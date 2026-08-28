@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF9B8C61DB9
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 03:14:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B84BAC61DC4
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 03:14:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F3A26B0088; Thu, 27 Aug 2026 23:14:00 -0400 (EDT)
+	id 485D66B0095; Thu, 27 Aug 2026 23:14:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A3B76B0092; Thu, 27 Aug 2026 23:14:00 -0400 (EDT)
+	id 40FB16B0096; Thu, 27 Aug 2026 23:14:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 744CA6B0095; Thu, 27 Aug 2026 23:14:00 -0400 (EDT)
+	id 23BBB6B0098; Thu, 27 Aug 2026 23:14:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 44B076B0088
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:14:00 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BFD891C18F0
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 01CEC6B0095
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:14:02 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 92DFE4031E
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:14:02 +0000 (UTC)
+X-FDA: 85149209124.10.38CC954
+Received: from mail-m82132.xmail.ntesmail.com (mail-m82132.xmail.ntesmail.com [156.224.82.132])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 0C748100002
 	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:13:59 +0000 (UTC)
-X-FDA: 85149208998.19.4B799C5
-Received: from mail-m602.netease.com (mail-m602.netease.com [210.79.60.2])
-	by imf04.hostedemail.com (Postfix) with ESMTP id DD4EE40004
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:13:55 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
+Authentication-Results: imf14.hostedemail.com;
 	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of zhen.ni@easystack.cn designates 210.79.60.2 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
-	dmarc=pass (policy=none) header.from=easystack.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787886837;
-	b=daZwIFp4ISJ27px9v4nMHt+L2na7RjeBPxflnNTM/BTL4Rqo5bUPUHEmPyG1v1RfkuSh0X
-	0YHtkhTxRu0CMW83ABb2vczUjyQR6pJ7rOLOWq8nk4NnWvOukJZPCISDHzG9zvIeGjWqpX
-	vlRhfQYlgn/PMc8plyra0gBvePKDgkE=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of zhen.ni@easystack.cn designates 210.79.60.2 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
-	dmarc=pass (policy=none) header.from=easystack.cn
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf14.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.132 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787886837;
+	s=arc-20220608; t=1787886840;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=9LGYTQqMi9XTtSU5VcHHGa+j+osUrnjXDKrPbS3nPcE=;
-	b=bGe5ERXuOjr+i48B2U7ECYnGOPmOsoJ9XNAMJBsunrjlQFv9bR96GaNDIycLmlB+5hJOxI
-	aekvyhZyUM//gfZEh6WfjhzUC4mnFtBgtO1MYXsbBl3ldPeZUKdM5i8fc1CkFyu4yF5074
-	jxznzkdZ6l3PYHyreUvnLYdNTPFGuN0=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=H/73O/DebCdEj7mf2t4BTKuj1WxJO/jCXygYEgnOHog=;
+	b=hFtA02EbNeOB7jKa9WsJrTgFPNmF0gK6z2do25UDXScUguq1541Nq0zGeb7tw4iCo/ANX8
+	Nr67RuedLjWNzu4PhSi7pJqJEUsmBrDAekbYvyKNhauWmyZBFTL39WsrWDI1eo5OC94X5Y
+	v2W1gfuLeKHOxRP5Nb6n3Nkws23dfto=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787886840;
+	b=oyQnY8MELEjRONZevcZzvySIaugbVMXACh81KbTkVRKzkLTtb0HoAMOA57f0JE8FIladE4
+	DQuNcnv3sRrofzuP/NETsyMefUjN235r31/EK0z6P4/HKCmoYOLco5XHjAi+IN/xF+wCzT
+	ZKUU2+HPxqjxqhf7F6vsSXz7Y3Lmuc4=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf14.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.132 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 Received: from localhost.localdomain (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 1e6a20d82;
-	Fri, 28 Aug 2026 11:13:48 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 1e6a20da3;
+	Fri, 28 Aug 2026 11:13:55 +0800 (GMT+08:00)
 From: Zhen Ni <zhen.ni@easystack.cn>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -70,27 +70,28 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Zhen Ni <zhen.ni@easystack.cn>
-Subject: [PATCH 0/8] mm/page_owner: Add PID/TGID/COMM and cgroup filtering
-Date: Fri, 28 Aug 2026 11:13:31 +0800
-Message-Id: <20260828031339.1270699-1-zhen.ni@easystack.cn>
+Subject: [PATCH 3/8] mm/page_owner: Add COMM filtering with wildcard support
+Date: Fri, 28 Aug 2026 11:13:34 +0800
+Message-Id: <20260828031339.1270699-4-zhen.ni@easystack.cn>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20260828031339.1270699-1-zhen.ni@easystack.cn>
+References: <20260828031339.1270699-1-zhen.ni@easystack.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=y
-Content-Transfer-Encoding: quoted-printable
-X-HM-Tid: 0aa0465bfb1a0229kunma81ef96712a30c
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0aa0465c18480229kunma81ef96712a33b
 X-HM-MType: 1
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaS09DVktMHUtDSB9JTE1NTVYVFA
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZT0JOVkJMSRkeH04dTENPGVYVFA
 	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
 	lPT09IVUpLS1VKQktLWQY+
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: DD4EE40004
-X-Stat-Signature: ig81gbet1crxx5rwihq67rg1obbe1ogx
 X-Rspam-User: 
-X-HE-Tag: 1787886835-50799
-X-HE-Meta: U2FsdGVkX1/b9LWfzHEwRucorZDe7T63nX7XPVi7kH7P4e50+owo7Zzt3WRJ+43i5UN0gdtyv97ZPj7CwKvY2N3hnSMTY63zl7Kq5g+xhR4uLL3nkvFv4MjpV2ZqQfvAGPCXqhTsPx/nBBeJI74NwNv8sILmUXufvPE6SIb4XlGFWfJUEgoE0qHZpYljJTuZQuwdvMEPA2+mqTEUH1Dk+22uOMbnwpTeBATnaCH4YRDfcaJCmKGk8KLUXVMF8ZLAFyOginQOXGBkZ5gPmpGzZ1mwLFD9tPd9GPlcp5wSFltLI1Hpb9t1yVUaTAVG0C+NEXE9DaU6Ax0KNRjFtVC2Fi61e+1Kx20xrsfbDq2rCN8swC2spbB2oO8KlcMKIE+OHE3NoWdkAOG1BrPHi0t8/aoqxWHLD8bSN0jwIO5t+3jw8i9PDUIIyEK4g1Pl9DzkFaJPUeux8NzhylFmILteuP+U0VOvdeIdxlD0tZNg66D989laAaErVCbG0FGVIIKl/pBPLEN1oU/MOoid5Hjcft+z+bHT5SoqI8GKK3RKVajl02uNxPKZvCZMcRCOLOOpMyCmlkZAF7WLiZmY3nOokJPI08E7LJpvH+QTu8+cRN/0F56p7aHB6fKk3YxRvQrZa1zrWv315/7zasV0PFFuADsGhBZaiRAT5M8gUndtTEZ2qlOD7995oelGJ3KhpGXmN8ec8bVvnbkrQQ7qSnk6TCL9oxtwJd+R/CVq/oG9vbg82N1+lJ761Htnnt5lhGUlLnvsP+AQ5AA6ZLHPhYWt2VGjygiy92FQD4Ur7cOMSvceRJe1jB50o4ppqZ1A5VmHj326UCnHE2yAd9cwHreru2t3lVPiadALdG7Jr4YTtVNwtyI0l4dbvE+86dmeE9k4M9x4+Ni9K9hWAS4BQI6ITfoWVKpAFu//bqxPJA1OZe4qbYzjC5l/fTOgbprWiHItAI8940dMWKraSajtRAG
- P/h5Qrnb
- zrkziPv2dBgSncyhj5HuBnfi043hiRrWfHPM8Gw3HjjI8OiPlCyStslPk5BpTFGbR7ONmuzCvc+3Ouuq8uypQmkDe9fo/FWbNtIR5
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 0C748100002
+X-Stat-Signature: 37dgbhactpmwhpmeg7a5ew5ouo611diz
+X-HE-Tag: 1787886839-732801
+X-HE-Meta: U2FsdGVkX19tX/ZCdMFPXse06yn2uBjpiNQwira4vxjqoYMdpAovAbFzSCA4Pd0Vz7v/x8I1yw5JgVz7wOmo68gnpmx5gS5Rc2t2SkyIriDOzoizyQlRrlzApRNfO9KGCtm+Q5fscITCxzekS2wlTu0brH6hPxiG7mC3THVMVAw0xtLPBGg8NYkXNh32mjg1sFOa2/fGdr2rJY3gf0s2PJSKOhXH2LlT8xJY3wj2vMLwPVhYvQpeSIBcEtsRo5DfmGSWKwLJ8VBpjP9jza8Ohg/CYPV/ci9prUlj9cYYWpWAZp6M1vzynVcMCQ+gVDADcGDbY0xbQXf7Hm5D0G22qBDIEOTwZI+ftcq2nAH+ARjVEtilAkd9YzmLOvyrycsqf7B7JoFafNaryTLPJdAahHdrDYf8ufuP0NIO7GYKFnIawdIkJCbEkk7Kh9Ks7eW/+oisNAJgcZEQMn/wmwbakarG62UCDyGhkMCnIQ7npBfrsoD3HJBvCCoxZuSMLSjDt2+97SNyPVjDyc7eW2uFGQAGBMW/C/h9l0o76VrxKNcQgKGBfO1zxQMEp+YZCaCzqyfmldBZS/9LDr6TjNUmTioOlhXSK1v1YZV4mkweHo4OwslGz+G1BFCLTWnGLIoIWP41MoxGTvRwyS9Z3N2XDPuBgTrctalUMqAX1RMvQc7HPujaHz48t/u8mpWmxXcWR/CubQc5mvr614n4URWUnJF8ZiHSvCG5b96nMRXcbhjDjlytKaV1YSb/Jocnb5lE9F1QYv1Ffb9eJkFBzScoh1hJSnihjJN0j4b/KyefwN5DE3Pv9ex/SF7hc8hX3kJCAZmf8bhI2Vkm2pRiKa1tfqG5qjvB8wjJRhd5Px/LyAFmtVtG1hcc+lRwoGoc2i6hwd6JMBRZy5LRjBDbQgqjNwSdkuzgac1K8FNCDsfGDO2rf+dupEdgiXWjD1zGAxiWQNfgwzeZ4f4Qjz6OKNv
+ 4RtmRBn7
+ +yE84fUoVrG2Bvx7MF4LbYf5xT9fLXeUsvZ3tRIHORAT4y4wgFCMdWL+vvso4I2lEvmz+pVASkmB4bA1O9d12Onis3GCGNqY/kbwz/OytCZPgCT0sLLWgJngW7lVdCEWrJenZFDFnVZ9x60Mv9aeKp/M0Fg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,1395 +99,201 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch series adds process and memory cgroup filtering support to
-page_owner. Following the previous series that introduced print_mode and
-NUMA node filters:
-  https://lore.kernel.org/linux-mm/20260707115411.1714314-1-zhen.ni@easysta=
-ck.cn/
-
-This series adds filtering capabilities to page_owner, allowing users to
-filter output by specific processes and memory cgroups. Users can now
-filter page_owner output by PID, TGID, COMM (with wildcard support), and
-memory cgroup path. This makes page_owner debugging more focused and
-efficient for tracking memory allocations in specific contexts.
-
-Targeted filtering provides significant performance benefits on large memory
-servers by reducing both execution time and output size. By filtering at the
-kernel level before reading, only relevant page allocations are processed,
-dramatically reducing the amount of data that needs to be handled in usersp=
-ace.
-
-This series extends page_owner filtering capabilities with:
-- PID filtering
-- TGID filtering
-- COMM filtering with wildcard support
-- Cgroup (memcg) filtering for containerized environments
-
-The series is organized as follows:
-
-Patches 1-3: Add PID, TGID, and COMM filtering support to page_owner
-  - Support filtering by process ID
-  - Support filtering by thread group ID
-  - Support filtering by command name with wildcards
-
-Patch 4: Refactor memcg handling to prepare for cgroup filter support
-Patch 5: Add memory cgroup filtering support
-
-Patches 6-7: Update page_owner_filter tool with corresponding features
-
-Patch 8: Update documentation
-
-These filters are particularly useful for:
-- Debugging memory leaks in specific processes
-- Analyzing memory usage in containerized environments
-- Isolating allocations from specific services or applications
-
-Test Setup
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-The filtering functionality has been tested with the following tools:
-
-1. page_owner_test_alloc.c - Test allocation program
-
-   Build: gcc page_owner_test_alloc.c -o page_owner_test_alloc
-
-   Run: ./page_owner_test_alloc
-
-   Creates 3 threads in separate cgroups (test_a, test_b, test_c), each
-   allocating 1MB continuously. Allows verification of PID/TGID/COMM/cgroup
-   filtering accuracy by comparing page counts. Automatically cleans up
-   cgroups on Ctrl+C (SIGINT) or SIGTERM.
-
-2. test_page_owner_filters.sh - Comprehensive test script
-
-   Run: ./test_page_owner_filters.sh
-
-   Covers invalid inputs, PID 1 filtering, cgroup filtering, combination
-   filters, and page count verification using the test program above.
-
-Test Results
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-1. Start test program (keep it running)::
-
-   $ ./page_owner_test_alloc=20
-   TGID: 792 PID: 793 COMM: po_thread_a CGROUP: /test_a
-   TGID: 792 PID: 794 COMM: po_thread_b CGROUP: /test_b
-   TGID: 792 PID: 795 COMM: po_thread_c CGROUP: /test_c
-
-   [Keep this terminal running, open a new terminal for the test script]
-
-2. Run test script in another terminal::
-
-   $ ./test_page_owner_filters.sh
-
-   Test environment: 4-node NUMA system.
-
-   The same script was tested on both cgroup v1 and cgroup v2, and the
-   results matched expectations on both.
-
-   The cgroup v1 testing requires CONFIG_MEMCG_V1 to be enabled at build
-   time, plus the following kernel boot parameters::
-
-     systemd.unified_cgroup_hierarchy=3D0
-     systemd.legacy_systemd_cgroup_controller=3D1
-
-   The output below is from the cgroup v2 environment.
-
-   root@ubuntu:~/pid# ./test_page_owner_filters.sh
-   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-   Page Owner Filter Tests
-   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-   =3D=3D=3D I. INVALID INPUT TESTS =3D=3D=3D
-
-   --- 1.1 PID Invalid Inputs ---
-   Test: Negative PID
-   ./page_owner_filter -p -1
-   Error: Invalid character '-' in pid_list (only digits allowed)
-
-   Test: Non-numeric PID
-   ./page_owner_filter -p abc
-   Error: Invalid character 'a' in pid_list (only digits allowed)
-
-   Test: Empty PID argument
-   ./page_owner_filter -p
-   ./page_owner_filter: option requires an argument -- 'p'
-   Usage: ./page_owner_filter [OPTIONS]
-
-   Options:
-   -m, --mode MODE       : print_mode (stack, handle, stack_handle)
-   -n, --nid NID_LIST    : NUMA nodes (comma-separated or ranges)
-   -p, --pid PID_LIST    : Process IDs (comma-separated, max 16)
-   -t, --tgid TGID_LIST  : Thread Group IDs (comma-separated, max 16)
-   -c, --comm COMM_LIST  : Process names (comma-separated, max 8)
-                           Supports wildcards: * ? [a-z]
-   -g, --cgroup PATH     : Memory cgroup path
-   -o, --output FILE     : output file (default: stdout)
-   -h, --help            : show this help message
-
-   Examples:
-   ./page_owner_filter -m handle -o output.txt
-   ./page_owner_filter -n 0,1 -c bash
-   ./page_owner_filter -c "python*" -g user.slice
-
-   Test: PID with letters (mixed invalid)
-   ./page_owner_filter -p 123abc
-   Error: Invalid character 'a' in pid_list (only digits allowed)
-
-   Test: Multiple invalid PIDs
-   ./page_owner_filter -p -1,-2,-3
-   Error: Invalid character '-' in pid_list (only digits allowed)
-
-   Test: Excessive PID value (> max PID)
-   ./page_owner_filter -p 4294967296
-   write filter command: Invalid argument
-
-   Test: Too many PIDs (17 PIDs, max is 16)
-   ./page_owner_filter -p 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17
-   Error: Too many PIDs (max 16)
-
-
-   --- 1.2 TGID Invalid Inputs ---
-   Test: Negative TGID
-   ./page_owner_filter -t -1
-   Error: Invalid character '-' in pid_list (only digits allowed)
-
-   Test: Non-numeric TGID
-   ./page_owner_filter -t xyz
-   Error: Invalid character 'x' in pid_list (only digits allowed)
-
-   Test: Empty TGID argument
-   ./page_owner_filter -t
-   ./page_owner_filter: option requires an argument -- 't'
-   Usage: ./page_owner_filter [OPTIONS]
-
-   Options:
-   -m, --mode MODE       : print_mode (stack, handle, stack_handle)
-   -n, --nid NID_LIST    : NUMA nodes (comma-separated or ranges)
-   -p, --pid PID_LIST    : Process IDs (comma-separated, max 16)
-   -t, --tgid TGID_LIST  : Thread Group IDs (comma-separated, max 16)
-   -c, --comm COMM_LIST  : Process names (comma-separated, max 8)
-                           Supports wildcards: * ? [a-z]
-   -g, --cgroup PATH     : Memory cgroup path
-   -o, --output FILE     : output file (default: stdout)
-   -h, --help            : show this help message
-
-   Examples:
-   ./page_owner_filter -m handle -o output.txt
-   ./page_owner_filter -n 0,1 -c bash
-   ./page_owner_filter -c "python*" -g user.slice
-
-   Test: TGID with special characters
-   ./page_owner_filter -t '$$'
-   Error: Invalid character '$' in pid_list (only digits allowed)
-
-   Test: Mixed valid/invalid TGID
-   ./page_owner_filter -t 1,abc,2
-   Error: Invalid character 'a' in pid_list (only digits allowed)
-
-
-   --- 1.3 COMM Invalid Inputs ---
-   Test: Empty COMM argument
-   ./page_owner_filter -c
-   ./page_owner_filter: option requires an argument -- 'c'
-   Usage: ./page_owner_filter [OPTIONS]
-
-   Options:
-   -m, --mode MODE       : print_mode (stack, handle, stack_handle)
-   -n, --nid NID_LIST    : NUMA nodes (comma-separated or ranges)
-   -p, --pid PID_LIST    : Process IDs (comma-separated, max 16)
-   -t, --tgid TGID_LIST  : Thread Group IDs (comma-separated, max 16)
-   -c, --comm COMM_LIST  : Process names (comma-separated, max 8)
-                           Supports wildcards: * ? [a-z]
-   -g, --cgroup PATH     : Memory cgroup path
-   -o, --output FILE     : output file (default: stdout)
-   -h, --help            : show this help message
-
-   Examples:
-   ./page_owner_filter -m handle -o output.txt
-   ./page_owner_filter -n 0,1 -c bash
-   ./page_owner_filter -c "python*" -g user.slice
-
-   Test: COMM with only spaces
-   ./page_owner_filter -c '   '
-   write filter command: Invalid argument
-
-   Test: COMM with path separator
-   Verify: Non-existent COMM is accepted but produces no output
-   ./page_owner_filter -c 'invalid/name'
-
-   Test: Empty COMM in list (consecutive commas)
-   ./page_owner_filter -c 'test,,another'
-   Error: Empty COMM in list
-
-   Test: Empty COMM at end
-   ./page_owner_filter -c 'test,'
-   Error: Empty COMM at end of list
-
-   Test: Empty COMM at start
-   ./page_owner_filter -c ',test'
-   Error: Empty COMM in list
-
-   Test: Extremely long COMM in a list
-   ./page_owner_filter -c 'short,very_long_process_name,another'
-   Error: COMM too long (max 15 chars)
-   Near: very_long_proce...
-
-
-   --- 1.4 Cgroup Invalid Inputs ---
-   Test: Empty cgroup path
-   ./page_owner_filter -g
-   ./page_owner_filter: option requires an argument -- 'g'
-   Usage: ./page_owner_filter [OPTIONS]
-
-   Options:
-   -m, --mode MODE       : print_mode (stack, handle, stack_handle)
-   -n, --nid NID_LIST    : NUMA nodes (comma-separated or ranges)
-   -p, --pid PID_LIST    : Process IDs (comma-separated, max 16)
-   -t, --tgid TGID_LIST  : Thread Group IDs (comma-separated, max 16)
-   -c, --comm COMM_LIST  : Process names (comma-separated, max 8)
-                           Supports wildcards: * ? [a-z]
-   -g, --cgroup PATH     : Memory cgroup path
-   -o, --output FILE     : output file (default: stdout)
-   -h, --help            : show this help message
-
-   Examples:
-   ./page_owner_filter -m handle -o output.txt
-   ./page_owner_filter -n 0,1 -c bash
-   ./page_owner_filter -c "python*" -g user.slice
-
-   Test: Non-existent cgroup path
-   ./page_owner_filter -g /nonexistent/path/that/does/not/exist
-   Error: Cgroup path '/nonexistent/path/that/does/not/exist': not found or=
- no memory controller
-
-   Test: Cgroup path with spaces
-   ./page_owner_filter -g '/path with spaces'
-   Error: Cgroup path '/path with spaces': not found or no memory controller
-
-   Test: Cgroup exists but has no memory controller
-   =E2=9C=93 Created: /sys/fs/cgroup/test_no_memcg_parent_796/test_child
-   =E2=9C=93 Verified: /sys/fs/cgroup/test_no_memcg_parent_796/test_child/m=
-emory.stat does not exist
-   Note: page_owner_filter should detect missing memory.stat
-   ./page_owner_filter -g /test_no_memcg_parent_796/test_child
-   Error: Cgroup path '/test_no_memcg_parent_796/test_child': not found or =
-no memory controller
-
-   Test: Cgroup path exceeding PATH_MAX
-   Generated path length: 4101
-   ./page_owner_filter -g '<very long path>'
-   Error: Cgroup path '/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'=
-: not found or no memory controller
-
-   Test: Multiple cgroup paths (last one wins)
-   ./page_owner_filter -g /user.slice -g /sys/fs/cgroup
-   Verify: Tool accepts multiple -g and uses the last one
-   Note: /sys/fs/cgroup is invalid
-   Error: Cgroup path '/sys/fs/cgroup': not found or no memory controller
-
-
-   --- 1.5 General Invalid Options ---
-   Test: Invalid option flag
-   ./page_owner_filter -x
-   ./page_owner_filter: invalid option -- 'x'
-   Usage: ./page_owner_filter [OPTIONS]
-
-   Options:
-   -m, --mode MODE       : print_mode (stack, handle, stack_handle)
-   -n, --nid NID_LIST    : NUMA nodes (comma-separated or ranges)
-   -p, --pid PID_LIST    : Process IDs (comma-separated, max 16)
-   -t, --tgid TGID_LIST  : Thread Group IDs (comma-separated, max 16)
-   -c, --comm COMM_LIST  : Process names (comma-separated, max 8)
-                           Supports wildcards: * ? [a-z]
-   -g, --cgroup PATH     : Memory cgroup path
-   -o, --output FILE     : output file (default: stdout)
-   -h, --help            : show this help message
-
-   Examples:
-   ./page_owner_filter -m handle -o output.txt
-   ./page_owner_filter -n 0,1 -c bash
-   ./page_owner_filter -c "python*" -g user.slice
-
-   Test: Unknown filter combination
-   ./page_owner_filter -q 123
-   ./page_owner_filter: invalid option -- 'q'
-   Usage: ./page_owner_filter [OPTIONS]
-
-   Options:
-   -m, --mode MODE       : print_mode (stack, handle, stack_handle)
-   -n, --nid NID_LIST    : NUMA nodes (comma-separated or ranges)
-   -p, --pid PID_LIST    : Process IDs (comma-separated, max 16)
-   -t, --tgid TGID_LIST  : Thread Group IDs (comma-separated, max 16)
-   -c, --comm COMM_LIST  : Process names (comma-separated, max 8)
-                           Supports wildcards: * ? [a-z]
-   -g, --cgroup PATH     : Memory cgroup path
-   -o, --output FILE     : output file (default: stdout)
-   -h, --help            : show this help message
-
-   Examples:
-   ./page_owner_filter -m handle -o output.txt
-   ./page_owner_filter -n 0,1 -c bash
-   ./page_owner_filter -c "python*" -g user.slice
-
-   --- 1.6 Mixed Invalid ---
-   Test: Valid PID + valid cgroup + invalid NID (node 4 doesn't exist)
-   Verify: Invalid NID should cause rejection even with valid other filters
-   ./page_owner_filter -p 1 -g / -n 4
-   write filter command: Invalid argument
-
-
-   =3D=3D=3D II. PID 1 AND ROOT CGROUP TESTS =3D=3D=3D
-
-   --- 2.1 PID Filter with PID 1 ---
-   Test: Filter by PID 1 (init/systemd)
-   ./page_owner_filter -p 1 | head -20
-   Page allocated via order 3, mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|=
-__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 1, tgid 1 (swapper/0), ts 5=
-991990 ns
-   PFN 0x400c8 type Unmovable Block 512 type Unmovable Flags 0x3fffe0000000=
-040(head|node=3D0|zone=3D0|lastcpupid=3D0x1ffff)
-   get_page_from_freelist+0x17d8/0x1a60
-   __alloc_frozen_pages_noprof+0x198/0x133c
-   new_slab+0xd0/0x4e8
-   refill_objects+0x204/0x278
-   __pcs_replace_empty_main+0x130/0x3ec
-   __kmalloc_noprof+0x354/0x42c
-   bitmap_zalloc+0x24/0x30
-   asids_init+0x64/0xf0
-   do_one_initcall+0x70/0x1b8
-   kernel_init_freeable+0x108/0x2ec
-   kernel_init+0x2c/0x1e0
-   ret_from_fork+0x10/0x20
-
-   Page allocated via order 2, mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|=
-__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 1, tgid 1 (swapper/0), ts 1=
-1666300 ns
-   PFN 0x400e0 type Unmovable Block 512 type Unmovable Flags 0x3fffe0000000=
-040(head|node=3D0|zone=3D0|lastcpupid=3D0x1ffff)
-   get_page_from_freelist+0x17d8/0x1a60
-   __alloc_frozen_pages_noprof+0x198/0x133c
-   new_slab+0xd0/0x4e8
-   Verify: All pages should be from PID 1
-   ./page_owner_filter -p 1 | grep -o "pid [0-9]*," | sort | uniq -c
-   14919 pid 1,
-
-   --- 2.2 TGID Filter with PID 1's TGID ---
-   Test: Filter by TGID of PID 1
-   ./page_owner_filter -t 1 | head -20
-   Page allocated via order 3, mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|=
-__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 1, tgid 1 (swapper/0), ts 5=
-991990 ns
-   PFN 0x400c8 type Unmovable Block 512 type Unmovable Flags 0x3fffe0000000=
-040(head|node=3D0|zone=3D0|lastcpupid=3D0x1ffff)
-   get_page_from_freelist+0x17d8/0x1a60
-   __alloc_frozen_pages_noprof+0x198/0x133c
-   new_slab+0xd0/0x4e8
-   refill_objects+0x204/0x278
-   __pcs_replace_empty_main+0x130/0x3ec
-   __kmalloc_noprof+0x354/0x42c
-   bitmap_zalloc+0x24/0x30
-   asids_init+0x64/0xf0
-   do_one_initcall+0x70/0x1b8
-   kernel_init_freeable+0x108/0x2ec
-   kernel_init+0x2c/0x1e0
-   ret_from_fork+0x10/0x20
-
-   Page allocated via order 2, mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|=
-__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 1, tgid 1 (swapper/0), ts 1=
-1666300 ns
-   PFN 0x400e0 type Unmovable Block 512 type Unmovable Flags 0x3fffe0000000=
-040(head|node=3D0|zone=3D0|lastcpupid=3D0x1ffff)
-   get_page_from_freelist+0x17d8/0x1a60
-   __alloc_frozen_pages_noprof+0x198/0x133c
-   new_slab+0xd0/0x4e8
-   Verify: All pages should be from TGID 1
-   ./page_owner_filter -t 1 | grep -o "tgid [0-9]* " | sort | uniq -c
-   14919 tgid 1=20
-
-   --- 2.3 COMM Filter with systemd/init ---
-   Test: Filter by systemd (or init if systemd not present)
-   ./page_owner_filter -c systemd | head -20
-   Page allocated via order 1, mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|=
-__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 170, tgid 170 (systemd), ts=
- 4340986430 ns
-   PFN 0x40172 type Unmovable Block 512 type Unmovable Flags 0x3fffe0000000=
-040(head|node=3D0|zone=3D0|lastcpupid=3D0x1ffff)
-   get_page_from_freelist+0x17d8/0x1a60
-   __alloc_frozen_pages_noprof+0x198/0x133c
-   new_slab+0xd0/0x4e8
-   refill_objects+0x204/0x278
-   __pcs_replace_empty_main+0x130/0x3ec
-   __kmalloc_noprof+0x354/0x42c
-   load_elf_phdrs+0x68/0xec
-   load_elf_binary+0xac/0x1664
-   bprm_execve+0x274/0x4c4
-   do_execveat_common.isra.0+0x164/0x1c4
-   __arm64_sys_execve+0x44/0x68
-   invoke_syscall+0x54/0x110
-   el0_svc_common.constprop.0+0x40/0xe8
-   do_el0_svc+0x20/0x2c
-   el0_svc+0x30/0x198
-   el0t_64_sync_handler+0xa0/0xe4
-
-   Page allocated via order 1, mask 0x252800(GFP_NOWAIT|__GFP_NORETRY|__GFP=
-_COMP|__GFP_THISNODE), pid 1, tgid 1 (systemd), ts 3621526030 ns
-   Verify: All pages should be from systemd
-   ./page_owner_filter -c systemd | grep -o "([a-z]*)," | sort | uniq -c
-      2290 (systemd),
-
-   --- 2.4 Cgroup Filter with Root Cgroup ---
-   Test: Filter by root cgroup /
-   ./page_owner_filter -g / | head -20
-   Page allocated via order 0, mask 0x42800(GFP_NOWAIT|__GFP_COMP), pid 1, =
-tgid 1 (swapper/0), ts 162339490 ns
-   PFN 0x40b33 type Unmovable Block 517 type Unmovable Flags 0x3fffe0000004=
-124(referenced|lru|active|private|node=3D0|zone=3D0|lastcpupid=3D0x1ffff)
-   get_page_from_freelist+0x17d8/0x1a60
-   __alloc_frozen_pages_noprof+0x198/0x133c
-   alloc_pages_mpol+0x70/0x1c4
-   alloc_frozen_pages_noprof+0x4c/0xc8
-   folio_alloc_noprof+0x14/0x6c
-   filemap_alloc_folio_noprof.part.0+0x134/0x148
-   __filemap_get_folio_mpol+0x260/0x50c
-   __getblk_slow+0x94/0x2c4
-   bdev_getblk+0x68/0x7c
-   ext4_sb_breadahead_unmovable+0x1c/0x84
-   __ext4_get_inode_loc+0x334/0x520
-   __ext4_get_inode_loc_noinmem+0x44/0xb0
-   __ext4_iget+0x1cc/0xd38
-   ext4_get_journal_inode+0x30/0x110
-   ext4_fill_super+0x1624/0x2be0
-   get_tree_bdev_flags+0x140/0x1ec
-   Charged to memcg /
-
-   Verify: All pages with memcg info should be charged to root cgroup
-   Total pages:
-      ./page_owner_filter -g / | grep -c "^Page allocated"
-   14187
-   Charged memcg paths (should only show memcg /):
-      ./page_owner_filter -g / | grep "Charged to" | grep -o "memcg [^"]*" =
-| sort | uniq -c
-   14187 memcg /
-
-
-   =3D=3D=3D III. TEST PROGRAM FILTERS (WITH PAGE COUNT VERIFICATION) =3D=
-=3D=3D
-
-   Found test program with main PID: 792
-   TGID: 792
-   Thread 1: PID=3D793, COMM=3Dpo_thread_a, cgroup=3D/test_a
-   Thread 2: PID=3D794, COMM=3Dpo_thread_b, cgroup=3D/test_b
-   Thread 3: PID=3D795, COMM=3Dpo_thread_c, cgroup=3D/test_c
-
-   Note: Each thread allocates 1MB (~256 pages)
-   --- 3.1 Thread 1 (po_thread_a) Verification ---
-   ./page_owner_filter -p 793 | grep -c PFN
-   ./page_owner_filter -c po_thread_a | grep -c PFN
-   ./page_owner_filter -g test_a | grep -c PFN
-   By PID (-p 793):   262 pages
-   By COMM (-c po_thread_a): 262 pages
-   By cgroup (-g test_a):   267 pages
-
-   --- 3.2 Thread 2 (po_thread_b) ---
-   ./page_owner_filter -p 794 | grep -c PFN
-   ./page_owner_filter -c po_thread_b | grep -c PFN
-   ./page_owner_filter -g test_b | grep -c PFN
-   By PID (-p 794):   263 pages
-   By COMM (-c po_thread_b): 263 pages
-   By cgroup (-g test_b):   268 pages
-
-   --- 3.3 Thread 3 (po_thread_c) ---
-   ./page_owner_filter -p 795 | grep -c PFN
-   ./page_owner_filter -c po_thread_c | grep -c PFN
-   ./page_owner_filter -g test_c | grep -c PFN
-   By PID (-p 795):   264 pages
-   By COMM (-c po_thread_c): 264 pages
-   By cgroup (-g test_c):   257 pages
-
-   --- 3.4 Summary: All Thread Counts ---
-   Thread          By PID          By COMM         By Cgroup=20=20=20=20=20=
-=20
-   --------------- --------------- --------------- ---------------
-   po_thread_a     262             262             267=20=20=20=20=20=20=20=
-=20=20=20=20=20
-   po_thread_b     263             263             268=20=20=20=20=20=20=20=
-=20=20=20=20=20
-   po_thread_c     264             264             257=20=20=20=20=20=20=20=
-=20=20=20=20=20
-   TOTAL           789             789             792=20=20=20=20=20=20=20=
-=20=20=20=20=20
-
-   --- 3.6 Multi-PID List Test ---
-   Verify: PID list equals sum of individual PIDs
-   Expected count: 789
-   ./page_owner_filter -p 793,794,795 | grep -c PFN
-   789
-
-   ./page_owner_filter -p 792 | grep -c PFN
-   50
-
-   ./page_owner_filter -p 792,793,794,795 | grep -c PFN
-   839
-
-   Verify: TGID equals sum of all PIDs in thread group (4 PIDs)
-   Expected count: -p 792,793,794,795
-   ./page_owner_filter -t 792 | grep -c PFN
-   839
-
-   --- 3.7 COMM Wildcard Test ---
-   Verify: Wildcard matches all thread COMMs (should equal sum of thread co=
-unts)
-   Expected count: 789
-   ./page_owner_filter -c 'po_thread_*' | grep -c PFN
-   789
-
-   ./page_owner_filter -c 'page_owner_test' | grep -c PFN
-   52
-
-   Verify: COMM list equals sum of individual COMMs
-   Expected count: 789 + -c 'page_owner_test'
-   ./page_owner_filter -c 'po_thread_*,page_owner_test' | grep -c PFN
-   841
-
-   Verify: Should only show current test PIDs
-   ./page_owner_filter -c 'po_thread_*,page_owner_test' | grep -o "pid [0-9=
-]*," | sort | uniq -c
-         1 pid 684,
-         1 pid 685,
-         1 pid 686,
-         1 pid 785,
-         1 pid 786,
-         1 pid 787,
-      46 pid 792,
-      262 pid 793,
-      263 pid 794,
-      264 pid 795,
-   Note: Previous test program PIDs may appear with small page counts (~10-=
-20) due to kernel cache
-
-
-   =3D=3D=3D IV. COMBINATION FILTER TESTS =3D=3D=3D
-
-   --- 4.1 PID + Cgroup Combination ---
-   Test: PID 1 with Root Cgroup
-   Verify: Should only show PID 1 pages in root cgroup
-   ./page_owner_filter -p 1 -g / | grep -o "pid [0-9]*," | sort | uniq -c
-      9779 pid 1,
-   Verify: All pages should be charged to root cgroup (total pages =3D char=
-ged pages count)
-   Total pages:
-      ./page_owner_filter -p 1 -g / | grep -c "^Page allocated"
-   9779
-   Charged memcg paths:
-      ./page_owner_filter -p 1 -g / | grep "Charged to" | grep -o "memcg [^=
-"]*" | sort | uniq -c
-      9779 memcg /
-
-   --- 4.2 COMM + NID Combination ---
-   Test: systemd with Node 0 filter
-   ./page_owner_filter -c systemd -n 0 | head -10
-   Page allocated via order 1, mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|=
-__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 170, tgid 170 (systemd), ts=
- 4340986430 ns
-   PFN 0x40172 type Unmovable Block 512 type Unmovable Flags 0x3fffe0000000=
-040(head|node=3D0|zone=3D0|lastcpupid=3D0x1ffff)
-   get_page_from_freelist+0x17d8/0x1a60
-   __alloc_frozen_pages_noprof+0x198/0x133c
-   new_slab+0xd0/0x4e8
-   refill_objects+0x204/0x278
-   __pcs_replace_empty_main+0x130/0x3ec
-   __kmalloc_noprof+0x354/0x42c
-   load_elf_phdrs+0x68/0xec
-   load_elf_binary+0xac/0x1664
-   Verify: Should only show systemd pages on node 0
-      ./page_owner_filter -c systemd -n 0 | grep -o "([a-z]*)," | sort | un=
-iq -c
-      191 (systemd),
-      ./page_owner_filter -c systemd -n 0 | grep "PFN" | grep -o "node=3D[0=
--9]" | sort | uniq -c
-      191 node=3D0
-
-   --- 4.3 Test Program Filter Combinations ---
-   Note: Process filters (PID/TGID/COMM) use OR logic among themselves,
-         but AND logic with other filters (e.g., cgroup)
-
-   expected: TGID page count, max of PID or TGID count)
-   ./page_owner_filter -p 793 -t 792 | grep -c PFN
-   839
-
-   expected: max of PID or COMM count
-   ./page_owner_filter -p 793 -c po_thread_a | grep -c PFN
-   264
-
-   expected: TGID page count,max of TGID or COMM count
-   ./page_owner_filter -t 792 -c po_thread_a | grep -c PFN
-   841
-
-   AND logic: both must match
-   ./page_owner_filter -p 793 -g /test_a | grep -c PFN
-   257
-
-
-   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-   Tests completed
-   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-   Summary of test categories:
-   I.   Invalid inputs for all filters
-   II.  PID 1 and root cgroup tests
-   III. Test program specific tests (with page count verification)
-   IV.  Combination filter tests
-
-   Please review output above for any errors or unexpected behavior.
-
-Appendix - Test Programs
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-1. page_owner_test_alloc.c - Test allocation program::
-
-// SPDX-License-Identifier: GPL-2.0
-#define _GNU_SOURCE
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <signal.h>
-#include <sys/prctl.h>
-#include <sys/stat.h>
-
-#define ALLOC_MB 1
-#define NUM_THREADS 3
-
-static volatile sig_atomic_t shutdown =3D 0;
-static char cgroup_names[NUM_THREADS][16] =3D {"test_a", "test_b", "test_c"=
-};
-
-static void sig_handler(int signo)
-{
-	shutdown =3D 1;
-}
-
-static void cleanup(void)
-{
-	FILE *f;
-
-	/* Move self to root cgroup first */
-	f =3D fopen("/sys/fs/cgroup/cgroup.procs", "w");
-	if (!f)
-		f =3D fopen("/sys/fs/cgroup/memory/cgroup.procs", "w");
-	if (f) {
-		fprintf(f, "%d", getpid());
-		fclose(f);
-	}
-
-	/* Give threads time to exit cgroup */
-	usleep(50000);
-
-	/* Now remove the cgroups */
-	for (int i =3D 0; i < NUM_THREADS; i++) {
-		char path[128];
-		snprintf(path, sizeof(path), "/sys/fs/cgroup/%s", cgroup_names[i]);
-		rmdir(path);
-		snprintf(path, sizeof(path), "/sys/fs/cgroup/memory/%s", cgroup_names[i]);
-		rmdir(path);
-	}
-}
-
-static void *thread_func(void *arg)
-{
-	int id =3D *(int *)arg;
-	char comm[16], path[256];
-	FILE *f;
-
-	snprintf(comm, sizeof(comm), "po_thread_%c", 'a' + id);
-	prctl(PR_SET_NAME, comm);
-
-	/* Create cgroup and move thread (try v2, fallback to v1) */
-	snprintf(path, sizeof(path), "/sys/fs/cgroup/%s", cgroup_names[id]);
-	mkdir(path, 0755);
-	strcat(path, "/cgroup.procs");
-	f =3D fopen(path, "w");
-	if (!f) {
-		/* Try cgroup v1 memory controller */
-		snprintf(path, sizeof(path), "/sys/fs/cgroup/memory/%s", cgroup_names[id]=
-);
-		mkdir(path, 0755);
-		strcat(path, "/cgroup.procs");
-		f =3D fopen(path, "w");
-	}
-	if (f) {
-		fprintf(f, "%d", gettid());
-		fclose(f);
-	}
-
-	/* Allocate memory */
-	size_t sz =3D ALLOC_MB * 1024 * 1024;
-	char *p =3D malloc(sz);
-	if (p) {
-		for (size_t i =3D 0; i < sz; i +=3D 4096)
-			p[i] =3D (char)i;
-	}
-
-	printf("TGID: %d PID: %d COMM: %s CGROUP: /%s\n",
-	       getpid(), gettid(), comm, cgroup_names[id]);
-	fflush(stdout);
-
-	while (!shutdown) sleep(1);
-	return NULL;
-}
-
-int main(void)
-{
-	pthread_t threads[NUM_THREADS];
-	int ids[NUM_THREADS];
-
-	signal(SIGINT, sig_handler);
-	signal(SIGTERM, sig_handler);
-
-	for (int i =3D 0; i < NUM_THREADS; i++) {
-		ids[i] =3D i;
-		pthread_create(&threads[i], NULL, thread_func, &ids[i]);
-		usleep(100000);
-	}
-
-	while (!shutdown) pause();
-
-	shutdown =3D 1;
-	for (int i =3D 0; i < NUM_THREADS; i++)
-		pthread_join(threads[i], NULL);
-
-	cleanup();
-	return 0;
-}
-
-2. test_page_owner_filters.sh - Comprehensive test script::
-
-#!/bin/bash
-# Comprehensive test script for page_owner filters
-# Tests: PID/TGID/COMM/Cgroup filters (invalid cases, PID 1, test program, =
-combinations)
-
-cd "$(dirname "$0")"
-
-# Color codes for output
-RED=3D'\033[0;31m'
-GREEN=3D'\033[0;32m'
-YELLOW=3D'\033[1;33m'
-NC=3D'\033[0m' # No Color
-
-echo "=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D"
-echo "Page Owner Filter Tests"
-echo "=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D"
-echo
-
-# =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D
-# Section I: Invalid Input Tests
-# =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D
-echo -e "${YELLOW}=3D=3D=3D I. INVALID INPUT TESTS =3D=3D=3D${NC}"
-echo
-
-echo "--- 1.1 PID Invalid Inputs ---"
-echo "Test: Negative PID"
-echo "  ./page_owner_filter -p -1"
-./page_owner_filter -p -1
-echo
-
-echo "Test: Non-numeric PID"
-echo "  ./page_owner_filter -p abc"
-./page_owner_filter -p abc
-echo
-
-echo "Test: Empty PID argument"
-echo "  ./page_owner_filter -p"
-./page_owner_filter -p
-echo
-
-echo "Test: PID with letters (mixed invalid)"
-echo "  ./page_owner_filter -p 123abc"
-./page_owner_filter -p 123abc
-echo
-
-echo "Test: Multiple invalid PIDs"
-echo "  ./page_owner_filter -p -1,-2,-3"
-./page_owner_filter -p -1,-2,-3
-echo
-
-echo "Test: Excessive PID value (> max PID)"
-echo "  ./page_owner_filter -p 4294967296"
-./page_owner_filter -p 4294967296
-echo
-
-echo "Test: Too many PIDs (17 PIDs, max is 16)"
-echo "  ./page_owner_filter -p 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17"
-./page_owner_filter -p 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17
-echo
-
-echo
-echo "--- 1.2 TGID Invalid Inputs ---"
-echo "Test: Negative TGID"
-echo "  ./page_owner_filter -t -1"
-./page_owner_filter -t -1
-echo
-
-echo "Test: Non-numeric TGID"
-echo "  ./page_owner_filter -t xyz"
-./page_owner_filter -t xyz
-echo
-
-echo "Test: Empty TGID argument"
-echo "  ./page_owner_filter -t"
-./page_owner_filter -t
-echo
-
-echo "Test: TGID with special characters"
-echo "  ./page_owner_filter -t '\$\$'"
-./page_owner_filter -t '$$'
-echo
-
-echo "Test: Mixed valid/invalid TGID"
-echo "  ./page_owner_filter -t 1,abc,2"
-./page_owner_filter -t 1,abc,2
-echo
-
-echo
-echo "--- 1.3 COMM Invalid Inputs ---"
-echo "Test: Empty COMM argument"
-echo "  ./page_owner_filter -c"
-./page_owner_filter -c
-echo
-
-echo "Test: COMM with only spaces"
-echo "  ./page_owner_filter -c '   '"
-./page_owner_filter -c "   "
-echo
-
-echo "Test: COMM with path separator"
-echo "  Verify: Non-existent COMM is accepted but produces no output"
-echo "  ./page_owner_filter -c 'invalid/name'"
-./page_owner_filter -c "invalid/name"
-echo
-
-echo "Test: Empty COMM in list (consecutive commas)"
-echo "  ./page_owner_filter -c 'test,,another'"
-./page_owner_filter -c "test,,another"
-echo
-
-echo "Test: Empty COMM at end"
-echo "  ./page_owner_filter -c 'test,'"
-./page_owner_filter -c "test,"
-echo
-
-echo "Test: Empty COMM at start"
-echo "  ./page_owner_filter -c ',test'"
-./page_owner_filter -c ",test"
-echo
-
-echo "Test: Extremely long COMM in a list"
-echo "  ./page_owner_filter -c 'short,very_long_process_name,another'"
-./page_owner_filter -c "short,very_long_process_name,another"
-echo
-
-echo
-echo "--- 1.4 Cgroup Invalid Inputs ---"
-echo "Test: Empty cgroup path"
-echo "  ./page_owner_filter -g"
-./page_owner_filter -g
-echo
-
-echo "Test: Non-existent cgroup path"
-echo "  ./page_owner_filter -g /nonexistent/path/that/does/not/exist"
-./page_owner_filter -g /nonexistent/path/that/does/not/exist
-echo
-
-echo "Test: Cgroup path with spaces"
-echo "  ./page_owner_filter -g '/path with spaces'"
-./page_owner_filter -g "/path with spaces"
-echo
-
-echo "Test: Cgroup exists but has no memory controller"
-TEST_PARENT_DIR=3D"test_no_memcg_parent_$$"
-TEST_CHILD_DIR=3D"test_child"
-
-if [ -d "/sys/fs/cgroup/memory" ]; then
-	# cgroup v1: /cpuset exists but lacks memory controller
-	echo "  ./page_owner_filter -g /cpuset"
-	echo "  Note: /cpuset exists under memory/ but lacks memory.stat (cgroup v=
-1)"
-	./page_owner_filter -g /cpuset
-else
-	# cgroup v2: create parent without memory in subtree_control
-	TEST_PARENT_PATH=3D"/sys/fs/cgroup/$TEST_PARENT_DIR"
-	TEST_CHILD_PATH=3D"$TEST_PARENT_PATH/$TEST_CHILD_DIR"
-
-	if mkdir -p "$TEST_PARENT_PATH" 2>/dev/null && \
-	   echo "-memory" > "$TEST_PARENT_PATH/cgroup.subtree_control" 2>/dev/null=
- && \
-	   mkdir "$TEST_CHILD_PATH" 2>/dev/null; then
-		if [ -d "$TEST_CHILD_PATH" ]; then
-			echo "  =E2=9C=93 Created: $TEST_CHILD_PATH"
-			if [ -f "$TEST_CHILD_PATH/memory.stat" ]; then
-				echo "  =E2=9C=97 Test setup failed: $TEST_CHILD_PATH/memory.stat exist=
-s (should not)"
-			else
-				echo "  =E2=9C=93 Verified: $TEST_CHILD_PATH/memory.stat does not exist"
-			fi
-			echo "  Note: page_owner_filter should detect missing memory.stat"
-			echo "  ./page_owner_filter -g /$TEST_PARENT_DIR/$TEST_CHILD_DIR"
-			./page_owner_filter -g "/$TEST_PARENT_DIR/$TEST_CHILD_DIR"
-		else
-			echo "  =E2=9C=97 Failed to create: $TEST_CHILD_PATH"
-		fi
-		rmdir "$TEST_CHILD_PATH" 2>/dev/null
-		rmdir "$TEST_PARENT_PATH" 2>/dev/null
-	else
-		echo "  (skipped - cannot create test cgroup)"
-	fi
-fi
-echo
-
-echo "Test: Cgroup path exceeding PATH_MAX"
-LONG_PATH=3D"/$(head -c 4100 /dev/zero | tr '\0' 'a')"
-echo "  Generated path length: ${#LONG_PATH}"
-echo "  ./page_owner_filter -g '<very long path>'"
-./page_owner_filter -g "$LONG_PATH"
-echo
-
-echo "Test: Multiple cgroup paths (last one wins)"
-echo "  ./page_owner_filter -g /user.slice -g /sys/fs/cgroup"
-echo "  Verify: Tool accepts multiple -g and uses the last one"
-echo "  Note: /sys/fs/cgroup is invalid"
-./page_owner_filter -g /user.slice -g /sys/fs/cgroup
-echo
-
-echo
-echo "--- 1.5 General Invalid Options ---"
-echo "Test: Invalid option flag"
-echo "  ./page_owner_filter -x"
-./page_owner_filter -x
-echo
-
-echo "Test: Unknown filter combination"
-echo "  ./page_owner_filter -q 123"
-./page_owner_filter -q 123
-echo
-
-echo "--- 1.6 Mixed Invalid ---"
-echo "Test: Valid PID + valid cgroup + invalid NID (node 4 doesn't exist)"
-echo "  Verify: Invalid NID should cause rejection even with valid other fi=
-lters"
-echo "  ./page_owner_filter -p 1 -g / -n 4"
-./page_owner_filter -p 1 -g / -n 4
-echo
-
-# =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D
-# Section II: PID 1 and Root Cgroup Tests
-# =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D
-echo
-echo -e "${YELLOW}=3D=3D=3D II. PID 1 AND ROOT CGROUP TESTS =3D=3D=3D${NC}"
-echo
-
-echo "--- 2.1 PID Filter with PID 1 ---"
-echo "Test: Filter by PID 1 (init/systemd)"
-echo "  ./page_owner_filter -p 1 | head -20"
-./page_owner_filter -p 1 | head -20
-echo "Verify: All pages should be from PID 1"
-echo "  ./page_owner_filter -p 1 | grep -o \"pid [0-9]*,\" | sort | uniq -c"
-./page_owner_filter -p 1 | grep -o "pid [0-9]*," | sort | uniq -c
-echo
-
-echo "--- 2.2 TGID Filter with PID 1's TGID ---"
-echo "Test: Filter by TGID of PID 1"
-echo "  ./page_owner_filter -t 1 | head -20"
-./page_owner_filter -t 1 | head -20
-echo "Verify: All pages should be from TGID 1"
-echo "  ./page_owner_filter -t 1 | grep -o \"tgid [0-9]* \" | sort | uniq -=
-c"
-./page_owner_filter -t 1 | grep -o "tgid [0-9]* " | sort | uniq -c
-echo
-
-echo "--- 2.3 COMM Filter with systemd/init ---"
-echo "Test: Filter by systemd (or init if systemd not present)"
-echo "  ./page_owner_filter -c systemd | head -20"
-./page_owner_filter -c systemd | head -20
-echo "Verify: All pages should be from systemd"
-echo "  ./page_owner_filter -c systemd | grep -o \"([a-z]*),\" | sort | uni=
-q -c"
-./page_owner_filter -c systemd | grep -o "([a-z]*)," | sort | uniq -c
-echo
-
-echo "--- 2.4 Cgroup Filter with Root Cgroup ---"
-echo "Test: Filter by root cgroup /"
-echo "  ./page_owner_filter -g / | head -20"
-./page_owner_filter -g / | head -20
-echo "Verify: All pages with memcg info should be charged to root cgroup"
-echo "  Total pages:"
-echo "    ./page_owner_filter -g / | grep -c \"^Page allocated\""
-./page_owner_filter -g / | grep -c '^Page allocated'
-echo "  Charged memcg paths (should only show memcg /):"
-echo "    ./page_owner_filter -g / | grep \"Charged to\" | grep -o \"memcg =
-[^\"]*\" | sort | uniq -c"
-./page_owner_filter -g / | grep "Charged to" | grep -o "memcg [^\"]*" | sor=
-t | uniq -c
-echo
-
-# =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D
-# Section III: Test Program (page_owner_test_alloc) Tests
-# =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D
-echo
-echo -e "${YELLOW}=3D=3D=3D III. TEST PROGRAM FILTERS (WITH PAGE COUNT VERI=
-FICATION) =3D=3D=3D${NC}"
-echo
-
-# Find the running test_alloc process and get all 5 variables
-TEST_PID=3D$(pgrep -f "page_owner_test_alloc" | head -1)
-if [ -z "$TEST_PID" ]; then
-    echo -e "${RED}ERROR: page_owner_test_alloc not running!${NC}"
-    echo "Please start it first: ./page_owner_test_alloc &"
-    echo
-else
-    echo "Found test program with main PID: $TEST_PID"
-
-    # Get TGID (main process TGID, same for all threads)
-    TEST_TGID=3D$(cat /proc/$TEST_PID/status 2>/dev/null | grep -i "^Tgid:"=
- | awk '{print $2}')
-    echo "TGID: $TEST_TGID"
-
-    # Get the 3 thread PIDs (po_thread_a, po_thread_b, po_thread_c)
-    THREAD_PIDS=3D$(ls -1 /proc/$TEST_PID/task/ | grep -v "^$TEST_PID$" | s=
-ort -n)
-    TEST_PID_1=3D$(echo "$THREAD_PIDS" | sed -n '1p')
-    TEST_PID_2=3D$(echo "$THREAD_PIDS" | sed -n '2p')
-    TEST_PID_3=3D$(echo "$THREAD_PIDS" | sed -n '3p')
-
-    # Get COMM names for each thread
-    TEST_COMM_1=3D$(cat /proc/$TEST_PID_1/comm 2>/dev/null | tr -d '\n')
-    TEST_COMM_2=3D$(cat /proc/$TEST_PID_2/comm 2>/dev/null | tr -d '\n')
-    TEST_COMM_3=3D$(cat /proc/$TEST_PID_3/comm 2>/dev/null | tr -d '\n')
-
-    echo "Thread 1: PID=3D$TEST_PID_1, COMM=3D$TEST_COMM_1, cgroup=3D/test_=
-a"
-    echo "Thread 2: PID=3D$TEST_PID_2, COMM=3D$TEST_COMM_2, cgroup=3D/test_=
-b"
-    echo "Thread 3: PID=3D$TEST_PID_3, COMM=3D$TEST_COMM_3, cgroup=3D/test_=
-c"
-    echo
-
-    # --- 3.1 Individual Filter Tests with Page Counts ---
-    echo "Note: Each thread allocates 1MB (~256 pages)"
-
-    echo "--- 3.1 Thread 1 (po_thread_a) Verification ---"
-    echo "  ./page_owner_filter -p $TEST_PID_1 | grep -c PFN"
-    PID1_COUNT=3D$(./page_owner_filter -p "$TEST_PID_1" 2>/dev/null | grep =
--c "PFN" || echo "0")
-    echo "  ./page_owner_filter -c $TEST_COMM_1 | grep -c PFN"
-    COMM1_COUNT=3D$(./page_owner_filter -c "$TEST_COMM_1" 2>/dev/null | gre=
-p -c "PFN" || echo "0")
-    echo "  ./page_owner_filter -g test_a | grep -c PFN"
-    CGROUP1_COUNT=3D$(./page_owner_filter -g test_a 2>/dev/null | grep -c "=
-PFN" || echo "0")
-
-    echo "  By PID (-p $TEST_PID_1):   $PID1_COUNT pages"
-    echo "  By COMM (-c $TEST_COMM_1): $COMM1_COUNT pages"
-    echo "  By cgroup (-g test_a):   $CGROUP1_COUNT pages"
-    echo
-
-    echo "--- 3.2 Thread 2 (po_thread_b) ---"
-    echo "  ./page_owner_filter -p $TEST_PID_2 | grep -c PFN"
-    PID2_COUNT=3D$(./page_owner_filter -p "$TEST_PID_2" 2>/dev/null | grep =
--c "PFN" || echo "0")
-    echo "  ./page_owner_filter -c $TEST_COMM_2 | grep -c PFN"
-    COMM2_COUNT=3D$(./page_owner_filter -c "$TEST_COMM_2" 2>/dev/null | gre=
-p -c "PFN" || echo "0")
-    echo "  ./page_owner_filter -g test_b | grep -c PFN"
-    CGROUP2_COUNT=3D$(./page_owner_filter -g test_b 2>/dev/null | grep -c "=
-PFN" || echo "0")
-
-    echo "  By PID (-p $TEST_PID_2):   $PID2_COUNT pages"
-    echo "  By COMM (-c $TEST_COMM_2): $COMM2_COUNT pages"
-    echo "  By cgroup (-g test_b):   $CGROUP2_COUNT pages"
-    echo
-
-    echo "--- 3.3 Thread 3 (po_thread_c) ---"
-    echo "  ./page_owner_filter -p $TEST_PID_3 | grep -c PFN"
-    PID3_COUNT=3D$(./page_owner_filter -p "$TEST_PID_3" 2>/dev/null | grep =
--c "PFN" || echo "0")
-    echo "  ./page_owner_filter -c $TEST_COMM_3 | grep -c PFN"
-    COMM3_COUNT=3D$(./page_owner_filter -c "$TEST_COMM_3" 2>/dev/null | gre=
-p -c "PFN" || echo "0")
-    echo "  ./page_owner_filter -g test_c | grep -c PFN"
-    CGROUP3_COUNT=3D$(./page_owner_filter -g test_c 2>/dev/null | grep -c "=
-PFN" || echo "0")
-
-    echo "  By PID (-p $TEST_PID_3):   $PID3_COUNT pages"
-    echo "  By COMM (-c $TEST_COMM_3): $COMM3_COUNT pages"
-    echo "  By cgroup (-g test_c):   $CGROUP3_COUNT pages"
-    echo
-
-    # --- 3.4 Summary Table ---
-    TOTAL_PID_COUNT=3D$((PID1_COUNT + PID2_COUNT + PID3_COUNT))
-    TOTAL_COMM_COUNT=3D$((COMM1_COUNT + COMM2_COUNT + COMM3_COUNT))
-    TOTAL_CGROUP_COUNT=3D$((CGROUP1_COUNT + CGROUP2_COUNT + CGROUP3_COUNT))
-    echo "--- 3.4 Summary: All Thread Counts ---"
-    printf "%-15s %-15s %-15s %-15s\n" "Thread" "By PID" "By COMM" "By Cgro=
-up"
-    printf "%-15s %-15s %-15s %-15s\n" "---------------" "---------------" =
-"---------------" "---------------"
-    printf "%-15s %-15s %-15s %-15s\n" "$TEST_COMM_1" "$PID1_COUNT" "$COMM1=
-_COUNT" "$CGROUP1_COUNT"
-    printf "%-15s %-15s %-15s %-15s\n" "$TEST_COMM_2" "$PID2_COUNT" "$COMM2=
-_COUNT" "$CGROUP2_COUNT"
-    printf "%-15s %-15s %-15s %-15s\n" "$TEST_COMM_3" "$PID3_COUNT" "$COMM3=
-_COUNT" "$CGROUP3_COUNT"
-    printf "%-15s %-15s %-15s %-15s\n" "TOTAL" "$TOTAL_PID_COUNT" "$TOTAL_C=
-OMM_COUNT" "$TOTAL_CGROUP_COUNT"
-    echo
-
-    echo "--- 3.6 Multi-PID List Test ---"
-    echo "  Verify: PID list equals sum of individual PIDs"
-    echo "  Expected count: $TOTAL_PID_COUNT"
-    ALL_PIDS=3D"$TEST_PID_1,$TEST_PID_2,$TEST_PID_3"
-    echo "  ./page_owner_filter -p $ALL_PIDS | grep -c PFN"
-    ./page_owner_filter -p "$ALL_PIDS"| grep -c "PFN"
-    echo
-
-    echo "  ./page_owner_filter -p $TEST_PID | grep -c PFN"
-    ./page_owner_filter -p "$TEST_PID" | grep -c "PFN"
-    echo
-
-    FOUR_PIDS=3D"$TEST_PID,$ALL_PIDS"
-    echo "  ./page_owner_filter -p $FOUR_PIDS | grep -c PFN"
-    ./page_owner_filter -p "$FOUR_PIDS" | grep -c "PFN"
-    echo
-
-    echo "  Verify: TGID equals sum of all PIDs in thread group (4 PIDs)"
-    echo "  Expected count: -p $FOUR_PIDS"
-    echo "  ./page_owner_filter -t $TEST_TGID | grep -c PFN"
-    ./page_owner_filter -t "$TEST_TGID" | grep -c "PFN"
-    echo
-
-    echo "--- 3.7 COMM Wildcard Test ---"
-    echo "  Verify: Wildcard matches all thread COMMs (should equal sum of =
-thread counts)"
-    echo "  Expected count: $TOTAL_COMM_COUNT"
-    echo "  ./page_owner_filter -c 'po_thread_*' | grep -c PFN"
-    ./page_owner_filter -c 'po_thread_*' | grep -c "PFN"
-    echo
-
-    echo "  ./page_owner_filter -c 'page_owner_test' | grep -c PFN"
-    ./page_owner_filter -c 'page_owner_test' | grep -c "PFN"
-    echo
-
-    echo "  Verify: COMM list equals sum of individual COMMs"
-    echo "  Expected count: $TOTAL_COMM_COUNT + -c 'page_owner_test'"
-    echo "  ./page_owner_filter -c 'po_thread_*,page_owner_test' | grep -c =
-PFN"
-    ./page_owner_filter -c 'po_thread_*,page_owner_test' | grep -c "PFN"
-    echo
-    echo "  Verify: Should only show current test PIDs"
-    echo "  ./page_owner_filter -c 'po_thread_*,page_owner_test' | grep -o =
-\"pid [0-9]*,\" | sort | uniq -c"
-    ./page_owner_filter -c 'po_thread_*,page_owner_test' | grep -o "pid [0-=
-9]*," | sort | uniq -c
-    echo "  Note: Previous test program PIDs may appear with small page cou=
-nts (~10-20) due to kernel cache"
-    echo
-
-fi
-
-# =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D
-# Section IV: Combination Filter Tests
-# =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D
-echo
-echo -e "${YELLOW}=3D=3D=3D IV. COMBINATION FILTER TESTS =3D=3D=3D${NC}"
-echo
-
-echo "--- 4.1 PID + Cgroup Combination ---"
-echo "Test: PID 1 with Root Cgroup"
-echo "  Verify: Should only show PID 1 pages in root cgroup"
-echo "  ./page_owner_filter -p 1 -g / | grep -o \"pid [0-9]*,\" | sort | un=
-iq -c"
-./page_owner_filter -p 1 -g / | grep -o "pid [0-9]*," | sort | uniq -c
-echo "  Verify: All pages should be charged to root cgroup (total pages =3D=
- charged pages count)"
-echo "  Total pages:"
-echo "    ./page_owner_filter -p 1 -g / | grep -c \"^Page allocated\""
-./page_owner_filter -p 1 -g / | grep -c "^Page allocated"
-echo "  Charged memcg paths:"
-echo "    ./page_owner_filter -p 1 -g / | grep \"Charged to\" | grep -o \"m=
-emcg [^\"]*\" | sort | uniq -c"
-./page_owner_filter -p 1 -g / | grep "Charged to" | grep -o "memcg [^\"]*" =
-| sort | uniq -c
-echo
-
-echo "--- 4.2 COMM + NID Combination ---"
-echo "Test: systemd with Node 0 filter"
-echo "  ./page_owner_filter -c systemd -n 0 | head -10"
-./page_owner_filter -c systemd -n 0 | head -10
-echo "  Verify: Should only show systemd pages on node 0"
-echo "    ./page_owner_filter -c systemd -n 0 | grep -o \"([a-z]*),\" | sor=
-t | uniq -c"
-./page_owner_filter -c systemd -n 0 | grep -o "([a-z]*)," | sort | uniq -c
-echo "    ./page_owner_filter -c systemd -n 0 | grep \"PFN\" | grep -o \"no=
-de=3D[0-9]\" | sort | uniq -c"
-./page_owner_filter -c systemd -n 0 | grep "PFN" | grep -o "node=3D[0-9]" |=
- sort | uniq -c
-echo
-
-if [ -n "$TEST_PID_1" ]; then
-    echo "--- 4.3 Test Program Filter Combinations ---"
-    echo "  Note: Process filters (PID/TGID/COMM) use OR logic among themse=
-lves,"
-    echo "        but AND logic with other filters (e.g., cgroup)"
-    echo
-    echo "  expected: TGID page count, max of PID or TGID count)"
-    echo "  ./page_owner_filter -p $TEST_PID_1 -t $TEST_TGID | grep -c PFN"
-    ./page_owner_filter -p "$TEST_PID_1" -t "$TEST_TGID" | grep -c "PFN"
-    echo
-
-    echo "  expected: max of PID or COMM count"
-    echo "  ./page_owner_filter -p $TEST_PID_1 -c $TEST_COMM_1 | grep -c PF=
-N"
-    ./page_owner_filter -p "$TEST_PID_1" -c "$TEST_COMM_1" | grep -c "PFN"
-    echo
-
-    echo " expected: TGID page count,max of TGID or COMM count"
-    echo " ./page_owner_filter -t $TEST_TGID -c $TEST_COMM_1 | grep -c PFN"
-    ./page_owner_filter -t "$TEST_TGID" -c "$TEST_COMM_1" | grep -c "PFN"
-    echo
-
-    echo " AND logic: both must match"
-    echo "  ./page_owner_filter -p $TEST_PID_1 -g /test_a | grep -c PFN"
-    ./page_owner_filter -p "$TEST_PID_1" -g /test_a | grep -c "PFN"
-    echo
-fi
-
-# =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D
-# Summary
-# =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D
-echo
-echo "=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D"
-echo -e "${YELLOW}Tests completed${NC}"
-echo "=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D"
-echo
-echo "Summary of test categories:"
-echo "  I.   Invalid inputs for all filters"
-echo "  II.  PID 1 and root cgroup tests"
-echo "  III. Test program specific tests (with page count verification)"
-echo "  IV.  Combination filter tests"
-echo
-echo "Please review output above for any errors or unexpected behavior."
-
-Zhen Ni (8):
-  mm/page_owner: Add PID filtering support
-  mm/page_owner: Add TGID filtering support
-  mm/page_owner: Add COMM filtering with wildcard support
-  mm/page_owner: Refactor memcg handling for cgroup filter support
-  mm/page_owner: Add memcg filter support
-  tools/mm: Add PID/TGID/COMM filtering support to page_owner_filter
-  tools/mm: Add memory cgroup filtering support to page_owner_filter
-  Documentation: page_owner: Document PID/TGID/COMM and cgroup filters
-
- Documentation/mm/page_owner.rst |  25 ++-
- mm/page_owner.c                 | 327 +++++++++++++++++++++++++++++---
- tools/mm/page_owner_filter.c    | 220 ++++++++++++++++++---
- 3 files changed, 526 insertions(+), 46 deletions(-)
-
---=20
+Add process name (COMM) filtering to page_owner with glob-style wildcard
+pattern matching support. Users can now filter page_owner output by
+process names using flexible patterns.
+
+Supported wildcards:
+  *    : matches any sequence of characters
+  ?    : matches any single character
+  [abc]: matches any character in the set
+  [a-z]: matches any character in the range
+
+Examples:
+  comm=python*  : matches python, python3, python3.9, etc.
+  comm=*sh      : matches bash, zsh, dash, etc.
+
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+---
+ mm/page_owner.c | 82 +++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 79 insertions(+), 3 deletions(-)
+
+diff --git a/mm/page_owner.c b/mm/page_owner.c
+index 077867e9e572..7cd533682054 100644
+--- a/mm/page_owner.c
++++ b/mm/page_owner.c
+@@ -14,6 +14,7 @@
+ #include <linux/sched/clock.h>
+ #include <linux/bsearch.h>
+ #include <linux/sort.h>
++#include <linux/glob.h>
+ 
+ #include "page_alloc.h"
+ 
+@@ -72,6 +73,7 @@ static const char * const page_owner_print_mode_strings[] = {
+ #define PID_MAX_DIGITS  	7
+ #define MAX_FILTER_PIDS 	16
+ #define MAX_FILTER_TGIDS	16
++#define MAX_FILTER_COMMS	8
+ 
+ struct page_owner_filter_state {
+ 	enum page_owner_print_mode print_mode;
+@@ -80,8 +82,10 @@ struct page_owner_filter_state {
+ 	nodemask_t nid_filter;
+ 	int pid_count;
+ 	int tgid_count;
++	int comm_count;
+ 	pid_t pid_list[MAX_FILTER_PIDS];
+ 	pid_t tgid_list[MAX_FILTER_TGIDS];
++	char comm_list[MAX_FILTER_COMMS][TASK_COMM_LEN];
+ };
+ 
+ static int cmp_pid_t(const void *a, const void *b)
+@@ -854,6 +858,20 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
+ 						    sizeof(pid_t),
+ 						    cmp_pid_t) != NULL;
+ 
++			if (!proc_match && state->comm_count > 0) {
++				bool comm_match = false;
++				int i;
++
++				for (i = 0; i < state->comm_count; i++) {
++					if (glob_match(state->comm_list[i],
++						       page_owner->comm)) {
++						comm_match = true;
++						break;
++					}
++				}
++				proc_match = comm_match;
++			}
++
+ 			if (!proc_match)
+ 				goto ext_put_continue;
+ 		}
+@@ -1007,6 +1025,38 @@ static int parse_pid_t_list(const char *str, pid_t *list, int *count)
+ 	return ret;
+ }
+ 
++static int parse_comm_list(const char *str, char (*list)[TASK_COMM_LEN], int *count)
++{
++	char *str_copy, *token;
++	int i = 0;
++	int ret = 0;
++
++	str_copy = kstrdup(str, GFP_KERNEL);
++	if (!str_copy)
++		return -ENOMEM;
++
++	while ((token = strsep(&str_copy, ",")) != NULL) {
++		token = strstrip(token);
++		if (*token == '\0')
++			continue;
++		if (i >= MAX_FILTER_COMMS) {
++			ret = -E2BIG;
++			goto out_free;
++		}
++		strscpy(list[i], token, TASK_COMM_LEN);
++		i++;
++	}
++
++	*count = i;
++
++	if (i == 0)
++		ret = -EINVAL;
++
++out_free:
++	kfree(str_copy);
++	return ret;
++}
++
+ static ssize_t page_owner_write(struct file *file,
+ 				 const char __user *buf,
+ 				 size_t count, loff_t *ppos)
+@@ -1022,8 +1072,10 @@ static ssize_t page_owner_write(struct file *file,
+ 	bool new_proc_filter_enabled;
+ 	pid_t new_pid_list[MAX_FILTER_PIDS];
+ 	pid_t new_tgid_list[MAX_FILTER_TGIDS];
++	char (*new_comm_list)[TASK_COMM_LEN] = NULL;
+ 	int new_pid_count = 0;
+ 	int new_tgid_count = 0;
++	int new_comm_count = 0;
+ 
+ 	/*
+ 	 * Maximum input length for filter commands:
+@@ -1035,12 +1087,19 @@ static ssize_t page_owner_write(struct file *file,
+ 	 */
+ 	if (count > 32 + 6 * MAX_NUMNODES +
+ 			(PID_MAX_DIGITS + 1) * MAX_FILTER_PIDS + 4 +
+-			(PID_MAX_DIGITS + 1) * MAX_FILTER_TGIDS + 5)
++			(PID_MAX_DIGITS + 1) * MAX_FILTER_TGIDS + 5 +
++			TASK_COMM_LEN * MAX_FILTER_COMMS + 5)
+ 		return -EINVAL;
+ 
++	new_comm_list = kmalloc_array(MAX_FILTER_COMMS, TASK_COMM_LEN, GFP_KERNEL);
++	if (!new_comm_list)
++		return -ENOMEM;
++
+ 	kbuf = memdup_user_nul(buf, count);
+-	if (IS_ERR(kbuf))
++	if (IS_ERR(kbuf)) {
++		kfree(new_comm_list);
+ 		return PTR_ERR(kbuf);
++	}
+ 
+ 	orig = kbuf;
+ 
+@@ -1056,6 +1115,11 @@ static ssize_t page_owner_write(struct file *file,
+ 		memcpy(new_tgid_list, state->tgid_list, sizeof(state->tgid_list));
+ 		new_tgid_count = state->tgid_count;
+ 	}
++	if (state->comm_count > 0) {
++		memcpy(new_comm_list, state->comm_list,
++				state->comm_count * TASK_COMM_LEN);
++		new_comm_count = state->comm_count;
++	}
+ 
+ 	while ((token = strsep(&kbuf, " \t\n")) != NULL) {
+ 		if (*token == '\0')
+@@ -1095,6 +1159,10 @@ static ssize_t page_owner_write(struct file *file,
+ 			ret = parse_pid_t_list(token + 5, new_tgid_list, &new_tgid_count);
+ 			if (ret < 0)
+ 				goto out_free;
++		} else if (!strncmp(token, "comm=", 5)) {
++			ret = parse_comm_list(token + 5, new_comm_list, &new_comm_count);
++			if (ret < 0)
++				goto out_free;
+ 		} else {
+ 			ret = -EINVAL;
+ 			goto out_free;
+@@ -1105,7 +1173,9 @@ static ssize_t page_owner_write(struct file *file,
+ 	state->print_mode = new_print_mode;
+ 	state->nid_filter = new_nid_filter;
+ 	state->nid_filter_enabled = new_nid_filter_enabled;
+-	state->proc_filter_enabled = new_pid_count > 0 || new_tgid_count > 0;
++	state->proc_filter_enabled = new_pid_count > 0 ||
++				     new_tgid_count > 0 ||
++				     new_comm_count > 0;
+ 	if (new_pid_count > 0) {
+ 		memcpy(state->pid_list, new_pid_list, sizeof(state->pid_list));
+ 		state->pid_count = new_pid_count;
+@@ -1120,10 +1190,16 @@ static ssize_t page_owner_write(struct file *file,
+ 	if (state->tgid_count > 1)
+ 		sort(state->tgid_list, state->tgid_count, sizeof(pid_t),
+ 		     cmp_pid_t, NULL);
++	if (new_comm_count > 0) {
++		memcpy(state->comm_list, new_comm_list,
++				new_comm_count * TASK_COMM_LEN);
++		state->comm_count = new_comm_count;
++	}
+ 
+ 	ret = count;
+ 
+ out_free:
++	kfree(new_comm_list);
+ 	kfree(orig);
+ 	return ret;
+ }
+-- 
 2.20.1
 
 
