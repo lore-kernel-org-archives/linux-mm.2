@@ -4,135 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74A2BC61DB9
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 05:29:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 934EAC61DB9
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 05:30:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6979F6B0099; Fri, 28 Aug 2026 01:29:04 -0400 (EDT)
+	id 9F6416B009E; Fri, 28 Aug 2026 01:30:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66FF16B009B; Fri, 28 Aug 2026 01:29:04 -0400 (EDT)
+	id 9CD2E6B009F; Fri, 28 Aug 2026 01:30:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 585456B009D; Fri, 28 Aug 2026 01:29:04 -0400 (EDT)
+	id 8E3EE6B00A0; Fri, 28 Aug 2026 01:30:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 351396B0099
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 01:29:04 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BA58780366
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:29:03 +0000 (UTC)
-X-FDA: 85149549366.04.E2B9B54
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 963D7140005
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:29:01 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=berkeley.edu header.s=google header.b=irdEQKOf;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=berkeley.edu;
-	spf=pass (imf09.hostedemail.com: domain of farhad.alemi@berkeley.edu designates 209.85.214.170 as permitted sender) smtp.mailfrom=farhad.alemi@berkeley.edu
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787894941;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6302F6B009E
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 01:30:19 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EE8C91A038F
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:30:18 +0000 (UTC)
+X-FDA: 85149552516.06.D73C9C3
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3879F1A0007
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:30:17 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eCYaCU60;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787895017;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=323/e/RaqA8mIXEHSxzv2u3juG8I1v9sZLdgI4Di9tk=;
-	b=7OL13Lg1mHr+o57ojGtEDnQftHHFpTyVORRzgdXzypGkN3J1HXdpcakDdyqFxwUNPM9Cl4
-	obQL7iAlvSiyi9DTh0QvhNoc1zYlZWTRlR2wz0Ob98gDI71GPh+oZIMbLzKTIt2VYoozbm
-	fn0sfWrQMt2ub75ViGImWWAPBXrm6WU=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787894941;
-	b=xcvGBf0eAGv56bS50+0GEI2pIYitfyIlTkjXja8QnhoPz8FMHTDrYXtluZANBcxwdUkoO5
-	XUXvFAjng9q6Iirsmt5XSYPBYt8h/aJSeFKXxxioW6setoTN2Um6uokodBZwh2GHNHTd2R
-	kNrGJQ3do4tKvLYomXyeR50lHbP+oPc=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=berkeley.edu header.s=google header.b=irdEQKOf;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=berkeley.edu;
-	spf=pass (imf09.hostedemail.com: domain of farhad.alemi@berkeley.edu designates 209.85.214.170 as permitted sender) smtp.mailfrom=farhad.alemi@berkeley.edu
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2d01663d816so4776455ad.1
-        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 22:29:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787894940; cv=none;
-        d=google.com; s=arc-20260327;
-        b=gWl5JJ7cgthNnYk/1Iv24JwYiHS/hshwZK6MRuAWje4v9u6ABBwY/bjjqvcUYaffRb
-         br+xWhUSELj3FFZOaWTYo3bLqpkxKd/2INdVgRVEt2uD0oso4pGo3Lx5ZG37/vAJu3wE
-         trJGEEZK8Nv9aZa+7RCyGHsLGAAHVtIkNsDNhUxJXAZsLY0lCvEd82GEZDtOMPGC+URl
-         fLBDbt2cOsgISJiE4wi5RrabmjjBAxBJ/iGduKPB2OlW2aEpjJqoO9V8gY6XmovCMjow
-         oeCfk44wbDFtM7yITMBqmuROgp/qmjAzg5GoRu+5coKBelE2nOIE7tAEmpAtfXLdmzwP
-         eRfA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:from:dkim-signature;
-        bh=323/e/RaqA8mIXEHSxzv2u3juG8I1v9sZLdgI4Di9tk=;
-        fh=Db8IxUEpWs/sSp3lItTCxpF5VuMawnfyHuN3sUCkCmY=;
-        b=EBM8794l9ZhMcFIdU2vTzj69F9fLOkcVBNnYiv5NSahmTgazHvHpxM4Y/HZ/RQShr8
-         v5hDYO/ZeWuOzWlgk26TARMJfWKUOzSxLV6npMJuU3VB7MRqYfxpP130wqokCERqBOP5
-         1lV+M4CMW3mdobXwShjTtty0dIZYBliVoxdorPBQioc9NcJUZVt59vODZs91wH2MsANq
-         AnDXu24lCXBwwQkrhdsSWXQYc4eqHrrwEyNM3jF19r8KZ+FxRqiwnlD4XUjE2T3HUJHa
-         IpAU8AkAOOabEElz1NDj2B7WuQM6pTnvknMwOqyW6/nzu2MD+3samwviS2qWoAp2XN+0
-         8SAQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=zjyf211XtRs0nkL10Qp9VSObiEIsDLFDi9ZSA9jafOA=;
+	b=aCfARW+/QcHk9myxju3QMNLHSgb9/jph6GJ0V+SXMDbplWOYhuMKSBk65ZajBrVQOMgeVp
+	eu+sCCemn7m8khjhFzbMb4NLlnE90FpNyStx1snNZdDBO5QGcXJb0PasPedSZtxFMRBil+
+	xFS5091gU2b1CX8KFxPf23Z9YMOnzc8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787895017;
+	b=FzvNKoPARD3fgZ0c1ekCbJ6G0jDBg9dNHJA+TRBS+0wrC1OCbzuLNgVKE8psj7kAGElsHg
+	cP5nz0UW7900z3vz28xhrwUi/LekRV8kkecLk+Rbq1/5MlhEStTlqbjzRjY0N320olaP1Y
+	X5ik8rioNggVXFUmWLLLy7yYcYw2kl4=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eCYaCU60;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2d5335cf904so5930655ad.2
+        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 22:30:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=berkeley.edu; s=google; t=1787894940; x=1788499740; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:from:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=323/e/RaqA8mIXEHSxzv2u3juG8I1v9sZLdgI4Di9tk=;
-        b=irdEQKOfqFEWJgPfs1gzIHZo/7ziB+A7OTNTj/6/luxEPQD4pSHjIxTD/LVDQ6BrU8
-         BU/YkKLXerFvBXBWEH4/SkPmHpspHLYUwu2l8Lgv5kPySZiJh9wNBFmfBtk1oW4U/irM
-         ZCwGwqC/+tPFJwqEDlA0FTcx3aZ1SLXPCHfLjy1CkBGVcRSeVY6m/E4bjKMakyf42tK1
-         Aqf/hodYuMWJVksZTJMuA8DUhWAHRVEEVGF2eQ297oF/0wTl+Q0zggovtDS566+l21Kb
-         lhF/ntNxS2uyTpMRDy5DOjq2OWRE/xc7F5M8Qn2c86ANfDqhrYnE8l8KERCaZIpYo8gg
-         htug==
+        d=gmail.com; s=20251104; t=1787895016; x=1788499816; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zjyf211XtRs0nkL10Qp9VSObiEIsDLFDi9ZSA9jafOA=;
+        b=eCYaCU608Ip3/t47zucmKF6JB8LMq/gz23FnUet03tN6sWUMUrCdXg7ozgOpa0JIVD
+         7m1rUI0pKBZjB5CDL6bw3zA+gP6xVlKHPhV2Lr2epBEQPlc6CDSc27WT3IfKAJGxzS9Y
+         /QutJ8EPFxC9s0Cb08HSPeuBrJeBVRIsu8vehRTa4vN0OIe2YqdIcLIMyL2xBixjuyW/
+         Ls9fiVM/Rro6cNDFd/FYsRd5ePUK8tDYfJtRntvektXEocGguICpeC1/qMesXFvLjI2G
+         mEHSW8qOfkjMiP12UIeIoIm8hKxqbZqAeXk1LjIRDRPqynM6B8Rk4DxZMbPwkM2oIgaM
+         O5Ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787894940; x=1788499740;
-        h=content-type:cc:to:subject:message-id:date:mime-version:from
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=323/e/RaqA8mIXEHSxzv2u3juG8I1v9sZLdgI4Di9tk=;
-        b=b6ulxzusu0MLcWu7cWgyGERn+OK9NaaqN37Ec8q3nt5MIEaUwPi9jylGG5+ztndsME
-         A3GRuJLDgz4nkJMhRqDVuqhSuDlIEDpIyNf7hO3tO5Qpq7VG9fN216OsA9DBc11+9iXH
-         0jMW8AuAuQIPZO8N+T19adN66x4+hoZfO49Lacb4Ci49ooREk75GIZg1pCtwM119NGQm
-         d3KE2PCRb4lRo+qtnCm9UkXhD2MZVXcTkn0JHjvdZAsgSqoSlPdvHlIY0o6rLtFW/0kk
-         X20LFaOU9Pkj3KmVSNLbBrOuPgtInDV7iJkTmsDgF/OsS8Rmp8Ho1BfHgGuikWFg/HZI
-         ViRQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rr8WASgmsmGzcG1eXb53WdR9nLZqs4A+c+3RCwrHdCWndRbA9tPvTKN8W7ujkm8G4W9UoN2aHrjPA==@kvack.org
-X-Gm-Message-State: AFuF++lUGIpD0Hs9E3Dl8vb1FKrS1oru7h0e5cvVixFlNyUeMXiWU8gA
-	Owp6n91j1XICBpTfQgcgShbeB4zgDLfIVuGzPjC23oNEt0LVYbPef81FXOooJlNykfszKj52rfj
-	dqs684Xq+xjaTnPp6yYigRbG08NcxChcfqfdbZTbk
-X-Gm-Gg: AR+sD130fvP18hXf8Rg/08f3B1T+7efZovEgaS9psiV7mnGI7yf1fW3bXmLnTcTOEsi
-	S1TKn/Ofp64CDDTiGBScV1NiJZ1LV3SaLDnN7V7+lYHj0vLgy4Ow5JEMnB7Taz6U60efVnZnh8G
-	AebwOGACdQH/AjbE77mcPaat+qhlOpAsGGwPLcZ7m6Uq8HBTOaCnloDLrQHVHm4+tONWtC+Phl3
-	jvgLBgmQ6FmJ2V9eyAQNszwySXRvcRrBQLJfYl2C5o6xwzdop28GsyvffwPyveEoLrcqQSezRa7
-	hWstmkYmd57ptXXGCw9U/NbHsWAEQ7wdXgJMhTY3p4GF5RUqYj6nO4+MJeKtwf5dhGq7QX2okhs
-	mpvmVYLFs8BqzPKlYE+sSBDphxwnXyLtiYwIrri1QFDU=
-X-Received: by 2002:a17:903:324c:b0:2c2:62ee:5a0d with SMTP id
- d9443c01a7336-2d74df1c634mr88380135ad.14.1787894939423; Thu, 27 Aug 2026
- 22:28:59 -0700 (PDT)
-Received: from 474444807712 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 27 Aug 2026 22:28:57 -0700
-Received: from 474444807712 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 27 Aug 2026 22:28:57 -0700
-From: Farhad Alemi <farhad.alemi@berkeley.edu>
-X-Mailer: git-send-email 2.53.0
+        d=1e100.net; s=20251104; t=1787895016; x=1788499816;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zjyf211XtRs0nkL10Qp9VSObiEIsDLFDi9ZSA9jafOA=;
+        b=bH1YMcF0u/5ORz4CPxBeHTaTHfYnwQ77BKGTIHvZoE7qAr0MBKPUP8b82s7rI1Lc7U
+         jIeEBDSwEaGUGuqW37gLMqd+/uEmaIObQvDp3DD2M002awiVJJCJ98f/POnTWe+qes79
+         ngCRLYwr/81aiVGegR16CDy+7gFNz4M2oCQWJXGU7WtuqIDuoZLm2CuR+xMvQ8GxVE50
+         yApKN7r4Icr9qB7wgOYfI+HjnoeHkcIh7/bdiDQQOcxC2+i19t3ycFkBwe0AHfjh675L
+         vhhaK42AsK4Dfccd7SqyaRwLvVIF5lZYEOzrJT21IeLCRUMFGZh6OWg4mjxW7T8fI9qU
+         cKFg==
+X-Gm-Message-State: AFuF++ms+ijmRzIXLyC+uVehr9RExVI34h58/xK78/r/TmG3XodH4SJ3
+	mQ3ZrkUCvPjy5cL2Y9IvJ11Rdvrt5aZjYINPYLnoid9pgFky+WCNQze/
+X-Gm-Gg: AR+sD12mdn4tDCWQ8AfJaZO9ok/c6GlZBQgn2qm9jbyZmtEV5CesFVcwsjO9nsyuvra
+	In5DwXX+ZC1aO5X+44Gvtu1TXt3VJIjfklC+DNBw+REd/TymX//bcfV2bBeBZcHzWt/Mfxdx38a
+	GP/c21/xUbHXiX7Br+iA5hYSeHhU4fx6mfWYVS/PQujxF00dLeDkF1PrHfyg/9FE8eWPUvSHqEc
+	tFKCZjYVZnlBZo9mY4gtyqxlapNbZMB8qvrNixdeu+BCneqr5BcFv9gJMtRu/9zfTPt65f8N8oY
+	RmJMdc5S9bJPjXn48w9S/FEHdPCzdyn/1vaDppVcMjugYcQsv+dZVptmstZq6lmkq6WZ4tydAol
+	u1n9j+eQM78Zr6Fye2lDvRD2/sh22Mtxw558Y2rH7dmhkm3+B3lTy4uMlM6v6OKzHGs5fW5GSjT
+	9597qvf4R396iiMcmi+vXAPlG0VAo11DYvJwMSPR/AmsfgKtHy+FX2ma0FV5PnodwKWgownj/lk
+	fnizMD/DdINy8A6LbdPCb7V3Og8
+X-Received: by 2002:a17:902:d591:b0:2c9:deec:f564 with SMTP id d9443c01a7336-2d74df52c1cmr1686825ad.13.1787895015897;
+        Thu, 27 Aug 2026 22:30:15 -0700 (PDT)
+Received: from localhost.localdomain (vmi2317720.contaboserver.net. [84.247.152.65])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d75988cb5dsm2170415ad.64.2026.08.27.22.30.05
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 27 Aug 2026 22:30:15 -0700 (PDT)
+From: Lian Wang <lianux.mm@gmail.com>
+To: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
+Cc: linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Chris Li <chrisl@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Ridong Chen <ridong.chen@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Yu Zhao <yuzhao@google.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Kairui Song <ryncsn@gmail.com>,
+	Kairui Song <kasong@tencent.com>
+Subject: Re: [PATCH v3 5/6] mm/mglru: use explicit tier range in read_ctrl_pos()
+Date: Fri, 28 Aug 2026 13:29:28 +0800
+Message-ID: <20260828052949.52874-1-lianux.mm@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260826-mglru-flags-cleanup-v3-5-d9f1c75549c8@tencent.com>
+References: <20260826-mglru-flags-cleanup-v3-0-d9f1c75549c8@tencent.com> <20260826-mglru-flags-cleanup-v3-5-d9f1c75549c8@tencent.com>
 MIME-Version: 1.0
-Date: Thu, 27 Aug 2026 22:28:57 -0700
-X-Gm-Features: AcwNN1UlzyJTQI4xLeKZfZmMD9WMPAJkGc0arO9zP77WjK-dTinfNX0jJqWgP4Q
-Message-ID: <CA+0ovCgWzUMK+nNbbtH7eV65Ca=fDN4Ozu7iASgryjvv8Tk8zQ@mail.gmail.com>
-Subject: [BUG] refill_stock -- VM_WARN_ON_ONCE(mem_cgroup_is_root()) from a
- write to the cgroup-v2 root's memory.reclaim
-To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: falemi@asu.edu, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 963D7140005
-X-Stat-Signature: pxeh79wbuofpqsq7tdnzc7xqqtcc9e9a
+X-Rspamd-Queue-Id: 3879F1A0007
+X-Stat-Signature: 1ceri4m9utd47gqqesg6ghkmhziyokxx
 X-Rspam-User: 
-X-HE-Tag: 1787894941-518469
-X-HE-Meta: U2FsdGVkX1/MP+ufwTDKwTALsY48lBg/AeacHRx6HlBcL5dZkwUnuuk1Ud94iuZtPfIuuX9A5doWbV24zINDYWOGos+iK08OLektadTvNZPVsYqiM4xQJTKP24oiCRfJslIYMeC4YWsRLDSOWJvSsqcSW5ZmHbgpzAvu0+3GCDf92ewkeUnnLaYoEGcm85Ytb5nzWjJ+ycOffNq9J1y7qsezEndbKy5lXjZkMrrggPyztM0HLD4begtZMmV//TCA4oiEMH/iAlE2hpreLoMe6Gqs7bmY00HImiWwF0iRu2NclvqfZQOWRJhBEqTvyr4XYp2Abd5lJ33yO0uXzO345rzctlljn5gKDDCVLxY0jWWpshFBP+5euoad/oKgM7BKTnPdfiJfRfF2AHDwWJcRz0iJPW9em+uQXoDePyTKtmYaLxGTZMBIj3NCskVivJOGk7zIM0LpSDe+9N3ZoK3+GXEHwp9CbsbNyJXG4NpwgjL69U0P4b6rpxcWVtza7GSP9ICNH81Nmo177pEAl36VsdTKIGIP3LJltzTS2yi7CPNfOp6Fk0ZApT8vARSsyTRg/Gn0Sl26/4mgx5ALZXdrRxzYr0wqZgA8TY8UKC7qNg9WDO3gNIgWc/PMDi7eh/CLHmsy1389xA5zd4lWG76PwOCU7x6/uWeBw/7jPwIO5c19jLVHpuqt6mv1qHs5lljb8Uh0Y5IS1r54SZ+JY5O1pupvpLJYC9P0Cil6Eg+NXt5qg0LzwNw+LjhNiUhOagusttoUATWNDcc96GRNHDOqoZaMnKKeGPP/qq2eZVpSTCE38guG95WIUao0OVxSYcxPkQfEnKMyMfsjhrLWk/50xCGVvKw6q7NiUEqPrD6NcaOMzOz9W566+ED5b68FZf7udHNJW2F2WNpuEgcLMrqIppzVh/AwGKa7UDO49n4+kU1Ykhv77kPpTKO6XU4kXRno14edRsvtK3Wmo3AI0B5
- z06mSd1w
- WgmZSoUQOPSFtu+4Qkg5xLWcpZzOVwg/aKedUYtNg0Wi6Wbp/gn1KL2yAMcDusWKwtDv1qXra9w+wQDAlo5xRu333j98W9DMtCHHZlXj6lf0jDEUZ86mhFa7Yx4tLvJC3MhVOcNqASZh0do6c/KDNaSv9z9ACtvhEqQQHtAiyR/VYS0WZbCnKaFlzaEjPk0BY1mDOa2V5Dl11xuQKwBsFIk5W+fYD+RWS3aq2mIgoLpEgg/hkRHPxseVT0r4fRq25e9lGkxy/0rl1ih9fO/5vj3mXFCZMnNzxz2ZhjbetUPDZVjz8HOW1inlyGhSQInmC1nzaoGYP4KdfMuGc6vh+fqVITBk5TSAzb2P1SOB4L+dUTa6bJ0MFgxUrQT2ORyOt0hgFUuXpZd+HPAaQmJf/HvUERA==
+X-HE-Tag: 1787895017-319804
+X-HE-Meta: U2FsdGVkX1+uf6PMKlNZr1CytwnuiB3cKrgEDrWTZLihgyUkWxKIA6LZyH4woQ9KYsxpAe0si8lcv3rT35vw9OP3aB/Hg2n0iPBJtzPuNHSbtHiNs13n5S3XOxQKylXGez0skkXFueuf1AV8PcIPz+g5WewcgOpyH0eTI15HtjGQus1sMn5sejFwjDmu+6YySNSDAxHVdvSfbGoT/Qt7x3NvQtojSsiqmBrNxnulC7J+slL/zYfpyNkhWXn/SkgwdzPx84EPTihf1lhahAH3x/vInWX62R7VAjWPbrQ0mxb9radU2pBZ1sKVJTEMV7rsySClzSTWyisNgMg9PisFJLbFU1PyEAcexLj0cPI+W+lt4dwb4VrjzwEwwbkXpVs5+b3OijUO5DBJgVYefBcm6Rx3R1KM2jha4kNG5H1B6lCpJOnRi5DsmNFfWQqifYhogonxS6m2dTv8xPUtFBFa3nPBnqRS9gmGRsyCPre+QFyrRaQkbYzxLgbL4K6+DykdDborTvd9pL0eQDAQRtI8WWCB7HVlC+LJ/nJm8Z4QKuvEmTDAI9IKShAcp3a9dmngua3VR6TkcjbE5neKjmRO5yQIYjSBnYowXxlZw1PnajFmJkdh8CzhOoccJ1PwsSfQ5826egkZ2ZGPX1gwasHM6bisxNF5hc5v649rheHkdZSAm43zqlLUKgpkdL2c/IpOQx2yL6OagvlTraTI29Mi7em8ki4YLj4w7lFU8/un9vPBVu5MZ2HbWveE8pD7VSmUblr+gpeJCJELGUnCMy9DnrUwD7Mm92KGtWPf+DuiQKSWVP3XAqgmgd6STPzuK0fot9Aw9Bu4u+q2ZrH3i+LQsMG4STJCUQJV4NEzYGb2TtFl1dLBkDB7RxjRZC6WTb8no7GHNdrPPQIWpa+zM2iWdtoZy0EqEt3graffYuvVLLUD/8yP/r0tYWWnuZVDjixpnTeYP+WQjP5gWPjBfj7
+ FE1GJC5G
+ e1JqiNTp9GRZ67tY1DdJizzitmIfDFOimEySaRSTuPhBbPQX/4VZ0PRz4cTPv6/m2AamXms7OzVQszhL82u/g3tNxOdPpgf+k+2nsYH+BuPwAB6pNLUk7ZYwESEmAW44LZzOeQw6glv0BBJMYUYaoD3nSuVpENajUprdep8uGFDLKQByRmXjrlHuHeIcsF9I62WbgXBqIsNDaCrqON/KMCOuODhjvNfIYUCN0lgWD8DUc+jfuVeGXhVIjgF1zV8/PyISJywqLKCdrX+eBImvdjIIb2E/hLm5Pgnh9rX+EilYdIztaLXRe0j4USch3/fHuwj5HqeqXc+ra8WkCkJmSP5AnFk3Arv0Eq+yTxUeddyN3jVAmqm0ClhX8tDTbBPkhbjVAfoNx51GvBOzC/4eQhzqiQugRB2uQ53oGHDDkgBYgQ+/DaSd8vDMRBWnCnScqWAggHMGaqyyWyr4MpAgb+YobARwv6dzBXFBB2MeP4bsHlpjixMwXt06k03yFb2MzSq33QKRb7zGny/JkqUPzqj8xLVr8e01RHOPCDKZAeH5K0814RN77Ni4UyRGy3o7ES9YM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,37 +141,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+Hi Kairui,
 
-As part of the kernel research at ASU's SEFCOM
-lab, we hit the crash below. Crash reports can be found here:
+> Replace it with explicit (tier_min, tier_max) parameters using a
+> closed [tier_min, tier_max] interval
 
-  https://github.com/farhad-alemi/public_bug_reports/tree/main/145-memcg-vm_warn-refill_stock-root-cgroup/
+While touching read_ctrl_pos(), would it make sense to add:
 
-  mem_cgroup_is_root(memcg)
-  WARNING: mm/memcontrol.c:2198 at refill_stock+0x644/0x940, CPU#1: repro/9490
-  Call Trace:
-   refill_stock+0x644/0x940
-   try_charge_memcg+0x12d6/0x1570
-   __obj_cgroup_charge+0x35/0xf0
-   obj_cgroup_charge+0x1de/0x210
-   obj_cgroup_charge_zswap+0x83/0x270
-   zswap_store+0x1620/0x2000
-   swap_writeout+0x94c/0x14c0
-   shrink_folio_list+0x3388/0x52b0
-   evict_folios+0x374d/0x48c0
-   try_to_shrink_lruvec+0xe72/0x1350
-   shrink_node+0x3320/0x3b90
-   do_try_to_free_pages+0x6a2/0x1990
-   try_to_free_mem_cgroup_pages+0x30d/0x830
-   user_proactive_reclaim+0x504/0x840
-   memory_reclaim+0x1f/0x30
-   cgroup_file_write+0x331/0x8f0
-   kernfs_fop_write_iter+0x3af/0x540
+	lockdep_assert_held(&lruvec->lru_lock);
 
-Our reproducer.c is available upon request.
+All current callers run under the lruvec lock. read_ctrl_pos() derives the
+history slot from min_seq and combines avg_refaulted/avg_total and protected
+with the atomic counters, while reset_ctrl_pos() rotates and clears that
+state under the same lock and already has this assertion.
 
-Happy to test a patch if that would help.
+Adding the assertion here would document the snapshot contract and catch a
+future lockless caller before it can observe fields from different history
+epochs.
 
-Regards,
+If I missed an existing lockless caller, or if this is intentionally a
+best-effort snapshot, please ignore this suggestion.
+
+Thanks,
+Lian
 
