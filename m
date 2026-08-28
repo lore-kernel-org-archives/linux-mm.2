@@ -4,99 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A940C61DBD
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 10:31:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7305C61DCB
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 11:09:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A1906B0088; Fri, 28 Aug 2026 06:31:58 -0400 (EDT)
+	id 71EC26B0088; Fri, 28 Aug 2026 07:09:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 552B16B0092; Fri, 28 Aug 2026 06:31:58 -0400 (EDT)
+	id 6CF936B008A; Fri, 28 Aug 2026 07:09:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 469076B0095; Fri, 28 Aug 2026 06:31:58 -0400 (EDT)
+	id 5BE7E6B008C; Fri, 28 Aug 2026 07:09:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 275F06B0088
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 06:31:58 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9A6F01402D4
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 10:31:57 +0000 (UTC)
-X-FDA: 85150312674.25.3DE6653
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E3BB316000D
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 10:31:55 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P989eIXz;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 393766B0088
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 07:09:53 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C3EA4A3C0A
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 11:09:52 +0000 (UTC)
+X-FDA: 85150408224.03.71535CB
+Received: from mta0.migadu.com (out-106.mta0.migadu.com [91.218.175.106])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 7E93BC0009
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 11:09:50 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="RdniU1/D";
+	spf=pass (imf22.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.106 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787913115;
-	b=byRNPdOiFVQqmZoYPNvJXapRO/9regtVuvyQ9l3e7gr1j+xouFX0v6Wq+2oE5QhFmULujE
-	eTLVACJJUI4nKLVN7O6r3wWRwN3blpwrHX/vARupmokvOmjnhHmdZLwJj4i7JZkhGMIf23
-	ci1e6kiA4E5zFo29dUPHFHC5FjWWTiQ=
+	t=1787915391;
+	b=Y5ruoN7SzceftrMZBp0fQFVlG2rNfMCkQYIoQmkJstS2NppRLWDN5PDZ67Hye8aJ7b/EIK
+	3LMC2/py9HQL2rQQXWImEcDKJ0V2IHhk0dupvRGSisdBuaeqn86zW9x0Gv20GA6jgFy6ZN
+	5z4I0C6eSX7fUShhrseTsiV6XSpEL/c=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P989eIXz;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="RdniU1/D";
+	spf=pass (imf22.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.106 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787913115;
+	s=arc-20220608; t=1787915391;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VLmy+23wSUMzFyOWBFEJkdW6wQyehsnhIV8JJJbWhJA=;
-	b=O69O0epI4dnatHYZvzehGfHPyuzGkwuIFL5ZSqUwqDJOQtZJ1+dC+QqwGXNY4A8iT6C/cq
-	GbgM7P+3h9GachK0rTUOahedgZasJoyWBtbukQF8qm76K4rTwVZsTrsCk9gZIPhEP9Rg1y
-	PJh67sQfZco0ydxhQzg+AYajjeNePkE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4E6C96020A;
-	Fri, 28 Aug 2026 10:31:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B03E1F000E9;
-	Fri, 28 Aug 2026 10:31:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787913115;
-	bh=VLmy+23wSUMzFyOWBFEJkdW6wQyehsnhIV8JJJbWhJA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=P989eIXze+S82yL2CVHsL74+giO6o33ilLH9BPNZn0niAdRKaHqMhWO7/NSTDr6H9
-	 Eew7wwFmGkmovJVq+UmD64uLpJoJDCxE7UbFoBXxEeCbcJk/H4Mm3PN19Txi9312Ew
-	 +lE0dy0ry+lkzp2WJKe39CpBwaPy3dql9U7K2CNbU9iBq4bXJNwVoltY8BROi7R5qb
-	 Hc4O59X2WWHfTaw+95o/hy8Ie8Bc8UFT9aeLV1gL5ELMOEKoekGQ+5wUUhCqiafGx+
-	 iuqeChfF+32+ZTbGrv2DG7FhlXkz8EQZa/ueGq0p+zzPy7Ak+KtnGLtJ4DKSGVrx2m
-	 y8sH74ZBQiJgA==
-Date: Fri, 28 Aug 2026 11:31:47 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] kselftest: mm: replace usage of /proc/self/smaps
- for check_huge_xxx() helper
-Message-ID: <apFhDA4e1sBfDOeh@gremlin>
-References: <20260828-fix_split-v3-0-374022586a4b@arm.com>
- <20260828-fix_split-v3-2-374022586a4b@arm.com>
- <apFMvo8pCzaGKope@gremlin>
- <apFgVvNMbdhYnu6p@e129823.arm.com>
+	bh=1oydDuKh0otg5pEbKAftRi+l/Yz+usCBDeY+4MJ87tE=;
+	b=bS02h9x9aba/BTXe6UbiJrvKtODVL2x0uX0HY85damSUiJm9tbbwAI3OCXlhyrdx+Wm/O/
+	9Jfj9uyKo2A3NGe+PQgSqedoRWWBd+waC4CuDD3WkPQ1ILXoUGVMbFfhY1csFfmKbUz4Ht
+	b0/k12u6Ok97YuCGmp4c68ZPIQj3Ap0=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=OoHGgjSfWYpB05+fSb88E0ID0/HP1IBQpVIbX01UjGk=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787915388; v=1; x=1788520188;
+ b=RdniU1/DbmPn0VtQ3oCjn/aSXaa7PAma4T34fwwGoPs1wOs9/MxtRHlPwLGmp3p7HTMZXCTB
+ dZULfLBRB0RxyIlVbkElGGqIghNQtBlA0tLz/nSxP73dpOULj/+LTh7zOtWmcdbG1nm08/VATDj
+ NeAv7aqxRVWu6e8lf73YbtNY=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id e93b957396df94b6;
+	Fri, 28 Aug 2026 11:09:48 +0000
+X-Mizu-Trace-ID: e93b957396df94b6
+X-Migadu-Flow: FLOW_OUT
+From: Ridong Chen <ridong.chen@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Chris Down <chris@chrisdown.name>,
+	Tejun Heo <tj@kernel.org>,
+	Yu Zhao <yuzhao@google.com>,
+	cgroups@vger.kernel.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
+	linux-mm@kvack.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
+	linux-kernel@vger.kernel.org,
+	Ridong Chen <ridong.chen@linux.dev>,
+	Ridong Chen <chenridong@xiaomi.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/2] mm/page_counter: avoid integer overflow in effective_protection()
+Date: Fri, 28 Aug 2026 19:09:18 +0800
+Message-Id: <20260828110919.1324028-2-ridong.chen@linux.dev>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260828110919.1324028-1-ridong.chen@linux.dev>
+References: <20260828110919.1324028-1-ridong.chen@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <apFgVvNMbdhYnu6p@e129823.arm.com>
 X-Rspam-User: 
-X-Stat-Signature: 9q3gwzxs9ffsn1dp1ziyuoijynq8tzuo
-X-Rspamd-Queue-Id: E3BB316000D
+X-Stat-Signature: 9nxgz6e91t64tqygwaz3y6eowqan1wrg
+X-Rspamd-Queue-Id: 7E93BC0009
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1787913115-486988
-X-HE-Meta: U2FsdGVkX18kRGS2D9j55QtLXBOnn62NcZDy/WUgCn7zcIpBNbEXlJcw2yeiC1P4pV7+OtmU5riB+1g/o3fzEpqyopj2LvbXXm6d+y7eax/So32FWBW1I3kM5rTVb1CPXnb2nb468FoG0eIbR1xvLsBae8rOatVY7PncqL6u0If1j2OKeN+onGAu+VtMPmmTke56ePZSJczjGQAQJM0LiA1eEo15x/VERzqSqvmBZpL6ZluEDTyTBVQKGU3d5h/0Z+hidLB2CqjUYNvUdBSQDxT/T5wvGGMEljsCh9ghYBMUaCYCCWtoJ/FCgepwxz1QnNrjcKf/ombIcaFYIqRKXrNQ6BvBjbqehBF4I1ujA+v2nvr0Orn44cwRPglhiyMiqnP6uez7AHiscjcCkIGgGu5pU8h/VcNme4fO3n5geCjcV2FptvsAX2psg/1kTZA46talJaOhUqR5n0KOuE4m3vqvk3GWo+u1OWQnGTIBvGfq+yJVZTpCkrrmmykxA55ni++UTE1Kjke9ByOpxTzDRtXmNzEKmTvqGomGDKrJidKTMbC1LAX2geEBBU75zyEwBWPwDZ7reJk8m1qc4fTRrMmMFEq3AEvjN1TAjIFWIqGRIZF9IKwgaJqdscaebMw3BPce8zXqaV3oBWR7zwnqPIG98uXWvqAyClPXTnRGJrWNs7JyQCU2Q1yYOSSVBrC1m6WDn6a6UcbdPWq8UY1oDJn6SvRlDUbW6nMuJdF5A0ZVy/vyFUP4We4CcWH1W6e6OaE/J28729tG1tFFN4pVtf7oWxAJ9i+zr9bEE4PGPLdTTJPtBNx2kdloCdr7Y05k6WROsIirUJDU6BamAnXmzpwX5WtfOjg3T0NVMQqt1X4hBTOb3BGyopPesc/bu0wVBG7XWdbeBB0o1gKoHuoUpcBab2ZlXD+RQkY4tYRaWoY7D7KdtzNK1iHtE9d/fFC4dE1NDXwUvaZWT/zmLpc
- HRe4kYMx
- IdDPZbmkoHFvXNRZNziZK1IWm2GbWBvIkjMyPs4d5sUNQorrSzdLAycGCLGCPq1KJiFBz/iBuPgtd7KgUBfVvhyTB9CA4BUq00UnO4i74w/VjDpCbCpcH7dEwUnNyDD8HMYZO1QiUFKQJbVSmESxeqr/oxEKE+NNzv3OajRg32LSIm2EYsvdjbAjZboMd0+3eCobKUSTl0xzniW/S9+5LaSaLdTchXAm5l3vk1MmC08CFDfM/8uhgnOCC3Zxu00WKuc79DNwv45gUExsZaIJ3Iuzn5OjF174fx23r4Bs8kjR7QutwdRZp+KKPsno2/+VXRnvr92q0BCQk7XxTT2I031Q/bSRk5V9uf2ym
+X-HE-Tag: 1787915390-814277
+X-HE-Meta: U2FsdGVkX1/l0mftjD64IHLBI47IfBk9rBF+2wom3bUV0Kiv6dRLxdmMkTH3++BlD5Jn2aAWzuK3f06tBPkHAXVVR5ekzpGGVqaq97iwGshPcrpMGIQReVvFnUjKQu+xnS7mMKQCapTVFJ4TshnMkG/2OH+FmW+hnyt0gaVQLg5WoyUg2E5wN0AXMOF89scEZYjJ1MplWJCPY3hII2cAdi7HO1S5aSimHfX4HjRLlOd+hxL4c6yaH3r59Huzl+8misVHDxBzy8FoD20g40tjeQJgjy8IDXLgyuDrinIib0rZx0EBkMgybo6Ar7m8AhLklk75/vMjvPm/xFd7tmAQde9HkB1Ay0mXp9F1Wd/Qxq/BvNyZkE1IHUMvmyKwYfu1jFrkAFGpC4pOwn8kxGEH9h0eJDvDwLB/XjeCwx6JVKwrv4xHAXMSnew1UzhgAsdmiUPolsowgN9QWmoUSp7qC4kNwI8UfBH1rb9hwSgFldVo14ryxI1Y+AF4AvQYoUlPY3JFB0SCwT3S+b25pluzCbdKPhlqI6l6A9TeuHK6XWs160ZaMsjdofRsz4Vpf6yPP3v5FjO1xK/X3sL+GX3TwbJWqArx71g1fimD4bjfu4h3NWh+UKBywFsbChfOSpbhy73kH1jU1vUvZGu2r4vuALr2TVKtMgWIw9CE1kAYCYmS4s1/WmQl7krJP8Hf+Pg78MPIFrFMLW1bhpPOL7nCYPZjpwwUpq2IP0H1AYwSgkX59bv4Ljdf0B6l3u7bsCOslwsmeHbs+ym6LJULqHNT93v/jzJAuYyfHtvi4w9zQsXsWjakSrFOmwYO91EaO29rVBV0WKSqlMrJIe3Vk6go2gD3XORdyMyLN97X5meMJqGqJTrZOgX57e6iaoN4Hkp/EsC/XgOMRWffc4ybXi8LLX0c4ivfLRLBsgamv7Czdz1nRVINxgFx2repW79M6CFaOJAmuvVGPaf/rcFQEDp
+ WWybR73v
+ nAwHhWGcEPx0N/9noeztAZUdU1Jpbclak8C3w8OERv95+2AeRBV/3BRKOypS+o2FZZJt8M+FPhP0KxwuD1RQZUvHLqbIBxOlp0I+DXCS5VZKt2I9DH17lzyY0Q+5ZuQKNMmXBAxaSaokNjVO+yt6kVckGKIZ10/Z7YzvFA06Y2NqyTs/Xs3KlLymhQRLkNysCRLAZXcVeprMO3/TK0pEzj2HqxPgqrEYZMGL/GQ1nht6ElkW69K9egX8l65u0/H0a2l2lcVt664uSkEdveoCw5Rjh/nVZQCj+jpKWD3yNm76wwJsPL9G3gtkK/eqZHh4y3yQLMqp2kifQ+L3SO8bWPZ7U4wqrQD/JGQ14Gj/jLE9JN/1AWa8+7z88onmfzrNTo/1Fvs4Xb/QjXLUp/UcZ0NmHainquvKD65yuLSu9uzZb/KbSSpCHLIXtg62abK6otUJM7eexSczpZNwgR1Yp9AhWTZCssEUdGVkngzTLrLEVjFfmdqIljzahDl7jPnOUJxK33R/A93PFtoL2tIM13gmR3H1IBdSI21lSL4X/KEnmFURJ4MmW5qKUsxaXc9jt6VJDxTbrNlA0PE2lEX+fdKtsHlbnHX4bHLx+8nfMamjQXTn/qnTKfH5lgeBrEMxpIDFQ+HRtL9dnXLaGUnH7I86tSgx6e3DNitVAR/0CrZt6CdrFI8rfB3WaVmp8VKJkecPJbUmkzyh6V5IJm4rZ1G3XJvEdgm0hsVfIo6aW8h5zVBGbXdqve4Gg9aVR4IpVeFQQcc96uUy3HNnzGdy8TVb+H+RDwsMijvkvCamGX1tjgw/FictgquulkDMj/ctzHgCRrWXDj9IYc7BEaDwoITJBTKxmA4puDXo3nW+U0/xUNzJAa9x2KF8OWZ593UBPHWJz8BKXY59B3LnceTH6bvrr9p+Z8YT3AF4p
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,77 +108,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 28, 2026 at 11:17:58AM +0100, Yeoreum Yun wrote:
-> > On Fri, Aug 28, 2026 at 09:11:34AM +0100, Yeoreum Yun wrote:
-> > > Since glibc commit 321e1fc73f (“malloc: Enable 2MB THP by default on AArch64”),
-> > > glibc may call madvise(MADV_HUGEPAGE) for sufficiently large allocations
-> > > made by memalign().
-> > >
-> > > The underlying VMA may start at a different address from the aligned
-> > > address returned by memalign(). Furthermore, a subsequent
-> > > madvise(MADV_HUGEPAGE) call does not split the VMA because the flag is
-> > > already set.
-> > >
-> > > This causes split_huge_page_test to fail because the check_huge_xxx()
-> > > helpers incorrectly require the address returned by memalign() to
-> > > match the VMA start address reported in /proc/self/smaps.
-> >
-> > Hmm, is the test correctly putting sentinels either side of the VMA? Any test
-> > that doesn't risks flaking due to unwanted VMA merges.
->
-> I believe that with this change, we don’t need to worry about unwanted
-> VMA merges when checking for huge pages, since the test no longer relies
-> on VMA sentinels but directly checks whether the mapping is huge or not.
+From: Ridong Chen <chenridong@xiaomi.com>
 
-We always need to worry about that though, anything that asserts stuff on a
-VMA level must prevent unwanted merges first.
+effective_protection() scales a parent's protection by a ratio of page
+counts, e.g. for recursive protection:
 
-I guess I'm asking you in a roundabout way to go check and if there isn't
-isolation like that (i.e. mapping PROT_NONE VMAs around the VMA you want)
-then to go do that :)
+	(parent_effective - siblings_protected) * (usage - protected)
+		/ (parent_usage - siblings_protected)
 
-I think glibc going off and mapping a bigger VMA is possibly a symptom
-of this not being done.
+The multiply is done at unsigned long width before dividing. On systems
+with >= 16TB RAM the product can exceed 2^64 and wrap, giving a bogus
+protection value and silently breaking memory.min/low enforcement.
 
->
-> Also, this flaky failure was not caused by a VMA merge, but by a change
-> in glibc’s behavior that sets HUGEPAGE for sufficiently large areas.
+Use mul_u64_u64_div_u64() to multiply in a 128-bit intermediate. Because
+usage and parent_usage are not read atomically (a child is charged
+before its parent), usage - protected can briefly exceed the divisor,
+making the quotient overflow 64 bits and trap (#DE on x86). Cap it so
+the ratio stays <= 1.
 
-Yep your change is worthwhile reagrdless! :)
+Reported by the sashiko review tool [1].
 
->
-> Might for the *NO_HUGEPAGE* setup, there would be a chance to merge
-> VMA area, But since it seraches the mapping directly, it's fine.
+[1] https://sashiko.dev/#/patchset/20260826133054.88529-1-ridong.chen@linux.dev?part=1
 
-As above, generally we should put this protection in case, even if it's
-unlikely for a VMA with VMA_NOHUGEPAGE_BIT set!
+Fixes: bc50bcc6e00b ("mm: memcontrol: clean up and document effective low/min calculations")
+Fixes: 8a931f801340 ("mm: memcontrol: recursive memory.low protection")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+---
+ mm/page_counter.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
->
-> >
-> > >
-> > > Fix this by using /proc/self/pagemap and /proc/kpageflags instead of
-> > > /proc/self/smaps to detect huge pages.
-> >
-> > You should probably call out the fact you're doing some refactoring here
-> > also!
->
-> Okay. I'll spell out with some detail. Thanks!
+diff --git a/mm/page_counter.c b/mm/page_counter.c
+index 661e0f2a5127..e8bd512069c5 100644
+--- a/mm/page_counter.c
++++ b/mm/page_counter.c
+@@ -8,6 +8,7 @@
+ #include <linux/page_counter.h>
+ #include <linux/atomic.h>
+ #include <linux/kernel.h>
++#include <linux/math64.h>
+ #include <linux/string.h>
+ #include <linux/sched.h>
+ #include <linux/bug.h>
+@@ -356,7 +357,8 @@ static unsigned long effective_protection(unsigned long usage,
+ 	 * otherwise get a smaller chunk than what they claimed.
+ 	 */
+ 	if (siblings_protected > parent_effective)
+-		return protected * parent_effective / siblings_protected;
++		return mul_u64_u64_div_u64(protected, parent_effective,
++					   siblings_protected);
+ 
+ 	/*
+ 	 * Ok, utilized protection of all children is within what the
+@@ -397,13 +399,18 @@ static unsigned long effective_protection(unsigned long usage,
+ 	if (parent_effective > siblings_protected &&
+ 	    parent_usage > siblings_protected &&
+ 	    usage > protected) {
+-		unsigned long unclaimed;
++		unsigned long unclaimed = parent_effective - siblings_protected;
++		unsigned long unprotected = usage - protected;
++		unsigned long parent_unprotected = parent_usage - siblings_protected;
+ 
+-		unclaimed = parent_effective - siblings_protected;
+-		unclaimed *= usage - protected;
+-		unclaimed /= parent_usage - siblings_protected;
++		/*
++		 * The usages aren't read atomically, so a child can transiently
++		 * appear to use more than its parent, making the ratio exceed 1
++		 * and the quotient overflow 64 bits (#DE on x86).  Cap it.
++		 */
++		unprotected = min(unprotected, parent_unprotected);
+ 
+-		ep += unclaimed;
++		ep += mul_u64_u64_div_u64(unclaimed, unprotected, parent_unprotected);
+ 	}
+ 
+ 	return ep;
+-- 
+2.34.1
 
-Thnks!
-
->
-> >
-> > >
-> > > Reported-by: David Hildenbrand (Arm) <david@kernel.org>
-> >
-> > Should always have a Closes: tag if Reported-by: ideally.
->
-> Yes. but talked with personally nothing to close. So Reported-by tag
-> only. Would it be better to remove?
-
-Yeah or Suggested-by maybe? If he said it to you on-list then a Closes:
-<lore link> works also!
-
---
-Cheers, Lorenzo
 
