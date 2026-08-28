@@ -4,136 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 934EAC61DB9
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 05:30:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85114C61DBD
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 05:34:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F6416B009E; Fri, 28 Aug 2026 01:30:19 -0400 (EDT)
+	id 6C8DE6B00A0; Fri, 28 Aug 2026 01:34:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CD2E6B009F; Fri, 28 Aug 2026 01:30:19 -0400 (EDT)
+	id 67A6B6B00A1; Fri, 28 Aug 2026 01:34:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E3EE6B00A0; Fri, 28 Aug 2026 01:30:19 -0400 (EDT)
+	id 58FF06B00A2; Fri, 28 Aug 2026 01:34:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6302F6B009E
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 01:30:19 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EE8C91A038F
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:30:18 +0000 (UTC)
-X-FDA: 85149552516.06.D73C9C3
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 3879F1A0007
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:30:17 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eCYaCU60;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DD396B00A0
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 01:34:20 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 96003C0396
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:34:19 +0000 (UTC)
+X-FDA: 85149562638.02.E124BC8
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 0BF64100002
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:34:16 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="f+sF+z/J";
+	spf=pass (imf14.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787895257;
+	b=iG3hgjUkoyHrpE6T3+oGwwx06cBqseYVnJi3oh9Bhd+1W+cN9XkjH2MWuHHTAUnaAPl71L
+	brS71GykMVO9hLrcabexmZMd26qXIfRmErdhtWFFWE3iWKqLpe5VMTJzcZqMd4/YjkHA2z
+	eOGrmsVy0LgH4A/lVO/ZLOhSXTYyThI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787895017;
+	s=arc-20220608; t=1787895257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zjyf211XtRs0nkL10Qp9VSObiEIsDLFDi9ZSA9jafOA=;
-	b=aCfARW+/QcHk9myxju3QMNLHSgb9/jph6GJ0V+SXMDbplWOYhuMKSBk65ZajBrVQOMgeVp
-	eu+sCCemn7m8khjhFzbMb4NLlnE90FpNyStx1snNZdDBO5QGcXJb0PasPedSZtxFMRBil+
-	xFS5091gU2b1CX8KFxPf23Z9YMOnzc8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787895017;
-	b=FzvNKoPARD3fgZ0c1ekCbJ6G0jDBg9dNHJA+TRBS+0wrC1OCbzuLNgVKE8psj7kAGElsHg
-	cP5nz0UW7900z3vz28xhrwUi/LekRV8kkecLk+Rbq1/5MlhEStTlqbjzRjY0N320olaP1Y
-	X5ik8rioNggVXFUmWLLLy7yYcYw2kl4=
+	bh=fNxA61xg/sFWixfr/AGYMYFeaFjndZ7uXYyULbKtlao=;
+	b=qZ2y3vIwBkQeOonSv5oKJIVEUiSygjHc7r32QQsd0vYOs/1t+MY8U2LuCruj8FQJ/NIBVP
+	dcgCQHiqeRYuGlPg/arAQZ3GQO4k7d7/qERI57r6q0742zh+qY87ArHSFooUgMNID2G/dU
+	AbOTd1JTjD8ZixDZ0JIysM30HqNEjKg=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eCYaCU60;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2d5335cf904so5930655ad.2
-        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 22:30:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787895016; x=1788499816; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zjyf211XtRs0nkL10Qp9VSObiEIsDLFDi9ZSA9jafOA=;
-        b=eCYaCU608Ip3/t47zucmKF6JB8LMq/gz23FnUet03tN6sWUMUrCdXg7ozgOpa0JIVD
-         7m1rUI0pKBZjB5CDL6bw3zA+gP6xVlKHPhV2Lr2epBEQPlc6CDSc27WT3IfKAJGxzS9Y
-         /QutJ8EPFxC9s0Cb08HSPeuBrJeBVRIsu8vehRTa4vN0OIe2YqdIcLIMyL2xBixjuyW/
-         Ls9fiVM/Rro6cNDFd/FYsRd5ePUK8tDYfJtRntvektXEocGguICpeC1/qMesXFvLjI2G
-         mEHSW8qOfkjMiP12UIeIoIm8hKxqbZqAeXk1LjIRDRPqynM6B8Rk4DxZMbPwkM2oIgaM
-         O5Ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787895016; x=1788499816;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zjyf211XtRs0nkL10Qp9VSObiEIsDLFDi9ZSA9jafOA=;
-        b=bH1YMcF0u/5ORz4CPxBeHTaTHfYnwQ77BKGTIHvZoE7qAr0MBKPUP8b82s7rI1Lc7U
-         jIeEBDSwEaGUGuqW37gLMqd+/uEmaIObQvDp3DD2M002awiVJJCJ98f/POnTWe+qes79
-         ngCRLYwr/81aiVGegR16CDy+7gFNz4M2oCQWJXGU7WtuqIDuoZLm2CuR+xMvQ8GxVE50
-         yApKN7r4Icr9qB7wgOYfI+HjnoeHkcIh7/bdiDQQOcxC2+i19t3ycFkBwe0AHfjh675L
-         vhhaK42AsK4Dfccd7SqyaRwLvVIF5lZYEOzrJT21IeLCRUMFGZh6OWg4mjxW7T8fI9qU
-         cKFg==
-X-Gm-Message-State: AFuF++ms+ijmRzIXLyC+uVehr9RExVI34h58/xK78/r/TmG3XodH4SJ3
-	mQ3ZrkUCvPjy5cL2Y9IvJ11Rdvrt5aZjYINPYLnoid9pgFky+WCNQze/
-X-Gm-Gg: AR+sD12mdn4tDCWQ8AfJaZO9ok/c6GlZBQgn2qm9jbyZmtEV5CesFVcwsjO9nsyuvra
-	In5DwXX+ZC1aO5X+44Gvtu1TXt3VJIjfklC+DNBw+REd/TymX//bcfV2bBeBZcHzWt/Mfxdx38a
-	GP/c21/xUbHXiX7Br+iA5hYSeHhU4fx6mfWYVS/PQujxF00dLeDkF1PrHfyg/9FE8eWPUvSHqEc
-	tFKCZjYVZnlBZo9mY4gtyqxlapNbZMB8qvrNixdeu+BCneqr5BcFv9gJMtRu/9zfTPt65f8N8oY
-	RmJMdc5S9bJPjXn48w9S/FEHdPCzdyn/1vaDppVcMjugYcQsv+dZVptmstZq6lmkq6WZ4tydAol
-	u1n9j+eQM78Zr6Fye2lDvRD2/sh22Mtxw558Y2rH7dmhkm3+B3lTy4uMlM6v6OKzHGs5fW5GSjT
-	9597qvf4R396iiMcmi+vXAPlG0VAo11DYvJwMSPR/AmsfgKtHy+FX2ma0FV5PnodwKWgownj/lk
-	fnizMD/DdINy8A6LbdPCb7V3Og8
-X-Received: by 2002:a17:902:d591:b0:2c9:deec:f564 with SMTP id d9443c01a7336-2d74df52c1cmr1686825ad.13.1787895015897;
-        Thu, 27 Aug 2026 22:30:15 -0700 (PDT)
-Received: from localhost.localdomain (vmi2317720.contaboserver.net. [84.247.152.65])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d75988cb5dsm2170415ad.64.2026.08.27.22.30.05
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 27 Aug 2026 22:30:15 -0700 (PDT)
-From: Lian Wang <lianux.mm@gmail.com>
-To: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Cc: linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Chris Li <chrisl@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Ridong Chen <ridong.chen@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Yu Zhao <yuzhao@google.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kairui Song <ryncsn@gmail.com>,
-	Kairui Song <kasong@tencent.com>
-Subject: Re: [PATCH v3 5/6] mm/mglru: use explicit tier range in read_ctrl_pos()
-Date: Fri, 28 Aug 2026 13:29:28 +0800
-Message-ID: <20260828052949.52874-1-lianux.mm@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260826-mglru-flags-cleanup-v3-5-d9f1c75549c8@tencent.com>
-References: <20260826-mglru-flags-cleanup-v3-0-d9f1c75549c8@tencent.com> <20260826-mglru-flags-cleanup-v3-5-d9f1c75549c8@tencent.com>
+	imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="f+sF+z/J";
+	spf=pass (imf14.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787895257; x=1819431257;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=L12kByngmxm0+XcLwhdT9GBJpdEOxar0JOOmR9A9qck=;
+  b=f+sF+z/J6Lbu0TjniittfTdTkUiOPRc7V8CsunZGYJtLgrW2+UJLrTj9
+   bPXfjY/ceXVq21q49u7ocGkznr8gPHVeWknyNzVuc5x+HDGbhiOlT0pS0
+   KFaK9aFBBpFqLPQ+TRaWAS45sv4596qCXzkChtC0xoUA+jr2dH0BwS8gC
+   bnRHtc4LTkOSq6gmr/9QTyYRk86o/PyB5MPsH3R5SaqbFO7kDVakGFEka
+   i0P1DvhzOuU7Azobo61Sx5sJQSwX2BQWqGbcMPdRp15Pjd5mVN4wxdRJW
+   6qh3K1euNvOMZe5p4InmEc0b5YEgP86pnAj/VI4GttrUaC4WEO8xaLS8m
+   A==;
+X-CSE-ConnectionGUID: WLxyI9k1Q3e1y3+KaaH9pQ==
+X-CSE-MsgGUID: pISc6vXiRPCqjt0o9zfeew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11888"; a="88525466"
+X-IronPort-AV: E=Sophos;i="6.25,248,1779174000"; 
+   d="scan'208";a="88525466"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 22:34:16 -0700
+X-CSE-ConnectionGUID: 2JOw/X5sR7qW4b71mX5Ntg==
+X-CSE-MsgGUID: mIi6lFz/Rs6jYJK3+8P47g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,248,1779174000"; 
+   d="scan'208";a="270025508"
+Received: from lkp-server01.sh.intel.com (HELO 3532383e6126) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 27 Aug 2026 22:34:14 -0700
+Received: from kbuild by 3532383e6126 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wzpEB-00000000AST-1pk6;
+	Fri, 28 Aug 2026 05:34:11 +0000
+Date: Fri, 28 Aug 2026 13:33:29 +0800
+From: kernel test robot <lkp@intel.com>
+To: Zenghui Yu <zenghui.yu@linux.dev>, damon@lists.linux.dev,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, sj@kernel.org, akpm@linux-foundation.org,
+	"Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
+Subject: Re: [PATCH] mm/damon/core: remove declaration of kdamond_fn()
+Message-ID: <202608281351.Hv386MvO-lkp@intel.com>
+References: <20260827163953.83520-1-zenghui.yu@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 3879F1A0007
-X-Stat-Signature: 1ceri4m9utd47gqqesg6ghkmhziyokxx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260827163953.83520-1-zenghui.yu@linux.dev>
 X-Rspam-User: 
-X-HE-Tag: 1787895017-319804
-X-HE-Meta: U2FsdGVkX1+uf6PMKlNZr1CytwnuiB3cKrgEDrWTZLihgyUkWxKIA6LZyH4woQ9KYsxpAe0si8lcv3rT35vw9OP3aB/Hg2n0iPBJtzPuNHSbtHiNs13n5S3XOxQKylXGez0skkXFueuf1AV8PcIPz+g5WewcgOpyH0eTI15HtjGQus1sMn5sejFwjDmu+6YySNSDAxHVdvSfbGoT/Qt7x3NvQtojSsiqmBrNxnulC7J+slL/zYfpyNkhWXn/SkgwdzPx84EPTihf1lhahAH3x/vInWX62R7VAjWPbrQ0mxb9radU2pBZ1sKVJTEMV7rsySClzSTWyisNgMg9PisFJLbFU1PyEAcexLj0cPI+W+lt4dwb4VrjzwEwwbkXpVs5+b3OijUO5DBJgVYefBcm6Rx3R1KM2jha4kNG5H1B6lCpJOnRi5DsmNFfWQqifYhogonxS6m2dTv8xPUtFBFa3nPBnqRS9gmGRsyCPre+QFyrRaQkbYzxLgbL4K6+DykdDborTvd9pL0eQDAQRtI8WWCB7HVlC+LJ/nJm8Z4QKuvEmTDAI9IKShAcp3a9dmngua3VR6TkcjbE5neKjmRO5yQIYjSBnYowXxlZw1PnajFmJkdh8CzhOoccJ1PwsSfQ5826egkZ2ZGPX1gwasHM6bisxNF5hc5v649rheHkdZSAm43zqlLUKgpkdL2c/IpOQx2yL6OagvlTraTI29Mi7em8ki4YLj4w7lFU8/un9vPBVu5MZ2HbWveE8pD7VSmUblr+gpeJCJELGUnCMy9DnrUwD7Mm92KGtWPf+DuiQKSWVP3XAqgmgd6STPzuK0fot9Aw9Bu4u+q2ZrH3i+LQsMG4STJCUQJV4NEzYGb2TtFl1dLBkDB7RxjRZC6WTb8no7GHNdrPPQIWpa+zM2iWdtoZy0EqEt3graffYuvVLLUD/8yP/r0tYWWnuZVDjixpnTeYP+WQjP5gWPjBfj7
- FE1GJC5G
- e1JqiNTp9GRZ67tY1DdJizzitmIfDFOimEySaRSTuPhBbPQX/4VZ0PRz4cTPv6/m2AamXms7OzVQszhL82u/g3tNxOdPpgf+k+2nsYH+BuPwAB6pNLUk7ZYwESEmAW44LZzOeQw6glv0BBJMYUYaoD3nSuVpENajUprdep8uGFDLKQByRmXjrlHuHeIcsF9I62WbgXBqIsNDaCrqON/KMCOuODhjvNfIYUCN0lgWD8DUc+jfuVeGXhVIjgF1zV8/PyISJywqLKCdrX+eBImvdjIIb2E/hLm5Pgnh9rX+EilYdIztaLXRe0j4USch3/fHuwj5HqeqXc+ra8WkCkJmSP5AnFk3Arv0Eq+yTxUeddyN3jVAmqm0ClhX8tDTbBPkhbjVAfoNx51GvBOzC/4eQhzqiQugRB2uQ53oGHDDkgBYgQ+/DaSd8vDMRBWnCnScqWAggHMGaqyyWyr4MpAgb+YobARwv6dzBXFBB2MeP4bsHlpjixMwXt06k03yFb2MzSq33QKRb7zGny/JkqUPzqj8xLVr8e01RHOPCDKZAeH5K0814RN77Ni4UyRGy3o7ES9YM
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0BF64100002
+X-Stat-Signature: xzk883t17cdd4awjsk3djpfixknifko9
+X-HE-Tag: 1787895256-892472
+X-HE-Meta: U2FsdGVkX1/MueMAipJgBEKCYaoRPzeB0T5ZTzek7cWcXm2muC1d6qXUUEiOFSG3oV2huuXvOXLlm7Sv3AvF00dvQRb1Uiruaz1+WG3h+rQFFmINGeVLU3CCsqQEY42g/hpsST4VU148Rssb9cZt0ESNfMAdgwDK2A4YW7EejaQ9+s5jWPregnv3dJUsAe5Jx0psSwnqMRvffXtZV85U2DT/9l0EUR0eCWESmLRAg/Gnktox0Jc3p0o1z69ATWSWcn5zF+Kh3X+dE8nzfp3TwPuf/9PUtGrRjlvGfglQQxACiXwRRniGJkNOx7p3ogbo+q0ASAw7w3GccG0u01Wb2wnXzZLkpczjsPiz3ScUL5Kuix/5iMNDuEzLS1HYFkNOPKGagHLJmdUfWZ7kFGgKxwEq4hepiKscAHXCeUdCovueVTN0wH1j7dkTioA1IawEylLDQd5+fxAJuFV9BrLeAlncMjSigf3Xyc0qoWceji8eR6rwdmpi16vgCS0r/JxrYbVQP56Ub66JpNpXzKxSMuvy+RLo7ri3ZEGmbDjrviGUXK6jPgK/GQiXObOVSP6pyMwBSvkbVqFf1Fx1YNNOoYcML3lhC5NR/N+eJ19rf1ECFz0sw0GwwWk71rNwKmf34pjg7R2uaBcP8di69Xa5JP82gyFUBNCgaRQnBoaGKtuhZK4Mm7CoCBScKa3iTfxqz0ZKGF5UFhewlXkpSGVEV91ea/BfzNJ5+86GN8sV2XBw4uW0eEidrnTL9Y+Vv5kLO/9J2Xv/D6stPAZln5wZzpSgb3gN+bB6P1TCUAJ47I2XwkGLUF7XBhMfZ7/3emfQAjHEOEB4hzXvrwTbFyInzAqkW0g4DCDHc6olB9EVQmxtXJDaz6NftY/XBP/uj4JLg5lHogA3Qclrbg/zvSx5olSxC1tzmw5GCZ0oG1BeArje8YYtMM2ACKOoXrWrqToCQwIf0RBItNt8A4djs2A
+ /totBn33
+ t2kC3FwD1qM0eM2r7KEtsmZLI/q9PGLaa0s41qQSE0y/r9CMN+AMi1yaX6Zmen3rFq6vHONnyJPo7f3vWyd/beMJt4wURkGW+HXhqfzt7QGspiz3GHHwOLY+zhW92bd7QYXmMFmd2hco3nziGtp2ln8hO89oOQN6Z7YLXoE6GFQYG1w81ra8usvsAimq3rhrCuA0m61+r+JIiX+TuM9Gvh1e3AzRcvq1TPjeC1cTu1eqNhVCAEzYiw6Ui/OMtD0SlqIlr/1sjW+AgTJnbhzzkNOnZkHM1l5+S4R4hC4/WEk9hOy8CJd1md2Az9184kMC/8oyCtCXs1/DLENDhRssZRRHEKkZEcU08b2Fvo395bhzemvsZqK6lhi8GiA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,27 +107,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Kairui,
+Hi Zenghui,
 
-> Replace it with explicit (tier_min, tier_max) parameters using a
-> closed [tier_min, tier_max] interval
+kernel test robot noticed the following build errors:
 
-While touching read_ctrl_pos(), would it make sense to add:
+[auto build test ERROR on akpm-mm/mm-everything]
 
-	lockdep_assert_held(&lruvec->lru_lock);
+url:    https://github.com/intel-lab-lkp/linux/commits/Zenghui-Yu/mm-damon-core-remove-declaration-of-kdamond_fn/20260828-003953
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260827163953.83520-1-zenghui.yu%40linux.dev
+patch subject: [PATCH] mm/damon/core: remove declaration of kdamond_fn()
+config: xtensa-randconfig-r073-20260828 (https://download.01.org/0day-ci/archive/20260828/202608281351.Hv386MvO-lkp@intel.com/config)
+compiler: xtensa-linux-gcc (GCC) 16.1.0
+smatch: v0.5.0-9187-g5189e3fb
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260828/202608281351.Hv386MvO-lkp@intel.com/reproduce)
 
-All current callers run under the lruvec lock. read_ctrl_pos() derives the
-history slot from min_seq and combines avg_refaulted/avg_total and protected
-with the atomic counters, while reset_ctrl_pos() rotates and clears that
-state under the same lock and already has this assertion.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202608281351.Hv386MvO-lkp@intel.com/
 
-Adding the assertion here would document the snapshot contract and catch a
-future lockless caller before it can observe fields from different history
-epochs.
+All error/warnings (new ones prefixed by >>):
 
-If I missed an existing lockless caller, or if this is intentionally a
-best-effort snapshot, please ignore this suggestion.
+   In file included from include/linux/psi_types.h:5,
+                    from include/linux/cgroup-defs.h:24,
+                    from include/linux/cgroup.h:29,
+                    from include/linux/memcontrol.h:13,
+                    from include/linux/damon.h:10,
+                    from mm/damon/core.c:8:
+   mm/damon/core.c: In function '__damon_start':
+>> mm/damon/core.c:1941:44: error: 'kdamond_fn' undeclared (first use in this function)
+    1941 |                 ctx->kdamond = kthread_run(kdamond_fn, ctx, "kdamond.%d",
+         |                                            ^~~~~~~~~~
+   include/linux/kthread.h:46:32: note: in definition of macro 'kthread_create'
+      46 |         kthread_create_on_node(threadfn, data, NUMA_NO_NODE, namefmt, ##arg)
+         |                                ^~~~~~~~
+   mm/damon/core.c:1941:32: note: in expansion of macro 'kthread_run'
+    1941 |                 ctx->kdamond = kthread_run(kdamond_fn, ctx, "kdamond.%d",
+         |                                ^~~~~~~~~~~
+   mm/damon/core.c:1941:44: note: each undeclared identifier is reported only once for each function it appears in
+   include/linux/kthread.h:46:32: note: in definition of macro 'kthread_create'
+      46 |         kthread_create_on_node(threadfn, data, NUMA_NO_NODE, namefmt, ##arg)
+         |                                ^~~~~~~~
+   mm/damon/core.c:1941:32: note: in expansion of macro 'kthread_run'
+    1941 |                 ctx->kdamond = kthread_run(kdamond_fn, ctx, "kdamond.%d",
+         |                                ^~~~~~~~~~~
+   mm/damon/core.c: At top level:
+>> mm/damon/core.c:3750:12: warning: 'kdamond_fn' defined but not used [-Wunused-function]
+    3750 | static int kdamond_fn(void *data)
+         |            ^~~~~~~~~~
 
-Thanks,
-Lian
+
+vim +/kdamond_fn +1941 mm/damon/core.c
+
+b1029f29eb1d5fb SJ Park        2026-02-28  1924  
+2224d8485492e49 SeongJae Park  2021-09-07  1925  /*
+2224d8485492e49 SeongJae Park  2021-09-07  1926   * __damon_start() - Starts monitoring with given context.
+2224d8485492e49 SeongJae Park  2021-09-07  1927   * @ctx:	monitoring context
+2224d8485492e49 SeongJae Park  2021-09-07  1928   *
+2224d8485492e49 SeongJae Park  2021-09-07  1929   * This function should be called while damon_lock is hold.
+2224d8485492e49 SeongJae Park  2021-09-07  1930   *
+2224d8485492e49 SeongJae Park  2021-09-07  1931   * Return: 0 on success, negative error code otherwise.
+2224d8485492e49 SeongJae Park  2021-09-07  1932   */
+2224d8485492e49 SeongJae Park  2021-09-07  1933  static int __damon_start(struct damon_ctx *ctx)
+2224d8485492e49 SeongJae Park  2021-09-07  1934  {
+2224d8485492e49 SeongJae Park  2021-09-07  1935  	int err = -EBUSY;
+2224d8485492e49 SeongJae Park  2021-09-07  1936  
+2224d8485492e49 SeongJae Park  2021-09-07  1937  	mutex_lock(&ctx->kdamond_lock);
+2224d8485492e49 SeongJae Park  2021-09-07  1938  	if (!ctx->kdamond) {
+2224d8485492e49 SeongJae Park  2021-09-07  1939  		err = 0;
+6376a824595607e SJ Park        2023-12-08  1940  		reinit_completion(&ctx->kdamond_started);
+2224d8485492e49 SeongJae Park  2021-09-07 @1941  		ctx->kdamond = kthread_run(kdamond_fn, ctx, "kdamond.%d",
+2224d8485492e49 SeongJae Park  2021-09-07  1942  				nr_running_ctxs);
+2224d8485492e49 SeongJae Park  2021-09-07  1943  		if (IS_ERR(ctx->kdamond)) {
+2224d8485492e49 SeongJae Park  2021-09-07  1944  			err = PTR_ERR(ctx->kdamond);
+7ec1992b891e59d Colin Ian King 2021-11-05  1945  			ctx->kdamond = NULL;
+6376a824595607e SJ Park        2023-12-08  1946  		} else {
+6376a824595607e SJ Park        2023-12-08  1947  			wait_for_completion(&ctx->kdamond_started);
+2224d8485492e49 SeongJae Park  2021-09-07  1948  		}
+2224d8485492e49 SeongJae Park  2021-09-07  1949  	}
+2224d8485492e49 SeongJae Park  2021-09-07  1950  	mutex_unlock(&ctx->kdamond_lock);
+2224d8485492e49 SeongJae Park  2021-09-07  1951  
+2224d8485492e49 SeongJae Park  2021-09-07  1952  	return err;
+2224d8485492e49 SeongJae Park  2021-09-07  1953  }
+2224d8485492e49 SeongJae Park  2021-09-07  1954  
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
