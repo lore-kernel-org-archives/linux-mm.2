@@ -4,128 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33CCBC61DBD
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 09:29:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39C9FC61DBD
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 09:30:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30A186B0088; Fri, 28 Aug 2026 05:29:28 -0400 (EDT)
+	id 41CEB6B008A; Fri, 28 Aug 2026 05:30:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26BDA6B008A; Fri, 28 Aug 2026 05:29:28 -0400 (EDT)
+	id 3A7066B008C; Fri, 28 Aug 2026 05:30:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E5B96B008C; Fri, 28 Aug 2026 05:29:28 -0400 (EDT)
+	id 26E1F6B009B; Fri, 28 Aug 2026 05:30:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DF0BB6B0088
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:29:27 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7B90580291
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 09:29:27 +0000 (UTC)
-X-FDA: 85150155174.17.59088B4
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 611EE40002
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 09:29:25 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=O4FYA4Rb;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=O+F89elZ;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gk+e5jRH;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="1koz1/ze";
-	spf=pass (imf12.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787909365;
-	b=Z8aYyj0f4NE3zOflQqEZ4lmqV/7zMCtesCALYv0bE5tET9mBSPelT13u7KazOGsYikPuWt
-	m8gbBakStZxl6tBEod3H2juNaKpVWHLUJGvE5ysKEakBXb1y4vsmGsiA2/b0cr5gYnxeV1
-	O/XMz0m+PeawiBxtZtZ5e8ceLlxg9uU=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=O4FYA4Rb;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=O+F89elZ;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gk+e5jRH;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="1koz1/ze";
-	spf=pass (imf12.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id ECDC16B008A
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:30:30 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 779FE14028E
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 09:30:30 +0000 (UTC)
+X-FDA: 85150157820.30.D3BB439
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 98E0018000C
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 09:30:28 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UE+56Yl6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787909365;
+	s=arc-20220608; t=1787909428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R0+yG+1bN20RSdMl6UCMwOfEUTtxXoxF8Axb3Ve+/jI=;
-	b=MWXrenvjYbCxWqvLv7wPYItRo68TnEXki2yS4CNlASna196IqLaCoCBPh93x5XHvmhSKvk
-	enhAdatcaBkkO1fZ0KFLiCzt+7YEgrKSIumO+QG4n9JN8gBwg6tpZ3SkVgRKBz6SNLl8Pv
-	JdVixSB1biga6dXUG0qDF5JQgI+9pWM=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A9EA21FB62;
-	Fri, 28 Aug 2026 09:29:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1787909359; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R0+yG+1bN20RSdMl6UCMwOfEUTtxXoxF8Axb3Ve+/jI=;
-	b=O4FYA4RbVJixP2zJBddcAkrp/ewWu0qU4f/QLJkPIQfOIBoMfb2Nvhk8gtN8I63OBy/nP5
-	r345r02e7XaPDd8y8a9V7R9FXn/EnTQO83eF7Mqkiu2RLmDVgmcfG+WRRhma6Jl3d6xtRp
-	Hq6m2EIE4lWrIPzxhrgchXpVsYm9y+I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1787909359;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R0+yG+1bN20RSdMl6UCMwOfEUTtxXoxF8Axb3Ve+/jI=;
-	b=O+F89elZiROAeuOGjX1wcKvutymEHMqY15NgQsCKisaoAg+QuapHtyAuJljMpCtcKxrE13
-	67RaqiR4o2/qP/Bg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1787909355; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R0+yG+1bN20RSdMl6UCMwOfEUTtxXoxF8Axb3Ve+/jI=;
-	b=gk+e5jRHYxvSE0b9WE+tGn2kFt5rvxTZt7ByFcTJGa9p/Dk3Ovf3KMyc+xiPYLwJpUndPx
-	9vzqd0QAZLbfitdzUvyrs3lxBtI22goXDS8hyksHyt51PE3JBTWopUXFCw7N6MDDU9Hqlo
-	h3g/hucmLmtkK6F3lC9k+0jUkwwmj0M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1787909355;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R0+yG+1bN20RSdMl6UCMwOfEUTtxXoxF8Axb3Ve+/jI=;
-	b=1koz1/zeBsS2C4mZty+80W9OUVX9cI5asaX8nmkWjTc8uQsAjl6YehNx2xyRxlKwWIcj8E
-	jsRB706U2x5nlvAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DCF3813515;
-	Fri, 28 Aug 2026 09:29:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Vc+nMupUkWoEeQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 28 Aug 2026 09:29:14 +0000
-Date: Fri, 28 Aug 2026 10:29:13 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+	bh=r9o8Kq8i/SkkJT21MegjxpzJj6woYmqf+dtso+F8rDM=;
+	b=OyrQPWNDy8gj8WBv4J0EoA9E6lVIZwo8dhCcvKsWweDF+KDeN0pyzJwpxnPkROD8Khyltp
+	F2SWjCLYD9U9WSEh0K9XZ0rDz7AFvUzyuZYZ1wYSgg1KsPQAiaGlgdPbs7e9yUhbJGZ1x9
+	VRkWP4Xqmhx7pRzkrjthuD4u+74SqDs=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UE+56Yl6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787909428;
+	b=k2cBgjHTVBuXdweczZB5vCgcKgC0Uf4XKGinhf41ITwy3XU/2cMJtmlQTKy73jwr9gnEJw
+	MKJsbx0zB/VC2g00OUi78IKXwgYLsLj6WAHjAAPkjlaKCPh+FwNJTbXz2oLYj3is9TM8aw
+	+6GPcQ2i3awTud9Q33iEx5FzvBC/w6I=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8F1E941595;
+	Fri, 28 Aug 2026 09:30:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B267E1F000E9;
+	Fri, 28 Aug 2026 09:30:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787909427;
+	bh=r9o8Kq8i/SkkJT21MegjxpzJj6woYmqf+dtso+F8rDM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=UE+56Yl69Eql8i4QNGQz9CX9k5QgFeXTsmif4zrkUzvDrdnmVS2JPDqgW/5etvnlU
+	 +GCsKRZYYuBZMCbrqER2Ot+y5nkNmQfvX4jCVRK273mxe+ecaPgfPt95C/LmlTD1T0
+	 12nudhHl24g44E1QB2VuoQj/z3T8XRUViCDGiVS+LSkva4Y4d2C9/v96kXXL1Cn1wX
+	 qvXvesAhC/lKJ5FGzMJ/uR+CjiDaSEa9AEC2e9deunz+Rv90939F7vkl3MIbLUip2i
+	 RxSVUMJflcRl4iR4b5fsrY06A1WF88bCH5yU0scGxtn0rers0peTKu1hpEK8MV+/vY
+	 WdgyYInXdmftA==
+Date: Fri, 28 Aug 2026 10:30:20 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Li Xinhai <lixinhai.lxh@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, syzbot+f12658786a4153df5113@syzkaller.appspotmail.com, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/mremap: reset unfaulted VMA page offset for
- MREMAP_DONTUNMAP
-Message-ID: <apFUzpx6zwAjhvC2@pedro-suse.lan>
-References: <20260825-fix-mremap-dontunmap-pgoff-v1-1-39a40b2c98b3@kernel.org>
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] kselftest: mm: replace usage of /proc/self/smaps
+ for check_huge_xxx() helper
+Message-ID: <apFMvo8pCzaGKope@gremlin>
+References: <20260828-fix_split-v3-0-374022586a4b@arm.com>
+ <20260828-fix_split-v3-2-374022586a4b@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260825-fix-mremap-dontunmap-pgoff-v1-1-39a40b2c98b3@kernel.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 611EE40002
-X-Stat-Signature: tgt3tisig5ambotkaj363aspuwzj7ki6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260828-fix_split-v3-2-374022586a4b@arm.com>
+X-Stat-Signature: ejziq39gh8ess47szxa4ixrnizgidpbp
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 98E0018000C
 X-Rspam-User: 
-X-HE-Tag: 1787909365-7076
-X-HE-Meta: U2FsdGVkX18B317tqc2Rd1qglb6t4By/CT7NH7I6Yzd+SqQQZwMji1J5QEhkvSgJTsd2ZUsBsK6MHJ8ZIxYzj3x3oUtu/+QuGuLWEgxOjuXiznhw3m8qZyvQOfRm/ofBJXWo2Ps/TRLnsE5JZ5i9MG+ivNu5mc8bArtcFM2GXfSp+ALMVMafa6NDa6E3anwKGvqYr5+iXem/SVuVUKg04YQwcqiDeXKuJaCFhC1vzM4V/qdes+uLxx+hRIEu6rp25cfQNCGbiBdzXhxR9o6bIIvQpTIjm12Dh0iFmrsA2wVhi/UTPTNuqbVMF6xzyOek0hyD0006+oKxp446H+oqhCGk5Wdg4CDERYYbdwvYHO/AQqu0dm+a40yVQBccPs4m1z///iK8sWjPkzPsL10+d1z6RWHr4KdINATAMlTqckXA2kAsE8jwJvNwqHdf4ovK8SSJmGMfRYWLXUmwYVkUtifi87zJ4Kwj1CAHIWvYxvV9vP0ysUBRLfAe8hRREWHjho2AmJCHGoV3tFWykWSce3gTQhS1tEp7VhZllNo5gkp0xrlUwbvs8PE3R52o3wqgYqYiqacrBEJcONBbmqCtYNGbEEGvjS9xhROWBJsj4vt1FW0pSopI2vcRtJI8OeeoZfXUthsg7eVB1Dtc27GK5Gc8FADn52p0WW/7+Fckjwqbo4Et8nOAcKDR0I/IzhcTU1aNfpDO6WnJp20nLYq35Pc5e1dYvkWIWRND8f/68eD723VaZVbor/2zPqKs21mj8LtLD4HTn3cphUiLg3MHr4zhQ56q4mZ8Ya/3j2Nfh3sv61oilt7onY7Offh5o4heXT7GB76D2WhL2iOlE69vGUJwbC8AESZP92n0syWyQ7MftT+jAzy/PI+6Ml/GCQC01XQIGM2rVuYXJtQkDk8PgpgtiSczpzRebUH7RJ2bB22rWWp+GYz3UolEN7Pvy5Cevt1CTfpukA9+qahDTKB
- H4LUF/+K
- IlLwvaMEeq+vEWiomgM6kJlaKcw6Yz1rExOJu0xwsgZAT2zzCdaU19htpn2QMoAOo453nEslhoDwdM0t9OHwJ3GknHTV5Wn5VbZnLb98F5LmHbfj5IETaPTMPl0Rhtxb8LUlRyuXTbFkz8LHbEx7FqKCbKsim5Paudr9QGb4zgbvbeuQ3lMYC84h1/zYQRp4MAnM9W4sQ+VgLuelWvN8TIS+exBnWJCPvyAl437zZgqvwYUhuubilxfn5twBlj75HXn806l3+NyZoV+MExM91LGx0exjBimobwUtqrBV0YxrgexGOEbab43CUXPVyLVK7QZx9PvcZrllR7cWkJ2KrVGgMnqPMvrVs4VRURcngD7heFVJzUtc0+opnAmz9Uj3DfiTUD+RSzEUBty4iDwaeE0sgDPDuYG+PoMSTMRFjz7HmYEZzOyayWpPXe3t0ABN4p5lc+Z5PTttYQwTUFKWUc+SAwgpOt0uJRnUcxMixzFM9JmU+VDdr1hcxC+OOMCrooWva30mFT6GCB7xQm6ZqYBwYONtG9w4euU78sNWfM0lZdHM=
+X-HE-Tag: 1787909428-905855
+X-HE-Meta: U2FsdGVkX1+/dc9aG0YthnrOsB6krmKPJXp46fRpdrlO2oQRARv4MA4Fax8RtfeUFfmLIID162rpz74do7fb3ZDP2nShe+Dr8OKP462LUlJmGMh0BVL84zkjwPP0Zv9qDNKWXcCqxX3X2ZDDVpfTvV/NBxX83hNSzlXKCd1CyfLGZhPdWx15/thvsEQqrJ+HTYjYbmf0GdyWmP4X95qir6Wp/Rbmytc1ac+VE/1mm5uWTCkCZz52OnQHemlQV6OyWrfus7ktlEnJgYWPCwUR/k3HbjohfkBki1ZtEPKoELSBoux78nULgdoWapfo1Fz4WC3RcMiWzTu/iBUVqUwHHcXQfSxhF/hYQCW32u85cRIesEqf9uXLg0Suj45PqL0qNYs3gyU79VSbwnsLgxcK0fcBsQqXfyj3PD4PChuRAFkLqOVzi250tJotUsuN2LXcS+x4Ee+CU7fMRzD6+61XDzWxCYTa3JHM4XHCRKGZH0a6UM4bITUclxd2cE/j0KumPLmpYD93R1G2HV+F10UnA1KGYeyoRRDDmwn8Hh90AXn80EntvYOkNP/lNPMJBLBY+I5ZSnY2FGPRuR/WfPTAvsJlafn/kEuIDRlEF1SriJFLF91Tf7+cvOO5ga8SLKJe5woV0nGo9DaZP6XbbOR8CniH8UWczz3hAUARtZLcKN1B5rA20AcVFXBlb1KWBFxSddMdRCznyA3Tdc7QFrfjEUlySWnOZNTzEKNG67WZKVueQB7O5vp9HMXY+4x7LoyUiOov2wVoyVN05Qhvj8r905XcLVrbH8ifVfW3hAjg+zdJVhm2VRPhnRiC6LeCirdX+n3gOg/KqKiMoHNNCAN+ZFK6LmTq2I/CYj2R/2UAoV9npbtBfx8nz+wUvCKBDmW64RMuuJfIe388Rmem4Dcc0ADDOQCtQDx9+hRI0bYcRuaEoUFYh/ljHLb3IXGNtkH40cBgyAzSQBCyQgcpIXR
+ k7m6fIui
+ AgLyjZHYb0M/RrVeGgUWjHzTwLxBkp0uvlAWki7H+znXt45FRbymXQZcKZt0FxfJ8lnxlM/uUHNtY+Z3BbIwYFvtVwHZEd3++Ij+Jg8/4NRQVZ5QuV9oWNqZUn7Mjg5EtaekyHHy/5JtAW6xOlr3s0Qr4jYhAZFlXDeWrrS7CFBI7isHdVTBPcHVlkD+aOGeefJBdoULppvqC/BKr2FKplgF5rqM0lp39NDok332QR9mPkeS0PSWTzoR/3reJjdySyRZ2gPISDj9I9+Gvchbj8ZU2h0YVhZtEzDsosCK8Z9r3WNSnzeVWZGlIJKi8YQ2FTYAlmuLMudn6cI2Qwixn/+32LkWUVZefxouy5eQV7oqhCd23FMuq3GRhWr+LASl4+5H9fO90beCPei90pnWqmNknLtGjlZece4QRcOcypgIV76PK84kJqziDgA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,37 +102,259 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 25, 2026 at 08:55:26AM +0100, Lorenzo Stoakes (ARM) wrote:
-> Uniquely an mremap() invocation using the MREMAP_DONTUNMAP flag can reset
-> a faulted VMA into an unfaulted one.
-> 
-> It does so after the page tables have been moved to the copied VMA with
-> MREMAP_DONTUNMAP leaving the old VMA in place which is naturally unfaulted
-> as the page tables it had are no longer present.
-> 
-> However, in doing so, it violates the invariant that the anonymous page
-> offset of an unfaulted VMA is vma->vm_start >> PAGE_SHIFT.
-> 
-> This is because a VMA may have been faulted in, mremap()'d (causing a delta
-> between its page offset and vma->vm_start >> PAGE_SHIFT), and then
-> mremap()'d again with MREMAP_DONTUNMAP resulting in the unfaulting.
-> 
-> This condition is a violation of a fundamental assumption in mm, but now
-> also triggers an assert in assert_sane_pgoff() which explicitly checks for
-> this condition.
-> 
-> Correct it by resetting the VMA's page offset at the point of completing
-> the MREMAP_DONTUNMAP operation.
-> 
-> Reported-by: syzbot+f12658786a4153df5113@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/all/6a87853b.ae6ddae5.3da009.0023.GAE@google.com/
-> Fixes: 1583aa278f5f ("mm: mremap: unlink anon_vmas when mremap with MREMAP_DONTUNMAP success")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+On Fri, Aug 28, 2026 at 09:11:34AM +0100, Yeoreum Yun wrote:
+> Since glibc commit 321e1fc73f (“malloc: Enable 2MB THP by default on AArch64”),
+> glibc may call madvise(MADV_HUGEPAGE) for sufficiently large allocations
+> made by memalign().
+>
+> The underlying VMA may start at a different address from the aligned
+> address returned by memalign(). Furthermore, a subsequent
+> madvise(MADV_HUGEPAGE) call does not split the VMA because the flag is
+> already set.
+>
+> This causes split_huge_page_test to fail because the check_huge_xxx()
+> helpers incorrectly require the address returned by memalign() to
+> match the VMA start address reported in /proc/self/smaps.
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Hmm, is the test correctly putting sentinels either side of the VMA? Any test
+that doesn't risks flaking due to unwanted VMA merges.
 
+>
+> Fix this by using /proc/self/pagemap and /proc/kpageflags instead of
+> /proc/self/smaps to detect huge pages.
 
--- 
-Pedro
+You should probably call out the fact you're doing some refactoring here
+also!
+
+>
+> Reported-by: David Hildenbrand (Arm) <david@kernel.org>
+
+Should always have a Closes: tag if Reported-by: ideally.
+
+> Suggested-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+
+Generally looks reasonable to me, some nits above and below though :)
+
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+> ---
+>  tools/testing/selftests/mm/vm_util.c | 145 ++++++++++++++++++++++-------------
+>  tools/testing/selftests/mm/vm_util.h |   1 +
+>  2 files changed, 92 insertions(+), 54 deletions(-)
+>
+> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
+> index 4821a3563036..083b72d92b14 100644
+> --- a/tools/testing/selftests/mm/vm_util.c
+> +++ b/tools/testing/selftests/mm/vm_util.c
+> @@ -351,31 +351,13 @@ char *__get_smap_entry(void *addr, const char *pattern, char *buf, size_t len)
+>  	return entry;
+>  }
+>
+> -static bool __check_pmd_huge(void *addr, char *pattern, int nr_hpages,
+> -		  uint64_t hpage_size)
+> -{
+> -	char buffer[MAX_LINE_LENGTH];
+> -	uint64_t thp = -1;
+> -	char *entry;
+> -
+> -	entry = __get_smap_entry(addr, pattern, buffer, sizeof(buffer));
+> -	if (!entry)
+> -		goto err_out;
+> -
+> -	if (sscanf(entry, "%9" SCNu64 " kB", &thp) != 1)
+> -		ksft_exit_fail_msg("Reading smap error\n");
+> -
+> -err_out:
+> -	return thp == (nr_hpages * (hpage_size >> 10));
+> -}
+> -
+> -static bool check_large_folios(void *addr, size_t len, int nr_hpages,
+> -		uint64_t hpage_size)
+> +static bool check_large_folios(int pagemap_fd, int kpageflags_fd,
+> +			       void *addr, size_t len, int nr_hpages,
+> +			       uint64_t hpage_size)
+>  {
+>  	int order = 0, pagesize = getpagesize();
+>  	unsigned int nr_pages = hpage_size / pagesize;
+>  	int orders[MAX_NR_ORDERS], status;
+> -	int pagemap_fd, kpageflags_fd;
+>  	bool ret = false;
+>
+>  	if (!nr_pages)
+> @@ -386,15 +368,6 @@ static bool check_large_folios(void *addr, size_t len, int nr_hpages,
+>  		ksft_exit_fail_msg("invalid order\n");
+>
+>  	memset(orders, 0, sizeof(int) * MAX_NR_ORDERS);
+> -	pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
+> -	if (pagemap_fd == -1)
+> -		ksft_exit_fail_msg("read pagemap fail\n");
+> -
+> -	kpageflags_fd = open(KPAGEFLAGS_PATH, O_RDONLY);
+> -	if (kpageflags_fd == -1) {
+> -		close(pagemap_fd);
+> -		ksft_exit_fail_msg("read kpageflags fail\n");
+> -	}
+>
+>  	status = gather_folio_orders(addr, len, pagemap_fd,
+>  			kpageflags_fd, orders, MAX_NR_ORDERS);
+> @@ -405,48 +378,112 @@ static bool check_large_folios(void *addr, size_t len, int nr_hpages,
+>  		ret = true;
+>
+>  out:
+> -	close(pagemap_fd);
+> -	close(kpageflags_fd);
+>  	return ret;
+>  }
+>
+> -bool check_huge_anon(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
+> -{
+> -	uint64_t pmd_pagesize = read_pmd_pagesize();
+> -
+> -	if (!pmd_pagesize)
+> -		ksft_exit_fail_msg("reading PMD pagesize failed\n");
+> +enum check_huge_type {
+> +	CHECK_HUGE_ANON,
+> +	CHECK_HUGE_FILE,
+> +	CHECK_HUGE_SHMEM,
+> +};
+>
+> -	if (hpage_size == pmd_pagesize)
+> -		return __check_pmd_huge(addr, "AnonHugePages: ", nr_hpages, hpage_size);
+> +static bool check_huge_type(uint64_t categories, uint64_t kpageflags,
+> +			    enum check_huge_type type)
+> +{
+> +	bool file = categories & PAGE_IS_FILE;
+> +	bool swapbacked = kpageflags & KPF_SWAPBACKED;
+
+NIT: nice to const these :)
+
+> +
+> +	switch (type) {
+> +	case CHECK_HUGE_ANON:
+> +		return !file;
+> +	case CHECK_HUGE_FILE:
+> +		return file && !swapbacked;
+> +	case CHECK_HUGE_SHMEM:
+> +		return file & swapbacked;
+> +	}
+>
+> -	return check_large_folios(addr, len, nr_hpages, hpage_size);
+> +	return false;
+>  }
+>
+> -bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
+> +static bool __check_huge(void *addr, size_t len, int nr_hpages,
+> +			 uint64_t hpage_size, enum check_huge_type type)
+>  {
+> -	uint64_t pmd_pagesize = read_pmd_pagesize();
+> +	bool ret = false;
+> +	int pagemap_fd, kpageflags_fd;
+> +	int nr_pmd_mappings = 0;
+> +	uint64_t pmd_pagesize, scan_mapping_size;
+> +	uint64_t categories, kpf;
+> +	unsigned long pfn;
+> +	bool check_pmd_mapping, allow_nonpresent;
+> +	char *start = addr;
+> +	char *end = start + len;
+>
+> +	pmd_pagesize = read_pmd_pagesize();
+>  	if (!pmd_pagesize)
+>  		ksft_exit_fail_msg("reading PMD pagesize failed\n");
+>
+> -	if (hpage_size == pmd_pagesize)
+> -		return __check_pmd_huge(addr, "FilePmdMapped:", nr_hpages, hpage_size);
+> +	check_pmd_mapping = (hpage_size == pmd_pagesize);
+> +	scan_mapping_size = (nr_hpages > 0) ? hpage_size : psize();
+> +	/* Some mTHP tests check a partially populated PMD-sized range. */
+> +	allow_nonpresent = (uint64_t)nr_hpages * hpage_size < len;
+>
+> -	return check_large_folios(addr, len, nr_hpages, hpage_size);
+> +	pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
+> +	if (pagemap_fd < 0)
+> +		ksft_exit_fail_msg("open pagemap fail\n");
+> +
+> +	kpageflags_fd = open(KPAGEFLAGS_PATH, O_RDONLY);
+> +	if (kpageflags_fd < 0) {
+> +		close(pagemap_fd);
+> +		ksft_exit_fail_msg("open kpageflags fail\n");
+> +	}
+> +
+> +	if (!check_pmd_mapping &&
+> +	    !check_large_folios(pagemap_fd, kpageflags_fd,
+> +				addr, len, nr_hpages, hpage_size))
+> +		goto out;
+> +
+> +	for (; start < end; start += scan_mapping_size) {
+> +		categories = pagemap_scan_get_categories(pagemap_fd, start);
+> +		pfn = pagemap_get_pfn(pagemap_fd, start);
+> +		if (pfn == -1UL) {
+> +			if (!allow_nonpresent)
+> +				goto out;
+> +			else
+> +				continue;
+> +		}
+> +		if (pageflags_get(pfn, kpageflags_fd, &kpf))
+> +			ksft_exit_fail_msg("read kpageflags: %s\n", strerror(errno));
+> +		if (check_pmd_mapping && (categories & PAGE_IS_HUGE))
+> +			nr_pmd_mappings++;
+> +		if (kpf & KPF_COMPOUND_TAIL)
+> +			continue;
+> +		if (!check_huge_type(categories, kpf, type))
+> +			goto out;
+> +	}
+> +
+> +	if (check_pmd_mapping && (nr_pmd_mappings != nr_hpages))
+> +		goto out;
+> +	ret = true;
+> +
+> +out:
+> +	close(pagemap_fd);
+> +	close(kpageflags_fd);
+> +	return ret;
+>  }
+>
+> -bool check_huge_shmem(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
+> +bool check_huge_anon(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
+>  {
+> -	uint64_t pmd_pagesize = read_pmd_pagesize();
+> -
+> -	if (!pmd_pagesize)
+> -		ksft_exit_fail_msg("reading PMD pagesize failed\n");
+> +	return __check_huge(addr, len, nr_hpages, hpage_size, CHECK_HUGE_ANON);
+> +}
+>
+> -	if (hpage_size == pmd_pagesize)
+> -		return __check_pmd_huge(addr, "ShmemPmdMapped:", nr_hpages, hpage_size);
+> +bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
+> +{
+> +	return __check_huge(addr, len, nr_hpages, hpage_size, CHECK_HUGE_FILE);
+> +}
+>
+> -	return check_large_folios(addr, len, nr_hpages, hpage_size);
+> +bool check_huge_shmem(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
+> +{
+> +	return __check_huge(addr, len, nr_hpages, hpage_size, CHECK_HUGE_SHMEM);
+>  }
+>
+>  int64_t allocate_transhuge(void *ptr, int pagemap_fd)
+> diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
+> index 9a49af88702e..f19bd17817e5 100644
+> --- a/tools/testing/selftests/mm/vm_util.h
+> +++ b/tools/testing/selftests/mm/vm_util.h
+> @@ -18,6 +18,7 @@
+>  #define PM_SWAP                       BIT_ULL(62)
+>  #define PM_PRESENT                    BIT_ULL(63)
+>
+> +#define KPF_SWAPBACKED                BIT_ULL(14)
+>  #define KPF_COMPOUND_HEAD             BIT_ULL(15)
+>  #define KPF_COMPOUND_TAIL             BIT_ULL(16)
+>  #define KPF_HWPOISON                  BIT_ULL(19)
+>
+> --
+> 2.43.0
+>
+
+--
+Cheers, Lorenzo
 
