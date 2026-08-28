@@ -4,80 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAF10C61DCB
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 16:51:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F220C61DD6
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 16:54:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 024C56B008A; Fri, 28 Aug 2026 12:51:20 -0400 (EDT)
+	id 5367C6B0088; Fri, 28 Aug 2026 12:54:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F17D26B008C; Fri, 28 Aug 2026 12:51:19 -0400 (EDT)
+	id 4BDD66B008C; Fri, 28 Aug 2026 12:54:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2E1D6B0092; Fri, 28 Aug 2026 12:51:19 -0400 (EDT)
+	id 3AD216B0092; Fri, 28 Aug 2026 12:54:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B76ED6B008A
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 12:51:19 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 34DADC047E
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 16:51:19 +0000 (UTC)
-X-FDA: 85151268678.05.64B6219
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1688080003
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 16:51:16 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="d/1vtvYC";
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf02.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 16BB66B0088
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 12:54:16 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2C2D1A3F02
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 16:54:14 +0000 (UTC)
+X-FDA: 85151276028.07.9134141
+Received: from mta0.migadu.com (out-221.mta0.migadu.com [91.218.175.221])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A2A3210000C
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 16:54:10 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KMWLw46O;
+	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.221 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787936051;
+	b=5Oux5jZ4iZSl6m84p1RXgtIp8mt20LC1rSmZ2WgQkR8FCERuoC9m8+d0pOUpFMIF7N25y7
+	JbfN/g0aZQpUzWUsNJ0GZhTZphhzpnRZ4fJ3G5YehGhd8pj0R4DgqqgI9Ia80EMNFPIBW6
+	F59v6hXobsFM7Q6A8G9eAJvnonmVJMs=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KMWLw46O;
+	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.221 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787935877;
+	s=arc-20220608; t=1787936051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=xPKA4dqMFkjx4RSuFvBFENsWoT8+rV2iEBjMHZL6H5Y=;
-	b=UCmQfS4GCRYIaq6HERXCUtbHlgQG0JKV09xAIsSc8AKXgwL8BXjFWc8ZCRP7OhMAe47fVU
-	Y20HaQu+P8GaT2Hp+maWs35jiLy4NtmkCGgBviS2foUQ6Y8VQiLaMAo3w8NMtzkAviNIhu
-	SiC906o6JDq8//IFxBiutLlPr1wPPb0=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="d/1vtvYC";
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf02.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787935877;
-	b=3/8+Ik16cavTHh1FoNrU4aqHaBXupMRqi2Q1iXY0CQ2aSXFa+c67AOlhiICSg/8iol+1iO
-	cNKIkOzMuy0cZB8UhjSwV+hEb2EpQDxfDu/STfP99lSUDxpeiGnF5YJDtxxjL9SPLtIXvu
-	rjmPe8tbuhun684UDM0egn8qjzigt7I=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=xPKA4dqMFkjx4RSuFvBFENsWoT8+rV2iEBjMHZL6H5Y=; b=d/1vtvYCyw2ZRdg3dvLwcagxFd
-	8dxh+CV4TIZTC2NLYU2cNkV2DJ6/6HaA9CKjFeu5Rl00igONQvT0ID4r4scRd5Cn8Y+rKF6tePtkx
-	PpBujuzC2V2rjTVKBS3RYF7lDZnwF89heFzZjjLB+0FfzLDeLH3nWsAbUFKtZNBAGmf1mY7GI3uME
-	lPQE85hv0dsonNETIMEoZ4Jba+ZAh/Ehx6/Os/hG6vcaPW5ivLUjuEVnnybi4IkAjUvBedjzL/+5d
-	m5wX0yEfWN2A9ON1vUIklnnzAcAdzgBZRgDB5q7Pm/DXi4lp92+Bi8+Vwt/qLm2EabXsYEBgmtIm6
-	sFOgFJWQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzznP-0000000F8I0-2KJ6;
-	Fri, 28 Aug 2026 16:51:15 +0000
-Date: Fri, 28 Aug 2026 17:51:15 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [GIT PULL] Remove dependencies on pagemap.h
-Message-ID: <apG8g-5krNRUFUuD@casper.infradead.org>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8VuU959mLcIyuyMNgmVKSLaRTObzAJRt0JWSsrWb4lc=;
+	b=ivSvUy81RPsv1OR/pUEs8cr+1pOp54yG4x4BW5uVSy3Xq8+en5aBUQmaeocaeXo+G1tKhr
+	8Hzge2GaY2w4vA2zZJBmOB75NHPNi63lNiQGpWOm6kY8loH1r4/x3ahAC+aMIteBPzXipD
+	idbiQp/6c3Sb1qjADW/auEc6xK9Oqhk=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=psJGwL1+j+jKt7s0yptB6/W3PUUi95PtS5n+HITAWyc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787936041; v=1; x=1788540841;
+ b=KMWLw46OnClM4RT7i00HJSzN7lZFpKGoDxoP9mv7bV9IjQJrEBa+KRhkvUfg/PuVFI/A9M3Y
+ 2jxgN9LOTBrlm1buMQwNnwQBDC4s5i5FCLuEn5sjIpL0+C8mC06z+0dJ169vZhVwY7Wz2IQS01I
+ BLV1xK7o9NKK2RKgJRs2TPmQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 4322b439f1cc1ba4;
+	Fri, 28 Aug 2026 16:53:51 +0000
+X-Mizu-Trace-ID: 4322b439f1cc1ba4
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 28 Aug 2026 09:53:50 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Farhad Alemi <farhad.alemi@berkeley.edu>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, falemi@asu.edu, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [BUG] refill_stock -- VM_WARN_ON_ONCE(mem_cgroup_is_root()) from
+ a write to the cgroup-v2 root's memory.reclaim
+Message-ID: <apG8lKU0xDitsvV7@linux.dev>
+References: <CA+0ovCgWzUMK+nNbbtH7eV65Ca=fDN4Ozu7iASgryjvv8Tk8zQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Stat-Signature: a3zem1fpjhf18xqnjhk9tu9ajsrakd6i
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1688080003
+In-Reply-To: <CA+0ovCgWzUMK+nNbbtH7eV65Ca=fDN4Ozu7iASgryjvv8Tk8zQ@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1787935876-562296
-X-HE-Meta: U2FsdGVkX1+/Jx0NnCwl9DjumQ5aiOH5LF52VsjiRbBSRqNgHgDkmXEl8LjFqYFSevhkUzDwuOuuoGCTkJN1IHggLutdrhRVRGwMHIQVJB4N4jGWWzNfhQmES1gGaP4izurt7P9pVhEf+j3wMMNh/LNBwEy7kP3PT0o4J8A+OvaNBgNHdL2U/2QCBLCWnz1WEoEAgEyzJPIJYSVLuUW87t5eMFcqxM3iZlh0hkpxOwJab2u3VaCe0pSuWay3sqwSGoOI60NzDqUMg1fHo5vE9AZCqetSzxGzk3NF3T01G/L8QNlHS7IofBL7VEr9wjUafuD0v7XCRSJN9JUIYoFbpEGnxI1tiqeRhDtOTyFMk6PnIvkOSQInC7EQxZDLI681d1TODLKo5ICByAgq7yxFMlpXmaNxIUTeipKwu3w/vKjR1LsCb9c5NWauX0J2+BwPe4zQgBTvRnlgeBj+MXyGKMSo0TNdh8IbJKH7VW/il6UFDYA7ULksi02bus09BOjRXmXBy/C/IkKG/K1cTDhdlQrwNl9apgtR1l4vxhbh3ql3tB/f+JzqWjPnHD8b/jpaz5oWp+DjAtSY9lA5vEOg1joJWIM9U/KM4g2AFA+Bm8W6NofWMNkcg1x3LdeMTlTJiheWy4h2uWtGx9giawneFXJ92mjVQmnFnqM/x3P/AstKcnosOiCYcwcNgcdJxgSAr/dACqDd541LXgBoKzxDy4ZVThwVEY6Nt3MEIB/nn2oMThEFAl8KEtOM4wU0VOWZqaVQoAExcRl/2U66TJ8C+ykhWTSGIehvUPPYLIcbbjWu+fUL5oNCxmnicf6eq7JW8YGrgr3T97xg0z2fuGJpNkLjIGmYCEBwJOi0n8PI78v0zQ7pQuJSMMgBsz53ioZaduNN4R7+ckzjz0K4v2zj3loNi++kEB0B9j0kBsuMj/etOOMS4b2GQctCnYjp1slsJ3GnkVhFVahlWJqGETM
- Fi287b0b
- Kb5sgCDAlxBj/lt057SMC5LaK9Gk3r0/Mxl+Ettv0bc4EgBiRg3w7bHaMfN2l/qKXWte8rbsKSKivBXFoD1qhiMKmbOAA5EGEB5Czypq0Vo88aCp/nhcKUPjooWOkdjpYfW6qkjjxANhlFoCyYDNSZTSAn53y0eojIWe6S7IMDIed300n88iaLxAJVGkm7r4RnoUpQg9+46DoKnE7KqqMOTXHGB1gHl2O4uiSWapWMKlDpZAEjvgZp9GJa1miQe5laplDbkqQuTMOFjiw96XS4oKdCwFPysogg8rbFxUBKVYEQ8acaeInzAX97lnMdcSAf+V44PoGXUYIV04=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A2A3210000C
+X-Stat-Signature: c18ht5yfoujqxcuu6u7eg1rnbdjz61hn
+X-HE-Tag: 1787936050-912153
+X-HE-Meta: U2FsdGVkX19ZAyUMWm0bTGEsR1ySu9V4wz54S6nC78yTdOlu1hwW+FZzxqf1xc5IMyb6MmSVOKlaJNxhesHvVQx/NHElEaDD7qXsteJfpOA+MVPSJ3EMAEQWbeooU+uZixa9pF45Yru4827S45S8qyKV5VJ9bUziF4vX3ig8fpTnKLjgoKL53VjfsK1hRRFMeSieUxlxtwHfnc7HCC6Hq51gzXQGayMAWZ+/axve/gZrH/Mm1GFftTXMmMIbzk2RFC4Db5ndLFx88Pm8f5fWFh5gppPx1VK60n4+AK0j1x2ZEXQpTukilbT1zYC3Q/CJl+XEuT3Qs22IPuo6FCnLyhpySBokyqgIKqSP4cNPOMDlmbyGw6EcUCR8cCk8Ey7YWFtMTPqWwWV6CGhwfypJZo+oVScibi/6Stm6UNwSN9EOtzko5cgrf+wvHYVw0d+3cOFCHpELqYAqv9t/Fpla6BKjjoUa3M9HZJhSuthr8PBjkRzBzOBkWwoHVX4g9DuYSMmN7hzFiaK0FnuOF4OilHTCz4/+VvhFUP+WPOiIoIdfehJ09Yq9Wf0kfqag0lLKKgmevLgXNQy+jKs1K4d9f7kb8hNumkToWu0WwpHxjwieu7RS9v1hLd62lyrsxBW/fX1ykzs9zuMhXiSi/b3yxuu8QXfxaOCKHcX++JjNsWke9rSZAjfBs9apHpnxDbyFNl81Oyq0WqDAE853hQI4/O35lSK0OQK5B3/QxE9XDnEJYqH+9keykRs3U312s0scpfVk8+q2paq6IAxhCD7YzWZCPwiK8fslN/sIopfkHLEvN38Xrmpg/sRnCCHaB5I2PUWlUrlyuIqS8DP8CFYB3ILYYavg/Dyvtm8dgLgPZaTOgIoXdnbPbN6YmFtGrfnPnr5/CetHOxC0lz+D/aULaNAX/kcHk6mFMeNrrdXVbvZ04SFTq+qPxRMUtYc3ZREIsiLYXT9MtX4XMlhmwGc
+ 7fnotkAw
+ zG37Rny8R4JTWt8jci3DUrFR9/ctJ/i161HW6tD09o7jlBBlccpkEjrbEoUGwH5KX2SVXm4lWWt+37x0Skuq+N6bngdG7m4RxD5H4/BxOH66NKfH3QtGKyKo6RGpWHuVQ/vX6kNyjQ2PLJnugup9Mce0+/ojQkBE64+lSUvXUlA0YKySXttfg4M44FM1xq6jZfTHhKeQMMnVMk+SX1AcTum4gujzo9Zm8eSnz7PMrHUNIWDR9kWNSKMgi7wUVGBwDHk4jLUPkHQSPoJxXID6S/u2LAIog9h7e5+or1i4sqhaqvl41GyIh+woj/mK3NzdXqQgYBBx+0SXPyyj3rcwfGhYdiFGIts/084twmeRhXFGrNIlAzdCeoVv8xw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -85,210 +90,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-My apologies for not sending you a signed tag.  I haven't used it in so
-long that I've forgotten my passphrase on that key.  Here's what would
-have been in the commit tag message:
+On Thu, Aug 27, 2026 at 10:28:57PM -0700, Farhad Alemi wrote:
+> Hello,
+> 
+> As part of the kernel research at ASU's SEFCOM
+> lab, we hit the crash below. Crash reports can be found here:
+> 
+>   https://github.com/farhad-alemi/public_bug_reports/tree/main/145-memcg-vm_warn-refill_stock-root-cgroup/
+> 
+>   mem_cgroup_is_root(memcg)
+>   WARNING: mm/memcontrol.c:2198 at refill_stock+0x644/0x940, CPU#1: repro/9490
+>   Call Trace:
+>    refill_stock+0x644/0x940
+>    try_charge_memcg+0x12d6/0x1570
+>    __obj_cgroup_charge+0x35/0xf0
+>    obj_cgroup_charge+0x1de/0x210
+>    obj_cgroup_charge_zswap+0x83/0x270
+>    zswap_store+0x1620/0x2000
+>    swap_writeout+0x94c/0x14c0
+>    shrink_folio_list+0x3388/0x52b0
+>    evict_folios+0x374d/0x48c0
+>    try_to_shrink_lruvec+0xe72/0x1350
+>    shrink_node+0x3320/0x3b90
+>    do_try_to_free_pages+0x6a2/0x1990
+>    try_to_free_mem_cgroup_pages+0x30d/0x830
+>    user_proactive_reclaim+0x504/0x840
+>    memory_reclaim+0x1f/0x30
+>    cgroup_file_write+0x331/0x8f0
+>    kernfs_fop_write_iter+0x3af/0x540
+> 
+> Our reproducer.c is available upon request.
+> 
+> Happy to test a patch if that would help.
 
-Remove unnecessary dependencies on pagemap.h
+Thanks for the report. Please test the following patch. I will send formal patch
+after your testing.
 
-pagemap.h contains primarily page cache functions.  Currently around
-9100 files (x86 allmodconfig) depend on it, mostly unnecessarily.
-This series reduces that to around 1400 and unsnarls a few other headers
-a little.
 
-The following changes since commit b6b019a1d9b90ac51174f0ca15b1338b61506bf9:
-
-  Merge tag 'parisc-for-7.3-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux (2026-08-23 10:30:02 -0700)
-
-are available in the Git repository at:
-
-  git://git.infradead.org/users/willy/pagecache.git tags/headers-7.2
-
-for you to fetch changes up to e02cb91d4644dfff593146f89e70d2008cc6ac16:
-
-  ksm: Remove pagemap.h include (2026-08-25 15:12:27 -0400)
-
-----------------------------------------------------------------
-Matthew Wilcox (Oracle) (21):
-      alpha: Fix pgd_t dependency
-      arc: Fix pgd_t dependency
-      microblaze: Fix pgd_t dependency
-      sh: Fix pgd_t dependency
-      sparc: Fix pgd_t dependency
-      headers: Remove swap.h from suspend.h
-      agp: Remove pagemap includes
-      arch: Remove pagemap.h from arch includes
-      security: Remove pagemap.h includes
-      mm: Remove pagemap.h from mempolicy.h
-      balloon: Remove pagmap.h include
-      drivers/net: Remove includes of pagemap.h
-      drivers/media: Remove pagemap.h includes
-      drivers/mmc: Remove pagemap.h includes
-      drm: Remove pagemap from ttm_tt.h header
-      drm/amd: Remove pagemap.h includes
-      headers: Remove pagemap.h from swap.h
-      sunrpc: Remove pagemap.h
-      net: Remove includes of pagemap.h
-      nfs: Remove pagemap.h from includes
-      ksm: Remove pagemap.h include
-
- arch/alpha/include/asm/pgtable.h                   |  2 +-
- arch/arc/include/asm/Kbuild                        |  1 +
- arch/arc/include/asm/pgtable-levels.h              |  2 ++
- arch/arc/include/asm/tlb.h                         | 12 ----------
- arch/arm/include/asm/pgalloc.h                     |  2 --
- arch/arm/include/asm/tlb.h                         |  2 --
- arch/arm/mach-pxa/pxa3xx.c                         |  1 +
- arch/arm64/include/asm/tlb.h                       |  3 ---
- arch/hexagon/include/asm/tlb.h                     |  1 -
- arch/microblaze/include/asm/pgtable.h              |  2 +-
- arch/nios2/include/asm/tlb.h                       |  1 -
- arch/openrisc/include/asm/Kbuild                   |  1 +
- arch/openrisc/include/asm/tlb.h                    | 26 ----------------------
- arch/powerpc/include/asm/tlb.h                     |  2 --
- arch/sh/include/asm/pgtable.h                      |  2 +-
- arch/sh/include/asm/tlb.h                          |  1 -
- arch/sparc/include/asm/pgtable_64.h                |  2 +-
- arch/sparc/include/asm/tlb_64.h                    |  1 -
- arch/x86/include/asm/pgalloc.h                     |  1 -
- arch/x86/virt/vmx/tdx/tdx.c                        |  1 +
- arch/xtensa/kernel/hibernate.c                     |  1 +
- block/fops.c                                       |  1 +
- drivers/char/agp/backend.c                         |  1 -
- drivers/char/agp/generic.c                         |  1 -
- drivers/char/agp/intel-agp.c                       |  1 -
- drivers/char/agp/intel-gtt.c                       |  1 -
- drivers/char/agp/uninorth-agp.c                    |  3 ++-
- drivers/dma/ste_dma40.c                            |  1 +
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c   |  1 -
- drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c             |  1 -
- drivers/gpu/drm/amd/amdgpu/amdgpu_gem.c            |  1 -
- drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c            |  3 +--
- drivers/gpu/drm/amd/amdkfd/kfd_migrate.c           |  1 +
- drivers/gpu/drm/amd/amdkfd/kfd_priv.h              |  1 -
- drivers/gpu/drm/display/drm_dp_cec.c               |  1 +
- drivers/gpu/drm/etnaviv/etnaviv_gpu.c              |  1 +
- drivers/gpu/drm/i915/display/intel_display_power.c |  1 +
- drivers/gpu/drm/i915/gem/i915_gem_userptr.c        |  1 +
- drivers/gpu/drm/msm/msm_fb.c                       |  2 ++
- drivers/gpu/drm/msm/msm_gem_shrinker.c             |  2 ++
- drivers/gpu/drm/nouveau/nouveau_dmem.c             |  1 +
- drivers/gpu/drm/omapdrm/dss/hdmi4.c                |  1 +
- drivers/gpu/drm/omapdrm/dss/hdmi5.c                |  1 +
- drivers/gpu/drm/panel/panel-ilitek-ili9806e-core.c |  1 +
- drivers/gpu/drm/panfrost/panfrost_gem.c            |  2 ++
- drivers/gpu/drm/panthor/panthor_gem.c              |  3 +++
- drivers/hwmon/pmbus/pmbus_core.c                   |  1 +
- drivers/i2c/busses/i2c-amd-asf-plat.c              |  1 +
- drivers/i2c/busses/i2c-gxp.c                       |  1 +
- drivers/i2c/busses/i2c-k1.c                        |  1 +
- drivers/i2c/busses/i2c-pasemi-platform.c           |  1 +
- drivers/iio/accel/fxls8962af-core.c                |  1 +
- drivers/iio/adc/nct7201.c                          |  1 +
- drivers/iio/adc/ti-ads1298.c                       |  1 +
- drivers/iio/light/rohm-bu27034.c                   |  1 +
- drivers/iio/pressure/bmp280-core.c                 |  1 +
- drivers/iio/pressure/bmp280.h                      |  1 +
- drivers/input/misc/aw86927.c                       |  1 +
- drivers/input/touchscreen/goodix_berlin_core.c     |  1 +
- drivers/input/touchscreen/hynitron_cstxxx.c        |  1 +
- drivers/input/touchscreen/imagis.c                 |  1 +
- drivers/leds/leds-turris-omnia.c                   |  1 +
- drivers/media/common/videobuf2/frame_vector.c      |  1 -
- drivers/media/pci/cx18/cx18-driver.h               |  1 -
- drivers/media/pci/ivtv/ivtv-driver.h               |  2 +-
- drivers/media/platform/st/stm32/stm32-csi.c        |  1 +
- drivers/media/platform/ti/omap3isp/ispvideo.c      |  1 -
- drivers/media/usb/go7007/go7007-v4l2.c             |  1 -
- drivers/media/usb/gspca/gspca.c                    |  1 -
- drivers/mfd/88pm886.c                              |  1 +
- drivers/mfd/abx500-core.c                          |  1 +
- drivers/mfd/adp5585.c                              |  1 +
- drivers/mfd/cs40l50-core.c                         |  1 +
- drivers/mfd/cs42l43.c                              |  1 +
- drivers/mfd/rt5120.c                               |  1 +
- drivers/mfd/tps65219.c                             |  1 +
- drivers/mfd/twl-core.c                             |  2 +-
- drivers/mmc/core/core.c                            |  1 -
- drivers/mmc/core/host.c                            |  1 -
- drivers/mmc/host/renesas_sdhi_internal_dmac.c      |  1 -
- drivers/mmc/host/renesas_sdhi_sys_dmac.c           |  1 -
- drivers/mmc/host/sh_mmcif.c                        |  1 -
- drivers/mmc/host/tmio_mmc.h                        |  1 -
- drivers/mmc/host/tmio_mmc_core.c                   |  1 -
- drivers/mmc/host/usdhi6rol0.c                      |  1 -
- drivers/net/ethernet/atheros/atl1c/atl1c.h         |  1 -
- drivers/net/ethernet/atheros/atl1e/atl1e.h         |  1 -
- drivers/net/ethernet/intel/e1000/e1000.h           |  1 -
- drivers/net/ethernet/intel/e1000e/netdev.c         |  1 -
- drivers/net/ethernet/intel/igb/igb_main.c          |  1 -
- drivers/net/ethernet/intel/igbvf/netdev.c          |  1 -
- drivers/phy/st/phy-stm32-combophy.c                |  1 +
- drivers/pinctrl/pinctrl-sx150x.c                   |  1 +
- drivers/platform/arm64/huawei-gaokun-ec.c          |  1 +
- drivers/platform/arm64/lenovo-yoga-c630.c          |  2 +-
- .../platform/x86/intel/int3472/clk_and_regulator.c |  1 +
- drivers/power/supply/bq25630_charger.c             |  1 +
- drivers/power/supply/rk817_charger.c               |  2 +-
- drivers/regulator/fixed.c                          |  1 +
- drivers/regulator/fp9931.c                         |  1 +
- drivers/regulator/mt6360-regulator.c               |  1 +
- drivers/regulator/qcom-labibb-regulator.c          |  1 +
- drivers/regulator/rtq2208-regulator.c              |  1 +
- drivers/regulator/tps65185.c                       |  1 +
- drivers/regulator/tps65219-regulator.c             |  1 +
- drivers/regulator/tps6594-regulator.c              |  1 +
- drivers/soc/xilinx/zynqmp_power.c                  |  1 +
- drivers/ufs/host/ufs-mediatek.c                    |  1 +
- drivers/ufs/host/ufs-qcom.c                        |  1 +
- drivers/usb/core/hcd.c                             |  1 +
- drivers/usb/typec/mux/it5205.c                     |  1 +
- drivers/usb/typec/wusb3801.c                       |  1 +
- drivers/video/fbdev/core/fb_procfs.c               |  1 +
- drivers/xen/balloon.c                              |  1 +
- fs/aio.c                                           |  1 +
- fs/buffer.c                                        |  1 +
- fs/file_table.c                                    |  1 +
- fs/inode.c                                         |  1 +
- fs/nfs/blocklayout/blocklayout.c                   |  1 +
- fs/nfs/nfs42proc.c                                 |  1 +
- fs/nfs/nfstrace.h                                  |  1 +
- fs/nfs/pnfs.c                                      |  1 +
- fs/nfsd/nfs4proc.c                                 |  1 +
- include/drm/drm_print.h                            |  1 +
- include/drm/ttm/ttm_tt.h                           |  1 -
- include/linux/balloon.h                            |  1 -
- include/linux/ceph/libceph.h                       |  1 -
- include/linux/i3c/master.h                         |  1 +
- include/linux/ksm.h                                |  1 -
- include/linux/mempolicy.h                          |  1 -
- include/linux/nfs_fs.h                             |  1 -
- include/linux/nfs_page.h                           |  1 -
- include/linux/suspend.h                            |  1 -
- include/linux/swap.h                               |  1 -
- include/sound/cs35l41.h                            |  1 +
- kernel/power/snapshot.c                            |  1 +
- net/ceph/osd_client.c                              |  1 -
- net/ceph/pagevec.c                                 |  1 +
- net/core/datagram.c                                |  1 -
- net/rds/rdma.c                                     |  1 -
- net/sunrpc/auth_gss/auth_gss.c                     |  1 -
- net/sunrpc/auth_gss/gss_krb5_crypto.c              |  1 -
- net/sunrpc/auth_gss/gss_krb5_wrap.c                |  1 -
- net/sunrpc/auth_gss/svcauth_gss.c                  |  1 -
- net/sunrpc/cache.c                                 |  1 -
- net/sunrpc/rpc_pipe.c                              |  1 -
- net/sunrpc/socklib.c                               |  1 -
- net/sunrpc/xdr.c                                   |  1 -
- net/sunrpc/xprtsock.c                              |  1 -
- security/commoncap.c                               |  3 ---
- security/inode.c                                   |  1 -
- security/selinux/hooks.c                           |  1 -
- security/selinux/selinuxfs.c                       |  1 -
- security/smack/smack_lsm.c                         |  1 -
- sound/soc/codecs/cs35l41-lib.c                     |  1 +
- 155 files changed, 98 insertions(+), 118 deletions(-)
- delete mode 100644 arch/arc/include/asm/tlb.h
- delete mode 100644 arch/openrisc/include/asm/tlb.h
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 4a18ee4509ab..1709ac96bbde 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -3157,7 +3157,7 @@ static int obj_cgroup_charge_pages(struct obj_cgroup *objcg, gfp_t gfp,
+ 
+ 	memcg = get_mem_cgroup_from_objcg(objcg);
+ 
+-	ret = try_charge_memcg(memcg, gfp, nr_pages);
++	ret = try_charge(memcg, gfp, nr_pages);
+ 	if (ret)
+ 		goto out;
+ 
 
 
