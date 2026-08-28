@@ -4,97 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 123C9C61DCB
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 14:32:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4011C61DBD
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 14:35:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11F846B0096; Fri, 28 Aug 2026 10:32:54 -0400 (EDT)
+	id BD2996B008C; Fri, 28 Aug 2026 10:35:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D0016B0098; Fri, 28 Aug 2026 10:32:54 -0400 (EDT)
+	id B82896B0092; Fri, 28 Aug 2026 10:35:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F273D6B0099; Fri, 28 Aug 2026 10:32:53 -0400 (EDT)
+	id A99B86B0098; Fri, 28 Aug 2026 10:35:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CE7106B0096
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 10:32:53 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5ED051403D0
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 14:32:53 +0000 (UTC)
-X-FDA: 85150919826.11.7BA5480
-Received: from relay.hostedemail.com (unirelay03 [10.200.18.66])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 7B759140017
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 14:32:51 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 888516B008C
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 10:35:13 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 00ACD1203DB
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 14:35:12 +0000 (UTC)
+X-FDA: 85150925664.30.6273D29
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 032E71C0006
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 14:35:10 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ttw3JWgq;
+	spf=pass (imf20.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787927711;
+	b=2DVG1pGmWSbmlJmfsgHn3vhilEFMdvFI4de3XR4D7Ie37AJL9CTkzTPG6jcnLMdcS+uCfx
+	WKmhiq4S4och67jG5tht6gsL87hBb6cZ8DmAQ2+jIwO5NxczTnvEA7se75yj0nwMTbkA3A
+	U+uKahEofpVBt6muAHYVya9SuWRmWfk=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ttw3JWgq;
+	spf=pass (imf20.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787927571;
+	s=arc-20220608; t=1787927711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=txgaP3eXPwGHZiNk+kzD9nMiqpi6Z8kpuswwMKDKk10=;
-	b=V8pYFXdVTGSqDhXW/UnjNmlJDtenTC925VCyrK06mKuwqzzNLFr6q26u9zTfIE15vz0eag
-	dDxsbY7guD5bjazBuTN//6IbxmMUFEzEglv2f9c4puKZOP79E3x+Ba8MHClzAqh3GVBBKq
-	SXK8hA9ERI/m5nye735QYYm4/0UufwY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787927571;
-	b=boZCOvwDTDToQnw9+xjWW70z+kNpLWstdOdcKfE5Cdz+v3+0PUDSkiQOGNiDq9cY+2Xilc
-	wAzqQWMtoooriS01fWKkRWgMyd9Hy2EiY+ZlkF7PnsxP2pl45n0vrydZ0vr63DmDx6OD8V
-	IlcTuhSi19ehA+764xEOaAIFSg+X52w=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	none
-Received: from omf08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 56281A03CB;
-	Fri, 28 Aug 2026 14:32:47 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf08.hostedemail.com (Postfix) with ESMTPA id 68DD520027;
-	Fri, 28 Aug 2026 14:32:38 +0000 (UTC)
-Date: Fri, 28 Aug 2026 10:33:28 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: David Stevens <stevensd@google.com>, Catalin Marinas
- <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Thomas Gleixner
- <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
- <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H . Peter Anvin" <hpa@zytor.com>, Andrew Morton
- <akpm@linux-foundation.org>, Dave Chinner <david@fromorbit.com>, Qi Zheng
- <qi.zheng@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>, Muchun
- Song <muchun.song@linux.dev>, Juri Lelli <juri.lelli@redhat.com>, Vincent
- Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann
- <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, Mel Gorman
- <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, K Prateek
- Nayak <kprateek.nayak@amd.com>, Uladzislau Rezki <urezki@gmail.com>, David
- Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R .
- Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike
- Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
- Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, Sebastian Andrzej
- Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>,
- suleiman@google.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
- linux-rt-devel@lists.linux.dev, jstultz@google.com
-Subject: Re: [RFC 00/10] Reclaimable kernel stacks
-Message-ID: <20260828103328.633bbfbc@gandalf.local.home>
-In-Reply-To: <20260828124758.GP687043@noisy.programming.kicks-ass.net>
-References: <20260827232948.2520558-1-stevensd@google.com>
-	<20260828124758.GP687043@noisy.programming.kicks-ass.net>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	bh=X98NIGQPKg+8BL1yOqDNFmiYvUCnib2Cgl3Keq8DNq8=;
+	b=VdWqxxUu4/2bOAOJ87h46/mvIbPhb6Cssecqli4xD7SBjlLjAOrxcsLDGnJdod0dtfafON
+	4PqqlAUNYdINRj03thyaxzZ/tOovFdlsej+mmbOa31HTQ6dgQDhepUuJZBC0BFB55udqut
+	3O3mGXQCS02UBr5Zw0TgQ16uQW0gZ+8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2AB8F431CA;
+	Fri, 28 Aug 2026 14:35:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D50901F00A3A;
+	Fri, 28 Aug 2026 14:35:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787927710;
+	bh=X98NIGQPKg+8BL1yOqDNFmiYvUCnib2Cgl3Keq8DNq8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Ttw3JWgqNYV5trlA+T4J+dIMw+PPccTmFDjHPtV5ldhV352Ou+iRwpxOzR/YnVN2n
+	 PZrQkRwOzfU8qQcXj/0pJkyLp09ydZFYrDCgaPhl+W7Twuz4qVnBqnmIFVEfb11ghg
+	 UcIOreweXmta4MnUHvisAL6p3gRuw3M8yAHK+qWsCwNkZaPmcDVtZvyJvFTPwPWjmS
+	 umL7X2ZOXGi8oZsKB4keyN+jztq0Qy6/FKsy6xUyyf4z5e6qP7N+Nwtq3ZBQS8Zj91
+	 SNCZo1oft6Ret6h/p7cdcV5Apubb1yBX8gbIxOxL0cAIPQH2N4CXEN1s1+tJVcfXa3
+	 oEMGw4VX292yw==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 52C35198008C;
+	Fri, 28 Aug 2026 10:35:04 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Fri, 28 Aug 2026 10:35:07 -0400
+X-ME-Sender: <xms:l5yRarcPRM80BNt_5aHC1xO0r_gvBz4bDVyiZHDXrDOiNDgIzur_hg>
+    <xme:l5yRakUd8Wc6NL_qZ5h8G6qBbE30XTs-Jt7ReT9ovn-mkInkh7AURYX8am8VDxAl8
+    ZDfPV6aC7zhs2ZP4ismfFfJUf037nclNuqiOOskXlVyROGnx0ocNAci>
+X-ME-Received: <xmr:l5yRah8G0tfniwzDLxB8WVU8F3Jgy7vppsnErh2NSXLdQXRf-L5DUyKDUSE>
+X-ME-Proxy-Cause: dmFkZTFr1ErFwYp/sqUKdif/sqW6Wb/VLBv2jg+httKCJi0/AiJZkNFzvc+y4ea1xp/ZET
+    2BvSs8QnzsnCXfGgp2ktatqoulkesBfNz9bNdfY+uqmeKUm8+9HL7ZW9s56lkxowNkQHlS
+    AjzdH/bRfIsBF/KnwpBnDG36NrdV3UW7HS6CG5RjSJMhSI4bpm8wI9kR6EVyq816yX8vGf
+    mRUeK7k3IA6El8JHfKpYwDBMH4psiZovq5zMI+LxcFqzE9+a0akPdGqZRuIJ7dGqwZ5MQT
+    +9kkWrZXPfiDaAA8/1kCqtOBnBva6b1YGyBkk9gQTnzIMyRZEGeSRoa5mI+ZJTmrtyq3dC
+    /nUCEZPuQ2cFYPEkbhCQN9LmCZisqrhzK1YHzoItQBRLyPB6dljqFRiGftTCfOXdrevsNL
+    H0bBBZUB01hFRlOT4YV67+KOI1zTNOR+HuxbIbNLC40+7/gUg9TU4jihypkbo6PjhwQgwJ
+    DfLZcSVXiNu/PpssEtSApwapZhxvgFGbop+tHpV7Md0Q5kViZBZxlKAahyhRpEfPEP74Fz
+    83Le96qvmhI69sQIroizEz1uSe/5KwR/x+dml0NZFHXTBMwGCbvSVOJpRktkFUUtp0EpBk
+    yVnh1glRHSqB+gOxq4DTr+wtKmcZNouvSfDPqte9/hIi/8Ifqb0rO/pcQAEQ
+X-ME-Proxy: <xmx:l5yRahj0oiv-fevYFaXsx6GjkNiVTBgYAQT8083bvNLeZRlJ8nwY0Q>
+    <xmx:l5yRamWsrAxPFiBPUGrV0oMHaTPO5PyClkuGdJUCYV2qoX9nSwnG5g>
+    <xmx:l5yRaosIDwkm7IkEIS2Qd8I-3tdOeCQ-wyHH6czifFXyMseGWt9fpA>
+    <xmx:l5yRag43aZFdWKQ_Ki5udhyfQo96KqOf14aWRhL9ZC-sWkfos0KWwQ>
+    <xmx:l5yRanWawyaciE_RzQ8QiinNDbBWtMHmM3KINcLCwMwmX3zAXRQIdG-T>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 28 Aug 2026 10:35:02 -0400 (EDT)
+Date: Fri, 28 Aug 2026 15:35:01 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	kexec@lists.infradead.org, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, rmikey@meta.com, riel@surriel.com, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v3 5/5] mm/memory-failure: efi: replay the poisioned page
+ in the next kernel
+Message-ID: <apGbDOnPm5VXP5ez@thinkstation>
+References: <20260826-hwpoison-kho-v3-0-6f79c4b605bc@debian.org>
+ <20260826-hwpoison-kho-v3-5-6f79c4b605bc@debian.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1/SjYl3uwJx4/ioiGGgwrjcuLujqecRKpg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=txgaP3eXPwGHZiNk+kzD9nMiqpi6Z8kpuswwMKDKk10=; b=PTsDfFpy3Vn67qp+64dLKVjQMOectY5i18n4Kp3f0JbzDuDbg7QuhtcfWz3fQ0TXyhJjaIW8ExLbYtONSHMQyC1lyZxg1V6i+rr5HmbeaXTfnqg0mSKpLe1M7Xz4Ctw9aeW54P5Vi/KVRNyogahr68RbAAuK75JA7ttYZ7ZvTJg=
-X-HE-Meta: U2FsdGVkX1/ynCiK2eODLPrYZ9tK1G7fze2omD18GRMu+p//Za8+4H8RGGJDHLXLBjpOVe3LkBV8eMOFg5z3gwtX0OJ59kPUZ1lXGuPE1Jngey2WvrHtD2Ios5dJmmCOW6/JzjEJjZR90rWu8s+8+rGI/f3PjKGR+amq7feErZbTZBZRK1a0gZQoVjeHxPsRe1WHdO9gAWNFsSVvOHPGAZ3BLjjMhQSGqs6mMT5JrzNV9F/rZcZ43kHOPupCbE6Oeze20thPJ6wIJ05cvfQ3P1S19nukkkme0//ZjrjG06nJBIEqqfBqKclCyd8maOH2IMWUNDJmDCxPXN7KuEq4eel3RCvHJX/rMXNPrmNloIAPLi5whsjRBjeIKs43ysEB
-X-Stat-Signature: ztkfmnrpgu49shqhx5dux69fx5guyh4n
-X-Rspamd-Queue-Id: 7B759140017
-X-HE-Tag-Orig: 1787927558-448627
-X-Rspamd-Server: rspam02
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260826-hwpoison-kho-v3-5-6f79c4b605bc@debian.org>
 X-Rspam-User: 
-X-HE-Tag: 1787927571-773903
-X-HE-Meta: U2FsdGVkX1+CWYl+RzKzbO91AyaXAnbgMSJaWs/v5HDQRiZxkLoBDAHFbX/LE0bCpwQfP9UiNtxGjip2+csP3k9N+fas1/P4ONobQxgvu3i/xOA3Ko9e/B0VwK3IDs1HvKSjp33JgSkiX/v342qAimOZ+JbWoBhFh6vyLBQTdi5gkLQP/2S3Gkb7QClxFuYX0w6EpnEA8F/uR04GPN7vUlzOWzLI+CqDMJSIjOqwJnwuMwYTfLVWWgNTMOpkAzDvIKvwObCaOUgIExx+Uvai1TxWf6rnm4aGlJNT+NpJ/gyxk8kF4bg4e42fMk6oJWUgPUaQvJTI+Ei7X8yGiI7y4uukXUmkAK5fcaAujt8UngT65jGq64RdCz0tLDquGWUaNk4/RqSkSwxIANc7MPDcSbPoyToVsd3ef87SaGx8aVQF6fv3PPY48k0icX9xLt0E6lvF47tmAkmwgrxT0yQWQbd3n0op1Da5EJPV2bOg/rWleq9YMQi2qfuTqnYB5GQjpTf7V+MgyxuIcw12UCUfsJepedcJ9ruD1Jl0o+fABwCGq3PGQO9U98cigmTLqF1ofTeqwfUmfU30KJNQ3u50aIsBNlE7bGyw/D+MgPss4kKjMeVHpv2QXQj5v4jSGMxPCPfg4DvUfvocMZBxWYLwGIFPJydIuTFqjPItex5MbMZ1GPm54V3cjT7HvSrDvBefxp8jVq03FpmutNgN4V7kBP6UWk/bK6Tw9nZtplPpiJHvyhnkenAZ7+FnQs1dJWaFkMtIHMJ2cWmswlKqKdgl+iU6b1m027CUkBdLWaNKn66R4KqvJ/J4+06wFbfCnMLUuuZHQK+FHtCNDMIbccO0BKqUFkD7UCJhlxw6/u/kuTw74KY+hocLrVtkcd9fwmS/v5EORAG2nDJbvm/AkZ/M4oFMolVkF2R6wM640lGW342iPV6v3J8EGaJwskOZ1v6XFjnh2h1mGQrvj2FThHq
- anivsi59
- A4o6nup9DjzsJ6iPitXmNdbUumd4mMcIoy+njYu4t7KEJ4g/wXbAW2yIf/yetikA/GOktD2RZj2K7nxINhq8LQtcbH2BhK3ytqgkng7olpaztK/g=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 032E71C0006
+X-Stat-Signature: rurqxamwu1uzragg3ebkpmuayn87g8di
+X-HE-Tag: 1787927710-880843
+X-HE-Meta: U2FsdGVkX18NyraMfXeVnuoCoaFi9vaDSvkxBIqO4eAYPzwhbYRVz4U9LoWQ8mAZDUiWBF2r+1nPvQ/GZ5JkusdDjwgYjI2WNWjOpPAicEJkvJBXETRrUtymRFAZPqry7bnTZkK0kwBlsdT7EpEcLoQzUeu2BZLbO9TrvgIbH2WrcacoRGbivBTxhDs8PKjXVEjzxoYqCQNYO5xg+KcpIhhFMzsX7OYLju6rT0gzjf0fmgyFHgBIzwZIYXde4ccHiz9H8bKLCcJsLQl8pAR8wZKiWiTQ2uvDYX16gMEZVGUiel7qC6vAViznmhRfoOCcgjMl/gOHb482uoQofBHXiv1s5O/hVqCKW6qrJeWIkOK2Cm7H4/qrDK72Le6zGunwNJnSfL4t48eBWZEgVAbpa4x40DJslc0j5h9HZ/U2EvRLOsuLi0bf9GKsJD2JpWPhpKckoZei7tR2fnE5ZctxJx3nxe+LPTspv4W0wPx8GVPifr7JzPgcUCgJqSIJ1MiqGkJXBWF0XpTW4Zoebd6wsg4rJr4c8KD3CZdJZTa1ewB+gFsKalJXlbKboiPYKnwndiadiTH0DvOIt6qqKr3l/Ja8wDNWlrZfrZyMk59WIzu7d7glG1JfU0vYv0vpGQEtUp9+kyMEk3Hpr73/HJjxRXP6gEJaPzOLxPXZ/H/+6oFDZGnCiQNdjDjRhYjo7lO1SykRX7GCHk8GLua+CJ8SYhXcT3DJiAvBnrLlTrHJQ7CwkkWErSc+aO50aLTHeUKG2ghGVxtbtN0+woXVt1maxx31+PdP8bz6I08mVt9LZQQCjwdqYnJLx2sWS61xh3LTuUSBLTJg/cdSYB0Y4LUoyzj2SJ856LcZK56AERt24gMGETqp9iMqibYuQ5Y1SfjS57dzCuNtD+M/q+a6RnzxVZH/+19LHvpjc91QcdjNcvPqdTHAdnvoC8VcqqArDoUT6arFV9wRXgn6CqRz3uA
+ pudMgikE
+ omfD7ueHUIacth7XTcRwTtw9VHlLES/1lJP8lKB/uTbSfCRegC9J93vr5UZb6uJDu4PxuIOLbpf5M9IDq2FC/6/KPBjNEBn3foqZv0gridh4l2y08aIOtLp0D2a7Q2kOxHzQmDPdwxH35mvyOmp6f9ny9bGlOAE6YR+fKD5H2SdamALnCKcFys3b5w+AdaNPhaaIgQkj2bFs+AGl/VD2SVyl6200zEHt9P9rCWKasZ1TjsOgUX0zfOBH0IEhPTo8pNyleFuKSUMcuY8Eldls6MiIp9mWVJ4Ze5NsTM1ASBBsfExf0iTRcKLiZIGFyIgpKPLhI9aVR1e9BwhLzfpZllOFDl3RmWH+uH0ap
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,16 +126,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 28 Aug 2026 14:47:58 +0200
-Peter Zijlstra <peterz@infradead.org> wrote:
+On Wed, Aug 26, 2026 at 05:03:56AM -0700, Breno Leitao wrote:
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index ddda9d6837f32..f94fa221da0b8 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -2667,6 +2667,7 @@ void __init mm_core_init(void)
+>  	kho_memory_init();
+>  
+>  	memblock_free_all();
+> +	hwpoison_init_boot();
+>  	mem_init();
+>  	kmem_cache_init();
+>  	/*
 
-> > On Android, system processes typically have 2000-3000 threads. App
-> > processes add 1000s more threads on top of this.  
-> 
-> WTF ?!? Why does that all spawn *that* many threads? Perhaps work on
-> reducing that some?
+I don't think it works with deferred page init.
 
-I guess you never ran Java ;-)
+With CONFIG_DEFERRED_STRUCT_PAGE_INIT the struct pages above
+first_deferred_pfn are not initialized here. memmap_init_range() breaks
+out at defer_init() and the rest is done by page_alloc_init_late(), way
+past this point.
 
--- Steve
+But I think the shape is wrong here, not just the placement. We should
+flag poisoned pages on the first add to buddy, not after the buddy is
+initialized.
+
+__free_pages_core() already consults the unaccepted table. Adding youre
+case there seems logical. And all three paths -- memblock_free_pages(),
+deferred_free_pages() and generic_online_page() -- gets there.
+No need in special-casing for deferred page init.
+
+It also closes the window where the page allocator is live before the
+frames are taken out of it.
+
+And patch 4 seems to be redundant in such shape.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
