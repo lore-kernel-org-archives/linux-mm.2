@@ -4,91 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F798C61DB9
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 12:42:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4B3FC61DBD
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 12:48:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 314286B008C; Fri, 28 Aug 2026 08:42:04 -0400 (EDT)
+	id 896476B0088; Fri, 28 Aug 2026 08:48:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2965D6B0092; Fri, 28 Aug 2026 08:42:04 -0400 (EDT)
+	id 849B26B008A; Fri, 28 Aug 2026 08:48:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15DDF6B0095; Fri, 28 Aug 2026 08:42:04 -0400 (EDT)
+	id 737626B008C; Fri, 28 Aug 2026 08:48:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E49E46B008C
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 08:42:03 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7ED511A0349
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 12:42:03 +0000 (UTC)
-X-FDA: 85150640526.05.4601F5B
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 0AB59120004
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 12:42:00 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Pi3v2UDn;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5708B6B0088
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 08:48:25 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E41911C1CC6
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 12:48:24 +0000 (UTC)
+X-FDA: 85150656528.27.7CB91C6
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 842D480009
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 12:48:22 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=apd9kBBL;
 	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+	spf=pass (imf02.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787920922;
+	s=arc-20220608; t=1787921303;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fOOErk9kx1LUUsIH+ihqTAkp4s+n4NYBXTagYvHGXok=;
-	b=M+4dwRmp4zgjh253EJJguW9LaxZ/FdN91knT04SbEaiU+DSH8hXQIfKUXErBVxracsHHMe
-	a+pPprWBhlCG/M798mtZBI0gEz5oSq27uJNTpE6iTi773SpKpNmi4afzgAf2rvGF/5Ng8I
-	hnGrwXMFNNRExxE1XCl89u96/LhiRcs=
+	bh=AY84rfjFkNDjAWFNf8AP9fCrg78WzFe8p1rGWp/UIAo=;
+	b=0xyz4Y79/bXB0PJN2GtboW9Fvb1jd6i5KoOc4qW3yIWyDu9Ui4SdTR46w9vWfM8bG1Vq96
+	uSt7/rkqS8mfROJI+r2VO+kcs3KGjPEBlX/rH7mWWfAbbpuEHiZ0uNtXSiwlOpmKVUPM6r
+	DKKnbkr5OBYp4htEsURy4kdlweFA9zw=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Pi3v2UDn;
+	imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=apd9kBBL;
 	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+	spf=pass (imf02.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787920922;
-	b=LNi78hoTO44It358zqYDij/6GPSlSeuojtX/ckznb6BHU4hG2uumJJNGPeZOYL5hQk7mzZ
-	HkmvjE+QM1AXqhjO9w8yru6Qo9gfOGOCRIwlnvyIDTOp6vceSIOhgz4lOEnc/+PoSM6dmn
-	MMF6XOZoy/HY0VOMj5NROKmyFWDrclQ=
+	t=1787921303;
+	b=laMYSSdUyuJVc+vvx2/6OFg+2Dt5lPbOhvIF+5na/E4WOwVva5FeEJ3W56jrFW7gIK7COZ
+	xRS0uEJ7Ra70N/c4FiJ/cwcKtDmKjoKCtkjQ3yoACxvqM2pYD/h7d71NlWtQZLSfIi0G9J
+	nchRqBYyfznr+RKD1ZN+fkghuJc1YGs=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=fOOErk9kx1LUUsIH+ihqTAkp4s+n4NYBXTagYvHGXok=; b=Pi3v2UDn5tSqmbtKPiAIqYtln1
-	e3ippwoYEwrMHwU8+8U7n6fMm7hPZvXt5XcS8l96v5TPNPp8qAnJEnyFzd4RsAf99V/EL+YVDmfrR
-	lRoL5MfJqEWmyn2MRf5W18/93DaKy1xmUjxD15xTREg/ddJ78a/gUK/JDkDuCeCSLVqpe5iSBrf0f
-	MsNSN3RlBRU7cYYNaq5RM47oT5s317cFo9TZak9nPBi5n4M47+Hj9Kn8w9y6uiyKvbCpqoM/ejXTN
-	ZLFKqB0EpP7NvgCQ1zIxmMbltUfyIHS5uuzkrJCmAT0vjeV7f9FBGxIHZOls9oco2hSrnuvooSyTj
-	hbZACARg==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzvu2-0000000Ehny-3KzH;
-	Fri, 28 Aug 2026 12:41:50 +0000
-Date: Fri, 28 Aug 2026 13:41:50 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: Yuan-Hao Hsu <aa9736195201@gmail.com>,
-	Miklos Szeredi <miklos@szeredi.hu>, linux-unionfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	bh=AY84rfjFkNDjAWFNf8AP9fCrg78WzFe8p1rGWp/UIAo=; b=apd9kBBLyOu58CYgPPP5CX3ADi
+	bQwvk9xWrikcjNqyLtRx2ifMpANi76pueMtJCNpfBW3hS6hNFriUiwNXeOieYmaxYoWVEhH4yeyGQ
+	B4ChwuMdqS6J+KGWO6Pa3/maqlBEgbclayatiFx/Nevfd831UN+Hiq0OeBqw4epE32rqEZruKNo5h
+	Q94YyBfUjvAiC772y/3ECHbKipiJm4gmgQlmEjGqyB2krabU5/5qZDMZWTDH1+KD+eIB+yuwmHYHm
+	GaTodGV5H2Mm+kMp6XQEbWwM8QktRq9qECMqOyA+DpA1ltXatP778QCi/VudQMVEmDm5i25tjrCUk
+	2pUDBrnA==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1wzw00-00000008FkC-1X7M;
+	Fri, 28 Aug 2026 12:48:00 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id C791030030F; Fri, 28 Aug 2026 14:47:58 +0200 (CEST)
+Date: Fri, 28 Aug 2026 14:47:58 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: David Stevens <stevensd@google.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
-	David Hildenbrand <david@kernel.org>, Linux MM <linux-mm@kvack.org>,
-	Christian Brauner <brauner@kernel.org>,
-	"zhangyi (F)" <yi.zhang@huawei.com>, tujinjiang@huawe.com
-Subject: Re: [PATCH] ovl: implement ->get_unmapped_area()
-Message-ID: <apGCDtf-gE1osJqE@casper.infradead.org>
-References: <20260827170718.497-1-aa9736195201@gmail.com>
- <CAOQ4uxjxDV0U9yrDA_StN968P_6cpjRAN2mBCx1c_RYd7BF4Og@mail.gmail.com>
+	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>, suleiman@google.com,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev,
+	jstultz@google.com
+Subject: Re: [RFC 00/10] Reclaimable kernel stacks
+Message-ID: <20260828124758.GP687043@noisy.programming.kicks-ass.net>
+References: <20260827232948.2520558-1-stevensd@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAOQ4uxjxDV0U9yrDA_StN968P_6cpjRAN2mBCx1c_RYd7BF4Og@mail.gmail.com>
-X-Rspamd-Server: rspam11
+In-Reply-To: <20260827232948.2520558-1-stevensd@google.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 842D480009
+X-Stat-Signature: fki6k1srbjued4tzd9rc91aq467ke69p
 X-Rspam-User: 
-X-Stat-Signature: jn41jiuo5yhjp8pf8m7z93fecahasw4a
-X-Rspamd-Queue-Id: 0AB59120004
-X-HE-Tag: 1787920920-238768
-X-HE-Meta: U2FsdGVkX19OKh/s5v9CWRceRVLU43+r1UMYgE+OVoQGZXs9nkMxfLazehHWbn6T9DCCxWlwXwT6a7XpVkkmghAk58ZBDKueKeO4vFOZKHP8HafdFO4V1usZ9k0nAb3siwmz6Cm0d/1kQ/zVdyhx/WzdPSAyjzgzRURD7YUPN9TkERiMipDOT3YOMZYZ/6auSecgY1RVPNRf+q9YbHZ8gGRErb7DxpNgvhBbcD1/5D7a9NpXiJNdGvHr+EitAiXYOi+jBt2yC/aSmaFlsazhF2Gfd+ghQtmOvC7XBgZURJrIbQ+dDdZFQh7l38x35KisUdsJJbh5ngFDy9w82WB8cMm27mCg+7nWZVSD+4N+WSREkrvhcJXWYcQUSwnPFSy4IWs9gIWjtKyfEdqvRkDsJig7+GW4vvAf49zHX0R4a4z/aEF3HzqBP3TW1CW24TU/OfZDZ8JnX44iuscn59FcuCsNQfyGVgtHyc2F282Fze3FzZg3Ukg/YO5QmAqzNxnoHPiSZdMBWUJnh0a9LkOY0RYk3iM9P5HVcCu6rUh0sSEA+4R/2oqji2Pbq+TQV1KEgaROLLANvZsnm0msaW9sdAaZrB7q64BLd6qeeTazeNgftNHYLKsOoQS9Kp/cWvGCLMx4BnoPt5Eus1cr0IWoOmbRaIzxx2V835P2x8E9ZQQvaTx5VtdEh8K5GiWLUZSEyyx21V5DyA6KaKu/U5NKjqAphPWUDm6F4GKD/v+f79J4PFYw6/4GjllHN7dSC850oi5bMucloR547XXp1Tt3XSrFfGiu4wp7W/PdBNjRRDch0qcM/1UOqa9J4Ig+gXUniGJoUMyr3aOIqKlmg8pHxG8R2Gp2utfk2CXI1lAbSuom25e/0CH7YwfGxaT5u8/BpULsGvcC3HIqB+Iz0Vhh/b05noAjhVN3K0QjcIp3UE6fUQ+fNMQyNshdSE4k31w3jSVLrtktLxKeX/a6UvP
- j/cHweWM
- G3VrIj1NCD46fzOZ40o68DLZRjEFEnhDvDELRR6t6Sg2Qo+icT5E57Wd1m0Ps1iNF6ppRsnI1r1gNxn9OzE9hZJLtCiT69NPJC8LRBTXOCLfj7xVthpi3wqAwDvTCN/T/w02aZw9P97COkteFElTmp4iSL/EbEhjSfGwu1gSKZknvQwo52gF7R8G4PNDIcFT57C2ZOjRqyzPtP2Tk03/cGCWaCYg1lTtKrE/LXs6oca8x+xWQV08sP0mrMcB7r/3bcK2jfWsGvvFjaQRE4ebKEGvcx+Pf0S0zkDq1J9xpmUHROR9oT/cVwu/efEOYdMyT9f6niteZxXGL9mPbSnEj8Wbhvw==
+X-HE-Tag: 1787921302-493438
+X-HE-Meta: U2FsdGVkX1/SNccP1rGJFgWPTDn35Zw/TzKZ6PSluaadSPkDN/9i2dGx5eDXghPyGzIk3ytTSf9J1SC1juC71aiI2YNdNQve30UEgor4zuIKv9wzhRTEY3IYDzP4ijC5JkUutrv//WQrv04zYuxAk+BHnnx34bLvY2bBnKQRn+pwb3tRT7TTI1s9oknNc55wWdU+arIgjNPb9JF7EIanUA3bwUx6xTeSRgtf7wZzgJgdEDG6g9YhKHhTRO9RIU0d0DxMV4c5E3jwKzWZh33zM7O4wEAJzvcibQxnxqqBFzyyQfVZN8djYHd4jUdheE6sp0QrYT2C3Lb21Z9Nc+y1gh/buvDQhM3tUIPKFxFRhDi5Z4AHuY4HAEe/8VhvJm8Ve91X1WzehtjDoEVW8M3DTS05s86Ryg68t/lw5fWD4bNOARxCXj/BqvXbm9bvhopfV7fVZ0sWXzaqeac2NvogMBN2yRhamni+ZzHsOIBoA5oTOkPJLCnPyjHafbyjvQHoYS65J8kr7ThZ+IEY2E997jgswizU37o1pE/i0LRNqt70g2dxwJS+gZUf2rg8F0Hg4TL2Bj3ntJ4t9kEMDDv7+UaJmjtnO72MaIxUCyDT4KhJep+4Qk1moQ6PJDCu/1ZR84ahtoZsVIKqy5BS9P2Iqg29nLtmHLo41cGh6i0ONQRtEH66wb1AnwUpG/3GnNPFDNVhjjG4+N8L+d5T1yuOJtvKtn/UUfFtNehgB9vnOyCPoCASN3shAnxA27jSunm2XEiaz54BU1PnqgjSWJ61AMUZbiFfQpNg8GLSjzh9NAN+9Fxv5MamW9WS7EOus+1Z/Hgbc0PddM1FxJhwyNxZTSe9vce7FZIY0iHyXViQkXJ38YvlQJoZedD0MJ0yoap8GKKNIN9SjAvynBEJV/u4erEq0MKi48uLTsKmXdHOzpvucfLf6QZ7+oNQZFOXC/4tGqH9yrPqwKhVayGgP72
+ 4kGcr9uI
+ +YrKnF07tnGvdgVVZeqaAoqDAnMoIV1m4xsxc/js3pc0h7HSfJpdnEaC/bZhpLu+La0Rz8Er1ESyUxaNwE7nM2AUmf18Q+K0JoqSxeR3JIFGH7cUx75JGZXbNzoHnkmdNx7vpA8njN2QQrDaSpjx5OaSEvuiSZWtykEGnQZx6pX4ks3om4ZIsNtby3ulDCMMN51JyWKZnD2r4009IVbxuuWf4oi4pQ1TB0n0tVc4X3PFNylw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,34 +118,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 28, 2026 at 02:23:11PM +0200, Amir Goldstein wrote:
-> Since mmap is going through backing_file_mmap() probably a good idea to
-> pass this method through a backing_file helper as well.
+On Thu, Aug 27, 2026 at 04:29:38PM -0700, David Stevens wrote:
+
+> On Android, system processes typically have 2000-3000 threads. App
+> processes add 1000s more threads on top of this.
+
+WTF ?!? Why does that all spawn *that* many threads? Perhaps work on
+reducing that some?
+
+> Tracking blocked state and when it is safe to reclaim a stack is done
+> via a series of hooks in the scheduler. The actual reclaim of stacks is
+> done asynchronously in a shrinker.
 > 
-> But more importantly, adding MM people to this patch review, mainly the ones
-> that participated in the discussion over patch to fix similar issues
-> in 2024 [1].
-> Most of the concerns in that patch seem to have been addressed (?)
-> 
-> [1] https://lore.kernel.org/linux-unionfs/20241205143038.3260233-1-tujinjiang@huawei.com/
+> Once a task's stack has been reclaimed, it cannot be rescheduled until
+> its stack is repopulated. Although there can be a repopulation fast path
+> within the scheduler, reliably allocating memory to repopulate the stack
+> requires a fallback path that defers the repopulation and wakeup to a
+> workqueue context that can use GFP_KERNEL.
 
-No, not at all.  All this patch needs to be is:
+I am really confused. On the one hand you have John working on proxy
+execution, with the aim on reducing latencies, and then here you are,
+posting something that will introduce basically unbound latencies.
 
-+++ b/fs/overlayfs/file.c
-@@ -657,6 +657,7 @@ const struct file_operations ovl_file_operations = {
-        .fallocate      = ovl_fallocate,
-        .fadvise        = ovl_fadvise,
-        .flush          = ovl_flush,
-+       .get_unmapped_area = thp_get_unmapped_area,
-        .splice_read    = ovl_splice_read,
-        .splice_write   = ovl_splice_write,
-
-
-All this "oh we have to call the underlying filesystem's
-get_unmapepd_area" betrays a lack of understanding of the problem.
-
-And Lorenzo suggested this in the linked thread:
-
-https://lore.kernel.org/linux-unionfs/69b72e3d-b101-4641-9ce5-51346c93a98d@lucifer.local/
 
 
