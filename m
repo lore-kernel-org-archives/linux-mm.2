@@ -4,146 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A756BC61DBD
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 17:14:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5C4DC61DD6
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 17:19:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A12ED6B008A; Fri, 28 Aug 2026 13:14:21 -0400 (EDT)
+	id 8E2376B0088; Fri, 28 Aug 2026 13:18:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C4756B0092; Fri, 28 Aug 2026 13:14:21 -0400 (EDT)
+	id 893F66B008C; Fri, 28 Aug 2026 13:18:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8676A6B0095; Fri, 28 Aug 2026 13:14:21 -0400 (EDT)
+	id 7AA5D6B0092; Fri, 28 Aug 2026 13:18:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 58FE96B008A
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 13:14:21 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DE733804D1
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 17:14:20 +0000 (UTC)
-X-FDA: 85151326680.16.9EB8D65
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf08.hostedemail.com (Postfix) with ESMTP id EEDC4160003
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 17:14:18 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="cybzf/5l";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf08.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787937258;
-	b=swzyxZL9kN1LXrWS9bFoA1oj0pbbB1vdnbM5zC5UYZNdoElVNI7JuGqTYOTMfOKvoAawXs
-	AXtlQhdYg1isbkETWob3vMXE88Z3287UysMZI572u99ABWiEOeZUMrXr9LVs+FC3Sqf4Wp
-	dyJDLGZIs6dxgQgtw7sly8ylDfcT5CU=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="cybzf/5l";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf08.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787937258;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 544CD6B0088
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 13:18:59 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D8FD51C1E16
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 17:18:58 +0000 (UTC)
+X-FDA: 85151338356.28.51F0399
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8AA5D20009
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 17:18:56 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="aTjNCdw/";
+	spf=pass (imf03.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787937537;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fLW8KjG+1iJkxaiPEbmpBvUr0x4Qil1Zdzs/J2jlauI=;
-	b=NwZpdHVdbeS0c0qhImeyvaUMz/19s2nNKosgMDQikO/KIBmVtx9rJUlsAY8/3BScyPG69x
-	qNmtKI7ACmFlQabgNhv30HsqH75UgHhGNE5j+XXHp/2iRcGh7wjM0RB17TnTxMh4GnQlAO
-	Wp5D2I/NTTZq/TKyi2cQkxoXXLl+O5Q=
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-49954b88fffso9203945e9.0
-        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 10:14:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787937257; cv=none;
-        d=google.com; s=arc-20260327;
-        b=TQG5kLs33QZEQ4pcpAEHH1rvK7pjxIAzmZMaPFvlw7PsSTd2sFY0qebaepH42YcQRK
-         24AyD34EyNWCq/vBU/2hsmCS+84HPeF0Xxg9lRDxfsHUgEJUVu3rArsFd/oyY9g43Va1
-         QyY2XRqLxp5qlnSqvEjhDqngNYUAqbUvqe6Iq/D+ymHTlXSJQBZ4oYC7vvHnYFDvFPbR
-         r5ogT6iusNa3xFknYJcJON6g8NUJHSUNPB0V86xEWAIJgFmD2EcAMJzPH1A/vIvQEmbp
-         lWgePDgIVsi+H27j3VwEoUXlUd45g9tAokjofuAlJBTaW4hqnvqjkIHjJf4HZJuGjHMV
-         hfAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=fLW8KjG+1iJkxaiPEbmpBvUr0x4Qil1Zdzs/J2jlauI=;
-        fh=7wYnO+yUyh6gfxXEvC7bsN5mPXD1nMC4MtWhX3Hoa4A=;
-        b=dRJffzDx8wptbLJ6OXYMtlT4wkWMpPM1jxfL0PZZEsUUb5pHpqwAxPN3jh76foGLJ5
-         H37gEy1f7ZkLiKxiu0gEXFxyqN1+b5OHhEsN3bnD6a6qPQvY5iTAsD/IaDNZKrRXtSKy
-         q2aNnwDGiBA1QQZUpAdbUhaZKujdKkxOzt/tSSu1b43ygC49JKuIg3KgpJNMFNFAHUME
-         EeqiGoazabAmge1coEIE39nX5HVg8pz7L+653lLqnuCntrmzU9lEPYa8Dtl++31UuEux
-         eHI/lmCDZB+2F0h9hB7+3xwgrp9IH7aBMss+HzHM850MTA8vxvBo56+cha7sLeS6HZj9
-         ZXYQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787937257; x=1788542057; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=fLW8KjG+1iJkxaiPEbmpBvUr0x4Qil1Zdzs/J2jlauI=;
-        b=cybzf/5l17A13JOnnMlD9OpeGmPV4QL/TPN8rMDHj0bYHBa+QIPAy0VL8heqVCUSDn
-         6V6Or9V8bFeRB3e2PKWFcSu7c6W6K9GJ5o6jBjRyvgES05Tb9ZG6EzV3Hd/eq9rekZXr
-         uO334Vg6/wOiOlJDeLgzSHCYXJfjLsVRfELluRmgZx1KRmFuX1yd3Qh1iu5iOFY8aEVy
-         UFRe6kEA+k6JS7aUR3H047WvRKH3WXmi+3NbfWpfiEEQ0FQ2DlGcvwVrZ/WkqIEDQ2Ap
-         zJSHlSL3HOcuGIvSpaO98Bjok7stVF3TYsHa2aE2reAdSNN30rjSxoFNSJ78lHJ6b+fc
-         xbkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787937257; x=1788542057;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fLW8KjG+1iJkxaiPEbmpBvUr0x4Qil1Zdzs/J2jlauI=;
-        b=GkKSzfnmusHAzNI4GeJjuqy3ix7k5L4pXp4Stsoc32Nk6aAo51R3j5BM2GTs/aePJt
-         TYFV5huVi7lIjIvAw3JeH46UwkpYmTjd41XOrIpRqwN/kHucjDgX/52I3vUyOzX8VPcj
-         ojnKJDjAYm/M9H09ffSpoNn9BegDGBHMXh0tSghJYFfic8NA95jLXHsW1gq8hZX/J703
-         BTnWYvrzNzPGq9NI8ZOuC5Qi6XQR1MHMbg145yf7U5JV41uZlVHVx0kVhgVbLDiNppni
-         AW3wh3KJOKK77BgQBXRFDFxwgxX6FC/eqxUD8fqVnb1ey05wUn6bGvMQp1OUGr2spg/9
-         /QIA==
-X-Forwarded-Encrypted: i=1; AHgh+RqBrsvPdrb5oud9+9Iz3HN1iPPOYtb2GmTd17ZAjdy5OS1gAZU5/gd1a5pc7wSlh6iXXJe6cdCZRQ==@kvack.org
-X-Gm-Message-State: AFuF++nJ8sOhJPLvf0/8DTI1BoFS30MHz9RXGMvRoAmUX7OyqE2oT+Bp
-	aakFC5f6jX6vAG14VLlHlsmVD2qPuhsA8VkOglUyJUmCgmaGcWBAL5d6jgXlBNLJsmLyhHCyi0x
-	Y1OTApGx0bvQAc60qmarXgxkXPlwslzk=
-X-Gm-Gg: AR+sD12ObE35coiH4SojUDFJKvxwN/+c2xgYlKonj4VLc0r/RaZZZ6XDl/X4N9OS7ft
-	xX1TdcP22+1QW1whcYzbkxBZCjX/a/vNtLHB0QR8k+pBhXzT1uSNfRCb2uNY2LglbAI7B3WGPnN
-	cnzWRpexElNfzX2Cd8b+c7LvFr7DFfwYInUrECNFdJfW6Cx5VcmeD+Z+scYoFTVWr4f8CJ6Vx7J
-	SRtyQEjXrtFyyF+iKEIJOg3P+wvSBTS2b3wdz8f3urZjF+yjX0Bc8EUiRqNkNXDLR6sqESZMUvK
-	k8kL1oT+Lq9nFd9Fi88pF7bKLj3CCSOGPAHePacGiiornfD+CD50GE93CcxaDyELQzUnZZVDdVH
-	6
-X-Received: by 2002:a5d:5f91:0:b0:482:fbb0:a262 with SMTP id
- ffacd0b85a97d-482fbb0a404mr7651916f8f.20.1787937257283; Fri, 28 Aug 2026
- 10:14:17 -0700 (PDT)
+	bh=7BqH+mJJNouchoXYZ3ssmFPqelP6Ak9OqMh5GOTj380=;
+	b=UpO2AB28nIhpUNWkh7qMgmDDrf9d7NSiKoMlOxy20mozSRKleUczaz7RpsqJrzRj9MP9pU
+	PdlqXKblKIe7f1yh6Tn58VeJ1GbmsEubrU4F2/BfrcNK7TeTtfEFmHNrOISMftuM6hJx0n
+	vKIO8esKIzrjTrBXsNkZxrByHxgSHBk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787937537;
+	b=aZy6zuyiqWZvGsE3fCgzufP2rFnlWlAVN67E6O6LIrOp4bcCp/v78WhSSVT3XMLBS27i7z
+	DEKXsDCY00U5IhwXn7HTb16+dqq8aKLaYwIJ5c5Hf+RMtRQ6osFp5Avo6MQgjhdCL3Wo1b
+	/EmZwYLj9R4f3GqRGgNql3NELgupUUo=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="aTjNCdw/";
+	spf=pass (imf03.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=7BqH+mJJNouchoXYZ3ssmFPqelP6Ak9OqMh5GOTj380=; b=aTjNCdw/YGw05Q/oUS1Im69fx2
+	NCgNclO20G6mjnMW3wmg5sB6riqPdFzxFRvzeoG12sIVhotmWyZJ8+JSYKV2ePeuNkMT3Tg9ZRBtB
+	b8RHKJTS6T+1sgDMJUYPiDRlHQ8pKUFAAWvLoakKiMkznOae/ZHmWRxtCIO6eVaRkksR+hGYAHecG
+	J5iPZlgeWc8g8hmpKopRr2+FWActEqW+GPRGMu6lzO3oFewq3H8597bNdsqzvxuFnzDRmcfunbGzq
+	EI4sd3bjiO/zRXFdIX9XozaySNA8ECCisZlpnO/1xdOw1BzW6nVhiUdAhFIIzvvvTIEDnh3GJz2BM
+	nyFSajqg==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x00EA-0000000FA0u-44QK;
+	Fri, 28 Aug 2026 17:18:55 +0000
+Date: Fri, 28 Aug 2026 18:18:54 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [GIT PULL] Remove dependencies on pagemap.h
+Message-ID: <apHC_mHJ3wsJPEgy@casper.infradead.org>
+References: <apG8g-5krNRUFUuD@casper.infradead.org>
+ <CAHk-=wiY22BnQkAMMc8-h6xaRksvVAbASpg=pj+=kVaXXQYo6w@mail.gmail.com>
 MIME-Version: 1.0
-References: <20260825153238.2695446-1-nphamcs@gmail.com> <20260827200716.97881447f243c4afd275144e@linux-foundation.org>
-In-Reply-To: <20260827200716.97881447f243c4afd275144e@linux-foundation.org>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Fri, 28 Aug 2026 10:14:05 -0700
-X-Gm-Features: AcwNN1VqRctLWtrJqo_bsUXm3dQvc_4Ji-SS_KiORUhzWLUsKtjvYyQhD1-JmPo
-Message-ID: <CAKEwX=NdnBM7cqbO3rSsUB7JFZK6DBxNMFbpGWgLh5m6M7yRXw@mail.gmail.com>
-Subject: Re: [PATCH v4 00/11] Virtual Swap Space (Swap Table Edition)
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: chrisl@kernel.org, kasong@tencent.com, hannes@cmpxchg.org, 
-	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
-	yosry@kernel.org, david@kernel.org, muchun.song@linux.dev, 
-	shikemeng@huaweicloud.com, baoquan.he@linux.dev, baohua@kernel.org, 
-	youngjun.park@lge.com, chengming.zhou@linux.dev, ljs@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	qi.zheng@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
-	weixugc@google.com, riel@surriel.com, gourry@gourry.net, 
-	haowenchao22@gmail.com, corbet@lwn.net, hughd@google.com, 
-	baolin.wang@linux.alibaba.com, tj@kernel.org, mkoutny@suse.com, 
-	skhan@linuxfoundation.org, kunwu.chan@linux.dev, kernel-team@meta.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	cgroups@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: EEDC4160003
-X-Stat-Signature: 1zea3jkbu55oz64jixb69xkkt5ddinsg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wiY22BnQkAMMc8-h6xaRksvVAbASpg=pj+=kVaXXQYo6w@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1787937258-472042
-X-HE-Meta: U2FsdGVkX1+xH0IBrjNwlcvo91sv5MM2QBlCr8nFqmp4X6t0fbv8GbfQMu63Ju39GZbwiKDFJRd3Oj4hFAlcU4/c5tQpcHKOLeMG/UYrPla5m0jZLUoS7T6efYnyCOUcEpYbE2PUt+oBSEzkkpIJHgrNc2/BsRCQLkZMWve8xL9mVM56Z+/DBOCtvYqStT0qYXQ6cxwMAtd+NhI5ncv4maC1cJp5EfMHOF6UH9g7InV4USIQoFnDZ+4d95EfrZ8kkNIYEpCQbwSb53M3N+1Xl6OuFjZvOiFJvGtF4YkRZcshZc2peu3HDq3Gx6cgbcrxbNOC8JqUiNed50KTFNKBVpN58cVmK9/V5WrGMP6VLInukso6a5VM1z0u4hsCrsnu0uwOfYIBSRxPlA9xm6IEnAOL+OLzGXzur2oCM+cXYEQG20n8mkIajJelPmWMtcrEhRv1QPvo1Ns1D9+HGidpLRJnRnZa7xhhpPih+FFmb7ty5XbmZo5M/rwpZnJ4P+aiH7xVrKXZDPqvSTEGd6kIBEB3QaW2XR3cSVlRkCvYjG9rACkCGLnD1GCOfyIfCfBJQtSbhIox+pBxUTg0ysIWQL7ReL1dUn8VupsmOcV5mucSmoSOk9AEFJMEb/47t/ovZQR7tPzEMDeYlCgdxIMxt1qO2oizd0U8wWn/ujtOYN9rJCsyfrjL91rs7fCPF15lMfn0l8YlaRbNaqyzT/uv5LCZUusMgtkh3y2nfausUM2liwj39pDmRSEO/pzJlsLE8soWF9CMXh8NWrLLjOUY7Co0O9jzVvhtILp2oXnvB86ieIAyHErxzZZLul7A5TkQP8Gm+K5NKk+2J5tOxKT1O3eulDP/DIa3HIek8yi/XE7OAuR1xW/rVGS9FTPMCQ3/W3ooz5vNDtjbgxOGvnWuncH2AwI+dyObTmYikfAJ3zmE8ubp+LYoAOEZWzjSoCReA7w0xC5Qu38pC2/Xvwr
- KVz4yEFN
- xHmcWY8krVcHYcDt0/OzvWe4bnLhiPVU7z53N1LbAm1EKfKgiUbFZc6h9fzovs3CRbEhbklYhPw6PWCfajoZz+DvgKjB7jeQLIhXz5KhAsQ5GQMY9Kxtr+vu7QCYKyjS+6TO6Swua523s+IHmIV9WqpxTzTqoozXhPdmjV2Igl0nmlmwa04YVYPmGcsg2URnlZ5JEITaRlqM3j8m9Gv9w9EScyVS6tJqFIN860kwSrqRzcVVA73e6LHYkFI0L7DC9LrcSf7VY0uDUK+jvlYlSpycJ/tl6vVDCm81XXplcXtPECagbyrVn7wwkD5IfO1yje0CGU1iOhsIYaWLbhSMbtpiK0EdMUT5dalz22AuH9iegyCuPxwbwUep3scTXE3JRAFMpZCsoeqghR1gzh4jemA/zT+nZOa1Tl5oV8tHmhR5Lsb3l93XQAgm0LOGOWnKiUqXcZ/2o02qfF0pGS2258uiRM9cbnHoQ8vP6nOPPw0Z451iIvKKgqHDb/b+PeKJERrSa/ZSGV5ZYuLoGHWsFMNNH7Scn0H3adeLL2hZhMJAMObw=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8AA5D20009
+X-Stat-Signature: iefw4k7soqkiybbnpw4jp5eagggkqpsr
+X-HE-Tag: 1787937536-744417
+X-HE-Meta: U2FsdGVkX19laFsK1gEHwifstb1NXMN/Shjo09fAhCjF379HRBZ6oAkywpP+fWWRI3DSdfOECo/TMbsH97DeT2rfSy3inZDW8udbN6FFUt2j0P5TI1XpOKMNKR/0quhgv7MWPvZ3g6cbHyQiY00AepcLVlP+ZQuXezdL4hXJSgQJCoFuR08xDRnMNFt1GzLQ4RAvEefbbpJYqA4hPRF+Z1cq4fYcI9upBo78ooCuxlu16yU31akSeeK0zg2dq/KXAHnn45rbsPjy3PRzj2C78qqesotF3+gSiB2OMqzouX4S/IK0emhgzQpsybJQynICfWin4kQsxr4QNqa94c34n1LLR7ixbUNqFimTLTLgG5sOfbQ8a65GSCohw6mE3wTcnQM5CORwWRP1PXb8QxSpcrt45G6xAQ61L2cuLMVvNlbIKfG5NEv7g58jBKqYhnFcjq9a2Ln8AyKkJidUOqigySD5R7HnzKNat3Btph9tjcodHM2Mc+Gmronrnhw56yoy+e+nocKCyIEYOxOQZHGG/yAgvE/mWMEbIehtrjOq84wTKWa/VZjq/yBQ5FjxhtdkgtzPDkg8T8U5ukDlMLORjwDcW9Wt5BFsORqKwUB1ZyYOMp07M0lfW/Q8UZlnVQI1ZUqZzLYX0JFY1HGFNrFf1qslgPdeGzJOKHcn0DcTglQZ6inqI/dSC9FqvECegj8Ze5rNH0XoMbVpq8TkSC+uZ8j6BeYep712rfSddBl7kL5nhOfAMGQrYezC2AuRbFnGeRdRSaxxUPzGoEKImMXI82aSyWrBRkFmYc5dc5lDgy6dOhte6cFYtHlOZl6QWWlk1teP7xADemnwJRqjhMwmJV7pCn4oHfRzHo6XWcuga/vvtzk6Zom0lCcW8ddKWtBahV6Iu/h1Bip50crXtVwoO7YYc+Tn2mNdB0qbf+jdmg+89ZTd90LFCVXhgALVL5Wkz903sBx8oLImOFZfk4G
+ +5Vwshsx
+ 4VRJaCU1NcminHxhBJjU3Fiu2fbBFxhabxhtWXnnCrphLi4a+z0Js0Y9QJ3EF4aKfzkua9xZuHQEwIPPixQPh5mIqFSD/hwJGaNTelcxR7A5ckg4fpCoUmg5xSFN/A+brkb2nrPek8I1YY5SpXQ78ISHJWogBIPEwJUAqJftjNNO7v1A5uaX4X7Qtg1t0gOwrWIBeR1JDLlRzH5+HEJV2IFOpsvzphtBKAZxrYwqvu4ZTTIObW1xYBpmULzlsTBxTeNiT16CBQKTYOnOPNUfv1LjQGJ/mPjHXAdtSEh1xTQb9rWP9eYVqOT/MGmxWSWIwEwoz7W5d1tjQZFE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,72 +89,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 27, 2026 at 8:07=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
->
-> On Tue, 25 Aug 2026 08:32:26 -0700 Nhat Pham <nphamcs@gmail.com> wrote:
->
-> > Currently, when an anon page is swapped out, a slot in a backing swap
-> > device is allocated and stored in the page table entries that refer to
-> > the original page. This slot is also used as the "key" to find the
-> > swapped out content, as well as the index to swap data structures, such
-> > as the swap cache, or the swap cgroup mapping. Tying a swap entry to it=
-s
-> > backing slot in this way is performant and efficient when swap is purel=
-y
-> > just disk space, and swapoff is rare.
+On Fri, Aug 28, 2026 at 09:56:59AM -0700, Linus Torvalds wrote:
+> On Fri, 28 Aug 2026 at 09:51, Matthew Wilcox <willy@infradead.org> wrote:
 > >
-> > However, the advent of many swap optimizations has exposed major
-> > drawbacks of this design. The first problem is that we occupy a physica=
-l
-> > slot in the swap space, even for pages that are NEVER expected to hit
-> > the disk: pages compressed and stored in the zswap pool, zero-filled
-> > pages, or pages rejected by both of these optimizations when zswap
-> > writeback is disabled. This is arguably the central shortcoming of
-> > zswap:
->
-> Thanks.
->
-> I asked Gemini for a tl;dr and was told
->
-> : Introduce Virtual Swap Space (vswap) to decouple swap entry management
-> : from physical disk slots by using dynamically allocated virtual
-> : clusters that back swap entries on demand via zswap, zero-filled pages,
-> : or physical disk.  Eliminate wasted storage space, remove the need for
-> : static swapfile provisioning, and enable in-memory swap features on
-> : diskless systems without degrading performance.
->
-> I'll take no action at this time - let's see what the other swap
-> developers make of this.
+> > My apologies for not sending you a signed tag.
+> 
+> I'm not pulling non-signed stuff.
+> 
+> And it's way too late in the merge window to try to fix this. Make a
+> new key, and we can do this next time around.
 
-Hi Andrew!
+OK.  I thought you liked this kind of churn stuff at the end of the window,
+rather than having it create random unnecesary conflicts throughout the
+development cycle.  Have you changed your mind on that?
 
-Thanks for taking a look. I'm also waiting for review from fellow swappers =
-:)
-
->
-> Sashiko was talkative, as usual:
->         https://sashiko.dev/#/patchset/20260825153238.2695446-1-nphamcs@g=
-mail.com
-
-I've been going through the sashiko review on every iterations!
-Hopefully the list will keep getting smaller and smaller.
-
-There are a couple of false positives, as per usual (the first issue
-for e.g was intended behavior, at the point of that patch at least).
-
-That said:
-
->
-> There are a few pre-existing things in among this, They look legit to
-> me, from a quick read.  SWAP_USAGE_OFFLIST_BIT should use
-> BITS_PER_TYPE(atomic_long_t)?
-
-I think that might be pre-existing. Maybe we just have not seen users
-who used 4TB+ swapfile yet?
-
-Might be worth just putting in a quick fix independent of this patch
-series just in case.
-
-Let me see if I can quickly whip sth up :)
 
