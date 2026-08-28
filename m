@@ -4,92 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B66EBC61DBD
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 07:11:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C8AFC61DB9
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 07:26:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3CC76B0088; Fri, 28 Aug 2026 03:11:42 -0400 (EDT)
+	id 9E4276B0088; Fri, 28 Aug 2026 03:26:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A14136B008A; Fri, 28 Aug 2026 03:11:42 -0400 (EDT)
+	id 994B06B008A; Fri, 28 Aug 2026 03:26:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 951C66B008C; Fri, 28 Aug 2026 03:11:42 -0400 (EDT)
+	id 883D16B008C; Fri, 28 Aug 2026 03:26:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 696E56B0088
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:11:42 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DEB5016027A
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 07:11:41 +0000 (UTC)
-X-FDA: 85149808002.24.783ED67
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 58A951A0008
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 07:11:40 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LQO7tg5L;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E42A6B0088
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:26:43 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E4422A028F
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 07:26:42 +0000 (UTC)
+X-FDA: 85149845844.12.6483E99
+Received: from mta0.migadu.com (out-44.mta0.migadu.com [91.218.175.44])
+	by imf12.hostedemail.com (Postfix) with ESMTP id BD8E040006
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 07:26:40 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Wpp1C6qz;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.44 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787901100;
+	s=arc-20220608; t=1787902001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Nlvtq8RrY4Qv1BwWlfkIuckX4fyEMKpcHNCZEpNZD1g=;
-	b=eBgxB37rBK3NpOui5OzU+Qk/G3V/kclQiY3pdPgwBczPdb6TWo/svK9qancEbEEjcsaHoA
-	RX65kF31iuhqU5auqkIF2LRHlhdQZ0C10e0JiJdWRQ2DhC83JmHVO+gVZrQLYnX1LDDs2U
-	0LqNjYbnV/KgKuINW/kGynESv5gJ3xg=
+	bh=kWXsBd101uoPLtQpn1+4mOXqmsinyUBG23B6Dw7eP1E=;
+	b=UR+AsLuY5T2govjJ2w3wRiZlmcFcoKtzZ1T4Tl33HtO6s+lkcMR+f5Bik7Ec2boM+ybpSs
+	lY8+7npf32Yfdu+ZsrRgDUSwDrAPCtnG6BhLhffnYIIQSxcOFW1s5n003orhvcuDhAz9Yh
+	fUo0+H9cWHzC4ChifDEhegNOyX/0aX0=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LQO7tg5L;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Wpp1C6qz;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.44 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787901100;
-	b=OcxjhLQ+w9WIJPg/oMisNRXZiicgfmSLJ1PySid/QTSl1lNTWMY++tQY2y+1olhA1RNDja
-	mrz4pnOei9r+4wgGDwKBKkPetIz1lAQHa694v+1/nlLrAHfPhmz9hVlWN8+PR8rRn+zSV2
-	DNku2+Cf2T7EafrCd7JKV1bB7pg+gQ4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1F3EF60232;
-	Fri, 28 Aug 2026 07:11:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3981F000E9;
-	Fri, 28 Aug 2026 07:11:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787901098;
-	bh=Nlvtq8RrY4Qv1BwWlfkIuckX4fyEMKpcHNCZEpNZD1g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LQO7tg5LJMeiaUlf4a5H7/JysPrXdJg6wWW6gAPJHdrP//LipPDnv3j2P+z5oJifu
-	 ttdApyw0xT3NW4RHj9q26RZUz/UY38/m1vrm3PQ369Ezl/ttVkOK/4rKaNz2cb7DNA
-	 ORPvN9x+XNb4nzBNb6MKiwqb7laHIaP+jTiLbOnePwZjZSL056DXh8Xfi/kKU7eG57
-	 lPkXI6PjMfTVH8laDKmUwoRCM/hnw6jjRHTRiOitxxUN5ysdv7HeEnUa479ld34MbZ
-	 ons+fV7jS1m7b9RDaYPkBMqqyMkJEqOUKDuI5NPgIHP0iKT4O6WtjPHivhePxqiadR
-	 rNbRhQ9ePvwag==
-Date: Fri, 28 Aug 2026 08:11:32 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, Peter Xu <peterx@redhat.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Cedric Le Goater <clg@redhat.com>, Saravanan D <saravanand@crusoe.ai>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/huge_memory: bypass THP tuneables for huge pfnmap
- mappings
-Message-ID: <apEzvfGgsvbc3vBI@gremlin>
-References: <20260827-hugepfn-allowable-orders-v1-1-94819c8807c8@kernel.org>
- <DL08J4JGJ4UK.2G92WO0NK8XU3@nvidia.com>
+	t=1787902001;
+	b=V6aIpYtsdMCAcRB/LJ0pWXyy0uocumGFWWWthDT+R+N19oyMxpzDF3FYntl5MFR2QRNI82
+	FvN4n6T6aj97CVg7dQTFDBYopcWIhrp2YqJdI5prjgPWF37edn1EV4rQh/55gb6b6/WGKh
+	lgDyOYJJDnP2r5+FQGOI4lPdG0L4MhQ=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=kckWbcCWwzGpC3oweqdN/h/vS4FFlKvUVHQRTYQfcLo=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787901999; v=1; x=1788506799;
+ b=Wpp1C6qz7pdxz0C4jTsx5XB7EhoBkRBwV/4BGmpq+GEAfCNy5sYYgq1GbEzCmcHJCiZg1czu
+ GFmUrdQd+EEC4lJffA2datSr7tOYG4ntPtjR/tASuuxwY9/s835pJOCRLc3vV0w6hU0tE0ca+/G
+ sZ5fuD5Texyaki0w6MD8ZzrI=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id dfa73102092ea13f;
+	Fri, 28 Aug 2026 07:26:39 +0000
+X-Mizu-Trace-ID: dfa73102092ea13f
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 28 Aug 2026 15:26:35 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Barry Song <baohua@kernel.org>
+Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org,
+	akpm@linux-foundation.org, david@kernel.org, rostedt@goodmis.org,
+	mhiramat@kernel.org, kasong@tencent.com, qi.zheng@linux.dev,
+	shakeel.butt@linux.dev, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com,
+	baolin.wang@linux.alibaba.com, hannes@cmpxchg.org
+Subject: Re: [PATCH 2/9] mm/mglru: suppress cross-node empty page table walks
+Message-ID: <apE4K3PnupiUG63g@fedora>
+References: <20260824073806.629593-1-hebaoquan@kylinos.cn>
+ <20260824073806.629593-3-hebaoquan@kylinos.cn>
+ <CAGsJ_4yC+2-Hx8wXop9bXPsAk7ZH=p=ZS1QmfyePKYK-VKhRXA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <DL08J4JGJ4UK.2G92WO0NK8XU3@nvidia.com>
-X-Stat-Signature: wk9o5eij9imoc6ahp6m3unnfx46woihc
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 58A951A0008
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGsJ_4yC+2-Hx8wXop9bXPsAk7ZH=p=ZS1QmfyePKYK-VKhRXA@mail.gmail.com>
+X-Stat-Signature: 1fnigg66dtmrmc8o1xrhz8nzn51p4yar
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: BD8E040006
 X-Rspam-User: 
-X-HE-Tag: 1787901100-618305
-X-HE-Meta: U2FsdGVkX190kmXChBm7mqG+Foj8RqMN373Y8Np2MKHr0CgTMkrJ8/9+TQ+rbPQ9r2iywJgCgnSUpahPS13cBshIF34q2wjUa0/BF4BsLimpR4sYViLmUb8L7a/ibflmHC/naWwv8qVSJTysPloVthLMjgCGM9JibB8LkMlX6D7MaMxaiVQ0NSrfCqw01GQr48cv1InR0bunc7wU0MvRKy+4Fzldj2eXz/Az7vQVeHtO+lCZqI+dhQ+s2owZdu72vdTVumIqg8x73VfEOi7UEDmr3pX/AeJMOpsvbBvMe0GLL2QurZiNhJoiUiXLjx+sOSjqPDktr3ySXbE+8tecT1S+udMkt1DNt3pF5r7WIWaQuiA8ccTF0oOV3ADzB2IG4te6H8Il7b288oRlbiBE2gVG5jFPMAshsmtBgXZUhc2jkB9Ja/ySegC5K847cGdBhxYmO3ZUSzxlmebComi6u3W865lr08FG+MbSooz97wwS7UMhMnhZ55LC5OSKMjlX4Ww09l3+5g4MhB/idpM+0RZj0HsuSwwjKj/Z/4LgEv3FxZiWyOMpI+LebVP+Hc38D7TQrNgdkjDvIPzx0nkRcfpPsR6BHucFJD5HnwzeespqXAZNrmLe0zti4/6zTJV7MrWfrqIubPayDydu58B0XnTsCXF2zNluc8StxDGQ+j1bu8AtwBgE6WtoQ4wIT+fLSMZIuAHoovdQVbVgVDCexra+XhIBk4VAYjYkzTrzTIqsb8dW4qHKAI0k8kxZvtqVIj+HQTS+VILq9k5YZESSCchAgtN5yIwH6bOQFgpMTTjO0xcfo8UDpYdS2IVHEYQja0ug81WgQCL0xZpxk6WB5PsYI6wGr5Algt30XaZGKXxOHeWsvjJT0KPYXmm+1WjU/YIn5tV+pOEzEYU7TU+DZ9k9he1ExHOjyXvr0giP3N4EbuMeS0QMvdlILTysuaLin48ULQsoH+G0yGq4xvq
- JM/F2F+r
- 4dV5mpYuRNjsCUpUW5VrSupsSC3ukJKMPgcx4apzd7uu46++gWxfBwOB/oF/X6G9xYRYJxLApVYKwgQI2ey1dUzVXdVznvfsG6GtNHeiH+6r4zuNJ4Qvyl30KIdU8eC/FxD6dd2CpU6TSyv4wUsAl/KATG8H5Y4ngDTcp7j2PZvxGzm9x1waMvLifB+iNW3gwvYNcJ5wLWwUmTs5/XCm0iMPQxlM4garwkz0/FVY5ldG9NB9pVi3McLbaaimqkQpBe/Iu5TnAr8uAc7wYxETAxUpAX8ws6LK+4/XP5vtv+/lIisqsTDo6r+z4JaBqZdjzxitJ9M4sHM1OgzZ2r5Nd8iHh4YuCI9VM90vdTaoP/A8I9CTxmYjv/I2n1w==
+X-HE-Tag: 1787902000-349600
+X-HE-Meta: U2FsdGVkX1+l1Z+IQl7VlTJF6DE9wI99eFU9v8oyqsvvNSn/CLZ6R/hIpu2fnXY9jny8ne12O4jpssTvENDoSnmYkvGW5pqvPz0DX1ysomjV3QkqQLj4uffUPj8pLmrnAcRo6qaeKImREC4Y/ZWvU3a919FsM1/QPR2xVyCZYweE34I8J29i90DyiDR9ADCuQyNHyjdaVwdncFVTdZuvcyOc9ld23xbsxBvs+o3fwGu6VHMG+xAg8CXxlC4qIm3ajq3B4a6pBsepXMWd7Mxcib1SwhWYsY9Aab7ExK98nSbaPKKcn/bvfqxIaTlZpJqj6rM4z7P6//qzDoi9EZjZNQBTPTjDnSc6ZjRp8ZYlwb4HDp3KoT12FptBYA67GReu8rRA8AY6g4rsM0Vgc5v+7rfICNQrLDK0pQlp/E2DGTD7AfbjqBXAIo2NcWF8tdmdRXWKb+X2QauASKNeQKKVjq8oeZeMKd8PkjgIHUu7KZwp9evLfeEsUDlkqmV0kEw3UQmMXNa+BHcKPAXMvaQLex1Eny10va6NeUCw6FiHkf1u+0DFsZHdFM+dBuv2+6sLXwzYGVPCa7IbwSj47kDHpQ7leZz3EvoOZGeQt9/squms0DZKX0z13fMPCig9xqicYSS2jYARexK4ISF9iGxAUuKJYDJWcoYP5jUd9zkrViNByCPHa345H4BOBxRI/rFCd4QQUNIiTyvByA3vK/AeaC1s8NqdIm0JZHmJvWXfQ0z+dW+X/54CQdg96TpEVUsJ2UB4+bn9ErJ2Rg/GdLFBn4bcPhwrz0vW4kBzFa0rJNcKueCH4bf2oVe3njeN0eQH0irOGsNNesUFF6lhWM5bE3sStqW9uYVuS7GPXuXDOd6AOSke4yA+ei6xcliN8bBvKmpzGnglAmP7+itD9CWtIF382r741n76+QYPrRFM8gq9g+HESZqr8CYJm6VlYX2oHv79xklqLWzE0wh/19H
+ yd3eUScL
+ ee6niRZuSGHZQcI+5adTs3m4V6qetpZSx7pPgmvFRVidiDcs1KdWiox8xUtYdZxdE/oKnzCx8VM4B86//jZNHLMyxmcFIeuZXXxmU2zEQsY8SY+f3nf0oVtYSMxo8377GCSnhkDX2Q6NICeIP7Zk1W7o/6dFUCktRTRiIaKDEit/R4m7BbYM36Oa9awmAjzaVPPA9xHfungnKI8INhNm/7yOtM2++PN7MnUHUAdoWizO5wo2kc32ne7+jzTCvc7lwnSwR2pvf8oZroG2TKxiTrAVlRvdOtpMSSyhAmpsD2RXwosc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,216 +96,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 27, 2026 at 10:52:24PM -0400, Zi Yan wrote:
-> On Thu Aug 27, 2026 at 3:55 PM EDT, Lorenzo Stoakes (ARM) wrote:
-> > The sysfs THP tuneables at /sys/kernel/mm/transparent_huge_pages/ rather
-> > confusingly only control the behaviour of THP in some instances.
+On 08/28/26 at 02:35pm, Barry Song wrote:
+> On Mon, Aug 24, 2026 at 3:38 PM Baoquan He <hebaoquan@kylinos.cn> wrote:
 > >
-> > They are not applicable to MADV_COLLAPSE operations, nor to DAX mappings.
+> > In the current MGLRU, lru_gen_use_mm() will mark one process's mm used
+> > on all nodes at each context switch. So each nodes's aging walks into
+> > each mm's page tables. For an mm with memory on one or only a subset of
+> > nodes, the other nodes' walks find no pages for one lruvec. While these
+> > empty walks are pure waste.
 > >
-> > Long-term, THP is predicated upon compaction being able to obtain large
-> > folios to populate THP ranges.
+> > Track per-mm, per-node empty-walk marks: bit N on mm->lru_gen.empty_map is
+> > set when node N's walk of the mm found no page for this lruvec, and
+> > get_next_mm() will skip the mm on node N between re-scan passes. The re-scan
+> > is driven by each node's own pass count (mm_state->seq), so every
+> > mglru_empty_skip_gens-th (default 4) pass re-walks all empty-marked mms to
+> > close migration/NUMA-balancing windows; keeping it on the node's own clock
+> > avoids a shared "oldest marking" sequence latching at the slowest node.
 > >
-> > However, vm_normal_folio() returns NULL for PFN map mappings, thus their
-> > reference count is maintained by the driver, not core mm.
+> > A walk is "empty" when it traversed the page tables and found no folio for
+> > this lruvec.
 > >
-> > As a consequence, the folios are not subject to reclaim nor compaction, so
-> > are not truly part of the THP mechanism at all.
+> > A page that appears on the node during the skip (fault or migration) is not
+> > aged until the re-scan; a later patch invalidates the skip on those
+> > paths. mm_struct grows by 8 bytes per process.
+> 
+> Hi Baoquan,
+> 
+> As mentioned in my reply to the cover letter, I wonder if this could
+> be achieved by the PUD filter instead.
+> 
+> For example, if we find no associated folios in a PUD, could we simply
+> filter out the entire PUD?
+> 
+> BTW, is this related to memory policies such as `MPOL_BIND`? If so,
+> could we inspect the mempolicy to avoid these empty walks in the first
+> place?
+> 
+> I'm not quite sure what the best solution is. My gut feeling is that
+> `empty_map` adds quite a bit of complexity, so I'd like to explore
+> whether there are alternative ways to avoid the extra code and the
+> additional space in `mm_struct` before going with this approach.
+> 
+> So far, I'm not really against `empty_map`; I'm just trying to get a
+> better understanding of it and explore whether there are simpler
+> alternatives.
+> 
+> I mean, I really like your PUD filter, but I'm not quite as fond of
+> the `empty_map` approach. :-)
+
+Thanks a lot for your careful reviewing, Barry, really appreciated.
+
+I totally understand your preference. When I found the defect of
+mm->lru_gen.bitmap, I was also very hesitant about the final solution.
+empty_map is the specific solution, PUD filter is a generic one
+while benefit mm->lru_gen.bitmap too. I agree with you that PUD filter
+is good enough to resolve the defect of mm->lru_gen.bitmap, and benefit
+even non-NUMA systems. Maybe in future when huge system RAM, e.g several
+TeraBytes of memory becomre normal, we can come back to consider adding
+the empty_map solution.
+
+That said, I will drop the empty_map related code changes and post v2.
+
+> 
 > >
-> > However, since commit 5dd40721f147 ("mm: allow THP orders for PFNMAPs")
-> > introduced the ability to establish huge PFN maps, they have been subject
-> > to THP tuneables.
-> >
-> > This is incorrect - if a huge PFN map is available (defined by
-> > vma->vm_ops->huge_fault being non-NULL for a VMA_PFNMAP_BIT VMA), then it
-> > should be mapped huge upon fault-in.
-> >
-> > Correct this by explicitly checking for this while ensuring that smaps
-> > continues to accurately report THPeligible statistics.
-> >
-> > While here, abstract the entire file-backed THP check in
-> > vma_can_map_huge_file(), with sensible separation of logic into helper
-> > functions.
-> >
-> > Note that drm_gem_shmem_mmap() and panthor_gem_mmap() establish huge PFN
-> > maps of shmem folios, however they are marked unevictable in
-> > drm_gem_get_pages(), and in any case would fail the reference check in
-> > __remove_mapping() even if they weren't.
-> >
-> > Failing to map huge PFN maps has resulted in significant real-world
-> > performance degradation, see links for details.
-> >
-> > Reported-by: Cedric Le Goater <clg@redhat.com>
-> > Closes: https://lore.kernel.org/linux-mm/20260805055544.1568534-1-clg@redhat.com/
-> > Reported-by: Saravanan D <saravanand@crusoe.ai>
-> > Closes: https://lore.kernel.org/linux-mm/20260821070520.25759-1-saravanand@crusoe.ai/
-> > Fixes: 5dd40721f147 ("mm: allow THP orders for PFNMAPs")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
 > > ---
-> >  mm/huge_memory.c | 86 +++++++++++++++++++++++++++++++++++++++++---------------
-> >  1 file changed, 64 insertions(+), 22 deletions(-)
->
-> I checked the code logic and find everything matches except the intended
-> pfnmap check for the fix.
->
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-
-Thanks! :)
-
->
-> Some nits on the function names below, but feel free to ignore.
->
+> >  include/linux/mm_types.h |  3 +++
+> >  include/linux/mmzone.h   |  2 ++
+> >  mm/vmscan.c              | 52 ++++++++++++++++++++++++++++++++++------
+> >  3 files changed, 50 insertions(+), 7 deletions(-)
 > >
-> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> > index afbb5974bd22..4bf7b670586d 100644
-> > --- a/mm/huge_memory.c
-> > +++ b/mm/huge_memory.c
-> > @@ -92,7 +92,7 @@ unsigned long huge_anon_orders_madvise __read_mostly;
-> >  unsigned long huge_anon_orders_inherit __read_mostly;
-> >  static bool anon_orders_configured __initdata;
-> >
-> > -static inline bool file_thp_enabled(struct vm_area_struct *vma)
-> > +static inline bool file_thp_enabled(const struct vm_area_struct *vma)
+> > diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> > index 6d815f6440c9..3738e8877b73 100644
+> > --- a/include/linux/mm_types.h
+> > +++ b/include/linux/mm_types.h
+> > @@ -1410,6 +1410,8 @@ struct mm_struct {
+> >                          * page table walkers cleared the corresponding bits.
+> >                          */
+> >                         unsigned long bitmap;
+> > +                       /* bit N: node N's last walk found no folio; skip until re-scan */
+> > +                       unsigned long empty_map;
+> >  #ifdef CONFIG_MEMCG
+> >                         /* points to the memcg of "owner" above */
+> >                         struct mem_cgroup *memcg;
+> > @@ -1503,6 +1505,7 @@ static inline void lru_gen_init_mm(struct mm_struct *mm)
 > >  {
-> >  	struct inode *inode;
+> >         INIT_LIST_HEAD(&mm->lru_gen.list);
+> >         mm->lru_gen.bitmap = 0;
+> > +       mm->lru_gen.empty_map = 0;
+> >  #ifdef CONFIG_MEMCG
+> >         mm->lru_gen.memcg = NULL;
+> >  #endif
+> > diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> > index 229d27fbfb54..30213a880db0 100644
+> > --- a/include/linux/mmzone.h
+> > +++ b/include/linux/mmzone.h
+> > @@ -633,6 +633,8 @@ struct lru_gen_mm_walk {
+> >         int batched;
+> >         int swappiness;
+> >         bool force_scan;
+> > +       /* this aging pass is an empty-walk re-scan pass (every K-th) */
+> > +       bool rescan_pass;
+> >  };
 > >
-> > @@ -118,6 +118,67 @@ static bool vma_is_special_huge(const struct vm_area_struct *vma)
-> >  	return vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT);
+> >  /*
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index 92cb83a78971..e8ba49683b28 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -2710,6 +2710,14 @@ static bool should_clear_pmd_young(void)
+> >         return arch_has_hw_nonleaf_pmd_young() && get_cap(LRU_GEN_NONLEAF_YOUNG);
 > >  }
 > >
-> > +static bool vma_bypass_thp_tuneables_file(const struct vm_area_struct *vma,
-> > +		enum tva_type type)
-> > +{
-> > +	const bool has_huge_fault = vma->vm_ops->huge_fault;
-> > +
-> > +	/* MADV_COLLAPSE ignores tuneables. */
-> > +	if (type == TVA_FORCED_COLLAPSE)
-> > +		return true;
-> > +	/* Huge PFN mappings are uncompactable so the policy doesn't apply. */
-> > +	if (vma_test(vma, VMA_PFNMAP_BIT) && has_huge_fault)
-> > +		return true;
-> > +	return false;
-> > +}
-> > +
-> > +static bool vma_thp_tuneables_allow_file(vm_flags_t vm_flags)
-> > +{
-> > +	/* THP=always? */
-> > +	if (hugepage_global_always())
-> > +		return true;
-> > +	/* THP=madvise and marked MADV_HUGEPAGE? */
-> > +	if (hugepage_global_enabled() && (vm_flags & VM_HUGEPAGE))
-> > +		return true;
-> > +	return false;
-> > +}
-> > +
-> > +static bool vma_check_thp_tuneables_file(const struct vm_area_struct *vma,
-> > +		vm_flags_t vm_flags, enum tva_type type)
-> > +{
-> > +	return vma_bypass_thp_tuneables_file(vma, type) ||
-> > +		vma_thp_tuneables_allow_file(vm_flags);
->
-> Naming is hard, but
-
-Yes :)
-
-> 1. is vma_allow_thp_tuneables_file() better? Then all three helpers are
-> vma + a verb + thp_tuneables_file().
-
-That's a good idea! Much better thanks.
-
->
-> 2. is vma_file_ a better prefix than putting file at the end?
-
-Yeah, it's an annoying one as kinda want to say 'file-backed VMA' but I think
-you're right vma_xxx_file() -> vma_file_xxx() is better.
-
-Andrew - could you fix that up in place?
-
-Obviously if there's further feedback I can respin as well.
-
->
->
-> Another idea is to put all checks in one function and just add some comments
-> on bypassing ones and allowed ones.
->
-> > +}
-> > +
-> > +static bool vma_can_map_huge_file(const struct vm_area_struct *vma,
-> > +		vm_flags_t vm_flags, enum tva_type type)
-> > +{
-> > +	const bool has_huge_fault = vma->vm_ops->huge_fault;
-> > +
-> > +	/*
-> > +	 * Enforce THP collapse requirements as necessary. Anonymous vmas
-> > +	 * were already handled in thp_vma_allowable_orders().
-> > +	 */
-> > +	if (!vma_check_thp_tuneables_file(vma, vm_flags, type))
-> > +		return false;
-> > +
-> > +	switch (type) {
-> > +	case TVA_PAGEFAULT:
-> > +		/*
-> > +		 * Trust that ->huge_fault() handlers know what they are doing
-> > +		 * in fault path.
-> > +		 */
-> > +		return has_huge_fault;
-> > +	case TVA_SMAPS:
-> > +		if (has_huge_fault)
-> > +			return true;
-> > +		fallthrough;
-> > +	default:
-> > +		/* Only regular file is valid in collapse path. */
-> > +		return file_thp_enabled(vma);
-> > +	}
-> > +}
-> > +
-> >  unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
-> >  					 vm_flags_t vm_flags,
-> >  					 enum tva_type type,
-> > @@ -190,27 +251,8 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
-> >  						   vma, vma_start_pgoff(vma), 0,
-> >  						   forced_collapse);
-> >
-> > -	if (!vma_is_anonymous(vma)) {
-> > -		/*
-> > -		 * Enforce THP collapse requirements as necessary. Anonymous vmas
-> > -		 * were already handled in thp_vma_allowable_orders().
-> > -		 */
-> > -		if (!forced_collapse &&
-> > -		    (!hugepage_global_enabled() || (!(vm_flags & VM_HUGEPAGE) &&
-> > -						    !hugepage_global_always())))
-> > -			return 0;
-> > -
-> > -		/*
-> > -		 * Trust that ->huge_fault() handlers know what they are doing
-> > -		 * in fault path.
-> > -		 */
-> > -		if (((in_pf || smaps)) && vma->vm_ops->huge_fault)
-> > -			return orders;
-> > -		/* Only regular file is valid in collapse path */
-> > -		if (((!in_pf || smaps)) && file_thp_enabled(vma))
-> > -			return orders;
-> > -		return 0;
-> > -	}
-> > +	if (!vma_is_anonymous(vma))
-> > +		return vma_can_map_huge_file(vma, vm_flags, type) ? orders : 0;
-> >
-> >  	if (vma_is_temporary_stack(vma))
-> >  		return 0;
-> >
->
-> The rest looks great to me. Thanks.
-
-Thanks!
-
->
->
-> --
-> Best Regards,
-> Yan, Zi
->
-
---
-Cheers, Lorenzo
+> > +/*
+> > + * Cross-node empty walk suppression. lru_gen_use_mm() marks an mm used on all
+> > + * nodes, so aging on a node where the mm has no memory wastes a full page table
+> > + * walk. Skip such an mm for up to MGLRU_EMPTY_SKIP_GENS generations after an
+> > + * empty walk, then force-rescan to close migration/mlock/NUMA-balancing windows.
+> > + */
+> > +#define MGLRU_EMPTY_SKIP_GENS 4
+> 
+> Is this related to `MAX_NR_GENS`? Does that mean that, over a full
+> aging cycle, we have a `1 / MAX_NR_GENS` chance of doing a rescan?
+> 
+> Best Regards
+> Barry
+> 
 
