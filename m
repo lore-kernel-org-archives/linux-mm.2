@@ -4,124 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0359FC61DBD
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 18:36:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A217C61DD6
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 18:37:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F8E26B0092; Fri, 28 Aug 2026 14:36:57 -0400 (EDT)
+	id C31BA6B0095; Fri, 28 Aug 2026 14:36:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A99B6B0095; Fri, 28 Aug 2026 14:36:57 -0400 (EDT)
+	id BBAD76B0096; Fri, 28 Aug 2026 14:36:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BF606B0096; Fri, 28 Aug 2026 14:36:57 -0400 (EDT)
+	id 94A186B0098; Fri, 28 Aug 2026 14:36:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DC51E6B0092
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 14:36:56 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 552E6140506
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 77D966B0095
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 14:36:58 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EFFAB1A0534
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 18:36:57 +0000 (UTC)
+X-FDA: 85151534874.05.D573FED
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2D49840006
 	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 18:36:56 +0000 (UTC)
-X-FDA: 85151534832.30.E57D053
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 99A4C14000C
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 18:36:54 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cUKPAGG4;
-	spf=pass (imf23.hostedemail.com: domain of yintirui@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=yintirui@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yQyk69T+;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787942214;
+	s=arc-20220608; t=1787942216;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=tj/6UYQts00alOowhGV+RewyQyJrbaYQ35fI8AlyfYY=;
-	b=xRFazmKenz9n1I2A9iaSjNR6rspQ9Nuf7eMimYaQDWOeha/SXXXR5z3FJasbounoopGw7r
-	i5I04QhBBJ6Ccu6gpptX3uz0T+OSj6It+c4XZRKepCxTCjuN9Y6sqLYzFUVhETx+8H866U
-	Cp/MYlOFUD0q6WCGCN04aIKSG/B588k=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=gbn49kAAPUgUC+oEM+rUHWn7hXR94lgTDWdzdwQhvBs=;
+	b=c7wyMZ6J3aX8kkkJQ6lVBvvI6XXEnaty1JTmGBJTH2WlVv4VbziM5s7Y5oTlwhba0bQ1tV
+	V0MsNuYoI62Ej45KjkJOmI2VU1ixCeSvD7Oe22rru+ihAo52mwfGN/kBJjKUp74MkaCcVS
+	4tjoJ3brkF4USdmtnsb59COXWrzZJuU=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cUKPAGG4;
-	spf=pass (imf23.hostedemail.com: domain of yintirui@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=yintirui@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yQyk69T+;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787942214;
-	b=u3btU90NA8BBlP4tCrrf8ZMQ9eik9cOWFXnJ46Idu09n8wAfYZ8O5ncgQEXhF2F/t4vdeM
-	arbN67/zhaJ4IXxG5x4Q3UoIx/0ePKWR5M7RUxJ3exXYyi6fmGfkPnI6jPkp4TUkvaQ6oR
-	26lVcORW000lsfS+Q+ei7c5Z/HwE6cg=
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-84e27035206so1240299b3a.3
-        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 11:36:54 -0700 (PDT)
+	t=1787942216;
+	b=gxDmx1FVMz5+Ja5SCONXdyFrrTS2o+clo77GjljqEzmJ7jc56sixJluEKQgj2CDBsWtQ9G
+	I3DyQkQKltL8T+HUIosyKnCK+GHBOaNsFWfmAzvcixfQLDuAl1RyZLFcfO3OpYwRHnkIQj
+	Rumd3nasLXwpWnveYe+LgbEffDNRRgE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8C874601FE;
+	Fri, 28 Aug 2026 18:36:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C266B1F000E9;
+	Fri, 28 Aug 2026 18:36:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787942213; x=1788547013; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tj/6UYQts00alOowhGV+RewyQyJrbaYQ35fI8AlyfYY=;
-        b=cUKPAGG42dwCdTDmatUFQS+yKy8MYnVLinGfx16ocf8fHG5vllgcSB5Lrh0cfypYGx
-         F5J+35sqaKUJVhXBwnytONzl7/4tJhoooiu03pT/SciFxxY9RyTi+aoZM5Btty36OaAf
-         SzmfSaQ7LMKmIaxGFMFyxDafBSRqxAVnL5goSF/K8vwp8sD+346t/pxXLOo++1e04Q90
-         77onDtbqeRJFb8I9dVoTZLi6kqwx3OWUEc5mqp0bARtMb7CqYtxhbabXYMIZ+QqL6YVm
-         +plpFbmWSUlcWPSr3rGfUX0ToeJIoFLlPLiWtjIoJak+YZkOOr88lPvKrs5o5GGdjJsE
-         OO8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787942213; x=1788547013;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tj/6UYQts00alOowhGV+RewyQyJrbaYQ35fI8AlyfYY=;
-        b=G+HeuFOlddM3I3cvqX27emBGeBznIX4hRl6nCAi3H1f0s2YTOuJpEkpNncck1o40DH
-         EDs4Er5FqH51YYm3By7Dc/X7alFJR51njtrzLp/d2DM8MRpPvoiMrVZbDzx7UnajUKmh
-         n8GVe1FLw3apo335TFYRhtiEyDRRn0FT1bdYRki2w5yyISGouMG/1Ru73S5PkTPYe7iG
-         yegUCugJEV0Kf0Y570vAW+UpUo/wXsL2AnFjbtsATJKyw349ZtS0Scl76bVGMy57JSYo
-         v6BEkjq6kXmwOxMI7pSBvoJP3vs/g4yPY47d4tTxiln9aiUhymZ2hJ2lsb7sSrv+memc
-         4yfA==
-X-Forwarded-Encrypted: i=1; AHgh+Romlh8lbnkM5G/7dX412KV0LH2fPw6/fDn7O9ZFPzTefFQJGj2oyytZkd9SEStvXJ4MCyib81HJPg==@kvack.org
-X-Gm-Message-State: AFuF++m3UWx6RjYvda4LFlNqlAjqwSsnj5GgUlB1v9vigwvRWsQgY+cS
-	yer9a9fBLMYYCz7PVpI8plnMwA9CqDhfKRkW9kjDPN16zaFxCsMS1C6c
-X-Gm-Gg: AR+sD11Ah2Mo3hnVb+4GvjzaJkTiLM9/MO7Yj3kLyDnwQWxtm3wRznUhYHbuMuEmwTa
-	FUNGPsKycyriKUofU3cLb58XZd+2npBf8W1zcQSDMi218K5yufaLjDBbtwXktYwcxXJd3P2T2CM
-	bztd/CN7TIG7tuGb8JOjd8Yc01Hj+MxyodxYLDkMZvcdcwVitUh+BocPqg8VHKCsj+JV/r94itb
-	Fxn6W9y2+fyE9n7QpyQBlYWgryp56x7OHHLuXDzTtxkDIN8awWmtIzp28PvMLPudovsS8iB29BS
-	/2CrPTaFidEbFuvUs1T6KxXSaDUmOvVxgANqL0bFcZbXdXkAd2Z3XEfJcPwTLQRW5PSyHO7kW3V
-	UI4lyFjN+n9fYxT/L2Hkc22iSGpOWMfpoX1FcoRk6EfaR+uOAQN67lFWlW7GAdwdBc7PovUNK4b
-	FH84UCMzOBCUa4P/YmS7SzGjepLoc1S4wMngD/VErLgNvrDmlQJ4psCrmRfr1LaHfu3eATAy6tq
-	gItaglXZ26BXRoO7Q==
-X-Received: by 2002:a05:6a00:2ea3:b0:855:1590:ba2b with SMTP id d2e1a72fcca58-856285920b6mr16244293b3a.5.1787942213289;
-        Fri, 28 Aug 2026 11:36:53 -0700 (PDT)
-Received: from aig-kmd-01.. ([120.133.49.20])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-856a2ea6fa3sm844230b3a.37.2026.08.28.11.36.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2026 11:36:52 -0700 (PDT)
-From: Yin Tirui <yintirui@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org
-Cc: David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Dev Jain <dev.jain@arm.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Nico Pache <nico.pache@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	wangkefeng.wang@huawei.com,
-	chenjun102@huawei.com,
-	linux-kernel@vger.kernel.org,
-	Yin Tirui <yintirui@gmail.com>
-Subject: [PATCH RFC 0/9] mm/huge_memory: refactor __split_huge_pmd_locked()
-Date: Sat, 29 Aug 2026 02:33:10 +0800
-Message-Id: <cover.1787941780.git.yintirui@gmail.com>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: hbd3x7a6kqfkiootpp1xztpuk5hnhpjc
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 99A4C14000C
+	d=linux-foundation.org; s=korg; t=1787942215;
+	bh=gbn49kAAPUgUC+oEM+rUHWn7hXR94lgTDWdzdwQhvBs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=yQyk69T+hrkrj6khDh9IxOsJiuyHv14Nj+E52yTtQdaqGJ4G2In+sdgqdeJKUQ0G1
+	 uICrkPblJSCQ2wdbbLRv7D93URitNuMpUU+E7AzFMO9LrGXpOnxtpBHm7LkBuld4yn
+	 qEplW5wtIrT+4CEGo+YWUYYv4ApomHqA7C0yRZPw=
+Date: Fri, 28 Aug 2026 11:36:54 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Zhen Ni <zhen.ni@easystack.cn>, David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet
+ <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
+ <rdunlap@infradead.org>, Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/8] mm/page_owner: Add PID/TGID/COMM and cgroup
+ filtering
+Message-Id: <20260828113654.d01abd8baed3f73e87506eb3@linux-foundation.org>
+In-Reply-To: <apEx0wT_hWs1Q5Wp@gremlin>
+References: <20260828031339.1270699-1-zhen.ni@easystack.cn>
+	<apEx0wT_hWs1Q5Wp@gremlin>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1787942214-782101
-X-HE-Meta: U2FsdGVkX19MkTJvz5dqgvaCbrmauJezsj/XDGGcClWflNZ/r6VjRJObyQF80Jft6OSDf719i3ybMvbzLSGYQjaPLuoFVbWUMjH8A33NL+toCMN/yWfHRykhD/pjVLPkwB1SlWAqWcYiR5gzdSCuY8/+c43vdIRdt7BFfL1cwMT8KhSmtK15ul/QqInDmCxjPjWvmOE4zEtpbcuSCXWuq4AfT9z3pMAvyZtSIw2LN3DE2S7Jz3Q2POmRiItAJXN6iy2bnP+bj5Bos8XLhCVmlXP5iI7G2DvDvuQtoM9mRSDPnZG/5CPUdXCCiXIYN6B7qWkRHBZOfT247YyHGUmbiX8jLbvLMbGMZMm98OBG8rM+jjy3VCgFRy05/ygBjG3hw5M2zcB0Ocqx5M6FKU556dwyKzhN6G5Qey2ICEweyXTT6hQCpCLTmPDTYAPVsrW/x2JFxiwkkSsjrCdGTd9z2g14PFTm1pHTlLkBzUdz41uZ0yS0Hbdk3NmG7hj0pkim2IRK/GREty6/1tWZceNQf4S8dj0rckuoTvDMWgV3I7HYcj0/wzlzk/mUr0EKImlqNUNBq2EbZJrSe2aElg4ena66F8xT6eHNJkIlumlkO0Q1EwybDlJqdxvFW5GuMK2IomMWgLJX6FcTKX8uCREvUmVmWT2nH6WfJAxafB6tyidkP7wAfuSzion1LqKkkajVBYReyCc3goH+qt5hyCBumQ/5ta+bap8RWitd04iKaxN1RBNHKKEUs8RdnXVbb0SBRZpICHtYmGt/TM1u300B/FO8Btb/UNpg8zQHofso01HAgaEUsl0sG4zhOuqOLlaE2wN5yo62+F2QXo7n7eK5f8Xc1TYm9ZbGOuepPd0AeAJ/CFW3GFb9CNrK3OjJ43eJ6ps23Pqo6TYlth31azH/LHGZypcN2GmRH+tOUgYA1EgqQmu2005E106HH4KKMRWAY6Pol8TL+v8PhFCoixw
- qaCWol0i
- tPjiktT4FI4lOUgGrWddZo9oT1SIGOqJceIO6oiJLIe6UrZMAS/HTzitOaRMju5qcTKajB7WwRDvRePglc5sH0CFz5Uvas3xZjkpoDT6rrYvZ8wXRNyIwmsOMbsSXM34kTrGLnRIYDxUb41TONDtEbQTzTH5GDVQJeyy+j+FPMCZYugqr6rbm1YDcVgoYRNJ8RchsoI6s8K3hOmjx2KB+q93f5E5MX+MqIRr19zCYezxO1+oIuikcHYaiwPQAENZBvgoi3u868gzBpeyZt2cYhDsDxXd7EroWxWpdXDFh/Y/MlZT05D0COOEvOtk7QQFbS66f9yvvCAi++SlN3KCaJyVTz9J2M7zbspPXxKerJAy6z3vTRyUfVeTHxuELLESrdQvf8XULoLsXKSX6NrpVXDnhSv+B5PaePkwySikfWOxY4H9iuSnVjseFRQ==
+X-Stat-Signature: h5sfqdkkdpksfwebpouajszjap135yp4
+X-Rspamd-Queue-Id: 2D49840006
+X-HE-Tag: 1787942215-496181
+X-HE-Meta: U2FsdGVkX1/j0PcldGrZ8Rpt4nHAkrX0Q7nqXW2Hfo5UCeXDQ3t+3/CsBHEGWYYSe8nZ8IfUqeJOVsNFJDhuLvpZVi6RDxm/+3yL2cwydopbksmRF2jgrlWEDFlEQjGoxVYQ0B1EoLjnQV4W6EgHqNUmkZyhg5/8n+1y7KsX2hUV3BDbRvIeqANDS/b5OnsPV3HGVLb1cQePKdbPytHHnjL+0x2SXqrLTqdgKoG8YH578tqKiLYVDhxLqbIdaVbEv5G5kX2XvPAanWxQ+pxIALqWqDwIMQuXKmna4Kj7L9EznyKe2xjs7NY6xtQMINnZlupB8djsriPzZbcn31Zo+4zbcAFXB116GG98pYIRWfRgI0M1Umf8fQlDkehlw6HcFEvKpsYL9s7rDlUdMhCZvSQ1Dc38IhG6FCRINQBrGUs5X7q0Ab/ae1eUY46QKdY+alcdTUndc9iQDz6Lvyo5q5laft2rQH4oXwe4lWDQRyJcRCxi+3p9Uz60WlsvFOAYyrRs3VWhx7nFITPVo2NiGSrtxh7uMlK4P+MabPakZyWrGIhRCRvUfo8dzHuhgqRMSoRn/olZ5QfEo/qLtgoE4Exy+4GZxgHpUTppeieBufmjdPqdVZfjCvNaXkCLTuWDdrbjG01RVSLUNfvjEPd79I/221VRCW06ySXNV89qIFfpnuwoAD6cvLf+es6MT3ZKb+zczfyJoLcgwAjnM/E11QYdqLpSnvp6Gigfsc1Mj38q2eVblaqI6OxsdhMrRdf5yVo7v8EGP9AraLl99IQimw7PlZlGuIf4+jd/9goezEQnyLD6Ky733+PVTV0zD/NcnXHxd6Ly+wJNUX3EipF3jCBnE28rpjyG48uGUJMK1NLytKSZ5wCg6DyZ9ygL+YurUSBLMa1o2YGnjYJUqXl9lEVivID/w7lVrA3w3aXlh0ObIUCQ+vEETf4+AMNVvVEcHH3Uuxd7/kaNlzQSCCN
+ MRa3kbE3
+ ECdZsHRd8Jfhh8emn3gmk9StcxsXRvpIMoXk56HAAu7muJr4zIRaLH2VDLaxNh4sLnoGgN7dVgcaIeYFTLAhksks9uZ20YzRqzzUDrWfgXlJL+OTFSGyodCIguzt3+bCBCJgqbz1BoZ4cZOFGwDORzbUbcSXAdxxLyqLLZC1XN7OXDaKaeTwcsUmeN0RgwauFGQY/Nf4KEYmMxtYucp7IPmFutXFqRpQdiBgfgchgQLM/mbJiU1mpssa1YE3y2S7kexmDMv7BLrM6EluBEBalEwj0SNlFTVpXf4aqlxdcXbLhvmGPDazNlUEmh9DA8o7x9lY0Bmub4Kl0/jMrpyRZfH0gFsw7oE6JTJiGmsfJoyCOnA6h8pHTE8WuyZsABdJzcwiq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,33 +97,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__split_huge_pmd_locked() currently decides from the VMA --
-vma_is_anonymous(), then vma_is_special_huge() -- before inspecting the PMD
-entry, so split and zap can classify the same PMD differently. The entry
-itself should decide. The function also mixes the present and non-present
-cases, resulting in duplicated code.
+On Fri, 28 Aug 2026 08:03:38 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
 
-This series uses the PMD entry and its folio to decide how to handle each
-PMD, as zap_huge_pmd() does. It separates the present and non-present paths
-and moves their common work into helper functions. After this change,
-__split_huge_pmd_locked() only selects the appropriate helper.
+> On Fri, Aug 28, 2026 at 11:13:31AM +0800, Zhen Ni wrote:
+> > This patch series adds process and memory cgroup filtering support to
+> > page_owner. Following the previous series that introduced print_mode and
+> > NUMA node filters:
+> >   https://lore.kernel.org/linux-mm/20260707115411.1714314-1-zhen.ni@easystack.cn/
+> >
+> > This series adds filtering capabilities to page_owner, allowing users to
+> > filter output by specific processes and memory cgroups. Users can now
+> > filter page_owner output by PID, TGID, COMM (with wildcard support), and
+> > memory cgroup path. This makes page_owner debugging more focused and
+> > efficient for tracking memory allocations in specific contexts.
+> 
+> The majority of this cover letter feels like it should have been
+> documentation put somewhere :)
 
-Yin Tirui (9):
-  mm/huge_memory: read the huge PMD entry once when splitting it
-  mm/huge_memory: add and use huge_zero_pmd_can_split()
-  mm/huge_memory: add and use unmap_huge_pmd_entry()
-  mm/huge_memory: use normal_or_softleaf_folio_pmd() in the PMD split
-    path
-  mm/huge_memory: dispatch on the folio when splitting a huge PMD
-  mm/huge_memory: add and use split_huge_pmd_anon_rmap()
-  mm/huge_memory: add struct split_pmd_state
-  mm/huge_memory: split present and non-present huge PMDs separately
-  mm/huge_memory: unify the migration and device private PTE loops
+yes please.
 
- mm/huge_memory.c | 525 +++++++++++++++++++++++++++--------------------
- 1 file changed, 302 insertions(+), 223 deletions(-)
+The only thing longer than the cover letter is the Sashiko report ;)
 
--- 
-2.34.1
-
+	https://sashiko.dev/#/patchset/20260828031339.1270699-1-zhen.ni@easystack.cn
 
