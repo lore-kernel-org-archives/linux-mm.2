@@ -4,89 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE4F9C61DBD
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 17:51:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32037C61DBD
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 17:58:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E74B6B008C; Fri, 28 Aug 2026 13:51:08 -0400 (EDT)
+	id 424656B0088; Fri, 28 Aug 2026 13:58:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BE986B0092; Fri, 28 Aug 2026 13:51:08 -0400 (EDT)
+	id 3AE2E6B008A; Fri, 28 Aug 2026 13:58:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FACD6B0095; Fri, 28 Aug 2026 13:51:08 -0400 (EDT)
+	id 251C96B0095; Fri, 28 Aug 2026 13:58:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 522866B008C
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 13:51:08 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E7063A3E2C
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 17:51:07 +0000 (UTC)
-X-FDA: 85151419374.20.23BC0F1
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 412F8100007
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 17:51:06 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="hz wq2uT";
-	spf=pass (imf05.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787939466;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DB4486B0088
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 13:58:41 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 77DE91A04F8
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 17:58:41 +0000 (UTC)
+X-FDA: 85151438442.05.F6AD033
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 8B9FA1C0002
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 17:58:39 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=tn2v298X;
+	spf=pass (imf20.hostedemail.com: domain of stevensd@google.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=stevensd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787939919;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=HRZSERTM0W44dOUuuxbU9VU3oVx0AWLYRmfUpfpxEzc=;
-	b=SpkCdJK4we4R+k1R9ftaYHxF3leBW/0HDWc757jiMQPBaQqXSR4pPN5TJ20qWFlMOJLym4
-	SxCargX/kYxeSHG9uEOUEImhtbkTdiMU7vD26MAcXfoL2YsT/MtJ4AP7EDYgCRCPfIBqYb
-	T0yHTciJw2JDU7ulivxxnqdC4DUbrfk=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="hz wq2uT";
-	spf=pass (imf05.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787939466;
-	b=mzJ3u8o4wSmhZeG2ZtBg9x+ERdeaDCprkakBZpYOFep2Z0nHM5jSNJ1KpHDzLCtnOJvqaS
-	zEgdhMJKffe3XVnxz4Oe/8H7w5bNlo6G0JiVmOklrZmTEsrFqFLv/S15+lxUFtWMiioOZk
-	ly3QbOXMJUEWK4GIbro/Qa/8Tj0b9UE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References; bh=HRZSERTM0W44dOUuuxbU9VU3oVx0AWLYRmfUpfpxEzc=; b=hz
-	wq2uTiBTs8IkwanKDfjgJVs1pnY2pp2w3uzTcO7HgW8d1Hvy8ZeNbPuQ1SxbBooaq/QUzSrOHiEpb
-	7TQD2iTEBnTiB5qScFe5IN6zrGaNINE4x7Q1uv1k9OOr+Z0zhRQcUnP81v+8Mv/7ukzZYYpLDumoX
-	ENifvuszFTj8zU5VW+5QRvMWO0Qv5oDaSEBrPqru6G8G5DVTbHnIWfox7sOJTlmHwXCx2iXrYkU1E
-	GDP44K8sM89Eueh9TO2HSnS+0JVnmrlSf6N3N9WgA7onuMh2BfLA3nya5z6wXkJ8DlMtFo8KxS5rM
-	vaQlQ8hR5eHXWUSKVMy7/0Wvvbw/aORw==;
-Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708] (helo=fangorn)
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1x00ir-000000093Tk-0mpH;
-	Fri, 28 Aug 2026 17:50:37 +0000
-Date: Fri, 28 Aug 2026 13:50:36 -0400
-From: Rik van Riel <riel@surriel.com>
-To: linux-kernel@vger.kernel.org
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
- <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, Andrew
- Morton <akpm@linux-foundation.org>, cgroups@vger.kernel.org,
- linux-mm@kvack.org, kernel-team@meta.com
-Subject: [PATCH v2] mm/memcontrol: fix stuck FLUSHING_CACHED_CHARGE bit on
- isolated cpus
-Message-ID: <20260828135036.7d44361f@fangorn>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=R2koS2vCzM8w7VNNntAyqh354TzQoKL9/yGNgBa5fxE=;
+	b=VTiDOnKvxWS1fzYUK37QE+gQ8QfxHf1eo0fgR/7ytyUW2In4wasJDED7sPLeM2NgRXK/S+
+	VeJSqrZqwKBtgOOocVWV4784IYenxBITAybTVrre5o8BCRK71OUN8WkiWFTz378I0SHqhq
+	9siFvJY3T+Sgc3wdkKKm2UaUSyF+MMo=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787939919;
+	b=sjP8eChpe28PRonwSsAxhH+771AD7gee6ceSGr5ZNZPQQueSQS7Cwo8PE1jTQ43SjLe5/E
+	T53XzadvAbgZYEscRzJcAuocQU1ppbqtgaZnyp9ixpAnJiA1LmHXM1HfNmqhuq5Y9bjm7B
+	Pr5j5MYam09QwDRVWXwM/lcSDh9ZJ5U=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=tn2v298X;
+	spf=pass (imf20.hostedemail.com: domain of stevensd@google.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=stevensd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-498012a61f6so3225e9.0
+        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 10:58:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787939918; cv=none;
+        d=google.com; s=arc-20260327;
+        b=eWa4kvTjCn1uYJUOMW6GeF/zzZ85Dxd0Qe2DjiUhQ9/tVkzQz6JQ2L0KH6isAQ8m1B
+         W1tVJu0vBW66vci8AKQPZY6GyXVKmg/qFheI4hMqvk4uQwoeAtc4cObuVn5w5NXSNfen
+         2ELKyzDL51NRS0DaBEWgNvTzy5Oljg5Aj/APznHRhI10ofTY8tuL0ucNBlMck0ZHT2p9
+         PS6mieAGXBgm4NpIzgVzBt4M7EhOEzcX0NQ+GVR0BfXOiXodKwDzPi2sMi0e49xHq1wu
+         8BG+PfLIaOHLE8Q1oP3isTKpamHA0WwGnnUZJ5x8omagcwEkH18DcoyrermHT4BMvhgh
+         PfZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=R2koS2vCzM8w7VNNntAyqh354TzQoKL9/yGNgBa5fxE=;
+        fh=jY/JT3KP5QH39i/PW67cGKxhNqe2Wqnc1FsM5/6etuQ=;
+        b=PvjKvelMwqmnaSTNR4AR/UnAwNamQXeUL2iI+4Y4t0IkIDRw8RwULmtXc25D2IqOPc
+         zVQQRLscEGmaiuQuiCwpv8xWxXprMxt/3EcOT4gLApUq0fac3UYlRiqAnZFWVsg7uzZn
+         fi+Mt0iAZmC6CZHCoNfzq0UTw4Zwe2HxCq9v2NoRNCPKoBEk1sl5LoqOwnzVBFDCLsWH
+         v2YWXvCt5H0XdG1xbqcKprTBD8HzhDdxocRIdHes/IOiE1uTKnBmEXVYvoRNs35SkMZv
+         fYOMWXoEWH5/vTuiNDFIPF0P7m7GkOkPlVreaUhL6gOAQsaCSEXN+CMs2J9FT7A/QboJ
+         9zag==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787939918; x=1788544718; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=R2koS2vCzM8w7VNNntAyqh354TzQoKL9/yGNgBa5fxE=;
+        b=tn2v298X5xB6q4V3gNU1SLBl3wcOD99TI0YQeB/QU+i2xzvEWAPoqa6CXxSfyCydoV
+         bbpncfxjOrAKIjwg3HK2rb06Sn09lDZqpruE5lbpXMqzYQZLS0f7XgDD2u2RL5nvARby
+         NIPNDoXQDGOl98S6CngDZO+Ps2fFuFT2LA8P5KzJvvCDGv7PQsUU4dCgb/yIo25x3kEP
+         S7VLTTIlyoMG0yLNzsCe7Qxax0R6Curuxc40g5k1ZhfVsLVIiVG+AJrsIhKS89gwdHAy
+         aLxm4SkEyTRaaANUqDgLW1B6mpyhEiGh7rjHLWWLX4Ll9qMmwANN6g2qYNCHY2gKaKTq
+         yMyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787939918; x=1788544718;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=R2koS2vCzM8w7VNNntAyqh354TzQoKL9/yGNgBa5fxE=;
+        b=MUGNJzt/lzB/y1BYnwpkMC3IDDXaVKFiugrHWRNQZ8fYFywLlrADnvfSFxhjddqmAF
+         TRC8MUPOb5ITCEhqU5ED7Rn8KhhCphCvQjW9BVrJp62FYLQt1naDjy5/jUkKjQe3JdMy
+         ZY4P5TciNoHAmPV5wT0mFCKQBzqDm/biZx+i9zUTtnN7DTyvnCOPFDg7XfB9UC6gKKbq
+         NsHqUyiCdvQ22fyxi1e/XJBvsqY1npnedvOPiBF6H9N8BG3kgtkm7l3hplM747RVEeUp
+         OCuilN7FtCW71Kl/aMv5nw9l41SM1+MNGqWOtN5UHOSUouxnGHbQW5b4ajtT/pVsmnHT
+         NGaA==
+X-Forwarded-Encrypted: i=1; AHgh+RqmoI33myPKNiUo1J/L/Y5ls2UAJo/QzXoXSzCRpSlKuUbrF0z7DC5U5fj1CQDndggDpi+R/oR3uw==@kvack.org
+X-Gm-Message-State: AFuF++nNBCWZ/i7iZd3Q3upMW7KWuPrYumTRMg/LXb5uPSS+LPwPVqh8
+	OXp8q+XMb4W2sLx+CJ4byQ2NIpIp3Qcs2yRopn0Wgp3p+f+LRQZbDTNfn1XDBKLcdDM550mALWo
+	DVRQVPIGpvguTlP9bm9b3GKNZdXHtQhKLysEaDvtn
+X-Gm-Gg: AR+sD13lw7Om4Dmx3BYP4m/7neCWllpvjeJrnWqEyCuY1aqtRHqzP1FL1aMLW1P5HGQ
+	1XVWPpvuS9fdF1JgPZdOr//jLAuxdWhLDXVGm84Rp86o2y2+KmN5l0MNXihBufB7onLuFr+kBzZ
+	kQ+/YvetvAWxuAycGjmRFa9zjAa1R2MjqtgynF+u+QDyLKDyFDhdbN53hCzlkJYOm89sz6M7ERl
+	1P40XHEtMt4pnUK/NhWEuuaqKr/mm1G+tiPc4V51b9SYGmdUOJgM/Rqx0ChLpfGEhkL1rK8Uo2U
+	yI13YNSOW95pXCy9ikYoVpHiakfOv+tknvEQK5P2J0RYXzyBIt8YmxBb1JvsXGoyIcV6Mkc+tNQ
+	=
+X-Received: by 2002:a05:600c:6051:b0:499:c46c:addc with SMTP id
+ 5b1f17b1804b1-49ccbb107damr76865e9.2.1787939917426; Fri, 28 Aug 2026 10:58:37
+ -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: yszfjsah5xjxnp84ts5mg9b46s9od83o
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 412F8100007
+References: <20260827232948.2520558-1-stevensd@google.com> <20260828124758.GP687043@noisy.programming.kicks-ass.net>
+In-Reply-To: <20260828124758.GP687043@noisy.programming.kicks-ass.net>
+From: David Stevens <stevensd@google.com>
+Date: Fri, 28 Aug 2026 10:58:25 -0700
+X-Gm-Features: AcwNN1WqLTUUK7Ta5eHOzidgwYbjtzO211AQh82X2UkIHuKv6OJYSJ2tvHu1D2I
+Message-ID: <CAOiLmNGr385FOvdd9utJ6VYmngvRPbg8v6KfVVhFwmQ4oxhLSg@mail.gmail.com>
+Subject: Re: [RFC 00/10] Reclaimable kernel stacks
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H . Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
+	Uladzislau Rezki <urezki@gmail.com>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, suleiman@google.com, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev, jstultz@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1787939466-400204
-X-HE-Meta: U2FsdGVkX1/Km7xXdP0quFyjtn3YJvMvaa2v7qON/f2Jyx2EQ0ZrXPTC++YuijywrthPfM5xmiJyl47yQxUaDwsN9LtKivzvv1GygCuQz/K7Jl5X/+4CvssfIyZbL6ecyeBZdGXf+Nxu5AamlpagOcKdQr8v1Czaqvtey1TKkH1SQuDmLk2Y6I6iNWh4kwcaErvVvjiA9t/ERyaL757SFdc4guU91ZJvClILEFGfEOnjWGP7fSJ76gKdSn2wLFjeAjcTmCsZpy7smpLsNohlPJ3aHzL0be/p0Io2EG16EwaMsZa2qUu8XEqlb+X/RPPHTXJBiS5FZRwDqU+C/Hk6Omft7scZ67laQ7Wj5qBMOtI3AaF5/qWQAwBaKEwLbd1l/+MPFLBxu1Cb6ZWxIGBJwVRk0p1Sv2E5q8S/tVCWg+DnJo1Nz3vtDCAheAmhf9nxzqGUMNKhAypyhOTWMvKL5gV0WY8q+Z3WInvZiyxpN+j2bp62yC0qcfhyHbOHx0f7ZhbO1M7tPj0wDgPfJgZP4TvhgVNqrr9gPLN1nN2dZEi87eQJaYIQhpqF82iP6yHOPY/vat7pSV+4U+lIyAz+PMMVgvT8H5rkOFoxW5MjFcgbQ4M1uDemxM5O/Wl5bhS1dyef7Z+1u0Bex7ETmCb8NECa1Y3RDWbuXLnL4AV5POLTVTH5XQbMylWT1BaIoSjVn3CJWvWxZF/E5RDFu1IPqy7WxUb3pp8sXRCIHTWPMgYDv5sV3mSKIxG07p+PgY+hyvE4lfRc7qFn0uQAwNb6F5/v65i1puJGF2sYaUVCitbWB6F9h+j7XBgTP/vWviMFg0EYk41Yw+6TTW7TZBgfRisJbtnDmaPaxl/IWOQtEu/0pI6sSSgk6yNsdb3JqkeN1vWbjMIwx+iHOwnhzU3+5NEIho5LanhMcVKjQcmrChAGl43KLanswGdyQGQe5E06I583B6TpBC2YePSahQi
- KfuXZ86J
- Z6G41Oqn4w74k7XN1kLD2oDrZf/84SSrmIKLJtuSPWHZB/jHFiOXvPbwJTQN0FMZR3t58XW6d+huBe+MVgODajCYVoHbO0u8qwUhXlW2mseRPjDgx4nmtcQHTXdZX7uE6WCdq9DNwvqag1rdE7qGJrwHit9aKxMDTI+BH+aUTYyXOewTb/X2qA48SjA3nY3dNMPJW58cofamlL8NDmmrVcMz/JMgD5zctVgmmaCpIq4HlnMH3qzgQ3nMsL833l7clO6+YAyQBPvgut7RQ/vzJYXCDiApl2WJc90wD3nQ/nY9SnarE+akl8aggJmOFjzdpiiYt+HEjWLTYoBwrFghK/sgM1jbiWWxMHmd1Dyc3eBIYl9iygoen5eH558+lyq8CmiqDLxLuKNUntNmPsI8PNoRIXjvqVdIcXrQsMQZAoMPEQ7Mk44o6aV12MmgAshKMMc6cOZj3FlO7DJUpykGV9B6mUA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8B9FA1C0002
+X-Stat-Signature: ach6wm4mnspdhm9x1zujpa8daifja5y8
+X-HE-Tag: 1787939919-950053
+X-HE-Meta: U2FsdGVkX18Gq5yclaJ/jTSjfD7r2RGbCu5ORNBJ/vcURDTeSZUdCWxm2Lm5JwWo7N22s5fMJTKdPkf8Wyq/vYTI73vosDZkkK829ICmgCqVNDbHRQU4XI5Iq69ikLTB70lGAy1CeFj/DIQZ5Kzmhmq1vUXnePt/zSzZyCnwEWFs5h8/ZSEDfWyLhzyGkfbmc4Xz7gvMcD/T5QShms1HxeHfAGhS90QEZNnHaQmgMdJX82nX+D0XEMJ8mtcv9PA/L7e9MCfihnI1HBOrPS35ecu56L5XfujCdma7znNI+Yh2S1UYFkAZIkW9iyvye0PIwmpBVVm778aaaz7+QzIc35p2G1jRCb5G2XfzsfnNlq1pDpV2pF8Nf9ZynooakAJswvWIlU1RoWGyr0yTTKLyL0XUWhthHOWmWXFwa0YnJNiVdLzuKlVg15OkCrfsLcF6AEyyz6u9GYs7O5JJt2pljXTtjXPjGCUGhKQ4YvXHsMzY+hsaM2SXl53SzwMvEQ3lKcDPEgLUK3OPPIz7yi3M2Aa2pv7n1AA+zN7rQtdur22RAMPGMOC2yFyIBL5z+3Ld9tlGKUdzamDhOyB/eUQEyqoZMtOFMrOkELdYh5HtcC7Y3zp/e2tRdF01kB4xdHYL0SpOPBGRO1c1mUmQ+3FdDDIw0N0wDfksbPvAXW6yT9vHXmeLqaCdbaY5JlQnm8W1V8BvohXpVH+A3AoTn8fHWo91UZk8m8swR82ChVN7hb1AdP/aSFyc/IOhB/q3yvpqZ9GSdRlpMoforDIxw13TO2pTMBQRkVAb8dU4AScj3TrDOgZLhDN21FhhVP4u36U4uJKU5Lhloy3vT52GUackjMPLTOkJVBAJ1vBRix7jr+KKNpUEmxMIas+P4gbPORt3dCpcpTP4mR06mGSntxAOifTJkgv73/77p331Vp1Yp5Q8bTucmrMhD1zSfFukkLJ/2y8QnIRv3liUtBB4Ym0
+ xPnB2dw1
+ kRthjwaAcyGCMtRRh5pii1JKeFW/V8hX26b9EeQEF6fPXESNG9NCa34xnx/MmWFqjm1OoPT8SvWGuI3bUrCbGRqAPt1uWF/bKr57BYMx4g2cN+rt4kV5coA8tZOhs0WhOzJ1issbKbNJm+9DkWqsYAG3EtTpXB5IAfv6ipqyw2cs9htJCOZ3E+3jEdcF9fRuazkolqdjpcmBjHEDfynEpoE7szeiiWfhzepooV+8dnFnT3GKxSajfjUlihqDKF1i+QMs4dmP3E9MElOVsMHmwcBEd8UOiQ8vdvlVgdMRBf2JuphA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,84 +154,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When drain_all_stock() sets FLUSHING_CACHED_CHARGE before checking
-isolation, schedule_drain_work() can drop the work in a separate RCU
-critical section, and housekeeping_update()'s synchronize_rcu() can race
-that second check, leaving the flag set.
+On Fri, Aug 28, 2026 at 5:48=E2=80=AFAM Peter Zijlstra <peterz@infradead.or=
+g> wrote:
+>
+> On Thu, Aug 27, 2026 at 04:29:38PM -0700, David Stevens wrote:
+>
+> > On Android, system processes typically have 2000-3000 threads. App
+> > processes add 1000s more threads on top of this.
+>
+> WTF ?!? Why does that all spawn *that* many threads? Perhaps work on
+> reducing that some?
 
-drain_local_stock() only clears the bit for work that ran, so the flag
-remains set and the stock is never drained again.
+I agree that the number of threads is rather excessive, and reducing
+it in userspace is an ongoing effort. However, given Android's use of
+Java and its heavily multi-process architecture, especially once apps
+are involved, there are limits to how much the thread count can
+realistically be reduced. And even if a 50% reduction in thread count
+were somehow achieved, kernel stacks would still consume upwards of 1%
+of system RAM on lower spec devices with 4GB of memory.
 
-Have schedule_drain_work() return whether the work was queued, and clear
-FLUSHING_CACHED_CHARGE in drain_all_stock() when the remote CPU is
-isolated, so future drains can retry.
+> > Tracking blocked state and when it is safe to reclaim a stack is done
+> > via a series of hooks in the scheduler. The actual reclaim of stacks is
+> > done asynchronously in a shrinker.
+> >
+> > Once a task's stack has been reclaimed, it cannot be rescheduled until
+> > its stack is repopulated. Although there can be a repopulation fast pat=
+h
+> > within the scheduler, reliably allocating memory to repopulate the stac=
+k
+> > requires a fallback path that defers the repopulation and wakeup to a
+> > workqueue context that can use GFP_KERNEL.
+>
+> I am really confused. On the one hand you have John working on proxy
+> execution, with the aim on reducing latencies, and then here you are,
+> posting something that will introduce basically unbound latencies.
 
-Fixes: 6a792697a53a ("memcg: do not drain charge pcp caches on remote isolated cpus")
-Cc: stable@vger.kernel.org
-Suggested-by: Michal Hocko <mhocko@suse.com>
-Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
-Signed-off-by: Rik van Riel <riel@surriel.com>
----
-v2: use the approach suggested by Michal and Shakeel
+The two projects aren't contradictory because they deal with different
+types of latency.
 
-Link: https://lore.kernel.org/all/cover.1787890328.git.riel@surriel.com/
+Proxy execution aims to solve latency introduced by priority inversion
+between background tasks and foreground tasks. This can happen at
+basically any point if you get unlucky, resulting in unpredictable
+latency spikes in high priority tasks.
 
- mm/memcontrol.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+The latency introduced by reclaimable stacks isn't substantially
+different from the latency from refaulting evicted anon or file pages.
+It's a tradeoff between the reduced cost of cold memory and the
+increased latency when re-accessing that cold memory - clearly a
+tradeoff that Linux already makes. In situations where reclaimed
+stacks introduce latency, there will almost certainly already be extra
+latency incurred from refaulting userspace pages. I don't yet have
+production data, but the testing I've done so far doesn't show any
+measurable negative impact on user visible latency metrics.
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 1271d390b617..309398e943ca 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2306,7 +2306,7 @@ static bool is_memcg_drain_needed(struct memcg_stock_pcp *stock,
- 	return flush;
- }
- 
--static void schedule_drain_work(int cpu, struct work_struct *work)
-+static bool schedule_drain_work(int cpu, struct work_struct *work)
- {
- 	/*
- 	 * Protect housekeeping cpumask read and work enqueue together
-@@ -2315,8 +2315,11 @@ static void schedule_drain_work(int cpu, struct work_struct *work)
- 	 * pending work on newly isolated CPUs.
- 	 */
- 	guard(rcu)();
--	if (!cpu_is_isolated(cpu))
--		queue_work_on(cpu, memcg_wq, work);
-+	if (cpu_is_isolated(cpu))
-+		return false;
-+
-+	queue_work_on(cpu, memcg_wq, work);
-+	return true;
- }
- 
- /*
-@@ -2348,8 +2351,9 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
- 				      &memcg_st->flags)) {
- 			if (cpu == curcpu)
- 				drain_local_memcg_stock(&memcg_st->work);
--			else
--				schedule_drain_work(cpu, &memcg_st->work);
-+			else if (!schedule_drain_work(cpu, &memcg_st->work))
-+				clear_bit(FLUSHING_CACHED_CHARGE,
-+					  &memcg_st->flags);
- 		}
- 
- 		if (!test_bit(FLUSHING_CACHED_CHARGE, &obj_st->flags) &&
-@@ -2358,8 +2362,9 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
- 				      &obj_st->flags)) {
- 			if (cpu == curcpu)
- 				drain_local_obj_stock(&obj_st->work);
--			else
--				schedule_drain_work(cpu, &obj_st->work);
-+			else if (!schedule_drain_work(cpu, &obj_st->work))
-+				clear_bit(FLUSHING_CACHED_CHARGE,
-+					  &obj_st->flags);
- 		}
- 	}
- 	migrate_enable();
--- 
-2.55.0
-
-
+-David
 
