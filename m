@@ -4,117 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72442C61DBD
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 16:54:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6596BC61DBD
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 16:57:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7307B6B008C; Fri, 28 Aug 2026 12:54:25 -0400 (EDT)
+	id 07E8F6B008A; Fri, 28 Aug 2026 12:57:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E0AC6B0092; Fri, 28 Aug 2026 12:54:25 -0400 (EDT)
+	id 030516B0095; Fri, 28 Aug 2026 12:57:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D0316B0095; Fri, 28 Aug 2026 12:54:25 -0400 (EDT)
+	id E63706B0096; Fri, 28 Aug 2026 12:57:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C72E6B008C
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 12:54:25 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BD931A3D69
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 16:54:24 +0000 (UTC)
-X-FDA: 85151276448.05.BE24688
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E998FC0002
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 16:54:22 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TXp5KVgW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=urezki@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id C049A6B008A
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 12:57:20 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3BE62A3F1E
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 16:57:20 +0000 (UTC)
+X-FDA: 85151283840.09.0D8EA7F
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 1BA4EC0010
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 16:57:17 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=bmWouooj;
+	spf=pass (imf22.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.47 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787936062;
+	s=arc-20220608; t=1787936238;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PZc1WWxRZ8hTjRwH7hstNkGifi5usT3ZTkYTcQBOSfg=;
-	b=LJshI29XvdSzcOpEmJ8wdOqQIEymjBuxh1dc5DDJkYsenfEc5d8hKuBYq4na2BtGvFndnY
-	M8jEqlH/VuM+5uKzjVzyxKKnItSpCW82AQTQ5o2OYNFwjRzUeDzU6NsmuwaeCISeO4c2yF
-	WTcJYVdUNb0WyEfvRMGLz25R3+ZzD8o=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TXp5KVgW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=urezki@gmail.com
+	bh=fqWP1cvvzzLBgenvSOHjdbQzbLJm8dhm2YNn3syViIg=;
+	b=zMw0XuGV3/Z20hb1fmA045WK+aZMTvR/yFTuhKAqAtyj1YZ9IR9E9m13qzP/w5DDp2W16f
+	btLIBJJxTVS1lYwuUJJc2kApbxnYa9Q7mX0AT0rn8RhR4fgKaPIOLJ8mV5PtFsCeofAD2i
+	YGnTDkZUV/DgLv5zTqF1RmJTYM0Yhyc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787936062;
-	b=FHvdAve4159rlKefWWfe5MziopMC9qlcao1y1E++YeSD2ZxqeuoOW2ef7rI2wdOODiZN5e
-	vbX+sjkTqUbF0ZYYSl6TLb3b5mE7mp7nK5BDgJQOZGRvMPTN2rUX2bNuhZsDUPPcdoL8cM
-	At+jmTmuwYYK8YqezO3rFnppJfUGta4=
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c250c6a6a9aso203286266b.1
-        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 09:54:22 -0700 (PDT)
+	t=1787936238;
+	b=7eWA3bxOZU6RUEi3GEkuwryzzo7j+rN2vztXI3hC9AzcE97nbnP9oT7vmIKmzpRFZvI4RY
+	st71v9ff6QrHqV0bqsCTLay0T21L/m8KTvavZ2DVgfhua0BOI2o6V5vwxI40FJSQbX6XZq
+	jugqgaOQ9svRkdxixRaAdLxeIN0tEg4=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=bmWouooj;
+	spf=pass (imf22.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.47 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6a623987d32so288011a12.1
+        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 09:57:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787936061; x=1788540861; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=PZc1WWxRZ8hTjRwH7hstNkGifi5usT3ZTkYTcQBOSfg=;
-        b=TXp5KVgWwvL+gyOQFq0HiNVjbWCG34/J1Ub+Vd7W+M4r6ZJVzMY1bMKKHRvN1VmErZ
-         NMywm5uSOnvKEevK2wLOv3FCuO7zGF0H3ppdnlfTTkDyg7VUtmOKx+qxKPJ5UTStQ4B4
-         9+hMfCuSWpc2Jzs9t6NKoFEvKEd3cfhpJWPldC3s9uyYXL1A2qdqV+Lw/7Auf4byu0qW
-         Hbmg0S+NAxZmZ0lMk1x8ZNkTmyXX1OnA7qKCj4ZZq11a9ft9R2whCEvNcTBS8HQ1Ms5L
-         P5ZQZYT1Ycuvs3/uYtF2b0kn9BHW5hMrUO5W2/7T1xRtstLyiXV+jyzPYdjx62dVdyIh
-         IBsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787936061; x=1788540861;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=linux-foundation.org; s=google; t=1787936237; x=1788541037; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=PZc1WWxRZ8hTjRwH7hstNkGifi5usT3ZTkYTcQBOSfg=;
-        b=jLKn/N2FrfevSeYoK1RB2E9tA3U3lQ5AwQ2J8NOW1TcUbC95O1sNNRAc2L6gFouQBg
-         l7F4Sz/ro7x6ProSZ8Uzg95403Man0jxJUZM1/bMOf4o44IivA3IHwbVazJ4IeWSqKnL
-         NIe9IHsoNpVBHtR+ZpgSdrBZa9ynJmpeT8dmYEJhbEUPEk8nDgEH9doG8kTSlTVsXT0I
-         fnwKj0pB52ssdGWI43i3HxPHddiW9V1tKB/5iTC1CqeBLIUnX0RBgjVYYzozVem5NHAM
-         Lkwrf9CBCj3vpdM/GtfzWOiRH7qqeC4RmmqN9OzL4kPsMNEqbL0eViKcFeGSrem3IWSq
-         B0jw==
-X-Forwarded-Encrypted: i=1; AHgh+RpUCCvkJT+FFKoG3zbFg/DG7MNZrnFZiJgdkJejhd5I86NKcgXt+wZH9NoDU3ILzKnYbiYQckB+uw==@kvack.org
-X-Gm-Message-State: AFuF++l1lnYjMY7bJd7BS63Zsha5zyIGJh6ALi62gj2386hg+33Nnd1x
-	OKiiqXWfKikUqIDWUoIoqro8s6EQQAEONz7XaFmeSCYyUSzRWiE/pL6o
-X-Gm-Gg: AR+sD13H02ok9vQJoUBhUgahtnbT2S0tvJTCUnEu4htdjeHwrLiL8NEfsbMmaYnW2mV
-	O2bb9azcGI/G2l4+qqccd/BP9tapZzcovSkwbWgdD1lfOAUD87PP3sPwpXjUS2uJp6TdPiQfQxk
-	q1uoQwUcrdueq6FgoiWwQ/qp+/6tcO7I5nQE+xa5vbxpHF4lxJ8OIuIOFrIODjgZNoWxqVMn4bM
-	2WiVqY2EeesY7X9L8HaYfDiP3na5AeLsjoRxdY6n+SYHJQT23Mxu+m4ZkzSO7OrZ6k3nkvE50yx
-	hWH4qFzzmBRdpqmi0UzmeRnRr4ewn3Vk/UtPt7yWEnlZl3F5FqVJYEM45cAXDevdLtdWubPRdiT
-	qpUBmF+ZGEQTXzYb4inxtOPmNjvkTUpKRSLDwJPbyBBKehT4Ye4KRa2uzBjD4Z+tu5U9cM4eZ03
-	UOokpk4S/fuNhVT/XNid3b2tHGcw==
-X-Received: by 2002:a17:907:1c90:b0:c24:d6f0:1223 with SMTP id a640c23a62f3a-c2557012418mr630435366b.12.1787936061168;
-        Fri, 28 Aug 2026 09:54:21 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c255ee0b23esm102793266b.2.2026.08.28.09.54.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2026 09:54:20 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Fri, 28 Aug 2026 18:54:18 +0200
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, Ye Liu <liuye@kylinos.cn>,
-	Dev Jain <dev.jain@arm.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm: vmalloc: fix vmap_purge_lock livelock under
- memory pressure
-Message-ID: <apG9OjDrFygvb4Yo@milan>
-References: <20260828091753.299295-1-ye.liu@linux.dev>
+        bh=fqWP1cvvzzLBgenvSOHjdbQzbLJm8dhm2YNn3syViIg=;
+        b=bmWouoojU5Yc+3l/Ru4l+vXsIOPDt7eJgNfHo5DizFmrmqJL2rlLq6ZT1EWzpzekOG
+         E4W8IU3raWdgDDxVUmF9xIJcXhizcP/6BejRwr3yPcbkxuWVBV6Y60eFFI63HD8UzsK+
+         wnHboVAl9OxyBk5d3yzXsiifvVtbmOrsD44fw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787936237; x=1788541037;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=fqWP1cvvzzLBgenvSOHjdbQzbLJm8dhm2YNn3syViIg=;
+        b=JnXMIpTQFF3E3ymgcA24T5QQM7eoBnLU3sl+k9nryQbBClyhFzt4j6fTNoMrKVItbr
+         vmd+PgulUnxmmIjnF4/DyN/t+0nEtfuGS7VVFvaJJM89YJYeseSym6WevDadbgGdjmKz
+         IpWK0nEFuEyPdirZ69aihJg/UpHcdtx0r3uVfQqXApV6gyzEhJEN3jqcnhM6XRQTX9Jx
+         17cgwoD35Boz7dmWLBw+ehU8IAj22hMc4vKp087ssENcxRf4Wgztea5sVULY5/2PvbVS
+         9jwwIC2YoOMqjd3Y4vjsaq7kKOp7izJcckXUOWTOdgA7CLirt4p7WJg+K0KiWH5D/lG0
+         sw3g==
+X-Forwarded-Encrypted: i=1; AHgh+RrxMXeCLelTqx3QM2bt6zS/aJa4PTALC4kmm3u1KpqaeDUI3iPf2OcH5cyZs6tanm7C0coVAzRbgQ==@kvack.org
+X-Gm-Message-State: AFuF++lWNaVPLKD8fThe1JMvI8Lph2JLMkSovbyYOkjYvGSMiz/BwrKi
+	ztzua4NYwsZnFgqTVPwKrUTuCRCcINh7EELESAOuhuudRal+5iPh1MFABwnxjiONfDfehYzwryQ
+	vcgb2GTQ=
+X-Gm-Gg: AR+sD12/AcISLykSO1z4zGlmuIBnYIsVhsKAgPiOkc2Ywh62NMJmSFWTgQlaQwppnHK
+	Ob8avD/7Mwm9yApGJevetjBWt+7OIvBY7FjqoUUglhpyw0B9zwxk74nXdyVyHkMs2KVJr48hkDg
+	8veHY47IAW4UkMcOrYcOsXhqc2PI5DFwfa/VuuPQhzD/owh8R9REYV8a/IxR/Rvf1FxiUxoyfk7
+	X7DCU+2ubjhHk4XugVVR2LVa2SstMGRh0ExboDYny9nY0zpWCuLLFLkINjXQz6NDGN3iUtLFKWk
+	MJlIByEiCzjcJJ43EfbdFIGX2ozm82cdjNrGwz1o8jOE6JgipFX75CrRKwJ5eKdmJoHU7Wsl85P
+	IxCvXzBmlLTViDvyg0MDhysuRnb385D3CuBBOQ+RsjavFlr6EmrQq2nXF/F+C2F9892T+vCnIcC
+	HxDhQWb1FDwnX1m9/cYm2zUNbiFggf3laltRU3qQkP1c+40/qw5qiAzmO6ArXbgJwK7fFcDzA3x
+	BzvcTNU5vEyc8yVM8mST+PjvelAlfmtjjuRmfAZTrWM73bC
+X-Received: by 2002:a05:6402:847:b0:6a5:d7e0:626f with SMTP id 4fb4d7f45d1cf-6a60d35e94dmr5417905a12.6.1787936236544;
+        Fri, 28 Aug 2026 09:57:16 -0700 (PDT)
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com. [209.85.208.41])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a611b5c3f7sm806690a12.6.2026.08.28.09.57.16
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 28 Aug 2026 09:57:16 -0700 (PDT)
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6a6165b4402so1158216a12.3
+        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 09:57:16 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RogdKYN3FzdUqoonRQQOdymU7noX6HdBUHzSc4OXMrMap5lqCTCkMLLErvlqlnXZK4ZkF5drNZEgA==@kvack.org
+X-Received: by 2002:a05:6402:24c9:b0:6a3:714e:f5b4 with SMTP id
+ 4fb4d7f45d1cf-6a60d3a5f5cmr4955636a12.9.1787936235799; Fri, 28 Aug 2026
+ 09:57:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260828091753.299295-1-ye.liu@linux.dev>
-X-Rspamd-Server: rspam11
+References: <apG8g-5krNRUFUuD@casper.infradead.org>
+In-Reply-To: <apG8g-5krNRUFUuD@casper.infradead.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Fri, 28 Aug 2026 09:56:59 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiY22BnQkAMMc8-h6xaRksvVAbASpg=pj+=kVaXXQYo6w@mail.gmail.com>
+X-Gm-Features: AcwNN1WR0kJ5fa4772K72bkb1NaLJxumbwJKKrqGtowAymofDWBsxumI0FifkBg
+Message-ID: <CAHk-=wiY22BnQkAMMc8-h6xaRksvVAbASpg=pj+=kVaXXQYo6w@mail.gmail.com>
+Subject: Re: [GIT PULL] Remove dependencies on pagemap.h
+To: Matthew Wilcox <willy@infradead.org>
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Stat-Signature: s39g7ew8f4zakw88ezun1tufk3mkmeni
-X-Rspamd-Queue-Id: E998FC0002
-X-HE-Tag: 1787936062-186736
-X-HE-Meta: U2FsdGVkX1+FmMMy0TorGfVw41mxUKU2qjmADNyABYVnsU+F/KG/DC4HGdeJ9YX/i2vm5UjAUWYC3bVBGaWR3W76TfSt+SenWbIpyEVaLQ+4envKJF1Vack+3uFCS4tYTaOPh9i5typbjwFo09fvSnc/Rt8+sShu+TEICbfi1DaxgDzYxkHULCQbLuaI9yd99ASwMoHW0eVyZSaNag/vmEXIRXDWqIvY5n9dAUVzVVMg/g+2Od+cBLZda79iuMYBWfQdksk9sEnVK28ZLdGoGdCh8YYSCTqG05Nv+X/SCgubVmCsXyZ0hlOz2hIJ5NyOtVf2yizRsmmOKu2z6+GrAYqPDxHZX0CgfY6a3bdLj91RUEGa2RylIhaWId6mJKZv4WGUToGpmXg3IYCHqZJ7sKafYA4g92JPXnu4WLgXM9KJog7+kISzC1p/0velRN4jOmNy1kggqDGcGTwWYYwazFWz7dwL03q6BO696VYofJ6BsdtiIMJ/EcsQyuW9HbGpj+AahyVb4j0Cf2r7yCn4oWr91abU36sIlzHZ4GD9pdTPB+299jiSFeFbNmkR7qwvTduHSeoRo8M/AaelAER0LeayGkbbxMxqXDyjFBHS+fYGe9MU8U/xj45oaVUKmGMKYNMiSs9fQ2MLWLxOW5J9ImreKwEccsLkEhPd8u9HAOkZnv075CdQaxHj6TcYQq+8vivOzhQxAffp6Oxmbi57Yql4j0nlPCw76k72pszckHYtr3aPDv+Y3Gfl627rorwIs7Vny09tdwfBf+aUD5v+Uf1htW8Kap4BQjrwRZbUEYNh+usdBEHRR3NYdx1YbWTEojao03bPIAZGxB7P95VFgojAZ5YhVlk3kVpsoFCwgg9fQOc02nwe71DW8zrhiG7mYBaD1yoTs4Ft+9zDwEonOFt0yuweWSAxt++jCALocY5POBmiyx9uhmYNYO5nCupY0zVVqy21hK8V9ylhCT6
- pZpXZ5b2
- 5KQA4rHTLIMHdEQJRhnqkRrKJZNXZzeuqnYuWnuWD1z6dvaAB1QJXrctdOit02PrGrf3Ool6TZ3v0KgGHps58RERg7ecvCObbLNThJtxnfS0QeK4PePH3uD2Uhp49Ic6pkGGCMILs3aafn0UJ3SXAjUEtQBXhgXRf60Qr2+75kEWRfzItX6sMoBuzE63UUyPN6i650VIlPlpFTSZ6b3/YJvpuB71d8E4QluMKUApWpeJhNg3r6bnUHKZDn9zWET4m+4K4f03JCQr8FW3YmSl1Q+YuRdSsDzSGVi1dKwSoVwrp/mozlXVGUYon8DHjM4X4qlPGagOL6rvYm01xEXCRuIggSNyhTO3+2ezeAgIsowdxcOsueJ1CdFF+uJkc13qYaqdxZEoJUyVj+M5z9Tgn9rNbKZKDB8liE5NfCgIMLoyjsA8rHV9NyKKSRKBcip1ljak5XivW4riZz5S/MCeZp9c5No56blGZCvwLJgyc38m6Tfw/VbcXKnax0L3zavVjZAuaGQd+8oEOsaw4tFH5dsxpvpu/+sbOwy+X5LmNwC2i9C8RaKceOLg+NXkWh6ma+9pXOv3tALYt00LvOF5H8LdFtA==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1BA4EC0010
+X-Stat-Signature: rtpjkpb8icp9uspgqo3imyncuj8tg7ub
+X-HE-Tag: 1787936237-141194
+X-HE-Meta: U2FsdGVkX18Dys4SqefRJ4fGx8KahETZiqwvcbzauEzGbcWXqv6vASqYybxcxYmbo0eVw7tmzXnwlQZbODSAJ+Vo4w2ThtwvHK7gTck3cZStV+xi8kSYgceo/4pN8/Ub2y1c5UTZbVtir8b4/12v88RVWS2pit7PWWROIjO5OaxRDg0dA1FQW2yoSBvF4ey4UP/V0q1EE+K271u0nDWWqgVX0RnydM6mpAJnuUsABRghXO6Oa5SNSExaifdWBjkqBWtPV124v7sCStJhu/t6WCeWH6NJFVFfv/6KKF0zqv+hbFrO7qnLMhfJnSJjrWrthj38bB8MUbgwh5tob9XPVgvZB1w3Q2AqpPXameWcRNl+uXMXWrqtU/3u1PgOLmir6NiMcRX/v9wvH+FhEqL/FCn/7qJ8pWaFLykPEU19VEbR/xlYyVWAFNNeCT9ke5a+x1F2hly5sqfgV4N5EHuFzhNRu7k6kUNlNgLeuqd9lJ+HDETNeixMXyjWLE7ANErBarQCAmqjRmHYL8QxhGY2dPRBViXZWqor/W2p8Mb0mGBMU6eQnsS+EAKgwlOggqhVQX4VOETBo9zUsB2ppmvq9YgnyQedQ3cHOZ+PsjpmswMwN7gicYN1esJBLg2Bl3Vln9bz3yiHRUAa7rm8KGPVOio0WselyocfDvffnmXpDLze6OIWVCr2qriFKwefNTUCL92jIkKN0SbKkkf8S6a2WaQgDdxUqAh9DwfuewG6kIQeYlXv8AB6T0DLiNuYXXN4F1TNTKVCb6KOF8x+EbvqyyBLJWOteE5/OeZyAUY5zIZw3g7RWnjjeJKmHhmPncxu4KNdesmIyJ0NY6EihDuG4f3EB/rtsVqswh6rKOMsbtgigSjYW8m7AJV7zR4cYDUgcU/z07CzUG2EYoHokx55irSnp0k/JivoTFkgpqL/fpGR6dzkBkFS1nPpDOVwkXrBGFVq+NaKhegBtGD5hv/
+ 0C7qaE7V
+ Wwondy1OWE/9pzYzfIVsMxHnHRtxbfwsiPAa/9a9b6D9+ky3dhOCSZbFeq0THdC7ERLU4WD4jNT3X5W7x8xzI2ICoV1epA3bDZ8VTHl+IPAQ8B3KY7BWeozEt1uCdhhtxhlTuuCEf7S0RJXDTkottVThyLia8NJgc6qD9X2Ycwr7RjQp/Z+hrrmYYOT1hMvFstIpZJ/3Ff3v39x9buT5aiKb1ZiOEQj7SqzSOFjugkiQmnRJ522gnp7B2zBjR5IVY4X68l0PRaNyd/VFLf3LrISpo3sQjGMJGKdUWP4a0+lXFdIsFdYTyeJBjARS5vzwBxk3b9mOhs8IQ4K6gg8HyUx9/NWw3vyeBBqc0nO10Aep42h1HSzzTVARceX4w4wNVisfQ5RCkuwBVTF4dJSt2GgKEijeLbDoxICtFBU0ddfBqF9KeMnrp9IDVycERX75vWuxmE5cYRfkPy1AcYRt1oOLwV8YywGcy0Nu6OxfNq1p01ejW7QLZmM+Ovp5tXUmPt3oolVkXDVfMb7K2vGZiG/bvSW2NvSRfGganAzVneG48VwKRSKiQcMuT3MkZbYLYOe1/4Lc76LPqIBAJoPsXsuZxBo1Wrl3wD9TTEOGYHH4HpN1zCLL5oRjX6Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,89 +124,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 28, 2026 at 05:17:53PM +0800, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
-> 
-> The vmap_purge_lock mutex can be held for an extended period by
-> __purge_vmap_area_lazy() which calls flush_work() to wait for
-> purge_vmap_node workers while holding the lock.  Under memory
-> pressure, those workers may themselves be blocked in direct
-> reclaim trying to acquire the same lock via the
-> vmap_node_shrink_scan() shrinker callback, creating a circular
-> dependency that deadlocks the entire system.
-> 
-> Two places acquire vmap_purge_lock from paths that can be reached
-> during direct reclaim:
-> 
-> 1. vmap_node_shrink_scan(): replace blocking guard(mutex) with
->    mutex_trylock().  This is a shrinker that only decays the vmap
->    pool and returns SHRINK_STOP without freeing memory; skipping a
->    decay cycle when the lock is contended is harmless and prevents
->    tasks from piling up on the mutex in the direct reclaim path.
-> 
-> 2. reclaim_and_purge_vmap_areas(): replace mutex_lock() with
->    mutex_trylock().  This is called from the vmalloc allocation
->    overflow path; if trylock fails, another thread is already
->    purging and the allocator's retry will find freed space.  The
->    notifier chain provides a fallback if the retry still fails.
-> 
-> Both trylock failures break the circular dependency: the lock
-> holder's flush_work() can complete because workers are no longer
-> blocked on vmap_purge_lock in the direct reclaim path.
-> 
-> Fixes: 7679ba6b36db ("mm: vmalloc: add a shrinker to drain vmap pools")
-> Suggested-by: Uladzislau Rezki <urezki@gmail.com>
-> Suggested-by: Dev Jain <dev.jain@arm.com>
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> ---
-> v2:
->  - Use mutex_trylock instead of mutex_lock to acquire vmap_purge_lock,
->    as suggested by Uladzislau Rezki and Dev Jain.
->  - Link: https://lore.kernel.org/all/20260824095020.1225189-1-ye.liu@linux.dev/
->  mm/vmalloc.c | 15 +++++++++++++--
->  1 file changed, 13 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index bea9f76ed7e7..e5c68b795a3e 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -2440,7 +2440,8 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
->  static void reclaim_and_purge_vmap_areas(void)
->  
->  {
-> -	mutex_lock(&vmap_purge_lock);
-> +	if (!mutex_trylock(&vmap_purge_lock))
-> +		return;
->  	purge_fragmented_blocks_allcpus();
->  	__purge_vmap_area_lazy(ULONG_MAX, 0, true);
->  	mutex_unlock(&vmap_purge_lock);
-> @@ -5519,10 +5520,20 @@ vmap_node_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
->  {
->  	struct vmap_node *vn;
->  
-> -	guard(mutex)(&vmap_purge_lock);
-> +	/*
-> +	 * This shrinker is invoked from direct reclaim where memory
-> +	 * pressure is already high.  Blocking on vmap_purge_lock here
-> +	 * can deadlock the system: the lock holder may be blocked in
-> +	 * flush_work() waiting for a worker that is stuck in this same
-> +	 * reclaim path trying to acquire the same lock.  Use trylock
-> +	 * to avoid this; skipping a pool decay cycle is harmless.
-> +	 */
-> +	if (!mutex_trylock(&vmap_purge_lock))
-> +		return SHRINK_STOP;
->  	for_each_vmap_node(vn)
->  		decay_va_pool_node(vn, true);
->  
-> +	mutex_unlock(&vmap_purge_lock);
->  	return SHRINK_STOP;
->  }
->  
-> -- 
-> 2.25.1
-> 
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+On Fri, 28 Aug 2026 at 09:51, Matthew Wilcox <willy@infradead.org> wrote:
+>
+> My apologies for not sending you a signed tag.
 
---
-Uladzislau Rezki
+I'm not pulling non-signed stuff.
+
+And it's way too late in the merge window to try to fix this. Make a
+new key, and we can do this next time around.
+
+                 Linus
 
