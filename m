@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89227C61DB9
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 09:25:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F99FC61DBD
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 09:25:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A7A296B0092; Fri, 28 Aug 2026 05:24:59 -0400 (EDT)
+	id 943126B0096; Fri, 28 Aug 2026 05:25:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2B2E6B0095; Fri, 28 Aug 2026 05:24:59 -0400 (EDT)
+	id 919FC6B0098; Fri, 28 Aug 2026 05:25:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9418E6B0096; Fri, 28 Aug 2026 05:24:59 -0400 (EDT)
+	id 830476B0099; Fri, 28 Aug 2026 05:25:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AA4D6B0092
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:24:59 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 06D781A0245
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 09:24:59 +0000 (UTC)
-X-FDA: 85150143918.19.2718C42
-Received: from mta1.migadu.com (out-214.mta1.migadu.com [95.215.58.214])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3935C100008
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 09:24:56 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pbkERHQJ;
-	spf=pass (imf05.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.214 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id 671206B0096
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:25:11 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CF63440266
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 09:25:10 +0000 (UTC)
+X-FDA: 85150144380.26.4AC7587
+Received: from mta0.migadu.com (out-194.mta0.migadu.com [91.218.175.194])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D8E5C140009
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 09:25:08 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=S9ChDKaL;
+	spf=pass (imf23.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.194 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787909109;
+	b=irrd+s1pLaXIiGEZvNd5B8fjDT5PPbAoeVk9yZqpb5btkKyfE/mfmVK66e5RY4SfoZTSzk
+	16UzMGZBty3eSXf97C2WFbw6NUunp7AsZOvOfbrCQ1rlPPdBxOPhNh4g0CLrJikffletAj
+	odZfX+zWtxICIrl7Qe/4kDbzzqezcns=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=S9ChDKaL;
+	spf=pass (imf23.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.194 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787909097;
+	s=arc-20220608; t=1787909109;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=//wYykVAzO56xi2ypfdxIFY7+db4T2dNiRrOYuiC9mQ=;
-	b=lmQ5ldAdgWLl9NjzkYJm2QTxXPueKbVl8IK7PMuLDU0x4i69uTEjlb7pgeWh6Cf/bn07h4
-	IZYZzKDo8VlZFN9AxXUghXH+r44wcQcllwl7ff6ywc4wSZ3dRsCJNVz7yYSc1zUUQi/X32
-	g6VCqwAIeJt84UwdmEcD0eLXkdamT50=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pbkERHQJ;
-	spf=pass (imf05.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.214 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787909097;
-	b=L+zZ2knU9aNYQMLDe9ertTLCJZUb5k3DFUV8+gSYGoWnj3MSIVJSHkKXL7a0ckbO9BogGa
-	hA8tuwiv9FHq7CZpeQD2oE+5IIdPXNVYGdGT2fPnj6FlTmIW0OAqz42o0G9JVGmzZHwPh4
-	2uoW5ah9yQoBEGBQujHDkRrCB7U0o+8=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=npBYA3khn5BUGAS8kGiA7fGPLj8BCUmEJ7r44dYwGPs=;
+	b=GwgXlC7WtbxvLM8Kzwy3buas8D3kGjSeCUdlUF6gqeouuI+0IvP69V8GyYhH/kcrOFl5g8
+	vz7i3RQvbfeBEe80haUwnt+/2//T493JtwPBN+/OgEe4nFVVw/B3aPqVhqCc91FGoraX+r
+	VOCfAm3vJ3ZA2un3LD9URbEjOVwDR1g=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=CDI22/xCoc9ddBdZXUhSYZ3MzxPYo2degC19Pq6FtgM=;
+DKIM-Signature: a=rsa-sha256; bh=dBqn/fwXS6Yqu7+OeooRTuVzLOlPePdPqVBD4zdNuTA=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787909095; v=1; x=1788513895;
- b=pbkERHQJkaHElumOogHNEjWknXO+i1b5M+StdIo+zG6BnFCi7wMPV/RECNgeGCjdvJ4snv2h
- Ej0YNfsYEXscKQDCMuw7X9hMaLmy8aASChOhogmFclGZIJvs4rIk81ODwASU+uKXoHoS93ojBzg
- oHmQhIAvt0BQJv3SS/hGnSUE=
+ t=1787909107; v=1; x=1788513907;
+ b=S9ChDKaLDw1RrTJFJfcqJNeTpafUMPONVvbaQW8JqDshbUn0LnQJnL6RgjNKr8Q28oSO42RH
+ oIOmhPqXy1J60mbKDF+3BJIHk3ZR/AigbVTa+TlmkrewN5JVFuvc41K+K6B8C4FsVfdpUIlwNN/
+ noG+AmmaXTB9yQ7GDxneWt6s=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 220f4142187c77b2;
-	Fri, 28 Aug 2026 09:24:55 +0000
-X-Mizu-Trace-ID: 220f4142187c77b2
+Received: by smtp.migadu.com with ESMTPS id 770e0ca2d72166ed;
+	Fri, 28 Aug 2026 09:25:07 +0000
+X-Mizu-Trace-ID: 770e0ca2d72166ed
 X-Migadu-Flow: FLOW_OUT
 From: Ridong Chen <ridong.chen@linux.dev>
 To: Johannes Weiner <hannes@cmpxchg.org>,
@@ -83,21 +83,24 @@ Cc: Muchun Song <muchun.song@linux.dev>,
 	linux-mm@kvack.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
 	linux-kernel@vger.kernel.org,
 	Ridong Chen <ridong.chen@linux.dev>,
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: [PATCH 0/2] mm/mglru: fix ineffective memory protection for non-kswapd reclaim
-Date: Fri, 28 Aug 2026 17:24:30 +0800
-Message-Id: <20260828092432.1257917-1-ridong.chen@linux.dev>
+	Ridong Chen <chenridong@xiaomi.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] mm/page_counter: avoid integer overflow in effective_protection()
+Date: Fri, 28 Aug 2026 17:24:31 +0800
+Message-Id: <20260828092432.1257917-2-ridong.chen@linux.dev>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260828092432.1257917-1-ridong.chen@linux.dev>
+References: <20260828092432.1257917-1-ridong.chen@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 734s4s16xdbrte6upwmzgydr19ius73k
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3935C100008
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D8E5C140009
+X-Stat-Signature: 8t7597h6b6c4ak4cu5m1kc4h4taczmf5
 X-Rspam-User: 
-X-HE-Tag: 1787909096-734471
-X-HE-Meta: U2FsdGVkX18yAbaliBLvfJrQbW8CNGxVLQ4pS6XpZPrBD7y/0wT8z8yM9j6blA3hVtP88cNJkA3952oHTiFZYHrl4RUN+orq7eEl1/+sSQLUnu0LEnTSCow0Cvdvd/YFxUf39Yahq1CtrPIexoiAFd+oYPAB119OwuNZsKGb5lAJ/IuDv/gSDTtaPER1WCseq30aqKiPyB/XnXfHTEHK5CN1bJ223mZxatISOyBa/3xdYbA0ZomYSqZgLtepHfxy0bx2MHruqCvWZYIvwp6c2u2R48wtcJq+hsevYyjpJO+ZiiSb87v7AvtIEIuKIUGukEAAo4Lor3MW3mWnrhXwJkZNo4LD3XKu/KGZw2ncl15YHAY8PbQ+y/hBUo68InHGy4d7CJYyXDRsn5sHKTq1BqO/qnbVnzNKtHGfbWcf1tkTfot+9niNcu73pMDFNBB9FmyL2jh+qUaZT7tV4C6CmXVYhY8ne74JMXyDdUnHbTQX2pJBKYfPYimnQbNBlBQjozhLC+VpCzYSu6y39WBx4Rc2UGA6829180HJGEK643bpN25g6rZ6EDP10NVH8pkVLHLeDbmQA2T0ss7bedl38fw4hFJMOedNCdjnTALkQD/6fKOToyN507Vs2FXSufCFpNyMxduuSqsDwNEdwtgbtwsURPw0pZOiifgKx450wWfwBom2gHzv5hjxRs3p8TEmv5p3IsTUT3QOOlj0AtU/HA7Jpf9FtQu/y6ikGUidfcSRG6A5OCVR0scbIBjsZIBBzIg1JhzxG/mmhj41i1t54xZKYLzCEOYlQI7MTDFw0g2ofF49CL6yMr069hQTIsnlplNxtAMkGC2yP0d/PkGlAuQBZfSbd2Hnumy6ndG9AJffJVPm+d5i2kfjh5nrMG1OVmEUfUNpB2YH9Oiqa2TpgYX+stE5g7bgFhHaJleqLMM3s9PBiwcns2VNSxyV1AAHrpaw/O5sEq1nCOf4Y4q
- yMNxqtFd
- /qxWC8nwHc36Jio825vot9CLaLrucqEH0Qmj415rs8VghcPB/o5lqL2jdJdJYWWgZSxkQVv1NSF/Pz4KMF+crTubZlHWCqBSvELlUZIe5XlY6gQPgLinMguhKWPGUduZEozA+GI+bnK8exeHjYAE/4TOHxafLaeiIf9WPCTSi3V9LHW2rQI8X5hrc+pFefnA5dtkfRJNCisH2DC2Os8A9R3xbww66nlSaAeNuHbmV1PzGQ0dKaVH5IJKtkDZ3S1fHqalgeMbJBMI+UYKjybLAL9Vica494uRx2QsB98f3pRYLSFYsI9EMuEmne3R+IUDQNYOrZR6s3sZfqEubxoacP+KtmoVi97U3c4X6mgE+mNdzKJMRtJML89f5ZKfQfrr+QmqY+C+fn2Y4qEuY+Bryi03LlVPws5Uka9wxaj9h4cBMeD5/lrB0j+eNFCL/9tcu2nGqVtj1TSRfIct9aRi3/wUnBrNBp5jYNad9VuV7tZgEgXHoVfHTRlte316NtuiTpLua7PUlpx8PfYvkjkHj6YlZGv8OWkQLFsslDlbtXFskpu9wpZNOapvyHaMTLRzMOXCXJX5BwxHilwGPD6ne6Vcla8XRVux02/YhHqARAXJ1iJ36kVpnoLfkENw+rOuT+VJdxMJM4XLHA3mQuBbDIswjQXAp5VOzCsr1zS0cC/+3OUV7irCWTsgsePCitZqnjv3POmtIyU+L1MhWx+d40oCJJZFdB7QECx3Hlb4nfZ1xxzNhl82o+4V92k7vskVlWOHy716mFSDa+5d6Js1ytVJlb4WNeTAX1R0XhnpMbTgjhxJHWh1CcTBmvQ==
+X-HE-Tag: 1787909108-798837
+X-HE-Meta: U2FsdGVkX1+YmSOowKNihqWdBIwqfJz5wqRRgAkuM5wJWuepi+v6mXBW2wDiL2RZDIUSy2rh1/WPBYVW0X6pePn3aJVRcpbtrr1Gm2mNAaWfrBvf9ag3HfLGLAhhKtWJIVdlEW79VOzTWwqoO4ELStWmdC2F97HX0eBajQ+jvIZpidWy6ELwuMHC1e9JLP5SWhGIv1RwevOysEOS37/U7VCtkkmOuclVq59DjS/Sn+pLMcUZ11TXJIHEwJ5T5APWbZ25Pb4Joxai05LGYapBBw9yE7RTZmX+fbQVuawUVd601PxNabVTO/48d6++Omld85Ja5IBMMWGY5bHIeECG25k5ZhYzX/GxVq21uW0Tgf0ihqdqsHrUifDiiCTd8QCyPtuz7zkzriMfEyadIgF7Mhqmd8MMkklkWL0UyYpyYeqe91E5X2aLMZd3k+uN8+UlTPE7fw7QiYNXBjt6vPYaZz5k++cWYYKFT8BdD+QLOnW9YB4rcITEh3wcxbc8Cq3egOx8stQ3aXoHDcb7wOe/ixpdRb4UJI74zLXc4G0qac7NGCSOdPlUqjR1NdKyxWTGYuEWcUss+uVUnkqrrxnWdPbQMo1QPEnkfDveXrU2Ccgu27uCPiqi/tVI/vKV00XWiwSDq7UUOWt4xCrUhgifNXJGQiuGTJU7ScUWfWXohVNWWP4qVL0wObZNg6mTRzS5v1Ag3/pRzgQTZQnlWFEptbtqAsn69dZ4faV2z2WwaVeH2ACXXsRWeKLEHwq7Vsk5zx8Kht1a342b71cJxpTStjP7tMc/6HPJZdmPNaIuzwe/20vNh2oBkzrEb7v8wN8/17v6KHQqhtdORmiRsHJhvIkGV3m/5ojM3n3zG/XWhOfVkJDRYvqZDbFY2V4YQV34rhHi8xUx74QVr2ppvBMWG8PPAobe8FPaa2f3lwLv9z4nq+/EpKZtTCTPJZf8QMe3BvKFa6C4zymaPN2YclA
+ 32LYDbxm
+ yEr9ezwwgSAfxB+jNOqeTIEuCZMmNA2ljA2N7ZOXW/DxLqMalKaqisXBD9thuSWpFpN4Sb3tvIGI2O+pYaULJWhdI1mXjrI1AFhH9kjEhVCgEQ/trHyqAVDznasZxmqgCbFR3S1blmKtO0DKPctdYMbmzNvYS9u4wlsH7ZhMYyC7MWw5YtKBUCiiMQ6xApfF8y52JienK5snPp65goNgs0hOHLMRb5RvNsyiGybSzcNGJ+Y8JlgOv3vgjUY/zQlWg2Idhy8weiMoVeM1L5IQahceocuBxJp2TVgxd2+VjElf3Z/mAfCsdkjVp1/AIIi7xohLd1Wf+6Rg5YUi3QdLhRNsnOpYrMo6cfjSFTZYN/nMtFVwsd2OugGVAgHY5U/maZSxfCngA//mTjHhq1bwIMnFZeApxIWfRVhJzWpJKEw9XORTUkV9b6Q9jxTgt4ndyqSbXQupV4CoLRnWN+kXkIzt0DXuJ5SKLw2r6WMcTeZnHf40Rs8NP/SoonhM3YCty93o6M0SKr3U1Yu+myZfOFf9zg/uVfB3PMDTnIRLPKExw0bAhITUWpXxPW5ytX/zTbvuNAo1xacJyXxM43Wl5gutQVbIgYBbyp4AW0AtQDuKN/C9jGvQuZSHn9G3+v/VnlzZGdKd+/IlmaTVbM4MJkoDvy4L2rgti1q/YwomSDnROfRgXWcjqipeNvXnILQGVXeX9kA4Z7DqZGw9n0KWfz/Cr3Pr7K+/r3reJgMXKLvST+gbfseWSjoU/JqCLTAaVX+O6cYpelDMdPdw9KYjA3CuCLLryMkBuCcY2f7P/BrD0RcvfacfFWcfNKpakLYpOCT9UFOFtn5GOd0j7XIR8FkF0aqTso17Tt7nDNFDtaFc/xiHgF0JiDnCVZlaYTLKIHlRSySI3/np0ip0eCXCiFCZXEJq5sU4v5GOp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,24 +110,75 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ridong Chen <chenridong@xiaomi.com>
 
-This series fixes memory.min/low being silently bypassed for MGLRU
-during non-kswapd global reclaim (global direct reclaim and root-level
-memory.reclaim).
+effective_protection() distributes a parent's protection among its
+children with two proportional calculations:
 
-Patch 2 is the actual fix. Patch 1 is a prerequisite: an integer overflow
-in effective_protection(), spotted by the sashiko review tool, which
-patch 2's new caller would also be exposed to.
+	protected * parent_effective / siblings_protected
 
-Ridong Chen (2):
-  mm/page_counter: avoid integer overflow in effective_protection()
-  mm/mglru: fix ineffective memory protection for non-kswapd reclaim
+and, for recursive protection:
 
- include/linux/memcontrol.h | 11 +++++++++++
- mm/memcontrol.c            | 45 +++++++++++++++++++++++++++++++++++++++++++++
- mm/page_counter.c          | 10 ++++++----
- mm/vmscan.c                |  8 +++++++-
- 4 files changed, 69 insertions(+), 5 deletions(-)
+	(parent_effective - siblings_protected) * (usage - protected)
+		/ (parent_usage - siblings_protected)
 
---
-2.43.0
+All operands are page counts in unsigned long, and the multiplication is
+done at unsigned long width before the division. On systems with >= 16TB
+RAM the product can exceed 2^64 and wrap, yielding a bogus effective
+protection value and silently breaking memory.min/low enforcement. This
+was reported by the sashiko review tool [1].
+
+Use mul_u64_u64_div_u64() for both expressions, which performs the
+multiply in a 128-bit intermediate before dividing. The divisors are
+non-zero on the paths that reach them: siblings_protected >
+parent_effective in the first case and parent_usage > siblings_protected
+in the second.
+
+[1] https://sashiko.dev/#/patchset/20260826133054.88529-1-ridong.chen@linux.dev?part=1
+
+Fixes: bc50bcc6e00b ("mm: memcontrol: clean up and document effective low/min calculations")
+Fixes: 8a931f801340 ("mm: memcontrol: recursive memory.low protection")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+---
+ mm/page_counter.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/mm/page_counter.c b/mm/page_counter.c
+index 661e0f2a5127..311153b0e002 100644
+--- a/mm/page_counter.c
++++ b/mm/page_counter.c
+@@ -8,6 +8,7 @@
+ #include <linux/page_counter.h>
+ #include <linux/atomic.h>
+ #include <linux/kernel.h>
++#include <linux/math64.h>
+ #include <linux/string.h>
+ #include <linux/sched.h>
+ #include <linux/bug.h>
+@@ -356,7 +357,8 @@ static unsigned long effective_protection(unsigned long usage,
+ 	 * otherwise get a smaller chunk than what they claimed.
+ 	 */
+ 	if (siblings_protected > parent_effective)
+-		return protected * parent_effective / siblings_protected;
++		return mul_u64_u64_div_u64(protected, parent_effective,
++					   siblings_protected);
+ 
+ 	/*
+ 	 * Ok, utilized protection of all children is within what the
+@@ -399,9 +401,9 @@ static unsigned long effective_protection(unsigned long usage,
+ 	    usage > protected) {
+ 		unsigned long unclaimed;
+ 
+-		unclaimed = parent_effective - siblings_protected;
+-		unclaimed *= usage - protected;
+-		unclaimed /= parent_usage - siblings_protected;
++		unclaimed = mul_u64_u64_div_u64(parent_effective - siblings_protected,
++						usage - protected,
++						parent_usage - siblings_protected);
+ 
+ 		ep += unclaimed;
+ 	}
+-- 
+2.34.1
+
 
