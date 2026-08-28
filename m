@@ -4,99 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3A20C61DCD
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 05:37:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 459BEC61DB9
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 05:39:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 809166B008A; Fri, 28 Aug 2026 01:37:31 -0400 (EDT)
+	id F39236B0092; Fri, 28 Aug 2026 01:39:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7926C6B008C; Fri, 28 Aug 2026 01:37:31 -0400 (EDT)
+	id EC2A16B0096; Fri, 28 Aug 2026 01:39:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6330A6B0092; Fri, 28 Aug 2026 01:37:31 -0400 (EDT)
+	id D8A246B00A2; Fri, 28 Aug 2026 01:39:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 387AB6B008A
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 01:37:31 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 629D71A0391
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:37:30 +0000 (UTC)
-X-FDA: 85149570660.18.A67BF9A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AF0386B0092
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 01:39:52 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2108BA3C5E
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:39:52 +0000 (UTC)
+X-FDA: 85149576624.30.10BD67C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A10F2180006
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:37:28 +0000 (UTC)
+	by imf06.hostedemail.com (Postfix) with ESMTP id 65822180004
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:39:50 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RQ3yEnvm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="OUe/I4kK";
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787895448;
+	s=arc-20220608; t=1787895590;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H/VifZxkJSk1k+3aE/imUllFCc9JvxhQtddtCwuwgbg=;
-	b=58m9r5sPdCr44kzFF8Gos6Fa6z+EjkavVTn+hpEdh899xGoJXH2Kj0CBUooK7pGP5rYtVj
-	WH+hr6HENv/HHKgL4WY1wGAXU6B8/3sVLwcu8UeGsjtB/E2/jXVzy95DaNYI+gwIMy+CoX
-	N8+YGoQpcHudejMmP/BlznmgQAeUWcA=
+	bh=saCp1ODXEDwi38FA7nL50yvKTMsyJL4w4PBPDdxbPpY=;
+	b=rk7L42/MaIYQRqDRa2DqtidxeqBjvQxOeENCSJAWCKRvQfeYe9cVaVuvmDDrVKnsw3DM38
+	5LA5RPGwsYU+lH74jgycRKZHQWg73yWLHueVGCmtR+2dch/7VPsi4+KV4IA8H7VgU+rAre
+	NzaMhhbE1EqYCZouVfm0v6TqfXElfhs=
 ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RQ3yEnvm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="OUe/I4kK";
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787895448;
-	b=7CKdYQgjnDq7VwOcV3p+d6ffGEP4TQQvc7eRz9SmUzryQA+p7D7qkJLuqJIEsqj6mY42ZQ
-	iZFFzjAzMvKWyScf3NVCaLACrALsto/zcMBlRvWjDyfG3QSxe4zVp/MnmdBf1AjYF1Xw/6
-	T8ShgRq+SnAUl2zbQW97KhzhTyoP4yQ=
+	t=1787895590;
+	b=xRl7hs/TDwYRlZh/JbhQSkWlAVZWQwLx6AbqshKDpydgpvonWS/caJET5wGGQszxBnNI7p
+	jlCZosgl+hmkQiZE5TqSXAJqtbA5zqUd38wzm5w13QenVUjabPybITU/DlFQFje7mujz3P
+	1pa1SLhKaoD394RlXBnEXIJOLCx219s=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6774B602A8
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:37:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E4591F00ACF
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:37:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787895447;
-	bh=H/VifZxkJSk1k+3aE/imUllFCc9JvxhQtddtCwuwgbg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=RQ3yEnvmddp8nb+1nMK2sB0pqv1JFKKfCfibJ5P+kia6a6V3i6Zgtx/PwPnLBbs1q
-	 EgMQasl/9ouFhJgteF2mA1DQhRvaZvFK12CA3B7oIrjcZa64LTOMpfLd7tEIgYBGTe
-	 9FAeEy4xpwYLO9iLaxpT9lsv/ztMDT4eorH/z6xC5eve0LX50Kr2/1YFcvUK+8dy+E
-	 cfdrFvF/zdsm6XfCdDFoUZaS8TDTWlHQ8kRGTYf9LrAbXyyHKHB1EIqiWKgzo1soiA
-	 TuxKTrT3ImCZ2Ggwqzq90JZhbRw83LB/VqV5uD+OJd4RdZ6LyHPzstNbzy6LriHMKl
-	 xZX/ja4pehXJw==
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-90ce3971a86so1710946d6.0
-        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 22:37:27 -0700 (PDT)
-X-Gm-Message-State: AFuF++nv6BjT8LQ5H7PJWQ24CvZeLgcZiXptLCcOSm9o3PxnfEH7wjzR
-	IVCuLY6HOc52Jzyr33xV+XVLJSBLn+Dg9x/k0svYcXHxqxqSTRBw65wHya7K4B7V4e3Mt3Nuhqf
-	V9XXGqbytuLNCYxTN8WQZ+1hJYrhG85M=
-X-Received: by 2002:a05:6214:5b0f:b0:90c:5947:7e60 with SMTP id
- 6a1803df08f44-90ce0c3d7bemr67500216d6.4.1787895446368; Thu, 27 Aug 2026
- 22:37:26 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260824073806.629593-1-hebaoquan@kylinos.cn> <20260824073806.629593-2-hebaoquan@kylinos.cn>
-In-Reply-To: <20260824073806.629593-2-hebaoquan@kylinos.cn>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 28 Aug 2026 13:37:15 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4y-aAhfYEEroOD0=hromLZA63CYw6OegN9tgYBswD20cA@mail.gmail.com>
-X-Gm-Features: AcwNN1VuYRowG3GmuIFFw_UGh3tRxLgNLrdlpD6S5c_QZxAVgl9KzWVuJNQ_sHc
-Message-ID: <CAGsJ_4y-aAhfYEEroOD0=hromLZA63CYw6OegN9tgYBswD20cA@mail.gmail.com>
-Subject: Re: [PATCH 1/9] mm/mglru: add MM_WALK_EMPTY stats and tracepoint
-To: Baoquan He <hebaoquan@kylinos.cn>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, david@kernel.org, 
-	rostedt@goodmis.org, mhiramat@kernel.org, kasong@tencent.com, 
-	qi.zheng@linux.dev, shakeel.butt@linux.dev, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, baolin.wang@linux.alibaba.com, 
-	hannes@cmpxchg.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A10F2180006
-X-Stat-Signature: bpxbgxk39oy8m54ggj1qzqdjyuw5izwj
+	by tor.source.kernel.org (Postfix) with ESMTP id C7BDA602CE;
+	Fri, 28 Aug 2026 05:39:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F2A1F000E9;
+	Fri, 28 Aug 2026 05:39:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1787895589;
+	bh=saCp1ODXEDwi38FA7nL50yvKTMsyJL4w4PBPDdxbPpY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=OUe/I4kKl1IqBcGIkGjmGrfcJVc9TLT2CvvQlffxqcLuYDyJcEvYYDfW1rZZPMhiH
+	 lYW/VNcrDLI36iGraqidaScttACFiGrJ1k7I/GKZaA2Ey07eH3kpV2Es2yikDQJn6I
+	 XvfKFsQX7UaaX+ke7/7cKng5/7pFHOWAuZm5Ev8I=
+Date: Thu, 27 Aug 2026 22:39:47 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Adrian =?UTF-8?Q?Barna=C5=9B?= <abarnas@google.com>, Albert Ou
+ <aou@eecs.berkeley.edu>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Alexandre Ghiti <alex@ghiti.fr>, Andy Lutomirski <luto@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Brendan Jackman
+ <brendan.jackman@linux.dev>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, Dave Hansen
+ <dave.hansen@linux.intel.com>, David Hildenbrand <david@kernel.org>, Gerald
+ Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens
+ <hca@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>, Len Brown <lenb@kernel.org>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>, Pavel Machek
+ <pavel@kernel.org>, Peter Zijlstra <peterz@infradead.org>, "H. Peter Anvin"
+ <hpa@zytor.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Ryan Roberts
+ <ryan.roberts@arm.com>, Sven Schnelle <svens@linux.ibm.com>, Thomas
+ Gleixner <tglx@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, Vasily
+ Gorbik <gor@linux.ibm.com>, WANG Xuerui <kernel@xen0n.name>, Will Deacon
+ <will@kernel.org>, x86@kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ loongarch@lists.linux.dev
+Subject: Re: [PATCH v2 0/6] arch, mm/execmem: resolve confusion about
+ set_direct_map_valid_noflush()
+Message-Id: <20260827223947.c773e6a7324eaf3fe0d8362f@linux-foundation.org>
+In-Reply-To: <20260823-execmem-set-vm-perms-v0-2-v2-0-b013a37d84b3@kernel.org>
+References: <20260823-execmem-set-vm-perms-v0-2-v2-0-b013a37d84b3@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: o1z854x3fncmntpkt14etjt4bb4hh9hp
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 65822180004
 X-Rspam-User: 
-X-HE-Tag: 1787895448-918631
-X-HE-Meta: U2FsdGVkX1/sKBK7FqnvJRRZAMZyUwpt9Qz3umSPYOqmTmGgbpLVLGN3MRNIISPLpbUt8OwntPlMZkyt1+qtHFV+9bpoALZ1wIIpx1OUT327VDh7L4KzywrnpxIgEcHxNngxeBvpY0u9sHpGQ+eI/N/pkidzvLGAjm17gcUZ0+U0ToCRlyH3BNn0M4MXVDMo7+nqHAHXHcwoOGXnJas73T4/4PWHmEJVH+6c9brYgKtsCuyGQukDaTHIIZGA1t1z3HYCtv03gPyz4a6n62Heng6OmwcZtFSwid2fMBW1+olOyqiD2Oudd+OdcZQJjX+5T44iwuaUv7xOnDbN7bt1xMg7FMIaSrwxqIekcD8NvSHJ+rZoZwP2bA8fS0kkZ/qV1lN1zEKe9uuwgVC03h/giSMSyC5F5vCqV9BoijUf49NMT8BUmSR2k4k61yf2JIOmSSvePmGZtdp1RPNDaqAis3F232BHdQmE4Qx5Rz7y22hq0OivxxSmhX+05ROoImQIL/u1wKF1fbwajM5c0hrAnxkfqAFidWHLah1x5I/bdXtiNcWO6tH8mpUQqsaEFDZ15t8nBKhemfo2ZkUIk+7I7xfcaBg5o8TWKc/n+ie3V+HeTBIGTz9yOVTqMixWvIkXHvzBh9bfAtlrhOOgIOCyw1PWbCEE05Wpw5EuS4bu19gSUp2vM3sCmA2R17SwLD49+XOWLJKoZhvA2d2LMJWN2kHrbo+MbmDjPLTNKEBpXUquVB52oQxNahCSNpnwV4sYh5PEIqz257A+i4cEnZ1T5uV5F4Wgom13ct1vB2GGMY8m/7R5mCCFCjExFy0QRoQdHFHpgjLoIgBW8OZl1Low3JGzhtM/lqF49nEA2//QMC/garYN9hd5ovteuvmHdmUUAGDsyBT9TZQDefywLAG5aah3CrDfDLiGLHWB6HqJT4gxyLbuHgTM93N7HGSCPATeKwGlvzcm2MzNWhhfSwI
- y8RiU7yk
- EzQCjY8joaDTcHjoqTFD66mn9Fdp+/qldpNpL8AqB5xV0Ky2fxgSCSsSb3aS378xSS+NT0LlgPduFdtfYcnNQcx5+6/vfPQj9/SOxMcqivMh/p6SMmDCwPXv05yfbo+6W5dvMoURo/cB8He/Auf2qks2NVkCjtB+qYmBE2uiiK8C3PGHQZUtaGLYXZQBjcYSpnw5nCAXLiJO26bDmlQyx/IXgRcBJFAlzhzQ/hG/s2TuRWWtzkuy3bfiMSBUY7rVR0iwB56ZrjtKcKEmoW71FC3e3+sh178+MfOkpBOybPT7uccxD+52WcovFjOrptwCx9DKlQMH1b4HTblQ=
+X-HE-Tag: 1787895590-381888
+X-HE-Meta: U2FsdGVkX1+trZHgmF3lUdFLVWpjGqpmygsi8FZKzbN5dRnESrG2eo8kqT82IyFCaOfdMNBSpLReg8OnapRI7njBMw5hqDo3tdim5PIX/k0Rh8XfyDS/DXgM8ZAu7O6N7qRh6piqsDgUWwbRfGSbLevbxPiCcvnMKTF2rGD6a9sVfxeo85IY7h6qoxbj0RrdN23vewE5rhZwys6LYBhCvf2pdkvMgWsa9+VvS8IqbQObuA7YpY5tKCNoMOKrTCeku4fdW/USAw7no7vxt5u1barU4ol+0luCUwD1aVUa+djHK2pSGRUPchERd6N9xJSDPpVCPDp6Q2c2tN2CJu3Ei/vXPHUoats+pz6yndb0gmfEXinR1qWVQxedDDgcbq0VMEZMoKizwgalUjuP0O4tRKeK20XOIs4Q5FHGgW40yn0q47SHAmZQXj2PkfiZGUwXw7qa8hRn8KAjuMRyz5d/0+KxUjx1yzCmb4smgz2pWuBFXzHEWjC3xgd930iX4N5iu8v/cWEVdzrslI+Sk5KMSzCCgXdmjZToOfqSFTzyaB4HdlprvIF0pu3HgTJQ5xwJS2SOiDGkGWLIxOV1IdO1yIsLZhjQNq6a76bxfMwFvENHtoxqYh8IjlLgaHIoGFkhYyLwHLCLo2xIlBHJhkW/syMKZUE66rFxfObkzxWV4IUnuKmCebjywVn4IDx1Da+nGHhhOyRihKdZQHrdF5UW6zzcQwO2o16MI+GDHbPy1X/M2+9OW0J2SefC3U+zYUM6QMLf3YhxzVCWKBi1RADMSrIOq4rBVlDYwKG+lMj/fsZ4ywYYqy44yguNhnckuO41n+D3KilyLtih4xrwBOx3mBtASYgCQGRZ7gK0XGiTRiwmJ4UYqjNi/bjHgDTPFgCCtqNVRJBuxFR59sP0PsGCIScCj7QRpERvGu9XCBo5yqXG5M239bxuWpSknbZMMuB972iQeUc5GqOyzI+CWe7
+ IEDanicM
+ 67tfegFPZkisCZqOkG5EFBTN61oIeDHkMh6mgsYcQw17U3GVrSl/rdRKWc5iP0HbX0TD1q5PlV9kH+ukyX1/zAk3CijLlVnY23g5VOp74zgSUrB0QXAfcUQ7iDIGsgHSbhgoU/O12Te6Y59Cl+iO52MCk9B40Igplz9Qw+4XWQl9EuNzDBU/kF/NnwPSr4FUO4gwAQs/Dotya6wWszxZw0tsuNkMSdXE7jbBu9aQT6lXmcIHC4qXp2aUou2gaVaoDxYsAXyHbOni5gV3UwNLleS8JHkwc2GMyDIUw/fV/RS1Vk6lQL1asVqieF4ALykY7eJF16lpDEqy7p2d7+4naPITYxmzg2rbeIjOefv+BNQkf1XTDoz55pMYtn58Q0DiefG7M5tEAPuZ+VyPajyIN6sW8IA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,70 +108,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 24, 2026 at 3:38=E2=80=AFPM Baoquan He <hebaoquan@kylinos.cn> w=
-rote:
->
-> Add per-walk counters to measure empty aging walks which traverse
-> an mm's page tables but find no folio for the current lruvec (node+memcg)=
-.
-> These are common on multi-NUMA node systems because lru_gen_use_mm() mark=
-s
-> an mm for all nodes at every context switch.
->
-> New counters (accumulated in mm_state->stats[]):
->
->   MM_LEAF_ELIGIBLE    - folios belonging to this lruvec
->   MM_WALK_TOTAL       - page-table walks completed
->   MM_WALK_EMPTY       - walks that found no eligible folio
->   MM_LEAF_TOTAL_EMPTY - leaf entries scanned by empty walks
+On Sun, 23 Aug 2026 14:46:11 +0300 "Mike Rapoport (Microsoft)" <rppt@kernel.org> wrote:
 
-Hi Baoquan,
+> Recent discussion about implementation of execmem's ROX caches on arm64
 
-I'm having a hard time understanding what MM_LEAF_ELIGIBLE means.
-In particular, I'm not sure why "eligible" refers to folios here.
+I'm assuming a "[1]" reference was intended here.
 
-I'm also finding MM_LEAF_TOTAL_EMPTY quite difficult to understand
-without looking at the implementation.
+> revealed a confusion about how set_direct_map_valid_noflush()
+> implemented on different architectures.
+> 
+> On arm64 it sets or clears the PTE_VALID bit marking a PTE as present or
+> not present.
+> 
+> On other architectures it's a range version of
+> set_direct_map_invalid_noflush() and set_direct_map_default_noflush()
+> 
+> Unlike arm64::set_direct_map_valid_noflush(),
+> set_direct_map_default_noflush() not only marks PTE as present, but also
+> sets its default protection mode.
+> 
+> Other than that, initial design of execmem ROX caches didn't rely on
+> restoration of large mappings that's now available on x86, but
+> completely removed the memory allocated for the ROX cache from the
+> direct map to ensure that large mappings are not split. This precluded
+> usage of VM_FLUSH_RESET_PERMS for the ROX cache allocations and required
+> execmem to implement manipulation of the direct map alias.
+> 
+> Current implementation of ROX caches does not remove the direct map
+> alias but simply calls set_memory_rox() that updates the permissions in
+> both vmalloc address space and the direct map and relies on
+> collapse_large_pages() in x86 CPA to keep large mappings.
+> 
+> This allow using VM_FLUSH_RESET_PERMS for execmem ROX cache allocations
+> with small adjustments to set_direct_map APIs and vmalloc::reset_perms()
+> behaviour: adding number of pages parameter to set_direct_map APIs and
+> making resetting of the direct map permissions in vmalloc VMAP_HUGE
+> friendly.
+> 
+> Implement these adjustments, make execmem always use
+> VM_FLUSH_RESET_PERMS and revert set_direct_map_valid_noflush() changes.
+> 
+> [1] https://lore.kernel.org/all/20260611130144.1385343-4-abarnas@google.com
 
-Could we come up with clearer and more descriptive names for these
-counters?  might be?
+The patchset is perhaps a little green but I tossed it in there, thanks.
 
-MM_LEAF_ASSOCIATED,          /* folios associated with this lruvec */
-MM_WALK_TOTAL,               /* completed page-table walks */
-MM_WALK_WITHOUT_ASSOCIATED,  /* walks with no associated folio */
-MM_LEAF_WITHOUT_ASSOCIATED,  /* leaf entries in such walks */
+I hit a few rejects in arch/x86/mm/pat/set_memory.c, but minor stuff.
 
->
-> A new tracepoint, mm_vmscan_lru_gen_walk(), fires after each walk, and th=
-e
-> debugfs lru_gen output ("TYFALWEE") exposes the new counters.
->
-> Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
-> ---
->  include/linux/mmzone.h        |  4 ++++
->  include/trace/events/vmscan.h | 28 ++++++++++++++++++++++++++++
->  mm/vmscan.c                   | 30 ++++++++++++++++++++++++++----
->  3 files changed, 58 insertions(+), 4 deletions(-)
->
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 94f9c3ff5416..229d27fbfb54 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -595,6 +595,10 @@ enum {
->         MM_LEAF_YOUNG,          /* young leaf entries */
->         MM_NONLEAF_FOUND,       /* non-leaf entries found in Bloom filter=
-s */
->         MM_NONLEAF_ADDED,       /* non-leaf entries added to Bloom filter=
-s */
-> +       MM_LEAF_ELIGIBLE,       /* folios belonging to this lruvec (node+=
-memcg) */
-> +       MM_WALK_TOTAL,          /* page-table walks completed */
-> +       MM_WALK_EMPTY,          /* walks that found no eligible folio */
-> +       MM_LEAF_TOTAL_EMPTY,    /* leaf entries scanned by empty walks */
->         NR_MM_STATS
->  };
->
+I trust you've seen Sashiko's incidental oh-btw comments.
 
-Best Regards
-Barry
+	https://sashiko.dev/#/patchset/20260823-execmem-set-vm-perms-v0-2-v2-0-b013a37d84b3@kernel.org
+
 
