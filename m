@@ -4,121 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CDFBC61DB9
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 19:14:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F6BEC61DB9
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 19:17:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FE4E6B008C; Fri, 28 Aug 2026 15:14:38 -0400 (EDT)
+	id 244636B0096; Fri, 28 Aug 2026 15:17:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AF046B0096; Fri, 28 Aug 2026 15:14:38 -0400 (EDT)
+	id 21B146B0098; Fri, 28 Aug 2026 15:17:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39D5E6B0098; Fri, 28 Aug 2026 15:14:38 -0400 (EDT)
+	id 158ED6B0099; Fri, 28 Aug 2026 15:17:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 06E0D6B008C
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 15:14:37 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id E9C576B0096
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 15:17:13 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 73022C052E
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 19:14:37 +0000 (UTC)
-X-FDA: 85151629794.20.E8B36EB
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A51D2140013
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 19:14:35 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Fiyx9SHk;
-	spf=pass (imf26.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.160.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7724FC0531
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 19:17:13 +0000 (UTC)
+X-FDA: 85151636346.20.A14F04F
+Received: from relay.hostedemail.com (unirelay04 [10.200.18.67])
+	by imf17.hostedemail.com (Postfix) with ESMTP id A2C8D4000F
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 19:17:11 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787944475;
-	b=U58MwaXUVASff5yIGljyTs/AuFMP9kC+j12lWg/ONKgCd10JcB1hu13Nz+chor5ZrItWi5
-	J+m+rYr2Sk17FxiWI5k82e3KxQF9a2ZD1ntc/8Y4gjaNlLszjG6x3zpGg8cXvoYAzA1WHy
-	T7J+/VHubSKH8KOiuTzmuHmPadrxO6Q=
+	t=1787944631;
+	b=NEvGFTQLk4ML5WdIrxagzYkPW1xcmn1Je++ntdrm1E9ExgIQvvMZ79C0QrS4g8a72FXfe3
+	0DNH6aiW4wN6P9Lu9m/AHe0J3xNAzRGqMffUUPI1fC3YaFDjqMSbu2O/4vGWrVpwGHCPFN
+	eteo4hEQ62GaiZuGeEdthl3z2APOKfg=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Fiyx9SHk;
-	spf=pass (imf26.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.160.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf17.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787944475;
+	s=arc-20220608; t=1787944631;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Jpwie+QQslO3AtQo1vwzAm2YZpOmk97PIG4zVXiE+Dc=;
-	b=vzeQCHXJ0BCjBh/g47zGIvVKGONhP4SiAeFlQ4dg6RUL2ezCsZnbVXsL9JvoitWL6SWyDG
-	6RJ5lUXX18PeYaYxXf1ViBQdds3SJ7jDo8DIVCH6hv2u/zG6Pg3W9dhLPbpu6ABEnW+S/l
-	sjVv/jHAVcnO7cz3TaSq4Bl19Dd8OJY=
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-46556b9e02cso1207978fac.1
-        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 12:14:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787944474; x=1788549274; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Jpwie+QQslO3AtQo1vwzAm2YZpOmk97PIG4zVXiE+Dc=;
-        b=Fiyx9SHkMG9OVC3n+kjv53HZkI5AWBsl2rZYpzXHHWMsGKR/37WzR5mxrTNLZv1JDN
-         YvntNm+OLnvgWdXEbynWjFlp9iPgAZ+WljXuVoyemVlErh0iQT4nyoB6SFs3wWKfdur+
-         q21sBlGsWQDbCkhwZy9m9toni1JZUM+7N6yLIkqrUQA9Cnbn700B7G+ZcvpLzNRnC5T7
-         65PibyKdDOqE5JA6585a/1TlZlYXLH/Hvr6NTm8wO9935ra0Wa0GZRsHaG/2Wt7XnqMA
-         H7k0ABGLk5GYjUwX7QW587n9Pcb1UXMwYSeTwri0H4OxKBtQWbM7PWTeUGd6RBtlGtKN
-         eyAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787944474; x=1788549274;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Jpwie+QQslO3AtQo1vwzAm2YZpOmk97PIG4zVXiE+Dc=;
-        b=ZX6nyTMC/odCTIQa/Cxeu6Q+wXGQKgeegWl2Q9G4+0OA7IE+nFpIJLu8rog05wjwlh
-         Ydmayg3epZ4J7100rTJyj/4UpPoRXvv+CvNc2nfz+M/1eqVgja1fJh8RBkLOx/qFPWJW
-         H3JBmj1map8KMzgLNcfBsHjnxCsWPQ2KBb84/Naozpl0EF+4WcT3/JXESNnAuYdQ1nXg
-         d1+w1NaQWNuavcuhYgYO22MlxAWSjnGqJdUs+rPiywdwPFZXk7GmeADrVnpY+eoYA+e8
-         mycINfIYlJZHtp35WVdYrVueJfQzmlOIfQXmWU3wIp+Z5wuzPGTE+YgucKdXWcNjcfo9
-         /kMQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpkINJ1qbPz/oxONRrlLc8ZnZHj0cAleXonUM3ctpCuej2AV+65HFdSat1smrQYrrcDkExVebY96Q==@kvack.org
-X-Gm-Message-State: AFuF++l2UQwdFJN1IBe9xk6Ql/eWtxo1nW4noYY8eoYciT2xttpdPqKQ
-	P/xIm95NPD6HtkoRgNPfclhQ6AJ/VVhk7QTzA/35qI3M1c8YhhPPJFZS
-X-Gm-Gg: AR+sD10r0wLF/TU9+tQxHVd32iU24cPKEQ3dx7bpZXQy1H+eW9u1+RLcjQsRcjKPi8u
-	zB6u5fLk4i02OwFHh/ykTo55BEuefgcawGykW32PfFDgJacrZP3YLl1uYGwBgIzPL1b593jnq0u
-	aBMfE60M6hzHlnp6bnEEDUqdWB+HZyXAj9nqftau64kgkHkLNVjwnvxXiYitg8jcf0v8T0EyEHB
-	7FDGRSZNUvt+v1WR75EUk6wOxriRhrvP+ovm6oYcFyQyGOMI1vIH+WKHARZo7tipWdIY03F7d9v
-	KiaPsivIN/PHfAZiXwMKuPjChkoIVbJKCp/TF9SVrbDh+Is7EzoaAo2q+35AGofiaZijwJUCO9q
-	41/zuXJurvskC7IaqflBacG6Ifdwp3o+KrNnme6LI987C2Wp1Hi4gPa51nfmHqacLyyBoPMV8/3
-	ve1mCjkKp7HKXnHkno11Wpkqd4z8sVr0qW5xhAynQW6EMnCN5JlYchVuj5xuvQwBpb04C+APNFI
-	vM/aP3CFQI=
-X-Received: by 2002:a05:6820:f00b:b0:6b1:d085:d9a9 with SMTP id 006d021491bc7-6b2fcdd0d6cmr1760722eaf.0.1787944474457;
-        Fri, 28 Aug 2026 12:14:34 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:56::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6b1ce359f82sm2363780eaf.14.2026.08.28.12.14.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2026 12:14:34 -0700 (PDT)
-From: Nhat Pham <nphamcs@gmail.com>
-To: akpm@linux-foundation.org
-Cc: chrisl@kernel.org,
-	kasong@tencent.com,
-	shikemeng@huaweicloud.com,
-	baoquan.he@linux.dev,
-	baohua@kernel.org,
-	youngjun.park@lge.com,
-	hannes@cmpxchg.org,
-	shakeel.butt@linux.dev,
-	joshua.hahnjy@gmail.com,
-	gourry@gourry.net,
-	kernel-team@meta.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm, swap: fix SWAP_USAGE_OFFLIST_BIT collision with real usage count
-Date: Fri, 28 Aug 2026 12:14:33 -0700
-Message-ID: <20260828191433.3304458-1-nphamcs@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0RDwr71FlsrAMrAAlqln64IM9QGsxwXWA77DtZDfZwQ=;
+	b=WFf4KCXfwmI1DTvYTOIzwS+fwJ+1ma343ofonBNCCNaOORmCymRu14LO+jKy9k9R40Trqn
+	RjD3BJqeDxllcj04rp/surVvRJ5JRIUivfHUVdqyAG4NHtWpSWRGBT5jClq0Xe7stNw2m5
+	0OLjM61tFL4KZqCyvl2ynjDh8xEUF4s=
+Received: from omf05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C52951A053F;
+	Fri, 28 Aug 2026 19:17:06 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf05.hostedemail.com (Postfix) with ESMTPA id C3E9F20011;
+	Fri, 28 Aug 2026 19:16:57 +0000 (UTC)
+Date: Fri, 28 Aug 2026 15:17:47 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>, David Stevens
+ <stevensd@google.com>, Catalin Marinas <catalin.marinas@arm.com>, Will
+ Deacon <will@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, "H . Peter Anvin"
+ <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, Dave Chinner
+ <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>, Roman Gushchin
+ <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, Juri Lelli
+ <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall
+ <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin Schneider
+ <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, Uladzislau
+ Rezki <urezki@gmail.com>, David Hildenbrand <david@kernel.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kees Cook
+ <kees@kernel.org>, Clark Williams <clrkwllms@kernel.org>,
+ suleiman@google.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ linux-rt-devel@lists.linux.dev
+Subject: Re: [RFC 06/10] Reclaim memory from blocked kernel stacks
+Message-ID: <20260828151747.20035d50@gandalf.local.home>
+In-Reply-To: <20260828151313.5c4a5e4b@gandalf.local.home>
+References: <20260827232948.2520558-1-stevensd@google.com>
+	<20260827232948.2520558-7-stevensd@google.com>
+	<20260828133620._x2XfJR_@linutronix.de>
+	<20260828135947.GU776954@noisy.programming.kicks-ass.net>
+	<20260828151018.HnR9xV1N@linutronix.de>
+	<20260828150836.2d5b378c@gandalf.local.home>
+	<20260828151313.5c4a5e4b@gandalf.local.home>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A51D2140013
-X-Stat-Signature: u3kjyk8wc66qn55gwk71dqx6183spneq
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1/FRCRqi3s+JC4roW7NUQua3g10tn9P4XM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=0RDwr71FlsrAMrAAlqln64IM9QGsxwXWA77DtZDfZwQ=; b=gAZTVjGDveN8fhsH4aJV2blL0f0S/QpEEvr3BQpYaHupiEQdLMD69nFOfdLEk1spL0/g6lXtTnfNyIqHZGTSM2GCgE4DvzYvzij8bAWlZRrSpkm67+yI+NJTg387b0JmME/jtx2tEqWIUYUrCD2W7DFVoX4NatssuHtJiesq2nE=
+X-HE-Meta: U2FsdGVkX1+ViF3OvOgaM5ssQLR7tn0uySWJaFHYtcXWZ21cz7nnxMRW6iHpDWrp6Htrs0cIkgW4SbBQGFpZUf1ROkYnZEWGOtcWKXjDukDAh5xQHzSUkPxJbyaumnTpSqP3YXkkCipkNohafMlloaOqbdI5ACVjC77j7iGbrpU8lCltcFJhtONUqXBCJpw9eTajIr0/aLHn6NisdoeErwIxVK/oB2Np5iYGqcWQEGRVIxOt9i1N8E1VkhWj8uFuSoYqfpNN0eEmhPs7aE8vmz2WPbGl+v4Ry92BAG7LkkOQAqWIZjLFKEu432FqDcWspoc2zzLFnstcV5vVdG65ka7IObsOxeMhd+5KlkygWN4xwraefOr4pQuVKgzS9Rrd
 X-Rspam-User: 
-X-HE-Tag: 1787944475-848231
-X-HE-Meta: U2FsdGVkX19Ty2KXPoXR+8QgPzcFawvtbHEIo1N8ceZ3+nRDiU+U8pf3erKpAXHEpqjf7yz2qGTzi7rCsqbKzGYUZ8qqzXqkqN/pjMXhM82CqVpxuZlNiDUc6HgilTIOoNdJU9t+2JrJyuDxjP/PTtRogAi30xhQlkpp4HQ9EbrYdVQ/XR4aAhPnCyRFt5SgZPO1c8fVizuiUtCVjaRM118Nh3ve5jYZmKxmG7wZKdTER4BrO3o8ZHgIhDH9bNY1QvKWYsNhHUn5bZhh7jSGQqGmozRJoi51ASPmpHvbEuaj86bUZU/rIQ5A7o6xq7UIez1/9bMqN9i08p7Zv2RPiD5x2/wBmu4QdZVl3WW+784FlDfp6iMsuuEAvS1R7kwvXq+8UCwnsbjp++awAk/JIF+v1zXb7TUpogZCJc8nlqC/Ifadocag3a4Pgyp5MPbNoYNjJNRTMCRsvdhB4NoxsmYpuKCFRoFpPn0O9sbW1uwYTNzmNDafIpadmYxlI3ttWOpRy6LeUJXBawDKVWb0OvHSscZXKSlUMLaJVyQT7tdVz8Zg118/5+mL2KVBNFF4MPjB0T0/j3pwLp+lKz16TTK6Lj1dv/S7dVXAXAg4XGpK257rPjQEo5Y+08F5jSvogDmPBk2DM9WmhFQmskSmloZ/bV94Qolv+PR9THQfKtnXs2UFaJl+dk9NiCIPCPgfDIBMzirPNpAX5OY1OoB657wWOf2eTIlf9fJH9spVBzbDNntZJIU/oyKthvDrDNEarceUeyjIun7dGOKO6kTEkYOoBffXIMp4eXyxRNDaGxOrpYyIGJFlTw6CM8jhSMzmdFt0/GD4qh1/1EnT8ezJrPOP+f7UOYkdM/MW9TGf9KMhb5bzU/uW0uY/nF3h0jISzY0MSCimxLg1Z8vuSjRIM08prW5da7YIuf2i93Ca6TOi5QSLgh5goAlWTKqFWrD5jYc3gJgGFvwxv7uQEKM
- OIaZDhkc
- llIms3cW0iPTk0BCeSe4urZm4FKY4Qoe2APnP8tkrnpt1v47MeG2l8j1KeNDLXORIxE0kEor+BcPWZsMgTc8KmvmqIV1cb8HE5vYB4F467dggAJjs2FetGGI2ZUYWuIDolOAyWVhVEabmS7RkfQMeNXIxEsXt41AcOG7EBXjOCOUijn2NOttMsnx7/2CFXn9b/6LuQ2GXNmQBVjcJQsC9euSlwZCZJW7V4aGVWCAQAJoj8oNuoBA7w+IjHatT92wnndKIaIkb0bp9/951aDUariISOv47lf7xTkrr/79p6/3mVuGg0GhhqQyL9+HP6nG2wzl5ZC/1BVeK4LfaRvQvkbdrsG44ViZvmn7gHnb30v48ttrDk6CW0TtWzZUpTqhLaD7yU3HsKummRKPwC/9p+5vbfl7iJ5CRT2OxJtkn3ob37sHKY2c1IKmSENGQPGUE9UaD2O0dh5EV0Sq58WIfpJDw2G/chP2J46TKkHvMskrIEGl1vhR6RAr8JY6sGmglZ37oIP55YvwRI1Rrk7Pfj5k5Ozw2/Gebvnm4TPw34IC1rtdF15L6sjvCGjEPy9bzMuBY7BeagLSWlajUq+WkjRc89EqWnztJTL1y0g5uFjTau5Awit7/uoIiLi81xIdGULL3IozV/Oeek6m7OwZVM3pYS03EAfyLixyyYLLM31wxmObc9vkjS1LC49gS3tlR9yxizqWA2Rf4fpMM09+hZZrHCbdvBW1/zv8U
+X-Stat-Signature: j65tfsnn7wb96ijjjfomjeapo6aro4m7
+X-HE-Tag-Orig: 1787944617-357454
+X-Rspamd-Queue-Id: A2C8D4000F
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787944631-539276
+X-HE-Meta: U2FsdGVkX18Cm8T5/tzLKsDZileIfLExKXZvW19h4/eTVbTpopOzDWbiZot4k7qT6N7wug1ZzPMQV7mzmUNBL1GJ8BSEuTL5QwjZHOXDFCp3CU6/vyjx+Kc54wJoE1eZ53GGwpZ+HdehVgsspS19OescnIYwtq4Zq9lyQI2QVfxzspvLbvn/xbn5aj+Qx3/oxoyD3CYyyPhaywSER9IqG/I61xJ0qUZUeT8xvhKbaVuVSLZe8212JJY+HHJnsw1Ev1EbKVs82ghpUdzRI8hGVoqQ0r1br9Sg0k3gcmue9w4nuklui4tj7ZM17qTJTYFFLoUJUG3HIYKCGN1DO4/JTmDViCGQox7/JXZ4sWyk8O4HR99a/4shagedXu6ZicBb1W2qgEVVW9TvQgrrH0O2oc0ThssClkZlWo7OnD06MV9sML9i7kBLYZQoy1Ibqn9dwpDhVPFeErY6eeJvl+dZQi9K0kKLx/dUO58xrw/h8u+eiuGtBY1I7zE1HSa/K8une8JricNunqsZrzQQWk0PPoIORowLLu5LAJtCUAMk7t8u6HCJ9/nsXwpQNrpL2IfCQH0LdEatet0SMOvN09IgFylKqBoZpnO54HmS3B7pBmIiEUozItiOm+8WoHbhesYCkN0X8pgoPeSmFesQB00Eh56KQeid0arTa3kUNtdNqvodsERon67FB+CFQGY7h+ZPxRDmpw85iTClDZk8Kv8S3KCHp8YmFTbeExRosi+ifL0pFal2FCcy+xZH8AomnLTBQ/beIPs1mr2jh5K2k2Y2i0hNjrWeloQqc1CkmEjwVUF9GMnG55+eODft7RR0mcIEWDqin2HxxK/qs+jzZ/bz4C3PG9ZxoeMoRYa2Zf3Eavyquygk0nThF1LncisdG0WcDh78h1HZeDe/AwASJ/iR6T8ZhXFRnyvIrsDbS1IbKCnP573HPuMnmYstTLWZXdRgMaIcg7aLf7IKeiWogLQ
+ xj8SuvQ0
+ c4WEeDiYTAX1p6mRDoPB49gadblpE19P90GlwCdTXRpiUHzkx/Vo9OcfYtafHfYdvzr5R18Ract7Mcu4E2AVNLdsADiJU1APXfyc5seIsN6jF3k0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,61 +107,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-SWAP_USAGE_OFFLIST_BIT is embedded in the si->inuse_pages usage counter,
-and is meant to sit above any value that counter can reach. However, it
-is defined from BITS_PER_TYPE(atomic_t), so it is bit 30. On a system
-with 4 KiB pages the flag collides with the usage count once that count
-reaches 4 TiB.
+On Fri, 28 Aug 2026 15:13:13 -0400
+Steven Rostedt <rostedt@goodmis.org> wrote:
 
-swap_usage_in_pages() masks bit 30 out, so whenever the real count has
-that bit set, every caller of it reads 4 TiB low:
+> If one worries about stack size, they may want to turn off
+> CONFIG_RANDOMIZE_KSTACK_OFFSET as I see some big numbers for do_syscall_64()
 
-* /proc/swaps understates Used by 4 TiB.
+And the scheduler has some heavy stack usage here!
 
-* A raw count of exactly 2^30 masks to zero, so try_to_unuse() takes its
-  "if (!swap_usage_in_pages(si)) goto success;" early exit and swapoff
-  tears the device down while pages are still swapped out. Nothing in
-  the rest of swapoff aborts the teardown, so those pages are lost.
+  # trace-cmd stack
+(stack tracer running)
+        Depth    Size   Location    (31 entries)
+        -----    ----   --------
+  0)     8120      48   __msecs_to_jiffies+0x9/0x30
+  1)     8072     104   update_group_capacity+0x94/0x960
+  2)     7968     528   update_sd_lb_stats.constprop.0+0x426/0x39b0
+  3)     7440     424   sched_balance_find_src_group+0x8f/0x1150
+  4)     7016     552   sched_balance_rq+0x934/0x4130
+  5)     6464     408   pick_task_fair+0xa71/0x1fe0
+  6)     6056     496   __schedule+0x628/0x76f0
+  7)     5560      32   schedule+0xde/0x2c0
+  8)     5528      32   io_schedule+0x8c/0x100
+  9)     5496     256   rq_qos_wait+0x12b/0x230
+ 10)     5240     136   wbt_wait+0x150/0x260
+ 11)     5104      40   __rq_qos_throttle+0x51/0xa0
+ 12)     5064     304   blk_mq_submit_bio+0xc40/0x28e0
+ 13)     4760     240   submit_bio_noacct_nocheck+0x410/0xb30
+ 14)     4520      40   ext4_io_submit+0xca/0x1a0
+ 15)     4480     144   ext4_bio_write_folio+0x5e2/0x1470
+ 16)     4336      96   mpage_process_page_bufs+0x392/0x700
+ 17)     4240     616   mpage_prepare_extent_to_map+0xaae/0x1120
+ 18)     3624     480   ext4_do_writepages+0x971/0x37f0
+ 19)     3144     312   ext4_writepages+0x2d2/0x610
+ 20)     2832     152   do_writepages+0x21e/0x560
+ 21)     2680     184   __writeback_single_inode+0x119/0x1240
+ 22)     2496     752   writeback_sb_inodes+0x67d/0x17b0
+ 23)     1744     168   __writeback_inodes_wb+0xf2/0x270
+ 24)     1576     304   wb_writeback+0x63e/0x890
+ 25)     1272     320   wb_workfn+0x844/0xca0
+ 26)      952     360   process_one_work+0x8b4/0x15d0
+ 27)      592     176   worker_thread+0x5d3/0xfb0
+ 28)      416      64   kthread+0x33c/0x420
+ 29)      352     160   ret_from_fork+0x65c/0x9e0
+ 30)      192     192   ret_from_fork_asm+0x1a/0x30
 
-Independently of swapoff, the collision also corrupts the counter and
-the plist. On a device in normal use, a free that leaves bit 30 set in
-the count makes swap_usage_sub() see the flag where there is only count,
-and call add_to_avail_list(). It clears the bit with
-fetch_and(~SWAP_USAGE_OFFLIST_BIT), leaving the stored count 4 TiB below
-the real one, and calls plist_add() on a device that is already listed,
-tripping the WARN_ON(!plist_node_empty(node)) in plist_add() and linking
-the node a second time.
+Note, I'm running this on my server. That is, this is a production machine.
 
-Change the definition of SWAP_USAGE_OFFLIST_BIT to be based on
-atomic_long_t instead. Note that the usage counter field itself is of
-this same type, so it is still a valid bit.
-
-Fixes: b228386cf237 ("mm, swap: clean up plist removal and adding")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260825153238.2695446-1-nphamcs%40gmail.com
-Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Nhat Pham <nphamcs@gmail.com>
----
- mm/swapfile.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 53bf01d5f7f1..601979b97f95 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -156,7 +156,7 @@ static struct swap_info_struct *swap_entry_to_info(swp_entry_t entry)
-  * This bit will be set if the device is not on the plist and not
-  * usable, will be cleared if the device is on the plist.
-  */
--#define SWAP_USAGE_OFFLIST_BIT (1UL << (BITS_PER_TYPE(atomic_t) - 2))
-+#define SWAP_USAGE_OFFLIST_BIT (1UL << (BITS_PER_TYPE(atomic_long_t) - 2))
- #define SWAP_USAGE_COUNTER_MASK (~SWAP_USAGE_OFFLIST_BIT)
- static long swap_usage_in_pages(struct swap_info_struct *si)
- {
-
-base-commit: efecab401cb15fd3bb9bc05990609acb6b267ff2
--- 
-2.53.0-Meta
-
+-- Steve
 
