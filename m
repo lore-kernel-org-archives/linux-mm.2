@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EF65C61DBD
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 13:46:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A659FC61DBD
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 13:46:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F1CA56B0098; Fri, 28 Aug 2026 09:46:42 -0400 (EDT)
+	id AD4BB6B0099; Fri, 28 Aug 2026 09:46:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA5EA6B0099; Fri, 28 Aug 2026 09:46:42 -0400 (EDT)
+	id A11BD6B009B; Fri, 28 Aug 2026 09:46:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6E166B009B; Fri, 28 Aug 2026 09:46:42 -0400 (EDT)
+	id 8B2E16B009D; Fri, 28 Aug 2026 09:46:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B0B666B0098
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 09:46:42 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3E71DA3D53
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 59E9C6B0099
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 09:46:43 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 46BF61603B3
 	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 13:46:42 +0000 (UTC)
-X-FDA: 85150803444.11.799FB66
+X-FDA: 85150803444.15.73D637B
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A0DCF20009
+	by imf25.hostedemail.com (Postfix) with ESMTP id A85B9A0002
 	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 13:46:39 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="Ct A7Dgd";
-	spf=pass (imf03.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787924800;
-	b=v5qDnvc9rTzG8QCpCwj3eMrhFKI2ieQpRMMjlw2Dwxi3ynZ72dT+QzOruXArS03cTbv9CO
-	AxEp7JFuWz4bvDM2BjiaSRzHKZ9E+ckPoFQO72PU7i181u7LMIC6ig5J+vRnH2/UBjW0rL
-	WNpGbUFUnEO07VFVX2K4kqXlN02qJbs=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="Ct A7Dgd";
-	spf=pass (imf03.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="NnZNH0 /";
+	spf=pass (imf25.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
 	dmarc=pass (policy=quarantine) header.from=surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1787924800;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=R/cHZ9f+AKwXbLDV25J27rvOAvjlInOdxrZWedG8Pdw=;
-	b=Coti8JaZIs3RPIGqsWelCVf1JrvcV2n97ElZNajNC4bzGYF8vONIPEuc3PEFxKz6apzGQE
-	9Bjz3fzTfvU3cLx0pqQoUqfbL9igCKpWciRPwdfxd1euWnWyXkRdkWsdVQjjNUO3X08bTk
-	H3HoT9R+hXVB30QnIgOfaBRZwJDgOFM=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9TfgXIoukN/RPVFm1I+e7bggSQFoinJyk03xgumztOQ=;
+	b=QOJiP5qi64ALJEgNbSXARLBfmRDQ5SW8z8PKPKJ6eejGsb59K+wIIvbiyyd/Xi1/r3n1XW
+	KDmixOuO3krszkRqGgRMvuKI2lkAehyD3skxAEGoTFW5BceTjMgRpP7OG6e2IgUl2U61oO
+	cHLmaMVxDuTFk4wCe7s12uuxusKvmH8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787924800;
+	b=JSz5ZtTh9/foNENj0QWJRqrzWITErhLQzmBisQHmrF5Qt6JojqBjen18M3xmz+E5BKVjyY
+	zZpZvTnzwod947paZJfRmhHq0xHJASw85jIw1V3aay0zpgJVxkBW+XAhvPz3EwzX08/9y4
+	NIydyavAPMBK1C3DYO0gfREoN9lbnKQ=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="NnZNH0 /";
+	spf=pass (imf25.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc
-	:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References; bh=R/cHZ9f+AKwXbLDV25J27rvOAvjlInOdxrZWedG8Pdw=; b=Ct
-	A7DgdFdcRGEn0sKd2G2viWBh8uaj1wTRdnaUh6IcaSw/IdC4/QQqHBlxnZSR1XBriu7JOoUKySgLr
-	PSCS5uSahp774QactqKZFVTlF6+rx30I989eGTwQSd357AMXvcuSemJUMxAMwJGWcbXzGm3WT0/Nw
-	GyDQ9tDSRj/c26SdnoaBYPMdFQjaG3Yd6PLc5Ktu8foXZJHNpBjuvXhOnVtkp0CrqT6yT47uOl2ph
-	rLaNu2AtqzRhsxHzzfQ4TniOtrXt5rlB11eFjt7sLglfhYALVWkPQi6i85o4iL78wNOu9alUko6dL
-	+LR/HfLjI/zV9W5VvZm3IR52ebbe8A7w==;
+	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=9TfgXIoukN/RPVFm1I+e7bggSQFoinJyk03xgumztOQ=; b=NnZNH0
+	/Kz1ZEAaFeSw5eQJXsW2aeU6YbzoXE+iOLimV0vZZtb1oVYNMYEUZCo8JMBjKpMZ5yH3S+fV7vcOO
+	qKk461zeTFImkVEIeTIpUS67b/cbPvv3oafPXwDHdNEvexeCxV7yIC+3LB96cKgC5sPzpJRSvRdbh
+	010F/tSvQC0fN4cxlXGclzSXZr30Ef+qTdbZ8anTTk9OJG99VpeaZlkMMnKqTjBwdyzPVONjx6mDP
+	Em0DOkkIWD5/vDbr5QmPWTt8vECuVzUT9VG1tCybO8bgQ4lmCMr3+GuPwOzV4reJwTTlSiEurXxNN
+	xGPVYZIIcqD5gp6WYwvyp/Ai+onA==;
 Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708] (helo=fangorn.surriel.com)
 	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.5)
 	(envelope-from <riel@surriel.com>)
-	id 1wzwuY-00000008zmT-0fEt;
+	id 1wzwuY-00000008zmT-0utG;
 	Fri, 28 Aug 2026 13:46:26 +0000
 From: Rik van Riel <riel@surriel.com>
 To: linux-kernel@vger.kernel.org
@@ -75,21 +75,24 @@ Cc: Rik van Riel <riel@surriel.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: [PATCH 0/2] mm/memcontrol: fix stuck FLUSHING_CACHED_CHARGE bit on isolated cpus
-Date: Fri, 28 Aug 2026 09:46:19 -0400
-Message-ID: <cover.1787890328.git.riel@surriel.com>
+	kernel-team@meta.com,
+	stable@vger.kernel.org
+Subject: [PATCH] mm/memcontrol: avoid stuck FLUSHING_CACHED_CHARGE bit on isolated cpus
+Date: Fri, 28 Aug 2026 09:46:21 -0400
+Message-ID: <a611f2bc40d30f9c14a6f41b173185975c46a203.1787890328.git.riel@surriel.com>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <cover.1787890328.git.riel@surriel.com>
+References: <cover.1787890328.git.riel@surriel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: p7387bg9ak8b1g16h98izytg8f5fnbmk
-X-Rspamd-Queue-Id: A0DCF20009
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787924799-135762
-X-HE-Meta: U2FsdGVkX1/DFwecy56Qlgrv9gLf+UTKqOBGIIfSo5aiJCek9Md0sSGzLOEAtgyunk31x3W8rO4yqwPsDnr2xYl0hzme9RSy2OylHjxw/GYOg/x7QxRUSvCwqk/SxQkOsSzoxy0+wQSJuolO46615T1Xfb3ATZqcdpSIaI6C5Gn3WTp0aCIqGUaaFlXejNw62dyOxamv8P74tgDJoSPXXFQkpy5EzD3Nxi1hvr2csKAoYZOz/nHoJTqkjgn16Bhn/icctahHzmbWM9FWZKHbL7q+EgUKhB+OLYgMIJc64UocEn9nkSphx2VVuQzWfH8RAHeikw2bTvDGfCB2NByFrA1oiwPPHvJopWXzCshDEEnOdme8PaRbmI1kUfNDm4aDX+ct1loj2vG8DoyMTCi7eMJ1cssDGgNB8M9QRqPDyYHnjuGOrhKvfcJwrz8IHyvwwATHjqKVPWdz7VBI6lfEkt9YB+rXCwAqApmI6nOoLgD7QJVf2oIcuuN1zuOjG3s0nI4fA+Aq6De9zb1pLnttOu4pEMN/TlIN665jHpfdg6PxXvwquZjrvc4s7Zi0zCUjwwnwHDeOGNtAuNfqrVShjq+wEJf7LRk0cavFlFUCS9ap+z5TkYTzncVhPT1cAQrrFBYTMZrCWtlvb4lIEExvAT00xdXP2k5gYz0zgmv+XiG7IyS23oSDyOs7H3q/TGAHeNgadbIaFTG3110ZiPf3K2kRLyz/BrAeTyYfod8Dv0z5kQ8NYyH1P0PXmCfBiABu3SzCjgppQjbf2vmamfqPLg6QT8UMJxP9U9IdKNCXy8qkT71x8oyXCqZnu7H0+eTE3Dj8Re5UaVtbTOSxR8yiluMey+ZQuz3UajU6nhj6KBNsoVEQgAcLkfF/kr4hfqJ6Hymc8o440d00lgDaZqGaBDKUY9YvxEwkcbF38libMdJxihlDE558lpvKIioFBXBO/zZEke54rJ43Wb0ME8d
- Brt3YNtI
- Xh58LN7si8HUF8OfjO8gMjv5AkpESDtpUOVEwIAxnAmOSQpO+IkripznxsyPjfI+XmQVTS5srUHr8o3JGGNr62/HLlLCZm6qotUnFgy0ZgSq+V7IPzgE7TDxTxYD201V91K1gqszB/u3FRRiLbQXHCJvsUt8ZAEsF5VrrTS6zh3PHVkvdOp8nZvKymgYR59ylmUfetqJFaA1fpZWvJ1KRn065kuSk6sirBB8URUFSioaEorKWtx6XtoVpkolY4NMxdTvUCZfJc2S5rxyyS75zCj5BFaz61Ic9iYHdo/Biiv482fr/59ZyJBsEw6QW6/Mv7v1lBDHD/B0a1quDuYO7vF9YvFNeHAmINSl148t+CqHiaVM2DowL6FQz/A==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A85B9A0002
+X-Stat-Signature: zg3ch47oxz9fwfu1xw3fyyyimxwj8kn4
+X-HE-Tag: 1787924799-834776
+X-HE-Meta: U2FsdGVkX19Zfv4JSA2cwlwAO9Bqg0hnFjWGYl0pYvK9u8wYE97RBH43eqAFWjcXftNBRHhy+iCc0SQdJ9u/B+tDf48w3BLP7aJzd89CUqzSASpbnZMgnDE0/mWvu8lJrugThcVnBIauOD+kQ7e7sgOAjdrvUp0cT/vGEbmpvbgJATKtOdhaiGCkNuy+FycJHg7Dizupzvw3hTFcxZS2koF/GLIMOeLvLR0lk91yscrRVC0thCUcwkecc629Rsl8UMm3lQxKWr61U5CwCjR4elt3yZZ2lk572Hd2FJ4UoQlo8EtSxv/JpUnQfPr3Pj6viC9M30FUwRTT/acsbMF+QwW30EurIUNUgJN+GTVXeBb83Ne0QkCxqZkk0hBDYsF8zeIPxVG5pxz+WJNSP0gGF9xRI+0lgjJG3UQThuPuMAqPqsHuflbV5MLrb3OONaETE92WRIZ4NayYkxLIsUj3EHVDSl8NTgT0ac1XG/72R97oHyhPJNAm6OxHcHhdkcWcwHEaPTIkAsZulBIjWRCHhS9/y5BH1lB3qJ/ZXbwFd4qmKRIF7Hd7wNRu26BcGT2i+EzyUiCtA8yFw4cfNMICcY7mtWuqzOJEr0rbDNGwoMKqDlbbHJkuuvEXJKaXPnGzcBl0Ri5kB9dXnGT0ao6YOw1q+bnbIQFawftv90Ve0COn1D0jnuRWcxAj1a1RnC1qpvFO5HTw1EFkB4/d7p9ApywFrcbKSA7VTnIfPlp3hqS3FhczHm/Crn38zhYztGIw5GY4D6JwickUjnwYur0rR4MHTzNEIVaQ0GGpOaWA2ISfxBxRRAXxzws3BBw40ztY4TD/nZQcsSNrzY1csOKNhJJdG/Oc4yPUE/QyLxfyWTwS+Y88KkXWPYHYPMMse8AM6cRPZJ74app9WJl9qQsBHZCn+cEbddRO5CESrjHaQfR7QXcx8OoT5sEwjEr+DAWsCC/NR4Zx6nOckIlbodZ
+ 4zgVpppB
+ QVWUd11tgnWVCaMTTcJXzjhlqxVQowxYiUrUpNDtsQcyby1Q2mFNZw2WXzWKEZ8cAN6XE5uDIeq+urXzXp4LMZLq4z+FOWi/bimXAre3Cp3opF3Cw7Clx/eMF4wHDxtbgyDZP/3CKDLad49acK/ZrUUo6qcbPpj606gwINc1LmnXdZgR7/wgd22/0UVMgXPpWhDc8ZNNltO4F2A1vKWL4Ss0WjAfgwO2iQKHHxkZI8dOL5Pvo9aaHv1R94dY8yh14Nw5IOShbQJwr8Hgi/qYKpzayKQdoolEo3SbpJiTJ18GoZf4vNdtVTCRc4tgdJKHnFTGAxcFymFy7y/fnjY3gVELBlZShwUFoVi7+x/J/eqb4EMl3UCTCXvcKBBI/xwA1MCg+5OPFu1Vj2pI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,21 +109,71 @@ race the second check.
 drain_local_stock() only clears the bit for work that ran, so the bit
 remains set and the stock is never drained again.
 
-Patch 1 extracts the stock drain predicates into helpers.
+Reorganize the drain_all_stock() loop, reducing nesting, splitting
+out local vs remote cpu handling, and skipping everything on isolated
+cpus, which solves the stuck FLUSHING_CACHED_CHARGE flag.
 
-Patch 2 reorganizes the drain_all_stock() loop, reducing nesting,
-splitting out local vs remote cpu handling, and skipping everything
-on isolated cpus, which solves the stuck FLUSHING_CACHED_CHARGE flag.
+Fixes: 6a792697a53a ("memcg: do not drain charge pcp caches on remote isolated cpus")
+Cc: stable@vger.kernel.org
+Assisted-by: Hermes:muse-spark-1.2
+Signed-off-by: Rik van Riel <riel@surriel.com>
 
-Link: https://sashiko.dev/#/patchset/20260827124211.3b94b103@fangorn
-
-Rik van Riel (2):
-  mm/memcontrol: extract stock drain predicates into helpers
-  mm/memcontrol: fix stuck FLUSHING_CACHED_CHARGE bit on isolated cpus
-
- mm/memcontrol.c | 61 ++++++++++++++++++++++++++++---------------------
- 1 file changed, 35 insertions(+), 26 deletions(-)
-
---
-2.55.0
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index a660ea0f820b..b0d8ec042d48 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2330,19 +2330,6 @@ static bool obj_stock_should_drain(struct obj_stock_pcp *stock,
+ 	return true;
+ }
+ 
+-static void schedule_drain_work(int cpu, struct work_struct *work)
+-{
+-	/*
+-	 * Protect housekeeping cpumask read and work enqueue together
+-	 * in the same RCU critical section so that later cpuset isolated
+-	 * partition update only need to wait for an RCU GP and flush the
+-	 * pending work on newly isolated CPUs.
+-	 */
+-	guard(rcu)();
+-	if (!cpu_is_isolated(cpu))
+-		queue_work_on(cpu, memcg_wq, work);
+-}
+-
+ /*
+  * Drains all per-CPU charge caches for given root_memcg resp. subtree
+  * of the hierarchy under it.
+@@ -2366,19 +2353,23 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
+ 		struct memcg_stock_pcp *memcg_st = &per_cpu(memcg_stock, cpu);
+ 		struct obj_stock_pcp *obj_st = &per_cpu(obj_stock, cpu);
+ 
+-		if (memcg_stock_should_drain(memcg_st, root_memcg)) {
+-			if (cpu == curcpu)
++		if (cpu == curcpu) {
++			if (memcg_stock_should_drain(memcg_st, root_memcg))
+ 				drain_local_memcg_stock(&memcg_st->work);
+-			else
+-				schedule_drain_work(cpu, &memcg_st->work);
+-		}
+-
+-		if (obj_stock_should_drain(obj_st, root_memcg)) {
+-			if (cpu == curcpu)
++			if (obj_stock_should_drain(obj_st, root_memcg))
+ 				drain_local_obj_stock(&obj_st->work);
+-			else
+-				schedule_drain_work(cpu, &obj_st->work);
++			continue;
+ 		}
++
++		/* Pairs with RCU barrier in housekeeping_update(). */
++		guard(rcu)();
++		if (cpu_is_isolated(cpu))
++			continue;
++
++		if (memcg_stock_should_drain(memcg_st, root_memcg))
++			queue_work_on(cpu, memcg_wq, &memcg_st->work);
++		if (obj_stock_should_drain(obj_st, root_memcg))
++			queue_work_on(cpu, memcg_wq, &obj_st->work);
+ 	}
+ 	migrate_enable();
+ 	mutex_unlock(&percpu_charge_mutex);
 
