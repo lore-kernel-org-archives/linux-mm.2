@@ -4,99 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E1CCC61DBD
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 06:35:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C4C7C61DB9
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 06:42:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90B9F6B008C; Fri, 28 Aug 2026 02:35:22 -0400 (EDT)
+	id 3E8DC6B008C; Fri, 28 Aug 2026 02:42:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E3726B0092; Fri, 28 Aug 2026 02:35:22 -0400 (EDT)
+	id 3738F6B0092; Fri, 28 Aug 2026 02:42:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 821706B0095; Fri, 28 Aug 2026 02:35:22 -0400 (EDT)
+	id 241726B0095; Fri, 28 Aug 2026 02:42:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A3966B008C
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 02:35:22 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D8EFDA3A4E
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 06:35:21 +0000 (UTC)
-X-FDA: 85149716442.11.C8980A6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1CD2B40007
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 06:35:19 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WBEl1Rwh;
-	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787898920;
-	b=19NaAOX0YcNccM7gZtOZOj2nmYXxyojOxBkx68XbJd1ICCndlYL1A7VARxUmtlSi4sVTMq
-	A58sVuSOkTa+jlJyuy0cheR1z0Q7SKizEMeOkPQlLGu9T3CKixnRwaqmV+U23V5NSP3JEn
-	STqkCwEC+UIyDffcxL/4ULBgFfMVyYk=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WBEl1Rwh;
-	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E9FBA6B008C
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 02:42:09 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5F3F2A028F
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 06:42:09 +0000 (UTC)
+X-FDA: 85149733578.28.C2ACA2C
+Received: from mta1.migadu.com (out-199.mta1.migadu.com [95.215.58.199])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 296DE14000A
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 06:42:06 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JLc7M1BJ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.199 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787898920;
+	s=arc-20220608; t=1787899327;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jub6oZR5NxUoNz20i8gX2vUB8KJOx19wdwkx4L9rW+s=;
-	b=O4T5RPSAPyOnOTnRvJ+dawid0KVemY4GNrDbY57iOR2ODr5C233MiSuWUHQHmUYuz6RBuW
-	XjmjGivz51hFnFjsLY/noLWIwudJtNQtEVtEq57tL0hJ0D62vr6SfEJMMYt1b82URg+4Ps
-	Lrx9spnqAGiJGPltpKDhWtsRn8fFMJg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 45B7B602DA
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 06:35:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F09DA1F00A3A
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 06:35:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787898919;
-	bh=Jub6oZR5NxUoNz20i8gX2vUB8KJOx19wdwkx4L9rW+s=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=WBEl1Rwhdy2n3UH2bTSIQH4+L18Cg6INFObyO36gEMsULJxen0wLLqzeR3NjSpdVK
-	 ER+2aui6AK8yl/6y7huJhJ+O9pD/RIm4CIcW95ive62fT0Kxb2MHlAimJBpP7edc5j
-	 KhaGRTgH9hGD2bXMiWCNhxdmYStPF2jrvJPTj5QCzFlvy5i5H3zNnAklxCbmBKT5ib
-	 /P78mx23bfSQSsB9rlNaYC/AJXpg8501zwfaKX2DMMGcVZ2i2fdeYgHTzLDCiIAqwi
-	 k75XqIglL8s7DTys2mftQXfbAjZ2bnMcKtqP3c7wknyv10NzN5GifJ9iTh8hFy4rMG
-	 c9mTMLPnvU8nw==
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-52de178a66aso4847541cf.3
-        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:35:18 -0700 (PDT)
-X-Gm-Message-State: AFuF++md9iQNh0+0Nvf30d4Bj4aYW2tgBnlg5qrAsE8dMbYKbdj76pCG
-	WwVpFbel1+IDCV8tge5plGcOQIRm0/1DEKUWLZvYQSBnnJg7Zb0KYlZWcOSC5RmXRNYDvfu8xG7
-	FldzYgSpl3utN1bfpfLsHJZWt8SbFNh8=
-X-Received: by 2002:ac8:7d8f:0:b0:52d:e425:9b83 with SMTP id
- d75a77b69052e-52fb97248b5mr54275861cf.32.1787898918303; Thu, 27 Aug 2026
- 23:35:18 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260824073806.629593-1-hebaoquan@kylinos.cn> <20260824073806.629593-3-hebaoquan@kylinos.cn>
-In-Reply-To: <20260824073806.629593-3-hebaoquan@kylinos.cn>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 28 Aug 2026 14:35:07 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4yC+2-Hx8wXop9bXPsAk7ZH=p=ZS1QmfyePKYK-VKhRXA@mail.gmail.com>
-X-Gm-Features: AcwNN1U_mzxCnRk-WaIHLOzyDikoq-RGhiUqHaYXLmV6lZ9d2FLezDxgmf6WHCg
-Message-ID: <CAGsJ_4yC+2-Hx8wXop9bXPsAk7ZH=p=ZS1QmfyePKYK-VKhRXA@mail.gmail.com>
-Subject: Re: [PATCH 2/9] mm/mglru: suppress cross-node empty page table walks
-To: Baoquan He <hebaoquan@kylinos.cn>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, david@kernel.org, 
-	rostedt@goodmis.org, mhiramat@kernel.org, kasong@tencent.com, 
-	qi.zheng@linux.dev, shakeel.butt@linux.dev, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, baolin.wang@linux.alibaba.com, 
-	hannes@cmpxchg.org
-Content-Type: text/plain; charset="UTF-8"
+	bh=SXRmLWTxklsm1zcLkmzlYzJZu9xlAGNyhvOD0WxKqaI=;
+	b=Em+mLzjKNkrp6NQ6aTZA0IOptcx6RUROc1ai2TDCnc1k3dA/io1TmG6lJMnlT7GIG2N0Dh
+	p+HdvJkTS18NM4QXk7Au/O8sZgC7i075ULu9VPeR7KFPXV9g8UHpNODlgspG0zjBs6VXKm
+	mWw6gwYVSuzptNymQKYjHyrdvY7B/0U=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JLc7M1BJ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.199 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787899327;
+	b=Ju9Su+KcTnBe4LI8P0TboM7lAy6Tf5dJEbykJ+E6ioEOlMNzSiUYpBDVslquCZ1vAQhnp/
+	gNn5/rfkiLxubHNp9ngyc5bydiJkrt7S7f1J4BYkGO66OIcdD5y6cIBsQRZcXGbb1Nm0t5
+	m71hjfNVW8wiX+CJEE/OPhgO/mTSSFg=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=SXRmLWTxklsm1zcLkmzlYzJZu9xlAGNyhvOD0WxKqaI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787899325; v=1; x=1788504125;
+ b=JLc7M1BJjBBxbWiRMu24+tnS6++XVj1JJVdzhO1VKPJyNQ8SNPfipZoKA6yAngPteCtdpRFo
+ sQ9Ijf/MwunWIkFEK0yB7XvnSNDo8dOcnamoba8dFVHtEApWNMK1SbYwHAUFdAKunddx8Kq34EG
+ 2n4z6UgK5lfuL2dsfvkELqAE=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id da3454e6c9281e75;
+	Fri, 28 Aug 2026 06:42:05 +0000
+X-Mizu-Trace-ID: da3454e6c9281e75
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH v2 1/2] mm/hugetlb: do not dissolve gigantic pages without
+ runtime support
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260823044118.1097121-2-xialonglong2025@163.com>
+Date: Fri, 28 Aug 2026 14:41:51 +0800
+Cc: osalvador@suse.de,
+ akpm@linux-foundation.org,
+ david@kernel.org,
+ mike.kravetz@oracle.com,
+ mhocko@suse.com,
+ linmiaohe@huawei.com,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ xialonglong@kylinos.cn
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <E654A716-5F59-4B7B-B402-17B1A776D541@linux.dev>
+References: <20260823044118.1097121-1-xialonglong2025@163.com>
+ <20260823044118.1097121-2-xialonglong2025@163.com>
+To: Longlong Xia <xialonglong2025@163.com>
+X-Mailer: Apple Mail (2.3864.600.51.1.1)
+X-Stat-Signature: 381j7kdkj7oduccc8ndbtk5jsijpdz58
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 296DE14000A
 X-Rspam-User: 
-X-Stat-Signature: zb89wwh3zte1xrk6mnf86gjzwm4z6qym
-X-Rspamd-Queue-Id: 1CD2B40007
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787898919-769520
-X-HE-Meta: U2FsdGVkX1+IeY4bOYPXMwon8CkbMNBuplG90cOH3KZvTIySDjxbGRgq77aEyF1uCsVrJ1VhYDZ056p37JyrzSAUpG9ZhGfxeisOYccTV1j2Q/CsG39XJpWjBl0kNJGv/ItiJGjamwTjjqPpRyi0DpC+zy3OuxIBKo1w686oAFqAMk4wAlNKEwv4aG/l6E6VAzuLJNBJJfzx4yMfbArAWl/XyuQ7RXytyK+IVIcZimIWiYq9JfPF1dx4ZQ4/N+S4PdnFg2qjHFkkL9GseUL5fGqzLRnb4agKT9dP8hMC/hxP8UTmF7hW4ohc7NoArVFF0IhhvH+fpCrNaQ+tnMm1FZGFRKsm+c0Zi+9h2xBp1l8SvwuBE9GMUEqYD4p0OZqAKY4cKktohcWd+H2YGWlfUFMfP9Z45rRneSb7gG0IYCO1eCFEAgYYa0xeiNQ6JPZF3rG+ID2mrBQabGDBipV6e+/49irQtNlvZ7/KfCiqsbqGYytKdOFBqlbbLcuuPkGbidUL4/xUYJA0+I33hB6gDkX+70ImtoAtPBpV4878brRtrrhWJWJ0tcsBWJJZqHF0oZLo4F0hi9VF92g8ozrYVkXXmoohvE90/tMYr5GW7XeGG7qfrKw6bbBJe8bCtKz58AtFEZdP9Y4AxZLn93R1W37uj+6dOCBhKSNbqH1JiiXhHP8ihl/OjmqianXpgCyNH1gU6C/p7OwWmbvUWkSsOBecOI0wGRoyqzkDvYBgGcxdMEMVYpkJ+VaslcVgyxcWCZE0ykmXkwr5vCHvmDxpKoquEQXvwcereJxKRZuC+PrIr70uRSanMqA+4vV8mycSdVfhBLxkKK3rWvv+3Wk5aJjKjvQVaTtQR6O8VPy13qd/TKcinNe8Nfd/cDnwkm18+38THUK0B4vBhQwJKoD65x4aH0xAcMXHiyx2KuW9/Jfqp9DwYzuThxfCiJptMcppph18nStHXaR2zuYtd4M
- abp7SiZz
- C5U2VdMH0Xxob13hJQlKYVddoq6ZjPLaXWMjakjMy2xYSaJ1OQ2X7PMHxPrjQUTtpnmcRNZH084c0I+9o5KiEl6/n9gYiNF+9AeZvzQzQchqhO7uKDPNG8QtTcrHPUOwMppXzI/Qg51KuJtDE7U68GFGid5rYhfBnkR4t5CEo1047fgUjR7GY9cLZfZ5tA4B49GRZIu0L/+8XlnSARlvE5O5AUeioLUEu+gYnVBedjbd7P0Pqq9X56p5BTaO8nv5dbU9iHZRCdk4BcPDJQYTqCRYKt5d0IUYPHJZ4
+X-HE-Tag: 1787899326-402075
+X-HE-Meta: U2FsdGVkX18t9ZX9fmboQMvaAkR6yOYNdmn16j1xVxKaXBdkl5X8ZobVyhzDiwGg3QQHMfYNDNA8AVXACbmt9mV79CnTOEhOKkUrsr6SOavtI3krR34ypG6+YlTCDKBIzk3xE5T9eIcg5vDoE0RURe+0bF/ksEAW8lMFubvKZrTixLT8NM632WtJyNm/d1DJivMpCJXCUQrYxJEoAtsUfnhRXvKBiUM4lLN9aYhEEqN89lLdG2K6zqRjm5CiUh2i/zKTsz/atoRPAWFMF7rhUnTAaQ2uf3PT8/g8frNELwHxhBb5t1EWTMynmpECriUc5X/v5c542GoWgw7vdsBs0+/7FNDwo0t0dyrLnfV3izPPru2RnYqlN0+V/X6zFaPVv+lyBui3bUsZtkQWy2ZrNo3F6GdCeh+mBMNd8gRs8ftKxW64VsGqYk5gPZGtlPqU3S/2RER5Dq0lfTYFtKoEoVl3B6moSM227YrWDRmuaBTbFVJkIgNG9DBPM3kukHk9goFXvnC0PCiXXyJ/Bod8qaeHi1XIbnLpz/MKFRGCgpfc1d4RzLL7S6q1yQHfhHgANLtocCcluewup1OL3RUJzjdrvDJt2jkwxqplbBNeB4SVvtQKdkckJLxkAA3E+xdlfz6xjwtz1oKgO6EB2fYHapKWkCHX6LW1MN5FduNvw+dFQOb5DrqS5zFFcnvn/9QUThFldoSHCKFMTZdcX7mavHc6mKTbdErIcPbfZ+KwAge2J/U79sD6JorPXrR4oESiS4dHZJ4z4X/UjketCV5HkestWt6atSzR1oOAngp2hOw64ZE1kmwui168uRIp4wnPSeuElII/63ghhiUz6Gp7Lw8PN0d83Txjf0H0EvCxasedZWBV35+rChRsbG7eVvo8aL9bG9n3SJkV1nhdjm8sObV9j/kNwP2vebLNlyQxKvaaQMnkVIUEtlfptjatcis+Lm3x9Ut6LA0O3gE9IAI
+ zoLdLAxJ
+ Hp0lpchbn7Zl9HPZ/cO2M6EpXBRZKh2CeAXzGOvQ4vCyCXjIh5hAWeDBNxl2Xlti+1SHlZeUTxc2mbkkTlc5tdpmc/J9dG2MwFr2pUy4Bv6knsEgN20wxSHcW2OSojZdMaC35regVYrXh3SPoEUJGcf1C+zBToAh5nPmQN34+zYgNjPL9gMH9Mh9i7icHzaKp9PopxC+fBsMyQmlZeipWEMbNOHTaQw9qkYrpiO/VUuIXZG6wMh2wu5zXUkrOa+x7Wn1T0Eed9QfqVJwwHxQTmIaUekV+4KNvOb8VUTVj0sHfo1YRNkv4wjbtMe/lwAp5fyZ+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,129 +100,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 24, 2026 at 3:38=E2=80=AFPM Baoquan He <hebaoquan@kylinos.cn> w=
-rote:
->
-> In the current MGLRU, lru_gen_use_mm() will mark one process's mm used
-> on all nodes at each context switch. So each nodes's aging walks into
-> each mm's page tables. For an mm with memory on one or only a subset of
-> nodes, the other nodes' walks find no pages for one lruvec. While these
-> empty walks are pure waste.
->
-> Track per-mm, per-node empty-walk marks: bit N on mm->lru_gen.empty_map i=
-s
-> set when node N's walk of the mm found no page for this lruvec, and
-> get_next_mm() will skip the mm on node N between re-scan passes. The re-s=
-can
-> is driven by each node's own pass count (mm_state->seq), so every
-> mglru_empty_skip_gens-th (default 4) pass re-walks all empty-marked mms t=
-o
-> close migration/NUMA-balancing windows; keeping it on the node's own cloc=
-k
-> avoids a shared "oldest marking" sequence latching at the slowest node.
->
-> A walk is "empty" when it traversed the page tables and found no folio fo=
-r
-> this lruvec.
->
-> A page that appears on the node during the skip (fault or migration) is n=
-ot
-> aged until the re-scan; a later patch invalidates the skip on those
-> paths. mm_struct grows by 8 bytes per process.
 
-Hi Baoquan,
 
-As mentioned in my reply to the cover letter, I wonder if this could
-be achieved by the PUD filter instead.
+> On Aug 23, 2026, at 12:40, Longlong Xia <xialonglong2025@163.com> =
+wrote:
+>=20
+> From: Longlong Xia <xialonglong@kylinos.cn>
+>=20
+> dissolve_free_hugetlb_folio() doesn't check
+> hstate_is_gigantic_no_runtime(h) though remove_hugetlb_folio()/
+> update_and_free_hugetlb_folio() silently bail for such folios, so it
+> frees a still-listed folio and, on vmemmap restore failure, the
+> add_hugetlb_folio() rollback corrupts the free list.
+>=20
+> Fixes: 6eb4e88a6d27 ("hugetlb: create remove_hugetlb_page() to =
+separate functionality")
+> Assisted-by: Codex:gpt-5.6-sol
+> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
 
-For example, if we find no associated folios in a PUD, could we simply
-filter out the entire PUD?
+Again.
 
-BTW, is this related to memory policies such as `MPOL_BIND`? If so,
-could we inspect the mempolicy to avoid these empty walks in the first
-place?
+Acked-by: Muchun Song <muchun.song@linux.dev>
 
-I'm not quite sure what the best solution is. My gut feeling is that
-`empty_map` adds quite a bit of complexity, so I'd like to explore
-whether there are alternative ways to avoid the extra code and the
-additional space in `mm_struct` before going with this approach.
+Thanks.
 
-So far, I'm not really against `empty_map`; I'm just trying to get a
-better understanding of it and explore whether there are simpler
-alternatives.
-
-I mean, I really like your PUD filter, but I'm not quite as fond of
-the `empty_map` approach. :-)
-
->
-> Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
-> ---
->  include/linux/mm_types.h |  3 +++
->  include/linux/mmzone.h   |  2 ++
->  mm/vmscan.c              | 52 ++++++++++++++++++++++++++++++++++------
->  3 files changed, 50 insertions(+), 7 deletions(-)
->
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index 6d815f6440c9..3738e8877b73 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -1410,6 +1410,8 @@ struct mm_struct {
->                          * page table walkers cleared the corresponding b=
-its.
->                          */
->                         unsigned long bitmap;
-> +                       /* bit N: node N's last walk found no folio; skip=
- until re-scan */
-> +                       unsigned long empty_map;
->  #ifdef CONFIG_MEMCG
->                         /* points to the memcg of "owner" above */
->                         struct mem_cgroup *memcg;
-> @@ -1503,6 +1505,7 @@ static inline void lru_gen_init_mm(struct mm_struct=
- *mm)
->  {
->         INIT_LIST_HEAD(&mm->lru_gen.list);
->         mm->lru_gen.bitmap =3D 0;
-> +       mm->lru_gen.empty_map =3D 0;
->  #ifdef CONFIG_MEMCG
->         mm->lru_gen.memcg =3D NULL;
->  #endif
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 229d27fbfb54..30213a880db0 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -633,6 +633,8 @@ struct lru_gen_mm_walk {
->         int batched;
->         int swappiness;
->         bool force_scan;
-> +       /* this aging pass is an empty-walk re-scan pass (every K-th) */
-> +       bool rescan_pass;
->  };
->
->  /*
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 92cb83a78971..e8ba49683b28 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -2710,6 +2710,14 @@ static bool should_clear_pmd_young(void)
->         return arch_has_hw_nonleaf_pmd_young() && get_cap(LRU_GEN_NONLEAF=
-_YOUNG);
->  }
->
-> +/*
-> + * Cross-node empty walk suppression. lru_gen_use_mm() marks an mm used =
-on all
-> + * nodes, so aging on a node where the mm has no memory wastes a full pa=
-ge table
-> + * walk. Skip such an mm for up to MGLRU_EMPTY_SKIP_GENS generations aft=
-er an
-> + * empty walk, then force-rescan to close migration/mlock/NUMA-balancing=
- windows.
-> + */
-> +#define MGLRU_EMPTY_SKIP_GENS 4
-
-Is this related to `MAX_NR_GENS`? Does that mean that, over a full
-aging cycle, we have a `1 / MAX_NR_GENS` chance of doing a rescan?
-
-Best Regards
-Barry
 
