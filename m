@@ -4,98 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 916F9C61DBE
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 11:32:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C77CC61DBE
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 12:08:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0B8B6B0088; Sat, 29 Aug 2026 07:32:53 -0400 (EDT)
+	id 375906B0088; Sat, 29 Aug 2026 08:08:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D949C6B008A; Sat, 29 Aug 2026 07:32:53 -0400 (EDT)
+	id 3267B6B008A; Sat, 29 Aug 2026 08:08:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5E316B008C; Sat, 29 Aug 2026 07:32:53 -0400 (EDT)
+	id 23CF86B008C; Sat, 29 Aug 2026 08:08:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A35C6B0088
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 07:32:53 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 82BB61C1528
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 11:32:51 +0000 (UTC)
-X-FDA: 85154094942.21.470DC6D
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EC8C46B0088
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 08:08:13 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 683971A06A6
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 12:08:11 +0000 (UTC)
+X-FDA: 85154183982.22.2565ADF
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 58A4640006
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 11:32:48 +0000 (UTC)
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3E2E740003
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 12:08:06 +0000 (UTC)
 Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=aXgWjF3R;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=zz4Wq7u7;
 	spf=pass (imf12.hostedemail.com: domain of panov.nikita@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=panov.nikita@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788003169;
+	s=arc-20220608; t=1788005288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gwk+BI46++mQRfC3AlfNr23A+9jAy9KyTdI8CCPcTAI=;
-	b=Pv15DjCdMPEnhSz2cgowkpiBfJqG4XC5EaKZPkt/MeMWTtaEfhw4AqcQCM6UTWkfcUPhIH
-	D7EXXE1FWqgg3/aPy6/BBOWrWFdUA2tN2VoH2/+h8MG/JWW1nK3yX/9uExE0ROHpHBC44m
-	t6OGJFkT5U5F7XT8XnkjQgsddcrbFBc=
+	bh=QvKWXz/j5Jupz5fjOK8A5bo1yI+OZxHVuzUDDQ85lQU=;
+	b=EwR5U4Z9s32wjH27iZTuaCBbzaHsjgc/AxHyRLcH4nw9bikq/kdJ9Xvsok8AFF5nhsd3ls
+	mIGU2iuKdFRFkTSZDLgFvU3TRXtbnbHGBq0Fn1CXbNFS+vtHD8XZUfIsVTkliMQOVZFj/T
+	2t1iPHjklMp1z/CF1xVPagom9r/SoMs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788003169;
-	b=niQk97s2KFjYu5oWwltOVW1SvK6eb1tTAyixieNXuxq8RaEZd9VDghc5P7DJANeNYuJx3u
-	/Ni7CTTGLsamrJt5PXk+mO8j24P4TUQtxKbv1W4PUkDCVC3w1jUN31VRNfroz6eqVfGtel
-	TbrVPLxdJOQ5f1ARPXcE6iDaO4+oXso=
+	t=1788005288;
+	b=TPaU1PD8ditZiXkVtIU8/jd4Eb8iMg5yfKA/KqX+ifJlkxF+9g+W8BsdJaOEEmYXZWJ2xS
+	XqNIS4msT6eMnm9JWIqDz6dXgpk93tNidQoiSvu06WTbKO/umzEOV30t2s66kKVB4y31ck
+	B3BvHajgvfofeV2FfQexyYttjEp5k7U=
 ARC-Authentication-Results: i=1;
 	imf12.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=aXgWjF3R;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=zz4Wq7u7;
 	spf=pass (imf12.hostedemail.com: domain of panov.nikita@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=panov.nikita@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=gwk+BI46++mQRfC3AlfNr23A+9jAy9KyTdI8CCPcTAI=;
-	b=aXgWjF3RCIrF73N2rxm23D543lwf65bN7UvH+g2NVAUDpVegRpfeATmI1PN02/WVWdpSFpa8M
-	HWWnQOsJJpTvtR/aOTzTUPlt0KBHGvJmorYqKsCmKC7Tj1nlMNL+LZRwlN2uVVEpzZ6CT8gBQBD
-	84eIU0ZhClM0bygV8z+7uEY=
-Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4hXClX0C7TzJ4686;
-	Sat, 29 Aug 2026 19:32:08 +0800 (CST)
+	bh=QvKWXz/j5Jupz5fjOK8A5bo1yI+OZxHVuzUDDQ85lQU=;
+	b=zz4Wq7u7NY2JN7Z0bik45bViBrqFRHLhWKFVhW5unt83sFyu+7wtcYfNoxeJQ05Qbwogwipqz
+	cKFj81EiwdYlf+WA6yO0VWqb4wKFLCTbCeM/vHxwPArXGwvR8RK+jUyTu3o6gfbqGveXvBWagAd
+	MMQ9npSRrj2M0mVYzOoTrPQ=
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4hXDXP2zGmzJ468J;
+	Sat, 29 Aug 2026 20:07:33 +0800 (CST)
 Received: from mscpeml500004.china.huawei.com (unknown [7.188.26.250])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8A8794058B;
-	Sat, 29 Aug 2026 19:32:32 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id F342040570;
+	Sat, 29 Aug 2026 20:07:57 +0800 (CST)
 Received: from mscphis00949.huawei.com (10.123.66.11) by
  mscpeml500004.china.huawei.com (7.188.26.250) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Sat, 29 Aug 2026 14:32:31 +0300
+ 15.2.2562.45; Sat, 29 Aug 2026 15:07:57 +0300
 From: Nikita Panov <panov.nikita@huawei.com>
-To: <cl@gentwo.org>
+To: <yang@os.amperecomputing.com>
 CC: <akpm@linux-foundation.org>, <artem.kuzin@huawei.com>,
-	<catalin.marinas@arm.com>, <david@kernel.org>, <liam@infradead.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux@armlinux.org.uk>, <ljs@kernel.org>,
-	<mark.rutland@arm.com>, <mhocko@suse.com>, <panov.nikita@huawei.com>,
-	<rppt@kernel.org>, <surenb@google.com>, <vbabka@kernel.org>,
-	<wangkefeng.wang@huawei.com>, <will@kernel.org>,
-	<yang.shi@os.amperecomputing.com>
+	<catalin.marinas@arm.com>, <cl@gentwo.org>, <david@kernel.org>,
+	<liam@infradead.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux@armlinux.org.uk>, <ljs@kernel.org>, <mark.rutland@arm.com>,
+	<mhocko@suse.com>, <panov.nikita@huawei.com>, <rppt@kernel.org>,
+	<surenb@google.com>, <vbabka@kernel.org>, <wangkefeng.wang@huawei.com>,
+	<will@kernel.org>
 Subject: Re: [RFC PATCH 00/18] mm: arm64: Add kernel replication feature
-Date: Sat, 29 Aug 2026 19:19:53 +0800
-Message-ID: <20260829111953.893466-1-panov.nikita@huawei.com>
+Date: Sat, 29 Aug 2026 19:55:25 +0800
+Message-ID: <20260829115525.915867-1-panov.nikita@huawei.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <f47c0ab3-6d78-fcdc-b7c0-cd3a7b5c8276@gentwo.org>
-References: <f47c0ab3-6d78-fcdc-b7c0-cd3a7b5c8276@gentwo.org>
+In-Reply-To: <6c8d880a-0517-4669-80be-8a134f4bf7cb@os.amperecomputing.com>
+References: <6c8d880a-0517-4669-80be-8a134f4bf7cb@os.amperecomputing.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.123.66.11]
-X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
+X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
  mscpeml500004.china.huawei.com (7.188.26.250)
-X-Stat-Signature: kmif74y365o54zgpsbrekoxer5jekejr
-X-Rspamd-Queue-Id: 58A4640006
+X-Stat-Signature: f3byrh14abuce9g9agzdrs87p91m9ywx
+X-Rspamd-Queue-Id: 3E2E740003
 X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788003168-1403
-X-HE-Meta: U2FsdGVkX19VTlaWcrPFuPeK19jiFxdFaV0Wfdujnw3LN28h99jLayTV7Bqkbe5rn9KQflwn8Lwz1+IrAbsMzLTO6quqxVAj6xns9IeBYgeE5ZwQNzgTc01D6/AA6LL0KQBsJEkwiYkU6zDwPXOeV9jcyTMPAxCGqKp2RDKmjhHmpon9GMos0W9brvaOm9/8YsnB9Zile9AHzO/E70/nlL0Nx2HO095GCwy5DNPnqwjKykgWwYiO0Ue2lnw+7fHvyge7H+ZELctFbuG8a2Ib6BTwN6r8a07JuvLgVi+oguivsg6Bg7qUiFM6r8xVnLtI0c0ZGe7+9GeFQqJfNwnOrnwxGuf0XneRi07fQVA5jHXXx2huVwn9OCb/jJii76wgovXGczOwwX+eExsW6ajZ1alQW3Qn+Q3OPWg+nWO9O2PGmDE7nq4iivJCehIV7F84a2lIeiQa9WSxsbOcjLoyLjy9UTB4gyHnax1wKLDEe8mcNGX6kfC7iv8tdQm5bXo8RY7KQawP9seR643BGGqpCIEGh6tToqotQ+PwPJnYeCamJjS6C4/H8zZbEkluwky3eQV2rAywnrCA+8Fd7O0x3Q+ORI3BE1ufjOwL6IVBavoNnsz3OPrpSKSIrnxvRwdHnc13+Vu1T9GGspKe9Wmq3a63qJYbUF/CwpPOvxjWIA3WdrqEvWlt1pqnAKYvyxN7qn6rD3QO06U+fAWzxh9IgiLD4GpoU8J7f39MaJisq7kYZG9QLD7qdQAsFgtS9WeNfPWLOi2RdZlNNMVTDK2RkYgf4FQRFdE6cf4jbEbLAR4Ok5jR4tsrnZHUn1Lm6muIurMASmiTTEiGZ+ZJhPLbyd1GRoQi1oSx4nVC6fceUaVadnRUyGkJvqHpMfJE5D0zthTLSumlnfUdAiPRlN0VHZVq2qIpOwJfcVSjmC5rQ+LWnvv34atNO/fg1JzYma3sv0Xe1NjBs0P3/ev4FPp
- SggTi8kJ
- SXzueogFT+KzjCJCe9srXsGAAr0kM9Nt24uyouRXo8wdDPgsSporu+ipC7AhK+B5ZbtaiMZXw92C/cJXlyI28e7OcrdH41uFgkeZADMxapWULaPTL39QdWOqqtsUJR8rhPqtM5bNDRIopnkMGgPxlf21lNHH4piqT+Xxpi9WG/yjDJjhglz8mH454RFiO4ZKosmzCIDWS5jGJTlWcygxKG/XoNjTLa/B/u455Stf3P8S+wrKfOMMD9dRx9Y1eMjnK5uagkwMAB9yTRU12ypoLBaprNJswVk1cC2VyV5h3M6Fu+NIOTlHyVnAOhYPaZoOhNVMBkmAc/ZTSP9bg87K4JEfwcw==
+X-HE-Tag: 1788005286-652354
+X-HE-Meta: U2FsdGVkX18qpPOKKB2ETzTqjum3deEfql+yjnqs9G3rkfanicteB1TyraOmFdmT0DlaWigyRZmnDbDKzNKWGdKLRlKya9UgV+gj8O7JTtlJds4VxNnUSkvo/FeQndSrNEvsLmtPmpKdBzgjL9m9TN9NvJ6Aa8l7RmlHg4CobhqMdNyeOv5LyNB1/qVkaYsCdpxakje0dP3aqcnzRichmLh5C8AjKOVSf0CtuyhsObLqv+RJ/q7zn9CRiqiYCkTdPFNnutAYKPMX4eel9FntsZOa+HdpBUFJCnlexSyTBdFkRZDhVrzIjqU8T82jLuGfADodGvOxxBlFWCxqeh+oQAiDRVTuunqpT8n2irzd0o7wPjYTA+/asPgO6fuVQQwHR6WHi2XmW7kSe4pcCW+unB5Q/p27vw7WWX7sEo5s8snphUx1myyfcdHJW4eo8vk0PicpGo5rz4jZ0zrT6gYM8VNiC3l46R/L9e4XPfbZvpTNlllZq/26OiJuDg07D60GzAlp0qwOXnJamHrsFbtlmjxjusYOokBWxXvKhxDEo7yEYDj6Eye0QO1lHVj4rgIT8jKnjoWnwjX8cvULE9yKv2c9IDWiEfGDBqBWNR2gYWyY8aXRzVRbnbk+vF7gcZ6XcSJ2t9Si65ZL+mopq6vlvHEZNJZect52BvQYQSxj2AANFFjWpsdwxGdzt4l+nRc53ZoqZNMnLUOTfNxIJORC9uQ1ycmXArDO+z9i3AIvzo1iXhRvadfne7M9wH3GiU2bxr9uWNBtlR1IyM+1+Q7t+yzJWb2tNoW/JP3tcfpo/quIBG7knvoMNQP4rdQCGQtnD+yIMcVPcSJwSJtwXVpxMKwGKtZzE81PnVrZT+nMGdHyB7Zp9lU+7VQ22eprC2QnDVx5z5CeRg/vhyLFKHvHZelr+xfk+CMPYjks6QT1of1EIal1QOYM8MRHagOEr12PfPCCJ0sjik4PC+Ex19V
+ aJ0mzhFX
+ lYgLrA9JCTbYXudSD9lUb9RPf5J6nI3uxhMzr4eA5bD4gHhWtLyQsrYRg1hyUT7EhftRpQxVK0g8+hjlaJBMh10SrxaM3V/t1fFEPqd7xy8VJKyF5gWwIl/HaX34lz9jZHYq0PHTyiRRz5HT7aPag0GGCfA0ZmbTIh+4n31XRB2fNHhtI06J98srRuQXMeMGogpDF9rn3oHUPTgvZey2a+/5POPuFhjseLWNQDevJR6NCSSR5JhoODl58KOVsks4q8aVkFZpgThBkliE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,52 +103,179 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello, thanks a lot for your reply.
+Hello, thanks for your comments
 
-On 8/28/2026 8:58 PM, Christoph Lameter (Ampere) wrote:
-> On Fri, 28 Aug 2026, Nikita Panov wrote:
+On 8/28/2026 11:58 PM, Yang Shi wrote:
+>>
+>> [1]  - arm64 kernel text replication
+>> [2]  - x86 NUMA-aware kernel replication
+>> [3]  - x86 kernel text replication
+>> [4]  - NUMA replication of user data
+>> [5]  - Mitosis: Transparently Self-Replicating Page-Tables for
+>> Large-Memory Machines
+>> [6]  - WASP: Workload-Aware Self-Replicating Page-Tables for NUMA Servers
+>> [7]  - PaCaR: Improved Buffered I/O Locality on NUMA Systems with Page
+>> Cache Replication
+>> [8]  - Memory page replication for Linux on X86 processors
+>> [12] - Optimize this_cpu_*() ops for non-x86 (ARM64 for this series)
+>>
+>> As of today, none of it was merged into mainline.
+>>
+>> Patch set description:
+>>
+>> This patchset implements initial support of the kernel
+>> text and ro-data replication for arm64 platform.
+>> Linux-next was used as a baseline.
+>> (903c1cf6dff9 Add linux-next specific files for 20260821).
+>> This patch set heavily relies on our previous submission [2],
+>> their generic part is the same, these solutions might be merged into a
+>> single one.
+>> However, after thorough re-evaluation, we were not able to observe
+>> performance improvement for the x86 platform, so we have decided to
+>> stop this
+>> direction and switch on arm64.
+>>
+>> Current implementation supports the next functionality:
+>>
+>> 1. Replicated kernel text and rodata per NUMA node
+>> 2. Vmalloc is able to work with replicated areas, so
+>>     kernel modules text and rodata are also replicated during
+>>     modules loading stage.
+>> 3. KPROBES, KGDB and all functionality that depends on
+>>     kernel text patching work without any limitation.
+>> 4. KPTI, KASLR, and KASAN are supported.
+>> 5. Only part of a translation table related to
+>>     replicated text and rodata is replicated
+>>     (up to 2 pgd entries if kaslr is enabled)
+>> 6. 4K + 48bit and 64K + 48/52bit are supported and tested.
 >
->> There were several prior submissions with some sort of replication
->> for NUMA systems, including one from our side for the x86_64 platform.
->> In the last couple years, several research articles related to solving
->> locality issues on NUMA machines through replication emerged as well.
->
-> Thank you for this work. This aligns with our efforts to increase data
-> locality and the performance of local data access. Yang Shi has a patchset
-> that introduces similar code to be able to map partial virtual ranges
-> differently. His code may be more mature and I think these mechanisms can
-> be used in a straightforward way in future iterations of your patchset.
->
-> If we combine our efforts then I think we could be rapidly come to a clean
-> implementation that can be merged.
+> I think 16K + 47 VA bits should work too. I guess it is because there
+> are just 2 top level entries with 16K + 48 VA bits. That requires some
+> extra effort to sync up kernel page tables.
 >
 
-I will check these patches in detail and leave some comments during the
-following week (or to the v3, if it will be published).
-At a first glance, code is definitely more mature and can be reused
-for the text replication patches.
-It would be great if we merged our efforts to produce something clean
-and viable.
+You are right, it should work with 16K + 47VA.
+I did not test it on real hardware, so decided not to mention it here.
 
+>> Known problems:
+>>
+>> 1. Other combinations of base page size and va size (especially with
+>> 16K pages)
+>>     should be adapted and verified.
+>> 2. Replicated translation tables for the vmalloc region are not local
+>> right now.
+>>     Allocation performed with default memory policy, so translation
+>> tables
+>>     for kernel modules will not be local. However,
+>>     replicated text and rodata of the modules are local.
+>>     In general, vmalloc patch should be cleaned up.
+>> 3. Any modifications of kernel PGD level. These modifications
+>>     should be synchronized across all replicated tables.
+>>     Right now, for example, memory hotplug/hotunplug
+>>     lacks this support, vmemmap and kasan regions for
+>>     added memory might not be observed correctly. This could be fixed
+>>     by patching all places in the kernel where swapper_pg_dir
+>>     is modified, or by "lazy" propagation on kernel faults in the
+>> pgd-level.
+>>     Propagation approach will not help in the case of pgd_clear()
+>>     on swapper_pg_dir though.
 >
-> Please see Yang Shi's patches. We can provide resources to push this
-> functionality forward and have seen significant performance improvements
-> with earlier approaches like this. There is significant customer demand as
-> well.
->
-> https://lore.kernel.org/all/0344c559-1959-4531-9265-d5a5180eb7cd@arm.com/
+> My percpu patchset (I saw you mentioned it above) already had these
+> problems solved. I have not looked into too much detail yet, but it
+> seems like you have replicate kernel page tables per node. My patchset
+> added percpu kernel page tables. It should be able to support kernel
+> text replication as well without too much extra effort. And it can
+> support multiple usecases, for example, this_cpu optimization
+> implemented in my series, kernel text replication and some potential
+> security features. Multiple usecases should be able to make it more
+> attractive and convincing. So as Christopher suggested it may be better
+> to combine the effort.
 >
 
-For me, it looks like the kernel text and rodata replication could be
-adapted on top of the "Optimize this_cpu_*" patch set.
-Problems with pgd synchronizations are the same and should be fixed as well.
-Since vmalloc code is used for percpu memory allocations, module replication
-might be supported, the only thing that should be taken into account -
-data locality.
-Consider all of this, we can focus on preparing the new patch series, on top of
-the Yang Shi's patches and share it. If that path is ok, we will start.
+I am going to check details of your patch set in the following week.
+Preliminary - it can be reused for text replication, so yes,
+I think it is better to combine our efforts.
+The core problems of having replicated pgd are the same
+for both per-cpu and per-node table cases.
+Management of translation tables might become more complicated,
+if both types are used (per-cpu and per-node).
+But I do not think it will be a problem for kernel text and rodata replication.
 
-Thanks again for your input.
+>>
+>> Overall, this patch set in an early PoC stage and require some
+>> improvements.
+>>
+>> Overhead:
+>>
+>> Memory overhead for the kernel itself is about 30MB per NUMA node
+>>    on our deployment. For kernel modules - depends on their sizes, but
+>> text
+>>    and ro-data are not that big.
+>> CPU overhead - replication performed on the boot stage. After boot
+>>    only "rare" operations are slowed down -
+>>    module loading, text patching, kernel table pgd-level modifications.
+>>
+>> Performance evaluation:
+>>
+>> Our local testing was performed on
+>> Kunpeng 920, 128 CPU, 4 nodes, 100Gb for each node.
+>>
+>> Microbenchmark:
+>> Kernel module with a huge text section (~50MB) filled with CPU-bound
+>> instructions. For each NUMA node thread is spawned, each thread in a loop
+>> executes isntructions. Total execution time of each thread is measured.
+>> The insmod call bound to node 0 through numactl (less time is better).
+>>
+>> node                 0        1        2        3
+>> Before time, s     5.567    7.598   13.294   18.905
+>> After  time, s     5.469    6.960    6.777    5.531
+>>
+>> Diff               ~0%      -8.5%    -49%     -70%
+>> In this benchmark, interconnect was not used by any other actors,
+>> so microbenchmark numbers might be significantly improved.
+>>
+>> Customer's evaluation:
+>> We were provided with the following feedback on this patch set
+>> directly from our customers. Unfortunately, we do not have details
+>> regarding how these measurements were done other than it was
+>> a production setup.
+>> Evaulation was performed on Kunpeng 920 and 920B platforms:
+>> CEPH distributed storage +5%
+>> StarRocksDB              +5%
+>>
+>> Couple more words about patch set and technology:
+>>
+>> This patchset was merged into the innovative branch of
+>> the openEuler distributive 1.5 year ago (openEuler-25.03)
+>> and was actively tested in production environment [9], [10].
+>> In addition, besides the kernel part, we have published
+>> user space replication (for translation tables and rodata) as well,
+>> but it is very complex and experimental
+>> even compared to this patch set [11]. With replication in user
+>> space, we were able to achieve the following numbers in
+>> performance improvement:
+>> MySQL + sysbench      1-6%
+>> Spark TPC-H           4-20%
+>> Phoronix test-suite   0-25%
+>
+> Thank you for sharing the performance data. Does the SUT with 4 nodes
+> have 4 real sockets? Nowadays the CPU design is moving to multiple
+> chiplets. Subnuma configuration may be more and more popular in the
+> future, so we thought kernel text replication can help performance for
+> more usecases other than multi sockets machines.
+>
+> Thanks,
+> Yang
+>
+
+Our test machine has two physical sockets.
+Each socket consists of two dies, 4 NUMA nodes in total.
+
+We will start developing v2 on top of your patch set,
+and share it when it is done. If you think we should do it differently,
+please let us know.
+
+Thanks again for taking the time to reply.
 
 BR
 Nikita Panov
