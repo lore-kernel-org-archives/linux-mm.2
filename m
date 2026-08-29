@@ -4,115 +4,184 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0584FC61DD9
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 14:49:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BF8EC61DD9
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 15:26:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBA116B008C; Sat, 29 Aug 2026 10:49:52 -0400 (EDT)
+	id 29BB86B0088; Sat, 29 Aug 2026 11:26:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6BB66B0092; Sat, 29 Aug 2026 10:49:52 -0400 (EDT)
+	id 24D966B008A; Sat, 29 Aug 2026 11:26:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5AAB6B0095; Sat, 29 Aug 2026 10:49:52 -0400 (EDT)
+	id 114FA6B008C; Sat, 29 Aug 2026 11:26:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 902CD6B008C
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 10:49:52 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1A051120173
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 14:49:52 +0000 (UTC)
-X-FDA: 85154591424.24.B11C2E7
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf12.hostedemail.com (Postfix) with ESMTP id C0A8940006
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 14:49:49 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=OvozmjiX;
-	spf=pass (imf12.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D4C1C6B0088
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 11:26:02 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 438D6A2ADB
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 15:26:02 +0000 (UTC)
+X-FDA: 85154682564.29.0AB361F
+Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8BDD2A000B
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 15:25:59 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=Gu2zFIuG;
+	dkim=pass header.d=columbia.edu header.s=lionmail header.b=VkFm5na0;
+	spf=pass (imf15.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788014990;
+	s=arc-20220608; t=1788017159;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SX1FLvOIFSHuqgjqZXoyvcWzn59rRJ4yAy3cPilBPfs=;
-	b=a69VSAIh0cPbKg8YHBie7X3xTSJWB5qed7xzKWXEeMyj8uOsIl3mU4CHezJjOdjDTSnneb
-	YhVWKQ3GagYUyC8/SCVIClZNeHHeWj/nqHYOV6TXFu4qBu4uNVMU9KIR2gZ85dFhoGD/y3
-	V3raTqs3j5SdyluNGr44Ugxis0wvZOI=
+	bh=TFVWlDwfNWxgPSj86otvED5lH0a6QKBTMoQ7ChKGCcU=;
+	b=dMN9Mk1iaj1rn25XBfS2wtzr0ztsga7vTTIEjfKfWho89mROVOFH/4MAyOuPOdZMkR2WjP
+	TpLhtdCxNeHYinaAhbWLCmaL445XEpMt4N4dQ1Day39g+lTFAXKFGrzef/sUcEBDNQjQRG
+	4IP7QMcAdU+/WpTCIFfpYfrwXZDffqg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788014990;
-	b=LPtzt+I74YFeSLYWIUZjYjdia6j4EI1hD5ODAVXHvjnClilR/9oI/VMy6lX8JiKE+wRuPR
-	x2orw/Kv/fbsKlpGaPPZmdK1ww+yL4i3iy2cXaqWYXMS+A6pwyQUlOsMku+X9km0qGIjI8
-	xookIj3TFm6qDqOjkeW68rbT6NhRKq0=
+	t=1788017159;
+	b=znjuJTpKgve468VxJhjC4DNpYFPimV+rsS/KBHMHS3B6/ZQjfzgXC8YfsFMAl0vDn6nI9I
+	1SXKJuAGBs0o9r7+qy04nzBzvHItI1cKtfxfP/G9eNPciZ15J6tdJcy694nodlwh+OB2CF
+	y9JpuIrnUG5LiIRz9zWUXVtxAfgEhBk=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=OvozmjiX;
-	spf=pass (imf12.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=SX1FLvOIFSHuqgjqZXoyvcWzn59rRJ4yAy3cPilBPfs=; b=OvozmjiX5mFbDoB4jSgTxkNxJ5
-	Zfhj7AJNCi2u1p2S6ieZ3nMrvkj151vzofRuiFEtBNVz43gfPB5P7/Oa1vbTIskKCIYUXSrO07ppN
-	OiKsyqHdyBhlVSw78tpf1rYf+g1rT66QEZeH0x/zWKX8tst6RBW1U+4WyQFQlRjQUUXCwlnsbDBbb
-	idHkygyLw05rNiH0LzWDD+blm0X/hIK6DUYdKm2oQJZAulbAmC5fFqheRJehMiJxsOO7Cqd8ORGIs
-	3YicaqqUsyNU956MFxLwfQJ5/3Eq5JxZwq3wNIO2WvwMUIvUjQMWbQkYm4ij7TR9l6nMPYkOb0OOF
-	7lzqn0VA==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x0KN1-0000000Gbyg-0k1Y;
-	Sat, 29 Aug 2026 14:49:23 +0000
-Date: Sat, 29 Aug 2026 15:49:22 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: David Stevens <stevensd@google.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
-	Clark Williams <clrkwllms@kernel.org>, suleiman@google.com,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev
-Subject: Re: [RFC 06/10] Reclaim memory from blocked kernel stacks
-Message-ID: <apLxcg3Lgy0-nXA4@casper.infradead.org>
-References: <20260827232948.2520558-1-stevensd@google.com>
- <20260827232948.2520558-7-stevensd@google.com>
- <20260828133620._x2XfJR_@linutronix.de>
- <20260828135947.GU776954@noisy.programming.kicks-ass.net>
- <CAOiLmNHrbXeTY7zoNodmaZUoMWf+NgvGvZ_LjfWD-1sKAoiLeQ@mail.gmail.com>
- <20260829084901.GA776954@noisy.programming.kicks-ass.net>
+	imf15.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=Gu2zFIuG;
+	dkim=pass header.d=columbia.edu header.s=lionmail header.b=VkFm5na0;
+	spf=pass (imf15.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from pps.filterd (m0499198.ppops.net [127.0.0.1])
+	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67TEbYw91444508
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 11:25:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pps01; bh=TFVW
+	lDwfNWxgPSj86otvED5lH0a6QKBTMoQ7ChKGCcU=; b=Gu2zFIuGUDCk+rJ2VDBk
+	70a9GXKIRmd3CKMeiyckWv/D5MP7Zgaj/CA+sovdSkrETK1IrJb2qFnGnQEaNT3S
+	N9KtoDtS2aWLMgdaZS8EG79pcfDMQu06yKTxqcmPhJVJAftER9ykGtp1pbja1UeX
+	kUFeO1YwKQdpDr1sZdsz5l4M5OOqmQkrZTmdrHduJ4FxpamhWS1IQq9E37/oh+3q
+	nZtzyUcZ5SRVAnnPNjuAJxQT4FXqYOGakyKLjlrLX5KwZ+Imu1kdoq89hPFZ5bjm
+	jEkOlYV+J6fGeVEAdtwq+7wZe5VJJ9mAqHAPx4qs90lyy6hcLcj/IAjQH5/0tLN2
+	0w==
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
+	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4gbqy7a8b6-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 11:25:58 -0400 (EDT)
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-90c8cb9f37eso21475946d6.0
+        for <linux-mm@kvack.org>; Sat, 29 Aug 2026 08:25:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=columbia.edu; s=lionmail; t=1788017158; x=1788621958; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TFVWlDwfNWxgPSj86otvED5lH0a6QKBTMoQ7ChKGCcU=;
+        b=VkFm5na0WNP0LPKNuN2sszcPhSsLZodgzviBDLmP5vZ3zvjpCl7naMNe460CZ8DFze
+         gicpvo5xukausiCqk7HRMpmBvVT+AMNY31H2xvGRZ98Lkp5JbmssJcubu+sL9+s2K8qP
+         bEqgiZqmv4QZ2n9Gv9Mj4vj5yyzHr3f7g44Ao/yKIfX+749eg3miNA+wcoPjKy7JBkzv
+         X3ZuFS3kdheAXRbYC53Li5YULmLlWg2O6FOkzipqsnhc1T9fo0dYdbD4UftEiodArv9Q
+         Bm7srYDSOeI2xO0oJefzatwxuXLHXVAe5leN9fCh9xSby2ep7RYhaQ4jF3AdIUjBPuW+
+         GBRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788017158; x=1788621958;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=TFVWlDwfNWxgPSj86otvED5lH0a6QKBTMoQ7ChKGCcU=;
+        b=ME0vxZoDC29tWdk5VLITflPuSLt4JkcmRsXagPA9N1/ybfg5fBmKawiVfEO19+/9qT
+         gIJvFqeQi9nqta+joaJnURYvmiukqHnsRDKjwuDIgG5N+O9aSiXMVSFhFg2IBLY2gH9d
+         nv2hvHMESNhbw9MC7jnyCezh58TW1CGOfoz4hbfHIcK41TUnhDqb7+DUsMlBpMuPLxXp
+         RaF8CJYoYfZZUdvJuT3/92NezmXr/czgH1UvOLsBBDRVDuAXm8nxXiN6r8FBBCoTkN+c
+         QfPGml5I9DqBPgho/hBqk4kMTjuAIE8URK58TxMK8CfG0ERLPNCVY+PjLMxdUk/QrfQd
+         WggA==
+X-Forwarded-Encrypted: i=1; AHgh+RrR968Eromfz0LwhjhunKXqc7TNOF48Pdjf1cj6fQQyqSW5cO/FrggrRqCERd66xM+cdsXd8+VU1Q==@kvack.org
+X-Gm-Message-State: AFuF++kIgi2hbQKj7XyVvnmUsA8lcz4aM1efoTQQWb7FtNxR0PWrl0go
+	trTsFMSBUiSNvfEJmyz82z9ll3PFLuQlL92eHa8wMcE3Q4hel+3ADZ2LcZgtuYAXPB0V5LLb0Qu
+	spG3bbxMPMvBxl/5wkp67WFUUtjxAPorIwyZuzJULrzU9lKJ/
+X-Gm-Gg: AR+sD11CQF/jPjdPG58wDG85+khGQIvvudoiN4NNaYY1KfMmzHqSfbu0XuxzVdMhx1g
+	0/ub6VEWzgJWcLr2vOfg8e4xss8euZGrL1xNILkXrxglymaKs/G5jRZRCFbWh6LyDbR/oNBUh4Q
+	5/ckNDFE40062WVOvl6fbL7M/oHKAkHwLypXIOUjCCOWeaa5+ykpJOP7KKeAVvYNSDRRQV79F33
+	lfrkpEWDtgkuKEYZxNzqhFku9Trocb2q28/Dcd/zYNmkM93M9lNe6nUrKQm9zaXE7b2JDO9DBg+
+	iSnLJMpNCJVd+99E1feZigtXraT1CyYAnkaz5YzBJpqA/Qna9hOkVlKsYhPwhkhwTeqE4roPzuD
+	pAIhRd4sOMy+sQVrvoxbhp1YWLf/RAnmGT/yah8XnqXNfMuo=
+X-Received: by 2002:a05:622a:95:b0:519:8998:661b with SMTP id d75a77b69052e-52fb9640d64mr173116541cf.20.1788017157666;
+        Sat, 29 Aug 2026 08:25:57 -0700 (PDT)
+X-Received: by 2002:a05:622a:95:b0:519:8998:661b with SMTP id d75a77b69052e-52fb9640d64mr173115921cf.20.1788017157157;
+        Sat, 29 Aug 2026 08:25:57 -0700 (PDT)
+Received: from [192.168.0.175] (bzq-79-179-7-133.red.bezeqint.net. [79.179.7.133])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cca1ed292sm84339685e9.8.2026.08.29.08.25.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 29 Aug 2026 08:25:56 -0700 (PDT)
+Message-ID: <6672b30b-427f-45ed-a172-4c47a63d2c7c@columbia.edu>
+Date: Sat, 29 Aug 2026 18:25:53 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260829084901.GA776954@noisy.programming.kicks-ass.net>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 2/5] block: add task-context bio completion
+ infrastructure
+To: Barry Song <baohua@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Christian Brauner <brauner@kernel.org>,
+        "Darrick J. Wong"
+ <djwong@kernel.org>,
+        Carlos Maiolino <cem@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+        Christoph Hellwig <hch@infradead.org>, Gao Xiang <xiang@kernel.org>,
+        Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>,
+        Jeffle Xu <jefflexu@linux.alibaba.com>,
+        Sandeep Dhavale
+ <dhavale@google.com>,
+        Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>,
+        Dave Chinner <dgc@kernel.org>, Bart Van Assche <bvanassche@acm.org>,
+        Hillf Danton <hdanton@sina.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-mm@kvack.org, linux-erofs@lists.ozlabs.org
+References: <20260730-blk-dontcache-v7-0-3e8e6850068d@columbia.edu>
+ <20260730-blk-dontcache-v7-2-3e8e6850068d@columbia.edu>
+ <CAGsJ_4wUvLoKGafR3U-ji1kUUaz6K_QdN6QxMT-apSaO5tXp0A@mail.gmail.com>
+Content-Language: en-US
+From: Tal Zussman <tz2294@columbia.edu>
+In-Reply-To: <CAGsJ_4wUvLoKGafR3U-ji1kUUaz6K_QdN6QxMT-apSaO5tXp0A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODI5MDEzMyBTYWx0ZWRfX9UqypJIxUYc1
+ HbyT2W+u84Cp7b5hh3xyhG6wD3byMOF4injd6XvqhqLdGmZSn3C6WKs650ZnFJsSbmwAmp8tgXW
+ UlwKNdFYD7pGsIU9t7P5KZ4Qh2YDOIfTZGJeiQIIeaFFe4FflwvA
+X-Authority-Analysis: v=2.4 cv=e+I2j6p/ c=1 sm=1 tr=0 ts=6a92fa06 cx=c_pps
+ a=UgVkIMxJMSkC9lv97toC5g==:117 a=LRATYcvZeiQrLRB5MfbBvg==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=BpGzv1V74M3SfeTrGa8v:22
+ a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=bN2RZfqcuyHWyQBaeeoA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=1HOtulTD9v-eNWfpl4qZ:22
+X-Proofpoint-ORIG-GUID: suznue0R8lwMdrhQfEYzjChHaAU_LMcj
+X-Proofpoint-GUID: suznue0R8lwMdrhQfEYzjChHaAU_LMcj
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI5MDEzMyBTYWx0ZWRfX1sk0FRzYuXkr
+ LNgPQI5Hbc7jG53NOYhAhrrSd9q7ABscPfhzVU2Kc7zDj70egAoCgTWnF3QwSnFt9W8OMrOVJ3d
+ fUzObByF3ViakLcukHtmQw2JXHu7JBzOPILfjUMGwyBV9z9ZwIqx/gKXoTetvMBHT7X0zRwdmhT
+ 1WmUU+rjRjSz8XhrKPGxTI2aNrMMHzwyzy2G16LZEki38nvAxzhbErKyv5wIQy2Wxx4EHpdfY+y
+ ZKXB+KR6RFVLTcfISrLn6Z67JdjxIH8EdVU9de0AKbML9flgHsS08A0QVUV51bbK5Uh2++6jlNr
+ dQPc9qu3xrq48gPL6UT4zkk78ni88dZuL+vXVo0h1DuOoRKJFGsUya6BsOVKkbtCtZgXb2waWLs
+ DdPZugG2QW4nDRwwVuHQK7BGYda10N7jJvzy/oO8YqIiqyvplqVHPdOJJF3VWs3c1b/aX8upi8z
+ DVyL74Pd5yoPtpZ/Fiw==
+X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11890
+ signatures=596817
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=10 bulkscore=10 phishscore=0 priorityscore=1501 suspectscore=0
+ spamscore=0 clxscore=1015 adultscore=0 lowpriorityscore=10 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608290133
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C0A8940006
-X-Stat-Signature: mti5xapa4wwiritx49kszoechze77m5c
-X-HE-Tag: 1788014989-947496
-X-HE-Meta: U2FsdGVkX18jkgeDUIb+JSSmjahCOvcskclJ5+lEWTqCsxWW35IT5Adm79Kj0ou5ZZymOWmKfDrdvhoi9sQ9GH+TZfBs4DjK6ThE9q5TBSY9Ash7mxYvJpqGk3zemJpSF4NDYmyOU4IUdjrQ3PWyVCX9h6rOI8HJX2U25nizgJVnPED9PRikBvfCVT0WQPUDvaSpbJVUNoWV8vVCmDWq5Vrutwd9mtsOv2+vsOfhcsxCcYAJHOFzdt6rgfWKyeLXfGD9fsqMTQY2RXW+MafP6voRme64T8vWlNznDd8BY6JCJ+ac8hLaU/eg7TovxuULAD24ZkTz95h3HMjDKzNC6N8GWoYXUzY/j2E15njeuZpXn6PSQE+Zpt3KbZFiJgTHIZsvOMG5VkUYRHvIdQe0VSoyj50svrmdULNag50PshEgXiArI95wa/uCb/Gyk0tyONx67P7E88kfjWuAtG9sAJWy0N7xdtnNShJSJf3ehnxA+k62VhN5nudzusUNZRIYXy4g1yBTcn/Qz+XlFv4NtrEOg7dLYHVhnaRnpl3CMzKVY3mYAbZ/rwOm6LH/VkLLEAFgVfTmqNRDspuwFNMYDZlRbpgFyswcZmJKl8Qo1YcHZ0xB9yZha0eLGu21z/4Gp2rVkEw42aEZFB9Ihm4xqPv9ENaJeXQmgurJdUPsCg56mGK13a2QRTvaErwAxi0vxpNH8tEwJFsX1RyQr9sUaUE6D7ixKkHxuJ9EWGUwEaWeNxiF2MLvMprk1qlKj6enye/ak5YZeAgta+Kvw0XAbQXqxfjYOW8wzUmYhrgyjzAKJXcIjFmgKvkequQoN3tQCyOMV3u0vpGeDDkJef2YPiR6KiPqGnyTSpnIwSCcgIXB2HzvqyeDRJDvwlB1vNAxYfgsQcprKn4WNBOM2Im+V0eGWD+rNIWyG1HZ6+Vx29Kbb9A2bZTJEEjR+LLxA8CLH9khZhb4broicqMqkuW
- hXG4IKpj
- cYb7wPE8G+pI2y5OMROPqwu/N2yvM1eLyEoaYMNb8s+7WhzlmM4OhgZsPTli0gx0AxQMMTseg0PPjev1EvpJkCvHE91Xst9B2yYZq6g2godNnntZqJBVMRGkveEk3hCj2JSmWbg6kMJU0f2HIzyuB0zIm5M0jcbA6LWyy16Lngz72r5FYhnK/s1yyRowCRxmEfRpajShcMPC4pS6sZmoDLtSnVO2FRTrwQ1WNOA0Ta8gWHQvURl1NQ7CjQKHcmixX4XY2JGS7pC6OeuQUWP2wOpFOJA==
+X-Rspamd-Queue-Id: 8BDD2A000B
+X-Stat-Signature: o3ofp49sskb79ykp58brziuj1ods1ikh
+X-HE-Tag: 1788017159-335765
+X-HE-Meta: U2FsdGVkX1/lJY83wkS630M5K4RgPpmfGpm/58TiLClXtE3DIEGs29uMsdaeHspPJ6pDY5UMLjIQ1XxuZ9fkSPINYwxi0AbUISryIecvDxcXRXxtQX9mqNbma8z7O5VIewznzoXexOmOXWrwL9CoNJ3361F2cfYu2eG/2HX+Lz7kKwv58gqjnaNiaH448eHkvAcThR8a/dodcm+RJmqZeDGpnJWYmeG1cYHaFZQKYiQ65gLfh8UZXROcQ3Pm8SuvXeqa5sUMm2so32zUfn3GdUg+92qwRQCzLsrI70MlA7q7a45gvI9KT83MkyJDCxv4/4Y6z6GQCNQjV5o4lu+anAssvTYRhGYNssU2DKzsC/6i5fU3QqAzMheLndMowRiB5CQz74+0Gn5Q0iXC2/Ryzol9IyLAuGhDoRs9pKqB+KvjUAlHUtBMcEzRBgsVNWkjNqTy1MmEOk4NPVsNW1Q0mejK/fM3vzE//By02nqJv4YyTs3Hcz14wddcMxnoN6ml2rcdS52YzPbevEttKUT+B2kISGMKYn6jZkzjNfMdxpl+BdvDTd97E9SKdCIJBmt5dxJaz32Y0KxMz7FfxJwpVH+uqDrnF6BSBUPPJBisMcofYPWU//t5DCqocQIIY3QJd8paJPxWlCgplI8nZZr1PtGdXCbMEYMfVwtxiHZkWmW3Fltf0iNUnODCeaxwVOuSp8WQz20WDbqlzXnyvFBNycMwCoDmbnQ05paE9382JxJi26R7MerVeNUVyxe4CqXdW91jizdsGQcbaayTrjvqE4hjXQwQ7Or0Virk9LK74wxzERNTAPwHTZgegerM4JgSjTH6hBvGgaAVzURTEqj38ygbZHY0O8gFCyuyuRejFxcsdDbrAQu8FYm5rV+6z4LTdaqijFgoo1rIpWYOYVnMNUwPGW9vQzHkyo+ypnCIccW/wtMP0hSEYG3KWb7MBJW/2z6gOtLgqyDINJtoPi+
+ uzvu+XVZ
+ 8Cy7qcaG5zRgdw97lowezAtOobB6mMziaXyVT+Jm36MF2B56XTEtC8aACcUVPrtbUJp5tslT+P9O5qC4qzK71wVXe0DMBg6zhTJiuzOle9hA5mKPTJhRl+PnCp0WFhin+C0Yz2EgLVGKUkkT5Qu8S8kp2efIcWZlGr8U4FBIs55oxyMAOc67FB/MboUU+0M0qo4dE0vXyXmGCje4C1aK+fedcEpFBBvaGDLIx4H3mt1/87LKrMY2Y3YApHnJEtSHa9uG2OM3M9fK26C8DaSMB+KFgKFhK2dxFqCyLdB9fHlQE0PHVyXSzbDRebj8jjvolHGHi1n6izUWF9e2jFbWqHzEOsWSuX9Cp/jkTIWVhYkNci8XTnLFWSll9PH8bDjT3Q0R8Gx0RFOmrofkM/aG7bM/AKOLz1i1YInT3gZqgDUJM8g4o0ff5CDI6awwW121tbaTPMyfz6siBs5K8cnYgkAs21StQPSLDRO0nyFwBsIh+V0k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,16 +189,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 29, 2026 at 10:49:01AM +0200, Peter Zijlstra wrote:
-> > On PREEMPT_RT, it is necessary to skip the call to
-> > alloc_pages_nolock_noprof() from under pi_lock, since with that
-> > configuration spin_trylock can end up needing to take pi_lock. But at
-> > least on !PREEMPT_RT, there is no risk of deadlock.
+On 8/16/26 7:11 AM, Barry Song wrote:
+> Hi Tal,
 > 
-> Yeah, which puts the lie to that horrific hack Alexei did. We should
-> probably teach lockdep about spin_trylock() not being safe and see the
-> house of cards crumble.
+> Thanks very much for the patch. I’m just a bit confused that
+> folio_end_dropbehind() only requires in_task(), and nothing more.
+> 
+> void folio_end_dropbehind(struct folio *folio)
+> {
+>          if (!folio_test_dropbehind(folio))
+>                  return;
+> 
+>          /*
+>           * Hitting !in_task() should not happen off RWF_DONTCACHE writeback,
+>           * but can happen if normal writeback just happens to find dirty folios
+>           * that were created as part of uncached writeback, and that writeback
+>           * would otherwise not need non-IRQ handling. Just skip the
+>           * invalidation in that case.
+>           */
+>          if (in_task() && folio_trylock(folio)) {
+>                  filemap_end_dropbehind(folio);
+>                  folio_unlock(folio);
+>          }
+> }
+> 
+> But we’re applying a much stricter check with bio_in_atomic():
+> 
+> +static inline bool bio_in_atomic(void)
+> +{
+> +     if (IS_ENABLED(CONFIG_PREEMPTION) && rcu_preempt_depth())
+> +           return true;
+> +     if (!IS_ENABLED(CONFIG_PREEMPT_COUNT))
+> +           return true;
+> +      return !preemptible();
+> +}
+> 
+> I feel like something may be missing either in
+> folio_end_dropbehind() itself or somewhere in the
+> filesystem/block-device path.
+> 
+> Do you know why they don’t match each other?
+> 
+> Best Regards
+> Barry
+> 
 
-Why is spin_trylock() unsafe on PREEMPT_RT?  It's not intuitive since
-one can mutex_trylock() in interrupt context or under spinlock.
+Hi Barry,
+
+Apologies for the delay.
+
+As far as I can tell, the in_task() in folio_end_dropbehind() wasn't meant
+to be a generic test for if it's safe to sleep, but rather filtered out the
+known unsafe case of buffer_head writeback completing from IRQ context.
+In contrast, the bio_in_atomic() check needs to be stricter since the bi_end_io()
+callbacks could sleep or the callers could be holding locks, RCU, etc.
+
+I see there's some more discussion about this at [1], but I suspect there are
+other instances that are (incorrectly) using in_task() as a proxy for being able
+to sleep (like f2fs_read_end_io(), but I haven't looked too closely at it).
+
+Additionally, it probably only makes sense to use bio_in_atomic() when there's
+some deferral path, since with CONFIG_PREEMPT_COUNT=n, it'll always return true.
+
+Thanks,
+Tal
+
+[1]: https://lore.kernel.org/linux-fsdevel/20260829121335.3491374-1-qwjhust@gmail.com/T/
 
