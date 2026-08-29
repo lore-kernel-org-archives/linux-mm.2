@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46383C61DB9
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 01:50:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67EE5C61DB9
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 01:55:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3EE0D6B0088; Fri, 28 Aug 2026 21:50:10 -0400 (EDT)
+	id 4BC0E6B0088; Fri, 28 Aug 2026 21:55:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39EE96B008A; Fri, 28 Aug 2026 21:50:10 -0400 (EDT)
+	id 46C6B6B008A; Fri, 28 Aug 2026 21:55:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B5186B008C; Fri, 28 Aug 2026 21:50:10 -0400 (EDT)
+	id 381ED6B008C; Fri, 28 Aug 2026 21:55:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C7FB6B0088
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 21:50:10 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 83B651C21C3
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 01:50:09 +0000 (UTC)
-X-FDA: 85152626538.19.7A2D55C
-Received: from mta1.migadu.com (out-75.mta1.migadu.com [95.215.58.75])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0380880002
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 01:50:05 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=v+vtgKxR;
-	spf=pass (imf02.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.75 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787968207;
-	b=HgspMzB/lBWelvr1dS3DyH/zBW1Hr7UnFUUmlkZk5T7CO6UO56OWtZNpYuKbp/HYvVCf+G
-	3ob0DKiY3q29XbNC8KutHlQoMAQxhWEvAIUAoa/OCahqtzOqOVUHr8OkMPG6kT1w6I56qm
-	O+Fxo6p9cac6Gra7m2M/4WaVJcf0qEQ=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=v+vtgKxR;
-	spf=pass (imf02.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.75 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 16ADF6B0088
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 21:55:22 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 60CA41402E3
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 01:55:21 +0000 (UTC)
+X-FDA: 85152639642.20.E4FDFA0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id BE5CA180003
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 01:55:19 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PZGB1bkQ;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787968207;
+	s=arc-20220608; t=1787968519;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k3Vp+PyidmV2KfIrQxD0bN9wMnJa3hoLN6Iy1W+CIfw=;
-	b=DHwXYFjaIv6HjkVkOKNC0nJ9sY7lWBID0iqsl02fsT7hBdcoBQ+7/kM+LYwz3freLbsnPc
-	/1rgAJD3irz2kFK0Rdkj1qSiRXdYBxFnall/e/Kuc8eWMx0An0o64Z05CDwbxejuX2+LE1
-	GLTsRttMkP3Zj7xuqOHzKsK2vQ7ybK4=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=/iqJD9g/AaG1YjZFJu2Q3XSOJAmhV2Z6W0ipXJVXn84=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787968204; v=1; x=1788573004;
- b=v+vtgKxRBsYMITQGo0/pSgvKElzZbwHg3I7UgC+mHhsJ6eHpf0D1nndc/K4HFtw6Wp++y+xf
- vX0yVpafU2qEKOjmKNBfykROwoUQdpbFLcIzPhNdM8x819iupUtRtF8guypqlzzonKKdAs+ZpiY
- R/NgW1luFthpytQd52a5C6cE=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id c2ecf192b3279494;
-	Sat, 29 Aug 2026 01:49:54 +0000
-X-Mizu-Trace-ID: c2ecf192b3279494
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <eeae0d48-4d50-4dd4-9e16-b4f9902d84f4@linux.dev>
-Date: Sat, 29 Aug 2026 09:49:44 +0800
+	bh=bqsrIgE1vMZSFVutAeptIWgwiGFQSyUVPvdWjryJwx0=;
+	b=udfTwWCg78LtsIAoK3AwmNp0X1qto/gNiQhf7eqUV+dFewtemiw+UptwIX/OguKskuHQXo
+	6BANSNnj7+d8kkqbevxmghUM3CrQgP/p+TWoGPn9/jKnqDr7Ne8Tj+qqRsB9L+BWYzdE2G
+	ZRlh9+8IgRyrXJSiM1gLb80GYJfg2nY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787968519;
+	b=XPi73Ci9nGwhMKTG+Rs67lenfuoEZG/nu78Ex7VS+DkSemtLklG4onM93FO45DWtHmMAgp
+	d4chPDuenqOgp7T7RTEqyWJ19yhRW6e/zCN2hjJ41FIb8dFqtZpGzrHSSbr6ljraX8twzl
+	7AzEiqwhIZxBKXW35WDo68p2nQ4kuuc=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PZGB1bkQ;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D4B3C41820;
+	Sat, 29 Aug 2026 01:55:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 681B81F000E9;
+	Sat, 29 Aug 2026 01:55:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787968518;
+	bh=bqsrIgE1vMZSFVutAeptIWgwiGFQSyUVPvdWjryJwx0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=PZGB1bkQAPezLN4UngIrermFUA4t75K1Hc/7NB6Lwhne5lHDBNfm+pH5K3af4KccM
+	 +KYUewu/UttfS5UY5I6E5fttCivXAMb7FtQRzfU0Ao9rMn274VuC9gu32Ob255Tlez
+	 noEj3NKap7EgNwqR+iNLoZVhwBDsxsPhtgolQr/ApvnLl/O1U/H16nPAf43WwOjTE8
+	 ymVzs3dIDX83CIlUO7Kvzo44tBFK1pvsqPvrPWN+SByW7tEwBVkHvsEeCjQOKZaYZ9
+	 KKLQ3y3OWsi7Pw1k9HDgyfwb1l8tEvg8HtYnY7fRgGxF4PIiYJ+C8K/PXCnMfvx2a0
+	 qTHCTCc1pTIAg==
+From: SJ Park <sj@kernel.org>
+To: Nathan Gao <zcgao@amazon.com>
+Cc: SJ Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	baolin.wang@linux.alibaba.com,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/damon: use a page-aligned sampling address
+Date: Fri, 28 Aug 2026 18:55:11 -0700
+Message-ID: <20260829015511.74221-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260829010455.28607-1-zcgao@amazon.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/4] fs: fix missed removal of
- super_fs_objects_eligible()
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: hughd@google.com, baolin.wang@linux.alibaba.com, usama.arif@linux.dev,
- brauner@kernel.org, david@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1786955972.git.zhengqi.arch@bytedance.com>
- <3b038d373c70ebac7cdabfb0035bb91d1d6e6cfe.1786955972.git.zhengqi.arch@bytedance.com>
- <20260828114129.909edbfb7e42b36af2da6a98@linux-foundation.org>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20260828114129.909edbfb7e42b36af2da6a98@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0380880002
-X-Stat-Signature: pio3onikarz5ey9s7e86xq6uro3x9615
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1787968205-764103
-X-HE-Meta: U2FsdGVkX18v05516Rj3+bYBIfijtPe8rNzQlNtb5QnBdwF6OG0R70j2puoCQEQCqt8zSD+FrDTPnDc/T4vBFWUIBEtXuU204ymVK03YEYxO0tjGKtpzyqeOL96SJ3ktF+yeosDO1sj2nB7sMDOjQpuJYIkRfDGV01XU0LY8Mu5SKgEJfxs3kviBtWyAO4z9rV0j3XASc/GKUd3vffbKyirzYLvx8yrcGFD1FQ5+gtj2ymVuXldkThnjlSUZ+lp/ozrYyx9x/Ld/8Xiecb3IoDC+YBST+dykE3U12dVGEEUqGctKl1YJVT3g/wgGTWOndWqo9gLRLWikMt8Q0qB6RobHpgy3yT0RTHhrA+f2v6CyEPtP1LHvAhXyfnpNfzvjIejRQhvUlvfaO1LVc3+TtQAgsUejbITa99cikCXBLYeU0NBHpX/OaXGxbM01CyeyOR0UH58AGDTHiIFAOo+Tw2kPRT4zBn7LaACagcyJPss/tm4weVRXaWPiuPNu1tSTq+g67MOZkGEtvzLqcH+i4iO9vt68kfCnbk+dAb5c6xT4PwXtPhVMGQLlU9hemF9G0p/PjMadFP/F+1pJpoYyAwqzYfsrH2pp0RbWPjGH7xtP9FA9u0ydXSLDPTkI9Qkdh5rjxJ7SUxBspy3VzxvIfi2YPtkFt9eJI4/sHDR6Ysqagx4fUWofiMjTnFLRXr3IxO0bsD7XRG2iBLDp2TkXMOYnnb0CUgG1KX6D4Jl7PvYSDigqD9k8aMa5n4wx6Z3CtjUe4Xv2qXn9beRkamr+j6MiGjvtpt0UuEHvYtCXQzdn9B7F8AQeQLdLDSx6RvMOzr2wBVtawFhRXgLKr9ya3IYBE8zMIUodTVy7tFvRqrwv/zh8p7ve7hfPRnd3ZO0KcfBSzcP/On7X+13nRh4D2hkm2T9yO3StAlHvoEkcKQxTe/zCYwDluh/QMxr3jJBLQSJDMIJbbubAJgm7bhc
- HyUgwoWq
- kkQ5Ghy6XW+wp2a1GFyw0x7D6znKYyJCvBPRV7ueG1zxSnlSdIVmRKcxl4XTzC8WntRsBEu2UbuwbEp5MzGEYBym0TwzR+UnNxR+nuReC0QP8cLmFhOsRsrfE4iaS6WFdZEC/VXBHtFIwPAkW+KcIb+wmi85dj/3e9KXS1wvOPSw8M6osZ/F93Pn2foOB++b9kP0FE7LQZiiBwGpENA280FWFbBj+TwzyuwmFNNwJ61cH+cS4gf01+s3tRIpsesFKGNuH5PKf5yUQpcsINKLi+IHYm8YavS4zCUXJz8qsmIRXyWQnN5yMjcAIh5bzPGewdu+GJIeoyfbX+w4NqpJCFTLDZLT31fNuSW8FvBkSW8y8O0upxRLFZxfDtQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: BE5CA180003
+X-Stat-Signature: cbmsiqwzadqxooik3fku9fj8hyrjguba
+X-HE-Tag: 1787968519-360605
+X-HE-Meta: U2FsdGVkX18PF1XQOW2iB4I9grC6NEMebAGWseaHAp9H0yJF1LYSY2XTHcWohyE5xWYhu9TgOOyu9zQdZBbHArwEiiJrrtmyIk369irRfibIydT1hU2MYpXG6b1lofVsg5v2I8uYwRb8nbqsIGelIewJ+boxIUrCt8is2mdu8POWEci/gj/9E1HUm2RVRKod9w6xavD96xJBpc/95+q26DelHjKBF9flDZZlwynHHwyG1HllB1nDzw9XF1e3UDryjIESIpj7zuHA7veJMDxGeAciDfF8HqQ1pxRh0ycMbPYBrMZQPweyBim6jyzHhpDimvcTeKY20RY4JI6KGuIWSFjw0OlBHDZXeh/GX5jTQZAuL71BzSmjiWsK7h0p5uaOWm6El4aZsCnpt700yiax78t1IBM1eQIGL+Sao825mNPaEsNhQV5ReLo2WJOdKhiduIm4dCL4zzThFTJlfcBBiM33biQLtkKDQ6d4YtFd+/ghkjiOwCCG0qIUDaRKlaDoOByDMy9Wkx8KxTUMx0HXFf/U040zqXobwQpdv5WJOejFHyApKF0i7trHRwfEopwJYAcJCu3u9Dc8OQmx78Y/SRWV1UQB0Nef/s/t38+BJzSXrvOsMRGpvTULKiFx4aw7HOfyjlYMjxklRCagoMN7wed4ofnAH4qKbHYfXjhSpvIuJezsT9YJ47S3PH/pB5fxwN8wRd/QCqx4G1VQujSH2Vdqv8JLJC0bdokmb3L42yMdqb14s7hqAzMQ6Zju2ishKIu4NneT6oO3hKdMEtwAQ5sRz/2mz7+9KuMTHOT00mwH/lbu5rR9YJLIOS3RrI2dY41Keni9yfblZnTsR7B+HHnfw424nnMU87fpr3VtVPBWU6d1TfnwMRExhF1xGImxq9bViBYZGjNGwgmP8FL+6SyXjJvKGDzug6WwIAWR4gxDtc6zHnbxr6AcduJv8g6dNtxu1Q2VqjJL8sduLES
+ M/4hdu+X
+ hql4f5bXWq8RVanStFXWX0uNunM/XgYQyRVOxrYYvCgYWbEkyrV10GnkCmDRBajHw6hQjlP37wxyK3eokVtoriVRpxNAtPWVidlmYwsSskqi2LSadCZPnsBlr7F0UaKbt0zKrdmbL2y6EoYnZyNOZWrpi8QaWAhxbZ/udBvixbGkgbqdCID2eA3oNgZPPMe7mAue1kGrIzLdPjNTvtXwZiG+0lUbLwrd3BeKpM22SuOkBPLzVIaE8SW1Vu/70wIGp+9XT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,35 +95,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew,
+On Fri, 28 Aug 2026 18:04:55 -0700 Nathan Gao <zcgao@amazon.com> wrote:
 
-On 8/29/26 2:41 AM, Andrew Morton wrote:
-> On Mon, 17 Aug 2026 17:03:25 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
+> Hi SJ,
 > 
->> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>
->> Commit 0ef8faff490be ("fs: push nr_cached_objects memcg gating into
->> individual filesystems") forgot to drop the super_fs_objects_eligible(),
->> just fix it.
+> Thanks for your review!
 > 
-> Oh.  Why?  Please can we have a description of what's wrong with the
-> current code?
+> On Thu, 27 Aug 2026 17:22:11 -0700 SJ Park <sj@kernel.org> wrote:
+> 
+> > Hello Nathan,
+> > 
+> > On Thu, 27 Aug 2026 12:38:21 -0700 Nathan Gao <zcgao@amazon.com> wrote:
+> > 
+> > > __damon_va_prepare_access_check() picks a random byte address within the
+> > > region and stores it in r->sampling_addr. There are two users of
+> > > r->sampling_addr in vaddr.c that pass it into a page table walk, and
+> > > both use it as the address of a page.
+> > > 
+> > >   damon_va_mkold(mm, r->sampling_addr)
+> > >     damon_va_walk_page_range(mm, addr, addr + 1)
+> > >       damon_mkold_pmd_entry()
+> > >         damon_ptep_mkold(pte, vma, addr)
+> > >           ptep_test_and_clear_young(vma, addr, pte)
+> > >           mmu_notifier_clear_young(mm, addr, addr + PAGE_SIZE)
+> > > 
+> > >   damon_va_young(mm, r->sampling_addr, &folio_sz)
+> > >     damon_va_walk_page_range(mm, addr, addr + 1)
+> > >       damon_young_pmd_entry()
+> > >         ptep_get(pte)
+> > >         mmu_notifier_test_young(walk->mm, addr)
+> > > 
+> > > test_and_clear_young_ptes(), which backs ptep_test_and_clear_young() on
+> > > arm64, documents @addr as "Address the first page is mapped at".
+> > > 
+> > > For arm64, before commit 6f0e1142173a ("arm64: mm: support batch
+> > > clearing of the young flag for large folios"),
+> > 
+> > The @addr documentation is also introduced by this commit.  This commit is
+> > authored at 2026-02-09.
 
-As I replied in another thread [1], this fix and commit 0ef8faff490be
-together make up the complete patch originally sent by Usama [2], so
-they should be squashed together. Without this fix, all memcg-aware
-nr_cached_objects() will be skipped during memcg-level shrinking.
-Besides the newly added memcg-aware shmem huge shrinker, XFS will also
-run into issues.
+I was wrong.  The documentation was introduced by commit 6d7237dda44f ("mm: add
+a batched helper to clear the young flag for large folios"), which was authored
+by Baolin on 2026-03-06.
 
-[1]. 
-https://lore.kernel.org/all/51f48626-c38b-4cd6-a826-92d107ae35bb@linux.dev/
-[2]. 
-https://lore.kernel.org/all/20260715103516.2410175-1-usama.arif@linux.dev/
+> > 
+> > > the contpte helper walked
+> > > exactly CONT_PTES entries from the aligned-down page table pointer and
+> > > used @addr only to pass down to each entry, so an unaligned value was
+> > > harmless:
+> > > 
+> > >         ptep = contpte_align_down(ptep);
+> > >         addr = ALIGN_DOWN(addr, CONT_PTE_SIZE);
+> > >         for (i = 0; i < CONT_PTES; i++, ptep++, addr += PAGE_SIZE)
+> > 
+> > So, there was no issue before the commit.
+> > 
+> 
+> Right. Before 6f0e1142173a, unaligned addresses were tolerated but I don't
+> think this is guaranteed.
+> 
+> > > 
+> > > Align the sampled address down to a page boundary. It is the address of
+> > > the page to sample, so this matches its intended meaning and fixes both
+> > > users in vaddr.c.
+> > 
+> > This indeed sounds like can fix the issue to me.  However, was it a clear rule
+> > that we should pass only contepte-aligned addrss to
+> > ptep_test_and_clear_young()?  And is DAMON the only ptep_test_and_clear_young()
+> > caller that is mistakenly passing the unaligned address?
+> > 
+> 
+> It is not spelled out as an explicit rule, but the documented "Address
+> the first page is mapped at" implies it,
+
+You mean the comment on test_and_clear_young_ptes(), right?  But as I mentioned
+above, the comment was introduced by Baolin's patch that was authored on
+2026-03-06.  I'd still appreciate Baolin's opinion.
+
+> and these callers are using
+> aligned addresses:
+> 
+>  mm/page_idle.c: page_idle_clear_pte_refs_one()
+>  fs/proc/task_mmu.c: clear_refs_pte_range()
+> 
+> > If not, it might make sense to make contpte_test_and_clear_young_ptes() support
+> > unaligned adress again in my opinion.  May I ask your opinion, Baolin?
+> > 
+> > > 
+> > > Fixes: 3f49584b262c ("mm/damon: implement primitives for the virtual memory address spaces")
+> > 
+> > I think 6f0e1142173a ("arm64: mm: support batch clearing of the young flag for
+> > large folios") would be mroe correct 'Fixes:', if there was no issue before the
+> > commit.
+> > 
+> 
+> Will use that in v2.
+> 
+> > > -	r->sampling_addr = damon_rand(ctx, r->ar.start, r->ar.end);
+> > > +	r->sampling_addr = PAGE_ALIGN_DOWN(damon_rand(ctx, r->ar.start,
+> > > +						      r->ar.end));
+> > 
+> > If we need to have the fix in DAMON, this kind of change would be needed.
+> > 
+> > However, what happens if the address is backed by large folios?
+> > 
+> > Before the commit 6f0e1142173a, also, it was aligning to CONT_PTE_SIZE.  Should
+> > we do same?
+> 
+> Passing a page-aligned address restores the pre-6f0e1142173a behavior.
+> Before the change, the helper aligned ptep down to the block start and
+> walked a fixed CONT_PTES entries, regardless of addr.  After the
+> change, the walk covers [ALIGN_DOWN(addr, CONT_PTE_SIZE),
+> ALIGN(addr + nr * PAGE_SIZE, CONT_PTE_SIZE)).  With a sub-page offset,
+> addr + PAGE_SIZE lands just past the block boundary, so the round-up
+> extends the walk a whole block further.  With a page-aligned addr,
+> addr + PAGE_SIZE is at most the block end, so the round-up lands
+> exactly on the block end and the walk covers the same CONT_PTES
+> entries as before the commit.
+> 
+> We also can't align to CONT_PTE_SIZE in DAMON since it's defined only under
+> arch/arm64/:
+> 
+>   #define CONT_PTES		(1 << (CONT_PTE_SHIFT - PAGE_SHIFT))
+>   #define CONT_PTE_SIZE		(CONT_PTES * PAGE_SIZE)
+
+DAMON cares only exactly the byte of the address, so I agree this would work
+for DAMON and be safe.  But, still the behavior is not exactly same to
+pre-6f0e1142173a, isn't it?  I'm not really sure if this is really the correct
+use of the function.  Again, I'd appreciate Baolin's comment.
+
+> 
+> 
+> > Also, I think we should pass aligned address to only the functions that
+> > require alignement.  Making the alignment to the sampling address in general
+> > sounds too much to me.  Particularly, we are working on supporting new page
+> > access check primitives other than PTE Accessed bit, like AMd IBS.  In the
+> > case, we might support <PAGE_SIZE granularity monitoring.  Aligning sampling
+> > address in general will make it more complicated.
+> 
+> Makes sense. I will keep sampling_addr as is and align inside damon_va_mkold()
+> and damon_va_young() in v2.
+
+Regardless of Baolin's comment, let's fix this issue.  So the v2 would be
+appreciated.  In the v2, could you also add more details about how the issue
+can be reproduced, and the user impact?  You mentioned you found memory
+corruption from DAMON selftets.  It would be nice if you could make it more
+detailed, such as what selftest reproduces the issue and what symptoms it
+showed you.
+
+Nevertheless I'm also wondering if supporting unaligned address again, like
+below also works.
+
+'''
+--- a/arch/arm64/mm/contpte.c
++++ b/arch/arm64/mm/contpte.c
+@@ -519,9 +519,12 @@ bool contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
+         * of the same large folio in a single VMA and a single page table.
+         */
+
+-       unsigned long end = addr + nr * PAGE_SIZE;
++       unsigned long end;
+        bool young = false;
+
++       ptep = contpte_align_down(ptep);
++       addr = ALIGN_DOWN(addr, CONT_PTE_SIZE);
++       end = addr + nr * PAGE_SIZE;
+        ptep = contpte_align_addr_ptep(&addr, &end, ptep, nr);
+        for (; addr != end; ptep++, addr += PAGE_SIZE)
+                young |= __ptep_test_and_clear_young(vma, addr, ptep);
+'''
+
+Nathan, what do you think?  If it makes sense to you, could you also test this?
+
 
 Thanks,
-Qi
+SJ
 
-> 
-
+[...]
 
