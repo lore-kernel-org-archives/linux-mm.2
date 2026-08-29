@@ -4,150 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03383C61DBD
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 00:18:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0E96C61DBD
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 00:24:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AF936B0088; Fri, 28 Aug 2026 20:18:22 -0400 (EDT)
+	id B659A6B008C; Fri, 28 Aug 2026 20:24:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 739746B008A; Fri, 28 Aug 2026 20:18:22 -0400 (EDT)
+	id B15D16B0092; Fri, 28 Aug 2026 20:24:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D9CC6B008C; Fri, 28 Aug 2026 20:18:22 -0400 (EDT)
+	id A07DE6B0095; Fri, 28 Aug 2026 20:24:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 249A06B0088
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 20:18:22 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 804AAA05DE
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 00:18:21 +0000 (UTC)
-X-FDA: 85152395202.18.065F096
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8D38F1C0005
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 00:18:19 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=jCfK+3gp;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf20.hostedemail.com: domain of stevensd@google.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=stevensd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787962699;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7CF556B008C
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 20:24:30 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E6831C05AA
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 00:24:29 +0000 (UTC)
+X-FDA: 85152410658.27.D67E75F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 4506140006
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 00:24:28 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HdLtyO7N;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787963068;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=92zwtXlgyBYYVN9xkl2KGrhKya15L+GyHSeWZLE5yFc=;
-	b=MIESQf9pW9eyGVrT0lKdSpFuWM9psAs4jmD3Ib8l++ckps6+rowwDKiZKtfrJZXrFqJt4D
-	i3rv5AxOxhladoM5CaYqcN0kzpLFt/Cnt9cHhDomg9Wvfihh6uZdCPMpdgff2X1v+trXVa
-	BjOKUAXli9Ba0jSaW5/U4hjYE4i+vAc=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=jCfK+3gp;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf20.hostedemail.com: domain of stevensd@google.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=stevensd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787962699;
-	b=GI/SpRg2smtWlWQkefSe4yC8oUKj9dNvFBiewthip9sBMwYTztfkn1DSf6vxcMDxaYnbg9
-	AN18EmcjMysaqh5am2swqP94PEJTZffe9gWRWDESye2W2P5Fa1OWXaWOLEHhuEnEV+UwOo
-	LA1wPIOkcFplPZCXWKBV2l86qvvSGZI=
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-498012a61f6so16605e9.0
-        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 17:18:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787962698; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ImG6uWplPh6fo+JULb4iFJUOPuMPljSV+n9RYQ890pwpusINM/Zalb5q0q2ZlpPMwp
-         KXpwVGeqpZTtHfLxrPyvjyr4onevNhd4UDw5IdRjtewIHuFSEbDsMKlVhusgJw7dsTP8
-         pul/qai/e7sOg7LmOLRylLXtFcJ2E8etWK60GxnrYpP2rU2CIVXFC2fsNetb/82USMHI
-         iNWO0/AtyYUsMyqA1MhBWlnzUO4sA10u/rkF1yl6Rf0ogsRd6CcSurkI0v2ynl4MPgYB
-         hsAgLXOar2ehO5g/BIclFO5opUcTxAvPIsPuxRM+NjtYUh5VKwyEz6DskbNBino5zXVA
-         5g4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=92zwtXlgyBYYVN9xkl2KGrhKya15L+GyHSeWZLE5yFc=;
-        fh=cZHWiSbmQEInFNAm74WFViGPvXU4/CiTmKVGgcjWGH8=;
-        b=mL3+D0BjPFzp51GEYiToYFNklXJlyArf2MWwJMQkdA8MCfm8iHOVxuepEOj+PcBr4f
-         c4IctX01sW+KdMNVZZ5NhY8HB7p2PWCMlVKaN4EhSrpt4QQ1cqSIN3lLzipe5ocqhqj6
-         56u4oUm+2bTXccNGkDKMfdRxE1puewuEDZGgV7pTzq8JGZTODHlXuS/UaMRHxayXSpKk
-         QRnVC3xuy3h7NTmThsKt3qgsTxM2M4DU9tIndhPoWWU4piYCNcauvq3yeVSz6WW8YDvY
-         tfp5H0aHdDNuB1NHC5OfpMVngPDP67dEKzUies8oVCstlc67xxqHB0VlTtsE8G2ApVxL
-         HVyg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787962698; x=1788567498; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=92zwtXlgyBYYVN9xkl2KGrhKya15L+GyHSeWZLE5yFc=;
-        b=jCfK+3gpYCucWWJ2cNvIRdL2tPk3SMg37iPIaU8lC+DxSHwX24gXkRMmwewi0+SF5T
-         oHUEKKelqx82BCj9L9MS7Y7bBV2ATcMm3Of+Vm/DosD38hRhreh249bWrTUJCQ15niML
-         UfAk2IJAAY3Z43uGUt4hIukn+eOKHNUDOT64Hn9HK8RMYHzgStdDm1iHJUIOdv8SFpHD
-         txnOOOaB2CoiPhT4HhkLo0vBw3LEvyCmUEsiGcZmZgiCo9yrDhMSvgKO3BeLIgjBIYZ+
-         5d1zI/VdUWMM5tbMLesDW/2UmTj4w9DL7ZcFYH8QFjqJnRu9GqXic20zknrEnlYz/VFt
-         7G1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787962698; x=1788567498;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=92zwtXlgyBYYVN9xkl2KGrhKya15L+GyHSeWZLE5yFc=;
-        b=JSVuV06Ef8K6ItN9Hp+mMEWWmWaQmc75MxpfFE7AVKgXKPgoxUQv6YeCsJXENywB+I
-         4ZdcpWfl3B4nNZY1RAtdzRY+F55JAId4HBzYhdXSFKJtq9BGi5aImOz+QIpB6ISiEG5d
-         laj6EwOe1GNQGZ6rt8ceSOY/V2HhySEPQNOqTNDFLMj+NULuLJ2R4bqpfzeetjiNJvSk
-         3qP/0/zHJZ4lENmGYWOFNEJCKuRa9Ubf4RnpPrPfoD+9GAZQ+1AnIGTGRTbF+2CrKuLt
-         9S/soYdNKbsWCWmnj0frema5Fe9S8EhY4woRvgyi4JwFB8ZX87tKi3uyp0qMtGJwA6Yq
-         khUQ==
-X-Forwarded-Encrypted: i=1; AHgh+RprQyk05PnN9m395YmXg5n0Cr6/Cq3/YOrRjnZ3mRKvxpgyA1adWb+0R6Sw7vh+uRrMta7d7cZVwg==@kvack.org
-X-Gm-Message-State: AFuF++n3/EiMYmKtGx/A7Q0LKG10pp4yl8LlEHmBhDT2oU8CthrbH33f
-	j6KKH9XhSpkagyE+R+RTK0SAolWv3K9uf+5DluZApyb3Nhf85L0ya3C9tffMdoFW2m9VFPkReWN
-	S60NibjzNCfIqBly2lQtc0UPiPnaDkLHQnu8qcXVc
-X-Gm-Gg: AR+sD12S74SOXsF6WQN77iiInAmxBCfmr5jox15yboTUue0yJt8/pRoXn5mxHNbfYeC
-	8KRbJE9j3x8liakMQdh/hA2o/pArF1esqlC0PUpF2asLFSAIMflf1V4jW/uMxxpXPL26mjb8zSS
-	taQiY6aBDOPu60J7xikXpkK0EVMPGVA4jFT8QzTU3MIoYKVWZpGI8DpduoUKptJTzhdC59EFUj1
-	VFyMWcD51uHM3wHWyw9IPrzxLpgqzH2gO5Nu7v5wxLBri7+VUP03RfidQgoIpe/9zt6KZFLutT8
-	OW6Y1rFRhbqqsCweYC9bVxxHdKPAAcxU7+d4egzCz2xG8MbRsxctZttfUX90a19V2FuvsQZJQYY
-	=
-X-Received: by 2002:a05:600c:6051:b0:499:c46c:addc with SMTP id
- 5b1f17b1804b1-49ccbb107damr428575e9.2.1787962697528; Fri, 28 Aug 2026
- 17:18:17 -0700 (PDT)
+	bh=kQAWhYNX0SuWWv3eBBuShtV05hfUqpxzn/crb4rmaGE=;
+	b=Vil9EgGNE/PZ2vsC1LYjeWQRe+Jxrwd/F66vy84UqmiRMm9vge11snnnXnEAdJxC5/jpn5
+	XgO+9QlpIhsq+CeNbGnpP4xp8WkZ1ZMVbHX+op9joDAO8GV7DDhJAyOEumzRcpTN16Esa4
+	Ytk0n8VucvGqcN9ZUO50CF28PX1bIAs=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787963068;
+	b=SyLXEil/2HaWCshwt+TdeTQzH3w06CSoh/PRlhPXadspTYtVhHXQU8mW+ReINW/A/7ad3i
+	fXbOtVK7Zs9BLtB4kYRMaktlb+uwRMo/P9Ak+pTjaMvrz/IMxsPw3osklx1qtHud+QXNIB
+	Hh9VRMbdbbbrsvbr4iJZg1ilE1qqfDc=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HdLtyO7N;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 24356447BE;
+	Sat, 29 Aug 2026 00:24:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584CF1F000E9;
+	Sat, 29 Aug 2026 00:24:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787963067;
+	bh=kQAWhYNX0SuWWv3eBBuShtV05hfUqpxzn/crb4rmaGE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=HdLtyO7N309KcJcf2B3rmobF0/LUOAvW9C6UQJaMu1lMKCx6DC4XdGoxOj4UiURTX
+	 u2izl8GV/cN4hj0ap5z+x/cFTftPi2Ua7OboYFhN8s2l/fFyHTJ2pgIklNJfb0I9/3
+	 ZxO8jvx8A5+nCaUKwKfQamltRnf1EISoa08LozDqymr/Km//ZX/NHnvWE4owOmVXjG
+	 i/WuXevj6My0WlvZjzN6AxoNKKRCEQrcG8wYlPWDn/NZGDEHkG7uPncf+KfseqfvwE
+	 09dJvqW6/Ma/e8BBWji8zWA6XL6i3Wy/HdUzLfk88zFi5fMOPNcMk++W1Z01Lhtxu2
+	 ypuuaEiKto+Ew==
+From: SJ Park <sj@kernel.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Peter Xu <peterx@redhat.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Cedric Le Goater <clg@redhat.com>,
+	Saravanan D <saravanand@crusoe.ai>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/huge_memory: bypass THP tuneables for huge pfnmap mappings
+Date: Fri, 28 Aug 2026 17:24:18 -0700
+Message-ID: <20260829002419.73386-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260827-hugepfn-allowable-orders-v1-1-94819c8807c8@kernel.org>
+References: 
 MIME-Version: 1.0
-References: <20260827232948.2520558-1-stevensd@google.com> <20260827232948.2520558-7-stevensd@google.com>
- <20260828120408.GN687043@noisy.programming.kicks-ass.net>
-In-Reply-To: <20260828120408.GN687043@noisy.programming.kicks-ass.net>
-From: David Stevens <stevensd@google.com>
-Date: Fri, 28 Aug 2026 17:18:05 -0700
-X-Gm-Features: AcwNN1U6VBNd8zJTEq4mYD8VweLtljSgvulTToePYb44m-5Q8rEJ_yFqUyGXmiE
-Message-ID: <CAOiLmNHWGSwAqH815X3JWMrQCc2nh-fRNsNZ0hjQGv8JvFndag@mail.gmail.com>
-Subject: Re: [RFC 06/10] Reclaim memory from blocked kernel stacks
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H . Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, suleiman@google.com, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 7nsmyj7wjaja9rgp3qhuh7bcwf5rupp5
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8D38F1C0005
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1787962699-246986
-X-HE-Meta: U2FsdGVkX18Dmw3dw2iN1Sx+qV4blFu+PswHcGjToA0x404rPBe6gcoDIAULRkpnrKMWoy9V3F3odlvoHV2g3/TTSTNU2joWfESOxTlz8utKGVKszwbHV1Cp3HtcgXkisQkvN7a1N8++s4nCKobbyrCr/B2twfEz7HccIS2hTao4AOOcup7SjHU/ZVT8F9wp9r2Gk3NiBJv9yYTUgipha+lSoUizAh6JxbjMx5wCVQcAnaQorY0hH++fm5iA+97p7Pg/lj4lzYYOxXTn+usE5wAqvIJvvIhDt4qt5Q8bfEVaoa2HoPbxT1ot87fhTnef4mocU6y5OCK3PPLoS+cCcS2ZbinMingr0PTT5J8K4CipJJA4FsZaIRVBE0P9d+NxYwTGEwwUbwTEIViGIeSrNADXGCKq8hmliYJfjrkWaaxQYTGwlN6BBcqScmsZFB4EjmIWLG3r/zlWVFEVgzOqyM+NtfSJiF8g84Nl0Wh8FPkcMvHLFea8IuaITw30DcF2ACsR9osH0WnIg/THCQwSnF6Hm1k0LT2OsSyV7UoXBWU+Cs/NvjvZju6wUmW+RyI6wejyYQKb2+fNCAT7oH5c9t9rrRefQQZqbeUnbShqoevijFflMfpN0/A0H5tjQlbsCEe3SE67WQ9ouzImV2Z2ZtX3BrKI8Bsc1ssg6Jw56wLpSxfYqS9EXpYNZeGi++++ycY5+DrfqNhMKAHjVg3MU2/hDlkUxwelkOcDmCjpd8VSDs2Pa1HHsSOoLXgB5hApqnOD+73AKDD2+8Rm9eFrKqGPxr7dgGmqzDKW9EBTkql23SZjOd1swn/Hca0FApT74OoxHCA+1DWrAL2SwKSJs/cBz8olefDbC0uE7a9PwMGKADEFk5c8mVpyVcxXmj4dNTLFRjLZyFYkLqp7cmJipPri2tW3KF2/CpZqgDMiyvXf6mvoTrEsua/px3FtAkz7x3dk9ewCvbY0C0qfky2
- s2sQ+c4X
- /OpFzy+VJCwivfuCwochvES4yDf9W+lpvRmFYVOUEaxvPL2gFj5miO6H6rHfx2NAJSghc2PEn3IMcIflpHta9F/AhQepYCLyAyYs+Ef4FDXWzJoM50nJgNSc9GK/P7fndHGl+QDmLSgcGTb9+ya1BQGv0BdtwN0rrCZ8vqw64c1ZR1YNXrkgjSZQp1Gr6Agy3zTusKo1t+aZgtNigKankYGgLTJdv4UD4Qod8xxf+jV/5YXpvKG9/Y7EUW7Rm1y6qjP2O+fnyeDl29EBqNvZEThswvTlS6BtmM6X3VTu0/Tlack4=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4506140006
+X-Stat-Signature: j1idn1iww7ggqtn1inneqhnbd3oqwt1m
+X-HE-Tag: 1787963068-71675
+X-HE-Meta: U2FsdGVkX19EwM1PW2yDC2X308WE6+YYeIqL3tZ/XH9Sh7SA2ue04b4QvtiO8T67gloZHk61mbXD5E9kv+F5/a+HueWKJNmmh03Zj3ha4b4hv5+r31B19PMOqaTYcWFC8nmfEONAJa0LzoBWY8jiOY7qWIAfxmoIIUPuMdY3ky+r0CK/89qRZeE17uDkxT+/zVcFKu1LlS5VMVPM6BhrL49FwETbIv3rA3UAB1GQQp5PKcMJT0aJZH9uVBoEyvCrD8zlBcq5yNa+v4qb6/c/lPTJajjBdkde/zUqdlcqWaozFLGXx22BrlNYlYMDf0oI8Rb9iYM8V+JZx9B1y2ka5yITrVYLOKf1NUTBXW6h7Inm+ICeH9DIFk+kpLTPcYSpIlzMmLA+PKuGDLBxyvs861ZisTAcqjdJSqGeOxOggBbr8ZTmKReKUNy3SwMOlnlUE4GVL7q+e9w1+3aN8hiHJIQlfyi6QNGcfghVIJHjopDphvFp/VizDNt1dKcVO+PBtMRxVuACsmKdaQe1lgJiJgv2h+FlhujhWdlCmduG60hv09hXKBTKqGb4WVeh+eGQxEj34WHZ0Ryv+/oi64y/2d9suJjguhGBye5us88vsdnM1zd5CH90CT6DItBAJ02T/DKNvjY974787qVZXvsEGQBkOlfzlWnXCiB8CZq9TfFAJfxah3ahDlqD/PuaTtAh+H3eh99EnIKaj4hSIVAv9zZDzt5S1S1imGxoSSEsIB1UIjtQSWjzVtOSt9tyab1Wl3xnVIBXJoV59tbjet4wZbEASlj8qHhmeN6+B4YFITIddCkzZ6wEIHLksH1V7zITcMD5sr7ihVfg9jyDAUtgyND7g1sb3ahpAAkyoVsuR57KHvHweLJy0qQGl6CiMaFbmZbgBzckWraqrTg7qydpWDS97mQQwyWmI9c/BH/FwQiOoBt9jGQzEEmdulF1XcfZVJe7z2vCEY93UAStPIW
+ nfdJyp/+
+ QhvANJCHzTm+61t9jAFojJe7sr//86/QXwLKL1UosXjvW7297lB3CbxaF2YZNj6bs5mwWTouVqlHCMyj0XmnEhuo9REa5C+0oIVY5tUT99RuPOznv06swwqeOzf3EFoh2fXkNCD5v0SRwST+P02ZkAAgV8qTwgxm8rv/DsIAt/NdrJHD+K+nxGJU1iCfA9R6/Q+7drdivIEIK9xIzhBdTQdrYp8yqGk+Wm7MJH/B3lsg2KAqwsi4VzRZ7R9WKDR9xy9+8AvMkOLxv+E8RQnb0NikNpkk/ez9ijCqDltqLbGWyI9sDDFFO4Cl1Ww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,48 +107,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 28, 2026 at 5:04=E2=80=AFAM Peter Zijlstra <peterz@infradead.or=
-g> wrote:
->
-> On Thu, Aug 27, 2026 at 04:29:44PM -0700, David Stevens wrote:
-> > @@ -4320,8 +4319,18 @@ int try_to_wake_up(struct task_struct *p, unsign=
-ed int state, int wake_flags)
-> >                * A similar smp_rmb() lives in __task_needs_rq_lock().
-> >                */
-> >               smp_rmb();
-> > -             if (READ_ONCE(p->on_rq) && ttwu_runnable(p, wake_flags))
-> > +             if (READ_ONCE(p->on_rq) && ttwu_runnable(p, wake_flags)) =
-{
-> > +                     trace_sched_waking(p);
-> > +                     break;
-> > +             }
-> > +
-> > +             if (!ensure_stack_is_present(p, &need_deferred_repopulate=
-)) {
-> > +                     WRITE_ONCE(p->__state, TASK_STACK_RECLAIM);
-> > +                     do_deferred_repopulate_wake =3D need_deferred_rep=
-opulate;
-> >                       break;
-> > +             }
-> > +
-> > +             trace_sched_waking(p);
->
-> Absolutely not; ensure_stack_is_present() must not call
-> repopulate_stack() while holding ->pi_lock. Not happening.
+On Thu, 27 Aug 2026 20:55:57 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
 
-The optimistic fast path for repopulate_stack() could be modified to
-try pulling from a pre-allocated pool of zero'ed pages. That would
-reduce the function to a couple of memcg_kmem_charge_page() calls and
-then vmap_pages_range() to repopulate the stack's page tables. That
-wouldn't require touching any locks except a raw_spinlock protecting
-the pre-allocated pool (or just make it per_cpu). In terms of cost,
-this would involve a couple of atomic operations for the page pool
-lock and the memcg charging plus non-atomic operations on 5-10 other
-cache lines.
+> The sysfs THP tuneables at /sys/kernel/mm/transparent_huge_pages/ rather
+> confusingly only control the behaviour of THP in some instances.
+> 
+> They are not applicable to MADV_COLLAPSE operations, nor to DAX mappings.
+> 
+> Long-term, THP is predicated upon compaction being able to obtain large
+> folios to populate THP ranges.
+> 
+> However, vm_normal_folio() returns NULL for PFN map mappings, thus their
+> reference count is maintained by the driver, not core mm.
+> 
+> As a consequence, the folios are not subject to reclaim nor compaction, so
+> are not truly part of the THP mechanism at all.
+> 
+> However, since commit 5dd40721f147 ("mm: allow THP orders for PFNMAPs")
+> introduced the ability to establish huge PFN maps, they have been subject
+> to THP tuneables.
+> 
+> This is incorrect - if a huge PFN map is available (defined by
+> vma->vm_ops->huge_fault being non-NULL for a VMA_PFNMAP_BIT VMA), then it
+> should be mapped huge upon fault-in.
+> 
+> Correct this by explicitly checking for this while ensuring that smaps
+> continues to accurately report THPeligible statistics.
+> 
+> While here, abstract the entire file-backed THP check in
+> vma_can_map_huge_file(), with sensible separation of logic into helper
+> functions.
+> 
+> Note that drm_gem_shmem_mmap() and panthor_gem_mmap() establish huge PFN
+> maps of shmem folios, however they are marked unevictable in
+> drm_gem_get_pages(), and in any case would fail the reference check in
+> __remove_mapping() even if they weren't.
+> 
+> Failing to map huge PFN maps has resulted in significant real-world
+> performance degradation, see links for details.
 
-Is that within the scope of what can be done under the pi_lock? If
-that's still not happening, I can see how things look if we always
-defer wakeup to a workqueue.
+All make sense the code looks correct to me.
 
--David
+> 
+> Reported-by: Cedric Le Goater <clg@redhat.com>
+> Closes: https://lore.kernel.org/linux-mm/20260805055544.1568534-1-clg@redhat.com/
+> Reported-by: Saravanan D <saravanand@crusoe.ai>
+> Closes: https://lore.kernel.org/linux-mm/20260821070520.25759-1-saravanand@crusoe.ai/
+> Fixes: 5dd40721f147 ("mm: allow THP orders for PFNMAPs")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+Reviewed-by: SJ Park <sj@kernel.org>
+
+I also support Zi's naming change suggestions.
+
+
+Thanks,
+SJ
+
+[...]
 
