@@ -4,98 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C77CC61DBE
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 12:08:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EF1AC61DBE
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 12:11:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 375906B0088; Sat, 29 Aug 2026 08:08:14 -0400 (EDT)
+	id 501E76B008C; Sat, 29 Aug 2026 08:11:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3267B6B008A; Sat, 29 Aug 2026 08:08:14 -0400 (EDT)
+	id 4B2E06B0092; Sat, 29 Aug 2026 08:11:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23CF86B008C; Sat, 29 Aug 2026 08:08:14 -0400 (EDT)
+	id 3A0E56B0095; Sat, 29 Aug 2026 08:11:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EC8C46B0088
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 08:08:13 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 683971A06A6
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 12:08:11 +0000 (UTC)
-X-FDA: 85154183982.22.2565ADF
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3E2E740003
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 12:08:06 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=zz4Wq7u7;
-	spf=pass (imf12.hostedemail.com: domain of panov.nikita@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=panov.nikita@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788005288;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 10B1B6B008C
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 08:11:01 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0EB871206BD
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 12:10:59 +0000 (UTC)
+X-FDA: 85154191038.03.4DA56BC
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 26BB740008
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 12:10:57 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kpGxqSVB;
+	spf=pass (imf17.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788005457;
+	b=QAn4OzBl1Wbm2BTZKXIR/GcqAZ0y+Farf4YEN2z/QZO9RrupX9X9QwscWwWppDQQWHov13
+	cRaaA8+x+4UOxQu8GK59K7vAx4Uk0ROyh1HVFlb8t7LDuxD2Dr/xRlFpGjhmFc7ylsx+ul
+	PSt6uKtslK91pbLOBSZze5pmG8TQYCg=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788005457;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QvKWXz/j5Jupz5fjOK8A5bo1yI+OZxHVuzUDDQ85lQU=;
-	b=EwR5U4Z9s32wjH27iZTuaCBbzaHsjgc/AxHyRLcH4nw9bikq/kdJ9Xvsok8AFF5nhsd3ls
-	mIGU2iuKdFRFkTSZDLgFvU3TRXtbnbHGBq0Fn1CXbNFS+vtHD8XZUfIsVTkliMQOVZFj/T
-	2t1iPHjklMp1z/CF1xVPagom9r/SoMs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788005288;
-	b=TPaU1PD8ditZiXkVtIU8/jd4Eb8iMg5yfKA/KqX+ifJlkxF+9g+W8BsdJaOEEmYXZWJ2xS
-	XqNIS4msT6eMnm9JWIqDz6dXgpk93tNidQoiSvu06WTbKO/umzEOV30t2s66kKVB4y31ck
-	B3BvHajgvfofeV2FfQexyYttjEp5k7U=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=zz4Wq7u7;
-	spf=pass (imf12.hostedemail.com: domain of panov.nikita@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=panov.nikita@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=QvKWXz/j5Jupz5fjOK8A5bo1yI+OZxHVuzUDDQ85lQU=;
-	b=zz4Wq7u7NY2JN7Z0bik45bViBrqFRHLhWKFVhW5unt83sFyu+7wtcYfNoxeJQ05Qbwogwipqz
-	cKFj81EiwdYlf+WA6yO0VWqb4wKFLCTbCeM/vHxwPArXGwvR8RK+jUyTu3o6gfbqGveXvBWagAd
-	MMQ9npSRrj2M0mVYzOoTrPQ=
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4hXDXP2zGmzJ468J;
-	Sat, 29 Aug 2026 20:07:33 +0800 (CST)
-Received: from mscpeml500004.china.huawei.com (unknown [7.188.26.250])
-	by mail.maildlp.com (Postfix) with ESMTPS id F342040570;
-	Sat, 29 Aug 2026 20:07:57 +0800 (CST)
-Received: from mscphis00949.huawei.com (10.123.66.11) by
- mscpeml500004.china.huawei.com (7.188.26.250) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Sat, 29 Aug 2026 15:07:57 +0300
-From: Nikita Panov <panov.nikita@huawei.com>
-To: <yang@os.amperecomputing.com>
-CC: <akpm@linux-foundation.org>, <artem.kuzin@huawei.com>,
-	<catalin.marinas@arm.com>, <cl@gentwo.org>, <david@kernel.org>,
-	<liam@infradead.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux@armlinux.org.uk>, <ljs@kernel.org>, <mark.rutland@arm.com>,
-	<mhocko@suse.com>, <panov.nikita@huawei.com>, <rppt@kernel.org>,
-	<surenb@google.com>, <vbabka@kernel.org>, <wangkefeng.wang@huawei.com>,
-	<will@kernel.org>
-Subject: Re: [RFC PATCH 00/18] mm: arm64: Add kernel replication feature
-Date: Sat, 29 Aug 2026 19:55:25 +0800
-Message-ID: <20260829115525.915867-1-panov.nikita@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <6c8d880a-0517-4669-80be-8a134f4bf7cb@os.amperecomputing.com>
-References: <6c8d880a-0517-4669-80be-8a134f4bf7cb@os.amperecomputing.com>
+	bh=YdSf9m2n91aamefLP8qGKuKu6/Pkf1L7aKMLcZgsGmY=;
+	b=Wh1wokDosgHDSF7GWJ0Z3CeRw5GigylDvt6K1aa/VcRNIYA6fBCc3yuTKL/ay5FsIV+Bzl
+	s7aQrGT4tzc6RGWmI+upQSQX27n8f8lT1hOOE09+dmvQiv2leS0qfTaqRaxQWLyKRGSPCy
+	uCvpxpWVOZo/jhRBRvzaUbL+wCdZv0Q=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kpGxqSVB;
+	spf=pass (imf17.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5b4ab0e4da6so1674551e87.3
+        for <linux-mm@kvack.org>; Sat, 29 Aug 2026 05:10:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788005455; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Ma40hSm4A1nNqc6zwJlbYNHqGN2KKl7OB8XbNK/LBPYL02kWDScwd7M+xORzbvjAdp
+         3Bqp+pT7unsaVDfQW/5HYUOX5ZsBvc6UM3N2h8VM9luZKRqE3sszV39n4hydy8HrlmIr
+         9r6x6nzBXpEx3IgjTLls92V8XQDJ44y5ouZNukNHDIo3YO9NJuv21UnqMNpGoxg1SrDj
+         yMicu8RdE4py10c7vMBrhdmtSyTTO9SCuQ9aD+MGTPHNWAudhl41InytYkk1MIuqW7DW
+         c10A1jv+klWRQbV/CfssWJwEdHl48HYM98C9sKmqgQYe0/TG4J7IHWQqGeY2sHcP4uxA
+         Uy0w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=YdSf9m2n91aamefLP8qGKuKu6/Pkf1L7aKMLcZgsGmY=;
+        fh=D9EXyWpVXJPhRF+GSPdiEzwZ0yzd1+my7Oh9E7yJ0bw=;
+        b=RbfM3FeY4qIABHvfljByknLKyMU23ARR2+yjNwg/tJoYT7bl4mHmS87mQX/Bx6zxxm
+         gynh98o7/rcY6GyyuHkR/JE1rGhY8uAFtc5ZwJS3E+NdOkk5WpLZMVdUa/MF0vj6dpo3
+         9a6rmBXbzk6vdDT2OYcqcI2WZ0ZeGyKJCC3lAd1R7thbfb8f4AVtAu1eoBrCYRgPCn7A
+         /OVUx74U1Ofsxj1zoQBLTFHc6q2mxYQJckP6CYDSjYhevnizzQlSJYdf11YNWN8lXdLv
+         /5uFcMKSXg0rsjJw8UKISZg5xwsT3+B8qLM+4WVxsOse5LfVHbFAodiBD5TV0zcNqefR
+         AdTA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788005455; x=1788610255; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YdSf9m2n91aamefLP8qGKuKu6/Pkf1L7aKMLcZgsGmY=;
+        b=kpGxqSVBQyhiILsIKxhFqgVMKDttod8XxvPAlkJZJ+L9BtONFEUbTwZqMm8h1Tm/v5
+         /TQajUjKg4ITFZXbRSyW8jiAgsE+5NPSJjM4mqGlzgp4wbiHwSr5Tw723jCzVcemmNhb
+         n4lMCJ9aqiBW24QDScBTZMEcH+iUQKNadXmZpS2InFnUO8HUjv/WniA/1+6qJYRBaMmZ
+         Z7bavFlZ2uWwNI4CNx7c/4owjXUzXSSgfxCQQd+TgB16LJK5NKpNTReocbDJ75EcDzDZ
+         dPEPMTC5Et/v4aMoqgEOsPydLbN7OQ3y+H8d/ZylGbwyXq7SCbrL/TrgUNKQmCtTBtRX
+         SpGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788005455; x=1788610255;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=YdSf9m2n91aamefLP8qGKuKu6/Pkf1L7aKMLcZgsGmY=;
+        b=HHMwHq95g7NOyFxFoariO0lMdyIhRKHz9JsgK8XdOwqQPy1bSTk5Dt4T9ROpMls3J1
+         YhZdy/8m73rS94JyTaFKgP57bBP1ahqbBl2CMBZy3xZtTf4jaHc/x/JNe0hDfdO44DWV
+         e9VXxIbMXIdm/bmS4Fg2Wna3f34cXW216Ff5ksFDtzw0BK6vyEIb8mLEILAwKpJtU2Z8
+         Da732IFE6Ui2ABcz/fWktfM5Ug72Tlo2+YBeruFl+myHXx9WewmqXYrXgYjLsUYtzMUT
+         k5wXEPl/cIee/aSTWhjcZmhNW0nFPDEVmVhNk7ntQ9sMO7+g2TXOAazSsvcFnRznMNms
+         DmKA==
+X-Forwarded-Encrypted: i=1; AKwUvBwC4tKWwRGqHkUvROu6h8L/SQzMSIpynkOjyN569g+l5f8OXbLmvjkmZ11laZlFP5bwSSBHUIiHiw==@kvack.org
+X-Gm-Message-State: AFuF++kLz7SnfYQUvProTLzeeTjqvCXdTs7L7RueNpF6xBQbqtGPu/Hb
+	yjVIBqA+4yySeL8OLZe2t2uAGJvf/FUCkP0m19ApGJ2H8b6Oz+yEqvpMQcsVkhRULEE5ypNJ29t
+	j9XImUYibZGmvrIlSyDdyZlk7lzUfTRU=
+X-Gm-Gg: AYBFou1mK7hMUU97VFtPTzTXeJbBVagIVAglIzqH3M2zr3ZOAbkdHZmeiVdQnmWGM6Q
+	xw7eBOuW7mxMPysHWeWElr02JYHLK2ecn5pMOFXSRRq7lKacTJXTj7BxBH3b9hG2r3lovzeedDE
+	RhFErnHnoVEKrOdmPMyGhwlMo2JW69Nm8whbtgetWUJC0Yyr9nyvrXA1ccH3do9jXjiACz72uSd
+	zoOeP7wh6YjY9HW7WAavgINresQS5PsQq0Dcbke7LUq1Hx7Y1BEtMY7SmDSfXC0GNEMnRD5V2Nh
+	VubKXBlXGl9YOdqwddHjtxqQ0FXpJboYf4c+M2TEq4ufLg91ifGJo3v65fPfizbwt5+oNF2wsMk
+	=
+X-Received: by 2002:a05:6512:400c:b0:5ae:a0b4:5013 with SMTP id
+ 2adb3069b0e04-5b5e685c15dmr4390991e87.0.1788005455037; Sat, 29 Aug 2026
+ 05:10:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.123.66.11]
-X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
- mscpeml500004.china.huawei.com (7.188.26.250)
-X-Stat-Signature: f3byrh14abuce9g9agzdrs87p91m9ywx
-X-Rspamd-Queue-Id: 3E2E740003
-X-Rspamd-Server: rspam02
+References: <20260815-shrink_zswap_entry_0815_v2-v3-0-0171bd86a667@gmail.com>
+ <20260815-shrink_zswap_entry_0815_v2-v3-2-0171bd86a667@gmail.com>
+ <CAO9r8zNFYM1bry0DwDRNtpnEL9yyXQ3h=1wcLbGsO1sFtGgvjg@mail.gmail.com>
+ <CAJxJ_jgihBLy2mbPAN-uqup2mGq+hurKkH=W4RGo4Ad0Eki5sQ@mail.gmail.com> <CAO9r8zP6+6jZ7qOxOy1fyd=UgR3yYP20Db9KghW1zJ3bNqoREg@mail.gmail.com>
+In-Reply-To: <CAO9r8zP6+6jZ7qOxOy1fyd=UgR3yYP20Db9KghW1zJ3bNqoREg@mail.gmail.com>
+From: Jianyue Wu <wujianyue000@gmail.com>
+Date: Sat, 29 Aug 2026 20:10:44 +0800
+X-Gm-Features: AcwNN1VS1whBYUNjVaenQNu2AZucmtbOSqkRNtiG9piXAGBmW3esKLM09pafUWw
+Message-ID: <CAJxJ_jh6J5N0vbFfi2139vnTVZEECJoq-AV4VVNew6a0Bkwk_w@mail.gmail.com>
+Subject: Re: [PATCH RFC v3 2/3] mm/zswap: replace the zswap_pools list with a
+ fixed pools array
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1788005286-652354
-X-HE-Meta: U2FsdGVkX18qpPOKKB2ETzTqjum3deEfql+yjnqs9G3rkfanicteB1TyraOmFdmT0DlaWigyRZmnDbDKzNKWGdKLRlKya9UgV+gj8O7JTtlJds4VxNnUSkvo/FeQndSrNEvsLmtPmpKdBzgjL9m9TN9NvJ6Aa8l7RmlHg4CobhqMdNyeOv5LyNB1/qVkaYsCdpxakje0dP3aqcnzRichmLh5C8AjKOVSf0CtuyhsObLqv+RJ/q7zn9CRiqiYCkTdPFNnutAYKPMX4eel9FntsZOa+HdpBUFJCnlexSyTBdFkRZDhVrzIjqU8T82jLuGfADodGvOxxBlFWCxqeh+oQAiDRVTuunqpT8n2irzd0o7wPjYTA+/asPgO6fuVQQwHR6WHi2XmW7kSe4pcCW+unB5Q/p27vw7WWX7sEo5s8snphUx1myyfcdHJW4eo8vk0PicpGo5rz4jZ0zrT6gYM8VNiC3l46R/L9e4XPfbZvpTNlllZq/26OiJuDg07D60GzAlp0qwOXnJamHrsFbtlmjxjusYOokBWxXvKhxDEo7yEYDj6Eye0QO1lHVj4rgIT8jKnjoWnwjX8cvULE9yKv2c9IDWiEfGDBqBWNR2gYWyY8aXRzVRbnbk+vF7gcZ6XcSJ2t9Si65ZL+mopq6vlvHEZNJZect52BvQYQSxj2AANFFjWpsdwxGdzt4l+nRc53ZoqZNMnLUOTfNxIJORC9uQ1ycmXArDO+z9i3AIvzo1iXhRvadfne7M9wH3GiU2bxr9uWNBtlR1IyM+1+Q7t+yzJWb2tNoW/JP3tcfpo/quIBG7knvoMNQP4rdQCGQtnD+yIMcVPcSJwSJtwXVpxMKwGKtZzE81PnVrZT+nMGdHyB7Zp9lU+7VQ22eprC2QnDVx5z5CeRg/vhyLFKHvHZelr+xfk+CMPYjks6QT1of1EIal1QOYM8MRHagOEr12PfPCCJ0sjik4PC+Ex19V
- aJ0mzhFX
- lYgLrA9JCTbYXudSD9lUb9RPf5J6nI3uxhMzr4eA5bD4gHhWtLyQsrYRg1hyUT7EhftRpQxVK0g8+hjlaJBMh10SrxaM3V/t1fFEPqd7xy8VJKyF5gWwIl/HaX34lz9jZHYq0PHTyiRRz5HT7aPag0GGCfA0ZmbTIh+4n31XRB2fNHhtI06J98srRuQXMeMGogpDF9rn3oHUPTgvZey2a+/5POPuFhjseLWNQDevJR6NCSSR5JhoODl58KOVsks4q8aVkFZpgThBkliE=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 26BB740008
+X-Stat-Signature: 8ko1khqtimtiy4rom6f39iqam3z691o3
+X-HE-Tag: 1788005457-520831
+X-HE-Meta: U2FsdGVkX18VePh0sK5dKZ92r7dIbxWzrkO8TdtX4RwiKXuk9bKKzFqJ0DasxcDquuyL1uzHcbGnQZJChb6y6gVGpqTPIYdsdm7ylk8D/F9BgrF7YieWnIdSeJ3yYGABecJQh3vAtJnoTGs7VSDHjiwyXOb7INv6ppSDsICFKzrCfBY+6IwbZKI2ljPMqY9Mu0JY4q0BtUiWgTH2FoHuWslGGVRPHOq22dPn5uB74m9kz2TPGL8hRPjrXpk/P+5Z9/uHVOKzQ7JAOT2DxkKPkO2yb5dibgZkxE7F1AWQ+KuMlX9FtFSXAUe6+5DEI05hCaPNEXzqWzhdL+8Gg0fVw+lPLr8RPvAT+TCnVvKR+rwABj4BJlwpUpF2JEbxjRdIbjSRBYcxo7RtsttwOI+F7zOU2eEIRQPFxwHh1sFypbsgRzv5kSrmRFZrRectqDw/b38KufkUFznuJs3sDTHvMjXbbtO0CLfMMchsEXYWuk/rMS7OjRdSf7u/L7x887I8kaby+ILKnemcrT0UJr3gTZ1MouEtYeML6dI6VeZhaD3txOMeaxsPSsfIaQ2wWgf39ksIidlNOD/wFjfI+INDsWUlccrR7Ft+HQ1pq9lv2wVjMMwKmJu1U4NWYzMPb9x5coHQc2rInwJfxolhDnvDQxtaM1wS3Ks6MfFSpyoVGEdw1hOuWe4XLpPwyGek2Vz10wlZbi3hLCBdrLFqZa4xlI9b9qneEU4YE6kZV6mCNMpuNgUVGUwIyfyuXwgNdDuhNte4qHNDFdHHjlS/xAeLFmJLFB43zHHQvKrMv3qZv1gb9mTGDHv9fvIHPHe5Ow74pECmNFzZG0LKPxS7aOrOnhTR89VFtU9ObdSLJJp8j01nw/429niW1aPb2tfKzSe3TYI/JuxZwGMATbrridKBVnxP6jkEp8tvTP8QbOZ7sIgtvoTkF/TnNp0xSL+1MPo2JfD/DBHegn14eVUdVPd
+ 1e0CObtd
+ OG/TSrkO6d1blCif+8B1hviPAZjigAE973EqEuleVMPnmX1DxfXQeCxx4HJ5vUJ5fA2xnbVEPqYI8iEkd9IwO+zUsFVUYIjokedigkXekIIerEseWdUSxJdLncvyqu7aKtStwOs0KMlE2Q/NYJOQdwBKjRDzWQEGfCGhhM+Jwt1rXV3/DymVEVpaK7Fqe82UdHtn9D7kktl/x5oqLvQC/U86XGNeAhfr/f01tNSUd22SgPZEu+YZZ04zkomqCz2Xg4cPE9vrm9ga/7I9P6tuUdXU2H6jBzu1sHubTXz3HG9A3MwVXTz9pyO/8atW2kli3Eyf5VrJ1UEIV6s54bvLiV88KghdNt6nFR0LC6svSOOq0qomOlr3t1rIaEsLQ1SeJNmgFJVleJBE8QvWL3hlLwI/vR0UMTD0nNxf9wr5VopeOSm+C63gKiqdGxIW/Hv8vNTJ+PHINMAL3a3m6dFMFYPycKBjJ+UzmYVizOetHtUABMQn5DSC7KDgXFg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,180 +142,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello, thanks for your comments
-
-On 8/28/2026 11:58 PM, Yang Shi wrote:
->>
->> [1]  - arm64 kernel text replication
->> [2]  - x86 NUMA-aware kernel replication
->> [3]  - x86 kernel text replication
->> [4]  - NUMA replication of user data
->> [5]  - Mitosis: Transparently Self-Replicating Page-Tables for
->> Large-Memory Machines
->> [6]  - WASP: Workload-Aware Self-Replicating Page-Tables for NUMA Servers
->> [7]  - PaCaR: Improved Buffered I/O Locality on NUMA Systems with Page
->> Cache Replication
->> [8]  - Memory page replication for Linux on X86 processors
->> [12] - Optimize this_cpu_*() ops for non-x86 (ARM64 for this series)
->>
->> As of today, none of it was merged into mainline.
->>
->> Patch set description:
->>
->> This patchset implements initial support of the kernel
->> text and ro-data replication for arm64 platform.
->> Linux-next was used as a baseline.
->> (903c1cf6dff9 Add linux-next specific files for 20260821).
->> This patch set heavily relies on our previous submission [2],
->> their generic part is the same, these solutions might be merged into a
->> single one.
->> However, after thorough re-evaluation, we were not able to observe
->> performance improvement for the x86 platform, so we have decided to
->> stop this
->> direction and switch on arm64.
->>
->> Current implementation supports the next functionality:
->>
->> 1. Replicated kernel text and rodata per NUMA node
->> 2. Vmalloc is able to work with replicated areas, so
->>     kernel modules text and rodata are also replicated during
->>     modules loading stage.
->> 3. KPROBES, KGDB and all functionality that depends on
->>     kernel text patching work without any limitation.
->> 4. KPTI, KASLR, and KASAN are supported.
->> 5. Only part of a translation table related to
->>     replicated text and rodata is replicated
->>     (up to 2 pgd entries if kaslr is enabled)
->> 6. 4K + 48bit and 64K + 48/52bit are supported and tested.
+On Thu, Aug 27, 2026 at 12:56 AM Yosry Ahmed <yosry@kernel.org> wrote:
 >
-> I think 16K + 47 VA bits should work too. I guess it is because there
-> are just 2 top level entries with 16K + 48 VA bits. That requires some
-> extra effort to sync up kernel page tables.
+> Makes sense.
 >
-
-You are right, it should work with 16K + 47VA.
-I did not test it on real hardware, so decided not to mention it here.
-
->> Known problems:
->>
->> 1. Other combinations of base page size and va size (especially with
->> 16K pages)
->>     should be adapted and verified.
->> 2. Replicated translation tables for the vmalloc region are not local
->> right now.
->>     Allocation performed with default memory policy, so translation
->> tables
->>     for kernel modules will not be local. However,
->>     replicated text and rodata of the modules are local.
->>     In general, vmalloc patch should be cleaned up.
->> 3. Any modifications of kernel PGD level. These modifications
->>     should be synchronized across all replicated tables.
->>     Right now, for example, memory hotplug/hotunplug
->>     lacks this support, vmemmap and kasan regions for
->>     added memory might not be observed correctly. This could be fixed
->>     by patching all places in the kernel where swapper_pg_dir
->>     is modified, or by "lazy" propagation on kernel faults in the
->> pgd-level.
->>     Propagation approach will not help in the case of pgd_clear()
->>     on swapper_pg_dir though.
+> Actually, this led me to rethink the slots reservation mechanism we
+> came up with and the issue that Sashiko brought up initially. I
+> initially thought it still existed, as two racing threads setting the
+> compressor could try to resurrect a newly created pool. However, I
+> realized that's not possible because a module-wide mutex is held while
+> any module param is set. This also covers zswap_enabled_param_set().
 >
-> My percpu patchset (I saw you mentioned it above) already had these
-> problems solved. I have not looked into too much detail yet, but it
-> seems like you have replicate kernel page tables per node. My patchset
-> added percpu kernel page tables. It should be able to support kernel
-> text replication as well without too much extra effort. And it can
-> support multiple usecases, for example, this_cpu optimization
-> implemented in my series, kernel text replication and some potential
-> security features. Multiple usecases should be able to make it more
-> attractive and convincing. So as Christopher suggested it may be better
-> to combine the effort.
->
+> So IIUC, we cannot really have any concurrency here. Pool creation
+> either happens through params setting (protected by a module-wide
+> mutex) or during initialization. Does this mean that Sashiko's review
+> was a false positive and we can go back to directly assigning array
+> slots at pool creation? If that's the case I am happy we can avoid the
+> complexity (but sorry I led you astray).
 
-I am going to check details of your patch set in the following week.
-Preliminary - it can be reused for text replication, so yes,
-I think it is better to combine our efforts.
-The core problems of having replicated pgd are the same
-for both per-cpu and per-node table cases.
-Management of translation tables might become more complicated,
-if both types are used (per-cpu and per-node).
-But I do not think it will be a problem for kernel text and rodata replication.
+Thanks for the patience here. I wanted to check the details before replying.
 
->>
->> Overall, this patch set in an early PoC stage and require some
->> improvements.
->>
->> Overhead:
->>
->> Memory overhead for the kernel itself is about 30MB per NUMA node
->>    on our deployment. For kernel modules - depends on their sizes, but
->> text
->>    and ro-data are not that big.
->> CPU overhead - replication performed on the boot stage. After boot
->>    only "rare" operations are slowed down -
->>    module loading, text patching, kernel table pgd-level modifications.
->>
->> Performance evaluation:
->>
->> Our local testing was performed on
->> Kunpeng 920, 128 CPU, 4 nodes, 100Gb for each node.
->>
->> Microbenchmark:
->> Kernel module with a huge text section (~50MB) filled with CPU-bound
->> instructions. For each NUMA node thread is spawned, each thread in a loop
->> executes isntructions. Total execution time of each thread is measured.
->> The insmod call bound to node 0 through numactl (less time is better).
->>
->> node                 0        1        2        3
->> Before time, s     5.567    7.598   13.294   18.905
->> After  time, s     5.469    6.960    6.777    5.531
->>
->> Diff               ~0%      -8.5%    -49%     -70%
->> In this benchmark, interconnect was not used by any other actors,
->> so microbenchmark numbers might be significantly improved.
->>
->> Customer's evaluation:
->> We were provided with the following feedback on this patch set
->> directly from our customers. Unfortunately, we do not have details
->> regarding how these measurements were done other than it was
->> a production setup.
->> Evaulation was performed on Kunpeng 920 and 920B platforms:
->> CEPH distributed storage +5%
->> StarRocksDB              +5%
->>
->> Couple more words about patch set and technology:
->>
->> This patchset was merged into the innovative branch of
->> the openEuler distributive 1.5 year ago (openEuler-25.03)
->> and was actively tested in production environment [9], [10].
->> In addition, besides the kernel part, we have published
->> user space replication (for translation tables and rodata) as well,
->> but it is very complex and experimental
->> even compared to this patch set [11]. With replication in user
->> space, we were able to achieve the following numbers in
->> performance improvement:
->> MySQL + sysbench      1-6%
->> Spark TPC-H           4-20%
->> Phoronix test-suite   0-25%
->
-> Thank you for sharing the performance data. Does the SUT with 4 nodes
-> have 4 real sockets? Nowadays the CPU design is moving to multiple
-> chiplets. Subnuma configuration may be more and more popular in the
-> future, so we thought kernel text replication can help performance for
-> more usecases other than multi sockets machines.
->
-> Thanks,
-> Yang
->
+Agreed, and I confirmed it. param_attr_store() takes
+kernel_param_lock(mk->mod) around ->set, and for a built-in module
+(zswap) that resolves to the single global param_lock
+(KPARAM_MUTEX(mod) -> &param_lock, "Protects all built-in parameters"
+in kernel/params.c). So zswap_compressor_param_set() and
+zswap_enabled_param_set() are mutually serialized, and the only other
+pool-creation path is single-threaded init. There is no window for two
+threads to resurrect or create the same pool concurrently. Sashiko's
+concern was a false positive.
 
-Our test machine has two physical sockets.
-Each socket consists of two dies, 4 NUMA nodes in total.
+I also tried dropping the slot reserve and went back to assigning
+the real pointer directly at creation. The only invariant that matters
+is that the slot store happens after the pool is fully constructed,
+it's the last step of zswap_pool_create(). So array walkers only ever
+see a NULL slot or a ready pool. zswap_pools_lock
+still serializes that store against a retiring pool clearing its slot
+in __zswap_pool_empty().
 
-We will start developing v2 on top of your patch set,
-and share it when it is done. If you think we should do it differently,
-please let us know.
+I tested with LOCKDEP + PROVE_RCU + DEBUG_ATOMIC_SLEEP: an e2e
+store/load workload + compressor switch (lzo -> zstd -> lzo) that
+exercises both the pool-retire and the pool-reuse/resurrect paths. All
+passed, no lockdep splats and no suspicious-RCU or sleeping-in-atomic
+warnings. These are functional tests only, 2 writer races can't be triggered,
+since param_lock already serializes concurrent param writes.
 
-Thanks again for taking the time to reply.
+No problem, the discussion made the concurrency model clearer, and we
+can drop the complexity. I'll refactor the code and send out the patch
+in the next version.
 
-BR
-Nikita Panov
+> It also makes me wonder if we can just drop zswap_init_lock, but
+> that's a separate project. Most of the zswap init code needs to be
+> reworked imo.
+
+Agreed it's separate. zswap_init_lock guards the zswap_init_state
+machine and coordinates the two zswap_setup() entry points (the
+late_initcall vs. zswap_enabled_param_set()); the param lock doesn't
+cover the initcall path, so it can't just be dropped. I'll leave that
+out of this series.
+
+Best regards,
+Jianyue
 
