@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08180C61DC4
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 04:41:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43FC5C61DC4
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 04:41:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C883A6B0096; Sat, 29 Aug 2026 00:41:11 -0400 (EDT)
+	id 954366B0098; Sat, 29 Aug 2026 00:41:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C3A186B0098; Sat, 29 Aug 2026 00:41:11 -0400 (EDT)
+	id 92B146B0099; Sat, 29 Aug 2026 00:41:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8BF66B0099; Sat, 29 Aug 2026 00:41:11 -0400 (EDT)
+	id 869536B009B; Sat, 29 Aug 2026 00:41:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 759306B0096
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 00:41:11 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 130D91C20F3
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 04:41:11 +0000 (UTC)
-X-FDA: 85153057542.02.A4C4B1B
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E9C56B0098
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 00:41:15 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 693CDA060D
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 04:41:14 +0000 (UTC)
+X-FDA: 85153057668.24.E9BB111
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 988BFC0005
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 04:41:08 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=netz25qL;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf22.hostedemail.com: domain of kris.pan@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=kris.pan@intel.com
+	by imf08.hostedemail.com (Postfix) with ESMTP id 22142160006
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 04:41:10 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="LZMX4/ra";
+	spf=pass (imf08.hostedemail.com: domain of kris.pan@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=kris.pan@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787978472;
+	b=HnAYe9ilefGIfjhHqzPcbZ8QnFE7kWl2qvmEELR6BfBpNv6vhOO0Q2PHN4jlpBZczu8oIc
+	x9D7yV0HLenoeRBnBkQ0u6hQONTW4aaTSdYP3aLFooGpwLgBETS1UFgs8/aoawtz8P3Hfd
+	Pm7EXVrdNbReyraZpj3y9jrBCRd4Hbk=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="LZMX4/ra";
+	spf=pass (imf08.hostedemail.com: domain of kris.pan@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=kris.pan@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787978469;
+	s=arc-20220608; t=1787978472;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zUbSIVPmc1rSs3fkk2FhYbLJadxPtnH4oBc3dFr23A8=;
-	b=z8VTh5EQaGjipW9c7fKQPwvlAJBiLV0kxn7SKZ4EVynX2eHeNPxJusiw/h7CroNOf6lu7v
-	K2p/mrD5pzyPeK+6ZiX2sRYUUesQhzwL6iEUfpDBgSttllMHWnRVZ/WiKS8ROPJ6g4aukA
-	bpJgLmupWo2RZ3PTib4/ltn7AKjM5Lo=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=netz25qL;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf22.hostedemail.com: domain of kris.pan@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=kris.pan@intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787978469;
-	b=slL+ScCX1Z+wlmLIraxEzYEdzwHj59c2ue68KtjLVuXDv3uG1KoTkHaSgqwQOq9NlbPKba
-	94Vgff7jtSOHIn/DB6AbVO/anuNSY2xtftCQIOEIuwd5N4CMuOQq/4ail1dDrhmf4qItj0
-	3bCQMkz4EudMBoVgguQdi5msXHkOk0M=
+	bh=xSDDsqMcFQ9tV4f7lYA1keyCPIc/hLgMx2f3S9zO6NM=;
+	b=Xj/FOfMb39zk3iqO1BjyF0Q8tUafxx/DW9VDEofw29wAoNF+8ZB6Sm5Q4KOVSxGrcc42GY
+	X1wtu9f6Y3TuG++njkiq1iOInEXu6LKuuDsQ6Z2rK/3cN7ggdT2hszyvsDA1OCMzdAD440
+	btZXh4zSrq0ONjQoMCsi3jd9Yr/3J+Q=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787978469; x=1819514469;
+  t=1787978471; x=1819514471;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=2II95OXJXOkKiEoXYBuOZjT5qcX4TdXv1W0z3wcoh3Y=;
-  b=netz25qLQMso1cdssawL2FPzi42pKmXHnOO9mMV/KuaYKQIawOdpv0Gi
-   /Yy4D8aehte1sQUuqe2JfOeGV3v3x2C4/fXbvOfT5e8HALht1uD9zDWoo
-   hhhpJOwHIHqwXTyr7Dm9JFz2dhfHMSBgDcCEWPmS6j3H/5dOp34smSTCl
-   uY9Cwk1aVyT6hmF9SAnb81HMNYM8gOpLO45PMBuccyh1Zk+7XkOz2C1wW
-   If2h0tuQsVbz0N9mlISIvhXteZJ+mX8XNZ3CIpxX///mAVAPaDk+aRXEY
-   zXxhOZihbLY10v4zkHCzUMEtOqQh4sd0x68mFdvgT26d3Jt63WFQg4IOs
+  bh=2JGqXWCbZ5rvViDhEt7kOXZr99HBUzTG6/6Uyla+htg=;
+  b=LZMX4/ra7zlIiDTXvUL8EDBB1AIVNmrYjSB4zuupJf1N0cHTv4ueokJ9
+   ENKAi10cuNhhgFy1MxxKLQlnx1dry03gQDjrPXwpw3v0OTTufcdAdIUv5
+   NsMmbAFo9erEw0sJFBgD7o14YGPMDUBlbDlyrzbG4Rcseq6iW8xAtDs4Z
+   WmmIcusmvF9pOvGDorNv9jkQHmm9rn5wy9mKVbyq47eTXTDRprqMbSndX
+   eUn31+eUirC4/pRfhmrmWlzf+nGj92z8z+IoOz6RcDMA6fYQmDUk7g3+N
+   sq+U6HlKiEF5LJahCfKVaaRtguswYCJOxPRPfwjyvyvO7mZpG7+k/2Tb1
    g==;
-X-CSE-ConnectionGUID: uuaUTfO+RfyqcbIGk1OU/w==
-X-CSE-MsgGUID: PZznNfqnTEygg1/78eioaw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11889"; a="88683920"
+X-CSE-ConnectionGUID: c3i1XWInQSauSe2OUghqFw==
+X-CSE-MsgGUID: E8Kp85lGSr6B0YK0R1KcAg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11889"; a="88683938"
 X-IronPort-AV: E=Sophos;i="6.25,249,1779174000"; 
-   d="scan'208";a="88683920"
+   d="scan'208";a="88683938"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2026 21:41:08 -0700
-X-CSE-ConnectionGUID: cQD99vGjTMO70sDaQBOW0g==
-X-CSE-MsgGUID: 46PDy14TRb23Kckm0tcnRw==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2026 21:41:11 -0700
+X-CSE-ConnectionGUID: PVdNb1TbTG6lMhgtjoogew==
+X-CSE-MsgGUID: MsJFC2WfSh6fGBC2zTN5zQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,249,1779174000"; 
-   d="scan'208";a="266533030"
+   d="scan'208";a="266533038"
 Received: from pankris-x299-ud4-pro.bj.intel.com ([10.238.152.122])
-  by orviesa006.jf.intel.com with ESMTP; 28 Aug 2026 21:41:05 -0700
+  by orviesa006.jf.intel.com with ESMTP; 28 Aug 2026 21:41:08 -0700
 From: Kris Pan <kris.pan@intel.com>
 To: gregkh@linuxfoundation.org
 Cc: akpm@linux-foundation.org,
@@ -87,22 +87,22 @@ Cc: akpm@linux-foundation.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Kris Pan <kris.pan@intel.com>
-Subject: [PATCH v2 1/2] fs: move splice_zeropage_into_pipe() and zero_pipe_buf_ops to fs/splice.c
-Date: Sat, 29 Aug 2026 12:37:45 +0800
-Message-ID: <20260829043746.2929210-2-kris.pan@intel.com>
+Subject: [PATCH v2 2/2] drivers/char/mem: splice the zero page for /dev/zero and /dev/full
+Date: Sat, 29 Aug 2026 12:37:46 +0800
+Message-ID: <20260829043746.2929210-3-kris.pan@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260829043746.2929210-1-kris.pan@intel.com>
 References: <20260829043746.2929210-1-kris.pan@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 988BFC0005
-X-Stat-Signature: ufkt5be851f17dmo8gogkyjdd74pcbg8
 X-Rspam-User: 
-X-HE-Tag: 1787978468-225625
-X-HE-Meta: U2FsdGVkX19YeCgb4H0o8PmzXLJyF29ghLCjLBG+Y7UzG77xwmiwjpDATt/QQW6G213qYovLNYL3LunLGoeaCXye3XW9H+dEsOXNW3l1ebzWaIllyPjQttZw4OBZndWcMVGUz91tWfTLEALCt9ylfAuahjVDYOG9QOj5zSkft/i05eloShCuYBdMClLF6J6Cw/7MCrDVC2xEYlHzjXFaEM11yY4HgjHXO+9NwPOI3EY1p1LFUsXQPT2oagxp+l459/opiXUGyCxjshgt+HAZKtww7PivpRcvgDHU7nKCuBHQPfYieo6/FVfz5nFiYk4A+pRh+W3dKpkxWjTcBlmnEAiwojAO9F2abFc13f7wPjj8yqS3xkK4rT5UtROrYvTEVrm5Iv3yw0Symv9sloBHlXxbQuOgdA86jGgqVjIkrJF5nfYbdEEbD0sSGhW+JlB9sKZN/blBacmAABBABRQV9KNZzvargFXZBIuov9qN6vkrkPG5rs2n22kRfH5f1kMg8ITwC7Zx6irvawSKM9zjjScNDp2qGVXtjCg2CoohFai8Ek8EW2P8tCPUj4JPOscMNPZmoWuA4hPXcPsJwsEQvR6mNOuQlH4ZEyv5VcsVEn4EhpElPmVdNM4htSKozi1ynAIa+9bnZXZVpV/4YlD0QdTZM78tc/qWdX/+vmn8EWuQx4OdbUYgeMi1FFlNiNLUv0fXMEwaetiemiqeyB5FuuF0dBXXKuDfZxUJX4kVZ2JmmuAzYudk9cDONmDm5cT+GTMzsrOY73SnggXxJWfXXvqme2d0dionWYySIHN6PMCjUw/VZazdKr+dz/q4wRxDDINV4iIX1AJJuOtXkQU3uo/+v2okgt9BA9890pJ73m3eqlErIgm86xL09sHkX2Vcumj5OV1U7Z/FAwfr6eIK4v1y+pnkmtWZ2GzYdqsgA7T4Ws0ZbLQ8ljmlz+B9CCSxLEoAQ9W83SdluImk72u
- 5KcqIJ/f
- 8do/pgauP08zT+SjoFAcbBbIJtch5pg817mI1xO4MtKHtcxp+g7tdsT34uXwCPzmKwlHgij0/i4etZBja49rhJuxTSuW9WsHo8uHsmhj+/z0i9cu8Boqtj4FT0qyhlW/F/ruLUD2NMITX1WtA/s1r1yOTH6uooSYw8gipOwx+SLREmXXGKDEoxX2luv3wI0uunnbyetzyrrSAEr4c+8tFjGixDCBnvVXGyPHa
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 22142160006
+X-Stat-Signature: by1rgzrb64fz8rtzsudj5sqkok3cywec
+X-HE-Tag: 1787978470-571723
+X-HE-Meta: U2FsdGVkX18KLYyXnJzoBIIaXK1z5/k4e3zvIOztM2cugLDNlywJ/uwzTayqMQX3Wc8Lxt84wcnQz5SiYhnS6VWg4UUdc9aWwp0ByQ8ytPh1JoeHzvyPxUM1xUBK2gn3Qtnr1u/n62ii2xq9Qo5rPMsZcuC41tA5/yOb4GTTV/1ZQf7POeUuG9sGVYUuee3ozYuYN4+RMGrOu3gTXVpWt2niE+vfVDtgvKLyo3zYKYpTphIJ8Oo8OzbEWkl+xIqByY9sKVxkNwVcrdt8riWjndHMxz5Gese4xdkLScATjX0I7L+kKVBkr6tjOf7+h/HhnILUlmSx13YzfkCuQ98Qcr4GnmXTRhSEJlqEOpINN0YUmGNsguB+7PcYxxJIRJ5wSbxpHiwfUf3sD5tU3dso2F4uEB8VYw/HN4gtBxAK1XeXQNArCP17VTbEXd9BVpaaV3O1sJLNW2wdCSApjg84MnIjaW0EUxBYJopPpAH376aErweOMvJT03X8MqFV8juTjCVk6dD7QtBkM8jdb38rLlNsEi5Cjm/giP0Md0NhKpBeD4KSsodHHN5x0v4JUc4NXRWTTen820IYzx7J0uTgGmeIijxla7zedYjYWrTid3RonNyqc6pg4+Z73dB3UpYVnSaLNQZt7Nl7IgXpERPUmp1wzhW+U8AWICYUAjaD8uexxJkTGaNmmj5+EUXOEc+6YyttdOAvVZZ5mQEt/B7+SOuuM8YqBMn5ESs1BvteWRX+DzdQ/bCukJAWkQTFzq9kgF0EvsyZFPRytDPMmscUH6dbR8BgrxPAy8C49fns1+FQnqvJ0NiqdZpTIVshaJ9VsIqrrRATbtEdaK2qc+XY7ZmS3aFfERn1NEYN04xD52HyHGKcVSjSaYwwBkcCxgp0a3HLNqJs7D7NV8oKOPkJkOr3OfqaZngmQZ4oW1i4khOR4uVXJ9I9WtyiPPdlYgO5lO2YgXjjkXsYu8k9k/e
+ OMB6EytS
+ FU8DlrmyYC5e/URAuhUWW2BDyaQj0lWiKKdY4yq9kL8spBsOostFQD0aZUNY+ULSJyUEzOdtNPoe5HAjiR7Rmy2PeaEhIaT3o4XsJrkLv/0ETs/QtCWhEe7QozSAWDm3jXmAvIRVDkxbGJzK6qrj+coKt0o8u+65zX16Z7PjForMEYAJaWTghQgmdGICN60bcl9zb0JmvMsCyCci8PEsGCUog1zcoRRioTFSgIAZ6vHTogcg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,164 +110,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The zero-page splice logic in mm/shmem.c (zero_pipe_buf_ops and
-splice_zeropage_into_pipe()) is generally useful for any file that wants
-to splice zero pages into a pipe, such as /dev/zero and /dev/full.
+Implement a splice_read handler for /dev/zero and /dev/full that pushes
+references to the global zero page into the pipe, instead of allocating
+and zeroing a fresh page for every pipe buffer.
 
-Move them to fs/splice.c next to the other pipe buffer operations and
-declare them in include/linux/splice.h so they can be shared by other
-callers without duplicating the boilerplate.
+This is much faster than copy_splice_read() for splicing zeroes, since it
+avoids the page allocation and zeroing on every pipe buffer.
 
-No functional change.
+Use the shared splice_zeropage_into_pipe() helper from fs/splice.c.
 
 Signed-off-by: Kris Pan <kris.pan@intel.com>
+Reviewed-by: Max Kellermann <max.kellermann@ionos.com>
 ---
- fs/splice.c            | 62 ++++++++++++++++++++++++++++++++++++++++++
- include/linux/splice.h |  3 ++
- mm/shmem.c             | 45 ------------------------------
- 3 files changed, 65 insertions(+), 45 deletions(-)
+ drivers/char/mem.c | 29 +++++++++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
 
-diff --git a/fs/splice.c b/fs/splice.c
-index 9d8f63e2fd1ab..b6ea98cc62fd5 100644
---- a/fs/splice.c
-+++ b/fs/splice.c
-@@ -398,6 +398,68 @@ ssize_t copy_splice_read(struct file *in, loff_t *ppos,
+diff --git a/drivers/char/mem.c b/drivers/char/mem.c
+index 63253d1de5d70..6d3ef359b2d7b 100644
+--- a/drivers/char/mem.c
++++ b/drivers/char/mem.c
+@@ -471,6 +471,31 @@ static ssize_t read_iter_zero(struct kiocb *iocb, struct iov_iter *iter)
+ 	return written;
  }
- EXPORT_SYMBOL(copy_splice_read);
  
-+/*
-+ * Pipe buffer operations for splicing zero pages into a pipe, used to
-+ * optimize reads from sparse holes in files and from zero devices such as
-+ * /dev/zero and /dev/full.
-+ */
-+static bool zero_pipe_buf_get(struct pipe_inode_info *pipe,
-+			      struct pipe_buffer *buf)
++static ssize_t splice_read_zero(struct file *in, loff_t *ppos,
++				struct pipe_inode_info *pipe, size_t len,
++				unsigned int flags)
 +{
-+	return true;
-+}
++	size_t total = 0;
++	loff_t pos = 0;
++	size_t used, npages;
 +
-+static void zero_pipe_buf_release(struct pipe_inode_info *pipe,
-+				  struct pipe_buffer *buf)
-+{
-+}
++	used = pipe_buf_usage(pipe);
++	if (used >= pipe->max_usage)
++		return -EAGAIN;
++	npages = pipe->max_usage - used;
++	len = min_t(size_t, len, npages * PAGE_SIZE);
 +
-+static bool zero_pipe_buf_try_steal(struct pipe_inode_info *pipe,
-+				    struct pipe_buffer *buf)
-+{
-+	return false;
-+}
++	while (len) {
++		size_t n = splice_zeropage_into_pipe(pipe, pos, len);
 +
-+const struct pipe_buf_operations zero_pipe_buf_ops = {
-+	.release	= zero_pipe_buf_release,
-+	.try_steal	= zero_pipe_buf_try_steal,
-+	.get		= zero_pipe_buf_get,
-+};
-+
-+/**
-+ * splice_zeropage_into_pipe - splice a zero page into a pipe
-+ * @pipe: pipe to splice into
-+ * @fpos: file position
-+ * @size: number of bytes to splice
-+ *
-+ * Splice at most one page of zeroes into the pipe.  The zero page is not
-+ * refcounted, so @zero_pipe_buf_ops must be used to avoid taking a
-+ * reference on it.
-+ *
-+ * Return: the number of bytes spliced.
-+ */
-+size_t splice_zeropage_into_pipe(struct pipe_inode_info *pipe,
-+				 loff_t fpos, size_t size)
-+{
-+	size_t offset = fpos & ~PAGE_MASK;
-+
-+	size = min_t(size_t, size, PAGE_SIZE - offset);
-+
-+	if (!pipe_is_full(pipe)) {
-+		struct pipe_buffer *buf = pipe_head_buf(pipe);
-+
-+		*buf = (struct pipe_buffer) {
-+			.ops	= &zero_pipe_buf_ops,
-+			.page	= ZERO_PAGE(0),
-+			.offset	= offset,
-+			.len	= size,
-+		};
-+		pipe->head++;
++		pos += n;
++		total += n;
++		len -= n;
 +	}
 +
-+	return size;
++	return total;
 +}
 +
- const struct pipe_buf_operations default_pipe_buf_ops = {
- 	.release	= generic_pipe_buf_release,
- 	.try_steal	= generic_pipe_buf_try_steal,
-diff --git a/include/linux/splice.h b/include/linux/splice.h
-index 9dec4861d09f6..f1d4aefa4ec2c 100644
---- a/include/linux/splice.h
-+++ b/include/linux/splice.h
-@@ -108,4 +108,7 @@ extern void splice_shrink_spd(struct splice_pipe_desc *);
+ static ssize_t read_zero(struct file *file, char __user *buf,
+ 			 size_t count, loff_t *ppos)
+ {
+@@ -669,7 +694,7 @@ static const struct file_operations zero_fops = {
+ 	.read_iter	= read_iter_zero,
+ 	.read		= read_zero,
+ 	.write_iter	= write_iter_zero,
+-	.splice_read	= copy_splice_read,
++	.splice_read	= splice_read_zero,
+ 	.splice_write	= splice_write_zero,
+ 	.mmap_prepare	= mmap_zero_prepare,
+ 	.get_unmapped_area = get_unmapped_area_zero,
+@@ -682,7 +707,7 @@ static const struct file_operations full_fops = {
+ 	.llseek		= full_lseek,
+ 	.read_iter	= read_iter_zero,
+ 	.write		= write_full,
+-	.splice_read	= copy_splice_read,
++	.splice_read	= splice_read_zero,
+ };
  
- extern const struct pipe_buf_operations page_cache_pipe_buf_ops;
- extern const struct pipe_buf_operations default_pipe_buf_ops;
-+extern const struct pipe_buf_operations zero_pipe_buf_ops;
-+size_t splice_zeropage_into_pipe(struct pipe_inode_info *pipe, loff_t fpos,
-+				 size_t size);
- #endif
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 9001aaf3b7b94..39d8dfefbe9f5 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -3427,51 +3427,6 @@ static ssize_t shmem_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 	return ret;
- }
- 
--static bool zero_pipe_buf_get(struct pipe_inode_info *pipe,
--			      struct pipe_buffer *buf)
--{
--	return true;
--}
--
--static void zero_pipe_buf_release(struct pipe_inode_info *pipe,
--				  struct pipe_buffer *buf)
--{
--}
--
--static bool zero_pipe_buf_try_steal(struct pipe_inode_info *pipe,
--				    struct pipe_buffer *buf)
--{
--	return false;
--}
--
--static const struct pipe_buf_operations zero_pipe_buf_ops = {
--	.release	= zero_pipe_buf_release,
--	.try_steal	= zero_pipe_buf_try_steal,
--	.get		= zero_pipe_buf_get,
--};
--
--static size_t splice_zeropage_into_pipe(struct pipe_inode_info *pipe,
--					loff_t fpos, size_t size)
--{
--	size_t offset = fpos & ~PAGE_MASK;
--
--	size = min_t(size_t, size, PAGE_SIZE - offset);
--
--	if (!pipe_is_full(pipe)) {
--		struct pipe_buffer *buf = pipe_head_buf(pipe);
--
--		*buf = (struct pipe_buffer) {
--			.ops	= &zero_pipe_buf_ops,
--			.page	= ZERO_PAGE(0),
--			.offset	= offset,
--			.len	= size,
--		};
--		pipe->head++;
--	}
--
--	return size;
--}
--
- static ssize_t shmem_file_splice_read(struct file *in, loff_t *ppos,
- 				      struct pipe_inode_info *pipe,
- 				      size_t len, unsigned int flags)
+ static const struct memdev {
 -- 
 2.43.0
 
