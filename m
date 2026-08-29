@@ -4,87 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5B63C61DB9
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 01:04:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CE1EC61DCB
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 01:05:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B4886B008C; Fri, 28 Aug 2026 21:04:43 -0400 (EDT)
+	id A2AA16B0092; Fri, 28 Aug 2026 21:05:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98C136B0092; Fri, 28 Aug 2026 21:04:43 -0400 (EDT)
+	id A02586B0095; Fri, 28 Aug 2026 21:05:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C9286B0095; Fri, 28 Aug 2026 21:04:43 -0400 (EDT)
+	id 9189A6B0096; Fri, 28 Aug 2026 21:05:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D5586B008C
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 21:04:43 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CB2DE140574
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 01:04:42 +0000 (UTC)
-X-FDA: 85152512004.05.8E2BFF1
-Received: from mta1.migadu.com (out-55.mta1.migadu.com [95.215.58.55])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 9F0EB18000D
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 01:04:40 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=TTcxGMFW;
-	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.55 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C78C6B0092
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 21:05:10 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 691BF120600
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 01:05:08 +0000 (UTC)
+X-FDA: 85152513096.19.D35135A
+Received: from pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.77.92])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 267E2160002
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 01:05:05 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=LsGt0bNu;
+	spf=pass (imf08.hostedemail.com: domain of "prvs=694d194d3=zcgao@amazon.com" designates 44.246.77.92 as permitted sender) smtp.mailfrom="prvs=694d194d3=zcgao@amazon.com";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787965481;
+	s=arc-20220608; t=1787965506;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ujQsZj3ZcfVTm5paqkOFzeFRu6z6q0TzQhnrTrxNXXQ=;
-	b=y1Ct3ksAJ1dGyB76gB+qFk61PeVdVOfImpJds6xfAQ395uX3aGmVqEnCT3jl1NsX+65Nan
-	3CEnoWjCN4jZNnxfy9UNBIkEj+5UVZwYb2SBURAtMHFtCkiCyg67vbfBsyJcy6U6wFs1OY
-	lyng23Bz4wXuvjJU7QBX7B4ZZ2OZFCI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787965481;
-	b=qDWe5RmoUnbXhTqV9+u2+EJ5F5nZZxTqIY6/1203WbbOwGkoLm5/ymoAHm49IiNmY+Qg4q
-	AjPk0azZPohFVgSEYHjfqALwHZetzIp7SPiVt7Nus6oyAeM0G8cN/UqJwnW510Pt8nkKjz
-	kbiyWVQWcGIghfqbZbJfO95lvuMUvpY=
+	bh=AnDR6DMNIm8190T9Mj0ZWeFFqjC7wiMNtZlDelqgd7U=;
+	b=WxZ5I9LtyJPMJi2ZGPR0myoxmeHLEgDc65I1MF9jmdn4785yisaBnvPhB+2n3cmGFc/+q+
+	9sl59eF82ZuJ3ZqBlMykuh4kK6eWEOLjGQcUouZqhKdvMS6lroP130OFq6rjZ3M9ihi9rH
+	anc2TNj5ye5uDyokhvPAReA56Q+00Ws=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=TTcxGMFW;
-	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.55 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=kFVnj/RCyVGdhv/GrLJjxqmvHwAXJnYM9xkltOMPrqc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787965478; v=1; x=1788570278;
- b=TTcxGMFWoEsBiY1ov6+AULkzfP5/X/1wHWOBMu8dlEFvJ5REThzhY3wALQRrUmkBF1BaAZeH
- 4cFaHcLmcV5NtG6hOqpxz4Om++qEdMBzHwwhtSvu/uCiFDCT6m5IDy5YqTU17QlK/H1rxYWSSyC
- 1MCLwCoqV6lrgKNGEbY62zvs=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 171c61ff73f22124;
-	Sat, 29 Aug 2026 01:04:38 +0000
-X-Mizu-Trace-ID: 171c61ff73f22124
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 28 Aug 2026 18:04:37 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Joe Damato <joe@dama.to>
-Cc: linux-kernel@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org
-Subject: Re: [PATCH] mm: memcontrol: raise MEMCG_MAX for charges that fail
- without reclaiming
-Message-ID: <apIvUej_7wvcDUjg@linux.dev>
-References: <20260827233119.411152-1-joe@dama.to>
- <apDPJzlJ4gS9YUDX@linux.dev>
+	imf08.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=LsGt0bNu;
+	spf=pass (imf08.hostedemail.com: domain of "prvs=694d194d3=zcgao@amazon.com" designates 44.246.77.92 as permitted sender) smtp.mailfrom="prvs=694d194d3=zcgao@amazon.com";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787965506;
+	b=2mmmAIplO+k9AbU1TcmEuX3PP7kDC4L7jmAV7L/fQWPXS25hILE5XDR4pyg/jq2qjsrVUM
+	XO69TfI6+8ju0910kyL4oDWA+JdonV5gXprL48amEvWVOdytB8kHd/BcRXcYFd8ovLoOrM
+	WX+WB8MJw7qxoZlDCfHYrRikR6hHDdQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1787965506; x=1819501506;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=AnDR6DMNIm8190T9Mj0ZWeFFqjC7wiMNtZlDelqgd7U=;
+  b=LsGt0bNu2JEEn+J5FPFutmvA/H2kcIqnsg+qRM61Yn+E4egqkc5nZi1b
+   XIj+4h4CBGYclO626Uv1AohqHsKXwUORWVbjTOcDs6q4fwO5mpTeLAtGh
+   ORYbS/uQAOIHXZr2qCr32fdDpc3L3OZk1UvZCXjbY17Lb/WGvoR4TIZ9a
+   EO0baXhgTJFIq8tBnCqizkcgDlkcnf6HAvCElPuc01ugzPCbGaRoInwko
+   1TBE/5QO/DnqNisQ7HtMU/wbIwveKZ76tESPf8++AxiMkYYF/hcljVt5m
+   vCEUbVjxZ0WixkyzLIUdFiMo/Bo2E8k3nYwBRTRyW3yk/rLmMgvklh7UN
+   A==;
+X-CSE-ConnectionGUID: l3w405B6Q3qTp7vJELniRA==
+X-CSE-MsgGUID: XfIREu1fQeiEvPbPMsGFZQ==
+X-IronPort-AV: E=Sophos;i="6.25,249,1779148800"; 
+   d="scan'208";a="27259169"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2026 01:05:04 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.48:17926]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.30.13:2525] with esmtp (Farcaster)
+ id b56c57eb-15a2-4d68-b802-e011e4869232; Sat, 29 Aug 2026 01:05:04 +0000 (UTC)
+X-Farcaster-Flow-ID: b56c57eb-15a2-4d68-b802-e011e4869232
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
+ Sat, 29 Aug 2026 01:05:04 +0000
+Received: from 6c7e67c92ceb.amazon.com (10.187.170.21) by
+ EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.46;
+ Sat, 29 Aug 2026 01:05:03 +0000
+From: Nathan Gao <zcgao@amazon.com>
+To: <sj@kernel.org>
+CC: <akpm@linux-foundation.org>, <baolin.wang@linux.alibaba.com>,
+	<damon@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <stable@vger.kernel.org>, <zcgao@amazon.com>
+Subject: Re: [PATCH] mm/damon: use a page-aligned sampling address
+Date: Fri, 28 Aug 2026 18:04:55 -0700
+Message-ID: <20260829010455.28607-1-zcgao@amazon.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260828002211.61987-1-sj@kernel.org>
+References: <20260828002211.61987-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <apDPJzlJ4gS9YUDX@linux.dev>
-X-Stat-Signature: ntdqukq8o4h5ogbh57nczspn8oeer4ji
-X-Rspamd-Queue-Id: 9F0EB18000D
-X-Rspamd-Server: rspam02
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.187.170.21]
+X-ClientProxiedBy: EX19D037UWB001.ant.amazon.com (10.13.138.123) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+X-Stat-Signature: jn7iseejwarowix18u68sam9eghi4toc
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 267E2160002
 X-Rspam-User: 
-X-HE-Tag: 1787965480-999339
-X-HE-Meta: U2FsdGVkX1/E20Y3KKWuVWWOmNsjTmGvr6Sau1XY6KAtMXWF8t9YXa1R3uBzhdebg65eBXjvThVaDmsxHLaMxW6k4CjYYAIiy4/Z3+FwLu97GRNcHJfODf01fnrKAkc3lLVCqbEnXQuOTSiKclrn09m/VyKaa2yoS3t49rnLuQYkc9O9gNE6gLu5629yUVqzRkWKoMZJrnfn8dLwMtLlhI6QLtLgwAZSOBIkcoJf2P8oNl38ptXM//wMsOBAoli1mQQyQG2NgmWs+XZzwEKoIX0+U9JeyxKccY4VEAbTQPhdJhAilgUTzkTRA3evZRxTEGHuBR9JTEpHSvHuzT2CY4kabs+ch7R9JnybW37CElQNMWYumhLYG/v9PDIERI3DlXIaLqyBiNlCSyr99e1pS/x2NZ+fEFbAEG8/zSRcRUe7B6Sls5u+ov51RvzakUleZpHUT/nY0qF+JbKVkrrLiE9R1d+wmesCsFGcyTgJO8RJCXn8b0ZHMKjKH8GQkksifhWE845Xv9gDSpX1rfJF2hxA8UYvEtqmi45NGwaNcHLSizQV+XO+ghuZ3V08/8eCpfFmeMk65d2Y1PB1L+SbDwpPsK2OwXUPhUS5clNV7XE1fluJxloIOhq9Pozfz6gjMFx1nrQZzx5HryuQkNXyk7e9uBKl0ZSiWwqAYfy/VDio42G88JYLPPXPhxA4oGFH3bazSBbfLZZOeglXeF3LRHBCj+OEq97WSXHlUcaiKfaFb2z+UfMUg8uIamcih4aCxzmnLtp9qy03T93d39zWJt9B6uRHjSWHRt0HNniWiiNnH4ZolWOIBnDxtMgESdVv3r4rXEt4dr8rchLMNp/2JnWhc/LdxIQ1/PEof8y1YqW5gF8B3nDhk/A4YmP0+uqVW/YsoEC7ZFlC9XRO9EGHF4EMgtpZ5S4qJ4g29igY2Ht2CwDLP8NRWLwRzjj8tP7AhHXg2pe+qvXd6X+vZLU
- FcxBs8fL
- Dm+myzIKpcQvjDWEYoCNdH6jMKjQ0KQ0tXAJXCC3knO+71gSbWqyXrDTP5LDsq24XOmInIrSdq2Ff3eOSB+hEuAD8Z6Xj0jtO+Z949dHQGpgPN7b4/YHMBZGWqKosKJRyEgJRP4LZX+neWuaz/R3V8j9uc9YlFmSHAO4CQ8CG16+jbWYu1r/SiEPSCrtSYPfDpVFq5/YCmAG3Z5cvSJ97cuildwYkAfvQ5GoaJ9jnDyIeMKJwA19smN4dKrZ1OmMMe9l5ZK2tF89AyakzHiZdxjW0N5oojhePAR+crZprUcNjKhv86Jgg887JBHvRWYhKqVd7
+X-HE-Tag: 1787965505-164177
+X-HE-Meta: U2FsdGVkX1+V+kkqW9l/ROdV/HsG2NEqkbYN1FyWOFTN77Ou/umTzUH0dfZXuVOYcMlfIhHy28Yn0574KXCNys/kw5Qa9NbLfhGRmZY/b9N9QRxkvPLbpmelnzlMF6aA5VCd2Bk4Kk1aq52oufaKQ+vT97wU2vXATiQ21Al0sHjK3nvD4RgJAHAeADkJ9r2jlJ+IXtCyaZsCs6sr6q1inBT1ryUflWvLozLZtJnJHVI3AmxLD7jKXcZRxA/fDEYwbPDsCMJGgBXWGSN7xHgcthFEr4fota4F8j+tQejBfGSFqOQMb5W60iGU0cH4YVvZh/7/7dIjMEyhsrPKxKmB/vXvm8yx8okxj93RK+NwG9t0DfpLIcBpXlLVnCqaKC9TWio4DpIReEPLW+mu7QGbbv9hk6lje8X4sQYOTAQgHt/uA23VGfJgYyNHE+5bBsdGaw+b92iOuvTNTrh9EJtklW4lUi6BcKWhaJjh5hrefOwBQB2yTRQP1I1eb2obXr3/dxzpJsuj3zo+w2q7D464ceK4q4N0/CG8qXnIhQ4Yg2eJwV6GRKUV7Xbu3tUCVTxFS00a+awEBXW0JEgHSGn03qi74NiyE9vJP3N3F08NFhm1zxbLIi6x3ReMaczIkuX1kDsUqOwfQEiQAJpcKLcsGEV84ACkgsI+ThW3+9th6spuNdSaZ8fBtOq00zfXkOj9Bp+N6eckKQG8d+8PPMl1iqTUlMxI9k2xjCXSQBRuSFaNBJm/OEniXKze39njQD9zLueY6jNRyuM4dLzKCPXFv925faxTOKYuW2oTu2sMlltKDNBx6n8thguFn0CVCeSX5AP71fm2eHhp54obCj1fWYqqUyLR7kNOWCwJHFsSwiLca65UCs8+R15EECDQ/8gPoQqI1Op1+TCJLWaMaWHIxOMvBWad2QJJm6QRiRcMItC5MvWtFZkoHvNMDSySwOZXZb7159u4fvn7/nAzQXW
+ Qqhr9wZ8
+ NjIpRF8AB52gRHpzt1EsGRvEWt29Bwz+ZT/OcebjHY7sOV3HtKnCdsHHZWCGUy6ry4L6RWC2f1RO7Mg5nIwQE10Gf7nc4mFhQurTtaNp9KC3Keb81AJk0fLkzfOP+F9HYDeGi4tXnSrPV3i3NbOqU1t3aaGD4ABZcUwDiPLSDjchc63Cs+EfPk8RvvXeB5PIFUrvkTmN1N+6UPchsu7/Pjzi4xpSiD/uTNnqj86jqsVRFrLQ7/fqC0kvrmX7+GBP9Z65fQd1gWQxoMX5HdpHEsSDUzpUEZ1yu/L/QWjSsYE0PJPi8Ou8MUBmsnpnVjyh02sGulpv54BE+9lBHa6JrWagyoMju8WMaYqYw3fql/aRb4gPZSsiqCat29PptKn3J7dv3ECKsRvjI7P+QaViVRV2nvi3ZoUH+8NanF8JuLJaJUViNrTRH1hpVnUPmWww38tDEZUfLkl7ZhOtXQBbTUlAujzO7O338a0onuH2MYTyi4sw3hwUyC/rt6MN/Wk28Ed9QE6O7b965ocjmDVovJ4XrVzE/gykk+U8Pgs+V/y0ekvsmZv64pWQ1ctGnTtozDJq8qV5e52vo+lHNfQYfOaHg1x0NE0lMeh5FBB4cHj2PWkEmYMQ/3+anNNadj12IQ+N8WgKHh+BvuTQrrMEYLtKy4fpy3h3Y1BpppEFSSRqJRvp/hg/a65o566EnnTZD8eGok3/rM+LBpGlappClqb2vBQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,129 +112,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 27, 2026 at 05:13:44PM -0700, Shakeel Butt wrote:
-> On Thu, Aug 27, 2026 at 04:31:18PM -0700, Joe Damato wrote:
-> > Charges that exceed memory.max and return through the nomem label can
-> > raise no event and simply return -ENOMEM.
-> > 
-> > A non-blocking charge can hit the limit, get rejected, but is not
-> > visible in memory.events.
-> > 
-> > This was noticed in a production setting where bpf_mem_alloc() attempted
-> > to refill its per-cpu freelists, which triggered a non-blocking charge
-> > while at the limit.
-> > 
-> > Move the event so that it is raised as soon as the charge is known not
-> > to fit.
-> > 
-> > Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
-> > Signed-off-by: Joe Damato <joe@dama.to>
-> > ---
-> >  mm/memcontrol.c | 15 +++++----------
-> >  1 file changed, 5 insertions(+), 10 deletions(-)
-> > 
-> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > index 1271d390b617..3904fe9a7b2e 100644
-> > --- a/mm/memcontrol.c
-> > +++ b/mm/memcontrol.c
-> > @@ -2683,6 +2683,11 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
-> >  		goto retry;
-> >  	}
-> >  
-> > +	if (!raised_max_event) {
-> > +		__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
-> > +		raised_max_event = true;
-> > +	}
-> > +
-> >  	/*
-> >  	 * Prevent unbounded recursion when reclaim operations need to
-> >  	 * allocate memory. This might exceed the limits temporarily,
-> > @@ -2711,9 +2716,6 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
-> >  	    mm_flags_test(MMF_OOM_SKIP, current->signal->oom_mm))
-> >  		goto nomem;
-> >  
-> > -	__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
-> > -	raised_max_event = true;
+Hi SJ,
+
+Thanks for your review!
+
+On Thu, 27 Aug 2026 17:22:11 -0700 SJ Park <sj@kernel.org> wrote:
+
+> Hello Nathan,
 > 
-> I just noticed that this will change the current behavior where we keep
-> increasing MAX counter while charge request loops through reclaim and retry.
-> Though we have not documented that behavior, so not sure if it is worth
-> preserving. It does help identify cases where a request keep looping in the
-> charge/reclaim/retry path.
+> On Thu, 27 Aug 2026 12:38:21 -0700 Nathan Gao <zcgao@amazon.com> wrote:
 > 
-> Let's see what others say. Keeping the behavior should not be that hard if we
-> decide to keep it. Something like below (untested):
+> > __damon_va_prepare_access_check() picks a random byte address within the
+> > region and stores it in r->sampling_addr. There are two users of
+> > r->sampling_addr in vaddr.c that pass it into a page table walk, and
+> > both use it as the address of a page.
+> > 
+> >   damon_va_mkold(mm, r->sampling_addr)
+> >     damon_va_walk_page_range(mm, addr, addr + 1)
+> >       damon_mkold_pmd_entry()
+> >         damon_ptep_mkold(pte, vma, addr)
+> >           ptep_test_and_clear_young(vma, addr, pte)
+> >           mmu_notifier_clear_young(mm, addr, addr + PAGE_SIZE)
+> > 
+> >   damon_va_young(mm, r->sampling_addr, &folio_sz)
+> >     damon_va_walk_page_range(mm, addr, addr + 1)
+> >       damon_young_pmd_entry()
+> >         ptep_get(pte)
+> >         mmu_notifier_test_young(walk->mm, addr)
+> > 
+> > test_and_clear_young_ptes(), which backs ptep_test_and_clear_young() on
+> > arm64, documents @addr as "Address the first page is mapped at".
+> > 
+> > For arm64, before commit 6f0e1142173a ("arm64: mm: support batch
+> > clearing of the young flag for large folios"),
+> 
+> The @addr documentation is also introduced by this commit.  This commit is
+> authored at 2026-02-09.
+> 
+> > the contpte helper walked
+> > exactly CONT_PTES entries from the aligned-down page table pointer and
+> > used @addr only to pass down to each entry, so an unaligned value was
+> > harmless:
+> > 
+> >         ptep = contpte_align_down(ptep);
+> >         addr = ALIGN_DOWN(addr, CONT_PTE_SIZE);
+> >         for (i = 0; i < CONT_PTES; i++, ptep++, addr += PAGE_SIZE)
+> 
+> So, there was no issue before the commit.
 > 
 
-Hi Joe, let's go with the following patch. No need to change the semantics. Also
-I think we should Cc stable as getting ENOMEM/allocation-failures without the
-corresponding counter i.e. MAX getting increased is clearly a bug and unexpected
-to the users and will make debugging/monitoring harder.
+Right. Before 6f0e1142173a, unaligned addresses were tolerated but I don't
+think this is guaranteed.
 
+> > 
+> > Align the sampled address down to a page boundary. It is the address of
+> > the page to sample, so this matches its intended meaning and fixes both
+> > users in vaddr.c.
 > 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 1271d390b617..6bfa4ad30b24 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -2656,10 +2656,11 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
->  	bool raised_max_event = false;
->  	unsigned long pflags;
->  	bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
-> +	int ret = 0;
->  
->  retry:
->  	if (consume_stock(memcg, nr_pages))
-> -		return 0;
-> +		return ret;
->  
->  	if (!allow_spinning)
->  		/* Avoid the refill and flush of the older stock */
-> @@ -2770,16 +2771,11 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
->  	 * put the burden of reclaim on regular allocation requests
->  	 * and let these go through as privileged allocations.
->  	 */
-> -	if (!(gfp_mask & (__GFP_NOFAIL | __GFP_HIGH)))
-> -		return -ENOMEM;
-> +	if (!(gfp_mask & (__GFP_NOFAIL | __GFP_HIGH))) {
-> +		ret = -ENOMEM;
-> +		goto out;
-> +	}
->  force:
-> -	/*
-> -	 * If the allocation has to be enforced, don't forget to raise
-> -	 * a MEMCG_MAX event.
-> -	 */
-> -	if (!raised_max_event)
-> -		__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
-> -
->  	/*
->  	 * The allocation either can't fail or will lead to more memory
->  	 * being freed very soon.  Allow memory usage go over the limit
-> @@ -2789,7 +2785,15 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
->  	if (do_memsw_account())
->  		page_counter_charge(&memcg->memsw, nr_pages);
->  
-> -	return 0;
-> +out:
-> +	/*
-> +	 * Don't forget to raise a MEMCG_MAX event for forced or rejected requests.
-> +	 */
-> +	if (!raised_max_event)
-> +		__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
-> +
-> +	return ret;
->  
->  done_restock:
->  	if (batch > nr_pages)
-> @@ -2848,7 +2852,7 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
->  	    !(current->flags & PF_MEMALLOC) &&
->  	    gfpflags_allow_blocking(gfp_mask))
->  		__mem_cgroup_handle_over_high(gfp_mask);
-> -	return 0;
-> +	return ret;
->  }
->  
->  static inline int try_charge(struct mem_cgroup *memcg, gfp_t gfp_mask,
->  
+> This indeed sounds like can fix the issue to me.  However, was it a clear rule
+> that we should pass only contepte-aligned addrss to
+> ptep_test_and_clear_young()?  And is DAMON the only ptep_test_and_clear_young()
+> caller that is mistakenly passing the unaligned address?
 > 
+
+It is not spelled out as an explicit rule, but the documented "Address
+the first page is mapped at" implies it, and these callers are using
+aligned addresses:
+
+ mm/page_idle.c: page_idle_clear_pte_refs_one()
+ fs/proc/task_mmu.c: clear_refs_pte_range()
+
+> If not, it might make sense to make contpte_test_and_clear_young_ptes() support
+> unaligned adress again in my opinion.  May I ask your opinion, Baolin?
+> 
+> > 
+> > Fixes: 3f49584b262c ("mm/damon: implement primitives for the virtual memory address spaces")
+> 
+> I think 6f0e1142173a ("arm64: mm: support batch clearing of the young flag for
+> large folios") would be mroe correct 'Fixes:', if there was no issue before the
+> commit.
+> 
+
+Will use that in v2.
+
+> > -	r->sampling_addr = damon_rand(ctx, r->ar.start, r->ar.end);
+> > +	r->sampling_addr = PAGE_ALIGN_DOWN(damon_rand(ctx, r->ar.start,
+> > +						      r->ar.end));
+> 
+> If we need to have the fix in DAMON, this kind of change would be needed.
+> 
+> However, what happens if the address is backed by large folios?
+> 
+> Before the commit 6f0e1142173a, also, it was aligning to CONT_PTE_SIZE.  Should
+> we do same?
+
+Passing a page-aligned address restores the pre-6f0e1142173a behavior.
+Before the change, the helper aligned ptep down to the block start and
+walked a fixed CONT_PTES entries, regardless of addr.  After the
+change, the walk covers [ALIGN_DOWN(addr, CONT_PTE_SIZE),
+ALIGN(addr + nr * PAGE_SIZE, CONT_PTE_SIZE)).  With a sub-page offset,
+addr + PAGE_SIZE lands just past the block boundary, so the round-up
+extends the walk a whole block further.  With a page-aligned addr,
+addr + PAGE_SIZE is at most the block end, so the round-up lands
+exactly on the block end and the walk covers the same CONT_PTES
+entries as before the commit.
+
+We also can't align to CONT_PTE_SIZE in DAMON since it's defined only under
+arch/arm64/:
+
+  #define CONT_PTES		(1 << (CONT_PTE_SHIFT - PAGE_SHIFT))
+  #define CONT_PTE_SIZE		(CONT_PTES * PAGE_SIZE)
+
+
+> Also, I think we should pass aligned address to only the functions that
+> require alignement.  Making the alignment to the sampling address in general
+> sounds too much to me.  Particularly, we are working on supporting new page
+> access check primitives other than PTE Accessed bit, like AMd IBS.  In the
+> case, we might support <PAGE_SIZE granularity monitoring.  Aligning sampling
+> address in general will make it more complicated.
+
+Makes sense. I will keep sampling_addr as is and align inside damon_va_mkold()
+and damon_va_young() in v2.
+
+Thanks,
+Nathan
 
