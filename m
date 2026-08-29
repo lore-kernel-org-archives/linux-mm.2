@@ -4,112 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5FF1C61DD3
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 02:50:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3D44C61DD3
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 02:58:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D15CC6B0088; Fri, 28 Aug 2026 22:50:39 -0400 (EDT)
+	id 5AC346B0088; Fri, 28 Aug 2026 22:58:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC7276B008A; Fri, 28 Aug 2026 22:50:39 -0400 (EDT)
+	id 55D056B008A; Fri, 28 Aug 2026 22:58:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB5856B008C; Fri, 28 Aug 2026 22:50:39 -0400 (EDT)
+	id 4737A6B008C; Fri, 28 Aug 2026 22:58:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 954A56B0088
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 22:50:39 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 766F640631
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 02:50:38 +0000 (UTC)
-X-FDA: 85152778956.24.3B03FE2
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B650620002
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 02:50:36 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=sCQXL1RP;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf13.hostedemail.com: domain of 3-0iSagoKCDIXhVciUVhcbUccUZS.QcaZWbil-aaYjOQY.cfU@flex--jthoughton.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3-0iSagoKCDIXhVciUVhcbUccUZS.QcaZWbil-aaYjOQY.cfU@flex--jthoughton.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787971836;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vFZPhakOwxRZAFtn7md9lSxeY1Cg1zyr2h0Gca9vEbU=;
-	b=lbaNrKvQPI5QeGtHGZHgtXW/FeoUAeuEOkzynZtQeHSFmCPG2ZN/p9XVK8XsFPhSEFuc0i
-	V3Y+gux4idGd0EcYFi3pnRLWCD44Ubv1Fsj5d2riVbNmJck4W2Fb8GoVVP6PVkULZEXZAj
-	cmhmdI6kfLnrQuGYGXR1aEdMttHJh/4=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=sCQXL1RP;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf13.hostedemail.com: domain of 3-0iSagoKCDIXhVciUVhcbUccUZS.QcaZWbil-aaYjOQY.cfU@flex--jthoughton.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3-0iSagoKCDIXhVciUVhcbUccUZS.QcaZWbil-aaYjOQY.cfU@flex--jthoughton.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 216956B0088
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 22:58:56 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9ED99A3FF0
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 02:58:55 +0000 (UTC)
+X-FDA: 85152799830.21.A30AC92
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 12A2440003
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 02:58:53 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XMEmLGsr;
+	spf=pass (imf07.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787971836;
-	b=SkbSR9npD6mJPbFOBp/F7q3sR7SI7N844QT+yYmscfuqSB5jr1TtxcpM9Q3PEapp/TBM+j
-	ksXaiPJJ4hd1LxbrJV2Z9lvVOSOpovJsoJEk89LhXR3J36V661xlURiRtpvuGYMg5H5QJH
-	TMWsNsl2cdln2ClZlJvw/d4B8xDWW40=
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc1c5810451so2350406a12.1
-        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 19:50:36 -0700 (PDT)
+	t=1787972334;
+	b=H6J1e5QAQIXJ/Y69m8Mk7LbRUMw/bbL/emICz9RiUN+0Rn8pNnhT4KDARhUByQlc20ERmS
+	sw3q4AYvg4owKGJeOfQ8xKHickynFrp7nwZacOLKGDM/N89QVzFSwBLhHubWdB7spUzAna
+	/sZm+cGQVrl2ImG98rTaSu4yDHJyZjA=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XMEmLGsr;
+	spf=pass (imf07.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787972334;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=erpIzgXZaIbN7nWQesP+4kuweE5Y/K/C1rP9kfbv+ZY=;
+	b=77B9rCSPq7exta8rPaNZeTdZiB77zefEORNPqnIm4/9AndCqp8V4GvGx/f+wIZvdwBnho4
+	gHhqupAhgKQJclnUew2HUHMWEhLQqbe6pGhHMpMxs4yz4ZpL/XBmenpwsP5YHvoAiTI/ti
+	gk5ijbovEovPUAe1v+gVcbaWB+DTk70=
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c1670dad7a8so267142066b.3
+        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 19:58:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787971835; x=1788576635; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=vFZPhakOwxRZAFtn7md9lSxeY1Cg1zyr2h0Gca9vEbU=;
-        b=sCQXL1RPMw9I0gxcZT1oD4lYYL+GVHtuu4WhFEi/qpqko2XKoyRbaoan0IGDd7I3if
-         8CySdejeeJwS5/qr8QuPUGFyaIFz9MaogNerpmAw172rdH7ezGRUnKJltqtg5R8YZ2RH
-         sTQjfxNq7qwDHEeBvZ/dPLWxiPhjqIBBa82OFyxdOK008VmBSPOfssFAWvrqydSCeoY9
-         39d+sGWMypweG57g6Nfnx1SNeWOCkbGemPXfNU1CCWKCMWFsnZVcOFWsSxk2RooINGjV
-         FNxqMyOumS41aUiSRj+lUBrxFmn0+fXBmfb6XutkIiZch6YK1Ut3veTGtgvDt17ATeMk
-         XkeQ==
+        d=gmail.com; s=20251104; t=1787972332; x=1788577132; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=erpIzgXZaIbN7nWQesP+4kuweE5Y/K/C1rP9kfbv+ZY=;
+        b=XMEmLGsrYXhEsnyijb4jGoSRHnA7J4YWqPYd8Tjmrm8T6CBqumfvmumeHJVaJvQD53
+         diNDUAst03Q/3fkT0Uv3se09d6Uro0GEs60ppWQIn7EZ4VaZjrWe/ZXblZQRRrVAB8dm
+         /goWccZeaSf3pzR9Wo0LhBdsYcb83D+rgvGHGd0omzA5IOhS6xBB3q7fvdwdm6NLlqH4
+         JJzFhoDkNIz4qjMcHXhpxQi7yqoqupJV+dVJlCMfOw7JAo1wvemHp2ZLZvLwjuOoycTU
+         YpGMgP1m8xmY16PVLi8lOXqxcl39R9ukIvw+n5JEFMnQwD6z/pql/S/6rnzCtB7zYS8o
+         Lg9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787971835; x=1788576635;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vFZPhakOwxRZAFtn7md9lSxeY1Cg1zyr2h0Gca9vEbU=;
-        b=bzw6KVSxNo+JdLEIYm1mWZtGaF5l3jitcPeRQZw6SfXZm/NX/0WsT79opiwH2+rPiE
-         EelBY9Es3uT+NVglk4E1YgTAlSvkD+XAU0tBsdLslQlEjk7ixjbH5pMCctjAWRXMHaED
-         kZz+TN9xZWArSlCbMxeGsWZFn7EIzOda7pZSAGd+mXJw2pJmyxN7du0WDuRYz2HHaL/V
-         ml8rLXAeHV1TYXkKu3lFnTDlx4w2FB1fut4Z1w/99XR+EZIKLuibMiYo4NO48jGxCn4b
-         BuRGKv9hjfU3gAcI+0H+SqUUnX+K8srPY4KYlwtkaRrLhZ70/SgmLn4EeQAw0+dsSE+9
-         Qq3g==
-X-Forwarded-Encrypted: i=1; AHgh+Rp40hIaqZTP/bZc3ypOmU7S/wPvXNbmbdZfOkDbtX8cDf7cfiNDLfRi/FPXSXgEQysPGd2Q7NURWw==@kvack.org
-X-Gm-Message-State: AFuF++koRC7vxu/Th+z4gLa3vPctm0tzI/GCys7l2wMPlRRgALzUr1Ai
-	Q1pp7jJFPyUc8J3H2qwqg8ot1OnAAs9umWBuUYNlAlcAPSLes0j9KKa4KJ96xGUbT/mYKpfVtnY
-	3GxFu7gSgQxHLAXR31pYC4w==
-X-Received: from pgby8-n2.prod.google.com ([2002:a05:6a02:6508:20b0:cc1:c78b:a2fb])
- (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:f94:b0:857:7317:cff4 with SMTP id d2e1a72fcca58-8577317d1bcmr6303601b3a.21.1787971835104;
- Fri, 28 Aug 2026 19:50:35 -0700 (PDT)
-Date: Sat, 29 Aug 2026 02:50:33 +0000
-In-Reply-To: <20260828183801.04fd2d2a6af837cb45b60e0f@linux-foundation.org>
-Mime-Version: 1.0
-References: <20260828183801.04fd2d2a6af837cb45b60e0f@linux-foundation.org>
-X-Mailer: git-send-email 2.55.0.897.gb25b4bd76c-goog
-Message-ID: <20260829025034.2500920-1-jthoughton@google.com>
-Subject: Re: [PATCH v2] mm/khugepaged: Don't install PMDs in
- uffd-minor-registered VMAs
-From: James Houghton <jthoughton@google.com>
-To: akpm@linux-foundation.org
-Cc: baohua@kernel.org, baolin.wang@linux.alibaba.com, david@kernel.org, 
-	dev.jain@arm.com, hughd@google.com, jthoughton@google.com, kas@kernel.org, 
-	lance.yang@linux.dev, liam@infradead.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, ljs@kernel.org, nico.pache@linux.dev, 
-	ryan.roberts@arm.com, shy828301@gmail.com, stable@vger.kernel.org, 
-	usama.arif@linux.dev, ziy@nvidia.com, zokeefe@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: siaho6eicox93wqmwejpxd9zwz7mn7e5
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B650620002
+        d=1e100.net; s=20251104; t=1787972332; x=1788577132;
+        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=erpIzgXZaIbN7nWQesP+4kuweE5Y/K/C1rP9kfbv+ZY=;
+        b=re0zuh6cwcmVBxfiJjEcFyJMy18yNW17H5nehwdOcDtc/QFMOfQeangtlUyk2lgfA4
+         0YRxL7CfRMAMXMbTM4azxixqzewuI1SbvtBVMC1d2CK/NLC7nGKJj660dGXVKoB69U9e
+         MEnETqquTEDRPCooCc7Q6IPLlXk81o7hOFVJle8zzTt6wsxd4AtcIJT76kzGzHhDf7nB
+         Bw0j4EFA2mCI+NfFjtBUYqtsUkReFKDXRlBFHIUWnRKTqEIdTAIyYZQx21K7JaPE3Nwv
+         n8C9+TuACUV8tFi5uu0a9uLQOlnca14LUh+5qGLQGnWujRcRS28EHmrQRbQnf+loj5+H
+         JVUQ==
+X-Gm-Message-State: AFuF++m3CfkWAagf12yQK6M0xALve0htom66CLQX9/mwhdMdMezmCGf/
+	kxk+qAi56GrdppuwuXWDd4jWorYdAmhIuIg6V8Zpn2+v+/ilou64xrb3
+X-Gm-Gg: AR+sD10hYvuxGyy7FKisx7dNFnPIN4TItRYuExMXXsEwMGLz1wfkFMIbNdBXqTKz/Vc
+	WvBM2ZjCmM2Viwa0vrehiZo7BJvS4tpyWX5HgTrnbrQH9ogaydTAH1+YIEUiqj4fAtuSSECr0bI
+	/kd2yUS86TZWJ6qDtTb9QZpRsjwv4y/Oz7X3vrW5jje4xfP+Ur9EWGhY5qKKc1w6+e3OTFRpSAq
+	0o6qmDBtIYMnoRSUQ6U59uslfvHMTkr1UW3klMF/AnanDHVOZXOH8wDjQezhjPFgig0CP3zBdaW
+	kZofeNB+DQBvkZpc6wrznBTnFiSx4K0KqneIVTVYagXAU7z253eWdH6PQwbX5991oWgRiRJFLDo
+	Y7lIcEkUU5GwZt3bHEnW0mwwXOADVElYocCtAPgBcAUeGC9KjTJfFvO9tljQ6iI7Jc7UJFet4jw
+	HDYNU8vpv6zyeWnUgBnBF34ShGdMfMDk6arIrZ9XcmOHuKCD0ljJgFt9+4X60=
+X-Received: by 2002:a17:907:7a94:b0:c12:83da:7eeb with SMTP id a640c23a62f3a-c25574862admr880775666b.19.1787972332414;
+        Fri, 28 Aug 2026 19:58:52 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c255ee0b233sm153800966b.11.2026.08.28.19.58.50
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 28 Aug 2026 19:58:51 -0700 (PDT)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	brendan.jackman@linux.dev,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Wei Yang <richard.weiyang@gmail.com>
+Subject: [Patch v2] mm: adjust out-dated document of __GFP_NOFAIL
+Date: Sat, 29 Aug 2026 02:58:47 +0000
+Message-Id: <20260829025847.26779-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
 X-Rspam-User: 
-X-HE-Tag: 1787971836-261137
-X-HE-Meta: U2FsdGVkX1/nfPbA8IjFPHdQ9mvuAzta7f7S9obB5ihCceFm9Dd6TD9rYrOufS0/JCCeNaQPJQr8NajfhrsScKSOKTKwxatTfE/cfJghi1Dz5u9FVvQK5Zbp+pB2E9N9hYliWp1zFG6tybagSMvfWW4v9iyEetXA77zpqJaGoWx4n1zSGX6xhtgJxFXOa5TNkaR/HkwuUao8nY4IZi7oQgaPn01wzQfJJaLzJpBHdzwgFWlXWoM79z6X5hzPPOas/y+y78Q/R91YiMEAFCmXqCVqgTfAc5xY1QgPSd5kxjnt8z7uFus4O9h1/osJ6o44r/Yk2L04T+KYIbSli19zt9e9/DxJe+Iej/7NTmeOFZ4DxBLZtRc0VetC/AOQxyvKEMXzCUqb/X5sTFssB9autDeLaFYhVW8Spr6PgLQv4sNmgtnfqnxiZbllp2jkoU7J8jpSD6HZNIEw17COTT6Np1zOzPIsNiI/w5jy+V1JKtv0/U3ueeX+4oFEdIGop+30Qn7OUXDza4EWb6uturwy7/419it5KwKrKStuIXWIyfWWTObFkYzolhUjk3IeiOiPxWnoOyCN5Q8Hy0N90z1OKIGrfY/jZYYExTBPN/86U9FC8AxWLHi8kvLdq8kWRPniwu5J0LTSWV2qSmaS9zGtdumiHdiXS6Awm6Kn8SEMbsvgQIVd9l1dpSTfGO/peddcaGtOj4F+X3Y7InKwhe0Wwg2atLVIPcFEwJhfWeZ2YHR2dOeoS/028ZFhB3NFx+ObxgqTcnOSvK8aB2nKeSfIFfTtTQQN2bI9UUqx5+8pszS4KgObL5qDld3G6vp7E6n+0GqIAnIK5dvu8ak3/hQ1CX91sb89RLilTuwom4eDEhY+eGoWL+nRJ0W/Avf0NRIaT+uPdzD8S6GqpSgLwJNcnmT29SOOGjvN+aBhWYabo+sMKPyFXnaLinWX0BL9HJEuIQvNvhY4V/I+H0/xtEA
- FE+ZVhFC
- EL4TIELp6XMhkzq5PvsC2bhRECbonu96fsCyc3AkbyNQjTKGm7tIJjV9K8sA0fzD7GC4279imn6PewCmC5vLVridBjDYhkgbwwpHsqaqEdxnP+LVMnomYv+QibyRuJs3dm/kbqeDRSA+2SSNIVlPd1VrOisu1HhLJ9dq88jKZBlukNdZs3u/IjxoHec9/YIdeyZEOhqL178leFZpj6A0MNQeSBE6XScvGOgmJ017igLxnfFZscs8iTOKbbLZbKm7VBb0E6SU8tuzca/+vnqZ+rDmZ0WjrhwTCIEhFzXB2UpM/c2hoAKlowxtu6kvsYH9bsjCHzcl9qklhYfJFARnW2+c8pgjk9CVa/Dv0YIgyOAmltcmzyxiNOZq8/ZUFtzFLgpn67XseeCH1532iJZZQ1dzpnqNXoPCg6zY9iYJE982ggdDUHTu9Ruv4xYHiyUsg43A3lA8dlufDAUuwS2nrXnZE4AmA0lk5Ouyt4rslvLCa4KL8J/7rnv4AMGEwyCpJHitjYE5NdjmdaBRcQiWJwlg7vuptZeAlizEbWaNcoR/3RRv1xdS5l3oibGtSwyg2wHK2pzsfb47xsspH/VvSDzQzk1kYbliPtda7h7hoYYe9HfRKVnVkbb/bxsppICT8b73WjH8OtirH0udiZ8abLAGl5D+1v/cGvPWUI9D6AwwF6K6FXkfLHvlVbSC7ikFmMqkf
+X-Stat-Signature: bt3s4a1ia7niss79o19sqidg7m4uau7g
+X-Rspamd-Queue-Id: 12A2440003
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787972333-736652
+X-HE-Meta: U2FsdGVkX18FK6dkd0d8FAZNlHgs256XHurd+532vGSQ+1t5i3YNfaqD8kcjs+Bi6IKVitYYyahzkaOCDJNloob/rY4jsy3hZGcn4Bct/SIwRELB/VruudnU8p2odbNcZxRaPmG1bZwSNbHBSaic2stMVXWO06facWbLJqRlVuLgKoX2+jGbOyQIF9atRJxR28059Xtb7L0et2CnaWzu0YrwWFU0VbSIiTgYu/3LafrxlXgXHzBuQqhdAoMRj+jB/tPtGVgqLwm2Puy1AFlQ/0L/u1PjqXZAXjmgeWHMjO4booEsIxuEFlTHeQZQgbxFod6T9dva/L3lbrwhk59pP78+fdeYCG7XB2Yi5OezEAYOx4AsIJcAQvvyaYCjENdvpINsZ5d7Aqs3ohjky2TwAFNMi8goW0IoiVTpL+prDMdim2t7LHtUmnAsjTcX6R6luyHOTw4pGChSF8q0THRnqrP6ewDrUHXOrLX3J5tak668HgdhlXgH04q9E+TZ2X9B/FmgRU9KCWwdTvtcJT2U+MZhWTOpyZTJwcNngyzyJBgOCMVWM6cmzxr4qT7ZihxmT0yGFMtkaVCutw8MVxstI6v62rqHLtYkA112hZxw3Ul3j8+WG6wzetJ9jUDNceCwBTzT3mKwKqixi3k+QYrswtYb7siQeK8h6frqLbUpr7qQmElZIAGUhNmW45ioem/DLzCBch4X63N+pVjMxEbmGOEqDQ9VRufR43r+Ko0/o7evJH4j23N1huv9HTrqw4xl9Mex5gY8+xhIobab7bptP/Hyypls/mLwlc59EW1kW7v+fWR0H+G0H9kB24VCJ31Y+MuEFqxS0bcHArTqZssaEE1UX81pFRNnIOhTxyTOVBfYqqVO6Zf8eLck5s5KAqcAEDJ4aiU28YKoq2LSDs8hpXW3E94w8zJPrLmTQWRUlpK+QIcSQuNCSzJu40mOGbUJlxlOWrwA9QcAICaB4b1
+ ZhjJYlWr
+ ScEu7+9jTo2xnEBPw8gtwMk/y0i0f0yjR23GK76cC9NuVqJkFOXTPU/tpAed+6LuOoz1Fd3S+8hqMDijk1tfZWW9yTEHIzwEf+gIpJ2FUQk+2H7cUaBrdDNWGqbO/GcdOdAuoyWP8jM4vIGVsArYL3I6+B9n3KUMJO6nTb+snJGiWbDLYlbwWyI3SDa1TUa9at3muD8JfZNl8+b/QmPisxmjMV1n6tRmBrZ4KzV6yrrpcDJyaI//rm2m/cOZA/iWc3Ua9oINJwDt24pJySxmLB1qocFF7GssC4hSkaIoqYvOCvAbESPuAiaB/2pOMenP6QIsVbZjcAYB3A0PvYwoQ+cz2GtCp6qrwDbmgq1C+eguMSNRp6GX3CUGP8mG2sh36lCPJ02/sYS4OFpfNvkU39ax+HyiQ0oOTcGtKy58z3F4BiQRJX8u4wDWKxzqTKcSegv2a/ycPUDyEbZdwqxhRMdfuL+5KrtN00iyvRQCxi0HFfehenHS0172sBgyqFCUa5Sxizz2m2PC1xFoU4vlcHLaGJfB9h6K9pnTX54A9eEgFa26mpBVcESQyOy+7XZhO25assxoMRBXhFTeoXZV0lAy8+I4dYNsOUfqWbjn/JppI7bI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,154 +120,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 28, 2026 at 6:38=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
->
-> On Fri, 28 Aug 2026 18:18:11 -0700 James Houghton <jthoughton@google.com>=
- wrote:
-> > Ah, just to be clear, I linked a repro on v1. Here[1] is that repro.
-> > Sorry, slipped my mind to also include it in the notes for this v2.
-> >
-> > [1] https://gist.github.com/48ca/d399bf534158e80241fb4937ef1ff664
->
-> Cool thanks, I'll slap this into the changelog.
->
-> # ./a.out
-> TAP version 13
-> 1..1
-> madvise(MADV_COLLAPSE) succeeded
-> ioctl(UFFDIO_CONTINUE) failed: File exists (errno=3D17)
-> not ok 1 - memfd userfaultfd MINOR continue test
->
->
-> We do have a ton of uffd selftesting code in there.  Adding this case
-> to uffd-unit-tests.c would presumably be pretty simple.  We don't
-> really have a policy on adding a test-case after fixing something -
-> it's common practice but why?  We already fixed it!
+Commit ee040cbd6e48 ("mm/page_alloc: don't warn about large allocations
+with __GFP_NOFAIL") remove a warning on allocating large folio with
+__GFP_NOFAIL, which was placed there by commit 903edea6c53f ("mm: warn
+about illegal __GFP_NOFAIL usage in a more appropriate location and
+manner").
 
-Good idea. The below patch should work; I'll send it properly on Monday.
+While in that commit, it also documented this behavior which is
+out-dated now.
 
-diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/s=
-elftests/mm/uffd-unit-tests.c
-index ef9b3956bdcf..227bcd6aef9d 100644
---- a/tools/testing/selftests/mm/uffd-unit-tests.c
-+++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-@@ -518,19 +518,34 @@ static void uffd_wp_fork_pin_with_event_test(uffd_glo=
-bal_test_opts_t *gopts, uff
- 	uffd_wp_fork_pin_test_common(gopts, args, true);
- }
-=20
--static void check_memory_contents(uffd_global_test_opts_t *gopts, char *p)
-+static int __check_memory_contents(unsigned long offset,
-+				   unsigned long nr_pages,
-+				   uffd_global_test_opts_t *gopts,
-+				   char *p)
- {
- 	unsigned long i, j;
- 	uint8_t expected_byte;
-=20
--	for (i =3D 0; i < gopts->nr_pages; ++i) {
-+	if (nr_pages + offset < nr_pages)
-+		err("overflow in memory check");
-+	if (nr_pages + offset > gopts->nr_pages)
-+		err("out of bounds memory check");
-+
-+	for (i =3D offset; i < nr_pages; ++i) {
- 		expected_byte =3D ~((uint8_t)(i % ((uint8_t)-1)));
- 		for (j =3D 0; j < gopts->page_size; j++) {
- 			uint8_t v =3D *(uint8_t *)(p + (i * gopts->page_size) + j);
- 			if (v !=3D expected_byte)
--				err("unexpected page contents");
-+				return 1;
- 		}
- 	}
-+
-+	return 0;
-+}
-+
-+static int check_memory_contents(uffd_global_test_opts_t *gopts, char *p)
-+{
-+	return __check_memory_contents(0, gopts->nr_pages, gopts, p);
- }
-=20
- static void uffd_minor_test_common(uffd_global_test_opts_t *gopts, bool te=
-st_collapse, bool test_wp)
-@@ -539,6 +554,8 @@ static void uffd_minor_test_common(uffd_global_test_opt=
-s_t *gopts, bool test_col
- 	pthread_t uffd_mon;
- 	char c =3D '\0';
- 	struct uffd_args args =3D { 0 };
-+	unsigned long checked =3D 0;
-+	bool bad_contents;
- 	args.gopts =3D gopts;
-=20
- 	/*
-@@ -564,19 +581,51 @@ static void uffd_minor_test_common(uffd_global_test_o=
-pts_t *gopts, bool test_col
- 	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &args))
- 		err("uffd_poll_thread create");
-=20
-+	if (test_collapse) {
-+		/*
-+		 * Read just a single page and try collapsing. The collapse
-+		 * should either be rejected or be a no-op.
-+		 */
-+		if (__check_memory_contents(0, 1, gopts, gopts->area_dst_alias))
-+			err("unexpected memory contents before collapse");
-+
-+		madvise(gopts->area_dst_alias, gopts->nr_pages * gopts->page_size,
-+			MADV_COLLAPSE);
-+		/*
-+		 * If the above collapse mapped pages that were not explicitly
-+		 * CONTINUE'd, the below __check_memory_contents() will not
-+		 * fault on some pages, resulting in incorrect contents. The
-+		 * PTE for the first page may get retracted, so avoid checking
-+		 * that page, as we might take a second fault, flipping the
-+		 * contents a second time.
-+		 */
-+		checked =3D 1;
-+	}
-+
- 	/*
- 	 * Read each of the pages back using the UFFD-registered mapping. We
- 	 * expect that the first time we touch a page, it will result in a minor
- 	 * fault. uffd_poll_thread will resolve the fault by bit-flipping the
- 	 * page's contents, and then issuing a CONTINUE ioctl.
- 	 */
--	check_memory_contents(gopts, gopts->area_dst_alias);
-+	bad_contents =3D !!__check_memory_contents(checked, gopts->nr_pages - che=
-cked,
-+						    gopts, gopts->area_dst_alias);
-=20
- 	if (write(gopts->pipefd[1], &c, sizeof(c)) !=3D sizeof(c))
- 		err("pipe write");
- 	if (pthread_join(uffd_mon, NULL))
- 		err("join() failed");
-=20
-+	if (bad_contents && test_collapse) {
-+		uffd_test_fail("unexpected memory contents after collapse");
-+		return;
-+	}
-+
-+	if (bad_contents) {
-+		uffd_test_fail("unexpected memory contents");
-+		return;
-+	}
-+
- 	if (test_collapse) {
- 		if (madvise(gopts->area_dst_alias, gopts->nr_pages * gopts->page_size,
- 			    MADV_COLLAPSE)) {
-@@ -593,7 +642,10 @@ static void uffd_minor_test_common(uffd_global_test_op=
-ts_t *gopts, bool test_col
- 		 * This won't cause uffd-fault - it purely just makes sure there
- 		 * was no corruption.
+Adjust the document to align to current code, and adjust the comment
+while at it.
+
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+
+---
+v2:
+  * s/is adjusted/was placed there/ in change log
+  * instead of removing the document, say "is discouraged"
+
+v1: https://lore.kernel.org/all/20260827030548.16631-1-richard.weiyang@gmail.com/T/#u
+---
+ include/linux/gfp_types.h | 2 +-
+ mm/page_alloc.c           | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
+index 190191411009..bfd4c43ed777 100644
+--- a/include/linux/gfp_types.h
++++ b/include/linux/gfp_types.h
+@@ -244,7 +244,7 @@ enum {
+  * definitely preferable to use the flag rather than opencode endless
+  * loop around allocator.
+  * Allocating pages from the buddy with __GFP_NOFAIL and order > 1 is
+- * not supported. Please consider using kvmalloc() instead.
++ * discouraged. Please consider using kvmalloc() instead if possible.
+  */
+ #define __GFP_IO	((__force gfp_t)___GFP_IO)
+ #define __GFP_FS	((__force gfp_t)___GFP_FS)
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index ab385bc252cc..146f7e0a9462 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4804,7 +4804,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 
+ 	if (unlikely(nofail)) {
+ 		/*
+-		 * Also we don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
++		 * We don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
+ 		 * otherwise, we may result in lockup.
  		 */
--		check_memory_contents(gopts, gopts->area_dst_alias);
-+		if (check_memory_contents(gopts, gopts->area_dst_alias)) {
-+			uffd_test_fail("unexpected memory contents");
-+			return;
-+		}
- 	}
-=20
- 	if (args.missing_faults !=3D 0 || args.minor_faults !=3D gopts->nr_pages)
+ 		WARN_ON_ONCE(!can_direct_reclaim);
+-- 
+2.34.1
+
 
