@@ -4,145 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAF01C61DD7
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 07:48:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87350C61DCB
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 07:48:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAD2E6B00A7; Sat, 29 Aug 2026 03:48:24 -0400 (EDT)
+	id 893386B00AB; Sat, 29 Aug 2026 03:48:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E854B6B00A9; Sat, 29 Aug 2026 03:48:24 -0400 (EDT)
+	id 86B456B00AC; Sat, 29 Aug 2026 03:48:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D746F6B00AA; Sat, 29 Aug 2026 03:48:24 -0400 (EDT)
+	id 780826B00AD; Sat, 29 Aug 2026 03:48:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BB2EF6B00A7
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 03:48:24 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0AFAE1C21F5
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 07:48:23 +0000 (UTC)
-X-FDA: 85153529286.08.E9EFCE4
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2024720002
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 07:48:20 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=seryxQlH;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 53E726B00AB
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 03:48:31 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EEB8E1C21ED
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 07:48:30 +0000 (UTC)
+X-FDA: 85153529580.03.7F10C93
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 26D72C0009
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 07:48:29 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="lWRUP5/l";
+	spf=pass (imf28.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787989701;
-	b=mHHB31Gr4b4Hfri9j6tzm38X9JiSKHdS65GTKr4wJMdhALWywtk6VKQ/qtb2gl0Me5yab1
-	Op1ZTfDdvr+Ix2YDvAGNbfduk9fpGV405FenYX4oGGUCmpjrbfyBwsOYVnZZDWDzTHvZnD
-	8AXvhnNE0ZODUxO+9PoSbcdwERpix6c=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=seryxQlH;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787989701;
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787989709;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dWapX60dJR+7QW79Phk5gItOGIsoVWovo6H2MZ5WZKI=;
-	b=pt94FPFZ+19x23B1E+MyZ9daWilPvCAv3YPe3Lx0alPiHJtSC/pe/7R5S1hEvYLFZ0zL0I
-	u0ebXQDHfQT+JG0dZlf1FiF3p+Ts+D34cz0RklQ3iTZJzg0rBF6WAFgAvsAkjmlHGs5D3C
-	TeMN/F8HCoIME279n8m+9oowWZXtgBs=
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c1c26d7e951so315901466b.0
-        for <linux-mm@kvack.org>; Sat, 29 Aug 2026 00:48:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787989699; cv=none;
-        d=google.com; s=arc-20260327;
-        b=A6uutZ4neXrn5x+/SOJCZ3fRqjA3R/cNbEBQ/9/BZfGTkxQPz7aimX/LkyaI3HmKDN
-         +Pu2fnFvntjilWehsvt/WnVW6tVF6Sf59kiozwIA4fSgY9QnSqyzJ/m0i5FhmftyMWyy
-         5ITFXBiPReQpcgCb9efRm6ubOMvk+ch6krkvOdRJLkw1uVZmwHrmUb1XTudznxZim6w7
-         SuRywLU/r1ojeE2TZMqPk/2VVwhUfrMGLWU+OYgKKtU6842PFDZ7MltGl0jEXHNQGwPS
-         YJZRpki9/+07lRee+BnDlO7nvMnBO6JVF1ywvB075gnOSs7oi+BDSaCSu9mZDKoQklNu
-         zCrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dWapX60dJR+7QW79Phk5gItOGIsoVWovo6H2MZ5WZKI=;
-        fh=M3U06CuXaOIIY7qMb0QSr8jPpia2e0LkMWqSuX3fo7A=;
-        b=knWOjyHLpOBv6ktpGRwViA7P6Dl+hELCBB0Ol7+gfMyi3HzNvMvMLC4VRfemVJl93o
-         2aMe1zpajGxBoc1SN38xa5ki+wDQKq4MSpcZqdO7NHmLvrgpmIpq0LjnXHdSubb7P9m+
-         af9R2KOUNGj141c3dDSMbqRdX7D2XM3gqIzzqu+rdY3Qn2rnDLi07gj0D6S2VRb8IvIM
-         738Yl0C78srW0fCc0VwuklvFBQQOeF860gEKR9Zi/PFtsBEtBOXYEiCnyyVyUVL+q+3g
-         iSg8hh+aBWl09OdgIT7L/+KFUgRh/O/0EH0CGyKKsu/fhGXDRAw5Gb5x98TP8VZnvqcb
-         YGGA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=Zmu3XpqP05NRue2fBxvw9Ta0ua8JaiA5G6dY6hEI5XE=;
+	b=IwZJQz7KCLcjdByDN8HLCTMzKWoOA+z+OLnTe3Tuny3/rdC0jzAu4a06SkCtIjILgOW3Bg
+	/pXyXjQPgKWNiHuqWPGiprUY69MYAlqaefy5otFOLklTttbt3twBM2nBcz0dphyjYXQbsO
+	1V47WpAInFKZAvxtm4GxwyY16sN/GqU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787989709;
+	b=flYPzeGfzgSYYDZEL8x2VYZmoNXnNa6CYCZrUm3F6xoAXmDT1nioQEznrsQWxBocsoEaL9
+	D4uFmsTQlN3D8q5EEAmJKSAmwK+Q3TYLx2ocGivpx0txyHlbTWan0T+hfZJObtfxWu5TUI
+	7uQghcMlyUNeGA4Uj5t3kBOfnqYq+go=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="lWRUP5/l";
+	spf=pass (imf28.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3968e063f84so1357645a91.0
+        for <linux-mm@kvack.org>; Sat, 29 Aug 2026 00:48:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787989699; x=1788594499; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dWapX60dJR+7QW79Phk5gItOGIsoVWovo6H2MZ5WZKI=;
-        b=seryxQlHXqUd/iBKgOQiMAx84VMDxsaIrfDQpcHN5souI5QM/6jmuYfdOSrao8l+Pq
-         gNvB1FVXZMLKanHyGucvXnRZScMx8F0RxpOw+qt+qHMOznNDoL5UWP0JPhMuBkmqDpGs
-         UanMSWBlzgEyrcyYZSaDW9H0zuDFIWbs9xHB9N5EOCQEBiXypjJVFKq0gRgo0mRWBpaX
-         DyNdUOYm4asJaBrirNnBhFDYP5YZR8A5KdAhuZ7+mBZxjld1kdLyPwbTBb/rrgfxd3I/
-         aQv/UtxDRlfgAv6b/jNiBbnbJsAuhucncWzJdFGg0XVmX9nAbulk5abJFNT0ouiuIhZx
-         SCSw==
+        d=gmail.com; s=20251104; t=1787989708; x=1788594508; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Zmu3XpqP05NRue2fBxvw9Ta0ua8JaiA5G6dY6hEI5XE=;
+        b=lWRUP5/llZzTMjffVmhzngdsXAyOKJ5jniY234h9BwD9/21IjewJ5II1Wg6RCYVu4c
+         KZ9mwWatLvDUp9W9XXjHbYvz+ycDg8HBm99gJnjE94pWMH34ykkHeu7fC1FiYckeAWJV
+         l6WYjBjGwtjJC+26kpUv5WH4NiDtB4mK8J73JQVhTyfkWTOXyCumilconXYpcFuw2xiC
+         jvcvT3W9VGeg3Xz2crg1oNr4OLCI4a51e2xISw0lcKeqV46skqTD3m9yYHsriHaH3bpo
+         l5VppEzCbBX1bilUdvqjNgTArIN92aYlXm2LYZqUOxFtzYsWolla3AsrE3MbQLKD63m6
+         SZlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787989699; x=1788594499;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dWapX60dJR+7QW79Phk5gItOGIsoVWovo6H2MZ5WZKI=;
-        b=nGp5y+DIgSmUTTZFbZ6ujV3H75GGxbkSECp9SyVHlKYCIOIBTq/5msO21lTslfr3o6
-         Yfj6e8hCPOAXqG4MpRtamOMmaGykDvPRa8kkng7/xEJ7kVwyuVyrFQATTYKzOjclHOhD
-         3SrFssRREh12BZytu+LfZxn6sy9RrlDh+QvGa5w+pt6J+LaxcrK0rNDfV1fae5KcMJ0S
-         rbgTew1a0Q44Pon4+0KlqQ/sO5JhniWBNUpaKfQ1hbZJZiHxkA/uSnqkJscN1CrIPo0L
-         aFI/i4zLcBwEgeJRs3wZxm8ehiXG2HNVJOUKD9lrtOEqW8jUNKQuk7YjnPrtBVU44Dz8
-         VB1Q==
-X-Gm-Message-State: AFuF++mHA4YrPSN/hsBPNeoKQG8cPYrGLGQKQ1GTkQTPrP/6F2eAT726
-	OBPQAWwMXEl9k2qai4h2uSpjyGAVkG3lXZ9wkLkGqYQkcKZqcQkK16kQsT3XuPQ/tYIFPI1kvVl
-	BYRUn1SQhjbSXvM9VZ8gtEg9bOrXHJBs=
-X-Gm-Gg: AR+sD12E12HGRk+ow40/AgcAhslMfwf1ivcCqk2OpWNv3Zm7VEBvA6brwh/N3Ik8DRK
-	5vzLpiAVMGBnIHVoDnaDLGtdsLSRrsjiSKZ/dj5m31UVaTNwkbo6wGYeApuP5kxQdSD5Iz7MZo8
-	oNpHNN2qpVq1U62HRtfnPpt5Gv0qYDNES1eb0yVqzo6XzBfZVJk6lGULZ+Cwh5x3ptlsOFvkfNT
-	U82/dnXmitruCddoXYza2kxTqUac+cMBiUzUUnxjIw1YK7qs8I22CIBETfaGuunsURSf2MbiBL6
-	wtq4K7cMVHhHBfKGHu0/SkEYSRnulBNH6SSJnPpQOdrejLBYxAbNroV3x63aMM1fHtGszT9/QUN
-	O
-X-Received: by 2002:a17:907:d0a:b0:c25:32b0:e56c with SMTP id
- a640c23a62f3a-c2556bc8abfmr1111092566b.4.1787989699264; Sat, 29 Aug 2026
- 00:48:19 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787989708; x=1788594508;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Zmu3XpqP05NRue2fBxvw9Ta0ua8JaiA5G6dY6hEI5XE=;
+        b=fvMllXilzOjDfjw3eC7HOLvovx/nV/2JXVTICyCJzsKeGq3F1yP8odCcJZZEi1A/7J
+         DkA9i/8mCc90gDibI7/sP1qzR8c/c/Pgk+ljBh2W7JhiEgXaYZzYAWT/VFXWvUvnT+mE
+         jCC0Z1ATfFB381Kmlfj6dzPiX02dM1/Bttg+rxEH212wAFXhjbNtZ9KAkeBXgwtohdyf
+         6tjTnXwJ445eTXX6KuMc2wAeNPyx1DNOYiP324R7HWwJ+DZZy9ONkO0/pYgpaB1Z9/7H
+         7el5swJ92uVO9QPGPYMnVAmkI4W95CxDaWDWgQL8D9xGpK/hPduZ9J3UVo+PF9YnwQp0
+         fmZQ==
+X-Gm-Message-State: AFuF++nXQB6c+U0iJRxrLovBR5oCyXIED0WujVs4jyPEkhuP5R5jZdgW
+	HUClMgDXeO38eNu7CXGTiBzpKKya0vOsUP7pi5lH5PYSt9J0U15SApcSMJEPaw==
+X-Gm-Gg: AYBFou115OLBVetsdM8Vn+v7nE1n9LgD82R4oSaVgZm8OEZiAm0bp74+fNwxMEtsLda
+	V1mjToBA+HHYwXdLtVo1QxRaELtcwBxCn2nZDUyIvtm1evlkRK9pp4Rj4p6ISRNARQP2NsRWDfs
+	KjmaHmfY348UrQNNM2twJ/Dr+jcX/Qs/bX7H0uC9OOaV46jIE5sHEzQNxV8/2+bMyoGKAoMLBmv
+	dkMI6pvDlNX8NmnljzqVkirUWO3z30NzeQP4tu0Bzs6urrgvWfFEdFbZXsGftUJEIKP3ZONm+qw
+	PxBB42w2/1uN0mzLEjnR+cII/icu93HAxndrpkZH9P6q0FBV5twfB6BmoXW8ra9FHdLuQak4mi1
+	NZ7QU+78dwcE12kDzjYe4bc9aaWGUw9sBQzUrcEx8lCTGqP1KmTyqWoMBFssFxK+yZcw5oPzbqW
+	D1agq9vyhbf3e7VOUMkninmU2h0YS7eOFAs6rNxt0iZfdAnrBkKj8UB1sjJKnLrHPpmMW8sc77Q
+	S1A6dxnE3C+iXPVTFdDBtflJbR9dDs5L2icKMM=
+X-Received: by 2002:a17:90b:52c8:b0:398:9bd1:3214 with SMTP id 98e67ed59e1d1-3989bd13874mr6809369a91.21.1787989707985;
+        Sat, 29 Aug 2026 00:48:27 -0700 (PDT)
+Received: from localhost.localdomain (vmi2317720.contaboserver.net. [84.247.152.65])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396b0fd5c34sm10702719a91.8.2026.08.29.00.48.24
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 29 Aug 2026 00:48:27 -0700 (PDT)
+From: "Lian Wang (ProcessMission)" <lianux.mm@gmail.com>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Kairui Song <kasong@tencent.com>,
+	Jihan LIN <linjh22s@gmail.com>,
+	Kunwu Chan <kunwu.chan@linux.dev>
+Subject: [RESEND RFC PATCH v2 11/13] mm/swap: bound synchronous discard during allocation
+Date: Sat, 29 Aug 2026 15:48:20 +0800
+Message-ID: <20260829-swap-pcp-priq-v2-resend-11-68d3d925578c@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260829-swap-pcp-priq-v2-resend-0-68d3d925578c@gmail.com>
+References: <20260829-swap-pcp-priq-v2-resend-0-68d3d925578c@gmail.com>
 MIME-Version: 1.0
-References: <20260826-mglru-flags-cleanup-v3-0-d9f1c75549c8@tencent.com>
- <20260826-mglru-flags-cleanup-v3-2-d9f1c75549c8@tencent.com> <CAGsJ_4yasRXO52K-13dx9ZXPw95wEyn2bpnf0NiQ2z56dxf-vQ@mail.gmail.com>
-In-Reply-To: <CAGsJ_4yasRXO52K-13dx9ZXPw95wEyn2bpnf0NiQ2z56dxf-vQ@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Sat, 29 Aug 2026 15:47:42 +0800
-X-Gm-Features: AcwNN1VPg-XLWwgQTNShvKrK-YhiJ14GL2XJlZsGpzpk42yCs3IhhH0zUnSFR9I
-Message-ID: <CAMgjq7B7TFfBZLPorZEmg5y9u6TzFbYVQXZNC8+iztGtifmdKQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/6] mm/mglru: introduce helpers for manipulating gen
- and refs flags
-To: Barry Song <baohua@kernel.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Ridong Chen <ridong.chen@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Yu Zhao <yuzhao@google.com>, 
-	Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: cd6z9b83w1o3yx3d983itakqkhrsuotk
-X-Rspamd-Queue-Id: 2024720002
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787989700-148393
-X-HE-Meta: U2FsdGVkX18rPMXUd7D1hDSNtKGCTA8bFZSQn41L9X6w8AxzZjM7NmX5QiSFUxxDew+y5VYmwfN78hOlJ55S8dPJL0zw0UnRRR8pld11iIliF99YWFRdyThAa5vtyh9VK/AF3x4ddO4VWu5Wqqc5kU0Jwp4pv6crcnrJJ+faP9WPxSos/Efd/mz97Sa9OLjHKxGUKEHXgF5/pgkZtkNM2PtRBOMqU/lUxreQH7Ez4XvXHs1fnLHG1z7vu55PMvwadvF3rl0Hzvc4OBRD68ee+y6hSj9On/C9XRlhjavJGT7ko6LC9A40E6ocmsYpsxp2mIKuHudQ2lpRr9fN+ZnMv/LpFt3ZqauwUjO9nQ2t1psvMYMMZvoKWhX6++2hXdj0sNma1+6yvgWPsEDLwxgonyU3ZG4BaxTShX0U0Q7jfY4k3ITflAMPxfLsYBqKdKOZj+tuoU5ELsWm0XitAornLFlHf3zL7mybFfxHklbiie8l4aGZtZZ9vklnK5jhZzQWJch9BGCDsPHrZkGMP3NBP/awP0oeLnnW6G/x0jZ7yguvXfM4wCDqovkKPf5btPCTUWXDcqdc4Ai1mcqH/MAAN5aO1d87ENcrkERlRQzFxPKRh4ddOHUk6BWGHHLoPUDx6hRc7HTFUKDmolzqRiMjdrH2PLHGNVdhNeHlwZBly7L7mRzhoP9we92pI5gjUJoLDm6Wc/EM7Ec0aHxspeex+pGATFXwF2Wk9r+ToDLb7TwuZW63j/ULfzSIvDo7xNTaM3CBNo1gOLzBc/NU80EUgZuSpZkz0xPitZLUr1saeISqQ1PiLqlYnp1eRhqI6jH7V8kBLo14B5Bdw62ad3sLadatzn1Gn415iSVcm2SuKpkrx741Z1aRed87hEIBvkGr341AIZAPJUA/8ECoTv84YFIeAvELMaNfSsy3BO3y03nS9jz0goEypvm76e/lQlXyoA+IkbLNLmgOfunDlcB
- dp5piNBP
- GQiH1LZq0/WmtuVRo3Bq5VdghtfagpHCWBWlEmzXZnwidMXfbAe88EQAvwHRkMyNVEJHm+o8djA7FGRFf/J7efWUJDUThVRfXZPGqQN2kN6dhbPYFrWcOpWjsUetjuvyhSKsAYhK1+3KGkTkYUYUK7XAfDENGu+SZSCEInGC0pThhvH62v0J7fxl8gCi0ABLcpmQJuoLgSVt6b/qthj2E8ia2pfxGW49knD6KpS1AovKOelJK3RzODGzUhI+1y/dTOBv1VBRE/tEIgRaL9VnQsvTqrRZj/0rilNwBq/qXnWdLzEvnVW84t4NEuGH5SMYR0vduGtveh1q3KSL2VrU4VgQny66jzhQVCZl6pHj3FGorZuCYj/bXzqydCpUlCnpFtL3xgAbz559oNFYsrWTMVYsDgGn7rYT7dBK/TQt+1q1PFQXO2npI4Zn5KDszlvTRLmLc8oY6jH+dh/U=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 26D72C0009
+X-Stat-Signature: ykchjqpw6peo5chxyopduhn9jd5zoiar
+X-HE-Tag: 1787989709-117801
+X-HE-Meta: U2FsdGVkX18EMar8uOYO8cMvF2pHx1sIdkAQBwv/AZdaE7AesxyrKmrkvXEJ/wXW6GfqYygjvngyfJUfBhSIZfLPUgRP0EjnRtprjkwteTrB3vmY/GFBLrxRNwzvIHIX/5lgfpkuHTuoB6QWERGEWo5R7w+MprtsEtEtFvXiS648VH7Q2WnuwljXHBa82yd0RY5lb36++rkZqfoMm7I1jpwkT3uKzAVMoFTFHSpp5jFLZWAo1q2CqLRLXDnYEeKBnpq9bZBGlASFI37x7Dy13vBjOkAAsiYxYkXx9BDd4YpsLde57w+yGLbfQEra5XvgU9qL7yV9gefp23luQn7clHjbBDNwmfjmAzvvIi3Nl8EE7uIvYY8caip4SnYkL9La8KXNutfhX13jbpvT9nCgd58Rz8kPdvtDw54343YDTx69gce8JOQGwIPXdpgmpd9ALS/UBK4becYHfSMXsDwwT5ddg6wOsgcT+/nWMtGFecndRaf59VPofgK5TfUJQ4e4IlEYJ6ZCe3CGeW0pA68CE5D4/PuiqQBZiMA7XnpN6R3IYP/c5UUCNgyXTFBejfU5rPsYkBkO7zDqoOkajEkspxMu0aY4rpVyU3vXLKCE1EL9j+TIuqH3u+4dX6UVtD1oAppRCd8x/21zMLayRtTbrU2ClSO5vDQfWDL+akEGb+tQ77J66dzeuREHSpmhCwA1mhF70VnVxjBUwQ9JetC+2BuSEzheWeo67VCqiofS8kHLd6l44cSUNhq7vmyt5JICb81GhYOgXKD7KXhRMZ3ZwUlf0FUhByH51wjWoMEOLinv324IFv/29+wfYPIQzLJy5C9JdtRVMZP03VISO5Ah4GToUeaP7Z6snugyDk3GCd1bpoBKpaxBvZCR4pDyrFYA1/YA1AArg5J1qbkfW4V6fL97Yz/zTXbVkAfxtlDujKTE4gZD8bu8hKu110dny0GooRLMED3ckRNEQLg4RKx
+ a1wScxkE
+ 8/OGVRdNXum9wi4cjVvGi0QbuT8JHj27765qCFdB9RmERap8CXNPYkmLAPjnim8ruPsvaZs7Vs/3P9QU5Kmh1G6bPXsu59wefVWohWde6YVo8fi3ZKCKh2wlu97djQ4fdGsYKw6EGs0QO74KLAkaFPAEevHpsWoQgII7RT2tFpKtPi2ml558FssG4BtycILtdU4MeYYUScWdKE656Pkr1Mwd0RsSSw5fU2iGMPOkObk56DtoHIXSiNMM8MdPCdl6Va0wq4uED6mjM+p+fSQ3LVQQrTKUfzuGhFl4ZnWJVuk9ywSSCZwa5F42bJlXwj3jom0xyuDBmO1yEyCX7e8mTMP4VRulz3ppoHWXNIowM1iSYNfjcvsJ64Upmiocgt42MBc05MeNvSsupAG1Ys8bv1r0jntWhxMetf96fkpDupPHG36fwshTrxgnqhCF+f77FDRWP7KoMBIOQmBHC0/ECGydK1nH0QBnhEtt1iYUznnL2oNxMyyR5N8dBEw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,230 +126,281 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 29, 2026 at 12:22=E2=80=AFPM Barry Song <baohua@kernel.org> wro=
-te:
->
-> On Wed, Aug 26, 2026 at 1:53=E2=80=AFAM Kairui Song via B4 Relay
-> <devnull+kasong.tencent.com@kernel.org> wrote:
-> >
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> > Instead of doing bit ops on folio->flags.f, introduce helpers for
-> > adjusting a folio's refs and generation info, making the code easier
-> > to debug and understand.
-> >
-> > No functional change is intended: some combined atomic operations are
-> > split into two, which only creates harmless transient states. There is
-> > no measurable performance impact, and some paths even look slightly
-> > better in the generated assembly.
->
-> Hi Kairui,
->
-> I like your idea. Overall, it looks good to me. With some cleanup,
-> we might have the following:
->
-> >
-> > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > ---
-> >  include/linux/mm_inline.h | 76 +++++++++++++++++++++++++++++++++++++++=
-+++-----
-> >  include/linux/mmzone.h    |  1 +
-> >  mm/folio.c                | 19 +++++++-----
-> >  mm/vmscan.c               | 61 ++++++++++++++++++++-----------------
-> >  4 files changed, 114 insertions(+), 43 deletions(-)
-> >
-> > diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-> > index 621c8653d8f7..edfaf2661812 100644
-> > --- a/include/linux/mm_inline.h
-> > +++ b/include/linux/mm_inline.h
-> > @@ -142,10 +142,42 @@ static inline int lru_tier_from_refs(int refs, bo=
-ol workingset)
-> >         return workingset ? MAX_NR_TIERS - 1 : order_base_2(refs);
-> >  }
-> >
-> > -static inline int folio_lru_refs(const struct folio *folio)
-> > +/**
-> > + * lru_gen_from_flags - Return the LRU generation number from folio fl=
-ags.
-> > + * @flags: folio flags
-> > + *
-> > + * Returns: A number between 0 and (MAX_NR_GENS - 1), inclusive. Retur=
-ns
-> > + * -1 if the flags indicate the folio is off the list (e.g., isolated)=
-.
-> > + */
-> > +static inline int lru_gen_from_flags(unsigned long flags)
-> > +{
-> > +       int gen =3D ((flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF);
-> > +
-> > +       BUILD_BUG_ON(LRU_GEN_MASK & LRU_REFS_MASK);
-> > +       gen -=3D 1;
-> > +       VM_WARN_ON_ONCE(gen !=3D -1 && gen >=3D MAX_NR_GENS);
->
-> Since `gen` is an `int`, it seems a bit odd to have
-> `gen !=3D -1 && gen >=3D MAX_NR_GENS` combined here.
->
-> Do you actually mean the following instead?
->
-> VM_WARN_ON_ONCE(gen < -1 || gen >=3D MAX_NR_GENS);
+From: Kairui Song <kasong@tencent.com>
 
-Thanks for the review!
+The old global per-CPU cluster cache made it difficult to select a
+specific device before handling its pending discards.  Now that cluster
+state is per-device, let an allocator issue discard for that device when
+its free-cluster list is drained instead of waiting for a global fallback
+scan.
 
-Yeah, thats's a better sanity check, will udpate it.
+Do not drain the entire discard list from one allocation.  The list is
+also updated by freeing paths, so an unlocked non-empty check races with
+those writers, and a full synchronous drain has no fixed latency bound
+when other CPUs continue to enqueue clusters.
 
-> > +}
-> > +
-> > +/**
-> > + * lru_gen_set_flags - Set the LRU generation number to specified foli=
-o flags.
-> > + * @flags: pointer to the folio flags
-> > + * @gen: generation number, between 0 and (MAX_NR_GENS - 1), inclusive=
-.
-> > + */
-> > +static inline void lru_gen_set_flags(unsigned long *flags, int gen)
-> >  {
-> > -       unsigned long flags =3D READ_ONCE(folio->flags.f);
-> > +       VM_WARN_ON_ONCE(gen >=3D MAX_NR_GENS || gen < 0);
-> > +
-> > +       *flags &=3D ~LRU_GEN_MASK;
-> > +       *flags |=3D (gen + 1UL) << LRU_GEN_PGOFF;
-> > +}
->
-> It seems that we are setting the gen in the flags, rather than
-> setting the flags themselves.
->
-> The current name makes me think that the function is setting the
-> entire flags field, especially since `lru_gen` is used as the
-> namespace for various MGLRU functions, e.g.:
->
-> void lru_gen_add_mm(struct mm_struct *mm);
-> void lru_gen_del_mm(struct mm_struct *mm);
-> void lru_gen_migrate_mm(struct mm_struct *mm);
-> struct lru_gen_folio;
-> lru_gen_update_size(lruvec, folio, old_gen, new_gen);
->
-> However, this function only sets the gen bits in the flags.
-> Maybe we could use a name that makes this distinction clearer?
->
-> Could they be named as below, or is there a better naming option?
->
-> set_gen_to_flags(unsigned long *flags, int gen);
-> get_gen_from_flags(unsigned long flags);
->
-> Or something like flags_to_gen() or gen_from_flags()?
+Factor out swap_discard_one_cluster().  Isolate one cluster under
+si->lock, retain CLUSTER_FLAG_DISCARD while I/O is in flight, and return
+it to the free list after the discard completes.  The background worker
+continues looping until the list is empty, while an allocator handles at
+most one cluster before retrying allocation.
 
-I think having lru_gen as the prefix is a good idea actually since the
-header here is a very generic one, the word "gen" could be used my
-many other subsystem or drivers, gen_to_flags sounds too generic..
-While lru_gen is a very specific MGLRU thing.
+This keeps the proactive per-device policy while giving each allocation
+a fixed synchronous discard budget.
 
-How about just rename it lru_set_gen_flags / lru_get_gen_flags? And we
-will have lru_set_refs_flags / lru_get_refs_flags below.
+Link: https://lore.kernel.org/all/CAMgjq7CsYhEjvtN85XGkrONYAJxve7gG593TFeOGV-oax++kWA@mail.gmail.com/
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Co-developed-by: Lian Wang (ProcessMission) <lianux.mm@gmail.com>
+Signed-off-by: Lian Wang (ProcessMission) <lianux.mm@gmail.com>
+Tested-by: Kunwu Chan <kunwu.chan@linux.dev>
+---
+ mm/swapfile.c | 149 ++++++++++++++++++++++----------------------------
+ 1 file changed, 64 insertions(+), 85 deletions(-)
 
->
-> >
-> > +/**
-> > + * lru_refs_from_flags - Return LRU referenced / access count from fol=
-io flags.
-> > + * @flags: folio flags
-> > + */
-> > +static inline int lru_refs_from_flags(unsigned long flags)
-> > +{
-> >         if (!(flags & BIT(PG_referenced)))
-> >                 return 0;
-> >         /*
-> > @@ -155,11 +187,40 @@ static inline int folio_lru_refs(const struct fol=
-io *folio)
-> >         return ((flags & LRU_REFS_MASK) >> LRU_REFS_PGOFF) + 1;
-> >  }
-> >
-> > -static inline int folio_lru_gen(const struct folio *folio)
-> > +/**
-> > + * lru_refs_set_flags - Set the LRU referenced / access count to speci=
-fied folio flags.
-> > + * @flags: pointer to the folio flags
-> > + * @refs: referenced / access count number, between 0 and LRU_REFS_MAX=
-, inclusive.
-> > + */
-> > +static inline void lru_refs_set_flags(unsigned long *flags, unsigned i=
-nt refs)
-> > +{
-> > +       VM_WARN_ON_ONCE(refs > LRU_REFS_MAX);
-> > +       BUILD_BUG_ON(LRU_REFS_MAX !=3D (LRU_REFS_MASK >> LRU_REFS_PGOFF=
-) + 1);
-> > +
-> > +       *flags &=3D ~LRU_REFS_FLAGS;
-> > +       if (!refs)
-> > +               return;
-> > +       *flags |=3D (BIT(PG_referenced) | ((refs - 1UL) << LRU_REFS_PGO=
-FF));
-> > +}
->
-> Similar to the above, maybe we could use more descriptive names?
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index e183dfad264e..cb27f2e246f0 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -528,6 +528,26 @@ static long swap_usage_in_pages(struct swap_info_struct *si)
+ 	return atomic_long_read(&si->inuse_pages) & SWAP_USAGE_COUNTER_MASK;
+ }
+ 
++/*
++ * Serialize the allocation on single CPU or globally to avoid
++ * fragmentation and make the workflow easier to follow.
++ */
++static void swap_alloc_lock_device(struct swap_info_struct *si)
++{
++	if (si->flags & SWP_SOLIDSTATE)
++		local_lock(&si->percpu_cluster->lock);
++	else
++		spin_lock(&si->global_cluster->lock);
++}
++
++static void swap_alloc_unlock_device(struct swap_info_struct *si)
++{
++	if (si->flags & SWP_SOLIDSTATE)
++		local_unlock(&si->percpu_cluster->lock);
++	else
++		spin_unlock(&si->global_cluster->lock);
++}
++
+ /* Reclaim the swap entry anyway if possible */
+ #define TTRS_ANYWAY		0x1
+ /*
+@@ -914,10 +934,7 @@ swap_cluster_populate(struct swap_info_struct *si,
+ 	 * the potential recursive allocation is limited.
+ 	 */
+ 	spin_unlock(&ci->lock);
+-	if (si->flags & SWP_SOLIDSTATE)
+-		local_unlock(&si->percpu_cluster->lock);
+-	else
+-		spin_unlock(&si->global_cluster->lock);
++	swap_alloc_unlock_device(si);
+ 
+ 	ret = swap_cluster_alloc_table(ci, __GFP_HIGH | __GFP_NOMEMALLOC |
+ 					   GFP_KERNEL);
+@@ -930,10 +947,7 @@ swap_cluster_populate(struct swap_info_struct *si,
+ 	 * could happen with ignoring the percpu cluster is fragmentation,
+ 	 * which is acceptable since this fallback and race is rare.
+ 	 */
+-	if (si->flags & SWP_SOLIDSTATE)
+-		local_lock(&si->percpu_cluster->lock);
+-	else
+-		spin_lock(&si->global_cluster->lock);
++	swap_alloc_lock_device(si);
+ 	spin_lock(&ci->lock);
+ 
+ 	if (ret) {
+@@ -1023,44 +1037,40 @@ static struct swap_cluster_info *isolate_lock_cluster(
+ }
+ 
+ /*
+- * Doing discard actually. After a cluster discard is finished, the cluster
+- * will be added to free cluster list. Discard cluster is a bit special as
+- * they don't participate in allocation or reclaim, so clusters marked as
+- * CLUSTER_FLAG_DISCARD must remain off-list or on discard list.
++ * Discard one cluster. After the discard is finished, the cluster will be
++ * added to the free cluster list. Discard clusters are special because they
++ * don't participate in allocation or reclaim, so CLUSTER_FLAG_DISCARD must
++ * remain set while a cluster is either queued or being discarded.
+  */
+-static bool swap_do_scheduled_discard(struct swap_info_struct *si)
++static bool swap_discard_one_cluster(struct swap_info_struct *si)
+ {
+ 	struct swap_cluster_info *ci;
+-	bool ret = false;
+ 	unsigned int idx;
+ 
+ 	spin_lock(&si->lock);
+-	while (!list_empty(&si->discard_clusters)) {
+-		ci = list_first_entry(&si->discard_clusters, struct swap_cluster_info, list);
+-		/*
+-		 * Delete the cluster from list to prepare for discard, but keep
+-		 * the CLUSTER_FLAG_DISCARD flag, there could be percpu_cluster
+-		 * pointing to it, or ran into by relocate_cluster.
+-		 */
+-		list_del(&ci->list);
+-		idx = cluster_index(si, ci);
++	if (list_empty(&si->discard_clusters)) {
+ 		spin_unlock(&si->lock);
+-		discard_swap_cluster(si, idx * SWAPFILE_CLUSTER,
+-				SWAPFILE_CLUSTER);
+-
+-		spin_lock(&ci->lock);
+-		/*
+-		 * Discard is done, clear its flags as it's off-list, then
+-		 * return the cluster to allocation list.
+-		 */
+-		ci->flags = CLUSTER_FLAG_NONE;
+-		__free_cluster(si, ci);
+-		spin_unlock(&ci->lock);
+-		ret = true;
+-		spin_lock(&si->lock);
++		return false;
+ 	}
++
++	ci = list_first_entry(&si->discard_clusters,
++			      struct swap_cluster_info, list);
++	/*
++	 * Delete the cluster from the list, but keep CLUSTER_FLAG_DISCARD
++	 * set while the discard is in flight. A percpu cluster may still
++	 * point to it, or relocate_cluster() may encounter it.
++	 */
++	list_del(&ci->list);
++	idx = cluster_index(si, ci);
+ 	spin_unlock(&si->lock);
+-	return ret;
++
++	discard_swap_cluster(si, idx * SWAPFILE_CLUSTER, SWAPFILE_CLUSTER);
++
++	spin_lock(&ci->lock);
++	ci->flags = CLUSTER_FLAG_NONE;
++	__free_cluster(si, ci);
++	spin_unlock(&ci->lock);
++	return true;
+ }
+ 
+ static void swap_discard_work(struct work_struct *work)
+@@ -1069,7 +1079,8 @@ static void swap_discard_work(struct work_struct *work)
+ 
+ 	si = container_of(work, struct swap_info_struct, discard_work);
+ 
+-	swap_do_scheduled_discard(si);
++	while (swap_discard_one_cluster(si))
++		cond_resched();
+ }
+ 
+ static void swap_users_ref_free(struct percpu_ref *ref)
+@@ -1467,6 +1478,7 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si,
+ 	struct swap_cluster_info *ci;
+ 	unsigned int order = likely(folio) ? folio_order(folio) : 0;
+ 	unsigned int offset = SWAP_ENTRY_INVALID, found = SWAP_ENTRY_INVALID;
++	bool discarded = false;
+ 
+ 	/*
+ 	 * Swapfile is not block device so unable
+@@ -1475,15 +1487,12 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si,
+ 	if (order && !(si->flags & SWP_BLKDEV))
+ 		return 0;
+ 
+-	if (si->flags & SWP_SOLIDSTATE) {
+-		/* Fast path using per CPU cluster */
+-		local_lock(&si->percpu_cluster->lock);
++restart:
++	swap_alloc_lock_device(si);
++	if (si->flags & SWP_SOLIDSTATE)
+ 		offset = __this_cpu_read(si->percpu_cluster->next[order]);
+-	} else {
+-		/* Serialize HDD SWAP allocation for each device. */
+-		spin_lock(&si->global_cluster->lock);
++	else
+ 		offset = si->global_cluster->next[order];
+-	}
+ 
+ 	if (offset != SWAP_ENTRY_INVALID) {
+ 		ci = swap_cluster_lock(si, offset);
+@@ -1507,6 +1516,15 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si,
+ 		found = alloc_swap_scan_list(si, &si->free_clusters, folio, false);
+ 		if (found)
+ 			goto done;
++
++		if (!discarded) {
++			swap_alloc_unlock_device(si);
++			if (swap_discard_one_cluster(si)) {
++				discarded = true;
++				goto restart;
++			}
++			swap_alloc_lock_device(si);
++		}
+ 	}
+ 
+ 	if (order < PMD_ORDER) {
+@@ -1555,10 +1573,7 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si,
+ 			goto done;
+ 	}
+ done:
+-	if (si->flags & SWP_SOLIDSTATE)
+-		local_unlock(&si->percpu_cluster->lock);
+-	else
+-		spin_unlock(&si->global_cluster->lock);
++	swap_alloc_unlock_device(si);
+ 
+ 	return found;
+ }
+@@ -1751,36 +1766,6 @@ static int swap_alloc_entry(struct folio *folio)
+ 	return ret;
+ }
+ 
+-/*
+- * Discard pending clusters in a synchronized way when under high pressure.
+- * Return: true if any cluster is discarded.
+- */
+-static bool swap_sync_discard(void)
+-{
+-	bool ret = false;
+-	struct swap_info_struct *si, *next;
+-
+-	percpu_down_read(&swapon_rwsem);
+-start_over:
+-	plist_for_each_entry_safe(si, next, &swap_active_head, list) {
+-		percpu_up_read(&swapon_rwsem);
+-		if (get_swap_device_info(si)) {
+-			if (si->flags & SWP_PAGE_DISCARD)
+-				ret = swap_do_scheduled_discard(si);
+-			put_swap_device(si);
+-		}
+-		if (ret)
+-			return true;
+-
+-		percpu_down_read(&swapon_rwsem);
+-		if (plist_node_empty(&next->list))
+-			goto start_over;
+-	}
+-	percpu_up_read(&swapon_rwsem);
+-
+-	return false;
+-}
+-
+ static int swap_extend_table_alloc(struct swap_info_struct *si,
+ 				   struct swap_cluster_info *ci,
+ 				   unsigned int ci_off, gfp_t gfp)
+@@ -2085,14 +2070,8 @@ int folio_alloc_swap(struct folio *folio)
+ 		}
+ 	}
+ 
+-again:
+ 	ret = swap_alloc_entry(folio);
+ 
+-	if (!order && unlikely(!folio_test_swapcache(folio))) {
+-		if (swap_sync_discard())
+-			goto again;
+-	}
+-
+ 	/* Need to call this even if allocation failed, for MEMCG_SWAP_FAIL. */
+ 	if (unlikely(mem_cgroup_try_charge_swap(folio)))
+ 		swap_cache_del_folio(folio);
+-- 
+2.55.0
 
-And here we have lru_set_refs_flags?
->
-> > +
-> > +static inline int folio_lru_refs(const struct folio *folio)
-> >  {
-> > -       unsigned long flags =3D READ_ONCE(folio->flags.f);
-> > +       return lru_refs_from_flags(READ_ONCE(*const_folio_flags(folio, =
-0)));
-> > +}
-> > +
-> > +static inline void folio_set_lru_refs(struct folio *folio, unsigned in=
-t refs)
-> > +{
-> > +       unsigned long new_flags, old_flags =3D READ_ONCE(*folio_flags(f=
-olio, 0));
-> > +
-> > +       do {
-> > +               new_flags =3D old_flags;
-> > +               lru_refs_set_flags(&new_flags, refs);
-> > +       } while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_fl=
-ags));
-> > +}
-> >
-> > -       return ((flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
->
-> [...]
->
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index 73a81b4a3e16..9ee9f8dc6805 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -843,19 +843,22 @@ static bool lru_gen_set_refs(struct folio *folio,=
- const vma_flags_t *vma_flags)
-> >         if (!folio_test_referenced(folio) && !folio_test_workingset(fol=
-io)) {
-> >                 /* Activate file-backed executable folios after first u=
-sage. */
-> >                 if (is_exec_file_folio(folio, vma_flags)) {
-> > -                       set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, =
-BIT(PG_workingset));
-> > +                       folio_set_workingset(folio);
-> > +                       folio_set_lru_refs(folio, 0);
-> >                         return true;
-> >                 }
-> >
-> > -               set_mask_bits(&folio->flags.f, LRU_REFS_MASK, BIT(PG_re=
-ferenced));
-> > +               folio_set_lru_refs(folio, 1);
->
-> We have quite a few instances of folio_set_lru_refs(folio, 1) and
-> folio_set_lru_refs(folio, 0). Do these values have any special
-> meaning? Could we add wrapper helpers to make the code more readable?
->
-> `1` just means `PG_referenced`, right? Could we add a comment or
-> changelog description to clarify that `1` actually means `refs =3D 0`,
-> but `PG_referenced` is set?
-
-Right, I introduced a LRU_REFS_REFERENCED in a later series. Now a
-comment could be good enough, as in fact PG_referenced is already kind
-of a unstable page flags under both MGLRU and CLRU. For MGLRU it only
-mean the refs count is larger than 1 so using a strict 1 here seems
-even cleaner, but it still keep getting cleared in many places. As for
-CLRU, the flag keeps getting reset when a folio is activated leading
-to an under-accounted value from smap and other components. So
-sanitizing its usage is a long-term goal.
 
