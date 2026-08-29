@@ -4,87 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C51BC61DB9
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 02:23:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A94DFC61DD3
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 02:32:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 47D026B0088; Fri, 28 Aug 2026 22:23:36 -0400 (EDT)
+	id 725806B0088; Fri, 28 Aug 2026 22:32:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 405FE6B008A; Fri, 28 Aug 2026 22:23:36 -0400 (EDT)
+	id 6D64A6B008A; Fri, 28 Aug 2026 22:32:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F5B36B008C; Fri, 28 Aug 2026 22:23:36 -0400 (EDT)
+	id 5EC146B008C; Fri, 28 Aug 2026 22:32:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A0D06B0088
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 22:23:36 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 856FE140611
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 02:23:35 +0000 (UTC)
-X-FDA: 85152710790.08.720FC42
-Received: from mta1.migadu.com (out-5.mta1.migadu.com [95.215.58.5])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 645681C0003
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 02:23:33 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LphodUxq;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A8E26B0088
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 22:32:58 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8F9F1120616
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 02:32:57 +0000 (UTC)
+X-FDA: 85152734394.21.EAA0759
+Received: from mta0.migadu.com (out-82.mta0.migadu.com [91.218.175.82])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 85FA640002
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 02:32:55 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=e9qHmgdf;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.5 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.82 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787970213;
+	s=arc-20220608; t=1787970776;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FVQSx10JSsuNekdLQ5SfTTAo7yFc50nA5E1OrvPW0kk=;
-	b=2DpEFiNkTaqwWryGZFRZfSLAH5/8VWXxdnUsMkfpFE1uEB6OwZlUdGJUxFA/EgH1VbcSse
-	xamIn6VZwzAXRTwcIoeDU0xX8MmEt6tmhcD5oHu4hthq6a/FmpaP0PESxQeW/TgXId/U7Z
-	d3SLdnuew3ZjSgoTby/UDY36d0j54J0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787970213;
-	b=D3MH7v8wkLuSbWWlpOuvcqV+eSi5iu8IKUtwkAw4qWYT98Ugl2qbmf0nbFlUHOyIzU92l7
-	NaKTwJJdrmqA/5TSiciYsBHNnr1rUtAO6DUV/vaUxSw+C6k38cHz3csVj9abgNslQAQdCl
-	AMl53iNWZJKl1zibDoUF1jHC/+dwVgs=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=25I0k11lg1U7F/BrG1zyu3Isz9IEV77VAnOY4pukh3o=;
+	b=u96GHjp8dYu2/o+J4fZVkf1455lPSpErKWDfSz0b7e110QhDIXjrrWWjdO/Nc08SeN6o/6
+	r4FEhCgTme0n7kso9r30eNzoSFrxCGFRl/7NQa5iDJAUT04vviFrbvR63nvzM5CYxJ/ND5
+	Pfj35EYRtuZiTYnAb2NlVC4ve2itglo=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LphodUxq;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=e9qHmgdf;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.5 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.82 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787970776;
+	b=lMKeF9sEVyxg88544K1N7nm+e/IPS7y4vi9bPsUaAGAN9XNQmQcUdRQi1Gnmr3qjNSqvP5
+	q6FRFS/HAZYe/ULZmzxilNhjBmMehQvD+cUmlxf8xgWrmoT3zh3dWiORVFmWA6qJK+CEdD
+	0lVZ4knKBcOtdoMM+vfW0UlyUHWY+IU=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=9dpmGVCTK6YIdLHcSKf21OYzQ3WaSDmWbAA1Hj8B9Aw=;
+DKIM-Signature: a=rsa-sha256; bh=H1xtjBEAg3BPif39hck2d213NLc0Z1FDsX7jcBX47e4=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787970211; v=1; x=1788575011;
- b=LphodUxqIwLjzXmbYSyecuzHAK3nEZfEyuCVbt3lT/QWRtQkeXy2tooU1oGia7tb2a3ewg9r
- VF1G90pSwum1eVmbLoM1qlW0cUM3Owe7DFseTqvubD1zROZsFyyT4zJRy4ym7su0aSswi6qyCwy
- jLCthg6wbShYkzQBRBVWuft4=
+ t=1787970774; v=1; x=1788575574;
+ b=e9qHmgdffEAllsCyb3XwlS1rkgZlJ+NInPSUhsjHQBBpLcbnM72Sqa9kufFDnea4Tv1p6xZD
+ sDGOTlrdvt8vXOZHdHr0d9g1mFa6Q7Gd47tBmMEe6Iw3EBGaff36Iq5/7Mo9+LfWUS1VcWeqLKQ
+ 8QEvlD0bKue2ELQbhlMl9y0g=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 167889d1c3b5653f;
-	Sat, 29 Aug 2026 02:23:21 +0000
-X-Mizu-Trace-ID: 167889d1c3b5653f
+Received: by smtp.migadu.com with ESMTPS id dddd84c8fda15912;
+	Sat, 29 Aug 2026 02:32:53 +0000
+X-Mizu-Trace-ID: dddd84c8fda15912
 X-Migadu-Flow: FLOW_OUT
-Date: Fri, 28 Aug 2026 19:23:19 -0700
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH for-7.4 0/9] memcg: remove the v1 soft limit
-Message-ID: <apJCb-8RK0azF8_h@linux.dev>
-References: <20260811203203.3456029-1-shakeel.butt@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Meta kernel team <kernel-team@meta.com>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Farhad Alemi <farhad.alemi@berkeley.edu>,
+	stable@vger.kernel.org
+Subject: [PATCH] memcg: avoid charging the root memcg from obj_cgroup_charge_pages()
+Date: Fri, 28 Aug 2026 19:32:51 -0700
+Message-ID: <20260829023251.474083-1-shakeel.butt@linux.dev>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260811203203.3456029-1-shakeel.butt@linux.dev>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 645681C0003
-X-Stat-Signature: p5psm5ge9o1pwhs97hakuekc99ged4yu
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1787970213-1049
-X-HE-Meta: U2FsdGVkX1/qrdFpsYEcKb+mSxqBT1/kFdQUeM1FbA6k4i415y33TKw6N5wP3M9rtCbAXf8YrSafaRYfJt8lcX7b0uDLrnHhuE6YkcFvycqUIf9iMzZqNiqq+MAEz3nfnz7/Sq+DccGxQAzbkLImd0kGVj+wNVlLM8XRaoltp5cLTNRjEmApTWwtjJv6X8fGJdckn8GWcoTZD6swc8P7FjHQ+rD1t1zLq3riKsUYBqkE6TSEalDNil8e8ada+yBPimra3mZY4qZBo36ER/UYrytBA1hfuD51dveLMP6+rXybYu8+/GaV53zBMY+KicWdEDtsrHZRCprEqq0UnWf4SSybvscVUonZRjcWpEqVOoddGKfxRYY/GsgpZGVoyLzMBbD/N80KACGNIAF6T7cIQ0YB6iVUPM3n/Q4NQTiG+JtN7f24QHo+NSzbNrv7rAc4wpmK6liwOEWV86uTbhx42ufAyzk/izHeYx+pykjnAK6dU08KevUG/C1FCdldmtf5iYw5O59ZHPh2uL13OMvJ7LiPVUapUu97v6sMltqYs5qtWFeZARmBmZta/sCmzklqb5cqFku+fv5ofQpxjsW7XUDn/J/bx9qi1bXmSUJAZnQVqBPun1sy8GPRjeegSqIM6ZnPNQFxyAOmHyOXgdqc4lV/MnOE8EvdcIFK5ZyIHLDBeuSN4noKvfkNEW5pmCGVxmoaPi1URNFjHNOmcXCU6E52+7lNwJaUefQHdLxxjpHfav9BDkZ2GxVdOPVd1gM2rv/sOWHMWUXET4RpwAErMIQRUUvEk2WtStYENlEsT5B7NffIvqcVOed+yYU8NZ+u8B1vJQAuU8dc/jyJyv6L9Ykyv2XwO2wKcop7FBzST0sTaoNIMF562o4R5++O35jqwJg6bk2q/0dGNAHhV+sGVxUNlA0MQUgfzlCI8mHzQ/s6kP1oPrQp0WWAHnQ7Pz5tA9bAbYlNXqBe1qCFtEd
- ZHf3MYRl
- o4ryeGDeLvwF2YVnCD+c9Iw9gCC/Nk6Iz8XUbTLK0BU414On2xgMDiJ3Y2aRkOa0xSll79jeHcESJK9pBMNLsLyd2/8MDZuQYOQ6maThBwrs+med4B05R/h3S3tQN17SblCohD0RJEzWtmMassOMsDaKZemnXUsbKWDJ2GmEAAYsLAaWxUQVX/QU1X8Xy9ZgzuT6pwSkq5zsVmnAcy7mziERjzC2+ZIdLEb1c7NAk+1I4i4lvypbDyeRpetk7ft6V9MjiIvyg10uDS6/bFlt2/aNlGDeGAqGN66YYlU48ZBa7kmLcuWFNV9WzSSK+85FM7ynN
+X-Stat-Signature: hg56xa714n11jq7o6enhx467oc9rugw8
+X-Rspamd-Queue-Id: 85FA640002
+X-HE-Tag: 1787970775-756178
+X-HE-Meta: U2FsdGVkX18FCGBhwZFcTA+ISxnfqkz+tda2ZFs0mtBhzzJZzMQNHtTWjmcf3pxRzRUhhAQfb+Khjrq7hwQdCS+qz+CewFYJDQAO0mzG//s5G5+vle64P+b5aF2gZd3F9j+Vo5hwvlR2bKSDHa6hisKvzKYnU9yEc/UlxYFLN4w2q4aH7aC/k3X2i3NVVRRVlFFlueT6ZnAtX+VWiGaWlfndFaxUUa3syUM39KNkxF1Sxke0YZ+mI8ZotVxNJ4q/G4YCnQ8dyKiPdPJ8V0YN63O16M19rVlzvfDfIYKU8FPMNQtqrFrTVnj+uRyegp2ebBeDDiRin8ndjxAyzb2aXCP7mU5qNTJHl0LG2kX9ROTP3A6T92p+D9PLKDS6Qoq+Lxws+Hh9i7V0ttU0LLWQfJHSk2lY3JkizZ3tvUZ0o6r/dUfJ9NFkpo7zqniTXdg06c12CWEamlnJPJK3pjbNnS3hSbMqFJwLGCKya8cEqyI9FABiWeehNefgT5nlcNp0+bijvyHiwbnkBJDIoYTGnrxnhh+ExBcSn/r0N1JVKfaXpWlt1U56KX63f6tzQGzGAIHVwZ9QmyJxbDptOHjB63TneQCyI5VSdm0+sYxvUrzhpTi55WA0XVCE+JbY5q4RuMe6g3cJa6gPT5uPOupMeQfG6pxUb5svNbG17e35DYuXGBySmWR4Omv3W+jx4DD3d7C1mkW1JqoKvb4LJ2ZtLLzB0Ac178Q9bgLA4foIaTPyMweRe1koJiCZt7r5ijhmlfITXuar6o9ad+oOGqQmEUo6I92XKFVSFmbAQfTLvItnTreecljhfssaeIFOAUq233mJgqnifDemGgFYcCvG8igC5O97zyGpTW62GnXpqm+KdlS748vKgIyfGURnPFqwVYIAea6bLljZVBaAWKup1I5qKAtQYgoGDWnWo2rB34LHpLF+uuECmddXacswv40+dF0bSUOjIWny2gJRqWo
+ bglJQudZ
+ WO+GMYmsDj3S+QuCD4C1Km7okVZq5D/qjla/sfPWBQQ/E/7wowucpcb6pvZe0qFgUQX5JNafMt+mjf1Xr79p7R+mdlHP2ksruchnFDi67dJ7mCDIJ/XzDysTNF9QRmKMN7jBBn/pstQjSvYMXBOav0p3PeaJyQkHHrmL/5zCWeahRJNFlQ1fm151ULGdIktqPUIgfcniSprA9XkBkfzjApnnwl0knOAnwnWJiYl0wYCcBUsCyBB4tLzCeJ/anwDaPVx2xkMNJuMohOas0O6uVdLGAXdMYmlUn6plME7prx9SwN8onqPLommxXGHC0P3XXdzRg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,50 +95,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 11, 2026 at 01:31:54PM -0700, Shakeel Butt wrote:
-> Syzbot reported [1] a set_mm_walk() warning from kswapd. Soft limit
-> reclaim is the only thing that runs shrink_lruvec() from kswapd with a
-> target memcg set, and thus the only way kswapd can reach
-> lru_gen_shrink_lruvec() and in turn set_mm_walk(). The offender,
-> mem_cgroup_shrink_node(), has long carried a "Only used by soft limit
-> reclaim. Do not reuse for anything else." comment and a priority hack,
-> and it simply never got taught about MGLRU.
-> 
-> Rather than teach it, let's delete it. The v1 soft limit was deprecated
-> in v6.12 by commit 569c4f62d84a ("memcg: initiate deprecation of v1
-> soft limit"). Nobody has reported depending on it in the ~21 months
-> since, and v2 has covered the same ground for a long time with
-> memory.low and memory.min.
-> 
-> Link: https://lore.kernel.org/all/6a7a6929.b50370da.49fe0.005e.GAE@google.com/ [1]
+obj_cgroup_charge_pages() resolves the objcg to its memcg and calls
+try_charge_memcg(), which does not short circuit the root memcg.  That
+memcg can be the root memcg: obj_cgroup_is_root() reflects the memcg the
+objcg was created for and is never updated, while memcg_reparent_objcgs()
+does redirect objcg->memcg to the parent on rmdir.  An objcg of a dying
+child of root therefore passes every obj_cgroup_is_root() filter but
+resolves to the root memcg.
 
-Andrew, should I resend this series (without the first patch) or will you pick
-it up?
+Folios keep the objcg they were charged with, so this is easy to reach
+through zswap: allocate anon memory in a cgroup, move the task out,
+remove the cgroup, then write to the root cgroup's memory.reclaim.  The
+reclaimed folios are charged through the reparented objcg and end up in
+refill_stock() with the root memcg:
 
-> 
-> Shakeel Butt (9):
->   memcg: make the v1 soft limit knob inert
->   memcg: remove v1 soft limit reclaim
->   memcg: remove mem_cgroup_shrink_node()
->   memcg: remove the soft limit reclaim tracepoints
->   memcg: remove the soft limit rbtree
->   memcg: remove lru_gen_soft_reclaim()
->   memcg: remove the per-node soft limit tree fields
->   memcg: remove mem_cgroup->soft_limit
->   memcg: simplify v1 event ratelimiting
-> 
->  .../admin-guide/cgroup-v1/memory.rst          |  49 +-
->  include/linux/memcontrol.h                    |  27 --
->  include/linux/mmzone.h                        |  30 +-
->  include/trace/events/vmscan.h                 |  14 -
->  mm/internal.h                                 |   4 -
->  mm/memcontrol-v1.c                            | 435 ++----------------
->  mm/memcontrol-v1.h                            |  12 +-
->  mm/memcontrol.c                               |   7 +-
->  mm/vmscan.c                                   |  96 +---
->  9 files changed, 66 insertions(+), 608 deletions(-)
-> 
-> -- 
-> 2.53.0-Meta
-> 
+  WARNING: mm/memcontrol.c:2198 at refill_stock+0x644/0x940
+   refill_stock+0x644/0x940
+   try_charge_memcg+0x12d6/0x1570
+   __obj_cgroup_charge+0x35/0xf0
+   obj_cgroup_charge+0x1de/0x210
+   obj_cgroup_charge_zswap+0x83/0x270
+   zswap_store+0x1620/0x2000
+   swap_writeout+0x94c/0x14c0
+   shrink_folio_list+0x3388/0x52b0
+   [...]
+   try_to_free_mem_cgroup_pages+0x30d/0x830
+   user_proactive_reclaim+0x504/0x840
+   memory_reclaim+0x1f/0x30
+
+Beyond the warning, the charge is asymmetric: obj_cgroup_uncharge_pages()
+skips refill_stock() for the root memcg, so the root's page counter grows
+and is never uncharged.  It is not user visible, since memory.current is
+not exposed on the root, but it is a leak.
+
+Use try_charge(), which returns early for the root memcg, restoring the
+symmetry with obj_cgroup_uncharge_pages().
+
+The above sequence was scripted into a standalone reproducer (zswap on,
+swap on a virtio disk, 512MB of anon memory faulted in inside a child of
+the root cgroup, the task then migrated to the root cgroup, the child
+removed, followed by "echo 600M swappiness=max > memory.reclaim" on the
+root) and run in a CONFIG_DEBUG_VM=y VM.  It reproduces the splat on the
+first zswap store of a reparented folio, with the same call chain as the
+report.  With this patch applied the splat is gone while the zswap store
+count over the run is unchanged, so the same path is still exercised.
+cgroup selftests test_zswap, test_kmem and test_memcontrol show no new
+failures.
+
+Fixes: 20d6c1725228 ("memcg: avoid refill_stock for root memcg")
+Reported-by: Farhad Alemi <farhad.alemi@berkeley.edu>
+Closes: https://lore.kernel.org/all/CA+0ovCgWzUMK+nNbbtH7eV65Ca=fDN4Ozu7iASgryjvv8Tk8zQ@mail.gmail.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+---
+
+Note: I kept it simple for easy backports. I will followup with more cleanups
+where I will remove try_charge().
+
+ mm/memcontrol.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 4a18ee4509ab..1709ac96bbde 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -3157,7 +3157,7 @@ static int obj_cgroup_charge_pages(struct obj_cgroup *objcg, gfp_t gfp,
+ 
+ 	memcg = get_mem_cgroup_from_objcg(objcg);
+ 
+-	ret = try_charge_memcg(memcg, gfp, nr_pages);
++	ret = try_charge(memcg, gfp, nr_pages);
+ 	if (ret)
+ 		goto out;
+ 
+-- 
+2.53.0-Meta
+
 
