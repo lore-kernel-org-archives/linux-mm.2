@@ -4,127 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E345FC61DBE
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 18:02:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9B02C61DBE
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 18:15:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BAD516B0088; Sat, 29 Aug 2026 14:02:55 -0400 (EDT)
+	id B29796B0088; Sat, 29 Aug 2026 14:15:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5DBD6B008A; Sat, 29 Aug 2026 14:02:55 -0400 (EDT)
+	id ADB7A6B008A; Sat, 29 Aug 2026 14:15:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4C506B008C; Sat, 29 Aug 2026 14:02:55 -0400 (EDT)
+	id 9A3EC6B008C; Sat, 29 Aug 2026 14:15:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 79C786B0088
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 14:02:55 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 062FA140185
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 18:02:55 +0000 (UTC)
-X-FDA: 85155077910.15.CBF237A
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 40C80C000E
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 18:02:53 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=crserw6D;
-	spf=pass (imf10.hostedemail.com: domain of trintaeoitogc@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=trintaeoitogc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EEC56B0088
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 14:15:48 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C3D0E1601B0
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 18:15:47 +0000 (UTC)
+X-FDA: 85155110334.16.F1C2E2F
+Received: from 10.mo582.mail-out.ovh.net (10.mo582.mail-out.ovh.net [87.98.157.236])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3FC9114000A
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 18:15:45 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=quelquesmots.fr header.s=ovhmo4049951-selector1 header.b=cMLHHPZd;
+	spf=pass (imf23.hostedemail.com: domain of l.wandrebeck@quelquesmots.fr designates 87.98.157.236 as permitted sender) smtp.mailfrom=l.wandrebeck@quelquesmots.fr;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788027345;
+	b=6B8rvJNuJOqioGF3+z67AozLEiV11BJzzlQdOwhmIneK53zZJSgiuLWwA9Q+kxphuckzXg
+	KpTFd3xkFsJQ2Q4+K+WwJqdZCmCzRBmXc+2QeNdJdMAs42JUPcmIqJWEoaGm7sp16/guDB
+	bOK8ZaF+POIL1FDYRWOCuyeUur7Gnbc=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=quelquesmots.fr header.s=ovhmo4049951-selector1 header.b=cMLHHPZd;
+	spf=pass (imf23.hostedemail.com: domain of l.wandrebeck@quelquesmots.fr designates 87.98.157.236 as permitted sender) smtp.mailfrom=l.wandrebeck@quelquesmots.fr;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788026573;
+	s=arc-20220608; t=1788027345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i87P69rcYkzXTWHP14+OyA7oFnzKvLPVHE4Ngy0a/UI=;
-	b=NlBiH9ZPrqOl7o3qGFfQGhfU9em7ST0ut231fLg4ef1IWci6Ov5/PlUEPxquCFfyrbou/J
-	McijPibg1cNwu/d20P9KNN1O6CSawH98S3LiONv0vQhatBl+YJitAdoqvgoABWE0Xlrues
-	LuNmO2sQuecxIqQ5NzEIasG5uyl0NhM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788026573;
-	b=7HRqF4IAVcPR6gKnJGmu74DswQgGs0B4pzRK0AHnmUQe4a1sSvXJsvUr4cv58jQadBrqXp
-	kqyM6CVByfuIygpnCb86enqHRFMsXdbzbTM4GkJyV4hVSq5DusvPnoWKBxrYtdZbKVWbQ0
-	Qz533JuhWT7bA8uWrS5UDywh1MfaOdE=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=crserw6D;
-	spf=pass (imf10.hostedemail.com: domain of trintaeoitogc@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=trintaeoitogc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-398c1101c1bso209983a91.1
-        for <linux-mm@kvack.org>; Sat, 29 Aug 2026 11:02:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788026572; x=1788631372; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=i87P69rcYkzXTWHP14+OyA7oFnzKvLPVHE4Ngy0a/UI=;
-        b=crserw6D2zeItwzjuIFpBN4sIrxJfq5iCaxmeCLjWCZHn6uWx+/Uyx9rGfS8X+DxJB
-         YQ1Ep2WqX3fbIqGeJr+gJTWzt1ZSVrO+YnLLtLw9BcBaUJitJ+BFCiTrDulJoM+uEVIG
-         YYiqtPKPRW0KCqQOrGiGzoRVn4/5UamXNPet2Vb5CeTFarBoqaOR3EDsOu0JdNYxfTUC
-         IeqrrVhCdGFhO3j5rRjSdE8y729kXKjbbWM8FpI/2/aeOc0/vSQO0gDcFOFeTAFMrKs5
-         mnRraPBtu7adn5FIOdcq8WdCe6DXUofJYG/fHO06/c16MRRc9jzP2PURRWjEQ5Qbib9n
-         lZVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788026572; x=1788631372;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=i87P69rcYkzXTWHP14+OyA7oFnzKvLPVHE4Ngy0a/UI=;
-        b=G0zA4e5p9mYbYxwNReT9mTEnPTjSfwSFZlRJUVpe6VXB8+yiA50p8C/zDyEn9UlG49
-         rh29Y0QIMS4DgKOA3vtMrR7FxpkL7RjT+ixzsr6g3W71QTMHpLLtI9c1E4ze4bksOLv9
-         YvDdXjIxmSHWn0wL60FjB2bGDamlfFL53m2zHxMIGWvec7PqCqaTS5ILsluXt3ex2U11
-         /kog+YrljcdHYA+vF+9RBZFRAEz03qmqCAl2GwFA6XYhFfIYEHly5UdqVCVbTS6ubeMP
-         exJB8TXmcdNSSgd2nmhH7sQd5TwAF7HHbl/Lw2GdEl/Mouf4HV7Aon2z6bEqY0ZtsuPu
-         T4GQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwAaAnoIBjf0WT5lex6u8UKeYGOjLG8HYbr0EGv4VjfsgPqpvqmnk+hEk4n/U7aJEcHuoFnL7mGNQ==@kvack.org
-X-Gm-Message-State: AFuF++lWhe07U2bJKz3dE/Nsty8G1+TAmjO920PyMXIIt6EvvhXXAoAB
-	OYwlREJAr9HcjmrMtG0gmkgG17wX+LzRlmKAklhCX0zA20Dy/8PcHsaj
-X-Gm-Gg: AYBFou3AHSxreur4JxUC6UfdjQZHLpO6IHcUhROjoXHEt3ZAb4fGvtVxNmGhIWwZ/iK
-	vjIRyaKENB1YR7HowCALkfAcQyUjI/UDfYEY/cH+7cqHHFYVpHq2Y7+8onrxsY7ywh16Nd+W8jc
-	HrcAgZqS57JkQFFQkvY++2nWaUVh0PeE5wsEgaRL4DxzIWCbdwr59gRjJBOLIw1b8Uqc//Y0Qbe
-	HwdL6RToC8L4866qNNjOa8oyZlyM53otwQrjAOvJ89edxlkdet/zkrRFESWHwLzeUIdlK2igZkN
-	MMN+xyfhW8So/E6HmhM3Duq0U8efx5UXbvYazyR8LlqTEiWx+dTFhSufJ9AWpy+Ed6/Er0iA3g4
-	l5kyHtEwzUVQ+DQpNZMweM7HZv/hCF22qjVtIGEEvaZxOYEzJqiDUEJobd2ePQMHQMbBb34C/Gg
-	q4AIkJ6/HCpAFszDHPKtl8UJF/1sk6JE50kS+KFz9EeA9zdmHY3cXrEFySJ1UTmOWE3i2uH/mJS
-	I1IOuFsgnL27R7D+Y7Vg5NwOXq6dwv814VMwq/oj5g=
-X-Received: by 2002:a17:90b:3d91:b0:38f:18f9:785 with SMTP id 98e67ed59e1d1-396d0f016bcmr27981938a91.8.1788026571891;
-        Sat, 29 Aug 2026 11:02:51 -0700 (PDT)
-Received: from fedora ([177.21.143.191])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-142e0de4de3sm23619917c88.12.2026.08.29.11.02.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Aug 2026 11:02:51 -0700 (PDT)
-From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-To: willy@infradead.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	harry@kernel.org,
-	jannh@google.com,
-	lance.yang@linux.dev,
-	liam@infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	mhocko@suse.com,
-	riel@surriel.com,
-	rppt@kernel.org,
-	surenb@google.com,
-	syzbot+395b7abe9696862fc188@syzkaller.appspotmail.com,
-	trintaeoitogc@gmail.com,
-	vbabka@kernel.org
-Subject: Re: [PATCH] mm: fix the race on huge alloc failed
-Date: Sat, 29 Aug 2026 15:02:34 -0300
-Message-ID: <20260829180234.435064-1-trintaeoitogc@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <apL8kdB0j561wl5G@casper.infradead.org>
-References: <apL8kdB0j561wl5G@casper.infradead.org>
+	bh=E3Q07Ul84TtwxtMmkTHBsOndh+GS920WQGcYM6z2zxE=;
+	b=3LjQ9440SU6NPVcMXUpurfJeL9o4BBj0sgCP5orbb9SGPfO2R9AiikbYOrwHkI+Zs1G5+U
+	rN8M+ydjPL56dQzDsfuNzD21IctkmkHCZrRFvIj9/C7UMgmPVFWPrciMmuM+XWMjuNIHHH
+	iilCm5KmAkpXMq0b0pYknyb/eN/UVT0=
+Received: from director3.ghost.mail-out.ovh.net (unknown [10.109.231.97])
+	by mo582.mail-out.ovh.net (Postfix) with ESMTP id 4hXNjC58Yyz5xql
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 18:15:43 +0000 (UTC)
+Received: from ghost-submission-c7b579475-mpc78 (unknown [10.110.168.168])
+	by director3.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 2F422C087F;
+	Sat, 29 Aug 2026 18:15:40 +0000 (UTC)
+Received: from quelquesmots.fr ([37.59.142.97])
+	by ghost-submission-c7b579475-mpc78 with ESMTPSA
+	id 4Z+HNswhk2r/ghgAMlBLyA
+	(envelope-from <l.wandrebeck@quelquesmots.fr>); Sat, 29 Aug 2026 18:15:40 +0000
+X-OVh-ClientIp:90.103.222.124
+Date: Sat, 29 Aug 2026 20:15:40 +0200
+From: Laurent Wandrebeck <l.wandrebeck@quelquesmots.fr>
+To: Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@intel.com>
+CC: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_x86/mm=3A_don=27t_apply_va=5Fa?=
+ =?US-ASCII?Q?lign_to_hugetlb_mappings_on_AMD_F15h?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <20260829174704.GAapMbGAZMwImcvIN7@fat_crate.local>
+References: <20260828135747.724789-1-l.wandrebeck@quelquesmots.fr> <3faecf65-7edb-4cec-be7a-e5266dd3a649@intel.com> <20260829174704.GAapMbGAZMwImcvIN7@fat_crate.local>
+Message-ID: <0B48BE2C-2E72-4961-91D9-35E215F537A9@quelquesmots.fr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/alternative;
+ boundary=----9Z16V9LWZQN1BJCCB8YU1TWLEU9MW0
+Content-Transfer-Encoding: 7bit
+x-ovh-tracer-id: 2436165927672151323
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: dmFkZTGjAG2Nw2Sx9I8NTCrOxqYKZl8zj0dWUlJg3yrYp81kQlK9dwVA09BhfQ/sg8Zhxrn2MlTo5bwHjBYnSDsPM/7yd7BwTIP5Dvx5C0og8WHanIIIVczUcB+bl/Dv1XIjqQjer/VWV+fSdewldv6w1OIO99nnAeZYu8aKFDxSzBqJjY1tmAIMmmDxRExBH1eq8tvTgQOsIyTfAcYACOpR/ofQ26ybG58kXwmb6eOL0PWgEFJ6tqjOLS5v4b7tPHkRC8Iz3R08NHEj9I53+2pPAnPyuXlvDF1aDk0Y0tGkW2o8cZE4MRrx36G9OM2earh9ytrR8q9+VqqU1CIDPeTI8PJtPnvtL3c7B3dEdE4EbE3/4NfJOidy6T5RMYDnMsNWQPAJl3g+CmDS08NcKh811jEDmXEf39LNQ3Pcl133TgyxspZod9qTXFqAbQT30xaT5jU+lvM+Dg2XK9nQRmySaIGU3vq6VBvDcBCsHuHfWMbbNwPASqc6K1MsrtWhjLfYJeoDfxWAuIkak88AaV0CXABdJ5OfqHwfRjHCVvXsWD6111Vnv1CNdZn9ytmj4Rp2PewcBQfmeqIb2I97dwe/G7H8XybM6sLwzb/H34pIYwrRQjfltP40FdkCtmaj79TsxqwcssyUwr3TGkkhsYNoDiXTP5EP0NGtjkPAfnqKK+eD8g
+DKIM-Signature: a=rsa-sha256; bh=E3Q07Ul84TtwxtMmkTHBsOndh+GS920WQGcYM6z2zxE=;
+ c=relaxed/relaxed; d=quelquesmots.fr; h=From; s=ovhmo4049951-selector1;
+ t=1788027343; v=1;
+ b=cMLHHPZdXInQpM7TuESwfh1XfHkIdHSWyU7Z0FlL4FBYPeIRQeejJUaBSsyGUSKiO/DKW7+A
+ /bS2ohhKNqdtzdpymVVOtizcsuqu38Wd4iSvy39Gue7aF/Gpgr01Yea2I5JV9bOf4FE0zVQ3eGI
+ mm60h2B5pGgES5xix3TS+KRLJeO7fOSji14Dk9v8KQdMEmC1iJvoPj7rSVkVK4IGw1lwbGQAgRT
+ Pk2DUGA56iiCuLdXF1/J8b4AX8jC7KHJ2lGYDI9uhpz0MSMDfay2tgadO5UmjKCYNdHcpQ+EsLb
+ TZqwgqe+6FZif+pA5Zgu4jPspeARq3Bk/0XtSCpu5aVMg==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 3FC9114000A
+X-Stat-Signature: jme3d7frm76hrzyi1gpyxs3mumum7sg5
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 40C80C000E
-X-Stat-Signature: bdzc5qfpwja18318mou81r3ir7ezh6fq
-X-HE-Tag: 1788026573-159593
-X-HE-Meta: U2FsdGVkX1/ZsTiputJHcJaYniC1EQI3KrV+aeSnH97C7uL3zRTtlCBGEjJ1AN6NTRpmaUaz87eQyOMMV1VXODHnv4+cR8rHlcS5bSQMiUMPUfMZQu415bw69HiCe61RHEAuzP3KaTxDqE2FxybqIKPPBSGa74smq7hHfiHLe+nWKZvboanGXZvR+wzXLxK5Lt2DGL81cQ5WQBqezI/g1pIF7Rz9CFny8wwRnI3y0gqh2k59HOvP76EfNo/f+1WbmgB5IERgsTuN42F1q6lskleFRc5NLH9llePR2akuOykeAuhdpzroZDr8dsm44AJXmoSAIGwyoC6P2kGE1pN33N4CHKsPR3+ecswUHxTEpUwdZIXCHtv5mHSvbZzefJYsQgn3Eod6d54cEuj+Mosk+jQK2KBfAXCpn1ZH0u+IVHpUk7kJgJurI3qaGUNorMjpvoe3Cg9H5YSaP2P1VMvS+vaxYko/9YPc4dQgC+aDI0sAPVhvwheQ79W8BkHTr95Pf4fbTufSYh/DB0Gdu9wqzrO5oi/oI/1BZV1ua3AUXIP3UCCFYTEO9/c7GHyrAQjP/bO7liTtcAsbrINSqegV1ohID9Ik43OuX9x386k2O0qO6AFzAPnetugt3sPD6/AgW1lAaZpXzNb+6hcsA98v33nndvvvo8cq11Wjohe/v/5eoSaZpOFAwtPn3yA3SuRKuMVpcshvBcazlVmallmmkCFhq6/cFiY392ivRL9Q9SfnkXmR5Ih7J6fFfd4EIIPdLkCt+arWB4vwme1RheofVnlLG2u6LtIVnt+rtXvTT3AzEgqg9+PPu5UgZqQvyXaVO7oL9bmVsJvTlIz1lsr/WsiT9MJg1NJeasS8zU2Pb4fEtAwr/kULOxRV+RCAzmBLQVto1OXuVi5NbOgZCOE7l8W1I9l0bxxaKybJ3qrVA5LVDosj+0MhlaEMJRvhFraiG551gLHQt1YigNS7aOG
- 1Id/xry4
- L1Y+c5k1hKrLGUQ8bIQUbuimGCoe+LMbn8i02D4YI73f9k4HDLFKQ3PEO7koAzSvQH6CH37bctjgAyR4tcZFiObTbjUNbY2tQzFLJ9VrWbsZPGGj18CNvvbJmpKaIGdpQYj2TimJJ9QI3TDlQe9tCzLzj5o12QqB3nDX/uvjDW+i+Pgw7ReB807MP+Ur3/AILmS/dRpHxlfQQkLYNqZNaNot26nTlOGsdVijWHpFU0B8Z8V5ZBdCapknIqFDp0uh7AZmgqBJK3Is6/fg2Nv03IJ2esXk91Zuuu5F79oHyCVBuyN427nihrhO6O4gMVE1XP6EhyGoPgXHgWHCnuNqdNsHx1f0xrrWK//zoc9YP11TtxrGAMYtUSOwjAk7BCY2aXeyWE9GusaET5GYk80J4E8wRKF3DRxkBrPlUKgA9+wUP9lOrpVmzRSvEBRmAtGLS3ZiDmmh2+2BqY/sjiTUYFh2Ct3QH2HyAjRM6HNdMHYYP6cxjKJ0u2jHLVY/Bc8DENsvF0TIiL7FQMadK+g/Onb/8qI9wWhBU/iBZxm+3oVlvMNtNDwxQc8Hxrzil5qT8YI8VCkWU3UlPe0X93w9+BoBuoIp/hpSGZN0C
+X-HE-Tag: 1788027345-748379
+X-HE-Meta: U2FsdGVkX19hA5VRrTOhzYQP0f0nCZntMpdBH31UbkR1IlGT4Ad1UxUwm5mtSWGqutdgKzyac6YF2Dks9yXSh1xuiccmLwdJTvWD2YDOHZtQtAA4IHiBJtC6vrnMwzsnCBaBybByyYesKlm7MEIvkJuTIVBoPEI43WCkoZ40ey9p2J8WQBy20AHDz348KI7u+aqRENbDIci8Pm5Z+rK/hs/b0K6A1poydxRl/hmBUdj8n5bwRnxIXwULO0thg8U4B1a9mkDEcfIWFGWox6UIOuT+euHBW2iqqIGnzgKmT5Bj2yXLOjgS+G24MxkfOHBWpxecrdwvvge+GoBc7gyT43ugMmQH+Jb31/cLPXl4lypFcv9rYZTN8Iwy8ao9cKb0ubiE29DKYUO0MB2sr1OOUAHxoXne8RjV63z6KW+VQHCvyy1P8+drnWI7mZwoqBvaxmhIvF15Rr4fyEQjJMG8CPuvXScEklurlw94a/fnLTTyuQfRawzC9ndFAqs158L+BoY8rQvmTavMTLAM+YefcWa7WZhWxSK6U2dEYjfGXaZhejMPBOZW6U97BuiTKI6I6KUmfPAWjjkoQmtkCJPjgtvCyRifqNCan+wk6S5Xxe+xi5slhjxtQz52IMxfErk3Q+H8Ly0lV0ZifUBUkYtG6yJWNLf/3xpg+Gq2POtB+q9AF1LDyQ3kfbozByUSS2txhfupJOLgEkXIg4OkEA58pGwvP0MqrQM3UDoyLwAY6GANnqvFnOYoHcC6ua943SCpdVWgcBHiFX2Kew0q+uXXOLv4n0UmVWFoVjChYgrhm3WZarMFB5lmIACYdwxUso/q8D6jw6BTmSrm1HfPqIxVOH3QvEQu6tvPrXg32Erd3lDtYW/p/u4IG1Df4J6XmB0Iyr2su/0PPu+WSS9hwIydQK9Db/CKDsZTFKOsA/8D1sMK3hSuVPy+CEuMmV4Whm7B3vHi3zALQ14QlfQOH8i
+ YRoErjmT
+ oYx0TzyEpuURERjwAeHnBiW1jXAwTgmMaWNBiRFSJDakU3scwEqv66gXQmTLVd6wvhVAqafLRskGPlvm7+wy4+NxfGUL9WAwgH65hq/Uj5FW6dmLqvV4bsUMnrmIMuTUNskWOMBagOzsyJ6HJYtWaU49CgJqFJnVOQxs8HfQd78lqqZdUjDukubAf4Ytb5PF38awZtUGdO0xIOTfH2eEROTM+n/9gDiwtz2Pbkrwj7PIIVDATVgj/TWSoNxkvv/jOxj3NvZrFy/WIYgpemMr6KCKVstU9YQ8pCVMTtAFRt7WX9Q6BtilKQhjpQxDVWy9GGfp+cTvvyi21P4c4a8A1cg+JdvfOJgBJ/by0nVQEEIbkb2H5hhfphT7acf+SZgGp8MvKTnZKpY7L9RJzb7WFXLAAMmZOWx0Ay1Yy2wWtqAN9KRPpI18ZcT7bbDm+iHSaiZ4TL6U72y/3HjwOnz9MTb3OIhdNmdpi5JdfO2uPCso8c9t5Q/TFLPPRYZoSdfPAMyvP3hSQkKf2Gm2Iw45snbIi7zSDIhTAEV7JuH12gKxnG6uiB+x+f7OfvBZF/V6pt+U2SHxByoR61ZzKZdT/BizwxWplDgo+AIAZHCmc0N7qWjep7SKLZsg0SRtXbAgu7/OB8Igw8/mweXyu4JCIwVuEZEzuYuw3AuOmKxX3zUFUKKU2jlm8yM8tjVEZRdWGJWyX6xtSw22amH2NkbJRIINYyj1EqKjgltLNoKrUAZliiX/tHbZOtpYVWoSW+w0NimgmTtUMKR84FRk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,29 +105,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Matthew Wilcox <willy@infradead.org> wrotes:
->> Fixes: 164b06f238b9 ("mm: call wp_page_copy() under the VMA lock")
+------9Z16V9LWZQN1BJCCB8YU1TWLEU9MW0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+Hi all,
+
+My homelab is indeed composed of 5 thinkcenter with a10-8770e, and desktop=
+ has fx-8370e=2E Actually I hit that bug running 26=2E04/7=2E0 and reproduc=
+ed with 7=2E1, 7=2E2 so I dug a bit more and AI (I'm no kernel hacker) prop=
+osed this patch=2E I'll happily test and report on whatever you'll propose =
+if that one does not fit=2E SSH+sudo access is possible too if you want=2E
+
+Best,
+
+Le 29 ao=C3=BBt 2026 19:47:04 GMT+02:00, Borislav Petkov <bp@alien8=2Ede> =
+a =C3=A9crit=C2=A0:
+>On Fri, Aug 28, 2026 at 10:07:42AM -0700, Dave Hansen wrote:
+>> These AMD F15h CPUs are, what, 15 years old now? How bad of a
+>> performance hit *was* this issue? Is this optimization worth keeping ar=
+ound?
 >
-> what makes you think this is the right commit for fixes?
-Maybe I would should analyzed this better. I only seed the commit that introduce
-this function (and consequently this reader)
-
->> The race occurs because the reader (__vmf_anon_prepare()) checks
->> `vma->anon->vma` without holding the mmap_lock and withou the
->> READ_ONCE() macro. Since the writer (__anon_vma_prepare()) is holding the
->> mmap_lock and updating the pointer, it creates a data race as the two
->> access are not properly synchronized.
+>Oh, look, even back then I did perf measurements:
 >
-> also this explanation is bogus.  i don't have time to fix it right now.
-Hmm... I would like to say that the reader (__vmf_anon_prepare) access the same
-data that the writer (__anon_vma_prepare()), lead to a race condition problem.
+>https://lore=2Ekernel=2Eorg/all/1312550110-24160-2-git-send-email-bp@amd6=
+4=2Eorg/T/#m04c05a9a6f59b73d610b556f1efda8cd9e0487d1
+>
+>8s penalty for kernel build workload on 3=2E0=2E
+>
+>Do I care about Bulldozer?
+>
+>Meh, I only have access to a laptop with that uarch and I've been using i=
+t
+>only to test kernels on it so, not really=2E Besides, we have Zens now wh=
+ich
+>are soo much better in every aspect so that Bulldozer looks more like a e=
+nergy
+>waste than anything else=2E
+>
+>But there are apparently folks which still use those and run new kernels =
+on
+>them so we probably can't axe it off yet=2E=2E=2E
+>
+>Looking on the bright side, Laurent can test patches =2E=2E=2E :-P
+>
+>HTH=2E
+>
+>--=20
+>Regards/Gruss,
+>    Boris=2E
+>
+>https://people=2Ekernel=2Eorg/tglx/notes-about-netiquette
 
-When the huge page alloc failed, the asm_exc_page_fault interrupt is fired but
-on the same time the procces that was trying to alloc the huge page, try handle
-to this failed too..
+Laurent Wandrebeck 
+------9Z16V9LWZQN1BJCCB8YU1TWLEU9MW0
+Content-Type: text/html;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-How READ_ONCE() and WRITE_ONCE() is atomic, the race problem can be resolved.
-
-Thanks,
-Guilherme
+<html><head></head><body><div dir=3D"auto">Hi all,<br><br>My homelab is ind=
+eed composed of 5 thinkcenter with a10-8770e, and desktop has fx-8370e=2E A=
+ctually I hit that bug running 26=2E04/7=2E0 and reproduced with 7=2E1, 7=
+=2E2 so I dug a bit more and AI (I'm no kernel hacker) proposed this patch=
+=2E I'll happily test and report on whatever you'll propose if that one doe=
+s not fit=2E SSH+sudo access is possible too if you want=2E<br><br>Best,</d=
+iv><br><br><div class=3D"gmail_quote"><div dir=3D"auto">Le 29 ao=C3=BBt 202=
+6 19:47:04 GMT+02:00, Borislav Petkov &lt;bp@alien8=2Ede&gt; a =C3=A9crit=
+=C2=A0:</div><blockquote class=3D"gmail_quote" style=3D"margin: 0pt 0pt 0pt=
+ 0=2E8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;">
+<pre class=3D"net-thunderbird-android__plain-text-message-pre"><div dir=3D=
+"auto">On Fri, Aug 28, 2026 at 10:07:42AM -0700, Dave Hansen wrote:<br></di=
+v><blockquote class=3D"gmail_quote" style=3D"margin-bottom: 1ex; --net-thun=
+derbird-android__blockquote-default-border-color: #729fcf;"><div dir=3D"aut=
+o">These AMD F15h CPUs are, what, 15 years old now? How bad of a<br>perform=
+ance hit *was* this issue? Is this optimization worth keeping around?<br></=
+div></blockquote><div dir=3D"auto"><br>Oh, look, even back then I did perf =
+measurements:<br><br><a href=3D"https://lore=2Ekernel=2Eorg/all/1312550110-=
+24160-2-git-send-email-bp@amd64=2Eorg/T/#m04c05a9a6f59b73d610b556f1efda8cd9=
+e0487d1">https://lore=2Ekernel=2Eorg/all/1312550110-24160-2-git-send-email-=
+bp@amd64=2Eorg/T/#m04c05a9a6f59b73d610b556f1efda8cd9e0487d1</a><br><br>8s p=
+enalty for kernel build workload on 3=2E0=2E<br><br>Do I care about Bulldoz=
+er?<br><br>Meh, I only have access to a laptop with that uarch and I've bee=
+n using it<br>only to test kernels on it so, not really=2E Besides, we have=
+ Zens now which<br>are soo much better in every aspect so that Bulldozer lo=
+oks more like a energy<br>waste than anything else=2E<br><br>But there are =
+apparently folks which still use those and run new kernels on<br>them so we=
+ probably can't axe it off yet=2E=2E=2E<br><br>Looking on the bright side, =
+Laurent can test patches =2E=2E=2E :-P<br><br>HTH=2E<br><br></div></pre></b=
+lockquote></div><div dir=3D"auto">Laurent Wandrebeck </div></body></html>
+------9Z16V9LWZQN1BJCCB8YU1TWLEU9MW0--
 
