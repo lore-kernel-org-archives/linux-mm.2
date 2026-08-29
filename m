@@ -4,113 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1A99C61DD6
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 21:48:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71A6AC61DD6
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 21:58:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 370FC6B0088; Sat, 29 Aug 2026 17:48:36 -0400 (EDT)
+	id E0B5F6B0088; Sat, 29 Aug 2026 17:58:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 321A56B008A; Sat, 29 Aug 2026 17:48:36 -0400 (EDT)
+	id DBC206B008A; Sat, 29 Aug 2026 17:58:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 20F566B008C; Sat, 29 Aug 2026 17:48:36 -0400 (EDT)
+	id CD2866B008C; Sat, 29 Aug 2026 17:58:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DC9DA6B0088
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 17:48:35 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4369E1201D8
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 21:48:35 +0000 (UTC)
-X-FDA: 85155646590.28.AD65145
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9252140003
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 21:48:33 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=uCDCCpJU;
-	spf=pass (imf07.hostedemail.com: domain of rientjes@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BC5A6B0088
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 17:58:43 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 01509A285D
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 21:58:42 +0000 (UTC)
+X-FDA: 85155672126.30.E1C260E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1A2FA40004
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 21:58:40 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=f2h2yJOG;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788040113;
-	b=l5MBFbetXDcxfnRW/HmTizNrz+MrpYNnoNWTD6F+hzBvoR8By3Y3zLEU7uw9cZOuqfgR8C
-	kkkBzTG8dnebRhgKAlj4/UxXbJ+QGpRX2J8lZxLANwZhv+M2VmYna8hqT7r/2oBEfaKuN+
-	kxDdu6A3X/X7/wvwmaCNhDoefWcI/cM=
+	t=1788040721;
+	b=CibWAqBoQ+Qb06xqywPJ6dyfeAKgb1uy9EYq8Fn4FuLGsLNazcoPemo3l89nLUGTdRiz6/
+	wD0H8fF702rn8qhGMmL3P7tTcwKBu87gN34WpQV49vwQPhpAE4Ot+fMZCJo33MrH/8JVnv
+	qu43GliJcQ1MTaOt0jcaNI+uhNYe6H8=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=uCDCCpJU;
-	spf=pass (imf07.hostedemail.com: domain of rientjes@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=f2h2yJOG;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788040113;
+	s=arc-20220608; t=1788040721;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=NIfPECdOC7+2I+bBH3nhv6b9o46APH+A8u/7CKah76U=;
-	b=VYlQiObsEobwiDKHBuySLxHFHD/VTu4LljsahyaldOWsXAlzImTkh1N6VGgrKS4Sl69amu
-	XPDqr+FlRplt4Jf7cQgRMuJxB/2bwf7dK4cIbj//KB7GcfkjRGVMgMD4C6R07wDzoBruQV
-	vSn9Jpb+eWMrY6hl5ybOdeT3s4WJNzE=
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2d8facae850so17735ad.0
-        for <linux-mm@kvack.org>; Sat, 29 Aug 2026 14:48:33 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pdp2KYYF/8DbOvF5byyXuFVlInYv4CiLt0saQi9aJsQ=;
+	b=dOS7p6tH2Wa9zUxr4fmbe8q5bB4AClrIu/wAV14tPxo6/Bmcxl201G2urwR/NSbDodgcWv
+	gLwcwve/ecf7xJYMlqly+d2oGXcnHBzNkurWzRbngBIjR2dHjLmvSLzoiHDkngZLECvm9k
+	4+sPNietQkEpnKzRaupEAbMsAzsQ9o4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D459143A2A;
+	Sat, 29 Aug 2026 21:58:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405321F000E9;
+	Sat, 29 Aug 2026 21:58:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788040112; x=1788644912; darn=kvack.org;
-        h=content-type:mime-version:message-id:subject:cc:to:from:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NIfPECdOC7+2I+bBH3nhv6b9o46APH+A8u/7CKah76U=;
-        b=uCDCCpJUUyLrQz7Qh3E9nYOS2Km6pJ/W4f9AiiRLvCNRkWW/HhYnjeSxTHG5TvIKAu
-         r7oOub2ES2ODm14j1akAhzLRdVGjR0oX7f6ThMK5KtN9KQ5aHt3CPw+g/NxfHh8x/xch
-         bGpO3foe9YXlxH9XXzf0z1bp4+W5aH7V/EzlekrPJsbFHDrw6rBkqu7ovgIZSnq6E2FD
-         TSPASslKHjKZi8adgvDfHaS94ofPVH35SM0i8V6dG8f9moxDi0PXN+w+fsHfZjO5qO6o
-         bdaM9DfR656DkMtsURRHkqyGD0y7I1Rax/fcvcSBI9ILxpd90v8VNZk/w2ewYkj3/k81
-         +B2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788040112; x=1788644912;
-        h=content-type:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=NIfPECdOC7+2I+bBH3nhv6b9o46APH+A8u/7CKah76U=;
-        b=Qj36LE4wmF63FiegoYPOroTk0DC4TN2ppZ856cncw5kSuq9xsizUV08p0rsx8gn77/
-         dnnkqSLWfpkzHa8Lpd5gNNLkDNMXJIyOOde2FYjA9gu4Te+TGOjEE5KOoqJAFj5gO922
-         HQhO98ybV5wEJLJm6Dz1BSZk7kDfdl8enJ1JGBC9D2/Ljq/giv7JvHRqW8psA29ywG3+
-         AyUIxeWEgBqW/98U7f+UdWc3h/oTJoogmpHQcT7GMsDQYOas+96vAjhYJ8N9G1RcnUaT
-         gHmndwAPM8mVOlMiRiDxIRf6mEY1eW8yA5ThVTNdixGi+xZhHp6+0LvypW41w+OMQKh1
-         PvIw==
-X-Gm-Message-State: AFuF++koxHgjkclnhcw4mWgiRog9dYvTdB+ephORdPXtrl9JLyg0/zzm
-	MONDdhbr9NAVBRtzsT0MvhbgVyWMuyP3gqvM0Cjvj+QNMqt3UBBOxfIDQUy0NiXOXQ==
-X-Gm-Gg: AYBFou2PvUJRZ5BiL/6SOgl9uszQKg5MBCX+8xaDdHFAkNJonEkd8OckYTKeuAJG46G
-	cDR9QlZCSFTfpfykDBZ0Rrb924zvKipsXYQu8blmWLMC0+oKfJjVcQQKHyRfPXfTAr2hRXvJwg+
-	84Eva7jDZ8433L1rQkcVe0BiSzWIVUZZHxKq50RggusO6ezizfNTnPLgWEo1o8DxGC2vwVLrD/e
-	UMhbvoUMJUp3w9s1uW1azxOY2oJLSleZsnrhnd6LJNANc4Nlm1fnecv4DsdGAVBazR0+QeKFgZK
-	goIIq1EpDWVB0EAcCM9+BETsh+xpTSlr+gAJ2oeNlOirNZQMBtH0MCu4vl1M6b3avm6d1d4N7Cn
-	d5+rZ6+nFT90nZXSGDBqH3JkBnxmTRX95St5tpASmz+rK1Vwe/u+6MTP5YPL6M+Fn28eEs9DGrV
-	peHAPMrXbiWWw9dxlY3lA8PjAH9S0KUNtUUtqY0sxmPwDHZpdYuU1nbC5NUhZbsFCQypuol9e1g
-	ViOeJz+ybtmmXhQj59Ba5Czfm0wjCHHcYtkhlN4UaHVG+BiRRb1fief/NFHa0TA+vBJTKqGYWxd
-	W/A89YLhu7mBmwg=
-X-Received: by 2002:a17:902:f642:b0:2d5:db38:800f with SMTP id d9443c01a7336-2d8df554483mr5357385ad.14.1788040111466;
-        Sat, 29 Aug 2026 14:48:31 -0700 (PDT)
-Received: from [2a00:79e0:2eb4:9:201d:c4fa:f5f8:451f] ([2a00:79e0:2eb4:9:201d:c4fa:f5f8:451f])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-398a661a0ddsm1530877a91.3.2026.08.29.14.48.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Aug 2026 14:48:30 -0700 (PDT)
-Date: Sat, 29 Aug 2026 14:48:30 -0700 (PDT)
-From: David Rientjes <rientjes@google.com>
-To: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>, 
-    Frank van der Linden <fvdl@google.com>, Gregory Price <gourry@gourry.net>, 
-    Jonathan Cameron <jic23@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-    Raghavendra K T <rkodsara@amd.com>, 
-    "Rao, Bharata Bhasker" <bharata@amd.com>, SeongJae Park <sj@kernel.org>, 
-    Wei Xu <weixugc@google.com>, Xuezheng Chu <xuezhengchu@huawei.com>, 
-    Yiannis Nikolakopoulos <yiannis@zptcorp.com>, Zi Yan <ziy@nvidia.com>
-cc: linux-mm@kvack.org
-Subject: [Linux Memory Hotness and Promotion] Notes from August 27, 2026
-Message-ID: <ba64ee1d-5fda-d428-9955-a89b28d1de8f@google.com>
-MIME-Version: 1.0
+	d=linux-foundation.org; s=korg; t=1788040719;
+	bh=pdp2KYYF/8DbOvF5byyXuFVlInYv4CiLt0saQi9aJsQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=f2h2yJOGpiZ7jQWOsex1MBBGzJDL2xe4GDMoiuttXJpgCWkVoS9zQq2EmHbs5TauG
+	 DTTp0Jd6w5/lSnMX/1ECf7h1m1rL98R6Co8g5recVRUDuTclbhBlFj0jRL2zkJknFw
+	 CYjzl9QlkJNzQLNUaJkI/JVrDPdgQW5bEhjAehNg=
+Date: Sat, 29 Aug 2026 14:58:38 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: syzbot <syzbot+e4aa91d7f20c34417d4e@syzkaller.appspotmail.com>
+Cc: dvyukov@google.com, elver@google.com, glider@google.com,
+ jannh@google.com, kasan-dev@googlegroups.com, liam.howlett@oracle.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, netdev@vger.kernel.org, pfalcato@suse.de,
+ syzkaller-bugs@googlegroups.com, vbabka@suse.cz, Junjie Cao
+ <junjie.cao@intel.com>
+Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in __mmap_complete
+Message-Id: <20260829145838.19351db0a28b30b7ccc1b295@linux-foundation.org>
+In-Reply-To: <6a934778.4d659fcc.734b4.002f.GAE@google.com>
+References: <695aefde.050a0220.1c9965.001c.GAE@google.com>
+	<6a934778.4d659fcc.734b4.002f.GAE@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1A2FA40004
+X-Stat-Signature: yhc1dognqp1xc8h8y8utz49ic1bon6se
 X-Rspam-User: 
-X-Stat-Signature: s4p54erxcynikk11g791tu94emmyq9qm
-X-Rspamd-Queue-Id: 9252140003
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788040113-719419
-X-HE-Meta: U2FsdGVkX193jaM71xnewa+X3utHtjCiw/b8vUPOoJ+1M7E5o8MdXuNCaAV1vZxu85xJsyoWNaRmA2kHS615vtB8HmIvrwev2vbshQu8/tYNLL8YWM3JBxwbmxdmZ3CMm98jXKqSX4Qp5OsnTyW+xIkacr+PNx5RdxytsjGYhxpp0rcayxrvLDxzh4hEMdSlFlbHwSJ4/kgHzGNH2QGgCSgIoPf4PH+Vlk5zgFbeH7qkeadYON34qM68/HKuYDwpGS/dYCnyaChwDEabR3OEksd5EmzaGFEb9tOihbYDemyULypkccJdGjniK2EvulUke6LnEYpDDLwTruZcguGaVcd32/UOhXq9EpECT46ucJ27W97EZT12Q/uqUwWQG57shRiOMuogBdmhbMM0ZC5XpOudKwuAIi897WApRFf53SMyNs5eaevZfhdqseAyPZ/M6NMat12OFk3bBoW81pHGBQ+hvWlKNB31vyN5eMPbhZ6UeUmrgVLW12Fhb2AaGiUs4EEBqipH0m1OU1WceKl785+ZUWHGAn83sWDwAFLl8YiVlVB/XIF+3tSTU6S6p31cRnfQr5xummPAsx3lS5cYlo5Yn4SHQ2aGWM+6XsEKQYZNmU6nSRXTsjiPwqiCMSF3TY35/4EEkkXhlOGPwcNh1DGixm1MNzMLtVP+CkgIBEbx20sbigYwgBaNsE955f8ujop42xa+hdQYGmS12sxVaKgpsmmsXwVH6mrOIzM+01VEr08Wavz/5urTFy9fx0n1TJwOvtFgofgQFogndyQtQA0PAad+0eHnO4L3uKntzvLfvnaWQUNPFZPVktnQBRkwGRmM0kd52Ya6IHF2VljxzBYG0+xKeBfK3hlNLXHnGA+ig96LC021S8J7wFYE6/iCy79okxIRuJymAFdlyuLomqNRKkgVVw0BdiXM6gl5YMMs+BlOTtGiV2kzjv2p6DnxmRIJ2o10dHd17o/8+GR
- OM4MRCgz
- APbN6Eqlmww1660lSNe720SILlTH45rWRBmtapApC/nK9vUtfOXp9tt7uctx737YSiRzdwaUf3WtX07RZ3RxylTvai+CVC6NCYIpTC5FLUvRUkEuVNRepZUK7q9toeMnBJop4cf4Mz73EyubTBi2RmlPFYVB0lsichzTgsMZBHEhwSs62+6urAMbw4XxE1qs8HXK4SqmX/e4oHv/+F7gDP6Z+9IGAM7JUJOWYM9jovrMxFqdEx/QlWJUw3r4ggd+3VU7GOMWXUSnMrAzwsHcwqUOpmYXwAYhwkLr7nSpFtpV+E3Dj/yVGAWdZg/i8MjYqq8nweMjUzIAXfvEhcsUkeUYJifHhe5VPns1N7be9XXUYm+hT7xzrNEs1WplBbMHSL3SZPNF1wJRpVBTxR8gOjyqqK6484YfThIGCm1RpE8BRGGjN+7OA8MYkNg==
+X-HE-Tag: 1788040720-676844
+X-HE-Meta: U2FsdGVkX18VBpqPPOVoBY1SktUPFgQN2bP0feKzmdj5G5sXiceqrYnp+RlvJqUYRpWN/Go92I4ib7RXBBtrjIe4Z0M+YfWfjLFiURKrSu5+ni8ecsPAO4t4KnnNItEqW2r6SlvMzYNDTRyH0gbcbQtUqjzPOpulf+vrZvb5bY4hoP5nVy0FZReJM0X67NVJUzwMf0YWz1hb9j2AoqwGRc8J8+iIdDtX9FRPhNqzYiUqsO3FBwwun+aYh6sGBRReENwLYSEiEyoW4cjj7BHgIY/UCq0/0H6nqSEdb6QNRlComxyrRdWpZhYqqs+eMT2CXve2Cj2Ks4deLSgcaEOWArsZPgO/GB/U+R0LbLplIUhJ1oQC2OQGniHXt4BYRT5H0Xfl9BJpGDI5Y3qV/q5/FT2RQj073FuvnjExICfhdFszblelJz8Na9C8di5BzFbITQONx7WyN8OsJTGOwOsm1Z4qRFPe3tYic5eiPSbDxqv0iTyW4Def6pQ3ygd3GYRmBMVAhRLH38qdlGfmhzwC/Yve+FcB5l5bVMweSOymGHbwvuU1VDimOqebtvYt+cVrA+1t2LoENwVU/9chVyv2eZdBRpKSUNjrAuOI6nRHrOh+VrhkUx+QiwY0NbOvxrARv2uXs62e39GQJRvczc36B2vZUY2U7U8GDrIiuAobRF/8UaHLXWu1IRK45GvQnAfZTfHEUwd3AcwquhZNRCL/fLK7Xbh866Rqnr4JRVTXWarkwrr/8XkYohDZcOoEGEdfpC8Rd5a1ta+XP61pr3m5DIF8eeFCvXVNMNsBj1rCZ+8eObGOnknKDEbCiwghmMmOA5rIdiM8bSlUUnGOaEMr5DkA5do4XIemN0cb0P/Z0wBDeAUuOrhgFAVQhNb63hFbGwYE19Jpr5SujwKdufJpKP+WCOWxvH/eiWEQCYp7WJ/qcTcfya1b3gi59qZXUpI5pgbGydwFTIGWkFuys5a
+ 9yjU39GF
+ 6QZITJNLVsYy3ctEv70UZEedFlPihvvEiNR3Iffy0IOnNzqWadn2ZI4i+c0lzMabHul35AccIAYppHiqistUG+fSzvPZwgoaZ0/4LPq2d/CclNdeCgJcOO+C49mPNEq7OW6ev/twDh2E/vgQKFqB9nrmjDm64JkTsIYYw/nVbMaz8U5hEH6yhGmsfo4OSzqZCX3/ybx36sCwcA9oiaTphKWjPO5VgUi2pJjFjRuzQXQBIhDQWCVYEmBTNhbdMBEZz34PTqVcStI6HgLoiYbKsV8EeHUFbXFoORTDXrwFp9D33CObbZLVRprUSdYZ8KQXRWwFiPZx20WA98I/TAcOEWs3MFSvxRbYW68AvAkpDWG01uY6gpcmI05FgsSW64FO2JeU5VXaL5PZH9l6mhFgiz6ctqKLLXRYQ8fVwbyuieOxU0nxVx6ntq1je6NQU2ERRnbX/x8x3mpTA1dDYGoO8U95PJH4+SfU5pnegHe14RHkxkdG416IZORBRR6N7K2bedlgA3CWs8Zv/Q0KrYha0+BxJbY6w4aVghy2PWwfI5leIWvbztF61EGqNQQKn77Bx7rdoQAgRiUwBEnNEIot7JQhqW98jaKlGxPRLPKjiO9KsJM9uI+fiqqFEuf+NfMxBTKl1rU/v9nRpO8BT4qLRZ42gzTvEZu6FGbiudJrtqXTy+0g0ry7xA256kZwuGB4MKdI+3Bij/M8lHDPjC9b69bm1op/AVzfztCw2nBmpYYECEpBQYT5iWieV9pHSHmfe7IMuttMw0olI4zC1i2yK1JDE6wK/KHArUqG7eMO4cTljvz4vThPPo21+gj2u76TVYedOki7qh8dcE+Iz5f2mbJYj6yQ88KTquBHj9YDpGWEOYBU6hPIkse4O62yIKNbkYF1QfdIhnmZAOpqG/1aZ+9fq7aylJbcsn0Q+e9LTnUkiR9b0vkm4nrAa4jlueszs1AN5S1znt3JNsFA/PcJpS/zMFtcw
+ 77462V79
+ jcWvHNUfvtzf+6fB2YJh7r+EK8ydDvvGO8m6Er1/bPiHge9o4+9aRr2YiVVvAdtPvKP8YYsJJZ3ov/SZB3AoGl2LTEXCKUwVzE7P0eEsBWg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,127 +96,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi everybody,
+On Sat, 29 Aug 2026 13:56:24 -0700 syzbot <syzbot+e4aa91d7f20c34417d4e@syzkaller.appspotmail.com> wrote:
 
-Here are the notes from the last Linux Memory Hotness and Promotion call
-that happened on Thursday, August 27.  Thanks to everybody who was 
-involved!
+> syzbot has found a reproducer for the following iss
+> 
+> HEAD commit:    1b78070aaef6 Merge tag 'net-7.3-rc1' of git://git.kernel.o..
+> git tree:       net-next
+> console output: https://syzkaller.appspot.com/x/log.txt?x=154d7d49580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=5e4e3a0e188a497e
+> dashboard link: https://syzkaller.appspot.com/bug?extid=e4aa91d7f20c34417d4e
+> compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=134d7d49580000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1177ae25580000
+> 
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/18856a03a9a3/disk-1b78070a.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/cc2bc68d7ef4/vmlinux-1b78070a.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/05a5e00f8f91/bzImage-1b78070a.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+e4aa91d7f20c34417d4e@syzkaller.appspotmail.com
 
-These notes are intended to bring people up to speed who could not attend 
-the call as well as keep the conversation going in between meetings.
+#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git main
 
------>o-----
-While Yiannis is on leave, I noted that Huan from Google would pursue 
-sending the non-temporal stores patches upstream that include his 
-extensions for handling of memory errors.  They will sync together before 
-the upstream posting.
+From: Junjie Cao <junjie.cao@intel.com>
+Subject: net/sched: taprio: catch up in bounded time when the schedule falls behind
+Date: Thu, 20 Aug 2026 14:27:13 +0800
 
------>o-----
-Bharata updated that he is getting ready for pghot v9.  There were a lot 
-of corner cases addressed in preparation for this.  He also tried to 
-compare DAMON with pghot and was able to get some realistic DAMON 
-configuration working after some iterations.  He posted some initial 
-comparison numbers and more will follow in the pghot v9 posting.
+advance_sched() advances exactly one entry per hrtimer expiry.  When the
+operational schedule falls behind - the timer was delayed, the CPU was
+starved, or the reference clock stepped forward - every elapsed entry is
+replayed back to back from hrtimer context with current_entry_lock held,
+and each replay rearms the timer with an expiry in the past.  Once the
+backlog is large enough the CPU never leaves timer processing and RCU
+stalls follow.  syzbot triggers this with schedules whose intervals are
+shorter than the cost of servicing one expiry, so the backlog only ever
+grows.
 
-He's also planning on sepraating out the pghot-hwhints (IBS Memory 
-Profiler source) into a separate patch series.
+Skip complete cycles arithmetically and walk at most one cycle of entries
+to land on the entry covering the current time.  Gate close times and
+budgets are still only computed for the entry landed on.  An admin
+schedule crossed by the jump is picked up by the existing
+should_change_schedules() check on the recomputed end time.  The walk is
+capped at twice the entry count as a safeguard against degenerate
+intervals; leftover backlog is then handled by the next expiry as today.
 
-Hrushikesh is working on reviving the PTE A bit based source (kscand) that 
-Raghu worked on earlier; the plan is to integrate it into pghot, get 
-benchmark results, and then post it.
+Link: https://lore.kernel.org/20260820062715.278124-2-junjie.cao@intel.com
+Fixes: 5a781ccbd19e ("tc: Add support for configuring the taprio scheduler")
+Signed-off-by: Junjie Cao <junjie.cao@intel.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
-Bharata continued to request additional patch review from the group and 
-any insight into relevant benchmarks would be very useful.
+ net/sched/sch_taprio.c |   56 ++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 53 insertions(+), 3 deletions(-)
 
------>o-----
-Shivank noted that there were no new updates at this point for his 
-migrate_pages() series because work was being done on the rmap series.  He 
-is waiting for additional feedback upstream and preparing for a discussion 
-at LPC.  He is also focused on migrate_pages() refactoring to make this 
-cleaner, including for pending batching optimizations.
+--- a/net/sched/sch_taprio.c~net-sched-taprio-catch-up-in-bounded-time-when-the-schedule-falls-behind
++++ a/net/sched/sch_taprio.c
+@@ -916,6 +916,51 @@ static bool should_change_schedules(cons
+ 	return false;
+ }
+ 
++/* The operational schedule fell behind, e.g. because the timer was delayed
++ * or the reference clock stepped forward. Advancing one entry per timer
++ * expiry would replay the whole backlog from hrtimer context, so skip
++ * complete cycles arithmetically and walk the remaining entries to land on
++ * the entry covering the current time.
++ */
++static void taprio_catch_up(struct sched_gate_list *oper,
++			    struct sched_entry **next, ktime_t *next_start,
++			    ktime_t *end_time, ktime_t now)
++{
++	int budget = 2 * oper->num_entries + 1;
++	struct sched_entry *entry = *next;
++	ktime_t start = *next_start;
++	ktime_t end = *end_time;
++	s64 behind = ktime_sub(now, end);
++
++	if (oper->cycle_time > 0 && behind >= oper->cycle_time) {
++		s64 jump = div64_s64(behind, oper->cycle_time) * oper->cycle_time;
++
++		start = ktime_add_ns(start, jump);
++		end = ktime_add_ns(end, jump);
++		oper->cycle_end_time = ktime_add_ns(oper->cycle_end_time, jump);
++	}
++
++	while (ktime_before(end, now) && --budget) {
++		if (list_is_last(&entry->list, &oper->entries) ||
++		    ktime_compare(end, oper->cycle_end_time) == 0) {
++			entry = list_first_entry(&oper->entries,
++						 struct sched_entry, list);
++			oper->cycle_end_time = ktime_add_ns(oper->cycle_end_time,
++							    oper->cycle_time);
++		} else {
++			entry = list_next_entry(entry, list);
++		}
++
++		start = end;
++		end = ktime_add_ns(end, entry->interval);
++		end = min_t(ktime_t, end, oper->cycle_end_time);
++	}
++
++	*next = entry;
++	*next_start = start;
++	*end_time = end;
++}
++
+ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
+ {
+ 	struct taprio_sched *q = container_of(timer, struct taprio_sched,
+@@ -925,7 +970,7 @@ static enum hrtimer_restart advance_sche
+ 	int num_tc = netdev_get_num_tc(dev);
+ 	struct sched_entry *entry, *next;
+ 	struct Qdisc *sch = q->root;
+-	ktime_t end_time;
++	ktime_t end_time, next_start, now;
+ 	int tc;
+ 
+ 	spin_lock(&q->current_entry_lock);
+@@ -961,14 +1006,19 @@ static enum hrtimer_restart advance_sche
+ 		next = list_next_entry(entry, list);
+ 	}
+ 
+-	end_time = ktime_add_ns(entry->end_time, next->interval);
++	next_start = entry->end_time;
++	end_time = ktime_add_ns(next_start, next->interval);
+ 	end_time = min_t(ktime_t, end_time, oper->cycle_end_time);
+ 
++	now = hrtimer_cb_get_time(timer);
++	if (unlikely(ktime_before(end_time, now)))
++		taprio_catch_up(oper, &next, &next_start, &end_time, now);
++
+ 	for (tc = 0; tc < num_tc; tc++) {
+ 		if (next->gate_duration[tc] == oper->cycle_time)
+ 			next->gate_close_time[tc] = KTIME_MAX;
+ 		else
+-			next->gate_close_time[tc] = ktime_add_ns(entry->end_time,
++			next->gate_close_time[tc] = ktime_add_ns(next_start,
+ 								 next->gate_duration[tc]);
+ 	}
+ 
+_
 
-Teja discussed hardware errors that were being encountered in his testing 
-of SDXI, he was not yet able to get pages to be migrated.  He is iterating 
-on this with AMD and will continue conversations next week to try to make 
-forward progress.
-
------>o-----
-Wei Xu suggested we add an additional topic for this meeting series: 
-compression enlightenment for memory tiered architectures.  He was 
-advocating for a unified approach upstream for handling of second tier 
-compression.  Specifically, he was looking at software support for 
-efficiency such as handling of free memory -- the goal is to represent 
-this with no memory footprint in the second compressed tier.  This would 
-likely require hardware signals to indicate.  Secondly, he noted that the 
-physical capacity of memory on the second tier may be insufficient if the 
-compression ratio is not good; we want to ensure that we do not run out of 
-memory in these cases perhaps with watermark handling.
-
-He also noted that handling MCEs for compression support does not have 
-first-class support in the upstream kernel that we may want to improve.  
-Gregory noted that we may end up killing critical processes and that it 
-may be unrecoverable.  Gregory suggested that we cannot allow writes to go 
-to the device uncontended although there would be performance implications 
-of this.  Gregory has an end-to-end configuration for this already in 
-progress including separating the second tier into compressed and 
-uncompressed memory to provide the necessary reliability while still 
-having memory efficiency.  The most obvious example was the lack of 
-control over file writes.  We will invite others from Google to attend the 
-next instance of this meeting for more discussion.
-
-Gregory noted that he has a talk for LPC scheduled for compressed RAM that 
-will cover his end-to-end design with performance numbers using qemu.  We 
-decided to dedicate the instance of this meeting in two weeks to this 
-topic.
-
------>o-----
-Gregory updated on behalf of Joshua for the tier-aware memcg limits work.  
-He noted that the LRU inversion issue was due to the system as a whole 
-being pressured.  They've concluded that there is no good solution -- when 
-we are going to swap, wherever you can get the memory is probably the best 
-we can do.  Aggressive demotion typically just ends up resulting in much 
-worse performance.  For tier-aware memcg limits itself, there is a major 
-versioning change happening for this.  When testing previous iterations, 
-there were issues when the amount of hot memory was larger than the top 
-tier.  They have a solid solution that provides fairness using memory.max, 
-high, low, and min settings.  The proportions that you get are based on 
-the physical topology of memory tiers on the system itself (3:1 top tier 
-to CXL provides 3:1 ratios for each memcg).
-
-The latest revision is going through production testing.  Notably, there 
-are no new tunables to configure.  This is enabled through a kernel boot 
-parameter, mostly for production testing.  It also helps to avoid adding 
-new userspace APIs while still iterating through solutions.  Later, this 
-could be enabled at runtime.  Since we're in production testing right now, 
-it's possible that this will move beyond RFC in the near term.
-
------>o-----
-Next meeting will be on Thursday, September 10 at 8:30am PDT (UTC-7),
-everybody is welcome: https://meet.google.com/jak-ytdx-hnm
-
-Topics for the next meeting:
-
- - Gregory's end-to-end compressed RAM design and performance numbers
-   obtained with qemu experimentation
- - update on combined patch series for supporting non-temporal stores in
-   migrate_pages() with memory error handling (series from Yiannis +
-   Huan)
- - v9 of pghot and the PTE A bit based source (kscand) for inclusion in
-   the upstream kernel
- - v6 of Shivank's series for enlightening migrate_pages() for hardware
-   assists and his rmap batch series and LPC discussion
- - Teja's update on SDXI page migration based on AMD patches and hardware
-   issues being encountered that do not result in page migration
- - update on tier-aware memcg limits status and production testing based
-   on the latest major overhaul
- - first class support for virtualization based memory tier support, how
-   to leverge memory tiers in the guest
- - discuss generalized subsystem for providing bandwidth information
-   independent of the underlying platform, ideally through resctrl,
-   otherwise utilizing bandwidth information will be challenging
-   + preferably this bandwidth monitoring is not per NUMA node but rather
-     slow and fast
-
-Please let me know if you'd like to propose additional topics for
-discussion, thank you!
 
