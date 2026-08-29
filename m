@@ -4,106 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17ECDC61DD3
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 03:35:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A450C61DC4
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 03:46:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10F936B0088; Fri, 28 Aug 2026 23:35:08 -0400 (EDT)
+	id 78EB96B0088; Fri, 28 Aug 2026 23:46:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C08F6B008A; Fri, 28 Aug 2026 23:35:08 -0400 (EDT)
+	id 6F22F6B008A; Fri, 28 Aug 2026 23:46:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F17946B008C; Fri, 28 Aug 2026 23:35:07 -0400 (EDT)
+	id 5E0AF6B008C; Fri, 28 Aug 2026 23:46:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CEF886B0088
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 23:35:07 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BEB871C20E7
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 03:35:05 +0000 (UTC)
-X-FDA: 85152890970.29.78F78AE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id F3C86180002
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 03:35:03 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cfm8s5qU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3622E6B0088
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 23:46:52 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C77AFA0632
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 03:46:51 +0000 (UTC)
+X-FDA: 85152920622.30.5EFCD59
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 2C50180003
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 03:46:48 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Go+hhcgt;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787974504;
+	s=arc-20220608; t=1787975210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8yAywSgOCSK1fCox2+toPCjcPuWCAJR0UBUdjbUi4aw=;
-	b=Ey25nYVYt6bosqv7LsOB9i8/DAWy1JdxsmJvKWs/gu/TWM8T5I4OdFcIQr5H5eAWfCrr1N
-	oHmqqG8HGCK81wwtxnmFnqukGAC7iJOJFBcsB/6F4kOBFLx71lSCZ1WdQIpPTfT+heJHg6
-	wXiDSg/IHYWjeSTJRNg/vDKNWOBcBv8=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cfm8s5qU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=8fxnAi36CxakzKmU2fHHvMwPwirjyz5dgSGaovBOkyE=;
+	b=DhAbMRLOslk0dQ2ZERX/nDJg89+ETSWVoGF650M8YZjmOtNMqnzkjvsJ9qoyDYkkvl+0Fw
+	2tH4+Bz8teKii/+IUrlro4xe3GObmIztCCfsgrwT+PpDTOtiAWRASoZ6vCu/u1pSWrZAA/
+	91S/yKOAk+729wvEc56UsBrX2yMjI44=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787974504;
-	b=0W5TV0G4yKKeXrm+/sXYdfkE0C/TUCpYozGEomN8SeV0PLYSzDaKiMx/3WppvJsXEmUaqA
-	/d4jFaaFiL3iNFs0Szbwz04sO2ktKatmkh0pgnA2oOiiRajwiR2N9vHGOHBF4CZqjaC+0n
-	4Jrano9Un4f9RbRnDZglk8wLHGpbTrc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6E5C360D82
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 03:35:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 272C11F00ACA
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 03:35:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787974503;
-	bh=8yAywSgOCSK1fCox2+toPCjcPuWCAJR0UBUdjbUi4aw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Cfm8s5qU2msB9/1h7moyZ6tSFsusG89fmAeWBlt9HtHBBkc5igneHUtZh/Ka5ksAa
-	 deohhCbeHtgQ4joCZCm7rxke1psvcS6Y332qfpx92RsGr4evnULtiG77Lita4FVNxd
-	 PJFhzvLLSwPiO9QMtyQhCFacFCW2D5X2ZfYCdTtxHVWxMU7n/F0RdqDwcI7HS4eTrF
-	 fhy+rcUUrQfZI790pRboMXz5yCs2aBxU80FiX4JevPD+pKwFnkKrg34cd9VCUWQmDK
-	 kKTk0L4h3xeB/MJxzrnaR5xaEUsq5ZO3Z8in59mIrASxRfPD0MJnZ8THdIvALSz6em
-	 gckm1CwjVkLIw==
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-90e7d9c747eso321196d6.2
-        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 20:35:03 -0700 (PDT)
-X-Gm-Message-State: AFuF++kZMdJxg1AQZBisQeha1ILNFPQMf6AMpl0tHbIEVNI++yz9P4Tv
-	wQ2n0/iEYGp4DHVQDmelRuy5c9JTEw738eSTmSG0iAf7tRkrMaXI51BtZy0/K4VYk4sIzL+Gpc6
-	XYTXmDldzF0RgqtVOmxoXXPDYi/OqhY0=
-X-Received: by 2002:ad4:5c4c:0:b0:90c:d136:f686 with SMTP id
- 6a1803df08f44-90ce0c5e041mr152357926d6.8.1787974502361; Fri, 28 Aug 2026
- 20:35:02 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260826-mglru-flags-cleanup-v3-0-d9f1c75549c8@tencent.com> <20260826-mglru-flags-cleanup-v3-1-d9f1c75549c8@tencent.com>
-In-Reply-To: <20260826-mglru-flags-cleanup-v3-1-d9f1c75549c8@tencent.com>
-From: Barry Song <baohua@kernel.org>
-Date: Sat, 29 Aug 2026 11:34:51 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xqEpAxO4wuxFruYaRphSeD=Zmz5nUZCMoJYEbyprP+6g@mail.gmail.com>
-X-Gm-Features: AcwNN1WEqRQ3mtVBCtrOuN4gMOImSKKb5i3DYRumzgHPVKAv8X125ymB3I-vnAo
-Message-ID: <CAGsJ_4xqEpAxO4wuxFruYaRphSeD=Zmz5nUZCMoJYEbyprP+6g@mail.gmail.com>
-Subject: Re: [PATCH v3 1/6] mm/memcontrol: make lru_zone_size atomic and
- simplify sanity check
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Ridong Chen <ridong.chen@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Yu Zhao <yuzhao@google.com>, 
-	Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Kairui Song <ryncsn@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: rd1xur3etjz89qmgrz7z4g4ohbmxm36m
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: F3C86180002
+	t=1787975210;
+	b=5Zcj3pHLVBrC0OIdVmBWgAtXs6WOgV1WSxmnZyqsKXY8XTfijZQUju+duOJIUSttRqiuCp
+	3mruVtGDDJ6oXZ8zeYkb1FaqRBlB69DKTaj/ZwYog64FuvDN+5PT0eRC/13HiO0x1OPJI+
+	D6ndGnBtHW2uDUegnF6h4vAbuJoiGRs=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Go+hhcgt;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787975209; x=1819511209;
+  h=date:from:to:cc:subject:message-id;
+  bh=YPXV2j0gHNX5kjECiKi+VeMyw+i6MFQWhqUcoGF3NJc=;
+  b=Go+hhcgtImsBlXAw2aciAICbPF9HOivCZrQ3ItlB2nul5i5tDi9IG1IH
+   UdDMx+Q5Q6rfTH5zyP4HVUlDiwni/hOkHpndX3VHrXi8KeOBSx8iXQN5e
+   44CWlkmIQgBxLVJEGPOabWIZyH3xp91SQnbukMyr/j1fFRf6B6139N8U9
+   7b2cRFEUlfM8LY7kKgS3pdME42/4qBcm9eenlkgNoWOZ6tiSV+E8h5kGs
+   T18NSIi1CwVmmpzlt8iCz30Rvdm649y0jcRJpiIdYuqHo/YTUGU7s7viR
+   WiLPRijX+qszfziVCChaM0ErTBJLFXJR+dMdrVx5nq2TPQMFNj1hqWmDZ
+   Q==;
+X-CSE-ConnectionGUID: yA67xanaThixhIVVEzACpA==
+X-CSE-MsgGUID: eOE3fMVpSd6YnrPhxBRWKA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11889"; a="92345536"
+X-IronPort-AV: E=Sophos;i="6.25,249,1779174000"; 
+   d="scan'208";a="92345536"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2026 20:46:48 -0700
+X-CSE-ConnectionGUID: LY4N4t5zTgaq6Lh7sPNXyA==
+X-CSE-MsgGUID: 8rNRtkWXRdWsMEZ4KlyVEA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,249,1779174000"; 
+   d="scan'208";a="271842182"
+Received: from lkp-server01.sh.intel.com (HELO 3532383e6126) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 28 Aug 2026 20:46:47 -0700
+Received: from kbuild by 3532383e6126 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1x0A1k-00000000CLY-1wBB;
+	Sat, 29 Aug 2026 03:46:44 +0000
+Date: Sat, 29 Aug 2026 11:46:07 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>,
+ Mark Brown <broonie@kernel.org>
+Subject: [linux-next:master] BUILD SUCCESS
+ e30626823a406725ce29bc75cb8ec467d3e1e326
+Message-ID: <202608291153.snZNwRZV-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2C50180003
+X-Stat-Signature: 6ketn7ig7uitz4cefgdzpouszaygu68x
 X-Rspam-User: 
-X-HE-Tag: 1787974503-534433
-X-HE-Meta: U2FsdGVkX18w7wwcHDMScoUjiGtm+lJl45f4GARADq1FVBLAv4mu7LgQDkPkb5+j762m3IZW78WjJLyIQobpyNCDKloPJM1j5JhLkRiieXOE12ai1SPSZPp7/awHkzThV/LCa/3Cw2JvdCkiq4fKwOPW9anR3jwkJwTbAuY6mIYnIe7lVPg+ndJTeqU/9BD5U/ti7iv7BB578clP2DrGuYfMrDJ1Dm14mv36FNuk4l7Pe7kd5TIoAwlIY7mvwM1JSu9nZcUpxGIIDVwcZDmh09jwSpWxnVPMd1soZVdPCMh8YfDPiup9jMuXFTxAL0KXL6SN+Lv9TFaVl425OZbgqc4hexUUEpwY7kPJ7W1eofz74FiD2fFLJJcvDOiQfe1RvU5+agMDkQkZh1Cx08R+sfnHK6KfPeohDo+Ag59riqZDwqMaciIFkcC/Ikyv7eIfDLBBpAYefzVY0kTPQMdUK66Rt+3MQZHOII5KNofF6PAL1P8DonRad4xX6bKkunEHnd8DWs+nzGEaLIv/KDhs5XFB9/b+kJDhTGs9E2qCovMijzwuPP+0NKjdZU9yIVekbXzS0Dq5XMsNQ/HT5a8DaU4MiZjekmq4NnvLAqTbQsgPLMobJ+P7Vdmvs7o6QLIAUTOI2v782ceyvsWdp8VSSZ0AqS/tbl00j/G/YbEliVshHqGei6suVuYUj3wJuUmUbY+QGuCDugxdWBrCwKDxHo7XzNOGjRrmKlCCiaAMY6D1Da+zOnN1eJ5C/lu/3lymlocqPQXVO57z9uL3tTFJEXw8I8Xx5G5mS1r6Q76PVOyyGsTonWkwr4+3eeIM3P5xbq9OYAGnN9LJLnTNutj+nzt97HfiFDQ9hKbKmwcsEwVuabftj/l11EaH577pFFDSuu1YGYTVIg5O/mMmPXBP+77c+nLVuE0ku9iQ/5NCZL4jvNXL7Y9Gd3tAG+b3PZPI0BrtfA3t2ttE0xx1n2v
- HFYdlU3M
- ddJQ0uwyCczw2z0yOBNWKNeTZHMo3uZkKfdJgRSTYPx9O29QcXm4afF30ar8XWyyQ/Vx74hOqZEdSBMcR3e+tnONATF2A8v/adDcwIYjA8Rs0xwHjOMCBBfClwabGG4eqm+mW2ZbK+5cMUogHaXSU//uPexLeoiy+bQlvYkgfS3HW+qj5RnEZP2QTU76RN8Z6+DFJFCTo1bBN2mHDiZWkkVqKg6SPCqv+SyFxnJiXPCKXPnU23YAT4n716lEl2Ws5FdCiTmOWT23/uHOLxE1hw2yrXkV6VEgYIZuv/6V4IisJWPfdXs1Cyx9RKFvJi6cZkFIUA8ZonAKH1zDbytpPCLrKiLGyv5H2JTNde8KAOFAzDm39vN8y4qJ+Uw==
+X-HE-Tag: 1787975208-639730
+X-HE-Meta: U2FsdGVkX1+/9FHg3hGTCHuFOD+1ijkZYhDGk4wZehD1H0nZP7qxmvTOYKXEXU3flEaV0XQ0lIYUKPdIwDEoKhAF6o3PrKGUa6cqqzFRDwRCZ3xkbJ6+rBn2RKYGTOpbkmQ4+FPNIuWJ+xzxOeUty9DNkgis4f+18zifZE7nrjrhijgmoJ+X8z7ZSlpl7YU6Xnm3LD8IbulriExFvyxiOMyebj2lc5vZOYjzC8Arge+sXu6ye0MjdPVintoufDB12pVeqRVCoBB1gdHAAix6+v7a1RG0tCv0EGMT8qPRXv8VxNFgdJZutmtEY7qJt/tF8ru/1vLVpRxLDykTICUM7KDVRDoG986fKsPAKt8HmDGL0M9Out2nalJ4F/0OwTExSBxLHbilW+Y5W0OA9TiiPr2GkmXGQir/cV3jTuupfGtfjQ5FqN6zdIFdi4iy8Y628ivuP2q6LLrg8C6T4xQyPmgNUu45W3puuri8AMrK8sADvuv5kw+J10WHariq4/xYv9QU/lu+SP0hzHJU5p0TfAHvZF3b3FopcrpSPmrfRvG6xA+eRrlDrXZaUHK/6WgkUgRPxtZrceZWiSvJNT4Vdg8C765xni/HwQKFJnHY/8kYorj+q3xv/P3fNHDekTbNqqRI/RNWLBz3qIWzX48b+ssImV2wjMLo/xA/2Ko7cPYGD6vIlEWU8gaT78L2vpqc6f0dsqH2TVCecc8sZQ8BSiCSIzTDq4JgeNg8YqT1MiDOxzJ2bxmDbGT+E/t7pgN2ZAAV1gVLhOnXCO6ogSgAClpdvWl8pFl83LPhUgQENFacLTvZve8bU6BbRBujgfQ0SKsfFb6qGYin0xbMJFTYqsiMNBlUqMC9nT3ajMG5NfldltXLOITRhU+E9OygUDp4OkXQKDkRvPeYakyGNUCQpWFGiJkGegh6b6A65CbMhZF+F2gedOB/wr+xcRNkV77LgnGgaCbc7kJEs1GNPtB
+ xIG1QOXR
+ DCfRK+/JQ1Xkjj0rcKmUaGdpijRam6XypM7G4mhbuWzDKzu9NjMT8MY6+OGNTpGumn5vvfIcw2zoXpbBnKIw2cUtaZIVfSupBLEkUFsaoC0HMhIE9nlW9F36OIzduvE5ewN/2R0/yCxbyTbmHvA/o6OsklCA77H4J1a0+hv9yehTCB7xYOoHkr6ub393JY8u5CtPRjK80AMz6MFc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,40 +101,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 26, 2026 at 1:53=E2=80=AFAM Kairui Song via B4 Relay
-<devnull+kasong.tencent.com@kernel.org> wrote:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> commit ca707239e8a7 ("mm: update_lru_size warn and reset bad lru_size")
-> introduced a sanity check to catch memcg counter underflow, which was
-> more of a workaround for another bug: lru_zone_size is unsigned, so
-> underflow wraps it around and returns an enormously large number, then
-> the memcg shrinker loops almost forever as the calculated number of
-> folios to shrink is huge. That commit also checked if a zero value
-> matches the empty LRU list, so we have to hold the LRU lock, and
-> handle the positive and negative deltas separately.
->
-> But later commit b4536f0c829c ("mm, memcg: fix the active list aging
-> for lowmem requests when memcg is enabled") already removed the LRU
-> emptiness check, so handling the deltas separately is no longer
-> needed. And if we just turn it into an atomic long, underflow isn't a
-> big issue either, and can be checked at the reader side, which is
-> called much less frequently than the updater.
->
-> So let's turn the counter into an atomic long and check at the reader
-> side instead, which has a smaller overhead. The underflow correction
-> is removed: a massive leak of the LRU size counter would indicate
-> that something else has gone very wrong, and one should fix that
-> leaking site instead. Besides, the updater-side sanity check is
-> unlikely to catch the leaking site anyway: if a folio was removed
-> without updating the counter while other folios remain on the LRU,
-> the WARN only triggers much later, from a likely innocent callsite.
->
-> Reviewed-by: Ridong Chen <ridong.chen@linux.dev>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: e30626823a406725ce29bc75cb8ec467d3e1e326  Add linux-next specific files for 20260828
 
-LGTM,
-Reviewed-by: Barry Song <baohua@kernel.org>
+elapsed time: 754m
+
+configs tested: 120
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha               allnoconfig    gcc-16.1.0
+alpha              allyesconfig    gcc-16.1.0
+alpha                 defconfig    gcc-16.1.0
+arc                allmodconfig    clang-24
+arc                allmodconfig    gcc-16.1.0
+arc                 allnoconfig    gcc-16.1.0
+arc                allyesconfig    clang-24
+arc                allyesconfig    gcc-16.1.0
+arc                   defconfig    gcc-16.1.0
+arm                 allnoconfig    clang-17
+arm                 allnoconfig    gcc-16.1.0
+arm                allyesconfig    clang-24
+arm                allyesconfig    gcc-16.1.0
+arm                   defconfig    clang-24
+arm64              allmodconfig    clang-24
+arm64               allnoconfig    gcc-16.1.0
+arm64                 defconfig    gcc-16.1.0
+csky               allmodconfig    gcc-16.1.0
+csky                allnoconfig    gcc-16.1.0
+csky                  defconfig    gcc-16.1.0
+hexagon            allmodconfig    clang-24
+hexagon            allmodconfig    gcc-16.1.0
+hexagon             allnoconfig    clang-24
+hexagon             allnoconfig    gcc-16.1.0
+hexagon               defconfig    clang-24
+i386               allmodconfig    clang-22
+i386               allmodconfig    gcc-14
+i386                allnoconfig    gcc-14
+i386                allnoconfig    gcc-16.1.0
+i386               allyesconfig    clang-22
+i386               allyesconfig    gcc-14
+i386                  defconfig    clang-22
+loongarch          allmodconfig    clang-19
+loongarch          allmodconfig    clang-24
+loongarch           allnoconfig    clang-20
+loongarch           allnoconfig    gcc-16.1.0
+loongarch             defconfig    clang-24
+m68k               allmodconfig    gcc-16.1.0
+m68k                allnoconfig    gcc-16.1.0
+m68k               allyesconfig    clang-24
+m68k               allyesconfig    gcc-16.1.0
+m68k                  defconfig    gcc-16.1.0
+microblaze          allnoconfig    gcc-16.1.0
+microblaze         allyesconfig    gcc-16.1.0
+microblaze            defconfig    gcc-16.1.0
+mips               allmodconfig    gcc-16.1.0
+mips                allnoconfig    gcc-16.1.0
+mips               allyesconfig    gcc-16.1.0
+nios2              allmodconfig    clang-20
+nios2              allmodconfig    gcc-11.5.0
+nios2               allnoconfig    clang-24
+nios2               allnoconfig    gcc-11.5.0
+nios2                 defconfig    gcc-11.5.0
+openrisc           allmodconfig    clang-20
+openrisc           allmodconfig    gcc-16.1.0
+openrisc            allnoconfig    clang-24
+openrisc            allnoconfig    gcc-16.1.0
+openrisc              defconfig    gcc-16.1.0
+parisc             allmodconfig    gcc-16.1.0
+parisc              allnoconfig    clang-24
+parisc              allnoconfig    gcc-16.1.0
+parisc             allyesconfig    clang-17
+parisc             allyesconfig    gcc-16.1.0
+parisc                defconfig    gcc-16.1.0
+parisc64              defconfig    gcc-16.1.0
+powerpc            allmodconfig    gcc-16.1.0
+powerpc             allnoconfig    clang-24
+powerpc             allnoconfig    gcc-16.1.0
+riscv              allmodconfig    clang-24
+riscv               allnoconfig    clang-24
+riscv               allnoconfig    gcc-16.1.0
+riscv              allyesconfig    clang-24
+riscv                 defconfig    clang-24
+s390               allmodconfig    clang-17
+s390               allmodconfig    clang-24
+s390                allnoconfig    clang-24
+s390               allyesconfig    gcc-16.1.0
+s390                  defconfig    clang-18
+sh                 allmodconfig    gcc-16.1.0
+sh                  allnoconfig    clang-24
+sh                  allnoconfig    gcc-16.1.0
+sh                 allyesconfig    clang-17
+sh                 allyesconfig    gcc-16.1.0
+sh                    defconfig    gcc-14
+sh                    defconfig    gcc-16.1.0
+sparc               allnoconfig    clang-24
+sparc               allnoconfig    gcc-16.1.0
+sparc64            allmodconfig    clang-20
+sparc64               defconfig    clang-24
+sparc64               defconfig    gcc-14
+um                 allmodconfig    clang-17
+um                  allnoconfig    clang-17
+um                  allnoconfig    clang-24
+um                 allyesconfig    gcc-14
+um                 allyesconfig    gcc-16.1.0
+um                    defconfig    clang-24
+um                    defconfig    gcc-14
+um               i386_defconfig    gcc-14
+um             x86_64_defconfig    clang-24
+um             x86_64_defconfig    gcc-14
+x86_64             allmodconfig    clang-22
+x86_64              allnoconfig    clang-22
+x86_64              allnoconfig    clang-24
+x86_64             allyesconfig    clang-22
+x86_64                defconfig    gcc-14
+x86_64                    kexec    clang-22
+x86_64                 rhel-9.4    clang-22
+x86_64                 rhel-9.4    gcc-14
+x86_64             rhel-9.4-bpf    gcc-14
+x86_64            rhel-9.4-func    clang-22
+x86_64            rhel-9.4-func    gcc-14
+x86_64      rhel-9.4-kselftests    clang-22
+x86_64      rhel-9.4-kselftests    gcc-14
+x86_64           rhel-9.4-kunit    gcc-14
+x86_64             rhel-9.4-ltp    gcc-14
+x86_64            rhel-9.4-rust    clang-22
+xtensa              allnoconfig    clang-24
+xtensa              allnoconfig    gcc-16.1.0
+xtensa             allyesconfig    clang-20
+xtensa             allyesconfig    gcc-16.1.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
