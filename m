@@ -4,102 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC5E5C61DBE
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 04:39:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 484BAC61DC4
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 04:41:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D47946B008C; Sat, 29 Aug 2026 00:39:12 -0400 (EDT)
+	id 44A836B0095; Sat, 29 Aug 2026 00:41:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF83F6B0092; Sat, 29 Aug 2026 00:39:12 -0400 (EDT)
+	id 3FC3E6B0096; Sat, 29 Aug 2026 00:41:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0E2A6B0095; Sat, 29 Aug 2026 00:39:12 -0400 (EDT)
+	id 311496B0098; Sat, 29 Aug 2026 00:41:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A2566B008C
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 00:39:12 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DBC03C0610
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 04:39:11 +0000 (UTC)
-X-FDA: 85153052502.01.3197003
-Received: from mta1.migadu.com (out-68.mta1.migadu.com [95.215.58.68])
-	by imf30.hostedemail.com (Postfix) with ESMTP id CC4E380003
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 04:39:09 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=obGKmCHZ;
-	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.68 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787978350;
-	b=ab81BV5C6qG0G0AH9wMymp2RbCJBBT490iuTIXnVmTPuXr0EV+wAaKKIjasSvo7VlUQ+Tp
-	e8PrO2lowayntNc3xa8xrz9FGgb2ojyA/vBqK/NPqBh2/LvuS3MEIb0dRsms2LTEejtmZi
-	KtljB24bmwiRLas75zrPbWs2gFt9D/8=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=obGKmCHZ;
-	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.68 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 108236B0095
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 00:41:09 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 89FB116061E
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 04:41:08 +0000 (UTC)
+X-FDA: 85153057416.10.397238A
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 592C9C0004
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 04:41:06 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kqFZ6RjL;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf22.hostedemail.com: domain of kris.pan@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=kris.pan@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787978350;
+	s=arc-20220608; t=1787978466;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tjBXgeDn6Wcd4jStH1R7v/NMp5ixkFmR2sDS+gJWsQk=;
-	b=n66IEQDCkFWCFWg11xjdbKJ3pE1MF0ICwClpdfs5IfZ3HEGW2Hwa+2B7JxZlELGhHfh8lw
-	9MvpU58mKhAKTlTIWLi/35Bf6MAxmqEvOmK8F0E01snH/q/N2KFULrQigJ9nM3vU7vZsYs
-	jykjW5zGtlH3W2Fb2UTh9WxexgHNcn4=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ccYXNPj/B/0WdxnMrSq4t7JSxTjFKYCzydgIEuIk/aQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787978348; v=1; x=1788583148;
- b=obGKmCHZiVoH5+A6EW2bEYuxIqk8Zh/HkST6tiGpCudUVwas26L9sP+soJ3jt2E7aNKw3uzT
- 8IdgECzez38F0v7iiz+WnhtiztanmxbOFXxnDE4STTrvcglOlbkzbfAu0y7WrJBp5UbckfMoorQ
- JVJOg+FCBRbUeaMhwUMbwqKc=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id fa5da2c804325558;
-	Sat, 29 Aug 2026 04:38:57 +0000
-X-Mizu-Trace-ID: fa5da2c804325558
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: jthoughton@google.com,
-	akpm@linux-foundation.org
-Cc: lance.yang@linux.dev,
-	david@kernel.org,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	usama.arif@linux.dev,
-	shy828301@gmail.com,
-	zokeefe@google.com,
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=c4RdSTQgCIHBNq3qnE0NnaJV8PxYXmUJkQ04F2niOQw=;
+	b=3Bvm1BPGETONa2CC0vg0KuTahXQdfU4LSoEu1VnQmTwF9PjRW+K6+IL4UJ4zpSIuSBVg2G
+	Ek7EzXgSFnRRcumW+oB4KPNpPmD2NZ4n0iomRo7UKGT9hwJM7Y6J5LI60inCn54Cwfz/bZ
+	tvfBpG/n7Smm03YXP+trqMzUTrmMqjs=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kqFZ6RjL;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf22.hostedemail.com: domain of kris.pan@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=kris.pan@intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787978466;
+	b=MASo3vtPqC5FknUz52r52LfO4weXdaV7TkznrXT+1dP49erOq7BEwrmIcUQuMVMeKt3go9
+	LGy2jQcGG6qF/MLbkNCFV63kwQi/bDUf7SuRGSsV5Uu0PsbDzrUbkL2HrYpHnzxV3AjqUr
+	3+bLeulRdMi0yqYzdohup7rB3AwUtEk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787978467; x=1819514467;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=AAbhPvDUaBJKmqmN0hWK2oPT0O7KSyqED1IG1hPaVrM=;
+  b=kqFZ6RjLFNtzigyEykzpGhr3lCtuT6j1o5u0ItBX018YO//qJxFRp20w
+   zWEX+n89evqFySRzXlCmko5hvwjIjXraBjUSGt0b5YmrPdxYzfnWyjp7f
+   ampDZbAa8q8TPZZZP44sS4i3TzXSrZKpgdG2KF57rAzCQd/5qMH/XcbKT
+   SDAC8hqJ2pfp4XZsoL5MDIdm4vD/RKuDFSBCaeliG0Woku4bpsrJaAzG3
+   qwBe+7UEkfj6TvQ0I3mNhMhWs2poWQ9YulPFO5uqTNqvZ92z84NgtMV0z
+   rICL5ZxXlVzLH4+QaAh4+q4VVM2X4fZTtNuFoRg02bofRHZzITTUgS7mf
+   A==;
+X-CSE-ConnectionGUID: WmzcIbE9R8634zpOLR0xrQ==
+X-CSE-MsgGUID: 4VCT1qxbTk2o9n4YLikKGg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11889"; a="88683911"
+X-IronPort-AV: E=Sophos;i="6.25,249,1779174000"; 
+   d="scan'208";a="88683911"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2026 21:41:05 -0700
+X-CSE-ConnectionGUID: d0jjEtayQcqHCNaaJ2HUJw==
+X-CSE-MsgGUID: P70QfAmOQQ2ojogSmjMcaA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,249,1779174000"; 
+   d="scan'208";a="266533019"
+Received: from pankris-x299-ud4-pro.bj.intel.com ([10.238.152.122])
+  by orviesa006.jf.intel.com with ESMTP; 28 Aug 2026 21:41:03 -0700
+From: Kris Pan <kris.pan@intel.com>
+To: gregkh@linuxfoundation.org
+Cc: akpm@linux-foundation.org,
 	hughd@google.com,
-	kas@kernel.org,
+	viro@zeniv.linux.org.uk,
+	brauner@kernel.org,
+	arnd@arndb.de,
+	max.kellermann@ionos.com,
+	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/khugepaged: Don't install PMDs in uffd-minor-registered VMAs
-Date: Sat, 29 Aug 2026 12:38:52 +0800
-Message-Id: <20260829043852.45486-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <CADrL8HVzfEXgE9OQfULhe6wh1kMMOALsYuCNOUkgBqtzk_LUVg@mail.gmail.com>
-References: <CADrL8HVzfEXgE9OQfULhe6wh1kMMOALsYuCNOUkgBqtzk_LUVg@mail.gmail.com>
+	Kris Pan <kris.pan@intel.com>
+Subject: [PATCH v2 0/2] drivers/char/mem: splice the zero page for /dev/zero and /dev/full
+Date: Sat, 29 Aug 2026 12:37:44 +0800
+Message-ID: <20260829043746.2929210-1-kris.pan@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 592C9C0004
+X-Stat-Signature: ce6bywd95rsruy7yd47uhjorb1uscnox
 X-Rspam-User: 
-X-Stat-Signature: f5d3bky9rn77kqr8ssk5oeyukayww7g6
-X-Rspamd-Queue-Id: CC4E380003
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787978349-206539
-X-HE-Meta: U2FsdGVkX1+7MYNJ4MOakmXskTigvSzpn2EtLWNc3bbPphn/2ror8COziLt7VrsR395KRCkc4bAIRiyQNDTkUQpgPu+0nwHZuJZmBBefto5QefTKBdFuxedN83B7QyOGM+njbYAV8an5KM2mnR70CdIYGVdGZqsxhrimjr4fmRqgnxU2wFh5VpZ0c9+enhlNogiv/hVIhTjc2NXTikt041naf7AaO8Hsm+zs44ReStxyf73wtsA5MXRGNDmtI8Ll0OsY1qeuRMCtURYoSGlhOCBGwawCxNQTULJFbysmEewOzDJ42GZjwBi8HHUlE6xnolcNgLs2Xajk64TkNzxHH/WllSQcNBZv/k5R+ecZW6w3kKc979CUfB5tmxVpB1J18f5GqR1NjQ/AVgsKDGsT1NxVwER/Z+Q5Ifucdtmb9FFfNFPxd5w+nSgwnj9m8nvC6bI2yMzGPRoCcKf5FSWg7Nk1+Vc8jDy/xgaai1ltgWdUs0sPbEgZ+blvb00ZHsXAHCEAYwdkw+rsVcel2cpPCw6QimspGQ9eFcpSB3yMnGtbX0yd2t/whZUw/M93iFMVDRwPNBapZIm7gIW7flWHKuxstiO2znjjEuKLaqOP8g71oYcsSffS8GVWHNWGVhccF2KDgWPlCl4vjVdMrF5UAs/UaLNxD+s1rQdi4Q18pQzl4u/XFtpqqlEcDn+Ndr12jCqI4fOwJsQiJyMeUOKOk7V4D3Hmvd9oGckMSrCBWiY8lfWf0gd5Fico68e8HQqcQ2l95VW4mwyXyni+hR5cpRtUKzahwEC71OPBffROZudLr9vBPcTpf59cAdhVruORregDmwhjwReQpRqxiInmZYT3Tb4mog7ef8mtZ3vufsBxpF7kmV43FXtu4Gkz4wQfSbrYK4bwa9uUD0Cg2C6HdkSPn43PsDI5uFw3sA19TFmlHcfhqc2CVGVt0jE/EgShNi828BPAFZPVP1E1zfG
- PE7EYYRw
- +He5EoF7VDZj/iJcbHHg32+IftLDlbQt+lubj0t2ZgQtPdfzbGvZ4/hPpjC8kwKsqDfRExluJkh6mFci8EPMecU7Db6K2Y5wBMsXmpHkCWP1W9pp/R5Tu2O8hiduElZp0imaA75UIQyuI/K9rSr3g78c/elHEoMaJzExg8ZxI9sIlXFk63Wogve9L2RvW1YKKSbyQyholALZNjSxWx8eRfbhAkzpZ5x61VMK+zK7SiF4iTOw6ycQpHyKejFS+MjX/+nYigImOK+/eBMjCIIzyc44McsGzH2LNQdw7CsyA9hUAraLTIHXoURbUSiGDHE2e1kNs8WVJPf+rc07cSHHFIxFIGGACzy8GtPZb820wu+4Hw0N6Wbtc3jKi7SBT6qCcPrEiK6yqWPennIEGX6rRBtfkh6tQCM+3lxB5QLwy1kOo/pg=
+X-HE-Tag: 1787978466-910479
+X-HE-Meta: U2FsdGVkX19E5vsIlbDCL197H9Yyygxc0SuyOraLz0C2WjxjmwG2uT5FJ5SjLgXlNU0Ep/WEG0n0JZzewjvp7aqNTi6qZpHm/MT8L/nQvAuOY89X4ESU2NjZ50lCV0yNrX0fuYXevTfpafXJsPHUI7Mj5gh+OAdxe4FbNNFXQEtPwHcs4e/ABwJTIWqNCJBgV/egAqTuEey4nBhFe0kjKIYJ59142MP4NbXWVef95FSKVuXooynLHoSX172zl4DKTs5quXO8ho88vFdB5OYDA68YEPp+Mkiqw/sVuS1zzHBa3v+YSVI0MXbsPTk9lUxjb/AJHBEHuy1QGhOIXcUpJvWKVcWN2328v6eHcB5VrtKyFBpBXcgcwi0G+J6Z8lMG+3tB8x/wOuwtr0AZroQB3eu5WxUVFBL777ll/Gzmo49TUsgxeVzBhuP9RvvBsF8lhOgif15SlLuqGWiRzcZAMSHk9Ob0vsXTgh3Qo00GUIIEULfkfou5argocHf6gFxQXW1tHR2/RMuqkPhNYx8FaorX4KckpLiLneuWXqHVOmEusUr22s1qfSryHoMPHEu13oozITs6HItOzdXPJppMZYckSw+Y5YAyMCvI/JisD2PKS0hZago8Jko5VhSTEt+lRkgZnDPv8z0CrUV0b3z8gBcxUBwo7tn9q/QcUIwyt2Nboh1jaSIdX3QNFzhyTxpZnPur5FxKOWjwamNK9nicOE1x+94PZ4hl4iI8vLDC0kaJBENo4Dnv7IVbIOVg5tqVxe3DwxZGJs5BYd4K44L2ESMNgxF7IrXjs4f42yy7MiIw8GUWBV9CzY/uoU8LTtUjBnRWw23nusxb3XOSuhWXKBrL9JGO8NWOLPnVIR6nEfbGIpcJExX3Q3W2t4sIWSKTejOCCEwbyMUn92569EH52PHOdV0BFYSYaE5T+VGBwB/5V64MiPO+RnQljcOOWjLqwEwCavzpYLWvwMJExsV
+ yuaJqNxV
+ CblX3dyJRwLqhLmM1Ot5EvxQiQmL+nZfxhZklm6yiWDLQdrhEFkJ/+y1XpUGn+92GV93MAOcsZPVEMvb1uNf0Vj+zdu0WJGbE9AWF7LpRmzrlxOpdoS2yCPMw1rtsG4UurHeEnzuuBm10gdO5b5A4CcMY2w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,44 +108,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Commit 1b057bd800c3 ("drivers/char/mem: implement splice() for
+/dev/zero, /dev/full") added splice support to /dev/zero and /dev/full
+using copy_splice_read(). The author noted that this could be optimized
+by pushing references to the global zero page instead of allocating and
+zeroing fresh pages for every pipe buffer, deferring it as "an
+optimization for another day".
 
-On Fri, Aug 28, 2026 at 06:09:39PM -0700, James Houghton wrote:
->On Fri, Aug 28, 2026 at 5:33 PM Andrew Morton <akpm@linux-foundation.org> wrote:
-[...]
->> Wondering what Lance tested.  Was he able to reproduce the bug?
+This series implements that optimization by splicing the zero page into
+the pipe for /dev/zero and /dev/full, reusing the existing zero-page
+splice logic from mm/shmem.c.
 
-Yes!
+v2:
+- Move zero_pipe_buf_ops and splice_zeropage_into_pipe() from mm/shmem.c
+  into fs/splice.c so they can be shared, instead of duplicating the
+  boilerplate (Max Kellermann's suggestion).
+- Rework splice_read_zero() to use the shared helper.
 
->I assume he just re-ran my repro, but yeah I'm not sure, heh. Lance,
->what did you test?
+Kris Pan (2):
+  fs: move splice_zeropage_into_pipe() and zero_pipe_buf_ops to
+    fs/splice.c
+  drivers/char/mem: splice the zero page for /dev/zero and /dev/full
 
-In general, I prefer to write my own reproducer from scratch, using
-whatever approach works. That's what I did here.
+ drivers/char/mem.c     | 29 ++++++++++++++++++--
+ fs/splice.c            | 62 ++++++++++++++++++++++++++++++++++++++++++
+ include/linux/splice.h |  3 ++
+ mm/shmem.c             | 45 ------------------------------
+ 4 files changed, 92 insertions(+), 47 deletions(-)
 
-On the parent, MADV_COLLAPSE installed a PMD, and a later
-UFFDIO_CONTINUE failed with EEXIST. With v1 applied, MADV_COLLAPSE was
-rejected and UFFDIO_CONTINUE succeeded when registration completed
-before collapse.
+-- 
+2.43.0
 
-I then extended the reproducer to register the VMA during the mmap lock
-drop/reacquire window in collapse. With v1, a PMD was still installed,
-and the later UFFDIO_CONTINUE again failed with EEXIST. Adding a
-userfaultfd_minor() recheck after reacquiring the lock closed that race.
-
-Before reviewing v2, let's go back to v1 [1] and settle the expected
-semantics there first. The check depends on which policy we choose, so
-I'd hold off on reviewing v2 until that is resolved :)
-
-[1] https://lore.kernel.org/lkml/20260829041523.43008-1-lance.yang@linux.dev/
-
->> Sashiko might have found another race in there:
->>
->>         https://sashiko.dev/#/patchset/20260828222640.1638457-1-jthoughton@google.com
->
->Let me get back to you on this. Best case, I'll send another
->(separate) patch. :)
-
-@James please don't send another revision or a separate patch for now.
-
-Cheers, Lance
 
