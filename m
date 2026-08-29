@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05860C61DB9
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 01:59:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94866C61DD6
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 01:59:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18EEA6B008C; Fri, 28 Aug 2026 21:59:51 -0400 (EDT)
+	id 908E56B0092; Fri, 28 Aug 2026 21:59:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 13FAD6B0092; Fri, 28 Aug 2026 21:59:51 -0400 (EDT)
+	id 86B536B0095; Fri, 28 Aug 2026 21:59:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 055966B0095; Fri, 28 Aug 2026 21:59:51 -0400 (EDT)
+	id 782206B0096; Fri, 28 Aug 2026 21:59:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DBAE86B008C
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 21:59:50 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 534138061B
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 580D86B0092
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 21:59:53 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 49D5D1C216B
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 01:59:52 +0000 (UTC)
+X-FDA: 85152651024.24.BD26D19
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 82D6EC0006
 	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 01:59:50 +0000 (UTC)
-X-FDA: 85152650940.29.E171236
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 9FC13180003
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 01:59:48 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=SkXyg9tY;
-	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787968788;
-	b=JQipQUI8Gn608ZviQjOLf/kyzpEtustnGgFp9uzvk9tJGn71bPksvGt2983q5/Quw1eFc3
-	kR3ISxwbQQ2xwqOV9LFWmtE/MoZEQ13L+C0x1ygAc8CNmiXKa5TjRyDBh5/vPy42zdvYAB
-	VGSdKMJ8LE+bXWGMlOLS3+ymx1sVCO8=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=SkXyg9tY;
-	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=iTAFNOmG;
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.174 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787968788;
+	s=arc-20220608; t=1787968790;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=IC0TVf+dsTZWglnCyPO0E/mOtnxcSosUkHWaCKQvN3U=;
-	b=ukp0mHvDFM+J/1hngZkDSlIbZqPT0M5mZw1zPMM5pNghz1EmGJKtK6Gn2WtDDdgptQT3Mj
-	a+cid0T905QkxR4KeD6tHPUZsRkFmk+haVlnLgCK6Wa3X+KjfFDvVTWnrXJObzjiQRCjO8
-	0wJ6sp8OQkDrgPqK56LalVC+kYL5N+o=
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-92e57a753f9so154479985a.2
-        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 18:59:48 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jC5RZ0/W3U26Ng+tF+NWajMfbOb15T9nPbwMwMEpGWM=;
+	b=B62xJkeiVNQ5DroMLAegu/Gl7C9R19JC3UYOaAMSINGezSvtEfZibtF5L7mK4hOn7qqEej
+	zRsap7GUhKxr0TLz1g5RWlRCOeI8EWhzKIP0NIAX+zf/kOvbCXZVci+NlhNthB4O3t0FHD
+	/RYLlkfJcO2uBpo24ikoBAOGo5kqe/8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787968790;
+	b=8iIVGzKRNSAMhyRRRyYydbb8lWo4B6jve4T3Q7MutgbHaFUkZWVz/zIgttvYMfRbFuaB8h
+	GSlXrvNsCe8uC2pULeZzlODq3EcjZ8B89F7lr/vHx2dtHyhpj6f6kejwtY4wIzrgdJ0tDm
+	zod8xjnTCyrJxTEUSRfrPnE4WcyIv3o=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=iTAFNOmG;
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.174 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-92e55b62640so70651385a.0
+        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 18:59:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1787968788; x=1788573588; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IC0TVf+dsTZWglnCyPO0E/mOtnxcSosUkHWaCKQvN3U=;
-        b=SkXyg9tYfD+8hL4cVHSI0n3AvVOfaElUinpEU6s3orxBgvrWKs0XDtf2EZzwCeQu66
-         WG8KhE44ACfoPcn0GFq/QOs11KKHtqICNV7rk11v6jA6sa3RKGrlR/057Z7Ih0yAV8z9
-         EN8Gj7dyrvCXjm3LtPnTlX9ySGFDwU5Uged+oZqBD2h1dYoV8gqThYeoAHYkxEU8mEHH
-         EmlWOUt4xashioqxfPLejeu0sx6GxdiBepnklEEPNcvqJ5GI18KUYYcEzr8kA5q2SdL+
-         pZEvowh/1vfResmpNKcjiRebJCbQzJRtKyr9q73XHIkIkd9kfThhjx2+ysMtAN78FQNY
-         eRhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787968788; x=1788573588;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gourry.net; s=google; t=1787968790; x=1788573590; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=IC0TVf+dsTZWglnCyPO0E/mOtnxcSosUkHWaCKQvN3U=;
-        b=AlcYtYpDmVuTvXvVxTugu4XzysXUv6yqS7ZVizojtg209JbP3WF+gqxtGaBkPPLh0q
-         WpyYDXJYhD/TmuKALT7K9LVSoaW+s4if1Qyd6gC/DRnegIPneCtpR8OrrQ+aAwm5305o
-         tvHKwLNSXC0tesvBbWloEkdRCmuFfyFwt/gQeSAJOZy3zNctNyiyJts3pQuOGr2JHrfz
-         EaMpFK0NyY1BdzmZrTniNMWsSorb1g1w+j+BUyy/7PGmR8nFte6MC+kOgfZfYkfaV7Yb
-         47nWTsv5vy0Xm7WoMZLNEiw+MQ9tKCDOJ4akaImf8ZQXFUALdcGQiFeTxjoMEN9LYeWU
-         gR6w==
-X-Gm-Message-State: AFuF++mwGkUo+tF4pIEI96QdSyym3Cb6aehsxnyNtH1dN9sj+pXuEimf
-	rI6EzkEwdNO55HdqmBtsZz9qjdLChUN4OOn9Igi53AlK30ZoXwSIlEEY02EdnHOHjmEPyrTRlhS
-	SY2KXW2A=
-X-Gm-Gg: AR+sD11b338YU7r0PNw3j5ugAZsMR1ExOItYenuNHUPasAU8XmYjET60yC/q5wMx6oS
-	o0DR8RLIKmNXZLK2cdpzda1KfQFK9i9UQS/WHA8RWyzNZzEpycE1va561hsvWF52VrJ+Ig4aln7
-	636SXFFzsU2UMWrgTjkccDLCYW1YBNLCc14kDoqR+mflFbMDQQQcZyhgNeoECUXaKOIEfeVjQKc
-	MQRsu+hF1zpmpqIjOooWrNAzEVyA3Ee7Cx4/XH7NfXN0zNiBsgPRMqAeIJsnCtXo3pUu0Hxdfl9
-	F8jIVBjClBSHjAUEBCUAL5PzORHVetTsxkWKF6YJmQn6zBXtvg7X1MMXwmZRlae+ws8mR4dmtDM
-	u65l0rNHMr9rka0jJWdT7ffo4kldf1/6TCzMZm0veO9E2sV5wg5FecgMRqzdubA0dAUnyji787I
-	jFiligGlSbZCrNe1gz0WMLkXkN4FZVJdB1VvYK+j32BjJ53AeDHj+TQH7HVR19/4auHCFM1oO7C
-	Mf/YNdycRlOgJf3GsjfKnSy+xDwvGMk+Iy7OYjcfU+Ot8ydbw==
-X-Received: by 2002:a05:620a:2acd:b0:936:dbd7:fcb3 with SMTP id af79cd13be357-939138ffddemr1080911685a.21.1787968787726;
-        Fri, 28 Aug 2026 18:59:47 -0700 (PDT)
+        bh=jC5RZ0/W3U26Ng+tF+NWajMfbOb15T9nPbwMwMEpGWM=;
+        b=iTAFNOmG8VQCCj8qaP6fxpmqRLk8Yi9gNMVCRYtV69OheiFZ3ak8W4EdLll5gmZPSS
+         uQtdyiMuI0Jr+q3EIKCHMHM0c3ZVVxe4nrsDld2B+be0NKP2X/ZK9xeULu/YFq4v1SBg
+         hikwYne2273E++SK/jpRtwzXUTiWxw2xfoWlCDJGIVo9QCiS3ZzCsZi93N4ixMy1GhST
+         Q3BnfRuoGn/2SyWTp8s1tO9IOnpmdFrXXVHQHQ9C1VcTQd7e7eYfAHxiFcHh6+TDVZ9W
+         iUmFNZfko1Oq87ct8gVavE8Du+vAo1IW4SHdP6RpfnVtLpfCGBKm4QjFUJJA/mL7Z1+5
+         Mkgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787968790; x=1788573590;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jC5RZ0/W3U26Ng+tF+NWajMfbOb15T9nPbwMwMEpGWM=;
+        b=Psm4prvyYSITmEmBQcI43E7lPslVcmIFNFjY/zczFdPAXeSlgBI3ahqob0zRjACJSK
+         ok5CvKr1VAPAsl/gddK4pswDXjHBfCgHUKKQMmOYM+Igm9EIAgBE4TXBg5qMWEIj8qNA
+         aSsFMzI7lTec4PZvgEG83dKzb4Fvb8WlLJXbGHdGJmiZqD6073gQnpVxujmjcR0Xzkg2
+         lKX3u2Vu8R/UYLAZv3S1/vIPtYP6U/0FJxaj4JhjZ5ao7rHgdXWIkLo60yg0ztOE3T4c
+         WcECPEfWVKcgw0KvRgLgTT7ueN6ibRCflyUuqug/0OhhlyqRkx//wlqSj1TJVnDN/pC3
+         6mNg==
+X-Gm-Message-State: AFuF++mGSsyz3r6OKw1h17n7CnX+8cP2Ynsb4ZLjlcDJnF06MK6Tm2Py
+	c1ucWzdKcI47ucIVmXFlaDGaEh+7jrBtAQp1k5RkhHGrs6biP88b+XHMj57gmxVlEybh9mMlyv5
+	V9bRpk5k=
+X-Gm-Gg: AR+sD12jsmHRn5EKfTo+H5MC8Kjtfn/xGvsf+ZObx7XgNHOgvcU85xBIJOCk9Rv5lUM
+	3+0YxLsRYdAjThqEDGorQUZkNwIV0QIGWTcm6OkYL4kyiGQKC3l6wUMbB4oR8/8KZ5FpVK662SJ
+	JAgCzli3yhLEtMH+zQJlaBrsiIzJchbf2U1lv/+MRQAfne5Nazzp2X9etrAQ6u4ZJG+LTzhAHEG
+	00IKYihIUO1xBWIc26/AnR6Z+yF0G/qnxXG+sIb3iFu8ycKa81OxDGf3gvWxYZmQbE4+lKTFQrE
+	MNVaMIvtHHwxa6PUdfCpkiVKdR+STn77G/rzNPF/wIxd/NZlfJzEsBTYMONLjSsXSklc5pIJ/jw
+	n4hBLTJqfR3oSj5l5AfJ8GBiZAQQexV7nR0oZsEiIPaV9y3fbQYQwH3ByGmpiEE6tuOhHLBj6CH
+	RB8ToRkcwdiw6gIU1tp6xzze0RTeQ6rBZ4kw+8/mJNh9l+tTc6WxN2pzazD9SaFaq/MCCLrvIUz
+	Yw46Nd7+JgcinFSyrThY30KrKohd0kgFmrJgmiEn/lRnZSJEw==
+X-Received: by 2002:a05:620a:40cb:b0:936:cda7:554d with SMTP id af79cd13be357-93913798773mr1261501085a.14.1787968789658;
+        Fri, 28 Aug 2026 18:59:49 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9391701305dsm272582285a.4.2026.08.28.18.59.46
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9391701305dsm272582285a.4.2026.08.28.18.59.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2026 18:59:47 -0700 (PDT)
+        Fri, 28 Aug 2026 18:59:49 -0700 (PDT)
 From: Gregory Price <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -105,21 +106,24 @@ Cc: linux-kernel@vger.kernel.org,
 	ying.huang@linux.alibaba.com,
 	apopple@nvidia.com,
 	urezki@gmail.com,
-	chenwandun@huawei.com
-Subject: [PATCH 0/2] mm/mempolicy: stop copying state in the interleave paths
-Date: Fri, 28 Aug 2026 21:59:41 -0400
-Message-ID: <20260829015943.1258774-1-gourry@gourry.net>
+	chenwandun@huawei.com,
+	Matthew Wilcox <willy@infradead.org>
+Subject: [PATCH 1/2] mm/mempolicy: use SRCU for the weighted interleave state
+Date: Fri, 28 Aug 2026 21:59:42 -0400
+Message-ID: <20260829015943.1258774-2-gourry@gourry.net>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260829015943.1258774-1-gourry@gourry.net>
+References: <20260829015943.1258774-1-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9FC13180003
-X-Stat-Signature: ccoxsu5bbthqoseng9sx8ibxuprr7ck9
-X-HE-Tag: 1787968788-541534
-X-HE-Meta: U2FsdGVkX18Z/gsOWbZPqBrD4+7XHlILH3a9yE0k0Rk5rA6jFsyQ29xG6LYtyry1sZK2PqRgyp3Kf2C3e47s+ViFYEms2AbZRz8F1TW/U5H6GyvHLVhTeGrGClqtBgBaUJTKTzRdGypuA0xev9av8ncEQMgqg2ygoWujBzJ7dOGOCPicHZ3awTGjfqt60+IbrLg3hSHl4pp1JaIIGHWcdbR1DPdIg8tZjiU+Mub+1InMed7GFzIyO84B2lmrQQjUiAdqNqI27E4ffrkmMLz8DkmNQpja5FSJlipk+FupvgVWUlP6/lU+uvQpd/KlrMse5oLO3CVu+dOc84koiVcgXvYG1jHn6t5PRjIDh630skkQvy6FllgnMLtlDwjpeN0cS/QIvDDvOvFBjj1XymnWgsV+Lo2fYUsyZHKMaeK0qVmHBq7XQZjgKOuqrYt+qYBeZ5BjxS+9xyO0yI8YR4dQ3KQWTW2jWhu10Y3yqU09wtdgzIUdk4LQV4Cpsah0cS2MmnQT5FoP6oT/5Cl9AcKbFyzFqdTba7A3sgFp6CN0jxedcEzh1VEVYetbn6OmKIpVLMpNqWXFuFnTUPMjHnKOV3m4EYutzX8a/1tqvjc8CmxCpyRvRuWKuIAJMggYjFOvaZW/oSugQl+KpIaI/icbMZ/HStseqcDW8mQvBhyyi5WOLh98+fNIP7eRznNRFm+pto6KdyVRtZpb7vN3/Y3QXJZTzxY+BkmhsF2lqtcD1J6UlXkpMZMeUUNtlYGCKzeJ3fbyGdt/GszAtfAmUCxJ6ZR9uoD/C3MpiVemV6CmrXfip7EeD/6ysA1b74guiKBbS04bGt9SNuv70RCzDT1UsJcfG47YGxTdLzwXB5trrxxnGqh5WI+qSVX8+qPaWSpzL9Pvfr/WZDDPoPFOh90LoSx0UlFAtnBnn7n9oCbJFYiuQzAIwau5t1HSIWRaylFNC6NHhC74UV1JVQuYpJX
- 8+6uu1a+
- G5Npb39tbyfcsCy5lyGZ/2LZYIYVKIRWLeDDGbwgVhag9Xv3G+52KBD+ML7T/y8YdjbxYMPNUtj0wQHXnUpzm/99/Que0hxWrK/Q64ht2jtcdcnY6UaW+ZatfhLraRe5nT1DnAnbw/NfGr0aJMmvRn6F74xBjb3Y4G899UyhYA0O2KlMctAW9A8RrOAgN+ETWzGR0EAIW5C4lGZAoUznZZvrL4uWJ1eCcMCDVprRWnL66HU/WH7CLwfrBrZhZDUC5ff9yTJ0ejP27DwPFb7b3wMJdrSOn9Rg+yiuEBjIclwdRdzo1LOX7BioKCKzfiP6sNQwk
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 82D6EC0006
+X-Stat-Signature: hkfg17f7g3bg6efhfakkp1ctk1uouiw9
+X-HE-Tag: 1787968790-687010
+X-HE-Meta: U2FsdGVkX19w2bj0s8UA2DoxvEFcZSHJjdhpoG+TmhVWducra7fcAtzM6byb1aXffDB+VmXEXDjHVN8z7oq8O+1UddbGwidNKwVOhZn0ldqGx4WpBWyE1WyAwMGP8oamTr57o8BUVS2N4yKiJntFLxDfubU5KVcjhh4OxhhwPCvNl1r724vGS8FFZPvf7YUFWgtddfNZ7Gc5IHQ8Ast915qiVLXbgR5ZYflANtmcpZWwuPbMD0bVssWYMNEjsAB4OjyURtTEseZRjKlzxuClMSyRkXGnPrdpJ6Bo89N+oM4tuKpq/+OLsGmTE0xwLK5wT1DlpAPUt7h/8GlT9qfYGyWCmQoaeFoJojahooBAtvqfX5AlnpTS2jBBUK/qcohWaPBYwmLqBE9w7ws1kTjvpVKsR/9lNzoPb7gpyh/Vpg8QQfW3VOvDYzWpulePf7qCCGatbkpkF0WTQ54X1b9qX77h2VlZyLK9aWx3nOutETmQimpQ9C1Np4RQVfUwzS3ccB9r/GTKK7NqPCYcHLMteun5Gicxd3Rc5ilChxvwPWdt2pz3d38DOSWUkuYjrnGfcLY9y7OQwl6uMfFAGwtwjICaqnoe/7r++wiKompqCL6iud5t/VIeyOsxogshXDkKrFwjGKHkz5/yBZ73SbxqyqwqtCYc4O4h0V1s4Rc8jHuAf20rkNncw2afq3HptGAaiApI641+EVrxrK0+ADHMSVVn9TrURHQ0PARxTX99yD/6TCTQP8K4SwzAE89TTbqF1qOHrScAeqXoH6nTSKAheqYTA5GV7g5OQTzylzf5GwXTwfKr/Gai9nSHFzkNDahZvt5J+kqTOafLG5nmJkScBcNEsQ90Xg7cHU7TrMb4P1fuu9arL7OJh4z7SOaufGJBu9q9/FjfHX73vCquUYtZ+eQnMQGV8JeQdYw5m3rul7Lgu3OEKQxiDShFukwVg8vw1YLvlNairB0rjtWklYv
+ js5YMmw6
+ GzGu6u60+wg2FAc37SRyHPn9weK5On0lRbGJBZutXkzFzqOYVQzKwRTsl25xCiJsKZ+ZyM7GLWuM37wIgmmj/cCuK8NEs+WyeIO+BiNe2bMk2Yoy/NlkO7EWlYM0M1oakQebudvu8EGV4iEPI89sL6SsVlEX9liHOwiqkHJCZtHB9sbmQXQzTnr9d6koeJfC0hKscKdJO04LZpjzhDTDae0B7zSSljxZOHHWGEUJdea1MGrnXWZtnI/O32sG+rjWcudQ6/umlf4JrPPqZNHpPHEV80RNr/IFxkpN5DCmbVhKobwljy6dz/9n48aVdBzRtgiG/D2ofEYrCTto8rk48X1YpwhbEN+mpy3Z2xOQsmln9GeC6W4ujlAe60V2MQP6aIO0xqa7UI4wSOoP948n6PbdhritXyzK3gQAn5REYXKdJGi1bDnW6hrA8vVYFCTd/0vawYmlYFJkC9EHQ+Rmpvc0eEsCfrZ99OsU9kBiXzbRoLjrR0ATGHsvgXA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,38 +131,189 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The interleave node selectors and bulk allocators take copies of
-nodemasks and node weights (for weighted interleave) in the fault path.
-Both of these copies can be entirely eliminated.
+alloc_pages_bulk_weighted_interleave() copies iw_table into a scratch
+array on every call so it can walk the weights outside of RCU.  The copy
+exists only because the loop may sleep in the page allocator and so cannot
+hold rcu_read_lock().
 
-For node weights, use SRCU to pin the weights in place.  This eliminates
-a copy and a kmalloc from the bulk allocator path.
+Use SRCU to pin the global iw_table object and use it in-place instead.
 
-For nodemasks, we can operate directly on pol->nodes as long as we bounds
-check the walk.  A concurrent rebind can shrink the mask, or tear the read
-of it so the mask appears empty.
+Retire through both flavors - call_srcu() for the sleeping readers, then
+kfree_rcu() for the reference-less ones - so writers no longer block on
+synchronize_rcu() either.
 
- - The interleave node selectors fall back to numa_node_id() when that
-   happens, which is what they already did when a copy came back empty.
+Tested in a VM with KASAN, PROVE_LOCKING and DEBUG_OBJECTS_RCU_HEAD,
+with a udelay() injected into the read section to widen the race against
+concurrent sysfs weight writers, and placement checked against the
+configured weights.
 
- - The bulk allocator simply returns what it managed to allocate.
+Every retired state reached its callback. Swapping the deferred free for
+a bare kfree() in the same test reports a use-after-free immediately.
 
-The node count and weight totals are read separately from the nodemask
-walk that consumes them - creating a time-of-check / time-of-use race.
-Just clamp the walk to a single pass (number of nodes), and clamp each
-bulk allocation chunk to the space left in the request.
+Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+Suggested-by: Matthew Wilcox <willy@infradead.org>
+Assisted-by: Claude:claude-opus-5
+Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+---
+ mm/mempolicy.c | 70 ++++++++++++++++++++++++--------------------------
+ 1 file changed, 34 insertions(+), 36 deletions(-)
 
-The cost is distribution accuracy during a rebind.  The copies never
-corrected for that either - they only kept the code from dividing by
-zero and overrunning the allocation request.
-
-Gregory Price (2):
-  mm/mempolicy: use SRCU for the weighted interleave state
-  mm/mempolicy: stop copying the nodemask in the interleave paths
-
- mm/mempolicy.c | 156 ++++++++++++++++++++++++++-----------------------
- 1 file changed, 83 insertions(+), 73 deletions(-)
-
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 060a0eb26917..2643915dc966 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -112,6 +112,7 @@
+ #include <linux/printk.h>
+ #include <linux/leafops.h>
+ #include <linux/gcd.h>
++#include <linux/srcu.h>
+ 
+ #include <asm/tlbflush.h>
+ #include <asm/tlb.h>
+@@ -157,6 +158,7 @@ static const int weightiness = 32;
+  */
+ struct weighted_interleave_state {
+ 	bool mode_auto;
++	struct rcu_head rcu;
+ 	u8 iw_table[];
+ };
+ static struct weighted_interleave_state __rcu *wi_state;
+@@ -168,6 +170,24 @@ static unsigned int *node_bw_table;
+  */
+ static DEFINE_MUTEX(wi_state_lock);
+ 
++/* Readers that sleep while walking iw_table hold this instead */
++DEFINE_STATIC_SRCU_FAST(wi_srcu);
++
++static void wi_state_free_rcu(struct rcu_head *head)
++{
++	struct weighted_interleave_state *state =
++		container_of(head, struct weighted_interleave_state, rcu);
++
++	kfree_rcu(state, rcu);
++}
++
++/* Retire through both flavors: sleeping readers use SRCU, the rest RCU */
++static void wi_state_retire(struct weighted_interleave_state *state)
++{
++	if (state)
++		call_srcu(&wi_srcu, &state->rcu, wi_state_free_rcu);
++}
++
+ static u8 get_il_weight(int node)
+ {
+ 	struct weighted_interleave_state *state;
+@@ -266,10 +286,7 @@ int mempolicy_set_node_perf(unsigned int node, struct access_coordinate *coords)
+ 	rcu_assign_pointer(wi_state, new_wi_state);
+ 
+ 	mutex_unlock(&wi_state_lock);
+-	if (old_wi_state) {
+-		synchronize_rcu();
+-		kfree(old_wi_state);
+-	}
++	wi_state_retire(old_wi_state);
+ out:
+ 	kfree(old_bw);
+ 	return 0;
+@@ -2644,7 +2661,8 @@ static unsigned long alloc_pages_bulk_weighted_interleave(gfp_t gfp,
+ 	unsigned long nr_allocated = 0;
+ 	unsigned long rounds;
+ 	unsigned long node_pages, delta;
+-	u8 *weights, weight;
++	struct srcu_ctr __percpu *scp;
++	u8 *table, weight;
+ 	unsigned int weight_total = 0;
+ 	unsigned long rem_pages = nr_pages;
+ 	nodemask_t nodes;
+@@ -2688,25 +2706,14 @@ static unsigned long alloc_pages_bulk_weighted_interleave(gfp_t gfp,
+ 	me->il_weight = 0;
+ 	prev_node = node;
+ 
+-	/* create a local copy of node weights to operate on outside rcu */
+-	weights = kmalloc(nr_node_ids, gfp & GFP_RECLAIM_MASK);
+-	if (!weights)
+-		return total_allocated;
+-
+-	rcu_read_lock();
+-	state = rcu_dereference(wi_state);
+-	if (state) {
+-		memcpy(weights, state->iw_table, nr_node_ids * sizeof(u8));
+-		rcu_read_unlock();
+-	} else {
+-		rcu_read_unlock();
+-		for (i = 0; i < nr_node_ids; i++)
+-			weights[i] = 1;
+-	}
++	/* The page allocator may sleep, pin the weight table with SRCU */
++	scp = srcu_read_lock_fast(&wi_srcu);
++	state = srcu_dereference(wi_state, &wi_srcu);
++	table = state ? state->iw_table : NULL;
+ 
+ 	/* calculate total, detect system default usage */
+ 	for_each_node_mask(node, nodes)
+-		weight_total += weights[node];
++		weight_total += table ? table[node] : 1;
+ 
+ 	/*
+ 	 * Calculate rounds/partial rounds to minimize __alloc_pages_bulk calls.
+@@ -2718,10 +2725,10 @@ static unsigned long alloc_pages_bulk_weighted_interleave(gfp_t gfp,
+ 	rounds = rem_pages / weight_total;
+ 	delta = rem_pages % weight_total;
+ 	resume_node = next_node_in(prev_node, nodes);
+-	resume_weight = weights[resume_node];
++	resume_weight = table ? table[resume_node] : 1;
+ 	for (i = 0; i < nnodes; i++) {
+ 		node = next_node_in(prev_node, nodes);
+-		weight = weights[node];
++		weight = table ? table[node] : 1;
+ 		node_pages = weight * rounds;
+ 		/* If a delta exists, add this node's portion of the delta */
+ 		if (delta > weight) {
+@@ -2747,7 +2754,7 @@ static unsigned long alloc_pages_bulk_weighted_interleave(gfp_t gfp,
+ 	}
+ 	me->il_prev = resume_node;
+ 	me->il_weight = resume_weight;
+-	kfree(weights);
++	srcu_read_unlock_fast(&wi_srcu, scp);
+ 	return total_allocated;
+ }
+ 
+@@ -3673,10 +3680,7 @@ static ssize_t node_store(struct kobject *kobj, struct kobj_attribute *attr,
+ 
+ 	rcu_assign_pointer(wi_state, new_wi_state);
+ 	mutex_unlock(&wi_state_lock);
+-	if (old_wi_state) {
+-		synchronize_rcu();
+-		kfree(old_wi_state);
+-	}
++	wi_state_retire(old_wi_state);
+ 	return count;
+ }
+ 
+@@ -3742,10 +3746,7 @@ static ssize_t weighted_interleave_auto_store(struct kobject *kobj,
+ update_wi_state:
+ 	rcu_assign_pointer(wi_state, new_wi_state);
+ 	mutex_unlock(&wi_state_lock);
+-	if (old_wi_state) {
+-		synchronize_rcu();
+-		kfree(old_wi_state);
+-	}
++	wi_state_retire(old_wi_state);
+ 	return count;
+ }
+ 
+@@ -3789,10 +3790,7 @@ static void wi_state_free(void)
+ 	rcu_assign_pointer(wi_state, NULL);
+ 	mutex_unlock(&wi_state_lock);
+ 
+-	if (old_wi_state) {
+-		synchronize_rcu();
+-		kfree(old_wi_state);
+-	}
++	wi_state_retire(old_wi_state);
+ }
+ 
+ static struct kobj_attribute wi_auto_attr = {
 -- 
 2.55.0
 
