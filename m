@@ -4,88 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D6DCC61DBD
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 01:03:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5B63C61DB9
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 01:04:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56CBE6B0088; Fri, 28 Aug 2026 21:03:44 -0400 (EDT)
+	id 9B4886B008C; Fri, 28 Aug 2026 21:04:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51E5C6B008A; Fri, 28 Aug 2026 21:03:44 -0400 (EDT)
+	id 98C136B0092; Fri, 28 Aug 2026 21:04:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 433E06B008C; Fri, 28 Aug 2026 21:03:44 -0400 (EDT)
+	id 8C9286B0095; Fri, 28 Aug 2026 21:04:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 20DDE6B0088
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 21:03:44 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2D902A409B
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 01:03:42 +0000 (UTC)
-X-FDA: 85152509484.01.1EE5112
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 88739C0004
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 01:03:40 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eQwi8PNY;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by kanga.kvack.org (Postfix) with ESMTP id 6D5586B008C
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 21:04:43 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CB2DE140574
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 01:04:42 +0000 (UTC)
+X-FDA: 85152512004.05.8E2BFF1
+Received: from mta1.migadu.com (out-55.mta1.migadu.com [95.215.58.55])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9F0EB18000D
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 01:04:40 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=TTcxGMFW;
+	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.55 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787965420;
+	s=arc-20220608; t=1787965481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lFyln8QEmRs5uikiP3R7oCsripVvL4fOG8PYbkvVJso=;
-	b=PxAzCbikGzTXs1lrMhJCzQbe0FVZNIf/CGl1kIGDFq0MMaAUkqvSyQ82EFtGT2dNQTg3GT
-	5J5MlnnczYspL06iXOwpF/YYPAR/nm703j7hanEQ2EJS2hypkMzcLNRdDyd2/6O1YfWBoz
-	CDf3vxnKwbPQ4ZVolkVvHish+nA7frU=
+	bh=ujQsZj3ZcfVTm5paqkOFzeFRu6z6q0TzQhnrTrxNXXQ=;
+	b=y1Ct3ksAJ1dGyB76gB+qFk61PeVdVOfImpJds6xfAQ395uX3aGmVqEnCT3jl1NsX+65Nan
+	3CEnoWjCN4jZNnxfy9UNBIkEj+5UVZwYb2SBURAtMHFtCkiCyg67vbfBsyJcy6U6wFs1OY
+	lyng23Bz4wXuvjJU7QBX7B4ZZ2OZFCI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787965420;
-	b=2PJ1ro4VjpS/fHTurEU+zsU4ch2Dycx99i5GLAaUWj0QdKEWc8zS1p6HB60yahHKt7D3ZP
-	icpBvacMS44mcwlhbucB+J8dYtaZOFSc+aczjYnOaSRo7I1gVeMZVCanawY28fyw69MDce
-	g56U7v4FVkBaWhat4fVfWtHGqwSfSmI=
+	t=1787965481;
+	b=qDWe5RmoUnbXhTqV9+u2+EJ5F5nZZxTqIY6/1203WbbOwGkoLm5/ymoAHm49IiNmY+Qg4q
+	AjPk0azZPohFVgSEYHjfqALwHZetzIp7SPiVt7Nus6oyAeM0G8cN/UqJwnW510Pt8nkKjz
+	kbiyWVQWcGIghfqbZbJfO95lvuMUvpY=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eQwi8PNY;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8ED916053D;
-	Sat, 29 Aug 2026 01:03:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E994D1F000E9;
-	Sat, 29 Aug 2026 01:03:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1787965419;
-	bh=lFyln8QEmRs5uikiP3R7oCsripVvL4fOG8PYbkvVJso=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=eQwi8PNYwht4MHbQ1LuAdmHY+ZwV2eJWmjfwdMsNOuFIEYnKT/CABsi1AMO5LQsl4
-	 wH87a3S9v/spu2LY+5iXkE8GuZLou2B7oj8Ih43AWNHKHSUU9luXorPmcYtAt681+C
-	 1zYsnMkBG9SwtSqkQ1DvTIvEqSHmgpVL7PwpjPcE=
-Date: Fri, 28 Aug 2026 18:03:38 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>, chrisl@kernel.org,
- kasong@tencent.com, nphamcs@gmail.com, baoquan.he@linux.dev,
- youngjun.park@lge.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] mm, swap: Fix potential NULL dereference when
- trying a sleep table allocation
-Message-Id: <20260828180338.0e62379137b832bd66d48b7d@linux-foundation.org>
-In-Reply-To: <ao_ybL9yRO_pHphW@KASONG-MC4>
-References: <20260820115505.20027-1-shikemeng@huaweicloud.com>
-	<20260820115505.20027-2-shikemeng@huaweicloud.com>
-	<ao_ybL9yRO_pHphW@KASONG-MC4>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 88739C0004
-X-Stat-Signature: m7fbq96qbfow379thsheh1m9un3gj9zk
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=TTcxGMFW;
+	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.55 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=kFVnj/RCyVGdhv/GrLJjxqmvHwAXJnYM9xkltOMPrqc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787965478; v=1; x=1788570278;
+ b=TTcxGMFWoEsBiY1ov6+AULkzfP5/X/1wHWOBMu8dlEFvJ5REThzhY3wALQRrUmkBF1BaAZeH
+ 4cFaHcLmcV5NtG6hOqpxz4Om++qEdMBzHwwhtSvu/uCiFDCT6m5IDy5YqTU17QlK/H1rxYWSSyC
+ 1MCLwCoqV6lrgKNGEbY62zvs=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 171c61ff73f22124;
+	Sat, 29 Aug 2026 01:04:38 +0000
+X-Mizu-Trace-ID: 171c61ff73f22124
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 28 Aug 2026 18:04:37 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Joe Damato <joe@dama.to>
+Cc: linux-kernel@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org
+Subject: Re: [PATCH] mm: memcontrol: raise MEMCG_MAX for charges that fail
+ without reclaiming
+Message-ID: <apIvUej_7wvcDUjg@linux.dev>
+References: <20260827233119.411152-1-joe@dama.to>
+ <apDPJzlJ4gS9YUDX@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <apDPJzlJ4gS9YUDX@linux.dev>
+X-Stat-Signature: ntdqukq8o4h5ogbh57nczspn8oeer4ji
+X-Rspamd-Queue-Id: 9F0EB18000D
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1787965420-609826
-X-HE-Meta: U2FsdGVkX18QuqcPtIWpiftUz9TIyHOv3mw3tLLsoieIU/4G9qqgtQ4xPW4icxoJndbtuGtbwahenBXdMzn6yv9kx20lZ0Uo68ErhobgnpJcH/pf+Zq1WgycF+98C7cAClzDp9r/DGmExhA9a0oWA4gzUandGTIpFpHlc7F+y4YT73bGzazwSsk2KWYrrPteK4uIfhY9JFTjBmwJbsS0COqX5XZ8zsfJoOAiY1A0DSm1L182ymfMwkybhav3SYIEKHOxRTywa95laa6hKw7iJA4Jg+XcaNmv7TclpE+b/LmTav6PVBiMwAjuyLaAWxyVER/uazQLW6W8sUPg9YGFnlIAcwGYvYIghH39wrhBelNpjy2X7Yu+uXBeM1y+t0FcBkLvynD67HqF3JKq+anjLcRMvjAqtHaILCRhzL3WyPLncVp0iah7LOuNi2Lt4eSsYgzot/MN6WzW7GYrBJE5NQmYgifTQMhLRaF+/XsjkaLp1gnFQvbw3UZW3kSDNkz8IefSlcabrEztsLoi3pfcRAN4D2ipof5JlosJMlzdzX5fsQcz1TyP83CvIgu1cj+ySInSOQfMtS3AqLsWnMysYyIs4XZmuA1lk562KoiMW3ckiOmZ2O4H1C3hH7kz6raf0ad8E1aVlzyWGCLZ75ibU7lT7YgdtNlQ4L9oiA7TUkdI3yv041ZCRMQ9xdzkRK8a0Uom3OWX8wh55CWs5Rt0WS1V/N3+e47MBoMdOZdGADdRJk130raj9hzdYU2I7Hm0GV7Q+wT8nStQjx4o/1IlbSVxwQybI0A6r2bAIBkKBicVe6gzAlV0/G34/uTGugsd8+jyoMgMsX2Z2macJRMnZ2BUGFpvdTwMURcMZbJg6Nk6dwY2iPMtXxiKAy6IjFN5lmGxSB/ZPQO94edwv1uNasl/nH57WYQTSAPyEMcIZfzmXKnGHIHpfBQXf6FMNyafGtnOEvIIJIgFG3qAwQm
- E9G6QbIU
- hKVF//tCq/LwFEquF9ZNkkx9jVAAmVHXEYhYMDUIqvFfucmIlgNO3QOdLlBSD5zFLPaFNKTpP/OZHUFJlebT77P8ZCfOR22O1U/7pDo/XfYfbfQuJnwHDxTjZEu64/wON9m9pt6zQX0K5nm9MtLefTYEAU9MLGj/G03DHSll9SykRpL23YxpNx7rjX1OoQIDzpCq/Y6e7nL/u3PcXJpscZt4v+HiVC9S2Y2OsrGiyNvbileLlT8nQaGYxEGrJTMdHhzfbVA2UbIWm4ozQCYz2zcdCQ6yBH1AxZSKgkMwOJ80zgXrjbf14IgYXvPJ2X61BBVjIiNz9TFSgS1TQyNP5pXAjKXlFKEhoq6Z5
+X-HE-Tag: 1787965480-999339
+X-HE-Meta: U2FsdGVkX1/E20Y3KKWuVWWOmNsjTmGvr6Sau1XY6KAtMXWF8t9YXa1R3uBzhdebg65eBXjvThVaDmsxHLaMxW6k4CjYYAIiy4/Z3+FwLu97GRNcHJfODf01fnrKAkc3lLVCqbEnXQuOTSiKclrn09m/VyKaa2yoS3t49rnLuQYkc9O9gNE6gLu5629yUVqzRkWKoMZJrnfn8dLwMtLlhI6QLtLgwAZSOBIkcoJf2P8oNl38ptXM//wMsOBAoli1mQQyQG2NgmWs+XZzwEKoIX0+U9JeyxKccY4VEAbTQPhdJhAilgUTzkTRA3evZRxTEGHuBR9JTEpHSvHuzT2CY4kabs+ch7R9JnybW37CElQNMWYumhLYG/v9PDIERI3DlXIaLqyBiNlCSyr99e1pS/x2NZ+fEFbAEG8/zSRcRUe7B6Sls5u+ov51RvzakUleZpHUT/nY0qF+JbKVkrrLiE9R1d+wmesCsFGcyTgJO8RJCXn8b0ZHMKjKH8GQkksifhWE845Xv9gDSpX1rfJF2hxA8UYvEtqmi45NGwaNcHLSizQV+XO+ghuZ3V08/8eCpfFmeMk65d2Y1PB1L+SbDwpPsK2OwXUPhUS5clNV7XE1fluJxloIOhq9Pozfz6gjMFx1nrQZzx5HryuQkNXyk7e9uBKl0ZSiWwqAYfy/VDio42G88JYLPPXPhxA4oGFH3bazSBbfLZZOeglXeF3LRHBCj+OEq97WSXHlUcaiKfaFb2z+UfMUg8uIamcih4aCxzmnLtp9qy03T93d39zWJt9B6uRHjSWHRt0HNniWiiNnH4ZolWOIBnDxtMgESdVv3r4rXEt4dr8rchLMNp/2JnWhc/LdxIQ1/PEof8y1YqW5gF8B3nDhk/A4YmP0+uqVW/YsoEC7ZFlC9XRO9EGHF4EMgtpZ5S4qJ4g29igY2Ht2CwDLP8NRWLwRzjj8tP7AhHXg2pe+qvXd6X+vZLU
+ FcxBs8fL
+ Dm+myzIKpcQvjDWEYoCNdH6jMKjQ0KQ0tXAJXCC3knO+71gSbWqyXrDTP5LDsq24XOmInIrSdq2Ff3eOSB+hEuAD8Z6Xj0jtO+Z949dHQGpgPN7b4/YHMBZGWqKosKJRyEgJRP4LZX+neWuaz/R3V8j9uc9YlFmSHAO4CQ8CG16+jbWYu1r/SiEPSCrtSYPfDpVFq5/YCmAG3Z5cvSJ97cuildwYkAfvQ5GoaJ9jnDyIeMKJwA19smN4dKrZ1OmMMe9l5ZK2tF89AyakzHiZdxjW0N5oojhePAR+crZprUcNjKhv86Jgg887JBHvRWYhKqVd7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,36 +92,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 27 Aug 2026 17:10:54 +0800 Kairui Song <ryncsn@gmail.com> wrote:
-
-> > --- a/mm/swapfile.c
-> > +++ b/mm/swapfile.c
-> > @@ -466,8 +466,6 @@ static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
-> >  	if (!table)
-> >  		return -ENOMEM;
-> >  
-> > -	rcu_assign_pointer(ci->table, table);
-> > -
-> >  #ifdef CONFIG_MEMCG
-> >  	if (!mem_cgroup_disabled()) {
-> >  		VM_WARN_ON_ONCE(ci->memcg_table);
-> > @@ -487,6 +485,12 @@ static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
-> >  		return -ENOMEM;
+On Thu, Aug 27, 2026 at 05:13:44PM -0700, Shakeel Butt wrote:
+> On Thu, Aug 27, 2026 at 04:31:18PM -0700, Joe Damato wrote:
+> > Charges that exceed memory.max and return through the nomem label can
+> > raise no event and simply return -ENOMEM.
+> > 
+> > A non-blocking charge can hit the limit, get rejected, but is not
+> > visible in memory.events.
+> > 
+> > This was noticed in a production setting where bpf_mem_alloc() attempted
+> > to refill its per-cpu freelists, which triggered a non-blocking charge
+> > while at the limit.
+> > 
+> > Move the event so that it is raised as soon as the charge is known not
+> > to fit.
+> > 
+> > Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
+> > Signed-off-by: Joe Damato <joe@dama.to>
+> > ---
+> >  mm/memcontrol.c | 15 +++++----------
+> >  1 file changed, 5 insertions(+), 10 deletions(-)
+> > 
+> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> > index 1271d390b617..3904fe9a7b2e 100644
+> > --- a/mm/memcontrol.c
+> > +++ b/mm/memcontrol.c
+> > @@ -2683,6 +2683,11 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+> >  		goto retry;
 > >  	}
-> >  #endif
+> >  
+> > +	if (!raised_max_event) {
+> > +		__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
+> > +		raised_max_event = true;
+> > +	}
 > > +
-> > +	/*
-> > +	 * Make tables visible to cluster_is_usable() after everything is
-> > +	 * ready.
-> > +	 */
-> > +	rcu_assign_pointer(ci->table, table);
+> >  	/*
+> >  	 * Prevent unbounded recursion when reclaim operations need to
+> >  	 * allocate memory. This might exceed the limits temporarily,
+> > @@ -2711,9 +2716,6 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+> >  	    mm_flags_test(MMF_OOM_SKIP, current->signal->oom_mm))
+> >  		goto nomem;
+> >  
+> > -	__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
+> > -	raised_max_event = true;
 > 
-> Hmm, but for the error paths above, they will leak the new allocated table?
+> I just noticed that this will change the current behavior where we keep
+> increasing MAX counter while charge request loops through reclaim and retry.
+> Though we have not documented that behavior, so not sure if it is worth
+> preserving. It does help identify cases where a request keep looping in the
+> charge/reclaim/retry path.
+> 
+> Let's see what others say. Keeping the behavior should not be that hard if we
+> decide to keep it. Something like below (untested):
+> 
 
-Sashiko thinks so ;)
+Hi Joe, let's go with the following patch. No need to change the semantics. Also
+I think we should Cc stable as getting ENOMEM/allocation-failures without the
+corresponding counter i.e. MAX getting increased is clearly a bug and unexpected
+to the users and will make debugging/monitoring harder.
 
-It also might have found a pre-existing data-race which seems
-sufficiently on-topic for this patchset?
-
-	https://sashiko.dev/#/patchset/20260820115505.20027-1-shikemeng@huaweicloud.com
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 1271d390b617..6bfa4ad30b24 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -2656,10 +2656,11 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+>  	bool raised_max_event = false;
+>  	unsigned long pflags;
+>  	bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
+> +	int ret = 0;
+>  
+>  retry:
+>  	if (consume_stock(memcg, nr_pages))
+> -		return 0;
+> +		return ret;
+>  
+>  	if (!allow_spinning)
+>  		/* Avoid the refill and flush of the older stock */
+> @@ -2770,16 +2771,11 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+>  	 * put the burden of reclaim on regular allocation requests
+>  	 * and let these go through as privileged allocations.
+>  	 */
+> -	if (!(gfp_mask & (__GFP_NOFAIL | __GFP_HIGH)))
+> -		return -ENOMEM;
+> +	if (!(gfp_mask & (__GFP_NOFAIL | __GFP_HIGH))) {
+> +		ret = -ENOMEM;
+> +		goto out;
+> +	}
+>  force:
+> -	/*
+> -	 * If the allocation has to be enforced, don't forget to raise
+> -	 * a MEMCG_MAX event.
+> -	 */
+> -	if (!raised_max_event)
+> -		__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
+> -
+>  	/*
+>  	 * The allocation either can't fail or will lead to more memory
+>  	 * being freed very soon.  Allow memory usage go over the limit
+> @@ -2789,7 +2785,15 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+>  	if (do_memsw_account())
+>  		page_counter_charge(&memcg->memsw, nr_pages);
+>  
+> -	return 0;
+> +out:
+> +	/*
+> +	 * Don't forget to raise a MEMCG_MAX event for forced or rejected requests.
+> +	 */
+> +	if (!raised_max_event)
+> +		__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
+> +
+> +	return ret;
+>  
+>  done_restock:
+>  	if (batch > nr_pages)
+> @@ -2848,7 +2852,7 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+>  	    !(current->flags & PF_MEMALLOC) &&
+>  	    gfpflags_allow_blocking(gfp_mask))
+>  		__mem_cgroup_handle_over_high(gfp_mask);
+> -	return 0;
+> +	return ret;
+>  }
+>  
+>  static inline int try_charge(struct mem_cgroup *memcg, gfp_t gfp_mask,
+>  
+> 
 
