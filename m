@@ -4,108 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D065C61DBE
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 08:26:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C94ECC61DBE
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 08:37:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 186696B0088; Sat, 29 Aug 2026 04:26:36 -0400 (EDT)
+	id A26F16B0088; Sat, 29 Aug 2026 04:37:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15DF86B008A; Sat, 29 Aug 2026 04:26:36 -0400 (EDT)
+	id 9D6DB6B008A; Sat, 29 Aug 2026 04:37:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 074D66B008C; Sat, 29 Aug 2026 04:26:36 -0400 (EDT)
+	id 8C7466B008C; Sat, 29 Aug 2026 04:37:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D2FD36B0088
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 04:26:35 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 52A6812066C
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 08:26:35 +0000 (UTC)
-X-FDA: 85153625550.14.BC4F86E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 7896FC0004
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 08:26:33 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5AEF86B0088
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 04:37:40 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B33BC16065D
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 08:37:39 +0000 (UTC)
+X-FDA: 85153653438.02.497D781
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf10.hostedemail.com (Postfix) with ESMTP id D9F3EC0003
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 08:37:37 +0000 (UTC)
 Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VX3mGmcw;
-	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787991993;
-	b=Rkgo8L3SPgRpuvEcO0hL15BlDqsPfxOakQyiUYotNKikJFWlPp19mgVmo4w3WEIX0GHkzj
-	o+5mTZ4Sd52fHCWFnF7QKm1+C1XaeCrzs4zin1MFj+9xcOTUkw5GW/E6yzY8Ti6AppzwJh
-	jlPrJUrtRHdL25VOKjKBs6QRKr/1MVo=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VX3mGmcw;
-	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DCvhkcUF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787991993;
+	s=arc-20220608; t=1787992657;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ELz8WpSjJQ38zjegY/jVb779cX2lY7cfwp1pllayTUM=;
-	b=vdTe3oLJB1KrUjwREwZ0xEfOjV87LZZB9KIA+tGUyPCAGDALCDJFFWVsGdtCV8fck3vb/o
-	oz652zRxv1tD3K1M8CrE+j6JhklJQ9e1FHOS3JvDOLc5NEfcvQVCGZ66sq9K7dtmKQF8kt
-	k7aucpoatkRXYkolAf1kMZ6dxR/yB9I=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 627AE601FE
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 08:26:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00C2B1F00ACF
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 08:26:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787991992;
-	bh=ELz8WpSjJQ38zjegY/jVb779cX2lY7cfwp1pllayTUM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=VX3mGmcwK3arZBZaxnK+cLQQYM75+vBP4n+6HcOqKFptpaZqeOC+MYXommfOyItgJ
-	 swHsvPpCgTE3WvLmZqhHBwFNIZ/uOytolr4D8399ZL1UhHyeDsxIpRMgCp8oyTHKL7
-	 1zWgFobF0P7xX0A1Nki6UMpR5fkwcDMbYhmnD7b4qwxRIJUpPOYseuQ2vOWQmdd5/H
-	 /609oaOqp1k6M18mTaqFq4cV3HEx1yGp8BfaXdxs8TZFfa6c3vzs1BAzC9GcU5eNwN
-	 wConOUZXx+3CQTdsLXtXjey8YgS6KgFfwQxfgmhRwnegQx0vNNVBHEim/4gG2fYB+S
-	 1xmwww2NXkhvg==
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-936dfd009d1so268950785a.1
-        for <linux-mm@kvack.org>; Sat, 29 Aug 2026 01:26:31 -0700 (PDT)
-X-Gm-Message-State: AFuF++lyKsR3pi0+LtgH4pQOIl5ZNLAqKik9G7M9aKLuIQt3Mbrkz/o5
-	oxH3HXjdKN+2JmypuKZrAu2n9Yd94OvIS9mCqVBYWP4vXeVcTe0WDdu47YeKfVA8GM4A4DwjCa0
-	wJ4tyd58Z0CMyJjzHWF3zHPgEcZwleLg=
-X-Received: by 2002:a05:620a:2901:b0:92e:57ea:8c8b with SMTP id
- af79cd13be357-938ff9abf4fmr2092839685a.0.1787991991229; Sat, 29 Aug 2026
- 01:26:31 -0700 (PDT)
+	bh=A4IwbgMrRyJTDKTZ/KQuUur9K0X+mbmrk/E1Z34LTpY=;
+	b=eBqeTAenIG2NcHOEve324m6MrCAJdmAXxFMXKoO05F3G33C4cA25llwdVr+ArBV58nO/W1
+	YKA2Ux68BMElPHYFQ1rJ0obMZcSEhibkdIATfTCBQjT0SUeksoLpa4N2+CMO4B0DGZl0Nb
+	6GQBQmD1EBMpVPLTFxuRESCOYdR4mAM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787992657;
+	b=V6nyzBOU3GJC0pZxN+ca0cmDo+3ScVKtplAN4ofRfz+/m60EXkE9Xzg6O6ds/8IAtUPSSl
+	BNWmbpiiAOQRWqITARblPNx+F+w/a96bIRXjMargJF8ObuNkqtSwVxri2Ptw4olyh+Nx+2
+	fbfXPXh3HX368AkVzu/gZab7pcuFvKA=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DCvhkcUF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2d71ae3455aso26909115ad.1
+        for <linux-mm@kvack.org>; Sat, 29 Aug 2026 01:37:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787992657; x=1788597457; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=A4IwbgMrRyJTDKTZ/KQuUur9K0X+mbmrk/E1Z34LTpY=;
+        b=DCvhkcUFnHrSSHK2VUv6TpDwaZZjqmLOa/mDxRC73H5gbtA3ZMYFRnVxJX1fIcsK6D
+         ZGvMxIAglOieJ1MHIfw2mUkIYinXFcVR4/W3kx06js2NNnPg3thzRiMBVjxlhw9euvZ+
+         VpPYqApl67t94AZq2DxMZuJ4UEssIBt5PJfXTjFCu5RlwPUeKbKdzEZcZ8GRoeGqvj3Y
+         ruMXvkqElWmyqaf3mwfX07fr41dLD6WK9Xf4niaYBYYv0M6fLbqlHvHu4z7eZ9bPP5/V
+         Q9cReqbTqWaYQ7Brmnilq0tSEfoOSRi2J/sbAtPTqN2Z2EF9+pLMfC6oCoeKEHIN3Xzf
+         lOOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787992657; x=1788597457;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=A4IwbgMrRyJTDKTZ/KQuUur9K0X+mbmrk/E1Z34LTpY=;
+        b=XGVhjwEGpwEFll8Bfya9nf3GALyfXtdhWx+C0d32c63eekU0D7rGPDY4iAHiiOAovn
+         f1EB5z58DKZZcSki/lulR3fm+v1PelRsW4enjWeNl/UVj5+LH2tndwpEkvBnGwyy2fer
+         6ojPp8xDsReBgfLOIAgHcynk8NEaT6rSWC0vCQ4rYGP461hW/nzTgDUTlZLBkHu8H+LR
+         XIukxmO8e0fLiCDn7fh3qLXTkWbWO71GjcfptotLyzOawKI3EknlFhUj9mcJExnHlxTE
+         HFUfYptrcvqD/X83/5s9jFoCk3QdwtsBis+9E1+OsEsKo78tRsYF4eXSRamSYrKqr9jn
+         uAEQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxWUls1+C3kzxafhOiPBRQOIOhqG6WdNGuhBO3UwnUPVXTTojb9/qZ7RuXBZG/ACakjbrFlz0lUJA==@kvack.org
+X-Gm-Message-State: AFuF++lt0gwtp7fsceIIuGHLJTHPvBYKPxownWH8WiG8+D34yRLQE5iY
+	FphaM50GNsQLJT2XoluZYEHG54DUI+kleo5GMliDtCVY0l5UpHT6/2XN
+X-Gm-Gg: AR+sD10to6r0KJwDhb2bPSUgJbtd3TjArudfWzgbOVBiW/eOugwCdjH1s9bR3PrIwf5
+	kW8rJEtVxsLMLIsMUn/11Z/oSCWQNZolaVFvhiLUSTzAKrOz1vpjZzlVCZaKQ9gB9VkcHP5huKs
+	3ASLqlLJugtvrZU/D9ph4Rg3rV/RVYmTXKUvYN/MelZ2HJAWVt7Xw3JGCQBp6HNETu6mCrVFJKD
+	5Z8fm2Syzb8AqnvTcJtWcj9RkxP+sviYqz/TuWIIpBtWtLUoL1VcjMiOTJ9weGxgOTOaXIyoIpg
+	7RmgnAdDrlmOtQBG7rkyKWl7wc1TlZDNkWXcuiL1Kw/6Ufsiq4dkraBTCM6WtwIYpVmmqEt+Dt2
+	RNptFFGUNMj5yPK8oJV3kvUjfvKS3ym7Pe4HI+zb6bxSXMvrZ3s/o9XjDXRO1DUR4TUJMJzwl7k
+	/hTkIiO06uGO7PoRjm74SsunCcHHB3ax4xXrx+a/JxqvFlrQAGq1hZEQ5joUIPuDP/ePA+9i6V2
+	mgT1919eLooDoD5+ti7Ojnf8GDb
+X-Received: by 2002:a17:902:ffce:b0:2d8:d4d2:dc9a with SMTP id d9443c01a7336-2d8d4d2dfadmr79579325ad.22.1787992656523;
+        Sat, 29 Aug 2026 01:37:36 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2402:1980:88cd:27c4:5897:46d2:587d:19e7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d7594ffc94sm12819105ad.5.2026.08.29.01.37.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 29 Aug 2026 01:37:35 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: aethernet65535@gmail.com,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/damon: fix unconditionally skip last region
+Date: Sat, 29 Aug 2026 16:34:26 +0800
+Message-ID: <20260829083744.73299-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260828182910.70304-1-sj@kernel.org>
+References: <20260828182910.70304-1-sj@kernel.org>
 MIME-Version: 1.0
-References: <20260826-mglru-flags-cleanup-v3-0-d9f1c75549c8@tencent.com>
- <20260826-mglru-flags-cleanup-v3-2-d9f1c75549c8@tencent.com>
- <CAGsJ_4yasRXO52K-13dx9ZXPw95wEyn2bpnf0NiQ2z56dxf-vQ@mail.gmail.com> <CAMgjq7B7TFfBZLPorZEmg5y9u6TzFbYVQXZNC8+iztGtifmdKQ@mail.gmail.com>
-In-Reply-To: <CAMgjq7B7TFfBZLPorZEmg5y9u6TzFbYVQXZNC8+iztGtifmdKQ@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Sat, 29 Aug 2026 16:26:19 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4z0f=gN58BgneY8GMyOPk+T-D9kY99Fo5FA1MKx2sADyA@mail.gmail.com>
-X-Gm-Features: AcwNN1Vh8SvUhrDJHT68EhT8q8n0BxzVKAvDoklCBhtG9RXuinmOYLs_SOCYxYw
-Message-ID: <CAGsJ_4z0f=gN58BgneY8GMyOPk+T-D9kY99Fo5FA1MKx2sADyA@mail.gmail.com>
-Subject: Re: [PATCH v3 2/6] mm/mglru: introduce helpers for manipulating gen
- and refs flags
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Ridong Chen <ridong.chen@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Yu Zhao <yuzhao@google.com>, 
-	Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 7896FC0004
-X-Stat-Signature: 1kg4jmrjfcc4srxmq413bfcjhtsb61hc
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D9F3EC0003
+X-Stat-Signature: s7fyt9hc8q3mxuicqbp4kij91xeu6r7o
 X-Rspam-User: 
-X-HE-Tag: 1787991993-169878
-X-HE-Meta: U2FsdGVkX1/qGGjRuOe4aVEy5RJYn3oqqIgLHFe7syJKwXXgLwuNZRl4UbXTLdcC4VB+8sSRye3LYPOWnddFXknSjiAQHeVSJt0xlYwRM0CisHd9z7iZqJigCym6GJfOC5yTwE73+XJHzNJy64n+UbZ1RqEG7EKppupnEOS66HvnnGUhKAoRZ4296xDK0eRO4KxKM8qwENSYOcTKAd7NIGeUz8a2ezrH8OyY+NcG4vhUj7tMrXJeauaV0Ekv/xQvV1NlHJlmX0L8eUKis6Di4qxaMuy0FodbpdNU4ujF2OWkGHnuEG99EjHr2JFDs5Wu8Bc2XYrLMUOdhJ/AG3SdPTUD3DD2xUyOeVW4fw7GcjyJsciq79nJDETiryT9AW0kvKa9HVWUIwGcpWTFnJa7bL1xRRdnxC4o9LC5OnzN8W1b1XBZlh3NEqjDrJlAL2P4jCgC3BnSGJ1pfcPj9H/H/fE7bQAl0RZTlLoM2vmVQ2k4HlwxU32V5mShy1j2A6S7FUNEv9QBRGUbu2B7jiIQev9IFgL7ov0M0+qeBD4qhr6SOak2vChMHB5iju/sx1Jad5fQqp9nGX/aZnXA8e25Owj4IzYdH989T2xhnDttaG3eG3Km1JpKYCAJBXHgp9wl1NWxumSvhJWkicZAVIBU+T6xKDLFKRdWld0sdlr2rPfDrrvF3FNV4i9Sbu4vwlGimH0/Guvy/pTRYrklGKN/3F7BfOWOKNU+++6iBq8MFD7Av1F4uXOBK5k72zZ8e32Ee7TC1y1JQjqb2Je6FbE7CVohoGC2nBDa8ew7cxecGo4InvsLeOPLOsgtMLae7Q0IZa1xI3HD44lp5g2XJYDYoaFFRr1YX9hfW8neX1hCLiaajkm8sFET3CimNYJTQcnTTLNenARleP5SYS7P5jVmsVCDiCK4tzJS9VAjsgXrE0vtLtekIYzg34W829sPdqOy+oDubyGLjiLG8qLGkLi
- b1sv8DQP
- yEoEaI3d1ofLX/PaEUiVwFNJgzzzZ1rBSO7QvOlAh+CAFGG5EXYRavDnULNC3HLFkt/ZMrx/C+gk2dTjlytKSJ/Vaa6jlunmnUsiSje8JpA2w1aEicRCbRb/KcWopPiXS3BguV4rY6UPDQ1SoKfNtuKxCqvMEn3pGf8xEUIYqEe1d+BQ3BnghuqfRujzW/ZTGgWfjkYBl5nImnyaofC7D5qpV3n4mLL+eC7NBfTqo0m5EtJzjj+KiXU2czPC98QTkfKfxXAC4JduOnmttFky7zcVsSMcXt4MEqr2xrEIQnZrv/unhdloT3d5MZA==
+X-HE-Tag: 1787992657-512496
+X-HE-Meta: U2FsdGVkX1+/TyI7RZdFbfbdqlMtw2WYk5vwOCljKG36jHBBNrVgRYSgtopk7aJiwnLgw0uSB7X7T9vRFXu2yXuSVCFp335Jjy/3oSfY+Q6fXXohDYIg0q9n07L7O8V4CEhUn4iYbNUqMAwnV2Bz6w19pr5NCDHwL48ZJT2Et1W5BnNLWzwuepLyTaUuDGerFsaavc9M4rBbOiKXahgeWMgaq9EmohJ6m6b81qIcuNxR+WwvOxMFgzZc8TS+68E6wUevYN07tObWK392BSQasc7UPD75vh/9qcjZohgT3/E4UHgWTlnYIoiibRBR5KyVieWCURrrttiRurseNaConJ8dsHjPXxEGsyQHlBSGHeLVptYT2qGUdZilymL8tJypAcG2VRc2BFYPXrJJqi5WkB5wly+8725C8NvNHZGFMre9WybgDqkBzPZrNLvJI4qm2C4z0zccNxTYvDYZ8kSMPrT07hFR/nmZJ5jVrkJUGI9tmtzqbfrPuTGYhyyXdX8oJERez1FSVZY2jZNESBH2vat71xWonSQoVhmnGmIgsI4KhMbPfmuPZxj3FZh6aIjIOys5yAboQSTL2RdfNWmVrIw+Uvf1DUNKaD7FTPC5EVkEZPb9lYFZqZRDlCDocDmH9L7Z0uu1nrmZEkP01OqVcuKcsQ25RjfM8LIfRqxfhcUpLVm0FdLoJEX6DRFj4M7C7ipfZvS11lGCJI1j2kZ2xP7vaVMCAGkL0bHymj5Edes/ICpTVe1968SnAHV4JzbDSDJL+9DP6JMiNLMGAyrhytuhgE8teTap8TiTdYTVE8nU6zwmKly2oD0rgr4DjvgooKaeOVjEtdD6JSR2PBz83bCRwhkBat+EGEYDb5Jj0irZttN7lgBWyw+GjdkXf7QBzpFFSTW9hBG3R45zbblqLcOquL/CYhmUnD6HHkP+ZyiB/nNgMOMlrESf6Be7XuZp2EhBxMuKQgS5SHmKtZi
+ G7d6IGre
+ X0VXxxwJDVEhpGwInGIfa3nCVPKPAND8mNKMyUJ4y4+MHN+EV9oQDI32Wjc6IHX340H/LPVifI5oYA4C9b1LeOMohSDPmY3Iu32k5RrfdeL27jN7W8McoTwXe8Drd5967LrHJET71ULqZZGele9kpEl6pGODNGO+sKc1U92peemSjxzn6tzjh4NFOVjzZv9F3E9mD3qnbICCTt6/4Oy9mUlQZiY5wqYvhsbZDTTC5YL+b6Nda205sC3BNQOYXa4VyTONG7YZtIbLlmPBXbCWb0ZC8WbbdqqasVBwCVezUyN2FDMxEicRDveqkOeEqNHwr4y0XsnlQkBRaplyl6orwsIZV441bOMa8m/HelU0olVAF9cXfg2vo6foE7ETkgkGyrg7oDR9cgK6i3hARlbXyWqCHzOEwX8tjd9QRsL/oJEYxrtD78ubKbo0GJ+Z2jyioh721
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,127 +122,345 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 29, 2026 at 3:48=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
-e:
-[...]
+On Fri, 28 Aug 2026 11:29:09 -0700 SJ Park <sj@kernel.org> wrote:
 
-> > > + * lru_gen_set_flags - Set the LRU generation number to specified fo=
-lio flags.
-> > > + * @flags: pointer to the folio flags
-> > > + * @gen: generation number, between 0 and (MAX_NR_GENS - 1), inclusi=
-ve.
-> > > + */
-> > > +static inline void lru_gen_set_flags(unsigned long *flags, int gen)
-> > >  {
-> > > -       unsigned long flags =3D READ_ONCE(folio->flags.f);
-> > > +       VM_WARN_ON_ONCE(gen >=3D MAX_NR_GENS || gen < 0);
-> > > +
-> > > +       *flags &=3D ~LRU_GEN_MASK;
-> > > +       *flags |=3D (gen + 1UL) << LRU_GEN_PGOFF;
-> > > +}
-> >
-> > It seems that we are setting the gen in the flags, rather than
-> > setting the flags themselves.
-> >
-> > The current name makes me think that the function is setting the
-> > entire flags field, especially since `lru_gen` is used as the
-> > namespace for various MGLRU functions, e.g.:
-> >
-> > void lru_gen_add_mm(struct mm_struct *mm);
-> > void lru_gen_del_mm(struct mm_struct *mm);
-> > void lru_gen_migrate_mm(struct mm_struct *mm);
-> > struct lru_gen_folio;
-> > lru_gen_update_size(lruvec, folio, old_gen, new_gen);
-> >
-> > However, this function only sets the gen bits in the flags.
-> > Maybe we could use a name that makes this distinction clearer?
-> >
-> > Could they be named as below, or is there a better naming option?
-> >
-> > set_gen_to_flags(unsigned long *flags, int gen);
-> > get_gen_from_flags(unsigned long flags);
-> >
-> > Or something like flags_to_gen() or gen_from_flags()?
->
-> I think having lru_gen as the prefix is a good idea actually since the
-> header here is a very generic one, the word "gen" could be used my
-> many other subsystem or drivers, gen_to_flags sounds too generic..
-> While lru_gen is a very specific MGLRU thing.
+> On Fri, 28 Aug 2026 16:47:37 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> 
+> > Once quota set, the charge_{target,addr}_from unconditionally skips and
+> > resets at the last region of the tracked target, so the last region can
+> > be skipped even when it has not been processed.
+> > 
+> > Example:
+> > 
+> >     1. Target has 2 regions: R1 (0-100 bytes) and R2 (100-200 bytes).
+> >     2. Quota is configured to process only 50 bytes per window.
+> >     3. Window 1: Processes R1 (0-50).  Quota is full.  Cursor is saved
+> >        at (Target, 50).
+> 
+> Cursor means charge_{target,addr}_from, right?  Let's explain that, or just
+> keep using the terms (charge_{target,addr}_from).
 
-Yes. The current problem is that `lru_gen` has been used as a
-generic prefix for MGLRU functions. Here, however, we mean the
-actual generation (`gen`), rather than `lru_gen` as the MGLRU
-namespace.
+Yes, thank you for pointing that out!  I changed cursor to
+charge_{target,addr}_from now.
 
->
-> How about just rename it lru_set_gen_flags / lru_get_gen_flags? And we
-> will have lru_set_refs_flags / lru_get_refs_flags below.
+> 
+> >     4. Window 2: Skips R1 (0-50).  Processes R1 (50-100).  Quota is
+> >        full. Cursor is saved at (Target, 100), which is exactly the
+> >        start of R2.
+> >     5. Window 3: The loop reaches R2.  Because R2 is
+> >        damon_last_region(t), the old code unconditionally returns true,
+> >        skipping R2 entirely and resetting the cursor.
+> > 
+> >     Result: R2 is permanently skipped even though it has never been
+> >     processed.
+> 
+> Let's make example simpler by setting R1 (0-50 bytes) and R2 (50-100 bytes) or
+> quota size 100 bytes per window.
 
-sounds good to me.
+This is the updated example:
 
-[...]
+'''
+Example:
 
-> > > +static inline void lru_refs_set_flags(unsigned long *flags, unsigned=
- int refs)
-> > > +{
-> > > +       VM_WARN_ON_ONCE(refs > LRU_REFS_MAX);
-> > > +       BUILD_BUG_ON(LRU_REFS_MAX !=3D (LRU_REFS_MASK >> LRU_REFS_PGO=
-FF) + 1);
-> > > +
-> > > +       *flags &=3D ~LRU_REFS_FLAGS;
-> > > +       if (!refs)
-> > > +               return;
-> > > +       *flags |=3D (BIT(PG_referenced) | ((refs - 1UL) << LRU_REFS_P=
-GOFF));
-> > > +}
-> >
-> > Similar to the above, maybe we could use more descriptive names?
->
-> And here we have lru_set_refs_flags?
+    1. Target has 2 regions: R1 (0-100 bytes) and R2 (100-200 bytes).
+    2. Quota is configured to process only 100 bytes per window.
+    3. Window 1: Processes R1 (0-100).  Quota is full.  charge_{target,
+        addr}_from is saved at (Target, 100).
+    4. Window 2: The loop reaches R2.  Because R2 is
+        damon_last_region(t), the old code unconditionally returns true,
+        skipping R2 entirely and resetting the charge_{target,addr}_from.
 
-sounds good to me.
+    Result: R2 is permanently skipped even though it has never been
+    processed.
+'''
 
-[...]
+> 
+> Also, it continues being skipped only in a corner case that the region
+> addresses and the access patterns are kept.  So the user impact is mild.  Let's
+> clarify that to not make users unnecessarily afraid.
 
-> > > --- a/mm/vmscan.c
-> > > +++ b/mm/vmscan.c
-> > > @@ -843,19 +843,22 @@ static bool lru_gen_set_refs(struct folio *foli=
-o, const vma_flags_t *vma_flags)
-> > >         if (!folio_test_referenced(folio) && !folio_test_workingset(f=
-olio)) {
-> > >                 /* Activate file-backed executable folios after first=
- usage. */
-> > >                 if (is_exec_file_folio(folio, vma_flags)) {
-> > > -                       set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS=
-, BIT(PG_workingset));
-> > > +                       folio_set_workingset(folio);
-> > > +                       folio_set_lru_refs(folio, 0);
-> > >                         return true;
-> > >                 }
-> > >
-> > > -               set_mask_bits(&folio->flags.f, LRU_REFS_MASK, BIT(PG_=
-referenced));
-> > > +               folio_set_lru_refs(folio, 1);
-> >
-> > We have quite a few instances of folio_set_lru_refs(folio, 1) and
-> > folio_set_lru_refs(folio, 0). Do these values have any special
-> > meaning? Could we add wrapper helpers to make the code more readable?
-> >
-> > `1` just means `PG_referenced`, right? Could we add a comment or
-> > changelog description to clarify that `1` actually means `refs =3D 0`,
-> > but `PG_referenced` is set?
->
-> Right, I introduced a LRU_REFS_REFERENCED in a later series. Now a
-> comment could be good enough, as in fact PG_referenced is already kind
-> of a unstable page flags under both MGLRU and CLRU. For MGLRU it only
-> mean the refs count is larger than 1 so using a strict 1 here seems
-> even cleaner, but it still keep getting cleared in many places. As for
-> CLRU, the flag keeps getting reset when a folio is activated leading
-> to an under-accounted value from smap and other components. So
-> sanitizing its usage is a long-term goal.
+I will add this clarification in the next revision:
 
-Ok.
+'''
+However, it is important to note that this is a very minor issue.  This
+is because it is triggered only when the previous window saved/kept
+charge_{target,addr}_from, and in the next window, all regions except
+the last region were skipped by damos_skip_charged_region().
+'''
 
-Best Regards
-Barry
+> 
+> > 
+> > Fix this by only skipping the last region after it has been applied.
+> > 
+> > Fixes: 50585192bc2e ("mm/damon/schemes: skip already charged targets and regions")
+> > Cc: <stable@vger.kernel.org> # v5.16.x
+> > Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+> > ---
+> > 
+> > Changes from RFC v1:
+> > - Minimal fix, only fixes the issue where the last-region is skipped.
+> > - Add an example to the commit message to demonstrate that this error
+> >   occurs very rarely.
+> > - RFC v1: https://lore.kernel.org/damon/20260825124616.5129-1-aethernet65535@gmail.com
+> > 
+> > ---
+> >  mm/damon/core.c | 13 +++++++------
+> >  1 file changed, 7 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > index 644daf5a1656..21dc6b086c42 100644
+> > --- a/mm/damon/core.c
+> > +++ b/mm/damon/core.c
+> > @@ -2347,14 +2347,15 @@ static bool damos_skip_charged_region(struct damon_target *t,
+> >  	if (quota->charge_target_from) {
+> >  		if (t != quota->charge_target_from)
+> >  			return true;
+> > -		if (r == damon_last_region(t)) {
+> > -			quota->charge_target_from = NULL;
+> > -			quota->charge_addr_from = 0;
+> > -			return true;
+> > -		}
+> >  		if (quota->charge_addr_from &&
+> > -				r->ar.end <= quota->charge_addr_from)
+> > +				r->ar.end <= quota->charge_addr_from) {
+> > +			if (r->ar.end == quota->charge_addr_from ||
+> > +					damon_is_last_region(r, t)) {
+> > +				quota->charge_target_from = NULL;
+> > +				quota->charge_addr_from = 0;
+> > +			}
+> >  			return true;
+> > +		}
+> >  
+> >  		if (quota->charge_addr_from && r->ar.start <
+> >  				quota->charge_addr_from) {
+> 
+> As Sashiko pointed out, this doesn't work if the the last region's start
+> address is smaller than charge_addr_from and the end address is larger than
+> charge_addr_from, but the size to skip (charge_addr_from - r->ar.start) is
+> smaller than min_region_sz.
+> 
+> As you replied to Sashiko, let's do the last region handling in every case.
+> While doing that, let's do the charge_{target,addr}_from reset in only one
+> place, like below.
+> 
+> '''
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -2688,36 +2688,40 @@ static bool damos_skip_charged_region(struct damon_target *t,
+>  {
+>         struct damos_quota *quota = &s->quota;
+>         unsigned long sz_to_skip;
+> +       bool skip = false;
+> 
+>         /* Skip previously charged regions */
+>         if (quota->charge_target_from) {
+>                 if (t != quota->charge_target_from)
+>                         return true;
+> -               if (r == damon_last_region(t)) {
+> -                       quota->charge_target_from = NULL;
+> -                       quota->charge_addr_from = 0;
+> -                       return true;
+> -               }
+>                 if (quota->charge_addr_from &&
+> -                               r->ar.end <= quota->charge_addr_from)
+> -                       return true;
+> +                               r->ar.end <= quota->charge_addr_from) {
+> +                       skip = true;
+> +                       goto out;
+> +               }
+> 
+>                 if (quota->charge_addr_from && r->ar.start <
+>                                 quota->charge_addr_from) {
+>                         sz_to_skip = ALIGN_DOWN(quota->charge_addr_from -
+>                                         r->ar.start, min_region_sz);
+>                         if (!sz_to_skip) {
+> -                               if (damon_sz_region(r) <= min_region_sz)
+> -                                       return true;
+> +                               if (damon_sz_region(r) <= min_region_sz) {
+> +                                       skip = true;
+> +                                       goto out;
+> +                               }
+>                                 sz_to_skip = min_region_sz;
+>                         }
+>                         damon_split_region_at(t, r, sz_to_skip);
+> -                       return true;
+> +                       skip = true;
+>                 }
+> +       }
+> +out:
+> +       if (r == damon_last_region(t)) {
+>                 quota->charge_target_from = NULL;
+>                 quota->charge_addr_from = 0;
+> +               return true;
+>         }
+> -       return false;
+> +       return skip;
+>  }
+> 
+>  static void damos_update_stat(struct damos *s,
+> '''
+
+I noticed a potential subtle issue in the suggested fix above:
+
+'''
++out:
++       if (r == damon_last_region(t)) {
+                quota->charge_target_from = NULL;
+                quota->charge_addr_from = 0;
++               return true;
+        }
+'''
+
+If 'skip' is false (region should be processed), but it happens to be
+the last region, the condition 'if (r == damon_last_region(t))' would
+still be met.  This would cause it to reset the state and 'return true'
+(skip it), which inadvertently re-introduces the original bug we are
+trying to fix.
+
+To ensure the reset logic is centralized and correct, I refined the fix
+as follows.  The comment is intended to help you and other reviewers
+quickly understand the rationale behind the compound condition.  I will
+remove this comment in the next revision.
+
+'''
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 644daf5a1656..82c5aed8a417 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2342,36 +2342,48 @@ static bool damos_skip_charged_region(struct damon_target *t,
+ {
+        struct damos_quota *quota = &s->quota;
+        unsigned long sz_to_skip;
++       bool skip = false;
+ 
+        /* Skip previously charged regions */
+        if (quota->charge_target_from) {
+                if (t != quota->charge_target_from)
+                        return true;
+-               if (r == damon_last_region(t)) {
+-                       quota->charge_target_from = NULL;
+-                       quota->charge_addr_from = 0;
+-                       return true;
+-               }
+                if (quota->charge_addr_from &&
+-                               r->ar.end <= quota->charge_addr_from)
+-                       return true;
++                               r->ar.end <= quota->charge_addr_from) {
++                       skip = true;
++                       goto out;
++               }
+ 
+                if (quota->charge_addr_from && r->ar.start <
+                                quota->charge_addr_from) {
+                        sz_to_skip = ALIGN_DOWN(quota->charge_addr_from -
+                                        r->ar.start, min_region_sz);
+                        if (!sz_to_skip) {
+-                               if (damon_sz_region(r) <= min_region_sz)
+-                                       return true;
++                               if (damon_sz_region(r) <= min_region_sz) {
++                                       skip = true;
++                                       goto out;
++                               }
+                                sz_to_skip = min_region_sz;
+                        }
+                        damon_split_region_at(t, r, sz_to_skip);
+-                       return true;
++                       skip = true;
+                }
++       }
++out:
++       /*
++        * The last region may remain unapplied for extended period due to
++        * various regions (e.g., it is invalid or has been filtered out),
++        * preventing other regions from being applied (those preceding the last
++        * region and all regions with different targets).  Therefore, when
++        * encountering a region that needs to be processed, reset
++        * charge_{target,addr}_from.  If necessary, this parameters will be set
++        * to the correct value in damos_do_apply() due to quota is full.
++        */
++       if ((r == damon_last_region(t) && skip) || !skip) {
+                quota->charge_target_from = NULL;
+                quota->charge_addr_from = 0;
+        }
+-       return false;
++       return skip;
+ }
+ 
+ static void damos_update_stat(struct damos *s,
+'''
+
+> 
+> Btw, I think damos_skip_charged_region() may deserve a kunit test.
+
+I agree that a kunit test would be valuable.  While I am still getting
+familiar with the kunit and it might take me a little time, I plan to
+work on it.
+
+Should the tests include these scenarios?  Note that I use 1-based index
+in here since it is easier to understand.
+
+1. Baseline test:
+
+    - Parameters: charge_target_from = NULL, charge_addr_from = 0,
+      nr_target = 1, nr_region = 3.
+
+    - Expected: Returns false three times in a row.
+      charge_{target,addr}_from remains (NULL, 0).
+
+2. Skip test:
+
+    - Parameters: charge_target_from = target[1], charge_addr_from =
+      region[2]->ar.end, nr_target = 1, nr_region = 3.
+
+    - Expected: Returns true, true (for region[1] and region[2]), then
+      false (for region[3]).  charge_{target,addr}_from is reset to
+      (NULL, 0) after region[1].
+
+3. Split test:
+
+    - Parameters: charge_target_from = target[1], charge_addr_from =
+      midpoint of region[2], nr_target = 1, nr_region = 3.
+
+    - Other: Ensure region[2] is large enough for the split to succeed.
+
+    - Expected: Returns true (region[1]), true (region[2] first half),
+      false (region[3] second half), false (region[4]).  Total nr_region
+      becomes 4.  charge_{target,addr}_from is reset to (NULL, 0) after
+      region[0].
+
+4. Sashiko's edge case (Split failure on last region):
+
+    - Parameters: charge_target_from = target[1], charge_addr_from =
+      midpoint of region[3], nr_target = 1, nr_region = 3.
+
+    - Other: Ensure region[3] is small enough so that the split is
+      guaranteed to fail (sz_to_skip < min_region_sz).
+
+    - Expected: Returns true three times in a row.  Crucially,
+      charge_{target,addr}_from is reset to (NULL, 0) on the third call,
+      preventing permanent state leakage.
+
+5. Last region processing test:
+
+   - Parameters: charge_target_from = target[1], charge_addr_from =
+     region[2]->ar.end, nr_target = 1, nr_region = 3.
+
+    - Expected:
+
+        - Round 1: Returns true (region[1]), true (region[2]), false
+          (region[3], resets charge_{target,addr}_from because !skip).
+
+        - Round 2: Since the charge_{target,addr}_from is now (NULL, 0),
+          it should return false three times in a row, proving that
+          subsequent regions are not incorrectly blocked.
+
+If there are any issues or missing edge cases in these scenarios, please
+let me know!
+
+> 
+> [1] https://lore.kernel.org/20260828090410.40AEA1F000E9@smtp.kernel.org
+> [2] https://lore.kernel.org/20260828115047.332978-1-aethernet65535@gmail.com
+
+Best regards,
+Rui Yan
 
