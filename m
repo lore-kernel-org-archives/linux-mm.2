@@ -4,115 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3D44C61DD3
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 02:58:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75429C61DD3
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 03:00:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5AC346B0088; Fri, 28 Aug 2026 22:58:56 -0400 (EDT)
+	id 64AAA6B008C; Fri, 28 Aug 2026 23:00:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55D056B008A; Fri, 28 Aug 2026 22:58:56 -0400 (EDT)
+	id 5FC046B0092; Fri, 28 Aug 2026 23:00:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4737A6B008C; Fri, 28 Aug 2026 22:58:56 -0400 (EDT)
+	id 539BB6B0095; Fri, 28 Aug 2026 23:00:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 216956B0088
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 22:58:56 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9ED99A3FF0
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 02:58:55 +0000 (UTC)
-X-FDA: 85152799830.21.A30AC92
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 12A2440003
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 02:58:53 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XMEmLGsr;
-	spf=pass (imf07.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787972334;
-	b=H6J1e5QAQIXJ/Y69m8Mk7LbRUMw/bbL/emICz9RiUN+0Rn8pNnhT4KDARhUByQlc20ERmS
-	sw3q4AYvg4owKGJeOfQ8xKHickynFrp7nwZacOLKGDM/N89QVzFSwBLhHubWdB7spUzAna
-	/sZm+cGQVrl2ImG98rTaSu4yDHJyZjA=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XMEmLGsr;
-	spf=pass (imf07.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 37D1A6B008C
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 23:00:25 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AAAA7160609
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 03:00:24 +0000 (UTC)
+X-FDA: 85152803568.12.EDFBD8A
+Received: from mta0.migadu.com (out-240.mta0.migadu.com [91.218.175.240])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 75635100007
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 03:00:22 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eOTjjhS6;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.240 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787972334;
+	s=arc-20220608; t=1787972422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=erpIzgXZaIbN7nWQesP+4kuweE5Y/K/C1rP9kfbv+ZY=;
-	b=77B9rCSPq7exta8rPaNZeTdZiB77zefEORNPqnIm4/9AndCqp8V4GvGx/f+wIZvdwBnho4
-	gHhqupAhgKQJclnUew2HUHMWEhLQqbe6pGhHMpMxs4yz4ZpL/XBmenpwsP5YHvoAiTI/ti
-	gk5ijbovEovPUAe1v+gVcbaWB+DTk70=
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c1670dad7a8so267142066b.3
-        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 19:58:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787972332; x=1788577132; darn=kvack.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=erpIzgXZaIbN7nWQesP+4kuweE5Y/K/C1rP9kfbv+ZY=;
-        b=XMEmLGsrYXhEsnyijb4jGoSRHnA7J4YWqPYd8Tjmrm8T6CBqumfvmumeHJVaJvQD53
-         diNDUAst03Q/3fkT0Uv3se09d6Uro0GEs60ppWQIn7EZ4VaZjrWe/ZXblZQRRrVAB8dm
-         /goWccZeaSf3pzR9Wo0LhBdsYcb83D+rgvGHGd0omzA5IOhS6xBB3q7fvdwdm6NLlqH4
-         JJzFhoDkNIz4qjMcHXhpxQi7yqoqupJV+dVJlCMfOw7JAo1wvemHp2ZLZvLwjuOoycTU
-         YpGMgP1m8xmY16PVLi8lOXqxcl39R9ukIvw+n5JEFMnQwD6z/pql/S/6rnzCtB7zYS8o
-         Lg9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787972332; x=1788577132;
-        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=erpIzgXZaIbN7nWQesP+4kuweE5Y/K/C1rP9kfbv+ZY=;
-        b=re0zuh6cwcmVBxfiJjEcFyJMy18yNW17H5nehwdOcDtc/QFMOfQeangtlUyk2lgfA4
-         0YRxL7CfRMAMXMbTM4azxixqzewuI1SbvtBVMC1d2CK/NLC7nGKJj660dGXVKoB69U9e
-         MEnETqquTEDRPCooCc7Q6IPLlXk81o7hOFVJle8zzTt6wsxd4AtcIJT76kzGzHhDf7nB
-         Bw0j4EFA2mCI+NfFjtBUYqtsUkReFKDXRlBFHIUWnRKTqEIdTAIyYZQx21K7JaPE3Nwv
-         n8C9+TuACUV8tFi5uu0a9uLQOlnca14LUh+5qGLQGnWujRcRS28EHmrQRbQnf+loj5+H
-         JVUQ==
-X-Gm-Message-State: AFuF++m3CfkWAagf12yQK6M0xALve0htom66CLQX9/mwhdMdMezmCGf/
-	kxk+qAi56GrdppuwuXWDd4jWorYdAmhIuIg6V8Zpn2+v+/ilou64xrb3
-X-Gm-Gg: AR+sD10hYvuxGyy7FKisx7dNFnPIN4TItRYuExMXXsEwMGLz1wfkFMIbNdBXqTKz/Vc
-	WvBM2ZjCmM2Viwa0vrehiZo7BJvS4tpyWX5HgTrnbrQH9ogaydTAH1+YIEUiqj4fAtuSSECr0bI
-	/kd2yUS86TZWJ6qDtTb9QZpRsjwv4y/Oz7X3vrW5jje4xfP+Ur9EWGhY5qKKc1w6+e3OTFRpSAq
-	0o6qmDBtIYMnoRSUQ6U59uslfvHMTkr1UW3klMF/AnanDHVOZXOH8wDjQezhjPFgig0CP3zBdaW
-	kZofeNB+DQBvkZpc6wrznBTnFiSx4K0KqneIVTVYagXAU7z253eWdH6PQwbX5991oWgRiRJFLDo
-	Y7lIcEkUU5GwZt3bHEnW0mwwXOADVElYocCtAPgBcAUeGC9KjTJfFvO9tljQ6iI7Jc7UJFet4jw
-	HDYNU8vpv6zyeWnUgBnBF34ShGdMfMDk6arIrZ9XcmOHuKCD0ljJgFt9+4X60=
-X-Received: by 2002:a17:907:7a94:b0:c12:83da:7eeb with SMTP id a640c23a62f3a-c25574862admr880775666b.19.1787972332414;
-        Fri, 28 Aug 2026 19:58:52 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c255ee0b233sm153800966b.11.2026.08.28.19.58.50
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 28 Aug 2026 19:58:51 -0700 (PDT)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	brendan.jackman@linux.dev,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Wei Yang <richard.weiyang@gmail.com>
-Subject: [Patch v2] mm: adjust out-dated document of __GFP_NOFAIL
-Date: Sat, 29 Aug 2026 02:58:47 +0000
-Message-Id: <20260829025847.26779-1-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=QSfT4HxlRrI7sP8TUXtByEErhJL/3KY/pDWAsSpMXNM=;
+	b=QBB8b+fdmtz7fUhhD9ps3UBuU0Ud2O/vC70OKpAPRUlG6dpVV8t0nlckfv67n85VHt6pmv
+	YLFHRKaaBRWMwEO03KTYyhCBhj/QFWRmVIrEBaGO2gihvEc0GTcMMQzrVru9YWB5zytZba
+	1ZoA8SaDOMeki4qF6AT4dXcZry0TkD8=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eOTjjhS6;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.240 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787972422;
+	b=nNWYA1SV4xsYNboXvXlid9mLnjw9MMPKiFUynwmL8AxvpVug9VJKIlCpsVpebCgnBZgWXh
+	Wl1aDF9PBX68X/EAXmsH9zHpybEFzNlNNe/5hPJHl3EBjbDyM4b36JU/c5mjIRg+0rXD0l
+	LZocIstNsUMPPae2HARWIP9rvwg4CzM=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=NOrUlbKMwb9Hf9uRBB2hPgRlJDS6GE9m2ZXH7xMBtKY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787972421; v=1; x=1788577221;
+ b=eOTjjhS6wsCNhxi0blFeQDYJdCdPq8UjX7L3CBRlvReGBr4Sl9QiEZbO2d9BhPBDPoW6R7B5
+ IJUQrhowsf5aMfZFPYM2hdLBn8c/xj1rTJx1WZF0TGUmkXS3LMZkuX3djJrElreQ44eOqE43HN5
+ FlPUG2DHjtlOP0kinXbFCw3w=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id ce6ac9aa603e1006;
+	Sat, 29 Aug 2026 03:00:18 +0000
+X-Mizu-Trace-ID: ce6ac9aa603e1006
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH] memcg: avoid charging the root memcg from
+ obj_cgroup_charge_pages()
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260829023251.474083-1-shakeel.butt@linux.dev>
+Date: Sat, 29 Aug 2026 11:00:00 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@suse.com>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Meta kernel team <kernel-team@meta.com>,
+ cgroups@vger.kernel.org,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ Farhad Alemi <farhad.alemi@berkeley.edu>,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <17E1B73A-F6CD-422D-B7C9-95EB581F0ED3@linux.dev>
+References: <20260829023251.474083-1-shakeel.butt@linux.dev>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+X-Mailer: Apple Mail (2.3864.600.51.1.1)
+X-Stat-Signature: dirhrt1pahnif5zznu4zhh8rp6nxm463
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 75635100007
 X-Rspam-User: 
-X-Stat-Signature: bt3s4a1ia7niss79o19sqidg7m4uau7g
-X-Rspamd-Queue-Id: 12A2440003
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787972333-736652
-X-HE-Meta: U2FsdGVkX18FK6dkd0d8FAZNlHgs256XHurd+532vGSQ+1t5i3YNfaqD8kcjs+Bi6IKVitYYyahzkaOCDJNloob/rY4jsy3hZGcn4Bct/SIwRELB/VruudnU8p2odbNcZxRaPmG1bZwSNbHBSaic2stMVXWO06facWbLJqRlVuLgKoX2+jGbOyQIF9atRJxR28059Xtb7L0et2CnaWzu0YrwWFU0VbSIiTgYu/3LafrxlXgXHzBuQqhdAoMRj+jB/tPtGVgqLwm2Puy1AFlQ/0L/u1PjqXZAXjmgeWHMjO4booEsIxuEFlTHeQZQgbxFod6T9dva/L3lbrwhk59pP78+fdeYCG7XB2Yi5OezEAYOx4AsIJcAQvvyaYCjENdvpINsZ5d7Aqs3ohjky2TwAFNMi8goW0IoiVTpL+prDMdim2t7LHtUmnAsjTcX6R6luyHOTw4pGChSF8q0THRnqrP6ewDrUHXOrLX3J5tak668HgdhlXgH04q9E+TZ2X9B/FmgRU9KCWwdTvtcJT2U+MZhWTOpyZTJwcNngyzyJBgOCMVWM6cmzxr4qT7ZihxmT0yGFMtkaVCutw8MVxstI6v62rqHLtYkA112hZxw3Ul3j8+WG6wzetJ9jUDNceCwBTzT3mKwKqixi3k+QYrswtYb7siQeK8h6frqLbUpr7qQmElZIAGUhNmW45ioem/DLzCBch4X63N+pVjMxEbmGOEqDQ9VRufR43r+Ko0/o7evJH4j23N1huv9HTrqw4xl9Mex5gY8+xhIobab7bptP/Hyypls/mLwlc59EW1kW7v+fWR0H+G0H9kB24VCJ31Y+MuEFqxS0bcHArTqZssaEE1UX81pFRNnIOhTxyTOVBfYqqVO6Zf8eLck5s5KAqcAEDJ4aiU28YKoq2LSDs8hpXW3E94w8zJPrLmTQWRUlpK+QIcSQuNCSzJu40mOGbUJlxlOWrwA9QcAICaB4b1
- ZhjJYlWr
- ScEu7+9jTo2xnEBPw8gtwMk/y0i0f0yjR23GK76cC9NuVqJkFOXTPU/tpAed+6LuOoz1Fd3S+8hqMDijk1tfZWW9yTEHIzwEf+gIpJ2FUQk+2H7cUaBrdDNWGqbO/GcdOdAuoyWP8jM4vIGVsArYL3I6+B9n3KUMJO6nTb+snJGiWbDLYlbwWyI3SDa1TUa9at3muD8JfZNl8+b/QmPisxmjMV1n6tRmBrZ4KzV6yrrpcDJyaI//rm2m/cOZA/iWc3Ua9oINJwDt24pJySxmLB1qocFF7GssC4hSkaIoqYvOCvAbESPuAiaB/2pOMenP6QIsVbZjcAYB3A0PvYwoQ+cz2GtCp6qrwDbmgq1C+eguMSNRp6GX3CUGP8mG2sh36lCPJ02/sYS4OFpfNvkU39ax+HyiQ0oOTcGtKy58z3F4BiQRJX8u4wDWKxzqTKcSegv2a/ycPUDyEbZdwqxhRMdfuL+5KrtN00iyvRQCxi0HFfehenHS0172sBgyqFCUa5Sxizz2m2PC1xFoU4vlcHLaGJfB9h6K9pnTX54A9eEgFa26mpBVcESQyOy+7XZhO25assxoMRBXhFTeoXZV0lAy8+I4dYNsOUfqWbjn/JppI7bI=
+X-HE-Tag: 1787972422-221315
+X-HE-Meta: U2FsdGVkX186tUG6nPnh0RsVhlw8Tx7YRoNgYWZXnHcM4z6DCSIVckMX40U4jg3f4wK+mjpoHHgz2/C4f73IOLPNgn7W53k25pi3asnG37eEcC0ZT2Kwhe5oflpMZ4qQoMxKCRiZ4O2px9VQSc1qJgrQyHv1+t3LF+twXszaOrOxn7zM4Tc3aYfkKOxuU/B33UA6oWjZwKK2xnfx4EmwI7wmHU3XnttX2kN5F8N0rGnp2jIrUK+O6TRxHYX8DSuJ4+EpnuhSpCdlLG6w3b/p2Q9BCRz/R0PxFxKLEsVcajNae1oSaxinaqpXYL9ggGQlkybFnzgtDtfM9FAnPMgge9qECO9QGBQXvAy9h9AJxmVfNBmhMuUoyhOq1Si0dwtHr+ZYzOPxyLYFxvvwbKJAGjexO0J/zBR3n463hQdWyzDZOw4MdI0YCeyiSq33EAPkX7oCMz8y1h3DgEsjwYP/d6Yn0/WqEILdoTC/SmYTpNilrwz7ENcLxcA/xXa0Vf7SJscSnk5yfNYCm8MezZqSfbmu9E29ot40m4eXoYJ+T+vnLJkKTL5ZBxRvH8kX9haxJLJEgGm3urjpjKZUzGgC60L4EFkVEkfYO9mJQSlc/tpKWJBFDh3CbMFyw6J8N4tdt4WidDfX0+athvUFFwHqfSNQqcbGeKtxkVe2RqFlDT3WSIlG/c7NYz2rCgE/8i6zpVbjdqiTKwNFy2+UwlYQHi423+z7kW1HM0IrVndo2XNoDpDXdGUJoq9+w4jiIFI3aYlBElNVgSZ7fKq1XHmMKP7W/qHRp15tWTdrF0svV0gwlAfLsV11zmFZEdNGUqQSwnMlcrvwBP1yLpdc5jxKuwum1VbhAo6sh7TPLdL6ICLnc3dytw5XyXMSB8h0SmV4Xfqnka4xl5aRQ/hFniR97dxX2bmNESMIdOjh7aBxS/U2KikX08427yGnK+flDqqEq8lnX6gchjq6H9rqlVG
+ 2wCQuv9O
+ JOlUPGNXnN7ERi7VgWc+ENaaE1g9IWWVk1PznG9ahUoX1nPvmrjUTqdLXCZCD43ZyWMG1ijUtGR4h8DbuHOABUyxHK44ft+khIr9Wilh0VTev4Cq46MCvxveIY9nmbMxvKIDWapzQubHAqwlYgyvNVOhC5EQYu1g0iRFne32aa7uioGeLxD83SaL65eCYRDTKAcqAJJ1FAjYUdbbncXazgVLnY16jhJ79Z8sTrdJByguS5eQVYWBgnvwpjuBTWB+08FXp9KmULJmKYeqO66O/ly+W+ADelWr0ZneAisc75hn0ajRLmbgZFexBesA2sIr/F+o+KgtobxAq8r50jkR8sDv68UlqRJKJophDgnr9TtDgE0c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,58 +101,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit ee040cbd6e48 ("mm/page_alloc: don't warn about large allocations
-with __GFP_NOFAIL") remove a warning on allocating large folio with
-__GFP_NOFAIL, which was placed there by commit 903edea6c53f ("mm: warn
-about illegal __GFP_NOFAIL usage in a more appropriate location and
-manner").
 
-While in that commit, it also documented this behavior which is
-out-dated now.
 
-Adjust the document to align to current code, and adjust the comment
-while at it.
+> On Aug 29, 2026, at 10:32, Shakeel Butt <shakeel.butt@linux.dev> =
+wrote:
+>=20
+> obj_cgroup_charge_pages() resolves the objcg to its memcg and calls
+> try_charge_memcg(), which does not short circuit the root memcg.  That
+> memcg can be the root memcg: obj_cgroup_is_root() reflects the memcg =
+the
+> objcg was created for and is never updated, while =
+memcg_reparent_objcgs()
+> does redirect objcg->memcg to the parent on rmdir.  An objcg of a =
+dying
+> child of root therefore passes every obj_cgroup_is_root() filter but
+> resolves to the root memcg.
+>=20
+> Folios keep the objcg they were charged with, so this is easy to reach
+> through zswap: allocate anon memory in a cgroup, move the task out,
+> remove the cgroup, then write to the root cgroup's memory.reclaim.  =
+The
+> reclaimed folios are charged through the reparented objcg and end up =
+in
+> refill_stock() with the root memcg:
+>=20
+>  WARNING: mm/memcontrol.c:2198 at refill_stock+0x644/0x940
+>   refill_stock+0x644/0x940
+>   try_charge_memcg+0x12d6/0x1570
+>   __obj_cgroup_charge+0x35/0xf0
+>   obj_cgroup_charge+0x1de/0x210
+>   obj_cgroup_charge_zswap+0x83/0x270
+>   zswap_store+0x1620/0x2000
+>   swap_writeout+0x94c/0x14c0
+>   shrink_folio_list+0x3388/0x52b0
+>   [...]
+>   try_to_free_mem_cgroup_pages+0x30d/0x830
+>   user_proactive_reclaim+0x504/0x840
+>   memory_reclaim+0x1f/0x30
+>=20
+> Beyond the warning, the charge is asymmetric: =
+obj_cgroup_uncharge_pages()
+> skips refill_stock() for the root memcg, so the root's page counter =
+grows
+> and is never uncharged.  It is not user visible, since memory.current =
+is
+> not exposed on the root, but it is a leak.
+>=20
+> Use try_charge(), which returns early for the root memcg, restoring =
+the
+> symmetry with obj_cgroup_uncharge_pages().
+>=20
+> The above sequence was scripted into a standalone reproducer (zswap =
+on,
+> swap on a virtio disk, 512MB of anon memory faulted in inside a child =
+of
+> the root cgroup, the task then migrated to the root cgroup, the child
+> removed, followed by "echo 600M swappiness=3Dmax > memory.reclaim" on =
+the
+> root) and run in a CONFIG_DEBUG_VM=3Dy VM.  It reproduces the splat on =
+the
+> first zswap store of a reparented folio, with the same call chain as =
+the
+> report.  With this patch applied the splat is gone while the zswap =
+store
+> count over the run is unchanged, so the same path is still exercised.
+> cgroup selftests test_zswap, test_kmem and test_memcontrol show no new
+> failures.
+>=20
+> Fixes: 20d6c1725228 ("memcg: avoid refill_stock for root memcg")
+> Reported-by: Farhad Alemi <farhad.alemi@berkeley.edu>
+> Closes: =
+https://lore.kernel.org/all/CA+0ovCgWzUMK+nNbbtH7eV65Ca=3DfDN4Ozu7iASgryjv=
+v8Tk8zQ@mail.gmail.com/
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+LGTM.
 
----
-v2:
-  * s/is adjusted/was placed there/ in change log
-  * instead of removing the document, say "is discouraged"
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
 
-v1: https://lore.kernel.org/all/20260827030548.16631-1-richard.weiyang@gmail.com/T/#u
----
- include/linux/gfp_types.h | 2 +-
- mm/page_alloc.c           | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
-index 190191411009..bfd4c43ed777 100644
---- a/include/linux/gfp_types.h
-+++ b/include/linux/gfp_types.h
-@@ -244,7 +244,7 @@ enum {
-  * definitely preferable to use the flag rather than opencode endless
-  * loop around allocator.
-  * Allocating pages from the buddy with __GFP_NOFAIL and order > 1 is
-- * not supported. Please consider using kvmalloc() instead.
-+ * discouraged. Please consider using kvmalloc() instead if possible.
-  */
- #define __GFP_IO	((__force gfp_t)___GFP_IO)
- #define __GFP_FS	((__force gfp_t)___GFP_FS)
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index ab385bc252cc..146f7e0a9462 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4804,7 +4804,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 
- 	if (unlikely(nofail)) {
- 		/*
--		 * Also we don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
-+		 * We don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
- 		 * otherwise, we may result in lockup.
- 		 */
- 		WARN_ON_ONCE(!can_direct_reclaim);
--- 
-2.34.1
+Thanks.
 
 
