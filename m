@@ -4,90 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4450DC61DBE
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 10:35:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F22FDC61DCB
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 10:48:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 515476B008A; Sat, 29 Aug 2026 06:35:20 -0400 (EDT)
+	id ECC796B0088; Sat, 29 Aug 2026 06:48:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C69F6B008C; Sat, 29 Aug 2026 06:35:20 -0400 (EDT)
+	id E2E4B6B008A; Sat, 29 Aug 2026 06:48:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3DD5F6B0092; Sat, 29 Aug 2026 06:35:20 -0400 (EDT)
+	id CD1B16B008C; Sat, 29 Aug 2026 06:48:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 14DE16B008A
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 06:35:20 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 93C358069F
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 10:35:19 +0000 (UTC)
-X-FDA: 85153949958.27.0A6677E
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D7C06B0088
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 06:48:44 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D207E1C223E
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 10:48:43 +0000 (UTC)
+X-FDA: 85153983726.09.3A1A79F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E165480002
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 10:35:17 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O4hQnDvs;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 296F9C0004
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 10:48:42 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LWRmvwZ5;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788000522;
+	b=6185h+Fp+LW6pkidyMXp3ABRv6HdV/bOawViEPvDVQW8Tsluau+nav/WnQ4Uym9FvZwwA8
+	B11Jnz8w+b2bI+YAVJmqFQDvMsSYU2jaTnPXZAm+Sd5B5SbR7l+zAzuDcSfczDpRbpcAxh
+	0KeSu0j0SWPsDcU2nSCPgR9bFrm4I3Q=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LWRmvwZ5;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787999718;
+	s=arc-20220608; t=1788000522;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2cSRCs8wDnCpBsS5x9/4R2NQI4neq/3EffewAPnRfKA=;
-	b=IO7LfYx1Nw/0pf7vhKf+sxPs7GzQlNwZSBQVsGOzTrsM3ZlAXRalQUB6IXBVN49OBlykuE
-	RfeURVJvt7H9akbq7ZxXoinbPSNUkVgrFDruWaIKxqeJFs0bPanVOYE9QHd+1eIiX3inSH
-	3+fQPkfiA5DPBdoUZXISP00aI6hvhjo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787999718;
-	b=Ml62+bTvoPUiiZ3+vZbxutDoibPdR6GgKpHVbrLdIQLlYYdRfVALu7iHoieOl5bHTnPzDW
-	AQNMJaQE09V0QMwT694XhX5Vkw1McK/vYbzmC2ltJVqErGT+SzspjsAblGvxhyxYyEXWZI
-	2VjEOVMcWKuKlJX1iESxywHZ3XyTYAU=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O4hQnDvs;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=KFZ1nhGEZbR6O/VCAicWb32eNrolFHOIlFtmV4ujfk4=;
+	b=nyCIlUPXDbrVj2hGl43QnfDA5+fR8F2t5O+ZywhJk1dwP1ENPBYerhWr3C3HuLMsL0LE5Z
+	7KB+2LcBb9045iNXr8HIHYMdJ2rzssXvh7qd4y3hvhni+eTs/QI3Qs1tEVQY12X0Y9m0zz
+	xckLwNxmTDXqTyXdUFUdYwE+LHqSvQs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0FAD043CDB;
-	Sat, 29 Aug 2026 10:35:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1854E1F000E9;
-	Sat, 29 Aug 2026 10:35:12 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 15621437B7;
+	Sat, 29 Aug 2026 10:48:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C6B1F000E9;
+	Sat, 29 Aug 2026 10:48:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787999716;
-	bh=2cSRCs8wDnCpBsS5x9/4R2NQI4neq/3EffewAPnRfKA=;
+	s=k20260515; t=1788000520;
+	bh=KFZ1nhGEZbR6O/VCAicWb32eNrolFHOIlFtmV4ujfk4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=O4hQnDvsR3xz25zX0vx3nLmgtgXidRy0h4sWYehV2mXaWQF9J/8/dCttJ+E6EWeiL
-	 AU5vXmX8gEuh+eiBybVN36gcL9arMMcSOSmanqnA1H0jUHcst2QpkRCuZYvOQ1utna
-	 CmwIa3FMYIznrNaOU5idsntYbhRRO3HxdH82sL2QSmZq4KSQ//9h/0e1+1QzkyWNZ0
-	 0rU3vqxq8xzjrVdcdZh5qOVfsw3iXccSIzOadiD6bqnoMbprP3lZK1UtNz4gXJHS5C
-	 0O9KudEm0w62SpmKO8x56+dxacucnGq4B3gGwuAtRjfi6EA2/TmEU4oUb4c3BtwI86
-	 LMFxBKkcdwmyA==
-Date: Sat, 29 Aug 2026 13:35:09 +0300
+	b=LWRmvwZ5mPls4Z+BaiG1qXwR10+CBxW+bUOShLfZyRmLMeWBsXFZbiPwmkePznqr5
+	 RDgCI5JSJI/PnwyJzmrjiTTIt4pQEyHh4ig4dGZIGujt3YWBOXTXM28p4gyqeJwbxf
+	 WsaqKftKKe5VsQ0VW/PEX8SxuQhw1GHVsePh+UKddYUexwRXUbdmDfNrJmoD2ZI1v6
+	 YA0GuLxzRK2viPxmPZf5a9S7TnaLyvMWbeiiVwoWcOVI5CYLFrXFWBc0Jr3YfAzGPD
+	 ENSQxCrpJykei+zA/nljjaxyFx/CEE02iM1psN14xjNoYwJ+aBxdLXjvTaTWkcJoke
+	 quOJdXXFQrxWg==
+Date: Sat, 29 Aug 2026 13:48:28 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: Brian King <brking@us.ibm.com>, Hannes Reinecke <hare@suse.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Wen Xiong <wenxiong@linux.ibm.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-scsi@vger.kernel.org,
-	target-devel@vger.kernel.org, Hannes Reinecke <hare@kernel.org>,
-	John Garry <john.g.garry@oracle.com>
-Subject: Re: [PATCH v2 0/4] scsi: replace __get_free_pages() with kmalloc()
-Message-ID: <apK13danJIU2PD8f@kernel.org>
-References: <20260704-b4-scsi-v2-0-7d2d21a810de@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Adrian =?utf-8?Q?Barna=C5=9B?= <abarnas@google.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alexandre Ghiti <alex@ghiti.fr>, Andy Lutomirski <luto@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Len Brown <lenb@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <pjw@kernel.org>, Pavel Machek <pavel@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Vasily Gorbik <gor@linux.ibm.com>, WANG Xuerui <kernel@xen0n.name>,
+	Will Deacon <will@kernel.org>, x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-pm@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	loongarch@lists.linux.dev
+Subject: Re: [PATCH v2 0/6] arch, mm/execmem: resolve confusion about
+ set_direct_map_valid_noflush()
+Message-ID: <apK4_MgCtPFlDwoc@kernel.org>
+References: <20260823-execmem-set-vm-perms-v0-2-v2-0-b013a37d84b3@kernel.org>
+ <20260827223947.c773e6a7324eaf3fe0d8362f@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260704-b4-scsi-v2-0-7d2d21a810de@kernel.org>
+In-Reply-To: <20260827223947.c773e6a7324eaf3fe0d8362f@linux-foundation.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E165480002
-X-Stat-Signature: c3bgcor46y3hmmqih6gyiys58yd5zqk3
-X-HE-Tag: 1787999717-580031
-X-HE-Meta: U2FsdGVkX1/PeaR8uC0l0EyXGpyQhO+c5DKeI81gD9o2RHW3Pz1BTo5isjFvZ7FhMsI/OEhZ8WQCTgunYxcQcFW3QCHLcfewpfej4jjUHZYPa0fksyP4aSbNZERKRDFWsUEVz9S301YeM2P07lEZPUV1JhYrKJoxQcclhU/iJ0k0Rp/MhMG1/uk3rgHaHgkdFc/o+Dk2JVUJiYutpkui54BzIfNBpUzgvVKQIoTdUHl4x5Rhr6nbq/KNSG4KecpQFyY8HYFjnXGNk4fQOPhswWC7gMuiFj9K8LFuXEeRmRPY2OqHeiESxwnlehoXGP+Ht8rjuONd2vARxYTHdb9Ai6ZtwnFy9DIKC8u8M0ddpxqB8mxNWMHwjb24x2zhevkeH/58kuzlnskzctSIarEIfMjh7t4X517OLZfQbJUB++cQTBALwu5LYUj0ilQZMNaSkFFA9ZtnCt2ZX/sClf4QHzQJ17JRCTw9Irbdyzp7XZqfw7xgjKJWfZXQoJpdNedZPTanQ3Ydu2vJvuRnlLMr5Q6crDZStPDEzaYgZWYdjDEvQRU1S4Lg0E8YrnNd+XRcO7gp6o+mCxejWbFGrIUAlbYNtGHYFLYX+zc/Jmzsukf3tRRVWODsqrBoiv5k7O7n3kmefbbxk0jQJk8L3QPyprP1vjXCbyroh3hlYCCulumXDrQGfrB9vFZ/XFHHLOi3G6yByoALBX6eRSe8LyAWBT8R6IlZBC2xfs9aq0wEN4AIwkEE62mka8kLZAuntOWcVvu5wU37XUpesdrbBCngqBk9ppBM2hTVybt2DDVpxYHbU9NDCRKZbdA2avJfNi6CTbcoW8kZHLnHJNl6aYfAxGSxU6GwK/p4lXNPBTUxTDc2eUgRfX6FNF5qRlCSB5bGzb7fn2Tzdhiv7gX7/jmMH8IQzim3CjjQ4Jeiu3MniwWJnjKXW1lONz4e3YMmFE7xPuWaOcNRhg7YWIkeqwi
- lQqldcHD
- gdCPr39il67oW3g2kHGLOgBAbukJ8t7O3KbtFICK33fSW2Y76rCTwW5YtWXwR36PUgzlPyJKjFYs9xETzKnWqKSVlPMEtyy6sliH55qApLQ818W3ylqSnJMppxcGsXGJ7agmZDrFRGH0g+b4R1jVJ/7WXJV62Ys+xfJvc3Pd5NhOYJxbRzcFytfFm9yJjkdxj95tronVppOAjVO6RoyML7Gf/GojnUjltCP7TCPWE3DI2RZQN+TXhSoKztt0VFOY/gMq7I9sE7DO1Z/Ufqt/MdZXYpAXtw/bRRyE0CJX8qIMRv87yIi4kTj2xmZ4cwje1Nbp6ZSHRxa6h4fdd1yqbe0wDmj+nemqdc08mOOIB7uVsXe9FAaSibmUS5PbRVpoUKbM0n7JuIXGWAhQjQaLk/Lz1uhPRS32zJF6xptCIu3VHHZwd34WIUjd7ZHSduniAKPD5yqiriGetTMjXJdjMDgT4tsqJrJ2EtQeWo84/Yk/QQCNzINnkga3fabJygftGjbOC
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 296F9C0004
+X-Stat-Signature: saidxw5x5io95tceq7p6het7z5nqpaxi
+X-HE-Tag: 1788000522-733056
+X-HE-Meta: U2FsdGVkX1//NYN8qq0dWb6Mgv2hbZGSiARR9eU07WJrrF8q+CTjdeilIYwhbkZl26ZANCROkqvtGC3jKsvi2ByCIUxtSMJqXLVhXo+bTmpBNDlsqZWz2qr7OfqFf40u63z5eyRehMlv1NaTwUhkfvyJZyRFKpe5iigXtJod0H9pkaORL8t2J+NpotQveTQ8whlttIW/41Ail9HXVdthl4DIytta2segUNGaN/dxZYK77gHHKmdHM6klE8ym5+P323/dBxBDBNG2GsekMMTUv8oFGAU3lFnJfyrevWc49VvNJUW7n88zeVTybklT0BRr5DXgh+rsSlz2bx+dbCmA6hLu+v/b8OPfMdYfDIebD7ryIHGGBOYybcyWFXynDIkm832xwJ3GMIdXPsVGkoo6nbhT/+lBFiRtqs8iFn3LObF6NjiY0rDBUJeVSCZzy75FagnT3FttFxzye3oZ0Gg01FcJJHii4qcr8vSuuTnBm8xtJTT5sAqDET/uXVC745NAw+NSc0DUB9eV5rk5Vt4dk+9F40y4C2pLWQmJJgl/6qpiPz+rAgzzF1sZM3YVirwLg0C7e3H6R2twUNk2bENbxRuuo1AJNTOJV74PNMewmRyjZGKKUgiTVOyx97hD/WnbeSvae49jyMXjV83pNdNDW+1p5Z62EgjHdZ3DDLBg04SYVRg19Cc8SgiPAUw9bO3nyKk6O7nhV1/aw6O8WK47QFGW/bw58XF+8P+JFD4gLry5lxiWyuoriDjXIRbxcaqsyxIaa5TgptoRU4UewrR2hb9OspCz2ZlACXqaQ4UjqmjljX0NiuEO5ZIlK0t5aLKPODBthniv6XObdsl9rr+5B8h3CiAWfllOPCG311XYtISsusI/Qhg54nEel4ghmoNnjT8l6YeBItA3sm2YzUt51ZhzVzHeE0HtKkD3TnS9eg1gKa+FKe4S7rkxNdFX/qUYoqv/SDFn6Hg7v4hf0hN
+ cj51rIC/
+ sqnsKUIJcLAqxGZCYnzpmXu2olm3wr8wEmtfIL47hVOkmK89Obo+uWytOcnugQt6BaUu2CQt9dFgNYC2/MiwlE8Rzojkd0344cItzKrR/U6K39G158dZLv+/xUM8430Bq/c/6hTmBRCBAX8HaOhB1A1ZY/feMFtSGiIMkx1OlCfymmHHtKH5ZMyTkFoQ1bt59qG170RXjicTV/kcIAQCLrINlopI6FtZ9hgSGF/YovXN2FHHdqchBJ+axZvRfvbXGTF5yczSj44YLE/i9Jc+YIpyj85sRZGwfjYCNXiRIp0powbGMTpEAo3BjyQPvAY7pgnxcYpHaJn2wivZEO28Y3A0xnpwHhDhIjV8bGZVXe+I01PD4x8TYxnSTDx98WvkRxFnDQ4l9Xe1V8XUwXiilgdDApP2yd0aoiLiR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,73 +118,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Martin,
+On Thu, Aug 27, 2026 at 10:39:47PM -0700, Andrew Morton wrote:
+> On Sun, 23 Aug 2026 14:46:11 +0300 "Mike Rapoport (Microsoft)" <rppt@kernel.org> wrote:
+> 
+> > Recent discussion about implementation of execmem's ROX caches on arm64
+> 
+> I'm assuming a "[1]" reference was intended here.
 
-This seems to fall between the cracks.
+Yes :)
+ 
+> > revealed a confusion about how set_direct_map_valid_noflush()
+> > implemented on different architectures.
+> > 
+> > On arm64 it sets or clears the PTE_VALID bit marking a PTE as present or
+> > not present.
+> > 
+> > On other architectures it's a range version of
+> > set_direct_map_invalid_noflush() and set_direct_map_default_noflush()
+> > 
+> > Unlike arm64::set_direct_map_valid_noflush(),
+> > set_direct_map_default_noflush() not only marks PTE as present, but also
+> > sets its default protection mode.
+> > 
+> > Other than that, initial design of execmem ROX caches didn't rely on
+> > restoration of large mappings that's now available on x86, but
+> > completely removed the memory allocated for the ROX cache from the
+> > direct map to ensure that large mappings are not split. This precluded
+> > usage of VM_FLUSH_RESET_PERMS for the ROX cache allocations and required
+> > execmem to implement manipulation of the direct map alias.
+> > 
+> > Current implementation of ROX caches does not remove the direct map
+> > alias but simply calls set_memory_rox() that updates the permissions in
+> > both vmalloc address space and the direct map and relies on
+> > collapse_large_pages() in x86 CPA to keep large mappings.
+> > 
+> > This allow using VM_FLUSH_RESET_PERMS for execmem ROX cache allocations
+> > with small adjustments to set_direct_map APIs and vmalloc::reset_perms()
+> > behaviour: adding number of pages parameter to set_direct_map APIs and
+> > making resetting of the direct map permissions in vmalloc VMAP_HUGE
+> > friendly.
+> > 
+> > Implement these adjustments, make execmem always use
+> > VM_FLUSH_RESET_PERMS and revert set_direct_map_valid_noflush() changes.
+> > 
+> > [1] https://lore.kernel.org/all/20260611130144.1385343-4-abarnas@google.com
+> 
+> The patchset is perhaps a little green but I tossed it in there, thanks.
+> 
+> I hit a few rejects in arch/x86/mm/pat/set_memory.c, but minor stuff.
+> 
+> I trust you've seen Sashiko's incidental oh-btw comments.
+> 
+> 	https://sashiko.dev/#/patchset/20260823-execmem-set-vm-perms-v0-2-v2-0-b013a37d84b3@kernel.org
 
-Do you want me to resend?
-
-On Sat, Jul 04, 2026 at 09:13:33AM +0300, Mike Rapoport (Microsoft) wrote:
-> This is a (small) part of larger work of replacing page allocator calls
-> with kmalloc.
-> 
-> My initial intention a few month ago was to remove ugly casts [1], but then
-> willy pointed out that Linus objected to something like this [2] and it
-> looks like more than a decade old technical debt.
-> 
-> Largely, anything that doesn't need struct page (or a memdesc in the
-> future) should just use kmalloc() or kvmalloc() to allocate memory.
-> kmalloc() guarantees alignment, physical contiguity and working
-> virt_to_phys() and beside nicer API that returns void * on alloc and
-> doesn't require to know the allocation size on free, kmalloc() provides
-> better debugging capabilities than page allocator.
-> 
-> Another thing is that touching these allocation sites gives the reviewers
-> opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
-> another size is appropriate.
-> 
-> For larger allocations that don't need physically contiguous memory
-> kvmalloc() can be a better option that __get_free_pages() because under
-> memory pressure it's is easier to allocate several order-0 pages than a
-> physically contiguous chunk with the same number of pages.
-> 
-> And last, but not least, removing needless calls to page allocator should
-> help with memdesc (aka project folio) conversion. There will be way less
-> places to audit to see if the user was actually using struct page.
-> 
-> Also in git:
-> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/scsi
-> 
-> [1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
-> [2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/ 
-> 
-> ---
-> v2 changes:
-> * replace GFP_ATOMIC with GFP_NOIO in ipr driver
-> 
-> v1: https://patch.msgid.link/20260630-b4-scsi-v1-0-494fb37ebe7b@kernel.org
-> 
-> ---
-> Mike Rapoport (Microsoft) (4):
->       scsi: target: file: use kmalloc() to allocate temporary protection buffer
->       scsi: proc: use kmalloc() in proc writers
->       scsi: ipr: use kmalloc() to allocate IPR dump buffer memory
->       scsi: sym53c8xx_2: replace __get_free_pages() with kmalloc()
-> 
->  drivers/scsi/ipr.c                  | 4 ++--
->  drivers/scsi/scsi_devinfo.c         | 5 +++--
->  drivers/scsi/scsi_proc.c            | 9 +++++----
->  drivers/scsi/sym53c8xx_2/sym_hipd.h | 4 ++--
->  drivers/target/target_core_file.c   | 4 ++--
->  5 files changed, 14 insertions(+), 12 deletions(-)
-> ---
-> base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
-> change-id: 20260611-b4-scsi-d0b0eb4895f4
-> 
-> --
-> Sincerely yours,
-> Mike.
-> 
+Yeah, it did discover something fishy with the fallbacks handling.
+I'm looking into it.
+ 
 
 -- 
 Sincerely yours,
