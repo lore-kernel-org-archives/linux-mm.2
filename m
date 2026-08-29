@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5475DC61DD7
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 07:42:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E3F9C61DD7
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 07:42:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B3256B008C; Sat, 29 Aug 2026 03:42:22 -0400 (EDT)
+	id 3CD066B0092; Sat, 29 Aug 2026 03:42:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6645F6B0092; Sat, 29 Aug 2026 03:42:22 -0400 (EDT)
+	id 37D736B0095; Sat, 29 Aug 2026 03:42:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5043F6B0095; Sat, 29 Aug 2026 03:42:22 -0400 (EDT)
+	id 293526B0096; Sat, 29 Aug 2026 03:42:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D91A6B008C
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 03:42:22 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 960CFA4121
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 07:42:21 +0000 (UTC)
-X-FDA: 85153514082.03.A76FF51
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E0A1640003
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 07:42:19 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ln6IGQ3W;
-	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 00AE56B0092
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 03:42:25 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7930DC033C
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 07:42:25 +0000 (UTC)
+X-FDA: 85153514250.27.94C96A2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id ED48640003
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 07:42:23 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UdOdwJ4L;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787989340;
+	s=arc-20220608; t=1787989344;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ae9c4vZDXmNsxI4AdcLQro9NNVm5MPBZzf84/REbvA8=;
-	b=0vhZlflajTVQx1lmF1Y7UD4DOdszyCIfyZTmQwKkyiotmAKWAvYlG8COHT0UkTPlZ7Us0k
-	dsdvGjGh1/7+NKcA19Km7iup89W3YZWfBJ0+4DIs4DopmWO/EZK/yqsz9C59zd90gzudu9
-	o8g4JEfIMMVN7aQ1SCzVBIPdXrytMWg=
+	bh=E2pnQ2VYIoa3WiugIYl7Jp3rxV5b0Mqm4HU5w5Xg4uo=;
+	b=ST8DAobR7PK4f8E1pm1xtH6987g0gl7+fp/Dt+EoW1yANE2I2A00TkIdodwJWIFbOOUY3f
+	jOBCTsCSQTXA1ad7/yZLaV1qBMP2J8mfdNInZnUxQFKPzzqhkhy2gf3z8QYP45Z3QuWI2v
+	r4dkMIwPmcHBfh+sK0qrlpo56yEUKTU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787989340;
-	b=fWqhsQvzi+XHl4M3i9m9yGQHYVD/ba/lTH8Ec85rz2vnt/CqeOSt9BIfTpbNP/4MQJ6eU7
-	jjTczvn/59oEDenFuuZYkiVWXsBm82cx4SgTAKKUak68zE/JqxBGcTqeaEwH4E7nCJHGgq
-	6JX9YbeMahcH26NO2g55Dmhq55FKb7k=
+	t=1787989344;
+	b=wVkXLd1UjFHUkKFOpdd2jVrwHpznrUgBKEnCIcUaevDuHhvdYOAXkXhenr8qPoHPtZBRy+
+	Pw5YbBQbdNgQF0gH/ispGy4OteVxnVzBCXBYV97ofvSfNK7t/pFQKT9oow8yfH63Kxspxq
+	Go8oNkK1d6YYcwYujBNzDgOKWCe+4I8=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ln6IGQ3W;
-	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UdOdwJ4L;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2451E42AF7;
+	by tor.source.kernel.org (Postfix) with ESMTP id 2E1C960055;
+	Sat, 29 Aug 2026 07:42:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66ACF1F000E9;
 	Sat, 29 Aug 2026 07:42:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851F71F00A3E;
-	Sat, 29 Aug 2026 07:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787989339;
-	bh=Ae9c4vZDXmNsxI4AdcLQro9NNVm5MPBZzf84/REbvA8=;
+	s=k20260515; t=1787989342;
+	bh=E2pnQ2VYIoa3WiugIYl7Jp3rxV5b0Mqm4HU5w5Xg4uo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ln6IGQ3WV6IeHmrg10U5ceIy56PEPVtGtpAAax24IdWmKpTzpp+86hL3xcu3AaJqL
-	 INTubcliazpz9aoUI1sdyqJJ0+gULgCpcq07nzu5PWTc9rXbONFKfOPoeBVmuoi6nP
-	 jSoI+bKv0JTaeppyswbN02SjOZFC9N0FKhd7zXmHJchIjeWpLOgnlCxhkS2FFKJQfy
-	 i4x10maRQcYmjeY6+3JqjMvB2aKeIv0Q4FCgaGVoy0W/1cm4c9TZLl8wZLS5AxINJ3
-	 r8ttq56E1GZfaWlBBezM0HVFmf2iZC83RSqOu1nKBfbbdONpI+bT7O4icpvyrgt0kh
-	 fzmmEZFuN3ZVQ==
+	b=UdOdwJ4L1EiMt94CheIbvvTHNp40JARJbaPYbLKdR8O16tMBHur/IaGOamJRA1IQr
+	 Anbh5gB1YSRpAMeAGR8+BdMgXvvym5h8Lnc0DZCccOelPrSrVAjfkU4KCbhEEO1E62
+	 LcLQ9GpnPEEJ0qAHuSwPowzHwy3hiIpHyaUM4JQAHUjcLWj9n2OPKES+hXvVwdgz8Q
+	 BN4XJyxv9v69l7FveED4v8uH6UAAYTEyDzCs751U8H8gWGYHo+U+3M/83eC98MQKTH
+	 ngSNvLH6KEqw7Ksl0hQ4DSnRAE1SDyWGY9sclcESg50ZZf7IJDzUJdGBQfOvT9ecHj
+	 t7ohmgZveEDQg==
 From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 To: akpm@linux-foundation.org,
 	linux-mm@kvack.org
@@ -84,23 +84,23 @@ Cc: axelrasmussen@google.com,
 	wangzicheng@honor.com,
 	weixugc@google.com,
 	yuanchu@google.com,
-	Barry Song <baohua@kernel.org>
-Subject: [PATCH v2 1/2] mm/mglru: make type fallback logic explicit in isolate_folios()
-Date: Sat, 29 Aug 2026 15:42:03 +0800
-Message-Id: <20260829074204.45304-2-baohua@kernel.org>
+	"Barry Song (Xiaomi)" <baohua@kernel.org>
+Subject: [PATCH v2 2/2] mm/mglru: make retry logic explicit in isolate_folios()
+Date: Sat, 29 Aug 2026 15:42:04 +0800
+Message-Id: <20260829074204.45304-3-baohua@kernel.org>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20260829074204.45304-1-baohua@kernel.org>
 References: <20260829074204.45304-1-baohua@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: ED48640003
+X-Stat-Signature: 53mqpx1n3nfyj3xen543ayfwsw5uw3gi
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E0A1640003
-X-Stat-Signature: tqq4sdt6qpqd8dye6xf7796aag8uzqgf
-X-HE-Tag: 1787989339-326671
-X-HE-Meta: U2FsdGVkX18IoYsVwpYM3Gxtbi2KCbHm9kqHVi1l10D2b5E8AUlS0Pv1AXCQdf2hM0houP3BJ4sn8nvfCETs54CosheB3HIEQebZRu7cJwPHsIzWONKFEqJ5GhQHMhiIuTslGtGFdZHxpzgB1RDn7cjQc0MJ7IYabP/4/MmTq+PCvGoGvBOupd/3mROqw+M7C3uJfN3hVuY6DNSnhFkVj7CT4f07lR91VcWQ8trv00C3emXXqlok2WJ7/CLpGEjFZFs6kSrOMB8CqIrP+PrYyFpGUahEwgrP2mv8KtZZWPrKUj7gMCGdNXZbBHtKBg0LXA7WkzaEC3t5q8IQYy1mv4oplCJVXno5snvjed1Tp81vpPmkNMx+gl3GbBO5V6mhizbPVTxvh4sR0lUEzTmLJ8fG65XPvrUztZyCM55hoq083w2FbF8fA8YX8ij+yRAbKQtuZctsJcDWZJhMdSRYiFVhxDiU/o3K8pFH9m33iYh4v1IfWsTQrcLvr9UU4JAWUm1Z2Gt1glhnlvEWHf0+HypXJ06wWYJWz4MNThEVR53Z/QA/6kWP+onwCaJMKSYuvN01doPoMAZWGATT/U6nJ6XVNadYoy5oYB2W3Uh1jrZOtGtMwwzdee6yfoc8hj9reY96QpM2UsoCc2KDfm/f5Leky+n68hIm1Q47gCqI0pfs4cf6MINDY/+Y6XapyZ+kDjIz+hJ4TwwYzF0VXtdfLfZ2AQKwOYkXSLw+V92UvfkkpORiUmJpa+TogdRq9hAw+LurER3n7fKUaWzf7peyWBmDa4oyalsuYp2UTkagUbkVpA9K5Mx3RkcoyJyu1l9FtU+RXWix7y1S4HGRD0CX8zbI1Gk4cEB5plX5gyOP5r7YaeDk7AUsYWenbhGl4r4oDbc9u+liTMs6x4xQprfqvAnd/aIx1b+WoBtSBPmfBzyhaEuOA7uo0CGifbidFQBAQywoIm+d1dwfv9baYj5
- 3DW/zJKK
- 4mmrgVA/42uH+6auO63cMi6s0IG7nlOSL9feYUUtYy6f9hATfeaeemJ3OCoB2bb31SIdujAExfP3ccS3Tsf9kB0AoscIOqWM8+Dv2FBwT4TyvwSi72GeNWveuyqVX50vKx173D92JEuUGqJ6+oklT1CD33xUoWctFI32Cx3PcRuWcMQX09tojC5XkGS4E0NE5bb183bm7avX6/EWC/2PQhHD2lmTrWPBz0TsGIDGTuaifKKk3d6AthrpxvvmC/W/IQOIXS3loJ5Wyk1G3s/wppRsinFWrFve/WYKgaU4yvNpV6l7etpHfzTRPoyBTuZWtIGFR4BjJ51ZEj9telV5Q3/L1s8TuTsZhJrgRea2x54Qqw0uhdFHNu2RoSmUHQRyFeIEx
+X-HE-Tag: 1787989343-515578
+X-HE-Meta: U2FsdGVkX198+naM+ORJnBX7oZW8JW247cDBDi04AvMysOBSVHQoZADNkusa4AE/93uNJwFOSslLbSaKt2ysEuBLTalbwqK8Lz7gc0to8Ze2MHvTp1qfQM/UGrKlUG6erO5RUqmb2Fq3RVOlJKTQ8fWOsR4xy7nCyhN/g/hnnZJND/vl6Djf7bDYdqgrOOxEKQ0B4cpx30CTYGFwlKmXmYPQQqVScjXkk5mGXBY++zKS8HAwRQzBrXbghHhVzOuyRL6zRg09FXOAYKC8KneW1nqff1E1zGwJYQMbXJMlx9V5whb/c5marGT/Iiev0d3n4q1ou4dpCzbap6XuHkjTUExoIjz456npOqlDUKC+NdsVoIkN5Kc+T0EzpABZZRe1bpcPexWdqEW8M8cHj1zl1XwMYxiPEqi0FbF+9wMv95ksovvYafBrSf6XyIgMtGUk2kHvnB7R6nDgpsyW5byzecAy4XMXmjuXn3Yq8eXRyq7oAU/k4oYd1D7NcAnEZaBKckBzJbhHIUkRAecUgotsyov4+7jNFg3mSwIXUR9k3WZz9ICeImIY0rJJDeNUmSAF7ddhCMDvKubIO2sHjsheBz1XtFeVXms+v31IVVD4/3+YZsp93szgi5NqaeDLP58VdKpSIkGgB6ob4z5lBc8XBTibxH1nbYaiPDA9AaljuHr62uJ33U1XHDkgW3W1fbDFLAkYE1t8xudR7p0dvKrm3U+BkLs2QTJUV/sKeZbu8uN64L+zPngW3VE+BJXtMtSaHFzKTAyPTCBNgingdx5IDRgSjX3rAmsWRx5yyTm92SVXvCUY2wVVYcHr3hDlIykmuwkzDu2qLBgyo4wHZ/Rd32dpcq1b3d4rft2G49ugorB7Mto09whfS70FHhGNSi9Wiq9tG4sOTpL6YZTvlIjPagwhZcyNGP8QjtxZHnYXjrqlBV9sIHdzYTqyv5sAFf8Os5NC9daVcaEgvQL3igu
+ +hUh2G5A
+ jRKNecH+ibLiEH216l5oFo8JYITOaqRRuFHpp3SoJDn+qFs93C7y7O86zoae1w2yiXxjDRCTrb8nJVfmNuvNOEvqwPOKufxu/IBV1l1FwYPZQafRxAU/3Pa0NWxScsyW53+KvpU04D2lzKoERdrtU8cJ4thNTA+WIqmmzOMvdqKRdqkuzQwvg41miMov8mwJWOfuEN8FgyuNhrGiM+CwiFzStf0Plx9XFjHEScAqF+x9LweoC4lnpZW9nOgF263aNau1Egrsyj5o03uXC6iITpKqHxaZ5+B1X+6Pr2gLTK3RuSyP9v0ZWqKat/h7un29WDVoFgGDxOTrSj7mnozc9APVt4NU2+J0rs5QW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,90 +108,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ridong Chen <chenridong@xiaomi.com>
+The existing mainline code retries the same type once in a rather
+subtle way. `for_each_evictable_type()` may provide one more iteration,
+allowing the same type to be retried if we scanned some folios but
+failed to isolate any due to protections, promotions, or races. This
+patch makes the retry behavior explicit.
 
-The for_each_evictable_type() loop in isolate_folios()
-is misleading: it does not actually iterate over each
-evictable type. Instead, get_type_to_scan() selects the
-type to scan, while the iterator `i` merely bounds the
-number of attempts.
-
-Make the fallback behavior explicit in the code and remove the
-opaque for_each_evictable_type(i, swappiness).
-
-Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
-Co-developed-by: Barry Song (Xiaomi) <baohua@kernel.org>
 Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 ---
- mm/vmscan.c | 46 ++++++++++++++++++++++++++--------------------
- 1 file changed, 26 insertions(+), 20 deletions(-)
+ mm/vmscan.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index fdd13299a04a..35a233623368 100644
+index 35a233623368..718f59ffc688 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -4838,35 +4838,41 @@ static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
- 	return positive_ctrl_err(&sp, &pv);
- }
- 
-+static inline bool is_single_type_reclaim(int swappiness)
-+{
-+	return swappiness == MIN_SWAPPINESS ||
-+	       swappiness == SWAPPINESS_ANON_ONLY;
-+}
-+
- static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 			  struct scan_control *sc, int swappiness,
- 			  struct list_head *list, int *isolated,
- 			  int *isolate_type, int *isolate_scanned)
- {
--	int i;
--	int total_scanned = 0;
-+	bool type_fallback_allowed = !is_single_type_reclaim(swappiness);
+@@ -4852,6 +4852,7 @@ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	bool type_fallback_allowed = !is_single_type_reclaim(swappiness);
  	int type = get_type_to_scan(lruvec, swappiness);
-+	int total_scanned = 0, scanned, tier;
+ 	int total_scanned = 0, scanned, tier;
++	bool tried = false;
  
--	for_each_evictable_type(i, swappiness) {
--		int scanned;
--		int tier = get_tier_idx(lruvec, type);
-+retry:
-+	tier = get_tier_idx(lruvec, type);
-+	scanned = scan_folios(nr_to_scan, lruvec, sc,
-+			      type, tier, list, isolated);
- 
--		scanned = scan_folios(nr_to_scan, lruvec, sc,
--				      type, tier, list, isolated);
-+	total_scanned += scanned;
-+	if (*isolated) {
-+		*isolate_type = type;
-+		*isolate_scanned = scanned;
-+		return total_scanned;
+ retry:
+ 	tier = get_tier_idx(lruvec, type);
+@@ -4871,9 +4872,18 @@ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	 */
+ 	if (!scanned && type_fallback_allowed) {
+ 		type = !type;
++		tried = true;
+ 		type_fallback_allowed = false;
+ 		goto retry;
+ 	}
++	/*
++	 * We scanned some folios but failed to isolate any due to promotions,
++	 * protections, or races. Retry once to avoid a larger loop.
++	 */
++	if (scanned && !tried) {
++		tried = true;
++		goto retry;
 +	}
  
--		total_scanned += scanned;
--		if (*isolated) {
--			*isolate_type = type;
--			*isolate_scanned = scanned;
--			break;
--		}
--		/*
--		 * If scanned > 0 and isolated == 0, avoid falling back to the
--		 * other type, as this type remains sufficient. Falling back
--		 * too readily can disrupt the positive_ctrl_err() bias.
--		 */
--		if (!scanned)
--			type = !type;
-+	/*
-+	 * We are running out of the current reclaim type. Fall back to
-+	 * the other type if allowed.
-+	 */
-+	if (!scanned && type_fallback_allowed) {
-+		type = !type;
-+		type_fallback_allowed = false;
-+		goto retry;
- 	}
- 
  	return total_scanned;
+ }
 -- 
 2.34.1
 
