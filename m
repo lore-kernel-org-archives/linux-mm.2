@@ -4,122 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31BA9C61DD6
-	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 07:48:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D065C61DBE
+	for <linux-mm@archiver.kernel.org>; Sat, 29 Aug 2026 08:26:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 510D56B00AD; Sat, 29 Aug 2026 03:48:49 -0400 (EDT)
+	id 186696B0088; Sat, 29 Aug 2026 04:26:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E8FF6B00AE; Sat, 29 Aug 2026 03:48:49 -0400 (EDT)
+	id 15DF86B008A; Sat, 29 Aug 2026 04:26:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D8C36B00AF; Sat, 29 Aug 2026 03:48:49 -0400 (EDT)
+	id 074D66B008C; Sat, 29 Aug 2026 04:26:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 211D56B00AD
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 03:48:49 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B70371A0621
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 07:48:48 +0000 (UTC)
-X-FDA: 85153530336.27.7C7AB28
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0824120003
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 07:48:46 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=O6vX7pnx;
-	spf=pass (imf03.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D2FD36B0088
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 04:26:35 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 52A6812066C
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 08:26:35 +0000 (UTC)
+X-FDA: 85153625550.14.BC4F86E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7896FC0004
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 08:26:33 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VX3mGmcw;
+	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787989727;
-	b=0L0+SEHhzuEA5R/uRNPJdB4rpJZjLtj2tOLX4n7xgbs02abVFfNm2uVJXElWq/+ZrV2hxG
-	IYfy2Iy5lTkVTBtABsGKW1mVnuMDfcbTkbet6kTDnNDizsm4Nc00h9TQilozar/iGLnyGs
-	cLewizsqmEefXeBNiIAeGevanD+zB5A=
+	t=1787991993;
+	b=Rkgo8L3SPgRpuvEcO0hL15BlDqsPfxOakQyiUYotNKikJFWlPp19mgVmo4w3WEIX0GHkzj
+	o+5mTZ4Sd52fHCWFnF7QKm1+C1XaeCrzs4zin1MFj+9xcOTUkw5GW/E6yzY8Ti6AppzwJh
+	jlPrJUrtRHdL25VOKjKBs6QRKr/1MVo=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=O6vX7pnx;
-	spf=pass (imf03.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VX3mGmcw;
+	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787989727;
+	s=arc-20220608; t=1787991993;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V58LX9cQfAsn8GO5XE1VypHteINKmbZsjfFFi0DDS4w=;
-	b=y8SWi1LdHZQer5wLsHMc9kukCwgtM2/xJ6mLQoxlSbdiUji3JtYg4CxtrVqXZq2I4z7Jzd
-	uayvwJEoEa8qowo+ilcAfv4Qjyc3sivP/03SPoguzQZdVhDSaWQh/MryB66guQNHotQWL9
-	Td1raHvwyCTFHQdvCZZBvH25R8opN+s=
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ce7d2adef4so27469015ad.3
-        for <linux-mm@kvack.org>; Sat, 29 Aug 2026 00:48:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787989726; x=1788594526; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=V58LX9cQfAsn8GO5XE1VypHteINKmbZsjfFFi0DDS4w=;
-        b=O6vX7pnxTwO8kX4KJ1+ls6q1WL9RFLXMp7ZOeYUY21x46kM3u/CCcfkMx+VPgI141r
-         lXc9+kfCiKbjVo4oipl4GB3azK7pxT17m4vupGuiw+6ImuiHhvdEbIgFILoGiSNxW3gH
-         gnMSMU3fzZvX6MeN+2d7Esg/RquL1VbIlWPSsnShiU8p20TbHYODA12XH9l/WGKeR5Zd
-         7fGoGbR0Cs1c9BY0YcOkogvV31DwcLyxoPwFCAPQ9ijghnefDkQ3/MplP7Hlp190aA1+
-         LAeus9/ileGBOh+vXy1y8qH4KWlYykepAKgm1c/x4sgwrYUFNYemsVhhXfUofVWAS51F
-         fINg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787989726; x=1788594526;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=V58LX9cQfAsn8GO5XE1VypHteINKmbZsjfFFi0DDS4w=;
-        b=IwyycfTs9APwk5meKShP5FH0nNcifvYk8qaNq2tyC8/pUCg/EUc/ZjBhb+r0pQej24
-         pfQWOlASrVbI2N8L9kGEnAS8QpIMRYVGYNTP/9ykisSHghf+o6dEYmHFaYeB9U6HqKJc
-         nGRkZKvp84uuppjWg66kLXFD2my5tyRoLEJ4aBdkK6oUAm1168yuUd6Uib1eqcUNyz8t
-         vXU0IrpaUk6wbP+8LoUOgno8Q2sCIrGGff7wsYLzq72xPhG0/BURp9e92nepXwvmrx6k
-         sKZnGk94+XdROopxDPTqcI46Zj8XCx74x7Qx8JJhSJQ0gQzdcoEp597BtwsgjTQmKYRW
-         m78A==
-X-Gm-Message-State: AFuF++n4+6g3cKQdMs45dO1g/M+r0gNypP7gH3OQQh1gjW55a0R5oI5o
-	95Tn2bwD4sqatIUr93BUWmqqV9T/oUGolYeyGz+zNM7VWwMT+hqwNn/ojt14BA==
-X-Gm-Gg: AYBFou3I83KHZ3n7DS4e48Rl8qrbGIfSM2nWZ9+vFIUjGz6EOEmRmbg9TK9TmVHcLT/
-	AahWgNUPK/zNonAZRDRV6DKEw7pyB1GzG2ixAAbJbvdYoSEAnPAR+Vm8GLjxYWN3ZJ3WChr5/29
-	vFSNADAUmn8PkAsPX5JuGjXnR4hNCOsscJo7H1P81htBTnz9A7PRwKhNTU30wZPGM3We6Td/VQC
-	YoPi0i4Tjj3RurnmWJkIzZscN8Eq5sswuIZnZCX0c3xDnXsxdP9n7Q73sudwldn89aRXdEM5GiZ
-	AwweDHNAULrRXNcQzGog6oIgf8h0LN5dl8JyLwsunDbUPRH6Gir5pF9R9DIaMuVVI0nfRTH7s2C
-	Tn4ddg+bpT6j5c4F2afINqAJOvw0fftlV0rKJkF3/a5CmfdbdW2ZrI4P6Z47woxm79AqIs1qhOt
-	0Bwgj8JugqqMWbTiOXq7DgUSSRtxj4wAGCz1TbdvngqCFqdAkuGK5HgMA5f0qaU6BFhLuojMlxz
-	u4m0zPBFHykf6e5+XTwIJb7ZmrG
-X-Received: by 2002:a17:90a:fc4e:b0:395:5eec:b932 with SMTP id 98e67ed59e1d1-396d0f8fdbemr24035986a91.11.1787989725941;
-        Sat, 29 Aug 2026 00:48:45 -0700 (PDT)
-Received: from localhost.localdomain (vmi2317720.contaboserver.net. [84.247.152.65])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396b186809dsm10748234a91.10.2026.08.29.00.48.41
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 29 Aug 2026 00:48:45 -0700 (PDT)
-From: "Lian Wang (ProcessMission)" <lianux.mm@gmail.com>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Kairui Song <kasong@tencent.com>,
-	Jihan LIN <linjh22s@gmail.com>,
-	Kunwu Chan <kunwu.chan@linux.dev>,
-	Thomas Gleixner <tglx@kernel.org>
-Subject: [RESEND RFC PATCH v2 13/13] lib/plist.c: remove requeue function
-Date: Sat, 29 Aug 2026 15:48:37 +0800
-Message-ID: <20260829-swap-pcp-priq-v2-resend-13-68d3d925578c@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260829-swap-pcp-priq-v2-resend-0-68d3d925578c@gmail.com>
-References: <20260829-swap-pcp-priq-v2-resend-0-68d3d925578c@gmail.com>
+	bh=ELz8WpSjJQ38zjegY/jVb779cX2lY7cfwp1pllayTUM=;
+	b=vdTe3oLJB1KrUjwREwZ0xEfOjV87LZZB9KIA+tGUyPCAGDALCDJFFWVsGdtCV8fck3vb/o
+	oz652zRxv1tD3K1M8CrE+j6JhklJQ9e1FHOS3JvDOLc5NEfcvQVCGZ66sq9K7dtmKQF8kt
+	k7aucpoatkRXYkolAf1kMZ6dxR/yB9I=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 627AE601FE
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 08:26:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00C2B1F00ACF
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 08:26:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787991992;
+	bh=ELz8WpSjJQ38zjegY/jVb779cX2lY7cfwp1pllayTUM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=VX3mGmcwK3arZBZaxnK+cLQQYM75+vBP4n+6HcOqKFptpaZqeOC+MYXommfOyItgJ
+	 swHsvPpCgTE3WvLmZqhHBwFNIZ/uOytolr4D8399ZL1UhHyeDsxIpRMgCp8oyTHKL7
+	 1zWgFobF0P7xX0A1Nki6UMpR5fkwcDMbYhmnD7b4qwxRIJUpPOYseuQ2vOWQmdd5/H
+	 /609oaOqp1k6M18mTaqFq4cV3HEx1yGp8BfaXdxs8TZFfa6c3vzs1BAzC9GcU5eNwN
+	 wConOUZXx+3CQTdsLXtXjey8YgS6KgFfwQxfgmhRwnegQx0vNNVBHEim/4gG2fYB+S
+	 1xmwww2NXkhvg==
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-936dfd009d1so268950785a.1
+        for <linux-mm@kvack.org>; Sat, 29 Aug 2026 01:26:31 -0700 (PDT)
+X-Gm-Message-State: AFuF++lyKsR3pi0+LtgH4pQOIl5ZNLAqKik9G7M9aKLuIQt3Mbrkz/o5
+	oxH3HXjdKN+2JmypuKZrAu2n9Yd94OvIS9mCqVBYWP4vXeVcTe0WDdu47YeKfVA8GM4A4DwjCa0
+	wJ4tyd58Z0CMyJjzHWF3zHPgEcZwleLg=
+X-Received: by 2002:a05:620a:2901:b0:92e:57ea:8c8b with SMTP id
+ af79cd13be357-938ff9abf4fmr2092839685a.0.1787991991229; Sat, 29 Aug 2026
+ 01:26:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260826-mglru-flags-cleanup-v3-0-d9f1c75549c8@tencent.com>
+ <20260826-mglru-flags-cleanup-v3-2-d9f1c75549c8@tencent.com>
+ <CAGsJ_4yasRXO52K-13dx9ZXPw95wEyn2bpnf0NiQ2z56dxf-vQ@mail.gmail.com> <CAMgjq7B7TFfBZLPorZEmg5y9u6TzFbYVQXZNC8+iztGtifmdKQ@mail.gmail.com>
+In-Reply-To: <CAMgjq7B7TFfBZLPorZEmg5y9u6TzFbYVQXZNC8+iztGtifmdKQ@mail.gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Sat, 29 Aug 2026 16:26:19 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4z0f=gN58BgneY8GMyOPk+T-D9kY99Fo5FA1MKx2sADyA@mail.gmail.com>
+X-Gm-Features: AcwNN1Vh8SvUhrDJHT68EhT8q8n0BxzVKAvDoklCBhtG9RXuinmOYLs_SOCYxYw
+Message-ID: <CAGsJ_4z0f=gN58BgneY8GMyOPk+T-D9kY99Fo5FA1MKx2sADyA@mail.gmail.com>
+Subject: Re: [PATCH v3 2/6] mm/mglru: introduce helpers for manipulating gen
+ and refs flags
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Ridong Chen <ridong.chen@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Yu Zhao <yuzhao@google.com>, 
+	Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0824120003
-X-Stat-Signature: mk7ckxx4yadt98zpd8bryo45coisew3c
+X-Rspamd-Queue-Id: 7896FC0004
+X-Stat-Signature: 1kg4jmrjfcc4srxmq413bfcjhtsb61hc
 X-Rspam-User: 
-X-HE-Tag: 1787989726-898009
-X-HE-Meta: U2FsdGVkX1/Bf5PomokFfdSv9bHoO2yAtexsXAsaRRuDMBWKte+9d7fEbhrYBGkmPxh6mjnjTbJmigqQJMj8FuXth/Wn0441cJFVn/iACtPkITkTv3vshQhfNOGTcdiA1nN9TPWd8wxKmNVYv3ojQAclkfI7rGwgoDHXyebN90Fn1FnWO0SdNw87e2cfkAdUm5GtczgAGwTOfBTSd+2asSZdcrm86T8qpV7ImYAHe6p2SxNqJU+v71+VYc3eVcSg+JSfELMjYNsqXC+O+E1h8gSaAQ9MGcZecUcBTIulnAxaw3MeEYpWG9bAvUhemDEZ2zUGAaMJrWnB6vvM6LthGoNmRk/nb5O/WESBKLwxwiIWdLGOgPrgyJ8hLSxq8DMSHtbZka3yNanBWRmASXH9okbLEfV5ceySi+kgnO2G5IQFkT27QKB8RMQXSuGRUTwnl+ML7CTjvU6WcL/jeqFXf3u+p+1ZfdJdayXPTZb6WL96sHxVU0GhYRJflfwjJB9r/E2MUXUHV+6yn/GKWP7X3sChragH07VnOjbtzEl5T5Oc+gACpw2rOVq0KKIPqUKBnbftBsVKX3NPJNe5BZBXE9vJpho7zDtwqPUbkFmcEgPeRihmJOUwbZxuiVHgG1I9a7pTNbAs0Z9ShPvztHVBDKlLsWDQRcO8+1FjZ20RQmWNEjBfbnAp2d9iktukNfpX+/FIiX8f44CwDDX4Lf23SjBZSdKWC2bgRSLawpqqIG0H851lNoM9PhIbojRTFFsbiXmHFnv1tS/5OsoDy+FuQyO18TwY9P/hhL4t4934Bj9p7m2RpYq6dLcAYsiTni/Q86gyPX1xvxV/zw95zLpvdbKbPsgyOAaw6JYM1nR1x+weMULuGm86HZPzASYUo9r04hsQXExkiwoPjEctTZbEYkQK++u/zSxjITqMjnIco8Fe1qmeVds7ZrXse9wqhRB9LV4vae9j1GpJqpNitxB
- W/akouGs
- jCPPNkAtyEKDs7AYttyzzJORwmvJyMMj74vQcwmz83X3769ggQ06VHinULZxi17RDBa7TZq3ObkBwdpNDAz9ocaB14mtGQl8YRHWNGKZT8W7mmdJfc1XA54QWMrmcq9/rkCu8K8pWKQTI0btJvxlV/p2hK9T1H0mGekZJnVtZYgAYxKtHn97elYVfP/jEfbH6gOWF4+dfl4cFph2sNast+lrtM1oqj6YjLmKuahmBeTFlYliH+MzumtjWq5zFaaq+J9iIAmuA8zXbDdbtmG9mvEJQpcgUJY+8XUlY+mQjIjXVADYHZRymSz7nSxJylFsb9yxe0iIT5MEJl9x0asJ2d27XyhjDMByXNYn6a0f8Rr0f3Fn2gc1Z5xdfZnj8YNH2+T/1g+M0JQ8Y2TEJzqhE5Zy76+wA5YqQZDx4MZBtEc7JwILBcx+0b6wzJ85CRpL8DjJlr+YSoaOW/cqc0ut1CBbT9hDdmgcITOG/
+X-HE-Tag: 1787991993-169878
+X-HE-Meta: U2FsdGVkX1/qGGjRuOe4aVEy5RJYn3oqqIgLHFe7syJKwXXgLwuNZRl4UbXTLdcC4VB+8sSRye3LYPOWnddFXknSjiAQHeVSJt0xlYwRM0CisHd9z7iZqJigCym6GJfOC5yTwE73+XJHzNJy64n+UbZ1RqEG7EKppupnEOS66HvnnGUhKAoRZ4296xDK0eRO4KxKM8qwENSYOcTKAd7NIGeUz8a2ezrH8OyY+NcG4vhUj7tMrXJeauaV0Ekv/xQvV1NlHJlmX0L8eUKis6Di4qxaMuy0FodbpdNU4ujF2OWkGHnuEG99EjHr2JFDs5Wu8Bc2XYrLMUOdhJ/AG3SdPTUD3DD2xUyOeVW4fw7GcjyJsciq79nJDETiryT9AW0kvKa9HVWUIwGcpWTFnJa7bL1xRRdnxC4o9LC5OnzN8W1b1XBZlh3NEqjDrJlAL2P4jCgC3BnSGJ1pfcPj9H/H/fE7bQAl0RZTlLoM2vmVQ2k4HlwxU32V5mShy1j2A6S7FUNEv9QBRGUbu2B7jiIQev9IFgL7ov0M0+qeBD4qhr6SOak2vChMHB5iju/sx1Jad5fQqp9nGX/aZnXA8e25Owj4IzYdH989T2xhnDttaG3eG3Km1JpKYCAJBXHgp9wl1NWxumSvhJWkicZAVIBU+T6xKDLFKRdWld0sdlr2rPfDrrvF3FNV4i9Sbu4vwlGimH0/Guvy/pTRYrklGKN/3F7BfOWOKNU+++6iBq8MFD7Av1F4uXOBK5k72zZ8e32Ee7TC1y1JQjqb2Je6FbE7CVohoGC2nBDa8ew7cxecGo4InvsLeOPLOsgtMLae7Q0IZa1xI3HD44lp5g2XJYDYoaFFRr1YX9hfW8neX1hCLiaajkm8sFET3CimNYJTQcnTTLNenARleP5SYS7P5jVmsVCDiCK4tzJS9VAjsgXrE0vtLtekIYzg34W829sPdqOy+oDubyGLjiLG8qLGkLi
+ b1sv8DQP
+ yEoEaI3d1ofLX/PaEUiVwFNJgzzzZ1rBSO7QvOlAh+CAFGG5EXYRavDnULNC3HLFkt/ZMrx/C+gk2dTjlytKSJ/Vaa6jlunmnUsiSje8JpA2w1aEicRCbRb/KcWopPiXS3BguV4rY6UPDQ1SoKfNtuKxCqvMEn3pGf8xEUIYqEe1d+BQ3BnghuqfRujzW/ZTGgWfjkYBl5nImnyaofC7D5qpV3n4mLL+eC7NBfTqo0m5EtJzjj+KiXU2czPC98QTkfKfxXAC4JduOnmttFky7zcVsSMcXt4MEqr2xrEIQnZrv/unhdloT3d5MZA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,121 +113,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kairui Song <kasong@tencent.com>
+On Sat, Aug 29, 2026 at 3:48=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+[...]
 
-Now the last user of plist requeue is gone, this function can be
-removed.
+> > > + * lru_gen_set_flags - Set the LRU generation number to specified fo=
+lio flags.
+> > > + * @flags: pointer to the folio flags
+> > > + * @gen: generation number, between 0 and (MAX_NR_GENS - 1), inclusi=
+ve.
+> > > + */
+> > > +static inline void lru_gen_set_flags(unsigned long *flags, int gen)
+> > >  {
+> > > -       unsigned long flags =3D READ_ONCE(folio->flags.f);
+> > > +       VM_WARN_ON_ONCE(gen >=3D MAX_NR_GENS || gen < 0);
+> > > +
+> > > +       *flags &=3D ~LRU_GEN_MASK;
+> > > +       *flags |=3D (gen + 1UL) << LRU_GEN_PGOFF;
+> > > +}
+> >
+> > It seems that we are setting the gen in the flags, rather than
+> > setting the flags themselves.
+> >
+> > The current name makes me think that the function is setting the
+> > entire flags field, especially since `lru_gen` is used as the
+> > namespace for various MGLRU functions, e.g.:
+> >
+> > void lru_gen_add_mm(struct mm_struct *mm);
+> > void lru_gen_del_mm(struct mm_struct *mm);
+> > void lru_gen_migrate_mm(struct mm_struct *mm);
+> > struct lru_gen_folio;
+> > lru_gen_update_size(lruvec, folio, old_gen, new_gen);
+> >
+> > However, this function only sets the gen bits in the flags.
+> > Maybe we could use a name that makes this distinction clearer?
+> >
+> > Could they be named as below, or is there a better naming option?
+> >
+> > set_gen_to_flags(unsigned long *flags, int gen);
+> > get_gen_from_flags(unsigned long flags);
+> >
+> > Or something like flags_to_gen() or gen_from_flags()?
+>
+> I think having lru_gen as the prefix is a good idea actually since the
+> header here is a very generic one, the word "gen" could be used my
+> many other subsystem or drivers, gen_to_flags sounds too generic..
+> While lru_gen is a very specific MGLRU thing.
 
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Signed-off-by: Lian Wang (ProcessMission) <lianux.mm@gmail.com>
-Tested-by: Kunwu Chan <kunwu.chan@linux.dev>
----
- include/linux/plist.h |  2 --
- lib/plist.c           | 64 -------------------------------------------
- 2 files changed, 66 deletions(-)
+Yes. The current problem is that `lru_gen` has been used as a
+generic prefix for MGLRU functions. Here, however, we mean the
+actual generation (`gen`), rather than `lru_gen` as the MGLRU
+namespace.
 
-diff --git a/include/linux/plist.h b/include/linux/plist.h
-index 16cf4355b5c1..73d359c1a053 100644
---- a/include/linux/plist.h
-+++ b/include/linux/plist.h
-@@ -132,8 +132,6 @@ static inline void plist_node_init(struct plist_node *node, int prio)
- extern void plist_add(struct plist_node *node, struct plist_head *head);
- extern void plist_del(struct plist_node *node, struct plist_head *head);
- 
--extern void plist_requeue(struct plist_node *node, struct plist_head *head);
--
- /**
-  * plist_for_each - iterate over the plist
-  * @pos:	the type * to use as a loop counter
-diff --git a/lib/plist.c b/lib/plist.c
-index a5bef38add43..b05ae7ffea87 100644
---- a/lib/plist.c
-+++ b/lib/plist.c
-@@ -142,58 +142,6 @@ void plist_del(struct plist_node *node, struct plist_head *head)
- 	plist_check_head(head);
- }
- 
--/**
-- * plist_requeue - Requeue @node at end of same-prio entries.
-- *
-- * This is essentially an optimized plist_del() followed by
-- * plist_add().  It moves an entry already in the plist to
-- * after any other same-priority entries.
-- *
-- * @node:	&struct plist_node pointer - entry to be moved
-- * @head:	&struct plist_head pointer - list head
-- */
--void plist_requeue(struct plist_node *node, struct plist_head *head)
--{
--	struct plist_node *iter;
--	struct list_head *node_next = &head->node_list;
--
--	plist_check_head(head);
--	BUG_ON(plist_head_empty(head));
--	BUG_ON(plist_node_empty(node));
--
--	if (node == plist_last(head))
--		return;
--
--	iter = plist_next(node);
--
--	if (node->prio != iter->prio)
--		return;
--
--	plist_del(node, head);
--
--	/*
--	 * After plist_del(), iter is the replacement of the node.  If the node
--	 * was on prio_list, take shortcut to find node_next instead of looping.
--	 */
--	if (!list_empty(&iter->prio_list)) {
--		iter = list_entry(iter->prio_list.next, struct plist_node,
--				  prio_list);
--		node_next = &iter->node_list;
--		goto queue;
--	}
--
--	plist_for_each_continue(iter, head) {
--		if (node->prio != iter->prio) {
--			node_next = &iter->node_list;
--			break;
--		}
--	}
--queue:
--	list_add_tail(&node->node_list, node_next);
--
--	plist_check_head(head);
--}
--
- #ifdef CONFIG_DEBUG_PLIST
- #include <linux/sched.h>
- #include <linux/sched/clock.h>
-@@ -231,14 +179,6 @@ static void __init plist_test_check(int nr_expect)
- 	BUG_ON(prio_pos->prio_list.next != &first->prio_list);
- }
- 
--static void __init plist_test_requeue(struct plist_node *node)
--{
--	plist_requeue(node, &test_head);
--
--	if (node != plist_last(&test_head))
--		BUG_ON(node->prio == plist_next(node)->prio);
--}
--
- static int  __init plist_test(void)
- {
- 	int nr_expect = 0, i, loop;
-@@ -262,10 +202,6 @@ static int  __init plist_test(void)
- 			nr_expect--;
- 		}
- 		plist_test_check(nr_expect);
--		if (!plist_node_empty(test_node + i)) {
--			plist_test_requeue(test_node + i);
--			plist_test_check(nr_expect);
--		}
- 	}
- 
- 	for (i = 0; i < ARRAY_SIZE(test_node); i++) {
--- 
-2.55.0
+>
+> How about just rename it lru_set_gen_flags / lru_get_gen_flags? And we
+> will have lru_set_refs_flags / lru_get_refs_flags below.
+
+sounds good to me.
+
+[...]
+
+> > > +static inline void lru_refs_set_flags(unsigned long *flags, unsigned=
+ int refs)
+> > > +{
+> > > +       VM_WARN_ON_ONCE(refs > LRU_REFS_MAX);
+> > > +       BUILD_BUG_ON(LRU_REFS_MAX !=3D (LRU_REFS_MASK >> LRU_REFS_PGO=
+FF) + 1);
+> > > +
+> > > +       *flags &=3D ~LRU_REFS_FLAGS;
+> > > +       if (!refs)
+> > > +               return;
+> > > +       *flags |=3D (BIT(PG_referenced) | ((refs - 1UL) << LRU_REFS_P=
+GOFF));
+> > > +}
+> >
+> > Similar to the above, maybe we could use more descriptive names?
+>
+> And here we have lru_set_refs_flags?
+
+sounds good to me.
+
+[...]
+
+> > > --- a/mm/vmscan.c
+> > > +++ b/mm/vmscan.c
+> > > @@ -843,19 +843,22 @@ static bool lru_gen_set_refs(struct folio *foli=
+o, const vma_flags_t *vma_flags)
+> > >         if (!folio_test_referenced(folio) && !folio_test_workingset(f=
+olio)) {
+> > >                 /* Activate file-backed executable folios after first=
+ usage. */
+> > >                 if (is_exec_file_folio(folio, vma_flags)) {
+> > > -                       set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS=
+, BIT(PG_workingset));
+> > > +                       folio_set_workingset(folio);
+> > > +                       folio_set_lru_refs(folio, 0);
+> > >                         return true;
+> > >                 }
+> > >
+> > > -               set_mask_bits(&folio->flags.f, LRU_REFS_MASK, BIT(PG_=
+referenced));
+> > > +               folio_set_lru_refs(folio, 1);
+> >
+> > We have quite a few instances of folio_set_lru_refs(folio, 1) and
+> > folio_set_lru_refs(folio, 0). Do these values have any special
+> > meaning? Could we add wrapper helpers to make the code more readable?
+> >
+> > `1` just means `PG_referenced`, right? Could we add a comment or
+> > changelog description to clarify that `1` actually means `refs =3D 0`,
+> > but `PG_referenced` is set?
+>
+> Right, I introduced a LRU_REFS_REFERENCED in a later series. Now a
+> comment could be good enough, as in fact PG_referenced is already kind
+> of a unstable page flags under both MGLRU and CLRU. For MGLRU it only
+> mean the refs count is larger than 1 so using a strict 1 here seems
+> even cleaner, but it still keep getting cleared in many places. As for
+> CLRU, the flag keeps getting reset when a folio is activated leading
+> to an under-accounted value from smap and other components. So
+> sanitizing its usage is a long-term goal.
+
+Ok.
+
+Best Regards
+Barry
 
