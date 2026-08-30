@@ -4,115 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E71FC61DE2
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 07:25:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DE92C61DE2
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 07:27:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 817AA6B0088; Sun, 30 Aug 2026 03:25:53 -0400 (EDT)
+	id 0515C6B008A; Sun, 30 Aug 2026 03:27:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C9626B008A; Sun, 30 Aug 2026 03:25:53 -0400 (EDT)
+	id 029096B008C; Sun, 30 Aug 2026 03:27:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B8016B008C; Sun, 30 Aug 2026 03:25:53 -0400 (EDT)
+	id E81276B0092; Sun, 30 Aug 2026 03:27:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B28B6B0088
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 03:25:53 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 899F412027F
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:25:52 +0000 (UTC)
-X-FDA: 85157101344.14.B02BFE6
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D6ADD1C0003
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:25:50 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="HW2OpT/f";
-	spf=pass (imf21.hostedemail.com: domain of imv4bel@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=imv4bel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CB9A46B008A
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 03:27:12 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 57F4316024C
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:27:12 +0000 (UTC)
+X-FDA: 85157104704.01.FDB53EA
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 914E2140009
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:27:10 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Io4z6jul;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788074750;
+	s=arc-20220608; t=1788074830;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Hcmzw/bzGZXuqmnVsevrBZ8607zbsdAVZ+LLgOu15kE=;
-	b=AnAVxFOres64IxOHLG3u4UzKCdT0Sgq8Tg0Bh0EhFXv6oqrb8p7uKC7mrkj4FdTLE14kXO
-	JJNTsA8BdDifQ1OQ6fgw0i2aGdJnvaaVOExmqwOM8i+MmuYKkKcw7t8qTKMGbyTfHKplDn
-	Ma8oXkR3Z8j+gLt1Zjxl9XLr72RdGeA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788074750;
-	b=JBRGdyvXvJv5l2vW2MY9L4MRrqgXCftXYzjxvxOLH0rog0cFQZGYu7c89oe3yBFLIGOXzh
-	e9qkuHQdBSOHzM6OzaqEuqmXFL26TAEg7AS6smN+suzAVV/Xs6BYOJ1IdjjJvINicD2i8h
-	JylUKeh/XfS3SNWABrbbbFvKw6ijluo=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=H0NSc8dCdzQEaixfxG0SBDT4pCc/TJMvf+PTu1jP0Oc=;
+	b=RKyCb/w6Z2FjTev07X5/Fjr7VeNs3HBuh1ai5Ugkbt18uEPXejrC1NTBHuXPO9YNwbg0VB
+	8MOsnEgljw4NXfKvMnD+Kk2TfWVv03dZjtIjxWUls7YhTKgX1+JYDaknlDeJ/ZwzsmX0np
+	N0Vt8GMTNlWwzvnjlzlrnHDJHhSAs7o=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="HW2OpT/f";
-	spf=pass (imf21.hostedemail.com: domain of imv4bel@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=imv4bel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cc1e1ff659bso2100453a12.0
-        for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:25:50 -0700 (PDT)
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Io4z6jul;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788074830;
+	b=mGuqntQMexlJ2N6StEyWQJJtNFa6UGkjz5mbbtE3G8TyexLAJE8rqIdcpo5Z1Do2aHDCh7
+	GXG/AAS3dEdJN7z0bFwM6VZvAQoSOFp2LnLqA4CoIGxqqq4ShrmY1/KChtS65fVLMT6Fsb
+	F25/DGs1cDa5M+Wx8j9v4nROTVJ7O5M=
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-cc1d57602e8so2142734a12.3
+        for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:27:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788074750; x=1788679550; darn=kvack.org;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Hcmzw/bzGZXuqmnVsevrBZ8607zbsdAVZ+LLgOu15kE=;
-        b=HW2OpT/f7tw3lB8QVB0RXcXKfB/b2b6kdppxu9E3rry+Q4xgt9089vG+HZsnMEgxww
-         7Et2t6YAHmxqGQww0pKhU4u6iJElYzt1VGd5loZVzGtr2VTZlUCLtZ/amn+WY45CNkIJ
-         7+IVQ7VXMqdTU9xR44+7S8/xVMyqcFGSIsbX7tr1/LY/LSawveerva7GDC2X9IKriKhx
-         55xuz0UYp4cEAEqR8OBUjdZpgsDwY1m1E5MLgGfPxR3k1bAkL7JaSn4cU6I4OnVF3Hpe
-         i+I/tJV5muzgSwuG8FoL836gdP55xqyEG8Cw6cqD32d1J05njZ0w0DXTLg7WUQsOJrqu
-         nXBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788074750; x=1788679550;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1788074829; x=1788679629; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Hcmzw/bzGZXuqmnVsevrBZ8607zbsdAVZ+LLgOu15kE=;
-        b=aMHrn41BO3I08YPTG8HmmLvwZPB0IEaDPns4uCKpgd7dZnLyUfkjj8H7fxB2lAFDi2
-         u2Qe8y12HXFemlRM//HgZE87Bxg5Q8Mi1UeJ33bMyUMX/QFfRZKwWtrUPF77qGsyMU4q
-         4JOuCpmYpAXd9LOyIPQyn8VsSncpmWBTv6B8cEUXmo6+IQgHDLhbH0F/vCmkZwYp7Yca
-         8iTh9Aa1RWXYjnzqKKtUXzjZtNi/m5VgOhHwmZ/M2CyTeY7NDR7lqL0KqXcllc4g1TM7
-         /ysX+0Sl2bUSHsVKGR4/QtjTqN4vRGuCz32NTcabyP93B1UBbO0zHrA3FWbqeYHCbMpq
-         yTJQ==
-X-Forwarded-Encrypted: i=1; AKwUvByTyA+poV+1MB5f65svZQQe9Erxzw62PW3jEYSUaNX9ilmW1ik5igz68KeO0YOOadamguGb5GlWlw==@kvack.org
-X-Gm-Message-State: AFuF++lTH0zwd/taUHp+AxkKLBzMGwwbguZBFJONQXXNEKcutYzDNuvR
-	WI6smcns2Cxhu/kNwGc+yS9rBLknIZHvC+7TnhEKYYc8sQcPZpzoc39M
-X-Gm-Gg: AYBFou1LiiT0vcL3VYFfCZVRuFpKjqWTSKHe6fxR91LKP6MMAq7fj6jDhxQXOc/J/9J
-	uUk+zfob/ILYIaI5/yHHa1W3NwyyHKnc5y6SyY7QmucO592QJ/H79JtM+UpxhsbMprKvUeuYofa
-	WhBgIffq6gMAiO/chL6EKojTSRzuMsY+EEDGSWnVb/EjVsLFQqygEBt8K7MENE4U5W33pT7+zLD
-	HzVVqjv6hFMne68TaPNJp53jx4n507r1vSa2eOMgKwuVPkyRrKB/LrlI/sfqMOOD2n+b/oZ0Z/r
-	bO1smHarFwYgnV5V5XBdKOMYNjbyZwvE47A+E6C7FfBYUDjxp1c2fj1XsiAgPDJkfzPWDId43Qa
-	dmMdx8lTNooUwuVBAAdamKpercxGazbfTH4ZVundC1ywQGSUjOGCQSVS8mUA9Usf9jzAkxHvLm/
-	nB8mMbiwszM4ygZ8wQLPphe5t7AwpYi9sEQRZPiHjNayEk4U5KzB4TM3RLNe/cR5G0rGMgFp2y9
-	XYqBIU=
-X-Received: by 2002:a17:90b:2fcc:b0:398:9be9:ab8f with SMTP id 98e67ed59e1d1-3989be9aca2mr16397639a91.20.1788074749551;
-        Sun, 30 Aug 2026 00:25:49 -0700 (PDT)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396dda7835dsm10440159a91.5.2026.08.30.00.25.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Aug 2026 00:25:49 -0700 (PDT)
-Date: Sun, 30 Aug 2026 16:25:45 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, imv4bel@gmail.com
-Subject: [PATCH] mm/slab: take n->list_lock for the list_add() in
- __refill_objects_node()
-Message-ID: <apPa-cGLcyt90l-E@v4bel>
+        bh=H0NSc8dCdzQEaixfxG0SBDT4pCc/TJMvf+PTu1jP0Oc=;
+        b=Io4z6julu5Iarkcpp9iWtQlfDvQRmkn3SO+Q4Jzz2u3c/vkV0sQwinnJEHzoKqtR74
+         dTJPM3FHjM/YYyTz/Re9fC/iyAMPZ8z6y4UVCCiqbcLRXxF+w4dlCqEiwgGuaqkKn62W
+         lWdbvRXnM7hRgmqx/63ipBZGXIJrVqfNaYiwcWdLrgRak4I3MCQItjqxm1wP2ZdQahHX
+         8BrElaQCkEqXrbh3iwkgz3EBPhaoopFnCvzr68WAlnEI050i0thxv1cUfC3PD0WmLr1u
+         I3fX0Xb1VAKanNQo3FI6bt5eMh1bc7jPWIXoTJo1Va8kTnR4tEODw8eWBe0bUb4a+9Go
+         NLUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788074829; x=1788679629;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=H0NSc8dCdzQEaixfxG0SBDT4pCc/TJMvf+PTu1jP0Oc=;
+        b=O7qDuwpTW9WyudfpG70LgoZxNdxYtJAz8dws2j6jfRxmG6a327itZ+ttX44xAqROQy
+         GKn3ITrJfzJO5rx+DxFUDu8YrG4+O+T7kLvqTm8Ll5+SqepJTuenfyNHShzIuo2g+c+O
+         4mA6bca5/2odF15iR/58BwTFjpjGfyqe3844/v5LkxIpkjxbN2PuClHTLq6jL33yvjFK
+         h3i3HXpxe+5nQ6GxdHYwDQKxB5i3PuJ8hYemN4g2P9b24S7xTeKzznFViJslshyoLopm
+         OvIF/G3WXxx4wjzfXHzYxxgQCcIC03pJ6kJrCmdbv8SSpywFADSHtEXpKXHG/qBS+96p
+         j7+w==
+X-Forwarded-Encrypted: i=1; AKwUvBwKJbJ9KMQY3Rz1IPNJSKGIpAK/rwDwkMZk6a6ZJ+y+HWgSI6S1H+ww+lewLplYIhqYr4BR+WHT7A==@kvack.org
+X-Gm-Message-State: AFuF++lF+a/5z0ai8EGp0Xh4KQFRU8ptYJKxj6QBiQNrtoxdyr1flM6M
+	KQ1syu1FqARS46QT+B7uds8nkMD5GsmTyOPbA63FPSNJNMc9VtXU5Kcf
+X-Gm-Gg: AYBFou2fPkDjkeakRnc5BUtwkeX9tQa//Z7y/efbQn5omX6UD7vtPldAW9L4gbXab2r
+	5jP3ENQpvE8xmWUk1mdVJ0r4JZ374vGyVTc70mqKJ2rpOeGxNVlmM9Fc+IS0vLlnVJrblyXqJMY
+	W1/0N/k74eXaijLGsTG+8PTUe7oT2JFUOo6xk35+XXqFUcmraMv2kl+QHPEAFqMZ4Y2vjLjkgDa
+	Wi/XcLBYrUWku6yD0qNIhJLmGvKeSHRKd3saJ1TCQ2Ih/avdiNp9s8Em/V8/GNpn3xiz38zr+G7
+	NDLawovJ8jrQsEVCXLXpMpIFEmNuvJ44WDFih7zDAH7d7s+z6siB+YaIn7QK+WNudo9ihTFOpQ6
+	g92QEBh05eVPCxm4p7a7wRc7vu/JCKX6R/2k3J24+Xm6upZzDCr6VxxH85S5WmDMd7b5van6A3R
+	ZAoslXlZJvytWi4vUW5Cw7oqXS/qiebpS8HtmAXF9NIGZqO2hS05yyiCIP20JV53Of76AlQT8x2
+	1BJHSlIB83sFn4AqJYcWv6a+fj4
+X-Received: by 2002:a17:90b:3f50:b0:381:a766:efc9 with SMTP id 98e67ed59e1d1-396d0df72e2mr29568789a91.7.1788074829523;
+        Sun, 30 Aug 2026 00:27:09 -0700 (PDT)
+Received: from localhost.localdomain (vmi2317720.contaboserver.net. [84.247.152.65])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-398bda33e17sm4492394a91.14.2026.08.30.00.26.59
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 30 Aug 2026 00:27:08 -0700 (PDT)
+From: Lian Wang <lianux.mm@gmail.com>
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>
+Cc: akpm@linux-foundation.org,
+	lianux.mm@gmail.com,
+	axelrasmussen@google.com,
+	baolin.wang@linux.alibaba.com,
+	baoquan.he@linux.dev,
+	chenridong@xiaomi.com,
+	david@kernel.org,
+	hannes@cmpxchg.org,
+	kasong@tencent.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	lyugaofei@xiaomi.com,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	stevensd@chromium.org,
+	wangzicheng@honor.com,
+	weixugc@google.com,
+	yuanchu@google.com,
+	zhangbo56@xiaomi.com,
+	Xueyuan Chen <xueyuan.chen21@gmail.com>
+Subject: Re: [PATCH v2 1/7] mm/mglru: separate folio generation update from LRU accounting
+Date: Sun, 30 Aug 2026 15:26:41 +0800
+Message-ID: <20260830072651.78997-1-lianux.mm@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260827234704.63163-2-baohua@kernel.org>
+References: <20260827234704.63163-1-baohua@kernel.org> <20260827234704.63163-2-baohua@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Stat-Signature: ru6t546xywp598t4jbzq6r58rtscsemu
-X-Rspamd-Queue-Id: D6ADD1C0003
-X-Rspamd-Server: rspam02
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788074750-626459
-X-HE-Meta: U2FsdGVkX18RNUzCK+8fbyK5Wukx+5QmYSXHGe1UKgAELGc7pfcU1yE88Amk2G87BpVHybrVEaTd95SqJQNh9ilnbXVJc5I8AO/Fsze9Quvz3o24JSTKqbUx5pFzIZfHFJu6QRZMQnFSUjvuzm1vicKHF6vyTLsfhruWFXT6v74/4EpkcexkA8iZCo7FRp6fMOwc/D0LIg/8Hi7kGJXJJl+rNQMWfRDgEW5TU+kpKtZ96gk6BGfyYxzC/sg0Zi+6K6nNYm5oRFNXR+DM7Vhg1cjCkSDYoWwdgh1LBAP1JxoKGClb5Fte76R8n3P/iiPiU6ll2M7dy88b2XDUT3YwywTPniKYc5aaWPObNT4OQXOUZiUVZzD2+tSZRN5LYhC7uwRCRXSX630Zx6YQoETwHWU/cdUIHbege94j985BLi0EGLfh5EpjgKstn4jDeqK70NXDwECKxfbGkZxjtN5kEn5MuZqoReU23lkzv/0Hbr4QAk88ljukHToIgQEDFV88zvfryU7be1OnBrfHCTKkMfg0QGMwsLRW63aPrumCOycOPwsWHwyIKuCxwmxXglP+DX+gCda8qdlag25Fwr4mp038xhCLY5cRizO1j5BtrfSQ9XKffdfSt6HZHwFOuZyGiT1t879icEQKt5Vdz1y9l30xTZ+AHeRA6LQzFrCSE9Pj9LvH/osF1IyN820V8iILdtgCkKHL3iIm94X4XBPBg8Gm+dk7aqvLg/GJryzlk68wzvSjjHWHK2hVLQdbxyrKjBWzKrHMxlkwm6LVJ8Jtf0dkivZCx7QOChory7MDqMNwbu2ZmL3M6/tpTxsp2KUxY/Lv1pYNDneb92EtJCRaZJ6A6uMrT/tYmyl9O3rtfnLSWjWdtU/ojiqvWEmxRi/RJmc9JEUhFh4uiGX7TOQvJzqxMOqX6DfKi97W327juuTGYxlnBKmv9SQMADTcOezgJBY1dPcn8SxmixVSapZ
- raqBq3XT
- qV0YK7NRU+qNeKNmtQjVi3EvcQZ05pzs7yMIIZo3pVYo8BAxVF2A/a5LSOURMZf4gU3QD2Zsx2sErYOUpxZEGoiqBvE6Jgf5eRDapg3EglD2R+N9rdeVBy5i949ie9z4Wev1htqGFFN9RgCrxK+aehU0ionn5Dhde2v5Ngxsvpw40nlZ+C1WvEU6KTzIwe+iJKOh3dyI+f3LuxiXNKNJTuZWvCBgKafEycEMhl0j0RUiL7q/bdbMSB/aJcYS8gD1MQdXdF8cG+Bqv4Xm1lOsEUJSpBnlpRzdFga/oDfrnm8rOZ3pzx2kioRd0f/gWPvdBd/HYWuEr3C5Jd0f1GrP9cYMBfRTEUGtpIjQKscBiuLlKrMme4eAFDFNNgbQh662IK97L4pAeKqbBs/y5t4WxEF8etbYROJ7O3lHgs8wMDEgO3iGgn5/ow8y3MhaSbCN878f4jOJU4D894O/4mgsMXlYNB/RiiAdL4FJmw4AHXEUOCxJPE+mMUVRVr1D1u/s5oyYGyiSAnXtn98gDs7u8y681eA==
+X-Stat-Signature: i8rc5zrmwudg1ti97ynxhjusamtj4r3y
+X-Rspamd-Queue-Id: 914E2140009
+X-HE-Tag: 1788074830-537759
+X-HE-Meta: U2FsdGVkX1+cqUg9HcICB6saCYvXBJsoNK/w5IBhX8sH24USyq0f3QdwRNFgkWuLRrpiRDnqNWO9C06hkrfD2slVW3Tns4+tWEmzhkYihFv+UBDc7K/RuhUFBcfM6gLz90usKUg8DntShRgO4HetGYQH41wmEblNb1pTfSGq6V0qK+4Zp+MOwHpaQ3ynz5OA/4JpSHYmVuPYm/l++ovPbTfJjlodoxfFD12KQ2PYmuHLTCXO1/i4SAsgyteF24R5jz8uD90MA3RwPJAgPRQxTzELSu9R5ytdPh18/alvTS9IPBR4hsZdncCba5s6aGJZ9dkKgwIfXfzOTF9Byt+DxFSBGA4jUhJXJpchSDNNVTPED8DNwwnYnmw/guPUTYfrMi8nxDTmzUw6tG/1uUR+KbePLPct6r8E/XMCu2w5QP8kETTN0Q+DSe8+Id+DY9x3yycukQ/7kuh8pLMXK2sGWibKI5DTMBrh1pHCOi/+m4Nnq9bJDMfmIlzckbdRsjYM4VDpZOG5CXnk63jEmcuu79pKzfWjHpR+yJIQreeVl+C6f4+XHbgsE/zWbUDSYe551kmyEN7kEmC4YlPBWnaOF3SytuYevrHpCjTwyD5DZ75Wrfxbm0HwVPB8VFT+k7XMqn9GgW+aSPgqFfLSpa53Suyog1/rvX7KxG5HlQ5/r35UkIFziI1RukmjXMgDK3UoTbYYQdf56qTt7cmc6l0fqjdcORwV2L1fcDuVarJREa6wA6GKuuY2mY0I79qwWWLFLWtSfmznkk4hST4TUxM9tcwrr64MfUQIQR8R88yf2lFWO/2HIZVQC8pbMcfAG1kF5dpaIeYr7siHgniFgIGh10dTcR1ONc4VoJ7Pv86r6XgH6HolVtuGQPB8cNQnDLfZ6powoJUITPbMDFMQ3cXKTqMEbSktB9Wygs57u6n4I+yEi4R8yTXDe0wWoj7ke0aSm/sXTabB9Zm2bkG92Xk
+ Se7aBJV3
+ n3eV/5yURunGEKuIt+JtUO1oVRhHjTMQhbuWErWXBjrdD0W1dp27v2cd0p4pYZ3+ZrLvaEPlQmpBFNWXCjNh1eLlTqnbsYxpUQyZQ2UQMQQPiC+SGQYHUMXPBPoHgnycC+OQ/nVIp01zzUKfKrooPHJrtliEGtWdZZv7o5+l0aKFeoYA6JADJoKCYmrU25uTdDWQJGChqfKSCcs7bX1N0HRNNjJoxdbapi8H25pM1KuRkjJuOiGyQheaVKfCmt4Ssllx6IuctV4SrSh7o4gy49jR83evkwekCJtFXaXAbxtnP7l4sTIF7m6rHmmzftAO0e56pk8zqETkWYLJUCCPosvSPuHa3s6w4Pge8V5UaMiMThB9fYt7bTyZkVUz+Ro7LRZIuuzQrhrh958PFtAfjbOzb0OXskB3uLuUvAl3Kz05LenAG/TgWGaUTKfasG9dTnjA2JluhR87ATtUxAoZFtnl8ueQFU1addVCWRBw9y6DQ/yM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,132 +138,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In __refill_objects_node(), the list_add(&slab->slab_list, &pc.slabs) that
-follows a successful __slab_try_return_freelist() is done without
-n->list_lock.
+> Extract the generation update into __folio_inc_gen(), which only updates
+> the folio's generation and reports whether the generation was actually
+> increased. Keep folio_inc_gen() as the wrapper that performs the LRU size
+> accounting when needed.
 
-__slab_try_return_freelist() only succeeds while slab->freelist is NULL. The
-slab we are refilling from is taken off pc.slabs by the list_del() at the
-top of the loop, so at that point it is on no list.
+This is a nice split. Separating the per-folio generation update from the
+LRU accounting makes the batching path straightforward. Looks good to me.
 
-If another CPU frees an object of that slab, __slab_free() sees the slab as
-full and puts it back on n->partial. If a third CPU then takes that object
-in get_from_partial_node(), the freelist becomes NULL again.
-
-A slab that sits on n->partial with a NULL freelist only exists while
-get_from_partial_node() holds n->list_lock, between its cmpxchg and its
-remove_partial().
-
-A list_add() in that window overwrites slab_list to point into pc.slabs.
-The list_del() in remove_partial() then follows the overwritten links, so it
-unlinks the slab from pc.slabs and poisons slab_list while leaving the
-n->partial side alone. n->partial is left pointing at the poisoned slab.
-
-           CPU0                        CPU1                  CPU2
-
-  __refill_objects_node()
-    get_partial_node_bulk()   // n->partial to pc.slabs
-    list_del()                // on no list now
-    get_freelist_nofreeze()   // freelist = NULL
-                              __slab_free()
-                                add_partial()
-                                // back on n->partial
-	                        // freelist is not NULL
-
-                                                    get_from_partial_node()
-                                                      lock
-                                                      cmpxchg
-                                                      // freelist = NULL
-    __slab_try_return_freelist()
-    list_add(&pc.slabs)       // overwrites slab_list
-                                                      remove_partial()
-                                                        list_del()
-                                                        // off pc.slabs
-                                                        // slab_list = POISON
-
-panic log:
-
-  list_add corruption. next->prev should be prev
-  (ffff888100000248), but was dead000000000122.
-  (next=ffffea000416e410).
-  kernel BUG at lib/list_debug.c:29!
-  Oops: invalid opcode: 0000 [#1] SMP NOPTI
-  CPU: 1 UID: 65534 PID: 144 Comm: poc Not tainted
-  7.2.0-16172-gcf72cbb39da8-dirty #1 PREEMPT(lazy)
-  RIP: 0010:__list_add_valid_or_report+0x80/0xd0
-  ...
-  Call Trace:
-   alloc_from_new_slab+0x183/0x300
-   ___slab_alloc+0x31c/0x890
-   __kmalloc_noprof+0x3d4/0x800
-   lsm_blob_alloc+0x2d/0x50
-   security_msg_msg_alloc+0x26/0x90
-   load_msg+0x1aa/0x210
-   do_msgsnd+0x91/0x800
-   do_syscall_64+0x109/0x5d0
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  ...
-  Kernel panic - not syncing: Fatal exception
-
-Do the list_add() under n->list_lock. Reattaching the freelist stays outside
-the lock. Once it succeeds the freelist is no longer NULL, so __slab_free()
-cannot put the slab back, and by the time the lock is taken remove_partial()
-has finished and the slab is on no list.
-
-The lock is held until the block below that returns the remaining slabs to
-the partial list. That block already took the same lock on this path, so no
-lock/unlock pair is added.
-
-The unlock is keyed on having taken the lock instead of on pc.slabs being
-empty. With CONFIG_DEBUG_LIST or CONFIG_LIST_HARDENED, __list_add() returns
-without linking anything if its check fails, which would leave pc.slabs
-empty.
-
-Fixes: ba7425312607 ("mm, slab: add an optimistic __slab_try_return_freelist()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
----
- mm/slub.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index f9b56cb439e709..4f6d1a03a8ee46 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -7260,6 +7260,7 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
- 	struct slab *slab, *slab2;
- 	unsigned int refilled = 0;
- 	unsigned long flags;
-+	bool locked = false;
- 	void *object;
- 
- 	pc.flags = gfp;
-@@ -7297,7 +7298,10 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
- 			void *tail;
- 
- 			if (__slab_try_return_freelist(s, slab, head, count)) {
-+				/* get_from_partial_node() may be mid-removal of the slab */
-+				spin_lock_irqsave(&n->list_lock, flags);
- 				list_add(&slab->slab_list, &pc.slabs);
-+				locked = true;
- 				break;
- 			}
- 
-@@ -7312,9 +7316,12 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
- 			break;
- 	}
- 
--	if (!list_empty(&pc.slabs)) {
-+	if (!locked && !list_empty(&pc.slabs)) {
- 		spin_lock_irqsave(&n->list_lock, flags);
-+		locked = true;
-+	}
- 
-+	if (locked) {
- 		list_for_each_entry(slab, &pc.slabs, slab_list)
- 			set_node_partial_state(n, slab);
- 
--- 
-2.43.0
-
+Reviewed-by: Lian Wang <lianux.mm@gmail.com>
 
