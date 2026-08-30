@@ -4,96 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68605C61DB9
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 04:19:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8E1FC61DB9
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 04:26:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D7AF86B00A3; Sun, 30 Aug 2026 00:19:40 -0400 (EDT)
+	id 069366B008C; Sun, 30 Aug 2026 00:26:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D055F6B00A4; Sun, 30 Aug 2026 00:19:40 -0400 (EDT)
+	id 01A4F6B00AA; Sun, 30 Aug 2026 00:26:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C41D86B00A5; Sun, 30 Aug 2026 00:19:40 -0400 (EDT)
+	id E4A846B00AB; Sun, 30 Aug 2026 00:26:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C5FD6B00A3
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:19:40 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2B6E01A0246
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:19:40 +0000 (UTC)
-X-FDA: 85156632120.26.49785D8
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf03.hostedemail.com (Postfix) with ESMTP id AA20120005
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:19:38 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=SXgE0M1y;
-	spf=pass (imf03.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B933F6B008C
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:26:19 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 44302C0242
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:26:19 +0000 (UTC)
+X-FDA: 85156648878.04.435F1C6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 56A6DC0005
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:26:17 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I95TTF0Q;
+	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788063578;
+	s=arc-20220608; t=1788063977;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Aq91nEzmhiWcCrw9x2W22xOz/ZEdIqQpE8kWR+O0NkA=;
-	b=PMnUsrYtiiK6Q6dXHOHs43HALwx81HdcjcdQUMjNmTkY/nVtrPtAqSuLs5Q62i0GriZZlN
-	YYaBMYFRRRnfq4W5r9hCY06G0/FmWk/uHzjdJrfpzVT7OXhcqlH4tkS1O+b0Wl4rCBGmsd
-	fPFKdXQW7hKv/GYnVzIJwdNVv9f/AsM=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=z4oyq3XNxRWjvU5KSLZ3bRN6q9YknXc+HlOna4jRbr0=;
+	b=UrbYfKpe5s899C/pOZQ7luL3djtf/7gWWpA1BL0ecOu+h41aSohyOnZCX6FS8q4ZmBzBI/
+	0F+JoZ7g7z0VjAeNXCXoREJzH8Cwe1AOlg0AqB01Qfhsv0uG9I0nns+4qhLdKR3jKLbNU1
+	lYJeeJgMGKBX8gTq7GxBPg0YuisTI3c=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788063578;
-	b=6Ldiq5UMIfY9K+H07srNQHW77+t+t6R93uaK32FVYp2zhXiXV+L1iz6is2j9O0yh+90GF8
-	Yy7esJ73Bv0Q7CNC7Y4qfyo3SOVfIHabMXN9XdeDjcY6zJmgUS5XDh0Zh10MdHiFd+6MdH
-	PXKrN+/jp39uPybRNAuHZjnqmzSeBvA=
+	t=1788063977;
+	b=gd5erMt93xYEa+z2DM09IsVmbVnynzhrjyh0EqEMEtATHXaI77PVaGJrUtA7G13kL9RuV8
+	wgkJr6YHfViBS6e7xgUeJxN2TZ9PuCtLlpG3MYaPkkNR2wvcEoSRgoRi1PLnWn8DlOY5XG
+	Z/tks6OKzOgGQp6epGTYG2O6tGjsa7w=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=SXgE0M1y;
-	spf=pass (imf03.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=Aq91nEzmhiWcCrw9x2W22xOz/ZEdIqQpE8kWR+O0NkA=; b=SXgE0M1yzk/4IOCBxbi6JCeibY
-	l/ZzAsS0d9y+MhWS2Zj9oR1xd6NyCOGh/uXFJXxsDD9xtXsFxzXDUTbwoYyo/r5vkaFA90qrevPzA
-	lcSx0f7Ff8JB4PB2wkE+34bN9lcF3sELubj2ZVBVVIerSOgz/TMjaYVTkk0ruejPn9ra/2ubKqhLW
-	ctO3gUBseMzwy+wqmQ1R2Fr2PyQcqg5BYkMS5LKClOhhCGxe1P18Ba7RoSizVxbOex3a5H+2Yow2J
-	Jh9eKWbRJUSE/07pvTMCiIrwGBZjrjspB9zentyvDPzibetEfrvZQpHdqArWGUVK9Yi3a/4OxIb8n
-	TXuImnLQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x0X0Y-000000000hK-3Hg9;
-	Sun, 30 Aug 2026 04:19:02 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Christian Brauner <christian@brauner.io>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>,
-	Gao Xiang <xiang@kernel.org>,
-	Chao Yu <chao@kernel.org>,
-	"Theodore Tso" <tytso@mit.edu>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Hyunchul Lee <hyc.lee@gmail.com>,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	linux-erofs@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	linux-ext4@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ntfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 0/9] Remove FGP_NOFS
-Date: Sun, 30 Aug 2026 05:18:47 +0100
-Message-ID: <20260830041901.2668-1-willy@infradead.org>
-X-Mailer: git-send-email 2.54.0
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I95TTF0Q;
+	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3445543F57
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:26:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1708E1F00ACA
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:26:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788063976;
+	bh=z4oyq3XNxRWjvU5KSLZ3bRN6q9YknXc+HlOna4jRbr0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=I95TTF0QUvm2sKLPEjcrxd3aq353fdKMcv3SW7001GkL12ACKoyFefSQeeTGTkMd8
+	 ypJirdJ2KH0hio/e+7BT3gBUP+LdlL9BR+KBVnJZniMvujaw2fZVoT/ZiN7+epiI6L
+	 fcvYq31wwZ2Z3UknzLt7zCrD/fR61PAE5CRfnfUky/h+FIvob2hRkjFVfgburqe7nT
+	 pu/ZzTlFjds/E6JarfSKthPs6bq1tWRBGbEKtHx2Y8umTAybEYS07p4BxrzklkKRDX
+	 9yt2QCej+V97Rm97l0RyfXBhNxysNrL51AxX84WW8FFTIcOCNtjQd75waSxMrShwsf
+	 DDrJNHyfggdvw==
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-9392aa26b25so61329685a.2
+        for <linux-mm@kvack.org>; Sat, 29 Aug 2026 21:26:16 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqGNpbGC04ZX6J4s2ZQ+Fs8CccrW52RoKre2rW6CEbWgefthNTQG72oK817DFJjQ/WskqYerQ7yhQ==@kvack.org
+X-Gm-Message-State: AFuF++npGMP3Ooe4nXZ/czcyNVr2ECxnMpMHYGMR6jUM4Tk/82pq4QK9
+	VXAYWAaP8Os3YVbnCBwAKJnLPPkrYrW8z1MwkAYUkTVLA5dfa3rTITThLEsUo8Dzsw/t2nrF71f
+	e80ybOO3du25/Ksc0dAIbiMjk5+bu7yc=
+X-Received: by 2002:a05:620a:1d08:b0:939:32cc:f2cd with SMTP id
+ af79cd13be357-93932ccf558mr159931785a.1.1788063975448; Sat, 29 Aug 2026
+ 21:26:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: dz1m7ygdg7wj4ksjpc36uskmxx4gtsc5
-X-Rspamd-Queue-Id: AA20120005
+References: <20260827234704.63163-3-baohua@kernel.org> <20260830035843.712320-1-kunwu.chan@linux.dev>
+In-Reply-To: <20260830035843.712320-1-kunwu.chan@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Sun, 30 Aug 2026 12:26:04 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4y0Pz2fiyhS1X4PY+D-z-o8ycSKdFar9R5PQg-o2Kd6pQ@mail.gmail.com>
+X-Gm-Features: AcwNN1VgEblGKtPauG047hZ4EFaf4rQhRNcWvgLAHvyDRFW4jMs-EL1wXwED7J8
+Message-ID: <CAGsJ_4y0Pz2fiyhS1X4PY+D-z-o8ycSKdFar9R5PQg-o2Kd6pQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/7] mm/mglru: batch update lrugen->nr_pages in inc_min_seq()
+To: Kunwu Chan <kunwu.chan@gmail.com>
+Cc: Kunwu Chan <kunwu.chan@linux.dev>, akpm@linux-foundation.org, lianux.mm@gmail.com, 
+	axelrasmussen@google.com, baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, 
+	chenridong@xiaomi.com, david@kernel.org, hannes@cmpxchg.org, 
+	kasong@tencent.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	ljs@kernel.org, lyugaofei@xiaomi.com, mhocko@kernel.org, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, stevensd@chromium.org, wangzicheng@honor.com, 
+	weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com, 
+	Xueyuan Chen <xueyuan.chen21@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: wgx145fxufaqzrgoe5br51xcrb14nbjp
+X-Rspamd-Queue-Id: 56A6DC0005
 X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788063578-253702
-X-HE-Meta: U2FsdGVkX1/wcbO0LGWw6R6zKjd5s/zlq2ijlujrMnULF0bVJhAyaXbtF8AGk5xqtPgfXbHIoqylSoYkdiigAFGSGu2l9ExpGxgd483d7W10709fIuP93fUsyFWDbuplndM6Hnjzuu6Aj7ZxjeRfzjJAoRMffzVtdbBLZVxAc/TqczVps4w5KbWe/YY+wVvzseJpSUEKb5WlVLrwhVe9NpvsUjQwZjKbKbsO/s7ttDGBY03X3VbvQYRBAuPCzH4J8UXQ44Udb/Z9nUpyngwj7qS/damuxg5vzOt1CsljJpPRySPBCv5ZWvdcikHj6NX03nqwPV6DazxASlQyptiH6hMBg84QVZIgTNsD3LqXD53MlHCRzBSFGYRuweYhtGnUHIzm6g8ySzk4tV/cXdzU0JfSzGoq5TWpxt0oOSNjghEt9ppi+pY+rrcypxEGNquMSrglz6RjAeQNk5e3fhWR5ky4OeA0wwYsng8SofeSn2/zUpn7MIMN3+WrdsQFjd3hG1cR5tTEnVxTWTLDzwEXl7EZGttq8KKpTY1rB54Fxw5My5o7ymtcF7jrdH/icoDZ43pOxcGfT8T3xolIAFeLwGhJuQnrFtVkVgyHIZMKSqNyf2ZxmBRzsbi5ANIVP9rePl4K3Gko63+RL/UzAfpcmSa5pmjWqw7peyuCsRsdWjgk8HM/UgyTeE0YMhHNm1LA8INKtrXwFnInnZfnSUS+WB2nQk5rtnPMpn3ttJa2CkBkvNdwatGnHFZHGO8XCZpnchIZKqrgx5vZLGksN0mQgjroU7Oc4RVGty2lKfBsNIwtoypbyzCgdJO47oA+0Whxh+iaNJ4nWsd5VYoKis9Vv/RymLZj1Sp3G4B3u6SyJsSl+3It6jDOx3EGXx9C5AxKSdOje7ZD7GTF0AtQXKhPRkJzrFC1lvGGpttxpFAsUazUL1GfFtkiHLJs8RPaQJKPDqXZ5ohnx2nzy3s327G
- HhwDXLeo
- HrP702EOUGm8sKfweJcOB1o1Ei4QfXM6Gf5Cs2qKVFjC9IzNmGFNIbeeUYYYx5QdZK7CfuawYUxXvd977+2bAqReHy9H7QLNfeQpjOElkQ4SyKGkK3idlww4zIigkxuN1v9spnwQCML4e1Y5AmQBF+vgUNukWQmB9x3FYXjWNMh6+RqznzqIYaN7BCDMwXtcR81zEjO95+mbZ1l3JV/L7T02+jHaqZTFYCnRbZwyjeV5LylNeZoxmFdYd80fp9fxyW+fmrm18UvjC2q0D0V+arsnmf7HFdDx9pWHS5ozzyf799RBHgKN/M9jAelia0Vr/DwWr
+X-HE-Tag: 1788063977-162023
+X-HE-Meta: U2FsdGVkX1+3yM5U2vphwcLJ1b7fohl1IRbRyX3G8bYgicA5lhBX2UBAOCDJtc9cKZPP6ly3MaB3FH4GuY485ms4qD6eQv4N++oET8ypD6WAIuasnzaTBtpnUcTCVR6e4HBzQ6g8OgNNbN0cSN5YnVAFqEnwm2sNXKWEJQjZLzr5b77WvOY4U32rzd9LLxbEAtIxe5lPjJr7VKZwjIKQk3eVNC3I8aCXdQcl/IbJ/zZo0Sk/UW2PVXd1mDDCLPUIM5UK1PPqBUpmR9OOQjS3eD5PvPXoYfHeTX3dFb1JjwavgJeqt+DB9NxNAmIfMd2Z7BNKkdwffospViPpmdGGZieVwestMmSC4rZmFVsCI9zozaKnGtiIWaKl2kZu+GsWjJn8kRKI8kSIWBczniO75+PCWz0rcIUZmoZsQz080oE2kvEogeCGhisJdiRSA0uEeZdUZMRdQkcgIxPbYXn1S9AHfU8fbBtYpZIWYGb7EJ+AAf/P3g7jyAAE7r9WqIZZdjv8+skk2pGvMPwGDXoR7TcB2bu5EA7qmzZBO1/2pZFMX19XuJDFjPMlVfyzW0AQWOMJ7LJ8tFNl6gSaQo6k58ggEl7N0p/9AE15DrvhJXUFFVO9xTY9C153db8gglInqnKodzYFQHFjEjO6FT+/1iuN369X3ySA5yC0LopnZWm7ksVcYrUkH99HLcHU39w4gS6wta8Q/Oc1DSSTxHt8I9VVBHkKMGkXuFi1obKXfEdhkxWjr4fQHRlDGOYSDYP+rCBbqK3JOqE6YcAd+GgRRW2/a0/m0ZrlPW6mk4zgzKIL6cTzXv7HdMa34ZUv4s0rM+2mXRhPvUy9VWoT0rPlmRP+PL3m7HJXhhV8w1n31tQBW3hGyFzk3+7svi+8Lj2WeC4l9Rv6gJUhtUt4YaI13sYFeTo31bwKWmGxXLmbvIRCd9LfzWQYjmi0BwnEjyVKcXINoIhhCOm/7InzTKQ
+ jTEwi7/x
+ IXbrRuIrOvDnrVUc+U5zdlMHBGLuJv1ASFtJIyfdGpLJDbG8RAeuvBlMImrAv2xTtLroz6A4zDvV/QJPH2gvlzQnvbYC69H7umlDzfonYE4W2O2QnycFjUctuSnP1tL2vcFidnmnSH4lSe4nydARQfFurD4iFJqO5UWILzfsVOLSX+7sarqvOVaglfW3BT8y4vqqIoQnylbH4lH2JW2BkMAyhBLFW7lTbYRamBppKykrKc7Ml3wtl9AMvsBTZNG96MaSGcnSnVIEedVbRib8czI8iVrJrxDrLSS9ldr8vIqRtrYlBh9yJLLLX71EzRviU+5icCS1rKbpVSn5/tqhi8bXqKhohjLF18cF6U1D3XdID3tFLI3qOUdM9yA/KWrDNNNHYQQol4E/lngZYjDYdDOkHRb/qQNdIxK8xQ+HHvZ8FnSMUW+k7qH3KQrLg3NBeqsECKWVjLNBYzL4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,50 +108,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There is broad agreement that we should eliminate __GFP_FS in favour of
-using memalloc_nofs_save().  This is a small step in that direction by
-getting rid of FGP_NOFS.  It's also a nice simplification in its own right.
+On Sun, Aug 30, 2026 at 11:59=E2=80=AFAM Kunwu Chan <kunwu.chan@gmail.com> =
+wrote:
+>
+> On Fri, 28 Aug 2026 07:46:59 +0800 "Barry Song (Xiaomi)" <baohua@kernel.o=
+rg> wrote:
+>
+> > Currently, folio_inc_gen() updates lrugen->nr_pages for every folio
+> > as it advances generations. Instead, accumulate the size changes
+> > and update lrugen->nr_pages in a batch after scanning the entire
+> > oldest generation, or when the scan stops because remaining reaches
+> > zero.
+> >
+> > Since we only move folios from the oldest generation to the second
+> > oldest generation, the active/inactive state cannot change. We can
+> > therefore skip __lru_update_size().
+> >
+> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> > ---
+> >  mm/vmscan.c | 23 ++++++++++++++++++-----
+[...]
+> >
+> >                       if (!--remaining)
+> > -                             return false;
+> > +                             break;
+> >               }
+> > +             WRITE_ONCE(lrugen->nr_pages[old_gen][type][zone],
+> > +                        lrugen->nr_pages[old_gen][type][zone] - delta)=
+;
+> > +             WRITE_ONCE(lrugen->nr_pages[target_gen][type][zone],
+> > +                        lrugen->nr_pages[target_gen][type][zone] + del=
+ta);
+>
+> Hi Barry,
+>
+> One subtle point about the `remaining` handling:
+> when `remaining` reaches zero, we now `break` rather than return
+> so that the accumulated `delta` is applied before returning.
+>
+> As I understand it, this is required because `__folio_inc_gen()`
+> has already changed the generation of the scanned folios,
+> while `lrugen->nr_pages[]` is now updated only in batch.
+>
+> So the invariant is that every successful generation increment must
+> have its corresponding `delta` flushed before `inc_min_seq()` returns.
+>
+> Is this the intended accounting invariant?
 
-I added the documentation improvement at the start of this series, not
-because anything depends on that (obviously it doesn't), but because
-I thought the existing documentation was rather MM centric and it needs
-to be FS centric.  Hopefully the cc'd filesystem maintainers will have
-the chance to look at patch 1 and see if it makes sense to them.
+Yes, Kunwu, you're right. We can't return when `remaining =3D=3D 0`,
+otherwise we will miss the chance to flush the delta.
 
-There's a few different solutions here:
+So changing `return` to `break` is intentional. Another option would be
+to duplicate the code that flushes the delta and keep the `return`, but
+that would be ugly since we would have to duplicate the code below:
 
- - Filesystems specifying both FGP_NOWAIT and FGP_NOFS.  If you're not
-   waiting, it doesn't matter if you're allowed to reclaim from FS
-   context or not, you're just not doing reclaim.
- - We're already under memalloc_nofs.
- - We can prove that the MM should be allowed to reclaim from
-   filesystem memory (and so specifying FGP_NOFS was wrong).
- - We can add a call to memalloc_nofs_save().
+             WRITE_ONCE(lrugen->nr_pages[old_gen][type][zone],
+                       lrugen->nr_pages[old_gen][type][zone] - delta);
+             WRITE_ONCE(lrugen->nr_pages[target_gen][type][zone],
+                        lrugen->nr_pages[target_gen][type][zone] + delta);
 
-Matthew Wilcox (Oracle) (9):
-  mm: Improve memalloc_nofs_save() documentation
-  ext4: Remove uses of FGP_NOFS
-  erofs: Remove redundant FGP_NOFS
-  nfs: Remove redundant FGP_NOFS
-  ntfs: Remove FGP_NOFS from __ntfs_inode_resident_attr_pwrite()
-  ntfs: Remove redundant FGP_NOFS from ntfs_wof_collect_dest()
-  squashfs: Remove use of FGP_NOFS
-  filemap: Remove redundant FGP_NOFS
-  filemap: Remove FGP_NOFS
-
- fs/erofs/internal.h      |  2 +-
- fs/ext4/inline.c         |  6 ++----
- fs/nfs/dir.c             |  2 +-
- fs/ntfs/inode.c          |  2 +-
- fs/ntfs/wof.c            |  7 +++----
- fs/squashfs/file.c       |  5 ++++-
- include/linux/pagemap.h  | 12 +++++-------
- include/linux/sched/mm.h | 31 +++++++++++++++++++++++--------
- mm/filemap.c             |  2 --
- mm/readahead.c           | 14 ++------------
- 10 files changed, 42 insertions(+), 41 deletions(-)
-
--- 
-2.47.3
-
+Thanks
+Barry
 
