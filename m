@@ -4,117 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31F3EC61DD9
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 16:40:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA9B2C61DD9
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 16:48:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F3D656B008C; Sun, 30 Aug 2026 12:40:05 -0400 (EDT)
+	id 6C1BB6B0088; Sun, 30 Aug 2026 12:48:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEE966B0092; Sun, 30 Aug 2026 12:40:05 -0400 (EDT)
+	id 6723E6B008A; Sun, 30 Aug 2026 12:48:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDC836B0095; Sun, 30 Aug 2026 12:40:05 -0400 (EDT)
+	id 5889C6B008C; Sun, 30 Aug 2026 12:48:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B60C76B008C
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 12:40:05 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3B65A1C1CAC
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 16:40:05 +0000 (UTC)
-X-FDA: 85158497970.24.43B6131
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 6EB4D1C0007
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 16:40:03 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=s9V0EXm9;
-	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788108003;
-	b=ZF4llEWbirhbm74lUq/y4jeGRJdqSh8HPcKypj2ssuk4K+2g7bRSTTeGiYdvJnOt3ZF2/E
-	/fawN5XXXxt2kRyKIyiRvzbdxOnmxMq079JhxDkWGAYS0T1hhGx1q85K6ww5mJ1Y3/2oS+
-	4ut6RwBU3RQXrXJXvSIMWPN6+hdjOA8=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=s9V0EXm9;
-	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EBD86B0088
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 12:48:52 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C45C31A035A
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 16:48:51 +0000 (UTC)
+X-FDA: 85158520062.27.2A091F0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1BDD140008
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 16:48:49 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="alleFJ3/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788108003;
+	s=arc-20220608; t=1788108530;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PokV92Wfh1ph78+DVYXuDrVLqAtkUu6EZ7/DX6OOMHg=;
-	b=Xe19+1m2Uzlp10CktIoBra3HbAbrPHKkTVeoWw3L+tceCPJoySQhaU4vZ4JcQcNg5atMjb
-	lvo1vKjcaYCn4kQQWZoRId+7mxMyyAJt7+ZGHXPs1fFFJ69Uw7R7cmipxj4T9t90eCbLYB
-	iJLve1wNwfiSDGWiPPdXavJ7XGT6pMU=
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-92ea24a2dbfso273349285a.0
-        for <linux-mm@kvack.org>; Sun, 30 Aug 2026 09:40:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1788108002; x=1788712802; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=PokV92Wfh1ph78+DVYXuDrVLqAtkUu6EZ7/DX6OOMHg=;
-        b=s9V0EXm9BdzoqIVY7YILZ25NFJ3NDGkc+z303lq+IiomDYMFfYrLKmS8kwEPipUrXv
-         tjJrLiGq/LkGlaYsO2+01qv9jaYjJ7TzMPWQ71RRTHn+h+Dy7V7wuV92EpYvxaNvZZV1
-         UzHTuKwCwoJ0jaVB0GYikCzcrcZGqeVdh03/ydsdSknBlWhJ7o1oMaNOIty6N1vkdKty
-         2NTHx1C7b3eS3cooHOVH2rF9VyDIEFd8qVtIyuODG7K4hJr7IFWXuIkXwIsaQzWYTTQf
-         MTGpYxLXuik7ZYvhbks5KOa+b/7wxzylkVVrDdKHKaj+2X2Ic4PQ4YHNbsMEa07Z8mAC
-         B/Aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788108002; x=1788712802;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PokV92Wfh1ph78+DVYXuDrVLqAtkUu6EZ7/DX6OOMHg=;
-        b=T6rqHawYvULScanBlBcVNSw2e6x9egT5DUlzsOoTi5pQF5vdBQjeiRJ5vxzSqbnD8N
-         E9Y3Yxuke35FVj70sYgWfEqkG0mvRSqstigB25/2CdcmGe6I1jiRYngIOJTQz2J6iZ2o
-         6vps+L+MQ1hD9Q+5FPH/WmLcJMOy6WQGmYHbqXXaeLTcoZBND+l+AXBuD9qvoLCvLrJQ
-         Qoe5mKaG3YvmZ90C2lQ/JKOtrxZiaFF2UnAtlw6Xt9FQiYzNAIUzD/JS96KhNOnFvYkV
-         MJlvH3V4goP4TCyNCyRLAVBcqBS6vXlNI2YMBEGvkbye86dGwv0dwCOdXiOhXLwIa1Bi
-         WokQ==
-X-Gm-Message-State: AFuF++nmMglj3Hp4ptyLM3gb4IlYZ4kiIorhMs6gWDA3GRs2mFx0r1yJ
-	Hs+m2d+VQ0chm3mLoNh5IXXljRczo6uUqo0FPvIuLL+1MBnjPnglL0o2NRsgNhFvog4=
-X-Gm-Gg: AR+sD10fMRNwJyTSXIHU6QAeJyi/aHgXULXNko3dzrMjviqevxzFTTj9lSybcQ/qWc9
-	uLDY+d1K7PtnCHm2aF2ydglliBRDHJO9gmu+QOyrlILARrmiUUwwkCgpYVNlRwb/20lwamVvOyw
-	j51yg0Z3sntDXLGNynU2DHE0QwRIh3CBKHRfrudrAUnXPaheDiPMC9x8eJ8DSF2xZL6TqY5a5me
-	UVzlA2vlSpfl/hIqFQdE/7QvhjtKzQ4YvLVXDFNb63P59bk7vnEZ+9JxaIx+aocfcTKEYFooty+
-	DiNDYewFeI2Jl3dSEuWWw6zvK2puqb6cKBq3UV2vGKv1JqNYa9FyLV3ClDlwiQ/oGjryf3DSK+c
-	bn0CyJ0Oc97y0dsEFldWgDi1ykVxKl9rdG6XVUOuFIPM2N4y4uDeMUA44EiDQP58hynGIsDHJsA
-	tsdI7fhTQwXdHSLBRKccWWoY54Zc3unb9QdyIq2WvLuWuWa3YMuTf+tZ8O8WaOvjhNaU1KPO5A8
-	1KxTFINjKgDS7QT8bQxT6m4VbwESlmOrHHiRMTYloL+
-X-Received: by 2002:a05:620a:5235:b0:937:5298:7820 with SMTP id af79cd13be357-939137b5b95mr2035043285a.8.1788108002384;
-        Sun, 30 Aug 2026 09:40:02 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9391725f916sm605301085a.20.2026.08.30.09.40.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Aug 2026 09:40:01 -0700 (PDT)
-Date: Sun, 30 Aug 2026 12:39:59 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	david@kernel.org, ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
-	apopple@nvidia.com, urezki@gmail.com, chenwandun@huawei.com
-Subject: Re: [PATCH 0/2] mm/mempolicy: stop copying state in the interleave
- paths
-Message-ID: <apRczHobjsdUTChR@gourry-fedora-PF4VCD3F>
-References: <20260829015943.1258774-1-gourry@gourry.net>
- <20260829161850.db162f9f99deb419f4700c11@linux-foundation.org>
+	bh=pzu+ACkuwUxOrchSybuObnY6MIz1l+8zvuyyHN0CqRg=;
+	b=5+KLJfjqIh9OcMM+ez+2t3QgTVJQc1+CGlEV5bxU0SwOEZS4anaBfbCjBFvO4OvbX9sB8w
+	pMA7ROlccvkuURKVUEvvFAF83lpQmMXLga+GAdnwZcyTMxuOnQUnS7jsIaeASGZeu5dEu6
+	pWPCGIPnElU3OMROThEh+NpPstWNrtE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="alleFJ3/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788108530;
+	b=PMGVnxLTkWh78nAbXXmezKHgvEzbcd5DfRb65+FvycJiYKfxu/PsOi1fm7YoGDZdcQhzAd
+	5WSzbu6r908fYH/pSXM02+FYhu6X4dWJHrdLfUwKfjdHyTfMoR5K2oFWpKT4sgzVrhSqJm
+	EXDUgnazFZFMsVq9/Kpy3kE9/jKCNxE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 560CB40BC1;
+	Sun, 30 Aug 2026 16:48:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E621F000E9;
+	Sun, 30 Aug 2026 16:48:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788108528;
+	bh=pzu+ACkuwUxOrchSybuObnY6MIz1l+8zvuyyHN0CqRg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=alleFJ3/WMBQoZD+8zwyyiLEGd0cTl0GKTN52DYrQFDRvVW6EgqTuD/QRRKxP6+Gk
+	 0QgsFSBBursCxqkLwNJz8fg+fxD6m4NX+SwLgEKdbx9rb1lKxAZms1FQgwZrkeON3I
+	 9YdDua1nep0yilZ/Yx1SxJQf7fvjJIzEXVJgaYgCJjTCN6FjmHT2xQeTsP/h7KHQP/
+	 qQmNx5Y1qL+EkvykG0VC4x8aELSYYcuBmaiP1gCYOEi/IzX/DDNwcXjdHi5DUhG2Kg
+	 EPWshzwU/2iNxo+18UbI/EQuYqoK3dGgHnWlPqGPwy65iwYI1w5169mF8y+ZKIP/aW
+	 4sOQErbfdq9Ag==
+From: SJ Park <sj@kernel.org>
+To: Krishna Iyer <kiyer@crusoe.ai>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/6] mm/damon/ops-common: handle hugetlb folios in folio mkold/young rmap walkers
+Date: Sun, 30 Aug 2026 09:48:40 -0700
+Message-ID: <20260830164841.103180-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260830051407.50008-3-kiyer@crusoe.ai>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260829161850.db162f9f99deb419f4700c11@linux-foundation.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6EB4D1C0007
-X-Stat-Signature: pxzzk3oxq63irz98rg8etjhkaudbt8ag
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: iggq576pad8uj34kesesg4kkjphowrga
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1BDD140008
 X-Rspam-User: 
-X-HE-Tag: 1788108003-488143
-X-HE-Meta: U2FsdGVkX1831kq/k5pSKM0mUyr1pvFOlTKgxiaaw9e2lEwyANopjc96K8ph58OuUy3mmr8jDd1L8J4Z0s7SQHTYIoB5josHDVpNLjYTZYAbTFsl4FE2oDCx2KGG77AU16phnDBGIqMktPwi9+RvcWGlGC4FiZEp1ROrWDPwbG1ONa6zC7YSLRrLWxyjpLOmgy+UGpm4GeQ0rPeRup4caKMf3DshZKGZH4Y6xyVaieLigTB+lXtslzUTDGFVlcRscm3ChAXvIiAGVv/rCui3uj+/GT95883ElCj6Z8gx+jbG7gfpD+fTRQoNOAMHLCSuXQl6xPZ/V43dhQel1xHCvTUf+mOatZOuPCih4SDM6NH0ZhewW+7gD09BOkP96dOVkbfu4GqenxmiriLIq8zWRJ75oDlpcC7GTlXpygIE+s2BFqroOfcCfinMg1M0b865MrrSvre4fZHPMvA7yPdt3ec7YlYHgBjMy3zB95fyjnkBauhQPPYDV8No5PNjyLZbbsrvQ30B2MseSFKqOmpIoLlaX+ctyj736P+zf0JQpdKNqwRS/Pged0hnbnsNQir6zWSc9moSzsaS6lsx0Zx2c0TsZqx23T86YD5LxLkuo3n6N2WCYbjIQ4YIGyLWx7BlwPoBFdqo0cJCztCBzyZHiC9a83PBAl0TlWD8h7/Z5/MFw4YAzOqoqreQS5Xkb0U3c5dbImmPEAkzffoedNC6bXoe2YK/RwQtXsL0ma24/01QZLdVbJDi4v2hxEHFjRdKtkaUODtTf2QAdsaDoiycVWaP8VnlDm5sSCBieWqLLtsQ8+n8iTVKnTPgnZjU/cMLOD+uMWF3djOseLSR0AXIAeFciu0Nq4gXe7cUrZIgyIu08WG5RcJlrVhY7Z47F9Geu4J+p5a1hJTXrq7wwc97pSAuBYsSl9XJsc1RFBbbwV0KUfSnbIHh6zeC3nfySWVwc5JntJjE4f0gjIPxaRD
- vocMkzYE
- mlp3iLFnU0DmqvTjFw2DJdxlludX40qCdzuAjAo/w5mFyyQc07b0mv9/CfpCBIHiGIi79+yVxy9q9jflL1ymU89UqF7OVWbpgKwhswV682zn81II6tl3Y3JXbGvQOzCVNTJeMlkJqQYYtZ09gl4b0dgtz/uL8ck3VX0Qwd4AhohuSoPYKJWWsqLecApjjsm+b15Z87VHAmYGLM9m0QHUxAGYGS2oZp8NXp7s+q99n4zHVRltb3Uwc0DIH986tm9HLP1S4p4t7/O7ilg/rE7qlU59MzpVOiyTK3M3CGykvDVUvXj1xSaUKR/GnaO7SxJ9LqmH5wEHyk24KZ2D8zfATezaIX+xCRE4tqkdTmFdbPQ6/byINeIf9Yug4P4h6oMwqEKT127AQlgurv+UNVKnCVJeLDKZ1KiNxZc3CKRzat1ZSjJKag+62HjasTC4CoFXtq7li7FDldttb93yaKtIZxuNfaSRmqDC4rxYL7k4vTI0MjukLMVe5iULGQFNHtYaayHV3XtT0+V3DP9Y15TxFPlueVzHXDSYQUBVG
+X-HE-Tag: 1788108529-311061
+X-HE-Meta: U2FsdGVkX1+JTW/38FRFqgz0WB0wCdzX1UcQKrGw5JyaihGUp8O9J8lM+P4k9UVTmnQijzEq5J/pzHiO8rTGOPuXOu93ULA2Y3//JRGxviYtd7onaruuaj3j+COjBC+pIdxBgMtA0ymUNOcULKoYbpSYnbiOsF8TyU1DDx/VJhanvHE97VQjKatcBPE0/VnOO/6B+HAC+0oXV3PSGwqp/yZkkyiBqrKWOxGKxzG0CPltjVXMLGN/8O4e8NjErw6vW2mO8SJfBEawP9eySV33A50oOtD0crxju14Q0+RWr0F478cZrYagXxeFnXKAWFvEk7t9HlwdNvnJoyS+3NZIL/m/ea7iF9+gphUg8QJ3aaFGsZPpyOt+9Y2WedBdO5AtQ7QcyJPHEVmQ37RtiGAE0ndZFM7dXklOu1eB/V9BDqYThcu8ioGziprxeLOVmWr2CapzhcKKqxkhD6yvczliLXXPVbVAYWGVELDZvMRs9mFAXJJOck4vFsX4+BssKXsUsPugs8Dhse/PY7nDuiRiWE7847XksM1bcG3y/wpj+xKk87ids5g6GFEvH8QvWBTykbLE/b/3ADak00y6YE291zwN5/5DkjquaBABchYAnm0uxGbub4j5fGNoqY4eSVQWCWRXgmzbsfpSW4jSvJ6HccgFU8J5MtRKc1sjRiGcaaX4qAAAQ0UzljT1yOfsh4UYLZY2ViCK15E/zGFGIVoXlgR+asUNZpED3DU0Af4nk7PpV9O8P6/4goZ8xJavQvVa3daw0L6n0oiVGNzZX8mJDDJy4gUe3fUP8WW5xydSwyh/LOIQK8YCwoyB8jFI3fN5vKq00UsliEDdMSYfytjWjH5guXZ9RvIvHKa6fGWrEnjmqkezG7O5hWwqrAJc7WDAYQ8yIhj17NlvnCcs++3QHkKy07apT1AZ01mV+AlwkcOAtFVDeR1tiYQ9gHl0mo6p9FlTVNHv0tKLnrD1w7L
+ rczxWytX
+ /ohtGYPloEAkazVOYMbOxBgCdWZ//5T6351wHcNsivr8wdT1vGy/XoAjufxkqjzoT62XEMEsli34CciAinE16/YgheW8vMmVpAyuUkZTDvHVBdKWutHfG9R8x/W0cC4Sj+FE3LTMXG0QdRokiDNwbcvJwXreOkopu3Nvo8YgGWUnLE688ddhjTSZRZIZ6U0yhgfAJK2i4BSajjPA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,43 +93,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 29, 2026 at 04:18:50PM -0700, Andrew Morton wrote:
-> On Fri, 28 Aug 2026 21:59:41 -0400 Gregory Price <gourry@gourry.net> wrote:
-> 
-> > The interleave node selectors and bulk allocators take copies of
-> > nodemasks and node weights (for weighted interleave) in the fault path.
-> > Both of these copies can be entirely eliminated.
-> > 
-> > For node weights, use SRCU to pin the weights in place.  This eliminates
-> > a copy and a kmalloc from the bulk allocator path.
-> > 
-> > For nodemasks, we can operate directly on pol->nodes as long as we bounds
-> > check the walk.  A concurrent rebind can shrink the mask, or tear the read
-> > of it so the mask appears empty.
-> > 
-> >  - The interleave node selectors fall back to numa_node_id() when that
-> >    happens, which is what they already did when a copy came back empty.
-> > 
-> >  - The bulk allocator simply returns what it managed to allocate.
-> > 
-> > The node count and weight totals are read separately from the nodemask
-> > walk that consumes them - creating a time-of-check / time-of-use race.
-> > Just clamp the walk to a single pass (number of nodes), and clamp each
-> > bulk allocation chunk to the space left in the request.
-> > 
-> > The cost is distribution accuracy during a rebind.  The copies never
-> > corrected for that either - they only kept the code from dividing by
-> > zero and overrunning the allocation request.
-> 
-> Not very well, it seems.  Sashiko thinks there's a div-by-zero in
-> alloc_pages_bulk_interleave().
-> 
-> 	https://sashiko.dev/#/patchset/20260829015943.1258774-1-gourry@gourry.net
-> 
+On Sat, 29 Aug 2026 22:14:03 -0700 Krishna Iyer <kiyer@crusoe.ai> wrote:
 
-That's what this was for :]
+> damon_folio_mkold_one() and damon_folio_young_one() assume the folios
+> they walk are mapped by normal PTEs or THP PMDs.  When the folio is a
+> hugetlb folio, page_vma_mapped_walk() returns the huge PTE in pvmw.pte
+> with its page table lock held, but the walkers treat it as a normal
+> PTE: they read and age it with PAGE_SIZE-granularity helpers, which is
+> wrong for huge PTEs (up to PUD level), and notify secondary MMUs for
+> only PAGE_SIZE of the mapping.
+> 
+> Add hugetlb branches to both walkers.  The mkold walker reuses
+> damon_hugetlb_mkold(), which the virtual address space operations set
+> has been using for hugetlb aging: it clears the young bit of the huge
+> PTE via set_huge_pte_at() and calls mmu_notifier_clear_young() spanning
+> the whole huge page size.  The young walker gets an equivalent new
+> helper, damon_hugetlb_young(), which reads the huge PTE with
+> huge_ptep_get() and consults the page idle flag and
+> mmu_notifier_test_young() like the existing PTE branch.
+> 
+> Locking mirrors what page_vma_mapped_walk() provides: the huge PTE's
+> page table lock is held inside the walk, and for shared hugetlb
+> mappings (the only ones subject to huge PMD sharing), rmap_walk_file()
+> already holds i_mmap_rwsem, satisfying hugetlb_walk()'s locking
+> requirements.
+> 
+> This is currently dead code: both rmap walkers are only reachable
+> through damon_get_folio(), which rejects hugetlb folios since they are
+> not on the LRU lists.  A following commit will let the physical address
+> space monitoring primitives opt in to hugetlb folios.
+> 
+> Assisted-by: Claude:claude-fable-5
+> Signed-off-by: Krishna Iyer <kiyer@crusoe.ai>
+> ---
+>  mm/damon/ops-common.c | 63 +++++++++++++++++++++++++++++++++++--------
+>  1 file changed, 52 insertions(+), 11 deletions(-)
+> 
+> diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+> index f5fe92b825bb..62004206ca31 100644
+> --- a/mm/damon/ops-common.c
+> +++ b/mm/damon/ops-common.c
+> @@ -193,10 +193,20 @@ static bool damon_folio_mkold_one(struct folio *folio,
+>  
+>  	while (page_vma_mapped_walk(&pvmw)) {
+>  		addr = pvmw.address;
+> -		if (pvmw.pte)
+> -			damon_ptep_mkold(pvmw.pte, vma, addr);
+> -		else
+> +		if (pvmw.pte) {
+> +			/*
+> +			 * For hugetlb folios, page_vma_mapped_walk() sets
+> +			 * pvmw.pte to the huge PTE with its page table lock
+> +			 * held.
+> +			 */
 
-https://lore.kernel.org/linux-mm/20260828193111.1023497-1-gourry@gourry.net/
+This comment looks too verbose.  Let's drop.
 
-~Gregory
+> +			if (folio_test_hugetlb(folio))
+> +				damon_hugetlb_mkold(pvmw.pte, vma->vm_mm, vma,
+> +						addr);
+> +			else
+> +				damon_ptep_mkold(pvmw.pte, vma, addr);
+> +		} else {
+>  			damon_pmdp_mkold(pvmw.pmd, vma, addr);
+> +		}
+>  	}
+>  	return true;
+>  }
+> @@ -221,6 +231,24 @@ void damon_folio_mkold(struct folio *folio)
+>  
+>  }
+>  
+> +#ifdef CONFIG_HUGETLB_PAGE
+> +static bool damon_hugetlb_young(pte_t *pte, struct vm_area_struct *vma,
+> +		unsigned long addr, struct folio *folio)
+> +{
+> +	pte_t entry = huge_ptep_get(vma->vm_mm, addr, pte);
+> +
+> +	return (pte_present(entry) && pte_young(entry)) ||
+> +		!folio_test_idle(folio) ||
+> +		mmu_notifier_test_young(vma->vm_mm, addr);
+> +}
+> +#else
+> +static bool damon_hugetlb_young(pte_t *pte, struct vm_area_struct *vma,
+> +		unsigned long addr, struct folio *folio)
+> +{
+> +	return false;
+> +}
+> +#endif	/* CONFIG_HUGETLB_PAGE */
+> +
+>  static bool damon_folio_young_one(struct folio *folio,
+>  		struct vm_area_struct *vma, unsigned long addr, void *arg)
+>  {
+> @@ -232,16 +260,29 @@ static bool damon_folio_young_one(struct folio *folio,
+>  	while (page_vma_mapped_walk(&pvmw)) {
+>  		addr = pvmw.address;
+>  		if (pvmw.pte) {
+> -			pte = ptep_get(pvmw.pte);
+> -
+>  			/*
+> -			 * PFN swap PTEs, such as device-exclusive ones, that
+> -			 * actually map pages are "old" from a CPU perspective.
+> -			 * The MMU notifier takes care of any device aspects.
+> +			 * For hugetlb folios, page_vma_mapped_walk() sets
+> +			 * pvmw.pte to the huge PTE with its page table lock
+> +			 * held.
+>  			 */
+
+Again, this new comment looks unnecessary.  Let's drop.
+
+> -			*accessed = (pte_present(pte) && pte_young(pte)) ||
+> -				!folio_test_idle(folio) ||
+> -				mmu_notifier_test_young(vma->vm_mm, addr);
+> +			if (folio_test_hugetlb(folio)) {
+> +				*accessed = damon_hugetlb_young(pvmw.pte, vma,
+> +						addr, folio);
+> +			} else {
+> +				pte = ptep_get(pvmw.pte);
+> +
+> +				/*
+> +				 * PFN swap PTEs, such as device-exclusive
+> +				 * ones, that actually map pages are "old"
+> +				 * from a CPU perspective. The MMU notifier
+> +				 * takes care of any device aspects.
+> +				 */
+> +				*accessed = (pte_present(pte) &&
+> +						pte_young(pte)) ||
+> +					!folio_test_idle(folio) ||
+> +					mmu_notifier_test_young(vma->vm_mm,
+> +							addr);
+> +			}
+
+I feel like the indentation becomes too deep.  Could we split out this into
+another static function, say, damon_pte_young()?
+
+>  		} else {
+>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>  			pmd_t pmd = pmdp_get(pvmw.pmd);
+> -- 
+> 2.54.0
+
+Other than the above two simple things, this patch looks good to me.
+
+
+Thanks,
+SJ
 
