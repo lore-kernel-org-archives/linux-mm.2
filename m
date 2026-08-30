@@ -4,94 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48329C61DE2
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 08:11:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C7EDC61DE1
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 08:35:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA2506B0098; Sun, 30 Aug 2026 04:11:03 -0400 (EDT)
+	id B75676B0088; Sun, 30 Aug 2026 04:35:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D05566B0099; Sun, 30 Aug 2026 04:11:03 -0400 (EDT)
+	id B26A26B008A; Sun, 30 Aug 2026 04:35:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1A416B009B; Sun, 30 Aug 2026 04:11:03 -0400 (EDT)
+	id 9EEBC6B008C; Sun, 30 Aug 2026 04:35:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 98D6C6B0098
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:11:03 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2C2F7A028A
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:11:03 +0000 (UTC)
-X-FDA: 85157215206.23.8314C6C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8390F40003
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:11:01 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gQvyf6PN;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F1816B0088
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:35:34 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BBC6B12028E
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:35:33 +0000 (UTC)
+X-FDA: 85157276946.04.D5843DA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id E417040002
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:35:31 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b8fTlafw;
+	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788078931;
+	b=1+LU8x4gkVd6S0+TmG53kxCWRDh5zXmRXrmiU2PWzCPmTbn6OfJxl/0YFTln7RSncc6pV1
+	XSwv7/vYx327fqWYsBmT8BIwRrBOqEahttFI3p+nWvdio3Rmm7gpNIhtxiI94GrNz7GQ3+
+	rxfQdZyep1iTIPkmg897hJnUjuMPc9w=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788077461;
+	s=arc-20220608; t=1788078931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8L0DQGDXoOlsLX4qSHAjD9TzK8pF9McDUOUSa7CuY7A=;
-	b=wLwMPN10KN6JA7bzOcVtJw7B7JD8Iwb1Mjgo6TuHH1QReB6lovhTpMOl6Spj64T4FbY2O6
-	+PJEMUVuBX8i5Kl4kQMlwBB0bB5CwrVvxP2Fix7SXLtOi3g3alAVJ88KOYDSB1MVKAz0CE
-	HbGN6oNFXxpARONxcdyDlLDYWu+vIs4=
+	bh=B/BZcM1Q1yyTiL+u2PtZ1N/UUsr6bDlHImpT2ZOZlfs=;
+	b=BvJTwwA7qlM0xDKIv/J8YTeThvB0OlfxCReXSY2R7Ujvk0TwZbxk12IzoE4JAyZt8ktIMf
+	zV+W1/Kjg9OUh8pnkmFeCxFh6nlPDPC7aNWuIledJHJm/oKcxGbBetCVo11ZWtGkEV8Jzb
+	6iIjn5UyDhcXAwNzvq7xzpeWxmMQR8Y=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gQvyf6PN;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788077461;
-	b=cDymgYQ/UomWWyvDdALq25KdXZurjaN72ATVVPeBuD/f1PLiNrqAlFQcPbXd3oKXbb1atG
-	X39rAuBjn+7VVcQg3s3OieXNLQmVHJ/r7mZP3DaAniPx42930OMmMef9YoZVTmyCqrcl4K
-	zF46+k5huxcK/kFRCVVi4Ts2K/9rHag=
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b8fTlafw;
+	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D58CF44226;
-	Sun, 30 Aug 2026 08:11:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8694B1F000E9;
-	Sun, 30 Aug 2026 08:10:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3315D600AE
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:35:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF92D1F000E9
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:35:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788077460;
-	bh=8L0DQGDXoOlsLX4qSHAjD9TzK8pF9McDUOUSa7CuY7A=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=gQvyf6PN3R9q93P8546a/NefC9aYrfJGhZBZdpjV6Fe3KOAasOetNmw2TYaKTIaWd
-	 ti9JZzWYYUJf25XhXJF7aw0PJbG9VTxfr9PXW1aPVAuYV6OCwdRidp5UtsJBXocH7b
-	 pwkLM2eskU8MTxCy51CulWv6QW3cQOT8/GPPLXzGp3P9LspNcN5B5u6tJjV6v4Ohl8
-	 9+AKGZNxMpWbcTaP7/ArMhsnOsBzCs83PzOlR/o2TTMC44Y85jBGh5cpjIdkpH5S//
-	 VpoNO+wsaqsn7AI+FJrQBIynEb9zdVELyRUKuEX9qJX1WsSKvPI8vgK61eeT2K36So
-	 3LLd3zSMFkfOg==
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Sun, 30 Aug 2026 11:10:40 +0300
-Subject: [PATCH 4/4] USB: serial: wwan: replace __get_free_page() with
- kmalloc()
+	s=k20260515; t=1788078930;
+	bh=B/BZcM1Q1yyTiL+u2PtZ1N/UUsr6bDlHImpT2ZOZlfs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=b8fTlafwH6UFDyGONtyr6rUiXpbbUs62Tm16Rs0gt+kRY7v3OA9AGiyfZnTd+xXwa
+	 KYt8tuSu3Icc6epTbfaWFqWfSD98F2MKVe1P47wRi2daLxQd54NMxTsoQYXtO/PKCP
+	 aK38K/JkKZOnRUvOELHQt+JlxgSayPDc16QZ/vYz1+2X8EocqN64ewOt+FwLF44haX
+	 ydIfae8uixrpGQfOOE6eJg2yT3Rih0K4Lxd7ifB9J0SNy8sJUa5KlhsY7XnyX+vC0z
+	 8nZnKmmVxiD/hXAgkEIwn5PJ8y8HAGM3rhNj5NeTlWFw6BD9JsEV4ktJnftU43/PKD
+	 3ymWwIbIAbOjw==
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-930f618435cso179576885a.3
+        for <linux-mm@kvack.org>; Sun, 30 Aug 2026 01:35:30 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RoBOLt8u5UlxSotZZuAb2r0lM3ARiypjkkGVXguuYA4mKAB1wHpBpTaJyho2k0NiqB/qksF8EwSvw==@kvack.org
+X-Gm-Message-State: AFuF++lQLPeeHvBQSJUkFULBtLqfkeXap5gQ2ritjURscfVbcJJYQyLX
+	1gf0DhZOLILb5DJzBFtm8cywcBhkr9ay080JZsTl1/jTRmtnYnqHEB5yVZR1vNMm6ehkTK84d7/
+	/7RhO/qkFrq+l8l4xSI7JrlbL9uLHDqo=
+X-Received: by 2002:a05:620a:40cb:b0:936:cda7:554d with SMTP id
+ af79cd13be357-93913798773mr2019122985a.14.1788078930311; Sun, 30 Aug 2026
+ 01:35:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260830-usb-v1-4-aa349c302246@kernel.org>
-References: <20260830-usb-v1-0-aa349c302246@kernel.org>
-In-Reply-To: <20260830-usb-v1-0-aa349c302246@kernel.org>
-To: Chas Williams <3chas3@gmail.com>, Duncan Sands <duncan.sands@free.fr>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Johan Hovold <johan@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
- Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
- accessrunner-general@lists.sourceforge.net, 
- linux-atm-general@lists.sourceforge.net, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, linux-usb@vger.kernel.org, netdev@vger.kernel.org
-X-Mailer: b4 0.17-dev
-X-Rspamd-Server: rspam11
+References: <20260820142956.1414337-1-qiwenjie@xiaomi.com> <3fa43eaca792bc0bbde4b82a6c1fcdd3f528b398.1787999152.git.qiwenjie@xiaomi.com>
+ <4aba05e1a2c3b61cb337d373eb9b7a8db4ddd822.1788024049.git.qiwenjie@xiaomi.com>
+ <20260829111621.41ed2bc9a0e99e3367eb96c3@linux-foundation.org> <ef160933595c365f2c47597b260bc7ecd98ed7ce.1788029516.git.qiwenjie@xiaomi.com>
+In-Reply-To: <ef160933595c365f2c47597b260bc7ecd98ed7ce.1788029516.git.qiwenjie@xiaomi.com>
+From: Barry Song <baohua@kernel.org>
+Date: Sun, 30 Aug 2026 16:35:19 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wpUBOXKd8aGNz76U+87bwDUXZZFSW2UhNcq4qpjVvggQ@mail.gmail.com>
+X-Gm-Features: AcwNN1XKAv-WpIMNo6BgbyKwLX6-0pyA1HhQGvJzilWFR4BrtIbEJ34mKKdkwmc
+Message-ID: <CAGsJ_4wpUBOXKd8aGNz76U+87bwDUXZZFSW2UhNcq4qpjVvggQ@mail.gmail.com>
+Subject: Re: [PATCH v4] mm: filemap: retain mapped dropbehind folios
+To: Wenjie Qi <qwjhust@gmail.com>
+Cc: willy@infradead.org, jack@suse.cz, akpm@linux-foundation.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, axboe@kernel.dk, 
+	trond.myklebust@hammerspace.com, tz2294@columbia.edu, jaegeuk@kernel.org, 
+	chao@kernel.org, qiwenjie@xiaomi.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: pf7fhr3q4xx7h86nkox1t1oncf8x8a35
-X-Rspamd-Queue-Id: 8390F40003
-X-HE-Tag: 1788077461-912249
-X-HE-Meta: U2FsdGVkX19w7vSiHRCS0cqoGQxBDEjpdPX6N4WAEE6WxVYoYqzLOn+Pzwb6eQefl08x8wY+t3O0SiVNj7r9ZhLJTqFKZib6uL5g7s98HlEsST0H2f1SrFjpUnx5MX+cRjQJvIhnws3SyaY5DozAm8I9hn3F3zJZVA6z7NVoc9qntBIhUywnHoAsGoCt3Cqf6QRo8M6J5rczXv/J6ybYjQg93tyCM5DhQr50zc3HrKpnOZfmHo8nU2WNVy1HGUlMmSZUMj5ya1Jk9E72/TnlM292VXBAaU6EJXt+Q0Z54GLsygPuaoX+Qo5KnhPAdy2WOGGqtlG3GcU+iHWT8xFBH3TLOTbR+X9e3R88WWPgJ1D5Fhr82PhLnPKkYOCWdaMyHxLHYzH9k4BvrcmbnLdRQMFEtV1Ru42QcKj8SRybTCh3WmNqMx2hbZt56QKEZVJ54NP+U0AX/Z4YYrBLnUEewdwEFHx6pQlYL8iZ2sBFyj0dLngR5a0z8I50UEDeqHaJIrmAAFF2u+oa5OfbnV3wQ4v7L7Oyjg5pjJ2jBHyb5zSDo/A9xPkPrJG2asODPqK8QLfO410XEQ703MLbOg2SgM+iAmBbBaOpLac96wSF0W4xDDLnGzSnijhD6u4LA5bFcy3AZgLc6R3lEcMw5qr0MJluZY+oNncNcGj3jNW31752j2YNddcSHybfdndYdl4lL0Lqx3+eq7agqAYpbyHR22fMEGLwgz8A/60IMGYZTiL3GyMjnq8VCAvJqUFgCRGUsBoel5a2ftHtY0oAOVPPrMHcUm1jQzV6V49fwwWy/aK9KI8RJhU/WsL+ikbBqc4kkIM5dpLzRdj5xkCZQAfTqm2f3tTRytLdZVEpBWYS9cB4yOkNkABpyrxMxHqt0aPsqmeij42tDouRHr/lqWWgJZRIEUkVY5JDrPLIqNOkF78VlS21GdPA+a81KLNha1KW33ntPYryeXx1GLUzmiY
- uCH5zkfL
- rZDqv8dkHeT8yu/YgvB99ChkZxFaQ+9f+DbAlIorGftBOaReIQJcbuZLzNtVHCxaOZ3r5O4MvSR4pXt+byF3gBDwMprC04Eyu/4n5vD6s/QJAMzg2Whp1NasOGHAbTqg2gb4Z0DslmrAwgAtlyGSIfM41cFbx1WaJXuO6rbGatp0qBNIDlecw4QE47mDYTzjCIXWLjWjEDN4FV9HfO24eGjAhTay1jrQrCWU/dy7G9bPgtbzftGcyphcOTUGGRuqdANeMmh5Jkk1Klf3BjlNbLPV6G3j4o8MnP0SCISSvroSNAwy44j0f+mpqKLleA0b5OCkF
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: E417040002
+X-Stat-Signature: wwmzyu8c7h8836rbo6bzw411j9k8dpj4
+X-HE-Tag: 1788078931-152076
+X-HE-Meta: U2FsdGVkX1/k0sZvrxA6kBBCetl4fuooUeYyf385ZAbzowP3cgWEkQcXILamN/N+sv9JwMlGTspYAVRHWcexhti7w5+UazP8y4OTN7/JaLoedKFfoXGLVDdmqTgSOZTf4DZj3XhA2SDAKVUNq0bbqB8DVpS/fBFnT/nEEv8DtRqN5EhJHPp9MgiTmX/rdT08UaDfVZAfKfWkw7hfoTpnA7HRMP3ntMFccWQ16A8ld2siTKI60CiQM0b6mrynb1Be56Z1xEUiiygTMw+fKZEWHoRS7rtU6zjYlXPvU/a5tDkdzGM/YwZjWNStm2fPS8PCogTPHMgzpJLj1MI9aB9nfTogcLiX+Ge0CTXZDzbePYVRQsZtnhI0n7KY+hzsbuAq6cUvfN0+QOxuAKjm4pHa5/5Um8wG6dlhKSlwrxxGo7AnfNnvjmev9xumUT02QdmZmjuYetXMTe7OkhTynCX0k2puMXzUDkiBuKa1RTEMTzebsj6GgJjdmWMmJ/Yi9RloDgjBX80QhKtmzIg54aFUZx3KyudGb64WazcLx13i2GX1Pa/eCh+MVqrnHCC2DTR97WwQoSkJ2t3abN9en+5KjJhvMze7FV+FjpxH8+Cuccq3YyU3KVBHkTlV2Md5gblg7R2MyB+MaWlt3BnQj5m6StNqj8zaMMJsXsOZbtZmeXDTTwr1ub0CrLZR+TJaj7VMoiaeulT7yaz1yddvFoFNAf3WNaHzQ2ItmOYwSbuux6/mPLF9I3mKLnbDZqZitUFqTbwJiGlMTmVR4CTSUGrPaptzkpodvWTE5ZYi8Rah4DQPJvavbylw7Yq2Luwn4/w0mURUWsrYo0sKO+BAXLkM/UVz5ogrn+A3J3k2gAGemScE+86VLtLsXvwQP1k7iwGGZUhCeP0A9v51CGBaZ/qL+DXFCMDm2zzoJgQchybE/jqAR87wgoxR7Jr7PV7G4d1gSIOntEzzGnezfhnxGzG
+ p2wc5cFd
+ 6AiymlJG+pmOnBM8Ca11Sfu+ZHVR4VQXmROs26ho+82bR/OZNcDS39qnxy/itn6Tfq2k04aZ200xU93RZud4aJJah03Wy3FwqWEkUbagj/t/GObvNyxq4fEb89XlK1ZFanJpmNr+X5TXoLYJHYUNIFGu0D3lz2Xepki1GF/oAYNvHtmd5pL1AbkEZgwqA4WmXIRQoI9DO0AHuDcCl7TG4+4YooYaVRRWTrNzsMiWIKJJy0IRFQMInzhYdf/vsWq0RjO9LCfUcbFze4fg+C6f7iAFKhNbJhgRmIcq+EDaCVq2a9xcxPcDYOJ7xJrSbCkRj6r4O8OupVbIjip0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,68 +107,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-usb_wwan_port_probe() allocates the transfer buffers for the read URBs.
+On Sun, Aug 30, 2026 at 11:25=E2=80=AFAM Wenjie Qi <qwjhust@gmail.com> wrot=
+e:
+>
+> From: Wenjie Qi <qiwenjie@xiaomi.com>
+>
+> Fault-around can map ready dropbehind folios without going through the
+> normal page-cache lookup that clears dropbehind. A mapping represents a
+> competing cached user, but writeback completion can currently unmap that
+> folio. A later mmap access must then fault it back in.
 
-These buffers can be allocated with kmalloc() as there's nothing special
-about them to go directly to the page allocator.
+Andrew is asking for a visible user-facing impact. I think the current
+mainline code might result in an extra fault-in and extra I/O. Maybe we
+should highlight this?
+On the other hand, my gut feeling is that this patch might only be
+50% right, rather than 100% right.
+Fault-around might just end up mapping data that will never be accessed
+at all (fault-around mappings aren't really fault-mapped), while the user
+has explicitly requested "dropbehind", which seems like a strong hint
+that they don't need it :-)
 
-kmalloc() provides a better API that does not require ugly casts and
-kfree() does not need to know the size of the freed object.
+>
+> Retain mapped folios instead. For a mapped folio,
+> folio_unmap_invalidate() can call unmap_mapping_folio(), which takes
+> i_mmap_rwsem and may sleep. Retaining the folio also avoids this path whe=
+n
+> folio_end_dropbehind() runs in non-preemptible task context.
+>
 
-Performance difference between kmalloc() and __get_free_pages() is not
-measurable as both allocators take an object/page from a per-CPU list for
-fast path allocations.
+I'm not quite sure this can be entirely avoided. Somehow,
+`folio_launder(mapping, folio)` could also be nasty. For example, NFS
+can still be problematic today:
 
-For the slow path the performance is anyway determined by the amount of
-reclaim involved rather than by what allocator is used.
+static int nfs_launder_folio(struct folio *folio)
+{
+        struct inode *inode =3D folio->mapping->host;
+        int ret;
 
-While on it, allocate IN_BUFLEN bytes rather than a full page. IN_BUFLEN
-is the transfer_buffer_length of the read URBs, the page allocator was
-only used because IN_BUFLEN happens to equal PAGE_SIZE on x86.
+        dfprintk(PAGECACHE, "NFS: launder_folio(%llu, %llu)\n",
+                inode->i_ino, folio_pos(folio));
 
-Replace use of __get_free_page() with kmalloc() and free_page() with
-kfree().
+        folio_wait_private_2(folio); /* [DEPRECATED] */
+        ret =3D nfs_wb_folio(inode, folio);
+        trace_nfs_launder_folio_done(inode, folio_pos(folio),
+                        folio_size(folio), ret);
+        return ret;
+}
 
-Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-Assisted-by: copilot:claude-opus
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- drivers/usb/serial/usb_wwan.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/usb/serial/usb_wwan.c b/drivers/usb/serial/usb_wwan.c
-index a183cc4515ed..a3929d3a3ec1 100644
---- a/drivers/usb/serial/usb_wwan.c
-+++ b/drivers/usb/serial/usb_wwan.c
-@@ -455,7 +455,7 @@ int usb_wwan_port_probe(struct usb_serial_port *port)
- 	init_usb_anchor(&portdata->delayed);
- 
- 	for (i = 0; i < N_IN_URB; i++) {
--		buffer = (u8 *)__get_free_page(GFP_KERNEL);
-+		buffer = kmalloc(IN_BUFLEN, GFP_KERNEL);
- 		if (!buffer)
- 			goto bail_out_error;
- 		portdata->in_buffer[i] = buffer;
-@@ -492,7 +492,7 @@ int usb_wwan_port_probe(struct usb_serial_port *port)
- bail_out_error:
- 	for (i = 0; i < N_IN_URB; i++) {
- 		usb_free_urb(portdata->in_urbs[i]);
--		free_page((unsigned long)portdata->in_buffer[i]);
-+		kfree(portdata->in_buffer[i]);
- 	}
- 	kfree(portdata);
- 
-@@ -510,7 +510,7 @@ void usb_wwan_port_remove(struct usb_serial_port *port)
- 
- 	for (i = 0; i < N_IN_URB; i++) {
- 		usb_free_urb(portdata->in_urbs[i]);
--		free_page((unsigned long)portdata->in_buffer[i]);
-+		kfree(portdata->in_buffer[i]);
- 	}
- 	for (i = 0; i < N_OUT_URB; i++) {
- 		usb_free_urb(portdata->out_urbs[i]);
-
--- 
-2.53.0
-
+Best Regards
+Barry
 
