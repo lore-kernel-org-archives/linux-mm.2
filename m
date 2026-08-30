@@ -4,119 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63ABAC61DD9
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 11:48:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EF9FC61DB9
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 11:48:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8185E6B0096; Sun, 30 Aug 2026 07:48:06 -0400 (EDT)
+	id 44A996B0098; Sun, 30 Aug 2026 07:48:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A1DB6B0098; Sun, 30 Aug 2026 07:48:06 -0400 (EDT)
+	id 3FA276B0099; Sun, 30 Aug 2026 07:48:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6910A6B0099; Sun, 30 Aug 2026 07:48:06 -0400 (EDT)
+	id 2C5636B009B; Sun, 30 Aug 2026 07:48:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 43A446B0096
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:48:06 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B4F361402B8
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 11:48:05 +0000 (UTC)
-X-FDA: 85157762130.14.5ED8B60
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E55531C0003
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 11:48:03 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="H2CrJ/a6";
-	spf=pass (imf18.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0579C6B0098
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:48:54 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 816DA1202D1
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 11:48:54 +0000 (UTC)
+X-FDA: 85157764188.27.4D74C3D
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	by imf03.hostedemail.com (Postfix) with ESMTP id CA0D920007
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 11:48:52 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XRkBHb6D;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=qwjhust@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788090483;
+	s=arc-20220608; t=1788090532;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wZaMr9PcVum7xXG2P1QWnBBkzHTyXA9Vmtkj6+XCSfc=;
-	b=OSTriMZOJw82mOSE9Yx2riBjloLKD9FAgy3Aq1ztMwekNEQnOWpJae5XBApvzLqBQLYw+x
-	eu/UKARcEi19JScuWtTxTsEbewkyWDIWUso15TUwyM6u8ktdqI4B7j+yLLbiKooj4xCDGU
-	G347TWCxFYnDx1yaFg4jQeqyk0IOi2w=
+	 in-reply-to:references:dkim-signature;
+	bh=F6dWzVftJmVxxbOmYyIM0bVDs+vsg5QWyjKFPq8DPDo=;
+	b=OCFemyLKfOSTELMwNA4QHGd8d/de3o7gJd3sfjwismzVqQGZLI+mUDj3DI9h8fd3Qu80Se
+	4gp/HEXfQkadp0kN1/w5uHryR2gy0rS5JhpiJlmtkQfnEYNXV9PBwg+2C9N63RZXR1kDNn
+	Yo7GmY88L6tr1x/U4dm0RPjh+9pKTn8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788090483;
-	b=YfLbOtfTCYwksH/PDlol1oTk5V9nOzdFw6b5hasJVPJ0BOAuv8O6r9Rmd06iK9juEAeXax
-	d3oj/Mh77qtpzH+VQ39MNzFL7ZA43+J4h6RgbPgwU27kH4lLyYUAwujoQMmA+1PaUo4j+e
-	LPoZSnI+RSqgXW7+DnnQFSsMc8fvBH8=
+	t=1788090532;
+	b=DjGFhAQBAPH2O5ZfTezhViGOXNsVaHUTt4ZCQunNimdqSQsT66H0LK+H3ICp6XVyVrWRyS
+	NYD70iljxmdhzSFh2ZD8+01p0vU7W0dl+jq+EgWU/r+P+FhEW5uMP5Fjs47z6MdQTtxkww
+	90fVY7NW2PwwH8C9+KcgpuTgxUQYMoY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="H2CrJ/a6";
-	spf=pass (imf18.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-84e27035206so2461655b3a.3
-        for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:48:03 -0700 (PDT)
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XRkBHb6D;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=qwjhust@gmail.com
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-cc147d86bebso2850464a12.0
+        for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:48:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788090483; x=1788695283; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wZaMr9PcVum7xXG2P1QWnBBkzHTyXA9Vmtkj6+XCSfc=;
-        b=H2CrJ/a6B/IHVtMuwG3Zggnr+Rx+9PbTKiukW/7IeLLDbwIxvrp17UnMx3ormT5ale
-         dzgRdGNPWFRptgYdlCZ5mHPdS4jP6tVBVyyuJ7ZHMNp2tn6AWOsue7cVrgAFFGRyS9uM
-         U8uDVUqt9AFdk1tFr6LiNL5w51K84MK2PwJ85EQJzYllKtOiY7OZRSr95BlMjpuR2PQA
-         CdgDzq0KlydZe127zdDeM84tnCvTe3t2uxufDst6GVDrUaYAaZIm8QSgbe7RU09epmNP
-         rxfpwn1HnJLxqUqxq4rxXNxO6QuOGtDn7rwlamEjv65Jtge42FJI6jL8UyMBqoy3Hmyl
-         y6dg==
+        d=gmail.com; s=20251104; t=1788090531; x=1788695331; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=F6dWzVftJmVxxbOmYyIM0bVDs+vsg5QWyjKFPq8DPDo=;
+        b=XRkBHb6DlhS03imQcUjtVBCaYEmP9uPjQWeKa5XRaxQu3ThMuBNMoB9WwhtzuzfC5q
+         mRPAfPZnDib4KHciULq5PBRlHnGjWThlZjuS8a6b60398cVkQFU0mwzIDU5S7rOjXdfB
+         g00/oWlMImrhxI+6Uu+DQvOK4feu+kcOVIo3vgWl2TsLyub7D2kzejFVCgmH6UPi4a7H
+         PjN4wqjTr9Bv/dG/LAaDpLRtt+QqV+5HjfM0c05yDshIAZCbWV4yh7QeGLN2c0vpiwvd
+         +eAjn1hWMXtYCtye81Ux4jEgP2bT18cU5fldUNIkjrFulmTHh5H5heDShXkatdIC5I9f
+         sbBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788090483; x=1788695283;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wZaMr9PcVum7xXG2P1QWnBBkzHTyXA9Vmtkj6+XCSfc=;
-        b=due6vR4r4EGeuHOc73u0QQZEbGNmu1oEOIlNH77Gr/O9l7NX6grEZ/yQzGPbFBg3cb
-         bEi/vTYZF63oPjBt6bY010FAc9PlUWmCQJcZjBxYVcie9hm1QFld9x4mTiAbzBJwV5OI
-         flS0nILQWOn3qsZd0K8cHqShNG+pCJLlimfZeyUvHkFhnyfKPxFqeIjmvpLalgCcuASI
-         3X+2xNzJi0MhxT628GGbEYc1Wqv89T+x8ewH+9PvKFbBHA6nmPNR6keThHkiELyBy3tn
-         vXimaaFjhEhTylol5uh/ZmB24BgFWKs0048OBv0AliiZ02919Tz0/v0Jy7kUXxjJ+hjA
-         3NRg==
-X-Forwarded-Encrypted: i=1; AHgh+RoEMIUzvec61we7lJWH5fM/iPGMdDJ3VyAjfWs5c8PBLAY3A/RDKOruoh5Cv7lulQFd9YshHO0IMg==@kvack.org
-X-Gm-Message-State: AFuF++nB2ObRWBhr7lZ9m8t3gEdq+dSaOHgjFeayM7yeIMGdc5IjBtFT
-	PcOMB9AeyXUodaq8JZP7Vczv9hzdQDLpmQyhfQIOijV+5vI3QjaYYnXSl7zSr7up
-X-Gm-Gg: AR+sD12rKcsi4GxwcfCycQQ/TWqr4lV05+nfJopLZG7DlVVB1iDgQnkTQtQUfrZJwyj
-	oUuz7onXO8l6TPdjlIvq1CDMaCji5XxDMqv4PL9fHq6ejQ1tLHOcbfX2nWpDXlcsysVu1RqLF9S
-	zBGIZGCXVDYGx6LtteejJDJ0qQrJdJ+Nvz90C0+rRzhG0OqlpsZUIkp4IKY4fm4A2aPqBswgv3x
-	T+WbjteQJjr2q8fCrZHL26iJ2u0em77Gq6lTx6dnxqjDVA6NIV3+HZaVyyt09SZbGfdylHnkCY7
-	0IhorYJDxZUB7VWOGBGhILYXy5jgQUwbZDy/hXEA7imENmv3uBqPWYlAOqv5Uw0D3QE1poCaIlL
-	uNWsJVQkzIZ/nFAlEXFMcPPjaVT9sTefEXJBOwDvhzZCDqK2igkte6/NGU3+DG0E7gLUk55Sccx
-	9MGZUG9jRvRDzFCtKTXYIXv6Vud7fTuk/DomjH7X6FU4X4+OuEimqznP3BHLdLBK1PM27FhItBS
-	kqYno4ywCSoN6m3oQaQbMd3bUL6Jr/2Pax+NA==
-X-Received: by 2002:a05:6a00:1c9a:b0:84e:9257:d0c2 with SMTP id d2e1a72fcca58-8562a00149emr33552260b3a.9.1788090482772;
-        Sun, 30 Aug 2026 04:48:02 -0700 (PDT)
-Received: from NV-J4GCB44.nvidia.com ([2409:8929:a7b:121:d0e3:2a32:8ea7:5ade])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-856a397c0a7sm2395264b3a.49.2026.08.30.04.47.56
+        d=1e100.net; s=20251104; t=1788090531; x=1788695331;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=F6dWzVftJmVxxbOmYyIM0bVDs+vsg5QWyjKFPq8DPDo=;
+        b=MklbhEXz4OeexN93QjaB1jR0a+wiiObgFgIm+W/cupsoGTNHOCf3+r+k5fbbBVclfY
+         yDUM6IDWl2/dzAtTQnnP5pufS2PoB/3CVaszAbow7B/azd+CwNkoMQwUeTu5xFzlkWWe
+         ZR/hQiM7POm6JOjw4Nb/LEovx8mdVcUmu7KR6B7o/PDC9GwRc8sA6uw7Z3IBeLcJiYht
+         aYRp+YnlW85/4/lCLKATucGTqrraT4Idx1aa+D9QJY3NMt2RbqtowVYw0FPscjVqtFyZ
+         bdX894KHxkGjtPRhLYglEApBDKvpR5i18mHgbDt/MVSzhcemdp2LiMKUqonAK6M8tG6o
+         QMfw==
+X-Forwarded-Encrypted: i=1; AKwUvByHwtHUINNdPRrVu83djdAJ0gNc68ilnMeKBFRMdmHdrBij1Q1z8egpOFiYNe/UFuWX3APqgKKg0w==@kvack.org
+X-Gm-Message-State: AFuF++l+9duhBd7daW5OLUxgbwuAOvUOH7Ju91F5clVN0V/yGdEw7IaB
+	vY6eRdj3nnGQucb/Uxr6IAXl7L1tMEtm+/81iiw8xYmBpGU4wCbg9JQE
+X-Gm-Gg: AYBFou1h4NK3JftAlq3UHv0tyo07TDBlmOodS9Ilb200f7VwAYNMu0ds/Q4OrvdwLTt
+	LA/z0zcv6QgjTiD54UMPNSfEm0EQ6AJ37RISFj2lQHWklk54WzBDKEIrE2PA3kK2M6Yz1BN1NNn
+	9UruaG+HN+bOgb3mtdvDjTi1FiuFTug5E6bFtfdRnxx1waml82msPtxYGvnBN02PArCPm/TRIhc
+	PBDzkMT4B3g0qqXXyV6Z5VgRY7Yt7lOPBblV4QfB/drEkHL7wn6rmWGb0H/BSbyGx+bHDwhdZtS
+	Db/4NymPLlr8HMnqJAYnPxUKjdo50+QVS3Yns2ZiQliG0REFPIu9ecVL7E1Vza6V60YXN0jtg0J
+	fZbZ3ua7OPDs+b5LG3tqyAaAAWNdIxBomxnK40Zz+w5jA0fbLg5Lj7HYKWcKr9R85H32/U8pITL
+	e36vS3NJ7lekq3LS4zCXokmh5QdUjQWexxcMVjcXywrSeDnZ5GBoX7H/xms/UQBd9F/6wvahB4z
+	bJAX+jQ1OvBuNbokZArAQ==
+X-Received: by 2002:a17:90b:48cf:b0:38f:de94:bf34 with SMTP id 98e67ed59e1d1-398da6f3e41mr1421458a91.10.1788090531274;
+        Sun, 30 Aug 2026 04:48:51 -0700 (PDT)
+Received: from qiwenjie-ThinkCentre-M760t.mioffice.cn ([43.224.245.241])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396b0ea7fa9sm16269311a91.4.2026.08.30.04.48.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Aug 2026 04:48:02 -0700 (PDT)
-From: Jianyue Wu <wujianyue000@gmail.com>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Jianyue Wu <wujianyue000@gmail.com>,
-	Chris Li <chrisl@kernel.org>,
+        Sun, 30 Aug 2026 04:48:50 -0700 (PDT)
+From: Wenjie Qi <qwjhust@gmail.com>
+To: willy@infradead.org,
+	jack@suse.cz,
+	akpm@linux-foundation.org
+Cc: linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v4 3/3] mm/zswap: reference the pool by index to shrink struct zswap_entry
-Date: Sun, 30 Aug 2026 19:47:31 +0800
-Message-ID: <20260830114731.8322-4-wujianyue000@gmail.com>
+	linux-kernel@vger.kernel.org,
+	baohua@kernel.org,
+	axboe@kernel.dk,
+	trond.myklebust@hammerspace.com,
+	tz2294@columbia.edu,
+	chao@kernel.org,
+	qiwenjie@xiaomi.com,
+	qwjhust@gmail.com
+Subject: [PATCH] mm: filemap: skip dropbehind folios during fault-around
+Date: Sun, 30 Aug 2026 19:48:45 +0800
+Message-ID: <4a4ac0b4accb50641f504f205663435047c4b26e.1788086386.git.qiwenjie@xiaomi.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260830114731.8322-1-wujianyue000@gmail.com>
-References: <20260830114731.8322-1-wujianyue000@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CA0D920007
+X-Stat-Signature: qpci7zh8m8oq1fotsbzu5fddd4a7zgs3
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E55531C0003
-X-Stat-Signature: eibwjr6hzecjdfiun4f77p3fekdmkdyj
-X-HE-Tag: 1788090483-149429
-X-HE-Meta: U2FsdGVkX1+jYwbzaT8VG9JZiuzf/yoQMHFwDuZqpyV8PSQomX9AhoqtahzaIBp1K5NLqLZc4JCirPDfzf9y4zMf/qnEbQRCPdSA9Iuh1j+F+jr22vRB439Vd0U/QY1bAjtlj8NzwI6We1sLkdafpeNEl49aTaaNAnTqEb1BkFbZ4fPTS9BOME9atn/aqM8C5Z7U0RMlF4F+lrK0H5rTux1UFskk/lEP299b9+QolRvFMX4ERcQWRbo/OUzqcedigdYvD4cOD4gaUlSK7QKE8Lu6fg45PI20ANaePukHn8/1gxF0lRLXKw/IhIPcOEV2Kytuy5h6O5NqWqybAlududhbzTiXerj3p60lxIj5eybriUOT1mqF4F9lyFgUyek5ZwWCt55i+AR2SgjBscSw4/5YX1v5KDi8Qf39kPCSUu8Pdv2Sj5oXVR2CCMgSbsMhwlJ8D5vhlb+iGfHOplexl/x7fp1ikWvWJo8Hor/vFlq4m1g9mW51FmVT72hxPr9JivVEMOvSKT7QWujh/LEWV7MvXIQcss/zvP8vEVab1fX+4+Qhf70n02Rqx3pYUzX5j5GCCyqZFh3VxgeYotDnzodO2HwA2uMqDfZDTIYiAo4lLxBGNoP1XqA9zAnNlj6Tbt5bCG6borDBVZW0woxCCC5663x9Wwb+E59ZNGS6y7yY0+p33S8ukF+Jx33c0HfCFUc5GIfYTMYzuT1nqoVMAoWLy6lFnRwwBzkEDLhlEgkGXTk8J1oxCQ+Bzm5kR3b0F3/2PF0LipQ7yKDFI0hWJZLyRM1efq48cFhIhi6syXGtKph7niL7zicr5AHNK2oiMtuEwu0EorG70xUD8PmyoyumM3ezAUaEAaP7GSdxSqubLhGkrFNCKgFYIeBXsQpcrpG+6o59D6zByVbntYrlse5L7vEzBXwKq/AjbDZ6iFJ7N5z04LOn+V+JIYC8SrTtYKifhxZ6f3GTWBOwqZ2
- k41FdG0N
- lULZw7HdnRW+Snh4h0RubOcdaCmrGPLYBmbcOC5m6JXS4S5jHJyKCH6bmAu8wjcCDEYzgQ8+v3cDb4hCRzY6KVr6E6q97Qg/V0SNPyRQC/6tmP0Ji2pWZjse1gYGm0p1bdW7knD+e4ex+almtIzheVE6/e8r7HgnFAttHCiS5ikNdzJvhORSoQPeqCtamrkRDSG1LehrxjH4ccfwkk8v2SXdbVUylSQGdy4YUeT6NB5C+BtnQS282V5ucc3fJ+58VJxzzfGIXZbzxkZk5L9khxnXlqBqLcfT6V+mav8UbvsYmvtFy3BrmLugH35B41OUaJZymiN/FKkAORnbhzcDnd78VGrVr95YCbpGstCcHX1P4Gw7181HnSE7w9M+vbMcbKjtH/UByQssJ9EsdQfxSCgOnWgAwYuYJR/tF+7JCxxf1GpOSZl4kf7o/kOWSGla0kJ8PSFdEirVXYU5Hu5f668Jbs3W4IhkGSBefvWY5cUSVjovcjRwUttv5wSOj5VyL+X+xQ8lGQb/YTIY=
+X-HE-Tag: 1788090532-568311
+X-HE-Meta: U2FsdGVkX193gK5uashK02mF++JATTwMzRXeWcpNHmruCZ88ak9ZIiaE1JllN2pQp8BQznq8WEBLP9vYuupa22Wcv3lXgdUGj5XXIdKe9qyc1RmCv0k2i423cKCXtmpktAhn9kM+g/qdtCbSeAZUujy5jBML4eCdExpigBqc59xEU95LXSWfxtMF7a52oDqchAu4Uc34UisJSQkBJYfHYvogWKSxrg7IM4y3vnh5bUx/TSdl6uDOvfk9DFaDAE1wpEsEtbsE0qjMdae6GlCpRg4K2sO+rBpMpJ89YVKjHicOoPxOUkpg/FabGt/LBBuDR2NeQ3kQBIsNYi1b/qcv2/gPeLfvP7nwnflDThHfnj7E1jM5a4kz/d9Q+dwGAkALu0UWtcGyPLziGhG+siSUMq+ORwD8SvgKBqAUh6egyb56qiniM71PslK7fSAXvnFqweVudLrWBC/Z9286ZWG0LkqeXk5zrXAFvyZZBF8r1DcV5I5UqjZm/H9UVPAPqErLcs43YMolEY7pcxCVMidVgm9kIDAxHUgjc6ts7WPhGmOjju4S1goxwooIkmSwY7iiCbaYi8Zh5TUU4Z/T65cePrhNWzblHYkVzomcwNqKbTn+CIpQPoFxbklkgPvO6kVIQMLO5sj7q2Keh/3HBtpNlEDodogRLoHf0k+hm1s1YVYYTYxYvFF8jVBsLh5fd9ZL2bktEj0q/UdyHo9LxM5e3h33WVCIa2mPkgxwhI3SX9xyLhIBhylxMBPW5wvBE/Ts8L49AqfcvFX7P5CdRUgX1YBD4sNEot8gc9Z0ooVaoEz+YsiZ/Vq0NNRuzrYwiesdmE/iGdudKYcDFWZ6NL9DKEqYwymdQDy29yoyvOK2f/tiX/S5Z64YmhR2cHbmkEUEji19JgISlk8f0ER8MZOyXMdEnwr0GUsJCMyt8ol4HjG1EHYMnl6MUms1N/Pw8GNiPS9jfkZOgH2lT7VBEeE
+ HP62LjUM
+ atmelyngVz8l9rsZmPG4Je9JVQRKEJnC5pyPTDSVG9mlSfCJeVabnq3mHDsndgGP/yjFmARWIxEKXpJ28Db9WoqVfatV4kPRoZjquEFobc+yQlgmdnNGX0tS9YMueCC+OsaOLzBRSGq/8aO9/MpWws6nrvYPzhogsjsYRjmqJDU8DIfN+lMLAcoYl288KaWBiD1FP+V0oPB2IRbmkZLp+qokDV5wH4FG1nnfdkxj0K847xtq07v6f65ydL6MZfwyuNXJw94jl3yBdspjwKWjvrCEi/7ceOZO9spRW2eu71L8ABETnPmNVfJSGdpMULF8z01t1Z21aOus2CAX+hr7fEkOcoouF2JRZIbfM+F2OHfqcyA3cLzZ2YJxPGw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,116 +125,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-struct zswap_entry is one allocation per stored page, so its size is
-pure overhead. It currently embeds an 8-byte pool pointer, even though
-the live pools now sit in a small fixed array indexed by a u8 slot
-number.
+From: Wenjie Qi <qiwenjie@xiaomi.com>
 
-Replace the per-entry pool pointer with that u8 slot index and resolve
-it through the fixed pool array. A live entry holds a reference to its
-pool, so the slot cannot be reused under it. The lookup therefore needs
-no RCU read-side section or zswap_pools_lock.
+filemap_map_pages() maps uptodate folios speculatively without going
+through the normal filemap lookup that clears dropbehind. As a result,
+a neighboring dropbehind folio can acquire a PTE and the mapped-folio
+completion guard will retain it even if that PTE is never accessed.
 
-The u8 fits in the padding after the bool referenced field, shrinking
-the entry from 56 to 48 bytes on x86_64. This raises objs_per_slab from
-73 to 85 and saves about 2MiB of metadata per 1GiB of data held in
-zswap.
+Skip still-dropbehind folios in next_uptodate_folio(). If the skipped
+folio covers the fault address, do_read_fault() falls back to
+filemap_fault(), where the normal lookup clears dropbehind and updates
+WB_DONTCACHE_DIRTY accounting before mapping it. Speculative neighbors
+remain unmapped and can be discarded when I/O completes. Normal folios
+continue to use fault-around.
 
-Suggested-by: Chris Li <chrisl@kernel.org>
-Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
+Dropbehind is folio-wide, so a fault into any subpage retains the whole
+large folio through the normal fault path.
+
+Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
 ---
- mm/zswap.c | 31 ++++++++++++++++++++++++-------
- 1 file changed, 24 insertions(+), 7 deletions(-)
+Tested on XFS over a 5-second dm-delay target in QEMU:
+- neighbor-dontcache: the target remained unmapped and was evicted.
+- target-dontcache: the directly faulted target was mapped and retained.
+- neighbor-normal: the target was fault-around mapped and retained.
+- unmapped-dontcache: the target remained unmapped and was evicted.
+All cases completed writeback, validated data, and kept dmesg clean.
 
-diff --git a/mm/zswap.c b/mm/zswap.c
-index b3b5e2887c00..521e0187bcd1 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -198,7 +198,7 @@ static struct shrinker *zswap_shrinker;
-  *              writeback logic. The entry is only reclaimed by the writeback
-  *              logic if referenced is unset. See comments in the shrinker
-  *              section for context.
-- * pool - the zswap_pool the entry's data is in
-+ * pool_idx - slot of the zswap_pool that the entry's data is in.
-  * handle - zsmalloc allocation handle that stores the compressed page data
-  * objcg - the obj_cgroup that the compressed memory is charged to
-  * lru - handle to the pool's lru used to evict pages.
-@@ -207,12 +207,22 @@ struct zswap_entry {
- 	swp_entry_t swpentry;
- 	unsigned int length;
- 	bool referenced;
--	struct zswap_pool *pool;
-+	u8 pool_idx;
- 	unsigned long handle;
- 	struct obj_cgroup *objcg;
- 	struct list_head lru;
- };
- 
-+static struct zswap_pool *zswap_entry_pool(struct zswap_entry *entry)
-+{
-+	/*
-+	 * A live entry holds a pool reference, so the slot stays valid with no
-+	 * RCU read-side section. The != 0 check marks access protected by
-+	 * the reference. A live entry never uses the reserved slot 0.
-+	 */
-+	return rcu_dereference_check(zswap_pools[entry->pool_idx], entry->pool_idx != 0);
-+}
-+
- static struct xarray *zswap_trees[MAX_SWAPFILES];
- static unsigned int nr_zswap_trees[MAX_SWAPFILES];
- 
-@@ -808,9 +818,13 @@ static void zswap_entry_cache_free(struct zswap_entry *entry)
-  */
- static void zswap_entry_free(struct zswap_entry *entry)
- {
-+	struct zswap_pool *pool = zswap_entry_pool(entry);
-+
- 	zswap_lru_del(entry);
--	zs_free(entry->pool->zs_pool, entry->handle);
--	zswap_pool_put(entry->pool);
-+	if (!WARN_ON_ONCE(!pool)) {
-+		zs_free(pool->zs_pool, entry->handle);
-+		zswap_pool_put(pool);
-+	}
- 	if (entry->objcg) {
- 		obj_cgroup_uncharge_zswap(entry->objcg, entry->length);
- 		obj_cgroup_put(entry->objcg);
-@@ -967,12 +981,15 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 
- static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- {
--	struct zswap_pool *pool = entry->pool;
-+	struct zswap_pool *pool = zswap_entry_pool(entry);
- 	struct scatterlist input[2]; /* zsmalloc returns an SG list 1-2 entries */
- 	struct scatterlist output;
- 	struct crypto_acomp_ctx *acomp_ctx;
- 	int ret = 0, dlen;
- 
-+	if (WARN_ON_ONCE(!pool))
-+		return false;
-+
- 	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
- 	mutex_lock(&acomp_ctx->mutex);
- 	zs_obj_read_sg_begin(pool->zs_pool, entry->handle, input, entry->length);
-@@ -1008,7 +1025,7 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 	pr_alert_ratelimited("Decompression error from zswap (%d:%lu %s %u->%d)\n",
- 						swp_type(entry->swpentry),
- 						swp_offset(entry->swpentry),
--						entry->pool->tfm_name,
-+						pool->tfm_name,
- 						entry->length, dlen);
- 	return false;
- }
-@@ -1511,7 +1528,7 @@ static bool zswap_store_page(struct page *page,
- 	 *    The publishing order matters to prevent writeback from seeing
- 	 *    an incoherent entry.
- 	 */
--	entry->pool = pool;
-+	entry->pool_idx = pool->idx;
- 	entry->swpentry = page_swpentry;
- 	entry->objcg = objcg;
- 	entry->referenced = true;
+ mm/filemap.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 00fd89cf6f550..c123de583b3e1 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3769,6 +3769,8 @@ static struct folio *next_uptodate_folio(struct xa_state *xas,
+ 			goto unlock;
+ 		if (!folio_test_uptodate(folio))
+ 			goto unlock;
++		if (folio_test_dropbehind(folio))
++			goto unlock;
+ 		max_idx = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE);
+ 		if (xas->xa_index >= max_idx)
+ 			goto unlock;
 -- 
 2.43.0
-
 
