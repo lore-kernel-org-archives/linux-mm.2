@@ -4,88 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54000C61DD9
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 02:38:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F383C61DD9
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 02:44:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DACB26B0088; Sat, 29 Aug 2026 22:38:03 -0400 (EDT)
+	id 9BF7D6B008C; Sat, 29 Aug 2026 22:44:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D36826B008A; Sat, 29 Aug 2026 22:38:03 -0400 (EDT)
+	id 949B56B0092; Sat, 29 Aug 2026 22:44:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD8DB6B008C; Sat, 29 Aug 2026 22:38:03 -0400 (EDT)
+	id 85F4F6B0095; Sat, 29 Aug 2026 22:44:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 903D96B0088
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 22:38:03 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0DC53140222
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 02:38:03 +0000 (UTC)
-X-FDA: 85156376046.01.E987E5B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6660240002
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 02:38:01 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QVajQr8N;
-	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 578326B008C
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 22:44:15 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AA496140229
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 02:44:14 +0000 (UTC)
+X-FDA: 85156391628.08.C0EF01F
+Received: from mta1.migadu.com (out-35.mta1.migadu.com [95.215.58.35])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 6FCE1C0008
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 02:44:12 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ew6ndIm+;
+	spf=pass (imf22.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.35 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788057481;
-	b=C0SBIkmjf98GOCCN15kB0bgLxbwWwzHjKsdiPKKEcomvIgNEbSL9yKjwpC7U2WvBo2OzKX
-	ZfAAH6oxBxGb0xqe+7rFpO4KrWQ7HDytYwRJygFEyHZmQif1tzoYSoITZBxDliM+blh73v
-	syRSlMcZDlS1gI5pfZcfMRH/WBecKEs=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QVajQr8N;
-	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	t=1788057853;
+	b=XkpAYSwkxv7BXagVq7ibVnMeq4+e4J2tx+4ADGr2RJwRGgDEKifl83i7JTcFEJB953Wy42
+	zY2o6nS2L34NJBP/+IJ5MAKNpMuP7LjHbgRmLhAS5lhQMk7xRgv0P+snOGilvN0kGRbOKH
+	ndVHMpJNfkTPjTFFNu6VTOpWYGNq3bk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788057481;
+	s=arc-20220608; t=1788057852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8JYy4cwxYHYB3SLpHqiVEkE1C6SYKPTNsf1PpaVEnwg=;
-	b=ZaIw/FRnco7HPic14HdNHrB4IIdqpuIWWmGATWd16ug6vNP3PB6EL/MSbGbKmj6S/7E14A
-	K5kGXQNsCQO++BHlKXpdd/aaPEw+NbevBi4oLBrDiLa0Ydlr48tICGHk6+E2VxcKx+jCFy
-	Q122V72Bgpp03D88OgSm+ZgG6EKEwoY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7006A600AE;
-	Sun, 30 Aug 2026 02:38:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC531F000E9;
-	Sun, 30 Aug 2026 02:37:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788057479;
-	bh=8JYy4cwxYHYB3SLpHqiVEkE1C6SYKPTNsf1PpaVEnwg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=QVajQr8NNF6WPo/YrfP06JWv6nBxuMXUVYkL4jV+k7kofGQyAqz7WQZ82AizCeFUZ
-	 kAT3EfC07ssgCo3wsWRLa38WTRca6Bkg907opIQTsW6d1FYUAiYxWdnnhbzERCR/8a
-	 erqZhgAOb21E3uccdcRdMiINp9YIOYLA7PNTvGX0=
-Date: Sat, 29 Aug 2026 19:37:58 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti
- <alex@ghiti.fr>, david@kernel.org, SJ Park <sj@kernel.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, kernel-team@meta.com
-Subject: Re: [PATCH v2] tools/mm: add hwpoison-panic tool
-Message-Id: <20260829193758.b251f3c89f8201bdc585a305@linux-foundation.org>
-In-Reply-To: <20260803-memory_failure_rewrite_test-v2-1-ed020ce42129@debian.org>
-References: <20260803-memory_failure_rewrite_test-v2-1-ed020ce42129@debian.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	bh=v/TzCfg4eQnZBBqVNb9wcZBTlkXaEMXu1hm5uznR21c=;
+	b=4+eWwyFKPSE6fRb+uXaXTEQBkbV1BtXUk5whIqbJUpkOo0DeUp7tX+V1GmItDgcz+uuDHn
+	WusjLvydUZiXyBAwYTYYCnm0DASckLn5xb4ixHxFzODI2pGk30GRdMnaenUIXHYRO/Y2fR
+	prqOmxsvdf47smJm8E7mIFok6hP/tdM=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ew6ndIm+;
+	spf=pass (imf22.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.35 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=HMrK2tewBvrIMRD/RpK8lBB2m3OiLHhGTVVB+J2XoD0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788057850; v=1; x=1788662650;
+ b=ew6ndIm+3T/64+6WjO/CQoJGGdwtkPgLsa20gsbinzE/3n4pQiVBU8GjCkv+3DszSy55U3gw
+ hYqsueezzZlbYuLcJGYmLOjPcmOpmS1uh8ych6700w+9Z6V9z0tK+Wn/XTpzObQkUWkbqJexmFl
+ K0HH/wiALxQLjkApjOoCvbGI=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id fa0b8e2f78cb6e66;
+	Sun, 30 Aug 2026 02:44:10 +0000
+X-Mizu-Trace-ID: fa0b8e2f78cb6e66
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <af26ac3d-30cb-47de-a295-6f9b4f2e2c32@linux.dev>
+Date: Sun, 30 Aug 2026 10:43:58 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/7] mm/mglru: enhance cold/hot inversion handling in
+ inc_min_seq()
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
+ lianux.mm@gmail.com
+Cc: axelrasmussen@google.com, baolin.wang@linux.alibaba.com,
+ baoquan.he@linux.dev, chenridong@xiaomi.com, david@kernel.org,
+ hannes@cmpxchg.org, kasong@tencent.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, ljs@kernel.org, lyugaofei@xiaomi.com, mhocko@kernel.org,
+ qi.zheng@linux.dev, shakeel.butt@linux.dev, stevensd@chromium.org,
+ wangzicheng@honor.com, weixugc@google.com, yuanchu@google.com,
+ zhangbo56@xiaomi.com, Xueyuan Chen <xueyuan.chen21@gmail.com>
+References: <20260827234704.63163-1-baohua@kernel.org>
+ <20260827234704.63163-4-baohua@kernel.org>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <20260827234704.63163-4-baohua@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6660240002
-X-Stat-Signature: 1qzammo3s6cfncbjuje9rtudcuzayz8u
 X-Rspam-User: 
-X-HE-Tag: 1788057481-478119
-X-HE-Meta: U2FsdGVkX18Ptou9nmdRuvWaCNy0DCjfvS6doAunH54NcPeQSz7tsRLxEnz8ved7ncwGcBvsz3hq1IPuN5qqYFr0bF/yA+76LhtUC3mO4HAA+F+N5JPlVKV5GRVZqjPpV0yfHbxfpLEHT3aUOI0mCX4z6RU2paQfwb3kEY1DyYyHr79zdaQuJSOp+LrapniUIRvjlWwpVq2uJA1T+70ndt51UkHZEZLQuW6xajYzoquHX+h9piUJv/Lcu7185Ea6GNM9CXjxdg/nSzAktPf//JqiACIJAEyf/m6dVNdS/d82hDCQZP5lMfsuYvhWY6zURYqkhuwZkm7kCyrmna8xYi+ykrNCsuSg20ViAVqefKX3g65BKZxepDw8NcFrlDqNfuGWtbVz/SA8WZfYC/Uh9uX6rRw+t5HtjZCkK1dnn6pVR5sjacYLUWxnv7+9c2de9NscPvhAZSB3QUYzheh3FRZpz/RbcSdw0nRdga8gTRecRDo0fL8LXRhDk1cZDUV5+NQMpbmZ+zH06Bm/sC8sknoOUktO1VP09V9yo/OONUTlZxm98C148dgXbulL3FY3BzpKH7KNZRL5XAM0mce9eyeUVLsY6JhZJmm3ZgFh643cKvAwHyUy4MAMFjhMAsic/yKNvi1QNFzyrEVBaA83uOjzV+MxPe7jnU0K4aBKrEfVHKcgdgp6FvRo1+QGQCl++W1ne9CrulaLiq1oBjdGHWv7913IZWdeboqRFnh2/LXlZ/lL+hAwjcetl8vHD+WG1g6q9BUYFuMHKotOtriqUVDP65cq4C0LcN7oEzEqK/JQjNjfZiky5Y9UHZ/L5q6qLKEnmMawI56I0luATdIHPBNDhbQUGxSsktLnfrFfhigaGJa8tP5V84PT3Oufy4bytYP1L+ChZSS1kiqUV607ET55w5S1JzoJksB2sSIovkGdAjcjJa2iTzzAIi7g/OHu7M0jUBeZ7zegztC88Bk
- lRB0SJA+
- ukh7j9edUXhSCd04PG15uNTTDa/apND4Lxd7ZPO53mdqg8Y6SkXaytfCG1lgjjh2eB244CZShC0bcQ42Q4SGsXXXJGsc8gAYq5nyLvPkmdprApzWvYOBw78APzfe4kL5Vh+91JIm4wg0D8yKdtBpq1+TpfY4Xpd7kZsBIBloIOBQKn79iwGVH8Zc11ZUciPlV+RKVAtCpmgiBCtfdoh6QBq7gBjuLqTEaLJeiX+hDFIZ6XaHywGAgLoRQffhWFw79PnYm8kMCdUqu4M/SVKRcyovOo6CsqLFqH8zDRxYdaWVHYl7RBb+Jl7PZmXr5j1NpD5EpuIi1zmEesyRm3DbG+LuPMn4YgD2A2d3W
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 6FCE1C0008
+X-Stat-Signature: r3ppm8sfyf6ud98ya5fper68zse84963
+X-HE-Tag: 1788057852-146219
+X-HE-Meta: U2FsdGVkX19S88NhQJP3kRFNZ/nE4oBrodSq6DV/46qLkepKjPbwUB2NPsVqNLPb7d+ksiO9vtPG9zpocuINzAMplpxAQUHWIMKuygesyzMMg8ao1PZ2GGfW4zvGQKiOFHzS3tD7kZF/V3QaeDVrkZFbcaXS+YSlc+K7di08GgZdFaL/xz1/xJqVPVMMzvPWneOMTbklZILEJCWwh1jSaVbadZROkkKzxeLzSsd6RU96WYDlhAXo27gqB2IxDBRKJieOx50UmA+L+Q8osFcvd5PSFaBJca2/ARJDxYXhvCZ53A3M4T8mBFn5DY/yk2nscUnGyqPrjHhBfmlfvZ0r+JLPILXr0Psj0dzp6ayxhDwR+15WVMIbG720BKmUaWd4lMeuB4rU1viOgBkk6sy+VJOOttbj5jW5bEg52KzoemN7rNE/x/NIO2moTA+4BSnkHweyVpVQ9Kght2aJfKUh5GtMSiqDImsPEMoDWqJ07Qn7jt9P05aL62qheDhw3/ni2fTbZHvinYwdDVodNZF61reaT1KjmIsBZVWpc6W2NGuExGc8y29jnymnMt8c4+Egsv7enTXRfXvQdDrd5edlAt8aolDdfRFdqdVB5pctPcLkUxl01GP7oaHVfqskEmKO04fwJEiRqx1OjPKBlGbbg7EuDsqIXjnN8jNyAuh9gMOO5YHJ1sgOnTJZ4Q1otitdxJSB49LAEn0wGMIRtD9QozJQ6oQlpwxwozxQGIk1RPqpfn/FZn2mmJJ4MMQ/8ArgUabjzh1Ai7LN12+FnLZkoDdrmKYYwDDxrAuusYvav+VeUVuYLGEBxADuFzQTk9IapLkPwerY7iw3ueV0zxnPS1xVVrO4C7a09FjfOcac5/PhEs9e3R7xT+wY0rjS5mPAQinTS4tA+MkKyM5xr4q/wXYRrNvVwXxn7EMSTGpPt3lG0tg5s1HNMfG/mb4s/tKC24HNp2ZYMWVKdQGYa+2
+ V016MQQI
+ WCC//i4VcXEnUfx0EImTFlxypvWUHAy3zVHH6FYZptIVFhJuocb7R3u1HLu2E6mM4ms+G0+yLHAzTS9wZw5YO+ffWegx7M/ZV+O2T7784ffjDHAdDjOa+2l1VCXS7uVM55eVCCCcwYUIfrYlL9dCoooLICljn41wCZrGT+FtPrEivRyBsjtf+M9N+3aWzV9rtrI8GaZHaeDVMdR9G1J0mtZe335JYxYQVY8TrxHvH5l8gp9SsGeEuQasvNLrIFI0R4a1FMUSx9tu7srKVG3BTN1T4W7I5qFwLlLpWVleWADrj+qyCLNXgOvnZZi+JhiigAqmAX2fo2ZTOYYaZkw3Q87iQ0c+DEXNYur4MR9hnRI1LEcborzEJ0pu/ySiA+QBNIxprSnomK47vkAuQAKZqGR5e9ykMQwoJuqPhUaXvqjh/+MdEH97zEXVin1bau5/7idpacwiyRJtljPFTWOtoXD7snA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,37 +98,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 03 Aug 2026 04:31:20 -0700 Breno Leitao <leitao@debian.org> wrote:
 
-> Add a tool that enables the vm.panic_on_unrecoverable_memory_failure
-> sysctl, picks a kernel-owned PFN and writes its physical address to
-> hard_offline_page.  Three page kinds are selectable with -k: rodata
-> (default), slab or pgtable. In all cases the host should panic.
-> 
-> Example:
-> 
->         # ./hwpoison-panic -k slab --yes-panic-my-kernel
->         injecting hwpoison at phys 0x100032000 (pfn 0x100032, kind=slab)
->         expecting kernel panic: 'Memory failure: <pfn>: unrecoverable page'
-> 
-> In dmesg, you will see:
-> 
->         Memory failure: 0x100032: unhandlable page.
->         Memory failure: 0x100032: recovery action for reserved kernel page: Ignored
->         Kernel panic - not syncing: Memory failure: 0x100032: unrecoverable page
-> 
-> This lives in tools/mm rather than selftests/mm because every successful
-> run crashes the machine, which is not something to run from CI.
 
-I wonder if we can fix this.  Add a knob which tells the kernel not to
-panic/oops/crash/etc.  Instead it sends a message "i tried to crash but
-you told me not to" and proceeds.
+On 8/28/2026 7:47 AM, Barry Song (Xiaomi) wrote:
+> During aging, a folio's generation may already have been updated by
+> folio_update_gen(), even though it has not yet been moved to the
+> corresponding generation list. Such folios are hotter than those
+> already in that generation.
+> 
+> It makes sense for inc_min_seq() to increment the generation of
+> folios that were never promoted during aging and move them to the
+> tail of the new oldest generation. However, folios that were already
+> promoted should instead be moved to the head of their updated
+> generation, just as sort_folio() does in scan_folios().
+> 
+> Otherwise, promoted folios could end up behind folios that were
+> never promoted, effectively inverting their hot/cold ordering.
+> 
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> Reviewed-by: Kairui Song <kasong@tencent.com>
+> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> ---
+>   mm/vmscan.c | 7 +++++--
+>   1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 07c22d51debd..b10d1703d907 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -3949,9 +3949,12 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
+>   			VM_WARN_ON_ONCE_FOLIO(folio_zonenum(folio) != zone, folio);
+>   
+>   			new_gen = __folio_inc_gen(folio, old_gen, &gen_increased);
+> -			list_move_tail(&folio->lru, &lrugen->folios[new_gen][type][zone]);
+> -			if (gen_increased)
+> +			if (gen_increased) {
+>   				delta += nr_pages;
+> +				list_move_tail(&folio->lru, &lrugen->folios[new_gen][type][zone]);
 
-Set that knob around your hwpoison-panic tool and voila, it's now a
-selftest.
+Nit.
+This is a bit confusing to me.
 
-Wondering if we can sneakily use fault-injection to do this.  Add a new
-i_should_crash_now() and use fault-injection to make this function
-"fail", by returning zero.  Or something else.
+When I read the code, I thought this implementation contradicts what the commit 
+message says, which means I thought that we move the folios that have been 
+promoted to the tail.
+
+> +			} else {
+
+Maybe adding a comment would make it clearer, like:
+
+If gen_increased == false, it means the folio has been promoted, so move it to 
+the head.
+
+> +				list_move(&folio->lru, &lrugen->folios[new_gen][type][zone]);
+> +			}
+
+
+
+>   			/* don't count the workingset being lazily promoted */
+>   			if (refs + workingset != BIT(LRU_REFS_WIDTH) + 1) {
+>   				int tier = lru_tier_from_refs(refs, workingset);
+
+Overall, looks good to me.
+
+Reviewed-by: Ridong Chen <ridong.chen@linux.dev>
+
+-- 
+Best regards
+Ridong
 
 
