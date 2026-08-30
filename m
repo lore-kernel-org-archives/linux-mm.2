@@ -4,109 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDE74C61DB9
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 08:57:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 701DCC61DB9
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 09:08:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9FA626B0088; Sun, 30 Aug 2026 04:57:34 -0400 (EDT)
+	id 50BE86B0088; Sun, 30 Aug 2026 05:08:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9842B6B008A; Sun, 30 Aug 2026 04:57:34 -0400 (EDT)
+	id 4BD1E6B008A; Sun, 30 Aug 2026 05:08:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8259B6B008C; Sun, 30 Aug 2026 04:57:34 -0400 (EDT)
+	id 3D2B16B008C; Sun, 30 Aug 2026 05:08:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5287B6B0088
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:57:34 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C0B1E16027B
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:57:33 +0000 (UTC)
-X-FDA: 85157332386.15.CC69C37
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id DEA8A140003
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:57:31 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oqxJpBEt;
-	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0915E6B0088
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 05:08:25 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 774EF802A5
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 09:08:25 +0000 (UTC)
+X-FDA: 85157359770.18.1966E74
+Received: from mta0.migadu.com (out-69.mta0.migadu.com [91.218.175.69])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 4359C40008
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 09:08:23 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qr1GZV46;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.69 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788080251;
+	s=arc-20220608; t=1788080903;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=029+faS5ZzWsov4hpcUm5x/4rseKLpq/BvplkVhE40Q=;
-	b=kC2zm1XUIGTGtwr5cAetQZpoklLBO4+i4zOWwl13njW/NdQFXwnVIpMewTIW6ut94rmilB
-	3GnwgUh1G3otw2gUgazrrFvPNFy8ZCi+33UZhGuOzJuoBkc+ZSso9GHzgt2VpRhjMabExf
-	5YRquclNW4IN0yeLL1oYFhNSH4ubnr8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788080251;
-	b=u+OG2Sb5/WbayVlC1TVAXu52cvcy1cEZQft+r52elhZv8BUI8NLykkoeR+pu2eWRTkg9fD
-	/GzWY+gZt37NuA1DR8KFcSV6t7r5FjFfNK2OWrt8wVk0rURx6thLJa3C0EKV1SU6H+fYax
-	qC+DNFonH+YzTJwtnrikCArTVthn6Nk=
+	bh=AhNLhP0niRo1iFZVbcpIIAPhATZL8XNvvgMnbrg6p20=;
+	b=e3We3FZuvTZIRiD0Ey+9jXEBa+F3+vuluBsgkZ5cL2CQXZQHKSTLJZB5Ju4c0CNixJEVcZ
+	WGghYFq7zQN805n+PaZNixGOXbIM8BkzZBTJUsxvNSs4jhSLrAkvbN1rVNVVpWaV44sBgD
+	2I3gBH3lexnPofveaXOuu0AWOaRZ8sk=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oqxJpBEt;
-	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6D69F600C8
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:57:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BE131F0155A
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:57:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788080251;
-	bh=029+faS5ZzWsov4hpcUm5x/4rseKLpq/BvplkVhE40Q=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=oqxJpBEt3n/PrGLolRfZZ7q7RTLGVwOKqEZrxdigyJmNaxBaixGYhIkZxi2c5aHwD
-	 zunXvrJiXLvdfJs1+0b3rPl0Y12AJ6soo/nCjQKUUc1BAfJfxfp9TUJdt6hnaVQ5Xv
-	 EOylIyrS38eh5Fzk+dcH48n0ojGUMd2gnf020FT3U/1Gcnp3OqcRsb6YSMxUiPJQDF
-	 8CefjlqcToWNeNbAvueJxf/Hsb0MyCeMlYp437F6XPwy4Crs8HHWbPfdJdUMQclMCk
-	 CPhTPBIGDk+KRETf7XulrJk+h2d4YVk2vmGBwsCXP8eRAnUKt7aRL6YxuvwEqPA/JQ
-	 9/X7BSHxiyo4g==
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-9384cb251fbso114143385a.2
-        for <linux-mm@kvack.org>; Sun, 30 Aug 2026 01:57:30 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpMoYT9KKGC3iFvDMccaHXrahMpRTtzSnPsUZuQCMxZs5hjXLqR62M0ULQI37KzNI5Ol+7Gmr9Q6g==@kvack.org
-X-Gm-Message-State: AFuF++ndCJ1lDtIdoPqOx73efCX7GX7JfYzp7qQYzRjs2ItEygkuKj8D
-	SzwDrnfuyPXMQncuyRQiMbvCIQDlVZD34uuqLsi4PQNwiqsJtvP67/2NiK+Z/gt0Y68FfQOtaCj
-	iPcrLSn1CJzUBPS1Tq0D8uSYCWyQhW8g=
-X-Received: by 2002:a05:620a:5d83:b0:92f:279:5953 with SMTP id
- af79cd13be357-939138ae01emr1707149385a.27.1788080250323; Sun, 30 Aug 2026
- 01:57:30 -0700 (PDT)
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qr1GZV46;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.69 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788080903;
+	b=qHm+czU11IpQD+m6eGMoIyU8PktjtWv6gatcr7xK7KhC61/Y/e7AzGAWgd+fN3p9207MyB
+	QcWFbiunxDsEiZqPBy7S/oX0lwxvzNvoLHefEubd21Ls6n8Waes1Cn7Dw6nTCSKqBNh3mu
+	K3HmVgQSzeLXTtvTKUtk6OxmphbOBgs=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=V2dtd4OYMUBexxYoOnaLyFCYO8Ylxw79o0cRyiJ0VzI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788080901; v=1; x=1788685701;
+ b=qr1GZV46n+ZUqk0jC9yht8q2rzFEtqcG7swKFr9ovvEkCzvQ0zzvHUYAoIChaIdOPz4njpLQ
+ dKkYshLQi/3O++HcWSmPp18iH4lG/kIPc8Jl4tfbO8LACd1xTbDxCmsKYtdMlvX5ffkNDSHtksh
+ Ct39qA6q0PR3C3aiyAWXa2Wk=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id b72dab2c1cd40654;
+	Sun, 30 Aug 2026 09:08:21 +0000
+X-Mizu-Trace-ID: b72dab2c1cd40654
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <d270d063-027a-4297-bd0c-8f4a1eaf3f40@linux.dev>
+Date: Sun, 30 Aug 2026 17:08:04 +0800
 MIME-Version: 1.0
-References: <20260730-blk-dontcache-v7-0-3e8e6850068d@columbia.edu>
- <20260730-blk-dontcache-v7-2-3e8e6850068d@columbia.edu> <CAGsJ_4wUvLoKGafR3U-ji1kUUaz6K_QdN6QxMT-apSaO5tXp0A@mail.gmail.com>
- <6672b30b-427f-45ed-a172-4c47a63d2c7c@columbia.edu>
-In-Reply-To: <6672b30b-427f-45ed-a172-4c47a63d2c7c@columbia.edu>
-From: Barry Song <baohua@kernel.org>
-Date: Sun, 30 Aug 2026 16:57:18 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4y8tAh8A8pfi5TJEtPq-JMPjrLX4gCLvesmPNYuZdWCCA@mail.gmail.com>
-X-Gm-Features: AcwNN1UV9cGDBED4rxscU4sOzbiEGy-p9iJ4uD11AMCMxh60PQMZXIFRTunlV-4
-Message-ID: <CAGsJ_4y8tAh8A8pfi5TJEtPq-JMPjrLX4gCLvesmPNYuZdWCCA@mail.gmail.com>
-Subject: Re: [PATCH v7 2/5] block: add task-context bio completion infrastructure
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: Jens Axboe <axboe@kernel.dk>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Christian Brauner <brauner@kernel.org>, "Darrick J. Wong" <djwong@kernel.org>, Carlos Maiolino <cem@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
-	Christoph Hellwig <hch@infradead.org>, Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, 
-	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>, 
-	Sandeep Dhavale <dhavale@google.com>, Hongbo Li <lihongbo22@huawei.com>, 
-	Chunhai Guo <guochunhai@vivo.com>, Dave Chinner <dgc@kernel.org>, 
-	Bart Van Assche <bvanassche@acm.org>, Hillf Danton <hdanton@sina.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, linux-block@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-erofs@lists.ozlabs.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/6] mm/mglru: introduce helpers for manipulating gen
+ and refs flags
+To: Barry Song <baohua@kernel.org>, kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Yu Zhao <yuzhao@google.com>, Zi Yan <ziy@nvidia.com>,
+ Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Kairui Song <ryncsn@gmail.com>
+References: <20260826-mglru-flags-cleanup-v3-0-d9f1c75549c8@tencent.com>
+ <20260826-mglru-flags-cleanup-v3-2-d9f1c75549c8@tencent.com>
+ <CAGsJ_4yasRXO52K-13dx9ZXPw95wEyn2bpnf0NiQ2z56dxf-vQ@mail.gmail.com>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <CAGsJ_4yasRXO52K-13dx9ZXPw95wEyn2bpnf0NiQ2z56dxf-vQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: u3om4iziuxd5j845zaaciyg73kpxbe3z
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4359C40008
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DEA8A140003
-X-Stat-Signature: 3nyuxdg7ynozq1uao77kykni3sga4ony
-X-HE-Tag: 1788080251-551736
-X-HE-Meta: U2FsdGVkX19JNQvmv0h18JclnOs/aUJY2fNIqdKpqsZF9abTBf99u9fps9u6Mb0AkZzTX7uTCpLKkuYxD3aM2nv2ZaGoq6FMF55/6BWhdQhv0JsVBjoEcvaxqHJFr1zBVv8ISaqPh4o96U9QxLy6N9PtHucuPBw1llZ2p5U4dVXnqmuWWGeH52AzQLeg1SRhi/8xsN9Wd+/Wx0XDq/w4Y0h8iUsHeXl4Uz34sk48f143YcM+Csj6aIHiN3wPK46vYe0osFMGRcCmsaLhiST7VKPWPP1ZCzZPYNIuUzhYgcScbwCf50SUQQ+SdHQmw+gYcTsf9ZjbPGTxOTke74xL6rEZGccuKGPvGtRvWnzizSJyVx/OFnA39vB8Lo0HvaBU1uNk0Y+QxJQWbzjKw7fUOIPaUQMCZkcruR/9xKz7DCJ/6QN7Bsh1VLUdaKsxKI5b7J+YPHzF+3VhOmMoJpwoDeV1BLGefCblegc13mAKUCgx4MR9tb8lR76tgPcAmoo6AsArV+TIzvioZk2AyhYe1jQaaVdR4lgQAtt+reU0+21QnSXieZhBDzd7Xd14VsIbqwNBTyz8Y9PUIRlCftk4UkOMdtfNrQnJRGFFSsOA8zMvtwV9v4ZuzibElOPywqG6259fUcU6i0n96DfDz3eFovHjFi9vutCYjPd+EjroG8V6A8KvgtjDVz6RhQmOnSf9ViAU1aZVY7zt4uFMKxQ5E3sdKMgb4+eZgDMLLMkV0EGzr+RLLcexGT5n16UjAetAt55B1UjUrBgj3k04WjkK375Mc0ooEr37nbhunk88OX9zWwJrDJPnvzeKQdNcOKROM6MYNFoDUpom8DjlomrdJKSuGsE0mSCuGYamHDpmt+JnKXOl3jKqyxkhWiZouUC/4u7o8RdCwCxkJGxlcxITMKz5nOImGKXYN/bPsKMGJu0V8nau2GsbKA7OEg/a86MGZ7NJZQwL0TpIExFRcEi
- fx3a2GFh
- CBT3qWSQaHOu7cPA8U/vmdtAYuG5ODbBTBNus0N9IdLpV7KMTl3eiiV15QKnnYxj0dVM3ZlboGEldshTakS/1wAakj0iS6HVF6pT83CY3CtPG5vBLu6AqSC9XQTILCa3naTyOsvGsdvp0M/1j51e6w3pUIAcIDwYcgEZOQ5DD/l/Kbn2ourCC7pKZBLIXPS/UzEvb7Nz5BQhaNFCiHUE/mrjSVvTqdq3MH7G05z4lHHiQ43zxFNGft85l7LGtAcpESMfq5g3r+zNxgGpf/NZxVw+O09WMOu3U/gdNyBobJXoIfGZ35qAoJcXS/BW/k8GyEqBu+G/fY8U5n40=
+X-HE-Tag: 1788080903-889881
+X-HE-Meta: U2FsdGVkX1/ISsl88AsJHuY5JYERm1LN5tE9ztaRHazzgm8q5EosGXr1F4YESFz7WFfd74ky2l9yP56wHPDbGkXIdP+z+X9veTNIJbhT7E9Wn4Ifb3Z6x1xDSFCNq93mCm0KXV5kuSmnCeXQvaKfdS5xxxOoOVLQTvXrneksPg637DSJqckgUrK2E0RCsh02LLNzr9Q24a1K8zrlnahvF5Inxqx7uUmkzvdY9+GWdO9b7OehFH5zdVpgQattiy1A0Wbt+YcBBzIfFmRGmXcZB8DUy2MN0HGGEPcjRCvO0IF5DAO7dr6N/ghaH4rsdUOaP3zMPXaqMV3KZHsDlE9ZGswKeMZGR9euHDkhXEcHu45gKoRPHi0R4WA7IGCDfmH+rBQ3oqt6nt+OuGAp8qNq8ugoSl5RhL9xWX2jQVj9e9N8bCL6GISS5TbfRqRhhZufiMtmoJmWuA0aJJDJShIIU4aEkFh++OjhpMbpoh5FiWzyh9k7uWwtUmaMr0vUiVn3edKD0nsvsvV8JQNi0bZEJSpwuhJYG6mlAgGJzNx3gFIAVBliWwVvmlSLVvwyxkXbpj9Is4Yols9y0RwjCtjuKKcFnW9xTTl6/EWdCZyxcKKMWsI7SCrJglg1LmyJXsbsYREf4hXbZQasI8JZNCwMfhoRFxD+cFlWf9NF06RMDDoudwKL88ozMopbgGsiJNCsEioPeGx+p1Ptdx0rqhZc4n5Qw3MjsGVPKHssPqOMISWzd1kosMtlAb02cVLe9cV8FjdgB/HpQeY6SNcoQYMRPR3DHpmePC8T9JMXoYnDzPmu/FEdfcuBk5Z2MFhcCHp7Sgq5ndES9UNlcRpfbkQG30HBpGvfokVG0SSb9NYTdNbyWInLOIAFcZe2xKUpiYJPR+3PUn4cQb212HQv7WCDsZz1Xen/VzMIsyPWhvGOQ+hc459FnGmOtybmzt+XvA8/pSUC4vjV5d7pVFhGAyy
+ uYAGFB8P
+ ppIOyXDpXwEvwmRj8Ljiv1zP3A0iSPlVtnUKlWV3pXaa8zbEFum+ZI+lYV2Cl9fYkBNyk2SM6yjAFLoH2qurkBVG+EifMqvapivmXbyHkNdDJ0DqvbcODkdV23+ZmDG0++FT7kjY5qG/bKpmRdMCJ0c8x4+juAyXuma/os0r/qVk74ePB1sXgr8YM6QQyrAm9VYS8Q7EQEvqim0+ywzqCBuPmfTl2/CZyBP9Ew43T5RORbfrBT5tVdc4752ZvtxKCsnRi5k6na+WpM9DdEKF4UEgmstrvNs4r1Bz6DEQrTvKHqTpObc/eTzUaMRGjoTC5podcFAoc8v8VTR4VpeKV6LR02DqgOrtyFL4F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,94 +103,201 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 29, 2026 at 11:26=E2=80=AFPM Tal Zussman <tz2294@columbia.edu> =
-wrote:
->
-> On 8/16/26 7:11 AM, Barry Song wrote:
-> > Hi Tal,
-> >
-> > Thanks very much for the patch. I=E2=80=99m just a bit confused that
-> > folio_end_dropbehind() only requires in_task(), and nothing more.
-> >
-> > void folio_end_dropbehind(struct folio *folio)
-> > {
-> >          if (!folio_test_dropbehind(folio))
-> >                  return;
-> >
-> >          /*
-> >           * Hitting !in_task() should not happen off RWF_DONTCACHE writ=
-eback,
-> >           * but can happen if normal writeback just happens to find dir=
-ty folios
-> >           * that were created as part of uncached writeback, and that w=
-riteback
-> >           * would otherwise not need non-IRQ handling. Just skip the
-> >           * invalidation in that case.
-> >           */
-> >          if (in_task() && folio_trylock(folio)) {
-> >                  filemap_end_dropbehind(folio);
-> >                  folio_unlock(folio);
-> >          }
-> > }
-> >
-> > But we=E2=80=99re applying a much stricter check with bio_in_atomic():
-> >
-> > +static inline bool bio_in_atomic(void)
-> > +{
-> > +     if (IS_ENABLED(CONFIG_PREEMPTION) && rcu_preempt_depth())
-> > +           return true;
-> > +     if (!IS_ENABLED(CONFIG_PREEMPT_COUNT))
-> > +           return true;
-> > +      return !preemptible();
-> > +}
-> >
-> > I feel like something may be missing either in
-> > folio_end_dropbehind() itself or somewhere in the
-> > filesystem/block-device path.
-> >
-> > Do you know why they don=E2=80=99t match each other?
-> >
-> > Best Regards
-> > Barry
-> >
->
-> Hi Barry,
->
-> Apologies for the delay.
->
-> As far as I can tell, the in_task() in folio_end_dropbehind() wasn't mean=
-t
-> to be a generic test for if it's safe to sleep, but rather filtered out t=
-he
-> known unsafe case of buffer_head writeback completing from IRQ context.
-> In contrast, the bio_in_atomic() check needs to be stricter since the bi_=
-end_io()
-> callbacks could sleep or the callers could be holding locks, RCU, etc.
->
-> I see there's some more discussion about this at [1], but I suspect there=
- are
-> other instances that are (incorrectly) using in_task() as a proxy for bei=
-ng able
-> to sleep (like f2fs_read_end_io(), but I haven't looked too closely at it=
-).
->
-> Additionally, it probably only makes sense to use bio_in_atomic() when th=
-ere's
-> some deferral path, since with CONFIG_PREEMPT_COUNT=3Dn, it'll always ret=
-urn true.
 
-Tal, thanks very much for your reply and the kind clarification. It
-seems you're right, and I think we should also use `bio_in_atomic()` in
-`folio_end_dropbehind()`.
 
-On the other hand, as I mentioned in another thread[1], I really feel that
-`bio_in_atomic()` has nothing to do with `bio` at all; it's really a
-scheduler thing. We may want to move it to the scheduler layer and
-discuss it there.
+On 8/29/2026 12:21 PM, Barry Song wrote:
+> On Wed, Aug 26, 2026 at 1:53 AM Kairui Song via B4 Relay
+> <devnull+kasong.tencent.com@kernel.org> wrote:
+>>
+>> From: Kairui Song <kasong@tencent.com>
+>>
+>> Instead of doing bit ops on folio->flags.f, introduce helpers for
+>> adjusting a folio's refs and generation info, making the code easier
+>> to debug and understand.
+>>
+>> No functional change is intended: some combined atomic operations are
+>> split into two, which only creates harmless transient states. There is
+>> no measurable performance impact, and some paths even look slightly
+>> better in the generated assembly.
+> 
+> Hi Kairui,
+> 
+> I like your idea. Overall, it looks good to me. With some cleanup,
+> we might have the following:
+> 
+>>
+>> Signed-off-by: Kairui Song <kasong@tencent.com>
+>> ---
+>>   include/linux/mm_inline.h | 76 ++++++++++++++++++++++++++++++++++++++++++-----
+>>   include/linux/mmzone.h    |  1 +
+>>   mm/folio.c                | 19 +++++++-----
+>>   mm/vmscan.c               | 61 ++++++++++++++++++++-----------------
+>>   4 files changed, 114 insertions(+), 43 deletions(-)
+>>
+>> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+>> index 621c8653d8f7..edfaf2661812 100644
+>> --- a/include/linux/mm_inline.h
+>> +++ b/include/linux/mm_inline.h
+>> @@ -142,10 +142,42 @@ static inline int lru_tier_from_refs(int refs, bool workingset)
+>>          return workingset ? MAX_NR_TIERS - 1 : order_base_2(refs);
+>>   }
+>>
+>> -static inline int folio_lru_refs(const struct folio *folio)
+>> +/**
+>> + * lru_gen_from_flags - Return the LRU generation number from folio flags.
+>> + * @flags: folio flags
+>> + *
+>> + * Returns: A number between 0 and (MAX_NR_GENS - 1), inclusive. Returns
+>> + * -1 if the flags indicate the folio is off the list (e.g., isolated).
+>> + */
+>> +static inline int lru_gen_from_flags(unsigned long flags)
+>> +{
+>> +       int gen = ((flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF);
+>> +
+>> +       BUILD_BUG_ON(LRU_GEN_MASK & LRU_REFS_MASK);
+>> +       gen -= 1;
+>> +       VM_WARN_ON_ONCE(gen != -1 && gen >= MAX_NR_GENS);
+> 
+> Since `gen` is an `int`, it seems a bit odd to have
+> `gen != -1 && gen >= MAX_NR_GENS` combined here.
+> 
 
-[1] https://lore.kernel.org/linux-mm/CAGsJ_4xxDpeaPv9Uh_1qsuXsMLkx+J0X=3D2V=
-6342idLFO5jkTBw@mail.gmail.com/
+Agreed. Especially with the gen -= 1 right above, it took me a while to figure 
+out what that actually meant.
 
-Best Regards
-Barry
+> Do you actually mean the following instead?
+> 
+> VM_WARN_ON_ONCE(gen < -1 || gen >= MAX_NR_GENS);
+> 
+
+Maybe we could add a macro like the one I mentioned in my earlier reply:
+
+GENS_UNREF -1
+
+>> +       return gen;
+>> +}
+>> +
+>> +/**
+>> + * lru_gen_set_flags - Set the LRU generation number to specified folio flags.
+>> + * @flags: pointer to the folio flags
+>> + * @gen: generation number, between 0 and (MAX_NR_GENS - 1), inclusive.
+>> + */
+>> +static inline void lru_gen_set_flags(unsigned long *flags, int gen)
+>>   {
+>> -       unsigned long flags = READ_ONCE(folio->flags.f);
+>> +       VM_WARN_ON_ONCE(gen >= MAX_NR_GENS || gen < 0);
+>> +
+>> +       *flags &= ~LRU_GEN_MASK;
+>> +       *flags |= (gen + 1UL) << LRU_GEN_PGOFF;
+>> +}
+> 
+> It seems that we are setting the gen in the flags, rather than
+> setting the flags themselves.
+> 
+> The current name makes me think that the function is setting the
+> entire flags field, especially since `lru_gen` is used as the
+> namespace for various MGLRU functions, e.g.:
+> 
+> void lru_gen_add_mm(struct mm_struct *mm);
+> void lru_gen_del_mm(struct mm_struct *mm);
+> void lru_gen_migrate_mm(struct mm_struct *mm);
+> struct lru_gen_folio;
+> lru_gen_update_size(lruvec, folio, old_gen, new_gen);
+> 
+> However, this function only sets the gen bits in the flags.
+> Maybe we could use a name that makes this distinction clearer?
+> 
+> Could they be named as below, or is there a better naming option?
+> 
+> set_gen_to_flags(unsigned long *flags, int gen);
+> get_gen_from_flags(unsigned long flags);
+> 
+> Or something like flags_to_gen() or gen_from_flags()?
+> 
+>>
+>> +/**
+>> + * lru_refs_from_flags - Return LRU referenced / access count from folio flags.
+>> + * @flags: folio flags
+>> + */
+>> +static inline int lru_refs_from_flags(unsigned long flags)
+>> +{
+>>          if (!(flags & BIT(PG_referenced)))
+>>                  return 0;
+>>          /*
+>> @@ -155,11 +187,40 @@ static inline int folio_lru_refs(const struct folio *folio)
+>>          return ((flags & LRU_REFS_MASK) >> LRU_REFS_PGOFF) + 1;
+>>   }
+>>
+>> -static inline int folio_lru_gen(const struct folio *folio)
+>> +/**
+>> + * lru_refs_set_flags - Set the LRU referenced / access count to specified folio flags.
+>> + * @flags: pointer to the folio flags
+>> + * @refs: referenced / access count number, between 0 and LRU_REFS_MAX, inclusive.
+>> + */
+>> +static inline void lru_refs_set_flags(unsigned long *flags, unsigned int refs)
+>> +{
+>> +       VM_WARN_ON_ONCE(refs > LRU_REFS_MAX);
+>> +       BUILD_BUG_ON(LRU_REFS_MAX != (LRU_REFS_MASK >> LRU_REFS_PGOFF) + 1);
+>> +
+>> +       *flags &= ~LRU_REFS_FLAGS;
+>> +       if (!refs)
+>> +               return;
+>> +       *flags |= (BIT(PG_referenced) | ((refs - 1UL) << LRU_REFS_PGOFF));
+>> +}
+> 
+> Similar to the above, maybe we could use more descriptive names?
+> 
+>> +
+>> +static inline int folio_lru_refs(const struct folio *folio)
+>>   {
+>> -       unsigned long flags = READ_ONCE(folio->flags.f);
+>> +       return lru_refs_from_flags(READ_ONCE(*const_folio_flags(folio, 0)));
+>> +}
+>> +
+>> +static inline void folio_set_lru_refs(struct folio *folio, unsigned int refs)
+>> +{
+>> +       unsigned long new_flags, old_flags = READ_ONCE(*folio_flags(folio, 0));
+>> +
+>> +       do {
+>> +               new_flags = old_flags;
+>> +               lru_refs_set_flags(&new_flags, refs);
+>> +       } while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
+>> +}
+>>
+>> -       return ((flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
+> 
+> [...]
+> 
+>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>> index 73a81b4a3e16..9ee9f8dc6805 100644
+>> --- a/mm/vmscan.c
+>> +++ b/mm/vmscan.c
+>> @@ -843,19 +843,22 @@ static bool lru_gen_set_refs(struct folio *folio, const vma_flags_t *vma_flags)
+>>          if (!folio_test_referenced(folio) && !folio_test_workingset(folio)) {
+>>                  /* Activate file-backed executable folios after first usage. */
+>>                  if (is_exec_file_folio(folio, vma_flags)) {
+>> -                       set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, BIT(PG_workingset));
+>> +                       folio_set_workingset(folio);
+>> +                       folio_set_lru_refs(folio, 0);
+>>                          return true;
+>>                  }
+>>
+>> -               set_mask_bits(&folio->flags.f, LRU_REFS_MASK, BIT(PG_referenced));
+>> +               folio_set_lru_refs(folio, 1);
+> 
+> We have quite a few instances of folio_set_lru_refs(folio, 1) and
+> folio_set_lru_refs(folio, 0). Do these values have any special
+> meaning? Could we add wrapper helpers to make the code more readable?
+> 
+> `1` just means `PG_referenced`, right? Could we add a comment or
+> changelog description to clarify that `1` actually means `refs = 0`,
+> but `PG_referenced` is set?
+> 
+> Thanks
+> Barry
+
+-- 
+Best regards
+Ridong
+
 
