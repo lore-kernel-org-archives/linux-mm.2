@@ -4,103 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8E1FC61DB9
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 04:26:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84984C61DB9
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 04:28:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 069366B008C; Sun, 30 Aug 2026 00:26:20 -0400 (EDT)
+	id 834956B008A; Sun, 30 Aug 2026 00:28:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01A4F6B00AA; Sun, 30 Aug 2026 00:26:19 -0400 (EDT)
+	id 7E5636B0096; Sun, 30 Aug 2026 00:28:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4A846B00AB; Sun, 30 Aug 2026 00:26:19 -0400 (EDT)
+	id 6D5846B00AB; Sun, 30 Aug 2026 00:28:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B933F6B008C
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:26:19 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 44302C0242
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:26:19 +0000 (UTC)
-X-FDA: 85156648878.04.435F1C6
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 454E16B008A
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:28:26 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BD1091C15C4
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:28:25 +0000 (UTC)
+X-FDA: 85156654170.27.32ACD9B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 56A6DC0005
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:26:17 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I95TTF0Q;
-	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id CBA37A0003
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:28:23 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b6LdenXe;
+	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788063977;
+	s=arc-20220608; t=1788064103;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z4oyq3XNxRWjvU5KSLZ3bRN6q9YknXc+HlOna4jRbr0=;
-	b=UrbYfKpe5s899C/pOZQ7luL3djtf/7gWWpA1BL0ecOu+h41aSohyOnZCX6FS8q4ZmBzBI/
-	0F+JoZ7g7z0VjAeNXCXoREJzH8Cwe1AOlg0AqB01Qfhsv0uG9I0nns+4qhLdKR3jKLbNU1
-	lYJeeJgMGKBX8gTq7GxBPg0YuisTI3c=
+	bh=kwhhqAKQey/9CCyH5sr0Bsi1+3+p1VFmtEf1p7MZ37I=;
+	b=L7iLHyp19ydY2+wYSmZmyoonnqJ3ogSzSHGEAgqAYFGmLNKH2gLw+M9C853Zw4CFssKe2T
+	9bfFUPmj+MUsb32XslgBnkwH2MW6aNFFcC7pzf4ktmZUZt1Sf1+H0vI8Hp6ogA4VM4NHr0
+	yUyN4etMjs9YuHpJ8fNqaz4jA4gZ1v8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788063977;
-	b=gd5erMt93xYEa+z2DM09IsVmbVnynzhrjyh0EqEMEtATHXaI77PVaGJrUtA7G13kL9RuV8
-	wgkJr6YHfViBS6e7xgUeJxN2TZ9PuCtLlpG3MYaPkkNR2wvcEoSRgoRi1PLnWn8DlOY5XG
-	Z/tks6OKzOgGQp6epGTYG2O6tGjsa7w=
+	t=1788064103;
+	b=ltRo65I4sWhLzp99W/GS+YF2BZwKcIC2fuNN7BXKhdtTQbS0YkfbikuvUGf6tvephIYdtR
+	erIRHoC2ZHIKwG1wRuBgt8LNXC001aKdMt2vtNk3xs/e5hf0Z9Yt5U+nkaYTh0kUuJ/Ovd
+	thYodstwihyUAdMY3yycmvc34J3AwZU=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I95TTF0Q;
-	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b6LdenXe;
+	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3445543F57
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:26:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1708E1F00ACA
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:26:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 022DB43EFE
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:28:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DADDF1F00ACF
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:28:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788063976;
-	bh=z4oyq3XNxRWjvU5KSLZ3bRN6q9YknXc+HlOna4jRbr0=;
+	s=k20260515; t=1788064102;
+	bh=kwhhqAKQey/9CCyH5sr0Bsi1+3+p1VFmtEf1p7MZ37I=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=I95TTF0QUvm2sKLPEjcrxd3aq353fdKMcv3SW7001GkL12ACKoyFefSQeeTGTkMd8
-	 ypJirdJ2KH0hio/e+7BT3gBUP+LdlL9BR+KBVnJZniMvujaw2fZVoT/ZiN7+epiI6L
-	 fcvYq31wwZ2Z3UknzLt7zCrD/fR61PAE5CRfnfUky/h+FIvob2hRkjFVfgburqe7nT
-	 pu/ZzTlFjds/E6JarfSKthPs6bq1tWRBGbEKtHx2Y8umTAybEYS07p4BxrzklkKRDX
-	 9yt2QCej+V97Rm97l0RyfXBhNxysNrL51AxX84WW8FFTIcOCNtjQd75waSxMrShwsf
-	 DDrJNHyfggdvw==
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-9392aa26b25so61329685a.2
-        for <linux-mm@kvack.org>; Sat, 29 Aug 2026 21:26:16 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqGNpbGC04ZX6J4s2ZQ+Fs8CccrW52RoKre2rW6CEbWgefthNTQG72oK817DFJjQ/WskqYerQ7yhQ==@kvack.org
-X-Gm-Message-State: AFuF++npGMP3Ooe4nXZ/czcyNVr2ECxnMpMHYGMR6jUM4Tk/82pq4QK9
-	VXAYWAaP8Os3YVbnCBwAKJnLPPkrYrW8z1MwkAYUkTVLA5dfa3rTITThLEsUo8Dzsw/t2nrF71f
-	e80ybOO3du25/Ksc0dAIbiMjk5+bu7yc=
-X-Received: by 2002:a05:620a:1d08:b0:939:32cc:f2cd with SMTP id
- af79cd13be357-93932ccf558mr159931785a.1.1788063975448; Sat, 29 Aug 2026
- 21:26:15 -0700 (PDT)
+	b=b6LdenXeqNNfz6OaQ3QpZEafuBQ7ReSjctgC8JdYp/65ku+3LoOcicUanoiiY7U6A
+	 oAzX7k2tbTsQp6SDRyqg0qdpCcn3V3cYu/ZUgRGVTwz8A1koYQ3eDwtQX++OY/KiuK
+	 itxGO2Y/ZUSH10Lx8QS75L0RIoasjl6N03ZicF2K5NevvJdap72baFEKgO9XGHRSiu
+	 iUyanC09nnn/CGt6jFGM+aW3k3BEPIfE+wrWPaGpk4/SnjtAvGNhJGW+wquvjXTW+7
+	 9eUxAEtvzIUdgOOip/ASQFJc4GhWEiUm3J5hGF53cpbpxaVcIH+2swlu2QSubb/R4w
+	 1aR0t6o0MVStQ==
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-9390a2c8909so154450385a.0
+        for <linux-mm@kvack.org>; Sat, 29 Aug 2026 21:28:22 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rq7ZDovLAvqkfLzVb5uPw40TvNekJ/pxRmXh1/osIcyqsGVRlltd8kI6BAohAqg95OwRtbDvkCnXw==@kvack.org
+X-Gm-Message-State: AFuF++kBr+5mXKBgXhxl5S3+E0+9v1jumodOElVrQMrndbkjjFsAU0MN
+	XyLrTBVNqEI83vcA2amOYoPbqD7sbwgre+s+EsYX/XRwGuZC1bn8NBcQ3vNGQcDprHO1bDdssZu
+	YSjLWN/am/j3OcfEhNTgcyL7KA8hx2is=
+X-Received: by 2002:a05:620a:29d1:b0:939:1b82:47c4 with SMTP id
+ af79cd13be357-9391b8249e0mr1079000085a.37.1788064102271; Sat, 29 Aug 2026
+ 21:28:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260827234704.63163-3-baohua@kernel.org> <20260830035843.712320-1-kunwu.chan@linux.dev>
-In-Reply-To: <20260830035843.712320-1-kunwu.chan@linux.dev>
+References: <20260827234704.63163-1-baohua@kernel.org> <20260827234704.63163-4-baohua@kernel.org>
+ <af26ac3d-30cb-47de-a295-6f9b4f2e2c32@linux.dev>
+In-Reply-To: <af26ac3d-30cb-47de-a295-6f9b4f2e2c32@linux.dev>
 From: Barry Song <baohua@kernel.org>
-Date: Sun, 30 Aug 2026 12:26:04 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4y0Pz2fiyhS1X4PY+D-z-o8ycSKdFar9R5PQg-o2Kd6pQ@mail.gmail.com>
-X-Gm-Features: AcwNN1VgEblGKtPauG047hZ4EFaf4rQhRNcWvgLAHvyDRFW4jMs-EL1wXwED7J8
-Message-ID: <CAGsJ_4y0Pz2fiyhS1X4PY+D-z-o8ycSKdFar9R5PQg-o2Kd6pQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/7] mm/mglru: batch update lrugen->nr_pages in inc_min_seq()
-To: Kunwu Chan <kunwu.chan@gmail.com>
-Cc: Kunwu Chan <kunwu.chan@linux.dev>, akpm@linux-foundation.org, lianux.mm@gmail.com, 
-	axelrasmussen@google.com, baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, 
-	chenridong@xiaomi.com, david@kernel.org, hannes@cmpxchg.org, 
-	kasong@tencent.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	ljs@kernel.org, lyugaofei@xiaomi.com, mhocko@kernel.org, qi.zheng@linux.dev, 
+Date: Sun, 30 Aug 2026 12:28:10 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zTHhkBjzL-Q2N9kk6ggjYeKQOmkXBPofRyQno8QrE5LQ@mail.gmail.com>
+X-Gm-Features: AcwNN1VbJ6v4Z40lv3fn5JDjk7Qgjnd1FigfVZYZsefYA5vPub56D-6w5qqkpCk
+Message-ID: <CAGsJ_4zTHhkBjzL-Q2N9kk6ggjYeKQOmkXBPofRyQno8QrE5LQ@mail.gmail.com>
+Subject: Re: [PATCH v2 3/7] mm/mglru: enhance cold/hot inversion handling in inc_min_seq()
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: akpm@linux-foundation.org, lianux.mm@gmail.com, axelrasmussen@google.com, 
+	baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, chenridong@xiaomi.com, 
+	david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
+	lyugaofei@xiaomi.com, mhocko@kernel.org, qi.zheng@linux.dev, 
 	shakeel.butt@linux.dev, stevensd@chromium.org, wangzicheng@honor.com, 
 	weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com, 
 	Xueyuan Chen <xueyuan.chen21@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: wgx145fxufaqzrgoe5br51xcrb14nbjp
-X-Rspamd-Queue-Id: 56A6DC0005
+X-Stat-Signature: ac96ot9w5nmrcjs6ehbge8dhh4qou1to
+X-Rspamd-Queue-Id: CBA37A0003
 X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788063977-162023
-X-HE-Meta: U2FsdGVkX1+3yM5U2vphwcLJ1b7fohl1IRbRyX3G8bYgicA5lhBX2UBAOCDJtc9cKZPP6ly3MaB3FH4GuY485ms4qD6eQv4N++oET8ypD6WAIuasnzaTBtpnUcTCVR6e4HBzQ6g8OgNNbN0cSN5YnVAFqEnwm2sNXKWEJQjZLzr5b77WvOY4U32rzd9LLxbEAtIxe5lPjJr7VKZwjIKQk3eVNC3I8aCXdQcl/IbJ/zZo0Sk/UW2PVXd1mDDCLPUIM5UK1PPqBUpmR9OOQjS3eD5PvPXoYfHeTX3dFb1JjwavgJeqt+DB9NxNAmIfMd2Z7BNKkdwffospViPpmdGGZieVwestMmSC4rZmFVsCI9zozaKnGtiIWaKl2kZu+GsWjJn8kRKI8kSIWBczniO75+PCWz0rcIUZmoZsQz080oE2kvEogeCGhisJdiRSA0uEeZdUZMRdQkcgIxPbYXn1S9AHfU8fbBtYpZIWYGb7EJ+AAf/P3g7jyAAE7r9WqIZZdjv8+skk2pGvMPwGDXoR7TcB2bu5EA7qmzZBO1/2pZFMX19XuJDFjPMlVfyzW0AQWOMJ7LJ8tFNl6gSaQo6k58ggEl7N0p/9AE15DrvhJXUFFVO9xTY9C153db8gglInqnKodzYFQHFjEjO6FT+/1iuN369X3ySA5yC0LopnZWm7ksVcYrUkH99HLcHU39w4gS6wta8Q/Oc1DSSTxHt8I9VVBHkKMGkXuFi1obKXfEdhkxWjr4fQHRlDGOYSDYP+rCBbqK3JOqE6YcAd+GgRRW2/a0/m0ZrlPW6mk4zgzKIL6cTzXv7HdMa34ZUv4s0rM+2mXRhPvUy9VWoT0rPlmRP+PL3m7HJXhhV8w1n31tQBW3hGyFzk3+7svi+8Lj2WeC4l9Rv6gJUhtUt4YaI13sYFeTo31bwKWmGxXLmbvIRCd9LfzWQYjmi0BwnEjyVKcXINoIhhCOm/7InzTKQ
- jTEwi7/x
- IXbrRuIrOvDnrVUc+U5zdlMHBGLuJv1ASFtJIyfdGpLJDbG8RAeuvBlMImrAv2xTtLroz6A4zDvV/QJPH2gvlzQnvbYC69H7umlDzfonYE4W2O2QnycFjUctuSnP1tL2vcFidnmnSH4lSe4nydARQfFurD4iFJqO5UWILzfsVOLSX+7sarqvOVaglfW3BT8y4vqqIoQnylbH4lH2JW2BkMAyhBLFW7lTbYRamBppKykrKc7Ml3wtl9AMvsBTZNG96MaSGcnSnVIEedVbRib8czI8iVrJrxDrLSS9ldr8vIqRtrYlBh9yJLLLX71EzRviU+5icCS1rKbpVSn5/tqhi8bXqKhohjLF18cF6U1D3XdID3tFLI3qOUdM9yA/KWrDNNNHYQQol4E/lngZYjDYdDOkHRb/qQNdIxK8xQ+HHvZ8FnSMUW+k7qH3KQrLg3NBeqsECKWVjLNBYzL4=
+X-HE-Tag: 1788064103-938151
+X-HE-Meta: U2FsdGVkX1+4iXXaV+UalEd9hjwuh2xFcDWE/1f5dbBAiBjWm8IFz8JGOVvdW5BeIk5RfoViiuyQ4qHMx/1YdAeEuGLIT0qK9GWuk6nTEWnfsr9lfZyilmQc/vztRmJgJENfH5RAyK2owhtRoFAbQM4/5PMZ8Ky6R6YcYk5elQEIuQ4siuOzwswbrNZuttuD9Ak+B7Lm6pDPm4lRhwgVX+VpK8K8ujqty9WpR7gthIE25jH9FoDwesF0oPCX6mcDgHBSWqnABlbFySto6vBZHYV9eynQQQvtfRKhaXU6PRjBUkXUQu40KI3f+P0OHZjXnyjV+q8qvCsv12Ls5kWWp0rriuLtI9AlCAdByMM2eZxcqwcwLRK/BlxSeKEU9A14B5YF3RUFpOPb957mz6gg6MuSTzEKlI3iNVXzUpRhZwpRc9Ft9qcqC06HNdThNZ2NWCydJD7XEArKnM3NA+w/t41bM9JN7jOwIu2mWA00OTSQYqAyd84WSchYUz6Bk57GfcnNLQEHvTTx5HZdrcUzaRkH6v4YFcFrRfyCUsydGnnmJteAhEerhtbq0rPSdPT4n2HskEgW+ALY0WQHvVjP3BNgISUlv69icYuAGwXMlFlq9FrohxyGUFbDjMiE0igoVHhQ04C5fncD2hJQwDoja9R3NNMgi7qO9FKbnbRr/vK73iAGNbYFY9yxlnDroJFa+NK0rZoj31z4NWUrpmNpKAfku0FoNi89vSTKEGaJv8L7h2buihSiLdJsGr72wHcEYrbK3beAYeTerLqNVWoAcn2t07N4z99sVa1FItWzuzihbuQrwKk+ZnlVBFm0rtyGREFQaj1rbTNsu1hAdA0Z68pEPMA7S13/TW0xYcnir55avtvMdF6bJxwZHM83d0Ljv1wvlYsv7RrU7f2cG/rDMJisBeh7+K1sEni9P+zvJRW1XFwfTxZVwmpQDneTskZ+icL2RMSilu8kohGPD7T
+ CoWSw5iS
+ FtgzCHJ0/HDOzIuspWT8i5eV4RnHwhGBAOMsXwRvHyhyhD97zmj19tIxCDak3WsBVEgLbXYkyjAEQftmNghOWucNzA5dbzSLTu6uFVvxCvxuLtz+aAPUeQEVn90e3LJtRCg+DzfB+BN1rj/uOPyd7JTN36rQ3HB9B6pe2T3zsd6xLxjMoYQCq59Rh4SbdSXZ5HCMGMXku/qVNEJ/0ivUGS88LfE3wNKkwalnK/H4aFkkeCa6E+3ylh3P5RUrUcpLhcW0jVI1P76P0GE3pk1NUNfTN2CJYyUIy/r8DUJMtPvkAhB6hCHMmGOELgEGik42EQdLcUcms4vGL80aQDUL/Zm7NYI2Cby3/2ilxMz10ja6cizyR5WEqAJJ9sAm+gE/e5Sa0xJlTpXTQJDSnnm1hfrAqbw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,66 +109,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 30, 2026 at 11:59=E2=80=AFAM Kunwu Chan <kunwu.chan@gmail.com> =
-wrote:
->
-> On Fri, 28 Aug 2026 07:46:59 +0800 "Barry Song (Xiaomi)" <baohua@kernel.o=
-rg> wrote:
->
-> > Currently, folio_inc_gen() updates lrugen->nr_pages for every folio
-> > as it advances generations. Instead, accumulate the size changes
-> > and update lrugen->nr_pages in a batch after scanning the entire
-> > oldest generation, or when the scan stops because remaining reaches
-> > zero.
-> >
-> > Since we only move folios from the oldest generation to the second
-> > oldest generation, the active/inactive state cannot change. We can
-> > therefore skip __lru_update_size().
-> >
-> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> > Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> > ---
-> >  mm/vmscan.c | 23 ++++++++++++++++++-----
+On Sun, Aug 30, 2026 at 10:44=E2=80=AFAM Ridong Chen <ridong.chen@linux.dev=
+> wrote:
 [...]
+
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -3949,9 +3949,12 @@ static bool inc_min_seq(struct lruvec *lruvec, i=
+nt type, int swappiness)
+> >                       VM_WARN_ON_ONCE_FOLIO(folio_zonenum(folio) !=3D z=
+one, folio);
 > >
-> >                       if (!--remaining)
-> > -                             return false;
-> > +                             break;
-> >               }
-> > +             WRITE_ONCE(lrugen->nr_pages[old_gen][type][zone],
-> > +                        lrugen->nr_pages[old_gen][type][zone] - delta)=
-;
-> > +             WRITE_ONCE(lrugen->nr_pages[target_gen][type][zone],
-> > +                        lrugen->nr_pages[target_gen][type][zone] + del=
-ta);
+> >                       new_gen =3D __folio_inc_gen(folio, old_gen, &gen_=
+increased);
+> > -                     list_move_tail(&folio->lru, &lrugen->folios[new_g=
+en][type][zone]);
+> > -                     if (gen_increased)
+> > +                     if (gen_increased) {
+> >                               delta +=3D nr_pages;
+> > +                             list_move_tail(&folio->lru, &lrugen->foli=
+os[new_gen][type][zone]);
 >
-> Hi Barry,
+> Nit.
+> This is a bit confusing to me.
 >
-> One subtle point about the `remaining` handling:
-> when `remaining` reaches zero, we now `break` rather than return
-> so that the accumulated `delta` is applied before returning.
+> When I read the code, I thought this implementation contradicts what the =
+commit
+> message says, which means I thought that we move the folios that have bee=
+n
+> promoted to the tail.
 >
-> As I understand it, this is required because `__folio_inc_gen()`
-> has already changed the generation of the scanned folios,
-> while `lrugen->nr_pages[]` is now updated only in batch.
+> > +                     } else {
 >
-> So the invariant is that every successful generation increment must
-> have its corresponding `delta` flushed before `inc_min_seq()` returns.
+> Maybe adding a comment would make it clearer, like:
 >
-> Is this the intended accounting invariant?
+> If gen_increased =3D=3D false, it means the folio has been promoted, so m=
+ove it to
+> the head.
 
-Yes, Kunwu, you're right. We can't return when `remaining =3D=3D 0`,
-otherwise we will miss the chance to flush the delta.
+Good idea. will do it in v3.
 
-So changing `return` to `break` is intentional. Another option would be
-to duplicate the code that flushes the delta and keep the `return`, but
-that would be ugly since we would have to duplicate the code below:
+>
+> > +                             list_move(&folio->lru, &lrugen->folios[ne=
+w_gen][type][zone]);
+> > +                     }
+>
+>
+>
+> >                       /* don't count the workingset being lazily promot=
+ed */
+> >                       if (refs + workingset !=3D BIT(LRU_REFS_WIDTH) + =
+1) {
+> >                               int tier =3D lru_tier_from_refs(refs, wor=
+kingset);
+>
+> Overall, looks good to me.
+>
+> Reviewed-by: Ridong Chen <ridong.chen@linux.dev>
 
-             WRITE_ONCE(lrugen->nr_pages[old_gen][type][zone],
-                       lrugen->nr_pages[old_gen][type][zone] - delta);
-             WRITE_ONCE(lrugen->nr_pages[target_gen][type][zone],
-                        lrugen->nr_pages[target_gen][type][zone] + delta);
+thanks!
 
-Thanks
+Best Regards
 Barry
 
