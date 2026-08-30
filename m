@@ -4,104 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D4EAC61DB9
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 09:32:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E9F7C61DD9
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 09:43:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31A116B0088; Sun, 30 Aug 2026 05:32:03 -0400 (EDT)
+	id 136B46B0088; Sun, 30 Aug 2026 05:43:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CB026B008A; Sun, 30 Aug 2026 05:32:03 -0400 (EDT)
+	id 0C0836B008A; Sun, 30 Aug 2026 05:43:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BA846B008C; Sun, 30 Aug 2026 05:32:03 -0400 (EDT)
+	id ECACE6B008C; Sun, 30 Aug 2026 05:43:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 000F56B0088
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 05:32:02 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6AC43802AF
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 09:32:02 +0000 (UTC)
-X-FDA: 85157419284.20.292666E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 99E53140007
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 09:32:00 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fCCv+HHW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C23BE6B0088
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 05:43:33 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DC4CA1C18C5
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 09:43:32 +0000 (UTC)
+X-FDA: 85157448264.02.DBE403A
+Received: from mta1.migadu.com (out-217.mta1.migadu.com [95.215.58.217])
+	by imf16.hostedemail.com (Postfix) with ESMTP id CDA12180002
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 09:43:30 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ii8B1GFX;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.217 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788082320;
+	s=arc-20220608; t=1788083011;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nvYs9KqQQiDFu9j18mNGTYlbSQTfBbCYWUQ8jg0y0r4=;
-	b=KDvnL7r5wWV2/d7bG3vXlCLgM/dsOKPVWOWigCqutGq/5ba+fILsdqcAEkjkVl/rwuImRu
-	d3DB3EGmnw9BkLOjX1S5c/K4BC3VUPUtheGCE5cJyK7T8p8iviLNOySL4kw4tqDO2sOeLg
-	wsK2pLP6ZgaITwe/5qDSwubE7PRdxNY=
+	bh=WXl/DiezIY9pkE9XHR+teQ0/Nb5jZrePrjuyWCMJkkQ=;
+	b=FZTN8txKf64ofUIbjEPvsy6imbvfBXaegIPFNLmQs82EF3wrg+UrlaOqHfgfOHbedi2BD6
+	/tncqfgHFoU1etWpD1rbxZLo1B/14cnWUjNJDz8iHENHeDA3VcJ9d5rNDIRNLlyXVecxv8
+	Cx44UGeK77OeFUGUMBl+dp3DzJ9b8gw=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fCCv+HHW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ii8B1GFX;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.217 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788082320;
-	b=Bnvfh/llKIzG0x4qz1x7zczdDaeVrOxLwZuBkgGwa66BpnneGDd6EiWVd0OircU9kyhDVJ
-	WBinRlGEQ0RtlCvsl2Ury+kqcSARhmAiNvsBFgre6Bj19eplr6Pb8KdLy3nGdQMrmM9IEN
-	rA3L7m/GmFpalReYRewuNWC9va06EC0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D3B36600AE
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 09:31:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B67C1F00A3E
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 09:31:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788082319;
-	bh=nvYs9KqQQiDFu9j18mNGTYlbSQTfBbCYWUQ8jg0y0r4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=fCCv+HHWayBekTpcF1F3IRCa/NlTMeI0SHFmDk3sJXRVzb5NYiI4k+PAr1AcvyU6Q
-	 3YAt1YQIi1PVpovVNd5xSEfN6Hs3lLmAnILDBFG5GfLK7l/7AH5vEjydVEs9gN3H31
-	 inOHTmiBDKTyLT3qhRXAt5kJNuny/gM6XkeiTagk8BjJdhm9tnLLBxD113isvnQKnr
-	 lJmAWlzKCyuw2jt93bpkuOqmOV3rk3qfIzegw6Vc6J3/XmJ4m856w8qfFeuCWX5a7i
-	 M1gX0nk57QVgeyHMTgrl45j5cgRXvMxYPyGVxp9DNHb+JnWzBuBHppIvWBNsfYGxFa
-	 BNw2amaBlp1yg==
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-930f618435cso182145085a.3
-        for <linux-mm@kvack.org>; Sun, 30 Aug 2026 02:31:59 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rp4OVf78lOufudtNvV5CcBB5vY6Mzttd+eVjD4UKBOK9T02a9rph4GDEjI8CcUn3zC0AGvYE7eHCQ==@kvack.org
-X-Gm-Message-State: AFuF++lAIBRE0XjtH+W2A5xQbd0W9tKeAHcprbPaZsf3PGI1erqpChUz
-	1S2vaoVhexwg9yzwpLC5JtgBUYCNToiZYUuIXTT+V8UlagC38URK/aZSSObcxRmMRBWu8FhXWMG
-	x+pB3vQxh5VdwASUMFDkS7dn/QsHR/yg=
-X-Received: by 2002:a05:620a:f04:b0:92e:6a33:7118 with SMTP id
- af79cd13be357-939138df202mr1911249285a.30.1788082318676; Sun, 30 Aug 2026
- 02:31:58 -0700 (PDT)
+	t=1788083011;
+	b=Q5UIMN5RpPm216oxTDNCRbro/CDvNygYokrc8jNnV0EVHLa6WsdBRzZdWqkhnrUnl9ociN
+	Jix8nLbvmeQY6hHeJf1KACasYW6wvlCL384uBlyC5BmvyXFhJO9JbSODEKH90iZd5/4yoi
+	ve0P0/2xLO6AZTqcP37Ss3Ti7TZ6KKk=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=WLzeZ4W+JrfRBuJ4IDHnEXj5Yo3WA5fDEH3jQpf5dZg=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788083009; v=1; x=1788687809;
+ b=ii8B1GFXIP4C97TtjNGFHcTISARp+DTjIZA8SS0lxTod4xH+CLkW8kpFqAXKP6HUglSKjt7M
+ o/h2fdjf13ZZv0k2zlzN6AyzDVd54LdjtCI7BDFETHvCsurlxq8kMkLFe51APXMuztPNqkE6HIu
+ O+cW510HbcdvqGZTCxK1ttFQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id b5dc266f82cf0c4a;
+	Sun, 30 Aug 2026 09:43:19 +0000
+X-Mizu-Trace-ID: b5dc266f82cf0c4a
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <d469a60a-3aaf-43d3-955a-238042115a3e@linux.dev>
+Date: Sun, 30 Aug 2026 17:43:06 +0800
 MIME-Version: 1.0
-References: <20260820142956.1414337-1-qiwenjie@xiaomi.com> <3fa43eaca792bc0bbde4b82a6c1fcdd3f528b398.1787999152.git.qiwenjie@xiaomi.com>
- <4aba05e1a2c3b61cb337d373eb9b7a8db4ddd822.1788024049.git.qiwenjie@xiaomi.com>
- <20260829111621.41ed2bc9a0e99e3367eb96c3@linux-foundation.org>
- <ef160933595c365f2c47597b260bc7ecd98ed7ce.1788029516.git.qiwenjie@xiaomi.com>
- <CAGsJ_4wpUBOXKd8aGNz76U+87bwDUXZZFSW2UhNcq4qpjVvggQ@mail.gmail.com> <20260830165401.1788080041-1-qwjhust@gmail.com>
-In-Reply-To: <20260830165401.1788080041-1-qwjhust@gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Sun, 30 Aug 2026 17:31:46 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zGN9rqqxoFU66G_PbXqTiDaeV_tUiyr8vbfxFWEJg62Q@mail.gmail.com>
-X-Gm-Features: AcwNN1XZPfiog3RD9yg8B0eXNaoAai7OPxYRVCjEpqabBekjMlLKWknwxqjTMg0
-Message-ID: <CAGsJ_4zGN9rqqxoFU66G_PbXqTiDaeV_tUiyr8vbfxFWEJg62Q@mail.gmail.com>
-Subject: Re: [PATCH v4] mm: filemap: retain mapped dropbehind folios
-To: Wenjie Qi <qwjhust@gmail.com>
-Cc: willy@infradead.org, jack@suse.cz, akpm@linux-foundation.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, axboe@kernel.dk, 
-	trond.myklebust@hammerspace.com, tz2294@columbia.edu, jaegeuk@kernel.org, 
-	chao@kernel.org, qiwenjie@xiaomi.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 38zt6wn7fqfpg1mg51ityi8xc8n96n35
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 99E53140007
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 5/6] mm/mglru: use explicit tier range in
+ read_ctrl_pos()
+To: kasong@tencent.com, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Barry Song
+ <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baoquan He <baoquan.he@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Yu Zhao <yuzhao@google.com>, Zi Yan <ziy@nvidia.com>,
+ Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Kairui Song <ryncsn@gmail.com>
+References: <20260826-mglru-flags-cleanup-v3-0-d9f1c75549c8@tencent.com>
+ <20260826-mglru-flags-cleanup-v3-5-d9f1c75549c8@tencent.com>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <20260826-mglru-flags-cleanup-v3-5-d9f1c75549c8@tencent.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788082320-570718
-X-HE-Meta: U2FsdGVkX1+OSOtWeXAvooO+3rwLwyjPbE9vYM2tpXWPEMEHzv/VR2AJlh0yMvx3JDO/yXaWkInjpusC4sPOu8m+VuUIPlFEN4PRXY5OVJYJbp2Er2hhxGM7kietFmD9ulTgFVwP4vfZO1HB2A/Vf7fCRTZc5QNSW3ZZUeRIzx0G09germKRKz5nmeiHJ8VsnkKB1Pp9uOYHxMjTRwALWQK/a+CWGAuOEk4ALKCWOcFzrf53kJGnAc1WeQ5KciK+7jOux9eCzt/lFulPG0B0c1pn65wnQY8e1klM23mnQL5JpJ46sFSfpSUElEAStlh4p+Sl4xw2ubfj3gQEX1eqd4N/ZEEjvY/AoOP+yOgWuMHUfpvpAhG3g5loqEDhm7NFxpmVxzfAmu/d1gu+4fhLVOF+4GkjnbjPFsyxEcVSa/gEJU5KPrLN22qTMtIU7xLcIfoaxEe4HoXaZ1hqHB+iyVprsPWVxD5DzkZz/f9xVzPqDdGY98rg6JwTrdCJrTsgfw67XCr9zAG9Njsvj7SQzHsdS6N200HQWBjMhdwgAvls2eRwJmvpt0TIAeMw00dVNHPU8X/L/jth2qwaM3Ejx372gphw1JBlAd0bM0wN+m040Q+tEdxBRVTgleFLsmgZOWrE9/7+iyFGV1Amn1bwSRVEDFkXO3rwYYn7R4wrhdXpu5pLPBD4MgK+Kt53LrSXv/xFfH8WNbCdZPTMOMil+gie4cvmLBQ7rB2zSks2Osbe7NHGy5EW3hmY/m5rHYFmEBW3vmzezXEkYpZLlqOnvsPch8z+MlZYJg6o6r7WBARJC3ZLJVHj4I/5qiwIBuHFb27EuWZclEsoNswm2hdk+9MGb38dHurlW5Zq9WmurPz7c3VF7jU4jVWec4+xY248AQ64mGbGUhKGDRMttq37Oesv2v9vV8uZvNVCc3zeGpOhKwdWxq5R4BDlJja5+cSoTEcrB6PdP8FyE+KshVH
- erRs9vfH
- WSZxD0pOxvGO2vUnm8SxPTbGssMxfHxV9neO00eUwvHg6kGMUICe5gxRF9bjOAS+7DLp2Y2Ms4k4j2kM8osPhyoPCKvrXTcv8tJ8xz8IYFR4vES91YGWyYNEUs1p14jXP6NYsw4bXI4EJksu1Tj+AjoomwXzFiurPuDljipgU3qfcqNBG6QAfyPcw410JGqgVbEnG+vv6IZII9HwRAabLENn0JP48xhGReJVr+zDFui59CicqF+HfSDGCYVKRqhUvqrSNTPnrHZYbA5ziGg1OGlCEGnon6VVjzKs6MDTcJ2n9QMWhF1+LxGOgOA==
+X-Stat-Signature: u75kaj5r8f4zysw49ea5s4us318mbf4f
+X-Rspamd-Queue-Id: CDA12180002
+X-HE-Tag: 1788083010-921547
+X-HE-Meta: U2FsdGVkX1/KHcxa2RKlRA0e19mhi3Br6FhXavq5hL1a+uZKLFGtPGvFMYk39aRCFDyZCocOQH7xHfpV0Q0fLHYHLbI8gTlkKgPdT5QTa/vckwg+aJrjmmDnjesgJPtNHdSvRF0hSYY2rD7z/ZUFeT0w8rZWQH+hCj/br6mwewAK+wzcPxGrsb4xJK+GngdJ2wmox70gRwCTJH9C0SzZozQyL4821KOAGG1NPO3orBLlyIjT9q5OHLtJ/vFGLwHpL7dcKo1YacYoIIbXpXeq4ibXrEr2BbtnCy8DBvaFDhf7SHzOsjVLynBu925xn8Sn1WVeD27HHnd66qWrMTLjPdS/YeRt0abG47z07CNvZpU95aGnQCzc5s+OzICn+gCibYtwAh1xPcUIlhHAMW/wqqeJupVSl2mfPxzISHnVs2LeC/jhFU9os+/lMj7/A4eeF2NYLneqkP+iv7MC2r11wxMsqAVtJ0A1mVWDMNf/UubXfW3YciP5bMh1/HrNPWMQ9ABh9XsYyBnBhH7jvoo84kuxfcssKLrYYQwCX38UBXA9RYKNvx22HrHPpXklvThHWeeLBY1orLBf3mknNGLIxUd8qxehsmMW1ENZ+HCWGzzS0L97wiEhIIdb/5i4/23tG+i471YSB1+SNq474CmZ1KbWan+Ldnu5bsfOQlohgKoS/fgUysHiOLje5jJk/GjXvzGHdgBJRkGAQDuVrGTF4oepfpugMQlkH/X6tULqfPZkOJWjp4ChpYK2C7puz9N6Ndodn4X3BRQl23cv0nKoPEFEApFPHswK20QCo9ZNVbdkBUPkSv5Z1tJoo/C+AR1hthWmA4oXCNETpxdV/Y/meGT8QMJTN9+/xaE7o3ISxpeEDeWvf3v5ZGBRlCqY62CRRzXvlFkXwxrsQUsdm4urrGOotg6pGuOSUW8vNrIkhkH75oGlJJaZsvAEcaf+yMb959E+2jL5YwmZBes9QS5
+ 9/qpd+vt
+ ylvOKu1BgxMYZVaNElg5cEkuXiGpJl8pXU8UIx4gO/lm7RNVES23Lkp1nbcaidd6MkwBBLvUEHQB5KDhrxtCXIIUxPi4m1aU01FPOYAVCB3txu8FLtq0nxJdksCuB1FfvBppJhWaD6FAVdICSf9PjbUo8NOPM1TsbLkK3Ox1Q6FjymknRly55nvSU02y3Z03eDNncI/nXx2TUfuScWmkBS6uQOjEasCUSxEp4WVxbW6YJtmuHCBPGy9kzFW8cHFJbhKhu9O9CdrOqlHCeX9rfqb/aOvvlytqMy/R6FU9Hr/wkB36oq1F//xAxjHR1OosVdFcqd2WTkviX2tjIRu9uMK9GGtowqxB7gLePsXITljGUN8psAZBe2eQEVTix7UdPQkG3/gqNnjxzS10=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,43 +103,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 30, 2026 at 5:13=E2=80=AFPM Wenjie Qi <qwjhust@gmail.com> wrote=
-:
->
-> Yes.  The current path removes the folio from the page cache, so a later
-> mmap access can incur both another fault and I/O.  I should have stated
-> that explicitly.
->
-> For fault-around neighbors, folio_mapped() cannot distinguish the faultin=
-g
-> page from a speculative neighbor.  This patch takes the conservative poli=
-cy
-> that an installed PTE represents a competing cache user and wins over the
-> writer's RWF_DONTCACHE hint.  It can therefore retain a speculative neigh=
-bor
-> which is never accessed.  Distinguishing those cases seems to require
-> fault-around to preserve the faulting folio while not mapping, or later
-> dropping, dropbehind neighbors.  I think that should be considered as a
-> separate follow-up.
 
-Yes. Maybe we can skip mapping neighbors with the dropbehind flag in
-fault-around.
 
->
-> For folio_launder(), filemap_end_dropbehind() holds the folio lock and re=
-turns
-> if the folio is dirty or under writeback before calling
-> folio_unmap_invalidate().  folio_launder() also immediately returns for a
-> clean folio.  I do not see how nfs_launder_folio() is reached from this
-> completion path unless the locked, unmapped folio can become dirty betwee=
-n
-> those checks.  Is there a path I am missing?
+On 8/26/2026 1:53 AM, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
+> 
+> read_ctrl_pos() encodes the tier range in a single "tier" parameter
+> via "tier % MAX_NR_TIERS" as the start and "min(tier, MAX_NR_TIERS-1)"
+> as the end. This is hard to follow, maintain, or extend. Tier values
+> 0..3 select a single tier, while tier == MAX_NR_TIERS selects the
+> full range.
+> 
+> Replace it with explicit (tier_min, tier_max) parameters using a
+> closed [tier_min, tier_max] interval, and add LRU_TIER_MIN and
+> LRU_TIER_MAX for the tier bounds. The call sites now become
+> self-documenting:
+> 
+>    - get_tier_idx:   (LRU_TIER_MIN, LRU_TIER_MIN) for the first tier,
+>                      (tier, tier) for each subsequent tier
+>    - get_type_to_scan: (LRU_TIER_MIN, LRU_TIER_MAX) for the full range
+> 
+> No functional change.
+> 
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+> Reviewed-by: Barry Song <baohua@kernel.org>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>   include/linux/mmzone.h |  2 ++
+>   mm/vmscan.c            | 18 ++++++++++--------
+>   2 files changed, 12 insertions(+), 8 deletions(-)
+> 
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index c9ecf370cd9f..9b27cf53bdbc 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -492,6 +492,8 @@ enum lruvec_flags {
+>    * folio->flags, masked by LRU_REFS_MASK.
+>    */
+>   #define MAX_NR_TIERS		4U
+> +#define LRU_TIER_MIN		0U
+> +#define LRU_TIER_MAX		(MAX_NR_TIERS - 1)
+>   
+>   #ifndef __GENERATING_BOUNDS_H
+>   
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 52ef4c3705bd..cdc2e44875da 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -3198,8 +3198,8 @@ struct ctrl_pos {
+>   	int gain;
+>   };
+>   
+> -static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier, int gain,
+> -			  struct ctrl_pos *pos)
+> +static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier_min,
+> +			  int tier_max, int gain, struct ctrl_pos *pos)
+>   {
+>   	int i;
+>   	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+> @@ -3208,7 +3208,7 @@ static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier, int gain,
+>   	pos->gain = gain;
+>   	pos->refaulted = pos->total = 0;
+>   
+> -	for (i = tier % MAX_NR_TIERS; i <= min(tier, MAX_NR_TIERS - 1); i++) {
+> +	for (i = tier_min; i <= tier_max; i++) {
+>   		pos->refaulted += lrugen->avg_refaulted[type][i] +
+>   				  atomic_long_read(&lrugen->refaulted[hist][type][i]);
+>   		pos->total += lrugen->avg_total[type][i] +
+> @@ -4809,9 +4809,9 @@ static int get_tier_idx(struct lruvec *lruvec, int type)
+>   	 * This value is chosen because any other tier would have at least twice
+>   	 * as many refaults as the first tier.
+>   	 */
+> -	read_ctrl_pos(lruvec, type, 0, 2, &sp);
+> -	for (tier = 1; tier < MAX_NR_TIERS; tier++) {
+> -		read_ctrl_pos(lruvec, type, tier, 3, &pv);
+> +	read_ctrl_pos(lruvec, type, LRU_TIER_MIN, LRU_TIER_MIN, 2, &sp);
+> +	for (tier = LRU_TIER_MIN + 1; tier <= LRU_TIER_MAX; tier++) {
+> +		read_ctrl_pos(lruvec, type, tier, tier, 3, &pv);
+>   		if (!positive_ctrl_err(&sp, &pv))
+>   			break;
+>   	}
+> @@ -4832,8 +4832,10 @@ static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
+>   	 * Compare the sum of all tiers of anon with that of file to determine
+>   	 * which type to scan.
+>   	 */
+> -	read_ctrl_pos(lruvec, LRU_GEN_ANON, MAX_NR_TIERS, swappiness, &sp);
+> -	read_ctrl_pos(lruvec, LRU_GEN_FILE, MAX_NR_TIERS, MAX_SWAPPINESS - swappiness, &pv);
+> +	read_ctrl_pos(lruvec, LRU_GEN_ANON, LRU_TIER_MIN, LRU_TIER_MAX,
+> +		      swappiness, &sp);
+> +	read_ctrl_pos(lruvec, LRU_GEN_FILE, LRU_TIER_MIN, LRU_TIER_MAX,
+> +		      MAX_SWAPPINESS - swappiness, &pv);
+>   
+>   	return positive_ctrl_err(&sp, &pv);
+>   }
+> 
+Reviewed-by: Ridong Chen <ridong.chen@linux.dev>
+Thanks.
+-- 
+Best regards
+Ridong
 
-You are probably right. I was referring to the bit wait in
-nfs_launder_folio(), though I'm not quite sure whether this can
-actually happen:
-folio_wait_private_2(folio); /* [DEPRECATED] */
-
-I assume we won't wait for `private_2` while the folio is clean. If so,
-it should be fine.
 
