@@ -4,87 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D997C61DB9
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 05:15:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79FEAC61DB9
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 05:18:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFEE26B009E; Sun, 30 Aug 2026 01:15:25 -0400 (EDT)
+	id 70D2C6B009F; Sun, 30 Aug 2026 01:18:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB0166B009F; Sun, 30 Aug 2026 01:15:25 -0400 (EDT)
+	id 6BE9C6B00A0; Sun, 30 Aug 2026 01:18:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EC7A6B00A0; Sun, 30 Aug 2026 01:15:25 -0400 (EDT)
+	id 5D4696B00A1; Sun, 30 Aug 2026 01:18:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 740E76B009E
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 01:15:25 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0E4711C16F6
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 05:15:25 +0000 (UTC)
-X-FDA: 85156772610.10.B330D17
-Received: from mta1.migadu.com (out-28.mta1.migadu.com [95.215.58.28])
-	by imf08.hostedemail.com (Postfix) with ESMTP id DF749160002
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 05:15:22 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Cd2tm3y1;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3986E6B009F
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 01:18:45 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9D5C912026F
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 05:18:44 +0000 (UTC)
+X-FDA: 85156780968.03.7DAF254
+Received: from mta1.migadu.com (out-56.mta1.migadu.com [95.215.58.56])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6A1E81C0007
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 05:18:42 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OUfzD71g;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.28 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.56 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788066923;
+	s=arc-20220608; t=1788067122;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0D1AWf4KzbXcCA4PdDmSuSOslQXY6/j0QDBlsJSzOjQ=;
-	b=M/wYka3Gm/d7oNzLQCCmjtc/yC4VPgpFxN7PZrbTTWLsNGM5AWi6UHjXZbdDDZ5B1yzlaD
-	iouKXFLfcFqeVn5XpAvZV2cEgJ+YudfheaZuY/sZGp3pAVqwMcoll3NkSCy5KIagEmIrcL
-	sMOIk4ZVrEb5aPEsRq/FIFwAj7q2KuA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788066923;
-	b=rNY1rFMlmD2EOGUYz6ttaELrOlpvVbapy0xpI5EF7GwjOxK1KS3MOyOK6cPLY+VOo4H3Wo
-	MdBLc6Y3ZHTfPdTVwmC9P2he8btxJuLH7z5H1yqcUZs3LyyUE/TuuBQRF1k1uHkyiInLlW
-	rb/3q2e69qWdsD+R+t0gPFVOHVIM054=
+	bh=n8ezaL9icbU9C7HIFQvgdZQO2Wi8VddFCHPu5jqFmjU=;
+	b=3poSq02UVLHzydA+H77EgqI/CikJ8AQ7cKrf3cAMfH47E8XeIA9T8ceVU2khtfAW+6gzDL
+	JnPj+zVVU704GhLsDg9otj1L04azXuG5x/rW18qC2eobvdbnSHYrVlWKkj1PdDdZPcPEmQ
+	6gxpMVFX3qO/12Mg80PGr8SABinVzCo=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Cd2tm3y1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OUfzD71g;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.28 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.56 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788067122;
+	b=1AoMG3rJ7KSw3XkAZWERYquI4z/Nz7TJopJcjCJ+aI0fB+8KVKAXKBdy63Ni2n4B1Ft9uR
+	+nwIR0xvkMZnnkFXqFZpvNet94ClKtDmYCJgbzujdVTL6GJG/JCdbvUpi6XjWPvzxOTBke
+	/IcPvir4UDqKIN0mtLkYiqyubyBxU8c=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=HiW3d3TplfCxceccjWG6SJ1prOMobAwhNnC0vLXjVus=;
+DKIM-Signature: a=rsa-sha256; bh=zpUnzyomNCkMBgYKtdeC/00VUtDf38xmo/shun73kSE=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788066921; v=1; x=1788671721;
- b=Cd2tm3y1EINfQQ5kESgQ13jGNKOcb1G4Eu6EFx1AIXhugCig36Cjjwl9I4gpLn3JBgAThXWr
- uxjHoVzJlgixBrtJKzQ4Xb0jK3Eu4mdL74N34k8Bbiz//xkgWbX+6E6CJv+MI781BtoUUVMYjW7
- Uww7aIKwbhjFqx55Qxk/UKkM=
+ t=1788067119; v=1; x=1788671919;
+ b=OUfzD71gsBHVbLwuzg5cFSUCjzA+5Tj79KnYt6pmfMxrAWGvYUREWb0H/MOx36qj3vQAeMOl
+ NOKMbQLTZR1QIrElQM8y3bW2SpaDfdOPxgU0P3KjzcqO2nOPMW09WF5xYaMVrBa1CSlK10aqo+s
+ g0GtYJTZa82USoSkMv7sFNDQ=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 13f0276adf91ee9f;
-	Sun, 30 Aug 2026 05:15:11 +0000
-X-Mizu-Trace-ID: 13f0276adf91ee9f
+Received: by smtp.migadu.com with ESMTPS id 82afb8ac5ccba36e;
+	Sun, 30 Aug 2026 05:18:39 +0000
+X-Mizu-Trace-ID: 82afb8ac5ccba36e
 X-Migadu-Flow: FLOW_OUT
-Date: Sat, 29 Aug 2026 22:15:05 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Hugh Dickins <hughd@google.com>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	syzbot <syzbot+cd2073ee6d958a8d0fcd@syzkaller.appspotmail.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [mm?] WARNING in __mod_zone_page_state
-Message-ID: <apO7GDwIgyhdn3t7@linux.dev>
-References: <6a931c5a.08e933ee.dbf97.0093.GAE@google.com>
- <apNjw0HRyr1Oj7q4@linux.dev>
- <apOAF5CPFWUUH9du@linux.dev>
- <a2288e73-5001-2104-1e7a-2b383e7edd61@google.com>
+Message-ID: <c2577ec5-acf6-466b-ba66-0b3bcabbef7d@linux.dev>
+Date: Sun, 30 Aug 2026 13:18:24 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a2288e73-5001-2104-1e7a-2b383e7edd61@google.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DF749160002
-X-Stat-Signature: nh6s9ruca94mygi9s3u9wzciwq1z5o7q
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] mm: reject zone device folios in more folio
+ walkers
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: gourry@gourry.net, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com, david@kernel.org, ljs@kernel.org, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, liam@infradead.org, nico.pache@linux.dev,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ usama.arif@linux.dev, vbabka@kernel.org, jannh@google.com,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+ balbirs@nvidia.com
+References: <20260817220810.1175596-1-gourry@gourry.net>
+ <20260818043143.22297-1-lance.yang@linux.dev>
+ <20260829171819.e1e8910e7e9a8a46b87c870f@linux-foundation.org>
+Content-Language: en-US
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20260829171819.e1e8910e7e9a8a46b87c870f@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6A1E81C0007
+X-Stat-Signature: mw58qn3r1g7qzkinsqqdjqzscts3cb61
 X-Rspam-User: 
-X-HE-Tag: 1788066922-358973
-X-HE-Meta: U2FsdGVkX18eF0Uz+BzZLOLYmp3tW2OQgVBzT2wjn93Gbnj0NexekJKqesezvogACiDgiaIXXIpn6wnr5nAwIr6Qi33h5xR+z8uEUrbRB0ilsFwR4YAdktAEDfZJnTooQY9v1fOgRADRET4xCH5n1JifzvF8tMp+lLhwx5g2nHvD9W/2apxjofJbwyc3Qb3zQpeVhbBU2pb3F50tZ6fBgXRiwipw/ljXKwz3dCn0kHVB7OH/bfh/PMyuHnA/KIi0eJX0P3Ze4F3q0BRm4f7Fn3z2PMinMRwQWokBHK4C4aqHKU2FDoJ5RSdDYRvNZXXxKKR9jG6uJChcjHW6w7HbKBO8tVroN9BrMnagtEOPD5bOZYKl9653HKoKqm1gxWM9/udykxCPFagZ0g2wpwEAc/b2+LCxfxTwPFwzKPxXAu3+/bLEIr9qLq/OuIzhD/DJT1sJsZjn5sS2eJMuSS3VF6SwG4vfkiopvq7R5NIahtXNu0nTcekS9AJgIhvpOJKz5AremiTcGs3CNsHaTDu30GSFLiPXwYqUzOBkz5Kku6QnB8ktjQi/NAeAgRqkhIO6JGRcx/c4YAqzSWpIedc+5ucljesfvUpvYJDPlpM4lZelPhO9uPe/cCrKATlQPdkzBKOakdsh986cf3OlyK9gI1fjAMWFrJffFjbYz94jcz42/G+0HhDC2uyNCb5TZCKoKFRa0hwgVgMPxZDMZQbe94F91pMs/h+l+oHbQLCPbLqAPqxpDFzHtCmDvRbC00imcfoEpp+7vDemmeX+CuMInin/SdRT52AIDlMw+LR8CJIvAZ3MQPV1ijBVP5D8kWoGPum57hhgo0qGh4R6OdvohQNBQIkYCWm1QegPj96wvY6hWkexbvBTj4U9BREUxapwOy64iZ9KWeldenUH0arI/FKH49N+ELGPxf4/GIbV/zmIzuU20DTpanMqgdMnZKvTvu0CkbsBTvc9QEvCFcN
- XbHZIFBi
- vhu70ChCaMwX/p0kLWYaqXeNGdQQzvPz19x0AYPCLtSm0EdHx/UOadh4o3IvVkzqcy2CZPm72x0Qri0bfXt4Y9pcNnSrfXOwi3HUP7hoC2ZbjFVnuC+n5qnd0w1xeVFMPRDXhCtdAA79wFRufCGLxdYEGNLqtpTEGLCoNmbX+csAC0Fy9RWI9TueZU9cLVvJoDJyl7lLuI3WqFogiwaJUv8aiV9rIAso3NFJO+ITnQHFKeGRI/KSfM5sgQFssmkmWICGUvVlF1HkUi1N8I6UYI5hKywV3N3cC4vhR45T4LKmUxpofscAhp1iypTcjmoViqZ57f97GS5qbMMTvUvJsjxqfDzlfKM75qMGIK7SMp1+vhESDzq2PI1TxTj47y0Lg12siFK7NhPz0uSH+Y54OmOx6Tqh+2JpYFmDtMlHEtU4Rc3XbPlGcmu6qF+uKraBzgFwuYMtoznE+8pV+AmTnzJH7QHu9uDb6QmeeP86fKTAg4ir7NvEGYuOi3mx64dXCRrFJQzNdB1duphu5YLsz4gCXhovzm5PZ1Wl7UEsvp4mdIOE9oryZfPAMa450qQDYy8Fssoun+aIj9+1cPMLFgwNRvz3TruE7uSsnpmSs85lHZkJhkUgSZ3zoVp3w64Rvzu7CPH2CoWLtjI5arm/BmvafUcNfL0BcABWphkSiyMo4px18vXjO+x45RGzGNdCwaMKHk+h1zKZcb08wodWNKDUaOVFvETEjnGhqd45GsSlbZmgu5ce1Ny8RAg==
+X-HE-Tag: 1788067122-162304
+X-HE-Meta: U2FsdGVkX1+utvkc6Fg2L/OAQx9Q5o5/0hrKkZlEBnkV+W7PcrfW0Y6f3RT2mJGrbIZwsWIIgDDneoJ1e1bopy0uy1HmuracJWXnjHTQxxh5lkKPeQ01TnfXaOzJ0YnNsXu/lc9PNBlSvhUBCXR1PNZflDyA1SyCAbEXizNCEEl996SQHIhYTtO8vE/0LjREyM+0dA756FcBWG3ItQj8QhTOokzv32UtWV2dlDTtGNPbnkyefkg36YNdbipaOAlzziXI2nvGQsqwhYn1TiMSGsXxNCPLZjwwcOAy69CrME8gXh1tA7CzcQ331sJ4FGZuBiBr9shwL1THI0XIdvDCqbBZVSh9WVKTZq4mrUARtFWjgKaN0WDwrQLdevmreOrGnfRm5dONImZeag/OeDorVZinZuMjz0wCPmH9FE3JAfmmt056B+tb3hGNAi6Bs+PgwGoJhkzAXRsCwDLYoiunl2px+YYjYgjHI4orbnlOXT0JVf7SF9XPK+f9nw7Xic1ae7ECyXr+4r+21Pa1MBA9u5l6BCHvCW0Z0Tc2v+BHJBOoCqoxqt4qNqDZRoG1C5LQk5zV39+fGEwd/f+bvmi+4lqUCw6HQFKM+5jYNm9fuINCUdaxm6wq9MBfwaPVCuudgY1q3jrsEMqjSWyTuQokDeRK2zw1ODqELFh3inOuOnihddfeM4qp3PtelLMCnX394JnsFWhXbJDp33z3aE32FDCVjn4D7MpWrZw9N1Q7zR9iathnuPcDmISe5c/aY7TfuPeFJKbn6FuZQY94wOAwndc0Kyhq7IO2PvTy+EaSTjsuwKp8yppG8ihomtbWlCBV6IoqEluJS27L/YkC6iAYwqOA483BO0+SzbQzefzJSoPnXdPjAJzkmVYehbvFrnqetlzzlpQV+U6q50hvxn+rew91Xm4iv1mp4A8z3awcNHSMv3E22FpsiWMDOfwWOiruB9t2CdaeFhhs+k+0Y9I
+ 9OTJnqJR
+ AEldXwczypTxBOup6wxfBSjYBsXgnZAN+L7hR0lPaLf9y04bJrrcxK5DokyxUp3pw9GJoRzfIc3p+5/jBdN7lMR/W5MpIpAGw+udBHRCsarQ3JUBkm34Gt2BFl3Rz9gNKhBK6tfVzpKkxvkWQIiRu8ZOvD9dzvgpy4mM0BaYii2LNygIdfP03iMQTbQIPT8mUcVMQg10yVwehDGzFj6/qGtS9TnItwmK0NBy2O+aaxiwk5OQKtWzs93K2Dpic2X1ukQ0u2JcUPS0vmY57rdL5pPJGmPvCIlqaGezpcZESmypQWrWVv7+nGp6sx+LlFrdesvD3UfsxXsG73/ul3IDKPbqhr2UvohPBCJZonz6l4+uLRZGPg6UbpXSotIhX7g3n9ZiFV519g3jK7Hk/3rg1rSdflneuFTbAWsBbdijz2X+ASTg8baG9LuNk4a9HEr3fwOy6pt5xAdso3sCEqa+dOyM25N/VlX+FakId
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,102 +100,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 29, 2026 at 08:26:02PM -0700, Hugh Dickins wrote:
-> On Sat, 29 Aug 2026, Shakeel Butt wrote:
-> 
-> > +hugh
-> > 
-> > On Sat, Aug 29, 2026 at 04:03:35PM -0700, Shakeel Butt wrote:
-> > > On Sat, Aug 29, 2026 at 10:52:26AM -0700, syzbot wrote:
-> > > > Hello,
-> > > > 
-> > > > syzbot found the following issue on:
-> > > > 
-> > > > HEAD commit:    818bebeb63dd drm/xe: Don't hand out the flat CCS storage a..
-> > > > git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-> > > > console output: https://syzkaller.appspot.com/x/log.txt?x=10286d79580000
-> > > > kernel config:  https://syzkaller.appspot.com/x/.config?x=ccca94d2c01b9e78
-> > > > dashboard link: https://syzkaller.appspot.com/bug?extid=cd2073ee6d958a8d0fcd
-> > > > compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-> > > > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13cf7625580000
-> > > > 
-> > > > IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> > > > Reported-by: syzbot+cd2073ee6d958a8d0fcd@syzkaller.appspotmail.com
-> > > > 
-> > > > smpboot: CPU 1 is now offline
-> > > > ------------[ cut here ]------------
-> > > > IS_ENABLED(CONFIG_PREEMPT_COUNT) && __lockdep_enabled && (preempt_count() == 0 && this_cpu_read(hardirqs_enabled))
-> > > > WARNING: mm/vmstat.c:361 at __mod_zone_page_state+0x96/0x190 mm/vmstat.c:361, CPU#2: syz-executor412/6040
-> > > > Modules linked in:
-> > > > CPU: 2 UID: 0 PID: 6040 Comm: syz-executor412 Not tainted syzkaller #0 PREEMPT(full) 
-> > > > Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-> > > > RIP: 0010:__mod_zone_page_state+0x96/0x190 mm/vmstat.c:361
-> > > > Code: d0 00 00 00 8b 05 3e 44 ea 0e 85 c0 74 1f 65 8b 05 87 e0 2e 12 65 0b 05 d0 99 2e 12 75 0f 65 8b 05 d3 db 2e 12 85 c0 74 04 90 <0f> 0b 90 48 c7 c7 c0 e7 ff 8b e8 3b b3 6d 09 65 48 0f be 5d 00 48
-> > > > RSP: 0018:ffffc9000627f8e0 EFLAGS: 00010202
-> > > > RAX: 0000000000000001 RBX: 0000000000000000 RCX: 1ffffffff2287150
-> > > > RDX: 0000000000000000 RSI: 0000000000000008 RDI: ffff88807ffd79b8
-> > > > RBP: ffffffff9489f448 R08: 0000000000000001 R09: 0000000000000000
-> > > > R10: 0000000000000001 R11: 0000000000000000 R12: ffffffffffffffff
-> > > > R13: 0000000000000008 R14: ffff88807ffd7940 R15: ffffffff9489f440
-> > > > FS:  00005555785ce400(0000) GS:ffff8880d5da2000(0000) knlGS:0000000000000000
-> > > > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > > > CR2: 00005608d531ffb8 CR3: 000000002cb7c000 CR4: 0000000000352ef0
-> > > > Call Trace:
-> > > >  <TASK>
-> > > >  __zone_stat_mod_folio include/linux/vmstat.h:410 [inline]
-> > > >  __munlock_folio mm/mlock.c:144 [inline]
-> > > >  mlock_folio_batch+0xf97/0x36e0 mm/mlock.c:204
-> > > >  mlock_drain_remote+0xe5/0x140 mm/mlock.c:230
-> > > 
-> > > So, we are calling stat update functions which requires preemption disabled
-> > > (because they access per cpu data) an offlined CPU which is fine but we have
-> > > warning that preemption is not disabled.
-> > > 
-> > > Let see if syzbot comes up with a reproducer. We can just simply take the local
-> > > locks like neighboring functions or something else.
-> > 
-> > After looking deeper and it seems like __munlock_folio is the only one which
-> > have a code path where lru lock with irq disabled is not done before call
-> > __zone_stat_mod_folio. I think we can easily fix __munlock_folio without
-> > acquiring local_locks here.
-> > 
-> > Something like below. I will run some tests before proposing a formal patch.
-> 
-> Thanks for looking into this, Shakeel, but I don't think complicating
-> __munlock_folio() is at all the right fix. This is peculiar to the use
-> by mlock_drain_remote(), isn't it? Which is not taking the usual local_lock
-> because the CPU is going offline. I would say, just take the local_lock in
-> mlock_drain_remote(), but (I haven't read the history) for all I know,
-> there may be PREEMPT_RT reasons why that would be completely wrong.
-> 
-> Hugh
 
-Thanks Hugh, I will explore the local_lock approach. BTW I simplified the
-fix to the following. is this still making things more complicated?
 
-diff --git a/mm/mlock.c b/mm/mlock.c
-index efa6716e4dfb..fa30ffed76ab 100644
---- a/mm/mlock.c
-+++ b/mm/mlock.c
-@@ -141,11 +141,16 @@ static struct lruvec *__munlock_folio(struct folio *folio, struct lruvec *lruvec
- 
- munlock:
- 	if (folio_test_clear_mlocked(folio)) {
--		__zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
-+		/*
-+		 * This runs both with and without the lruvec lock held, and
-+		 * mlock_drain_remote() reaches it fully preemptible, so use
-+		 * the accessors that serialize themselves.
-+		 */
-+		zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
- 		if (isolated || !folio_test_unevictable(folio))
--			__count_vm_events(UNEVICTABLE_PGMUNLOCKED, nr_pages);
-+			count_vm_events(UNEVICTABLE_PGMUNLOCKED, nr_pages);
- 		else
--			__count_vm_events(UNEVICTABLE_PGSTRANDED, nr_pages);
-+			count_vm_events(UNEVICTABLE_PGSTRANDED, nr_pages);
- 	}
- 
- 	/* folio_evictable() has to be checked *after* clearing Mlocked */
--- 
+On 2026/8/30 08:18, Andrew Morton wrote:
+> On Tue, 18 Aug 2026 12:31:43 +0800 Lance Yang <lance.yang@linux.dev> wrote:
+> 
+>>
+>> On Mon, Aug 17, 2026 at 06:08:07PM -0400, Gregory Price wrote:
+>>> Several LRU-oriented mm walkers resolve the folio backing a PMD entry
+>>> (or a physical pfn) and then reclaim, age, migrate, or lazyfree it
+>>> without ever checking for ZONE_DEVICE memory.
+>>>
+>>> This series adds missing folio_is_zone_device() rejections, matching
+>>> the checks that comparable walkers already perform.
+>>>
+>>> - mm/huge_memory, mm/madvise: the !pmd_present branch above these sites
+>>>   only filters device-private entries (which are non-present).
+>>>
+>>>   A present zone device PMD (e.g. device-coherent) would still reach the
+>>>   folio and be lazyfreed / aged / paged out. Add an explicit check.
+>>>
+>>> - mm/mempolicy: queue_folios_pmd() can see a present zone device PMD
+>>>   (e.g. device-coherent) and queue it for migration.
+>>>
+>>> No crash reproducer - this is a correctness/hardening cleanup found by
+>>> inspection. All checks are placed after the folio is resolved and before
+>>> it is acted upon, on paths that already hold the relevant page-table lock,
+>>> so no locking or refcount changes are involved.
+>>
+>> Cool!
+>>
+>> Gave the whole series a spin on x86_64 QEMU with a PMD-mapped
+>> device-coherent THP. Without these patches, partial MADV_FREE and
+>> MADV_COLD reliably hit a kernel panic in remove_migration_pte(), while
+>> mbind(MPOL_MF_MOVE | MPOL_MF_STRICT) returned -EIO.
+>>
+>> With v2, all three worked fine, PMD mapping stayed intact, and data
+>> checked out :)
+>>
+>> Note that both kernels used the same small change to the in-kernel HMM
+>> test driver, allowing its coherent device memory to be allocated as 2 MB
+>> folios so the PMD-mapped test case could be exercised.
+>>
+>> Tested-by: Lance Yang <lance.yang@linux.dev>
+> 
+> Thanks Lance, you're so diligent.
+> 
+> I'm wondering what to do here.  Gregory told us
+> 
+> : No crash reproducer - this is a correctness/hardening cleanup found by
+> : inspection. All checks are placed after the folio is resolved and before
+> : it is acted upon, on paths that already hold the relevant page-table lock,
+> : so no locking or refcount changes are involved.
+> 
+> And you had to tweak the hmm-test driver to reproduce the bug(s).
+> 
+> So when do we push this series out to -stable?  As a hair-on-fire
+> hotfix, or as a leisurely next-merge-window thing?
+
+Thanks, Andrew :) Yeah, I'd say next merge window should be fine :)
+
+The crash is real once the mapping exists, but I had to tweak test_hmm
+to create that PMD-mapped device-coherent folio, and I couldn't find
+any in-tree production driver doing that today.
+
+So no need to rush this one, I guess.
+
+> 
+> And Sashiko was clearly having a bad day, able to find only nine
+> pre-existing things to shout about:
+> 	https://sashiko.dev/#/patchset/20260817220810.1175596-1-gourry@gourry.net
+> 
+
 
