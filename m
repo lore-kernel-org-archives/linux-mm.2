@@ -4,133 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 626B1C61DB9
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 07:45:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0893C61DE2
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 07:48:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A3056B0095; Sun, 30 Aug 2026 03:45:52 -0400 (EDT)
+	id 0ED296B0096; Sun, 30 Aug 2026 03:48:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 553C66B0096; Sun, 30 Aug 2026 03:45:52 -0400 (EDT)
+	id 09E7E6B0098; Sun, 30 Aug 2026 03:48:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46D576B0098; Sun, 30 Aug 2026 03:45:52 -0400 (EDT)
+	id ECF406B0099; Sun, 30 Aug 2026 03:48:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 201AB6B0095
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 03:45:52 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A75C98026B
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:45:51 +0000 (UTC)
-X-FDA: 85157151702.24.17D2CF6
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf19.hostedemail.com (Postfix) with ESMTP id DC6991A0007
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:45:49 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AY2h6K6t;
-	spf=pass (imf19.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C42AF6B0096
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 03:48:03 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 56D22160253
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:48:03 +0000 (UTC)
+X-FDA: 85157157246.18.90AFBD2
+Received: from mta0.migadu.com (out-117.mta0.migadu.com [91.218.175.117])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 29271160006
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:48:00 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HqsumBeM;
+	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.117 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788075949;
+	s=arc-20220608; t=1788076081;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kD6ccXy2Hx5CE4BbOgtcR+UVtjcpOs3L5NimT1wEmAU=;
-	b=0zTDFIKNou+wTZpybvs5C0pc5m1n3Rf2IAMFkPxdSKpxaqnigw5yB7WJMF3mBX7bDwbxfK
-	dOhT1H6Eai3RdsYc1nBfqGWGPQ8tiWjLTZNl1KJPJUPw7PI82EpU2VPRKAKKiDzTFDX+nT
-	YU3srD3AI5OESzpp6XVjsWYihQEgtkE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788075949;
-	b=8rs4vq8SsMd6kZhwZ68Zey1wPI/dHasntaKh0XpRbMlPxo9CgSxM30jLAdiNiowGq9D3x1
-	YeR2rA/yCCwXuLZQWSJm/XceDT4OSTiYrNJn6aOIcb5kgulvjLn9crxkf2NbqN+GQ+j8vd
-	EFfxxSk96nj0v2aCyiDG5J4f6SOhv0c=
+	bh=FocyO/JDmM2QVifCnhzs+yu9qHtqhqqws4KGMnNgkMY=;
+	b=AcvlCtFUNPdl8tJGbcMiEMHotDeVVbIHyxQ6l68O9OsSOO32+5dYOMx3WpXqb5EB3AfyHU
+	xttL35OM6TmJcXabowa07RAvUyxcfRqHg35+1h/TVB3wSxSZBTw3SDO3aKn4Vm4wq1l3cy
+	SfWyYfdrtbNwSrqii61wsRVyEmGsfLs=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AY2h6K6t;
-	spf=pass (imf19.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2d032846c95so25809135ad.1
-        for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:45:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788075949; x=1788680749; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kD6ccXy2Hx5CE4BbOgtcR+UVtjcpOs3L5NimT1wEmAU=;
-        b=AY2h6K6tL3hW1YGzYolIRMGFz0c1IsgTsM1KwcleEPRWymo12/8wCes4jwbZ1/oWm2
-         ImMSK/hBYqBTC7R2YBAlAbA+fj7bq4VCCwhWlmks9/WIyP5mKf4e3Jugpo5Pi9cKKbtf
-         cDN/WjtNBrZ8vDd3Oo7p/yUSWwhkVco6yG1KdvDYzZJkaMYNipuVJU1gjuBwgq+kDtDQ
-         97JWbepOT4WgrX+KV9a2HqwQZ/3V1o1Y+dfEOeHUs+Vbd3OPGnpf7ezXBN0vEH8ZKmp3
-         2FA5BLF54uFVeaC0g5sbJQin8saTeH882jkw+F0vtoYjtdkb+MAxwlZSftSbRrKF5hbg
-         XPhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788075949; x=1788680749;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kD6ccXy2Hx5CE4BbOgtcR+UVtjcpOs3L5NimT1wEmAU=;
-        b=mwCnX5zGvxuGA7F8PCFbGtvi21bW8JaxlUvHSbrDsyczVb5lQ3bSUPCFKP+YTs2Pm0
-         yGKcTpwNwbjr+MZi0e476tHzEp4AGQDIgs/SgDl1b/rM3A7oIP9yZcOuBqO0kinvIaNG
-         GhU08weZkn6uBNK9RYSashQ5eI1PC0gVeMjKn6WP1DSGAVRoIZO60UMgNNhe2zVIiQhp
-         ts9RDZID2ipBa2/FjeQY2t88OlUs4IIoVwJ/o6Mh5yigXtkWUYEp15aKSPJx/1NH4b8O
-         AB/qDjuqV59IxHgbH5/CfN9/ud2zd4cEHJjPB3Aq/7KUZPjYbn6rgscjiNx7Ciy8XBEM
-         ZmAg==
-X-Forwarded-Encrypted: i=1; AKwUvBy6OMjEoi16zaTzgYPhlePe7JUeQeMxUs8xHIhJuAR2W8CnN5/+vnxXyc4JajucVgXpOAiNrcIwNg==@kvack.org
-X-Gm-Message-State: AFuF++mrVj9QzcRpgTJVSbQEBqdOSFidXGCejZyCZoFrjijk0yYEPh1U
-	IC5/NAgaK8oFvcUQrzDt/0iulfNr1M3bqSPFVfZcDVN8zvgXScMyB/KS
-X-Gm-Gg: AYBFou0FqGUsKHkx6kUihPpCp+fWWE2tWBShO/E6wpPK9KUBDLROI0qc2CVUZBqDoKq
-	lufHIEmFxFIvBLzaWRW5KoX5kJ/kf0k9jJRevMQrwt0b8SEM5ZeAXiI48z9qrB21tTYuzoDbRjW
-	cs690JK1L+5reerbzPDF9lCPf/aRXvCVCsvXDuj1JZ7kZQTRdc2W8dDV5+w4NCph82jIPz5/7aj
-	ucN/gmLGkIRg4W8B4yQRk7TD2JNIyba/itWKiEvEv1Q2+mWvlx8hli+paChmR+XJA7rILF1HHMM
-	uy4Md52dTvrgOFE91z3Joh71pHpRAvtiyxYUlMJKGeaTRa2L8n1u/O0/PGQxlmsp5eXaNr+yufH
-	txfxVwHFkEP5ttM+kmU9X/buNVMFMMYWHWaahuG+bvBhhrVRl6alK7xU0l13JCVK5448xWwlMty
-	zIDPy5O1eiPloVuvz1M/akAOjqccPyuYMPz67O2XAHEqtEzQQzDg6oQHjjkOJ8L3ySvVpUhw3y7
-	xKsYNaWc60E811PzL2be0w1A/QmWNUk7oTjtjI=
-X-Received: by 2002:a17:903:390f:b0:2d8:d4d1:313b with SMTP id d9443c01a7336-2d8d4d14bcdmr164252015ad.18.1788075948700;
-        Sun, 30 Aug 2026 00:45:48 -0700 (PDT)
-Received: from localhost.localdomain (vmi2317720.contaboserver.net. [84.247.152.65])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d75988cabasm20525495ad.65.2026.08.30.00.45.40
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 30 Aug 2026 00:45:48 -0700 (PDT)
-From: Lian Wang <lianux.mm@gmail.com>
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>
-Cc: akpm@linux-foundation.org,
-	lianux.mm@gmail.com,
-	axelrasmussen@google.com,
-	baolin.wang@linux.alibaba.com,
-	baoquan.he@linux.dev,
-	chenridong@xiaomi.com,
-	david@kernel.org,
-	hannes@cmpxchg.org,
-	kasong@tencent.com,
-	linux-kernel@vger.kernel.org,
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HqsumBeM;
+	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.117 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788076081;
+	b=xhRhiMvcHSHMLvjNt27KchugmjGfZsRC2o06sMlT0IUyy7pXK5yGxyIrEDEzGSfRC66kSI
+	I1KuoKELu0w/O9Xr1ZUOnaJJiY9DntB7xEWr7JYjOVZCfrx4VT4Lrzgn1xiBzph1pmFt9U
+	bo4mekzZej7D5Z8Wh51xGC8YcPCgRLA=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=sSUo0d8E6BWyoxCIKSh8oJBYJiXLVVUVNPEG+Z60ppw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788076077; v=1; x=1788680877;
+ b=HqsumBeMu8gUKQc240wHUOprGRLXsxzduQu04+kr7FaAHlgwWfYr6/0ZeFh3hcfNgou0fWqF
+ ddjzCUV1uLbKHiOZjp0/33vk1q7xqJwB7oNb+wfBICy6RI567FObiwnJIDiftdjNa/Hx6gBe7oP
+ XXvRxnMTipyLTuGIouA7YlEc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id ee9797414e8e0c9f;
+	Sun, 30 Aug 2026 07:47:57 +0000
+X-Mizu-Trace-ID: ee9797414e8e0c9f
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: akpm@linux-foundation.org
+Cc: gourry@gourry.net,
 	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	david@kernel.org,
 	ljs@kernel.org,
-	lyugaofei@xiaomi.com,
-	mhocko@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	stevensd@chromium.org,
-	wangzicheng@honor.com,
-	weixugc@google.com,
-	yuanchu@google.com,
-	zhangbo56@xiaomi.com,
-	Xueyuan Chen <xueyuan.chen21@gmail.com>
-Subject: Re: [PATCH v2 7/7] mm/mglru: batch move folios to the second-oldest gen's LRU
-Date: Sun, 30 Aug 2026 15:45:17 +0800
-Message-ID: <20260830074531.79967-1-lianux.mm@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260827234704.63163-8-baohua@kernel.org>
-References: <20260827234704.63163-1-baohua@kernel.org> <20260827234704.63163-8-baohua@kernel.org>
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	usama.arif@linux.dev,
+	vbabka@kernel.org,
+	jannh@google.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	balbirs@nvidia.com,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH v2 0/3] mm: reject zone device folios in more folio walkers
+Date: Sun, 30 Aug 2026 15:47:51 +0800
+Message-Id: <20260830074751.25370-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <c2577ec5-acf6-466b-ba66-0b3bcabbef7d@linux.dev>
+References: <c2577ec5-acf6-466b-ba66-0b3bcabbef7d@linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: yjaoysih84pbpjddken9qa5t3bmicnxj
-X-Rspamd-Queue-Id: DC6991A0007
-X-Rspamd-Server: rspam02
+X-Stat-Signature: nc4x5riot4wogerrq7dibo4omhjsrukc
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 29271160006
 X-Rspam-User: 
-X-HE-Tag: 1788075949-961187
-X-HE-Meta: U2FsdGVkX1/fal+1gPBJ3y31e1K2Knhk5WyVTmrxCmWbXQuwykzA4kVHXgUxY90cmVyya/W/4UCziazFZURTfn4pGlFflGxC51Q60OPBsjCdEj4J/Yym+qnW0H1PTBsa2QaB6Qm0V0/zU/qnW9LhqQhvqlsJqwzBWvHBidYLFVjPuachXpQySWMuKvOrdb8kXQnqkLTeI9487AYJzsF4ldadZZgbwvQgSxhffroLcjEm3QOcsJHUUE1q333CEfwNRskNx86VljAAhCMDubtWPEAyF8suHL/USls+XHD4hSU4skXKvWGqikdkah53f6LmIw4E/Eu/f2QeVpVDAJg1n5IC/+Xa5f1io4gNWcWMMNICvzkIWLxScubH1sJMsrLtZUgPB3epluY3lEYRi3s565jbmVfbePlyAstS4meVw6zM0AS64viW0QsXEpMEmaiT4INOV/XFe7OeraHJbMBxTW1RurC7g7Rxrhnv5OdAQsFZWTY3U85LbnFOOUx9cFaV8gZY0CIh2KcvBs5QYWuWsuAveol7t/E14eFYu9aK3G3quEIr0kvSsZFN2JHJqgliGtJ1CpGz29nQctyseQ9/lFbE6EUWPFW99Pu+KY1bYv3YIWkikQ6wO2PfjuQLlrhWgqlKlqtaUVjxgVlkrkcX5eKfwnHizkSMUoK6LzksA787F1A81rvc15Y6KIug0XgwCNPrHEGxivTZ6a2CMklpisXZS5L/7flTqrqq6oobVd7HlyYVvgB77lw8HmiYT6Xj2M6W527hYT9pxCXpyUTOcuw8kKGmNll5/Hrp95UVZpxXjgINgqaUSshLSMt6xk+9F1QT5+Hce47mMGukp+SHxPZzmEbvJKxP1It+6ulqM0Ifyl3ZiZLpq9/5dfcBveeNK+ptLGO8L7gz9Km3Yhd7APU6WO0YSSQfTb7QvCOau7jnxhdtMtHOF3pcQTm7L0MagE6cKwup66F7HpHjo5u
- PQsNaJ3x
- z4/FpVE2b1fejkSxkI5ZrUor9iGqZaXWdqFQOO9jlp6Dn6dnw84jSgW0kkPxAUl/clMq6nv4WkC5JlsheN/AUIBmcxkav2IqZTw3kt/VRS2zhgK2wuKIMAsABsOxR80A727mcz1x1pPVDyDaFZdJSsObmmlKVdqdqKTparUKBf8zpfAlfg3NNrMVDirICrQaQMMBkWz4BmDEylEPFOa+kL4E4aR0OWp4VpYLGVCbChS5YK/qdMwGYoiJIkvWF0oq8IHpOGTjrsOaGjm3kgglZbPlYgPCzbnFaFM9jLfpYD4Qff6LlxXHa+ASS6OfZoK50WEDTt6TyGWtrNGl3yMbyQaOdf3WDIOQfsVSDK7Com/uAgdDApk3EoCTITnHmBDbzp4WcllvBbhP4YN4jNmfEFIk5++lvNClzw/BID3GDdljr/l0MiYOZKlBKWpkyLOqMoGhxFrKDrnBYN5SgBRoJFvuJ6Od1FUDnrPqLLAMs9UsbM7Y6C0bkJMgtTlodyWNsBpn705aEg592bKA=
+X-HE-Tag: 1788076080-59747
+X-HE-Meta: U2FsdGVkX186QlxA81N9rnl6LfYL2ZIvWRgpjgZ+zDVhZG3Mk58INxr6sIJ65oUdPrnMmfwOUsnyN7Rk29s7UG6d/6S0g5k2n3ymOSsnzA351G+WP3JtlkwKbeLU/PkIdBNTPeDfwxYMjx1E/LfVqamr8Tt9UFyaxnmKSrYXqNDu/x2V7D45A58PZnAogJCt8soaSQaU4MbGsNEEuS/nBm2XWpUxfDeYl93h3EaPLNrPRLvLN7/T+6SUVhUJPGuJQk6XXjwNwRKCvDSEbG8nRxDeMHbyz0HwBL7RllnHED/qPJxnyMkNgE8Z4hhum6Kna5oj0uBjoFHf6mgsTvUvjWwvVLLjjWxSjyDw6XjRnTDpgg1rG9TLuyVTseE9taJZNf2EuDqtGekCwGKQQAeQJMZHU9erUvFxqI0mNwzXWqGUV8b8l7SCN7sshy2iGpnZDA0+EHuWRbvaB/UNnxZipdGl8VDzwqWfPsvXbjJd2Cs/SZ534aqJPTCySRefOFVO4I+ZqRc75taqxVynLRQs9g3yLtkMSJ/J4NZiWvBO+8P43t7STO7gFFIB8dsvC8sB/HUf4wxJOhVAMz6yz8zdGrjKvDLZSHUBX/VwjmiUqPvVENGadSqLYgqNfCiSKRsW8IRYqN8yBGIA9lj27RqMOyck4dovKlTWKu8+bIHnx6tGDJLxWt2oShgcAk3pfiub2R+n1NUehoNMyvCsQ8+nCCmzlMs/yZVfGe/uPYxaKjTBAXT0rICVwOuWkVRcP1is4hBgVQ4kjkc167lHWTswP6igDwn6X/F1ZbQqhHGBCAwOZZ18qhzE7NwbHnpkg8IDWzyOT4cMFjTluALJC+3qX71/vPVZW/0cd9yMT52fP83C9hKlhA6itOaWiK5vd2gBxdYDryBgqSvQiU7iAnq/7X1Iwe9ZoDr/9N6TLXDClcDKDBjEdoxebGTdtKCloXNbVRB1DYU7exNjuMlGniE
+ S+DS097g
+ YEvA/bOvyVdjjHQo2N7DlsPNpa1kkhh9RdAv73F26Rk9kWJUYc0z339TKQRuGRN6C3MqqAe4YrUaDBjvPos/HsJyI6esGjsN2FvNWZ4CA86Wl1g0Cl2/2441eKJwWBRoTa12ImZQatC/Kvz0uGkBT+L8iKc9srzW24xUgAs+/AD9r6Gyq6hhowqc5jLLe3tTaVAV73JPqmc5XgAIzVKbpFMMdlXzVBejz+yLgGQMZkqPlrb6/0ImCpvOgeL27OuZ3wceUd1tAppALX+J7VGP38voe0iDeJC6LoiFedY0+AYh+88KAzOwwFFwuAg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,96 +112,172 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 28 Aug 2026 07:47:04 +0800 "Barry Song (Xiaomi)" <baohua@kernel.org> wrote:
 
-> Detect folios that need to move from the oldest generation to
-> the second-oldest generation, and batch-move them together.
-> This can significantly reduce the sys time of inc_min_seq(),
-> especially when the other type is significantly behind the
-> preferred type.
+On Sun, Aug 30, 2026 at 01:18:24PM +0800, Lance Yang wrote:
 >
-> Assisted-by: gemini:gemini-3.6-flash
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> Reviewed-by: Baoquan He <baoquan.he@linux.dev>
-> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> ---
->  mm/vmscan.c | 20 +++++++++++++++++++-
->  1 file changed, 19 insertions(+), 1 deletion(-)
 >
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 17524e96fe64..2b6f3f05ce60 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -3931,6 +3931,19 @@ static void clear_mm_walk(void)
->  		kfree(walk);
->  }
+>On 2026/8/30 08:18, Andrew Morton wrote:
+>> On Tue, 18 Aug 2026 12:31:43 +0800 Lance Yang <lance.yang@linux.dev> wrote:
+>> 
+>>>
+>>> On Mon, Aug 17, 2026 at 06:08:07PM -0400, Gregory Price wrote:
+>>>> Several LRU-oriented mm walkers resolve the folio backing a PMD entry
+>>>> (or a physical pfn) and then reclaim, age, migrate, or lazyfree it
+>>>> without ever checking for ZONE_DEVICE memory.
+>>>>
+>>>> This series adds missing folio_is_zone_device() rejections, matching
+>>>> the checks that comparable walkers already perform.
+>>>>
+>>>> - mm/huge_memory, mm/madvise: the !pmd_present branch above these sites
+>>>>   only filters device-private entries (which are non-present).
+>>>>
+>>>>   A present zone device PMD (e.g. device-coherent) would still reach the
+>>>>   folio and be lazyfreed / aged / paged out. Add an explicit check.
+>>>>
+>>>> - mm/mempolicy: queue_folios_pmd() can see a present zone device PMD
+>>>>   (e.g. device-coherent) and queue it for migration.
+>>>>
+>>>> No crash reproducer - this is a correctness/hardening cleanup found by
+>>>> inspection. All checks are placed after the folio is resolved and before
+>>>> it is acted upon, on paths that already hold the relevant page-table lock,
+>>>> so no locking or refcount changes are involved.
+>>>
+>>> Cool!
+>>>
+>>> Gave the whole series a spin on x86_64 QEMU with a PMD-mapped
+>>> device-coherent THP. Without these patches, partial MADV_FREE and
+>>> MADV_COLD reliably hit a kernel panic in remove_migration_pte(), while
+>>> mbind(MPOL_MF_MOVE | MPOL_MF_STRICT) returned -EIO.
+>>>
+>>> With v2, all three worked fine, PMD mapping stayed intact, and data
+>>> checked out :)
+>>>
+>>> Note that both kernels used the same small change to the in-kernel HMM
+>>> test driver, allowing its coherent device memory to be allocated as 2 MB
+>>> folios so the PMD-mapped test case could be exercised.
+>>>
+>>> Tested-by: Lance Yang <lance.yang@linux.dev>
+>> 
+>> Thanks Lance, you're so diligent.
+>> 
+>> I'm wondering what to do here.  Gregory told us
+>> 
+>> : No crash reproducer - this is a correctness/hardening cleanup found by
+>> : inspection. All checks are placed after the folio is resolved and before
+>> : it is acted upon, on paths that already hold the relevant page-table lock,
+>> : so no locking or refcount changes are involved.
+>> 
+>> And you had to tweak the hmm-test driver to reproduce the bug(s).
+>> 
+>> So when do we push this series out to -stable?  As a hair-on-fire
+>> hotfix, or as a leisurely next-merge-window thing?
 >
-> +static inline void flush_lru_batch(struct list_head *head, struct list_head **batch_end,
-> +				   struct list_head *dst)
-> +{
-> +	LIST_HEAD(movable);
-> +
-> +	if (!*batch_end)
-> +		return;
-> +
-> +	list_cut_position(&movable, head, *batch_end);
-> +	list_splice_tail_init(&movable, dst);
-> +	*batch_end = NULL;
-> +}
-
-This is safe because `batch_end` always marks a contiguous prefix of `head`:
-the loop walks from head to tail and flushes the prefix before moving any folio
-that was already promoted by aging.
-
-> +
->  static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
->  {
->  	int zone;
-> @@ -3953,8 +3966,10 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
->  			lru_gen_is_active(lruvec, target_gen));
->  	/* prevent cold/hot inversion if the type is evictable */
->  	for (zone = 0; zone < MAX_NR_ZONES; zone++) {
-> +		struct list_head *target_list = &lrugen->folios[target_gen][type][zone];
->  		struct list_head *head = &lrugen->folios[old_gen][type][zone];
->  		struct list_head *pos = head->next;
-> +		struct list_head *batch_end = NULL;
->  		long delta = 0;
+>Thanks, Andrew :) Yeah, I'd say next merge window should be fine :)
 >
->  		while (pos != head) {
-> @@ -3974,7 +3989,7 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
->  			new_gen = __folio_inc_gen(folio, old_gen, &gen_increased);
->  			if (gen_increased) {
->  				delta += nr_pages;
-> -				list_move_tail(&folio->lru, &lrugen->folios[new_gen][type][zone]);
-> +				batch_end = &folio->lru;
+>The crash is real once the mapping exists, but I had to tweak test_hmm
+>to create that PMD-mapped device-coherent folio, and I couldn't find
+>any in-tree production driver doing that today.
 >
->  				/* don't count the workingset being lazily promoted */
->  				if (refs + workingset != BIT(LRU_REFS_WIDTH) + 1) {
-> @@ -3984,11 +3999,14 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
->  						   lrugen->protected[hist][type][tier] + nr_pages);
->  				}
->  			} else {
-> +				flush_lru_batch(head, &batch_end, target_list);
->  				list_move(&folio->lru, &lrugen->folios[new_gen][type][zone]);
->  			}
->  			if (!--remaining)
->  				break;
->  		}
-> +		flush_lru_batch(head, &batch_end, target_list);
+>So no need to rush this one, I guess.
 
-The flush in the `else` keeps every already-promoted folio ahead of the
-normal old-to-target batch. This final flush also covers the batch-limit exit
-before the counters are updated and the lock can be dropped.
+BTW, noticed that the ZONE_DEVICE split handling only covers
+device-private folios, so device-coherent folios aren't supported ...
 
-> +
->  		WRITE_ONCE(lrugen->nr_pages[old_gen][type][zone],
->  			   lrugen->nr_pages[old_gen][type][zone] - delta);
->  		WRITE_ONCE(lrugen->nr_pages[target_gen][type][zone],
-> --
-> 2.34.1
+The call chains are:
 
-The moved list entries and `delta` therefore cover the same folios, while the
-relative order of each normal-folio run is preserved. Looks good to me.
+split_folio()
+  -> __folio_split()
+    -> folio_check_splittable()
+    -> __folio_freeze_and_split_unmapped()
 
-Reviewed-by: Lian Wang <lianux.mm@gmail.com>
+migrate_vma_pages()
+  -> __migrate_device_pages()
+    -> migrate_vma_split_unmapped_folio()
+      -> folio_split_unmapped()
+        -> __folio_freeze_and_split_unmapped()
+
+And I added the device-coherent check to folio_check_splittable() and
+folio_split_unmapped(). See below. They can go away once device-coherent
+folio splitting is supported :)
+
+If folks think it's worth having, I can send it as a follow-up :)
+
+---8<---
+Subject: [PATCH] mm/huge_memory: don't split device-coherent folios
+
+From: Lance Yang <lance.yang@linux.dev>
+
+The ZONE_DEVICE split handling only covers device-private folios.
+Device-coherent folios are not supported.
+
+The call chains are:
+
+split_folio()
+  -> __folio_split()
+    -> folio_check_splittable()
+    -> __folio_freeze_and_split_unmapped()
+
+migrate_vma_pages()
+  -> __migrate_device_pages()
+    -> migrate_vma_split_unmapped_folio()
+      -> folio_split_unmapped()
+        -> __folio_freeze_and_split_unmapped()
+
+Reject device-coherent folios in folio_check_splittable() and
+folio_split_unmapped().
+
+Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
+---
+ mm/huge_memory.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 54494c3fa983..a5dd38e9a8de 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3937,6 +3937,10 @@ int folio_check_splittable(struct folio *folio, unsigned int new_order,
+ 	if (!folio->mapping && !folio_test_anon(folio))
+ 		return -EBUSY;
+
++	/* TODO: Support splitting device-coherent folios. */
++	if (folio_is_device_coherent(folio))
++		return -EOPNOTSUPP;
++
+ 	/* order-1 is not supported for anonymous THP. */
+ 	if (folio_test_anon(folio) && new_order == 1)
+ 		return -EINVAL;
+@@ -4354,15 +4358,16 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+  *
+  * anon_vma_lock is not required to be held, mmap_read_lock() or
+  * mmap_write_lock() should be held. @folio is expected to be locked by the
+- * caller. device-private and non device-private folios are supported along
++ * caller. device-private and non-ZONE_DEVICE folios are supported along
+  * with folios that are in the swapcache. @folio should also be unmapped and
+  * isolated from LRU (if applicable)
+  *
+  * Upon return, the folio is not remapped, split folios are not added to LRU,
+  * free_folio_and_swap_cache() is not called, and new folios remain locked.
+  *
+- * Return: 0 on success, -EAGAIN if the folio cannot be split (e.g., due to
+- *         insufficient reference count or extra pins).
++ * Return: 0 on success, -EOPNOTSUPP for device-coherent folios, or -EAGAIN if
++ *         the folio cannot be split (e.g., due to insufficient reference
++ *         count or extra pins).
+  */
+ int folio_split_unmapped(struct folio *folio, unsigned int new_order)
+ {
+@@ -4373,6 +4378,9 @@ int folio_split_unmapped(struct folio *folio, unsigned int new_order)
+ 	VM_WARN_ON_ONCE_FOLIO(!folio_test_large(folio), folio);
+ 	VM_WARN_ON_ONCE_FOLIO(!folio_test_anon(folio), folio);
+
++	if (folio_is_device_coherent(folio))
++		return -EOPNOTSUPP;
++
+ 	if (folio_expected_ref_count(folio) != folio_ref_count(folio) - 1)
+ 		return -EAGAIN;
+
+--
+
+Cheers, Lance
 
