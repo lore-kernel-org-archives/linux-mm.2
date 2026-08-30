@@ -4,121 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80C93C61DD9
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 16:51:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5ADF7C61DE1
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 16:58:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 517BE6B008A; Sun, 30 Aug 2026 12:51:03 -0400 (EDT)
+	id 636006B0088; Sun, 30 Aug 2026 12:58:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C8B16B008C; Sun, 30 Aug 2026 12:51:03 -0400 (EDT)
+	id 60DA16B0092; Sun, 30 Aug 2026 12:58:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B7E46B0092; Sun, 30 Aug 2026 12:51:03 -0400 (EDT)
+	id 4FC606B0095; Sun, 30 Aug 2026 12:58:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CF8B46B008A
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 12:51:02 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DBBB0801AF
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 16:51:01 +0000 (UTC)
-X-FDA: 85158525522.10.935C19C
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 22B3B40004
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 16:50:59 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=D+sil5Zn;
-	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788108660;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CDE36B0088
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 12:58:09 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 811B4C0297
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 16:58:08 +0000 (UTC)
+X-FDA: 85158543456.15.4453F8D
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8646E140007
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 16:58:06 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=M6aidOie;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf23.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788109086;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SNKyczvWqNAkly1A3l3hEKTWoLpnZErs8PHY6+e1IAQ=;
-	b=7o0zFoh4xonVgCD0fyWM10zXslaip1wnTSuBJ3lN+HiB7mruoGX1hXW+RgwURA8QuS78a1
-	efA72mTDY3vZ8kTX8klXg8Ut+oo4A+H/dlgDWQzc7c/q+3t7BIc9iWSkfiqJ96dC+92bUT
-	nkkSxoQJeQ2351YmDPqw3UJYTRS3nBc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788108660;
-	b=1zzQmzFH1OOkTkmR7nTcqmSVicA+GKfZJlRPRRf3P/IAQiomj60cJBaptbX9/iDeZFFS4X
-	6m7J7h+JQQcf0qvSupL8SBHWIgLn6clutue4tgCF+PA24iQ9AA56r6VUegiRs62eSPPlOc
-	rVTVoCO0Tkf377sXa8DuGtcVyGPcuzk=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=D+sil5Zn;
-	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-90e8095621eso8666176d6.1
-        for <linux-mm@kvack.org>; Sun, 30 Aug 2026 09:50:59 -0700 (PDT)
+	bh=eY6S1CuOxppKERshHyMUDaMx3fFTWDyqBYaQ5/cHRXU=;
+	b=gDSE0TWTk34K9g16CaTirU3m/MGk/xuZMoiaXglxT67TwWFpzXt1EHmVdSNkiBNn+qlGvH
+	5d/hBlSiV0HNgU8YoRoaNovT/a/cMUCBnXCscvNZw6Pktc02FOd0U44SBaorPNWo9S8Yl9
+	9ohQO7GFdp0M/rdWLbgI5GMHhUwAABI=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=M6aidOie;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf23.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788109086;
+	b=MHR4lHciJTU6+LXp25PjdUn4rrkIQdCPraUG0CoJkohrKkUMW9UelTGuG3EZlC0sMOeQD4
+	3u30mbko8mCvuG4fjVbGv9KlYBb0IkhQQchgfg5ge2ZLrsPmR77O0bvlVY9B1wVFx1MB7p
+	DV6gfN9S6RHEOF8KpELOyxCZERqoFHA=
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-51c10e86e52so209691cf.1
+        for <linux-mm@kvack.org>; Sun, 30 Aug 2026 09:58:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788109086; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jPhH9qG6ZdhO5LUtCCeK/ukBo71wrLhXJe9qDz/RfH1/0z3uQbR90Sk1oe8fRajJwH
+         8YWBo4kNDumqcP7Fhh1e9R3L6L4KNzj7hU0ss2OhzhBieZkTIlSa7nMEDlg+/9O+86an
+         PLYHzTLDItAFohjCFtAmwZmR9OvGoENlueDLcqe+5TdTdj4Azb3zpErGL3l5P23B1P88
+         sDH4nqGwIkAP70vUGJqOc08OjeqEW1aT6ycRAf2FrVQVNIfLCHrvK4hm3XiYkOAhb0ap
+         gyRDmRDz9MzYUMcYSKpgNKdLWV6ypwfofx4GAeFmw+KYWhrUtqGiWM04BFZv/eNBMGRp
+         MrPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=eY6S1CuOxppKERshHyMUDaMx3fFTWDyqBYaQ5/cHRXU=;
+        fh=2HsGHdFmC/iL52DnLCuSbRG3wjVCHNQL3tXUaLMmSKE=;
+        b=TraKXwR0uJAO2eq2tSf954Z34CDWKufyhGcdvrkRBwOm0tshZ72t/nFmVmxN9b1ZK3
+         sYlOd0SpqlcXk1gfup6wJ86PClYT4GGdOd/+f0NDO6h02GZUGqaDGXOpS1kqoC9RTcDQ
+         16O32yZ4mYvWvR7ADvPN7z3PWncQrWxDb5PCGmSvZXZrCM+Bzp6i7aJ0jdYjNf8g/Wyy
+         DFyg2vjP18iMJ783LlDFJDcVzCdquGxVhEySxZPxz2sHlp46dWWC5Njl+sNM8wr7+SEL
+         GFPmvVi25807TzDXnQoSKrsSPo1JzHv51eovIyU+0stSBNMfzoFXcNll5NG56HIz8BeM
+         aP6w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1788108659; x=1788713459; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=google.com; s=20251104; t=1788109086; x=1788713886; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=SNKyczvWqNAkly1A3l3hEKTWoLpnZErs8PHY6+e1IAQ=;
-        b=D+sil5ZnPBS61gLiVeFE4IcsuW72QvYaJ1RCcwDnx6X3FcHyVwlR9QlLoBuZoBnBC6
-         NPDrS+6Tbru/LCnADSABWKwMhGX5sgadhhVV0zVK0iU2jaj4KZKCcLliPdilm0e2efP9
-         gzHbVMP3AiQfvV7mdebA9e4r+Y4CoB6mmjmIZbfjHssS4U579+sHtg38DuXQTK7Solba
-         Eem2g1ZYbDBVRkRz5D1xjJjETLt7yTNQu2aakjO7mllZ34Q+vnWLaSxEZv1+KQPTFJLo
-         kv40s+NzZNN9Ku/VfLKSiX6JX8BqYPo8bcdE9o2+Flxvo42YhXRAMjpxnDGC5z6lZYDQ
-         LRww==
+        bh=eY6S1CuOxppKERshHyMUDaMx3fFTWDyqBYaQ5/cHRXU=;
+        b=M6aidOie78WpThMwz5I2RG5U+8qoS37boeXNOYbtblZTGo52VIbDhMlz6iU5Phf6Ju
+         pEcnVlUwgMaUiYERwFUymeSpDgHR5RbZq7wOAvpE6uNY1jp/NHRlV9EH81rc3V76CXqH
+         ciX7xyH2xiU989DrURwxmv3btBP+1771qDvejddMK9xubj+2yjUqJl8ckxl+AT2sdRFZ
+         LVh0auCFNFVQU6vRdUwQPqBhdp+IwFaBCyw1sQbfmJAiUxDcihOqzBwjwYiRou9Ufbcf
+         nhjs8DdwRn8d1YrxWOjvIVQxuylh8DGyKc9q7A4bVzYhXfDDu/eH4+4SwRxp3lCqt8X+
+         DUZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788108659; x=1788713459;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1788109086; x=1788713886;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=SNKyczvWqNAkly1A3l3hEKTWoLpnZErs8PHY6+e1IAQ=;
-        b=s8ib54xvcAxUQ00ohtCK5pMhKIfiFwuoITm5u4IXTq1oEw2sn5RCEbQYCByU0m0DIk
-         dfPRXRAxYyMg3fcQ/q+pW3Sw+DJZYU/9CmDDvuW9GcTM0AcPUo6iLtKkY5nN//yr+pl0
-         OBDMmedMAS8bdLGvmYvxGqgofxU/rjBmLB8PQTVV0Bz4BPVSaHWmCnQIVuLuOXacwGg+
-         V09WMLefKMB71rt9npcTx9h0PQzffcFV12nF+fW16l4w1aetD+OAjtrt1i8ony3iwc5D
-         MZ2uxN6HXBhPuclBWs2v1NjXo962CABfk/wDJJlZp3BOz8ZXgW9QN6TnTfJULVEmHqYy
-         Mpgw==
-X-Forwarded-Encrypted: i=1; AKwUvBytYy38NPj/00Jv9a9xSSSPLtzTv6/BbYnkKVLzU1f1cME+GD6hGB3HQNIOH9rcRtUWim5dPFATdg==@kvack.org
-X-Gm-Message-State: AFuF++mWoa6y+CKt5Xwg6rKoAlqKql2ASF6EHkHNi9ARF1Qw/cArHFJD
-	Z3iTNdkfoq36id8mOuEs/4sHGNiGvDid0+dV6uAfpWUo3iwR8qmhgvbcgyTXuSqGNQ0=
-X-Gm-Gg: AYBFou18BGo5VucWTCbZnAv8MCvPKcz8NMkUeIsNITvMiArgWidUtCNznm8LV69++FR
-	w2iyLmDD4y8SfdBdHqdqB+rRDWMAFdhDu811OGwxbePqDZaqSn+8Crkt2cDzl1hcHX5p4y+iWxI
-	f5aQehPJ63u0X0umGzRsDsHrGYdoShtdwds+tYlfOkGeOQZrNpCcF7MrRBEle3c6DlwmuIGzLnw
-	yT3iS2EZcUZkLnnwk2nJOwvhUIwK0TEj/IKITot+bNEJ7iTXtagP69jVr/uO8iJzxGgMy2KcbLK
-	Tgbn455WJWWUFZzhI1hXLlk6Csu1l1H3WZKh4hiYwnglH4E09EgMc06HuO9njvplVANG/u146Z3
-	N6VUctdPv1B59S7HZofxKnna9y6V6j7iSUUBv4mklqTsA2W8MX2p9lUdwd2i8CCuo9RhFQHYgfd
-	FklxyJziFHhB/JezcmZ5kwiH1GDnPvlEKfszNwyljDgRAF67M7rJvpFzH6wZmA3g40dRFRWpztq
-	etaxhkYRKg2zWG2S9WosOABuQ+snCaYy7dH+cX8CqEr
-X-Received: by 2002:a05:6214:1310:b0:90c:bcd4:e27 with SMTP id 6a1803df08f44-90ce0c5cba1mr282798086d6.7.1788108658494;
-        Sun, 30 Aug 2026 09:50:58 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90ce4512dcasm64404836d6.34.2026.08.30.09.50.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Aug 2026 09:50:57 -0700 (PDT)
-Date: Sun, 30 Aug 2026 12:50:55 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com, david@kernel.org, ljs@kernel.org, 
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org, 
-	nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	usama.arif@linux.dev, vbabka@kernel.org, jannh@google.com, matthew.brost@intel.com, 
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
-	apopple@nvidia.com, balbirs@nvidia.com
-Subject: Re: [PATCH v2 0/3] mm: reject zone device folios in more folio
- walkers
-Message-ID: <apRd6_7kzBO8aTQi@gourry-fedora-PF4VCD3F>
-References: <c2577ec5-acf6-466b-ba66-0b3bcabbef7d@linux.dev>
- <20260830074751.25370-1-lance.yang@linux.dev>
+        bh=eY6S1CuOxppKERshHyMUDaMx3fFTWDyqBYaQ5/cHRXU=;
+        b=FVhvNRbUX/n9kDTsoy+X0QXp6k+KkoDmsMOInYgA6kPeQwrfMrPEdTR4J9ZjNV+Zp5
+         N3TDRb4jIt339zzXOqvxI9UZl6vg+xhHMFHtM2VRIbsM5gVO5rbI9ItYSpmmtK9BdS+8
+         g5cHV0CX+T7+x/afPegziXMkM/WeKIrTF3+ZUjmd11snRjopfh8Jqqf/keG66g5aCIgu
+         AQd3FbFevx+wYdgzR1JtZURDTG2TT8qiIY4paf88+S2B8cpyuDURG09AeP4u/FE4fbhh
+         G4OqEPeF4qHeBEeJkHkh2+198Qzv0ve7tg7N8tBEKKzWgGIE29/35JMgOLE2MfHxNCF/
+         cDiQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpVz7iBqvFIe27X0EzpzAr7tOOorAW7os89Hg/tZhHFSVDxjrpCpPGPZCQUt2Sg3HbIilBP9F+LYg==@kvack.org
+X-Gm-Message-State: AFuF++nauIRZKocaCwiNU8WG/Vur39UAkaOEPdCyQyyi0Q5SPcr3xKGR
+	FrAUW0u6t01Lxm+iNUs1+Pp0OsvVmW2YYc1sohC637TyRZydurPlRdvj8EQOtv+5DmLGgbLrUy+
+	W8S0L6woKXSWJt9XrUiSnnyusJnf3kqWRTYwd78cX
+X-Gm-Gg: AR+sD13JH85T3J7BHGpVRlMisz3pwGYQjDfmrHnB9lM1aNEqUmGgqxLLpk/DaXPhIVq
+	hQELSkSMvHtRJDnKZOzqyxWUYvLp/Qr4/ND/PMNTTvtmJlSgT7olvN3eMnk9mH6hibr6gJORgPm
+	XvaYjxKjD7rnRZdCk3lR4jXjBrJgIKfS+wEzA1aJbNeN7J9KW6vJiRvT9eeOuqccHb0vi82MI1R
+	LNb3leKz4kDwWrVVODFzqKlz0t33eX8ZDjh+5uIrzWJd4mnLk5Xf2OrqtYJLHWG08zl1y3SP7Fo
+	R6Sw7JN8lNP9eOPlPDa5JXTE+K70ZPTYyj1hpa6yIpM=
+X-Received: by 2002:ac8:5a4d:0:b0:52f:6e06:89ac with SMTP id
+ d75a77b69052e-52ff7392cdbmr18296591cf.13.1788109084962; Sun, 30 Aug 2026
+ 09:58:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260830074751.25370-1-lance.yang@linux.dev>
+References: <20260813193433.3318288-1-surenb@google.com> <20260829185625.f5ee1b2931818843a78af88d@linux-foundation.org>
+In-Reply-To: <20260829185625.f5ee1b2931818843a78af88d@linux-foundation.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Sun, 30 Aug 2026 09:57:53 -0700
+X-Gm-Features: AcwNN1Uwp2PnQgLvcaKuLpOXbpaoKSzdckjfmxjUMDcpe7gynTwxBKZlGUetcPI
+Message-ID: <CAJuCfpFtq4Y-dDXNHJWDEXayhyCqqjTdJUCM3QTdbeBB1rXUNA@mail.gmail.com>
+Subject: Re: [PATCH v6 0/5] mm: Unconditional per-VMA locks and cleanups
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org, 
+	david@redhat.com, willy@infradead.org, shakeel.butt@linux.dev, 
+	vbabka@kernel.org, jannh@google.com, aliceryhl@google.com, arve@android.com, 
+	cmllamas@google.com, christian@brauner.io, tkjos@android.com, 
+	dsahern@kernel.org, davem@davemloft.net, gregkh@linuxfoundation.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: khjujdyzqjwurxciamafkn857fmiqf11
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8646E140007
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 22B3B40004
-X-Stat-Signature: oxeprdhcmarpqtzy1h5ju1g15pkxm7fq
-X-HE-Tag: 1788108659-174116
-X-HE-Meta: U2FsdGVkX1+4nOrUcIrPFNfl/uBGIf7QihL2hKbsoIJzjmTaZsyAEJS+JBT2vGXIpJO2LIQv6Hv+ajSzKWwSrGhUhiIqBBuIkEEb0WtpCnW1HdqpmIlrovN9KHmbkc7K83fKhzDuHXccRCAXkT0chIbC89YfW65uvBYRJhJBVw5B+mddADX5WC+kUaLlI6o9zyis9c7FLt+BvtciiyTWFRY3sd80sAtRFv8UnR8PW4+ALHJTBW5dnfVsU//3YnqhS/ZDY8zd9uGwKyIMiUQTY6lSNNW2FxPvPTTyWlWVQ5HXlYrRGGg9E375rSy2KLOLFSmiJCGSuTl/bPcgFoU/jmpOVODow6nsFMcxtLItQiHjVEWQv0rVgM1XWDVZoXK2bcvD3KCPCpoQHEiDItbS7lPPJyBu8b0Ic7EfArsn1ThdGj1h24j7dZJ/RHATKvYByQFC81nhXzCp7VVwypFQ3TjP86XgruOh6d54XanUrZVOp+eqz77UZte638yMKkBasvv9yUAr1ousoFnEAkSSdC/oIZBb2CIYZeQ/WQoLF5j0aExQiwvoWZvSCHvulDxuvsh/sEi1nzGyft181yJSHigfBFwbQsJCVf+FqPWdsn8YEj85PIXBIczHIUXCj77uGmyWm/PRyqSKoSj4nwNvO+7vedZQWc0KBJ4vjHtPTt3W+SJVxSPv92WC8HdkfM4mw62GurRRSPlCWH+Je4NVqel1Tv47C0a5kMcCzWJdC4i04GgmtBfcOFdx4ctAZ1I4hzRXTM25Mswoxzfrs+//ZC4twsWdQ+bsbnaiUV8wVB7KWpFIM4LywJaJ8y6ZzrZ0i6hGSohN9iUYhvSW1vEILe58QY4pG8y9lgePEMwrRX2WC0yA3HhpF61ceR0jloeOKdcwrlZ6oQ9swch+zqPqqFHuTFLgsSgPsyDSMy5Q5KXL1qF1pPIoim45fXBNFhRevaAcWfPcNk8PfNGQ6Oi
- 6S24r06z
- B15ETkJX9kfL5SBvxHn3KqgvgStLlsnj/So2A7/7G6opw+iN1B/icuDy47tLyt8khv2PB8Xm+GBtuttLvJ5OesIHHGYH4ddzD0XvnqmYVi78EQzymvij9+Vj5JzNqnUM2PuEb0q3FmxX8celkIqosPJ0pAaUQ5J02Z0Zu4s1R4Qy08bc3Bu/VC2EHFnPywpfcxHG2CMMScwdLtivKnioHyc2igNZ8jeL3vqMs30Yoge/sIBnD+IR24qBBb1oCPBRkigSFRNEM0Pk59wge/cUUztBiU+k6QKWMsEt7iVknk/Rgag7GDHg+BHBa3XzK0LDixYssUrjaorcFT4q7vVB5iXahmCrlCnhaijxaVAACKgzcXuCfdZi/L9aeiwM/r4RZKc52kZUKqntq7JW3Ucy7+wHUDw==
+X-HE-Tag: 1788109086-220601
+X-HE-Meta: U2FsdGVkX1+d17Ph4/H4J+7icOAYH2NyexQXE79LoAcvZHJGSzTZ8ynASBo0TDsXiYKIszFUh9EI5m5kx6BAQ/ISMnRTo7HcYAwRKK+dvjej7cZtr33Xd0XWkR6VuZfo5K3myU6cfGS/aE76cIuU0w1J4shN3S4Mg8z5SK/5mxN6HRAI8+aPYMOATsaWtqEtXAAiq9l70ZqYf7P7/S5wXG7OoDDKMLVvq2CotcBfJgthdCLk4kD/GR1WnhjBVGd2pSYkq4du8Q/mLO0cxrcDLEJLC31n9ctzNHrHfeB/Nm2knK+1XDH60Bz3UTLuafmkW0PuMnfQDQ5Dkp5rja0Gullhw4Fh0Q3jmQUARtH4OEMc5qufD1AvyNk/2tLwGz4AMbOyIjCyFbefcmqW8uLddd4o68pkxJxMk7gSk70El27KYdlamzlbXc05PvXvjNm1E8uoOssIyrX59jzxp9W1inMtybn9D1az9xuqtiocWlxvR83RX0jOpqWf4wUvjPDPye/dYDHFlo/UPe3yyBHLdrIMu6PK8w6rIauEVWjG1cfjCMoQkGZVPmSbj7gYRBm2SajMOFj9qoNydo6liBqKILb051qHh6KcNvTVl6mbt8G0QfLD11oUZZNsHSqB/VUkpPDJ7POITfsr/6+W6fwy6Ktx1scxRgKMi/pBYCeaOE/pymeXEyugvfwuFj4X/wOSuHhmrlPpQxTRwkL1NW/PEHkmSysvG61E+OG17WdiV4E8/9RsH+9j7E2Htx67FY6EuuJOVO9zKJy+tdnTZmAa7aXEi0hViRulnGvDpjRGsdY8ChGjWgQUHt+eGP1Nghn6wdJ2oyw4kz9rpw/KhXDEteo3s6NNvli37K7IfbKRao8zMIsry41cRskXLnWMZh97HPmtKc9yYTdDNGpGbiXSYrEaDFpyuTJSsUrZC1LiYiRhlz+Q6b5rlzO19ZHmmxHthmbHLrm5hKtirV1J2kQ
+ DDiSFzR3
+ YZVv7KYSRMB24DqCp5iUz8EC5DpEdAIM3qyeEkRrI2Mw/bVIlJ30MpxxCBXfuftt2GMdUWDJg247WMxg4WpAeNJ+ngSzAZeVU21RK6Zd1NboAMgIEhcWTujlIJ89UXUZ6RNpizdOwwWAlCKatLOvgAVcEJS57a5Hg0JhnIopjeOiHh0g4YM1fWs+kZ8/59ZiBLCa0J4JjeXhZigEnTzWnAdKm8FUgm4n7Cznm+9SCB0FPZZxiU4P7i+2Zrc0l4XFrc9wcy+9ikNuHqbkefKfozX99/boaJ6U+DzzaC7ShzFtO25aXqNRrb76n2PDU0YvpxW9iG7e/21nFRFcwY40rS26aKjt8HCFXkOUWc73QXhYABTlbPO7LTr65pTsoyfmH9iqTQafINWZT3un6EPk4nfstQckvyO/vWOuE1dm2Q4L7kUQpbyrD1/LNT6ZIzwtjDOdpKkNtidXNCM8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,25 +143,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 30, 2026 at 03:47:51PM +0800, Lance Yang wrote:
-> 
-> If folks think it's worth having, I can send it as a follow-up :)
-> 
-> ---8<---
-> Subject: [PATCH] mm/huge_memory: don't split device-coherent folios
-> 
+On Sat, Aug 29, 2026 at 6:56=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Thu, 13 Aug 2026 12:34:28 -0700 Suren Baghdasaryan <surenb@google.com>=
+ wrote:
+>
+> > v2 version of this patchset [1] was written by Dave Hansen and per his
+> > request, I'm taking over this series.
+> >
+> > tl;dr: Make per-VMA locks available in all configs. Simplify some
+> > of the per-VMA lock users now that they can rely on them being
+> > always available.
+>
+> It's been 2+ weeks so perhaps a refresh-and-remind would be helpful.
+>
+> But it applies well enough and is adequately reviewed so I put it in
+> there for testing, thanks.
+>
+> AI review might have found a couple of pre-existing binder bugs:
+>
+>         https://sashiko.dev/#/patchset/20260813193433.3318288-1-surenb@go=
+ogle.com
+>
+> and a small rusty thing which you might wish to attend to.
 
-First - thank you for testing, I was struggling to figure out a way to
-test this and I somehow missed your email where you managed it.
+Ack.
 
-Second - I think the split checks are worth it.  As I've worked through
-my private node series, I've learned there are at least a handful of
-missing zone device hooks throughout mm - but there is a lot of nuance
-between the modes that is frustrating to keep straight.
+>
+> > Binder and networking folks: Your code is the target of the cleanups.
+> > I'm cc'ing you now on v2 because there's emerging consensus on the mm
+> > side that the approach here is sane. I'm not quite sure how this pile
+> > would get merged, but ack/review tags would be appreciated if this
+> > looks good to you.
+>
+> As said, a resend might help with this.
 
-Every zone device patch helps clarify how coherent-link accelerators
-might manage its memory as a numa node, so at the very least I
-appreciate it.
+Will send an update on Monday.
 
-~Gregory
+>
+> More binder/net acks would be helpful, please.
 
