@@ -4,186 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1839EC61DE2
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 23:10:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 639E4C61DE2
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 23:50:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 480616B0088; Sun, 30 Aug 2026 19:10:23 -0400 (EDT)
+	id E928E6B0088; Sun, 30 Aug 2026 19:50:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40ABF6B008A; Sun, 30 Aug 2026 19:10:23 -0400 (EDT)
+	id E43216B008A; Sun, 30 Aug 2026 19:50:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2AD486B008C; Sun, 30 Aug 2026 19:10:23 -0400 (EDT)
+	id D32A26B008C; Sun, 30 Aug 2026 19:50:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E4BF36B0088
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 19:10:22 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 462D340390
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 23:10:22 +0000 (UTC)
-X-FDA: 85159481484.06.1DD84CF
-Received: from flow-b5-smtp.messagingengine.com (flow-b5-smtp.messagingengine.com [202.12.124.140])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 0F8F01C0003
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 23:10:19 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm3 header.b=Qo6ieQvu;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="V Pm/7Fh";
-	spf=pass (imf18.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.140 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
-	dmarc=pass (policy=none) header.from=ownmail.net
+	by kanga.kvack.org (Postfix) with ESMTP id 96B3C6B0088
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 19:50:25 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1531740393
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 23:50:25 +0000 (UTC)
+X-FDA: 85159582410.27.3A30FD7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 86CAD160006
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 23:50:23 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XG/UkaDZ";
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788131420;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1788133823;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zEc5hZJIk8YRnx+J+eo4+Y3sVspDxogbjvEEZwuJ7rQ=;
-	b=Ktq+9wK8ZJt7D4swrlQImWt3EWoDeJ7nyKrEqfOjv5JKWEE4lmmq/4amOgMAU5aTh4LIJS
-	9PdoDwIekcxJD7etou/JB9LJ0AtoB3ehU30z+HWaAWS4FylW2LeXZPhe6SuiRYKw3c6mNX
-	oMceEpp0U7+fWP4uCZdc51L7DjG4GzU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=nk53B6mnC9ONZ1g/6QwuuQHCnqJzmlXt3JqTbZUgnCI=;
+	b=D5LLD1BbrJgD03VCo99iQr+sJTaXu11QsKOejWQz2AQfcmWudBiNlYfd7Mm/Tpey+WZdas
+	qh2wlVuoM5ISASPUOhUwGAoarVi4NIsu7I0cQ+n5oOyzuUalDzJPGO6DFeqZ/5P6bfgDGj
+	BPH/xFmb0gWtvdo6jDbjSczZms+o4Zo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788131420;
-	b=LQ+Xf6lu2cCIpQIJlSSLJMqL0bfcn7QmwtvLjxDetuaz727QDKGVseOxoo8ocqTXSXrWi/
-	q3fPjj6F1Eltm7cGj8jX1Zk2KRo28fgCCxIlD/6j9ZDXW2kUkoTgaQ+GEaBm8haAwh3mqy
-	IVSBmZC/zs+DvAzIHoDoINydsK8uflI=
+	t=1788133823;
+	b=sjWwKhdEdxkZVEFZdFXVvHR8rQgUyocfHH1FTICYN7G3ane3j/zvZvYqF2NxXot80nks8t
+	Ws01e/KRcxRHyDLhCuAnQP7Ry1a32lUSMIIIn/gQc2JKjAzI7cIqnurWQbNt4zWXjP23UP
+	QTkH+MqqppzddXq+h98YYUKZiscfh8Q=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm3 header.b=Qo6ieQvu;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="V Pm/7Fh";
-	spf=pass (imf18.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.140 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
-	dmarc=pass (policy=none) header.from=ownmail.net
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.stl.internal (Postfix) with ESMTP id E9FB813001B0;
-	Sun, 30 Aug 2026 19:10:14 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Sun, 30 Aug 2026 19:10:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to; s=fm3; t=
-	1788131414; x=1788138614; bh=zEc5hZJIk8YRnx+J+eo4+Y3sVspDxogbjvE
-	EZwuJ7rQ=; b=Qo6ieQvuNCpEAFNGUhEaIGd1tM2qenglCvyZhQAtLYcKgEz5uZv
-	VBkmAHxWVjh7GITNYGQRuizAhYS66fu/QSC2e7UCmgPz4kXTk5AkzcfuRQnlVFRP
-	obCI4MlwXEShM2SHCHkmDlPo5XISgTzwCrpLP/3SjKxujKlWi9nqvG6db9p/iXJV
-	OpWFgdf4BeBSzTD8k+jOmUwdbzP/2FzRQ2JsA+NRYO/Wb8e+aEbOrBj5DJeqKV4F
-	mo0lR8bF74G8iO9YI3oa5e0UEi/LrPdRcv9f2BM5MbieoQLkdq9lj0/U9rjqixab
-	TWu+hSlLYlUN95axFhjHuP3dfSYVVt6XzGA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1788131414; x=
-	1788138614; bh=zEc5hZJIk8YRnx+J+eo4+Y3sVspDxogbjvEEZwuJ7rQ=; b=V
-	Pm/7FheSQWTuf0BTxlWwZtt+3pYz2nhduLw4e4y8za/QfTSzRWzNLT9xWYuPmAIc
-	u2iScyJLSttTa87WeCPnCZXn/Gl2gPZabiNI/TusdTrg2rxoLAc/VMFiqpkhoR6S
-	LQ0iKTcxz3hk+DwmEohzGehsn/5Wh1AzucxvOgw+WnDShRgf/uBTnxZEvQeejUv4
-	uiy25ACTvijKoXphHgt82oizR4gYVdqyJePgq/uKO/Q8l7aBEXKtFaecz0P2KuDW
-	NPFfEanh10Tr4PIAw9/Ttp6lzVA7Tw5SgfgV5/JqbWCARVUi3EaZbxN01GMjB+kI
-	lCRwskirVvl7AMPYTRbWw==
-X-ME-Sender: <xms:UbiUap_MtTSeFpMNORlr4wTWDVh0aA6ScnON58j3rpFyccMpDXHIBQ>
-    <xme:UbiUahH2TNeUk63s7BMkgYDKvmxeqjrvmkBoHgCp0p_iRIhMT_WV7fRvdL5DfgV9Z
-    xV8KqlrCQaK0hplET15otnZI5BE2coA-O7f7PR3q4bp8VG_>
-X-ME-Received: <xmr:UbiUagJhhsp10jRM39PBdQWH_D435G2njFRNXy8dKyREtIAZmuZC2LqatWjo_-5YIsgSO4CAuvUBwdlLl9RmrRBi5dPRqwg>
-X-ME-Proxy-Cause: dmFkZTFOIUHJLQqborIagOgmNN+pPcupbVotrH4sXk/9BxNtfHYUJG+jOdd9lP23wPqSUQ
-    AUFqozauDGsFj2Fcxtj3sABYHvl0ph+0UXejznX6q1Xr1Xg/U0V2IT+Tk94c9p2xCxdGcm
-    a9fTqsnIiGGjKyH3aovg7Hbw39SYODzd4xSmoty3roVPn9gC8PR9IGrItxoJJkl5Z9SeqL
-    qN1gQzMRLAf1DVi5pqAy+RVGbsxy3biNw6Ht0LFpwq7yHA4P1bo1DCXcT6AbluvZMKn1Ad
-    6oUtTqY8wpxkXvPNqdcZVzXrArQI+dyTirjeQU9xaq2PAci/BLvZmkKdn6HOgCF/wiNDR5
-    9ypjS27kIioFVXtCK3cYVV4EX87YiMJFRv1YmG81V/CBOpPEVGlHijee21VZbsDPuWUWT2
-    eIkpdBbOecXlENZwKR/2eekW+LLYVEGcUat3eiQbHa7r5NCiXFUSvoh9n0m66Cfn6MPY8F
-    nn+/UAVo+bSz0lZ0FMnWAjcbwosDDLMUFcjHtb2oWyUdokurmOw1uyWf9PuZC23xX1bhno
-    M6fmT9hcOCYeC8ptuK39TgThobX4Z06It4CZvTdsheRb100K9ulRUQKwJiTqPv3ZqMrr5g
-    wtS1gF+w0PemKcSEjYqBuy5LHyuHib4TgEnaucnWv4jXuwuB92nJE5Nsi6mg
-X-ME-Proxy: <xmx:UbiUah47CBbO19kbrhNmEsPxHAHgpefoYPnpR5z-_ohOrh1cCgC-Dg>
-    <xmx:UbiUalPzSFg1nYeOw2R5sG3wTQxx6Y0zUwyNG3X2kHwPHQNKUtVYuw>
-    <xmx:UbiUaprYVwmp1o7kh4B5Ol26B9junaQQXQMqO5xX3y2ZMifwxkjWAA>
-    <xmx:UbiUaseNryne3JEtbfGoTy-pA0krO1YyMhJ9fCu36NsZC9i9Dd6f2g>
-    <xmx:VriUatkHi2UuWhglcFHVNe1ttc7HDvYZlla8FaR0rvxatg4WTOf727px>
-Feedback-ID: i9d664b8f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 30 Aug 2026 19:09:27 -0400 (EDT)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XG/UkaDZ";
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 575F060120
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 23:50:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E121F000E9;
+	Sun, 30 Aug 2026 23:50:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788133822;
+	bh=nk53B6mnC9ONZ1g/6QwuuQHCnqJzmlXt3JqTbZUgnCI=;
+	h=From:To:Cc:Subject:Date;
+	b=XG/UkaDZQPkduayD+DgkEP6WGK4n9FBOxeDCEY1VkZL1L9hsOEpr6KBq7oFmAlNQt
+	 s+OJ3zF/FQ3pFqmC16/KEbAiTewpqsjffw+GVe8f5HaNiOx2j80mzn9iIqZqdTh7kS
+	 wQuQCfeOF2T8N54osUOiBfDOEWpIE3sMW9DrYG/fM1B6jceJIZzj9AZ4k9o/BwVRYV
+	 /8ojm9c+wjeKqY5k4CNRViSn2Gk3fJ3N+ylME7NFys/qn3SWptzQBtyAzsbFFVGxOB
+	 B/EevLuQ+sFi+h4HbArqSitB1Jthq7ZHYOrz4DtNTbLqqxr98uOhu1+StD/Nlbrxoi
+	 OuKwCtfgDlAoA==
+From: SJ Park <sj@kernel.org>
+To: damon@lists.linux.dev
+Cc: SJ Park <sj@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: DAMON Release Newsletter for v7.3-rc1
+Date: Sun, 30 Aug 2026 16:50:13 -0700
+Message-ID: <20260830235014.64406-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-From: NeilBrown <neilb@ownmail.net>
-To: "Byungchul Park" <byungchul@sk.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
- linux-kernel@vger.kernel.org, max.byungchul.park@gmail.com,
- kernel_team@skhynix.com, torvalds@linux-foundation.org,
- damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
- adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, mingo@redhat.com,
- peterz@infradead.org, will@kernel.org, tglx@linutronix.de,
- rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org,
- daniel.vetter@ffwll.ch, duyuyang@gmail.com, johannes.berg@intel.com,
- tj@kernel.org, tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
- amir73il@gmail.com, gregkh@linuxfoundation.org, linux-mm@kvack.org,
- akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
- hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
- jglisse@redhat.com, dennis@kernel.org, cl@linux.com, penberg@kernel.org,
- rientjes@google.com, vbabka@suse.cz, ngupta@vflare.org,
- linux-block@vger.kernel.org, josef@toxicpanda.com,
- linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
- dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
- dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
- melissa.srw@gmail.com, hamohammed.sa@gmail.com, chris.p.wilson@intel.com,
- gwan-gyeong.mun@intel.com, boqun.feng@gmail.com, longman@redhat.com,
- yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com,
- netdev@vger.kernel.org, matthew.brost@intel.com, her0gyugyu@gmail.com,
- corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
- hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
- gustavo@padovan.org, christian.koenig@amd.com, andi.shyti@kernel.org,
- arnd@arndb.de,  Liam.Howlett@oracle.com, rppt@kernel.org,
- surenb@google.com, mcgrof@kernel.org, petr.pavlu@suse.com,
- da.gomez@kernel.org, samitolvanen@google.com, paulmck@kernel.org,
- frederic@kernel.org, neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
- josh@joshtriplett.org, urezki@gmail.com, mathieu.desnoyers@efficios.com,
- jiangshanlai@gmail.com, qiang.zhang@linux.dev, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, dietmar.eggemann@arm.com, bsegall@google.com,
- mgorman@suse.de, vschneid@redhat.com, chuck.lever@oracle.com,
- okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com,
- trondmy@kernel.org, anna@kernel.org, kees@kernel.org,
- bigeasy@linutronix.de, clrkwllms@kernel.org, mark.rutland@arm.com,
- ada.coupriediaz@arm.com, kristina.martsenko@arm.com,
- wangkefeng.wang@huawei.com, broonie@kernel.org, kevin.brodsky@arm.com,
- dwmw@amazon.co.uk, shakeel.butt@linux.dev, ast@kernel.org,
- ziy@nvidia.com, yuzhao@google.com, baolin.wang@linux.alibaba.com,
- usamaarif642@gmail.com, joel.granados@kernel.org,
- richard.weiyang@gmail.com, geert+renesas@glider.be,
- tim.c.chen@linux.intel.com, linux@treblig.org,
- alexander.shishkin@linux.intel.com, lillian@star-ark.net,
- chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
- link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
- brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
- mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
- linux-doc@vger.kernel.org, linux-media@vger.kernel.org,
- linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-modules@vger.kernel.org, rcu@vger.kernel.org,
- linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- 2407018371@qq.com, dakr@kernel.org, miguel.ojeda.sandonis@gmail.com,
- bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
- dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
- alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v19 00/40] DEPT(DEPendency Tracker)
-In-reply-to: <20260825130843.GB23086@system.software.com>
-References: <20260706061928.66713-1-byungchul@sk.com>
-  <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
-  <20260821042143.GA40890@system.software.com>
-  <825134a8-ceae-430c-b2fc-d1d0c7240f39@kernel.org>
-  <178730572084.2852630.7732425311008244683@noble.neil.brown.name>
-  <20260825130843.GB23086@system.software.com>
-Date: Mon, 31 Aug 2026 09:09:23 +1000
-Message-id: <178813136354.3510150.4730256876703029797@noble.neil.brown.name>
-Reply-To: NeilBrown <neil@brown.name>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0F8F01C0003
-X-Stat-Signature: qa8q78ab9tneq78wz14hjnag7mim83gw
-X-HE-Tag: 1788131419-359327
-X-HE-Meta: U2FsdGVkX18YyBoOSK6VJUrE2cpjAoWwVitueaP1r1qhvyX0NRuZGyX9FnCRlHCea3aJjZ1ZqX5L95nJ1OFogzBmzYQw/0ai12YQw+TdIEyy4ceBp9dBOUXRh5szNaH6td1eQd5Q7JJhmTBIi6fxIBmyrr+QYIsYDQ4cli4QKydB/NCaSCJd1gbFw0CeCh7fP31J6E1Axpep4apyV4UFZNPfWbMeU6Z70OacRhUI4SF5MN/zeTOOaMpU8GuVtQPyZWNC78ENIsRS8DqW1Vkpa6yWqtcEXqquVTqgmdwBYg4Dgp8LQ3pDuhgR4rPIKuMemC90DkmfxnnziKAIF/sTsQEmAk8vAL0G2YBziMHAXMBUOCt6NpjKmsDh85j3dN+1Zsp9XpZxQ/wIsQ5BBUMqnZe+BWwl/yKZtbqEpkNEooAXkTsgHQQQIX6uWBdLFUer3CEebLIbEsJk/5WuYRGeyH+uLG8/Wr7bvxoIDYQMPEqJc/soIpYvnPphEgnpIkhibERvuaN0t53KJF1VadtH69pzqbOc5/wV3wcAJcJZJwtB2rcKdE++jj9knQbkzBCmXE+V56qAQ+tWtx/Ol/hMUYFGt+v5wooYADx7uJ+D1B6y4HeqjsHrxqCkgTAd5+Hzo+QQ3BlkY8J9PhLfOt7/0G0JuD+rmO3ZNGsNtQiXbH7oYntUkUk3GY7aqPIF8tK4mx2H9zzS639WbU/8XsUqyf8jZ0HV1RhSRjz/UOXZjk97itJmCwioxEib8Y019wYSzRWkXOsatk0uHWEAxW3f6BidyAYckr7nBtikBe96PXDtuQZ6ehg3CdJ0s5uKsmHi0UBYBcGGXSHu0VSMkT6xoYRHEBfpnfprl08sUZyak+fep/xR8hz5dr2vTcCLEUeGdAJyKqBHzwAUuLLecw4zKEwwMm4OrNRiop4vzHIwcAmES9mrbGmAYIQFssKFpS2e8WtIsjipPFtoYGT42IE
- NNxVAv21
- V8/LGeXJPq96EdTx/ymcN07gPD5usge7SfHrFF9elha0CWwIrcZ11Tx1hIWGEiR8XwRKNQaC5eixZbkOiYyIo3El0EyK2q/DEq1ScYqeoWFjdBw6+hMIFWsvPR99GLXjoh+6sVoyUh2vbnlWZ34HbEwq/8qeHiB8khUnaMBg4iZ8NMillHSaqyZqbVsd4aVIEHljBSnf0c5WTD7W82CXDm/ct0Jp/rF8gwKLVy0Xqu1eS2k5B7DNB0uaKav2jXqmaXIWNJgrS29Xhk4paWlB6V6+VxY8zjOMVzPAFu870a2WiYHazfGIY3qqdW3X8tYcM3ZYVru7Ai1G4gegmm8NE+YzZJARNuSN50XdWkMMwRuxfE1XLk2w7IGZdc2jJ230hwC2pHDE5YTh29OCIk7htkU3Aax7IeXECNsNZj4QxGgD/cw98eBmXiJRrZRtBo+WEm5D13VdarqajU3ITzceKH2VT3fIHEyNztLTShNMtvWb/ENcGzEB904UIIdakweNZUcTVCp7TatJo9K79PLbc2yLPyh5MDdpHOrms7CNDprM5tIKI5liTOwkLOYSa+wG83z2eP0inloVTzmTjX8vahNl1o4sFLkfLr68EWtXYppUCPRGKcSg5sBvsuaoeiG5+LVvk+t2qbOBh2IBpnebkBrM8baW8FxbOkxyeSzx7gDIGoJWASnWZ5EcZWwpUB5MFA1qQmzZ38jG9uay1CTfgMHjV0Qou2f1e0IxDxCIcchgdxDjI22fkxHZ7hReXG2VOM4swxBEpTeFxIPuVSb8FrXRS/boIc3hgFsCGX0nAVHm0She0D1+u1TXvd2Qf+PBdEStmwke2JEkT1Mmlq7cQ2W7YgQ+2ySKs4nvuSVwAOKsQxtgd9vcG2I3Zsg==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 86CAD160006
+X-Stat-Signature: x53q181keeat3k84s8hc65tx8jb45fjp
+X-HE-Tag: 1788133823-304866
+X-HE-Meta: U2FsdGVkX19hX7zYZrSXPgtu5W4Zas0+wTCuh/WW87FhzvRDoXTOqggrPbXWyH2/QdJQCakbLt7OQ90nO68uT1Hhr+BqRB7fljOf/gg2h7J4rs7R3wAeitc1lLKJWMKwz1UyqylBt5MmKtQANpY07aOERjNttixcJpeHkVV0mdIxLEe++ohLb91rDAwlRrnrN19GY13OhQdvWZZKsfr8xxUYFTyU6GQaxKe5Q7OGoXWoZmtYMGd5pwUk/2/7VjK3KKNrKEiJC2k9PiSCyr51HZGRlagWD9ZVX7VJqat1OvBpRQjkkS/CI9usDIQk8/YPxi6o/XeHu7IuMHl8ojouJ+xU5ZtJY8CDNhhvoa55EzfK99yLKYx+4dytBizEQoRtw+tyBblAzmLKKDAKWaUdazretNpS9mIdyvVleqnYg5SvU8V+5Rc3REyJPO7CHTR1fr26+7XECv6oQBUdRC3sMVe7+ybOZkRm/GOf+nUuQ/2T1KFopI0Q0KI4n1+ttOzpgEJjWM55RhsgbXbSqx1J0rge9HRqJbblv6W/1n/apw3P+29dJM6TIFVq15K/fkc/aQFEmVLtI01DXbaHBJ6/tS9FvuPGbxhis6f/qX8x3wTvZsxHQQuw8w49bx1iakVou8HjjL4XqCzrNltWYs9kU2B4GqwGzV+YqPHS1mcqwYqr09G/HtKg1miRHFHpaCpdIcMtmetJZc6r50qsn8+nRcIIkuJQvPXanJGWt/gQ0kl3sySM5MDtnWdOPbKehISu2w+2Ax0rR5ZaW2kpP9y5mKd+ivWesEik0ONrY9WTmVuBgQIV8CD6X7KOt8SyvnfrbGCDdd5h4w8orJWWgnSiFfHwtOcgx2haJNi0Vp4YSO7MagDjyAqQCQPaC2LxQx6mGPOckjCi8nZstY15eu8fjwDJnc7sMoXEGWHqMnEbdMSKZdFeQ/jqgYHWp6/hhmHkR9o+H52yZQNCQkEjUII
+ 7FvvQczB
+ I/zvWQY93tkExGyEX371aEyJuW2KMvgfE0G6+ZJstxzseF0got4N9heLX1ZJlkntz6IX6luqavzRPgyecaI+pVM6Bw738+dQ3GliNUzqqMv6qJCoeXbCe2mgr/kdnV75eKvubAnm/EB/+NNsmhwm6DkcPFIEjtBipYygQTMlCC29AMlyectMCpo0sMQJJjuBhUrt2MN35JytUWRM3k97ns0qV+FC/M6Bw0hNDQSyNlE+3DS26ts3xX0R2eF2jpiI0v33EQtqjX7hiqxcS54We1ti0a1CeMqH91rrEyL9ZzSNp5jJK2+uiDGMTzJmjO78MuqiPcGhuMqoD3chY6M6j1SGRkAmqYmb3dGtCSenTn80YBQPEgKryo4KilArLh54vVMer75buQCmgbVYDXeE5nVrXQIK8IzXUGn7ydq8Tz+bc/x3y0QD3j+zlVhiZ4SjBPe8J8PW187GkyK2MHv5SeKRsEbEzV95iM87/0tZMX8ROF7dnYClEkyRC6Xx3WQpKIQGOQOfL+COtBTLG6BIq7nWBijxOVLvXV4VNdZQw+TAs/4oUEvosBPsaWrRXkSqs+r0yi9Nore7J4N2ao0u5ydmLUJzu/E212knFbzEd63Cz20HNDM2SH7tl6aE5wAiolTlwpdGyzHbLyNeQ648D4LsTKmKkvAIZk/jEMIQbSlfBpPOb+slrGwwKn2NFKrSy3fpjHXmCE3ikH83gK48976bVuHqf6OQmsTpUoMTtFF6lYN0qib0Cu8wJbLlY3zhYFuNj3bIj6jGW1BO0yRyIPrcnvtaRlJS98J0I4BlDvBfONvGPLRUHhh6CPgapeibRDyFeIXDsqbmY/O3nawvrB7rvKYiM61jfNkCwGUZSfokNIztg+WE8byS0ZDRlTy3qdJsrJ0j1FF01VV1g6Pax2F5HxstrOAxoiFDdzYTeC/S9mboFM35YpO7C3JahyvKQCq2H
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -191,201 +89,347 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 25 Aug 2026, Byungchul Park wrote:
-> On Fri, Aug 21, 2026 at 07:48:40PM +1000, NeilBrown wrote:
-> > On Fri, 21 Aug 2026, David Hildenbrand (Arm) wrote:
-> > > [...]
-> > >
-> > > > Exactly.  That's why we use classification e.g. lock class - DEPT also
-> > > > makes use of the concept.
-> > > >
-> > > > DEPT doesn't use a full map in each page but uses a minimum space for=
- a
-> > > > timestamp in each to track when each starts to wait so as to use the
-> > > > recorded timestamp when the event occurs e.g. folio_unlock().
-> > >
-> > > Thanks for that information!
-> > >
-> > > >
-> > > >> Given that lockdep is a debug feature, and we will at some point all=
-ocate struct
-> > > >> folio separately, I assume we could just squeeze a "struct lockdep_m=
-ap" in there
-> > > >> in such debug configs and the world would not collapse.
-> > > >
-> > > > That's a good news for lockdep.  (And even for DEPT :)
-> > >
-> > > He :) Where do you currently store the additional per-page information?
-> >=20
-> > lockdep doesn't need to store per-page information.  Possibly DEPT
-> > doesn't either.
->=20
-> Class can be stored in global map, but DEPT needs to keep a timestamp
-> in each page to track when a potential-wait e.g. folio_lock() has been
-> started and to refer to the information on its event e.g. folio_unlock().
-
-A timestamp?  What does that do?
-There is a lot of detail in your cover letter, but I think there is a
-lot missing too.  I would like to understand how DEPT works, but I don't
-want to dig too hard.  The document in patch 25/40 helps a bit, but it
-is still a bit vague.
-Where is the document which would explain at a level that would help me
-understand this timestamp?
-
->=20
-> > lockdep needs one lockdep_map for each lock class.  It would make sense
-> > for all folio locks to use the same global lockdep_map.
->=20
-> Exactly.  Only considering classes, you are right.
->=20
-> > Each specific lock is known to lockdep as a task which holds the lock, a
-> > lockdep_map which represents the class of locks, and subclass number
-> > which allows a given task to hold multiple locks of the same class
-> > providing it declare (e.g. with spin_lock_nested() etc).
->=20
-> Right, lockdep works that way.
->=20
-> > > >> Doing that today (one "struct lockdep_map" in each "struct page") wo=
-uldn't work
-> > > >> as mm_zero_struct_page() would not expect such large "struct page". =
-But
-> > > >> conceptually, for a debug kernel with a special CONFIG_LOCKDEP_PAGE_=
-LOCK, maybe
-> > > >> that would already be ok and we could just do that (and optimize it =
-as we
-> > > >> allocate folios separately).
-> > > >
-> > > > Sounds great.
-> > > >
-> > > >> Not that it's ideal, but for a debug feature to at least check PG_lo=
-ck, probably
-> > > >> an easier way to achieve it than some completely new infrastructure.
-> > > >
-> > > > I understand what you are going to tell.
-> > > >
-> > > > However, it's worth noting that lockdep tracks dependencies basically
-> > > > based on **lock acqusition orders** in the system.  To make it track
-> > > > even rwlock and general synchronization mechanism as well, lockdep has
-> > > > no choice but to get more complicated.
-> > >
-> > > Well, yes, sure :)
-> > >
-> > > >
-> > > > Focusing on only the dependency checking, the most parts of lockdep a=
-re
-> > > > for the tricky things, so the reusable parts are not that big.
-> > > >
-> > > >> Now, Willy said "locking rules don't really apply to individual foli=
-os", I
-> > > >> wonder if that could just help to also let lockdep check PG_lock wit=
-h less
-> > > >> metadata? (didn't fully wrap my head around the implications)
-> > > >
-> > > > That's what DEPT did and what brought external wgen introduced in DEP=
-T.
-> > > > I was considering the exactly same thing :)
-> > > >
-> > > > Again, lockdep that tracks lock acquisition orders can't do that.
-> > > >
-> > > >> [1]
-> > > >> https://lore.kernel.org/all/aR3WHf9QZ_dizNun@casper.infradead.org/?u=
-tm_source=3Dchatgpt.com
-> > > >>
-> > > >>
-> > > >> It's your guiding example, that's why I mention it. You do mention o=
-ther wait
-> > > >> cases here, I don't know anything about them, but for folios it's re=
-ally just
-> > > >> "we used a single bit so far" AFAIKs.
-> > > >
-> > > > It doesn't matter whether it's implemented using bit or not.  folio l=
-ock
-> > > > is quite special since it's allowed to be released other than the
-> > > > acquisition context that makes lockdep impossible to track them.
-> > >
-> > > Does that really make lockdep *impossible* to track them? IOW, there is=
- no way
-> > > to extend lockdep to support lock release in different context?
-> >=20
-> > Yes and no....
-> >=20
-> > lockdep has no knowledge of control flows moving across threads in the
-> > way that I assume DEPT does.  But it should be possible to tell it.
-> >=20
-> > If you have some code that takes a lock and then hands it off to
-> > another thread, at the hand-off point you call
-> >    lock_map_release(&the_lock_map)
-> >=20
-> > This says "no task owns this lock any more".
-> >=20
-> > maybe you put the folio which is locked on a queue or an lru or
-> > whatever.
-> >=20
-> > There is no way to say "that queue owns this lock".  Maybe that could
-> > usefully be added - assuming coherent semantics can be designed.
->=20
-> It's certainly useful to track who owns the lock, but the essence, when
-> it comes to deadlock detection, lies elsewhere.  DEPT is based on the
-> essence, that is, a deadlock comes from waits that are never awakened.
-
-I disagree.
-The "essence" of deadlock detection involves the interplay of ownership
-and waiting.
-In your cover letter "THE DEPT APPROACH" talks about [S] where and
-event context begins, and [E] where the even occurs.  This S-E section
-is exactly ownership.  During that time something "owns" the event.
-Maybe the terminology is different, but the concept is the same.
-
->=20
-> > Somewhere else some other task takes responsibility for that folio and
-> > the lock.  maybe it dequeues a page, or maybe an lru callback gives the
-> > locked page to some code.
-> > That code then calls
-> >    lock_map_acquire_try(&the_lock_map)
-> >=20
-> > This says "this task is now holding this lock" (or more accurately "now
-> > holding a lock of this class").
-> > Note the "_try" - that says that the task didn't have to wait for the
-> > lock, it just got it for free, which in fact it did.
-> >=20
-> > Now if that task takes some other lock, lockdep will see a dependency
-> > between the page lock and the new lock, and will accept or reject it as
-> > you would expect.
->=20
-> It's an interesting approach if your goal is to track the owenership,
-> but if the goal is for tracking dependencies.. well.. I'm not sure.
-
-I am sure.  Dependencies are between waiters and owners.
-
-A strong theme in your cover letter is the need to add comprehensive
-annotation for DEPT to work.
-My position is that most of what we need for LOCKDEP to be able to
-detect exactly the same things is appropriate annotation.
-We need to annotate when ownership is handed off to another thread, and
-when the other thread takes on ownership.
-
-So what does your scheme provide that is clearly better?  Is the
-annotation easier?  Is some of it automatic?  Does if give better error
-reports?=20
-
-I had a look through dept.rst and it seems that if a lock is released by
-a different thread than the one which took the lock, then DEPT can
-detect that and do something useful.  That might be interesting.
-But how does it know when it first took ownership of that lock?  Or you
-use your terminology: how does it know when that lock first entered the
-context in that thread?
-
-Maybe when you see an "unlock", you assume the lock has been owned since
-the last time the context didn't hold hold any locks.  Would that be
-right?=20
-Surely it wouldn't the too hard to teach lockdep about that.
-i.e.  when a lock, which is allowed to migrate across threads, is
-released though it wasn't held - insert this lock at the top of the
-current context and re-assess all the wait points.
-
-How do you decide that a lock that was taken is no longer part of the
-current context?
+Hello community,
 
 
-NeilBrown
+This newsletter covers DAMON features that landed on or queued for the
+mainline, development statistics and misc events that were noteworthy in my
+opinion, that were happened from v7.1-rc1 (2026-06-28) to v7.2-rc1 (2026-08-30)
+time period.
+
+The newsletter covering the previous release cycle (v7.1-rc1..v7.2-rc1) is
+also available [1].
+
+TL; DR
+======
+
+Just after breaking the record of DAMON history in the last cycle, this cycle
+again broke the record.  It was the busiest cycle of DAMON history.  20 authors
+made 161 commits and 2283 lines of changes for DAMON on the Linux mainline.  A
+new data attributes monitoring feature, a few optimizations for DAMON users,
+and quite a lot of refactoring are delivered.  New DAMON usages and development
+projects are shared.  The first DAMON (nano) Conference is scheduled.
+
+
+Changes Landed on 7.2
+=====================
+
+All 95 commits that were landed on v7.2-rc1 have successfully landed on v7.2.
+In addition to those, 15 additional hotfixes have merged into 7.2.
+
+Those from 7.2-rc1 include a few user-visible and impactful features.  To pick
+only two among those, new DAMOS auto-tuning goal for tiered memory system
+(node_eligible_mem_bp, commit 9138e27a3bc38) and data attributes monitoring
+(commit 45c49d9fd6089) are introduced.  Read the previous newsletter [1] for
+more details.
+
+
+Chanegs Landed for 7.3
+======================
+
+During the 7.3-rc1 merge window, 146 DAMON patches have landed via the MM pull
+requests [2,3].  Introducing a few of changes that could introduce non-trivial
+impacts.
+
+New Features
+------------
+
+In this merge window, the below user-visible feature is added.
+
+1. Commit 37aae41c1056: Patch series "mm/damon: introduce data attributes only
+   monitoring".
+
+This feature makes DAMON useful for monitoring not only the data access
+pattern, but also general data attributes.  This is an important feature for
+extending DAMON for not only access monitoring but general data attributes
+monitoring.  It is also the foundation part of ongoing project [4] for multiple
+access check primitives support.   As a followup, we are working on extending
+data attributes to include access events.  Once it is done, access monitoring
+will be just a part of flexible attributes monitoring.
+
+Optimizations
+-------------
+
+This merge window also introduces below DAMON internal behavior optimizations.
+
+1. Commit 1a582e6e0174: Patch series "mm/damon/core: detect internal variation
+   above max_nr_regions/2", v3.
+2. Commit aa497a270f68: Patch series "mm/damon: provide pseudo moving sum
+   probe_hits".
+3. Commit 6c25083f7ae7: mm/damon/ops-common: use nr_accesses moving sum for
+   quota score
+
+The first optimization is contributed by Jiayuan from Shopee.  With it, DAMON
+makes more efforts on the monitoring accuracy.  The second optimization makes
+snapshot-based data attributes monitoring (update_schemes_tried_regions) just
+works.  Without it, DAMON tracepoints were the only reliable way to get
+attributes monitoring results.  The third optimization improves DAMOS quality
+in setups that separately and differently have schemes apply interval and
+monitoring aggregation interval.
+
+Refactoring
+-----------
+
+This merge window also introduced many cleanups and refactoring.  Below three
+changes among those may be noteworthy.
+
+1. Commit b90408ef1163: Patch series "mm/damon: validate all parameters in the
+   core".
+2. Commit 5bf9c1f3a97e: Patch series "mm/damon: refactor
+   damon_{start,stop,commit}() for simple error handling".
+3. Commit e0ea9467dbef: Patch series "mm/damon/core: hide core-private struct
+   fields".
+
+These are mostly motivated from recently found classes of bugs.  Hopefully
+these refactoring will reduce future bugs of same classes.
+
+Changes Cooking for >7.3
+========================
+
+A number of patches are queued and being developed for future mainline landing.
+My personal tree for those (damon/next) contains 214 downstream patches as of
+this writing.  Not all the patches are ready to be merged.  Some will be
+squashed or broken down.  Anyway, the number was 231 for the last release
+cycle.  This cycle might be less busier than the last cycle, but still expected
+to be non-idle.
+
+Statistics
+==========
+
+Putting simple statistics for the last release period.  Tools other than git
+that are used here for getting the numbers are available [4,5] at GitHub.
+
+In short, this cycle was the busiest cycle of DAMON development history.
+
+Number Hotfixes and Non-hotfixes
+--------------------------------
+
+15 DAMON hotfixes have landed on 7.2.
+
+    git -C ./ log v7.2-rc1..v7.2 --oneline --no-merges -- \
+            Documentation/ABI/testing/sysfs-kernel-mm-damon \
+            Documentation/admin-guide/mm/damon/ Documentation/mm/damon/ \
+            Documentation/vm/damon/ include/linux/damon.h \
+            include/trace/events/damon.h mm/damon/ samples/damon/ \
+            tools/testing/selftests/damon  | wc -l
+    15
+
+146 six DAMON changes have landed on 7.3-rc1 during the merge
+window.
+
+    git -C ./ log v7.2..linus/master --oneline --no-merges -- \
+            Documentation/ABI/testing/sysfs-kernel-mm-damon \
+            Documentation/admin-guide/mm/damon/ Documentation/mm/damon/ \
+            Documentation/vm/damon/ include/linux/damon.h \
+            include/trace/events/damon.h mm/damon/ samples/damon/ \
+            tools/testing/selftests/damon  | wc -l
+    146
+
+The numbers for the last ten release cycles are like below:
+
+    7.2   fixes:  15  7.3   changes: 146
+    7.1   fixes:  11  7.2   changes:  95
+    7.0   fixes:  9   7.1   changes:  64
+    6.19  fixes:  7   7.0   changes:  68
+    6.18  fixes:  7   6.19  changes:  78
+    6.17  fixes:  15  6.18  changes:  41
+    6.16  fixes:  8   6.17  changes:  93
+    6.15  fixes:  0   6.16  changes:  22
+    6.14  fixes:  6   6.15  changes:  62
+    6.13  fixes:  4   6.14  changes:  57
+
+The 6.17 development cycle was the busiest DAMON development cycle in history
+(~6 years since 5.15) before the 7.2 cycle.  The 7.2 cycle broke the record.
+And right after that, this cycle for 7.3 broke the record again.
+
+Authors, Commits and Changed Lines
+----------------------------------
+
+In this cycle, 20 people made gratful 161 commits and 2283 lines of changes
+for DAMON on the Linux mainline.
+
+    $ # stat for number of commits
+    $ ./lazybox/version_control/authors.py ./linux/ \
+            --since v7.2-rc1 --until v7.3-rc1 \
+            --skip_merge_commits --linux_subsystems DAMON
+    1. SJ Park <sj@kernel.org>: 130 commits
+    2. Song Hu <husong@kylinos.cn>: 6 commits
+    3. Kunwu Chan <chentao@kylinos.cn>: 3 commits
+    4. SeongJae Park <sj@kernel.org>: 3 commits
+    5. Jiayuan Chen <jiayuan.chen@shopee.com>: 2 commits
+    6. Ruslan Valiyev <linuxoid@gmail.com>: 2 commits
+    7. Cheng Nie <niecheng1@uniontech.com>: 2 commits
+    8. Xuewen Wang <wangxuewen@kylinos.cn>: 1 commits
+    9. Jiahui Zhang <jiahuitry@outlook.com>: 1 commits
+    10. Enze Li <lienze@kylinos.cn>: 1 commits
+    11. liyouhong <liyouhong@kylinos.cn>: 1 commits
+    12. Lorenzo Stoakes <ljs@kernel.org>: 1 commits
+    13. wang wei <a929244872@163.com>: 1 commits
+    14. Sailesh Nandanavanam <saileshnandanavanam@gmail.com>: 1 commits
+    15. Asier Gutierrez <gutierrez.asier@huawei-partners.com>: 1 commits
+    16. Doehyun Baek <doehyunbaek@gmail.com>: 1 commits
+    17. Philippe Laferriere <plafer@proton.me>: 1 commits
+    18. Akinobu Mita <akinobu.mita@gmail.com>: 1 commits
+    19. Arnd Bergmann <arnd@arndb.de>: 1 commits
+    20. Zenghui Yu <yuzenghui@huawei.com>: 1 commits
+    # 20 authors, 161 commits in total
+
+    $ # stat for number of lines
+    $ ./lazybox/version_control/authors.py ./worktree.linux/ \
+            --since v7.2-rc1 --until v7.3-rc1 --skip_merge_commits \
+            --linux_subsystems DAMON --sortby lines
+    1. SJ Park <sj@kernel.org>: 1810 lines
+    2. Jiayuan Chen <jiayuan.chen@shopee.com>: 113 lines
+    3. Song Hu <husong@kylinos.cn>: 95 lines
+    4. Ruslan Valiyev <linuxoid@gmail.com>: 85 lines
+    5. Kunwu Chan <chentao@kylinos.cn>: 34 lines
+    6. Cheng Nie <niecheng1@uniontech.com>: 33 lines
+    7. Sailesh Nandanavanam <saileshnandanavanam@gmail.com>: 28 lines
+    8. SeongJae Park <sj@kernel.org>: 26 lines
+    9. Doehyun Baek <doehyunbaek@gmail.com>: 20 lines
+    10. liyouhong <liyouhong@kylinos.cn>: 9 lines
+    11. Xuewen Wang <wangxuewen@kylinos.cn>: 6 lines
+    12. Lorenzo Stoakes <ljs@kernel.org>: 5 lines
+    13. Akinobu Mita <akinobu.mita@gmail.com>: 4 lines
+    14. Zenghui Yu <yuzenghui@huawei.com>: 3 lines
+    15. Jiahui Zhang <jiahuitry@outlook.com>: 2 lines
+    16. Enze Li <lienze@kylinos.cn>: 2 lines
+    17. wang wei <a929244872@163.com>: 2 lines
+    18. Asier Gutierrez <gutierrez.asier@huawei-partners.com>: 2 lines
+    19. Philippe Laferriere <plafer@proton.me>: 2 lines
+    20. Arnd Bergmann <arnd@arndb.de>: 2 lines
+    # 20 authors, 2283 lines in total
+
+Snapshots of the number of authors, commits and changed lines for the last ten
+cycles are below.  The snapshots for the entire DAMON history is also available
+[7] at the DAMON project blog.
+
+    <version>  <nr_authors>  <nr_commits>  <nr_lines>
+    v7.3-rc1   21            162           2283
+    v7.2-rc1   14            109           3311
+    v7.1-rc1   9             77            1070
+    v7.0-rc1   12            75            1279
+    v6.19-rc1  10            85            1640
+    v6.18-rc1  13            59            864
+    v6.17-rc1  8             104           3785
+    v6.16-rc1  5             22            564
+    v6.15-rc1  7             68            1479
+    v6.14-rc1  8             61            4008
+
+In terms of number of contributors and number of commits, this was the busiest
+cycle in DAMON's development history.
+
+DAMON user-space tool (damo) also got a significant amount of changes.
+
+    ./lazybox/version_control/authors.py ./damo \
+            --since 2026-06-28T12:01:31-07:00 \
+            --until 2026-08-30T13:34:40-07:00 \
+            --skip_merge_commits
+    1. SJ Park <sj@kernel.org>: 257 commits
+    2. Michel Lind <salimma@fedoraproject.org>: 1 commits
+    3. Enze Li <lienze@kylinos.cn>: 1 commits
+    4. Daniel Lysyi <daniellysy566@gmail.com>: 1 commits
+    5. oopiec <157018150+oopiec@users.noreply.github.com>: 1 commits
+    # 5 authors, 261 commits in total
+
+The last line was "4 authors, 151 commits in total" for the last cycle [1].
+
+Mailing List Traffic
+--------------------
+
+DAMON mailing list was quite busy.
+
+    $ hkml list damon --since v7.2-rc1 --until v7.3-rc1 --collapse \
+            --stat_only --stdout --ignore_cache
+    # stat for total mails
+    # 2019 mails, 183 threads, 180 new threads
+    # 871 patches, 148 series
+    [...]
+
+The traffic for the last ten cycles were like below.  The numbers for the
+entire DAMON development history is also available [7] at DAMON project blog.
+
+    <version>  <nr_mails>  <nr_threads>  <nr_new_threads>  <nr_patches>  <nr_series>
+    v7.3-rc1   2019        183           180               871           148
+    v7.2-rc1   1486        164           142               671           126
+    v7.1-rc1   1098        152           147               450           129
+    v7.0-rc1   426         111           58                223           43
+    v6.19-rc1  414         48            43                222           38
+    v6.18-rc1  563         82            62                211           53
+    v6.17-rc1  499         78            72                256           64
+    v6.16-rc1  147         40            31                63            22
+    v6.15-rc1  263         56            41                176           34
+    v6.14-rc1  260         55            34                154           23
+
+So the traffic is continuously and exponentially increasing.  By every traffic
+metric, the last cycle was the busiest cycle in DAMON's history.
+
+Events
+======
+
+Lian Wang from ProcessMission continued working on mTHP monitoring
+improvement.  As a part of it, they developed and shared patches [8] for
+extending DAMOS to flexibly handle mTHP collapse and split.
+
+Asier Gutierrez from Huawei continued working on DAMOS tuning goal for THP
+(hugepage_mem_bp).  The latest version [9] of the series has passed my humble
+review.  Hopefully it will be merged into 7.4-rc1.
+
+Kunwu Chan and Lian Wang developed and shared [10] ARM SPE based DAMON backend.
+As soon as the major milestones of ongoing projects for multiple DAMON access
+check primitives support [4] is completed, this series will also hopefully be
+merged.
+
+Jason Angelov developed and shared [11] a user-space pager that finds cold
+pages using DAMON and compresses those.
+
+Krishna Iyer from Crusoe developed and shared patches [12] for monitoring
+hugetlb pages on physical address space mode.  It also includes interesting
+test results on Crusoe's VM host setups.
+
+I'm also more that excited to share that we will have our first DAMON (nano)
+Conference [13] at LPC this year.  There will be five small sessions covering
+the evolution of DAMON for multiple access check primitives, memory tiering,
+huge pages, and AI cloud.  Refer to the website [13] for more details.
+
+Newsletter Subscription
+=======================
+
+This newsletter series is posted to DAMON mailing list [14] and archived on the
+project blog [15], for each release.  If you want a reliable delivery of this
+newsletter series to your inbox, subscribing to the mailing list [16] could be
+an option.  If the mailing list traffic is too much, feel free to ask me (send
+mail to sj@kernel.org) to [b]cc you for each newsletter posting.
+
+References
+==========
+
+[1] 7.2-rc1 news: https://lore.kernel.org/20260628211904.94361-1-sj@kernel.org/
+[2] First MM PR for 7.3-rc1:
+    https://lore.kernel.org/178728181878.600189.588163658498005550.pr-tracker-bot@kernel.org
+[3] Second MM PR for 7.3-rc1:
+    https://lore.kernel.org/20260826152330.9cdd482b43726942d6c149cb@linux-foundation.org/
+[4] DAMON access primitives extension roadmap:
+    https://lore.kernel.org/20260525225208.1179-1-sj@kernel.org/
+[5] authors.py: https://github.com/sjp38/lazybox/blob/master/version_control/authors.py
+[6] hkml: https://github.com/hackermail
+[7] DAMON development stat history: https://damonitor.github.io/posts/dev_stat/
+[8] DAMOS mTHP collapse/split series:
+    https://lore.kernel.org/20260720030327.80153-1-lianux.mm@gmail.com
+[9] hugepage_mem_bp series:
+    https://lore.kernel.org/20260720120140.881468-1-gutierrez.asier@huawei-partners.com
+[10] ARM SPE-based DAMON backend:
+     https://lore.kernel.org/all/20260816142222.689624-1-kunwu.chan@linux.dev/
+[11] Cold Pages DAMON Pager:
+     https://github.com/jasonangelov/damon-compression-pager
+[12] paddr hugetlb monitoring series:
+     https://lore.kernel.org/20260830051407.50008-1-kiyer@crusoe.ai/
+[13] DAMON (nano) Conference: https://lpc.events/event/20/contributions/2453/
+[14] DAMON mailing list: https://lore.kernel.org/damon
+[15] News letter on project blog: https://damonitor.github.io/tags/release_news/
+[16] Mailing list subscription guide: https://subspace.kernel.org/subscribing.html
+
+
+Thanks,
+SJ
 
