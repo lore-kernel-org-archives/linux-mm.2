@@ -4,93 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37E12C61DDE
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 00:53:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB45CC61DDE
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 01:09:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 101C06B008C; Sat, 29 Aug 2026 20:53:31 -0400 (EDT)
+	id 739F16B0088; Sat, 29 Aug 2026 21:09:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08BCF6B0092; Sat, 29 Aug 2026 20:53:31 -0400 (EDT)
+	id 6EAE66B008A; Sat, 29 Aug 2026 21:09:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E95006B0095; Sat, 29 Aug 2026 20:53:30 -0400 (EDT)
+	id 600D66B008C; Sat, 29 Aug 2026 21:09:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C2DF26B008C
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 20:53:30 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 361308021E
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:53:30 +0000 (UTC)
-X-FDA: 85156112580.20.238ED99
-Received: from mta0.migadu.com (out-153.mta0.migadu.com [91.218.175.153])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B565180004
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:53:26 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Gn1MZAVE;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.153 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 31C8F6B0088
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 21:09:03 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 800C4160211
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 01:09:02 +0000 (UTC)
+X-FDA: 85156151724.14.29A97BB
+Received: from mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 601B41C0004
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 01:09:00 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GeOwfDfy;
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788052140;
+	b=YkM5oIETFhRsfxuZljMOJv1iDGcnMxwTGl99MZS9AJQ1NmQCEjuSegP/8Yo1lXSmiKA16/
+	FS0TlThwcy/GIG8KIW3sapgisT3O5zy8RHvl6ww9BN4zBwj2uKme6F6tNBPoJXOziWesqY
+	r0Dm4dCjv9A1iXOlgKofznFsIDWAaf4=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GeOwfDfy;
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788051208;
+	s=arc-20220608; t=1788052140;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gs5AUPZu6Qlf/aA/abYQxkyhmO3pqxhHWvQ5t5reXrM=;
-	b=fP329Uq+jNPCAU6+MaLzucXNBmtntL4Y5IGvUYii7KRSv7LneM0eynOA+CaY+DasmTrQAv
-	XKvFQRmU3cXY5Ux1IWDL+uAcPeqks1ln8NYYHdYnfUGoTKoaLi4I+GOHYC+e/EprShVUzK
-	JiUSYeRad3h9vgLMiLxch2QxfXA5NZA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788051208;
-	b=0YDQZhdOoogDDAdzn9Fcw54BHfUijjFu6GsvZI5RhqF/yJ4c22FKmwARUgRtChEuY7mGon
-	LuDgu9zdtKRnIzxTekULEECAaC12+mI7VQCtzr//UAkSvlR++nFNcZKb2T/ySJVH7+Fm8F
-	HAhBAFttruNmEzYcJx9KcubDgPU66bg=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Gn1MZAVE;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.153 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=MemJbyD1rNuhRtJidyufZey4/RKnPBw7+b75T/wrLR8=;
+	b=s6pt1CLPDl5ZMQ2Y0KRpW00LEkqA9PVrpdrndSIm7UTrrY2+HwbsrP3jw2iWXteWIL7TgU
+	SyIvLpy1DE3L5PuYP8Z3KQOJ11ATUXuXhbcRkcHT99LCK2ozY9nVuM17eSJRAwoplQ/RHn
+	eRGBOH3TrXp4Axu1xoTC5qef5vGlcPw=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=fszXetNW+2890fJc/nTMASrc22mNEoZ8RTNdl5L3LRo=;
+DKIM-Signature: a=rsa-sha256; bh=DZzcjJc9sLyv3Y9LU9lZskwia54d44A48WITPmc1pDE=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788051205; v=1; x=1788656005;
- b=Gn1MZAVEFDsEiZmnB/XwDduREr+NWTNJ0Da9MP88K4q3StgmO/LiYUjjheFq/fU1YWBeBwyS
- /9qmm3feoxocvd/M87c2yItvkn3O/s4MjqpNYDYiFVMU+qots2yC2dEc/F8z2lpaLZz+6q5NYlk
- yjYqQLsc9PZ+0RY8IxRrzBWo=
+ t=1788052139; v=1; x=1788656939;
+ b=GeOwfDfy2MrS8fMyfogCrRSgyRyaiENzf2yxtgQ8WDhmKHHFhfCDB5BfwBLDKQYrrtbRFe+8
+ DhslNlByOsXD32mnyEt8m0jYRT8vcK319d2tuAAIxuhXOVC0ivakIsu1As6A1ipzHFFV7D2aVvK
+ fNlCpiheVjkXFC2sej4cfkHw=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 176b837cecade791;
-	Sun, 30 Aug 2026 00:53:15 +0000
-X-Mizu-Trace-ID: 176b837cecade791
+Received: by smtp.migadu.com with ESMTPS id 38fa7b8430628112;
+	Sun, 30 Aug 2026 01:08:48 +0000
+X-Mizu-Trace-ID: 38fa7b8430628112
 X-Migadu-Flow: FLOW_OUT
-Date: Sat, 29 Aug 2026 17:53:14 -0700
+Date: Sat, 29 Aug 2026 18:08:47 -0700
 From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Michal Hocko <mhocko@suse.com>, Tao Cui <cui.tao@linux.dev>, 
-	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	hannes@cmpxchg.org, roman.gushchin@linux.dev, muchun.song@linux.dev, 
-	Tao Cui <cuitao@kylinos.cn>
-Subject: Re: [PATCH] mm: page_counter: reject empty string in
- page_counter_memparse()
-Message-ID: <apN-zc_5SIEkdzB6@linux.dev>
-References: <20260817042652.74136-1-cui.tao@linux.dev>
- <aoMzchLCCz5hiFHp@linux.dev>
- <aoQNtIRvqXRh-x4u@tiehlicka>
- <aoRz72_zdMai_RNV@linux.dev>
- <aoSLxSBUPbEqimJq@tiehlicka>
- <9bd74181-2ce4-4d69-a353-614685559ceb@linux.dev>
- <aoVUlFdZYLFn_gvJ@tiehlicka>
- <20260829174220.204771edba7c52511dc08641@linux-foundation.org>
+To: syzbot <syzbot+cd2073ee6d958a8d0fcd@syzkaller.appspotmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	syzkaller-bugs@googlegroups.com, hughd@google.com
+Subject: Re: [syzbot] [mm?] WARNING in __mod_zone_page_state
+Message-ID: <apOAF5CPFWUUH9du@linux.dev>
+References: <6a931c5a.08e933ee.dbf97.0093.GAE@google.com>
+ <apNjw0HRyr1Oj7q4@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260829174220.204771edba7c52511dc08641@linux-foundation.org>
+In-Reply-To: <apNjw0HRyr1Oj7q4@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B565180004
-X-Stat-Signature: gghzq3k3kta6csji9gmmtwsin7gcx4uf
-X-HE-Tag: 1788051206-403286
-X-HE-Meta: U2FsdGVkX1/lycNpkoiV6XDDpWwtS0x6B4HW5COVB8D5AM3pmZ8+V+OX93Ktw0YMynJiq6TpSvaeNf2fe8KjG07pRKFKfQSSQxf43Dj0iUlj1oK56M+d/2bT0NOtuiPS9RhWjAb7+gfh+OZ/VoSyCShHZjx8b4nkjsuUrsuIsxN8eGIPZXl4y6w0PHs06ovBgDgGWM7v8adnMMeSjzByD0IY3JmuftFfV0E3twVudz6NQmsvzjph8MbJZ77FIvtfqCupq164bNSeiaKA89/F+mDfcxSjKVnj8y0GYP2vddTwk8hbe6AE+BbXfQSmDktAPVZctpSH4JqDh9yUDy90n2otBjkWLwK+tMGEZUTgP3wi/2qfgzSxu58aRcupLiztBe/OjudPcLml9YHzheY3G3k+gHQhg4VhKbEZTx1Bs5q6d7IHJQcV42lqiP4xPqOgmes8gZp0LNL1G75G3G5zMm5IH7NyFnEI26CV8H7FKFVx/S1es3vNROfBcBc7tZ7BljEMeOayTpJDJ6HNfqhBkwrVPYpBZJ9qrpUpEY37w6WoHjXaZ7SRbSUlmFrK0Uf87xZWOarem4tgSrMInZ+u7BwRSmgBeLCPmma+ebI96iZCj5wc2oNFjIb7DRcBeqWbEIrJ2zON6cI/0Xlnc0ugYLkr9r9khLXCaLVwlC0YKtdch2tYN0R8UGvnCeccM0DrkeKAFp0s4PMGroL4Ua6S3Q/TTS87fZufzu4UAh05ggLX9oUWmJb8EwxZl6V38AZTdZhPyLu26mz62TThQstWUaf5G8+bby8bC2I6trUTI9YwVPT+iREonViEe4T+WaNp3ilCb0OiSWx1SCQsagmnZ5h8W/BEkGX8HN6TcGb/+pbvJImpnR6B0RgxHBAJxYXRDE9gT6lrtdBbxr3t6IX6VXOj8xkPmtY/lXaPpdW1MiOCD5qa5Hn0Mow+W6FI0vDFA/SE64tJR6177XVFWDh
- hNKuS3yk
- c8GHyhR7BqGlH8uHm2f23H6gorXnb+2zPMymKROQ2/TEBl2WDFT2vaGYJG2YtdxWXNO0Sh6yNzwO+xE5KcpeeI+0GPNvr6LIhpqpogsuA7VG47ug3YAKfk0bPshdLCyoAAyKozI2MJfFEgovXJFpwBWEfr+LVYnwHRAcx3sg7K+oqtKpwt+vX3oW3jv9tBo0Q+3a3a7e20Ih9ghtHBZQT4Tbq2eWfp1n90orhXF9Ltm/NiYgMbkFuDAH7ZytAHVVfJQS4cQAv7Sak90L/o0lTzS0JM4/3RZzpiJY1hugYd+ZG7WVqaSJJ0SyvRYJT+LWZco9T0uc07UHKaMkrPtCCktKmWdt1082THMaDbFKVv3M3eosqIvMtnvbhGNGUdS1sizLWWCFMdGNiOC8TXSb5TvixoE2heYy76TrMh3+ykosJDYw=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 601B41C0004
+X-Stat-Signature: j1ex63g6pswmi8cwipa1bhpw5j5cbxzk
+X-HE-Tag: 1788052140-250312
+X-HE-Meta: U2FsdGVkX18n9+nBHfkK2R8IASdrIbsUxiyASGt/1OfYHUwLYe+3XTmZpndyP/X+pTHo2VILsg65kCwd+hVNP0GdFpmDrplW5pQjvxtocenvaCFpBclyni7TDJXACmeIkFHPnZKEj6ozzI5LkDwdhnTthJjFUoGApvRzgWzlyKt62OE1zcQcTF7gR8IYQvd/FfWtaOsyoHJAoJsj0k+liZZLeAOAYvTUh5VcQQiJAUaq70ZUfSDiXxsldvLEiFNGKaI112lrkvLDcwplTPE1AIDcHwDaIFs1XNl+lmJBZbz0LitdHzlBPb76tBEaDbm0+gcxe1/HP4Foqd0+87DFTt4k3kM472W2+Su/OL3GI/Gq6emKMEVGC74m9XNR48VrGJq7mJRAaK8XXo1wuYEymABHIijApHu+z4MizXnLohX5m4PZGK40q54Bfthhcu2uHJDGyAxbNl2oeqecHUDA3M17QnQPRdh0JiykpH/Wzgsz4xdJiryuhbosjXbVpwPWRYwGwn5JEZTyIr+zTYMV0YuRc1V27GR9cmEvQYNEbUsG+UC7+XNOndQlwlShjDc+J0Qb+MbjX1cgfMTm3BO8Xwa41zPWQ3zApkoU5OAUla3u4HSsasqTBtArIHdU1YqEAIJMznDukN1weWFia+LIO37BX4TQemo3wtnzYQoky1aH+l3IE2S141IncnzI+2o+FCgtCYxz7xIzn8BQ3GJHxtUKOAOHeEvMQiLKvoM0JvrYTryQZFF/+lFHak36Z9d4w2lzRFQyK33n7NzVs9sVbs9BIdlUw4oN0m8UIt/ILCY+2eepYJ6fw/SUTHLpAz52KNuRtMGa1XnGjfGSoBZykNDoGzhEHuMg9cDcgZ4ZqA9H4oXwxmLQ5NlPk8RWCZgT2cWj9cbIQKiklO24h1dgLLNkvXO1Cn1syGItJ9n/6WudjtxQzI16H4iFoZ/K/kTX6GxHBd3u8b0rsoE44Td
+ EeM+5EpV
+ lmrXtc+p5NI2gQFEFMDSzDZQ7jo4DBnMRhmqOrIJYDjR2v0JwqvMZvCtz0QgASOfscklglQ7Ex5qJ6AqBWQlg9msgrx5GN4qrUMrbNe54BIYe2p3s2sH8W3HXFkXI2FyGjRGv9CUBnV3f0nZltURCYzIB9s+UqPQjUmvC51FpNsZVfmMYOx0e3hQH5i0YNbu2EJD4q9MLg9wbmdup8bCQK5YX91saDOWdmUNH9ffZkMt/QBBvu9aYIp1TNVVqUN6cLnFjuYeVrlPb8DayAxhNSqMIxu8F9rftlgMP63FxsHv50yE9GdacjVhmqKZ7hZYufzL3SvLS1W425dyevV7uIu2vqaA/ZqtQ6aVYgtpTqGegXEmRHVrh/WxxbUASRDCVRM0JpFEIrprXDjrjCxrxwL/Nx1QomzbZhj9cvw0L5ezZI3K4ipjur+59un96Nn5WTC6fVDZLOshVU6jLGBh8AaOIRocxUbzEXtShSfyzilk8mlcQKq8K0Soq+aQJhEqc8CAaIPZHtauNmFNAmputk3Y5iSeVXY8d6iHpO+IZdbb64iDuarzPt3R2k8BLOJS1mFhHXa+k8z+Es4Mw0lH5sjNxqdN1UHHYAmw4VCU8onTdlB3/DKuOgU13O4WEVomHvnhA2RwAyMV6k6C7kbGUPB4zrH9fFh4poorRmwJ4VkMNBtCuXjmbAM7gu2lHFKhbN5ifLBiFqgSGWoNy67vTqQMzblO21IijeQ0TNY0HP6UFMbLTULMsHN4APg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,26 +89,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 29, 2026 at 05:42:20PM -0700, Andrew Morton wrote:
-> On Wed, 19 Aug 2026 09:00:36 +0200 Michal Hocko <mhocko@suse.com> wrote:
-> 
-> > > Whether that benefit outweighs the compatibility risk is not mine to
-> > > decide.
++hugh
+
+On Sat, Aug 29, 2026 at 04:03:35PM -0700, Shakeel Butt wrote:
+> On Sat, Aug 29, 2026 at 10:52:26AM -0700, syzbot wrote:
+> > Hello,
 > > 
-> > And I am still not convinced. I do understand your frustration from the
-> > debugging the issue. In any way, if other maintainers decide this change
-> > is worth I will not stand in the way.
+> > syzbot found the following issue on:
+> > 
+> > HEAD commit:    818bebeb63dd drm/xe: Don't hand out the flat CCS storage a..
+> > git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+> > console output: https://syzkaller.appspot.com/x/log.txt?x=10286d79580000
+> > kernel config:  https://syzkaller.appspot.com/x/.config?x=ccca94d2c01b9e78
+> > dashboard link: https://syzkaller.appspot.com/bug?extid=cd2073ee6d958a8d0fcd
+> > compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13cf7625580000
+> > 
+> > IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> > Reported-by: syzbot+cd2073ee6d958a8d0fcd@syzkaller.appspotmail.com
+> > 
+> > smpboot: CPU 1 is now offline
+> > ------------[ cut here ]------------
+> > IS_ENABLED(CONFIG_PREEMPT_COUNT) && __lockdep_enabled && (preempt_count() == 0 && this_cpu_read(hardirqs_enabled))
+> > WARNING: mm/vmstat.c:361 at __mod_zone_page_state+0x96/0x190 mm/vmstat.c:361, CPU#2: syz-executor412/6040
+> > Modules linked in:
+> > CPU: 2 UID: 0 PID: 6040 Comm: syz-executor412 Not tainted syzkaller #0 PREEMPT(full) 
+> > Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> > RIP: 0010:__mod_zone_page_state+0x96/0x190 mm/vmstat.c:361
+> > Code: d0 00 00 00 8b 05 3e 44 ea 0e 85 c0 74 1f 65 8b 05 87 e0 2e 12 65 0b 05 d0 99 2e 12 75 0f 65 8b 05 d3 db 2e 12 85 c0 74 04 90 <0f> 0b 90 48 c7 c7 c0 e7 ff 8b e8 3b b3 6d 09 65 48 0f be 5d 00 48
+> > RSP: 0018:ffffc9000627f8e0 EFLAGS: 00010202
+> > RAX: 0000000000000001 RBX: 0000000000000000 RCX: 1ffffffff2287150
+> > RDX: 0000000000000000 RSI: 0000000000000008 RDI: ffff88807ffd79b8
+> > RBP: ffffffff9489f448 R08: 0000000000000001 R09: 0000000000000000
+> > R10: 0000000000000001 R11: 0000000000000000 R12: ffffffffffffffff
+> > R13: 0000000000000008 R14: ffff88807ffd7940 R15: ffffffff9489f440
+> > FS:  00005555785ce400(0000) GS:ffff8880d5da2000(0000) knlGS:0000000000000000
+> > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > CR2: 00005608d531ffb8 CR3: 000000002cb7c000 CR4: 0000000000352ef0
+> > Call Trace:
+> >  <TASK>
+> >  __zone_stat_mod_folio include/linux/vmstat.h:410 [inline]
+> >  __munlock_folio mm/mlock.c:144 [inline]
+> >  mlock_folio_batch+0xf97/0x36e0 mm/mlock.c:204
+> >  mlock_drain_remote+0xe5/0x140 mm/mlock.c:230
 > 
-> Shakeel seems OK with it.  Other other maintainers are being aloof ;)
+> So, we are calling stat update functions which requires preemption disabled
+> (because they access per cpu data) an offlined CPU which is fine but we have
+> warning that preemption is not disabled.
 > 
-> I'll queue it for now, along with a note that additional poking is
-> needed.
-> 
-> A v2 would be nice, please.  Add details about that production incident
-> and make the requested update to
-> Documentation/admin-guide/cgroup-v2.rst.
+> Let see if syzbot comes up with a reproducer. We can just simply take the local
+> locks like neighboring functions or something else.
 
-V2 is already out and we decided to make it a documented behavior.
+After looking deeper and it seems like __munlock_folio is the only one which
+have a code path where lru lock with irq disabled is not done before call
+__zone_stat_mod_folio. I think we can easily fix __munlock_folio without
+acquiring local_locks here.
 
-https://lore.kernel.org/20260826021753.197871-1-cui.tao@linux.dev
+Something like below. I will run some tests before proposing a formal patch.
+
+diff --git a/mm/mlock.c b/mm/mlock.c
+index efa6716e4dfb..9ab8042671f1 100644
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -141,11 +141,20 @@ static struct lruvec *__munlock_folio(struct folio *folio, struct lruvec *lruvec
+ 
+ munlock:
+ 	if (folio_test_clear_mlocked(folio)) {
+-		__zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
++		enum vm_event_item item;
++
+ 		if (isolated || !folio_test_unevictable(folio))
+-			__count_vm_events(UNEVICTABLE_PGMUNLOCKED, nr_pages);
++			item = UNEVICTABLE_PGMUNLOCKED;
+ 		else
+-			__count_vm_events(UNEVICTABLE_PGSTRANDED, nr_pages);
++			item = UNEVICTABLE_PGSTRANDED;
++
++		if (isolated) {
++			__zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
++			__count_vm_events(item, nr_pages);
++		} else {
++			zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
++			count_vm_events(item, nr_pages);
++		}
+ 	}
+ 
+ 	/* folio_evictable() has to be checked *after* clearing Mlocked */
 
