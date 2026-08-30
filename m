@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D095FC61DB9
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 04:19:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4826EC61DB9
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 04:19:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A46F66B00A0; Sun, 30 Aug 2026 00:19:33 -0400 (EDT)
+	id A1FB06B00A2; Sun, 30 Aug 2026 00:19:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A9DF6B00A1; Sun, 30 Aug 2026 00:19:33 -0400 (EDT)
+	id 9A9D16B00A3; Sun, 30 Aug 2026 00:19:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 849C36B00A2; Sun, 30 Aug 2026 00:19:33 -0400 (EDT)
+	id 8C0586B00A4; Sun, 30 Aug 2026 00:19:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 573646B00A0
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:19:33 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CB2CC1A023A
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:19:32 +0000 (UTC)
-X-FDA: 85156631784.03.61886D1
+	by kanga.kvack.org (Postfix) with ESMTP id 589056B00A2
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:19:37 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BCC981A0237
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:19:36 +0000 (UTC)
+X-FDA: 85156631952.29.E16534C
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0FEA6140005
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:19:30 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ZYfiTFLB;
-	spf=pass (imf09.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788063571;
-	b=iKsaDKrQPXsFs771iEUcRsQvFOx9whRG06Eto/h6jyHwbedvtpH1ufWCJ5a0j0zHjM+F08
-	FvtHUQbOQOy6555d9+acQQEP8aSAD8oPSJlb5HOoVPsAio4YaIQzTJkSNPJk5pm8kDmrRq
-	SSTq8pOs0uFYvEJO4kQ43f6/PdCmmb4=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ZYfiTFLB;
-	spf=pass (imf09.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4021920005
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:19:35 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=jmnyzAGh;
+	spf=pass (imf03.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788063571;
+	s=arc-20220608; t=1788063575;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yrBK9zAVRuWrfCGTpwW8HiqL2BzA7MjQTeYnO4XWRqM=;
-	b=DPhHrIqxT5XuR2mlNvImB8k+7iM/gK65b7ynxEuWoaCTO32n7GTZ5I7b6SxT3ORDbtEzcR
-	Yp3jbBkumFAPHeb9Y8QH4l7YSJTlP17h/AzwUTOmOz4qq8aSPdzG10lw9i+cUbtEb+kNls
-	IsMTkwT7+rBqZC9QwOHOYecMQoSctig=
+	bh=tsfpWnTEEugF5BhxxP0f5NSzcOBwxx6do+o7r7CRpoM=;
+	b=1ZdgTCXzHjbFdhRmAgmsTEUQBPStbmTCgucLhDukJnf6+Q44mf7vh0Rg9S4l8GOERUjnD4
+	GH7VnTVc1SpbV0HHaAgImePLaD82R6tnGWRGX8JCm4SuxHc9yL9OZvQuuwhqOgVpMx+E7J
+	0G4X1rMs+AgDcHcSd4cz9uBH7SCkhD8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788063575;
+	b=nWK6pvwPAZv/lC1gc1Ik5OY9gQJPnE13dx73g4M6mMVtUWwvNzTksZHRDQGkQ83ux6KrGa
+	+Xr6K99KghEo6NoQOgLRV6Kk7L48S6E+R06IW6vZhK78DoYjuFFUZ90ZGTNDF9fZFQ/CqH
+	i2YlklwwERIGHgt3OMK+ydWD897Ke/k=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=jmnyzAGh;
+	spf=pass (imf03.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=yrBK9zAVRuWrfCGTpwW8HiqL2BzA7MjQTeYnO4XWRqM=; b=ZYfiTFLBbqpdaWTdAiqc0+5xJO
-	44XPrYZU6F4MGY/PtsCU8/I8FsN60fK+PLVNyFLOolQBLhPVG4oAy5ghiGXh3XA6i/J8LrLNlo1gS
-	nRD1GPEqKKMUK1wKAK3kF8msLk4fxe0AnMcFu6iWeHAQ/J+5S2aFm/tnFPN7QjjcMKL2r40t93fJO
-	iZEBXKfJRTsrPd1dKa/7324uldDA6fT9fizmRe62wSkq1l2cgf5cGHSNieSrJSrGjzuHeudQfxZwe
-	36jH284GDJM01IX/0tCWU5I0AQj8pu6NkuPaA+ZB5fcN6kKlOk0Z0pCzUTrAL+zeI8fN6sy5EkstX
-	GOyKOdMA==;
+	bh=tsfpWnTEEugF5BhxxP0f5NSzcOBwxx6do+o7r7CRpoM=; b=jmnyzAGhnXUs0+C5LS24e7OvOs
+	zECGaQnz/K7uDPY+0u1wIf57vrFCgxSAVDmXvvj2TMBVH3TwhpYMMCjU/iKIiKTFWX3wS6ki66JzL
+	u+cDYy9gVlfHAwnU21whEjN+K2q/N4jfjfUTBerTfCmMcehN/SHRRgR81UCMVMH1utVmJ4lkryx73
+	gukk3XpXRgPtZ+cK2nFL5ks8imp9XnV9WbnbHY6KaDnzoVrezcKyrtL4QpAosis5BrPyRe81xoTst
+	U6BQxwL8QcjppnnEieucNP8b4nPqOQuTwxvZKv4tOIF7s0w4u3IBCUeo+jof7AAqQejsMCVDHmuHG
+	SfbA0xNQ==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x0X0Z-000000000hQ-0aEV;
+	id 1x0X0Z-000000000hS-0u4B;
 	Sun, 30 Aug 2026 04:19:03 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Christian Brauner <christian@brauner.io>
@@ -80,22 +80,22 @@ Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	ntfs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 3/9] erofs: Remove redundant FGP_NOFS
-Date: Sun, 30 Aug 2026 05:18:50 +0100
-Message-ID: <20260830041901.2668-4-willy@infradead.org>
+Subject: [PATCH 4/9] nfs: Remove redundant FGP_NOFS
+Date: Sun, 30 Aug 2026 05:18:51 +0100
+Message-ID: <20260830041901.2668-5-willy@infradead.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260830041901.2668-1-willy@infradead.org>
 References: <20260830041901.2668-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0FEA6140005
-X-Stat-Signature: j6or9aju58nh3x5k6m1if6zh4g8nep39
 X-Rspam-User: 
-X-HE-Tag: 1788063570-114623
-X-HE-Meta: U2FsdGVkX1+gpjpG+jPDSfXVmvckIRy/j13ZT2gl7DGKGQZOs6crfHrcY+e67h5yJE3cHaL7nqw/5BBTdSc9Y/vclhvq7s4NY1HFHFQfTGWlqo/C+JqRVJ/d3QWfoCdEXhb/l/OGNjTn0RD01cuEiG9p1Ff5meGa3ZGkxKH8mvPVVzumudGZdGqc7l+3V1sBaQl+5lNoV6LhtP6sdqQYv+H+3sPFRVAOr5auI1Lwu2nfJY1pQPqfO4DD8ey/NNyG7LDKduKtKbghbsRclgiRQ0TIg6Aq3Pzlq4m/bjWgKFvcGgQUcjBsrRFMVFXAloE1oIxna6YEBL2s6FElLEOwGsxCF8R6MGBw1xg+xHh9lBYnHTsFftKcqbKlD/lJGSWv2T6WHDNvSB9smPEdipbNt7aWF5ZYXSkz5LHHgATnFZ5tQWYaJxV3Z/ZUfgojnnTv6bmwHbS8/PEttXOMbfa5XHpTCM2UPVapzSJxfp9hjDCqxj2wzPIoJ5o5Yo0NV1yOOCaLo04VILdg4XVP8+48DQEaW68pLaHg9XlsE/k1NufV2YI2+hmYwlbsP2SAMwga4/Kf0yGepPi6GQM0Pnbj0aue/wINA3XXfGCp2fGRzO++BdLCJxE5RNWi+n4stcIuzPB089GZU1ASllpudK95gNwaDjYemxAnr/Cdn2bIfFjdpb+tptyACKIv31g1tcbivqj++b0TgxRqK4jWbJ7KI2YVmD9httasS6XRcXipoe5wR3VrvjVG3SVhM+xn2qVL860jKbS2CbWHh4zKq/Ncw221hLy+MRX955IVBvOEO1iKDj3I5tSCcJB2SMBFiVHXUSNhLt/SfNjC8lxzJEqmtXKUN0wkh7pl4IJ7/fgxf6lRd/C2aJJTDzSUu6MrFT2ovC2zlN/1HgG+zrMfC6YlL2wUtM7sVKA+WCMr22RXt+H79QR+8Ql5e+durDq60m2L0GpKIiLPmN7YNBzHcbL
- C4NqMNHf
- ySDTQj+E8cvuRJmakDMQNXpsHB8tFXhuQVwbYVAf/+QhnByMDgFxnrHkTuzQhyco2E64KO3Vky4xY6+qE7DZhAbunIxuHd5QA+CTqrjUE5CQuPaHj05VVRkhCts7S60Sh/1YxPnv9PhFlJM/fNjyctYbWG4McXs5DCsArGBXdcRaIPq/lV7CDy6A5GeoF9tGVkxnvnJE5d3mWKONnV1FSdFlPFsyhqNS4ZoA63HcCwKxKKnu1yaSr3OV5AqOX5a132N6e5j0Ms/0obVa2CxT6nGc+2hBZzrIo3Kwo4XISmxN1buiilzFRc4YUVUIswhNelfbHW31IHMm/uuiuV7DVzq2kqQuy4azkeKRb0MaGI/UxdIcXFX0Lgt3b4TazKYqlnwBR
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4021920005
+X-Stat-Signature: 7s7xktmohnz58frx31wbtausqqud7bog
+X-HE-Tag: 1788063575-277884
+X-HE-Meta: U2FsdGVkX1/0N1SQ8bZVGwkPez2qhsGoV6ZyCKWe1GNmcfB7Cnm6RJa2Y3M6XzDyAcN7p2n9jnRzGSwU+3Idp5OixhbiY2iuNUOcUaoZxYdmQWzHwXbYumw/Gh1jmhRD4a4w8q2mtRJBmhP42obFu9ksJPYXVP0jUP+rTDlpZs08Q+0T3tf5wr68fLFMe82Gs3vOspemYUKQ3DXHewxWIzkYM0s0068cpBXqG35Rm2klu03CbxjSCbIoS/3V1ST8B3UY7q6MtXXFaLpademDDLmZYVth21tVjAi/z1K4kexJJOJkE1PQwnlyycE4ttpOwW+7Bf75QY+qS59YJNECyChOQo8u2h32I8uN31Z35w/JXb8ZW5p5KbHeF6XQk+GRbUJBQ26suGXwsu/CBDLDW3/ZqibTwYERHNje+f7mu2mPbx6+Crn1mU/cOT+K7EV7PA/TudqeWFznLFUW7BKJ7r6CTO6rYn6jMzU0flikcRB0+GSqKERPrQrOCbCIXQkQKZ1dvxSllxeuYuxsiqHwlTIuZNYr9TXBWNfd0J7klRT3lqduxez6kgAgxD2HWXutDMS7/rzbczgZXKPDxyBrZxnSYx6n5dQo5pbd38olFrXHv6W05kAq6ERYWAcifWXmNADXacWhWheNeoSWEPdrf1GNgxYi8TWi7iF0D+bvLSmbpjzsV5Gv+dokdWwd3T2lwyL3XGWflr5tNwHVd1HwkSRjvi9MsqmaB9TlISOMKMQ62Eg0qzSTuCaqQ5Fmw1zTCaSSfmTccDU3QVmRC9JA+BrJEVfqDRmKQ5rEdzGmmkYBzokqLledv0V9wZWfPP9TqYnfN+x3V8XTkT5sp0Gbp4cq6LUu3DsPj87tHTdlXOTvt/p1zqXf+k2AZDRqLYe/f3WsHUhjSDVLhSXNf/AA1s3heOGgvgfbh10wVEca/VVxH95gcr9if4hIGxmLFlEk0stGonBfBk6k6XOnqYL
+ OPLNOr5O
+ 7Mp1NsQwEJEf124Y3XE2i2FJtw19W+wWuAagVQRvyQy0C+OO/jW7kHEgBlDfLqgfvstaPCFxTf+gA42xf4UGc2Sya2Eh7XagyR7emEtHXZvZnQveuaZXd39nX+NNsFtC7EUMpH7coI3IcysxDzdcCX+jjQNLu3xJQ8pAsNL2vzZLYBvZI8LII298uBC6Rve6xvzFH+ni0O0Lg5Ee0RZaKNZkJx7lDpmt9O6CDglvUb7cEX8NixJRJ5TxLH+CzjMtWbx21A04JoZSQRSl8cjYC3GjARGMy6JYH8niMGs35CXcCSJmNR/G5QTgtLtrtpPKNZbIc9LYgaaYgmIDnON8goS1u60s9dwRQsVBTr1+Tk2IIQ0Mc5hPInnn0yA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,22 +108,22 @@ just reclaiming from the filesystem.
 
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- fs/erofs/internal.h | 2 +-
+ fs/nfs/dir.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/erofs/internal.h b/fs/erofs/internal.h
-index 65974e57aebf..84b3cdc8e88f 100644
---- a/fs/erofs/internal.h
-+++ b/fs/erofs/internal.h
-@@ -327,7 +327,7 @@ static inline struct folio *erofs_grab_folio_nowait(struct address_space *as,
- 						    pgoff_t index)
- {
- 	return __filemap_get_folio(as, index,
+diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+index 49394123bd09..e34125a8a2e2 100644
+--- a/fs/nfs/dir.c
++++ b/fs/nfs/dir.c
+@@ -447,7 +447,7 @@ static struct folio *nfs_readdir_folio_get_next(struct address_space *mapping,
+ 	struct folio *folio;
+ 
+ 	folio = __filemap_get_folio(mapping, index,
 -			FGP_LOCK|FGP_CREAT|FGP_NOFS|FGP_NOWAIT,
 +			FGP_LOCK | FGP_CREAT | FGP_NOWAIT,
- 			readahead_gfp_mask(as) & ~__GFP_RECLAIM);
- }
- 
+ 			mapping_gfp_mask(mapping));
+ 	if (IS_ERR(folio))
+ 		return NULL;
 -- 
 2.47.3
 
