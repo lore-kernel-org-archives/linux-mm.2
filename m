@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94FCCC61DDE
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 00:18:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CCA1C61DD6
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 00:21:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B8FE6B0088; Sat, 29 Aug 2026 20:18:24 -0400 (EDT)
+	id 383066B008A; Sat, 29 Aug 2026 20:21:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26AD96B008A; Sat, 29 Aug 2026 20:18:24 -0400 (EDT)
+	id 3330C6B008C; Sat, 29 Aug 2026 20:21:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 181676B008C; Sat, 29 Aug 2026 20:18:24 -0400 (EDT)
+	id 24B656B0092; Sat, 29 Aug 2026 20:21:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E63396B0088
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 20:18:23 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5CA361401EC
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:18:23 +0000 (UTC)
-X-FDA: 85156024086.05.6DC391C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9F02940002
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:18:21 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RRRZVrhU;
-	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BE5766B008A
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 20:21:20 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 45663160134
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:21:20 +0000 (UTC)
+X-FDA: 85156031520.10.8E09DC3
+Received: from mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3F3C6180003
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:21:18 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KlLBLmwt;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788049101;
+	s=arc-20220608; t=1788049278;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rLwaRMYQSdlC9dDrcYF6uhIrk96lZ4AnEwSNRsJJ7Jk=;
-	b=VKJ9pvmtz/pFqmS2AvPGkr/wluIYIMAMVQwJisXgwIy+vuCq8BScDX11+XExvzOK23jGSo
-	Ut7iuFBIRMzBP4tWERiV5h78jjRHeZxPoDtR6LE48z/x5s55NOrhKhC0ECAvLw8x6+CIjW
-	3+am3XiJpq9MfDaUsMfzw3EU/yZwHBU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788049101;
-	b=zibMfG0CwXN2+lAyFNXnzLEAfrfWhJN7KeYCXQVdcOQ0cigAXAEGGJIBqM7Hiqn+MgiJJo
-	3LXOVwQIUNNdWUwMhLjWs/yHvK3KUuqmGRHMboCjcStwY2l7TiIbbbQ7rBWnXIX8fO5XA8
-	vSjw8h49SxE6Y0sRVxDYBT6Ljhx/YUQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=SsQKvqqv9lwxQmy8bH/1T7isVoCT/trRlni0IzeSIvM=;
+	b=wTLz1YoDOjyGNb8h26wBCEsXa0irQs0dTnZQ68F9QU2yaZpwhxoj9uAhB8W1BTxYz84TMm
+	ok3pHCi/WDyD5RVry0Y5JokNHbEL10Y9jZtzg5gKQP6gNH38TQ4lPe28ro8N2ARwVB/nYR
+	h18XxVkSehMoydHs9n6cbN/wkkClo34=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RRRZVrhU;
-	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D7BB6600AE;
-	Sun, 30 Aug 2026 00:18:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B56351F000E9;
-	Sun, 30 Aug 2026 00:18:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788049100;
-	bh=rLwaRMYQSdlC9dDrcYF6uhIrk96lZ4AnEwSNRsJJ7Jk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=RRRZVrhUsMA1mrxJwrnY8deTAOsAhEgmZGzHX+tXScdO1bRIGsHwN7fDXs08zlApd
-	 DpQiip2DP81dFltY/sey8H1holAPNm78Zd1a+kuZ6I1yEeTXDITuoxuy6wZv9njlDu
-	 f6SZl0KBRhksKXL0kgUxkApA0hPEe5oPSYgC/EDo=
-Date: Sat, 29 Aug 2026 17:18:19 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: gourry@gourry.net, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- kernel-team@meta.com, david@kernel.org, ljs@kernel.org, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, liam@infradead.org, nico.pache@linux.dev,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- usama.arif@linux.dev, vbabka@kernel.org, jannh@google.com,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
- balbirs@nvidia.com
-Subject: Re: [PATCH v2 0/3] mm: reject zone device folios in more folio
- walkers
-Message-Id: <20260829171819.e1e8910e7e9a8a46b87c870f@linux-foundation.org>
-In-Reply-To: <20260818043143.22297-1-lance.yang@linux.dev>
-References: <20260817220810.1175596-1-gourry@gourry.net>
-	<20260818043143.22297-1-lance.yang@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KlLBLmwt;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788049278;
+	b=TtxOLInAyue7jjMrJn4CTVatmjNxh/cIOSaOy/DCNJMktcGOlz2J8fCB24n99yALXb+Jji
+	61i+pcJviQ0FVEBs2idaCzCCE6f9k3UE5XHYOjJ0gJ7gqXgVAWyztJp6NcOaEupiJ6oHaM
+	ejGNuHJdQTjf+crzoAt50l9o1n8uYUg=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=BcGgUmgJ5bToxf4lyEoXBY/SvuxrW/zu7KIJo4jPTnU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788049275; v=1; x=1788654075;
+ b=KlLBLmwto/gjzqlJIF89Z4XIEYQdlJ+FKtWtI+IiDMoEoLyeRB80gg+j0avYydWUvIDoB4iI
+ pRW/+Z7bFvvh5TKOxi6acq67WBcOLkrSt1brFF2SW64B/qG4Qy+x1NK7AQr/Cni2HWJjqg60kHZ
+ cU6yU3b8vPiPZjIeXIqWAL1w=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 19d959b935d34d05;
+	Sun, 30 Aug 2026 00:21:15 +0000
+X-Mizu-Trace-ID: 19d959b935d34d05
+X-Migadu-Flow: FLOW_OUT
+From: Ridong Chen <ridong.chen@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	Tejun Heo <tj@kernel.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	David Finkel <davidf@vimeo.com>,
+	cgroups@vger.kernel.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
+	linux-mm@kvack.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
+	linux-kernel@vger.kernel.org,
+	Tao Cui <cuitao@kylinos.cn>,
+	Ridong Chen <ridong.chen@linux.dev>,
+	Ridong Chen <chenridong@xiaomi.com>
+Subject: [PATCH v4 RESEND 0/2] mm, memcg: fix memory.peak reset clobbering other fds' watermark
+Date: Sun, 30 Aug 2026 08:20:42 +0800
+Message-Id: <20260830002044.1938621-1-ridong.chen@linux.dev>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3F3C6180003
+X-Stat-Signature: btjhh6cu5thcar1ensz8npp8e7fy9sh5
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9F02940002
-X-Stat-Signature: pwrnyo656afp4fcocwn6b3o4nymweae9
-X-HE-Tag: 1788049101-148539
-X-HE-Meta: U2FsdGVkX1/ZWcwBErenygyo7peO577KCnZgXr6s93vQje2eAgK0C3pxqixOGHhZYw5Wdr7nWI11TAUp2FaU/c0X6/8L/FkImaThlhOaV+H+I0jqNG+VWFryhcb6aT29IkXMuvdB4SYxxTJ2QG97bxkaheTpyo9M/6NRujbi25lhp0O/lJvqBbYOPft1jOJIo4YE49ZEpacRoJK76R6aXUd4BnRkwR+YaT0HpdvnbdMVuNUd6p31ofJ2d/QlHXZKxJd3dir36tr5IBXxuKn8zMZnC1FUGu1aU8CyGnZQ0YLwk5g5jaZF8I/U0EAyHlDteMd/G7LiULeoflgqHgftXrI5zNC+0jWrBZewwJgZphd6HeV5IKfR9Z/Xvpn0T+4/4iqpIji97UmggbC1YEmxBX8keTs0Ak9eOMX8NRLSe9oEzmoo8H1gK7RZ5fEqL88iwUt/5hED4CGDjZnKtDC9O9+M4zqTtLrgeIs9Ti5it52w6e1xRYU8Ld4Q96oIusHPa7QTpSW1oKR1pzhmVVa2FDyvXBDiKerGWcdP/TxJz4URKYGqorwdzvbPrGB0Ahp997yJ97io7yRvspPv5MuxHkCzdfQgEK6C0yZO/OpWTwFrwedowKeoYKPLGoRBGGbUnvKKqQ4Te7wfEFriLJk+sXiitks59ZNXOuqHZ0Si+LlBUx3aJem9cZdQ/uZdqIpbDKQLdQgBqHAFDsyca0/+htGgEyZzUiCMcM1EcDa0X9r9oyIconQMXSdmvrfEZM5HY66Z4wHLo9DpFKeLinoztAEBRbrzUg+f1Pqo8CxndNRigscLglO5YkJNLwN0sWKg+lYzHe67LZkNVbODEpZMz4cy7C5cGBsbBzDg/i7ijzZfLoyMcIyzzgexQDY87zsD4mZ+jc7XRdske1lkfrh++LZcJcOYpb33hwXgZmJnvSfhQnJU2fyCA+8Nmm1FhmgZlIWwx+YtnOW81ThHNfn
- rPuz206E
- JmlxxYNBfq6A2mHCvG521F1aAOdMUmTS70zAoRvhTUDvk+qtIL0T1m7QyEMNZcu1nA/ZVDX3XPY9TXApdMEN+i3gEU9mYgvfQwWzkGUpzRrKagESnG+XMM/yst9pZjxv6mDQ5696FeYw9iiHgLLr/djQThGnc8WDJBm3wVopqIaBUY3lWoBs6clJJRJYzNM7xFDZZoMIPpEE3oaXBk8nzd6yYqnTSCNch9d5fUenFz8owvKhYbS1PZBYb9mpUXfFbKOeEvk8/Rzv8Pd/bqpbQKjxfvZOhZcnMrmscsK+bA5FPKCm2GWXzurBmNvwnYm3KL+wtVQ5gcwOGDubDHLwsPwgUVlj9wmOTdQP3aIsLd01wNUpxwHlrFceipkGHBqrv3HnUjAOEviGgWBsZYykU6Z/aVyVxxF8gn2RAWL8SHS+yU3xcvneNx9ah9EK26YRhkRsd
+X-HE-Tag: 1788049278-150737
+X-HE-Meta: U2FsdGVkX1+yMRZ7gCWaus/mpE1UgYXl1biMO38WHXvteCrwpn8jVcH5WK588WUE2rw/uuX0GYCXsOFcsWbVvwY9kzjzH0updUQ4fgg3lQMpAOz1Rf+WpBDhUH61zrkFDyBIm71q8lhUaqL3WmqwYq0d/cD3NB7SUYfJb4nb1wmTLAcktisoIJQ69RcQEotftx77MeuY6NcP6VNSgtRQVnVIY8jJc8XKVPu1fVQD0/p7jr5bMCUk7rDp83vpcmztBLrim9nJqNmCxQsXH5BSB5fZjmRDWaMiP2RI6QJJ/uvsrf0WbDbyjUnMmgmPr/pP7u9aI2ipO8kYx8uFUEVkcM8vCwyCEoGvmocnm4gCP0RYyx7moercr8/8/sabusu9Ip6otwujNwSooSsNOYOn42ufsTy64pQtJC8BLNusQqUrTNa6LP+GJDoS0gYdWiJ+q2hA9QB9bq8vDGkOA6x1HmsRo7KapMjUqP40VGKhQVxRe+l1wqt2DkXNvilZpfhpxKRpklzDdKgZfRMMY9BK+4rS3/XzTlYxLqARnCki1AD1vOnxRRQmb94QQRsH/MSm0nHhZ2Kyg9PY7ShPylEo2Y+u7vo7ggTbALAZqeKnO7NJC6Eg1uY5hZo1VBga51Y4VKzinups5ZI50vecpMMVVrXz1fnJIL1eGmuLw/B75g2HcVMyFczbWjFDqxH6TYsx7P/Tkvi5NUM/OVLFtCv7fVDeq6RyF7pLrZ9R7dcnNxAFYiqHGJWiwEFqHlxbGtujTRuHXbnJSEzR7J07nBH/pXewvPIlLUb3uYKnJEY2iRbFoucCLyObFTedjiXtJfzJwG0GYMNCDLsKqpmOHzlZihuO+VkkVLrD+Rt6WA+4AYPwf2a0Drx1kg0HBpD24awhAUiIlWrp8oYLFVL8A1ATloUZG983PbGd9rJ+u5xjvmt4VVlZMu5q7/p76KPnUJDzHxPZvQBC2rii8m3J4NM
+ 4q3s4sUY
+ ePbWsh29Fq19IfHrugRxTPg1dYhuAdVqwsnXYVNWi0mB3I1xvgZn5aPVe5XOZjgeqd8POXQle+B0PuDfDPDMkr6ZpaeVZ11FKhWw/9lIrraRcdsPYr7wg/bZGx4iNxYwb72RyHI6lKpbevsfPaB5tDaZLupE63SkbUw7N+QbRiWut/rIv97Y0fRhsIDBHyHtiWaEpniuHDD5TTHOXzQu7C/dvOtzGh/Db6SIH3TmxDa5Rs9Dju2OMmnrQQAuhtKXBkbKphv1QkH77w9Oezc5whvKeoLY7GvcppzBatMg8afF01ADtSW2i5vc4GzPco1Hdb9c+Rd5SoTihaCiK+XJ6NEuth9cOhzoBR6bUY5ukhNr3Q48kz5e6+UrAEaURV74IwLN52TVln1y2BeY0fc85yPcsa48h8u+b0QG8ZhEtQpAB+lL68ImfajSP46aRX4SC1V39T2HzGYw5MZZ3rmCVFtJiPR1sbVJ/DR8MVeXxH0uJOKo4A+uwoyCAPXECucsTaN2e7KW2hC2oVryQlBbH4txWySatjzLqh4Ua2H2TwiiCiiqanih7UmDv75eNbXfTmK6xu+V1AEBxzwla/vuPbA5LVHxSnpxSbg0d7GeVI7+JePj1QY4aLB9Iwu5RPTmTU4uh99/vK8SxXCE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,64 +98,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 18 Aug 2026 12:31:43 +0800 Lance Yang <lance.yang@linux.dev> wrote:
+From: Ridong Chen <chenridong@xiaomi.com>
 
-> 
-> On Mon, Aug 17, 2026 at 06:08:07PM -0400, Gregory Price wrote:
-> >Several LRU-oriented mm walkers resolve the folio backing a PMD entry
-> >(or a physical pfn) and then reclaim, age, migrate, or lazyfree it
-> >without ever checking for ZONE_DEVICE memory.
-> >
-> >This series adds missing folio_is_zone_device() rejections, matching
-> >the checks that comparable walkers already perform.
-> >
-> >- mm/huge_memory, mm/madvise: the !pmd_present branch above these sites
-> >  only filters device-private entries (which are non-present).
-> >
-> >  A present zone device PMD (e.g. device-coherent) would still reach the
-> >  folio and be lazyfreed / aged / paged out. Add an explicit check.
-> >
-> >- mm/mempolicy: queue_folios_pmd() can see a present zone device PMD
-> >  (e.g. device-coherent) and queue it for migration.
-> >
-> >No crash reproducer - this is a correctness/hardening cleanup found by
-> >inspection. All checks are placed after the folio is resolved and before
-> >it is acted upon, on paths that already hold the relevant page-table lock,
-> >so no locking or refcount changes are involved.
-> 
-> Cool!
-> 
-> Gave the whole series a spin on x86_64 QEMU with a PMD-mapped
-> device-coherent THP. Without these patches, partial MADV_FREE and
-> MADV_COLD reliably hit a kernel panic in remove_migration_pte(), while
-> mbind(MPOL_MF_MOVE | MPOL_MF_STRICT) returned -EIO.
-> 
-> With v2, all three worked fine, PMD mapping stayed intact, and data
-> checked out :)
-> 
-> Note that both kernels used the same small change to the in-kernel HMM
-> test driver, allowing its coherent device memory to be allocated as 2 MB
-> folios so the PMD-mapped test case could be exercised.
-> 
-> Tested-by: Lance Yang <lance.yang@linux.dev>
+The memory.peak / memory.swap.peak per-fd watermark tracking has two
+issues. Each open fd is a watcher and reads back max(its own value, the
+shared local_watermark); both bugs live in that scheme.
 
-Thanks Lance, you're so diligent.
+Worst case for both is the same and is userspace-visible: a reader of
+memory.peak (or memory.swap.peak) gets a value lower than the true peak,
+so a tool that sizes or bills a cgroup by its peak usage under-reports it.
 
-I'm wondering what to do here.  Gregory told us
+Patch 1 (read side) fixes the race Sashiko pointed out in the v1 review
+[1]: peak_show() inspects local_watermark and the per-fd values without
+holding peaks_lock, so a reader that races an unrelated peak_write()
+reset briefly observes the lowered value. Transient. It takes peaks_lock
+in the show path.
 
-: No crash reproducer - this is a correctness/hardening cleanup found by
-: inspection. All checks are placed after the folio is resolved and before
-: it is acted upon, on paths that already hold the relevant page-table lock,
-: so no locking or refcount changes are involved.
+Patch 2 (write side) fixes peak_write(): on a reset it stores the
+current usage into the other watchers instead of the old watermark, so
+once usage has dropped from a peak a reset on one fd drags every other
+fd's peak down too, even fds that never reset.
 
-And you had to tweak the hmm-test driver to reproduce the bug(s).
+---
+Changes since v3:
+- Switch to guard(spinlock) in the peak readers, suggested by Muchun.
 
-So when do we push this series out to -stable?  As a hair-on-fire
-hotfix, or as a leisurely next-merge-window thing?
+Changes since v2:
+- Spell out the worst-case userspace-visible effect, per Andrew's
+  Go back to v1 [2].
 
+Changes since v1:
+ - New patch 1: hold peaks_lock in the peak readers (Sashiko).
+ - Patch 2: floor the peers with max(usage, local_watermark), mirroring
+   peak_show(), and skip the writing fd (Johannes Weiner).
 
-And Sashiko was clearly having a bad day, able to find only nine
-pre-existing things to shout about:
-	https://sashiko.dev/#/patchset/20260817220810.1175596-1-gourry@gourry.net
+[1] https://sashiko.dev/#/patchset/20260730115314.1069089-1-ridong.chen@linux.dev?part=1
+[2] https://lore.kernel.org/all/20260730115314.1069089-1-ridong.chen@linux.dev/
+
+Ridong Chen (2):
+  memcg: acquire peaks_lock when reading memory.peak
+  mm, memcg: fix memory.peak reset clobbering other fds' watermark
+
+ mm/memcontrol.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+-- 
+2.34.1
 
 
