@@ -4,99 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F231C61DD9
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 03:06:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63081C61DD9
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 03:13:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D19806B0088; Sat, 29 Aug 2026 23:06:23 -0400 (EDT)
+	id 5ACB96B0088; Sat, 29 Aug 2026 23:13:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCAC36B008A; Sat, 29 Aug 2026 23:06:23 -0400 (EDT)
+	id 55DF46B008A; Sat, 29 Aug 2026 23:13:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE0166B008C; Sat, 29 Aug 2026 23:06:23 -0400 (EDT)
+	id 44F216B008C; Sat, 29 Aug 2026 23:13:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E0076B0088
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 23:06:23 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1E7E51C115B
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 03:06:23 +0000 (UTC)
-X-FDA: 85156447446.13.59BCCF8
-Received: from mta0.migadu.com (out-249.mta0.migadu.com [91.218.175.249])
-	by imf17.hostedemail.com (Postfix) with ESMTP id F184740002
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 03:06:20 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pm46zNl3;
-	spf=pass (imf17.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.249 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788059181;
-	b=N7mCDwzxtOxtKbese86vK+JMyCmNTwk6AZjHWUnlMN2pNpZL8jNW9jlb/gbxuzNBp64ypw
-	WBJmiq8WDrJGHxH8ut074D+7ieToTXIRBqaD9wXvTy7QksrfQO6+LssBsmXX0SK92YT9lR
-	rvnu3PnrnScGl/Iup/t7qBxwDdwULDw=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pm46zNl3;
-	spf=pass (imf17.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.249 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AB826B0088
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 23:13:15 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5E7B94023E
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 03:13:14 +0000 (UTC)
+X-FDA: 85156464708.30.AF961CD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 9C92EC0004
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 03:13:12 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=oLJ8t3tU;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788059181;
+	s=arc-20220608; t=1788059592;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YPtFhA9cBK59YaKLNjdewaJ1q0Nop+upG85M+608ROw=;
-	b=CAx43/0ueqjth4taLcNvMlTmSMyuDn/istiPLpF8n9El+K4BneF4jr+FlT3E7caEJxj6FT
-	I0fZFYk4Wi/qqRz2xvYrmsF/isfbeYJHu7+ZtiWHEZxEoJjq9aQBSjUrzuBz6JipvpJJ0R
-	DuFeH2+g7mgDnxIBzvThBM03LtL0LxI=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=qXVdb+IqU2kIMGpTuiVRCYml0ZcRQXM5yPEGZHiM3xg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788059179; v=1; x=1788663979;
- b=pm46zNl3xIZkfZM/IhrNnf/xOvGCe2l+WHpDZYZU/siwYNPDgphRTDZzu4xSxYi4T0RPNrNi
- 4iZnXwstTANlXlDFhwvdWa1xvA9gazF/sH0xQv+1F1tvKd5FFq4eNoN9lByRXqwuXA339I2UwEi
- CcpEMcnq4ngr3pcwFcpjLDk8=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 3cf237b371277dd9;
-	Sun, 30 Aug 2026 03:06:09 +0000
-X-Mizu-Trace-ID: 3cf237b371277dd9
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: trintaeoitogc@gmail.com
-Cc: willy@infradead.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	harry@kernel.org,
-	jannh@google.com,
-	lance.yang@linux.dev,
-	liam@infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	mhocko@suse.com,
-	riel@surriel.com,
-	rppt@kernel.org,
-	surenb@google.com,
-	syzbot+395b7abe9696862fc188@syzkaller.appspotmail.com,
-	vbabka@kernel.org
-Subject: Re: [PATCH] mm: fix the race on huge alloc failed
-Date: Sun, 30 Aug 2026 11:06:01 +0800
-Message-Id: <20260830030601.90899-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20260829180234.435064-1-trintaeoitogc@gmail.com>
-References: <20260829180234.435064-1-trintaeoitogc@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+	bh=4hJJJOup+wIKIbKGSzexaljQV4pEOoVPh3Fa3fwUWmw=;
+	b=ODK9c58SkzJVNUpXOb+KS1CTNJQGm9yQxWRb9KU2A3xD7Lk4fI40jZlg3wlU5YP2ghQXpg
+	YXAydPI5g8RaA1MCpAwgZdhTeW7WL3kyYUqv6ESWR+GvYQv7Mh45fLCip+nSipaUeyZqho
+	uZc++HM8ZSYnUmoictG1+QkhpiYLrEc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788059592;
+	b=TVXvnY3U0ZotWjlx5dmCdHa9D3MOXZjLPr6Z8UtMlMGIUwYV847B4GwafFoTkdql7h3k4o
+	jOWoguN6kzB9QNL0pmUqNNRiRQ/GudiY+e7D2PVOA2Wo67Fv8nXlPWzB0wUF4SWahzROCR
+	Jla2mJn2z4ECPpOh6j0R7PmgNMaWRyA=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=oLJ8t3tU;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E9C06435F5;
+	Sun, 30 Aug 2026 03:13:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E5A51F000E9;
+	Sun, 30 Aug 2026 03:13:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1788059590;
+	bh=4hJJJOup+wIKIbKGSzexaljQV4pEOoVPh3Fa3fwUWmw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=oLJ8t3tUEgYSbjbEH9J/2AuVNTaOnRHH7ymkB5tvYAspfhvx/Qzhbaryl4IEYOSg7
+	 QvxmIT26hMnQD67CKvm9JDtBvRY1bkt3Lhr9Ky9SgIO3DA9uxx4FUnYkUYXgyPX05K
+	 y0T+/a0ipoOAQnU5MyQwYFwjx+k/hFSdb+6dtIzE=
+Date: Sat, 29 Aug 2026 20:13:10 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Ye Liu <ye.liu@linux.dev>
+Cc: Michal Hocko <mhocko@suse.com>, Ye Liu <liuye@kylinos.cn>, David
+ Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org
+Subject: Re: [PATCH] mm/oom_kill, proc: replace magic number 1000 with
+ OOM_SCORE_ADJ_MAX
+Message-Id: <20260829201310.648ed330984b91b1c135d8a3@linux-foundation.org>
+In-Reply-To: <20260811033609.3992348-1-ye.liu@linux.dev>
+References: <20260811033609.3992348-1-ye.liu@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: hx6cqzuhisdubg58jb3e3au6zhjnr5th
+X-Rspamd-Queue-Id: 9C92EC0004
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Stat-Signature: i4mxm8rcpqrb6gy47g6xeyqowryuu8ad
-X-Rspamd-Queue-Id: F184740002
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788059180-521678
-X-HE-Meta: U2FsdGVkX18GMdxqcL8piyWHyTlAH+oDr9HUCriQy52rvNWp1o4thHDkmWNxNGlMdQcsyLcEC/qoZ8WudE45+y8F4hzQNnotnl0WCaRCAtm7whjiDDLDkWr+za7w/TdVLZlQJnrT/6NqdVFzdDQiWHYcwYz9yj7gUh4SLmTYOjvU7kJWB1nnOGlhNKdw77xUEg7eBqcCiECCyaQQagYdedKVxky8gYlFoPb954krvg5YrxcL9NEI0Oiv3JpJ9/3BzEHu80XQ2djZVhcw4ZAloPHZceeCN7/c8e4agNlz2zvvs1IMoxggfs0HnzE46VYSDtGGcLTYFpNRRhBhxYkzWgXkqrgWFLTBj0kGTuj5+RLKywo0q4g77WoLu0xYga5HhzwYpHjqZRqrxeOo+aqBEIdy4ZJfPqLaOJlDFX8vY7CFnLi8JG1wRara2H/LLg9Qkkgei9hB8D9IJ9BjTuoKzkgMmSlB/kk/30JjhlxdY4IJTkzPh75yQnM9hyXJXI+bn7CQftowyBHjf261c4fyrmJ6IDklriUCQqxEkrun7SAP4TNbIZlSsR/oV6MxeiANqiA1bgil6i8Bd+U2cb15CBU1RFBm0c8KQKRCrwKqEPffp65s/3UhBeTDODdjRD16Z8vxlXXmajDSA3XfT7EXNXDunnyQd3V4VAK+LfZfaJ6y7vUUaFbqwebJV8smDwTYWCu0OD7svL8Do4lfvfYCcAmxM69Qe7F1q5hwHWu5SkngXopvlUUUaSa8+Q15gQjovAQlFcg55BOFvYUbTqRv9Xf9bdawTGsDXKjT1kKxA5aIUE6O5Td83DKEsFnKRev/ewqhvBGb9b9Nhiv54G5Jme4Zca8eVpqLt6faVxV3OY9E5cztC0ISkpvfs4pQltVfrOgffRR9hit2ikrfi+U9B/ooOPLdmjjIofQhNXmV4MhhA9MG0toO+tGOfBySDYKzLUlu1ueRtI2cpznw/Vh
- FtpBYkeU
- o5vayNPADGxHOexSFlbO7Sql2M0xYsBtV8Uqvl8DGoKIJYQ1eojuUFfglgczYMcYt6QT0Jfae49Otbsd8hDJHY918DCVsx/rt8E4thbnX6tE2/yVqKeN7Wm1Qezj0axEkiJZnZyYAR2VUgRY0C+R9888VrrrxfQaO1R7CUeajfa+ZHJ5T7xqFpRJW8tRAs7bB27O1Hwg0zlv27IAlTbZOTZaHbFIqPWOhTokeXEj6pjMnCecVMmrQQ1hX0nDqpncqI7RNTgBK+3t7ZqXcM/S9EAeiSTsUZYOYmOGB3LCLXwQmvASc8dL/CATS8kI6GbVbLfNNNmdNHC3yq4mPlnl85TnX4apfhx/i3ELcrdYqIIlfE4yXmCxkJF6YAP9wCRq0za7oxoYtH149NWBiFlqiIGpVtOIPP4znFb9Y1CuOyRj1n6MXI2wo/3xJ2MkB7GffvBa9el3m/975/eM=
+X-HE-Tag: 1788059592-6575
+X-HE-Meta: U2FsdGVkX1+JWdw5LT98OCnXxTzG9XytqbmIuAE7UwsAv887+7UpBI589sBaBDWuQNfWLpb4d7ohdRpJ8vE13M3EUHIjDx4G7HlaZGJuiodpDPO2LnfDynsUnEr3y6r9jkohtugLL9txVMcNwWDxvnEHk3IeFZ82l9ZJQXsuA8AJqoy7f6ZxE9ma5YihX5z8ykvcUDSBJ6XKQXg5i8l+MYKD7bGzPHax/z+nnsGeL4tpcWgMud+/jZYnQ8TrdsmJFynI2OUHtVVhP5F4h/bsf5MRHsnuBNQtf5R61ELruA2kZohij1sz5zeaZ2kmSlRwd5gn49S4b7iK42iJLzPhVMUCvCFfUgF8A7wFGo6cRvxJ9ONHSsu1eJVKIGwF4TFTH4U7DFTZzlw07YOwOIHRwzbdIeE+LlyVpBkFRvw/96IK5Nywxy8PMJB8PTPvmbN8rk+OvNJWpZWykUtTb8lA7nAOUMwBgEF+39OGTtZaquGZ2Xw5ZyYKlxqAvYXZm+qWRubIEvizJNWGhqi4MyitW90gJdSwJLOSlN9hd/Qc1LcV4/FXnKoO/wQj2R69KzaRGm3nDZIIjM8AppXqt1GBrYsf5YhNeSyEVYGchkfCt156EVljyB9hivLbzWZCbAdQ4kxLIJ4oRwskZNTdqz+gylpIxsHSMBWjY0yr7J5l3eueuhaX98eIlVPTeDrhtaeKeqT0x0NpgQCeOkxKG4kAiu6C8aGoPg7a6W8FWKiqKsYv7CgE4v0kypCflY05P0p0Yyj4vPZ46v1G+g2f3reqKAV1DTBpKY6jHJMoFBqKoHqcdTI8Cm3EdpnReMljjOja/wpW5igFx/+ZmUhEK+NXtR1AqaF7/TLjYIZv9Q9e2fJ8LykYelfJ1e4iAs5cvo/VrsmU/IXJqn3D/9TBGyX9vJR0b3uthTWdeRx2p9Xack6sc2WTA+sy04zFd6ibZYpb4M0LWFtmGqzPIil96vN
+ gu5ng1Sw
+ SEJhNFgB12z+25TmbJ+5jYlkN8bfVhgjRAZomIllkqaOa1y0j95etJEjXsF79bzA/En3IM4kUZK968wvBam26XtTdK5cxToEysypqa37SMNZeA44cbwXHnChgxWT7iAe0Fji56ly28v8U2BkIaZB4MBe9Z6AI/HwE6BxOSc8llSmyS2LZGVsTSoDEiSgpSWdTLi+y4qnrI12yakm0uvWhZYt9L3s+B8qIdLE2J0HoE8Dh/k59DvpDlYfHGyrn4/OPk9IZnZNeoB/klxWu39Bl4OVDs59kdNMPXyEsRIpDUthYQ1BFylTeejsga+KB7AekO3S/YTyARvO8xG7Yk5msVmo0z6rdoidwoJgj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,37 +92,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, 11 Aug 2026 11:36:08 +0800 Ye Liu <ye.liu@linux.dev> wrote:
 
-On Sat, Aug 29, 2026 at 03:02:34PM -0300, Guilherme Giacomo Simoes wrote:
->Matthew Wilcox <willy@infradead.org> wrotes:
->>> Fixes: 164b06f238b9 ("mm: call wp_page_copy() under the VMA lock")
->>
->> what makes you think this is the right commit for fixes?
->Maybe I would should analyzed this better. I only seed the commit that introduce
->this function (and consequently this reader)
+> From: Ye Liu <liuye@kylinos.cn>
+> 
+> In oom_badness() and proc_oom_score(), the oom_score_adj normalization
+> uses a hardcoded 1000, which is the value of OOM_SCORE_ADJ_MAX defined
+> in include/uapi/linux/oom.h.  Other code in the kernel (e.g.
+> fs/proc/base.c oom_adj handling) already uses OOM_SCORE_ADJ_MAX for
+> the same purpose.
+> 
+> Replace the magic number with the macro for consistency and
+> readability.  No functional change.
+> 
+> ...
 >
->>> The race occurs because the reader (__vmf_anon_prepare()) checks
->>> `vma->anon->vma` without holding the mmap_lock and withou the
->>> READ_ONCE() macro. Since the writer (__anon_vma_prepare()) is holding the
->>> mmap_lock and updating the pointer, it creates a data race as the two
->>> access are not properly synchronized.
->>
->> also this explanation is bogus.  i don't have time to fix it right now.
->Hmm... I would like to say that the reader (__vmf_anon_prepare) access the same
->data that the writer (__anon_vma_prepare()), lead to a race condition problem.
->
->When the huge page alloc failed, the asm_exc_page_fault interrupt is fired but
->on the same time the procces that was trying to alloc the huge page, try handle
->to this failed too..
->
->How READ_ONCE() and WRITE_ONCE() is atomic, the race problem can be resolved.
+> --- a/fs/proc/base.c
+> +++ b/fs/proc/base.c
+> @@ -594,7 +594,8 @@ static int proc_oom_score(struct seq_file *m, struct pid_namespace *ns,
+>  	 * exporting for a long time so userspace might depend on it.
+>  	 */
+>  	if (badness != LONG_MIN)
+> -		points = (1000 + badness * 1000 / (long)totalpages) * 2 / 3;
+> +		points = (OOM_SCORE_ADJ_MAX +
+> +			  badness * OOM_SCORE_ADJ_MAX / (long)totalpages) * 2 / 3;
+>  
+>  	seq_printf(m, "%lu\n", points);
+>  
+> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+> index 5f372f6e26fa..08bff7a55db8 100644
+> --- a/mm/oom_kill.c
+> +++ b/mm/oom_kill.c
+> @@ -230,7 +230,7 @@ long oom_badness(struct task_struct *p, unsigned long totalpages)
+>  	task_unlock(p);
+>  
+>  	/* Normalize to oom_score_adj units */
+> -	adj *= totalpages / 1000;
+> +	adj *= totalpages / OOM_SCORE_ADJ_MAX;
+>  	points += adj;
+>  
+>  	return points;
 
-This patch should make KCSAN happy, IIUC, BUT ...
+AI review suggests that this is a misinterpretation of "1000"?
 
-Still, the subject and changelog are rather confusing. The race is on
-vma->anon_vma, not on a failed huge page allocation. READ_ONCE() and
-WRITE_ONCE() do not stop the two faults from racing. They just tell
-KCSAN that these concurrent accesses are intentional ... no?
-
-Cheers, Lance
+	https://sashiko.dev/#/patchset/20260811033609.3992348-1-ye.liu@linux.dev
 
