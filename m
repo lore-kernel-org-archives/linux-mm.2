@@ -4,76 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 183A5C61DB9
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 08:10:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 025FFC61DB9
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 08:10:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3D6D6B0088; Sun, 30 Aug 2026 04:10:49 -0400 (EDT)
+	id 16CF16B008C; Sun, 30 Aug 2026 04:10:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEE656B008A; Sun, 30 Aug 2026 04:10:49 -0400 (EDT)
+	id 145566B0092; Sun, 30 Aug 2026 04:10:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D043B6B008C; Sun, 30 Aug 2026 04:10:49 -0400 (EDT)
+	id 033046B0095; Sun, 30 Aug 2026 04:10:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AFBF86B0088
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:10:49 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3CC9880293
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:10:49 +0000 (UTC)
-X-FDA: 85157214618.26.6DAE387
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 99A90180009
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:10:47 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g+CnEfqt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D93616B008C
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:10:52 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 464B712028E
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:10:52 +0000 (UTC)
+X-FDA: 85157214744.12.5C6D2C0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 9CBE114000C
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:10:50 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="c9AxY/NF";
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788077450;
+	b=IR5vokG+Ag4JY+lzOq/lxJEwBVFrZ1jizGO5I9CB8dR1HwqCILIiJjxpdcmFfEVJZgdlEI
+	RwksUu0YqZLioH5WqSx67eMicBkXIyj74xa33tSHbpg/z0VTeZasBiHwpvzxL49esBJ6im
+	VBBwfbH5EvAIzbz97msn2hf/4ZYjEcw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788077447;
+	s=arc-20220608; t=1788077450;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=roA3pn9tytWMEXCOgBxbLuMlI73dGfxw422usJPW7ws=;
-	b=manyfXsyXl+iz7gP9YB5ek4MDULlP2KsNfmvYLhKkGSCwg7MNNYN6POJV8wqd0LreFoYnf
-	FNBQ2nv3zCNb7zhcEfBPhAO5F48vdp09NMviCxrO8vSkNyl0UQ2p3I5ZksM32isGJahwNf
-	yK5hwR6VjzN/3/+wgWYdgKMJjuCs8ik=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=456eTZH5re1mOwITP+CRrgyuiPJU5C7OnY/8nFx1ZDY=;
+	b=nLLaMaLgkrykUglj55MZ4LUAz6jRIeYZAUylfZeti36OdRTzgpcl3uydBLphUiDdftzd5V
+	T+gAADNMsCjWRD9k1ROuIJwaqgl2m1i4E9smI8SJZpnXtqjPcUyPn+ugXTMyLSw/Hv2pfI
+	T5HIrR2w17Nm5pdFgwk8nImUgrXEF30=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g+CnEfqt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788077447;
-	b=CIjPj+1WGBX0IkP2/8or9J7sszV2q4vDMhTRRSqD/Ldx1K/rzoZ7dJnszu+eFeFyv+yaKE
-	FTlWY4mf76aQHBL8eJc399RfdN7MKAVTk5gSqpos3oK9vPHEmWT17EjgXKfMwOMExTiEhl
-	8f3Nm9A2ATiyEL9mAbwJt5xvyJ1hTRc=
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="c9AxY/NF";
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5317B600AE;
+	by sea.source.kernel.org (Postfix) with ESMTP id C51AA43E1E;
+	Sun, 30 Aug 2026 08:10:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B971F00A3D;
 	Sun, 30 Aug 2026 08:10:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD4D51F000E9;
-	Sun, 30 Aug 2026 08:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788077446;
-	bh=roA3pn9tytWMEXCOgBxbLuMlI73dGfxw422usJPW7ws=;
-	h=From:Subject:Date:To:Cc;
-	b=g+CnEfqtLN6YUoq+dT274N/zsTIZktli69oN0lC8EXm6TfKebORKrOjPyJ5V4Hc1/
-	 7ZJRxEfuZwTEBu8hxRmGCytaJh7VHkbyVkTRhm8wbUxHObSYkTvyz5jyH9LaBs+hDb
-	 IQHVTJO1tqpCZY2nfl5rug+O+lNQzgt+NmKtUbxmTN7KtIzvKocteZOpga8xLeN9O0
-	 dbATn+SstNgbhJi3do34ibCrnWKCajk1PwKSqhAXeZLFGGJ28250c+zUNC7YUXn+bc
-	 8O/dYy95oiKmlzSTKtwDFRdUKO8NlAdZphtdTa9D8UWr4jwZ3IdJhCs5+f/JSUOVrH
-	 uRSbGkLeJTJ0A==
+	s=k20260515; t=1788077449;
+	bh=456eTZH5re1mOwITP+CRrgyuiPJU5C7OnY/8nFx1ZDY=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=c9AxY/NFrk6YmMBtpXsB16Y8Vbd1+0AaacjabFZF0pnRDfVFy5Hmi2G6IDmZ9ghe1
+	 qI7dOUiPZ4DEYk+Jroe6RyVwkh/zPP/sbJTzoC3zJuHiUCLnPW6U+1uFYfP9pTLQ73
+	 izAsxvlg1XaJBB/3ahyXgXqogbE9+Y9fkZfDEw7pjb7f7/DG5uUZrWbVYNoTRPbsgC
+	 meTIUd7SUJXTdoBOr99jIZfPUG4n4BgzjvQjTtwK5co9DnDlHg1kQrkmnhaBRJ6IBc
+	 vFKoEf/sQnNy2S0/Vb1xiFjoJykWxEYA/7pdejplhy2d3sLlgYiF/CBdIyzmMb0khh
+	 yAHkcVEJZYFMw==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Subject: [PATCH 0/4] USB: replace page allocator calls with kmalloc()
-Date: Sun, 30 Aug 2026 11:10:36 +0300
-Message-Id: <20260830-usb-v1-0-aa349c302246@kernel.org>
+Date: Sun, 30 Aug 2026 11:10:37 +0300
+Subject: [PATCH 1/4] USB: usbfs: replace __get_free_page() with kmalloc()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMzQ7CIBAE4Fdp9iwGMP6+SuNhgUXWAxq2mCZN3
- 71Qj99kZhYQKkwCj2GBQj8W/uQGcxjAJ8wvUhyawWp70Td7V1WcwqDPltDEiAFa81so8ry/jM+
- /pbo3+alPe8OhkHIFs0892nk9nmBdN1ZD0b6CAAAA
-X-Change-ID: 20260829-usb-ad052ea1ffad
+Message-Id: <20260830-usb-v1-1-aa349c302246@kernel.org>
+References: <20260830-usb-v1-0-aa349c302246@kernel.org>
+In-Reply-To: <20260830-usb-v1-0-aa349c302246@kernel.org>
 To: Chas Williams <3chas3@gmail.com>, Duncan Sands <duncan.sands@free.fr>, 
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
  Johan Hovold <johan@kernel.org>
@@ -84,14 +83,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  linux-atm-general@lists.sourceforge.net, linux-kernel@vger.kernel.org, 
  linux-mm@kvack.org, linux-usb@vger.kernel.org, netdev@vger.kernel.org
 X-Mailer: b4 0.17-dev
-X-Stat-Signature: a586pyomynckxkq4tb7zqkitxim6gkaw
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 99A90180009
 X-Rspam-User: 
-X-HE-Tag: 1788077447-503738
-X-HE-Meta: U2FsdGVkX1/vWmuL4K5X+/uyM6aUXHTbryA+KLdv34R5uHt4EFQv0jsgbmBUFn5IdazZAV218BZnZ+uY8TrB7zVBCReVL2Mll58l17gzVIQKCf3w4dT3r5WzoBRh7ZNjMck2yTlCxnuOc6LGAx94W6yKOT2591FqTQj/8kZQJwG72ZomcnSOkbEbzI0Z4mHBvWCaujTN9VuyTOcbIMV3iV0H/aQPOkRbX4cVb0gtE/9GT7p8m3elbTw9JND3Bpzyctf7usp/aNC1yxhSz7rkvESckSKbLf7KBzkGjagQW8F2kPAlzh476V8fwHmKKHJDty1RVmShHJb/ayhDkJL1w/9IFoyiC2ZwssVvbh9AtcAqa8sLMW/ilWK86QFlL5UQztKG9WNX7PceBRIPitbMc+qKh64aYNUeHiAXY4zJaN/rQyqxGjbE76zQgkIMSZatWnbNoa6rKLjr0tK3eVdTl74Hq69UMue9pm4DhkZNrM/HYv+pzo5LjGCB7sX1FIfn1dPkAm3GA5hTG1vfEwvMnL+VhXeTtU461JTIrl9apWWQ0t4VUqGeZMuO5C+hve2fWg9UXcIBnjJpZk9xJN28w0bUDwuFYnXCEiO+c+MzpXYuZlepe1oZSytYYd6PuMjwMYpJgy7eWpkkU5ShGT5xGSfQXviCh2aTBw8C+xgkBRXIhrhE7EBmXMfpzayl6d6VcMXLTZG/daCYhdJP12D1qkQ2ZDMhdPfz82tJ7+qw1iUjcs49XK9cdqDxIufH4pgkgSZ6/1psPyvENjGQVavy5KVNqNeZsmkO1oip6y+YkG0Lgoii6aU0wpBKqSGCu7iS2o9vfCTjqpiXsGj6JQtl/mVQh4kken8oK5Z+Sdf602oc8QwqQU4VxIM1HaztJJmImWGMTnTJSsuyOeZwNaGP72ery5zw6CD4vN8eWERbI3yi/L7Ro71m2XjS9P26AXyoECi/iSRXNGvJybEBc2/
- jX4qxH5b
- 7WeyCDnak/7/mtF8xf7/mTjrNoFnGRpGJRQThtcFkwf+gLWiY8c6tM/Je9+e1BGUo58Ay0OrRKprvCCgi6xZACvoBjqQUDjoo+3wRDtwuqZcJjcErymCD7w082XrgymJjFbZJBltWdUUFdR4jE9npjrOnB+p5uh9TRapknPVoQ/CPoqNbmtJlB/S4TnBAda2/87cUojVK7c3zeojF4S1yGJOI+YCrySKc59W8D48K2vqU6Ef3foqaYqBRekDGuAlVxhhNT3SuYo9XsMc=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 9CBE114000C
+X-Stat-Signature: xdjdr8ssi8dtzoj9z65uhbqh4qha5cx5
+X-HE-Tag: 1788077450-945360
+X-HE-Meta: U2FsdGVkX19Vjhpx5aG6neyLlwVrCgtOw2nBv9Qi+ehIFaJPZdg/F6QxN7TjDAjgFhYXZkMJ0qc6v6NqKbgD0RlBdWOwPD1VR4eYv3V9H7rB4/TASzccw8JLgC+iWIK3Xg0ygAZOgJOKv+5TfLkxvKJZ9bCuLv0FHl+IJ1hBYKA1FT82e9XZM5xt3gfprS5Uwx6XEtOIfSZf7fFzdyRftePSGVMIvkHV0D8DSfjYxl8ZfaOjqG+Mqol6Y0TAwf9HVFPrvAa4wTWxeEefnR+26XEmsCLFNSx+U1m50P5r8guYBe5cEw10mroKFgBfxvHj5piK0ngw2qJRm8AZD9jGBjqalkGthPHJnqqPFYZ/+5Z3jAluZkfgdBnl4O08RRzIYuPGrrKCRwmSMjK+Qow9h4Hi+v+PqlUxnnTVfo+qQKak3cbtiWoUQfc6s6HDt6Y/uYWawQGynX21RIwE29PvXku9fIdJbfew9BFgGPQnbQDLvIiOfKSnMrVe2rxwrbIFCJjsMTv1l0ZRi8Ms6v3IKtRI6fjVrMIx1fbaX7JXh2V0Febj8h3UTuT+iZ+09cf3mxkq0vnsc3PRJB9VDfyv0XE+B5LkNtRjhk1Yzh7/J47TvLfbt2k359DaWnofF81yaHeBLOBvBbDQocxHkqWdU9fAHmiZ0J7PzZ8ZqJzNpNpdZHGCjcQvTkBFNd6AztYB/IS3qnnsOPsPP3Y1QbswGQZ7Tq2DDuzlN+GXnZ1qyGutO2kIPRDqRBuRopWVXjaWrSe1kFrwq1NHEA4QYg6GzBYSq74E+TkqNxiYg1QBtjAF2Xxm42FMEHZy8qRWqfCOlLZCGhmoIFu+zpO6WntZkZESxkZIVZk2BswE6YpLNU81EOO9yTdG8E71K2sQbRZnbw7/DHH2sOn/uq4y5Ck3VYrumY78TGXAP/TB6rrCqbv4MjXbwcc7BiqWesmDupJN5C1GywzM5PHpFYCfF34
+ 106KLz91
+ tbvhYPqdA420Pa8CEr8dbRCY624Dc6eRy3Q67GHlKpmEaoEpjFjBTRSsIsRADYeTIghYS4gWo5hP1XvWn2mKpc+4xNTHy8Dpgc/40cqleV5rGlE4XimQwNlx9QlT/DKy4jJ2DAfXWDEBRgshU3uY3c2hbYzgAFzhn5nJIVQ8I/l93xAAqBa8tYc2F56K8RqjqIOv9ghD5lxMuhO++5B+AioSG0McFzWE9l3X0nWzobd54/p9cwrAOiuJgFWHZ/3oEPPBud46+EolZ9TQXVQz7OQ5pCBLD+Zry2DTsSsvK8xEqCPzYNbvWyQnxfnwIzqBXI3yC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,62 +98,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a (small) part of larger work of replacing page allocator calls
-with kmalloc.
+do_proc_control() allocates a temporary buffer for the data stage of a
+control transfer issued from userspace.
 
-My initial intention a few month ago was to remove ugly casts [1], but then
-willy pointed out that Linus objected to something like this [2] and it
-looks like more than a decade old technical debt.
+This buffer can be allocated with kmalloc() as there's nothing special
+about it to go directly to the page allocator.
 
-Largely, anything that doesn't need struct page (or a memdesc in the
-future) should just use kmalloc() or kvmalloc() to allocate memory.
-kmalloc() guarantees alignment, physical contiguity and working
-virt_to_phys() and beside nicer API that returns void * on alloc and
-doesn't require to know the allocation size on free, kmalloc() provides
-better debugging capabilities than page allocator.
+kmalloc() provides a better API that does not require ugly casts and
+kfree() does not need to know the size of the freed object.
 
-Another thing is that touching these allocation sites gives the reviewers
-opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
-another size is appropriate.
+Performance difference between kmalloc() and __get_free_pages() is not
+measurable as both allocators take an object/page from a per-CPU list for
+fast path allocations.
 
-For larger allocations that don't need physically contiguous memory
-kvmalloc() can be a better option that __get_free_pages() because under
-memory pressure it's is easier to allocate several order-0 pages than a
-physically contiguous chunk with the same number of pages.
+For the slow path the performance is anyway determined by the amount of
+reclaim involved rather than by what allocator is used.
 
-And last, but not least, removing needless calls to page allocator should
-help with memdesc (aka project folio) conversion. There will be way less
-places to audit to see if the user was actually using struct page.
+Replace use of __get_free_page() with kmalloc() and free_page() with
+kfree().
 
-The patches are deliberately kept small: each one deals with a single
-driver or subsystem and with a single type of allocation, so that every
-conversion can be reviewed, and if needed reverted, on its own.
-
-[1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
-[2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/
-
-Note that the buffers in usb/core/buffer.c and usb/mon/mon_bin.c are left
-
-alone: they are mapped to userspace and thus really need struct page.
-
+Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+Assisted-by: copilot:claude-opus
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
-Mike Rapoport (Microsoft) (4):
-      USB: usbfs: replace __get_free_page() with kmalloc()
-      USB: cxacru: replace __get_free_page() with kmalloc()
-      USB: speedtch: replace __get_free_page() with kmalloc()
-      USB: serial: wwan: replace __get_free_page() with kmalloc()
+ drivers/usb/core/devio.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- drivers/usb/atm/cxacru.c      | 16 ++++++++--------
- drivers/usb/atm/speedtch.c    |  4 ++--
- drivers/usb/core/devio.c      |  4 ++--
- drivers/usb/serial/usb_wwan.c |  6 +++---
- 4 files changed, 15 insertions(+), 15 deletions(-)
----
-base-commit: 1b78070aaef63512688aebfbc82365ef9d6660f1
-change-id: 20260829-usb-ad052ea1ffad
+diff --git a/drivers/usb/core/devio.c b/drivers/usb/core/devio.c
+index 101cb9425480..9a7cc7cdf00b 100644
+--- a/drivers/usb/core/devio.c
++++ b/drivers/usb/core/devio.c
+@@ -1190,7 +1190,7 @@ static int do_proc_control(struct usb_dev_state *ps,
+ 		return ret;
+ 
+ 	ret = -ENOMEM;
+-	tbuf = (unsigned char *)__get_free_page(GFP_KERNEL);
++	tbuf = kmalloc(PAGE_SIZE, GFP_KERNEL);
+ 	if (!tbuf)
+ 		goto done;
+ 	urb = usb_alloc_urb(0, GFP_NOIO);
+@@ -1265,7 +1265,7 @@ static int do_proc_control(struct usb_dev_state *ps,
+  done:
+ 	kfree(dr);
+ 	usb_free_urb(urb);
+-	free_page((unsigned long) tbuf);
++	kfree(tbuf);
+ 	usbfs_decrease_memory_usage(PAGE_SIZE + sizeof(struct urb) +
+ 			sizeof(struct usb_ctrlrequest));
+ 	return ret;
 
---
-Sincerely yours,
-Mike.
+-- 
+2.53.0
 
 
