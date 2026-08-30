@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A59E6C61DB9
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 04:19:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE894C61DDE
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 04:19:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B2FC6B0088; Sun, 30 Aug 2026 00:19:17 -0400 (EDT)
+	id 5DC9B6B008A; Sun, 30 Aug 2026 00:19:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58A5B6B008A; Sun, 30 Aug 2026 00:19:17 -0400 (EDT)
+	id 58A0C6B008C; Sun, 30 Aug 2026 00:19:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A03B6B008C; Sun, 30 Aug 2026 00:19:17 -0400 (EDT)
+	id 4A14F6B0092; Sun, 30 Aug 2026 00:19:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 27C486B0088
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:19:17 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A934240256
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:19:16 +0000 (UTC)
-X-FDA: 85156631112.05.982B6CA
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2BE676B008A
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:19:18 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A0B5B160252
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:19:17 +0000 (UTC)
+X-FDA: 85156631154.25.DF94B5B
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 98A46100003
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:19:14 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=kq9hbcwK;
-	spf=pass (imf14.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788063555;
-	b=ahHgnz2GUjruMsJdW2wvwc7khN+JXeCR+6jj72FiA4rLP/2PObwkTdjYkIGYXeR0CqPI9W
-	He1c7JiEaILWBN7dhShPN7F6Ke7KAibfBeCFmnsLt+kZ8YZYumJnpVcnO1ijvWfQc2xFSa
-	2mbf9+GPQDtk+x2LeOep3Lk3gb1o1Kg=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=kq9hbcwK;
-	spf=pass (imf14.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id CA026C0004
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:19:15 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=TisMTFuh;
+	spf=pass (imf22.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788063555;
+	s=arc-20220608; t=1788063556;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dejHJnjtKaOM8kEBucRI9H7VqzSRiRdAVrdQgRGUFkI=;
-	b=rXD8mPmFHh+WSAEUwpQdvR8VukvX0z7tXzpo7r6FGGgoc3wUUCUB+mAPbsThRgNa3QTGh0
-	V2oOljhq2bjNhEXBxW1fQLUF6nOEvTpCO4i67/vvy2FI45k6sUURpXuYqC9iZSi7Aikv2B
-	rdyDh0NK3MAHSSmIz3uu/zCOk6065X4=
+	bh=17KDooFJoYeOcgqtwlU5ofiBDQP57dVuWi84LFJRoDU=;
+	b=NgWQrCUbdn+duelfV2azXZZ7kM641e5qw7snE05LHLtHqoWTFM7WUq8CYk05pEQCdzqYiW
+	Dcb5VA3T5A8o8RSgi+6USCj6ntW/TC9xM6pHD8qRdg4/dSnU7BCmlZKfMBWCACMzhQp1E+
+	YFuE0rwQSwUPTTuiK9gB08VdrKE0nUo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788063556;
+	b=TfMqFD8E2yoVWUca1CDSqfqvBTZwYOwFRoth0urTNk/j6KK86zC+aIvs3dtQvQ4C77HlFz
+	PyUmTV5SGflsVLHX5AmpvsGoC2xYHwI5My7Nq1IFHL2kXp3UNkwo1rQA2/HbEgC3+5F4lw
+	zmYifQN+84t3Vm+pa4fVD6lc9JcctMY=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=TisMTFuh;
+	spf=pass (imf22.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=dejHJnjtKaOM8kEBucRI9H7VqzSRiRdAVrdQgRGUFkI=; b=kq9hbcwKXkJ4J1vRrFYKTsZrzz
-	6lUCw4ImNf0uzG7wmavDvL2d1b1zE8A/RpsFFBEd2KjgADVNelaeu+Cc2ft0JaNcevE7WuveiN7Hb
-	tuuPLC7wUk69v4nkxbWpYMUDTfv9hB1Rd+51IvuOI4rXruVCB/9lK9RX1+qkSSlUe/PNQoGfnKbnr
-	FbqvDhWB9HA1L6PBoHuVyoe3P+DiWEWuQlRK2pYw1HhzYEuIWWYCtbW/rzc5y5iVbW1pda9V9RBwl
-	edUQp11krj3umqsJsfHJRhphqubpVr29NMhHxEytCZURqMJYmtIFItwO3XcpwP+SOtdsg84LGxNjv
-	2q6HPnXQ==;
+	bh=17KDooFJoYeOcgqtwlU5ofiBDQP57dVuWi84LFJRoDU=; b=TisMTFuhPCehbA7/9nutMd5vZd
+	dGAVseYx9yVTpk//u4fNFf54zujpuIxBHFGc46tKpAUpq1GZxXRPYSn7FYTAklF/bfAtpWBCIi0oC
+	1J3BDbE+FEpcCaXt3JF9blBGINHRtNtYhss61eG4phR8MkG4W5HyPetKV9dWjA59icSHtWvcNRJGN
+	GiKLqnHuePZ0aPQJE7gGK8fblo+0p7PB2bv+IKL2GOeSR7hWHlnEOEqpTCSnX98Tgprf0NJ7dTnYt
+	1ZXY+Z4uZeCw3nVDigJ0ICzRwqLlMVt5EZEKarX+tOuSAxr98ZRt2QwuDcnBtoKP22oJ8qCVci5uH
+	unmVDQ0g==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x0X0Z-000000000hb-1c0i;
+	id 1x0X0Z-000000000hO-0BzY;
 	Sun, 30 Aug 2026 04:19:03 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Christian Brauner <christian@brauner.io>
@@ -80,22 +80,22 @@ Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	ntfs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 6/9] ntfs: Remove redundant FGP_NOFS from ntfs_wof_collect_dest()
-Date: Sun, 30 Aug 2026 05:18:53 +0100
-Message-ID: <20260830041901.2668-7-willy@infradead.org>
+Subject: [PATCH 2/9] ext4: Remove uses of FGP_NOFS
+Date: Sun, 30 Aug 2026 05:18:49 +0100
+Message-ID: <20260830041901.2668-3-willy@infradead.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260830041901.2668-1-willy@infradead.org>
 References: <20260830041901.2668-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 98A46100003
-X-Stat-Signature: 9wpsw5jz8zjdrgwy8ej79jzwntc51ajd
 X-Rspam-User: 
-X-HE-Tag: 1788063554-882552
-X-HE-Meta: U2FsdGVkX1+jNdYobgyVVwyLrm3Bjq/7a4UuNDeGK4XAshbPtQR4KdeLmsEAGKHz4UN8vTZ/cYa5lJLMlCy9mxki2cX4hM4IT56grDrLsUJ7946G4R19IIczC6JxA/Lvsv4jhRFxskMseo8HpY4GH5zFJOv8ztAjrU5CniM/fIwfxGOuqsdBhhwly3oXYOhOc6FqX1mv9XP9BjoM/kKHbgVCE/7DIQOQr6pieVrK8hTgXi57sHwGjv11HMAVlBC7r/Jq8cFz26Ot5vLjWSRxvHSjaxSzvmgcM6eyYOZDjZWT5kulXC3tBuJDGEJBVxVdoX0ga605VgRH4at5J4A08G6J+TB4otZJ1hixFWGk8ALvIlxh5j8t/Ck30RbPUbssc9SOIZ36KTcf+Z4qvGBgewciL2qQ3SoY5P9b+tqHWvwCc2RMsuGHCpdjIPiafkr0JO8l1EjjetG7ASA/1at1POShUt7THOm6TI2kZG7pqfttA1rKTzxMJNooyUQEWVN2gUdfh53QUOCu1jYcNDUG34veXkCAIs2SnoQ8njsaAP1nh4ouhd+Z4gPAUvEwSQJqpouYviWf400rICwjpebzNGblYmL/FhAP2ncD11L6dgmTS+7p2yPjzVNOiiAxieeXNq1XsNy3N4pU+LWg7F8U0gW3x7n6T/rh8pBAhTXVvXou3PSNHVVsWU0qnjED7gLQCeoIdoQMSrUqi+mgbmNqjBG6J5TWxjpcG4d1Nunf23SIYRDlmxqTNRBlsWlsdE4F0dYPq/PoTB3EMAVR5+Zs0Bzi5/y59M+gE7VD4gjYuS2mHjJ6s3umZBvjDDrY0oSle6/rSRvLJ30TszzlCEX9w2uqoilgPgqo37b0+V2hWJ93/Wy3/uFggQpiSv0TQuMDMRW0BreLHcRUYsvxLvVZfv4MafegeNGM2UC3qqiYAgtkRDCtIcJ8JrliFUb+s9cQDg7j/ZLR8L7xGCcEyZJ
- uZBsVWC6
- xhPTEpaqzGui2EMN5v1c+RxH+G8swpja2a6YmNmLbkypXYlLEQCfDKFGgmsZYjAd//FAaoFIs9WxwcrV5XWQcrHsaomqlUvQ/d285hakj61o7Gi4836FWGE6MrK3uwNQ2cHzXkHE9nuGXtMDhV0jAt5sEYziiemVr+rhZwv5dnexhFwhjh/fafpgE139syn5NxVJnNMX+zTubi8CHN1lgWptlXD9uTuplcXVc8LvQiFHq4WOs8WeRUAWA3Jrg+8W5DNZsj7CfRd6D5ueu134d1a0VAVNlKcgdNDjACkxXt9HlvqwIlidOD9uRtP4BuaQqy5lJmfB8hRLUgbK36zL+6mc54+LAzKYqM9vrk0uv4P8UOWbcneaEH7bZ6g==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: CA026C0004
+X-Stat-Signature: kpoxcpi6z539mah3jxqafbukh1udxnan
+X-HE-Tag: 1788063555-524589
+X-HE-Meta: U2FsdGVkX18VyrK/ylSKBZtK7gIN2fee2o35nnADwbw+buqfQ7NRxkGhHn/NITUcWOSHJcjXoO3zbRsLJVlrgh2z7sYrwOZS1XQfMKOvPRbFm/CuGIw5LWL6TAq0y+G7CxSNLeD2Bw+OE1f9XyW+Lcq24q5d3+wCPkZqOf/GinWSIdd9yh50yhcmExAS8m6snjHjpLW0F7DmOQzXTZbzmddLT1eET0rdtffmaE7U4t8y2VJ2EBCW4+NELWlgp4gU2zvkVb9S0Of6VVuG7h2VYuG8KQ8jHrT2Ggc/HBIy3zA0z6FPp0rL1G6pQ+uacZTGqjWYm8bJO/4jAWmt5SIuxdEblT8rspCEGySMNw5OwGy59djMiwO7LCiEuLrBfIiTkP9EIpIAFciXuieofv/VLKmjQx40q5XX4ur92JOge99D6kq23HphjguuK39+jfJGmwkhEtSeBNRnFhpnBlQJ3CTrKbIF9FP5AXL0PJ56zboF1THHZzV70tEiyp3nz0g6W+vg5xnU8TjOJpdn8+FXojjZXv889CU3z9DnP036fy+BC+gAM2RjGVkVkRsYmJE1xSZEHaVcJr8blK3gD9qwAxO9KXJ8ZNI5QGGFaEae9Unpyt2NsC3PjACbi1x2ecKgGKWl6SYyzbHAetZDd2a07AzaeLyZy6qu4hHnLmY5lBvE1pYslvVMWVeyU81O5LA54KQK210CPq7Bzx9H+0bgh6I3zP8b5bS/7qkfIXYml/pQFQIXU1bHuFGTdmKPxrOcxeVVKjI7gwfZzW4gUd9Gdg3o16B3eFNPzIy7JVKy+58CNo8myFFyGLCoXqTNlhGVeNVVI44eUbmYlLYGWlwQzjSI6sM+/tBfBEMwRZdf1rJPvt0qU7qrmMv1IHHeVo7aCNkvxhaoIN3GEOi371fxXLlh16Bp7dzgJA/QR3oNQJugLEEzoFTkq36Hu1LSlfEn6EBsrVhdQmBODb/rUhX
+ 5r4C/IQo
+ 9wqrD6ovGrtvi50TSTMYk+8zmt5V0kmKIWMx7XgXUeEK2I1uFIqMxugufQZInqCefhsgDW61fYWxSfClu96+zGUTtnkTEcK91AR+JKb4gNDiOuYyTKJNTltx/7puuXPp5iUVNcMmM2ATPhH9yxv2tvTqDQSxsVO4hfBSKA4iSk9Ev+VkVRH3n8ntt03zUGSrB8BenfEoYIBlgNB5oNCZPXry4SaLw5M2zw0OQmnCvQx2et80/e4WIdVtiP2TzYyGtiavgu138JxoyfoPk3DsphLMy+NLMVsP6tuBObtZkZe51XOJTXBP9gOiXZAsxgSl6fGnTcPRwwYceySoSOhnq5yW+s8WAFx9S2t0UrpjyHuRbqqEMH2mtRyauM/4kTdefpchmzxmLrO/S0aBbY0e6aecM8A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,33 +103,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The flags already include FGP_NOWAIT which prohibits all reclaim, not
-just reclaiming from the filesystem.  Use mapping_gfp_mask() instead of
-GFP_NOFS as this will preserve flags like GFP_MOVABLE.
+Both of these locations are called while a transaction is in progress.
+Starting a transaction uses memalloc_nofs_save(), so we are already
+prevented from recursing into the filesystem and using GFP_NOFS was
+unnecessary.
 
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- fs/ntfs/wof.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ fs/ext4/inline.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ntfs/wof.c b/fs/ntfs/wof.c
-index 8f84c2212eee..c981b4a3b695 100644
---- a/fs/ntfs/wof.c
-+++ b/fs/ntfs/wof.c
-@@ -464,10 +464,9 @@ static int ntfs_wof_collect_dest(struct address_space *mapping,
- 			folio = target;
- 			is_target = true;
- 		} else {
--			folio = __filemap_get_folio(
--				mapping, index,
--				FGP_LOCK | FGP_CREAT | FGP_NOFS | FGP_NOWAIT,
--				GFP_NOFS);
-+			folio = __filemap_get_folio(mapping, index,
-+					FGP_LOCK | FGP_CREAT | FGP_NOWAIT,
-+					mapping_gfp_mask(mapping));
- 			if (IS_ERR(folio))
- 				return PTR_ERR(folio);
- 			is_target = false;
+diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
+index ceee69a66482..1884abb09614 100644
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -601,9 +601,7 @@ static int ext4_convert_inline_data_to_extent(struct address_space *mapping,
+ 		goto out;
+ 	}
+ 
+-	/* We cannot recurse into the filesystem as the transaction is already
+-	 * started */
+-	folio = __filemap_get_folio(mapping, 0, FGP_WRITEBEGIN | FGP_NOFS,
++	folio = __filemap_get_folio(mapping, 0, FGP_WRITEBEGIN,
+ 			mapping_gfp_mask(mapping));
+ 	if (IS_ERR(folio)) {
+ 		ret = PTR_ERR(folio);
+@@ -734,7 +732,7 @@ int ext4_generic_write_inline_data(struct address_space *mapping,
+ 		goto out_release_bh;
+ 	}
+ 
+-	folio = __filemap_get_folio(mapping, 0, FGP_WRITEBEGIN | FGP_NOFS,
++	folio = __filemap_get_folio(mapping, 0, FGP_WRITEBEGIN,
+ 					mapping_gfp_mask(mapping));
+ 	if (IS_ERR(folio)) {
+ 		ret = PTR_ERR(folio);
 -- 
 2.47.3
 
