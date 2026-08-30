@@ -4,116 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2F4FC61DD9
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 05:14:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D997C61DB9
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 05:15:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECF546B0099; Sun, 30 Aug 2026 01:14:18 -0400 (EDT)
+	id AFEE26B009E; Sun, 30 Aug 2026 01:15:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E30616B009B; Sun, 30 Aug 2026 01:14:18 -0400 (EDT)
+	id AB0166B009F; Sun, 30 Aug 2026 01:15:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1E7B6B009D; Sun, 30 Aug 2026 01:14:18 -0400 (EDT)
+	id 9EC7A6B00A0; Sun, 30 Aug 2026 01:15:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B45096B0099
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 01:14:18 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 45E611A0258
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 05:14:18 +0000 (UTC)
-X-FDA: 85156769796.13.DEC0157
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 738DB140003
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 05:14:16 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=crusoe.ai header.s=google header.b=GoCq0oU7;
-	spf=pass (imf09.hostedemail.com: domain of kiyer@crusoe.ai designates 209.85.214.177 as permitted sender) smtp.mailfrom=kiyer@crusoe.ai;
-	dmarc=pass (policy=quarantine) header.from=crusoe.ai
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 740E76B009E
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 01:15:25 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0E4711C16F6
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 05:15:25 +0000 (UTC)
+X-FDA: 85156772610.10.B330D17
+Received: from mta1.migadu.com (out-28.mta1.migadu.com [95.215.58.28])
+	by imf08.hostedemail.com (Postfix) with ESMTP id DF749160002
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 05:15:22 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Cd2tm3y1;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.28 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788066856;
+	s=arc-20220608; t=1788066923;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4psP7AFDz+Kluf5IGgOzZSSfstXE1tXapxgbnPUwWEA=;
-	b=Wt4MqtaTBGPblGU0780SQLpmM2c+D1YNv9tXmVYnyGTbJ/G7r6g3+tWHWwqoSgsGMjOQnq
-	4EGM5FqR1USLqVCb/D544AqK8DuUQOGZ+OJQixDUH2vTPH7M1moTJsjaArJ0916GFbTrVi
-	609vq0A8Bubt+xS4CQDDNB3Xof7m3xw=
+	bh=0D1AWf4KzbXcCA4PdDmSuSOslQXY6/j0QDBlsJSzOjQ=;
+	b=M/wYka3Gm/d7oNzLQCCmjtc/yC4VPgpFxN7PZrbTTWLsNGM5AWi6UHjXZbdDDZ5B1yzlaD
+	iouKXFLfcFqeVn5XpAvZV2cEgJ+YudfheaZuY/sZGp3pAVqwMcoll3NkSCy5KIagEmIrcL
+	sMOIk4ZVrEb5aPEsRq/FIFwAj7q2KuA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788066856;
-	b=2Avhe8Z0d43GVah/4Elwg1ReDlft1Ksv6Ljl/puF9l1NbtLajqd9alkBIY7/unYm+VFKxv
-	N6vFGZda3WwZ0pNn/d0PHMqgMEotdNwO4Xfs222wBpFtk+WvPIhhHZML/MeizQcvJ1dSTZ
-	vm1VMo9HSaqDvp23ww710fiMRriLPBw=
+	t=1788066923;
+	b=rNY1rFMlmD2EOGUYz6ttaELrOlpvVbapy0xpI5EF7GwjOxK1KS3MOyOK6cPLY+VOo4H3Wo
+	MdBLc6Y3ZHTfPdTVwmC9P2he8btxJuLH7z5H1yqcUZs3LyyUE/TuuBQRF1k1uHkyiInLlW
+	rb/3q2e69qWdsD+R+t0gPFVOHVIM054=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=crusoe.ai header.s=google header.b=GoCq0oU7;
-	spf=pass (imf09.hostedemail.com: domain of kiyer@crusoe.ai designates 209.85.214.177 as permitted sender) smtp.mailfrom=kiyer@crusoe.ai;
-	dmarc=pass (policy=quarantine) header.from=crusoe.ai
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ceab75934dso26990985ad.2
-        for <linux-mm@kvack.org>; Sat, 29 Aug 2026 22:14:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=crusoe.ai; s=google; t=1788066855; x=1788671655; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4psP7AFDz+Kluf5IGgOzZSSfstXE1tXapxgbnPUwWEA=;
-        b=GoCq0oU7YHUgsU0i1Wh/9NZQU6AfbzZ/QzSS5skfCOUoZ2mEXRqQXkHT+DP4C+qIYE
-         Kk/hoVJt2TivKma/p6ConTt4hAn8WwiXJmoZH6sPvJK9HKH+Ig7kxl8dtGfYI2mkb1mA
-         nPmdgtohE9kVwoK0f5rXVjdI9eUdfZKLU/gMHn002aOM590WOsiZLtJ5NKjslVQPfEw/
-         NPC1wLnUDIBYvJJejwAKjRk8znQ0bUyKCuVqNOJPa3W24IVfiK4J8daty/0jhNF7jsO6
-         2Bdn1nqYRhl13S77QB06U8j+jBMzqnfegVHHgRB1qLH80/EcBRDEY7I/heVvYbzJ3C9Q
-         cW2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788066855; x=1788671655;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4psP7AFDz+Kluf5IGgOzZSSfstXE1tXapxgbnPUwWEA=;
-        b=Z7zbkWeCfqvLcNbTC/61g/Yf2lbTzVZGNPJ0iXitXrHU6441Kg9/FTE3yiBDDrbeX3
-         0zJDF6sb4nV66E0ADnxVc2fLIyo+so9LiDSHQ2nYOPxL+LHa1ib0UBCfG8ey2tN6BO3M
-         DL24dFeyVfagIkdBgYoxjPNCtkjljF3eN4LM4CPd17kFikWg+Bt/LvOBgoZLRYPxWPrU
-         +lrKy9eupqhSvRnBhfBkmAvaaoCu2ho11nM8ZXn7X+4rrUlmRHrWoC6rzsOlrnTGjdkR
-         2LU3JrJtBfbuYjVdyYEre4XWhMBdn1d7Ajnk7lx2Wbi3FD7GXKpbrRgBnF3FKVIwQFky
-         pOyQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz0zHi/ltpBZg6DB1FMUzVLO7Ve/JnKI+bOP1ibKEsiM4IFFZt8COjaWNBuycEbk9jBnaBCezIxjg==@kvack.org
-X-Gm-Message-State: AFuF++kwzmYoV+jjAJp/yhtOZhtIcq2km5zpGwTxWcn8Orl1U980jpLB
-	VOUUFzs7XfWCCwm7mmXYs/Qd0XmvQWMIjH4WeMAnJbO0QpgR3+1eQzeU7MY7uVZ3KtU=
-X-Gm-Gg: AYBFou3+efXTqDjRl2g++f3aFHsPQHDIam5yccL9UcAd3j8sq/zZxw8XtMHDAZq7zkm
-	b/M7WkYCp+U/JQsWZeEiy/9VC6U8nAfD5xPdsstlFb1bzq4DcAPmiXmRsHoy43xHt1GOlhYQdez
-	lMT2ZjxqZQL69nPFvpEqyM3k8n/cwgh9+IAUvMEkFUzcJiIj5hjgMAhWj0aoEqcKRiyZROLOGvH
-	be91WBenbLSm4Lp2tvUI2F3v3QeOCBAIvJNAN87HOXLESfTuGTNGErKOiYJBfLdyKZxzKNemWPM
-	zMqKJ4DiU6sb9WWYtFIXTEBxsAd+6X7XeRck5gWHsQgs4ciWFxZRfpy3iALYGNWnoxXHJcYPx93
-	Is2oxKp+cVkhCK5YaJE1o2oBpOTzJH1vu30D7qO2xWO82XWishw+87nsR7/7a0h32Pjbja1ChD/
-	bQVthOvew3g/ENPU1fNoCs/StBw+0Bn0XXl//3kdnemgl5DmzUK/yERUf0UZLG2ZOXksqHe7FOk
-	GLynKJcN8B2o4sgv3dNHivQE/Z+hYLipeDu
-X-Received: by 2002:a17:90b:2e4f:b0:398:9bd5:490e with SMTP id 98e67ed59e1d1-3989bd54c43mr16185087a91.21.1788066855436;
-        Sat, 29 Aug 2026 22:14:15 -0700 (PDT)
-Received: from MBP-Krishna-Iyer.civet-hops.ts.net ([2601:645:c68a:b830:d101:1d:112c:715e])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3286fa37fa5sm22595810eec.29.2026.08.29.22.14.14
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 29 Aug 2026 22:14:15 -0700 (PDT)
-From: Krishna Iyer <kiyer@crusoe.ai>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Krishna Iyer <kiyer@crusoe.ai>
-Subject: [PATCH 6/6] mm/damon/stat: support aging_flush
-Date: Sat, 29 Aug 2026 22:14:07 -0700
-Message-ID: <20260830051407.50008-7-kiyer@crusoe.ai>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260830051407.50008-1-kiyer@crusoe.ai>
-References: <20260830051407.50008-1-kiyer@crusoe.ai>
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Cd2tm3y1;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.28 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=HiW3d3TplfCxceccjWG6SJ1prOMobAwhNnC0vLXjVus=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788066921; v=1; x=1788671721;
+ b=Cd2tm3y1EINfQQ5kESgQ13jGNKOcb1G4Eu6EFx1AIXhugCig36Cjjwl9I4gpLn3JBgAThXWr
+ uxjHoVzJlgixBrtJKzQ4Xb0jK3Eu4mdL74N34k8Bbiz//xkgWbX+6E6CJv+MI781BtoUUVMYjW7
+ Uww7aIKwbhjFqx55Qxk/UKkM=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 13f0276adf91ee9f;
+	Sun, 30 Aug 2026 05:15:11 +0000
+X-Mizu-Trace-ID: 13f0276adf91ee9f
+X-Migadu-Flow: FLOW_OUT
+Date: Sat, 29 Aug 2026 22:15:05 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Hugh Dickins <hughd@google.com>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	syzbot <syzbot+cd2073ee6d958a8d0fcd@syzkaller.appspotmail.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [mm?] WARNING in __mod_zone_page_state
+Message-ID: <apO7GDwIgyhdn3t7@linux.dev>
+References: <6a931c5a.08e933ee.dbf97.0093.GAE@google.com>
+ <apNjw0HRyr1Oj7q4@linux.dev>
+ <apOAF5CPFWUUH9du@linux.dev>
+ <a2288e73-5001-2104-1e7a-2b383e7edd61@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a2288e73-5001-2104-1e7a-2b383e7edd61@google.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: DF749160002
+X-Stat-Signature: nh6s9ruca94mygi9s3u9wzciwq1z5o7q
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 738DB140003
-X-Stat-Signature: gb4np54s3auuedz5q4ea4bxswb87zg8b
-X-HE-Tag: 1788066856-175474
-X-HE-Meta: U2FsdGVkX1/R1RJO7LRe18IuocceN53YeEPhL4hpSX/sNDPqucqWXqX2xSSgZlNUwEOOln+SEbYscMD70gnKuoK0Sr6qFSoLWxAR0CRrav46zYXLV48x0KAj3JZB4zHunfhxaoD+FPPGAG/a4V4nct4TAIJsER1VZ6db8nMs3rR97Oy4vQYlogsDMnm/768dd1hNtnjpF15/s/+6ODsamAf+V4dFMynC2IiAzqb40rHIDPAB7sA9OSDSY/xwqcpY1/q2Ksk+h+nMv0GH//n5MnnO3UQQ8XWvfODuzhq3pCwXf0Q72vP7G9b5SBgf8pEZZGsdeLBz7lSnblO4Sc0aD4Max7THQbF1EqYs9h7GG1PNg3jOnblNkUOFK31BnHzXp+DoVAgqsguzji3u3I6qRuX1E4Ml+LwXujlvvAhO0S5k+rLvbZ40enGcLG9TO68M/zDH4s6ewzqCi0OZcp/6i6ywnm0fKc+N3h0bdOBdj2CVSL/klM5Cj7ufqkczwtdTuEh2VtvDlizhksclIHn4NHeAXXibv59gYAbdgdDnoNEY9eyymuv7TtC+5anRypaTTQ2fvs9K3dKK/Q+kgTjDwkNfFlTDSbIMA6qLSALv7R2YsRd9cOZ8HntRHQ585b6/fhTVWqYBbKDHg71LQUtFXAwNVoZbT8oavK0I35PcnjcKeu/++skq9G2DBuYTmCJK0YoIOEPoSLoxB885AVRG9RcMx9Cm0g/NALfN2iqKG5XXvvTn+y8af45A0wcYVrtW3uXSZKUUNmWPAVwkLIuEo3Ovj2rRZsyz7zBGCtXAOHa8HPcqmOmlM4yMo6sWIAe3OFxrH5e2iDKPpmlssk1lUGyc3iQGRf2Ll0Nv57WiXd1N5BaDOIHcfpzqNuo9B9O2LQYEZdrwzHwUcBPxpK+v6i5PtpKlWdi/Lv5ZE5qIxbRT3ZAw+cuKJ9Sd7jJNBQzq98Qm5GhCWkQSlviFQ99
- 3NX8up+A
- M6V2rRDVmBMw4OScDB3xlGT589se3/xlEb/YwFCBHge3MpN5YmHlr/bjYRhxQPFEb9MGkQzpErb4tRl0aYZJrbE3cZ7F2tkrMFeDoxNBpWc7ftJ/+1JaPFjY4Vj+4s6tfB/iBkV0OfVpKG0IEKSlQ8QwAhhbCLWvm9OJdFUJATdOWkHXl8rPvE70BkjG9fAT3NyshX4CBliMrtUvwpDj8RNKHPLnqLXzfJRHyOSIGRgrF+N9KnkvNmWWdd1aH2v1dFW0YP68K/X5SzEeU0uvbxz3n0aKDya0zD/0Ng2n5povSJZ3dVJJnoNa4EtzPjOvDiwJ3TsqORzPk0p+z9mG/H2yDprYAjuZhmav/MyYCeLTGcOo=
+X-HE-Tag: 1788066922-358973
+X-HE-Meta: U2FsdGVkX18eF0Uz+BzZLOLYmp3tW2OQgVBzT2wjn93Gbnj0NexekJKqesezvogACiDgiaIXXIpn6wnr5nAwIr6Qi33h5xR+z8uEUrbRB0ilsFwR4YAdktAEDfZJnTooQY9v1fOgRADRET4xCH5n1JifzvF8tMp+lLhwx5g2nHvD9W/2apxjofJbwyc3Qb3zQpeVhbBU2pb3F50tZ6fBgXRiwipw/ljXKwz3dCn0kHVB7OH/bfh/PMyuHnA/KIi0eJX0P3Ze4F3q0BRm4f7Fn3z2PMinMRwQWokBHK4C4aqHKU2FDoJ5RSdDYRvNZXXxKKR9jG6uJChcjHW6w7HbKBO8tVroN9BrMnagtEOPD5bOZYKl9653HKoKqm1gxWM9/udykxCPFagZ0g2wpwEAc/b2+LCxfxTwPFwzKPxXAu3+/bLEIr9qLq/OuIzhD/DJT1sJsZjn5sS2eJMuSS3VF6SwG4vfkiopvq7R5NIahtXNu0nTcekS9AJgIhvpOJKz5AremiTcGs3CNsHaTDu30GSFLiPXwYqUzOBkz5Kku6QnB8ktjQi/NAeAgRqkhIO6JGRcx/c4YAqzSWpIedc+5ucljesfvUpvYJDPlpM4lZelPhO9uPe/cCrKATlQPdkzBKOakdsh986cf3OlyK9gI1fjAMWFrJffFjbYz94jcz42/G+0HhDC2uyNCb5TZCKoKFRa0hwgVgMPxZDMZQbe94F91pMs/h+l+oHbQLCPbLqAPqxpDFzHtCmDvRbC00imcfoEpp+7vDemmeX+CuMInin/SdRT52AIDlMw+LR8CJIvAZ3MQPV1ijBVP5D8kWoGPum57hhgo0qGh4R6OdvohQNBQIkYCWm1QegPj96wvY6hWkexbvBTj4U9BREUxapwOy64iZ9KWeldenUH0arI/FKH49N+ELGPxf4/GIbV/zmIzuU20DTpanMqgdMnZKvTvu0CkbsBTvc9QEvCFcN
+ XbHZIFBi
+ vhu70ChCaMwX/p0kLWYaqXeNGdQQzvPz19x0AYPCLtSm0EdHx/UOadh4o3IvVkzqcy2CZPm72x0Qri0bfXt4Y9pcNnSrfXOwi3HUP7hoC2ZbjFVnuC+n5qnd0w1xeVFMPRDXhCtdAA79wFRufCGLxdYEGNLqtpTEGLCoNmbX+csAC0Fy9RWI9TueZU9cLVvJoDJyl7lLuI3WqFogiwaJUv8aiV9rIAso3NFJO+ITnQHFKeGRI/KSfM5sgQFssmkmWICGUvVlF1HkUi1N8I6UYI5hKywV3N3cC4vhR45T4LKmUxpofscAhp1iypTcjmoViqZ57f97GS5qbMMTvUvJsjxqfDzlfKM75qMGIK7SMp1+vhESDzq2PI1TxTj47y0Lg12siFK7NhPz0uSH+Y54OmOx6Tqh+2JpYFmDtMlHEtU4Rc3XbPlGcmu6qF+uKraBzgFwuYMtoznE+8pV+AmTnzJH7QHu9uDb6QmeeP86fKTAg4ir7NvEGYuOi3mx64dXCRrFJQzNdB1duphu5YLsz4gCXhovzm5PZ1Wl7UEsvp4mdIOE9oryZfPAMa450qQDYy8Fssoun+aIj9+1cPMLFgwNRvz3TruE7uSsnpmSs85lHZkJhkUgSZ3zoVp3w64Rvzu7CPH2CoWLtjI5arm/BmvafUcNfL0BcABWphkSiyMo4px18vXjO+x45RGzGNdCwaMKHk+h1zKZcb08wodWNKDUaOVFvETEjnGhqd45GsSlbZmgu5ce1Ny8RAg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,48 +92,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Let DAMON_STAT users opt in to flush-assisted access bit clearing via a
-module parameter of the same name as the monitoring context option.
-The parameter is applied when the monitoring context is built, i.e., at
-enable time.  Defaults to off (current behavior).
+On Sat, Aug 29, 2026 at 08:26:02PM -0700, Hugh Dickins wrote:
+> On Sat, 29 Aug 2026, Shakeel Butt wrote:
+> 
+> > +hugh
+> > 
+> > On Sat, Aug 29, 2026 at 04:03:35PM -0700, Shakeel Butt wrote:
+> > > On Sat, Aug 29, 2026 at 10:52:26AM -0700, syzbot wrote:
+> > > > Hello,
+> > > > 
+> > > > syzbot found the following issue on:
+> > > > 
+> > > > HEAD commit:    818bebeb63dd drm/xe: Don't hand out the flat CCS storage a..
+> > > > git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+> > > > console output: https://syzkaller.appspot.com/x/log.txt?x=10286d79580000
+> > > > kernel config:  https://syzkaller.appspot.com/x/.config?x=ccca94d2c01b9e78
+> > > > dashboard link: https://syzkaller.appspot.com/bug?extid=cd2073ee6d958a8d0fcd
+> > > > compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> > > > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13cf7625580000
+> > > > 
+> > > > IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> > > > Reported-by: syzbot+cd2073ee6d958a8d0fcd@syzkaller.appspotmail.com
+> > > > 
+> > > > smpboot: CPU 1 is now offline
+> > > > ------------[ cut here ]------------
+> > > > IS_ENABLED(CONFIG_PREEMPT_COUNT) && __lockdep_enabled && (preempt_count() == 0 && this_cpu_read(hardirqs_enabled))
+> > > > WARNING: mm/vmstat.c:361 at __mod_zone_page_state+0x96/0x190 mm/vmstat.c:361, CPU#2: syz-executor412/6040
+> > > > Modules linked in:
+> > > > CPU: 2 UID: 0 PID: 6040 Comm: syz-executor412 Not tainted syzkaller #0 PREEMPT(full) 
+> > > > Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> > > > RIP: 0010:__mod_zone_page_state+0x96/0x190 mm/vmstat.c:361
+> > > > Code: d0 00 00 00 8b 05 3e 44 ea 0e 85 c0 74 1f 65 8b 05 87 e0 2e 12 65 0b 05 d0 99 2e 12 75 0f 65 8b 05 d3 db 2e 12 85 c0 74 04 90 <0f> 0b 90 48 c7 c7 c0 e7 ff 8b e8 3b b3 6d 09 65 48 0f be 5d 00 48
+> > > > RSP: 0018:ffffc9000627f8e0 EFLAGS: 00010202
+> > > > RAX: 0000000000000001 RBX: 0000000000000000 RCX: 1ffffffff2287150
+> > > > RDX: 0000000000000000 RSI: 0000000000000008 RDI: ffff88807ffd79b8
+> > > > RBP: ffffffff9489f448 R08: 0000000000000001 R09: 0000000000000000
+> > > > R10: 0000000000000001 R11: 0000000000000000 R12: ffffffffffffffff
+> > > > R13: 0000000000000008 R14: ffff88807ffd7940 R15: ffffffff9489f440
+> > > > FS:  00005555785ce400(0000) GS:ffff8880d5da2000(0000) knlGS:0000000000000000
+> > > > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > > > CR2: 00005608d531ffb8 CR3: 000000002cb7c000 CR4: 0000000000352ef0
+> > > > Call Trace:
+> > > >  <TASK>
+> > > >  __zone_stat_mod_folio include/linux/vmstat.h:410 [inline]
+> > > >  __munlock_folio mm/mlock.c:144 [inline]
+> > > >  mlock_folio_batch+0xf97/0x36e0 mm/mlock.c:204
+> > > >  mlock_drain_remote+0xe5/0x140 mm/mlock.c:230
+> > > 
+> > > So, we are calling stat update functions which requires preemption disabled
+> > > (because they access per cpu data) an offlined CPU which is fine but we have
+> > > warning that preemption is not disabled.
+> > > 
+> > > Let see if syzbot comes up with a reproducer. We can just simply take the local
+> > > locks like neighboring functions or something else.
+> > 
+> > After looking deeper and it seems like __munlock_folio is the only one which
+> > have a code path where lru lock with irq disabled is not done before call
+> > __zone_stat_mod_folio. I think we can easily fix __munlock_folio without
+> > acquiring local_locks here.
+> > 
+> > Something like below. I will run some tests before proposing a formal patch.
+> 
+> Thanks for looking into this, Shakeel, but I don't think complicating
+> __munlock_folio() is at all the right fix. This is peculiar to the use
+> by mlock_drain_remote(), isn't it? Which is not taking the usual local_lock
+> because the CPU is going offline. I would say, just take the local_lock in
+> mlock_drain_remote(), but (I haven't read the history) for all I know,
+> there may be PREEMPT_RT reasons why that would be completely wrong.
+> 
+> Hugh
 
-Intended for virtualization hosts backing guest memory with hugetlb
-pages, where non-flushing aging pins the observed access rate to the
-TLB-refill rate (see the aging_flush core patch for details).  Such
-deployments can set damon_stat.aging_flush=1 on the kernel command
-line.
+Thanks Hugh, I will explore the local_lock approach. BTW I simplified the
+fix to the following. is this still making things more complicated?
 
-Assisted-by: Claude:claude-fable-5
-Signed-off-by: Krishna Iyer <kiyer@crusoe.ai>
----
- mm/damon/stat.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/mm/damon/stat.c b/mm/damon/stat.c
-index b05b68f73e10..e093383ba406 100644
---- a/mm/damon/stat.c
-+++ b/mm/damon/stat.c
-@@ -47,6 +47,11 @@ module_param(aggr_interval_us, ulong, 0400);
- MODULE_PARM_DESC(aggr_interval_us,
- 		"Current tuned aggregation interval in microseconds");
+diff --git a/mm/mlock.c b/mm/mlock.c
+index efa6716e4dfb..fa30ffed76ab 100644
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -141,11 +141,16 @@ static struct lruvec *__munlock_folio(struct folio *folio, struct lruvec *lruvec
  
-+static bool aging_flush __read_mostly;
-+module_param(aging_flush, bool, 0600);
-+MODULE_PARM_DESC(aging_flush,
-+		"Flush TLBs when clearing access bits (applied at enable time)");
-+
- static struct damon_ctx *damon_stat_context;
+ munlock:
+ 	if (folio_test_clear_mlocked(folio)) {
+-		__zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
++		/*
++		 * This runs both with and without the lruvec lock held, and
++		 * mlock_drain_remote() reaches it fully preemptible, so use
++		 * the accessors that serialize themselves.
++		 */
++		zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
+ 		if (isolated || !folio_test_unevictable(folio))
+-			__count_vm_events(UNEVICTABLE_PGMUNLOCKED, nr_pages);
++			count_vm_events(UNEVICTABLE_PGMUNLOCKED, nr_pages);
+ 		else
+-			__count_vm_events(UNEVICTABLE_PGSTRANDED, nr_pages);
++			count_vm_events(UNEVICTABLE_PGSTRANDED, nr_pages);
+ 	}
  
- static unsigned long damon_stat_last_refresh_jiffies;
-@@ -178,6 +183,7 @@ static struct damon_ctx *damon_stat_build_ctx(void)
- 
- 	if (damon_select_ops(ctx, DAMON_OPS_PADDR))
- 		goto free_out;
-+	ctx->aging_flush = aging_flush;
- 
- 	target = damon_new_target();
- 	if (!target)
+ 	/* folio_evictable() has to be checked *after* clearing Mlocked */
 -- 
-2.54.0
-
 
