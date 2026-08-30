@@ -4,89 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10014C61DDE
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 01:56:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54000C61DD9
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 02:38:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A53A06B0088; Sat, 29 Aug 2026 21:56:42 -0400 (EDT)
+	id DACB26B0088; Sat, 29 Aug 2026 22:38:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DC6A6B008A; Sat, 29 Aug 2026 21:56:42 -0400 (EDT)
+	id D36826B008A; Sat, 29 Aug 2026 22:38:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A7456B008C; Sat, 29 Aug 2026 21:56:42 -0400 (EDT)
+	id BD8DB6B008C; Sat, 29 Aug 2026 22:38:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A3526B0088
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 21:56:42 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E623A1A0219
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 01:56:28 +0000 (UTC)
-X-FDA: 85156271256.19.44C82D5
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 903D96B0088
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 22:38:03 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0DC53140222
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 02:38:03 +0000 (UTC)
+X-FDA: 85156376046.01.E987E5B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 2E29620007
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 01:56:27 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Iby4Jm3r;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id 6660240002
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 02:38:01 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QVajQr8N;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788057481;
+	b=C0SBIkmjf98GOCCN15kB0bgLxbwWwzHjKsdiPKKEcomvIgNEbSL9yKjwpC7U2WvBo2OzKX
+	ZfAAH6oxBxGb0xqe+7rFpO4KrWQ7HDytYwRJygFEyHZmQif1tzoYSoITZBxDliM+blh73v
+	syRSlMcZDlS1gI5pfZcfMRH/WBecKEs=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QVajQr8N;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788054987;
+	s=arc-20220608; t=1788057481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ktLOUS2dthbwSMgKwyyKMwScfNeWqoT/1bLyJqBmlPc=;
-	b=OVC4SS/TxB4fNnAYrSHe5lWgfBsMQUKrmKsQD3pmADch3mVAyu36VWcZv8DY2Ej6tjyjUM
-	4CD/Y6CFfBHq4mX1UoLDwVWwT5b5meokPdpUjIY13NnC0axr+aOJ9QmeQMyFNuU6+37Ctv
-	57pcrsJH7oJA8UlPFKzRyLqsMV9K+WY=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Iby4Jm3r;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788054987;
-	b=GuEPhhknksto5YOtiTBuWdodifiuEjKb+kj1jM9jPzS11u3PC2z44Rn2HhXbV6ddgkBwLV
-	DTMozdPjrjI5qjOCVAKF5EjWwuKJXdPfuXRIpMADrGkrQUv5YE1SAUAp9KMopcMH/f6z/0
-	SPDjdppT9bqVVuE3LcPOfBjfR9FbPf0=
+	bh=8JYy4cwxYHYB3SLpHqiVEkE1C6SYKPTNsf1PpaVEnwg=;
+	b=ZaIw/FRnco7HPic14HdNHrB4IIdqpuIWWmGATWd16ug6vNP3PB6EL/MSbGbKmj6S/7E14A
+	K5kGXQNsCQO++BHlKXpdd/aaPEw+NbevBi4oLBrDiLa0Ydlr48tICGHk6+E2VxcKx+jCFy
+	Q122V72Bgpp03D88OgSm+ZgG6EKEwoY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 85294600C8;
-	Sun, 30 Aug 2026 01:56:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C20D1F000E9;
-	Sun, 30 Aug 2026 01:56:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7006A600AE;
+	Sun, 30 Aug 2026 02:38:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC531F000E9;
+	Sun, 30 Aug 2026 02:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788054986;
-	bh=ktLOUS2dthbwSMgKwyyKMwScfNeWqoT/1bLyJqBmlPc=;
+	d=linux-foundation.org; s=korg; t=1788057479;
+	bh=8JYy4cwxYHYB3SLpHqiVEkE1C6SYKPTNsf1PpaVEnwg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Iby4Jm3rsZ8tfSz3FvmKIHdQOgTxh6SIlBZ7J6BwALAyJrwJAuRuqcg7Yz2e05fke
-	 fbkXbPsZDeq0rRI0NW3ngAbpSnaQlemg/NtRhK4nQEu3r+iRW2Q3fqPVMwPHmLt5nO
-	 Kq++nDMnigZAdvVoMH0P9f/2f38+CSUZt8jlLAqk=
-Date: Sat, 29 Aug 2026 18:56:25 -0700
+	b=QVajQr8NNF6WPo/YrfP06JWv6nBxuMXUVYkL4jV+k7kofGQyAqz7WQZ82AizCeFUZ
+	 kAT3EfC07ssgCo3wsWRLa38WTRca6Bkg907opIQTsW6d1FYUAiYxWdnnhbzERCR/8a
+	 erqZhgAOb21E3uccdcRdMiINp9YIOYLA7PNTvGX0=
+Date: Sat, 29 Aug 2026 19:37:58 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org,
- david@redhat.com, willy@infradead.org, shakeel.butt@linux.dev,
- vbabka@kernel.org, jannh@google.com, aliceryhl@google.com,
- arve@android.com, cmllamas@google.com, christian@brauner.io,
- tkjos@android.com, dsahern@kernel.org, davem@davemloft.net,
- gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v6 0/5] mm: Unconditional per-VMA locks and cleanups
-Message-Id: <20260829185625.f5ee1b2931818843a78af88d@linux-foundation.org>
-In-Reply-To: <20260813193433.3318288-1-surenb@google.com>
-References: <20260813193433.3318288-1-surenb@google.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti
+ <alex@ghiti.fr>, david@kernel.org, SJ Park <sj@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, kernel-team@meta.com
+Subject: Re: [PATCH v2] tools/mm: add hwpoison-panic tool
+Message-Id: <20260829193758.b251f3c89f8201bdc585a305@linux-foundation.org>
+In-Reply-To: <20260803-memory_failure_rewrite_test-v2-1-ed020ce42129@debian.org>
+References: <20260803-memory_failure_rewrite_test-v2-1-ed020ce42129@debian.org>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: tjtiq7k3g1cwezs9kfcemptij4wpioei
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2E29620007
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6660240002
+X-Stat-Signature: 1qzammo3s6cfncbjuje9rtudcuzayz8u
 X-Rspam-User: 
-X-HE-Tag: 1788054987-142325
-X-HE-Meta: U2FsdGVkX195MK/kPhCGZTlMV/g/87Pq0bFEiVzT1UigZ+Q5ymAxffAo8TBkQ8pYATrm8ezeh8X2U4OJvVaORd8ca+1Tc3AytfKb+a1b7R+HH/tV/5lXphMIp5nvYE1tGwt8sNsSHEH0eCGfRIC+KvjaQ7QDUhquI3AhEbV9yQHEcfkMjK9iyFTTuwl7j/7uEohkYP4L/AcN4qShb7NtTy+0QDyklpgbIfZM92rlZ+4QasE8d80T2cb6uqjfK4Z7bQHlIAKJBv/1+nb1RQ8nMrXjCr7jXZi4Wb26YXot4zCAMQHOWp/Ay2Wzoqa1nD6S/g57V6ZzABsxy4/1O68sYyJebAYm0C4rp3H/xmTfPqhafIfJiuWnHAsbg4Vp9pcGN4asHlArGX8JESFQq41Jxr+S5NYTAEfFCaDqZ/PhlRYvOdueLmWzs4FNnZYuI8LtTtRKtXTeNaq8og9JPRmfIVf1iJ2J62ll4fnaH8XtS5ET0403qJUzZOGLrVWfVp/3j3ebuwsJqZ5vQAPS9NboCOPZg+u4PFXV88wngqxUbV7wh51DiMmSaWh9kBXb7vlWlWdYL2AJif7ef6ryj0c9CcQEQUPI2h0Zqd7VpykoNhdc8xHaV1whwApu3RerI92Dxj7lxzR4LuCRgo8z2OXu4+U+mYQvxzmajzLraB7msPF109YT+5mNkrj2Pvw+yGd5ndPh3+p4SqJmP43pxH02l10w8bd2MvBPKvQAICIc7bvfxVnZLm1ul7ZLGq11q6OrXt207tY5ziZiYX3e8V8rhZ8HjpJ38J+VoVPpi1f07m+Xb48sliBxGJ67onnZlDFdic7o5YL1TWGeRiL8lzDn45w21BBp4N4eBaVMhffyzvgIhVr34HxNIbCtR6rnFUAlfZU14+gnEq5Yc/WoyNySQi0Vq7uHXaFAbqnbeT7uub6izekZ1gDxBrjo62hK/jvo4ePYMGxSeOvAKoeUHS8
- ID/+nxlL
- za3Ub7dko0NdX/1b30TeBY/sL0rTsCXTeM9zDqoTBwPDxXlN7uVEqRjVonaHntO7tieOAPG88myntKVrfAEnPW1jZG+Diq3ut2+M/qV9TjsUlcECeD/jIglHX+peQlb3FvXDiLVQJHyBk+3Vov8WX1COicCPpdPSbvuwff9glkUZtFuGAeGfovrQgqGfi16SYxNOGEwe5hO3c6PnkcOAOAyBjTfwQ/zn0wJC+/C8z7gxeVMmgZziTGfvzDMLPRo9mE6LC5qZ44Am4t7XfYGM9HEGcFqCtn6Lr+Qk5Sba27Om+B79n8Dk5iZnu+h2GR6xsZZF3sCVFPZc2Ai6t10gWemNCVhxdFXFFANL45JTnuEzJWs7XaCDbdytzHZjWCcjT2aOfsg00LnuFnnvZcwaSKPrtsaHKLwzMiI5f
+X-HE-Tag: 1788057481-478119
+X-HE-Meta: U2FsdGVkX18Ptou9nmdRuvWaCNy0DCjfvS6doAunH54NcPeQSz7tsRLxEnz8ved7ncwGcBvsz3hq1IPuN5qqYFr0bF/yA+76LhtUC3mO4HAA+F+N5JPlVKV5GRVZqjPpV0yfHbxfpLEHT3aUOI0mCX4z6RU2paQfwb3kEY1DyYyHr79zdaQuJSOp+LrapniUIRvjlWwpVq2uJA1T+70ndt51UkHZEZLQuW6xajYzoquHX+h9piUJv/Lcu7185Ea6GNM9CXjxdg/nSzAktPf//JqiACIJAEyf/m6dVNdS/d82hDCQZP5lMfsuYvhWY6zURYqkhuwZkm7kCyrmna8xYi+ykrNCsuSg20ViAVqefKX3g65BKZxepDw8NcFrlDqNfuGWtbVz/SA8WZfYC/Uh9uX6rRw+t5HtjZCkK1dnn6pVR5sjacYLUWxnv7+9c2de9NscPvhAZSB3QUYzheh3FRZpz/RbcSdw0nRdga8gTRecRDo0fL8LXRhDk1cZDUV5+NQMpbmZ+zH06Bm/sC8sknoOUktO1VP09V9yo/OONUTlZxm98C148dgXbulL3FY3BzpKH7KNZRL5XAM0mce9eyeUVLsY6JhZJmm3ZgFh643cKvAwHyUy4MAMFjhMAsic/yKNvi1QNFzyrEVBaA83uOjzV+MxPe7jnU0K4aBKrEfVHKcgdgp6FvRo1+QGQCl++W1ne9CrulaLiq1oBjdGHWv7913IZWdeboqRFnh2/LXlZ/lL+hAwjcetl8vHD+WG1g6q9BUYFuMHKotOtriqUVDP65cq4C0LcN7oEzEqK/JQjNjfZiky5Y9UHZ/L5q6qLKEnmMawI56I0luATdIHPBNDhbQUGxSsktLnfrFfhigaGJa8tP5V84PT3Oufy4bytYP1L+ChZSS1kiqUV607ET55w5S1JzoJksB2sSIovkGdAjcjJa2iTzzAIi7g/OHu7M0jUBeZ7zegztC88Bk
+ lRB0SJA+
+ ukh7j9edUXhSCd04PG15uNTTDa/apND4Lxd7ZPO53mdqg8Y6SkXaytfCG1lgjjh2eB244CZShC0bcQ42Q4SGsXXXJGsc8gAYq5nyLvPkmdprApzWvYOBw78APzfe4kL5Vh+91JIm4wg0D8yKdtBpq1+TpfY4Xpd7kZsBIBloIOBQKn79iwGVH8Zc11ZUciPlV+RKVAtCpmgiBCtfdoh6QBq7gBjuLqTEaLJeiX+hDFIZ6XaHywGAgLoRQffhWFw79PnYm8kMCdUqu4M/SVKRcyovOo6CsqLFqH8zDRxYdaWVHYl7RBb+Jl7PZmXr5j1NpD5EpuIi1zmEesyRm3DbG+LuPMn4YgD2A2d3W
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,33 +93,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 13 Aug 2026 12:34:28 -0700 Suren Baghdasaryan <surenb@google.com> wrote:
+On Mon, 03 Aug 2026 04:31:20 -0700 Breno Leitao <leitao@debian.org> wrote:
 
-> v2 version of this patchset [1] was written by Dave Hansen and per his
-> request, I'm taking over this series.
+> Add a tool that enables the vm.panic_on_unrecoverable_memory_failure
+> sysctl, picks a kernel-owned PFN and writes its physical address to
+> hard_offline_page.  Three page kinds are selectable with -k: rodata
+> (default), slab or pgtable. In all cases the host should panic.
 > 
-> tl;dr: Make per-VMA locks available in all configs. Simplify some
-> of the per-VMA lock users now that they can rely on them being
-> always available.
+> Example:
+> 
+>         # ./hwpoison-panic -k slab --yes-panic-my-kernel
+>         injecting hwpoison at phys 0x100032000 (pfn 0x100032, kind=slab)
+>         expecting kernel panic: 'Memory failure: <pfn>: unrecoverable page'
+> 
+> In dmesg, you will see:
+> 
+>         Memory failure: 0x100032: unhandlable page.
+>         Memory failure: 0x100032: recovery action for reserved kernel page: Ignored
+>         Kernel panic - not syncing: Memory failure: 0x100032: unrecoverable page
+> 
+> This lives in tools/mm rather than selftests/mm because every successful
+> run crashes the machine, which is not something to run from CI.
 
-It's been 2+ weeks so perhaps a refresh-and-remind would be helpful.
+I wonder if we can fix this.  Add a knob which tells the kernel not to
+panic/oops/crash/etc.  Instead it sends a message "i tried to crash but
+you told me not to" and proceeds.
 
-But it applies well enough and is adequately reviewed so I put it in
-there for testing, thanks.
+Set that knob around your hwpoison-panic tool and voila, it's now a
+selftest.
 
-AI review might have found a couple of pre-existing binder bugs:
+Wondering if we can sneakily use fault-injection to do this.  Add a new
+i_should_crash_now() and use fault-injection to make this function
+"fail", by returning zero.  Or something else.
 
-	https://sashiko.dev/#/patchset/20260813193433.3318288-1-surenb@google.com
-
-and a small rusty thing which you might wish to attend to.
-
-> Binder and networking folks: Your code is the target of the cleanups.
-> I'm cc'ing you now on v2 because there's emerging consensus on the mm
-> side that the approach here is sane. I'm not quite sure how this pile
-> would get merged, but ack/review tags would be appreciated if this
-> looks good to you.
-
-As said, a resend might help with this.
-
-More binder/net acks would be helpful, please.
 
