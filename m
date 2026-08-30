@@ -4,93 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F383C61DD9
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 02:44:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F231C61DD9
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 03:06:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BF7D6B008C; Sat, 29 Aug 2026 22:44:15 -0400 (EDT)
+	id D19806B0088; Sat, 29 Aug 2026 23:06:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 949B56B0092; Sat, 29 Aug 2026 22:44:15 -0400 (EDT)
+	id CCAC36B008A; Sat, 29 Aug 2026 23:06:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85F4F6B0095; Sat, 29 Aug 2026 22:44:15 -0400 (EDT)
+	id BE0166B008C; Sat, 29 Aug 2026 23:06:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 578326B008C
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 22:44:15 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AA496140229
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 02:44:14 +0000 (UTC)
-X-FDA: 85156391628.08.C0EF01F
-Received: from mta1.migadu.com (out-35.mta1.migadu.com [95.215.58.35])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 6FCE1C0008
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 02:44:12 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ew6ndIm+;
-	spf=pass (imf22.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.35 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E0076B0088
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 23:06:23 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1E7E51C115B
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 03:06:23 +0000 (UTC)
+X-FDA: 85156447446.13.59BCCF8
+Received: from mta0.migadu.com (out-249.mta0.migadu.com [91.218.175.249])
+	by imf17.hostedemail.com (Postfix) with ESMTP id F184740002
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 03:06:20 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pm46zNl3;
+	spf=pass (imf17.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.249 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788057853;
-	b=XkpAYSwkxv7BXagVq7ibVnMeq4+e4J2tx+4ADGr2RJwRGgDEKifl83i7JTcFEJB953Wy42
-	zY2o6nS2L34NJBP/+IJ5MAKNpMuP7LjHbgRmLhAS5lhQMk7xRgv0P+snOGilvN0kGRbOKH
-	ndVHMpJNfkTPjTFFNu6VTOpWYGNq3bk=
+	t=1788059181;
+	b=N7mCDwzxtOxtKbese86vK+JMyCmNTwk6AZjHWUnlMN2pNpZL8jNW9jlb/gbxuzNBp64ypw
+	WBJmiq8WDrJGHxH8ut074D+7ieToTXIRBqaD9wXvTy7QksrfQO6+LssBsmXX0SK92YT9lR
+	rvnu3PnrnScGl/Iup/t7qBxwDdwULDw=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pm46zNl3;
+	spf=pass (imf17.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.249 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788057852;
+	s=arc-20220608; t=1788059181;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v/TzCfg4eQnZBBqVNb9wcZBTlkXaEMXu1hm5uznR21c=;
-	b=4+eWwyFKPSE6fRb+uXaXTEQBkbV1BtXUk5whIqbJUpkOo0DeUp7tX+V1GmItDgcz+uuDHn
-	WusjLvydUZiXyBAwYTYYCnm0DASckLn5xb4ixHxFzODI2pGk30GRdMnaenUIXHYRO/Y2fR
-	prqOmxsvdf47smJm8E7mIFok6hP/tdM=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ew6ndIm+;
-	spf=pass (imf22.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.35 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=YPtFhA9cBK59YaKLNjdewaJ1q0Nop+upG85M+608ROw=;
+	b=CAx43/0ueqjth4taLcNvMlTmSMyuDn/istiPLpF8n9El+K4BneF4jr+FlT3E7caEJxj6FT
+	I0fZFYk4Wi/qqRz2xvYrmsF/isfbeYJHu7+ZtiWHEZxEoJjq9aQBSjUrzuBz6JipvpJJ0R
+	DuFeH2+g7mgDnxIBzvThBM03LtL0LxI=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=HMrK2tewBvrIMRD/RpK8lBB2m3OiLHhGTVVB+J2XoD0=;
+DKIM-Signature: a=rsa-sha256; bh=qXVdb+IqU2kIMGpTuiVRCYml0ZcRQXM5yPEGZHiM3xg=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788057850; v=1; x=1788662650;
- b=ew6ndIm+3T/64+6WjO/CQoJGGdwtkPgLsa20gsbinzE/3n4pQiVBU8GjCkv+3DszSy55U3gw
- hYqsueezzZlbYuLcJGYmLOjPcmOpmS1uh8ych6700w+9Z6V9z0tK+Wn/XTpzObQkUWkbqJexmFl
- K0HH/wiALxQLjkApjOoCvbGI=
+ t=1788059179; v=1; x=1788663979;
+ b=pm46zNl3xIZkfZM/IhrNnf/xOvGCe2l+WHpDZYZU/siwYNPDgphRTDZzu4xSxYi4T0RPNrNi
+ 4iZnXwstTANlXlDFhwvdWa1xvA9gazF/sH0xQv+1F1tvKd5FFq4eNoN9lByRXqwuXA339I2UwEi
+ CcpEMcnq4ngr3pcwFcpjLDk8=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id fa0b8e2f78cb6e66;
-	Sun, 30 Aug 2026 02:44:10 +0000
-X-Mizu-Trace-ID: fa0b8e2f78cb6e66
+Received: by smtp.migadu.com with ESMTPS id 3cf237b371277dd9;
+	Sun, 30 Aug 2026 03:06:09 +0000
+X-Mizu-Trace-ID: 3cf237b371277dd9
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <af26ac3d-30cb-47de-a295-6f9b4f2e2c32@linux.dev>
-Date: Sun, 30 Aug 2026 10:43:58 +0800
+From: Lance Yang <lance.yang@linux.dev>
+To: trintaeoitogc@gmail.com
+Cc: willy@infradead.org,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	lance.yang@linux.dev,
+	liam@infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	mhocko@suse.com,
+	riel@surriel.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	syzbot+395b7abe9696862fc188@syzkaller.appspotmail.com,
+	vbabka@kernel.org
+Subject: Re: [PATCH] mm: fix the race on huge alloc failed
+Date: Sun, 30 Aug 2026 11:06:01 +0800
+Message-Id: <20260830030601.90899-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20260829180234.435064-1-trintaeoitogc@gmail.com>
+References: <20260829180234.435064-1-trintaeoitogc@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/7] mm/mglru: enhance cold/hot inversion handling in
- inc_min_seq()
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
- lianux.mm@gmail.com
-Cc: axelrasmussen@google.com, baolin.wang@linux.alibaba.com,
- baoquan.he@linux.dev, chenridong@xiaomi.com, david@kernel.org,
- hannes@cmpxchg.org, kasong@tencent.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, ljs@kernel.org, lyugaofei@xiaomi.com, mhocko@kernel.org,
- qi.zheng@linux.dev, shakeel.butt@linux.dev, stevensd@chromium.org,
- wangzicheng@honor.com, weixugc@google.com, yuanchu@google.com,
- zhangbo56@xiaomi.com, Xueyuan Chen <xueyuan.chen21@gmail.com>
-References: <20260827234704.63163-1-baohua@kernel.org>
- <20260827234704.63163-4-baohua@kernel.org>
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <20260827234704.63163-4-baohua@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 6FCE1C0008
-X-Stat-Signature: r3ppm8sfyf6ud98ya5fper68zse84963
-X-HE-Tag: 1788057852-146219
-X-HE-Meta: U2FsdGVkX19S88NhQJP3kRFNZ/nE4oBrodSq6DV/46qLkepKjPbwUB2NPsVqNLPb7d+ksiO9vtPG9zpocuINzAMplpxAQUHWIMKuygesyzMMg8ao1PZ2GGfW4zvGQKiOFHzS3tD7kZF/V3QaeDVrkZFbcaXS+YSlc+K7di08GgZdFaL/xz1/xJqVPVMMzvPWneOMTbklZILEJCWwh1jSaVbadZROkkKzxeLzSsd6RU96WYDlhAXo27gqB2IxDBRKJieOx50UmA+L+Q8osFcvd5PSFaBJca2/ARJDxYXhvCZ53A3M4T8mBFn5DY/yk2nscUnGyqPrjHhBfmlfvZ0r+JLPILXr0Psj0dzp6ayxhDwR+15WVMIbG720BKmUaWd4lMeuB4rU1viOgBkk6sy+VJOOttbj5jW5bEg52KzoemN7rNE/x/NIO2moTA+4BSnkHweyVpVQ9Kght2aJfKUh5GtMSiqDImsPEMoDWqJ07Qn7jt9P05aL62qheDhw3/ni2fTbZHvinYwdDVodNZF61reaT1KjmIsBZVWpc6W2NGuExGc8y29jnymnMt8c4+Egsv7enTXRfXvQdDrd5edlAt8aolDdfRFdqdVB5pctPcLkUxl01GP7oaHVfqskEmKO04fwJEiRqx1OjPKBlGbbg7EuDsqIXjnN8jNyAuh9gMOO5YHJ1sgOnTJZ4Q1otitdxJSB49LAEn0wGMIRtD9QozJQ6oQlpwxwozxQGIk1RPqpfn/FZn2mmJJ4MMQ/8ArgUabjzh1Ai7LN12+FnLZkoDdrmKYYwDDxrAuusYvav+VeUVuYLGEBxADuFzQTk9IapLkPwerY7iw3ueV0zxnPS1xVVrO4C7a09FjfOcac5/PhEs9e3R7xT+wY0rjS5mPAQinTS4tA+MkKyM5xr4q/wXYRrNvVwXxn7EMSTGpPt3lG0tg5s1HNMfG/mb4s/tKC24HNp2ZYMWVKdQGYa+2
- V016MQQI
- WCC//i4VcXEnUfx0EImTFlxypvWUHAy3zVHH6FYZptIVFhJuocb7R3u1HLu2E6mM4ms+G0+yLHAzTS9wZw5YO+ffWegx7M/ZV+O2T7784ffjDHAdDjOa+2l1VCXS7uVM55eVCCCcwYUIfrYlL9dCoooLICljn41wCZrGT+FtPrEivRyBsjtf+M9N+3aWzV9rtrI8GaZHaeDVMdR9G1J0mtZe335JYxYQVY8TrxHvH5l8gp9SsGeEuQasvNLrIFI0R4a1FMUSx9tu7srKVG3BTN1T4W7I5qFwLlLpWVleWADrj+qyCLNXgOvnZZi+JhiigAqmAX2fo2ZTOYYaZkw3Q87iQ0c+DEXNYur4MR9hnRI1LEcborzEJ0pu/ySiA+QBNIxprSnomK47vkAuQAKZqGR5e9ykMQwoJuqPhUaXvqjh/+MdEH97zEXVin1bau5/7idpacwiyRJtljPFTWOtoXD7snA==
+X-Stat-Signature: i4mxm8rcpqrb6gy47g6xeyqowryuu8ad
+X-Rspamd-Queue-Id: F184740002
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788059180-521678
+X-HE-Meta: U2FsdGVkX18GMdxqcL8piyWHyTlAH+oDr9HUCriQy52rvNWp1o4thHDkmWNxNGlMdQcsyLcEC/qoZ8WudE45+y8F4hzQNnotnl0WCaRCAtm7whjiDDLDkWr+za7w/TdVLZlQJnrT/6NqdVFzdDQiWHYcwYz9yj7gUh4SLmTYOjvU7kJWB1nnOGlhNKdw77xUEg7eBqcCiECCyaQQagYdedKVxky8gYlFoPb954krvg5YrxcL9NEI0Oiv3JpJ9/3BzEHu80XQ2djZVhcw4ZAloPHZceeCN7/c8e4agNlz2zvvs1IMoxggfs0HnzE46VYSDtGGcLTYFpNRRhBhxYkzWgXkqrgWFLTBj0kGTuj5+RLKywo0q4g77WoLu0xYga5HhzwYpHjqZRqrxeOo+aqBEIdy4ZJfPqLaOJlDFX8vY7CFnLi8JG1wRara2H/LLg9Qkkgei9hB8D9IJ9BjTuoKzkgMmSlB/kk/30JjhlxdY4IJTkzPh75yQnM9hyXJXI+bn7CQftowyBHjf261c4fyrmJ6IDklriUCQqxEkrun7SAP4TNbIZlSsR/oV6MxeiANqiA1bgil6i8Bd+U2cb15CBU1RFBm0c8KQKRCrwKqEPffp65s/3UhBeTDODdjRD16Z8vxlXXmajDSA3XfT7EXNXDunnyQd3V4VAK+LfZfaJ6y7vUUaFbqwebJV8smDwTYWCu0OD7svL8Do4lfvfYCcAmxM69Qe7F1q5hwHWu5SkngXopvlUUUaSa8+Q15gQjovAQlFcg55BOFvYUbTqRv9Xf9bdawTGsDXKjT1kKxA5aIUE6O5Td83DKEsFnKRev/ewqhvBGb9b9Nhiv54G5Jme4Zca8eVpqLt6faVxV3OY9E5cztC0ISkpvfs4pQltVfrOgffRR9hit2ikrfi+U9B/ooOPLdmjjIofQhNXmV4MhhA9MG0toO+tGOfBySDYKzLUlu1ueRtI2cpznw/Vh
+ FtpBYkeU
+ o5vayNPADGxHOexSFlbO7Sql2M0xYsBtV8Uqvl8DGoKIJYQ1eojuUFfglgczYMcYt6QT0Jfae49Otbsd8hDJHY918DCVsx/rt8E4thbnX6tE2/yVqKeN7Wm1Qezj0axEkiJZnZyYAR2VUgRY0C+R9888VrrrxfQaO1R7CUeajfa+ZHJ5T7xqFpRJW8tRAs7bB27O1Hwg0zlv27IAlTbZOTZaHbFIqPWOhTokeXEj6pjMnCecVMmrQQ1hX0nDqpncqI7RNTgBK+3t7ZqXcM/S9EAeiSTsUZYOYmOGB3LCLXwQmvASc8dL/CATS8kI6GbVbLfNNNmdNHC3yq4mPlnl85TnX4apfhx/i3ELcrdYqIIlfE4yXmCxkJF6YAP9wCRq0za7oxoYtH149NWBiFlqiIGpVtOIPP4znFb9Y1CuOyRj1n6MXI2wo/3xJ2MkB7GffvBa9el3m/975/eM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,72 +105,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
+On Sat, Aug 29, 2026 at 03:02:34PM -0300, Guilherme Giacomo Simoes wrote:
+>Matthew Wilcox <willy@infradead.org> wrotes:
+>>> Fixes: 164b06f238b9 ("mm: call wp_page_copy() under the VMA lock")
+>>
+>> what makes you think this is the right commit for fixes?
+>Maybe I would should analyzed this better. I only seed the commit that introduce
+>this function (and consequently this reader)
+>
+>>> The race occurs because the reader (__vmf_anon_prepare()) checks
+>>> `vma->anon->vma` without holding the mmap_lock and withou the
+>>> READ_ONCE() macro. Since the writer (__anon_vma_prepare()) is holding the
+>>> mmap_lock and updating the pointer, it creates a data race as the two
+>>> access are not properly synchronized.
+>>
+>> also this explanation is bogus.  i don't have time to fix it right now.
+>Hmm... I would like to say that the reader (__vmf_anon_prepare) access the same
+>data that the writer (__anon_vma_prepare()), lead to a race condition problem.
+>
+>When the huge page alloc failed, the asm_exc_page_fault interrupt is fired but
+>on the same time the procces that was trying to alloc the huge page, try handle
+>to this failed too..
+>
+>How READ_ONCE() and WRITE_ONCE() is atomic, the race problem can be resolved.
 
-On 8/28/2026 7:47 AM, Barry Song (Xiaomi) wrote:
-> During aging, a folio's generation may already have been updated by
-> folio_update_gen(), even though it has not yet been moved to the
-> corresponding generation list. Such folios are hotter than those
-> already in that generation.
-> 
-> It makes sense for inc_min_seq() to increment the generation of
-> folios that were never promoted during aging and move them to the
-> tail of the new oldest generation. However, folios that were already
-> promoted should instead be moved to the head of their updated
-> generation, just as sort_folio() does in scan_folios().
-> 
-> Otherwise, promoted folios could end up behind folios that were
-> never promoted, effectively inverting their hot/cold ordering.
-> 
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> Reviewed-by: Kairui Song <kasong@tencent.com>
-> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> ---
->   mm/vmscan.c | 7 +++++--
->   1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 07c22d51debd..b10d1703d907 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -3949,9 +3949,12 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
->   			VM_WARN_ON_ONCE_FOLIO(folio_zonenum(folio) != zone, folio);
->   
->   			new_gen = __folio_inc_gen(folio, old_gen, &gen_increased);
-> -			list_move_tail(&folio->lru, &lrugen->folios[new_gen][type][zone]);
-> -			if (gen_increased)
-> +			if (gen_increased) {
->   				delta += nr_pages;
-> +				list_move_tail(&folio->lru, &lrugen->folios[new_gen][type][zone]);
+This patch should make KCSAN happy, IIUC, BUT ...
 
-Nit.
-This is a bit confusing to me.
+Still, the subject and changelog are rather confusing. The race is on
+vma->anon_vma, not on a failed huge page allocation. READ_ONCE() and
+WRITE_ONCE() do not stop the two faults from racing. They just tell
+KCSAN that these concurrent accesses are intentional ... no?
 
-When I read the code, I thought this implementation contradicts what the commit 
-message says, which means I thought that we move the folios that have been 
-promoted to the tail.
-
-> +			} else {
-
-Maybe adding a comment would make it clearer, like:
-
-If gen_increased == false, it means the folio has been promoted, so move it to 
-the head.
-
-> +				list_move(&folio->lru, &lrugen->folios[new_gen][type][zone]);
-> +			}
-
-
-
->   			/* don't count the workingset being lazily promoted */
->   			if (refs + workingset != BIT(LRU_REFS_WIDTH) + 1) {
->   				int tier = lru_tier_from_refs(refs, workingset);
-
-Overall, looks good to me.
-
-Reviewed-by: Ridong Chen <ridong.chen@linux.dev>
-
--- 
-Best regards
-Ridong
-
+Cheers, Lance
 
