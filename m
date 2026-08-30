@@ -4,117 +4,186 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3129C61DE8
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 22:56:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1839EC61DE2
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 23:10:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 467166B0088; Sun, 30 Aug 2026 18:56:22 -0400 (EDT)
+	id 480616B0088; Sun, 30 Aug 2026 19:10:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 417336B008A; Sun, 30 Aug 2026 18:56:22 -0400 (EDT)
+	id 40ABF6B008A; Sun, 30 Aug 2026 19:10:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 309286B008C; Sun, 30 Aug 2026 18:56:22 -0400 (EDT)
+	id 2AD486B008C; Sun, 30 Aug 2026 19:10:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F30256B0088
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 18:56:21 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 702DE140127
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 22:56:21 +0000 (UTC)
-X-FDA: 85159446162.14.45448E5
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 96708A0004
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 22:56:18 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Rt8rTSuy;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E4BF36B0088
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 19:10:22 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 462D340390
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 23:10:22 +0000 (UTC)
+X-FDA: 85159481484.06.1DD84CF
+Received: from flow-b5-smtp.messagingengine.com (flow-b5-smtp.messagingengine.com [202.12.124.140])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 0F8F01C0003
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 23:10:19 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm3 header.b=Qo6ieQvu;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="V Pm/7Fh";
+	spf=pass (imf18.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.140 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	dmarc=pass (policy=none) header.from=ownmail.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788130579;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1788131420;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e3/cqdLvccPxZ2uqG95iLdrUgQeCw11ZIXwQ+yjx428=;
-	b=M8Kc7J/fbtwT0s98WNKJebvIj/wm+zpmZR2+Rqbngyke1uKu3h2UINZHwiXKSQYp/nYo5h
-	gTOvBe32q5YTnGeSOha6OXO77qo6HJ9QkeH+aQnECVYGuMg7UayRuSCoaXC1ZeBVlW5RrO
-	ldezLsduU3h0XHbY6pz7tdXsPY9G8qQ=
+	bh=zEc5hZJIk8YRnx+J+eo4+Y3sVspDxogbjvEEZwuJ7rQ=;
+	b=Ktq+9wK8ZJt7D4swrlQImWt3EWoDeJ7nyKrEqfOjv5JKWEE4lmmq/4amOgMAU5aTh4LIJS
+	9PdoDwIekcxJD7etou/JB9LJ0AtoB3ehU30z+HWaAWS4FylW2LeXZPhe6SuiRYKw3c6mNX
+	oMceEpp0U7+fWP4uCZdc51L7DjG4GzU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788130579;
-	b=48z/UonqqbH5ns+u9rfwWavaw6nkAhgZCPUlDLKFSbEVyugQKDDVC/4WcuL5Yj9PUQyLor
-	joqo1ZVd0EbwlU3hQc1kI9VgRaFTyG8shSVI7tG0JHI1SvE9hwZhgf/pnqltQYhyF7yUa3
-	V1rgPb80u3fMpkkxR2N66S78Px6h/eY=
+	t=1788131420;
+	b=LQ+Xf6lu2cCIpQIJlSSLJMqL0bfcn7QmwtvLjxDetuaz727QDKGVseOxoo8ocqTXSXrWi/
+	q3fPjj6F1Eltm7cGj8jX1Zk2KRo28fgCCxIlD/6j9ZDXW2kUkoTgaQ+GEaBm8haAwh3mqy
+	IVSBmZC/zs+DvAzIHoDoINydsK8uflI=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Rt8rTSuy;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788130579; x=1819666579;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=w2+MqKImWzvJSAsgyiI2Ii4OdoNpIUEYROMw5ChEGl8=;
-  b=Rt8rTSuyVUMEE+fjtD/QfQTTWW57F6JvARB56LYnsqzJLWfzomMViK+n
-   VOL76kujZ0bYQrL9qJQPNHMuhUD71VEVNwrgb5P0jLozgQ77SXtGV2u3q
-   JudszZfzdlE7bHR5hbq8aEgS+xfSXdb+78yoCMGD4HH0dXvwEZC3IoFfO
-   fCv7mk3i+BbDAtku1OZi4WJi9rQT7s4AKAaCTGffk/Qm93Zcc8vu3O7v7
-   4Fe+tJTYhxfUVYLmjRXR+Ix4xxsehMJsf7tCI3SsWvjQHNPUdqHcbSfl7
-   KDUm0k4GdVXRrnwz8sRDkt+5XVO2VE8itZ5AaZ6TiNGn5mxwBHlsqznq4
-   w==;
-X-CSE-ConnectionGUID: 5xqVKCzwTUaASjkt0notYg==
-X-CSE-MsgGUID: rsk50HLZQcG3OwxUsCV2oA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="88462316"
-X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; 
-   d="scan'208";a="88462316"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2026 15:56:17 -0700
-X-CSE-ConnectionGUID: RywSKtqsQvSRZEniFtSE1g==
-X-CSE-MsgGUID: TucMrbV9Sc+der39RTEi7g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; 
-   d="scan'208";a="292139749"
-Received: from igk-lkp-server01.igk.intel.com (HELO 32268bdb9915) ([10.211.93.152])
-  by fmviesa002.fm.intel.com with ESMTP; 30 Aug 2026 15:56:12 -0700
-Received: from kbuild by 32268bdb9915 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1x0oRc-000000000GZ-40gG;
-	Sun, 30 Aug 2026 22:56:08 +0000
-Date: Mon, 31 Aug 2026 00:55:20 +0200
-From: kernel test robot <lkp@intel.com>
-To: =?iso-8859-1?Q?Andr=E9?= Almeida <andrealmeid@igalia.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Christian Brauner <brauner@kernel.org>, Kees Cook <kees@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>, willy@infradead.org,
-	mathieu.desnoyers@efficios.com,
-	David Laight <david.laight.linux@gmail.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	akpm@linux-foundation.org, Yafang Shao <laoar.shao@gmail.com>,
-	andrii.nakryiko@gmail.com, arnaldo.melo@gmail.com,
-	Petr Mladek <pmladek@suse.com>
-Cc: oe-kbuild-all@lists.linux.dev, LKML <linux-kernel@vger.kernel.org>,
-	kernel-dev@igalia.com, linux-mm@kvack.org,
-	linux-api@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	=?iso-8859-1?Q?Andr=E9?= Almeida <andrealmeid@igalia.com>
-Subject: Re: [PATCH v5 6/6] selftests: prctl: Add test for long thread names
-Message-ID: <202608310045.6IJtlqhj-lkp@intel.com>
-References: <20260827-tonyk-long_name-v5-6-5fa843782a00@igalia.com>
+	imf18.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm3 header.b=Qo6ieQvu;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="V Pm/7Fh";
+	spf=pass (imf18.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.140 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	dmarc=pass (policy=none) header.from=ownmail.net
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailflow.stl.internal (Postfix) with ESMTP id E9FB813001B0;
+	Sun, 30 Aug 2026 19:10:14 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Sun, 30 Aug 2026 19:10:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm3; t=
+	1788131414; x=1788138614; bh=zEc5hZJIk8YRnx+J+eo4+Y3sVspDxogbjvE
+	EZwuJ7rQ=; b=Qo6ieQvuNCpEAFNGUhEaIGd1tM2qenglCvyZhQAtLYcKgEz5uZv
+	VBkmAHxWVjh7GITNYGQRuizAhYS66fu/QSC2e7UCmgPz4kXTk5AkzcfuRQnlVFRP
+	obCI4MlwXEShM2SHCHkmDlPo5XISgTzwCrpLP/3SjKxujKlWi9nqvG6db9p/iXJV
+	OpWFgdf4BeBSzTD8k+jOmUwdbzP/2FzRQ2JsA+NRYO/Wb8e+aEbOrBj5DJeqKV4F
+	mo0lR8bF74G8iO9YI3oa5e0UEi/LrPdRcv9f2BM5MbieoQLkdq9lj0/U9rjqixab
+	TWu+hSlLYlUN95axFhjHuP3dfSYVVt6XzGA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1788131414; x=
+	1788138614; bh=zEc5hZJIk8YRnx+J+eo4+Y3sVspDxogbjvEEZwuJ7rQ=; b=V
+	Pm/7FheSQWTuf0BTxlWwZtt+3pYz2nhduLw4e4y8za/QfTSzRWzNLT9xWYuPmAIc
+	u2iScyJLSttTa87WeCPnCZXn/Gl2gPZabiNI/TusdTrg2rxoLAc/VMFiqpkhoR6S
+	LQ0iKTcxz3hk+DwmEohzGehsn/5Wh1AzucxvOgw+WnDShRgf/uBTnxZEvQeejUv4
+	uiy25ACTvijKoXphHgt82oizR4gYVdqyJePgq/uKO/Q8l7aBEXKtFaecz0P2KuDW
+	NPFfEanh10Tr4PIAw9/Ttp6lzVA7Tw5SgfgV5/JqbWCARVUi3EaZbxN01GMjB+kI
+	lCRwskirVvl7AMPYTRbWw==
+X-ME-Sender: <xms:UbiUap_MtTSeFpMNORlr4wTWDVh0aA6ScnON58j3rpFyccMpDXHIBQ>
+    <xme:UbiUahH2TNeUk63s7BMkgYDKvmxeqjrvmkBoHgCp0p_iRIhMT_WV7fRvdL5DfgV9Z
+    xV8KqlrCQaK0hplET15otnZI5BE2coA-O7f7PR3q4bp8VG_>
+X-ME-Received: <xmr:UbiUagJhhsp10jRM39PBdQWH_D435G2njFRNXy8dKyREtIAZmuZC2LqatWjo_-5YIsgSO4CAuvUBwdlLl9RmrRBi5dPRqwg>
+X-ME-Proxy-Cause: dmFkZTFOIUHJLQqborIagOgmNN+pPcupbVotrH4sXk/9BxNtfHYUJG+jOdd9lP23wPqSUQ
+    AUFqozauDGsFj2Fcxtj3sABYHvl0ph+0UXejznX6q1Xr1Xg/U0V2IT+Tk94c9p2xCxdGcm
+    a9fTqsnIiGGjKyH3aovg7Hbw39SYODzd4xSmoty3roVPn9gC8PR9IGrItxoJJkl5Z9SeqL
+    qN1gQzMRLAf1DVi5pqAy+RVGbsxy3biNw6Ht0LFpwq7yHA4P1bo1DCXcT6AbluvZMKn1Ad
+    6oUtTqY8wpxkXvPNqdcZVzXrArQI+dyTirjeQU9xaq2PAci/BLvZmkKdn6HOgCF/wiNDR5
+    9ypjS27kIioFVXtCK3cYVV4EX87YiMJFRv1YmG81V/CBOpPEVGlHijee21VZbsDPuWUWT2
+    eIkpdBbOecXlENZwKR/2eekW+LLYVEGcUat3eiQbHa7r5NCiXFUSvoh9n0m66Cfn6MPY8F
+    nn+/UAVo+bSz0lZ0FMnWAjcbwosDDLMUFcjHtb2oWyUdokurmOw1uyWf9PuZC23xX1bhno
+    M6fmT9hcOCYeC8ptuK39TgThobX4Z06It4CZvTdsheRb100K9ulRUQKwJiTqPv3ZqMrr5g
+    wtS1gF+w0PemKcSEjYqBuy5LHyuHib4TgEnaucnWv4jXuwuB92nJE5Nsi6mg
+X-ME-Proxy: <xmx:UbiUah47CBbO19kbrhNmEsPxHAHgpefoYPnpR5z-_ohOrh1cCgC-Dg>
+    <xmx:UbiUalPzSFg1nYeOw2R5sG3wTQxx6Y0zUwyNG3X2kHwPHQNKUtVYuw>
+    <xmx:UbiUaprYVwmp1o7kh4B5Ol26B9junaQQXQMqO5xX3y2ZMifwxkjWAA>
+    <xmx:UbiUaseNryne3JEtbfGoTy-pA0krO1YyMhJ9fCu36NsZC9i9Dd6f2g>
+    <xmx:VriUatkHi2UuWhglcFHVNe1ttc7HDvYZlla8FaR0rvxatg4WTOf727px>
+Feedback-ID: i9d664b8f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 30 Aug 2026 19:09:27 -0400 (EDT)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260827-tonyk-long_name-v5-6-5fa843782a00@igalia.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 96708A0004
-X-Stat-Signature: oyuqfs7djq6uarunpbeo8hohuy9a6shk
+From: NeilBrown <neilb@ownmail.net>
+To: "Byungchul Park" <byungchul@sk.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+ linux-kernel@vger.kernel.org, max.byungchul.park@gmail.com,
+ kernel_team@skhynix.com, torvalds@linux-foundation.org,
+ damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
+ adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, mingo@redhat.com,
+ peterz@infradead.org, will@kernel.org, tglx@linutronix.de,
+ rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org,
+ daniel.vetter@ffwll.ch, duyuyang@gmail.com, johannes.berg@intel.com,
+ tj@kernel.org, tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
+ amir73il@gmail.com, gregkh@linuxfoundation.org, linux-mm@kvack.org,
+ akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
+ hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
+ jglisse@redhat.com, dennis@kernel.org, cl@linux.com, penberg@kernel.org,
+ rientjes@google.com, vbabka@suse.cz, ngupta@vflare.org,
+ linux-block@vger.kernel.org, josef@toxicpanda.com,
+ linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
+ dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
+ dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
+ melissa.srw@gmail.com, hamohammed.sa@gmail.com, chris.p.wilson@intel.com,
+ gwan-gyeong.mun@intel.com, boqun.feng@gmail.com, longman@redhat.com,
+ yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com,
+ netdev@vger.kernel.org, matthew.brost@intel.com, her0gyugyu@gmail.com,
+ corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
+ gustavo@padovan.org, christian.koenig@amd.com, andi.shyti@kernel.org,
+ arnd@arndb.de,  Liam.Howlett@oracle.com, rppt@kernel.org,
+ surenb@google.com, mcgrof@kernel.org, petr.pavlu@suse.com,
+ da.gomez@kernel.org, samitolvanen@google.com, paulmck@kernel.org,
+ frederic@kernel.org, neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
+ josh@joshtriplett.org, urezki@gmail.com, mathieu.desnoyers@efficios.com,
+ jiangshanlai@gmail.com, qiang.zhang@linux.dev, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, chuck.lever@oracle.com,
+ okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com,
+ trondmy@kernel.org, anna@kernel.org, kees@kernel.org,
+ bigeasy@linutronix.de, clrkwllms@kernel.org, mark.rutland@arm.com,
+ ada.coupriediaz@arm.com, kristina.martsenko@arm.com,
+ wangkefeng.wang@huawei.com, broonie@kernel.org, kevin.brodsky@arm.com,
+ dwmw@amazon.co.uk, shakeel.butt@linux.dev, ast@kernel.org,
+ ziy@nvidia.com, yuzhao@google.com, baolin.wang@linux.alibaba.com,
+ usamaarif642@gmail.com, joel.granados@kernel.org,
+ richard.weiyang@gmail.com, geert+renesas@glider.be,
+ tim.c.chen@linux.intel.com, linux@treblig.org,
+ alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+ chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
+ link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
+ brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
+ mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
+ linux-doc@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-modules@vger.kernel.org, rcu@vger.kernel.org,
+ linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ 2407018371@qq.com, dakr@kernel.org, miguel.ojeda.sandonis@gmail.com,
+ bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
+ dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v19 00/40] DEPT(DEPendency Tracker)
+In-reply-to: <20260825130843.GB23086@system.software.com>
+References: <20260706061928.66713-1-byungchul@sk.com>
+  <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
+  <20260821042143.GA40890@system.software.com>
+  <825134a8-ceae-430c-b2fc-d1d0c7240f39@kernel.org>
+  <178730572084.2852630.7732425311008244683@noble.neil.brown.name>
+  <20260825130843.GB23086@system.software.com>
+Date: Mon, 31 Aug 2026 09:09:23 +1000
+Message-id: <178813136354.3510150.4730256876703029797@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
 X-Rspam-User: 
-X-HE-Tag: 1788130578-46428
-X-HE-Meta: U2FsdGVkX19qAk+KmYtZExnpgzQV960GfVvAKBZ1I+2jWIws0ZMzJhOT7168Y0XYVU303mfAeU7zC4kQcCsWQ1MPHGN+Lyb05h6M4IqLVTTQX6BtNvZ0sWpP7NvbyoZiXNF60JCB3H4wX+YNOLzCm4TlR3jC6CNtGvNjxcw0DQGlAc8eTEp1B+u+Zp7QUfTKSfur1J+Xtf0G2ARymwapuy2UMzWRoiZSxoZ1tnf5N/WvDuSpFJntrr9aYjc5wteoi1NGDaF5XT7wpMpATOxtdZffjoW31bfG8WyccwryalC1n79sguHV+J8YFdMDWaMV7xG9hI8xiCrdr114dCQuKxEXOmxQX9IIokb2gZ5UfB8VHkHMOcYGwtUK9iw7YZHay3MiH3E+KANVeDOIY2TXNsoIBKdeuHuOKjqcpoAtK4ctBQxzVdNnWj2YKEMhfALWc7wvHu5cJXTXvH3WWc1Ah3HDtAhpi1fzF+L6bCqFPz4EiY/QkSedAXS5qOoctSXq696X2NLIfFGrQpm674UAA0YSzK1g4q/Z7325fGUC6En8ee6KGIVlpSxsHeOsUi23BJ3P5Lukty5xoncaSKwV2g7eeOGk/OQVv3pnkWYYXG+j/WNKPrasa7Rcb2Ob7MM3ICzOcTC87LtYvbHmDIT74ykO8egJu6BGOubnCbHEJJxi7MkOTexTr7y2IzKYAIdAsz7aRlv3zvt7U+jMz3xz4jXamAnHEiwtxyFpcgeC8CV0WAH+0nHqrsJ7XM+PC+Oo0IZ3kf4QZBmKQJB5XMxlo2rOYGYV/b3nGobqoF2uVq1zoK/+XDOwUp4bXwSTTIbrNucgLihvFtj/+4p8qX5Cji8zSSJMbTsdCKuzgjSNjXrF5LG0ZrpoxH6L/3Pk6Kkl4lB9DzCVl3BYT8kdPfAF2Rh95OTgW216MieOLTVDrtynnzaQB1J0zRSrRBrm2QkkNfRzDRhOLcIlL7iXpXf
- yK5n0jhe
- 9K8L0DU+85XzAqd7eLbcrMfh+WS2SzjYEpKp8kA1jd2BYxk+MeiTw/Pu7H3CXkP9W0YEKWZmVYvp6RR2D+dLPBH/PhSjcmBuapaT+h9YpodF/uw3uHhN2ZPW0tgNgWmVPT5tphE2N3RKaf1zQFJrMf0TeBqKTyFtzCIvcrjjaKkYVyK5u8rZSKnlSGza/Jt81iqvpEzovuQt4OdZ8Hf76XHibWXDKXdvod2D9Ue7ElPw007us1otkD7G3e85EvJ1tT5DU31Jxjq7lOOW6y7H9q7pTEeETxDqSFkCBDr3jokwe+dKXw0wgoAMHJ0gZHMpRGDxOpKXY2sJaOoekjyrypRrTcUOgp1gaZjuHUqQHgkp6lOLVrawx5RanrJnIlfBQrm9VVUN6A9CXduRG4mu6nEGDCudR2Zqbp+thPH4VVxTOBtbVmOO3fNRSN6wrg7PxvCOjQjbz6Hijdct/vmECOSyonPA6C1Ndqs7G2GMY7qWUl4o=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0F8F01C0003
+X-Stat-Signature: qa8q78ab9tneq78wz14hjnag7mim83gw
+X-HE-Tag: 1788131419-359327
+X-HE-Meta: U2FsdGVkX18YyBoOSK6VJUrE2cpjAoWwVitueaP1r1qhvyX0NRuZGyX9FnCRlHCea3aJjZ1ZqX5L95nJ1OFogzBmzYQw/0ai12YQw+TdIEyy4ceBp9dBOUXRh5szNaH6td1eQd5Q7JJhmTBIi6fxIBmyrr+QYIsYDQ4cli4QKydB/NCaSCJd1gbFw0CeCh7fP31J6E1Axpep4apyV4UFZNPfWbMeU6Z70OacRhUI4SF5MN/zeTOOaMpU8GuVtQPyZWNC78ENIsRS8DqW1Vkpa6yWqtcEXqquVTqgmdwBYg4Dgp8LQ3pDuhgR4rPIKuMemC90DkmfxnnziKAIF/sTsQEmAk8vAL0G2YBziMHAXMBUOCt6NpjKmsDh85j3dN+1Zsp9XpZxQ/wIsQ5BBUMqnZe+BWwl/yKZtbqEpkNEooAXkTsgHQQQIX6uWBdLFUer3CEebLIbEsJk/5WuYRGeyH+uLG8/Wr7bvxoIDYQMPEqJc/soIpYvnPphEgnpIkhibERvuaN0t53KJF1VadtH69pzqbOc5/wV3wcAJcJZJwtB2rcKdE++jj9knQbkzBCmXE+V56qAQ+tWtx/Ol/hMUYFGt+v5wooYADx7uJ+D1B6y4HeqjsHrxqCkgTAd5+Hzo+QQ3BlkY8J9PhLfOt7/0G0JuD+rmO3ZNGsNtQiXbH7oYntUkUk3GY7aqPIF8tK4mx2H9zzS639WbU/8XsUqyf8jZ0HV1RhSRjz/UOXZjk97itJmCwioxEib8Y019wYSzRWkXOsatk0uHWEAxW3f6BidyAYckr7nBtikBe96PXDtuQZ6ehg3CdJ0s5uKsmHi0UBYBcGGXSHu0VSMkT6xoYRHEBfpnfprl08sUZyak+fep/xR8hz5dr2vTcCLEUeGdAJyKqBHzwAUuLLecw4zKEwwMm4OrNRiop4vzHIwcAmES9mrbGmAYIQFssKFpS2e8WtIsjipPFtoYGT42IE
+ NNxVAv21
+ V8/LGeXJPq96EdTx/ymcN07gPD5usge7SfHrFF9elha0CWwIrcZ11Tx1hIWGEiR8XwRKNQaC5eixZbkOiYyIo3El0EyK2q/DEq1ScYqeoWFjdBw6+hMIFWsvPR99GLXjoh+6sVoyUh2vbnlWZ34HbEwq/8qeHiB8khUnaMBg4iZ8NMillHSaqyZqbVsd4aVIEHljBSnf0c5WTD7W82CXDm/ct0Jp/rF8gwKLVy0Xqu1eS2k5B7DNB0uaKav2jXqmaXIWNJgrS29Xhk4paWlB6V6+VxY8zjOMVzPAFu870a2WiYHazfGIY3qqdW3X8tYcM3ZYVru7Ai1G4gegmm8NE+YzZJARNuSN50XdWkMMwRuxfE1XLk2w7IGZdc2jJ230hwC2pHDE5YTh29OCIk7htkU3Aax7IeXECNsNZj4QxGgD/cw98eBmXiJRrZRtBo+WEm5D13VdarqajU3ITzceKH2VT3fIHEyNztLTShNMtvWb/ENcGzEB904UIIdakweNZUcTVCp7TatJo9K79PLbc2yLPyh5MDdpHOrms7CNDprM5tIKI5liTOwkLOYSa+wG83z2eP0inloVTzmTjX8vahNl1o4sFLkfLr68EWtXYppUCPRGKcSg5sBvsuaoeiG5+LVvk+t2qbOBh2IBpnebkBrM8baW8FxbOkxyeSzx7gDIGoJWASnWZ5EcZWwpUB5MFA1qQmzZ38jG9uay1CTfgMHjV0Qou2f1e0IxDxCIcchgdxDjI22fkxHZ7hReXG2VOM4swxBEpTeFxIPuVSb8FrXRS/boIc3hgFsCGX0nAVHm0She0D1+u1TXvd2Qf+PBdEStmwke2JEkT1Mmlq7cQ2W7YgQ+2ySKs4nvuSVwAOKsQxtgd9vcG2I3Zsg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,82 +191,201 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi André,
+On Tue, 25 Aug 2026, Byungchul Park wrote:
+> On Fri, Aug 21, 2026 at 07:48:40PM +1000, NeilBrown wrote:
+> > On Fri, 21 Aug 2026, David Hildenbrand (Arm) wrote:
+> > > [...]
+> > >
+> > > > Exactly.  That's why we use classification e.g. lock class - DEPT also
+> > > > makes use of the concept.
+> > > >
+> > > > DEPT doesn't use a full map in each page but uses a minimum space for=
+ a
+> > > > timestamp in each to track when each starts to wait so as to use the
+> > > > recorded timestamp when the event occurs e.g. folio_unlock().
+> > >
+> > > Thanks for that information!
+> > >
+> > > >
+> > > >> Given that lockdep is a debug feature, and we will at some point all=
+ocate struct
+> > > >> folio separately, I assume we could just squeeze a "struct lockdep_m=
+ap" in there
+> > > >> in such debug configs and the world would not collapse.
+> > > >
+> > > > That's a good news for lockdep.  (And even for DEPT :)
+> > >
+> > > He :) Where do you currently store the additional per-page information?
+> >=20
+> > lockdep doesn't need to store per-page information.  Possibly DEPT
+> > doesn't either.
+>=20
+> Class can be stored in global map, but DEPT needs to keep a timestamp
+> in each page to track when a potential-wait e.g. folio_lock() has been
+> started and to refer to the information on its event e.g. folio_unlock().
 
-kernel test robot noticed the following build warnings:
+A timestamp?  What does that do?
+There is a lot of detail in your cover letter, but I think there is a
+lot missing too.  I would like to understand how DEPT works, but I don't
+want to dig too hard.  The document in patch 25/40 helps a bit, but it
+is still a bit vague.
+Where is the document which would explain at a level that would help me
+understand this timestamp?
 
-[auto build test WARNING on 73e3f0710014fe6d4ed98cfc02292f6121db7558]
+>=20
+> > lockdep needs one lockdep_map for each lock class.  It would make sense
+> > for all folio locks to use the same global lockdep_map.
+>=20
+> Exactly.  Only considering classes, you are right.
+>=20
+> > Each specific lock is known to lockdep as a task which holds the lock, a
+> > lockdep_map which represents the class of locks, and subclass number
+> > which allows a given task to hold multiple locks of the same class
+> > providing it declare (e.g. with spin_lock_nested() etc).
+>=20
+> Right, lockdep works that way.
+>=20
+> > > >> Doing that today (one "struct lockdep_map" in each "struct page") wo=
+uldn't work
+> > > >> as mm_zero_struct_page() would not expect such large "struct page". =
+But
+> > > >> conceptually, for a debug kernel with a special CONFIG_LOCKDEP_PAGE_=
+LOCK, maybe
+> > > >> that would already be ok and we could just do that (and optimize it =
+as we
+> > > >> allocate folios separately).
+> > > >
+> > > > Sounds great.
+> > > >
+> > > >> Not that it's ideal, but for a debug feature to at least check PG_lo=
+ck, probably
+> > > >> an easier way to achieve it than some completely new infrastructure.
+> > > >
+> > > > I understand what you are going to tell.
+> > > >
+> > > > However, it's worth noting that lockdep tracks dependencies basically
+> > > > based on **lock acqusition orders** in the system.  To make it track
+> > > > even rwlock and general synchronization mechanism as well, lockdep has
+> > > > no choice but to get more complicated.
+> > >
+> > > Well, yes, sure :)
+> > >
+> > > >
+> > > > Focusing on only the dependency checking, the most parts of lockdep a=
+re
+> > > > for the tricky things, so the reusable parts are not that big.
+> > > >
+> > > >> Now, Willy said "locking rules don't really apply to individual foli=
+os", I
+> > > >> wonder if that could just help to also let lockdep check PG_lock wit=
+h less
+> > > >> metadata? (didn't fully wrap my head around the implications)
+> > > >
+> > > > That's what DEPT did and what brought external wgen introduced in DEP=
+T.
+> > > > I was considering the exactly same thing :)
+> > > >
+> > > > Again, lockdep that tracks lock acquisition orders can't do that.
+> > > >
+> > > >> [1]
+> > > >> https://lore.kernel.org/all/aR3WHf9QZ_dizNun@casper.infradead.org/?u=
+tm_source=3Dchatgpt.com
+> > > >>
+> > > >>
+> > > >> It's your guiding example, that's why I mention it. You do mention o=
+ther wait
+> > > >> cases here, I don't know anything about them, but for folios it's re=
+ally just
+> > > >> "we used a single bit so far" AFAIKs.
+> > > >
+> > > > It doesn't matter whether it's implemented using bit or not.  folio l=
+ock
+> > > > is quite special since it's allowed to be released other than the
+> > > > acquisition context that makes lockdep impossible to track them.
+> > >
+> > > Does that really make lockdep *impossible* to track them? IOW, there is=
+ no way
+> > > to extend lockdep to support lock release in different context?
+> >=20
+> > Yes and no....
+> >=20
+> > lockdep has no knowledge of control flows moving across threads in the
+> > way that I assume DEPT does.  But it should be possible to tell it.
+> >=20
+> > If you have some code that takes a lock and then hands it off to
+> > another thread, at the hand-off point you call
+> >    lock_map_release(&the_lock_map)
+> >=20
+> > This says "no task owns this lock any more".
+> >=20
+> > maybe you put the folio which is locked on a queue or an lru or
+> > whatever.
+> >=20
+> > There is no way to say "that queue owns this lock".  Maybe that could
+> > usefully be added - assuming coherent semantics can be designed.
+>=20
+> It's certainly useful to track who owns the lock, but the essence, when
+> it comes to deadlock detection, lies elsewhere.  DEPT is based on the
+> essence, that is, a deadlock comes from waits that are never awakened.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andr-Almeida/treewide-Get-rid-of-get_task_comm/20260827-152300
-base:   73e3f0710014fe6d4ed98cfc02292f6121db7558
-patch link:    https://lore.kernel.org/r/20260827-tonyk-long_name-v5-6-5fa843782a00%40igalia.com
-patch subject: [PATCH v5 6/6] selftests: prctl: Add test for long thread names
-config: loongarch-allyesconfig (https://download.01.org/0day-ci/archive/20260831/202608310045.6IJtlqhj-lkp@intel.com/config)
-compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260831/202608310045.6IJtlqhj-lkp@intel.com/reproduce)
+I disagree.
+The "essence" of deadlock detection involves the interplay of ownership
+and waiting.
+In your cover letter "THE DEPT APPROACH" talks about [S] where and
+event context begins, and [E] where the even occurs.  This S-E section
+is exactly ownership.  During that time something "owns" the event.
+Maybe the terminology is different, but the concept is the same.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608310045.6IJtlqhj-lkp@intel.com/
+>=20
+> > Somewhere else some other task takes responsibility for that folio and
+> > the lock.  maybe it dequeues a page, or maybe an lru callback gives the
+> > locked page to some code.
+> > That code then calls
+> >    lock_map_acquire_try(&the_lock_map)
+> >=20
+> > This says "this task is now holding this lock" (or more accurately "now
+> > holding a lock of this class").
+> > Note the "_try" - that says that the task didn't have to wait for the
+> > lock, it just got it for free, which in fact it did.
+> >=20
+> > Now if that task takes some other lock, lockdep will see a dependency
+> > between the page lock and the new lock, and will accept or reject it as
+> > you would expect.
+>=20
+> It's an interesting approach if your goal is to track the owenership,
+> but if the goal is for tracking dependencies.. well.. I'm not sure.
 
-All warnings (new ones prefixed by >>):
+I am sure.  Dependencies are between waiters and owners.
 
-   security/smack/smack_lsm.c:150:8: error: call to undeclared function 'get_task_comm'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     150 |                 acc, get_task_comm(comm, tsk), note);
-         |                      ^
-   security/smack/smack_lsm.c:150:8: note: did you mean 'get_task_mm'?
-   include/linux/sched/mm.h:151:26: note: 'get_task_mm' declared here
-     151 | extern struct mm_struct *get_task_mm(struct task_struct *task);
-         |                          ^
->> security/smack/smack_lsm.c:150:8: warning: format specifies type 'char *' but the argument has type 'int' [-Wformat]
-     148 |         pr_info("Smack %s: (%s %s %s) %s %s\n", smk_bu_mess[rc],
-         |                                       ~~
-         |                                       %d
-     149 |                 smk_of_task(tsp)->smk_known, oskp->smk_known,
-     150 |                 acc, get_task_comm(comm, tsk), note);
-         |                      ^~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/printk.h:584:34: note: expanded from macro 'pr_info'
-     584 |         printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
-         |                                 ~~~     ^~~~~~~~~~~
-   include/linux/printk.h:511:60: note: expanded from macro 'printk'
-     511 | #define printk(fmt, ...) printk_index_wrap(_printk, fmt, ##__VA_ARGS__)
-         |                                                     ~~~    ^~~~~~~~~~~
-   include/linux/printk.h:483:19: note: expanded from macro 'printk_index_wrap'
-     483 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
-         |                         ~~~~    ^~~~~~~~~~~
-   1 warning and 1 error generated.
+A strong theme in your cover letter is the need to add comprehensive
+annotation for DEPT to work.
+My position is that most of what we need for LOCKDEP to be able to
+detect exactly the same things is appropriate annotation.
+We need to annotate when ownership is handed off to another thread, and
+when the other thread takes on ownership.
+
+So what does your scheme provide that is clearly better?  Is the
+annotation easier?  Is some of it automatic?  Does if give better error
+reports?=20
+
+I had a look through dept.rst and it seems that if a lock is released by
+a different thread than the one which took the lock, then DEPT can
+detect that and do something useful.  That might be interesting.
+But how does it know when it first took ownership of that lock?  Or you
+use your terminology: how does it know when that lock first entered the
+context in that thread?
+
+Maybe when you see an "unlock", you assume the lock has been owned since
+the last time the context didn't hold hold any locks.  Would that be
+right?=20
+Surely it wouldn't the too hard to teach lockdep about that.
+i.e.  when a lock, which is allowed to migrate across threads, is
+released though it wasn't held - insert this lock at the top of the
+current context and re-assess all the wait points.
+
+How do you decide that a lock that was taken is no longer part of the
+current context?
 
 
-vim +150 security/smack/smack_lsm.c
-
-d166c8024d620d Casey Schaufler    2014-08-27  132  
-fba3d32825f4bb Konstantin Andreev 2026-05-11  133  static int
-fba3d32825f4bb Konstantin Andreev 2026-05-11  134  smk_bu_tsk_to_obj(struct task_struct *tsk, const struct task_smack *tsp,
-fba3d32825f4bb Konstantin Andreev 2026-05-11  135  		  char *note, struct smack_known *oskp, int mode, int rc)
-d166c8024d620d Casey Schaufler    2014-08-27  136  {
-fba3d32825f4bb Konstantin Andreev 2026-05-11  137  #ifdef CONFIG_SECURITY_SMACK_BRINGUP
-d166c8024d620d Casey Schaufler    2014-08-27  138  	char acc[SMK_NUM_ACCESS_TYPE + 1];
-fba3d32825f4bb Konstantin Andreev 2026-05-11  139  	char comm[TASK_COMM_LEN];
-d166c8024d620d Casey Schaufler    2014-08-27  140  
-d166c8024d620d Casey Schaufler    2014-08-27  141  	if (rc <= 0)
-d166c8024d620d Casey Schaufler    2014-08-27  142  		return rc;
-bf4b2fee997997 Casey Schaufler    2015-03-21  143  	if (rc > SMACK_UNCONFINED_OBJECT)
-bf4b2fee997997 Casey Schaufler    2015-03-21  144  		rc = 0;
-d166c8024d620d Casey Schaufler    2014-08-27  145  
-d166c8024d620d Casey Schaufler    2014-08-27  146  	smk_bu_mode(mode, acc);
-fba3d32825f4bb Konstantin Andreev 2026-05-11  147  
-bf4b2fee997997 Casey Schaufler    2015-03-21  148  	pr_info("Smack %s: (%s %s %s) %s %s\n", smk_bu_mess[rc],
-fba3d32825f4bb Konstantin Andreev 2026-05-11  149  		smk_of_task(tsp)->smk_known, oskp->smk_known,
-fba3d32825f4bb Konstantin Andreev 2026-05-11 @150  		acc, get_task_comm(comm, tsk), note);
-d166c8024d620d Casey Schaufler    2014-08-27  151  	return 0;
-d166c8024d620d Casey Schaufler    2014-08-27  152  #else
-fba3d32825f4bb Konstantin Andreev 2026-05-11  153  	return rc;
-d166c8024d620d Casey Schaufler    2014-08-27  154  #endif
-fba3d32825f4bb Konstantin Andreev 2026-05-11  155  }
-fba3d32825f4bb Konstantin Andreev 2026-05-11  156  
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+NeilBrown
 
