@@ -4,99 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E13CC61DB9
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 08:45:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDE74C61DB9
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 08:57:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E9786B0088; Sun, 30 Aug 2026 04:45:30 -0400 (EDT)
+	id 9FA626B0088; Sun, 30 Aug 2026 04:57:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 399C16B0092; Sun, 30 Aug 2026 04:45:30 -0400 (EDT)
+	id 9842B6B008A; Sun, 30 Aug 2026 04:57:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2AF766B0095; Sun, 30 Aug 2026 04:45:30 -0400 (EDT)
+	id 8259B6B008C; Sun, 30 Aug 2026 04:57:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 09B106B0088
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:45:30 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 73553A026A
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:45:29 +0000 (UTC)
-X-FDA: 85157301978.26.41B2543
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7302740005
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:45:27 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GaQVowwc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5287B6B0088
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:57:34 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C0B1E16027B
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:57:33 +0000 (UTC)
+X-FDA: 85157332386.15.CC69C37
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id DEA8A140003
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:57:31 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oqxJpBEt;
+	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788079527;
+	s=arc-20220608; t=1788080251;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7EkBLffHUilXUOjYRnC67N1nxTA08hQD3hpd88dlmDM=;
-	b=0MmCzeX/KhH9BFCyhAEA8kV4D94umjMg2EU33weRkyM90B3cXjiJpCbchZLhtFI9nHl/9X
-	LtAVv3AwiHVgblGqzjkSUlPbNKNUr81ZrurGd4x5WgUlYf66+u0txH3LTb+TNkyaTbZrrY
-	W2p9nWHdHnx5SWsSqJpts0Fu9gRMr70=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GaQVowwc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	bh=029+faS5ZzWsov4hpcUm5x/4rseKLpq/BvplkVhE40Q=;
+	b=kC2zm1XUIGTGtwr5cAetQZpoklLBO4+i4zOWwl13njW/NdQFXwnVIpMewTIW6ut94rmilB
+	3GnwgUh1G3otw2gUgazrrFvPNFy8ZCi+33UZhGuOzJuoBkc+ZSso9GHzgt2VpRhjMabExf
+	5YRquclNW4IN0yeLL1oYFhNSH4ubnr8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788079527;
-	b=VwWPtzWjZct58cerCOmib5X7vZESVUs0N/lH22135npHs8u3ApXoeNeMyrAUambnjzN1+B
-	8DxchfgxfqRu0nMfhu4QSAqbk2p2GLgnf98GNBOJR/3O8Gn91Vhpm4V+uMV9XzMuN9jMPV
-	Z0oMQK0a9dvAA/vA7B/PfpGChHQZfzI=
+	t=1788080251;
+	b=u+OG2Sb5/WbayVlC1TVAXu52cvcy1cEZQft+r52elhZv8BUI8NLykkoeR+pu2eWRTkg9fD
+	/GzWY+gZt37NuA1DR8KFcSV6t7r5FjFfNK2OWrt8wVk0rURx6thLJa3C0EKV1SU6H+fYax
+	qC+DNFonH+YzTJwtnrikCArTVthn6Nk=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oqxJpBEt;
+	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A247E441F4
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:45:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8575C1F00A3E
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:45:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6D69F600C8
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:57:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BE131F0155A
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:57:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788079526;
-	bh=7EkBLffHUilXUOjYRnC67N1nxTA08hQD3hpd88dlmDM=;
+	s=k20260515; t=1788080251;
+	bh=029+faS5ZzWsov4hpcUm5x/4rseKLpq/BvplkVhE40Q=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=GaQVowwcTTHSnoV07mxxH7tp3H0PPNfB7ije6AYFDP9JHUlPWqBF/K+elcY4Og3De
-	 GRq3QStCWJaF8QA6OJS/FKAQDCh9SKNZkwOA4qBzoTHiVe7bVHSDEzapqJAgsXKI3d
-	 Q3DkG1N1RJF2rahVShFluAeUcQx46U54xKFgM04CSYYWYTSWFFIIAiveagZUCcKCQK
-	 9Jb/Y6w+dBJaNEekiGVhwvlcE2pX7FUCq+xEuK3/cTtELO0MW0wXAmVZCWYoCq4TQq
-	 5y/lkUeytEztpNhiVSsq8YXZjxOAOLCPWSPk345k06XRhUOeJsvH5Lk3zaXvmiN5Fo
-	 XjD6LFXlNFxDA==
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-9392aa26b25so72956885a.2
-        for <linux-mm@kvack.org>; Sun, 30 Aug 2026 01:45:26 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rpjkz7su3sIP+C/IPw1VpYJlXnq692vng118hNlsqfGj4Y4+5OQeu5PXFfx5+MuPta32TpwbXeP1g==@kvack.org
-X-Gm-Message-State: AFuF++lRWwu3F+EHtcIput3Vpt5YFpCemsxhwyH47dERwIxgEPw5OpfI
-	wfenmqMpIwokmCG/wl3yt5rDOP6ffHAgn9H4dPQZ/a6/4+cmSXu0962KYnEs4wTIXQH6lFzlct9
-	QoOwz79n3qeabcNdiawu1am4nDlH2DAM=
-X-Received: by 2002:a05:620a:1a1f:b0:937:37d4:5dbb with SMTP id
- af79cd13be357-9391390a280mr2106971885a.27.1788079525955; Sun, 30 Aug 2026
- 01:45:25 -0700 (PDT)
+	b=oqxJpBEt3n/PrGLolRfZZ7q7RTLGVwOKqEZrxdigyJmNaxBaixGYhIkZxi2c5aHwD
+	 zunXvrJiXLvdfJs1+0b3rPl0Y12AJ6soo/nCjQKUUc1BAfJfxfp9TUJdt6hnaVQ5Xv
+	 EOylIyrS38eh5Fzk+dcH48n0ojGUMd2gnf020FT3U/1Gcnp3OqcRsb6YSMxUiPJQDF
+	 8CefjlqcToWNeNbAvueJxf/Hsb0MyCeMlYp437F6XPwy4Crs8HHWbPfdJdUMQclMCk
+	 CPhTPBIGDk+KRETf7XulrJk+h2d4YVk2vmGBwsCXP8eRAnUKt7aRL6YxuvwEqPA/JQ
+	 9/X7BSHxiyo4g==
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-9384cb251fbso114143385a.2
+        for <linux-mm@kvack.org>; Sun, 30 Aug 2026 01:57:30 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpMoYT9KKGC3iFvDMccaHXrahMpRTtzSnPsUZuQCMxZs5hjXLqR62M0ULQI37KzNI5Ol+7Gmr9Q6g==@kvack.org
+X-Gm-Message-State: AFuF++ndCJ1lDtIdoPqOx73efCX7GX7JfYzp7qQYzRjs2ItEygkuKj8D
+	SzwDrnfuyPXMQncuyRQiMbvCIQDlVZD34uuqLsi4PQNwiqsJtvP67/2NiK+Z/gt0Y68FfQOtaCj
+	iPcrLSn1CJzUBPS1Tq0D8uSYCWyQhW8g=
+X-Received: by 2002:a05:620a:5d83:b0:92f:279:5953 with SMTP id
+ af79cd13be357-939138ae01emr1707149385a.27.1788080250323; Sun, 30 Aug 2026
+ 01:57:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260820142956.1414337-1-qiwenjie@xiaomi.com> <20260828181035.ce6e23970d37e38b64818f10@linux-foundation.org>
- <20260829121335.3491374-1-qwjhust@gmail.com>
-In-Reply-To: <20260829121335.3491374-1-qwjhust@gmail.com>
+References: <20260730-blk-dontcache-v7-0-3e8e6850068d@columbia.edu>
+ <20260730-blk-dontcache-v7-2-3e8e6850068d@columbia.edu> <CAGsJ_4wUvLoKGafR3U-ji1kUUaz6K_QdN6QxMT-apSaO5tXp0A@mail.gmail.com>
+ <6672b30b-427f-45ed-a172-4c47a63d2c7c@columbia.edu>
+In-Reply-To: <6672b30b-427f-45ed-a172-4c47a63d2c7c@columbia.edu>
 From: Barry Song <baohua@kernel.org>
-Date: Sun, 30 Aug 2026 16:45:14 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xxDpeaPv9Uh_1qsuXsMLkx+J0X=2V6342idLFO5jkTBw@mail.gmail.com>
-X-Gm-Features: AcwNN1X4DbE0lm3JyC3by5kykwuVyKlkaTLRkog7SDb_iT14PqwGbCiV-P3uFKs
-Message-ID: <CAGsJ_4xxDpeaPv9Uh_1qsuXsMLkx+J0X=2V6342idLFO5jkTBw@mail.gmail.com>
-Subject: Re: [PATCH] mm: filemap: tighten dropbehind completion context check
-To: Wenjie Qi <qwjhust@gmail.com>
-Cc: akpm@linux-foundation.org, willy@infradead.org, jack@suse.cz, 
+Date: Sun, 30 Aug 2026 16:57:18 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4y8tAh8A8pfi5TJEtPq-JMPjrLX4gCLvesmPNYuZdWCCA@mail.gmail.com>
+X-Gm-Features: AcwNN1UV9cGDBED4rxscU4sOzbiEGy-p9iJ4uD11AMCMxh60PQMZXIFRTunlV-4
+Message-ID: <CAGsJ_4y8tAh8A8pfi5TJEtPq-JMPjrLX4gCLvesmPNYuZdWCCA@mail.gmail.com>
+Subject: Re: [PATCH v7 2/5] block: add task-context bio completion infrastructure
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Jens Axboe <axboe@kernel.dk>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Christian Brauner <brauner@kernel.org>, "Darrick J. Wong" <djwong@kernel.org>, Carlos Maiolino <cem@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	Christoph Hellwig <hch@infradead.org>, Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, 
+	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>, 
+	Sandeep Dhavale <dhavale@google.com>, Hongbo Li <lihongbo22@huawei.com>, 
+	Chunhai Guo <guochunhai@vivo.com>, Dave Chinner <dgc@kernel.org>, 
+	Bart Van Assche <bvanassche@acm.org>, Hillf Danton <hdanton@sina.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, linux-block@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, 
 	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, qiwenjie@xiaomi.com
+	linux-erofs@lists.ozlabs.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7302740005
-X-Stat-Signature: xhkmhc1zxk1yxiga377unmzf95b531e7
 X-Rspam-User: 
-X-HE-Tag: 1788079527-91513
-X-HE-Meta: U2FsdGVkX1+3Nnnf4/EXjYiSkfDHNA0vtnnw0rn7G17G1Rj3PHizNMAuJ7JOJTMCq4NsKLCFxMwAC+Xf3T9aXcVIfvd+MMwejxB1HksCGAteRaGWmZZIDflLbMFzg/AbZUXBwkDG+SXBtO/1GWij+IHOAm65iYRBRhAlXLNJ7sONWowOpkYvrq4crUtJ7oeQsypYTRGODjwFQRW3A6akC1XCr8QulbpvCdwc3h3plALd1wmjUbriX56+dfcm+1OEGzxr/pjJ4NPcKLcgHD5PsvRVwfUUuyMYnXGxjX9gfvN6zTmPMrMDe/iP7BFuJL3z0wz3DQv19b8/7SbTNgEazl4lxmR/XRw9ivQY6qT3kPi5r2HMRuhTrgo69qLjLOIGMNynSMVmvHlZMmuIANPH85wX610+1hPXIhStgEjD+KP+a2ZvMTcfbortV7wTS2srDl2CBjohZnWz4ZyMrRLJo2XiSnfbYt7oa2smPB7lGiaV6aRheuDW59tDDE3PwLHZmwctmJcrlgP0wLI0mnhFW1vPjFxtrmcmOIr8CVvYbn8h5YmYUyGftNlbgJd/rUnsmzO1mxQ3BTYqQNaeCeaHB28rPwHwP8/gavg56AeWP8Rq1b5ZwP6QevC5LAj5Np4yNIghhcxCeCmWcoe3nsjTno5S3dMK7Q5RVjZJcp8fRYOvJal43Mer6DeEnUCcFSjxoP3zD6ZNUJH5CDUnkS5Bh47flv002zxDUOp0JXzpOcTHkCB3X6GoCf+AqEiGdk5dn4Gqqmzn4qE5G1LfVWBAC3HU809Huv05NhBVUNPVIWmWVaUpdguqSS+mNmDYxzdyaGhZDBMRqOJMrU6CVvn4OxyZkWtRf8BCZDxStvx9nUXNZONtmB/J0Arp2A2/1jw+MciVcknJ2Q9aBG0js96xqTBUath2mz8N4W3iyQBst4bi6NAeQnVDnHKp88bAH+z6MwpwbAtlsV7vG/D7m99
- N/LCK/pu
- BshQ8IFb/ta2yvBQyAk2CRMJS0AciomWKVZ0z1jKY/4d7RH6sC2S0KIheCw2eArhinqOeZGfjzemjmrlQWYOEkcWjYdqtMrHBMo/Zz2UIJ0FKfFHuzEUi5vj4cIPKZmka09H30YY8K4ZHRhorZuxy+tvQtqyLOvkitojKKnufz0mi0/760IDU0ZpEjCiuZy67MfYbJdwAKRksnuNJt8Vcb5Vv36Nu4DL8YNNGdCB1fPuwOOujgurkG5r+ZZCSGQbRNLujHO/EoiXm52v1NwF5dwOWEVsTzN5udpEzJLqghrf9TwqkkZliaU9urA==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: DEA8A140003
+X-Stat-Signature: 3nyuxdg7ynozq1uao77kykni3sga4ony
+X-HE-Tag: 1788080251-551736
+X-HE-Meta: U2FsdGVkX19JNQvmv0h18JclnOs/aUJY2fNIqdKpqsZF9abTBf99u9fps9u6Mb0AkZzTX7uTCpLKkuYxD3aM2nv2ZaGoq6FMF55/6BWhdQhv0JsVBjoEcvaxqHJFr1zBVv8ISaqPh4o96U9QxLy6N9PtHucuPBw1llZ2p5U4dVXnqmuWWGeH52AzQLeg1SRhi/8xsN9Wd+/Wx0XDq/w4Y0h8iUsHeXl4Uz34sk48f143YcM+Csj6aIHiN3wPK46vYe0osFMGRcCmsaLhiST7VKPWPP1ZCzZPYNIuUzhYgcScbwCf50SUQQ+SdHQmw+gYcTsf9ZjbPGTxOTke74xL6rEZGccuKGPvGtRvWnzizSJyVx/OFnA39vB8Lo0HvaBU1uNk0Y+QxJQWbzjKw7fUOIPaUQMCZkcruR/9xKz7DCJ/6QN7Bsh1VLUdaKsxKI5b7J+YPHzF+3VhOmMoJpwoDeV1BLGefCblegc13mAKUCgx4MR9tb8lR76tgPcAmoo6AsArV+TIzvioZk2AyhYe1jQaaVdR4lgQAtt+reU0+21QnSXieZhBDzd7Xd14VsIbqwNBTyz8Y9PUIRlCftk4UkOMdtfNrQnJRGFFSsOA8zMvtwV9v4ZuzibElOPywqG6259fUcU6i0n96DfDz3eFovHjFi9vutCYjPd+EjroG8V6A8KvgtjDVz6RhQmOnSf9ViAU1aZVY7zt4uFMKxQ5E3sdKMgb4+eZgDMLLMkV0EGzr+RLLcexGT5n16UjAetAt55B1UjUrBgj3k04WjkK375Mc0ooEr37nbhunk88OX9zWwJrDJPnvzeKQdNcOKROM6MYNFoDUpom8DjlomrdJKSuGsE0mSCuGYamHDpmt+JnKXOl3jKqyxkhWiZouUC/4u7o8RdCwCxkJGxlcxITMKz5nOImGKXYN/bPsKMGJu0V8nau2GsbKA7OEg/a86MGZ7NJZQwL0TpIExFRcEi
+ fx3a2GFh
+ CBT3qWSQaHOu7cPA8U/vmdtAYuG5ODbBTBNus0N9IdLpV7KMTl3eiiV15QKnnYxj0dVM3ZlboGEldshTakS/1wAakj0iS6HVF6pT83CY3CtPG5vBLu6AqSC9XQTILCa3naTyOsvGsdvp0M/1j51e6w3pUIAcIDwYcgEZOQ5DD/l/Kbn2ourCC7pKZBLIXPS/UzEvb7Nz5BQhaNFCiHUE/mrjSVvTqdq3MH7G05z4lHHiQ43zxFNGft85l7LGtAcpESMfq5g3r+zNxgGpf/NZxVw+O09WMOu3U/gdNyBobJXoIfGZ35qAoJcXS/BW/k8GyEqBu+G/fY8U5n40=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,52 +114,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 29, 2026 at 8:13=E2=80=AFPM Wenjie Qi <qwjhust@gmail.com> wrote=
-:
+On Sat, Aug 29, 2026 at 11:26=E2=80=AFPM Tal Zussman <tz2294@columbia.edu> =
+wrote:
 >
-> I kept the helper private to avoid an MM dependency on <linux/bio.h>.
+> On 8/16/26 7:11 AM, Barry Song wrote:
+> > Hi Tal,
+> >
+> > Thanks very much for the patch. I=E2=80=99m just a bit confused that
+> > folio_end_dropbehind() only requires in_task(), and nothing more.
+> >
+> > void folio_end_dropbehind(struct folio *folio)
+> > {
+> >          if (!folio_test_dropbehind(folio))
+> >                  return;
+> >
+> >          /*
+> >           * Hitting !in_task() should not happen off RWF_DONTCACHE writ=
+eback,
+> >           * but can happen if normal writeback just happens to find dir=
+ty folios
+> >           * that were created as part of uncached writeback, and that w=
+riteback
+> >           * would otherwise not need non-IRQ handling. Just skip the
+> >           * invalidation in that case.
+> >           */
+> >          if (in_task() && folio_trylock(folio)) {
+> >                  filemap_end_dropbehind(folio);
+> >                  folio_unlock(folio);
+> >          }
+> > }
+> >
+> > But we=E2=80=99re applying a much stricter check with bio_in_atomic():
+> >
+> > +static inline bool bio_in_atomic(void)
+> > +{
+> > +     if (IS_ENABLED(CONFIG_PREEMPTION) && rcu_preempt_depth())
+> > +           return true;
+> > +     if (!IS_ENABLED(CONFIG_PREEMPT_COUNT))
+> > +           return true;
+> > +      return !preemptible();
+> > +}
+> >
+> > I feel like something may be missing either in
+> > folio_end_dropbehind() itself or somewhere in the
+> > filesystem/block-device path.
+> >
+> > Do you know why they don=E2=80=99t match each other?
+> >
+> > Best Regards
+> > Barry
+> >
 >
-> After looking further at the mapped-folio case Matthew raised, I think th=
-e
-> better fix is to retain a dropbehind folio once it is mapped.  A mapping
-> represents a competing cached user, and retaining it avoids the sleeping
-> unmap path, so filemap no longer needs a stricter context helper; the
-> existing in_task() guard remains.  I will respin the patch on that basis.
+> Hi Barry,
+>
+> Apologies for the delay.
+>
+> As far as I can tell, the in_task() in folio_end_dropbehind() wasn't mean=
+t
+> to be a generic test for if it's safe to sleep, but rather filtered out t=
+he
+> known unsafe case of buffer_head writeback completing from IRQ context.
+> In contrast, the bio_in_atomic() check needs to be stricter since the bi_=
+end_io()
+> callbacks could sleep or the callers could be holding locks, RCU, etc.
+>
+> I see there's some more discussion about this at [1], but I suspect there=
+ are
+> other instances that are (incorrectly) using in_task() as a proxy for bei=
+ng able
+> to sleep (like f2fs_read_end_io(), but I haven't looked too closely at it=
+).
+>
+> Additionally, it probably only makes sense to use bio_in_atomic() when th=
+ere's
+> some deferral path, since with CONFIG_PREEMPT_COUNT=3Dn, it'll always ret=
+urn true.
 
-But we still have `bio_in_atomic()` in `include/linux/bio.h`:
+Tal, thanks very much for your reply and the kind clarification. It
+seems you're right, and I think we should also use `bio_in_atomic()` in
+`folio_end_dropbehind()`.
 
-/**
- * bio_in_atomic - check if the current context is unsafe for bio completio=
-n
- *
- * Return: %true in atomic contexts (e.g. hard/soft IRQ, preempt-disabled);
- * %false when a bio can be safely completed in the current context.
- */
-static inline bool bio_in_atomic(void)
-{
-        if (IS_ENABLED(CONFIG_PREEMPTION) && rcu_preempt_depth())
-                return true;
-        if (!IS_ENABLED(CONFIG_PREEMPT_COUNT))
-                return true;
-        return !preemptible();
-}
+On the other hand, as I mentioned in another thread[1], I really feel that
+`bio_in_atomic()` has nothing to do with `bio` at all; it's really a
+scheduler thing. We may want to move it to the scheduler layer and
+discuss it there.
 
-Right now, it's used in three places, and I expect we'll see more users
-over time.
-
-   1   1925  block/bio.c <<bio_endio>>
-             if (bio_flagged(bio, BIO_COMPLETE_IN_TASK) && bio_in_atomic())
-   2   1451  fs/erofs/zdata.c <<z_erofs_decompress_kickoff>>
-             if (bio_in_atomic()) {
-   3    403  include/linux/bio.h <<bio_complete_in_task>>
-             if (!bio_in_atomic())
-
-Yet it really has nothing to do with `bio` at all; it's purely a
-scheduler thing!
-
-So I fully agree with Andrew that we should move it to `sched` and
-continue the discussion there. Maybe the current `in_atomic()` helpers
-aren't really good enough?
+[1] https://lore.kernel.org/linux-mm/CAGsJ_4xxDpeaPv9Uh_1qsuXsMLkx+J0X=3D2V=
+6342idLFO5jkTBw@mail.gmail.com/
 
 Best Regards
 Barry
