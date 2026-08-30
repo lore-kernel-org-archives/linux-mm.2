@@ -4,91 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E813EC61DD6
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 03:18:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 028E6C61DD9
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 03:25:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C936B6B008A; Sat, 29 Aug 2026 23:18:13 -0400 (EDT)
+	id E27B16B0088; Sat, 29 Aug 2026 23:25:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6AFE6B008C; Sat, 29 Aug 2026 23:18:13 -0400 (EDT)
+	id DD8376B008A; Sat, 29 Aug 2026 23:25:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA8606B0092; Sat, 29 Aug 2026 23:18:13 -0400 (EDT)
+	id CC9366B008C; Sat, 29 Aug 2026 23:25:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A27F76B008A
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 23:18:13 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 239E340246
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 03:18:13 +0000 (UTC)
-X-FDA: 85156477266.01.5567D3F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 5DDCFA0004
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 03:18:11 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Bb+SgGBx;
-	dmarc=none;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D2596B0088
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 23:25:18 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2FE0C80252
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 03:25:18 +0000 (UTC)
+X-FDA: 85156495116.25.0DAAAC6
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5EA3A40003
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 03:25:16 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="g6/sj2n9";
+	spf=pass (imf12.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=qwjhust@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788059891;
+	s=arc-20220608; t=1788060316;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3Rmogpoo8KWdLKv3l3rEZX6LosNLicNjBA0iv6MuuZE=;
-	b=0wU+3vZksG4BTzAtl+O5xNO/YWxWPFmm76NI9tS9Y7OQvSLH43YEG+N+JhggkwQqANgPEb
-	bWifLbEc8pwO4ivPzRdujXGa5aKwJ/lOPBTt/ML702yCfPct4S6SOtF7eHEUx9ie2reI+A
-	aZM59nE4VE0pi3lK4pjgtAVy3VGMjUA=
+	bh=xA51xnVuOwWqj9zN/LsUIC3tuEtKTMPy7bHuw6GJDJg=;
+	b=zRUGvs4WP+9K3vm4HXAZ8py5VK8LycDKsowZ4CDl8t1gcn7cqlMjo5tLCg3WO2+FWiXoPz
+	4BNmTUaT8ZI//jIsKZNlZ/njE7kASdrQqlT1XvvoCxuMbd3xWsK1a8xh1mtBuhs0667Hg2
+	2pN+LvVZvGo4Ys4FeDr5mntMvfHk0mY=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Bb+SgGBx;
-	dmarc=none;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="g6/sj2n9";
+	spf=pass (imf12.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=qwjhust@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788059891;
-	b=i8LlQKD3rRdjkl6dFtl7k1Qi/bnX3uQnOOcRZjyV/sy3LZ/McMz4ja+I9Rdrn65Fm2sPg/
-	F38hiKsc8gkecAOPzi6xHaqXgUPtPaiLBJp46HPkr7ucLqN3Ev5BwAZqV2AvT5VB/UrVZO
-	xHWoRjPYCogpRzAuSgSSQ5GYHG9E+Pg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8CEC140428;
-	Sun, 30 Aug 2026 03:18:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 086651F000E9;
-	Sun, 30 Aug 2026 03:18:09 +0000 (UTC)
+	t=1788060316;
+	b=zVF3qZbVG2iDdwqiO9ad2olsqD7Q+zWtnyl+1//cXOvHvNPYz2Qwd4ub0cvuysYhvVutu3
+	nMk0jE2RUEEswfatPNtm2TWzpHSoTO1NapjpLFn7M3sG4MrOicpl7J+matp/lMZ56Bq7em
+	CAxqgtXEMA2tBrFoGH9KioGTQkkwmOA=
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-cc1c3c90074so1836195a12.2
+        for <linux-mm@kvack.org>; Sat, 29 Aug 2026 20:25:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788059890;
-	bh=3Rmogpoo8KWdLKv3l3rEZX6LosNLicNjBA0iv6MuuZE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Bb+SgGBxOKzxMJ2kJ6B2tmna/h77lEJq+TVY7/5deiw0BvqpCeKG+jjrcRVjxtoVF
-	 F2wddFdkB7QonU3Pc9ZBUjf3os4mZQsztwgZTSToGpjPo4gijc6VZG5K9jmG6bJsdT
-	 szXBpJXopgU5Ajx0cOT4avtZeT6eH/jHDGqkETac=
-Date: Sat, 29 Aug 2026 20:18:09 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: mawupeng <mawupeng1@huawei.com>
-Cc: <liuye@kylinos.cn>, <hannes@cmpxchg.org>, <mhocko@kernel.org>,
- <david@kernel.org>, <ljs@kernel.org>, <hughd@google.com>,
- <mgorman@techsingularity.net>, <yang@os.amperecomputing.com>,
- <zhangqiuhao@huawei.com>, <wangkefeng.wang@huawei.com>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 0/2] mm: vmscan: fix scan overshoot and ineligible folio
- scanning
-Message-Id: <20260829201809.99fe79c4725413bf80510fed@linux-foundation.org>
-In-Reply-To: <f53b5d3a-9f16-460c-a7d7-a0f518c2f21d@huawei.com>
-References: <20260811070849.1332165-1-mawupeng1@huawei.com>
-	<20260811184241.e423b81c8a50d5f212af1c3b@linux-foundation.org>
-	<ef7a72dc-fc5f-4b08-833c-05c4ab416605@huawei.com>
-	<f53b5d3a-9f16-460c-a7d7-a0f518c2f21d@huawei.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5DDCFA0004
-X-Stat-Signature: h6nniujhbhkneumc1dkikw1c1cmm9ttm
+        d=gmail.com; s=20251104; t=1788060315; x=1788665115; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xA51xnVuOwWqj9zN/LsUIC3tuEtKTMPy7bHuw6GJDJg=;
+        b=g6/sj2n9aqNUDRv+q1TIf4o4895/ZyeCvTG7YjxgGXOWv4ACpXWC40ic8tZJtrh4op
+         6VzwEtoXPys77FGQ5lHswjWQDof16o5wxXeY6bFpcebKORbT+Y6VXwmQF64kPMZprFdT
+         BS7X63G8YxW/sYvl5/LN8TQ2568I6I1iG0DGyT1YgwnArzITX+lhu312HIWGa11n8rCS
+         2VEks3wo2rSQzeib/3iM8aADSTwsa3by71iF50a7eoJxJPUNBcjb6SehOqEZtxv3XqaS
+         c04UI+q506Pzs4MdIQLJ7tguJ+UZ2MfGb6cikUVQn0+ff8Kws0Q9aVLYJLWNyPYk3rAi
+         1AHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788060315; x=1788665115;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xA51xnVuOwWqj9zN/LsUIC3tuEtKTMPy7bHuw6GJDJg=;
+        b=cTgCVjvJ9ePbXOWZNscQr0UbD/3le1hzebmWBwOCw2vFsER1H3dlDZNUjS9z1VGsin
+         QX6h3pwtMcFXJx9GNuNXcVMOGp0caEUyv1er1B+yq5piCSeOW2FloDGzXjF9SEFOs67Q
+         qWrSEzDyOkzc2li7c2pf21OpefVhfyvxNY/0838yRaTUGJLyKCKxwNMjjU+il+q4gnFb
+         HZkLdca8AuVWWWP4uONFCGGYLYfTtUM5va7iXu1Jx4dALqd5PXcpUNU/uP6dcQhF6QQT
+         S9TN0ZSQpQsAClmTKeOr89RInJcdZC+rBViwwHxm13v5ta1oSwB9ERPHSI0xRdbg09++
+         uhwQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rp7xYog6H7u2ndfLToCsf4FaI8A+FDEsphFv+Wmiq4kK1x494qTzcHYucAEDaFexZ5LtVeaVw+yVg==@kvack.org
+X-Gm-Message-State: AFuF++mZqaiK1nRkbeVjCBwhqQ3ht8b9B7gE5IvMCPEIDyuHjc0J216D
+	MZK0ppb6g/WW2+qiPXwcjTl4MXGnfo2I9PHR4jYBddiS0pOchGYXOIyU
+X-Gm-Gg: AR+sD13OcXO5pXKYBx9a3yfglH3suFNjBUplCz2tv9T/H1sy6zp8R4+091yIkC5RlYL
+	YIAx4l2HqHy+1Fi6PlUIHCTs7hS411ci6i+mdeDAwhuX5qqxf3Fo5lQuRK2xmHv9FM2jVFv/0mp
+	4ObmxdeHMDpiO7wvrJTYw6UyXDD7JJZRzCr6d8LL7APMxlAhjcDm9eTYzPj7zdRgn3rajUmJhbZ
+	3uONcxI9o3rDHhJowVv9z3QXhRFkxHHSS3WzwMlFtfOhUrP+rh6pVGkKpSEgK8jO/sBbXdprq4u
+	QksvRJgT2Ea+LALZ4ZWJLFZwMB7O+sSvZGdCRKfHTsc+/BDvOccyQV7IekzPsyhG59oUkOgyUp1
+	+qBR7m40aSE8+xnOv4SU5CI02bTJu90gwgUdjxYMIqtMtSjaW4tcVLwRTmFTxQydSWo89Kk+XWf
+	P3xYhEKclRb7Fo350mGzrn7PQMRl+1FXdN8CA9u9qyNba8t18166iJ/HX7zgUfT0HvXFJThjKnE
+	c47yjcxx61VU4EN1SABsg==
+X-Received: by 2002:a05:6a00:1c8a:b0:851:8394:1696 with SMTP id d2e1a72fcca58-8562b49995emr32076993b3a.12.1788060315139;
+        Sat, 29 Aug 2026 20:25:15 -0700 (PDT)
+Received: from qiwenjie-ThinkCentre-M760t.mioffice.cn ([43.224.245.241])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc1f3312146sm2287261a12.8.2026.08.29.20.25.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 29 Aug 2026 20:25:14 -0700 (PDT)
+From: Wenjie Qi <qwjhust@gmail.com>
+To: willy@infradead.org,
+	jack@suse.cz,
+	akpm@linux-foundation.org
+Cc: linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	baohua@kernel.org,
+	axboe@kernel.dk,
+	trond.myklebust@hammerspace.com,
+	tz2294@columbia.edu,
+	jaegeuk@kernel.org,
+	chao@kernel.org,
+	qiwenjie@xiaomi.com,
+	qwjhust@gmail.com
+Subject: [PATCH v4] mm: filemap: retain mapped dropbehind folios
+Date: Sun, 30 Aug 2026 11:25:07 +0800
+Message-ID: <ef160933595c365f2c47597b260bc7ecd98ed7ce.1788029516.git.qiwenjie@xiaomi.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260829111621.41ed2bc9a0e99e3367eb96c3@linux-foundation.org>
+References: <20260820142956.1414337-1-qiwenjie@xiaomi.com> <3fa43eaca792bc0bbde4b82a6c1fcdd3f528b398.1787999152.git.qiwenjie@xiaomi.com> <4aba05e1a2c3b61cb337d373eb9b7a8db4ddd822.1788024049.git.qiwenjie@xiaomi.com> <20260829111621.41ed2bc9a0e99e3367eb96c3@linux-foundation.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 11jdjtg3pffx1hzwcn8wdhmejyi9t3xh
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5EA3A40003
 X-Rspam-User: 
-X-HE-Tag: 1788059891-194482
-X-HE-Meta: U2FsdGVkX187A9+nEpF+QfEIkA6Jc198/iyS3GVRWzl/KtZXvI2n6USdkG5emmcqpj9UjPNbRxHUjr7yz0ZtBRe1BGI3VXbk8xa93kfIBEnunalybCNaP0Md0fyn4l36ABwp45wdXd0YbzrXnytWr4ldiskNxxKoWAM0mqhwwF+ME4JQbWlWQFkBpUkld7TxuO9uO831ZWWX8TKGAwxvyxvignIIlj4BPydNNif+r+OlvwtueTCUORJXkrXNSO6DffMi7f5PKt+p1YdQB0mMa+XM9XtfeqnfO9dokH9512JzNQxepE5mOreBK15tHcKl0IuD3xm2AR+nCoYETeOd+deVUr4moqgbVuEMaeRDw2noLxCmyEJkr71qPP6qOHJjAGc/qw1AxVXTzZ/A9LZ219yreoH5usQ0+EU9mA5bgsVCOiTn1z5DhFj5y6iLJpM8bQ3jnBsMMJ4ajBrC5pR4X6GYt32V9L/38S0iRj0vbpZtmYYpDfRTbj2NuKCIdXm7ye6LFpzlZzLYhg46GWteIa8xdmFjVUMP6Qdkmm+XnOgi9jXRmuisl2pLRonqK6COAXUfmmRgD7q+e+sg9FH/qkRe9H7hVVasQbKhoI5HzDsFPyjwN1E2feB8qQzURw/mA0swMmmq0K3drutqnJWYa0RXgN39Jed91KTw3N4i6S83Y+antRuDSQp77xUSfRdZ3PlmNCyYSffxaxqvEa8MUSOH69Kmr7vaekNfe0J7XCGoiZIyolvHVTuHnz2d6CUAfgh/bhPowBMafOX9I0UqPS1IWyxq3ezmT5cWquAoR4ukCXFgVwCGSBbBSLoFd14xVBaG1WsDaOMicij3kmhOSaJofnzeuz0kWh4Bs8GZNSM2kWqFovCK27+1rMvtILwInZEBZLR1vOZBUjXYxcIGwSk9SRhDuYn1zvjy43oFSoLYxdUWhMg4ofRbTedJIU0UiLbIddYDhSW57/D2AZw
- jhIqQ7AH
- G7ZuP9QcHbVJH7yGcb5H3v8y9DwKXvF6POCWNNwJmsWrrkLHiAEZ6A4ap/gaZYPt1QJxrxEhntTMFjXHafUUCIWfOCYMyrPjkAZ2theLUb5VY0YqTNIT7b9YeL4YdN78gZlQzpJuSZVpwYB99vqhl0K3Vke8evdnjEiDb42VPMxeEBmkn9nq3aJ88J634Xf90iMgrHI551s2uoGl4zCQBD5Oyc3/Obs3CRg3bDxcrESLNundnlmlDdIeDKBAWuTHYndJgB/z04a3jxYEK1cwSEUNz2bjbaH0GafTVhwGsEcrEIhI=
+X-HE-Tag: 1788060316-386225
+X-HE-Meta: U2FsdGVkX19FKzNTKmd8rnpzcXzQkG/4XO2/roD83VoLwCpgH8whOfuYJNIa6JXwr3eHpiLwlaZtwsTMFuAdxcVVQ/4jkdGokO5+J96IAsUaTYlcD9cwdMfNMximWtfBofnh5nfKE78/zly4Beh2OlvxD+vrnpwDSD/4Z2iuAts3wN7zVg4dpL+37v2Qvm0yYEqIbD1JC2uf/XUbkIYL4YHw5bEBURCEv8PWN4RzuAJ9iWLygoYTn1k1dbs8kt/66Y78py9T0+xO7zNwiQvwFh4n6/HZLeurkmjmHTprHOnVzyMrWqovzmYa5VhLErFcB7+ST2bIEk1c8vK0tnpJj4l1AB0BJI8PVrCAOnfH+HFuGhzk5JwdMP/J5aW4uQohlkhS8Xnnuqga4wtMY/RoNKyKz1bCtkL43zyC1zpcfH5hdskddXUX531S4TZAsazHvW3u6bj49ArztOWMcU6fKDMST4tdI1kM7+ydssfDWE079rVuvtlgthyeyzgkqcOy02tp7BGSvMchBU0rzq8kEd5pQCNe7gMtH/4neWRTd6+rzIRoHOSHFmL6zt5MB9aV6bLoFJp7nE765mSiT21CZHh1XFWjtWr2M6/gUdK1wsjEu4805OzG+LO9NMj+NflqiKgcBNahQ+Yetfb5f7rKl9gw8RkwUshDsXbLuH/o5oJzOjJ5IW16spnnYCnqGZbUWCJmNX30c+ESrWqx92kqyHUl4BGZFjyTxALOezIBIhJtb4oCW9O7jSo2+O6TfxTO+oUR2Z1W1KhYu825aMInGBi3G0QNyQp+2lQJrsNtoH1G0Q1YmHJopYFf9NdzLHuEceusWqJ+iYo0x6yFg9/BEZMZ2Fn27N3lDjjpCslkzVopTUE6uXy+r9BQmDy7+qoS4txGq6cS6AoLStXQwxInpl3VWa9hnDhZam+NO6lW6VmslvmafdiCRKFrpEcHLsNV9dHtSzK49+Jm4Cuc8EB
+ M31fQLzr
+ NS03u/U5Q1LlVe4EPPp9HLNEDblIybjeckpdSzBh+oAn2THIyBjGm2q6a3bTTyA81TKbpBYdGIejVcIGltLeaPKyuV71w0FGOAf5eEcWNHY/SfPakjFusQd6ctH5BpGYlEpMTYzaXuN/UvoH4iYVvFDCRSgVcwlrhR+cv9hOJEkM28Dd4viAl/O9UUIhDH2mlxFs4CP5vuyA6lKvytxBIt1DE+O+DIqlaFprVJkyYDkhJMDSB9K5xEpOL4NqE9KaEVlsf6NXOnay9W01YjayLLzk5UlhcqHCBsy5BtxM6nqPZ1zBFqheHHAb/ePDGntNbx9fLJX6tZl1U1tOlc3WxExJDQhhBD8F1NdCbGoJ7hmxoaLgKxAe/YqB+LODY/AhER4LeKHH/ugnUlZREenJa+ANRHmLWhJtRucoInvYVgdRpiN8FTWXN5hLdlVEbUkvDWe1BAwzXIBADtoE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,20 +130,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 25 Aug 2026 08:59:54 +0800 mawupeng <mawupeng1@huawei.com> wrote:
+From: Wenjie Qi <qiwenjie@xiaomi.com>
 
-> Hi, maintainers
->   Kindly ping.
+Fault-around can map ready dropbehind folios without going through the
+normal page-cache lookup that clears dropbehind. A mapping represents a
+competing cached user, but writeback completion can currently unmap that
+folio. A later mmap access must then fault it back in.
 
-It's been quite a while.  It would be helpful to refresh/retest/resend,
-please.
+Retain mapped folios instead. For a mapped folio,
+folio_unmap_invalidate() can call unmap_mapping_folio(), which takes
+i_mmap_rwsem and may sleep. Retaining the folio also avoids this path when
+folio_end_dropbehind() runs in non-preemptible task context.
 
-While doing this, please update the changelogging to help reviewers
-understand the end-user impact of the issue.
+Unmapped dropbehind folios continue through the existing invalidation path.
 
-Please also give some though to whether we should backport these fixes
-into earlier kernels, with a cc:stable.  Given the unusual
-circumstances which are required to hit this, I'm thinking "no", but
-feel free to disagree!
+Fixes: fb7d3bc41493 ("mm/filemap: drop streaming/uncached pages when writeback completes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reviewed-by: Tal Zussman <tz2294@columbia.edu>
+---
+The mapped-plus-dropbehind state was reproduced in QEMU. The patched
+kernel retained the mapped folio and continued to evict the unmapped
+dontcache folio. I did not reproduce the sleeping-in-atomic warning and
+am not aware of an existing report.
 
+Changes since v3:
+- Describe the forced-unmap/refault runtime effect.
+- Record the reproduction boundary and add Cc: stable@vger.kernel.org.
+
+ mm/filemap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 6afec636881f..00fd89cf6f55 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -1616,7 +1616,7 @@ static void filemap_end_dropbehind(struct folio *folio)
+ 		return;
+ 	if (!folio_test_clear_dropbehind(folio))
+ 		return;
+-	if (mapping)
++	if (mapping && !folio_mapped(folio))
+ 		folio_unmap_invalidate(mapping, folio, 0);
+ }
+ 
+-- 
+2.43.0
 
