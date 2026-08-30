@@ -4,88 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 620CCC61DB9
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 12:45:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D748EC61DD9
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 12:48:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5290C6B008C; Sun, 30 Aug 2026 08:45:24 -0400 (EDT)
+	id B705B6B0092; Sun, 30 Aug 2026 08:48:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DA406B0092; Sun, 30 Aug 2026 08:45:24 -0400 (EDT)
+	id AFA1F6B0095; Sun, 30 Aug 2026 08:48:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F0A76B0095; Sun, 30 Aug 2026 08:45:24 -0400 (EDT)
+	id A101A6B0096; Sun, 30 Aug 2026 08:48:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 15B046B008C
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:45:24 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7F27E1402CA
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 12:45:23 +0000 (UTC)
-X-FDA: 85157906526.08.72F1720
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id C96F21A0008
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 12:45:21 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A3t3iDLZ;
-	spf=pass (imf19.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788093921;
-	b=SPvCk2XA3RoYdamqxyRS9Q7a+67ScERne3lU2H9ggg4H1zgZxkxKF2NwJKZNszTtLa4BAz
-	KNLFKiBKZ/j04CHATVc+RDve2a4WqDer43kkUjBYI/XqgmqXTlYYuE3kdxOpzZkcvXbRMF
-	ZdxfLuYjfnr78Hu6fjILp2I/cvQv6n8=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A3t3iDLZ;
-	spf=pass (imf19.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 803BE6B0092
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:48:14 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 09B5DA3BE1
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 12:48:14 +0000 (UTC)
+X-FDA: 85157913708.10.A772CBE
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3422140006
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 12:48:12 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lkjd9mAx;
+	spf=pass (imf12.hostedemail.com: domain of trintaeoitogc@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=trintaeoitogc@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788093921;
+	s=arc-20220608; t=1788094092;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k9cnmp5ZkTHdW2lOosIXUykWsrrVlbAOxtMT9OdCYxk=;
-	b=7RgwmEoB/h/Ec2luQicXLlYTtTPCxakGDLTjseem5pfLas38mzk0WETpOR/T312gc5U6Xd
-	dOQgMYBojcfA8F8LLkMZs0LHhmHb3LsFlm6X7Dt+ugn2uHI/zE4V7BwXW/4Zsui8TChwW5
-	ScSoUuMAaDdY0I+gRmN+yhk2tT4FVAA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9EDCA40530;
-	Sun, 30 Aug 2026 12:45:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 044191F000E9;
-	Sun, 30 Aug 2026 12:45:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788093920;
-	bh=k9cnmp5ZkTHdW2lOosIXUykWsrrVlbAOxtMT9OdCYxk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=A3t3iDLZnHq1YFyUtUOiBvOMlXGNNVk912o1wn7eYy18KDA+IFdiRun+WxiQq9YEU
-	 Cmdw73N9/G9XQIzqWRG+VNDPlO3HMMaKCp5ZITH4U5y0zMXp40px/ZyWcJkUHU6PLU
-	 ikmJUxoosR3F6tAI2l2jytjXhcWo+FFudJ0K8fpkI4GAGZKLb2lvoQF/fm7dxnLt3T
-	 pkUCiK62yxjzuWVHVOI61LlU0ELjQp1fvH/vA/VOq8HqyczrSaU5sEJchwkwmesVOQ
-	 tusT6c7RdUk1nYSRM19d2l11kEAyusfnSoPQxl0OwOuB++psqIoapLu/0KZpD5ivrX
-	 tunkXec23SWSA==
-Date: Sun, 30 Aug 2026 12:45:17 +0000
-From: Harry Yoo <harry@kernel.org>
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/slab: take n->list_lock for the list_add() in
- __refill_objects_node()
-Message-ID: <apQU8wjMlvbKBQgh@dev>
-References: <apPa-cGLcyt90l-E@v4bel>
+	bh=w2dVvCYD9RAYS7/u5Gv2TMbo54nxfZe+ySEn1+VlbEk=;
+	b=is+OTqWZOmHcRfKoz/gyQtFTPYcTFvwrklFk7LZIHwTWluVrw7Pmf0hsAHlep1t8oQ6ISn
+	VLiwcs6VEHYJmNFoKMsxNhjwXY4/VrLgZJgTgT9xBDIkpGrgFuNLo/36D9hn4MHKPK8vPF
+	TOBLtsvxePL/2rkVjXW2nP4h/0FtN0k=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lkjd9mAx;
+	spf=pass (imf12.hostedemail.com: domain of trintaeoitogc@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=trintaeoitogc@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788094092;
+	b=uWlwh2Y2ZT6pUdKkeOsvztsyIrerdx6veAzuR9huiN7BQBBhyREMUD8haICbW1CBR5zR/e
+	9TieLXOiLp2BHj6vAU3NZafhxkmsYvY+OevvhVb0Vxoyf4JtxHWIZWBkY2mGeoH0WWzeof
+	eGDnFckWDDegBosRDqaY1HskiDqSiU8=
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cc1c3c90074so2017025a12.2
+        for <linux-mm@kvack.org>; Sun, 30 Aug 2026 05:48:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788094091; x=1788698891; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=w2dVvCYD9RAYS7/u5Gv2TMbo54nxfZe+ySEn1+VlbEk=;
+        b=lkjd9mAx+Mc/Ydo5ZX2Gp4/yC8dzhygIpvM3HZkDyaJsOIlDPqwZX+eGZ4m7kTqhn5
+         +/PxV58se6fi98Gl1my5sycha09GGowQ/m8wndyV/VbKju5bGW3Lb/s9lrXqsYm4lp40
+         Zy3p9bF4YB4ctxF3fd2l4paHN4Uqi15+c6T9l0ZoCHY/QjzuHHWy1zZ8YcR2AEg9WWca
+         /V1N2WCR8tTdiLO+X2FVNlR5RiqcSulIAQ/Qg38qmSy6C4uop91vKbNzFcWjgyspxp7q
+         DIeAxG84dRPB5lfLX+hO/KkwSCI+BqEnilhYJt6x/D0ShrvUlf4yCdfdKVvZcHd4TXXi
+         i76A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788094091; x=1788698891;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=w2dVvCYD9RAYS7/u5Gv2TMbo54nxfZe+ySEn1+VlbEk=;
+        b=hla/LiTqsu5dEGdmMjZfNEuudypTjBKHAdnVK4jmaQEQJUt4yoC/H8r898pv482wwv
+         O51cQ/YNBd1T/NVw4+XAp47mEGkglgB/ZotDET18SE8qrLvFLcpKktl60DJYKIyZvaqG
+         V47ZIU4METcNSfBY88G8cvU+SgirVigXP/kq9opr22zMcXu46WZjIzCuxgTUEd/4npMw
+         ADzqOsiO22J/SA7w1LP8fNsqP+4RSy1D0Ol2X5piPaeFWi0MGK1rMLlKBikrtt0sqbvT
+         leC7G5hUdPYAcm3+9T6Y1Zf2NcqMd1G3rfWzOiNQdlrk1kUXoXE5e8/+z4k1wxcSzCBx
+         HsMA==
+X-Forwarded-Encrypted: i=1; AHgh+Rpap3i79Uc8hWggxtj1GC2iQmuy+QvrBJ0+1dCCKaQt2HshT13BWIQ9J+S7flMLdz6lqZpsrOlZXg==@kvack.org
+X-Gm-Message-State: AFuF++lYU0CI6nksqsud65XZmRDx2bQTrkkzpFibkUfYKgCTfiLW0/li
+	S0+n17C85sHo5RK8K0Y7WS2ZIC8KKCUMJSgIOB3RiTCg4OctuRsxbwpn
+X-Gm-Gg: AR+sD1134Inc+jRaYm6qS8XNrqWBUX3tvYLR/PbJFTWL4f7fKj57n9koL9C2cSHDFN/
+	RdflXSd/od/sRTCd5DKp13LzHihOSdzeRWaiEQJ7MaSGbp+f37sm5mI/3ljiwuUa2x+xkMFY3O8
+	SvFFTi5bl0AuHmn4lGoTauk84bONw1KnaJVxBLwL24v67mex8Jtwccw20tUwz2zquGreEQIaTwG
+	EgeUbUki1OnbZs9R5OXrylg5OiCXpwzeg7SGDHvPTVZsh69YxKl0LJl/6CtE07v3I3qRzWtxXyD
+	zyhd8JMMMwVCDK6H0EJY8RgjYI2MERWWgsayaJ4YzIJ5Ik6SRUW0JXhEc3+XoDH41iBv1M3RPfY
+	trDOIucgryv92f8B1Jb2YGSxY1qns0XYDmvNBIyGN507kBQMP0YzeJvEszrQwj7QPcNFyhVztLj
+	SnV/u9CYd+dQh1cFWvzoo0umr8sh2sO8BXO+iroX0akz0nGkQZjqZnCcHPm2xxQ8HxrwkcYXINU
+	ZgcK+wDFZb97tXfD7WIpLog6k2h774tGQTryUHNHDY=
+X-Received: by 2002:a05:6a20:d0a1:b0:3cd:8bba:824f with SMTP id adf61e73a8af0-3d26562ead0mr32088995637.4.1788094090908;
+        Sun, 30 Aug 2026 05:48:10 -0700 (PDT)
+Received: from fedora ([177.21.143.191])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3286f552473sm25325171eec.0.2026.08.30.05.48.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 30 Aug 2026 05:48:10 -0700 (PDT)
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+To: willy@infradead.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	lance.yang@linux.dev,
+	liam@infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	mhocko@suse.com,
+	riel@surriel.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	syzbot+395b7abe9696862fc188@syzkaller.appspotmail.com,
+	trintaeoitogc@gmail.com,
+	vbabka@kernel.org
+Subject: Re: [PATCH] mm: fix the race on huge alloc failed
+Date: Sun, 30 Aug 2026 09:47:56 -0300
+Message-ID: <20260830124756.457887-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <apOkscUtVMpFqFjM@casper.infradead.org>
+References: <apOkscUtVMpFqFjM@casper.infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <apPa-cGLcyt90l-E@v4bel>
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: hhqg4t3b1p4t8eqx9duiyuqkxzgao3bw
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3422140006
 X-Rspam-User: 
-X-Stat-Signature: cftozjjdjri988bmtk3tfprorb3m84du
-X-Rspamd-Queue-Id: C96F21A0008
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788093921-331078
-X-HE-Meta: U2FsdGVkX1+pZbDKDJ78bea89yh42NiMHxUM7REv3IHj+cPbKEdJheDOnQB6Q9a9gTVEgoXnBAXeg/PxP2lty5GO1gmWzyfK+EI9hGRZLP1L7P+xE9GImmn/thHWnEbJwJ8ETbduLTG2cuYtKVd91yHMMu+/9K4tXk7X/Eq3kTjEPQHh4tmBcoDRgiU2mcmvzAz9G/Dtf+MaEixA+rzMfiZVl31Uq1s0uW1o0FEJjn0SgChh72Nf1Ib6gOx7JHVqfAuWNp1DN8WxwLT9AzzEHyhDBfLHVbeHHzoSfm8HxNvOrDksL1I2MbxQgvxW7BqbwhKvPq2cGLdAxa2eqRRyMN9YfkmbSrKUKwSa75cafEhCTK43Qgh0c1jB1l/OGw6UizQDRm5bBZvUJ29Djwv1odagFrrcWkitLRWSj9u4E7ZNTaN+FD1uNv4sb+ndCKg9dFm1SbsDtKjLuwCS1CLVDlT7aQO0cLP/DJvO9Eo8M7UNi4DosfOzOX5BLLFlmDgffJDVMJT4EluOBVnCNITGsXNTywWYphGmfPMHqeDOq3+eibuV+4W0asQNcHxaKewrcU0g3imymyKTMN+FMexvxipgwk/6AlrI0ilahem7pIAkoOCMnO31sVXKI7UVab+rClq9u7YRisA8mM6/KoIV1zWbH3iOC14/vonhlPv5Hk5ijRAN0n6Iw/RogpOYwvC0hkzEnZSjP6zBJaKuzQezHUtiEqf7yOtlefhhMxRpTMeA9PlrYidqXdQkfJ1TjlEZSx0iZDGZi+mddqugXMw/r7dJnHGQ3SwV9ZsteT7BsugcME0sugqrsFMv6OLLBrqMbfJ9CKE7fXDc7ZGPEMpJipTQjtk7826ZfIjQHDLIl/g98APZytfo1nm0/MSHzdSVEG3qztmrCk31/Ps50QAMPhzzfYZl1rus8ZKKrpiy4gvyJXxPxHtONfVNBYC1vhU0L5iehG74oK/1CbjMj31
- 1HqF7jSf
- 2wPy1pYgmbwvlAT7hgfuiSRAVeVr3uyIgcAPJqnI7uOH2T6AUqVjTtA7h90zdyVWwBu6iBmsXGOPOhLHfYab7tCcReGrkwaoJ32W0cSl9KH9s+eNnvAFNCDxZMdcQsz4dyZB+E5ntXNyBzw0KQICxxQlrsLjPlhxFwXMkd/ZWxrLKDnIAmqHT2WrfZmdlN7oNuSpU8fhoTMwIxFpCSOmAEMeYAuem5WGpeEz6645PS3/suJxmtJ5GXIRIit6q/r9jm3oF8C1wAJ/4VTCRkR6rjpCdRjcLWB5GMz1ReTwsnZE1Z6xEiE380MSEIKuBIHPyMuEHROz36C1Ce2DlhI2K8M+8muIe6vumcLMF
+X-HE-Tag: 1788094092-551852
+X-HE-Meta: U2FsdGVkX19mbLGmZBTcrH03lTyqBg4QLDu2qO1zlhZj7xlQflDow7PuYjsgVbsof7G8HnNSYY1jiI7dt5pfCZMD6S53xMzAhmZtKwKtOMLcK0PQYVl+BaRw4uaGe1eZLkWTHTgEp2c8rIWd4yeBuep7OA1bomOqtOI1tFnKdKpU3HTF6d9Um6iRLb7Lpg8S9qfDNCG/oVl7odfVLYOB3H7h2TaB2FIGRLxv7Mhyxgwu/eleZEC0Sb/r7DxsBFfQDPRvPpw+9Ccvd09uquaP9UJG1xEK+CoJkJaDiDqJA3HH23nR1/6URBQWgv1c6yAuUeOS4t/EzXLRRxZladwGcxCKoYWwCLKY2Vc7ESiIDdGzVNdSY/TjY/JDd7Kxzcgr5HquEGdRU/RPj3vYWFLYP3zsvVv0+4QPNDzEY1EgLCdoo3RLTJVRAM7nXEYSCa+9wOEfYjIhMNRReJIZa4q6xCbntXABAtX+gfKUEjT5AgQimIsnQ30x2Y0aW8cRQuMxrbJ5lBc5bk628sP3UAbFygjXc68QD84L6kAHDQyWNlI9MPrNL+vm3nYqJ4xoPTSzR1kS66j0aOKltNy4yS5+RWbxyW6ejSBcAYfuB0ckV9qTMooCTQBtD5FiUrhaa9n7xBt+dJAqOmBdC5Kk4iIRAIm2ymjW+KCBsl13McASDoTeKW7EsPcZv17Kio8PYLFS3KowtmUFph7+etZPdgdAxWOrExJ55xh//xRhXlgHCjCmINwKsiJ8KW7vcHz+geFl4kYl1ah9MY+psyFetn9uFpselrb4YbcBfMQoXbMhMxYUcyCU4DOiyZ3FW5Mw2Ta/IHEQPU2VILYmt6jqzlq/vVG5Mp/I+B7XsE1KjVeG3GVaKmw911Extj8E+lBW4GUHJ8dVeSe7oE5JVdLXOKrlc8q/+iXbdsKzzuYRxpqOFtLqcRUpgizyYK8DGjBpJCJ1vw5tCclI0lMVn6e0eOe
+ lHvHmAd1
+ otqBwqxqxq+LLPU2oWsq1Q4cBEcOZ2G+h3FIwjRBJUurt8X4gI6S3bxHgkP1kKuMuJ5kt5W9x61wQ97c8PDrcaCUohpTNXZEpf4gAfNEU5UrDLcxQyYmlhd0rUeOpWPr0NB37mTFd123i4XjgLHByyGBUG1ySU3w7Iar5/AIukvDGG/iOdk4lGVhR/exMZvWU6Yu7rO7YfSOI6k/hog8Mmys49mygk2NpuVewhhmpBgP3E43k+9p3tz/Qf9cC2zYmpNmzPGO9QPCNQb8jHk3DWo5VUAhtPGrah1ECZEWG5DzcdH4rptT6a8zzX0xStv2Q5BtjPWrG0nRS/xBqWaMmpcP84yGhycVQ0vQ/7yE7BXDNMIgIqexUnCf3M2c3qhnmQUUqXLTRRZckEhcW3p9N5ijFziaaAp+udjstEnC7bP47DyeRf/cjx0I0IBV3x/Ssi2EYM3sxtQi9YHvqEeBy+VTLnBRTeDrJANvWe9H7AL95eQC3vUtVXfa62oi2mqELjYPsPnWHfl1z4cPDzF8Rjo3RfhRDrYdD1zntXPcGCr/RpFUyPEZMow4KcTSOijyq843DgzAZy1mTc1jGT7UJhUkxaZd6r2LosWDF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,164 +132,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 30, 2026 at 04:25:45PM +0900, Hyunwoo Kim wrote:
-> In __refill_objects_node(), the list_add(&slab->slab_list, &pc.slabs) that
-> follows a successful __slab_try_return_freelist() is done without
-> n->list_lock.
->
-> __slab_try_return_freelist() only succeeds while slab->freelist is NULL. The
-> slab we are refilling from is taken off pc.slabs by the list_del() at the
-> top of the loop, so at that point it is on no list.
+Matthew Wilcox <willy@infradead.org> wrotes:
+> > >> Fixes: 164b06f238b9 ("mm: call wp_page_copy() under the VMA lock")
+> > >
+> > > what makes you think this is the right commit for fixes?
+> > Maybe I would should analyzed this better. I only seed the commit that introduce
+> > this function (and consequently this reader)
 > 
-> If another CPU frees an object of that slab, __slab_free() sees the slab as
-> full and puts it back on n->partial. If a third CPU then takes that object
-> in get_from_partial_node(), the freelist becomes NULL again.
-
-Ouch. Good catch, Hyunwoo.
-A classic ABA problem :)
-
-> A slab that sits on n->partial with a NULL freelist only exists while
-> get_from_partial_node() holds n->list_lock, between its cmpxchg and its
-> remove_partial().
+> That was what I thought, but it's not enough to determine if that's the
+> start of the problem.  Look, that commit does:
 > 
-> A list_add() in that window overwrites slab_list to point into pc.slabs.
-> The list_del() in remove_partial() then follows the overwritten links, so it
-> unlinks the slab from pc.slabs and poisons slab_list while leaving the
-> n->partial side alone. n->partial is left pointing at the poisoned slab.
+> -       if (unlikely(anon_vma_prepare(vma)))
+> -               goto oom;
+> +       ret = vmf_anon_prepare(vmf);
+> +       if (unlikely(ret))
+> +               goto out;
 > 
->            CPU0                        CPU1                  CPU2
+> ... and anon_vma_prepare() does:
 > 
->   __refill_objects_node()
->     get_partial_node_bulk()   // n->partial to pc.slabs
->     list_del()                // on no list now
->     get_freelist_nofreeze()   // freelist = NULL
->                               __slab_free()
->                                 add_partial()
->                                 // back on n->partial
-> 	                        // freelist is not NULL
+>         if (likely(vma->anon_vma))
+>                 return 0;
 > 
->                                                     get_from_partial_node()
->                                                       lock
->                                                       cmpxchg
->                                                       // freelist = NULL
->     __slab_try_return_freelist()
->     list_add(&pc.slabs)       // overwrites slab_list
->                                                       remove_partial()
->                                                         list_del()
->                                                         // off pc.slabs
->                                                         // slab_list = POISON
+> so either this race was already present in 164b06f238b9 (and you need to
+> go back further) or it was actually introduced later (maybe the write
+> side was introduced later?)
+
+This commit introduce the vmf_anon_prepare():
++static vm_fault_t vmf_anon_prepare(struct vm_fault *vmf)
++{
++       struct vm_area_struct *vma = vmf->vma;
++
++       if (likely(vma->anon_vma))
++               return 0;
++       if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
++               vma_end_read(vma);
++               return VM_FAULT_RETRY;
++       }
++       if (__anon_vma_prepare(vma))
++               return VM_FAULT_OOM;
++       return 0;
++}
+
+in commit 2a058ab3286d (mm: change vmf_anon_prepare() to __vmf_anon_prepare())
+the vmf_anon_prepare became __vmf_anon_prepare.
+Where the race problem occours `if (likely(vma->anon_vma))`...
+This commit 164b06f238b9 is introduced in 2023.
+
+The write side is introduce in commit d5a187daf585 (mm, rmap: handle
+anon_vma_prepare() common case inline) in 2016.
+
+> The important thing to know is that the mmap_lock is a read-write lock.
+> That means that two readers can be present at the same time.  So this race
+> can happen when both threads hold the mmap_lock.  I don't know whether
+> they do in the syzbot reproducer; probably not, but it doesn't matter.
 > 
-> panic log:
+> The other important thing is that _we don't care_ what the value of
+> vma->anon_vma is.  We only care whether it's NULL or not (this is a
+> sufficiently common case that I wonder whether KCSAN shouldn't special-case
+> it and decline to monitor it ...)  VMAs are created with a NULL anon_vma,
+> and then if needed, anon_vma is set.  Once set, it is never changed (uhh
+> ... at least I don't think it is.  Lorenzo, could you check me on this?
+> I think all the places where we set vma->anon_vma to NULL are in
+> situations where the VMA is not yet exposed to the page fault handler,
+> like in the child side of fork()).
+But if I have a write in the same time, this can be a problem, even though if
+you only want to know if vma->anon_vma is NULL or not.
+
 > 
->   list_add corruption. next->prev should be prev
->   (ffff888100000248), but was dead000000000122.
->   (next=ffffea000416e410).
->   kernel BUG at lib/list_debug.c:29!
->   Oops: invalid opcode: 0000 [#1] SMP NOPTI
->   CPU: 1 UID: 65534 PID: 144 Comm: poc Not tainted
->   7.2.0-16172-gcf72cbb39da8-dirty #1 PREEMPT(lazy)
->   RIP: 0010:__list_add_valid_or_report+0x80/0xd0
->   ...
->   Call Trace:
->    alloc_from_new_slab+0x183/0x300
->    ___slab_alloc+0x31c/0x890
->    __kmalloc_noprof+0x3d4/0x800
->    lsm_blob_alloc+0x2d/0x50
->    security_msg_msg_alloc+0x26/0x90
->    load_msg+0x1aa/0x210
->    do_msgsnd+0x91/0x800
->    do_syscall_64+0x109/0x5d0
->    entry_SYSCALL_64_after_hwframe+0x77/0x7f
->   ...
->   Kernel panic - not syncing: Fatal exception
+> So it's inappropriate to use READ_ONCE() / WRITE_ONCE() to "solve"
+> this problem, because we don't need those semantics.  It's sufficient
+> to wrap the read side in data_race() to indicate to KCSAN that we know
+> what we're doing.
+you sure? 
+
+the __anon_vma_prepare(..) is write on vma->anon_vma and the
+__vmf_anon_prepare(..) is reade from the same vma->anon_vma at the same time,
+you sure that is not a problem? (I'm asking as a curious layperson.) 
+
 > 
-> Do the list_add() under n->list_lock. Reattaching the freelist stays outside
-> the lock. Once it succeeds the freelist is no longer NULL, so __slab_free()
-> cannot put the slab back, and by the time the lock is taken remove_partial()
-> has finished and the slab is on no list.
-
-Yeah, this should work correctly. 
-
-> The lock is held until the block below that returns the remaining slabs to
-> the partial list. That block already took the same lock on this path, so no
-> lock/unlock pair is added.
+> Also, as Lance said, I don't see how this is related to huge_page_alloc
+> failing.  All I see is two threads calling  __vmf_anon_prepare() at the
+> same time, which I presume is an attempt to COW a hugetlb page.
 > 
-> The unlock is keyed on having taken the lock instead of on pc.slabs being
-> empty. With CONFIG_DEBUG_LIST or CONFIG_LIST_HARDENED, __list_add() returns
-> without linking anything if its check fails, which would leave pc.slabs
-> empty.
+> I don't think it's enough to just add a data_race() to this one read of
+> vma->anon_vma.  I think it's quite prevalent.  There's probably other
+> syzbot reports that mention it.
+Yeah, I mentioned this on commit message because how is said by KCSAN the
+__anon_vma_prepare() and __vmf_anon_prepare() is called after huge fault... My
+interpretation might be wrong and if so, i will fix the commit message without
+problem. 
 
-Well, if the check fails, it has a bug and should be fixed.
-We should not make the code less readable to handle a bug.
-
-I think it's better to have (diff on top of the patch, not tested):
-
-diff --git a/mm/slub.c b/mm/slub.c
-index 7a7f9935c711..eff96b992164 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -7216,12 +7216,10 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
- 			break;
- 	}
- 
--	if (!locked && !list_empty(&pc.slabs)) {
--		spin_lock_irqsave(&n->list_lock, flags);
--		locked = true;
--	}
-+	if (!list_empty(&pc.slabs)) {
-+		if (!locked)
-+			spin_lock_irqsave(&n->list_lock, flags);
- 
--	if (locked) {
- 		list_for_each_entry(slab, &pc.slabs, slab_list)
- 			set_node_partial_state(n, slab);
-
-> Fixes: ba7425312607 ("mm, slab: add an optimistic __slab_try_return_freelist()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-> ---
->  mm/slub.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index f9b56cb439e709..4f6d1a03a8ee46 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -7260,6 +7260,7 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
->  	struct slab *slab, *slab2;
->  	unsigned int refilled = 0;
->  	unsigned long flags;
-> +	bool locked = false;
->  	void *object;
->  
->  	pc.flags = gfp;
-
-uh, I'm not a big fan of having a new variable to store 'locked' state,
-but okay, this seems unavoidable with current implementation.
-
-> @@ -7297,7 +7298,10 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
->  			void *tail;
->  
->  			if (__slab_try_return_freelist(s, slab, head, count)) {
-> +				/* get_from_partial_node() may be mid-removal of the slab */
-> +				spin_lock_irqsave(&n->list_lock, flags);
->  				list_add(&slab->slab_list, &pc.slabs);
-> +				locked = true;
->  				break;
->  			}
->  
-> @@ -7312,9 +7316,12 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
->  			break;
->  	}
->  
-> -	if (!list_empty(&pc.slabs)) {
-> +	if (!locked && !list_empty(&pc.slabs)) {
->  		spin_lock_irqsave(&n->list_lock, flags);
-> +		locked = true;
-> +	}
- 
--- 
-Cheers,
-Harry / Hyeonggon
- 
+Thanks Matthew and Lance for reviewing my patch and sharing your thoughts,
 
