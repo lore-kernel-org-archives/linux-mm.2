@@ -4,95 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DF63C61DD6
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 00:21:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35DCAC61DD6
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 00:42:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 94FAA6B0092; Sat, 29 Aug 2026 20:21:33 -0400 (EDT)
+	id 3D1B06B0088; Sat, 29 Aug 2026 20:42:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9272B6B0095; Sat, 29 Aug 2026 20:21:33 -0400 (EDT)
+	id 382926B008A; Sat, 29 Aug 2026 20:42:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 815CB6B0096; Sat, 29 Aug 2026 20:21:33 -0400 (EDT)
+	id 2984A6B008C; Sat, 29 Aug 2026 20:42:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E8FC6B0092
-	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 20:21:33 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D9121A306B
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:21:32 +0000 (UTC)
-X-FDA: 85156032024.14.81FF855
-Received: from mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E7AA81C0002
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:21:30 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="cv5J/t3a";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B7426B0088
+	for <linux-mm@kvack.org>; Sat, 29 Aug 2026 20:42:24 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8F9F5A01FC
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:42:23 +0000 (UTC)
+X-FDA: 85156084566.01.E815E76
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id EA19AA0009
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:42:21 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=SV0icf9X;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788050542;
+	b=jqsUJFr6ZD+XIrfhrK1BUlHO2TZbluQFz83WPPzBfxOhrdOv9FwfG24fNdwFPhtUBpxHN6
+	/fBC4NyOmQcGpvLFBV5CD3U+4dB9k4pjKTSRboVYI1Ne+tbVHB9/memxYDukD3goRo6V12
+	+5kRMT/JW0o9lIpotoA5rZ+R/2Jnhxo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788049291;
+	s=arc-20220608; t=1788050542;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2xV7/sSOP8gJsxvvOySKe6GHZrDy3lTpXUj+7CugGvQ=;
-	b=4zSWtTxXY9uICjNSVJkSBqaZiVv1ujonlsGTCmfeJEEaduvzqTi11dIjZxwODrxrSo9xyT
-	iyEtWOmB4GtMFlh0usXmeRqGznsAHYk/5I3mIeI/1JC8A/pKzuxdT+HSTQSRcdboQ0rCbf
-	A5IfwaoTvsvnknsdwySu2tqlBtVk0fw=
+	bh=Rb4xEC514rL8RB4hHk5hsrJ5d856ovaUy3Z49tjYAx0=;
+	b=Dz3b3mu2PKZxa5Ljm9lG+1vconn2fn+QSsneCdKzcja3J5iGrVBkvF8r68JkNjW22b1KU9
+	DJ+oogv+JTI+1woyvoB7oGOlV2sEpKXYdoIDzLL2nUEI4CKZaGS79HhJuRVw8TBHskI+lD
+	p05cokZjfYToVHIVsveivfEYGDcRtNc=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="cv5J/t3a";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788049291;
-	b=7jWW7S54grz7Gb3L8Lrz+UwVBSrS3QzGNRF4Lv9x/icQOTHjNsP86YoOTEvFsObfobqJMF
-	yZevPFFv7Y9OTke1T8ohcKEuoOXu1omJ8+rDVZNeSpPWY1O1bn7Bf7ewZyuSTtfb7y3O4S
-	6z9ZRSqWetQ4QSQNh15HCKKgrf9fzhw=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=HW0I75C/5UBwwd+jukPw0ARJed7HblTEcNCAI5VbTdI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788049289; v=1; x=1788654089;
- b=cv5J/t3aEBhM4DKLAaOZG4aDJjyvdVlwaVEnSmjLfQx0ZFmRa45LBUDqVbjlbP0DwkvrP81S
- FeQSBC6pO23xN4OYtcPP1Xggo7ZHjbu6LvSoMZubHavDI2ci1/0xGhb/KEdjtYW8Nu61ERUtFDr
- Bu+zv/3Yn6pU/bvtFpJ6H90w=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 485d79aea16e38b9;
-	Sun, 30 Aug 2026 00:21:29 +0000
-X-Mizu-Trace-ID: 485d79aea16e38b9
-X-Migadu-Flow: FLOW_OUT
-From: Ridong Chen <ridong.chen@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Muchun Song <muchun.song@linux.dev>,
-	Tejun Heo <tj@kernel.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	David Finkel <davidf@vimeo.com>,
-	cgroups@vger.kernel.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
-	linux-mm@kvack.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
-	linux-kernel@vger.kernel.org,
-	Tao Cui <cuitao@kylinos.cn>,
-	Ridong Chen <ridong.chen@linux.dev>,
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: [PATCH v4 RESEND 2/2] mm, memcg: fix memory.peak reset clobbering other fds' watermark
-Date: Sun, 30 Aug 2026 08:20:44 +0800
-Message-Id: <20260830002044.1938621-3-ridong.chen@linux.dev>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260830002044.1938621-1-ridong.chen@linux.dev>
-References: <20260830002044.1938621-1-ridong.chen@linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: qngmswptrm3kophduxcgd7oodc8ntcaa
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E7AA81C0002
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=SV0icf9X;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6B8FB600AE;
+	Sun, 30 Aug 2026 00:42:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B59161F000E9;
+	Sun, 30 Aug 2026 00:42:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1788050541;
+	bh=Rb4xEC514rL8RB4hHk5hsrJ5d856ovaUy3Z49tjYAx0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=SV0icf9XNL8ZxbctcyAIM46gZXeJQW3d+vRCQ/i3WsiaRhzeYIDMCtbcdETuI5hc1
+	 onYQb8AgOZwAjr25Im4ziTtdVk+0TNtQoGiWrY7tbadrZxIJOnimL9gbA8ksuCossx
+	 nViWZmlkCpuiiYK3QNwEou1JKddc/MCvEpYgrcu0=
+Date: Sat, 29 Aug 2026 17:42:20 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Tao Cui <cui.tao@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+ hannes@cmpxchg.org, roman.gushchin@linux.dev, muchun.song@linux.dev, Tao
+ Cui <cuitao@kylinos.cn>
+Subject: Re: [PATCH] mm: page_counter: reject empty string in
+ page_counter_memparse()
+Message-Id: <20260829174220.204771edba7c52511dc08641@linux-foundation.org>
+In-Reply-To: <aoVUlFdZYLFn_gvJ@tiehlicka>
+References: <20260817042652.74136-1-cui.tao@linux.dev>
+	<aoMzchLCCz5hiFHp@linux.dev>
+	<aoQNtIRvqXRh-x4u@tiehlicka>
+	<aoRz72_zdMai_RNV@linux.dev>
+	<aoSLxSBUPbEqimJq@tiehlicka>
+	<9bd74181-2ce4-4d69-a353-614685559ceb@linux.dev>
+	<aoVUlFdZYLFn_gvJ@tiehlicka>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1788049290-374034
-X-HE-Meta: U2FsdGVkX1/elTjSQPm3EmREDGmRjFmI28VGKlG8jsElkaFM/IFcl17JoQoajArLZEjeK8UxZUO2NzlqZ59GrrMZuxrqQski0J6u/MSKwHGW58Y144Zvoo7sDcFZQvRnP9xwEc6C9S9iDk6cm2YnKpRbRhH6D86gd4mXtZkDnXQ/HZFa3mKe4JtYbT+0IGfcmzU1WjnMP/2u6ggOvOW8IyUxZbd1niIFpv0izrXF13aBBBpS0wivTnf6R2rTeDVV8Y2RjJY2Pju+mJK2aGGGHbdtUgOBVkUWaPsnkY7ocxZOAnFWroRnLHsUEmalxs2CRTYsEafQQhfGGFvB2WyZOnCdx6UcqGz1Cpk1yz81otpyqeT5/WRD/o3CAI96S9xgvunCCkeck2CP901agjXjpWdxZvtETly0xUVJBEApXAQHdKSnz+39lfqO1XLDYkWSQFnps2PJS3vFaHA0ss8KjcLy8hinIUZPoUGa2jBBYdy0KnsRodsgz6V/YjzSpJGuW9qByH2hy/4XYcaOzn3Ah4P2aQ0xBfDOqy/o5ssMMNumeJueUweYqGFYZ+YVnVzZdhPEO1rGgUfTvw9LDTaGySDlNMq8TtfET3mIp3c6yJ43/n7CFcudf321OZeVUvKm7PnUVx8ELT7A2B8f18IpxVCUOUVhYazWnbcn+m4w0k0T0TqnYr3E8o78oREd0W307krg8UzMF4TS8Ui/e66OcpjNERV6+1gndpH/9SZitlnROLpNGbFoEaTTwuDd6k/mB/K8cP5TM7LvspKD2oAJSzy5lGhjPaix0R6Gj0Z1FBMVFWH0OQBsEhd27QLXPTLw9lrTCQxLcHfDnYG0PwoV0Wqy9V5hJRB1GZ6lz5UuNt3/rBg4dbYMOkPUlIX/7kJjyEanUHRC6CeQqqkdT/pWZUvosq2Hs3s+PNewhrCC34hf0Yiro31wajXiWnQTbFeuRXOZd/5kFCEJlq0NwYn
- jmi/fY7L
- 9JL4GbXnv4A4mHizE+krEupNKccbSWKesaKN2mlCAJbiIBW1WQHzQWYRkozSqUM1oOBxe74P7OQAw8M7RQ94SLX78Vv2eKN5DiHVes6m335u2icYnMSB32Ingvl6NRDOvOJyRnxzd9r2WdcCo/r89WVEUPTBjNzgDEmmad+KZlCQAwiv1YIMpiatSUZlG7aX1vzGuQEqXHIE5HoYj22vd0SVvWXJhKXWPpTqMpVP5sFt8gXUTTjyNZl0GmOoU8Ql8Gl2HbPHKoGaUGG1YDeCO7WtHsg/n9Yd4SsWIwO+NmJ1moXx4i/Do7TAuleCu1kIGnmZaJZl1rU4FdwDvGilwoZ2DiXBx2nYueIoMxOV/NYL61fgeBaogrAylJg0v2BpBBkVSfhamVh4Rnr11CvxzNGsFFWEFV7/X5YrVCOiwo7ZTs59tvUYYiuS2IZy9T2tGZgX9v0HmJRVbNIh3mKGEUi6tZO+vIkde61VD8dmVaGN9qXDM//q5HHMN9WDCdww5OwQtJ+2YK020MBOjlJb3G2NoTdaUtdUH+pgLn/wkXtQHv8hP/s8r6HGnbpVGPFDRSp3G23NE5nmcYuQTqasoGweDHzMkNkIQZKV5tKqqqBQ92awuxJ+kX6fERBD263p+vuv6JOapbmRIZ+Dm4pZlZ4q8R241iVRasJ2g8m1+hrvvoxA=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: EA19AA0009
+X-Stat-Signature: squmm4tzdyiezexi1nodeo6jatigaabq
+X-HE-Tag: 1788050541-951879
+X-HE-Meta: U2FsdGVkX1/JNe9wxRm75OM3gd3ITL0DVQLzW10Vp6Th8bHjgxTn1ZJozYBl8AiTCgXthwpdAJgwaT+e8M+5v7mPsMdU927wmioWqPN+zP2LBoGPnZ9zpdxsa/Gp8zqom08xAA8bn5h4THgq8/5+yTxP8JSjISlQVdGDlGGuoCWgU0jcZ0xxJW7tFiVHrZtAVhQRTisOyI/rUMFd8L9DbBujBI2lKakuBBUouiZJWgEufCz4jrOffgkYPBRqldIkBX4u2xv3MiPTZT12GJerihXSNnA8qH8r69FwAccLxqHWtxGH+kjUI9JMlm+gTlyajLparac9hhDeb9VU2V+XH1gFg4raUDjSbVrXyn2S2pjcuxb3+pCmacFCtPNP3pXt4LqzMwb++btnaVZgUigpPotG25EwaVQbyUyUpHyG/2kzXIWEt3METMVdQZVguGOXJIEa44Wy0oqubaeFjcfTQ8MvIgmw2VdDAIuy9vk8+T+vg4jQPVey3UJyz9UgmdGlhI3bgOjKxPqOo4QijbX94aA3jxWZ0qqLWAKitWwDSLLa3oAjBPIog4xjcqztdkpnKqbnZSH4VH7vCwabYXaghhR87ZwkUxmfbHL89nRPnkasEoX/XG7qTuoO9wIiOlm8nF9HM1a2zbAfgeEX28vZCvxo1yJvVaUvcuQEsziLoX595VNRq6PN5R749nnSfplQSiIEpTXy1ooMv9E7X8KZR042md9NkwU3mPtDPgQo2y7kU3nxbPJHKFpUSeQf3dRZUmWRP8zjbcCodCPq/oHxD61t+mLeL6mUW3e3NlSBg+t4mWHt+/C54NsOHOylEXjVKkaxIdE9K0mY7YBLCd/urzs2DNL0fctVH3nXBYAzdsHxLax1aq44dMGpkjA7LRG5nqKmW6ZcixiQJGyDmJ2oiHzaMMUf/2iLclymbT4yaVtfV4eTe2hRMD4W7LXIjcjnsqTJ5rQASBRKyCQETCG
+ nnjaWph0
+ rxDsZVbae4iT71x67ZvmxoWngIP0KHdhSUase117veBYmzy59DxeIc5BnU6I0OWILlYu0aFObnmRrvT1Km9Ytk93T/tRDvNppcYW7iw3wOm3fB41PkL/D8Cpv6STOKe3n656t+coCE2bXTIXKxGgjyp3UB24Tn8/zQcqf13KPM6bKkvcawOfZI+LiqT/LAKLjvVIui/z9TikGKEgdx91CpxB2tzl13jW5+aLVBEVYBirP9XgyRQgI1qmZNWzu6O4pbZZZmRl8+UgnZ5qFgq6jH6RZIVJBpRVI+rkpwDUWHxC4KPvSHoyDuV2xcpG0JCMBSk/0YOR4AkJrjEBBntev/rMFmD9eE/NaHnvn8Mw9t/UGsR5CCf4hE7MaYJw6tyKDRgzR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,65 +98,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ridong Chen <chenridong@xiaomi.com>
+On Wed, 19 Aug 2026 09:00:36 +0200 Michal Hocko <mhocko@suse.com> wrote:
 
-Writing to memory.peak resets the peak for that fd only. Each fd is a
-watcher and reads back max(its own value, the shared local_watermark).
+> > Whether that benefit outweighs the compatibility risk is not mine to
+> > decide.
+> 
+> And I am still not convinced. I do understand your frustration from the
+> debugging the issue. In any way, if other maintainers decide this change
+> is worth I will not stand in the way.
 
-peak_write() resets by lowering local_watermark to the current usage.
-To keep the other watchers' peaks it then walks the watcher list, but it
-stores the current usage into them instead of the old watermark. So once
-usage has dropped from a peak, a reset on one fd wrongly drags every
-other fd's peak down too, even fds that never reset.
+Shakeel seems OK with it.  Other other maintainers are being aloof ;)
 
-Reproduced on 7.2.0-rc5-next under QEMU, two fds A and B on one cgroup:
-B sees the peak (410624 KB), usage drops, then A resets -- and B's peak
-collapses to 1060 KB although B never reset. With this patch B keeps
-reading 410624 KB.
+I'll queue it for now, along with a note that additional poking is
+needed.
 
-Fix: save the old watermark before lowering it and use that to floor the
-other watchers, so a reset only affects the fd that issued it.
-
-Fixes: c6f53ed8f213 ("mm, memcg: cg2 memory{.swap,}.peak write handlers")
-Closes: https://sashiko.dev/#/patchset/20260807090000.1532495-1-ridong.chen@linux.dev
-Assisted-by: Claude:claude-opus-4-8
-Acked-by: Tao Cui <cuitao@kylinos.cn>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
----
- mm/memcontrol.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index b84f448fe984..4c02d7de460c 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -4749,7 +4749,7 @@ static ssize_t peak_write(struct kernfs_open_file *of, char *buf, size_t nbytes,
- 			  loff_t off, struct page_counter *pc,
- 			  struct list_head *watchers)
- {
--	unsigned long usage;
-+	unsigned long usage, old_watermark;
- 	struct cgroup_of_peak *peer_ctx;
- 	struct mem_cgroup *memcg = mem_cgroup_from_css(of_css(of));
- 	struct cgroup_of_peak *ofp = of_peak(of);
-@@ -4757,11 +4757,12 @@ static ssize_t peak_write(struct kernfs_open_file *of, char *buf, size_t nbytes,
- 	spin_lock(&memcg->peaks_lock);
- 
- 	usage = page_counter_read(pc);
-+	old_watermark = READ_ONCE(pc->local_watermark);
- 	WRITE_ONCE(pc->local_watermark, usage);
- 
- 	list_for_each_entry(peer_ctx, watchers, list)
--		if (usage > peer_ctx->value)
--			WRITE_ONCE(peer_ctx->value, usage);
-+		if (peer_ctx != ofp && old_watermark > peer_ctx->value)
-+			WRITE_ONCE(peer_ctx->value, old_watermark);
- 
- 	/* initial write, register watcher */
- 	if (ofp->value == OFP_PEAK_UNSET)
--- 
-2.34.1
-
+A v2 would be nice, please.  Add details about that production incident
+and make the requested update to
+Documentation/admin-guide/cgroup-v2.rst.
 
