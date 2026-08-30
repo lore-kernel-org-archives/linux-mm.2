@@ -4,101 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F319C61DB9
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 10:13:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED506C61DB9
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 10:33:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C02F6B0088; Sun, 30 Aug 2026 06:13:39 -0400 (EDT)
+	id B0CB66B0088; Sun, 30 Aug 2026 06:33:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16F4B6B008A; Sun, 30 Aug 2026 06:13:39 -0400 (EDT)
+	id ABDE06B008A; Sun, 30 Aug 2026 06:33:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 085736B008C; Sun, 30 Aug 2026 06:13:39 -0400 (EDT)
+	id 986166B008C; Sun, 30 Aug 2026 06:33:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C4B7A6B0088
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 06:13:38 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3563CA029D
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 10:13:38 +0000 (UTC)
-X-FDA: 85157524116.21.78D9DC0
-Received: from mta0.migadu.com (out-245.mta0.migadu.com [91.218.175.245])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E6C9F40002
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 10:13:35 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hV9xK6G+;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.245 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 681B46B0088
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 06:33:30 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DB96B802BC
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 10:33:29 +0000 (UTC)
+X-FDA: 85157574138.11.3811276
+Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
+	by imf28.hostedemail.com (Postfix) with ESMTP id EB509C0006
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 10:33:26 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=UrN5Y7Al;
+	dkim=pass header.d=columbia.edu header.s=lionmail header.b=yBmqukGl;
+	spf=pass (imf28.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788086007;
+	b=wyznqgSbB66ZlYwhQQ5CiTSlRs2u6o58UuEimfimyQLOAnT4YErjArnq/5UcOqVmI4pHza
+	Qo+ENXjy3WtgInPG2deSAuk+OE/dNK4oHPe3BtvQdqVkGzSd+tzJRWdwrRLK99bl+wrqGN
+	ItPj36E7LOZ8hr+Hbp5NqUY9V6dq1fg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788084816;
+	s=arc-20220608; t=1788086007;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PHKJUx/v87vn2rRT/cCDlfgVC+ElcN14sQeQkxTybd0=;
-	b=Y2dMXiU9UjcKsW+E6SWouce5PUMZuCowIKdofZsbhYCFm3A611rctBHDv3ncq4x6m3snkn
-	Zfgtry1lo9nghUBWzc1hzzrLnq4TUFRaSgR1VkTb16tOt6sU96Pdc75+FiIPzxwH5E6zI8
-	gCgTZHLSWYappTboIejWESkCRar0YEM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788084816;
-	b=yx7eiUkFs7U7Svlbki3EvPqvTfILY98y+HbddMK6Mt4Rn3AvAhovJgFpbQhEG2I3LmcqSd
-	xTTpJGj0lAuTGR4EvO199Vdn4MCJFLzZRw+PG2qC6KRpxqOAeip9drqY+Cvbx/LwAANFWk
-	sJWUQMKO/kQL8ZLvFzBlje8G5ahIwi8=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Dmcr4tzCXL4F7wgRjqJeFcGn1Q75Cerw60dFrdsb/pM=;
+	b=Z4EcWZwbDZAfrLfpf6o0rPS43AOqyuw7LFhW62vv+kFGOCc28D77KiHum7wU2st0M05XU6
+	aKscOjjmnqG30G8rAfqdfRN+XNQ4MzzsnnryVGJZHTxekbH+k+YFwWe9I1lZIWKAwtJq+S
+	D4giZO5WzTPCLqVKtaeeZd+C2drwDow=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hV9xK6G+;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.245 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=orh/j8jOJpiqrKlrLd2jKhjQfJBswjC/3RKWNPcbXdI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788084814; v=1; x=1788689614;
- b=hV9xK6G+s2tQILnyHfaicHJCKWu8j6ovNFFtf2xsQxXkp2ZITHcQNBjt9+UjsEvwE1aB2E0G
- +GzIb0G0qqZiCT0C2SSiqZj/7RNHTtSDxSB9PZlZOV7cZAsDmkEvVIjAErRVY6bBrzrBp1+oVPk
- WYn6rh9a84SOeEBHvOG/Gg1M=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id e5d5919426a8fdc3;
-	Sun, 30 Aug 2026 10:13:24 +0000
-X-Mizu-Trace-ID: e5d5919426a8fdc3
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <c0a32c3c-bff8-433c-8552-f0723e3a07b7@linux.dev>
-Date: Sun, 30 Aug 2026 18:13:13 +0800
+	imf28.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=UrN5Y7Al;
+	dkim=pass header.d=columbia.edu header.s=lionmail header.b=yBmqukGl;
+	spf=pass (imf28.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from pps.filterd (m0167077.ppops.net [127.0.0.1])
+	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67U9mmqd3220594
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 06:33:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pps01; bh=Dmcr4tzCXL4F7wgRjqJeFcGn1Q
+	75Cerw60dFrdsb/pM=; b=UrN5Y7AlAfBbY4Fy/u2SJtnyl48+/thxogZMawq5vx
+	GWDobDYzCPueT5SwmQqcFvh62bwzdLbPA0voxbttGPICDfjCp64zUixpqjHKv5M1
+	60fDqXYLjHpqE4RUq/8b4UwHFwB8u+06Nm46g/H4mqnh8+duSlzN4blTnsZG1puW
+	1cS5jLJWugFVEOIgAC/bcsaqQw5tqU373L1NN2rn4hsTy5BoFe0bQgt20RPpSYtn
+	x/qBuhiaxKDwIdoDnZp+iwOV7pWzdAEXUfgXn5q7wxef/9rpinE0x+SOAwds3jM+
+	gbL/t3e0nkJZwlwf2aJsn3xRZfPIV/wgtzdPB9V6UkzQ==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4gbs0pvvq5-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 06:33:25 -0400 (EDT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-52f52ccd459so37867951cf.1
+        for <linux-mm@kvack.org>; Sun, 30 Aug 2026 03:33:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=columbia.edu; s=lionmail; t=1788086005; x=1788690805; darn=kvack.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Dmcr4tzCXL4F7wgRjqJeFcGn1Q75Cerw60dFrdsb/pM=;
+        b=yBmqukGliyAO3xIpOjZIcLLlBFA7M4lLVuB/l5Zet4ZxfUaKhMH5iOvuXW+9OEpncH
+         I5oI3GX1r7wcleSLLk+8m67xgyl9v0XhTT8wIPPFeI8n1yyGn/ePOaWiiHP3Q7SnxR+N
+         sXawfdlSCSoHD49jb/Fc/WuIx05huogS6A24SHKc/B0fLW4iXf6sGumzBUWvgpAXMj8P
+         V87vubP+6K2wDtkk3pkdmEucFFw8SdumsOD+G9jmggsGJCQQwDV+gCNhGaMtzvkDbgzG
+         JMbKnHjeEtfSFxjYaBL6ZO+ZuExbS8tC9Nwol8Cnx2iztwAJgW2pKVE9TRQuhXJmwOPf
+         pjtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788086005; x=1788690805;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Dmcr4tzCXL4F7wgRjqJeFcGn1Q75Cerw60dFrdsb/pM=;
+        b=E3fjhnZdhMOUb3IypjnD5D9LETqGvbQk40NbPyDy2S4B0ib6s3PpD+aEzje+XAntjy
+         gwcD2Vgb0JqsuVGNumYJdwoaWdnwnn0RwUINX32DMVb7gOlvkZVCJoeylpINWFXLTsZ/
+         n3qtwYSwx0I4/5fJ9p3n7a1k7/CTvYjb6qLpHeWYVUBQnqTz8jkj2/AjVg1xu9UQ4T5j
+         8515eGmQM12ODzb+UeEebnVym+Qn2/DRGiRIoapUU63gXxdENRZytkbZddWsRMvPACOK
+         v3pZfsuKkNM54V5qDu/J2/OKrSajobGvxFWRchWU8WuLfubTVqN2LhDiCt9CiyYE0pWm
+         8c4g==
+X-Gm-Message-State: AFuF++kBx3ubxsM/y6W+BmR7u9U+NGk3oYN++jomuNnB/FfcPIQb8NTR
+	o8Y0sLVUxrfhs/Wv6/b77xz4Mes44+iJfm0Bp/nKOV6JK66LmBW+Q78wb4bUjGKOiHeV17TqM5j
+	S0x1DQhI8vDUwFBwaSGr2pnKfmR1/zu4ipMjUjAOazxEqjxDb
+X-Gm-Gg: AR+sD11GDZmb/8l1+oUUpKhpXhESAkVAVBV0ImNc75YtxLHRP8GD5vPiI4WUJNYTr08
+	jKQJamfj2tLjkDAsD+Jp/d0HdxJCBbcsu5vgMicNc7ur+IIca+RNI4W9UehccbiD05ba48CVZI7
+	Hq/UDibtPMGXxblF3UacZ2EcLw/oDoF14bpF09lRXghOScNLXF9Ftz+b/IhTIDVE1vPPoVDu0Iz
+	6qinxTEVp4/o9bjvU06Sv/agul7zlHr9IwR5LuG9xujqDrkdFyt8mVaTvWAVLAa7rXgPitpcqro
+	Ha23PCDgZnhxDCbwRP60ZDXOCHWfWr8jD1Y3UuSGBKwt7nFETvZLndyNiSNSZSWPXDJGvWLPv2d
+	q6S9IMCETp6/9uc24cIC2HeSVAmYRDLrSZjPNdMERag==
+X-Received: by 2002:a05:622a:4d44:b0:52d:7b6e:4986 with SMTP id d75a77b69052e-52fb94aca06mr249247231cf.23.1788086004553;
+        Sun, 30 Aug 2026 03:33:24 -0700 (PDT)
+X-Received: by 2002:a05:622a:4d44:b0:52d:7b6e:4986 with SMTP id d75a77b69052e-52fb94aca06mr249246751cf.23.1788086004114;
+        Sun, 30 Aug 2026 03:33:24 -0700 (PDT)
+Received: from [127.0.1.1] (bzq-79-179-7-133.red.bezeqint.net. [79.179.7.133])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ccf5a580esm69304005e9.3.2026.08.30.03.33.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 30 Aug 2026 03:33:23 -0700 (PDT)
+From: Tal Zussman <tz2294@columbia.edu>
+Subject: [PATCH 0/8] mm: remove page_swap_entry()
+Date: Sun, 30 Aug 2026 06:32:22 -0400
+Message-Id: <20260830-folio_swap_entry-v1-0-7786b52acbc8@columbia.edu>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] mm/mglru: fix ineffective memory protection for
- non-kswapd reclaim
-To: Barry Song <baohua@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Kairui Song <kasong@tencent.com>,
- Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Chris Down <chris@chrisdown.name>, Tejun Heo <tj@kernel.org>,
- Yu Zhao <yuzhao@google.com>,
- "open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
- <cgroups@vger.kernel.org>,
- "open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
- <linux-mm@kvack.org>, linux-kernel@vger.kernel.org,
- Ridong Chen <chenridong@xiaomi.com>, stable@vger.kernel.org
-References: <20260828110919.1324028-1-ridong.chen@linux.dev>
- <20260828110919.1324028-3-ridong.chen@linux.dev>
- <CAGsJ_4ws6edtcToqJQ0azJPTymAYj41nzdGJvBqEM+gROiJtRQ@mail.gmail.com>
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <CAGsJ_4ws6edtcToqJQ0azJPTymAYj41nzdGJvBqEM+gROiJtRQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E6C9F40002
-X-Stat-Signature: r431ci894gbsg4trwcpbe8a8wutb9ygj
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALcGlGoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDCwNz3bT8nMz8+OLyxIL41LySokrdVFPjFDMLM0ODlFQDJaC2gqLUtMw
+ KsJHRsRB+cWlSVmpyCcgcpdpaAN3xYOJ0AAAA
+X-Change-ID: 20260807-folio_swap_entry-e53d68610de0
+To: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+        Kairui Song <kasong@tencent.com>,
+        Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+        Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+        Youngjun Park <youngjun.park@lge.com>,
+        David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+        Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>,
+        Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+        Lorenzo Stoakes <ljs@kernel.org>, Rik van Riel <riel@surriel.com>,
+        Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
+        Jann Horn <jannh@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+        Yosry Ahmed <yosry@kernel.org>,
+        Chengming Zhou <chengming.zhou@linux.dev>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Tal Zussman <tz2294@columbia.edu>
+X-Mailer: b4 0.17-dev-db0b7
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788085997; l=1676;
+ i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
+ bh=URqsD108Ktb7Q1ul6tJPwzbY4nIKxLZRUx0agGsKnfc=;
+ b=Vbu1vdG/yynRHwQQgggtra/gysbc3tRr4M+3u9Jf693fE4TvPp8VylrcVsbN5b3J6pcxUbsgp
+ qB3DhfuPzdhCqmnLZqz/XufM/PRKZAua1WrSRVFIPkcEVAXKk9HZwVG
+X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
+ pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMwMDA4OCBTYWx0ZWRfX3dgnszbJZ7PG
+ IOstNCzk7KjLql9uNIi+LxFDJcjLOtxjk9xju7rSMZ3Y8u8a1AQoKAWgR2KhAtQzufNwJbh7PVZ
+ +5kPlAqDbEoE+Wg8Uj3dpT0+vTKwNlpxWT4WI5YCbMw8dMrh4XkktGtwutPfmTV4L4B0KBeXku7
+ vC5KoRDgdY6wafTM26RvWKOkbN3EvgNpM4echhuLJtPlZfj2vm25EAuWJZQ5qKecDRYEflnCPW1
+ j6wLlhMfeN+8nK0zLkimWZAeejBYY3q7LdFfHp3kkNExSvfSBFQ8xuqMiS8xMsPucD3J4PzG7hZ
+ Y0ZgNjj798YVc7sB4OYQKFQRnEeZkmDmRvNQNOqKw4e8BLkn7g0iDaUV1jFMMsz5enRs8kuDX7J
+ Qc6YUiia7gf5Q/5VNYiKhEf139PSzKnWKHSe7gPDW6HCT4xFGmwaH1c+c/NL6fmabMKE/GAocfW
+ i9Y2E/tPj2/lJWnHVMw==
+X-Authority-Analysis: v=2.4 cv=EtbiaycA c=1 sm=1 tr=0 ts=6a9406f5 cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=LRATYcvZeiQrLRB5MfbBvg==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=QOCMdifcju39GKoXhKua:22
+ a=FVoBsLlWJ5wMsLtFyMMA:9 a=QEXdDO2ut3YA:10 a=uxP6HrT_eTzRwkO_Te1X:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODMwMDA4OCBTYWx0ZWRfX63IgR2IuNS8d
+ FQI2R1Sj9tvNXkdpisv+A8tvvFNAEKNvPUgKNF47+MuqmldC47T5VeuvKKKmkXbMTJ8mQEibLga
+ eAIsi++xeKUuQdpQRSUYGJESib2upCNzU5gdVdHjXhEYBc54KySU
+X-Proofpoint-ORIG-GUID: s1b8QCjaIfURPk57oWEHVsEjxDpUpJQd
+X-Proofpoint-GUID: s1b8QCjaIfURPk57oWEHVsEjxDpUpJQd
+X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11890
+ signatures=596817
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 adultscore=0 lowpriorityscore=10
+ spamscore=0 clxscore=1015 impostorscore=10 phishscore=0 bulkscore=10
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608300088
 X-Rspam-User: 
-X-HE-Tag: 1788084815-909183
-X-HE-Meta: U2FsdGVkX19s1J5lvpz4MslgiBjJXkmXXDtzF6+H70AF5ka10c93JtwzFxowqVJPPnun0AmNUnUrG3VAn1EnK7FSu/78h6vIIGJmbsdnvxWv69cm3xuje+uk8OPNkv7RanI6+IKCL+OmY4PnQiAqeEjG5B9472hCw2azeyxyp0/+9rAwaCJDm/okYBdn3A3aeq4DfbH70kytrWTDkLB+N4UzEpPP0mx0A6/DZndO0SGxtOgFqraQtORxAvRYJZPBwpMb5Ui5CwJME7zgGYpPrJhad14XEllBXSyL4qItwz3o0yUf+OdA1r7lOPBNAN3/TXw19z10uQPb7A9aOslHP6iPt5Lg3e6gwhoKAW+/me7Zhvbmu4GKgXUzFO9IILEFnardN800bdr8izBQYb7NBKjP+Hm2/N1xXdbdx5iox6U+jDthu6jT6FeTmMlTSw37ZmqDPTjNW0YcPWFfvZ9Oa4yGjCDHmDCjYY4UQFjEUCZagND/obDlfTJtl7duSGEv5Ix9VV59FUBzrXR5hBPcADGAc4V2uH8GnXG1x+JuBpQKMd5BGf+AGyAjyXFvrk1NDRbvNRhtNNW+WS22LvpASNrCyRQE2QHO5m5zjK5kDqeW9krvEzn4LCBV628MhaBIsIEx20sXv2L6umRNW6YHKhvVyEBl7URjhVDLjxnye3z5d/AoTJJaUmwYDdWRDBM1CaS1gTKG6INxF6bL/gTcpfGbNbUAqRKY8mssLrpoC6ThUIhse4831Nv4N+GH86+7oT//eE6BlPWFBCGYqq/Cj3GWswMxA9lDBE6AEkcfOwOOWN19w05cj3qLfu40hmPQefJlK5j/8iMs/bQH4rhtmQBAOsmaxF1pK6cmGlelSP99/9LsYqRPw70DUw7tmxZyKBJd7RkxBdVll5aNSszoGDhBSxIBzBi+wlat5vo50Q3UtBDk0uHuUmWi5NBrWwwl0TZdOP/z1uieNzjFdxG
- 4kR+rhaO
- mbYc5/0CY0TcXGxm2JCro6cktIcVWx1rylG14Pn6gyQEk2s7+8sHGElDxiWF0zOR7JlYRV1cE7+ZqvIBhGYJe8vMBbjlK4djltMv6YICK63QzOgdN2UIvQdV3xYjvpjOXwOFwac7HWh12NGaN7/MxFxpoV9uKviuO3wNiS1+d1xiEgVrB5rMfOqCFsKkZAstFDMyV17UsGqPcZhuiJ7wPmH7Nl0nyazwLuB4eS+NIO1vEXpzlxJLbDl9ST4nMjVRPZeRN6ZrYg0fddWn8WfI2I6z1lDyx93jbrOMeZexsMCpaVS39mJQlX0gVmQ1YOE11uf6bY7ru9LQ1gKnSXaavim5sKrQ0dL1A4zim
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: EB509C0006
+X-Stat-Signature: bmdpcdj7w697fqum9r9stexej5rhenqe
+X-HE-Tag: 1788086006-597849
+X-HE-Meta: U2FsdGVkX1/tSZPkxID4m3qK1L8fFBAfBDoDbYlMBmqZcBvt3RT6ftnYtV22ao0iv5Jbmipp0WniWEl4Kf1VAkV2jEvyMVL0mkyxNPt4WOaYQpl8UVAyas1+DYMEHhmMMW4GPJwV4uAg3N+HL+vikLATn109C701NuNiR3GHAyiKwzKgDjATYmLiv1ikkcLVfC+COse7lbspGWHeY+lWNxSdRP+nxqVDd5yV5Z454HKgPKfNFZXvH86Tn6VWL2Co4IYsSAtctpW/SNH+7FnQgUswMwhUTrFn93DBb0yqS25+CadZ/IyDeWdKht2TvzEHe7rnA7gUodFsrJj4av4mzrWKaj3r+cP52Ffo4xkwrlmGVZ+w7zdPhCJVxM9qLZdWZjOouyE4Qi9ZHvnXfM2LtcBJ9+LXt0X5Yo2S0Q7RLursG/DYOoAuJtXeastGL9VBYK+dfTWVJHdzJjOcIbMJmBy0S+n++rUMKn6GhymMIs3pXMvfSGB5iwqiFyiVQXCqkBi0mq4TGHDuw08GOOUFFOQSLGyy1BrFiAXVXdbkCOFZeo2s4RzGMzpeMh6BcMEiv02bCFi8nWrPwvLwx9DHlZ26uBpfghlqw/qfnWZWr/Jz7k8CC1T0FTI7vlcYSeQYJXfXS9FMJeZmuMwL5EF1iCTDI0TSjN1T0Yl2jxeLLmvi1o2gM0Bim/Yp4hXk75wWnxMBlOaZp58+so7g9Kc0rz3bH2SIfsg94f4jA+DI8UU/qUJ8JKrYS5C/a36YQXu3UDrzWSbA1RyXorgVMMwIp2kIvMIX4Vwr12BMbWb6Yvs+WRVJDwI8tlsfl2ZgeArvI8iPEIlX8lzOHDK/KgJqy0eMLV7Vl2aiUpYyL21UkIC8jo9sS2e6h/Ncz/Fx6yk06BUJmcpxdqmB5S53DUA9zfj/C7Fb2vMbJx0cJ2hTekvid2n3QIWMzJFlBUASsDFdZT4Xw8NX0ooE3rnBhup
+ U+U2+dby
+ USJnZHZURRapyg2WNJchtcQwgxtveXKSsppRss4kVKqJSXIYcsYCcCCl46Mo5KZ0VdOglVktKMcPyozMI6UFHyEsiIH664jmxYOGEUUrU4rFnmx+V90RyNpQ7beHZjZgCNLyCtMrrsPd99Aovqw5yVmbxPMJYPdkh75V6dAjoDaW0KOL2ucDohvi35XKDkT/bzlYSWVCgN+QefIRKF6P3ufV1dgt6NVKgmwR8Ofg/H8YTJu/YGkZC6d43yW1idXZVshh6YqKcXwso0Npq3FDHt3o1DOx8AXvhRX1Bdcjqc7p3CNT82VbJ9jcoX6kF98snsvGSfRLrHq2ZOnoogXW14LkvFmnCXsc/GO/ZYPRjP4dLKXJELfP8CabDpXnXnCSB8sxhAqGdkVCdM6gRaAr0i4xEnAkTlnflCFTToU0vAxC4bDw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,158 +190,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+A folio in the swap cache occupies folio_nr_pages() contiguous swap
+entries starting at folio->swap, so a page's swap entry is just
+folio->swap plus the page's index in the folio. The swap entry is
+folio state, but the only helper for it is page-based:
+page_swap_entry() takes a page and recomputes the folio its callers
+already hold. Several callers avoid it by open-coding the arithmetic
+on folio->swap instead.
 
+Add folio_swap_entry() and folio_page_swap_entry(), convert all users,
+and remove page_swap_entry(), with a few other cleanups along the way.
 
-On 8/30/2026 3:53 PM, Barry Song wrote:
-> On Fri, Aug 28, 2026 at 7:10 PM Ridong Chen <ridong.chen@linux.dev> wrote:
->>
->> From: Ridong Chen <chenridong@xiaomi.com>
->>
->> memory.min/low is silently bypassed for MGLRU during global proactive
->> reclaim (writing to the root memory.reclaim) and global direct reclaim.
-> 
-> I guess nobody is silently bypassing anything. It's just that the
-> effective min is stale data. If kswapd has run at least once, should
-> the protection have been updated already?
-> I guess we need to update the changelog a bit?
-> 
+---
+Tal Zussman (8):
+      mm/swap: add folio_swap_entry() and folio_page_swap_entry()
+      mm/huge_memory: use folio_swap_entry() when splitting a swapcache folio
+      mm/rmap: use folio_page_swap_entry() in ttu_anon_swapbacked_folio()
+      mm/zswap: convert the store path to take a folio and index
+      mm/swapfile: use folio_page_swap_entry()
+      arm64: mte: make mte_save_tags() and mte_restore_tags() static
+      arm64: mte: pass the swap entry to mte_save_tags()
+      mm/swap: remove page_swap_entry()
 
-The children's emin/elow are derived from the parent's min/low settings and 
-children_min_usage, both of which can change over time. As a result, emin/elow 
-may become stale, even if kswapd has already run once.
+ arch/arm64/include/asm/mte.h |  2 --
+ arch/arm64/mm/mteswap.c      | 32 ++++++++++++++------------------
+ include/linux/swap.h         | 30 +++++++++++++++++++++++++++---
+ mm/huge_memory.c             |  2 +-
+ mm/rmap.c                    |  2 +-
+ mm/swapfile.c                |  4 ++--
+ mm/zswap.c                   | 25 +++++++++++--------------
+ 7 files changed, 56 insertions(+), 41 deletions(-)
+---
+base-commit: da6c37ed8beb273e3308e42d4bca3ce11b4432fa
+change-id: 20260807-folio_swap_entry-e53d68610de0
 
->> It can be reproduced as follows:
->>
->>    # echo 7 > /sys/kernel/mm/lru_gen/enabled
->>    # cd /sys/fs/cgroup
->>    # mkdir -p a/b
->>    # echo 100M > a/memory.min
->>    # echo +memory > a/cgroup.subtree_control
->>    # echo 100M > a/b/memory.min
->>    # echo $$ > a/b/cgroup.procs
->>    # dd if=/dev/zero of=/tmp/testfile bs=1M count=200
->>    # cat a/b/memory.current
->>    222650368
->>    # echo 500M > memory.reclaim
->>    -bash: echo: write error: Resource temporarily unavailable
->>    # cat a/b/memory.current
->>    6070272
->>
->> memory.min is 100M, yet reclaim drops a/b down to 6M, breaking the
->> protection. The traditional LRU path is not affected because
->> shrink_node() calls mem_cgroup_calculate_protection() for each memcg it
->> visits during a top-down tree walk.
->>
->> Commit 30d77b7eef01 ("mm/mglru: fix ineffective protection calculation")
->> moved the protection computation into lru_gen_age_node(), which only
->> runs for kswapd. Non-kswapd global reclaim reaches shrink_one() through
->> lru_gen_shrink_node() -> shrink_many() without any protection
->> computation, so emin/elow remain stale or zero.
->>
->> Introduce mem_cgroup_protection_path() which computes emin/elow along
->> the root-to-target path only by iterating through the cgroup ancestors
->> array top-down. This avoids the full tree traversal that would be
->> needed with mem_cgroup_calculate_protection(), limiting the cost to
->> O(depth) per memcg - typically 3-5 levels.
->>
->> Call it from shrink_one() for the non-kswapd path so that each memcg
->> about to be shrunk has correct protection values.
->>
->> Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
->> Cc: stable@vger.kernel.org
->> Assisted-by: Claude:claude-opus-4-8
->> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
->> ---
->>   include/linux/memcontrol.h | 11 ++++++++++
->>   mm/memcontrol.c            | 45 ++++++++++++++++++++++++++++++++++++++
->>   mm/vmscan.c                |  8 ++++++-
->>   3 files changed, 63 insertions(+), 1 deletion(-)
->>
->> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
->> index 7d1c0ce189a8..8066b798a759 100644
->> --- a/include/linux/memcontrol.h
->> +++ b/include/linux/memcontrol.h
->> @@ -605,6 +605,10 @@ static inline void mem_cgroup_protection(struct mem_cgroup *root,
->>
->>   void mem_cgroup_calculate_protection(struct mem_cgroup *root,
->>                                       struct mem_cgroup *memcg);
->> +#ifdef CONFIG_LRU_GEN
->> +void mem_cgroup_protection_path(struct mem_cgroup *root,
->> +                               struct mem_cgroup *memcg);
->> +#endif
->>
->>   static inline bool mem_cgroup_unprotected(struct mem_cgroup *target,
->>                                            struct mem_cgroup *memcg)
->> @@ -1133,6 +1137,13 @@ static inline void mem_cgroup_calculate_protection(struct mem_cgroup *root,
->>   {
->>   }
->>
->> +#ifdef CONFIG_LRU_GEN
->> +static inline void mem_cgroup_protection_path(struct mem_cgroup *root,
->> +                                             struct mem_cgroup *memcg)
->> +{
->> +}
->> +#endif
->> +
-> 
-> I wonder if we could follow the zswap pattern?
-> 
-> #if defined(CONFIG_MEMCG) && defined(CONFIG_ZSWAP)
-> bool obj_cgroup_may_zswap(struct obj_cgroup *objcg);
-> void obj_cgroup_charge_zswap(struct obj_cgroup *objcg, size_t size);
-> void obj_cgroup_uncharge_zswap(struct obj_cgroup *objcg, size_t size);
-> bool mem_cgroup_zswap_writeback_enabled(struct mem_cgroup *memcg);
-> #else
-> static inline bool obj_cgroup_may_zswap(struct obj_cgroup *objcg)
-> {
->          return true;
-> }
-
-That is fine for me, I will update it.
-
-> ...
-> #endif
-> 
->>   static inline bool mem_cgroup_unprotected(struct mem_cgroup *target,
->>                                            struct mem_cgroup *memcg)
->>   {
->> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->> index 1271d390b617..095050d4296a 100644
->> --- a/mm/memcontrol.c
->> +++ b/mm/memcontrol.c
->> @@ -5198,6 +5198,51 @@ void mem_cgroup_calculate_protection(struct mem_cgroup *root,
->>          page_counter_calculate_protection(&root->memory, &memcg->memory, recursive_protection);
->>   }
->>
->> +#ifdef CONFIG_LRU_GEN
->> +/**
->> + * mem_cgroup_protection_path - compute protection along root->memcg path
->> + * @root: the top ancestor of the sub-tree being checked (NULL for root_mem_cgroup)
->> + * @memcg: the target memory cgroup
->> + *
->> + * Walk the ancestor path from @root down to @memcg and compute the effective
->> + * protection at each level.  This is safe for isolated queries because it
->> + * ensures parents are computed before children.
->> + */
->> +void mem_cgroup_protection_path(struct mem_cgroup *root,
->> +                               struct mem_cgroup *memcg)
-> 
-> Can we rename it to `mem_cgroup_calculate_protection_path()`?
-> 
-> BTW, I see that the only caller is in vmscan and it passes NULL as
-> `root`. Do we need to keep the `root` argument if the new helper is
-> only used for global reclaim?
-> 
-I'd suggest keeping it as is. This function updates protection along the path 
-from root to memcg, and could be reused later. Note that 
-mem_cgroup_calculate_protection() assumes the caller has already performed the 
-top-down walk, each level's calculation depends on its parent being updated first.
-
-For mem_cgroup_calculate_protection_path(), it can be called in any context 
-without such a precondition.
-
--- 
-Best regards
-Ridong
+Best regards,
+--  
+Tal Zussman <tz2294@columbia.edu>
 
 
