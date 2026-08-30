@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2D29C61DE2
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 07:48:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A153C61DE2
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 07:48:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D97676B009B; Sun, 30 Aug 2026 03:48:12 -0400 (EDT)
+	id 5817B6B009D; Sun, 30 Aug 2026 03:48:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D20176B009D; Sun, 30 Aug 2026 03:48:12 -0400 (EDT)
+	id 532446B009F; Sun, 30 Aug 2026 03:48:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0F9D6B009E; Sun, 30 Aug 2026 03:48:12 -0400 (EDT)
+	id 424856B00A0; Sun, 30 Aug 2026 03:48:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 90DE46B009B
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 03:48:12 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 124F016024E
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:48:12 +0000 (UTC)
-X-FDA: 85157157624.02.C15BDB6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 71CFC14000C
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:48:10 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C5WEFdIx;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 10E616B009D
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 03:48:16 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6E79FA027C
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:48:15 +0000 (UTC)
+X-FDA: 85157157750.14.4A0943B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id B3439140007
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:48:13 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MITK9vI0;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788076090;
-	b=sWKX+gn3OGIBZ1IkDV0qXuuyjJsk/dLo0NgZpvoEMNgOo0td4QUkRZnpR9/25WsEJlIW3W
-	mO7cUrSVjXeo21DLeqd79m5PtOYoLaYRN7UEAxd512GaR2Bm8RhcI+NFhWvpsxCI9gXYb9
-	2JO74E/qA1SoArHzkHE8d76wfa0Id+I=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C5WEFdIx;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	t=1788076093;
+	b=fLXtF7jHFgwuL8+E8Wni6J0hGkelw65UcDi5AOQvQMmg34CJXC+OYe2NGubAmqXknqxD69
+	PTpLqEuhoq3YTRd2764yf2axktNvh3y7dOfHvPusyOK8Qkl3cS27PMCmETYsMIbqdlQata
+	GDTkuxwXAWyaOi83xN400nYFV1Q4Rao=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788076090;
+	s=arc-20220608; t=1788076093;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lBV4SRjso+EkgLj4PkYZQJzo+GNlBWOlH+QTKJh25O4=;
-	b=tI7g84enXKNxmTWXs4A0l6Cu0FZPXl4IFAb7FPZIu8VKlWhW7+g5vIIyj9iIX02ihcRB8o
-	nEqfxmR8u1xlAQJhqfuXs7ksJfKr+FkhL2S7EfcBniGgPyDqGS49LuTOsPnFxAHZ4IHReu
-	Q/Gu2PymNoj7CWJhgpqyUhmqFQ+c8O8=
+	bh=38jl+dsC2EM5o3wlTYxKA9vi8q2Wl79pFO6QzTnvIhE=;
+	b=2FWy73J4bAL6a41LelIoCq4zDCxbOBlJ8u6c2Sg2QH6WRJ1vpMWTILOEEwjx4tjXV78tqn
+	TUykPxqS1KIvAGyMJ1c5c2o7BwUuK1l3BnL7q2z1hoe4fCeMok95p8ZhyrGmdiKTUpKCXV
+	XBdOWKibhIBw5tMXTic5EmOm7h25CGA=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MITK9vI0;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 472016020A;
+	by sea.source.kernel.org (Postfix) with ESMTP id 0D1A243C8C;
+	Sun, 30 Aug 2026 07:48:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F1FF1F00A3D;
 	Sun, 30 Aug 2026 07:48:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E3281F000E9;
-	Sun, 30 Aug 2026 07:48:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788076089;
-	bh=lBV4SRjso+EkgLj4PkYZQJzo+GNlBWOlH+QTKJh25O4=;
+	s=k20260515; t=1788076092;
+	bh=38jl+dsC2EM5o3wlTYxKA9vi8q2Wl79pFO6QzTnvIhE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=C5WEFdIxnZu7NyCEa0917/q9m8RAavDxTcdqoLLl699TQIsq4EeOhuxI+szK6oUPX
-	 BBIzv3+IJ6+fS9FQmBehVilOS0JWGi1UM3ADz5QENEJkQ7B/lCi6MWuSsmh9d24gC/
-	 xqZO9ZbJgzAnKUPKUwFxOq36/mp/Mjxngs08R/Q2YejbbFqe90lyuLn5rhvLGud3X2
-	 EVKuB+T3cucf4i8ZuJBhzJEXqmfg9dO6oauWM/ZNRbde/XgSesB8Mx+xxgTVU6krb/
-	 +wgLp1Rk81AU4bDORSu6mDLNfdNz2kcvtvVoz/m10gaevkyEoeDi6cwxlvkD5TYLbP
-	 9ZbWSJno7s5+w==
+	b=MITK9vI0TqCwtGzG/5NMmeWpLrvyxDEIRP5gcuykrnjJ8pC3e+zwNDgzgR7zvRtLU
+	 KIzQKgJMT9sNr5suPtvvhbWU/cROpvKy18evTNfnEXuj1IZyDAqWfI4lgUkIp0DZha
+	 ciw9wYDeDuB2aHMYJUyfKdodFjmUGsXMvoQQ6UFn1UIGvnuSh0429/xcIJLYDiSMeE
+	 VlLLt/omlbjjYeDJc6JWI8dSpj7U6b/541bhnYGQGVYvMSzU6VT7VvnrjrNKct2d+m
+	 /GEswHY8ZS366BC6EBjVsqmNvbQ0/G81R4uGCcBP0y0kVpcd9ISRxxu4KKOgC/ZbP4
+	 aLDP1Kl/ay2AQ==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Sun, 30 Aug 2026 10:47:58 +0300
-Subject: [PATCH 1/4] char: xilinx_hwicap: replace page allocator calls with
- k[mz]alloc()
+Date: Sun, 30 Aug 2026 10:47:59 +0300
+Subject: [PATCH 2/4] char: xillybus: replace __get_free_pages() with
+ kmalloc()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260830-char-misc-v1-1-05e2ce44f291@kernel.org>
+Message-Id: <20260830-char-misc-v1-2-05e2ce44f291@kernel.org>
 References: <20260830-char-misc-v1-0-05e2ce44f291@kernel.org>
 In-Reply-To: <20260830-char-misc-v1-0-05e2ce44f291@kernel.org>
 To: Arnd Bergmann <arnd@arndb.de>, Brad Warrum <bwarrum@linux.ibm.com>, 
@@ -85,13 +85,13 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org
 X-Mailer: b4 0.17-dev
 X-Rspam-User: 
-X-Stat-Signature: a3zx4dkoer6u1figd6b5mxe9gm41wjyj
-X-Rspamd-Queue-Id: 71CFC14000C
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788076090-266587
-X-HE-Meta: U2FsdGVkX1+EKGtUJi1lxFiI6RvOxwtPDh1fSLBFUWfNW6kvWkd1QIZaXmScMJieh/VQod+QlwAQMr5SKr19FqWOTnTxp48BedR3934OYgI/aFJqYM7eQYXslf6fgXm6xgLctCtvJH4IGzW5Mwbn2XzQlZBKlh7w5dlH/c9UnO0DZlsEu7ufayn/VHAgqpznIJA2Z6VwHNHma/FXgV0r+4xAE3nYZSPyAEWPraIjh6fTE804ZrCnRTDzvkxQVUMsjRpVwjusAhKyy0aMUutIQtpLELs4WvuhHZxLJL4aOc3MBUVFH6PJ6Y33nX9B4ooVVbCMYUn+JAm2JCNhETVMvS7+e1HjgEYJXdnB/ODce+iKp4dzW4FM2d8VpXFjiZKtgaPQ2vnqM9VAzLr3PX0e7m42rqwV9xLkWjd6iI6mcDptN1qACXufomJYarBxM63o6lCLpVu4Utbe9aucWV+6BgpSazskVQZD3yCcoSXuTut5lCly6KlMHYvtV9UnNejM2Ebn72uKqJNlPK/pV8zbvCwXLB60RxyQ47nbqIGrhXNOsIgLKCn1jXR0wwe4uWrmYCKuYlu7Busd1ZUPrK4DPnByfIgnwxb+LxwZfaf4kzwf6Tw4svt+Pgm71zndNaan7lvWUgzVFWF6h6YwqgNaygWuQPg0egp8AGnO/YyBpdDJm1na40yIC4OFybqkWC0qdN5OzTZei7Cd4nQWamwI2MXHjkdD1zN8dtal0S1PF/XWxs+zoGvNr9+LD1SlQF6ew0bfa7WHVTxhycfhlPVAUw8xDbrqTnwp8Bp7AF0SxNteZeYmUWSM1NWSAmE+l9fN0QMvQwmhuTgt67EuknYKSzXUtPxmuNRsfTQzK9mKJdtS9P8rnW/hPRIzJEI1tJguT4wpkFeumkpAMazFwDRbYekJ77eyp3wse2RJCwc/xY3jCJYchFld/EN95wWZXHao2wKr5p9pi+FKIsZrWEj
- cDhMxuRu
- X6O328q2E/K/X3FEF13ImPATJO0D9N8mKhdOgoNayv7+Rmte5AozwbVlsbOHQxDHCgTOc9fDcfkf7oxfL1wRb+3xWFYIUw8nhOo9SeD43M+zOAMXb9MGV4L8Qia37Aqp0dLFKTtk2Sdc/ntE1Qa3/PC8CF4w64Bv4EMm7Rcd0xwZ8L9/QHvkHlc5efpEMdTFORyPYK+HYFiAG3zs38ZlQR1UZlGfuB+DHhS+uXHttSsXo3J8VmBQJxK0lHH+x3tNJUHs8e5zzK3sxwSPlE6XWTHT8sD59dqwvcELFZNYNuOqiuSM1ShT5KNAHdE+n7LuIYnVr5LcNbZJCkZWrG9uJuwi4u4ETpYzKC5Ut+QZFfEq6auNt2VgkO8U3M4gqfPrPONOeSzPsw0K7xOA=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B3439140007
+X-Stat-Signature: p8dggc1nygs7uabt9ws6mtot4gqpa4o1
+X-HE-Tag: 1788076093-771724
+X-HE-Meta: U2FsdGVkX19H+wsDDNXbX0TpmnEyRwu8Py2zn2iWg840uaNUuLGY2qshzv/hRL7aprySvlS66B3MehZ1Lay2d5r9MlKp+ODScazYloQT0nHnxInvEtImDCA7WS1dui0G/5KmeJLj5UEYTTGbrAqDqMmwPlrVYAfhZMAsI0ahH1OCTCdJcUrRu/g2LxnZIm3VA9ySMmd9IR53RDz5Z6Cq3J3S8ltONkUSGUSEZZ03P/HxInyI9NiI1Cat1UyEfESPSbeT5LISfkyMtS4YADUklKyNQB4xuA8zhueHAoHOnOQH+BSd5th+6MRd315NaMnqW3l0RmLjKl1meQ6IFiglKgFXiIFbSe9/ugXaPz2Gm+fphIh+nC9VeT49oXiNOit6bdXUdDO8O09TBh3e1I+ak7VeKAVKg7P2PUDq2OezRtvV+joMQAteyhNCfWzEeU+48a2av25Abij78cNd9XSKCm5C3ebwti7IwkHO6jZBMS10fRrGRW/sohKodC2Dnl6WpPPLCJs0TvBwJJocOt7dtnHqVsecewbitPNh1dL0xuMK6G1TLu87eUHJAWKkcSREjfVsyFEtkwak8U9fgouC6GY1EtDx4B+ZVvoHikF0CW/p/25CJWCcAutnXk8FEnnB12spQFFSlHUzLuX54NvcvMRWGFD9QMB5cw/Z/T+KJhupXALRlS/bGH86e30n4c+4sTbqzGoCG8s1N9NyFo1UN73ukOMCyReNsnipUUIhKVvgPdlEkcOy0CoNM9ypgjBPSndnbT0CvaRAjriCeR6P51AZnMvG5K5zIpTdGEbHWKWKk6/2coWRYLVIeUpp0WkWgJlopwlu4I9edLTrWTcjJct1isaIg3H2eCWHdKN7Bf/ebcu8y/yMl7tGNFWUa20VSRXp1sIBNR0/WQ/MZllvt4/6KRJ1Ia3ZY+58ftUAnInrZSBmsVmOjAZRmIsmYbUTSg8TRxAom3Q5Ma/d0S/
+ xEDKy1mY
+ OUYKuhwBaXJ9K+TEhvg3r61e1H1zThzA28oB5WrOTfEfAJBA/72vI2PfLS9mhElHPxn8za/PUtXgsRaoN2RzVQfqTws1Io+6S0/OznBxNrKoF+0vOalwGr1S2IfJklYDwglqyB4WC8LU2h+EsfqEU/A5ZHxiHZjyJr3dxlEEuvwAYV/4zBhM4K7/MKqUhJ4abWROqmfr31qmjYiQD3L/92hoxioYvH20hTG09A/kvHnnnrzJhkstsrNFyGWoZ93lYvipL8XDepqzYUQUMZHJHNCFoV2o585Okkks2hnWEnsuwh1iv/5/9UXdvcFIVNhOfcZDrjZbFt0zdMvm1m0X9pjqy1hi1bLoFgBMMt02E7EANCAeJOYqdtQhjDlOoiSr/kEliqXSyHOIieok=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,8 +99,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-hwicap_read() and hwicap_write() allocate temporary buffers used to pass
-the FPGA configuration data to and from userspace.
+fifo_init() allocates the buffers backing the software FIFO and
+endpoint_alloc() allocates the transfer buffers of a USB endpoint.
 
 These buffers can be allocated with kmalloc() as there's nothing special
 about them to go directly to the page allocator.
@@ -115,97 +115,141 @@ fast path allocations.
 For the slow path the performance is anyway determined by the amount of
 reclaim involved rather than by what allocator is used.
 
-Replace use of __get_free_page() and get_zeroed_page() with kmalloc() and
-kzalloc() and free_page() with kfree().
+Since kmalloc() does not need the allocation order, ask it for the buffer
+sizes the driver already tracks and drop the now unused order fields. For
+a FIFO smaller than a page this also stops rounding the allocation up to
+PAGE_SIZE.
+
+Replace use of __get_free_pages() with kmalloc() and free_pages() with
+kfree().
 
 Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
 Assisted-by: copilot:claude-opus
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- drivers/char/xilinx_hwicap/xilinx_hwicap.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/char/xillybus/xillyusb.c | 25 +++++++------------------
+ 1 file changed, 7 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/char/xilinx_hwicap/xilinx_hwicap.c b/drivers/char/xilinx_hwicap/xilinx_hwicap.c
-index 9bb5fa642fd8..bbeb9b6060dc 100644
---- a/drivers/char/xilinx_hwicap/xilinx_hwicap.c
-+++ b/drivers/char/xilinx_hwicap/xilinx_hwicap.c
-@@ -382,7 +382,7 @@ hwicap_read(struct file *file, char __user *buf, size_t count, loff_t *ppos)
- 		       4 - bytes_to_read);
+diff --git a/drivers/char/xillybus/xillyusb.c b/drivers/char/xillybus/xillyusb.c
+index 34e7ad3bcab3..193e2a5b599e 100644
+--- a/drivers/char/xillybus/xillyusb.c
++++ b/drivers/char/xillybus/xillyusb.c
+@@ -71,7 +71,6 @@ struct xillyfifo {
+ 	unsigned int bufsize; /* In bytes, always a power of 2 */
+ 	unsigned int bufnum;
+ 	unsigned int size; /* Lazy: Equals bufsize * bufnum */
+-	unsigned int buf_order;
+ 
+ 	int fill; /* Number of bytes in the FIFO */
+ 	spinlock_t lock;
+@@ -95,7 +94,6 @@ struct xillyusb_endpoint {
+ 	struct list_head filled_buffers;
+ 	spinlock_t buffers_lock; /* protect these two lists */
+ 
+-	unsigned int order;
+ 	unsigned int buffer_size;
+ 
+ 	unsigned int fill_mask;
+@@ -370,7 +368,6 @@ static int fifo_init(struct xillyfifo *fifo,
+ 		     unsigned int log2_size)
+ {
+ 	unsigned int log2_bufnum;
+-	unsigned int buf_order;
+ 	int i;
+ 
+ 	unsigned int log2_fifo_buf_size;
+@@ -380,18 +377,14 @@ static int fifo_init(struct xillyfifo *fifo,
+ 
+ 	if (log2_size > log2_fifo_buf_size) {
+ 		log2_bufnum = log2_size - log2_fifo_buf_size;
+-		buf_order = fifo_buf_order;
+ 		fifo->bufsize = 1 << log2_fifo_buf_size;
  	} else {
- 		/* Get new data from the ICAP, and return what was requested. */
--		kbuf = (u32 *) get_zeroed_page(GFP_KERNEL);
-+		kbuf = kzalloc(PAGE_SIZE, GFP_KERNEL);
- 		if (!kbuf) {
- 			status = -ENOMEM;
- 			goto error;
-@@ -412,13 +412,13 @@ hwicap_read(struct file *file, char __user *buf, size_t count, loff_t *ppos)
- 
- 		/* If we didn't read correctly, then bail out. */
- 		if (status) {
--			free_page((unsigned long)kbuf);
-+			kfree(kbuf);
- 			goto error;
- 		}
- 
- 		/* If we fail to return the data to the user, then bail out. */
- 		if (copy_to_user(buf, kbuf, bytes_to_read)) {
--			free_page((unsigned long)kbuf);
-+			kfree(kbuf);
- 			status = -EFAULT;
- 			goto error;
- 		}
-@@ -426,7 +426,7 @@ hwicap_read(struct file *file, char __user *buf, size_t count, loff_t *ppos)
- 		       kbuf,
- 		       bytes_remaining);
- 		drvdata->read_buffer_in_use = bytes_remaining;
--		free_page((unsigned long)kbuf);
-+		kfree(kbuf);
- 	}
- 	status = bytes_to_read;
-  error:
-@@ -457,7 +457,7 @@ hwicap_write(struct file *file, const char __user *buf,
- 		goto error;
+ 		log2_bufnum = 0;
+-		buf_order = (log2_size > PAGE_SHIFT) ?
+-			log2_size - PAGE_SHIFT : 0;
+ 		fifo->bufsize = 1 << log2_size;
  	}
  
--	kbuf = (u32 *) __get_free_page(GFP_KERNEL);
-+	kbuf = kmalloc(PAGE_SIZE, GFP_KERNEL);
- 	if (!kbuf) {
- 		status = -ENOMEM;
- 		goto error;
-@@ -479,13 +479,13 @@ hwicap_write(struct file *file, const char __user *buf,
- 			    (((char *)kbuf) + drvdata->write_buffer_in_use),
- 			    buf + written,
- 			    len - (drvdata->write_buffer_in_use))) {
--				free_page((unsigned long)kbuf);
-+				kfree(kbuf);
- 				status = -EFAULT;
- 				goto error;
- 			}
- 		} else {
- 			if (copy_from_user(kbuf, buf + written, len)) {
--				free_page((unsigned long)kbuf);
-+				kfree(kbuf);
- 				status = -EFAULT;
- 				goto error;
- 			}
-@@ -495,7 +495,7 @@ hwicap_write(struct file *file, const char __user *buf,
- 				kbuf, len >> 2);
+ 	fifo->bufnum = 1 << log2_bufnum;
+ 	fifo->size = fifo->bufnum * fifo->bufsize;
+-	fifo->buf_order = buf_order;
  
- 		if (status) {
--			free_page((unsigned long)kbuf);
-+			kfree(kbuf);
- 			status = -EFAULT;
- 			goto error;
- 		}
-@@ -516,7 +516,7 @@ hwicap_write(struct file *file, const char __user *buf,
- 		}
+ 	fifo->mem = kmalloc_array(fifo->bufnum, sizeof(void *), GFP_KERNEL);
+ 
+@@ -399,8 +392,7 @@ static int fifo_init(struct xillyfifo *fifo,
+ 		return -ENOMEM;
+ 
+ 	for (i = 0; i < fifo->bufnum; i++) {
+-		fifo->mem[i] = (void *)
+-			__get_free_pages(GFP_KERNEL, buf_order);
++		fifo->mem[i] = kmalloc(fifo->bufsize, GFP_KERNEL);
+ 
+ 		if (!fifo->mem[i])
+ 			goto memfail;
+@@ -417,7 +409,7 @@ static int fifo_init(struct xillyfifo *fifo,
+ 
+ memfail:
+ 	for (i--; i >= 0; i--)
+-		free_pages((unsigned long)fifo->mem[i], buf_order);
++		kfree(fifo->mem[i]);
+ 
+ 	kfree(fifo->mem);
+ 	fifo->mem = NULL;
+@@ -438,7 +430,7 @@ static void fifo_mem_release(struct xillyfifo *fifo)
+ 		return;
+ 
+ 	for (i = 0; i < fifo->bufnum; i++)
+-		free_pages((unsigned long)fifo->mem[i], fifo->buf_order);
++		kfree(fifo->mem[i]);
+ 
+ 	kfree(fifo->mem);
+ }
+@@ -477,7 +469,7 @@ static void endpoint_dealloc(struct xillyusb_endpoint *ep)
+ 		struct xillybuffer *xb =
+ 			list_entry(this, struct xillybuffer, entry);
+ 
+-		free_pages((unsigned long)xb->buf, ep->order);
++		kfree(xb->buf);
+ 		kfree(xb);
  	}
  
--	free_page((unsigned long)kbuf);
-+	kfree(kbuf);
- 	status = written;
-  error:
- 	mutex_unlock(&drvdata->sem);
+@@ -509,8 +501,7 @@ static struct xillyusb_endpoint
+ 	init_usb_anchor(&ep->anchor);
+ 	INIT_WORK(&ep->workitem, work);
+ 
+-	ep->order = order;
+-	ep->buffer_size =  1 << (PAGE_SHIFT + order);
++	ep->buffer_size = 1 << (PAGE_SHIFT + order);
+ 	ep->outstanding_urbs = 0;
+ 	ep->drained = true;
+ 	ep->wake_on_drain = false;
+@@ -520,7 +511,6 @@ static struct xillyusb_endpoint
+ 
+ 	for (i = 0; i < bufnum; i++) {
+ 		struct xillybuffer *xb;
+-		unsigned long addr;
+ 
+ 		xb = kzalloc_obj(*xb);
+ 
+@@ -529,15 +519,14 @@ static struct xillyusb_endpoint
+ 			return NULL;
+ 		}
+ 
+-		addr = __get_free_pages(GFP_KERNEL, order);
++		xb->buf = kmalloc(ep->buffer_size, GFP_KERNEL);
+ 
+-		if (!addr) {
++		if (!xb->buf) {
+ 			kfree(xb);
+ 			endpoint_dealloc(ep);
+ 			return NULL;
+ 		}
+ 
+-		xb->buf = (void *)addr;
+ 		xb->ep = ep;
+ 		list_add_tail(&xb->entry, &ep->buffers);
+ 	}
 
 -- 
 2.53.0
