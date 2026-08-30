@@ -4,133 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DE92C61DE2
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 07:27:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DFF3C61DE2
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 07:30:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0515C6B008A; Sun, 30 Aug 2026 03:27:13 -0400 (EDT)
+	id 02FBB6B0095; Sun, 30 Aug 2026 03:30:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 029096B008C; Sun, 30 Aug 2026 03:27:12 -0400 (EDT)
+	id EFB066B0096; Sun, 30 Aug 2026 03:30:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E81276B0092; Sun, 30 Aug 2026 03:27:12 -0400 (EDT)
+	id DEA116B0098; Sun, 30 Aug 2026 03:30:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CB9A46B008A
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 03:27:12 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 57F4316024C
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:27:12 +0000 (UTC)
-X-FDA: 85157104704.01.FDB53EA
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 914E2140009
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:27:10 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Io4z6jul;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B74C26B0095
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 03:30:11 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B13F6C023E
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:30:10 +0000 (UTC)
+X-FDA: 85157112180.27.4369582
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 06407140006
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:30:08 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HMON2q++;
+	spf=pass (imf09.hostedemail.com: domain of imv4bel@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=imv4bel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788075009;
+	b=2Y/mfcuBvkgevxNMgJqgFcjVh29hNWffNbwV0OHNXnlWVRjxCrYEUCGEx7NuTtP3HBEMwj
+	H5uKmI42Rzsw1M9ylQuuiNZoWJEJpsE0VJ+NwceZssn78Nq7w/NHEvrKa/H37ZWkxobiZW
+	vJPYbTqxxSfo5HrixXIJajf0RJIIk+c=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HMON2q++;
+	spf=pass (imf09.hostedemail.com: domain of imv4bel@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=imv4bel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788074830;
+	s=arc-20220608; t=1788075009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H0NSc8dCdzQEaixfxG0SBDT4pCc/TJMvf+PTu1jP0Oc=;
-	b=RKyCb/w6Z2FjTev07X5/Fjr7VeNs3HBuh1ai5Ugkbt18uEPXejrC1NTBHuXPO9YNwbg0VB
-	8MOsnEgljw4NXfKvMnD+Kk2TfWVv03dZjtIjxWUls7YhTKgX1+JYDaknlDeJ/ZwzsmX0np
-	N0Vt8GMTNlWwzvnjlzlrnHDJHhSAs7o=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Io4z6jul;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788074830;
-	b=mGuqntQMexlJ2N6StEyWQJJtNFa6UGkjz5mbbtE3G8TyexLAJE8rqIdcpo5Z1Do2aHDCh7
-	GXG/AAS3dEdJN7z0bFwM6VZvAQoSOFp2LnLqA4CoIGxqqq4ShrmY1/KChtS65fVLMT6Fsb
-	F25/DGs1cDa5M+Wx8j9v4nROTVJ7O5M=
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-cc1d57602e8so2142734a12.3
-        for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:27:10 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=XnUZn6wf9UUIpF2RonxD+yTbLf5BGIQEYs8B6KvVijM=;
+	b=5QxYenkPxpWsy2N03uBx7Z0pCEhP+CDTY6eCqiV+uAv+L4ZKvowgGIrsX1HpoRD6XzQ6Kg
+	ijVqO9026QSWdjP2tg+Usx0F45fqLZYjF/bN0McjzyZ95QmWmxx+RWGaLITh6N6cF92xpm
+	s/PJBJa/Rp4BYdQyhcm1elVJhIMsuvQ=
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3964dfb5b9aso2531618a91.1
+        for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:30:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788074829; x=1788679629; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=H0NSc8dCdzQEaixfxG0SBDT4pCc/TJMvf+PTu1jP0Oc=;
-        b=Io4z6julu5Iarkcpp9iWtQlfDvQRmkn3SO+Q4Jzz2u3c/vkV0sQwinnJEHzoKqtR74
-         dTJPM3FHjM/YYyTz/Re9fC/iyAMPZ8z6y4UVCCiqbcLRXxF+w4dlCqEiwgGuaqkKn62W
-         lWdbvRXnM7hRgmqx/63ipBZGXIJrVqfNaYiwcWdLrgRak4I3MCQItjqxm1wP2ZdQahHX
-         8BrElaQCkEqXrbh3iwkgz3EBPhaoopFnCvzr68WAlnEI050i0thxv1cUfC3PD0WmLr1u
-         I3fX0Xb1VAKanNQo3FI6bt5eMh1bc7jPWIXoTJo1Va8kTnR4tEODw8eWBe0bUb4a+9Go
-         NLUg==
+        d=gmail.com; s=20251104; t=1788075008; x=1788679808; darn=kvack.org;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XnUZn6wf9UUIpF2RonxD+yTbLf5BGIQEYs8B6KvVijM=;
+        b=HMON2q++eHtwNjAG/xKP4VxWTuXFh3MAaU6UBiU4B6XshLcYG/iAG4WH6APAB0hz8u
+         RthTzgawZdCIyDJLSFmuZUZK5gZSIU4UqjgWVhnJuktjDs90MiB1wvyjq1bAVRKG7qdK
+         8B7QiNSsFL8sjhN2+Aj8uyKuvKwpSoBYJ8cOqqSXzTEaBAN4wY1tOuotL3027lFGAH+j
+         zza8xAh4F7U3VVp3h1HRd46IdLy7lAyvUg2EP5RTDBg57AGuXLsH66f9QYnj6RTGN95f
+         zBqQPnaEkE9D581fWv6cElU9eUSOEwk/XcO/rSpDCre3CATRQv1KFqe8dvp0ugOWupNs
+         uMxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788074829; x=1788679629;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=H0NSc8dCdzQEaixfxG0SBDT4pCc/TJMvf+PTu1jP0Oc=;
-        b=O7qDuwpTW9WyudfpG70LgoZxNdxYtJAz8dws2j6jfRxmG6a327itZ+ttX44xAqROQy
-         GKn3ITrJfzJO5rx+DxFUDu8YrG4+O+T7kLvqTm8Ll5+SqepJTuenfyNHShzIuo2g+c+O
-         4mA6bca5/2odF15iR/58BwTFjpjGfyqe3844/v5LkxIpkjxbN2PuClHTLq6jL33yvjFK
-         h3i3HXpxe+5nQ6GxdHYwDQKxB5i3PuJ8hYemN4g2P9b24S7xTeKzznFViJslshyoLopm
-         OvIF/G3WXxx4wjzfXHzYxxgQCcIC03pJ6kJrCmdbv8SSpywFADSHtEXpKXHG/qBS+96p
-         j7+w==
-X-Forwarded-Encrypted: i=1; AKwUvBwKJbJ9KMQY3Rz1IPNJSKGIpAK/rwDwkMZk6a6ZJ+y+HWgSI6S1H+ww+lewLplYIhqYr4BR+WHT7A==@kvack.org
-X-Gm-Message-State: AFuF++lF+a/5z0ai8EGp0Xh4KQFRU8ptYJKxj6QBiQNrtoxdyr1flM6M
-	KQ1syu1FqARS46QT+B7uds8nkMD5GsmTyOPbA63FPSNJNMc9VtXU5Kcf
-X-Gm-Gg: AYBFou2fPkDjkeakRnc5BUtwkeX9tQa//Z7y/efbQn5omX6UD7vtPldAW9L4gbXab2r
-	5jP3ENQpvE8xmWUk1mdVJ0r4JZ374vGyVTc70mqKJ2rpOeGxNVlmM9Fc+IS0vLlnVJrblyXqJMY
-	W1/0N/k74eXaijLGsTG+8PTUe7oT2JFUOo6xk35+XXqFUcmraMv2kl+QHPEAFqMZ4Y2vjLjkgDa
-	Wi/XcLBYrUWku6yD0qNIhJLmGvKeSHRKd3saJ1TCQ2Ih/avdiNp9s8Em/V8/GNpn3xiz38zr+G7
-	NDLawovJ8jrQsEVCXLXpMpIFEmNuvJ44WDFih7zDAH7d7s+z6siB+YaIn7QK+WNudo9ihTFOpQ6
-	g92QEBh05eVPCxm4p7a7wRc7vu/JCKX6R/2k3J24+Xm6upZzDCr6VxxH85S5WmDMd7b5van6A3R
-	ZAoslXlZJvytWi4vUW5Cw7oqXS/qiebpS8HtmAXF9NIGZqO2hS05yyiCIP20JV53Of76AlQT8x2
-	1BJHSlIB83sFn4AqJYcWv6a+fj4
-X-Received: by 2002:a17:90b:3f50:b0:381:a766:efc9 with SMTP id 98e67ed59e1d1-396d0df72e2mr29568789a91.7.1788074829523;
-        Sun, 30 Aug 2026 00:27:09 -0700 (PDT)
-Received: from localhost.localdomain (vmi2317720.contaboserver.net. [84.247.152.65])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-398bda33e17sm4492394a91.14.2026.08.30.00.26.59
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 30 Aug 2026 00:27:08 -0700 (PDT)
-From: Lian Wang <lianux.mm@gmail.com>
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>
-Cc: akpm@linux-foundation.org,
-	lianux.mm@gmail.com,
-	axelrasmussen@google.com,
-	baolin.wang@linux.alibaba.com,
-	baoquan.he@linux.dev,
-	chenridong@xiaomi.com,
-	david@kernel.org,
-	hannes@cmpxchg.org,
-	kasong@tencent.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	lyugaofei@xiaomi.com,
-	mhocko@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	stevensd@chromium.org,
-	wangzicheng@honor.com,
-	weixugc@google.com,
-	yuanchu@google.com,
-	zhangbo56@xiaomi.com,
-	Xueyuan Chen <xueyuan.chen21@gmail.com>
-Subject: Re: [PATCH v2 1/7] mm/mglru: separate folio generation update from LRU accounting
-Date: Sun, 30 Aug 2026 15:26:41 +0800
-Message-ID: <20260830072651.78997-1-lianux.mm@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260827234704.63163-2-baohua@kernel.org>
-References: <20260827234704.63163-1-baohua@kernel.org> <20260827234704.63163-2-baohua@kernel.org>
+        d=1e100.net; s=20251104; t=1788075008; x=1788679808;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XnUZn6wf9UUIpF2RonxD+yTbLf5BGIQEYs8B6KvVijM=;
+        b=MYJB1cjqAmOxruBmqO3bnMN8IsnwTPwQfnOXfhezZKqOQfb1BeLLhpvLOKxR4y3Yua
+         FJA0oBvAHQlTpWC57n74WQ9tDnt22Mgs+4OUoSmkgPayifA1mVoWOmsB3THd2PrQycCs
+         rypNYuxl5Lcqsmqp02smHj4ocryqiyCdMERslMTn9NXM4G1a4L4eBlGMlJ0tJjzsZpDg
+         6roLQf1T8Lgy0Or1s/zmF6ATdsufqCQ4uJQCBnswpeJBNJyjUdx8r/gG+SEkUkzdga25
+         Qxh5t2wl7QP/VM8qpEh/Zto1yAmyS2VKaUqM4xgBucK9bOKhYuv0+/ptcq7iA8gkzEAF
+         snag==
+X-Forwarded-Encrypted: i=1; AKwUvByKcJ6KXrwJyz1KAsUIC9o5dybVj9ju+9+pccauzv6DhLdOMlkwwYXcu7JgKLQZPJ8LObdyptl5Tg==@kvack.org
+X-Gm-Message-State: AFuF++nHi5Ytt/laLmKwgd6BYQ2Z1wnHtj1y2Vl9vdkWb1QMFjF16hbv
+	yOFtUsQcgVwUimtkWXtnefy72UxsNU8tsGNRO0yiRX4X6zv4+LUqwgMX
+X-Gm-Gg: AYBFou3EWtF34N3aqKTL4b5nhPTwZy98uDjcV3XlAsVtcODIb1aZvNiWMpyOoylIcbv
+	TM+7M0oWWqve8HofGbD/Y5IxofbXAcVZyPaSGBabEWf8yJ8zaJQIqW9ugXp8ShtFpaw55Uwv7n8
+	7BQCpoI0DCV35CP3ir03jJW0lY5QSVyVYg7wTBig9U4g3QG+Kyce8AaipX/DGGEay0G8NVKiQVG
+	cWfWsQN55aCT3Ueaz+oEYgJvizeMXLUFN1bxv+VgmfaWrHC2PIraTFvCwE6gDI4jnFG08jJ0ZRC
+	PhnUlL2vhJ9VXbfNzzSphXm8sRqfgdezVrjGyo2POjv3aA6ylZXxGvvbVNMQEItZcLHtXwWj3lt
+	01Pq29fxFmkYJSPBOzFSizjJQ2q89JdwweE03VbvOlEdBewMxu8/TP5SLoGG29Kqt0sg1TW9vud
+	EV6XFqAz9208p/+a7wEpqLwepjaN2Q9Ghy9G/pmH8aiQePNmp3XxaPdCUIM2FkL1hWmaWRmRdy9
+	pGDwBvMfdZGRQ/nig==
+X-Received: by 2002:a17:90b:3c44:b0:398:dcef:c040 with SMTP id 98e67ed59e1d1-398dcefc24amr634359a91.19.1788075007671;
+        Sun, 30 Aug 2026 00:30:07 -0700 (PDT)
+Received: from v4bel ([58.123.110.97])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396b1992e05sm15110527a91.15.2026.08.30.00.30.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 30 Aug 2026 00:30:06 -0700 (PDT)
+Date: Sun, 30 Aug 2026 16:30:00 +0900
+From: Hyunwoo Kim <imv4bel@gmail.com>
+To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>
+Cc: Chen Yu <yu.c.chen@intel.com>, Tim Chen <tim.c.chen@linux.intel.com>,
+	Kees Cook <kees@kernel.org>, Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Qais Yousef <qyousef@layalina.io>,
+	Aaron Lu <ziqianlu@bytedance.com>,
+	Srikar Dronamraju <srikar@linux.ibm.com>,
+	Vineeth Remanan Pillai <vineethr@linux.ibm.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, imv4bel@gmail.com
+Subject: [PATCH] sched/cache: Fix use-after-free of the mm replaced by exec
+Message-ID: <apPb-Dr4nPYuHQOK@v4bel>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspam-User: 
-X-Stat-Signature: i8rc5zrmwudg1ti97ynxhjusamtj4r3y
-X-Rspamd-Queue-Id: 914E2140009
-X-HE-Tag: 1788074830-537759
-X-HE-Meta: U2FsdGVkX1+cqUg9HcICB6saCYvXBJsoNK/w5IBhX8sH24USyq0f3QdwRNFgkWuLRrpiRDnqNWO9C06hkrfD2slVW3Tns4+tWEmzhkYihFv+UBDc7K/RuhUFBcfM6gLz90usKUg8DntShRgO4HetGYQH41wmEblNb1pTfSGq6V0qK+4Zp+MOwHpaQ3ynz5OA/4JpSHYmVuPYm/l++ovPbTfJjlodoxfFD12KQ2PYmuHLTCXO1/i4SAsgyteF24R5jz8uD90MA3RwPJAgPRQxTzELSu9R5ytdPh18/alvTS9IPBR4hsZdncCba5s6aGJZ9dkKgwIfXfzOTF9Byt+DxFSBGA4jUhJXJpchSDNNVTPED8DNwwnYnmw/guPUTYfrMi8nxDTmzUw6tG/1uUR+KbePLPct6r8E/XMCu2w5QP8kETTN0Q+DSe8+Id+DY9x3yycukQ/7kuh8pLMXK2sGWibKI5DTMBrh1pHCOi/+m4Nnq9bJDMfmIlzckbdRsjYM4VDpZOG5CXnk63jEmcuu79pKzfWjHpR+yJIQreeVl+C6f4+XHbgsE/zWbUDSYe551kmyEN7kEmC4YlPBWnaOF3SytuYevrHpCjTwyD5DZ75Wrfxbm0HwVPB8VFT+k7XMqn9GgW+aSPgqFfLSpa53Suyog1/rvX7KxG5HlQ5/r35UkIFziI1RukmjXMgDK3UoTbYYQdf56qTt7cmc6l0fqjdcORwV2L1fcDuVarJREa6wA6GKuuY2mY0I79qwWWLFLWtSfmznkk4hST4TUxM9tcwrr64MfUQIQR8R88yf2lFWO/2HIZVQC8pbMcfAG1kF5dpaIeYr7siHgniFgIGh10dTcR1ONc4VoJ7Pv86r6XgH6HolVtuGQPB8cNQnDLfZ6powoJUITPbMDFMQ3cXKTqMEbSktB9Wygs57u6n4I+yEi4R8yTXDe0wWoj7ke0aSm/sXTabB9Zm2bkG92Xk
- Se7aBJV3
- n3eV/5yURunGEKuIt+JtUO1oVRhHjTMQhbuWErWXBjrdD0W1dp27v2cd0p4pYZ3+ZrLvaEPlQmpBFNWXCjNh1eLlTqnbsYxpUQyZQ2UQMQQPiC+SGQYHUMXPBPoHgnycC+OQ/nVIp01zzUKfKrooPHJrtliEGtWdZZv7o5+l0aKFeoYA6JADJoKCYmrU25uTdDWQJGChqfKSCcs7bX1N0HRNNjJoxdbapi8H25pM1KuRkjJuOiGyQheaVKfCmt4Ssllx6IuctV4SrSh7o4gy49jR83evkwekCJtFXaXAbxtnP7l4sTIF7m6rHmmzftAO0e56pk8zqETkWYLJUCCPosvSPuHa3s6w4Pge8V5UaMiMThB9fYt7bTyZkVUz+Ro7LRZIuuzQrhrh958PFtAfjbOzb0OXskB3uLuUvAl3Kz05LenAG/TgWGaUTKfasG9dTnjA2JluhR87ATtUxAoZFtnl8ueQFU1addVCWRBw9y6DQ/yM=
+X-Stat-Signature: 9sq8hrsnpx9ye8pbcehsn8yti4x96w8j
+X-Rspamd-Queue-Id: 06407140006
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788075008-105538
+X-HE-Meta: U2FsdGVkX18NEJPQyrOwRnnW4aoYkbJcFiyQ6FA+XuPgaWat5v+slZWBqr6rhpbDjZ6En06oN3bml5W85eBJWLtScPQQdys8xRdmcg2kaS5uz2/ma0qUt/K62iGqx1k8YzTFe5SgX7ZvSIOnsZTr8B8CjD1zXc12n0/hO/TZa4iEBaPpN6NQ4hc/QKLkW24R2Ol02J1DVcWQZe3tq6s+RkU99BPQGTmziozpR1cOcXbigggX8tBbLbLdSdLa9It299olNv2jAUpcmLXrV78c3S1jby5rswoJnutwGZrnved/IzTu8zeWaHlMN5AWHz9yaUTUJ/PSJgFVZJOC2swdZHmbCyo5UFPzCwiQvzzG7lbwXPtR2pTCvKx3cj8L2oylPa4QL3h91PWu0B872uMA81XuVOdIvT0rZ/gwplfnJY5t0dtc0lMhsCfGy07Wkn4cDeATShZ6IyyLrguNKkR9+x9nnaELoPNTMLDTycWcNwhh9ZPOl41g1CL1Y2CtJHh1w/CUBHl0kFLp8iKwXfqRAF3wpdbqqEuAwjvx/xdBKC3zLwsCdLflXl56KKOjBHsCE4K8fbKbcjGbgUNR89nWueYGMoUSCLHEM9e3P9W6p9HHmyXa4kATHEn2S6SENnoznMXiQcLKneOCI9+DDRGxWvwiA6jHrIN1lAaAH5moCm3hR0TEbt1ybl8INscAP6g2OlCf8Gu8svFv8QnREOg5+8Xpu7ti/3qWB+0myiG/LWnnIyzj8asQQORnZ7FkIvTUqbQ8VvOCkdYbh5mEvAeap/aTILEoc3urDhgWWYCm3MbVrMOQzuqd0EhFHmGBEAzGPwY0o99sVSenIcWTXkARGTOJnYbVmigvVgnpuBwUfubzzf2RU06pMI6N2K1EhEMgoObApVhdwLi9SAvlywVjy9v8q3lIJXd5YjykdTfp+rq7Dx1ahreLOzEK1ODk3vqpTckp/DBSuqWlEWDpDBp
+ c17fAzbS
+ VNc1ompTkVxxvbHW+trMHlno2LBJ0xNOZCthwYW/HmmaFXxIKO3VN5PGExPloi353Tvy0ez3oYmGwSJb7JFjhtmy2lhcRPnoE2iKLYKO+S2AtyPL+KdhiBsJuJ5n2lBQ9RUa4kypMkoE310mqU+JQ8KmujZowwk6aZeGQtKYKJR418hJxF058Ynip2jg5e/n5eG0IQi6q9+mQhx3W80cF65nzekl7Wuty4eE0lbj/rfjHHhUekZa5tD40EWfhMjLWMKHY2khcC+fuVHhrVAINt3Qvv2+0mliudZjgJ8mBJ9KSFB53icgSMn4aqmcfkMcEUVG4qOyJKQLGwfawtUpTAEqZPrYJA692OBvXsuWxUsSsL2IbIjZhVZ7TNXS4TmSPaon2HWJTtKq7Z4MnlNAeN2ycQ2TL1VL2JSQuWBKwn9+0Fui2ei9zfG2dk2BAOLT+Cp8MimHik+eYOBxiCFi5fN6bZHJFw8jLxJKI+sZPugbs5jieXiMmf8lxxhESCRYb8eHV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,13 +130,180 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Extract the generation update into __folio_inc_gen(), which only updates
-> the folio's generation and reports whether the generation was actually
-> increased. Keep folio_inc_gen() as the wrapper that performs the LRU size
-> accounting when needed.
+When the waker cannot use the wakelist, ttwu_queue() takes the target rq
+lock and goes down into update_curr(). If the target rq belongs to another
+CPU, the task handed to account_mm_sched() is the one running on that CPU,
+not the task being woken.
 
-This is a nice split. Separating the per-folio generation update from the
-LRU accounting makes the batching path straightforward. Looks good to me.
+account_mm_sched() reads p->mm and updates mm->sc_stat. Nothing keeps that
+mm alive. The rq lock and rq->cpu_epoch_lock it holds have nothing to do
+with the lifetime of the mm.
 
-Reviewed-by: Lian Wang <lianux.mm@gmail.com>
+If that task happens to be in execve(), exec_mmap() points tsk->mm and
+tsk->active_mm at the new mm, and exec_mm_put_old() from setup_new_exec()
+drops the old one. free_bprm() does the same when exec fails. On the way
+from mmput() down to __mmdrop(), mm_destroy_sched() calls free_percpu() on
+sc_stat.pcpu_sched and free_mm() returns the mm_struct.
+
+Whoever already read the old pointer keeps using it. It adds to runtime in
+the freed per-cpu area and reads sc_stat in the freed mm_struct. Depending
+on the condition it also writes sc_stat.cpu. That is a use-after-free.
+
+Commit 9f23469401b0 ("sched/cache: Fix potential NULL mm pointer access")
+changed the remaining p->mm dereference to the local variable, and said the
+active_mm reference keeps the structure allocated. That holds for the other
+paths that detach an mm, since they take an mmgrab_lazy_tlb() reference.
+exec reassigns active_mm to the new mm as well, so that reference is gone.
+What is left is the mm_users reference in bprm->old_mm, and dropping it is
+the free.
+
+             CPU0                                CPU1
+
+                                      write(pipe)
+                                      try_to_wake_up()
+                                        ttwu_queue()      // takes rq0 lock
+                                          enqueue_task_fair()
+                                            update_curr()
+                                              update_se()
+                                                account_mm_sched()
+                                                  mm = rq0->curr->mm
+                                                        // old mm
+  execve()
+    exec_mmap()                       // tsk->mm = new mm
+    setup_new_exec()
+      exec_mm_put_old()
+        mmput() -> ... -> __mmdrop()
+          mm_destroy_sched()          // free_percpu()
+          free_mm()
+                                                  read mm->sc_stat.epoch
+                                                        // use-after-free
+
+KASAN log:
+
+  BUG: KASAN: slab-use-after-free in update_se+0xe6e/0xf70
+  Read of size 8 at addr ffff8880093cad10 by task sc-direct-set/80
+  ...
+  Call Trace:
+   update_se+0xe6e/0xf70
+   update_curr.isra.0+0x28/0x380
+   enqueue_task_fair+0xb58/0x3560
+   enqueue_task+0x70/0x170
+   ttwu_do_activate+0xeb/0x590
+   try_to_wake_up+0x79b/0x14f0
+   autoremove_wake_function+0x16/0x150
+   __wake_up_common+0xed/0x160
+   __wake_up_sync_key+0x36/0x50
+   anon_pipe_write+0xa62/0x1830
+   vfs_write+0xa4f/0xcf0
+   ksys_write+0x17c/0x1c0
+   do_syscall_64+0xdd/0x4a0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  ...
+  Freed by task 1:
+   kmem_cache_free+0xba/0x3b0
+   setup_new_exec+0x2c4/0x3d0
+   load_elf_binary+0x435/0x4740
+   bprm_execve+0x6d2/0x1290
+   do_execveat_common.isra.0+0x3a3/0x580
+   __x64_sys_execve+0x8e/0xc0
+  ...
+  The buggy address belongs to the object at ffff8880093cab80
+   which belongs to the cache mm_struct of size 1688
+  The buggy address is located 400 bytes inside of
+   freed 1688-byte region [ffff8880093cab80, ffff8880093cb218)
+
+Take and release the exec'ing task's own rq lock once before the old mm is
+dropped. The task account_mm_sched() looks at is that rq's curr, so it is
+the same lock a reader holding the old pointer is on. If the task migrated
+to another CPU in between, leaving that rq required the same lock, so a
+reader there has already finished.
+
+That reader only uses the mm inside the rq lock and never hands the
+pointer out. Getting the lock means it is done, and whoever takes the lock
+after that sees the new tsk->mm.
+
+Fixes: df0d98475954 ("sched/cache: Introduce infrastructure for cache-aware load balancing")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+---
+ fs/exec.c             |  1 +
+ include/linux/sched.h |  4 ++++
+ kernel/events/core.c  |  2 ++
+ kernel/sched/fair.c   | 16 ++++++++++++++++
+ 4 files changed, 23 insertions(+)
+
+diff --git a/fs/exec.c b/fs/exec.c
+index 745f6eb5279e6..6194c38807980 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -916,6 +916,7 @@ static void exec_mm_put_old(struct mm_struct *old_mm)
+ {
+ 	setmax_mm_hiwater_rss(&current->signal->maxrss, old_mm);
+ 	mm_update_next_owner(old_mm);
++	sched_cache_exec_done();
+ 	mmput(old_mm);
+ }
+ 
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 8b3d47a325cca..6ae31bffe049e 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -2415,10 +2415,14 @@ struct sched_cache_stat {
+ 	int cpu;
+ } ____cacheline_aligned_in_smp;
+ 
++void sched_cache_exec_done(void);
++
+ #else
+ 
+ struct sched_cache_stat { };
+ 
++static inline void sched_cache_exec_done(void) { }
++
+ #endif
+ 
+ #ifndef MODULE
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index a6c8e38a31104..2f29cbccf03f1 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -5427,6 +5427,8 @@ attach_task_ctx_data(struct task_struct *task, struct kmem_cache *ctx_cache,
+ 	if (!cd)
+ 		return -ENOMEM;
+ 
++	/* @old, loaded by the try_cmpxchg() below, is only stable under RCU. */
++	guard(rcu)();
+ 	for (;;) {
+ 		if (try_cmpxchg(&task->perf_ctx_data, &old, cd)) {
+ 			if (old)
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 6d881e530f891..fc63bfcbccc5b 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -1989,6 +1989,22 @@ void init_sched_mm(struct task_struct *p)
+ 	p->preferred_llc = -1;
+ }
+ 
++/* exec() has switched to the new mm and is about to drop the old one. */
++void sched_cache_exec_done(void)
++{
++	struct rq_flags rf;
++	struct rq *rq;
++
++	/*
++	 * account_mm_sched() dereferences rq->curr->mm under this rq's lock,
++	 * so a remote CPU can still be using the old mm. The lock cycle waits
++	 * for it, and the store to tsk->mm cannot be reordered past the
++	 * release, so later acquirers see the new mm.
++	 */
++	rq = this_rq_lock_irq(&rf);
++	rq_unlock_irq(rq, &rf);
++}
++
+ #else /* CONFIG_SCHED_CACHE */
+ 
+ static inline void account_mm_sched(struct rq *rq, struct task_struct *p,
+-- 
+2.43.0
+
 
