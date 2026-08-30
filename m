@@ -4,105 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7807C61DB9
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 07:59:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 183A5C61DB9
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 08:10:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 019186B0092; Sun, 30 Aug 2026 03:59:21 -0400 (EDT)
+	id E3D6D6B0088; Sun, 30 Aug 2026 04:10:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0C186B0095; Sun, 30 Aug 2026 03:59:20 -0400 (EDT)
+	id DEE656B008A; Sun, 30 Aug 2026 04:10:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFC0F6B0096; Sun, 30 Aug 2026 03:59:20 -0400 (EDT)
+	id D043B6B008C; Sun, 30 Aug 2026 04:10:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BE4346B0092
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 03:59:20 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4CB9D8028F
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:59:20 +0000 (UTC)
-X-FDA: 85157185680.04.5E8CCB9
+	by kanga.kvack.org (Postfix) with ESMTP id AFBF86B0088
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:10:49 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3CC9880293
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:10:49 +0000 (UTC)
+X-FDA: 85157214618.26.6DAE387
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7A83580002
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:59:18 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lIw0faM7;
-	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id 99A90180009
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 08:10:47 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g+CnEfqt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788076758;
+	s=arc-20220608; t=1788077447;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NrLDNBRCYN+jXa4vhl3946i3kCe1JZe5SP3/HQaL10U=;
-	b=nj0mvOy0cqppECH/meONGIRkctGogrf7bk4M69USOMz1HjHW9Tsd5aApMI4NegoiN3YrJH
-	JRO7uf84sMkyXKi7UaNSMEE3cEgx69LIFKkatqEmCjd3RXJQC3D4/BVH2BbExvcLedXNn2
-	zfsKpRQAF0F9uhYglB5QmXXztwgEOSs=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=roA3pn9tytWMEXCOgBxbLuMlI73dGfxw422usJPW7ws=;
+	b=manyfXsyXl+iz7gP9YB5ek4MDULlP2KsNfmvYLhKkGSCwg7MNNYN6POJV8wqd0LreFoYnf
+	FNBQ2nv3zCNb7zhcEfBPhAO5F48vdp09NMviCxrO8vSkNyl0UQ2p3I5ZksM32isGJahwNf
+	yK5hwR6VjzN/3/+wgWYdgKMJjuCs8ik=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lIw0faM7;
-	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g+CnEfqt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788076758;
-	b=Ke6+ezJMF95ZWtNgUwUxswJyhZ116a8UMXR1RRUxvMsLpX855fj+Lpda3SAdaZ2Ya5nGtf
-	IhmlavtVKkciR2FHs10B0+g2DRxvncqoZLjPRf4sMi2iagGo9ai+0RvUOfP05c1dGeqmlz
-	TZfeAR4Uo3OLX9qYIIypI1Kl39tsc78=
+	t=1788077447;
+	b=CIjPj+1WGBX0IkP2/8or9J7sszV2q4vDMhTRRSqD/Ldx1K/rzoZ7dJnszu+eFeFyv+yaKE
+	FTlWY4mf76aQHBL8eJc399RfdN7MKAVTk5gSqpos3oK9vPHEmWT17EjgXKfMwOMExTiEhl
+	8f3Nm9A2ATiyEL9mAbwJt5xvyJ1hTRc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EC842600E2
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:59:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E3E1F00ADF
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:59:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5317B600AE;
+	Sun, 30 Aug 2026 08:10:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD4D51F000E9;
+	Sun, 30 Aug 2026 08:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788076757;
-	bh=NrLDNBRCYN+jXa4vhl3946i3kCe1JZe5SP3/HQaL10U=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=lIw0faM7AwczaPglu+Ccvr2HXhVNbDDmxWNjJXQ5CjV4eGSR/yPsCnHUn0p9Mg/qc
-	 YVgNxuBLmyqhygOdOIphzwelaalJTN36rqN6TCmLGicMk+9y0yevruc6IfODRc0cyR
-	 U3zzrMNXe1Putuqul5Ssc94V879+Q2V5g6+af2a9Xy7hIsEBGjQV/6HFr+1Ee11m6l
-	 mZiy0JqnURPf2rmZh48RhFX6cuj4XWA0NH7RCsHlEqvtdvyhY8XhvhiWGvcsoacEYf
-	 TlpjYailZ0wm6CauWCtPmJMEf5PftYSFlRFfT0BANi3bs4iPpk1DdjKjveXZe40lcF
-	 5iRg/W3GhgNMA==
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-930f618435cso178088385a.3
-        for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:59:17 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rqf7f263SU69ABWIohJ06/xAVTXQXohj2cgtN6d8JyI+AISE/WIomyrFgr704EQD32nEGmSC1WNWQ==@kvack.org
-X-Gm-Message-State: AFuF++n8IGevbMJ+8jwvGcam+av+PJQuM1fU8JKlbxDMo5qEtCVT0olJ
-	74PN1Kk+1itM16J2DK/jnJQiGn5ItSegblnW18chcEzCfCrTj7aDaWV9JIGrZ+nle3mvQ6xCFDy
-	KjoDO0yZBr8pE02uWgdYetLfFEJbJhE0=
-X-Received: by 2002:a05:620a:29cd:b0:915:a953:4b9c with SMTP id
- af79cd13be357-93913749780mr1843635385a.3.1788076756998; Sun, 30 Aug 2026
- 00:59:16 -0700 (PDT)
+	s=k20260515; t=1788077446;
+	bh=roA3pn9tytWMEXCOgBxbLuMlI73dGfxw422usJPW7ws=;
+	h=From:Subject:Date:To:Cc;
+	b=g+CnEfqtLN6YUoq+dT274N/zsTIZktli69oN0lC8EXm6TfKebORKrOjPyJ5V4Hc1/
+	 7ZJRxEfuZwTEBu8hxRmGCytaJh7VHkbyVkTRhm8wbUxHObSYkTvyz5jyH9LaBs+hDb
+	 IQHVTJO1tqpCZY2nfl5rug+O+lNQzgt+NmKtUbxmTN7KtIzvKocteZOpga8xLeN9O0
+	 dbATn+SstNgbhJi3do34ibCrnWKCajk1PwKSqhAXeZLFGGJ28250c+zUNC7YUXn+bc
+	 8O/dYy95oiKmlzSTKtwDFRdUKO8NlAdZphtdTa9D8UWr4jwZ3IdJhCs5+f/JSUOVrH
+	 uRSbGkLeJTJ0A==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Subject: [PATCH 0/4] USB: replace page allocator calls with kmalloc()
+Date: Sun, 30 Aug 2026 11:10:36 +0300
+Message-Id: <20260830-usb-v1-0-aa349c302246@kernel.org>
 MIME-Version: 1.0
-References: <20260828110919.1324028-1-ridong.chen@linux.dev> <20260828110919.1324028-2-ridong.chen@linux.dev>
-In-Reply-To: <20260828110919.1324028-2-ridong.chen@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Sun, 30 Aug 2026 15:59:05 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wp+O3AX2YQMsU5iHNZX2tYJ1TuSH30eyp=_XeEb2gSrQ@mail.gmail.com>
-X-Gm-Features: AcwNN1VSR0ETjAivAghBgogeIeAmAQL0JT7gsTA1npC62VHF_x-d0gDpe0cIFYc
-Message-ID: <CAGsJ_4wp+O3AX2YQMsU5iHNZX2tYJ1TuSH30eyp=_XeEb2gSrQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] mm/page_counter: avoid integer overflow in effective_protection()
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Muchun Song <muchun.song@linux.dev>, 
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Chris Down <chris@chrisdown.name>, Tejun Heo <tj@kernel.org>, Yu Zhao <yuzhao@google.com>, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <linux-mm@kvack.org>, linux-kernel@vger.kernel.org, 
-	Ridong Chen <chenridong@xiaomi.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: k5ki7fsyywjtp9uxze5fzpcbpcmnitny
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7A83580002
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMzQ7CIBAE4Fdp9iwGMP6+SuNhgUXWAxq2mCZN3
+ 71Qj99kZhYQKkwCj2GBQj8W/uQGcxjAJ8wvUhyawWp70Td7V1WcwqDPltDEiAFa81so8ry/jM+
+ /pbo3+alPe8OhkHIFs0892nk9nmBdN1ZD0b6CAAAA
+X-Change-ID: 20260829-usb-ad052ea1ffad
+To: Chas Williams <3chas3@gmail.com>, Duncan Sands <duncan.sands@free.fr>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Johan Hovold <johan@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+ Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ accessrunner-general@lists.sourceforge.net, 
+ linux-atm-general@lists.sourceforge.net, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-usb@vger.kernel.org, netdev@vger.kernel.org
+X-Mailer: b4 0.17-dev
+X-Stat-Signature: a586pyomynckxkq4tb7zqkitxim6gkaw
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 99A90180009
 X-Rspam-User: 
-X-HE-Tag: 1788076758-475309
-X-HE-Meta: U2FsdGVkX1/XcpgzEbqDp3BhwLK/OoErHyS+2MuFby0BSX+Qd2KBxY8rkrTwfXD54txoOr3Nb2KVM66fcIx4t8gdnDinPIZ/YdKdcLLlloYzbhEzdZJkw8u40WAjLe/+zSKMvNl3lYbyGnHofeNHzQ22hucNVsb7F3mjp9TvWUAoyJgY0ang+wrBZ23X0PfswB9gZ9+2IeZJEIGa6YxDXGy0xoL+xFQgpL2J5bdTlV6Grgxa+moSALygjkisPFb8FWCSI6vLMtc3d21SPhCTQGD7FKWbqAZUTYR3e2rESemWcWhJyrgb3PyH9pTbT9i6NhK3v3itI+GMpgkSglZUPWquYSSeKtgCtr4n5UdU6RfDjYH55q9pxepHJ4d8kflhRyhKG1TsvgfBTTo1n7y+Bp7bsu3JrTURxz89TPq5FV0ZWJnKPp52hOioJKTvOnfdMJlsnCrGZRMWkgU3Y2vhy5xQKaHc2QQIL4/W97aNewG+yCrPdkwH/Ee2jvxCNHH5NmMUjFMfvp8/Qx2fe88hGVFl0LnWSmV8svvxZZM9ekHZKi70R29rqvzbav1Qb05SFleVxLWb2qngBft/JV4sE8XIQXLbnQcatKaEWDW6vJ0Dtb5WWqoayasaHbi+mtyLoyuF7tALEYI3T9xlx0gOhspksTyCZDmjAAakremGYhR3fojSz3Uws9XxBrtocPq9AHEvKmDVb9cPjVs8j6PdhOaZy4rMNdn+5YkfPyVOIzY216YPeKBEk4d2unSZdJ2xnWZwVKX6ZDITk4SS1h3Sdioev5u2LlsTlezyxIeB/MqLpfCVmEuMcIJiZpW1jDXJtTv7jFN6iDl2E8N5Blx7uwZF5a6tiQcu9WzhfJEG3MP4LcyiOuwsoSTQ7OJ5vd2Z+p0uUdQnkLHubI9H9KZjwk7Ta5ygCh9uleiqV4p/ZmiA3GlBglfPjp9SYbH4TWqJQ5AUpx9etyqy18W53Kw
- r+pbfi3U
- uEOjHZ9RKZcj/9Ayuo2V7eeYuk/9yqcSfcATakjz2lniuH09GGtP53GhFzrXm3/DYxkGyBkfTc5HO53Pba1V955neQr/aWB45zWwXC5XqTSS7LUm8GxIjFqnJ/pdu2vQqXEKr2iFpj9suci9BYAKiKZPO2mib99Ut2X+MhYobzo8CPTW+NcUqQTrbswLYEgrRtPa0h+C+r+fjjV2zZduH4HPUxGPh7OCd69Wa6tVP8QfrlPIbLdtaf9/ZLb98ZvRBUTSqKZBfrSyXUhKd/pA4qRtkHWbQdSO9imU3avLj9hQAWqzc7XQXESe4J3YvzhuFENB937ztXG4fJz8Vdkq7cQnSfsoEQ1ESr6WDnmch2p0MpQlixEwqO0W03QyH1dgydO0464eDT4XerrRTgKKwRUIUNEqYEY7ngUhi/IT09thrVyOjxVUQ42nDyg==
+X-HE-Tag: 1788077447-503738
+X-HE-Meta: U2FsdGVkX1/vWmuL4K5X+/uyM6aUXHTbryA+KLdv34R5uHt4EFQv0jsgbmBUFn5IdazZAV218BZnZ+uY8TrB7zVBCReVL2Mll58l17gzVIQKCf3w4dT3r5WzoBRh7ZNjMck2yTlCxnuOc6LGAx94W6yKOT2591FqTQj/8kZQJwG72ZomcnSOkbEbzI0Z4mHBvWCaujTN9VuyTOcbIMV3iV0H/aQPOkRbX4cVb0gtE/9GT7p8m3elbTw9JND3Bpzyctf7usp/aNC1yxhSz7rkvESckSKbLf7KBzkGjagQW8F2kPAlzh476V8fwHmKKHJDty1RVmShHJb/ayhDkJL1w/9IFoyiC2ZwssVvbh9AtcAqa8sLMW/ilWK86QFlL5UQztKG9WNX7PceBRIPitbMc+qKh64aYNUeHiAXY4zJaN/rQyqxGjbE76zQgkIMSZatWnbNoa6rKLjr0tK3eVdTl74Hq69UMue9pm4DhkZNrM/HYv+pzo5LjGCB7sX1FIfn1dPkAm3GA5hTG1vfEwvMnL+VhXeTtU461JTIrl9apWWQ0t4VUqGeZMuO5C+hve2fWg9UXcIBnjJpZk9xJN28w0bUDwuFYnXCEiO+c+MzpXYuZlepe1oZSytYYd6PuMjwMYpJgy7eWpkkU5ShGT5xGSfQXviCh2aTBw8C+xgkBRXIhrhE7EBmXMfpzayl6d6VcMXLTZG/daCYhdJP12D1qkQ2ZDMhdPfz82tJ7+qw1iUjcs49XK9cdqDxIufH4pgkgSZ6/1psPyvENjGQVavy5KVNqNeZsmkO1oip6y+YkG0Lgoii6aU0wpBKqSGCu7iS2o9vfCTjqpiXsGj6JQtl/mVQh4kken8oK5Z+Sdf602oc8QwqQU4VxIM1HaztJJmImWGMTnTJSsuyOeZwNaGP72ery5zw6CD4vN8eWERbI3yi/L7Ro71m2XjS9P26AXyoECi/iSRXNGvJybEBc2/
+ jX4qxH5b
+ 7WeyCDnak/7/mtF8xf7/mTjrNoFnGRpGJRQThtcFkwf+gLWiY8c6tM/Je9+e1BGUo58Ay0OrRKprvCCgi6xZACvoBjqQUDjoo+3wRDtwuqZcJjcErymCD7w082XrgymJjFbZJBltWdUUFdR4jE9npjrOnB+p5uh9TRapknPVoQ/CPoqNbmtJlB/S4TnBAda2/87cUojVK7c3zeojF4S1yGJOI+YCrySKc59W8D48K2vqU6Ef3foqaYqBRekDGuAlVxhhNT3SuYo9XsMc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,40 +99,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 28, 2026 at 7:09=E2=80=AFPM Ridong Chen <ridong.chen@linux.dev>=
- wrote:
->
-> From: Ridong Chen <chenridong@xiaomi.com>
->
-> effective_protection() scales a parent's protection by a ratio of page
-> counts, e.g. for recursive protection:
->
->         (parent_effective - siblings_protected) * (usage - protected)
->                 / (parent_usage - siblings_protected)
->
-> The multiply is done at unsigned long width before dividing. On systems
-> with >=3D 16TB RAM the product can exceed 2^64 and wrap, giving a bogus
-> protection value and silently breaking memory.min/low enforcement.
->
-> Use mul_u64_u64_div_u64() to multiply in a 128-bit intermediate. Because
-> usage and parent_usage are not read atomically (a child is charged
-> before its parent), usage - protected can briefly exceed the divisor,
-> making the quotient overflow 64 bits and trap (#DE on x86). Cap it so
-> the ratio stays <=3D 1.
->
-> Reported by the sashiko review tool [1].
->
-> [1] https://sashiko.dev/#/patchset/20260826133054.88529-1-ridong.chen@lin=
-ux.dev?part=3D1
->
-> Fixes: bc50bcc6e00b ("mm: memcontrol: clean up and document effective low=
-/min calculations")
-> Fixes: 8a931f801340 ("mm: memcontrol: recursive memory.low protection")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
-> ---
+This is a (small) part of larger work of replacing page allocator calls
+with kmalloc.
 
-LGTM,
-Reviewed-by: Barry Song <baohua@kernel.org>
+My initial intention a few month ago was to remove ugly casts [1], but then
+willy pointed out that Linus objected to something like this [2] and it
+looks like more than a decade old technical debt.
+
+Largely, anything that doesn't need struct page (or a memdesc in the
+future) should just use kmalloc() or kvmalloc() to allocate memory.
+kmalloc() guarantees alignment, physical contiguity and working
+virt_to_phys() and beside nicer API that returns void * on alloc and
+doesn't require to know the allocation size on free, kmalloc() provides
+better debugging capabilities than page allocator.
+
+Another thing is that touching these allocation sites gives the reviewers
+opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
+another size is appropriate.
+
+For larger allocations that don't need physically contiguous memory
+kvmalloc() can be a better option that __get_free_pages() because under
+memory pressure it's is easier to allocate several order-0 pages than a
+physically contiguous chunk with the same number of pages.
+
+And last, but not least, removing needless calls to page allocator should
+help with memdesc (aka project folio) conversion. There will be way less
+places to audit to see if the user was actually using struct page.
+
+The patches are deliberately kept small: each one deals with a single
+driver or subsystem and with a single type of allocation, so that every
+conversion can be reviewed, and if needed reverted, on its own.
+
+[1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
+[2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/
+
+Note that the buffers in usb/core/buffer.c and usb/mon/mon_bin.c are left
+
+alone: they are mapped to userspace and thus really need struct page.
+
+---
+Mike Rapoport (Microsoft) (4):
+      USB: usbfs: replace __get_free_page() with kmalloc()
+      USB: cxacru: replace __get_free_page() with kmalloc()
+      USB: speedtch: replace __get_free_page() with kmalloc()
+      USB: serial: wwan: replace __get_free_page() with kmalloc()
+
+ drivers/usb/atm/cxacru.c      | 16 ++++++++--------
+ drivers/usb/atm/speedtch.c    |  4 ++--
+ drivers/usb/core/devio.c      |  4 ++--
+ drivers/usb/serial/usb_wwan.c |  6 +++---
+ 4 files changed, 15 insertions(+), 15 deletions(-)
+---
+base-commit: 1b78070aaef63512688aebfbc82365ef9d6660f1
+change-id: 20260829-usb-ad052ea1ffad
+
+--
+Sincerely yours,
+Mike.
+
 
