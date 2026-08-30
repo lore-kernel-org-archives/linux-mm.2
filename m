@@ -4,95 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79FEAC61DB9
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 05:18:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A48FEC61DB9
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 05:36:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 70D2C6B009F; Sun, 30 Aug 2026 01:18:45 -0400 (EDT)
+	id 556D86B0088; Sun, 30 Aug 2026 01:36:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6BE9C6B00A0; Sun, 30 Aug 2026 01:18:45 -0400 (EDT)
+	id 52EAA6B008A; Sun, 30 Aug 2026 01:36:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D4696B00A1; Sun, 30 Aug 2026 01:18:45 -0400 (EDT)
+	id 4449C6B008C; Sun, 30 Aug 2026 01:36:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3986E6B009F
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 01:18:45 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9D5C912026F
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 05:18:44 +0000 (UTC)
-X-FDA: 85156780968.03.7DAF254
-Received: from mta1.migadu.com (out-56.mta1.migadu.com [95.215.58.56])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6A1E81C0007
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 05:18:42 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OUfzD71g;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.56 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 22C136B0088
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 01:36:20 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9EB7D40276
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 05:36:19 +0000 (UTC)
+X-FDA: 85156825278.19.B9BA68C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 1289D40003
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 05:36:17 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F5e3f3zr;
+	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788068178;
+	b=hvTDsPBion8suwo/z0hdGHdKx0K13f7YtPyq1I99XOQpyKa35Zm/SsozxWdf+lfGjaXyf4
+	vOyKEB0lKZ4EM6gGsLOcIOwU8bzvfkGSXUOVCeMfKk7XeP7FYBUN4Q6x5qcgGXl78HI1SC
+	MgsJWrlgxr2FxlUWoOUzEsEBgbweptc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788067122;
+	s=arc-20220608; t=1788068178;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n8ezaL9icbU9C7HIFQvgdZQO2Wi8VddFCHPu5jqFmjU=;
-	b=3poSq02UVLHzydA+H77EgqI/CikJ8AQ7cKrf3cAMfH47E8XeIA9T8ceVU2khtfAW+6gzDL
-	JnPj+zVVU704GhLsDg9otj1L04azXuG5x/rW18qC2eobvdbnSHYrVlWKkj1PdDdZPcPEmQ
-	6gxpMVFX3qO/12Mg80PGr8SABinVzCo=
+	bh=dbu7Q3qcydpbduK5d5xuw3bm+6kDkYu6ps7F3h/cYC4=;
+	b=L0pEI0UPvejU9f4zViNUYMMMGMlrOLis//dJmOPoWh3Eg2ng7ztu88t89HfzV18YZwmFhp
+	iiIZcqjC8zy42NUBIR+9FK1K+Bzcli7y9m7hRoAX7CvkItydK+wgrnv3NLYHrxV+FrHty9
+	Ydb2I1OBpP0g30La8AQEL4pPmnnjNtw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OUfzD71g;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.56 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788067122;
-	b=1AoMG3rJ7KSw3XkAZWERYquI4z/Nz7TJopJcjCJ+aI0fB+8KVKAXKBdy63Ni2n4B1Ft9uR
-	+nwIR0xvkMZnnkFXqFZpvNet94ClKtDmYCJgbzujdVTL6GJG/JCdbvUpi6XjWPvzxOTBke
-	/IcPvir4UDqKIN0mtLkYiqyubyBxU8c=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=zpUnzyomNCkMBgYKtdeC/00VUtDf38xmo/shun73kSE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788067119; v=1; x=1788671919;
- b=OUfzD71gsBHVbLwuzg5cFSUCjzA+5Tj79KnYt6pmfMxrAWGvYUREWb0H/MOx36qj3vQAeMOl
- NOKMbQLTZR1QIrElQM8y3bW2SpaDfdOPxgU0P3KjzcqO2nOPMW09WF5xYaMVrBa1CSlK10aqo+s
- g0GtYJTZa82USoSkMv7sFNDQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 82afb8ac5ccba36e;
-	Sun, 30 Aug 2026 05:18:39 +0000
-X-Mizu-Trace-ID: 82afb8ac5ccba36e
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <c2577ec5-acf6-466b-ba66-0b3bcabbef7d@linux.dev>
-Date: Sun, 30 Aug 2026 13:18:24 +0800
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F5e3f3zr;
+	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id AA4DE600AE;
+	Sun, 30 Aug 2026 05:36:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9AFA1F000E9;
+	Sun, 30 Aug 2026 05:36:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788068176;
+	bh=dbu7Q3qcydpbduK5d5xuw3bm+6kDkYu6ps7F3h/cYC4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=F5e3f3zrh6K28tm/qQp6Oue55tKOTLOm01Yu0X0OpWd11buxJM+oaQZgRaPgAlviw
+	 orfhumU4zI6rXgZbcTbz0VyTxjMqyrqmt1yX+dwx/pPQKPoDwxaZymNkiEKL37jeMy
+	 m8iwifd6CBos3sCjQc12VSH5HxST5TNAz8sS8HWLLTXtD53zgpGszWjYd1Udf6YqOi
+	 RItioxeawc68IRB5v4ZTiIT2/t0l07vAMlA5MEkxNFTdL0oaOKmRwu/l+811BFK+ra
+	 hPrKDWDpFPIFCqHB2QRZ5eP+KTGkOQHlKN9AYVVTraJss062/hlCVu+RUurmS761IA
+	 JU6btVfCDBo7Q==
+Date: Sun, 30 Aug 2026 08:36:01 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+	Hugh Dickins <hughd@google.com>, Jann Horn <jannh@google.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+	Jonathan Corbet <corbet@lwn.net>, Lance Yang <lance.yang@linux.dev>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Nico Pache <nico.pache@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Usama Arif <usama.arif@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH 6/6] userfaultfd: collapse VM_UFFD_{MISSING,WP,MINOR,RWP}
+ into single VM_UFFD
+Message-ID: <apPBQQ-850DwlCVA@kernel.org>
+References: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org>
+ <20260823-uffd-vm-flags-v1-v1-6-3086981b33cf@kernel.org>
+ <ao16VxNvaYzlt2WG@gremlin>
+ <ao_9R3CbjYFipFu7@kernel.org>
+ <apAB9GSnHNyNoSc1@gremlin>
+ <apAcweThjiD-iIBF@gremlin>
+ <37f6af95-950e-4457-886e-6548d4719f0d@kernel.org>
+ <apK7s4xSgA_GmY7d@kernel.org>
+ <178802897277.671075.10362065249796431311.b4-reply@b4>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] mm: reject zone device folios in more folio
- walkers
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: gourry@gourry.net, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- kernel-team@meta.com, david@kernel.org, ljs@kernel.org, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, liam@infradead.org, nico.pache@linux.dev,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- usama.arif@linux.dev, vbabka@kernel.org, jannh@google.com,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
- balbirs@nvidia.com
-References: <20260817220810.1175596-1-gourry@gourry.net>
- <20260818043143.22297-1-lance.yang@linux.dev>
- <20260829171819.e1e8910e7e9a8a46b87c870f@linux-foundation.org>
-Content-Language: en-US
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260829171819.e1e8910e7e9a8a46b87c870f@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6A1E81C0007
-X-Stat-Signature: mw58qn3r1g7qzkinsqqdjqzscts3cb61
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <178802897277.671075.10362065249796431311.b4-reply@b4>
 X-Rspam-User: 
-X-HE-Tag: 1788067122-162304
-X-HE-Meta: U2FsdGVkX1+utvkc6Fg2L/OAQx9Q5o5/0hrKkZlEBnkV+W7PcrfW0Y6f3RT2mJGrbIZwsWIIgDDneoJ1e1bopy0uy1HmuracJWXnjHTQxxh5lkKPeQ01TnfXaOzJ0YnNsXu/lc9PNBlSvhUBCXR1PNZflDyA1SyCAbEXizNCEEl996SQHIhYTtO8vE/0LjREyM+0dA756FcBWG3ItQj8QhTOokzv32UtWV2dlDTtGNPbnkyefkg36YNdbipaOAlzziXI2nvGQsqwhYn1TiMSGsXxNCPLZjwwcOAy69CrME8gXh1tA7CzcQ331sJ4FGZuBiBr9shwL1THI0XIdvDCqbBZVSh9WVKTZq4mrUARtFWjgKaN0WDwrQLdevmreOrGnfRm5dONImZeag/OeDorVZinZuMjz0wCPmH9FE3JAfmmt056B+tb3hGNAi6Bs+PgwGoJhkzAXRsCwDLYoiunl2px+YYjYgjHI4orbnlOXT0JVf7SF9XPK+f9nw7Xic1ae7ECyXr+4r+21Pa1MBA9u5l6BCHvCW0Z0Tc2v+BHJBOoCqoxqt4qNqDZRoG1C5LQk5zV39+fGEwd/f+bvmi+4lqUCw6HQFKM+5jYNm9fuINCUdaxm6wq9MBfwaPVCuudgY1q3jrsEMqjSWyTuQokDeRK2zw1ODqELFh3inOuOnihddfeM4qp3PtelLMCnX394JnsFWhXbJDp33z3aE32FDCVjn4D7MpWrZw9N1Q7zR9iathnuPcDmISe5c/aY7TfuPeFJKbn6FuZQY94wOAwndc0Kyhq7IO2PvTy+EaSTjsuwKp8yppG8ihomtbWlCBV6IoqEluJS27L/YkC6iAYwqOA483BO0+SzbQzefzJSoPnXdPjAJzkmVYehbvFrnqetlzzlpQV+U6q50hvxn+rew91Xm4iv1mp4A8z3awcNHSMv3E22FpsiWMDOfwWOiruB9t2CdaeFhhs+k+0Y9I
- 9OTJnqJR
- AEldXwczypTxBOup6wxfBSjYBsXgnZAN+L7hR0lPaLf9y04bJrrcxK5DokyxUp3pw9GJoRzfIc3p+5/jBdN7lMR/W5MpIpAGw+udBHRCsarQ3JUBkm34Gt2BFl3Rz9gNKhBK6tfVzpKkxvkWQIiRu8ZOvD9dzvgpy4mM0BaYii2LNygIdfP03iMQTbQIPT8mUcVMQg10yVwehDGzFj6/qGtS9TnItwmK0NBy2O+aaxiwk5OQKtWzs93K2Dpic2X1ukQ0u2JcUPS0vmY57rdL5pPJGmPvCIlqaGezpcZESmypQWrWVv7+nGp6sx+LlFrdesvD3UfsxXsG73/ul3IDKPbqhr2UvohPBCJZonz6l4+uLRZGPg6UbpXSotIhX7g3n9ZiFV519g3jK7Hk/3rg1rSdflneuFTbAWsBbdijz2X+ASTg8baG9LuNk4a9HEr3fwOy6pt5xAdso3sCEqa+dOyM25N/VlX+FakId
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1289D40003
+X-Stat-Signature: 7be8qsee6qdazr78wu344h77set1jm16
+X-HE-Tag: 1788068177-681669
+X-HE-Meta: U2FsdGVkX1+ZZnvBQhhSdiwMpnr9KWKD+GNSoWRgbXKrOMo17i5JFGyVRcuBumMI9bNL3c0AiMgrn98Cj80vKkKgOqh2v+fIrSk/EdZ7TgN0V7t/Yg5WJxy0U1wJs/4+yK40lsKCBEhTYR83YTcm+rRyb+NXZxn/ZKQ030Q6hliYDQjUtZwbvgijPjiaVg0mbGw640dXdV+ywBGtVC7E90LFPBL7Xq3PbBbf/D8I36AxniBQeCIprIw3aZV9/a7Yy3ii3gtJEucRnL8Sm0jmVju/3ELY6UmFYpzYMlNQxtMB1gxr3vFNLwSctJgzXH7dWgPoz7h6rMjnVsji7fkxuvU/mkRfIFznrEQCOIwsPPNqQVpyesT3dziBNJFrz3EUHraSYAEJhGg9J018ESqNreS7OrYkn7TI+VbSrCRIjO1O1Y2yr7NNdVUzM3YsenbMWQU7kaNrPvmbqQQloTHvQTknDmMDfrx7TswxqYCSYe59DH/VCFdFAiJcjGHdUJX7cY3En3usTltWCqoihr/CdBGtEA0u4kp/6NmCvSetrPpy58GniCc1J0jdJN0fajXVIPMZ3kaGcQg04WVqH6FCAax4m937jwq+mlznC2ukoBYh75oJOyRg//9LUVwRhSrl8sd2xJLk00aYAfgnhwoG70EYtBcAy4dbvyC2v1FJzekOwDMLXzf501zJs4GVqh3aA398f7BAXUzgJH4NB0ZjAQ6EpEmKyFFglB0LeynZaf25HRm4n4n8c0E9U9yce+Agvix2EzCMDX9PmJ2kE+JIi76ROtYlfe+94Z7c4wXGhe8H3C7GmXuv+lxzdi4GHpqFZwvvm5jLdMx0raenEBfAfdJ3feQQUO+WBC2i8wtk58cY3QaZWIo9HajXa/j8hF5fu5sh/Wd6r3UYNYZxO+WkjvzEnSfKuIrpWv/NXHrhOR+aANrJTLo9RN/si+bBGPP64DC9nneLv3I+NrtsmyV
+ a2EgR2Wp
+ HY8k9z6I4+baMHQqlYjERc8vmwOKSslzFjlKu2YJp/MEfzCemRvKllXBCrL847+A33iUUBZo4JyerolkvQ2oSqlDuScKAGY8rM1CFPI1gdUX47M15hrGuQFGv3+lX11LsV84R+rT+X00KHGywKzDIWCqzdWQkQkFieVvj9KTki1kBwU1WGWe+2JShkaMfBBUzBzyMj7mb66Syf36CYnqquOSy3S7h3sh6hokQBnJwWzLIS92n1496AODL6THoKL21txv+5LszFBDIhIPYM4XPSdGe0sToYrJbFMQI/FXZfszAXDM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,76 +122,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sat, Aug 29, 2026 at 02:42:52PM -0400, Tal Zussman wrote:
+> On 2026-08-29 14:00 +0300, Mike Rapoport wrote:
+> > On Thu, Aug 27, 2026 at 05:19:30PM +0200, David Hildenbrand (Arm) wrote:
+> > > On 8/27/26 13:18, Lorenzo Stoakes (ARM) wrote:
+> > > > On Thu, Aug 27, 2026 at 12:16:32PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > > >> So actually you're increasing by a cacheline and increasing the VMA size by
+> > > >> 64 bytes, i.e. 1/3, which is unacceptable obviously.
+> > > >>
+> > > >> Maybe there's something that can be done with:
+> > > >>
+> > > >> 		/* forced alignments: 1 */
+> > > >>
+> > > >> Perhaps? But that looks potentially ugly.
+> > > >>
+> > > > 
+> > > > I say elsewhere (or think I do) but to highlight - I think probably we could fix
+> > > > this by putting the flags in the low bits of vm_uffd_state.ctx?
+> > > 
+> > > if that's possible that would be clearly preferable memory-wise.
+> > 
+> > This gives only 4 bits and makes this completely not extendable.
+> 
+> Wouldn't it be 6 bits? struct userfaultfd_ctx is allocated with
+> kmem_cache_create() and SLAB_HWCACHE_ALIGN, and most of the flags are
+> only available on 64 bit, so it should be 64-byte aligned in the
+> relevant cases.
+> 
+> (Not that 6 is that much better than 4... but it's a little more wiggle
+> room.)
 
+I did remember that SLAB_HWCACHE_ALIGN could be as small as 16 bytes, but I
+didn't verify it for architectures that support fancy uffd modes.
+ 
+> It could in theory also be bumped up to 7 by setting align in
+> kmem_cache_create(). userfaultfd_ctx already takes 192 bytes due to
+> existing alignment. Aligning it to 128 bytes would make it 256 bytes,
+> adding 64 bytes to each uffd rather than each VMA. But this sounds like
+> more pain for little gain :)
 
-On 2026/8/30 08:18, Andrew Morton wrote:
-> On Tue, 18 Aug 2026 12:31:43 +0800 Lance Yang <lance.yang@linux.dev> wrote:
+Yeah, even with as plenty as 7 bits :)
+ 
+> > So I think I'll drop this for now and wait until VMA grows another cache
+> > line or until having per-VMA uffd state rather than a pointer to per-fd
+> > context is a must.
+> >  
+> > > -- 
+> > > Cheers,
+> > > 
+> > > David
+> > 
+> > -- 
+> > Sincerely yours,
+> > Mike.
+> > 
+> > 
 > 
->>
->> On Mon, Aug 17, 2026 at 06:08:07PM -0400, Gregory Price wrote:
->>> Several LRU-oriented mm walkers resolve the folio backing a PMD entry
->>> (or a physical pfn) and then reclaim, age, migrate, or lazyfree it
->>> without ever checking for ZONE_DEVICE memory.
->>>
->>> This series adds missing folio_is_zone_device() rejections, matching
->>> the checks that comparable walkers already perform.
->>>
->>> - mm/huge_memory, mm/madvise: the !pmd_present branch above these sites
->>>   only filters device-private entries (which are non-present).
->>>
->>>   A present zone device PMD (e.g. device-coherent) would still reach the
->>>   folio and be lazyfreed / aged / paged out. Add an explicit check.
->>>
->>> - mm/mempolicy: queue_folios_pmd() can see a present zone device PMD
->>>   (e.g. device-coherent) and queue it for migration.
->>>
->>> No crash reproducer - this is a correctness/hardening cleanup found by
->>> inspection. All checks are placed after the folio is resolved and before
->>> it is acted upon, on paths that already hold the relevant page-table lock,
->>> so no locking or refcount changes are involved.
->>
->> Cool!
->>
->> Gave the whole series a spin on x86_64 QEMU with a PMD-mapped
->> device-coherent THP. Without these patches, partial MADV_FREE and
->> MADV_COLD reliably hit a kernel panic in remove_migration_pte(), while
->> mbind(MPOL_MF_MOVE | MPOL_MF_STRICT) returned -EIO.
->>
->> With v2, all three worked fine, PMD mapping stayed intact, and data
->> checked out :)
->>
->> Note that both kernels used the same small change to the in-kernel HMM
->> test driver, allowing its coherent device memory to be allocated as 2 MB
->> folios so the PMD-mapped test case could be exercised.
->>
->> Tested-by: Lance Yang <lance.yang@linux.dev>
-> 
-> Thanks Lance, you're so diligent.
-> 
-> I'm wondering what to do here.  Gregory told us
-> 
-> : No crash reproducer - this is a correctness/hardening cleanup found by
-> : inspection. All checks are placed after the folio is resolved and before
-> : it is acted upon, on paths that already hold the relevant page-table lock,
-> : so no locking or refcount changes are involved.
-> 
-> And you had to tweak the hmm-test driver to reproduce the bug(s).
-> 
-> So when do we push this series out to -stable?  As a hair-on-fire
-> hotfix, or as a leisurely next-merge-window thing?
-
-Thanks, Andrew :) Yeah, I'd say next merge window should be fine :)
-
-The crash is real once the mapping exists, but I had to tweak test_hmm
-to create that PMD-mapped device-coherent folio, and I couldn't find
-any in-tree production driver doing that today.
-
-So no need to rush this one, I guess.
-
-> 
-> And Sashiko was clearly having a bad day, able to find only nine
-> pre-existing things to shout about:
-> 	https://sashiko.dev/#/patchset/20260817220810.1175596-1-gourry@gourry.net
 > 
 
+-- 
+Sincerely yours,
+Mike.
 
