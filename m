@@ -4,141 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39378C61DB9
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 04:47:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFD75C61DB9
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 05:14:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12E4A6B008C; Sun, 30 Aug 2026 00:47:52 -0400 (EDT)
+	id 61B086B0088; Sun, 30 Aug 2026 01:14:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DFC06B0092; Sun, 30 Aug 2026 00:47:52 -0400 (EDT)
+	id 5CC1E6B008A; Sun, 30 Aug 2026 01:14:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEC456B0095; Sun, 30 Aug 2026 00:47:51 -0400 (EDT)
+	id 4BA006B008C; Sun, 30 Aug 2026 01:14:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BBDBA6B008C
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:47:51 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 318AF140245
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:47:51 +0000 (UTC)
-X-FDA: 85156703142.22.8225A70
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 4FE4340002
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 04:47:49 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=osru8nqQ;
-	spf=pass (imf17.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788065269;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2564F6B0088
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 01:14:13 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A63B640274
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 05:14:12 +0000 (UTC)
+X-FDA: 85156769544.23.F564F70
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B99B514000B
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 05:14:10 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=crusoe.ai header.s=google header.b=PZsmYzGZ;
+	dmarc=pass (policy=quarantine) header.from=crusoe.ai;
+	spf=pass (imf26.hostedemail.com: domain of kiyer@crusoe.ai designates 209.85.214.171 as permitted sender) smtp.mailfrom=kiyer@crusoe.ai
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788066850;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1Vc06ZNRpYBBHTvqsgy23xgxM38CjEwml45kmCyFTrw=;
-	b=nQy6ucRn9MNpEWD3sNPwqojhOiZdNkRGE/WwVoYvTCOobj3br6Jh7IOFqoUDCgvFqPLRcd
-	nAi1YpKQQ/W/OiheMoO9gqyCoIhMPYO4VK3brCXlUqnN5ZrHSNawMn+WHsd6okJ4FgnjLy
-	GBMGd8AkrgGFN3DkQ1lC/WEUOzxehqE=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788065269;
-	b=HusFVik8RPiyf2WA0gY5JwYfdal6hv4GiLarwwQbyOltcEa54Iyk8TRZ1Bca6VtGW04eY2
-	26CtOHJtBOtBInA0Hy3G7st8WjYCrc8VUx7rQPPvFn5m9RGzGi03jV8/a+PYKvpf7VBMGL
-	tLBdPTnSbRpnxq/vy+YfF686YKw+4BM=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=osru8nqQ;
-	spf=pass (imf17.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-49b8687630fso15368565e9.3
-        for <linux-mm@kvack.org>; Sat, 29 Aug 2026 21:47:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788065268; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ByHykbfc2zOU5+pH1TxsgSvdDY6TkV/vRuI+C5w5wpGi5FENr9/1yO+PH1+tzGvq7V
-         eB3zfudH/b60CkfHqpVL4EQfIHLQmkrVP++3EkFnuH+MKU4/cTFQ8QC/9qbiLGmTltbN
-         uUFKwrBzWlmhzbDrtLKRVO/KDuYz2+M417Gxqs2l/D9ZXxqUuTCbjlymdZnXZA3s+q48
-         VRmwHMsWjK5Rru9YNSiCxQbrIN5qoLH6YEqVfeEY5u7DrhSNDsQqNBiVlhS4oTzRS8T+
-         qRBmUwqHXq2eFGyN2+ZRMYMDQVn9PEJ52iK8lwhQgl6fm2Ezr4tiKvsgAjCCPK2+xgXX
-         WOHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1Vc06ZNRpYBBHTvqsgy23xgxM38CjEwml45kmCyFTrw=;
-        fh=SaysGBKjlAfzBaBQ/a+fY8VKr2aagOO6HvuE0eYo6Fc=;
-        b=ooO8gUDgmhfAZPoY71dxDtHlh3k4g6wXrQOYLo1m+2JvfhTrKI4pr5fLZgd0uJSv5O
-         BhUrpLq3KegLAHudgblvjQA3HCpF0MIrQO4/CuIIlZfvJgE+J41PkoT2Jb7+HzgKR1r1
-         12UpODQPzM/UkL3L5Dmj3Oo0FlnEM4fWoyO/x5pniMBhEHlFi6Y9UUtERooQjSyhWvxK
-         hTpthRXMN6uwaI3eTW209hKJsiKG0onbz4RiDoFyjuaDGDTZCYUjc9zzUjDBHI3T1Rcp
-         +q47zDvwWKviziu62Aa+gXI1WReBQ1vyQWtZtDRpOKfJCfpIFWNXnlEy2U7Gd7rr+L8C
-         RnMA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=hnvYqsxNp8b49/rBowWqUXaz80+meTKicT7aB9r1cG0=;
+	b=KlTA9g4ggIIhpCefYqu3Z/6j/p7NXxjJPLQMlfldq6eVSwALEfezsQnLy3ticHg34r4Lsa
+	xo+NEWnvpsn3ofMUH1fsIaVz0iVYH/yAxy0Y84s2Jq5EFOkgOJUOncazdWe43+izmxDxru
+	I1OQrx2QwuOPi6qP1Qm29u/nakmUTE8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788066850;
+	b=RRlybdWhC4hGgye8lXrIDWvEOy+r1p7eNB5SvWL+gBQ85gFKuZ5JDylAoW5X0Bin+XLXav
+	nu+hWvx6vw1X60wArbVqEh69q1erDk2pHfia0WDFVtEyp9DwzZix9p2KPmOmy15Az3JHqc
+	RRHgbzD7xRC1jzMPonuBr6Dx1TFA4yc=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=crusoe.ai header.s=google header.b=PZsmYzGZ;
+	dmarc=pass (policy=quarantine) header.from=crusoe.ai;
+	spf=pass (imf26.hostedemail.com: domain of kiyer@crusoe.ai designates 209.85.214.171 as permitted sender) smtp.mailfrom=kiyer@crusoe.ai
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2d91518a63fso932105ad.0
+        for <linux-mm@kvack.org>; Sat, 29 Aug 2026 22:14:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788065268; x=1788670068; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1Vc06ZNRpYBBHTvqsgy23xgxM38CjEwml45kmCyFTrw=;
-        b=osru8nqQFb0L4c5d1iBtN0tPOfokvKQZs8GhzzX0djaZtZBRwMjmRT7pj/Kqc9AtBb
-         Cu+KbZcx7PHixx3VA+VC9Zo2QfhhymJkteBq0hhHa03ljxrksk2pY/wjTEX9WDBDMbFP
-         Fte3Y7GhuUoRQew8iPsmuvHiR2eqvoBonUzMPZa6Htn0SBeiVGsYrtKYsCR4Os7KH866
-         0Slp2tq3rvA1wm5PhWK0GOCvn5ZK0HEwT+PCtLjHzKcXUow9zw5f2Z2LBYqFThYD3HhE
-         D5WHXryClnw1a48Cm0jol9fC7RYZmmIYuZCbu6mPSDcUe+Xwn/7PRPr4rn8fuC/koJkO
-         VhXA==
+        d=crusoe.ai; s=google; t=1788066849; x=1788671649; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=hnvYqsxNp8b49/rBowWqUXaz80+meTKicT7aB9r1cG0=;
+        b=PZsmYzGZupyQk01Gqh9Hj/pfz9Hi7y9T7kdUMAa+9wEnEE2lie7HGiz1YgjPwItF9O
+         BCXhygD86DAHoOfJPAtknibE7PyWJEe06pdC7cobVMSm3yswpWRLxNWjgWd8Zxcsxn9Z
+         ykyQEFXyskNIoxY3nKd9O2LH/grlBojtxeY0rWL5BaCmBLFgdyaj39xhMZdls6Bh9PwM
+         aosNPzy3OvE1h5kh/Uz0Iuj0L0/c+pXFQbX1GDgMmyd/NRwnI6i/isWMD7CrFkzZoYyk
+         GLUI7wQIeHzBzRV9M+MAsixwfERccTt4CpT8H8ahgkE0n7oTW180KCHw78+TgD9Coyj5
+         3nMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788065268; x=1788670068;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1Vc06ZNRpYBBHTvqsgy23xgxM38CjEwml45kmCyFTrw=;
-        b=hkvAPmDlk11PtDPG/Bx/NUYSPE9e9MFWSPi6YVkcKmy/NUS1OPsqozSlkrv3Tp7tUO
-         6tH0aN+Wbt9k5hqc/eARSmri9JnNZ4cpavEOH6+IW1IdY0fl+giaS2NqDwyGm5mgA1b+
-         pBcBY2+o7UFNs0SVa/F6tu+BDk53B5Uj7/wX8YtaJ88gMdol7KB8BGHoqsEMDM9TWnSR
-         BbEt61Gy1HalmXREapeXKjrqyLERLz9E/FiSzZQ76D1hv0VcglAoizfOeJkFF9eCMe3f
-         xTqgoK0y25cx0124RPKGS09jcotBAjYDZ97tz+/crHH00FB3lsQ9CaGwr/SmsZMNRz4z
-         WzAw==
-X-Forwarded-Encrypted: i=1; AHgh+RqzuM4JYAeHMeC+DXZsIC97H2e/VPZ+NGthY9DbXGpJFBZfPRTD3GPAss/VCDPGze0UDd6ICoyWEA==@kvack.org
-X-Gm-Message-State: AFuF++nFNusTTMBbaZHQ5ObueFp8dfA+r177VcNfSK/Sf2viSjjbYWaW
-	TMsWZu2YJV6HsCqkmCk7RWKjC4r/EKnjY70C3fh0SE+YQb7HLsoIVjBLF3Svde1UB19/dMDcPCe
-	sV9x9rOkqM/L6jVC1DkujJ81uVJx266Q=
-X-Gm-Gg: AR+sD134z+a8jhYKohnoo4UJ7D+vULK9l9HKKJo/tKF1yHvM/9Sar+5HhiWYZuQjkKQ
-	+1vXOTME/2BBPIpNDbARvTurL4MpVpqJXOYtvO1Zw4SQA0OhfA7xlF8Ou0B9X5RK8u6eobYRdpv
-	b4nabs6TSPevUPEFFYav6raLnA3v6NviIm2Cc6/Udv3ePN79Lvu80wvD37EQOM7Kv03wWWvXgJR
-	+jMDkKTvViRvwBDLOf9FVJ4C9IEqKIIf0k0gja/DOxccfRFm/+bEJfb9Cat8HebBlZPq1HgFHXd
-	CwSFXBoxC+GFIlEZo8rXNznFni3zILP/oqjzPwUkK2ouJg==
-X-Received: by 2002:a05:600c:c4aa:b0:497:fecd:5b00 with SMTP id
- 5b1f17b1804b1-49b91c56cccmr199584725e9.9.1788065267228; Sat, 29 Aug 2026
- 21:47:47 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788066849; x=1788671649;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=hnvYqsxNp8b49/rBowWqUXaz80+meTKicT7aB9r1cG0=;
+        b=ZGjHxS59GHLejRssMqTdbqJixhBDnF7lEaXuArmwnUgydtssr1fKj7bIuCVZSeB+Up
+         zcUerkRDqSgRT+jjVkwFIVyggsW8rYnTPQYX1eBk7KGqnyzCPSvYdfDi8Sq/G4Se3wTB
+         fXj+A1ya9HuFxBj8igmz6yG094qqYyw5xro5bd2rTOtAtT98KEeIde4R0qqK3hwgnYFw
+         RODCEZ7q4TlWCQINhEChaeuaj7p2zqTu8auN03FkjDuTREHf+EO9oqWP1UGaEbn3gpIJ
+         QVL6whp9oqsYIjfvT7E7lvSEcNueJm79D5HLWBG1k2tXZPesBKgDI1W2hrYUpY/WHr1Y
+         R5Xg==
+X-Forwarded-Encrypted: i=1; AKwUvBx7fcJLLrqD7pGYJ8YgQILs+PtjcmPIJgjcqBCEhr8AM8sEWvXMixreolhGPuIFot6avZZEB17eLA==@kvack.org
+X-Gm-Message-State: AFuF++nZVIMZcEalLpMn6lNYoRdHqGf0miGRhYoueceA/cKjQ5CVgYzF
+	dSjTh+Ltp4+0RyUNXOURdUGHVyMgn3MyADh1VDlzzFYKjiDBy0UJfGtgGG4MOWD+jJnBIdxQuHv
+	XLfyYWj+37g==
+X-Gm-Gg: AR+sD13pm28ImUvW3lkaBtMuQPYHzcli+yWbDP8+ZNhbwhSobAn2IzyN9B2F1rFL27v
+	GG0zMayw+RR1uQXPH4zuq8F1yFNQjoL87JZTCJJr6Px/LBpzSLe0qvoZ+vpbJj3CE1wruDgD+pQ
+	fXwqv4K1uGz3ry1Z6Zk4/LmNzBqDi3+jSFR/teu03D3KCr6/BQByHeKb6/AZEVx4icQCM5cysUs
+	TPp4tpfBxRHBznKuIO6IxOcBGF8g0Rs0uQUx8uM5fYBSwo2DRVRIB0Ir9HCO+jVRQ0h57O7ZaJW
+	CUY4uoou6YVo5ynLNXIVflxVwH7ypKUnp+wBctpehONP+LV3Xaw7Qzn+O7U1/6yX9SdUjDSK1kW
+	9tyMH6oFZtSbvsrnrlZ26+hDlPhT7SfQvLdguB8ljNnaU88GmvNhPJHDxxOIAblCrX+uUxeIGXi
+	e0TGHvxy3zjkF49WKPNCUT72LKu1h+RjHuuSiCzcmcbQZkdxmndVDvY9dPb1aPHo1DayU5RzkCL
+	06r1bmHF1EI1mDZvvtpEsKblp8UyzOmRm0=
+X-Received: by 2002:a17:902:ce88:b0:2c9:c952:6e9 with SMTP id d9443c01a7336-2d74dca2281mr279592645ad.2.1788066849370;
+        Sat, 29 Aug 2026 22:14:09 -0700 (PDT)
+Received: from MBP-Krishna-Iyer.civet-hops.ts.net ([2601:645:c68a:b830:d101:1d:112c:715e])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3286fa37fa5sm22595810eec.29.2026.08.29.22.14.08
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 29 Aug 2026 22:14:09 -0700 (PDT)
+From: Krishna Iyer <kiyer@crusoe.ai>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Krishna Iyer <kiyer@crusoe.ai>
+Subject: [PATCH 0/6] mm/damon: support access monitoring of hugetlb-backed memory
+Date: Sat, 29 Aug 2026 22:14:01 -0700
+Message-ID: <20260830051407.50008-1-kiyer@crusoe.ai>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-References: <20260827234704.63163-3-baohua@kernel.org> <20260830035843.712320-1-kunwu.chan@linux.dev>
- <CAGsJ_4y0Pz2fiyhS1X4PY+D-z-o8ycSKdFar9R5PQg-o2Kd6pQ@mail.gmail.com>
-In-Reply-To: <CAGsJ_4y0Pz2fiyhS1X4PY+D-z-o8ycSKdFar9R5PQg-o2Kd6pQ@mail.gmail.com>
-From: KunWu Chan <kunwu.chan@gmail.com>
-Date: Sun, 30 Aug 2026 12:47:36 +0800
-X-Gm-Features: AcwNN1X1BM3aFCDy9xWEoYq0B8egfZbvtIFbvh-Pve7EqgmNqihbqIlpuSJ_cJg
-Message-ID: <CAN_Opa-zZEHoc5+7peZk0nApJ-PW4oNqy6YDomRs803o26TpUA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/7] mm/mglru: batch update lrugen->nr_pages in inc_min_seq()
-To: Barry Song <baohua@kernel.org>
-Cc: Kunwu Chan <kunwu.chan@linux.dev>, akpm@linux-foundation.org, lianux.mm@gmail.com, 
-	axelrasmussen@google.com, baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, 
-	chenridong@xiaomi.com, david@kernel.org, hannes@cmpxchg.org, 
-	kasong@tencent.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	ljs@kernel.org, lyugaofei@xiaomi.com, mhocko@kernel.org, qi.zheng@linux.dev, 
-	shakeel.butt@linux.dev, stevensd@chromium.org, wangzicheng@honor.com, 
-	weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com, 
-	Xueyuan Chen <xueyuan.chen21@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 3d5gjxjgayijuu1rzb9hjnp4fypukszp
-X-Rspamd-Queue-Id: 4FE4340002
-X-Rspamd-Server: rspam02
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B99B514000B
+X-Stat-Signature: 16rz4aqgtxfoggzoc95469hqwxenqwnt
 X-Rspam-User: 
-X-HE-Tag: 1788065269-512701
-X-HE-Meta: U2FsdGVkX1+vDZmHbr84xT/1rQG/qUiUYBLByLEhS1GPSlcOt+C9KoDVem77nT4votCUJ1Qe00N2ZCuLr9CdV9HJzmPdCbCiu3NBsieUlJ1GbfsCqYQs+rpcOnGnBfWdsEdIZCss0LNfuN+t7S09vgaH7HhHZv2a41ajBqszu9B0X8+rGncFFU+O2KhOs5lTagNe5xJ1okzuLWMwc+Z7AvhRZEdlTS6Q8+vNbtoOCXBjjqEcDueiR1jdSsryRsONlUCqqbtk4X2CLMLpigveEAM57FfB03RqVwoADykq1780JOLcweS1R4MAF5tTOAGJqNWGTP1K4qvQRA0pLLsL4NJGBfrDMcAuR2hcbEHXglsHQsiiRKpfH1kk1r0o5UNDQfUw08jfIuKJ4AmMuja6/5MT2GwBkoHoJYJULTAZTICi/T+Yb5UmtBosomqshreHuUMKNSXkxubFOg4aFCML1MxYGwJ1VIo8U9poliRkkVUQO9m1G7imfkIiYQ6vNRfrE/acfPVqNNyiSbK5HBTLpZM8l2E6wWr4sm4QGEE50qO5+vItK16IAiAcNxo2BhgxKN6eUBwTGj5K5UgEl3paJmxWUJG1ZHr6P7Sj6pfxaDNGfzS7v0qhleVGlytvV/niy6Wf4ShtBcIa6KM9C3Gw83GpuM3vt1SbKo366FC5dU2+1l3zWpRW644xqVxYPPO20xPZkNSOBsdT6bzCEMzqMGTGUPOg2FxHlZtuv/+XH7PjT1A4IdV/5A8JUcpmu8xWQSoUzrfF0tIervfioybTeeCVl1DT40JfGhd4XGbT8pzsYcXwsVPHf3xc9dXomFD4k24ClLBgbetUMbXUIKiDI4ZA0K/WEOG1tAylkJi3vA5Utn0tnmmAYRpFq7r/iYJvlPqDrxc/p40wsbgNmQji0H7FJ0mL/77YNMU2/4DGM8wpbJ5q8oP7mCeaQnybAYZ+GAFazJJQlseLREmwBeg
- oQ07og8Q
- sXVdUbIES2qZaPD6BS+N1L6Nkf9PdgoQBeVS8EhgVuE4ULJo/AbkUupignx0Mqv7mvE2cqMvkBeWLKANi6DY/KYAjI4WzuymkKednJ1o29vIBoa/NyHIuhmNWa623LHSDp7oCYGCMN8z2Ogp1sv+7YjhshS+MjABzF8AtWrR6t3rZn/Dzdomor1YpR9iSH30c3mjLve03FOV7cGCSjfFF+3o5F3ZxwqnOdbiVmImuqCvaOmz2FaBQ1GV+RBGTxG/qR7zQZcB6J72TvpOXEeSadbd3et6dn4yyz/kjEv0NMZqEn2T3EA2n3bvRHs6K1DKBgaKAgMjMLJJ6UDm7QGjOUxKTdtitxqWWQZkt2LGElM+Fk9Gti763nOqWQlaRINuHswQmmKddfMOw2XdmbjIjuOlTxjtWeyNV0uxDRv7vBcyRCaPvg/d0c7nyhqdXgXb5m9tg4UH/l8N6WTpzo6Z9nNLbUQVwUhfKwK/+T/orxo1XnHl95rPTtwOi06OL4jETCBC+H3OxhzX5s8z1J6Lfqqc0ugEXPDyIfseZui0nGoEMgpU+cXLAgeRmu6KVILz4zqBp
+X-HE-Tag: 1788066850-321816
+X-HE-Meta: U2FsdGVkX1+mGN9cPkkPX9Ymgvu+bkJxQHnZNKNdnuf3u/8NrJfT9Ip1UeTu0mqqwToQF9/TWnGlId/D9EECLimcLBI+zVE82IeLC4SsN3twfQYu4ec5gqnqMP63/26FqKguu+bnNsvplk5vChUY1Uu/Qyr4US/8tTGgQITdDMp1F/5ThRZVBKK+pD+JxVVWzuouBAfWNtsaaoH5SBNU9LQ/XoQ0DjF7OlHVs9KIYwepi76DCPsARugkFZkNs32XdNc9VgytEUNQuzqZ/vn/yU0f4+Wdu8snvOCwmbRq7HEg4Wk9DWJee4BbPqH2VPuMVLVUZCwtT6tZ/bGc24ZCiifbZ1Aj77/fvVBAO4jTk57/7Oi+7iVblWxn0A1KccJrFkf8bVzg6wlHxMa+6GpYfVf2g3fsnZWPD1yJHAGcZn+l5qXaNx6JFqEq2gEdYgaptncVIncQYlat4Xzugh63w1Xg/sWRg4vJM2mjJPiX0m6aZzYDwZFhGO6WVlJfMZT35ZhDFkkEB9IZvThVO1CxzZUfQjDTrKWGtXAOpHCiz87jwFzTmtvivZrxEEiabjlgY0yCjzjTaq5LhAOaOHi87CiSuMRfg6jNlrzIdTb4iXZ8RK97UpLIDXjhsoUoEOhXrkhRew2L6ogmFKwk3EVEGZIul8lEcrmh76xINIgqoMhCoLHn12XUesWjJzjsrMfNWsmgR/bTvsxEqWY0B/FdEWaGnOCaR1h6stux7qh4ujApvsnm4WsbGCXSHPUR8U4N9+hPg04h1rzWZevQIqE8IID3DsRyVqpogqEmH1ljjBdgzk3aXpob/mlc6+zOy3E858euu/a1GuUSAvrV2gkFyiO3gudv0KXUbcZyKr/7/uq6pEaKhithTPuptG6ovo5fZ6bXjzvdkqi7TAnCQtghR2JH0sxVsybdvJJIpDwXYIPOMfMXrBqWDadhEnah8Xa7Mbg6s8j+YEvEzuzjSPV
+ CT3nYswG
+ SJAe6IN3IfSq3QRpGZwRTONSl5AGeBN+QR+Qs/4Q1AH3MKuaqQTxE9REZ6rgiLzuUH5oOsplF6Lti435CjKYiZhaeWQP6A4UzXCb4udVQZRQhgJn0wACwBJZVhgJwTbeirCo/eScSytoj5yDYbI8UoJ206HDpC9z4UIrQM0cbtjoYXJ1KuaPWbix/oe4MbWC5AraPiJIOl/cxQBoYDF+lz+EtkQaLYX0QjBauE+2JC6nKloA8weYdXKyA43cymrIiXcYOlTfmr+nMHuY+uGBW/O7bkvYYGk37s4MIhIjfj31s3trS4yBnIfTPqQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,81 +119,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 30, 2026 at 12:26=E2=80=AFPM Barry Song <baohua@kernel.org> wro=
-te:
->
-> On Sun, Aug 30, 2026 at 11:59=E2=80=AFAM Kunwu Chan <kunwu.chan@gmail.com=
-> wrote:
-> >
-> > On Fri, 28 Aug 2026 07:46:59 +0800 "Barry Song (Xiaomi)" <baohua@kernel=
-.org> wrote:
-> >
-> > > Currently, folio_inc_gen() updates lrugen->nr_pages for every folio
-> > > as it advances generations. Instead, accumulate the size changes
-> > > and update lrugen->nr_pages in a batch after scanning the entire
-> > > oldest generation, or when the scan stops because remaining reaches
-> > > zero.
-> > >
-> > > Since we only move folios from the oldest generation to the second
-> > > oldest generation, the active/inactive state cannot change. We can
-> > > therefore skip __lru_update_size().
-> > >
-> > > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> > > Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> > > ---
-> > >  mm/vmscan.c | 23 ++++++++++++++++++-----
-> [...]
-> > >
-> > >                       if (!--remaining)
-> > > -                             return false;
-> > > +                             break;
-> > >               }
-> > > +             WRITE_ONCE(lrugen->nr_pages[old_gen][type][zone],
-> > > +                        lrugen->nr_pages[old_gen][type][zone] - delt=
-a);
-> > > +             WRITE_ONCE(lrugen->nr_pages[target_gen][type][zone],
-> > > +                        lrugen->nr_pages[target_gen][type][zone] + d=
-elta);
-> >
-> > Hi Barry,
-> >
-> > One subtle point about the `remaining` handling:
-> > when `remaining` reaches zero, we now `break` rather than return
-> > so that the accumulated `delta` is applied before returning.
-> >
-> > As I understand it, this is required because `__folio_inc_gen()`
-> > has already changed the generation of the scanned folios,
-> > while `lrugen->nr_pages[]` is now updated only in batch.
-> >
-> > So the invariant is that every successful generation increment must
-> > have its corresponding `delta` flushed before `inc_min_seq()` returns.
-> >
-> > Is this the intended accounting invariant?
->
-> Yes, Kunwu, you're right. We can't return when `remaining =3D=3D 0`,
-> otherwise we will miss the chance to flush the delta.
->
-> So changing `return` to `break` is intentional. Another option would be
-> to duplicate the code that flushes the delta and keep the `return`, but
-> that would be ugly since we would have to duplicate the code below:
->
+On virtualization hosts, most system memory is often backed by
+hugetlbfs.  On our production hosts, for example, ~95% of RAM is 1 GiB
+hugetlb pages backing guest memory.  DAMON's physical address space
+monitoring cannot produce a useful access signal for such memory, for
+two layered reasons.
 
-Hi Barry,
+First, it is blind to hugetlb folios.  Every access check starts at
+damon_get_folio(), which rejects folios that are not on the LRU lists,
+and hugetlb folios are managed outside of the LRU by design.  As a
+result, all hugetlb-backed memory is silently reported as never
+accessed.
 
-Thanks for confirming the invariant and the control flow reasoning.
-The logic makes complete sense to me now.
+Second, even once hugetlb folios are visible, access-bit-based sampling
+under-reports hot memory.  DAMON deliberately clears accessed bits
+without TLB flushes to keep the overhead low, so accesses served from
+cached translations do not walk the page tables and never re-set the
+bit.  With 1 GiB mappings, translations effectively never leave the
+TLBs, pinning the observed access rate to the TLB-refill rate: a
+saturating guest is indistinguishable from a nearly idle one.
 
-Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
+Patches 1-3 address the visibility problem.  The first patch moves
+damon_hugetlb_mkold() from vaddr to ops-common as a preparation.  The
+second patch teaches the folio mkold/young rmap walkers to handle
+hugetlb folios, aging the huge PTE and notifying secondary MMUs across
+the whole huge page size; the secondary MMU notification is what
+surfaces guest-side (e.g., KVM/EPT) accessed bits.  The third patch
+adds damon_get_folio_incl_hugetlb() and uses it from the paddr
+monitoring primitives only.  DAMOS action appliers such as
+DAMON_RECLAIM and DAMON_LRU_SORT keep the LRU-only lookup and are
+behaviorally unchanged.
 
-Thanks,
-KunWu
+Patches 4-6 address the intensity problem with a new default-off
+monitoring context option, 'aging_flush'.  When set, access bit
+clearing for monitoring uses the flushing primitives
+(mmu_notifier_clear_flush_young() and TLB-flushing PTE/PMD/hugetlb
+aging) so that the next access is guaranteed to re-set the accessed
+bit.  The option is exposed via the DAMON sysfs interface (patch 5) and
+as a DAMON_STAT module parameter (patch 6).  With the option unset, the
+behavior is identical to before this series.
 
->              WRITE_ONCE(lrugen->nr_pages[old_gen][type][zone],
->                        lrugen->nr_pages[old_gen][type][zone] - delta);
->              WRITE_ONCE(lrugen->nr_pages[target_gen][type][zone],
->                         lrugen->nr_pages[target_gen][type][zone] + delta)=
-;
->
-> Thanks
-> Barry
+Evaluation on an Intel EPT host running a 944 GiB guest with an 842 GiB
+in-guest memory workload (masim):
+
+  configuration          estimated access rate    idle -> load
+                         idle -> load (GB/s)      separation
+  stock                  0.08 -> 0.21             none (guest memory
+                                                  invisible)
+  patches 1-3            1.70 -> 1.96             1.2x
+  full series, flush on  1.21 -> 5.34             4.4x
+
+With aging_flush set, the estimated hot footprint covers ~82% of the
+actual working set size, compared to ~40% without flushing, where the
+signal mostly reflects the ambient TLB-refill rate rather than guest
+accesses.  kdamond CPU consumption stays approximately 0%, and the
+worst-case flush overhead measured is below 0.1%, which is acceptable
+for hosts that opt in.
+
+Per Documentation/process/generated-content.rst, this series was
+developed with the assistance of an AI coding assistant (Anthropic
+Claude, via Claude Code).  The assistant helped draft the code and
+changelogs, and performed the rebase of the series from its original
+6.17-based development tree onto mm-new, including merge conflict
+resolution against recent DAMON changes.  All changes were reviewed by
+the human submitter, who takes full responsibility for the
+contribution.
+
+The series as posted here was regression-tested on its base commit
+with a full x86_64 kernel build (no new W=1 warnings in mm/damon), the
+DAMON kunit suite (41/41 passing) and the DAMON selftests (15/15
+passing) on a kernel booted with virtme-ng.  Functional validation
+(the evaluation above, ftrace verification that the flag switches the
+notifier variants, and enable/disable stress testing) was performed by
+the submitter on production-like hosts running the 6.17-based backport
+of this series.
+
+Krishna Iyer (6):
+  mm/damon: move damon_hugetlb_mkold() from vaddr to ops-common
+  mm/damon/ops-common: handle hugetlb folios in folio mkold/young rmap
+    walkers
+  mm/damon/paddr: support hugetlb folios in access monitoring
+  mm/damon: support flush-assisted access bit clearing for monitoring
+  mm/damon/sysfs: support aging_flush
+  mm/damon/stat: support aging_flush
+
+ include/linux/damon.h |   2 +
+ mm/damon/core.c       |   2 +
+ mm/damon/ops-common.c | 154 ++++++++++++++++++++++++++++++++++++------
+ mm/damon/ops-common.h |  18 ++++-
+ mm/damon/paddr.c      |  11 +--
+ mm/damon/stat.c       |   6 ++
+ mm/damon/sysfs.c      |  29 ++++++++
+ mm/damon/vaddr.c      |  46 +++----------
+ 8 files changed, 203 insertions(+), 65 deletions(-)
+
+
+base-commit: d2aad7fdcda7ae8a726926f2d6de7fe9e8ee7563
+-- 
+2.54.0
+
 
