@@ -4,133 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D00EFC61DB9
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 07:04:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E71FC61DE2
+	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 07:25:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B426B6B0092; Sun, 30 Aug 2026 03:04:18 -0400 (EDT)
+	id 817AA6B0088; Sun, 30 Aug 2026 03:25:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF3956B0095; Sun, 30 Aug 2026 03:04:18 -0400 (EDT)
+	id 7C9626B008A; Sun, 30 Aug 2026 03:25:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A08B96B0096; Sun, 30 Aug 2026 03:04:18 -0400 (EDT)
+	id 6B8016B008C; Sun, 30 Aug 2026 03:25:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8447E6B0092
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 03:04:18 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 145831A0236
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:04:18 +0000 (UTC)
-X-FDA: 85157046996.25.78C7E0C
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 4E9F6180007
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:04:16 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ncxVuLtX;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B28B6B0088
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 03:25:53 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 899F412027F
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:25:52 +0000 (UTC)
+X-FDA: 85157101344.14.B02BFE6
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D6ADD1C0003
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 07:25:50 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="HW2OpT/f";
+	spf=pass (imf21.hostedemail.com: domain of imv4bel@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=imv4bel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788073456;
+	s=arc-20220608; t=1788074750;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/fCeRGLBJKDhd1zxoKor8/347vytyDNRSfu4cMLTY8c=;
-	b=L+AjoFfRoMdxIGtfL/ad+GCXR4U19efiJEjtADtgiBUMxVwQlgSlSj8hGtmh7rAkbXUy6Y
-	8NlauGCXzGyZAS8CfGVs5oqXnIR+6GYhUdjx5MQu92LmrepCabNkeXccWcScw0xasHhD/4
-	yeFtWZ3R3jSx/JuYusBZwqb+vhmHEIU=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ncxVuLtX;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Hcmzw/bzGZXuqmnVsevrBZ8607zbsdAVZ+LLgOu15kE=;
+	b=AnAVxFOres64IxOHLG3u4UzKCdT0Sgq8Tg0Bh0EhFXv6oqrb8p7uKC7mrkj4FdTLE14kXO
+	JJNTsA8BdDifQ1OQ6fgw0i2aGdJnvaaVOExmqwOM8i+MmuYKkKcw7t8qTKMGbyTfHKplDn
+	Ma8oXkR3Z8j+gLt1Zjxl9XLr72RdGeA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788073456;
-	b=IwdHHBgVWaq4J2+SJPycgz2xF6D62cvhS6OjLWTfBrsTrOgZmfq8npbVNJmUw8ExtljRC6
-	utOZ9Rcpz28cq20ghhXC1BRj8s95TQTxYF25OMT/w5N8qtiLlXPGUdsxolhF2zVAsO219o
-	qaEH6zRSyci9RJd7OEE/qRI3zak/1aU=
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2d58efc7356so27986455ad.1
-        for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:04:16 -0700 (PDT)
+	t=1788074750;
+	b=JBRGdyvXvJv5l2vW2MY9L4MRrqgXCftXYzjxvxOLH0rog0cFQZGYu7c89oe3yBFLIGOXzh
+	e9qkuHQdBSOHzM6OzaqEuqmXFL26TAEg7AS6smN+suzAVV/Xs6BYOJ1IdjjJvINicD2i8h
+	JylUKeh/XfS3SNWABrbbbFvKw6ijluo=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="HW2OpT/f";
+	spf=pass (imf21.hostedemail.com: domain of imv4bel@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=imv4bel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cc1e1ff659bso2100453a12.0
+        for <linux-mm@kvack.org>; Sun, 30 Aug 2026 00:25:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788073455; x=1788678255; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/fCeRGLBJKDhd1zxoKor8/347vytyDNRSfu4cMLTY8c=;
-        b=ncxVuLtXBlBnNCgHtaQR1oueiXk51cD36zJ/7obU4RcvudU2QwS/v/FuKFh0rZ3nck
-         dpMyn3XQG7S5bLjXlNYXbjNJnjdA7BdobzZx23/ccL0uCS4aG4vCkjsxxv1p6dhFMBJ3
-         jqNVxx/D0U0k56iy/hWh4Ea7QdR6InNIxezO/3byOHe18ty0JwihaC0CANKDbqM/LiHn
-         A9btJZ6GlBQVGfO5KAk/pjiGHb+DYrd29B0emnQWq1omE/QvKj7yW7B7iO0cmAKzFwIp
-         WRB83wLFgwArrrO63mqGRhPgIa4srCjw5s9l9ydFCwp3nFwFIGRyaXCxxufKACPERTRj
-         OFDg==
+        d=gmail.com; s=20251104; t=1788074750; x=1788679550; darn=kvack.org;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Hcmzw/bzGZXuqmnVsevrBZ8607zbsdAVZ+LLgOu15kE=;
+        b=HW2OpT/f7tw3lB8QVB0RXcXKfB/b2b6kdppxu9E3rry+Q4xgt9089vG+HZsnMEgxww
+         7Et2t6YAHmxqGQww0pKhU4u6iJElYzt1VGd5loZVzGtr2VTZlUCLtZ/amn+WY45CNkIJ
+         7+IVQ7VXMqdTU9xR44+7S8/xVMyqcFGSIsbX7tr1/LY/LSawveerva7GDC2X9IKriKhx
+         55xuz0UYp4cEAEqR8OBUjdZpgsDwY1m1E5MLgGfPxR3k1bAkL7JaSn4cU6I4OnVF3Hpe
+         i+I/tJV5muzgSwuG8FoL836gdP55xqyEG8Cw6cqD32d1J05njZ0w0DXTLg7WUQsOJrqu
+         nXBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788073455; x=1788678255;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/fCeRGLBJKDhd1zxoKor8/347vytyDNRSfu4cMLTY8c=;
-        b=gq1dNWtm5/1GY5DZG/R5wZGER1elhcR0ZxWSpZ/HOPTEc7UZHeO4Lhv0Xo2bOGiMBQ
-         iKz4ZlahRwccNk9Gyf/CjGai4SW1a9suskANyiRen5duS8KVC3FCXtSAc8oH2oLQf5/+
-         GhFcrSVsYFbu6EcB4YfoxBxOtH+Yea2kViugee/1lsZBu9clIu8/AidvwBKdZFyEjrjR
-         X4Ogv40sd+0dW2jf/exZZ0Mv/0PuQIa1oN47GRCsLRmFmu8ZKYSrx5adg0gkthkfCJLU
-         FEr36xSWt3JxSs1U8GdyhGPNT7ErSNvgt8UxNlNDuBNOumfvhB6+Ab+C0QFXdQSQf2J5
-         G1Hg==
-X-Forwarded-Encrypted: i=1; AKwUvBylcHwPsey0idOACY9gqNlA8BmC/VyoGMJiao/Tl+WARZulFKnpT6DDuPBbdzyiN0Dq2IotEPGK5Q==@kvack.org
-X-Gm-Message-State: AFuF++mLjmP07uF945sjey1qNsHvc7DEaJqq7jumJrk7utVzl8tGKDcW
-	/bm1sKzWLITQphhNwgOstOh+1NQMuk+meyjWzdNb38l/8H4mc6b1QIqg
-X-Gm-Gg: AYBFou1iFrrD8ksn3wLstEbOJbzo9RAi2uhX47DlYqy49TMPZF9ghTc/fZoeT6i6PU5
-	yA1UqzacHD07DiROMMrFT5abSyXfXUaMrWrHGHiPhs39RDlP8JUup54/lVhXotwN6dchqvpx10w
-	NqI76SgH/KJvOVKAfprNne6gYyTpKntA5spCslwUdCbe5xMGMR+sSdUmMhpId2v7aZZMBmRYV4G
-	Z7p3tI/JJ3Cd/FEGdLpMHkfis6ecyohGcJ+JDkPgURavzW/z72HWlpSQXS9JrOVLiie5uSiJR++
-	zVSqj8Y4FrGZ+6JvcBmSXSb+VJZEW8XoaIxdYrbVbLFNgN37ZrChwqBbOpUvTR6aaSkOqpnZVfZ
-	xbq4BZgt7eh21DUsC5UXzxMRRnsROG+hOPEXgiQobke7SABotXg3H5GG8/3llHhnWl/Hx7HoFSn
-	oKa4O1/onWFke/HYOMn6eNsb7zg+36D8Bm/KnFIN8K9HGffmqh60s+1B7iiMncVplJK19oXckY4
-	aSwBTDQ3f1ImIqqj0OvIrIoCCmI
-X-Received: by 2002:a17:903:906:b0:2d8:d4d0:7932 with SMTP id d9443c01a7336-2d8d4d0796cmr169846685ad.22.1788073455150;
-        Sun, 30 Aug 2026 00:04:15 -0700 (PDT)
-Received: from localhost.localdomain (vmi2317720.contaboserver.net. [84.247.152.65])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d7598b8607sm20821615ad.72.2026.08.30.00.04.06
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 30 Aug 2026 00:04:14 -0700 (PDT)
-From: Lian Wang <lianux.mm@gmail.com>
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>
-Cc: akpm@linux-foundation.org,
-	lianux.mm@gmail.com,
-	axelrasmussen@google.com,
-	baolin.wang@linux.alibaba.com,
-	baoquan.he@linux.dev,
-	chenridong@xiaomi.com,
-	david@kernel.org,
-	hannes@cmpxchg.org,
-	kasong@tencent.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	lyugaofei@xiaomi.com,
-	mhocko@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	stevensd@chromium.org,
-	wangzicheng@honor.com,
-	weixugc@google.com,
-	yuanchu@google.com,
-	zhangbo56@xiaomi.com,
-	Xueyuan Chen <xueyuan.chen21@gmail.com>
-Subject: Re: [PATCH v2 4/7] mm/mglru: exclude folios promoted by aging from protected in inc_min_seq()
-Date: Sun, 30 Aug 2026 15:03:40 +0800
-Message-ID: <20260830070353.78030-1-lianux.mm@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260827234704.63163-5-baohua@kernel.org>
-References: <20260827234704.63163-1-baohua@kernel.org> <20260827234704.63163-5-baohua@kernel.org>
+        d=1e100.net; s=20251104; t=1788074750; x=1788679550;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Hcmzw/bzGZXuqmnVsevrBZ8607zbsdAVZ+LLgOu15kE=;
+        b=aMHrn41BO3I08YPTG8HmmLvwZPB0IEaDPns4uCKpgd7dZnLyUfkjj8H7fxB2lAFDi2
+         u2Qe8y12HXFemlRM//HgZE87Bxg5Q8Mi1UeJ33bMyUMX/QFfRZKwWtrUPF77qGsyMU4q
+         4JOuCpmYpAXd9LOyIPQyn8VsSncpmWBTv6B8cEUXmo6+IQgHDLhbH0F/vCmkZwYp7Yca
+         8iTh9Aa1RWXYjnzqKKtUXzjZtNi/m5VgOhHwmZ/M2CyTeY7NDR7lqL0KqXcllc4g1TM7
+         /ysX+0Sl2bUSHsVKGR4/QtjTqN4vRGuCz32NTcabyP93B1UBbO0zHrA3FWbqeYHCbMpq
+         yTJQ==
+X-Forwarded-Encrypted: i=1; AKwUvByTyA+poV+1MB5f65svZQQe9Erxzw62PW3jEYSUaNX9ilmW1ik5igz68KeO0YOOadamguGb5GlWlw==@kvack.org
+X-Gm-Message-State: AFuF++lTH0zwd/taUHp+AxkKLBzMGwwbguZBFJONQXXNEKcutYzDNuvR
+	WI6smcns2Cxhu/kNwGc+yS9rBLknIZHvC+7TnhEKYYc8sQcPZpzoc39M
+X-Gm-Gg: AYBFou1LiiT0vcL3VYFfCZVRuFpKjqWTSKHe6fxR91LKP6MMAq7fj6jDhxQXOc/J/9J
+	uUk+zfob/ILYIaI5/yHHa1W3NwyyHKnc5y6SyY7QmucO592QJ/H79JtM+UpxhsbMprKvUeuYofa
+	WhBgIffq6gMAiO/chL6EKojTSRzuMsY+EEDGSWnVb/EjVsLFQqygEBt8K7MENE4U5W33pT7+zLD
+	HzVVqjv6hFMne68TaPNJp53jx4n507r1vSa2eOMgKwuVPkyRrKB/LrlI/sfqMOOD2n+b/oZ0Z/r
+	bO1smHarFwYgnV5V5XBdKOMYNjbyZwvE47A+E6C7FfBYUDjxp1c2fj1XsiAgPDJkfzPWDId43Qa
+	dmMdx8lTNooUwuVBAAdamKpercxGazbfTH4ZVundC1ywQGSUjOGCQSVS8mUA9Usf9jzAkxHvLm/
+	nB8mMbiwszM4ygZ8wQLPphe5t7AwpYi9sEQRZPiHjNayEk4U5KzB4TM3RLNe/cR5G0rGMgFp2y9
+	XYqBIU=
+X-Received: by 2002:a17:90b:2fcc:b0:398:9be9:ab8f with SMTP id 98e67ed59e1d1-3989be9aca2mr16397639a91.20.1788074749551;
+        Sun, 30 Aug 2026 00:25:49 -0700 (PDT)
+Received: from v4bel ([58.123.110.97])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396dda7835dsm10440159a91.5.2026.08.30.00.25.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 30 Aug 2026 00:25:49 -0700 (PDT)
+Date: Sun, 30 Aug 2026 16:25:45 +0900
+From: Hyunwoo Kim <imv4bel@gmail.com>
+To: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, imv4bel@gmail.com
+Subject: [PATCH] mm/slab: take n->list_lock for the list_add() in
+ __refill_objects_node()
+Message-ID: <apPa-cGLcyt90l-E@v4bel>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 9a8yomdryq9ic5kkjdmgd1eu1b4ia1mj
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4E9F6180007
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Stat-Signature: ru6t546xywp598t4jbzq6r58rtscsemu
+X-Rspamd-Queue-Id: D6ADD1C0003
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788073456-409190
-X-HE-Meta: U2FsdGVkX18RJmF/cY0zrnywnHpnmd39Rd/V1OfALwdQroSTVili0uflx3nZ9Mn3W8OB1oAGbYPI01Lq9Ojujc5irritIz9XXE1z2ZYCwjoyiobIsncTgbUCpDhFuj9vJfQsgxe38MX1mDM8xKShikzLgbITgWSWWsd5D5LRe3nsinzeq7C7lwOIFlPwXpvm+IVe9PdaprdKdCtAicv3ji/tvJlDSoTBRRHFAwqHmelKPdjgChD0eRFsUyxRPMPmScH2DkrRHNyGH5eeHoxnudzR+3aDKTTAtoTk/5F7VRy4ktTFw5t7k0+gFkzQ+8AWRd53nBxscXxabcQiNQ4zY1r2Vupvo+QYKzSwBjBrfdveqULLUt3mJkggpTAvxd1ZNR/N7gCBMB9/Nk6keBB+re9roAnads/HSWXfIecoCPG5ROFZb0AYWw0i1L3+I4R639Oxdz5/EdCbaGG9R9D5vtNENeQUIFokf156RmxEG/Hnj1alMMR3Ll+cHwc2a4qrxp4NxFvUzhaLDfd4oqjLw4GqVSGTW4nAnT0DVNF/uPUFa+tcAFYfNpJDR7MQwnIyjSTeqGCa+hLx+sA6zX+wawm5QzZ0GCew+3zULyNH2c7PXhclnuVZjZaRW2/cKbluUr3qW4Z4GEYq0pXQwxJjKW8CUV8WWtHfrVSQghlsIXfRMOlyq3S+bXW0xorQuik0zgDAQgIZI0X1PcKH5nCzW4nUmtnQEO+8gRzYG2qwiipuwhPmmZvtCpIFP+0Znenm8I6F4hyoRpHF2rnhC3vbnv8aAojioGsH5W/CtlPx+AS58EyQurY+3QBJ7K+02VtiHHKhgq71IfsWmg2zpm7e7zCAAozRED7DSKS2Ra9aDTgWMZCZdvopo0daPKXOYlIEBNG5oxKamnyud2jUviBXUyhucGgyGHa0yxhYK5x8Rb7DEZLytt8wgLkfFEkG0AhHFr/iVXCK8YX1jZ511Mu
- xj2p+jpl
- 0uEAFLOYZ07Glsz56LwRUM/GtcORYWQEC4D7PVbKGz0nv2Ma5NolvNUcefty/bJdxYADxBoAnQLhwSLr9gDW+lgNFLjkfhkwG54A7DB78wftuOPmi8NqNk/FQ0xxCrjH38SA5TlDTOc2cUAb7wvgDNKZL7fObtvWZqaUwTEL+VChafLhwVwEeExYummy0XCdkPE1Ktw/TGsHiVMABKzjh/4hgcNmr65r5VNhDHwkWBoevclitnte1eNZ8OHVi/jW7Zm3GixTJGSJMeLHhvmkZ7nwZ9dny2FkFRPvJh8QLcmWzX1iQxxvgf7WVRuBEzFCA8ViN4L+wuuBDN12vEb/19ZgQwMGiWrVGfUiuaKJTjcRZkNNFCQkDiVtgCgR6F4Y5LpcA0oHuU/fuzD/T4yCQhtU9HNqqUaqtBU3H/FTROvMiMZ7CC3/RI44RmLM09G/VlGakpliho0sodp16uAwMcWYaGZu2Lk26QIMfIjTL0zlaqIixPi+nSwR9fDH3E6jKz/q0L0lim2mRNSuOoPbWHGo8n2jxlgoUb/zXWcLALE/U4MWAuy4q9NEqPug1QxJiDoth0omVeA1nxiZFt9pyLVvd9Q==
+X-HE-Tag: 1788074750-626459
+X-HE-Meta: U2FsdGVkX18RNUzCK+8fbyK5Wukx+5QmYSXHGe1UKgAELGc7pfcU1yE88Amk2G87BpVHybrVEaTd95SqJQNh9ilnbXVJc5I8AO/Fsze9Quvz3o24JSTKqbUx5pFzIZfHFJu6QRZMQnFSUjvuzm1vicKHF6vyTLsfhruWFXT6v74/4EpkcexkA8iZCo7FRp6fMOwc/D0LIg/8Hi7kGJXJJl+rNQMWfRDgEW5TU+kpKtZ96gk6BGfyYxzC/sg0Zi+6K6nNYm5oRFNXR+DM7Vhg1cjCkSDYoWwdgh1LBAP1JxoKGClb5Fte76R8n3P/iiPiU6ll2M7dy88b2XDUT3YwywTPniKYc5aaWPObNT4OQXOUZiUVZzD2+tSZRN5LYhC7uwRCRXSX630Zx6YQoETwHWU/cdUIHbege94j985BLi0EGLfh5EpjgKstn4jDeqK70NXDwECKxfbGkZxjtN5kEn5MuZqoReU23lkzv/0Hbr4QAk88ljukHToIgQEDFV88zvfryU7be1OnBrfHCTKkMfg0QGMwsLRW63aPrumCOycOPwsWHwyIKuCxwmxXglP+DX+gCda8qdlag25Fwr4mp038xhCLY5cRizO1j5BtrfSQ9XKffdfSt6HZHwFOuZyGiT1t879icEQKt5Vdz1y9l30xTZ+AHeRA6LQzFrCSE9Pj9LvH/osF1IyN820V8iILdtgCkKHL3iIm94X4XBPBg8Gm+dk7aqvLg/GJryzlk68wzvSjjHWHK2hVLQdbxyrKjBWzKrHMxlkwm6LVJ8Jtf0dkivZCx7QOChory7MDqMNwbu2ZmL3M6/tpTxsp2KUxY/Lv1pYNDneb92EtJCRaZJ6A6uMrT/tYmyl9O3rtfnLSWjWdtU/ojiqvWEmxRi/RJmc9JEUhFh4uiGX7TOQvJzqxMOqX6DfKi97W327juuTGYxlnBKmv9SQMADTcOezgJBY1dPcn8SxmixVSapZ
+ raqBq3XT
+ qV0YK7NRU+qNeKNmtQjVi3EvcQZ05pzs7yMIIZo3pVYo8BAxVF2A/a5LSOURMZf4gU3QD2Zsx2sErYOUpxZEGoiqBvE6Jgf5eRDapg3EglD2R+N9rdeVBy5i949ie9z4Wev1htqGFFN9RgCrxK+aehU0ionn5Dhde2v5Ngxsvpw40nlZ+C1WvEU6KTzIwe+iJKOh3dyI+f3LuxiXNKNJTuZWvCBgKafEycEMhl0j0RUiL7q/bdbMSB/aJcYS8gD1MQdXdF8cG+Bqv4Xm1lOsEUJSpBnlpRzdFga/oDfrnm8rOZ3pzx2kioRd0f/gWPvdBd/HYWuEr3C5Jd0f1GrP9cYMBfRTEUGtpIjQKscBiuLlKrMme4eAFDFNNgbQh662IK97L4pAeKqbBs/y5t4WxEF8etbYROJ7O3lHgs8wMDEgO3iGgn5/ow8y3MhaSbCN878f4jOJU4D894O/4mgsMXlYNB/RiiAdL4FJmw4AHXEUOCxJPE+mMUVRVr1D1u/s5oyYGyiSAnXtn98gDs7u8y681eA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,10 +120,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Some folios may have been promoted during aging, so don't count them
-> as protected, similar to sort_folio().
+In __refill_objects_node(), the list_add(&slab->slab_list, &pc.slabs) that
+follows a successful __slab_try_return_freelist() is done without
+n->list_lock.
 
-This makes sense to me and matches sort_folio().
+__slab_try_return_freelist() only succeeds while slab->freelist is NULL. The
+slab we are refilling from is taken off pc.slabs by the list_del() at the
+top of the loop, so at that point it is on no list.
 
-Reviewed-by: Lian Wang <lianux.mm@gmail.com>
+If another CPU frees an object of that slab, __slab_free() sees the slab as
+full and puts it back on n->partial. If a third CPU then takes that object
+in get_from_partial_node(), the freelist becomes NULL again.
+
+A slab that sits on n->partial with a NULL freelist only exists while
+get_from_partial_node() holds n->list_lock, between its cmpxchg and its
+remove_partial().
+
+A list_add() in that window overwrites slab_list to point into pc.slabs.
+The list_del() in remove_partial() then follows the overwritten links, so it
+unlinks the slab from pc.slabs and poisons slab_list while leaving the
+n->partial side alone. n->partial is left pointing at the poisoned slab.
+
+           CPU0                        CPU1                  CPU2
+
+  __refill_objects_node()
+    get_partial_node_bulk()   // n->partial to pc.slabs
+    list_del()                // on no list now
+    get_freelist_nofreeze()   // freelist = NULL
+                              __slab_free()
+                                add_partial()
+                                // back on n->partial
+	                        // freelist is not NULL
+
+                                                    get_from_partial_node()
+                                                      lock
+                                                      cmpxchg
+                                                      // freelist = NULL
+    __slab_try_return_freelist()
+    list_add(&pc.slabs)       // overwrites slab_list
+                                                      remove_partial()
+                                                        list_del()
+                                                        // off pc.slabs
+                                                        // slab_list = POISON
+
+panic log:
+
+  list_add corruption. next->prev should be prev
+  (ffff888100000248), but was dead000000000122.
+  (next=ffffea000416e410).
+  kernel BUG at lib/list_debug.c:29!
+  Oops: invalid opcode: 0000 [#1] SMP NOPTI
+  CPU: 1 UID: 65534 PID: 144 Comm: poc Not tainted
+  7.2.0-16172-gcf72cbb39da8-dirty #1 PREEMPT(lazy)
+  RIP: 0010:__list_add_valid_or_report+0x80/0xd0
+  ...
+  Call Trace:
+   alloc_from_new_slab+0x183/0x300
+   ___slab_alloc+0x31c/0x890
+   __kmalloc_noprof+0x3d4/0x800
+   lsm_blob_alloc+0x2d/0x50
+   security_msg_msg_alloc+0x26/0x90
+   load_msg+0x1aa/0x210
+   do_msgsnd+0x91/0x800
+   do_syscall_64+0x109/0x5d0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  ...
+  Kernel panic - not syncing: Fatal exception
+
+Do the list_add() under n->list_lock. Reattaching the freelist stays outside
+the lock. Once it succeeds the freelist is no longer NULL, so __slab_free()
+cannot put the slab back, and by the time the lock is taken remove_partial()
+has finished and the slab is on no list.
+
+The lock is held until the block below that returns the remaining slabs to
+the partial list. That block already took the same lock on this path, so no
+lock/unlock pair is added.
+
+The unlock is keyed on having taken the lock instead of on pc.slabs being
+empty. With CONFIG_DEBUG_LIST or CONFIG_LIST_HARDENED, __list_add() returns
+without linking anything if its check fails, which would leave pc.slabs
+empty.
+
+Fixes: ba7425312607 ("mm, slab: add an optimistic __slab_try_return_freelist()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+---
+ mm/slub.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index f9b56cb439e709..4f6d1a03a8ee46 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -7260,6 +7260,7 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
+ 	struct slab *slab, *slab2;
+ 	unsigned int refilled = 0;
+ 	unsigned long flags;
++	bool locked = false;
+ 	void *object;
+ 
+ 	pc.flags = gfp;
+@@ -7297,7 +7298,10 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
+ 			void *tail;
+ 
+ 			if (__slab_try_return_freelist(s, slab, head, count)) {
++				/* get_from_partial_node() may be mid-removal of the slab */
++				spin_lock_irqsave(&n->list_lock, flags);
+ 				list_add(&slab->slab_list, &pc.slabs);
++				locked = true;
+ 				break;
+ 			}
+ 
+@@ -7312,9 +7316,12 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
+ 			break;
+ 	}
+ 
+-	if (!list_empty(&pc.slabs)) {
++	if (!locked && !list_empty(&pc.slabs)) {
+ 		spin_lock_irqsave(&n->list_lock, flags);
++		locked = true;
++	}
+ 
++	if (locked) {
+ 		list_for_each_entry(slab, &pc.slabs, slab_list)
+ 			set_node_partial_state(n, slab);
+ 
+-- 
+2.43.0
+
 
