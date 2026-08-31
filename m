@@ -4,115 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BBEBC624A4
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 13:03:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A66AC61DD3
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 13:04:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BBDF6B0098; Mon, 31 Aug 2026 09:03:22 -0400 (EDT)
+	id 0AD2C6B0099; Mon, 31 Aug 2026 09:04:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16CF76B00A0; Mon, 31 Aug 2026 09:03:22 -0400 (EDT)
+	id 05E4F6B009D; Mon, 31 Aug 2026 09:04:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A9646B00A1; Mon, 31 Aug 2026 09:03:22 -0400 (EDT)
+	id EDE096B00A1; Mon, 31 Aug 2026 09:04:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D94976B0098
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:03:21 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 68B0780125
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:03:21 +0000 (UTC)
-X-FDA: 85161580602.10.4DBC4AF
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B0D99C0007
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:03:19 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=chZNXR9f;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of tahasezer.is@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=tahasezer.is@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id D149D6B0099
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:04:30 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 61AF2A1F92
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:04:30 +0000 (UTC)
+X-FDA: 85161583500.24.DD20B31
+Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 801F48000E
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:04:28 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ggqMHMEV;
+	spf=pass (imf30.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788181468;
+	b=4hY43k+zurky6T7MHhL1yioGNewRqFWm2p6C9RON3+jKi0QmeSTSOvFJGVaeGXSZGmUjo6
+	LR/ShnTaBHruTD4mvJogi+SulGfAGp5GaGZGil51kZ8SSYVbGe80XO+h64/TcDUs2HFxvR
+	F1flRSTbmKkMjToDLN+oG3ZDSFtdv2E=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ggqMHMEV;
+	spf=pass (imf30.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788181399;
+	s=arc-20220608; t=1788181468;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ZxE1bcDNUrY2o7v6e0PV/peTaEiNN2c2sEFM7UzGp/E=;
-	b=7tgKi8jVQebLqXnf8AiiPLDNKRWECxdy/EPQ59Bv2fg+7FAFlr1iNaxEyg4BKkv0B27sDw
-	uMXY3KuyAwjkX2HxovblLFCl2z09b1IYdv5aCGsf2QPntOcHPbyXLbgYnfmE70JfU/zJP3
-	wGF/BEGPuY2nW0Agy6n4i+OPnTZUWYM=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=chZNXR9f;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of tahasezer.is@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=tahasezer.is@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788181399;
-	b=loKeFpHZx9h151wNTv7N5Qk97funK18fU7vuFotjxpMg5Cdbajj9shoPRslDlZrXd0BbM2
-	GRxwvVljFRZ0o6j+1c/904H6t1SKAHhtAXe6d9wbBAlKZhJ2aquGETamzPEnF/R9m+6+2e
-	WWWa1we5H5VEC6YiNGionLFBjl9zWRE=
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-49b0eab380eso35957205e9.0
-        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 06:03:19 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VXjjK4cQByHA+0LozWy93yMgZYx3/ZFKSUZa+XbHMGg=;
+	b=C/sH8d9+JGiYB2MInRv22ik4TxSzicc/Oa6SA1R2wbBmLRSiqJURTJuoMCgR7RkEuCgS5z
+	W2YD22vGPuaJ4IaYtBZOQZ5LQnbDNJD0Rw00HvBFmOtj3KGpx1xS1gMsICDPiPPJFKq13N
+	2Q+X54Mhie74Dch1+9F7xJUHDou1tc4=
+Received: by mail-pj2-f11.google.com with SMTP id 98e67ed59e1d1-396bf83d458so1279702a91.1
+        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 06:04:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788181398; x=1788786198; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZxE1bcDNUrY2o7v6e0PV/peTaEiNN2c2sEFM7UzGp/E=;
-        b=chZNXR9fzLLHZM1JPawfXqMCsWHQinxgzYF4agCHuyTxcPz7lO/UtT7cUpzx1W55KV
-         m4c+zF8W2WX3AqsOxTzOKCFWUg+K7tUZ8CBocVVmNVcvJQccxUPOSngFvdzWzx+2/kjp
-         QEuzvFdJyqpCJZBdBxv4UmUJhK1YSWziS267/WRr5LkYYHRlX6ZE2/aE4Gp44w6I0P8D
-         vYQnQNl2aEd7k0K4eKB0Er0uLZfy3efMH8CSiwZ57XjNuxKEPPvIlZdAXqKMS6cGnBdv
-         1RZFQ7Q9VEhWZR9ssZddP56yW062jErXD9rfBfQRo1WU/DPAQiyjCl3BEBIaD4XBC3E6
-         jXMw==
+        d=gmail.com; s=20251104; t=1788181467; x=1788786267; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VXjjK4cQByHA+0LozWy93yMgZYx3/ZFKSUZa+XbHMGg=;
+        b=ggqMHMEVtcjJ0pWigRsCBM+OI0lzO52wC7IAg6TxdiNrTkuzlPRIEeiIqx+EussVru
+         gesUBAklnoqHKVao6cgLa30lnyq8c13uqg9UKTwlBrk4E+SV4GI8ccA8xk1kr8cDVl/A
+         19FYAxIzUxCRKPzMFoljyJH9rVF1dPaFOipVGhw9i8vCfOOpi4/+ET6d3S8SNxvb2a10
+         +eeHpgmsjFiVGMlojEyZl8n5mK6yOPKhq8MpfpOgNn4qj4HMgy0ENUD65m5nhcSYD6E9
+         PR6fdNdeZ3lR5MKYdKCHw08hBBINy4Vo1ndr/rAaO+Gsu8xUoGqheymzNgOhpX9DjX5Y
+         bTOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788181398; x=1788786198;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1788181467; x=1788786267;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ZxE1bcDNUrY2o7v6e0PV/peTaEiNN2c2sEFM7UzGp/E=;
-        b=k4TcqIuDrlITAScg4evYvEdi5UXLKzlcuKFxKWuAvYgCnd7vOJuUKp6dT9O71hZcck
-         eAmGquEvaufaz6DicfRs3L4NVLTgKpcBIfzapI7UjjQhVcTyBTDRDC7wkajpe32FY8xP
-         T2B7W1rhFjGJp8R0y9Mif3G5JZoTAimKK8QiBCBUXj7IdNAkmTcttP3/Dbz/smBH7h2Z
-         HqSgzvVtFKkRw/Th6y4V6JMdA8vkxYpKNLmoq03ZoNjCTe18Ci4GytLux/Nc+jP46GP+
-         rXqRLZtwesNxGmy1X2Hy3uUWJfkBy4F67lVDdNXApEUUzasWDxFeod9bQisu3sdhll7Q
-         otrg==
-X-Forwarded-Encrypted: i=1; AHgh+RoGOM5Tu8pE4pVXH0PdxgQKlBy3k1rghxl46urPgoMPJMzEQ5fKGNN+KWUXj0x40zfLk6c7104Rcw==@kvack.org
-X-Gm-Message-State: AFuF++nxxfKCsbUsjsBUvUOvFeNFuoXEbPd/dQwAWBhlcV/3I6UfDrA3
-	UNg3yZLBRLKmTO7LxhrY3oib97+OgZKPFuCcJ2PVXdxANd7RAStyxyfl
-X-Gm-Gg: AR+sD13IW/tt0Ts88B0YqtUgR0aOOpq4ZIpJvWopkqVPljlfeolYKpAej6gr0ZkjXVI
-	MGpmSbSTVmVNCWh7Jk3wj6VvDIU7djbXCHq471ORVyBQ59gwowESP8qdshJQWa46+E/iDyzzTem
-	hTJtCAWHo6VA4CJP7dKYiBLpF0HjDDCnQM5qYoid9jzmzvVD1GCvJbCoOKccZRseDI4IBtQX648
-	5SZScxABSV0qEhFa5oQvDn9zo14qMWNjyGEm947QPNhDcTw9crVa0qDb244easjPDeEHTjS9EVg
-	SwUX1bf0ypS1rzaWwYzFUHFK7VpqVkVCWtemEODG+1M2bv3/MaUWFfkXgpAG3ntvnJxQQPfGtjU
-	cXFriR1CHeLTaRU6PJMJZ047c0QJX0dj0YKCLjJTP+E7LxzNTGaLLlCgKQzy23jO5RhQycEqWC/
-	hooTdAXmMrhQlHqJV4WhDOJuVwRCac8GShMyQjpIIx9EW1+SPU4+foT2wtfqvq/ZSqCOyp4yk8/
-	UgTerqgrFspH0w/
-X-Received: by 2002:a05:600c:8b63:b0:49c:ced9:ab7f with SMTP id 5b1f17b1804b1-49cd53c438bmr129895425e9.8.1788181398028;
-        Mon, 31 Aug 2026 06:03:18 -0700 (PDT)
-Received: from Minno ([193.192.121.123])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cdb13f094sm31831445e9.3.2026.08.31.06.03.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 06:03:17 -0700 (PDT)
-From: Taha Sezer <tahasezer.is@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org
-Cc: ljs@kernel.org,
-	vbabka@kernel.org,
-	mhocko@suse.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Taha Sezer <tahasezer.is@gmail.com>
-Subject: [PATCH] mm: vmpressure: scale window size based on machine memory
-Date: Mon, 31 Aug 2026 16:03:16 +0300
-Message-ID: <20260831130316.448-1-tahasezer.is@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        bh=VXjjK4cQByHA+0LozWy93yMgZYx3/ZFKSUZa+XbHMGg=;
+        b=PeCR40wATgfHdwSEyDE4lIGSY0ToAmhljyQBTpYXBVoClbTK3ihyNLELQgPhdzbtQd
+         b/gpg63uW/cU9UtNH80vSuNGe58J6nBcGDChb/IEffL3wFGTRllp2H73vwzFICRtJf++
+         xyYcaTbUJk61k68OnHtZGDZfcstlAJiM9bF3bYB6TuEmQ/ifeZwmnpWZ9IwMcFPQTxXa
+         zY+7MYUJpWGnfOST1Aq15ij88vdZe7IUiof6Fo17SV4fou+z8n3Guo6xqTWkJTey/8C2
+         kLwrmfC3tjxfcDwRk04ERkYKfjXik+rnfJ90aPc9HsCsa3NjwZxA5LI/G/dVErqUcdrS
+         1+Wg==
+X-Forwarded-Encrypted: i=1; AKwUvBwRVt+ffycg1NMP/OTbkrFTYZAdHyg7JRQT2uxuG7e5msqpPJCuVufPri9tmctI6emzl2Cz2s/w3A==@kvack.org
+X-Gm-Message-State: AFuF++l8vJLiED725Q7KH5fTtl6l5yo4c6qM4Y112XzQNIOjobDzCspq
+	N55q8dzao1aG8XWmfkQOyVTs7zl2MD7lKZsK71bvpR0qIBj0W8KcgWEN
+X-Gm-Gg: AYBFou2Ecb4EQloZC20P/A+OTSn+gW4czceaYViRb74Lwzh2Lmy2u8RkdV9ZNqr02B0
+	JGZx6zQihjgeN6K75hkwIY/I+Uc8axa1fkhkPDwZ9WMsgZpwA7uKjPZ0EbVqUlNvqALKCoNxPQj
+	o11XN3S9M0fadW0upd07zzBXWcd1ThI9ZG3QmOmJHBgJKVO2udnaW7dhbiAfYJH3LeaSUhcTeRi
+	ZMEzRrEIkh+yaYAvdYbbXrQZwlFnyguA0FOLHMiyvwt2ykc26kYnmGZRtjSPo+gDdEfG+1hDTwo
+	r8XFC6BTT0/Odjh7ZhdxRT5f7eCeJqM1aFQN6TLZg5y4VtEffUd3ecFefrJ91KKn/v+UzCuqewN
+	GmcjUBrqPr2fLwJdSd2ueZ20lKYqMvV/v+I04Ealy8jYcA3AU/uRniRv1vcsDuUSW2mbaCv8CzY
+	DL/814xREP8vddYCNX/pQuhKGyfJchC3SqUGsVlPSeSBT3kl7EzPD+Lc/k5S4YmefOti7HRxoIE
+	fRJrg==
+X-Received: by 2002:a17:90b:2888:b0:37f:e326:6557 with SMTP id 98e67ed59e1d1-39907ab0ea1mr1000718a91.4.1788181465569;
+        Mon, 31 Aug 2026 06:04:25 -0700 (PDT)
+Received: from [10.125.112.20] ([122.11.210.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396d6d29de3sm4981354a91.2.2026.08.31.06.04.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 31 Aug 2026 06:04:24 -0700 (PDT)
+Message-ID: <af87036b-0809-4880-b088-545780b4d963@gmail.com>
+Date: Mon, 31 Aug 2026 21:04:18 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/5] of: reserved_mem: skip init for regions whose
+ early reservation failed
+To: Marek Szyprowski <m.szyprowski@samsung.com>, robh@kernel.org,
+ saravanak@kernel.org, rppt@kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Cc: akpm@linux-foundation.org
+References: <20260818092420.2859026-1-chenwandun1@gmail.com>
+ <CGME20260818092438eucas1p20115e5d33908e32ef4433cb246da8098@eucas1p2.samsung.com>
+ <20260818092420.2859026-2-chenwandun1@gmail.com>
+ <72074a49-2963-4f96-b939-79bf95a829cb@samsung.com>
+Content-Language: en-US
+From: Wandun <chenwandun1@gmail.com>
+In-Reply-To: <72074a49-2963-4f96-b939-79bf95a829cb@samsung.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B0D99C0007
-X-Stat-Signature: ihwy65ijqj6eixdenzwg7qrgwq9hso4u
 X-Rspam-User: 
-X-HE-Tag: 1788181399-15109
-X-HE-Meta: U2FsdGVkX1/RaZjMuCwferlv09/u0+pkY20AWqpPaGOzlmyxNFrdr+8B9hGag/g8P5/SOkuTABDHF5on7q4hQwmzMaMq8mScKjhAVCN7r93VleUdXdRWlC4dFmuuw0il5LzuUxcM1vuNUqcD1qxvXijVE/sbYUKFU9Cvusc4MW9MCOAb4pMhMTb6qDqagRuHKipgT0SWM4b/zJPIlarVh4NEyANPYrmXMIqaxz0hzkXvbNQrxWF+rwc/iILWJoveJ5OybagHXaWo5gREutYnEkdpgjt/NvHS+4J0AQTA6VrO+ICNzuIEPUoGe2/rHMcQZIdMGbsJ62ObZvOKQ731h2Xjugw8TwZp1gdyNZpopAmfXCefkCuDE7wTD+GJ+fYSgMGX7EjfduFpoD2iOO8TY+xa8yO5stizGi0BrgFziFhp+Rc1CScaMyj00SskMqd3LFRErm/WMQTj+Ua4gh5uTCbLycCQQhH4Vj4CMrq5eBbpCaVT1n0ScARQEGMbQfteV0bWGqHRGSkwDTPpRJNE18bbyghzSiLVVD3vOCbpm8WuOUIwBfYQqHTp0T9E50fgtF9cEtPRXnwp3dri8RH52F5m3YDiUY4kzJxmfyd+Axeh4kNO9KePywrNes9hZqkYi03vm10Bytyer320sgYhK6p37bnsItiNQOfPeqDXM0+44ji8xRBh/WsffJnP/XlhwTS55RNnEsdNmMGReDno8bx2SpaNMDRInMmY6CkA8ElqlqoTxUbgw/eTy6bA7dUd6SatOxxoFQt12iCVdxeU4wimcp4SzS/GGYM4Nq9GNHRcbCi5qRnYoHY58SJ0PgpYRPupun0drk0GwfWO8fLLMfm1ERp6TWmaAIMpE5EDR/UrzrIyuzi9UQ32PgOkN0DAreoZ/DxcvYdLdybuDxdT3+bTljIdqxP6o3gvPLkqz7WovEpWsdsE5uoeN6IoqAPUI0ctqZqKFfk+o74thS6
- vzGVaela
- bJXHjfF1F/SPhfRHyDiFVX7Yx1xtzsNuru45BlnGEarvdBcjRFi/OfqKiLDnrjJvOWBnB1XEl/R0YrFuGkw/bSSKFBvWvrJ7oR4dZMH6YtXu3Qdz/ZpaXuMqNmk/h9cqTe7v7si+zmXAYQstEpi02+XesqYJuz2KxbbODsGvZsX8bvA08qu8Une7GrG8N3cByuEDpcu0u4197VV574RJY2k6ory9GIC01WL9nRaB58g5eR35682pGOywu+sX7cSMXasYoD+G/gOXw4M5X+CxefUZWYG+2VA8Fkqu58rxmPVGl8wIt+lXyktAcbj/x45QOUbiMdfa5k526+SGxCU+/ChyPCV8vMWruLzEfG2+YSgbD8gtsRWcm0Nr8hp/HroDQ0YOz/9AKay7B/7A03znEQj+M0q9MbUEAgL03wRQwZgsC0ec+qNwPQagOTwyScDNVFkbj35+lUBiDrmAVMmbgSlk0k9Yq/R6cENsEcpN1dtE5Ja4=
+X-Stat-Signature: ciy85trggx4nkqxpshrxepahs4oq9n54
+X-Rspamd-Queue-Id: 801F48000E
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788181468-529548
+X-HE-Meta: U2FsdGVkX18Isnh7ITbvGoqCBTCWdvkR25LHxaonAYi+MzDGKLNB1IFWM1td+GwzBomGqHeTM4mq/Ui5u0oa6ITyA6aTUBN/R1QHkCC4wQV6okLec3JR5Mvmg+H9TQ8qMO6XFpREy0DNCWm7bgpj//TKJ2au+HqzMYP7wP3SkfSn7LGUxC28UucR0YMsjj6m8gZUJAt1TChFXQgUTUhCFTv/dRZd3N58vsy+V7ax1d/VVoCFl5bnKT6tyoCH04qiTSdULoiqRxXE0YrI1RLFl6gJ57Bhk018Asa34yzUi1bH/3l3D+KifyaYZT0Wp8Hu2DooDg2KZUFyT3IJlT5Vd88HWC5vJ4JxzdlRXsLh7KoQ91NCLzl+KyvCllJcjy9G47eYpEVCGajq51cGhut6PzddLgix5rm5CmiCKHFPPbF3vKnnwQV6lP5U4vOoZuWrnkqSBMKyX9neOtJ9L1Fb+vDKBgRHBKoeWBjR/eq/2enSvnJX/8yxUxUGccjZ8pg/wGDwXDP58AnlDH3H4h0kmbKeVHA9jgpidJr1Sgmjcq/8VAle0b+2qjF4ES5W1OQxvDypIvzPdfRCO0BjUc/o/SUqbV3T83kuLQu5Cl8gx0WhCMk57Wd71LcjW3+zpxkJ1KmgW0oizAWP60lAbpNI2CbZXMa8PRplAZWVc2lJoCDrDJ4G4aUeUkZlQ5tKU6MXL2KDaE8h2eZSt7oYGXM8wyHXevbF+bd1HIElBSqnkYoxIVrj6pa8BDP74QOkqHCOC7U9vKm/eKOB3DnBi9WNiZrRvcP9r30sNRN0leRrLrHi7wfFP+812V2oCn5qCpOCKjTzqcBPcL7bL5I7zBEoe2+kHdOWFJKE2M+mB24ZpeN9zOWDcCfPWF6IgpIxvfESuEDGWzACs14xbkDzLoUHDTGzKywB3+43rfIDcyzCGusWQ3dbv09eKJwZ3HIB2hqSQbA244zTN7BgBE3zO7O
+ KJkVb7yz
+ pjMHInhI9sfHqht6Cz8Chn+CvxTrVfl5P7ZyYStsWzbDN+2baUtxuATYwt+0uSuTMk6IjzJtyUNk5o3ZTUypPTeVCOaqVzrQDfzl1xbJLkvbXZnUKuciOXn3yBfImlrkRSk1xsyD41FqJfn/185wHuoO/k7OO+8haBL21N4D+KxciofB+WMzWcJpcs7KqBihtJI/+ndy/O+J7FRBNB/sD3snCBHhRmhpvAI8GKqTa7SEKJZdiABefFCiTvU59Jjm0ok6zv1OZ1+02DeLt5upVcx6wqDQd+iTCDV2HsTEV0XB29KChyD0jdBWQGrWL78vI4O3g/tVgA+rMTkXjHTxDcqMJbDTKeBJI/B5vnV0zjZ/MZgCXX7c3cAvugDZ25T51/807hnFrXRE9eKCcJ2mEUdtBAtXb5XhZmxngru7f446ND/BZofEJo+OUHP/GfTpQEsCNGaGy6Kce/8vhC5LJe7uimdN28oRPKls5kmCvOoq0JhgjDle/F2AZ+k5XbALiK/gmcIEoHexuoESl7ujrvsalJ80echYpYXpYNs9kHImicMcM8MjZgZn5NJfe92dav6wM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,122 +128,186 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The vmpressure window size is currently a compile-time constant of
-512 pages (2 MB with 4 KB pages), regardless of the machine size.
-On large machines with hundreds of gigabytes of RAM, this small window
-leads to excessive false-positive pressure notifications due to the
-higher absolute reclaim activity.  Conversely, the fixed size is
-already appropriate for small machines.
 
-Scale the window size logarithmically with total memory at boot time,
-following the same approach used by calculate_normal_threshold() in
-mm/vmstat.c.  Total memory is converted to 128 MB units and fls() is
-used for cheap logarithmic scaling.  The multiplier is clamped between
-4 and 64, yielding a window range of 128 pages (512 KB) to 2048 pages
-(8 MB).
 
-This resolves the TODO that has been in the code since the original
-vmpressure implementation.
+On 8/26/26 21:14, Marek Szyprowski wrote:
+> On 18.08.2026 11:24, Wandun Chen wrote:
+>> From: Wandun Chen <chenwandun@lixiang.com>
+>>
+>> __reserved_mem_reserve_reg() discards the error from
+>> early_init_dt_reserve_memory() and returns 0 unconditionally, so the
+>> caller counts the node in total_reserved_mem_cnt and the late scan
+>> initializes it without checking whether the early reservation actually
+>> succeeded. A region whose reservation failed is then handed to a
+>> device assuming the memory is protected.
+>>
+>> Propagate the error so failed reservations are no longer counted, and
+>> record the failed nodes so fdt_scan_reserved_mem_late() can skip them.
+>>
+>> Recording the failed nodes explicitly is necessary because
+>> fdt_scan_reserved_mem_late() rescans the DT independently. It cannot
+>> tell from memblock whether early reservation succeeded.
+>>
+>> The failed-node array is bounded by MAX_RESERVED_REGIONS, the number
+>> of static regions is not bounded by it, so on overflow the extra nodes
+>> fall back to being initialized, which is the current behavior.
+> 
+> I'm not very keen on such partial solution. Indeed we have no place to
+> 
+> store the result of the early init call, but we can check if the given
+> 
+> region has been earlier marked in memblock as reserved or no-map in
+> 
+> fdt_scan_reserved_mem_late(). If those attributes don't match the
+> 
+> region can be simply skipped then.
 
-Signed-off-by: Taha Sezer <tahasezer.is@gmail.com>
----
- include/linux/vmpressure.h |  2 +-
- mm/vmpressure.c            | 60 ++++++++++++++++++++++++++++++++++++--
- 2 files changed, 58 insertions(+), 4 deletions(-)
+Considering the later patches that reject reservations for overlapping
+nodes, checking the memblock state in fdt_scan_reserved_mem_late() may
+produce false positives.
 
-diff --git a/include/linux/vmpressure.h b/include/linux/vmpressure.h
-index b4d13457b..09111f5bd 100644
---- a/include/linux/vmpressure.h
-+++ b/include/linux/vmpressure.h
-@@ -51,7 +51,7 @@ extern struct vmpressure *memcg_to_vmpressure(struct mem_cgroup *memcg);
- extern struct mem_cgroup *vmpressure_to_memcg(struct vmpressure *vmpr);
- 
- /* Shared with the v1 vmpressure block in mm/memcontrol-v1.c. */
--extern const unsigned long vmpressure_win;
-+extern unsigned long vmpressure_win;
- extern enum vmpressure_levels vmpressure_calc_level(unsigned long scanned,
- 						    unsigned long reclaimed);
- 
-diff --git a/mm/vmpressure.c b/mm/vmpressure.c
-index 9629240d7..f88bafb71 100644
---- a/mm/vmpressure.c
-+++ b/mm/vmpressure.c
-@@ -13,6 +13,7 @@
-  * (tree=false) socket-pressure path that runs on cgroup v2.
-  */
- 
-+#include <linux/bitops.h>
- #include <linux/cgroup.h>
- #include <linux/log2.h>
- #include <linux/mm.h>
-@@ -31,10 +32,63 @@
-  * As the vmscan reclaimer logic works with chunks which are multiple of
-  * SWAP_CLUSTER_MAX, it makes sense to use it for the window size as well.
-  *
-- * TODO: Make the window size depend on machine size, as we do for vmstat
-- * thresholds. Currently we set it to 512 pages (2MB for 4KB pages).
-+ * The window size scales logarithmically with total memory, following the
-+ * same approach as calculate_normal_threshold() in mm/vmstat.c.  On small
-+ * machines the window stays small for responsiveness; on large machines it
-+ * grows to reduce false positives from the higher absolute reclaim activity.
-+ *
-+ * Sample window sizes (SWAP_CLUSTER_MAX = 32, PAGE_SIZE = 4K):
-+ *
-+ *   RAM          fls(mem)   multiplier   window (pages)   window (bytes)
-+ *   -----------------------------------------------------------------
-+ *   <= 4 GB      0-4        4            128              512 KB
-+ *   8 GB         6          6            192              768 KB
-+ *   16 GB        7          7            224              896 KB
-+ *   32 GB        8          8            256              1 MB
-+ *   64 GB        9          9            288              1.1 MB
-+ *   128 GB       10         10           320              1.3 MB
-+ *   256 GB       11         11           352              1.4 MB
-+ *   512 GB       12         12           384              1.5 MB
-+ *   1 TB         13         13           416              1.6 MB
-  */
--const unsigned long vmpressure_win = SWAP_CLUSTER_MAX * 16;
-+unsigned long __read_mostly vmpressure_win = SWAP_CLUSTER_MAX * 16;
-+
-+/*
-+ * Initialize vmpressure window size based on machine memory.
-+ *
-+ * Use fls() for cheap logarithmic scaling, following the same approach
-+ * as calculate_normal_threshold() in mm/vmstat.c.  Memory is measured
-+ * in 128 MB units so that the window starts growing once total RAM
-+ * exceeds a few GB.
-+ */
-+static int __init vmpressure_win_init(void)
-+{
-+	unsigned long mem;
-+	int multiplier;
-+
-+	/*
-+	 * Convert total pages to 128 MB units, matching the vmstat
-+	 * convention: mem = totalram >> (27 - PAGE_SHIFT).
-+	 */
-+	mem = totalram_pages() >> (27 - PAGE_SHIFT);
-+
-+	/*
-+	 * fls(0) == 0, so for machines with < 128 MB the multiplier
-+	 * is clamped to 4, preserving the original 128-page minimum
-+	 * (SWAP_CLUSTER_MAX * 4).  The maximum multiplier is clamped
-+	 * to 64, yielding a 2048-page (8 MB) ceiling which prevents
-+	 * excessively delayed notifications on very large machines.
-+	 */
-+	multiplier = clamp(fls(mem), 4, 64);
-+
-+	vmpressure_win = SWAP_CLUSTER_MAX * (unsigned long)multiplier;
-+
-+	pr_info("vmpressure: window size set to %lu pages (%lu KB)\n",
-+		vmpressure_win, vmpressure_win << (PAGE_SHIFT - 10));
-+
-+	return 0;
-+}
-+core_initcall(vmpressure_win_init);
- 
- /*
-  * These thresholds are used when we account memory pressure through
--- 
-2.53.0
+For example, if region A is reserved first and region B is a subset of
+A, reserving B will fail because it overlaps with A (in patch 02/03).
+However, during fdt_scan_reserved_mem_late(), B will still appear to
+be reserved because its range is already covered by A. As a result,
+B would be initialized even though its own reservation failed, which
+is contrary to the intended behavior.
+
+Best regards
+Wandun
+
+> 
+> 
+>> Fixes: 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved memory regions are processed")
+>> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
+>> ---
+>>  drivers/of/of_reserved_mem.c | 65 ++++++++++++++++++++++++++++++------
+>>  1 file changed, 54 insertions(+), 11 deletions(-)
+>>
+>> diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
+>> index 8c9d6395d6a3..c6e73d710ee1 100644
+>> --- a/drivers/of/of_reserved_mem.c
+>> +++ b/drivers/of/of_reserved_mem.c
+>> @@ -32,6 +32,30 @@ static struct reserved_mem *reserved_mem __refdata = reserved_mem_array;
+>>  static int total_reserved_mem_cnt = MAX_RESERVED_REGIONS;
+>>  static int reserved_mem_count;
+>>  
+>> +static int reserve_failed_nodes[MAX_RESERVED_REGIONS] __initdata;
+>> +static int reserve_failed_nodes_cnt __initdata;
+>> +
+>> +static bool __init reserved_mem_node_reserve_failed(int node)
+>> +{
+>> +	int i;
+>> +
+>> +	for (i = 0; i < reserve_failed_nodes_cnt; i++)
+>> +		if (reserve_failed_nodes[i] == node)
+>> +			return true;
+>> +	return false;
+>> +}
+>> +
+>> +static bool __init record_reserve_failed_node(int node, const char *uname)
+>> +{
+>> +	if (reserve_failed_nodes_cnt == MAX_RESERVED_REGIONS) {
+>> +		pr_err("too many failed regions, '%s' reservation failed\n", uname);
+>> +		return false;
+>> +	}
+>> +
+>> +	reserve_failed_nodes[reserve_failed_nodes_cnt++] = node;
+>> +	return true;
+>> +}
+>> +
+>>  static int __init early_init_dt_alloc_reserved_memory_arch(phys_addr_t size,
+>>  	phys_addr_t align, phys_addr_t start, phys_addr_t end, bool nomap,
+>>  	phys_addr_t *res_base)
+>> @@ -141,7 +165,8 @@ static int __init early_init_dt_reserve_memory(phys_addr_t base,
+>>   * first entry in 'reg' property
+>>   */
+>>  static int __init __reserved_mem_reserve_reg(unsigned long node,
+>> -					     const char *uname)
+>> +					     const char *uname,
+>> +					     bool *should_record_failed_node)
+>>  {
+>>  	phys_addr_t base, size;
+>>  	int len, err;
+>> @@ -149,6 +174,8 @@ static int __init __reserved_mem_reserve_reg(unsigned long node,
+>>  	bool nomap;
+>>  	u64 b, s;
+>>  
+>> +	*should_record_failed_node = false;
+>> +
+>>  	prop = of_flat_dt_get_addr_size_prop(node, "reg", &len);
+>>  	if (!prop || !len)
+>>  		return -ENOENT;
+>> @@ -167,14 +194,20 @@ static int __init __reserved_mem_reserve_reg(unsigned long node,
+>>  	base = b;
+>>  	size = s;
+>>  
+>> -	if (size && early_init_dt_reserve_memory(base, size, nomap) == 0) {
+>> -		fdt_fixup_reserved_mem_node(node, base, size);
+>> -		pr_debug("Reserved memory: reserved region for node '%s': base %pa, size %lu MiB\n",
+>> -			 uname, &base, (unsigned long)(size / SZ_1M));
+>> -	} else {
+>> +	if (!size)
+>> +		return -EINVAL;
+>> +
+>> +	err = early_init_dt_reserve_memory(base, size, nomap);
+>> +	if (err) {
+>> +		*should_record_failed_node = true;
+>>  		pr_err("Reserved memory: failed to reserve memory for node '%s': base %pa, size %lu MiB\n",
+>>  		       uname, &base, (unsigned long)(size / SZ_1M));
+>> +		return err;
+>>  	}
+>> +
+>> +	fdt_fixup_reserved_mem_node(node, base, size);
+>> +	pr_debug("Reserved memory: reserved region for node '%s': base %pa, size %lu MiB\n",
+>> +		 uname, &base, (unsigned long)(size / SZ_1M));
+>>  	return 0;
+>>  }
+>>  
+>> @@ -306,10 +339,14 @@ void __init fdt_scan_reserved_mem_late(void)
+>>  		base = b;
+>>  		size = s;
+>>  
+>> -		if (size) {
+>> -			uname = fdt_get_name(fdt, child, NULL);
+>> -			fdt_init_reserved_mem_node(child, uname, base, size);
+>> -		}
+>> +		if (!size)
+>> +			continue;
+>> +
+>> +		if (reserved_mem_node_reserve_failed(child))
+>> +			continue;
+>> +
+>> +		uname = fdt_get_name(fdt, child, NULL);
+>> +		fdt_init_reserved_mem_node(child, uname, base, size);
+>>  	}
+>>  
+>>  	/* check for overlapping reserved regions */
+>> @@ -349,6 +386,7 @@ int __init fdt_scan_reserved_mem(void)
+>>  
+>>  	fdt_for_each_subnode(child, fdt, node) {
+>>  		const char *uname;
+>> +		bool should_record_failed_node;
+>>  		int err;
+>>  
+>>  		if (!of_fdt_device_is_available(fdt, child))
+>> @@ -356,9 +394,14 @@ int __init fdt_scan_reserved_mem(void)
+>>  
+>>  		uname = fdt_get_name(fdt, child, NULL);
+>>  
+>> -		err = __reserved_mem_reserve_reg(child, uname);
+>> +		err = __reserved_mem_reserve_reg(child, uname,
+>> +						 &should_record_failed_node);
+>>  		if (!err)
+>>  			count++;
+>> +		else if (should_record_failed_node &&
+>> +			 !record_reserve_failed_node(child, uname))
+>> +			/* Keep a slot for the untracked node's late initialization. */
+>> +			count++;
+>>  
+>>  		/*
+>>  		 * Save the nodes for the dynamically-placed regions
+> 
+> Best regards
 
 
