@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AF56C61DD3
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 09:46:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3489EC61DD3
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 09:46:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB7A66B0088; Mon, 31 Aug 2026 05:46:37 -0400 (EDT)
+	id 4EAFC6B0092; Mon, 31 Aug 2026 05:46:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8F506B0099; Mon, 31 Aug 2026 05:46:37 -0400 (EDT)
+	id 4C3CB6B0099; Mon, 31 Aug 2026 05:46:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CE006B009B; Mon, 31 Aug 2026 05:46:37 -0400 (EDT)
+	id 3FFB16B009B; Mon, 31 Aug 2026 05:46:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D5A46B0088
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:46:37 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1191F803DB
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:46:37 +0000 (UTC)
-X-FDA: 85161084834.20.668B748
-Received: from mta0.migadu.com (out-157.mta0.migadu.com [91.218.175.157])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 284051C0003
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:46:34 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LVprdE3U;
-	spf=pass (imf20.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.157 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E3D66B0092
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:46:43 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AFD831C1F65
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:46:42 +0000 (UTC)
+X-FDA: 85161085044.11.16462EA
+Received: from mta0.migadu.com (out-167.mta0.migadu.com [91.218.175.167])
+	by imf24.hostedemail.com (Postfix) with ESMTP id AEFBE180005
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:46:40 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NW4vXXiz;
+	spf=pass (imf24.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.167 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788169595;
-	b=3AWEv494omCunfAc7CfhFKWRD4vc3Dd3YAlEMrZYIilKBdyFdzkjeTqQDQaDc1hSWKqWVv
-	+yankrVIfe8TRI/tYLlRQ3kRrF/VbXIFrnr/r9lj7VymjDIqDvjPFciMbSzwFg7cLsc/mZ
-	PnpVKKAtFRE9wt/8ShZvbTdxfYH+lB0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788169595;
+	s=arc-20220608; t=1788169601;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=SHTQh7YAxUXwUXiRr8/gStlx7ps1LpU+wTdJ7Z2vmco=;
-	b=zsaJtAOp66OIo+iUOWCgkYIMFDRoWhs1Ry2NZ/eVKSR8A8BQCTrgDO2OdZOUDRavXRH0Mz
-	RA+2JFLPrEOOrhgs9dB+E5/t6bF5M4/sBGN4uVIFn9UWoEnAd+mVF9D3qdAW/nP77UiaMN
-	WPo/5TbhRCDt4/sLZXp9mQlIuadDccI=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=YXnELxIKf8pN9mK7H9Vs6VuJcv6bJ05vjHjiX65vBn4=;
+	b=ZBahhi5nwR6M2sDDbEsCVxnWYJsFiJ3E897nUFrxSlO3Mz835hi3oGyFIf6tfcjzr31cl3
+	3sWb9ZPa0xGEMRf2pe62RJC5k6LTz8UsuLtEqEiISxNlMrlwlxrbXDN8TTGuA0oIOOQH9t
+	EDfSwq4jkz0ntju8nJvNUR6GQsgqnhY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788169601;
+	b=yRnEajmDERZQxr+SPZobx18xaYN444YyFC2LkSAOy3kh9i+K6I6EqQquEpLoVrTYRQbjnH
+	MYmpMrvOki7IjeACnKTin4SNvGMiM75PuwAbsOSslR7JNDAZSXBdhH1HQ1yifK6yekVLpu
+	WVc7jpUBoM/2kiu2ZlI7d0PONjYXQmo=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LVprdE3U;
-	spf=pass (imf20.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.157 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NW4vXXiz;
+	spf=pass (imf24.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.167 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=AF4DD4VVRvODeKZk9FQinottqHGc5UMNhNCLJuS+ivE=;
+DKIM-Signature: a=rsa-sha256; bh=gLq6dTRueazhtZMb/V4BL5tx3YydnlrYd+x5AgErLV0=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788169592; v=1; x=1788774392;
- b=LVprdE3Ub8HO29yourlyTGlfgZbpOFAnHCkNfh7v77RZgWe+bRfXJGw8ujZhmy9rzG5HAduv
- 4w1CWWR5yqy55Sqny5U3xmGEUxhKeY+NusZ3F73Tr7P3FHamp3KNBxfEEFr8lRa0OqMs+2BQOom
- 3EhfzPJjhDd7GRJM71l4B7so=
+ t=1788169599; v=1; x=1788774399;
+ b=NW4vXXizt6meWPAXDM+eYSu6b9F/w+WIaLtKLgX5XWAk0osIeecEezgLzw/39BdRZZZFZTNx
+ bQHuWAFtFc2OCiE21LyYQwgvDA1lYW6dzWsA9RsdyLCqK3XK6YjG1GPgfmVr0Eee4vvNNdzBydQ
+ QvAZ5/RU8nvxso7X8LPOgBtQ=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 22025baba8b5f51b;
-	Mon, 31 Aug 2026 09:46:32 +0000
-X-Mizu-Trace-ID: 22025baba8b5f51b
+Received: by smtp.migadu.com with ESMTPS id 151bee8d5fdfa34c;
+	Mon, 31 Aug 2026 09:46:39 +0000
+X-Mizu-Trace-ID: 151bee8d5fdfa34c
 X-Migadu-Flow: FLOW_OUT
 From: "Hui Zhu" <hui.zhu@linux.dev>
 To: Johannes Weiner <hannes@cmpxchg.org>,
@@ -79,21 +79,24 @@ To: Johannes Weiner <hannes@cmpxchg.org>,
 	cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-Subject: [PATCH v2 0/3] mm: workingset: fix the shadow node budget under MGLRU
-Date: Mon, 31 Aug 2026 17:46:08 +0800
-Message-ID: <cover.1788169145.git.zhuhui@kylinos.cn>
+Cc: Hui Zhu <zhuhui@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/3] mm: workingset: use lruvec_page_state_local() to count lru pages
+Date: Mon, 31 Aug 2026 17:46:09 +0800
+Message-ID: <e16dc5e411c1c5d95c4c4db6ffc789756362b867.1788169145.git.zhuhui@kylinos.cn>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <cover.1788169145.git.zhuhui@kylinos.cn>
+References: <cover.1788169145.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 284051C0003
-X-Stat-Signature: 79edna8dmu511c4f9dq6bzrrbzuh9etq
-X-HE-Tag: 1788169594-928928
-X-HE-Meta: U2FsdGVkX1/45z5RzoHoa20nTS7gYIkavZ9/9ueA0Iz+qBD9hhuaVG4zyWmzF6iPuMT+PjWLy05iGLzs1AYLijXlnk9BtdrIhVgUPZrn1TXcqK224+z6Y6SR8ueJx6mgwZd4TQ5RSbsR2m1XO2R8BuW1B1AQskS8n07qBbJuLpS5FlzlgczwipJqCvRjt9pHJ0LnRgPcosfFn8CdPyLfibi/AOb8J0qMc0rs9UQLD44r145qPIDKlQU1NkoK+hi0nTPtOA0TfHDnUN0ChWWrWJepjgXpv+sJcCuYE5Ha5wRXzwR5YOwyKrGM1P1kUypxfvPgIwt7WhT+KCKbLH9BLEfB1mWn54iAVP1t6nB/OjTkSEaSKqExfEjjKIXQULu9rwnq/A4VZz1Kan72tRy/D1ITSeGgKdLzau8hVMZSnN1hwRRiwqkYboMjjxYVU2x6+/dRAl73UUTjOC4NXFDgE6+9M0a921otcERZ/P5J3DwiMl3+aT78q8vlt7s6iRrN14tn3VsPkLsnAcKipR2kuUlxKHdNYjcbvq0Esz0fdRfniaPuAWy9aW67c+Q3fr9HH9KNoKzVDvrqq+7UCq16vvcSjT9VGl45SvSTZnnMMEtXkM2U/rpBscYVMVI3oMHGHpT+h74OoQDHYjyIPnfD0/8Yr/t96HwHGFIL9cjQbwDRBZiVRDKcwC4BBuqEYXkrK1CriQH9QQ0Yas01Hsw8qirLGgxfW8PP1ZhYuZ1Jd5P8674KgJ/AOzsfippgs5KHfdiSM2hfX4641/riB1H+B3uuRiT8agLrjwQY+2nnJlqr1Dlyco4R5IxvP+5wjJav2z6NlQwfxtlsps7t1d1sJROX47QcTg4EGQJb3fQIb+pHrJKtzWEd1oRIiqj1COyfxnily5QPdkJ4YD8nU4zQHUA9Rm1RjXHuTDB7ExOlSFSJQ81WuYdbDX8QFjvFVEuZKniF4vXArckBkrFmSqA
- pNVNYnuS
- ZxdtRVRWmY+E3p7O2qDGl63pWk/6qkkvnG36dKynt7NLSTYauRkKOZb//eO9Cu3YICOUAwUP1PmSObmq1Fzgkk6MWzgda6zdEmPUf3pCFPnmz+WqKI1RG+QG7qnC+8RUcK7Xxb8kauonXPhuM9ygvb/4idFvTHHPQ4wsSEl/B7TK3kqAGEcQVJK8flfe6BGjkul4WxFf7mFpU1enPUMKwIbLzkw==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: AEFBE180005
+X-Stat-Signature: e7hnjbozp4b8f5sebenmy6u6zzcctmo4
+X-HE-Tag: 1788169600-535420
+X-HE-Meta: U2FsdGVkX1+yx9bAAI8CDIwh7HgEpthC4mkoquQw3fUxK/886MaOfC2p46PUgAFVlTsUoSK2ucUj+OnDsjLj6+7SBGyBYCEqKic5eLyAfS0fY6775N9E3m+RHYSL6EHtd/qhI0uKMhLemmlBqHu4c6TfnDNqhbGvD4gvNlcT95TxPEvIq0CKkZ2KPZDQd03GyXqcFFUjTwM+aGu+LQeX/zaz0hSvG/LYUABh/7kBDI81m9+3DlzdtjAHK1AQ2ObyoAaXqBoSbY7jb0aPZttZvQi0wNgwXkFjEhx/AtAqU/QJf0d4C9fxflF6DUvddXS5WPQzhGjLyfi9fqTH0c50wcRwZwoek9rv70smQmMErhaQtrd3XfNaTcAlQ2YfsTPRIrv1PB51r3HX6bE26uwWbqEtcS1RmHXyfkzX8eAiqAoE4/WjyxdeMwK7SM7PU3ekPyx/PxhKEwtZOgZeOclp29PDcDxtNDmjnfgoHUenQT7969relINO4EAgVDANMv5ilW7dKPAlAMziXspmdKibXHXxNS8PPqFWeLYL7chDuoDoIPY7kK2qzTp5RAzUkTVneBDYr2609Ixv6PSuqiH3h0e/ECopl0yE4lSXSbQHxAPt4WgGrNbtiWQlUHblQ5GenaJJdMbVIyFzXzlNE3S1ER7gykEFZdIMcVEpfR+nYEO/fQmjSrOG+rQ+KB81lgizNnestqlEFPb2Zi8FAOHZLNmArSJwClvZw0RK6HnUuNlhZk4/JzLLxWXSRnUvs5FkHdhQ3RFdXmr8SS2nwJbAgQ5HQMsE1RpZdTqgVTbj55hbX9La31qfyYoD0Pqv6XxkS8LqglHV3IzoyIutKXN9fFIf/JBsCx+h0515w5lfq0KbkhAYeAC+nqGtA5GT6q9CriReEoRxGqjo2A6tlW+SHTt4NYY0u8nIesBnCKCUUU0klP/fcgoGhDvKsvqhaKmZwBxC/vIthWazcoui5Kv
+ 0c+aW7gB
+ U8qI8AZt6UCAFkYiPV5/7bXvvWlwcnad2HMm0/EGKIATNHU7vjbD0XFoaeEaaZFn3AFv54mHXT9s/CNz6YrXzANuOo+e1Otd5exjX5Ttci6RVxttTlNacLAyM3CL+UUbccervgndPMSOAp0uWyUkcXd+jvgfBCKanaBvMUAHDTByq/BW2od6UP51nYYop37uFvHvx2VzpBiZmrhIL8/XZK9+8jmPtLmARBczZbUV2Kb3iqTlm62YjIQR3vcSTR2Uu5hR6ZTinE3jfx+FlrJsWx985gdsC0lOvCgx7eyG12hflHLw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,73 +107,44 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 From: Hui Zhu <zhuhui@kylinos.cn>
 
 Commit 7404bd37cfbe ("mm: workingset: use lruvec_lru_size() to get the
-number of lru pages") broke the workingset shadow node budget under
-MGLRU: lruvec_lru_size() reads mz->lru_zone_size, which MGLRU never
-maintains, so count_shadow_nodes() sees the evictable LRU lists as
-empty and the shadow shrinker reclaims eviction tokens almost as fast
-as they are created, losing thrashing protection.
+number of lru pages") switched count_shadow_nodes() to lruvec_lru_size().
+With CONFIG_MEMCG enabled, lruvec_lru_size() reads mz->lru_zone_size,
+which only the classic LRU paths maintain.  MGLRU accounts its pages
+through __update_lru_size(), which skips that array, so with MGLRU on the
+four evictable LRU lists are always seen as empty.  The shadow node budget
+(pages >> 3) then collapses to slab plus unevictable pages, and the
+workingset shadow shrinker reclaims eviction tokens almost as fast as they
+are created, losing thrashing protection.
 
-Patch 1 switches count_shadow_nodes() back to lruvec_page_state_local(),
-which both classic LRU and MGLRU maintain.
+lruvec_page_state_local() reads lruvec_stats->state_local instead, which
+both classic LRU and MGLRU maintain.  Switch back to it.  The reparenting
+race this re-exposes on cgroup v2 is closed by the follow-up patch that
+redirects dying-memcg stat updates for all hierarchies.
 
-Patch 2 addresses the reparenting race that motivated 7404bd37cfbe:
-patch 1 makes cgroup v2 read state_local as well, so extend the
-dying-memcg stat redirection (previously cgroup v1 only) to all
-hierarchies.
+Fixes: 7404bd37cfbe ("mm: workingset: use lruvec_lru_size() to get the number of lru pages")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+---
+ mm/workingset.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-Patch 3 recovers the performance.  Patch 2 added an unconditional
-rcu_read_lock() to the stat update fast path; patch 3 moves the dying
-check out of the RCU read-side critical section so the lock is only
-taken on the rare dying path.
-
-Performance testing
-===================
-
-The test script and the raw results are available at [1].
-
-Environment: 10-vCPU QEMU guest, 8 GiB RAM, cgroup v2; 7 runs per
-configuration, medians reported.  Workloads:
-
-  w1-anon-churn: single-threaded anon fault/charge loop in a memcg
-                 (MADV_DONTNEED + re-fault, no reclaim).  Every touch
-                 is a real fault with charge and memcg stat updates,
-                 so it stresses exactly the fast path patch 2 changes.
-  w2-file-churn: file read loop under memory.high pressure
-                 (reclaim-bound, noisier).
-  w3-reparent:   reparent accounting sanity check.
-
-w1-anon-churn (pages/s):
-
-                 classic LRU          MGLRU
-base             4393028              4377122
-patches 1-2      4385996   (-0.2%)    4352887   (-0.6%)
-patches 1-3      4381832   (-0.3%)    4377053   (+0.0%)
-
-w2-file-churn (MB/s):
-
-                 classic LRU          MGLRU
-base             8277                 8226
-patches 1-2      8226      (-0.6%)    8123      (-1.3%)
-patches 1-3      8157      (-1.4%)    8294      (+0.8%)
-
-w3-reparent passed on all kernels.
-
-Patch 2 alone shows a small overhead, most visible under MGLRU (-0.6%
-on w1); patch 3 brings w1 back to the base level in both LRU
-configurations.  The remaining differences are within run-to-run
-noise.
-
-[1] https://gist.github.com/teawater/32f373ec41d185d840455eb167321a5a
-
-Hui Zhu (3):
-  mm: workingset: use lruvec_page_state_local() to count lru pages
-  mm: memcg: redirect stats updates of dying memcgs for all hierarchies
-  mm: memcg: skip the RCU lock when the memcg is not dying
-
- mm/memcontrol.c | 30 ++++++++++++------------------
- mm/workingset.c |  5 ++---
- 2 files changed, 14 insertions(+), 21 deletions(-)
-
+diff --git a/mm/workingset.c b/mm/workingset.c
+index f351798e723a..85a4e14e95d5 100644
+--- a/mm/workingset.c
++++ b/mm/workingset.c
+@@ -693,10 +693,9 @@ static unsigned long count_shadow_nodes(struct shrinker *shrinker,
+ 
+ 		mem_cgroup_flush_stats_ratelimited(sc->memcg);
+ 		lruvec = mem_cgroup_lruvec(sc->memcg, NODE_DATA(sc->nid));
+-
+ 		for (pages = 0, i = 0; i < NR_LRU_LISTS; i++)
+-			pages += lruvec_lru_size(lruvec, i, MAX_NR_ZONES - 1);
+-
++			pages += lruvec_page_state_local(lruvec,
++							 NR_LRU_BASE + i);
+ 		pages += lruvec_page_state_local(
+ 			lruvec, NR_SLAB_RECLAIMABLE_B) >> PAGE_SHIFT;
+ 		pages += lruvec_page_state_local(
 -- 
 2.53.0
 
