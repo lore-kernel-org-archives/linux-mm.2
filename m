@@ -4,85 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA84DC61DFD
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 23:31:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 544FFC61DFD
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 23:32:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4A836B0088; Mon, 31 Aug 2026 19:31:23 -0400 (EDT)
+	id 569CB6B008C; Mon, 31 Aug 2026 19:32:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FB866B008A; Mon, 31 Aug 2026 19:31:23 -0400 (EDT)
+	id 543396B0092; Mon, 31 Aug 2026 19:32:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 911226B0096; Mon, 31 Aug 2026 19:31:23 -0400 (EDT)
+	id 480FA6B0096; Mon, 31 Aug 2026 19:32:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FBE66B0088
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 19:31:23 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F318DA30F7
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 23:31:22 +0000 (UTC)
-X-FDA: 85163163204.01.D7D4955
+	by kanga.kvack.org (Postfix) with ESMTP id 1F8AC6B008C
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 19:32:15 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EDF16140280
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 23:32:13 +0000 (UTC)
+X-FDA: 85163165346.30.84237B8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 445472000F
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 23:31:21 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Zg07NLIH;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788219081;
-	b=DB5nlDtQIxe3RInSECaA25TMmd2deyDnldRv5LuCTKZkIfpfE7Oun5NYdeBJUsgVtZofP1
-	0YV1qO7KqjF5Lo9aRidY7uHQ0Ke4n7VBWbDmjJjNbTWQ/KJdUcZ35tQwNcOGRr/4zSmUOQ
-	MSGkP05LpAFL4sjY5aYpAEeIjhnWZts=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Zg07NLIH;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf10.hostedemail.com (Postfix) with ESMTP id 0B313C000B
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 23:32:11 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hM9ggej7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of linkinjeon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linkinjeon@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788219081;
+	s=arc-20220608; t=1788219132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jizsFETCWcLjtbHiJF9W08hqM5CBVKybdf/GQ2X6ALI=;
-	b=xtaU/BMYTC/cK3NxRAF9Sd45n+j7vTlNKSR2SKdb3NKoxnvZSauD/avYyk5nADyi1GxlO0
-	hIaXOUVbO29ltYe0ODiihyPc9ZaB5kglF+yOnXUCnzVqPhfwk6wfjYFeH7sdZLJB0JcQrT
-	JFkzX/nHzQOW0+zt5+pYV+HOmJGkwcc=
+	bh=HqSnM2Sf1MnAraFVDX5f+6TBqIzKd36nKm4xtyvhybM=;
+	b=Pw/HLyWg2WehX44o399ORcwIL+ImpLplPKkpqPDkDtOq7knytC3zs/YkC8xs/xIpCyfs0A
+	DlQIdxVHL4PSuJ+9lnVaaxV1Nrv0uyPAIPUFEZ6w183nYxNT4OYEG5mkayJ+eI8yR5hJoZ
+	FKeH4kFf2ATaj2Yb6xQB9BMIlyhit0Q=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788219132;
+	b=wDgW8OZdALh2uq2u+x0+cn2ZPll2hgwrrHqzGhkX7eH34zAdFvpoGRItl/3SygX/vIKPU0
+	PwPmpWi114VyK5bF2jaqJXNen+XEd5a2do5rXwFLeXXMm7PpczWW0i5DodwG/1n4s6CWBu
+	Tpc5OmX2s8qrJ2hFB3k4yoIrsnoO+HE=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hM9ggej7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of linkinjeon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linkinjeon@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 571FF40479;
-	Mon, 31 Aug 2026 23:31:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DD351F000E9;
-	Mon, 31 Aug 2026 23:31:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788219080;
-	bh=jizsFETCWcLjtbHiJF9W08hqM5CBVKybdf/GQ2X6ALI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Zg07NLIHLvXKjITd2jS6CzCbIu0ABOpMuUX0qsGivAZ6HN5JAgik4Z7hYq3tAXt0L
-	 luxyGGooi1iSkwnUYX4fwRzZqNpQ0zh8Ki4dpS5aixZ1hOeYohpKdX3zi68UYMN41b
-	 xZJYEbqMSW5Ogq9nhfYJqjW0Ain6xsCNjQPhU1Io=
-Date: Mon, 31 Aug 2026 16:31:19 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: SJ Park <sj@kernel.org>
-Cc: damon@lists.linux.dev, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Enze Li <lienze@kylinos.cn>
-Subject: Re: [PATCH 2/7] mm/damon/core: introduce damon_set_target_pid()
-Message-Id: <20260831163119.66bcfdd8a4ee66b3609be63a@linux-foundation.org>
-In-Reply-To: <20260831142611.77572-3-sj@kernel.org>
-References: <20260831142611.77572-1-sj@kernel.org>
-	<20260831142611.77572-3-sj@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by sea.source.kernel.org (Postfix) with ESMTP id 4EC2640496
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 23:32:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 349431F00ADF
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 23:32:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788219131;
+	bh=HqSnM2Sf1MnAraFVDX5f+6TBqIzKd36nKm4xtyvhybM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=hM9ggej7PlPuTMCDzgOh3zYet3jaCTTtvglzC/zYWOZL6KGj0BcKod4DB2KHZmpuk
+	 9Xr8E5fI7omKEWAg8npO64Q4oxaIsgjG+ROJho52pGDM0t6/3xak1DlwmCvfeLGEq2
+	 QgA1Yt5/MRFPTMRaDIUjwW5YGSiC2DurJZI45p7kp3NGtY4Qjnfuwky7WXn7o9f4Z8
+	 wC4Ds6R9vHRh9IGZpDif5s6pgETlC/Wre846fOo21aTGBy8Pvwtz0uK2tMm6Oadwv/
+	 53QRlUMvhrjqA91WlLKbIal6dENP3blXPeG/7/rBm3eOLTTcQXLTrHKYGeIJ/eD/kO
+	 gZhLRtPK2lJyg==
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6a668ce86abso1093445a12.2
+        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 16:32:11 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzYtfmykuc2FmaCHHt1Hc4nnMtca020pFeRGIOTmiUH3nFbU/HYpAH28rbGdaW+mAafoBDmag5w3w==@kvack.org
+X-Gm-Message-State: AFuF++lBII/PQjtvXZPNyM1EJlK3qwcM1ismGhFYEgzf++lHbX35Va/E
+	I+0kjVQ2TPQZ6pr59phNPDpI/L+caE5fD+4Ftx8BucEv75YucGExdl/lGYpTFNYOaI4648PZPKO
+	QBgDQlwnPp6vZwW4MpBFVBzYBSf2VmWw=
+X-Received: by 2002:a05:6402:1e90:b0:6a6:32f5:90b3 with SMTP id
+ 4fb4d7f45d1cf-6a663b24942mr2593080a12.21.1788219129658; Mon, 31 Aug 2026
+ 16:32:09 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260830041901.2668-1-willy@infradead.org> <20260830041901.2668-7-willy@infradead.org>
+In-Reply-To: <20260830041901.2668-7-willy@infradead.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Tue, 1 Sep 2026 08:31:57 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd_zarKuogwNS=ZNDuyR4w_iB7yui+h+CqGvjZvzxPFpzw@mail.gmail.com>
+X-Gm-Features: AcwNN1UvF-7AQZoHjsPGrrmMkPeyVFXaEcU2n-gcV41YpQO_AYBnZepzQZ06-b8
+Message-ID: <CAKYAXd_zarKuogwNS=ZNDuyR4w_iB7yui+h+CqGvjZvzxPFpzw@mail.gmail.com>
+Subject: Re: [PATCH 6/9] ntfs: Remove redundant FGP_NOFS from ntfs_wof_collect_dest()
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Christian Brauner <christian@brauner.io>, Jan Kara <jack@suse.cz>, Gao Xiang <xiang@kernel.org>, 
+	Chao Yu <chao@kernel.org>, Theodore Tso <tytso@mit.edu>, Trond Myklebust <trondmy@kernel.org>, 
+	Anna Schumaker <anna@kernel.org>, Hyunchul Lee <hyc.lee@gmail.com>, 
+	Phillip Lougher <phillip@squashfs.org.uk>, linux-erofs@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	linux-nfs@vger.kernel.org, ntfs@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0B313C000B
+X-Stat-Signature: tmw83agrsx8rjrd875ycf5fqsqrhrxnw
 X-Rspam-User: 
-X-Stat-Signature: ebx6fyjqtpiexpqzpts35omthzto8i8r
-X-Rspamd-Queue-Id: 445472000F
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788219081-170741
-X-HE-Meta: U2FsdGVkX1/Yx6JM+NNKlX1/CL+Trbq2vHeCLfAbMd9wIcwcjUY/wA0vbqivY5AmSjfKRIwD6/5AZFFW0jwY/ab5xxA59OzEkvp2jVe1O4+C8qqWW2kFBvxoVvbiHTlyZpHd4OrtEVe+Bk9w6IoTkLwF0L/7Ja8nAV5js8fQ4PHiZsoKNOqK7fllMhbRhJRC9keYEmS0RbvLTFozfii5i43TTm994iq5QKFP0ij9OlwK4pDbnrKgk9aTLhHODE95nHMPAlh6RgRC/ern/t5ngNYDS3Jdx4xZDE3PGL2zS3xI05Rce7jjgOXP3vEa1NWnPPjqVdm500ig/n2Fxl1W5aPFPSpGhGH8MBBqPZBNiUoDb15kznPORGJ4zXZxv6xP8VxzSxfw6iNmD4n67nP6iW6kcUHa0Akbh3EYgBYnh4S/UdTPJCj/zX8fBKsazznuneJ0MtA5pQLPS2DFhFknLvYeIH6c50f7z/JEgjKE2e3tDIaq+zIxeKDcNIZjUAz46/A2LpVo56Ev4cVko5L/ZSfbOei+A+2EWT1V8aaawdN1WfWfsjtUodAttdm3olNI3LFOkGQ5GQPrM08WEiRlF7Jz0xSKYpOSEkhNM0oNTZ1IxUYINEVxe13MD/rLVhbdRu8x6p7I/q6XJv54ezHivLOZASvn9zHLKr59XeVciXm60oNg8IVFQEa5UBLVw5iBEjY0aUf/DKdqlcogg/ifdRsdeamJsjm3XT6SszeIwJ2Lm4eFoBdA4oVwGKhnw7OCTsNMKhh6KvvwyfRi5a4S0+4pKiT8rHU2bpQGtaxGhoa4MgDWqn3s38WHNCir9bPFsd0U4q3TkkR3PWrqHLwOptteRXJmZfoPqmclriWzpYMyxG8JNuHCbPXXLy/qED1fyU+T8q1aMeSa053TIzyTmnD6oyPY+Yq9b2wAa6W4zMzRZRQd+x4eI6kmk26RcBQd9TemG2vvErXlLPCBc0D
- XBgrxqFt
- qRzzyKsBh+6BFsSjghrjWbu0BQXudqm3plTEtV5Bd1HeWboeZLcXfLV5RlnvVsAFRGJcqQzeYkBeQQ/EYFbIh7VVL3gQIdMRIkkb2aBT2Ek+h1b/Mo2ij7nrovmxfpk6vioMP7VdT90i5HUYV4gsXmLFNMBMV6gKMwZ827MfS0wGqZAb/crQl9biiSkipIDiulbMHUv3CO5pBufre45HfymSvMdj3HsWrWnrBajqZcd7U6a/nWA+eV0U4/CdMTUk3FMBiAjTskjrkvoX7Uws0jIi9+dVb1nyE53axzX6H1RTbj4TqdWeasCPDd5CdcRKWrr9o
+X-HE-Tag: 1788219131-29131
+X-HE-Meta: U2FsdGVkX1+5PqDHDus4XExuWtRm7TZ/KczKOHi6LbOYzJaMvu4X3YCTeo9qLwk3tipBRiIm1DaeZxwahgAUCBx+95HQy+UbuMTtMXb6OHVjbyJSMODDr23Ahg0tlvBOafluAnP8dObaAOugD2VJ9DKGUV2DccO+MI1W8RmpU8EbAa9vpHTL2owxwbWBH6e0PCc7Ac7iKi3Pv5xIBooE+yLcO4oQpEuQTx/ebGlBSwdeDzezjXqJmDKxFJildBBFF6bFNkFwD7QL4iOnovQ2Gdop1LB5GHVzeZKGA5Phzfp1GbDfaBGHL+RgMpKfTPm+c+W73XjDxabbZ7d925Qp9fJAzJZEPPFlpxuPn5+y2I575uWP85Jt7Eeo+FEwXhiw0eZBm6imXCdc4MJQHD2MoQfsC808ouK5t60UFYe+Zm6hoqDFhEVF1lPAttLFcaGVA6CH1NvJ1obiCv1XhhgYts1G2F5EZzfLOy6I6C2ujuaAvo77c2rxuG9slLfCUkY+pGu3GGtCaCyYsS3qTkCXTooclMaFAZI9WDHnQBom3ehw/0I2OzsuQNLpcGoYZWKLkNUvIsAw3cIBwTC6UbJJwhMGP9CoDapw2gFlxAATinzRiAXqSGYuhloMukhQfi7IbpszyWCvk9mXJrwXprb3Fn6YmiH9QvIoftJB5jfB77/uw3y/UCpEGK9UVRuDbaNNvgv8fGANnEZDJ2cl3dQh8xsRBt6jB8UpKUxwt+I51+C610CSBFeT04y/LjI0e1M5fFBDCngceSvb8rAE8kmP4We/jONy876jYxUi+T5yMND/NH0WnAn97OYk2EibLonq5o34vswDPfJ7qyOTqwJwDhrnh4sXxDC+DkK1NBXXv9a0ytuTgYv6mkfcoXGqrctCO9PAi9RWE2SBcdvXnG5QnOt7N5+tcXaO0KY++7pOMboVadH6SIVUXXQ4CQN2XjG5N8HmUFhGfVBHIpyUHm4
+ HUuv+4rt
+ le6KVc/ahwvM7G6R+p4RumKhFVp/rGpkBdHSE6bXZCZCHt6uscClBDLQsBs8aKkNZRy7/RpGEyYWOWfpKNl/5AfGHP4ZSph8CCNmR5yzk4XtzPmoeU1JR/iDaej/9bTu7EVZCBXRw5Fknp/QI6RbG8rR6cN/PoPCrGHC8FR9D6m7hbQgMc6agAXF6Av9r3WBaE6Y7fAwDqwmRzomJMka0KDlVYLFI5fb/JEQKBB2rHt5JU9TpKkixaEMtVa7NWNfUewe3BDXXJWmQ6eCjlzo/pPqJI7hQ7SMk75nYV350Qc7zLl7W/wqOhU4sh4driWVdHUge9PobUOmdZVYKioxOnutTOqd1QPOzesbSTsRkeJZd5bFr1BhVKtLXBSHdWF5piSX+vdmqELxXw8bAYOMwjHjmdBiDtzTWFf2wKEWxrHTbcIQ6tSEBgSMBiNzGAYjF176T4Cb/9rnKUeiN9Jywcuvp8XMBltG0TpTPvYLJI8wveMI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,19 +107,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 31 Aug 2026 07:26:04 -0700 SJ Park <sj@kernel.org> wrote:
-
-> The logic that finds the struct pid for a given pid number and assigns
-> it to a damon_target is duplicated in multiple places.  Including
-> damon_sysfs_add_target() of mm/damon/sysfs.c and the start functions
-> of the two sample modules, samples/damon/wsse.c and
-> samples/damon/prcl.c.  Add a function that does the work, and replace
-> the duplicated code in the places with calls to the function.
-> 
-> Signed-off-by: Enze Li <lienze@kylinos.cn>
-> Reviewed-by: SJ Park <sj@kernel.org>
-> Signed-off-by: SJ Park <sj@kernel.org>
-
-I assumed that From:Enze was intended here.
-
+On Sun, Aug 30, 2026 at 1:19=E2=80=AFPM Matthew Wilcox (Oracle)
+<willy@infradead.org> wrote:
+>
+> The flags already include FGP_NOWAIT which prohibits all reclaim, not
+> just reclaiming from the filesystem.  Use mapping_gfp_mask() instead of
+> GFP_NOFS as this will preserve flags like GFP_MOVABLE.
+>
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reviewed-by: Namjae Jeon <linkinjeon@kernel.org>
+Thanks!
 
