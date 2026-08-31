@@ -4,98 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBA31C61DFD
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 09:46:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29047C61DE2
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 09:49:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A69606B009B; Mon, 31 Aug 2026 05:46:49 -0400 (EDT)
+	id 3B7A76B008A; Mon, 31 Aug 2026 05:49:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A41046B009D; Mon, 31 Aug 2026 05:46:49 -0400 (EDT)
+	id 3689D6B009D; Mon, 31 Aug 2026 05:49:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92FE36B009E; Mon, 31 Aug 2026 05:46:49 -0400 (EDT)
+	id 27FBD6B009E; Mon, 31 Aug 2026 05:49:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 770D66B009B
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:46:49 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0AAD3A03E3
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:46:49 +0000 (UTC)
-X-FDA: 85161085338.20.4BD36C4
-Received: from mta1.migadu.com (out-230.mta1.migadu.com [95.215.58.230])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 31D6C20003
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:46:46 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=R9okeS85;
-	spf=pass (imf31.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.230 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788169607;
-	b=rvNd7mWtu2eP9oOS/MXP2rKHsI2xpQL2OqH7GmpqkQy3G0DKVPf39YXtUBRfppew8+kysu
-	XZS+pC90Nne34VoPxvg8q3QbwDQ2+R25FyE1oANbLu0cqF7uzCSUqtzlgqA8y7WCSRH78B
-	t9r0UmHUvMbIjYy9mpXI2K0jaf+7io0=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=R9okeS85;
-	spf=pass (imf31.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.230 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F27A56B008A
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:49:37 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8B6311A03E4
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:49:37 +0000 (UTC)
+X-FDA: 85161092394.09.5BA146E
+Received: from mta1.migadu.com (out-32.mta1.migadu.com [95.215.58.32])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 83950180002
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:49:35 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nZTmAivR;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.32 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788169607;
+	s=arc-20220608; t=1788169775;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OIS9Ot1Mt8Mugjw08/u2wRJivxgb7JgzvGqihQuXeJ8=;
-	b=4+lhlBYPItPtM+V/NR1MFCuqLF020CapsgZkKhZJnSfCSrNg/v135k/5wG/Qs1x9dZcYT3
-	sy+x65ewHjBDVH/j1IueLTASEJfQN0YUWMvIoIEi0sEfjc1OzJdDEJ97I468bSGzQaH7Mh
-	7vD7/jkij5EAJqwjy7sPQ+zPW2I3cqU=
+	bh=WpUTaYUo8NvjfAjWzrJ89AEQkaKdbwDPkg6VPiVl/9Q=;
+	b=Kits/wU1uz1WCOK2icvNpDd4GDvqQ+NpT2Utvi8+HTPaRxwopOnDn94PJCbN2huaEc6RW1
+	pI7e52lVH9n8KI+VKQpPDt+pZ45/YCh4KPciGtHHVHZCn0EzPjiH/5w2irgdmfUfNALXQR
+	kwbl/adm688k02xQknWRE+1kTQBeuwA=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nZTmAivR;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.32 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788169775;
+	b=BZuxS0mC4e5L3KIdb1Wsib/jtgwYDntDLvEs41+ikQTe+hyIoAUoQlRyJ90jJ0G4QsxI/a
+	bsTk67VvUW76O63J4FLovt0jBQCtDURoFIu7a69OvDSOD6hEru7ZXuSCHsxoypf7yzwgKf
+	Obb5/aRXCigLdhugFsUEY7isC2Cq9x0=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=6jhXtJO17DBB7qI18ikslI33Zv8zYlXSXdj+9tIORRU=;
+DKIM-Signature: a=rsa-sha256; bh=2tQ8kc8Ed0EXiv4AJfetOVW4cPn5i1WpwfCATVSfhG4=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788169606; v=1; x=1788774406;
- b=R9okeS85NqmAhuuAI7UUSUA+gI3T5d+ERJZYJiOBuYL1RLp2wbwHaDrtH9fIzOcPPCJEwwUC
- Bq3X5qSfk2XzEJTjavH521qet+xaV7O9xvZirr1R7J/vof1BjLxK1T2bH8n5vD3/qhR/d7n1/jm
- 6ogAeuxtWZVh6jibxEKal1WQ=
+ t=1788169774; v=1; x=1788774574;
+ b=nZTmAivROI3QPvbKgW9/X3P9Pf+1p0Rev/SDbZe0poBfQAduPE1xFqHi8hAnzDmWV0REKtYQ
+ k6o8dj/v6rzyZ973prNFiUjEYsSbFvLRpfM54hON91zkFfScvHr9rqsYKYKx7t12ii/NWXpIto6
+ aDBNYfU9BdFsyEa7gBifzylg=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 8bffe5621f7da27d;
-	Mon, 31 Aug 2026 09:46:45 +0000
-X-Mizu-Trace-ID: 8bffe5621f7da27d
+Received: by mta12.migadu.com with ESMTPS id dc3f19ad1b3d1efa;
+	Mon, 31 Aug 2026 09:49:34 +0000
+X-Mizu-Trace-ID: dc3f19ad1b3d1efa
 X-Migadu-Flow: FLOW_OUT
-From: "Hui Zhu" <hui.zhu@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-Subject: [PATCH v2 3/3] mm: memcg: skip the RCU lock when the memcg is not dying
-Date: Mon, 31 Aug 2026 17:46:11 +0800
-Message-ID: <3fc10f32131097bb57efaec72d049d635b227cf1.1788169145.git.zhuhui@kylinos.cn>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1788169145.git.zhuhui@kylinos.cn>
-References: <cover.1788169145.git.zhuhui@kylinos.cn>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 31D6C20003
-X-Stat-Signature: y5ttcggw5m1n9jrgsudof4yyyjj3twd9
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
+Subject: Re: [PATCH 01/11] mm/sparse-vmemmap: introduce
+ CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <0e1c3bb8-49a4-479e-adb3-17c21261d409@linux.dev>
+Date: Mon, 31 Aug 2026 17:49:16 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Jonathan Corbet <corbet@lwn.net>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-doc@vger.kernel.org,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ Randy Dunlap <rdunlap@infradead.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <9BB960A5-E8C8-4094-BD28-87FE483AB680@linux.dev>
+References: <20260831075342.57563-1-songmuchun@bytedance.com>
+ <20260831075342.57563-2-songmuchun@bytedance.com>
+ <0e1c3bb8-49a4-479e-adb3-17c21261d409@linux.dev>
+To: Qi Zheng <qi.zheng@linux.dev>
+X-Mailer: Apple Mail (2.3864.700.51.1.1)
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788169606-865492
-X-HE-Meta: U2FsdGVkX19zMRrySFUurduW0hUGinM6qB2hIZxFxfuYqJaAaEKtsp1YjhODPTyWoXIN0W1B+6x1L3R9wkK2gGqkz5b+YtQRCpaVUkfxJ+P5nv/qZqtDemrh+CZepiLCBuKX+GFZDmEtrakRv8ZpxUo6CXhlind0qKFWYJtnQtebecWNGBTHuzuW0vCZ1YsiZ+OuJimJzEx9cVotDk+sQXWKbRpspub3ypTwtJ7Qu2z9QMRaoVREkphsyqwVh9Ha4byd/9cWD11impap/E1Fybgt578p5ogMJXvDI0kS/VkexOQ0esecHpZIa94JqvqK70X9ywpaXtf7uBLnkalgFqKgcntwD/ilHjO8QWb1AQjplsBR8W1kgoDQZaFph+BBv1gCcIQ5K2NYkY23SU07C3XLrQgufqnvJIkgCqlXwhroDbJU17MyjHixe3ue0OG6a2utrmBfdlLebrXsKYRoi5UOgjLONVxyXen21+W11GfJ4tQp0E/HoQ0zpH9nLfj9dl6BlPSW5K43wX9iH/9atkmNIM+sMvhKVbZyDkz53amCw6W9udMUL9moiabvEoJ9eigZMmxjSC6nKGw8QGBY2lssp2zLPTNmk40+K640EE5MqbMlgGDa4jnnuf1eZteRDyMh9BHCTVxymkDI32hh1kOfb9Ncsq8C5+cMq32ChVk8g9bdPQyx/yXAm8yOB2HNuDPbWA3tE8F5oRStvuIab4NfuPZnvl1B6VjBmJ1ri58TBvNCj1OMGG07mqwnefbamiJsgWhauwNtxuiDKjdDd7oWdUO95w9IwrS2JpGdI1Hej/OFgGQQNl3mYMzmD6jvgi8n+MEOfN4sm76+yy4xMFf3rT3i+y1adqkwfzXjOxeyqsx1/S5/RNdDzDivc95dXv0RpTIr4RKg1oyyen93AwIcVQVd3gT3YVwrO4nPU4xWV2rh7erMkHzTqbQ0t/8Thq7jm7tllPf8d7TwxTI
- yNNnb0mT
- hBeEdIYXD2+pPL42ODcIGUHSQn4u2hagzfF/ssa/0jmRG1I3Wh2bnB372VRtaJ1DnDohSe1yREYdEMjTJhmU9sPdXJnZtNd/nU91orcUewQ4ZgP5AJocwUwHBOsvC3UQSzUcEOlEI3WV4khfLUC1tWiP+513e9Ohr9zuTR4pWun6Z3G9giOn70oi4jXIMpWMkv3+ZZY+oArLS9OfoAa6kKNqhuA==
+X-Stat-Signature: ifmuqhfakkxcu4m59faecbqje7ucc58c
+X-Rspamd-Queue-Id: 83950180002
+X-HE-Tag: 1788169775-246795
+X-HE-Meta: U2FsdGVkX18Jr4trtqOb3+4xe4lhAyi3INPvS8ie93lOqFY4nQhvtNfJeYE7Mf2mCq9KX71fmopx4LHKQNUMTcl5rNa8nUNirJrmoHtFw2PghPGkPWwqgnkqFwNLmE6V3j3T4LPr10tItosT57gpVi0XgZM8VZFzsfMNfBC3/i3rZ02R3V45GerTlbcINVYTuYBZhq/YrT2OCefwykHkMssOTbP80uzRjtYGYQczvRg3RNqxZhUqNNRPnUGsEa8JAqmF/4tLveDKhRKOzJM1/dJA4+CeoZCbJMoZ15ztuM6sZ+rOljikjQ8HUvU0TZFb/spEfLvT5RAeZCB4CIWy5/QmQJ9vc8sojQobz777dvVvTvrc5vPc2+vJ7fgwRLFWjT3w1Kevl89E2sZqaGD1egYM52jpvS/36oGQ9VrNNbaOqQ3dMJNFzwQ8jljvGbH3M4wuCklrV3T53vLBH4vaosv/956ZcEdnXXs8fMIWXy3F75c7bUPKs8OU1OKLqyas7WJe6a85+1q5m+ccE4NsJpbTZSWeRdWiv0q2e2uAdWfjv4WCoUUcI1S7E7/ZI55c5oB9Nx3vIJBfwvNQBaAq6vu6DmE3Wx6FT/7TuTkIIBJfm1RtpKNk4/1QhKdvJBhWDRuPaR+6V2zs/cqgWuoC1HU1DQw/cBlOlKfmo4y4aWjjwPBDOLQwY9DmhwR2SClyXTxYw/CpCKS4mUQTh2CGMlNv+Khd/Biuhjwga40kfiW8kDBEqzhB8cnIbeiE9VFqav76OWN5+t2AhKE6e0sFVVF5J414YiQcahT3o+eDhzC06mEvMe04ffwtUhnvcToeEHFl5B2rqIkvukYg/z2APsMaBrl2ICe+drPoUreKzLU1iwS4AOuT9hUxXirSfdjln50IAAXet5El0ktvkmIszUkBORaW3ihCwVx0TJ3gJKVnJ+88ZjtGEugBwmUk0i3YITjOTDnsKx/me7aXSGA
+ L6K9v7vu
+ 7OkVlw68ETKmn3YUkAONjhprkwXtYcdPTLmb0x2OtxizGSn3In/5Ibp55cKd4N/NI2VGTNimFElKV841StTOSQD3QraXIhPbxaAkGmS86pzm6n2c09+deLJ9IqtIdOSLvaoqLdgkvyxRHaQwFRf3rVY59AIDrft3LRi46zdC4yubcUL7sH7Oil/ZLMHGEkg/WKVuVziyTXGzUl/ppAPEI+lxtU03bo81wtaIzIQGbVjHSg99rW7xsJdvtE3rxDSAFTW7hKC0WlOKXVDA6zhLy0fUqLqqbHOdzAAZF60gWe+b4Mmp3pt8LMUXZ18216xj4LUPW/0wxd/c+SbHOPADx0RCIpL/+xrf8n2/GR7fnNc5imMSXX3Pd+zIt5INABw1x56w3oLVpsYRIyaM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,58 +108,214 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hui Zhu <zhuhui@kylinos.cn>
 
-get_non_dying_memcg_start() takes rcu_read_lock() on every stat update, but
-the lock only protects the upward walk to a non-dying ancestor, which
-happens solely while a memcg is being offlined.  The dying check itself
-reads the CSS_DYING flag of a memcg the caller already holds a reference
-to, so it is safe without the lock.
 
-Check memcg_is_dying() first and return immediately when the memcg is
-alive, taking the RCU lock only on the rare dying path.  On an anon
-fault/charge churn workload in a memcg this recovers the ~0.6% overhead
-added by the previous patch (4368077 vs 4343159 pages/s before, back to
-~4377000 pages/s after).
+> On Aug 31, 2026, at 17:44, Qi Zheng <qi.zheng@linux.dev> wrote:
+>=20
+>=20
+>=20
+> On 8/31/26 3:53 PM, Muchun Song wrote:
+>> The section-based vmemmap optimization infrastructure is still =
+guarded by
+>> CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP, but it also can be used by =
+device
+>> DAX. Introduce CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION as a common =
+config
+>> for the shared infrastructure.
+>> Select the new option from HUGETLB_PAGE_OPTIMIZE_VMEMMAP and from
+>> DEV_DAX when the architecture opts in to DAX vmemmap optimization, =
+and
+>> use it to guard the generic sparse-vmemmap state and helpers.
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> ---
+>>  arch/x86/entry/vdso/vdso32/fake_32bit_build.h |  2 +-
+>>  drivers/dax/Kconfig                           |  1 +
+>>  fs/Kconfig                                    |  1 +
+>>  include/linux/mm.h                            |  3 +++
+>>  include/linux/mmzone.h                        | 13 +++++++------
+>>  include/linux/page-flags.h                    |  5 ++---
+>>  mm/Kconfig                                    |  3 +++
+>>  mm/sparse.h                                   |  4 ++--
+>>  8 files changed, 20 insertions(+), 12 deletions(-)
+>> diff --git a/arch/x86/entry/vdso/vdso32/fake_32bit_build.h =
+b/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
+>> index bc3e549795c3..5f8424eade2b 100644
+>> --- a/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
+>> +++ b/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
+>> @@ -11,7 +11,7 @@
+>>  #undef CONFIG_PGTABLE_LEVELS
+>>  #undef CONFIG_ILLEGAL_POINTER_VALUE
+>>  #undef CONFIG_SPARSEMEM_VMEMMAP
+>> -#undef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+>> +#undef CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
+>>  #undef CONFIG_NR_CPUS
+>>  #undef CONFIG_PARAVIRT_XXL
+>>  diff --git a/drivers/dax/Kconfig b/drivers/dax/Kconfig
+>> index 602f9a0839a9..85ad4c135cdd 100644
+>> --- a/drivers/dax/Kconfig
+>> +++ b/drivers/dax/Kconfig
+>> @@ -8,6 +8,7 @@ if DAX
+>>  config DEV_DAX
+>>   tristate "Device DAX: direct access mapping device"
+>>   depends on TRANSPARENT_HUGEPAGE
+>> + select SPARSEMEM_VMEMMAP_OPTIMIZATION if =
+ARCH_WANT_OPTIMIZE_DAX_VMEMMAP
+>>   help
+>>     Support raw access to differentiated (persistence, bandwidth,
+>>     latency...) memory via an mmap(2) capable character
+>> diff --git a/fs/Kconfig b/fs/Kconfig
+>> index d1c210c6508f..9b32ce79cc80 100644
+>> --- a/fs/Kconfig
+>> +++ b/fs/Kconfig
+>> @@ -278,6 +278,7 @@ config HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+>>   def_bool HUGETLB_PAGE
+>>   depends on ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
+>>   depends on SPARSEMEM_VMEMMAP
+>> + select SPARSEMEM_VMEMMAP_OPTIMIZATION
+>>    config HUGETLB_PMD_PAGE_TABLE_SHARING
+>>   def_bool HUGETLB_PAGE
+>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>> index a9fbe26536f4..edadd7549b72 100644
+>> --- a/include/linux/mm.h
+>> +++ b/include/linux/mm.h
+>> @@ -5188,6 +5188,9 @@ static inline bool =
+__vmemmap_can_optimize(struct vmem_altmap *altmap,
+>>   	unsigned long nr_pages;
+>>   	unsigned long nr_vmemmap_pages;
+>> + 	if (!IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION))
+>> + 		return false;
+>> +
+>>   	if (!pgmap || !is_power_of_2(sizeof(struct page)))
+>>   		return false;
+>>  diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+>> index c9ae7991a8b2..e9b54ea0eff0 100644
+>> --- a/include/linux/mmzone.h
+>> +++ b/include/linux/mmzone.h
+>> @@ -102,9 +102,9 @@
+>>   *
+>>   * HVO which is only active if the size of struct page is a power of =
+2.
+>>   */
+>> -#define MAX_FOLIO_VMEMMAP_ALIGN \
+>> - 	(IS_ENABLED(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP) && \
+>> -  	is_power_of_2(sizeof(struct page)) ? \
+>> +#define MAX_FOLIO_VMEMMAP_ALIGN \
+>> + 	(IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION) && \
+>> +  	is_power_of_2(sizeof(struct page)) ? \
+>>    	MAX_FOLIO_NR_PAGES * sizeof(struct page) : 0)
+>>    /* The number of retained vmemmap pages with HVO enabled. */
+>> @@ -116,7 +116,8 @@
+>>  #define __VMEMMAP_OPTIMIZATION_NR_ORDERS \
+>>   (MAX_FOLIO_ORDER - VMEMMAP_OPTIMIZATION_MIN_ORDER + 1)
+>>  #define VMEMMAP_OPTIMIZATION_NR_ORDERS \
+>> - 	(__VMEMMAP_OPTIMIZATION_NR_ORDERS > 0 ? =
+__VMEMMAP_OPTIMIZATION_NR_ORDERS : 0)
+>> + 	((__VMEMMAP_OPTIMIZATION_NR_ORDERS > 0 && \
+>> +   	IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION)) ? =
+__VMEMMAP_OPTIMIZATION_NR_ORDERS : 0)
+>>    enum migratetype {
+>>   MIGRATE_UNMOVABLE,
+>> @@ -1155,7 +1156,7 @@ struct zone {
+>>   	/* Zone statistics */
+>>   	atomic_long_t vm_stat[NR_VM_ZONE_STAT_ITEMS];
+>>   	atomic_long_t vm_numa_event[NR_VM_NUMA_EVENT_ITEMS];
+>> -#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+>> +#ifdef CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
+>>   	struct page *vmemmap_tails[VMEMMAP_OPTIMIZATION_NR_ORDERS];
+>>  #endif
+>>  } ____cacheline_internodealigned_in_smp;
+>> @@ -2019,7 +2020,7 @@ struct mem_section {
+>>   	unsigned long section_mem_map;
+>>     	struct mem_section_usage *usage;
+>> -#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+>> +#ifdef CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
+>>   	/*
+>>   	 * Normally, sections hold regular (order-0) pages. However, for
+>>   	 * sections with HVO enabled, this tracks the compound page =
+order
+>> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+>> index ae2ebaed6d4d..de3c06062bc6 100644
+>> --- a/include/linux/page-flags.h
+>> +++ b/include/linux/page-flags.h
+>> @@ -208,14 +208,13 @@ enum pageflags {
+>>  static __always_inline bool compound_info_has_mask(void)
+>>  {
+>>   	/*
+>> - 	 * Limit mask usage to HugeTLB vmemmap optimization (HVO) where =
+it
+>> - 	 * makes a difference.
+>> + 	 * Limit mask usage to HVO where it makes a difference.
+>>   	 *
+>>   	 * The approach with mask would work in the wider set of =
+conditions,
+>>   	 * but it requires validating that struct pages are naturally =
+aligned
+>>   	 * for all orders up to the MAX_FOLIO_ORDER, which can be =
+tricky.
+>>   	 */
+>> - 	if (!IS_ENABLED(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP))
+>> + 	if (!IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION))
+>>   		return false;
+>>     	return is_power_of_2(sizeof(struct page));
+>> diff --git a/mm/Kconfig b/mm/Kconfig
+>> index c1ddf59c0d71..b5f8372cd164 100644
+>> --- a/mm/Kconfig
+>> +++ b/mm/Kconfig
+>> @@ -461,6 +461,9 @@ config SPARSEMEM_VMEMMAP
+>>     pfn_to_page and page_to_pfn operations.  This is the most
+>>     efficient option when sufficient kernel resources are available.
+>>  +config SPARSEMEM_VMEMMAP_OPTIMIZATION
+>> + bool
+>=20
+> As sashiko was concerned about [1], it seems we need to add
+>=20
+>        depends on SPARSEMEM_VMEMMAP
+>=20
+> here.
 
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
----
- mm/memcontrol.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+You are right. Besides that, we also need DEV_DAX to depend on
+ZONE_DEVICE explicitly.
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index b3d1ac3fe0aa..f454d02746e9 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -813,6 +813,17 @@ static long memcg_state_val_in_pages(int idx, long val)
- static inline struct mem_cgroup *
- get_non_dying_memcg_start(struct mem_cgroup *memcg, bool *rcu_locked)
- {
-+	/*
-+	 * Fast path: the caller holds a reference to @memcg, so reading
-+	 * its CSS_DYING flag without the RCU lock is safe.  The RCU lock
-+	 * is only needed to walk up to a non-dying ancestor, which
-+	 * happens only while a memcg is actually being offlined.
-+	 */
-+	if (!memcg_is_dying(memcg)) {
-+		*rcu_locked = false;
-+		return memcg;
-+	}
-+
- 	rcu_read_lock();
- 	*rcu_locked = true;
- 
-@@ -824,6 +835,9 @@ get_non_dying_memcg_start(struct mem_cgroup *memcg, bool *rcu_locked)
- 
- static inline void get_non_dying_memcg_end(bool rcu_locked)
- {
-+	if (!rcu_locked)
-+		return;
-+
- 	rcu_read_unlock();
- }
- 
--- 
-2.53.0
+>=20
+> Apart from that, LGTM. With this fix included:
+>=20
+> Acked-by: Qi Zheng <qi.zheng@linux.dev>
+
+Thanks.
+
+>=20
+> Thanks,
+> Qi
+>=20
+> [1]. =
+https://sashiko.dev/#/patchset/20260831075342.57563-1-songmuchun%40bytedan=
+ce.com
+>=20
+>> +
+>>  #
+>>  # Select this config option from the architecture Kconfig, if it is =
+preferred
+>>  # to enable the feature of HugeTLB/dev_dax vmemmap optimization.
+>> diff --git a/mm/sparse.h b/mm/sparse.h
+>> index 049272aba84e..b408d15baf7b 100644
+>> --- a/mm/sparse.h
+>> +++ b/mm/sparse.h
+>> @@ -10,7 +10,7 @@
+>>    #include <linux/mmzone.h>
+>>  -#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+>> +#ifdef CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
+>>  static inline unsigned int section_order(const struct mem_section =
+*section)
+>>  {
+>>   	return section->order;
+>> @@ -72,7 +72,7 @@ static inline bool vmemmap_optimizable_pfn(unsigned =
+long pfn)
+>>    static inline bool vmemmap_optimizable_order(unsigned int order)
+>>  {
+>> - 	if (!IS_ENABLED(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP))
+>> + 	if (!IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION))
+>>   		return false;
+>>     	if (!is_power_of_2(sizeof(struct page)))
+
 
 
