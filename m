@@ -4,119 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2DC9C61DD3
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 07:29:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F2A9C61DD3
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 07:36:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D82BF6B0088; Mon, 31 Aug 2026 03:29:17 -0400 (EDT)
+	id 3CC2E6B0088; Mon, 31 Aug 2026 03:36:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D0C556B008A; Mon, 31 Aug 2026 03:29:17 -0400 (EDT)
+	id 37DF26B008A; Mon, 31 Aug 2026 03:36:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD42A6B008C; Mon, 31 Aug 2026 03:29:17 -0400 (EDT)
+	id 26CB16B008C; Mon, 31 Aug 2026 03:36:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 900526B0088
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 03:29:17 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F2BD7A3BB8
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 07:29:16 +0000 (UTC)
-X-FDA: 85160738712.10.DAD62B3
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 24CC61C0006
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 07:29:15 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="HS0Q/svA";
-	spf=pass (imf18.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788161355;
-	b=bBmgDQenVbCjXrWFk7r2tMraTtXQMRvZwJHacx8/z/EeFwWMC7JYWmWQUEwFjObiJxtLJK
-	cZcSdyRPdU+AFpD8yLI+EAE3M9Z0czFYCeY5ErcRmvBtCUYL1jxoP89R/8RxMZrXmRJ0TW
-	I8HMEJuhorW/CbxE1k7id9QWMTWghPs=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="HS0Q/svA";
-	spf=pass (imf18.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 03FAE6B0088
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 03:36:24 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8641640389
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 07:36:24 +0000 (UTC)
+X-FDA: 85160756688.28.1CEAB98
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf05.hostedemail.com (Postfix) with ESMTP id EBD2B100003
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 07:36:22 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=nq4JVzso;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=pk91fDTw;
+	spf=pass (imf05.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788161355;
+	s=arc-20220608; t=1788161783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lObPyH6kdWwL+DlBFF/s5fn9Kq4aH8qpCjM9SPcedhs=;
-	b=Cp1+ndU1wOAFry+1af0zWVb3hgFTsx/u/Uy2VS8NU3/lVe6VUgcZQ6aAnR5M/MTC1VY4uP
-	Fb4/eqqDOZ+dpPxyNiHkKgjOTr2oEI+imtk1pcWil9KnIAk/jmaxeiIEC8+Jbe7M9aZZ8o
-	vL+YiaZUtCHRXiYAR657PyDx6LUypM8=
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4953e04ef16so30809315e9.2
-        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 00:29:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1788161353; x=1788766153; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=lObPyH6kdWwL+DlBFF/s5fn9Kq4aH8qpCjM9SPcedhs=;
-        b=HS0Q/svA5nKW0nQXwxTWBYEI4cDPgKFIRj7uXwwvGXAC9G2s2V42WoGM7n8Qj1SeyM
-         rTtdLdsKgsuGfWxoxNmcY2zZBGbD96NRBIu3xWBkFdIX/wTL9M680xz5eVVA1VM43g6W
-         fy/Y7sQe/ycuTov8tMAWX3Ogi4q0csiZ6Ks2RUGB6+tDzzZYYxlZ0AOMvwjHleHm1RXA
-         iawoV/QDMnV7b1NoCmFWyYr4JtJaplbaw7yMvZ8fKtnyquSJpho8wAr20PloIFvGDHl8
-         icBd7/9Zn2jTUo0MXuYuuXzGweg7AVpDi1O7ffGBP+D0yAQDRMtNKXvzM/fAcD+P9zUU
-         TVPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788161353; x=1788766153;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lObPyH6kdWwL+DlBFF/s5fn9Kq4aH8qpCjM9SPcedhs=;
-        b=li+irlYccPJ3aEQAoCZt0vBOTAtkECex9TaWbsdgXiLREup76nfXsSNpfpK/SlynUx
-         0PrY/MiWhg1PJQ8+ir+C/wtsLM2gg+mFsyEwuU3bKE0n8Omko6eLSanr5aKQu6e55v7R
-         0psKDHpLn4G9JchWDPc6AIeXVUYQ34N90lBfc8ghJeHjtbz11yZ0Nb2H+XvtjhgiLrW/
-         i0+95NIN38ViYehiA7eM28cuY27O8LjcsHmovM43woe3bD7pmKd5MYUafIxrWCYhM5/r
-         tg10LhkYqDYyfXBcBKU1A1dBGM112FpUu8+5issBw99HUOVRJlGbvioK+n2UtYCbsmu/
-         vIkQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoPKarjxF332+AuvNaKAkoYswEEUxugyKl0L+MmW8Ra3K1JzSTRV5WF7I/KLTfH6NQ7s6E5KjCZvQ==@kvack.org
-X-Gm-Message-State: AFuF++kTVaJYJ1As7sLAjtY+f7B3j0g8E6b1bzRN2+wd4k2TuwaLS/Tf
-	znCk5VqeQ8Z2nfqRHtYzAn4kmVHs8CTNkBZtAwwO+xgOssKBC4cbPqghatIZwxj13sQ=
-X-Gm-Gg: AR+sD12VLZ/edMsf9nan7BgiivJER5KJ/ohTFMT1/Uixy2U0T/b5uC9b1VpkOZ9BfW1
-	20RFjD0lsVV7N/kH66yN3kliAYzpU1asDGVt2gomvIun4JihKVR4HSB/VfyujfQadZpL8U0NoLq
-	SBjkOZfl7U6ph/HT/7SDoBwGlm/uyp0KqWy2JaQH3vrBFOUpIU9dilcV68HqssPkRVASISG6fhY
-	W7Effz4jN0/Es9WfY2Jwfr8EhsD3VME5Hcg5HyHnbPi6GIw9NELrCUUPbD+DoIIdpdiR3uNrUq6
-	b5hJiM5CfUSS7WzL8/rka5mYMk9xOHTXFvUrHOFctm+x40x+FlfZlmvDBAWv4e9AZuOM0qFk+GV
-	tDnaFRUrLYxgGrp0twz9vH32tQZ7T8k/caZA4OyoAUOdq9oh3gsznYUHEdYQyAbPGttNEq7k4zw
-	6FvvXogtQu2rKKnLlreVrLFwm6LZ1E6nsCN1MtWtIZ7VspVA28VSRpNYDcWmJ5cJygZ64XPIXbB
-	Q==
-X-Received: by 2002:a05:600c:b85:b0:49c:c96a:d36b with SMTP id 5b1f17b1804b1-49cc96ad411mr275821535e9.12.1788161353524;
-        Mon, 31 Aug 2026 00:29:13 -0700 (PDT)
-Received: from localhost (109-81-17-247.rct.o2.cz. [109.81.17.247])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b94dd2517sm269889955e9.7.2026.08.31.00.29.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 00:29:13 -0700 (PDT)
-Date: Mon, 31 Aug 2026 09:29:11 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Rik van Riel <riel@surriel.com>
-Cc: linux-kernel@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>,
+	bh=0bbLn43OEfzJk6RijiG0hY9eLwY+qM7uVXluXMN+YSs=;
+	b=1DnZgfDvjnuX/Rf7DyAxbPtRJdtR3RpGUnrjw0v+NWLDDsZLFMavFkwt53itw7cbqiUsmK
+	zhYr8Utw72E68caQg70BGPHRW+uAqV0Z1TMLD7b6R6cd53RWwrJJG/fep5lRSWQHv5XIWK
+	2XuW64CSnaTjSrF5a+N4fnLuWeIVWiI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788161783;
+	b=jfbprmRx4IDI4lUEPsfOOYWwD7GDbiMxUBdhwL3e/d1Qvtt51RYkS97FRx0ELFpJOuge0S
+	KHnSgpV/oP9VE/6WJ5I4Sxip8y5so1FYvJVRy9Icfsxc5lCaqOYDGdbGWhF2PmuXBXA24e
+	SiPozuUgUX7VFoFqKdlMyFjVvVrPBt4=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=nq4JVzso;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=pk91fDTw;
+	spf=pass (imf05.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+Date: Mon, 31 Aug 2026 09:36:19 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1788161781;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0bbLn43OEfzJk6RijiG0hY9eLwY+qM7uVXluXMN+YSs=;
+	b=nq4JVzso6agIIEJPtT+hA2jj6xB08NNe45cLx3b3da5REQJup3Vb5gX/bgy+epwACYFOwh
+	4dmrOIEwuY26RvfhCQapR4BZRlTBYX8V9rIvVQdNqVZtO9KcX8cY2gPUAvu7eG1IUk4zWI
+	iGQf6n/EHr3gsDVe8aj2pFL/0A65eG2jbRDrih1dS473/GiZE0uyEJDNlC2egaMTnbXRGM
+	I0XJQ4EsLkyrO58e8EV7+vj7II5p+fmDJfFCHdFbMJyuZD3zYw5jR1Vz6jk6oExsjbzlZX
+	KRTFOrv9cQRhCIMu5h9rUFqvjPoLMdr2d2IYVQJDRkrwgFk+D6SvmF+ajLcFWA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1788161781;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0bbLn43OEfzJk6RijiG0hY9eLwY+qM7uVXluXMN+YSs=;
+	b=pk91fDTwvh9wOOk+diFwBjcIFfkAtuIAvaITJVIRjHrxu/tDM8ZpStQUYGvAopCfp7Lifw
+	XzuXrIPEv7O0J2AA==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	David Stevens <stevensd@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
 	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, kernel-team@meta.com
-Subject: Re: [PATCH v2] mm/memcontrol: fix stuck FLUSHING_CACHED_CHARGE bit
- on isolated cpus
-Message-ID: <apUtRwonTCUF07u5@tiehlicka>
-References: <20260828135036.7d44361f@fangorn>
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
+	Clark Williams <clrkwllms@kernel.org>, suleiman@google.com,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev
+Subject: Re: [RFC 06/10] Reclaim memory from blocked kernel stacks
+Message-ID: <20260831073619.Ssq-wt7s@linutronix.de>
+References: <20260827232948.2520558-1-stevensd@google.com>
+ <20260827232948.2520558-7-stevensd@google.com>
+ <20260828133620._x2XfJR_@linutronix.de>
+ <20260828135947.GU776954@noisy.programming.kicks-ass.net>
+ <CAOiLmNHrbXeTY7zoNodmaZUoMWf+NgvGvZ_LjfWD-1sKAoiLeQ@mail.gmail.com>
+ <20260829084901.GA776954@noisy.programming.kicks-ass.net>
+ <apLxcg3Lgy0-nXA4@casper.infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260828135036.7d44361f@fangorn>
+In-Reply-To: <apLxcg3Lgy0-nXA4@casper.infradead.org>
+X-Stat-Signature: 4gth31ifenq5qo1uhkicbe95369msni9
+X-Rspamd-Queue-Id: EBD2B100003
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 24CC61C0006
-X-Stat-Signature: 4r4yfqktu7897pu64mbt3nz6xku7ztkf
-X-HE-Tag: 1788161355-882342
-X-HE-Meta: U2FsdGVkX19+aOHDFYfSCDD63qvJR/Jj/iEh/BJ/vgfWIxQ6Z2ppcdDLeo0n16UGxlgFbCiX+WiqvdZTBg8G/1TTNOmhXctXQYgo/xvKuOgKphemIThAyihSLygSt+t+M5Z/FSrXeumA8x3K4P1UncCC7FTJzvYlOkkncz+qoQHSyEVV/ibK9cdkqmJzlAOtr+7E9VBt1HEA7lVpKzRHRE7bvXMIcTkmHGWOc65jkRwec3aUpfYI3R9wfHK7xLtEFTmqO2j/h3mOdTX35oNaGTcn90D8AgdZPbj6fZ1GfpVM9vYscQUZVEF4XJ+F4/HfNiQSNydi4uTlTcp43P9CuQYNjjFHX+QbK6XEgVA0ebpTLEAy+BONF9IjJ8sw+dIUbCvUf5+LgWHHwMLthn04jUHqUQHlyrUqAKs9FT+KIeUMngV2zLG0rPEhLQHsRA/tG4Z1YFjSK09ezalp7cSI0r5MTyNyJokoDlbIb8u7mzg3+oex7qsdbETjy71rWDqM0q18aETVN9ISycYjlV7Mx65Ga6zF9pF3j6LO1RfqqqHrXMuPKeIKMOv1p7YC666qXOa6juOXfgiCigLl98t6ukvMClAY+8E5KrOsAQKrUfCigHcwO+bbzzlfQB5Ndn/uG5wAF8LWM0rLWZHU5m4rphB+xqA3tdx5roypqH8iEDoQPR2HPo/3bcH4Gmfev9sh1ejHXdeKcBvgS6W7owf28k22EgSstYxP+F/zIdqiV/AYdHMqKPQsQHiYRhh1PpryHhDimBS1IQx4vzOFy1WUueN9BBdxzMgnQ8XouhiDKJZ6RHD1rJNjgay6pFsHg37I4aLtPyOKs6rtAFx/TZP0YAkji18X/nw7bGR7M8RULweyLP06O8gk5nVNcdJIFhpOYOHhbs8LvqaVDpnUEjFTPoc1SZNJYNYBi1l4/bhIYCkTHsul2xEQxpbMyEObcsWHFXyA9qsjhsxaTxdsP0c
- OBa5QcLp
- wZwZex+mw+3ZPm/uwzN8BjKQ05eTI+dLG7hC+G5eqILadcSdb+jaxKWPjNQJfjL4PX0/ScpngLa+WPNCBsyxo+/79wMlJWYClaats8LnzGHVTuZmQRrfUgOdwocdqsc6CQTbxAjjBzZbWSTLN70EqLoPm1oiBk35IZ+sx6rsWQr2sy28y7TlsKa6wFx70qon3IH689YZwC5ADXfbT40m072dsMQN+CpwYgWJPhsemXqa9TIpTL4Ncz10RwpxlX4IA/EegyDRkETVZCTeDU3M/xAV52Czlex7ssYGMW/h0fHxFsZLkIvLJC254GxFe+6jlFAUuQmUzUmVm1OGmd3wxtW7EDyykU8mxvR92yEoU8rW+O/P93A40NfHJEpmY94IrZORyazKcNzGZDe7FA2aexT+Nhy3pqXVWP52P/VhnaK7H/lvp8lUm7fK00zRAUyw5jQDePYMJKf7MOWsH7u9WmOPvOZPRIo0pgelEXS3vhbe+zQRfIYiKTTtD9jfR1Y3W8HsuoS5gK1sZyUQ+4XQoRFqZRN34MH+TsuZl
+X-HE-Tag: 1788161782-160474
+X-HE-Meta: U2FsdGVkX1+0jhra48Scjc0QevP98BucljVm1uxyCpMbtpZ0uKDV1FLmp2lh3UwTZbkBGhhwSnJG8QYbKOzgRhy1fg7xeg4TJ3Rzadp+rnO7r/9shqOdhCsMZ2YWT+xEhQqilXI3eY+6MK0FEVy4GPaPiP04JX6RwOzdJfqhvE1RjAwogkW5HQC8BMvqDctetYMfTsuzUAs15MKe31Piw2dQXpfBxXpEITr4j1mDQH4F9SBT0Vl73i057R4ANtTlVAUVVvw4iHM5p5BILUND05xBtP/0hMOmgcsxXuICTkXFLjv1enWy1R2sErpeRoAKHDXBFRL7xfTVJjqOSW3npP8uC/tR4yw+0qjIfl1rd5RCAfjJ5PqfygSsv12iD8w93tDczokA8nMTCQM9BzTA4yeacAvDoHEAd2xNLsmw4ku9ClBB58EVfWAgso0Tno64zuSjww8AbkfW4qRU2Cdvt2UNsfKB3k0EZx9SjFFA0lt5sPqNmOFAHBFMWruyxRW6rRPc7zq+FftodEkVFfE0mPvH26AB+uzl2XJHu0LMXwhOEazwK73qSlff8gUdRNZ+y1qciPPSBEfNDm1oAgmB6/fsiyETE3TNS2oPnE3kWqi4peXP9Xgp0jwHkgVfif8gdM8IWlcYGxS7VqtAf9Rw39dMCSOPhDR+ln6eyLUatKy6MzorQ01pJGNZhlbsGSPgmGYS90Aoy72uvV6tmp+0aguPsW3cJG8hQ5iAevw/WlC74Z4UOPbr7UCCQXxuBjzs10xsPnFro0WfOrcUeieRAbaIDqi76CdqxD2t1vYoqKzn+NiO4tLg1pshaFhFY1X14bARFBJxNi78GoOoDiEZYXHnrJ2Lr/Gou2y0rlxuLOYoVrUn/bSpM9k21iyfZi4WtZkWU1ZqtVqQahuyRlTTean3qgOhHAVIvm4LhpEU1/62FVToUyyvtA7TweLGFdVHOShlc8BtYs2e49KtQlU
+ OR5x00R/
+ OrXf9yjqw7vdVFh0UfKqES4Dci9RUgnkHZbtz6Hhpb8RRPLjDHcbsyhIfV/AW6yfyBgdbx6oeKk+XlRktP/fjHCanwGP6l08iRNzf7bSjQLYteimdrDlzOeGgSagum1Ew9WTc3xgCKE+Qd4wDQIspug4FkbWeL6plm+qk3jJqJL0tJ0anVDx2yRVC8BZrZqzDv3Lx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,94 +129,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 28-08-26 13:50:36, Rik van Riel wrote:
-> When drain_all_stock() sets FLUSHING_CACHED_CHARGE before checking
-> isolation, schedule_drain_work() can drop the work in a separate RCU
-> critical section, and housekeeping_update()'s synchronize_rcu() can race
-> that second check, leaving the flag set.
+On 2026-08-29 15:49:22 [+0100], Matthew Wilcox wrote:
+> On Sat, Aug 29, 2026 at 10:49:01AM +0200, Peter Zijlstra wrote:
+> > > On PREEMPT_RT, it is necessary to skip the call to
+> > > alloc_pages_nolock_noprof() from under pi_lock, since with that
+> > > configuration spin_trylock can end up needing to take pi_lock. But at
+> > > least on !PREEMPT_RT, there is no risk of deadlock.
+> > 
+> > Yeah, which puts the lie to that horrific hack Alexei did. We should
+> > probably teach lockdep about spin_trylock() not being safe and see the
+> > house of cards crumble.
 > 
-> drain_local_stock() only clears the bit for work that ran, so the flag
-> remains set and the stock is never drained again.
-> 
-> Have schedule_drain_work() return whether the work was queued, and clear
-> FLUSHING_CACHED_CHARGE in drain_all_stock() when the remote CPU is
-> isolated, so future drains can retry.
-> 
-> Fixes: 6a792697a53a ("memcg: do not drain charge pcp caches on remote isolated cpus")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Michal Hocko <mhocko@suse.com>
-> Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Signed-off-by: Rik van Riel <riel@surriel.com>
+> Why is spin_trylock() unsafe on PREEMPT_RT?  It's not intuitive since
+> one can mutex_trylock() in interrupt context or under spinlock.
 
-Acked-by: Michal Hocko <mhocko@suse.com>
+no, you shouldn't do mutex_trylock() in IRQ. There was something, I
+don't remember but that is the reason people use semaphores because it
+is okay to do down_trylock() in IRQ. It might be unlock path. 
 
-Thanks
-
-> ---
-> v2: use the approach suggested by Michal and Shakeel
-> 
-> Link: https://lore.kernel.org/all/cover.1787890328.git.riel@surriel.com/
-> 
->  mm/memcontrol.c | 19 ++++++++++++-------
->  1 file changed, 12 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 1271d390b617..309398e943ca 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -2306,7 +2306,7 @@ static bool is_memcg_drain_needed(struct memcg_stock_pcp *stock,
->  	return flush;
->  }
->  
-> -static void schedule_drain_work(int cpu, struct work_struct *work)
-> +static bool schedule_drain_work(int cpu, struct work_struct *work)
->  {
->  	/*
->  	 * Protect housekeeping cpumask read and work enqueue together
-> @@ -2315,8 +2315,11 @@ static void schedule_drain_work(int cpu, struct work_struct *work)
->  	 * pending work on newly isolated CPUs.
->  	 */
->  	guard(rcu)();
-> -	if (!cpu_is_isolated(cpu))
-> -		queue_work_on(cpu, memcg_wq, work);
-> +	if (cpu_is_isolated(cpu))
-> +		return false;
-> +
-> +	queue_work_on(cpu, memcg_wq, work);
-> +	return true;
->  }
->  
->  /*
-> @@ -2348,8 +2351,9 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
->  				      &memcg_st->flags)) {
->  			if (cpu == curcpu)
->  				drain_local_memcg_stock(&memcg_st->work);
-> -			else
-> -				schedule_drain_work(cpu, &memcg_st->work);
-> +			else if (!schedule_drain_work(cpu, &memcg_st->work))
-> +				clear_bit(FLUSHING_CACHED_CHARGE,
-> +					  &memcg_st->flags);
->  		}
->  
->  		if (!test_bit(FLUSHING_CACHED_CHARGE, &obj_st->flags) &&
-> @@ -2358,8 +2362,9 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
->  				      &obj_st->flags)) {
->  			if (cpu == curcpu)
->  				drain_local_obj_stock(&obj_st->work);
-> -			else
-> -				schedule_drain_work(cpu, &obj_st->work);
-> +			else if (!schedule_drain_work(cpu, &obj_st->work))
-> +				clear_bit(FLUSHING_CACHED_CHARGE,
-> +					  &obj_st->flags);
->  		}
->  	}
->  	migrate_enable();
-> -- 
-> 2.55.0
-> 
-> 
-
--- 
-Michal Hocko
-SUSE Labs
+Sebastian
 
