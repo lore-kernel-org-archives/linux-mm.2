@@ -4,126 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 981BAC624C6
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 14:19:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9818C624C6
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 14:25:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B3C36B0098; Mon, 31 Aug 2026 10:19:17 -0400 (EDT)
+	id A1D666B008A; Mon, 31 Aug 2026 10:25:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8646D6B009B; Mon, 31 Aug 2026 10:19:17 -0400 (EDT)
+	id 9CEA66B008C; Mon, 31 Aug 2026 10:25:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 753CA6B009D; Mon, 31 Aug 2026 10:19:17 -0400 (EDT)
+	id 8E41B6B0092; Mon, 31 Aug 2026 10:25:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E9906B0098
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:19:17 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CD11580160
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:19:16 +0000 (UTC)
-X-FDA: 85161771912.29.2B7CD81
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 22ED2100003
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:19:14 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=IJgNMTIM;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=YDLpBnsD;
-	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf05.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 73E626B008A
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:25:00 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 148C81C07A9
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:25:00 +0000 (UTC)
+X-FDA: 85161786360.20.289D0EC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7FD104000A
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:24:58 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LITTDiu0;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788185955;
+	s=arc-20220608; t=1788186298;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fY9FkrWPyWj0ZgYccDxYtQRH8Ojx2I+KpYWeK1aZjSs=;
-	b=QgkICqkihvqz4BHO5MDvRZOLoCefUIbpbPWvm6QH7hAiX20yh23WTaKv+sJx3Cm2zyx7a/
-	JX/dmlaQczvooy6anIIHVq726junUn+Js2gA/ArNiti9eUsT3CaFLDdkTMc2+OdXAQs9oz
-	0/ZTeNWuscpbbs58q5sC4Txvm1fazAk=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=IJgNMTIM;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=YDLpBnsD;
-	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf05.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
+	bh=kN8VVuJjyCRIfJGd2CWhuOieF+fTB+JhsXqBxWFw1xw=;
+	b=s/IlUS4rlaBFmuuxMG1XAom5k/4ItPLFlENYIacKuWz98+STENoCgWgrDF5HfXAJ/MoauA
+	zHKg0Njg8XG+6eD0nuYuOSIeRmXRj3aRemrAxvPojuSWQmkZgEXZgx9ysTEzHRRhbJ5/Qo
+	YyiQ47n+g88YmLXTUu2JnfBQe65vQk4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788185955;
-	b=3ka5tBqHeuJLFBvRKUGJri5eufpo8sVTMxxzehfrYG5fRVhu6axjYP56ZDh8wNymuIBDd1
-	3bDnDtE1gET4DslbH9ff5Jow4upJKzOfLzJEWsXkJsVkT54oR0FT39wGxoYXoiU0XEJDVG
-	kMKrTBS/wxxUm2JBj6FZBmcDssVMmPc=
-Date: Mon, 31 Aug 2026 16:19:09 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1788185951;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fY9FkrWPyWj0ZgYccDxYtQRH8Ojx2I+KpYWeK1aZjSs=;
-	b=IJgNMTIMa9qcuZqyQE+GWQmT7cQgtDV9HIZlDG+9zc4n8ry57LubvX9cN0NcV9TybkqM3z
-	USaydmSmVjyyUm+3MS8IpLX+GPDIICU330OOMpKw/BwMUblf8gAPONtX90GufQu2LUT58s
-	1tI2FVuP32tPuYLetmGEy18q/P01FFG6REUmB2uuqv1I73zUrGjcPnKSbrHqfIEyzjOCt3
-	Aybhz5fr1Aw/+BnUPkvJngpbfn/GRZfa8uBO6vXA6muOIGleAe8PIfqaSRm+WZq7ui281O
-	0b5u8OCx3UvWSblltmM5vardsl8wETIXZPeFqLeW5JOcO/07Dn4k1Kae9t2Tkw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1788185951;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fY9FkrWPyWj0ZgYccDxYtQRH8Ojx2I+KpYWeK1aZjSs=;
-	b=YDLpBnsDa5JKA0InFyvu7EzOe/ogs1h3Xq99G44tWTp3Fqgj4tW3yhLruINH7w66+25ZI0
-	U7piwSBCg7GzteBA==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	David Stevens <stevensd@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
+	t=1788186298;
+	b=Zt0/pawI0XQR8s8Xy1lsPjr6Z5BNAn+wpNaLmKB6Vkvaa76euU4uR8wDXqWpXh5QydlpLz
+	tzvLf9XrvGbOg4UY/C/SY3yRLmSEMPw2sqSQS3E2CD31+Sb4ctIjftxtgphuggfAxz1lrl
+	l3JY++/2vRwMwEkMhA6t4gZwjay/WKE=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LITTDiu0;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id EE9D660200;
+	Mon, 31 Aug 2026 14:24:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B5201F000E9;
+	Mon, 31 Aug 2026 14:24:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788186297;
+	bh=kN8VVuJjyCRIfJGd2CWhuOieF+fTB+JhsXqBxWFw1xw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=LITTDiu0TuhGMwuKMF4EXuPsKnjGbNXD03w0qkxXneBOu0Oe10rqqshgvKt1bkagg
+	 2SiU7E2iSn5d158K4qcu8jAYR0b8GxPGeomms8nTm6p6TfxBBi9jTogLrej/XhKnmI
+	 xHkGwjNTm3O8d5s/si0eRHDbveXkajHPlfcNAoe5eJqljzEKT5Q9YTIFrI7cKG9Kqn
+	 C4EZc9ZL6Y82v89T5/YbMiIJozMIJ7w0J+7FJh0WxKknNBj8JaAFY5YbCUtJ01ZTA4
+	 6JKoQy1jNjb1P4pVGo1xRiZ79kkLnWFuWz8qIMxy2UM6TLllD8pXB/29evc3afAq0X
+	 CpFwtqwBDWCkg==
+Date: Mon, 31 Aug 2026 17:24:50 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Oliver Neukum <oneukum@suse.com>
+Cc: Chas Williams <3chas3@gmail.com>, Duncan Sands <duncan.sands@free.fr>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Johan Hovold <johan@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
 	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
-	Clark Williams <clrkwllms@kernel.org>, suleiman@google.com,
+	Matthew Wilcox <willy@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	accessrunner-general@lists.sourceforge.net,
+	linux-atm-general@lists.sourceforge.net,
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-rt-devel@lists.linux.dev
-Subject: Re: [RFC 06/10] Reclaim memory from blocked kernel stacks
-Message-ID: <20260831141909.WrGjMogw@linutronix.de>
-References: <20260827232948.2520558-1-stevensd@google.com>
- <20260827232948.2520558-7-stevensd@google.com>
- <20260828133620._x2XfJR_@linutronix.de>
- <20260828135947.GU776954@noisy.programming.kicks-ass.net>
- <CAOiLmNHrbXeTY7zoNodmaZUoMWf+NgvGvZ_LjfWD-1sKAoiLeQ@mail.gmail.com>
- <20260829084901.GA776954@noisy.programming.kicks-ass.net>
- <apLxcg3Lgy0-nXA4@casper.infradead.org>
- <20260831073619.Ssq-wt7s@linutronix.de>
- <0849e5ca-6dec-4cf9-83ac-89ab08364044@kernel.org>
+	linux-usb@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 1/4] USB: usbfs: replace __get_free_page() with kmalloc()
+Message-ID: <apWOslh5BF-ISQ6f@kernel.org>
+References: <20260830-usb-v1-0-aa349c302246@kernel.org>
+ <20260830-usb-v1-1-aa349c302246@kernel.org>
+ <ea165ff8-cda2-4fed-9354-1d14ac2d87ca@suse.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0849e5ca-6dec-4cf9-83ac-89ab08364044@kernel.org>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 22ED2100003
-X-Stat-Signature: tgffrmommm1c1z67p7nu89aa7jwbpgab
+In-Reply-To: <ea165ff8-cda2-4fed-9354-1d14ac2d87ca@suse.com>
 X-Rspam-User: 
-X-HE-Tag: 1788185954-817220
-X-HE-Meta: U2FsdGVkX1/ZQMrMcYxxwNY5habDBtY6KvwNxds/HyFzQ/R1tAnNGegWofX8LvAZShdOG7tyB4F9As6+uFkaybK60Rb6gHmdRkKVfRkvBAd3Ud/sNyASFrz4igQQk17KMx3jUpmccGKIp0yOCKJhUqvw43OsH2sLl31u0JV4ZZ4Ky/7MLg5IF8tPWV9dZntZgiZQWOsrrJwce5nxCqpq6kDaOHUk5va1LYfqDnfObuuHsiNuPtUw9hGvWuU3qB6xEg+J1/jJhFvBuXclAGkREY14N1wkpnbNnXzu78IKMnDtZA7Zpd/5sJGDyWuzKKn2B9V2gqFTYO8DU4KKVVt6KlJJYNsU1rS655vwyJ6+w/518WAD+jatUbknb550SXs3rbLJRWzM6YIVPVEBdL7NhL7c6WuSRsALrSnuLkvuPMNon4+FPKsk6yfs4cMCm7v4wQZYMPuSO3jrWOBiKVNh2ZhS6t3S+qzw285WVgtBiWvqCNNXAlB/klH7Y3xGHufjZAdBF3ZKYlncbftKgJ7z6RaspmjZg4CqRrrpVbWvhcIXus8gQd5x7L4uJt1DMdh4xOmAviCTqza1ExbnvNPX9ao9VmsH/TQWnthF8bg61tZsxXfexmpcyj1DYcxFOlFgN7lQ9PUZdRZk39iDdP8H955AP5O8YvUDgpz7XK4VQHxvx9Fye9q1/aO8G/JyBqi+LoieHj0Gj+DF9asDiMjY80cOHtrjAfRw7AkzbIF/79u0Nmz4UMc1K25mhg6PWYUnKcbeYZDSclOr6I5E4jr/Oa/yS4A7WJlT39AVW3ZASrSXOwSZuwyQ2dIFVzkYXYiHvdzE+uwD68LX9cEWPy8doeSBibxv6+dYfmWgSc5zhHG+bBZDD/QoRR6aw7FM326ifotBV4icceSxrboWLIjyNBbUgu3qTVScPGH/FireKGxlbfxoGGqXrD3+3ISv17Zwd5vv/dp/APFg5Xxwe/U
- hmHHSkyb
- S+mDPyYZU7wb/ipbk8q8JnH6Vu+jB0DhbsvVV4+bU9+VeDRljymxT9v349CsGXj6R6cYxBzXebZSnIVUehhgSySedoJkEnjddIn2uis9sUWKZuQk0vseokc+QJZ8uvh6Qlz1QmNhVipLbyZVYE9uI+DvmpEZ6ZOlwQGMwO6Zz+8AQLQHiGP7UcAxJCH7N9f/pLtym30c7/teQECjz5tzt6QJLlAR9vjfNol3vnmenNl8QMLQ=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7FD104000A
+X-Stat-Signature: xgxp7s9sciugjgu7zzp1dnrjmzk4oo3w
+X-HE-Tag: 1788186298-275008
+X-HE-Meta: U2FsdGVkX1+5T3rWXjzNZjKh4OWGGbCoFQ3YedRNAN8Ajl/WGx0fNv5s6uN0QSkPr8zJu9zKPJRBwkrjYeLKl7lyYU3JGDJsh7xSDn0pQc7raWticfEkoUoh/FyHUAF0duv7mix/LHqM+aNZ/Gt0PfS/iKStV4zbNUwsDoZ6sXMaEY0VHyh/yPrRnN+4AycNIkUtXiyBdmYRw7nnWbIbqoqyHJEITB33FFPsXJkCaFk0Xm/Tpn58Cbqur3rlmKo5R/5eODXLtrx3UliizRyg+JJqiUeF31QUOa2wmj0yDXt0jHd5baRytTgnnaFqSaWIaBimYHEFRJj5/MM1AlDOqY0W8Qy5c9vUsoTmXt0PoVge7+Epg0qSTIDjXvO3125K5IoC9NEEdTJgEhghaWr8VcskaJGI4kaSqf0UaJiCTTEsH5GhLnOXRDGdVisea0ynYV++pD+uPRmbTApHPFMtuAqY1qJ99FbSGp/OnZPlpXExDdxvsUIGpT5OuTNwpUGeuhE2zm5YSWFo4VxOGyei8fzkMLvc7/FR5vUEKMgAGujRixg7Cm8j6shpcMhUBCyGwMvfHHy7SIpLnlw3NsDxymkAJU7jOuA6Zu1eXf4xrfD7pB9eQFXFtscreGSj/p5RCDJyikTUk+KIj/nz8kaMrSSOdkcaV5PWK7NBkpbyAID7zdeABr7KYJrjXzaO25v8tC+mwNFs5lXrnMx/XBrzF4qUZu8rN9hK4Zxwf726O+QcXWQfXK3+UFvy+Q5IXOqHsakpFvZ31NoJd621pe48ohKm9EEHnHwHxgBoUUwUuPJdvBIUzCRwA0wKgEUgAUHYlKfWFOM//BqkdTT8Cq10jS6LVSFn1flTR1NnP8WEyTdOQI5/JWmHuKvkZezOg3sS4d11iI3UKBg04K6OtPF72mXxmhP5b5h8hBY8QDo5RCDvbJEbgMxcgrQhFx6+kkWOSlpcL8r5+1r0sZgCkIl
+ UKBe34pR
+ IeKVL4nE1fhowu+SdxBGaOZ0RySeI8uqqmMui2qfPQteObbg+6uw0A5ln4bniuIbNORdVzYRLwZQ/ySl3ehMEPiTlpZYv/oiziCgjv6sbctEUHQdwMl58adqlEmKaFaj7MxzcuXfw0wrmfa3B3ANlwusyqEIqT6mnuxNCxJlXQjgwKQWxXpSaaDow1CTLYOeBSUqdUX7WUFwaKgRAeW5dGTNm5tQ9apWJiQgiw3iTpmwsMPi09KksIzBDMCuRKpjCCmlQZ70XmeWEzZUquJsZt6hu9GEKo5LhjQaVBH7IinoE1a35t0FVOjOTDYgH5WW0RuJuhJ735QfUqBg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,52 +101,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-08-31 16:03:38 [+0200], Vlastimil Babka (SUSE) wrote:
-> On 8/31/26 09:36, Sebastian Andrzej Siewior wrote:
-> > On 2026-08-29 15:49:22 [+0100], Matthew Wilcox wrote:
-> >> On Sat, Aug 29, 2026 at 10:49:01AM +0200, Peter Zijlstra wrote:
-> >> > > On PREEMPT_RT, it is necessary to skip the call to
-> >> > > alloc_pages_nolock_noprof() from under pi_lock, since with that
-> >> > > configuration spin_trylock can end up needing to take pi_lock. But at
-> >> > > least on !PREEMPT_RT, there is no risk of deadlock.
-> >> > 
-> >> > Yeah, which puts the lie to that horrific hack Alexei did. We should
-> >> > probably teach lockdep about spin_trylock() not being safe and see the
-> >> > house of cards crumble.
-> 
-> Is it already happening then?
-> 
-> https://lore.kernel.org/all/20260831053846.107974-1-ngocthang2710.1999@gmail.com/
-
-here I would strip kfree_rcu_sheaf() from the kfree_rcu().
-
-> >> Why is spin_trylock() unsafe on PREEMPT_RT?  It's not intuitive since
-> >> one can mutex_trylock() in interrupt context or under spinlock.
+On Mon, Aug 31, 2026 at 03:27:07PM +0200, Oliver Neukum wrote:
+> On 30.08.26 10:10, Mike Rapoport (Microsoft) wrote:
+> > do_proc_control() allocates a temporary buffer for the data stage of a
+> > control transfer issued from userspace.
 > > 
-> > no, you shouldn't do mutex_trylock() in IRQ. There was something, I
-> > don't remember but that is the reason people use semaphores because it
-> > is okay to do down_trylock() in IRQ. It might be unlock path. 
+> > This buffer can be allocated with kmalloc() as there's nothing special
+> > about it to go directly to the page allocator.
 > 
-> Is it what this comment (recently moved to can_spin_trylock()) explains?
-> 
->         /*
->          * In PREEMPT_RT spin_trylock() will call raw_spin_lock() which is
->          * unsafe in NMI. If spin_trylock() is called from hard IRQ the current
->          * task may be waiting for one rt_spin_lock, but rt_spin_trylock() will
->          * mark the task as the owner of another rt_spin_lock which will
->          * confuse PI logic, so return immediately if called from hard IRQ or
->          * NMI.
->          *
->          * Note, irqs_disabled() case is ok. spin_trylock() can be called
->          * from raw_spin_lock_irqsave region.
->          */
->         if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq()))           
->                 return false;
-> 
-> Of course checking for being under raw_spinlock_t can't be added like this,
-> hm.
+> You are breaking the calculation. A page has a size of exactly
+> PAGE_SIZE. A kmalloced object of PAGE_SIZE is larger. That is
+> a bad idea.
 
-Yes.
+What calculation does it break and why do you say that kmalloc(PAGE_SIZE)
+gives you an object larger than PAGE_SIZE?
+ 
+> 	Regards
+> 		Oliver
+> 
 
-Sebastian
+-- 
+Sincerely yours,
+Mike.
 
