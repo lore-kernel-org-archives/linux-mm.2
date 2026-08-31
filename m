@@ -4,96 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0E47C61DE2
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 08:57:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89C25C61DD3
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 09:00:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB3A56B008A; Mon, 31 Aug 2026 04:57:17 -0400 (EDT)
+	id A10A96B008C; Mon, 31 Aug 2026 05:00:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D64806B0095; Mon, 31 Aug 2026 04:57:17 -0400 (EDT)
+	id 9E9B06B0095; Mon, 31 Aug 2026 05:00:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7A2E6B0098; Mon, 31 Aug 2026 04:57:17 -0400 (EDT)
+	id 902FA6B0096; Mon, 31 Aug 2026 05:00:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A51C46B008A
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:57:17 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 13327C03E1
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:57:17 +0000 (UTC)
-X-FDA: 85160960514.07.205524E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 577FD140008
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:57:15 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="EyqF/SjR";
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DB6B6B008C
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:00:21 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7AB121A03F0
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:00:19 +0000 (UTC)
+X-FDA: 85160968158.18.3FECA4A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E3D4380006
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:00:17 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S+fCunIa;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788166635;
-	b=Cm5BIktHiNMPZUPVDV9Cq4gh6Ffl183bDwpU+BJrO1s7syb65fC5Oa1cZfkSDee9Df97Xi
-	07MSV1XDY7amhASbhI5VvOAR1pUr1HE2Z65V6q8uWIMA2PyLfuTLDp32LPuaZVuRCvSSu5
-	W32TarCweMMwbkGwfKgcAzdzULFNZhc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788166635;
+	s=arc-20220608; t=1788166817;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YpqPq4bvtMsOVeG0UN+yy/NuoFZ+H+t/+49d1u/I1io=;
-	b=K4Ew5ET+PauBAzjua95zBgXvc52ydFIvIzVUYw49Z4ZNVY38om1M4beXNisoNuRqA8g+j6
-	yn8K6yYd21raiisJoZ9pEO3LfN3F+GwCrSy3dHmM9AeuaZ6NjsjAJBV/4n4JvA8DrkeLkx
-	OO9bRG5Q21p5HFD5CHEtBjrXUVZ1DAQ=
+	bh=zi54Xqc9wYL4hOWczwnWfHtX2+L7V7hgC2AJ84YdNes=;
+	b=2w2RT8DrF4TFflwf8X23G79uOZPELNTqZq6kBgSS5KN1+tgM/uwRNyDNvRUuS/fhyXd/8T
+	rWL93KNpNJpYNdlE7zCbIOGEolbcoD7iNEQPHFx1P1+4qIKYcUTqkAf99PB9GvUSQa0Z4u
+	cCZ6foSzWkUMY2fO2mmYoAc/fCAVIV0=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="EyqF/SjR";
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S+fCunIa;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788166817;
+	b=SHXO/QJXnflKJbf1N/a+XtqE3/QRq6dlLtpyTIclPxBvrY1evcAOdxT7ZQpviRqKeLciHt
+	fdD6DzfVwk+PYcGRDthlG2WNrI7xYk4alDuHAg/QIf1Q5T8FsXFPsFN1jnGrEvn2K44WrN
+	hAkRO0Lhl2sRFMCCmfZGhJdwJI/NJWA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E0DFB411B0;
-	Mon, 31 Aug 2026 08:57:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1274C1F000E9;
-	Mon, 31 Aug 2026 08:57:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5479E60120;
+	Mon, 31 Aug 2026 09:00:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 565CA1F00A3D;
+	Mon, 31 Aug 2026 09:00:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788166633;
-	bh=YpqPq4bvtMsOVeG0UN+yy/NuoFZ+H+t/+49d1u/I1io=;
+	s=k20260515; t=1788166817;
+	bh=zi54Xqc9wYL4hOWczwnWfHtX2+L7V7hgC2AJ84YdNes=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EyqF/SjRvWc/h8CQwUE1TihCdfdXAUbBtv3y4A0dT6UbuMtRzhhG0ezD1YP8W6IB1
-	 D1UC6+/yv2T3QyDTv/QKSDkuhr16a7cryNgwZ5B6fcR9kxnoN3Rzu1psKdUKxDkIYd
-	 54XgUOPP0PK3+aGg3J5NrGYHZ2Olr6u5urt8HbFyNnKED5mKtDkI/30RyVIOpHeDT/
-	 5ZCfkLhsWRwLFq0zE0aJsZM/2e1qpUcEmHgFIPds4GXPE1n0n8Q4v4jVTv8c8x70qs
-	 5iGeZvi71UgCbxIg4rPs/lKJWa/iDnwILmdscXOHeUODYzlfByh+0KRz1cCHK442nz
-	 QvYs+X0zqjPQg==
-Date: Mon, 31 Aug 2026 09:57:04 +0100
+	b=S+fCunIaNf5e046H2LrNrB9xa1oI+cz/7K5WGt2m+QU4J1O7Q4q4zkactYTUJjEna
+	 ZXDXDWJFCZBZeMuL0R5BGFzezr7l+t10w23P8E0DgD8N36jmTndUD+3sWi1Rsw55pS
+	 HnyrUy7xRo2rYW4gyiAru2sdSx/8MQT450NBHzWM7YUle6h12dUkvZvWwHWc8bbQ8+
+	 RyCR7Nb0Mjx5jbjiMz2pndFw4USjQnmc7QoyWHhUBYmPaIh5QNwk/nje8pKfPjFcmS
+	 ADkQaTtXqgN/JiqWTviAzOIMGEzz4xNcU6Dq7NvIiknL6i2C2NbhaLeAjeMi8pzEUE
+	 CaEZzYqJDBxlQ==
+Date: Mon, 31 Aug 2026 10:00:07 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Nimrod Oren <noren@nvidia.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Vlastimil Babka <vbabka@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, Zi Yan <ziy@nvidia.com>, 
+To: Nimrod Oren <noren@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, Zi Yan <ziy@nvidia.com>, 
 	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
 	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
 	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Nirmoy Das <nirmoyd@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+	Kiryl Shutsemau <kas@kernel.org>, Nirmoy Das <nirmoyd@nvidia.com>, 
+	Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v2] mm/khugepaged: cap min_free_kbytes recommendation at
  1 GiB
-Message-ID: <apVAEJtgAzX-kAwN@gremlin>
+Message-ID: <apVCAeICeuxaL5Ed@gremlin>
 References: <20260831075635.2244437-1-noren@nvidia.com>
- <apU-lExw89P-zKgD@thinkstation>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <apU-lExw89P-zKgD@thinkstation>
+In-Reply-To: <20260831075635.2244437-1-noren@nvidia.com>
+X-Stat-Signature: x96reh3ptuxbp9z1a5p4qapswsoexfos
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E3D4380006
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 577FD140008
-X-Stat-Signature: 55s66up19u8m3p67dycf859jz6ogiha7
-X-HE-Tag: 1788166635-546795
-X-HE-Meta: U2FsdGVkX1+kvDC1zyv745cDPbP0uPT+SQ7gUw+owmlZIG1YzeS91rqo63MQOhIVYED7wTjriEeF4W9O1caRh1rKuiv9BoYCz//PHnt83nloKjtmNWmoDfoLexpkvqOH9qy/73OyBjdJuQgABlmmSOwLnoq8OX0B3z1nj70SfG1/ypKCzfezVu+P9KVFI09IOU6aGm3SKjCcsXgjg5N+ZirikcbjrmV4k2bVKiL7/rOwFAgAlCVrQAWcCNdLBB9egt0OG5BYYrt64LpQkrbgRKOLk4MJ6H3o8r8Tazd+Uo3XQWLrn2hvntESwDzUz0SlSfsG/iTlsq9d2VZAU2kjVyc5teOEpnSjsClDYjpbElRAMDwa4wv3szS3WQEvsqTnqlhSf0J0qDraeHp2Q69VswJ6/tCwFA6OErM+hjHbmlHz1uhbqUUHZPexJMOyZpJWTKTcvHSnuocfifwd1M03SIWDz1oIKNHv+oupm0kyz55StfllgRbq7ZCy1nhq2yvjS2gOmwAh4nRsNYnLp2bMe8Dd+Vx6sXAoPBNFEgmcD+uvdFNqQ5+/zMQdTA7WtHsPFpsOAZzuBsc6dZahkcfJOegB/6B8eDPxUjR4ygV35dWCYvimyTiSHiCC6OruQSDp0G1RBDnV7non7SEnuFla5P7cq3NinqWByytiPJTLCwTWdS8kbImUfOmpFN/mFqdjlRgOmZUT1upbCVjp4R4maMrIR9Pkb7YwYcgIDKVd88Cqhal+CKvb8T9i0rcr5d9elNHRe1FudmCTe3b+NHVhyfdxVKXzLtxLJDmhS1uh/n29Fl7DGLzO9xS9P8UvhVft3TUMXEaj00OX1abejz0I0tU6bAoZBpOPBPUYQA/VoIUPlkmTv1JOEWM59jiFtL+BBYANK2SMplmFX524gtDJvC4SJXBtGLNorRaqDQz4sgU8ESS66cYrISKrVxDK/UMeK2F7pImnbtXpk5fSpkR
- a/ehc7wS
- bbz/vWchwhMxu5uhGDbNULkNRj233h1pEwvOIqBl/hQvvhrr1EvWa+FtyoFha0R1sDdblbz3SbrLY8zjJ35TEW8ehcBNAli3+3Yn6sheiMyJ3en0zTmd+07BCyX7Jae4q5TeNZE7efd1UmSmpvnKgmKSjSuTK/1xVdeGv1Tk7GBgc/w8ZLrEZ4v9bRTuWc/oDBjZtufITRkLl2C7S/yMjrEIV0M+lP+lbdDF4TEy9SxzeLEBSWuFEfLxXtddNGoNuO7GapjqF7V/MGWj6NC+H3Ky2hrf8IMNUVjbXJb0HKUhnPZo=
+X-HE-Tag: 1788166817-508411
+X-HE-Meta: U2FsdGVkX1/jzQFUSvLlrEh3EwbqvwiITp/mWZY6VRRgWRv8nRYdEnJmyVCekhFrhBfNgbkJltsRykakUwDLgNhv/c0KwXEaUTezUZp8iKH7V/PJ8bz1F74vmRtqwtnaHiA2p851fYysCW8Kxz32KPiFKlXm6TD3CczDo32fIG2z0gozGOTuTgAkBDoLxw4wjiCm230AKKl7BBC/TQjyIio2MKR6cxA+cxS0Q5OhIBSdBB8tS21VHr4IHew+Nz9j8WNl2WdLgMj3uwvjjKMJEMjzxLbIFy/Waqeckn4OnmvUzDCEl+gzONDED8a6WKVd/AqWsF7K0OsPY9r7zS4AA/tZHU5ptkkgfgkcvK+i5GNOsdeE+3dDy0o/GdztJkdgFoW3Na+Ar3rcdRRqJy2DMNEa0PplcA/Q9Ge/StR5OyAavWOO+PQuW+8AdmPimR2sTOneN23aqRGTdRM3nV0GBZ8iqozSw7ZizYw41a/mYuHptrWqHOpp7HLW9GUH/tuVocU6RWnq2l3frPSHDFQ+yScJoqTcatEekzYOGtf5P+E2jaUpPVpbcb8V2GuMdnC61BeQfIfWGMkLJZLmoBRfGSrFLVBz+wVHiqeiM2+9SzMJYPyH2AKDvsblaB3Sp67eQ1kgNFnI/VVZuNKdgEMpG4USzFOL+gRF8/Z+s91XV0kTf9PeGWLo+cYYjAUdSWMCYAqUESn8cFaLxae0A+AhdmDYxBgjFBHV0ytU0TT7r/6S6mo5MeAzrMsocZhdcklTp7Xk+n2ZuVSNOSaqSfUkxclyP+TtXyrkumdeyLYx5LMoQWj5SR1Ns7BAU7NWko5QCBY9+Yu9s7yztmbHozaC5Eerh5BSPZNcFxZesYZj+nxMfFBMmtLIK1fbioy0QOvvTtJUqQCPyQEM9x3DVIXuWN6qv1pmeMqtXimrUnQc0Cff2VoF223zZWPndKPJHZ+Z4VLez7cy1MPUjwusTB5
+ TvU67LZj
+ DeQocY69R9WNsreq2zJ/wL17j17DITzWiWAwHdGD38oxCVdslNqZFFybnuV/f37JjiazNfCJ4JLncBP2vFSRrnhQZdk2giX3qqShrTlB9sWX5GJRBzF3Q0rUukznp06SN9iLqImxCY4loeK7nGfq2qYnpqyojSjmmR/Jvi9lKj4d1P8mH0ULtf8sTJdpnHHzQdSRN7zWiXyVGPtnxx11vgE5RyJnStRH7rqEsH17BkJp17FtbjWE/1F/QQXovV5vzcrQGKbCq80DjkDLz83czv99vkjSwJF7XSErxyD44Nb+glVKHB6ZooKyPKxCGCJQo3t3DecSLxeGN25sJzZYADftqv11UdCnLInkR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,51 +101,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 31, 2026 at 09:47:29AM +0100, Kiryl Shutsemau wrote:
-> On Mon, Aug 31, 2026 at 10:56:35AM +0300, Nimrod Oren wrote:
-> > When THP is enabled, set_recommended_min_free_kbytes() may raise
-> > min_free_kbytes using a heuristic that scales with pageblock_nr_pages.
-> > With MIGRATE_PCPTYPES equal to 3, the formula accounts for 11
-> > pageblocks for every eligible populated zone before capping the result
-> > at 5% of low memory.
-> >
-> > This is reasonable when a pageblock is 2 MiB, as on common 4 KiB page
-> > configurations, but scales poorly with larger base page sizes. With
-> > the default arm64 pageblock sizes, the contribution per eligible zone
-> > before the 5% cap is:
-> >
-> >   4 KiB pages:   2 MiB pageblock,   22 MiB per zone
-> >  16 KiB pages:  32 MiB pageblock,  352 MiB per zone
-> >  64 KiB pages: 512 MiB pageblock,  5.5 GiB per zone
-> >
-> > Consequently, min_free_kbytes can reach excessive and unwanted levels.
-> >
-> > Add an absolute 1 GiB cap to the recommendation, in addition to the
-> > existing percentage cap. This bounds the automatic recommendation to a
-> > sane value on systems with large pageblocks while preserving existing
-> > behavior for typical systems with 2 MiB pageblocks.
+On Mon, Aug 31, 2026 at 10:56:35AM +0300, Nimrod Oren wrote:
+> When THP is enabled, set_recommended_min_free_kbytes() may raise
+> min_free_kbytes using a heuristic that scales with pageblock_nr_pages.
+> With MIGRATE_PCPTYPES equal to 3, the formula accounts for 11
+> pageblocks for every eligible populated zone before capping the result
+> at 5% of low memory.
 >
-> I am not against an upper limit for min_free_kbytes, but I think the
-> root cause of the problem you see is the size of the page block.
+> This is reasonable when a pageblock is 2 MiB, as on common 4 KiB page
+> configurations, but scales poorly with larger base page sizes. With
+> the default arm64 pageblock sizes, the contribution per eligible zone
+> before the 5% cap is:
 >
-> We at Meta switched to 2M page blocks on 64k ARMs recently, targeting 2M
-> mTHPs. A 512M pageblock is not practical.
-
-I mean we do keep looping around on these things as 64 KiB page size is
-fundamentally a big problem for the pageblock model :)
-
-I don't love the idea of just making page blocks arbitrary smaller for
-higher page table size, because hey the intent is to get a PMD-sized thing.
-
-So really I think to do it 'properly' you'd need to rework how that whole
-thing functions.
-
-For me the approach here is a practical trade-off - if the intent is to cap
-at a sensible value, then just cap at a sensible value.
-
+>   4 KiB pages:   2 MiB pageblock,   22 MiB per zone
+>  16 KiB pages:  32 MiB pageblock,  352 MiB per zone
+>  64 KiB pages: 512 MiB pageblock,  5.5 GiB per zone
 >
+> Consequently, min_free_kbytes can reach excessive and unwanted levels.
+>
+> Add an absolute 1 GiB cap to the recommendation, in addition to the
+> existing percentage cap. This bounds the automatic recommendation to a
+> sane value on systems with large pageblocks while preserving existing
+> behavior for typical systems with 2 MiB pageblocks.
+>
+> Link: https://lore.kernel.org/r/20260716173504.760369-1-noren@nvidia.com/
+> Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: Nimrod Oren <noren@nvidia.com>
+
+I do think this is a practical way of preventing runaway increase of reserves.
+
+In the long run we need to rework the pageblock model I think, but this is
+a reasonable way forward in the short-medium term.
+
+Obviously I defer to David and the community on this if they think this is
+horrible, then let's not.
+
+But I do worry that we'll carry on with unworkably huge reserves on 64 KiB
+page size while rejecting every way out until pageblocks are _entirely_
+reworked to account for this (probably the long term solution).
+
+So I think this the least-worst approach of those proposed so far for now
+:) Therefore:
+
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+> ---
+> v2:
+> * Use a named constant for the cap.
+> * Drop explicit linux/sizes.h include.
+> * Update min_free_kbytes documentation.
+>
+> v1:
+> * Cap the final recommendation at 1 GiB as suggested by Lorenzo.
+> https://lore.kernel.org/r/20260728202014.2517142-1-noren@nvidia.com/
+>
+> RFC v1:
+> https://lore.kernel.org/r/20260716173504.760369-1-noren@nvidia.com/
+> ---
+>  Documentation/admin-guide/sysctl/vm.rst | 8 ++++++++
+>  mm/khugepaged.c                         | 7 ++++++-
+>  2 files changed, 14 insertions(+), 1 deletion(-)
+>
+> diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
+> index 5b318d17aa4b..c0c925e6f504 100644
+> --- a/Documentation/admin-guide/sysctl/vm.rst
+> +++ b/Documentation/admin-guide/sysctl/vm.rst
+> @@ -539,6 +539,14 @@ watermark[WMARK_MIN] value for each lowmem zone in the system.
+>  Each lowmem zone gets a number of reserved free pages based
+>  proportionally on its size.
+>
+> +When Transparent Hugepage (THP) support is enabled through global or
+> +per-size controls, the kernel may raise this value automatically to
+> +help keep pageblocks free and reduce fragmentation for THP allocations.
+> +The automatic recommendation cannot exceed 5% of low memory or 1 GiB,
+> +whichever is lower.  This limit applies only to the automatic
+> +recommendation and does not constrain a higher value written by
+> +userspace.
+> +
+>  Some minimal amount of memory is needed to satisfy PF_MEMALLOC
+>  allocations; if you set this to lower than 1024KB, your system will
+>  become subtly broken, and prone to deadlock under high loads.
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index f49a6710933b..a8fc061d2488 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -101,6 +101,7 @@ static DEFINE_READ_MOSTLY_HASHTABLE(mm_slots_hash, MM_SLOTS_HASH_BITS);
+>
+>  static struct kmem_cache *mm_slot_cache __ro_after_init;
+>
+> +#define THP_MIN_FREE_MAX_PAGES		(SZ_1G / PAGE_SIZE)
+>  #define KHUGEPAGED_MIN_MTHP_ORDER	2
+>
+>  struct collapse_control {
+> @@ -3120,9 +3121,13 @@ void set_recommended_min_free_kbytes(void)
+>  	recommended_min += pageblock_nr_pages * nr_zones *
+>  			   MIGRATE_PCPTYPES * MIGRATE_PCPTYPES;
+>
+> -	/* don't ever allow to reserve more than 5% of the lowmem */
+> +	/*
+> +	 * Don't allow the THP recommendation to exceed 5% of lowmem or an
+> +	 * absolute cap, whichever is smaller.
+> +	 */
+>  	recommended_min = min(recommended_min,
+>  			      (unsigned long) nr_free_buffer_pages() / 20);
+> +	recommended_min = min(recommended_min, THP_MIN_FREE_MAX_PAGES);
+>  	recommended_min <<= (PAGE_SHIFT-10);
+>
+>  	if (recommended_min > min_free_kbytes) {
 > --
->   Kiryl Shutsemau / Kirill A. Shutemov
+> 2.45.0
+>
 
 --
 Cheers, Lorenzo
