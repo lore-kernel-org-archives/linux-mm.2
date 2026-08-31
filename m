@@ -4,88 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D8F8C61DE2
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 11:20:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 018DCC61DE2
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 11:23:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 963CF6B00A1; Mon, 31 Aug 2026 07:20:32 -0400 (EDT)
+	id 0B64C6B008A; Mon, 31 Aug 2026 07:23:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EDE56B00A2; Mon, 31 Aug 2026 07:20:32 -0400 (EDT)
+	id 040606B008C; Mon, 31 Aug 2026 07:23:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DCD46B00A3; Mon, 31 Aug 2026 07:20:32 -0400 (EDT)
+	id E4D7B6B0092; Mon, 31 Aug 2026 07:23:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 581936B00A1
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 07:20:32 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D61CFC0432
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:20:31 +0000 (UTC)
-X-FDA: 85161321462.10.E96AE84
-Received: from va-2-112.ptr.blmpb.com (va-2-112.ptr.blmpb.com [209.127.231.112])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D63F120002
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:20:29 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=qWbZE25+;
-	spf=pass (imf03.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BD22A6B008A
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 07:23:16 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3564A1404AA
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:23:16 +0000 (UTC)
+X-FDA: 85161328392.09.2029FC0
+Received: from mta0.migadu.com (out-221.mta0.migadu.com [91.218.175.221])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 13454C0006
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:23:13 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=o7TqchhN;
+	spf=pass (imf28.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.221 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788175394;
+	b=pkG87Audsf7bNq0HXSGmR1QrytoG+ipUQw4fTY4+rcnxZ2JMZe+Jm9bkdSTPiGoYmIc6Pb
+	3BZiYpOaT3DV52s2WDI8SpFiF7wLmWCHmNQtVwh4FaaCP8Qz0y4Es8F1WfJWxNDseOZRAG
+	Vew0aom1i1Q4gzamIz859OPmnrsFyGc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788175230;
+	s=arc-20220608; t=1788175394;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W3mTk0uO3fJ8loj8Vy9eCiD36YUSNCrm55bF0bJb8Z0=;
-	b=oymimjCpbPiX3R1Gl2OQwKshdKiFl9em5lMVn0OGH/OixekwYXNBUaCaoGIC+wRpb2+S/R
-	gV+vyJKcyjNMU+yvrZYa4Lf61Pv3VErQVhIok17CKE/giXSyShEjMQcWKtDR7o3c5HnE0/
-	ZgK1G98fyqH2ZcBqI2YULsC28sMNWT0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788175230;
-	b=QbNyu8+lYb6I/GSZK3Sl6cp+WHwTd7NbZY94U8k16KWiKboxEsTugkM//aywIVgafCRF5r
-	Y6z5deIKSx9HZw1vd8InWe9RXGkNVQ+YGHDP3EVFA2n/B7KSnbrFrNFh9/6sNUFaf215Kx
-	wMoMquPfyIxxUEnC4VQhE7tFLxV2PA0=
+	bh=P1qVb+9t1maPSDo/3bRtsMghftgqht+jlYThRGRjj8c=;
+	b=CAVN/j1m1tatqcXscyG5LAwL8zHFfCcDa3ioa60kyKZSJ2VY+sb/otWBrLVq6R8iJIJWTL
+	TvedioO60x1jGpOxSfRkQLhQwwopVOTqqzQHehccCX80niJbSNhAMC+7AiWeylDz71fKbg
+	pDKS3rIZgbictylAHchpBRzmUHtous4=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=qWbZE25+;
-	spf=pass (imf03.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1788175224; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=W3mTk0uO3fJ8loj8Vy9eCiD36YUSNCrm55bF0bJb8Z0=;
- b=qWbZE25+Fl/NO3nw9RCvnXO4dihmAdjyq8obIx9OzGhqChQoZCJxhpFItIo7yZKOHm8Dqp
- hn5MsrQa6e1Dn1qbScw3plQ6afOWl3995LkplFaD32gJ7kaBZP3vXXaiw3dlOaoRboNJot
- zzZxOH9zgKiUO5RU86qHZ/d0jaA/FyR3j1FiEfl/9qcZ7u9F3tmuCmTpttEONG6ftWx2y1
- /MjVpCSQg5dKcXUTuyIkDuf/vHItBM08K5AofmSqCAD3M+T9ZLIKUu1GJogzSztN3H/aMZ
- UnehlEqzfbyOLbimAK44vg9maKpRQXiJbhTLCLVG/srG/BloRX725Ad9XXfyxw==
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Subject: [PATCH v11 7/7] x86/string: extend memcpy_flushcache() fixed-size fastpaths
-Date: Mon, 31 Aug 2026 19:16:38 +0800
-Mime-Version: 1.0
-X-Lms-Return-Path: <lba+26a956377+09a041+kvack.org+lizhe.67@bytedance.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-X-Mailer: git-send-email 2.45.2
-To: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <arnd@arndb.de>, 
-	<balbirs@nvidia.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>, 
-	<david@kernel.org>, <kees@kernel.org>, <mingo@redhat.com>, 
-	<muchun.song@linux.dev>, <rppt@kernel.org>, <tglx@kernel.org>
-Cc: <linux-arch@vger.kernel.org>, <linux-hardening@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <x86@kernel.org>, 
-	<lizhe.67@bytedance.com>
-Message-Id: <20260831111638.76012-8-lizhe.67@bytedance.com>
-References: <20260831111638.76012-1-lizhe.67@bytedance.com>
-Content-Transfer-Encoding: 7bit
-In-Reply-To: <20260831111638.76012-1-lizhe.67@bytedance.com>
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=o7TqchhN;
+	spf=pass (imf28.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.221 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=2FGAuKBAnVuvrfl8BpuL8kcvxiiWdtByJuqPiUkCZuM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788175392; v=1; x=1788780192;
+ b=o7TqchhNCUQPemqRNT2gvBRZmZK0ygz944LWsDMvlsrvIx0pEYBlNb8wwtxCcugBieAYzmhv
+ D/Te9edx8V3nBipXDANvuJCHqfd2GgN7pdXfDUMqTGpiuu2bh3WpXhg3D6Rw76onlwJitkSKpzh
+ xfuWM6zLRG7lWg1LpepcLfhQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 18fcbf994d3f25d8;
+	Mon, 31 Aug 2026 11:23:12 +0000
+X-Mizu-Trace-ID: 18fcbf994d3f25d8
+X-Migadu-Flow: FLOW_OUT
+From: Usama Arif <usama.arif@linux.dev>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	hannes@cmpxchg.org,
+	lance.yang@linux.dev,
+	ziy@nvidia.com,
+	kasong@tencent.com,
+	hughd@google.com,
+	baolin.wang@linux.alibaba.com,
+	baohua@kernel.org,
+	liam@infradead.org,
+	nico.pache@linux.dev,
+	dev.jain@arm.com,
+	ryan.roberts@arm.com,
+	balbirs@nvidia.com,
+	kas@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] mm/huge_memory: do not touch frozen folios in deferred_split_isolate()
+Date: Mon, 31 Aug 2026 04:23:03 -0700
+Message-ID: <20260831112305.466147-1-usama.arif@linux.dev>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260831091514.1879786-2-kirill@shutemov.name>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D63F120002
-X-Stat-Signature: tp1ruanakpffbqgzw16bmjc4wwat58e3
-X-HE-Tag: 1788175229-488026
-X-HE-Meta: U2FsdGVkX190yxuvjBvgBSwiYizZF/etptaAB9grvTeYRuNOq1COCsFXHPq5p6Znitn0gkKEyGaAT/uS+5okkUKwy0ipLmCGJ9RLT6pWml5pp0Hgjd1CXJ5inRCRqB4OL1/FdXx1cNgr5n+zYFRoKmWAlTpCnvF8KwkjcGoXUovvh4K+bJNWT0EPrwK1mKd2nQj/QCd0S7yoT4tXrrl9oRXfPXCowaqeCIACBiHlJ/mT2ZTyMRRM0KeM6cYQnqn6XyLYirxTv0YNzKuy6mmME/xC7nhoeoxgVSXrc1HCU9IQ+ZCHUrZrcX6nB1ZuyJe30M6pyrOLRniaP8N+jYVVSqPG+GPHTfL4FbEKYTr83iWAGf2XnSSVyfaXu2SQUmEeB8PouedvJkJlfla83deHmW/ZsGcz5QKLLyCEkgBRHb0CwZtYzoAEUpgDeY4EiqUx5pG6GBDVgiL4kp2GCfL/lBFVlqWeCoqnFU4o0cmpe3i9HMkpFalveUKGkEANfyYOGDOB+r1Ir0eFEzCfNm8sxNJ1/dSk6RGydd405dUIdWlSSu6l4cLOLaBbGSro8lLRg1mb90ZqdT4evHzWBeVgHLxqHK+vuEI2B/KtzrDnGIkVtu/ibsvlPxxoZJnflvr9zUSlumtlncLaHisXYi5MmEYvx2t/i1VeEhNM+kipcMbeOSTpIeIWaeqEKBgcqSiCFwlpDPRFCChqR2Mpln8poplKjsiVDpUhDw++BJB2m2eWPe8nSHeAxWPbJmxYhjznCED3ajGaU7WcdSMKj8UeQTBDyLhW81aJQ4js3mEwdJt2IP8XvKEKnmu9qwDBjks2e++lvO0vX+8+X5Nikq66CIS3FK0p/89nS7oA3g3wdR2D5cmVFQvsYjeAlLaJcgsvvbQdNzWpGrKNaSMcRa0ORLyXyYo+5eIMWNkM/YZxqMNjb4U8iAmu7DJVmvLHqnrKL3fhy2zfB9jF9HHkzEc
- s668ZnMz
- 8O/lQT+khMZkyMpCZCLBKxoT8zIK7EdgIZL6cE0Xjvp9wtmPM1AGfnIKfwB/wuF30EAJfW1em7ebI2AKptWT/HJO2eOy3q8X0kDnYMYsFrb3AjvFj6YoaobaLtwDJv4dxRkccXTzlcY3bpbXkHy3lN3PCY/LHHld1YKJVBCLCEnVhMueRwExqsXuHzQnbMWAQ2xehxFlzVLJ+O7K8zoIMgEF8HdHZk2Vg9sf5SffIJlDJcoYUdwd6wdcMN4Pl/sG4gx36h5n4r+2X54sgS0x2j5X4gr32qy6uuIli0V+SRfYfhvl9Bpz52o/Cdw==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 13454C0006
+X-Stat-Signature: is4k4o3m58zf1dak71txko8h9soqb77k
+X-HE-Tag: 1788175393-275509
+X-HE-Meta: U2FsdGVkX1+4YqQd4fJD5/JPdVh9V4O85nB56h9wOGpsw9VLvWpHoVz7Bpm5Leg+gUxoo2kqjkQM6R7wUksVHj50lEjUcTgMZiPi8TYyAp1GakqOX2NAPXgX29ng3dUm2RrFZ2uYR/Ab1S2yHaE2b+PYu1TlJ4XRC/TBH2/qViuj8GUGTwoXsP5CEPARg4DlD4hvTi/QDSvDo5cNR8fQuaNvWIVMJ/U2O8SPEILoliB8CRuz3dUIyVpbPCfhTM8HS3V4mKPjhtB1B1mlZUwmnWTBzoF14YswKfHDjZweZNW0r4NPgUYxJbfWEPJcSb2vFUCA9HwpbNsZSEhFJfsMri/tB5LlEMsHJ8uOT+lN8kW5XAGGtQn6EjglBLvdHB+SZnPOHKzo6rYRBiuOnvLlnvsbXn30kWF+VNAgo8mVuGn2/QSQiELL30MF2u7Y1UY5dVIVEXf9xFkYjoYzRudldByWV//hLrQp6DkopqhnrKBboYNWB6SvbPCQtUnh4qVlY6m8tg7vO1cMKNES3FErRhhDoqiduXkxbQIo6coAQkIQ8Gp0IEi859QqYnDMMsJAnioyCb6+hBkULPRrBOdteD5loaqMc27kWRyRN+wOCquMdnZDENHPb2xLrfHf/ztqW9brxWlvEQjsrXK0gOj25XtIBJRmb9W0LodED5bE5neabbM2cpMk6AEJyywvEJmn95Bf44YyKlTRkQy1OWoVQKj1mBEXkfmSEAvcfgiOp412c8TKsTaxi3fqVjEPBIoAfSbnKOUzYejs5/9VALz+4EAaigGhExNHTqPOY1O2u+xqmiPYJTP2GRTKw1GdSjD6VmnEjuxdTkhOOnaHZcjmbwO4lD/Ux+jWeL8BLFheO/TjZFVrwRpwqfj74wkhLgIne8dzXf2/X1CrpGzNiqeDIibrDw1Vw7TlU7CPC3GEP/akyUfdJ46aPqO3yKvs4oM3XCmehrhb4qrgoAGSDL3
+ Xn/y/rnM
+ WmAgmlJA3tEjPS5+1uCqrxtaqitjik/dEekkopUxkY0SDrEbbDpEOPSYKhYmh6C+mDawnnPLSnbf3RIApXMULjL1fcjgOlFduzjUnrATw1I1MdBkWQCRc8pDnqfbjfJ+RqELfy3aonV51aTnmXCg9E4y7J0/9Zs6k3bEB8PvB22mfUhCxXjpKRUJBXw38Il9T6BaLAz9hu+dRLz+YSSRxmkEcVcYVq+uPUZbznyFb2SVRTSMmDCUJ9tNH2SrZh2xhvmTQFWU9xXnShwRB8J5m2p9xmWXN6qbriR41B3AJYxpuf7BR6BdxDJHL6TAujTI4Ek//yXMQfQhEu9QPUKTTagYmgmrQLG7hZkbnngsOrn0FR6kx9kWuztMikGIlvlVE9LLn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,140 +105,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The x86 memcpy_nontemporal() helper maps to memcpy_flushcache(), and the
-ZONE_DEVICE template-copy path uses it to copy one struct page at a
-time.
+On Mon, 31 Aug 2026 10:15:13 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
 
-The relevant copy size is sizeof(struct page). On x86_64, the base struct
-page layout is 64 bytes. Adding either the KMSAN metadata pointers or an
-out-of-flags last_cpupid field can make it 80 bytes after alignment, and
-enabling both can make it 96 bytes.
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> 
+> deferred_split_isolate() probes each queued folio with folio_try_get().
+> folio_try_get() failure is treated as a lost race with folio_put(): clear
+> PG_partially_mapped, correct MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, take
+> the folio off the queue.
+> 
+> The folio_put() race is the most common case for !folio_try_get(), but
+> it is not the only option. Another scenario is folio_ref_freeze().
+> 
+> A zero refcount in such cases does not mean the folio is going away.  It
+> means "don't touch me" and current deferred_split_isolate() doesn't
+> respect it. It can lead to unqueueing folios from the deferred list for
+> no reason:
+> 
+>     CPU 0                            CPU 1
+>     ---------------------------      ------------------------------
+>     freeze a mapped folio            deferred_split_scan()
+>       folio_ref_freeze()               folio_try_get() fails
+>                                        folio_clear_partially_mapped()
+>                                        NR_ANON_PARTIALLY_MAPPED--
+>                                        folio off the queue
+>     give up, put it back
+>       folio_ref_unfreeze()
+> 
+> The folio is still partially mapped, but it is no longer a split candidate.
+> Nothing queues it again until part of it is unmapped once more.
+> 
+> Skip the folio instead: whoever freezes the folio, owns it and owner is
+> responsible for its fate. It also covers the folio_put() case:
+> __folio_put() unqueues the folio via folio_unqueue_deferred_split().
+> 
+> Nothing is lost by skipping.  Everything that frees a queued folio
+> unqueues it first, and folio_unqueue_deferred_split() clears
+> PG_partially_mapped and brings MTHP_STAT_NR_ANON_PARTIALLY_MAPPED down
+> on the way:
+> 
+>     __folio_put(), folios_put_refs()   mm/folio.c
+>     __folio_migrate_mapping()          mm/migrate.c
+>     shrink_folio_list()                mm/vmscan.c
+> 
+> __folio_freeze_and_split_unmapped() does the same by hand, under the
+> list_lru lock it holds across the freeze.  A freeze that ends in
+> folio_ref_unfreeze() leaves a folio that is still partially mapped and
+> still belongs on the queue.
+> 
+> Fixes: 8422acdc97ed ("mm: introduce a pageflag for partially mapped folios")
+> Reported-by: Lance Yang <lance.yang@linux.dev>
+> Closes: https://lore.kernel.org/all/20260824131224.73344-1-lance.yang@linux.dev/
+> Assisted-by: Claude-Code:claude-opus-5
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
+> ---
+>  mm/huge_memory.c | 19 ++++---------------
+>  1 file changed, 4 insertions(+), 15 deletions(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index ced400f72d43..6281ed993243 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -4590,22 +4590,11 @@ static enum lru_status deferred_split_isolate(struct list_head *item,
+>  	struct folio *folio = container_of(item, struct folio, _deferred_list);
+>  	struct list_head *freeable = cb_arg;
+>  
+> -	if (folio_try_get(folio)) {
+> -		list_lru_isolate_move(lru, item, freeable);
+> -		return LRU_REMOVED;
+> -	}
+> +	/* Lost race to folio_put() or the folio is under folio_ref_freeze() */
+> +	if (!folio_try_get(folio))
+> +		return LRU_SKIP;
+>  
+> -	/*
+> -	 * We lost race with folio_put(). Read folio state before the
+> -	 * isolate: folio_unqueue_deferred_split() checks list_empty()
+> -	 * locklessly, so once removed the folio can be freed any time.
+> -	 */
+> -	if (folio_test_partially_mapped(folio)) {
+> -		folio_clear_partially_mapped(folio);
+> -		mod_mthp_stat(folio_order(folio),
+> -			      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
+> -	}
+> -	list_lru_isolate(lru, item);
+> +	list_lru_isolate_move(lru, item, freeable);
+>  	return LRU_REMOVED;
+>  }
 
-memcpy_flushcache() currently only has inline fixed-size cases for 4, 8,
-and 16 bytes. As a result, these constant-sized struct page copies fall
-through to __memcpy_flushcache() even though the compiler knows the copy
-size at the call site.
+Acked-by: Usama Arif <usama.arif@linux.dev>
 
-Add fixed-size MOVNTI cases up to 96 bytes so the ZONE_DEVICE
-template-copy path can keep these struct page copies in the inline
-memcpy_flushcache() path.
-
-This matters for ZONE_DEVICE memmap initialization because the copy
-happens once per initialized struct page. For a 100 GB fsdax namespace
-with map=dev, this is about 25 million struct page copies during nd_pmem
-binding or rebinding.
-
-Tested in a VM with a 100 GB fsdax namespace device configured with
-map=dev and a 100 GB devdax namespace (align=2097152) on Intel Ice Lake
-server.
-
-Test procedure:
-Rebind the nd_pmem and dax_pmem drivers 30 times and collect the memmap
-initialization time from the pr_debug() output of
-memmap_init_zone_device().
-
-With memcpy_nontemporal() used by the ZONE_DEVICE template-copy path:
-  Average of rebinds for nd_pmem driver: 150.40 ms
-  Average of rebinds for dax_pmem driver: 161.83 ms
-
-With this x86 fixed-size fastpath patch applied:
-  Average of rebinds for nd_pmem driver: 71.93 ms
-  Average of rebinds for dax_pmem driver: 87.37 ms
-
-This further reduces the average memmap initialization time measured
-during rebind by about 52.2% for nd_pmem and 46.0% for dax_pmem.
-
-Suggested-by: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
----
- arch/x86/include/asm/string_64.h | 71 +++++++++++++++++++++++++-------
- 1 file changed, 56 insertions(+), 15 deletions(-)
-
-diff --git a/arch/x86/include/asm/string_64.h b/arch/x86/include/asm/string_64.h
-index 21ae515ae35a..831d3dda3b38 100644
---- a/arch/x86/include/asm/string_64.h
-+++ b/arch/x86/include/asm/string_64.h
-@@ -82,23 +82,64 @@ int strcmp(const char *cs, const char *ct);
- #ifdef CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE
- #define __HAVE_ARCH_MEMCPY_FLUSHCACHE 1
- void __memcpy_flushcache(void *dst, const void *src, size_t cnt);
--static __always_inline void memcpy_flushcache(void *dst, const void *src, size_t cnt)
-+
-+static __always_inline void movnti_4(void *dst, const void *src)
-+{
-+	asm volatile("movntil %1, %0"
-+		     : "=m"(*(u32 *)dst)
-+		     : "r"(*(const u32 *)src)
-+		     : "memory");
-+}
-+
-+static __always_inline void movnti_8(void *dst, const void *src)
-+{
-+	asm volatile("movntiq %1, %0"
-+		     : "=m"(*(u64 *)dst)
-+		     : "r"(*(const u64 *)src)
-+		     : "memory");
-+}
-+
-+static __always_inline void movnti_16(void *dst, const void *src)
-+{
-+	movnti_8(dst, src);
-+	movnti_8(dst + 8, src + 8);
-+}
-+
-+static __always_inline void movnti_32(void *dst, const void *src)
-+{
-+	movnti_16(dst, src);
-+	movnti_16(dst + 16, src + 16);
-+}
-+
-+static __always_inline void movnti_64(void *dst, const void *src)
-+{
-+	movnti_32(dst, src);
-+	movnti_32(dst + 32, src + 32);
-+}
-+
-+static __always_inline void memcpy_flushcache(void *dst, const void *src,
-+					      size_t cnt)
- {
--	if (__builtin_constant_p(cnt)) {
--		switch (cnt) {
--			case 4:
--				asm ("movntil %1, %0" : "=m"(*(u32 *)dst) : "r"(*(u32 *)src));
--				return;
--			case 8:
--				asm ("movntiq %1, %0" : "=m"(*(u64 *)dst) : "r"(*(u64 *)src));
--				return;
--			case 16:
--				asm ("movntiq %1, %0" : "=m"(*(u64 *)dst) : "r"(*(u64 *)src));
--				asm ("movntiq %1, %0" : "=m"(*(u64 *)(dst + 8)) : "r"(*(u64 *)(src + 8)));
--				return;
--		}
-+	if (!__builtin_constant_p(cnt))
-+		return __memcpy_flushcache(dst, src, cnt);
-+
-+	/*
-+	 * The relevant fixed-size copies here are the x86_64 struct page sizes:
-+	 * 64, 80, and 96 bytes. Keep 32-byte and 48-byte copies inline as well
-+	 * instead of sending those nearby fixed-size cases back to
-+	 * __memcpy_flushcache().
-+	 */
-+	switch (cnt) {
-+	case 4:  movnti_4(dst, src); break;
-+	case 8:  movnti_8(dst, src); break;
-+	case 16: movnti_16(dst, src); break;
-+	case 32: movnti_32(dst, src); break;
-+	case 48: movnti_32(dst, src); movnti_16(dst + 32, src + 32); break;
-+	case 64: movnti_64(dst, src); break;
-+	case 80: movnti_64(dst, src); movnti_16(dst + 64, src + 64); break;
-+	case 96: movnti_64(dst, src); movnti_32(dst + 64, src + 64); break;
-+	default: __memcpy_flushcache(dst, src, cnt); break;
- 	}
--	__memcpy_flushcache(dst, src, cnt);
- }
- 
- #define memcpy_nontemporal memcpy_nontemporal
--- 
-2.20.1
+>  
+> -- 
+> 2.54.0
+> 
+> 
 
