@@ -4,85 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CF03C61DE2
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 08:53:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B161FC61DFD
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 08:56:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E5ED6B009D; Mon, 31 Aug 2026 04:53:04 -0400 (EDT)
+	id BDF736B0088; Mon, 31 Aug 2026 04:56:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56E106B00A1; Mon, 31 Aug 2026 04:53:04 -0400 (EDT)
+	id BB6EB6B0092; Mon, 31 Aug 2026 04:56:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 434B36B00A2; Mon, 31 Aug 2026 04:53:04 -0400 (EDT)
+	id AA8396B0095; Mon, 31 Aug 2026 04:56:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 118C36B009D
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:53:04 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6A0421A03EC
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:53:03 +0000 (UTC)
-X-FDA: 85160949846.12.8F1D679
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0FD3E4000D
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:52:59 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 792356B0088
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:56:50 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 049501C1F10
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:56:49 +0000 (UTC)
+X-FDA: 85160959380.06.541F2F3
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 0EB9A40002
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:56:47 +0000 (UTC)
 Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Fnr4No4J;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf27.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	dkim=pass header.d=suse.com header.s=google header.b=cOIjTbbE;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf27.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788166381;
+	s=arc-20220608; t=1788166608;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TZYb7qeuDeUdbF6Gzt4VmWbSRmjddUQtr9AFQa/PBJc=;
-	b=lzcTLjpa9xCnTazV+XWdJL+caAa+O50jghM6RdwwIHw8pbKTgdRcxXuY0WJdlMhp8g29YF
-	0hP2/WA045BkPUtuE0VJNbLgie/bePb7bXZI7w2yHFqURq9rA6YGf9Svr99kaZf9U07rAE
-	68WVQPxtdCa9vM8WQ4btjF3yPMemLJU=
+	bh=HLgX1bHF///geDnj0BJGtTg8YhTYEnQT5ferZZbVKSA=;
+	b=Y/opUuAX3dyRfUkJPeTaRiscQ0gyRlyFN180x6Y7DkF7eD79u2zy6ZjmZib06n2rvDoxZp
+	BL3vllxWhizPfhl8bKMoljjJ5vpdCkM0IbxAcPWHvEbrBD74UuYx/PhXKi8dcAXPQejvEk
+	KcxzhFS67PlkH/3ZrykAg9CjcYkhGbk=
 ARC-Authentication-Results: i=1;
 	imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Fnr4No4J;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf27.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	dkim=pass header.d=suse.com header.s=google header.b=cOIjTbbE;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf27.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788166381;
-	b=0ND7xPkKPvK+SS0pJ6Rw9KofDL9Q8VZm/JyaI6YQqz9p86mG6HyqmC17QKG13aRg/eMiQv
-	AvfsF4oCRLXKya0XxQZFNTQfLT4n/87XJKdsOPHqG+46AF2cOgeltIbSwqCSd+RPy1iilI
-	UYMXRpzLeIsejNyaroRgSt93RKeqFMU=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1788166377; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=TZYb7qeuDeUdbF6Gzt4VmWbSRmjddUQtr9AFQa/PBJc=;
-	b=Fnr4No4Js1ojWUx/Fbc0ANQOn9xJtZS99ZFz1wbEBqws2/lRE2VXS04z+shyg+uA+Ia4WfD15ydUMNQrQ1Tl5Z6IeAryQnE4x4XACB6O2CUKm+7qni7mDx0edwH8ZK45yH9xuevXEhmPH80pcPXb4VjXlmuR9P+bDqRrCvkxHoo=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=3;SR=0;TI=SMTPD_---0X9wFnwG_1788166376;
-Received: from 30.74.144.115(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X9wFnwG_1788166376 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 31 Aug 2026 16:52:57 +0800
-Message-ID: <8ba99027-7ee0-4459-9eeb-acc15769b2c0@linux.alibaba.com>
-Date: Mon, 31 Aug 2026 16:52:56 +0800
+	t=1788166608;
+	b=Z4WOMEnKSwYJXKiT+caQWuIY9pMtt1zpLk23Ru1ub6jr7XwnDbyGrEA5kK3DAtngSESnPN
+	fMlTsHEe5rVsjDWXn7Zje7IzCD8bGqzumzVrIK8bYviCf/TrGZ7RNllF8NhWOCCod157tY
+	OKq10Gyj0Rzw0RRoqN6rurDuESfEnug=
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-482e4998d28so2203837f8f.2
+        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 01:56:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1788166606; x=1788771406; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=HLgX1bHF///geDnj0BJGtTg8YhTYEnQT5ferZZbVKSA=;
+        b=cOIjTbbElX9ZkhbOAoOgfEEdQ41DOGf70zKVQKn97V9lbelklRJZ8OMZEhSn0eBIwB
+         yXCAxS07BnYozL9e8rou53jecvLJGf+soXbCHrmgbn0hiunEdmhND3/3PqX4Kp2JAUe1
+         L+bPWpc9XcFomb8u0+7dcnCFRVOR1viGSi0FUE2GAI4TbQjrSGd0aG+HdJcK/GkRMj5c
+         lSsk4MaGK9PHnZI1K6QuWHEoXw2QWCzC3D11aoXQBK+Csy/p8AESn30nhye09/PGxa0t
+         ct3ncDRGvBUqv3tLImIbi8shh7FkEt4bFUcB65Q+RTJ20s3reTvdY4+0dMm6XBhcOjFr
+         PL4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788166606; x=1788771406;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HLgX1bHF///geDnj0BJGtTg8YhTYEnQT5ferZZbVKSA=;
+        b=GSippOqTO8HkVXe9B97NoKcEOsVu2wmDi0r2t4S+q2T3cFFndlVXlSgaUOigLCPzn2
+         idiJXpsWqCR0nBEQ/Di/O06JrVi9smHl0G/Xf7ieSGsr6UbOj3rzRc7lKBPHs3oHghu+
+         1ITaYkjj28fJPh/KAUluCloSuNL6cWLkoCa+4SPKj49Nt6gpQJZC+jBJergUYf8jgZlf
+         ZvwbzYsP0Us5mxRj4WYvG7OG1J7AnfDyqwNbwczuYhVhVmsD+M4QnVl3OBww+BX9B4CS
+         QT1V3Ce9gymVnMwUnTwTQq5Yb6Agd02aa15VtlB/FBp5Svpa8vFKGUemdF8vuZC9MCz5
+         HsHQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxyh/nHPBrIsQ6yh35Ewdk3qfqPdUX/DG1dUHQIDksOpI8qCh1TKpPX6F7l5UL3EjCz8rp8pRa3ZQ==@kvack.org
+X-Gm-Message-State: AFuF++m3UPSUd43PFYJCoObJZ/cEPPGY1yIw62dolB6cV+sukXwzoiHV
+	/uTT258qxcudVv2xy2C0quhduBYSWdeDsYf00MSnw3NI09Dx+2LaxYeYb+kfRhFJGDU=
+X-Gm-Gg: AYBFou1S3LFh4cNrM3Et7malCFbRvg0KTXWbquzAlezkADhVfTqfYJjfFL94Rtv7zDU
+	CufI30z4TTp0TjqUyP7yUuT4LMnVXLt1vRE/ZCZvdsXfmtCBMi9KRHG+TpwAtHVS5UvKUjE861u
+	9u2YCeUbAqqhPGFD6EoDti8vq4u45ue4Fxd0/Qbm3wT2xXbXewWrq1E6FbkdrDGoc5j83TqxYJs
+	khqz2zKoqfVEyR2pU9i6/H7CDLBXpPmTG1yoq1qQXfUAsnHOwLvGi+XxbKHXkaEDS9TeeGWuMYw
+	55Zwkmas9Er/MnDeWp66fyWhz0Nfi7J7b+CFwGXiChSV/GZ43zdLeUQYM5dYS+fqwRNBZQpU/rE
+	3flTjUlOXrg2dA51d5oeH/1xaZXbw0h0ikl+f3CIMCFiIWhUjhKG4vZTKzgcV2u6LP9qcmwdQxt
+	+k4UEOXMLKjwQepRC36zqPD6P7tWHNC36Dwo/ZFypQ4poIYpSR4hjEiPNcwPGtmAbzQLGE5u0yc
+	A==
+X-Received: by 2002:a05:6000:4911:b0:483:9f9d:59dd with SMTP id ffacd0b85a97d-4839f9d6235mr29857682f8f.19.1788166606171;
+        Mon, 31 Aug 2026 01:56:46 -0700 (PDT)
+Received: from localhost (109-81-17-247.rct.o2.cz. [109.81.17.247])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482fbab3fdbsm18886146f8f.6.2026.08.31.01.56.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Aug 2026 01:56:45 -0700 (PDT)
+Date: Mon, 31 Aug 2026 10:56:45 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Rik van Riel <riel@surriel.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
+Subject: Re: [PATCH] memcg: clear FLUSHING_CACHED_CHARGE on cpu offline
+Message-ID: <apVBzfx9PX7fbxdR@tiehlicka>
+References: <20260828192419.3057939-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/6] mm/mglru: introduce helpers for manipulating gen
- and refs flags
-To: Kairui Song <ryncsn@gmail.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>
-References: <20260826-mglru-flags-cleanup-v3-0-d9f1c75549c8@tencent.com>
- <20260826-mglru-flags-cleanup-v3-2-d9f1c75549c8@tencent.com>
- <fbb40ab7-6942-4983-9621-ab8d5d50474f@linux.alibaba.com>
- <apRx-xd0csgBU4sL@KASONG-MC4>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <apRx-xd0csgBU4sL@KASONG-MC4>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: igpocjrzrrawoq5mipn7ym7mkdrs34zh
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0FD3E4000D
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260828192419.3057939-1-shakeel.butt@linux.dev>
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788166379-544068
-X-HE-Meta: U2FsdGVkX1/Al1FuF0fQCzzBcN5qYGbc8UGyPId6iZTSwHA0IvX5AkF29xFaDKV/RWdXMVKdfCtHM3xOnlZZYTFWU9zyK75ZnZOOLIuUxqC38DGBC/zg6OXpBjRdIwcE8WgjaIkfDkbdZDq+CSrcWC2pmwMSQc+oqwMq6vDWP4gat80hv/w5XsHcBoiieqLotcsJwwgGVm7JC/t91PHhq+yfo5YNL+rL4dwmEIpK+U1MWHjxlUWFXglclnwit3Bc3aYvpTlYKfVtE/1WQ1fibYAMH5/t7H4CJmHpdlP1O2TGUnzm4DqfcN8Ei0RUkegV53CaGkXbZpmwTwwHud1S7jj8f1LQBWrcFo4Jsxd1UWsrBORCpBM9HYdaWtKF3sEnX42P21/YnmftwqjNOlb0KcFlw7pn8YXdja00GPUV9+6Q/kxxPli0/hz8P2XNONrjQjCOmsi68m8qAYZiiJ3bnvRm9jPzG6rKMXyO/la7kJ+kwZ7FOD6TOpaRiTKb3pKGcGJ2o4aIYcSSB++Od1S23IOHycvGY5zkd8KI8xQv2KTcMLc/aTLWZXdyqLRhrnFzpw9cwNk3lK9VyRl96Ni0SYPdn5KZkCC9aZATFoeYXu4ablH/s+zotm6Sm/RotiZOzyZZ2T81f+Iu7saeOsLECM/ep7c/iO1B1W5QSUxgW+UOfZQvgJqNAEfNMKg1jxalv5VDxaVwQPCrXOtJkruTY5tumrCYIa/NfMZ4zXcuEjXewdWXPj6nq6PwR44CdxdFaK7UJRHFAVr7kTXCI/o92CSECK23fey33+nfycwp4Xp0dgJvrAZdyIZb8aXpZ3ti892xe1D7hSDNdcil79cf4jkeZ99v7HRMkNy5rhwZmia+AvHONhuw7UcDNFe1cQB3/7iYQ6lRuZMJOzVjokQDM1/zJS/32jJWVmaloI1JmLC9zn1JDu60yctSDMT8xF2SDqHpd3AGhNLs75AC5jq
- jl01c40U
- T5uKYnkLNAUbsDOT4gsuXb3TIJRBGGdyi8Fb3/IfevhDO90ligsyQ579E6wg4Kk+GOnEK6yeurrMt9gXNdwrwTtDhpBiEszRMajx8BPFHucFkK26EElyHM7U35GBfdXun2x0NYM9XW8dzfX0hC9ESnFiZaD1uXhk419R9gPxh10y7DkF8uAC1m+LbOj0st6vRsIJDtYAHswh6B/d5GF76QmiNgVQpBZ2h3Aif/GYivDE9ehHdATtgi0AWFPbmyLycD5YhFz2URP+c3ETTWKBiT4vIYGTJLnFU+Oqyj3TgwvtADPd/zfEZXOrPWoI7MuSBEdkub89gMIHd0ILK0h6OpKOZK87owE+PZq6Pn4aSi7QsIfdnu4h0UihXcQ==
+X-Stat-Signature: 88a4e7w8mugr46ai3ek9yctyjb8er3sx
+X-Rspamd-Queue-Id: 0EB9A40002
+X-HE-Tag: 1788166607-569768
+X-HE-Meta: U2FsdGVkX1/3FqBm4XgM6sl3pJ4x47RgBOIGkj1zUCba6MTEaUSnvoKDrmh1veBBMil2kybMWIa/Rl4nY/4LgREr4BWnUZX784k3D7aRrPLRouCtwVsHhEEwjTeRB6+gutwT9ulmsMoYGk4NhK5Y3aGi4JvcQWx68aPM5R9oyC6B+ptPQiDsvqBnc9neEJVU8eBCzCSD5V8yyZn6+kw2QxXlkW649nkjzqKdZn6PEHFOXQsYiWo0nLTQuAGBWd/WO28vx7phVdc23dE/L5vwwV4URTAi8ZEd9U/aUeFbaTa4KLqY7g9vV34+T2Usn3KJxUp6+PhzzeV7eg2Yk8dP8M8+QS+bwTZxAZEjCcNxOU0zrezSQw63CA0Y9aHmxO3hmD+rpyJ1zUS4dHfPlhv8OTY9EO8knOMvRiBz3nLSUmogdWHN7PeE4YlElhGzTWzDLRGlcAmEoieQI3tuLw1wjR79/drUASrRZK6es24ChTQe4LxVwCugwmcrJ+wzs3O9AiY3liuLZ28Doja/IoX70o8SQugr/PFMuZTnCk64hx/QnW0vStzdWgQyb4wn2xqbAuHR0SHPiejt07LiPsXA7pZB6uJpqZ/za9neSqwC5JIk99iZ8OXem+Mu4+gWXJzaoHiulrd4kMQiT5OGikPTkfbeHrcLc+0rOECr4KGjLS3AhvlN3Ojf+2aDWIudj+s5FdcobEbJV+PNNnEOKNHSaezFDXhMbv/YSJ2EVXmtzTRhgKzDm5JWgcKqEewYsU4MWCg7IziySi7ONW+HdmnAxvETKEpWY/rrhffcFTL+42thWfMyEMRL8KIAGh3gigjKR2zJ4ERFVU7N/AVvrVOXqZpcr02zKvOfbvoCTC54AV9ZaesojHiE9fF0iqMWXIR9r+IQC4t7I39Q1pDmwIqdvL7qkiNE8AyYq/BODSNQlP4Gy4wA5rvjc7Gz9auKuZVPQHO/1J6VkWsJuHPhGIQ
+ kQvmc2/5
+ 1OX3zDmUzcGujRotpkIju8KcRvPSjV/5RD0ZNi3EMwoHVmvTOB1l+fzA4CCfmXjtHPjAkaO6tJJNT8WNWiJDzWMSxLYqjPBhdKyFbeCFPynfYNBkTwYc6viFUjRjtXUh0SsOA+MrHtllf+Rs+UDyba0zG8nyrv92c+p7tdrj0brH1FyxE/X1RysxhESK9Bgs/a1nGntoGFtll1lBluBG+KOpOhIAFxJCY91dsgx5IlbWiNe03UUCzlTlytuQ+a46pPEtFxxw8o3VmsMd8P6MxjPBS6Epw45PO7ze9Tfu02mg57qoqINUZvwLzRCkSF82Nevi6gvZ38CFJNoFqqkpDMIizIpDBoqa+PvP1k2sW1BdVXtKm4fjU2Fs/0SmaKfQMQC/TjU7KI9nEY7QjT0XwvM3PF/5hnwyqQLrlkhr8+4301yYZZQ3Aete+L2wNl93QkZTca+k9FtExBMpl3AdpL6hMAL87ahW4YNaDIOVGlmZ+hbkEYWr6al7OCkUM4LtjChsjGSHhAjjlkK3bnu2InCxaIphiPdLfdcxz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,81 +124,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 8/31/26 2:12 AM, Kairui Song wrote:
-> On Thu, Aug 27, 2026 at 03:32:18PM +0800, Baolin Wang wrote:
->>
->>
->> On 8/26/26 1:53 AM, Kairui Song via B4 Relay wrote:
->>> From: Kairui Song <kasong@tencent.com>
->>>
->>> Instead of doing bit ops on folio->flags.f, introduce helpers for
->>> adjusting a folio's refs and generation info, making the code easier
->>> to debug and understand.
->>>
->>> No functional change is intended: some combined atomic operations are
->>> split into two, which only creates harmless transient states. There is
->>> no measurable performance impact, and some paths even look slightly
->>> better in the generated assembly.
->>>
->>> Signed-off-by: Kairui Song <kasong@tencent.com>
->>> ---
->>>    include/linux/mm_inline.h | 76 ++++++++++++++++++++++++++++++++++++++++++-----
->>>    include/linux/mmzone.h    |  1 +
->>>    mm/folio.c                | 19 +++++++-----
->>>    mm/vmscan.c               | 61 ++++++++++++++++++++-----------------
->>>    4 files changed, 114 insertions(+), 43 deletions(-)
->>>
->>> diff --git a/mm/folio.c b/mm/folio.c
->>> index c02dcea9c03c..a932059057ac 100644
->>> --- a/mm/folio.c
->>> +++ b/mm/folio.c
->>> @@ -353,26 +353,28 @@ static void __lru_cache_activate_folio(struct folio *folio)
->>>    static void lru_gen_inc_refs(struct folio *folio)
->>>    {
->>> -	unsigned long new_flags, old_flags = READ_ONCE(folio->flags.f);
->>> +	unsigned long new_flags, old_flags = READ_ONCE(*folio_flags(folio, 0));
->>> +	int refs;
->>>    	if (folio_test_unevictable(folio))
->>>    		return;
->>>    	/* see the comment on LRU_REFS_FLAGS */
->>> -	if (!folio_test_referenced(folio)) {
->>> -		set_mask_bits(&folio->flags.f, LRU_REFS_MASK, BIT(PG_referenced));
->>> +	if (!folio_lru_refs(folio)) {
->>> +		folio_set_lru_refs(folio, 1);
->>>    		return;
->>>    	}
->>>    	do {
->>> -		if ((old_flags & LRU_REFS_MASK) == LRU_REFS_MASK) {
->>> +		new_flags = old_flags;
->>> +		refs = lru_refs_from_flags(old_flags);
->>> +		if (refs == LRU_REFS_MAX) {
->>>    			if (!folio_test_workingset(folio))
->>>    				folio_set_workingset(folio);
->>>    			return;
->>>    		}
->>> -
->>> -		new_flags = old_flags + BIT(LRU_REFS_PGOFF);
->>> -	} while (!try_cmpxchg(&folio->flags.f, &old_flags, new_flags));
->>> +		lru_refs_set_flags(&new_flags, refs + 1);
->>> +	} while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
->>>    }
->>>    static bool lru_gen_clear_refs(struct folio *folio)
->>> @@ -384,7 +386,8 @@ static bool lru_gen_clear_refs(struct folio *folio)
->>>    	if (gen < 0)
->>>    		return true;
->>> -	set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS | BIT(PG_workingset), 0);
->>> +	folio_set_lru_refs(folio, 0);
->>
->> Actually this clears the folio's refs counter. Would it be more readable to
->> introduce a folio_clear_lru_refs(folio) helper and use it for all the other
->> folio_set_lru_refs(folio, 0) calls too?
+On Fri 28-08-26 12:24:19, Shakeel Butt wrote:
+> Sashiko [1] reported that memcg_hotplug_cpu_dead() drains the stocks
+> of the CPU which went away but leaves FLUSHING_CACHED_CHARGE alone.
 > 
-> Thanks for the review! And yeah, that's right. But a standalone
-> folio_clear_lru_refs seems a bit bloated? I'll add some comment on the
-> relationship of refs and PG_referenced for the helpers first, that
-> might be helpful enough I guess?
+> The flag can be set at that point: drain_all_stock() may have claimed
+> the stock and queued the drain work shortly before the CPU went down.
+> workqueue_offline_cpu() unbinds the per-cpu workers, so such a pending
+> work item is executed by an unbound worker on some other CPU, where
+> drain_local_memcg_stock() operates on this_cpu_ptr() and thus drains
+> and clears the flag of that other CPU instead.  Nothing clears the flag
+> of the dead CPU, so drain_all_stock() would skip its stock forever once
+> the CPU comes back online.
+> 
+> Clear the flag of both stocks after draining them.
+> 
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Link: https://sashiko.dev/#/patchset/20260828135036.7d44361f%40fangorn [1]
 
-OK, I'm fine with that.
+I suspect this goes all the way down to
+Fixes: 26fe61684449 ("memcg: fix percpu cached charge draining frequency")
+
+Acked-by: Michal Hocko <mhocko@suse.com>
+
+Btw. is there any good reason why we are not clearing the bit directly
+in drain_obj_stock resp. drain_stock_fully. Doing so would simplify the
+code flow and prevent from bugs like this one.
+
+> ---
+>  mm/memcontrol.c | 16 ++++++++++++++--
+>  1 file changed, 14 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index e082aa68fa5c..872115c6b0f2 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -2378,9 +2378,21 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
+>  
+>  static int memcg_hotplug_cpu_dead(unsigned int cpu)
+>  {
+> +	struct memcg_stock_pcp *memcg_st = &per_cpu(memcg_stock, cpu);
+> +	struct obj_stock_pcp *obj_st = &per_cpu(obj_stock, cpu);
+> +
+>  	/* no need for the local lock */
+> -	drain_obj_stock(&per_cpu(obj_stock, cpu));
+> -	drain_stock_fully(&per_cpu(memcg_stock, cpu));
+> +	drain_obj_stock(obj_st);
+> +	drain_stock_fully(memcg_st);
+> +
+> +	/*
+> +	 * A drain work queued before the CPU went away is executed by an
+> +	 * unbound worker on some other CPU and clears that CPU's flag, so
+> +	 * clear the flags here to make these stocks drainable again once
+> +	 * the CPU comes back online.
+> +	 */
+> +	clear_bit(FLUSHING_CACHED_CHARGE, &memcg_st->flags);
+> +	clear_bit(FLUSHING_CACHED_CHARGE, &obj_st->flags);
+>  
+>  	return 0;
+>  }
+> -- 
+> 2.53.0-Meta
+
+-- 
+Michal Hocko
+SUSE Labs
 
