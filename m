@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1884FC61DE2
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 00:26:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE82AC61DE4
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 00:26:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 279416B00AA; Sun, 30 Aug 2026 20:25:31 -0400 (EDT)
+	id B04216B00AB; Sun, 30 Aug 2026 20:25:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2502A6B00AB; Sun, 30 Aug 2026 20:25:31 -0400 (EDT)
+	id AB5866B00AC; Sun, 30 Aug 2026 20:25:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18EB96B00AC; Sun, 30 Aug 2026 20:25:31 -0400 (EDT)
+	id 97C786B00AD; Sun, 30 Aug 2026 20:25:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E2EE46B00AA
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 20:25:30 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6DF3A1A03CE
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 00:25:30 +0000 (UTC)
-X-FDA: 85159670820.26.7BB5167
+	by kanga.kvack.org (Postfix) with ESMTP id 704186B00AB
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 20:25:31 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0E4951A03C3
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 00:25:31 +0000 (UTC)
+X-FDA: 85159670862.20.F8AB81C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 8415720003
+	by imf25.hostedemail.com (Postfix) with ESMTP id 073C7A0007
 	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 00:25:28 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q4XDKKI9;
-	spf=pass (imf13.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J7ixRXTW;
+	spf=pass (imf25.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788135928;
-	b=HXsvcrA5ulODKTRKvFPve06XYcewNoQgZkn9JxJ9J89zbhMIHqMfN3xBVQwwGtQxZb9f9s
-	ZKUzfXoXaskU5rgkbMape8Iv0c/Wp3nY4Xx35fLQxlw6Wzxz7aUcZ4se4HOqlSZ/fenQ4Y
-	YilPe7m9BM2AYKlBAhNmV9/D9jxK4cM=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q4XDKKI9;
-	spf=pass (imf13.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	t=1788135929;
+	b=8mAF18Ce+ixMOxQ8kA+LP71FDkvTiZ8yYsGaMU7mQnkTbOLtqBFR2lCPqFD5A1QuxXVA+W
+	RW/aopXrLpnO9yJ9YVLJb8A7u3S8Mz9SD6wZsvs8Ui4GLStORn+Fhv+z+/MJwwKVL0v3h9
+	qA6W28/d8jDAKGjKEMNg+mYiU4IkjTI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788135928;
+	s=arc-20220608; t=1788135929;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5m1svVYiyrAZtzLzVHG280jSxc0WG9zXh0ngFgKHWQU=;
-	b=5lUmzzrTco0B0PRdjOIjGWwTEaHRaHE0FcwICZ+5iHQ1JPxcKKjemhTPIPsEjxxIfw+Hg+
-	mW+ow7Wo6F+LwWvvtpq6u6FOr32VGH7C+Dg9f0P31m5fKM+h11GtxPG7Z5zar9Q/w8Ju2b
-	E7++9r6RJ8R4iSV7SoP1T3++aQOoafw=
+	bh=Yoh3WuzrcEJJWcfzWiQW8FrqYn2BMbIMaohBWnxNBKo=;
+	b=cC+miYt0+yaxsumyOG1U3gwzoNTPXIoxfrxXnT3PgmxpAKiEgLJWQIZY5fageY2Oa1FhHT
+	j81oZ25KiLDuY8cQSTtVzvaY4cr8uWBMaE4H05BlBHhEX44sNZBY38LyMgyb8pC6cOLcTk
+	mRbGVEGDHxubHaUBO2rDTfnPYLERuEA=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J7ixRXTW;
+	spf=pass (imf25.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8E6F644832;
+	by sea.source.kernel.org (Postfix) with ESMTP id 9955544842;
 	Mon, 31 Aug 2026 00:25:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5A282C32786;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6C704C2BD04;
 	Mon, 31 Aug 2026 00:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1788135921;
-	bh=0u7TejSHMad9bYL2p6sJmzMrRCXcgVnE5lch746jIL0=;
+	bh=INfl/U4MD7DiNVtE20rEnCF+KqGWKq4XKxW9ss03gIs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Q4XDKKI970cDwrlLeOUyPXzL41fHU8ixKdjKvqGjaArmtm3P47QWIbAtRhaNOzqyb
-	 +1i/fJnnXYIf3u/mZ8lMtWzBTvlYBxs9+ErohCEzzYLLMjA/3yE66N1ASko4Gq81dG
-	 pndUl+FiJaAZRQTFsTP7SBd7DYFlV48y28KYOklloq6f51TTC+9J2A3EmaY6+s4AWv
-	 60p1/q0rVQTJQn8RTpTCqKxMrJZc/MCnwzHODOapdLD+Fg3Vrg5zvFwPxLP7NMKIeN
-	 h1TH9DbipEWqk0soO5LzCrkaHmA6OmlViW/Ze8+jBEntG4wkOCmDMddn5bnkIfTXFY
-	 MXvuZUpRMzEQw==
+	b=J7ixRXTWSc5y6i4hxgZ+vagyxK1c4T1Q5OxM7n49KwqCLSdHU+Q5P1825KMWSNCCl
+	 6QzFq+JulXODd9QaYpj1JpQMbEE22BcGNDHQYBIRQX5CbCSKNoSn3V5xOjKiOcLHUp
+	 6474IBrpI9oaHry4lMCko9TWcsafgUUhylnSP5nbH/kgvo0d3w8QwIvp9jbRpkZkVg
+	 lZlMeE2m1WBompIa00FCrC1XZeLeO1Io9MQFNwts96/g7IDNevknCIHRf2RZaB+R1H
+	 RA8MLBO7bcV4d+S1AUDPRg9bAbU37BgsXyZBO3ocN3AX4XQfLKe/Y8lWWZFV9i55PL
+	 LV61OtRr3BBkw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 38934C61DE4;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 51E9BC61DFD;
 	Mon, 31 Aug 2026 00:25:21 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Sun, 30 Aug 2026 17:25:18 -0700
-Subject: [PATCH v12 17/45] KVM: guest_memfd: Return early if range already
- has requested attributes
+Date: Sun, 30 Aug 2026 17:25:19 -0700
+Subject: [PATCH v12 18/45] KVM: guest_memfd: Handle lru_add fbatch
+ refcounts during conversion safety check
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260830-gmem-inplace-conversion-v12-17-85e5fd25252a@google.com>
+Message-Id: <20260830-gmem-inplace-conversion-v12-18-85e5fd25252a@google.com>
 References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
 In-Reply-To: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -112,13 +112,13 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>, 
- Xiaoyao Li <xiaoyao.li@intel.com>
+ Fuad Tabba <fuad.tabba@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788135915; l=1963;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788135915; l=4735;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=9VNi9pEuvRkZvdOHV26sDWiemmZK8/yVnQLh7gIYUDA=;
- b=CFxkPT3CEVpS6OYk5q/nJQbCjkiuG38jxjI0AEn8ybxQssVnDPdSR4CXvx5zB8nUH7yz3IHXZ
- FIdLJl85tJiBVhY6bcB+H02CGuqGFpIwiDvHRM0IWlde4lr2+MEuRAp
+ bh=Ty5BgQhIGN1xkSlbhdIOV4bbPZLbusnibdr1eTvGdlc=;
+ b=91swEloDGQUbfYBsHAl/7syD81mtjIP2F0V0Ab45bJ3IEkR1Q5bwBtEL76LfwbU26GezrPCHL
+ XT0wJWHs3EeBheGTp9WnqG2e2q+vGU7johvpQZYqq79+7IhHv7ZWqRu
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -126,13 +126,13 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8415720003
-X-Stat-Signature: y5crf7485b5szffy9htwkforwh8fmhj7
-X-HE-Tag: 1788135928-168547
-X-HE-Meta: U2FsdGVkX1+J4VOMTMXo29snjAuDHp1yLbr69jvRR2GIX2r0hu64LKbTcVf+pZXe8u5Gjl/z+qqMM0w6hAZkbwJN5Y/XNGb86qjTE6VKO7cU0PvVTla22lHjFpoglbygy5Q5yU9MpqlLqz0+FjOSNsPuB63HwgdM9t4rcY/y8DcGh9qGGiV62AON0IOSfRbqT2/RwYkqBgBAPzLzZ+6zc/2uzJXcTlgMV2G25sJ7+BEtyz3DEb9ioqjoWcLvuLI2SYLjl9js92I1JTbdEDvuzetQZLJMnSh/6wNsc2gJWON5s2t4CEoJrffauUOcHXdJSG2rAr3ChyumeaBL7q2iFHA+pHbwZpQi3oLSjhw9my46/R1wTTWY+PbG0CZ3OJC62KS7NvWhVJqg0uhpJe99BkCgYhiQ/Y8A32mJ5+f3ivq/K3b8cRpqSgZR0dEPmviyD3/8lzTFmsKa9w1RulK0joKkME0fQfckGZbQ6rOuEnvcuv5SlYzJiNtbZ7eVy14PBqpf+uxgEFh/Tt+O8k+SRMQXXkMJ2CZmE1+QrrIozXtSPFDE84dtDMFPD7i0cwDaCvR4zaFS8Pnx3J6tEA4kE13KHEk0lDfEWPUBjazySJwcLXj87wk4qzeSAqcvb6fefeN2/EcqpMtmJ/11jcdD5ma6qyR/IakqGl+FB00aAYV9bg1bAikBRVX1xhLra4xuSb3lTzm+0RXSEpCAinsq0qMoPnBNnd5v8EV49zwVj7XBLgcDVedpYl3KxQAOqvVNnRr1uHk6AB0n8ghVeMsoNw4MG6T2wHW9+afVY01k+xtj4yqDvRi3pb0DiRLrfRfbkrRaENTp0jbe81345FAJXUHB4+AV0GVI8MRNhhohqQcbF5lqjuunuT+j4cEyFGSus0+pb8Mnu1L8I9Akl0X2OaA84lNYHFR9J+ju5xU0EIJz1XqzdRjH0z+5MYeyI4OBtCyzjGrfzJ1SluLwNxd
- OcUBMubP
- FnWhGn+2roEgZE4JhqWs5xr6CycsZFQoZ+/pk4UFg0DlhG1D4Y+TyhtPlVNpDOXK4ruNpS2AvPJSV1NCixgrMHWEiT4Da7+WokqCSXYUogCSqwhmih7+CcNIWmuaOL6jZZ/sSdNpAf+FL7GlG94H/1v63OYO7G3vBtEzcyVgLDimsv0Kp5wsAk0emrdg1r/YwY4ifSX7NDNde7VeyE2RvowVdYj44gHkiRPSZFUlCFL1+VZpsrp29O01WBz96AV0QWoTmlu6h+sC0aD0yGJnm19qguwJOSzYy9jsePO9vHW7ffBwLUEEDUAVbW46frveAJS5HFdxQM2T6vQAKDsSUgQg1piSpkritw7yh3iPq+kmVf1kALHqrb162C1gMflZxMss9GoTBgUHRbRXLp3F8kN0IRt0CUMTDi4hY26g+eFfXed4CZwN0hzgOLN+qisIq8EgSnydJ89KNhFQUYDYWovxQbz64FINHFs8LtWp9BZM63qh/xEKvoUQcZ8sjA+EOMo+1Z5mp97JwAFQIALt4TyQ9Yi9tfVEj5Zel36VyXZkvUZo=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 073C7A0007
+X-Stat-Signature: cjpfiizg5jjg3zeifrk9syxon8ni8zqe
+X-HE-Tag: 1788135928-297067
+X-HE-Meta: U2FsdGVkX189MRjo7YSRthavVaNDJH5yeKzZ8vnsiFTw2fVz+Mr8KQJBrVbqKfYb7/6PRQQqxlDZAIaiUrgo/zjbEKkdn21rJNUJA5SylqtH4i2l/M3ORVbeDYDVHUyzrd0t7F/O6TFGSgLl6dgg8omFoXGrk2gBUGqWr3+YITKKAjpIwoD2/ddZCQNGx5wu8iF8EAWC9kEvlPnm08cbsmaRejuHyfX6MBMQngYISPyV/Sd69fOwJgQw7vJcD3JLeamlsZFos/ZGysaVYIXB3i6MqLeGLOqOTZYuh3RtkNSkod38/kMyguB8SY6rkNi1eVB3LxpRwtzZEP3CtOeb2m48ymTJ5sVk+dNO+ux/ta1Q6qZlJPSRh1uaU0gQYHOQIMUbUqR+cyikUc8atT1HMMVvsjKAHU9Dgi+dHn/vQCh+8DQaj5t6XVsGJpAgQ3m40nheJxYU/bL5q7NuLVecQ6PnZUBt7NYYDb/8fmo9ESUmoxEK+7DeTdDgl4hyQVMJM3qublYTDUPuac5HjQjk9W48aCjkGMOh8SY7GPJMr8naOTkaU//zblRWJoB16RobBCh4QB4D94nxwxVGqrenM5uaWnR58N+eAvCH3lBbChGfia8Ze1xN5kJfWGx5GK186HVQ3RPyMXHsR4EuQI9+1RfzLZoTsuT92VUsW8ADcVd0ZsaH5s62XiR27Q9L2hxbyNTsl5rSaGqsU5Jqn+wh/J5WOfiKZppDrZabpIXgAb+GKmWQBobRY8lNtCek+q1cQVFlGF/Vl/IUnaz8vymE3Lldx06ZqNjMYcrtOPZnObd6v2WlB2FsGqB04Jy4NIB9H1mZpIh9oMlO6UHZqtiM31p8M2cwHyHUBRIbOX5SEQi7tAKjD0ZV+1l89qPTfWfZdhyq63wGUinIGH6XWCUqFhYStOjJlxCauDUCh+lnD1GYChWWYosTeuzvqn92cHKbrwjIBh9KLcdmIKUBwPd
+ SAdNe7lJ
+ HElq5cVIKHXym60ZyS+Xlt3WX5B4iR4NRFNugGkmd1KGPCMCnWbYqcUlvQm6B4BEE0Hg+CGVVe8ebJt/dB+3QEowqDIqxetZl5MANw/N60f+EhhxkrFs/RDRURCFTMp3gD6rRnDgQEMsPcdR1LiE1sCB4ncSg4JQIdSMesIM+N/cbWqnBS2nXY744MyWZD5D/BONqh9oRxmIhbJT14XHeap9yliPyyXXmLZukmQGJKVnP6MVrr2+goYjDxoOW+GgmxXomsqjOTc5t46B03IhO6g+81FDCuqbT0AN53jYucpHEzOb14iDk4PxN6ys2M4o4AnxeuAafrwIL5aienmcO+Vi8VfqdWuE/P7B9mqJRI6trBnTsq1T0TjgHD4YkJAonCxOayTIsk/M3itDH+KeaFpy+gAj8IJn2clidas/bNq567HPw5Hc3xeoUQJAEUUPK52YrFLntVHPQDl9Kz4nxLB6jNzu1Q+9AJHYYoNlpTxmXCVhfNl/lDCMkzeJv8kWI6ib1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,66 +142,129 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Provide a function to check that a range has given attributes.
+A guest_memfd folio has no outstanding references if guest_memfd holds the
+only references on it. Any other references on the folio may indicate
+another user, and guest_memfd cannot convert it to private if there may be
+an existing host user.
 
-Optimize setting memory attributes by returning early if all pages in the
-requested range already have the requested attributes.
+A folio will have outstanding references if it is present in a per-CPU
+lru_add fbatch. guest_memfd does not actually participate in LRU, but
+freshly-allocated folios are still added to the lru_add fbatch for batch
+LRU statistics processing.
 
-Reviewed-by: Fuad Tabba <tabba@google.com>
-Tested-by: Shivank Garg <shivankg@amd.com>
+A folio may also have extra refcounts if it is on the mlock fbatch.
+
+These two known "usages" of the folio are handled by calling
+lru_cache_drain_for_folio, which drains both the lru_add and mlock
+fbatches. After draining, if the refcount is still elevated, then there are
+truly outstanding references.
+
+If the page may be dma pinned, DMA is using it and hence there are
+outstanding references. folio_maybe_dma_pinned() can have false positives,
+but that's only with a significant number of refcounts, at which point
+draining LRU is not going to move the needle - it can still be concluded
+that the folio has outstanding references.
+
+If the page is still mapped after guest_memfd tried to unmap it earlier in
+the conversion process, it also has outstanding references.
+
+Return true and exit early to avoid unnecessary draining in these 2 cases.
+
+Provide a drain status to only drain once ever while processing a batch of
+folios.
+
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Suggested-by: David Hildenbrand <david@kernel.org>
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- virt/kvm/guest_memfd.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ mm/folio.c             |  2 ++
+ virt/kvm/guest_memfd.c | 30 ++++++++++++++++++++++--------
+ 2 files changed, 24 insertions(+), 8 deletions(-)
 
+diff --git a/mm/folio.c b/mm/folio.c
+index c02dcea9c03c2..50a6dbe55998e 100644
+--- a/mm/folio.c
++++ b/mm/folio.c
+@@ -33,6 +33,7 @@
+ #include <linux/page_idle.h>
+ #include <linux/local_lock.h>
+ #include <linux/buffer_head.h>
++#include <linux/kvm_types.h>
+ 
+ #include "internal.h"
+ #include "page_alloc.h"
+@@ -926,6 +927,7 @@ void lru_cache_drain_for_folio(const struct folio *folio,
+ 			*drained = LRU_CACHE_DRAINED_ALL;
+ 	}
+ }
++EXPORT_SYMBOL_FOR_KVM(lru_cache_drain_for_folio);
+ 
+ atomic_t lru_disable_count = ATOMIC_INIT(0);
+ 
 diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index d14a7024bdc7b..ac8e0c6d6e942 100644
+index ac8e0c6d6e942..1fe935aaef36f 100644
 --- a/virt/kvm/guest_memfd.c
 +++ b/virt/kvm/guest_memfd.c
-@@ -98,6 +98,24 @@ static bool kvm_gmem_is_shared_mem(struct inode *inode, pgoff_t index)
- 	return !kvm_gmem_is_private_mem(inode, index);
+@@ -8,6 +8,7 @@
+ #include <linux/mempolicy.h>
+ #include <linux/pseudo_fs.h>
+ #include <linux/pagemap.h>
++#include <linux/swap.h>
+ 
+ #include "kvm_mm.h"
+ #include "guest_memfd.h"
+@@ -556,10 +557,28 @@ static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attributes,
+ 	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
  }
  
-+static bool kvm_gmem_range_has_attributes(struct inode *inode,
-+					  pgoff_t index, size_t nr_pages,
-+					  u64 attributes)
++static bool __folio_has_outstanding_references(struct folio *folio,
++					       enum lru_cache_drained *drained)
 +{
-+	struct maple_tree *mt = &GMEM_I(inode)->attributes;
-+	pgoff_t end = index + nr_pages - 1;
-+	void *entry;
++	if (folio_maybe_dma_pinned(folio) || folio_mapped(folio))
++		return true;
 +
-+	lockdep_assert(mt_lock_is_held(mt));
++	/* 1 reference held by filemap_get_folios() in the folio batch. */
++	lru_cache_drain_for_folio(folio, 1, drained);
 +
-+	mt_for_each(mt, entry, index, end) {
-+		if (kvm_gmem_get_attributes(inode, entry) != attributes)
-+			return false;
-+	}
-+
-+	return true;
++	/*
++	 * Outstanding references are anything other than those from the page
++	 * cache, plus 1 temporary reference held by filemap_get_folios() in the
++	 * folio batch.
++	 */
++	return folio_ref_count(folio) != folio_nr_pages(folio) + 1;
 +}
 +
- /*
-  * Returns a locked folio on success.  The caller is responsible for
-  * setting the up-to-date flag before the memory is mapped into the guest.
-@@ -623,12 +641,15 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
- 	pgoff_t end = start + nr_pages;
- 	struct maple_tree *mt;
- 	struct ma_state mas;
--	int r;
-+	int r = 0;
+ static bool kvm_gmem_has_outstanding_references(struct inode *inode,
+ 						pgoff_t start, size_t nr_pages,
+ 						pgoff_t *err_index)
+ {
++	enum lru_cache_drained drained = LRU_CACHE_NOT_DRAINED;
+ 	struct address_space *mapping = inode->i_mapping;
+ 	pgoff_t last = start + nr_pages - 1;
+ 	bool has_outstanding = false;
+@@ -570,17 +589,12 @@ static bool kvm_gmem_has_outstanding_references(struct inode *inode,
+ 	folio_batch_init(&fbatch);
  
- 	mt = &gi->attributes;
+ 	next = start;
+-	while (has_outstanding && filemap_get_folios(mapping, &next, last, &fbatch)) {
++	while (!has_outstanding && filemap_get_folios(mapping, &next, last, &fbatch)) {
+ 		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
+ 			struct folio *folio = fbatch.folios[i];
  
- 	filemap_invalidate_lock(mapping);
- 
-+	if (kvm_gmem_range_has_attributes(inode, start, nr_pages, attrs))
-+		goto out;
-+
- 	mas_init(&mas, mt, start);
- 	r = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
- 	if (r) {
+-			/*
+-			 * Outstanding references are anything other than those
+-			 * from the page cache, plus 1 temporary reference held
+-			 * by filemap_get_folios() in the folio batch.
+-			 */
+-			if (folio_ref_count(folio) != folio_nr_pages(folio) + 1) {
+-				has_outstanding = true;
++			has_outstanding = __folio_has_outstanding_references(folio, &drained);
++			if (has_outstanding) {
+ 				*err_index = max(start, folio->index);
+ 				break;
+ 			}
 
 -- 
 2.55.0.897.gb25b4bd76c-goog
