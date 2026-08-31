@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2769C624D1
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 13:35:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C473C624A4
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 13:35:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 52D806B008C; Mon, 31 Aug 2026 09:35:47 -0400 (EDT)
+	id 15CAD6B0092; Mon, 31 Aug 2026 09:35:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DEBE6B0092; Mon, 31 Aug 2026 09:35:47 -0400 (EDT)
+	id 10DD96B0095; Mon, 31 Aug 2026 09:35:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F3CB6B0095; Mon, 31 Aug 2026 09:35:47 -0400 (EDT)
+	id 0243E6B0096; Mon, 31 Aug 2026 09:35:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 20BB26B008C
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:35:47 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B21ED1C028A
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:35:46 +0000 (UTC)
-X-FDA: 85161662292.24.23D30FC
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E33C714000E
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:35:42 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=SRYIzDVc;
-	spf=pass (imf26.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788183345;
-	b=oIk/tLSVLF7U/urZ5zLnlg5P/ciYUuWIji2/t2p+NTzeVZSPNC4lH8mUvxbmBNauXsIBwH
-	QtHIpY9tn6D/hAp6rvUv3wRdXW2vOPxAsFWGz0ZCbH9toxWLl/xYrNo0OifOLzz7lJq7OP
-	1gPpv7/l2Nr/II9gYMkOX8tPTHuAvkw=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=SRYIzDVc;
-	spf=pass (imf26.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	by kanga.kvack.org (Postfix) with ESMTP id D56646B0092
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:35:48 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6927D1C0243
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:35:48 +0000 (UTC)
+X-FDA: 85161662376.11.E8DA4ED
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by imf11.hostedemail.com (Postfix) with ESMTP id C2F0E40002
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:35:44 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=LWrUCsyp;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf11.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1788183345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=MNIhhVbw7X5/d7sVTwXmPhv3XWWu8nVjTkE+oAnGKMc=;
-	b=a8bAyIe8Lr3b5njdG4b2UE5x64qkEMZRwjZL+pIXpzg5qfN7m77LXyDTU8jqRyhaGXU4/W
-	M58bOykHNp6GHxLRnsdWlpRqQr23TH/VzsCWIKnphNcwSNhrDcQLDBZABmjgCi5sRpmuSb
-	QWcNac0i23F9TNssSkwPbsej28CTvYI=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=w/ZOvr0cFnO+KxNXzKLYo9hHd8muTFSoABjiNPb5SQo=;
+	b=VSlhn4lcmcBjWgr41TiUMdWQXFFpM3nFY4a/leSW7QM3nGIHOV+5h2N9LsclbjCzEMyP77
+	HhPlwFIGUl4rb5fRfn4F1GHpSsdadrtupVM9fstQ4z4KFdJw9l8S2E8MPl7EWzfxWbiZXb
+	2DvfD8lB7F3rD6+FEmJZnm3JPzJc37Q=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=LWrUCsyp;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf11.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788183345;
+	b=U7Vg/EQwd/++iy6Yow2oIvYuIZnHUfYLiHedgaiUqeppcqh83CpZz8clFlgGLHaF7P/DxG
+	F7g5+/AttQYIvm+WFNe4aqS7fbcZhGQffcTM3KJVCwOtp4AmD+K47eyJyAuGJWon4u/elG
+	lDHsWl/M1qQugxzuL799cTuCRpI6PMM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=MN
-	IhhVbw7X5/d7sVTwXmPhv3XWWu8nVjTkE+oAnGKMc=; b=SRYIzDVcRlREcSQMkz
-	IUXwLG1D/GcchB+9+Cp6maBH1EKJcpddPcz7v/tQm+YWCOlALd/qUSYKY9GgrYV6
-	uzDIoG9ZJ/aTT+o2tWH+MXnih8rUbg1MmsS0b/+pU7OMmRQb0fhDZn+9MRqKpFip
-	ad9AFMtPCpWFwG+LkZKrPHp1U=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=w/
+	ZOvr0cFnO+KxNXzKLYo9hHd8muTFSoABjiNPb5SQo=; b=LWrUCsyp6sBJRjuFFH
+	WoX/i60LcZJIhpl9tb8texE4kWXekPjEjDwGD0GBLWceXAlSipmfOb1zX3SH5iGW
+	Nndy4j6SMPn2S98e9bLe+YVaEsNI7xnQl0qloYEDZnJH2MgTjYLRYO3oxjymQtLj
+	9Ag1QdX40jVFjzUjGlD6nfAW8=
 Received: from XLL-9950X.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wBHHmEbg5VqFKS5Sg--.13223S2;
-	Mon, 31 Aug 2026 21:35:25 +0800 (CST)
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wBHHmEbg5VqFKS5Sg--.13223S4;
+	Mon, 31 Aug 2026 21:35:27 +0800 (CST)
 From: Longlong Xia <xialonglong2025@163.com>
 To: muchun.song@linux.dev,
 	osalvador@suse.de,
@@ -67,27 +67,29 @@ Cc: david@kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Longlong Xia <xialonglong@kylinos.cn>
-Subject: [PATCH v2 0/2] mm/hugetlb: fix surplus accounting and availability checks during demotion
-Date: Mon, 31 Aug 2026 21:35:17 +0800
-Message-ID: <20260831133519.2505020-1-xialonglong2025@163.com>
+Subject: [PATCH v2 2/2] mm/hugetlb: cap demotion at currently available free pages
+Date: Mon, 31 Aug 2026 21:35:19 +0800
+Message-ID: <20260831133519.2505020-3-xialonglong2025@163.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260831133519.2505020-1-xialonglong2025@163.com>
+References: <20260831133519.2505020-1-xialonglong2025@163.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBHHmEbg5VqFKS5Sg--.13223S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxAr1kWrWrAr43uF4xZrWUJwb_yoW5AF4Upa
-	98Jw1Y9r1kGry7Kr4fZ34qv3ZY9r1rXr1Ygwnxtw15Jan8u39Fgr1Svw15Wa40vrZ7uay8
-	Xr4UAr1ku3W5XaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jbWrAUUUUU=
+X-CM-TRANSID:_____wBHHmEbg5VqFKS5Sg--.13223S4
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZr17Cw1xArW5Aw45tF1rCrg_yoWrJFy5pr
+	W8tw1Sk3ykZF9rGr1Sqw1Dt3WfZw4xKrWrA34fJ3y5Zw13X3sF9r1xJryUZa4xuFWfJanI
+	9F4DZ34DZry5XaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jc6p9UUUUU=
 X-Originating-IP: [39.144.46.203]
-X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC+B3n4GqVgx2NgwAA3N
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC+B-n4GqVgx+NqAAA3m
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C2F0E40002
+X-Stat-Signature: b4d95qzmmoeif9hhkntixyzpj83rbeae
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E33C714000E
-X-Stat-Signature: q8j51jurie44juemj7x4sxqn8i6ampjc
-X-HE-Tag: 1788183342-441208
-X-HE-Meta: U2FsdGVkX19Mmj3D2SVpTc/SZCncokAAm+J4yTC3Y0s7YPJxbgkTYtXTSmEAq0h1Pz0Ap28vRz/8SxkqbXfnl8JAdEkbdwZ3KtwdK3CkwvPovefJbIgAOdMm4nQk9/N4+LLVqnIYD90WROQG7CfW1SW1W2h4byZ0tSuA2G5EnnUch7SQPBIEgFYWGnyd/vlGCnS00nt7rihtO8o2U069ceAcoBtEEnPnM2tLHl1YjPkw8nW6m4xhNdqxu2Fu9Ykl9roVbqRQWqmay2yNWOQe2gQXtteU5mwi9G0wWTHjJzrNytwNWA3Gj0AsPcZUaO3OXtYWd6i7ISWcToP2vQS+6D2JKyvb9eQjlOAT6DALqGnYmDoqIEJrE+fu/hNs3/56YUyoOASBnt3d9w+WPZDCffWa03N7dGmCawVtWkfbLh4/8cIJa/dY5G5EREKS/3csq4/YSZ5urWsYwg+Z5wcdvRXXp0QqGU7h8laAImQoqUl79qlSLK+fyP1Qj9Sfto1MRD7/O796xOrC/4m7FdxUojc6XJnHmRF/nvkO6/Smed0nrJj5Xi0tMCF8DQHZuHiug3a5+ivbk85bbuscPCHjB4rsEtOTgXMoJ6v+wveHRU3SiRdi5Kro9teEFK+ZMLEuMgPu+9DJTYdmiifmHGXarXq02PJ79lojgdih/+fM14+pY8OdJ7gV7QmdIVokqYL0Rb7ovt5B0EH4qKKtbQFWkXNm4LkgM7mFZLKPKoylmazef4hxpk8AjdcgQROObNCe0jhaWwjUrARagqbPuOInHWgoNXfh7vfN4iOu9hJkaRarz/+GntA6sFiOoAilAS+yV36UPFKix62EAEkxXxg1eED/igUeSUpqepd5j1sYoOmh+2bSuLVVq5V6AWLiIWL2b11GU7vN49ibbm20W4Ho1p8aejDauFImVEHZTQM72StumydeFyB4xgGVws0o2ZeS6Cz/i3fhWEQfWfT9iNZ
- F4X0QiRb
- QOWvFLDdZEkeVriQWB9lp3p3wlxDF+4FxHKleg8lRkxmks4vrUWGycS/9dOERxA8oNBgDLNT1gKMArDK1fuVt6CJFTQJqgGL3uuVquMFPNWzdA76FkQ11QFIvgH3X/2M6yoNVD5J+za1vDWObqa4aKYh2Jx7cmJlxtMvr7BZyvQ8sBAuftR52apZ9TYc9+GE+iyMT7C2tTrLJA8LIammGc5ECvUlmk1TCEocCAsNcVFc12UfK1W3QPN4zqmWof1eUNkpSGwRY6ECiXhbAryXt/83UyiEIS0FQWTq0UPWAJ/OUGYQWqOpCLarK5OiMzUpevkx9H9CCefh57T+2QX1dUV1hiOwgz4bD55BcUS+wO1wgiLlSbQgdSE7Z0jv2Gj6nVv6P
+X-HE-Tag: 1788183344-469420
+X-HE-Meta: U2FsdGVkX18SrR5NUQkp3+oTNhFQOC50akueIzkX73dJkvLHWnuLPRNfCmAox7T36kFEXrZHQAykmg1UoeNBADg+s5ONzkQbbV8IKP8n/oiDM6D9fFjW78+taUeHtbWxzWzgN8TSACylec1YDZ6B2iGtid/PPLVN1dFDcwd16tTjftZSuViumbUoIU8OEscwy9SJawgSGsipOmmvy9IZHu6XZyGrEtmh4zaPJ1CtR6q9zQpGQrWoHcgzy+aFDaNkXAUbsP/vc+A4eO5FESs6NhdbXKYIufJD3lbnyWwR+9nbO9FO6XpylQkOIvhflsKf1PwxCnotHPFlfqSfYhRx9UuZPUbpifvX6pQZaVzUnbhpVw7rbJHsSly2BenibXlivEzEsVH0ZdwiIIXvapcTN8malg/Gq2G/1AYJ2y4kFxVIGR5WnQ0ilg/TKM4oISMPrecEKtj9vC7wQyXZzXPW7CLN77Eg1FdPvLGNcjxz6fmNqPCoh6UeZXtHkGrTgdSNIrMbYLVJQaFYDzKOWVpV0DWgsaBssS3QKBNs99egDPW6ps98d1OPnzsYQz08HRf4JYZl01S+VjZXmKLjGl3wKiv2IYcA1CE8GOLlyBxzhboDSiEX2gn7IdB7tRlHMsJm9EtQZHv7ZuO0jZF0BIoyh2H5Q8/FpsGEFXr4IrbR0gGD+U7IhW51/PNRquZUyU+TWRvqUH3eLoPa7zdEO3J9E6MPlsS3gH48ebez3eZoCbELKaCEL0iJsDabEZEgzeMeKg2YoecmkR5lY1tRTIrHqNcRi5Q+LqNdu9DOeZ0jhYgkBCUssS8Qx9dHLl17EztzMYF8KtZMaiwhMrQTDeHzKMciBRxbCvCx6UfdFg8dSf8dy9uUowAgW1SjZprRPbwRfQRuJ3Z1UVyYFPUwM95xOFo5mE1y5M5T4o0+JKpvd4DwWQcsO8PmrNMKW5Bo2Gz3cZdAZ15oxJIDa3KgltE
+ WtOgIvnn
+ 6Kyk2T8vGRjZkDo1ynhqh6tUzjzY7cDyLcKfwzyK2qMdt5zmZPsqhs9V3on8rW6lVWuMtr1DLIqYqC05zu2qCBHHEzfcXSEXBCCH8KtaQ3Vbsff7eSXBxjAKi1rGnjVjy8qo8/0Ge3tMaKUb3WX08xwqMtB/2O2OYne08/YvUhWppCnZLsGSXm+e5iDFrlYh/qB9K66JPDSwwz3HNNG2rEHM5mALhiBwqQL+e0K2/2XtAWO6AaOEOjXouSInaZKi/72Bu8/BASmPdn/itd75swACQwBdPLyXouHe/a13HyfQf9cEq6Qzg4KQvZg4jmoMDcwlC3bK7Ye6GF34nixaSWx+b3w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,120 +99,114 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Longlong Xia <xialonglong@kylinos.cn>
 
-This is v2 of the two-patch series fixing surplus accounting and
-availability checks in the hugetlb demote path.
+Demotion must not remove free huge pages that back existing reservations.
+The sysfs path checks whether any page is available, but passes the entire
+request to demote_pool_huge_page(). For example, with two free pages and
+one reservation, a request for two pages removes both and leaves the
+reservation without a backing page.
 
-Patch 1 fixes source hstate accounting when the free folio selected for
-demotion accounts for a surplus page. Patch 2 prevents demotion from
-removing free huge pages that back reservations.
+Cap the sysfs request by both global availability and the selected node's
+free pages. Recheck global availability in demote_pool_huge_page() before
+each node batch because that function drops hugetlb_lock while restoring
+vmemmap and reservations can change before the next batch.
 
-Both fixes were tested with x86_64 QEMU guests. The commands below use:
+Testing:
+Tested on an x86_64 QEMU guest booted with:
 
-  hstate=/sys/kernel/mm/hugepages/hugepages-1048576kB
+  hugepagesz=1G hugepages=2
 
-Patch 1: surplus accounting
+Reserve one 1 GiB huge page with an untouched hugetlbfs mapping:
 
-A vmemmap restoration failure is difficult to trigger deterministically.
-For this test only, add a one-shot fault injection that makes the first
-attempt to restore the vmemmap of an optimized 1 GiB folio fail:
+  nr=2 surplus=0 free=2 resv=1
 
-  /* TEST ONLY: fail the first optimized 1G folio restore. */
-  static atomic_t fail_next_1g_restore = ATOMIC_INIT(1);
+Request demotion of two pages. Before this fix, both free pages are
+demoted:
 
-  /* In __hugetlb_vmemmap_restore_folio(). */
-  if (huge_page_size(h) == SZ_1G &&
-      atomic_cmpxchg(&fail_next_1g_restore, 1, 0) == 1) {
-          pr_info("TEST ONLY: forcing one 1G vmemmap "
-                  "restore failure\n");
-          return -ENOMEM;
-  }
+  nr=0 surplus=0 free=0 resv=1
 
-The injection does not modify the demotion or accounting code. It is
-one-shot so that the later restore performed during demotion can succeed.
+Touching the reserved mapping then fails with SIGBUS. After this fix, the
+request is capped at the single available page:
 
-1. Boot QEMU with:
+  nr=1 surplus=0 free=1 resv=1
 
-     hugepagesz=1G hugepages=0 hugetlb_cma=1G
-     hugetlb_free_vmemmap=on
+Touching the reserved mapping succeeds. After the process exits, the
+counters are:
 
-2. Enable overcommit:
+  nr=1 surplus=0 free=1 resv=0
 
-     echo 1 > "$hstate/nr_overcommit_hugepages"
+Fixes: c0f398c3b2cf ("mm/hugetlb_vmemmap: batch HVO work when demoting")
+Assisted-by: Codex:gpt-5.6-sol
+Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+---
+ mm/hugetlb.c       | 22 +++++++++++++++++++++-
+ mm/hugetlb_sysfs.c | 10 +++++-----
+ 2 files changed, 26 insertions(+), 6 deletions(-)
 
-3. Allocate one 1 GiB huge page:
-
-     nr=1 surplus=1 free=0 resv=0
-
-4. Unmap it. The forced restoration failure leaves the folio on the
-   freelist while it is still accounted as surplus:
-
-     nr=1 surplus=1 free=1 resv=0
-
-5. Demote one page:
-
-     echo 1 > "$hstate/demote"
-
-   Before this fix:
-
-     nr=0 surplus=1 free=0 resv=0
-     surplus > nr
-
-   After this fix:
-
-     nr=0 surplus=0 free=0 resv=0
-
-Patch 2: cap demotion
-
-This reproducer requires no kernel instrumentation.
-
-1. Boot QEMU with:
-
-     hugepagesz=1G hugepages=2
-     nr=2 surplus=0 free=2 resv=0
-
-2. Reserve one 1 GiB huge page with an untouched hugetlbfs mapping:
-
-     nr=2 surplus=0 free=2 resv=1
-
-3. Request demotion of two pages:
-
-     echo 2 > "$hstate/demote"
-
-   Before this fix:
-
-     nr=0 surplus=0 free=0 resv=1
-     resv > free
-
-   After this fix:
-
-     nr=1 surplus=0 free=1 resv=1
-     resv == free
-
-4. Touch the reserved page and let the process exit.
-
-   Before this fix, the access fails with SIGBUS and leaves:
-
-     nr=0 surplus=0 free=0 resv=0
-
-   After this fix, the access succeeds and leaves:
-
-     nr=1 surplus=0 free=1 resv=0
-
-Changes in v2:
-- Add reproducer details and test results suggested by Andrew Morton.
-
-Link: https://lore.kernel.org/all/20260823034307.1072415-1-xialonglong2025@163.com/
-
-Longlong Xia (2):
-  mm/hugetlb: preserve source surplus accounting during demotion
-  mm/hugetlb: cap demotion at currently available free pages
-
- mm/hugetlb.c       | 57 ++++++++++++++++++++++++++++++++++++++++++----
- mm/hugetlb_sysfs.c | 10 ++++----
- 2 files changed, 57 insertions(+), 10 deletions(-)
-
-
-base-commit: a4ff2be345d0abc943da8dd8da98151843b750dc
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 640df58be4e5..ae26d400ad31 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -3998,6 +3998,26 @@ long demote_pool_huge_page(struct hstate *src, nodemask_t *nodes_allowed,
+ 		LIST_HEAD(list);
+ 		LIST_HEAD(surplus_list);
+ 		struct folio *folio, *next;
++		unsigned long nr_available, nr_target;
++
++		/*
++		 * Re-check available each node batch: the previous
++		 * batch released hugetlb_lock for vmemmap restore/split,
++		 * and a new reservation could have been added in that
++		 * window, shrinking the budget.  available is global
++		 * (resv is not per-node), so 0 means no node can
++		 * contribute -- stop the whole scan.
++		 */
++		nr_available = available_huge_pages(src);
++		if (!nr_available)
++			break;
++
++		/*
++		 * Cap this batch at the current budget; expressed as a
++		 * cumulative stop point because nr_demoted is running.
++		 */
++		nr_target = nr_demoted + min_t(unsigned long,
++				nr_to_demote - nr_demoted, nr_available);
+ 
+ 		list_for_each_entry_safe(folio, next, &src->hugepage_freelists[node], lru) {
+ 			bool adjust_surplus;
+@@ -4012,7 +4032,7 @@ long demote_pool_huge_page(struct hstate *src, nodemask_t *nodes_allowed,
+ 			if (!adjust_surplus)
+ 				nr_persistent++;
+ 
+-			if (++nr_demoted == nr_to_demote)
++			if (++nr_demoted == nr_target)
+ 				break;
+ 		}
+ 
+diff --git a/mm/hugetlb_sysfs.c b/mm/hugetlb_sysfs.c
+index 79ece91406bf..326a54b4d991 100644
+--- a/mm/hugetlb_sysfs.c
++++ b/mm/hugetlb_sysfs.c
+@@ -211,15 +211,15 @@ static ssize_t demote_store(struct kobject *kobj,
+ 		 * Check for available pages to demote each time thorough the
+ 		 * loop as demote_pool_huge_page will drop hugetlb_lock.
+ 		 */
++		nr_available = h->free_huge_pages - h->resv_huge_pages;
+ 		if (nid != NUMA_NO_NODE)
+-			nr_available = h->free_huge_pages_node[nid];
+-		else
+-			nr_available = h->free_huge_pages;
+-		nr_available -= h->resv_huge_pages;
++			nr_available = min(nr_available,
++					   h->free_huge_pages_node[nid]);
+ 		if (!nr_available)
+ 			break;
+ 
+-		rc = demote_pool_huge_page(h, n_mask, nr_demote);
++		rc = demote_pool_huge_page(h, n_mask,
++					   min(nr_demote, nr_available));
+ 		if (rc < 0) {
+ 			err = rc;
+ 			break;
 -- 
 2.43.0
 
