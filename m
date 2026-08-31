@@ -4,133 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C727AC61DFD
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 22:19:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 343BCC61DFD
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 22:27:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD6C16B008C; Mon, 31 Aug 2026 18:19:00 -0400 (EDT)
+	id 0108F6B0088; Mon, 31 Aug 2026 18:27:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A878C6B0095; Mon, 31 Aug 2026 18:19:00 -0400 (EDT)
+	id F03626B008A; Mon, 31 Aug 2026 18:27:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9771A6B0096; Mon, 31 Aug 2026 18:19:00 -0400 (EDT)
+	id E19766B008C; Mon, 31 Aug 2026 18:27:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DA986B008C
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 18:19:00 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EEA83120265
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 22:18:59 +0000 (UTC)
-X-FDA: 85162980798.24.ADD98CE
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 2B614100008
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 22:18:57 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pCtFHgM3;
-	spf=pass (imf14.hostedemail.com: domain of ziyang.meme@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=ziyang.meme@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788214738;
-	b=f44CMPV7VLaWtXMxu+PjDCxvTeQtAlNQmKylaU+EASOIJ2qgo7QT4A/ORz6e80AT0JmQgB
-	T+ITOMgCthds0ZjtwKoXM7ixqVYAPz1lnmWw00DHncTWsmu+W70ReIPAasc83oz3mEAj/h
-	nk0Fr0KyteSBSP1Ibp1w9Kmq4Rnh+3g=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pCtFHgM3;
-	spf=pass (imf14.hostedemail.com: domain of ziyang.meme@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=ziyang.meme@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B35AC6B0088
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 18:27:06 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 24F0C140271
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 22:27:06 +0000 (UTC)
+X-FDA: 85163001252.07.2B0D46F
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 4F089C0008
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 22:27:04 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Gi0AdDvI;
+	spf=pass (imf22.hostedemail.com: domain of cmllamas@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=cmllamas@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788214738;
+	s=arc-20220608; t=1788215224;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XnNt0hP8YJjLsvezbznRGz62Lklpiz7+58ZQDmGUihY=;
-	b=dLO3UArAWUdlKHmiuI7J6k8wyUOZk3o4Ng8q1fF8DyaQEiwNSFNLTAe7yIolH7H0Mj+M03
-	YJpiBdHTgD52WaaSEkIycpBIuCwDF08hoDN/52AMN4Iq3FE8E+y+l0N5qsKNrMTk2YQ153
-	uUwxwMVDmkJyeU966kMFoLPt1ekqSJo=
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-852c481415fso5042662b3a.3
-        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 15:18:57 -0700 (PDT)
+	bh=IRt+Et4enRDJl2yrF6XadJrav4xwHstUxCtXFADfmWk=;
+	b=EM7xMvdtwtOpheI+t7Prf36Zjxw1m0L0LwVlSvWVxMlp0vxOqQH7PuOlICZsRSGa2FO1FS
+	2B+vyz10ZKRS4DnBR3KFhrvzFOTrXBEGFqDEZPiKbncUQR37NPSAR7nzHKpkU+PyqG2syJ
+	axXK3q2eltivLAoFTQOmkSQJFnBENII=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788215224;
+	b=Mr2EbZlsdr01gqbjxjV65HO+SBzlXt/Ye9gJvOGE++QUimw2j1ho74jvZp4PFOYkyen9KX
+	dleLNhLWyHxUh+RoADqLKr1pGCqof+ZeGjaJfOFaVv/8yQcAoiUbecqO5cXDXjy9d5XPV7
+	GMWl9XCuWss+KUmD2ifJhJZvjuEE05I=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Gi0AdDvI;
+	spf=pass (imf22.hostedemail.com: domain of cmllamas@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=cmllamas@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2d3b445a84fso18085ad.1
+        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 15:27:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788214737; x=1788819537; darn=kvack.org;
+        d=google.com; s=20251104; t=1788215223; x=1788820023; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=XnNt0hP8YJjLsvezbznRGz62Lklpiz7+58ZQDmGUihY=;
-        b=pCtFHgM30WnoW6wxjCju557WdPftU6ovIS1ogk6+M/6ztcUBnwtHOimjCbvLgJbkr/
-         7KnChj+1jv7bH06pBqK0c4CtoIkk4Qx+ZXrAkSqmNvJ8DQLHfPOGrDZRssBaExylipF9
-         YcTCm6w86x6sXob8Ak48YfwmgZKF/qu9bhdw3QVqBkMbwfXPIoa5ONtZhIErjO7VTZ2t
-         Qo2Py5sUD26SfMXfgM3iZw3WJlKAFBWuiGQtjfd+2Ww+jDZvOrp/0iRlAgHzUnzeg5Cr
-         lpRsoXN8L7I5dRYcHM1/6VbE53YDvziEdLZstK/4P1cY/iHpbzDkfl43t4RCpAN4vmnU
-         ciNA==
+        bh=IRt+Et4enRDJl2yrF6XadJrav4xwHstUxCtXFADfmWk=;
+        b=Gi0AdDvIymBGxaQ0ngMEUn4U6wjCrTF3W26Rt3OKCF6SebjCtkrsXiKqbQT/orXXyJ
+         Z+28rs6XyhDV0VQ1HEPo0vpHhAxZ/YL7Nc0EBuI9q7VrFpENFx0vjQLMCGeYewqTbyoz
+         bEQuS9NLySXkXaV7F0TC8vF7M2Y2GhwBU+NsHVUYs0t93LuRrHOFHj9RrMkWoNW3/6B7
+         HuO19IiIgshxrgYu2z93hQSyNZA5ECnLQr3mFi+X3uULzBXFY2qGBxsNA7O4hSkSIjAZ
+         FITJOOtcePSdVOAn5jKnqWP+iqXx51LteuiGQ14F2VgGSYTlbezf0OdVjC2GYS6KXjSY
+         RASw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788214737; x=1788819537;
+        d=1e100.net; s=20251104; t=1788215223; x=1788820023;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=XnNt0hP8YJjLsvezbznRGz62Lklpiz7+58ZQDmGUihY=;
-        b=Bbo1jiiyLONcxP228uBUcKAcLtWxGIhUXoQRnar3hU+Y6HstUiVqPeWDdPpkQy04h1
-         BAWh0v/qtLjlywo7PI3ktqgorml3vnMSn6isdqziDGfS1j3BotxlDrNCe0WLwQ9eTw+g
-         5LQELqwe2lpLauonHZ6kq4RGPxXdAECPERxgMjF8YeNhEWC5wWPQ8JklWTudlYDlZcvs
-         UEPbeE1EdhhDOuQ1iV1CvhGLyOFL0uJ+WvobUaEDeQHMRGOSvWDMgpLMzhC5r2JM0rtO
-         E/M4aNg2Qx70+4w6EpAoflj9QW8nD+CUI1UJWJrlxStHQxDvEZDkkf6RHNeZ7F4k5xru
-         tGIA==
-X-Forwarded-Encrypted: i=1; AHgh+RqRd4jBTjiTkrS4BM2e991Wsrah2JdqcfKSoat0XoAT238XUZAowVex7Bfz23I2C9jnaBgzO1KufA==@kvack.org
-X-Gm-Message-State: AFuF++mS969VlKMT/27WbRaAnVBOlBMObYhT5QSfVltsqTEWdsWS8Uih
-	FkDKdHontvNFMSTH0Nbgecygbp84Ya/L6ixl4HJIB5pQwnMA87KbTxvh
-X-Gm-Gg: AR+sD115zMGpIP2fXOFJQ5uhbMWS3lFkx7kEA9w9P/NBVM8TW26/y8Xl6c+MvJgf8Bv
-	OZdD6vsdDXniurP7CCfIfCWUDwe9DgrQ5uewfHJOTze8cPh7TMG/OJdetXq6ywTDeVIxF5mXeYw
-	dlPWH9YLRUrFnv/QPFi7ufAzbDiYDli+l8LCjFV7GTr2mTA8XLtXoa3RtP60v0ztMvpcVSyxlPz
-	QgcaxqxUij7a9BOA2AzyapjGrTHjF6jOSiQLjxT7Ijoujjv+BHAeo/2xupMhul3vC9cOhI9A8X4
-	TPmMix4BmlnC7tkG7Hs/wxr0uqDiwwQddVhaZvayaaOWNCufHpTrFkSFFvqInfLEuVF8oaOfkgl
-	fkEvL6UqN4m2VgV/y/zRflDTsFjut8cnOYD4MgAomejzg71q/6KjNSrF6/mUc8MjPb3PWN4tRd4
-	E4xWT8/tMOKvGZYQH0554GgRz8s357ZW4tvfalSXBfP+XXg+1F3rQf/7yCW8+Qd/xOXMU99LSjC
-	VGlJuac
-X-Received: by 2002:a05:6a20:2586:b0:3d3:b02a:7252 with SMTP id adf61e73a8af0-3d3b02a76a6mr29131323637.28.1788214736859;
-        Mon, 31 Aug 2026 15:18:56 -0700 (PDT)
-Received: from devvm16600.scu0.facebook.com ([2a03:2880:9ff:44::])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3286f7be607sm33073832eec.10.2026.08.31.15.18.55
+        bh=IRt+Et4enRDJl2yrF6XadJrav4xwHstUxCtXFADfmWk=;
+        b=c5iMRRKkiuCwIdI0CpLbHmIOmeaOaMAwq/n7/Mjg80/gpzUqePEbIfOzM8oSvveWQo
+         OWg5byiSY977F3GHyo3kc8XOrNS3v8EJkkKJ1BcMerHq64d4HQ4hk+bjz5HsBeLIN4ot
+         1XX0IbjBp1GC1QqbRO3IzBH9J+LHI1SH3C+68eHPRGQ33yQl5K4lNGV+qLbC7aKta327
+         Y6KK+DZH4f3aWa3PRj6+DgHK0GhGEuqwWJsxgB1QnQPc+qVnyvAzh6Em5npD9xmcKLh8
+         8xWudWOnVS8LwPZubdUcbKH30iFg/h15XFuXtL5LdJBvULHKdBFWoroWWd388ssyvxVq
+         HisA==
+X-Forwarded-Encrypted: i=1; AKwUvBw4AhuMZXkG9NcKC1t6yXtzciJ2ERWtvZ90hA+wvDBgTLlw3jfRimC5n2rCXW7X3yiIajr6TmF64A==@kvack.org
+X-Gm-Message-State: AFuF++ld2NSprxpufRgJ1cfXdJoKUVAzLD0QLSWr1RG68gDKcXCcV3CT
+	baCIQxjBDtJVFfZbwugZVH1RRiNSYrjz+aZHQAn40ltMts9LAdoKZpKumMNoCAPtAw==
+X-Gm-Gg: AYBFou2x65tWQ8PweAWHCwrr/+Txxk3gsXglhZmqEpuX/YPXlZlwpYKgnh5mTQa40st
+	MoP78F0XLKg+9W7slXcWDWl+7pB6jv61VfwwLe8alx7hJ1VGsI357uFFjhwrdDour80VnoXbEL+
+	inbD4vRvUJI2g8oYKoFQgAdXeu0rlU6UvSe2bmKwUQicwykc+KHO47CoqYD7hMUsLz/gewk3mJU
+	8h/xWWQb5zWJExa1ysD/xcfXQEOk2py4yrQr0GikZ1QJWKzbCoI5mNhmXw+DOV4hNKDeAt8o5SR
+	NOUborad3Cqo1AZwsnjLLIfflaAyIXgfPJBt0dqNW6DB01cZjnLGdTku+K/8m/2S8WTMI48qmgP
+	OgPNY2puBU51bkq50uc95wIhcjIKVP4Ts4W7+Bgq8tJlFSna0x51qOKsCgGjKXNnG1gHWwNEubt
+	jNmV2i7XvE/d5EXagjsv8GBzm6jLepnEeZlzxttD27IvoAhzQLsPTZpi8YKy8DcQVR2JXgJqvsf
+	8KutTLjct7ysWrp/kigS6ZBzxi7setkCJXRl8BcPV/nAAWGtaDfGK7v5O5hmwnoV6we0ki3ixTS
+	4w16ngM=
+X-Received: by 2002:a17:903:174e:b0:2d5:db3d:1a43 with SMTP id d9443c01a7336-2d95213ffffmr2991545ad.16.1788215222431;
+        Mon, 31 Aug 2026 15:27:02 -0700 (PDT)
+Received: from google.com (193.67.125.34.bc.googleusercontent.com. [34.125.67.193])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396d7759bd1sm5651120a91.3.2026.08.31.15.27.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 15:18:56 -0700 (PDT)
-Date: Mon, 31 Aug 2026 15:18:53 -0700
-From: Ziyang Men <ziyang.meme@gmail.com>
-To: Shuah Khan <shuah@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	David Vernet <void@manifault.com>,
-	Eduard Zingerman <eddyz87@gmail.com>
-Cc: Viktor Malik <vmalik@redhat.com>, Andrea Righi <arighi@nvidia.com>,
-	Changwoo Min <changwoo@igalia.com>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	Mykola Lysenko <mykolal@meta.com>,
-	Nathan Chancellor <nathan@kernel.org>, kernel-team@meta.com,
-	linux-kselftest@vger.kernel.org, cgroups@vger.kernel.org,
-	linux-input@vger.kernel.org, sched-ext@lists.linux.dev,
-	linux-mm@kvack.org, bpf@vger.kernel.org, llvm@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/4] selftests: shared lib.bpf.mk for building BPF
- progs and skeletons
-Message-ID: <apX9zb+3awc99Pfh@devvm16600.scu0.facebook.com>
-References: <20260814075054.507089-1-ziyang.meme@gmail.com>
+        Mon, 31 Aug 2026 15:27:01 -0700 (PDT)
+Date: Mon, 31 Aug 2026 22:26:55 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Suren Baghdasaryan <surenb@google.com>, dave.hansen@linux.intel.com,
+	Liam.Howlett@oracle.com, ljs@kernel.org, david@redhat.com,
+	willy@infradead.org, shakeel.butt@linux.dev, vbabka@kernel.org,
+	jannh@google.com, arve@android.com, christian@brauner.io,
+	tkjos@android.com, dsahern@kernel.org, davem@davemloft.net,
+	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v6 0/5] mm: Unconditional per-VMA locks and cleanups
+Message-ID: <apX_r59k4e-XiI-C@google.com>
+References: <20260813193433.3318288-1-surenb@google.com>
+ <20260829185625.f5ee1b2931818843a78af88d@linux-foundation.org>
+ <apVhzM2501wSiGGg@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260814075054.507089-1-ziyang.meme@gmail.com>
+In-Reply-To: <apVhzM2501wSiGGg@google.com>
 X-Rspam-User: 
-X-Stat-Signature: cuorrgqex1ht8kwwk83iuzupu8m7j3ah
-X-Rspamd-Queue-Id: 2B614100008
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788214737-7107
-X-HE-Meta: U2FsdGVkX1+d8UTP2EmKxZ7nz2ZT5ntu4u/4T2rJxZd6yo+l2ERuy3ZIkN/DZbx93vSd9xzGGQ+pLN0yr32KY7RYrKAnvLDkOMHFdBU+hII/kFgxEJ99DPGZ2ssQrOiIhlaSfNk+1bgPo9mucfg9sXr0nhDU3uFgvoL12TtvvuF+kp1AyqkjsHNuiIGwzPoFQ76qOXh6CYc2xNuNJfG6dLcn81DseFQSinqwdA99aiUWTHOFdy7t9SbEnX5gi7zfKjO6G5S+675JhoX/7KIj1EsN+hnyEQYl/YUEPgTB4KglHlswbRAlk2FIWrjecOVvexhyGVxrcbjziXdBvLy2ePZbHhF2+SY2u13sQbRPYEggRotNqR34eEwUxd4rA2g7SxfyWdsvK1apvHRCC0qCYmXpYAFeZweTXQeiv0z1XF0dDcILMPfTeB7KrVU/ghBjm8LwwMeYxrfgWLltmc1qiy6rbnlX0Uft7WpIC30DO89CrQJduAiL+cNjk6YW5NpznwDiO2MSW7Yz4sf2Tz6v/iUHXWYbQc3xmPBatz+sPNt/kB2DplssSrwRTVpVovdg5lrI+KNIOTNTJVZnnFRkMnZhfHJ3qA4fw+3tX4P/4Ipl76x/G8Yy4rkg8GsV9OFvVR2U47kAzHzI6vwF6kapHXUip85lg9PCAptg8YQkgy/08aCpKzGsWkKXD2xOICCZhZI8kbrRuqZIkXBTjwdzUUGt4B4Qn74kV0xtWW+U96AKlazd7wF+PNvaaH1ZM+ciKVralf0JG9HZ5ip+4/lfBWBYIh9ye6nII4+2M8Unhp7qR4HJTke4SDFO7lqCZmmx5BON1EjqVyoQRBA6DY8PRlMm/74j8R0Xpdnu6/DkKcloaYh23c2dEiFHu6JKoHUd9+g1cdjTm46NnnS++8rOjDXlW8MZwysIpAsLkpOYv6usplkc/ZV8SW/JPnABvX3qh57rXYKma05Ac2oKQIc
- GClpr09o
- 2sTCqzP+IFSQu/3oHzpYEy8Vg9zJ4TAxBUSItXQ/hiTTQSJXjEp3AIxFNOBpQaeHtXa4eUEUHw9XIjfNoUJWxOgyOtRqzJtJ+0fD4PAUW+B9q6k68cBGOsnWbTxoXprvAISgRmIsiBYYAl3N6UIi4C5SUchsgyi0OMsLXG4FTXcdEssP++J0tFb0yc8fIt78t2J78F9g9DDAY3Z8NMiX+vLAdQno+wPtTDat55XFAH4xvPw3MtCm6fvLHomBJ/M2kpFTJO3aB7206GUwRu4qx+m/rwrKVL9WELoQYIaBQZ81DXhFlnWSV59T0jbJgwIhrSeStDhd1vFfQtgCGk7711S6jzr5JKzG/bwYzk7otMcY/Xdk1ZhRjXLci6Ca1QPdzUqPqDXMtku+i76gieV1YnCadiCeRbcPKA9PGY9g2VKMoJ5GniCLfRWrydJSVNB+98cgCw5AJ092cdC6dVKZ1Iwn/VioGyIKb8wMVBrkAapvD+I624sKvyppWYOxV3tPXsnfddxWDExvZY58=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4F089C0008
+X-Stat-Signature: 4hjdxwhxshiytr3d6erww864351wbcr1
+X-HE-Tag: 1788215224-142694
+X-HE-Meta: U2FsdGVkX1+jjQA2YzcagB9L+V1sdnriI9NBDuJBVSxsYb1Pk+/h6LYMuFgaG6uFP2L0Yej2rQOYKMfQAQG5z3ZWE8Qm4D4LM908Qc5LcJnof6+TsXZqsOZqCMZCtt7DgRXcvKhnxlAt2WxMQ4aTCjpwHkl4DYdt6hmMu0TPuBdvlyZbK6xBQNwiOks8rJGS2Kw1Al/w9Pz3P5ptkNOobYhzOaObiPz2g6XReZ8GOMd192UX5CgFH3HWs0wvRp6bbXuMPggOeqnN121pRZjnvtMZXuUl2xbqNkjUUZxR8xC9mA9zIrqESfKE8mJVyk01gu98zsD8Cekr/VIEhkC5D875KxHUGvqS1gFsS8TXU0HpNjDIperkKzqhzvt8c9F7TEllSwBzJTOAaAphWiZ65Va4Gr8ATsLeypjjp/eHuhJ1hS4OX1vcZ7n6Mh1D64RvGjld48mYKSUlaFalRRRNZ3aHVJFnrmuwzgTc/dEPhoRtwpF088nwZC6mct3xeu2am27DfKYhfY1bL9oSBVIB8xKazuCrjGfVFXiXZbT7BT3SRJODQzsvocfdoM85xyUpHiAqua6/0Ccejyl+vbD/sH2MEO+iwzWybhVPx0MHcRioLu+EHqJ83cgZ2iM3Mi6ZBn3gR2JhR0t36BCwXYINBVfNvWPQ/ntsvusaCyuLoTX6Kj3RdXYjEFdeGOyHvF+7JLHlUMoH+b1vLNRwpNhNQKpikZTqukaUbb9vXeZoSjdg+7/JyUSaoqF+joRwxrLBesJdvsaFlweNxpbC3FJRuBGsdb+hpBTSG4iB1g9BpYZ6V5MqG3I21QCnAhg/PDccS7I0JRlQQ6zwNhiSVO2+86mbWzptl+Zjn5pVeiLKZJxGkTAJ7UZWdeaRZfytkrBrk5LwsbW2TXmIoydaCPMdRINo0kILgnXKeDsB/A7XMCDPGHtgdmm3Mc8U/59Hlw3UHvHmaaoZv9TvkaJP5oT
+ qEKLATTv
+ +p42s4/L1Xp/9qvoXNpraIwp7ybfBffI9BzeZxsK4eqGMcXGqwxUfvKbMylv2sXqcUdrkfzzu6kdAcHqQmx0/4Ihg0Th0w/+TnAzRIpIeAxPSl741Wx38wSze6geiMjVPsQ5AMXemzYCmF/NX4YkI9FCbVVEqXC+KMm5nT6vx9djkMPa5NHBgd1SrXyUHIKNbfSWLrSuYAPrYy0P1ap7GIELIebxvzRyA7ojSKr2pc0Xuz1clxN/L4WZlCW/uekRbttVaDYoi7Jwo8Ix05j1PUuUSN+ofCdpnD9rpmCqCxrTIh2VY5sAEydJTAAuIjJL7RIIh03iYeWgHYzQA30/+CZ+8Gtz9pqme6TUnlHEpIytpaNry8XMPW6ssQKjUc9Tw/s65IaG8Nb4fzG1KybcIJKOXg24VriCQ4uvnAd+zwqAy0f4H0R4INAubADnVKNVHcvrCNbHK3O+/z7avizzAu1G534UOMFUxS1eJ6mGtbAr95eg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,94 +128,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Reviewers,
+On Mon, Aug 31, 2026 at 11:13:16AM +0000, Alice Ryhl wrote:
+> On Sat, Aug 29, 2026 at 06:56:25PM -0700, Andrew Morton wrote:
+> > On Thu, 13 Aug 2026 12:34:28 -0700 Suren Baghdasaryan <surenb@google.com> wrote:
+> > 
+> > > v2 version of this patchset [1] was written by Dave Hansen and per his
+> > > request, I'm taking over this series.
+> > > 
+> > > tl;dr: Make per-VMA locks available in all configs. Simplify some
+> > > of the per-VMA lock users now that they can rely on them being
+> > > always available.
+> > 
+> > It's been 2+ weeks so perhaps a refresh-and-remind would be helpful.
+> > 
+> > But it applies well enough and is adequately reviewed so I put it in
+> > there for testing, thanks.
+> > 
+> > AI review might have found a couple of pre-existing binder bugs:
+> > 
+> > 	https://sashiko.dev/#/patchset/20260813193433.3318288-1-surenb@google.com
+> > 
+> > and a small rusty thing which you might wish to attend to.
+> 
+> The binder bug is not actually a bug. When using VM_MIXEDMAP and
+> vm_insert_page(), the vma takes a refcount on the page, so there is no
+> use-after-free even if free_page() is invoked without removing it from
+> the vma.
 
-Just want to follow-up on this patch series. Please let me know the possible
-issues and I will fix them.
+Exactly! I agree the refcount on the page would prevent the UAF.
 
-Thanks very much!
+However, we should still reject mremap() because this leaves the page in
+limbo since it is not given back to the shrinker and also binder can't
+make use of it anymore. I'll send out a patch to fix this.
 
-Best,
-Ziyang
-
-On Fri, Aug 14, 2026 at 12:50:50AM -0700, Ziyang Men wrote:
->This series re-factors the bpf-related toolchain for selftests, which
->currently duplicated across selftests/{bpf,sched_ext,hid}/. Unify them
->into a single includable fragment, the tools/testing/selftests/lib.bpf.mk,
->and wires up three consumers. We believe this will simplify the work for
->configuring selftests with the bpf, for both the existing and future ones.
->
->Patch 1 adds lib.bpf.mk mentioned above.
->
->Patch 2 adds a new selftest, selftests/cgroup/test_memcg_stat_cross_cpu,
->which checks the cgroup flush happens correctly by comparing the bpf
->read value matches the file reading. Existing test
->bpf/cgroup_iter_memcg only ensures whether the number is non-zero, which
->is trivial in some cases.
->
->Patches 3 and 4 replace the duplicated parts in selftests/{hid,
->sched_ext} with the lib.bpf.mk
->
->===
->Changes since v2:
->For shared Makefile:
->- The lib.bpf.mk now use the USERCFLAGS (and USERLDFLAGS) to extend the
->  CFLAGS and LDFLAGS.
->- OPT_FLAGS/RELEASE and EXTRA_CFLAGS now reach the libbpf and bpftool
->  sub-makes as well.
->- One rule per BPF source instead of a vpath, which is global and also
->  applied to the caller's own %.c rules.
->- HOSTCC/HOSTLD come from lib.mk instead of including Makefile.include,
->  which also rewrote the caller's AR, LD and CFLAGS.
->- A missing vmlinux is reported by the recipe rather than at parse time,
->  so "make clean" still works without BTF.
->
->For cgroup selftest:
->- Only one cgroup tree is created, one flush is performed, follows by
->  bpf read and file read.
->- More common cgroup functions e.g., cg_read_key_long() and
->  value_close(), are used in the selftests.
->- Use cpu_set_t rather than manually allocated cpu lists.
->- Use test_memcontrol.c's anon allocator and moving it into cgroup_util.
->- Other suggestion from the review.
->
->Others:
->- Bot reviews are fixed.
->
->===
->Changes since v1:
->  - Generalized lib.bpf.mk (source layout/suffix, extra hdrs/cflags,
->    skeleton suffix, subskeletons, configurable output dirs) so it can
->    serve hid and sched_ext, not just cgroup.
->  - Added patch 3 (hid) and patch 4 (sched_ext), converting those folders
->    to the shared fragment.
->
->Ziyang Men (4):
->  selftests: add shared lib.bpf.mk to build BPF progs and skeletons
->  selftests/cgroup: add memcg_stat_cross_cpu correctness test for flush
->  selftests/hid: build the BPF program via the shared lib.bpf.mk
->  selftests/sched_ext: build BPF schedulers via the shared lib.bpf.mk
->
-> tools/testing/selftests/cgroup/.gitignore     |   8 +
-> tools/testing/selftests/cgroup/Makefile       |  52 ++
-> tools/testing/selftests/cgroup/config         |   5 +
-> .../selftests/cgroup/lib/cgroup_util.c        |  83 +++
-> .../cgroup/lib/include/cgroup_util.h          |   3 +
-> .../cgroup/memcg_stat_cross_cpu.bpf.c         |  86 +++
-> .../selftests/cgroup/memcg_stat_cross_cpu.h   |  21 +
-> .../cgroup/test_memcg_stat_cross_cpu.c        | 596 ++++++++++++++++++
-> .../selftests/cgroup/test_memcontrol.c        |  29 +-
-> tools/testing/selftests/hid/.gitignore        |   1 +
-> tools/testing/selftests/hid/Makefile          | 180 +-----
-> tools/testing/selftests/lib.bpf.mk            | 296 +++++++++
-> tools/testing/selftests/sched_ext/Makefile    | 146 +----
-> 13 files changed, 1204 insertions(+), 302 deletions(-)
-> create mode 100644 tools/testing/selftests/cgroup/memcg_stat_cross_cpu.bpf.c
-> create mode 100644 tools/testing/selftests/cgroup/memcg_stat_cross_cpu.h
-> create mode 100644 tools/testing/selftests/cgroup/test_memcg_stat_cross_cpu.c
-> create mode 100644 tools/testing/selftests/lib.bpf.mk
->
->-- 
->2.53.0-Meta
->
+Thanks,
+--
+Carlos Llamas
 
