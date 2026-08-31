@@ -4,97 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CFC7C61DD3
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 08:16:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1006C61DE2
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 08:18:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8FA486B008A; Mon, 31 Aug 2026 04:16:20 -0400 (EDT)
+	id 8129A6B008C; Mon, 31 Aug 2026 04:18:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8ABA56B008C; Mon, 31 Aug 2026 04:16:20 -0400 (EDT)
+	id 7EAC96B0092; Mon, 31 Aug 2026 04:18:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 799E06B0092; Mon, 31 Aug 2026 04:16:20 -0400 (EDT)
+	id 7277F6B0095; Mon, 31 Aug 2026 04:18:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 41CAE6B008A
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:16:20 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B69411A03BE
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:16:19 +0000 (UTC)
-X-FDA: 85160857278.04.F6A1791
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 8F4F312000C
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:16:14 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=OD66rEDt;
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788164177;
-	b=5ovMvnVpQL+wBNAzyTqB1AO7qjCQxB9HM9qM8DnbTatWQs6qb9WgMBcBh4QNIF3hezlxkf
-	ad8xOQomd2xkp1aWA0doqK26JcOgacXtTrXJOJUaecA5EA5EcmIvWGtRL6GRScHf7bbg2Z
-	c5P7XDPz50LIgm5pX2MLwtZpQ9sWgbs=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C4F36B008C
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:18:20 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 12A8F1C1DC5
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:18:19 +0000 (UTC)
+X-FDA: 85160862318.19.945DF2C
+Received: from mta0.migadu.com (out-250.mta0.migadu.com [91.218.175.250])
+	by imf31.hostedemail.com (Postfix) with ESMTP id E2E6320004
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:18:16 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HMMQ9Ima;
+	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.250 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788164177;
+	s=arc-20220608; t=1788164297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=gmj+qOuzfTsWXIPq76fy+iKHANtTeUQp1sPuZmuPqxw=;
-	b=D1IqaeGDOzPdVGLK6s+Xym5kA62oUuAsZlbeS4xHfjy3IUTp/KM88QISwCPhN0jGFYIUtF
-	0yQ2UbzUgmC0fw2xcc/sni5lHvhWkERVX1dGqexYc/rgVrMinwh2VmIuDtsCkO40eQsrn2
-	cvJylsXwCYHi87HTqnqt9xF3xBF/BKU=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oO+Ut4kkB1GGcSxOC6RuevH1eS7jBVJdILytnLiBn5M=;
+	b=YFMCT/ESr9XbbfqetEyMx6u0lnTZt1BwpoVEQg/IyGzBzgbJnTKCy4KEuPk7wfA8OutF88
+	f1loXxkkzHPbeCulgiv+VrvyPOrkIiVG34c+vIr3NtWDv3eSAy65rhZ+l7R6wfhRoF122l
+	Rjuqz6sMkJXFyVeV2qJHNRh56ZTkT6A=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=OD66rEDt;
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788164177; x=1819700177;
-  h=date:from:to:cc:subject:message-id;
-  bh=0U702yJcbd24Mu5PvfVhwQ/Kix6w1KoMLIReavJw4Cs=;
-  b=OD66rEDtCGLFVp9d3KDMwaySXqNvvYR2LidMSSxYw1lHIeG7gErs2UGN
-   hI2L4+Le6UESozl2ApQnlreHO45pGpPCbWUTDt0n+EuR+/JsEVvGXsOpP
-   9C9xZOd97nP/4SM/wJKOlE9JtzKwseetSTNINwotL7Ec27B6JIUOkkavP
-   Q09AbLyu2pqNRcZQVAqDDIRwZh9eh3BVUTWh4FvRHCVAMbH5EGKCzFFoT
-   DKGYEEC3+9nNdFEmlf9tJYp0R5Zrzcoe4vjMSAI3+/QLquf+DD0sdR8x5
-   mtLf+Vxp/w0Hcn7wlrv93txepJU9o+75o1urfn+6VZMy+GZ32jMkT4c99
-   A==;
-X-CSE-ConnectionGUID: NqNhEnEPRRiSsRfn27viOw==
-X-CSE-MsgGUID: T75pKzDHQjqeNqjwMKdUkA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="100076773"
-X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; 
-   d="scan'208";a="100076773"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 01:16:13 -0700
-X-CSE-ConnectionGUID: JA2LiJtbSeyyxboh5pUlzg==
-X-CSE-MsgGUID: +z45bSEwQyug/K4UVqvIIQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; 
-   d="scan'208";a="274002441"
-Received: from lkp-server01.sh.intel.com (HELO 12c799cf0c09) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 31 Aug 2026 01:16:10 -0700
-Received: from kbuild by 12c799cf0c09 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1x0x9w-000000000NY-31uk;
-	Mon, 31 Aug 2026 08:14:38 +0000
-Date: Mon, 31 Aug 2026 15:51:44 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Hildenbrand <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- mm-commits@vger.kernel.org
-Subject: [akpm-mm:mm-new] BUILD SUCCESS
- da6c37ed8beb273e3308e42d4bca3ce11b4432fa
-Message-ID: <202608311524.TNSAy5ID-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HMMQ9Ima;
+	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.250 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788164297;
+	b=tpReNJlmT6ClpQ3Oq0FECa7Cesoqva9HLOeJAwtyZVK1BWjsJzxEMARniaSAV37+abvT1R
+	bx7x9KEcLBcH+Dqbj7BldaLkk8jYZTOpezPn3moUVJ5KrVP1C2nlsFNG0kmIpuSTo6iEWU
+	KoGrKhz6B27610bCaUmsCjVmOoNnNOY=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=p0Wn5LXFNiUqYCTbv3Nqi2VHkDFFge54B76gAv3Ms94=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788164295; v=1; x=1788769095;
+ b=HMMQ9ImaAIs6PchMlPBCNZPoznCFG4eNwafU/GCKM27yoTlFIO9hOM++r0Ed8SOxPkNHcWMe
+ 7Ob/rtPunkKXjO9E5ICeHpyvEgsKs1HTHLUHhQe0O0opNP5hhT/6vDBHdM6kx/H7V+Ji3l2J6m9
+ GqzeIMXN2nLcfxwrMG9tiYLI=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id b65819945f0b82dc;
+	Mon, 31 Aug 2026 08:18:05 +0000
+X-Mizu-Trace-ID: b65819945f0b82dc
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 31 Aug 2026 16:17:56 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Barry Song <baohua@kernel.org>
+Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org,
+	akpm@linux-foundation.org, david@kernel.org, rostedt@goodmis.org,
+	mhiramat@kernel.org, kasong@tencent.com, qi.zheng@linux.dev,
+	shakeel.butt@linux.dev, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com,
+	baolin.wang@linux.alibaba.com, hannes@cmpxchg.org
+Subject: Re: [PATCH 1/9] mm/mglru: add MM_WALK_EMPTY stats and tracepoint
+Message-ID: <apU4tEOSo4aR-O_q@fedora>
+References: <20260824073806.629593-1-hebaoquan@kylinos.cn>
+ <20260824073806.629593-2-hebaoquan@kylinos.cn>
+ <CAGsJ_4y-aAhfYEEroOD0=hromLZA63CYw6OegN9tgYBswD20cA@mail.gmail.com>
+ <apE87WYTYvfAqXbc@fedora>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <apE87WYTYvfAqXbc@fedora>
+X-Stat-Signature: 9r9bzu4kmy444ex8a7m67axpmjn8e8ju
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E2E6320004
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8F4F312000C
-X-Stat-Signature: fax838n91qmp1dc1r848k3pc7r4pite9
-X-HE-Tag: 1788164174-57758
-X-HE-Meta: U2FsdGVkX18lL7M8RA9Y6zZikFlrQyu5VNLwvERkmL8+VMSCWbRcKSUpC+bO9B5gaIzkOGh3gknQSQ6jekhN+XftxH9DcWC57jYOtuqAJnwNFdhfcHnlYVwcQg5nBIChDAPpQxzuWBe3BBMlp7RwqSgN+jmxDX0ufGm+Vfkij2zrSXJJWbDyBzgx+xf9L4aCsdNvQCcZN98Z0Kj0XlOsew/6PV9D7iQKCm9Uu1Gupr97Ry1TEmLaOLmWbNtpABMKM8F62YNcocKjHPg5gE/0I4sLwKbXKif1U1/lgeICU30lqEMBqHhS1PkoAIR6zr7vjMRnGNWoatiUupsvfY3c2NJ783+d+p5NKqBIp1khFvumBwa6OUlKwQZOeclbyyCcllSidsZLFRnXFlY+PCVgcCMWTbPs5St28kq5AYRDCKP8TrM4vrvDZs+5O85QiT9rNxNbu8aSP7olixZ+tizTMfzchxrkcQOeK5626iyZD1rEtF5pBLRfVVfmVl3rKgmYtKt+jQQU2vWuzpI03H5z4T9vpyeMsv1uZHnSqcAtYQmoPNkuqgVjELXIA/afUF0dcN/jet/PW22a5JBsBvIW2M26g97sdg3MsD+qJuL4BFfH6YEMhBcY12ODLq4Q8KrRVSmIuu2bBPkOxdTGsVzOV6P3NZqRsmv+uDzKn2W4uF+nmZy1IeqdlXCmWBCXloz/1ZXgOB97eW91UjR6cPBtPvdKWuAVHDKOHQR8WCk2RaK9WQBTv/04MpZSGERxTzW5kq/m7AoxpZPlfIK1wjzkaGvaMmxjfdFP+rASbPOUUfdRgi6itz1M1kmwYvXJ0180+J7xlU4jGCbkuv2yo7GTgorqpVdaC3+kbDjik3Jlq62wsl7PBjuKFxc/3rwpjgjI2uxZUAjfW5cQgRbLctI+pqfUJ8Uz0EJQNXj31O7PbKQ1lBwK5+hK4QOGOVLb6rd+6+TTrrz5bNLaVfIRUKw
- DZOVD2br
- I/spH4l1XLA9Xzr+ZMCbg9Z8aYn0uZzMlaxUSb/vJExMI7yeGLTmfkRRLXuFyJa941H8fXHmx5h3q+kNcCZM6dA94Br4XL5mf0bIWcDD+hi/BC7viXiSHvYVeoR59FZE/QJvxZU+HxgT0RSZI7f2zZEsUslThGnJ8sT4XEGdpbYwAo6f+A9GH/hYd9GLjEVWFWV5wx+6Mjp8/G/c=
+X-HE-Tag: 1788164296-137141
+X-HE-Meta: U2FsdGVkX1/4WTpUi2QNB9fr2cxT49270R8qe1zzvgDLnrglOUTInV/MR0svRsSte8qj9egfoT45puI3S1dr6RYB31WRtebj5OO8EGcp6Hg3GZkIqd1NVqBTTr/xkeBLFeNDXNu0G3Vp4yQaYymsb7nsPk2bfOJ1aPxvfX4EA8adYysS/zkY+4rzwCMpx/8FT9Sts3P2iKY79499eR0LDJZBEO++prqFgEqqxriRv6d4+VpQXWocn2GImhQqFGTtMxRpS+krSqvB5sGdi7p7Jw+160JY/pPRBLFyPJq3xLpsUYN4M5ykSg0eBDTqX26ABfGzFOmQ8qehVdfqq839Djcp9BOhx7ceVDjTrHnPny5tUKncbvfijuzzx5fjqb73rzfvjjeBPJyxKWLAArtKiIBmWmk9I5MC/IpeF2v6uejhNVbCljkFGLwfnuJcQIcD5RfOyQ3+0u/XvSgpmDjhvo/IQ5ecSpOXQAMmYE6kn+Na1P0pSQPhb1x5XKaAmpkSd0axWknWV9ZGC2My75nk+CncjaNDx/CkDwQkh4lIFNDzzE9MePMQnwplgcdTVtCy8qu1eY9sSO75/ZXF1g+5qs03uvOXgVbdbOd1X+pKWeNNFdXN9jsEiYebpSrCyBpMyNwz2vuy+SFF6SSe2RZgj9gsNDkD+tgUuRvRJ7g2WunW9B3Dh6IxF+poqkSV3wLUO2uN9Oq8f5ZjKFwelsdogaxMxzD8++ITTmWlJs/WJQj5HS2PCgh+N0sIq9+oMin6CVgHEnf0PWra+O0aOkBgcMgyA2XWebAzYb6NuESWWDsmVGYsdLJxzvp3h25TelskkA1wY6Ff+U6NQKYcHCfMeXeGZ6xlSCF1JLfrZKFPB/z6O1XABaRLLLXuaIbxKRwYzGlviklHP0L5cwQKjqmW09ChXRZ7tNQD25U3K3vpomR4nYqw2EnBl9R1tvHf+nBwa6YDSBMd6LaaMox1Ika
+ wZS5eEVt
+ eop4KAq5pIwtlFOctBStJPER6RHMRuynSIBYJ3UAsdOwUElGzMdj0d/8kmujfC62pqOHmLKwgmyfuCMLHdQVEJntvNl6UVH2R82ZzwFg+AMJS9sXFuLVJJKowgYg3mrx3/JvIJNN23+ncLteA3/Z3fOrG0yisOS5WSxH2CDJEwq62WHfb8wrux+U4e2y8hVE0zTompWMWaJS3gLzpRoF134tDAAMK2Et0HgHl/6oKp3J28x2S7LG3DXvRyO49oZrVXTzIxvouxQXH5jGzWtende9cB5Xoq+VJ+ldU7iwdLAFdfJnCn0kTOLrhiW6HcfON6y8niFVKUD+3UHxkTrZu++YuWL6sdI/evOgN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,186 +97,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-branch HEAD: da6c37ed8beb273e3308e42d4bca3ce11b4432fa  mm/swap, PM: hibernate: atomically replace hibernation pin
+On 08/28/26 at 03:46pm, Baoquan He wrote:
+> On 08/28/26 at 01:37pm, Barry Song wrote:
+> > On Mon, Aug 24, 2026 at 3:38 PM Baoquan He <hebaoquan@kylinos.cn> wrote:
+> > >
+> > > Add per-walk counters to measure empty aging walks which traverse
+> > > an mm's page tables but find no folio for the current lruvec (node+memcg).
+> > > These are common on multi-NUMA node systems because lru_gen_use_mm() marks
+> > > an mm for all nodes at every context switch.
+> > >
+> > > New counters (accumulated in mm_state->stats[]):
+> > >
+> > >   MM_LEAF_ELIGIBLE    - folios belonging to this lruvec
+> > >   MM_WALK_TOTAL       - page-table walks completed
+> > >   MM_WALK_EMPTY       - walks that found no eligible folio
+> > >   MM_LEAF_TOTAL_EMPTY - leaf entries scanned by empty walks
+> > 
+> > Hi Baoquan,
+> > 
+> > I'm having a hard time understanding what MM_LEAF_ELIGIBLE means.
+> > In particular, I'm not sure why "eligible" refers to folios here.
+> > 
+> > I'm also finding MM_LEAF_TOTAL_EMPTY quite difficult to understand
+> > without looking at the implementation.
+> > 
+> > Could we come up with clearer and more descriptive names for these
+> > counters?  might be?
+> > 
+> > MM_LEAF_ASSOCIATED,          /* folios associated with this lruvec */
+> > MM_WALK_TOTAL,               /* completed page-table walks */
+> > MM_WALK_WITHOUT_ASSOCIATED,  /* walks with no associated folio */
+> > MM_LEAF_WITHOUT_ASSOCIATED,  /* leaf entries in such walks */
 
-elapsed time: 848m
+Hi Barry,
 
-configs tested: 166
-configs skipped: 4
+Thanks for the naming suggestions — they helped, and I've incorporated
+most of them in v2. Here's how each counter ended up:
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+1. MM_LEAF_ELIGIBLE -> MM_LEAF_ASSOCIATED:
+ - agreed, "eligible" was a bad choice since it normally implies reclaim
+   eligibility in this context. Adopted your suggestion.
 
-tested configs:
-alpha                             allnoconfig    gcc-16.1.0
-alpha                            allyesconfig    gcc-16.1.0
-alpha                               defconfig    gcc-16.1.0
-arc                              allmodconfig    gcc-16.1.0
-arc                               allnoconfig    gcc-16.1.0
-arc                              allyesconfig    gcc-16.1.0
-arc                                 defconfig    gcc-16.1.0
-arc                   randconfig-001-20260831    gcc-8.5.0
-arc                   randconfig-002-20260831    gcc-14.3.0
-arm                               allnoconfig    clang-17
-arm                              allyesconfig    gcc-16.1.0
-arm                       aspeed_g5_defconfig    gcc-16.1.0
-arm                                 defconfig    clang-24
-arm                   randconfig-001-20260831    clang-20
-arm                   randconfig-002-20260831    gcc-16.1.0
-arm                   randconfig-003-20260831    gcc-14.3.0
-arm                   randconfig-004-20260831    gcc-16.1.0
-arm64                            allmodconfig    clang-24
-arm64                             allnoconfig    gcc-16.1.0
-arm64                               defconfig    gcc-16.1.0
-arm64                 randconfig-001-20260831    gcc-16.1.0
-arm64                 randconfig-002-20260831    clang-24
-arm64                 randconfig-003-20260831    gcc-16.1.0
-arm64                 randconfig-004-20260831    clang-21
-csky                             allmodconfig    gcc-16.1.0
-csky                              allnoconfig    gcc-16.1.0
-csky                                defconfig    gcc-16.1.0
-csky                  randconfig-001-20260831    gcc-16.1.0
-csky                  randconfig-002-20260831    gcc-16.1.0
-hexagon                          allmodconfig    clang-24
-hexagon                           allnoconfig    clang-24
-hexagon                             defconfig    clang-24
-hexagon               randconfig-001-20260831    clang-24
-hexagon               randconfig-002-20260831    clang-20
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-14
-i386                             allyesconfig    gcc-14
-i386        buildonly-randconfig-001-20260831    clang-22
-i386        buildonly-randconfig-002-20260831    gcc-14
-i386        buildonly-randconfig-003-20260831    clang-22
-i386        buildonly-randconfig-004-20260831    gcc-14
-i386        buildonly-randconfig-005-20260831    gcc-13
-i386        buildonly-randconfig-006-20260831    clang-22
-i386                                defconfig    clang-22
-i386                  randconfig-001-20260831    clang-22
-i386                  randconfig-002-20260831    clang-22
-i386                  randconfig-003-20260831    clang-22
-i386                  randconfig-004-20260831    gcc-14
-i386                  randconfig-005-20260831    gcc-14
-i386                  randconfig-006-20260831    gcc-14
-i386                  randconfig-007-20260831    clang-22
-i386                  randconfig-011-20260831    clang-22
-i386                  randconfig-012-20260831    clang-22
-i386                  randconfig-013-20260831    gcc-14
-i386                  randconfig-014-20260831    gcc-14
-i386                  randconfig-015-20260831    gcc-12
-i386                  randconfig-016-20260831    gcc-14
-i386                  randconfig-017-20260831    gcc-14
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-20
-loongarch                           defconfig    clang-24
-loongarch                loongson64_defconfig    clang-24
-loongarch             randconfig-001-20260831    clang-24
-loongarch             randconfig-002-20260831    clang-24
-m68k                             allmodconfig    gcc-16.1.0
-m68k                              allnoconfig    gcc-16.1.0
-m68k                             allyesconfig    gcc-16.1.0
-m68k                                defconfig    gcc-16.1.0
-microblaze                        allnoconfig    gcc-16.1.0
-microblaze                       allyesconfig    gcc-16.1.0
-microblaze                          defconfig    gcc-16.1.0
-mips                              allnoconfig    gcc-16.1.0
-mips                             allyesconfig    gcc-16.1.0
-mips                          eyeq6_defconfig    clang-24
-nios2                            allmodconfig    gcc-11.5.0
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20260831    gcc-11.5.0
-nios2                 randconfig-002-20260831    gcc-8.5.0
-openrisc                         allmodconfig    gcc-16.1.0
-openrisc                          allnoconfig    gcc-16.1.0
-openrisc                            defconfig    gcc-16.1.0
-parisc                           allmodconfig    gcc-16.1.0
-parisc                            allnoconfig    gcc-16.1.0
-parisc                           allyesconfig    gcc-16.1.0
-parisc                              defconfig    gcc-16.1.0
-parisc                randconfig-001-20260831    gcc-8.5.0
-parisc                randconfig-002-20260831    gcc-15.2.0
-parisc64                            defconfig    gcc-16.1.0
-powerpc                          allmodconfig    gcc-16.1.0
-powerpc                           allnoconfig    gcc-16.1.0
-powerpc               randconfig-001-20260831    clang-21
-powerpc               randconfig-002-20260831    clang-21
-powerpc64             randconfig-001-20260831    clang-24
-powerpc64             randconfig-002-20260831    gcc-14.3.0
-riscv                             allnoconfig    gcc-16.1.0
-riscv                            allyesconfig    clang-24
-riscv                               defconfig    clang-24
-riscv                 randconfig-001-20260831    clang-17
-riscv                 randconfig-002-20260831    gcc-8.5.0
-s390                             allmodconfig    clang-24
-s390                              allnoconfig    clang-24
-s390                             allyesconfig    gcc-16.1.0
-s390                                defconfig    clang-18
-s390                  randconfig-001-20260831    clang-17
-s390                  randconfig-002-20260831    clang-24
-s390                       zfcpdump_defconfig    clang-22
-sh                               allmodconfig    gcc-16.1.0
-sh                                allnoconfig    gcc-16.1.0
-sh                               allyesconfig    gcc-16.1.0
-sh                                  defconfig    gcc-16.1.0
-sh                          r7780mp_defconfig    gcc-16.1.0
-sh                    randconfig-001-20260831    gcc-14.3.0
-sh                    randconfig-002-20260831    gcc-16.1.0
-sh                          sdk7780_defconfig    gcc-16.1.0
-sh                           se7343_defconfig    gcc-16.1.0
-sparc                             allnoconfig    gcc-16.1.0
-sparc                               defconfig    gcc-16.1.0
-sparc                 randconfig-001-20260831    gcc-11.5.0
-sparc                 randconfig-002-20260831    gcc-16.1.0
-sparc64                          allmodconfig    clang-20
-sparc64                             defconfig    clang-24
-sparc64               randconfig-001-20260831    gcc-15.2.0
-sparc64               randconfig-002-20260831    gcc-13.4.0
-um                               allmodconfig    clang-17
-um                                allnoconfig    clang-17
-um                               allyesconfig    gcc-14
-um                                  defconfig    clang-24
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20260831    clang-20
-um                    randconfig-002-20260831    clang-20
-um                           x86_64_defconfig    clang-24
-x86_64                           allmodconfig    clang-22
-x86_64                            allnoconfig    clang-22
-x86_64                           allyesconfig    clang-22
-x86_64      buildonly-randconfig-001-20260831    gcc-14
-x86_64      buildonly-randconfig-002-20260831    gcc-14
-x86_64      buildonly-randconfig-003-20260831    gcc-13
-x86_64      buildonly-randconfig-004-20260831    clang-22
-x86_64      buildonly-randconfig-005-20260831    gcc-13
-x86_64      buildonly-randconfig-006-20260831    clang-22
-x86_64                              defconfig    gcc-14
-x86_64                randconfig-001-20260831    gcc-14
-x86_64                randconfig-002-20260831    gcc-14
-x86_64                randconfig-003-20260831    gcc-14
-x86_64                randconfig-004-20260831    gcc-12
-x86_64                randconfig-005-20260831    clang-22
-x86_64                randconfig-006-20260831    gcc-14
-x86_64                randconfig-011-20260831    clang-22
-x86_64                randconfig-012-20260831    clang-22
-x86_64                randconfig-013-20260831    gcc-14
-x86_64                randconfig-014-20260831    clang-22
-x86_64                randconfig-015-20260831    gcc-14
-x86_64                randconfig-016-20260831    clang-22
-x86_64                randconfig-071-20260831    clang-22
-x86_64                randconfig-072-20260831    clang-22
-x86_64                randconfig-073-20260831    gcc-14
-x86_64                randconfig-074-20260831    clang-22
-x86_64                randconfig-075-20260831    clang-22
-x86_64                randconfig-076-20260831    clang-22
-x86_64                          rhel-9.4-rust    clang-22
-xtensa                            allnoconfig    gcc-16.1.0
-xtensa                           allyesconfig    gcc-16.1.0
-xtensa                       common_defconfig    gcc-16.1.0
-xtensa                randconfig-001-20260831    gcc-11.5.0
-xtensa                randconfig-002-20260831    gcc-13.4.0
+2. MM_WALK_EMPTY:
+ - I kept this one rather than MM_WALK_WITHOUT_ASSOCIATED. Two reasons:
+   - (a) "empty walk" is exactly the concept this series is about,
+     suppressing/reducing empty page table walks, so the name ties directly
+     to the motivation;
+     (b) "a walk without associated [folios]" reads a bit weird. The walk
+     itself isn't associated with anything, the folios in its page tables
+     are. The comment now is changed as "walks that found no folio in this
+     lruvec".
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+3. MM_LEAF_TOTAL_EMPTY -> MM_LEAF_EMPTY_WALKS:
+ - I will go with this instead of MM_LEAF_WITHOUT_ASSOCIATED.
+   The latter sounds like "leaf entries that have no associated folio",
+   which is confusing: those leaf entries do have folios, they're just
+   associated with a different lruvec (node+memcg). What's empty is the
+   walk, not the leaves. MM_LEAF_EMPTY_WALKS ("leaf entries scanned during
+   empty walks") is parallel to MM_WALK_EMPTY and can't be misread.
+
+All four counters and the tracepoint field are updated accordingly.
+
+Please check if they are OK to you.
+
+Thanks
+Baoquan
+
+> > 
+> > >
+> > > A new tracepoint, mm_vmscan_lru_gen_walk(), fires after each walk, and the
+> > > debugfs lru_gen output ("TYFALWEE") exposes the new counters.
+> > >
+> > > Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
+> > > ---
+> > >  include/linux/mmzone.h        |  4 ++++
+> > >  include/trace/events/vmscan.h | 28 ++++++++++++++++++++++++++++
+> > >  mm/vmscan.c                   | 30 ++++++++++++++++++++++++++----
+> > >  3 files changed, 58 insertions(+), 4 deletions(-)
+> > >
+> > > diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> > > index 94f9c3ff5416..229d27fbfb54 100644
+> > > --- a/include/linux/mmzone.h
+> > > +++ b/include/linux/mmzone.h
+> > > @@ -595,6 +595,10 @@ enum {
+> > >         MM_LEAF_YOUNG,          /* young leaf entries */
+> > >         MM_NONLEAF_FOUND,       /* non-leaf entries found in Bloom filters */
+> > >         MM_NONLEAF_ADDED,       /* non-leaf entries added to Bloom filters */
+> > > +       MM_LEAF_ELIGIBLE,       /* folios belonging to this lruvec (node+memcg) */
+> > > +       MM_WALK_TOTAL,          /* page-table walks completed */
+> > > +       MM_WALK_EMPTY,          /* walks that found no eligible folio */
+> > > +       MM_LEAF_TOTAL_EMPTY,    /* leaf entries scanned by empty walks */
+> > >         NR_MM_STATS
+> > >  };
+> > >
+> > 
+> > Best Regards
+> > Barry
+> > 
 
