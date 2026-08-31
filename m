@@ -4,126 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BB02C624A4
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 13:27:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C97CFC624A4
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 13:27:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03C236B00A1; Mon, 31 Aug 2026 09:27:17 -0400 (EDT)
+	id CE7606B00A3; Mon, 31 Aug 2026 09:27:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2E436B00A3; Mon, 31 Aug 2026 09:27:16 -0400 (EDT)
+	id C70EF6B00A5; Mon, 31 Aug 2026 09:27:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1CB26B00A4; Mon, 31 Aug 2026 09:27:16 -0400 (EDT)
+	id B38F86B00A6; Mon, 31 Aug 2026 09:27:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BAF106B00A1
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:27:16 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 35B1D1C01CF
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:27:13 +0000 (UTC)
-X-FDA: 85161640746.25.3F83D68
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 44221180011
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:27:11 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=HbgNdH5h;
-	spf=pass (imf24.hostedemail.com: domain of oneukum@suse.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=oneukum@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788182831;
-	b=eNlA2hqad0V36FdI4hzpGYQM4dxAd9BgrEuft26AfXtus2TXllTSF4sBhbvWEzZwM5F2uN
-	O6jP5IIQJYO7APefvEd8fnpqk3W7fTcdEY8mDzhGKOCCCPXKey/Im3QQTKOyDeXcZKOssz
-	Za2PLmVqN3f5zime6Q4eRijXquKYb+k=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=HbgNdH5h;
-	spf=pass (imf24.hostedemail.com: domain of oneukum@suse.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=oneukum@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 78E1E6B00A3
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:27:55 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 052BCA0068
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:27:55 +0000 (UTC)
+X-FDA: 85161642510.29.2F95DCD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 43AF020004
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:27:53 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="T4/B18RG";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788182831;
+	s=arc-20220608; t=1788182873;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9dJl19p/pVq6YV4fVMLMZrL500AfikOykyPbafsX3fM=;
-	b=2nbykPCuSSqmUOw9a2Xed8UHm8M1PmUDzoVDRD9JpxDVCYLJeMqaTX9zz+2nWB7vkeVZby
-	jodeOXED4H3usE1lUD5Ok/V3sA9H//eZ5knTJVU0gH3RcjLXExd1vtN8REcPEZDl7oUMdk
-	RbobBKgUds32Gf+AU3fupmTjEJk7DBk=
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-49cca4ffdcfso17727835e9.0
-        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 06:27:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1788182830; x=1788787630; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9dJl19p/pVq6YV4fVMLMZrL500AfikOykyPbafsX3fM=;
-        b=HbgNdH5htWCswUGf1YkL+h2I+qT+cjxrHXezBM+g2T+2rqqReQCN+0P/y1E6qLKqAY
-         g/ihD7xS9PXFAUqlqtt3P3rqz0n/79GUVXaUjPspGk6ZJ4c9obRbv+GC+PkmrPenFMk7
-         WehPDyNxCAhEIYlRhnvARIoITjDUccPaLFzxioyQ8zkzvgYHQ219vV5RVLDG2SCHe2hR
-         lWqLuo+ldNu2qL49pVIty4zpRRnp4UFd0pDk28rZ8/+mADCduUYZvYfu2qRQOaQTYgfp
-         hQPpOER5jbFwUHqI6iPEJYc5LkDan0Mgqje30MbpXpCu/87Qz7JgJAoGrI4W+f9yIg3U
-         psIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788182830; x=1788787630;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9dJl19p/pVq6YV4fVMLMZrL500AfikOykyPbafsX3fM=;
-        b=pEwjfoekKujYKMrHoOLuJM70/t56zfTh321geYG7Lj7fHquB8IEo7F/CtiFeEd1QD+
-         PEU07GyD8BamFbvW/LjSG7JtmFSggob6bLYi0AznuouYaYvMTINUvK09nHyVNoggDJHi
-         i3yGYg9cqXa5WVSvcWP0b8hxW9xxkkHZbBgbGADPwfvKewfzu8DUuX5tRg0xM2R4quwp
-         07lLMuta3uP379/g3/odfNhblSpsyG720r+4jm1ucn7c0awCMUwQaQp6ia8R46/MnHF7
-         sJXQPEktUy13xuUMOFEXCK3NdCe1P/ZG+AdWPVCVT4uzMXR5STwRXuY5tRSGKdDDzCrP
-         6j4g==
-X-Forwarded-Encrypted: i=1; AHgh+Rr4AE2HZRVH817F+wnbLVOL7zgmt/WoVz24D4DFLqD85lSAb+b8hvp4N7OFCkVDJ/OCMUiTEbklVQ==@kvack.org
-X-Gm-Message-State: AFuF++kSRuudywlGYyKrvHa1KbA1eBUfycnIhvGBv8m2Gb1M9rTqhXxT
-	ogH5eb15qae6H2qh4mjbOz8aADRoNKtEIcU8q7hDBQ8sPRD2/V7xh1ilco7gEvnBgiI=
-X-Gm-Gg: AR+sD10F90VamJSDzTzQAVMoh39OYambpZn4zYEy5xwA8uOwdu8fZmmth82gyp3wGEs
-	1nLXspgxXJcLpnpXaQ5J0uoMQWbKNJGr74hY2oXP4qQpzpsD0TqCmiU/o6uO+of4KmhFHhIuC6/
-	IEoed5fr9dLWO/omeMMEJZm3EEzyb/p4aQ/JghVDyzBJ0btofKBWg70Ltm+DKnfZ8WtHF02DdR/
-	/pISEqZJbTcmunJM7r1mlIsU2r0iOAW13RZfYnWKcJqX4nX5Gn32qorUNOOQJYa2vp6eMGBIMNK
-	qEFsYk2JUXfWGml7qYnmVfxA/10gMV9+5xPWZmiUaFru+jNvGLZA7Rpkni3V5So5wQtYk70THLx
-	4cE0PQ+dzvRSO64xHWfOrA0V95osi2sUYFZYzNzoWLn57rb/jSuA7yuc1Qkzkxr6xn5fBqsc+AH
-	NoLWAW3l/nKIs636PgJYOFr7UDZddCGMga0Ew8AfYwPdJ1TiUS4fbBzjZyCPxu8DEnsQYJ2UR8D
-	4W5WM1MEvLUTEhsw4AKM0mKrt50GEc=
-X-Received: by 2002:a05:600c:3511:b0:499:adb4:a922 with SMTP id 5b1f17b1804b1-49b91c4bab5mr295369375e9.12.1788182829769;
-        Mon, 31 Aug 2026 06:27:09 -0700 (PDT)
-Received: from ?IPV6:2a02:3033:283:b9b7:bec2:3dce:f757:ce06? ([2a02:3033:283:b9b7:bec2:3dce:f757:ce06])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ccea6b814sm176057695e9.0.2026.08.31.06.27.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 Aug 2026 06:27:09 -0700 (PDT)
-Message-ID: <ea165ff8-cda2-4fed-9354-1d14ac2d87ca@suse.com>
-Date: Mon, 31 Aug 2026 15:27:07 +0200
+	bh=agjsrWF0V9C9oS5Bhar4854ibGBp1WvgI5DDxyJUu/k=;
+	b=GTQfockV+77tKTcX4/gaWD6CZLlWlNpOGJu/nSmz1n7dTZFsCDSR4yFKtaBpJKfbsqs/+J
+	PD8LAOLwiH6s8gaSDiUioverA9BkIBOyPvgTkGKdrUAs99jMxKgnGgal8c97RV74mM6Ku1
+	TrwIV8OYMTb13sIRUj23DItu4Ulzykk=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="T4/B18RG";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788182873;
+	b=8pGvzwEW8sIqCluFXUdZcy7xUGn+2EhbJCDzY7HCLLxR1X7PBQjMly9njAVsQKD8z/Zn9c
+	6J/MQzU0c1IwrrYzDE79AHSCYyZqt0vNmXLtqKLFddZqpHwdeQXdRikfVkAnN3GxAX3EcX
+	6cmOlRP1NTi5j90G8ZO7zVInXXQQhZg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3BDFE4366B;
+	Mon, 31 Aug 2026 13:27:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 644B61F000E9;
+	Mon, 31 Aug 2026 13:27:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788182872;
+	bh=agjsrWF0V9C9oS5Bhar4854ibGBp1WvgI5DDxyJUu/k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=T4/B18RGcw1gFmQ6ryKfrRMJuSbinyHhovZm8pAQGvsyB/bhxRk0Z5uDd3S3y8oZR
+	 4SowP+GnzVaUUsRoDVubMeSkb3irQk4bKu9IPGkvTq2YA+SZ7vCkkPAhOaNdAR1FzI
+	 lbfc3qsEDTvY/VaL3KIl+jQq7hjmosOAX9GpGnjgV9+PMM5m01qxNFrDg7SZQ0ep5k
+	 eDNom+hQuZqwVhnOI1H7jOR2maGVZ09stImlLIA8RVm2K0+kRxmP6RE0O0Wlu8mWJ1
+	 aGMQp+NoTK9vG+7fcybtyt9OPGYgpvvv8AfudqcLE6JbYfUVpSRiIOisFo9pNy+hoe
+	 MoCX4vsoY5nXg==
+Date: Mon, 31 Aug 2026 14:27:32 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Taha Sezer <tahasezer.is@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, vbabka@kernel.org, 
+	mhocko@suse.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: vmpressure: scale window size based on machine memory
+Message-ID: <apV_VwQx-7qXks_a@lucifer>
+References: <20260831130316.448-1-tahasezer.is@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] USB: usbfs: replace __get_free_page() with kmalloc()
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Chas Williams <3chas3@gmail.com>, Duncan Sands <duncan.sands@free.fr>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Johan Hovold <johan@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- accessrunner-general@lists.sourceforge.net,
- linux-atm-general@lists.sourceforge.net, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-usb@vger.kernel.org, netdev@vger.kernel.org
-References: <20260830-usb-v1-0-aa349c302246@kernel.org>
- <20260830-usb-v1-1-aa349c302246@kernel.org>
-Content-Language: en-US
-From: Oliver Neukum <oneukum@suse.com>
-In-Reply-To: <20260830-usb-v1-1-aa349c302246@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260831130316.448-1-tahasezer.is@gmail.com>
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: af59pcgdisfm3c8droi3qnkuigxdfuwj
-X-Rspamd-Queue-Id: 44221180011
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788182831-456879
-X-HE-Meta: U2FsdGVkX18reAKhuEogXkN5d0tC39c3VNjVCxTYi2mOyON7uH7nelQ1X5tA/HLelbVlAU+CqY62mu1/Ip8Eb93DkIiJPJytaLhi7dVatIeIaaWSUrk7xmpLoC+TnqR3iMfI8NoIOung+CyQdKcJv9Qo9ZEC2nf7qx2polgUSEKVbgX0JaXS41cFsN1rZNmIrNOe388K1UOcMIYruiM7DRwIqnrqcPS2Qk1zClU7dAPFT3s9HTC70nOmcwQtVLaA5MOutJqBrP43WWkiEhNJhoH3ci6CektzTShoEFeiXmI3pR9BpJWG7wVHPAPj9wlzB9LPhZnZzQU+UowunmafptNvRDAeOiI4FTwfnha+Q+mtLyUxHkGIoY8c58uHJdkUsx/9YfUZKIBeu6r5V0X2EY3TZ/jes2XDyDmmo3gq4vp4ct+phGJX1F9IFzEaAAXEEQ3TVzf/2Q+llepVXn26QJSL5fsOagmJLgJ8LUG86Gbuv3SYLO72kRlcnGWgqOvpBRhEuCY+IbAXhrAcnVwJyRY7jtGGtm3ly2qdCmCiKaS7hjgNYQmeGjRDEbNeXhXHdQlXpQ/qmun9C/aDLG16fe02fyrOO2eQDrYcl15RRQ41vn4YhUhMPN8aEwhRGsrOj1qgpbNdRft+BYh5GRR8Zufitm1h07We5dYkHR3UwwGUAZZ/EfHcB7K5MWVJdQRuNlUkhVVhxu8M/qHt1dWaEwpUfXIaSn+oL2pnqoSKaNMBldljrOzZzsJg2b5Sw9JujK8mDs+oNR1xUotDJPRt2AfiojApZYMW6Ro4z3OMyMF2hABFk5h1Y5UtqXpV+JIcGFNHS8GLgl3cdhyC/fq6LL4XVvijUiKrobcHg/NoAk2c6zuCbiJG8uZThdmV5ejNMVuF6EYeTaB305385ESeQCMJ8sTYSTDFH9A5mOXEU1b+8FJgvm0IwmY0oKAPegG0hqOY468M1tbUQr1hDqD
- CKUjoS+S
- 0kcFmlTJn4Ofq+rSSYZQNPl6paDJdX/K3Pi63Oi26pA81WLRHS0J7Hzy3zCBUfd66Kt6luP9/jcKvpeJofWoQ13RLvquNUEhFPfRqwbGzLzJeVCpJQVXZ4Llfy17ld/pDCyWq+eGrexLuRCp7rFuVsinHkMP3/LftkisVfzQ0WXEzbzlgwA74/HrINT7YHzHuleEvkonpg4A8YQ55LgWB7OR3wSMvuBFdHvdP6mffmrtElLWLPSZqB+z6Ygdnzxh2SSp86eXVZ1f2ovhYs23ER8+Be0KQWZJ+R4D9lNNKdmRj5sA9KOr914qKIKD6Qz8lvfB2f+EpbeBRHE69JLjpaip5twVBKqFKLcxZx3WuFBrQjj8SbVeKNuoapi2nmwqLWA9Ug2XjLC1Tgl0FkjRMOHXBHsVnp/Z3MTfj/Q03aNz0X7hHtUfy2f3iWA==
+X-Stat-Signature: ebu8a3engp3iws19f7mcq99zujq6uzm4
+X-Rspamd-Queue-Id: 43AF020004
+X-HE-Tag: 1788182873-891735
+X-HE-Meta: U2FsdGVkX1946M9r1QtQ0+oLD+FKcAXf2kzbW1WM9xDwHjxaVBkPtvr9aGsccN4MSkg5ZVZ4MtTyVGI+GFBzMFfzsdbh/j0alKXoP0hirmIzkjwIk/nITKyaiA7psqA33fdcTnts/lKTLwZjXg74M43cpfA4bUpMgFhU8g6+RULKlPQTp8MuH+m1NxKWRGHUTeKj6ilPubS+sxxDOb5X2CpVxtZVU79gkZCFONnY13EVaxiOfQVCINcFEuyXYTyddLIYNmB7zbQeMs5C2xBIM9z0UXXN39ESUoeYFQBNOmrpVO4Jup+SRzTwiHh0s6/Hsi98GZERue/OR7jNJE2EddAsuS+u5aWJRmgPMd4MMO+bUYt+1OZpLh2ZlLk5J4yBftzSIzxtI0beu7xVyPxs0oxr5yONp3rfeMUEFat4FhnboiSLOdlF4NJwkl8pbsGcVA9Eb66VzAA3D419+RTy+VrwHB7t10eLpLuNhXL6ufkyGte3jbhaiYlEn8lqJXyu3oBm24Im7DLTidaew39joJQcUpKxZHD4yx5SxGFhMuCBIgLywfa2u6m9k0/ohSkS7PC40WpwyxS/xq8TyxQfGwdGGU9ghYMekEGHQniD380yagGrO+bFenbHNJJVtDSUiv3TFx8vcihdojQ/3SkVxCStPBP3PV28Hy2UGeWWn2kKuEMb8V8LrwEmR8M5vyIuh05i4Y6nw+C+goTXkutuuyFVaBHuuHr/3WoYy4xUm9/xn0HuxgFLzxul/pYRLT9J1qXIaYcg+XyxSKkSp5Xf8wE+5dJcWqrKM9A+VO09G6cSh49wCFW0cYw2TWyUtNJE4jlTapK+I48xfjF/amD6wutRCK5jJCij7a2zvSM6uo9IHbFmxYaRMNxpduV0m04fkpyXNPBRx4SVYlHBRkRaSZFPTqlp2OUt3ZNXCyOaJXWyPvEsIStETLBt26+2TONN+fx11b+UVWEhdEV3l9Q
+ qEDO70+H
+ mshHmsOh4shnFQqhK5m3e62aw8uBdG6lUajr9shjj+QVeYS5afoqAyrXU2nvkW2A7xoE+hwrOH3ha0JlXg2Khc/f8N6nGMYbOJSpPmXAaN/lgGX3aiViCWOC7E8C39LFdolvnqePveONL8Wk/4RUB2zPW1gJAJPkCcWAKzqSJp3XLzNELjuAIfd5k1hfQyHwb9rK1bgdKUymdX/yhav1isKOIfZOhuiYmRsL7zVELsGsVrov8brF6x1ih/2m9H+b1UClMY2wKpOQblmuF3aCb50kr4G9AEaaBjIL850N/agFpGCEQhb9SfANEhC+SJhkzV91H3vnHfcyGrzBhTPwyirBa5ifD4GiKioKZK43bLyduClemLuGAmuXFdp6KMWFC8Xt8XUl9S9FyAXk+gf0pAOcjqdJ9qomMmLC6NUeRBTM1JFKlGb5U2eiQKbnfaisBiRUbKpOu9U4x1Z0yN5XmRT/TrEtSJtm72Ry/EzafuTuN8jI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,18 +90,170 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 30.08.26 10:10, Mike Rapoport (Microsoft) wrote:
-> do_proc_control() allocates a temporary buffer for the data stage of a
-> control transfer issued from userspace.
-> 
-> This buffer can be allocated with kmalloc() as there's nothing special
-> about it to go directly to the page allocator.
 
-You are breaking the calculation. A page has a size of exactly
-PAGE_SIZE. A kmalloced object of PAGE_SIZE is larger. That is
-a bad idea.
 
-	Regards
-		Oliver
+On Mon, Aug 31, 2026 at 04:03:16PM +0300, Taha Sezer wrote:
+> The vmpressure window size is currently a compile-time constant of
+> 512 pages (2 MB with 4 KB pages), regardless of the machine size.
+> On large machines with hundreds of gigabytes of RAM, this small window
+> leads to excessive false-positive pressure notifications due to the
+> higher absolute reclaim activity.  Conversely, the fixed size is
+> already appropriate for small machines.
+>
+> Scale the window size logarithmically with total memory at boot time,
+> following the same approach used by calculate_normal_threshold() in
+> mm/vmstat.c.  Total memory is converted to 128 MB units and fls() is
+> used for cheap logarithmic scaling.  The multiplier is clamped between
+> 4 and 64, yielding a window range of 128 pages (512 KB) to 2048 pages
+> (8 MB).
+>
+> This resolves the TODO that has been in the code since the original
+> vmpressure implementation.
+>
+> Signed-off-by: Taha Sezer <tahasezer.is@gmail.com>
 
+Hi,
+
+Since you seem to be relatively new here and you're making a fiddly change to
+core mm, I do have to ask if you're using an LLM here?
+
+If so please follow kernel process and disclose:
+
+https://docs.kernel.org/process/coding-assistants.html
+https://docs.kernel.org/process/generated-content.html
+
+Note especially:
+
+	"You are expected to understand and to be able to defend everything
+	you submit. If you are unable to do so, then do not submit the
+	resulting changes."
+
+In general we recommend new contributors to do smaller changes first
+without the use of LLMs to gain understanding.
+
+And if one of your very first patches, it should really be to
+drivers/staging/ where you can learn the basics safely.
+
+In general, we aren't really interested in wholly generated patches except
+from those with established understanding of the subsystem.
+
+Thanks, Lorenzo
+
+I also note that this is the 4th patch I've seen trying to do the same
+thing from a new person.
+
+It seems LLMs are honing in on TODOs like this, so I may send a patch to
+just delete the TODO to prevent this from happening:
+
+https://lore.kernel.org/linux-mm/20260724054305.516126-1-cui.tao@linux.dev/
+https://lore.kernel.org/linux-mm/20260715143646.15828-1-gaikwad.dcg@gmail.com/
+https://lore.kernel.org/all/20260227221555.29969-1-mcq@disroot.org/
+
+In any case, LLM-generated or not, this is a vital heuristic that would
+need significant real-world data and justification from somebody with
+intimate understanding of this code, which I'm afraid isn't the case here.
+
+> ---
+>  include/linux/vmpressure.h |  2 +-
+>  mm/vmpressure.c            | 60 ++++++++++++++++++++++++++++++++++++--
+>  2 files changed, 58 insertions(+), 4 deletions(-)
+>
+> diff --git a/include/linux/vmpressure.h b/include/linux/vmpressure.h
+> index b4d13457b..09111f5bd 100644
+> --- a/include/linux/vmpressure.h
+> +++ b/include/linux/vmpressure.h
+> @@ -51,7 +51,7 @@ extern struct vmpressure *memcg_to_vmpressure(struct mem_cgroup *memcg);
+>  extern struct mem_cgroup *vmpressure_to_memcg(struct vmpressure *vmpr);
+>
+>  /* Shared with the v1 vmpressure block in mm/memcontrol-v1.c. */
+> -extern const unsigned long vmpressure_win;
+> +extern unsigned long vmpressure_win;
+>  extern enum vmpressure_levels vmpressure_calc_level(unsigned long scanned,
+>  						    unsigned long reclaimed);
+>
+> diff --git a/mm/vmpressure.c b/mm/vmpressure.c
+> index 9629240d7..f88bafb71 100644
+> --- a/mm/vmpressure.c
+> +++ b/mm/vmpressure.c
+> @@ -13,6 +13,7 @@
+>   * (tree=false) socket-pressure path that runs on cgroup v2.
+>   */
+>
+> +#include <linux/bitops.h>
+>  #include <linux/cgroup.h>
+>  #include <linux/log2.h>
+>  #include <linux/mm.h>
+> @@ -31,10 +32,63 @@
+>   * As the vmscan reclaimer logic works with chunks which are multiple of
+>   * SWAP_CLUSTER_MAX, it makes sense to use it for the window size as well.
+>   *
+> - * TODO: Make the window size depend on machine size, as we do for vmstat
+> - * thresholds. Currently we set it to 512 pages (2MB for 4KB pages).
+> + * The window size scales logarithmically with total memory, following the
+> + * same approach as calculate_normal_threshold() in mm/vmstat.c.  On small
+> + * machines the window stays small for responsiveness; on large machines it
+> + * grows to reduce false positives from the higher absolute reclaim activity.
+> + *
+> + * Sample window sizes (SWAP_CLUSTER_MAX = 32, PAGE_SIZE = 4K):
+> + *
+> + *   RAM          fls(mem)   multiplier   window (pages)   window (bytes)
+> + *   -----------------------------------------------------------------
+> + *   <= 4 GB      0-4        4            128              512 KB
+> + *   8 GB         6          6            192              768 KB
+> + *   16 GB        7          7            224              896 KB
+> + *   32 GB        8          8            256              1 MB
+> + *   64 GB        9          9            288              1.1 MB
+> + *   128 GB       10         10           320              1.3 MB
+> + *   256 GB       11         11           352              1.4 MB
+> + *   512 GB       12         12           384              1.5 MB
+> + *   1 TB         13         13           416              1.6 MB
+>   */
+> -const unsigned long vmpressure_win = SWAP_CLUSTER_MAX * 16;
+> +unsigned long __read_mostly vmpressure_win = SWAP_CLUSTER_MAX * 16;
+> +
+> +/*
+> + * Initialize vmpressure window size based on machine memory.
+> + *
+> + * Use fls() for cheap logarithmic scaling, following the same approach
+> + * as calculate_normal_threshold() in mm/vmstat.c.  Memory is measured
+> + * in 128 MB units so that the window starts growing once total RAM
+> + * exceeds a few GB.
+> + */
+> +static int __init vmpressure_win_init(void)
+> +{
+> +	unsigned long mem;
+> +	int multiplier;
+> +
+> +	/*
+> +	 * Convert total pages to 128 MB units, matching the vmstat
+> +	 * convention: mem = totalram >> (27 - PAGE_SHIFT).
+> +	 */
+> +	mem = totalram_pages() >> (27 - PAGE_SHIFT);
+> +
+> +	/*
+> +	 * fls(0) == 0, so for machines with < 128 MB the multiplier
+> +	 * is clamped to 4, preserving the original 128-page minimum
+> +	 * (SWAP_CLUSTER_MAX * 4).  The maximum multiplier is clamped
+> +	 * to 64, yielding a 2048-page (8 MB) ceiling which prevents
+> +	 * excessively delayed notifications on very large machines.
+> +	 */
+> +	multiplier = clamp(fls(mem), 4, 64);
+> +
+> +	vmpressure_win = SWAP_CLUSTER_MAX * (unsigned long)multiplier;
+> +
+> +	pr_info("vmpressure: window size set to %lu pages (%lu KB)\n",
+> +		vmpressure_win, vmpressure_win << (PAGE_SHIFT - 10));
+> +
+> +	return 0;
+> +}
+> +core_initcall(vmpressure_win_init);
+>
+>  /*
+>   * These thresholds are used when we account memory pressure through
+> --
+> 2.53.0
+>
+
+--
+Cheers, Lorenzo
 
