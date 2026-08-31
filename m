@@ -4,86 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83A13C61DD3
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 10:13:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BF09C61DE2
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 10:21:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93B4B6B00A1; Mon, 31 Aug 2026 06:13:31 -0400 (EDT)
+	id 1D0BF6B0092; Mon, 31 Aug 2026 06:21:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 912AE6B00A2; Mon, 31 Aug 2026 06:13:31 -0400 (EDT)
+	id 1815B6B0095; Mon, 31 Aug 2026 06:21:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 852ED6B00A3; Mon, 31 Aug 2026 06:13:31 -0400 (EDT)
+	id 098846B0096; Mon, 31 Aug 2026 06:21:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 60C546B00A1
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 06:13:31 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id ED18F140451
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:13:30 +0000 (UTC)
-X-FDA: 85161152580.08.91DC511
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 14372160006
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:13:28 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cnZL2NY8;
-	spf=pass (imf08.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DDE446B0092
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 06:21:53 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 75E611C1F92
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:21:53 +0000 (UTC)
+X-FDA: 85161173706.21.7F2C68D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 0E9DAC0004
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:21:51 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nadmiYF+;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788171209;
+	s=arc-20220608; t=1788171712;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=u4pvdqX6uUUjk2ecyGqAOoGGHy8gCGA80kHxkvMpj6w=;
-	b=bT3OdyYkcUjU0affQRbGkZ7wrqmP8Jeztgj17r/WvrWxTmAocFx2ZWrxWz9VmGP7VnpEVu
-	GzLW3y1vFZ56sarMEKlTreq0kwQ+oqkyDNcvtXx0eRDBUAF6X3vibYKEAvCvCJ+HG3KfHu
-	gaFpl6k3bEAvoNy9uEuV1/ZNUR1F9QA=
+	bh=yiR7x9/v4RMoVRI0sREa2O7du016hdua950VEmziwYo=;
+	b=wkps1IHsXy4hc2DLNic59HLnLbZ7+6En2GEx/UVOLhf7/LgJ5t7wWDWWvNEcB7UF1FV414
+	/V/rxVri5+DcIjQ/ESlXBlOKu93ktzxIt/gHvRn06SETD0H3vty0m1cbQzflIsRKZHAbFH
+	WTcga2p4k7UfSUW9ufzwY7iNDWopYII=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788171209;
-	b=iiAwBDbyEUqXg1e2wBUQ+F8bdaEWHcpwTuhBE/U3JILs0eUxcjKO/tI9EIIIXCUC/InNDi
-	ENfwTOsH66bjdIUp6FAY/tcnJNx9bqURyo00ZoqHand3P7FNFDmZu+gwqLHu4I60iy6vzx
-	ztn54hWxcD+qCAgIXCNX3BTxDGmwpLU=
+	t=1788171712;
+	b=t1Xz3HEymGPZ63+uBvXNkd+vH7B76jrx7Ympk2DcU5Q7JZLxq1dTxHEw+qKYcJbGUgJbye
+	KT/yqlmie89nx/ygQNdt8CGdLw1QxWwvEw38r3LJCpUtEuwL8FOI/k7uWkvf5lyLtze1uJ
+	NQWVxLz/vaMxz/gaz76DfwDWi2hoSck=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cnZL2NY8;
-	spf=pass (imf08.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4D43014BF;
-	Mon, 31 Aug 2026 03:13:24 -0700 (PDT)
-Received: from a081061.blr.arm.com (a081061.arm.com [10.164.19.84])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 6EF5C3F85F;
-	Mon, 31 Aug 2026 03:13:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788171208; bh=nAaI25J9nKaPHwn96ct79MsYlooxdS3n/qgazVKWIFg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=cnZL2NY8ZWMhShcCvjAoi0MLZcRQmkdVeJgwBv8Gvu1K4wK4kM64Ja++SsdLjQYFM
-	 hu95J0iYKE4pZJ5ne9Ubn42z8ZdgMEXTPSZNDCUmrWMOnLHzPFgz+ETMZMMGHGcqYa
-	 SXy7h3sMOOUf+7Zrs6OyL8NMg44lN3cIg5w/AT6I=
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Sarthak Sharma <sarthak.sharma@arm.com>
-Subject: [PATCH v2] mm/gup_test: report actual pinned bytes
-Date: Mon, 31 Aug 2026 15:43:04 +0530
-Message-ID: <20260831101304.162867-1-sarthak.sharma@arm.com>
-X-Mailer: git-send-email 2.43.0
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nadmiYF+;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 73C0160212;
+	Mon, 31 Aug 2026 10:21:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0F141F000E9;
+	Mon, 31 Aug 2026 10:21:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788171711;
+	bh=yiR7x9/v4RMoVRI0sREa2O7du016hdua950VEmziwYo=;
+	h=From:To:Cc:Subject:Date;
+	b=nadmiYF+WjxzCff8CEE9MFVzPy15iC/X3xVb0THTf7eFYTRCmRPErsvHK6wBkntA9
+	 yLxm5EHTLTNsUav5UE62b5bCAiyXHMuiHtE+APe52/XPcbOPfdlbiKBWos1woglkE/
+	 ZN9kKViEqFbxU80DpbpAW0zdKKubHvTFYYmvE1TVUI4fwYtN7qC8YDucmSg/TrkoRt
+	 DhTj6cEvpSupOYeklNHxbqRpRQqXgHGUmcDOQ22wJj0oCyr473NQMxosJ8QkHiVhIb
+	 NcvXKzjIMKI0PkvHrAbrMkDI4jWH/tDunHNonrGYzRiJhxWb1Hd/xl/NlHkKXLVFa1
+	 aUix3kK3g5Pkg==
+From: Mike Rapoport <rppt@kernel.org>
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] MAINTAINERS: update memblock tree URLs
+Date: Mon, 31 Aug 2026 13:21:43 +0300
+Message-ID: <20260831102143.69265-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: i97eg5jkq6ujq3xuhaik5qpq6i4obeqc
+X-Rspamd-Queue-Id: 0E9DAC0004
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 14372160006
-X-Stat-Signature: z9drf87e4fuh1d1mgiqyxz7bxbauqy5q
-X-HE-Tag: 1788171208-383077
-X-HE-Meta: U2FsdGVkX19azodqst2aEVTGwQhGS2m5KQpERq8chfO/lBLpHXZAUZ9h210OrRT/T1a12MIawqc/Zzo1kRXl621dAZPzahEkgBFQdGBm/G8vYHCVsqJWm+f1ihP2CwNLkcUB2XXDClJvOj3XTq49mANmZ0c+xvMprwqeVZ1QfDWdKQGzvOabqVuXx6CNtvE/vTci0Svbwjglt+nvZ+EQAmUBrOUQeWG2HmLUKosABDyV7ltIcfZL+T2ae/HmsjV7UoQIHBrFcx5DVTve1xwPdW6OsY5E82bi4COxe9/0jwmuO8YAbP/d9OcH3g05+fA/jIujalaIN2sFY7ZG3ofM2PCekAHg+RwZYxBCYTEGxMnrWRKuq+tvV4jyL/u+PXhWN7CvUbVwKH0YBAacQ0JpXJrE5CCR0Se0USpbHlxq/6m0y639nPqRn4oUbYqKqe0EnLF13lFJp1DG2unBng5oN+Z6QWs1aZkF4iE3oxU2LNBBwGCdTxxx3DLwmXAozID1SraXFoiHT9UElwp2AgoSAaowfCIYroQ/gk0ZteFUcliyJEw2/y/6Io+ZUXWmdH1UPVaYRHtzea3bE2Sl3F6xbkEJqahAbmPQ0qf8wudQSeFsw0yMkhUE8PI0ISXnyeXcOKgWUYf5/PbBwy5QP94UsVkXMpalQZe9EefCy9Td/Qhy/DapQuuGicrwXkRwtdkcreN15Hgdl2eZYOHXoxSR72fb1sBqpxDwcHq9v7kQXPmSNDmclpNqxzAaYW1X/JqXN+p2urSHBmub68bMX+AhNhA5gnArt6dhpkKCqqWHcZaL7gxo+7rsXYOUXdgo+bqBPGJ5+JirA0ufAqoK9/KRNCK5pVmBLwaqe+WYux/RvsSpMMaGcqImJx9pe8yksXm2UIQ8h7TZaI6RjHabC63iePQeNjQckBj3bshuXn0XrYIOv3IIcb0mp+i/YprEpK5645KqVcfR6KvBOdyGO5K
- JJ4A2qCI
- PVDmCHBZcVAh/sBz7f/6gUaPGhJb1IXXXqoR3cYxKIuPL6o/WX1KFfReNKrhKt8VFrK6dU5J6PT/+8gEUOgPJO0CgzQZQD4s3aKdaBtxkoWqW+JRNhDQWfLs+1RIRb6yJ5cdIjDbZj/ESUtI5dZn4atC61XTRhl9g2wPsAIpswRr4T2xgGOOcn9em8AC7h9p+GA1ZpxbOsijfSkAJtqU8ccYV0UU1A2yxAKPHu66YVsa0KjOEYorvNyqu5t/3RDVHZKw0cXEwONGZVPRKvBeTYd7isM4/hEBYdojEujUrkMM+nV6lpDHhqPugxA==
+X-HE-Tag: 1788171711-577827
+X-HE-Meta: U2FsdGVkX18Ac87Dr5Ltfb2WUvzJzZWKZA2n1DeE+E++s3ApPVqYdOIslphXxyLquqanhGGBaRiFK1ACtY9DZW+YPD5fo8ioQwRP9EpKNm2Gi8S6Hh7b1DnXBe1+xBnu38sJ4RctBZchoIyBULmmmjIqoXO3TE94s74FocPq5p+IjKwySyqAM3eYozybG2X1YDw7fYublabXJti4hKyKZUd5/QAEui7zGw/PHA5B0yYq7q6BZIjrouoXPmcVUvss3Y5OyCj4/ekY/fAABMI9HEV3zpd3JDdj4/L7ab4vsne+wrSySI5U68OmuJBDoLhuanKS28vJ9Q4u9oZNEXc6vgFOlzB88ElBRC0UIBrzIpC1z4oEz1RZVQleZMeIR6qL9sWWrZVHRMDFvmPpdfFEYwKIMucgH+iNbJ1ndeZXjloHCLNH+DboXClGaLfsbFgK6C0JmzZxg7x1VMEnWva22eOKdYWrqlXFsx8u+g7L5GRiZq/OMafEhvPdOjk0TsSlZWjQFuO6CuM3KGpZgpTPV972dKTUClF2lZCAzpdeL7iaOyz11KyljDdtwAAXk1UrvXbnnzaXz4+KY+HL+VtqW8ICUMn9RhX3OmAkemqQUfsp11FNfPB0QbKNqVRIIE4TfbtDcFUzImF9plp/V0XXYohgGifgIbp2Iz4SYvIMZm8RJbHpx93aFRUS1gIzPHYzjy9lrtRmXmaOX7rT8WIlaIq7iZFK2ZI3RjtmVQBG9V5JTwCNEg29rX/wLrD8FuQZQe216rWCq7ECiTVxsLZvKR8RONn2hYiMZtU+ulcoco1TvkUuS+cmKvBXyXOplCtNtrKV7rXiT0m3Y6rcXtjntKwT/YXZmkKVqzl6msAEd57E9XpnBu0MC0oyDcLfBPIPo05bKhXZS5B4vIuOoJTLhDeHnXHXqpOBzbz0vqT/+KGLe9Z8NW7u6Pqoq7dlwR7sPXW4o+WBnyAw4SNubCf
+ 5i5NTD0Q
+ cGvmxUhtkojfUxKHAtHpfsQoIY7tuEMOzzTUSXBEeeUzKtqsZdzylwJAB/nYQOJVUX4mwfhLYCxl13av04z6pUjfKOGhqnABke/4Fy/XpXNW6tKL6vu4rx0pAx2lnbM7QrKN/hJElVAlmsIPeqg8g85ta+/ONePpYVZTHCe9FPGZ2K41ZluUOX1l6tTF5xPThK7yqd8ntrR1fhoAZWhsBQV6YhGcyJb/A9SnDmuJHxyXtSfq/T1YI0DKsHJitYuyg+zRQl5t5tcQil6UA3Gov1zAqEWEn4QHnSYHJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,43 +90,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__gup_test_ioctl() advances addr to the end of the current batch before
-checking if GUP pinned the entire requested batch. If GUP pins more than
-0 pages but less than the requested batch size, addr still advances by
-the requested batch size.
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-The next iteration detects the partial pinning and breaks out of the loop.
-Again gup->size is calculated using addr - gup->addr, so it also includes
-the unpinned pages of the requested batch.
+memblock tree moved into mm/ namespace at git.kernel.org.
 
-Calculate gup->size using the actual number of pages pinned multiplied
-by PAGE_SIZE.
+Update the T: entries for memblock to match it.
 
-Fixes: 64c349f4ae78 ("mm: add infrastructure for get_user_pages_fast() benchmarking")
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
-Changes in v2:
-- Fix typo in the commit message
+I can take it via memblock tree if there are no objections
 
-v1: lore.kernel.org/all/20260831064808.77768-1-sarthak.sharma@arm.com/
+ MAINTAINERS | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- mm/gup_test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/gup_test.c b/mm/gup_test.c
-index 44c1cdfb9c37..185ba3bb8ed1 100644
---- a/mm/gup_test.c
-+++ b/mm/gup_test.c
-@@ -188,7 +188,7 @@ static int __gup_test_ioctl(unsigned int cmd,
- 	nr_pages = i;
- 
- 	gup->get_delta_usec = ktime_us_delta(end_time, start_time);
--	gup->size = addr - gup->addr;
-+	gup->size = nr_pages * PAGE_SIZE;
- 
- 	/*
- 	 * Take an un-benchmark-timed moment to verify DMA pinned
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 3a19da74d00c9..1731d197c33ca 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17036,8 +17036,8 @@ MEMBLOCK AND MEMORY MANAGEMENT INITIALIZATION
+ M:	Mike Rapoport <rppt@kernel.org>
+ L:	linux-mm@kvack.org
+ S:	Maintained
+-T:	git git://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git for-next
+-T:	git git://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git fixes
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mm/memblock.git for-next
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mm/memblock.git fixes
+ F:	Documentation/core-api/boot-time-mm.rst
+ F:	include/linux/kho/abi/memblock.h
+ F:	include/linux/memblock.h
 -- 
 2.53.0
 
