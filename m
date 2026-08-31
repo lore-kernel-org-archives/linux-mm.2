@@ -4,78 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3D60C61DE4
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 02:59:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E055CC61DF0
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 02:59:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA3C36B0088; Sun, 30 Aug 2026 22:59:15 -0400 (EDT)
+	id F39A06B008A; Sun, 30 Aug 2026 22:59:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C26016B008C; Sun, 30 Aug 2026 22:59:15 -0400 (EDT)
+	id EE6026B008C; Sun, 30 Aug 2026 22:59:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B150D6B0092; Sun, 30 Aug 2026 22:59:15 -0400 (EDT)
+	id D85016B0095; Sun, 30 Aug 2026 22:59:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 844016B0088
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EA376B008A
 	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 22:59:15 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 065071C1D26
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2772EA03E6
 	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 02:59:15 +0000 (UTC)
-X-FDA: 85160058270.10.EF9691A
+X-FDA: 85160058270.16.0F55267
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 106A420003
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1CCDB40002
 	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 02:59:12 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L55ZscrO;
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TKt3RH9y;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of devnull+me.black-desk.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+me.black-desk.cn@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of devnull+me.black-desk.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+me.black-desk.cn@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1788145153;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lY3wDBkX3sq/hg1WYCXoywESa9iyZjs3DufoPlZqSWI=;
-	b=twsPnPRB2d/dWr3ygMSlC7f0yZEwDGLU4J+mHLYdcUNPjoYfe3bi6qHpdDp3okD1GW3Zgy
-	u8+hY5jNRfMHXnVz7DmdyJ/g/3YRRiYC6U8Q33sqRLV+THCU/EVrnhWUR17MrZ5oHjI9BU
-	LVc55SuqDKKCXX/lFqNyp/u54f17uZ8=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=VBkMjLhCwWXOFeyRJOAOZa88lrqhXcBtmFB4cgMI3RA=;
+	b=tHfRIXC1ANswD7XdrDmKA14qr8ydCmtA6YZdlKPank1hE8Kydd1iGrLKuW/zukCsDZE8b9
+	Bwt1OOLnmbQyTsC/YRCqMw5SfqrSmB9tarNMfbQqjiOuWauSQbK75jBUlOM6uI1iM5HpOY
+	g0ipLomUz2rjeEnk5p8BH8d3H00whcg=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L55ZscrO;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TKt3RH9y;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of devnull+me.black-desk.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+me.black-desk.cn@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of devnull+me.black-desk.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+me.black-desk.cn@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1788145153;
-	b=4qB42Sq+mpah5MTDdU3cUWcxMg0NIPFcYxOHjWecfSLEmNZdxrIT3oBp8o79pv9P+9FRgp
-	3s5wU2iRMhEbBIHiH16P8C+8ke3J3vWM9UVPhIg00saKZt4IfEGkOWBEQ69gxuKx1u2jEB
-	kBGkH380v7c8hSFB9KItYkMw1buzPAM=
+	b=HbeCknaokXupG9+aGGsgefKfAZNa8Mj/gN2h6kNJ+NtCYXMHH7vRT9y0yW4vOX4MhFLOEA
+	SUqGL0KZr3bUEIIKau4G0hl7ThVFIx6D2ZrMgXzDn5OL0kbe/R2s5qrwUKOd3xIH1hukHH
+	Q0m8eVpVLRHBzMjo80GnwUXyVsM5+XA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id ECD0843DAC;
+	by sea.source.kernel.org (Postfix) with ESMTP id BD3714126F;
 	Mon, 31 Aug 2026 02:59:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id AE156C2BCFA;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8BBB4C2BCC7;
 	Mon, 31 Aug 2026 02:59:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1788145151;
-	bh=diMrWF/LmTzet43A7eKj6E3amyHbnnDa/tpKXigKzZw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=L55ZscrO3tXErkI5OAaHQVqcs+LwX/H1nDJu7RNNoaonWreSTOJeIxhfRUMc9raZ8
-	 L/PX7lVCOgCq68xuX66DqYeLbi6YLPS2tWM7VcZhnlAPqwhR6MhjNr4NI2W+4q1PMx
-	 sdQ6xn6BuBR7vTcYkh1klhUD1B7+IvPEYov/KGm8eadQPWQ1du6NcX8Zls9jI02YRv
-	 zt99AkHvdmb3V/bY3eKcEA/MifNIDgFBV3gqhbwVZV4UF4XBOTv0Tk71jK8+lxDnLU
-	 fa/F0CAd1Dhwy+GsD35dZ9VPiSMq9K24OeeGOZYz1jwDmqPOB+wBkZuDIAvbRq1UYg
-	 WsniX3MNb8dDw==
+	bh=RMKGmZEdzeP7q4RQyJWLL5ub3gwDxt6jUsCX6DmjrtY=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=TKt3RH9ywQh+2U+bclod27pUMCxZgwIvkUJdtlPCxfYjm7Uabt3JtfceAakC+o9Qv
+	 4UT7x1TQCIIpab/pm17iQBOeJ5gqOBCLfmlj5MsC9Fa3EFubPbJ/BrYqkg8lMAXyOg
+	 DswiXsCZ5EbzaFkkeLBMYX/YMZfqOIiMDkiBEhbamv7Ul1oJiOAMiiQZeXm4txn/7a
+	 /0gVJTfoxrqo9gBIWQnjZod1wX618QP6E+WuPgN4+UwaVa/1Tp3YvgyNUYB+1CLbyK
+	 UW7alQbh0kpPDYeOAYAnu9Nz/swlgQ7w7zHaXLcxTi43DGHRQdSFMvbNLjiISfV1Bb
+	 R86G9pYd56NBg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B0DCC61DE2;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7596AC61DF0;
 	Mon, 31 Aug 2026 02:59:11 +0000 (UTC)
 From: Chen Linxuan via B4 Relay <devnull+me.black-desk.cn@kernel.org>
-Date: Mon, 31 Aug 2026 10:59:06 +0800
-Subject: [PATCH v2 1/3] fs: Introduce task path helpers
+Subject: [PATCH v2 0/3] pidfd: add task path ioctls
+Date: Mon, 31 Aug 2026 10:59:05 +0800
+Message-Id: <20260831-pidfd-get-paths-v2-0-c59ea6a21b72@black-desk.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260831-pidfd-get-paths-v2-1-c59ea6a21b72@black-desk.cn>
-References: <20260831-pidfd-get-paths-v2-0-c59ea6a21b72@black-desk.cn>
-In-Reply-To: <20260831-pidfd-get-paths-v2-0-c59ea6a21b72@black-desk.cn>
+X-B4-Tracking: v=1; b=H4sIAPntlGoC/2WNyw6CMBBFf4V07Zi2PAKu/A/DonQGGDFA2ko0h
+ H+3oDuXJzn33FV4ckxeXJJVOFrY8zRG0KdE2N6MHQFjZKGlLmSpKpgZW4SOAswm9B7yqsgklhY
+ VkYir2VHLr6N4q7/sn82dbNgzu9GzD5N7H5eL2r1fXcu/+qJAgrEpEWVSpphfm4exAyD54WxHU
+ W/b9gGsVnX8xAAAAA==
+X-Change-ID: 20260819-pidfd-get-paths-59640d8cd1ee
 To: Alexander Viro <viro@zeniv.linux.org.uk>, 
  Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
  Andrew Morton <akpm@linux-foundation.org>, 
@@ -98,35 +100,37 @@ Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, 
  Chen Linxuan <me@black-desk.cn>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6540; i=me@black-desk.cn;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3549; i=me@black-desk.cn;
  s=20260831; h=from:subject:message-id;
- bh=5So2OP5xtxhWElec19b9ZT6vFlwvdbmJSxLeLau4rVo=;
- b=owEBbQKS/ZANAwAKAXYe5hQ5ma6LAcsmYgBqlO38hlMmWYrfhNP7tNxvYyk/trBioVtyxuO0L
- 54fL84jSkCJAjMEAAEKAB0WIQTO1VElAk6xdvy0ZVp2HuYUOZmuiwUCapTt/AAKCRB2HuYUOZmu
- i/oQD/9roMaaNnUmCilRvUZYD8kg+6YObUuwkSY9d99SWki86zWmjnaICnVR+Zb2W8WBtOvGZKB
- 6jJRoML7cvLT2hBpblOSeMCQNQK0aC6E3aAWlPdUCDesQdi77+V2pW7TEnve0oy2yGy2VI4Oehd
- h6cf2M5RlpdB2Qk2wd/ASa7xGgcF0UUx0Je/e6Z8kqyWrqaPGGcEr2kJiyDgQ5TnGcyS7etamrO
- wgif/QpDRx+2UYqUbGnAQh1eHfQFMlfKvI36EjtFBqaUCC5y2MC/AadKqtBcDaq6oJQCf7oS0/k
- dY8MXF5nEsqRAGoex3WZV2FMuRg6b8qo4ytELiFKlNsBY/a59YynuRiMzBqI0MsbAsGFYQznNa5
- 88UDWMfpUTMB/7fS7xwyV1Sc8rI2fR3Vg7bfoRteDU1zUgrnfalv0MZSa+398Y3IBu0q0JRaVp5
- ECbyOznGF4D8gbD0IiXzV6XnInvJTX7UrfKEdzI4XU2UUWFEOyq/uXoTTZ/IOgDK+AR0tPjMbBr
- 0We4F21C4pk/F5ZEhucZ8qdPYzCNRfCNkYt5zk8XXbd7biq9LJoDBPt3zFtDEAmohqdbzTfPeed
- zIt2DrJbd3/iU1BtXbZ1aP04uRnh1E2a+ha+noDPZQ/5tmZQ3OioxmWNeAtrv03A6onDNUibqlZ
- QAHLvTlgoussE/Q==
+ bh=RMKGmZEdzeP7q4RQyJWLL5ub3gwDxt6jUsCX6DmjrtY=;
+ b=owEBbQKS/ZANAwAKAXYe5hQ5ma6LAcsmYgBqlO37ZFQatvNIJ/XqWG5+bT55C46sV06hh7vsz
+ nV6esn8i+SJAjMEAAEKAB0WIQTO1VElAk6xdvy0ZVp2HuYUOZmuiwUCapTt+wAKCRB2HuYUOZmu
+ i6b2D/4puD5mcrb6qIcY8fPVCL726xa5XVAfOmZYE6ujw+AMfe7DCzs9at0X6tjITAq79046tno
+ R5lu9W07Yl/SyM8SQbe8qFMyICkr+dCQ3aBgLyO02B3xMmq/of+Zl9hwX+mo3B5v6WOesIdTwDQ
+ ApCXcjyvz/BhV+Xa6QLduRrop2wnXfW6V6xCtLzL5hbJs1uwmo+E32dxz8vTN7WnkaR1/ZqRIxY
+ hqOD3WZzgdr+xYctOVSe59+06DaT1Ziry0N96FozDQvkNZSkutS5jo1TTScGN9tbczg4yoyYKpU
+ koJVijkxkaTvuGAKoJSLr3PKRljhvkHdo9/wMlXrNNjYG1Q2WRyqqG/z78ocMahd/9MSaPC6x6y
+ 7A2kv53KAl0orXsUKgHWUIeG4gzH4oZn4c2cZgecEymfASxrfpGLZCWAGE+vwcjzNjoKe/UNpEd
+ zcxjqRzNnH/rqKgf6HaBzhct7Q0tQLRiVXg8zRgqiVchfEVZ0JOGR2G6DtSl6D14PB6uPEDZi94
+ 3HuakPqCsEKOzCKy192XUvPpBc/NsXTV5OvqJIYMteXtl16ZE28S9msyF4sC1sJscpVZRKuu/c3
+ vVuQalPUCIYjCo2Pu9b4T0FwHNyGiCABxIPhgoxnuwB/dB+LhKkt58Y+pMUC1AK1GGj9JwkRf2M
+ 2feItAuIEwUdetw==
 X-Developer-Key: i=me@black-desk.cn; a=openpgp;
  fpr=D818ACDD385CAE92D4BAC01A6269794D24791D21
 X-Endpoint-Received: by B4 Relay for me@black-desk.cn/20260831 with
  auth_id=991
 X-Original-From: Chen Linxuan <me@black-desk.cn>
 Reply-To: me@black-desk.cn
-X-Rspamd-Server: rspam11
+X-Stat-Signature: sj7i86uxpk1gh4wptp943cgierm7xacz
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1CCDB40002
 X-Rspam-User: 
-X-Stat-Signature: un9y1xg89sta11c6gye1e3p939u1r3x9
-X-Rspamd-Queue-Id: 106A420003
-X-HE-Tag: 1788145152-343857
-X-HE-Meta: U2FsdGVkX1/JX3GlKt6xZX/lKbW2B5+XAI/g6xqwntMVEVVjRhUYlPgFKeJKH1SqFACTv7qiyMXjntSuFAgLDWXl795WFLQpJlOktDxFax6nmfAUS5jp5gUJne5cg2v2Kd7lDHV+0jOiCSV2cPj0+dbr04cM/dp1BaaxP9LctfSpvAqB/6S8XxKLfRaG+uH6ONk6wctAeni5fwDtePTWSFo4SG+ykIMNZm9O88WYohyG4rfeY9uQbQ+LbiUZ+yuk6bRUnYT1NcJ/iUJyB2LRRSzGThsh0sleU2SFVGillzu4ZjWjt7rYr/KsTiy0tC1RG6MHOvkLUjrufXWJsJssB3jTB2V0cx5/9/M9l4v8h1hvV4TLD3DOBOa5n2wY7Vy1oWNgVLxD4ykEkSMqB9rWtIii5/KwLCwfdIaFpEGIEr1HMg5A49lKW5BgCPltI1zp+kYu7HKH+jnn37pPSYsyOjNaNIbU87YJelpU9jbWGfMFZC2QDg+n16FoyxjMUciyT1Yrv56NEmfb5nqaiUH8H+IX3ZQR6ju15PSdSfQEKbOIhU4Qnh+z2RFr6HDrmUGP6fg+dBlCngjQZ0KiQ58DE27FKJnb8yrnH/e8H661LYmzATFrsQrHAUu9j00zXDrfNNREvDfuRlWBFJMWCW70Iw13WIL9779/Tmfe2cOYCW7oResZyVrzRd1lSF5gUQbWjuwXdH6NlIhyDB/qzPhV9smDHlYQKy5XImz5RUzGXuPHl8wW0TSLgaBesEzsOBOTHZjuKIitb8NX8bgeIfxNU5+Ti6sa3Tg5cWOWFU0/toF1WDE/NpsVX7erC9CUSXp+ijReHrgfLBFvKlMgUHl1crrdbba98phWWx/mFBxs3lCcofbSnqHy2eFcuJI47pGpQNXr+PCXXeeWHWnqmVccoxp0UU4k0sMyXnepciK/34JzuAQinrQUI0sndkVwURLbeim1jTcT0t/+Qdz96SL
- sG0rUrKo
- oGKPeDI+pI1mOzWRpe2s+YF5LDZlYo0R5IaHlKIrEjeqCO6d7PFHpOsr3as9XqAcl4IHbtbwDWYTEd+4lclTvKlQ6clG4RUGk8zVI34RccqWlRdGI5rpEy38zdlunsJBZaqChK8eV7KuhLwMTmjzIGCjoUnVoAraiABfnTlDw5QDlCq9XaWlI+IBts1jX+U8UF72XQcqRPHZjueTAubao5XPH4tGjTjkXDSEbPcYT6U63aPD3pQT8O4Rs1jkZcq0vk/+gC1BU9grjVdX8T/HE6zlihjSdJ4MMj8XpTryAS9J0ibi8vNEFA2Aby3NgD6kjB+rs6BzEuc/450ZGoN3W6BhZ6X3dp1druyV/+vpWmO8aJ5PrnGl0EL2c1L2gMQfaFIby
+X-HE-Tag: 1788145152-499014
+X-HE-Meta: U2FsdGVkX19BjXQd0h4D2YuEFoBNtwXeRlF2sDOauh7nJVMqUZwpL6HUnE52Anm+PwNrfGJsRe5FzZC0y7mi01MhxlWMir/FcqmlwuWFvASLH/qz1YnssJi28lUmuFUy4BMbcGSljrP+OnNJi+EcQhPxPvO5wuZ+4SIRs8Bxxd90nlpNPrK+Hze0zID71IIgHlqUitaZO93AlL/9puxvpTjYsYFn3oeLDelRDXIpT+6xwjGpeJtPMl7fwDOQowWXVIRJIjjfPwKllxDED8KzemVECgAgzhYa2zlHou7wnGOi9Iu4lIpDFBRfnsPjKrEXJMAVPWyR/DH4+jP6VPjDqpNMB1IvyQiP8tis5tHhjncSoJ/OxMYX53NqPqKzYNNzT+2lBWVZgVZdC4Bt6/azXFqFT+kZLIbZ3KBi5Cntd4wrD3UhNqluLz8FC/q/QMcTucXN2AWfKAnqPF70zcUSqVr14vD3/1FawPv09UKG6K44TUGKRe92vXtH66FNvD/fYagxkhyrcDBvwzv8+66XJ2tveuDbmMRblfIatTivBc/KUpFYnHE2JW3SkTLkGpgZIYvvwIbKj+dQ1ne4poJ/1kS4c23ZnQyoQ9vVjhUs1rRQ29Oy0q1XcFzYhPjYOZ7+BXhyuGftwsbGbrENIgss5Mo/0k0BRt1V7GSbw7dVM7n67wEuKFGgRvEL8Nh5D1sW0CGcOmly26X5PysWVi6eAXRJ2Bp5FcC+xi3EGumB2kCjYnhSfqFIRLELnd6cQpm5uPTb10iHou2C+oLbu5DB6Nf5K6euxu81sPY4E59l9Ga+oIEOQZJuevp4tUrB8Xayh1fEsgUBmG7ohrGRQBX3x+LK8Qlns2qQCRM5020v3eYt+/5meobL5otCCFw3fSHIUM5BeULkrtW3hT28tgGiQ0UZ7M6DCz4InwS0rsZJyKeWPEt5fZO8YpxG4mZXoOBh+hK4P7QrmBfrQJAWKUW
+ pIqxzYCI
+ Azs2RShX8JQo8gGYQ0wf8f6U7/otpvFPT0dJ0V2SaJydf/d5dgEfRjaPGGbZpVW2JNGkANbO1oNpbFHeyHjnDDwSv3bOccXH47BmlKw0vhF1E4z2vXlRXzR3jjwxmAayyNTSJr8/zMk5G94leJCYvr4dcDDLYZn/pL6JBGTrgsuSWRCKUWNA6XanvG+1EIyb4gtejNOuquCeYOARmo6nJixBGpZ0+oEuOj9+ACHPXq0bQprwad7YEVemDY+t9/L2QkcJVX8ABIZIlzBqrdGXbFLg+qArGzxS7NmdOCqygAtlbFT/RAkArH8Da/vya/BSUSbq43Jkf8fo7NeMaASCL/MCg5Dm4H7yPypunv8DjoxnHGRwav9aGm2Is9A0kSPcHrryrGZ79twS3ZRk6xUX+31U8QK0szE8OPwl6EBtxiLT3SjQtn2eq1cmS/lWLy0eNhv9oFap4+85gIOVjyoHHvJAztwuD0SvRoy//vTmDBZfb4VDvWpw7ffGsot3yO9JGJYSv0hzrZACQuR1IcjeEM5elfeKpSD9oLeUKra6aq43fhkSB5IInDtOMqZDEid69U2yY30mebGGl97CaEhpKS1nK+2auz1nTcpVC2GHPkK7qqQ6yx14ZTcc3svFIJatjMXpjQnnQanbTB7yPFTynEVJHW2BEFyKB+NCOIXdsJ0gxF0q+KwTNva8oEHC2Qtkiqs1NDby7bnk5/GspzS2XmCyi+b1q8yzUxH/hop4q+khG0tu5pfZvSVeEIrZDX0C9KnqgSwpJY0pJHcVgaO8KKg2LUKL0BzoFGtc3jc3qpC6Ab95BCMWtOX7l6KEaxECGrINKB1LCpIYA1XX3cKH7/EoS1TeMMIlpsLBK14h1ih9YyR0l1A8OgaP0w76hz70AC+3zAUkOMdrXlwHU33u4PjE/n37MTSVBNFHqRHXuWGia7k0b5jV7K9iFIRxYO6ItHOe/lhDbxSIr5hTR/BDAxa7OxsnG
+ qAF0uMzt
+ T9muBhw1J2OL+WdVsBHhoX4+r3OJI4ZsZ4L9Ez84C9MUSHJocaJHm6HuM/LvdH1NASzSk/KZ1g80jE+3AQsg2baDibSwGJQDzAshe3Oj3gng4YjMLc1GQOeAbHQkfAUDM2RFrUPv6lijcHd5fGojHrjWZQRgRb3lsXR2UyF50ozfhnY590N4iRO3kYvxw0UCcxL82Au+7+loDxLxqdsrRykXaIcIajhI6BGCIXM27hXxzFtd3YiZbxoyYPlZ4yo8JVM0YndWABg/IlTRLXHfEpK1YEeYSvhD1w5MQJYnfk6mbi6wftB50jsnPD+aDMJ/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,232 +138,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Chen Linxuan <me@black-desk.cn>
+Obtaining a target task's executable, working directory, or root
+currently requires walking procfs symlinks such as /proc/<pid>/exe,
+/proc/<pid>/cwd, and /proc/<pid>/root.  That makes the operation depend
+on procfs being mounted and visible to the caller, even when it already
+holds a pidfd for the target.
 
-Introduce helpers that acquire a referenced struct path for a task's
-executable, root, and working directory. Reuse them for procfs task
-links and AppArmor executable-path handling instead of duplicating file
-and path reference handling at each call site.
+This series adds PIDFD_GET_EXE, PIDFD_GET_CWD, and PIDFD_GET_ROOT. Each
+ioctl takes no argument and returns a close-on-exec O_PATH file
+descriptor referencing the corresponding task path.  The new ioctls use
+the same ptrace permission check and nonzero-argument rejection as the
+existing pidfd namespace ioctls.
 
-Assisted-by: LLM
+The target task is sampled while holding its exec_update_lock. This
+keeps the access decision and the task-state read in the same exec
+critical section, preventing a concurrent execve() from changing the
+credentials or target state between the check and the use.
+
+The first patch factors out helpers for acquiring referenced task paths
+and reuses them in procfs and AppArmor.  The second patch introduces
+scoped cleanup for privileged pidfd task access and separates namespace
+lookup from namespace fd creation.  The final patch uses these pieces to
+implement the three new ioctls.
+
 Signed-off-by: Chen Linxuan <me@black-desk.cn>
 ---
- fs/fs_struct.c            | 44 ++++++++++++++++++++++++++++++++++++++++++++
- fs/proc/base.c            | 34 ++--------------------------------
- include/linux/fs_struct.h |  3 +++
- include/linux/mm.h        |  1 +
- kernel/fork.c             | 21 +++++++++++++++++++++
- security/apparmor/task.c  | 12 +++---------
- 6 files changed, 74 insertions(+), 41 deletions(-)
+Changes in v2:
+- Make pidfd_get_task_locked() own the task reference until it is
+  transferred to the pidfd_task_locked cleanup class.
+- Link to v1: https://patch.msgid.link/20260820-pidfd-get-paths-v1-0-ac3eee4003d5@black-desk.cn
 
-diff --git a/fs/fs_struct.c b/fs/fs_struct.c
-index 34699f3b6f88..5c772896260a 100644
---- a/fs/fs_struct.c
-+++ b/fs/fs_struct.c
-@@ -10,6 +10,50 @@
- #include "internal.h"
- #include "mount.h"
- 
-+/**
-+ * get_task_root - acquire a reference to the task's root path
-+ * @task: The task.
-+ * @root: The task's root path.
-+ *
-+ * Returns 0 if the task has a root path, or -ENOENT if it does not. The
-+ * caller must release the path through path_put() on success.
-+ */
-+int get_task_root(struct task_struct *task, struct path *root)
-+{
-+	int ret = -ENOENT;
-+
-+	task_lock(task);
-+	if (task->real_fs) {
-+		get_fs_root(task->real_fs, root);
-+		ret = 0;
-+	}
-+	task_unlock(task);
-+
-+	return ret;
-+}
-+
-+/**
-+ * get_task_pwd - acquire a reference to the task's working directory
-+ * @task: The task.
-+ * @pwd: The task's working directory.
-+ *
-+ * Returns 0 if the task has a working directory, or -ENOENT if it does not.
-+ * The caller must release the path through path_put() on success.
-+ */
-+int get_task_pwd(struct task_struct *task, struct path *pwd)
-+{
-+	int ret = -ENOENT;
-+
-+	task_lock(task);
-+	if (task->real_fs) {
-+		get_fs_pwd(task->real_fs, pwd);
-+		ret = 0;
-+	}
-+	task_unlock(task);
-+
-+	return ret;
-+}
-+
- /*
-  * Replace the fs->{rootmnt,root} with {mnt,dentry}. Put the old values.
-  * It can block.
-diff --git a/fs/proc/base.c b/fs/proc/base.c
-index 6a39de424f62..7e2c0538323c 100644
---- a/fs/proc/base.c
-+++ b/fs/proc/base.c
-@@ -206,31 +206,10 @@ static unsigned int __init pid_entry_nlink(const struct pid_entry *entries,
- 	return count;
- }
- 
--static int get_task_root(struct task_struct *task, struct path *root)
--{
--	int result = -ENOENT;
--
--	task_lock(task);
--	if (task->real_fs) {
--		get_fs_root(task->real_fs, root);
--		result = 0;
--	}
--	task_unlock(task);
--	return result;
--}
--
- static int proc_cwd_link(struct dentry *dentry, struct path *path,
- 			 struct task_struct *task)
- {
--	int result = -ENOENT;
--
--	task_lock(task);
--	if (task->real_fs) {
--		get_fs_pwd(task->real_fs, path);
--		result = 0;
--	}
--	task_unlock(task);
--	return result;
-+	return get_task_pwd(task, path);
- }
- 
- static int proc_root_link(struct dentry *dentry, struct path *path,
-@@ -1761,16 +1740,7 @@ static const struct file_operations proc_pid_set_comm_operations = {
- static int proc_exe_link(struct dentry *dentry, struct path *exe_path,
- 			 struct task_struct *task)
- {
--	struct file *exe_file;
--
--	exe_file = get_task_exe_file(task);
--	if (exe_file) {
--		*exe_path = exe_file->f_path;
--		path_get(&exe_file->f_path);
--		fput(exe_file);
--		return 0;
--	} else
--		return -ENOENT;
-+	return get_task_exe_path(task, exe_path);
- }
- 
- static int call_proc_get_link(struct dentry *dentry, struct inode *inode, struct path *path_out)
-diff --git a/include/linux/fs_struct.h b/include/linux/fs_struct.h
-index 97eef8d3863d..fb725707754d 100644
---- a/include/linux/fs_struct.h
-+++ b/include/linux/fs_struct.h
-@@ -42,6 +42,9 @@ static inline void get_fs_pwd(struct fs_struct *fs, struct path *pwd)
- 	read_sequnlock_excl(&fs->seq);
- }
- 
-+int get_task_root(struct task_struct *task, struct path *root);
-+int get_task_pwd(struct task_struct *task, struct path *pwd);
-+
- struct fs_struct *switch_fs_struct(struct fs_struct *new_fs);
- 
- extern bool current_chrooted(void);
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index dd09c438fa23..a65f24b2e65b 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4239,6 +4239,7 @@ extern int set_mm_exe_file(struct mm_struct *mm, struct file *new_exe_file);
- extern int replace_mm_exe_file(struct mm_struct *mm, struct file *new_exe_file);
- extern struct file *get_mm_exe_file(struct mm_struct *mm);
- extern struct file *get_task_exe_file(struct task_struct *task);
-+int get_task_exe_path(struct task_struct *task, struct path *exe_path);
- 
- extern void vm_stat_account(struct mm_struct *, vm_flags_t, long npages);
- 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 416758c8a3d4..a493de3ae5c2 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -1371,6 +1371,27 @@ struct file *get_task_exe_file(struct task_struct *task)
- 	return exe_file;
- }
- 
-+/**
-+ * get_task_exe_path - acquire a reference to the task's executable path
-+ * @task: The task.
-+ * @exe_path: The task's executable path.
-+ *
-+ * Returns 0 if the task has an executable path, or -ENOENT if it does not.
-+ * The caller must release the path through path_put() on success.
-+ */
-+int get_task_exe_path(struct task_struct *task, struct path *exe_path)
-+{
-+	struct file *exe_file = get_task_exe_file(task);
-+
-+	if (!exe_file)
-+		return -ENOENT;
-+
-+	*exe_path = exe_file->f_path;
-+	path_get(exe_path);
-+	fput(exe_file);
-+	return 0;
-+}
-+
- /**
-  * get_task_mm - acquire a reference to the task's mm
-  * @task: The task.
-diff --git a/security/apparmor/task.c b/security/apparmor/task.c
-index e16ff4130bc2..05cba261dd34 100644
---- a/security/apparmor/task.c
-+++ b/security/apparmor/task.c
-@@ -13,6 +13,7 @@
-  */
- 
- #include <linux/gfp.h>
-+#include <linux/mm.h>
- #include <linux/ptrace.h>
- #include <linux/task_work.h>
- 
-@@ -330,22 +331,15 @@ int aa_may_ptrace(const struct cred *tracer_cred, struct aa_label *tracer,
- 
- static const char *get_current_exe_path(char *buffer, int buffer_size)
- {
--	struct file *exe_file;
--	struct path p;
-+	struct path p __free(path_put) = {};
- 	const char *path_str;
- 
--	exe_file = get_task_exe_file(current);
--	if (!exe_file)
-+	if (get_task_exe_path(current, &p))
- 		return ERR_PTR(-ENOENT);
--	p = exe_file->f_path;
--	path_get(&p);
- 
- 	if (aa_path_name(&p, FLAG_VIEW_SUBNS, buffer, &path_str, NULL, NULL))
- 		path_str = ERR_PTR(-ENOMEM);
- 
--	fput(exe_file);
--	path_put(&p);
--
- 	return path_str;
- }
- 
+To: Alexander Viro <viro@zeniv.linux.org.uk>
+To: Christian Brauner <brauner@kernel.org>
+To: Jan Kara <jack@suse.cz>
+To: Andrew Morton <akpm@linux-foundation.org>
+To: David Hildenbrand <david@kernel.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+To: "Liam R. Howlett" <liam@infradead.org>
+To: Vlastimil Babka <vbabka@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+To: Michal Hocko <mhocko@suse.com>
+To: Ingo Molnar <mingo@redhat.com>
+To: Peter Zijlstra <peterz@infradead.org>
+To: Juri Lelli <juri.lelli@redhat.com>
+To: Vincent Guittot <vincent.guittot@linaro.org>
+To: Dietmar Eggemann <dietmar.eggemann@arm.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+To: Ben Segall <bsegall@google.com>
+To: Mel Gorman <mgorman@suse.de>
+To: Valentin Schneider <vschneid@redhat.com>
+To: K Prateek Nayak <kprateek.nayak@amd.com>
+To: Kees Cook <kees@kernel.org>
+To: John Johansen <john.johansen@canonical.com>
+To: Georgia Garcia <georgia.garcia@canonical.com>
+To: Paul Moore <paul@paul-moore.com>
+To: James Morris <jmorris@namei.org>
+To: "Serge E. Hallyn" <serge@hallyn.com>
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: apparmor@lists.ubuntu.com
+Cc: linux-security-module@vger.kernel.org
 
--- 
-2.53.0
+---
+Chen Linxuan (3):
+      fs: Introduce task path helpers
+      pidfd: Use scoped cleanup for task access
+      pidfd: Add task path ioctls
+
+ fs/fs_struct.c             |  44 +++++++++++++
+ fs/pidfs.c                 | 153 ++++++++++++++++++++++++++++++++-------------
+ fs/proc/base.c             |  34 +---------
+ include/linux/fs_struct.h  |   3 +
+ include/linux/mm.h         |   1 +
+ include/uapi/linux/pidfd.h |   7 +++
+ kernel/fork.c              |  21 +++++++
+ security/apparmor/task.c   |  12 +---
+ 8 files changed, 190 insertions(+), 85 deletions(-)
+---
+base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+change-id: 20260819-pidfd-get-paths-59640d8cd1ee
+
+Best regards,
+--  
+Chen Linxuan <me@black-desk.cn>
 
 
 
