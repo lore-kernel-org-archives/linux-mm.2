@@ -4,83 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74630C61DE2
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 10:43:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3563C61DD3
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 10:45:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BCAF6B0098; Mon, 31 Aug 2026 06:43:26 -0400 (EDT)
+	id 075C76B0088; Mon, 31 Aug 2026 06:45:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26D0E6B0099; Mon, 31 Aug 2026 06:43:26 -0400 (EDT)
+	id 04D476B008A; Mon, 31 Aug 2026 06:45:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15C106B009B; Mon, 31 Aug 2026 06:43:26 -0400 (EDT)
+	id EA5496B0099; Mon, 31 Aug 2026 06:45:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D1CDD6B0098
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 06:43:25 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 420B41A046F
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:43:25 +0000 (UTC)
-X-FDA: 85161227970.08.8A6FD3D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 9D0C920005
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:43:23 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CDvpYveJ;
-	spf=pass (imf31.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BF8346B0088
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 06:45:04 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6460EA0450
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:45:04 +0000 (UTC)
+X-FDA: 85161232128.02.66FAE7B
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A233640003
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:45:02 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf12.hostedemail.com: domain of 3LVuVagkbAJQGMN8y992FyDD61.4CC492IG2F0CBH2BH.0CA@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3LVuVagkbAJQGMN8y992FyDD61.4CC492IG2F0CBH2BH.0CA@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788173003;
+	s=arc-20220608; t=1788173102;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4A6rVmZ4kXsT9r+WYDtkSaIU7jzFhtTA68G3dKhDy+8=;
-	b=DUBscwjiN5mbNYX/epd2SeVO6NabvM5EPQdUWqaivxD7/arkSUAPbk4CichY0S0svXOB7u
-	daUWLyc+2XmhYrntxj7cwGxGsBUwigaEWHjIuutdiUov4DRxLkzmeCPuvqm6klAtOZTbHZ
-	kwMJEtMtlesMoeZdmrA+BquInhs9Y1s=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=qhkEAgoqO6ep+MkPIh2UOwEwqFOPQY1XaLq+naxQCEc=;
+	b=hyI0tyX7G5puFlG5EF7l1ryOn1DGmstFHb8kFh9OOI2pLW+SKDK+HhCcMVtya3DrCBopzu
+	KD1DDdBgzAEtfpOVe5bpZ3ovAXgw+aLZkQ/7quE9VAsoA63kavFLFpnh6/96eLbdUai+tI
+	dEclUsILAcXrChYA7i9G5t+6K9e0Clc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788173003;
-	b=wM2WCcZMJSWBNJAewTp9Lhlvf3lj0WtF64JBcl73T8HWQC/plbmwW1BFgKjYP9AHHo21V5
-	kyEzHnpHFWJ0Sonnj0e5Tq92hvV/uzaIrCWFQ9YTYIVL8GA0ofYJDOo/HQmSFjQnLHBhBj
-	G6WUsVb/Q9ZUibzmU13y3xlvGr/vlUs=
+	t=1788173102;
+	b=GtM7uEq6OyF/oawqjDu/4ajETYquton1hjAMnfzkSB355+iHgLfX3ECEiFm+zmivreuO6o
+	ZPviwi/rAdmshtOd6rKD8jScpwiutnvVcvj0A8FGGGHShYI6JL8IUki3SGPEHmDX290Itn
+	rCz/bdDOinVbQ+RoaLLn1D8xNpqQKPw=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CDvpYveJ;
-	spf=pass (imf31.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C605443D94;
-	Mon, 31 Aug 2026 10:43:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D2281F00A3F;
-	Mon, 31 Aug 2026 10:43:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788173002;
-	bh=4A6rVmZ4kXsT9r+WYDtkSaIU7jzFhtTA68G3dKhDy+8=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=CDvpYveJfDwfFRCpZc0xZE3uPNrncqqnDF+aPMZ1MpImzzLt27PEl+xWCpfTgW5FK
-	 0bKquH9D+eT0uYVUnDPXvSyRM6vrrMNLaUS86g4gYACm1Gw+ZWylB6CDSYt70JiKGz
-	 GOJemDTTlkmp0S8EFPQW+En11jImLCVVsbK9hXCU71WquGUP2vUDn5JgUufYDPfpxq
-	 +l3wGWbDoo8DCZevAvk+0nHbHREph9aBi4lK9gItHpuXbDy1tfkmfOu9DPIaU/gmbu
-	 yrZj/TWy19LEmlT+yDrGKI37MUEEFlpS36XLlnRFqVVWUwN0x5bbZjL1iNLUQs/B75
-	 yqVvssCw1UEDQ==
-Content-Type: multipart/mixed; boundary="===============8374567278503569975=="
+	imf12.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf12.hostedemail.com: domain of 3LVuVagkbAJQGMN8y992FyDD61.4CC492IG2F0CBH2BH.0CA@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3LVuVagkbAJQGMN8y992FyDD61.4CC492IG2F0CBH2BH.0CA@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4ab4dd46ddeso2307799b6e.3
+        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 03:45:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788173101; x=1788777901;
+        h=content-transfer-encoding:content-type:to:from:subject:message-id
+         :in-reply-to:date:mime-version:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=qhkEAgoqO6ep+MkPIh2UOwEwqFOPQY1XaLq+naxQCEc=;
+        b=gram0plyQ+EuVvhrBXWcY42isWomLez9DMRGOlbneaYExB0G7nX8negUxHg0zaJwSN
+         rwH664grQGV567KBXogCkeidTb6dyFc+VA3zBoiLmyjtFYA4MVFuI+SzYsQ++YCperIT
+         t7IrQkO2ci7r7zVN5ZStMeHgP9rfsUxQhipkdpP/agW03m7wqwS07GxM+s2FBAe9t7pJ
+         VL8cWIr14grnJWmVMX8SjfPPZpFtzA5FBsAEFxWcLxisyczwk4ffsbtTdufq+GG7CKxr
+         P8Gx+RfDUUtw1Vdy4BlWyZyd6yoKnfe6dW/O4gHKaEyhAfSRFx+WGZrfJSUW6xCHYmfO
+         kNIA==
+X-Forwarded-Encrypted: i=1; AHgh+RoSqmusJdqWp8/kGf5GjnTrbqHvJMvtOsyQj/Bk/Lp1s+vSvlzCaXZQvpYP9CZzCpcwGACfV65/lg==@kvack.org
+X-Gm-Message-State: AFuF++nGRYO6i9D6FVY3uDbSVYDUAb/mTuSo160yW8aHVlkfyvF5RCyI
+	Y2Wb7r0RtIYPNhUwmCGhclQvMIK6Ypw29HuvAiqMNvTAwDQ22duU8opFRHMRPgVCaZQwEdGLAAF
+	KjYItD45Ul8zEcpz1GwvLSHYGHwfiyWy2Wm9AeHuA3iMEXRa9rinJyPAanYA=
 MIME-Version: 1.0
-Message-Id: <9e411feb9558d5759bd8927b9b2e95751f19b11981be87e6cb9757c2e9f65852@mail.kernel.org>
-In-Reply-To: <20260831092305.42062-6-tasos.papagiannnis@gmail.com>
-References: <20260831092305.42062-6-tasos.papagiannnis@gmail.com>
-Subject: Re: [PATCH bpf-next v3 5/7] selftests/bpf: Cover trusted-or-null BTF pointer reads
-From: bot+bpf-ci@kernel.org
-To: tasos.papagiannnis@gmail.com,bpf@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,linux-mm@kvack.org,linux-fsdevel@vger.kernel.org,viro@zeniv.linux.org.uk,brauner@kernel.org,akpm@linux-foundation.org,david@kernel.org,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,kpsingh@kernel.org,matt@bobrowski.net,song@kernel.org,utilityemal77@gmail.com,tasos.papagiannnis@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Mon, 31 Aug 2026 10:43:21 +0000 (UTC)
+X-Received: by 2002:a05:6808:178e:b0:4b2:b653:87ff with SMTP id
+ 5614622812f47-4b39803b2ffmr29583819b6e.7.1788173101570; Mon, 31 Aug 2026
+ 03:45:01 -0700 (PDT)
+Date: Mon, 31 Aug 2026 03:45:01 -0700
+In-Reply-To: <20260831084112.410440-1-junjie.cao@intel.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a955b2d.4d659fcc.734b4.004c.GAE@google.com>
+Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in sys_munmap (2)
+From: syzbot <syzbot+8785aaf121cfb2141e0d@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, bigeasy@linutronix.de, davem@davemloft.net, 
+	david@kernel.org, edumazet@google.com, harry.yoo@oracle.com, horms@kernel.org, 
+	jannh@google.com, jhs@mojatatu.com, jiri@resnulli.us, jpoimboe@kernel.org, 
+	junjie.cao@intel.com, kuba@kernel.org, liam.howlett@oracle.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
+	pabeni@redhat.com, peterz@infradead.org, pfalcato@suse.de, riel@surriel.com, 
+	syzkaller-bugs@googlegroups.com, vbabka@suse.cz, vinicius.gomes@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: nen4gey4asqofreh87ubnyeyj5htzpwe
+X-Rspamd-Queue-Id: A233640003
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9D0C920005
-X-Stat-Signature: 1rq7mtim9r3hhc73t1j1tzw33aygadh1
-X-HE-Tag: 1788173003-907262
-X-HE-Meta: U2FsdGVkX19Tt7+4KX4GfmVsXLZqKQHty7OsujA4TdiPWNg6+tXe940p7D33IzYhrQmCVWLGycntqygnS2grcc+V7jjppht8BWWg+CelGmo1OwNDPbA3FWzqdNSSbv59OCTipMWap/DT1BD3uWmp4GZMclpEEuDNMd2k4Wa+kd13UPoPxh+Q0Q36JMmdAwgZ3CZ02VBF0/XJiLLLwkc3OVtr18GX1dm7HKuqUc8YwCBoptQxF2n8wqPsThRhrWPBsLqhlMBUIoXjgRIC/ChakC0RMgQel0wZpz9KdpuibfJS/6dPC/QBN/JazKXJX5BbaYHA1MhDYj1cbcrzlmYDVI3K/Q0nLXq9Nb2aCV18sBVHV2CfcIHrjLpDMeexpOjMpO7ud3W7aoU/WZzh+tjR3y0z+yj3GGklACRYq8aLFr2gRA8ULgWFShBFGte0i8FP9jl+b3zWVtWiY05NKFJQfO15iczlZJjuVXH7tqbfkgvAFlW7e79Lwo/3/DOuGPt5d1E+sxP3VMzZGQ4I2urRsENXJXW5cD70QodEmbGsR33YQTzOj2iUT7b6iCR2Zr89+cN7AnxA0tH2zrqk8I7F3PYiv4kw7EwYW/g6f6BSusn6mD2GAJOVw1mZRQRJ3CnWrTwOl4/C/aO1MEDi1DUira1nzNV8844rV7/ZDqAjiDuatLsExUIeYYzdHsCFKcoHQ0Lgh2e1I2qHb1NtHPnmZE2NibWp/pSm8TMkLEru8iS/5l61b0ngwuObWhVx5ANbdABnDJfZ/Pt9RD+OKJif8og+J5ajQuC33et1ap+iPFRk/9S9S+iDiCWmpVpF47DsyyNqkYteqUJWJ4AU0fR2zHrY1LVIZbBMAn7Z8P1P1Gur1MFYUIKWdgWcyvZqnzJi+Hhmq8M/iDnsAfh4mN2ERLPf20gBeKrrlCMT1NG1qdKVv1o+s/fDgXbg6nUMHktsnd0vQVwlGirRSno9OKg
- +eA1DtlC
- hBxBgE8SyX4LiqFgwkLw9toOodlAeoWk5bPmb/9a86tky014msdbCtknOxJ6DU/roIj41UZw9C9T/vfY1znKcW+NuYt/VGx9SZaGihAvIxFS7qmrUHZ2XAoSMkRRJkYwVz58fvy2SPvTL3iatbnXytEATQnuw6dbaCkih0oYym01m4yviWGf+kqIiVS7PpxFOVuOpHQV4JOP7xDb/zN2ZkTUc6YksbYDe/ojXlCGVW0hGZ/s6ryeq4ZJnRQMNu6I85OpqjP18PsT3YPVdmg3ZnVd4LjwJSuESbgZSdj2LO8GHVlPvZbAivdVm1UolC0lYzryApSEpV2ooUJwVtXWbJE+nRUqbNX5+HyiNnL8Ygr4YF6igQO+Ynv+slJ/1av6Qjaq+GxR/skOiVgYFA9CbbWvlov3qI9K1+F6DdUxz0pJnul5VPQyOKrMyv2KvTLRJ9AQbAhQtEzD/E/C3E2j2QfWQjIOVlTSnrnOQvtpwIqd+zqdKIs3e3dnyEA==
+X-HE-Tag: 1788173102-355314
+X-HE-Meta: U2FsdGVkX1/S3Lvfoq5H9tTH8sWH66SaigcJo3bjneWA60lKpCEWmX26hUSN57SJdNRe2sSIxW/ICMfOvzkzX4OaH4bcDUALJkTaKGYoFwfShBT8qaRlzoQ4cLJPd0HxErRjTje9TAQ+BT7auCvmGbUStXnauVKiRSVXfRUUfzn9lxt/pyG/QeBeFMYJUdV4SDzkq/9XLn3n93VQJJdtM3fFVVL5g4lQ3+oT5vzeDqB8tqzddNSU9XoA0z5i3Frpx2WSG36Yf8HnJylh7GU4/992DTCDfhXVHaRn7lu+CCil3lN1uMGrAguJ2O7JruTE6BvRP+c2y+jrjg/IUV4COtYmPLt/iOH4kUlx0BEgGhUeO8kUxSqWtVv2cQ4IxIa59c3IwJDlLsDhDhna2bMiHnSX1kB0IgAUuE7jXRg9d6wxjjcqIXf4P9qQBK7vcg4hlCzBlo7U4AsPaxpSsSCpQS/sNuNJ+Wq1M7PBK8qWECyB9QygOitZThHG60Hh/P14p0N8Lx760zLtEaB5wGPeR+OnxmHqzLNkE0pH3LZd+nQ3BCcUFKsujlcVUGu836tG6H05KGx789h8aW8vVqDW3We8ylIhbKqGmJFP5lgsgD5X03A5uvIz2HiUvuA8bLA9eX7zq5KBxoZ2b4V90iTKsHZu7rYiVrsj0fxkEwENL3I4fPxeMUkxKJpk0RMLsy6DL6Pk3DcdQNJVwBrMg6fNPiUqPxB5RuOBkpu9ClKFCB6xlao8cqCIs/LNs6zdZegbUG1LeACXYtc9SuLTtd6VU08FzuWPpFwc7hEjNko8q6FPbGJqvOucaFdMLxS3AdpViqbZKlLGtU+FaNHQCh4EVDucCssT5/oon2E4S2UAAsheztNxRlPXhMoArkt54G+xFZRYdaGnB0q/2BbgoF/j5f5oFiB1mafzC1YcSBEEBxEvT5KwEyaNxE5XxKb+IN/lQ/FD4rZfrIlyU/txzFX
+ GLblt33k
+ bLkVqYxhyv6UtjpE4T3MPw9AazT/zCym80H5K7V5Pts0kEAl4mT1zVJ8JwZjcInmd1cw5ChfLwOj+abeaQjlJWPSKog32LZT7UJ2EAHDKDpMTLo/JXXD0RnOQLzOM/hfjPIplsbD5WZdhTYl6x5auozkSL0z3qzxQl/LcHgvx+1CuVmL6/Ssa85hij8iATtcp4jWc3tsvIQTLjqDAm85YesnIgr7yJdeex2hIbVEjl7uh8ZjKgMTP5YITI42AKO0LTzibqvBHrYdBE8o/BZxlBWAp7u/bVP+06HjySbqqLB6rZYkeplF+Pm0ZlU8bQvyVQbMfFa8FTXDtSww8IveaDQssv6kuO34Q21bVkZ/fnD6SXaidPYpMnlWIGIdgU8GOunuinpu4m8M5QY5kd1qXReTRwfvVMVhxbQFTuT2XZF771Fa1g5AakqD2VDfy0Mx6OXarYsBrKOaxyfKzG3I7Lj6fag4flRiqNiH4yj2z5Qp1YnDy9lQeykz/Be0v4xMSwIiLbt+d20D2EjRivVaalD34VdjNPUx9AF2tYeZzijnGpIpdh6wFR+LHyO7oGNjATbnOKAm8m1Gn0htt1r8CdDG5pxsl9tVK2q9jypWtFwrTDA7VVwa+7Mu74ea7bm1JzzeWfvyYx0ydXRhsHKQ3GUjEG7dT4V7N+vRZlKc4VKSSR7HEHLMrerAs0WoC5hd+TeHbuEl9nWcwJJyg5cSDGedumbx6c+hLWxec9teBDNqAo22EdppWz8TraOp4tRJ6rfv58kb5LV0aqtP/CL58tpuZam/ncwLiafkMi+zbuKWAaKN+JxZvuzU7thXsFnCXSUmPORUR2nej5Mnys1neBILKFvZQgXStX/37nbVtN2/3zp/GcDGtuj0Ni72I0SEWpS6LZWCltOpK6KePhhgwH2VJIOU3yXxiFui6dLS6jOOIJyCQ6bF6CYWgrIOdVrIJ7cMs9rHNxfXHQZRdMbtV3ecc8f/f
+ oi5UjErG
+ 8UrogVDGzx+ZLe5ekEmcmzGQ+6KPAji/ajQmCjX6x4KlmzI/+cq00tK3uzMxwaTndCuhyMlogA9W8pxkrCRSV5sBLadbAUTvBV2RZJejDAizUuYITysePUO3TG1QhA4brcAONVVf0scTTpB5NWBQ4vo8sAcSzr+v
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,268 +104,374 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============8374567278503569975==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hello,
 
-> Verify that pointer arithmetic, stores, atomic RMW operations, and
-> BPF_LOAD_ACQ accesses remain prohibited. Assert that a BTF pointer
-> derived from an unchecked trusted-or-null load is PTR_UNTRUSTED.
+syzbot tried to test the proposed patch but the build/boot failed:
 
-Does the patch actually verify atomic RMW operations and BPF_LOAD_ACQ
-accesses?
-
-Looking at the diff, pointer arithmetic is covered by
-handle_tp_btf_nullable_arith in progs/test_tp_btf_nullable.c with the
-expected verifier message "pointer arithmetic on trusted_ptr_or_null_
-prohibited". Stores are covered by store_through_trusted_or_null_bprm_mm
-in progs/verifier_lsm.c.
-
-But there is no test for an atomic RMW operation (such as
-__sync_fetch_and_add through a trusted-or-null pointer) or for a
-BPF_LOAD_ACQ access (such as __atomic_load_n with __ATOMIC_ACQUIRE).
-Running grep over the diff for "atomic", "load_acq", or "__sync_fetch"
-only matches the commit message text itself.
-
-The underlying kernel behaviour is correct: is_load_acq_unsafe() rejects
-BPF_LOAD_ACQ on a may-fault pointer, and an atomic RMW is rejected by
-the BPF_WRITE pass of check_mem_access(). So this is a coverage gap
-rather than a functional bug.
-
-> diff --git a/tools/testing/selftests/bpf/progs/raw_tp_null_fail.c b/tools/testing/selftests/bpf/progs/raw_tp_null_fail.c
-> index 0d58114a4955c..45df28c0a25ed 100644
-> --- a/tools/testing/selftests/bpf/progs/raw_tp_null_fail.c
-> +++ b/tools/testing/selftests/bpf/progs/raw_tp_null_fail.c
-> @@ -2,14 +2,18 @@
->  /* Copyright (c) 2024 Meta Platforms, Inc. and affiliates. */
->
->  #include <vmlinux.h>
-> +#include <bpf/bpf_helpers.h>
->  #include <bpf/bpf_tracing.h>
->  #include "bpf_misc.h"
->
->  char _license[] SEC("license") = "GPL";
->
-> +extern struct task_struct *bpf_task_acquire(struct task_struct *p) __ksym;
-> +extern void bpf_task_release(struct task_struct *p) __ksym;
-> +
->  /* Ensure module parameter has PTR_MAYBE_NULL */
->  SEC("tp_btf/bpf_testmod_test_raw_tp_null_tp")
-> -__failure __msg("R1 invalid mem access 'trusted_ptr_or_null_'")
-> +__success
->  int test_raw_tp_null_bpf_testmod_test_raw_tp_null_arg_1(void *ctx) {
->      asm volatile("r1 = *(u64 *)(r1 +0); r1 = *(u64 *)(r1 +0);" ::: __clobber_all);
->      return 0;
-
-Flipping these two tests from __failure to __success leaves their
-comments describing an assertion that no longer exists, and drops the
-only compile-time proof of nullability marking for these tracepoint
-arguments.
-
-Both programs now load whether or not the argument carries
-PTR_MAYBE_NULL: after this series a read through a trusted-or-null
-pointer is allowed, and a read through a plain trusted pointer was
-always allowed. So if a future change accidentally stopped marking the
-module tracepoint argument or the sched_pi_setprio argument as
-maybe-null, these __success tests would keep passing while the comments
-still claim otherwise. The file name raw_tp_null_fail.c is likewise now
-inaccurate for the two leading tests.
-
-Mitigating factors: progs/raw_tp_null.c plus prog_tests/raw_tp_null.c
-still prove the module tracepoint argument is maybe-null at runtime via
-ASSERT_EQ(skel->bss->i, 3), and the new trusted_or_null_walk_is_untrusted
-test indirectly proves the marking for sched_pi_setprio because its
-expected verifier message only holds if the argument was trusted-or-null.
-
-Would retaining an explicit assertion (such as __log_level(2) plus
-__msg("trusted_ptr_or_null_")) or updating the comments to reflect the
-new test semantics preserve the intent?
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/bpf/progs/verifier_lsm.c b/tools/testing/selftests/bpf/progs/verifier_lsm.c
-> index c724bf389f5c6..c912215579c92 100644
-> --- a/tools/testing/selftests/bpf/progs/verifier_lsm.c
-> +++ b/tools/testing/selftests/bpf/progs/verifier_lsm.c
-
-[ ... ]
-
-> @@ -188,6 +188,17 @@ int BPF_PROG(null_check, struct file *file)
->  	return 0;
->  }
->
-> +SEC("lsm.s/bprm_check_security")
-> +__description("store through trusted-or-null bprm->mm is rejected")
-> +__failure
-> +__msg("R{{[0-9]+}} invalid mem access 'trusted_ptr_or_null_'")
-> +int BPF_PROG(store_through_trusted_or_null_bprm_mm,
-> +	     struct linux_binprm *bprm)
-> +{
-> +	bprm->mm->task_size = 0;
-> +	return 0;
-> +}
-
-Can this new negative test actually pass at this commit?
-
-The test relies on bprm->mm being loaded as a trusted-or-null pointer.
-But struct linux_binprm is not in the BTF_TYPE_SAFE_TRUSTED_OR_NULL()
-allow-list at this commit.
-
-Looking at the list in kernel/bpf/verifier.c (around line 5957), at
-146a2bd it contains only struct dentry {d_inode}, struct socket {sk},
-and struct vm_area_struct {vm_mm, vm_file}.
-BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct linux_binprm {struct mm_struct *mm;})
-is only added two commits later, by 83008d7d1f94b ("bpf: Mark
-linux_binprm->mm as trusted-or-null") which is outside this commit.
-
-Consequently, in this sleepable (lsm.s) program in_rcu_cs() is false and
-neither type_is_trusted() nor type_is_trusted_or_null() matches, so
-bprm->mm is walked as PTR_TO_BTF_ID | PTR_UNTRUSTED. The store then hits
-the earlier guard in check_ptr_to_btf_access():
-
-    if (atype != BPF_READ && bpf_may_fault_on_deref(reg->type)) {
-        verbose(env, "only read is supported\n");
-        return -EACCES;
-    }
-
-The program is still rejected, so __failure holds, but the log says
-"only read is supported" instead of "R<n> invalid mem access
-'trusted_ptr_or_null_'". test_loader's __msg match therefore fails and
-the verifier_lsm subtest reports failure at this commit and at the
-immediately following commit; it only starts passing at 83008d7d1f94b.
-
-Either the linux_binprm marking must be ordered before this selftest
-commit, or the test must use a type that is already trusted-or-null here
-(such as struct socket {sk} or struct vm_area_struct {vm_mm}).
-
-> diff --git a/tools/testing/selftests/bpf/progs/verifier_vfs_accept.c b/tools/testing/selftests/bpf/progs/verifier_vfs_accept.c
-> index 55398c04290a8..2827a16507274 100644
-> --- a/tools/testing/selftests/bpf/progs/verifier_vfs_accept.c
-> +++ b/tools/testing/selftests/bpf/progs/verifier_vfs_accept.c
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/bpf/progs/verifier_vfs_reject.c b/tools/testing/selftests/bpf/progs/verifier_vfs_reject.c
-> index 8f0c45421f893..2a0813258183e 100644
-> --- a/tools/testing/selftests/bpf/progs/verifier_vfs_reject.c
-> +++ b/tools/testing/selftests/bpf/progs/verifier_vfs_reject.c
-> @@ -159,18 +159,4 @@ int BPF_PROG(path_d_path_kfunc_non_lsm, struct path *path, struct file *f)
->  	return 0;
->  }
->
-> -SEC("lsm.s/inode_rename")
-> -__failure __msg("invalid mem access 'trusted_ptr_or_null_'")
-> -int BPF_PROG(inode_rename, struct inode *old_dir, struct dentry *old_dentry,
-> -	     struct inode *new_dir, struct dentry *new_dentry,
-> -	     unsigned int flags)
-> -{
-> -	struct inode *inode = new_dentry->d_inode;
-> -	ino_t ino;
-> -
-> -	ino = inode->i_ino;
-> -	if (ino == 0)
-> -		return -EACCES;
-> -	return 0;
-> -}
->  char _license[] SEC("license") = "GPL";
-
-Does the deletion of this test leave struct dentry's d_inode field
-without a type assertion?
-
-The deleted test was the only place in the tree that asserted struct
-dentry's d_inode field is typed PTR_TO_BTF_ID|PTR_TRUSTED|PTR_MAYBE_NULL.
-Its __msg("invalid mem access 'trusted_ptr_or_null_'") named the reg
-type explicitly, so it failed if d_inode ever stopped being listed in
-BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct dentry) in kernel/bpf/verifier.c.
-
-The replacement in verifier_vfs_accept.c is a bare __success program:
-
-    SEC("lsm.s/inode_rename")
-    __success
-    int BPF_PROG(inode_rename_no_null_check, ...)
-    {
-            ino_t ino = new_dentry->d_inode->i_ino;
-            ...
-    }
-
-This program loads identically whether d_inode is
-PTR_TRUSTED|PTR_MAYBE_NULL (the intended marking, read via BPF_PROBE_MEM),
-plain PTR_TRUSTED (normal load), or plain PTR_TO_BTF_ID. The other
-d_inode test in the same file (inode_rename at line 88, which
-NULL-checks first) is also __success and equally indiscriminate.
-
-A grep of tools/testing/selftests/bpf/progs for d_inode finds no other
-type assertion (only local_storage.c and profiler.inc.h, neither of which
-checks reg types). So after this patch nothing detects a regression in
-the trusted-or-null marking of dentry->d_inode.
-
-Would adding __log_level(2) __msg("R{{[0-9]+}}=trusted_ptr_or_null_inode")
-to the new accept test (the style already used by raw_tp_null_fail.c and
-verifier_global_ptr_args.c), or keeping a __failure store/arithmetic case
-on new_dentry->d_inode, restore the lost discrimination?
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/sched_ext/maybe_null.c b/tools/testing/selftests/sched_ext/maybe_null.c
-> index aacf0c58ca4fa..8fec296c31bd3 100644
-> --- a/tools/testing/selftests/sched_ext/maybe_null.c
-> +++ b/tools/testing/selftests/sched_ext/maybe_null.c
-> @@ -25,11 +25,11 @@ static enum scx_test_status run(void *ctx)
->  	maybe_null__destroy(skel);
->
->  	fail_dsp = maybe_null_fail_dsp__open_and_load();
-> -	if (fail_dsp) {
-> -		maybe_null_fail_dsp__destroy(fail_dsp);
-> -		SCX_ERR("Should failed to open and load maybe_null_fail_dsp skel");
-> +	if (!fail_dsp) {
-> +		SCX_ERR("Failed to open and load maybe_null_fail_dsp skel");
->  		return SCX_TEST_FAIL;
->  	}
-> +	maybe_null_fail_dsp__destroy(fail_dsp);
-
-Flipping the maybe_null_fail_dsp arm from expected-failure to
-expected-success removes the only check that .dispatch's second argument
-is nullable.
-
-The program under test is:
-
-    void BPF_STRUCT_OPS(maybe_null_fail_dispatch, s32 cpu,
-                        struct task_struct *p)
-    {
-            vtime_test = p->scx.dsq_vtime;
-    }
-
-That is a single scalar BPF_READ, which now loads regardless of whether
-p carries PTR_MAYBE_NULL. In other words, it loads identically if
-kernel/sched/ext/ext.c ever loses the prev__nullable suffix on
-sched_ext_ops__dispatch(). The sibling positive test
-(maybe_null.bpf.c maybe_null_success_dispatch, which does if (p != NULL))
-also loads either way, so the .dispatch nullability marking becomes
-entirely untested.
-
-Only the .yield arm still discriminates, and it does so incidentally,
-because bpf_printk("... %s ...", to->comm, ...) performs pointer
-arithmetic on to (rejected), not because of a null-check requirement.
-
-Consequently the test's own description is now inaccurate:
-
-    struct scx_test maybe_null = {
-            .name = "maybe_null",
-            .description = "Verify if PTR_MAYBE_NULL works for .dispatch",
-
-Making maybe_null_fail_dsp.bpf.c do something that is still prohibited
-through a trusted-or-null pointer (pointer arithmetic on p, or a store
-such as p->scx.dsq_vtime = 0) would keep the arm a real negative test.
-The fail_dsp file/struct_ops names (maybe_null_fail, .name =
-"maybe_null_fail_dispatch") and the description also need updating if it
-stays a success case.
+ 3.236788][    T1] Mandatory Access Control activated.
+[    3.238423][    T1] pnp: PnP ACPI init
+[    3.269664][    T1] pnp: PnP ACPI: found 6 devices
+[    3.342961][    T1] clocksource: acpi_pm: mask: 0xffffff max_cycles: 0xf=
+fffff, max_idle_ns: 2085701024 ns
+[    3.352346][    T1] NET: Registered PF_INET protocol family
+[    3.355095][    T1] IP idents hash table entries: 131072 (order: 8, 1048=
+576 bytes, vmalloc)
+[    3.367877][    T1] tcp_listen_portaddr_hash hash table entries: 4096 (o=
+rder: 7, 294912 bytes, vmalloc)
+[    3.370711][    T1] Table-perturb hash table entries: 65536 (order: 6, 2=
+62144 bytes, vmalloc)
+[    3.373291][    T1] TCP established hash table entries: 65536 (order: 7,=
+ 524288 bytes, vmalloc)
+[    3.385547][    T1] TCP bind hash table entries: 65536 (order: 12, 94371=
+84 bytes, vmalloc hugepage)
+[    3.393661][    T1] TCP: Hash tables configured (established 65536 bind =
+65536)
+[    3.397399][    T1] MPTCP token hash table entries: 8192 (order: 8, 7208=
+96 bytes, vmalloc)
+[    3.400924][    T1] UDP hash table entries: 4096 (order: 8, 1048576 byte=
+s, vmalloc)
+[    3.404182][    T1] NET: Registered PF_UNIX/PF_LOCAL protocol family
+[    3.411572][    T1] RPC: Registered named UNIX socket transport module.
+[    3.413199][    T1] RPC: Registered udp transport module.
+[    3.414079][    T1] RPC: Registered tcp transport module.
+[    3.414926][    T1] RPC: Registered tcp-with-tls transport module.
+[    3.415874][    T1] RPC: Registered tcp NFSv4.1 backchannel transport mo=
+dule.
+[    3.424329][    T1] NET: Registered PF_XDP protocol family
+[    3.425489][    T1] pci_bus 0000:00: resource 4 [io  0x0000-0x0cf7 windo=
+w]
+[    3.426780][    T1] pci_bus 0000:00: resource 5 [io  0x0d00-0xffff windo=
+w]
+[    3.427855][    T1] pci_bus 0000:00: resource 6 [mem 0x000a0000-0x000bff=
+ff window]
+[    3.429423][    T1] pci_bus 0000:00: resource 7 [mem 0xc0000000-0xfebfef=
+ff window]
+[    3.432220][    T1] pci 0000:00:00.0: Limiting direct PCI/PCI transfers
+[    3.433681][    T1] PCI: CLS 0 bytes, default 64
+[    3.434929][    T1] PCI-DMA: Using software bounce buffering for IO (SWI=
+OTLB)
+[    3.437630][    T1] software IO TLB: mapped [mem 0x00000000b4400000-0x00=
+000000b8400000] (64MB)
+[    3.440304][    T1] ACPI: bus type thunderbolt registered
+[    3.457158][   T60] kworker/u8:3 (60) used greatest stack depth: 27880 b=
+ytes left
+[    3.460006][    T1] RAPL PMU: API unit is 2^-32 Joules, 0 fixed counters=
+, 10737418240 ms ovfl timer
+[    3.483867][    T1] kvm_amd: CPU 1 isn't AMD or Hygon
+[    3.484542][   T62] kworker/u8:2 (62) used greatest stack depth: 27160 b=
+ytes left
+[    3.486256][    T1] clocksource: tsc: mask: 0xffffffffffffffff max_cycle=
+s: 0x285ce32725a, max_idle_ns: 440795269150 ns
+[    3.488472][    T1] clocksource: Switched to clocksource tsc
+[    3.523013][    T1] Initialise system trusted keyrings
+[    3.526797][    T1] workingset: timestamp_bits=3D40 (anon: 35) max_order=
+=3D21 bucket_order=3D0 (anon: 0)
+[    3.535793][    T1] DLM installed
+[    3.541986][    T1] squashfs: version 4.0 (2009/01/31) Phillip Lougher
+[    3.550171][    T1] NFS: Registering the id_resolver key type
+[    3.551232][    T1] Key type id_resolver registered
+[    3.552038][    T1] Key type id_legacy registered
+[    3.553117][    T1] nfs4filelayout_init: NFSv4 File Layout Driver Regist=
+ering...
+[    3.554408][    T1] nfs4flexfilelayout_init: NFSv4 Flexfile Layout Drive=
+r Registering...
+[    3.560217][    T1] smbdirect: subsystem loading...
+[    3.568727][    T1] smbdirect: subsystem loaded
+[    3.585999][    T1] Key type cifs.spnego registered
+[    3.587259][    T1] Key type cifs.idmap registered
+[    3.593788][    T1] ntfs3: Enabled Linux POSIX ACLs support
+[    3.594840][    T1] ntfs3: Read-only LZX/Xpress compression included
+[    3.596200][    T1] jffs2: version 2.2. (NAND) (SUMMARY)  =C2=A9 2001-20=
+06 Red Hat, Inc.
+[    3.599424][    T1] romfs: ROMFS MTD (C) 2007 Red Hat, Inc.
+[    3.601080][    T1] QNX4 filesystem 0.2.3 registered.
+[    3.602026][    T1] qnx6: QNX6 filesystem 1.0.0 registered.
+[    3.604181][    T1] fuse: init (API version 7.46)
+[    3.609768][    T1] orangefs_debugfs_init: called with debug mask: :none=
+: :0:
+[    3.612294][    T1] orangefs_init: module version upstream loaded
+[    3.614231][    T1] JFS: nTxBlock =3D 8192, nTxLock =3D 65536
+[    3.629821][    T1] SGI XFS with ACLs, security attributes, realtime, sc=
+rub, repair, quota, no debug enabled
+[    3.638637][    T1] 9p: Installing v9fs 9p2000 file system support
+[    3.641019][    T1] NILFS version 2 loaded
+[    3.641796][    T1] befs: version: 0.9.3
+[    3.643277][    T1] ocfs2: Registered cluster interface o2cb
+[    3.645240][    T1] ocfs2: Registered cluster interface user
+[    3.646934][    T1] OCFS2 User DLM kernel interface loaded
+[    3.669685][    T1] gfs2: GFS2 installed
+[    3.684713][    T1] ceph: loaded (mds proto 32)
+[    3.699225][    T1] NET: Registered PF_ALG protocol family
+[    3.701213][    T1] async_tx: api initialized (async)
+[    3.702013][    T1] Key type asymmetric registered
+[    3.702812][    T1] Asymmetric key parser 'x509' registered
+[    3.703725][    T1] Asymmetric key parser 'pkcs8' registered
+[    3.704729][    T1] Key type pkcs7_test registered
+[    3.706869][    T1] Block layer SCSI generic (bsg) driver version 0.4 lo=
+aded (major 239)
+[    3.709629][    T1] io scheduler mq-deadline registered
+[    3.710514][    T1] io scheduler kyber registered
+[    3.711663][    T1] io scheduler bfq registered
+[    3.713717][    T1] raid6: skipped pq benchmark and selected avx512x4
+[    3.734548][    T1] input: Power Button as /devices/platform/LNXPWRBN:00=
+/input/input0
+[    3.738269][    T1] ACPI: button: Power Button [PWRF]
+[    3.742091][    T1] input: Sleep Button as /devices/platform/LNXSLPBN:00=
+/input/input1
+[    3.744908][    T1] ACPI: button: Sleep Button [SLPF]
+[    3.747251][  T164] kworker/u8:3 (164) used greatest stack depth: 26904 =
+bytes left
+[    3.764689][    T1] ioatdma: Intel(R) QuickData Technology Driver 5.00
+[    3.797287][    T1] ACPI: \_SB_.LNKC: Enabled at IRQ 11
+[    3.798540][    T1] virtio-pci 0000:00:03.0: virtio_pci: leaving for leg=
+acy driver
+[    3.834047][    T1] ACPI: \_SB_.LNKD: Enabled at IRQ 10
+[    3.835198][    T1] virtio-pci 0000:00:04.0: virtio_pci: leaving for leg=
+acy driver
+[    3.870818][    T1] ACPI: \_SB_.LNKB: Enabled at IRQ 10
+[    3.871873][    T1] virtio-pci 0000:00:06.0: virtio_pci: leaving for leg=
+acy driver
+[    4.463531][    T1] N_HDLC line discipline registered with maxframe=3D40=
+96
+[    4.466143][    T1] Serial: 8250/16550 driver, 4 ports, IRQ sharing enab=
+led
+[    4.477632][    T1] 00:02: ttyS0 I/O:0x3f8 (irq =3D 4, base_baud =3D 115=
+200) is a 16550A
+[    4.494957][    T1] 00:03: ttyS1 I/O:0x2f8 (irq =3D 3, base_baud =3D 115=
+200) is a 16550A
+[    4.512363][    T1] 00:04: ttyS2 I/O:0x3e8 (irq =3D 6, base_baud =3D 115=
+200) is a 16550A
+[    4.527464][    T1] 00:05: ttyS3 I/O:0x2e8 (irq =3D 7, base_baud =3D 115=
+200) is a 16550A
+[    4.558586][    T1] Non-volatile memory driver v1.3
+[    4.578432][    T1] usbcore: registered new interface driver xillyusb
+[    4.584967][    T1] ACPI: bus type drm_connector registered
+[    4.593877][    T1] [drm] Initialized vgem 1.0.0 for vgem on minor 0
+[    4.601531][    T1] ------------[ cut here ]------------
+[    4.601561][    T1] [PLANE:35:plane-0] pixel format with alpha exposed b=
+ut blend mode not setup
+[    4.601579][    T1] WARNING: drivers/gpu/drm/drm_mode_config.c:872 at dr=
+m_mode_config_validate+0xfb4/0x1be0, CPU#1: swapper/0/1
+[    4.605357][    T1] Modules linked in:
+[    4.605941][    T1] CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted syz=
+kaller #0 PREEMPT(full)=20
+[    4.607286][    T1] Hardware name: Google Google Compute Engine/Google C=
+ompute Engine, BIOS Google 08/05/2026
+[    4.608865][    T1] RIP: 0010:drm_mode_config_validate+0xfbb/0x1be0
+[    4.610255][    T1] Code: 00 49 8b 57 18 48 89 f8 48 c1 e8 03 0f b6 04 2=
+8 84 c0 74 08 3c 03 0f 8e 00 0b 00 00 48 8d 3d 5c 1f 7e 0b 41 8b b7 c8 00 0=
+0 00 <67> 48 0f b9 3a e9 fa fd ff ff 48 8b 5c 24 20 e8 d1 aa 39 fc 48 8d
+[    4.613458][    T1] RSP: 0000:ffffc90000067c18 EFLAGS: 00010246
+[    4.614327][    T1] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000=
+0000000000000
+[    4.615493][    T1] RDX: ffff888027a14860 RSI: 0000000000000023 RDI: fff=
+fffff91504ba0
+[    4.616662][    T1] RBP: dffffc0000000000 R08: 0000000000000001 R09: 000=
+0000000000000
+[    4.617843][    T1] R10: 0000000000000001 R11: 0000000000000000 R12: fff=
+fed1004f77623
+[    4.619247][    T1] R13: ffffed1004f77624 R14: 0000000000000001 R15: fff=
+f888027bbb028
+[    4.620935][    T1] FS:  0000000000000000(0000) GS:ffff888123c65000(0000=
+) knlGS:0000000000000000
+[    4.622254][    T1] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    4.623267][    T1] CR2: 0000000000000000 CR3: 000000000eb96000 CR4: 000=
+00000003526f0
+[    4.624414][    T1] Call Trace:
+[    4.624912][    T1]  <TASK>
+[    4.625427][    T1]  drm_dev_register+0x56e/0x7b0
+[    4.626244][    T1]  vkms_create+0x491/0x5b0
+[    4.627147][    T1]  ? __pfx_vkms_init+0x10/0x10
+[    4.627983][    T1]  vkms_init+0x98/0xe0
+[    4.628641][    T1]  do_one_initcall+0x11c/0x6f0
+[    4.629391][    T1]  ? __pfx_do_one_initcall+0x10/0x10
+[    4.630294][    T1]  ? kernel_init_freeable+0x4ca/0x7b0
+[    4.631363][    T1]  kernel_init_freeable+0x6ea/0x7b0
+[    4.632148][    T1]  ? __pfx_kernel_init+0x10/0x10
+[    4.632889][    T1]  kernel_init+0x21/0x1e0
+[    4.633551][    T1]  ? __pfx_kernel_init+0x10/0x10
+[    4.634383][    T1]  ret_from_fork+0x730/0xd60
+[    4.635179][    T1]  ? __pfx_ret_from_fork+0x10/0x10
+[    4.635928][    T1]  ? __switch_to+0x800/0x10f0
+[    4.636696][    T1]  ? __pfx_kernel_init+0x10/0x10
+[    4.637489][    T1]  ret_from_fork_asm+0x1a/0x30
+[    4.638367][    T1]  </TASK>
+[    4.638850][    T1] Kernel panic - not syncing: kernel: panic_on_warn se=
+t ...
+[    4.640061][    T1] CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted syz=
+kaller #0 PREEMPT(full)=20
+[    4.640168][    T1] Hardware name: Google Google Compute Engine/Google C=
+ompute Engine, BIOS Google 08/05/2026
+[    4.640168][    T1] Call Trace:
+[    4.640168][    T1]  <TASK>
+[    4.640168][    T1]  dump_stack_lvl+0x100/0x190
+[    4.640168][    T1]  vpanic+0x553/0x970
+[    4.640168][    T1]  ? __pfx_vpanic+0x10/0x10
+[    4.640168][    T1]  panic+0xd1/0xe0
+[    4.640168][    T1]  ? __pfx_panic+0x10/0x10
+[    4.640168][    T1]  check_panic_on_warn.cold+0x19/0x34
+[    4.640168][    T1]  ? drm_mode_config_validate+0xfb4/0x1be0
+[    4.640168][    T1]  __warn.cold+0x191/0x318
+[    4.640168][    T1]  __report_bug+0x30f/0x440
+[    4.640168][    T1]  ? drm_mode_config_validate+0xfb4/0x1be0
+[    4.640168][    T1]  ? __pfx___report_bug+0x10/0x10
+[    4.640168][    T1]  ? reacquire_held_locks+0xdd/0x1f0
+[    4.640168][    T1]  report_bug_entry+0xe2/0x290
+[    4.640168][    T1]  ? drm_mode_config_validate+0xfbb/0x1be0
+[    4.640168][    T1]  handle_bug+0x1cd/0x2a0
+[    4.640168][    T1]  exc_invalid_op+0x17/0x50
+[    4.640168][    T1]  asm_exc_invalid_op+0x1a/0x20
+[    4.640168][    T1] RIP: 0010:drm_mode_config_validate+0xfbb/0x1be0
+[    4.640168][    T1] Code: 00 49 8b 57 18 48 89 f8 48 c1 e8 03 0f b6 04 2=
+8 84 c0 74 08 3c 03 0f 8e 00 0b 00 00 48 8d 3d 5c 1f 7e 0b 41 8b b7 c8 00 0=
+0 00 <67> 48 0f b9 3a e9 fa fd ff ff 48 8b 5c 24 20 e8 d1 aa 39 fc 48 8d
+[    4.640168][    T1] RSP: 0000:ffffc90000067c18 EFLAGS: 00010246
+[    4.640168][    T1] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000=
+0000000000000
+[    4.640168][    T1] RDX: ffff888027a14860 RSI: 0000000000000023 RDI: fff=
+fffff91504ba0
+[    4.640168][    T1] RBP: dffffc0000000000 R08: 0000000000000001 R09: 000=
+0000000000000
+[    4.640168][    T1] R10: 0000000000000001 R11: 0000000000000000 R12: fff=
+fed1004f77623
+[    4.640168][    T1] R13: ffffed1004f77624 R14: 0000000000000001 R15: fff=
+f888027bbb028
+[    4.640168][    T1]  ? drm_mode_config_validate+0xf76/0x1be0
+[    4.640168][    T1]  drm_dev_register+0x56e/0x7b0
+[    4.640168][    T1]  vkms_create+0x491/0x5b0
+[    4.640168][    T1]  ? __pfx_vkms_init+0x10/0x10
+[    4.640168][    T1]  vkms_init+0x98/0xe0
+[    4.640168][    T1]  do_one_initcall+0x11c/0x6f0
+[    4.640168][    T1]  ? __pfx_do_one_initcall+0x10/0x10
+[    4.640168][    T1]  ? kernel_init_freeable+0x4ca/0x7b0
+[    4.640168][    T1]  kernel_init_freeable+0x6ea/0x7b0
+[    4.640168][    T1]  ? __pfx_kernel_init+0x10/0x10
+[    4.640168][    T1]  kernel_init+0x21/0x1e0
+[    4.640168][    T1]  ? __pfx_kernel_init+0x10/0x10
+[    4.640168][    T1]  ret_from_fork+0x730/0xd60
+[    4.640168][    T1]  ? __pfx_ret_from_fork+0x10/0x10
+[    4.640168][    T1]  ? __switch_to+0x800/0x10f0
+[    4.640168][    T1]  ? __pfx_kernel_init+0x10/0x10
+[    4.640168][    T1]  ret_from_fork_asm+0x1a/0x30
+[    4.640168][    T1]  </TASK>
+[    4.640168][    T1] Kernel Offset: disabled
+[    4.640168][    T1] Rebooting in 86400 seconds..
 
 
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+syzkaller build log:
+go env (err=3D<nil>)
+AR=3D'ar'
+CC=3D'gcc'
+CGO_CFLAGS=3D'-O2 -g'
+CGO_CPPFLAGS=3D''
+CGO_CXXFLAGS=3D'-O2 -g'
+CGO_ENABLED=3D'1'
+CGO_FFLAGS=3D'-O2 -g'
+CGO_LDFLAGS=3D'-O2 -g'
+CXX=3D'g++'
+GCCGO=3D'gccgo'
+GO111MODULE=3D'auto'
+GOAMD64=3D'v1'
+GOARCH=3D'amd64'
+GOAUTH=3D'netrc'
+GOBIN=3D''
+GOCACHE=3D'/syzkaller/.cache/go-build'
+GOCACHEPROG=3D''
+GODEBUG=3D''
+GOENV=3D'/syzkaller/.config/go/env'
+GOEXE=3D''
+GOEXPERIMENT=3D''
+GOFIPS140=3D'off'
+GOFLAGS=3D''
+GOGCCFLAGS=3D'-fPIC -m64 -pthread -Wl,--no-gc-sections -fmessage-length=3D0=
+ -ffile-prefix-map=3D/tmp/go-build2916329939=3D/tmp/go-build -gno-record-gc=
+c-switches'
+GOHOSTARCH=3D'amd64'
+GOHOSTOS=3D'linux'
+GOINSECURE=3D''
+GOMOD=3D'/syzkaller/jobs-2/linux/gopath/src/github.com/google/syzkaller/go.=
+mod'
+GOMODCACHE=3D'/syzkaller/jobs-2/linux/gopath/pkg/mod'
+GONOPROXY=3D''
+GONOSUMDB=3D''
+GOOS=3D'linux'
+GOPATH=3D'/syzkaller/jobs-2/linux/gopath'
+GOPRIVATE=3D''
+GOPROXY=3D'https://proxy.golang.org,direct'
+GOROOT=3D'/usr/local/go'
+GOSUMDB=3D'sum.golang.org'
+GOTELEMETRY=3D'local'
+GOTELEMETRYDIR=3D'/syzkaller/.config/go/telemetry'
+GOTMPDIR=3D''
+GOTOOLCHAIN=3D'auto'
+GOTOOLDIR=3D'/usr/local/go/pkg/tool/linux_amd64'
+GOVCS=3D''
+GOVERSION=3D'go1.26.0'
+GOWORK=3D''
+PKG_CONFIG=3D'pkg-config'
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/33379004067
---===============8374567278503569975==--
+git status (err=3D<nil>)
+HEAD detached at 4cb2b096987
+nothing to commit, working tree clean
+
+
+tput: No value for $TERM and no -T specified
+tput: No value for $TERM and no -T specified
+Makefile:31: run command via tools/syz-env for best compatibility, see:
+Makefile:32: https://github.com/google/syzkaller/blob/master/docs/contribut=
+ing.md#using-syz-env
+go list -f '{{.Stale}}' -ldflags=3D"-s -w -X github.com/google/syzkaller/pr=
+og.GitRevision=3D4cb2b096987c8122dc6b37eb51200b1ca7991e0f -X github.com/goo=
+gle/syzkaller/prog.gitRevisionDate=3D20260727-130118"  ./sys/syz-sysgen | g=
+rep -q false || go install -ldflags=3D"-s -w -X github.com/google/syzkaller=
+/prog.GitRevision=3D4cb2b096987c8122dc6b37eb51200b1ca7991e0f -X github.com/=
+google/syzkaller/prog.gitRevisionDate=3D20260727-130118"  ./sys/syz-sysgen
+make .descriptions
+tput: No value for $TERM and no -T specified
+tput: No value for $TERM and no -T specified
+Makefile:31: run command via tools/syz-env for best compatibility, see:
+Makefile:32: https://github.com/google/syzkaller/blob/master/docs/contribut=
+ing.md#using-syz-env
+bin/syz-sysgen
+touch .descriptions
+GOOS=3Dlinux GOARCH=3Damd64 go build -ldflags=3D"-s -w -X github.com/google=
+/syzkaller/prog.GitRevision=3D4cb2b096987c8122dc6b37eb51200b1ca7991e0f -X g=
+ithub.com/google/syzkaller/prog.gitRevisionDate=3D20260727-130118"  -o ./bi=
+n/linux_amd64/syz-execprog github.com/google/syzkaller/tools/syz-execprog
+mkdir -p ./bin/linux_amd64
+g++ -o ./bin/linux_amd64/syz-executor executor/executor.cc \
+	-m64 -O2 -pthread -Wall -Werror -Wparentheses -Wunused-const-variable -Wfr=
+ame-larger-than=3D16384 -Wno-stringop-overflow -Wno-array-bounds -Wno-forma=
+t-overflow -Wno-unused-but-set-variable -Wno-unused-command-line-argument -=
+static-pie -std=3Dc++17 -I. -Iexecutor/_include   -DGOOS_linux=3D1 -DGOARCH=
+_amd64=3D1 \
+	-DHOSTGOOS_linux=3D1 -DGIT_REVISION=3D\"4cb2b096987c8122dc6b37eb51200b1ca7=
+991e0f\"
+/usr/bin/ld: /tmp/ccr3LZX8.o: in function `Connection::Connect(char const*,=
+ char const*)':
+executor.cc:(.text._ZN10Connection7ConnectEPKcS1_[_ZN10Connection7ConnectEP=
+KcS1_]+0x386): warning: Using 'gethostbyname' in statically linked applicat=
+ions requires at runtime the shared libraries from the glibc version used f=
+or linking
+./tools/check-syzos.sh 2>/dev/null
+
+
+Error text is too large and was truncated, full error text is at:
+https://syzkaller.appspot.com/x/error.txt?x=3D1421d379580000
+
+
+Tested on:
+
+commit:         a8455260 ipvlan: unregister upper devices outside pnod..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.gi=
+t
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3D9cc692b98d9b4fd=
+b
+dashboard link: https://syzkaller.appspot.com/bug?extid=3D8785aaf121cfb2141=
+e0d
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Deb=
+ian) 2.44
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=3D13ffec155800=
+00
+
 
