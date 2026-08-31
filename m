@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A035C624A4
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 15:13:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7963CC624A5
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 15:13:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6867A6B00A7; Mon, 31 Aug 2026 11:13:15 -0400 (EDT)
+	id 7E5CA6B00AA; Mon, 31 Aug 2026 11:13:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E8D06B00A9; Mon, 31 Aug 2026 11:13:15 -0400 (EDT)
+	id 773236B00AB; Mon, 31 Aug 2026 11:13:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D6F46B00AA; Mon, 31 Aug 2026 11:13:15 -0400 (EDT)
+	id 638B06B00AC; Mon, 31 Aug 2026 11:13:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DC496B00A7
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:13:15 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BC6C71A017A
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 15:13:14 +0000 (UTC)
-X-FDA: 85161907908.24.48B1308
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 208F380003
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 15:13:12 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EkqpdoSr;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 398AD6B00AA
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:13:19 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C03D3A011F
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 15:13:18 +0000 (UTC)
+X-FDA: 85161908076.04.B2609A3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 2AE47100004
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 15:13:16 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AO8IaFX+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788189193;
+	s=arc-20220608; t=1788189197;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ualF5+awGlDHLbOLG+wUlZuM4jd8jJfoQcPc7XMxhaI=;
-	b=vPU/8/92qDUm5MiNhgWKJZ67ZvHxo2goG/d+Z3hthdHoMjIFo9f8omV4TkPLGJjao/TNlE
-	Dmnlr6EoAakcTa/siIMUILkLruQK9hJVwDtlKfYQt1XrJm2NWNJ4dp91Qfbn8cDDk5vWad
-	WMWXbluFkWpMEVr6dEl885C7vuKVP2w=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788189193;
-	b=Ch6YOkrtMjY+pe3Q5RXczn+aFebbTsQXkXRsKQqyHU46eOm11AWAUp5sBDroL7iSD7dNKy
-	lETWFh6OyY6/l9rqxBCAVz0X7WyNmJLSikJvQdeUQa2sGypULocN6v2Ek5OrXhwaeheQQ2
-	4N1tRo1Y+vrU6OEwFrkSYJCAHg5cN9o=
+	bh=1HtfgGFiEBh3+uueg+DAhyzc6ww3KykW+NDvD+nmBWs=;
+	b=2Jf7jUcan8jOVRjLC/I+vmItIfxviDC5UucUuYnknfn4M/nq8RnLCYHMWpn3A+E/bn8zsn
+	qcWd7d0ngtH6YkTihWKVbFzdRyTTb5khgsInS0l+e/HBONLQc7Bv0kM2JJWxC9OctGXkwI
+	QZzQnrCjhhx7ciKXQRPKAZJ4Q7RLw74=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EkqpdoSr;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AO8IaFX+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788189197;
+	b=VLA5Tpe7F0a8Juekgfzwez/tfbZjy3qPgwUNgMqb4tHT+zUKK4OOZZjFwJz8kqwfLEk5Kx
+	tdGTedRvXTJwjx0bhI8VRCb7U3vGFZcl1qSfB5ZZ+4Y1rYrJsQ2+4hugvhhGJHyVGk+EhD
+	TksDF+uDmVzSWWgcO3rAWpvF5YqOGBg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B514E60120;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4B19E41335;
+	Mon, 31 Aug 2026 15:13:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC8E01F000E9;
 	Mon, 31 Aug 2026 15:13:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363E51F00A3D;
-	Mon, 31 Aug 2026 15:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788189192;
-	bh=ualF5+awGlDHLbOLG+wUlZuM4jd8jJfoQcPc7XMxhaI=;
+	s=k20260515; t=1788189196;
+	bh=1HtfgGFiEBh3+uueg+DAhyzc6ww3KykW+NDvD+nmBWs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=EkqpdoSrLqrqJ+56jtIOkn0qQ5pYUzgkYbPaxtjasLmfcWU1udj5IEWVdg3ZSpHKz
-	 /KCIqnl3daGW2Hi603OV1Bf7sifJEDj14cdAgZQ70tYdaPdV9sbHFZzGWdASQFvyHh
-	 /qbzX2J379Fh8QCaEsGzunE0L/B7l9DCrMaVs4tuoH77I+l0Dq7B6L9IEAGSOD5uUO
-	 Ucbh1XtkiNia6/hmDhMxjLLM06QDEWo2ZzXE3GqWaL9bI4j+TwWHG4gtM4ZVfEv1v5
-	 JP09edUxkx6nI9Fg8a6vWVs4v9rlGM+oCg67G+Xga94HFpyFaRiqaN3ZYC80Cz48ml
-	 GzqyvjbE0oD3A==
+	b=AO8IaFX+fTD8vDibWVcdOTpG/5DKRXt0IQmtsbiW1CW7xMY36T1FTddiuClFkD2oB
+	 58pc8VeSe/KUscbFWUfGA44h89AJ1vNZZuRHYVosvMoELCX6/i+oQygeKryG+hjm1c
+	 zDJqLZAfZPqipV5aKzd5hOzooY8fI4PQ8q3bA5UkyHFtRG++JEpXvCoFDIVLImqNL9
+	 NaA26YjgLsjG/PRQEr0UzoGb8tNvqcQ6AbNenF7vmSBqOcL+9s9lYIXoM929V1VC7e
+	 UhSymhLRtsAmOWFbAnEF8LMwQoFq2P8R2lS94RKnVOCiVdQ4WrHRapASlNyE1Xo+pe
+	 7X/eXQ2BYnJ5Q==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Mon, 31 Aug 2026 18:13:01 +0300
-Subject: [PATCH 1/2] docs/core-api: memory-allocation: add k[mz]alloc_obj()
- and clarify kmalloc
+Date: Mon, 31 Aug 2026 18:13:02 +0300
+Subject: [PATCH 2/2] MAINTAINERS: add memory related docs in core-mm/ to MM
+ - MISC section
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260831-docs-memalloc-guide-v1-1-547718c274c1@kernel.org>
+Message-Id: <20260831-docs-memalloc-guide-v1-2-547718c274c1@kernel.org>
 References: <20260831-docs-memalloc-guide-v1-0-547718c274c1@kernel.org>
 In-Reply-To: <20260831-docs-memalloc-guide-v1-0-547718c274c1@kernel.org>
 To: Jonathan Corbet <corbet@lwn.net>, 
@@ -84,14 +84,14 @@ Cc: "Liam R. Howlett" <liam@infradead.org>,
  Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
 X-Mailer: b4 0.17-dev
+X-Stat-Signature: pwq37bu4ipsftnfsfmrrfgd5p8rd3jya
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 2AE47100004
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 208F380003
-X-Stat-Signature: 1imnerpxsmfxs9bsp9f7cghthkg65yz9
-X-HE-Tag: 1788189192-933522
-X-HE-Meta: U2FsdGVkX1/Nu3CPuFAAhCaM8hObHoNNzhU/akF2pmbqOV0pQE9nWApo69tuC9kEIkYQB1mQuDMgmoVLqy+sMDE0Wfx59FjcqDYV50QY7U7sLwna+bVueZclOZryfkRs64SelkM8gW1zcMOvwv2VDKWuL57A+gqwZYnK+/viKxs9ftgAYvnmOWTY3NlfTirheoSXHXzxqRpkg2EhCVLU/5HEhcwBOENgUG2y3kVEpexZkp4WeRPH/d6i6DyQbdcJCxy5wnZKrPGgX3vX0uJzNv1GISDlPmljSFqM3ULSv8KpwPX8FsJFbFOVr2gZlTUe+13NnoMGo9lbTSpKC8NglzSqTO1UGkvOlrUIBCxpyaGIckIPsO/KV2PhoAHkD3IV6aiYIsTNQHP0j9X0ACmnwtziU12SAr6ivkGo7GJOAzkZBHHWHhJu0vgp84oUO/LhqW86d9PS1thppnxlwYOhkO6GyfZ5O8GwNdsmB0pFd1kOop00WzMrlJJHsH28HhD2wUYN6Etbvp1tvkWYfu4mcteRkUUSJJj2iI4h3Rb9z/XwpNARvDhqaFjyppEaj5kPhUcAyjnlTQ+OIE/ioi7mwsh129ZXnev0UdwssWLTLWRNZe7IU0UpTY8srf5wnM5PEirEK64UxClupbqNu1rwqoM5vP1CmAUMd8R8nD9bvp9p6beYhAFVGum38MJamOpXd6U9rBUk2AZ/NRSRYvkP5YIigRnJ7DGT6+nzhm8GeUYHQvQKs+m0iDRGZ38LX4UERl79kMYuKHzjvnjlasvwG3bHtlkoJ3oyaFpiQ9/V1B4O1KVse6y73gtgg+pvEf6RRpGBTabYhOIqp+fYZuBHQFS+2R92UFKf085Ubzzef/B7uli0WLnZP+XIDHdKuc9nxbvxXtFpWz2Td5kRWOk0fF3Oj8423JkvvKywnRf3D30j6vD9ptq4mHuVNF28yuEpmztH1a77EeT8kMSxPxa
- 6yOTxcTS
- FYOGDO20buZ4LCcJ6vEkIa2auyphhvUsKU94SpnUgEp+4RZiWonbtDS4jdMBm03i2GN/fHxcnWbeQNV/II1l+eN8gIN/21cjyf6q/X7Q/b3QMDvlNmTDM46ax8kbI4bfqDT37zTP51omlSK+3BHupMBS+Gz5TuQCC7D3Tbimx1YS5PrMc+DMvTHRcTxDA9iA9CBNq8D2Ey5qblYi6q0JHtk2ZtHpYG4wLZnDzElycVc2uUpJLNg8+gxByt/oFQ8h3PMIXxxuc9upwMJHyKEsbr5nCXxRDBwQrCbx2
+X-HE-Tag: 1788189196-520779
+X-HE-Meta: U2FsdGVkX18o+XUynGgixEqpWHy9sgJ7z3xd4ByLLTZv5U0smZ4P2Ou133jwWqLe8RKWYwUFrJJCYgn/QN4T9+0pkqd4HBxLVzqEd67iI5C+cLVZu74sMaWaDh2qXOv38jZwhDc4NSZQa0120dfyobxJr05Jf1QA+GfDxy/V6eHoHazjELtD+tu0VaMBJ9szbXec5Cr7lUr+6matfKLJg/93wZYe/MWUciYefy2vii9C2pYHcj48UefnjAnaCkLvSal4H29iwFDDDs097n57daD6vgGxM9qx/7Qp7ucJEjuDYv2VJRxnQFWu/rHEKxtdBE+g7k+uLpasT8sh9QU3UhAMgYPkO1dyQIJuWoSdfCzKw91Lp7tfoSGOLfDTjk1blZvzxQapmNRlSGlFutq7h+DHS50ZKclULjUCVE+BK4owt42jw5pqIxKkJjr4kyTEgxPS2CDDbjX36iWENvwsnJqAzi+8c853p8hEeQTs9aCfapDhbAiWmwtSZGKq2YlOl0x43ok8j93znVXR9wJozp7Qf62obOggAFJC5V6m0WgPY3zMEv5MjjQxmO97QqOngJ9wtUHtqL91ch8ukZf9qngWr/Bp+pmVfnMh1ebmuYr4wGue9GV2I60X88/ABDX6tFfgHUchKY8x5u37YSIFNwBBWFVxZFKom5SrYe6YRnF6uSRK2tdGETQiRqa6p8sAd/mQ10RT7BKYxBCtoZboRLjC9XpIBPGHadcz2NC8YbNtca3Y1wIbexzhd1Il70cEW9EDv6xwaFFoXAJ+bV9J8BVnHGh4rig4UA+J5/RpY8Mwg2MpEZbc1yAWcYP3fCoeUy12qmbXKOCHK0JiV9woSP4006YNgMSpNm80kAK738DXGVy6KEFun2rpdBr0ZmjJ5EG1afGux9E1fVwcpuGnBgczrLCqKrYKgO7QxLLt+ogGxVKw/ASOWJQCsI5v0t26XYIGCLv3phHSKnKR3E9
+ idV1K6/k
+ ExbQnVyCEJkRgW+Lxy9oUpXpdSaMMBelujjJ6RcF7oXMrhovde9Y/sGfQoLWufxXqw3XEkd81rXr7HIyx6V8tVDg3G7NoQt0YrRpORJ0UCqKGnUBmgwI/9v7JVQ/kDxmH48lwNVma4n/2J8/M9ypRJNokyRip/EogQKKJObf/mgVvgRKpKo+Bghen0Vp+cvIIRY3p/cnlU2XX6Ar8sROaMCHQ20IGzHm74cx+UQcwwPSADqt2+AC1GcBRkg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,74 +99,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Since v7.0 the most used memory allocation function is kzalloc_obj().
+Previous efforts to make sure that mm files are properly listed in
+MAINTAINERS missed
 
-Update hte memory-allocation guide to describe k[mz]alloc_obj() family
-and make kzalloc_obj() the first answer to "How should I allocate
-memory?" question.
+Documentation/admin-guide/mm/
+Documentation/core-api/memory-allocation.rst
 
-While on it, clarify description of kmalloc() size limitations.
+Add them to "MEMORY MANAGEMENT - MISC"
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- Documentation/core-api/memory-allocation.rst | 30 +++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 7 deletions(-)
+ MAINTAINERS | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/core-api/memory-allocation.rst b/Documentation/core-api/memory-allocation.rst
-index 0f19dd5243239..8ecfa4d35f4f5 100644
---- a/Documentation/core-api/memory-allocation.rst
-+++ b/Documentation/core-api/memory-allocation.rst
-@@ -19,6 +19,12 @@ Diversity of the allocation APIs combined with the numerous GFP flags
- makes the question "How should I allocate memory?" not that easy to
- answer, although very likely you should use
- 
-+::
-+
-+  kzalloc_obj(<VAR_OR_TYPE>);
-+
-+or
-+
- ::
- 
-   kzalloc(<size>, GFP_KERNEL);
-@@ -139,10 +145,13 @@ allocate memory for an array, there are kmalloc_array() and kcalloc()
- helpers. The helpers struct_size(), array_size() and array3_size() can
- be used to safely calculate object sizes without overflowing.
- 
--The maximal size of a chunk that can be allocated with `kmalloc` is
--limited. The actual limit depends on the hardware and the kernel
--configuration, but it is a good practice to use `kmalloc` for objects
--smaller than page size.
-+Since 7.0 there are type aware kmalloc-family helpers that let you safely and
-+conveniently allocate a single object or arrays of objects with kzalloc_obj()
-+and kmalloc_obj() and their array versions kzalloc_objs() and
-+kmalloc_objs(). These helpers only need the type of the object that should be
-+allocated and the count of elements in the array for the array versions.
-+
-+As of v7.2, vast majority of the memory allocations use kzalloc_obj().
- 
- The address of a chunk allocated with `kmalloc` is aligned to at least
- ARCH_KMALLOC_MINALIGN bytes. For sizes which are a power of two, the
-@@ -154,9 +163,16 @@ Chunks allocated with kmalloc() can be resized with krealloc(). Similarly
- to kmalloc_array(): a helper for resizing arrays is provided in the form of
- krealloc_array().
- 
--For large allocations you can use vmalloc() and vzalloc(), or directly
--request pages from the page allocator. The memory allocated by `vmalloc`
--and related functions is not physically contiguous.
-+`kmalloc` always allocates physically contiguous memory and the maximal size of
-+a chunk that can be allocated with `kmalloc` is limited by `MAX_ORDER`, the
-+same limit also applies to the page allocator.
-+
-+Internally, slab allocator differentiates allocations of different orders and
-+delegates larger allocations to the page allocator, but for the users of
-+`kmalloc` family it is entirely transparent.
-+
-+For large allocations that do not require physically contiguous memory you can
-+use vmalloc() and vzalloc() family.
- 
- If you are not sure whether the allocation size is too large for
- `kmalloc`, it is possible to use kvmalloc() and its derivatives. It will
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 3a19da74d00c9..707f93320ad72 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17275,6 +17275,8 @@ F:	Documentation/ABI/testing/sysfs-kernel-mm-cma
+ F:	Documentation/ABI/testing/sysfs-kernel-mm-memory-tiers
+ F:	Documentation/ABI/testing/sysfs-kernel-mm-numa
+ F:	Documentation/admin-guide/mm/
++F:	Documentation/core-api/memory-allocation.rst
++F:	Documentation/core-api/mm-api.rst
+ F:	Documentation/mm/
+ F:	drivers/char/mem.c
+ F:	include/linux/cma.h
 
 -- 
 2.53.0
