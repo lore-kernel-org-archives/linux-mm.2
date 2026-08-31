@@ -4,103 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29047C61DE2
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 09:49:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D427C61DE2
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 09:54:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B7A76B008A; Mon, 31 Aug 2026 05:49:38 -0400 (EDT)
+	id 7B8846B008C; Mon, 31 Aug 2026 05:54:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3689D6B009D; Mon, 31 Aug 2026 05:49:38 -0400 (EDT)
+	id 7900B6B0095; Mon, 31 Aug 2026 05:54:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27FBD6B009E; Mon, 31 Aug 2026 05:49:38 -0400 (EDT)
+	id 6A5E86B009B; Mon, 31 Aug 2026 05:54:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F27A56B008A
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:49:37 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8B6311A03E4
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:49:37 +0000 (UTC)
-X-FDA: 85161092394.09.5BA146E
-Received: from mta1.migadu.com (out-32.mta1.migadu.com [95.215.58.32])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 83950180002
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:49:35 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nZTmAivR;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.32 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B29B6B008C
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:54:29 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CD762120457
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:54:28 +0000 (UTC)
+X-FDA: 85161104616.08.0EC8BB5
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	by imf08.hostedemail.com (Postfix) with ESMTP id F253416000F
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:54:26 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pu33dgZP;
+	spf=pass (imf08.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788169775;
+	s=arc-20220608; t=1788170067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WpUTaYUo8NvjfAjWzrJ89AEQkaKdbwDPkg6VPiVl/9Q=;
-	b=Kits/wU1uz1WCOK2icvNpDd4GDvqQ+NpT2Utvi8+HTPaRxwopOnDn94PJCbN2huaEc6RW1
-	pI7e52lVH9n8KI+VKQpPDt+pZ45/YCh4KPciGtHHVHZCn0EzPjiH/5w2irgdmfUfNALXQR
-	kwbl/adm688k02xQknWRE+1kTQBeuwA=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nZTmAivR;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.32 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	bh=loNoEotVshAkf6GbGqDOZPoaBhFH7ZZvecjTTBvFy18=;
+	b=FOv69sTp8P2EFMkQTX6uwhF20jbF9xzeEtjYxmbpnqFmV1tdwzjsuhj2U8TUQW2RA93Mse
+	q/M8fSq01inUjcz0uitUa1HFXAATDHJ5epg9OewMWH+bKEilcQe0OYGsbRrsTGrYjG4HFc
+	s2Yo4OCxMhEgewqMOwxHzXtBC40ksgs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788169775;
-	b=BZuxS0mC4e5L3KIdb1Wsib/jtgwYDntDLvEs41+ikQTe+hyIoAUoQlRyJ90jJ0G4QsxI/a
-	bsTk67VvUW76O63J4FLovt0jBQCtDURoFIu7a69OvDSOD6hEru7ZXuSCHsxoypf7yzwgKf
-	Obb5/aRXCigLdhugFsUEY7isC2Cq9x0=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=2tQ8kc8Ed0EXiv4AJfetOVW4cPn5i1WpwfCATVSfhG4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788169774; v=1; x=1788774574;
- b=nZTmAivROI3QPvbKgW9/X3P9Pf+1p0Rev/SDbZe0poBfQAduPE1xFqHi8hAnzDmWV0REKtYQ
- k6o8dj/v6rzyZ973prNFiUjEYsSbFvLRpfM54hON91zkFfScvHr9rqsYKYKx7t12ii/NWXpIto6
- aDBNYfU9BdFsyEa7gBifzylg=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id dc3f19ad1b3d1efa;
-	Mon, 31 Aug 2026 09:49:34 +0000
-X-Mizu-Trace-ID: dc3f19ad1b3d1efa
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
-Subject: Re: [PATCH 01/11] mm/sparse-vmemmap: introduce
- CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <0e1c3bb8-49a4-479e-adb3-17c21261d409@linux.dev>
-Date: Mon, 31 Aug 2026 17:49:16 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Oscar Salvador <osalvador@suse.de>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Jonathan Corbet <corbet@lwn.net>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org,
- linux-doc@vger.kernel.org,
- Lorenzo Stoakes <ljs@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- Randy Dunlap <rdunlap@infradead.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <9BB960A5-E8C8-4094-BD28-87FE483AB680@linux.dev>
-References: <20260831075342.57563-1-songmuchun@bytedance.com>
- <20260831075342.57563-2-songmuchun@bytedance.com>
- <0e1c3bb8-49a4-479e-adb3-17c21261d409@linux.dev>
-To: Qi Zheng <qi.zheng@linux.dev>
-X-Mailer: Apple Mail (2.3864.700.51.1.1)
-X-Rspamd-Server: rspam11
+	t=1788170067;
+	b=h8QSw6tr547n3oP0W6NGSKmWRVJmicXUv6/AoTTCUcE1PDovsCTGMyoYTO5gl8GJcs1IRf
+	bqNj77RyfrzjbthvhlkYAhImhnQFlzZgN3UHTzsSN5j8odSrkwCGIoT+DBB9x5Mnjb7lr1
+	nFaBCoyN7ovsSHR/Bu/utWJkZjQ1XG4=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pu33dgZP;
+	spf=pass (imf08.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6a5e392b2b3so5114877a12.1
+        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 02:54:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788170065; x=1788774865; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=loNoEotVshAkf6GbGqDOZPoaBhFH7ZZvecjTTBvFy18=;
+        b=pu33dgZPmXJnxMnlq3HNMNK9JwbUZMhyHq0B1eQgx4hNN/XYcfaFsiIicxZSxj5WBN
+         qH6c0apPvr954g36nSiF/NkJpSyogCrwbOmOKkUwRJ0oAvPWAG2r8vXm01ML30SO3fbc
+         Yas3CBqPHa0vofis1LgDcK/uj/aQkikV/Uy2y+radp9n1h0++lO/YH0PHEEOag4CkGNP
+         eT7y6nHSyYNvq2BeJy/wD2jntwPGJ8w5SjrcRN+9zQImS3qxXYj2vxHLn0TT9HsIseel
+         8csvZRdc+UeHCTXgXq/BMM6pX3tAVcsdpFlFEXGZ73hOLRcvTcxDnF25Yq1iLtbNIxuB
+         d2CA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788170065; x=1788774865;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=loNoEotVshAkf6GbGqDOZPoaBhFH7ZZvecjTTBvFy18=;
+        b=qP0F1kL01VeExC0B0TvlouSTNTvh3t2L964G5rPt1OT8+bB+Ye1pSVroIdURiXipBx
+         CHbxvd1wkhQP1BX0ojIKE8BsOYpcSI7skFOXxci3IfNNWGJR/V8ll+cgqwiT3nHfmJgp
+         VlFEQwDy/3hP3/1k3nBQGdOuMD9SRx+69EsaG8Z/Jfkl8fJoEax/JBR/Skf9JmiwpAVB
+         xt/PsHSXVjfpZZLevzscJ/SvudvRdOo2hx32ndR5RAg5RWhmbQtRAyGKlP6asKFoRr4X
+         DWkJ5qu/Rry9cQxbJAj8wOzCv44oi48srzMIrqOfgz+2QSpxfi+GxxSy3qP4IPKK9RGs
+         HpwA==
+X-Forwarded-Encrypted: i=1; AKwUvByYaX0DlZZQkip+nkUMM2CxCGOON3zT4wrxY1OTfkZZxJxUyBPOCgqfQqZCoOwetW2POKjnQ4clMw==@kvack.org
+X-Gm-Message-State: AFuF++k9soxllmj/aERFPAR37wCil0vLx4H2eKYOvh9bx4NY93BifmgH
+	Mso9dlXuSYHreTE8ZZfnbGpFm1fDIRC8tW5jgGq4/WdJN+VuhW5FZgxV
+X-Gm-Gg: AYBFou10+Oocz8W8QHeuN1kg+UwIWCVi0+KwfpjSPH+hbhx7+/xgvKEW4TynrWmursp
+	W35EFToIf3KRwJvJm73LqZPmqH5fZyeSUyrVO9CFPhmBWxxSPn4nT5iRsH443qKT3ubgyfQuezp
+	g4hwUEMvlQ0/NjGcFKDVpnR7JqFAaWpX5jG+8SO4fMFGohxUIPMbyYJ1ewjU0XMs3sV3i0vEeyG
+	KmQloDWkm/Jt14bQGYEgfsFYDS/EfUlsNKYR66lukqzem3jwEA4Ys4NbE78ESNbNxtc4ALQcj6w
+	TzytKteApAaml3N7RLhnh4eAq6eKsxhuyGUgU16zE5a9mph+ZmZT3hQvqfWRNHnRQp+gbkS2FlF
+	epX3SL8i8vl1Z1/H4N0Q+bKYLI5kvutZmNX+3Y6QyTEF4AbIbFLmBB8HQGc7lm/lf/33s8EY/98
+	7EijuIs2NXe5l23pScLtL7bTYf/A==
+X-Received: by 2002:a05:6402:501e:b0:6a6:15a1:6c38 with SMTP id 4fb4d7f45d1cf-6a615a16d92mr14366008a12.3.1788170065225;
+        Mon, 31 Aug 2026 02:54:25 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a636c816bbsm1697500a12.17.2026.08.31.02.54.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Aug 2026 02:54:24 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Mon, 31 Aug 2026 11:54:22 +0200
+To: Dev Jain <dev.jain@arm.com>, Ye Liu <ye.liu@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Ye Liu <ye.liu@linux.dev>,
+	Uladzislau Rezki <urezki@gmail.com>, Ye Liu <liuye@kylinos.cn>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm: vmalloc: fix vmap_purge_lock livelock under
+ memory pressure
+Message-ID: <apVPTt9Xw8kSgmTU@milan>
+References: <20260828091753.299295-1-ye.liu@linux.dev>
+ <20260828110503.e1eff32a9b7df9a8b2ddd4d6@linux-foundation.org>
+ <bec5eaef-d084-467f-9bfd-43f7dedc1aa7@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bec5eaef-d084-467f-9bfd-43f7dedc1aa7@arm.com>
 X-Rspam-User: 
-X-Stat-Signature: ifmuqhfakkxcu4m59faecbqje7ucc58c
-X-Rspamd-Queue-Id: 83950180002
-X-HE-Tag: 1788169775-246795
-X-HE-Meta: U2FsdGVkX18Jr4trtqOb3+4xe4lhAyi3INPvS8ie93lOqFY4nQhvtNfJeYE7Mf2mCq9KX71fmopx4LHKQNUMTcl5rNa8nUNirJrmoHtFw2PghPGkPWwqgnkqFwNLmE6V3j3T4LPr10tItosT57gpVi0XgZM8VZFzsfMNfBC3/i3rZ02R3V45GerTlbcINVYTuYBZhq/YrT2OCefwykHkMssOTbP80uzRjtYGYQczvRg3RNqxZhUqNNRPnUGsEa8JAqmF/4tLveDKhRKOzJM1/dJA4+CeoZCbJMoZ15ztuM6sZ+rOljikjQ8HUvU0TZFb/spEfLvT5RAeZCB4CIWy5/QmQJ9vc8sojQobz777dvVvTvrc5vPc2+vJ7fgwRLFWjT3w1Kevl89E2sZqaGD1egYM52jpvS/36oGQ9VrNNbaOqQ3dMJNFzwQ8jljvGbH3M4wuCklrV3T53vLBH4vaosv/956ZcEdnXXs8fMIWXy3F75c7bUPKs8OU1OKLqyas7WJe6a85+1q5m+ccE4NsJpbTZSWeRdWiv0q2e2uAdWfjv4WCoUUcI1S7E7/ZI55c5oB9Nx3vIJBfwvNQBaAq6vu6DmE3Wx6FT/7TuTkIIBJfm1RtpKNk4/1QhKdvJBhWDRuPaR+6V2zs/cqgWuoC1HU1DQw/cBlOlKfmo4y4aWjjwPBDOLQwY9DmhwR2SClyXTxYw/CpCKS4mUQTh2CGMlNv+Khd/Biuhjwga40kfiW8kDBEqzhB8cnIbeiE9VFqav76OWN5+t2AhKE6e0sFVVF5J414YiQcahT3o+eDhzC06mEvMe04ffwtUhnvcToeEHFl5B2rqIkvukYg/z2APsMaBrl2ICe+drPoUreKzLU1iwS4AOuT9hUxXirSfdjln50IAAXet5El0ktvkmIszUkBORaW3ihCwVx0TJ3gJKVnJ+88ZjtGEugBwmUk0i3YITjOTDnsKx/me7aXSGA
- L6K9v7vu
- 7OkVlw68ETKmn3YUkAONjhprkwXtYcdPTLmb0x2OtxizGSn3In/5Ibp55cKd4N/NI2VGTNimFElKV841StTOSQD3QraXIhPbxaAkGmS86pzm6n2c09+deLJ9IqtIdOSLvaoqLdgkvyxRHaQwFRf3rVY59AIDrft3LRi46zdC4yubcUL7sH7Oil/ZLMHGEkg/WKVuVziyTXGzUl/ppAPEI+lxtU03bo81wtaIzIQGbVjHSg99rW7xsJdvtE3rxDSAFTW7hKC0WlOKXVDA6zhLy0fUqLqqbHOdzAAZF60gWe+b4Mmp3pt8LMUXZ18216xj4LUPW/0wxd/c+SbHOPADx0RCIpL/+xrf8n2/GR7fnNc5imMSXX3Pd+zIt5INABw1x56w3oLVpsYRIyaM=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: F253416000F
+X-Stat-Signature: ze7t7c1amejqdafixjgbzenige5eqaas
+X-HE-Tag: 1788170066-859671
+X-HE-Meta: U2FsdGVkX1+rCj472ij2uxKHmi7EKvMSncCgRpE4w3OYOLTjmyfcHv2e5hJMRYpOGvjx9Dei2A4I0Z6WQsv/E7CxSma/F0Ugvr5kKcwPxQz716dth26ekP2fLH6cN+xeKXjuT2ZealyruMKHJHej3lTMB+iTP0bChp2dj5ZHEHS6CC8FExk7Wj6hD5FVPE9+I2OEFtCSFDdYkmFNn60tIr7ihGTNdRDEGL1Ryvbak270cpHWyGW3T91cxwO/HCaQusk1t+JVBbkiTbZPnDSjaKKnhwnIX285HbMtQ1Pyg0blmJhIm1uic4150O2RhdSn9w1OYY+h9umCJyDzkmIUl+fD8+ZjSvBvbvhyFIlvCa2QccU2CTgg/cg9aUFSSlCUeJRhx9mphAG3uRlIyZPplBtaPptlP1EJLCBgPtuLal+yYusxsGS84n3iJzp0RYruDTZWrnz+tT1LWNhbLrfo/vvlMl38dg1FBRPxfwtoJmdbII7+G+R/VTY/6YBIVRe6ueryzv63uVrZLM01qS8J+JZKuAblZPzJvl9AwSXumK6zsXEO0eDMqBEeswVaalgB7HXRcDlE0AiCftxfxDYNZa8mI7NpfBUMHdsWhSoQ7uLfKWxiNwmiWWkJVxdAFF8KaRTG2xZgQeAikAE2CRiicRzBi4t4c66rko1hdm0C32gsNDHVmLz3oHhOQKcb59QUb1o9jRzOXtlJ7zkIcyDmh6kE++6ZWliSO48mdmfJVquXPxLQ1BJw7h7Q1aSFkvAFKUp7+vSfS6ehhGeYWjz05ZUXLbOxnrHElQgdta7LeeTJOuFEOftmf8dKE7M8E0XzoDhMBIp8LIocp2dnUEbRfiDpXQ6lWjriYDBAtb/sGsRNZTNBgEuZqvO+FPgGJoDyMFiYAb6MEpZ57ZSKrR2MLPrlUsnO9dy5x4AhbS/2WklOG1oWK0SfgEjY8NLX9AWJxL1A//aPNucPhRec21d
+ hOxQpJkH
+ uFMQi/G11QFXn32ILfda1vqAW9m4s03ADLbUHx8eHWCzyqUZiMk8arPO9I2ORKfP5cv3HIrAwf7F7Jrcf9uHmsDKRPQICxwtrpmrZsFQ0mGisKe56SuZ61u/dvfVh1Z3J2ddT2jQjrhm97JQtb/lONLDq59HjTAeW42Wf5c28VCjcwMTdNmJkLLnf2QCfDcFA5eKCsOzutTQ1ScrSVa6/DXpXXufLTTtpRJzx+S9e30iEEYAIltdCVZgxrmx5+HILihpyCvVvqzAuMRDeF9EE85n2RMVfaAgSYN8B5bh0GeAAZntEIMglaP5VOcP7fehUjgujNcJP0eELgzVCg3wnQ6kqo5xIcnI8T7HDUOTdPp6wtbsuae2acoWIbWFQdP/g2wQycYM7XyYrpSvUHuRLKvK91jSd+y655/dHxyVLwPIlTApVRxezh27ykvbnnNDU+U1bSjW9YFARrH/FJS54TEkETaKiK/84MdvG5zrCxmKkn/gAoGv338x3fJ5aH1IlyrUbsujxZe0WqLxS6cX6Al35TPv+PYheQo04xpCpdyNv8cuXHgsjHYgRWXVCBHyM75nwxYZd4V/0njQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,214 +123,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Aug 31, 2026 at 11:39:14AM +0530, Dev Jain wrote:
+> 
+> 
+> On 28/08/26 11:35 pm, Andrew Morton wrote:
+> > On Fri, 28 Aug 2026 17:17:53 +0800 Ye Liu <ye.liu@linux.dev> wrote:
+> > 
+> >> From: Ye Liu <liuye@kylinos.cn>
+> >>
+> >> The vmap_purge_lock mutex can be held for an extended period by
+> >> __purge_vmap_area_lazy() which calls flush_work() to wait for
+> >> purge_vmap_node workers while holding the lock.  Under memory
+> >> pressure, those workers may themselves be blocked in direct
+> >> reclaim trying to acquire the same lock via the
+> >> vmap_node_shrink_scan() shrinker callback, creating a circular
+> >> dependency that deadlocks the entire system.
+> >>
+> >> Two places acquire vmap_purge_lock from paths that can be reached
+> >> during direct reclaim:
+> >>
+> >> 1. vmap_node_shrink_scan(): replace blocking guard(mutex) with
+> >>    mutex_trylock().  This is a shrinker that only decays the vmap
+> >>    pool and returns SHRINK_STOP without freeing memory; skipping a
+> >>    decay cycle when the lock is contended is harmless and prevents
+> >>    tasks from piling up on the mutex in the direct reclaim path.
+> >>
+> >> 2. reclaim_and_purge_vmap_areas(): replace mutex_lock() with
+> >>    mutex_trylock().  This is called from the vmalloc allocation
+> >>    overflow path; if trylock fails, another thread is already
+> >>    purging and the allocator's retry will find freed space.  The
+> >>    notifier chain provides a fallback if the retry still fails.
+> >>
+> >> Both trylock failures break the circular dependency: the lock
+> >> holder's flush_work() can complete because workers are no longer
+> >> blocked on vmap_purge_lock in the direct reclaim path.
+> > 
+> > Thanks.  AI review expressed a couple of concerns:
+> > 	https://sashiko.dev/#/patchset/20260828091753.299295-1-ye.liu@linux.dev
+> 
+> 
+> Sounds legit to me. Now there is no guarantee of purge being successful, and we
+> can get a spurious failure.
+> 
+> How about using a WQ_RECLAIM workqueue:
+> 
+> vmap_purge_wq = alloc_workqueue("vmap_purge",
+> 				WQ_MEM_RECLAIM | WQ_PERCPU, 0);
+> 
+> I see the same pattern in __lru_add_drain_all() and kmem_cache_init_late().
+> 
+WQ_MEM_RECLAIM makes sense but this is another patch.
 
+I copied here AI comment:
+>
+> Does replacing this blocking lock with a trylock break synchronization for
+> the callers?
+>
+No it does not. If someone is doing reclaim we do not wait and do not try
+to do it again thus fail allocation.
 
-> On Aug 31, 2026, at 17:44, Qi Zheng <qi.zheng@linux.dev> wrote:
->=20
->=20
->=20
-> On 8/31/26 3:53 PM, Muchun Song wrote:
->> The section-based vmemmap optimization infrastructure is still =
-guarded by
->> CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP, but it also can be used by =
-device
->> DAX. Introduce CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION as a common =
-config
->> for the shared infrastructure.
->> Select the new option from HUGETLB_PAGE_OPTIMIZE_VMEMMAP and from
->> DEV_DAX when the architecture opts in to DAX vmemmap optimization, =
-and
->> use it to guard the generic sparse-vmemmap state and helpers.
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> ---
->>  arch/x86/entry/vdso/vdso32/fake_32bit_build.h |  2 +-
->>  drivers/dax/Kconfig                           |  1 +
->>  fs/Kconfig                                    |  1 +
->>  include/linux/mm.h                            |  3 +++
->>  include/linux/mmzone.h                        | 13 +++++++------
->>  include/linux/page-flags.h                    |  5 ++---
->>  mm/Kconfig                                    |  3 +++
->>  mm/sparse.h                                   |  4 ++--
->>  8 files changed, 20 insertions(+), 12 deletions(-)
->> diff --git a/arch/x86/entry/vdso/vdso32/fake_32bit_build.h =
-b/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
->> index bc3e549795c3..5f8424eade2b 100644
->> --- a/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
->> +++ b/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
->> @@ -11,7 +11,7 @@
->>  #undef CONFIG_PGTABLE_LEVELS
->>  #undef CONFIG_ILLEGAL_POINTER_VALUE
->>  #undef CONFIG_SPARSEMEM_VMEMMAP
->> -#undef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
->> +#undef CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
->>  #undef CONFIG_NR_CPUS
->>  #undef CONFIG_PARAVIRT_XXL
->>  diff --git a/drivers/dax/Kconfig b/drivers/dax/Kconfig
->> index 602f9a0839a9..85ad4c135cdd 100644
->> --- a/drivers/dax/Kconfig
->> +++ b/drivers/dax/Kconfig
->> @@ -8,6 +8,7 @@ if DAX
->>  config DEV_DAX
->>   tristate "Device DAX: direct access mapping device"
->>   depends on TRANSPARENT_HUGEPAGE
->> + select SPARSEMEM_VMEMMAP_OPTIMIZATION if =
-ARCH_WANT_OPTIMIZE_DAX_VMEMMAP
->>   help
->>     Support raw access to differentiated (persistence, bandwidth,
->>     latency...) memory via an mmap(2) capable character
->> diff --git a/fs/Kconfig b/fs/Kconfig
->> index d1c210c6508f..9b32ce79cc80 100644
->> --- a/fs/Kconfig
->> +++ b/fs/Kconfig
->> @@ -278,6 +278,7 @@ config HUGETLB_PAGE_OPTIMIZE_VMEMMAP
->>   def_bool HUGETLB_PAGE
->>   depends on ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
->>   depends on SPARSEMEM_VMEMMAP
->> + select SPARSEMEM_VMEMMAP_OPTIMIZATION
->>    config HUGETLB_PMD_PAGE_TABLE_SHARING
->>   def_bool HUGETLB_PAGE
->> diff --git a/include/linux/mm.h b/include/linux/mm.h
->> index a9fbe26536f4..edadd7549b72 100644
->> --- a/include/linux/mm.h
->> +++ b/include/linux/mm.h
->> @@ -5188,6 +5188,9 @@ static inline bool =
-__vmemmap_can_optimize(struct vmem_altmap *altmap,
->>   	unsigned long nr_pages;
->>   	unsigned long nr_vmemmap_pages;
->> + 	if (!IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION))
->> + 		return false;
->> +
->>   	if (!pgmap || !is_power_of_2(sizeof(struct page)))
->>   		return false;
->>  diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
->> index c9ae7991a8b2..e9b54ea0eff0 100644
->> --- a/include/linux/mmzone.h
->> +++ b/include/linux/mmzone.h
->> @@ -102,9 +102,9 @@
->>   *
->>   * HVO which is only active if the size of struct page is a power of =
-2.
->>   */
->> -#define MAX_FOLIO_VMEMMAP_ALIGN \
->> - 	(IS_ENABLED(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP) && \
->> -  	is_power_of_2(sizeof(struct page)) ? \
->> +#define MAX_FOLIO_VMEMMAP_ALIGN \
->> + 	(IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION) && \
->> +  	is_power_of_2(sizeof(struct page)) ? \
->>    	MAX_FOLIO_NR_PAGES * sizeof(struct page) : 0)
->>    /* The number of retained vmemmap pages with HVO enabled. */
->> @@ -116,7 +116,8 @@
->>  #define __VMEMMAP_OPTIMIZATION_NR_ORDERS \
->>   (MAX_FOLIO_ORDER - VMEMMAP_OPTIMIZATION_MIN_ORDER + 1)
->>  #define VMEMMAP_OPTIMIZATION_NR_ORDERS \
->> - 	(__VMEMMAP_OPTIMIZATION_NR_ORDERS > 0 ? =
-__VMEMMAP_OPTIMIZATION_NR_ORDERS : 0)
->> + 	((__VMEMMAP_OPTIMIZATION_NR_ORDERS > 0 && \
->> +   	IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION)) ? =
-__VMEMMAP_OPTIMIZATION_NR_ORDERS : 0)
->>    enum migratetype {
->>   MIGRATE_UNMOVABLE,
->> @@ -1155,7 +1156,7 @@ struct zone {
->>   	/* Zone statistics */
->>   	atomic_long_t vm_stat[NR_VM_ZONE_STAT_ITEMS];
->>   	atomic_long_t vm_numa_event[NR_VM_NUMA_EVENT_ITEMS];
->> -#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
->> +#ifdef CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
->>   	struct page *vmemmap_tails[VMEMMAP_OPTIMIZATION_NR_ORDERS];
->>  #endif
->>  } ____cacheline_internodealigned_in_smp;
->> @@ -2019,7 +2020,7 @@ struct mem_section {
->>   	unsigned long section_mem_map;
->>     	struct mem_section_usage *usage;
->> -#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
->> +#ifdef CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
->>   	/*
->>   	 * Normally, sections hold regular (order-0) pages. However, for
->>   	 * sections with HVO enabled, this tracks the compound page =
-order
->> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
->> index ae2ebaed6d4d..de3c06062bc6 100644
->> --- a/include/linux/page-flags.h
->> +++ b/include/linux/page-flags.h
->> @@ -208,14 +208,13 @@ enum pageflags {
->>  static __always_inline bool compound_info_has_mask(void)
->>  {
->>   	/*
->> - 	 * Limit mask usage to HugeTLB vmemmap optimization (HVO) where =
-it
->> - 	 * makes a difference.
->> + 	 * Limit mask usage to HVO where it makes a difference.
->>   	 *
->>   	 * The approach with mask would work in the wider set of =
-conditions,
->>   	 * but it requires validating that struct pages are naturally =
-aligned
->>   	 * for all orders up to the MAX_FOLIO_ORDER, which can be =
-tricky.
->>   	 */
->> - 	if (!IS_ENABLED(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP))
->> + 	if (!IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION))
->>   		return false;
->>     	return is_power_of_2(sizeof(struct page));
->> diff --git a/mm/Kconfig b/mm/Kconfig
->> index c1ddf59c0d71..b5f8372cd164 100644
->> --- a/mm/Kconfig
->> +++ b/mm/Kconfig
->> @@ -461,6 +461,9 @@ config SPARSEMEM_VMEMMAP
->>     pfn_to_page and page_to_pfn operations.  This is the most
->>     efficient option when sufficient kernel resources are available.
->>  +config SPARSEMEM_VMEMMAP_OPTIMIZATION
->> + bool
->=20
-> As sashiko was concerned about [1], it seems we need to add
->=20
->        depends on SPARSEMEM_VMEMMAP
->=20
-> here.
+> When vmalloc space is exhausted, alloc_vmap_area() calls
+> reclaim_and_purge_vmap_areas() and relies on its blocking behavior to ensure
+> that free space has actually been reclaimed before looping back to retry:
+> mm/vmalloc.c:alloc_vmap_area() {
+>    ...
+> overflow:
+>	if (!purged) {
+>		reclaim_and_purge_vmap_areas();
+>		purged = 1;
+>		goto retry;
+>	}
+>    ...
+>}
+> With this patch, if another thread holds vmap_purge_lock, mutex_trylock()
+> fails and the function returns immediately.
+>
+If reclaim is in progress and trylock fails a caller repeats only one
+time to retry an allocation. There is no any infinite loop.
 
-You are right. Besides that, we also need DEV_DAX to depend on
-ZONE_DEVICE explicitly.
+>
+> The allocator then retries
+> instantly without waiting for the concurrent purge to complete.
+> Because the retry fails and purged is already 1, could this cause the
+> allocation to abort and return a spurious vmalloc allocation failure
+> (-EBUSY or -ENOMEM)?
+>
+vmap space can be fragmented and not avail for 32-bit systems. For
+64-bit system it is likely impossible.
 
->=20
-> Apart from that, LGTM. With this fix included:
->=20
-> Acked-by: Qi Zheng <qi.zheng@linux.dev>
+But, i think we can overt mutex_lock() into mutex_trylock() just only
+in the:
 
-Thanks.
+static unsigned long
+vmap_node_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
+{
+	struct vmap_node *vn;
 
->=20
-> Thanks,
-> Qi
->=20
-> [1]. =
-https://sashiko.dev/#/patchset/20260831075342.57563-1-songmuchun%40bytedan=
-ce.com
->=20
->> +
->>  #
->>  # Select this config option from the architecture Kconfig, if it is =
-preferred
->>  # to enable the feature of HugeTLB/dev_dax vmemmap optimization.
->> diff --git a/mm/sparse.h b/mm/sparse.h
->> index 049272aba84e..b408d15baf7b 100644
->> --- a/mm/sparse.h
->> +++ b/mm/sparse.h
->> @@ -10,7 +10,7 @@
->>    #include <linux/mmzone.h>
->>  -#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
->> +#ifdef CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
->>  static inline unsigned int section_order(const struct mem_section =
-*section)
->>  {
->>   	return section->order;
->> @@ -72,7 +72,7 @@ static inline bool vmemmap_optimizable_pfn(unsigned =
-long pfn)
->>    static inline bool vmemmap_optimizable_order(unsigned int order)
->>  {
->> - 	if (!IS_ENABLED(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP))
->> + 	if (!IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION))
->>   		return false;
->>     	if (!is_power_of_2(sizeof(struct page)))
+	guard(mutex)(&vmap_purge_lock);
+	for_each_vmap_node(vn)
+		decay_va_pool_node(vn, true);
 
+	return SHRINK_STOP;
+}
 
+so the reclaim path is not blocked. It should also address an issue
+reported by the Ye Liu <ye.liu@linux.dev>.
+
+--
+Uladzislau Rezki
 
