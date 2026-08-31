@@ -4,115 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80F11C61DD3
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 06:33:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F40DC61DD3
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 06:48:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57F456B0088; Mon, 31 Aug 2026 02:33:56 -0400 (EDT)
+	id 1EED96B0088; Mon, 31 Aug 2026 02:48:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 530826B008A; Mon, 31 Aug 2026 02:33:56 -0400 (EDT)
+	id 19F226B008A; Mon, 31 Aug 2026 02:48:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41ECF6B008C; Mon, 31 Aug 2026 02:33:56 -0400 (EDT)
+	id 0B6786B008C; Mon, 31 Aug 2026 02:48:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 20E106B0088
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 02:33:56 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 97BAE40203
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 06:33:55 +0000 (UTC)
-X-FDA: 85160599230.28.76DB21E
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C29F7C0002
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 06:33:53 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZAqy9phT;
-	spf=pass (imf10.hostedemail.com: domain of ngocthang2710.1999@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=ngocthang2710.1999@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D56C46B0088
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 02:48:20 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4ABC612021F
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 06:48:20 +0000 (UTC)
+X-FDA: 85160635560.30.A468A6C
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 7F9714000C
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 06:48:18 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=DTT6kbv4;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf27.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788158033;
+	s=arc-20220608; t=1788158898;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZdYVDo7588sL82RPlR1GkDzeflr+52xwAeMcbvupztY=;
-	b=YgctEUY+CM679ZQHPgXmvbCkT7KlXPcspGCaXEEgTi9z0BHmLjnAYUAIjLOzAIJtJipXE+
-	23aW2Njy49/mOpu41mCoQALy7TmXMDVgO1iwkmaRUFFqoA6E/ttydPB7WBddHwY0+fDtBz
-	bGfc7qkzV7g2V8aVoIww4KIQXcMgxsU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788158033;
-	b=dcnOqOiX/nPDXPCrP94+M9MghviD2vYD1aYb+39CE4/bATl5ETyLSLhjtdlQdkkffDRZZm
-	OvIqZmWhdDwWY5cVx8eiVMIMa4Npe7nB0bbSztbpz0OFwzKV1bWCOy54HQMwqyotKiuK50
-	8uIia56saCYX94XPS2LrdUIMjtHcc0g=
+	 in-reply-to:references:dkim-signature;
+	bh=PMyea5DRpKqH29IOq7YJCdjek2kE+JMzOsIjlPu1nxA=;
+	b=dfDBss/t5MPuAYwZETBZ0qNZ/JKifDQWmLxeRCfxzIK2eBRaYQz7+Uv9FlMEA9h4mWdR9R
+	47tiqs/ODHox369aNgPZ1B8ajU6eWn6uxR7MjxAMsEif6OjY7VtQAH/MXfIpJF4EzoF50b
+	sxGtim1TTCASLqodKrP60Wx2KPKGvNc=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZAqy9phT;
-	spf=pass (imf10.hostedemail.com: domain of ngocthang2710.1999@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=ngocthang2710.1999@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2d6f55a7089so31455965ad.3
-        for <linux-mm@kvack.org>; Sun, 30 Aug 2026 23:33:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788158032; x=1788762832; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZdYVDo7588sL82RPlR1GkDzeflr+52xwAeMcbvupztY=;
-        b=ZAqy9phTnOZSfsM4Vv2MnBIIJvaG3bLsHbuIQ0poOhrEkQW4e1oHcmUhzdJvu/xLAe
-         6oayzcjcbPY4syI+UPFLt/pcQv2SD8vMrZk7H5tTJ7PLopDRAZcjKEI1tnidEaGjmzRM
-         lFyRktOnhYlrnQaAIui265Yx6RP8/4Bs0U7ebNgRQhc3ByJTp8iGXPNizL6eQKt3yoJY
-         ewiI0FAs6FcjOHTk0FBcqGGgtDlPwosdPW61wNf97jAAs0/TTMZloIJ/i9+FbYXyPRoN
-         a1nwX+MdU0ykrrA6Qg2qFTFQNSLF1a/MENDKYjgRRckA3iPBXe5ZOohE2brntg6ssu9X
-         KevA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788158032; x=1788762832;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZdYVDo7588sL82RPlR1GkDzeflr+52xwAeMcbvupztY=;
-        b=NiMn6KH4nB/RbYHm8OlR1nQOopAYWPWy3MCv/DAiExzxIKi7UHsrw3JlVC0PGBFBJ6
-         AR3PV15+sAB5kkZ4I8ZiCg2lhmbO1SlLlYAHsxog9Gbk+1v1FQdBdJkOxDfJKixKH0sZ
-         jNjHdSV6TWiUqrCmhHDBpMeUzY7teGgGyJB37z7vvP235HYtNdccYe4YylqxZ1bzH/OH
-         Ai18ToUXrBCEPFdeOw+BBwZvCKbTitg8yK/qjjeD7j1a4sqU8VvfjlslvjeXVE8rBCSl
-         KpvDGRYHSdYHPQntFYZ3/T6UrT7Tx823QsNOYdeL7u6xd8MMt+5o6SRNVeIA73fUwiCf
-         YtSg==
-X-Forwarded-Encrypted: i=1; AKwUvBx7ksDpmQ6lkSabYoXdP48GlHjllu6RXSbelPicnTdPeH3etmmJOkYzKOBPlalhtWOe/tZm9P8wiQ==@kvack.org
-X-Gm-Message-State: AFuF++lmpKzPsgA+hFgTFDIc7xzGw5XG/4uFF+6Ea1EKLBWkiKsr/CZq
-	U1/ir0BSOd/yBBRnwcW3cPhgMGX6tB/PT7n4UsytzJqf1TJNMOvDuQ3+
-X-Gm-Gg: AYBFou3xDP7V9IBKC9x2YyzXeKBPqHtvaQmRIZWOaxblMZhThv8SsjKviYqC1SGh86d
-	TTmh8bfM+NwQp/xV1gA8zvmrAqXojHY1OXMHbWnqYDiOH0vNHqucHV8SaM8jqi0y1lViwTue8AJ
-	QwUnuhS1w9S2NHxl8vQYn+eWMF8OZ2Sq00zZZCB/DBJw5zFQoHtuUCOYlxM6zZ95DZvBxYxlQqK
-	OFo+Z9Y83/FEkP06kKut4CCtvsJ5vJ6fqZ/0l5+QYWavJlN1v7KN5yyg2TtaWqBWo91RCENe4bl
-	JQZ+pp9mvEKBml/gG8x9Ep5aQ8ikAM8JjxoVjASXiYtuWHWkAN3/IooiEhUnn8FKSuhuE+8/MMX
-	QNERRomI5j269fePpTA1dmz+irNRojSHTF6kXVe8RzFyLJ6onQtljLJUhvK5OrkNeWoH/kYx1JF
-	Z16nTpws8mAEU9vLHvxv5KDeyo8TpEU6Y/Mop6ydFswgxP15VDnGDz36UQdFeA0B5CgG550hQI+
-	dBzJvM=
-X-Received: by 2002:a17:903:286:b0:2c8:248a:5dbb with SMTP id d9443c01a7336-2d74dcbe867mr391007535ad.7.1788158030880;
-        Sun, 30 Aug 2026 23:33:50 -0700 (PDT)
-Received: from thangnn-ASUS.. ([2405:4802:21dc:72d0:e0c:d445:c26f:9091])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d75963bc14sm29404725ad.32.2026.08.30.23.33.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Aug 2026 23:33:50 -0700 (PDT)
-From: ThangNN99 <ngocthang2710.1999@gmail.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-rt-devel@lists.linux.dev,
+	imf27.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=DTT6kbv4;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf27.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788158898;
+	b=CaosqkQCQf4I/9bj3ePOlhjFB19yr5zmW5xYr4HPYkxIrCq4/RsuXRUkJKCP992bFQoojE
+	qo8fh9miroGqKxFooTrrla2KWsgGTLWBLY31q1uuLJtJxz8Zl1Y7mteot2eUb9uJn8lAVK
+	NnDDMmMAUWDklRI4s3OdLGOe4t3Bzv8=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B7ED214BF;
+	Sun, 30 Aug 2026 23:48:13 -0700 (PDT)
+Received: from a081061.blr.arm.com (a081061.arm.com [10.164.19.84])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id D48E83F8C6;
+	Sun, 30 Aug 2026 23:48:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788158897; bh=5olqPp+uoUNvpv37aMdMlkQLle9Ih+Y/RgwFUi6iT9U=;
+	h=From:To:Cc:Subject:Date:From;
+	b=DTT6kbv4UG5s8P5+bjJdSX0aemh/+OhrvlfrqUoL0zHbeVi5RRBshFICR1Sr9YuHi
+	 MTNsNCg8h82qS1jkg5TwiL1dVKAzh/BUokl8Xq4h2649HNEb2BPDmaM72azzaKiwCT
+	 LxDLLGYtYORTKij/gBSlNcrXsDkgGS7QkxksyriA=
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
 	linux-mm@kvack.org,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>
-Subject: Re: [PATCH v2] mm/slab: don't use kfree_rcu sheaves on PREEMPT_RT in kvfree_call_rcu()
-Date: Mon, 31 Aug 2026 13:33:44 +0700
-Message-ID: <20260831063344.7933-1-ngocthang2710.1999@gmail.com>
+	linux-kernel@vger.kernel.org,
+	Sarthak Sharma <sarthak.sharma@arm.com>
+Subject: [PATCH] mm/gup_test: report actual pinned bytes
+Date: Mon, 31 Aug 2026 12:18:08 +0530
+Message-ID: <20260831064808.77768-1-sarthak.sharma@arm.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260831062054.319EA1F000E9@smtp.kernel.org>
-References: <20260831062054.319EA1F000E9@smtp.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: zs8ksbceab6mory4ecnnpytkyz3ht3kp
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7F9714000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C29F7C0002
-X-Stat-Signature: w3t9u7aqu9jqsrzint8t3zjxxhki7m64
-X-HE-Tag: 1788158033-697897
-X-HE-Meta: U2FsdGVkX1+du+u2/hadYIK/hNwWVJNheLB5GCW+0En1i2THeAZq8CoeaYAmQM0cZcIOcg1SMKNW6w6Q+HyYNr8riAi1cT/6mK2BmGaUzr+/6jK3buy+Fkfajl3yHN+our0IUfZFq3UpVBgHVDWjy9zN10cC2S3JbsvUGxb4o0boApDu1qqhG2S1A/jb6263+iirb5nsguPkGkjG1f412s1YUEmLGNGKIQr4UgOFUaw4vmRQxVpvGbxVdHmt3rTza4DKcRUx3XH/9vn/lN58X641qsPGzhdOQ3BeLErvvfXSx00ePAyLUDeH6NX2hNP/3bhEUWZFVRqsHj5zh3iX8w22kP/hRGnCKdx1OKIfKnAOEnQudSk2rsDLyM/MwrbU4zeJbRGG8sAPSKY9+rmlsYhq+DsVORdQHrkRcY+8rKpmahS1hoVQsjMdJv9fB5Dy+8CTntDEh4Ge896WsOBY6kaHtpO/gfdbCLR3NNJY9XAQJolUoMDHXHHE7t7lBn9XKIjs97u8V63Yau4CkfLXWZvL76zOiZxSwJw0J5ol1iMvZ0zHXZlJmuiZai7abJbbpsKSSuIGHj65ZsPzvAmWhEIZo0eT1/5Z6BfmtPrtZ/+U/7H6bznFRuYnkVpYsZ7Fw8kBeQ2fzo7C0AFOrzGB/CaBUpKPYY8IK92oK4c07aZuM8twtbL7Eyu+/5PxIi+Kn4NMh0ljfnrL6eV73ik47D047Vt0+UcJrSeXyCffOIC93O3Ohcn+X9NCqxQ8RHAiFE8PTnRA7DWPoyi8Lsxo46Nwv/R9IrTekrOT+zGeiAU2paXrgzlEj1gXViApUXERe3ga/eK7VP7Cia7Mgz5iuzHNnzm5gywf8I7pLu8YLhA6lXcFB2BpQ3lHtuPQur8FLmccYoxDB+TUNBCmsfmfbLErF1pvd4oB8zSbCpmTVvfWiOwz8nMrNEFEtryeZA86Yrelvd+2UiNJQIFC0UW
- JRjACfHJ
- E22WWxKhlWVVHnPzs9b62DoFuYYUqkHciNZGOdAOIpmqBJGnbaxzaCPV1dJ4z8oiFt5xBVSOsIDVk8f1+6kcV3nu3mru446Y3A0P6AdN+F7GQz7XQXIRU2NVl5ny7alakmpPHBcLH9DU+PK0vRoix7aXYAIE/23/SV3G3lulxxW8IfScZti5OUWa9/JuxK2zIAvBu3TZly5Sz6aOayPIqdUnq/z3H29tpAEbKEhZcbNT/dLUt2R2DOtV7FGUvIA2reUUm2FA9wskhET86WhP+qsLaVVXj87k1klR5KMEZSssnNKNJj75X8sT7/Ry2uYncLxtz+RGfZbW0BdBx54LIIQXimvvdg0PiusJuLMDrg1p10X8iHfI1wJfOHgnYvLqD/HOXMPytoN2GITLwP9NAjU5naYGX8ThaeQm/dTRrgouAPqghk60Opu/q/eSA8ge0bt6RkCJ9KkQueJ7hTi/LA+wm0mMMAb4H8Mr0gvnds+L9L5JuJXDqooO5shoD6+tfWJxFm2ONIMWuvfY8vtqaNC+Yt7Rap+auJ2jX
+X-HE-Tag: 1788158898-540800
+X-HE-Meta: U2FsdGVkX19vTa2MwI2tRaYPq2ZMEeb0KSgplYQuuh6AK2wjQtCc2BGwF5C5TIdTBdtV68Fjy9Ai8+4O4bnSMSSY6G5u1kqtPyvXrLrhEVJ9JkaguyyHoYQwacxwUch/UO7YTDhT44UZ/Fhe4fHm3wE2K/dPSmSg29XvbVZrB4CbumU78bSBBLgXDlsDkrz/3cNzRaq4JUY5A58nJUfdvJN2PxOQnfV4B/mFFx9Z8A3cljrCTNgcc9aQnkDv0pKiF1g5wm+77Eukuxze4oB9WksWIt0nrWb4WSphCDFINUY/2JZT44AF3P8yzDPyoSz/E1LGg8c23iwaw2jUDKSt1iTtIE8VXHNmcjTgbJVqiL6NZFgseh6MiN0glGf8Zw5q93JVRiU6ioFeYeRvNr2YR4mrhlKxbQnpPDVhoFd6ibWPuGGTnCwdy5WkZfx+hiKBC6w0AMqjhulliSKl+LluC9QgbX5OqZBfpgDk61ZppZE6iQfI8qCGkqgNvp5fcAnokzzPTe2CG6G6xysuqF18VLRy315gxZQH3X5EidNef7r6gAgs41s0gzKv+mtSSQMzQY2H/uvrTSuqBXKxc8yVCSjtZvnurwcn3EnBaLFI3pjd9e3Qp3ky7avLQo5+atUBush4h3wLZVLDyEl3RCZd1M+Z5knwVwjGmpM1jKdizMJDVMRxeobrHOXlO8sI2btqNkRLHnSWc+7TXqwYlJ3WUfC/vLXzQz3Wt6ZZJOmJtNW2YTourVCOYQRa7VpgV+e2BWnmmj+k61YVvYZehOLmD8if68fcECSTzcAIqK6x0ByMzsoOS3DXZOjPpcBvMhUfKGk477y8WMShqR5hRBmlCLIHNPtAiS+l+snH9yiEUut0K1is2AZnB4FmU9oebu2f/RPt4hDc83dGRY6uKIEAllLWwc0dQ/gg2PFRkZHoymVh6iN+5knyJiU/yHMz8JE3i+TQxngMgm5bmCsROe2
+ kAphOj+N
+ 6Ky91WSwXGLpBrOoPiXds+cpyXpzPHfM2iv7jhpyudt59TRLvo3c/Rdy2D9gufw2fQmwx652lGoxjCQFdwSSpNxH+ZwhegSvtdkMIzo7wj2vNK8wxZ8ZAP5kqZTaImIfE1s+WFunMjL7bZS8j7sbKALsvHe6DD6PlwYx11rpEG5TRaTk3xYT7y7Hj25t0b/fH6pjyzulgdZZOCtxWvq9umtu3yhR/t5DJFu+NgOgMgPSKuRkcswMyJnlhlLt2+4CAZo58M53KBI/TmV1fMHTsnjXWyPEgGPVKJ8mB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,25 +91,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks, both flagged items are pre-existing and out of scope for this
-patch:
+__gup_test_ioctl() advances addr to the end of the current batch before
+checking if GUP pinned the entire requested batch. If GUP pins more than
+0 pages but less that the requested batch size, addr still advances by
+the requested batch size.
 
-- The headless kvfree_rcu(ptr) might_sleep()/synchronize_rcu() path is
-  never reached by the caller this patch fixes: set_cpus_allowed_force()
-  uses the headed two-argument kfree_rcu(ptr, rcu) form specifically to
-  avoid it (see its own comment), so it's unrelated to the sheaf-bypass
-  this patch adds.
+The next iteration detects the partial pinning and breaks out of the loop.
+Again gup->size is calculated using addr - gup->addr, so it also includes
+the unpinned pages of the requested batch.
 
-- kfree_call_rcu_nolock() still hitting local_trylock(&s->cpu_sheaves->lock)
-  unconditionally is exactly what this patch's commit message already
-  calls out as unsafe under a raw spinlock. This patch intentionally
-  leaves kfree_call_rcu_nolock() untouched; fixing its 'any context'
-  guarantee belongs in a separate patch.
+Calculate gup->size using the actual number of pages pinned multiplied
+by PAGE_SIZE.
 
-This patch stays scoped to the specific syzbot-reported splat in
-kvfree_call_rcu(). Happy to look at the two pre-existing issues
-separately if a maintainer wants a follow-up patch for either.
+Fixes: 64c349f4ae78 ("mm: add infrastructure for get_user_pages_fast() benchmarking")
+Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
+---
+ mm/gup_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
-ThangNN99
+diff --git a/mm/gup_test.c b/mm/gup_test.c
+index 44c1cdfb9c37..185ba3bb8ed1 100644
+--- a/mm/gup_test.c
++++ b/mm/gup_test.c
+@@ -188,7 +188,7 @@ static int __gup_test_ioctl(unsigned int cmd,
+ 	nr_pages = i;
+ 
+ 	gup->get_delta_usec = ktime_us_delta(end_time, start_time);
+-	gup->size = addr - gup->addr;
++	gup->size = nr_pages * PAGE_SIZE;
+ 
+ 	/*
+ 	 * Take an un-benchmark-timed moment to verify DMA pinned
+-- 
+2.53.0
+
 
