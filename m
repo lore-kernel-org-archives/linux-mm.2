@@ -4,93 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A831C61DE2
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 08:29:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 768B0C61DE2
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 08:29:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CB406B00A1; Mon, 31 Aug 2026 04:28:59 -0400 (EDT)
+	id 8746F6B00A2; Mon, 31 Aug 2026 04:29:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A22D6B00A2; Mon, 31 Aug 2026 04:28:59 -0400 (EDT)
+	id 8257B6B00A3; Mon, 31 Aug 2026 04:29:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B8E06B00A3; Mon, 31 Aug 2026 04:28:59 -0400 (EDT)
+	id 7625D6B00A4; Mon, 31 Aug 2026 04:29:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 22B4F6B00A1
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:28:59 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B9690140436
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:28:58 +0000 (UTC)
-X-FDA: 85160889156.12.CDD2FAA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1E79040006
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:28:56 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d4ZAcMaG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 57C376B00A2
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:29:09 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C177FC03B9
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:29:08 +0000 (UTC)
+X-FDA: 85160889576.03.618D2A2
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id ED32D1C0006
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:29:06 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=WDek0KzA;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788164937;
+	s=arc-20220608; t=1788164947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VQpc8lTOdX3xSHi8EiRB4f2hLx8t85VdxKOuNWE2LD0=;
-	b=xQvDUbmTol0d5wcjudSbmGbIWP8ZJy7DKgMZslY6IHuQennLUKgAhq9tFPXS7W8YpuOEx3
-	Oe3wkbmg0bQIGnOqWo+BAICMy88YMaitnLIxuU60G6JF0+EeknhIewB7iLPGNCL12IXhhK
-	UoQPDku/bctsezxdrmNvgLEUBFlf1/g=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d4ZAcMaG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=zL5VLVZjP8B4IiR7cDacSwNLTXI8TvnuJhAme3BzNzw=;
+	b=LmXPrN4yQf9MsuhRo41tC3Nft2v278zu18oeOEf+PbJ4HMR7qzQ5zf9ySncxojZXIR6zLn
+	LupfkpimC5+ZmhqgdtRP7oOEl06o9CR8C+JHqNF7aq+LvrN0rhmvpaj/41OhNkHuYP2/0I
+	H+38uIJlieWGYOI4qXHiWo62ICaKsTQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788164937;
-	b=RDOyaYb+YuBniiIzkJitZGg9Pi+z0WWcJNUJsWTKU5VeJGj0SFLjIoRSfyG3s+YAbPVOQ5
-	Nn9ZNdg5B/WV+6cxJ8e+U0GBM78VOZD9BtuPyGleK7K0WXrQ3FPL/VHz3MdChtX6PItuO6
-	439hiaKpAE6fRMbkkFK8eBwzCY5w2TU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4EE5B4383A;
-	Mon, 31 Aug 2026 08:28:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F240B1F000E9;
-	Mon, 31 Aug 2026 08:28:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788164936;
-	bh=VQpc8lTOdX3xSHi8EiRB4f2hLx8t85VdxKOuNWE2LD0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=d4ZAcMaGmhWkbt0Rh1OPbj1YlvacnstiEn1h6FFml6IuFq+3UCfM+lcx8aLY2H5Sb
-	 aTcviB67lh56jpthcbuARnaiLX4X0zEJ5iPxkrisAndSC28M/yhEdVLGlUkt0diRxO
-	 9bduFdfWk+hI7CWNkelr83aVU9pAyG0ntG7S56uds6uH8gbohovzZGzBTSkSIocm39
-	 gnGlVJEZbg6CRfoOomrsStasSuqGXnXNNxknZttY9AdVDI4XPTmJ93LIezloeltrna
-	 rqfo0Swu4IbyUCEIkpSb0iea7aqu2MJDVQwQFkcSN19DRtkiVxfkbBz7lauGqWknXo
-	 5oualX6cx/Q9g==
-Date: Mon, 31 Aug 2026 11:28:49 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-serial@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 2/3] serial: core: replace get_zeroed_page() with
- kzalloc()
-Message-ID: <apU7QSOV22VJL3ay@kernel.org>
-References: <20260830-tty-v1-0-0cbe6170649b@kernel.org>
- <20260830-tty-v1-2-0cbe6170649b@kernel.org>
- <602bdc5f-e9fa-4ed5-a009-03af860d31a6@kernel.org>
+	t=1788164947;
+	b=c8aZd3dOvNUsGprBSUw+UZbD6jEVvLDkjRZP71acI8G1Vc3jfQJ73Bc72okxX7t5ZU1WGr
+	jmoXO9RN0VhKT4RZL0dMaoyDfN6ujX/XRofAFLl5Bz+CZSJUSRbr5NZVchv/9TpmGRA2pa
+	vCFsY43Bp6PZ/kl8Z7Oq78CMFFuopds=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=WDek0KzA;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0EDFE1477;
+	Mon, 31 Aug 2026 01:29:02 -0700 (PDT)
+Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.33])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 7253E3F85F;
+	Mon, 31 Aug 2026 01:29:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788164945; bh=Evn7Zfh9iuBirO24rNV2tVorrvWz1SCWoNgm/w4vOxA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=WDek0KzATN0t8hjZiy7B9EfLSgwTpZL505soK50bfiBjSlYL83nPMqXWIevbm161g
+	 rkL1wmBIsxcEmthh/G4GrnDXaGKKqmgfQyn0ZRFDjuXIGroUF0LL362LIv0s18wc6Y
+	 rtfYyWOI4VXTDleXrN05OYyfl+Uw3qNr+YW8H/Xo=
+From: Dev Jain <dev.jain@arm.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org
+Cc: Dev Jain <dev.jain@arm.com>,
+	riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	lance.yang@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm/rmap: remove stale hugetlb check in try_to_unmap_one
+Date: Mon, 31 Aug 2026 08:28:47 +0000
+Message-ID: <20260831082849.3573957-1-dev.jain@arm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <602bdc5f-e9fa-4ed5-a009-03af860d31a6@kernel.org>
-X-Rspamd-Server: rspam11
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 6obkcstfoiysbz66qaozaeqc89ozw6do
+X-Rspamd-Queue-Id: ED32D1C0006
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Stat-Signature: aa7r16jkr7gh94hjbnjfxwfr1ycteeax
-X-Rspamd-Queue-Id: 1E79040006
-X-HE-Tag: 1788164936-734467
-X-HE-Meta: U2FsdGVkX19ZBVGENa73zYcwWQRDYzU1gDlWAYs+bmqnv2GSDums9RZJeSHL/CFtvbDdowuelLSpxmFv0kC70zaIrsgGx4ZKd+sHARKVQ6UbX4+8KxHLLuciytKj1QaNe/azspiDzn5m5rbxRMu1Ik+mzbGZ6BxuFeceT/zxqFSVnwwupEs0B0rRoTPdFYbzNUS/3gIudjadFmo1Urer4hlUiIN9UMQEUeIOiXjTs3npsGW27Dj72q5w/eBuTXbiHXq1ledpLgfSCQA9b/EoGvf9hGsc3NKlgXm6GFMZ5Jr4QDOD2xz7s9MwWc7Euy9HUR34g5Li5dosO/A+Bmogkt0v4RYfJB5rBfj8Sv+QocsLJylNOrfKtO8nJTivnu9YL3vxgE4mDmsrsZRCHfuIp3aYryLp5vrRctzvTzMSi1toCDi9P8IEj0+naii3D2Nd1UHdfJ0Z3hAH7S0WTx3GETRTgy+oxbBFDQ7LpIuKTizCnlVZ0H+RCrSR4clGjvidBl9pulRdr3vv76vicmHQTtiNd7OmQVe0ukppbNY+yN1yqDTiTczAvRtVkbCYsTJtSyMz289oIY+lfJQFALvJZw8JTcVwDArMSVTWMxTeAl9mSeh2qzi9bK/LF9R/P9YlioJ84vJYkfkRrpui5y94o7sS8o1ciPvH84C8ja2hBQOrI6p4HZwIRRnicAKB6rNScpAPohlGDmj5IS90xKdKdssM6WmHIZ1FZ6CNO4G98uPGreGWL+4f/QY6nGGQqfS1bmkRnxPPartoAN7FlHZcVQj0cWmw5kKTFo1Gklb6wCpDdUmwHgnbgBiadsL5YRRhZTBTQUU69N+GGe+5nkgckDujGwCaOjbPADKTKtOAsRQA/bt33mg1MQeDRqMRw2lGTiP6/GN8xZ84L/uyWFMJMKCyA3EknQfM19TK7ohbGvqs2lOh5EmkUHeCuCM6wlkSAiuREkv5XaNYRNooDiE
- X0NQNoTk
- ovpnm1b7An5s5DaVagSilg/ebbAzrC/t8WSEd7D0VYCvIyhJ+ML2rRFarTBlSwjZizNkMLxnpTlFWWgMPxZIrNjHUw5OlZPUW1R8E1SlhN3L8LOsXBWC0s2u9EhUH2Ve9uQOMG8kVSEoOF1BesUxCrbg7d8keqbrA80l1f1jTyFb43U5lU2dZABk8D5f2xGK/rwof78c2pmQB+eD4QGL4soImbYEDCflTEaktPfejTcUOM+s5+x0PtT3W86hAQa1cUrGRxlxGZUTeGrcjUrbLHoZI94NBD4/+Ah/oIdFueehL34nZ6FToC7D8dwOpKV5Q+9aJ83qwFEMewSGaAv6SyvG+SGwjpsDxFPRB
+X-HE-Tag: 1788164946-475570
+X-HE-Meta: U2FsdGVkX1+iZtAfGj0kvWsOiUP9SwTQVWGLNt0sdNvNI5Vtlh+Zk3qTkq9tmeWuD5ze6v8tNoK7QwLlS3iz1BdawEF1Mg/QEwM7qoO8rsq2y8nkSL10/iNpsO4x8i9Fr79G7dXGKtOuPZWFd/ZKrns9wDKzm9n34M62BVISnQ9tQFxthXYAT72xbH1K74asU8yKYDcA5/jZUSc8mdAwxLkYZTvsxqzrll6QXGgXMnNCjzcqaQ/m6pCEmEsHLmtgx/0JpJuv55bi5yPHsagAvRttGjIGEvUZAv2oyUyQVYo9s++pcz2vEu5JUkESeeOrAhZ+9mhOs8zjIReRspn6Kpn/9OCIDw66r/x/LrzZJ8QXkMzzrr4rzEiavSzIKdqAmZA8jaU2/BtCiYXisILJtP0ZBK3lAkAYF2jbnFR/vg8PkWHMq35lyflzQnfJ3Nj3JSggpR6LiDO74y8d5mrzDoxSaImr45P0cp9cCYL7Ux5tTo/WkHSH3e4P9l6Nx2ojxHnCTzFxVUDu9gVPqaSBi+lGbiO1MvAHn6NdQYQIP/WvNZvZjt96bW0UeEc69UH5l1oy7FU5Vf34htmCkkQHBR7eKqKc1fjStxHA5peLm5K2rTw3femweqjrUT0FY6KsYU2MEViJRwAtmZt3qh3hl64wnXd3+GhbfV/5uO1fnYrEKHEoBVabkD1xOnNalEUO2G9MpqqZWkGqbpXwJLDmsXK0N5z9Cd9M6kW5Sou9L/pM3TJUY3GyE2nd3NQPrj89fJ67wvybzXQrVqiTSFMJlLUDpHPvKuyb+XiJVcaPANkL3rJJ0lMyYzKE1lFyphuP4PzBej7SZt7wiH9jPkMUmK1h6eSXQKtIJt3U0FhqbTdeeKaNLftLmKH8y6Hof+jPaE+5soz5oRVmD7b0bOTnQv9tA6Y3Bvz01VBBmF4aGBIZECVRrRTt2zL/ch2SwUXzaT2T6kCOa3pCAzMiIpB
+ 3oSbvUbT
+ n+3rfwBKqpAvRcV7XeVznvuqIPZIHDJiiD46UsucVsbJgp9YKOyx5hsrc/HhpRZWvY79JdfWZEuNhQAKYkKGmz+CTWq3e8RNJd+0UNnwuNaRn0fMWcfObCMF6F5v9sNWnE4PG0o9XDVbOWX+ZH/g3FMc1jD+dB7B3FG4UoKKtyhOxfuQBveqZkssJwxDEV16XLI1jQJABJsUPECM3vk5RPhpzFg3HZ3ynXIFzIWFmCEkjXHgY+7Xi4B7tsjoC7D7as8N1trALZgA9tNNm9suwlHaUUW34JzJU6FexY7wpURcvWzD1hI/PT+pBE2cGaEgaIn0ZOIAUzZEvNsHZxth9XkqcMg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,76 +94,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 31, 2026 at 05:02:54AM +0200, Jiri Slaby wrote:
-> On 30. 08. 26, 9:49, Mike Rapoport (Microsoft) wrote:
-> > uart_alloc_xmit_buf() allocates the transmit buffer of a serial port. The
-> > buffer only backs the port's kfifo, the data being sent is copied in and
-> > out of it.
-> > 
-> > This buffer can be allocated with kmalloc() as there's nothing special
-> > about it to go directly to the page allocator.
-> > 
-> > kmalloc() provides a better API that does not require ugly casts and
-> > kfree() does not need to know the size of the freed object.
-> > 
-> > Performance difference between kmalloc() and __get_free_pages() is not
-> > measurable as both allocators take an object/page from a per-CPU list for
-> > fast path allocations.
-> > 
-> > For the slow path the performance is anyway determined by the amount of
-> > reclaim involved rather than by what allocator is used.
-> > 
-> > While on it, make the local variable holding the buffer a pointer to get
-> > rid of the casts.
-> > 
-> > Replace use of get_zeroed_page() with kzalloc() and free_page() with
-> > kfree().
-> > 
-> > Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-> > Assisted-by: copilot:claude-opus
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > ---
-> >   drivers/tty/serial/serial_core.c | 16 ++++++++--------
-> >   1 file changed, 8 insertions(+), 8 deletions(-)
-> > 
-> > diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-> > index 95774b0f1484..f12ce7d190fe 100644
-> > --- a/drivers/tty/serial/serial_core.c
-> > +++ b/drivers/tty/serial/serial_core.c
-> > @@ -247,29 +247,29 @@ static int uart_alloc_xmit_buf(struct tty_port *port)
-> >   	struct uart_state *state = container_of(port, struct uart_state, port);
-> >   	struct uart_port *uport;
-> >   	unsigned long flags;
-> > -	unsigned long page;
-> 
-> 1:
-> 
-> > +	unsigned char *buf;
-> >   	/*
-> >   	 * Initialise and allocate the transmit and temporary
-> >   	 * buffer.
-> >   	 */
-> > -	page = get_zeroed_page(GFP_KERNEL);
-> > -	if (!page)
-> > +	buf = kzalloc(PAGE_SIZE, GFP_KERNEL);
-> > +	if (!buf)
-> >   		return -ENOMEM;
-> >   	uport = uart_port_ref_lock(state, &flags);
-> >   	if (!state->port.xmit_buf) {
-> > -		state->port.xmit_buf = (unsigned char *)page;
-> > +		state->port.xmit_buf = buf;
-> 
-> xmit_buf is u8 *. This uchar was omitted when I was changing the type back
-> then. Could you use the right type at 1b now?
+Post commit d4ec5572825a ("mm/rmap: add try_to_unmap_poisoned_hugetlb_one")
+try_to_unmap_one() cannot be called with a hugetlb folio. Therefore remove
+the folio_test_hugetlb() check.
 
-Sure, I also made this change in uart_free_xmit_buf().
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+---
+Rebase soup - my huge_ptep_get() fixes landed after the refactoring.
+
+This patch applies on Linux 7.3-rc1.
+
+ mm/rmap.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
+
+diff --git a/mm/rmap.c b/mm/rmap.c
+index d1819fd699380..606c8ecf31302 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -2299,11 +2299,8 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 		VM_BUG_ON_FOLIO(!pvmw.pte, folio);
  
-> thanks,
-> -- 
-> js
-> suse labs
-
+ 		address = pvmw.address;
+-		if (folio_test_hugetlb(folio)) {
+-			pteval = huge_ptep_get(mm, address, pvmw.pte);
+-		} else {
+-			pteval = ptep_get(pvmw.pte);
+-		}
++		pteval = ptep_get(pvmw.pte);
++
+ 		if (likely(pte_present(pteval))) {
+ 			pfn = pte_pfn(pteval);
+ 		} else {
 -- 
-Sincerely yours,
-Mike.
+2.43.0
+
 
