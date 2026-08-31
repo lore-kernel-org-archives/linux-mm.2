@@ -4,84 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14610C624A5
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 14:35:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4D77C624A4
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 14:47:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 133F06B00A3; Mon, 31 Aug 2026 10:35:37 -0400 (EDT)
+	id B5DBD6B0088; Mon, 31 Aug 2026 10:47:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E4B56B00A4; Mon, 31 Aug 2026 10:35:37 -0400 (EDT)
+	id B34E06B008A; Mon, 31 Aug 2026 10:47:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3BDB6B00A5; Mon, 31 Aug 2026 10:35:36 -0400 (EDT)
+	id A717C6B008C; Mon, 31 Aug 2026 10:47:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C29396B00A3
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:35:36 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 457761A0166
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:35:36 +0000 (UTC)
-X-FDA: 85161813072.03.BDB8381
-Received: from one.firstfloor.org (one.firstfloor.org [65.21.254.221])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7B7B24000A
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:35:34 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=kernel.org (policy=quarantine);
-	spf=pass (imf27.hostedemail.com: domain of andi@firstfloor.org designates 65.21.254.221 as permitted sender) smtp.mailfrom=andi@firstfloor.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 74D776B0088
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:47:44 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C435714016C
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:47:43 +0000 (UTC)
+X-FDA: 85161843606.29.7C6F60B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 482FB1C0003
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:47:42 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YVCZraL+;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788187662;
+	b=fQuYzLCCAcMhHBDjjIdO3QNWejh3KqBCZuhTdgJByWBr6PIaCRz2wWuYTsPSAsMGTFwdYh
+	J/xz/4KahF6VtIr+885BBtqsFIOFjv6ciOZDEO47HWq6ymT003/2iHakNVNhEt28neWeHF
+	y4AIQwJto8eE8mNqM1c4RroU+bg9Kew=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YVCZraL+;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788186934;
+	s=arc-20220608; t=1788187662;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=Fk9r6VICudALutPJi8lzwEAoopugiNoG3mqsZtKzW5Y=;
-	b=C1ymRce9oY6f2MTX0DJUpvcJqpNZWPusf7OXzmFFniHKN2HNPwiG101S9mNAskT2IO0Vj7
-	TRHs9qyvs4ich8VJPxgFcTjZ+iBnfqbAujoME7xr1s0u1901Cz/znfK8Lvd2YvPtuAFDxF
-	R1GR3CaUHJ2s5ESTbhhiadRe+ifVFWk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788186934;
-	b=GbcENULp+Vq2pi3PahFwmRiZllI1U0iesziXEfV3es8etRei9t4HEE1sFCnZd09VPVSHvB
-	q/uee+LxhKgrAVErNvegxEj0vcWk/1F6CHE3oLQp7j/90EVWMkJD7GgOFn0YbJoka0S4lf
-	Ek5xHyyxTSdDs5GlEwgLhT/Yv0cGJwI=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=kernel.org (policy=quarantine);
-	spf=pass (imf27.hostedemail.com: domain of andi@firstfloor.org designates 65.21.254.221 as permitted sender) smtp.mailfrom=andi@firstfloor.org
-Received: from firstfloor.org (c-73-11-123-161.hsd1.or.comcast.net [73.11.123.161])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by one.firstfloor.org (Postfix) with ESMTPSA id CC20D5DBF9;
-	Mon, 31 Aug 2026 16:35:31 +0200 (CEST)
-Received: by firstfloor.org (Postfix, from userid 1000)
-	id 68D9A162257; Mon, 31 Aug 2026 07:35:28 -0700 (PDT)
-From: Andi Kleen <ak@kernel.org>
-To: akpm@linux-foundation.org
-Cc: liam@infradead.org,
-	ljs@kernel.org,
-	jannh@google.com,
-	pfalcato@suse.de,
-	linux-mm@kvack.org,
+	 in-reply-to:references:dkim-signature;
+	bh=Xhmwl9JHB2IkWqifzSdi9Ztd8FkooRsXdBNJtN34y6o=;
+	b=eKNbsF9Wo3QpmJMy6u0pZ+RH09dSXamqjdaY8SIxsgjGTxuHoN0N3M5EUHZzj/rkChKN/E
+	1Dva8xIrz9fA5/gQ2kduAXd85UbRaygkmNeYcUltckfmODhfnRLylvcPC84mEf6lGKpSIM
+	+NqKpgronZeMmJhbf085TX2ctzsJC+I=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id BDE95601FD;
+	Mon, 31 Aug 2026 14:47:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF5271F000E9;
+	Mon, 31 Aug 2026 14:47:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788187661;
+	bh=Xhmwl9JHB2IkWqifzSdi9Ztd8FkooRsXdBNJtN34y6o=;
+	h=From:To:Cc:Subject:Date;
+	b=YVCZraL+1CF3ljGPOXiXzPK12Y3o9O1PPUq8fd7+ZAZBjca4i+L6L8N9i285SQGew
+	 Zo4E2VL5Qh658Ak63BYMbDrJy4l7a2nZ6wM6lZYT36QMkSmXK7FLw3IWPlNKk5ct+f
+	 7hGxGuUOhSCd5yZAwd1LJh8tWNDEDL78GzTzDqv8aqbQjXUauQNlOpfIFWoqdgco5f
+	 AFVc96jzCRxqrmvESToqlD8n/SAcfVtRAlS8yY5Bk/0gYH1X8z4pMa5vEFxlvdUIC7
+	 2b4GzxTmVhDRyv48PXZ4QEnbIjpUHxtibpH9N6ZKKtnMpZQhCE5QLwx90pLtE73Ch8
+	 8uU0Tw5wTifRg==
+From: SJ Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SJ Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Andi Kleen <ak@kernel.org>
-Subject: [PATCH] RCU safety for vma maple tree walks
-Date: Mon, 31 Aug 2026 07:35:11 -0700
-Message-ID: <20260831143511.1133029-1-ak@kernel.org>
-X-Mailer: git-send-email 2.54.0
+	linux-mm@kvack.org
+Subject: [PATCH v4 0/3] mm/damon: Introduce a huge page collapsing mechanism using auto tuning
+Date: Mon, 31 Aug 2026 07:47:27 -0700
+Message-ID: <20260831144732.80910-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: qqehnnxh9gdh47okrsc3wthmm5m9djzu
-X-Rspamd-Queue-Id: 7B7B24000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Pre-Result: action=add header;
-	module=dmarc;
-	Action set by DMARC
-X-Rspam: Yes
-X-HE-Tag: 1788186934-654946
-X-HE-Meta: U2FsdGVkX19ezrrTlncvKNSyTQuZAg8MEK14ViKxXlP7gszJuPTQd4wZTfN3Ay0kqtgZMSYbLiBh1biQNC33oZZaGikniwDFR6MTJkJVwaxkxgbHYWPi3yqOEwsCO6nnUP+glvBO65Z1f11U3o122qaGe2uVYuXRvAA/1soY7QJEUcfszP5cbUZZ4GH/HuX2KOLPd7CAi5LSYaputSxdh+2b34tsE7ynhbk8RSrVfS0E3Wi/PKp2RExZ7Y4qxSRispsbrH0vwomQHWoLkWCdJU6wnJrP0F29tWtFNCJo81rgOQoER8tb2jaqUBaF4E9UuTzwTrlbv9BZsmhBIHbHyEBhzDPWrX9kTdZbP2pL8crx5pEtLLr8JbMRO4Xk1Nd2iaL4vXokcTQ/lxaeCNVcNWDTOSAWG8KyMlpotj9PFiyQ+D+mVsJdfZH6N/ArV0A+hgojb9lFVPjZvLVS7RKEHm2548CtO/hr6onfCRBucsToml3SElmyD52CbOZIUTcoDzVUyukj7qTQYu/ynbQfNFj52xjWzcwBmm/2Aihd3R3COZdUdkh8Ulx8kep7lUn+GlI9BUssJxeSPGnAu2mKMrGxH+ygCnuETBffH1X8BpKMzKeZywENgMduSJCsAl8H/qRNDy3YB7w9m5tNb2m0qrHzR3cMaxIzgxO8NB8SDM/E4eyXLf8X8Kzp+kH1sbBZOXs403OK+e3cJcAue6moB7O/mCPfPJtvOZLNi96YE6SGBTM87y3KC1zSj6C0Rv5NentYfkW0xXkb95lkeDOu0mwTS4Ybu7C2GN+okMFCU5iL96noNLKTXdxuZ0Q13bvf1hmqv/nt6OsdMnpfAMBIn25i6g7K/Kcaq3wQh7mhNt858HjX6u4xJIVukJprtaYeIAuL7BCoE1jpZSUBAC6xrRufVIYLrvQFf8N/lTBdj9fKOZWvuqDW0aTyxi/M5asAnzXK5rbGmJWAlGcTEw3
- /qI29eDx
- +kjZc8BId/+FL3TsWWiEmN8WH2yBNPEwAKw5jIAcDszl5HFFaezFniz4D/pNGOxEqeykbZfMYqBe3dKLKKXYojh4kJ7If6eTmPkg0mLdDDZnKDGwHXFbvxfW1HOf8EXuah2gzOy/qGCobP3V9uuABUC2G9swLlaHOqiKQBuKM0Lu0WMrWNiIAYVdiI3CSMUSS4FmIkZii9sV2gidJeGvrmR/31fY94AkQRiS699CNS/VTLjDz3UUuDEQgF072LJ+PebbXhIvdqG+NFjGMxUGKzKfJZri4O8hSvFkDWx1TQ97/oQC/dI14BLJzfjBj9nXBzpDK+w7oorFMLz9G6H7l24bdjHbZF4EfNgGmEbWGHAJaRcpGjjYYXsTdmw==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 482FB1C0003
+X-Stat-Signature: ixtn6mn5hoh4acpbe7jxcnkupscznxdp
+X-HE-Tag: 1788187662-35707
+X-HE-Meta: U2FsdGVkX18d1PsKGcYwANCXVUbHHQJBT91uyTE/MLEm5yszL+YfQesGwxv93wfvqMArh3IPS4K/B6pklYYn/Dj9dwmVhdJgSxjsXWNBj4cNBIVrszt19d0XmpmIcGHFcHnX5HckccxkA17nPUnNbO6TRO19M/pHAxhovTYZ0CXsyICXD+YvTRjbzAzAmQnd8QJA/Q2q50BZTNQE/5OkKlMjtjuY0tylNo2KmZZ8TbetuT6wt/LHtY8vjicbf9R63BPqLeKZR9v2ObGRNNJZYn4ekHHoUgFvqy3acxk1qKKnK/cIHCjKUdmprnJzY70eI8PiQWN3CiVLfXaztytHjUvFc42gNNqkK0asQ40zQQ+HUC5YnrB9W25ZnNAV3FYVutucnM8rzLiC8TX4jy4BYzaxHc+altMPAxcdmZD/Bnry08VQVRssZdvaMwoL/dT9xqOdb8KyxMeMZl03p0BMJ/gtUzGlC+/Fp5rIaOrFV3vN09yTSFckNGm1km4lK12WCb8DjkZ8wUqb+lHEux5KaIeJWNRo7mSE2kZQPp8dZJJOU33fbhZLFwdetEHN4ancketA7eAMscVp1QhRAm+YRgNwEkn2gXmISRESNtxUXNXCz5S8+5b4dzz7sf0ZqdXQsSvqJQ89OC+IlpnAsE0pMg3hIwbairCxJ4/T0fhTQ+9BYbAQz+L+6V/yf+Sj8M9jE9Uoa+mdQPfK2AMHTrQRRHzqvBVNy/H6R+Tq1zPx6TY9Wo2NCnawqHwO2jX6STGSnrK8awjJfSdlgkfeP/5OTF1B6j5Ojrlt5aGgVkiQutieICr5gmVec6kZG2o2A4P3CItKS0rD2VbAzbgfq7ppaozPOpkezVP7CjkJ9oqO0UVLAz1oGK47zJpMpO4GgMqyhEMlAVR+UXRZWOujHz/GhKT5/TqCcc2PTHCnraKMzS/lxnMcVo/rZcgA2e9s0dxdtvs/B6cGOV/Dy0o1o5M
+ tJnoe6cO
+ C4t0gGIuB/Wb8J2K3dTeeUxXqxCaZspHtOhivsqISVBfhGjejd+kN1bWH6Br4VlrjMBqsLLIcBFlm6bdXHXyjDWDpJ2xnf2+3tWVmT/SMDdnkSsGCctNlOee07zOM+AJJryGTIX+WKUxsxZ9LJbfc/ouapOzKaqdqsZD4ae4ohmdAN3L5C8nXjWFEGpERRjeECjMhgp7urGwl+vyFjE8Fb2b6lD9MvuybsxqQb5Ds9KAcj/iaeV5I8Bb+R/U28Yb/z7vsG4yzclmSyLtEU7xpeDCzfuWD9nKiT0bnaPTnTGpG65rEPoto9shGt2nxXH6TuHNZlpwaAKVtPfNZBZ+EgcNY4Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,637 +101,274 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I ran into the following scenario in a slightly modified kernel:
+From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
 
- 1. vms_gather_munmap_vmas walks the unmap range and caches a maple node N
-    in the maple iterator.
- 2. It triggers a __split_vma to fix up a range and during that node N
-    is queued for freeing with kfree_rcu
- 3. There is another __split_vma that allocates memory and sleeps due to
-    memory pressure.
- 4. During the sleep the grace period expires and node N gets freed for
-    real.
- 5. The iterator still has node N cached
- 6. When the iteration continues it accesses the freed node and KASAN
-    trips:
+Overview
+========
+This patch set introduces a new autotuning which allows to collapse hot
+regions into hugepages.
 
-BUG: KASAN: slab-use-after-free in mas_next_slot+0x1e95/0x2860
-Read of size 8 at addr ffff8881160bdc00 by task pool-e/5770
-CPU: 1 UID: 0 PID: 5770 Comm: pool-e Not tainted 7.2.0-rc7-1-debug+ #106
-Allocated by task 5770:
-  mas_alloc_nodes <- mas_preallocate <- __split_vma <- vms_gather_munmap_vmas
-    <- do_vmi_align_munmap <- do_vmi_munmap <- __vm_munmap <- elf_load
-    <- load_elf_binary <- bprm_execve          (pool-e's exec)
-Freed by task 25 (ksoftirqd):
-  __rcu_free_sheaf_prepare <- rcu_free_sheaf_nobarn <- rcu_do_batch <- rcu_core
-The buggy address ... cache maple_node of size 256
-freed 256-byte region [ffff8881160bdc00, ffff8881160bdd00)
+Motivation
+==========
+Since TLB is a bottleneck for many systems[1], a way to optimize TLB
+misses (or hits) is to use huge pages. Unfortunately, using "always" in
+THP leads to memory fragmentation and memory waste. For this reason,
+most application guides and system administrators suggest to disable
+THP.
 
-There was also a more complex scenario when the node was immediately
-recycled for the next split VMA insert, modified, but the access by
-the iterator for the previous walk saw corrupted state and triggered
-KASAN too.
+Selective huge page collapse per process is possible using prctl and a
+launcher. However, this does not solve the issue with hot region
+detection.  Additionally, it the sysadmin should create a launcher that
+uses PRCTL to enable THP for a particular process.
 
-Basically the problem is that any sleeping during VMA walks breaks the
-RCU reader guarantees for the RCU Maple tree iterators. But sleeping
-is unavoidable for various reasons.
+We can use the DAMON support for DAMOS_HUGEPAGE and DAMOS_COLLAPSE, to
+target a certain process. DAMOS_COLLAPSE can also target the hot regions
+in that process.
 
-I hit it with a kernel modification that makes this more likely
-(It can do VMA splits on exec mm teardown)
-and also in a very memory constrained environment (4GB guest running a
-stress test), but based on code review I believe it's a generic problem that
-could happen in a unmodified kernel.
+Still, there is an issue with the amount of huge page consumption. Since
+huge pages can lead to memory fragmentation and waste, there should be a
+way to limit the amount of huge page consumption. There is hugetlbfs,
+but it requires changes to the application code or the use of
+libhugetlbfs.
 
-That said I wasn't actually able to trigger it in a unmodified kernel
-so far with stress testing.
+DAMON has now a way to autotune some of the variables and adjust quotas
+automatically, so that DAMON is fired only under the right
+circumstances.  It would be nice to have something similar, but for huge
+pages.
 
-The following old unsolved syzkaller report has a similar signature,
-so maybe it was already seen:
-https://syzkaller.appspot.com/bug?id=4c5268fbb1d6d508a4c34dc425e2693d1ff9911a
+Solution
+========
+A new autotuning quota goal[2], damos_hugepage_mem_bp, is introduced,
+which checks the huge page consumption to total memory consumption. This
+new quota mechanism reuses current autotuning architecture.
 
-I guess in many cases where it happens for real you don't notice it
-if you don't have KASAN active.
+In order to test this new mechanism, a sample module[3] was created, but
+not included in this patch series. To demonstrate the tool, damo user
+space tool was modified[4], which sets up huge pages collapse
+autotuning.
 
-The patch fixes up all callers to maintain the RCU reader lock
-regions correctly during the VMA walk. If they cannot be maintained the
-iterator is refreshed by a new VMA address lookup in a new region, unless
-it is proven safe not to.
+Benchmarks
+==========
+Setup: physical server with arm64 processor with 4 NUMA nodes, 1 TB RAM
+and running mariaDB 10.5.29. Sysbench was used for the benchmark, with
+20 tables and 3 million rows per table. The database was pinned to one
+of the nodes, and the benchmark framework to a different node. No
+network traffic involved in the benchmark.
 
-In the cases where there is no sleeping it is strictly not needed
-because this scenario could not happen due the existing VMA locking.
+Damo user space tool was forked and hugepage_mem_bp support added[4].
 
-But I fixed them too to not violate the maple tree iterator
-"rcu read lock or write lock" contract.
+DAMON was lauched using this command line:
 
-The ones that do not strictly need it are: count_mm_mlocked_page_nr,
-remap_file_pages, range_contains_unmapped.
+sudo ./damo start $(pidof mariadbd) \
+--monitoring_nr_regions_range 10 1000 \
+--monitoring_intervals 5000 100000 60000000 \
+--damos_quota_time 0 --damos_quota_space 128000000 \
+--damos_quota_interval 1000 \
+--damos_quota_weights 0 1 1 \
+--damos_quota_goal hugepage_mem_bp <target> \
+--damos_quota_goal_tuner temporal \
+--damos_apply_interval 50000 \
+--damos_access_rate 0 max --damos_age 50 max \
+--damos_action collapse --debug_damon
 
-The ones that may sleep and clearly need it are: apply_vma_lock_flags,
-do_mprotect_pkey, remap_move, mseal_apply, mbind_range, userfaultfd
-register/unregister,
-mwriteprotect_range (doesn't sleep in the walk itself, but uses iterator
-after sleep)
+<target> was 1000 to taget 10% hugepage to total memory ratio, or 2500
+to target 25%. Tuner was also tested with consistent and temporal.
 
-In principle it could be optimized more, e.g. for example only do the
-re-lookups when actual sleeping happened. Some of it could be done
-with a new cond resched variant. But I tried to keep it minimal
-for now.
+Results
+=======
+After the last timestamp, there was no change in huge page use, and the
+total huge page to memory consumption ratio barely moved.
 
-The patch survived most of LTP, the kernel mm selftests and
-my own stress tests. I didn't do any benchmarks.
+hugepage_mem_bp: 1000
+goal tuner: temporal
 
-For when it was introduced it's a complex area, but I believe the patch
-that originally added the problem was
-commit b2b3b886738f ("mm: don't use __vma_adjust() in __split_vma()")
-Then
-commit 17f1ae9b40c6 ("mm/vma: change munmap to use vma_munmap_struct() for
-accounting and surrounding vmas")
-extended the pattern to more places, and then later it was copied
-elsewhere too. I'm mentioning only the first below.
++-----------+----------------+----------------+----------------------+
+| timestamp | total mem used | huge page used | percentage hugepage  |
++-----------+----------------+----------------+----------------------+
+| 0         | 16945.04297    | 0              | 0                    |
+| 7         | 17008.69531    | 74             | 0.435071583          |
+| 8         | 17036.40234    | 194            | 1.138738074          |
+| 9         | 17017.01563    | 314            | 1.845211916          |
+| 10        | 17029.67969    | 434            | 2.548491856          |
+| 61        | 17111.30859    | 584            | 3.412947623          |
+| 120       | 17071.05859    | 694            | 4.065360072          |
+| 180       | 17133.88281    | 804            | 4.692456513          |
+| 203       | 17088.16406    | 916            | 5.360435426          |
+| 204       | 17126.34766    | 1046           | 6.107548562          |
+| 205       | 17093.84375    | 1176           | 6.879669764          |
+| 206       | 17142.77734    | 1298           | 7.571701913          |
+| 209       | 17149.17969    | 1686           | 9.831374041          |
+| 210       | 17097.30859    | 1754           | 10.25892462          |
++-----------+----------------+----------------+----------------------+
 
-No cc stable so far, needs some discussion first.
+hugepage_mem_bp: 1000
+goal tuner: consistent
 
-Fixes: b2b3b886738f ("mm: don't use __vma_adjust() in __split_vma()")
-Assisted-by: omp:gpt-5.6-luna
-Signed-off-by: Andi Kleen <ak@kernel.org>
----
- mm/mempolicy.c   | 13 ++++++++
- mm/mlock.c       | 13 +++++++-
- mm/mmap.c        |  1 +
- mm/mprotect.c    | 29 +++++++++++++---
- mm/mremap.c      | 16 +++++++--
- mm/mseal.c       | 15 +++++++++
- mm/userfaultfd.c | 86 ++++++++++++++++++++++++++++++++++++++++++------
- mm/vma.c         | 13 +++++---
- 8 files changed, 163 insertions(+), 23 deletions(-)
++-----------+----------------+----------------+----------------------+
+| timestamp | total mem used | huge page used | percentage hugepage  |
++-----------+----------------+----------------+----------------------+
+| 0         | 16955.24609    | 0              | 0                    |
+| 34        | 17039.71875    | 106            | 0.622075995          |
+| 78        | 17009.47656    | 554            | 3.257007927          |
+| 90        | 17048.92188    | 596            | 3.495822225          |
+| 150       | 17092.90625    | 706            | 4.130368409          |
+| 180       | 17053.08984    | 764            | 4.480126517          |
+| 233       | 17100.50391    | 1496           | 8.748280216          |
+| 239       | 17098.89063    | 2216           | 12.95990511          |
+| 240       | 17135.44531    | 2334           | 13.62088908          |
+| 245       | 17132.55078    | 2932           | 17.11362212          |
+| 246       | 17117.95313    | 3052           | 17.82923448          |
+| 250       | 17163.12109    | 3532           | 20.57900763          |
++-----------+----------------+----------------+----------------------+
 
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 3498a5651d50..7ffdb930b60d 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -1062,7 +1062,20 @@ static int mbind_range(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	if (IS_ERR(vma))
- 		return PTR_ERR(vma);
- 
-+	rcu_read_lock();
-+	/*
-+	 * The modify might have invalidated the iterators when
-+	 * sleeping happened. Do another lookup
-+	 */
-+	vma_iter_set(vmi, vmstart);
-+	vma = vma_find(vmi, vmend);
-+	if (!vma) {
-+		rcu_read_unlock();
-+		return -ENOMEM;
-+	}
- 	*prev = vma;
-+	rcu_read_unlock();
-+	/* Iterator still protected by write lock */
- 	return vma_replace_policy(vma, new_pol);
- }
- 
-diff --git a/mm/mlock.c b/mm/mlock.c
-index efa6716e4dfb..ee5c0347129d 100644
---- a/mm/mlock.c
-+++ b/mm/mlock.c
-@@ -540,12 +540,15 @@ static int apply_vma_lock_flags(unsigned long start, size_t len,
- 
- 	nstart = start;
- 	tmp = vma->vm_start;
-+	rcu_read_lock();
- 	for_each_vma_range(vmi, vma, end) {
- 		int error;
- 		vma_flags_t newflags;
- 
--		if (vma->vm_start != tmp)
-+		if (vma->vm_start != tmp) {
-+			rcu_read_unlock();
- 			return -ENOMEM;
-+		}
- 
- 		newflags = vma->flags;
- 		vma_flags_clear_mask(&newflags, VMA_LOCKED_MASK);
-@@ -555,12 +558,19 @@ static int apply_vma_lock_flags(unsigned long start, size_t len,
- 		tmp = vma->vm_end;
- 		if (tmp > end)
- 			tmp = end;
-+		rcu_read_unlock();
- 		error = mlock_fixup(&vmi, vma, &prev, nstart, tmp, &newflags);
- 		if (error)
- 			return error;
-+		/*
-+		 * The iterator is always left on a life node, so no
-+		 * re-lookup needed after sleep.
-+		 */
- 		tmp = vma_iter_end(&vmi);
- 		nstart = tmp;
-+		rcu_read_lock();
- 	}
-+	rcu_read_unlock();
- 
- 	if (tmp < end)
- 		return -ENOMEM;
-@@ -589,6 +599,7 @@ static unsigned long count_mm_mlocked_page_nr(struct mm_struct *mm,
- 	else
- 		end = start + len;
- 
-+	guard(rcu)();
- 	for_each_vma_range(vmi, vma, end) {
- 		if (vma_test(vma, VMA_LOCKED_BIT)) {
- 			if (start > vma->vm_start)
-diff --git a/mm/mmap.c b/mm/mmap.c
-index e10412160b32..dfe5c51dee98 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1184,6 +1184,7 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
- 		VMA_ITERATOR(vmi, mm, vma->vm_end);
- 		struct vm_area_struct *next, *prev = vma;
- 
-+		guard(rcu)();
- 		for_each_vma_range(vmi, next, start + size) {
- 			/* hole between vmas ? */
- 			if (next->vm_start != prev->vm_end)
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index 2888ee638d87..53e4fd45d39b 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -941,6 +941,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
- 	tlb_gather_mmu(&tlb, current->mm);
- 	nstart = start;
- 	tmp = vma->vm_start;
-+	rcu_read_lock();
- 	for_each_vma_range(vmi, vma, end) {
- 		vm_flags_t mask_off_old_flags;
- 		vma_flags_t new_vma_flags;
-@@ -984,29 +985,49 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
- 			error = -EINVAL;
- 			break;
- 		}
-+		rcu_read_unlock();
- 
- 		error = security_file_mprotect(vma, reqprot, prot);
--		if (error)
-+		if (error) {
-+			rcu_read_lock();
- 			break;
--
-+		}
-+		rcu_read_lock();
-+		/*
-+		 * The security hook may sleep; re-lookup instead of
-+		 * trusting the pre-sleep pointer.
-+		 */
-+		vma_iter_set(&vmi, vma->vm_start);
-+		vma = vma_find(&vmi, end);
-+		if (!vma) {
-+			error = -ENOMEM;
-+			break;
-+		}
- 		tmp = vma->vm_end;
- 		if (tmp > end)
- 			tmp = end;
-+		rcu_read_unlock();
- 
- 		if (vma->vm_ops && vma->vm_ops->mprotect) {
- 			error = vma->vm_ops->mprotect(vma, nstart, tmp, newflags);
--			if (error)
-+			if (error) {
-+				rcu_read_lock();
- 				break;
-+			}
- 		}
- 
- 		error = mprotect_fixup(&vmi, &tlb, vma, &prev, nstart, tmp, newflags);
--		if (error)
-+		if (error) {
-+			rcu_read_lock();
- 			break;
-+		}
- 
- 		tmp = vma_iter_end(&vmi);
- 		nstart = tmp;
- 		prot = reqprot;
-+		rcu_read_lock();
- 	}
-+	rcu_read_unlock();
- 	tlb_finish_mmu(&tlb);
- 
- 	if (!error && tmp < end)
-diff --git a/mm/mremap.c b/mm/mremap.c
-index e8df5cdb0ac9..c8589c699515 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -1903,6 +1903,7 @@ static unsigned long remap_move(struct vma_remap_struct *vrm)
- 	 * with all VMAs in the input range [addr, addr + old_len) being moved
- 	 * (and split as necessary).
- 	 */
-+	rcu_read_lock();
- 	for_each_vma_range(vmi, vma, end) {
- 		/* Account for start, end not aligned with VMA start, end. */
- 		unsigned long addr = max(vma->vm_start, start);
-@@ -1911,8 +1912,10 @@ static unsigned long remap_move(struct vma_remap_struct *vrm)
- 		bool multi_allowed;
- 
- 		/* No gap permitted at the start of the range. */
--		if (!seen_vma && start < vma->vm_start)
-+		if (!seen_vma && start < vma->vm_start) {
-+			rcu_read_unlock();
- 			return -EFAULT;
-+		}
- 
- 		/*
- 		 * To sensibly move multiple VMAs, accounting for the fact that
-@@ -1940,12 +1943,17 @@ static unsigned long remap_move(struct vma_remap_struct *vrm)
- 		multi_allowed = vma_multi_allowed(vma);
- 		if (!multi_allowed) {
- 			/* This is not the first VMA, abort immediately. */
--			if (seen_vma)
-+			if (seen_vma) {
-+				rcu_read_unlock();
- 				return -EFAULT;
-+			}
- 			/* This is the first, but there are more, abort. */
--			if (vma->vm_end < end)
-+			if (vma->vm_end < end) {
-+				rcu_read_unlock();
- 				return -EFAULT;
-+			}
- 		}
-+		rcu_read_unlock();
- 
- 		res_vma = check_prep_vma(vrm);
- 		if (!res_vma)
-@@ -1969,7 +1977,9 @@ static unsigned long remap_move(struct vma_remap_struct *vrm)
- 		}
- 		seen_vma = true;
- 		target_addr = res_vma + vrm->new_len;
-+		rcu_read_lock();
- 	}
-+	rcu_read_unlock();
- 
- 	return res;
- }
-diff --git a/mm/mseal.c b/mm/mseal.c
-index 7a8ac66dc215..551b5ad52f4d 100644
---- a/mm/mseal.c
-+++ b/mm/mseal.c
-@@ -22,6 +22,7 @@ static bool range_contains_unmapped(unsigned long start, unsigned long end)
- 	unsigned long prev_end = start;
- 	struct vm_area_struct *vma;
- 
-+	guard(rcu)();
- 	for_each_vma_range(vmi, vma, end) {
- 		if (vma->vm_start > prev_end)
- 			return true;
-@@ -43,6 +44,7 @@ static int __mseal_range(unsigned long start, unsigned long end)
- 	if (start > vma->vm_start)
- 		prev = vma;
- 
-+	rcu_read_lock();
- 	for_each_vma_range(vmi, vma, end) {
- 		const unsigned long curr_start = max(vma->vm_start, start);
- 		const unsigned long curr_end = min(vma->vm_end, end);
-@@ -51,17 +53,30 @@ static int __mseal_range(unsigned long start, unsigned long end)
- 			vma_flags_t vma_flags = vma->flags;
- 
- 			vma_flags_set(&vma_flags, VMA_SEALED_BIT);
-+			rcu_read_unlock();
- 
- 			vma = vma_modify_flags(&vmi, prev, vma, curr_start,
- 					       curr_end, &vma_flags);
- 			if (IS_ERR(vma))
- 				return PTR_ERR(vma);
-+
-+			rcu_read_lock();
-+			/* The modify may have slept and merged, so re-lookup. */
-+			vma_iter_set(&vmi, curr_start);
-+			vma = vma_find(&vmi, curr_end);
-+			if (!vma) {
-+				rcu_read_unlock();
-+				return -ENOMEM;
-+			}
-+			rcu_read_unlock();
- 			vma_start_write(vma);
- 			vma_set_flags(vma, VMA_SEALED_BIT);
-+			rcu_read_lock();
- 		}
- 
- 		prev = vma;
- 	}
-+	rcu_read_unlock();
- 
- 	return 0;
- }
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 23fb68fce000..464570b15d4a 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -1134,6 +1134,7 @@ static int mwriteprotect_range(struct userfaultfd_ctx *ctx, unsigned long start,
- 		goto out_unlock;
- 
- 	err = -ENOENT;
-+	rcu_read_lock();
- 	for_each_vma_range(vmi, dst_vma, end) {
- 
- 		if (!userfaultfd_wp(dst_vma)) {
-@@ -1150,14 +1151,18 @@ static int mwriteprotect_range(struct userfaultfd_ctx *ctx, unsigned long start,
- 
- 		_start = max(dst_vma->vm_start, start);
- 		_end = min(dst_vma->vm_end, end);
-+		rcu_read_unlock();
- 
- 		err = uffd_wp_range(dst_vma, _start, _end - _start, enable_wp);
-+		rcu_read_lock();
-+		/* The iterator is still on a life node */
- 
- 		/* Return 0 on success, <0 on failures */
- 		if (err < 0)
- 			break;
- 		err = 0;
- 	}
-+	rcu_read_unlock();
- out_unlock:
- 	up_read(&ctx->map_changing_lock);
- 	mmap_read_unlock(dst_mm);
-@@ -2324,9 +2329,17 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
- 	if (vma->vm_start < start)
- 		prev = vma;
- 
-+	rcu_read_lock();
- 	for_each_vma_range(vmi, vma, end) {
-+		rcu_read_unlock();
- 		cond_resched();
- 
-+		rcu_read_lock();
-+		/* The cond_resched above may have slept, so re-lookup. */
-+		vma_iter_set(&vmi, vma->vm_start);
-+		vma = vma_find(&vmi, end);
-+		if (!vma)
-+			break;
- 		VM_WARN_ON_ONCE(!vma_can_userfault(vma, vm_flags, wp_async));
- 		VM_WARN_ON_ONCE(vma->vm_userfaultfd_ctx.ctx &&
- 				vma->vm_userfaultfd_ctx.ctx != ctx);
-@@ -2355,6 +2368,7 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
- 		new_vma_flags = vma->flags;
- 		vma_flags_clear_mask(&new_vma_flags, __VMA_UFFD_FLAGS);
- 		vma_flags_set_mask(&new_vma_flags, vma_flags);
-+		rcu_read_unlock();
- 
- 		vma = vma_modify_flags_uffd(&vmi, prev, vma, start, vma_end,
- 					    &new_vma_flags,
-@@ -2368,15 +2382,31 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
- 		 * the next vma was merged into the current one and
- 		 * the current one has not been updated yet.
- 		 */
-+		rcu_read_lock();
-+		/* The modify may have slept and merged, so re-lookup. */
-+		vma_iter_set(&vmi, start);
-+		vma = vma_find(&vmi, end);
-+		if (!vma)
-+			break;
-+		rcu_read_unlock();
- 		userfaultfd_set_ctx(vma, ctx, vm_flags);
-+		rcu_read_lock();
- 
--		if (is_vm_hugetlb_page(vma) && uffd_disable_huge_pmd_share(vma))
-+		if (is_vm_hugetlb_page(vma) && uffd_disable_huge_pmd_share(vma)) {
-+			rcu_read_unlock();
- 			hugetlb_unshare_all_pmds(vma);
-+			rcu_read_lock();
-+			vma_iter_set(&vmi, start);
-+			vma = vma_find(&vmi, end);
-+			if (!vma)
-+				break;
-+		}
- 
- skip:
- 		prev = vma;
- 		start = vma->vm_end;
- 	}
-+	rcu_read_unlock();
- 
- 	return 0;
- }
-@@ -3808,16 +3838,26 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
- 	found = false;
- 	basic_ioctls = false;
- 	cur = vma;
-+	rcu_read_lock();
- 	do {
-+		rcu_read_unlock();
- 		cond_resched();
- 
-+		rcu_read_lock();
-+		/* The cond_resched above may have slept, so re-lookup. */
-+		vma_iter_set(&vmi, cur->vm_start);
-+		cur = vma_find(&vmi, end);
-+		if (!cur)
-+			break;
- 		VM_WARN_ON_ONCE(!!cur->vm_userfaultfd_ctx.ctx ^
- 				!!(cur->vm_flags & __VM_UFFD_FLAGS));
- 
- 		/* check not compatible vmas */
- 		ret = -EINVAL;
--		if (!vma_can_userfault(cur, vm_flags, wp_async))
-+		if (!vma_can_userfault(cur, vm_flags, wp_async)) {
-+			rcu_read_unlock();
- 			goto out_unlock;
-+		}
- 
- 		/*
- 		 * RWP uses protnone as an access-tracking marker. PROT_NONE
-@@ -3827,8 +3867,10 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
- 		 * mprotect() must still be unregisterable, so this is not
- 		 * part of vma_can_userfault().
- 		 */
--		if ((vm_flags & VM_UFFD_RWP) && !vma_is_accessible(cur))
-+		if ((vm_flags & VM_UFFD_RWP) && !vma_is_accessible(cur)) {
-+			rcu_read_unlock();
- 			goto out_unlock;
-+		}
- 
- 		/*
- 		 * UFFDIO_COPY will fill file holes even without
-@@ -3839,8 +3881,10 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
- 		 * F_WRITE_SEAL can be taken until the vma is destroyed.
- 		 */
- 		ret = -EPERM;
--		if (unlikely(!(cur->vm_flags & VM_MAYWRITE)))
-+		if (unlikely(!(cur->vm_flags & VM_MAYWRITE))) {
-+			rcu_read_unlock();
- 			goto out_unlock;
-+		}
- 
- 		/*
- 		 * If this vma contains ending address, and huge pages
-@@ -3852,11 +3896,15 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
- 
- 			ret = -EINVAL;
- 
--			if (end & (vma_hpagesize - 1))
-+			if (end & (vma_hpagesize - 1)) {
-+				rcu_read_unlock();
- 				goto out_unlock;
-+			}
- 		}
--		if ((vm_flags & VM_UFFD_WP) && !(cur->vm_flags & VM_MAYWRITE))
-+		if ((vm_flags & VM_UFFD_WP) && !(cur->vm_flags & VM_MAYWRITE)) {
-+			rcu_read_unlock();
- 			goto out_unlock;
-+		}
- 
- 		/*
- 		 * Check that this vma isn't already owned by a
-@@ -3866,8 +3914,10 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
- 		 */
- 		ret = -EBUSY;
- 		if (cur->vm_userfaultfd_ctx.ctx &&
--		    cur->vm_userfaultfd_ctx.ctx != ctx)
-+		    cur->vm_userfaultfd_ctx.ctx != ctx) {
-+			rcu_read_unlock();
- 			goto out_unlock;
-+		}
- 
- 		/*
- 		 * Mode switches that drop VM_UFFD_WP or VM_UFFD_RWP would
-@@ -3876,8 +3926,10 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
- 		 * into the other mode. Require an unregister first.
- 		 */
- 		if (cur->vm_userfaultfd_ctx.ctx == ctx &&
--		    cur->vm_flags & (VM_UFFD_WP | VM_UFFD_RWP) & ~vm_flags)
-+		    cur->vm_flags & (VM_UFFD_WP | VM_UFFD_RWP) & ~vm_flags) {
-+			rcu_read_unlock();
- 			goto out_unlock;
-+		}
- 
- 		/*
- 		 * Note vmas containing huge pages
-@@ -3887,6 +3939,7 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
- 
- 		found = true;
- 	} for_each_vma_range(vmi, cur, end);
-+	rcu_read_unlock();
- 	VM_WARN_ON_ONCE(!found);
- 
- 	ret = userfaultfd_register_range(ctx, vma, vm_flags, start, end,
-@@ -3980,9 +4033,17 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
- 	 */
- 	found = false;
- 	cur = vma;
-+	rcu_read_lock();
- 	do {
-+		rcu_read_unlock();
- 		cond_resched();
- 
-+		rcu_read_lock();
-+		/* The cond_resched above may have slept, so re-lookup. */
-+		vma_iter_set(&vmi, cur->vm_start);
-+		cur = vma_find(&vmi, end);
-+		if (!cur)
-+			break;
- 		VM_WARN_ON_ONCE(!!cur->vm_userfaultfd_ctx.ctx ^
- 				!!(cur->vm_flags & __VM_UFFD_FLAGS));
- 
-@@ -3991,8 +4052,10 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
- 		 * the one used for registration.
- 		 */
- 		if (cur->vm_userfaultfd_ctx.ctx &&
--		    cur->vm_userfaultfd_ctx.ctx != ctx)
-+		    cur->vm_userfaultfd_ctx.ctx != ctx) {
-+			rcu_read_unlock();
- 			goto out_unlock;
-+		}
- 
- 		/*
- 		 * Check not compatible vmas, not strictly required
-@@ -4001,11 +4064,14 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
- 		 * provides for more strict behavior to notice
- 		 * unregistration errors.
- 		 */
--		if (!vma_can_userfault(cur, cur->vm_flags, wp_async))
-+		if (!vma_can_userfault(cur, cur->vm_flags, wp_async)) {
-+			rcu_read_unlock();
- 			goto out_unlock;
-+		}
- 
- 		found = true;
- 	} for_each_vma_range(vmi, cur, end);
-+	rcu_read_unlock();
- 	VM_WARN_ON_ONCE(!found);
- 
- 	vma_iter_set(&vmi, start);
-diff --git a/mm/vma.c b/mm/vma.c
-index 35e7a64855fa..e00b0cdc3d83 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -614,10 +614,8 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	validate_mm(vma->vm_mm);
- 
- 	/* Success. */
--	if (new_below)
--		vma_next(vmi);
--	else
--		vma_prev(vmi);
-+	vma_iter_set(vmi, vma->vm_start);
-+	vma_find(vmi, ULONG_MAX);
- 
- 	return 0;
- 
-@@ -1573,7 +1571,12 @@ static int vms_gather_munmap_vmas(struct vma_munmap_struct *vms,
- #endif
- 	}
- 
--	vms->next = vma_next(vms->vmi);
-+	/*
-+	 * The loop's cached node may be the one a split's store deferred.
-+	 * Continue from the range end.
-+	 */
-+	vma_iter_set(vms->vmi, vms->end);
-+	vms->next = vma_find(vms->vmi, ULONG_MAX);
- 	if (vms->next)
- 		vms->unmap_end = vms->next->vm_start;
- 
+hugepage_mem_bp: 2500
+goal tuner: temporal
+
++-----------+----------------+----------------+----------------------+
+| timestamp | total mem used | huge page used | percentage hugepage  |
++-----------+----------------+----------------+----------------------+
+| 0         | 17010.31641    | 0              | 0                    |
+| 9         | 17063.6875     | 50             | 0.2930199            |
+| 10        | 17051.75781    | 170            | 0.996964664          |
+| 60        | 17133.85547    | 572            | 3.338419663          |
+| 90        | 17192.07813    | 626            | 3.641211932          |
+| 120       | 17221.44531    | 682            | 3.960178647          |
+| 181       | 17199.76172    | 790            | 4.593086886          |
+| 208       | 17222.77734    | 1206           | 7.002354939          |
+| 214       | 17245.17969    | 1904           | 11.04076637          |
+| 215       | 17240.45703    | 2024           | 11.73982799          |
+| 220       | 17234.79688    | 2624           | 15.22501262          |
+| 228       | 17222.83594    | 3584           | 20.80958103          |
+| 231       | 17247.55469    | 3944           | 22.86700968          |
+| 235       | 17229.37109    | 4424           | 25.67708349          |
++-----------+----------------+----------------+----------------------+
+
+hugepage_mem_bp: 1000
+goal tuner: consist
+
++-----------+----------------+----------------+----------------------+
+| timestamp | total mem used | huge page used | percentage hugepage  |
++-----------+----------------+----------------+----------------------+
+| 0         | 17125.85156    | 0              | 0                    |
+| 38        | 17081.23438    | 76             | 0.444932716          |
+| 39        | 17133.11719    | 196            | 1.143983304          |
+| 40        | 17119.83984    | 316            | 1.84581166           |
+| 60        | 17109.72656    | 554            | 3.237924335          |
+| 90        | 17164.11328    | 628            | 3.65879664           |
+| 180       | 17177.66016    | 792            | 4.610639591          |
+| 220       | 17180.86719    | 1378           | 8.020549749          |
+| 226       | 17187.82031    | 1980           | 11.51978531          |
+| 233       | 17143.48438    | 2818           | 16.4377319           |
+| 240       | 17137.38281    | 3656           | 21.33347921          |
+| 250       | 17175.5        | 4856           | 28.27283049          |
+| 260       | 17199.66406    | 6056           | 35.20999002          |
+| 270       | 17203.98438    | 7254           | 42.16465118          |
+| 275       | 17207.21875    | 7762           | 45.10897498          |
++-----------+----------------+----------------+----------------------+
+
+More detailed tables are provided here[5]
+
+From this, we can conclude that the huge page autotuner works fine,
+achieving the target. When using consistent autotuner, it actually
+over-achieves the target, which is expected, since quota esz_bp is not
+set to 0 to cap the DAMOS policy.
+
+Patches Sequence
+================
+Patch 1 -> Introduce DAMOS_QUOTA_HUGEPAGE_MEM_BP and autotuning
+Patch 2 -> sysfs support for the new quota goal
+Patch 3 -> Document hugepage_mem_bp parameter
+
+[1] https://dl.acm.org/doi/pdf/10.1145/3307650.3322227
+[2] https://lore.kernel.org/e67f05ad-dbb9-45e6-ba30-b167a99ac67d@huawei-partners.com
+[3] https://lore.kernel.org/20260616150316.580819-3-gutierrez.asier@huawei-partners.com
+[4] https://github.com/asierHuawei/damo/commit/79ae1a4ab1c012a7161db85a000d14f08fa36736
+[5] https://lore.kernel.org/all/03f678dd-9ef3-4b97-b753-c2e4554c5159@huawei-partners.com/
+
+Changes from previous versions
+==============================
+v3 -> v4
+  - v3: https://lore.kernel.org/20260720120140.881468-1-gutierrez.asier@huawei-partners.com
+  - Add R-b: from SJ.
+  - Handle a per-cpu count race where free pages larger than total
+    pages.
+  - Return 10,000 as hugepage memory ratio for the racy corner case,
+    instead of MAX_INT.
+  - Wordsmith commit message.
+  - Rebase to latest mm-new.
+v2[6] -> v3
+  - Reworked the cover letter to make more clean the intents, design
+    choices and results.
+  - Added a guard in damos_hugepage_mem_bp in order to avoid potential
+    division by 0.[7]
+  - Fixed a typo in the documentation.
+v1[8] -> v2
+  - Rebased onto updated mm-new
+  - Removed the sample module altogether, since it will increase
+    maintenance costs[9]
+  - Document hugepage_mem_bp in design.rst
+
+RFC 4[10] -> v1
+  - Renamed config to SAMPLE_DAMON_HPAGE, file to hpage.c and functions
+    to damon_sample_hpage_...
+  - Make the module depend on TRANSPARENT_HUGEPAGE, since the module
+    will need some THP functions anyway
+  - Removed documentation, since this is just a sample module
+  - Removed DAMOS_QUOTA_HUGEPAGE_MEM_BP from damos_sysfs_add_quota_score
+  - Added a short description of the module in Kconfig
+
+RFC 3[11] -> RFC 4
+  - Simplified the module
+  - Removed unnecessary parameters
+  - Renamed DAMOS_QUOTA_HUGEPAGE_MEM_BP to unify the naming style
+  - Switched to DAMOS_QUOTA_GOAL_TUNER_TEMPORAL
+  - Updated the documentation
+  - Removed new interface for context creation with DAMON_OPS_VADDR
+
+RFC 2[12] -> RFC 3
+  - Module moved to samples
+  - Change autotune to monitor total memory and hugepage
+  - Added performnace benchmarks to the cover letter
+  - Bail out gracefully when trying to start disable the module after
+    the monitored task exited. This issue was discovered by sashiko [13]
+  - Fixed typos and added quota_sz to the documentation discovered by
+    sashiko [14]
+
+RFC 1[15] -> RFC 2
+  - Rebased into mm-new
+  - Use DAMOS_COLLAPSE instead of DAMOS_HUGEPAGE
+  - Fixed an issue that returned silently an error when the PID didn't
+    exist in the system.[16]
+
+[6] https://lore.kernel.org/all/20260714150116.382521-1-gutierrez.asier@huawei-partners.com
+[7] https://lore.kernel.org/all/20260715151615.99767-1-sj@kernel.org/
+[8] https://lore.kernel.org/20260616150316.580819-1-gutierrez.asier@huawei-partners.com
+[9] https://lore.kernel.org/20260618150806.4633-1-sj@kernel.org
+[10] https://lore.kernel.org/20260611150244.3454699-1-gutierrez.asier@huawei-partners.com
+[11] https://lore.kernel.org/20260604150338.501128-1-gutierrez.asier@huawei-partners.com
+[12] https://lore.kernel.org/20260522145518.158910-1-gutierrez.asier@huawei-partners.com
+[13] https://lore.kernel.org/20260522171210.900B11F00A3D@smtp.kernel.org
+[14] https://lore.kernel.org/20260522171633.AAF5B1F000E9@smtp.kernel.org
+[15] https://lore.kernel.org/20260430134139.2446417-1-gutierrez.asier@huawei-partners.com
+[16] https://lore.kernel.org/all/20260430154338.E22E6C2BCB3@smtp.kernel.org/
+
+Note to Andrew:
+Footnote references 6-16 are only used for changelog.  Hence those can
+be removed with changelog.
+
+Asier Gutierrez (3):
+  mm/damon: Introduce DAMOS_QUOTA_HUGEPAGE auto tuning
+  mm/damon/sysfs: support hugepage_mem_bp quota goal metric
+  Docs/mm/damon/design: Document hugepage_mem_bp target metric
+
+ Documentation/mm/damon/design.rst |  2 ++
+ include/linux/damon.h             |  2 ++
+ mm/damon/core.c                   | 19 +++++++++++++++++++
+ mm/damon/sysfs-schemes.c          |  4 ++++
+ 4 files changed, 27 insertions(+)
+
+
+base-commit: 0ae786fcfff4cfea3290e16a65fe12f5c99a6d2f
 -- 
-2.54.0
-
+2.47.3
 
