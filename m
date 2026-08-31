@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4F38C624CF
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 16:38:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E4F7C624A4
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 16:38:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 157D76B008A; Mon, 31 Aug 2026 12:37:59 -0400 (EDT)
+	id 290646B008C; Mon, 31 Aug 2026 12:38:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E16C6B008C; Mon, 31 Aug 2026 12:37:59 -0400 (EDT)
+	id 1F3D36B0092; Mon, 31 Aug 2026 12:38:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE9DE6B0092; Mon, 31 Aug 2026 12:37:58 -0400 (EDT)
+	id F38A96B0095; Mon, 31 Aug 2026 12:38:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id ACE1F6B008A
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 12:37:58 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A308B1201A7
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 16:37:56 +0000 (UTC)
-X-FDA: 85162121352.23.9596525
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-	by imf05.hostedemail.com (Postfix) with ESMTP id DD8B2100008
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 16:37:54 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=A6Y+sfa1;
-	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.51 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BDB6B6B008C
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 12:38:00 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4BDD5A35A9
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 16:38:00 +0000 (UTC)
+X-FDA: 85162121520.17.9167575
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 82C5910000A
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 16:37:58 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="JYt/IT+M";
+	spf=pass (imf14.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.54 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788194274;
-	b=CF9IoQX4xtD/PteqatRwlqgDIH12zUmxrzP5z/tO8gID0P2wQoJHc/LTSMlmdQ0YzyyoqG
-	vJirD6v+eExkd5OeIvqK1f8QWtQVDA8Rjnpr+qKJM7Gh+QuE7ke40uTciDaK9NxxUdhpp8
-	zhqJGwPgI4NvK+c12uhZSRLtLW7zaxM=
+	t=1788194278;
+	b=DHl+l/G9dkI0nKwQTtkiBFti5Rt/BgTddNeG8/AYXWQmBsjeZ4YUkWIT2bSOQY03Q7R4/4
+	vLBR8g8/qdkyZGc3uFNDbUCcy0pxNvCQWqNg4rjz38QjMSe6y2ceZq+lFT02A3RHkvfTmo
+	G6qXt0CnTReP9594I/U2+/RcQ7AtjL0=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=A6Y+sfa1;
-	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.51 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="JYt/IT+M";
+	spf=pass (imf14.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.54 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788194274;
+	s=arc-20220608; t=1788194278;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=jHXBYg66UBEqhTnn/X5o4cskQbf8hKecJ7lklGtPMOg=;
-	b=sMt2X74vzyTl9rDDlqxHbm/E4VW3GJW1zEIaxOSxGwEBUHc3z/s3nLyVi8BlsAWcVyxAiT
-	EcgHI10jXrB3QTcR3z7JPAbQWsuZZqfJ7rChOJFljNKRe0FPVliyz3gIRYxlMfqEmhxolZ
-	YK+LmrTCkl6sRJnVrAbVSB89dxjh+CY=
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-6b19e291cc6so1512296eaf.2
-        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:37:54 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UZzK6JqUVQtEF4ncuPC417FBn/U4i41SWhLzyFT/8Js=;
+	b=WCqj3hTdRV4GGO4DoX/YCgwEz/QQw1Ya1TO4+SRQRgbT+DcOXPuS010SBJRyjkxHoWhvSs
+	TugxDTOqRSX9Gn2CnuIe1k/tNMu5bGX0AULaxadQshFkbsDsUi7ih04roUjgMcc7EwlLoj
+	YXxNhIh/QlSytDUzfnIfhdgo/toMxBs=
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7f3f52143cdso2907486a34.2
+        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:37:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788194274; x=1788799074; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jHXBYg66UBEqhTnn/X5o4cskQbf8hKecJ7lklGtPMOg=;
-        b=A6Y+sfa1rZ6jjDGuzwYB0xbKtJIzUXAGqV8Qo3zhECF8VP41qwIK8KTYB+5pbBUhDx
-         q6J6Ng0GW5Hq9244caEKWpqW+zIR08dfNdDiNl2cVpAYO/J5myd6cPI76tiQ1t5PyLYf
-         wf0RUgabzN7a9VNwkDz2LZFPstZ7Q1Bj57ZbMXyEMArjRcCZj9fzgzDuteGekEqldTKT
-         VHHu/5NHKVP3BHsuHyMk6TZ4IygyFMY2uVcXXP987lYmH+4+6Y53m32EuFbi7ZFCnkv9
-         36zat1Rpz8/KWm+P1+y9uMY2OWd8uexhr9k9AlESFrtFWJ+CBKx9gvizl766c3aQ+xsP
-         QxIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788194274; x=1788799074;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1788194277; x=1788799077; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=jHXBYg66UBEqhTnn/X5o4cskQbf8hKecJ7lklGtPMOg=;
-        b=Lz6lxeYkQq/j8QRZCiWWQVQEf0vAs1WB4Xgr6HuKqqPdxEDAaUdKxAq7415dw3zSFh
-         jVFrfmA6behv1rxY5cw30WgAMxBUjcwLvT4uOe6W3UCjWEoZxNNYDrzyLX5YEsZU3zRB
-         5zN3VFDvSoCkc4t0lVJclDF0y6h/klPnwmNAeLIwZMWQRaWGEGLf1sg/OXfy3CmV2IkA
-         TQvPxBSF7XPR94ZzcbNQmdc1CdC+cB26wT9Zy81AWPLbbNzXCU8vOhDnSrnEr/VNnATO
-         kAy2gLYaP2BKYiaCLNVQxh4Jzlfy/sGqD/LBB4xrQnyeInJKx/UUoCCBHurB5f221mfM
-         Gvmg==
-X-Forwarded-Encrypted: i=1; AHgh+RrSXo04lAN/QpMvkgVp7O+ItGQOd8rx7Nub2OojA9wApapjzChxsrmNzXfIHxZCjrQeXaQdu+LEjw==@kvack.org
-X-Gm-Message-State: AFuF++nZkZHyP52s6zcCpxFR5YpuMJxoIfIrOv7qGQAqvv5D13U3s2ma
-	FXvDsAiii47MV1bPEUespoNujI4DICzHcwYO7DwlXzVC+9mk9FTSuW8i
-X-Gm-Gg: AR+sD10led7Bq+RF8Ep73bhIIQoP+KSQNJrdymchwHsFkRVEv69Ow99faBTeemfKmzc
-	O+ylfOuL9+TqIV2Do8IcPHH5nq9dIr2MYYZNBuc3kPw3H2V/1/ClC0xB90oWIApCMLaWFwo4ibs
-	PfzrfMdYgV/anbNW6cR3C/mB4Zk4MqdNSVeFSNhspakURawgvxlP7PBprpKAN3Lma3dP5u6dMRv
-	nnvdypNL+5yNp0Bg138BF0vGX4ZqU65R4179yYnaUo0Ic8SX4Ek+GcltdFDjAnWU+BcCTgFjWwW
-	NYURCpshnl6E2N60X0BYWawvZd8OQWvKQy2fMq/Xy0OBwEr1vrgi/0BR04csEe3J/1VKrn6jG8v
-	6O1i4FYkvmLiBpeM4EiWD41+7lZtm2gl+QIUeNMLBgMP6HBlVRE7hYdmI/PHmrLQposqQIlj0Wx
-	mHa8QGDq4wgLumljJ10B6Cjxxsb9VZsN6aBidzaPb6ZfwkeNp3/C3sDqK3sr/UkI/IAnqX3AQZk
-	jICkmxpU5iQx+HIkvI=
-X-Received: by 2002:a05:6820:f02d:b0:6a1:77ce:1b09 with SMTP id 006d021491bc7-6b372ca85d5mr1858404eaf.6.1788194273632;
-        Mon, 31 Aug 2026 09:37:53 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:51::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-468a3535e25sm10291971fac.5.2026.08.31.09.37.53
+        bh=UZzK6JqUVQtEF4ncuPC417FBn/U4i41SWhLzyFT/8Js=;
+        b=JYt/IT+M8hiYNLhw8wzhYHIGlgOiWWCiRuoynNmOOCGQ+SaAp5adp2fWJIWTbqVQby
+         VH8DCnvv1IiTUMXlc3E2Aymgc2VUK7pt2YAlVGPyVLTVACTmg2GQ+xn4oaTvgPnvuGHH
+         m+xp5K3i74ZBweSo4JdV5At3SI78isKGZ18/Epn85SG1R0xO7i6QtKZGZIjs3le7EmFU
+         e1cnG2m7tZYk0Uo26Ibg8S11gWGtMxDxhdUTpz3HrKGt2RFWgcW9kWpDLXrguwWIBuK5
+         c8iBVTJplsjcJKLucgPrW4rivcp+kPXAe/OD+51mAxCKxv4QcFKEyx3kZcAoLIaQ/MQ9
+         VTfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788194277; x=1788799077;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=UZzK6JqUVQtEF4ncuPC417FBn/U4i41SWhLzyFT/8Js=;
+        b=YYGLjk4X7sq7im3gI5x7/u7zwBtvkjsyCAK+8FqecUNwTO8EoxEGHXfRYKrmWZoWRK
+         /HFa+Zc3pZ2xIdSGmb7XCbXxPpw58d+y+56AzK1fYB4xGZUC6BxMAQZ7a79eUvezQmCX
+         YB2w9jPsQTP06q1+ddEHcOs5VdRUnKyL11okWwfjkfNAAxaRBUwSvXGsgT5SRHLGa3u8
+         M4mBnT5Hxh6z/9z5VBSZJeklbPLl6I/bhObyp97CBtZvg546pD+qfealBiVUGy7Mu6pM
+         Tp3yBbCdhxIfLLarjjq7byUWH395fJWfnuJvzmb4nYWsPuHvj9/emz+xfLfJS9Z6trdg
+         NsyA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr6wPiZ3iFFIV9BT2/hqyWky8sb+rHbuPNbqn8OaBrUe1zyQ34DmAsC0jX1PkLAmQys+LVJ/uImLQ==@kvack.org
+X-Gm-Message-State: AFuF++k6BK1mj8X6lTzkqBFKiflZ5cu0jAUHkyj2COe0yiId8VjgSTvv
+	mD4340REP0Rgep3xELEaN32zXqMFLOivdZvrPhE2PcyhYtvUVivliWiO
+X-Gm-Gg: AR+sD12J+7osg7W/Z98oapKtruSoS/RSL0Hrz/hqRItLabLOKuQGJJhX7DNJYAFgRA2
+	gxYCs0dqFOpr/fbU9K7tVAV9i+gwxMjYGaBIVfLq2ydKoG4xo6FsAy7Z2JjlE8+lDzrIznGSEMC
+	n2iQ5oJ8oIx4DLABuG4sAEPHRX9i1G06uXDyzo9xG9Z07fAp72ZqU3z6+LhjTfSfmbPBwp/Gf8q
+	JDFFmBc1/JChAK1fVhyh5urKxuHVvN40ieuYQUI1dqBJc3+/lyP+VMpBkcgB+Y+0sOHLRfJlaTJ
+	kuMnsB4aWYEaLMj8+tcBil2hnOq1gqerkYmZe6eqcVKSzVIRIYsG/xTT6f3aKxhYFjCbc5A/Hh/
+	IxTjX8+l2AzIUEZYay2kwa5FE64aZKRlaJ0kOhc83AtTMktMXGL9UAfHfUcXhNdiqC5IoQounTk
+	SeEqzsffSj1YS4L8eYPBx9T/pf7vrHtu2EVfMyunypT/nBkOvjUpD39jsfyU7GyzoYyTwFVtTPY
+	OZxQ5p1aGkxUF+zGg==
+X-Received: by 2002:a05:6830:349a:b0:7e9:e288:2b60 with SMTP id 46e09a7af769-7f4f21cb626mr27446752a34.1.1788194277265;
+        Mon, 31 Aug 2026 09:37:57 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:3::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f4fa96cf17sm8719481a34.15.2026.08.31.09.37.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 09:37:53 -0700 (PDT)
+        Mon, 31 Aug 2026 09:37:56 -0700 (PDT)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: hannes@cmpxchg.org,
 	shakeel.butt@linux.dev,
@@ -114,20 +115,22 @@ Cc: roman.gushchin@linux.dev,
 	linux-kernel@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	kernel-team@meta.com
-Subject: [PATCH v5 0/7] move stock from mem_cgroup to page_counter
-Date: Mon, 31 Aug 2026 09:37:44 -0700
-Message-ID: <20260831163752.2193337-1-joshua.hahnjy@gmail.com>
+Subject: [PATCH v5 3/7] mm/page_counter: introduce per-page_counter stock
+Date: Mon, 31 Aug 2026 09:37:47 -0700
+Message-ID: <20260831163752.2193337-4-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260831163752.2193337-1-joshua.hahnjy@gmail.com>
+References: <20260831163752.2193337-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DD8B2100008
-X-Stat-Signature: t448189sj3s38b1grqdop9zcanh1614m
-X-HE-Tag: 1788194274-881872
-X-HE-Meta: U2FsdGVkX18t1AiOwv7ceB/OoYydve1/2aSQJe2I/5/LvcB0w9rs2F/az/Ig4UNphocHlG6UkVrFRjyP7DhD5xYxgob7GUujbPId76MSwbGRrZ9iH6bnyH7LPVbyDgCMzx7Odp4bYItJ29tqvI3tBfT3dc5/ZXn0TfAcSNb58/o5CF4zH5wMDwlFzo1DyEtbP0NWX3KHE4qwzsfzieBPHhTErLNWx8buMJ2DIvww0Q9Fxgy0MW0DDehDJ0yuWpPRW7d2rDnzvs2V0ZVzXylb8UVcOsAcHSrrzEIU942n4in/F/Wiq8TPlar+TXbH7rb5b+JbNDSOBTzG7xr5noMBRlnX5+Dgjimd/5ysEGT/l/R9CQ6o0rbZ2NHb0wzAG3aoeCRIdOLlRgFY4XWpPZPDHrUWOtqicy6lNqNsJNY0r4D708mI/t+xsCMwZUsdYgX7lIXkruVDDaVnuTbXuIhHrSmmRRqURzAzTqJI48yX5H1cD9HAzVB1DNgXt3KdjGM+x7IX+Z4qtHZ35mu24+9ZsE2hpxXcfXyFf1hk5JPSiknwUqmHc2hUKgukQ20cMUsdqKgEhepA6g4mo7ZmofBroNE+03LkEVkDHMhC25gAuPOWlhmm6zipsv8idy85tSZ9RAcYnEy1pCDuk/yefIU7WeapKQbT9mPtt+4IeFsjoulqyyAroF8UBE+kvzlrWgw8bexgGRwh1QGAwA+/ERK0L7Si+KrNCEKkXp2ryMu+bij2tK5hq6W70ClD/SdbaRLFyIh6fBL9LGcyA6V2CwCVFiUjQkRSw5lwL1cqezJunauavW2Zv8eauBZ6sxPQ5UtR8MfzsX9pn0/ApA/Myg4LDdmm7NDkv6JzZbi/nQdT+CbM0OtbruJaT7mntw4sKU8+L0kLfwUNvW7SVcneAuWhnmXPOQwZl9c7h2hmZlNH0l/CToUdSlhpl2HyjWsUSUyInKQn3elTAvTpkedRVLs
- 5ANaH0wN
- fNq7QG+JqcLsAFff0wGKiLAVg6iiz/e7VDXkSP0fnUpbw2fLzdBCU+RUAmUTtorD5habloEI4k02WLNiW1MKCznyPM5SnehfQ2NIDRLzH/TuvxISiRSoAdkRxPqa9EkV6/uSRl77gOJx3TLSUAnVyqCMAJI1NUFq+er36yC897anrEopwnSBxeVGqzifeubByHhoLWxzKLo5QX7kSLwT92v82as0YjIao7U35oTFR8cmgPBhjfvFF5TQ/x6+i7/QU3nQ0r+T+ZMQv4hRHlh/8dlvvKZOMggOooJg/4/GMiuYwh7gJSSTw5cIse9XWpp91YWSZHtWR3yviaEzgLLks083HmQ70IdFmQWAKJ7zKdvZ7DCOQpN6rBKv+wtpOI3U8HgquYi4+oilZ3aFrbxV6JTG6+gg3DZcAVqADdVCPzKBf1hT3u/DtKh3ntg9tnzVAUH62vuN/VNTDrgTf/fuVdPf1IJI4IBniBu/nr99TFmNvHahyCr0mzP+17Ttx/8i/XJHh6EFUgAG4FkGTMmk5DbZedLU5Ktn39Aol
+X-Stat-Signature: ej79fybjxeknwtrj78ejce5uyhz7engf
+X-Rspamd-Queue-Id: 82C5910000A
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788194278-962352
+X-HE-Meta: U2FsdGVkX1+4Y5et4BUGpnb+e2RqAKyvNPtKLBefwWyfzCHfpF/eDP9Vo3zfa38eHYcGAf6frpCm1McUVhl48nMBu6E67J8QkELAi+wFlX2w8aJjlnPOU/OHIFZPCqBTB6k+OLI3vvJva/yyhoqucgYSkr54pylugBF4akhkajTJkMhJZmOpPEZUqzzV3Y7vnSNm25m8XpiXj7m71j2IfB2h9eQ+lfVyX9jBEHIZdw3rgOq5nWqTlzN8UGCy6gCKAS03RW95FqCuHZigLw7D3MAcGsuj3MkqGrFR0ooDTi8DjO7DvA9K/wAw6bwqnJYOtIYitqcT6nE4nXb6H8QsSIorER5VUv90nj/kyhqASwD/ntiRyIoROcPQ7kR9UJstjx8baO2TaQB865sFg01IeF2Atkn73rKhbgShissWW8A5EwwoM3Nejf7hrlWhfLnMreBLXITuRNf/7mG8aASXmXSkoez65z3ac2JAx3iBoS4xTZHHYoMD9c2BX+eDmygFMytCCaX1XTAIzewm3hlvY3SU9gY9uMsukHRD8vhPFKGQGNa7sBo+y69yw7fTj8Qm/MLDvRW66I4q9m2SjotZDvTtg5Af6ztd5cNrlC1c6NhvYZEZsQ8+B0Mx7HHbkz85npqSKnb8dkcoO0hNFZnZchPhEpPoegUOwGG1ElrXcHE3a4b4MdpERxSRAlu5pa8qZ8AeaFvp/zliuXVULKft9LYcILvCHfq/+lmmUJkGN6AMa8bqppUvfvM0Xe3jAtv6RfGPrTYYFMG7NU/JVLraVJGi0fb0BIOVgRmGJ9iwVb2sPVCtBLeFw0ocC9gxxguOefLUkQhL/nRh0XrUBqtzkO24rGhL/lNJJSl5LMu9HiakfRrGmgzKKaf9IYNk7C7aMp+rYNeCQ+MPpLSM6/2/mKCZqo9cgvoyei4GYUKmYYZBFC9nhXLSWLJt+YTOjxvphOIRsQ1R92a5OXgOOhD
+ TYrfiMfY
+ 3UritNgK89J9X7y6oPnqHvuSPlgTdLUhNQxrQWvxXOgXbK4leE9k7ERUWOCYmzLz/s7auLTfM3vuLju39OHFydh1swaZTAjnWMdrVuIgWvW2AEIeegdFXRCxD79tsb4uyvqJZkONAaLJXYLfGIe4kpckFOpgvnAePs4eE7g0B72QeykOW+fJJVfhUa8r7eHhZh3ZWUX9MyyP82otu6mmXZq7LeVMcXF3PZz1UCPlbl3rpCa1Ue/jEPMh3PnDeHbp44F6wgTuCzMCNuT8vnNcPegq9vY4oldBPJEIjFCXFz5d3tpeT/3Iym1SOLbSV8bQWB5l0AiV1MIVfRMLyWgYiEElLOSkTg7eIa/PrN8LRuyz9cH/YtQ8iHcWXk3UY+HzSVUv0FcTgtHgN7AP4UeztWSChNbfNKZuCVEEUK0ZlYM4k1V/vpsuKNzPIyGnkgGAa3STGOtEdWPtohwCHLqjg9ECpn6v+NX4oVEWBF5YkpbMoWLqSu7k1J202lE8lvZtV1ThR+vC9VAWf23BuhW8M4c7hMeQqSY+jPPcGBLLRUtJpmcwAXs/YLj/r64LD+0oaOMTwp2lN5bYjigjbMAq8sNQqmMhdrIcbeu5H1ytjvzFxCV0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,185 +138,208 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-v4 --> v5
-=========
-- The stock is now a raw_spinlock_t and an unsigned long to more closely
-  match the original semantics of the stock code.
-- Draining is asynchronous again, we add a work_struct per-page_counter
-  (not percpu) that walks every cpu. This eliminates the concerns
-  of doing a synchronous drain.
-- page_counter_try_charge transparently handles stock.
-- Addressed the netperf regression by reworking the refill path to match
-  the vanilla uncharge path more closely.
-- Correctness fixes for the percpu pointer access usage
-- More testing to demonstrate that this series achieves its goal.
-- Included Shakeel's stock watermarks from [1].
-- Wordsmithing
+In order to avoid expensive hierarchy walks on every memcg charge and
+limit check, memcontrol uses per-cpu stocks (memcg_stock_pcp) to cache
+pre-charged pages and introduce a fast path to try_charge_memcg.
 
-INTRO
-=====
-Memcg currently keeps a "stock" of 64 pages per-cpu to cache pre-charged
-allocations, allowing small and frequent allocations to avoid walking
-the expensive mem_cgroup hierarchy traversal each time. This fastpath
-offers real improvements, but there is room for improvement:
-1. Currently, each CPU tracks up to 7 (NR_MEMCG_STOCK) mem_cgroups. When
-   more than 7 mem_cgroups have stock present on a single CPU, a random
-   victim is evicted and its associated stock is drained.
-2. When one cgroup runs out of memory and needs to drain stock across
-   all CPUs it has stock cached in, those CPUs will drain all other
-   memcgs' stock present in that CPU. This leads to inefficient stock
-   caching and cross-memcg interference under memory pressure.
-3. Stock management is tightly coupled to struct mem_cgroup, which makes
-   it difficult to add a new page_counter to mem_cgroup and have
-   multiple sources of stock management.
+However, there are a few quirks with the current implementation that
+can be improved upon.
 
-This series moves the per-cpu stock down into page_counter, so that
-page_counter_try_charge() transparently serves a charge from the stock
-and refills it, and each counter owns and drains its own cache. This
-eliminates the 7 memcg-per-cpu slot limit, the random cross-memcg stock
-drains, and the slot traversal.
+First, each memcg_stock_pcp can only cache the charges of 7 memcgs
+(NR_MEMCG_STOCK). When an 8th memcg wants to cache its charge on a CPU,
+a victim memcg is chosen among the 7 cached memcgs and is evicted,
+losing all cached charges.
 
-In turn, we can add independent stock management for additional
-page_counters in each memcg, which is used in my tiered memory limits
-series to add a new page_counter to track toptier usage [2]. Patch 7
-uses it to give memsw its own stock.
+Second, stock draining is per-CPU rather than per-memcg. That is,
+when a memcg is under pressure and must retrieve all cached charges,
+it iterates through every CPU and drains the stock charges of all
+present memcgs. This means that one under-pressure memcg evicts the
+caches of all co-cpu-resident memcg stock caches.
 
-Because the stock is now a property of the counter rather than of the
-cpu, it is also reachable remotely, so draining no longer has to run on
-the cpu that owns the cache.
+Finally, stock is tightly coupled with memcg, so adding new
+page_counters to memcg is an unscalable operation where only one counter
+gets to use the fastpath.
 
-This series preserves as much of the old semantics as possible,
-including non-spinning safety by using trylocks for stock access.
-The old !allow_spinning semantics in try_charge_memcg are slightly
-different now though; outside NMI, page_counter_try_charge may perform
-a speculative batch charge and a refill.
+We can address all of these concerns by pushing stock caches down to the
+page_counter level, and making each counter responsible for its own
+charge.
 
-TRADEOFFS
-=========
-These are disclosed in the individual changelogs, I've also accumulated
-them here so we can discuss them in one place.
-1. The bound on pre-charged-but-unused memory is raised, from
-   NR_MEMCG_STOCK * 64 * nr_cpus pages system-wide to
-   nr_memcgs * 64 * nr_cpus. Because a child's stock is charged all the
-   way up the hierarchy, an ancestor's memory.current -- and therefore
-   its limit enforcement -- includes whatever its descendants cached.
-   These are not "real" allocated pages and are returned under pressure,
-   but the ceiling the old 7-slot design provided is gone.
-2. struct page_counter grows from 192 to 256 bytes to accommodate the
-   new struct work_struct.
-3. cgroup v1 only: memsw.usage - memory.usage is no longer exactly swap
-   usage, since the batch charges may go out of sync.
-4. The stock lock is a raw_spinlock_t taken with trylock, where the memcg
-   stock used local_trylock_t. Two cpus can now contend for the same
-   counter's stock.
-5. drain_all_stock() now queues work per-memcg, instead of per-CPU.
+Introduce struct page_counter_stock along with its allocation, free, and
+per-CPU drain helpers.
 
-TESTING
-=======
-We can demonstrate the effects of the finer-grained stock draining by
-creating a synthetic workload which allocates a batch of pages, then
-yields. This is meant to demonstrate that prior to this series, a 4 page
-charge could refill 64 pages worth of stock, but have it stolen away
-if it didn't use all of it before yielding.
+No functional change intended.
 
-In the table below, the "batch" parameter is how many pages a workload
-allocates before yielding. The measured metric shows how many refills
-are needed to fault 64 pages. A higher number indicates more work needs
-to be done to fault (charge) the same number of pages.
+Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+---
+ include/linux/page_counter.h | 16 +++++++
+ mm/page_counter.c            | 90 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 106 insertions(+)
 
-	+-------------------+
-	| refills/64 faults |
-+-------+----------+--------+
-| batch | baseline | series |
-+-------+----------+--------+
-|     4 |    14.34 |      1 |
-|     8 |     7.12 |      1 |
-|    16 |     3.56 |      1 |
-|    32 |     1.78 |      1 |
-|    64 |        1 |      1 |
-+-------+----------+--------+
-
-This is reflected in throughput in this microbenchmark:
-
-        +---------------------+
-	|      faults/s       |
-+-------+----------+----------+-------+
-| batch | baseline |  series  | delta |
-+-------+----------+----------+-------+
-|     4 | 11487696 | 23825483 | +107% |
-|     8 | 18408472 | 25869537 | +41%  |
-|    16 | 24882465 | 26915403 | +8.2% |
-|    32 | 27987869 | 27912912 | -0.3% |
-|    64 | 29096451 | 28853936 | -0.8% |
-+-------+----------+----------+-------+
-
-Throughout testing outside this edge case across 4 to 64 memcgs per-cpu
-led to negligible (within 1%) performance deltas. The microbenchmarks
-above are just to demonstrate that refills become more efficient as we
-do round-robin evictions less often.
-
-CHANGELOG
-=========
-v3 --> v4:
-- Reduced memory footprint by 4x, from 16 bytes per-(cpu x memcg) to
-  4 bytes per-(cpu x memcg). Each page_counter_stock is a thin wrapper
-  around an atomic_t.
-- Removed locking completely and uses atomic operations to use stock.
-- Removed synchronous work_on_cpu. All work is done via remote
-  atomic_xchgs.
-- Added a patch to flatten page_counter charging in try_charge_memcg
-- Split page_counter_try_charge into stocked and non-stocked variants.
-
-v2 --> v3:
-- Dropped the cgroup v2 optimization, since it could indeed lead to too
-  much time held with the cgroup_mutex. Instead we let the stock
-  accumulate in the parent cgroups, which is not so bad; charges can
-  still land on these cgroups, and if we ever reach the mem_cgroup
-  limit, we can easily return those charges.
-- page_counter_disable_stock no longer drains, just prevents
-  accumulating stock. The actual draining is done in the free_stock
-  variant, where we know for sure there are no in-flight charges.
-- Reordering the page_counter_disable_stock path to disable before
-  draining as to prevent accumulating stock first.
-- Skip isolated CPUs when draining synchronously
-- Rebase on newest mm-new
-- Wordsmithing
-
-v1 --> v2:
-- Dropped stock returning on uncharge to preserve same behavior as memcg
-  stock. This resolves some race conditions present in v1.
-- Fixed many race conditions between disabling page_counter_stock and
-  in-flight charges
-- Restructured drain_all_stock to iterate over all CPUs first before
-  memcgs, to reduce the number of synchronous CPU work scheduling
-- Optimized cgroup v2 further to drain only on the first child and skip
-  the root mem_cgroup
-- Dropped RFC
-- Wordsmithing cover letter
-
-Based on latest mm-new as of August 31, 2026: "da6c37ed8beb2
-mm/swap, PM: hibernate: atomically replace hibernation pin"
-
-[1] https://lore.kernel.org/linux-mm/20260820012010.2016086-1-shakeel.butt@linux.dev/
-[2] https://lore.kernel.org/all/20260423203445.2914963-1-joshua.hahnjy@gmail.com/
-
-Joshua Hahn (7):
-  mm/memcontrol: flatten try_charge_memcg control flow
-  mm/page_counter: report the number of pages charged
-  mm/page_counter: introduce per-page_counter stock
-  mm/page_counter: use stock in page_counter_try_charge
-  mm/page_counter: introduce an asynchronous drainer
-  mm/memcontrol: convert memcg to use page_counter_stock
-  mm/memcontrol: add stock to the memsw page_counter
-
- include/linux/page_counter.h |  23 ++-
- kernel/cgroup/dmem.c         |   2 +-
- mm/hugetlb_cgroup.c          |   2 +-
- mm/memcontrol-v1.c           |   2 +-
- mm/memcontrol.c              | 308 ++++++-----------------------------
- mm/page_counter.c            | 272 +++++++++++++++++++++++++++++--
- 6 files changed, 334 insertions(+), 275 deletions(-)
-
+diff --git a/include/linux/page_counter.h b/include/linux/page_counter.h
+index 89a083f16fbf7..c1fe331f34e7e 100644
+--- a/include/linux/page_counter.h
++++ b/include/linux/page_counter.h
+@@ -5,8 +5,11 @@
+ #include <linux/atomic.h>
+ #include <linux/cache.h>
+ #include <linux/limits.h>
++#include <linux/workqueue_types.h>
+ #include <asm/page.h>
+ 
++struct page_counter_stock;
++
+ struct page_counter {
+ 	/*
+ 	 * Make sure 'usage' does not share cacheline with any other field in
+@@ -41,6 +44,13 @@ struct page_counter {
+ 	unsigned long high;
+ 	unsigned long max;
+ 	struct page_counter *parent;
++	struct page_counter_stock __percpu *stock;
++	unsigned long batch;
++
++	/* make sure the work_struct is separate from the read most fields */
++	CACHELINE_PADDING(_pad3_);
++
++	struct work_struct drain_work;
+ } ____cacheline_internodealigned_in_smp;
+ 
+ #if BITS_PER_LONG == 32
+@@ -61,6 +71,8 @@ static inline void page_counter_init(struct page_counter *counter,
+ 	counter->parent = parent;
+ 	counter->protection_support = protection_support;
+ 	counter->track_failcnt = false;
++	counter->stock = NULL;
++	counter->batch = 0;
+ }
+ 
+ static inline unsigned long page_counter_read(struct page_counter *counter)
+@@ -99,6 +111,10 @@ static inline void page_counter_reset_watermark(struct page_counter *counter)
+ 	counter->watermark = usage;
+ }
+ 
++void page_counter_drain_cpu_stock(struct page_counter *counter, int cpu);
++void page_counter_alloc_stock(struct page_counter *counter, unsigned long batch);
++void page_counter_free_stock(struct page_counter *counter);
++
+ #if IS_ENABLED(CONFIG_MEMCG) || IS_ENABLED(CONFIG_CGROUP_DMEM)
+ void page_counter_calculate_protection(struct page_counter *root,
+ 				       struct page_counter *counter,
+diff --git a/mm/page_counter.c b/mm/page_counter.c
+index a934619cc7bf7..3f61eba695518 100644
+--- a/mm/page_counter.c
++++ b/mm/page_counter.c
+@@ -8,11 +8,18 @@
+ #include <linux/page_counter.h>
+ #include <linux/atomic.h>
+ #include <linux/kernel.h>
++#include <linux/percpu.h>
+ #include <linux/string.h>
+ #include <linux/sched.h>
++#include <linux/spinlock.h>
+ #include <linux/bug.h>
+ #include <asm/page.h>
+ 
++struct page_counter_stock {
++	raw_spinlock_t lock;
++	unsigned long nr_pages;
++};
++
+ static bool track_protection(struct page_counter *c)
+ {
+ 	return c->protection_support;
+@@ -295,6 +302,89 @@ int page_counter_memparse(const char *buf, const char *max,
+ 	return 0;
+ }
+ 
++/**
++ * page_counter_drain_cpu_stock - release @cpu's cached charges
++ * @counter: counter whose stock to drain
++ * @cpu: CPU whose stock is drained
++ */
++void page_counter_drain_cpu_stock(struct page_counter *counter, int cpu)
++{
++	struct page_counter_stock __percpu *stock = READ_ONCE(counter->stock);
++	struct page_counter_stock *pcp_stock;
++	unsigned long nr_pages;
++	unsigned long flags;
++
++	if (!stock)
++		return;
++
++	pcp_stock = per_cpu_ptr(stock, cpu);
++	raw_spin_lock_irqsave(&pcp_stock->lock, flags);
++	nr_pages = pcp_stock->nr_pages;
++	pcp_stock->nr_pages = 0;
++	raw_spin_unlock_irqrestore(&pcp_stock->lock, flags);
++
++	if (nr_pages)
++		page_counter_uncharge(counter, nr_pages);
++}
++
++/**
++ * page_counter_alloc_stock - allocate the percpu stock for a page_counter
++ * @counter: counter to allocate percpu stock for
++ * @batch: maximum number of pages a CPU may cache
++ *
++ * Failure to allocate is not fatal; @counter falls back to hierarchy charges.
++ * The caller must not (un)charge @counter concurrently with this call, and this
++ * must not be called twice on the same counter. A concurrent drain is fine
++ * since the stock is published with a release store the drain paths pair with.
++ *
++ * Context: Process context. May sleep, the percpu alloc uses GFP_KERNEL.
++ */
++void page_counter_alloc_stock(struct page_counter *counter, unsigned long batch)
++{
++	struct page_counter_stock __percpu *stock;
++	int cpu;
++
++	if (WARN_ON_ONCE(counter->stock))
++		return;
++
++	stock = alloc_percpu_gfp(struct page_counter_stock, GFP_KERNEL_ACCOUNT);
++	if (!stock)
++		return;
++
++	for_each_possible_cpu(cpu) {
++		struct page_counter_stock *pcp_stock = per_cpu_ptr(stock, cpu);
++
++		raw_spin_lock_init(&pcp_stock->lock);
++	}
++
++	counter->batch = batch;
++	/* Publish stock only after percpu allocs / inits are finished */
++	smp_store_release(&counter->stock, stock);
++}
++
++/**
++ * page_counter_free_stock - free @counter's percpu cached charge
++ * @counter: page_counter whose stock to free
++ *
++ * Caller must guarantee no (un)charge or drain of @counter is in flight or can
++ * start. memcg only calls this once the cgroup is dead and unreachable.
++ */
++void page_counter_free_stock(struct page_counter *counter)
++{
++	struct page_counter_stock __percpu *stock = counter->stock;
++	int cpu;
++
++	if (!stock)
++		return;
++
++	/* Stop greedy over-charging before the stock goes away */
++	counter->batch = 0;
++	for_each_possible_cpu(cpu)
++		page_counter_drain_cpu_stock(counter, cpu);
++
++	WRITE_ONCE(counter->stock, NULL);
++	free_percpu(stock);
++}
+ 
+ #if IS_ENABLED(CONFIG_MEMCG) || IS_ENABLED(CONFIG_CGROUP_DMEM)
+ /*
 -- 
 2.53.0-Meta
+
 
