@@ -4,139 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E855C61DE2
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 11:13:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 828FAC61DD3
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 11:16:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C4696B008C; Mon, 31 Aug 2026 07:13:57 -0400 (EDT)
+	id 7D62F6B0092; Mon, 31 Aug 2026 07:16:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49C526B0092; Mon, 31 Aug 2026 07:13:57 -0400 (EDT)
+	id 7AEBC6B0095; Mon, 31 Aug 2026 07:16:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B4116B0095; Mon, 31 Aug 2026 07:13:57 -0400 (EDT)
+	id 6EC126B0096; Mon, 31 Aug 2026 07:16:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F047B6B008C
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 07:13:56 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 85CF2C0439
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:13:56 +0000 (UTC)
-X-FDA: 85161304872.24.4AA253F
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 949E140008
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:13:54 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=iNyWZYHe;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788174834;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D8F76B0092
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 07:16:52 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D1EE21C201E
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:16:51 +0000 (UTC)
+X-FDA: 85161312222.21.A779A72
+Received: from mta0.migadu.com (out-143.mta0.migadu.com [91.218.175.143])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6492C40006
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:16:49 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Bd1eZyep;
+	spf=pass (imf17.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.143 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788175010;
+	b=Qo2gzm4z25Pj9EpFLv5akYexWLPR0doEEoi7r83o1SczbAkChx2D63fDigWIqQx7NjWcfX
+	jq60U1IBQmyYEwI46LPjvDFM5h6do6PcJYQ7WuBztFM1ixDEGis8UgTm4bfSBmhSkJmmBX
+	haExRfkuGYEKUnbNxO+jYy/R5fAIZhg=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Bd1eZyep;
+	spf=pass (imf17.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.143 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788175010;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yuWjbx1O5hIe3EKGR7TrgAX/AAbp43qDAxNhOzFObuU=;
-	b=2fgU1i9WFRD5i/r5agnS17kVfL19+9jULq6766wP21UqPUInNgY9pssCLTPaXHt/5doEmD
-	vcDz9kC2PyJHtLGO2WUnfO8/FtowiOBIU6eU3P9SWq9BCDBm92FYvHPMxHy1ehTGas2J/w
-	s24+Mxa9wJ7bJZXvnbl5iFRFC3NuUVY=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788174834;
-	b=Fset1ae79TlvQ4Nhblnj7QUVE2Bswl10/ipQxaRxXnIbLuystAC61WKMhrcCVuCdj5pOw2
-	OsI7SmoZFbHtrWZpIHLMWS/rVB7thoADdrtHx0trSRwqAzfMIrrzthhB8U51RHqDG8sIYk
-	uq5oE61YqbMIw/QvCA4LxN7QHLzNbsU=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=iNyWZYHe;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-84864086bfeso3485723b3a.1
-        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:13:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788174833; cv=none;
-        d=google.com; s=arc-20260327;
-        b=j/F5sGxgZjOpPmtxTKzqx330eyYWZJjhuwyG6ehl93roQ6oblbYXXk5yflUG5i5gIm
-         +CC2p+HZjEPbsvIfwbwtvULYdK8UcpUIGGqsuOcMJ8QIXybxnn9+XxfmaxEOBycG1IZ6
-         9962cIT6ox1vHy4NpOeLih9bzM9/eVmDElffmjJnepVVXtDHhWwX3kqzHxvgJVDL9aS4
-         03KUNmhQFmSjNBCk4rrWrsG4rC2afnuAxJOTPCOlwS6euIk6TDGVwiMnjwjGG8Qvtmps
-         AFDFb3P+4MTdm54M1LBC/0CRpzlb/OBb+8ZD7HWE0Jn9NRWjDZbq9qufwhl7bujFRLiK
-         Vb3A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=yuWjbx1O5hIe3EKGR7TrgAX/AAbp43qDAxNhOzFObuU=;
-        fh=bLjP3My+mdYVC9dZ7DCghk44tWTn7VYzYrNUOyCZ+n0=;
-        b=kySc7uY8kK9ErWyQlWHjt6m4UaeM52NuwluM/c8sZRE+oUuGcbAp/1zzYZ2ZDKKu+N
-         n18J2uEnNoKpwqKWuI0ErasnQ0hivnbWuDNGamU72ua+uLwKqhsfdr9O2F6xNZ6IYFLF
-         L+wikzMgdr3O93vfM95olF25vNhh+VC9JWPtum8un0fEo3BH5XlIIGSaJsTEBm5a7MdQ
-         DLNzDa2oaiteIFtfaL1oTmzZv4/sHAT59GWRAS91NGcG59q4EH+cfBUestMXbGQaedSV
-         2ZRE5ErnRX2x63TJRplS3JIMozj4gDCSdZf+Fnzpkgn2fFTA+RT/2BqWIZ+84wgMNMJW
-         foRQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788174833; x=1788779633; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yuWjbx1O5hIe3EKGR7TrgAX/AAbp43qDAxNhOzFObuU=;
-        b=iNyWZYHeo7wRCoHy7hU3t0PcUnPoL8EEColFY2siNd+/TrFd6ASyioCwLGWdno1P8I
-         na246k1Zjt4jfDpdlKpRWQTcSosFPxIurR1UHiJ6jH3xEOijWElaC7FF8DEEgWPnMUt5
-         rs46nvy/JGS4qr+ZJxPJ5YW9WMJEcXZusGgh8kYtaE5Ue5gH5Og3/MDFVOVUaBzHvikD
-         5oqiQ9wrXSO8hYNJRzaO6RasC50B7Gqf3i8f+nVy+LJqKyKtWuHw0BVRxNVN5tL3DY2X
-         J/lK/GJHKFA1pHnXQ81lffl6uKFN2S8gd3PO0ZNFlMLorR6ay4GC/x4E3OIijttlpQhj
-         O4uQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788174833; x=1788779633;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yuWjbx1O5hIe3EKGR7TrgAX/AAbp43qDAxNhOzFObuU=;
-        b=DJno8X0Q+xay+28RfEs35bSkt6n+lhQDcEoQWtcz0HXvadPaUc3LRyBjFNY3MJ/nvb
-         OboEA9r8l8FDoX4qQXVYhHWZ7k40GWblzfRPEWLf7RIQIpw0pNNQYKM5TtXC2zX5sk0B
-         2N9WuS/p5pBaN8OgrK7Bpj7dDW/1z9JQp+o0NNxs6itk/PJSEJer7uUSyVohUEDKZvy4
-         ZhRR7aSAzANmXbCc4t9PuPxm8KlygYJ1hegoc2kbGT1cm/+xdSKK1uapqNRWjwgyhV95
-         qy7eO61Kg8XU1TGhSygt5huZ8x9CwMRZLMGagNu/jIb6FV0YX7O+kjlVPrTEvrno51vA
-         c8qg==
-X-Forwarded-Encrypted: i=1; AHgh+RpcsVDn+eWtTVMjvLG5YaQEu2utbzrIwkdB+UUthB+TNqmJmKESapGfGiSYC/h5c/2LzRTTfe5x8Q==@kvack.org
-X-Gm-Message-State: AFuF++mTp6ilPX8rS8K7EkHyVTE47vyobyiDg0wDg8f/yo1KKTgFU0eN
-	Z1ml98wskxCI+y12wFN/+xZVI6EQ9bfPDK13iP9bSgHUDrkKmw6vCkvRApndSaM24A1VQMV7wSv
-	7nLyClRZW/EoWjyFhrgHc8FrPMyHuU0c=
-X-Gm-Gg: AR+sD11qSsDLCJSFFT4/kJa0I/NT6w+axSy69jS8qfTe4cXKepHh0yq9C84W8uhE4a6
-	fN/mcLmRF1GA88YcMfPWHKXsmNNnmFdbkSaf6+u/y0m/zArEeFH4Crrl0N6WnWo9lKcJ7PUlsEe
-	O8p7046mPCBKSkAPhgzNFAGd27rGM5NCAxDIHrnhHiK5gsEZm4b08bcuV93KZgjIAh//xNfeS4c
-	COQ2c2JYqaJlvmLcFeigv9OsMBKJ2w37FETjs9ee/dU81oT/HY3KailUT3p1OKYCCvYA9o6p8lG
-	KX4GWlwLiwwso2JsfN0we14rmZuOyi4sRJbWiXocdq5B6ZhQ4F2B7SkwU9AGmmTnSdD21q5vtqv
-	WtA==
-X-Received: by 2002:a05:6a00:4b4e:b0:857:726d:2e97 with SMTP id
- d2e1a72fcca58-85b5c0e42cfmr426775b3a.20.1788174833315; Mon, 31 Aug 2026
- 04:13:53 -0700 (PDT)
+	bh=VwdftaVIZmlh3CDWUjMMFKtdPpiSiH6htcM146k0hFw=;
+	b=v2DGdS8lwpWxy3t8cZgBpBIkAvb1JhOD+dlkqbdybSzf+EPSfXvfdekCRE36/wy9JXHjzQ
+	qbYc1qLbA6ObnlRvjLIwVupyuG1PcOujqTke57p5oJOPyIMP4mLjyI4dHvDcHicaJN0ONG
+	jcq4L8+D+9liJXsZL7SQU5kW2CFz5yM=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=YWlxGEd+q0psBfApITqKzWdA2Uw4k5OebAGh84O7dtE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788175008; v=1; x=1788779808;
+ b=Bd1eZyepJx6PRVcMTMWIlRP0f7pJy/cLLz2ciTdASJ1IBA23DNGpHDlL67xdx1J8o32VGXwt
+ c7yOurJw6GgP/WLL7pQoUT+IVX3mddS9HpZUaXfRb85/5pIHEjeMqSff0bYZGZHMbvYAgNbR1LM
+ a51mhcOaFR68btTKtJUR+iD4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 5bea7a6055a809e8;
+	Mon, 31 Aug 2026 11:16:47 +0000
+X-Mizu-Trace-ID: 5bea7a6055a809e8
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <249e0c30-bdd2-4dec-8c21-57cc4c2dd617@linux.dev>
+Date: Mon, 31 Aug 2026 19:16:39 +0800
 MIME-Version: 1.0
-References: <20260828191433.3304458-1-nphamcs@gmail.com>
-In-Reply-To: <20260828191433.3304458-1-nphamcs@gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 31 Aug 2026 19:13:14 +0800
-X-Gm-Features: AcwNN1VrQPpiBb-m8M8cbBhiD6LWslgKbMuquunerrwCU6jvrwuqE6JT8Cs2Vrc
-Message-ID: <CAMgjq7B9FxSU13_vJH222_wp4wdA_n9viy+MJbd22=YfgP7mbw@mail.gmail.com>
-Subject: Re: [PATCH] mm, swap: fix SWAP_USAGE_OFFLIST_BIT collision with real
- usage count
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, shikemeng@huaweicloud.com, 
-	baoquan.he@linux.dev, baohua@kernel.org, youngjun.park@lge.com, 
-	hannes@cmpxchg.org, shakeel.butt@linux.dev, joshua.hahnjy@gmail.com, 
-	gourry@gourry.net, kernel-team@meta.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 949E140008
-X-Stat-Signature: xamw81h1rzjphda7xpfydnxgw7kbkrj1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] mm/huge_memory: do not touch frozen folios in
+ deferred_split_isolate()
+Content-Language: en-US
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: ziy@nvidia.com, kasong@tencent.com, hannes@cmpxchg.org, david@kernel.org,
+ hughd@google.com, baolin.wang@linux.alibaba.com, baohua@kernel.org,
+ liam@infradead.org, usama.arif@linux.dev, nico.pache@linux.dev,
+ dev.jain@arm.com, ryan.roberts@arm.com, balbirs@nvidia.com, kas@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ ljs@kernel.org
+References: <20260831091514.1879786-1-kirill@shutemov.name>
+ <20260831091514.1879786-2-kirill@shutemov.name>
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20260831091514.1879786-2-kirill@shutemov.name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6492C40006
+X-Stat-Signature: m73e7r1zqrs51kmf67rjbb1ppedxa3ds
 X-Rspam-User: 
-X-HE-Tag: 1788174834-332905
-X-HE-Meta: U2FsdGVkX1+sM8mVCXc/EycFl0Tpu5yunEuZYy9c0I8a/i1YlnH0oj6Ug9hfE2SSYzjpYDoh1yX29a5JqIAYdN+9JdaNajO+PiSBYHR+N770VxXTQaStGRKXmTV5v5SJPMDWcdQP9B5FVwq4ucHV3boNpyFV4FZZJjaJvl1gD0AMZvTuA5lJABCcgqq2nhQmswU0PjcYntzzH5iB9nNC8zAteheVHkJxPpGeN5bhYzGobAos7RDURZn1ZSUKAE58S8jGrmZVmcBc6841rtb8bHlPP85rGobn41Q4z/v4uw3YPOTqpI4JkZCybUY5+hALV5g9SxZqfn+mCCM4t/hHsK3p1ZgekJHraxYSQTIvwTF8LFQ//F85K2JZVRcnh5XYbFHQ7zFEQFPF780FOMIr7r3G9wQXF07Zs+UF4saeC7piDtjvWm3G5RUXdPdOM815BNRg6Yi1hkK9TKxxb2ezL7XiBI3TguORlz5iqZJqcmUnde5tvXFuGb6V9wUQ8SpEWpsrWIKYqv9HF8N11+vjf6k/FWSYNdwI2q1lwi8UCCRxegAIqGmYO+fIjgYB7ZAqCNKo1bEbIO+2Wr3PHvc+Fd/6aLMOjJ2DXvqv3gN3v71C3rconxaMIDNN7ziyGc+O5ajEtpFmIO/AHmugExM10YJ0KKsVipT+2+Rg/0UvfaEZQdOCGCypBj0c8UQmzMwcbMrUwPlHkknhh0hbqcWSvYt0JA+H2xV1MJlPazHihGBsrFQLHzg3XHi7OLz1p/dU6U4mNTOUJ5v8qvXPK8pzaejJe3m7o4nG2W+PTbPcdDWBr3/a0VyX384TGLIk9WTbNSLd0M7qoZygNQCJNQprXVWnqgjdsEM0GQNzL5g6K7zR7HtL+H5g6BjxTl5BR70lZYTcn/4TANahHOlE1lonPCfPPTIDwLzesH5anhAywuVXf6vjn57bIBvaMFAlgXsrmBIaBidTyuCsqkBp3MP
- E+OdIY3y
- bSenZGTRseDdO3eZLLDvyLDdRPCUJSVsaXKke1ZVlK1HWZ2u6QMiRQ/qKIazHxMpkf2PbJk2LoH7LBUSa2GCE51L7AuQfP2I2nKoxvf1sujcq+13CHtGJTesWoUzLyo33EvAKVVDaceaWKOTZtnZ6kLE3x6MlU4UAWZBkgqrY/ijDIxI2ZnKlTHm+nADPUNQMxuyz0RufbWb+evKEp6ytyGgy6P4DDR7TBVBMBddZ8qUuULHZdrHfxC2cuqAuCYJVXUmQBSr0Au+DE9Bt93ZHj0SiOCc5NkFEVBqn9l5lPricKKR6o8miIzIOtYYUY4wFxSXUcPkGFho4G19dU9DzBs9tw/aeZXnure4/j86BY3S/4S9zTIJF5XMMuHQtiopTWg0eO+kXAYEOFeJROD2XyTK6eNk/30i4hLgtMput6fnsoMYx7bCU5kjt3uB+Bp4DJ7/vLIaVHfFwgCuffU8n3abVu5SKEYfFUKYICE5jGMmCVagE/05EcvX6TpOvkkzX+rhMlmnV3GnjxX0nxrqT9uu7qOqMzr2bN3wa8XkBoSzISgx9FDQiZt1HxHv2zGpJEo42Hcdi7QPpllyepINsA0xeaT1+K4x+aL6kPVdQRj4iPQ4FFtucJe653Kh/H5131sADeuoQ0riDR1rplAHEr02j8hYnFEJcBnkWAjDB0mS0i3BoDD+eQKwmqWGsYRhFMHS6GS+p8wa8yrM=
+X-HE-Tag: 1788175009-782502
+X-HE-Meta: U2FsdGVkX1/V3cUhsNtgVdv9sPU7ivcRan1/jNRnGG4S9+xFm+FkqGNQILnNuofQ/r3fnmR4kLQcfJbViQKAYInfVBqkmqXyZ3R3CKqtR1xH4m9+PZ399Arv4NpbF27npzDnhBG5fAQIWkCUZ5fiRD6lKKT8K0BgyHKCahknihnBBMoE1RtifrVZp06D2O0YoraaJXa8eDfGlzX2vAdnfpYC26nrsio8/JmmL+GiID6YmZBnaTWqCx3Q2/mBd08lnKi97DczjSiOYARDnGB9w+Vdxd1ku4gDh5PWBuRWb4S2swXcXwe3uGFK2lPh2YO++68d1XdJMhwYfEfpJEvJOUYnuL6Aun326qt1+nZcf6Mio75jVqvJkGb/FSsk7FrLP9bBujWD5MCpxQZYMfJ/ZfDk9iid09wa/blW4pc5sHnNRMm3/kRsVGArhC/4Qpqm0pntWQ425h0sbzv2XzxIjidTiyC+a51h3uRaBRmXbTmIhc21HcEOYsFz9zebRjTGuinbSI6ku+zuhwhH6fIL2Fc6yyLg+RXZBPH59jWiX9ePEeUbKQAhmUxydbzB9q7DqnWZoTRFSTVYf3S3mkUqybFp4wDMFJroRQmSh/LOvxhJr7RljNibLB9Yb9sMjMsa9MLCeEshs7DnddSsWLccO3c0VXuEOLNjgt6AHz96/KGupuYguizSvEtAXwduK8puJZ7HneJRCBTvT1C81NFBZTZBdHsz95KBMa2HHlmkZwp71y+bbu5BWls4SDYzzMcLkq/P9kyhIxt4LMVgVGOc/i5FayZnvNCtqXfzUhMDyvpvVo9u5ZoPW2X9M9PJu68VQmIEPSg8ZslHsoam4v0M1c6aeo9fUSjW/6VjcM6Lniiis7M0q+ghQ+p6D4n+uJrjoCRzJ81x0xdm8HopfSYPBja092Y8spWiRBnDnF6ORrgvCQaWtEq9YbVmckzzFBVCzQtmKKvCH7XPxgKV7pt
+ dmM8DpuV
+ T1WVZdpGkOh6uAQTC1K717ns6pzzsiiVMC/yUUupRLjL/LYYIPq23/lyGuFl84cyUBLJvUrkj/PzkG/uii/XGP4oCELzlFd2m3LYGAlNEkZar1uP25twBcFAQ7SN2CPcNWgDRZGxZ4CWKDUuPmmbRYwh5WmkcgALeoT63In3U6SabMf4guzIKkIlC9pvDdPwTujvySFTUEbUUZn2ITfLTCZoFWZoCCnMguPQn5z1piEzB8PR/eDYG6oq6Cp/LndRruOHs77dVTojOz4n0dmbevM+BP1yqqKevM8wgVpLvtEK10xsV12ujRd12R1xLNZSCmuc3B6FH3G5BGJOVCdJTcHy9Px5nXeTZ6PTghKd2VS2rUxOP0wAsHPSNXSIIgKuK9iVXxpC7rQebTSXDp3g/ookaRD9njJOzB0AOIOadqqOhnKI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,66 +97,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 29, 2026 at 3:14=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote=
-:
->
-> SWAP_USAGE_OFFLIST_BIT is embedded in the si->inuse_pages usage counter,
-> and is meant to sit above any value that counter can reach. However, it
-> is defined from BITS_PER_TYPE(atomic_t), so it is bit 30. On a system
-> with 4 KiB pages the flag collides with the usage count once that count
-> reaches 4 TiB.
->
-> swap_usage_in_pages() masks bit 30 out, so whenever the real count has
-> that bit set, every caller of it reads 4 TiB low:
->
-> * /proc/swaps understates Used by 4 TiB.
->
-> * A raw count of exactly 2^30 masks to zero, so try_to_unuse() takes its
->   "if (!swap_usage_in_pages(si)) goto success;" early exit and swapoff
->   tears the device down while pages are still swapped out. Nothing in
->   the rest of swapoff aborts the teardown, so those pages are lost.
->
-> Independently of swapoff, the collision also corrupts the counter and
-> the plist. On a device in normal use, a free that leaves bit 30 set in
-> the count makes swap_usage_sub() see the flag where there is only count,
-> and call add_to_avail_list(). It clears the bit with
-> fetch_and(~SWAP_USAGE_OFFLIST_BIT), leaving the stored count 4 TiB below
-> the real one, and calls plist_add() on a device that is already listed,
-> tripping the WARN_ON(!plist_node_empty(node)) in plist_add() and linking
-> the node a second time.
->
-> Change the definition of SWAP_USAGE_OFFLIST_BIT to be based on
-> atomic_long_t instead. Note that the usage counter field itself is of
-> this same type, so it is still a valid bit.
->
-> Fixes: b228386cf237 ("mm, swap: clean up plist removal and adding")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20260825153238.2695446-1-nphamcs%4=
-0gmail.com
 
-It's really nice that AI can help catch more bugs.
 
-> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+On 2026/8/31 17:15, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> 
+> deferred_split_isolate() probes each queued folio with folio_try_get().
+> folio_try_get() failure is treated as a lost race with folio_put(): clear
+> PG_partially_mapped, correct MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, take
+> the folio off the queue.
+> 
+> The folio_put() race is the most common case for !folio_try_get(), but
+> it is not the only option. Another scenario is folio_ref_freeze().
+> 
+> A zero refcount in such cases does not mean the folio is going away.  It
+> means "don't touch me" and current deferred_split_isolate() doesn't
+> respect it. It can lead to unqueueing folios from the deferred list for
+> no reason:
+> 
+>      CPU 0                            CPU 1
+>      ---------------------------      ------------------------------
+>      freeze a mapped folio            deferred_split_scan()
+>        folio_ref_freeze()               folio_try_get() fails
+>                                         folio_clear_partially_mapped()
+>                                         NR_ANON_PARTIALLY_MAPPED--
+>                                         folio off the queue
+>      give up, put it back
+>        folio_ref_unfreeze()
+> 
+> The folio is still partially mapped, but it is no longer a split candidate.
+> Nothing queues it again until part of it is unmapped once more.
+> 
+> Skip the folio instead: whoever freezes the folio, owns it and owner is
+> responsible for its fate. It also covers the folio_put() case:
+> __folio_put() unqueues the folio via folio_unqueue_deferred_split().
+> 
+> Nothing is lost by skipping.  Everything that frees a queued folio
+> unqueues it first, and folio_unqueue_deferred_split() clears
+> PG_partially_mapped and brings MTHP_STAT_NR_ANON_PARTIALLY_MAPPED down
+> on the way:
+> 
+>      __folio_put(), folios_put_refs()   mm/folio.c
+>      __folio_migrate_mapping()          mm/migrate.c
+>      shrink_folio_list()                mm/vmscan.c
+> 
+> __folio_freeze_and_split_unmapped() does the same by hand, under the
+> list_lru lock it holds across the freeze.  A freeze that ends in
+> folio_ref_unfreeze() leaves a folio that is still partially mapped and
+> still belongs on the queue.
+> 
+> Fixes: 8422acdc97ed ("mm: introduce a pageflag for partially mapped folios")
+> Reported-by: Lance Yang <lance.yang@linux.dev>
+> Closes: https://lore.kernel.org/all/20260824131224.73344-1-lance.yang@linux.dev/
+> Assisted-by: Claude-Code:claude-opus-5
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
 > ---
->  mm/swapfile.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 53bf01d5f7f1..601979b97f95 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -156,7 +156,7 @@ static struct swap_info_struct *swap_entry_to_info(sw=
-p_entry_t entry)
->   * This bit will be set if the device is not on the plist and not
->   * usable, will be cleared if the device is on the plist.
->   */
-> -#define SWAP_USAGE_OFFLIST_BIT (1UL << (BITS_PER_TYPE(atomic_t) - 2))
-> +#define SWAP_USAGE_OFFLIST_BIT (1UL << (BITS_PER_TYPE(atomic_long_t) - 2=
-))
 
-That's a very clean fix, thanks!
+LGTM.
 
-Acked-by: Kairui Song <kasong@tencent.com>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
