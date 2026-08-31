@@ -4,114 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7963EC624C6
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 14:09:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5921BC624C6
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 14:18:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45E1C6B008A; Mon, 31 Aug 2026 10:09:48 -0400 (EDT)
+	id 382256B008C; Mon, 31 Aug 2026 10:18:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E7B46B00A4; Mon, 31 Aug 2026 10:09:48 -0400 (EDT)
+	id 35AF96B0096; Mon, 31 Aug 2026 10:18:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2AD1E6B00A5; Mon, 31 Aug 2026 10:09:48 -0400 (EDT)
+	id 2980C6B0098; Mon, 31 Aug 2026 10:18:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EC53B6B008A
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:09:47 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 641DE80159
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:09:47 +0000 (UTC)
-X-FDA: 85161748014.19.D22488D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 79CCE20006
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:09:45 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Vxa9oF/s";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 094236B008C
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:18:51 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 83AFB120142
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:18:50 +0000 (UTC)
+X-FDA: 85161770820.27.3524566
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C690080004
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:18:48 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="es/OHSgr";
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788185928;
+	b=okibuLIGxXJazM2r8RsR4v9c3q2Tm99yGaOM9VuJsttR2afiAIoM68D1b/AqZeZUFxO6hZ
+	9XuEDFjXKDGc84T/AMu7BXKw9S2GIF78MG5VVHNBjyd/y8+mTMYQWfwq2SnHsMCsPzETZI
+	xvgxii5kJ0aamxQTvHTZ6kAZTKf0Ypg=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="es/OHSgr";
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788185385;
+	s=arc-20220608; t=1788185928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L1mNt+t9t3Mp1gIJn7MX5n0Mz44VISN4VLwL6b799Bs=;
-	b=5eiAoHkYfqPQxklwR9F6BrSvjkIjMr7XHPvWEkYuSX/sZ3jktR3lCzv0hYqt7o4ge1SmF3
-	dK7Zm75OUaYaRxPUFL6gaXNgMAkzwZBrnvuUcg6b1G9z9yVNqKhPemUpFVkxFtD+wcskuU
-	GiSJEVaYsyidqYNuyxX3zmyNTRstCks=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788185385;
-	b=mBYSFFjgSwp5mFe5Vk6vVj6h65JgWpdazxj5ReZw9QbtbN7qs8O0YIAgvTM2r07BZYrZZI
-	Z+IQNQYO1XdZX/YJEw838ty0bxcp/o6a8gkGObcshCyAKuWVvLwQMxajmmB4vFVVxI7oc8
-	+K6zcyDIHwTaU8gqhH33J9fb8+WWdaE=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Vxa9oF/s";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=YONLIVVAUFRdHkx2Rc44fd4Rx093REbHbos2HAeeAtU=;
+	b=FCpG5pynM2wxwdTRRwtSA4G23Ejm4sp3J4q2FoJsOAiPm8Duj3AUz8ofte3LvPJs4l4ETw
+	ewsj+zWi8tLdzh3PWXlPCoDlJbZdrC3uSLcbQXMx87SViMigxRbxbO8zDq22SWs5om/+6H
+	RQ+8B0olcz5uZ9fEQpEyX/EC56MzNr8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8E1DB43FCE
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:09:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756311F00A3F
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:09:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8815B6013A;
+	Mon, 31 Aug 2026 14:18:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE251F000E9;
+	Mon, 31 Aug 2026 14:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788185384;
-	bh=L1mNt+t9t3Mp1gIJn7MX5n0Mz44VISN4VLwL6b799Bs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Vxa9oF/soWfIGx7X9eBymk6tUBTtSiGceTld0BHTg54XTE1uWopGPbiR5qAiDdjda
-	 iaJ3uvNfpOPmsRf222g18ht0Km7pm/98QZ3tlJNQjiOp3SaGMmyhyw9p/XFbPew558
-	 7tVYTzHuDm97oKg0HjVguFpsU2H9obvZ9W+/j6RGvcDs5jyZtgUqmkq8ESPWdMekxV
-	 d3j0zvnb5rRn9HJxwu8ZTDe6GNqARHZsq8wRDUFaq7Cjd+jP3t4AjfNlQD+ricbfQY
-	 t6b8GVYS/5XDQNQ+BqQfQROnn9n7hMkhuJImHAKQavStYE25THku2v1yfK8B7efNmp
-	 4dNZYg3inseBw==
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c2530cabcf4so544423366b.0
-        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 07:09:44 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqQwEvJ86JoqmVfpHB2VzxVKUDcZcUjiJiwBQ/qo8DMCzy9/PhvK4xGES8DPDhaptV8pluWCdD6ZA==@kvack.org
-X-Gm-Message-State: AFuF++mxCfv/VgPSubjbjAXUDPL3OTYi9y3sexeABeb9p5nCdMIbSWrm
-	GFMVNlaNgLjyGgPTXFdW4ykMkrYXyI8286Lw9nkHLH294oC8O5PjQsdGYAzENyuEeB+n2hAovba
-	Bi0DcFYJI7i4CkyV/evbIRd9lFU+EQ4Q=
-X-Received: by 2002:a17:906:4ed4:b0:c25:6c9a:88bc with SMTP id
- a640c23a62f3a-c25b3d8a1d8mr44713366b.19.1788185382598; Mon, 31 Aug 2026
- 07:09:42 -0700 (PDT)
+	s=k20260515; t=1788185927;
+	bh=YONLIVVAUFRdHkx2Rc44fd4Rx093REbHbos2HAeeAtU=;
+	h=From:Date:Subject:To:Cc;
+	b=es/OHSgrFhhuoB5mNLeORVCEwgIemnBbctWc1VqXmE/ivZ6SBs+Ja6EwcYS/4910S
+	 alTuWAoZYzsEqFU34j3SWao+xeT68zjaUaaMpYb/Ya6E3RoT2x+McOyVDaLRmMH+Mm
+	 ZS+ZRHI7YjX8cwf4PUMZGzZPWokcS7bFZgoeKVsjo6NZvkrudu7ET0YQ7mg84N886k
+	 JMcai+D1cYkOwowdJGDgB5jn8/fjvroxm6puqYnHDvPhbonfDjLgA3cSJ9+olUH1/Q
+	 Kv2KicCSqVsJCZSYeD8FvQS5vbc/n9aIQuPQLvwBrlNgXExPcbWTUPy8imsUTbK3Cs
+	 ZGuT0pNVoFDag==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Date: Mon, 31 Aug 2026 15:18:23 +0100
+Subject: [PATCH] tools/testing/selftests/mm: add missing .gitignore entries
 MIME-Version: 1.0
-References: <20260826092541.3905933-1-ruanjinjie@huawei.com> <20260826092541.3905933-6-ruanjinjie@huawei.com>
-In-Reply-To: <20260826092541.3905933-6-ruanjinjie@huawei.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Mon, 31 Aug 2026 22:09:30 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H7+dO2rnb4KxRvVo1w_Mx8Vfsdq7LAbkzPfNYrwUhEtfg@mail.gmail.com>
-X-Gm-Features: AcwNN1UnFQ4mMXEBOHuSLr0Mu3pUPtp_q9Do6p0Tl3kncID1TuZivoGd1AqJPW4
-Message-ID: <CAAhV-H7+dO2rnb4KxRvVo1w_Mx8Vfsdq7LAbkzPfNYrwUhEtfg@mail.gmail.com>
-Subject: Re: [PATCH v3 05/17] LoongArch: kexec: Fix CMA page leaks in segment
- placement retry loops
-To: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, 
-	kernel@xen0n.name, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
-	chleroy@kernel.org, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, hpa@zytor.com, akpm@linux-foundation.org, 
-	baoquan.he@linux.dev, rppt@kernel.org, pasha.tatashin@soleen.com, 
-	pratyush@kernel.org, ruirui.yang@linux.dev, kees@kernel.org, thuth@redhat.com, 
-	gshan@redhat.com, jic23@kernel.org, james.morse@arm.com, ardb@kernel.org, 
-	leitao@debian.org, yeoreum.yun@arm.com, sourabhjain@linux.ibm.com, 
-	coxu@redhat.com, tangyouling@kylinos.cn, hbathini@linux.ibm.com, 
-	adityag@linux.ibm.com, ionut.nechita@windriver.com, liaoyuanhong@vivo.com, 
-	seanjc@google.com, fuqiang.wang@easystack.cn, makb@juniper.net, 
-	piliu@redhat.com, ebiggers@kernel.org, jbouron@amazon.com, 
-	mclapinski@google.com, me@linux.beauty, graf@amazon.com, bgwin@google.com, 
-	robh@kernel.org, takahiro.akashi@linaro.org, palmer@rivosinc.com, 
-	x86@kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, kexec@lists.infradead.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 79CCE20006
-X-Stat-Signature: bwd9s7kkfwi54auqrw6i1e3dnp5k6zcq
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260831-fix-mm-selftests-gitignore-v1-1-c984bbd4c5e4@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAC6NlWoC/yXMQQqDMBBG4avIrDsQI6jtVUoXan7jlBpLJkpBv
+ HvTuvzg8XZSRIHSrdgpYhOVJWSUl4KGqQseLC6brLG1aauSR/nwPLPiNSZoUvaSxIclgp2r2qv
+ rGtvUhvLgHZHr//z+OK1r/8SQfkc6ji+cxVydfgAAAA==
+X-Change-ID: 20260831-fix-mm-selftests-gitignore-dd389da72760
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>
+Cc: Pratyush Mallick <pratmal@google.com>, linux-mm@kvack.org, 
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ ljs@kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1249; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=GiQY0/cGhCIhrwjz7J5xvOXUacu6SzKqp5fSychrLdM=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLKm9hpxHJY+fk3bZ5vKhnl/GItVs+fO4w32CZgY4Tjnm
+ /krpjXSHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZjIAh2Gf1rTy/fvmXPZ3Pb7
+ 1q5Nv9Q501wtoljnZOrvkNc3k+37ocrwv/SYefGUjgehKjudFCp8GsVey+iUiufaF5xfdJinyrO
+ WGwA=
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 X-Rspam-User: 
-X-HE-Tag: 1788185385-233480
-X-HE-Meta: U2FsdGVkX1/lnU6NCyvbK+atOA1tdyU5CHXM0MauHxCgRCRmxyONheB0rcPNv0iQwb/VqDF5GGB2/PghXCwUISTC7pugIUqjSaUCrkVouNqPxOBPdE5cUl5fJ5KOC/AmteARcoCk2+7pDpLboS8gfvA0rCV7e4HCEKkGTMas2rpHsmQf30F4vMfUj8Amcfn5Vpd4fSVupSdesF65alFQqMHObQoYc/BaLr25ytJw+AfrpmnUAVF2acgwj7BqWTX2mPHj6FD4DK/I6lpzrSaccUyq53HHYGiYDlMWx3OJ/ExhrSNRAx04Ibfa1JF979dKMcbot6YzNnDy495CV/1EBBtiyN3nYyIn2EtgPLCiIZSZgTXGISth2dUj9IZ0M04xF69R+i0TNTuyqbxF7JYXqfaHzrxaSlyBEKCudn0e2HYHKw7PQqGcFI1WXuQKriqUMxhGbU03hx9EkoXW7aDkj+D3R/IUfb6uH/NqYD704CKOvTqpx/RLGgGqlyEdsBYSJEzdmJSN94T1Ht/f4RSsKWo09BAeg4KqkfpnwHslKhgqnJfXzN/BtmQHwdwmNgrxvf4wHtAbuE4IFpi7xmamUV10Wh+0wUxaKfPiqi3thAxpi95u3BXcslzbPt0lk9a8w/VgV/nYcMsqs+wcNPZyhE8+PauLRkN2alyerhLHwoDhXHAisLHYTwFZrtSjgNDl85fs5tlh3CC1A5mdCQ+JsxV18u7tN/CrD/+oJlVVUoxDfZBdDcXK9tTghd0MsryT99P4GIkhn0uG4LE9ynTvuKBtKkNnMvHrhYnbDpMljFVQogRUIFpnNy2W3J1zSIxevbe2b/DNlu9pIvW/8L7vzK44HQXGm3rytQSmNdVOnxILo8WgUxYZwGPKLxHFabhh7Mmy5Pi3Ha/NgJVpl/rRMS4EFv55cACodkHOCWnhXBQxFREq1gM1i4PW+B2UhZeNyJ+PDAfR3xn5MEzcJ33
- B/8cKLgG
- 3Ex48dd2FkaUXJIr/Tmxi5Lf/K1QLAKho90/emE739dQhd9+dNzLvtJFvckjGmrzgTKHOEejcDrG0AxPAsWFeIeuFYGv7lj+LVy7YndgLCx4RXZ//ej1pXRt44+FOkf6E3YKxXHiZZDKoWOrhOFboiEhA+kBYeYQ8Nwks0qv9mNWLqN7/7V02UrixbpDggMC6KjnRX5J+qFi9uZ3ADdqkPzI+kgvAnmeYORztQrfI9KWfnOA7Qie2pZ5LWDbEqjFW9831wAJCBh2FJNRyDZaeQRKfn92SO4wHteOhGCqnWjVKkOgk4r2mzqO+3eUDa34rngSF480a6PBbNpI06eHGddKo+kfqsn+5S6dkEqq1+kkPirqC9eAzXmqM8rZfe3t+03eQ0rMainwPI9EtQa7zN/zXO8CUUq662j5p
+X-Stat-Signature: h8uuojfmj85yxhogs83urghtu8a38e1j
+X-Rspamd-Queue-Id: C690080004
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788185928-679847
+X-HE-Meta: U2FsdGVkX193pigXjwAW47Pq7vnYsa8upYysGaoTxUw+zzDYCXZ/KIWQ1gecRZa+kLDVaQcQHlKgrQDwORL3y1uBRgCUiH8EBuT+KeEACE+TeGnv6o98MAUZm1rUYmeHKxlssBxvy9ggIuhxFP8G7/9YkrABTDp0wtiRpKpdr3b4EDvQT4lOLZq2QIpe0HpBx1TPT8O7Bh8nRyldb2yVl2+D3Qw/IGlvsb3PmpU9yyCWVGszropeaNHuW+RpGhDtIULBXYcM0CWdT7ZG/7OBJKF+xKGMghz8z9MISFUIoSgugL60fut5r8Z8Q4M0BBv6B7714DZpFXtN0XRYmAAJ7qxhRvnle6on9wkfStIOUPGzWl+ZImBe4DTEsxhMQjAsxccSxmiUtdNk14NvF3L24Yr4OZawmJoqocf1WcGz0OGKEQrhPpX6NCEngKSN3Xyfco3vEYOhaFO2MHdKdkAdwD7Cqo5TKLydWBVF1bq+WNgoZ7bT4G1MYzDxIgDE+350JR1hzf3StcVIOYlMFZhr4T/rqNcvs28oNlkI3XariiwuLOJY+4KomXdM6vr6hue2LxOWnJx5EsbTQLRc31d2ueA4Lf95Hs8nRmXfTBySqyO9X5sVsLw6/ubUDr8nMQydUYeotlVd2dxSHGxZJLu7Ew2h3T8N3xpP+GhQRJyRZJIpAYFPKLBS1CASYE/tgVR05AHL1HRxwEyEqn1kNuh+tAly0ucj51p8L0AkAnvgccBVpcWL6fUV98CtO/6d/ZuIvZCRW4kpoASekw3pGcuUyWxtKfrtf42XA9Y5IFsmyYk0vMR6ZYqgMwn3ve3pXA2OhhnvrZq31WvE2liCiDv68wTTdskH0dOm+43xosFeVwbIAiu0/33BZ8kYAlcJ3Ab0DI58/yrqR/qZy13D/XnJ2X5lMZkZHXLwHQbpZGQzN2eqrYJ3nGJZLmhWGEcxxOZ2yHCggUwIwHF9789u5h/
+ cn934IGu
+ yJr0PEte99bMPRyFk1wlUzg5V6GoNHPZFIFzRqO1KB4RBE+6HV5sOP5GPK628npEA+b19IclqpICbYdX8MQhRk00Qwe3p4Himw5oX+KbbTTxLS/Jmu1B71kaP95Lm28Crx8eIIio+05ogsGwX3KPABg87M2/KRmn4FXKFW7g6ltz7soJe5pXxKmFZIOkaX1Saf84c048a1MCS/Qixa11nu5erixvE9dfMr7jw3ycwkxSwicPuAcMF2+l+XQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,80 +106,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, Jinjie,
+Commit 2bee308f3adb ("selftests/mm: use pattern matching in .gitignore")
+switched to a pattern-matching mechanism to reduce churn in .gitignore.
 
-Why does the ARM64 version of this patch use "kexec_file" in the
-subject line but the LoongArch version uses "kexec"? It is better to
-keep consistency.
+It however accidentally excluded the page_frag test's-generated module
+intermediate C file with .mod.c extension, and also the local_config.h
+header generated if liburing is available locally.
 
-Huacai
+Explicitly fix both the issues, fixing the module-generated C file as a
+general pattern as these are always intermediate files that should be
+ignored.
 
-On Wed, Aug 26, 2026 at 5:25=E2=80=AFPM Jinjie Ruan <ruanjinjie@huawei.com>=
- wrote:
->
-> During kexec image placement retry loops, any midway failure causes
-> the loader to truncate `image->nr_segments` back to its initial state
-> to purge the failed segments.
->
-> However, this truncation introduces a memory leak. The CMA pages
-> allocated via kexec_add_buffer() during the failed attempt are tracked
-> in the `image->segment_cma` array. Because the subsequent cleanup paths
-> only iterate up to the truncated `nr_segments` boundary, these allocated
-> CMA pages outside the new boundary are permanently leaked.
->
-> Fix this by explicitly releasing the associated CMA buffers in
-> the failure paths before `image->nr_segments` is reduced.
->
-> Cc: Huacai Chen <chenhuacai@kernel.org>
-> Cc: WANG Xuerui <kernel@xen0n.name>
-> Cc: Youling Tang <tangyouling@kylinos.cn>
-> Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
-> Cc: Kees Cook <kees@kernel.org>
-> Cc: stable@vger.kernel.org
-> Link: https://sashiko.dev/#/patchset/20260729031235.2840255-1-ruanjinjie%=
-40huawei.com
-> Fixes: 55d990f0084c ("LoongArch: Add EFI binary support for kexec_file")
-> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-> ---
->  arch/loongarch/kernel/kexec_efi.c          | 1 +
->  arch/loongarch/kernel/machine_kexec_file.c | 6 +++++-
->  2 files changed, 6 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/loongarch/kernel/kexec_efi.c b/arch/loongarch/kernel/ke=
-xec_efi.c
-> index 5ee78ebb1546..15fd797ff3de 100644
-> --- a/arch/loongarch/kernel/kexec_efi.c
-> +++ b/arch/loongarch/kernel/kexec_efi.c
-> @@ -86,6 +86,7 @@ static void *efi_kexec_load(struct kimage *image,
->                  * We couldn't find space for the other segments; erase t=
-he
->                  * kernel segment and try the next available hole.
->                  */
-> +               kexec_free_segment_cma(image, kernel_segment_number);
->                 image->nr_segments -=3D 1;
->                 kbuf.buf_min =3D kernel_segment->mem + kernel_segment->me=
-msz;
->                 kbuf.mem =3D KEXEC_BUF_MEM_UNKNOWN;
-> diff --git a/arch/loongarch/kernel/machine_kexec_file.c b/arch/loongarch/=
-kernel/machine_kexec_file.c
-> index 5412aa9f3568..62a5be102065 100644
-> --- a/arch/loongarch/kernel/machine_kexec_file.c
-> +++ b/arch/loongarch/kernel/machine_kexec_file.c
-> @@ -217,7 +217,11 @@ int load_other_segments(struct kimage *image,
->         return 0;
->
->  out_err:
-> -       image->nr_segments =3D orig_segments;
-> +       while (image->nr_segments > orig_segments) {
-> +               kexec_free_segment_cma(image, image->nr_segments - 1);
-> +               image->nr_segments--;
-> +       }
-> +
->         kfree(modified_cmdline);
->         return ret;
->  }
-> --
-> 2.34.1
->
+Since this is a trivial .gitignore change it doesn't seem necessary to
+treat it as a hotfix.
+
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+ tools/testing/selftests/mm/.gitignore | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
+index fcd892ed21e3..a306d7754786 100644
+--- a/tools/testing/selftests/mm/.gitignore
++++ b/tools/testing/selftests/mm/.gitignore
+@@ -2,7 +2,9 @@
+ *
+ !/**/
+ !*.c
++*.mod.c
+ !*.h
++local_config.h
+ !*.sh
+ !.gitignore
+ !Makefile
+
+---
+base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+change-id: 20260831-fix-mm-selftests-gitignore-dd389da72760
+
+Cheers,
+-- 
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 
