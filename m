@@ -4,91 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D7EEC61DD3
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 16:19:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E42D7C624A4
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 16:20:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B7F96B008A; Mon, 31 Aug 2026 12:19:17 -0400 (EDT)
+	id F19F16B008C; Mon, 31 Aug 2026 12:20:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 468466B008C; Mon, 31 Aug 2026 12:19:17 -0400 (EDT)
+	id EF1BF6B0092; Mon, 31 Aug 2026 12:20:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 380D66B0092; Mon, 31 Aug 2026 12:19:17 -0400 (EDT)
+	id E086D6B0095; Mon, 31 Aug 2026 12:20:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 19F146B008A
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 12:19:17 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9A77A1C06B6
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 16:19:11 +0000 (UTC)
-X-FDA: 85162074102.30.AB341C5
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BC50F6B008C
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 12:20:52 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 632661A01AD
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 16:20:52 +0000 (UTC)
+X-FDA: 85162078344.20.199006E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 127C140011
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 16:19:09 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jGJbox2L;
-	spf=pass (imf27.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id CE7ED20011
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 16:20:50 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PMQrHkaF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788193150;
+	s=arc-20220608; t=1788193250;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SHhHAXohzn8l8P7iQ2bTOcRyRwykV6bPfvLQtf0G7Ec=;
-	b=eAhyWirVjInB58ho2XoZ5z0rU73YbVcdRJKUfJHwkSVNUXgNGMeeGw45znIA4W6kuQ5ivE
-	F6MfLseyrab8y+z3VpPjL+G/y1hEPMgFRpKW5/U2Vkp8vhxVambL3OyJhNbUWuPX3t1N+m
-	VX3HXWc08veaVqXH84/2ZVYmDR9Pu08=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788193150;
-	b=bd62hBJzqTekDOezxPRNvln8b/FNAaP61KEHwF6CbaxCdtYeknO+Yh/ww7pRhtJDfG17rO
-	9TDAGgDDWpgWzkKOMWdR64MDi9bFrn2nsFPQYLUbW+vVf7w4d2ThLRg1nrGMQJfuWVw+Zw
-	NUO/qf6Sz9L9mO1X3gRvRjl8eePfAUk=
+	bh=tI1sWrR0uNh0TXdJTPbEYJyehu63ytxRVKdQE/GQYG4=;
+	b=e6Jk0nmv7TSJN98NHgV3H6GAFM/arspvah3pQj/YUmQEhi8oenEK8jzjIso3TQSNAVjolE
+	2v3NdwSfC7VQdDyzUmyPmK/swkI+9Td86mObcdCtCZR7rnQn4/TOgqLjMDTCAs4fKXNzAa
+	hPWAQOrrgW9ogXvMJZeBnWPaCDV7Edk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jGJbox2L;
-	spf=pass (imf27.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PMQrHkaF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788193250;
+	b=VviJtJlcK++QbOidckWdFtNCEZUPamshvZIZwn3r1WpE2mCiyq0o0Y9aa2WRZIcNdb+mDt
+	05U+6CYp7p9VedBi5WdoTNq2YihvjV2NVVfsZUdphN3oB3N84x+eoxluqJanRg4SBAKYWv
+	HSS4dm2D+zmS/RsIf4diNjMvpQ5X5S4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7636C404A2;
-	Mon, 31 Aug 2026 16:19:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 911111F000E9;
-	Mon, 31 Aug 2026 16:19:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EE4F440E24;
+	Mon, 31 Aug 2026 16:20:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 141811F000E9;
+	Mon, 31 Aug 2026 16:20:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788193148;
-	bh=SHhHAXohzn8l8P7iQ2bTOcRyRwykV6bPfvLQtf0G7Ec=;
+	s=k20260515; t=1788193249;
+	bh=tI1sWrR0uNh0TXdJTPbEYJyehu63ytxRVKdQE/GQYG4=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=jGJbox2LSWuG5z7srjqQgIsOFUWtGu+aUDw6+QB45QEGMNTx4Q6d9Vlf1c9HHU1/U
-	 wLNMf8Zcnydr4bbADfj2JmEmrBVXcl1+tHRdFreJIjBendMpiNugCA019BhzUTSJWp
-	 zW5Vsl0fPmcWy3lKl+wGIhuEtwymF0rmvIRKSZ+DXlVJli27XQGHt/sk/l24iinReR
-	 OggJ0kToqFctARCDPnCzcW5ufJT9zGgZ1cNz5eWFCbjQGPpRWLtWvyXjXh5IS3fuar
-	 Xm0iOHFhYFMK4YcTICYElXpfQ+pxpXeab9fW81u6d/cycjk83mKzhmpp/4l92ZEnhP
-	 Kt1ATiRml5+yQ==
+	b=PMQrHkaFWC+D3XenUSOXVVfwJVpDfELNYu8xlJ1JAOFrd7/+ae7emP9kKi2wMufD1
+	 kKKvd0RrxU0mVv1Ydumxvl9FhXN7zN0OaRcZvzTJYWqqishBG9YRCE36yDOyLZ+V1q
+	 bSLBEjZ9VX6Z5zoYcfJYpDhCi22Gh3ZpHgzi8/eZxgFgRaeUUqOl2Com7wLTnpsBVE
+	 /DCvBLhCVDVlXid+J05E3eZHof/yRpY+h8pGpd7T3SW21wzBTAZjPQjuDVFQa9Gxpv
+	 bqfLxYDgETax8eKgJb+AJRdYcQNHDo68H2FCGD47951r6aoe9PfpsXDR3D18ivb8XD
+	 5nK8yvkH889qw==
 From: Thomas Gleixner <tglx@kernel.org>
-To: Hyunwoo Kim <imv4bel@gmail.com>, Frederic Weisbecker
- <frederic@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Kees
- Cook <kees@kernel.org>, Christian Brauner <brauner@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>,
- John Stultz <jstultz@google.com>, Ingo Molnar <mingo@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, "Eric
- W. Biederman" <ebiederm@xmission.com>, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, Hyunwoo Kim
- <imv4bel@gmail.com>
+To: Oleg Nesterov <oleg@redhat.com>, Hyunwoo Kim <imv4bel@gmail.com>
+Cc: Frederic Weisbecker <frederic@kernel.org>, Anna-Maria Behnsen
+ <anna-maria@linutronix.de>, Kees Cook <kees@kernel.org>, Christian Brauner
+ <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, John Stultz
+ <jstultz@google.com>, Ingo Molnar <mingo@kernel.org>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, "Eric W. Biederman"
+ <ebiederm@xmission.com>, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
 Subject: Re: [PATCH v2] posix-cpu-timers: Dequeue per-thread timers before
  exchange_tids()
-In-Reply-To: <87bjaicxm0.ffs@fw13>
-References: <ao7Q8miiuLAPVnWv@v4bel> <87bjaicxm0.ffs@fw13>
-Date: Mon, 31 Aug 2026 18:19:05 +0200
-Message-ID: <878q5mclfq.ffs@fw13>
+In-Reply-To: <ao7iQ_wOLghOvTsq@redhat.com>
+References: <ao7Q8miiuLAPVnWv@v4bel> <ao7iQ_wOLghOvTsq@redhat.com>
+Date: Mon, 31 Aug 2026 18:20:46 +0200
+Message-ID: <875x0qclcx.ffs@fw13>
 MIME-Version: 1.0
 Content-Type: text/plain
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: CE7ED20011
+X-Stat-Signature: hk7oibk1uon77bkthopyk3ksm4fzhrw1
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 127C140011
-X-Stat-Signature: hxy5bsykdg6qfozo5bijyfw5tdt7tz8g
-X-HE-Tag: 1788193149-220085
-X-HE-Meta: U2FsdGVkX1/zLM64GwZ3yk+3Kf1NYqwbJVi+aVJDJGSworHwNrITl4Pk7adgb5Z15s8CXytFg177ANSzri/9jGUn0kvKcAPyEtEUDdEnexaMuITjmJTpFZ/SqY4oiuuuorukWlB2RyebMjEPNxceSlndpccvTEw1hHUCulxtSZrADv2F/AEIFA9XWyP9owKrmoMf/U4KfGU5vmAZDHR1WIMhgeJZtiY8olObMYhOIgPaHJDUSUkVtI/8K9+ackHAlMF6tcix+Yz4vWQ5z7JhfNWQRgFLIdfNGfnrX7BGuHkK9CZiSJMm5BZiV8fw56toNFiRz7V3PSII2051CRuVoXsl4pGtsTwfZRmMKUH8imPuoH0n+GqjywZDfFBbf/ruPD66Mamcvw66A9VCa/nYz1sNY8NpH3VRF/3Fl5q52VGT18RjvvUZiztSLPK3/CnQ/R5FTOmPwoXWMui1TjCaplO139CW7dT2LKi+43jTaRIqG7BTU5jynWVyuC1VjNsn/m3cMwaqeiMIGxFjrGL0lpEHCmHpEDv3Rn60R6DfeHpXCyU2xVUByHKU4+/mY0z0pBV32mnHxbcxksyltejvNdGD5ou96Dhc7CVdGvMeptmCcwLWgXTLsEPPlbra/XY5jWVvJxiCCfq3ibeuBr/Fe0QElcL1REl7oFxIP7uAF0LvCjh7YSyEiw9fZa9QhbFzpBRKj6NtRs30YJexxoX0Gam1H0Xd47u/lD3NjTtuk9NnaKvUnbGZMe7dt8WUMDIGvXYEWlMEobEvm6X4OyoFYvbxxBjaVqjmFk317/r38UpImnOPwrmpYM8yA/+MQVWrMr1y8MfHITP8eQfXY/Fl+6KwKJ80DhTjfmmIUXb/XZ+59Tb38LvbgD8Sj7IuZbENkU0c890Bgi2hUOIkpMPmUdl2/zaQ2whTtILfUK9W4Zxm1ZLQYbIpgWr5Wjgo4b0/1IvGrPg7v/x0nhEiYNO
- cnpQ5Bau
- w3SP20ju51OPKWNW5p0i8k4wLJkD3zFhIj0ULOOL5OIULEdq9Op+ot1k6vqrGdi04/gs/FZ0Eo0WikHVDfhCrlHDiKZuz0RyYWkFBIDEZJ2IHT72JOMhn6rAWsaqyEE0NRuGrW60L1YFQDAi/ZmShn4vT5mdVnxTrvOxtsjxxZ2AaofViLfGsLgmOP9Jx6bT3Y9HR4Km3dFOnqBYFP0+9djSAO36Hg6r3fZMyZMNGvcbhfVftvvbV6xtARdTm5JMhFaadEK26kLF/FJZWOzerfo3Yc+fMkZeg06st9rZ5Y1lTmfDt7PyqCSDiCI1uACLy0MvU
+X-HE-Tag: 1788193250-623160
+X-HE-Meta: U2FsdGVkX1+sEaVUS9Tvu8d6m5lwTeok6qoI597aGSzlu9qXD31CWUBcYnfQYOkQBfP6L+HHmBEsMNfZxpF7cUOxhUZ+Gk837HAcDAgpKPke5SwxJPeqKPHSghxPlLQvFvH25OBFeyh0rOAdObTlAMy81/apiik/Y/ijB6U7lPCd2t30S78kaMuuyGcAoo8wmJ3s0TSd3Cu6iGXXm8Exk14XguDafQm9SepMEvgbUxLROJagr/CjIPEnjDeFH2XQWPA2o9+Le+1b1kdD2H8bEa5LFz8nBVPZpUp4cjAEtyYUw1CyZhdnY0+1tPpKdnFEYdxCFVLVkk0h42Oy9aKnFUQnSe4IhwqIMvIOcUbZEpJF1hLdyookHwhlgdwa0+gqpJKpRdgQ6Q+qCLAabG7kXcGGjLvWG2pH1Wcot/0kn3T/uFzkKPiioBOmjEURK0u0aaSiTzhuiMEzahKxI6WG5Ne7o6VuhTZbprwq7cTfMHnsOiPc/hU8uJil9cPHUTagk6I5lsN/oWTAqsg5fcjtAUmWjMhTwxHlY4hNKgLYS/XLHP4I1L9trEd5tkEoFYtq9MotmY4QYX41KtWrSfmhSMEA20orEdWZtNN/MShqRHUwfu7Di3h8hocm4/R0DugkxJG6IWRhjR64Fx7iYme9t+cHNqH1P/mptFQdhEkAQc+QrXuhZXTb7dM7DerP4qVtzyeXAD1XGWlzXhaNDNARLCL3hXKgUpGP65mVXpw0yXtvRBwsCXEGhY+Ee1tKlWJas3scIJgQs9EItvjcZ6SsI3xZK2maMmg826PQ34UpG1g7N/XWrk3W6rnTYq+ERl3eD/ixUYHM5rCeTUt4SrwLkVMJpsfJKA4rOryoGNlXFz3WPFp7d5FKJkTVKXGNvXhYh7NSR+4M+06mOVf+1vIzHQMdhYwBX5FADrbhDDZPt4ZtXmJX01hMUB/Fx/5DDlM8+H1DxnXDx6q1DZNc5eY
+ D/pLe0Nw
+ +gpLyzcTtPZclXI8CoiE2yzKLE9gJMTTdMhQsJszKXdkILTcd4OmkdFspU99xIKk+/WAKdX3gE73WDDhv9YDwDDa7bdFNQa1ccaB3Y3RoSmQMEwa4rXObCpqnTRue5dggT9z+rNnMQmaPjLOJ7bWq0z/9QEHkDVLC5phIFcpHsqUlqCPvAdUektIPrguAbEJB31NvHpb4RdO/FpmrSvRQvNIOtJcZXT/kZsyKiV3As/gM1l/UG8dNFVwXAf5AsMLDGvxGoUO54UW38JYZWPC99Nb3CnFyaygFSi3i
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,41 +95,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 31 2026 at 13:56, Thomas Gleixner wrote:
-> On Wed, Aug 26 2026 at 20:41, Hyunwoo Kim wrote:
->> diff --git a/fs/exec.c b/fs/exec.c
->> index 745f6eb5279e6..9b2d140bd9f2a 100644
->> --- a/fs/exec.c
->> +++ b/fs/exec.c
->> @@ -1003,6 +1003,18 @@ static int de_thread(struct task_struct *tsk)
->>  		 * the former thread group leader:
->>  		 */
->>  
->> +#ifdef CONFIG_POSIX_TIMERS
->> +		/*
->> +		 * exchange_tids() hands this thread's PID to the old leader,
->> +		 * which is reaped right after. The PID lookup in
->> +		 * timer_lock_sighand() then fails while the per thread CPU
->> +		 * timers are still queued here, so dequeue them first.
->> +		 */
->> +		spin_lock(lock);
->> +		posix_cpu_timers_exit(tsk);
->> +		spin_unlock(lock);
->> +#endif
->> +
->>  		/* Become a process group leader with the old leader's pid.
->>  		 * The old leader becomes a thread of the this thread group.
->>  		 */
->
-> Similar to the other issue vs. POSIX timer signals this really wants to
-> be solved in exit() independent of non-leader exec(). Let me have a
-> look.
+On Wed, Aug 26 2026 at 14:55, Oleg Nesterov wrote:
+> Can we move posix_cpu_timers_exit() or the whole CONFIG_POSIX_TIMERS
+> sequence in begin_new_exec() up, right after de_thread() before the
+> "if (retval)" check?
 
-Duh. That's about the non-leader itself....
-
-Why did anyone think that swapping TIDs is a brilliant idea?
-
-I still think that this should be done differently. There is no point in
-doing the disarming in release_task(). Let me think some more.
-
+Yes, but that does not buy us anything.
 
