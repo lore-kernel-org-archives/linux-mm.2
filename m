@@ -4,126 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCF45C61DFD
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 18:25:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECA9EC61DFD
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 18:55:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A0B9E6B0095; Mon, 31 Aug 2026 14:25:05 -0400 (EDT)
+	id 64D2C6B0088; Mon, 31 Aug 2026 14:55:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E3B56B0096; Mon, 31 Aug 2026 14:25:05 -0400 (EDT)
+	id 5FDF46B008A; Mon, 31 Aug 2026 14:55:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D33D6B0098; Mon, 31 Aug 2026 14:25:05 -0400 (EDT)
+	id 4C7A76B008C; Mon, 31 Aug 2026 14:55:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CF506B0095
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:25:05 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3FAE080210
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 18:25:04 +0000 (UTC)
-X-FDA: 85162391328.11.AC0943C
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5DF80140009
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 18:25:02 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=recall.ai header.s=google header.b=Hq2qGXtb;
-	spf=pass (imf23.hostedemail.com: domain of mike@recall.ai designates 209.85.210.182 as permitted sender) smtp.mailfrom=mike@recall.ai;
-	dmarc=pass (policy=reject) header.from=recall.ai;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788200702;
-	b=h4vDLyc8RItz0a7xKjcxzaFQALcquHDijSYG/YxARXSX1Vs0mV0l7go/L7P+ABRovtSkTS
-	XmZS9Z3wF9ukdY+L0Ds7AXe3n9MsTFqIi6z0U5hAzUJB7hlWjg7HzBXRC9IMucv2cxDuhk
-	2rEactqysQx5nKhHxrZG1sn1h7wDp5g=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=recall.ai header.s=google header.b=Hq2qGXtb;
-	spf=pass (imf23.hostedemail.com: domain of mike@recall.ai designates 209.85.210.182 as permitted sender) smtp.mailfrom=mike@recall.ai;
-	dmarc=pass (policy=reject) header.from=recall.ai;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788200702;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B28E6B0088
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:55:30 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id ABCC416021C
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 18:55:29 +0000 (UTC)
+X-FDA: 85162467978.17.3B001C0
+Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
+	by imf31.hostedemail.com (Postfix) with ESMTP id E20B120002
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 18:55:27 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=H1I29dlb;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf31.hostedemail.com: domain of pedrodemargomes@gmail.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=pedrodemargomes@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788202527;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=hbV5Wg8l0nJ8T1Mygha+CfNYcTHfR/M+eEDDy9eLWnc=;
-	b=LkFKU8K2lw9RB9tAOuHu0ukN2Wmvp9S/zZaYPy26MB/cbW7b03t2VxPLKO3UAQCnhrMQj5
-	nP991ZAI2BuDIenNHyLV5GYwTIuTY86xnYk0273SPO0MkAXAQ0w6CynRG6H6yNXZoSA5fH
-	SOrR/T00BZftof/Ygjc7Pino7HNHtvw=
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8541875f596so2071404b3a.0
-        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:25:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788200701; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VBz4vBtWwYZd/4+4PsfV8ppIMttSrnHFZBI7ltwtbF24En9McazgH4yBUq4f/hx+1S
-         gb6hFupah3Pz8e1LaTqNM0ovsKA/RML8CRQEr+IHk+cibzjeYX8JEeHIXvMFb9Dl20T/
-         f1o3wCOTLt01G5e2irYeNNFJ8rAMgogNbLpTkNWKmiVaDfdpmefoKb09kT9pgdqCUqeX
-         Wyj4jVOargxWJIRc6dZTIZawjMq1qUFq3h6+D9LY9an6MlnMjbGXhLcAFp4MCApscbym
-         xPbAqHE3jtmYvC9T+8R2yFAaE4ma+b1ZxkCBw11inevtOXEYa7DbLJDBdgVYdIn4IcnP
-         qAhQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=hbV5Wg8l0nJ8T1Mygha+CfNYcTHfR/M+eEDDy9eLWnc=;
-        fh=vQXvw7WiGQ9ewuzNBl3WVswNmgKGxBJw4lbk1Bw2FSk=;
-        b=KZo5H4zT5AYQXXEJymn8Z7uQK7KHLZ9QCHZ6fwQ2MFwWWTb+STpHgqUuPe8KjV8s8l
-         3LNjHNk+RiYV9fC9CjgL2e0JYunT2D4o36sXiJnKB1DIl4yNZfolek3xk/82uBL53/0N
-         4Fb5L2mS8AdiGD+3BsH0szTCO8aBAvba9Wz0gsMX9Uazh22JUjDP0ocUWdWK25Exea3r
-         oC7qQDhWAtzbjiIPHSqEzormGS6MX6NwHB1FISASslA2byHNxVVsyRPo6/K0bXjBFtDa
-         954/dvJ9muBIMEFZHbJ4259RBB9hGpDrN9JJFjwDqGGjXLi+ryIITyLDkEFcYno28290
-         8sTg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=RhaWswkQxW+7On/cBV4TuoPoc9NhNmh0fp369raKMHM=;
+	b=zhej5K8YyKW12KGTdcYjzn0a9hwThwSsf5qo3VbQDUsSy9KfO4Ip8BqU7/CwMPmi4w5RVK
+	ANcboIm52XMcHjOZnVqIv/7irjJ5gjSNwbo6MbEf3rebyig/eVY19xOcjhRcRo9he1KHk3
+	el8d8aESVOKJfANqSb79Kv9q4TM4Puk=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=H1I29dlb;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf31.hostedemail.com: domain of pedrodemargomes@gmail.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=pedrodemargomes@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788202527;
+	b=EelTFEHNk0Sta1X/dSDU7w4745u8jeXNT4i+6HurDDiJtwz2NxyF6LN9eJIJv8jSpZsoNV
+	OOE4zxu/mx2uqoOAFkHHzZ+Z+5LtQ42TyDknniWqlqv5+w4A9fQ/80wWcZ8aoytM31MBRk
+	Ynf7uqCVFHXd64BCIyDQFB4OBXdTQmA=
+Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-66e63c2c9e1so304473d50.0
+        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:55:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=recall.ai; s=google; t=1788200701; x=1788805501; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hbV5Wg8l0nJ8T1Mygha+CfNYcTHfR/M+eEDDy9eLWnc=;
-        b=Hq2qGXtbf7CplIU2IjMssLrFTvcKBWgME4BJTcgksg3AmOaD6njspEu7ttZwbA4S/i
-         R4yNpo4NIde5DyICVyh8K9PxfERKhb/6K3ZFalE/R1FIrlo2TM0GERtvzC2ZuGCwQmN4
-         3ErNI92Yyope3tuNF2C0oMnIyNpTBSTgpS1oTqVL/znMNs2Bd9K+ogDM8yjlV2KL24SN
-         WNc5+tQIvl3mWtHukyPl21/KjnqEhfnDxD60wxzLwqglrA0FRdPD3o44voDgPvmByKjG
-         IzM9I6Ko2es8FRRzZWpo0Pepu8xx+jrJJQtBn1SRO16EKhNveX+7O9Y+0Kv37OWvf1tC
-         58Ow==
+        d=gmail.com; s=20251104; t=1788202527; x=1788807327; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=RhaWswkQxW+7On/cBV4TuoPoc9NhNmh0fp369raKMHM=;
+        b=H1I29dlbr4LNz18lxZI6tIbpQ6IH7EkRPEawwz+TOCLzfPfnhsWVJ5CcggxXI9eyon
+         gTl3iu0KJDdlymM+ZDPoCKppewMQWsQe6lZie+PVhz4PyRBRle2hGTPWEzZV/o/Pcli9
+         J0R3YqzHwyaUpX6IqOnCJsCwi69Ghxxf5U8NvPsG//cnC7N8OcZr5NhF9sgf3tiYtiIH
+         zRIsMX8N/vPiPuIiVtoQ706CKbIZCRKilZ9PlfxvpLL5CfSOlObi7LfOXw1RVVWj83jk
+         ZKaFaauhulL16w3wr8LnAT2y4pHpevn11x7kEl+10LNtOhHMMtWVzJ/oNW5sOPwLo8MC
+         HL0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788200701; x=1788805501;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=hbV5Wg8l0nJ8T1Mygha+CfNYcTHfR/M+eEDDy9eLWnc=;
-        b=ax4ApQ9jHdLZKfLv6IFZB7i6z5CYXEXYuJJ9BL3WGB1ux/QEUL1eRGpdftIQrdNS8H
-         XUp5md9cHh/nAgF0eK14ze0LOBoUQvWvTPGVm+GDrW3NFC3/CrFTRDfYWy7Q2/Q477k0
-         C1aI3AoIk93WBxqv0ZDjJPsTelUOuRdRjPBQ02D1S2cQnmAProiId3IMxaMJHJ567VPJ
-         BrpNWCctBZVzDroBWR7OmT6Di+68tAXjZjvWS982AMDNofIRWx1r+ymyqRqud0HfNjfI
-         cdQyuYLwcFEwdgPuKaR0cx+V/DZLvZ/oM4O4EpWk7GjZSwDPwYh84i/qKn7rCfU8qDXM
-         qrHQ==
-X-Gm-Message-State: AFuF++mj5QO7Hx2ks4P+sUDypTba1HjXP+Rb3z7HaDgo9mqV0haxiWxc
-	OM2pv0O3cH+r7WFYTG80zZKveynyVoZW4J9fNeCnX9Xt+Js4gXOuXbJWbJbrJ6qHynB7wJ3w8tl
-	ODWReXP3S4qeYXTANQgTm+HUEkLPrPuvrRLiMovwmEwwQldYbnovn6DXfGE5s
-X-Gm-Gg: AR+sD10aomwCi8Kn27LmnQC20v6EWW/QY5j5r9ae7tgBtiPV/4dWiHkpg6l/a8nzFOf
-	2gzMwsirCO0YWc/IVyxrmvEk4IwSfF0NAu6rwSmbWiv0l+FvC6Pc0R5gQ0k2/HiCpANn6i+b5ha
-	F2H4oswBs938J5Q3NuXCn8VTG4m3gVDKoEq4Y2hy4GOaN7SSAR1Ucg1FH/z6YXe8D7pMlCtZaO3
-	WeIxbvEM+HN1cnTklCzD4NomCXha3UVjFZv26Rt7CaBFr0LlAXJK33lLTkDPwu+asuDcZAjKqUz
-	DRhqGlfgli24xEikcV/5pGK1eYHow5fGfOfpQEqX1wb5hw==
-X-Received: by 2002:a05:6a21:700d:b0:3d3:b00a:7082 with SMTP id
- adf61e73a8af0-3d3b00a77a9mr34040179637.28.1788200700253; Mon, 31 Aug 2026
- 11:25:00 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788202527; x=1788807327;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RhaWswkQxW+7On/cBV4TuoPoc9NhNmh0fp369raKMHM=;
+        b=Lr3aJ6CyZzFFAxHFv8+yOegqguD60tU8lbbDjaXu8QnliHnbw5TMj70Kdu2NSUQRUl
+         xVTpUOMmiZ/eH77yCTyUgTAl/ydNS5GeqSshiaeKD3u8EHy5YejLGQp41K7g+ks9V3kS
+         l3OkeX4gQkslHliBZhjvFEG1mnWXclDhjnzPas31WXP6YIj1EI1W1yFJTWYcxbQG4otY
+         2zKiE76ssF9YteebgYg82ZU6XyRsgBHDXMDIDrzk7QlIuRjSEK9IAF1Q9g4bWgHEbZ5U
+         hVEo9wXnjddjyKxIlckIUTbDImJhExXdKj7NBZYlWAxP+x0GtlbGFRwYGiYjOnt245Bb
+         ChlQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzZUZJFQANZkbAIcC6KzkjKrIM53/GsMt0mNr+VUdTN/0IE6xA9Fu60ZSRm4gyIggm+V2spiVqrOw==@kvack.org
+X-Gm-Message-State: AFuF++mMwZYCH0onGNKcoSkHCaitbp8f43uVnXjP1+bpRyyU7jx7OhWm
+	9TR5tnIhaxCw5229CKJXTRzOXOpQWGcsi2DNw8zIZhyVgpkc6RQfoi3c
+X-Gm-Gg: AYBFou2nfgm4PldKd5Dr9ADy8H+9XEX5VCgowU47mem9VKA/7gKQyuwnOe2acmWxsEY
+	vkp+A92l6b/M6JT2sigSE+axOOjJ0xBfZ1VctnS2AsipYm7jXW+TCsSXzUylACFMtMXARIno8lO
+	N+VW4pxmtVu6iWPfHXeuIGtuPYWYp6FzpiL9Bm2SGqyySmBkvrMBMJxpb9Vi79yfj8cvOlAr3vB
+	0IEY/PlbXzUjjAoel98nCUQE4SClI3MMqpdmYo+Xk+iiz/4ASwr5vwOouqUu6fJJmGhBCCwA1B6
+	BgFO3Y6SAuaM/auq2xw3EE4EzXKqdfKq2jRax4w/BNWrlT85zRdPuN8EH3Y2IirFgURQDlSIj/X
+	0dG/00GQUguMEvlyHUmuOTPYkMwZwukwy5pBCBHC1zxQ+uxdJF+WMUf1Y5jiMPJT/+iDb4tn85s
+	Thtqqvc+Dl04/BXkqaQNV6dv24ekIoQdwDvTpsXPVWV2OyzTB7vCuMsHXnHGNZvXYA/xaIVw/aH
+	tBP/vEiEIR11U3F1DtzSdCq
+X-Received: by 2002:a53:e904:0:b0:66f:8a2b:b693 with SMTP id 956f58d0204a3-66f8a509c19mr89306d50.17.1788202526777;
+        Mon, 31 Aug 2026 11:55:26 -0700 (PDT)
+Received: from fedora ([2804:30c:1f03:a800:30b7:8d7b:fa5e:4825])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66e4ed2986csm6636227d50.18.2026.08.31.11.55.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Aug 2026 11:55:26 -0700 (PDT)
+Date: Mon, 31 Aug 2026 15:53:34 -0300
+From: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Lance Yang <lance.yang@linux.dev>, david@kernel.org, 
+	baolin.wang@linux.alibaba.com, akpm@linux-foundation.org, ljs@kernel.org, ziy@nvidia.com, 
+	liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com, 
+	baohua@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH mm-stable] mm/khugepaged: avoid unnecessary checking for
+ swap entries when collapsing a mTHP
+Message-ID: <apXHC7uYXE99ZgPp@fedora>
+References: <d02405a5-1d0d-49d5-9056-1a34ccdeef10@kernel.org>
+ <20260827121151.7837-1-lance.yang@linux.dev>
+ <apBB01VBbmV28gWP@thinkstation>
 MIME-Version: 1.0
-From: Mike Kaplinskiy <mike@recall.ai>
-Date: Mon, 31 Aug 2026 11:24:48 -0700
-X-Gm-Features: AcwNN1V4UKSJdBYkgpssMkmifC2j4_SqBsHSkI7X8KbOD1NWjz0zJyXnc6Ib_f0
-Message-ID: <CABeknB_S2XJSHFgnHdgnN0rjzHhH4oQJs_APq9fvxHztQ_pgiA@mail.gmail.com>
-Subject: [BUG/RFC] mm/madvise: MADV_WILLNEED skips swapped file-backed COW pages
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, akpm@linux-foundation.org, 
-	liam@infradead.org, ljs@kernel.org, david@kernel.org, vbabka@kernel.org, 
-	jannh@google.com
-Content-Type: multipart/mixed; boundary="00000000000086d436065a5beb9a"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <apBB01VBbmV28gWP@thinkstation>
+X-Stat-Signature: iwf91qw7eeyb3zurjb6xbu31styidpor
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E20B120002
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5DF80140009
-X-Stat-Signature: pkrjqekycsot4wpw86fwkzhj6yz7qdzu
-X-HE-Tag: 1788200702-668843
-X-HE-Meta: U2FsdGVkX1/X2F3YiJvP+5m0llURvbEqJuc/KxynMlk8X/RJ8c6+Soox768SHnSOpOxAnkJNnkZQA/DdfkOFGNVeh6MiZbQxEHHV18jlpnVua9xvaDSxPrMwZ7xCDnZfXM+YfBJy0bDGCGBu4bsuH26KzCyGVIz7KcMJbRyC6N69I72K+jpgk4U9mIaSg8uKtHLO4RMOW8CZVppenKxcE0O2EDMqHhJh8NNnZV2ildkj2S00SDPPGo7u6g2Q4WQ7CSkeGJrHN6gg3v5WyprNj/UMVl4k9UTeYvNgv1RDxh+9jmw2ktUx/SlZURG7yjLhObQK86je05mcYYn8xebRLPJPJNcHrlQIDLIfTAGRTmU6XywwKe+mrPf+VBtFc7PSeDNTq0Q7Ixovt6/routqcVSju7sqQLtLj3/StnDl8HT65jbFBMQqWC0GODLSHnyBPrSC/MaD2tqdGp7Vr56TDLa7zL+BXujzMNIrB+YPa2HdfWklmupRJGQfUZ9b8fs2AQzvTVXBLXBDxl53agblEIr1dlteE6VTsMR+YS+T4sPBpckds9/1AoCyvnWPXvbIzRic/K+IhGsEM54vJMpYuCF219pcPsyTRd5YUNtTOX8QlFNtJh6kCGMNfdb/3HPjwxEv0bOGob0dwbnh9DzmizJeSh/L/asOe7lAV76trI67AGZGlnPJ49QcPsY+kmmfY76W4NWCJwXuGlpjMoDMugSiDC9JMMuUe8mxxh0gzK9fVLNzrGLllPXGWbVoP4CKYQcUEfvFEsuj5X/Wwbbn8gdHafTjf3ZmqIm3ZSGUbpo9xbiCIYIo2LqpmgCcXcv74tMrcnzEVP4SaufMAFK65aWJ2A2HPiAE+8aaLw4FsirIyBQVBdCRgH0sQioYH+QXtUJX4Nk3RzSHZV4UVQl7wN6T4hGUw/Ib8tGmGs3owNTSPKP9pLcTanuKcomu+ybE+NSYg3M39pq+t43iPn6
- ZdmKdtrl
- eL24da6PW43OPYVuF13y1hi7ZWi+W8xo7ZLwrx3kjTzm7dyjgkPC35qhlULuTK9QmTsXRcFQvGg4/ulqrHTIcB5nkeNIFkx2WAvHjoXm6pFdQfff2v5PZdEcrXRhgJz5/WCW5rovHjiUXYj3JJ2SIP++J8qyt1Uc3hchBqUe0LHxS8KTOJbzUOqt46CIt02BiAMOMsRqL0BrvB+AdiQx/RGlQVaIFq3DD7IDBB4XVSrPds+KW9OnCP8C+nrJuk6f5oAjUgVKtc5JtvlBUlBvNMS8Yt+I2OvpY6Y9FpUqGjZRIvXqtjVRMc/8sIA47f+rkXfiQ6xIuNrFl6ZdiEEd6g+lkBPYyJ2xAhheJ7Kx7PEbU3LTPU++18MHhJxz9qvUJ4NkqTCua5Jb1GCzsm7vhejUsZpav0qCUYaN3mPnfa8KAshdqToofl/ylceisy5LP/EL/AH4FVfKgyEhNnSn7Mr2eXKZiH7fDGBYtNlJXXx7CN17GI/JRkRe+e6Sx6jbv67UH3ohLMCoaSrFvHeYaMQUHUejrZW1jfL5Ns2OnC92kiMgwqlCNr6HYMe9AJZjHkrsGmzkHB6Ean7Y=
+X-HE-Tag: 1788202527-34517
+X-HE-Meta: U2FsdGVkX1+KqA/5TLqMtTnPtEa4DBwa+mxv9T4uaYVlGZgJZAh9sSFpNbBvbY3W/gCNcX7mAYNorwCAMTUvrQJkurWB66bdwh+5lElMXtX5o55ufeWdVsKD1WgYILQd3y4BJ+uZXxcncPBe9dYe5cWxWY9iPs18S7FBPKDs6EsdxXd5oRTILbvxH9VnS0zeYQscIKEi1eW6AHOZLSQiLb5HvO2GBNcYQjxDu6cx+aT/zUoiF3TttRkFy0gVlYX9Afs3IApjR7ogDNFxeShrKlER99nUi+J8FFe4UGNub2E/eTv0RHShnV1j8qNLS1+vMGNLtp3strTu7lr/zXFUSqiZjVifWvOOYk4qRZhIQGcyDG5nD/IJZ7tZBL/f5by3/OBDceEZh+Mve+bsU+3K8sfaRCjSNBlhGa4qLSbGuvnUzhZBTdzjYkY8U129sqgrbygoW54zEqBS+51C9XCWA93Cd8YqgTW0WSU+TcnUjREkPa9M9tNSnJBxc32nOQwBflelxmtH8RLRDgLMAQCXChUtD9Xtfs6aP6BGf/RIEbM/7WYrNSlfvVcAGwOop5aEkvhDg20pZwyVrt4znzLmk+28ppanRyV9/vv2jy8fSX3m+7BHDjCYrvazMvlvhHVxmtBBxRGXfq9A6yfnaIHQAk7297ovghprgM3+OnagN3UQEx5b59K/QtmNcamYpFxnpcvS6noDlDi8YAqghz0F4CoakcfMj7FKSdyHyNeK4AOc9ue4RIUozLOJjj8g44iUz+XJ+LR3uT8UHNNBlctpFD8OpHz1Aaat5MQj4VKSzJtDb7EV4tFxzKTCylkNSpWdHR4jAjgdawC22PxHMqO94Dn5lvX9LH3S2CV0g1V4mEYOmytlkySZJM/psbjtiy+tez1IUN/fzwu2HUcbJr52PcPwObaLDNr+CP+nWPInDrJcggmYa8l+6a1tGrgsV4ZtEaa4gKkTpNuk9KV9juF
+ jwllDd/A
+ b0+nOILEIrTFY4WMkCBWszuBo+zcukaHHX9g2ot9w9hUN4Q7WR0E94oNtbNhdY2hIsJs/+ulcxBQPDLUAQPivrVT5rHecV1RjQyDiawgyNVvLalSjop1wh7LHojJ9bJ4N+LsyTHxLth1zD8hYYs4MojvleTDkfKRFuvRSjCa1O8ERf9wqqmmimCCAgmVIAIpuCDOxmarLQVhYGeKH0uIKjsTg+0na6kApjsXD8GDJHZgSCKDKSCPJUBfzL62oSSnC1+UuN9xGFhxlrwLKgjR2u5qs8VPahaH+4hjf/bC7dXpQjtFvBLcU8BMm6b1Y0sZel9l8c6k35MFWKo6RbWQWV8ZZKpaeQZVAOIdD+MEjgkdq1lsH7uAAtd6Q5mcDa4znGhQHWEF4OKJl1PgoifsyNnTWVFoQvsAi3uQGdGB4ZBpAFpR7mt1/EJ/HY/q2cl7EJgerpzoSMSXj4AH+CCOP3yXV2m/YhoKEGoYM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,69 +125,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---00000000000086d436065a5beb9a
-Content-Type: text/plain; charset="UTF-8"
+On Thu, Aug 27, 2026 at 03:07:10PM +0100, Kiryl Shutsemau wrote:
+> On Thu, Aug 27, 2026 at 08:11:51PM +0800, Lance Yang wrote:
+> > For the candidate above, the loop only reads its PTEs and returns
+> > SCAN_SUCCEED. Pedro's bitmap lets mthp_collapse() determine that upfront
+> > and skip the walk.
+> > 
+> > Emm ... as I asked before[1], any numbers showing how much the extra scan
+> > costs?
+> 
+> With the win being only some scan cost, I don't think it is going to be
+> measurable.
+> 
+> It can open a path to future work. For example, we could find fully
+> populated mTHP windows in a PMD that is not eligible for collapse
+> because unmapped > max_ptes_swap. Right now we just give up on the whole
+> PMD in such cases.
+> 
+> But there are more wins to gain there. Just saying :P
 
-Hi,
+Hi Kiryl,
 
-I'm seeing a strange behavior when using MADV_WILLNEED to schedule
-swap page-in. It seems MADV_WILLNEED does not schedule swap reads for
-swapped-out COW pages in an ordinary file-backed MAP_PRIVATE mapping.
+I devised a patch based on your proposed future work idea. If you think it
+makes sense, I can send it to the mailing list with a Suggested-by: tag.
 
-I reproduced this on Linux 7.0.14 on aarch64, but I think this code
-hasn't changed in a while. mm/madvise.c:madvise_willneed walks swap
-PTEs only when vma->vm_file is NULL, and sends other file-backed
-mappings to vfs_fadvise(POSIX_FADV_WILLNEED). This skips the case of
-MAP_PRIVATE mappings with changes, which frequently happens for
-libraries/binaries with relocations and/or writable globals.
+Thanks!
 
-The code is at the top of
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/mm/madvise.c#n282
-.
-
-Minimal reproducer attached. Would there be interest in changing this
-path to prefetch private copies in addition to the readahead?
-
-Thanks,
-Mike
-
---00000000000086d436065a5beb9a
-Content-Type: text/x-csrc; charset="US-ASCII"; name="madvise-willneed-cow-repro.c"
-Content-Disposition: attachment; filename="madvise-willneed-cow-repro.c"
-Content-Transfer-Encoding: base64
-Content-ID: <>
-X-Attachment-Id: 
-
-I2RlZmluZSBfR05VX1NPVVJDRQojaW5jbHVkZSA8YXNzZXJ0Lmg+CiNpbmNsdWRlIDxmY250bC5o
-PgojaW5jbHVkZSA8c3RkaW8uaD4KI2luY2x1ZGUgPHN0ZGxpYi5oPgojaW5jbHVkZSA8c3RyaW5n
-Lmg+CiNpbmNsdWRlIDxzeXMvbW1hbi5oPgojaW5jbHVkZSA8dW5pc3RkLmg+CgojZGVmaW5lIFNJ
-WkUgKDY0VUwgPDwgMjApCgpzdGF0aWMgc2l6ZV90IHN3YXBfa2liKHZvaWQgKm1hcHBpbmcpCnsK
-CUZJTEUgKmYgPSBmb3BlbigiL3Byb2Mvc2VsZi9zbWFwcyIsICJyIik7CgljaGFyIGxpbmVbMjU2
-XSwgcGVybXNbNV07Cgl1bnNpZ25lZCBsb25nIHN0YXJ0LCBlbmQsIHZhbHVlID0gMDsKCWludCBv
-dXJzID0gMDsKCglhc3NlcnQoZik7Cgl3aGlsZSAoZmdldHMobGluZSwgc2l6ZW9mKGxpbmUpLCBm
-KSkgewoJCWlmIChzc2NhbmYobGluZSwgIiVseC0lbHggJTRzIiwgJnN0YXJ0LCAmZW5kLCBwZXJt
-cykgPT0gMykKCQkJb3VycyA9IHN0YXJ0ID09ICh1bnNpZ25lZCBsb25nKW1hcHBpbmc7CgkJZWxz
-ZSBpZiAob3VycyAmJiBzc2NhbmYobGluZSwgIlN3YXA6ICVsdSBrQiIsICZ2YWx1ZSkgPT0gMSkK
-CQkJYnJlYWs7Cgl9CglmY2xvc2UoZik7CglyZXR1cm4gdmFsdWU7Cn0KCnN0YXRpYyB1bnNpZ25l
-ZCBsb25nIHBzd3Bpbih2b2lkKQp7CglGSUxFICpmID0gZm9wZW4oIi9wcm9jL3Ztc3RhdCIsICJy
-Iik7CgljaGFyIG5hbWVbMzJdOwoJdW5zaWduZWQgbG9uZyB2YWx1ZSA9IDA7CgoJYXNzZXJ0KGYp
-OwoJd2hpbGUgKGZzY2FuZihmLCAiJTMxcyAlbHUiLCBuYW1lLCAmdmFsdWUpID09IDIpCgkJaWYg
-KCFzdHJjbXAobmFtZSwgInBzd3BpbiIpKQoJCQlicmVhazsKCWZjbG9zZShmKTsKCXJldHVybiB2
-YWx1ZTsKfQoKaW50IG1haW4odm9pZCkKewoJY2hhciBwYXRoW10gPSAiL3RtcC9tYWR2aXNlLWNv
-dy1YWFhYWFgiOwoJaW50IGZkID0gbWtzdGVtcChwYXRoKTsKCWNoYXIgKnA7Cgl1bnNpZ25lZCBs
-b25nIGJlZm9yZTsKCXZvbGF0aWxlIHVuc2lnbmVkIGxvbmcgc3VtID0gMDsKCglhc3NlcnQoZmQg
-Pj0gMCAmJiAhZnRydW5jYXRlKGZkLCBTSVpFKSk7CglwID0gbW1hcChOVUxMLCBTSVpFLCBQUk9U
-X1JFQUQgfCBQUk9UX1dSSVRFLCBNQVBfUFJJVkFURSwgZmQsIDApOwoJYXNzZXJ0KHAgIT0gTUFQ
-X0ZBSUxFRCk7Cgl1bmxpbmsocGF0aCk7CgoJZm9yIChzaXplX3QgaSA9IDA7IGkgPCBTSVpFOyBp
-ICs9IGdldHBhZ2VzaXplKCkpCgkJcFtpXSA9IGkgLyBnZXRwYWdlc2l6ZSgpICsgMTsgLyogY3Jl
-YXRlIHByaXZhdGUgQ09XIHBhZ2VzICovCglhc3NlcnQoIW1hZHZpc2UocCwgU0laRSwgTUFEVl9Q
-QUdFT1VUKSk7Cgl1c2xlZXAoNTAwMDAwKTsKCXByaW50ZigiYWZ0ZXIgUEFHRU9VVDogIFN3YXA9
-JXp1IGtCXG4iLCBzd2FwX2tpYihwKSk7CgoJYmVmb3JlID0gcHN3cGluKCk7Cglhc3NlcnQoIW1h
-ZHZpc2UocCwgU0laRSwgTUFEVl9XSUxMTkVFRCkpOwoJc2xlZXAoMik7IC8qIFdJTExORUVEIGlz
-IGFzeW5jaHJvbm91cyAqLwoJcHJpbnRmKCJhZnRlciBXSUxMTkVFRDogU3dhcD0lenUga0IsIHBz
-d3Bpbj0rJWx1XG4iLAoJICAgICAgIHN3YXBfa2liKHApLCBwc3dwaW4oKSAtIGJlZm9yZSk7CgoJ
-YmVmb3JlID0gcHN3cGluKCk7Cglmb3IgKHNpemVfdCBpID0gMDsgaSA8IFNJWkU7IGkgKz0gZ2V0
-cGFnZXNpemUoKSkKCQlzdW0gKz0gcFtpXTsKCXByaW50ZigiYWZ0ZXIgdG91Y2g6ICAgIHBzd3Bp
-bj0rJWx1IChzdW09JWx1KVxuIiwKCSAgICAgICBwc3dwaW4oKSAtIGJlZm9yZSwgc3VtKTsKfQo=
---00000000000086d436065a5beb9a--
 
