@@ -4,90 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92018C624CE
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 14:26:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79616C624C6
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 14:26:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F2A566B009E; Mon, 31 Aug 2026 10:26:28 -0400 (EDT)
+	id 7616F6B009F; Mon, 31 Aug 2026 10:26:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDB516B009F; Mon, 31 Aug 2026 10:26:28 -0400 (EDT)
+	id 6EBCF6B00A0; Mon, 31 Aug 2026 10:26:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF15A6B00A0; Mon, 31 Aug 2026 10:26:28 -0400 (EDT)
+	id 628796B00A1; Mon, 31 Aug 2026 10:26:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BB7E56B009F
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:26:28 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 451E8A013F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 407436B009F
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:26:29 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 91828160162
 	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:26:28 +0000 (UTC)
-X-FDA: 85161790056.03.C67C8DB
+X-FDA: 85161790056.12.8445367
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 99BE3180007
+	by imf11.hostedemail.com (Postfix) with ESMTP id 08D3140004
 	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:26:26 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Em2drk/8";
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788186386;
-	b=ytEbdEbisB0KqyG1QShJGFmYb6LFSfwKEP/7PaaADLpsW1WN0Os19wR+CPppCZsAFTTtr8
-	DJDOTAwjtIrIJbU4HPpBw3yjN8xsC23JyZiyTtZy6Njg5Muv+cMfKwQ/NssSJ6LzJIWAEN
-	31xs8J0Cj1p2s8JJt0J2gURrIqHCH24=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Em2drk/8";
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ofv89aVI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788186386;
+	s=arc-20220608; t=1788186387;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Epq3PwHO3KDR58/nXH75JqepBtDLOvPb3QexcmNVybw=;
-	b=HtX4SOdHAOzio5T1O/Q09O7G0dznvuUHq/6H8ZG2OY2tPd7xUz4wwPXpsVrzyYZI1JhKLf
-	YpluTOney5DH3aNeU3kR8kNEnzKYSMdfRMzQ5OCCq13H9Q+65ypDejdw+xPY4jMdNrivHm
-	orMu5+XfyZz5TI08h6ExArOwn3Nkxwk=
+	bh=++mDemjAm3frVYhBHw1yycvSVhXLn1wofYJdDWaaqD0=;
+	b=SFyYTLuQ2A061Xa7kPCWlfpbIHEYWE1EOo8KHV76cF35yzb+JaSK1zv2i1CQqVepfuBwRR
+	K6wcyirvB4skaQxvffYyvvenvUWjyFIx39tdKcRhWqfyKU2RxehH+nh/Ob65oMNs5vXNTM
+	uB2fxapHagLt64KNwEQlU9E+wLcT7qQ=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ofv89aVI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788186387;
+	b=XSuu9pM370o5hnmQciQST6C4tDSsubvGCM0D+xhayeFtL47hF3V49Z9deHTeqI3DuHs/qy
+	NU9rhS4C1ZcdnQereszOduovHuZNiRDGHH6MMxeKqWg+fkuo1V3l9A+BBvRDQPDHIvYu9Z
+	Bm9v5vM7KlLc+3xX8PxkaloAgxXCMIA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3B6C26013A;
+	by tor.source.kernel.org (Postfix) with ESMTP id 8F5A7601DE;
 	Mon, 31 Aug 2026 14:26:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A971F00A3D;
-	Mon, 31 Aug 2026 14:26:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18C751F00ADF;
+	Mon, 31 Aug 2026 14:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788186385;
-	bh=Epq3PwHO3KDR58/nXH75JqepBtDLOvPb3QexcmNVybw=;
+	s=k20260515; t=1788186386;
+	bh=++mDemjAm3frVYhBHw1yycvSVhXLn1wofYJdDWaaqD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Em2drk/829piatKSrCV3QA5FNzUpmoDNkTJymkFxgZCGghcuOO8KN+vmmpxqLBMRB
-	 KHQijKDcHukKBQsj4bnDryymd+yQNAjM4XHoL1Qkn7BJFbclE9sljIWB+xz4VYhWf+
-	 dFthQ2P7kG+wW+m0cde2PlPDCwbiU6UlRwcPyNBXFo7jrJp7Jk3QzpE5ldqM1NyT+b
-	 HhNTI3nT9KJXzIdAfAEjZApxZDqtEXSBcFtH7VLnVRrdXz2aHy7QaMWARDcc82Dssb
-	 Q2Uo7yKo54EqjjGyxkAliod+fxNcUI88HA0LxZO8eZ0RUqyH5BPoXG8t1gFsovLP56
-	 c+92RHPWXh3SQ==
+	b=ofv89aVIYd0IbAdoYRts6tCrlsW/biaOf5xmsUAwpzPSRpgIs9Li1GKDDfQWI14Yb
+	 nnk6MDzcjK6R/FR4tB182JY1qKk1vs1549StOht7tUz4YeFuUfI5tDZtBna2CypCHe
+	 DGaLH/qRgrcC9PFGGGqARc8lR9t/QlmRJIASssB3Q4dKhmEjK+uwKCnACmz1E2yH++
+	 mQFJWyWDCvdmRZbQgzbIFDjJxNzRl+TnuGvQClRTpbZDiNB4o8t6JDTkkuLDvvN+OE
+	 6NOeWUCD05UHfY5cw5lGV9UEYz4qDnESis6u7yBZ2djBgHEi3AObxBKRtyjD0SDu2j
+	 aWA/dW27t3FGA==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>,
+Cc: Enze Li <lienze@kylinos.cn>,
 	SJ Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 6/7] selftests/damon: prevent remaining cross-object state pollution
-Date: Mon, 31 Aug 2026 07:26:08 -0700
-Message-ID: <20260831142611.77572-7-sj@kernel.org>
+Subject: [PATCH 7/7] samples/damon/mtier: add comment for struct region_range
+Date: Mon, 31 Aug 2026 07:26:09 -0700
+Message-ID: <20260831142611.77572-8-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260831142611.77572-1-sj@kernel.org>
 References: <20260831142611.77572-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 1sgs3obemuz63je48i85pebppt1e8zkz
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 08D3140004
 X-Rspam-User: 
-X-Stat-Signature: e3atmkp1kmjz1ohkz8otst57su3jq1r8
-X-Rspamd-Queue-Id: 99BE3180007
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788186386-608146
-X-HE-Meta: U2FsdGVkX19k9+hq8bkkQhMbADcT08a/dSKZ35+M7HPKYwS4wVekWQO8bLK645vWK2AQZpU4uIHbaLnav9hwuNTpPcUIqpXnvNQ+xPwl6/49p8nqzxzBMx0meCjjEIilbhW+ZP3igNyo7WXONEqPBQ4vtBtDVlxzvx3d8D0qHY91BsgVL0+XxNlVR4ctodV+6KFhLGQbfLzEuylBEtwIcDpfI8plnixD4ue6Op5UXrnWUNnV6fWSRvuHniFIyiL9kFeecdBRsWz2hzEzI7kOoqm8nn5R78wUGfJP2ucF8t2gpIun8utkr6fVww7U+AUXm4P1Rvi7H68XXusoO0BF9Z3RnRrB2C49ZKTPMXSIB33Xljm8eJHfVmphw8MkQhCJ2d+CXVxltSBELBBfOFG+3vru+y67qfBhrYsxqfaRDYqmH05CUibp/dqLSp1GyCqnldDK7uA0lEJJxSx+bh1o6Aqy3UsrDPt2bl9AxbnpYGSSwn2I8ougcSiwqB1QWUX2o++YjBinfNmOTY/RjdDWoNnqcykV+khCN3014BGRYGFH5F24N2j5UPlGI9tp+9xHAWkKQTW7GtffVOG85IWtxo8IekptNmZRulygHyurjDNaoKwfUqtL4xqFSaH1LrIDxSv9oK57chUh6Qso5c5yXzkOZxrEeXBubAl+k+THpR6B4iNMaPnVKcOl23dS9aAf73QBQZrKX+m/gDhjiIvvFGLXOYrB/MKCPj7SyXTdyQ32OIvn/pDh9vB/4X30SsCf2tSpZ7WlSBXuICVg4wMa4bjS4GZDPA7sJxaejRyeniiog6yVAd/ZuBicJ91LTekV4og4aLA/s4Ck9xtwOP3GMlHE+eEoo02xB0fJ43nEQ9x5Tl45xNuf7EAVR00OuBmkZoc2DWSQZjosyNvqCAw7/HwVRU6JCGQJI7BbkrQWY1ETIVNRr15XKAT7ZAE0I1ODVfkY8Kwq6PAQqpzxtcJ
- 5Txt8wsJ
- v8cmQiYI6KtAbe0IE1KaqmzZZ8+6ehSq3P83D9XcLvuh9S82ceXi/4CuWOK64wBZJTmRwDwKpCJUhuEOQYbTDBsHNepDZdguxX5A33C/5XriKjhibKJ/nQ+1dl8LTotFNHN7OlGpevqVr+TbT32i0dsYRQsw2Bxurw0s2OsUckU/M/sYVLipPkjwB1IUMIsSdttG+stMQWx08/yBSlJ5mPknfinoKaorlUwnN6omP7IYH87gZrqldcRkcSEBPChH11NKaS2+aCe6G5ymzM+vCpp4fGVcEGPEN/plS
+X-HE-Tag: 1788186386-595335
+X-HE-Meta: U2FsdGVkX1+lvKmXx2HPyImsB9U4V2/Xx/lLVn6ioZo/8Y/e6l3lDDrgJrpiKPB1FkDy9HgXiYPjC8oTSdLj4IwRgadCpjWbygpo9CVJ9fsE3ubO7ayH9J7rkiNdCcYbkfRc31yA9J0aSvYmgXO+emv1EwuTtKSl6ZWhiKYJl7ppYutLi2o+IoKEwP6KcZi7A4mIQycbQ9D2OmttCXfu/fL/5E13TlpH0MWLEUL/JAf+d2ZqNs5XyjyEA1tVShuQUxXXcZb76z0Zt4H+S8pPr/HevQ8XYUSvZyXskk9yjizu09BHJSTipGjwTCQjcsRcsXxJSAlY2a47V6AbwHOLbaNpGpHjt+PhRQmPErAQ3GK+6QzeFqsKgKExcasb4qTV3p3fEcsUtsYmPVOo0tCWD204Dmcu1xst/E1i5KmFSx/j6IGavmlzOFVd3WRHqvyUOccVyOTKes57zLP5HLHFyasTMdEFsPtrDVjwDEAmbkIgzeQaTtK4Fx4alBFudbm7r8wHHN1T+43wFrIz+Dj5EKBY9BQ/lZXg4BTLResbsCy0R9DxJnWtbB/Q5XICdk4jipXa2aPlJtPFVYlSszOA+RF6R7H7IdchqZrPFXSTMWAwqts9V/8biqwsX3PFvTM5W822gCOgWJ8GgUMwSQJTEcBEQ83568N458reNyBJilgrdEiiYYsoAkiN4P2fWFInTJidOqp4vtqj5U1J8lQVyfm19j1/AJQn1Rr0e9PPKUmtBMWoIjUM7Eftq9izZzxr/2jHRMHcBjiO8sJ7udfH5/DVTYSi31er0Fz5QEPTwfIDYchxzVkEjC0G24HlUeDSOoRjab/sJHixKbRqZcTVXLqLSb5YHUeHts2IXzQtr03l2pJl9jm5i1KcDsaDgowiPAi7cCuAboGg9yhMj8nIwbT7GGyNkHsWULqS0O0r4t4urX7kcNTq7OBRB8hofu+m25RRhGKfTB/SmT0zaly
+ 0DEgU5de
+ GNg/7IPTq4zVWxO+AZ1M4Jul95iidhNoGeqnYJEp9OZ4WJu0j6UdVlmLELFSsrbqrH50wsuTGtaefX6jBSgdltq/goyt5OtYIMm5DPw2P6gaKDnmeLofQOnGIC3z+gIUAUKBmsuG940umaHuNZw+EkLE5wQGL4t//uOohj4uUWd+PjGSP4YUO5B1io+ghWwVGhAAJqv7p6ZnKlkqB546YjLTmGWSIti/pw1ug5ch1OxIHW6WEu5B7uwo+pvWxU1E+rC/0huyyAcf2aAYL9O0BjbvfNA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,144 +93,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+From: Enze Li <lienze@kylinos.cn>
 
-_damon_sysfs.py defines constructors with mutable default arguments,
-including DamosAccessPattern(), DamosQuota(), DamosWatermarks(),
-DamosDests(), IntervalsGoal(), and empty lists.
+The mtier sample defines a local struct region_range using phys_addr_t
+instead of damon_addr_range which uses unsigned long.  Add a comment
+explaining the rationale: on 32-bit systems with more than 4GiB memory,
+phys_addr_t will be 64-bit while unsigned long is 32-bit.
 
-Default arguments are evaluated once at function definition time.
-Damos() instances created without explicit arguments therefore share
-the same DamosQuota(), and the other default-constructed sub-objects
-and lists are shared in the same way.  The sub-objects keep
-back-pointers to their owner scheme, so constructing the second Damos()
-rebinds the shared quota's scheme pointer to the second object.  An
-item appended to one object's default contexts or filters list is also
-visible from other default-constructed objects.
-
-The shared state can corrupt test configurations.  DamosQuota.sysfs_dir()
-derives the sysfs directory from its scheme pointer, so operating on
-the first scheme's default quota may write to the second scheme's
-directory.  The wrong values often match the defaults, so tests still
-pass, but the behavior depends on object creation order.
-
-Commit 8319dadcbd81 ("selftests/damon: prevent cross-context state
-pollution in DamonCtx") fixed the same pattern in DamonCtx only.  Fix
-the remaining constructors by defaulting to None and creating fresh
-objects or lists inside each constructor.  Explicit arguments keep
-their previous behavior.
-
-Signed-off-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+Signed-off-by: Enze Li <lienze@kylinos.cn>
 Reviewed-by: SJ Park <sj@kernel.org>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
 Changes from v1
-- v1: https://lore.kernel.org/38E4AAAAEDFCC283+20260827021515.1316838-1-zhaozhengzhuo@uniontech.com
-- Collec R-b: from SJ.
+- v1: https://lore.kernel.org/20260721070756.54435-1-lienze@kylinos.cn
+- Collect R-b: from SJ.
 - Rebase to latest mm-new.
 
- tools/testing/selftests/damon/_damon_sysfs.py | 38 ++++++++++++++-----
- 1 file changed, 28 insertions(+), 10 deletions(-)
+ samples/damon/mtier.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/testing/selftests/damon/_damon_sysfs.py b/tools/testing/selftests/damon/_damon_sysfs.py
-index e6a2265d721e8..f604b7d6530b3 100644
---- a/tools/testing/selftests/damon/_damon_sysfs.py
-+++ b/tools/testing/selftests/damon/_damon_sysfs.py
-@@ -321,8 +321,10 @@ class DamosFilters:
-     filters = None
-     scheme = None   # owner scheme
+diff --git a/samples/damon/mtier.c b/samples/damon/mtier.c
+index d1123ebbfab90..bea45c87cc9be 100644
+--- a/samples/damon/mtier.c
++++ b/samples/damon/mtier.c
+@@ -52,6 +52,11 @@ module_param(detect_node_addresses, bool, 0600);
  
--    def __init__(self, name, filters=[]):
-+    def __init__(self, name, filters=None):
-         self.name = name
-+        if filters is None:
-+            filters = []
-         self.filters = filters
-         for idx, filter_ in enumerate(self.filters):
-             filter_.idx = idx
-@@ -368,7 +370,9 @@ class DamosDests:
-     dests = None
-     scheme = None   # owner scheme
+ static struct damon_ctx *ctxs[2];
  
--    def __init__(self, dests=[]):
-+    def __init__(self, dests=None):
-+        if dests is None:
-+            dests = []
-         self.dests = dests
-         for idx, dest in enumerate(self.dests):
-             dest.idx = idx
-@@ -426,15 +430,21 @@ class Damos:
-     stats = None
-     tried_regions = None
- 
--    def __init__(self, action='stat', access_pattern=DamosAccessPattern(),
--                 quota=DamosQuota(), watermarks=DamosWatermarks(),
--                 core_filters=[], ops_filters=[], filters=[], target_nid=0,
--                 dests=DamosDests(), apply_interval_us=0):
-+    def __init__(self, action='stat', access_pattern=None, quota=None,
-+                 watermarks=None, core_filters=None, ops_filters=None,
-+                 filters=None, target_nid=0, dests=None,
-+                 apply_interval_us=0):
-         self.action = action
-+        if access_pattern is None:
-+            access_pattern = DamosAccessPattern()
-         self.access_pattern = access_pattern
-         self.access_pattern.scheme = self
-+        if quota is None:
-+            quota = DamosQuota()
-         self.quota = quota
-         self.quota.scheme = self
-+        if watermarks is None:
-+            watermarks = DamosWatermarks()
-         self.watermarks = watermarks
-         self.watermarks.scheme = self
- 
-@@ -448,6 +458,8 @@ class Damos:
-         self.filters.scheme = self
- 
-         self.target_nid = target_nid
-+        if dests is None:
-+            dests = DamosDests()
-         self.dests = dests
-         self.dests.scheme = self
- 
-@@ -568,10 +580,12 @@ class DamonAttrs:
-     context = None
- 
-     def __init__(self, sample_us=5000, aggr_us=100000,
--                 intervals_goal=IntervalsGoal(), update_us=1000000,
--            min_nr_regions=10, max_nr_regions=1000):
-+                 intervals_goal=None, update_us=1000000, min_nr_regions=10,
-+                 max_nr_regions=1000):
-         self.sample_us = sample_us
-         self.aggr_us = aggr_us
-+        if intervals_goal is None:
-+            intervals_goal = IntervalsGoal()
-         self.intervals_goal = intervals_goal
-         self.intervals_goal.attrs = self
-         self.update_us = update_us
-@@ -703,7 +717,9 @@ class Kdamond:
-     idx = None      # index of this kdamond between siblings
-     kdamonds = None # parent
- 
--    def __init__(self, contexts=[], refresh_ms=None):
-+    def __init__(self, contexts=None, refresh_ms=None):
-+        if contexts is None:
-+            contexts = []
-         self.contexts = contexts
-         self.refresh_ms = refresh_ms
-         for idx, context in enumerate(self.contexts):
-@@ -853,7 +869,9 @@ class Kdamond:
- class Kdamonds:
-     kdamonds = []
- 
--    def __init__(self, kdamonds=[]):
-+    def __init__(self, kdamonds=None):
-+        if kdamonds is None:
-+            kdamonds = []
-         self.kdamonds = kdamonds
-         for idx, kdamond in enumerate(self.kdamonds):
-             kdamond.idx = idx
++/*
++ * Use phys_addr_t instead of damon_addr_range (unsigned long) for physical
++ * addresses.  On 32-bit systems with more than 4GB memory, phys_addr_t will
++ * be 64-bit while unsigned long is 32-bit.
++ */
+ struct region_range {
+ 	phys_addr_t start;
+ 	phys_addr_t end;
 -- 
 2.47.3
 
