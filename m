@@ -4,133 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA925C61DE2
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 10:12:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E72A2C61DE2
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 10:13:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E41336B0088; Mon, 31 Aug 2026 06:12:04 -0400 (EDT)
+	id 14B776B009F; Mon, 31 Aug 2026 06:13:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF3796B0099; Mon, 31 Aug 2026 06:12:04 -0400 (EDT)
+	id 0FBD76B00A0; Mon, 31 Aug 2026 06:13:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB9BE6B009F; Mon, 31 Aug 2026 06:12:04 -0400 (EDT)
+	id 012326B00A1; Mon, 31 Aug 2026 06:13:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AEFB66B0088
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 06:12:04 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 398ED120465
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:12:04 +0000 (UTC)
-X-FDA: 85161148968.20.176395A
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C2C2218000B
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:12:01 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=A1cs8iP+;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=xjG79jMA;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=F+W7yegO;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=o4nK9Cvo;
-	spf=pass (imf06.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D31006B009F
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 06:13:14 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5B72316042F
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:13:14 +0000 (UTC)
+X-FDA: 85161151908.07.39DD32D
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7AEF040008
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:13:12 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jg7wA0vL;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of eli.billauer@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=eli.billauer@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788171122;
+	s=arc-20220608; t=1788171192;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L58Z7+BXjdSqb3Vh9n8TDNy2pZxNZI0wP+OuP60u9BQ=;
-	b=O+lzHaaIlDG0q5Ql1aSJjg+p3Ar/6DvmiDjkXODt7srYUsYHJ3vKdIybsWa7cvrDE5ryZ3
-	OjujFl47ei/vB4dtTbI2JhzOEtaCaRbPIdzBPWpw6xPxmoMqOamTs6FaNC8EiR6wqvTp23
-	6grj2/p0YQjC3Ram33nLX9RFW14A/iY=
+	bh=67t2MAwM/CJHQTc19wvE+OmwIIUNA6nz2MWrmdq+rUg=;
+	b=e28WwIfSUM+Pkar0nSaSOAYUJVE56yEXsOTl8Uw/QsJDH+8pvVlQy8UXFNJ84Cg8oO6FtL
+	vsuHOl50dg4Bf1fY6KNmfvZB+nHlfgp91DqjB7IkWKz3agA9g5NDgLoi8U4lsx7QfAC1/M
+	bvI4S9hjZHn+aVhNVH12qayvAZ636qA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788171122;
-	b=4rJDQpukyyNfXi4lzK5nhTLnMNv+QPq7noT84cqWMTs0YJ9lVCJcyIFYwINPSHuRTTGH3z
-	evOSQ6M99kvjISCecUfOUMAgGkLJbwCK2hJRkcIpdOaY+1hpUxPGNkCkcYn1ED8aui/5+x
-	VQCxjQvQzl/Ixt9Y7WUWLRjKOxCidBo=
+	t=1788171192;
+	b=dyfpcPcLqsssb+4yhDnIixGpX/dz6SVQlc0ip27gQ6pi31ESB1GVTYcG6cIulYOkpztMZ+
+	ix1PxD5sxaAO31mFrpO+u+NTYogtzlRd4FkLc78zBnFmSKlK6HtCCBrtF4siJFG91ZLHXo
+	i45bBiToi2qpyu6Pkx2WHuHdSTT4I+g=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=A1cs8iP+;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=xjG79jMA;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=F+W7yegO;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=o4nK9Cvo;
-	spf=pass (imf06.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 481B11FB86;
-	Mon, 31 Aug 2026 10:11:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1788171116; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L58Z7+BXjdSqb3Vh9n8TDNy2pZxNZI0wP+OuP60u9BQ=;
-	b=A1cs8iP+Nvyyux++q0vtbMa3kH8cI64Ua+JXZ3doMv37YUyN6i6MUwvKScUqv4zGOiMkI7
-	0asjHhByYIBYKrlmWDoiALVvUNpDsELSmrdS1USnP8/tEalHdoZi5+h6Z24vA9kyVtLcpV
-	rNxkPYv1HgsK/oxX4nBFrN3DA0IXaOQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1788171116;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L58Z7+BXjdSqb3Vh9n8TDNy2pZxNZI0wP+OuP60u9BQ=;
-	b=xjG79jMAZv7ON1n3tUBENQUqE/7TTqLmTnH+VeBN7NN4zMK43kKnRIFXyBdPEaRq12IcEl
-	Fpi9bK3txwfCOEDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1788171112; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L58Z7+BXjdSqb3Vh9n8TDNy2pZxNZI0wP+OuP60u9BQ=;
-	b=F+W7yegO8lF8Zxf8amh5VWl6oahxp5Hh6GwJLyL/oKyRWViCy1g0WLDkRWUrSGrEiVOZiY
-	RYWcFc0LIHfuMC+s0ovTElTgB1fzA0qhPB52C0MwARE0f/73BFUC3CtiFoe0jMzqytECQL
-	QDjGbU1OEohAUkq3r3ybPCcbLXaawVs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1788171112;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L58Z7+BXjdSqb3Vh9n8TDNy2pZxNZI0wP+OuP60u9BQ=;
-	b=o4nK9Cvoz6WVPfkrCSBPa+eFBQwLBoRiLh9TgJmTbXQL+N79z47Fy4WidY40CcLTKJEZ7X
-	T8j1Yzcrdhfiv3Dw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2891C13682;
-	Mon, 31 Aug 2026 10:11:52 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id bZnlCWhTlWoXfQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 31 Aug 2026 10:11:52 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id B8034A13B5; Mon, 31 Aug 2026 12:11:51 +0200 (CEST)
-Date: Mon, 31 Aug 2026 12:11:51 +0200
-From: Jan Kara <jack@suse.cz>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Christian Brauner <christian@brauner.io>, Jan Kara <jack@suse.cz>, 
-	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Theodore Tso <tytso@mit.edu>, 
-	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
-	Namjae Jeon <linkinjeon@kernel.org>, Hyunchul Lee <hyc.lee@gmail.com>, 
-	Phillip Lougher <phillip@squashfs.org.uk>, linux-erofs@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
-	linux-ext4@vger.kernel.org, linux-nfs@vger.kernel.org, ntfs@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 7/9] squashfs: Remove use of FGP_NOFS
-Message-ID: <kg2pupprlig5gqaqgjydpxfkrsi42bu2li6cingcmu3aidqhyp@afi5wxdrauk6>
-References: <20260830041901.2668-1-willy@infradead.org>
- <20260830041901.2668-8-willy@infradead.org>
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jg7wA0vL;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of eli.billauer@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=eli.billauer@gmail.com
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c20e70a0962so420745766b.2
+        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 03:13:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788171191; x=1788775991; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=67t2MAwM/CJHQTc19wvE+OmwIIUNA6nz2MWrmdq+rUg=;
+        b=jg7wA0vLZcbhJTzNj8beTE3TlPhaQJANq8RMi0pWXxGkQH5sckjnhFzg7hMIi81VYs
+         RDtY/yWUcJ96beQP7zpIc2fMqFCI3Bm6PjqhSxQNlOdVvxLYakMWeE+l6st2KBVDxWiY
+         EWLxXjvffkA+T8rRJef4StD8a7S9jMDqK4fM/0Zcu6QXavPptyA0kFzjRn6k0ZCJ4Pu1
+         CvgY4JFG5iel/jJj2WSu+odNLWbdH1xAdBYyghzKlMLuqVCxkqZO/1WhSlOf0FPYe4nu
+         bLh2izYeBFvX1bIVPr4ZKs0/TEVOOWhR6ruQKIEHHa3eFGnko/j3v1jXwK9lW3lSQOL0
+         4WMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788171191; x=1788775991;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=67t2MAwM/CJHQTc19wvE+OmwIIUNA6nz2MWrmdq+rUg=;
+        b=RliPhmuh+FzlcUudIRqWqEqFJoix/ZIFGtwdXzZlCgPCFLFX3gwbWf1rfk+NxK5Gu/
+         OPY2Nw6QWf0yVVw17ey1K1yfCiXIXOqWyAX/i9vl3yejjvsnUgEHCl7AsH9bDyLMn2RO
+         P7sD6W2X8A7ISRdo1WBOLpPtZ7z8mHgk2J8ptxSUSmbUg/If0/HGVU0CamtMmQb04PxO
+         2jBclixlZla+jq5g/aerDkDzKZI83Xzus5oI1lq8MjioQD/oS1gzxt8FyjmQtM+/ylG1
+         w1nOj0v7VExFA6q0ADToGQO6/j9cMXbW2B4RILvJS6kMvOzyLNNtApePKLoIiaSZ7NqG
+         V36w==
+X-Forwarded-Encrypted: i=1; AHgh+RoKFaoAE6rfgoObQpQefG4Zl063ho8tLyFUqKPxA3PedAAq2CvICE6RUydgwVnjamoK0DtN4crGLQ==@kvack.org
+X-Gm-Message-State: AFuF++lS1z6EZYGvNkUk1sIOhf8Ggl/jipRZY8VkU+is7Kj9zzvYop4k
+	Q8TH93d/XLliSCT7BuMXw6En6n67gG4E2CDdQD+FvRMmlfziYMyeYbDj
+X-Gm-Gg: AR+sD11G52Ss4rPdl1izkFCnhQtaZbdUYAgK2VtW3V1z/+Zf8REJQy9rAbgjwNIw0ji
+	iegcgG3SXuA6Nuu4QnYajNeSZ6hCvT0f69QaTiYuTB3vVDafEce7Vp2+W2hiVNgXvaSlY+Xjj2c
+	1KeKvrTOGvtKqWe3XWZLVNf9FxuA1JdBCqA7DKbeK1zwIOVXGpW5hCxiF1yEtZKNl9w1nCjjCUs
+	EcstsQ490ygeLxmDBa2OGV2axJojImbo5h7JA06h8CECSKBPS4Wa4InnmJ6VdoFQ7vXjSmYHYJw
+	Jhn9/5gXxaduMxg3P98eevcOqsAyLZg/pRY8h6+gXbGl8FQZrbXPoXID1UhtMUU+R6Nk9HI5EKv
+	HJE9iUIq8C/vv5h8eaudoIW9/KHh7fKh3l1xKCQo0vQsKzgmZPlAkvqzzL7JQesSkFFWDL39BGR
+	69sYFK7E8v2refnfwTC881YVj4DED6d6oj6mC27nazbzdYlYp/aI+LWTm2RerIhLtbbIXCetWNb
+	fIlO/oxkJ7cbGzKZGFGK3SC
+X-Received: by 2002:a17:906:1013:10b0:c25:2d27:5652 with SMTP id a640c23a62f3a-c25aee558cfmr69135566b.11.1788171190678;
+        Mon, 31 Aug 2026 03:13:10 -0700 (PDT)
+Received: from [192.168.1.89] (c-85-228-45-68.bbcust.telenor.se. [85.228.45.68])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c255f1b28f6sm385832566b.39.2026.08.31.03.13.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 31 Aug 2026 03:13:10 -0700 (PDT)
+Message-ID: <f6001085-9234-4025-ff34-6cc4a66c293a@outbound.gmail.com>
+Date: Mon, 31 Aug 2026 12:13:08 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260830041901.2668-8-willy@infradead.org>
-X-Rspamd-Action: no action
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+From: Eli Billauer <eli.billauer@gmail.com>
+Subject: Re: [PATCH 2/4] char: xillybus: replace __get_free_pages() with
+ kmalloc()
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Brad Warrum <bwarrum@linux.ibm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Michal Simek <michal.simek@amd.com>, Ritu Agarwal <rituagar@linux.ibm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org
+References: <20260830-char-misc-v1-0-05e2ce44f291@kernel.org>
+ <20260830-char-misc-v1-2-05e2ce44f291@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20260830-char-misc-v1-2-05e2ce44f291@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7AEF040008
+X-Stat-Signature: x5ym1enkgxg4igquncpe18tsd9z3bjfe
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C2C2218000B
-X-Stat-Signature: e6yfoyym4d8g8rfn6o9t141kc13d7qjk
-X-HE-Tag: 1788171121-121846
-X-HE-Meta: U2FsdGVkX19Odwsnu1+B/dpH0fPb+83qIWmuRGMZxrG0ydTjS7P0ckbdgKhrJLVZ5sJvbpTeio7tegoc3BBTUf2VIDJ/D5yuuvYfODE333VYXbGiFPj31nqz9ia5zYFkJHeSXa33cR88b0qaZp/IZqRtUVYxUPGpv3gp22FFN/fRNkIU3M/jKQTX7vPoLqmHzTJmdFl+Tn20+TdTGDYbEEC9BbHUiERrRxllV60LKf7dYAhnnlMdkq3HEczu8YOSurv9x/FR3FxeySXZ8LyHGhyFu1UG/HTNOG6E/iv6CiYsS27kfh4fHFV4UiaR7Cl1EVqwG+3/E/19tT0Czrbya1D7qsLpw22chXbEwbH4E4McnM47dk06+EMIRMLUXl9buefLpLXIvfPGAg6RCSwPzBXcs7o1HL7ruhNWHzagqYF5hvefjycHuHVNdMbv3f4X32j7ahn6cEqVVuikpJA+NSuB1p1zc/+TU46OYWUZD8nOmg2LAYzKGcfIfVY7JXplA+fiCd11k2S23kuRSrbjInEHE0vg7dTmyMLan3XOTLCvHZPYuiWRO8wsI/NEy8a5/MVAesAGzPQqX8+E7f85NKFmLmpWkIw+H6ewjjGHPfbfJYwixCosqSJ9MqMvPKq+4iouT3fiPZKSSnlNeCeZdfWp6KKVY3JYcWQtIIsR5NGhLodrm8NGarLU/RTBf7kldzjqTTzjsSWqSYkCBC3Svw7q3fPYLdbWTMalj35sTmrVFcHcmWgekkNLByeT6kI8pfCpGg/X6DEy5kll/4Xn16aGe70cz4XuTTfaYlvZVIztI2uwwo5mkzXrts08grgJQx6Y8phYW+IomymX6Zh+8tkUxSgSiU64wgFnAX85vwO+KGe/vrsHLsRAr2z/GFt2Jmp2goHmJFWij6UspK6Iu6cVQpmmn6XJ17ij8BIcIArlv5L/MDLas8XNPrJBjtIGdq8yDr5rUlu6cEWVchj
- mSZ2V1Sg
- ZPd86WQN1BUhrcXsMBrWnwpF2JB6XIKEx5wmaItwXDQbFbgb6iz/KkuR/jwv9ZYue889it9jDOa41D7/cmRPNiqr71bDdsk0U+TVlmSS6lBEKPkd0t54tpGNNFxQWWnAA00+U8z3L8MTT7nnxEWyDSZla+9SdXfIfjBq8Y9rjXrW2tsuLmfi9uP9ywATVngP1CsUjIMRy0yhWVqDmmjcFMEPt2Cl2gUau5w/BJPKdICaaoScx8ZZFeD6UEXqS+i2+k3ybJQ+Ya4TVhoyYq4q1DDvcexCDI8Xy1pAGBhWJzFauQGprNsQOXSOIrNgd8Alj7ZsquE1it1jVfo6d0AbTEqYgAzIkotB66RwpZ8uG97JquDLB+Gy9IgE4FXFEgN2VnV/6Fk1KQjBd8CCMNq9GFZ3DHpFJTGGRIGS97Uoc0fzODuXWYcufDJGxLHXTqkwaVqY+YjfwmGAhNyjznWXGlkD5pdPZqRPSTlFOETWFyKMA2LoFrSOWxsskELXfkVrlho6fypzU+zpvlwg=
+X-HE-Tag: 1788171192-457482
+X-HE-Meta: U2FsdGVkX19vEHYzcClXo8LkR9ITd0pKMpq/bOxl//F4I0qyFPabDj7irjl6LzRvCfahqzI81EOBjRobUPEgO/wMefn7X8dP69RMYsMsU/5vtaStTfp23ePiAXygNm/Je5r5dQ7UlDGkBp68FTdoSi4IOpnhooLbOlzwQZizoCGGK/fvCkembLTxtbRgUPxgam5HGy0NDA1A9/jEnoJcFRE04BQBa8L6rdZ+2kCgzDIWsGxQWISdG73hsWR1FDeCF55ramz/Oj9Td0Y+GctCUJsDnb+KyQtis4nLHcZoG9xjEVmw152/ooAivIMYIIdLiCnUicjjQ8k1mHY0alc9cTINUXsbs40968D/6Uk8Ultg2VZ/Fzdly7xz5yllbRhmnuX12nI2UJfrn1QOiv2wOyVg/ds7SwLxy/67ag3C4fDwk3H66A2x7MFY3Lsofqx906F9LE9Yc6EZ980u9hLGXsVJlrfVB9Tmkt+ZE3/CRZdRU0jalCnruG2hIwk/JIkuVs3+EnPsi9l1SdwG/UIav/+19RtsVWg4LDjyEP0EOxjRnl22ShaidrEwuZ2awiVD/6zfEoJRQsB0m0FYu0aOkcXN9QbR6kjNf5uaFvivcmQAQP+7uXjrEwOuuElGvMonZ1d/xTfkdOJWps3vtken2faHu+Fs/2Khjg1rrSwOMMi202eZ4QD81/dHgafCtuBJjHTMjg8MtU6EKCE02qTbdWeqKcLgDp6lrDFZR5JbwYOB+w1BXn1MS0PHX3iK8qtdPHs7k2Dz4QVEGCV0ETVgMkwOfe6pF7IN8K0tETQwNcjv6UOvnOjPhix0qe74u1RX68FnmdReBnBz0sBjXr06nluqFG87wR9mkKbRQJc+jzpl0HGK1EztmEQbNj6ygDmNhTRtfFxixXU+Ye6X+ARL6uR1gPD2Q18z8purzJz8U5kztfdFh4w+TBT7TG2hx/XQOcPs+NVvD+KvVbtDKW8
+ N0fPDKSz
+ KHB/SuYCwwue7VBodTGEgJmtSzVMyXI9wvhPhrMlc6Jnq/vpA0gHeSJmxb+Ms8f1YUjD0N+UkMhIcR9/I7QdoJ5bkLdhERmucWwaq/LhWK7Yyl7NmuHWUEXEONhgFAGyaoID2wXxo0U/xWmeFUpkVdCE+TDrAZdSZwvwh1efIycK5iVhYUKTeegbm6GwljVmzHFz3slH1CtOh9HXMGBxUf4wjTeUfhfnZwP3QkQHWvhGdpWUyBIwcgXBnwId5zz7cFywepTYg8ZufVXhxnNphAVhkFZmYbcumfCc8lLl8g5Ox0S5nb8XfRYTB6ZmL5HqUURC5wWsG4gGAuqE0Qoy+emDS3gDrj6HON786ZQ4WFJaBBg7YTQKMCUs2z9im693SffoZNSAFF/O/yJZ1Qd1VAP7nM0ym/zx9U7HZpv7Dcdem6S5gsDsGexJEHuk7hRo8TpKHJpA5EBeIt/jAah2jCBHyedM5S0SzVanrxZqIQFItacvcSeeXxa8hILEScO1fNxz0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,57 +131,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun 30-08-26 05:18:54, Matthew Wilcox (Oracle) wrote:
-> Since we can allocate memory while holding a folio locked, we cannot
-> allow page reclaim to call into the filesystem and attempt to compact
-> the folio we're currently holding locked.  Use memalloc_nofs_save()
-> instead of FGP_NOFS here.
+On 30/08/2026 9:47, Mike Rapoport (Microsoft) wrote:
+> fifo_init() allocates the buffers backing the software FIFO and
+> endpoint_alloc() allocates the transfer buffers of a USB endpoint.
 > 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> ---
->  fs/squashfs/file.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/squashfs/file.c b/fs/squashfs/file.c
-> index d83594ce91d2..34c550a266bc 100644
-> --- a/fs/squashfs/file.c
-> +++ b/fs/squashfs/file.c
-> @@ -398,6 +398,7 @@ void squashfs_copy_cache(struct folio *folio,
->  	struct squashfs_sb_info *msblk = inode->i_sb->s_fs_info;
->  	int i, mask = (1 << (msblk->block_log - PAGE_SHIFT)) - 1;
->  	int start_index = folio->index & ~mask, end_index = start_index | mask;
-> +	unsigned int nofs = memalloc_nofs_save();
+> These buffers can be allocated with kmalloc() as there's nothing special
+> about them to go directly to the page allocator.
 
-Why do you need this? The only allocation I can see is the one using
-FGP_NOWAIT below...
+Except that they are a bit large.
 
-								Honza
+fifo_init() may be requested to allocate up to 256 MB of buffer memory. 
+This memory resource is split into an array of buffers (fifo->mem[i]), 
+each 64 kiB (or less, if there's trouble obtaining segments of this size).
 
->  
->  	/*
->  	 * Loop copying datablock into pages.  As the datablock likely covers
-> @@ -415,7 +416,7 @@ void squashfs_copy_cache(struct folio *folio,
->  
->  		push_folio = (i == folio->index) ? folio :
->  			__filemap_get_folio(mapping, i,
-> -					FGP_LOCK|FGP_CREAT|FGP_NOFS|FGP_NOWAIT,
-> +					FGP_LOCK | FGP_CREAT | FGP_NOWAIT,
->  					mapping_gfp_mask(mapping));
->  
->  		if (IS_ERR(push_folio))
-> @@ -430,6 +431,8 @@ void squashfs_copy_cache(struct folio *folio,
->  		if (i != folio->index)
->  			folio_put(push_folio);
->  	}
-> +
-> +	memalloc_nofs_restore(nofs);
->  }
->  
->  /* Read datablock stored packed inside a fragment (tail-end packed block) */
-> -- 
-> 2.47.3
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Citing Documentation/core-api/memory-allocation.rst:
+
+"The maximal size of a chunk that can be allocated with `kmalloc` is 
+limited. The actual limit depends on the hardware and the kernel 
+configuration, but it is a good practice to use `kmalloc` for objects 
+smaller than page size."
+
+Regards,
+    Eli
 
