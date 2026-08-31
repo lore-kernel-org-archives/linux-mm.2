@@ -4,99 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 763EBC624C6
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 15:02:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AA67C624A4
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 15:07:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 894EE6B00A2; Mon, 31 Aug 2026 11:02:40 -0400 (EDT)
+	id 6EF9E6B008C; Mon, 31 Aug 2026 11:07:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86C486B00A3; Mon, 31 Aug 2026 11:02:40 -0400 (EDT)
+	id 6A0CE6B0095; Mon, 31 Aug 2026 11:07:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75B086B00A4; Mon, 31 Aug 2026 11:02:40 -0400 (EDT)
+	id 5B7026B009B; Mon, 31 Aug 2026 11:07:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F7206B00A2
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:02:40 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CF7B31A017D
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 15:02:39 +0000 (UTC)
-X-FDA: 85161881238.25.3BFA9E7
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3985D6B008C
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:07:01 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B244DA31EB
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 15:07:00 +0000 (UTC)
+X-FDA: 85161892200.10.C09F22E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 42F5640010
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 15:02:38 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SLIlB6Sf;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 41B17140011
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 15:06:59 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UETTYhjR;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788188558;
+	s=arc-20220608; t=1788188819;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fP0OmW7AaCN1UBBu3eieNVT1hiNAdPr1GoBH/nwPos4=;
-	b=Z4f+HWwmSW4v1Tz6IXoMwSghRrUbifzTOeDSVX0n6mqL6lcSvUBJRcFwrirIdSzrFkl/Pb
-	3h9mC7bgj+kXbZYQmHBoNWIu8cdC622uPV+R+FZ/X3n9hSJKe5IbGqUsduVpF1JKxSLad1
-	kQT0eLinhkLRJ+Lb5MPc5gMeftu7cGw=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SLIlB6Sf;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 in-reply-to:references:dkim-signature;
+	bh=f4iZoQApQIfopJT8EkqZwFe8+jFo1ysNs7WLaErjg9A=;
+	b=NiRpayi56CyeHYip36+iu0qd9nfDDyxxvwOhKT3t//C5legRlZjh5wIiR1gbeoFLgGwwOo
+	CdPCijdP/fkzlWKiWk/D7JlUoYDMq/qf6nH67GmOsokRJodyn05FoZu5jmJaybOz/NUWwr
+	vboOs0dOErOb96fRHSQheDtPBEgtO0Q=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788188558;
-	b=5cTm9NdySv47RwgUb+26cXTqpP1onNS93f5omIjNTe+RIWil2jbnCOxWEVvFdf7Ih0rupr
-	DO0xCykLv4hWuNcjuLQPSunLYPgiSPDI0SR/Bc8EGqFr6KcknKW3a/nR0egnztAcorTi+N
-	IXBODSWuSTkGuWKf9JDFelHwdUxGCDk=
+	t=1788188819;
+	b=Ko11Kh5KUtGKqCSIKjQwJoq2q0G3tdwhenpiDuABbIurWxjzPrPQDz34Kn4kiJOWUrAnch
+	Nq8tccN/4wAfKbxvDe9tDzEHieQQr8WSeuc2MjxRovCxLJ7YZ0Ud0iD9sgZ9YNu14vT8sE
+	XAzex6x+zpjYkswm0/X5tFS7WUM++d0=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UETTYhjR;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CF92260204;
-	Mon, 31 Aug 2026 15:02:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE1F01F00A3E;
-	Mon, 31 Aug 2026 15:02:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B4BB360120;
+	Mon, 31 Aug 2026 15:06:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2641A1F000E9;
+	Mon, 31 Aug 2026 15:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788188557;
-	bh=fP0OmW7AaCN1UBBu3eieNVT1hiNAdPr1GoBH/nwPos4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SLIlB6SfpA8AmTf/M6tefYj3BeCtREJ4QvfdwfP4DPz6DdnexLbsxZLrTiYPJSBfW
-	 KUYuEPlc4eGJ2e1oa7uaeuyF/DoZROmih/gY+20vA4Tzi90xWYOfwzC0+E7VL0/lDf
-	 qu51ty0064PMl8WzWR0NSawth/Gf/7cyzZOeDoREMjLq80zC3I0mF4ZraAkAN7yv1d
-	 NBaT3GkT/9lqzirq9o/PvpDmqya4XEoQxSkyz9Nzd7i4sPxsbJlfrfrUFkXzh+Ur/+
-	 Gq/8OCXK62Eh+dayewVvEJDr+uhwHiEYQS3dDKfMmYa7ruPI5BkESAVGPtFo8xR7g8
-	 i0LaH7vzQ3+vw==
+	s=k20260515; t=1788188818;
+	bh=f4iZoQApQIfopJT8EkqZwFe8+jFo1ysNs7WLaErjg9A=;
+	h=From:To:Cc:Subject:Date;
+	b=UETTYhjR1rTXv97DdzXd4cNx6xYLQVULNS4zG+oBtyJsqv+07TzNV73TUu3nwkFXA
+	 AVtE6H6Pmjk8cWrfo7SDBCOO/ZcQQEuHEuE94YCQiv6k5ZWVuXhNbwboKuxck9hCeZ
+	 kYuVySqZCoD/Tfw5wlqkrsTr0QcwiDLiz51k3uieIDmCdOtYn2t41OrjeaPIeZqCzC
+	 Bde08XvKxrSddVM3nnD1+hxa2koiRvD6z8Oloh1M4esG6f8GVlzumukBP9N85+VFfq
+	 Tnz56xumE6HiEqo/+VVgbxCz1Pc3eN7OEPoPxUSsTEDoY+ivpog0KyzQE2N4VWz6Bh
+	 I3e/5a5w4YYGg==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Liew Rui Yan <aethernet65535@gmail.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	SJ Park <sj@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
+Cc: SJ Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
 	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
+	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v3 3/3] docs/mm/damon/design: fix typo of max_nr_snapshots
-Date: Mon, 31 Aug 2026 08:02:26 -0700
-Message-ID: <20260831150227.83416-4-sj@kernel.org>
+Subject: [PATCH v2 0/2] mm/damon: add kunit tests for probe_hits handling and probe params validation
+Date: Mon, 31 Aug 2026 08:06:47 -0700
+Message-ID: <20260831150650.84829-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260831150227.83416-1-sj@kernel.org>
-References: <20260831150227.83416-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6sy1t3gorwy9zbjpzkt4z4qibq41frrz
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 42F5640010
 X-Rspam-User: 
-X-HE-Tag: 1788188558-625159
-X-HE-Meta: U2FsdGVkX18zv6RnIOB7XWBpEulr8dNvYJufaw3d2eU2nIddfmW4McYET/k+fzPmUOMbNMlZNKedMx36N6BqQEpaoWTfi01kZT4LGb8pkDtT9A6sQHjAjRL9GHdkAqyNj9CN2r5VDh2qUNnlyFxH+dRA3UyNnqRyKDIBvex49UmSVbvMSe5UBnraAhqlYECdLoUmqSof0m56xC69PrVMB6w2eSK3EWww97adrFw5g30WiEJ/ybI9TfEfnp+Xidvgmo5HeeWPPuBsDERCd9BVPTpaZzehznx3NS1AXmBIrfbcgw9AOXOjqOv/GNOjR2v3g1MnqEXQieJZg37HM9YLklTEbGwUiXp+dE0q5mhSD7qsFoj8sMUeEl5sZO6UsXs7Ox7AjAJG+IjDMy7slXHAkoW5f92bpsxXHsjvJSrBF0nQTxKR7hl8WFgPp2OqGtEvgZZYk55Tu6HvOkW/nBrbwaDe8/p+Cii/EDEvHs2U4/7OXSI1VWQxOViVCrUc2CJjU4q7fI+7gvZsHYgGmGt+fV8xQWK+CxdgHzeip/jOqAp7gGuGNXxVLvYkHRxJ7I520D0chUJUW+xYZnCm4SD7EEgSH4YE+vf3A0FbqlRoAVGEoUQLvB+n2UKcjEtKdaDTl3FW8NqYnPbT5dISxJ+Ya1Kzw1ECzaIQ1yYDz1LKPI+th/tRA/F1s7mk4eU5uKPpkPM6muQNcAptBXfm1JEInLqv1pA30Ip8iyOY/OAJL52EizSN9tX0/o3zvNlqD/Ljy6yOxZkzyXAqBXS8UredIbb53e6Nrz1x+yAIBTu6USrzcP53z2B6l0pb+G87O3oJm5RkJCZrsYJI7SVDNVjJATxJJkrYVz+8nIqPkEE4wW/LuwKA8Jxu/ZBnuzzLua3Pu47NBNfkOH8Qw7t8k6Xn1+Kq1yOtV6lKr3DNrTX00mNrEbH/1Mubyl1qwbaiAt3fOGL2hPA6Xom1zdEYDyD
- EZUM8/ur
- Tq8AYp5Z29g53rAD26MXPh2Q/JVGgpQUzY//vY9x9+9w2D7dYz+ZI0gQ7ZEEv0Hd+jSH9KSU0OEWCJ1u95gCraKwlbg1lcxQ2OLga2qMOSzpy84oEaitvi6nO/iL4BUm1Kv8Lj0RmUjVp2TSOEftQLcwUz0rZ5FnKSSEfwWqu9Gs5SOlzFpUb3ZERwtPrCSdcI38tTGkwBfG/pAJ8nQXhY2CAoz2XJAzpL6WgY8LORXgI/p02WKhAdh3jTq/DlbFgri9YrC6+UhrroJ2PMYO9TyPk4cCHbK0Gr9/DHyv/NOzBjlaJYcibxFPMFQ==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 41B17140011
+X-Stat-Signature: oqi5jdwgxiyutbqe44bpynm177c6a65h
+X-HE-Tag: 1788188819-357242
+X-HE-Meta: U2FsdGVkX1/kEGsLpGKOM8iFlgmC5xhbwN1AvvVL6LpAPXNwN2wPj9b7KB0fAwRMOMTruNHlwKYXmG1s8VGwgNgQV7Pix0Uz+UG/nxMMt627tnGaeKq2xC+HkHbj36sOvNnjr3355GzN1ezTgg9fSQQAlPjh6DSOsk99NoHAOc8WNFl+eGjmb7DpP4H4BkLr3MUQXJkuTpuEdiJuCnKp5/54Z5TQfS3hXTbPfRMwL1jhYdxZCt+0kl/50u+y6hwBToCQMXsm40xOAAJQ3lewgRt3uK18jsY/GZKgWWwV20xtHQrqln7Hw8dmEtSwE8781fIzR1npiU8fbIFeklqjgUdQ69qh49AK+YfaT0gTs9BQgTPIlTHmVz6lLXp/j0NQiDjbCpZURZxUkJwDQQx6nzMJJd0Wy9HzQwRUdpBdLJc/VTq1Uv2TNa/TaYaP+Z9NjpNzZkupsMAIRW2b86/awVN/+onVWuY545plenE9s1dzT2cE0R1E9el3fc5BV78BY11e4xFZikUAZBV0r0nFkVt18KHN5Y19nNLfPob+eP4iwyU0yPQsFHvKbGt5bg+SzXHDWeV+Dr4qDSRjjNADvVI2742oWtEh3YeU4Iew0xRxWYQdCAvxq8fEPTfTqYjAZ0/GgA+RLusacX1HANV1X9YOAw6/ShBAT8mvmukr9O7dUj9Vj926bnxSb1rGVeBDrMGNK4CfSQ+XUpD7cc+2qxTjvHRm0dwSvzdoj31W2Bo0JLjwxFGzKBUv3s2jbK2jsNgHavZh1DWsPGHMNbZvne35c9FlTa1U+t4cazpNWVnzQF6abU3ixeR3uLO50/qH67pAXwuegLXKuNgEIRbWgf/i6L7Gh2jL20NwGYLusZmQLTkVseNA8+ZLBE7scpsPdihatvjC6kcSvfsOoBJ2/cTPKkUViCFem1ZPjHaBKT6XQtSQP2PvnXyF6+QgT+XzjyKZ0bdF2FWFk1Ylcew
+ XVlJ55wc
+ VRWgsdL4GbsKSerTuiXaEyjt/4Yg0zVaybeZ0wUq/0O85Id/rHCLR5LCEZiWP3H/6bNSlxnfiG6HIvBZVEAUOEXiqiZZ+MygNha/kvHyetneN5eCq87pJnKcus5AGZqTu6bjoputy4iMk3+i4pp9SSa7NYdDhcZOAz2awf6rFMCnlHWAGFIkCACSwaapbfAtFRBYgfeiHlwc38aWQiJxa/vsXwmaSzOM1oVszUnw1iaUA31D5Mmje2/s66xbyOiPcCO0BBIXGONr23I4ncQsrjN0yOg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,47 +94,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Liew Rui Yan <aethernet65535@gmail.com>
+DAMON recently introduced probes and probe weights. Add kunit tests
+for the propagation of probe_hits at region split and merge, and the
+rejection of invalid probe parameters by damon_valid_probe_params().
 
-Fixes a typo (nr_snapshots -> max_nr_snapshots) and corrects a grammar
-error.
+Changes from v1
+- v1: https://lore.kernel.org/20260818034552.11975-1-jasonangelov@ucla.edu
+- Collec R-b: from SJ.
+- Rebase to latest mm-new.
 
-Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
-Reviewed-by: SJ Park <sj@kernel.org>
-Signed-off-by: SJ Park <sj@kernel.org>
----
- Documentation/mm/damon/design.rst | 4 ++--
- include/linux/damon.h             | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+Jason Angelov (2):
+  mm/damon/core-kunit: test probe_hits handling at region split and
+    merge
+  mm/damon/core-kunit: test damon_valid_probe_params()
 
-diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index 74170a2285501..63cbb7b536da2 100644
---- a/Documentation/mm/damon/design.rst
-+++ b/Documentation/mm/damon/design.rst
-@@ -873,8 +873,8 @@ action is ``pageout`` while all pages of the region are unreclaimable, applying
- the action to the region will fail.
- 
- Unlike normal stats, ``max_nr_snapshots`` is set by users.  If it is set as
--non-zero and ``nr_snapshots`` be same to or greater than ``nr_snapshots``, the
--scheme is deactivated.  Note that, unlike watermarks, even if a scheme's
-+non-zero and ``nr_snapshots`` equals or is greater than ``max_nr_snapshots``,
-+the scheme is deactivated.  Note that, unlike watermarks, even if a scheme's
- ``nr_snapshots`` reaches ``max_nr_snapshots``, monitoring will not stop.
- 
- To know how user-space can read the stats via :ref:`DAMON sysfs interface
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index d3f45f4dcdafa..7b1b6050a8286 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -551,7 +551,7 @@ struct damos_migrate_dests {
-  *
-  * After applying the &action to each region, &stat is updated.
-  *
-- * If &max_nr_snapshots is set as non-zero and &stat.nr_snapshots be same to or
-+ * If &max_nr_snapshots is set as non-zero and &stat.nr_snapshots equals or is
-  * greater than it, the scheme is deactivated.
-  */
- struct damos {
+ mm/damon/tests/core-kunit.h | 64 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 64 insertions(+)
+
+
+base-commit: e87656db0d5bae45056740ce6fc5d41e182013f4
 -- 
 2.47.3
 
