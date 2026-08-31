@@ -4,91 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D514FC61DE2
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 12:12:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78428C61DD3
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 12:32:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B98BE6B008C; Mon, 31 Aug 2026 08:12:35 -0400 (EDT)
+	id 3F5C96B008C; Mon, 31 Aug 2026 08:32:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4B326B0092; Mon, 31 Aug 2026 08:12:35 -0400 (EDT)
+	id 3CD826B0092; Mon, 31 Aug 2026 08:32:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A60006B0095; Mon, 31 Aug 2026 08:12:35 -0400 (EDT)
+	id 2E5C26B0095; Mon, 31 Aug 2026 08:32:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 84E966B008C
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:12:35 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1FC9A8045E
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 12:12:35 +0000 (UTC)
-X-FDA: 85161452670.17.1B73A3E
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 91182140012
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 12:12:30 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=gGfYbwOf;
-	spf=pass (imf26.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0FA826B008C
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:32:49 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8FA7FA09F1
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 12:32:48 +0000 (UTC)
+X-FDA: 85161503616.14.49B795F
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 6C0D9180002
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 12:32:45 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=WmpDWcMe;
+	spf=pass (imf16.hostedemail.com: domain of libaokun@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=libaokun@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788178353;
+	s=arc-20220608; t=1788179567;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5akJYmmRXUk88N0xG/Jq0H/5tMkiTfzIxeZ/sqRKUAk=;
-	b=ntTMjUf5D/1hvy4yge24VSGlhrrcJhnYJOj1PW3+BbGTkXkdLWUYb4OUp1uhvDm4WHdILE
-	Kjq8DEoe+S9SnFBY3KI9FKcTboia3n1QDSxZS+7fbZResIeOmQtd+ZQ9TSizTbjmPr5khu
-	pRwVvhd77IRi7ZXhfqz2BCvY5KwoOY0=
+	bh=d7kMVnx2LblB7BHqjw+a56gGYnnF9uAQgrmNwvR5plE=;
+	b=7fHuYSvIwXmAO0xRCmebcgbhlkNCB7Csfn5jaEpXMfMeo9Ay8WTs8j1nME/jC78C5n31cS
+	SRh8rKeKr5RBjSU2JsetEe0mRA5qAPFzMvGcUW/pQHCSHJrUyhhqjh8YGRH36PSg1kNOVj
+	y26T9MblUXx4777RPzbaaJ6IC9+c+gI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788178353;
-	b=rlpOkE0Et4X++eWZrVDhFZDlmM1y5B60Ar1BVTAWPy0h5f8C3cKzrCNDHHh7pdGVGjgFnL
-	ftK2RQqsrIsnJc0VNt9tCXB8Mlc3044+y0uS7vf/CWRzDqLdz8G/QSN1/ZMv4AxHgDOJgU
-	DY5uRUrN5We1ScaFbaGEw+rcw+42P7E=
+	t=1788179567;
+	b=HDu9l34Tl4BPJ+SQFQSaSn8cULpNAf9IJQPokHZoSu4/qMqj/R9fqdDl0J+m/LwYY9dsUk
+	wGz3IekvUwaRSTiHnoExbGiYYbuqb7Bl19ntGWNJzNRDFPDVgmg8hIlM3ARNpyJW/C8MY5
+	I5exbmPuut5pjX+17vmlBahr3ZLgeTw=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=gGfYbwOf;
-	spf=pass (imf26.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:From:Subject:To:
-	Content-Type; bh=5akJYmmRXUk88N0xG/Jq0H/5tMkiTfzIxeZ/sqRKUAk=;
-	b=gGfYbwOfRXEOpViqrUcm+fyEiDjZGznJv71548gpu2IJy9NiAVrJe21nRxsg9Z
-	O6gJTs/izv3YjSmGLkjm3e8lB9TC07rgHLeZMaATrw9+UGyFRXmsgRE2s6db3Jnf
-	lLERX+hY936Yl90WBpE1qrExGtwwNIwlGY2Ov2wN/sTLM=
-Received: from [198.18.0.1] (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wBnbsuZb5VqDhGmSQ--.62460S2;
-	Mon, 31 Aug 2026 20:12:11 +0800 (CST)
-Message-ID: <0f10d088-75c9-4287-bc2e-f2def5a9c7de@163.com>
-Date: Mon, 31 Aug 2026 20:12:09 +0800
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=WmpDWcMe;
+	spf=pass (imf16.hostedemail.com: domain of libaokun@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=libaokun@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1788179561; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=d7kMVnx2LblB7BHqjw+a56gGYnnF9uAQgrmNwvR5plE=;
+	b=WmpDWcMeDT18m0AmkXO8QDGK2sYnHgGPTtyS4hLdv09g9gWiEasAJKsB37n5C2qEpBFWIg3Tth0dVWqvBrLIldYh9gdpN5lvpvRlGVY6SJCAOM9q1pBhFlrSZz3dZoBviUY/woq61fDp7/pxqLls+G0CBgfmgoU3cnvNCnCUPnA=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=libaokun@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X9yvEG1_1788179558;
+Received: from 30.221.129.244(mailfrom:libaokun@linux.alibaba.com fp:SMTPD_---0X9yvEG1_1788179558 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 31 Aug 2026 20:32:39 +0800
+Message-ID: <156326be-7d4a-4bdf-b0c0-030dc951af2e@linux.alibaba.com>
+Date: Mon, 31 Aug 2026 20:32:38 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Longlong Xia <xialonglong2025@163.com>
-Subject: Re: [PATCH 0/2] mm/hugetlb: fix surplus accounting and availability
- checks during demotion
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
- mike.kravetz@oracle.com, yuzhao@google.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Longlong Xia <xialonglong@kylinos.cn>
-References: <20260823034307.1072415-1-xialonglong2025@163.com>
- <20260828161042.de43f4751296883eeca633a6@linux-foundation.org>
-In-Reply-To: <20260828161042.de43f4751296883eeca633a6@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBnbsuZb5VqDhGmSQ--.62460S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxury7JrWktry7Gr1UAr4Utwb_yoWrJry5pa
-	y5Jw1Ykrs5Ar1jkr4xZ34qkwna9r1fXr45K3ZxJw13t3W3Wr9rKrySy345WFyI9rWfJay0
-	qrWUZw1DZ3W5XF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UO2-5UUUUU=
-X-Originating-IP: [39.144.46.203]
-X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC2xsC+mqVb5tZ9wAA3d
+Subject: Re: [PATCH 2/9] ext4: Remove uses of FGP_NOFS
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Christian Brauner <christian@brauner.io>, Jan Kara <jack@suse.cz>,
+ Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
+ Theodore Tso <tytso@mit.edu>, Trond Myklebust <trondmy@kernel.org>,
+ Anna Schumaker <anna@kernel.org>, Namjae Jeon <linkinjeon@kernel.org>,
+ Hyunchul Lee <hyc.lee@gmail.com>, Phillip Lougher <phillip@squashfs.org.uk>,
+ linux-erofs@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-ext4@vger.kernel.org, linux-nfs@vger.kernel.org, ntfs@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+References: <20260830041901.2668-1-willy@infradead.org>
+ <20260830041901.2668-3-willy@infradead.org>
+Content-Language: en-US
+From: Baokun Li <libaokun@linux.alibaba.com>
+In-Reply-To: <20260830041901.2668-3-willy@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: u5sdme45rz3ufbax6j5qn1dzin8zy33p
+X-Rspamd-Queue-Id: 6C0D9180002
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 91182140012
-X-Stat-Signature: ht6ur7mjbf7gisjst71qkuuzzkbcebhf
-X-HE-Tag: 1788178350-194731
-X-HE-Meta: U2FsdGVkX1+2DstFEC34zyuOe7O6EPW7LOEJfjgiD/5X1bxZiefmucg377ly2ttB80xuDojxy5IY2pZQ6k117TwW1J7kwkVSCj8SZuAuSd6TwY2HZOOmmH/jtcl1Ka72zw+Ouo/lram6Y94/SXTQS3eV/XYJcrXCZmb9je72YEumuJb/Y46Zm1fS5RDSue9Eqm7WPRc0yAKzpYa7jT83GjAX2+bWxmkaTLur/uZKfVt/0UMHfwK2GkGKw9OZnSRVPjnQHoOZdq0pAAMOG/dYcN9kKhY0uWEBnRZmlphaevEHCRiR8sF1bQrpAZxPd0XV/ONDB2cUbQvrqI+sQMuDeolw6Qy6RVDxzTFmE5BzhxbsfM6YM9UNnpXdeIAhIe9M0dAO5Uo3g+Md8mrcYQwIW7SjAJOutIpqUWxw6ZcOi2jbY2TO8YH08/NgX/VLbyL7hlDR5qklZNZLVgxf2crgrQD3XEI1QJYA4satcFqYI0KyKJcTsMpTt13Gr697tlTEfwF9rwSBlEoUF7ejfiHUonU9XRJ/CxBODz/CNbd4thbJ/sA/56KtEUBAovLfArDem9KkiPo1Klch8O3gzXFEVN71vU6s84RqdAzV9GYpGcUJ38dz2NmXwnN8DrnLsN6Gjy59i4SF+cYrrAGcwkqh/0wmoVFGIutrl9EkOVWpRKt01nm1qbJntmvRDZSNfVZK6xoLARbcLyhxTNkwZk/+mesVnME8MgypTnajyi/gSdpu2lMLapDDXzmnNLB57/SsAaUD5Zr+kNh2sVUZFp5QsE2z3kBZIgC6hHrTcH1oSzCdIHhQUfywxYatT+an1UjMOkjsaf6KtwAAz0vIpfdALDKGgthUA2QcYHmoCPYWZQ+BhhH4OGteG7p5ealnuHicTwFL868KSC+ijhYTkEsHHKV9tmT0elt8+Cs5NP0FVueM3E2kryK+EMACQbIaGP5KKXZf3zdUw030PP/6okt
- B8vanUIM
- n195x/G+CTjH2BybLqdU9debTC2g6WthIaIbrXd973OIomd/266PcAHZjG8h/6Sxvgbrdgp20n0LJmMslsoLpGpRfGheOUq0zP4nnZEadUWtLX06wK7FbNZT1jRndlHBjFS1Bz0OW6fMAGQEHTJRKezbNIXVVbuPdqJf4JHEDerBjDXWZcFDJqeSlUNxZR+H5wB8v4Q5/Xco7peQQ+KqsuON2a4ceO7STiGW2Mhs3aU76vzZbY88ammXEl2vWApn1s5zEpFYH0GosPfZNwBqgseYfGDw1lda1KNUuiBsowqYIn7vo18Su0V4KR/4H6JOlNnmgRJOlyS5WukoBNj9vnaOXszSis/Kf7xk/Sm05Tnj44b6oKVVzYPykgsYa4oL8rkxxMrDVXNEFcdlZnQGqDdg7UFTQk6YXKHdE08EwPzFfbPdnk4jH9slSpsUMb4Zd7ihD
+X-HE-Tag: 1788179565-957837
+X-HE-Meta: U2FsdGVkX1+p8zCF7kADSh/CvE8qA9qsnLn2nRgFv5CMEM1fADA3ZJdbZHgoW2/vYEKtAlYzyfESAgm1jqm+ywv2ilyzoP0GFVkwxoMSMnqYDoLqhhxB7gEv2fomrmNz2hNBQaI7X+CqLO79mWVvx1jIkfMO5djV9jtoykKzOFQrfmt9tWqo2+E4jp6vQwvIB1MX2XzNrIMYpVIfCIzespUVEt622O90pTup5R3evCZRPCEcPvum1w1439kGN0YGVxY4CI8zD3avYqgi59gjLuAeBaNhsP9M2hh1KndMikJ92zb99dUiMFFnyh0Jqt3yQFRFBEkIcu+XLjGPzlititiRNyY6GREwfKfCO9QBVbhrOUtvsEnAQ2BoqyO6yanA91DSUASnqrShUgwNDmf1Br2yYMTK7SRb6c+/kfNugbv+8MA57mAPcoZy8sjdIAiryZPaZyYqIcM+5nyNzlzcYXMMxiGmeiZ8fSotvqbN5FMB7S+4NP4idtQ0U0PRojwng6D+jB1v5xbhSM1rrSTrgS4xbptF6QjIgUOi8c7FA+bPX00tZKqJ2QJyEQXsdclxfANZJCn6lDRyDL13GF31aprpfUTJnRLuLldDA/qB3osls+RsIbEc2vpw9fFZw0o1cCrSi1RYpOrO+44K1nayneduJ3S91C1UlGYTQjub2Rn/Tp8faAYIxZ6+fhKKOVy9eE18OAIktxCcHJ8TuvCMRDkfXFCjFC9GM1h8Syy8F1rCTAC8liOultVTmPqslMLku6GckVDeohtqINEj43wG546bzaOQ2lEzESHN6h8BRw3uyRDxGMVUejTbRpwaJ2VjDEWR6+cQlAhPVNcOVJe7Vl+s3VOT8siAvjhPktjnojcTD/mmt03VtBhWoRJ+7SiknUmVd5CA18KEfQyTgSrPkbSbyRoE1OYp90JZ6Jg9WSsEbz0Clmjy6gQcxd65HtyNBrmuCklLf6Evxib22Xz
+ X4quXyDR
+ 2zTki9Gh9jFx9uDSdK9DOlBtxwOrmXVy/Atg4RiBiYNNPCyTzoWfwtxbVOjmOCNdQKE11lwfROuOAYtWqvYYuEHg5fMHjjLz5MLCbS+47L+iLo0AeAC8ov401CXEfIOnzai5fqyWF4OCRXNdijXhK7wUAnmkwYx5dzY/qiXC73Wlr5GNAVIpiiMOUGkEU8HfR1gC2Dz3797VERrqWYoaWuBhFlKKYEPioOIO8brocO+yoqMrLxIXYShAUDFc2g84b2OY8PDd1VKB9IILiseKiJGjdYYJIO+tvtoXfhG0HLSGQlYLNqK41+OV6Bkl+VO94C7WRaprtPKqOGtJf4PvEHwjQj2zvRRy+MydgBiNLXsYHxhSVgBfAL4UV5f3ZjMgddn88ynk4ESBCBOId3qD85C33rkBoYUbw0/PMyyq9qlHkHBoJr5XviWgb3pwMv3eSyl3vg7PPW6WCa+gx6oO6yjxaSzblTVvjbWXdrbtFZoXIqlQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,121 +94,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-在 2026/8/29 7:10, Andrew Morton 写道:
-> On Sun, 23 Aug 2026 11:43:05 +0800 Longlong Xia<xialonglong2025@163.com> wrote:
+On 2026/8/30 12:18, Matthew Wilcox (Oracle) wrote:
+> Both of these locations are called while a transaction is in progress.
+> Starting a transaction uses memalloc_nofs_save(), so we are already
+> prevented from recursing into the filesystem and using GFP_NOFS was
+> unnecessary.
 >
->> This series fixes two problems in the hugetlb demote path.
->>
->> Patch 1 fixes surplus accounting in the source hstate.
->> demote_pool_huge_page() removes every source folio as a persistent
->> folio, but a free folio may instead account for one of the source
->> hstate's surplus pages (for example after a vmemmap restoration
->> failure). Removing such a folio without adjusting surplus_huge_pages
->> makes the persistent count underflow, and later subtracting it from
->> max_huge_pages can underflow that counter as well.
->>
->> Patch 2 fixes an availability overcount in the sysfs demote path. The
->> sysfs trigger checks whether any page is available but then passes the
->> entire request to demote_pool_huge_page(), which can remove free huge
->> pages that back existing reservations. With two free pages and one
->> reservation, a request for two pages removes both and leaves the
->> reservation without a backing page.
-> Thanks.  Have you created and tested reproducers for these?  Gemini was
-> trivially able to do this for me.
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+
+Looks good to me.
+
+Reviewed-by: Baokun Li <libaokun@linux.alibaba.com>
+
+> ---
+>  fs/ext4/inline.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
 >
-> If so, it would be helpful to includes the details in the
-> changelogging.
+> diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
+> index ceee69a66482..1884abb09614 100644
+> --- a/fs/ext4/inline.c
+> +++ b/fs/ext4/inline.c
+> @@ -601,9 +601,7 @@ static int ext4_convert_inline_data_to_extent(struct address_space *mapping,
+>  		goto out;
+>  	}
+>  
+> -	/* We cannot recurse into the filesystem as the transaction is already
+> -	 * started */
+> -	folio = __filemap_get_folio(mapping, 0, FGP_WRITEBEGIN | FGP_NOFS,
+> +	folio = __filemap_get_folio(mapping, 0, FGP_WRITEBEGIN,
+>  			mapping_gfp_mask(mapping));
+>  	if (IS_ERR(folio)) {
+>  		ret = PTR_ERR(folio);
+> @@ -734,7 +732,7 @@ int ext4_generic_write_inline_data(struct address_space *mapping,
+>  		goto out_release_bh;
+>  	}
+>  
+> -	folio = __filemap_get_folio(mapping, 0, FGP_WRITEBEGIN | FGP_NOFS,
+> +	folio = __filemap_get_folio(mapping, 0, FGP_WRITEBEGIN,
+>  					mapping_gfp_mask(mapping));
+>  	if (IS_ERR(folio)) {
+>  		ret = PTR_ERR(folio);
 
-Hi Andrew,
-
-Yes, I created and tested reproducers for both bugs.
-
-Patch 1 requires a vmemmap restoration failure, which is difficult to
-trigger deterministically. For that test only, I added a one-shot fault
-injection that makes the first attempt to restore the vmemmap of an
-optimized 1 GiB folio fail with -ENOMEM. The injection does not modify
-the demotion or accounting code, and it is one-shot so that the later
-restore performed during demotion can succeed.
-
-Patch 2 is reproducible entirely from userspace and requires no kernel
-instrumentation.
-
-Patch 1 (surplus accounting):
-
-   1. Hack the kernel to force the first 1G vmemmap restore to fail:
-
-      /* TEST ONLY: fail the first optimized 1G folio restore. */
-      static atomic_t fail_next_1g_restore = ATOMIC_INIT(1);
-
-      ... in __hugetlb_vmemmap_restore_folio():
-      if (huge_page_size(h) == SZ_1G &&
-          atomic_cmpxchg(&fail_next_1g_restore, 1, 0) == 1) {
-              pr_info("TEST ONLY: forcing one 1G vmemmap restore 
-failure\n");
-              return -ENOMEM;
-      }
-
-   2. Boot QEMU with:
-      hugepagesz=1G hugepages=0 hugetlb_cma=1G hugetlb_free_vmemmap=on
-
-   3. Enable overcommit:
-      echo 1 > 
-/sys/kernel/mm/hugepages/hugepages-1048576kB/nr_overcommit_hugepages
-
-   4. Allocate one 1G hugepage:
-      nr=1 surplus=1 free=0 resv=0
-
-   5. Unmap it.  Due to the forced restore failure, the folio is left on
-      the freelist but still accounted as surplus:
-      nr=1 surplus=1 free=1 resv=0
-
-   6. Demote one page:
-      echo 1 > /sys/kernel/mm/hugepages/hugepages-1048576kB/demote
-
-      Before fix:
-        nr=0 surplus=1 free=0 resv=0
-        surplus > nr  (wrong -- surplus not decremented)
-
-      After fix:
-        nr=0 surplus=0 free=0 resv=0
-        accounts consistent
-
-Patch 2 (cap demotion):
-
-   1. Boot QEMU with:
-      hugepagesz=1G hugepages=2
-      nr=2 surplus=0 free=2 resv=0
-
-   2. Reserve one 1G page (mmap hugetlbfs, do not touch):
-      nr=2 surplus=0 free=2 resv=1
-
-   3. Request demotion of 2 pages:
-      echo 2 > /sys/kernel/mm/hugepages/hugepages-1048576kB/demote
-
-      Before fix:
-        nr=0 surplus=0 free=0 resv=1
-        resv > free  (wrong -- reservation has no backing page)
-
-      After fix:
-        nr=1 surplus=0 free=1 resv=1
-        resv == free  (correct -- request capped at available=1)
-
-   4. Touch the reserved page and let the process exit:
-
-      Before fix:
-        Bus error (core dumped)
-      nr=0 surplus=0 free=0 resv=0
-
-
-      After fix:
-        touch: OK (value=0x00)
-        nr=1 surplus=0 free=1 resv=0
-
-I'll include these reproducer details in the changelog of the next
-version.
-
-Thanks,
-Longlong
 
 
