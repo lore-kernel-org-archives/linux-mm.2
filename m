@@ -4,123 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A66AC61DD3
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 13:04:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 312E4C61DD3
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 13:12:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0AD2C6B0099; Mon, 31 Aug 2026 09:04:31 -0400 (EDT)
+	id 1A7526B00A0; Mon, 31 Aug 2026 09:12:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05E4F6B009D; Mon, 31 Aug 2026 09:04:31 -0400 (EDT)
+	id 158776B00A2; Mon, 31 Aug 2026 09:12:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDE096B00A1; Mon, 31 Aug 2026 09:04:30 -0400 (EDT)
+	id 06D1D6B00A3; Mon, 31 Aug 2026 09:12:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D149D6B0099
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:04:30 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 61AF2A1F92
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:04:30 +0000 (UTC)
-X-FDA: 85161583500.24.DD20B31
-Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 801F48000E
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:04:28 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D66BD6B00A0
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:12:57 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 61A9E120111
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:12:57 +0000 (UTC)
+X-FDA: 85161604794.25.684FD08
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 2E64680006
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:12:55 +0000 (UTC)
 Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ggqMHMEV;
-	spf=pass (imf30.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788181468;
-	b=4hY43k+zurky6T7MHhL1yioGNewRqFWm2p6C9RON3+jKi0QmeSTSOvFJGVaeGXSZGmUjo6
-	LR/ShnTaBHruTD4mvJogi+SulGfAGp5GaGZGil51kZ8SSYVbGe80XO+h64/TcDUs2HFxvR
-	F1flRSTbmKkMjToDLN+oG3ZDSFtdv2E=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ggqMHMEV;
-	spf=pass (imf30.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=KPceeqwj;
+	spf=pass (imf30.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788181468;
+	s=arc-20220608; t=1788181975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VXjjK4cQByHA+0LozWy93yMgZYx3/ZFKSUZa+XbHMGg=;
-	b=C/sH8d9+JGiYB2MInRv22ik4TxSzicc/Oa6SA1R2wbBmLRSiqJURTJuoMCgR7RkEuCgS5z
-	W2YD22vGPuaJ4IaYtBZOQZ5LQnbDNJD0Rw00HvBFmOtj3KGpx1xS1gMsICDPiPPJFKq13N
-	2Q+X54Mhie74Dch1+9F7xJUHDou1tc4=
-Received: by mail-pj2-f11.google.com with SMTP id 98e67ed59e1d1-396bf83d458so1279702a91.1
-        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 06:04:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788181467; x=1788786267; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VXjjK4cQByHA+0LozWy93yMgZYx3/ZFKSUZa+XbHMGg=;
-        b=ggqMHMEVtcjJ0pWigRsCBM+OI0lzO52wC7IAg6TxdiNrTkuzlPRIEeiIqx+EussVru
-         gesUBAklnoqHKVao6cgLa30lnyq8c13uqg9UKTwlBrk4E+SV4GI8ccA8xk1kr8cDVl/A
-         19FYAxIzUxCRKPzMFoljyJH9rVF1dPaFOipVGhw9i8vCfOOpi4/+ET6d3S8SNxvb2a10
-         +eeHpgmsjFiVGMlojEyZl8n5mK6yOPKhq8MpfpOgNn4qj4HMgy0ENUD65m5nhcSYD6E9
-         PR6fdNdeZ3lR5MKYdKCHw08hBBINy4Vo1ndr/rAaO+Gsu8xUoGqheymzNgOhpX9DjX5Y
-         bTOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788181467; x=1788786267;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=VXjjK4cQByHA+0LozWy93yMgZYx3/ZFKSUZa+XbHMGg=;
-        b=PeCR40wATgfHdwSEyDE4lIGSY0ToAmhljyQBTpYXBVoClbTK3ihyNLELQgPhdzbtQd
-         b/gpg63uW/cU9UtNH80vSuNGe58J6nBcGDChb/IEffL3wFGTRllp2H73vwzFICRtJf++
-         xyYcaTbUJk61k68OnHtZGDZfcstlAJiM9bF3bYB6TuEmQ/ifeZwmnpWZ9IwMcFPQTxXa
-         zY+7MYUJpWGnfOST1Aq15ij88vdZe7IUiof6Fo17SV4fou+z8n3Guo6xqTWkJTey/8C2
-         kLwrmfC3tjxfcDwRk04ERkYKfjXik+rnfJ90aPc9HsCsa3NjwZxA5LI/G/dVErqUcdrS
-         1+Wg==
-X-Forwarded-Encrypted: i=1; AKwUvBwRVt+ffycg1NMP/OTbkrFTYZAdHyg7JRQT2uxuG7e5msqpPJCuVufPri9tmctI6emzl2Cz2s/w3A==@kvack.org
-X-Gm-Message-State: AFuF++l8vJLiED725Q7KH5fTtl6l5yo4c6qM4Y112XzQNIOjobDzCspq
-	N55q8dzao1aG8XWmfkQOyVTs7zl2MD7lKZsK71bvpR0qIBj0W8KcgWEN
-X-Gm-Gg: AYBFou2Ecb4EQloZC20P/A+OTSn+gW4czceaYViRb74Lwzh2Lmy2u8RkdV9ZNqr02B0
-	JGZx6zQihjgeN6K75hkwIY/I+Uc8axa1fkhkPDwZ9WMsgZpwA7uKjPZ0EbVqUlNvqALKCoNxPQj
-	o11XN3S9M0fadW0upd07zzBXWcd1ThI9ZG3QmOmJHBgJKVO2udnaW7dhbiAfYJH3LeaSUhcTeRi
-	ZMEzRrEIkh+yaYAvdYbbXrQZwlFnyguA0FOLHMiyvwt2ykc26kYnmGZRtjSPo+gDdEfG+1hDTwo
-	r8XFC6BTT0/Odjh7ZhdxRT5f7eCeJqM1aFQN6TLZg5y4VtEffUd3ecFefrJ91KKn/v+UzCuqewN
-	GmcjUBrqPr2fLwJdSd2ueZ20lKYqMvV/v+I04Ealy8jYcA3AU/uRniRv1vcsDuUSW2mbaCv8CzY
-	DL/814xREP8vddYCNX/pQuhKGyfJchC3SqUGsVlPSeSBT3kl7EzPD+Lc/k5S4YmefOti7HRxoIE
-	fRJrg==
-X-Received: by 2002:a17:90b:2888:b0:37f:e326:6557 with SMTP id 98e67ed59e1d1-39907ab0ea1mr1000718a91.4.1788181465569;
-        Mon, 31 Aug 2026 06:04:25 -0700 (PDT)
-Received: from [10.125.112.20] ([122.11.210.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396d6d29de3sm4981354a91.2.2026.08.31.06.04.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 Aug 2026 06:04:24 -0700 (PDT)
-Message-ID: <af87036b-0809-4880-b088-545780b4d963@gmail.com>
-Date: Mon, 31 Aug 2026 21:04:18 +0800
+	bh=QhaSwmeDZX+FhVbqZef/6aoKxmBjWUBVyUihTtoeWgo=;
+	b=hkVBLxgt2IyA7LR9lxAMkWpXvIRte2H//soh4fsFH+xikXBsO0nxG/FRn+DkwoHSNPOlSS
+	zVxQmmAUAWSQJwMkOnkA9sfZG9VicvBzvT7p3Dl2l9+YidfR03k2H3B9NZo7dBW1/pw8Cr
+	nueV2WYWLp+B2hsO4Jfs8umjthRpLaw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788181975;
+	b=fIoXWpjeQg1D6GLu6VA9A+O91jRNAYlknuogHOicKkMhNU6tj2c1huuufYndeos8qB8OqW
+	FjsA3irdGJKfa41+1kyPiCfCPtK3TJZLh5MlkvD6Bi2fX7BmIj+zB+MXB5es0/Qa8Q+C5N
+	Me5fcuP6KrichZKFapYiEazw8gdafMs=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=KPceeqwj;
+	spf=pass (imf30.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=QhaSwmeDZX+FhVbqZef/6aoKxmBjWUBVyUihTtoeWgo=; b=KPceeqwjCU2Fbvj/fap1K6JGrk
+	VteOYqIzCZNBPGtbM43FSLgWNd2edxK+1Vs92twpxayUN6CDSPs6CvaEO6No61AnEAx2V9aHcyTy4
+	ghxRdltlbsAddchl2mSxeMBFP1jrO1O2cMTmr2a821ZcWWQjRIBIaR2cLVvV/Lh0iwZ4yuBtcrPLP
+	BXRK9RaEe7j2+ndGqH6JdmkD0e3B7lkryDd0GDcgMorqUzGpt37NsR/Gj38ICFYydN+M9Qt9GFoHH
+	lGqihR/t1jrONnRcOO1qkrJJyQsLjVIWLYX1eKo4KZJfSLkaxRisPNNBEYh2t2NR1ELbMF3J3X24T
+	OHbql/DQ==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1x11ob-00000009sFC-353M;
+	Mon, 31 Aug 2026 13:12:46 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 918B9300E7E; Mon, 31 Aug 2026 15:12:44 +0200 (CEST)
+Date: Mon, 31 Aug 2026 15:12:44 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Jianyong Wu <wujianyong@hygon.cn>
+Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Chen Yu <yu.c.chen@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Phil Auld <pauld@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, jianyong.wu@outlook.com, zhongyuan@hygon.cn,
+	huangsj@hygon.cn, wangfengyu@hygon.cn, yingzhiwei@hygon.cn,
+	justin.he@arm.com
+Subject: Re: [RFC PATCH v2 04/23] sched/topology: Introduce a method to
+ calculate the llc distance
+Message-ID: <20260831131244.GJ4120091@noisy.programming.kicks-ass.net>
+References: <20260827122816.756234-1-wujianyong@hygon.cn>
+ <20260827122816.756234-5-wujianyong@hygon.cn>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] of: reserved_mem: skip init for regions whose
- early reservation failed
-To: Marek Szyprowski <m.szyprowski@samsung.com>, robh@kernel.org,
- saravanak@kernel.org, rppt@kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Cc: akpm@linux-foundation.org
-References: <20260818092420.2859026-1-chenwandun1@gmail.com>
- <CGME20260818092438eucas1p20115e5d33908e32ef4433cb246da8098@eucas1p2.samsung.com>
- <20260818092420.2859026-2-chenwandun1@gmail.com>
- <72074a49-2963-4f96-b939-79bf95a829cb@samsung.com>
-Content-Language: en-US
-From: Wandun <chenwandun1@gmail.com>
-In-Reply-To: <72074a49-2963-4f96-b939-79bf95a829cb@samsung.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260827122816.756234-5-wujianyong@hygon.cn>
 X-Rspam-User: 
-X-Stat-Signature: ciy85trggx4nkqxpshrxepahs4oq9n54
-X-Rspamd-Queue-Id: 801F48000E
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788181468-529548
-X-HE-Meta: U2FsdGVkX18Isnh7ITbvGoqCBTCWdvkR25LHxaonAYi+MzDGKLNB1IFWM1td+GwzBomGqHeTM4mq/Ui5u0oa6ITyA6aTUBN/R1QHkCC4wQV6okLec3JR5Mvmg+H9TQ8qMO6XFpREy0DNCWm7bgpj//TKJ2au+HqzMYP7wP3SkfSn7LGUxC28UucR0YMsjj6m8gZUJAt1TChFXQgUTUhCFTv/dRZd3N58vsy+V7ax1d/VVoCFl5bnKT6tyoCH04qiTSdULoiqRxXE0YrI1RLFl6gJ57Bhk018Asa34yzUi1bH/3l3D+KifyaYZT0Wp8Hu2DooDg2KZUFyT3IJlT5Vd88HWC5vJ4JxzdlRXsLh7KoQ91NCLzl+KyvCllJcjy9G47eYpEVCGajq51cGhut6PzddLgix5rm5CmiCKHFPPbF3vKnnwQV6lP5U4vOoZuWrnkqSBMKyX9neOtJ9L1Fb+vDKBgRHBKoeWBjR/eq/2enSvnJX/8yxUxUGccjZ8pg/wGDwXDP58AnlDH3H4h0kmbKeVHA9jgpidJr1Sgmjcq/8VAle0b+2qjF4ES5W1OQxvDypIvzPdfRCO0BjUc/o/SUqbV3T83kuLQu5Cl8gx0WhCMk57Wd71LcjW3+zpxkJ1KmgW0oizAWP60lAbpNI2CbZXMa8PRplAZWVc2lJoCDrDJ4G4aUeUkZlQ5tKU6MXL2KDaE8h2eZSt7oYGXM8wyHXevbF+bd1HIElBSqnkYoxIVrj6pa8BDP74QOkqHCOC7U9vKm/eKOB3DnBi9WNiZrRvcP9r30sNRN0leRrLrHi7wfFP+812V2oCn5qCpOCKjTzqcBPcL7bL5I7zBEoe2+kHdOWFJKE2M+mB24ZpeN9zOWDcCfPWF6IgpIxvfESuEDGWzACs14xbkDzLoUHDTGzKywB3+43rfIDcyzCGusWQ3dbv09eKJwZ3HIB2hqSQbA244zTN7BgBE3zO7O
- KJkVb7yz
- pjMHInhI9sfHqht6Cz8Chn+CvxTrVfl5P7ZyYStsWzbDN+2baUtxuATYwt+0uSuTMk6IjzJtyUNk5o3ZTUypPTeVCOaqVzrQDfzl1xbJLkvbXZnUKuciOXn3yBfImlrkRSk1xsyD41FqJfn/185wHuoO/k7OO+8haBL21N4D+KxciofB+WMzWcJpcs7KqBihtJI/+ndy/O+J7FRBNB/sD3snCBHhRmhpvAI8GKqTa7SEKJZdiABefFCiTvU59Jjm0ok6zv1OZ1+02DeLt5upVcx6wqDQd+iTCDV2HsTEV0XB29KChyD0jdBWQGrWL78vI4O3g/tVgA+rMTkXjHTxDcqMJbDTKeBJI/B5vnV0zjZ/MZgCXX7c3cAvugDZ25T51/807hnFrXRE9eKCcJ2mEUdtBAtXb5XhZmxngru7f446ND/BZofEJo+OUHP/GfTpQEsCNGaGy6Kce/8vhC5LJe7uimdN28oRPKls5kmCvOoq0JhgjDle/F2AZ+k5XbALiK/gmcIEoHexuoESl7ujrvsalJ80echYpYXpYNs9kHImicMcM8MjZgZn5NJfe92dav6wM
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2E64680006
+X-Stat-Signature: suggd9e1599w63xsgn9fdpaocgpxf5ps
+X-HE-Tag: 1788181975-324513
+X-HE-Meta: U2FsdGVkX1/4UkHmR7kSGBU6hpEW80s66d69hoIAtsHD0Q7POtfMxkXFzAgVvXieEoxFe5fgEidH20jNp2X7gS2atEuddpNRvN0Y74CNfZ9cApx388CggawHT5im/p4ivliM62lYjtXYuJQiDK4YrDXLhvkGBGKZLez3GS9lT5oQcFUnG8U1PXoKNyGkB4HXyUyihGu6YwHMX0DQTBlGLiVfRWOEvHJZ395r9bHgE1FUtUUI9Zzws09kpaMLFZ0M9hEH461Ex5Ksm7rT/KPv280nNfg7fEVk4qK5+qqNGjbWQ7XVoSlSVTcBxmJehc0IGDqVuelV0KVcwt8Jp3/LL5QBflaWalCJtWu2d2399K0R5oL3ndz2W3+B0Ibezup0P+IWSsj+CpJkaybpxwyAsYYkVtDfhmX7xB+oTgMSaTfs7Hoy/d7ZjGsV/Ax4WODqM7WB2mzl9N1ghq+9DP5UbvOKhuaROeMzwQP1hPsfynC9GVsfyXPoJih+UMggMA6F5s5B3j5xvi4Ox4REXC7j1TVKWCe1+8gUUP9wzs1QZinV+3j0oKOamBH3IGtQ8jt12o8aZYdT3kdvQHtmhuG0+tnay7af2l88EGUdbJpFL5QkjiTS7AexgljW1arrevnAMFpPm8ZPck4jxT0aw76o+UDz2hj3Vo/MQXikyTkHetkPY+U62sS8s6rm7SKwzSEim/pJZnq/evwQqQ8PDJOJQ0XQjKCr2RCluGH8tDd/MTj3qYPkZ1xnEsSm1gRrsdYefRZ8CXJ2pDXWxw0m5SCWYcJLVnJl5nN1EzT+Iz/9mJdmuOHYV5zneaXdRTk79rKk0tyei8ODFJ98Jj7FfXTVoht8GT6IN8WCBAEocJmulHERG/NgZtUzCYBZWUbWeN/l0AaiDBTz95yceUVPJBhsZsIq1+WEDep3KoW1Ocq5iI/K8Xa9Xr63IPOi46bC7OmSAiu8YaNGywEpjTKWg7I
+ T9aqLXaS
+ Hys69un6pvXesMnjCEdaFH5QPNDhqpoM5O5PTVEKM/bRvOQUESkpF4/kK+CeLkJfpwGt4Zk3jKkCCfRyz/9iG0v8zU6QxjSWK+QJpnRoe8TXeK8RpvyqdMlki1ZsNsIABN5L4Aw657JZrJCDmowiWFjsSJULGrsrT8EQJUw3qfw0wiJplM0Ke2m3C+aIdmFwydPVCdfUQC2gzDOLPyidxNnz9yrDJF+rGonub4FFQrdIVOrY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,186 +107,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Aug 27, 2026 at 08:27:57PM +0800, Jianyong Wu wrote:
+> The previous patch addresses NUMA inter-node distance handling. This
+> patch shifts focus to the LLC layer and introduces a scheme to compute
+> pairwise distances between sibling LLCs inside one NUMA node.
+> The calculation only guarantees distinct distance values for all peers
+> when viewed from a single reference LLC; it does not enforce globally
+> unique distances for every arbitrary LLC pair on the node.
+> 
+> One valid calculation scheme is defined by the formula below:
+> 
+>   dist(LLC1, LLC2) = (rank1 + rank2) % k + 1
+> 
+> Constraints: LLC1 and LLC2 must reside on the identical NUMA node.
+> rank1 = local index of LLC1 within its node; rank2 follows the same rule.
+> k = total count of LLCs available on the node.
+> 
+> The formula never yields zero, so diagonal self-distance entries are
+> explicitly hardcoded to 0.
+> 
+> For demonstration, consider a NUMA node with four LLCs (local ranks 0~3):
+>         LLC0    LLC1    LLC2    LLC3
+> LLC0    0       2       3       4
+> LLC1    2       0       4       1
+> LLC2    3       4       0       2
+> LLC3    4       1       2       0
+> 
+> Sorting each matrix row in ascending order generates a unique LLC affinity
+> sequence, which drives thread migration policies implemented in follow-up
+> patches.
 
+Aah, now I see. I got confused by your sched_cache_node_distance naming,
+and thought it was cache-to-cache distance.
 
-On 8/26/26 21:14, Marek Szyprowski wrote:
-> On 18.08.2026 11:24, Wandun Chen wrote:
->> From: Wandun Chen <chenwandun@lixiang.com>
->>
->> __reserved_mem_reserve_reg() discards the error from
->> early_init_dt_reserve_memory() and returns 0 unconditionally, so the
->> caller counts the node in total_reserved_mem_cnt and the late scan
->> initializes it without checking whether the early reservation actually
->> succeeded. A region whose reservation failed is then handed to a
->> device assuming the memory is protected.
->>
->> Propagate the error so failed reservations are no longer counted, and
->> record the failed nodes so fdt_scan_reserved_mem_late() can skip them.
->>
->> Recording the failed nodes explicitly is necessary because
->> fdt_scan_reserved_mem_late() rescans the DT independently. It cannot
->> tell from memblock whether early reservation succeeded.
->>
->> The failed-node array is bounded by MAX_RESERVED_REGIONS, the number
->> of static regions is not bounded by it, so on overflow the extra nodes
->> fall back to being initialized, which is the current behavior.
-> 
-> I'm not very keen on such partial solution. Indeed we have no place to
-> 
-> store the result of the early init call, but we can check if the given
-> 
-> region has been earlier marked in memblock as reserved or no-map in
-> 
-> fdt_scan_reserved_mem_late(). If those attributes don't match the
-> 
-> region can be simply skipped then.
-
-Considering the later patches that reject reservations for overlapping
-nodes, checking the memblock state in fdt_scan_reserved_mem_late() may
-produce false positives.
-
-For example, if region A is reserved first and region B is a subset of
-A, reserving B will fail because it overlaps with A (in patch 02/03).
-However, during fdt_scan_reserved_mem_late(), B will still appear to
-be reserved because its range is already covered by A. As a result,
-B would be initialized even though its own reservation failed, which
-is contrary to the intended behavior.
-
-Best regards
-Wandun
-
-> 
-> 
->> Fixes: 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved memory regions are processed")
->> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
->> ---
->>  drivers/of/of_reserved_mem.c | 65 ++++++++++++++++++++++++++++++------
->>  1 file changed, 54 insertions(+), 11 deletions(-)
->>
->> diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
->> index 8c9d6395d6a3..c6e73d710ee1 100644
->> --- a/drivers/of/of_reserved_mem.c
->> +++ b/drivers/of/of_reserved_mem.c
->> @@ -32,6 +32,30 @@ static struct reserved_mem *reserved_mem __refdata = reserved_mem_array;
->>  static int total_reserved_mem_cnt = MAX_RESERVED_REGIONS;
->>  static int reserved_mem_count;
->>  
->> +static int reserve_failed_nodes[MAX_RESERVED_REGIONS] __initdata;
->> +static int reserve_failed_nodes_cnt __initdata;
->> +
->> +static bool __init reserved_mem_node_reserve_failed(int node)
->> +{
->> +	int i;
->> +
->> +	for (i = 0; i < reserve_failed_nodes_cnt; i++)
->> +		if (reserve_failed_nodes[i] == node)
->> +			return true;
->> +	return false;
->> +}
->> +
->> +static bool __init record_reserve_failed_node(int node, const char *uname)
->> +{
->> +	if (reserve_failed_nodes_cnt == MAX_RESERVED_REGIONS) {
->> +		pr_err("too many failed regions, '%s' reservation failed\n", uname);
->> +		return false;
->> +	}
->> +
->> +	reserve_failed_nodes[reserve_failed_nodes_cnt++] = node;
->> +	return true;
->> +}
->> +
->>  static int __init early_init_dt_alloc_reserved_memory_arch(phys_addr_t size,
->>  	phys_addr_t align, phys_addr_t start, phys_addr_t end, bool nomap,
->>  	phys_addr_t *res_base)
->> @@ -141,7 +165,8 @@ static int __init early_init_dt_reserve_memory(phys_addr_t base,
->>   * first entry in 'reg' property
->>   */
->>  static int __init __reserved_mem_reserve_reg(unsigned long node,
->> -					     const char *uname)
->> +					     const char *uname,
->> +					     bool *should_record_failed_node)
->>  {
->>  	phys_addr_t base, size;
->>  	int len, err;
->> @@ -149,6 +174,8 @@ static int __init __reserved_mem_reserve_reg(unsigned long node,
->>  	bool nomap;
->>  	u64 b, s;
->>  
->> +	*should_record_failed_node = false;
->> +
->>  	prop = of_flat_dt_get_addr_size_prop(node, "reg", &len);
->>  	if (!prop || !len)
->>  		return -ENOENT;
->> @@ -167,14 +194,20 @@ static int __init __reserved_mem_reserve_reg(unsigned long node,
->>  	base = b;
->>  	size = s;
->>  
->> -	if (size && early_init_dt_reserve_memory(base, size, nomap) == 0) {
->> -		fdt_fixup_reserved_mem_node(node, base, size);
->> -		pr_debug("Reserved memory: reserved region for node '%s': base %pa, size %lu MiB\n",
->> -			 uname, &base, (unsigned long)(size / SZ_1M));
->> -	} else {
->> +	if (!size)
->> +		return -EINVAL;
->> +
->> +	err = early_init_dt_reserve_memory(base, size, nomap);
->> +	if (err) {
->> +		*should_record_failed_node = true;
->>  		pr_err("Reserved memory: failed to reserve memory for node '%s': base %pa, size %lu MiB\n",
->>  		       uname, &base, (unsigned long)(size / SZ_1M));
->> +		return err;
->>  	}
->> +
->> +	fdt_fixup_reserved_mem_node(node, base, size);
->> +	pr_debug("Reserved memory: reserved region for node '%s': base %pa, size %lu MiB\n",
->> +		 uname, &base, (unsigned long)(size / SZ_1M));
->>  	return 0;
->>  }
->>  
->> @@ -306,10 +339,14 @@ void __init fdt_scan_reserved_mem_late(void)
->>  		base = b;
->>  		size = s;
->>  
->> -		if (size) {
->> -			uname = fdt_get_name(fdt, child, NULL);
->> -			fdt_init_reserved_mem_node(child, uname, base, size);
->> -		}
->> +		if (!size)
->> +			continue;
->> +
->> +		if (reserved_mem_node_reserve_failed(child))
->> +			continue;
->> +
->> +		uname = fdt_get_name(fdt, child, NULL);
->> +		fdt_init_reserved_mem_node(child, uname, base, size);
->>  	}
->>  
->>  	/* check for overlapping reserved regions */
->> @@ -349,6 +386,7 @@ int __init fdt_scan_reserved_mem(void)
->>  
->>  	fdt_for_each_subnode(child, fdt, node) {
->>  		const char *uname;
->> +		bool should_record_failed_node;
->>  		int err;
->>  
->>  		if (!of_fdt_device_is_available(fdt, child))
->> @@ -356,9 +394,14 @@ int __init fdt_scan_reserved_mem(void)
->>  
->>  		uname = fdt_get_name(fdt, child, NULL);
->>  
->> -		err = __reserved_mem_reserve_reg(child, uname);
->> +		err = __reserved_mem_reserve_reg(child, uname,
->> +						 &should_record_failed_node);
->>  		if (!err)
->>  			count++;
->> +		else if (should_record_failed_node &&
->> +			 !record_reserve_failed_node(child, uname))
->> +			/* Keep a slot for the untracked node's late initialization. */
->> +			count++;
->>  
->>  		/*
->>  		 * Save the nodes for the dynamically-placed regions
-> 
-> Best regards
 
 
