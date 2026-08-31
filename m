@@ -4,94 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B81CC61DD3
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 08:41:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61E4BC61DE2
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 08:42:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 078B06B008A; Mon, 31 Aug 2026 04:41:28 -0400 (EDT)
+	id 645936B0092; Mon, 31 Aug 2026 04:42:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 050636B009B; Mon, 31 Aug 2026 04:41:28 -0400 (EDT)
+	id 61BDF6B0095; Mon, 31 Aug 2026 04:42:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA8816B009D; Mon, 31 Aug 2026 04:41:27 -0400 (EDT)
+	id 50B726B009F; Mon, 31 Aug 2026 04:42:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C39D26B008A
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:41:27 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 34496403F4
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:41:27 +0000 (UTC)
-X-FDA: 85160920614.21.F60CF47
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D11F8180002
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:41:24 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=JiNRi14O;
-	spf=pass (imf16.hostedemail.com: domain of junjie.cao@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=junjie.cao@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 29A0D6B0092
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:42:37 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 896DBC03E1
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:42:36 +0000 (UTC)
+X-FDA: 85160923512.07.4A33AA2
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 3837880006
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:42:33 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HF5smGEZ;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf02.hostedemail.com: domain of junjie.cao@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=junjie.cao@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788165685;
+	s=arc-20220608; t=1788165754;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
 	bh=9bG18/UuJ8sPW01vYMzFFFIcN9AfCWu3aTjE90c0NCI=;
-	b=WfooI3Y7HxS9QTOWpO51sCZy1exJifRzsbt/Qu9wfIutJYO9627omiA+HWdQr8++VEh5Ds
-	0nt9J87ZA1nRU67a/zfxdvCJYWsKFERzmGElu8m82rKrvlLp59yh5EBxRw6ZZ2UkuXR0No
-	3ZEg7kJlNS3kzJnrSVrC2DejdXiF4X8=
+	b=UZPjH02arEeAj9LpWflOzCASpTJjeGalyS1y8YK2feo3NMemyoMAzWfprJL+nyV6E6dcEP
+	/ItXDc71bA1N3G2tL1gzaKVmIn18E0nn+rz2RFQ1CYBB8EOsEIrEFJaGXWJp5PxRD4HvpS
+	2zLnhYaywK6ffDK7vF1kXqgxyxpdyTY=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=JiNRi14O;
-	spf=pass (imf16.hostedemail.com: domain of junjie.cao@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=junjie.cao@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HF5smGEZ;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf02.hostedemail.com: domain of junjie.cao@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=junjie.cao@intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788165685;
-	b=S7ZxXCA9MyiOUhRQ0OXZ1HnrU2uzSD724A6VWwkyyFu1LANyAXjOOKviBz74urgSyKydm6
-	k7Ic9s5D13gi3vhe88LP2SgXOeqRr2kqZE9395PFmizYas27BpbMxNW4AEWGf4W4cYIZGu
-	F/ge5CWyeOHno5agBAJTahfmRPwltnU=
+	t=1788165754;
+	b=CbGIH5gvyoYr/r3vXWZJbwieI+Vl+gL4/loHg8ys0nzWgPq4/MQ+Tzbu5eYPvF9chGaLVY
+	+GBo1tYtO/TyZP/hbkTScRljdxrEPSSTVd5wpNBFqxn9FD3/hBng7l8paLecTOTKmupfzx
+	0cHIVKoi1L5GFKE3uaoyaMyx9Uh7ukI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788165685; x=1819701685;
+  t=1788165754; x=1819701754;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
   bh=AnnLzZQASW3ffm7HTAuT/jmzPEia7UpYkcE3pF7Rkko=;
-  b=JiNRi14Ou/bnHVAjl8GqyozRkd/gdQaGCRM6KEvw1j+1CSh+7dw34eZi
-   krIgSWJQlYaiXkRAk8hb7azWLk64A4B7ZhRdFT74I+B+nqf7V9cdewd3w
-   CK42zAHAUuckXukS1DEa+vFcc+RoYM5vFA8SbR+JiMKinX10mRpz5v8f8
-   T/Pq/SwbmkvuILhxCUK+uVj55A1BScukAYYvnNImhLekgf1Y7wGIqWhKG
-   OiQ9LhAeLqo88mU82+PwPje3moEVLw5boufWQfytwb4vMRRkeBLcXopih
-   8tIPorKh9ceHX3wqSNVq1WGBNOHDdyfpMSHHUHgPB4ZrCLqACHnOot1wH
-   A==;
-X-CSE-ConnectionGUID: I2I/QwE3SaCHy0KYtiVWuA==
-X-CSE-MsgGUID: 7G3emzNXTvSr8Bj2folWGQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="92377458"
+  b=HF5smGEZjIHWZZBvEmo6jYnTyMtkxyG9kWmNE27JIdPgVRcMC16dB7tN
+   NLTNsis00p4UgA054TFpuRDMvfohT3/4jxaVkQUtxrmCV/WKsE0B7GHuz
+   mOHhoZbNF0aFcXK6Wn+ywkNe/C+82euKfXg9r8YMQCis9W3SYHt8vWe7D
+   Ta3/k1cFb3oWKqrC+e+oBwbx2U6uxWnqIUas4keW0iiib/11EGIJr8+u0
+   L2HMBbY5wSRv8t2d7oaFcIdcA6l1GIJlq8it0A09xdsVx3ZtTOn6ZND6C
+   3TMvfa62OlGrbOsfLyI3SbVnDeF7UEykr7mTQc2o6R96xZr/8GNsY9URn
+   Q==;
+X-CSE-ConnectionGUID: 2N3SqdSlTCmDs+1nLrPm2Q==
+X-CSE-MsgGUID: +s9qMvqhSTKX58pHCpgh1Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="88420964"
 X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; 
-   d="scan'208";a="92377458"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 01:41:23 -0700
-X-CSE-ConnectionGUID: x3cXeIogRP+9WYIvzuUX6Q==
-X-CSE-MsgGUID: W9En3HfcRAO15TxpsdsfNQ==
+   d="scan'208";a="88420964"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 01:41:43 -0700
+X-CSE-ConnectionGUID: G0af2RCzRaqI7TbIqJ/Gmg==
+X-CSE-MsgGUID: +StTUGGuSV+FSzs8rhOhVg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; 
-   d="scan'208";a="274009046"
+   d="scan'208";a="269326210"
 Received: from junjie-desk-dev.bj.intel.com (HELO junjie-desk-dev.tail2c02c1.ts.net) ([10.238.152.71])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 01:41:18 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 01:41:37 -0700
 From: Junjie Cao <junjie.cao@intel.com>
-To: syzbot+8785aaf121cfb2141e0d@syzkaller.appspotmail.com
-Cc: liam.howlett@oracle.com,
-	akpm@linux-foundation.org,
-	bigeasy@linutronix.de,
-	david@kernel.org,
-	harry.yoo@oracle.com,
-	jannh@google.com,
-	jpoimboe@kernel.org,
+To: syzbot+2642f347f7309b4880dc@syzkaller.appspotmail.com
+Cc: akpm@linux-foundation.org,
+	cgroups@vger.kernel.org,
+	hannes@cmpxchg.org,
+	jackmanb@google.com,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com,
-	peterz@infradead.org,
-	pfalcato@suse.de,
-	riel@surriel.com,
+	mhocko@kernel.org,
+	mhocko@suse.com,
+	muchun.song@linux.dev,
+	netdev@vger.kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	surenb@google.com,
 	syzkaller-bugs@googlegroups.com,
 	vbabka@suse.cz,
+	ziy@nvidia.com,
+	hdanton@sina.com,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
@@ -100,22 +102,22 @@ Cc: liam.howlett@oracle.com,
 	jhs@mojatatu.com,
 	jiri@resnulli.us,
 	vinicius.gomes@intel.com
-Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in sys_munmap (2)
-Date: Mon, 31 Aug 2026 16:41:12 +0800
-Message-ID: <20260831084112.410440-1-junjie.cao@intel.com>
+Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in exit_to_user_mode_loop
+Date: Mon, 31 Aug 2026 16:41:31 +0800
+Message-ID: <20260831084131.410457-1-junjie.cao@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <6945a977.a70a0220.207337.011c.GAE@google.com>
-References: <6945a977.a70a0220.207337.011c.GAE@google.com>
+In-Reply-To: <6887ebf4.a00a0220.b12ec.00ae.GAE@google.com>
+References: <6887ebf4.a00a0220.b12ec.00ae.GAE@google.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ka1zkp54tquwqz3bofp9pdu9hth6yqir
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D11F8180002
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3837880006
+X-Stat-Signature: p116fzqiekfnsyd4whdo9bwtood7ik1f
 X-Rspam-User: 
-X-HE-Tag: 1788165684-700914
-X-HE-Meta: U2FsdGVkX18P/Dc6ylVXtYgJfT60xWXhC8Hbd6RaCN+JvHk4Jx1K2PE7J5pWsJZ7BjTRgbKAOoq3s+04DhCLkhwe3BH5zs9Qq0tNzH/hSnJh89QF8vXhGZ4u9wK1+aKBxG6Djn19ImQPtl53RxWBilY6MyKJdvKOgs5xyYzEGVPvGoF9vTSPZLRhNBIPybg1mdHv36QeXYuq2fgoC9RA5zoVgqEczMOJFjkfXSq8GHqxFHXhcFNYBAMrjrd852tEnedaI4inKGlaa+s/1n+WFiqeegRdfU8Ed+xYQkC51hx85SrxqtI9mlus1htPcoYA68Qjv6CQ0uK9vjjCg/xQMhzCrUqd/ZZ2n9HRQ8g/iYfyvn5zcqBwnyxx3ABZnbq619gojJwgNlu5zxg61R9CaHfr6/85CAOyn70i0Q4J3Msyd+1HvLtrdjrfXw1AQ4r3JfwoM1ZF8eyzCllua9XEsJVoDJTY9S5//dJH4BoV5EzccnDcPxc45NrkexSMMl733otEhv48s7Odd2JKC7ONAanfEaaxKIvg2HqhKecQSYeKXef21dxBgQboN0w5DyAlpwhNdtcIUffAuXXNRKSEIbwcU4VeXIFOBN9B644BO8kJ1bpDnVASDlkFeKxl9ECcB0oQmXjmz8N45k7u8LNdGQAs0RbGQfnGNrXg1zW+3Roto9yA5zo1AI+pvB48atrcXokyAt3q3R+o37a8pDAITdN6zqapqTj5ZUl4BsIynxelaw9hICGd7wpDqVSddLIMQi4CAUfUxvc2DGkQXCsnH7uh0zul85MWuG7Zld7f5kK0Xs2luSwg7WyP5yrNPijF3aBKDAycJYndR+wTHgnXFveVn9D5R09oUZqP0jnM0VfWo/Tbs3q0h7+aHHJcSnbquw7+xCePCb4jTCWPUQqLWN8b5hfpTuH6jciBBUYCPfwJdpmcG2Lcy1q5LyELhsPl27CwcPPllmGrW9E7nWu
- 5mEeKny0
- xQNJhFgplPqhBnn9gQ5ba/lJVaI88LpSSz2mdyzjx7jw9hJkBToDLfq3LNJh9QdbfT893YmBFFXiA0f1LtRhS8wEL1pWSsZFnJrc6u0ZPGD5gm/s7TN/IHMDYe6Vmyw6WobvM06cYOJQZWCDC8Mz5P9kZAeLkWWsA9X5HAU1/O7dbh9tIVHzIIc2r84eq4afmfVnmr6/MiBuwrwaUPd/sg0NRrpfJvAjxXt6XXW4malyP5vwoyTfGTuE3yoyw3U1XzoJ3+GrxZrWLlUVgaD/iKAc4TyeyEl14YRAP8ZvMNnpTdlYgmTcKnnP361RLn0x/sMeHxp6FdqbAYidO/Y9DaBUaJMo6mZwV7KnQBPZdsE5NwdQHXZPNfRhTTAYN2VcnmrRd1f/MiU0WOavVKFGqnBtZzg==
+X-HE-Tag: 1788165753-202352
+X-HE-Meta: U2FsdGVkX19zgJvwwo138XIkuqAmJ/nxeh/ZRZD5iXotX+If13C/pcwF+GUU8MwTcN8qYaaHumbJEa6omiZGPILBxBIzkJQnioYNTwnF2s2/KU+uflvQSA6vmY+8zJBDjETSSAlvZZ/gp7d7ODS+BDPO52YlUQOyvPDNmF4vW4P+i8jq5frhf8hDJ73cjR3Fqvso2C4cZth3sany3RdAjVSBOTjtovVhi9jQvMxqrqeurKByJiw5BuB/dHepAWwoqf0Z/HYU4gQD0Xy5clhCK2BScUKTIplBwVs0NRyQgzu9ESAuQXbzZasLpn0yd/L+vy+CKmWl39+C5+ewpFqwUEK4WpTu2EipnHbSbY5z3KiV7Pd2V4OQYWsEZGxm1EcDdw3Tz/quI+aqn5Eea6KHJtc0UQr9iAEcVJ8djSc4IyCJVH9EeZVwuGk/X3okX6ZM+MwvHhQ9j1ucDS+SmrWojRX0eR4yxOivz+9KbNpbM54QXJeke7vae2fcuReeHg6AKmz+PSO8kmZD6gpbVRhJbywO2aZ8/IU6/w9J49W5TrTC0BAjN2GF60ziUuDs0zbSXR6Aj3wCS7C37KsWYFC9NKg3oJ2SmYxgSyJn5Fdv2l2sCojjo0OTzhuVR/W6uMyMblW0Wfg3Od/tZLBj/lQnFl8mX3P9lTN0TA5SCNTypeYKoDpJsr6VqWCEWRt6Zo4zdHUpCpSuwN30qEGABw3NbzJnh57ZBVvr0F1fmrsniif+HqgKBGjjPMMESCGUL/c+vM8Po9rm5s5LcQZ31BVt4OVGlDnkfWNNpuceRlMVPz3t2Y7sfpG2aHw1xpk9IQsx/VC76FJSfLVzY47/uUMbRbNsfVmP68cWy80BHNkDbRh7ngizxt81SBhFCQ+uf/K7FMo/T5hJfkEkbE3qhuWQURPNDb9kpN6MQw7O/JIT3cwsw/rlD85V6GjEQDvseDI531ICIoc8m4ZqM64dtNV
+ LY62vII+
+ X9Bb8Xj09d8DPzOo05M7vqBEnteKSf19CpXblDhzKT0ko8kRzkrdVM685IMqwdG3Sbs0X0KST4adR7PuH9YXucHiGdN4qxe3Up+YgPYvb60KV3dc0gZ4Y56Yp9xtvy5RgFR/SUFO/3a6/f1J6/6sedKScLWYPxxXrUlfGcCEcPAuSrvig1byjUcUMjqTWgFK1+BLJa7mY9HyRDsPEWOUrva36O5jOzbpcsKZUBCiU9IEFhbZFMGu2stfvKvrNfCjpYKxtsDewDyyDjNQg8rgGm77zcd89de4cYv+NED2zCyOA5h5s94oA2pf39PKlTZNXFn5+kN+BgZ8ieA8+tTdYQjysHeJTkcbepSDtrfjRQrijEsGPcS1U834SRiEF5P7tsPxN9Qsqk/q6wUa7eBi2smuL6Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
