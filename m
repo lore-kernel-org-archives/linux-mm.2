@@ -4,97 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E21FCC61DE2
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 11:43:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B7AFC61DE2
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 11:50:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03E736B0088; Mon, 31 Aug 2026 07:43:07 -0400 (EDT)
+	id 3A7566B0088; Mon, 31 Aug 2026 07:50:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F312C6B008A; Mon, 31 Aug 2026 07:43:06 -0400 (EDT)
+	id 37E1B6B008A; Mon, 31 Aug 2026 07:50:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1FC66B008C; Mon, 31 Aug 2026 07:43:06 -0400 (EDT)
+	id 2BF036B008C; Mon, 31 Aug 2026 07:50:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BFD456B0088
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 07:43:06 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F371A6B0088
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 07:50:18 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E74491404AA
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:43:05 +0000 (UTC)
-X-FDA: 85161378330.05.0F8DF28
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 57A3B40002
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:43:04 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf27.hostedemail.com: domain of 3x2iVagkbAEo4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3x2iVagkbAEo4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8E82B1C2045
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:50:18 +0000 (UTC)
+X-FDA: 85161396516.05.051EF89
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 2CFFA40006
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:50:16 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=AdN9RsL6;
+	spf=pass (imf04.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788176584;
+	s=arc-20220608; t=1788177017;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=I5LM+0Pjsyiw43Y9OPRtVO7+pR519d5y9NI1syLmG3Y=;
-	b=UZry/FEwLbgtGhYIS6qXQKiJb18PBMSYEzhESFxYSDvEG1cZPy8jrenQXZC01bGmfloVp5
-	a5z04InXrDX9yUCW17L66yXC5Gh6rcy9pvOmYvOTUBtXSUZyyAHlYnNzKwu/O8bri9iCML
-	Mh/qbof0JGdArykEsfpMOcOR9bU5L7k=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=aDebJtj+sX3RBx4IpJ0XhmIJry2c2+dglSVudIUPZUE=;
+	b=2uk12ByaVoKP7OGQaZnFHyJVFC5l1/3rXyS1I9JyDib/Un96R4KP0bJPo/cUVVXQ0adtKd
+	O33LhUV4BHdaJjuSLRsgKu6zgMGF/FkvA0Cpj8km70SnXtyNHgwEIhyc8QghiQhjyP1c7v
+	BltMLUCWXbNw3YurTNEvCmlYaipMUow=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf27.hostedemail.com: domain of 3x2iVagkbAEo4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3x2iVagkbAEo4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=AdN9RsL6;
+	spf=pass (imf04.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788176584;
-	b=s8sc51BaRwbkvGtylfOW2A6tTVwfl5jB6NDsLoPklYA2JOcFkQi0biX/UchZjpcyhIM2Pa
-	aJ6xYdPnyKSkTDlxPczfL3EUZhqQFfQ019nzxm36rdq3AMLr4k8oxdaA+ajzhgzHd3X1Xi
-	gUoTHFtKS0wZdqRaFDvxIrJ+6vzE+xk=
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4b28deb7ee3so5163194b6e.0
-        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:43:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788176583; x=1788781383;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=I5LM+0Pjsyiw43Y9OPRtVO7+pR519d5y9NI1syLmG3Y=;
-        b=awiBhh9nYZyavo1ahZPavPnbjPgdN56dgns3R7WH8APxshLeiNZ5kirIzAMUSINHOg
-         gUuxlBiNWqfI5iHztblmkn8eeSrg2QLtu45fojhVZFh8J/2qsJlxiQCc4i8+le+3aRAz
-         ofM1xAEUTeDfZe0xttEGAFy3LBqchG54y8Y8HScP3ojwGiwb+iBQ/wBv0H/ichLT4y2Q
-         E7nslgPCrYKHvxtA80iBhRfqo5qTsvBJMARuVtUtiMjrMhsuS3hTnuQV09Rhp/PCOL1J
-         qdarocT5ibM1R+C2mMcMNJSlEw1JKcFZFhL391voMrhmGPMIGe3tdJqO70RhwWjtKbxg
-         8+yA==
-X-Forwarded-Encrypted: i=1; AHgh+Rrp6O8ruB7SNIxZ5+btMHRduQBfAA1JBVVjcOLzjv7Klv+VheMmU4EEGU2dB8Ei999hZt4ZwMjO0w==@kvack.org
-X-Gm-Message-State: AFuF++nlmLyxjVOHS6D+lJ9JdAic5OsFS4AoeLmFYIZhmknbFyj1a4PI
-	tUMZV1aIXBFMJOdLK/buAtF4bIbUNmgolsGl3999YI4dBUBKS6dD5Uh5UdsEUTb0ETwndvxyN9M
-	bU7iLAkho4bl1TKqHSqEhjXcjZZLQ8B1RS7h3NsSphTZExeItexlm+EklZZ0=
+	t=1788177017;
+	b=lamGn9/qRDwDYSvjxsjl61jD1OLG7Qpx5TxNsz/ANtN4pnKi08dOkyhWCpdqQAcZnt9CFa
+	yjD7/GEicGuhlj0H0M09C+1HANIFmLYtk1zPF3JlgOwr1FqSLaEcOISixrV9jvS+py1Ur5
+	3YUD3ltTfJccLlmFCJIfQ4e9/6qmkiQ=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=aDebJtj+sX3RBx4IpJ0XhmIJry2c2+dglSVudIUPZUE=; b=AdN9RsL6r9JMai+CEQPHcCKxI5
+	sZcsFUTuoQL6iHOH6Clb6WgoiyAA9PwDD4JH5q7JQeW+nHPBtN9X5NsYMI3ng+YkoVM0ijVv3vo3/
+	L1QIFiGxIx4AQ9V7FW6Q5suvhmktMUDQ9r44TX4PMVPR1ShBBzfCbMVYkGf5WxNKXmLe4rT9KzQVI
+	vCWkAzQ9t0oSSb38vAk1oiqqfWVzLBPrEfXrFXl3CDlZLfdAycoT+bIrQLKpIHls5VlavQUACUT0C
+	9zqYTcbnHFjpIkgrNrbxDuawsr41c8kARi3OUlLWu5RawNfuTEOQLiMCKjQ0O6ACYwvSRKkY5pVwo
+	KaW/3SaA==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1x10Wb-00000009pJc-3iGF;
+	Mon, 31 Aug 2026 11:50:06 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 21E69300CC0; Mon, 31 Aug 2026 13:50:04 +0200 (CEST)
+Date: Mon, 31 Aug 2026 13:50:04 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Jianyong Wu <wujianyong@hygon.cn>
+Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Chen Yu <yu.c.chen@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Phil Auld <pauld@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, jianyong.wu@outlook.com, zhongyuan@hygon.cn,
+	huangsj@hygon.cn, wangfengyu@hygon.cn, yingzhiwei@hygon.cn,
+	justin.he@arm.com
+Subject: Re: [RFC PATCH v2 02/23] sched/topology: Introduce a NUMA distance
+ matrix with unique distance values
+Message-ID: <20260831115004.GF776954@noisy.programming.kicks-ass.net>
+References: <20260827122816.756234-1-wujianyong@hygon.cn>
+ <20260827122816.756234-3-wujianyong@hygon.cn>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:251a:b0:4b3:7c33:456 with SMTP id
- 5614622812f47-4b5b81720ddmr416388b6e.11.1788176583352; Mon, 31 Aug 2026
- 04:43:03 -0700 (PDT)
-Date: Mon, 31 Aug 2026 04:43:03 -0700
-In-Reply-To: <20260831084159.410474-1-junjie.cao@intel.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a9568c7.a8e469d2.cbf3.5619.GAE@google.com>
-Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in __mmap_complete
-From: syzbot <syzbot+e4aa91d7f20c34417d4e@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, davem@davemloft.net, dvyukov@google.com, 
-	edumazet@google.com, elver@google.com, glider@google.com, horms@kernel.org, 
-	jannh@google.com, jhs@mojatatu.com, jiri@resnulli.us, junjie.cao@intel.com, 
-	kasan-dev@googlegroups.com, kuba@kernel.org, liam.howlett@oracle.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
-	netdev@vger.kernel.org, pabeni@redhat.com, pfalcato@suse.de, 
-	syzkaller-bugs@googlegroups.com, vbabka@suse.cz, vinicius.gomes@intel.com
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: z47d9hpp7cujdet1x6tci6u5kqapuj5e
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260827122816.756234-3-wujianyong@hygon.cn>
+X-Stat-Signature: c5n4ze8m3d3z1wrjupznnbud9ghz6nns
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 57A3B40002
+X-Rspamd-Queue-Id: 2CFFA40006
 X-Rspam-User: 
-X-HE-Tag: 1788176584-556606
-X-HE-Meta: U2FsdGVkX19l/BVQjAgRaOXz8j69CTSfqpFCq/D7l9nGx+GAvKfxptjAba0DLSSbhcyZsleiO6aA843f62wxLlmX1ytB9Cnr4F09O7ZHwsX9RNloVjFAPStCrjOzhBcn5Vm7P6524SlMTA/NzLTj6kA7Ko/SzgIjIghEvXrPr4EeQmzLfTknrlzfBCTElPnBGtaJ/9Mv+EvEk/5FX/lBfcv1vpRB1SmUf0vapZX66oKLlOcX3O5C84wloJsyW1Fa9QfCmA6yCpDuRutFxcSqXhk00FOf5tFB3ZgYPHUP3DLN8TO0okHDl/QP9am5ueOKRaiN+qKwbbsBW/SrJsiTh3o12bfC3DQGktkcAdoBMaQWgbfZYqdPNltuVw5kSqT/BtTXaYJjkZlEIt0b+4FKg8MZBZ8slc1rNkcY6SXzFUeObsMOodz0aHsPcyZ5jV1E+DS93qnSLKMv7QNElEiHNfVTM/lnvTfjnx1bXmmIDwsSZaE/wC+jHMAvadE00J7Sas/2gw5YU/JOOGBh0nxDudFPZDlJPvLnvvBnYDg1swPJvLJsAhczt2lQSF0lluAW0IZu7r0aKJXoK3Ldu1igLnF55q3KDKd9kIsndBGmpyHJNrztA6yTPLao5D0SCTX0Nsif3ndwdRBpNxGIqOVaf2Ze0mIGDISi7rbl1rIHVu4gSk1CTAfzlSt2JG1vvExEs0KzhoH57u8F1YNl0UisqIFbAe0tBnZp/eAiFv5LMaLABhCsTqvWaYjPqwYkiMDp4SzFnLZj5V6HypaQsRL8cu/ynKsB6jnQZfIRQJLmcdd3wBm+HauFlaeHpeJFk/4Kn//zCbFUjWJqbx97fuJE+OrT+cecuacyzhST04rGKCLiGzl6VOCW/9d8MtlZrTWVlBtEmwdicROMVs3qW0xeTArwPKTc7Nati06Fphjp3keh3Yx9er+swHgojECVPEcnnnbRsjuOI4Qp5QvbEFB
- a2ixfXhw
- ZU2upa3c1E6zHmgYk1SdZAkbJu9tz/i6ex5lbkr7olZf1fmSOI1xLuJvkXE8llX7jRwg+bTX9KL0EIwXXT+1B2kgXOj0+JHe2P9MNCw0iYZNgq9aaZuq2gWZ5Zy/0NE5yoct4B2hHaIVyBNm7SBg3rTiOnBLpFttwrWorUBgYC3NUy2jcSR+rX18PEh5qZTb8DZ7IbpHtKQuxAobB+JLrOhxW4m/76yaN3Lrwwst4TpwLWgn1H3vPuCREcLFBqlwyNzVlZ0w9OsU1Swg1dGDlUFvlhxAVaCK+E4V9fexs44pBjJQsYVJFWHJBWoUorT0IMKFdrSnk5oeKfG80pEfJY97WPS3zyAFYKl/nqN7pr0LDKHE5/CvPk3/44bW0HvwtU/nQAFTEj2C/6Gil0Qb1UAm9uivm8JTUQPk11aXWVTKAlM1aNpXXhkcadmQF5BLGwbe4fSDvUFLIA8lxjGyTXQHF/jHFiWFGKKuiw9In05594XDeuAQ3/5wWre87pOe3dWMoNZyH/di2Dcmqg2ybWGqhvzCw1VvcvSUaOlME2s7/uyIfE3o0NxKlUQwwhfWAnvQ1DiMLUU70r35Dt0O200OPmdlzLyGfd5mncShYOnHXMq3h5/x82bZr5VYW3o3PgBlT7zeJ4s7qDCUgV0qKnSkyochIsecCtQzjspCw5yyyZHOCBJ23dc/+vc+dKQQ5hQUnA7slyjjpvMJ9AtvZ2SoGv/5jUARaisG2eHlJ/X0CJKnwCvUFbHLhyYp1qRmrICPIdsxEdE/7IIc7o49litmY5ENaMZhQTxB5svKuuBm0xqdiOXVUI+rKDHoy/+6i56x2hV88lOFP/FSgYJWbBPqt5WJDSfYibLpeVv0VUL7Hd1EKLFl7FIxYfsdOgw+viA+9Uy9yjmUI0qclnpRO+E1zcA20jCjyQBZKLEuwtV8zuIQ5ehX8AUbQY+nPM2/MjlByXKvDOo3NSoaAl6qXgnOHdk6b
- N4MHDd23
- 4Fw/GsUKUzJ7Laeza8FkjXInHStyCUq6fmbVtGDzIQM=
+X-HE-Tag: 1788177016-934705
+X-HE-Meta: U2FsdGVkX19Lwbkxx0wmovqwgtyTL1gbPej4w3tIeLxUKGcgrr5NJWLqJJFLOJ8ezzFALQPFYLC4+lwivWTxPYLn9FUCxjINNIaUqNS8aNRf6gfEuGyesMlFzhQFZo8xeGMffSz87lKmtycBXtQB7x1WVmCHFAyM4rw0O8MRXgfnD/7Ng/ORAFD+6Gl58MZtFmbciwXAyDu2B/dyopZ1sPlQMmVCz9hiosAof9W8squPKrayrU5cR2kYGtfGXEUbEZzb3UKQmvWadBg15DWRWAB9TqGsJPIpIuCZSOyFcpO9sE76jSXFamuO5Equ3bJQ7MHkqn55vxOjOfDGiMDznVcJtiJ4p1/0gK/QfoUkhgX+xcNtF/aSTP5nr2KUiYEKKXeBbfm03oAJnyS5ewMmQhR6gvl10ogHZZWTa6pUpB/Dv/NunmKLP/Zms5L56ubAi0jtvzX8/xug0AIKIMpVO6jisIDl6GR9S4uxRW3RD58DjdrnC/VubgSyR+zKVuO5R48g66BVtiEVgYqACHte+f4/aWGAUp2eNkR6tGLCnHEMDK6XXq0cYR2Ot0/5RVKQ46/H1YnZshBHvNdovJ25El2zlE61BxokudCdTEf+eN3CB9TygS5ba+3OX9WmHyc9M8GnZo7CDdNeh1RNhnbH82Gc/g2Z9hm+oBt6rAASmisSZMDI8Ne7NABM2wEe9mLE0G7KgzpICcaL++n7g7CfBNHk/xRJlHvtxf4ZSazrTNs9d6j5P95WO9YAZFkk4qRahVVMQPgJ8bjGvfeFjqMYjjF/wVt7TWvfyJO747AN6KsBSZ4MYsXFhMNtymljLqxeJlH15CHr/jwesOyrkCokNUCJ9567E38qGHiHjxzh4CK098EMb5rwcq+u+dAd2puy5KILyp7QGAA+pww9l3u+h7JMptDffAwzroFucrm3TpW09WTpmTwwEMfhU/FGkuvZMQKVXL69J5qanR7zRRd
+ tpB8UamD
+ 8/O0n8dLZXzHZlxk9gIXaRpztINaMBaZq/4KYQ9G+A6XjEfuDwnovHDrIQpR4JO4oNl9QdymeesDaxtG8B5kvFlL1X4FCZyNF/bZqnsSIuzzXZsm08r9qNgcnHsum/Eh7R86qICqzvZ2fQrxzvcc6dtldeZP20dRvh0gqQ4Ryvw3xy3J9VCP5zZeg7Je/FP+fG+koRlF61P5QMZtrrWS097cu/Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,22 +107,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Thu, Aug 27, 2026 at 08:27:55PM +0800, Jianyong Wu wrote:
+> Builds a refined node distance matrix based on the raw NUMA distance matrix
+> provided by BIOS. The refined matrix preserves the relative ordering of
+> NUMA distances, while assigning distinct distance values to node pairs that
+> originally shared identical distances within each matrix row. This matrix
+> is exclusively used for cache-aware scheduling and has no impact on existing
+> NUMA topology logic such as sched domain construction.
+> 
+> For example, consider a system with 4 NUMA nodes. The raw BIOS-provided
+> distance matrix may look like this:
+> 
+>         NODE0  NODE1  NODE2  NODE3
+> NODE0   10     20     20     30
+> NODE1   20     10     20     25
+> NODE2   20     20     10     20
+> NODE3   30     25     20     10
+> 
+> Multiple duplicate distance values exist within each row. After the
+> deduplication step, the refined distance matrix becomes:
+> 
+>         NODE0  NODE1  NODE2  NODE3
+> NODE0   10     15     20     30
+> NODE1   15     10     12     25
+> NODE2   20     12     10     15
+> NODE3   30     25     15     10
+> 
+> All entries in each row are now unique, while adhering to two core principles:
+> 1. The relative distance ordering from the original matrix is preserved.
+>    For instance, original distance(NODE0, NODE1) < distance(NODE0, NODE3),
+>    and this relative relationship is retained in the refined matrix as well.
+> 2. The matrix remains symmetric across its main diagonal. Maintaining
+>    symmetry is critical to guarantee consistent pairwise node distances.
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+This example uses Node only, but the code in question is specifically
+aimed at Cache granularity; might it be better to use a cache example?
 
-Reported-by: syzbot+e4aa91d7f20c34417d4e@syzkaller.appspotmail.com
-Tested-by: syzbot+e4aa91d7f20c34417d4e@syzkaller.appspotmail.com
+A little something like so (I got tired of prompting Gemini to generate
+more complicates / less broken examples)...
 
-Tested on:
+Pre:
 
-commit:         1bb784eb Merge branch 'net-phy-fix-cleanup-after-probe..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git
-console output: https://syzkaller.appspot.com/x/log.txt?x=17e3be25580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5e4e3a0e188a497e
-dashboard link: https://syzkaller.appspot.com/bug?extid=e4aa91d7f20c34417d4e
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=171ebe25580000
+Cache |  C0   C1 |  C2   C3 |  C4   C5 |  C6   C7
+------+----------+----------+----------+---------
+  C0  |  10   10 |  20   20 |  20   20 |  20   20
+  C1  |  10   10 |  20   20 |  20   20 |  20   20
+------+----------+----------+----------+---------
+  C2  |  20   20 |  10   10 |  20   20 |  20   20
+  C3  |  20   20 |  10   10 |  20   20 |  20   20
+------+----------+----------+----------+---------
+  C4  |  20   20 |  20   20 |  10   10 |  20   20
+  C5  |  20   20 |  20   20 |  10   10 |  20   20
+------+----------+----------+----------+---------
+  C6  |  20   20 |  20   20 |  20   20 |  10   10
+  C7  |  20   20 |  20   20 |  20   20 |  10   10
 
-Note: testing is done by a robot and is best-effort only.
+Post:
+
+Cache |  C0   C1 |  C2   C3 |  C4   C5 |  C6   C7
+------+----------+----------+----------+---------
+  C0  |  10   11 |  20   21 |  22   23 |  24   25
+  C1  |  11   10 |  21   20 |  23   22 |  25   24
+------+----------+----------+----------+---------
+  C2  |  20   21 |  10   11 |  24   25 |  22   23
+  C3  |  21   20 |  11   10 |  25   24 |  23   22
+------+----------+----------+----------+---------
+  C4  |  22   23 |  24   25 |  10   11 |  20   21
+  C5  |  23   22 |  25   24 |  11   10 |  21   20
+------+----------+----------+----------+---------
+  C6  |  24   25 |  22   23 |  20   21 |  10   11
+  C7  |  25   24 |  23   22 |  21   20 |  11   10
+
+
+> Each row of this refined NUMA distance matrix is sorted in ascending order to
+> generate a unique per-node affinity sequence. This sequence will guide
+> thread migration logic introduced in subsequent patches.
+
+IIRC greedy has significant worse bounds than many other schemes. This
+would result in more unique distances than strictly needed here, right?
+
+Since this is all on slow paths anyway, does it make sense to pick a
+slightly better algorithm in order to reduce this bound and get better
+results?
+
+Anyway, let me continue trying to dig through all this.
 
