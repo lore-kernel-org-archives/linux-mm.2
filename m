@@ -4,93 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6C17C624C6
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 17:20:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F275C61DD3
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 17:34:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B90C96B0092; Mon, 31 Aug 2026 13:20:27 -0400 (EDT)
+	id CDFFD6B0088; Mon, 31 Aug 2026 13:34:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B414E6B0095; Mon, 31 Aug 2026 13:20:27 -0400 (EDT)
+	id C90D16B008A; Mon, 31 Aug 2026 13:34:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A089A6B0096; Mon, 31 Aug 2026 13:20:27 -0400 (EDT)
+	id B7F266B008C; Mon, 31 Aug 2026 13:34:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A8286B0092
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:20:27 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B7861801D3
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 17:20:26 +0000 (UTC)
-X-FDA: 85162228452.14.2110A52
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 6134240003
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 17:20:24 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 9815B6B0088
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:34:00 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 23E71A38B4
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 17:34:00 +0000 (UTC)
+X-FDA: 85162262640.20.5339C8E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8074240003
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 17:33:58 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=e3qOWSeQ;
-	spf=pass (imf17.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G9V21Wgz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788196824;
+	s=arc-20220608; t=1788197638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pQUHwKk0U77GfMYQ/2B5fWOyPHpUKlicsOQQN5flvaI=;
-	b=IrnbJ/QsFkHSt3Bmamv2jV8tkLWgWiUPZXDSyZZES1KwO2s04a9sVT4AtB1MIIuTRrfp5N
-	lQ1xy3QifQwxHfoz8EVekpwiiwVvFedv1xC03/CoHehsBy5+HNscPz5XgYWxwbE/7o0e/b
-	IZTh2LZXgTocWLnz/AtCpRu1of/Y51s=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788196824;
-	b=SLn8vFkqHoUm1En+abcpiNEb1QgZUSQU5qqAZVH5NSx6yoZvJbCfg6mxOsxrmzUhkuhMXX
-	uUAiGDl9ZwlIpHr3R13t+JsxZUY0YRYbHCKVgezkicaBb3b8x+fABISA4c+u49VamTTwzh
-	aMyrInNP7OUmoXmWc91WyAclBX/5ZCs=
+	bh=3rWoRkOf7zv0PCshbvqGEHS10L1P71BDIMS5e/cVVs8=;
+	b=hqDCRMZyib2ZV2uBP5FaNlrMXwTe4VfIgUjvwl4LQa1JB9zZNv74bg90ZW5tl+dUJ0hOKH
+	W63YU5AzXBgackVAYGAXlpsXrro1V5DG1yEQiEvgfI2pructC7OHtAONtUvuT9IHViGJyz
+	6xNmB7k+lyK34s7KTJZZoZ5TBEO+XtY=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=e3qOWSeQ;
-	spf=pass (imf17.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=pQUHwKk0U77GfMYQ/2B5fWOyPHpUKlicsOQQN5flvaI=; b=e3qOWSeQPOB4I33XJBkgSPh4V0
-	Hdtl6j8ja41PVzOkvoVC2RB8LJvnFAkXaSAHdcDAGNj3ca3Uu5aec1OSyU5U9QqvHh9nzHGCdQqHc
-	MeejhveBfSkwi+6C90XWAyNrfklIhaWlIer5V+uE/Ng2l0pMK6o6cEwnCCwHsF2wJL2vfOiSPu3NB
-	4VHGV0yAlGQvPYZMPDhajMcKwv6fWZyheCYt+98hKkOcmqcuTAS4uWE8jIlKPk53DRUW2dzq4w6Rl
-	Wtrkh7W6jrd1dTPX99tuYszUAh7lTqlB3mBEuOfnIdLE6N1dhrC7QlOmWbbfgoapJ95GzcCNGzEL8
-	PjAYmU0A==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x15gD-0000000A9zs-2le5;
-	Mon, 31 Aug 2026 17:20:21 +0000
-Message-ID: <de391463-3e2d-488e-bb9d-94fd2cf8b5bb@infradead.org>
-Date: Mon, 31 Aug 2026 10:20:20 -0700
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G9V21Wgz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788197638;
+	b=2wniUL4h+LRq9SrggV8bYL2PAtiYsNwlRuIqy2LEifMlOfrZgEw3kRpnlJ5cnSyu3xKXRS
+	X9l5+IHmNTo/T0VBzJmCD6Va6FMVfY2x8dJt/BgtiACEQfdz88BUhg4lwsuWUH8VJGVfZE
+	xf+lQoPaxEv6z41x6bm3/UKbYMDqHyQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C20DC4080D;
+	Mon, 31 Aug 2026 17:33:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6982A1F000E9;
+	Mon, 31 Aug 2026 17:33:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788197637;
+	bh=3rWoRkOf7zv0PCshbvqGEHS10L1P71BDIMS5e/cVVs8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=G9V21WgzmFLNQZSG2z0fQqP6cGbXpFkpjQ33pCHeW0JoUiwQk4jNLw4DG0qFobeJV
+	 SB25y9pHTmIgw6hrHkJqVXLqx4PxokSKd+6FnKExY5fUXUJCY1wbcw6poJIXsHgvU1
+	 f2/ksMYJ/KI6+hnaezkUmQ3m049g58J6402lUYK5HESvPSz0E5cH1q5qAWVGDQnVaK
+	 s/03FuqbRC1Ko5k7gBhGNv+uwjBDZGOCah1wzXzVZwG19OU+55Z/HE/r/iBYILtjMR
+	 Uj0BZGaMWb6APJCKfnn+2rHy2RAEHQBpgbLC6xREt+AZzgGwBvx/LDiM2Blb5FPKiF
+	 nOCRD7bfgP/Ng==
+Date: Mon, 31 Aug 2026 18:33:37 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/vmpressure: remove window size TODO
+Message-ID: <apW6fJZ-i_JdJejI@lucifer>
+References: <20260831-remove-vmpressure-todo-v1-1-498515e59cdf@kernel.org>
+ <20260831101636.a714f7171af108d520d4848c@linux-foundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] docs/core-api: memory-allocation: add
- k[mz]alloc_obj() and clarify kmalloc
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <skhan@linuxfoundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260831-docs-memalloc-guide-v1-0-547718c274c1@kernel.org>
- <20260831-docs-memalloc-guide-v1-1-547718c274c1@kernel.org>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20260831-docs-memalloc-guide-v1-1-547718c274c1@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260831101636.a714f7171af108d520d4848c@linux-foundation.org>
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6134240003
-X-Stat-Signature: jy3xjatj38hchso3axgar5degc4whc39
-X-HE-Tag: 1788196824-372447
-X-HE-Meta: U2FsdGVkX18T+l6oNDkNkPT8ax0YtjdoryfH/G+xZFSldxymIyO+p8dIEOiuthwQgLRYaePzbELNSipno53h1qQK+XboCmw5f+pyY99YyKyDik1WnGedZz7j7a4xlQb16Y90OhXWko5E4Xg0FDmdq8W/NKdELn4Xco4h9bImxCPv0BU+4ZJJK60CQ0d4LvEqKNrGe7Tz9mSxrXOFZ+zITOCmWSHElwEPSim+hj1q7Yl0oBqITCDg8d+5fG9k94x2v6jgL3oIDAMyxhSVZm9E+LiTBmGgK53OOwzK7WNLDHAV3VJnMcv/gK9s+oB0qeu51OQLiyBkFvx/ZE3+OEyhxmiXzP0lFM+sKl3QndyZbobZlaKZdZWWH41DDUT6YauwF0MUpiZQPjywx4Dby/acdVpykAJiSmZXwIMJwRFq1X/igEVvjPA9jH93LXQqdL5fwQ6XP5KCJsK1zKC/6GKUMiek801cxxJ0Jl3HbYg3cdzdtpQRTVGf3Grw71+VA7itFtkPs3EfQPAEFIi5ihr6ux8k6aKoR7Xp0sqx/GbTio51/59NXlRzwb+Acb6ORaic24/HJwOnVEalABlPQcIN/AuaIgzuJptRUIHtPXebjgKkdAHBBOma0xkYgwX6iMw/Dl/fwCCESRQ1rTXrT2S14jZWFXnTWGZ8MVvYkYD4kdIEh5fbK1U2gS8uu4NZZPkZRncwuG+kj4BcRmGTcqUet05dwvZR+X9MYMHN/A8oB+z+UUd3gNltKag3tJlqhpl/C+wHrj+rbvPZ15eLmOf6Y119RN482U4iBlFCAUOYBl4owzuz9JnjRt9eBpYe4DHpuoQvZ3L+prY1QXBy3lqYkrd+wy2Wu17abyyfSCtTNLT+j+zf1aH3zYoG8Eg1sSm8+niS5/wXNsp9ozL0FkI5inUPcxlJZ2M6J7uAjWTkmNED45YbB1WfVuB6/QMSVDbapG3TZdAOgodOdV2LagX
- QemNK6Ge
- Ik2kzbMtx4u1qPy/aOhNfibiuXubGvqNu8oXX2oX+IujTTxt5JIMCRBP2q7rvx7Dnvp/IdvnS2E+x6f6Vnr4m4RTO9of1MoNj1NURie7WUiLavZih/q7sAfZJXycGxc+pdi1CJd45PAxh/NWDmxpAOx9atSQApqfSWY0P+LU8Pu9py4fe8gvV8VNSaqOT45wWpLv2m6KA/t4r6ausf21OqoTJu9+flSD8jGU09Q8s/ZP9gUHIkt3JlTAyyq66ThUvntMSH5p3OlwDbe5eMb2WBBeyc45jBzaUikllWkqBd63iHWt83jI4ms406hZ4b8TfXtxD77awso84lX7pkxnyTFUmP3ZbozUdj60XnWEMOBvTZfc=
+X-Stat-Signature: 93f3concxiq8a9efkwirjs6kntn9id63
+X-Rspamd-Queue-Id: 8074240003
+X-HE-Tag: 1788197638-888774
+X-HE-Meta: U2FsdGVkX18yoZYccyT3kfkQ85olfr/F5EFFMqFl57kp5MIPLcYtXabzYoM0wuULO38sijbGIBaPJpdfAwA1zmS7+XETZ665eZjfztJVHzPcf0BlUsmy7XVIMkco74Uks5xsKVy98meL8XGkCVt2O8cxD9bVLX2p6p02K8j0CFpLqStwNznX45XTUJmQtcBTU6B1roYaaE5kGZWSTZgnB1fDEM6t9vFLiO3Cu67Tg6RmalYSgZC6GiI8DyUHHn6QYKFT7BuNZ+4c5vQSWoVGhSkyR/JOsuoWMgtzSeLXmpgmWWPvvmWUGB7e3fFC5PWsW9sqN1S9fxqVq9wXcT7bWthYQHykzdijFVwGTIObf0rAwN8jbqNPNonVZRckdJWqs52aqubqTkCQkoHeu5t5INafcBhA6qKvkRxD+rbtopJDUkiim0wwNbAZvBuICm5BHUanHKPHTLK0qIQjomR5XmidERKs59bvds3+xUNRBVILrefQpAKORnrd+k50BJXTkwkIkkBPJinsoZcJqKGjpGpO49sH5HMEbr2torjZ03v0elYmayvn92FN+CB2dQ+lNBSGMIGWEYQfmJQST0BOJR3Gdy9jbHt/BcSvGsIcagChFzpbyDlSSeSxqTJMs0TXY4MhF/flH3xOUI+lyZtuHuJZ3IM+6gVKRgEofsjW/SpMxxuPE5trudnjiTsnwDejxae1cuJiM76eokyT6cWzjeHm/Vr5aYS+alE/fa3l7ubD0TjKu29f0JLYuN0qLxvGlg11R7hoxwD9RZXdm4yfRA/MeTBXYwL4X2nhqjhGpufN2z1ber3N3VMwQhpFGJwPWJuGWWu01Q5UmL3mojJuWX4CEmdDZzunCiQnCG6adGDDYY8Ry+K4UngGSer02VhslwzBDVmJ8Dui09mIJde6um/NsxKDNb42FpDvUM+mstmMzkChVFXMIPayFfk2uenvmL7BbwgrO/xSOdSYz7J
+ B6V0p4yL
+ h1ZjbuIrV3KIpxvEPScA9KlPifRFlmR2KqUdJIOaOiq6WdgdVzLK4C6eEfIKAAGbSqu2xZSdZeEqUJgqW3Z4nxBDC/7MOQ9rPjzmKpMMocWSFGsx6rjMd9FI2aDxeqVrXgEr5YeHp276mJ8oPzRe3ALGQB+SBCrhYTzv5DQCqaquaUV4HLsX33Y075waF0KmA64ZAnfe5V6Ae6/WfoonGGqyuXViabzg6jxNX1oJOnH00u32s/8Pv46pSk7zGkZQ+1iTx/N+iC82cS3h8z118uHXrbA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,87 +93,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Aug 31, 2026 at 10:16:36AM -0700, Andrew Morton wrote:
+> On Mon, 31 Aug 2026 14:42:11 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+>
+> > There has been a steady stream of patches that have been submitted by
+> > newcomers to core mm 'fixing' this TODO, with all but the original having
+> > very likely been generated by LLMs.
+> >
+> > It appears that TODOs to LLMs are like red rags to a bull.
+> >
+> > In addition, TODOs in code often bitrot and are distracting - those who
+> > understand the code know what could be improved in future.
+> >
+> > Therefore remove the TODO.
+> >
+> > The work required to actually fix this TODO requires somebody who both has
+> > understanding of the code and significant real-world data to back their
+> > changes.
+> >
+> > Such a person doesn't require a TODO prompt to implement this change, so
+> > nothing of value is being lost here.
+> >
+> > ...
+> >
+> > --- a/mm/vmpressure.c
+> > +++ b/mm/vmpressure.c
+> > @@ -30,9 +30,6 @@
+> >   *
+> >   * As the vmscan reclaimer logic works with chunks which are multiple of
+> >   * SWAP_CLUSTER_MAX, it makes sense to use it for the window size as well.
+> > - *
+> > - * TODO: Make the window size depend on machine size, as we do for vmstat
+> > - * thresholds. Currently we set it to 512 pages (2MB for 4KB pages).
+> >   */
+> >  const unsigned long vmpressure_win = SWAP_CLUSTER_MAX * 16;
+>
+> otoh, we could enhance the TODO to explain these considerations.  This
+> might result in the LLM warriors submitting more usable work.
+>
+> It would be a strange place to socialize these things but as you said,
+> red rags.
 
+I don't think it'd help anything, I doubt the LLMs are going to read what
+amounts to 'experts only' and sit back, they're not known for their
+humility.
 
-On 8/31/26 8:13 AM, Mike Rapoport (Microsoft) wrote:
-> Since v7.0 the most used memory allocation function is kzalloc_obj().
-> 
-> Update hte memory-allocation guide to describe k[mz]alloc_obj() family
-> and make kzalloc_obj() the first answer to "How should I allocate
-> memory?" question.
-> 
-> While on it, clarify description of kmalloc() size limitations.
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  Documentation/core-api/memory-allocation.rst | 30 +++++++++++++++++++++-------
->  1 file changed, 23 insertions(+), 7 deletions(-)
-> 
-> diff --git a/Documentation/core-api/memory-allocation.rst b/Documentation/core-api/memory-allocation.rst
-> index 0f19dd5243239..8ecfa4d35f4f5 100644
-> --- a/Documentation/core-api/memory-allocation.rst
-> +++ b/Documentation/core-api/memory-allocation.rst
-> @@ -19,6 +19,12 @@ Diversity of the allocation APIs combined with the numerous GFP flags
->  makes the question "How should I allocate memory?" not that easy to
->  answer, although very likely you should use
->  
-> +::
-> +
-> +  kzalloc_obj(<VAR_OR_TYPE>);
-> +
-> +or
-> +
->  ::
->  
->    kzalloc(<size>, GFP_KERNEL);
-> @@ -139,10 +145,13 @@ allocate memory for an array, there are kmalloc_array() and kcalloc()
->  helpers. The helpers struct_size(), array_size() and array3_size() can
->  be used to safely calculate object sizes without overflowing.
->  
-> -The maximal size of a chunk that can be allocated with `kmalloc` is
-> -limited. The actual limit depends on the hardware and the kernel
-> -configuration, but it is a good practice to use `kmalloc` for objects
-> -smaller than page size.
-> +Since 7.0 there are type aware kmalloc-family helpers that let you safely and
-> +conveniently allocate a single object or arrays of objects with kzalloc_obj()
-> +and kmalloc_obj() and their array versions kzalloc_objs() and
-> +kmalloc_objs(). These helpers only need the type of the object that should be
-> +allocated and the count of elements in the array for the array versions.
-> +
-> +As of v7.2, vast majority of the memory allocations use kzalloc_obj().
->  
->  The address of a chunk allocated with `kmalloc` is aligned to at least
->  ARCH_KMALLOC_MINALIGN bytes. For sizes which are a power of two, the
-> @@ -154,9 +163,16 @@ Chunks allocated with kmalloc() can be resized with krealloc(). Similarly
->  to kmalloc_array(): a helper for resizing arrays is provided in the form of
->  krealloc_array().
->  
-> -For large allocations you can use vmalloc() and vzalloc(), or directly
-> -request pages from the page allocator. The memory allocated by `vmalloc`
-> -and related functions is not physically contiguous.
-> +`kmalloc` always allocates physically contiguous memory and the maximal size of
-> +a chunk that can be allocated with `kmalloc` is limited by `MAX_ORDER`, the
+I also think, in general, we really should try to avoid adding TODOs - it's
+bitrot bait and if it's important enough to do, that should be abundantly
+clear to smart developers.
 
-                                                              `MAX_ORDER`; the
+And if people REALLY want to signal that, put it in the commit msg (and
+yeah that risks LLM incursion too but we do have to stop somewhere :)
 
-> +same limit also applies to the page allocator.
-> +
-> +Internally, slab allocator differentiates allocations of different orders and
+>
 
-               the slab allocator
-?
-
-> +delegates larger allocations to the page allocator, but for the users of
-> +`kmalloc` family it is entirely transparent.
-> +
-> +For large allocations that do not require physically contiguous memory you can
-> +use vmalloc() and vzalloc() family.
->  
->  If you are not sure whether the allocation size is too large for
->  `kmalloc`, it is possible to use kvmalloc() and its derivatives. It will
-> 
-
--- 
-~Randy
-
+--
+Cheers, Lorenzo
 
