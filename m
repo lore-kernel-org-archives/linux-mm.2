@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C763FC61DE8
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 05:44:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFF84C61DE8
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 05:44:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3F516B009E; Mon, 31 Aug 2026 01:43:59 -0400 (EDT)
+	id AA9B66B00A0; Mon, 31 Aug 2026 01:44:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC9A26B009F; Mon, 31 Aug 2026 01:43:59 -0400 (EDT)
+	id A58996B00A1; Mon, 31 Aug 2026 01:44:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1B7E6B00A0; Mon, 31 Aug 2026 01:43:59 -0400 (EDT)
+	id 8F80C6B00A2; Mon, 31 Aug 2026 01:44:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8AFFE6B009E
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 01:43:59 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 5E4236B00A0
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 01:44:03 -0400 (EDT)
 Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 05E251403EF
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:43:59 +0000 (UTC)
-X-FDA: 85160473398.26.CDDC7CD
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C267B803FE
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:44:02 +0000 (UTC)
+X-FDA: 85160473524.26.A7A2274
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5583C14000A
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:43:57 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=mexQGEwh;
-	spf=pass (imf23.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf10.hostedemail.com (Postfix) with ESMTP id 26865C0007
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:44:01 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=U0L19rtb;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf10.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788155037;
+	s=arc-20220608; t=1788155041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Na0nWqicnS2MtEk2/ZmNefkrvxhUMME7xzBfJeHlXfE=;
-	b=6IDRZyIDs9IUNPQ6A+LbfGboMWiCDAILX8brGu9ruPdNe+KIeuN5SI5N/qXDAAzeA7Dcuj
-	0Ztd2l4QPNmr7cGa1pklVdkc84vPJ+PP/kzqdnh/HjRy0WBY/7oX1fKyJ7CNOMJ4Z5hf64
-	VgFJgmOiS4JNKExNeiItOOlAyH8cME8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788155037;
-	b=ExN1dFPcgMXcZuoQjmr7NQEqbz/PuEhV+xJk5cJ3B2rPvuGvNOS1OXz4bU5EjClvAtoF9z
-	7V2tWHqKR5rDd4L1WAi0wF9ajQv+VR3+xG5suT0Gckkl6jR4g6zWrD8+62UXun/yzwUHtA
-	/Eg2d/1zTwW4z4EvhlzCVGCJgZ9vYgI=
+	bh=l8tEaJoybxgEHiydhpmRrd0zyZxOUOa5tuSqtahiLM8=;
+	b=wAcoUE01WOcNl80yA/5kDK++SBdLAYyDPf0BryqTNyaQE5RkeMWjjdluWHIVLchs2g8kE/
+	O3Dml7KFTXFAKoMzByfquXyUBTweAEs41wMx9Xy50N6KHSd0eKt1S3kejoizEBmHguXgUo
+	P5kbnjeQBL4h5JAYyz9KbGtCBAg/6fw=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=mexQGEwh;
-	spf=pass (imf23.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=U0L19rtb;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf10.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788155041;
+	b=hNfyM7U6k5nw+1ekK6bczCtuBxoxNPwKd4BcPMaoQ8jiqy1pMVeaypzYjYFGEr7cUdU9Ke
+	gXlsoHvyC82DesL3eFocOgDiRL6pGRDB9PSv9gdR4S+dOEQUteOMpQs4bMESzYZg65BcNY
+	i+VVFINC9EM1dyCGZ/mTIGAWuLB8LhE=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CE4A51A2D;
-	Sun, 30 Aug 2026 22:43:52 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9CF061A32;
+	Sun, 30 Aug 2026 22:43:56 -0700 (PDT)
 Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CE08E3F85F;
-	Sun, 30 Aug 2026 22:43:55 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6785C3F85F;
+	Sun, 30 Aug 2026 22:43:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788155036; bh=tv5DjbtfmXjBBuL3EGYgZEMiDxUCxKafhP8IwXphMBE=;
+	t=1788155040; bh=19JNL2aQ1m2bgjsQFbzvNHwUtw8tQlkca/Xxp7GPwo8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mexQGEwhHQAlOrXrZQ25kdw0Ek/wBEDGfOAXtdmcIVany4CjdRHDvTRCAQnRszXkF
-	 brFCVNYJ3wXIMOzy/m82CHQbQfsZL/9752QXUP8CK+p/FFq6WUSn/ton2ZHgaAcI4A
-	 mipdr60mJO12jxZ7sxfPTPRFfT7MvotJi5x09tSk=
+	b=U0L19rtbEHy9Bp2X2iUVLKKtbExFWVCCT5piVe9NpoUB1AFhA8YHZQbH1wlPAPfX4
+	 Ay2S64IR505XEPoJ0IN4Oh6nslmTu7PwulMz8Lw7NqgU8iCXl/uxnUPMxcESRtkCpw
+	 mWcDca7zBkcW4qfWA9izm/4P351I4KVkwzyARqd8=
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: linux-mm@kvack.org
 Cc: samuel.holland@sifive.com,
@@ -93,22 +93,22 @@ Cc: samuel.holland@sifive.com,
 	linux-um@lists.infradead.org,
 	linux-arch@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 6/8] sh/mm: Stop using [p4d|pud|pmd]_ERROR()
-Date: Mon, 31 Aug 2026 11:13:28 +0530
-Message-ID: <20260831054331.625505-7-anshuman.khandual@arm.com>
+Subject: [PATCH 7/8] sh/mm: Stop using pgd_ERROR()
+Date: Mon, 31 Aug 2026 11:13:29 +0530
+Message-ID: <20260831054331.625505-8-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260831054331.625505-1-anshuman.khandual@arm.com>
 References: <20260831054331.625505-1-anshuman.khandual@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5583C14000A
-X-Stat-Signature: u4b9xxokm7t6mabnp7ho7jmwfnwbgj6h
-X-HE-Tag: 1788155037-226037
-X-HE-Meta: U2FsdGVkX18FgNU5JTcEoZ+nuan5uGMAEOZz7nIm0Type8fTr29ncgSyFyrrO78hXkZ9x1tExmmIzWefY8cXGCGN7m8F0VG4glWAwzljn70IB4epgNZ/IypC+I1WYsVs3xDzs9skr3dPpVA05HgY+EhIzx/b9S1FRemAVBzH6kSXAABTw+DCqx+HidpNlp5pWCbyFdmypgCxTBJslz8ZXlBzUqg7mu3evj44IFMNndCZ6L5PFUDOGIgYhYC0Y8hJjLXeyLo3cQMve4td3H9++eQVGe6YJ0FT9hWOpCdxBaOJ/ztBAPYSHPPw0fI9zsCm0eEaE+byHa5MSp+AV9dX22B+7CRAH8hC1qW+Jimox18KjCDVwlmc52A/fQd8Siy4iCG5qZh1VG3iqlOCYUvVZXjlkx6yq+7FNZLQx0zRpPHtlZXhEkBgeCOnTXe/e0CeYgXlQP4x55WycER6mnFG5UdElroWdlqn3YmAbF4mOZjR6Xuwk6aZFJvLEsPF2D9s6jkRuVzaHNX8ZluMMsLg07XRANRkFEcx6bzJmbKD49eZnwBSwXlN/YhSbvso/e7Q1q6//KABf4WWxHEzh9Y+zOBepyxXDVKsXH1DqGYxqJQI5tJr6LZbnVW0r3dLqi0Zu3sVMNHc897Rd/sbM4e9ngf4gwZVaWeDYH5QITjZAZcZ8Ck8pf3jDl2Mc7F2exp+/Uf/qO5UaP2H/Q1JUCyXs23uo1SxT/r+DTR3ksseEpFzulUZZcECemJ8CKImrPELplsYWFTgifxJs3wJEosvgEYSDlFjiqryMq4fetduoCOXaG0SubiGPCxk+61q5vlt+DV6fzBbizccaiyLkbAr06jRrr9ghGpChP/MkYj2gW5DDRtzXeTd7yuHoxQKIhdOnlvTYLgenWNNogED3cX8rFeAx+DhL+Vp+GTDgiUwrxgZBZ9hXbYhCZgS7+rW6nR4gJeUdzRqerYZ2rEg82t
- 8H7w5e24
- 2JzsjxKp7/s8KHlB3TgoV/eTDBH8oXVOXKVy+xwM86WJ4Lqil/k3ugRaspOq+lZfC+Ru7AZ8bBSp9oO1CcCRfH8RR0KABXs9pgxRuHlWWBiqGlbEP5sstGjkfL1pk9DI61ETKxSlfXqKc8i7XE9wM/nXpp6uBxXCLyIDu5r2cUzQD1zf6EK7vJtj60aLtalpQmp+xWSPamt/SmjBNHTXGsrB5hgNUoQZyT53/QbHAo24Lxhcz9TzcYZKOl3HHrh/ieUJBEzEAlSYL9R5S+uuGzuYe98O53yKfxEhgUu63edLF80Fv96/h4OClc1Nll4B/XLsERCdZI9UmdHFAc4om3WjBw5wU+OzZgH12VIs6nB6uoAnvfGoqC1I6yY7ISPci+izKp5j4gr789B6lvdYH/5+izIFxQoonG7pGNaA/VOW8pWqDUzb9WwSpMwQzTU8n7KDISEpROD1cSGfmHP646Ee0QbJfrXSq6cA5K43+gRRcsPOETxT8+GP2aA==
+X-Stat-Signature: 3gesx7cq6aidwgt11wiacd8t9fzw15hf
+X-Rspamd-Queue-Id: 26865C0007
+X-HE-Tag: 1788155041-33176
+X-HE-Meta: U2FsdGVkX1/uEGtefK5cIiPvqU5QKZ5i+BJfJx6Eh364FAD0cPP7PsDfKpDbWrjNZp1I97dlC+ZVNOeLaO4hA/acIkXjV6XnwS1Bfkfdi25ya4zjauaP6g5OZ1B+QqW7kfB0B/KUAO7xsU+XnpX1JUU2IR6pNLOyY244gwO+RiSuCxRqaGYsK70OfJU75BJa5baCZJA/xgMxrVVt4Hvp8nrHyvM8R+g4QIJbfkkPldJMVSMqKcjIK3ElqGgrqszGZT9jUGVWd90wza1ay4p9L46iKMtOPWSzU4Rqa0HcSGYkLhN5J70Sgki3mxI6SQKays7sMi0LnvKC9MFS9Zv9XVObESjNfxVyovunXEYzq1Ka7hlJlLJb3O9xFm8zo3jKwKDCbjSldsi65dBVtYX+LlQoTRgAl3haBkkOnmMAo4U3wRAv1Ydnz0pbsOh32JnWFhnJ5nyzJ66ENTwivie116f8g0O3SGdpC28rDSqWTl4ki47pZrW0XXXJkBEKDKxHvk+FeHoiSggMXxiFD46RZ4wOvA7KNaM+Zna+HR3csxUzUvtnhJbXJz7qYQ7DRcXstPaNipplk/ePr1k/XCxZIIIEwTD+Ef9UAepbX09kKYgTzBXWHWdN9/s7tgT21A+Z5ZgBUAOekkQID02DFor8/upb9Dcr51R6wefGHwgQRPEK0U1j8a57Xc63/5y2iOwXBYkQZocyjuG+XPDq7hSrpgA9HlN9//gm1lETovi4PkskmvzXuDnA93LYNn6RUO8qI84xsj00IMGy/eC45Q7ZAtkxKR59UFZbAayv+mt4CgzomsBchbsiW6a/ezJ51DM3k9fAX+myRtxBXj1PxhcM1UMskM82y7krj65EQy8duZXbzj1VKyct/zpQ7bX6jlTV8tYBjVqfZVO78AleBJjpjtsaeEAGc05CYgJmn1YB3XTYdlVx4NMcQru9hKFD0XhdwYZUpyKpSFfa4yvdKSr
+ 5rA2KtPz
+ cFwKri26wqE6HSzXbCAI5wf4aGFQRmneKRgNUVGI8qoQFQYrwldv5kumES8xHrasm8h2nYSyIfgn7YfEeKxVvqHi0vImQ24SjTFxEuvxzeIzRz42ID6FSJ7Yg82gWydNPQu4J2CQUXFyvOpoo91j0/2lV2Z+PXuAIl+igzIKPQPcFCr2S1kF9DbNP7jNS9Ex3ECgvFj02OPjnQCO7XzJhlklQXb6DIzIgxQUgIUjRse7ELuNBXg++DEGOnAlZY8oAa589AcnQwUByoSfpJp5ThIOK78LNh40qgOeBiZVE11UFSjQRZzxZ5z6oP5h0eq67NqRLttwKXG031S+g9u+GlMnvgQiHeVGCb+0VDBTHwA0GR/4RaHEJyY1p/WryFYLsLrxmKrIqb7hjhbZjhoAwJJqF4jolAGRpLrwSHlU0hvQA8phAhbCBLKPVheWIJvpFrOtdIrvPnXlNMoFOH7VeEbQHoLrUxT4QEy3M6kbQl8JIKs35LOy/lScOAQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,8 +116,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Stop using [p4d|pud|pmd]_ERROR() in __get_pte_phys() as the pgtable entries
-are known to be NULL and hence could not really be accessed.
+Stop using pgd_ERROR() in __get_pte_phys() when page table entry is already
+known to be empty.
 
 Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
 Cc: Rich Felker <dalias@libc.org>
@@ -128,36 +128,25 @@ Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
- arch/sh/mm/init.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/sh/mm/init.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
-index 9466ae6f9f16..8d65e60688dc 100644
+index 8d65e60688dc..93921109f4e6 100644
 --- a/arch/sh/mm/init.c
 +++ b/arch/sh/mm/init.c
-@@ -59,19 +59,19 @@ static pte_t *__get_pte_phys(unsigned long addr)
+@@ -52,10 +52,8 @@ static pte_t *__get_pte_phys(unsigned long addr)
+ 	pmd_t *pmd;
+ 
+ 	pgd = pgd_offset_k(addr);
+-	if (pgd_none(*pgd)) {
+-		pgd_ERROR(*pgd);
++	if (pgd_none(*pgd))
+ 		return NULL;
+-	}
  
  	p4d = p4d_alloc(NULL, pgd, addr);
  	if (unlikely(!p4d)) {
--		p4d_ERROR(*p4d);
-+		pr_err("allocating p4d table failed\n");
- 		return NULL;
- 	}
- 
- 	pud = pud_alloc(NULL, p4d, addr);
- 	if (unlikely(!pud)) {
--		pud_ERROR(*pud);
-+		pr_err("allocating pud table failed\n");
- 		return NULL;
- 	}
- 
- 	pmd = pmd_alloc(NULL, pud, addr);
- 	if (unlikely(!pmd)) {
--		pmd_ERROR(*pmd);
-+		pr_err("allocating pmd table failed\n");
- 		return NULL;
- 	}
- 
 -- 
 2.43.0
 
