@@ -4,96 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61E4BC61DE2
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 08:42:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B03BC61DE2
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 08:42:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 645936B0092; Mon, 31 Aug 2026 04:42:37 -0400 (EDT)
+	id D4AD76B009F; Mon, 31 Aug 2026 04:42:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 61BDF6B0095; Mon, 31 Aug 2026 04:42:37 -0400 (EDT)
+	id D21976B00A0; Mon, 31 Aug 2026 04:42:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50B726B009F; Mon, 31 Aug 2026 04:42:37 -0400 (EDT)
+	id C11336B00A1; Mon, 31 Aug 2026 04:42:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 29A0D6B0092
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:42:37 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 896DBC03E1
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:42:36 +0000 (UTC)
-X-FDA: 85160923512.07.4A33AA2
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9AE2E6B009F
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:42:53 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1D8771A041B
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:42:53 +0000 (UTC)
+X-FDA: 85160924226.04.00D134B
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 3837880006
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:42:33 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HF5smGEZ;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf02.hostedemail.com: domain of junjie.cao@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=junjie.cao@intel.com
+	by imf29.hostedemail.com (Postfix) with ESMTP id 87E86120006
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:42:50 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NuL98E4D;
+	spf=pass (imf29.hostedemail.com: domain of junjie.cao@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=junjie.cao@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788165754;
+	s=arc-20220608; t=1788165771;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9bG18/UuJ8sPW01vYMzFFFIcN9AfCWu3aTjE90c0NCI=;
-	b=UZPjH02arEeAj9LpWflOzCASpTJjeGalyS1y8YK2feo3NMemyoMAzWfprJL+nyV6E6dcEP
-	/ItXDc71bA1N3G2tL1gzaKVmIn18E0nn+rz2RFQ1CYBB8EOsEIrEFJaGXWJp5PxRD4HvpS
-	2zLnhYaywK6ffDK7vF1kXqgxyxpdyTY=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HF5smGEZ;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf02.hostedemail.com: domain of junjie.cao@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=junjie.cao@intel.com
+	bh=XulvYGT1XgPT2hqf7DXRX/4cLPs0Snuf01uZUlrmk8s=;
+	b=pBKK6jmF6ryXaf1NlFWv3iYEuvgFk4O6N0gYllmMRr1RzeEL8J9Z6+j0zO2a7NXcX1i3RJ
+	1jKkzjsA1XBlFBMKG+q46qfUAb1o9S+FWcWi6z74bCO58nvo7mFKZHoHc9YeQAIV7FXfLS
+	+jXT4fzMkcEgM80Pa/94gGgodRnV8TE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788165754;
-	b=CbGIH5gvyoYr/r3vXWZJbwieI+Vl+gL4/loHg8ys0nzWgPq4/MQ+Tzbu5eYPvF9chGaLVY
-	+GBo1tYtO/TyZP/hbkTScRljdxrEPSSTVd5wpNBFqxn9FD3/hBng7l8paLecTOTKmupfzx
-	0cHIVKoi1L5GFKE3uaoyaMyx9Uh7ukI=
+	t=1788165771;
+	b=E63EYguzOYKZiRuUeL0/r7fOMdkecpfc/I8TBn4qC2d2hBIUnenOB1wrrXkZQdxFptSndC
+	XO6R73q7T08kC5lgEVwsMuk0yTHZpVTrWX87gLa4nyLpsDqfTZXdZMWbLHOe6W3wcxi0bp
+	frAg1hS6ayYSdjL4i/qvW/Muni999U4=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NuL98E4D;
+	spf=pass (imf29.hostedemail.com: domain of junjie.cao@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=junjie.cao@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788165754; x=1819701754;
+  t=1788165771; x=1819701771;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=AnnLzZQASW3ffm7HTAuT/jmzPEia7UpYkcE3pF7Rkko=;
-  b=HF5smGEZjIHWZZBvEmo6jYnTyMtkxyG9kWmNE27JIdPgVRcMC16dB7tN
-   NLTNsis00p4UgA054TFpuRDMvfohT3/4jxaVkQUtxrmCV/WKsE0B7GHuz
-   mOHhoZbNF0aFcXK6Wn+ywkNe/C+82euKfXg9r8YMQCis9W3SYHt8vWe7D
-   Ta3/k1cFb3oWKqrC+e+oBwbx2U6uxWnqIUas4keW0iiib/11EGIJr8+u0
-   L2HMBbY5wSRv8t2d7oaFcIdcA6l1GIJlq8it0A09xdsVx3ZtTOn6ZND6C
-   3TMvfa62OlGrbOsfLyI3SbVnDeF7UEykr7mTQc2o6R96xZr/8GNsY9URn
-   Q==;
-X-CSE-ConnectionGUID: 2N3SqdSlTCmDs+1nLrPm2Q==
-X-CSE-MsgGUID: +s9qMvqhSTKX58pHCpgh1Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="88420964"
+  bh=lHmdDF02yFT66UBYvYHsfNddxjkgE25gdJ6h30WIAHM=;
+  b=NuL98E4DR9K7r+aTWFZgpme9hj5+K5/qOT243xeGqqzcRrFh+qAip2Eb
+   BzQ9P5QrN4q1NqKLV0Rvb2qI+MijgJfww/4wu0GU6pklzl15zx4Kzy8Uc
+   0CyiJ7gahXrVcMhbpPfdxcHIZQMP38GdIRVAFjVlnC66UEldAjlKfuyo3
+   adl+vbopvygnUCX8beiZ/k7env1LpVBoanuOGH6KLYTwCrubSYphzI54P
+   vXY8dzeO3K6XGFmEsJuV7Z6UlQXXwDPZeZuFXdv2QQA4vGygPHkO0FeZu
+   yLTEUINjqUxWwlcZK+PTAUBj9qZBe3tp6WOBjHb/eOiyLTIAYf2fctRQ3
+   A==;
+X-CSE-ConnectionGUID: 5aTUbFyjRmKTcN4XUl2rVQ==
+X-CSE-MsgGUID: CA16HNSFSB2ZPHpXq5R+wg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="88421093"
 X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; 
-   d="scan'208";a="88420964"
+   d="scan'208";a="88421093"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 01:41:43 -0700
-X-CSE-ConnectionGUID: G0af2RCzRaqI7TbIqJ/Gmg==
-X-CSE-MsgGUID: +StTUGGuSV+FSzs8rhOhVg==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 01:42:10 -0700
+X-CSE-ConnectionGUID: 6+hsm4tSSCiMxbAeVSbiJA==
+X-CSE-MsgGUID: vBtDvO+CTbiJvfGMfKdOUQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; 
-   d="scan'208";a="269326210"
+   d="scan'208";a="269326248"
 Received: from junjie-desk-dev.bj.intel.com (HELO junjie-desk-dev.tail2c02c1.ts.net) ([10.238.152.71])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 01:41:37 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 01:42:05 -0700
 From: Junjie Cao <junjie.cao@intel.com>
-To: syzbot+2642f347f7309b4880dc@syzkaller.appspotmail.com
+To: syzbot+e4aa91d7f20c34417d4e@syzkaller.appspotmail.com
 Cc: akpm@linux-foundation.org,
-	cgroups@vger.kernel.org,
-	hannes@cmpxchg.org,
-	jackmanb@google.com,
+	dvyukov@google.com,
+	elver@google.com,
+	glider@google.com,
+	jannh@google.com,
+	kasan-dev@googlegroups.com,
+	liam.howlett@oracle.com,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	mhocko@kernel.org,
-	mhocko@suse.com,
-	muchun.song@linux.dev,
+	lorenzo.stoakes@oracle.com,
 	netdev@vger.kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	surenb@google.com,
+	pfalcato@suse.de,
 	syzkaller-bugs@googlegroups.com,
 	vbabka@suse.cz,
-	ziy@nvidia.com,
-	hdanton@sina.com,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
@@ -102,22 +99,22 @@ Cc: akpm@linux-foundation.org,
 	jhs@mojatatu.com,
 	jiri@resnulli.us,
 	vinicius.gomes@intel.com
-Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in exit_to_user_mode_loop
-Date: Mon, 31 Aug 2026 16:41:31 +0800
-Message-ID: <20260831084131.410457-1-junjie.cao@intel.com>
+Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in __mmap_complete
+Date: Mon, 31 Aug 2026 16:41:59 +0800
+Message-ID: <20260831084159.410474-1-junjie.cao@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <6887ebf4.a00a0220.b12ec.00ae.GAE@google.com>
-References: <6887ebf4.a00a0220.b12ec.00ae.GAE@google.com>
+In-Reply-To: <6a934778.4d659fcc.734b4.002f.GAE@google.com>
+References: <6a934778.4d659fcc.734b4.002f.GAE@google.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3837880006
-X-Stat-Signature: p116fzqiekfnsyd4whdo9bwtood7ik1f
+X-Stat-Signature: u3zr9xh9fo68qfons3hk7tj6gbi7ehup
+X-Rspamd-Queue-Id: 87E86120006
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788165753-202352
-X-HE-Meta: U2FsdGVkX19zgJvwwo138XIkuqAmJ/nxeh/ZRZD5iXotX+If13C/pcwF+GUU8MwTcN8qYaaHumbJEa6omiZGPILBxBIzkJQnioYNTwnF2s2/KU+uflvQSA6vmY+8zJBDjETSSAlvZZ/gp7d7ODS+BDPO52YlUQOyvPDNmF4vW4P+i8jq5frhf8hDJ73cjR3Fqvso2C4cZth3sany3RdAjVSBOTjtovVhi9jQvMxqrqeurKByJiw5BuB/dHepAWwoqf0Z/HYU4gQD0Xy5clhCK2BScUKTIplBwVs0NRyQgzu9ESAuQXbzZasLpn0yd/L+vy+CKmWl39+C5+ewpFqwUEK4WpTu2EipnHbSbY5z3KiV7Pd2V4OQYWsEZGxm1EcDdw3Tz/quI+aqn5Eea6KHJtc0UQr9iAEcVJ8djSc4IyCJVH9EeZVwuGk/X3okX6ZM+MwvHhQ9j1ucDS+SmrWojRX0eR4yxOivz+9KbNpbM54QXJeke7vae2fcuReeHg6AKmz+PSO8kmZD6gpbVRhJbywO2aZ8/IU6/w9J49W5TrTC0BAjN2GF60ziUuDs0zbSXR6Aj3wCS7C37KsWYFC9NKg3oJ2SmYxgSyJn5Fdv2l2sCojjo0OTzhuVR/W6uMyMblW0Wfg3Od/tZLBj/lQnFl8mX3P9lTN0TA5SCNTypeYKoDpJsr6VqWCEWRt6Zo4zdHUpCpSuwN30qEGABw3NbzJnh57ZBVvr0F1fmrsniif+HqgKBGjjPMMESCGUL/c+vM8Po9rm5s5LcQZ31BVt4OVGlDnkfWNNpuceRlMVPz3t2Y7sfpG2aHw1xpk9IQsx/VC76FJSfLVzY47/uUMbRbNsfVmP68cWy80BHNkDbRh7ngizxt81SBhFCQ+uf/K7FMo/T5hJfkEkbE3qhuWQURPNDb9kpN6MQw7O/JIT3cwsw/rlD85V6GjEQDvseDI531ICIoc8m4ZqM64dtNV
- LY62vII+
- X9Bb8Xj09d8DPzOo05M7vqBEnteKSf19CpXblDhzKT0ko8kRzkrdVM685IMqwdG3Sbs0X0KST4adR7PuH9YXucHiGdN4qxe3Up+YgPYvb60KV3dc0gZ4Y56Yp9xtvy5RgFR/SUFO/3a6/f1J6/6sedKScLWYPxxXrUlfGcCEcPAuSrvig1byjUcUMjqTWgFK1+BLJa7mY9HyRDsPEWOUrva36O5jOzbpcsKZUBCiU9IEFhbZFMGu2stfvKvrNfCjpYKxtsDewDyyDjNQg8rgGm77zcd89de4cYv+NED2zCyOA5h5s94oA2pf39PKlTZNXFn5+kN+BgZ8ieA8+tTdYQjysHeJTkcbepSDtrfjRQrijEsGPcS1U834SRiEF5P7tsPxN9Qsqk/q6wUa7eBi2smuL6Q==
+X-HE-Tag: 1788165770-682450
+X-HE-Meta: U2FsdGVkX1/le7HarpprZ2h/grJig3pNeCRECGr1pNmScexehfBvwFbdLb2MQYIRHdCagBcfbBKnnJQLLoQ1YT6XCIlBR3Mmo6+wUZXWEjmYbMdOCmOXlWU/QktYMq0bTZEDadudtwKBXZbJMX72dckNAZQ7SfFQUMO1oDXFkYI3Lrrny/uqyI+4+l58hcMq9WhLr70nn8SIGrmwqLRVSbICXyC2hRmoz1tlwtULkcjZcnaeeZS4TrFQCuAFw81dK2sQnxQ1GjYMq/Yu4AQKIU+ExK2AzTUQ83AmB7Y1XKojp07/wyQXTRDKJvMict3PKkcdMFy5JX4+0xubpiO1heN2o4ds4MwZYJYpSp4mQ3ct+XD1VVxtORGmY3GqUhVwcx+G8supnvL73hSkINwmg2MwSCsG9DWA+YygIK4S7vUuKSrGOiUNxkxOaCLCyZhcNm7dU3ZVAsDoBnHJHxJtApQbHUyRWeWvVTZVsH3DwyWG5Oa6ExEDozWZAlAjI0aSfNOl6KWvGcMP4c4wmgf1ZP4Pf+NcqcA+fGvgSh7gpCQI0CmIYnmCQg2fYhIlB4f6EYgaei/DiPsmxhG/c8LZa7f+7Vtvj5Qy5Moxn8MEYdtpVXvjJlROairBTd3aLMDcOmqbB6e4SDA3KczFXDHrQpfno41w35gysNDOAudoRTekYBHz+B1KM91Dj2a3CBKQ3t1646q63bTHvDfWYhdigEMj4zbXXttzINh2jSXIco/e/A78F5AvEpNosmZzk/UpImfHIOrOMNKX4kz1ge8/zPHa7jA92sxb2sr5lK+oSljwKhjs760tDaKUikxdANsPF3bSqrFhmx5vfeD4EA3GUM2cWW47j7+504IOH0Uux1X0SjBrZ7ikSaPfA7i79avAgfbQ88K30uneMRjuceZoErfBDrkSJTRxME01qQGiqQo++umTBVUzD81l+LSh/QFAGHIINv7egg+HzsxG/HF
+ Rddgk5tk
+ AbIBlRKlbz9ExJPeldJ6DAlp9Q6uNeMel+aAgGAYFuJqnfo/7K4pGSSZr1r8O7hVd8igXkb/iPinSZ2d1JmXZKa3r8IZE0xdWOlaoHJpRUB248q7IHmVLHA5fMrFsKFRdA28/p9OUMivaPjbe6uO0+YYWjsmyTfMA26GQqSRskuj3GpjiHn/qK24hQFr4o7f4OiIDpwlBL+oqWXYjZCZ0HPVgZJht0aKBF/urVdXl+Mh1b0VpNM7ioHanaY9ve2/7EYmsGfKBqY+WTLraahuIYE9mOkhJ0Vzp4M5berQqqzQ+Bgsl66szEVyCLXTwKTEYHPx1Ep+Ei1KUz6orQ2qimJxw/6l/54lyYOvlDBc+dTFidvoK4UIjTLd4/MMbYSKq2vcz84urFwbgELg0dGoUYjtkZQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,7 +122,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git a8455260b2e9c024d1872ac1c094793d55a7e537
+#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git 1bb784eb6e38fd73143f021608e4ef3095d0c0d7
 
 diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
 index 39ac5b97aa3a..901dfd2484e1 100644
