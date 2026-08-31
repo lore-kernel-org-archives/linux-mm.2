@@ -4,125 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A709EC61DD3
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 11:39:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E21FCC61DE2
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 11:43:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5B4A6B0092; Mon, 31 Aug 2026 07:39:42 -0400 (EDT)
+	id 03E736B0088; Mon, 31 Aug 2026 07:43:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B33716B0095; Mon, 31 Aug 2026 07:39:42 -0400 (EDT)
+	id F312C6B008A; Mon, 31 Aug 2026 07:43:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A48A96B0098; Mon, 31 Aug 2026 07:39:42 -0400 (EDT)
+	id E1FC66B008C; Mon, 31 Aug 2026 07:43:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8909E6B0092
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 07:39:42 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BFD456B0088
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 07:43:06 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1133AC0459
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:39:42 +0000 (UTC)
-X-FDA: 85161369804.05.28CA2E5
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 359DAC0004
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:39:40 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qx8aHArZ;
-	spf=pass (imf28.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E74491404AA
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:43:05 +0000 (UTC)
+X-FDA: 85161378330.05.0F8DF28
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 57A3B40002
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:43:04 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf27.hostedemail.com: domain of 3x2iVagkbAEo4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3x2iVagkbAEo4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788176380;
+	s=arc-20220608; t=1788176584;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t+e3nkWCWmnCXTSnQisaZ/JcY9969zoxFZBJ4/hDxuA=;
-	b=xrwuDan8aPYpmn05FEp6naSUla1gZGlWOr+JneAwJXymR22BjX9VciGoQMQHKvjY9iuaOo
-	0vrEJBfxSnx20pMwteaFUe7gqChbl3l4oi8k4iD2/p18JO15lkkWIiP9YS7SxMji38uaqN
-	hrxbzBnruqU6tyLl7RZxSwhB/1J22Co=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788176380;
-	b=zwywYRbsH/Rq77KdCiwJjzFQhIjv5FdAt+GyUKngKdwO+lKuvqtciFl6W5KKEfcuz5gQFQ
-	k/fNZAoMFreOACJdfJ53MaPgKWkC7FSauDdaF4ohvGKJxWjDkvG7UZcuP0H63L8rSE9U6L
-	eJLRw8GLapYhJ19JoSiabTGL1Qt8Ed4=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=I5LM+0Pjsyiw43Y9OPRtVO7+pR519d5y9NI1syLmG3Y=;
+	b=UZry/FEwLbgtGhYIS6qXQKiJb18PBMSYEzhESFxYSDvEG1cZPy8jrenQXZC01bGmfloVp5
+	a5z04InXrDX9yUCW17L66yXC5Gh6rcy9pvOmYvOTUBtXSUZyyAHlYnNzKwu/O8bri9iCML
+	Mh/qbof0JGdArykEsfpMOcOR9bU5L7k=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qx8aHArZ;
-	spf=pass (imf28.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-47c2b362ee2so2928224f8f.1
-        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:39:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788176379; x=1788781179; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=t+e3nkWCWmnCXTSnQisaZ/JcY9969zoxFZBJ4/hDxuA=;
-        b=qx8aHArZ6UtyXDs2nbdssD1CLMkKo2w+CrjIoH7ZX19QEzHczOYXH+FirdilvyEtzA
-         XrxGpHKFyJnsnBLSXjCQJus1Gdsj3kAtl0zfogRkEvhp4nxDdt/GvBaXYR+4k/BsQqj7
-         PI8iH5i3gC4gpXjDcIBE1EgazzMRwzkaSY01zgmpbaFX5baUGp4RggrZH56uuMEwbm1k
-         /VpnMiRjGHuQ4vW5UuiQxTRkpWvgK1eg+OGQBwOTmwOfa8eamKFUf/y1EaiWZTwatAEM
-         ct6PeiMP+fCX8IS/Qbehsm+CJ+Shdk9JUxpQAW92/TBhnbM9/q76F9hoCEQyYq5B7ZN6
-         5iEQ==
+	imf27.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf27.hostedemail.com: domain of 3x2iVagkbAEo4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3x2iVagkbAEo4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788176584;
+	b=s8sc51BaRwbkvGtylfOW2A6tTVwfl5jB6NDsLoPklYA2JOcFkQi0biX/UchZjpcyhIM2Pa
+	aJ6xYdPnyKSkTDlxPczfL3EUZhqQFfQ019nzxm36rdq3AMLr4k8oxdaA+ajzhgzHd3X1Xi
+	gUoTHFtKS0wZdqRaFDvxIrJ+6vzE+xk=
+Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4b28deb7ee3so5163194b6e.0
+        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:43:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788176379; x=1788781179;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=t+e3nkWCWmnCXTSnQisaZ/JcY9969zoxFZBJ4/hDxuA=;
-        b=Vcm5It3RtMMMwK1QDA5oyAwIQnNTgz8JDyLImFPBFScNKn8aIf+oVdMq+016NbiFFP
-         0h+GH4QLcv9jYmaBvJJs7OXouQF9u12L1PQg3/A57e5h9LGjtPUkFjBMBJcIqVfDV8h5
-         ASbVtqz6VogKQ1JjETLA6qK63FLIS6kuKbwMzeAZP8SN9u4GNR9dQ/9bDT3nbbwe+C50
-         2aOncJLu/h4Y2PyR5cGhSMqzY1c5z/UoUIY4hEUy0uczmPGly+fHO2h8GekACXNX9R1a
-         HBk5+1FN7Bpx/fR6vKgZJ2YV3Qxop2vXaGrjAaLLBFpXsgeElLi1HEbXtXl2xOo0Bcne
-         C8Jg==
-X-Forwarded-Encrypted: i=1; AKwUvBzYSDtQqmwL0gFLYGpErUJRZ0DSjFkk9IeaLUddCaPKy7DAjzHa4JnmURqbda30XhAPZXPeKxW1Pg==@kvack.org
-X-Gm-Message-State: AFuF++liaCzpHWL53XeoeVhq5/Y3P3TCpo0MWaE59xRc0MyqJrp/QDGc
-	49pngEpayq0irfy848qroEzpQVwzQRR+FK/Jsabptatfh9iCInAvJs77
-X-Gm-Gg: AYBFou0uhxfxtvnmZZEfcMwJgD7xCULsS1d/zfqjuJ//f6W9NQQL2vOp76WAaDhc5D4
-	DAxqFvOng0hphY8EoOouIaXtydEGHBqPauzO3UiYgoXDW9duD7xN/WT53CwygKX+py69Bwi51uO
-	BRCd2ixUUaQQayjLmiawGkx91znOtAEcpaLPyQlUVIzIRU9yN1kfgvf0mEscvJRSAFDaptL1s+X
-	8JRIDFjCGHy0fD7BAyH8B4uhMtYLazC6uzJTKZV0Qw3xmBy+VctF3/cnMvsbMl3fhO3QvGuxcwA
-	73tuMKSMiEKWTYnMP6dqCe7xiqAPaPTq9sckLE/8IrsfrZl4UK980BhEdrZBuxGh/3l/SF9VVFh
-	pyg1OA/6/e/sn0VT3/ymSSos7ebccWu7MPlrMBuPpiU9TWm9bXF0w6qEhyy4Z97MLIdN1g9fXV/
-	3qxaZdSDOvcSUVTz6uBoMsh/nCsrCdtRfv4cPhgHMZpwIYj/vz4zZQchvQnL58ktAI9WB9bwGC/
-	U12OAPmmj1Bqgm1TsJdfnVvrQ==
-X-Received: by 2002:a05:6000:480c:b0:484:3f5d:7dc3 with SMTP id ffacd0b85a97d-4843f5d7de3mr3330798f8f.5.1788176378681;
-        Mon, 31 Aug 2026 04:39:38 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4843310ab29sm14535272f8f.0.2026.08.31.04.39.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 04:39:38 -0700 (PDT)
-Date: Mon, 31 Aug 2026 12:39:37 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Eli Billauer <eli.billauer@gmail.com>
-Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>, Arnd Bergmann
- <arnd@arndb.de>, Brad Warrum <bwarrum@linux.ibm.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Michal Simek <michal.simek@amd.com>, Ritu
- Agarwal <rituagar@linux.ibm.com>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Matthew
- Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 2/4] char: xillybus: replace __get_free_pages() with
- kmalloc()
-Message-ID: <20260831123937.32255a49@pumpkin>
-In-Reply-To: <f6001085-9234-4025-ff34-6cc4a66c293a@outbound.gmail.com>
-References: <20260830-char-misc-v1-0-05e2ce44f291@kernel.org>
-	<20260830-char-misc-v1-2-05e2ce44f291@kernel.org>
-	<f6001085-9234-4025-ff34-6cc4a66c293a@outbound.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        d=1e100.net; s=20251104; t=1788176583; x=1788781383;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=I5LM+0Pjsyiw43Y9OPRtVO7+pR519d5y9NI1syLmG3Y=;
+        b=awiBhh9nYZyavo1ahZPavPnbjPgdN56dgns3R7WH8APxshLeiNZ5kirIzAMUSINHOg
+         gUuxlBiNWqfI5iHztblmkn8eeSrg2QLtu45fojhVZFh8J/2qsJlxiQCc4i8+le+3aRAz
+         ofM1xAEUTeDfZe0xttEGAFy3LBqchG54y8Y8HScP3ojwGiwb+iBQ/wBv0H/ichLT4y2Q
+         E7nslgPCrYKHvxtA80iBhRfqo5qTsvBJMARuVtUtiMjrMhsuS3hTnuQV09Rhp/PCOL1J
+         qdarocT5ibM1R+C2mMcMNJSlEw1JKcFZFhL391voMrhmGPMIGe3tdJqO70RhwWjtKbxg
+         8+yA==
+X-Forwarded-Encrypted: i=1; AHgh+Rrp6O8ruB7SNIxZ5+btMHRduQBfAA1JBVVjcOLzjv7Klv+VheMmU4EEGU2dB8Ei999hZt4ZwMjO0w==@kvack.org
+X-Gm-Message-State: AFuF++nlmLyxjVOHS6D+lJ9JdAic5OsFS4AoeLmFYIZhmknbFyj1a4PI
+	tUMZV1aIXBFMJOdLK/buAtF4bIbUNmgolsGl3999YI4dBUBKS6dD5Uh5UdsEUTb0ETwndvxyN9M
+	bU7iLAkho4bl1TKqHSqEhjXcjZZLQ8B1RS7h3NsSphTZExeItexlm+EklZZ0=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: rkf6yyao45tnm4499oknsbzzcrofwhhf
-X-Rspamd-Queue-Id: 359DAC0004
-X-Rspamd-Server: rspam02
+X-Received: by 2002:a05:6808:251a:b0:4b3:7c33:456 with SMTP id
+ 5614622812f47-4b5b81720ddmr416388b6e.11.1788176583352; Mon, 31 Aug 2026
+ 04:43:03 -0700 (PDT)
+Date: Mon, 31 Aug 2026 04:43:03 -0700
+In-Reply-To: <20260831084159.410474-1-junjie.cao@intel.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a9568c7.a8e469d2.cbf3.5619.GAE@google.com>
+Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in __mmap_complete
+From: syzbot <syzbot+e4aa91d7f20c34417d4e@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, davem@davemloft.net, dvyukov@google.com, 
+	edumazet@google.com, elver@google.com, glider@google.com, horms@kernel.org, 
+	jannh@google.com, jhs@mojatatu.com, jiri@resnulli.us, junjie.cao@intel.com, 
+	kasan-dev@googlegroups.com, kuba@kernel.org, liam.howlett@oracle.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
+	netdev@vger.kernel.org, pabeni@redhat.com, pfalcato@suse.de, 
+	syzkaller-bugs@googlegroups.com, vbabka@suse.cz, vinicius.gomes@intel.com
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: z47d9hpp7cujdet1x6tci6u5kqapuj5e
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 57A3B40002
 X-Rspam-User: 
-X-HE-Tag: 1788176380-498034
-X-HE-Meta: U2FsdGVkX19MNuFcZG8dMAFO+uwv9Pjc6S3834Le03Tggv22zagInpTAZ+eydVjBcUzSovYWoSFhvzCi1aMeoDhDt+umnJJzbHeWJap3cYn2uFzvfIWE1rUU0rWtI48lXabsdkK4SZLvcwGcUdtQSyqsEp2jljjdNF1i3pmqdpH/pnp5ICe0cS52KLzG8Y58lrHysQE6di2FShcDfzVNqgTUYK5lYcovMhLBWMC6KsVX8VPgqSI0ZJ6uYQmDJSIeSwK+84gQQ6tq2ibiCMN0SskeDS/gkqQK4hpf858Ig3mY1L48PSX/YkQfpC1BhcwnSLo0m742Vq5iFxzMy+OUr4ZZ/KFZjdOC8sVeiMDIjzZteYsseDQo0uRdhcHfCwzo4rSnLCAjf7rv+VxlWzlHrZgljTG18Z2aaLAvPgMO4Bwk1au7j56z9qs6+oYAFkmGsMzB8zblQiB0DeNPCdwMlJmUDiyRsGUdisrZ16fdQRTJNpuFzRczGj/cYjl2hfFnZAHzCHkLSaZElJbZGchzUomp45FVyoJeBubQjkrXVDKs1r4WxfFcxsh79UV7rvA+8ieyooDKo8I2PHLNKdAFjTUYatONz+xURsoxK/2QPBt789v7h6gSb8EHZV2a71tvBNRkjfvkyjgf7wn89A+f1XsxWcYgSSfPGrlrNa2Xn30eTazcvo3YkkcOdAz04W1BDCxn/8oYs83FLeQwpWDLdrGYr3o/JYUN2eIhWuKkCyQ1YDezyCLphO1RXLKtVUwFBywY6s8mWbcJY3QlkXbI7Vt33LgSCK/6kWOD3XiFHC27ytMrDUE4tWczqW59AYV8nvMLQfPqK2Lq+9dJvHxfp7o3zJD7nvBG+uWppTs8QfLWOF/8VG0DDBv6pMFrujzT25K7qNcB0P4Ylxhl9ICIWtRbHgDMuOyg2oafY2lGO9ZxpYUiY5ARm4NxVmxHrWxeDSR/M8rdidGnL79MxsE
- v3RAFukN
- DGTxt55hLIAz7y72pT58hbDTi/GAfpAyni39Kei2q0TDnVi5/gqGY8pQg10iOYX0vtM5OCYuFT7t6NAzrHUF0RDaCkyujW7Fu601zMbDT14sFKV4sbWfx3AIw7X2rk/8hH2vNaEVqsy9jdMCAhFJwx2C3Jg3NRoPNfJ5cjYi7snREfBtFeRPppWdy2dioCr6xp+gQuUFszOvQiMHtuKU8BM5/Ac9UinKanjMobJnUv4rpmCHrkH0A0dglrvlZFfxne+EHQU2GGbXwqSo/v3zERK0Zy0xnvpkmKr7J79qvpj4E83CjiH0xxMhafEHr/a8rnQMHN5yKPBr0vT8EaUE8qQkODVYjcgnFxH3uxN7JELih+Y/7l1SKU0QdkhekN4rafbhnlBVXY83WGZQD9ojPo16BF6V7j5ZVDK6Q14pPLFH8WxZIsb+xkbjLf7+tGUeHBQ43pYuvBOscpM6S3tBNrdRy0nhIsyQlaJpLRoRCaKg3IELFMiYbux0gSCgeYTgoE4rzh/GqXiMRKGdAwe3CQzWlkf9mTuWAGNE4
+X-HE-Tag: 1788176584-556606
+X-HE-Meta: U2FsdGVkX19l/BVQjAgRaOXz8j69CTSfqpFCq/D7l9nGx+GAvKfxptjAba0DLSSbhcyZsleiO6aA843f62wxLlmX1ytB9Cnr4F09O7ZHwsX9RNloVjFAPStCrjOzhBcn5Vm7P6524SlMTA/NzLTj6kA7Ko/SzgIjIghEvXrPr4EeQmzLfTknrlzfBCTElPnBGtaJ/9Mv+EvEk/5FX/lBfcv1vpRB1SmUf0vapZX66oKLlOcX3O5C84wloJsyW1Fa9QfCmA6yCpDuRutFxcSqXhk00FOf5tFB3ZgYPHUP3DLN8TO0okHDl/QP9am5ueOKRaiN+qKwbbsBW/SrJsiTh3o12bfC3DQGktkcAdoBMaQWgbfZYqdPNltuVw5kSqT/BtTXaYJjkZlEIt0b+4FKg8MZBZ8slc1rNkcY6SXzFUeObsMOodz0aHsPcyZ5jV1E+DS93qnSLKMv7QNElEiHNfVTM/lnvTfjnx1bXmmIDwsSZaE/wC+jHMAvadE00J7Sas/2gw5YU/JOOGBh0nxDudFPZDlJPvLnvvBnYDg1swPJvLJsAhczt2lQSF0lluAW0IZu7r0aKJXoK3Ldu1igLnF55q3KDKd9kIsndBGmpyHJNrztA6yTPLao5D0SCTX0Nsif3ndwdRBpNxGIqOVaf2Ze0mIGDISi7rbl1rIHVu4gSk1CTAfzlSt2JG1vvExEs0KzhoH57u8F1YNl0UisqIFbAe0tBnZp/eAiFv5LMaLABhCsTqvWaYjPqwYkiMDp4SzFnLZj5V6HypaQsRL8cu/ynKsB6jnQZfIRQJLmcdd3wBm+HauFlaeHpeJFk/4Kn//zCbFUjWJqbx97fuJE+OrT+cecuacyzhST04rGKCLiGzl6VOCW/9d8MtlZrTWVlBtEmwdicROMVs3qW0xeTArwPKTc7Nati06Fphjp3keh3Yx9er+swHgojECVPEcnnnbRsjuOI4Qp5QvbEFB
+ a2ixfXhw
+ ZU2upa3c1E6zHmgYk1SdZAkbJu9tz/i6ex5lbkr7olZf1fmSOI1xLuJvkXE8llX7jRwg+bTX9KL0EIwXXT+1B2kgXOj0+JHe2P9MNCw0iYZNgq9aaZuq2gWZ5Zy/0NE5yoct4B2hHaIVyBNm7SBg3rTiOnBLpFttwrWorUBgYC3NUy2jcSR+rX18PEh5qZTb8DZ7IbpHtKQuxAobB+JLrOhxW4m/76yaN3Lrwwst4TpwLWgn1H3vPuCREcLFBqlwyNzVlZ0w9OsU1Swg1dGDlUFvlhxAVaCK+E4V9fexs44pBjJQsYVJFWHJBWoUorT0IMKFdrSnk5oeKfG80pEfJY97WPS3zyAFYKl/nqN7pr0LDKHE5/CvPk3/44bW0HvwtU/nQAFTEj2C/6Gil0Qb1UAm9uivm8JTUQPk11aXWVTKAlM1aNpXXhkcadmQF5BLGwbe4fSDvUFLIA8lxjGyTXQHF/jHFiWFGKKuiw9In05594XDeuAQ3/5wWre87pOe3dWMoNZyH/di2Dcmqg2ybWGqhvzCw1VvcvSUaOlME2s7/uyIfE3o0NxKlUQwwhfWAnvQ1DiMLUU70r35Dt0O200OPmdlzLyGfd5mncShYOnHXMq3h5/x82bZr5VYW3o3PgBlT7zeJ4s7qDCUgV0qKnSkyochIsecCtQzjspCw5yyyZHOCBJ23dc/+vc+dKQQ5hQUnA7slyjjpvMJ9AtvZ2SoGv/5jUARaisG2eHlJ/X0CJKnwCvUFbHLhyYp1qRmrICPIdsxEdE/7IIc7o49litmY5ENaMZhQTxB5svKuuBm0xqdiOXVUI+rKDHoy/+6i56x2hV88lOFP/FSgYJWbBPqt5WJDSfYibLpeVv0VUL7Hd1EKLFl7FIxYfsdOgw+viA+9Uy9yjmUI0qclnpRO+E1zcA20jCjyQBZKLEuwtV8zuIQ5ehX8AUbQY+nPM2/MjlByXKvDOo3NSoaAl6qXgnOHdk6b
+ N4MHDd23
+ 4Fw/GsUKUzJ7Laeza8FkjXInHStyCUq6fmbVtGDzIQM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,37 +102,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 31 Aug 2026 12:13:08 +0200
-Eli Billauer <eli.billauer@gmail.com> wrote:
+Hello,
 
-> On 30/08/2026 9:47, Mike Rapoport (Microsoft) wrote:
-> > fifo_init() allocates the buffers backing the software FIFO and
-> > endpoint_alloc() allocates the transfer buffers of a USB endpoint.
-> > 
-> > These buffers can be allocated with kmalloc() as there's nothing special
-> > about them to go directly to the page allocator.  
-> 
-> Except that they are a bit large.
-> 
-> fifo_init() may be requested to allocate up to 256 MB of buffer memory. 
-> This memory resource is split into an array of buffers (fifo->mem[i]), 
-> each 64 kiB (or less, if there's trouble obtaining segments of this size).
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-Would it really make sense to allocate the four buffers separately?
-And/or use vmalloc().
+Reported-by: syzbot+e4aa91d7f20c34417d4e@syzkaller.appspotmail.com
+Tested-by: syzbot+e4aa91d7f20c34417d4e@syzkaller.appspotmail.com
 
-David
+Tested on:
 
-> 
-> Citing Documentation/core-api/memory-allocation.rst:
-> 
-> "The maximal size of a chunk that can be allocated with `kmalloc` is 
-> limited. The actual limit depends on the hardware and the kernel 
-> configuration, but it is a good practice to use `kmalloc` for objects 
-> smaller than page size."
-> 
-> Regards,
->     Eli
-> 
+commit:         1bb784eb Merge branch 'net-phy-fix-cleanup-after-probe..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=17e3be25580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=5e4e3a0e188a497e
+dashboard link: https://syzkaller.appspot.com/bug?extid=e4aa91d7f20c34417d4e
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=171ebe25580000
 
+Note: testing is done by a robot and is best-effort only.
 
