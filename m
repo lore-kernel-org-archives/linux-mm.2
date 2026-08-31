@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66FC2C624A5
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 05:43:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2550C61DD3
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 05:43:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 639EC6B0096; Mon, 31 Aug 2026 01:43:49 -0400 (EDT)
+	id 1D2946B0098; Mon, 31 Aug 2026 01:43:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C34E6B0098; Mon, 31 Aug 2026 01:43:49 -0400 (EDT)
+	id 1092D6B0099; Mon, 31 Aug 2026 01:43:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4649C6B0099; Mon, 31 Aug 2026 01:43:49 -0400 (EDT)
+	id F12F96B009B; Mon, 31 Aug 2026 01:43:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1CA596B0096
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 01:43:49 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8772B1C1E66
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:43:48 +0000 (UTC)
-X-FDA: 85160472936.18.32623AA
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CE4B76B0098
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 01:43:52 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 470AF40371
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:43:52 +0000 (UTC)
+X-FDA: 85160473104.23.C7961F1
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id BB31A180004
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:43:46 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=AgDK4gG1;
-	spf=pass (imf16.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9C00B1C0002
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:43:50 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=clNBxERM;
+	spf=pass (imf18.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788155030;
+	b=Br/vBwxkKC0TWtgHXDITygYoZs5Z/C0WLty4t1tQXvMwE2G5uGGupNrOXBhekfblFWRk+f
+	qpkkleuOpzVdzxN+OXbaZHcrOMhot+a/3pCnQii59hCNMWnQQxPUjMn3gZEIsoio9dU+Xq
+	Vw9mWMfoXaUFdiSj1Il3zOVKetvCrHY=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=clNBxERM;
+	spf=pass (imf18.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788155027;
+	s=arc-20220608; t=1788155030;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vC0AdXN9AInSTcYtPsX1sQWcKplWSYNtXUaddP0LnyU=;
-	b=gKsFz2qIl2G+pGsNSZfn11L6+RNsMh8tQlAXiLzamEUXriAZB5Q5V/Q7J7RAgeq7M9HMoL
-	Zwtuv5YU+X/u4L/0+K0SZ/H2KR4jDFP04xxxKLhFp8+8qsUm8GgcQ9n01vXXmJ5XRRge3n
-	Rw6aG9BCU1nWTVZCYenVKMbNODwhBoA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788155027;
-	b=P0lbXa8PRBttTEopiOcnUfUrvwfH+U+u/MHF7rYkJhGoHNUZMaUsM2oQyvHV43foLPfVX1
-	BvHmIe3RWfI7js9ZrRvJUWGgXaRzB0s4mE+whv4bNuCBZr40i7Nx88JKjDdnbdZrQYyqCZ
-	j7Ce4tGopLpic9aOF2E0T1SynAoEtH0=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=AgDK4gG1;
-	spf=pass (imf16.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	bh=PyZOSHbWdCLgVvtWvoTlV1hTMLOgk7p4ZvuZfdT15BQ=;
+	b=f05T+fzcXh87e3xdu7bzaJNKIdGKQdXdmLzVv8whVLedPbpqXO64sBq3Uodgai51WrTeuZ
+	D1q8vmBEOwAzw7zHkwPzikFgSXLX0vMof1TsPdsd08aEsiSEi7CsBxaCTxsDLDNSuoeZQu
+	BTqY9gMIOcIqkgx1cMEVVbxNhumq+2U=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1783419F0;
-	Sun, 30 Aug 2026 22:43:42 -0700 (PDT)
-Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1DC573F85F;
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A634419F6;
 	Sun, 30 Aug 2026 22:43:45 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AB2A63F85F;
+	Sun, 30 Aug 2026 22:43:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788155025; bh=MRpwBQolgZx1ZwHSmSp6+RbqpKwfTCpBNzioH9bhCJg=;
+	t=1788155029; bh=bHIKcGFMXnlsQJKrJxXnpqBn4JSSxbIBTdF+CIJ8MW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AgDK4gG1pVEjHbGnLFstkXRbQkc6tjZ3ZECUEyq/VeI1J9AzoNicjdQZP4HJ8Kvk4
-	 3TXh2zhKUhfWWSAzn8A6D9O2YljapP5Yo/mEFuIROb8kjVzJTM112mGGaKINlQH5eH
-	 hNcsn1bxAJ0UwDcOKskNwZcyK6BDzUFItaGQvZxA=
+	b=clNBxERMYdRAakaKKIeVq+fddLwKzW5bcKoOh3VIgFbow5RV1gsMlDc9WSqbXb3In
+	 gA4QFgJuxjGVFz7Nge+XaSm3JSHwl5mmk9xVBh4EipWfCTJt1zUhGrlxZzYC3eH25s
+	 bGFJxNhoF2TETCqvHlEfMMHmYKgnZUJbqwS8L0U8=
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: linux-mm@kvack.org
 Cc: samuel.holland@sifive.com,
@@ -93,22 +93,22 @@ Cc: samuel.holland@sifive.com,
 	linux-um@lists.infradead.org,
 	linux-arch@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/8] loongarch/mm: Stop using pte_ERROR()
-Date: Mon, 31 Aug 2026 11:13:25 +0530
-Message-ID: <20260831054331.625505-4-anshuman.khandual@arm.com>
+Subject: [PATCH 4/8] parisc/mm: Directly use generic [pmd|pgd]_clear_bad()
+Date: Mon, 31 Aug 2026 11:13:26 +0530
+Message-ID: <20260831054331.625505-5-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260831054331.625505-1-anshuman.khandual@arm.com>
 References: <20260831054331.625505-1-anshuman.khandual@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 9C00B1C0002
+X-Stat-Signature: fd1usrqmfz74sn7e4cf9ig14t5b11kzy
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: BB31A180004
-X-Stat-Signature: t6pgbhbuob19m9g9oyxdaa5kqzdhmqxr
-X-HE-Tag: 1788155026-708118
-X-HE-Meta: U2FsdGVkX19AtQ4NzOSsbI2xxBRcuOwqbthGjzOVlc1dgG9ZddkjhcZG/pKq/OOw//g9N26JU9Hpi4LvnsWlv7lLNEmh6mC1NQnaYqgzSKd8j1L4j1bO16vJmefSdV7GRycFvDRq1JEoRd5h74aHx04oCcdqUMRLh3lbRd3jiL9NUd2rqKQElc9eVQK32qKeuGxFSIMB6qGUks2pcWP0kcg3YVrO8+b/bDmo9xGkCvTAOJUvSZk95N754LpN/YWBsId7f1IFxHTrRTYCClNFx1Q45/BRX+oI4K5cCbnwlY7cvoG0/rWapIA5SzWYk6EcCNPnMOE1kqoJmWVUvJTma+Iy919CujY4XHIclG5W7Ugul2tLut4pDChUfki1xDJn2gAR0KkgbeNJhILlwr3vJc/0cW6g5Rr2meYZn+4puD3L1SrWltp74/oEyAukG2PR1MBoWZ+OZqKHSAvc743I9FDBa3bqWkxOhQPvI5rCM2d/KPeo2S9Pk9LellDWMvGKJA29B+JpVLAb3OHo0iv6VAy9p3q/gA1HYN94jfaAMrX2MX4bdUjcNo5YdshQgVTWIe52PNP5WminhQ2MkfWsdf0QDPKkODhMXA/EvO/ki2Tvb1tkdfuTq7rB3cq9coLIAf+FAm9Ak8gooV1Ym3+owTVuBB0+BSQCzryt++VeiL2aRGkGZEHexd7c1uLF/HdtkrF6be5+hpb6oTrQg4MkP/X6Ci/Nbdd4f8jVuFAhMT6l78nJOv5ARHxPPTBFwRelATT6bH1pf27H+XQs+QKaXgrWj7I0MVL+tQejzJtvRSAxp2yaZ9YC6PyFUQeQMzdFmLARf5Pjv6HCWVPGyZfjTYm1kodeFLTK+L86o15o/s/2/l2w3B6yswpOD+2hoY/ejZ3Qn502iy/wzahdomj4nPqQatERz7b/PzrXN4AZd0pGeFU8bcKbx8yCCwFEji4wF+GEimjprjWy8q7FgQa
- P/UQhXvG
- eJv8LKr5eOfS+TnlmRWwqWU9pKU6ImlpD7sBSCxOTh89AS66ATGredKzXkxU7KXFj7UGRNwgWEJthATHyiKaaJVaDMAJAx97E71NLY0eFVChBLSmkfWzwMv0I9eMlo44vf4EqwKcAPpL3hvwR+FPfE4pYGKTJin3eibMI0NwO+O1jShspwo2AqGARvszOuePZBfPgx4mrZT8kbCXewtoOW1KxokfMcxj15YsYdGCQGxvnLx4siXx4Xhk+OZdN1ST6RhUBdBi3U6h0QbotonSptkBbWrlcJ3h8L0hkb1zR6ldVVwrtR3eHB8viU6+myfF5fhNI5Qr6GBOdbT73zYBhbfrA9sR/8v0Gd0llAzti48Ap8nVjOTBiwL4VfhXCtbGNYn7fkVCajM/7nll7sgR7aRTiiPX/I9mK99mZBnapB/U833AsTv4MWDBUmQ==
+X-HE-Tag: 1788155030-182491
+X-HE-Meta: U2FsdGVkX18e1xb7worqME3bIJ4KIYN5SS1Ys8HwmqdaQDfaeVyLCi5gFeUq1LYoz7C1fXPBU29yByuR8zgvYHypS6a+sNU01z6fCdELGgDySskH+VSVBf/JtL/FGKw/1dW18siQ2ujHO0gEAymwvoeKwBUaIIeW2iVIo4e9YRg/bc9QGdaGJYkxbtDi1q0mSVRxd3I3wc51YFEZrfImeEwyi9ZAORKIXoPINXo7tTCE36MxBJvY+Fvr3q2TVILmbLGPhWrMXKhVzQBnRIa04Hs1gJOIDT2IyAbwcV7xVheNSWmP+vMrCDroEBgakd+gN3fG1XHYlprBgwAmXUnbKw6AtbBzU6RU0HZuBkCbQltZQj3GnUSazB3e7Fm1Kbv1tAXCosD/y/5qp6zeSpvpaNb4un517TvkFqdlfmVBj6gyKS6NEd2ca+m9w85aGwltadDo2lOELqNsG85vmYAHavOZTZ2+JVUgJleM+rcdUK1VCYIm01Au3p6m5XfVbO5BFQetAst/DulKM7thR4FWb1UCY6D8DSbB0iZtbNWxgPl6PhpPhdtG8XQHIqie/xn1Rwnws7JOgg0Lfn3UiuVxE2U3CrYVoD1BcfNS87Un8bWb2e/zvcT5L3KpI4wGc4nR6aPgI5rV5s4EOaxBq/RrWA7bjOMVfVab30bmTwN5qT4hJCqLFDPDF0dNQHB3qbqovvEnR13kutmFsD6EItPl9EYpfsek7uMgISS3gmsjEJUe+SzK3cOlmvaDB2mUgluPQuNFgrc11pV4GPWA0w+fd3skfQ7RuUtMcoJODAR9DJKo2ZO/Vf32EZvzsSXHuW6IEk+TLyObLcUGyXism4CKuPxcf8HxMXD6cw71uqeT8ty0PdlZzkzhuF5ETn2QBmYegzdUJKnbDzqyHeYeSkoSE2115G/rBRMwvqCFMu2+ECs9YNi9go2lLbhg7wQBsp2GsP7PC6mT96l2ZNjF7FO
+ tk74ybCG
+ shOmMUfcPc2TG8II9cXAMTAzjOURCwdw6C/OzErMH1mZudjac4AZB3+tGBmIdkzWPBJDEAENNumCdhmfvXooHJEa1gDG0Zm+vR4xkg2MgSUBlp2wBom7K644O4FDS+FC9Mtkcbo7kcK4hP4Tfqs+KYWTs/EQaaA2y+P/Kbwx+MCsXloG0xEspG/l9aricABKs1KZAcr7Asosqe97zuiWIUi/ymHA7sE9uTJEySa9YDtDSLXOgmBaW95JTaQtE+VN9V8jdUnwGBMTA7qXsZQMJ5az3DClqpM1d8afXKbDZz/zUiHyRbdHwg7vr8+/0/T3RTUH91ht0BR9+LbHlihNk8D1E468T2LzH/nOOXrchgBeTE+9GlBsnzQKhrpzx7r2dTGbg9Zc5wMSauNMgv9jple84W3glTgyc+WWEzM+aPxdZMUF6Op2i0p3oCT3DpVnM0/gzY0Vv4adpYDpaNpQfZPuxWpXXwt1IQyWBzdNqEF0uGW4wXC5q++2zGR3YuB60AmEm+bkjWn7hySXCTDN5jw8iKNtZu0DhyWat3hKUwexbAGKcCShmw7VDoamGnlYqVlUJCSpm0/YLUZztrqciiT/JCQ1Aq5D7ZMF2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,59 +116,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Directly use pr_err() in __set_fixmap() and drop pte_ERROR() which helps in
-eventually dropping pte_ERROR() macro across the tree. In this new printing
-__FILE__ and __LINE__ has been dropped because they are always the same and
-don't really add any value. The new ptval_to_str() helper is being used for
-converting pgtable entry value into a string. The error message itself has
-been cleaned up as well.
+Drop [pmd|pgd]_ERROR() followed by [pmd|pgd]_clear() instances. But instead
+directly use semantically equivalent generic helpers [pmd|pgd]_clear_bad()
+in unmap_uncached_[pte|pmd]() which helps in dropping their corresponding
+[pmd|pgd]_ERROR() macros across the tree.
 
-Cc: Huacai Chen <chenhuacai@kernel.org>
-Cc: WANG Xuerui <kernel@xen0n.name>
-Cc: loongarch@lists.linux.dev
+Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
- arch/loongarch/include/asm/pgtable.h | 2 --
- arch/loongarch/mm/init.c             | 4 +++-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ arch/parisc/kernel/pci-dma.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/loongarch/include/asm/pgtable.h b/arch/loongarch/include/asm/pgtable.h
-index a05f6a4928dc..eddd8906b77d 100644
---- a/arch/loongarch/include/asm/pgtable.h
-+++ b/arch/loongarch/include/asm/pgtable.h
-@@ -135,8 +135,6 @@ struct vm_area_struct;
- #define ptep_get(ptep) READ_ONCE(*(ptep))
- #define pmdp_get(pmdp) READ_ONCE(*(pmdp))
- 
--#define pte_ERROR(e) \
--	pr_err("%s:%d: bad pte %016lx.\n", __FILE__, __LINE__, pte_val(e))
- #ifndef __PAGETABLE_PMD_FOLDED
- #define pmd_ERROR(e) \
- 	pr_err("%s:%d: bad pmd %016lx.\n", __FILE__, __LINE__, pmd_val(e))
-diff --git a/arch/loongarch/mm/init.c b/arch/loongarch/mm/init.c
-index 4b46c5d30708..f801f7097f03 100644
---- a/arch/loongarch/mm/init.c
-+++ b/arch/loongarch/mm/init.c
-@@ -197,13 +197,15 @@ void __init __set_fixmap(enum fixed_addresses idx,
- 			       phys_addr_t phys, pgprot_t flags)
- {
- 	unsigned long addr = __fix_to_virt(idx);
-+	char str[PTVAL_STR_MAX];
- 	pte_t *ptep;
- 
- 	BUG_ON(idx <= FIX_HOLE || idx >= __end_of_fixed_addresses);
- 
- 	ptep = populate_kernel_pte(addr);
- 	if (!pte_none(ptep_get(ptep))) {
--		pte_ERROR(*ptep);
-+		ptval_to_str(str, pte_val(*ptep));
-+		pr_err("unexpected set PTE at %lx in %s: %s\n", addr, __func__, str);
+diff --git a/arch/parisc/kernel/pci-dma.c b/arch/parisc/kernel/pci-dma.c
+index bf9f192c826e..84e7309a8266 100644
+--- a/arch/parisc/kernel/pci-dma.c
++++ b/arch/parisc/kernel/pci-dma.c
+@@ -160,8 +160,7 @@ static inline void unmap_uncached_pte(pmd_t * pmd, unsigned long vaddr,
+ 	if (pmd_none(*pmd))
+ 		return;
+ 	if (pmd_bad(*pmd)) {
+-		pmd_ERROR(*pmd);
+-		pmd_clear(pmd);
++		pmd_clear_bad(pmd);
  		return;
  	}
- 
+ 	pte = pte_offset_kernel(pmd, vaddr);
+@@ -196,8 +195,7 @@ static inline void unmap_uncached_pmd(pgd_t * dir, unsigned long vaddr,
+ 	if (pgd_none(*dir))
+ 		return;
+ 	if (pgd_bad(*dir)) {
+-		pgd_ERROR(*dir);
+-		pgd_clear(dir);
++		pgd_clear_bad(dir);
+ 		return;
+ 	}
+ 	pmd = pmd_offset(pud_offset(p4d_offset(dir, vaddr), vaddr), vaddr);
 -- 
 2.43.0
 
