@@ -4,82 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 814BCC61DD3
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 09:10:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FC90C61DD3
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 09:14:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D7386B0092; Mon, 31 Aug 2026 05:10:58 -0400 (EDT)
+	id 60D3E6B0088; Mon, 31 Aug 2026 05:14:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 987A26B0095; Mon, 31 Aug 2026 05:10:58 -0400 (EDT)
+	id 5974F6B0095; Mon, 31 Aug 2026 05:14:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C8B96B0096; Mon, 31 Aug 2026 05:10:58 -0400 (EDT)
+	id 461E46B0096; Mon, 31 Aug 2026 05:14:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F3266B0092
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:10:58 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1475B8042C
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:10:57 +0000 (UTC)
-X-FDA: 85160994954.14.2E28482
-Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 72DE7180009
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:10:52 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=QGVSyqsm;
-	spf=pass (imf24.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 228F16B0088
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:14:23 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A475F1A0437
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:14:22 +0000 (UTC)
+X-FDA: 85161003564.10.FD15AB4
+Received: from mta0.migadu.com (out-145.mta0.migadu.com [91.218.175.145])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 299CF40008
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:14:18 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cNYVh093;
+	spf=pass (imf01.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.145 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788167453;
-	b=A6NP0+G5/ZSwdLDCMGj++KuZSJTo3104/895wGMR+OKSF8i9ImrwavE8BQ9+A/JB+KL65a
-	JCSfEdbDtVUpiLsrTTrJgRjpCCMos8WUPeh7B2XSm4ttgU9ExNmBhPbwCS3KxRfPYmEDtN
-	H9kx/iB0WcnujT2aXQYkhfgozrZHq7o=
+	t=1788167660;
+	b=yv+elw+jzcE2d64V6q2z8DRW9wmzqdkwmKBYAhnBYDqlDdTwWjsA5iefMtsuVYaxiYz6MZ
+	m/Dc5JKtdEgkflnbrccyRrJsQruouXj3VTjbRxlOZATEe2TNRz9HcFWetOGKyXODsstgnY
+	XDcg07rwGL5KW832Gw2G0PP16wLM/QI=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cNYVh093;
+	spf=pass (imf01.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.145 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788167453;
+	s=arc-20220608; t=1788167660;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=8Eo7QMhdQ3M9V1QnYKplCQa1xPwiIVALWEZ6TYtEi2g=;
-	b=PecRdZbLSL276tqwYrhuvoCMGOe2QTTGq6rz6IGaLyVPBvtFOls0yGnX/tkDyA0Yp9wBNc
-	W/KP0byHvg6Wqefml59B81dlgfYES/SBJIP48qyYU7+GW2eNPFat2iaonta5DFH1JuJVJz
-	sIai8CclTqjKdngWatgq26x5qaZ3Swk=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=QGVSyqsm;
-	spf=pass (imf24.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1788167447; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=8Eo7QMhdQ3M9V1QnYKplCQa1xPwiIVALWEZ6TYtEi2g=;
- b=QGVSyqsmZrBEHDNvJp+AAGgtVckvxUKBqOqUV7QYqMBeDqNioBnXhuf15krYgyDG/6iqzZ
- Rp17Dz5lGwrLvd7owblUUj78X/Cwrm/x/OJhIXdfFKyW/PLXgM4EfpMVlvFXC3MMaV4ypw
- PteHnKmc8Pqdtsaxg63wRDOrJevCocaGd3nOz59o9OpDAV3neAbWUsXfeeE9Nr95URmlll
- gNEFV2ygHO0I1PADWlf70XuOLb5R4lldiTsOx9lKQ9vrYzuIp5j3wDOvp75OLh1yB8r76F
- Ci3tEcWfbZ22MCEOnjfMP7XssdoXqyR00i4ZLc6+zN84LQIXlI+ZDjJnGOOLpQ==
-Mime-Version: 1.0
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-X-Mailer: git-send-email 2.45.2
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, 
-	<lizhe.67@bytedance.com>, <aiqi.i7@bytedance.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Subject: [PATCH] mm/hugetlb: fix overbroad MMU notifiers for unshared PMDs
-X-Lms-Return-Path: <lba+26a954515+ea7c3c+kvack.org+lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-To: <muchun.song@linux.dev>, <osalvador@suse.de>, <david@kernel.org>, 
-	<akpm@linux-foundation.org>
-Date: Mon, 31 Aug 2026 17:10:23 +0800
-Message-Id: <20260831091023.66581-1-lizhe.67@bytedance.com>
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JOxstMuNhjgQdO5Wf0RblTmBdSQd2loFpIZM3jwkxLY=;
+	b=7GXDztfgb3sO4zBWhWKcasuzhaC63l7qzKQCOxTt8VF33jUs/qrkWbZrtiFIwTzjuWJLyg
+	i3+v6kKuuQmSUJyZnXqo3sFMxAc3f5pWx8gdNXwxQFj/QJZDYHeB2DXmTVpOQOdgWRMRQC
+	drtdt1h9TjioB0Cvest9EWfgLeX0Fc4=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=Iiu36uPx5BDwkkFBUZed46ZW7Ls2oZHtivqmUwCVh+Q=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788167656; v=1; x=1788772456;
+ b=cNYVh093wxUgQ8JJeKoLaxbyJJR172a2ECG849duc7OhvzYrk5HCHk6rpTilDHD3z8lFd/Rj
+ uSBVgVoFrrkgXfAquSC7U/WmcJ8jZFHekxw7FG4semIX3t51H8S0ywESPC/XTFFnS767Bd/N7gz
+ 6sv4rabbxKi0nhFIAoIRUgTw=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id ecf1c50fc97867e3;
+	Mon, 31 Aug 2026 09:14:06 +0000
+X-Mizu-Trace-ID: ecf1c50fc97867e3
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <34412f02-d2b7-4717-a9de-cbe1acbb7a87@linux.dev>
+Date: Mon, 31 Aug 2026 17:13:55 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/rmap: remove stale hugetlb check in try_to_unmap_one
+Content-Language: en-US
+To: Dev Jain <dev.jain@arm.com>
+Cc: riel@surriel.com, liam@infradead.org, ljs@kernel.org, david@kernel.org,
+ vbabka@kernel.org, harry@kernel.org, jannh@google.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, akpm@linux-foundation.org
+References: <20260831082849.3573957-1-dev.jain@arm.com>
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20260831082849.3573957-1-dev.jain@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 72DE7180009
-X-Stat-Signature: j4aq8ynwnke56aeefkhc36hzipahikyc
-X-HE-Tag: 1788167452-200249
-X-HE-Meta: U2FsdGVkX1+r6R2sI8VlH+AlJfHT9aD7SZXr7SQ0TKQsvJdYD4bRUPPfoadwRnXBGHoIeAiA+jqDG0OcmKCmhx5cuwkkF83HQCFB/Ihg4KJ6fKzNEFe04iftPx9fnAQ3OY3Q2dIl8X8ZP4pKJn+gWjP/LR/PGaOyYWMdYfVG7CDCazPl09sOPWJrIV5nK1t8NW+criyMMAfyXHf1keBVFk1hzjeFoH8s9r/Li33nRBKMIvmdLY4VhcfoA9XkGRj+Lp4rOeMk2JkWgFFf0lRH4mO9pAV07bU6AZGuqz99Rm3pPCMSt33ZeXSjAWUvnJJHSxJKOianBgB7JCtY1fCzASp+iljCWghV7Rf9scOUlLYNEwHwgJT7QWCUX+caVBlB3VT06Gh6nrL/vKtO8nROswGLkyqnL/HaDl9nUDFJVVaKb4cqqWvwGYv6wFwamonNoKvnnKcFSsdgBgfGkx6PfA39ozArEnWTSfgVqLce8xjDJil4Dq7K2Jg7BULBq07lMeLVYCunz7K28FY/YSvm9ZfsUWcV1O91m+2GyQjynoyuP7RZJIW9z0w2YityvGUJdPkHPnYgy7Hyht7uHFGU1PyEr3dFswlAcUGqnMpUJxUY1/tZ0CP7bMfA9lrrdf7oXMROws9uRYeCoflGWOgtn3suNXvGaf0LAAD2cTBec5DsTYL5BptQfFOPTF1DAwLZZ1tbmEPtG/cJvF8b9+UZW2DOSQOzN5dwFL5dL6lySbIFq0L+N5DfTr/O1rbVYTGkHyB4oqcHa6tuu0wCP74RYYOVUKAb7Dq4oCk/fpN0ncjarTt2RNuYiw51I5ubeZuzYHsat4Etz7r8+LUl+pYFyHK4i3ilwgP9AW1OBmNy7LhyO2ECD7QrfzsvWQL6PuXrNjSuC9L/fnQLQ+MIUTn5Sc0orYU4wN+P6cr+w7tHYhdX6UyhxIHySDgqWUMeme6vqsSXY2nUDCVSZ39NdpI
- BmSPh0xt
- USjDDTadW/MuXXEN31tcLcjhZXvdT7HPLyxobzH0LYVlruxs6O4Xs1eAY0N7riUJHrNJEIvq1rBVLIUBUBeOYTPUOeZ++G4Z9ZP4kX73McNoMMNmz6DsOHOIsmE4LZc4X22o+6aIlfxDbB4v9KfvfrYjuZQSYOhZ7s5AuYXSHbqKDpOgk+ti2o/b2+MzYcISPUC5xuMoicuq6N7VaZFlPnThAqPE2pPsRQlDfrOk46eBeBDFvvVselpKIdtB78o1rf3p1
+X-Stat-Signature: 7nsbsg5pmwkxz4ngn6z6iktnensny6au
+X-Rspamd-Queue-Id: 299CF40008
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788167658-353074
+X-HE-Meta: U2FsdGVkX1/Niia4cwPUIlN8TI1PCGDXlkTaIDBFrZOyZjpB86ehdPdFgWPmyCX+e8jFdCZQKTGWmbEWJRdIQIk2rDv96vjHOtWw3rj1QdcsyrUOy1p+h6QYwUU4iZ/v688EeqsvQ4QaU2U/hLURwxfGBOIlEGWdQmBZhtBM4z60ZYG/v0mxUOXZcn8vu4GyWZG/kzZrGFqhS7sGrbRSf92LT/dlxmSMPGZhbEPZnUl2QPLZPq9H3jniQNwQA80FMN/Wip1fZT7UvdV91JcmYXmiQddioWgGZbTWBnjh12KMXYzoTO2hv1tWv5Qu1aa30UiU4Kq2XMYDEBIHlKKxuAu7hBuc9UtgPHBODWXnh1wnjSGT/mVCdWgvKxbUionvaeFyyrIEJWpItC1Cfh53n4hHBUJvdQYJRrXBkXT/6WfIE/4eZt1KMNjbQDi29ppQWXLf4OjZhcc7EnuQ+Agjd6aRKh/Rzr3LysJjH6gJNxmF5xMHSMLJbcM2mRlQ279qvdsdxEBY13lp5ZAT2a8rkpGXodONR9aund90/Ne7tXBFBDc79i2qmiLgliPlY8LA7uF17WAXI6T5LcHhc6BRt1GFCzCnX4G++HwuVjdCvRvFcxV3yqnMhERgNYK7BL5XeD3/VlXGr0mqZcq3/V9UHvpDMoRF8QUMgKSeuXyGOl1s+VDtN/ywBay/0/KUke+b5pkv8cGGf5/ERsp/0lnKX8Hmm+pA0JDPnUgUYi63pTjOhr1gu0xirTRgYt7so7avE8jntXNeuyaV4sVlaIhOvEY2ri+x1hM/y/QKiY9aQJf07WmF5eyTdeoxHrGibzT0v3rkecWCqkk+g0n1mSdo4ASVfESf/z4RcpWGU5MOBwKcS1j2H/ews4GrtaRoHBLxezolfTE7qigk2rW1akzoBnPhHaPEGtndc/2/ixQSsk+TVWHSWKyHd4mGMcpQrDBZOIz0EEghpY7w7uy5ZVS
+ 7xgroAI/
+ /AlPOAGdhn2QQCjO9fnEalaqc+Rt9IirFfLjFSDiauLGuTuE3v856UczZAIlsM/eRw5HWTJoIe2G1cI1SYM760xKsCLAHlEcr4M/lCkuMdM6b1AIwq8Q6jUz/LRtKrI+f7wdAwGI6Db+zGlp+kYwApJ1l9T4/ruhVqzcviyB7KdyqaqNsVoOaJir2XJ1953wzGb7GsKqze6cEO6WjeWD0U9cK+Dj4N+rDPC5nBvdFBuZOAa4mYbl6BtzSSlAoVXx/WXe8mACGHoiyHT5/kWv9vrDg5pLJthg962LXovJxS7Tgha+IgYEVhzI1Kyiv1d5sSoifmI7jrhq03fFyRxZv5eSwS1EhutYww54JlOcIIT1Lz1XTftHeuPnPkpUe5+WPPrnI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,188 +92,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hugetlb currently expands MMU notifier ranges to PUD boundaries whenever
-PMD sharing is possible. That is only needed when huge_pmd_unshare()
-actually detaches a shared PMD page table, because clearing the PUD
-invalidates the whole PUD-sized virtual address range.
 
-For hugetlbfs hole punch and MADV_DONTNEED, a shared mapping can pass
-the "PMD sharing is possible" range test in function
-adjust_range_if_pmd_sharing_possible() even when the PMD table covering
-the target 2M page is not shared. KVM then receives a 1G invalidation for
-a 2M operation and zaps unrelated secondary mappings, so the guest has to
-fault them back in.
 
-Fix this by using the existing cheap "sharing possible" test only as a
-gate, then inspect the candidate PMD tables under the locks held by the
-hugetlb unmap paths. The notifier is expanded only for PUDs whose PMD
-table is actually shared, while the other callers keep the existing
-conservative expansion.
+On 2026/8/31 16:28, Dev Jain wrote:
+> Post commit d4ec5572825a ("mm/rmap: add try_to_unmap_poisoned_hugetlb_one")
+> try_to_unmap_one() cannot be called with a hugetlb folio. Therefore remove
+> the folio_test_hugetlb() check.
+> 
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
 
-On a Redis-in-VM workload that punches cold 2M hugetlb pages, this
-patch improves P99 QPS stability while punching pages, reducing the QPS
-degradation ratio from 7.09% to 1.45%.
-
-Reported-by: aiqi.i7 <aiqi.i7@bytedance.com>
-Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
----
- mm/hugetlb.c | 118 +++++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 101 insertions(+), 17 deletions(-)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 7857728457952..e80e1118385f0 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5353,16 +5353,105 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 	huge_pmd_unshare_flush(tlb, vma);
- }
- 
-+#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
-+static bool
-+pmd_sharing_possible_range(struct vm_area_struct *vma, unsigned long start,
-+			   unsigned long end, unsigned long *range_start,
-+			   unsigned long *range_end)
-+{
-+	unsigned long v_start = ALIGN(vma->vm_start, PUD_SIZE);
-+	unsigned long v_end = ALIGN_DOWN(vma->vm_end, PUD_SIZE);
-+
-+	/*
-+	 * vma needs to span at least one aligned PUD size, and the range
-+	 * must be at least partially within it.
-+	 */
-+	if (!(vma->vm_flags & VM_MAYSHARE) || !(v_end > v_start) ||
-+	    (end <= v_start) || (start >= v_end))
-+		return false;
-+
-+	*range_start = max(ALIGN_DOWN(start, PUD_SIZE), v_start);
-+	*range_end = min(ALIGN(end, PUD_SIZE), v_end);
-+	return true;
-+}
-+
-+static void
-+adjust_range_for_pmd_sharing(unsigned long *start, unsigned long *end,
-+			     unsigned long range_start, unsigned long range_end)
-+{
-+	/* Extend the range to be PUD aligned for a worst case scenario */
-+	if (*start > range_start)
-+		*start = range_start;
-+
-+	if (*end < range_end)
-+		*end = range_end;
-+}
-+
-+static void
-+adjust_range_for_shared_pmds_in_range(struct vm_area_struct *vma,
-+				      unsigned long *start, unsigned long *end,
-+				      unsigned long range_start,
-+				      unsigned long range_end)
-+{
-+	struct hstate *h = hstate_vma(vma);
-+	struct mm_struct *mm = vma->vm_mm;
-+	unsigned long address;
-+
-+	hugetlb_vma_assert_locked(vma);
-+	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
-+
-+	for (address = range_start; address < range_end; address += PUD_SIZE) {
-+		pte_t *ptep;
-+		bool shared;
-+
-+		ptep = hugetlb_walk(vma, address, PMD_SIZE);
-+		if (!ptep)
-+			continue;
-+
-+		spin_lock(huge_pte_lockptr(h, mm, ptep));
-+		shared = ptdesc_pmd_is_shared(virt_to_ptdesc(ptep));
-+		spin_unlock(huge_pte_lockptr(h, mm, ptep));
-+
-+		if (shared)
-+			adjust_range_for_pmd_sharing(start, end, address,
-+						     address + PUD_SIZE);
-+	}
-+}
-+
-+static void
-+adjust_range_for_shared_pmds(struct vm_area_struct *vma, unsigned long *start,
-+			     unsigned long *end)
-+{
-+	unsigned long range_start, range_end;
-+
-+	if (huge_page_size(hstate_vma(vma)) != PMD_SIZE)
-+		return;
-+
-+	if (!pmd_sharing_possible_range(vma, *start, *end,
-+					&range_start, &range_end))
-+		return;
-+
-+	adjust_range_for_shared_pmds_in_range(vma, start, end, range_start, range_end);
-+}
-+#else
-+static void
-+adjust_range_for_shared_pmds(struct vm_area_struct *vma, unsigned long *start,
-+			     unsigned long *end)
-+{
-+}
-+#endif
-+
- void __hugetlb_zap_begin(struct vm_area_struct *vma,
- 			 unsigned long *start, unsigned long *end)
- {
- 	if (!vma->vm_file)	/* hugetlbfs_file_mmap error */
- 		return;
- 
--	adjust_range_if_pmd_sharing_possible(vma, start, end);
- 	hugetlb_vma_lock_write(vma);
--	if (vma->vm_file)
-+	if (vma->vm_file) {
- 		i_mmap_lock_write(vma->vm_file->f_mapping);
-+		adjust_range_for_shared_pmds(vma, start, end);
-+	}
- }
- 
- void __hugetlb_zap_end(struct vm_area_struct *vma,
-@@ -5401,7 +5490,12 @@ void unmap_hugepage_range(struct vm_area_struct *vma, unsigned long start,
- 
- 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
- 				start, end);
--	adjust_range_if_pmd_sharing_possible(vma, &range.start, &range.end);
-+	/*
-+	 * Only expand for PUDs whose PMD table is actually shared. The callers
-+	 * hold i_mmap_rwsem and the hugetlb VMA lock for shared mappings, so PMD
-+	 * sharing state cannot change before __unmap_hugepage_range().
-+	 */
-+	adjust_range_for_shared_pmds(vma, &range.start, &range.end);
- 	mmu_notifier_invalidate_range_start(&range);
- 	tlb_gather_mmu(&tlb, vma->vm_mm);
- 
-@@ -6943,23 +7037,13 @@ bool want_pmd_share(struct vm_area_struct *vma, unsigned long addr)
- void adjust_range_if_pmd_sharing_possible(struct vm_area_struct *vma,
- 				unsigned long *start, unsigned long *end)
- {
--	unsigned long v_start = ALIGN(vma->vm_start, PUD_SIZE),
--		v_end = ALIGN_DOWN(vma->vm_end, PUD_SIZE);
-+	unsigned long range_start, range_end;
- 
--	/*
--	 * vma needs to span at least one aligned PUD size, and the range
--	 * must be at least partially within in.
--	 */
--	if (!(vma->vm_flags & VM_MAYSHARE) || !(v_end > v_start) ||
--		(*end <= v_start) || (*start >= v_end))
-+	if (!pmd_sharing_possible_range(vma, *start, *end,
-+					&range_start, &range_end))
- 		return;
- 
--	/* Extend the range to be PUD aligned for a worst case scenario */
--	if (*start > v_start)
--		*start = ALIGN_DOWN(*start, PUD_SIZE);
--
--	if (*end < v_end)
--		*end = ALIGN(*end, PUD_SIZE);
-+	adjust_range_for_pmd_sharing(start, end, range_start, range_end);
- }
- 
- /*
--- 
-2.20.1
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
