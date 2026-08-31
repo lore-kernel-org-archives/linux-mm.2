@@ -4,101 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5921BC624C6
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 14:18:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 981BAC624C6
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 14:19:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 382256B008C; Mon, 31 Aug 2026 10:18:51 -0400 (EDT)
+	id 8B3C36B0098; Mon, 31 Aug 2026 10:19:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35AF96B0096; Mon, 31 Aug 2026 10:18:51 -0400 (EDT)
+	id 8646D6B009B; Mon, 31 Aug 2026 10:19:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2980C6B0098; Mon, 31 Aug 2026 10:18:51 -0400 (EDT)
+	id 753CA6B009D; Mon, 31 Aug 2026 10:19:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 094236B008C
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:18:51 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 83AFB120142
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:18:50 +0000 (UTC)
-X-FDA: 85161770820.27.3524566
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C690080004
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:18:48 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="es/OHSgr";
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788185928;
-	b=okibuLIGxXJazM2r8RsR4v9c3q2Tm99yGaOM9VuJsttR2afiAIoM68D1b/AqZeZUFxO6hZ
-	9XuEDFjXKDGc84T/AMu7BXKw9S2GIF78MG5VVHNBjyd/y8+mTMYQWfwq2SnHsMCsPzETZI
-	xvgxii5kJ0aamxQTvHTZ6kAZTKf0Ypg=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="es/OHSgr";
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E9906B0098
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:19:17 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CD11580160
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:19:16 +0000 (UTC)
+X-FDA: 85161771912.29.2B7CD81
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 22ED2100003
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:19:14 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=IJgNMTIM;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=YDLpBnsD;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf05.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788185928;
+	s=arc-20220608; t=1788185955;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=YONLIVVAUFRdHkx2Rc44fd4Rx093REbHbos2HAeeAtU=;
-	b=FCpG5pynM2wxwdTRRwtSA4G23Ejm4sp3J4q2FoJsOAiPm8Duj3AUz8ofte3LvPJs4l4ETw
-	ewsj+zWi8tLdzh3PWXlPCoDlJbZdrC3uSLcbQXMx87SViMigxRbxbO8zDq22SWs5om/+6H
-	RQ+8B0olcz5uZ9fEQpEyX/EC56MzNr8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8815B6013A;
-	Mon, 31 Aug 2026 14:18:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE251F000E9;
-	Mon, 31 Aug 2026 14:18:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788185927;
-	bh=YONLIVVAUFRdHkx2Rc44fd4Rx093REbHbos2HAeeAtU=;
-	h=From:Date:Subject:To:Cc;
-	b=es/OHSgrFhhuoB5mNLeORVCEwgIemnBbctWc1VqXmE/ivZ6SBs+Ja6EwcYS/4910S
-	 alTuWAoZYzsEqFU34j3SWao+xeT68zjaUaaMpYb/Ya6E3RoT2x+McOyVDaLRmMH+Mm
-	 ZS+ZRHI7YjX8cwf4PUMZGzZPWokcS7bFZgoeKVsjo6NZvkrudu7ET0YQ7mg84N886k
-	 JMcai+D1cYkOwowdJGDgB5jn8/fjvroxm6puqYnHDvPhbonfDjLgA3cSJ9+olUH1/Q
-	 Kv2KicCSqVsJCZSYeD8FvQS5vbc/n9aIQuPQLvwBrlNgXExPcbWTUPy8imsUTbK3Cs
-	 ZGuT0pNVoFDag==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Mon, 31 Aug 2026 15:18:23 +0100
-Subject: [PATCH] tools/testing/selftests/mm: add missing .gitignore entries
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fY9FkrWPyWj0ZgYccDxYtQRH8Ojx2I+KpYWeK1aZjSs=;
+	b=QgkICqkihvqz4BHO5MDvRZOLoCefUIbpbPWvm6QH7hAiX20yh23WTaKv+sJx3Cm2zyx7a/
+	JX/dmlaQczvooy6anIIHVq726junUn+Js2gA/ArNiti9eUsT3CaFLDdkTMc2+OdXAQs9oz
+	0/ZTeNWuscpbbs58q5sC4Txvm1fazAk=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=IJgNMTIM;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=YDLpBnsD;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf05.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788185955;
+	b=3ka5tBqHeuJLFBvRKUGJri5eufpo8sVTMxxzehfrYG5fRVhu6axjYP56ZDh8wNymuIBDd1
+	3bDnDtE1gET4DslbH9ff5Jow4upJKzOfLzJEWsXkJsVkT54oR0FT39wGxoYXoiU0XEJDVG
+	kMKrTBS/wxxUm2JBj6FZBmcDssVMmPc=
+Date: Mon, 31 Aug 2026 16:19:09 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1788185951;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fY9FkrWPyWj0ZgYccDxYtQRH8Ojx2I+KpYWeK1aZjSs=;
+	b=IJgNMTIMa9qcuZqyQE+GWQmT7cQgtDV9HIZlDG+9zc4n8ry57LubvX9cN0NcV9TybkqM3z
+	USaydmSmVjyyUm+3MS8IpLX+GPDIICU330OOMpKw/BwMUblf8gAPONtX90GufQu2LUT58s
+	1tI2FVuP32tPuYLetmGEy18q/P01FFG6REUmB2uuqv1I73zUrGjcPnKSbrHqfIEyzjOCt3
+	Aybhz5fr1Aw/+BnUPkvJngpbfn/GRZfa8uBO6vXA6muOIGleAe8PIfqaSRm+WZq7ui281O
+	0b5u8OCx3UvWSblltmM5vardsl8wETIXZPeFqLeW5JOcO/07Dn4k1Kae9t2Tkw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1788185951;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fY9FkrWPyWj0ZgYccDxYtQRH8Ojx2I+KpYWeK1aZjSs=;
+	b=YDLpBnsDa5JKA0InFyvu7EzOe/ogs1h3Xq99G44tWTp3Fqgj4tW3yhLruINH7w66+25ZI0
+	U7piwSBCg7GzteBA==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	David Stevens <stevensd@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
+	Clark Williams <clrkwllms@kernel.org>, suleiman@google.com,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [RFC 06/10] Reclaim memory from blocked kernel stacks
+Message-ID: <20260831141909.WrGjMogw@linutronix.de>
+References: <20260827232948.2520558-1-stevensd@google.com>
+ <20260827232948.2520558-7-stevensd@google.com>
+ <20260828133620._x2XfJR_@linutronix.de>
+ <20260828135947.GU776954@noisy.programming.kicks-ass.net>
+ <CAOiLmNHrbXeTY7zoNodmaZUoMWf+NgvGvZ_LjfWD-1sKAoiLeQ@mail.gmail.com>
+ <20260829084901.GA776954@noisy.programming.kicks-ass.net>
+ <apLxcg3Lgy0-nXA4@casper.infradead.org>
+ <20260831073619.Ssq-wt7s@linutronix.de>
+ <0849e5ca-6dec-4cf9-83ac-89ab08364044@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260831-fix-mm-selftests-gitignore-v1-1-c984bbd4c5e4@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAC6NlWoC/yXMQQqDMBBG4avIrDsQI6jtVUoXan7jlBpLJkpBv
- HvTuvzg8XZSRIHSrdgpYhOVJWSUl4KGqQseLC6brLG1aauSR/nwPLPiNSZoUvaSxIclgp2r2qv
- rGtvUhvLgHZHr//z+OK1r/8SQfkc6ji+cxVydfgAAAA==
-X-Change-ID: 20260831-fix-mm-selftests-gitignore-dd389da72760
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>
-Cc: Pratyush Mallick <pratmal@google.com>, linux-mm@kvack.org, 
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
- ljs@kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1249; i=ljs@kernel.org;
- h=from:subject:message-id; bh=GiQY0/cGhCIhrwjz7J5xvOXUacu6SzKqp5fSychrLdM=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLKm9hpxHJY+fk3bZ5vKhnl/GItVs+fO4w32CZgY4Tjnm
- /krpjXSHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZjIAh2Gf1rTy/fvmXPZ3Pb7
- 1q5Nv9Q501wtoljnZOrvkNc3k+37ocrwv/SYefGUjgehKjudFCp8GsVey+iUiufaF5xfdJinyrO
- WGwA=
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <0849e5ca-6dec-4cf9-83ac-89ab08364044@kernel.org>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 22ED2100003
+X-Stat-Signature: tgffrmommm1c1z67p7nu89aa7jwbpgab
 X-Rspam-User: 
-X-Stat-Signature: h8uuojfmj85yxhogs83urghtu8a38e1j
-X-Rspamd-Queue-Id: C690080004
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788185928-679847
-X-HE-Meta: U2FsdGVkX193pigXjwAW47Pq7vnYsa8upYysGaoTxUw+zzDYCXZ/KIWQ1gecRZa+kLDVaQcQHlKgrQDwORL3y1uBRgCUiH8EBuT+KeEACE+TeGnv6o98MAUZm1rUYmeHKxlssBxvy9ggIuhxFP8G7/9YkrABTDp0wtiRpKpdr3b4EDvQT4lOLZq2QIpe0HpBx1TPT8O7Bh8nRyldb2yVl2+D3Qw/IGlvsb3PmpU9yyCWVGszropeaNHuW+RpGhDtIULBXYcM0CWdT7ZG/7OBJKF+xKGMghz8z9MISFUIoSgugL60fut5r8Z8Q4M0BBv6B7714DZpFXtN0XRYmAAJ7qxhRvnle6on9wkfStIOUPGzWl+ZImBe4DTEsxhMQjAsxccSxmiUtdNk14NvF3L24Yr4OZawmJoqocf1WcGz0OGKEQrhPpX6NCEngKSN3Xyfco3vEYOhaFO2MHdKdkAdwD7Cqo5TKLydWBVF1bq+WNgoZ7bT4G1MYzDxIgDE+350JR1hzf3StcVIOYlMFZhr4T/rqNcvs28oNlkI3XariiwuLOJY+4KomXdM6vr6hue2LxOWnJx5EsbTQLRc31d2ueA4Lf95Hs8nRmXfTBySqyO9X5sVsLw6/ubUDr8nMQydUYeotlVd2dxSHGxZJLu7Ew2h3T8N3xpP+GhQRJyRZJIpAYFPKLBS1CASYE/tgVR05AHL1HRxwEyEqn1kNuh+tAly0ucj51p8L0AkAnvgccBVpcWL6fUV98CtO/6d/ZuIvZCRW4kpoASekw3pGcuUyWxtKfrtf42XA9Y5IFsmyYk0vMR6ZYqgMwn3ve3pXA2OhhnvrZq31WvE2liCiDv68wTTdskH0dOm+43xosFeVwbIAiu0/33BZ8kYAlcJ3Ab0DI58/yrqR/qZy13D/XnJ2X5lMZkZHXLwHQbpZGQzN2eqrYJ3nGJZLmhWGEcxxOZ2yHCggUwIwHF9789u5h/
- cn934IGu
- yJr0PEte99bMPRyFk1wlUzg5V6GoNHPZFIFzRqO1KB4RBE+6HV5sOP5GPK628npEA+b19IclqpICbYdX8MQhRk00Qwe3p4Himw5oX+KbbTTxLS/Jmu1B71kaP95Lm28Crx8eIIio+05ogsGwX3KPABg87M2/KRmn4FXKFW7g6ltz7soJe5pXxKmFZIOkaX1Saf84c048a1MCS/Qixa11nu5erixvE9dfMr7jw3ycwkxSwicPuAcMF2+l+XQ==
+X-HE-Tag: 1788185954-817220
+X-HE-Meta: U2FsdGVkX1/ZQMrMcYxxwNY5habDBtY6KvwNxds/HyFzQ/R1tAnNGegWofX8LvAZShdOG7tyB4F9As6+uFkaybK60Rb6gHmdRkKVfRkvBAd3Ud/sNyASFrz4igQQk17KMx3jUpmccGKIp0yOCKJhUqvw43OsH2sLl31u0JV4ZZ4Ky/7MLg5IF8tPWV9dZntZgiZQWOsrrJwce5nxCqpq6kDaOHUk5va1LYfqDnfObuuHsiNuPtUw9hGvWuU3qB6xEg+J1/jJhFvBuXclAGkREY14N1wkpnbNnXzu78IKMnDtZA7Zpd/5sJGDyWuzKKn2B9V2gqFTYO8DU4KKVVt6KlJJYNsU1rS655vwyJ6+w/518WAD+jatUbknb550SXs3rbLJRWzM6YIVPVEBdL7NhL7c6WuSRsALrSnuLkvuPMNon4+FPKsk6yfs4cMCm7v4wQZYMPuSO3jrWOBiKVNh2ZhS6t3S+qzw285WVgtBiWvqCNNXAlB/klH7Y3xGHufjZAdBF3ZKYlncbftKgJ7z6RaspmjZg4CqRrrpVbWvhcIXus8gQd5x7L4uJt1DMdh4xOmAviCTqza1ExbnvNPX9ao9VmsH/TQWnthF8bg61tZsxXfexmpcyj1DYcxFOlFgN7lQ9PUZdRZk39iDdP8H955AP5O8YvUDgpz7XK4VQHxvx9Fye9q1/aO8G/JyBqi+LoieHj0Gj+DF9asDiMjY80cOHtrjAfRw7AkzbIF/79u0Nmz4UMc1K25mhg6PWYUnKcbeYZDSclOr6I5E4jr/Oa/yS4A7WJlT39AVW3ZASrSXOwSZuwyQ2dIFVzkYXYiHvdzE+uwD68LX9cEWPy8doeSBibxv6+dYfmWgSc5zhHG+bBZDD/QoRR6aw7FM326ifotBV4icceSxrboWLIjyNBbUgu3qTVScPGH/FireKGxlbfxoGGqXrD3+3ISv17Zwd5vv/dp/APFg5Xxwe/U
+ hmHHSkyb
+ S+mDPyYZU7wb/ipbk8q8JnH6Vu+jB0DhbsvVV4+bU9+VeDRljymxT9v349CsGXj6R6cYxBzXebZSnIVUehhgSySedoJkEnjddIn2uis9sUWKZuQk0vseokc+QJZ8uvh6Qlz1QmNhVipLbyZVYE9uI+DvmpEZ6ZOlwQGMwO6Zz+8AQLQHiGP7UcAxJCH7N9f/pLtym30c7/teQECjz5tzt6QJLlAR9vjfNol3vnmenNl8QMLQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,46 +131,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 2bee308f3adb ("selftests/mm: use pattern matching in .gitignore")
-switched to a pattern-matching mechanism to reduce churn in .gitignore.
+On 2026-08-31 16:03:38 [+0200], Vlastimil Babka (SUSE) wrote:
+> On 8/31/26 09:36, Sebastian Andrzej Siewior wrote:
+> > On 2026-08-29 15:49:22 [+0100], Matthew Wilcox wrote:
+> >> On Sat, Aug 29, 2026 at 10:49:01AM +0200, Peter Zijlstra wrote:
+> >> > > On PREEMPT_RT, it is necessary to skip the call to
+> >> > > alloc_pages_nolock_noprof() from under pi_lock, since with that
+> >> > > configuration spin_trylock can end up needing to take pi_lock. But at
+> >> > > least on !PREEMPT_RT, there is no risk of deadlock.
+> >> > 
+> >> > Yeah, which puts the lie to that horrific hack Alexei did. We should
+> >> > probably teach lockdep about spin_trylock() not being safe and see the
+> >> > house of cards crumble.
+> 
+> Is it already happening then?
+> 
+> https://lore.kernel.org/all/20260831053846.107974-1-ngocthang2710.1999@gmail.com/
 
-It however accidentally excluded the page_frag test's-generated module
-intermediate C file with .mod.c extension, and also the local_config.h
-header generated if liburing is available locally.
+here I would strip kfree_rcu_sheaf() from the kfree_rcu().
 
-Explicitly fix both the issues, fixing the module-generated C file as a
-general pattern as these are always intermediate files that should be
-ignored.
+> >> Why is spin_trylock() unsafe on PREEMPT_RT?  It's not intuitive since
+> >> one can mutex_trylock() in interrupt context or under spinlock.
+> > 
+> > no, you shouldn't do mutex_trylock() in IRQ. There was something, I
+> > don't remember but that is the reason people use semaphores because it
+> > is okay to do down_trylock() in IRQ. It might be unlock path. 
+> 
+> Is it what this comment (recently moved to can_spin_trylock()) explains?
+> 
+>         /*
+>          * In PREEMPT_RT spin_trylock() will call raw_spin_lock() which is
+>          * unsafe in NMI. If spin_trylock() is called from hard IRQ the current
+>          * task may be waiting for one rt_spin_lock, but rt_spin_trylock() will
+>          * mark the task as the owner of another rt_spin_lock which will
+>          * confuse PI logic, so return immediately if called from hard IRQ or
+>          * NMI.
+>          *
+>          * Note, irqs_disabled() case is ok. spin_trylock() can be called
+>          * from raw_spin_lock_irqsave region.
+>          */
+>         if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq()))           
+>                 return false;
+> 
+> Of course checking for being under raw_spinlock_t can't be added like this,
+> hm.
 
-Since this is a trivial .gitignore change it doesn't seem necessary to
-treat it as a hotfix.
+Yes.
 
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
- tools/testing/selftests/mm/.gitignore | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
-index fcd892ed21e3..a306d7754786 100644
---- a/tools/testing/selftests/mm/.gitignore
-+++ b/tools/testing/selftests/mm/.gitignore
-@@ -2,7 +2,9 @@
- *
- !/**/
- !*.c
-+*.mod.c
- !*.h
-+local_config.h
- !*.sh
- !.gitignore
- !Makefile
-
----
-base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
-change-id: 20260831-fix-mm-selftests-gitignore-dd389da72760
-
-Cheers,
--- 
-Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
+Sebastian
 
