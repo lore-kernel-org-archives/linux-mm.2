@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF591C624A5
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 15:07:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7283CC624A5
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 15:07:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A5A96B009B; Mon, 31 Aug 2026 11:07:02 -0400 (EDT)
+	id 8EF5B6B0095; Mon, 31 Aug 2026 11:07:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 393106B00A0; Mon, 31 Aug 2026 11:07:02 -0400 (EDT)
+	id 826C46B009E; Mon, 31 Aug 2026 11:07:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E5546B009E; Mon, 31 Aug 2026 11:07:02 -0400 (EDT)
+	id 651AB6B00A0; Mon, 31 Aug 2026 11:07:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EE4556B0095
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:07:01 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 69DCBC0184
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 286056B0095
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:07:02 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A028514017A
 	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 15:07:01 +0000 (UTC)
-X-FDA: 85161892242.13.F68A393
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C4387160011
+X-FDA: 85161892242.20.7DF5C6E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 157E61C0002
 	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 15:06:59 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XDfT2val;
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F5wScyc6;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788188819;
+	s=arc-20220608; t=1788188820;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eijFprEn5vtvf/LMCpMXuJKzdfeHNzAGCtIabB6fjsY=;
-	b=7IS8aV8NWr1QpxPcwuPBfP8OD6/QwJx/R0p2SQWGVa+RD+PcsLUMRYH7T3Bchc1BFM77iS
-	HNbB/urC0y/nEVFkJyYXNrwU9X+XD6gyn+cUHTAtJa1ph2Jtk/PhK+Blm02Qc8xjF38m1T
-	YTRLGQLA7UqYP6+2A8pJGnwm8UEHZkc=
+	bh=o7lIq+lsQYzbYzf+cqUQ249deMwzfBwDjcIr5FOU1kQ=;
+	b=4eVa+OckWfFjSY4sTPf9kGZQXip8qf7PS9RFsvy1xq2BHOUgUrrH4tjDbngTxg5OriUKZm
+	EQ/s37xAbt6SJn2zydWEpSM9hH6CZMf0YRrdOWXhRjh8oLDRYMU7eeksP263eyBIpZl2Y4
+	ojHsJMMQ1U0Oztlqq/pwtb7r1PvWFZo=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XDfT2val;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F5wScyc6;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788188819;
-	b=7M6ajnZMWQotJAj1ZAAa5zwLuhtqE5t/cTceARPDcOfj20BvMslVp+DjEV/EfhZw8XwyC3
-	BjkdtaBpmFJeDFrA9X2eSfmK1ruNM0g3oS1TSRoRedGbb3dgDvR12XoUWIbalv84ldLyCv
-	F+nz50ppZKgvXgAIUhv+E1XqfgJ/QPA=
+	t=1788188820;
+	b=GWv/ae/bw4Mu8b1A9hjSEHHRg6T9SIMD64G22Vt5euXHgzCLJSR7/K2M5lvMhODdKfQ+pz
+	zDmjmQmQpvomKKcnEvJTWF3tDIkyb7HnuNko+YbhNXRav+pe5TlOfSjWRiPf6m82zHv50C
+	hq+HVj8XhFmZc7ifg+KGK8pHDQHi5SI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 073EC413E9;
+	by tor.source.kernel.org (Postfix) with ESMTP id A914E601DE;
 	Mon, 31 Aug 2026 15:06:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92CC01F00A3D;
-	Mon, 31 Aug 2026 15:06:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 119F51F00A3F;
+	Mon, 31 Aug 2026 15:06:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788188818;
-	bh=eijFprEn5vtvf/LMCpMXuJKzdfeHNzAGCtIabB6fjsY=;
+	s=k20260515; t=1788188819;
+	bh=o7lIq+lsQYzbYzf+cqUQ249deMwzfBwDjcIr5FOU1kQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XDfT2valRq0ffCXEwmL39LKtmFGpqdNyt06q3bmYE66NkaTSfgTfwbjQeKlKNAhQt
-	 y4z1ah38eDZ48aX30QXLYfLnrbg8si31mjn1NSilOdX7YP/P/cSO5IsJiIPF7+M9Dv
-	 9SmG82tY2XOAdAu/0TlhX1fO0NRcpMVo/r+Jxmp21iREl4rGlaPNSnK8BxrIjvPV2K
-	 l9R7ZvHuh48Y1gpZYgXfokb6+RDVmL2qLXmmaeHbOaZHBm2MR2pfoJkbugUxf2zZkg
-	 PZnuc6mAik0dHc1jbHuMP1LqirxB+Z3F1OGJGOLKxWVjBqem4NLlRZKI3oGBWdTpg1
-	 37hcR4LuGULHQ==
+	b=F5wScyc6VUkcQzeNeObcmSoumA5UwCUlKoqWQIJjXLhYY/NhNn0CVz16iLB6Wof5X
+	 OVbAR8k2fpqNpOlw8oKOWNbtpgLrFd76oQ4H0cv34bKVOU8Twv0chFMJsgWvfk/PLP
+	 +Y8dF45RzxRUn3tlrqfTrFCLv9XnBsnjWxG6nf4WcmqBLEJtMgQS+5pE53CGvhVPSf
+	 fsnGoVnyVVwT/n1NZD9f6PU+O4e0k5p+6U16ExhiX+lWBunFoXtCTCV+/cBa4spfb+
+	 s8TVCYgOvdvblvVqxU62Sin/thY7oQUGByap+TxLzaHqDjUEYwf5HkFZz+zFqqIWDz
+	 0OFFIq2lQutSw==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Jason Angelov <jasonangelov@ucla.edu>,
@@ -74,22 +74,22 @@ Cc: Jason Angelov <jasonangelov@ucla.edu>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 1/2] mm/damon/core-kunit: test probe_hits handling at region split and merge
-Date: Mon, 31 Aug 2026 08:06:48 -0700
-Message-ID: <20260831150650.84829-2-sj@kernel.org>
+Subject: [PATCH v2 2/2] mm/damon/core-kunit: test damon_valid_probe_params()
+Date: Mon, 31 Aug 2026 08:06:49 -0700
+Message-ID: <20260831150650.84829-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260831150650.84829-1-sj@kernel.org>
 References: <20260831150650.84829-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
+X-Stat-Signature: nc341mczaxswpe8boo3sgormh14ainpc
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 157E61C0002
 X-Rspam-User: 
-X-Stat-Signature: cd7a51rgk6ggqzidybyjq9zwhbszaa14
-X-Rspamd-Queue-Id: C4387160011
-X-HE-Tag: 1788188819-209913
-X-HE-Meta: U2FsdGVkX18qgLBf9VgXHRQQp426Lg8QM3fkempksb4s8mtu+X25pPiei7pavrwSCLcsLLjRk8dq2sLWApVv337xCtFrV0jN1nve+v78Pt0ab4Yy9sV9jlVZMa5FbL9O3ZUFq3iAgo3xXRFZjjUXvUXhKAd8vbQ+l59CWNFhAqUKHo891jBok5ORF0p1pIQXb2vZ+7JSOQ9MJ+TCrkYgEsgEWOgyK1huG/U1H4THNyPvTLkD0hFYa3dVNXfiM4uzb3ktBcucaDzkRhtHa4mgFRFFbkZ6ykdpEgFIAxgqvKAM6bao80xtsPmIdhu7mWp7wmu+6YXjD+zm5Y1TOfu9WQZhwp8MhED17sSIjDK6caqMCyaLUNOoJpmK72eEw8HomHPHTpUidaOmdESI2puMOKCtdMQZUmbKVrKGsP78XD3ZHPZi/I9L4NBONI90yaqHUGWKJQcPWJZeotfKHRQ+EfzKnQKIxisX88NP/safmPs7yHG6UxpSFKYHG9zsLKZbPKkfmFZyX1LMw899ZotSvf4KUmLzVBRk+NEXadqkfBupbq697IxwtK+krUeq58vZrfdUhlG47flL+c76XmDX5QrhjDLU5nwcQNTx2ZPW+mWUZTmWz6DjCouofpxpjdXknyzh4FFsoay+q2jgtFohW5jimtPYojg/Z9+Y5cw6f71t3At3mb2M/ap2lnuHsLw4QKa2FO7wD8vuQXF4e7svhoXcZUImxliVkCtuddz/bzqzSTzx04NDPBODeus/7HuAvxjGDT39e2MG1JoQ4mcMN4ku19tObRlBj/jsQjazu8P9UgOGzPq8d6cljg1O9+zwaEwU3E2/4mE7PBy7gWjVoWYUaLPJC/WJ63+gvzCW+2EeRtVfnngnmMxd2Ls41sUuQw3GgXPBr5raHr6GmrULdhByQHDjh1qTQzR4mZ60M91ER8nuUJalutQeUSwnVWF1qWkQ1EOPp0UHo9mzUhf
- t8iKUjPG
- lILFjXWh/grjZYkEWocRtD//OszmmyltKaI+YoR3t5XNZI7NIvhL9YWbbszqTGR58XAygkgSEVzf/sJIzFzueyVQxseqoR9xRgY/QyZtb+A+Pg++zC0kBijH9gQbbhOc0lgmrsx7ugYyTCiu1OvpMvaSnG/BG7/GabtY+j/9yxP1jGQg9UbmiJ0Oh/4fTlbci5RaeRpACqg8+Hw+NTRdi5NnTNDgk/gdo1LmAepwVTzryXtRi+rcf78Lxl3G9Ksdmtt0bmf18X4jmeYqehd/pXH4mzBK3NUVBKOHSbFrvdtHVtICdvWOt81/lqY4TLe0fngky
+X-HE-Tag: 1788188819-770015
+X-HE-Meta: U2FsdGVkX1+GNB1frzVRsimvxoXsnvlKbiTVXr5YbB4L9eEtch+zTs3uajhKm/gbQ54ucMUjm6ikFIhPa2bYS9Lg0ugIeSPiLh4Pm71hneNYpdpEiHUEVfiBbSlU5cmIoKfDqTB5HyvBTCDrI62lYz6BP+15bnnJmqFb8cDh8T8kkjeV2JY6QJy9fwEEqhkVDyqD+OJ8E06gIj43JITe2j2iBQ3enrvlr1uKywmJ8G8pqAZLCyMMp0tcoXUx6hGgPeFSjRZ3ZznhKkFvbKGsmhkUynnv5vZv0sqLT3XZmDmaQ6X1w09o6icmMp+8Kyh5GT58MZ+jciatxu1UpNc2amAl3MPmqdZoohSWc9KWSYNDhcj82M730Yax4XR+fPgPtCK8O8GJvHyLdO/a8HazDv8x+KhSWNikrHFfy9S0lhyggBAZSSlKlmRUAf0p9O89qCNH3yCSRkFQ5hTDkNldNGz005TZihLgG0nryJ8MH0xiNDKlCjRBzPMkQES3uOS8FzjUbPkKw+dQenj0xVxYhlkQkDxX6A18LZd/NMhPc4SHAKI/ggR/Ft9ZhrvJjzCnhe/DmGQXwO56++rGe4taEhanclkXC5KJ4LdZ4og2CelFCdwKTRLPfz7ugCOh8BtS9I05XdlPQ13jb79CetdmvTtVCEhZqC/GzvjlUhDn3qpjalSGEf3v/cmnYGAtZYF5rR5j1hh/MSrV5sOLXDvt6b2Ef0jzARLoXYX7D241pMAnE8WCu6QF0evQQrj5XqZyyp20j8+b6CmhkGL/KvZx0+qZ2vQ2xvUKkIUosZiMHgkvN9Q/xBOKYnH0nqfcJ+OHQ+JrImRy9zui59sSqvrV5gway5HcC9857CIjVe9Kv2mY1E3QFXOakUShTkp0OIpYNYmz/wJiAZgLCgZeHENQdmq7Jj5Z0ujIvnL4Iv3zEJypuY/dvToeI4GaIl1slNDVuuHmYo8aoZD44tr/cSK
+ HD2rep/S
+ TDT4pREUXaaz2DEF+jDlf3xCOSvuYjRnUaBhyNQQv8FTJNRh0yYZQrAOWkURYbNbu7lz674YjKqgq8wzO0dQkZRDZ88XJGinkL78D528G8ABr4397SZw5fmqrTr7xEYJsJS0VrmK+yKCMF69He7RPqr9derVx0FqUOdc+xGz8D2/xhNLKu2MDPM66JPJpkgqxiIMkoWeVXKo8hWaNmD7HSLkkCRZonTPvlCxPcpU3Rtx4PE799bswqgpykQLKQdJdm0U4RxC33Ux2rgZd7pGc5rn5Xb81wdtpC78qjCN/rCFLXsUsfcT+7Par0t/ZKhgpLV6o
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,67 +99,101 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Jason Angelov <jasonangelov@ucla.edu>
 
-damon_split_region_at() copies probe_hits[] and last_probe_hits[] to
-the new split region.
-damon_merge_two_regions() sets probe_hits[] to the size-weighted
-average of the merged regions.
+damon_valid_probe_params() makes damon_commit_ctx() reject probe
+configurations that could overflow a probe_hits counter, a single
+(weight * probe_hits) product, or the sum of those products.
 
-Extend damon_test_split_at() and damon_test_merge_two() tests to
-cover those fields.
+Add a kunit test covering each rejection at its boundary:
+
+- samples per aggregation interval: U8_MAX is allowed, one more could
+  overflow a probe_hits counter
+- single weight: the largest whose product fits in unsigned int is
+  allowed, one larger is rejected
+- multiple probes: each product fits, but their sum overflows
+- no weight set: the validation is skipped
 
 Signed-off-by: Jason Angelov <jasonangelov@ucla.edu>
 Reviewed-by: SJ Park <sj@kernel.org>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/tests/core-kunit.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+ mm/damon/tests/core-kunit.h | 57 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 57 insertions(+)
 
 diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index ec7260a3bfea8..68591ca99a4f7 100644
+index 68591ca99a4f7..af26b3d60957b 100644
 --- a/mm/damon/tests/core-kunit.h
 +++ b/mm/damon/tests/core-kunit.h
-@@ -152,6 +152,8 @@ static void damon_test_split_at(struct kunit *test)
- 	}
- 	r->nr_accesses = 42;
- 	r->last_nr_accesses = 15;
-+	r->probe_hits[0] = 7;
-+	r->last_probe_hits[0] = 3;
- 	r->age = 10;
- 	damon_add_region(r, t);
- 	damon_split_region_at(t, r, 25);
-@@ -168,6 +170,8 @@ static void damon_test_split_at(struct kunit *test)
+@@ -1341,6 +1341,62 @@ static void damon_test_commit_ctx(struct kunit *test)
+ 	damon_destroy_ctx(dst);
+ }
  
- 	KUNIT_EXPECT_EQ(test, r->nr_accesses, r_new->nr_accesses);
- 	KUNIT_EXPECT_EQ(test, r->last_nr_accesses, r_new->last_nr_accesses);
-+	KUNIT_EXPECT_EQ(test, r->probe_hits[0], r_new->probe_hits[0]);
-+	KUNIT_EXPECT_EQ(test, r->last_probe_hits[0], r_new->last_probe_hits[0]);
- 	KUNIT_EXPECT_EQ(test, r->age, r_new->age);
- 
- out:
-@@ -189,6 +193,7 @@ static void damon_test_merge_two(struct kunit *test)
- 		kunit_skip(test, "region alloc fail");
- 	}
- 	r->nr_accesses = 10;
-+	r->probe_hits[0] = 6;
- 	r->age = 9;
- 	damon_add_region(r, t);
- 	r2 = damon_new_region(100, 300);
-@@ -197,6 +202,7 @@ static void damon_test_merge_two(struct kunit *test)
- 		kunit_skip(test, "second region alloc fail");
- 	}
- 	r2->nr_accesses = 20;
-+	r2->probe_hits[0] = 14;
- 	r2->age = 21;
- 	damon_add_region(r2, t);
- 
-@@ -204,6 +210,7 @@ static void damon_test_merge_two(struct kunit *test)
- 	KUNIT_EXPECT_EQ(test, r->ar.start, 0ul);
- 	KUNIT_EXPECT_EQ(test, r->ar.end, 300ul);
- 	KUNIT_EXPECT_EQ(test, r->nr_accesses, 16u);
-+	KUNIT_EXPECT_EQ(test, r->probe_hits[0], 11);
- 	KUNIT_EXPECT_EQ(test, r->age, 17u);
- 
- 	i = 0;
++static void damon_test_valid_probe_params(struct kunit *test)
++{
++	struct damon_ctx *ctx;
++	struct damon_probe *probe, *probe2;
++
++	ctx = damon_new_ctx();
++	if (!ctx)
++		kunit_skip(test, "ctx alloc fail");
++	probe = damon_new_probe();
++	if (!probe) {
++		damon_destroy_ctx(ctx);
++		kunit_skip(test, "probe alloc fail");
++	}
++	damon_add_probe(ctx, probe);
++
++	/* Parameters are validated only if any probe weight is set. */
++	ctx->attrs.sample_interval = 1;
++	ctx->attrs.aggr_interval = 1000000;
++	KUNIT_EXPECT_TRUE(test, damon_valid_probe_params(ctx));
++
++	/* Up to U8_MAX samples per aggregation interval are allowed. */
++	probe->weight = 100;
++	ctx->attrs.aggr_interval = 255;
++	KUNIT_EXPECT_TRUE(test, damon_valid_probe_params(ctx));
++
++	/* More samples could overflow the probe_hits counters. */
++	ctx->attrs.aggr_interval = 256;
++	KUNIT_EXPECT_FALSE(test, damon_valid_probe_params(ctx));
++
++	/* The largest weight whose weighted hit count fits in unsigned int. */
++	ctx->attrs.aggr_interval = 255;
++	probe->weight = UINT_MAX / 255;
++	KUNIT_EXPECT_TRUE(test, damon_valid_probe_params(ctx));
++
++	/* Any larger weight could overflow its weighted hit count. */
++	probe->weight = UINT_MAX / 255 + 1;
++	KUNIT_EXPECT_FALSE(test, damon_valid_probe_params(ctx));
++
++	/* With one sample per aggregation, even the largest weight fits. */
++	ctx->attrs.aggr_interval = 1;
++	probe->weight = UINT_MAX;
++	KUNIT_EXPECT_TRUE(test, damon_valid_probe_params(ctx));
++
++	/* The sum of all probes' weighted hit counts could also overflow. */
++	probe2 = damon_new_probe();
++	if (!probe2) {
++		damon_destroy_ctx(ctx);
++		kunit_skip(test, "probe2 alloc fail");
++	}
++	probe2->weight = 1;
++	damon_add_probe(ctx, probe2);
++	KUNIT_EXPECT_FALSE(test, damon_valid_probe_params(ctx));
++
++	damon_destroy_ctx(ctx);
++}
++
+ static void damos_test_filter_out(struct kunit *test)
+ {
+ 	struct damon_target *t;
+@@ -1667,6 +1723,7 @@ static struct kunit_case damon_test_cases[] = {
+ 	KUNIT_CASE(damos_test_commit_migrate_hot),
+ 	KUNIT_CASE(damon_test_commit_target_regions),
+ 	KUNIT_CASE(damon_test_commit_ctx),
++	KUNIT_CASE(damon_test_valid_probe_params),
+ 	KUNIT_CASE(damos_test_filter_out),
+ 	KUNIT_CASE(damon_test_feed_loop_next_input),
+ 	KUNIT_CASE(damon_test_set_filters_default_reject),
 -- 
 2.47.3
 
