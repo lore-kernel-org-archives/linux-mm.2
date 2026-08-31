@@ -4,156 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D18DAC624A5
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 08:04:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21667C624A5
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 08:08:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F248C6B0088; Mon, 31 Aug 2026 04:04:28 -0400 (EDT)
+	id 233206B0095; Mon, 31 Aug 2026 04:08:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED5D86B008A; Mon, 31 Aug 2026 04:04:28 -0400 (EDT)
+	id 1E44D6B0096; Mon, 31 Aug 2026 04:08:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC4056B00A5; Mon, 31 Aug 2026 04:04:28 -0400 (EDT)
+	id 0D39F6B0098; Mon, 31 Aug 2026 04:08:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B23956B0088
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:04:28 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5321E1603A6
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 07:56:25 +0000 (UTC)
-X-FDA: 85160807130.16.AAD2B85
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013015.outbound.protection.outlook.com [40.93.196.15])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 54D2B4000D
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 07:56:22 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=biCVvgVA;
-	spf=pass (imf27.hostedemail.com: domain of noren@nvidia.com designates 40.93.196.15 as permitted sender) smtp.mailfrom=noren@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788162982;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E11E56B0095
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:08:09 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 53CC312040F
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:08:09 +0000 (UTC)
+X-FDA: 85160836698.23.43C5C52
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 8406940003
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:08:07 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=UqyAcgbk;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=N9IKktNN;
+	spf=pass (imf07.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788163687;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=L40kmwh0RKeXeWwMJhkteXPJBYYOEQqyYjSI23MQaxY=;
-	b=V6iZSqeQv2KBgWNYQaXsFccDVLEm2gNJMR8g7OVuJ6YIFJ3E3wuWRaUXzwRrKMCeutacmU
-	ff3O/HpM9nlhMNWzKu91s2Wi/cml8NyCTcwLgURQ4Ub/pCt5tChhzcY3IdibKvwDV7H07K
-	VODK/rX7V2Wsn/b62G+BSnzjSWTBweA=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788162982;
-	b=cdp7ywmmJ0IwUIOipDq3vZUUyvlFsfHAhBQdFnNKbRy4WOBdLLXyo1bjNd7IFLwIqZLiUw
-	eVcW5HDrG05XRrWgS7URu8zGign6yv56kSwhSBfQO1+VpHy+4Dos0JVJK5FTnR7lEzMMYJ
-	JflN6+WX3x9sThwVnnWT80K4ukcjkAQ=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=biCVvgVA;
-	spf=pass (imf27.hostedemail.com: domain of noren@nvidia.com designates 40.93.196.15 as permitted sender) smtp.mailfrom=noren@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qaS6M08fXz6iLWJM4KbaeB7xJOdBla4wUElRdnS/lsCv+Q/ZmLUN2qkDbjeBmfGV7OqT+SKq+lmsj9bbh6KeOEOQNF9Kyr2i8bracqfBFYcE2LwoZcSA/RK+oG4LhgxKlI5BMPK5tDf/NYEBLOhuYXY/Ws0J7x9Vps4fQysq2pbqgMa4/1w66J0fBNyu0V4YGuN1Jsa9mDwRvooMPbdPeB3TqUn7OZtDDempkdKaXa9Mx8v+6aKaG5MgcpPz4bQ0fWBMIbF1IRhCubt5LJZyALYhnTOCnJE4FAQo0V0iTfKY9Thm3tRN6Dd0fGrT/n/CiVjMSAqfNI13Gq/7mtKubw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=L40kmwh0RKeXeWwMJhkteXPJBYYOEQqyYjSI23MQaxY=;
- b=FWeF3m1ZMc0T2JuZJBUdtBOZSdOjGx8mTBMbASUe9x6RIn8D9Hw/CUh2f28eyEr1cY6uy62Tw0u64n4j8vhXwfcaMJxUNE/ivF5Mnmbf6l1uxHWG7gjNHIJjitn+r54m0xSBK0thMgDcaiajt17iqKOMh+5EQ3d4nYckFRVL+NwAC/SURvvATcl6zy2GkzU++NNIhzsJ3PQqH+gfIonHcZiQnwWDIOtAiMLAEUXlfS/QIEyVP1hv9Zb3hbB5ZYeom8BuFoJ6a0W7XlK91yStNg9ELn+Y+/B3PHNgnN8IHBrGd6mblfjbi1nFUhfF5dhA6WYngoP+3jI0e0m0kHRoUA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=linux-foundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=L40kmwh0RKeXeWwMJhkteXPJBYYOEQqyYjSI23MQaxY=;
- b=biCVvgVAdMh5FUMrt/UAno8UmJ1Lo3iC8xMADNJ7+pAkN/cdAAhbdNCcjB22Bq3pUlM51lOOomyohJ4WCfPgjMF3OqPNRsKyOAQDGFjM2C9U1FRIuGN7qmQX3JpPGTCIK9IxNLp2zaLw6cHmHov+nAoFZKZMdmaN6eR7Er0kcrgzuvJxzt44KLUCxSztBdCm7rH3uuLrYUgFzz0+je4SKBl9rlSAxqTuDOQkaBMZ+4njQ/5rdEX2UO6vAU3iRUhmCxr9PZGg4E2L2GAZXRyBeYfdVzrTkALnr9RdLzI6isaD/DZxNkdJ1i0iuK7zB2UnfVdgPmQxmMQJkjW4V4fOoA==
-Received: from PH8PR20CA0024.namprd20.prod.outlook.com (2603:10b6:510:23c::19)
- by CY8PR12MB8266.namprd12.prod.outlook.com (2603:10b6:930:79::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Mon, 31 Aug
- 2026 07:56:14 +0000
-Received: from SA2PEPF000015CD.namprd03.prod.outlook.com
- (2603:10b6:510:23c:cafe::7b) by PH8PR20CA0024.outlook.office365.com
- (2603:10b6:510:23c::19) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.13 via Frontend Transport; Mon,
- 31 Aug 2026 07:56:14 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SA2PEPF000015CD.mail.protection.outlook.com (10.167.241.203) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.382.8 via Frontend Transport; Mon, 31 Aug 2026 07:56:14 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Mon, 31 Aug
- 2026 00:55:55 -0700
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Mon, 31 Aug
- 2026 00:55:55 -0700
-Received: from vdi.nvidia.com (10.127.8.14) by mail.nvidia.com (10.129.68.10)
- with Microsoft SMTP Server id 15.2.2562.46 via Frontend Transport; Mon, 31
- Aug 2026 00:55:47 -0700
-From: Nimrod Oren <noren@nvidia.com>
-To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Jonathan Corbet
-	<corbet@lwn.net>, Vlastimil Babka <vbabka@kernel.org>
-CC: "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-	"Shuah Khan" <skhan@linuxfoundation.org>, Randy Dunlap
-	<rdunlap@infradead.org>, "Zi Yan" <ziy@nvidia.com>, Baolin Wang
-	<baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, Ryan
- Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
-	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
-	<usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Nirmoy Das
-	<nirmoyd@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>,
-	<linux-mm@kvack.org>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Nimrod Oren <noren@nvidia.com>
-Subject: [PATCH v2] mm/khugepaged: cap min_free_kbytes recommendation at 1 GiB
-Date: Mon, 31 Aug 2026 10:56:35 +0300
-Message-ID: <20260831075635.2244437-1-noren@nvidia.com>
-X-Mailer: git-send-email 2.45.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kOSOst4In022OAgVRNxSdoYjl0jKl41mZxfh1QOXGYk=;
+	b=UqwTV9JOe4jK3Y8GgVA9+qAxB1gbvf89QDQ8twmRu+lHd672CikRTTn1Sq2gQ5RK2r5vAm
+	lojaQS26mCK0UstPoreg5Sv4RG1iG+qGRJ91I52WhzEYiKnDir+FxRFxIJh1tAScFGIT5p
+	ZjR9Yr3Je8jDtHuMMVgISrqt4Uu6Q9s=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788163687;
+	b=jl1ZI1d4eYi7Va8PzlKZUv260Mfcsf/T3CI/T7vo+Es2MaJdgNlJuM5pZo48OetiRogvfy
+	76Cqd8Bz0HA7FXG+qas2iWTvhIervUf1XM6vNXrBXjjLEJRI+zFE90p/8JvIti2H6e7vNq
+	vvwDau8AuhXeKDgsqReTwKv1AnfPOl0=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=UqyAcgbk;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=N9IKktNN;
+	spf=pass (imf07.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+Date: Mon, 31 Aug 2026 10:08:03 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1788163685;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kOSOst4In022OAgVRNxSdoYjl0jKl41mZxfh1QOXGYk=;
+	b=UqyAcgbknTYn3fJW+77HU4qPPnTrytzLhryZvvJYqEuIx8qphJckoDifDfdm+rCRRjuKx3
+	X5AYx39fVc8NNQX0G53A5jZPrsmNKDCRCO17shC7V7IzmBfEvXg+awsNTsMSRKtjVuoish
+	6esMnTvDM2bG4LZr+N3HLR7SrxRC29FZ3/9FFEJPR5tIXTO8wMMMtHknvUzs1BeoJHSEES
+	fjqXjpkR/1miN9p7UOSQgsfBnbgFNVII3NxwD42wrshQxcc3VIE4WWUYwfm+VVzt4DLsDf
+	KxMDmIxUDVB+MF902mkKdqmc/xK1S4lVk0DJdJ9CvipP2ojiOg/aG7AJ5W14fQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1788163685;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kOSOst4In022OAgVRNxSdoYjl0jKl41mZxfh1QOXGYk=;
+	b=N9IKktNNqgpGblx0PmDvTe0TsNYwsV/Spk75gDgAMfcaFRBv4+VoIfFsyYXqyU/3U78EvG
+	MvmNWirnPXNVdQCw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: David Stevens <stevensd@google.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
+	Clark Williams <clrkwllms@kernel.org>, suleiman@google.com,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev
+Subject: Re: [RFC 06/10] Reclaim memory from blocked kernel stacks
+Message-ID: <20260831080803.LhShiZ4V@linutronix.de>
+References: <20260827232948.2520558-1-stevensd@google.com>
+ <20260827232948.2520558-7-stevensd@google.com>
+ <20260828133620._x2XfJR_@linutronix.de>
+ <CAOiLmNHK5Hw55omycg_EAHzi=g1iqJn1NTap1Mt98im3xTXcvA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF000015CD:EE_|CY8PR12MB8266:EE_
-X-MS-Office365-Filtering-Correlation-Id: d8cc7507-67fe-47e7-a0ab-08df07355490
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|1800799024|23010399003|376014|7416014|18002099003|56012099006|13003099007|6133799003|11063799006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	TLHEwO/TJRJNkcV2W0pp6kkm2ramVyqOBcM+m3AKAtGYCSdMAg0AC3tkwdGaZ5LnP/W6iB5auIjYfetodcgbBPBt7ZP6htfqaHFXlxk6oxOlUVtgelKRKLeG2+CPqKxTaQO0vEtixurI5+wr7BcYES5AFmEOhBJFsWmWD3OCue2N1AFKSaApfv3p668pHkl7OTaOzLkxCisBenSMpS7st6kmN7TdglaF5PUJqcyWg2qbBm4OTeYCg0Hg5qw+wQdAzRKBJDes+sJROBxgjCndcJAKa9jSP0yee+jDidqMVa8oM/gp1FtUFg13nTKsmTtL50kFDJaj8wVpUIC0fgqkN/Ktq7aCUSpJnBbOYq5lQ4q9g7py6ro2K7K+X0Yb4yGlhEU3zmoK18TyqHiHgV5KsARcR+IrdTuPdoHMLQM68njv2tvJ1XJ8RgY4+lCrS7uv3So9HczbYQstDNlXwtDxBJ3J+FF4o1ZEHtk5t2+VCUlcnp1fX3JAlLcsvbL3Xavos+BfjasgYZ2zf+7mawB63pVy9FXT2vAYZAH2Q7BFd7QTk349fMYphKkfTeimL8CwM7DbwQ2jXvcoJpwjvt8ujyvgMmp5SbOHbWy0mqtbVFfFi5a/PVa1gad5bvIjnhhDvaBELA6HH/5ty4vDOj/m/CKDVdnQeOJIYKicEW7gV3ANipD9W6JEUfvHCls4UOUMQhvbURvKR8aQELQKUDo4Rg==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(1800799024)(23010399003)(376014)(7416014)(18002099003)(56012099006)(13003099007)(6133799003)(11063799006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	vrnEFyhBEwVs+cDloI3aPzMT1oLZ8gyv7GYdYnTkJbUEHXqVYuR7cliUVHodBybZm1Ses2sHMUEmUGaFGaTyM5CvpuDF0NxCAyRgkBsg1T5/7zuyxiVjYUcipwxbQVt2q6ZkAyul7jjZLGyoPMTB10wPMVTmqDoY1FOc/lmboCPeBT80OLkXlFbmDlcc1WZ0eXqBx6Dm3YLrjo4prVslL7WzTcWW7sidxOkuvdJEDTKvYlX6sxykoFrDADTBT+NHOQaPDu4cvgfHSdvPVHJ1twmZ15kEwyQf9eMlJcSqZCRSy6JRIKVH/3Zz9IE4mEoOXJ75H4nDS4yF56zdsXqmUFTp/+Sd7MWoqKNuu8d/J67MPCqn0RBQMSxg/m5HE5yLnf8wLom5xQYq7zdSflLY8f7PkOrISZ5NAPSah+8tDv8U2bnS9jwn3nPVc1rk+a6p
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2026 07:56:14.1804
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d8cc7507-67fe-47e7-a0ab-08df07355490
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF000015CD.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8266
-X-Stat-Signature: ekycfnoms6k14mhoygdwpemoguoq9umr
-X-Rspamd-Queue-Id: 54D2B4000D
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAOiLmNHK5Hw55omycg_EAHzi=g1iqJn1NTap1Mt98im3xTXcvA@mail.gmail.com>
+X-Stat-Signature: d9j73tyui4sa939sxxmgqhim8him4e9g
+X-Rspamd-Queue-Id: 8406940003
 X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788162982-602936
-X-HE-Meta: U2FsdGVkX1+eEAJns9TGpi0a7RU3HrhSsJszQgASU9ZN+JyBWVn6GO7XbDX6DpbzNri6d8LwdZ50MwvWulXZ9wcIjcPd2F417G65lbNOGAezFLiGGMqwEp7gRhfXdHeda8ZeqV+rCL8WucFqHazY37lhavGGTqrhqNx5h91NFZZofKJMKiJqqOrE1MSN++s2UD8ejs2QDUnwmIrGnYqgj+BjcVzEaR45sQFIymq+r4deIEx5zVf6NeKxpcbAj1DJrGinxw+jQGW/GqsfE/+iIRghwdLbGZD6FWveMoqwX2LqOpIp2mfR9Y7GBvB0L8OT2TddhsQEUkiOkWVToLqfT25CLQSF6tyH2YlUIOpiKd2XEcNdnF+Ob14f3NN7B5mE59YdR4ZywnkoxC5GAspgi6ACuhb//3MtUhscT1hMrCobNIduJWNCu8MMP2oolTN7EutvRTLpN5TbtVZ2ZmvB6dadVp71rbZnnKcwEW7lzS9aCxGSNgneXTYqnwCPobP4E13uelHSVhjCA8fQ9CrPTaXCuKc1DqVKu6HU5gtqWVNkLPxruj2Fo4WykZKryfOK4p7giCExsPxmnyIN2yjLb8UffTZOfIVeQRsZm3n5twSs30wyTYvyz8BRNW0fWaljNgNMdcD1gWzKYDLx8tPHcEH8NtUOFrMW9MYWKXfEKq8PmYSHhlhVR8tE1GyV3udE5lLdpvH3pE5QCus8TySh+sACBjAtXKJJWcNrH/qjf2wM7UxoVQJXVTpJeGd8Sx9lxMDg4YUry82yTspLDNDS+U02WOcEUZgjVmGRV/gvM0DMS2ypRZ9CgaJo7cbsA96b7WccXowUQVOLwGzBPnQvUoKebhbasmSX06NdcV+l16z9LxFEbd7Gg9uAVaTJS6m5ozmjsMQP2OzQl6f7mJzwaIeBdc0NX2XgwSoIKN3oKCxg0+eRZ1E0dlYmDVayq84J+nh9vZOhX91zBHCvbvQ
- W1aF5gxy
- dJ/stfcm5eWuv25gncByAxC1kpPd0i+kziDDER5c+9JZ5vDIlfdfml88bPf4yeFh0J8CGVc/Y1f4RTG2cDhhOtpMhEWzXp2GGGRNPHH+Zt0+dgrnwFpAJ8MBN5rHUl57q6+n3/jBxOi+5QitXCp4Jwh9u9mZ5Xt50BKfN226bzXxsY5Lal60a3artlLRKiQ7NQIKCK52gJxngKg8fh/md/OnLyRNSL/yHgv/5dFeByveYwpMKGotKljukq2T1dqH+0J1QOK9a2hkROW8pg5amrNE+LKkmYAfNc2AgHe2MsAnx+X4c8QNvlBBJo8TWnd6ophmt0mi9DU03I//LlGDwCPjDMvQqpAiUQb8FAHBfAj6hQcRLIwqjHB0/zoBrifD46DA5rwstn/WHF8xTauswM/cYKg==
+X-HE-Tag: 1788163687-624059
+X-HE-Meta: U2FsdGVkX19lvRzT0PXrluXdef6RCrfvaGxzOMo9nJPXKQPgDtobMhnYWcRg3q7zATLjmGtSd6Wnfqy1+lifWGeBlFJcHbi5CvlquD7PDtjUhEgbLBE3KzfhQ0MuvtnbTN9ZmW2RtFZKeDTt9D6qCsxVd6HowdxWr2+tSwOSDMYM2mmTetaDTlvLfNWTs/Gy461XcmHM+qJn201n8E7A7PxCcpbRWiAUoDN6CQVWsf4SsE9cdmCmMJT1WTpOBUpVcHz2mlM2RUc0UGpqvdqybDzuLYnYbNODGEXNPe4FepivWKTp0ldmLIG3FynmSpHSonEYckFHuWaJ7osQU5paqK4s45NcAGAdQfkdQiJ7mYNGYGzFIkEZN3+TdJLgat+3w+us13FXxQDBFgo2Lfn8vFqwqRXTWlCZ6zcYjQ/tVDOQcKqWV8xZM5IRpn4Xrxnd3QHE9XQPoGru6PFP5t/2S5ypwNbdXP83Z0IjdsOwUDVFTihZh86BeERnReZoRnn0VWBAXSoHrNGaHOWoa7ITZaz6kQfi6gPBOiswF4fOSEpxcui3yO0D8CC3pQm4tnYdaiyeXa/cnEjAA7shGmK38mcG1ElUPRIQWvKky5l8cHlCKzeknV8wagjnrDVI8+7YdTHznn4wpRP89l9Qhtj4tvfHgiNPQWO9hW7zNKvM9Ebm1WpnjRsmqPEeE8ikKGx/a9/uNTneQZ6bH7TcHQWxXI9SnzmBmdQ3w6owEoM1rHmBritDk3K6G3jat90g9W+LwitXkZlmFgaqre1a99fA+7nw1cjE63eBtCPkFn1mqhssnomlixNw1vP9MlLZgSSz56Z9erwl9oMNuCKcMoIWCYxLY6IH42E9Gs5XlG4B6TK5YlRjpuY+/FB5drnZlt+jArIE4TgBbnzLTzMBIHdOdzY823hg0jAk1tmoShvWZN64fJg8Eazre/47+U88tfzq2Du8bTcJEQPUXHyHx8F
+ 6JoH0czy
+ zgFOfuedsaOk1lv+vUTQCeD7VSRInDmMsza1R5kCtQLeQqJVUy/hKYgUjzvuHVYtQG6SthzT3MFx4XTXgSl9wKCuHS0sxAU4JYijfXRZ9FILZTr4PXZk2EtomzVhBMamxD+KigUuCUN90/3IJr4mHULsCcEbq7feZtMxyom4R18s/aG4QSalXYmHFgWpNp7g6FeqT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,95 +125,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When THP is enabled, set_recommended_min_free_kbytes() may raise
-min_free_kbytes using a heuristic that scales with pageblock_nr_pages.
-With MIGRATE_PCPTYPES equal to 3, the formula accounts for 11
-pageblocks for every eligible populated zone before capping the result
-at 5% of low memory.
+On 2026-08-28 14:17:49 [-0700], David Stevens wrote:
+> > Did lockdep see this?
+> 
+> What are you referring to by "this"? I did stress testing with lockdep
+> enabled and didn't see any errors, although I will admit the bulk of
+> that stress testing was !PREEMPT_RT.
 
-This is reasonable when a pageblock is 2 MiB, as on common 4 KiB page
-configurations, but scales poorly with larger base page sizes. With
-the default arm64 pageblock sizes, the contribution per eligible zone
-before the 5% cap is:
+I am (was) just surprised that lockdep did not complain about the memory
+allocation under the PI lock. It was pointed out in that thread later
+that the new trylock usage could mask that.
 
-  4 KiB pages:   2 MiB pageblock,   22 MiB per zone
- 16 KiB pages:  32 MiB pageblock,  352 MiB per zone
- 64 KiB pages: 512 MiB pageblock,  5.5 GiB per zone
+> > If I understood the whole exercise correct then you have a kernel stack
+> > of two pages and in best case you can unmap and release the second page
+> > while the task is napping.
+> >
+> > What might be a tad simpler is to memset(,0,) the remaining part of the
+> > stack. Since the stack is vmap-ed it should be swapped out on its own
+> > without additional tricks. That memset() would help zram to compress
+> > better so it uses less memory. ta-da.
+> >
+> > What also should be simpler (and I am not saying just to move you away
+> > from the scheduler) is to have a shrinker which iterates over all tasks
+> > which are marked for reclaim and then similar to swap just unmap both
+> > stack pages and release the second page which is not used.
+> > Upon wake up the task should create a page_fault which would be used to
+> > allocate the second stack page and map the whole stack again.
+> >
+> > This sounds simpler.
+> 
+> There is no swap for kernel memory, only user memory. I did contribute
+> to some previous work that aimed to only only prepopulate one page of
+> each kernel stack and then to dynamically fault in further pages as
+> needed [1], but handling that architecturally and guaranteeing that
+> memory is available when needed is difficult. Full-on swap to zram
 
-Consequently, min_free_kbytes can reach excessive and unwanted levels.
+but faulting it in while the task is running is sort of complicated
+since the task might have page_faults disabled. This is what I missed
+initially (the task is with disabled interrupts in the scheduler).
 
-Add an absolute 1 GiB cap to the recommendation, in addition to the
-existing percentage cap. This bounds the automatic recommendation to a
-sane value on systems with large pageblocks while preserving existing
-behavior for typical systems with 2 MiB pageblocks.
+But unmap the stack while application is sleeping (via shrinker) and
+fault it in via another thread on wake up should be doable.
 
-Link: https://lore.kernel.org/r/20260716173504.760369-1-noren@nvidia.com/
-Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Signed-off-by: Nimrod Oren <noren@nvidia.com>
----
-v2:
-* Use a named constant for the cap.
-* Drop explicit linux/sizes.h include.
-* Update min_free_kbytes documentation.
-
-v1:
-* Cap the final recommendation at 1 GiB as suggested by Lorenzo.
-https://lore.kernel.org/r/20260728202014.2517142-1-noren@nvidia.com/
-
-RFC v1:
-https://lore.kernel.org/r/20260716173504.760369-1-noren@nvidia.com/
----
- Documentation/admin-guide/sysctl/vm.rst | 8 ++++++++
- mm/khugepaged.c                         | 7 ++++++-
- 2 files changed, 14 insertions(+), 1 deletion(-)
-
-diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
-index 5b318d17aa4b..c0c925e6f504 100644
---- a/Documentation/admin-guide/sysctl/vm.rst
-+++ b/Documentation/admin-guide/sysctl/vm.rst
-@@ -539,6 +539,14 @@ watermark[WMARK_MIN] value for each lowmem zone in the system.
- Each lowmem zone gets a number of reserved free pages based
- proportionally on its size.
- 
-+When Transparent Hugepage (THP) support is enabled through global or
-+per-size controls, the kernel may raise this value automatically to
-+help keep pageblocks free and reduce fragmentation for THP allocations.
-+The automatic recommendation cannot exceed 5% of low memory or 1 GiB,
-+whichever is lower.  This limit applies only to the automatic
-+recommendation and does not constrain a higher value written by
-+userspace.
-+
- Some minimal amount of memory is needed to satisfy PF_MEMALLOC
- allocations; if you set this to lower than 1024KB, your system will
- become subtly broken, and prone to deadlock under high loads.
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index f49a6710933b..a8fc061d2488 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -101,6 +101,7 @@ static DEFINE_READ_MOSTLY_HASHTABLE(mm_slots_hash, MM_SLOTS_HASH_BITS);
- 
- static struct kmem_cache *mm_slot_cache __ro_after_init;
- 
-+#define THP_MIN_FREE_MAX_PAGES		(SZ_1G / PAGE_SIZE)
- #define KHUGEPAGED_MIN_MTHP_ORDER	2
- 
- struct collapse_control {
-@@ -3120,9 +3121,13 @@ void set_recommended_min_free_kbytes(void)
- 	recommended_min += pageblock_nr_pages * nr_zones *
- 			   MIGRATE_PCPTYPES * MIGRATE_PCPTYPES;
- 
--	/* don't ever allow to reserve more than 5% of the lowmem */
-+	/*
-+	 * Don't allow the THP recommendation to exceed 5% of lowmem or an
-+	 * absolute cap, whichever is smaller.
-+	 */
- 	recommended_min = min(recommended_min,
- 			      (unsigned long) nr_free_buffer_pages() / 20);
-+	recommended_min = min(recommended_min, THP_MIN_FREE_MAX_PAGES);
- 	recommended_min <<= (PAGE_SHIFT-10);
- 
- 	if (recommended_min > min_free_kbytes) {
--- 
-2.45.0
-
+Sebastian
 
