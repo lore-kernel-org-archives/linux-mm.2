@@ -4,97 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F03C7C61DD3
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 11:58:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CEE7C61DD3
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 12:04:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11FBD6B008A; Mon, 31 Aug 2026 07:58:50 -0400 (EDT)
+	id 596CA6B0088; Mon, 31 Aug 2026 08:04:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D09A6B008C; Mon, 31 Aug 2026 07:58:50 -0400 (EDT)
+	id 521A56B008A; Mon, 31 Aug 2026 08:04:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F00A46B0092; Mon, 31 Aug 2026 07:58:49 -0400 (EDT)
+	id 3EB896B008C; Mon, 31 Aug 2026 08:04:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D61F16B008A
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 07:58:49 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5922640464
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:58:49 +0000 (UTC)
-X-FDA: 85161417978.27.DA9DB5F
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 71E0A20008
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:58:45 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=BHjc2uO+;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf13.hostedemail.com: domain of longwei27@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=longwei27@huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id 1365B6B0088
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:04:41 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 89B081A04BB
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 12:04:41 +0000 (UTC)
+X-FDA: 85161432762.11.0CBF496
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B3D9A4000B
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 12:04:39 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CaDQ8hxU;
+	spf=pass (imf01.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788177527;
+	s=arc-20220608; t=1788177879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aNbCjFVIuJYNB8+haqmfInpJlaQvl8qC6NDl65ZkQyw=;
-	b=OhiavxJDfiXN7a72YP8fuSLdd0VWCLnFAtfdQwCTHJ1BiVrudwLv8jDtgUb0uT5OsC2CHM
-	bDFMiLr0J6tulbqdFrakxerjlv2ce2ElijsjXITBv7mhaPRalCMAFZk0bE26lKNCFPt88n
-	jSBANhGDluE/oOCZPm7g42fNjvEBoaM=
+	bh=+Qqjdzv2bVxqqJ8KE8jthaL1miiMYy6+r7SugcWAN8g=;
+	b=gsJYgkiu5eLX5T88Lhs74+8hR/hZbXfvYTd4LbKX4UO09kU/SJDtesCY9iBvS1AHa7+ZpK
+	g/kSKfThD851Ppk+6SsQUWpNPdOLr8EmRkjuT2hUeK329lDnuusYk9tgK6gY/A+81Dx9E2
+	Om0kXIkrzddmS8XqGDUHYcckZdYt4ls=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788177527;
-	b=VWcdfQB0XxHHyAkdpVoQzBMhCKqIlUrT8HHo2uRWJgeVNml4i2fqclba2I+dDAvPCl9IKR
-	6RUfZ+ouizhc2tHkSk5aBcu2S50P4BKl37Kxk+aSsJ5Ag3ewfIgcdS5/1qxBj6cRvGsDq0
-	opVzHlEZ4vr8gMmlEEIQNCVIli1/2Xo=
+	t=1788177879;
+	b=akakQurvu8OB/FkdRcO5S8nI7NDMXAdwC3INI9NKSbLDWgB4IctP+TfaI8/i0ZnMZlhbii
+	3dh92YL14U+Dr64nS39Zq6/3/evsP7soYLCzw6q81arRdabe3/MdIi6587W8gu1fdfKB/o
+	Up1o33tCKUYZ6rwz3xo/VDckGF4BbKI=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=BHjc2uO+;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf13.hostedemail.com: domain of longwei27@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=longwei27@huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=aNbCjFVIuJYNB8+haqmfInpJlaQvl8qC6NDl65ZkQyw=;
-	b=BHjc2uO+C6lYOZPaXhd34wLAcGOm9vn6mA5Kq60tW021U0S2nmIAhenp50eWh6RYp8b6IpuvJ
-	kqZAAt7dx6Lx+ReriWigIjmA9doIwpFm+5F8+koxw/XpvXuG0CtRTb5ZpDpnRtwn9Bs/JXkF0LI
-	t7VPNXWMN44+jREmH1JvF1c=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hYS0F4SNkznTVd;
-	Mon, 31 Aug 2026 19:47:25 +0800 (CST)
-Received: from kwepemo200009.china.huawei.com (unknown [7.202.195.26])
-	by mail.maildlp.com (Postfix) with ESMTPS id DED7840563;
-	Mon, 31 Aug 2026 19:58:39 +0800 (CST)
-Received: from [10.174.186.187] (10.174.186.187) by
- kwepemo200009.china.huawei.com (7.202.195.26) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 31 Aug 2026 19:58:39 +0800
-Message-ID: <b5979755-6089-4e6e-844d-2e6f32f687a6@huawei.com>
-Date: Mon, 31 Aug 2026 19:58:35 +0800
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CaDQ8hxU;
+	spf=pass (imf01.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2d944747d41so3979435ad.0
+        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:04:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788177878; x=1788782678; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+Qqjdzv2bVxqqJ8KE8jthaL1miiMYy6+r7SugcWAN8g=;
+        b=CaDQ8hxUAdfVyL0FtYwXJVVvPOM+UUoIBnRvlyPUz2A7KNvxXrXNJO4S1fxESYx54w
+         eKM0qQMytE/l5/YnmaQnS3C1N/gEuIhK3KFprb/SI2n8kplYneppVhCq18+E0h7tQj4I
+         DTNhvsWzWjfS/6RfhyfghdGxODM7vgC7+3hL3fkJ52ZLvLJP8ILkC0NEbJEXMFuA2eai
+         gUiK8qFhTidJVYaj2tc2KsDJb3yMHjZ2z5x3qGE8TfovN90q45ykcuEaTj7YPDhZSPec
+         9zdXv6yry9c1DZJXN48vpl73GaDRxQcIokWtPouFTSAVMzVDWcxfSACki5370Fd28Zj2
+         11CQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788177878; x=1788782678;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+Qqjdzv2bVxqqJ8KE8jthaL1miiMYy6+r7SugcWAN8g=;
+        b=dAHCaE4Ps52hTWx5UWI8RLCplcBFWtYQ3QhDZUmmzLVLmqotZgyyudgjtZji+OKxe1
+         z7/mu3v9tv6DiYBZG6LQ9tsiNhoP4hxURJ6XGafYdtKnqGYsn1A0j0cra5OqTXbJowFy
+         /o9K1hI/m0dlzDNPxHpL2ZJe0uRNvKKr9YrPFdtGY/ANd+wkxv7Eiob9wPlAfi44yL+t
+         36rD0gUdjZXHo5jWyu3hvcINpfjfum9Pe/1sjwPRmOGtIQhIY6dUU/tsRD7wq5ZKZ5Rx
+         Ev4Gi8D4NRDlDsjA01KU0gL1QZjdbfe98lpk4Xz+1QxtLSiHzhE8BCiiHB9TwzxncwET
+         4HKg==
+X-Forwarded-Encrypted: i=1; AKwUvBwFSo+ebQHyCxY1Oe2d2RA8JD2L6msyD7fTraR1FmUT3K86eBilJJcdC+j0Ng2WEPP1MKrJ9AWsUA==@kvack.org
+X-Gm-Message-State: AFuF++nw5M7UneKkgMhH5ioZAN7YfhgB+jXfW074bTN/ts5DOfi8YteM
+	MFiE43BFoL6sLJMSVhUmlArkzsnR69xu9aibUbRxaX17CSj2bxdMfx1A
+X-Gm-Gg: AYBFou3lDUcjp7F90tD7wjckfUSpFYTQtyrizmgvi/gRPa+F5qvqERHuF7FASEeyQJo
+	rkYRTxEGk0ie5UAkJ2RpYpZe0ELMPAI4ZIccC0PYxpZnt6P5h6vSnCwpUlpaFBYMG77Zxm3uLhl
+	pgRW9Bghv449aqD6LAvC6Uc2//M9QMY/1OwEe+PZbJ3lnrmrYxLo0LkL/khRrkTnoBUhqLMRjCC
+	Ii3EqXSMW65MZ0DjzKLjhEOjNfV8iJ0xQ3x6FxZw9F/i2XCEQWzMJjCfljbrCsGeP9tE3lkwk/J
+	x6TYUNyOQHpj3QXe9VphYxanxmqZlSQfmqfJVqIn0MXLf/IQqH+Dfs6mKpWj46YYpGlcE7ADlfi
+	C7DOBGvdtxSIq+WGTwud7yy5VukeXKSwwpbXeEpAmxWiNqc2jspvCkAuAI25EzVUjuxyGTszJYT
+	Vodcdfvhpf0A2cbipCx3SznnePC1w+YppTZgBTF1qu0AkxeUY1w48V1zQgdASgUd3wSDlqrCfed
+	g4OI0uPENC8q4Mp9GX7tTAawHo0
+X-Received: by 2002:a17:903:468b:b0:2d9:2688:8be6 with SMTP id d9443c01a7336-2d926888c80mr78196075ad.19.1788177873305;
+        Mon, 31 Aug 2026 05:04:33 -0700 (PDT)
+Received: from localhost.localdomain (vmi2317720.contaboserver.net. [84.247.152.65])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d7594fb1absm34371945ad.6.2026.08.31.05.04.25
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 31 Aug 2026 05:04:32 -0700 (PDT)
+From: Lian Wang <lianux.mm@gmail.com>
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>
+Cc: akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	axelrasmussen@google.com,
+	baolin.wang@linux.alibaba.com,
+	baoquan.he@linux.dev,
+	chenridong@xiaomi.com,
+	david@kernel.org,
+	hannes@cmpxchg.org,
+	kasong@tencent.com,
+	lianux.mm@gmail.com,
+	linux-kernel@vger.kernel.org,
+	ljs@kernel.org,
+	lyugaofei@xiaomi.com,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	stevensd@chromium.org,
+	wangzicheng@honor.com,
+	weixugc@google.com,
+	yuanchu@google.com
+Subject: Re: [PATCH v2 1/2] mm/mglru: make type fallback logic explicit in isolate_folios()
+Date: Mon, 31 Aug 2026 20:04:01 +0800
+Message-ID: <20260831120416.32950-1-lianux.mm@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260829074204.45304-2-baohua@kernel.org>
+References: <20260829074204.45304-1-baohua@kernel.org> <20260829074204.45304-2-baohua@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2] kho: Convert error handling to immediate return
- pattern
-To: Mike Rapoport <rppt@kernel.org>
-CC: Alexander Graf <graf@amazon.com>, Pasha Tatashin
-	<pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>,
-	<kexec@lists.infradead.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <hewenliang4@huawei.com>
-References: <00c96a62-f783-497c-a7ac-1de495e4af06@huawei.com>
- <20260824024448.550552-1-longwei27@huawei.com>
- <178817571946.3691424.3757525664520719609.b4-review@b4>
-From: "longwei (I)" <longwei27@huawei.com>
-In-Reply-To: <178817571946.3691424.3757525664520719609.b4-review@b4>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.174.186.187]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemo200009.china.huawei.com (7.202.195.26)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 71E0A20008
-X-Stat-Signature: 8qoe75j5ewdqkiuszr1trwghs5fd46ck
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1788177525-343604
-X-HE-Meta: U2FsdGVkX18TgBnxBApbO609nSCjsZO4NZxqiEHyoDOqehRDrlia6ca5+DOj+BA2IGgU+8LX6raVZIZA5QZZyjRdRSCpF56JPOU/J/w4nJDEpMTd80Pn8vRcvouQ4d+q1hlShIgMfwUNYOC2ONUpf6DA/RcVJlZdZm6vdQJizCt4okyLCzbBsM6Ejh0jpxS+kDAQxC3Kfm2J9NPAHljPJ9j0qae+HTWX+g9riE5tdnRu7pq78meBH3oUWJFv9ZX61YmKLW2zpJ0hpS9RSpSUShqcBHY4+O77RM7Odw4lfMaaNMaDHhtKcqUCQQ7mz51SJO+WoJrUEl3+ohXWgceYkaOOxrm0aK9sWzuL8C7GP1MdbyEIOLKQ8oxHd/AF0qi3BLwOv3x8vdfoGiVUu5DiW3nMsSc+K9cWUFZOgv4mpJaEC2keRSA56rFOhDd38Ve9MFM4R/k12bvzinJR8DbPU/OkJgDNN4+GxRr5mhGPnGkH7sxVbOVVrah5GkeBvyz7x54TTn7GsfzWeRjcaoZYMbVKNG+EGGHPPGRvSjKU4tB4Hw98veYuYtTlzA9thV0HLqrtUy7SrtzEXFgo3jgwJ9z3VMj+1f9xkf5X99F/z6lFr/xhudBL13eCOBwiIo4tIUkR9r34ihLVmqJZAC5O4FNofD4ZvHRQDdVP6uq0xbUe1bQTrayxMrjHioGNnhiBtzB3VhsIGYX4ez/dnj1GYRt7WzmdyqsiYFJlVRVR5pYSUBytgxvL70iyMk8XRReaOmziRFPcn3lPrrThojCxjlrdJekQj4faeMcjmXTDNg8pYX8iai7EJu+sc1lDgmInlbkmrmGw7LMCEzqo+7BCnIwyGXXjWqYbaAvZwxgIbmJrTsnUvh/R6/4ipx67RzxTde4yqGSLe9cj65aMbdQKgQa8zYidtmhKHPaLf7lPc8w3J1FKLPHGXD6eq4Ef5C9yu8Z7EY0MPinubhXFlzJ
- Ccew0k9f
- gCJgvduLWA9fLdaFlnMi+xwIy2WKc+s+IYUK/EzZdsLa8XDsKQB9nENGrqJ1LnEG4Aku80/dvHQXgaUXIsaqrB1OABxoaWHLecGFyTLCKfjIRxXCnGJjrwgk3juh6nm/BXO6w41EyuRe3+FqjB7/sDIxFk/Dm5m4GXY/WdHUi00Jutb59sZHrk5FXQ1vPfZOXhfxTPVFuEO5mPQB+dc56dRvvcVtlrijZkbzup5rdGZX7hAlQo4nFOa4OhKpNH9ulsfCc/E0lTFbq15fxBi0T+g6JaLcprv2tMKGQSShGY4Zv4nw9VjRin6h6wotqb536Blir
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B3D9A4000B
+X-Stat-Signature: z7fqydnp7zejf9z3ftms5f39ciahpe1a
+X-HE-Tag: 1788177879-836128
+X-HE-Meta: U2FsdGVkX1/wqPyR/hBi8/9CsT9p+qp/XlmloTmVLn575fjKO2T2JqULY1teKAuVuSWtjCAD2rdAew7ibJ0jFd1XsyIVhanQspUpAYD9QYSpo4aR1upVwOFVI4fHDEblYVHPdegNk1er+i/ueCsGtfykkupLxJ7+gFU/gAEh1RjkBxsembM0Cpql9BQ3QwUBaNUeIvd97kX9uED0nO2rtTDb+HCbLQE1qVya32chxl7MU1AkHxyjRWWbRCII+ykAm9ZSrYompHscBThQVxBcXOXH8MBGmrjVN+hbndp38Qs4DQCZWRAj1CeSTpVgTZo2j8AZVyUwzgLHYl+rIKUmiz2iN33l5VFDeTM+mjIDXQHZvMWGXSdToI2W80P7HPZl7gSPIrzJfq/h/hRMfJUztXcnNBSPk2LV67uQmqlhATnjliW595uxCVomyJ7r73jN9OhAxlU59QVShCAUaagvL+6hzV9NQ2wHJBbZWDBezapbv+PUiG3vQj52wODCcSH2bIZeDEH8Ci4Zdck+ZYphh5BNDEGtwM2VImPNt9gqtdYsp+KC2zP4sCyThd/CS3DbvHAeoRtcRZcDzur55DrZLbGm2qAyln9uVFyWKJ8YlusbeYeeDNbrTGK4/WIi0kCzfIt5NsnQ/WGpnMV4u/xguuB1ID+4sctXnfeGJgCgDs5l3Sj2i0L0NjBUhZDxQxRIqHyS3qr5zK2n4EkWp7fU+GQBkQR8hW226vY6Lp4Ne4RVUzzU0PRd9MMuLcKG8dzHF78LFO1Vup7x0EjET8p/EXt/9MosmJBbyadHRUWm19OPsWGLf8QLOKsuIFO6hRbGOqk9zlCWRg/AXoeTFi+S+8/AwSHdT7pPPDYLgStCL1/TG/LnAt1vNQnb2j0xbsQm54c7kju+URBJvWx6TffGnIWCez4sW9YbR1l8i9lirVV83vHtPnfMYpRb+bmFta8aB2v8nWxB4WS+Nh7QzDB
+ fGPkdG2/
+ p/Xhmy86OUdmd9QNH4VTgiae9OF/wP8bQ8HHkqlhIf7BWwJNiJEP1T/ElKGA6LI6NtcHgk7pGi3+r0R8s4Eil2MnGVDnfFUc96lsi0wTgWp4W9lDU2USFh+DGLwNGgjTbbe0TWoBoiDfT/kBcrGrQESPO8F6P4xIeO3pg7ptc0g4dffYAezM2MVBykTORv2d6d3+b4P6u3NBOCO6UHlXxyyi0MJpHVCuQFxv7gVoTxGvfRS8xshOMogYkfy7ivUxDaXEtAilNMMRUiPK8SF8Ch/7YKyuSLp2MVKDQF+CaeR/UP8f0530gHYJ0bAvjX2SNXVt5He6WgyU/puXAbbqFEo25TxFKvTUpA3Kc6flc/Yer7rCA+v/cCqBTfyFVwczYajMeYMi2ymd9XMz41Flkz0BinlRjS372NCZJPfgDDKfoQFxLFu8ZkhCdlCwe6ZIVGvpAVLhzTVOY17xOMPdfSRzI3QmzewvRc+FBNK81ZurFPG/k5cpqlK297C5RqGqqW0pz9r19rXsjqqehQ2p2oE79r5Hx38kLSr8NlUnVA4gDFpDFB8r4mqlOz5R/3ycuUW1XhoUnTXjcW4VfypxQE4CNbw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,50 +136,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mike Rapoport=EF=BC=8C
+> Make the fallback behavior explicit in the code and remove the
+> opaque for_each_evictable_type(i, swappiness).
 
-Thanks for the review.
-To be honest, I haven't observed any actual failures in this path in our =
-production environment.
-This change was identified during our internal team code review=E2=80=94t=
-he err |=3D func() pattern looked concerning to us at first glance, so we=
- attempted to clean it up.
+Looks good to me.
 
-However, I agree with your assessment: the caller doesn't care about the =
-exact error value, libfdt uses its own error codes, and this is a cold pa=
-th where failures are unlikely. The change is indeed unnecessary churn wi=
-thout a concrete bug to fix.
-
-I'll drop this patch. Please ignore this submission.
-
-Thanks,
-Long Wei
-
-=E5=9C=A8 2026/8/31 19:28, Mike Rapoport =E5=86=99=E9=81=93:
-> Hi,
->=20
->=20
->> Replace the chained error accumulation (err |=3D func()) with immediat=
-e
->> per-step error checking and early return in kho_out_fdt_setup().
->>
->> Two problems with the current approach:
->> 1. It continues executing FDT operations even after a failure, which
->>    is pointless and potentially unsafe on an invalid FDT context.
->=20
-> Did you actually see failures here or was it an LLM suggesting that the=
-y
-> may happen?
->=20
->> 2. Bitwise OR of multiple negative error codes produces a result that
->>    may not represent any actual error, making debugging misleading.
->>
->> Early return fails fast and preserves the original error code for
->> accurate diagnosis.
->=20
-> The caller does not care about the exact error value, so the diagnosis
-> statement is moot at best.
-> Moreover, libfdt does not return Linux error values.
->=20
-
+Reviewed-by: Lian Wang <lianux.mm@gmail.com>
 
