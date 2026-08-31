@@ -4,92 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1006C61DE2
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 08:18:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB566C61DE2
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 08:18:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8129A6B008C; Mon, 31 Aug 2026 04:18:20 -0400 (EDT)
+	id DBA256B0092; Mon, 31 Aug 2026 04:18:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EAC96B0092; Mon, 31 Aug 2026 04:18:20 -0400 (EDT)
+	id D69D46B0095; Mon, 31 Aug 2026 04:18:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7277F6B0095; Mon, 31 Aug 2026 04:18:20 -0400 (EDT)
+	id C58DF6B0096; Mon, 31 Aug 2026 04:18:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C4F36B008C
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:18:20 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 12A8F1C1DC5
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:18:19 +0000 (UTC)
-X-FDA: 85160862318.19.945DF2C
-Received: from mta0.migadu.com (out-250.mta0.migadu.com [91.218.175.250])
-	by imf31.hostedemail.com (Postfix) with ESMTP id E2E6320004
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:18:16 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HMMQ9Ima;
-	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.250 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788164297;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 974F86B0092
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:18:48 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 21B35A3F99
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:18:48 +0000 (UTC)
+X-FDA: 85160863536.15.096A1F5
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9D16A40005
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:18:45 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=szeredi.hu header.s=google header.b=KYiOkET7;
+	dmarc=pass (policy=quarantine) header.from=szeredi.hu;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf04.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.160.169 as permitted sender) smtp.mailfrom=miklos@szeredi.hu
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788164326;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oO+Ut4kkB1GGcSxOC6RuevH1eS7jBVJdILytnLiBn5M=;
-	b=YFMCT/ESr9XbbfqetEyMx6u0lnTZt1BwpoVEQg/IyGzBzgbJnTKCy4KEuPk7wfA8OutF88
-	f1loXxkkzHPbeCulgiv+VrvyPOrkIiVG34c+vIr3NtWDv3eSAy65rhZ+l7R6wfhRoF122l
-	Rjuqz6sMkJXFyVeV2qJHNRh56ZTkT6A=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HMMQ9Ima;
-	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.250 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788164297;
-	b=tpReNJlmT6ClpQ3Oq0FECa7Cesoqva9HLOeJAwtyZVK1BWjsJzxEMARniaSAV37+abvT1R
-	bx7x9KEcLBcH+Dqbj7BldaLkk8jYZTOpezPn3moUVJ5KrVP1C2nlsFNG0kmIpuSTo6iEWU
-	KoGrKhz6B27610bCaUmsCjVmOoNnNOY=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=p0Wn5LXFNiUqYCTbv3Nqi2VHkDFFge54B76gAv3Ms94=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788164295; v=1; x=1788769095;
- b=HMMQ9ImaAIs6PchMlPBCNZPoznCFG4eNwafU/GCKM27yoTlFIO9hOM++r0Ed8SOxPkNHcWMe
- 7Ob/rtPunkKXjO9E5ICeHpyvEgsKs1HTHLUHhQe0O0opNP5hhT/6vDBHdM6kx/H7V+Ji3l2J6m9
- GqzeIMXN2nLcfxwrMG9tiYLI=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id b65819945f0b82dc;
-	Mon, 31 Aug 2026 08:18:05 +0000
-X-Mizu-Trace-ID: b65819945f0b82dc
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 31 Aug 2026 16:17:56 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Barry Song <baohua@kernel.org>
-Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org,
-	akpm@linux-foundation.org, david@kernel.org, rostedt@goodmis.org,
-	mhiramat@kernel.org, kasong@tencent.com, qi.zheng@linux.dev,
-	shakeel.butt@linux.dev, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com,
-	baolin.wang@linux.alibaba.com, hannes@cmpxchg.org
-Subject: Re: [PATCH 1/9] mm/mglru: add MM_WALK_EMPTY stats and tracepoint
-Message-ID: <apU4tEOSo4aR-O_q@fedora>
-References: <20260824073806.629593-1-hebaoquan@kylinos.cn>
- <20260824073806.629593-2-hebaoquan@kylinos.cn>
- <CAGsJ_4y-aAhfYEEroOD0=hromLZA63CYw6OegN9tgYBswD20cA@mail.gmail.com>
- <apE87WYTYvfAqXbc@fedora>
+	bh=xkiZoIxNervah7q7cypbGBqjGwr4LoCCTOgNZ2t/KAw=;
+	b=Iki+Gd6cS5DWMY/HF8XbBkcGNefRiHtQkPFSMI82jUxb4kddzWFjp5OIufhGkr9YeMJxyi
+	O7t0u+4gta0d+pV98l7ITvrPj0t+LgOpoRpDWQ/jtlUyHfbuS0MkTovh5cEDvNaq7E7FaS
+	AmQQlIYoSj9Cz402IOHNMDXC0u+R6ak=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=szeredi.hu header.s=google header.b=KYiOkET7;
+	dmarc=pass (policy=quarantine) header.from=szeredi.hu;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf04.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.160.169 as permitted sender) smtp.mailfrom=miklos@szeredi.hu
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788164326;
+	b=MUNbUc8IO14vhmbNk8gHqYBUPkwwRT/BCcGVmtjcTNsYFwKui7XljEjkE6hASNQ6RflZTs
+	Sn/I6GGwR5oYJDxI4FIsZEQbhf4kqcGfnwpGb5mgN77Ns7p8fJDOm863V2BiEJba2yMbet
+	dti+uyUI4aZsCFI107h/jS6Gaz24sRU=
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-52d7a3defe8so29508861cf.0
+        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 01:18:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788164324; cv=none;
+        d=google.com; s=arc-20260327;
+        b=lEWpoiXTwwdEHun157OUDIzgMBd6CwLyNPTyJmKtYUF0LgsIgDBpNEATVlGfr9JlWx
+         RH9CVBb5Q9jtU4rlI/9oIuzy98Kx1+KfuC6/aRwO9etHYEynvDXxpRMzGL1QE5q6HNgf
+         ohWxzUOIpTEPyIZ6Mpkx1cFHpW4Nnsuo3iQoILAQrz5z+EdAf7RceVh3ZPZ7T4qKR0uU
+         t+xV3bTp5ftKVObIrh9FpjxdWkHjNQFZwaUzLuu0GGuumLSzTu53k8cOPgz5zI+xdROO
+         XvdzCx6KhJ5w0deHjtq27IATfJLl1BkbQDvtifJ0ud3OTiAlluy/cjHHXqITRbsS2/CT
+         6U3A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=xkiZoIxNervah7q7cypbGBqjGwr4LoCCTOgNZ2t/KAw=;
+        fh=KifG6Y/5EKQ+qKZVQnivaPN5dzAGIUYmr5F/f7+jga4=;
+        b=iuIje2IA8VHcOX/u5G9n4syVibKaGfSWEEZfImGjt1kEJvX0sWrBOUoHz7jqufhhEE
+         IuZojDM3/46i83J9Q7nK6isejhD6qs+15WzTHM8lbx66xyrI51Ku5+j06nY2U4rSxC0x
+         170IbfUYZe7D0sYOShy5ycOah7Oqf5YDRL/dUXKLyJ7cERFcJdLqndevLjdYKcRLwQVv
+         5bWw/vxyf/adquJ06CQE3dRrdASrlhraJNFIb0M95d7WOifPqCwFKbgy10mMP1qM9e9i
+         3OM5P8lDKrVRAbPfnFJn+S1DO33WpBmI0POhmhXavarGlueeI9UxRPMOqOnKuNDOmZNm
+         hMBA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google; t=1788164324; x=1788769124; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xkiZoIxNervah7q7cypbGBqjGwr4LoCCTOgNZ2t/KAw=;
+        b=KYiOkET7RoWyr+wyU1p6kY7TIfhlgMxfjdcA93i2FprcZ2MnmeJlHpyXUfNNdIIknp
+         o4hQJ1n+Ux7P+8HpQFhva1KPHUiwwrfqWlyPbjq6a71CBiGFRgspk3ahVB5d8QHdX1DI
+         Kn2NJy3HVZ1X0TVq4ReM+f92bb+yZaholdnCI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788164324; x=1788769124;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=xkiZoIxNervah7q7cypbGBqjGwr4LoCCTOgNZ2t/KAw=;
+        b=Tzqs+GMFzyvBkkkhVFl05L8Ajil5kKjnMg4w03D88lNVi3k4na/BylQwVnLuZuHlJE
+         CPT2FCoxY8XBxFb0XbRP/VuP3yL6jwBkOX8LyncWSHyV+RKMz49JjicfBB+RSGFOrsVM
+         tH958G0G6LDmcjjspYQ2cbhnj45oi8Wy18YK7YVeGUTLsV7Fy1gIp3Sam9Qtmew9LF8E
+         YNk0/mAsQcDGhRwBGPG8/SeyzFbaM7OtyeoZGMKo07SDwSqTwR9ghXt2aPhOmqZ00Yxm
+         3kDUZtUnIEsaIyxDDk6k9NZc+hqAkvIz6J/Vxs2vSs+SURRc03Pc8yns2nSuxBvBxCV0
+         5ipw==
+X-Forwarded-Encrypted: i=1; AHgh+Rp67PjB2vZ9rUyXEAww65kYgLcmRCg3z918nDNlRUlZooHrxc11PpGc70wm5nkWx7GNKpWUc1UWKA==@kvack.org
+X-Gm-Message-State: AFuF++kRfHO7ShUX3yuuxcTEmi4O6d+OujjSLLmNrKhp0CjxDGJ9za+8
+	Uw64P2ttNpQXwmoVTOVF7ddd3N/2FVWlEGPe8bWZ9VofesUFrDl409mXUYhilM8mVbKV8umVstU
+	AlEQHddFE0Hpc9zwio6+7wOfd7YJH4x9FK9e29Lj/7A==
+X-Gm-Gg: AR+sD13ziHsxJgXP+zK5ZUAsaKIxd6fa55zPnPjtA/pd/sNgoOym7iFnHNnAZXG5fF2
+	YuLfsRvXdvZilPEf3vj0j+yfZ37YsIiDGbLVULjkpFruJzN8MoBOgwuhs/2eyBZ6Y/mSOvjmOxh
+	psIG88ozclXPfdkWLKL7q8QnEGDzVX3Q85szlwTZtktPTp/UDsqo4hrWD7zdbMxfHKkDmYYhdI2
+	s7c1zmvK9uA3J35OTzEeNGjSaKo3xMlxzDQHX1gzcWL8xmRSxEpfkJo61+5Iz+woIFttuqUDAu1
+	2jHZqRvaceRLCpEqW7aKEtTlvpr9q01KBTquCdFdbzBadU3DRGsFbVTDgkj72NPN03dRsC2xZ9Q
+	WhwyM203FKJU=
+X-Received: by 2002:a05:622a:1b0e:b0:51c:1cf8:ca4d with SMTP id
+ d75a77b69052e-52fb94b76acmr354793171cf.13.1788164324676; Mon, 31 Aug 2026
+ 01:18:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <apE87WYTYvfAqXbc@fedora>
-X-Stat-Signature: 9r9bzu4kmy444ex8a7m67axpmjn8e8ju
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E2E6320004
+References: <20260827170718.497-1-aa9736195201@gmail.com> <CAOQ4uxjxDV0U9yrDA_StN968P_6cpjRAN2mBCx1c_RYd7BF4Og@mail.gmail.com>
+ <apGCDtf-gE1osJqE@casper.infradead.org>
+In-Reply-To: <apGCDtf-gE1osJqE@casper.infradead.org>
+From: Miklos Szeredi <miklos@szeredi.hu>
+Date: Mon, 31 Aug 2026 10:18:32 +0200
+X-Gm-Features: AcwNN1WtuG1c2F0CSiDk17jHE9we46hn9ZVdZmfYdI6sy7esBdj1sJKhsZBvuCE
+Message-ID: <CAJfpeguhxCEs3pZuqAZ-gpG5gm7NV-TuzniSkCCrgAQ-TV6ZpA@mail.gmail.com>
+Subject: Re: [PATCH] ovl: implement ->get_unmapped_area()
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Amir Goldstein <amir73il@gmail.com>, Yuan-Hao Hsu <aa9736195201@gmail.com>, 
+	linux-unionfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, David Hildenbrand <david@kernel.org>, 
+	Linux MM <linux-mm@kvack.org>, Christian Brauner <brauner@kernel.org>, 
+	"zhangyi (F)" <yi.zhang@huawei.com>, tujinjiang@huawe.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9D16A40005
+X-Stat-Signature: 5nbg74zp5dmhxs1qxi8ouygbxw1xz3yj
 X-Rspam-User: 
-X-HE-Tag: 1788164296-137141
-X-HE-Meta: U2FsdGVkX1/4WTpUi2QNB9fr2cxT49270R8qe1zzvgDLnrglOUTInV/MR0svRsSte8qj9egfoT45puI3S1dr6RYB31WRtebj5OO8EGcp6Hg3GZkIqd1NVqBTTr/xkeBLFeNDXNu0G3Vp4yQaYymsb7nsPk2bfOJ1aPxvfX4EA8adYysS/zkY+4rzwCMpx/8FT9Sts3P2iKY79499eR0LDJZBEO++prqFgEqqxriRv6d4+VpQXWocn2GImhQqFGTtMxRpS+krSqvB5sGdi7p7Jw+160JY/pPRBLFyPJq3xLpsUYN4M5ykSg0eBDTqX26ABfGzFOmQ8qehVdfqq839Djcp9BOhx7ceVDjTrHnPny5tUKncbvfijuzzx5fjqb73rzfvjjeBPJyxKWLAArtKiIBmWmk9I5MC/IpeF2v6uejhNVbCljkFGLwfnuJcQIcD5RfOyQ3+0u/XvSgpmDjhvo/IQ5ecSpOXQAMmYE6kn+Na1P0pSQPhb1x5XKaAmpkSd0axWknWV9ZGC2My75nk+CncjaNDx/CkDwQkh4lIFNDzzE9MePMQnwplgcdTVtCy8qu1eY9sSO75/ZXF1g+5qs03uvOXgVbdbOd1X+pKWeNNFdXN9jsEiYebpSrCyBpMyNwz2vuy+SFF6SSe2RZgj9gsNDkD+tgUuRvRJ7g2WunW9B3Dh6IxF+poqkSV3wLUO2uN9Oq8f5ZjKFwelsdogaxMxzD8++ITTmWlJs/WJQj5HS2PCgh+N0sIq9+oMin6CVgHEnf0PWra+O0aOkBgcMgyA2XWebAzYb6NuESWWDsmVGYsdLJxzvp3h25TelskkA1wY6Ff+U6NQKYcHCfMeXeGZ6xlSCF1JLfrZKFPB/z6O1XABaRLLLXuaIbxKRwYzGlviklHP0L5cwQKjqmW09ChXRZ7tNQD25U3K3vpomR4nYqw2EnBl9R1tvHf+nBwa6YDSBMd6LaaMox1Ika
- wZS5eEVt
- eop4KAq5pIwtlFOctBStJPER6RHMRuynSIBYJ3UAsdOwUElGzMdj0d/8kmujfC62pqOHmLKwgmyfuCMLHdQVEJntvNl6UVH2R82ZzwFg+AMJS9sXFuLVJJKowgYg3mrx3/JvIJNN23+ncLteA3/Z3fOrG0yisOS5WSxH2CDJEwq62WHfb8wrux+U4e2y8hVE0zTompWMWaJS3gLzpRoF134tDAAMK2Et0HgHl/6oKp3J28x2S7LG3DXvRyO49oZrVXTzIxvouxQXH5jGzWtende9cB5Xoq+VJ+ldU7iwdLAFdfJnCn0kTOLrhiW6HcfON6y8niFVKUD+3UHxkTrZu++YuWL6sdI/evOgN
+X-HE-Tag: 1788164325-621231
+X-HE-Meta: U2FsdGVkX192dHIfqFgVE/YqVZmYostkRMmjePHf0Pyuj7PGY/KICXeptbv8xbe4ooEAGe5HluLKllQBQ2WQ5uC35T2WGWlnATLR6fNFTAB2CJ0vACkcXXmfqYEcO/mLU++CMdAdQD/hDaThpimb2MGkCKQBHvahl4irX5F0R7eRYLPIntMq73SKZ0oZRQs5b4KVOIGYzLHkkGOjTXhFSy9JF/N4ZjnQsxolZNYBkHM7yA1LD+C+h+v75L/AgrG5pzHkQ1orFa/nBo4ZMKBIwDMoPmKdioDqJUig041UjWuulaUYGNgl53jatZyPq35YuXm+FRohVPmAk/EpIOfelfJZOLJKEmp+pDYCTFtm/oKWj0b+fVelduVVGLKRSCCvId8nv7Kxhms3AEorFiDnR5ihNkxc7VX52uY+VVYoJOnHcBGHC4WIlYAagATk6xtE16AIs8bEWKZn83xI8r6h+YoaL9YAf6XrgjUEE6fpnLwW8uws4GBQoeR3K+ZnS8QwrptUf0fgmjK2jGew3hUKeJboCNO9O0/8rWvUf+/DuEOlfIaYULREYYVswjHL4pBR7DO8vQZYXpyXJZEf1Ec6Nc+qE9dw8OAfAPAPfH7kj3qMMcX9CLLFCsXOewvwAQQgh7GEFsO8TnzePHJsbaAUwTCh2af59KGO7fFeYY5cJmkKeyXYMRywBpfsdhURCPZNbD+ylxPT6PYpU1S8SZ6pjbwbOvLzSI2spNsrzBg6ZHbVB3Eiwxp06NaNKLrkJ3IvRV8JLA5UEXVsFQW2o5n2r59SBJF/lEXOMbnTIfe18DSrZe47JwJijzBOBqmjlR3B8cs/+f4npd+Hmgm1Mhm6seRYO5UDkfiefWcFo27+nL63hwLqQ9OkXHUaXrPbzf/0ZG6r0qKralBEpvzzualX5wHYB3Yqjw1x7I96/aoaN8T9Dn6AjPPul5srYdu5a6tAcwgHm0hcNFyqqcCvmW8
+ 7J/ZTTnd
+ 8gtnGauFlXv9ob1XoTmVB2GMSj0LLv1DvT3SwcRouK6PH9Vjnqpc6tBjU44flpVslw3zC+ob07Y98WMIlKODG95vBv1Gxe4jgsX5okXaQ1w830hQUoPyMOiy43ULID4+vz+69vr1czTBtbxlSfZZuip/NJULxGwbR7RufwBE10eutFRfJyaL4clQqu/E/uJvqmcxyrDPKkRU7FDn04nyjVFnu3SkJUARAkvpoNGOQ2t/gAwMJogNF3SSaGPVuam2JcutMq276gk3P5nB/TNbJaFnA+VLEY9TLdAGZe4JCSRzQ3yjdGww2WK194oUe/xjnn1eS0310YrPd8gJAJ4OtCysC2v9wasFyk5iCld8lYtvtdHQER+l+Mv6SeQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,101 +139,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/28/26 at 03:46pm, Baoquan He wrote:
-> On 08/28/26 at 01:37pm, Barry Song wrote:
-> > On Mon, Aug 24, 2026 at 3:38 PM Baoquan He <hebaoquan@kylinos.cn> wrote:
-> > >
-> > > Add per-walk counters to measure empty aging walks which traverse
-> > > an mm's page tables but find no folio for the current lruvec (node+memcg).
-> > > These are common on multi-NUMA node systems because lru_gen_use_mm() marks
-> > > an mm for all nodes at every context switch.
-> > >
-> > > New counters (accumulated in mm_state->stats[]):
-> > >
-> > >   MM_LEAF_ELIGIBLE    - folios belonging to this lruvec
-> > >   MM_WALK_TOTAL       - page-table walks completed
-> > >   MM_WALK_EMPTY       - walks that found no eligible folio
-> > >   MM_LEAF_TOTAL_EMPTY - leaf entries scanned by empty walks
-> > 
-> > Hi Baoquan,
-> > 
-> > I'm having a hard time understanding what MM_LEAF_ELIGIBLE means.
-> > In particular, I'm not sure why "eligible" refers to folios here.
-> > 
-> > I'm also finding MM_LEAF_TOTAL_EMPTY quite difficult to understand
-> > without looking at the implementation.
-> > 
-> > Could we come up with clearer and more descriptive names for these
-> > counters?  might be?
-> > 
-> > MM_LEAF_ASSOCIATED,          /* folios associated with this lruvec */
-> > MM_WALK_TOTAL,               /* completed page-table walks */
-> > MM_WALK_WITHOUT_ASSOCIATED,  /* walks with no associated folio */
-> > MM_LEAF_WITHOUT_ASSOCIATED,  /* leaf entries in such walks */
+On Fri, 28 Aug 2026 at 14:41, Matthew Wilcox <willy@infradead.org> wrote:
 
-Hi Barry,
+> No, not at all.  All this patch needs to be is:
+>
+> +++ b/fs/overlayfs/file.c
+> @@ -657,6 +657,7 @@ const struct file_operations ovl_file_operations = {
+>         .fallocate      = ovl_fallocate,
+>         .fadvise        = ovl_fadvise,
+>         .flush          = ovl_flush,
+> +       .get_unmapped_area = thp_get_unmapped_area,
+>         .splice_read    = ovl_splice_read,
+>         .splice_write   = ovl_splice_write,
+>
+>
+> All this "oh we have to call the underlying filesystem's
+> get_unmapepd_area" betrays a lack of understanding of the problem.
+>
+> And Lorenzo suggested this in the linked thread:
+>
+> https://lore.kernel.org/linux-unionfs/69b72e3d-b101-4641-9ce5-51346c93a98d@lucifer.local/
 
-Thanks for the naming suggestions — they helped, and I've incorporated
-most of them in v2. Here's how each counter ended up:
+There seems to be a logical fallacy in saying thp_get_unmapepd_area is
+the most suitable value, yet not making it the default for all
+filesystems.
 
-1. MM_LEAF_ELIGIBLE -> MM_LEAF_ASSOCIATED:
- - agreed, "eligible" was a bad choice since it normally implies reclaim
-   eligibility in this context. Adopted your suggestion.
+Saying this without any understanding of the subtle difference between
+setting .get_unmapepd_area to NULL and to thp_get_unmapepd_area.   All
+I can see that the difference is indeed subtle.
 
-2. MM_WALK_EMPTY:
- - I kept this one rather than MM_WALK_WITHOUT_ASSOCIATED. Two reasons:
-   - (a) "empty walk" is exactly the concept this series is about,
-     suppressing/reducing empty page table walks, so the name ties directly
-     to the motivation;
-     (b) "a walk without associated [folios]" reads a bit weird. The walk
-     itself isn't associated with anything, the folios in its page tables
-     are. The comment now is changed as "walks that found no folio in this
-     lruvec".
+Can you please explain?
 
-3. MM_LEAF_TOTAL_EMPTY -> MM_LEAF_EMPTY_WALKS:
- - I will go with this instead of MM_LEAF_WITHOUT_ASSOCIATED.
-   The latter sounds like "leaf entries that have no associated folio",
-   which is confusing: those leaf entries do have folios, they're just
-   associated with a different lruvec (node+memcg). What's empty is the
-   walk, not the leaves. MM_LEAF_EMPTY_WALKS ("leaf entries scanned during
-   empty walks") is parallel to MM_WALK_EMPTY and can't be misread.
-
-All four counters and the tracepoint field are updated accordingly.
-
-Please check if they are OK to you.
-
-Thanks
-Baoquan
-
-> > 
-> > >
-> > > A new tracepoint, mm_vmscan_lru_gen_walk(), fires after each walk, and the
-> > > debugfs lru_gen output ("TYFALWEE") exposes the new counters.
-> > >
-> > > Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
-> > > ---
-> > >  include/linux/mmzone.h        |  4 ++++
-> > >  include/trace/events/vmscan.h | 28 ++++++++++++++++++++++++++++
-> > >  mm/vmscan.c                   | 30 ++++++++++++++++++++++++++----
-> > >  3 files changed, 58 insertions(+), 4 deletions(-)
-> > >
-> > > diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> > > index 94f9c3ff5416..229d27fbfb54 100644
-> > > --- a/include/linux/mmzone.h
-> > > +++ b/include/linux/mmzone.h
-> > > @@ -595,6 +595,10 @@ enum {
-> > >         MM_LEAF_YOUNG,          /* young leaf entries */
-> > >         MM_NONLEAF_FOUND,       /* non-leaf entries found in Bloom filters */
-> > >         MM_NONLEAF_ADDED,       /* non-leaf entries added to Bloom filters */
-> > > +       MM_LEAF_ELIGIBLE,       /* folios belonging to this lruvec (node+memcg) */
-> > > +       MM_WALK_TOTAL,          /* page-table walks completed */
-> > > +       MM_WALK_EMPTY,          /* walks that found no eligible folio */
-> > > +       MM_LEAF_TOTAL_EMPTY,    /* leaf entries scanned by empty walks */
-> > >         NR_MM_STATS
-> > >  };
-> > >
-> > 
-> > Best Regards
-> > Barry
-> > 
+Thanks,
+Miklos
 
