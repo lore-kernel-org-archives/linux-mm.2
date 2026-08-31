@@ -4,84 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 639E4C61DE2
-	for <linux-mm@archiver.kernel.org>; Sun, 30 Aug 2026 23:50:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81154C61DE2
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 00:25:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E928E6B0088; Sun, 30 Aug 2026 19:50:25 -0400 (EDT)
+	id D27126B0088; Sun, 30 Aug 2026 20:25:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E43216B008A; Sun, 30 Aug 2026 19:50:25 -0400 (EDT)
+	id CFE836B008A; Sun, 30 Aug 2026 20:25:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D32A26B008C; Sun, 30 Aug 2026 19:50:25 -0400 (EDT)
+	id BC6C46B0092; Sun, 30 Aug 2026 20:25:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 96B3C6B0088
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 19:50:25 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1531740393
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 23:50:25 +0000 (UTC)
-X-FDA: 85159582410.27.3A30FD7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 86CAD160006
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 23:50:23 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XG/UkaDZ";
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 829406B0088
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 20:25:23 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D3CF6803C7
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 00:25:22 +0000 (UTC)
+X-FDA: 85159670484.20.84088C7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id D31FA40003
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 00:25:20 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="p/DsBHmA";
+	spf=pass (imf01.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788135921;
+	b=woxt3zEDI1nyJtWcXbNi7+nklZRniW2/5Upu83Xk5/dgBClAxbTSTKl8DlniVqN3WB8q7X
+	9NQSnEWlpqj7FpnkQXbJ4nM80sFbu5qiyDbohEzo1FSK0J4/uIeieTrciOhrYjk0JNhazN
+	FnF5QauM3dVlDoFmvwyhteOrCaduusg=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="p/DsBHmA";
+	spf=pass (imf01.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788133823;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1788135921;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=nk53B6mnC9ONZ1g/6QwuuQHCnqJzmlXt3JqTbZUgnCI=;
-	b=D5LLD1BbrJgD03VCo99iQr+sJTaXu11QsKOejWQz2AQfcmWudBiNlYfd7Mm/Tpey+WZdas
-	qh2wlVuoM5ISASPUOhUwGAoarVi4NIsu7I0cQ+n5oOyzuUalDzJPGO6DFeqZ/5P6bfgDGj
-	BPH/xFmb0gWtvdo6jDbjSczZms+o4Zo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788133823;
-	b=sjWwKhdEdxkZVEFZdFXVvHR8rQgUyocfHH1FTICYN7G3ane3j/zvZvYqF2NxXot80nks8t
-	Ws01e/KRcxRHyDLhCuAnQP7Ry1a32lUSMIIIn/gQc2JKjAzI7cIqnurWQbNt4zWXjP23UP
-	QTkH+MqqppzddXq+h98YYUKZiscfh8Q=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XG/UkaDZ";
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 575F060120
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 23:50:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E121F000E9;
-	Sun, 30 Aug 2026 23:50:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788133822;
-	bh=nk53B6mnC9ONZ1g/6QwuuQHCnqJzmlXt3JqTbZUgnCI=;
-	h=From:To:Cc:Subject:Date;
-	b=XG/UkaDZQPkduayD+DgkEP6WGK4n9FBOxeDCEY1VkZL1L9hsOEpr6KBq7oFmAlNQt
-	 s+OJ3zF/FQ3pFqmC16/KEbAiTewpqsjffw+GVe8f5HaNiOx2j80mzn9iIqZqdTh7kS
-	 wQuQCfeOF2T8N54osUOiBfDOEWpIE3sMW9DrYG/fM1B6jceJIZzj9AZ4k9o/BwVRYV
-	 /8ojm9c+wjeKqY5k4CNRViSn2Gk3fJ3N+ylME7NFys/qn3SWptzQBtyAzsbFFVGxOB
-	 B/EevLuQ+sFi+h4HbArqSitB1Jthq7ZHYOrz4DtNTbLqqxr98uOhu1+StD/Nlbrxoi
-	 OuKwCtfgDlAoA==
-From: SJ Park <sj@kernel.org>
-To: damon@lists.linux.dev
-Cc: SJ Park <sj@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: DAMON Release Newsletter for v7.3-rc1
-Date: Sun, 30 Aug 2026 16:50:13 -0700
-Message-ID: <20260830235014.64406-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=13RN7jr6qhJRYMoGLtzVcV8m6A+UWIAbzJBCb43pIS0=;
+	b=zH0CTfn4iZd4Q+YVblXPfwPstkw8elUfbI4aC/r4WNOTj4tBYDlNKM1lPk/NH1OYs9ShVx
+	WEPAdGYD2akAVHsW9oWAW4bftyk0ZZT4oGlx5LYSS9IoD6PZMZDDlGGqwh4LJhwKhwDzpu
+	UcgsEX+OMd/PIVGJ+BeO3jPPhTlGvp0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9D5B6434C9;
+	Mon, 31 Aug 2026 00:25:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 689C4C2BCC7;
+	Mon, 31 Aug 2026 00:25:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1788135919;
+	bh=jB3934St+OXWHZBQYrRZ5bx+0JcniUdY+5MQ7UHR2bg=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=p/DsBHmACKvCnTUXaQUBvx+B0rhbCevFn3J1wVa41KmY2z/4jwj9NXJSoKVBm8e5t
+	 GK+zJXnK2Q8T2MAtuI66FOXMTtH/eKrubu+EGLBpBseRJDNZFMbls+8Fd+9/cJoRfy
+	 zAu2gGK+W6zNW+07odNQpNGzeDUbVSM7Fqcu8SHrHViKjIHAf6WO+3Q1c2y5RTu44g
+	 jfPuBU/zY+/SSNIxAph0jtre65vyir1ipceRSZokQuMuk2cvxR0ueZuMha4Ng4vmET
+	 ZtcT9NRYl4Y3dX4pEMc6JCWScmm3LBoejvxi3ZE//RXFqMA/Rjh9zLF7wcQF8EoSjo
+	 DZUnuj3WTkrzA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3BD07C61DE4;
+	Mon, 31 Aug 2026 00:25:19 +0000 (UTC)
+From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+Subject: [PATCH v12 00/45] guest_memfd: In-place conversion support
+Date: Sun, 30 Aug 2026 17:25:01 -0700
+Message-Id: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAN/JlGoC/33TzW6DMAwA4FepOC9b4pC/nfYe0w4mcShagS50q
+ FPVd19oJ9EJwTGR/dmxnEsxUGpoKF53lyLR2AxN3+WDgKdd4ffY1cSakC8K4KA5gGJ1Sy1ruuM
+ BPTHfdyOlKYlVgYcqSGeUxCJnHxPF5nyj3z/yucKBWJWw8/vJ+xzbl47Opyl03wynPv3cmhjll
+ HAvJ4VcLTdKxpmKXgAaTt66t7rv6wM9+74tpnpj+QCBXofKDFEOi+QUjzEsIDVDJdh1SGUoWM2
+ t99EjwALSM6S4WYd0hpzASqGthMNyAZkHCGAdMhmCyCNS6bSSfAHZGdJi42l26iiAU04qY5VcQ
+ G6GzNaMXIakig7JA1JYzkjwWbJbQxL89jgvLJEOssIlJR6orQ0QIlMchQoWjXP4n7relznR13f
+ +Hqe/jb5efwEgqf/KPAMAAA==
+X-Change-ID: 20260225-gmem-inplace-conversion-bd0dbd39753a
+To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+ brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+ jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+ oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+ rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+ steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
+ suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, 
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
+ Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+ Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, Fuad Tabba <fuad.tabba@linux.dev>, 
+ Vlastimil Babka <vbabka@kernel.org>, Baoquan He <baoquan.he@linux.dev>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+ linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>, 
+ Xiaoyao Li <xiaoyao.li@intel.com>, Fuad Tabba <fuad.tabba@linux.dev>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788135915; l=9254;
+ i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
+ bh=jB3934St+OXWHZBQYrRZ5bx+0JcniUdY+5MQ7UHR2bg=;
+ b=EvLGdfk9baBRMpq/23qyZcMJi59GXHj122oJ7ORw+P2MUKpHjulgOv6RBjqtNYFuBFt6oURl+
+ xrFxovZ3s5dAN25sL5le2Vudaf2xFBkbWh4JMmubAiPQS4r+zIFrKd3
+X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
+ pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
+X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
+ auth_id=649
+X-Original-From: Ackerley Tng <ackerleytng@google.com>
+Reply-To: ackerleytng@google.com
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D31FA40003
+X-Stat-Signature: xmsg5ewzxmibe1rxfu5a9eeyfsa85nr6
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 86CAD160006
-X-Stat-Signature: x53q181keeat3k84s8hc65tx8jb45fjp
-X-HE-Tag: 1788133823-304866
-X-HE-Meta: U2FsdGVkX19hX7zYZrSXPgtu5W4Zas0+wTCuh/WW87FhzvRDoXTOqggrPbXWyH2/QdJQCakbLt7OQ90nO68uT1Hhr+BqRB7fljOf/gg2h7J4rs7R3wAeitc1lLKJWMKwz1UyqylBt5MmKtQANpY07aOERjNttixcJpeHkVV0mdIxLEe++ohLb91rDAwlRrnrN19GY13OhQdvWZZKsfr8xxUYFTyU6GQaxKe5Q7OGoXWoZmtYMGd5pwUk/2/7VjK3KKNrKEiJC2k9PiSCyr51HZGRlagWD9ZVX7VJqat1OvBpRQjkkS/CI9usDIQk8/YPxi6o/XeHu7IuMHl8ojouJ+xU5ZtJY8CDNhhvoa55EzfK99yLKYx+4dytBizEQoRtw+tyBblAzmLKKDAKWaUdazretNpS9mIdyvVleqnYg5SvU8V+5Rc3REyJPO7CHTR1fr26+7XECv6oQBUdRC3sMVe7+ybOZkRm/GOf+nUuQ/2T1KFopI0Q0KI4n1+ttOzpgEJjWM55RhsgbXbSqx1J0rge9HRqJbblv6W/1n/apw3P+29dJM6TIFVq15K/fkc/aQFEmVLtI01DXbaHBJ6/tS9FvuPGbxhis6f/qX8x3wTvZsxHQQuw8w49bx1iakVou8HjjL4XqCzrNltWYs9kU2B4GqwGzV+YqPHS1mcqwYqr09G/HtKg1miRHFHpaCpdIcMtmetJZc6r50qsn8+nRcIIkuJQvPXanJGWt/gQ0kl3sySM5MDtnWdOPbKehISu2w+2Ax0rR5ZaW2kpP9y5mKd+ivWesEik0ONrY9WTmVuBgQIV8CD6X7KOt8SyvnfrbGCDdd5h4w8orJWWgnSiFfHwtOcgx2haJNi0Vp4YSO7MagDjyAqQCQPaC2LxQx6mGPOckjCi8nZstY15eu8fjwDJnc7sMoXEGWHqMnEbdMSKZdFeQ/jqgYHWp6/hhmHkR9o+H52yZQNCQkEjUII
- 7FvvQczB
- I/zvWQY93tkExGyEX371aEyJuW2KMvgfE0G6+ZJstxzseF0got4N9heLX1ZJlkntz6IX6luqavzRPgyecaI+pVM6Bw738+dQ3GliNUzqqMv6qJCoeXbCe2mgr/kdnV75eKvubAnm/EB/+NNsmhwm6DkcPFIEjtBipYygQTMlCC29AMlyectMCpo0sMQJJjuBhUrt2MN35JytUWRM3k97ns0qV+FC/M6Bw0hNDQSyNlE+3DS26ts3xX0R2eF2jpiI0v33EQtqjX7hiqxcS54We1ti0a1CeMqH91rrEyL9ZzSNp5jJK2+uiDGMTzJmjO78MuqiPcGhuMqoD3chY6M6j1SGRkAmqYmb3dGtCSenTn80YBQPEgKryo4KilArLh54vVMer75buQCmgbVYDXeE5nVrXQIK8IzXUGn7ydq8Tz+bc/x3y0QD3j+zlVhiZ4SjBPe8J8PW187GkyK2MHv5SeKRsEbEzV95iM87/0tZMX8ROF7dnYClEkyRC6Xx3WQpKIQGOQOfL+COtBTLG6BIq7nWBijxOVLvXV4VNdZQw+TAs/4oUEvosBPsaWrRXkSqs+r0yi9Nore7J4N2ao0u5ydmLUJzu/E212knFbzEd63Cz20HNDM2SH7tl6aE5wAiolTlwpdGyzHbLyNeQ648D4LsTKmKkvAIZk/jEMIQbSlfBpPOb+slrGwwKn2NFKrSy3fpjHXmCE3ikH83gK48976bVuHqf6OQmsTpUoMTtFF6lYN0qib0Cu8wJbLlY3zhYFuNj3bIj6jGW1BO0yRyIPrcnvtaRlJS98J0I4BlDvBfONvGPLRUHhh6CPgapeibRDyFeIXDsqbmY/O3nawvrB7rvKYiM61jfNkCwGUZSfokNIztg+WE8byS0ZDRlTy3qdJsrJ0j1FF01VV1g6Pax2F5HxstrOAxoiFDdzYTeC/S9mboFM35YpO7C3JahyvKQCq2H
+X-HE-Tag: 1788135920-218088
+X-HE-Meta: U2FsdGVkX1/L5XD8Vj7vV3JytUHjA+prsr9l68amyXfpA66T1nT+84IYcwUQ3FfJ0TI6R84XyQ1U+Lfyvg8XfblUzJ7r/a8TsSRKNrnna33H+npMdbVaT7WsMoW9Wt6b5FkCZFTTyTiwWFGlGASQp/Yh+pSLrqfEwPKFr1DFdzcLv2vY8ZMLvZWlrv4VUStcyD/IgDO9fpXN4vVkdzzbgHhk42Sf6IBqnAc7FnJcbAQ8wkz+5ig0Rk9BlP52Ma8y4KHA8fQsM0potgEad8rHvZkixo8hIO4luyHixcT3MQ6v4essaAJs8yO88yyHIPQo5D96HwQoDs3ZyjB765CcXAU4U4KeqyFgahZgI4BzA3WOaJzO5IRaExm4U5H+kHczNWumukuczLM00KayoV8WoKPnOHn4Q1Q3W4wv5dsBAXvBBx5H9o98w+jfCc2dLC2FeLfJ7Lc0equgodXAOVFi/8bAn6xixUy3OvLCt22MgeoZu5q396QFqoU1UR427xbk28uVAwZOKRqsyC6QqXB7tfd67PG+iNbnBY573UoLTJ4MHZ1G3RIrgKbnmK/fQ+jpZW7vhQFfYciZgcpf9FgyrD89mZT6LWP8iEffG2u/i4AO3AUmmWgfdwlDWslIKbymAKRZcszaLbjZ8BMbp9lzVPhgYgj6+k3cqxG3uOzbyMVzE0rjSusuZ2UdK7vbN6HcNUQJS1uMkWTQx0O3XKXennVPQuWhHkTEbiRUo7xaZxuaNBOilcoKjJ07Tnut6/u4hUNfbtTP67aCJxlDnJyCgD1f+oieWzhKNbT8cHCQLOgc0FPKrLhCMdpQzUcd45w6LtVsIj8GnmmqGy4/FPLVjtxsNFh790/0J42LlFiXAKqQABndc4h4zSxQbkeu9JB2w6dwqv3S3aBL2vL+nb1vKrItnheo5EB5BNrgn4esgIIfn8D7UGx+kxRbgv0L6JJOh6jMzfDj7iuhWuUktL4
+ iY75Ox11
+ WOAwZV85lzTB2C6uKg7scpQy1SFIKAxrypfcZBuVXaN6OcXaISXn2mCJEKS5/0R7zmQ90jYz85kVl3kxz3TJR6iUrKOmJy1zMHYoXuoo/QouH8SrevvOitl3jljYHrWN3KvGRJZN2V+eLddrij8Du6AA43E3kxf3OR5/jXeQhnwSq6OwoAa7wyFDgIheIT8iaA9mqeHEV4++t3FhHMeYGk71VyhleVefWsgYJ5a8DukHFIqAgGfSQsZlmmqaDjRmL/GLor/4NWHBq/PNMXv0OnmpGJppqZkD3NPMIjxWPpEnLjyDsXXYe5G//7mV6I9YfslyghdHjw8XF8Z4tOYEzSLRQEDP1jxjMBPo3NREv+afSEvGpSa0sLoxo0AfovPKadvgVwWBCY4GO7r2jbrD7zcQJSln3hRQuoMFvVuTjikjalwCzua/tvYBF6NFVn/0X71uPJZgf/CK8lyTw7b0+7kSG1x0dsZQCdqEHbYEBkhoRIfW4pQsKjg0kbqTuAFg+ZQ2JD4nc+8MqGJ3uSI5mUWjCr/6hmt8wcCCwFl2t/4FGHIGDt/TAu54yBYuhRUHbmWffsSQ+k4gzn9fWeeqjynT+cg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,347 +144,165 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello community,
+Here's v12. Thanks everyone for the comments and fast responses!  We're now
+at ~4 weeks to soft-close at 7.3-rc5.
+
+v12 is based on 7.3-rc1 (contains the mm/ bugfixes). Like v11, v12 is also
+dependent on another series [3], which makes kvm_gmem_get_pfn() NOT return
+a refcounted page to KVM.
+
+Here's everything stitched together for your convenience:
+
+https://github.com/googleprodkernel/linux-cc/commits/guest_memfd-inplace-conversion-v12
+
+This revision resolves the issue on v10/v11 to do with over-zapping of
+non-gmem memory because of the requested filters. [1]
+
+The resolution is in a new patch "KVM: guest_memfd: Always fault from
+guest_memfd if in-place conversion is enabled". I also updated the
+documentation as requested.
+
+Documentation updates are in these patches:
+
++ KVM: guest_memfd: Stub in ability to enable in-place shared<=>private conversion
++ KVM: guest_memfd: Always fault from guest_memfd if in-place conversion is enabled
++ KVM: guest_memfd: Add base support for KVM_SET_MEMORY_ATTRIBUTES2
+
+The documentation update in v10's "KVM: Let userspace disable per-VM mem
+attributes, enable per-gmem attributes" was misplaced imo so I folded it
+conceptually into the patches above.
+
+private_mem_conversions_test was updated in v11 to test dual backing, and
+that's meaningless now since with gmem_in_place_conversions, we're now
+always faulting from guest_memfd, and the userspace_addr not being from the
+gmem associated with the memslot is considered a user error.
+
+I now only have 1 patch "KVM: selftests: Update
+private_mem_conversions_test for in-place conversions" instead of 2 in v11.
+
+Resolves discussion at [2].
+
+Here's v12 with tests:
+
+https://github.com/googleprodkernel/linux-cc/commits/guest_memfd-inplace-conversion-coco-selftests-v12
+
+Tested with both CONFIG_KVM_VM_MEMORY_ATTRIBUTES enabled and disabled:
+
++ tools/testing/selftests/kvm/guest_memfd_test.c
++ tools/testing/selftests/kvm/pre_fault_memory_test.c
++ tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
++ tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
++ tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
+
+[1] https://lore.kernel.org/all/apCLFSbj8sq2biJp@google.com/
+[2] https://lore.kernel.org/all/apCj6gz8x24Dkle8@google.com/
+[3] https://lore.kernel.org/all/20260826-gmem-no-return-page-v4-0-3bb9c1ddb4e3@google.com/
+
+v11: https://patch.msgid.link/20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com
+v10: https://lore.kernel.org/r/20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com
+v9: https://lore.kernel.org/r/20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com
+v8: https://lore.kernel.org/r/20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com
+v7: https://lore.kernel.org/r/20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com
+v6: https://lore.kernel.org/r/20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com
+RFC v5: https://lore.kernel.org/r/20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com
+RFC v4: https://lore.kernel.org/all/20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com/T/
+RFC v3: https://lore.kernel.org/r/20260313-gmem-inplace-conversion-v3-0-5fc12a70ec89@google.com/T/
+RFC v2: https://lore.kernel.org/all/cover.1770071243.git.ackerleytng@google.com/T/
+RFC v1: https://lore.kernel.org/all/cover.1760731772.git.ackerleytng@google.com/T/
+
+Previous versions of this feature, part of other series, are available at:
+
++ https://lore.kernel.org/all/bd163de3118b626d1005aa88e71ef2fb72f0be0f.1726009989.git.ackerleytng@google.com/
++ https://lore.kernel.org/all/20250117163001.2326672-6-tabba@google.com/
++ https://lore.kernel.org/all/b784326e9ccae6a08388f1bf39db70a2204bdc51.1747264138.git.ackerleytng@google.com/
+
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+---
+Ackerley Tng (23):
+      KVM: Rename kvm_mem_is_private() to kvm_is_private_gfn()
+      KVM: guest_memfd: Always fault from guest_memfd if in-place conversion is enabled
+      KVM: guest_memfd: Pass mapping type filter to invalidation helper
+      KVM: guest_memfd: Add base support for KVM_SET_MEMORY_ATTRIBUTES2
+      KVM: guest_memfd: Ensure pages are not in use before conversion
+      KVM: guest_memfd: Call arch make_shared callback for to-shared conversion
+      KVM: guest_memfd: Return early if range already has requested attributes
+      KVM: guest_memfd: Handle lru_add fbatch refcounts during conversion safety check
+      KVM: guest_memfd: Zero page while getting pfn
+      KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
+      KVM: selftests: Test basic single-page conversion flow
+      KVM: selftests: Test conversion flow when INIT_SHARED
+      KVM: selftests: Test conversion precision in guest_memfd
+      KVM: selftests: Test conversion before allocation
+      KVM: selftests: Convert with allocated folios in different layouts
+      KVM: selftests: Test that truncation does not change shared/private status
+      KVM: selftests: Add helpers to pin pages with CONFIG_GUP_TEST
+      KVM: selftests: Test conversion with elevated page refcount
+      KVM: selftests: Reset shared memory after hole-punching
+      KVM: selftests: Provide function to look up guest_memfd details from gpa
+      KVM: selftests: Make TEST_EXPECT_SIGBUS thread-safe
+      KVM: selftests: Set up page size and alignment independently for guest_memfd
+      KVM: selftests: Update private_mem_conversions_test for in-place conversions
+
+Michael Roth (1):
+      KVM: SEV: Make 'uaddr' parameter optional for KVM_SEV_SNP_LAUNCH_UPDATE
+
+Sean Christopherson (21):
+      KVM: guest_memfd: Optimize away conversion overheads via dead-code elimination
+      KVM: guest_memfd: Use kvm_mem_is_private() when populating guest_memfd memory
+      KVM: guest_memfd: Introduce per-gmem attributes, use to guard user mappings
+      KVM: Rename KVM_GENERIC_MEMORY_ATTRIBUTES to KVM_VM_MEMORY_ATTRIBUTES
+      KVM: Enumerate support for PRIVATE memory iff kvm_arch_has_private_mem is defined
+      KVM: Rename memory attribute APIs to prepare for in-place gmem conversion
+      KVM: Provide generic interface for checking memory private/shared status
+      KVM: guest_memfd: Stub in ability to enable in-place shared<=>private conversion
+      KVM: Consolidate private memory and guest_memfd ifdeffery in kvm_host.h
+      KVM: guest_memfd: Invalidate both SHARED and PRIVATE mappings for in-place conversions
+      KVM: Move KVM_VM_MEMORY_ATTRIBUTES config definition to x86
+      KVM: Let userspace disable per-VM mem attributes, enable per-gmem attributes
+      KVM: guest_memfd: Enable INIT_SHARED on guest_memfd for x86 Coco VMs
+      KVM: selftests: Create gmem fd before "regular" fd when adding memslot
+      KVM: selftests: Rename guest_memfd{,_offset} to gmem_{fd,offset}
+      KVM: selftests: Add support for mmap() on guest_memfd in core library
+      KVM: selftests: Add selftests global for guest memory attributes capability
+      KVM: selftests: Add helpers for calling ioctls on guest_memfd
+      KVM: selftests: Test that shared/private status is consistent across processes
+      KVM: selftests: Provide common function to set memory attributes
+      KVM: selftests: Update private memory exits test to work with per-gmem attributes
+
+ Documentation/admin-guide/kernel-parameters.txt    |  25 +
+ Documentation/virt/kvm/api.rst                     | 107 ++++-
+ .../virt/kvm/x86/amd-memory-encryption.rst         |  14 +-
+ Documentation/virt/kvm/x86/intel-tdx.rst           |   4 +
+ arch/x86/include/asm/kvm-x86-ops.h                 |   2 +-
+ arch/x86/include/asm/kvm_host.h                    |   9 +-
+ arch/x86/kvm/Kconfig                               |  15 +-
+ arch/x86/kvm/mmu/mmu.c                             |  28 +-
+ arch/x86/kvm/svm/sev.c                             |  13 +-
+ arch/x86/kvm/vmx/tdx.c                             |   8 +-
+ arch/x86/kvm/x86.c                                 |  20 +-
+ include/linux/kvm_host.h                           |  83 ++--
+ include/trace/events/kvm.h                         |   6 +-
+ include/uapi/linux/kvm.h                           |  16 +
+ mm/folio.c                                         |   2 +
+ tools/testing/selftests/kvm/Makefile.kvm           |   1 +
+ tools/testing/selftests/kvm/include/kvm_util.h     | 139 +++++-
+ tools/testing/selftests/kvm/include/test_util.h    |  34 +-
+ tools/testing/selftests/kvm/lib/kvm_util.c         | 222 +++++----
+ tools/testing/selftests/kvm/lib/test_util.c        |   7 -
+ .../kvm/x86/guest_memfd_conversions_test.c         | 512 +++++++++++++++++++++
+ .../kvm/x86/private_mem_conversions_test.c         |  66 ++-
+ .../selftests/kvm/x86/private_mem_kvm_exits_test.c |  36 +-
+ virt/kvm/Kconfig                                   |   3 -
+ virt/kvm/guest_memfd.c                             | 469 +++++++++++++++++--
+ virt/kvm/kvm_main.c                                |  92 ++--
+ 26 files changed, 1646 insertions(+), 287 deletions(-)
+---
+base-commit: a0c789941a3d705d00c018b3c9348b4b930c0c74
+change-id: 20260225-gmem-inplace-conversion-bd0dbd39753a
+
+Best regards,
+--
+Ackerley Tng <ackerleytng@google.com>
 
 
-This newsletter covers DAMON features that landed on or queued for the
-mainline, development statistics and misc events that were noteworthy in my
-opinion, that were happened from v7.1-rc1 (2026-06-28) to v7.2-rc1 (2026-08-30)
-time period.
-
-The newsletter covering the previous release cycle (v7.1-rc1..v7.2-rc1) is
-also available [1].
-
-TL; DR
-======
-
-Just after breaking the record of DAMON history in the last cycle, this cycle
-again broke the record.  It was the busiest cycle of DAMON history.  20 authors
-made 161 commits and 2283 lines of changes for DAMON on the Linux mainline.  A
-new data attributes monitoring feature, a few optimizations for DAMON users,
-and quite a lot of refactoring are delivered.  New DAMON usages and development
-projects are shared.  The first DAMON (nano) Conference is scheduled.
-
-
-Changes Landed on 7.2
-=====================
-
-All 95 commits that were landed on v7.2-rc1 have successfully landed on v7.2.
-In addition to those, 15 additional hotfixes have merged into 7.2.
-
-Those from 7.2-rc1 include a few user-visible and impactful features.  To pick
-only two among those, new DAMOS auto-tuning goal for tiered memory system
-(node_eligible_mem_bp, commit 9138e27a3bc38) and data attributes monitoring
-(commit 45c49d9fd6089) are introduced.  Read the previous newsletter [1] for
-more details.
-
-
-Chanegs Landed for 7.3
-======================
-
-During the 7.3-rc1 merge window, 146 DAMON patches have landed via the MM pull
-requests [2,3].  Introducing a few of changes that could introduce non-trivial
-impacts.
-
-New Features
-------------
-
-In this merge window, the below user-visible feature is added.
-
-1. Commit 37aae41c1056: Patch series "mm/damon: introduce data attributes only
-   monitoring".
-
-This feature makes DAMON useful for monitoring not only the data access
-pattern, but also general data attributes.  This is an important feature for
-extending DAMON for not only access monitoring but general data attributes
-monitoring.  It is also the foundation part of ongoing project [4] for multiple
-access check primitives support.   As a followup, we are working on extending
-data attributes to include access events.  Once it is done, access monitoring
-will be just a part of flexible attributes monitoring.
-
-Optimizations
--------------
-
-This merge window also introduces below DAMON internal behavior optimizations.
-
-1. Commit 1a582e6e0174: Patch series "mm/damon/core: detect internal variation
-   above max_nr_regions/2", v3.
-2. Commit aa497a270f68: Patch series "mm/damon: provide pseudo moving sum
-   probe_hits".
-3. Commit 6c25083f7ae7: mm/damon/ops-common: use nr_accesses moving sum for
-   quota score
-
-The first optimization is contributed by Jiayuan from Shopee.  With it, DAMON
-makes more efforts on the monitoring accuracy.  The second optimization makes
-snapshot-based data attributes monitoring (update_schemes_tried_regions) just
-works.  Without it, DAMON tracepoints were the only reliable way to get
-attributes monitoring results.  The third optimization improves DAMOS quality
-in setups that separately and differently have schemes apply interval and
-monitoring aggregation interval.
-
-Refactoring
------------
-
-This merge window also introduced many cleanups and refactoring.  Below three
-changes among those may be noteworthy.
-
-1. Commit b90408ef1163: Patch series "mm/damon: validate all parameters in the
-   core".
-2. Commit 5bf9c1f3a97e: Patch series "mm/damon: refactor
-   damon_{start,stop,commit}() for simple error handling".
-3. Commit e0ea9467dbef: Patch series "mm/damon/core: hide core-private struct
-   fields".
-
-These are mostly motivated from recently found classes of bugs.  Hopefully
-these refactoring will reduce future bugs of same classes.
-
-Changes Cooking for >7.3
-========================
-
-A number of patches are queued and being developed for future mainline landing.
-My personal tree for those (damon/next) contains 214 downstream patches as of
-this writing.  Not all the patches are ready to be merged.  Some will be
-squashed or broken down.  Anyway, the number was 231 for the last release
-cycle.  This cycle might be less busier than the last cycle, but still expected
-to be non-idle.
-
-Statistics
-==========
-
-Putting simple statistics for the last release period.  Tools other than git
-that are used here for getting the numbers are available [4,5] at GitHub.
-
-In short, this cycle was the busiest cycle of DAMON development history.
-
-Number Hotfixes and Non-hotfixes
---------------------------------
-
-15 DAMON hotfixes have landed on 7.2.
-
-    git -C ./ log v7.2-rc1..v7.2 --oneline --no-merges -- \
-            Documentation/ABI/testing/sysfs-kernel-mm-damon \
-            Documentation/admin-guide/mm/damon/ Documentation/mm/damon/ \
-            Documentation/vm/damon/ include/linux/damon.h \
-            include/trace/events/damon.h mm/damon/ samples/damon/ \
-            tools/testing/selftests/damon  | wc -l
-    15
-
-146 six DAMON changes have landed on 7.3-rc1 during the merge
-window.
-
-    git -C ./ log v7.2..linus/master --oneline --no-merges -- \
-            Documentation/ABI/testing/sysfs-kernel-mm-damon \
-            Documentation/admin-guide/mm/damon/ Documentation/mm/damon/ \
-            Documentation/vm/damon/ include/linux/damon.h \
-            include/trace/events/damon.h mm/damon/ samples/damon/ \
-            tools/testing/selftests/damon  | wc -l
-    146
-
-The numbers for the last ten release cycles are like below:
-
-    7.2   fixes:  15  7.3   changes: 146
-    7.1   fixes:  11  7.2   changes:  95
-    7.0   fixes:  9   7.1   changes:  64
-    6.19  fixes:  7   7.0   changes:  68
-    6.18  fixes:  7   6.19  changes:  78
-    6.17  fixes:  15  6.18  changes:  41
-    6.16  fixes:  8   6.17  changes:  93
-    6.15  fixes:  0   6.16  changes:  22
-    6.14  fixes:  6   6.15  changes:  62
-    6.13  fixes:  4   6.14  changes:  57
-
-The 6.17 development cycle was the busiest DAMON development cycle in history
-(~6 years since 5.15) before the 7.2 cycle.  The 7.2 cycle broke the record.
-And right after that, this cycle for 7.3 broke the record again.
-
-Authors, Commits and Changed Lines
-----------------------------------
-
-In this cycle, 20 people made gratful 161 commits and 2283 lines of changes
-for DAMON on the Linux mainline.
-
-    $ # stat for number of commits
-    $ ./lazybox/version_control/authors.py ./linux/ \
-            --since v7.2-rc1 --until v7.3-rc1 \
-            --skip_merge_commits --linux_subsystems DAMON
-    1. SJ Park <sj@kernel.org>: 130 commits
-    2. Song Hu <husong@kylinos.cn>: 6 commits
-    3. Kunwu Chan <chentao@kylinos.cn>: 3 commits
-    4. SeongJae Park <sj@kernel.org>: 3 commits
-    5. Jiayuan Chen <jiayuan.chen@shopee.com>: 2 commits
-    6. Ruslan Valiyev <linuxoid@gmail.com>: 2 commits
-    7. Cheng Nie <niecheng1@uniontech.com>: 2 commits
-    8. Xuewen Wang <wangxuewen@kylinos.cn>: 1 commits
-    9. Jiahui Zhang <jiahuitry@outlook.com>: 1 commits
-    10. Enze Li <lienze@kylinos.cn>: 1 commits
-    11. liyouhong <liyouhong@kylinos.cn>: 1 commits
-    12. Lorenzo Stoakes <ljs@kernel.org>: 1 commits
-    13. wang wei <a929244872@163.com>: 1 commits
-    14. Sailesh Nandanavanam <saileshnandanavanam@gmail.com>: 1 commits
-    15. Asier Gutierrez <gutierrez.asier@huawei-partners.com>: 1 commits
-    16. Doehyun Baek <doehyunbaek@gmail.com>: 1 commits
-    17. Philippe Laferriere <plafer@proton.me>: 1 commits
-    18. Akinobu Mita <akinobu.mita@gmail.com>: 1 commits
-    19. Arnd Bergmann <arnd@arndb.de>: 1 commits
-    20. Zenghui Yu <yuzenghui@huawei.com>: 1 commits
-    # 20 authors, 161 commits in total
-
-    $ # stat for number of lines
-    $ ./lazybox/version_control/authors.py ./worktree.linux/ \
-            --since v7.2-rc1 --until v7.3-rc1 --skip_merge_commits \
-            --linux_subsystems DAMON --sortby lines
-    1. SJ Park <sj@kernel.org>: 1810 lines
-    2. Jiayuan Chen <jiayuan.chen@shopee.com>: 113 lines
-    3. Song Hu <husong@kylinos.cn>: 95 lines
-    4. Ruslan Valiyev <linuxoid@gmail.com>: 85 lines
-    5. Kunwu Chan <chentao@kylinos.cn>: 34 lines
-    6. Cheng Nie <niecheng1@uniontech.com>: 33 lines
-    7. Sailesh Nandanavanam <saileshnandanavanam@gmail.com>: 28 lines
-    8. SeongJae Park <sj@kernel.org>: 26 lines
-    9. Doehyun Baek <doehyunbaek@gmail.com>: 20 lines
-    10. liyouhong <liyouhong@kylinos.cn>: 9 lines
-    11. Xuewen Wang <wangxuewen@kylinos.cn>: 6 lines
-    12. Lorenzo Stoakes <ljs@kernel.org>: 5 lines
-    13. Akinobu Mita <akinobu.mita@gmail.com>: 4 lines
-    14. Zenghui Yu <yuzenghui@huawei.com>: 3 lines
-    15. Jiahui Zhang <jiahuitry@outlook.com>: 2 lines
-    16. Enze Li <lienze@kylinos.cn>: 2 lines
-    17. wang wei <a929244872@163.com>: 2 lines
-    18. Asier Gutierrez <gutierrez.asier@huawei-partners.com>: 2 lines
-    19. Philippe Laferriere <plafer@proton.me>: 2 lines
-    20. Arnd Bergmann <arnd@arndb.de>: 2 lines
-    # 20 authors, 2283 lines in total
-
-Snapshots of the number of authors, commits and changed lines for the last ten
-cycles are below.  The snapshots for the entire DAMON history is also available
-[7] at the DAMON project blog.
-
-    <version>  <nr_authors>  <nr_commits>  <nr_lines>
-    v7.3-rc1   21            162           2283
-    v7.2-rc1   14            109           3311
-    v7.1-rc1   9             77            1070
-    v7.0-rc1   12            75            1279
-    v6.19-rc1  10            85            1640
-    v6.18-rc1  13            59            864
-    v6.17-rc1  8             104           3785
-    v6.16-rc1  5             22            564
-    v6.15-rc1  7             68            1479
-    v6.14-rc1  8             61            4008
-
-In terms of number of contributors and number of commits, this was the busiest
-cycle in DAMON's development history.
-
-DAMON user-space tool (damo) also got a significant amount of changes.
-
-    ./lazybox/version_control/authors.py ./damo \
-            --since 2026-06-28T12:01:31-07:00 \
-            --until 2026-08-30T13:34:40-07:00 \
-            --skip_merge_commits
-    1. SJ Park <sj@kernel.org>: 257 commits
-    2. Michel Lind <salimma@fedoraproject.org>: 1 commits
-    3. Enze Li <lienze@kylinos.cn>: 1 commits
-    4. Daniel Lysyi <daniellysy566@gmail.com>: 1 commits
-    5. oopiec <157018150+oopiec@users.noreply.github.com>: 1 commits
-    # 5 authors, 261 commits in total
-
-The last line was "4 authors, 151 commits in total" for the last cycle [1].
-
-Mailing List Traffic
---------------------
-
-DAMON mailing list was quite busy.
-
-    $ hkml list damon --since v7.2-rc1 --until v7.3-rc1 --collapse \
-            --stat_only --stdout --ignore_cache
-    # stat for total mails
-    # 2019 mails, 183 threads, 180 new threads
-    # 871 patches, 148 series
-    [...]
-
-The traffic for the last ten cycles were like below.  The numbers for the
-entire DAMON development history is also available [7] at DAMON project blog.
-
-    <version>  <nr_mails>  <nr_threads>  <nr_new_threads>  <nr_patches>  <nr_series>
-    v7.3-rc1   2019        183           180               871           148
-    v7.2-rc1   1486        164           142               671           126
-    v7.1-rc1   1098        152           147               450           129
-    v7.0-rc1   426         111           58                223           43
-    v6.19-rc1  414         48            43                222           38
-    v6.18-rc1  563         82            62                211           53
-    v6.17-rc1  499         78            72                256           64
-    v6.16-rc1  147         40            31                63            22
-    v6.15-rc1  263         56            41                176           34
-    v6.14-rc1  260         55            34                154           23
-
-So the traffic is continuously and exponentially increasing.  By every traffic
-metric, the last cycle was the busiest cycle in DAMON's history.
-
-Events
-======
-
-Lian Wang from ProcessMission continued working on mTHP monitoring
-improvement.  As a part of it, they developed and shared patches [8] for
-extending DAMOS to flexibly handle mTHP collapse and split.
-
-Asier Gutierrez from Huawei continued working on DAMOS tuning goal for THP
-(hugepage_mem_bp).  The latest version [9] of the series has passed my humble
-review.  Hopefully it will be merged into 7.4-rc1.
-
-Kunwu Chan and Lian Wang developed and shared [10] ARM SPE based DAMON backend.
-As soon as the major milestones of ongoing projects for multiple DAMON access
-check primitives support [4] is completed, this series will also hopefully be
-merged.
-
-Jason Angelov developed and shared [11] a user-space pager that finds cold
-pages using DAMON and compresses those.
-
-Krishna Iyer from Crusoe developed and shared patches [12] for monitoring
-hugetlb pages on physical address space mode.  It also includes interesting
-test results on Crusoe's VM host setups.
-
-I'm also more that excited to share that we will have our first DAMON (nano)
-Conference [13] at LPC this year.  There will be five small sessions covering
-the evolution of DAMON for multiple access check primitives, memory tiering,
-huge pages, and AI cloud.  Refer to the website [13] for more details.
-
-Newsletter Subscription
-=======================
-
-This newsletter series is posted to DAMON mailing list [14] and archived on the
-project blog [15], for each release.  If you want a reliable delivery of this
-newsletter series to your inbox, subscribing to the mailing list [16] could be
-an option.  If the mailing list traffic is too much, feel free to ask me (send
-mail to sj@kernel.org) to [b]cc you for each newsletter posting.
-
-References
-==========
-
-[1] 7.2-rc1 news: https://lore.kernel.org/20260628211904.94361-1-sj@kernel.org/
-[2] First MM PR for 7.3-rc1:
-    https://lore.kernel.org/178728181878.600189.588163658498005550.pr-tracker-bot@kernel.org
-[3] Second MM PR for 7.3-rc1:
-    https://lore.kernel.org/20260826152330.9cdd482b43726942d6c149cb@linux-foundation.org/
-[4] DAMON access primitives extension roadmap:
-    https://lore.kernel.org/20260525225208.1179-1-sj@kernel.org/
-[5] authors.py: https://github.com/sjp38/lazybox/blob/master/version_control/authors.py
-[6] hkml: https://github.com/hackermail
-[7] DAMON development stat history: https://damonitor.github.io/posts/dev_stat/
-[8] DAMOS mTHP collapse/split series:
-    https://lore.kernel.org/20260720030327.80153-1-lianux.mm@gmail.com
-[9] hugepage_mem_bp series:
-    https://lore.kernel.org/20260720120140.881468-1-gutierrez.asier@huawei-partners.com
-[10] ARM SPE-based DAMON backend:
-     https://lore.kernel.org/all/20260816142222.689624-1-kunwu.chan@linux.dev/
-[11] Cold Pages DAMON Pager:
-     https://github.com/jasonangelov/damon-compression-pager
-[12] paddr hugetlb monitoring series:
-     https://lore.kernel.org/20260830051407.50008-1-kiyer@crusoe.ai/
-[13] DAMON (nano) Conference: https://lpc.events/event/20/contributions/2453/
-[14] DAMON mailing list: https://lore.kernel.org/damon
-[15] News letter on project blog: https://damonitor.github.io/tags/release_news/
-[16] Mailing list subscription guide: https://subspace.kernel.org/subscribing.html
-
-
-Thanks,
-SJ
 
