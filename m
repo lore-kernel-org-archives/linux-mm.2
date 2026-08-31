@@ -4,98 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA6B3C61DE2
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 10:29:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 146E9C61DD3
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 10:30:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 894656B0088; Mon, 31 Aug 2026 06:29:01 -0400 (EDT)
+	id 230376B0095; Mon, 31 Aug 2026 06:30:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 844CC6B008A; Mon, 31 Aug 2026 06:29:01 -0400 (EDT)
+	id 2076A6B0096; Mon, 31 Aug 2026 06:30:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 733F86B008C; Mon, 31 Aug 2026 06:29:01 -0400 (EDT)
+	id 145906B0098; Mon, 31 Aug 2026 06:30:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BC1A6B0088
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 06:29:01 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C6DB71C1FAA
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:29:00 +0000 (UTC)
-X-FDA: 85161191640.25.0337A84
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 2CCB214000C
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:28:59 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=JYkRuxX8;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=Et4TbARV;
-	spf=pass (imf26.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+	by kanga.kvack.org (Postfix) with ESMTP id EB0556B0095
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 06:30:48 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 635FE160444
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:30:48 +0000 (UTC)
+X-FDA: 85161196176.23.F0F4073
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id BF668180005
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:30:46 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hUKxJxVY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788172139;
+	s=arc-20220608; t=1788172246;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oXHuqEMVd5r9Kb5uP27u7BqXJjMjwilyDDUTebyzQX4=;
-	b=pxeyyyMN73Egh9OY8Tm1lou+CSkk1BUccj6QRCnkg2Bo0pjv7SGFJn9gKjpNaFxayr6D09
-	PAJ6car5k4SCrBJUvnTon3LcZ4/+U9LUmuF1KTHThelRW5KaWl0eWeu6Z99OUcOzfbISfJ
-	/Gy14/l+nDG60S5unIc6WUy7o4+2MHU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788172139;
-	b=EfmYDQhmgxM+kX6IH4VAsTiOkQ+MnFkEE9adxA0+C8H3DQPDMbVR7MqszOnnARRyPYgDOz
-	3SI9mU/pn3ycc2o9sLY0Tj+4oPgbD/eqlsS8RRO3mVKSrBgqCIdvzeq8j+oSGz4mZ5S0Vt
-	TPiYtu/XHZmWj9brp3DO4CDI7T9Rm+Q=
+	bh=sMjEOiR4aoFiJu+sj3qn4Q9Lswnv2I+gPsZQbwsoA1s=;
+	b=CiqnqFkGHsTntOAFf6xVyMN0dhEXy7/9fO60zW1sfJ2vO7bpPc93mXU2N9SncpwHMIQHFk
+	QA1SvCmNMNkvyelGEwuJUjkd3gEBgbPrqxiY1SrSMa1tZSMyRs6vWkG8q21srVe2TTTQIE
+	vBoPTI7ozfWXcKywR/hE0T6uRuuDzNE=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=JYkRuxX8;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=Et4TbARV;
-	spf=pass (imf26.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-Date: Mon, 31 Aug 2026 12:28:55 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1788172137;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oXHuqEMVd5r9Kb5uP27u7BqXJjMjwilyDDUTebyzQX4=;
-	b=JYkRuxX83aiixALIH7LLrCuWfxOud3Br3FSshGL4xI3IdQvN9XSlMmu9UxGk6/A+5+c3DY
-	Jfjy372gb3H7iLhwTdYDIiMBaXVgA6tz3qpal8gd1kBPJv60QkaQAB63M7EFco488RsIOJ
-	MqFH//swaz9C0f5YOfAD+ftkHb5S2K6VvnOMLNn8u73TWwCYKqODgm/J/eGAWBg96bbOvx
-	lX3QdIYs+VDnTM5Nc4ZTahOywMtiGqmYNIGFMQH6WKeFCHNX7EOUlC3KU2HhXJlcFxbnrP
-	e+WMcoP0ACKGDnt0Y0WjylGZK4jJ2tSIoxyrhassfnyNylw59XtGAAh612xgBQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1788172137;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oXHuqEMVd5r9Kb5uP27u7BqXJjMjwilyDDUTebyzQX4=;
-	b=Et4TbARVJGmOcZqp3pkQLXcVtfr7mVUu6imjMFJX/FcsrC3o9JIydz2OmEjj6aIWUr1Lev
-	ICbpUTmyuxiUdpCQ==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Hugh Dickins <hughd@google.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>,
-	syzbot <syzbot+cd2073ee6d958a8d0fcd@syzkaller.appspotmail.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [mm?] WARNING in __mod_zone_page_state
-Message-ID: <20260831102855.TOx0U8Vi@linutronix.de>
-References: <6a931c5a.08e933ee.dbf97.0093.GAE@google.com>
- <apNjw0HRyr1Oj7q4@linux.dev>
- <apOAF5CPFWUUH9du@linux.dev>
- <a2288e73-5001-2104-1e7a-2b383e7edd61@google.com>
- <apO7GDwIgyhdn3t7@linux.dev>
- <4793259a-00da-ea31-8cbd-a6cb5bf48692@google.com>
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hUKxJxVY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788172246;
+	b=4g8LU7kIFyeWxV2EMVmN2lJZu0DeEZh/moGogGaLa07Fau7UV7cU/W1NN0krIGmCYv+RZX
+	u9qB06SATAFHGqxa0BmeldjBLpCNsY0NWVRZvb88ztr9CISK+ZiRwvskHW8VKk4P845Gjn
+	9md5uAaRIDysxY/Aa6Mx5kSm/QyHwME=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5040060213;
+	Mon, 31 Aug 2026 10:30:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE9181F000E9;
+	Mon, 31 Aug 2026 10:30:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788172246;
+	bh=sMjEOiR4aoFiJu+sj3qn4Q9Lswnv2I+gPsZQbwsoA1s=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=hUKxJxVYNSHxP6iBrkoe0/NqtQ9zDEnnrIPIoGw2JbqBCLTbGpFzvl1WG7nO6avAP
+	 LSQ5fmE8Wf/YBWTZ0mNSKoZp9ylCxmJLbRgvaDN3tb82RwkunKwnS4t/qlLb1ubWGm
+	 Waq0ODq0fAFJzLni2dVt44/oZPkpmU0QOt3d/HFbzBSlqoPLp4PNRQkrywj2WLrPEX
+	 WGrkP65uxzBQZb8g7HqzdSEO0avlczOtKeYBKS0Pw4k27DdRwPGFDv4bvL4QWxKWQa
+	 AI/iXuWIZ3eg34J9CF+WGYNQNGBi0rO9tG08PasoubNFUtRRYSn2vYZOA/mmASfj6P
+	 hnZQvg1beBKgQ==
+Content-Type: multipart/mixed; boundary="===============5908284071656517942=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <4793259a-00da-ea31-8cbd-a6cb5bf48692@google.com>
-X-Stat-Signature: 74y8oeqh4jc4hz8bw3pdzdm6b53kz3qj
-X-Rspamd-Queue-Id: 2CCB214000C
-X-Rspamd-Server: rspam02
+Message-Id: <27ef653d703dedfccac377609bf32e8bc15ef63260463f19adc8e05e332a555a@mail.kernel.org>
+In-Reply-To: <20260831092305.42062-4-tasos.papagiannnis@gmail.com>
+References: <20260831092305.42062-4-tasos.papagiannnis@gmail.com>
+Subject: Re: [PATCH bpf-next v3 3/7] exec: Clear bprm->mm before dropping its reference
+From: bot+bpf-ci@kernel.org
+To: tasos.papagiannnis@gmail.com,bpf@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,linux-mm@kvack.org,linux-fsdevel@vger.kernel.org,viro@zeniv.linux.org.uk,brauner@kernel.org,akpm@linux-foundation.org,david@kernel.org,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,kpsingh@kernel.org,matt@bobrowski.net,song@kernel.org,utilityemal77@gmail.com,tasos.papagiannnis@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Mon, 31 Aug 2026 10:30:44 +0000 (UTC)
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788172139-204642
-X-HE-Meta: U2FsdGVkX1+xZfSg8v6ewPhFOgJKQkzoM1LQbFLZzlvciIw2CZ5bDfUFWxZLPMeEWwaLhfl6gdfaX/tNWppHSph5leN5ff6I6+ZvSam63sD2DJH2ofne4ghibwORNK8ky0CBR5urRI+QuTD/JphJBp6oj6QjDxsIF+vk7N+tEQMYOS+wkMLDzdTQQkLtusiin61sQagW6xqpSx4menlRj9TJOSY+QsTa34Cf6IbHpwCjg5TWvJvpJIGnFO4FvwLdTsYOxHpQzRgksaZe5dFz1L5NTjxE7tbBd3ejgrzlU3My2sD2P86T3/y6bHKScq+zHWLpqRQUAYRU2g5s3zXm0lHvECal1wGt4hTFzE7VDnQIvS3gklI+gKLpUJw57dE5UItZDZkqrFP6i42sDivtXbJiVocTS8UzV7TDXzovjxKzDZ2Mfufuk1uJt7E4091zhDiHMkCCVpk2pq0rc9QDZBd0SUK5jDx6p2YtNtTyVKg1Gx16lB3tQX87lp/raOUgpkFE9p4Q3RGlLZVcVdI0zFsXUArYcyZSAblmlj7LuP8FU0s5dq8etylq3gfCLvALNy0dpTze0faPVp/AhmgYKVWBw+35X/FosX1CY8+HknHQ9ybwsIhamKfwzmG5Me4SEAK3C62UyUBcgBESsd17sXXESwooKlQDnmsFcGELI7zDx8d7dpdn+qhleYTCyJSo77cOLPfKdigEpSHgWLeSIS+JXRaNtDrzxaIZ5rI4nyO5rdXk+pllPbLXvicxpeyjZQuFbU22lIeET2QJgxdnHNvEE/GrdsmF7d58lkhcHfO3/ypDcCVhxw341SXfCfbCVQFrC6c6PjiGAhAhy56gCbVfdZha1bWaaFC/ECuOqjkzrOT3rJ6iIbbis0Ywgp8QKsHiY6qUDhfITbTJQRJtsVKZI/7/Gtm0I0xmQs9jU0jsdYMSPfNP6eLs1WWa+wz5hrUE9msbl+lxp+8dgmN
- Aub75gjn
- zrdrfR9wHISPrAyDCddvVSmMjY/gCdDXf1ofn4ljF+NGu9SdoEou32sE9AD6FQHn/7AT4Rl4j1P1IVYAxQ8vcNAVwBkvybJANi3dpPHeh0INLEJ0nJ+Pe6MWjkLx7syUozInix05XUkKXj6/LN/6MXDHx0dwz82pQXBOSQdF9EDc6TyRHjiWJ6N52bYhVTBDFdUOwxg4BWM7ignHJmG3Vn2+zs+bx+2kDu7pQ/5d/5yZMYO035/W/KiFtkRhJdnZEv6w0fuoLBWamRr445NSN0QXNrI7B0SmjC4veqZcQT1riolWdWfvclv8ayFViKRZnUNkxMyGtYNiQ9TGlZNCw4f43cO/BKY+NfptrlAOzattEPcKtUtW1LClb8T+OyNY5hQcIEAeWVZcHzIEyCyyMU2zWj6JqmtYrk/1E
+X-Stat-Signature: 43rn89y35zpzmnor5oqcmkacrbqxmaej
+X-Rspamd-Queue-Id: BF668180005
+X-HE-Tag: 1788172246-195292
+X-HE-Meta: U2FsdGVkX1/X1ch9+qs6yclRcAPBk3cEP6NCw0LklU/mFtZ7KQv/BXx1h2zroFNtJrtDw6lUDuPvk/XP+bYHZe90XRQAtGPM1mUCfwqcEZx6ZQJ0C1rqVI1QWmqHu7/FN6EVdqnI12c2+xBDI7Wf6YDVTpC3yRxCa5gIThW4tbN4np6XDNfCYtMaip+IDk0vU1PEbkaGctF44upULGcnHmlG8e+IOwbLHt8poY6jst98Nx4+KqoYTZJ73EmnaGHqmvw1bR/H61avbqNzsFvz+FPgLdnMvbrtxiqpaW1uFKlrQcb26F5EXVmvvfSUT0IYGKbTETvnF7r0KZdfsIdZ5m+O3309XEE+dKwBRGlOheZj745Tqpr0/xRuaaSIj0eIs+zWErAJ4wTIrg2ujif05SW9EhtvWaglfTNi1HKbjgSJVddlOdiiW4BYUQ01lCQXrXWtqElyEpTKIv0g4tJRIR0pgdu2QcLzbdu6QW48p5B7LYMhD6kf7UOt3jmRXTcIt6+nGeV33Lk0KMAIbzfvFoZAaaLXufWepeylJmMuCbJ6alfvQxtHi6TFnwfulmHhUvkcMX7CZHbIwY3Sa5/WyQ+96nzD0lYxYmvdzaeGJ8XqDiJGD3kINc0K9FTYC5raT1jcmYg4aYXQRWjKAfGikhIXtsXhO81m0a9hJwiA9VTKh6CsKm1JaubFQAqDNTUvzmPP4a45RbGbR0GpzUD7X+XWn9AW95yfK3nb7CSqz8FwG4OkaRrtpViJA7fnFTXJwljWvDcjeUP35L0pXIq0aYH3RhJsVzPksTkitGXdKXp8/YN8UOWWKbbF2cICFPcWB0OUBq1GyOwteEtQKvVarsUj4ZRZ+HM4ZMrBEsA5ODZLXZpxCQ/qugueX0eSeIBJ4qUuAUcIZPi8yoqBOtAHEEjvY+2CGTxVAZO4nAR9+uDuQSXa59uVQlrc5rVZObgRog0wBZ0GFCQMSfqxyrh
+ amJDHu3A
+ o1CTa0sHNF2fc9NoSvHSwqt9ofSuenHkREMg4I85WgqUPmBxZiSnBX9bOC7/EMZBag2toquMtOpRqRzF6K/C4te8kx7fXtKbDoQGoAmcxtPOa6Rdvgx2Oz5ShLBr6UhzpQPle+bhuQulktp+ENAbSjPU1N3Amu4Z03Cl6dU+F/AI0gV6FC55umckX+TKh/T4tmQbAZ+bIKIYJnpaJz7Ds12dr5XtqUq3CLdaMCR7Oja+8TN6gFubC2knVG+LdmL2RbOMlprOiVK6x24nFD7PM5vhTNYQOqf/0FsD29k4XCJiPxGpFwUGjyg/XGbyE7f2/AJMcr9u4KZaS/sA17R/lUqWyuxbElnVJQ9T/BlldwdizfvQ8bBhUvCs2Afp1aodOOvCxrUbN/wlN+d2iRHNUSW4vkaFD8g29JlbMEidkBAH+U4DPbtECSnca9qvjlZv6Sz0x+BQT2JE01fQUtr2Y3GegDylEuatW9CrY2WnzMI8WrWCgeHPn6q0JBzflub26kTKc0XOtpldMBH8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,40 +88,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-08-30 10:29:46 [-0700], Hugh Dickins wrote:
-> Oh for the good old days when we were allowed to say preempt_disable()!
+--===============5908284071656517942==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I'm sorry for taking this away from you.
+> commit d3633d366b08f6123fe20f3fd64fd2a8c5f6a5af
+> Author: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
+> Date:   Mon Aug 31 12:23:01 2026 +0300
+>
+>     exec: Clear bprm->mm before dropping its reference
+>
+>     Once mmput() drops the final reference to bprm->mm, the pointer must no
+>     longer remain accessible through struct linux_binprm.
+>
+>     The successful exec path and the bprm initialization error path already
+>     clear bprm->mm when ownership is transferred or released. Do the same in
+>     free_bprm() before calling mmput().
+>
+>     This is required for eBPF kfuncs where bprm->mm is either NULL or points
+>     to a live mm_struct to ensure safe access.
+>
+>     Signed-off-by: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
 
-> > --- a/mm/mlock.c
-> > +++ b/mm/mlock.c
-> > @@ -141,11 +141,16 @@ static struct lruvec *__munlock_folio(struct folio *folio, struct lruvec *lruvec
-> >  
-> >  munlock:
-> >  	if (folio_test_clear_mlocked(folio)) {
-> > -		__zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
-> > +		/*
-> > +		 * This runs both with and without the lruvec lock held, and
-> > +		 * mlock_drain_remote() reaches it fully preemptible, so use
-> > +		 * the accessors that serialize themselves.
-> 
-> I'm very far from being a good advisor on PREEMPT_RT,
-> but I think that comment about lruvec lock would be wrong there.
+This looks like a bug fix. Should this include a Fixes: tag?
 
-This change would eliminate the warning on !PREEMPT_RT and not cause any
-further trouble for PREEMPT_RT.
+The dangling pointer bug was introduced when eBPF kfuncs were added that
+access bprm->mm. At that point, bprm->mm needed to be either NULL or
+point to valid memory, but free_bprm() wasn't updated to clear bprm->mm
+before calling mmput().
 
-Given that this it might mandate for
+Suggested:
 
-    WARN_ON_ONCE(IS_ENABLED(CONFIG_DEBUG_VM) &&
-		!IS_ENABLED(CONFIG_PREEMPT_RT) &&
-		!!irqs_disabled());
+  Fixes: ef5769fc8b1e ("bpf: Add user memory access kfuncs for mm_struct")
 
-in __mod_zone_page_state() and other places where
-preempt_disable_nested() was added. The counters do rely on disabled
-interrupts not preemption.
 
-> Hugh
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-Sebastian
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/33379004067
+--===============5908284071656517942==--
 
