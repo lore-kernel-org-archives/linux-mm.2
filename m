@@ -4,84 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBB60C61DD3
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 09:01:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC326C61DFD
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 09:01:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0008B6B009B; Mon, 31 Aug 2026 05:01:21 -0400 (EDT)
+	id B4B886B009E; Mon, 31 Aug 2026 05:01:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1A5F6B009E; Mon, 31 Aug 2026 05:01:20 -0400 (EDT)
+	id B24526B009F; Mon, 31 Aug 2026 05:01:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E585A6B009F; Mon, 31 Aug 2026 05:01:20 -0400 (EDT)
+	id A61766B00A0; Mon, 31 Aug 2026 05:01:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BE0556B009B
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:01:20 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3402A403F4
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:01:20 +0000 (UTC)
-X-FDA: 85160970720.05.C4DCE40
+	by kanga.kvack.org (Postfix) with ESMTP id 859246B009E
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:01:35 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EFF4B1A03F2
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:01:34 +0000 (UTC)
+X-FDA: 85160971308.06.170B848
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 99000C000E
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:01:18 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l+hhR8ol;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8204B140013
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:01:32 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=atsmSRP0;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788166878;
-	b=MelAUc1r1BHQ1yiBtIFoxEgqvPHdMhf/nA1GWi1SDbE6T2/p0tick4LMMMsoHixZxhE9j5
-	Vo+3pUIe7AR/vl3W1OuT7zJsaxe7/2q0HWzurYXGlUZbtN3w4Rxtaf8CpV95nm3iuRqH5i
-	VH6DKXywk+FopUt6qTzeOVxIeBdOLfQ=
+	t=1788166892;
+	b=0r5vI/nDwLpqeslu26SQihMzJEC1woe2ap32gkxKBwB0X01Ewinmut4nH8eHgZmEZk7Spn
+	3yH2Eje4wtNIRHeybwJibd70yS+P5G2IMFz09dDf7o/53b8Dkjjn6DwSJ8mFXUlo+70acq
+	T4H9EvkbtAl1scdjzMMHBIZHZNorsRw=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l+hhR8ol;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=atsmSRP0;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788166878;
+	s=arc-20220608; t=1788166892;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nL2SfDvHl/slp/Vs9+nqgca0UCvmmLb4F8E84cwkblI=;
-	b=YvSRn3LCrziqqScZXO66EAADf2joamOY9KGct+h4QXXd0jwT/tUuQGK8RwgLNW2DIe3g+8
-	hrIKHuBWB3jmLwFB2c5K0qTVv0YT4gO0U67aB/qkSGuhTAh0i+RCjKbp+7bdhHgQkhDLrs
-	u3/GKt50H/O6ObyKlqt0NaLZUkezoVw=
+	bh=IFUViO5z4Y+XAB5uPhbTOwoEc6WJIUEHXXu3zrTrA4M=;
+	b=PFLYnOz5LMraJtHfsHEGsf9fzJo+FFJ+x1eXZIL0u8d9HoxiBb0Br0Xm+1fTzaB+C6i4CL
+	bsS21ATuWmUofI0xM0B+BXh35ylIyYFVxxIxSso4KGSxafN4A3K1nKXSO6zPIO6EkcWLDr
+	d/eVw/LAWBX10UKsev1ZW54Yn6rWw18=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1F897601DB;
-	Mon, 31 Aug 2026 09:01:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3AE1F00A3E;
-	Mon, 31 Aug 2026 09:01:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 29E7660120;
+	Mon, 31 Aug 2026 09:01:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 112871F000E9;
+	Mon, 31 Aug 2026 09:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788166877;
-	bh=nL2SfDvHl/slp/Vs9+nqgca0UCvmmLb4F8E84cwkblI=;
+	s=k20260515; t=1788166891;
+	bh=IFUViO5z4Y+XAB5uPhbTOwoEc6WJIUEHXXu3zrTrA4M=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=l+hhR8olxSIbnDE85Bd4JLj/P5abWeVEP0QZ8Xh6djK7acwsYipHrnxOgEoYD3mgj
-	 0qKMEQ60bSg3exhb8tftJUa0sAuv7vaqzStuKZo03ofWi6+TV9pLVqgF0AEw8ZBY0o
-	 nsgUZ0I2cDcptI0LOtsfWvTePiR8c74JIk0RqyDY8zheqrIW3FG0H9rcZuALJ0zmdg
-	 wkYq0A8ZOYSOj14zI4BWqTe5VG9h/1i0LZRQ1qhbuS98QT/Peuw2YvMAG09k4z5jKg
-	 ED2GGr3C1pUtGydZoc+mH+qeSp3ctnruMhjqGEBwMvyhXLrjY+l3+15wmVMXknnR4O
-	 eTE1RyWqjE88A==
-Date: Mon, 31 Aug 2026 12:01:12 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Guillaume Morin <guillaume@morinfr.org>
-Cc: linux-mm@kvack.org, leitao@debian.org
-Subject: Re: [PATCH v2] selftests/mm: hugetlb_madv_vs_map: add underflow test
-Message-ID: <apVC2D11bMz-QHic@kernel.org>
-References: <apGbO2QM35VZ8d7a@bender.morinfr.org>
+	b=atsmSRP0yTem4BuDZMH4FBRRe/Fsouc7fL5l8UIs5ZEdOAVY8OX6/MCoUiZ7Q6s6d
+	 Q+cm5WB7bQ8BQyBa+QMyfw0iRTW+SQZ9cExjiQxMu0n4uCoPDSYLxuUaYJ7ONhma2i
+	 PJFRtzXGzQEYNuHAlnSF50cdG6Vz62latGOGtA7OElUGUThBUq9jOhVrH05eI/TCqx
+	 hMaUcgVbT7y4zoBmmejGF2ILrpS941ENdEqRS+RVqZgVqguSIL/YuY6tnU3Mh69RIO
+	 EaQvXwYfqa8IiiGkygQxDD+lT9vlltnFEQY05yKUAIA7mCdE1FvGbZJqTtZ5nzh7Zq
+	 V4lyv/5RfUhlg==
+Date: Mon, 31 Aug 2026 10:01:25 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [Patch v2] mm: adjust out-dated document of __GFP_NOFAIL
+Message-ID: <apVC3tNDMx0AGsQj@gremlin>
+References: <20260829025847.26779-1-richard.weiyang@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <apGbO2QM35VZ8d7a@bender.morinfr.org>
+In-Reply-To: <20260829025847.26779-1-richard.weiyang@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 99000C000E
-X-Stat-Signature: zr5jgcnrwauth19jcijmqe6fnrhzk4us
-X-HE-Tag: 1788166878-51008
-X-HE-Meta: U2FsdGVkX18XY9mYOOLF++uKq/SLO02UG514aNDR3J/bmwOoJCxwsqkQf6VBGsscvKvEHfSAfji//wQkAivBkTcAfCLYowGsh2BoFi3UfBLdyC4fq41OV9TJJ+RVY1i2QX4VWH4qjWZTcUfZVW46Z2w7Pb7J3JtJE9Y5efgh0UUO8pLoo3cFK8AAEY583zf6WJsGVvOyA5Dt72Tja/7BrTJzzlh9MeNnW83F7Ms24WlUwAam1B3zrW4NUXXzTJOjb33AqJwTaHAiD5sVZ5iiJLLtlIEEf6FUKQFJTqerl4FhTiw45zl7uvTTGruYN8ZaUF6ssEg3QIAqE8SCqqwiQZLOfhSqPS4900H6xi9z2a6FelZ2cLQ0Z+Z1CwNQeoWn6KThE4k0reTZ77qz3dWPm7aJ38rZ+Dqju8LY4Pz77B+NyChxhWKXXCDZ2VCUGNRgXdQrZB2UHNb0ecvgyqbg9Ky7nkucyd+8JEdx7CL1Ak1IRgqz08MPmeym8Gq6RQboehJmeC3lJR0y9SYUh8nMzYj9Xgzep7OOH/nT92hoboHBv2bmwBH7sXnehiKzLwXLmMNxpQr4dv7QYtUUI2KjsOTJzHid5T/KA1gerivq4MkJ5io3Birey2EgzAWLThy2fw4duoRW4apS3h6OvdgztaEdn/CYU5AfEXua/5DSQgBhny/apr+k5gJK3+Gbb9bKIeMfH9SvOejAMgvmPvCmSMsMsaeSuZKSmmsdwd6QBvzf6NTTcCW50JZtWm8X8DIq4htg8lVK8idpRb0uoe8jpGouNDuJwAUVr+E1l7kJkWhITN05f6qWMX6e4drR/V83Ls/x4/slk8ityt7aDyJXqOQcLIo6yXLLvUf8hZrFx9PQMSw8tKc11MgMYdH1zlemjotcQ9fWd1ZRcZoqLzbbqSl+14MB+26yefWzViiD0UTVw9XeReShaDDPGVTNv3nt+Wz9TxzH82CTExDvG3c
- OJZt5KAc
- NTiUBT5ixz+Gwz8KaSvmccpGNjjYtHs95lkJvWPALr+ew2531iLeJGZPPuMl+K1AYfO2ZjOb/1/m6TFpv+Mnz3mDMGVteWPQMiZs+EBvGu93bj0Ypw6Mq/H0r91bQBNuMgNLm/Oio2m1meagjDsnHAcO18DFvLreL7Dny9pykpsRGJYxh3DSbVzpEAfKge7B44Dk1zbMzep70r42xMaBzvq6KjE1nXJFSK3BjnlVEQg/DlCM1tegDLGlZJHi+G0mIiNayFPlCDYrvKvxQWcDzKSqIdgLMwWusahPFbM6E0QrhWuk1mFy6qGEzPg243VJj7DM41zxYRfIvQG8Q3PCwUK7J87TAJOvVrFyMM5sl9NL2HvkGtrNW0ZkTAMQmFDI6NJWY1pE1jvWAVkX3NuiCucRNkw==
+X-Stat-Signature: t6h1o4jib3d1oupz7djr5xh4xc5dg5dy
+X-Rspamd-Queue-Id: 8204B140013
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788166892-410127
+X-HE-Meta: U2FsdGVkX19O47KAWFLLTGRoSBgMe2Jspng72Q5VM67DgBABZltGtL62JGltYplzeR5fYRVHeHUpcDbbzwhE7YJ/uzDoNJtdz7JLnNqBqYbj+luKAiVlpVppFBMBlz5GpzyfHKv661UcCjv7levx3pUP7Rajkn12kfIo/TsPo70wzIs7a4yUxA5caw655H/wKUrypb+bD3oVjc3V3fjJhzgnLOC0gmWJaaJIeO2rr5/MDPBY3ufD13pAo1UXtK76v91JV0tjO+yfembczj6nUe/qgHdETv+wf0seT3n2GIMfDkr7+BoTDqOC9Tci/VmjBmLGmOl6JqqoiLwIrmNECOvNoRfec0my576AhpiLxVZh/KD3kvc3G06A1GEt5BI1hUGG7bHpCUVU3fPKm0mIx8i9mEy/d/crEscqU3+Rg9BrpWwFCLroCWtGgjC4HPWml1AhjmlwPqI9rpgta+/K/qD65nfhoBX0gSybP5Y4GXaE3zDvmBaOurIVsBje7gk8ywZCCGvR/0fMlLrDlNgnn1os8vs8wbm9fx0NcNGdzUO/TiXBdjUSswz2os06exSPAS2jCNeQaUeNeLlhU+Ox664PKoc62cAMV7uVAJ6nQccL7lwS+QiB/zn7wDxqiyTkwRNRRY1gPf6EQ9TP6rg3+h7l3EG/bPWIBIOEAygXXCFcAnAthanV1X+TzXdhEGXs40sF1dYx/KWssLlJ/WWfnP0avePDZgSSHRGlCUwtriIcpjIETluNBNk9gyC3G9lCS0dRaNh5zhNYO3iFhvZutMb85d9HGkcvE5ylgHmv6WBi0VRhChmEitPuB39fIUrihFErGnbUYz64YaXSabRtCBjqulOcwwrCvcr+l3MVB2DpOG5fMXBB6qBMu4lE9U/xlWwiyj5ZJYMFCP7NWD2Cj+vfFvc/Bj3qxj0+kvxkpTO2tjstdJZh6zakxfyrmizONfz7UX65KhtGlAeCUxU
+ ilffWO+z
+ Eo+isrZdQBPZcpcsJiUHHgad6VsvaPGC+D6fNZF+gY3AokPGWg1hOeQGinAVSal6siC25Cx2LjPpKFR3eOnbzKWnsUWIx8r4GYiJrIIICl1V8TL+idYLEpCTs6UGn/zxUIjx1KkA6NIX75x3JnSQtISbgirq9+Y2E0jCP3gZuaxG0yDhgeTccJ1O6ixUWkj46i3jFe1cZceLyA3o24a3rm2qvjAT5ZCivlBg/JC4iolZ8BoQhe96WqH9BjrO9Dq9X68PJHm/c4zIfVq9xUrZYD2UMUsxPMqCgfg23yCzUCufpA4DZb49C2upRL/RvovmFvyPSXOoKIWJHVTNDB7Gr5ouV2gqnFGsSwjUo8miJk2cSKDb41XjTqKnP4fiFoxoslxkpgMaVPlqi7lVhJ94mIZs5PkqIGYIeC95yChRYSZjH51g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,234 +92,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 28, 2026 at 04:29:15PM +0200, Guillaume Morin wrote:
-> Add a test that checks for underflows when a parent unmaps the page
-> first. Also check that when the child exits the reserve count is
-> correct.
-> 
-> Link: https://lore.kernel.org/all/alEJkwn5VlTTH_ZX@bender.morinfr.org/
-> Signed-off-by: Guillaume Morin <guillaume@morinfr.org
-> Cc: Breno Leitao <leitao@debian.org>
-> Cc: Mike Rapoport <rppt@kernel.org>
+On Sat, Aug 29, 2026 at 02:58:47AM +0000, Wei Yang wrote:
+> Commit ee040cbd6e48 ("mm/page_alloc: don't warn about large allocations
+> with __GFP_NOFAIL") remove a warning on allocating large folio with
+> __GFP_NOFAIL, which was placed there by commit 903edea6c53f ("mm: warn
+> about illegal __GFP_NOFAIL usage in a more appropriate location and
+> manner").
+>
+> While in that commit, it also documented this behavior which is
+> out-dated now.
+>
+> Adjust the document to align to current code, and adjust the comment
+> while at it.
+>
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+
+LGTM so:
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+>
 > ---
-> v2: factor out tests
-> 
->  .../testing/selftests/mm/hugepage_settings.c  |   9 ++
->  .../testing/selftests/mm/hugepage_settings.h  |   1 +
->  .../selftests/mm/hugetlb_madv_vs_map.c        | 107 ++++++++++++++++--
->  3 files changed, 109 insertions(+), 8 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/hugepage_settings.c b/tools/testing/selftests/mm/hugepage_settings.c
-> index d7917dce3aba..584054736ce9 100644
-> --- a/tools/testing/selftests/mm/hugepage_settings.c
-> +++ b/tools/testing/selftests/mm/hugepage_settings.c
-> @@ -449,6 +449,15 @@ unsigned long hugetlb_free_pages(unsigned long size)
->  	return read_num(path);
->  }
->  
-> +unsigned long hugetlb_nr_resv_pages(unsigned long size)
-> +{
-> +	char path[PATH_MAX];
-> +
-> +	hugetlb_sysfs_path(path, sizeof(path), size, "resv_hugepages");
-> +
-> +	return read_num(path);
-> +}
-> +
->  static bool __hugetlb_setup(unsigned long size, unsigned long nr)
->  {
->  	unsigned long free = hugetlb_free_pages(size);
-> diff --git a/tools/testing/selftests/mm/hugepage_settings.h b/tools/testing/selftests/mm/hugepage_settings.h
-> index 726c73c43c05..548e9d288d1d 100644
-> --- a/tools/testing/selftests/mm/hugepage_settings.h
-> +++ b/tools/testing/selftests/mm/hugepage_settings.h
-> @@ -98,6 +98,7 @@ unsigned long default_huge_page_size(void);
->  unsigned long hugetlb_nr_pages(unsigned long size);
->  void hugetlb_set_nr_pages(unsigned long size, unsigned long nr);
->  unsigned long hugetlb_free_pages(unsigned long size);
-> +unsigned long hugetlb_nr_resv_pages(unsigned long size);
->  
->  static inline void hugetlb_save_settings(void)
->  {
-> diff --git a/tools/testing/selftests/mm/hugetlb_madv_vs_map.c b/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-> index f94549efcc6f..d1f568fed4aa 100644
-> --- a/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-> +++ b/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-> @@ -15,13 +15,20 @@
->   *
->   *  Touching the first page after thread3's allocation will raise a SIGBUS
-
-The comment above is now the description of test_madv_vs_map()
-
->   *
-> + *  We setup a 2nd test where we create a child process, then unmap the page in
-> + *  the parent while the child waits and verify that there is no underflow
-> + *  of the reserved count.
-
-And this one is a description of test_underflow()
-
-> + *
->   *  Author: Breno Leitao <leitao@debian.org>
+> v2:
+>   * s/is adjusted/was placed there/ in change log
+>   * instead of removing the document, say "is discouraged"
+>
+> v1: https://lore.kernel.org/all/20260827030548.16631-1-richard.weiyang@gmail.com/T/#u
+> ---
+>  include/linux/gfp_types.h | 2 +-
+>  mm/page_alloc.c           | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
+> index 190191411009..bfd4c43ed777 100644
+> --- a/include/linux/gfp_types.h
+> +++ b/include/linux/gfp_types.h
+> @@ -244,7 +244,7 @@ enum {
+>   * definitely preferable to use the flag rather than opencode endless
+>   * loop around allocator.
+>   * Allocating pages from the buddy with __GFP_NOFAIL and order > 1 is
+> - * not supported. Please consider using kvmalloc() instead.
+> + * discouraged. Please consider using kvmalloc() instead if possible.
 >   */
-> +#include <limits.h>
->  #include <pthread.h>
-> +#include <signal.h>
->  #include <stdio.h>
->  #include <stdlib.h>
->  #include <sys/mman.h>
->  #include <sys/types.h>
-> +#include <sys/wait.h>
->  #include <unistd.h>
->  
->  #include "vm_util.h"
-> @@ -74,7 +81,7 @@ void *map_extra(void *unused)
->  	return NULL;
->  }
->  
-> -int main(void)
-> +void test_madv_vs_map(void)
->  {
->  	pthread_t thread1, thread2, thread3;
->  	void *ret;
-> @@ -85,13 +92,6 @@ int main(void)
->  	 */
->  	int max = 10;
->  
-> -	ksft_print_header();
-> -	ksft_set_plan(1);
-> -
-> -	if (!hugetlb_setup_default_exact(1))
-> -		ksft_exit_skip("This test needs one and only one page to execute. Got %lu\n",
-> -			       hugetlb_free_default_pages());
-> -
->  	mmap_size = default_huge_page_size();
->  
->  	while (max--) {
-> @@ -120,5 +120,96 @@ int main(void)
->  	}
->  
->  	ksft_test_result_pass("No unexpected huge page allocations\n");
-> +}
-> +
-> +void test_underflow(void)
-> +{
-> +	pid_t pid;
-> +	int pipe_fds[2];
-> +	unsigned long nr_reserved = 0;
-> +
-> +	huge_ptr = mmap(NULL, mmap_size, PROT_READ | PROT_WRITE,
-> +			MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
-> +
-> +	if ((unsigned long)huge_ptr == -1)
-> +		ksft_exit_fail_msg("Failed to allocate huge page\n");
+>  #define __GFP_IO	((__force gfp_t)___GFP_IO)
+>  #define __GFP_FS	((__force gfp_t)___GFP_FS)
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index ab385bc252cc..146f7e0a9462 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -4804,7 +4804,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+>
+>  	if (unlikely(nofail)) {
+>  		/*
+> -		 * Also we don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
+> +		 * We don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
+>  		 * otherwise, we may result in lockup.
+>  		 */
+>  		WARN_ON_ONCE(!can_direct_reclaim);
+> --
+> 2.34.1
+>
 
-ksft_exit_fail_perror()
-> +
-> +	nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
-> +	if (nr_reserved != 1)
-> +		ksft_exit_fail_msg("Unexpected number of reserved pages: %lu, expected 1\n",
-> +				   nr_reserved);
-> +
-> +	/* Force the fault to ensure the reservation is consumed */
-> +	*huge_ptr = 0;
-> +	nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
-> +	if (nr_reserved != 0)
-> +		ksft_exit_fail_msg("Unexpected number of reserved pages: %lu, expected 0\n",
-> +				   nr_reserved);
-> +
-> +	if (pipe(pipe_fds) != 0)
-> +		ksft_exit_fail_msg("pipe failed");
-
-ksft_exit_fail_perror()
-
-> +
-> +	pid = fork();
-> +	if (pid < 0)
-> +		ksft_exit_fail_msg("fork failed");
-> +
-> +	if (pid == 0) {
-> +		/* Child: Simply wait for the parent */
-> +		char b;
-> +
-> +		close(pipe_fds[1]);
-> +		if (read(pipe_fds[0], &b, 1) < 0)
-> +			ksft_exit_fail_msg("child read failed");
-
-ksft_exit_fail_perror()
-
-> +		return;
-> +	}
-> +
-> +	/* Parent */
-> +	close(pipe_fds[0]);
-> +
-> +	/* First unmap, this will close the vma */
-> +	if (munmap(huge_ptr, mmap_size) != 0) {
-> +		kill(pid, SIGKILL);
-> +		ksft_exit_fail_msg("munmap failed");
-
-Won't this leave the child as a zombie?
-
-> +	}
-> +
-> +	nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
-> +	if (nr_reserved == ULONG_MAX) {
-> +		ksft_test_result_fail("After the munmap, HugePages_Rsvd underflowed!\n");
-> +	} else if (nr_reserved == 0) {
-> +		ksft_test_result_pass("Underflow not present!\n");
-> +	} else {
-> +		ksft_exit_fail_msg("Unexpected HugePages_Rsvd=%ld after munmap, should be 0 or -1.  Repeat the test\n",
-> +				   nr_reserved);
-> +	}
-> +	/* Make the child exit, this should restore HugePages_Rsvd to 0 */
-> +	if (write(pipe_fds[1], &nr_reserved, 1) < 0) {
-> +		kill(pid, SIGKILL);
-> +		ksft_exit_fail_msg("write failed");
-
-Same here.
-
-> +	}
-> +	close(pipe_fds[1]);
-> +	if (waitpid(pid, NULL, 0) <= 0)
-> +		ksft_exit_fail_msg("write failed");
-> +
-> +	nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
-> +	if (nr_reserved == 0) {
-> +		ksft_test_result_pass("After the child dies, HugePages_Rsvd is properly set to 0\n");
-
-This makes this count the test as two, right? 
-And do you need to re-check what happens after the child exits if you
-already detected the underflow?
-
-> +	} else {
-> +		ksft_exit_fail_msg("Unexpected HugePages_Rsvd=%ld after the child termination munmap, should be 0 or -1.  Repeat the test\n",
-> +				   nr_reserved);
-> +	}
-> +}
-> +
-> +int main(void)
-> +{
-> +	ksft_print_header();
-> +	ksft_set_plan(3);
-
-The comment at the header implies we've added the second test, so they plan
-should be bumped to 2.
-
-> +
-> +	if (!hugetlb_setup_default_exact(1))
-> +		ksft_exit_skip("This test needs one and only one page to execute. Got %lu\n",
-> +			       hugetlb_free_default_pages());
-> +
-> +	test_madv_vs_map();
-> +	test_underflow();
-> +
->  	ksft_finished();
->  }
-> -- 
-> 2.39.1
-> 
-
--- 
-Sincerely yours,
-Mike.
+--
+Cheers, Lorenzo
 
