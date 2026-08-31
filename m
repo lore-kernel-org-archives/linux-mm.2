@@ -4,91 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B1E3C61DE2
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 11:28:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06D5CC61DE2
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 11:30:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9732D6B0092; Mon, 31 Aug 2026 07:28:48 -0400 (EDT)
+	id 1FCFB6B0096; Mon, 31 Aug 2026 07:30:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9238E6B0099; Mon, 31 Aug 2026 07:28:48 -0400 (EDT)
+	id 1ACFC6B0098; Mon, 31 Aug 2026 07:30:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83BAB6B009B; Mon, 31 Aug 2026 07:28:48 -0400 (EDT)
+	id 09CBE6B0099; Mon, 31 Aug 2026 07:30:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DBC06B0092
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 07:28:48 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D73BDA3C10
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:28:47 +0000 (UTC)
-X-FDA: 85161342294.03.20D40F9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 507AC20006
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:28:46 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SB3scY7d;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788175726;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D2F926B0096
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 07:30:54 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 614B41C2033
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:30:54 +0000 (UTC)
+X-FDA: 85161347628.16.56FE183
+Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 77E6C1C000A
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:30:52 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=n38HeTaj;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.224.53 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788175852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gqj2K9+wp90YvEKZMSvL1LZpZwjNHSzCNuGCNxMefXo=;
-	b=JplhLnZa7e0mc+gGSA9i7rNng3/npWy/rLqO2TcUIrLrg6jR2pkRd7N0CraOug4jA1rGSP
-	3ws4Cme5LWh3HU7ukNPeSjvF1C+fwmOYq1PjyoiHxxSzANBHCAABIgAqUVgfXToC2UHYff
-	bANbByhpVhi/PR09RgCKjHejdP1Yjvw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788175726;
-	b=viaA03RCE4QAsFeICCQ6XWUCq05RaEYl/Fu7gl8nr43HvwvSrDKkk1GtMRVY3v2DC93ODx
-	LcDeU1EUE18Nb5S8exF3fv8YmadMaRkt1DPmuBw5fbByHz1i7v38xnKiuLCHTK6kG6EHIG
-	VaYjmmuIgz3RVbL2Ok+A1RXxx2JaHhA=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SB3scY7d;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7ABC960218;
-	Mon, 31 Aug 2026 11:28:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1151F1F000E9;
-	Mon, 31 Aug 2026 11:28:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788175725;
-	bh=Gqj2K9+wp90YvEKZMSvL1LZpZwjNHSzCNuGCNxMefXo=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=SB3scY7d63d/eJqv4Mh0utENg6FNoyxZgIZfYT9wskjSLb93/ewvpTUimcqX/GycD
-	 ea0MQ6BpzM0/16qegjhq+AUZrlZpEHHkiArnotvBjmtwdKodlaMy+08y3hHkQIK6AC
-	 kAbh/Rl8Kbbr3alcBNFvuwg7AztwQLn0+63qIN6qn0nB0HRxIEV6moLayEbXbib4m9
-	 wcds6YEC6MT4RzN0hGJlZgWRNfthKz7niDrcjOISOnnRkNo4A7wP2kMVd8VRT6RJC4
-	 iSDkFFPBdt7alnLg0sK3x/QULuPoYlRtjTIkKJcPOMir+/q1BUfoP+kPGj0atA8DXv
-	 am0ubi84jP7eg==
+	bh=B62KGiNz54kxYfvsaX6Te6uL5bqj9S2a+691iHGSfMM=;
+	b=MhvgxXxP+bTNs8XOe1H79O+koF7dRbzAQnbHBFPLd7C/TpJAxswoAq23j8umcc61Fr0Z+K
+	LGZhrJCHEYtTQ277DWAiHQuLTJx8Jqa9AwP3i1kxWD4fpkQpSmfTd4rqv/+Nv5PSDWvmiW
+	QRj9XeH5iCmoC0pR19/4/1nYcr1xrLs=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788175852;
+	b=e8JNdDVJNd4sCbUFzpPZ5CFLF2nuGuOakcqzun4opXhf1Bhpda214SWz8s4BCXyHeHl9jS
+	k0Kfy61PQuMhabH+w2LueTmo8xr6P0jGUrNcDZDQ2U1/l0A9Sz7wy9fzgsjzSbxB3gx/Wn
+	eeERIq9kgNOHWSjeZzDs25/ki/egjio=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=n38HeTaj;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.224.53 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-66e3d262d43so1035320d50.2
+        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:30:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788175851; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Z49Hh03/Xcso+jRhA82J/hpXX6fH7FxiK5uxUo2RMv/hMu+8Omm7msB00XTG6Ws5Eu
+         SVssFXwXpfUJyTre4pgEgLnDgX/QA+tN6VrmSQ02Msf1F+ImE8rjV9MQajOJyoQVWA/y
+         R08g4amnK2AHRwIY3REHS2b/9RbMhcRI4sikPfrcYuA/fRXQVXjHpKKDFtxbHx2T1ZqU
+         Bp5RN44pHysy78f0WeAugVx6yT6nlOLgShWzRIVEyybTeUCHdGiz4Phzod2yfgzTqJAs
+         O/gDrSH/j343erO9lVfgeU8WeOiWc+oZq2i9fY1puE1fks4jjgz74DkHlrz4nChd2Plz
+         K6TA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=B62KGiNz54kxYfvsaX6Te6uL5bqj9S2a+691iHGSfMM=;
+        fh=bSNMuemqiPzMljI29BpSGmk20/sD0hTOvQsSW8KUKxE=;
+        b=bMXrOCYDm/I18LyatJiwK0rNOF16axrDyIoPQB2LurIxz8PsuxOEupHly+jXElKGFZ
+         kK/NidqDHUJce6UZBc585ctN/buHlH+VBAEFiOY9/6JZNM+DI3nokVBtAxqmIUuPz/f3
+         oWiDHy5rRxqO+JF+EbzYeKD0/EJQh4AQ1Y4AWZsyFLh0cq+Iu5nniJhc1Tnh53sOSSlu
+         z5wq/6MKzGN3g9lLJT5MQr3GIr8P4tTfJAY1m5HAr3kzgB+2gpeJMHFYJkVQH8EAX9cw
+         HXRz6Ibmt+tVnXzmaEJuJXUlXrNO+HdXpMvjYRcKwpYXe74hg5Lh54uOo6oupvdh7XPj
+         ES1g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788175851; x=1788780651; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=B62KGiNz54kxYfvsaX6Te6uL5bqj9S2a+691iHGSfMM=;
+        b=n38HeTaj2xR+dYdCR5KFvdU5YpT5tBgtwKvQGT0GXLeEo1v/7WfurpiMvzavww/p0/
+         SIZGykoQxnLlurLMZOE0H/hvTdokQtqKEgnlILoVFXRao/w6QKAWsH1G9tKS0FNmiXLn
+         wJY48CM91p36wI4riFp/tm+zanYg5ZzdBSCRH6Rc22zEbRhw6k7aFZUJwi8udF0G0vgB
+         pJRr/ShEBlS0mL0/oghQlU/EN3uooYDO+Dd15jTWddBsUAcMdYUAivvqwME3Rmieu8KN
+         +E3y7JS8FDHyq/t8kWYhdMB3Zha5HuioUipQ79SE5IvHoUyNUYfu4ftk+S11DnEe29jQ
+         6eWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788175851; x=1788780651;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=B62KGiNz54kxYfvsaX6Te6uL5bqj9S2a+691iHGSfMM=;
+        b=haEaZJ4/vFhsIJFQPackE0+aDxJxoe4zWQUYiajMC46EKNeQKryAteevSyHp//g71y
+         YEThTeXgLyJb8Qg/gacwXAN1K6rSmW9nXwfSU9p3MiR228LBglRljPB6JFhXiJzocGC9
+         nklpTThXHlENQigQfHLs110FVOQfZCpaiedjjO2MQBV9pf9BNDMqcqiTPmkgLyLyFuVE
+         CdpWfSmtz0tfiUGjePvoEeeW64qLZDXsYDi5mPk7qQMy0Zg/Wm+Ov+cWSW3LdxA+qk1p
+         FCrPEVZbW0kyrbqSbSr/XhFsE5NDf/+PxDBfjI+ixqUaS5mxtvkb55nChRotfssp11DL
+         CIjA==
+X-Forwarded-Encrypted: i=1; AKwUvByu3jBQgel5ii6ySXLbUDNl01KQbHkLuNQEmFFa7owqhj1gLRSfEnb4/BGNBYcmV3rZw4uCJr58Mw==@kvack.org
+X-Gm-Message-State: AFuF++ksEUXV14WkGwrXGW1RezWBKaBPrQUh+QgEkScKuhPNYuCti6/e
+	xU1eqrApNR/d6bEA0mr/weuTQsaJm3LhrjPA1hAbCAoSDJZGxD05jU5A0H8+WptqLC5EHlSVPSC
+	GMFd5H1PgOaYmxKcM9uX+ZQW3Fk0cqUY=
+X-Gm-Gg: AYBFou19svbYdHUg+2Kb3SrXdqzHFUgy6fHFbeLbwsVt7UrE35LFFY+A6SV87hXAIl4
+	+FlYObEpcVLvu38+yI0IqbO62PpX2la++rAL2M7pqACm2ffI3qwRlUNX7ZktMZwfw2t8gnS1v7b
+	CqFUY50u0OuFIBg580g14ljYANdPdShGi+ANnw4nz/tyheeHD23RmXuo5yhDHJ20/BBF7w9TxeO
+	F+URv6qmm7eQMDYRrJ0fjTKLQJ5iZLqO968IFRhXSosVTS973qUM96TVinHrbhLozT49b0TerQ6
+	ElKMyoDxzC4V8QhjNr7z2ieRj5joK9+x+64VsT39K04rxDXjYwf8
+X-Received: by 2002:a05:690e:12c4:b0:66e:6486:e809 with SMTP id
+ 956f58d0204a3-66f87597547mr2148d50.30.1788175851291; Mon, 31 Aug 2026
+ 04:30:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH V2] kho: Convert error handling to immediate return
- pattern
-From: Mike Rapoport <rppt@kernel.org>
-To: LongWei27 <longwei27@huawei.com>
-Cc: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
- Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, hewenliang4@huawei.com
-In-Reply-To: <20260824024448.550552-1-longwei27@huawei.com>
-References: <00c96a62-f783-497c-a7ac-1de495e4af06@huawei.com>
- <20260824024448.550552-1-longwei27@huawei.com>
-Date: Mon, 31 Aug 2026 14:28:39 +0300
-Message-Id: <178817571946.3691424.3757525664520719609.b4-review@b4>
-X-Mailer: b4 0.17-dev
+References: <20260827144151.486192-1-ekffu200098@gmail.com> <178816183737.3691663.7482057515031348878.b4-review@b4>
+In-Reply-To: <178816183737.3691663.7482057515031348878.b4-review@b4>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Mon, 31 Aug 2026 20:30:40 +0900
+X-Gm-Features: AcwNN1Uqx3mPqCwuwqOkUz_hqxHT3iPOElbh9dodPcQG9GTSKkZdXkVBQFWRaI8
+Message-ID: <CABFDxMHQjXUhbkUs_5Ki7Q6ZpQkF6Y-fDCS+LfxERFv09UgOrA@mail.gmail.com>
+Subject: Re: [PATCH] mm/mm_init: remove zone_absent_pages_in_node()
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 77E6C1C000A
+X-Stat-Signature: f4b7ro81ee8pj8me1utnzned96wu47ba
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 507AC20006
-X-Stat-Signature: ezrstat3yx3u9izzya8pai3gmt94h57i
-X-HE-Tag: 1788175726-626459
-X-HE-Meta: U2FsdGVkX1/WmJuzxsJr4eU0d3arMvI/xJsNG745UY/NfFN81kswSsyIhKd98iMxDPxPtCA6YExVPbCZ/+w/18okjf+yZ9Tf/Q6owkfW9CKrqi48mfzysuTKrAmjzrgYec1Iueg5Gl0q4gOA46jDca2knT+Mhm6iCrlH8K46uPKVrjcz5toOuYRj7ClhkHQA6Ngyn3LARzBQw4dNW303dRf50qn7AFJD+kQbd2tpXiMLKc7LRzN4crItDFWKSeZtq3OoWQ+LzZOHFkXZS6oRqecd58qQ1AgLr/1Er/8HQ5I20m1b4hBMX8cq+ck66xZf/mvR/DuWLQsNmMT4N8+El5tSGitOdIj/LmadxjdRnReCoXVLDrAM8L+QYUuh4PSAsVxl6sxIefz220Ebf0e9IhRwIAvHaXWTyC9nZNLKPyfkAAB7s4Q1EVWm/xeEMwlqxsN1GrLqC/aFZ5R9nzZ4NfEZeXerCXhAI0ub50tT+Hc7RszPH1ECqrUmBZXOHKa3ADbTM+JDU7HhYoaY4PFu7bK1ar4TQatrrHT/X1Edr8m4p1ddtPt1NVdKvyQcK2ZY/gXqXQvGBNqsMJekMciyG1ynOCJfG1VuMrUxTbRXGYYRseB//lISBUjTEJDR7fvcO+5hRkdAbCzjShh3W+CUrk1bYPHJucP9bffS2H1KpVidCzt9fAZx5wg/um43zoD/7vubrE4xGcZJBp1zzQRIOlH6K0vUtM8BHePLev3n+eHiFVGnd9dg4oNd5tx/5cbgSaixNQbaWEIf92+UGOXbuHk4QBgygc5asKnDr210sQy8UiPriruof4MEjfZxKxmaTNsVaQN0ArcOIOdvS30fML+dZv3v6nzML14JiuSUx9gPQMMOPqPKIaaNOrVnmUmXAtWxPdDQULLawV6/J7tHZVkfMdee/KA47F0E+HpbKbIa0xJmcfOw50Xz22Fw7EHubvnw9vGy0nm0a64BUM7
- LuGiNCzj
- 8gXRYaRthPwmt/gpwVbD7R07NyXiIOaTCiOar7/RreGe0ZI93MXAoVBMzS6gXKyK/ug+e8rCfxZc2WfG50r5IKR6vPTSG4QclV4uIw8gG5Hl5bg1Jmhpjqz5Z4Fr2ancNVPqy4xWYBqwis7RIBGzfrED+giepgS7QctIe9TT2BeO3A52I8QSp5FGZhUK9RzAlcFGgWsLy93aZlj5uEs+p5j02OK1ZhfTmjR8QbpDK7x2cL8k=
+X-HE-Tag: 1788175852-894170
+X-HE-Meta: U2FsdGVkX1/hMlEqRMiZR8tZHKc5+Ww22UAqmAK2PhaufE9U7P+cTr7kc3pI7kzlbktl2VD6z9WXGcK8XxjFFmF5IQobNAyoSzP1w7eQcjzmw+zhhoxX0Nk8kL8FaL5tz9c/LzcAhv3y4w8vmfOq9l0hbqWNwxkv4c9vKREh7V+AqStOH4py+/Vq6fhi2Zuza6O3ouJMo0mxXtiXqFp9nvEZVQUM0Myy/t+s0nfY55zoZIVzt+P+oKfyDpmgs1W1OEvT9JqqIL8B6TbOEcO0jJfr1qW/sSgCg+Ph6hOR4YmAnSDL1pk13YJzvuFTlhqm4Ym9gGwbxGFeW8uCZeCnJnT3v7uietNvg1UGFEpqQjivbvhH45LAkzi8Uc3Nskk1eVu0I99lIr9Te1lvuFFLXoGYBVcruBWDVP5SxIrxC1PzotkI7v0qK6cZGXmIWuSWs0rt8AaNOmBi7lgmbmapDkwdkekX/4dcUGelo3FNBVFI1J+AR2XRROEuBhBLlVg+XvzVkauThOPAxt/1R8R0lleVtG0YiOnV8GHgq6ij17yF0yl106beJZqmGFXnZwzjjEEx93sthMXVlpYDGi9uW4QBJYEK7tKOZkvhv7z+yEdHXoqeO3Qv5WQOlDG31kKZnaxZ0tOfUFFNya2KhwXo0YyVXnX5VtV3w8CAG2idQ+NPlwuPe2IZW5beCQ4wDCG/Y/h0thcI2q34gzuXU0IrN4TCCg8X9EEJYFZHMRGDbytODtG6fHB3D8hGrovf6SeeFlGFJdymaedbzJ85hhFgiuZ3NTSgU0yysvUMoofy4OGYr+E8zDRRWGPd5ugJ13veyxwEBoe2wov/LbRsP3viWsZuWWPuicpTUpfBji8/AooMJrGmW0Knn6C4GrbP+8l4yQQodfxlWIYnJc/ZHY1RY8oCFHCvIla/urguoER5cPu4G0bm4blEmuzkZwUGkEtm9QwQ8MsZl/d3KoNQlEu
+ IDJUhsnM
+ fwxEOA57/dI7ujaXQs9qfpyopHVWYv/VgVSRYH+14Vrk7KzLJ7Cpu2LRCtWq7w6g5OCyK1Fs1ZrG1zbg2xXyDcZ5j3gfRalHbk49i9mhoXBiAlB7Zwjgq1LYCx5O+AMwiPbW765TY4jbZyhB5EeTVBjHRI555IqdjWPB0qIDV/YJEeHxmsEtDEAEO9RQ9yhpzFz0ycVSuVPjsUZQ6Feooe6AAw2qZKJLu4CF/opNqhAh5niQRV4dFqPDjAOSo086lEM7g0Tv6arrbyqyOertt1SNZISg1jM4q5htF7S1mgI1FpM7YG8vkphA51VbcFDLE90cZhr0WQAhUcthcAwR4UPsUeAdLEvKeYJgldWXAjqs/GG4TRYA8huhBpW8Glu/d3MNejYtrZdjYghN3E5EnigL1EG/OnGDUgSpTHAA4VetmK2mGBkGWTFMOjo+5pSY3FNbdV72DOjgVRTqchqzqUQ5+Zg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,29 +141,35 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Hi,
 
+On Mon, Aug 31, 2026 at 4:37=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wro=
+te:
+>
+> > zone_absent_pages_in_node() returns 0 when the zone is empty and
+> > otherwise calls __absent_pages_in_range(), which already returns 0 for
+> > an empty range.
+>
+> Right, but it loops over memblock memory for an empty zone to get that 0
 
-> Replace the chained error accumulation (err |= func()) with immediate
-> per-step error checking and early return in kho_out_fdt_setup().
-> 
-> Two problems with the current approach:
-> 1. It continues executing FDT operations even after a failure, which
->    is pointless and potentially unsafe on an invalid FDT context.
+Indeed. How about adding an early return in __absent_pages_in_range()
+to avoid unnecessary iteration? I just want to remove the wrapper,
+which never uses its zone_type argument since eb0e5b61369f
+("mm/mm_init: don't overlap NORMAL and MOVABLE zones with
+kernelcore=3Dmirror")
 
-Did you actually see failures here or was it an LLM suggesting that they
-may happen?
+        unsigned long nr_absent =3D range_end_pfn - range_start_pfn;
+        unsigned long start_pfn, end_pfn;
+        int i;
 
-> 2. Bitwise OR of multiple negative error codes produces a result that
->    may not represent any actual error, making debugging misleading.
-> 
-> Early return fails fast and preserves the original error code for
-> accurate diagnosis.
++       if (!nr_absent)
++               return 0;
++
+        for_each_mem_pfn_range(i, nid, &start_pfn, &end_pfn, NULL) {
+                start_pfn =3D clamp(start_pfn, range_start_pfn, range_end_p=
+fn);
+                end_pfn =3D clamp(end_pfn, range_start_pfn, range_end_pfn);
 
-The caller does not care about the exact error value, so the diagnosis
-statement is moot at best.
-Moreover, libfdt does not return Linux error values.
-
--- 
-Sincerely yours,
-Mike.
-
+> --
+> Sincerely yours,
+> Mike.
+>
 
