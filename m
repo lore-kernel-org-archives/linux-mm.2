@@ -4,117 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B03BC61DE2
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 08:42:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22FB0C61DD3
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 08:44:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4AD76B009F; Mon, 31 Aug 2026 04:42:53 -0400 (EDT)
+	id 202A76B0088; Mon, 31 Aug 2026 04:44:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D21976B00A0; Mon, 31 Aug 2026 04:42:53 -0400 (EDT)
+	id 1DA486B0098; Mon, 31 Aug 2026 04:44:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C11336B00A1; Mon, 31 Aug 2026 04:42:53 -0400 (EDT)
+	id 0F2876B00A1; Mon, 31 Aug 2026 04:44:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AE2E6B009F
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:42:53 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1D8771A041B
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:42:53 +0000 (UTC)
-X-FDA: 85160924226.04.00D134B
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 87E86120006
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:42:50 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=NuL98E4D;
-	spf=pass (imf29.hostedemail.com: domain of junjie.cao@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=junjie.cao@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DD4A46B0088
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:44:13 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 66F8914020B
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:44:13 +0000 (UTC)
+X-FDA: 85160927586.03.EEF652E
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 889EE140003
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:44:10 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=cevqBSxQ;
+	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788165851;
+	b=JzGlkHN3QEpbvNQaffWELxc6EsXRctM2r2FqocPZvVbm2yqgrem8nd6/Aa8fLdaC36qL6X
+	CmqggTVCC+RGspe1PQh5FRvyaAiQe/Fjx8PErcSCZX1XIz2k73V1l4Zk8TuvmVh33E0f84
+	d3ICLqabMBheMNMvalspo41lhMe3QgM=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=cevqBSxQ;
+	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788165771;
+	s=arc-20220608; t=1788165851;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XulvYGT1XgPT2hqf7DXRX/4cLPs0Snuf01uZUlrmk8s=;
-	b=pBKK6jmF6ryXaf1NlFWv3iYEuvgFk4O6N0gYllmMRr1RzeEL8J9Z6+j0zO2a7NXcX1i3RJ
-	1jKkzjsA1XBlFBMKG+q46qfUAb1o9S+FWcWi6z74bCO58nvo7mFKZHoHc9YeQAIV7FXfLS
-	+jXT4fzMkcEgM80Pa/94gGgodRnV8TE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788165771;
-	b=E63EYguzOYKZiRuUeL0/r7fOMdkecpfc/I8TBn4qC2d2hBIUnenOB1wrrXkZQdxFptSndC
-	XO6R73q7T08kC5lgEVwsMuk0yTHZpVTrWX87gLa4nyLpsDqfTZXdZMWbLHOe6W3wcxi0bp
-	frAg1hS6ayYSdjL4i/qvW/Muni999U4=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=NuL98E4D;
-	spf=pass (imf29.hostedemail.com: domain of junjie.cao@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=junjie.cao@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788165771; x=1819701771;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=lHmdDF02yFT66UBYvYHsfNddxjkgE25gdJ6h30WIAHM=;
-  b=NuL98E4DR9K7r+aTWFZgpme9hj5+K5/qOT243xeGqqzcRrFh+qAip2Eb
-   BzQ9P5QrN4q1NqKLV0Rvb2qI+MijgJfww/4wu0GU6pklzl15zx4Kzy8Uc
-   0CyiJ7gahXrVcMhbpPfdxcHIZQMP38GdIRVAFjVlnC66UEldAjlKfuyo3
-   adl+vbopvygnUCX8beiZ/k7env1LpVBoanuOGH6KLYTwCrubSYphzI54P
-   vXY8dzeO3K6XGFmEsJuV7Z6UlQXXwDPZeZuFXdv2QQA4vGygPHkO0FeZu
-   yLTEUINjqUxWwlcZK+PTAUBj9qZBe3tp6WOBjHb/eOiyLTIAYf2fctRQ3
-   A==;
-X-CSE-ConnectionGUID: 5aTUbFyjRmKTcN4XUl2rVQ==
-X-CSE-MsgGUID: CA16HNSFSB2ZPHpXq5R+wg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="88421093"
-X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; 
-   d="scan'208";a="88421093"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 01:42:10 -0700
-X-CSE-ConnectionGUID: 6+hsm4tSSCiMxbAeVSbiJA==
-X-CSE-MsgGUID: vBtDvO+CTbiJvfGMfKdOUQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; 
-   d="scan'208";a="269326248"
-Received: from junjie-desk-dev.bj.intel.com (HELO junjie-desk-dev.tail2c02c1.ts.net) ([10.238.152.71])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 01:42:05 -0700
-From: Junjie Cao <junjie.cao@intel.com>
-To: syzbot+e4aa91d7f20c34417d4e@syzkaller.appspotmail.com
-Cc: akpm@linux-foundation.org,
-	dvyukov@google.com,
-	elver@google.com,
-	glider@google.com,
-	jannh@google.com,
-	kasan-dev@googlegroups.com,
-	liam.howlett@oracle.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com,
-	netdev@vger.kernel.org,
-	pfalcato@suse.de,
-	syzkaller-bugs@googlegroups.com,
-	vbabka@suse.cz,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	jhs@mojatatu.com,
-	jiri@resnulli.us,
-	vinicius.gomes@intel.com
-Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in __mmap_complete
-Date: Mon, 31 Aug 2026 16:41:59 +0800
-Message-ID: <20260831084159.410474-1-junjie.cao@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <6a934778.4d659fcc.734b4.002f.GAE@google.com>
-References: <6a934778.4d659fcc.734b4.002f.GAE@google.com>
+	bh=etMu0VI5+wpQmX7ykhBd022G3QB/fUHBgr7JAI3YPJM=;
+	b=Ci1S/DsfF3i9rtUD15MJPz2DiY6rLguYWlnlvK70wCU/cQQrAmW59JAghWVWmxUS4b4B31
+	ONgVSRfNqztrSVke7RAuXkai/uUIVNWl9aIv9PB76RwL8mQ3AqRdeJkj5tGFxvZFXyFaFj
+	Bt1Ltff8YV4ni8+YOHN7ZJqrLDvEa9A=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1788165847; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=etMu0VI5+wpQmX7ykhBd022G3QB/fUHBgr7JAI3YPJM=;
+	b=cevqBSxQRajevCQFQ+HdGO4EPC6guL4gROTd6mkT8PBKMewT39P/Wb/Xqszd4qDN4rXu9YUGqJ78+PwSYkrm+ffCsQp877qX4kL1gbZYajT+ituC9IE5CFNRt+IiSdeVny1nGZIIq3Z9eAUBfdJKB4UkAGH+8tYsfandruLw4Po=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=20;SR=0;TI=SMTPD_---0X9vX2gk_1788165843;
+Received: from 30.74.144.115(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X9vX2gk_1788165843 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 31 Aug 2026 16:44:04 +0800
+Message-ID: <fc1721d9-aee5-4ffa-96a7-9f9b68ae0871@linux.alibaba.com>
+Date: Mon, 31 Aug 2026 16:44:03 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: u3zr9xh9fo68qfons3hk7tj6gbi7ehup
-X-Rspamd-Queue-Id: 87E86120006
-X-Rspamd-Server: rspam02
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] mm/mglru: make retry logic explicit in
+ isolate_folios()
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
+ linux-mm@kvack.org
+Cc: axelrasmussen@google.com, baoquan.he@linux.dev, chenridong@xiaomi.com,
+ david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com,
+ lianux.mm@gmail.com, linux-kernel@vger.kernel.org, ljs@kernel.org,
+ lyugaofei@xiaomi.com, mhocko@kernel.org, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, stevensd@chromium.org, wangzicheng@honor.com,
+ weixugc@google.com, yuanchu@google.com
+References: <20260829074204.45304-1-baohua@kernel.org>
+ <20260829074204.45304-3-baohua@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260829074204.45304-3-baohua@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1788165770-682450
-X-HE-Meta: U2FsdGVkX1/le7HarpprZ2h/grJig3pNeCRECGr1pNmScexehfBvwFbdLb2MQYIRHdCagBcfbBKnnJQLLoQ1YT6XCIlBR3Mmo6+wUZXWEjmYbMdOCmOXlWU/QktYMq0bTZEDadudtwKBXZbJMX72dckNAZQ7SfFQUMO1oDXFkYI3Lrrny/uqyI+4+l58hcMq9WhLr70nn8SIGrmwqLRVSbICXyC2hRmoz1tlwtULkcjZcnaeeZS4TrFQCuAFw81dK2sQnxQ1GjYMq/Yu4AQKIU+ExK2AzTUQ83AmB7Y1XKojp07/wyQXTRDKJvMict3PKkcdMFy5JX4+0xubpiO1heN2o4ds4MwZYJYpSp4mQ3ct+XD1VVxtORGmY3GqUhVwcx+G8supnvL73hSkINwmg2MwSCsG9DWA+YygIK4S7vUuKSrGOiUNxkxOaCLCyZhcNm7dU3ZVAsDoBnHJHxJtApQbHUyRWeWvVTZVsH3DwyWG5Oa6ExEDozWZAlAjI0aSfNOl6KWvGcMP4c4wmgf1ZP4Pf+NcqcA+fGvgSh7gpCQI0CmIYnmCQg2fYhIlB4f6EYgaei/DiPsmxhG/c8LZa7f+7Vtvj5Qy5Moxn8MEYdtpVXvjJlROairBTd3aLMDcOmqbB6e4SDA3KczFXDHrQpfno41w35gysNDOAudoRTekYBHz+B1KM91Dj2a3CBKQ3t1646q63bTHvDfWYhdigEMj4zbXXttzINh2jSXIco/e/A78F5AvEpNosmZzk/UpImfHIOrOMNKX4kz1ge8/zPHa7jA92sxb2sr5lK+oSljwKhjs760tDaKUikxdANsPF3bSqrFhmx5vfeD4EA3GUM2cWW47j7+504IOH0Uux1X0SjBrZ7ikSaPfA7i79avAgfbQ88K30uneMRjuceZoErfBDrkSJTRxME01qQGiqQo++umTBVUzD81l+LSh/QFAGHIINv7egg+HzsxG/HF
- Rddgk5tk
- AbIBlRKlbz9ExJPeldJ6DAlp9Q6uNeMel+aAgGAYFuJqnfo/7K4pGSSZr1r8O7hVd8igXkb/iPinSZ2d1JmXZKa3r8IZE0xdWOlaoHJpRUB248q7IHmVLHA5fMrFsKFRdA28/p9OUMivaPjbe6uO0+YYWjsmyTfMA26GQqSRskuj3GpjiHn/qK24hQFr4o7f4OiIDpwlBL+oqWXYjZCZ0HPVgZJht0aKBF/urVdXl+Mh1b0VpNM7ioHanaY9ve2/7EYmsGfKBqY+WTLraahuIYE9mOkhJ0Vzp4M5berQqqzQ+Bgsl66szEVyCLXTwKTEYHPx1Ep+Ei1KUz6orQ2qimJxw/6l/54lyYOvlDBc+dTFidvoK4UIjTLd4/MMbYSKq2vcz84urFwbgELg0dGoUYjtkZQ==
+X-Stat-Signature: 1j564crhy14cf7daj9u1oc1cqcqyqwqb
+X-Rspamd-Queue-Id: 889EE140003
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788165850-671334
+X-HE-Meta: U2FsdGVkX1+398sAZmVhmJcydVK6nHMbxg+1FMYqcoIEWbXu83xtjl88yJK3oHgOyqVwYXGUUM53HVOa+P5JqVqg9S+XRkEdN2fxuOWOu6V1YtlapMA44Mvr4BWSQ0alvA0YEwzctfOSGHVE1ggO4sllR5NVUu9sho5YaklvBlxU3wbIUKvyp1KszQaWVRuAfqg59DKOAK4aHjLKX3brk3Gp80nBoFpMehuDfJrE6qqEs3IrGP/oMqrSE9VZPlzvMAQFMA6eoG2UjL9ROzxhH/5uzOQfWgo2ohJhP3VulVJODe0k9cE86NXDr0PR8/hznH93dQ0zMwh9RsnRqhky1vuLzgLvccKlcyPSq/cQO6edk5l0A6yF4EKNCrmw7ZIiSpOxyFghJKG5pKkjmyt9D2syxDY5P70tCcjAneErJ36eNRtAbZunjPpHlok5Taf1XuDog6kdhVeIp83hXgKDWhaMcVIIVctm0UgG+8z85IPTtDCGT6Quvg4cK4uhkMkg8Vx1eMW1hVsYDcTg/K5QpgQPUfyZsFt/Uv1V28ND9+OC0HJfO2aQdW7uLR6yUFMG5AOPolPjIXVoQOvWtCdTMozY0aPq/2pvcTzZDC/MdJG0GKpjTilB3Pj1ND7tfrdBQBk1PdXMRTmz441IOH2bR1+zWb0ZATf4zQ0EJEZGliLIGi7GII+GNsuC0ibzQtkQevnplJ4TJwPAtnRaGRHrowDb8x7Hqb/GR9S8CUfUjALd45Yp2D0QXtJcLVlJRKswGpDT6YNTWh31SD6mApOAxX9D1GP7g6+e+rfdutbHMQ9ap180ySWVrdg0JJvE2MO23XawjUHkeIScpjklMTCxIplGiuq8qKy0Oo0y2MIgfOetAUCKR8BNEedysbmlvTt01F60ri0OCjoExse5cylY1cGMr6/QYGU+Q5ZN9uBAugoqEG6psHcXWKwd08HA8z7e/eThgo4rC6XUuYFr+qx
+ /XDATPOj
+ HGh9j5j5xc31h46WB5RH07egvPy2yI/npxYQIbb0fWsEQZLsmDH7jmJp6Ffrr+T3WPaIYXal8eTjHzl8M4rtVvLzSQVmWO3ehVOEPu9KdvfrY7Or0M6dpEzlfU1qExGW5Iw/acqwWeOkR20O1oBhBuhMy4yK8WoMlkrlfOGnFAwBp8TIK1ReaQvRgy59fFWNqh1anGSGbY45oc4f+WYazqn5IzVKO8OiDxtXRxH4vQVeGrldKDjovSwQtIlEYqxCw8/jMqFvGRndU2TizAkD1wbsJRnmIge6mhnoMKEV5vCb0frKnFzTJ6OVxdNY5dgzb5GI4/dDJhlRDPzxTq+f1HQPNA0jCS4HV/kokp64tpvZbe2gvr8HitO24ppyKgUwVarktVHZWgZCa0gEG9ApoJf2m1JOz1EPqQUr6xh40Wcx46bKU33O5Yf02nWbrejQVjg85
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,143 +93,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git 1bb784eb6e38fd73143f021608e4ef3095d0c0d7
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index 39ac5b97aa3a..901dfd2484e1 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -83,6 +83,10 @@ struct sched_gate_list {
- 	s64 cycle_time;
- 	s64 cycle_time_extension;
- 	s64 base_time;
-+	/* min(cycle_time, sum of intervals): the software schedule restarts
-+	 * the list after the last entry even when cycle_time is not up yet.
-+	 */
-+	s64 period;
- };
- 
- struct taprio_sched {
-@@ -871,12 +875,13 @@ static struct sk_buff *taprio_dequeue(struct Qdisc *sch)
- }
- 
- static bool should_restart_cycle(const struct sched_gate_list *oper,
--				 const struct sched_entry *entry)
-+				 const struct sched_entry *entry,
-+				 ktime_t end_time)
- {
- 	if (list_is_last(&entry->list, &oper->entries))
- 		return true;
- 
--	if (ktime_compare(entry->end_time, oper->cycle_end_time) == 0)
-+	if (ktime_compare(end_time, oper->cycle_end_time) == 0)
- 		return true;
- 
- 	return false;
-@@ -925,8 +930,9 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
- 	int num_tc = netdev_get_num_tc(dev);
- 	struct sched_entry *entry, *next;
- 	struct Qdisc *sch = q->root;
--	ktime_t end_time;
--	int tc;
-+	ktime_t end_time, next_start, now;
-+	int budget, tc;
-+	s64 behind;
- 
- 	spin_lock(&q->current_entry_lock);
- 	entry = rcu_dereference_protected(q->current_entry,
-@@ -952,23 +958,49 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
- 		goto first_run;
- 	}
- 
--	if (should_restart_cycle(oper, entry)) {
--		next = list_first_entry(&oper->entries, struct sched_entry,
--					list);
--		oper->cycle_end_time = ktime_add_ns(oper->cycle_end_time,
--						    oper->cycle_time);
--	} else {
--		next = list_next_entry(entry, list);
-+	now = hrtimer_cb_get_time(timer);
-+	end_time = entry->end_time;
-+	behind = ktime_sub(now, end_time);
-+
-+	/* Behind, e.g. delayed timer or stepped clock: skip whole periods
-+	 * arithmetically and walk at most one more to the entry covering
-+	 * now, instead of replaying the backlog one expiry at a time. The
-+	 * cap bounds the walk; a leftover is picked up by the next expiry.
-+	 */
-+	if (unlikely(behind >= oper->period)) {
-+		s64 jump = div64_s64(behind, oper->period) * oper->period;
-+
-+		end_time = ktime_add_ns(end_time, jump);
-+		oper->cycle_end_time = ktime_add_ns(oper->cycle_end_time, jump);
- 	}
- 
--	end_time = ktime_add_ns(entry->end_time, next->interval);
--	end_time = min_t(ktime_t, end_time, oper->cycle_end_time);
-+	budget = 2 * oper->num_entries;
-+	do {
-+		if (should_restart_cycle(oper, entry, end_time)) {
-+			next = list_first_entry(&oper->entries,
-+						struct sched_entry, list);
-+			oper->cycle_end_time = ktime_add_ns(oper->cycle_end_time,
-+							    oper->period);
-+		} else {
-+			next = list_next_entry(entry, list);
-+		}
-+
-+		next_start = end_time;
-+		end_time = ktime_add_ns(next_start, next->interval);
-+		end_time = min_t(ktime_t, end_time, oper->cycle_end_time);
-+		entry = next;
-+	} while (unlikely(ktime_compare(end_time, now) <= 0) && budget--);
- 
-+	/* next can be the entry already published as q->current_entry (a
-+	 * single-entry schedule, or a catch-up of whole periods), so the
-+	 * close times and budgets below are rewritten in place while
-+	 * taprio_dequeue_from_txq() may be reading them.
-+	 */
- 	for (tc = 0; tc < num_tc; tc++) {
- 		if (next->gate_duration[tc] == oper->cycle_time)
- 			next->gate_close_time[tc] = KTIME_MAX;
- 		else
--			next->gate_close_time[tc] = ktime_add_ns(entry->end_time,
-+			next->gate_close_time[tc] = ktime_add_ns(next_start,
- 								 next->gate_duration[tc]);
- 	}
- 
-@@ -1130,6 +1162,8 @@ static int parse_taprio_schedule(struct taprio_sched *q, struct nlattr **tb,
- 				 struct sched_gate_list *new,
- 				 struct netlink_ext_ack *extack)
- {
-+	struct sched_entry *entry;
-+	ktime_t cycle = 0;
- 	int err = 0;
- 
- 	if (tb[TCA_TAPRIO_ATTR_SCHED_SINGLE_ENTRY]) {
-@@ -1152,13 +1186,10 @@ static int parse_taprio_schedule(struct taprio_sched *q, struct nlattr **tb,
- 	if (err < 0)
- 		return err;
- 
--	if (!new->cycle_time) {
--		struct sched_entry *entry;
--		ktime_t cycle = 0;
--
--		list_for_each_entry(entry, &new->entries, list)
--			cycle = ktime_add_ns(cycle, entry->interval);
-+	list_for_each_entry(entry, &new->entries, list)
-+		cycle = ktime_add_ns(cycle, entry->interval);
- 
-+	if (!new->cycle_time) {
- 		if (cycle < 0 || cycle > INT_MAX) {
- 			NL_SET_ERR_MSG(extack, "'cycle_time' is too big");
- 			return -EINVAL;
-@@ -1172,6 +1203,7 @@ static int parse_taprio_schedule(struct taprio_sched *q, struct nlattr **tb,
- 		return -EINVAL;
- 	}
- 
-+	new->period = min(new->cycle_time, cycle);
- 	taprio_calculate_gate_durations(q, new);
- 
- 	return 0;
+
+On 8/29/26 3:42 PM, Barry Song (Xiaomi) wrote:
+> The existing mainline code retries the same type once in a rather
+> subtle way. `for_each_evictable_type()` may provide one more iteration,
+> allowing the same type to be retried if we scanned some folios but
+> failed to isolate any due to protections, promotions, or races. This
+> patch makes the retry behavior explicit.
+> 
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> ---
+
+LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
