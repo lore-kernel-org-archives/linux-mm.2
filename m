@@ -4,77 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2333C624A5
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 08:27:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 538D2C624C2
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 08:27:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D1B66B0088; Mon, 31 Aug 2026 04:27:54 -0400 (EDT)
+	id 452CA6B008A; Mon, 31 Aug 2026 04:27:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 982226B008A; Mon, 31 Aug 2026 04:27:54 -0400 (EDT)
+	id 403C76B009B; Mon, 31 Aug 2026 04:27:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8716A6B009B; Mon, 31 Aug 2026 04:27:54 -0400 (EDT)
+	id 319A26B009D; Mon, 31 Aug 2026 04:27:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6842F6B0088
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:27:54 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DDC444011E
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:27:53 +0000 (UTC)
-X-FDA: 85160886426.08.6B46A80
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 4012A120008
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:27:52 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jWpmUpON;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E20AE6B008A
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:27:56 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6D5E9140436
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:27:56 +0000 (UTC)
+X-FDA: 85160886552.10.1C20D2D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id B7AF71C0007
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:27:54 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PBOjheqg;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788164874;
+	b=uuonBTNX5qI3S/5ZWIYPrigkAOoAEvV3kMXMazj2solx+ggdD6m4dv58GG8IulKoUqHEDr
+	ZumgOslvC5xLsqjhisOy0eqBg4TXdCyYYLS1Z+CIP3Q3vUFdfUb92zRvLOyRPo+V1YF9uQ
+	8vYxmVkB4TIIZnuUp9dpnX/Oo1Sha30=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PBOjheqg;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788164872;
+	s=arc-20220608; t=1788164874;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=sdnDSnE27149BUcPj7rnlsDQtbHL0lCszRlaB8rnvRg=;
-	b=ngb/fqoYdDin++vHk4Fpay/cXXR5mzFz3Q71gNMCvQHaVBZoviyltALDNbPbBahnMS9rqe
-	+Q9uwdhGwlAwDf+TaA9Z3X4/r8Kwq/Wi5DYa1QaidHcbatLKSzSjwiJgp0ynrWtv9DYxUG
-	GKOfCW9zAvMbmAZKbzgk1BklMbdwv6A=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788164872;
-	b=u7MyPpO6QHELLCUD405IP4DJ+u8jJLWSx96OMtb5UVfbhkOITM8h7UZaE/cxzi/Gdd7GQW
-	BuM4NNiUsdo0aGwcsPtICSeJ7w08QDi/zXDB2Ucry/2sV1bql7FjcbfZXTxBf8qWrFkDak
-	Fwipg7MgZacRkpOGMNqxB19TuaC7KQI=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jWpmUpON;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Y4bH+/WtPEyRU+oBNZLJOMfju4/GbiOfv2EYcWlAxs4=;
+	b=fqYFpfd4AIFSMomHreTDiMJJuD+VePLIRZ89wQGxgVJ5t1eQoZCsjJZGiVqv7bWe0H8UAr
+	C4Rbci/t+zhXYO0rmri47ArsQX4q5orcMsCnkaGwclr16HkcTCFfutD216dzPo29b7S9yz
+	AcnmoKJFS0eiCymq+ErJCoSY3aBPFyY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 046D760120;
+	by sea.source.kernel.org (Postfix) with ESMTP id DEF2344505;
+	Mon, 31 Aug 2026 08:27:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 396651F00A3D;
 	Mon, 31 Aug 2026 08:27:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 237EA1F000E9;
-	Mon, 31 Aug 2026 08:27:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788164870;
-	bh=sdnDSnE27149BUcPj7rnlsDQtbHL0lCszRlaB8rnvRg=;
-	h=From:Subject:Date:To:Cc;
-	b=jWpmUpONIzS8DwMc97TLTkDvp8xhwhffGlQU+Gw9Em5B9/M5J/Cen3D8DG3Ny5rXA
-	 /X3Zg8kghs4opYX4bsP2kTLk7XDnWbqMZL1Vzm8Jn5XuxlWYWT4hHFfEGvfrdd8c9H
-	 NzVseV+IXY50R4md+TZPLh5gPD1MHVOAhL0DHzfVzpTNJglk+qDD37TlvsX99DW0Xt
-	 9isP1ngUcA7K4+tMAixOnjetJSa3kcD67YzuGUckxXQs2OqW8bg80rihAolDXHb6Md
-	 TAMBYtTxtXGKbCNm7OumQSKQVq06YANUkHxfDCqBserLdiA6hvWA6Ga4/Iplu5R8Ir
-	 yc49DsjUUXjFg==
+	s=k20260515; t=1788164873;
+	bh=Y4bH+/WtPEyRU+oBNZLJOMfju4/GbiOfv2EYcWlAxs4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=PBOjheqgZU2//8wt0aikBUBXJMoEdiXNgcruw0QaK+0mHSMz2A20L9Y+wS1TTqm2a
+	 cB8k9NDiAwOE3FQpU0Wtkxhy3pX5eP8uV5RGROxVtznX4ozJ+fAOLG5A4gsGTtqEKV
+	 2UX8sigBGUWxIVY2UXRFD645QP2a5kYSEjZbVx+BMbo4LUxTUoPDxH2heA4H95HwVw
+	 TCUE9QXm/lvmvJMvNdEvR4thgz5vc19pAXHDblSxIDmsO3hr4ILc8mb/dhEX4njQst
+	 xfZu6qdT+dVUxHz88Xxdx6uh7GVre1GhlxHhvGcHq48YCNkqtgmkg4M8cHiIDZDg7j
+	 ujirBHwtexgYw==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Subject: [PATCH v2 0/3] tty: replace page allocator calls with k[mz]alloc()
-Date: Mon, 31 Aug 2026 11:27:42 +0300
-Message-Id: <20260831-tty-v2-0-88cd58c3c640@kernel.org>
+Date: Mon, 31 Aug 2026 11:27:43 +0300
+Subject: [PATCH v2 1/3] tty: port: replace get_zeroed_page() with kzalloc()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/y2OzQ6CMBCEX4X0bMlSsPycfA/Doa0LVE0x20okh
- HeXVo/fzOzMbswjWfSsyzZGuFhvZ3eAOGXMTMqNyO3tYCZASGhEy0NYeVMNcNZ11Uih2JF8EQ7
- 2k1qu/Y/9W9/RhHgaE1p55JqUM1OUEtZ5Ga3J+jDTmj5YiljxHyshjS0FBw5GoyxqkFWrLw8kh
- 898ppH1+75/AVqHITrEAAAA
-X-Change-ID: 20260829-tty-84f05b74862a
+Message-Id: <20260831-tty-v2-1-88cd58c3c640@kernel.org>
+References: <20260831-tty-v2-0-88cd58c3c640@kernel.org>
+In-Reply-To: <20260831-tty-v2-0-88cd58c3c640@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
  Jiri Slaby <jirislaby@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -83,14 +81,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  linux-serial@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 X-Mailer: b4 0.17-dev
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B7AF71C0007
+X-Stat-Signature: 6frgnisa8uhg1hynqqm6as3ntuerjyfw
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4012A120008
-X-Stat-Signature: wtgk18htz8trid4sdu49wjoawr8twpyw
-X-HE-Tag: 1788164872-958449
-X-HE-Meta: U2FsdGVkX1+XIZYozJQKHGHHU4UIcUGWXj7iv8yz0hD2mtH06mwQCvdWzGWISjR7i5V32xLCDuETQr7jcT2xrfu8DqZb00vwIy9rzpTDj6/ygm6zGZzpDEhdV9hDRsQYzfevxHf2Mip5FS3lXuIcKYnCVDuvzT70gDNAVoB6jjPl/5NRmrP8zvOaiwyjNV4TDLMnXX9q58OG7z77zuOLMssssUq6DXNvbIlMeuM3ANpG6wG5YrXFkwPnptPO+U5jtvK0Oo85704FBoKwBVxTk8a5hPeyCAY10CyRwY7LKBIoutrffQXKFDW0Qn/sf/pCzexyPxbzO/1SVdE0XaciJTRoC8KRvKY8L7upJwKE9//iBJ3eBACCUVl0Vi45BYwOACN7q7wnRu7SzsBGzqrUiv/HBP9dygc+MHYGWw2QNUyIZVxNakRdjQaDGw4bvproRWesmunWeu0z0O0p5EDXKUY1wrhuOI5umnvLIYCZl6yBUQRSVHqAsbAaSQwdqbIEo3c46TBsS2I+HHnms7i6J9pBsKHpe/PfMyRQVg9XCyIyKNTjXdngs4e7n6xfsNTobanP2b6datBJnqhh76jQ6EduiET5Oq0WcakOOTMGYD+XfXq1lnbaekmPclH8tQa/tKoweEZm1FbW9Yz0555xPRsNUXx/Q2qI63Csfoa9G7PWnMX91zaezbauDezkABJDO6KWGlwQGAV8tU2JPdCuViRLuhGPWj15JcUX43yl5BbXjRm2DcBCZwbAydny+J/itx5hMowrjIhG/tZm2UGeHR4yY07lu/F/3mVoXgGmv72eayyi+Pax9dVsmAe44nTDX/mylXOP0fO3yAsH91XhYY/uyCuorrv84VVNYRKOmnljXgqBO+NlIZaawufkX+OmO3du9rYWN6/VxnRh2fT4fS0kIFUX9+LqaBmkFuOsItBOLsxKnwCQW5+ng/PnD1zEZ+CpX/OF+mc8lFJd9jo
- QfeWXlRI
- o8eYHda1wZnMGJjv1iSOt8GFpUUZ+PhGMxPAN0QviXsp4OEkJxcyl1Cvn0llBBmRSyNHJ5kw7pgNgGLw9q0KdhRFKZWEDv4qk9U4xm4PyzDzvkq1MjhL79Wo1CA6zqYn0X6siaEM6syLlFbz+9qsThcBraG/1QqcuD/n+bssb76P8QNmFZgxOUBCq5+qDd4OYX9J33Qol7+Vn+5b4f/IG//2NUFgTkPRAeg6CQ1mh4wREf9lhue/vFq7Tbc4d8sCK0T9a+NDTo941R9+q5r2cDrqTZr65cdja1vBHCWVKfft41UsJvn92J6R2LFxhq0LGJfD++qeVNcTouj2JaIgHaA62OKqinPeT+AWT
+X-HE-Tag: 1788164874-803548
+X-HE-Meta: U2FsdGVkX1/nSfcoDNKO7YYVgqNs3tYTolVCX+ygh4kI37/4KQv1IbX1/KhUS/BN6bcsVU+0HmFOOOpO3GPxHsPcyJfvgsbUR6T3QUWnMvbN71qvIHSrovxCuwMg+4EHfyUI84TKRWEo06PsRj5LxP9yzNeuOTQrZF9ZmDWbldTJvDUF2jnNF1vfrOxHPrbmV7j5CMN+qK5OQLnwTDrCffRcDv8TKOGiHJ1ALjvp8CE/t+Fe3P6y0N7LsKa2aKv8VKzUWim3p7Qys5lF2Kp/zE21xzQeWF0ZQqmRaK7gVuW+Dc+WAGzpyn5FzV8FfCT8TPNDqXIDRgbgtpgmk9mYmO8MBcVk+TmC+bzpvBnuPiehQiz3PvviY//z384E7pZcq5dT/rTpngyt8171aeqBJ25QldVtvCf2qClY4to3JTwStcCFS/aXbNfRrEhRCHa9IIz2ybKMroivnA/5wWyl0saNKZOaRyb2VZhLkgJW2HlP10JC+9lolwZU0StGggqYDYej7zlxNgyA+oN5Bzyi35yYzedu2z2ALZLJaB1y8BxeJb0ycqjQeKfhCOlFjnL+8cuTwt7wGZG7OGp7m58UAUFjLmML8rZeBoh8sIVSEukbuxvZ9z3/IhnDMrJJddua3tp3aSF/OZ3qpnPQ6+sPRXw9jbO0b1UFrg7RUKVJaqCGQeqe1yP4jHz50eZcL/WMeh+Y4Zb+lv7bgjDbX/px0DK9Zx9/re/PNW7qnLNUjRgUD3tDv6+xkLci7kkC3WFTXOALxc7Mgr3RSA014enJaGur0e2VFGWBnhTLQ43ku1/MnvtNNKgS8RJimOTyvahuohYeeb+jbHcX0IuMYO3Wkzm5pD461/uaqX7Ef9+vbRqa1rJOaGPCtMGN1paZz/ruo1Qs9TKLzsErKZgm8Z0/PqPp7GZHajxYFqdsXhgbvvW6YqxcyXMeGXVtv4SnGvqlti3IB0WgxxWi2Gp7DFr
+ F6IP3vxc
+ f+D2/VxSfOCx8C+AvbAObyPMeMXJOMQD3Rx6F06i2ZKdO1m+EwLun+eKwZBggQIbnoMTaDjY42Vt77/cv5VZhBNn07MGrmxeX4o90NCFqMuqwoghtQvcGh8dnBeFMdJwkrsBYowQzF5Gx4LJOXAmsIfEALIdNxFwmCi3REvxMj0kDYSnYy0PzU5ESMToheg6hyw29vKlGcFocwAqxEvN5RCa6QK+F8639ft75GsaI2M06UDH5PiABPicuJrNEqT6yD3Wt1/qCa4UfqNzaujCwSXFek6m7o90XxV90kQucly+pQqLmjTRebrZ/Ww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,62 +96,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a (small) part of larger work of replacing page allocator calls
-with kmalloc.
+tty_port_alloc_xmit_buf() allocates the transmit buffer of a tty port. The
+buffer only backs the port's kfifo, the data being sent is copied in and
+out of it.
 
-My initial intention a few month ago was to remove ugly casts [1], but then
-willy pointed out that Linus objected to something like this [2] and it
-looks like more than a decade old technical debt.
+This buffer can be allocated with kmalloc() as there's nothing special
+about it to go directly to the page allocator.
 
-Largely, anything that doesn't need struct page (or a memdesc in the
-future) should just use kmalloc() or kvmalloc() to allocate memory.
-kmalloc() guarantees alignment, physical contiguity and working
-virt_to_phys() and beside nicer API that returns void * on alloc and
-doesn't require to know the allocation size on free, kmalloc() provides
-better debugging capabilities than page allocator.
+kmalloc() provides a better API that does not require ugly casts and
+kfree() does not need to know the size of the freed object.
 
-Another thing is that touching these allocation sites gives the reviewers
-opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
-another size is appropriate.
+Performance difference between kmalloc() and __get_free_pages() is not
+measurable as both allocators take an object/page from a per-CPU list for
+fast path allocations.
 
-For larger allocations that don't need physically contiguous memory
-kvmalloc() can be a better option that __get_free_pages() because under
-memory pressure it's is easier to allocate several order-0 pages than a
-physically contiguous chunk with the same number of pages.
+For the slow path the performance is anyway determined by the amount of
+reclaim involved rather than by what allocator is used.
 
-And last, but not least, removing needless calls to page allocator should
-help with memdesc (aka project folio) conversion. There will be way less
-places to audit to see if the user was actually using struct page.
+Replace use of get_zeroed_page() with kzalloc() and free_page() with
+kfree().
 
-The patches are deliberately kept small: each one deals with a single
-driver or subsystem and with a single type of allocation, so that every
-conversion can be reviewed, and if needed reverted, on its own.
-
-[1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
-[2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/
-
+Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+Assisted-by: copilot:claude-opus
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
-v2 changes:
-* change xmit_buf type in uart_{alloc,free}_xmit_buf() to u8 *
+ drivers/tty/tty_port.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-v1: https://patch.msgid.link/20260830-tty-v1-0-0cbe6170649b@kernel.org
+diff --git a/drivers/tty/tty_port.c b/drivers/tty/tty_port.c
+index 54359310e293c..44122921fc45b 100644
+--- a/drivers/tty/tty_port.c
++++ b/drivers/tty/tty_port.c
+@@ -240,13 +240,13 @@ EXPORT_SYMBOL_GPL(tty_port_unregister_device);
+ 
+ int tty_port_alloc_xmit_buf(struct tty_port *port)
+ {
+-	/* We may sleep in get_zeroed_page() */
++	/* We may sleep in kzalloc() */
+ 	guard(mutex)(&port->buf_mutex);
+ 
+ 	if (port->xmit_buf)
+ 		return 0;
+ 
+-	port->xmit_buf = (u8 *)get_zeroed_page(GFP_KERNEL);
++	port->xmit_buf = kzalloc(PAGE_SIZE, GFP_KERNEL);
+ 	if (port->xmit_buf == NULL)
+ 		return -ENOMEM;
+ 
+@@ -259,7 +259,7 @@ EXPORT_SYMBOL(tty_port_alloc_xmit_buf);
+ void tty_port_free_xmit_buf(struct tty_port *port)
+ {
+ 	guard(mutex)(&port->buf_mutex);
+-	free_page((unsigned long)port->xmit_buf);
++	kfree(port->xmit_buf);
+ 	port->xmit_buf = NULL;
+ 	INIT_KFIFO(port->xmit_fifo);
+ }
+@@ -288,7 +288,7 @@ static void tty_port_destructor(struct kref *kref)
+ 	/* check if last port ref was dropped before tty release */
+ 	if (WARN_ON(port->itty))
+ 		return;
+-	free_page((unsigned long)port->xmit_buf);
++	kfree(port->xmit_buf);
+ 	tty_port_destroy(port);
+ 	if (port->ops && port->ops->destruct)
+ 		port->ops->destruct(port);
 
----
-Mike Rapoport (Microsoft) (3):
-      tty: port: replace get_zeroed_page() with kzalloc()
-      serial: core: replace get_zeroed_page() with kzalloc()
-      tty: hvcs: replace __get_free_page() with kmalloc()
-
- drivers/tty/hvc/hvcs.c           |  6 +++---
- drivers/tty/serial/serial_core.c | 18 +++++++++---------
- drivers/tty/tty_port.c           |  8 ++++----
- 3 files changed, 16 insertions(+), 16 deletions(-)
----
-base-commit: 1b78070aaef63512688aebfbc82365ef9d6660f1
-change-id: 20260829-tty-84f05b74862a
-
---
-Sincerely yours,
-Mike.
+-- 
+2.53.0
 
 
