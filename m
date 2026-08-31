@@ -4,88 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8D83C61DD3
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 19:56:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A4A7C61DD3
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 20:00:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B52176B0088; Mon, 31 Aug 2026 15:56:01 -0400 (EDT)
+	id 73BAD6B008A; Mon, 31 Aug 2026 16:00:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B032C6B008A; Mon, 31 Aug 2026 15:56:01 -0400 (EDT)
+	id 6EC0A6B008C; Mon, 31 Aug 2026 16:00:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A185A6B008C; Mon, 31 Aug 2026 15:56:01 -0400 (EDT)
+	id 6030E6B0092; Mon, 31 Aug 2026 16:00:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 830FA6B0088
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 15:56:01 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0EA32120226
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 19:56:01 +0000 (UTC)
-X-FDA: 85162620522.01.C87DA35
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 6744380006
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 19:55:59 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oHq6PIHi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4297F6B008A
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 16:00:36 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CA1361C185F
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 20:00:35 +0000 (UTC)
+X-FDA: 85162632030.20.791BE2B
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 359032000B
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 20:00:33 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="pU1g/ni1";
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf31.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788206159;
+	s=arc-20220608; t=1788206434;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y9/xutxa0yVC5oXqjxcXznHsaJxpAP0rLurk1SO8VpY=;
-	b=4DtZiNQsmL18XijqOww5cGGvO/W/kAsjQpBEf9HTwfJnVW/SRY5v9Ckgok8qtMUiy1L7/j
-	EjBG3QurXO41ptmtHTMCPMELiqm6H0l0BkQM63QqaUgOIpEHdZqltL2gpeW2ebZmHyiJS7
-	g37U21QTcAYDfkNoFZRo1Uy2lYGbk3E=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788206159;
-	b=3JJzoEIcRnL1kCuMZKxaYzYUYD75gFuNujrtTV167UmjML4xH257kPghEMdyzB4Y1e3LLo
-	fcznsJXr5/nfw1e6o3Y++yYCsrV24YiRSwbUnE70XfXxyhDCofZ3jbI8O/kghzPU4jtXVH
-	kAOWqbAAfJspfVdL2oUwypqi1Z6vSWU=
+	bh=KD9yzIj2ChMKwwwuCxZ07mabXpAm8XFsPfqRMa8Gidg=;
+	b=cs6Dj1IDeJkFNzErdU66kCG9rxIrqOAWiejvE2aglvEJmF21zTUemTNR8DMbmKjPLsvER2
+	4yqK0jSI5oEQkiLpHn42fF/E1Rmpv6ierOhU6Y//L77q1b0dk5+oKgErDUStvNLAyn3qem
+	OnrzyTrnyVOTpl0CJjT96wRA6+v5aVU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oHq6PIHi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C800640189;
-	Mon, 31 Aug 2026 19:55:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE961F000E9;
-	Mon, 31 Aug 2026 19:55:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788206157;
-	bh=Y9/xutxa0yVC5oXqjxcXznHsaJxpAP0rLurk1SO8VpY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=oHq6PIHiDubRuBSKmIQs2QbnhopS/6egB71tJJg68HkwzmP3mpjSk5O5/HwT+kms+
-	 widEfcMi5WrCNRwcpaZR0lLNh96xakeA89h5FwnIsfFKwafGAywUtrpzI5BUWpOrqu
-	 y/OJs+xhGzcByUHjTC6pMwzpdWSQeSZcBZ9C5CBOh0CukLzbdOzJWTWnBIMimIS2sn
-	 IkKjDbtSzceuVaf3Y0lqHH2obcto1Y0cF+3Rz5RyDE06QQuPpItiPa+Crnz0y0YPi/
-	 JiS6VIxNfKXKMQcdKulKBmWa7UZTYqh/WnlXznd4OFpBoz7JNbojB7Kx6DcJRwuZxG
-	 wyerF3pj1kEOQ==
-Date: Mon, 31 Aug 2026 20:55:37 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Andi Kleen <andi@firstfloor.org>
-Cc: Pedro Falcato <pfalcato@suse.de>, Andi Kleen <ak@kernel.org>, 
-	akpm@linux-foundation.org, liam@infradead.org, jannh@google.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] RCU safety for vma maple tree walks
-Message-ID: <apXaTN6o5YaEO8FR@lucifer>
-References: <20260831143511.1133029-1-ak@kernel.org>
- <apWUsc-a6k1YkuMv@pedro-suse>
- <apXXgimKxgJl57qo@firstfloor.org>
+	imf31.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="pU1g/ni1";
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf31.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788206434;
+	b=wn47wG0TaK4YLbzgPOundKVrkxFGU/Pb/4C4sMomOVImLgJfziUWbY4J2XBzVvDJsvRjo+
+	A7hR9jPAtSkJ3r7wtYdwR5Vg8P+RT4rvxlb0o6ZQvXncj0bBhQS7/nRwrSxxKtJnn2zKdk
+	O5SEGuUSy4vJt7zE4wiRHQD4njrK5zc=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=KD9yzIj2ChMKwwwuCxZ07mabXpAm8XFsPfqRMa8Gidg=; b=pU1g/ni1Q8VNIKWqixQp9DPlLZ
+	RKgJ0VTCZG5/fQTqCP+E9gZrN7JP4xCLRo4D2f9ZMwAC3fa1MZ0YWZRIjB4u3+erb45GAWOXHh37K
+	rNuE8d3hCyyAFLK5sLT2rmU/qwd3B6D/1j4p1PHPVDkNOPBWk+9uuP7oCwCY0zG2f9bdQf5XkLEqB
+	eMrocPSb+a/chLMvccv29MFIUR9jyjJiNroXmQczR3R33TLmnJVeVH4nw4rEXNNYizALXhpsSBPT5
+	9XOYC4VKFBPb3EAx7t750pksfaChxOEanXTp/7+i8F3k+S9c6xS+DO5ZmrEsKg0cmnW17PIkEUVCn
+	xkvIsPvw==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x18BA-0000000APTS-3Euq;
+	Mon, 31 Aug 2026 20:00:28 +0000
+Message-ID: <107dc6ba-697e-4b25-ba3e-8ce2499cac9a@infradead.org>
+Date: Mon, 31 Aug 2026 13:00:26 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <apXXgimKxgJl57qo@firstfloor.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6744380006
-X-Stat-Signature: epdh77ywsi4em7cd5yyqeg1rt7bwx858
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/3] Docs/mm/damon/design: Document hugepage_mem_bp
+ target metric
+From: Randy Dunlap <rdunlap@infradead.org>
+To: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Asier Gutierrez <gutierrez.asier@huawei-partners.com>,
+ "Liam R. Howlett" <liam@infradead.org>, David Hildenbrand
+ <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ damon@lists.linux.dev, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260831144732.80910-1-sj@kernel.org>
+ <20260831144732.80910-4-sj@kernel.org>
+ <f06ca3de-1cd9-4082-8c66-f6a26e417824@infradead.org>
+Content-Language: en-US
+In-Reply-To: <f06ca3de-1cd9-4082-8c66-f6a26e417824@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 359032000B
+X-Stat-Signature: q3o5ooaf9nxr4mdfp3n7ucnc7pcox1o7
 X-Rspam-User: 
-X-HE-Tag: 1788206159-263101
-X-HE-Meta: U2FsdGVkX18h6zCwB7VthFCntVY4ByAD+cFWo2Av+C6jOA1YcUMfPZxZSGo3+BB7P5ifJ+svPbWzJE6cBpgjvzjgcgTX1ROvj4+XbA8d4ttWhOrbFYuAYDsPRzaNTHuG1DZIrMn0h59TlGofP7HwkfieHY5j40vVfTyj7N/kTPb+ACh1BzAC9xJzhdvCsXNtQNqqt4+MnMAAE/2RxzA47Qiibm34hyFiUE59EZXki+35bJ18Z3SfGnz6saZ216nTo9hXcU7T6/lPE9D7aADKQ2Vq7ra3CfUqYV4JLI9nxCUZiz2MuJx6CQoddWTUZbXih3b8xuk7DHx3bYLvtxXYevk7Km0QtLOogzpck7vRoR7rMO6JT2+lvOkKUXxio7vrb791YapXxYUnavMr6yn98WfpsxH7TXn7FnQp7Y52stylV2adaDf6WjzK0DTQ+B7AFNc0XAR2gh87IkeqocUBr3zvvtBkaeTnAJE3IgWrli6i2PxPd3XtQeGQ4Z8STdoaJzO/PAKEcYBvOHxoQpJ+v6N0EYUdnEkB8TgYi6GZS0EQHnWvPV6OLJ0RExZ69ndt6Vlq56ObApt1hbi1sXNyWlOMdsycgKdYGbWIqvgB6tHXXNrJDD3TRmsaffi3YnJkCtKYmLXhQP0lWD8bzHRhHMglogx7vMVooD2kEj3Z0WflNf7eik4cl2dtrkS4M7wUsuUjHMyAE2g2pvt/Vwe/Myq0R9Xr6ZX1aGjwCYxO7F7Siq+tbgIvRiZD+JWIUztlswj6/gZUdPpkauAaYZ0j688aB0YRGr+tJ1okRp6n6Vh4jYTVV2PBy5CluWPCCUbamJ0l6NUoMR/ICcu4IK0P1xoJ3tVIIrZxirLrcHmTAVVlptIGR7P4kgFbkiVSJKTWsXSQwTt4+xCxn+pZf04Jy8bSVg35C6jYjuO6dz3Zek2MuySgSdvy9r/UmbnaGtlsDoQbCjsYdaxESu8zBYh
- EJSz0sSI
- zOvR4ak+lMrCfgo/4z2TYYplGHlxKjAZHQ6BEXIKiY33gsGEAFE/D8DBBv5lTFaPrBiv8gG3sRfZ8hnjcUCOgiR7dHUET7497wFHZAKd7+7FnMQXaeVY5m10c2PNg6hjMe1g8LJsP69OJWwIjtjpRvYH4YFCwEhRfjNppmH7lDnVy5v7vi5ss4LHKVrJi/lGluI7x8y4nRdVx5V4qqEwN7g8HbSrR+QhJV4nI37d/tqRh/66TzHwY+VYp89jpA87hT/2P
+X-HE-Tag: 1788206433-331517
+X-HE-Meta: U2FsdGVkX1+QEq0litYBHXtW+VU/5sdtxCwiVdlgF6UICjh71gjFlnh4zjXEZ0zcX9EtzDyW9DuUZvtLU3iSbQ6Bz1WLG6yWxNZMf6uLj764C3pse5u1J3U4XAIrwsWpbx0s0U/8BHctVAAXiQFX8NsE6gQuD3s6MFGy3NoLVFVm0VWER4inz3ETmtEr1TMIdAEcY3LT69/4/MGS9YiGuef3AEV9Cv13AXGLk+klMOT4HYta3JhwJQi1cfsr9wEo1g7uWUioFjSbXNpNuALZnXpEIpY/Bv0zchnqotF0YWrbpP9lMdmQC4ttSxhd7dhZ3u2+oxeTkhImTavdCJhGu6GOyK+aWNYOHPKgRXm9XYteOPDDcALBSUxd/vttk9YokloB7ZyaUF9uw/7717ESJdJo45sRkdqokkISJihM6eZhf5IlFdhLWSiQ+nipRHDrRCpArhHScJzkyabkoOw+ib0Fb+QzHczTL04CNbUwydtx9kXxsl8uwdEOAkJxou24evOCju9QDIvZZkTrszw58tE73K/MXiedcq+EpCmXanQz2sKnAENPVtHHHr8tUBLi9PrypXnSXwgi2RpwII0vunNasOCd8wgUdDGppeQDOa+x1JyEcx6Pp77w6GVJAyBHc1gFf6e8et2uctRCNIG++1MZ5LSmkIEUIavg++Ld9p3NnaOkeUFR5d6wO9tnflPVW8qDSbzU1KyB+frm/Zi4veMzMJv1QcmABsa7EqDHccXqxYOYdLsolMQiG62dukWasRCUdByfuR09M6AvXw0HUTHEmUDm0ZsbSCz8V9e20uH08tUox0TDfbnkpW22bj6H2ABBBV0JMtsBo9TyCLPE1nWB3kSZI4Ao0iyg6s3AzbT3Srcy98/ERC3K4RdJrttLPOmvB2B12SyY/PgZZbOWTxUw73RxWGWKKZffhklh4MKHq+SjeJuNlcYs2wHwsH1POpAHQGROmnFOC/eN+ev
+ 0ljIxUAX
+ MB3TtvghUv4OaoDD+XFyY0wjN2yKChXo9+xIwtHfqB4Mk1V/FASGtqznUF3JEmvxVPXYE1gzIoVjYY5X2wb9lxwy2x2m45tW0XDocIDBGhH0t3me5OXjfr8rqSqUHqUefAPvDHCPqFQMTcHcB4+1lORY4iFYHEJQwsrxcmRCi6qcaNCQNxZJdo4fCQrkurbk/VaewCLlLolT9umCwGGE2ge9n16ggSmGmSFpoMiO+gp9dgq6tp9j2s5Dd9XUzaqw9dQaPFoACgzlYSzPWCuiwrh/urP73A6VKd0vU9igJ5RCQjpSDgQjbG3kGq2rP5yStSPE8JMflwHJsGdCusGZB9Ni6Xbl+r7Gnd9+RovKgbZjnQZDaaf9uO/fTR9xB24tTc6jf1WhDVyUoztmcev/5GnmM8chxr5+H1Lki
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,58 +101,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 31, 2026 at 12:35:30PM -0700, Andi Kleen wrote:
-> > But none of this code uses RCU? I'm confused.
->
-> There are two classes of callers: ones that change the maple tree while
-> walking and those that don't. The ones that change it use
-> kfree_rcu (if that's what you meant with "use RCU") because they can free
-> nodes.
->
-> The patch changes both classes, but strictly only the ones actually
-> changing need the change. For the others the existing locking is
-> indeed sufficient.
 
-Andi I think you're really wildly off the mark here and it's not really a great
-use of our time to help you debug your own private patch.
 
-But in case you are on to a real bug here and I'm wildly wrong, it
-shouldn't be difficult for you to point out precisely where the node is being
-freed as a result of the split that causes a stale node to be referenced?
+On 8/31/26 8:45 AM, Randy Dunlap wrote:
+> Hi,
+> 
+> On 8/31/26 7:47 AM, SJ Park wrote:
+>> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+>>
+>> Document hugepage_mem_bp metric exposed by sysfs.
+>>
+>> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+>> Reviewed-by: SJ Park <sj@kernel.org>
+>> Signed-off-by: SJ Park <sj@kernel.org>
+>> ---
+>>  Documentation/mm/damon/design.rst | 2 ++
+>>  1 file changed, 2 insertions(+)
+>>
+>> diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+>> index aed6cb1cf4831..a8c163475ef2b 100644
+>> --- a/Documentation/mm/damon/design.rst
+>> +++ b/Documentation/mm/damon/design.rst
+>> @@ -713,6 +713,8 @@ mechanism tries to make ``current_value`` of ``target_metric`` be same to
+>>    bp (1/10,000).
+>>  - ``node_eligible_mem_bp``: Scheme target access pattern-eligible memory ratio
+>>    of a node in bp (1/10,000).
+>> +- ``hugepage_mem_bp``: Total huge page to total used memory ratio in bp
+>> +  (1/10,000).
+>>  
+>>  ``nid`` is optionally required for ``node_mem_used_bp``, ``node_mem_free_bp``,
+>>  ``node_memcg_used_bp``, ``node_memcg_free_bp`` and ``node_eligible_mem_bp`` to
+> 
+> I've looked thru the entire design.rst file and cannot find anything telling
+> me (or anyone) what "bp" means.  Explain??
 
-I mean what actually modifies the maple tree nodes here?
+OK, I found it on the internet. I still think that it would be a
+good idea to say "basis point" one time (the first time that it is used).
 
-__split_vma()
-  -> vma_complete()
-    -> vma_iter_store_new()
-      -> vma_iter_store_overwrite()
 
-Right?
+-- 
+~Randy
 
-But I see:
-
-	if (vmi->mas.status != ma_start &&
-	    ((vmi->mas.index > vma->vm_start) || (vmi->mas.last < vma->vm_start)))
-		vma_iter_invalidate(vmi);
-
-Which calls mas_pause() which sets mas->node = NULL.
-
-So I mean, presumably you are saying this doesn't work correctly or this
-criteria is wrong, I can't really see how else there could be a problem here,
-could you explain exactly what's up here?
-
-Also why is the solution to insert a whole bunch of RCU read locks everywhere so
-we can keep on accessing a node that we've already decided to free?
-
-I mean surely the solution really ought to be simply invalidating the iterator
-right?
-
-Also again, could you share the patch you've applied to the kernel you're
-actually seeing this bug in, given you haven't reproduced it even once with an
-upstream kernel?
-
-Thanks.
-
---
-Cheers, Lorenzo
 
