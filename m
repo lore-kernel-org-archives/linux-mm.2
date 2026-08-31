@@ -4,134 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2D80C61DE4
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 00:28:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57E7EC61DE4
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 00:33:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADEE56B00C5; Sun, 30 Aug 2026 20:25:50 -0400 (EDT)
+	id E95A06B00EF; Sun, 30 Aug 2026 20:33:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8EFC6B00C7; Sun, 30 Aug 2026 20:25:50 -0400 (EDT)
+	id E6DC66B00F0; Sun, 30 Aug 2026 20:33:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E1A56B00C8; Sun, 30 Aug 2026 20:25:50 -0400 (EDT)
+	id D83306B00F1; Sun, 30 Aug 2026 20:33:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 551E26B00C5
-	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 20:25:50 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DEBC7803BB
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 00:25:49 +0000 (UTC)
-X-FDA: 85159671618.09.3EC0C3D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D1D8214000C
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 00:25:47 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="QDL1/U5G";
-	spf=pass (imf23.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id A2D7A6B00EF
+	for <linux-mm@kvack.org>; Sun, 30 Aug 2026 20:33:09 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 221661403CD
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 00:33:09 +0000 (UTC)
+X-FDA: 85159690098.11.97A15CB
+Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2157C1C0002
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 00:33:06 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="O CmelH2";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=RpxQvsoh;
+	spf=pass (imf20.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788135947;
-	b=DvosJuYS+bjyOy6GtvUlta9mq57MgOWcnpMEkibKIclaAo/akLlGxjbUXQp8Wc2Xi0FUTW
-	FH83oap/XMFBY8hV6L14+jF75aeh7gjW6C/FYknwPOcSdJINIKrn4xbca/y/yRe3+qiP3b
-	qyWkUMVLJpYWRx1DRq4/R4MCh7H9+30=
+	t=1788136387;
+	b=thuaBg9r7l+BZNKvqEV0rcnfEoLjmKuichrKOPyTL02y2ZQJBIn2Y5m+lBjfqiz4/Xu9Y9
+	XNp75E2WzKuSFbS1Q8d9NmIJNkMCeYH80NlKO9hmGC142bE3alwtPthHdCoV5/g20zWMlh
+	vYUJKqCVNfDF/wtsFnChp733xiDQFL4=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="QDL1/U5G";
-	spf=pass (imf23.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="O CmelH2";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=RpxQvsoh;
+	spf=pass (imf20.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788135947;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1788136387;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yrq6jU85LpFQzYleUUEG1OaF/pCF7t5AEXSn8KYfUt8=;
-	b=Ui5Ey0ZSsBWJlga3YIw2lZeG/6DvpdSuluitzX64+asjXaMNC7VIY7DbfYG+5GZjYfd11h
-	ImCVsyEHj093Uu3NE66v7itkMTVPQ5kPD1q2T4PfLO0i3ndT+tpY3w1vzCC4QRBEQykjou
-	gEf6huZBlN/Fc1SiEqJOxdiCva9xU0o=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 76B0F44A2B;
-	Mon, 31 Aug 2026 00:25:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3E6A8C2BCFC;
-	Mon, 31 Aug 2026 00:25:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1788135924;
-	bh=lUde8iYPK4GJUXtsVUXDi0w9BjDZRsLdMY2F9VQx/eQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=QDL1/U5Gi2tI2Qsasc8gRi1lHT6KFbEmiOS2zkGQiMMd9NtAzAMilbTUB3CKXz5zx
-	 ttpag6CJtyLtVicvWYq/9LIjc1XNwVhRvwJ5dIyLS8/waaX0jF3F73MpmmyHU6rfbF
-	 q8XZb9UvWYE/5bAWG+W/Wp+5HDew4a4hKCfdXKCcdpuqGecuhW+AM0m39q3uFnO0Nd
-	 884bzQI+Q8B6qJLtlZndcQGLmdG3yNSZTfTWyeGeO9ss5Ck9GV/IY4K4XZHUvFpj2y
-	 wNMuF1AVUEzTEf0r06Ku3D787meq/w8H4jMg9F8FVYbwDGIB4cVNzMjOXu9q9YkydU
-	 DvKIGry0Tt90Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 23D49C61DE2;
-	Mon, 31 Aug 2026 00:25:24 +0000 (UTC)
-From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Sun, 30 Aug 2026 17:25:46 -0700
-Subject: [PATCH v12 45/45] KVM: selftests: Update private memory exits test
- to work with per-gmem attributes
+	bh=lJPZCOLUDNk+g6cYgbr1iPsO5mhcNg4J4ioSHDPrZzQ=;
+	b=gyoZc9xj6hzMjfhUBpH90Tx8R7icbLw+ov8+AbjskEMQxHVv0CK28uZDOlcYdHniuJl4Rc
+	huutAwOpJqDduv38kjruCpBVn+BJHHEtzu00Za9TByaZpcRS/xsPbX97hfzN1tWxJljOxc
+	dxz9VZIJ1QPTacLjJxyojUW0X4ave2U=
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.phl.internal (Postfix) with ESMTP id 72C95EC0100;
+	Sun, 30 Aug 2026 20:33:06 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Sun, 30 Aug 2026 20:33:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1788136386; x=
+	1788222786; bh=lJPZCOLUDNk+g6cYgbr1iPsO5mhcNg4J4ioSHDPrZzQ=; b=O
+	CmelH2IdrjYn+bNwwwhrxZVydaRfNGuwp1PZU5tE8CeSV9af5FkMFp1aAZU98ffS
+	tjLkPLY8r48f8zNo2K42YWTNI2TM1noM29FCSCPxM7x2TtLmzmq9V5gNj1ycJW2q
+	7q0WU2K0AFt7DTHgh00L7gkJZVZT8vx5ASEU2bDdNO023pXHfJkPTSmnW0EgMilU
+	G7tiLA1pwkMJvOEP1xPlNEv5TVTOwfeFNOL3hUU2BcY7pj5fVKnB67Bas+D1ARXt
+	0kEZcBGg+3Rhc19SaJKS4Kyu5ggYpmQJd3WDRA7LNYkDgnCTIQgGa8u1l/b2TQsx
+	lD4ivyNg/wj9bcieMHXFw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1788136386; x=1788222786; bh=lJPZCOLUDNk+g6cYgbr1iPsO5mhcNg4J4io
+	SHDPrZzQ=; b=RpxQvsohqxwK6JUe9I1qFnA4xYca/pTCvYXLSqxn3A81E0zU4H1
+	F13noCR91GcBL/1Y1YJ47n22BWhAZ3gCv+kNsWjs06RDKNSc1bHliu/n+5lGbdBV
+	MX0oHU1rkGIaa/y/08kZL6woyhABvPIWb6iB0WedetbZTOu3+/mYj8/ml8iWUtn4
+	cbhHU0DyEkuxxs/8IOPKWT3Lw0msoLjscRlrD028TWuPwCluOuNAt+1+0opaBTBT
+	zevvyEyR9eaSHx2AEAPmmjTig4rs/Wdb/4QoWTqocUElLEZcbkTA+CAbiZTtt3+4
+	Rq3qYfynZyrNwJ3Txq9NOy60DBzmv1a+9Qg==
+X-ME-Sender: <xms:wMuUashmOIEJMK-IAgNtOy9BHlHXjkLM3x9UmGE9OSqnK7OXcIxwSA>
+    <xme:wMuUar3Y24WYrNNkb8frTWR4kapMOngfq30hF801UHZmxtZjm9maS2HXaFt7ApEXp
+    J50SyCyNm8mOD5yyw9VFSbv9vEQuOPK8h9N3tf20aE3IAMPU88rNIo>
+X-ME-Received: <xmr:wMuUatCsHhXp2QN_Z431LzCXG8n2LrVi8Wy7sQSztbtHChLKasyfXA5vXbA>
+X-ME-Proxy-Cause: dmFkZTGWxIZKkq3xUOgUH4ygv02cvLsZ+hD3NKWU+FsQjPNSZgCQwwPv+JmWL5uCS4cqsg
+    3/sT4jCc0KHHG/Z8X0iJgpyNqUAuNz3xsso6DalAvRQKx5sqad53FONoT3236JY1ymED6h
+    ZN8kzGUvseACenUQxSwpIBP1MTBMcg5gVzZZ97jTCcLtIAP0NKZSI+azvAoiaQaNjpqH3F
+    wCCZD0BK9KSJVz+IMysk4BmIlj4bMsjPYymXcytnWPsV3t5kGLyCE3x83J0C6qbL5n6mSq
+    uPuKxKEFN1BWy1CEoDRkvwP1K74G1vsxqWfRCTguUzbdHZtLkLD9HdVbXGqU8xqM2pD8Nj
+    YnePeSeUFlIlmf3OOJO9zq909PkrNP2XHZzYzawt/dX7y9EtzL9tFTZAmuszAP1Jkt7pjL
+    IogkAI6Swucxn86WJAsRSt13R0laSBo8y9vDzafncz+Po+mK+1dtwxWvJ1Mr+sW5uI7HFU
+    y9lYQuIsCBGIjXhl0GQcGpabjnyCwU0vPoaCVXbAdR+7t2GVBKjR6e/JxBcsHN1plYfnQG
+    vkSEyBRWJaeWOiHix/tnpIpw5onSGN/KSCynDx0mhuqNOwASo3OTReKPms1rUFmmA80YuO
+    vJQ9wWLZVtDf4AodRcnzqlkXDomOo4f4ay1mHeseWItXomCNbiOx7zmnTb5w
+X-ME-Proxy: <xmx:wMuUagFAFFWbY2YjWwrsV20OPBml9H2Nk2101ufKBG8yzBEXh8dE7w>
+    <xmx:wMuUauCpvGk6DTb_7Vqwd0UFqATo4PgnGgQixx7xGeOvEVL1lG25nQ>
+    <xmx:wMuUaqb8YcMT644qNhyozAIWGQW3TbFh3tzLrfw507XEmoKSeI3AnA>
+    <xmx:wMuUamPzfSGhBpdUc7tEQO7KLDjN7DPHYKID1D9tvYN8iM_NBJF1bw>
+    <xmx:wsuUal5jylNIC9RMDN8Wv07F436UfPYuSnMuUrC-hyYzYxvUbkRSJaCx>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 30 Aug 2026 20:33:04 -0400 (EDT)
+Date: Mon, 31 Aug 2026 01:33:02 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Zi Yan <ziy@nvidia.com>, Balbir Singh <balbirs@nvidia.com>
+Cc: Usama Arif <usama.arif@linux.dev>, akpm@linux-foundation.org, 
+	david@kernel.org, ljs@kernel.org, hannes@cmpxchg.org, lance.yang@linux.dev, 
+	hughd@google.com, baolin.wang@linux.alibaba.com, baohua@kernel.org, 
+	liam@infradead.org, nico.pache@linux.dev, dev.jain@arm.com, ryan.roberts@arm.com, 
+	balbirs@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/5] mm/huge_memory: do not touch frozen folios in
+ deferred_split_isolate()
+Message-ID: <apTKkAkdUZYv-Zab@thinkstation>
+References: <20260826162101.1314941-2-kirill@shutemov.name>
+ <20260827163838.1813081-1-usama.arif@linux.dev>
+ <DL07CYI5866P.2HCBRH4BWPMKN@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260830-gmem-inplace-conversion-v12-45-85e5fd25252a@google.com>
-References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
-In-Reply-To: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
-To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
- brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
- jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
- oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
- rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
- steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
- suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, 
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
- Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
- Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Jason Gunthorpe <jgg@ziepe.ca>, Fuad Tabba <fuad.tabba@linux.dev>, 
- Vlastimil Babka <vbabka@kernel.org>, Baoquan He <baoquan.he@linux.dev>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
- linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788135916; l=3875;
- i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=mmy51FSAm74sXNx3NluUXGdNtIyrfc0yrVpZYstCmaY=;
- b=x1tSYHkMiZA15KG15MvuWidKGKIO9ZIkKkpYPRyas8DXVI2Iq/AGOOCZ5f2nE5+/RixYjQCnq
- p1pUwVfslNYAIHRIX9zYPGrQXJ1fNDZmZcdduy/XQlbcBp8CmqVZs0+
-X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
- pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
- auth_id=649
-X-Original-From: Ackerley Tng <ackerleytng@google.com>
-Reply-To: ackerleytng@google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DL07CYI5866P.2HCBRH4BWPMKN@nvidia.com>
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D1D8214000C
-X-Stat-Signature: i1unc1b9i1ra8z9uf5f7jdgwna41z5mg
+X-Rspamd-Queue-Id: 2157C1C0002
+X-Stat-Signature: qz5zt9zobacd9og9617eiowqa3utom8x
 X-Rspam-User: 
-X-HE-Tag: 1788135947-722217
-X-HE-Meta: U2FsdGVkX19v7PMbPIvlc6nLSKohwfbjKbS6c4Iu/npYfFqoYwJwZqP3K+ILNUESa/k8CqGENCPxj8gG+hiFHeMHT5lEMgqKIRtEO7Cg2Zq+hQ0HvHYyP9IaZ4pYU+5iMDA/UOetg1KqiQdNcCJ2Iaidg0mjSvjw6LXL74QEzYlB5jHGIKzSPCegQ+Pkg0m3ISGwiwAaH2s6gxh86mrpjYxdvIG+YP8uAJsRraQw7OZ2yOUBITHorGf6XfpAueYENCvlHWvNxVtqTZqrkb7o66rq0anpZnu9IHWda0TtpgmkHJcp++4wEJTq70O2ugrb/M1xhZrypT6k37dfxT+zzUeRxGMo13CEwtnynqmJPJzUA4cFhewSXgLtk4Szy/gqLI1IdhshlGZf9VdXVFGRLq+7C27Iz8Z+bd+hOZqKe9sDRL2gscYzpbNnF/KysW+AQzaDham1hiHlP079iQVBRqGwFlVidJwbgdSuXtY4+MUwSw1UucWRl1z6R9RZQpNh5u0hu/YY2saPZ3Vf/WED3LBT8cCVHLehyDKsDZpZ27tMhzuQt+qSCNUQNcEZPHK/S2uukwQ9z6DtLwqvojRXQUKj53+fJxwPigBUtPuqbgo4mnVWYT4+zdu+zJ53fMqPc7LeU3SQa3oFTXFJRn7vtW1rwrlplBEMqppAaboyjYbThvlObQDxNPHMgzVxT+0VeOdo2xY0db5+GMaK0Co3QTunlvTygIGIZk1zNthvHIldr/iKp/YFEv3O7AiH2wmJfY2Jf9zxeR/IOiBwzH6mSGoePPm05tUAe0xuGjv8oPmyko1ZOe9eP04zTXJk42TVxAHiz5B+HI0hQip6EZFCVYogh0kxUvsg+UvmINjBnPMCoOO2TMUjaF4jjKhHvZMemBhIvZqnQQKvDI1kAf1EH7VTklxqSmiCTfF2AfMzYwdtqJsHXadhyPljeRenhcVa6EwSov4Qz+xLQqE3bAi
- xNemTjzp
- hI6WwpRRp+kuKTqGBdbAXxWT18H6AXhzKLlM1IWoJjQkMDj99dT2l5xytncpRKUukssb8ValvrpnPSgucNmL5kW4o7qJaXTrBjVGzZrrQRk/xP0JzggIx29jm0/5fO/fE3RDOrU3zhFrXBr8fMeMlnhcCYzxZwVVPRi6jkDxgt0dzarNaHzzAUxwMPB2Mr8bsPFtWSBAJ4UFRAsWaYLA40p1Qr6k1/FM6EuJkvhUuLDBxZgMfAW0MSOiUU339bilE0DKCskrm5yHb6cTCP/7ZWb3KsBNelbiVvPS1b+CYBjBT3QvtHXuJbwVqg4SR0ptGVKG06O2Bg6cy8c7LpfIph26eFFx5O/nKq85ndvsTiUN9WMChyzasQohyxHaofDecdcDYrSxHQSN6R+so9PoxQx6UoDqdUMRdEK4FDYeBRXz1D1AjJ7lq6FghtsJBivNZ8vGSfpFHNpyomkfXbTEsUfQT9k9V9C5GBr/z
+X-HE-Tag: 1788136386-868431
+X-HE-Meta: U2FsdGVkX18fdi26iumX8MhtoLdrNWfGXljzrWYbzxv9volvM50Hjl5ydJTMuzJmbBBVUn8ztTOid11Ve4c9/ddYggWbGZJvnQeDp+9McE0oJUEjxu7YPESjPMXNdghNQQ+Ht42EHJum0oNrnL4het2dw9TRiO/IGCrroNaS+kEqeMbejDrw/8njbpyRQ9S0OpNnSj/lprxwiXy2VctzscL4MF0JIF67/kXDF+WKppP/lt7f2Hq1yqeutPkDgj64IbnJq63HupUuJrRpO4Q9WnwjsEH67y5Z8opNCBM5f6arMvuSdgZ6PIMhfvBJBOIdXwoGy8S7VBaSHxi8cioolhqfPPPrsnUpTNCIQpL+MDMsq8t7bO0M8jSjbjCGklGEyXhUfXyriSBJOTt3M7PM4FjmtQGf15MyFVR9xOg/jcpldA2pHmZIUZpOvJceTlOFCNyq3ouwwiOD1yZX7KipVnV+p44y4DKSB0OINeErv2NA8h9yXuwASJkIfu7RM32dwQddlMZ94VJ0/bQBzST7SX6UewqVbVKeOTCZdn+LEDJ+Dc3RUJbu8jn67ZboD8FrYAJt9ZMfenrPUeiUV+8sLUgV1HqSL5UvSjVlwNzi8rjxhAAh222ufjmeVJRkvqOmgtNeD4nLj5zEggIkmvNLnCfX7MbAQuLs+PHyLx8uikdJ6XWMZ/P2lXYAuLlJb6sKf8QvM4jcsdi+9HDVhEGGw3bhsvJChp/Hdd5euPXFWClge9NWp4wl6OQuha1cPCbPBAvxo4CTDwKgf2hBLHftzYX2kATI5OUky09IO0EIo2+0TXTeXvUOMsOgBnIlHLQGy5SldVgmoPmoE+rfm6TCyQuHAOyqvjvq9CfHDKcGdjoUxt5FQVwU70G7E3YSAEaClmoT/tHCTtF3p+QdjNvkfWwo7zu2zeW/XoyX2BeT2tcIoj7HDgToefRJRxdNHJyFlDIyozf1FblrVoopF1z
+ TQVg8tKl
+ 2smf7natMGGJX0ixrTFstpvxze43GsNqh8Xq5VtjY11B+/orCrheZKuDUq7vP9/SU+0bnqhPIeyfah0XtuQRye0nW/e6AXQg9qTGwifiqrfnFZArcKSF6Lf8PL/PJ0asH8et2QsShEXxRWOn0iC+1rZbVsaPdcJhNMhpaivA0nmiO3hKGzd7+pXseyKPZaiAmWTGdzuf4ZXHdUgEqhIakXEL1sALgd3fWE46n2aMj0w3w+qtGOY7Uqn8dt2z5M7TsfpEYwaRajKjFaNNffQpW90nH12ouhrt6f7ZXkw4zUTMPJ0Rq1xc9rt/31O+hXTyx25+TAU7dz5/mKmZ24joHSxgA/+fFtj2N5LMthyjESMgFm7oXchgD8UNug5X2yz7m4K3owMiTmDQyUEqD58aByRXDNRVf1NC2Jmh4WSr/jiXZiiuFBc7DdfaaeTe+VdpSrMdGeleTbSVwIGwBGDR2pICptjphEcJ23xph42UCLDgkB8Gp1ea0Dpwb0vhOQyomtOvqqMe+8ub5rpp051wvTEILN2l+PaAWThjnhhgLtHLoYUU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,95 +133,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Sean Christopherson <seanjc@google.com>
+On Thu, Aug 27, 2026 at 09:57:20PM -0400, Zi Yan wrote:
+> On Thu Aug 27, 2026 at 12:38 PM EDT, Usama Arif wrote:
+> > On Wed, 26 Aug 2026 17:20:57 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
+> >
+> >> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> >> 
+> >> deferred_split_isolate() probes each queued folio with folio_try_get().
+> >> folio_try_get() failure is treated as a lost race with folio_put(): clear
+> >> PG_partially_mapped, correct MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, take
+> >> the folio off the queue.
+> >> 
+> >> The folio_put() race is the most common case for !folio_try_get(), but
+> >> it is not the only option. Another scenario is folio_ref_freeze().
+> >> 
+> >> A zero refcount in such cases does not mean the folio is going away.  It
+> >> means "don't touch me" and current deferred_split_isolate() doesn't
+> >> respect it. It can lead to unqueueing folios from the deferred list for
+> >> no reason:
+> >> 
+> >>     CPU 0                            CPU 1
+> >>     ---------------------------      ------------------------------
+> >>     freeze a mapped folio            deferred_split_scan()
+> >>       folio_ref_freeze()               folio_try_get() fails
+> >>                                        folio_clear_partially_mapped()
+> >>                                        NR_ANON_PARTIALLY_MAPPED--
+> >>                                        folio off the queue
+> >>     give up, put it back
+> >>       folio_ref_unfreeze()
+> >> 
+> >> The folio is still partially mapped, but it is no longer a split candidate.
+> >> Nothing queues it again until part of it is unmapped once more.
+> >> 
+> >> Skip the folio instead: whoever freezes the folio, owns it and owner is
+> >> responsible for its fate. It also covers the folio_put() case:
+> >> __folio_put() unqueues the folio via folio_unqueue_deferred_split().
+> >> 
+> >> Reported-by: Lance Yang <lance.yang@linux.dev>
+> >> Link: https://lore.kernel.org/all/20260824131224.73344-1-lance.yang@linux.dev/
+> >> Assisted-by: Claude-Code:claude-opus-5
+> >> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> >> ---
+> >>  mm/huge_memory.c | 19 ++++---------------
+> >>  1 file changed, 4 insertions(+), 15 deletions(-)
+> >> 
+> >> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> >> index ced400f72d43..6281ed993243 100644
+> >> --- a/mm/huge_memory.c
+> >> +++ b/mm/huge_memory.c
+> >> @@ -4590,22 +4590,11 @@ static enum lru_status deferred_split_isolate(struct list_head *item,
+> >>  	struct folio *folio = container_of(item, struct folio, _deferred_list);
+> >>  	struct list_head *freeable = cb_arg;
+> >>  
+> >> -	if (folio_try_get(folio)) {
+> >> -		list_lru_isolate_move(lru, item, freeable);
+> >> -		return LRU_REMOVED;
+> >> -	}
+> >> +	/* Lost race to folio_put() or the folio is under folio_ref_freeze() */
+> >> +	if (!folio_try_get(folio))
+> >> +		return LRU_SKIP;
+> >
+> > I think we might have a problem here for ZONE_DEVICE folios?
+> 
+> For coherent ZONE_DEVICE folios, yes. IIRC, private ZONE_DEVICE folios
+> are not added to deferred split queue.
+> >
+> > This assumes the final put always dequeues the folio, but ZONE_DEVICE folios
+> > bypass the generic folio_unqueue_deferred_split() path.
+> > With memcg disabled, this can leave a recycled folio linked on the
+> > deferred-split list?
+> >
+> > Should we dequeue folios in free_zone_device_folio()?
+> 
+> I think so, before mem_cgroup_uncharge().
+> 
+> But it is a pre-existing issue. We need a separate patch unqueuing
+> folios in free_zone_device_folio() to fix commit a30b48bf1b24
+> ("mm/migrate_device: implement THP migration of zone device pages").
 
-Skip setting memory to private in the private memory exits test when using
-per-gmem memory attributes, as memory is initialized to private by default
-for guest_memfd, and using vm_mem_set_private() on a guest_memfd instance
-requires creating guest_memfd with GUEST_MEMFD_FLAG_MMAP (which is totally
-doable, but would need to be conditional and is ultimately unnecessary).
+Agreed, and it is inert today: nothing allocates a large coherent folio.
 
-Expect an emulated MMIO instead of a memory fault exit when attributes are
-per-gmem, as deleting the memslot effectively drops the private status,
-i.e. the GPA becomes shared and thus supports emulated MMIO.
+amdkfd is the only driver with a coherent pgmap and it hands out order-0
+pages, and test_hmm builds its coherent chunk the same way. With test_hmm
+taught to hand out PMD sized folios, memcg on gives the WARN_ON_ONCE() in
+uncharge_folio() and cgroup_disable=memory gives list_del corruption once
+the driver reuses the page.
 
-Skip the "memslot not private" test entirely, as private vs. shared state
-for x86 software-protected VMs comes from the memory attributes themselves,
-and so when doing in-place conversions there can never be a disconnect
-between the expected and actual states.
+I am not sure what the right solution is: keep such pages off the queue
+or dequeue them on free? Or both?
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Fuad Tabba <tabba@google.com>
-Tested-by: Shivank Garg <shivankg@amd.com>
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
----
- .../selftests/kvm/x86/private_mem_kvm_exits_test.c | 36 ++++++++++++++++++----
- 1 file changed, 30 insertions(+), 6 deletions(-)
-
-diff --git a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-index e6d16e9d61200..f7228e0f1ac61 100644
---- a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-+++ b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-@@ -62,8 +62,9 @@ static void test_private_access_memslot_deleted(void)
- 
- 	virt_map(vm, EXITS_TEST_GVA, EXITS_TEST_GPA, EXITS_TEST_NPAGES);
- 
--	/* Request to access page privately */
--	vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
-+	/* Request to access page privately. */
-+	if (!kvm_has_gmem_attributes)
-+		vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
- 
- 	kvm_pthread_create(&vm_thread, NULL,
- 			   (pthread_fn_t)run_vcpu_get_exit_reason, (void *)vcpu);
-@@ -73,10 +74,26 @@ static void test_private_access_memslot_deleted(void)
- 	kvm_pthread_join(vm_thread, &thread_return);
- 	exit_reason = (u32)(u64)thread_return;
- 
--	TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
-+	/*
-+	 * If attributes are tracked per-gmem, deleting the memslot that points
-+	 * at the gmem instance effectively makes the memory shared, and so the
-+	 * read should trigger emulated MMIO.
-+	 *
-+	 * If attributes are tracked per-VM, deleting the memslot shouldn't
-+	 * affect the private attribute, and so KVM should generate a memory
-+	 * fault exit (emulated MMIO on private GPAs is disallowed).
-+	 */
-+	if (kvm_has_gmem_attributes) {
-+		TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MMIO);
-+		TEST_ASSERT_EQ(vcpu->run->mmio.phys_addr, EXITS_TEST_GPA);
-+		TEST_ASSERT_EQ(vcpu->run->mmio.len, sizeof(u64));
-+		TEST_ASSERT_EQ(vcpu->run->mmio.is_write, false);
-+	} else {
-+		TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
-+	}
- 
- 	kvm_vm_free(vm);
- }
-@@ -87,6 +104,13 @@ static void test_private_access_memslot_not_private(void)
- 	struct kvm_vcpu *vcpu;
- 	u32 exit_reason;
- 
-+	/*
-+	 * Accessing non-private memory as private with a software-protected VM
-+	 * isn't possible when doing in-place conversions.
-+	 */
-+	if (kvm_has_gmem_attributes)
-+		return;
-+
- 	vm = vm_create_shape_with_one_vcpu(protected_vm_shape, &vcpu,
- 					   guest_repeatedly_read);
- 
+Balbir, I don't know much about zone device. Do you want to take it on?
 
 -- 
-2.55.0.897.gb25b4bd76c-goog
-
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
