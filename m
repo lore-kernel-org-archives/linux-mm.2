@@ -4,87 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B90B1C624C6
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 17:38:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65C0BC61DD3
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 17:40:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 965FE6B008C; Mon, 31 Aug 2026 13:38:57 -0400 (EDT)
+	id 65AEF6B0092; Mon, 31 Aug 2026 13:40:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9173B6B0092; Mon, 31 Aug 2026 13:38:57 -0400 (EDT)
+	id 5E5116B0095; Mon, 31 Aug 2026 13:40:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DF7A6B0095; Mon, 31 Aug 2026 13:38:57 -0400 (EDT)
+	id 461B96B0096; Mon, 31 Aug 2026 13:40:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 59E0B6B008C
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:38:57 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 04B1A6B0092
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:40:04 -0400 (EDT)
 Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C68DDA395B
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 17:38:56 +0000 (UTC)
-X-FDA: 85162275072.13.9D4BDF1
-Received: from smtp4-g21.free.fr (smtp4-g21.free.fr [212.27.42.4])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D54A91C0003
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 17:38:54 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=morinfr.org header.s=20170427 header.b=acRKMFNs;
-	spf=pass (imf18.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.4 as permitted sender) smtp.mailfrom=guillaume@morinfr.org;
-	dmarc=pass (policy=quarantine) header.from=morinfr.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788197935;
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EF76C1401E6
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 17:40:03 +0000 (UTC)
+X-FDA: 85162277886.13.A7EFD19
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 137591C000A
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 17:40:01 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=iCzZtgEk;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf20.hostedemail.com: domain of pratmal@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=pratmal@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788198002;
+	b=QuaIE6D6THEu27iuebd4EQMpZGbR+V3oXdzgqjSPjk0VLBGFbHi1Ol/KCcV80rZvOyYI8+
+	k7ytH4tQlsqAduRlTKU+Xx9f7aCydIr5LrgYNPp8Xxds0SmxzH65ngyINbFbwsCOjBoaLq
+	xBycA9lgBomrFZKPt7rNLrmuWDaFe60=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=iCzZtgEk;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf20.hostedemail.com: domain of pratmal@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=pratmal@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788198002;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hDRmFKQ3KwKa7CTJ+rHynqNI4b3G5V8gGpop+oMVOJQ=;
-	b=JHfSAQg+ETHb9MzbnkH7yAS59jbAEJCG1OboRl5sAgPzpfpLfML+5kcVE6v6oiK36qEIoY
-	bOz0GYYYo1V+0O16eHsB1CwooFwVPSEVcd9ochIh13V8qTHrMpM/NXASelrT0CIXZKy5ml
-	wPVUP6lpZXkrgtuyHEAL2p2QXW01S1M=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788197935;
-	b=m7XZBMKxjA6QlyQgxhpAH3tJd5r3wMnpg2KLWdtpMVo+v7TrUAq1XlnjB1IcWbt2wgCfd0
-	0AkEEvqtW9rfozKa9rs5q7PyAQ8qHl5gZ2TbS8S8rbBv0jBOno+Gd2pnDd8/XRJpCMgt62
-	FoRlPa4Q5+Mg8B2zB54ST4vQntnR8Pw=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=morinfr.org header.s=20170427 header.b=acRKMFNs;
-	spf=pass (imf18.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.4 as permitted sender) smtp.mailfrom=guillaume@morinfr.org;
-	dmarc=pass (policy=quarantine) header.from=morinfr.org
-Received: from bender.morinfr.org (unknown [82.66.66.112])
-	by smtp4-g21.free.fr (Postfix) with ESMTPS id 56D3219F54D;
-	Mon, 31 Aug 2026 19:38:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=morinfr.org
-	; s=20170427; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=hDRmFKQ3KwKa7CTJ+rHynqNI4b3G5V8gGpop+oMVOJQ=; b=acRKMFNsGBMMmsd3ottK8QINuz
-	cxuo3f4grvDL+afeeOwnnB2yyWOyEZ591wOajJXLH8ya0eSlXwVoz03KAg+iOintFkDplC+Tsg3/g
-	eGdZPI7epWrOyMplvqEKT/QlrFz4QtIpB3zMHkLGsq9knG6dkHqaad6yROgrlJpi1Ob8=;
-Received: from guillaum by bender.morinfr.org with local (Exim 4.98.2)
-	(envelope-from <guillaume@morinfr.org>)
-	id 1x15y5-00000000TQ2-2V0w;
-	Mon, 31 Aug 2026 19:38:49 +0200
-Date: Mon, 31 Aug 2026 19:38:49 +0200
-From: Guillaume Morin <guillaume@morinfr.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Guillaume Morin <guillaume@morinfr.org>, linux-mm@kvack.org,
-	leitao@debian.org
-Subject: Re: [PATCH v2] selftests/mm: hugetlb_madv_vs_map: add underflow test
-Message-ID: <apW8KS4D6k8621Ca@bender.morinfr.org>
-References: <apGbO2QM35VZ8d7a@bender.morinfr.org>
- <apVC2D11bMz-QHic@kernel.org>
+	bh=jPpUlWXdLPVx8AUYyFYJrBOj8LsObV8aDyLIE/Vn3+4=;
+	b=yy2u3Uof4FZazPHI02g9Dvd2QEpkQD+ll2SWU5yprLVefUQ1IwXjA0XUYDoi5X2AYqZIzn
+	0ytIJmEZbBJemX7PgYEagb2Yy4aOSvEF+UWK1xTRLg0bbTatHRHYz/KKmOyfoJKhas+b0i
+	awhgRsrZi38UtvsJMpmZh2EQdgTQnfk=
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-51c10e86e52so9941cf.1
+        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:40:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788198001; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Hrh9yjYzAxMsXGGYC1akl/oOw9dH9ReutvFuHOg4n4tkjZreeROsl8FxOgZ9HgZP4j
+         pfwzh35lQeX01AVAO95TAh7Mn417JT6hM+xhY557ADv1ymab71596vhU+wC+FDr6wtL5
+         /p/KAghzZsLMLyB2kiEJS8hWJMJnTBghc96/x8xfhs2CNik512EaOOhK1RUXdWPNN5d1
+         h7VXMnPOy2jAxdTrc+y5wxknPfaxJ2Ta5cG+wVYYzzFeiFLpI//ykL09qS1mNSqXn6ki
+         uoiKvBZy0tLGwLIkdwSUQnYGd8dnRbSqlsxSohVw96odvm4kP9VhKs1P+AGe7B0hmP3T
+         F0bA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=jPpUlWXdLPVx8AUYyFYJrBOj8LsObV8aDyLIE/Vn3+4=;
+        fh=6b7zxXgFSk+bm0zG16xNb/jj7reMxOZjmGBTc0wX5H4=;
+        b=UlrtPRIIcuN4YE/ucDQopnhsA+uf+YmoyfMxiUXIyKg/kmiM3dHwIa+D3qo8wptt82
+         zEqBE6PpHpQmB3riPS9Cf+vfJTX8EpFkSjorN5ZOW8rkJYI4rmTBTJMcPwHsGcKtiHI/
+         osbdJHMos/dLzr+b7gLzwmZklsSCHP4n7LUXd8/Y5lo+stpTcqT7e8K7JP9fzIut68mm
+         RELIjEjX9OLWnAnvWvYcIthi/RS8ZQiRydOJA96dt1Oys244/9+9QPYDF8vGppU5d2ZJ
+         CutDSea+W39isWy45OYwowySR7PW0A3TBnyIdh4aPUpVDJ5Bw0cWjHgHcpqfZb6LT9Tp
+         WwLw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788198001; x=1788802801; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jPpUlWXdLPVx8AUYyFYJrBOj8LsObV8aDyLIE/Vn3+4=;
+        b=iCzZtgEkI/R9KGZ2Wg14/d4ToLATXw9O55g3kUgKGq/OQY2keLizfyjB1IwECcHJBE
+         vN8hCRb4EK52R/Rp4oWKnDRffzFsfOJ2QTYyDDzQ1uDJvCWmglIdLOrO1wUf+trA0ZTd
+         8O03stpbrvTg5JBFRolRQzMf3a4pJwI6RC9UKy3MwAj+2SihwlylikUPMxzup1yEYC2f
+         FoU6jqsENsh/bs/xhHV9CHFpppC4pCGRykTmwrP7fEuMyG9b6int15+w+JA5roS9ya5u
+         BRyJ3v+HuzzbW27SWclC5JmGKuOodoBt3p0ZrbTsiAckH64/jbMz5e0VAkJTm43hNF/F
+         94fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788198001; x=1788802801;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=jPpUlWXdLPVx8AUYyFYJrBOj8LsObV8aDyLIE/Vn3+4=;
+        b=TfGYzOWSGYIbAk3O+55IGd84Azd1Xu8ZKdCn23f1d066WCr4+iFtwUgFippxML//Nq
+         hp5lYQpMYHFKdLYIXua7PB3UKL6x6M1Jz2PC5YXRl4lNe7LTY0IM3uPvSMuRCZoPfgvm
+         PZZ5s7ylRYPDRpnFNUpEnvMPsIvDhNyw4OBWC8rziyliA5Q6/6gfu1jkNiY790FZtEFR
+         CrX12ODNRRtCstkAeX1PcgABWNty0aqmDOk3YH3dmo4A1sq+Amk2UnRh8RCakdHSwTHb
+         eCHi68S8ES4auSseIug7cbjt5pv3f3VVwK6zxeWaeLQwIOpJgncsr8u+fWZJNx7Vc26C
+         9JLQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr04NkAcLha+GQkniZwNONWgocVFa6zvvLtivk5+wXouP5ohXr4KY0D8YRJHfxavkFO2Q2fD5rtuw==@kvack.org
+X-Gm-Message-State: AFuF++meoWIhZjD7SJH19EyLGWGHVQSHluldagsWqNhuRSIgL7POIgla
+	gGDl7mscuBJBHv3C6R1fqjpvtwvtGmJ0lJBkhyjOU3PPbl6ZBrlAEqOfAth4PmIZQvq6u6vGOei
+	nbq7Z0RPDQjXO7JPMuDFJ6HDfwKW/84viIWXFJOv2
+X-Gm-Gg: AR+sD11xwZjeTxX1rL182b8lU76WKi7oEJB4UMDmIn9HcOJSPBaDyOtZqqlq1/3jss6
+	WATS+feBFCGsTC6YIJyEICfL4XkB+iSKjXpdikMd0qNs3tsmqKMSLVkeD/4YVRRyHXnaaKNBj2R
+	2+r7jBSi5wh3CIPtHL9TmsWi/xv08shs6qS6aZtq0uu7Uslcl+XrZY4wDakgD8GQToEB268LvuA
+	86uD5xwPY63ne8EhERzZIV6GhoiXiO8nbNJddSf6niOlKjhb2lTtp9rU1wQ7aZs/Pas+tdqbwN+
+	qTrXZo5mKiMUKhd+aIKUfYHX5SyJTAeR3775djWeZ14spJKh5/pLXAO2dxpJcEuzc+7pNhswfKO
+	JsHOo8K/zpA==
+X-Received: by 2002:a05:622a:1f93:b0:52b:4ec6:52ba with SMTP id
+ d75a77b69052e-53024f7492cmr354231cf.6.1788198000536; Mon, 31 Aug 2026
+ 10:40:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <apVC2D11bMz-QHic@kernel.org>
-X-Stat-Signature: 5j94ptgyiyyq59bh7m51ox89eu9r4g48
-X-Rspamd-Queue-Id: D54A91C0003
-X-Rspamd-Server: rspam02
+References: <20260831-fix-mm-selftests-gitignore-v1-1-c984bbd4c5e4@kernel.org>
+In-Reply-To: <20260831-fix-mm-selftests-gitignore-v1-1-c984bbd4c5e4@kernel.org>
+From: Pratyush Mallick <pratmal@google.com>
+Date: Mon, 31 Aug 2026 10:39:49 -0700
+X-Gm-Features: AcwNN1WbiF693Rdd2E2JcwoD-vuH4ggrPp0CxLZtVrgBpAwJ32geLRUoTBwXrJo
+Message-ID: <CALHaPKfqDPo+4LSfE=Oq+JNrKyFyopkUsd86O6iKW2S4cBRY0A@mail.gmail.com>
+Subject: Re: [PATCH] tools/testing/selftests/mm: add missing .gitignore entries
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: multipart/alternative; boundary="0000000000009da829065a5b4a42"
 X-Rspam-User: 
-X-HE-Tag: 1788197934-726704
-X-HE-Meta: U2FsdGVkX19ztcVQR/miK7ft94Bv9tvJNhd/7U2KF/quVbSlRw4u3Yv1+FABpGDvIZxogLuXYVeqj+dMI+aOD7FBq1o07XIo3HX1/EtqcgbVOApkNsnf2/ZItL28qvc4CXQ8OuQIufQk7zUcuAssFF8vcdCwQ3+fUbyuzHznkWDJfdmSQtOw4cFoD2KYuLp1sWkCYJUStYIHVcEOq4vgQ30UFU/7/pG9wUS7L55TsAvzmf2h4s3SQqxM3x8JM+3h2WD2+CBuGtcYHmSBhtpXBMeFQdKftV2UNyUZrYOW7rBa9zBADobJmYZnIMKSegnFSIZN5e/J8Xc7+BWAKfQezp6k/copUrFMBF10YamFqUR4do+3uJ7Did19ENrg7MiOZIYOXxw/Rz6CE7HKmVxRuBLM3DYwLciEMwXnshIubUPPrkkWX+gV0L16oqgr8TOO5jMwQWdbGsXH3ybbPzcPS6PQWmSI9G4bEpYDw+F4s7zBSbo0O+YL+QYjhDtNJbJjPNxVEVB8auZhWhGll7PjruJoXeCWx2uH6yKpTgVk+jdPgW4mhA7eZ8xwvqBXZAR1Oo9nLODHbsiEFfQBOT6pBuEmXPX5r1rx+OXkhRX2jKp0zan1LWFEoxQ3jdK4dGyDGsNlDCtzs34jyU/TxZNw4dFRtU6HNf+y94Oqv7zJCE3ibv+Kb5FEAgI9VxpHxq4AUD7unKQD7YqdAlmlz+eilORUDS8O0bnbRxiyXsFV6Y/FhVE2bU5ec7OgyjitDKb6uPcXsHE+b0O13Z9+aD2YJx1tEOhltGgEe2Cjwqt7GGP0SAc8MQ2iFkIfKtBolysynSUNjdJZFcIE4qIAeVe6PvdHCwiYw+Zz6qn6emDGXMmQmTCYNj2494vt1U6lzlH62Ta5JykMYkBrReyYnHSdzNheAHbtLif2RClgpjvaxu7V/THI1cXOZTD8UXYvQ+z0L1QqUzjO5LknehsVFGs
- V0eIeSDB
- ojgTVc0oVYUySsHGaRMXsiUm4tDzOHvUPbmSyjCQpBBZ3QmH5v6+piqBhFjKxLUWyyfWvtCOTerUXAqS6xE9JF/xLjzLwzAWMlHPcv0Fmu5NvUgVEF8M7a/JBdpPuC9AfYuQkh2/pi0XFLqV+i88f88ctWRaPQuaH53vCxSpSgmUswoMkFRfgOwadRlUEnW8Uc+Quu7P7XaHg+BnLOOsqQmsouxFY5SIvGmehdj2nZbnYmIjn7qwXkq+0YTrnBykHNdJ8os/jVKwAxkeKzca7szGLq9DW1YA+OMprfwMJWXlvsLUX+f8zFLdDO3Yru3AykZRzsX0Lei1q0QhJYQIyzM9AcTg5QGAgSUCfvKk/BG6lHsY=
+X-Stat-Signature: onwmemfnx77f7oi6113ozt7pjtnqa9af
+X-Rspamd-Queue-Id: 137591C000A
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788198001-551921
+X-HE-Meta: U2FsdGVkX19TL3yqy3xu5a7nIxVHE1lUosT7VGGPGvc9WbuOWW3s5ELGRtLxG7EMLqYZdaVx+ggjFvLkjW/AoiGjoTSPbMp2cTdU3OhC5myhE4G2Y075lAYr6hoa3oo28x5IKY0WDVYskOQFkkbZ19vftwA1CCEoBfpXkIezqHo3wvSjAeYPJFgI7ozERyaLCmDHb640IiITk4sHZPQl7zuBMIbGHQfW93rcmRsxZzeyNebi2Dnpjs6j5Rjwa3GWFLQNuAKqRmWyC57FkJJ1rtxpPQo33/F0Qfg4bKEGeMX5fjtR1lDmm54WN3Cxc4lO4AtqVN/b5sONSItV+vEp2P4OHXIDJwNXWznIoXk6PjFmIi8W54wxyWroHgpNiwiSvbj6Gi/9bhkZgrHAfAsYduV6afkSD9Iy1jgVmYhcd/ogWyhl31JPMPHkga+RVF/0yKLGof7LwP+fBvSnjEjoPmq7xMB03G46mtqTNckYanWo9y7Io5RCkJIJ8NOCZXlhALk+HztXvypkMYcuyXEZJfkz0wctjBxtqQHH8rjiJDSesJN1O+gm7NhQlCcrQyWoBW3PGqs04qnX5uEH/HwWIFQy8v9u7hn3xuvrb0dITVzXCSLW91cRjclE4Di4yWiaT1QSjAsFJJ7Ns9liLisF0B4mdGURIPGLTqggpPwnenBD2lDf3cwg78mZcvh3VqP4Ox734J9iI46iChExFcjxqtEloe/d6jgsFWUhxHhVQo/I9KCPZW+L8Mz2bcBIypuiZNvil7cEGm7cSrx52375XVCFJLwOvi5p8Q1CFlc5UDlgWpSZYB7MqRUV6NTfMfiYf0PlCxRQenUUrWWaJiSqnRTN+ju56OxePpMP/7xuRamVoM627A0GaHvio/yVuizJ+0P54lCjObXDDkDomFUSocKfhfxMVxBi3C5xIjQQmPbdyD/fls9z8Fb14albK9Yu+NRLyIrcPpItZuYs2Pt
+ uRna10iX
+ IDwAoZimWrD7cweiIWNXz7NakMhamXjx0cNPQh3hBSJ2oTvcSB8so9PArfShW8VR66Zm4372MVaOnndSJoEcWnaln0qTIsjsSXeZlxa6sYC472nUbxnB0Ax1rBheiXx5+wxCYdJiyyiVdXrZecjHCjFLnQJTRhQbnrlWymNJ+yiugKbamQfR9u3/4mQamsMiGeYX0Le41VRO157fU7LrQpG9fEsXfSSzZgw71tMVILpmiml90+2ZRi5vJfTmZuOBc00zX99tYtJOZCz75Z+q1DcrK8c/d78+DW4+jEioD8Qo3Y7WpJq0gQQQUfBh5llEm7GADx0q6k0vkVZsQwmxhz5waHZqETiIVqPaGkTQSbVuZ8dM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,62 +140,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 31 Aug 12:01, Mike Rapoport wrote:
-> > +		return;
-> > +	}
-> > +
-> > +	/* Parent */
-> > +	close(pipe_fds[0]);
-> > +
-> > +	/* First unmap, this will close the vma */
-> > +	if (munmap(huge_ptr, mmap_size) != 0) {
-> > +		kill(pid, SIGKILL);
-> > +		ksft_exit_fail_msg("munmap failed");
-> 
-> Won't this leave the child as a zombie?
+--0000000000009da829065a5b4a42
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-It will, for a brief amount of time then re-parented to init which will
-wait(). Happy to add a waitpid() here but I was concerned it added more
-complexity for not much benefit (it's very very unlikely munmap will
-fail). Let me know.
+Thanks for the fix, Lorenzo, and apologies for missing it.
 
-> > +	}
-> > +	close(pipe_fds[1]);
-> > +	if (waitpid(pid, NULL, 0) <= 0)
-> > +		ksft_exit_fail_msg("write failed");
-> > +
-> > +	nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
-> > +	if (nr_reserved == 0) {
-> > +		ksft_test_result_pass("After the child dies, HugePages_Rsvd is properly set to 0\n");
-> 
-> This makes this count the test as two, right? 
+Regards,
+Pratyush
 
-Yes, it checks both that there is no underflow but that the count is
-restorred as well. is that a problem? 
+On Mon, Aug 31, 2026 at 7:18=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.o=
+rg>
+wrote:
 
-> And do you need to re-check what happens after the child exits if you
-> already detected the underflow?
+> Commit 2bee308f3adb ("selftests/mm: use pattern matching in .gitignore")
+> switched to a pattern-matching mechanism to reduce churn in .gitignore.
+>
+> It however accidentally excluded the page_frag test's-generated module
+> intermediate C file with .mod.c extension, and also the local_config.h
+> header generated if liburing is available locally.
+>
+> Explicitly fix both the issues, fixing the module-generated C file as a
+> general pattern as these are always intermediate files that should be
+> ignored.
+>
+> Since this is a trivial .gitignore change it doesn't seem necessary to
+> treat it as a hotfix.
+>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+>  tools/testing/selftests/mm/.gitignore | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/tools/testing/selftests/mm/.gitignore
+> b/tools/testing/selftests/mm/.gitignore
+> index fcd892ed21e3..a306d7754786 100644
+> --- a/tools/testing/selftests/mm/.gitignore
+> +++ b/tools/testing/selftests/mm/.gitignore
+> @@ -2,7 +2,9 @@
+>  *
+>  !/**/
+>  !*.c
+> +*.mod.c
+>  !*.h
+> +local_config.h
+>  !*.sh
+>  !.gitignore
+>  !Makefile
+>
+> ---
+> base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+> change-id: 20260831-fix-mm-selftests-gitignore-dd389da72760
+>
+> Cheers,
+> --
+> Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>
+>
 
-Need is a strong word. It can be done either way really.
+--0000000000009da829065a5b4a42
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> > +	} else {
-> > +		ksft_exit_fail_msg("Unexpected HugePages_Rsvd=%ld after the child termination munmap, should be 0 or -1.  Repeat the test\n",
-> > +				   nr_reserved);
-> > +	}
-> > +}
-> > +
-> > +int main(void)
-> > +{
-> > +	ksft_print_header();
-> > +	ksft_set_plan(3);
-> 
-> The comment at the header implies we've added the second test, so they plan
-> should be bumped to 2.
+<div dir=3D"ltr">Thanks for the fix, Lorenzo, and apologies=C2=A0for missin=
+g it.=C2=A0<br><br>Regards,<br>Pratyush</div><br><div class=3D"gmail_quote =
+gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Aug 31=
+, 2026 at 7:18=E2=80=AFAM Lorenzo Stoakes (ARM) &lt;<a href=3D"mailto:ljs@k=
+ernel.org">ljs@kernel.org</a>&gt; wrote:<br></div><blockquote class=3D"gmai=
+l_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,20=
+4,204);padding-left:1ex">Commit 2bee308f3adb (&quot;selftests/mm: use patte=
+rn matching in .gitignore&quot;)<br>
+switched to a pattern-matching mechanism to reduce churn in .gitignore.<br>
+<br>
+It however accidentally excluded the page_frag test&#39;s-generated module<=
+br>
+intermediate C file with .mod.c extension, and also the local_config.h<br>
+header generated if liburing is available locally.<br>
+<br>
+Explicitly fix both the issues, fixing the module-generated C file as a<br>
+general pattern as these are always intermediate files that should be<br>
+ignored.<br>
+<br>
+Since this is a trivial .gitignore change it doesn&#39;t seem necessary to<=
+br>
+treat it as a hotfix.<br>
+<br>
+Signed-off-by: Lorenzo Stoakes (ARM) &lt;<a href=3D"mailto:ljs@kernel.org" =
+target=3D"_blank">ljs@kernel.org</a>&gt;<br>
+---<br>
+=C2=A0tools/testing/selftests/mm/.gitignore | 2 ++<br>
+=C2=A01 file changed, 2 insertions(+)<br>
+<br>
+diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftest=
+s/mm/.gitignore<br>
+index fcd892ed21e3..a306d7754786 100644<br>
+--- a/tools/testing/selftests/mm/.gitignore<br>
++++ b/tools/testing/selftests/mm/.gitignore<br>
+@@ -2,7 +2,9 @@<br>
+=C2=A0*<br>
+=C2=A0!/**/<br>
+=C2=A0!*.c<br>
++*.mod.c<br>
+=C2=A0!*.h<br>
++local_config.h<br>
+=C2=A0!*.sh<br>
+=C2=A0!.gitignore<br>
+=C2=A0!Makefile<br>
+<br>
+---<br>
+base-commit: cee9395acd8043be0644b25c34bfa86623f2b935<br>
+change-id: 20260831-fix-mm-selftests-gitignore-dd389da72760<br>
+<br>
+Cheers,<br>
+-- <br>
+Lorenzo Stoakes (ARM) &lt;<a href=3D"mailto:ljs@kernel.org" target=3D"_blan=
+k">ljs@kernel.org</a>&gt;<br>
+<br>
+</blockquote></div>
 
-So you're saying that every test function should only fail or pass once?
-
-
--- 
-Guillaume Morin <guillaume@morinfr.org>
+--0000000000009da829065a5b4a42--
 
