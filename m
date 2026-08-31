@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70704C624A5
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 07:07:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47E60C61DE2
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 07:15:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F0AD76B0088; Mon, 31 Aug 2026 03:07:52 -0400 (EDT)
+	id 440A76B0088; Mon, 31 Aug 2026 03:15:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBBFA6B008A; Mon, 31 Aug 2026 03:07:52 -0400 (EDT)
+	id 4190E6B008A; Mon, 31 Aug 2026 03:15:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAAFA6B008C; Mon, 31 Aug 2026 03:07:52 -0400 (EDT)
+	id 32F1A6B008C; Mon, 31 Aug 2026 03:15:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A1D926B0088
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 03:07:52 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 033DCC0271
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 07:07:51 +0000 (UTC)
-X-FDA: 85160684784.19.0A2A520
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 110086B0088
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 03:15:00 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 940211C1E9C
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 07:14:59 +0000 (UTC)
+X-FDA: 85160702718.07.9F41345
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 086331A0003
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 07:07:48 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b="a67/WBXc";
-	spf=pass (imf19.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id BCFBB180009
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 07:14:56 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=pGIgXFEK;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf24.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788160070;
+	s=arc-20220608; t=1788160497;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rlHsLIomUZDuyupnnAtNJaCHYl4a5Rg7e9MyiEzSdUU=;
-	b=ZGlSoDK5wBXdowCjXwjZqXsHi3+HI4HbV94CYw+kZjDeGlYh62CtXcp98tbVVL2rYZbaoQ
-	E5tgNvJ7URj+CY2A4P5N0HHn6Lq00PFLgMSGgoXfZ901ELN9yJEVPYX46vHr3bMEPQfWki
-	R/0oXSaeAqxNRhb9QoiNSotDkl6+nIw=
+	bh=c2115nKGBEwObmSrqlfs2WcBhmzv4iDh4H0qiO5lvUM=;
+	b=sm/OrzgJJsS4VxTy6MUUuesi77I73yF7YdxZh/oMnRdbtFwRio7Rg4YE2YMxNBHA5zI9wm
+	LMAfsaKOANuzn41qFQ0xYNIvz6d3nBDpapXAxv635awu6/+7STS0wyMNw1c6dowUwTrSAS
+	bTbZ66XN0VleGpF5WJnaJhFTBsqU9FU=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b="a67/WBXc";
-	spf=pass (imf19.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=pGIgXFEK;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf24.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788160070;
-	b=yv01KgtdWrMUlxBWYpXJomEZHMvuOxWO0jH6+uOUJ775nJDslh8tfQbRiDMJs8ISCKmcJH
-	/GyR+K7IBaTrRA0hvUmGQX3hNf22FuxUKKGGDk8VfTi5dd6uFIjoaPkIRZ9VWJV7thhzdI
-	C+7Yy+VvuIDxmuVpEIP20CmQMJ0OqFA=
+	t=1788160497;
+	b=k4//0N3CUjNtro/U/TQQ5FAV/7dT8CwqsQkpuH/aVIQCVK5QVSqyrF5oV9aJmZdcIo7GF7
+	lCtFoPUSNP7D9i4yXu0ZrzWB0xOB0eAZjP9ZVtEuUSnVw4KMG1snzfKfzC3X2p70lHBGYm
+	lpVA1i7txULqoed9fTafcDSV7s/kZMk=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=rlHsLIomUZDuyupnnAtNJaCHYl4a5Rg7e9MyiEzSdUU=; b=a67/WBXciwwfTXKyxpcVqnkgrD
-	AlJwjFjl6pELrCGWf+akgeocN9/XKhybGbgvTSS9Zx5nrvlXfgo2SBaz14PrrOZPS2VukRTfhD/q6
-	Jfr/OkRBqX0gkCPkMqhchghylTHtfrNvF52sQ+iAYXZbgLQaIpyZ/xgqDRNwxVXvgKMeQfd8kuRAF
-	A8SN9TtFhnhAFtadO1lcrnkSC0ny7YBwnc8+GDgsWrgg06hTDeGotwS9qoQdZKgI50gJWin2KZt6a
-	+qD2ksvaqTbKHuXTK4U/3I7+FKvGqy6LrTtZznalbKweNDNmLTET1K6dItlPFsOZHxPKP0vvF9ZXo
-	iSIhEE9A==;
+	bh=c2115nKGBEwObmSrqlfs2WcBhmzv4iDh4H0qiO5lvUM=; b=pGIgXFEKAN/kTi6sG6t/00uMvv
+	+WycgRgKlg/+rvkAKsveOmQTewMEVutHhuo5hVygDJWrzcNnYzE7wD+mQYmhxZKmHutXGdW+zNJ0H
+	OyUKRZQJE2oXdf8gdmVvf7G1wf0r5LcVy71HIPmPUrpkyzANAaTHG15lLBvSqf7FaJ+gA2Uq5rV/g
+	uj+0F9R8YG0UxT1bpDWxxd/xYyYYqc1wmAynqepmWo4TB9B5IPbw0uCJKDqp/H3ooTXtSvGJdRSlP
+	0TMmHkfzu51BKdWUabDiW6kkL6aNKnDGgLILH9HbPwmWZLqpYHo+pm82f0/WFES3FAUGqRxoYI3Qf
+	7tFNNdGA==;
 Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
 	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1x0w7E-00000009b4c-0xtJ;
-	Mon, 31 Aug 2026 07:07:36 +0000
+	id 1x0wEA-00000009bM1-2gNA;
+	Mon, 31 Aug 2026 07:14:47 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 26E203002D8; Mon, 31 Aug 2026 09:07:33 +0200 (CEST)
-Date: Mon, 31 Aug 2026 09:07:33 +0200
+	id E7EBA3002D8; Mon, 31 Aug 2026 09:14:44 +0200 (CEST)
+Date: Mon, 31 Aug 2026 09:14:44 +0200
 From: Peter Zijlstra <peterz@infradead.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
-	David Stevens <stevensd@google.com>,
+To: Matthew Wilcox <willy@infradead.org>
+Cc: David Stevens <stevensd@google.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
 	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
@@ -81,6 +81,7 @@ Cc: Steven Rostedt <rostedt@goodmis.org>,
 	Juri Lelli <juri.lelli@redhat.com>,
 	Vincent Guittot <vincent.guittot@linaro.org>,
 	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
 	Valentin Schneider <vschneid@redhat.com>,
 	K Prateek Nayak <kprateek.nayak@amd.com>,
@@ -96,28 +97,26 @@ Cc: Steven Rostedt <rostedt@goodmis.org>,
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev
 Subject: Re: [RFC 06/10] Reclaim memory from blocked kernel stacks
-Message-ID: <20260831070733.GS687043@noisy.programming.kicks-ass.net>
+Message-ID: <20260831071444.GT687043@noisy.programming.kicks-ass.net>
 References: <20260827232948.2520558-1-stevensd@google.com>
  <20260827232948.2520558-7-stevensd@google.com>
  <20260828133620._x2XfJR_@linutronix.de>
  <20260828135947.GU776954@noisy.programming.kicks-ass.net>
- <20260828151018.HnR9xV1N@linutronix.de>
- <20260828150836.2d5b378c@gandalf.local.home>
- <20260828151313.5c4a5e4b@gandalf.local.home>
- <20260828151747.20035d50@gandalf.local.home>
- <20260831065509.qqEtERDB@linutronix.de>
+ <CAOiLmNHrbXeTY7zoNodmaZUoMWf+NgvGvZ_LjfWD-1sKAoiLeQ@mail.gmail.com>
+ <20260829084901.GA776954@noisy.programming.kicks-ass.net>
+ <apLxcg3Lgy0-nXA4@casper.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260831065509.qqEtERDB@linutronix.de>
-X-Stat-Signature: 1bbbwneg6zxeeahrrc4rjj9ucbhkbkxp
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 086331A0003
+In-Reply-To: <apLxcg3Lgy0-nXA4@casper.infradead.org>
+X-Stat-Signature: c6gnyii53nd3668ynahy59mzbffnex9o
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: BCFBB180009
 X-Rspam-User: 
-X-HE-Tag: 1788160068-967590
-X-HE-Meta: U2FsdGVkX1+HixZEPdEzoWZL9i51LZB4Eqbj1fWV3qgl8P0VDVMyai+yzmBafhaTtWyU1AK9odoFR6oaRq8uP66xMNXsj5rFveqOAavxAFLm1jRi+qckgWj9KSO3kF6RmftkfgcbWzCC84015LZqg5TN5PT1jHNXoMCjgDOr0Dx4UGvO6Zhthy5UQU5Ldyg3vZOfM25YajY/1F2YxX7rcxkIPM2JHj+JgW7SXLNHTwbFRijyZsUyC7nF5079WoH9HzYLQz4gGbDkAe8zd5CImA0/cApmYCEGxAfhf8oFdBxyukpCuqBUdnZi8TL1MAp9ZqxcGNTEo+2hrP+MXtS+zcQbOcksFkQIvuJqLnrhW8lXDZMeHFc2IeV9uu1PjDZOnicMeb2eP0VoWs7mKO4hzIPb0xrczpTsxp25jut3QAol2961AHkbTr0/AOesC2wc8DHSOTDkoBp+UMoizMJbiV3rnER2nMiPqb1bui2MeD+ULxN+yBxaYCa80FlP9NKlQy00z90PhMzVY1HZawqiOVfdmRWXYHUw6/kEoRl5bifuFq1Z8nmoSrNvQkbAwoJwkuSd+ovIdbjnRSr7TAj+F+WyR8DnQmEmK62MAPI8T1NFxNT3x5UfaxFLxRnG9pyyzfdq3Yiia6q6pXWWzgxwsFk5I49h0arHk1NWxohC7oMen2acKh0ukyBqFs2wOcrNZlUpAYd2bCxs4cWfX6+/ydx35nO0UdMs8zLnuBdZLTeThJzhYz37LKLJjvjCamIv/4g0KvjVyZpM94hFT4uvNIu3TJKv3Td50D47lUKoKq6PVt5ukgIxkLsCv57tFFd4/K0JhQoZeIu2kxhwpiYEsJnIBFzmNWs7FpFUt/Czczd4OOKA27L41ltovtS/i1Gp0lNYWPUuS+vNpWJbgjVckC1k/2ba/mK04hnnzpDwBnElznwmMz4+RabnGrQOUMoyNzKeiVuaf0SMHG0sWaE
- 5tsRafA5
- kWeAl7ZvABRLnPkJ3JFt0T6GsOiALiy3JMOnafOzYpUUvqWuHppVO5C0m9czzXjj47VQYXrdZyPvwul/l9S1X7tAuEHTSQpGRIR4SvQLTogBUsa4Ef8fJRlL2p9P7gGUP+8cAmPFqzRfdyo8XSGr0ckk2zhnxsBUmp2t0aafKnNI8jUvbTOrVmKWkGz8QZY1rcDo7O5vj8pbbCOg=
+X-HE-Tag: 1788160496-201421
+X-HE-Meta: U2FsdGVkX185EzyaSwTPDbd71+PBNUBntoj58CQJMuWP4vm2Cj5mbYbExyeptOmHq0uvtmbnylGONS2qDsKbVSvA5ggHQF3RbSe/jH4xfpWvSHjd9JG6HVh41hWIaRnJjwgPXuLnPzt2gc8UyFiSHTV3UJwfRPMnwV0EjD8Xi7gbRf3tRWQnWsC5wnWTDFOFOjuCT6FlyIviwSV7JQBwo59CKqzDdRCI+IlRHOkSl9I5Yu81ugfZcbukKzKPDAWn+B2Nt8301PwO3GuAWHqIzs1yc2c3xEB4yFZw4wxPPlWtRR0gHPgnrSWtdZiTfvHCwz260/VgtAkDIKzSfvIW4E+aq3D+RUSpZmKyk8fWzkR8if859mQTe8H+1xRLSEE1e7m3xcX5ZVdbR79ZOgfB+1uAzIc38MgQPFIRsFD1AXHIdIhHqvFVl1hlj9GtNQwpO6Vjej1NR7sanWdXannQzmfbisdbvzOGcqmypNJKWmsE/UBlaoz9kk5G6PqiXp6dN2zBEjBf7SJhGi4TT8CnCfn15TsIj1MrwuVtj8e99aI583bfK/VZHEwH6EwE14Pu4U1yVI+M5bpYaVrAoe0v4RD/FIizPr7WZu/AF6QiRtN8ap6ZLvZ/zMGPABXnRW0dygBee3Ua22kVd3yFpx7OFczWEU1mvOKxHrIC3zTEjltbFYa7/DHJpKP3zEtQUh8sro3v5HOqsxEXGpZVulihKuu8/6yY/OznhJZRR3jt5P38TsfFyDbWZHdclInUcU19Z0GUOwtoZ3wDd+rnxtwfJ2HuJTWE4PgaIhoKmTgGi+u5bBNLEdd30yM7mkQOh4lA/S8hGMnQvCecJ7Q694zxjYQvYzuvsy5Eb2a21ZJtWr1pPdIxbi94BDXhwr7Znykt1019Xq37blzADbeL0RYpV8OTUvGGoveq3HyzfdW+AJCxmdzbXIddJRQP4pbHVebd0lIA2BdkhQOL1LiNQE9
+ YKKMfCHU
+ KhYHEq/SBPStfujBc4/BLc8svCmWHKrcXHMV72ceSSz8b90YfR6ZXUq+qI01JDHV6mLcCS+IEJJ8A6Z5c16iC1QMfq44eV1a31TP21oCIhSdNLqw+KqepQAHMOmmdqn0QOnZKY9B2f1cC9WOErA/uexOena17WJ6n4VfJy++h3s7kpf1u2EBroh4aCrmI5oB2imtUY82oXImQ8ZY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,28 +124,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 31, 2026 at 08:55:09AM +0200, Sebastian Andrzej Siewior wrote:
-> (stack tracer running)
->         Depth    Size   Location    (60 entries)
->         -----    ----   --------
->   0)     8176      48   __css_rstat_updated+0x9/0x150
->   1)     8128       8   __cgroup_account_cputime+0x2f/0x50
->   2)     8120      48   update_se+0x10c/0x1b0
->   3)     8072      48   update_curr+0x31/0x180
->   4)     8024      56   put_prev_entity+0x153/0x1f0
->   5)     7968     136   pick_next_task_fair+0x684/0x8e0
->   6)     7832     120   __schedule+0x1ca/0x1130
->   7)     7712       8   preempt_schedule_irq+0x38/0x60
->   8)     7704      72   irqentry_exit+0x148/0x6b0
->   9)     7632     136   asm_sysvec_apic_timer_interrupt+0x1a/0x20
->  10)     7496     240   HUF_compress1X_usingCTable_internal_bmi2+0x12d2/0x1c40
-
+On Sat, Aug 29, 2026 at 03:49:22PM +0100, Matthew Wilcox wrote:
+> On Sat, Aug 29, 2026 at 10:49:01AM +0200, Peter Zijlstra wrote:
+> > > On PREEMPT_RT, it is necessary to skip the call to
+> > > alloc_pages_nolock_noprof() from under pi_lock, since with that
+> > > configuration spin_trylock can end up needing to take pi_lock. But at
+> > > least on !PREEMPT_RT, there is no risk of deadlock.
+> > 
+> > Yeah, which puts the lie to that horrific hack Alexei did. We should
+> > probably teach lockdep about spin_trylock() not being safe and see the
+> > house of cards crumble.
 > 
-> Does this stack tracer distinguish between the kernel-stack and
-> IRQ-stack? I would expect asm_sysvec_apic_timer_interrupt() on the
-> IRQ-stack and not adding weight to the kernel stack.
+> Why is spin_trylock() unsafe on PREEMPT_RT?  It's not intuitive since
+> one can mutex_trylock() in interrupt context or under spinlock.
 
-This is the return from interrupt path, irqentry_exit() is right after
-we switch back from the IRQ stack and are back on the task stack. We
-have to be, in order to schedule the task and all that.
+We should not be able to do mutex_trylock() from interrupt context.
+
+Because then we end up with an owner that is not a task, or if we
+account the interrupted task as the owner, idle that owns a sleeping
+lock, which also leads to problems, such as trying to boost idle and
+other such nonsense.
+
+
 
