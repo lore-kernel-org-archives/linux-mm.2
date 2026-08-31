@@ -4,87 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC326C61DFD
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 09:01:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BD6EC624C6
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 09:01:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4B886B009E; Mon, 31 Aug 2026 05:01:35 -0400 (EDT)
+	id 1888A6B00A0; Mon, 31 Aug 2026 05:01:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B24526B009F; Mon, 31 Aug 2026 05:01:35 -0400 (EDT)
+	id 139956B00A2; Mon, 31 Aug 2026 05:01:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A61766B00A0; Mon, 31 Aug 2026 05:01:35 -0400 (EDT)
+	id 075FB6B00A3; Mon, 31 Aug 2026 05:01:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 859246B009E
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:01:35 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EFF4B1A03F2
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:01:34 +0000 (UTC)
-X-FDA: 85160971308.06.170B848
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8204B140013
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:01:32 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=atsmSRP0;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CB3C46B00A0
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:01:50 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 50C2314044D
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:01:50 +0000 (UTC)
+X-FDA: 85160971980.23.3D438CE
+Received: from mta1.migadu.com (out-214.mta1.migadu.com [95.215.58.214])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 4899B1A0008
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:01:48 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CIiH08Du;
+	spf=pass (imf19.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.214 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788166892;
-	b=0r5vI/nDwLpqeslu26SQihMzJEC1woe2ap32gkxKBwB0X01Ewinmut4nH8eHgZmEZk7Spn
-	3yH2Eje4wtNIRHeybwJibd70yS+P5G2IMFz09dDf7o/53b8Dkjjn6DwSJ8mFXUlo+70acq
-	T4H9EvkbtAl1scdjzMMHBIZHZNorsRw=
+	t=1788166908;
+	b=Xnm2XhJB8cqXvnxhtoWTvG74tzzR5hh5rFGFjBx9LfW3v3q9tD17nyKkRcT6zN32kJJPf+
+	x0KvuzrwKuN+WQt/X5G43tFCeZ0dY1D9fOBLsWz8Xi2t0XcPF/LoDNib3bRH8839U0VQO0
+	G2b7ti3TpBus4ArcE/rDse6S55k+Egg=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=atsmSRP0;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CIiH08Du;
+	spf=pass (imf19.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.214 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788166892;
+	s=arc-20220608; t=1788166908;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IFUViO5z4Y+XAB5uPhbTOwoEc6WJIUEHXXu3zrTrA4M=;
-	b=PFLYnOz5LMraJtHfsHEGsf9fzJo+FFJ+x1eXZIL0u8d9HoxiBb0Br0Xm+1fTzaB+C6i4CL
-	bsS21ATuWmUofI0xM0B+BXh35ylIyYFVxxIxSso4KGSxafN4A3K1nKXSO6zPIO6EkcWLDr
-	d/eVw/LAWBX10UKsev1ZW54Yn6rWw18=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 29E7660120;
-	Mon, 31 Aug 2026 09:01:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 112871F000E9;
-	Mon, 31 Aug 2026 09:01:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788166891;
-	bh=IFUViO5z4Y+XAB5uPhbTOwoEc6WJIUEHXXu3zrTrA4M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=atsmSRP0yTem4BuDZMH4FBRRe/Fsouc7fL5l8UIs5ZEdOAVY8OX6/MCoUiZ7Q6s6d
-	 Q+cm5WB7bQ8BQyBa+QMyfw0iRTW+SQZ9cExjiQxMu0n4uCoPDSYLxuUaYJ7ONhma2i
-	 PJFRtzXGzQEYNuHAlnSF50cdG6Vz62latGOGtA7OElUGUThBUq9jOhVrH05eI/TCqx
-	 hMaUcgVbT7y4zoBmmejGF2ILrpS941ENdEqRS+RVqZgVqguSIL/YuY6tnU3Mh69RIO
-	 EaQvXwYfqa8IiiGkygQxDD+lT9vlltnFEQY05yKUAIA7mCdE1FvGbZJqTtZ5nzh7Zq
-	 V4lyv/5RfUhlg==
-Date: Mon, 31 Aug 2026 10:01:25 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [Patch v2] mm: adjust out-dated document of __GFP_NOFAIL
-Message-ID: <apVC3tNDMx0AGsQj@gremlin>
-References: <20260829025847.26779-1-richard.weiyang@gmail.com>
+	bh=wCYQqB2eNarvGe42PQFfyuGN0zW33B5LTLJOlRAO2Qk=;
+	b=G3t135RB33TShvbexzt/4oGDDBy40YT0yxld5kboBBYW7sLv0keTWkjOAsP+QJSxZr10Bw
+	J6i/4e3h4jstT40kh2fQE5cJv5ZTvQmPYKjBZ0UlYaezYVF2oeKH6GIW+4gwTr5bjTwg3y
+	9rACnPuGO7c9mWcTE39sviDcdpbyl3k=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=D1aQ86jIVbMkJKLx7nT1bV+FUZb9BZSNSzliGFp7PO0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788166906; v=1; x=1788771706;
+ b=CIiH08DuLIoyGa6j9TaEUbXzk9HgqHsSmYeSBs0iKur5PUOaxlraN2LbdZotflHXXv5Bd7Z0
+ yxN7Xq9KoMg6CIVJU3F/gW9RXJ2lJFrAJVToPGLGVDfASNG5IOTVpvSIleGOurXcR5URM2k3VjA
+ 5KTwmOwULMNm8H1uzSf48uDY=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id fe6321a115680fb0;
+	Mon, 31 Aug 2026 09:01:46 +0000
+X-Mizu-Trace-ID: fe6321a115680fb0
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 31 Aug 2026 17:01:33 +0800
+From: Hao Li <hao.li@linux.dev>
+To: Michal Hocko <mhocko@suse.com>
+Cc: hannes@cmpxchg.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
+	muchun.song@linux.dev, akpm@linux-foundation.org, vbabka@kernel.org, harry@kernel.org, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: memcontrol: treat disabled memcg as kmem accounting
+ disabled
+Message-ID: <apVAn6o1AVzWM8jB@fedora>
+References: <20260827091813.22327-1-hao.li@linux.dev>
+ <apAnveXHmeQlKJnU@tiehlicka>
+ <apDZV9nKW69ZbIj1@fedora>
+ <apGT74PpkVvkUkY4@tiehlicka>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260829025847.26779-1-richard.weiyang@gmail.com>
+In-Reply-To: <apGT74PpkVvkUkY4@tiehlicka>
 X-Rspam-User: 
-X-Stat-Signature: t6h1o4jib3d1oupz7djr5xh4xc5dg5dy
-X-Rspamd-Queue-Id: 8204B140013
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788166892-410127
-X-HE-Meta: U2FsdGVkX19O47KAWFLLTGRoSBgMe2Jspng72Q5VM67DgBABZltGtL62JGltYplzeR5fYRVHeHUpcDbbzwhE7YJ/uzDoNJtdz7JLnNqBqYbj+luKAiVlpVppFBMBlz5GpzyfHKv661UcCjv7levx3pUP7Rajkn12kfIo/TsPo70wzIs7a4yUxA5caw655H/wKUrypb+bD3oVjc3V3fjJhzgnLOC0gmWJaaJIeO2rr5/MDPBY3ufD13pAo1UXtK76v91JV0tjO+yfembczj6nUe/qgHdETv+wf0seT3n2GIMfDkr7+BoTDqOC9Tci/VmjBmLGmOl6JqqoiLwIrmNECOvNoRfec0my576AhpiLxVZh/KD3kvc3G06A1GEt5BI1hUGG7bHpCUVU3fPKm0mIx8i9mEy/d/crEscqU3+Rg9BrpWwFCLroCWtGgjC4HPWml1AhjmlwPqI9rpgta+/K/qD65nfhoBX0gSybP5Y4GXaE3zDvmBaOurIVsBje7gk8ywZCCGvR/0fMlLrDlNgnn1os8vs8wbm9fx0NcNGdzUO/TiXBdjUSswz2os06exSPAS2jCNeQaUeNeLlhU+Ox664PKoc62cAMV7uVAJ6nQccL7lwS+QiB/zn7wDxqiyTkwRNRRY1gPf6EQ9TP6rg3+h7l3EG/bPWIBIOEAygXXCFcAnAthanV1X+TzXdhEGXs40sF1dYx/KWssLlJ/WWfnP0avePDZgSSHRGlCUwtriIcpjIETluNBNk9gyC3G9lCS0dRaNh5zhNYO3iFhvZutMb85d9HGkcvE5ylgHmv6WBi0VRhChmEitPuB39fIUrihFErGnbUYz64YaXSabRtCBjqulOcwwrCvcr+l3MVB2DpOG5fMXBB6qBMu4lE9U/xlWwiyj5ZJYMFCP7NWD2Cj+vfFvc/Bj3qxj0+kvxkpTO2tjstdJZh6zakxfyrmizONfz7UX65KhtGlAeCUxU
- ilffWO+z
- Eo+isrZdQBPZcpcsJiUHHgad6VsvaPGC+D6fNZF+gY3AokPGWg1hOeQGinAVSal6siC25Cx2LjPpKFR3eOnbzKWnsUWIx8r4GYiJrIIICl1V8TL+idYLEpCTs6UGn/zxUIjx1KkA6NIX75x3JnSQtISbgirq9+Y2E0jCP3gZuaxG0yDhgeTccJ1O6ixUWkj46i3jFe1cZceLyA3o24a3rm2qvjAT5ZCivlBg/JC4iolZ8BoQhe96WqH9BjrO9Dq9X68PJHm/c4zIfVq9xUrZYD2UMUsxPMqCgfg23yCzUCufpA4DZb49C2upRL/RvovmFvyPSXOoKIWJHVTNDB7Gr5ouV2gqnFGsSwjUo8miJk2cSKDb41XjTqKnP4fiFoxoslxkpgMaVPlqi7lVhJ94mIZs5PkqIGYIeC95yChRYSZjH51g=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4899B1A0008
+X-Stat-Signature: ayxfyaeazhbu5p9mkq7a8mejf9pfau6d
+X-HE-Tag: 1788166908-899625
+X-HE-Meta: U2FsdGVkX1+IRyo648LzlMXhTgUbeUb8s9K+233nMolFPK0SBLdHeThzRm/gh5lvyEtBnJOuLgOzHYoSHF2w/Qx7CZUkS+VSgG4QaSqu/8Gf9DtTZyd7pLLK09X93IGtKDAZoWJbIRySFYhyfU4c9tnJDpGALbk/POucTuAqExjbgbz8GoNUOSzOW0RemZ9wH61lbjZJLLdfgmQN+qQVGbP0Ryh9Z/alpkTBmFJd3QC5YxSCzEZTS22cMHpMFK6C3tpefKvL1oS+WFWQWoShDozQmLgr4F5tl2pzSEPay7vx5ifN92IpmQNZAQY3t+hZu7OG0Yx/3CfAuXiKVgWxlsklnjd/bLPxCB1eYk3YD+rNU3ov/eUOFYppZ0newGljc2HP1OqD0uvuUuTR0NpYyfcpq4Slfl3Z5AdkEk603FUcWi90Ynu/dbnyldFAMbfSaZGM6Z0Q9h3H8WRAAGJ8slYgM8gOh7eIXZ1FbOtCy2ouRvxPVd3O9WfIqJ3IfLEW4jIL5qgAR4J4HgeUg/qS3HRD728CU8XpNEsEdg2Qf6kQSIVJMJXW4wNlqKRF7Bl/EvXYoOghl1ECrE9SWlz7NhQjoTO1J4lRGIO2x7EiMIJ0jGSj7ul8F8dFY+JEhLT++N7s3B9CkAoohyqXVP8SkeLQ4wMWx0ZGQxtuvtrlXbO3LXm3aTG7NIVI60wznQVQIoU2OheiOxPlFOyQdkk5VekGqGEmiEjvxQiWqMkGjCnNU8DX7wpwtIuZ9a4CkJEv/O8JlwhIZOl2LzEn5t+cqQN6iGgMOtEKlmQb8vGkEZKA6DCBKvT3+fUT6BrSLvTyj8YXeVBrXKf3cfUbt7sfaqFyK62fI83W72br5E4ZU7tAjX8UVZO61WjDI3yQpyhDz5sHdb4MyR4llJCSMl8bXbnZp73BbJgIxu92MIAX9Ee+luAGSshLcoEs52xucVLcXcAmMuBSsii0pkmtkrR
+ jCmproJf
+ yXKxxY7UBhNxB+ErOE6hGl3Ez/bEAwTOzs5et+fu5XXXPMUtGNHG1rzZfzUb2HGa/s9oMPuvdwVpV7h2Xpz3SIn/n2kQiu3LuqBY6uMcYgrVx9bk7kpPtADD2I+mPSRGXKcQ7ieLtryJehaxjOrPdTK1I3aJHxbQ3VheGoBVRjLV3ZWpdWw1jV5a9dEtzAkza81468xAWiKsHC1F/dXot8j9C5ppATUmeZV/fIT/h+VX1WfwOjxAPNyjdoDf6kGuxSO0+p3Ybm4eqTgK46PJaVbg6+jAvU7bHNuqb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,67 +93,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 29, 2026 at 02:58:47AM +0000, Wei Yang wrote:
-> Commit ee040cbd6e48 ("mm/page_alloc: don't warn about large allocations
-> with __GFP_NOFAIL") remove a warning on allocating large folio with
-> __GFP_NOFAIL, which was placed there by commit 903edea6c53f ("mm: warn
-> about illegal __GFP_NOFAIL usage in a more appropriate location and
-> manner").
->
-> While in that commit, it also documented this behavior which is
-> out-dated now.
->
-> Adjust the document to align to current code, and adjust the comment
-> while at it.
->
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+On Fri, Aug 28, 2026 at 03:58:07PM +0200, Michal Hocko wrote:
+> On Fri 28-08-26 08:47:54, Hao Li wrote:
+> > On Thu, Aug 27, 2026 at 02:04:13PM +0200, Michal Hocko wrote:
+> > > On Thu 27-08-26 17:17:50, Hao Li wrote:
+> > > > mem_cgroup_kmem_disabled() currently only checks whether the
+> > > > "cgroup.memory=nokmem" option is specified. However, kmem accounting is
+> > > > also unavailable when memcg itself is disabled.
+> > > > 
+> > > > Check both conditions to ensure the function accurately reflects the
+> > > > kmem accounting state.
+> > > 
+> > > It would be really great if you could describe how we could end up with
+> > > the inconsistent memcg enabled but kmem enabled and what kind of effect
+> > > does this have.
+> > 
+> > Yes, thanks for point out this.
+> > 
+> > > 
+> > > AFAICS the inconsistency is possible and it would lead some wastage but
+> > > no functional problems but the changelog should be more descriptive.
+> > 
+> > Exactly! The most direct benefit is that when memcg is disabled,
+> > new_kmalloc_cache() will not need to create a separate `KMALLOC_CGROUP` slub
+> > cache, but can simply alias it to `KMALLOC_NORMAL`. This avoids wastage.
+> 
+> This is definitely important detail to mention in the chagelog. Same as
+> the effect on the __list_lru_init and other callers. TBH I am no longer
+> 100% sure this is correct. You need to explain more why this is just
+> wastage rathe than a subtle side effect that is desirable.
 
-LGTM so:
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+That's a very fair question. Let me walk through the impact of this patch
+across the various subsystems in detail below.
 
->
-> ---
-> v2:
->   * s/is adjusted/was placed there/ in change log
->   * instead of removing the document, say "is discouraged"
->
-> v1: https://lore.kernel.org/all/20260827030548.16631-1-richard.weiyang@gmail.com/T/#u
-> ---
->  include/linux/gfp_types.h | 2 +-
->  mm/page_alloc.c           | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
-> index 190191411009..bfd4c43ed777 100644
-> --- a/include/linux/gfp_types.h
-> +++ b/include/linux/gfp_types.h
-> @@ -244,7 +244,7 @@ enum {
->   * definitely preferable to use the flag rather than opencode endless
->   * loop around allocator.
->   * Allocating pages from the buddy with __GFP_NOFAIL and order > 1 is
-> - * not supported. Please consider using kvmalloc() instead.
-> + * discouraged. Please consider using kvmalloc() instead if possible.
->   */
->  #define __GFP_IO	((__force gfp_t)___GFP_IO)
->  #define __GFP_FS	((__force gfp_t)___GFP_FS)
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index ab385bc252cc..146f7e0a9462 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -4804,7 +4804,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
->
->  	if (unlikely(nofail)) {
->  		/*
-> -		 * Also we don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
-> +		 * We don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
->  		 * otherwise, we may result in lockup.
->  		 */
->  		WARN_ON_ONCE(!can_direct_reclaim);
-> --
-> 2.34.1
->
+In fact, the initial motivation for this patch stemmed from a slab patch
+discussion: https://lore.kernel.org/linux-mm/amHldYIo_-Bgm7Ek@fedora/, so also
+Cc'ing the slab folks. But in retrospect, its impact on list_lru is somewhat
+more subtle.
 
---
-Cheers, Lorenzo
+1. Impact on list_lru (the most widely affected path)
+
+   a. list_lru_register and list_lru_unregister previously performed pointless
+   memcg_list_lrus operations. With this patch, both functions become no-ops.
+
+   b. In list_lru_from_memcg_idx, previously, because memcg was disabled, any
+   input idx reaching this function was guaranteed to be -1, so the `if` branch
+   was never taken. With this patch, the `if` branch is still not taken, so the
+   control flow remains unaffected.
+
+   c. In list_lru_add_obj / list_lru_del_obj, they previously performed some
+   unnecessary RCU operations in the if branch, and mem_cgroup_from_virt
+   returned NULL, meaning there was essentially no difference between the `if`
+   and `else` branches. With this patch, they directly take the else branch.
+
+   d. In list_lru_walk_node, before this patch, because memcg was disabled,
+   there were no elements in lru->xa. The function had already completed its
+   task once list_lru_walk_one finished, making the subsequent xa_for_each
+   inside the `if` block effectively a no-op. With this patch, these pointless
+   no-ops are skipped directly at the `if` check.
+
+   e. memcg_destroy_list_lru was previously a no-op as well because lru->xa
+   contained no elements. With this patch, the function bails out early,
+   causing no functional change.
+
+   f. memcg_list_lru_alloc / folio_memcg_list_lru_alloc were previously
+   unreachable because memcg was disabled or objcg was NULL, so applying this
+   patch has no impact here either.
+
+   g. memcg_init_list_lru previously initialized lru->xa. With this patch, it
+   is no longer initialized. This is safe because all paths attempting to
+   access lru->xa are either guarded by list_lru_memcg_aware(), or become
+   no-ops due to memcg_list_lrus being empty.
+
+   In summary, the impact of this patch on list_lru either preserves the
+   existing execution flow or saves unnecessary operations, introducing no
+   adverse side effects.
+
+   Additionally, when shrinker_memcg_alloc detects that memcg is disabled, it
+   returns -ENOSYS to let shrinker_alloc clear the SHRINKER_MEMCG_AWARE flag.
+   This confirms that the shrinker does not care about memcg list_lru when
+   memcg is disabled, further corroborating that this patch aligns with the
+   shrinker's design rationale.
+
+2. Impact on slab KMALLOC_CGROUP is aliased to KMALLOC_NORMAL instead of
+   getting its own set of caches, and __kmem_cache_create_args no longer sets
+   SLAB_MAY_ACCOUNT, eliminating the need to allocate the obj_cgroup vector.
+
+3. Impact on need_pcpuobj_ext and pcpu_obj_full_size When
+   CONFIG_MEM_ALLOC_PROFILING=n, there is no longer a need to allocate
+   pcpuobj_ext. pcpu_obj_full_size is not affected as objcg no longer exist
+   when kmem account is disabled.
+
+4. Impact on memcg_online_kmem / memcg_offline_kmem memcg_offline_kmem is
+   unreachable when memcg is disabled, and memcg_online_kmem will bail out at
+   mem_cgroup_kmem_disabled, so memcg_kmem_online_key is still not set.
+
+Finally, with CONFIG_MEMCG=n, mem_cgroup_disabled() and
+mem_cgroup_kmem_disabled() both return true. Therefore, making
+mem_cgroup_kmem_disabled() also return true under CONFIG_MEMCG=y with
+cgroup_disable=memory seems reasonable and consistent.
+
+Untangling all the combinations of whether memcg and kmem accounting are
+enabled is surprisingly intricate! Please feel free to point it out if I've
+missed anything.
+
+> 
+> > If this sounds reasonable, I would be happy to explain it in more detail
+> > in v2.
+> > 
+> > > 
+> > > > Signed-off-by: Hao Li <hao.li@linux.dev>
+> > > > ---
+> > > >  mm/memcontrol.c | 2 +-
+> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> > > > index 1ebceade4021..b28f6165c354 100644
+> > > > --- a/mm/memcontrol.c
+> > > > +++ b/mm/memcontrol.c
+> > > > @@ -132,7 +132,7 @@ static DEFINE_SPINLOCK(objcg_lock);
+> > > >  
+> > > >  bool mem_cgroup_kmem_disabled(void)
+> > > >  {
+> > > > -	return cgroup_memory_nokmem;
+> > > > +	return cgroup_memory_nokmem || mem_cgroup_disabled();
+> > > >  }
+> > > >  
+> > > >  static void memcg_uncharge(struct mem_cgroup *memcg, unsigned int nr_pages);
+> > > > -- 
+> > > > 2.54.0
+> > > 
+> > > -- 
+> > > Michal Hocko
+> > > SUSE Labs
+> > 
+> > -- 
+> > Thanks,
+> > Hao
+> 
+> -- 
+> Michal Hocko
+> SUSE Labs
 
