@@ -4,89 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A80FBC624C6
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 14:26:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79E5FC624A4
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 14:26:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9110B6B0088; Mon, 31 Aug 2026 10:26:26 -0400 (EDT)
+	id 7FE1F6B0092; Mon, 31 Aug 2026 10:26:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C0DC6B0092; Mon, 31 Aug 2026 10:26:26 -0400 (EDT)
+	id 760B76B0095; Mon, 31 Aug 2026 10:26:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D6B96B0095; Mon, 31 Aug 2026 10:26:26 -0400 (EDT)
+	id 605226B0096; Mon, 31 Aug 2026 10:26:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 601B66B0088
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:26:26 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EC299140168
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:26:25 +0000 (UTC)
-X-FDA: 85161789930.17.E94119F
+	by kanga.kvack.org (Postfix) with ESMTP id 376856B0092
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:26:27 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4635914016A
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:26:26 +0000 (UTC)
+X-FDA: 85161789972.15.75A254D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 824DD100003
+	by imf15.hostedemail.com (Postfix) with ESMTP id B58BFA0004
 	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 14:26:24 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qn4FJMnw;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OOnu/tWm";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1788186384;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=WLeUJLJYpDmFjxBILukrXtcofCnOjUGJ9w/aNU3G8fk=;
-	b=EfghMQU+RpLyfDRxspG8RxLLmQX2LXyLnN2yEuV1QqIhp6A46n6xrl5h9K+WH2zhsWu4Ny
-	9HojAiKJ7cXDpWVZr+T562BCr43Hc1xV93wN4Kv5tDiurtnvQDsCep8+yNNiICje37IHPs
-	w80xxL+moobvPc6zgCd0dSBIheTscfM=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=j0ux2Ajr+KLUU8fQjRJzy/leuNsARMPnQOrajKg2u/o=;
+	b=c4DXjclFYF1A9OjSzeKo2BOg7fl8LyCYwV1vDZvwTRe9v1jhpm8TLpTf+7sOBZYjFfNVto
+	V5uMWElBeVAfPQgtTHAO8NmwoD1D6ow7qJ9YwPWOhbY1Zqjrve4aRqKIgBdHP9da9hBO+r
+	8tUyfKEDONgU8P+EqccG9EDcUj+0lj4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1788186384;
-	b=7XLylwFdjhXCh0fGMu/AxhYyNgDBvQpxNmcfnVa8aggW7kVW2FqlNvN8yNEa1jlaJBLWlo
-	qa94YVdAcLcd7qexIKr9KVRilxyIoQm7QaUkDBKHCox8BRThTW91HbcWjqyrtWpXbGFn9k
-	h+Z/g0s5w8UI6j8hRI6YI9Igr7y5C+E=
+	b=taog1JiUCvtuPQtV+1MtFhg0SH9iGcNJJyOSl5dBrdfW/aPBGUhONuhDOE39YchuIds5w6
+	QXMogqYDF61/03mDPw8ZfZGzxK90tZ+tGbsSD/KR3TZF1sW/nWsVW5hmHu8lMru1AeCT0P
+	b0nvm9hYfJnF7DR9oK+CyYHqAohL4po=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qn4FJMnw;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OOnu/tWm";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 020036013A;
+	by tor.source.kernel.org (Postfix) with ESMTP id 5409A601FB;
 	Mon, 31 Aug 2026 14:26:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 651AE1F00A3D;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38F11F00A3F;
 	Mon, 31 Aug 2026 14:26:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788186383;
-	bh=WLeUJLJYpDmFjxBILukrXtcofCnOjUGJ9w/aNU3G8fk=;
-	h=From:To:Cc:Subject:Date;
-	b=Qn4FJMnwqJ1tVWBtnDCKXBEcM0yNf9/lDDInE4uBfFkJtoHOfzF/x8cN4gi+5lg6e
-	 2X5xMVdT92vUXbR8ZHf2foXPBSCTKBDejGrOwgitD2HmyQHrULY6PjfdcR09fZuphv
-	 HLz3mbAOxGPxqOnnOSqtI8mpn1gcsSzWinxtepUZWTjpXxXZGGn2721cxU+ojV7bGj
-	 NiB0KPUz48QSBC6PMa5Ct/3AI5AipabCAkzck9kXQ4m8lcWJGjySeIc8OH8RUePxfU
-	 7hMikOIGowHHaIIa7gIY5EhPU4qNIZZRo4nuD+EKa7UE3rndlgphj2+xp2jgHrgoE1
-	 eAAa14X4Pg+qg==
+	s=k20260515; t=1788186384;
+	bh=j0ux2Ajr+KLUU8fQjRJzy/leuNsARMPnQOrajKg2u/o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=OOnu/tWm7FfN/WVmuah++vaeUv4DTc82sDlwfcr2fojF5ZyGY1ykULsmmlY5KU12p
+	 tT56GE1m+DVb8VmGJzfdb7Awq9W4WmaX5D5fOuECuUGO+ZEKDO4r4RmWiOr2M821vI
+	 2SeZlnWf5CULk4zQd2cQ2/0cy+hkpUiDq894szbRuHeGbG+gD2ecFNJ6wmFpA6wPXn
+	 sFMeKH5ncp+HwYNPBy50vTiy4AGoUnWRrFr+q6p6o7Z9nZfBdZJsXs7O0MouB8kcuW
+	 dnFZt459wBFA+cGkZqr27oXM1TsX5DLpIZU17wb/bf5sSL2jYUwIXqcUf8VixxYxN9
+	 LQMbH3H8wLu6Q==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	"Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Shuah Khan <shuah@kernel.org>,
+Cc: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>,
+	SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 0/7] mm/damon: misc cleanups
-Date: Mon, 31 Aug 2026 07:26:02 -0700
-Message-ID: <20260831142611.77572-1-sj@kernel.org>
+Subject: [PATCH 1/7] mm/damon/core: remove declaration of __damon_commit_ctx()
+Date: Mon, 31 Aug 2026 07:26:03 -0700
+Message-ID: <20260831142611.77572-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260831142611.77572-1-sj@kernel.org>
+References: <20260831142611.77572-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B58BFA0004
+X-Stat-Signature: ctqajq9bxstu18p4n3xcw4z161hykm18
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 824DD100003
-X-Stat-Signature: mfq1a4y3wd5fzdof3iaa39j6xczh1h9h
-X-HE-Tag: 1788186384-662946
-X-HE-Meta: U2FsdGVkX19TGXMnSJkRHfyW+LnbpX81JuH7iqPO8gAGBLVLDthNGa3rIMHnBDQgKsANz9Xf/h+KkstlLv5ZAZ7K6Tjh33TMKGMzy6zqep0TGIViCgskn0kXJ4nJTAMcVWT6X811nmy9C6sv1j80gLIIvSzaCwzVnxnH+yh+ZQIGepo877Xvc85ZLLFLqIU4xTGb0kiHwKKTlM0AeApNp4zi8xRKSJyXjLGwqAs1fmaCi3z/GE8L1TtNRZ68Skz7YfHhU0yCU/Gxf48MwYBHfcSKpgkFfMCpnVBbzXhSh7RzSRknNCY0iQqnw1IwoWWxVpkuZZfoqNWcGPgC7JWk9iTw/vdl/tPxqUZFQTJcQC+2jn8i7cJ8J31OMSu5fdCd/Q67JYJBgtwhnKFpwL8bmL66vRWQcEt4ECTnTsxREXs/h/QgyHG+Dt3l0zkcrkIxH2paZm/B/tk3limkd3pRCCBX5TgYHtZzo56hCGqzSkgxSV5GQC7gEM3mbZ9Woa5JE6wPnX+keVM1084l/2vAN7j1e1b0ztbLTtiRKxjkOpLKskwqYYwKhIfdvnRAEUgdZ27pme77Qu2f4JzrMXu1T5N9eHGhHtrZS2MvHPYjHePFxM+ZWgUaaCpNlCw1pU5VTf6UTAT6RJwUF9eXpzdagPvwd+9deUMv/3OkuqMTE4cMM1cLC6Mklc3OQ0sZWEeiT20OcjQBMPpTxCB5SjRNevqglFJkFWYXVKtdYzrfa5MDummgWfs6QjWSYdqEkqkzeJWvEOgcfpN9MATx5mgREBTgHVvoTeno+rB0p7z5Bjlb6P1q6LhymZTn15e5K2RVMlj3g+9jIUO7dGeIiyW2BedZyMh4YKwHy3+x7CgRTy0SlGMiNTflYisXfAqj71rPETySAzf45G8MmG8g9XVNO9D67fN5fGKz5B7WXmykTetjcbnlJitQzmG2U5914qCeXN8Qk17M6wKuM6krHtw
- ydN9FuAn
- CCoH8BFNgnqu2QFTKOnW1tpkt00dcl7/QKX+A5fU7BkCjlfGob/b/JfABlnCgzLBoV4MmzXRVuWw95MeEGbtio/rOe1M7FcJXMC6F1BJ9i/5m6yVVgWfSJVlNdsd9ngL8hK7TrwBmJnWhldrACuGylIERCawL8Bgq3PX6L8/Cz+J5gIJ1Qnsa863Jbxm+9wkFQ7HAcFSXSE6Nc+Y=
+X-HE-Tag: 1788186384-703034
+X-HE-Meta: U2FsdGVkX1/OyLjdzRha9QRHblAuIC04qBEGlV54WXz5blF2N5hyURodz6KYtkw68Tr6XdJbcD29r9oPFVWiyu3sBNZkpgqhSeT7Y0/XUJzLEZ1DYlNy3XSJavNABbnJYeC3K6H7URDRbRzb8MdsjD+5RNLr88/S/Q5qfFB+ftLckQGsJVyahGxuUoooC/6A+n+BIPTBFUiK28jtlhV1KoTtYv6SGdsXth0AC1tPK06+AJCxlLB0EYI46W5qLgf+rBx53LL8yH9xRiQE0qjMoADWhOMVslNKb1qM91SDmkVr9XHs94NVilYVAxH5upzCim/8CD79yr87wzRuzC8vlynsK6vMZIN//eYccdSnczLqBd4lHA3wLjs19iE2UU0rDOpjG4bx4eIXVvj8k+hRs+i04T5DFpDsE8+VJEB6xEgkBXk5g8aEwaPROfpTTtG2aqcKdD6bX5DwQs+8hF+hk7hDHCAoD3zrFhl3r3MeVFvpasyhUZ4keIT1jF+XAStwQKXFmQsVFXAu0Y0mIw1seqtHPMMmCkMW4THLILbbQFN+fu4awEx2iMkCjoT7+J6n85JtIgTpKJ1A6dOCFkDG58Mm9v+jZ+A+HyKDbY/dUOB5AToEYilTUj/LdvrxQ/hpWN9mRdKsk6NrGaJLaHRDoe91zevZJKbZ/jznPL14uiazvZarNo+VTIcUwpcgTy5IuAR8xnotkBiFjhkj3BLtYiWfleLpMdPNEBk3M12Sshmp0DDsa7xPN0pJ5mIWQUeM6AzaTJKAW8ykvM0nJ7TwAWtv2X6Oz22VEIR5h4O4AiE/II9GGalPXcaC8NOfvSoziwgZiz7ybR6Iu+A/V783BXy6OGgMoYI/yj+yPnJ9Em+k+bGQTHDVii2Pk57d9EHOcCaMezvSrnqGY3d2zmQTrecxWpX4axttw/W7z/MORY+dAaql7xJvLC5owSTYg6lxa63CRpTjiwreCg0ftcK
+ M9Zw/X2q
+ 8LfZciI7NBRvbNCa3/HCqomrnP1Q7kSgyFLEast6LdqtHZxrexoy0PPUonZCKc+RYToae9PQG8adpXXtxzdPX4AVwpUQ8mgi0nESOr3umtL6QCuIVdtT/JpXQSa6d8ASU9r8f5pSuvbbSCfiVEG0ds34YV1QCpkL9O5CzNodwC3GJPEEh+IdDmokRKTBFgIBZwzhevGJroNxeq7NDtTi7NQO4Lr3riLJCqDKAJs8IrZeMD5NxRTgPPbEEIEk203UIO1nO6VKyyPvY+prhpydD4/pcRMm6MJXjys0byhgLqJg2HnRLVKhlhOPdfw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,48 +93,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Cleanup the code, tests and samples for clarifications and readability.
+From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
 
-The patches are individually sent by the authors.  I'm reposting those
-as one series for convenience of handling.  For this reason, changelog
-is on each patch's commentary section.
+It was added by commit b1471afe4d10 ("mm/damon/core: do parameter testing
+commit on damon_start()") but is actually not needed.  Remove it.
 
-Enze Li (1):
-  samples/damon/mtier: add comment for struct region_range
+Changes from v1
+- v1: https://lore.kernel.org/20260806170701.79266-1-zenghui.yu@linux.dev
+- Collect R-b: from SJ.
+- Rebase to latest mm-new.
 
-Hari Mishal (1):
-  selftests/damon/sysfs.py: clean up sh processes used for
-    obsolete_target test
+Cc: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
+Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
+Reviewed-by: SJ Park <sj@kernel.org>
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ mm/damon/core.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-Jaeyeon Lee (1):
-  mm/damon/tests: use scoped_guard() for damon_test_ops_registration
-
-Li Youhong (1):
-  mm/damon/ops-common: factor out damon_putback_folio_list()
-
-SJ Park (1):
-  mm/damon/core: introduce damon_set_target_pid()
-
-Zenghui Yu (Huawei) (1):
-  mm/damon/core: remove declaration of __damon_commit_ctx()
-
-zhaozhengzhuo (1):
-  selftests/damon: prevent remaining cross-object state pollution
-
- include/linux/damon.h                         |  1 +
- mm/damon/core.c                               | 14 ++++++-
- mm/damon/ops-common.c                         | 30 +++++++--------
- mm/damon/sysfs.c                              |  6 +--
- mm/damon/tests/core-kunit.h                   | 21 +++++-----
- samples/damon/mtier.c                         |  5 +++
- samples/damon/prcl.c                          |  5 +--
- samples/damon/wsse.c                          |  5 +--
- tools/testing/selftests/damon/_damon_sysfs.py | 38 ++++++++++++++-----
- tools/testing/selftests/damon/sysfs.py        |  4 ++
- 10 files changed, 79 insertions(+), 50 deletions(-)
-
-
-base-commit: 58132fed7967e3401e3f293a0a2cc983161e229e
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index b3f8bea774c2d..79515ef03fc2a 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1961,8 +1961,6 @@ static int __damon_start(struct damon_ctx *ctx)
+ 	return err;
+ }
+ 
+-static int __damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src);
+-
+ /**
+  * damon_start() - Starts the monitorings for a given group of contexts.
+  * @ctxs:	an array of the pointers for contexts to start monitoring
 -- 
 2.47.3
 
