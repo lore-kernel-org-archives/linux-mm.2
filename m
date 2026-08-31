@@ -4,120 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21667C624A5
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 08:08:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 933A4C61DE2
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 08:16:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 233206B0095; Mon, 31 Aug 2026 04:08:10 -0400 (EDT)
+	id 996F56B0088; Mon, 31 Aug 2026 04:16:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E44D6B0096; Mon, 31 Aug 2026 04:08:10 -0400 (EDT)
+	id 945FF6B008C; Mon, 31 Aug 2026 04:16:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D39F6B0098; Mon, 31 Aug 2026 04:08:10 -0400 (EDT)
+	id 85CCB6B0092; Mon, 31 Aug 2026 04:16:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E11E56B0095
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:08:09 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 53CC312040F
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:08:09 +0000 (UTC)
-X-FDA: 85160836698.23.43C5C52
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 8406940003
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:08:07 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=UqyAcgbk;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=N9IKktNN;
-	spf=pass (imf07.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+	by kanga.kvack.org (Postfix) with ESMTP id 604836B0088
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 04:16:00 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DD09512027D
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:15:59 +0000 (UTC)
+X-FDA: 85160856438.20.929FB75
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 9F9DD14000C
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 08:15:56 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=YhcOYYWh;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788163687;
+	s=arc-20220608; t=1788164158;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kOSOst4In022OAgVRNxSdoYjl0jKl41mZxfh1QOXGYk=;
-	b=UqwTV9JOe4jK3Y8GgVA9+qAxB1gbvf89QDQ8twmRu+lHd672CikRTTn1Sq2gQ5RK2r5vAm
-	lojaQS26mCK0UstPoreg5Sv4RG1iG+qGRJ91I52WhzEYiKnDir+FxRFxIJh1tAScFGIT5p
-	ZjR9Yr3Je8jDtHuMMVgISrqt4Uu6Q9s=
+	bh=tt0yHsbfJEZ1+ZZbrMLoRaILCdqS9+900vtSCcW9og4=;
+	b=DphqOlBVBkW566+BmqlonYcqKNxEzi5QZ/zEX+ShTucconnV4c1MfUM4iQ8e3OR394PhXV
+	197vTBN4eRqnQnAfZo97nehKov8MAGUgKNRGSlHtuTvksfRKVDxXutP7ouafPymaFJQeYF
+	s8gMI/ULicUVX7q3KYpj9mXDtPSCuds=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788163687;
-	b=jl1ZI1d4eYi7Va8PzlKZUv260Mfcsf/T3CI/T7vo+Es2MaJdgNlJuM5pZo48OetiRogvfy
-	76Cqd8Bz0HA7FXG+qas2iWTvhIervUf1XM6vNXrBXjjLEJRI+zFE90p/8JvIti2H6e7vNq
-	vvwDau8AuhXeKDgsqReTwKv1AnfPOl0=
+	t=1788164158;
+	b=3Um5wDCyzU4yz/rahOytAR/40RMtqFive4o06s/+CSm4MNddNy5qhCVh+44w2cGI9N8HjA
+	I/SufyvrsAQmwEB5xC+WzVtl+XrQsQs+NiM2xffm4Jf+rEESLdAhwlPyBSTmY++eLXUsHA
+	8trs/NAqtHvLHE7GOXhG/B+Z2kpdYiU=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=UqyAcgbk;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=N9IKktNN;
-	spf=pass (imf07.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-Date: Mon, 31 Aug 2026 10:08:03 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1788163685;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kOSOst4In022OAgVRNxSdoYjl0jKl41mZxfh1QOXGYk=;
-	b=UqyAcgbknTYn3fJW+77HU4qPPnTrytzLhryZvvJYqEuIx8qphJckoDifDfdm+rCRRjuKx3
-	X5AYx39fVc8NNQX0G53A5jZPrsmNKDCRCO17shC7V7IzmBfEvXg+awsNTsMSRKtjVuoish
-	6esMnTvDM2bG4LZr+N3HLR7SrxRC29FZ3/9FFEJPR5tIXTO8wMMMtHknvUzs1BeoJHSEES
-	fjqXjpkR/1miN9p7UOSQgsfBnbgFNVII3NxwD42wrshQxcc3VIE4WWUYwfm+VVzt4DLsDf
-	KxMDmIxUDVB+MF902mkKdqmc/xK1S4lVk0DJdJ9CvipP2ojiOg/aG7AJ5W14fQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1788163685;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kOSOst4In022OAgVRNxSdoYjl0jKl41mZxfh1QOXGYk=;
-	b=N9IKktNNqgpGblx0PmDvTe0TsNYwsV/Spk75gDgAMfcaFRBv4+VoIfFsyYXqyU/3U78EvG
-	MvmNWirnPXNVdQCw==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: David Stevens <stevensd@google.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
-	Clark Williams <clrkwllms@kernel.org>, suleiman@google.com,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev
-Subject: Re: [RFC 06/10] Reclaim memory from blocked kernel stacks
-Message-ID: <20260831080803.LhShiZ4V@linutronix.de>
-References: <20260827232948.2520558-1-stevensd@google.com>
- <20260827232948.2520558-7-stevensd@google.com>
- <20260828133620._x2XfJR_@linutronix.de>
- <CAOiLmNHK5Hw55omycg_EAHzi=g1iqJn1NTap1Mt98im3xTXcvA@mail.gmail.com>
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=YhcOYYWh;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1788164151; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=tt0yHsbfJEZ1+ZZbrMLoRaILCdqS9+900vtSCcW9og4=;
+	b=YhcOYYWhhUoS/qMw/h4airDhg5iWAPRj31tZn884Okb/7d9P2ploVnwHmeVK+KCySkQ2wco+ufh3AEkQtFZBeBx3BUtBH/4nd0e7lYRe8JVjpW7A49xTtPlKWfSHGZ50EwFxCHhJ5Cl/nhza5oCcsANCNH09HzIUyJH/QdDixM8=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R681e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X9v1.h._1788164149;
+Received: from 30.74.144.115(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X9v1.h._1788164149 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 31 Aug 2026 16:15:49 +0800
+Message-ID: <80b86bdb-9ef7-4eb8-95db-695fdae551d6@linux.alibaba.com>
+Date: Mon, 31 Aug 2026 16:15:48 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAOiLmNHK5Hw55omycg_EAHzi=g1iqJn1NTap1Mt98im3xTXcvA@mail.gmail.com>
-X-Stat-Signature: d9j73tyui4sa939sxxmgqhim8him4e9g
-X-Rspamd-Queue-Id: 8406940003
-X-Rspamd-Server: rspam02
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/huge_memory: bypass THP tuneables for huge pfnmap
+ mappings
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Peter Xu <peterx@redhat.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Cedric Le Goater <clg@redhat.com>, Saravanan D <saravanand@crusoe.ai>,
+ stable@vger.kernel.org
+References: <20260827-hugepfn-allowable-orders-v1-1-94819c8807c8@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260827-hugepfn-allowable-orders-v1-1-94819c8807c8@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9F9DD14000C
+X-Stat-Signature: 8ej75x5xacxypxxk3pmigs3pky3hrb4z
 X-Rspam-User: 
-X-HE-Tag: 1788163687-624059
-X-HE-Meta: U2FsdGVkX19lvRzT0PXrluXdef6RCrfvaGxzOMo9nJPXKQPgDtobMhnYWcRg3q7zATLjmGtSd6Wnfqy1+lifWGeBlFJcHbi5CvlquD7PDtjUhEgbLBE3KzfhQ0MuvtnbTN9ZmW2RtFZKeDTt9D6qCsxVd6HowdxWr2+tSwOSDMYM2mmTetaDTlvLfNWTs/Gy461XcmHM+qJn201n8E7A7PxCcpbRWiAUoDN6CQVWsf4SsE9cdmCmMJT1WTpOBUpVcHz2mlM2RUc0UGpqvdqybDzuLYnYbNODGEXNPe4FepivWKTp0ldmLIG3FynmSpHSonEYckFHuWaJ7osQU5paqK4s45NcAGAdQfkdQiJ7mYNGYGzFIkEZN3+TdJLgat+3w+us13FXxQDBFgo2Lfn8vFqwqRXTWlCZ6zcYjQ/tVDOQcKqWV8xZM5IRpn4Xrxnd3QHE9XQPoGru6PFP5t/2S5ypwNbdXP83Z0IjdsOwUDVFTihZh86BeERnReZoRnn0VWBAXSoHrNGaHOWoa7ITZaz6kQfi6gPBOiswF4fOSEpxcui3yO0D8CC3pQm4tnYdaiyeXa/cnEjAA7shGmK38mcG1ElUPRIQWvKky5l8cHlCKzeknV8wagjnrDVI8+7YdTHznn4wpRP89l9Qhtj4tvfHgiNPQWO9hW7zNKvM9Ebm1WpnjRsmqPEeE8ikKGx/a9/uNTneQZ6bH7TcHQWxXI9SnzmBmdQ3w6owEoM1rHmBritDk3K6G3jat90g9W+LwitXkZlmFgaqre1a99fA+7nw1cjE63eBtCPkFn1mqhssnomlixNw1vP9MlLZgSSz56Z9erwl9oMNuCKcMoIWCYxLY6IH42E9Gs5XlG4B6TK5YlRjpuY+/FB5drnZlt+jArIE4TgBbnzLTzMBIHdOdzY823hg0jAk1tmoShvWZN64fJg8Eazre/47+U88tfzq2Du8bTcJEQPUXHyHx8F
- 6JoH0czy
- zgFOfuedsaOk1lv+vUTQCeD7VSRInDmMsza1R5kCtQLeQqJVUy/hKYgUjzvuHVYtQG6SthzT3MFx4XTXgSl9wKCuHS0sxAU4JYijfXRZ9FILZTr4PXZk2EtomzVhBMamxD+KigUuCUN90/3IJr4mHULsCcEbq7feZtMxyom4R18s/aG4QSalXYmHFgWpNp7g6FeqT
+X-HE-Tag: 1788164156-822223
+X-HE-Meta: U2FsdGVkX1/SclV3KY6y3JJILZphp0fp1UO4zmkVJ8M+NrdLeI9xLybe5bpGydF4BMdI2w/5J5icEJouON9ijFfy7MoLD6pn2BSdbXjO6sogQ/Dadg5J76M0cZ2AuzjmrB2PnFOuURXZTkMZsGlgg594du+IPcmhqANQxPOKj0e/4WA/bDfX9dxDPg4JD4UOVgfsFSafSkCvr9BY2ZKOLl5BQtKKRibCiGXPGKxvM4QvmKhUHO9fCnjoiNVWpPDBF/SBqZ7HMt4DoEdfqIT9DfiXKFVm2r7tLCQVXG1EcxE0Sb7oVdtcMH6xv0DDYG+HG2oXHsOjWM1WzqwlMu51XAtp8+zJQx6XXkbBXTZ7vVD+76NEObih9xVjxw7kM2kTV59LuFZnGFipWQJnh4olYb0UPE7x85Jw2OXHMoznu8oCrQz85BPPZfnnKI2vXw/FGEYPtcYcyWIbAU1MbwrTdIFeTnBymqUUvHiqrABtffCaW3SHHr6pc4eNLI+fnUUPHIJmk1yIklIhmLGyvHpilVXax2Lhp/EEyDNLnKdPsya7vjKbvUrqKXh4zTbD4XLuTkXHiG4bePj32Mu3fx/VCvMCHNZ5S1Ed7xGRPIYM7sQMVbumL+pQSvXI6BDoaxSCMzbA2R75QeCfGTFypsEmC8Ym/Ni15bJZxsWFgc14fMkMyclGOyVxDEmXczcKRiHEjA+Zzqgipc7hZoXf5OmAuBuN26hf0zVi6EB8S6UoAxbBuguqSAdy1nHezfRgNcZJAwSecWsyO3Dalot0UoZFHyFkh8niqMlzC6c7bgyEab/I4JND+zQan/JKpQINzTCKoy5B1lJ4H185+/y3k1qn4tLIXJuK8SPaWILDwXLULszZB/eb+gOSmNAVDqV4sKi5mLBgWfr+pmpoHk6Ol4WKCxFlProq6UNnJ5Qw3etwEyY2ZSCOSO5gK6elHZmDRGw28CPejjH+huuXuM43mlS
+ F+Z+yB0P
+ Rz2hRAFrvhe63ibMkvy5+vbNAcjPNhFJTqRMsGR2EFmRAbzjSYfhEQ2NGIgq95qcMnh3HHRHjW5CiKNTS9gJHpsRb1zDBEA07ciRVjkaNCM9oCk32KZaEBcgvwJjRuxSK9Lw1h2/KMX1x1imbHgnQzCTHFZ9idDzYPtGNHJ+TaMMyZh8JJbOCQZV2C0Kv0iFzCbMzMwby7LgTqcNpyMNFQXnGvz3uMFt6LFDL9SgA4fRoyWiaRvs1soqL5+pkV9YN7eL81Lj4/kw+NLKAVyLwZkjV6U5UMaVuBOTbTgqltvSCeyXZAEwj5vxyVJeMGsUBqe7slb2DX3F8gbOjMXar2INKNe5nIYiMp9BJTrgHgY03gFZ57o/RXZfp3x1YF8nrBDyejvQiRV6zJ4w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,47 +95,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-08-28 14:17:49 [-0700], David Stevens wrote:
-> > Did lockdep see this?
+
+
+On 8/28/26 3:55 AM, Lorenzo Stoakes (ARM) wrote:
+> The sysfs THP tuneables at /sys/kernel/mm/transparent_huge_pages/ rather
+> confusingly only control the behaviour of THP in some instances.
 > 
-> What are you referring to by "this"? I did stress testing with lockdep
-> enabled and didn't see any errors, although I will admit the bulk of
-> that stress testing was !PREEMPT_RT.
-
-I am (was) just surprised that lockdep did not complain about the memory
-allocation under the PI lock. It was pointed out in that thread later
-that the new trylock usage could mask that.
-
-> > If I understood the whole exercise correct then you have a kernel stack
-> > of two pages and in best case you can unmap and release the second page
-> > while the task is napping.
-> >
-> > What might be a tad simpler is to memset(,0,) the remaining part of the
-> > stack. Since the stack is vmap-ed it should be swapped out on its own
-> > without additional tricks. That memset() would help zram to compress
-> > better so it uses less memory. ta-da.
-> >
-> > What also should be simpler (and I am not saying just to move you away
-> > from the scheduler) is to have a shrinker which iterates over all tasks
-> > which are marked for reclaim and then similar to swap just unmap both
-> > stack pages and release the second page which is not used.
-> > Upon wake up the task should create a page_fault which would be used to
-> > allocate the second stack page and map the whole stack again.
-> >
-> > This sounds simpler.
+> They are not applicable to MADV_COLLAPSE operations, nor to DAX mappings.
 > 
-> There is no swap for kernel memory, only user memory. I did contribute
-> to some previous work that aimed to only only prepopulate one page of
-> each kernel stack and then to dynamically fault in further pages as
-> needed [1], but handling that architecturally and guaranteeing that
-> memory is available when needed is difficult. Full-on swap to zram
+> Long-term, THP is predicated upon compaction being able to obtain large
+> folios to populate THP ranges.
+> 
+> However, vm_normal_folio() returns NULL for PFN map mappings, thus their
+> reference count is maintained by the driver, not core mm.
+> 
+> As a consequence, the folios are not subject to reclaim nor compaction, so
+> are not truly part of the THP mechanism at all.
+> 
+> However, since commit 5dd40721f147 ("mm: allow THP orders for PFNMAPs")
+> introduced the ability to establish huge PFN maps, they have been subject
+> to THP tuneables.
+> 
+> This is incorrect - if a huge PFN map is available (defined by
+> vma->vm_ops->huge_fault being non-NULL for a VMA_PFNMAP_BIT VMA), then it
+> should be mapped huge upon fault-in.
+> 
+> Correct this by explicitly checking for this while ensuring that smaps
+> continues to accurately report THPeligible statistics.
+> 
+> While here, abstract the entire file-backed THP check in
+> vma_can_map_huge_file(), with sensible separation of logic into helper
+> functions.
+> 
+> Note that drm_gem_shmem_mmap() and panthor_gem_mmap() establish huge PFN
+> maps of shmem folios, however they are marked unevictable in
+> drm_gem_get_pages(), and in any case would fail the reference check in
+> __remove_mapping() even if they weren't.
+> 
+> Failing to map huge PFN maps has resulted in significant real-world
+> performance degradation, see links for details.
+> 
+> Reported-by: Cedric Le Goater <clg@redhat.com>
+> Closes: https://lore.kernel.org/linux-mm/20260805055544.1568534-1-clg@redhat.com/
+> Reported-by: Saravanan D <saravanand@crusoe.ai>
+> Closes: https://lore.kernel.org/linux-mm/20260821070520.25759-1-saravanand@crusoe.ai/
+> Fixes: 5dd40721f147 ("mm: allow THP orders for PFNMAPs")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
 
-but faulting it in while the task is running is sort of complicated
-since the task might have page_faults disabled. This is what I missed
-initially (the task is with disabled interrupts in the scheduler).
-
-But unmap the stack while application is sleeping (via shrinker) and
-fault it in via another thread on wake up should be doable.
-
-Sebastian
+LGTM. Logic looks clearer now. Thanks.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
