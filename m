@@ -4,133 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D7CBC61DD3
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 10:06:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 243D2C61DD3
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 10:06:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CDF36B0088; Mon, 31 Aug 2026 06:06:33 -0400 (EDT)
+	id DC3296B008A; Mon, 31 Aug 2026 06:06:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77F366B008A; Mon, 31 Aug 2026 06:06:33 -0400 (EDT)
+	id D9B4A6B008C; Mon, 31 Aug 2026 06:06:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 698246B008C; Mon, 31 Aug 2026 06:06:33 -0400 (EDT)
+	id CB09A6B0092; Mon, 31 Aug 2026 06:06:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C8EA6B0088
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 06:06:33 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C2662C03FC
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:06:32 +0000 (UTC)
-X-FDA: 85161135024.08.72492D9
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 99FC340006
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:06:30 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jKwu2asG;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yIyma6zn;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hmYbXGPh;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=NxsPq1pR;
-	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788170790;
-	b=BohLq6IfdN6zpW7bg6Q0zLFLW9/ffU0S5o1M7sw4QW5lqF7wMoOS7D2eZx7Dy3muiCocxF
-	QQQL4b5xmYQqLq0Uo0UB2nx/lWvNmLu7NaLuOt/V/3TM84az7pj7rrTObpEb/YTy8/chJr
-	f2nYX4oeS/DCaBhDTnTIepO+YDxhHGM=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jKwu2asG;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yIyma6zn;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hmYbXGPh;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=NxsPq1pR;
-	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A07026B008A
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 06:06:52 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D3E22140462
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:06:51 +0000 (UTC)
+X-FDA: 85161135822.03.6D3AAE3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1D3F620007
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 10:06:49 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DATBspxv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788170790;
+	s=arc-20220608; t=1788170810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SUNwtZYE0BZEojiBC/c0w28QoGhVaGYNfF8bWOZe0J0=;
-	b=jFY1/G5jQiGjCj0GgsaDKDAI4DHPSvyOcpZLMREbeM9HyF2YD4z3TCRuRaR+X1eIE1aSqq
-	oTcMuPFTAgIwySPOKmTdloGHgp3dnzdZjGkYjPEc6s0tTw7GS76OhdoG2YSMEcrPUg0pY0
-	tZeB0NIsC2ZXZ1opJ4PiLrrb49VB1b8=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id BFE4A22347;
-	Mon, 31 Aug 2026 10:06:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1788170785; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SUNwtZYE0BZEojiBC/c0w28QoGhVaGYNfF8bWOZe0J0=;
-	b=jKwu2asGObmXrCsHXGJTde/JBaodQf9kqgWIndpdOxVluroTDfauMTBO87hFsi47W9KcoG
-	jTgX2l/rLJlcsCTFRacAZ2K+zTVb5Ooi78ojcnFceF6jE/F3XQrDGXyyTV6GSINgRdKdUj
-	IGjwvAFewJgqf5MAhcrCXoZPYAYhKWc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1788170785;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SUNwtZYE0BZEojiBC/c0w28QoGhVaGYNfF8bWOZe0J0=;
-	b=yIyma6znJVeJA846qMD4dW9M6BkaUTMQadp7YwBU7cxzIj4+DotGWnUz5DXezz9prWZN7K
-	fKkGBq2AfP44yZCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1788170780; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SUNwtZYE0BZEojiBC/c0w28QoGhVaGYNfF8bWOZe0J0=;
-	b=hmYbXGPhmUjtMThBiWN66fg3p2akpd1bjj3OoOiVFs9FqqACy6WhIHqVFhAJTkl1C9V1+q
-	4nQmI7fdTVlE1EMLQLRBwvK+u5HOeSd+xpKRCs3tU7rsnpdEWJiPkZ77htZDfLDb0/QQZQ
-	fcH0uzgkh6yNv79d9TeAp2ZjkITPx4Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1788170780;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SUNwtZYE0BZEojiBC/c0w28QoGhVaGYNfF8bWOZe0J0=;
-	b=NxsPq1pRW+nFN8R1t1REtUrjBb1pfxdB/lVWZH7awRQ22iz9nXcNbdcQkRu+rVA5x1pYaz
-	Zl45bp/pNmdh+iDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9D1FC13682;
-	Mon, 31 Aug 2026 10:06:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Li5UJhxSlWoodwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 31 Aug 2026 10:06:20 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 2C9C8A13B5; Mon, 31 Aug 2026 12:06:20 +0200 (CEST)
-Date: Mon, 31 Aug 2026 12:06:20 +0200
-From: Jan Kara <jack@suse.cz>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Christian Brauner <christian@brauner.io>, Jan Kara <jack@suse.cz>, 
-	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Theodore Tso <tytso@mit.edu>, 
-	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
-	Namjae Jeon <linkinjeon@kernel.org>, Hyunchul Lee <hyc.lee@gmail.com>, 
-	Phillip Lougher <phillip@squashfs.org.uk>, linux-erofs@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
-	linux-ext4@vger.kernel.org, linux-nfs@vger.kernel.org, ntfs@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 8/9] filemap: Remove redundant FGP_NOFS
-Message-ID: <d3w3bedhmbl7d2ssfq2ov43safj7hynj7rpwztdiu22fkasrhm@e4qjbeohazgv>
-References: <20260830041901.2668-1-willy@infradead.org>
- <20260830041901.2668-9-willy@infradead.org>
+	bh=rTCa3x1+NLElVZAzpXp0yBo3FBCgVkxgyOn4AqetuYc=;
+	b=OjR19qiqyfvjAeiilrbEY0z93R9oO4Fq87g17JEF4YASdwwcYxqnbARMYHAVFKw/nwEbg9
+	sF09/iMIL8PCd7GErW2o03/pMeLGYn/ftzsrKJDmuCVI16uQJ2hINXNlzllvMII63x69oR
+	3oJXlcxmRFRzvB1nGfYq1VmZa1Yt0BQ=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DATBspxv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788170810;
+	b=swBmO4zTHiiVL4KgnWnffQg5R6j/yqK9ul4gTaK/TQqrXp+UIn4D7Y4eM0dsUTxjKUZ7Gl
+	FX7CZ9jYU6rvBjFNk2t09PovzRxT0ejclsU1jAOjgJJw9yBPciU/+6ym91KbXkZ5B0fZ9G
+	81dym0fP19EOeiamymGMqLmEXeBBTME=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 69ECE6020C;
+	Mon, 31 Aug 2026 10:06:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D741F000E9;
+	Mon, 31 Aug 2026 10:06:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788170809;
+	bh=rTCa3x1+NLElVZAzpXp0yBo3FBCgVkxgyOn4AqetuYc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=DATBspxvVs8agfsX5YhOCluh8TkwJHWyMCd4BSL1dTeYmEDfDsaCxZEJjDKrjKvOz
+	 +RF2NtLVrHEoSP3sc2RhlhoVs4Jo9HPzeIrhYcM8vAO2iDokd5nUHDsTlGtd5ePScf
+	 t76hAjtpxb7lZqcYvcun9GWkZpg+Ka+cC/yeXhBJUVRbpoVhrMnVuUuuBRXSbrnOT/
+	 4KqA0KoPyzsh+d5qhNIhDMGqzRXy5I6/qP6i2cWOUIoqEOb3O00cg2MbPu6go4uRut
+	 hSsH0kjGDEbsNwSnaemTYucOGQRHcltY6KgDJ0PUWzIMU0VmLUoZ07EEP1lOVeNagK
+	 fK9VMEfu6YK1g==
+Message-ID: <3d3c124b-04ae-49bf-8bbd-684b412f0a1c@kernel.org>
+Date: Mon, 31 Aug 2026 12:06:45 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260830041901.2668-9-willy@infradead.org>
-X-Rspamd-Action: no action
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] mm/slab_common: reject zero object_size before
+ calculate_alignment
+Content-Language: en-US
+To: Longlong Xia <xialonglong2025@163.com>, harry@kernel.org,
+ akpm@linux-foundation.org
+Cc: hao.li@linux.dev, cl@gentwo.org, rientjes@google.com,
+ roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Longlong Xia <xialonglong@kylinos.cn>
+References: <20260826015506.3178758-1-xialonglong2025@163.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260826015506.3178758-1-xialonglong2025@163.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: s1umzbswk6x6f1yenwcggsz1m7951d9k
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1D3F620007
 X-Rspam-User: 
-X-Stat-Signature: u4tzfo6pe9od7nnqwqqmqaihqt81zx5a
-X-Rspamd-Queue-Id: 99FC340006
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788170790-739281
-X-HE-Meta: U2FsdGVkX190tyhlYka3d1kbs3F7F82AqUmuhRggnhtoLMuvQKAzTy12gpwO4nEaU1BYAZlMfJBtoB152+m0KtC4kb61y3F8Fwo8FXYU1VArIt1kRj9FwYfH28Fte+9Y4FWTAap30coSP8ENMYOP6JhRzgwnGlovZlEx1FmUu4aHCSd2jgIP3IvLuiKUbsKqyvjxuh84sojQgi1sHY+AxRJ1jAk4VBAktyDtqTsG5GYnzKWSRksBZY84etQEXdq2v5GDNvogGjII2lNBOFK33APzWCfKMrJXdhr/eLmtmV4wM71S1+b3f6bWCDszGwpQctKAgxai/DPy8Ik2K0DmKQwtzQ+aJ8p23143BrBXOKFcvk+OKXN0A9M5sV1iHKVKGpF/08FUZ2jsbHNT1+GdzqMaQLM5aBI6GKRvRkDnCrIbQMYjp8EZjZi6PYuHw/36+jLC196d+1RQ36B5eqLEoEIKrH8az1z4E64ltWJg/iDjtCdf+mzirO3HHEktKukmemkKSGmTsoMhwBYSQ8pBHbBM7E3Jw6jc3UWyYkbVO8Do6l2LOL82jtljPYKFtZLvgFTz1septtY8LsknvGvvdgLRmzHiCBEcPwoMQi3Sn9P9mD0xietPA1OXjoTVidCReGUDOSws6PRCflFCbGazQw6LP4rUyv4pJXsAdx2C2dfxqd1VzQFtZD3QGvxdTyWh2nnPMwQ/bJWC9cgoOLvDqRg3ARxGQrtzSrjf0EMcDsbm9MhQO+LgbROtAx2DSin1XcRAAyjBRoevdEjJxc/Hb6vQH7pY1jFI+n0umshnNK4hwa2tv+/MelwlFX7nxilxErrzubsXrL3dqI2ti3vU8xsSOajtIHw0HoY23/T0vCD4179n8sk4n4rEM0CBXeRXoS63lf9KUMPkVdXljCDmqfU0b6thI4O6BL0NI/7uUfEyH4ucryXI6owdBlrj5vfHIbMip8SLc8jDELANNbV
- g3tv/Ebw
- faZf7CqWhgg59j/eqVeVl6r/dVS7iOwqWXzM7f5ohT8KkIKL0pTJhOV8s0zTntb15Cmd1sJnnnzev+FiLB+4Z6N9C76qGx+r4jnexT7rhxGreHb99ieT+gWJxM20CB09xE9CfNfMqjsqCDqwkDTXT638p+2vHVV/mAHr9pw2l3sOi1I4gKUJFA17GXGXNwp3sMf5kfNoUE8Eyj+Oz6eXDgZIubNmCK4y8RnJ6d3Z/KGLbpQZgbRE92LEGzENor/XThGVdswyTT6uYzuErh8v77KCfD5w+ZZAtmXb6kbCVpzg/GDJXUzBz3nU0hcKvunVsdPLVaMjkNRZtnbS4Hf5gN1CIi87tqKppHPzrLnizcDIdcQIx/60GUMQL9mthAe5sUEmjmjbaD8FykedWedKkWiS+N3ucxRbZjZGHEADn8Bkf04qAZWe36pzobsBpXMGOb2tKLSFCnitmeq7lKX+HaYSC5hqaiO7F3mGS8NhUvJEExIDbyP/1eTsnpwVZsKZPHOeZLnyH2CFPYYU=
+X-HE-Tag: 1788170809-829182
+X-HE-Meta: U2FsdGVkX18J+XNzcTC9QJ9k51dcWRV5n6CuzNJK1j6NQAsx2JbSXki2sw04bUF6lWIPqvB0QdXr00MlPXeUqQnseeeZWvaqvLJSTvzUcqm9I7tuPExsjiXwzgkcgk61ModLHmv1z5IJlsQkbn/WBnyyNIDoTN6eK4pBuTLuPysf43iLACUG3vRkPjm5TPGcE+DGsBfh2v8sPnV7QUaJNiTeITPkLwjBW4fHfGxp8SJDZT5Le68O+IQv6cHnds4622Tdd3/6evPTU1ywh8G8BKVguRLw8XSDMIz14Ca4YLDUdK5pMAg81GTQ/xZ1aLFPtRFwNQp9A8jf5dpuzkh1ou8cSGWzIb94bess1Vuh9Eb6UNFlEZSIcPjRw3N3U5A9+en80mfOrSwVnEHNxxl7EE0W7VlWJzoBURGdDiEH5GjMesTAFUpbRQO9c9SrYwonAR26ej4o1kt7YTQTTOM2/DmZQz1nkMsu/xJaIXSq+MOHW7jOk9q/oFWGY4wmPuud3F+IvYv8/57ZBkvBjdjlLhl+7LKeeeTLzBbo7u+sKNJT9ZETHVMZ/QBcOHj4PsoMHy+9agyCOsaz3XK5wXpqzaveVKwI2yghZd7DFb5Y/N8KzLr0VN8LghxHcaoBc6lh/jZpEr1ermWlRJU51YjMrE2eGyG5Mc4AMj23H6uenMks3/E4X0sUFnpli/wZsqj6fnhjXikLkHqtTnIOqT4RgRp4q4I0/GbPWkeBaUK4rCvGVX88v5zyNemSIxmevzdeQajYtgdvbrsZZKDdoksqP3tzSwmimQ+pMbMUhleCxgaQrZ/VQ9t0uSgG0/JPQ8eozDkiMJfmHjyNrH3wsb8Xi0zOlIOxAdMTS+yH6daPE8URiWGMjLPe5rsgEmbCIr1xqsCaEw+5EoiMfgOhhXVCTVwviK4n6T5yT2ppNLNWSI0z0K1qFpB4kRFKLX1+FZajrTJJObwt1LG7x8v3C1Z
+ CMbhDrVl
+ Ewf/sx2nlarBdMZnx7N5Sq6xXwqFq4vnys4mCjdjjaGOKs2/9UBWN3jpLB1oB2bBKJ9Hy8DvB0+ZbVOZ2ciX5LeUPWhJlBj+FQiD5pLQd8FEnFakeWXrRUYXtaGW0vNeKkgPN2b+Yqax91QZcMmL1/uF23Cv8oeyrIwcv72/DpzvA3h9dy7WbJOUN6OcYbCBN7btGDwaOO0Z+G2l7EIF/oFSOcvqm3fUwV9ZlWuZ2kl/r4Q01CcaE8FTgPfZJZPm4gBpoAg9gYZuX7jf/bk1qno774yf4rO2R//4N7xaWr/SDhYwvFzwLsIvvOXUfIf9Cp5VspaNnRUmc6OmKJEE4yXZ1TJYpCEpb4jha
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,39 +135,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun 30-08-26 05:18:55, Matthew Wilcox (Oracle) wrote:
-> The flags already include FGP_NOWAIT which prohibits all reclaim, not
-> just reclaiming from the filesystem.
+On 8/26/26 03:55, Longlong Xia wrote:
+> From: Longlong Xia <xialonglong@kylinos.cn>
 > 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> calculate_alignment() with SLAB_HWCACHE_ALIGN halves ralign in a
+> while (size <= ralign / 2) loop. When size is 0, ralign eventually
+> reaches 0 and the condition stays true indefinitely, hanging the
+> kernel.
+> 
+> kmem_cache_sanity_check() rejected size > KMALLOC_MAX_SIZE but not
+> size == 0. Add !size to the check so a 0-size kmem_cache_create() is
+> caught on CONFIG_DEBUG_VM builds, where it can be diagnosed when it
+> surfaces.
+> 
+> Suggested-by: Hao Li <hao.li@linux.dev>
+> Assisted-by: Codex:gpt-5.6-sol
+> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
 
-Looks good. Feel free to add:
+Applied to mm/slab.git slab/for-next, thanks.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
+I however support Harry's suggestion wrt (not) adressing theoretical issues
+like this going forward.
 
 > ---
->  include/linux/pagemap.h | 2 +-
+> Changes in v2:
+> - Drop the !object_size check in __kmem_cache_create_args() that v1
+>   added to the always-compiled path, and keep the guard only in the
+>   debug-only kmem_cache_sanity_check(), as suggested by Hao Li.
+> 
+> Link: https://lore.kernel.org/all/20260824092454.1693745-1-xialonglong2025@163.com/
+> ---
+>  mm/slab_common.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> index 0adfa6605653..3974b063a049 100644
-> --- a/include/linux/pagemap.h
-> +++ b/include/linux/pagemap.h
-> @@ -929,7 +929,7 @@ static inline struct page *grab_cache_page_nowait(struct address_space *mapping,
->  				pgoff_t index)
->  {
->  	return pagecache_get_page(mapping, index,
-> -			FGP_LOCK|FGP_CREAT|FGP_NOFS|FGP_NOWAIT,
-> +			FGP_LOCK | FGP_CREAT | FGP_NOWAIT,
->  			mapping_gfp_mask(mapping));
->  }
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index 95ddbab290d4..e205a99d85cf 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -102,7 +102,7 @@ static bool kmem_cache_is_duplicate_name(const char *name)
 >  
-> -- 
-> 2.47.3
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+>  static int kmem_cache_sanity_check(const char *name, unsigned int size)
+>  {
+> -	if (!name || in_interrupt() || size > KMALLOC_MAX_SIZE) {
+> +	if (!name || in_interrupt() || !size || size > KMALLOC_MAX_SIZE) {
+>  		pr_err("kmem_cache_create(%s) integrity check failed\n", name);
+>  		return -EINVAL;
+>  	}
+
 
