@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79014C61DD3
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 05:43:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EAD6C624A5
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 05:43:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59B516B008C; Mon, 31 Aug 2026 01:43:42 -0400 (EDT)
+	id C06316B0095; Mon, 31 Aug 2026 01:43:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 528016B0092; Mon, 31 Aug 2026 01:43:42 -0400 (EDT)
+	id B8FC66B0096; Mon, 31 Aug 2026 01:43:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EED86B0095; Mon, 31 Aug 2026 01:43:42 -0400 (EDT)
+	id A58796B0098; Mon, 31 Aug 2026 01:43:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 00BED6B008C
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 01:43:41 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 73F0F1C0E6D
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:43:41 +0000 (UTC)
-X-FDA: 85160472642.14.BFD18CD
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 725F06B0095
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 01:43:45 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C84821402A4
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:43:44 +0000 (UTC)
+X-FDA: 85160472768.10.4BE3936
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B0DBF140008
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:43:39 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=CnW75J3D;
-	spf=pass (imf23.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788155019;
-	b=Evydme3elMKxnq4Yu4lOLb/cPI3yIns/0TCDUvggg67bJbdY7dChl239KKGI7guFnVQ3yC
-	Iz4BDXGyQy2HIsd82b2NeQwJ8xbZYacT2gbxSToi0G075BCvpGtpdVo0cXDH0pVnuIv2FN
-	/BiijnsHkxsuWcH2vv1dD40EKb81P+c=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=CnW75J3D;
-	spf=pass (imf23.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 157A5C0002
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 05:43:42 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=bOYCZ7KY;
+	spf=pass (imf10.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788155019;
+	s=arc-20220608; t=1788155023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HX2UJHkvYtIE8Iv3IhpwI5DtNIWDsoCmIUsixatil5Y=;
-	b=a3fsrdjxF8dJmUd9jBkzJ97skrduIg6lCcYlVP12MbwlNSvVRu/TXpAF8Kp0RIcODI5+HG
-	+Mke66+6Xj1G+UQ8wneU/WlU17huS5uM+feFQtgUDvxqZX5si1/yWAVjDB/5Vsbm/WXVfl
-	hnMmXvVMKZ919N6mrwY1DE96wEPQ0Pk=
+	bh=UJYurZV77Ugv5OPsFiZ0YfDrbpkWpLq/Kkn2WQCklUg=;
+	b=rHBax53/+mFH1Sd8nMRyc5z4wwzkiw9ANawkisv8LijFLquGkRGqsjSkFT67kG8ipfaxOr
+	4XZpNXvGdTgvYVOIAHCXq09rpYIBZAtaIW4lD0rfNkUoezLvU+ifCu1SBBiNVtvgPakVGe
+	q/0h/ZLvt14XyXgBOxs8glBvsdtF4eA=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=bOYCZ7KY;
+	spf=pass (imf10.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788155023;
+	b=i7f7YX7+mWY9H39u8E2hCv0Mpfn3FX9+sAkSa+fr5BTJW5Vtoag84tC768ytHLdDb2Vp3a
+	DZukmGeqggPPYpuWmi2AKoXuuzY7uvYVMlptxE3buB0/KpOqVAyfmcoF+ffWGM5glde50H
+	/42T7hxkOLPw7nAmurrderVFtuoYwMA=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E3F871692;
-	Sun, 30 Aug 2026 22:43:34 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 81995176C;
+	Sun, 30 Aug 2026 22:43:38 -0700 (PDT)
 Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E96B63F85F;
-	Sun, 30 Aug 2026 22:43:37 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 85D1D3F85F;
+	Sun, 30 Aug 2026 22:43:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788155018; bh=GGK9AC8Tv1PQeecS48AIrQ55e9LqtRQAIQ7FmY+hs+k=;
+	t=1788155022; bh=QXu4QCgmr2H1ZCNmIiMG/ZtqTETXJXvgk4Bv9ZBGY20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CnW75J3DRkRMOvrNTUSCnYFQNOIbOUOnmVJQMtfF42eAuoH7YKNUi6ESpSwqTyfrG
-	 vG0N5mSEM+8VmDd50f9PcBmxjBOkfiS4wh7Lhpjo2rW0nQBSjOK1m4mUYkK3mw+zi4
-	 N5OIrqAwr66EWBpqjhoDF/YwciJOKv9ClphMWYs0=
+	b=bOYCZ7KYkGWJMwi9hv08o8CPIK1B1PpAWsT/CWN6Rgcfw95970wz0SYilqsTPRRdM
+	 jy771f4RrMqp3RlkJj0jL31egGOxLsKMhmyO6mjoCsqu3qGWanVlVBYExkolRR0f08
+	 s6ecC7ZYicemVZWC8wmn+aaVAZnWZ7DbjWG2cN+I=
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: linux-mm@kvack.org
 Cc: samuel.holland@sifive.com,
@@ -93,22 +93,22 @@ Cc: samuel.holland@sifive.com,
 	linux-um@lists.infradead.org,
 	linux-arch@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/8] mm: Make ptval_to_str() generally available
-Date: Mon, 31 Aug 2026 11:13:23 +0530
-Message-ID: <20260831054331.625505-2-anshuman.khandual@arm.com>
+Subject: [PATCH 2/8] mm: Stop using pxd_ERROR()
+Date: Mon, 31 Aug 2026 11:13:24 +0530
+Message-ID: <20260831054331.625505-3-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260831054331.625505-1-anshuman.khandual@arm.com>
 References: <20260831054331.625505-1-anshuman.khandual@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B0DBF140008
-X-Stat-Signature: 9zxn3myubsdnt6p8jekuo5sbbk9wkoxp
+X-Stat-Signature: px46z3466t9ybti3b9mng4dsybyob8nf
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 157A5C0002
 X-Rspam-User: 
-X-HE-Tag: 1788155019-822651
-X-HE-Meta: U2FsdGVkX185aV1EXqmUuPAs5BhwfK/vIAMD+N6Zc9J+0RhNPGQXzIdEIHXXcesHSB631YentFpQXF9kTkOyZJ+sQy58sbCehidKn26M4MJgEy6GNekAf9nfhM/IE4uRdv5cUYfu54LSw6zFDqbLMZJ3j+fLyJg+MC0SjW2OpkthwP3/nG3DMgHQVZXeZIUYdjGJvWErq2NwDqRCM4U0SAPl4fpALxz0W/c6Fxwn/WeZI+yDVj0YnR+jBCNUw6hVl+UmniAx28/FWHdk/NXQniIdSVUoLStztzrAX8KWDBt7HdtistsnUlDjtoAWdKmsXbgkoh22Kig0Q7K4GB3A3Evy7ObvS+cmdFcxbF4SBgsgkBx5tFqwfqGZCfGL7hwEmRHl4Or5Mk4lSrDqV+meeCFA8o6SBlK3I7vFQrThLKWE6gLo/nVdw4hEBCjkvSF6X8NWaIlnni0EcYkygBw6meHKXBF64H8iXe0jofLI/O/BoFf9Rwsg1gtZzHiJIDkS1xwnlGeiAGUVYLEKYez94EsBAZPOCWJvXpM8o3LiV0jwIuxDSAON2mbO2K4Q9lM7jZu5CqXQAJ18k+SIzCnJ4z2BAK4rmYZgQXiLuDeU6Y6jwZ8QLG78zhr89yKPFg0KEm7/5JURhju73K3+ySjU7x+NAqQ9nxhOjBoqHT37X615+fywb59hikhPejysSlA4iEHfUNh7Ib2TV0nAmPxRlm0tWIQdLbUlISE4mK2erYpCY5CQKysukEZ4nW/D0Z8+SPFfGzs2keZ/C48wLzZzjzwc2uHyzlEN0Q1QXG4eAf7cnfdHqcnxX/1jqMPJeJVMlKA16lDDZwyupHoZenFWMK8yFiJnRMhSbzLBPPemb5qKzaI4BBbp1otmndvSPbQjNAJcyYESEAiCg3M3Ilt/BQnamqS+s0Q2PuQhkAxpLSd46e8Z3jBzmHoEx7bimS9LuMkxzptL3vTBp30Jb6f
- xWBsK8oi
- s+VWr0PyJmwBnQuqhj22osRp4Ie/vH+58UpS8xnzRfrVwurm3dlvRlhlX1tCVVdMDPfTY12XksB7Psd8/zYDQq7VJaddsRXwrDycrJbdIsOa3ZCuISm7wCsyFacn8e2S0jFqxrNlZq+bBBAg3pwF+kgpxM92a+XYE8J/Q+aeO+ygNMWU10w8M70kS6oTsjhYQ8kCw/Oiw1aSGAC4H5NBbW/d5NxfPqr8yKevNoxdVwe4WB5UbLTHymh2wW+PBHTC6CU2v6SuXNah5ySqfjNkhETQDylB6OOij5PR5VxGAmz4ii/B8ZeAGq+1SDYVySm9CZ1bRNfz8voouEOQ29MqMXTYJBeXvQxR+LkmFUZ+9KEq+wikBxJ33BcAoZrPPhy/kW0uZYBsGmGpyI03C0OzPwfAI5PobORPwbybFI2N6XI7nwMjEH4y9kcqsKVU0QtD0V91EA4SZI+mQX4HMkK9FUvUbyV1E8ADPszFbGf+p3CEYIDaSH0bjdlHArQI7QTH36WFaWMx+3LGIb0hZ/YuAzUwKuNdztDulT1iKXyTm2nS2XmWt9QxbIrw/Uw==
+X-HE-Tag: 1788155022-192807
+X-HE-Meta: U2FsdGVkX1+h5JO6i3o4cjFIwagbTe/hx8JKmh1hpwOuHgdr+vsh2YsZS6RXSDHT+nLWu9xDG+AnMiGOVIoa+o3mweYANT2ctXTgkTZq43v1UPbkI1hzNEebBNrNXek/lyda6Zpf0MyzFAmkNK3qNLs+lwIqc25MVivpDY3+vP9cQjVZqbQpllJAlYAjB0uDLN6QPBsx8L0KSEUfi3GOPlZbeICExmiB4clsCJjQrm3pJG/Ng5LSSqJapR6ZX+Et1y6EK+awWCRWtgu12kzo06Md0L8y92xEQ6LrRCJ22QIfIJKTAorD4QUHSimTpHCCgVtBhBLb0+A5X9hzV/9W/5eKMxgKgIRPqJpqPLEsrYIGKfOV+JhEufuHOpAnDwoq8KbsSMWd9YAR7vBjQGwLJO2rV2VObtzpiwEEfbFrB18ldxy/HSwF4iKGaFwkcNX1yr5hnm6tnPxjtd16Rf1G49XcdZJiBSp52+QbvYuGtGtdYOFUyLmnnRYH8fLgF3QzArYg4S2+lucaN2swzMusuOXsnyr3Ano/LykFeZbPnJXiw7EOppzFpXwXocwWyg7DfEyj1Pvmqp866EK7XLIFmtsJ10CNRsvcFgZK3JN8OKRl2p374pOGaH+shZIOt2LF3Sh4zWwJoBTdVTFZMyprRbyaXu3dPEOBUes4yBlDDoqVUV/emf+6Mp/nHhd53M/ep49/zwkSP1lHpsm+RG2Rzeo9rZCEnR5BnxYuljclSxOgFKky5oBP/XPiOEgVJpIhUHfpubH/BmVe9cTEbD4jlCj/Alg2180rVQQAEi99sMHpiLuS3IbhCqol/PKaCfkJZM9q3yFn+qZJ5E/pWRu1SjjG5hlgPONOJEJGS3kdnyyZZ/5zUlUNjdkqYwM4M5mKUsdJ3jkZjdi4J6QwYpD0tOhRwlGHH0nU4aNZGd80VCOnnsqNjEelf4XJLV3nYHjMDhSUNjuq7k8obFdOC43
+ oFJIoXXe
+ +lYw8QycHzWWRfobzd8PvcXHhFeLFo7DUkptQ7AjZv76geGLT2pnXETHj/vtwe+n/AQahkSZDfgbVK6uneJ3r4LshCqGGQ6IraEQzXoRTHuDsUMFh+Uvm3aLKZ6DvmUYZ4OyrvxBRUxVnMkpcjXbF8Nol+qnxAHGc71zcJ93F9WOFbkQq55jrbRsgNEcg04Qnx1q+ErrKdCdoH3Q6FbkK7LtyQowMRqs8QEIE1U++q1ydpB9p/stqKMYTKTAoGbR4aKOWf7qieoIeCNdGSKUmso96gHuMBGBq4paVX1aPPBQURNYZeRx8AXRzZELfLhEcY0TMwAJXBtUTWh5Qj+4nUQQgbra8AxpZvvEihN8fX5u4Zi3Xsuy+9N9HI1DV712sEumi6jH6zIT8RE6SVwJRX3ySCqyVIclcY6ehRNlAQIaIAtDz0x73UST4XVujneuFlie3yzN0mw83mW+ZUjKF0nTR3VyYItNdc977Z+sApHTsTYSTdHvhjlG9cyAoNkLn+9BIaYCNcvAKe8LUleHDsklCB92Ffq2zEcd1bwbcSxOfDdLiBI0x2sFQbQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,9 +116,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Move ptval_to_str() inside a header thus making the helper more generally
-available for new users which are being added later. While here, also move
-another related string size macro PTVAL_STR_MAX inside the header as well.
+pxd_ERROR() has been used in generic mm just to print the page table entry
+in pxd_clear_bad() before clearing those out with pxd_clear() later. These
+pxd_ERROR() macros have been provided by all platforms which basically did
+the same thing.
+
+Make pxd_clear_bad() use recently added ptval_to_str() instead for printing
+page table entries thus completely dropping dependency on platform provided
+pxd_ERROR() macros which can then be dropped off later on.
 
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>
@@ -131,71 +136,62 @@ Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
 Changes in V1:
 
-- Moved ptval_to_str() and adjcent declarations inside <include/linux/pgtable.h>
-- Fixed type s/ptrval_to_str/ptval_to_str in [PATCH 1/8]
+- Dropped including mm_type.h
 
- include/linux/pgtable.h | 14 ++++++++++++++
- mm/memory.c             | 15 +--------------
- 2 files changed, 15 insertions(+), 14 deletions(-)
+ mm/pgtable-generic.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 8c093c119e5a..e3c8ab96941c 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -2313,6 +2313,20 @@ static inline const char *pgtable_level_to_str(enum pgtable_level level)
- 	}
- }
+diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+index b91b1a98029c..224c444cf45d 100644
+--- a/mm/pgtable-generic.c
++++ b/mm/pgtable-generic.c
+@@ -26,14 +26,20 @@
  
-+void ptval_bytes_to_hex_str(char *buf, size_t buf_size, const void *entry, size_t entry_size);
-+
-+#define ptval_to_str(buf, val)								\
-+	do {										\
-+		auto __val = (val);							\
-+											\
-+		ptval_bytes_to_hex_str((buf), sizeof(buf), &__val, sizeof(__val));	\
-+	} while (0)
-+
-+#if defined(__SIZEOF_INT128__)
-+#define PTVAL_STR_MAX	(32 + 1) /* Max 128-bit value in hex + NUL */
-+#else
-+#define PTVAL_STR_MAX	(16 + 1) /* Max 64-bit value in hex + NUL */
-+#endif
- #endif /* !__ASSEMBLER__ */
- 
- #if !defined(MAX_POSSIBLE_PHYSMEM_BITS) && !defined(CONFIG_64BIT)
-diff --git a/mm/memory.c b/mm/memory.c
-index 8b0c2c735d3d..aa6b2fc770fc 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -519,7 +519,7 @@ static bool is_bad_page_map_ratelimited(void)
- 	return false;
- }
- 
--static void ptval_bytes_to_hex_str(char *buf, size_t buf_size, const void *entry, size_t entry_size)
-+void ptval_bytes_to_hex_str(char *buf, size_t buf_size, const void *entry, size_t entry_size)
+ void pgd_clear_bad(pgd_t *pgd)
  {
- 	if (WARN_ON_ONCE(buf_size < entry_size * 2 + 1)) {
- 		snprintf(buf, buf_size, "overflow");
-@@ -546,19 +546,6 @@ static void ptval_bytes_to_hex_str(char *buf, size_t buf_size, const void *entry
- 	}
+-	pgd_ERROR(*pgd);
++	char str[PTVAL_STR_MAX];
++
++	ptval_to_str(str, pgd_val(*pgd));
++	pr_err("bad pgd %s.\n", str);
+ 	pgd_clear(pgd);
  }
  
--#define ptval_to_str(buf, val)								\
--	do {										\
--		auto __val = (val);							\
--											\
--		ptval_bytes_to_hex_str((buf), sizeof(buf), &__val, sizeof(__val));	\
--	} while (0)
--
--#if defined(__SIZEOF_INT128__)
--#define PTVAL_STR_MAX	(32 + 1) /* Max 128-bit value in hex + NUL */
--#else
--#define PTVAL_STR_MAX	(16 + 1) /* Max 64-bit value in hex + NUL */
--#endif
--
- static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long addr)
+ #ifndef __PAGETABLE_P4D_FOLDED
+ void p4d_clear_bad(p4d_t *p4d)
  {
- 	char pgd_str[PTVAL_STR_MAX];
+-	p4d_ERROR(*p4d);
++	char str[PTVAL_STR_MAX];
++
++	ptval_to_str(str, p4d_val(*p4d));
++	pr_err("bad p4d %s.\n", str);
+ 	p4d_clear(p4d);
+ }
+ #endif
+@@ -41,7 +47,10 @@ void p4d_clear_bad(p4d_t *p4d)
+ #ifndef __PAGETABLE_PUD_FOLDED
+ void pud_clear_bad(pud_t *pud)
+ {
+-	pud_ERROR(*pud);
++	char str[PTVAL_STR_MAX];
++
++	ptval_to_str(str, pud_val(*pud));
++	pr_err("bad pud %s.\n", str);
+ 	pud_clear(pud);
+ }
+ #endif
+@@ -53,7 +62,10 @@ void pud_clear_bad(pud_t *pud)
+  */
+ void pmd_clear_bad(pmd_t *pmd)
+ {
+-	pmd_ERROR(*pmd);
++	char str[PTVAL_STR_MAX];
++
++	ptval_to_str(str, pmd_val(*pmd));
++	pr_err("bad pmd %s.\n", str);
+ 	pmd_clear(pmd);
+ }
+ 
 -- 
 2.43.0
 
