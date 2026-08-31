@@ -4,92 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7283CC624A5
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 15:07:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 032DCC624A4
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 15:12:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8EF5B6B0095; Mon, 31 Aug 2026 11:07:02 -0400 (EDT)
+	id E4CFB6B00A5; Mon, 31 Aug 2026 11:12:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 826C46B009E; Mon, 31 Aug 2026 11:07:02 -0400 (EDT)
+	id DD70C6B00A6; Mon, 31 Aug 2026 11:12:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 651AB6B00A0; Mon, 31 Aug 2026 11:07:02 -0400 (EDT)
+	id C9E046B00A7; Mon, 31 Aug 2026 11:12:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 286056B0095
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:07:02 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A028514017A
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 15:07:01 +0000 (UTC)
-X-FDA: 85161892242.20.7DF5C6E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 157E61C0002
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 15:06:59 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F5wScyc6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A17376B00A5
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 11:12:40 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 362004017B
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 15:12:40 +0000 (UTC)
+X-FDA: 85161906480.21.93AEE35
+Received: from relay.hostedemail.com (unirelay06 [10.200.18.69])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 59E76180005
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 15:12:38 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788188820;
+	s=arc-20220608; t=1788189158;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o7lIq+lsQYzbYzf+cqUQ249deMwzfBwDjcIr5FOU1kQ=;
-	b=4eVa+OckWfFjSY4sTPf9kGZQXip8qf7PS9RFsvy1xq2BHOUgUrrH4tjDbngTxg5OriUKZm
-	EQ/s37xAbt6SJn2zydWEpSM9hH6CZMf0YRrdOWXhRjh8oLDRYMU7eeksP263eyBIpZl2Y4
-	ojHsJMMQ1U0Oztlqq/pwtb7r1PvWFZo=
+	bh=IKf/qv+ZKDMiRuq6ap8IBmRH94f4tOFqUTBggMx1BmU=;
+	b=BwHy462cLhdWnNIpM2WtFrFFVoZt2wy8eNRxQiO0wt6YftIuPuk0N5E6WmxHLNMU5TahQW
+	adgJSafK7jwpcVfn8FyIQK7HXjCL35lsb2I6CFkRP3VgfIvudBSxpQyUjil9x4rfOiNurF
+	U+x6JRxTFrk2Dgi/YrIo95qdM6Dxd0Y=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F5wScyc6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf24.hostedemail.com;
+	none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788188820;
-	b=GWv/ae/bw4Mu8b1A9hjSEHHRg6T9SIMD64G22Vt5euXHgzCLJSR7/K2M5lvMhODdKfQ+pz
-	zDmjmQmQpvomKKcnEvJTWF3tDIkyb7HnuNko+YbhNXRav+pe5TlOfSjWRiPf6m82zHv50C
-	hq+HVj8XhFmZc7ifg+KGK8pHDQHi5SI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A914E601DE;
-	Mon, 31 Aug 2026 15:06:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 119F51F00A3F;
-	Mon, 31 Aug 2026 15:06:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788188819;
-	bh=o7lIq+lsQYzbYzf+cqUQ249deMwzfBwDjcIr5FOU1kQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=F5wScyc6VUkcQzeNeObcmSoumA5UwCUlKoqWQIJjXLhYY/NhNn0CVz16iLB6Wof5X
-	 OVbAR8k2fpqNpOlw8oKOWNbtpgLrFd76oQ4H0cv34bKVOU8Twv0chFMJsgWvfk/PLP
-	 +Y8dF45RzxRUn3tlrqfTrFCLv9XnBsnjWxG6nf4WcmqBLEJtMgQS+5pE53CGvhVPSf
-	 fsnGoVnyVVwT/n1NZD9f6PU+O4e0k5p+6U16ExhiX+lWBunFoXtCTCV+/cBa4spfb+
-	 s8TVCYgOvdvblvVqxU62Sin/thY7oQUGByap+TxLzaHqDjUEYwf5HkFZz+zFqqIWDz
-	 0OFFIq2lQutSw==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jason Angelov <jasonangelov@ucla.edu>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
-	SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v2 2/2] mm/damon/core-kunit: test damon_valid_probe_params()
-Date: Mon, 31 Aug 2026 08:06:49 -0700
-Message-ID: <20260831150650.84829-3-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260831150650.84829-1-sj@kernel.org>
-References: <20260831150650.84829-1-sj@kernel.org>
+	t=1788189158;
+	b=U+OAavkNcqviu6STmuQlADycFeKFJrN1wWqPeUVYslXmznnSGNk3n+irY8tXrlYCpWPu+g
+	rr/HKkVX55ZObCPijc235OhIRkTeMKoCTjzGl4xXm3z2GMhhEFrDlVr4DnK58DDUFGkqlg
+	fHfTztaWwEXPEy/gdUJQgfbSIG/ZvIQ=
+Received: from omf08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 72460A3176;
+	Mon, 31 Aug 2026 15:12:33 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf08.hostedemail.com (Postfix) with ESMTPA id 17D2620029;
+	Mon, 31 Aug 2026 15:12:24 +0000 (UTC)
+Date: Mon, 31 Aug 2026 11:13:20 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>, David Stevens
+ <stevensd@google.com>, Catalin Marinas <catalin.marinas@arm.com>, Will
+ Deacon <will@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, "H . Peter Anvin"
+ <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, Dave Chinner
+ <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>, Roman Gushchin
+ <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, Juri Lelli
+ <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall
+ <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin Schneider
+ <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, Uladzislau
+ Rezki <urezki@gmail.com>, David Hildenbrand <david@kernel.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kees Cook
+ <kees@kernel.org>, Clark Williams <clrkwllms@kernel.org>,
+ suleiman@google.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ linux-rt-devel@lists.linux.dev
+Subject: Re: [RFC 06/10] Reclaim memory from blocked kernel stacks
+Message-ID: <20260831111320.7b6b3946@gandalf.local.home>
+In-Reply-To: <20260831065509.qqEtERDB@linutronix.de>
+References: <20260827232948.2520558-1-stevensd@google.com>
+	<20260827232948.2520558-7-stevensd@google.com>
+	<20260828133620._x2XfJR_@linutronix.de>
+	<20260828135947.GU776954@noisy.programming.kicks-ass.net>
+	<20260828151018.HnR9xV1N@linutronix.de>
+	<20260828150836.2d5b378c@gandalf.local.home>
+	<20260828151313.5c4a5e4b@gandalf.local.home>
+	<20260828151747.20035d50@gandalf.local.home>
+	<20260831065509.qqEtERDB@linutronix.de>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: nc341mczaxswpe8boo3sgormh14ainpc
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 157E61C0002
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1/3KtEVjKaohpMEOxH4xzYg00zpuzVZqIw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=IKf/qv+ZKDMiRuq6ap8IBmRH94f4tOFqUTBggMx1BmU=; b=cImwxCY5M6/MZq1vXrGpwXyJIW4H4hu5sS1KO7PpnpoXteZNbNQ+GhZzlHqKlL3ZkFB0HN34EWkqTzLeQyS8IcFKie7OGgIlnJDjKa6hVhBcyvMHmYDM/yhwmGkc1A/6BHmeSAl3QTXL0In4xCov5c0vPfeze8DOuvivudM+e4o=
+X-HE-Meta: U2FsdGVkX18dzhGCsgKCVwcrIISXc5+c8eAfc+lay5xArphhXwOHYX/nvWZLcCNFYp/sd112suTMB0NzpOGtFdRY72fbzgE39wDPlKiV4JS9YOYXjTah/tBYpd2756XDxPPscNMuqeK262zY2EEZNuLwXIXN/boqjUHRkq/XHc8VDiMguYSMX3Fw9u9/Ec2SavB2O6BTLoVKPnTjGCPjSORO1SLgGh0MREZxm6i8RaGqjgOEjD6WMtZo4umY6LccK88OvdVUTL+WTfjTOF+AZaafG8EqAzLRlgRtocOn6VnjyRlU2JmSCo78sE9rgM2F
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788188819-770015
-X-HE-Meta: U2FsdGVkX1+GNB1frzVRsimvxoXsnvlKbiTVXr5YbB4L9eEtch+zTs3uajhKm/gbQ54ucMUjm6ikFIhPa2bYS9Lg0ugIeSPiLh4Pm71hneNYpdpEiHUEVfiBbSlU5cmIoKfDqTB5HyvBTCDrI62lYz6BP+15bnnJmqFb8cDh8T8kkjeV2JY6QJy9fwEEqhkVDyqD+OJ8E06gIj43JITe2j2iBQ3enrvlr1uKywmJ8G8pqAZLCyMMp0tcoXUx6hGgPeFSjRZ3ZznhKkFvbKGsmhkUynnv5vZv0sqLT3XZmDmaQ6X1w09o6icmMp+8Kyh5GT58MZ+jciatxu1UpNc2amAl3MPmqdZoohSWc9KWSYNDhcj82M730Yax4XR+fPgPtCK8O8GJvHyLdO/a8HazDv8x+KhSWNikrHFfy9S0lhyggBAZSSlKlmRUAf0p9O89qCNH3yCSRkFQ5hTDkNldNGz005TZihLgG0nryJ8MH0xiNDKlCjRBzPMkQES3uOS8FzjUbPkKw+dQenj0xVxYhlkQkDxX6A18LZd/NMhPc4SHAKI/ggR/Ft9ZhrvJjzCnhe/DmGQXwO56++rGe4taEhanclkXC5KJ4LdZ4og2CelFCdwKTRLPfz7ugCOh8BtS9I05XdlPQ13jb79CetdmvTtVCEhZqC/GzvjlUhDn3qpjalSGEf3v/cmnYGAtZYF5rR5j1hh/MSrV5sOLXDvt6b2Ef0jzARLoXYX7D241pMAnE8WCu6QF0evQQrj5XqZyyp20j8+b6CmhkGL/KvZx0+qZ2vQ2xvUKkIUosZiMHgkvN9Q/xBOKYnH0nqfcJ+OHQ+JrImRy9zui59sSqvrV5gway5HcC9857CIjVe9Kv2mY1E3QFXOakUShTkp0OIpYNYmz/wJiAZgLCgZeHENQdmq7Jj5Z0ujIvnL4Iv3zEJypuY/dvToeI4GaIl1slNDVuuHmYo8aoZD44tr/cSK
- HD2rep/S
- TDT4pREUXaaz2DEF+jDlf3xCOSvuYjRnUaBhyNQQv8FTJNRh0yYZQrAOWkURYbNbu7lz674YjKqgq8wzO0dQkZRDZ88XJGinkL78D528G8ABr4397SZw5fmqrTr7xEYJsJS0VrmK+yKCMF69He7RPqr9derVx0FqUOdc+xGz8D2/xhNLKu2MDPM66JPJpkgqxiIMkoWeVXKo8hWaNmD7HSLkkCRZonTPvlCxPcpU3Rtx4PE799bswqgpykQLKQdJdm0U4RxC33Ux2rgZd7pGc5rn5Xb81wdtpC78qjCN/rCFLXsUsfcT+7Par0t/ZKhgpLV6o
+X-Stat-Signature: zde79gjnjoi51h98gp5cfbbykcarusf8
+X-Rspamd-Queue-Id: 59E76180005
+X-HE-Tag-Orig: 1788189144-66867
+X-HE-Tag: 1788189158-19827
+X-HE-Meta: U2FsdGVkX18SEnmGGEYzVDv0zl7HwKxEO6KdhLhiF0vVcySsBS13s2uQGJS+69AgQx1J3xgg0YmvbnwR+TglqCsYMEhauGNpS9xG9Ggm2/sjs6ld8nzHiGF+rv7TkzbRe1RFDzIy4wtS62y6l5hvCi8GKBpbsY8mwqKwoXw6bY2shQdlHFT6SP7G4zhY0NGVHK6fZmnNSIQcusuQWWZJZ9k9w6Q3WNbCUHfdZu/Ph9iX4so5Y1ldH0wWs0h2gjRIAp9LXlBeSTREUfppDAj7PK7befHQ5+xGsD74CEwo411NkcNf5FGtgSvpANWzls/syucvYH8lQuMao0Hl1UChVrOcGG4J9xj7hVG4ARXUzsjuCn8ccMArGFS/lScioNc3l0XZRvdl+yFY/UZQ+60h8fLe9pyodkZrXvpUEM71bTVs5PbkeTPmUY3jhb3EbtvpA9/Hrtym2Tb19NSSGP7yNyL5a41PawT4Xa31+bAh6Seji3+glFH0hSyt0f6R66GTOjCe06BCxjqt05gpase5ImkMP6mrRNFuwhEHMCeH9kb6TyltH2RfAQ1yMxMlutyOcRwbCoaWGCpOJwKawmj0dJ+2gy6sKW6Z0/iGpOAtu5Pk+jg4CsP5Bt+hJ8EmGMTep4vZnujvw5fP0iOGAW4Q30vscGiYMkL5Yu03QL8+SVfeu495/+I/S3N1HXqWY80FMj4sqkvSPvR1sUUL4KvKao1Q2Uk7iQ8+An0sktNUgeDRHi4uM62VpDP8jf4Ymqv6gGJ6bQ5GbiqvcqAngbxS+6fooeOYeGQI894sbourhHTj/w28gx4dG5Xc2AvKK3cjGkI8KBxHxf7I3WJyKrRC/acX9158Ost5ItfD2rIp+Ig5IVHCJKf3aWp5GyrWRJUnj4FcndXyzSogFRjvoMYCOmcbBejiS8i6GmYeB96mbjQi4RJenaPZl6T6y/emw6q2pcbdcLc4MpMHBm7dCvB
+ Vie680Kq
+ ic86JXlLC/FeWHzTjLa/XpSWwgOxVyDE+iYO0O6ES00yrx+KOqR6TY/LqcA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,103 +109,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Jason Angelov <jasonangelov@ucla.edu>
+On Mon, 31 Aug 2026 08:55:09 +0200
+Sebastian Andrzej Siewior <bigeasy@linutronix.de> wrote:
 
-damon_valid_probe_params() makes damon_commit_ctx() reject probe
-configurations that could overflow a probe_hits counter, a single
-(weight * probe_hits) product, or the sum of those products.
+> Does this stack tracer distinguish between the kernel-stack and
+> IRQ-stack?
 
-Add a kunit test covering each rejection at its boundary:
+It should only look at kernel-stack and not the irq stack. This stack trace
+may have triggered when the interrupt put back the kernel stack, as it is
+in the irqentry_exit code and about to do a schedule. The code has:
 
-- samples per aggregation interval: U8_MAX is allowed, one more could
-  overflow a probe_hits counter
-- single weight: the largest whose product fits in unsigned int is
-  allowed, one larger is rejected
-- multiple probes: each product fits, but their sum overflows
-- no weight set: the validation is skipped
+kernel/trace/trace_stack.c:
 
-Signed-off-by: Jason Angelov <jasonangelov@ucla.edu>
-Reviewed-by: SJ Park <sj@kernel.org>
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/tests/core-kunit.h | 57 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 57 insertions(+)
+	/* we do not handle interrupt stacks yet */
+	if (!object_is_on_stack(stack))
+		return;
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 68591ca99a4f7..af26b3d60957b 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -1341,6 +1341,62 @@ static void damon_test_commit_ctx(struct kunit *test)
- 	damon_destroy_ctx(dst);
- }
- 
-+static void damon_test_valid_probe_params(struct kunit *test)
-+{
-+	struct damon_ctx *ctx;
-+	struct damon_probe *probe, *probe2;
-+
-+	ctx = damon_new_ctx();
-+	if (!ctx)
-+		kunit_skip(test, "ctx alloc fail");
-+	probe = damon_new_probe();
-+	if (!probe) {
-+		damon_destroy_ctx(ctx);
-+		kunit_skip(test, "probe alloc fail");
-+	}
-+	damon_add_probe(ctx, probe);
-+
-+	/* Parameters are validated only if any probe weight is set. */
-+	ctx->attrs.sample_interval = 1;
-+	ctx->attrs.aggr_interval = 1000000;
-+	KUNIT_EXPECT_TRUE(test, damon_valid_probe_params(ctx));
-+
-+	/* Up to U8_MAX samples per aggregation interval are allowed. */
-+	probe->weight = 100;
-+	ctx->attrs.aggr_interval = 255;
-+	KUNIT_EXPECT_TRUE(test, damon_valid_probe_params(ctx));
-+
-+	/* More samples could overflow the probe_hits counters. */
-+	ctx->attrs.aggr_interval = 256;
-+	KUNIT_EXPECT_FALSE(test, damon_valid_probe_params(ctx));
-+
-+	/* The largest weight whose weighted hit count fits in unsigned int. */
-+	ctx->attrs.aggr_interval = 255;
-+	probe->weight = UINT_MAX / 255;
-+	KUNIT_EXPECT_TRUE(test, damon_valid_probe_params(ctx));
-+
-+	/* Any larger weight could overflow its weighted hit count. */
-+	probe->weight = UINT_MAX / 255 + 1;
-+	KUNIT_EXPECT_FALSE(test, damon_valid_probe_params(ctx));
-+
-+	/* With one sample per aggregation, even the largest weight fits. */
-+	ctx->attrs.aggr_interval = 1;
-+	probe->weight = UINT_MAX;
-+	KUNIT_EXPECT_TRUE(test, damon_valid_probe_params(ctx));
-+
-+	/* The sum of all probes' weighted hit counts could also overflow. */
-+	probe2 = damon_new_probe();
-+	if (!probe2) {
-+		damon_destroy_ctx(ctx);
-+		kunit_skip(test, "probe2 alloc fail");
-+	}
-+	probe2->weight = 1;
-+	damon_add_probe(ctx, probe2);
-+	KUNIT_EXPECT_FALSE(test, damon_valid_probe_params(ctx));
-+
-+	damon_destroy_ctx(ctx);
-+}
-+
- static void damos_test_filter_out(struct kunit *test)
- {
- 	struct damon_target *t;
-@@ -1667,6 +1723,7 @@ static struct kunit_case damon_test_cases[] = {
- 	KUNIT_CASE(damos_test_commit_migrate_hot),
- 	KUNIT_CASE(damon_test_commit_target_regions),
- 	KUNIT_CASE(damon_test_commit_ctx),
-+	KUNIT_CASE(damon_test_valid_probe_params),
- 	KUNIT_CASE(damos_test_filter_out),
- 	KUNIT_CASE(damon_test_feed_loop_next_input),
- 	KUNIT_CASE(damon_test_set_filters_default_reject),
--- 
-2.47.3
+Which returns if the object is on the kernel-stack, and here "stack" is the
+parameter passed into this function.
+
+> I would expect asm_sysvec_apic_timer_interrupt() on the
+> IRQ-stack and not adding weight to the kernel stack.
+
+Right. But I believe this is where it switched back to the kernel-stack.
+
+> Given how close this is to 8192, I don't think two stack pages will
+> happen soon.
+
+Agreed :-(
+
+-- Steve
 
