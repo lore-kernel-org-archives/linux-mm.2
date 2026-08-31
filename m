@@ -4,129 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF659C61DD3
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 16:24:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5068CC624A4
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 16:29:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAD596B0088; Mon, 31 Aug 2026 12:24:53 -0400 (EDT)
+	id 2CE546B008A; Mon, 31 Aug 2026 12:29:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5DDD6B008A; Mon, 31 Aug 2026 12:24:53 -0400 (EDT)
+	id 280056B008C; Mon, 31 Aug 2026 12:29:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4C586B0096; Mon, 31 Aug 2026 12:24:53 -0400 (EDT)
+	id 195606B0096; Mon, 31 Aug 2026 12:29:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AB7C36B0088
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 12:24:53 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 468E8A2324
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 16:24:53 +0000 (UTC)
-X-FDA: 85162088466.17.D409BA1
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 6642A4000C
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 16:24:51 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lTx1M50y;
-	spf=pass (imf27.hostedemail.com: domain of ngocthang2710.1999@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=ngocthang2710.1999@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788193491;
-	b=ouTV/egOewxeYXajsP6ZpUxQQQ0Bf6euDUNrzHTHivHelVz48eRf5uY+B6wC5UUZ69yJmW
-	fLWy7j8/MVIvSZxX3yRcWVFXUg7uDE2AZ5Z5OCRM68ICUq/HMWNhIuhU7o8ivpxFF9qIGX
-	UDlvvgSjMSuWQ8v6eOTUI/Tp4nXF4tg=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EE2DD6B008A
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 12:29:50 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 829271C0A90
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 16:29:50 +0000 (UTC)
+X-FDA: 85162100940.16.0743F0B
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 40E51120008
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 16:29:48 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="A7Jmg/aF";
+	spf=pass (imf29.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788193491;
+	s=arc-20220608; t=1788193788;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4wASPUEGd3KOv6Fdubi246q8cZj4P8D3ytyUATn9DWg=;
-	b=DQbiVq2Pwsl2AStyROsM2e4Q353Mct06y0qPnhH+gMQW/kFNyKRw2yLli7+kndqB0fypa2
-	Zomnp4lIkabdz7V4Yoc+z9LqPb5/fq/KSQ692M3Jz+sHnPM9qQCX38W/SSQD6wLj60Qie7
-	/S4KPRTH3e4TnZFMEPvGR+fs3WX0w8g=
+	bh=CevEshRFCKtTBEABxBe8cgJ4pajQ0UGCKo9BrqWXex8=;
+	b=XDCAK2UNHXE1/Ds6eKYx/YAk/dpmzspvvba8VSRc7ZOIN2l857dgSb2KDlWY/8dG6tw4ex
+	vDMPP/+PLqdIZt9GrPUoIRQU+b0SjOHFOKRQ+tWajQX1d5+ZEJr4Z4xRE71DmvLT70ivkn
+	hd8HeLW8eRBY9VCBM2CUwH59OGoz8oI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788193788;
+	b=ewvTVqxHEUL8HtRM1lj2yjQSM5h4q7yDdVBKS573WwXcaYyxcM1a8uGexaBSNZRm5XXCUq
+	/sQkuLGbeVup+fffvuTDTU4Cz0c+G8jJmy6i1wk/DQCQVBM/WIK39lbiCX1J0x+AIOp7eh
+	ijillWXOdjwbkYulsLs+odZdfBoiM9Y=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lTx1M50y;
-	spf=pass (imf27.hostedemail.com: domain of ngocthang2710.1999@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=ngocthang2710.1999@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3964e76d0f4so3928089a91.3
-        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:24:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788193490; x=1788798290; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=4wASPUEGd3KOv6Fdubi246q8cZj4P8D3ytyUATn9DWg=;
-        b=lTx1M50yL/3XMBm4BU50gJL7lZqBx7a432KzxF+9W4Yk07boVx4iG1DtYEkmRaWx0I
-         Z3k7zrS3F8tNfAHNzmj0sCZIbXLfx4LmGWKarEr4x3rn7ktOBa2bTu2uoBW0sY/SwdEl
-         FqAFVZiaeuDbXvztVnkGQ/dWiq1x/yAwOXR9bKDJqYzBGad/S9CJS0yejl+x3iTe4vGs
-         sK2m+UFlBlYc5aSkSYsWlWLs+GVvziZzUslklhAN9kWs+XVBI84eCq3GvPVEHWB/774X
-         cCTGlNm3PFAsUvYUlYDBd51IJs+ir/2zP4WnqHlElOrQvMcGE5oDCYtDcozQP0tul7Cw
-         KpJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788193490; x=1788798290;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4wASPUEGd3KOv6Fdubi246q8cZj4P8D3ytyUATn9DWg=;
-        b=iENOJyQOL1l5iQsR/loF2ZY6qftVTljaqS3xvuy292mduMHuWfWhQfx8zQvuN0Qa8i
-         wWm6twX02WdLNHo5WoFyPuWoZzZpN936nnpSng/ao8eQ/r6pBUqYDeMe8Fn+M5HuF2Zf
-         BIs23oILlRY/dFEmShq4whyAbYUOPLNxCvUbBpyzXQJW1mBGMVSF+Dpz1XgryJaB3bm2
-         N3lK4NF/HVbiLpkQuuJ+h194rrMibjQBM+Svm8ubD0CtT5A4atm3Xloj+efC63yFDzeX
-         YaDfKZZs5ffc2t/QtvdQa1+5M1UOpqYhr0oXm7WbEIGnxajugyP9HmzK3zTWMrCb+ru1
-         z5ig==
-X-Forwarded-Encrypted: i=1; AKwUvBzfjlAJpV+QpwBJYpgTZ/t7BNGxrCaOKCI+biHGGaQZly6nxxoo56SlNvSm5p/nja0kNG30iRZGPw==@kvack.org
-X-Gm-Message-State: AFuF++knDLvkQkQ4uOpPBSqmtY0cM2v3TQjHyurQ/RSQzNa6lUksVbfR
-	9IKXuYdxIbd3wh+qz+hx/BCXCjZTJxDmtrSNvD315y4mvfI22Y77B/DU
-X-Gm-Gg: AYBFou0bgZFY3ohVE8aZN21WhDrbrH2HavTHIvk1jYRC+mv0xiZzQrIyCY03gxS1xUP
-	rc8p+kYsC9H2pF5BV6df3lM9zXJBdSWUQ2ZCAFH0aDLjgtACcadG9zoI32E2BykTzRJeyyYLLoK
-	kUVciuZDx2p2iA0Jn4NTZpV6PK9OSb812A1M+y2azzB+XBuy9MPnFAubg1HKeJluXATwQxxLy8W
-	+b+rxpp51bLwKqx7LZVHf4aVNLyRxkbwxwvrS7jrcXcK5nl9HemwmIOyZ/VkqPhkW2tawXEobwH
-	jT+chWWxksbeDrezjRJENU9rmmrZhrmwPeme4E5Zeg4MjOSWtKD4hTNb4lZqliMxTcJov/F0cXM
-	YifKSGDsD/ZjW6UrGC2dAZNTduwiRuJqKED54BrOwnMYF8Bo9yqj7mOcEwSlcHmUV/246YQA99B
-	rZJGOi1AKbE9bQWLoYg6hFVQXfRMD9v3rcW375U2ACrEwoGacBOjGWw94QvtL9bB8IDAAsBk9Mn
-	EAK6kfh
-X-Received: by 2002:a17:90a:e185:b0:37f:eafd:3505 with SMTP id 98e67ed59e1d1-396d0ecbdb9mr45635347a91.6.1788193490095;
-        Mon, 31 Aug 2026 09:24:50 -0700 (PDT)
-Received: from thangnn-ASUS.. ([2405:4802:21dc:72d0:a033:17f7:ad44:4f35])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3990c40d0c9sm311768a91.7.2026.08.31.09.24.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 09:24:49 -0700 (PDT)
-From: ThangNN99 <ngocthang2710.1999@gmail.com>
-To: Vlastimil Babka <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev,
-	ThangNN99 <ngocthang2710.1999@gmail.com>
-Subject: Re: [PATCH] mm/slab: disallow kfree_rcu_sheaf() on PREEMPT_RT again
-Date: Mon, 31 Aug 2026 23:24:42 +0700
-Message-ID: <20260831162442.8176-1-ngocthang2710.1999@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260831-b4-kfree_rcu_hotfix-v1-1-4f0fb882638b@kernel.org>
-References: <20260831-b4-kfree_rcu_hotfix-v1-1-4f0fb882638b@kernel.org>
+	imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="A7Jmg/aF";
+	spf=pass (imf29.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=CevEshRFCKtTBEABxBe8cgJ4pajQ0UGCKo9BrqWXex8=; b=A7Jmg/aFORJ4YSGm+Pn4W4PRp5
+	RsiRxqaErsr+1192mTFuToB8mK6pq2SzbjKaYJA1VFvdimdXZrGCMvGlupf8IRRENBOZJFRgdzPRp
+	VXP1I2TkmoRvZeYB7ajpsPQU3KibvLLZM3qDzmJtbqbEvenxUbplrmj9xdUnzCfg/G1hx6Fgvu+P4
+	GIFWt2MLb4RmtpMv7VtGAgrJ1GS2siZdVOKAxXvvYYSTHLFCcFFzM3e0R9xbrWBREYhZ7Ma1sCltT
+	vjcT194yk40+TZRrJLabxPJvGqe9r2RF41pvA8B3kAsxIt2S+bzOq9SnKaU85AoW61n4lAGuur+0P
+	cSPlkZ1g==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x14tG-0000000A2xn-0G0G;
+	Mon, 31 Aug 2026 16:29:46 +0000
+Date: Mon, 31 Aug 2026 12:29:39 -0400
+From: "Liam R. Howlett" <liam@infradead.org>
+To: Andi Kleen <ak@kernel.org>
+Cc: akpm@linux-foundation.org, ljs@kernel.org, jannh@google.com, 
+	pfalcato@suse.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] RCU safety for vma maple tree walks
+Message-ID: <nq4g527ozizmp2iqmozau7xwgdq4cny43onciw2mw7vu4bwabg@uzkdpjchygkn>
+References: <20260831143511.1133029-1-ak@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260831143511.1133029-1-ak@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 6642A4000C
-X-Stat-Signature: s6dbuuimbunnojmmtq5aqgfuk5nw8xnx
-X-HE-Tag: 1788193491-389846
-X-HE-Meta: U2FsdGVkX1+VGcEmVinkwpPDDMRymofM6jWiLYMTHBFQuuIJPbJK14Hdc6BMt4NUvFd6n1bLxvgeqhU0omRI7455rkNp0zWq4ZjZ9+H9v85yKq69l2rt8mg4/HgWcFqeqQh4iPsripE0KCby2vPr+TtxTpWQFiyUpEvBLytzSo5otiybGWUXc5iN6U6Rv3ARFZFKlKZEnRC/DMBKuy/9itn34G0YbMyxy1Bf4Blgayv1O1B0QuUUhgWo0vizPriELkYomhjCP5dJaTymnAj+mBqk7vo39jANb7wQOXkbFYg5Fi/kU9/L6syJ+QIf/sQ3JKJbm4felw2/yUuIaM0yON5lASKvUbC0E/QfSgM0cRrCTs5jQDWJkiQCsacC8YhlQf7YkPWpXSAPGMrpYdalTzyCLW1D5TzwbphNr6ZblefI6cS7SWoCR8RGuBaYOb2TqtUX91nDxgqMgDyB2kprAOluuFFeGuPNvy0zxWiRhNh+Bq2LipYCh8JFFWFeLkbvMyEtwmvC2BzeqP2dFxMZAQGMOQ9gURGgZSgojlwIcnREhfPbak/umLhSxYm6h4MTAZjfV1NL2fBCyt+mvFVZQqv/uwbo/S/XA9eKULUWQYHM/zH603FiuKkb5evCuvaZbXeLErePX1J/m3CxYcR58TslHhcZU4aDJaYMfNP1qMoa2LM3IZOOY2jBA47bU0uEARxG3HcanTy0foD08Bthliz7rvvtLiJHtuGzT7QlPpv40oipihziFurwEeWzgPnitxIgbg8amM3BSWW9ipYqO3TU981qx/hIZSl/IRjXtz3bZ6tm+2T7nZzlnMnmnSkP7xT0fnAlKi44IHcSL7qaN4DXqYqbPakHME/NyY9AVN36YbiAIVg3ZQ7fiCR0Z6EtiNxmHE503PB8JXRd6m6t8yDAmemXH/bsmWPkEDyJaVFYiGw6x1k/nLTVGEKZGtjT1CMCWcDcEPx38KZHeh8
- 2wA4iqiU
- y9p12BqB6ckglXUmJDYimN842zUI79tcXMj5GMbrQyXTlHwookjRye0CTh5kdLtE8hvbqKWVN1KQjCCEyz7DmyNvcFRd3md87/aWrwSoZTATeLcG03sCGFFI7X4+GRNDvz20J79zIE0Jcd55RKNvMo3wCSo6DFUJGtk64i2UFmxgpDq4bqTUnXFvPk9Li2+YzEdbiDRzuemOa9QExN9R+hk2Btea7LohbChJ3PKsRCAqOb3I3Qd6GxnMifYyos0pi7mAap7/+siCOga8QQ7j7gOo090Uf/uSvALO0DIgN/mi2xXV/2O2E/ZW9YD3Km4uf/JCtUFvCoj+GXDMVK91rBU971XDaC70WDABW1W+3gSFmvgBmd9e88wk3buopwR/CCYKYVY98yrMJR5ms+10rMxFvR8FDGvan9xNFcropbFSmdS9pVLSEcW8Gk0WJLnLih4qR74owkJx9nmHKeBFnmodBC7arl5x02Q7m0CyBW+xe2Q7T8c+T2LfAhZZMB9znKGZ9TNDNnBBEZXKfyf5I+dnJRCVKA+Bm6tDqRtF4N9pEKl0i14+46RqYfJQ6e+hfmFJcWYgQN+KVPEA=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 40E51120008
+X-Stat-Signature: 61ndpztkd6yu49gguqp3z45ia4esfba3
+X-HE-Tag: 1788193788-803044
+X-HE-Meta: U2FsdGVkX1/AgVy4rStok8m76nXhDx2X0H7LcLJ896UF7AuLHNSGTKE7P0AJVlj2XtRnpC18bCJAeCZ5qncNQYbehYMOMVQuppxgeUnAD+NQGLYYA3WfXBVrGcqk4lowlBP47T39ISSJQ+c1njf9M/GFEhNGp4e9tC5o3IXDSe59yugwJgvAQGCu5lFZcBaE1fEPKFBSx+aG7+1KfOBKrN0Al+Ftsvzw9c12LDXz5eNyLZTR1ycBRTHxIEg4fHgLbD+QZlwsCgwYwiA71BApEa4ZXs2eazrSOJX8ZLD9K2qctbI56kLd5CGuZkw/8PXkyzbbJMhLbufBs5jEUxeD98N8vuPfkH+md46O/lF60woeV590ngzfekEeFl2tKzjBAR0dUNHhvgHxh5i1ljwPMd6rezMyj7Vb2ExTNEdqu1JIwc5kDqHl85mFg55E2iGNQA0OvMaiC/z8PFK36Iz0fqIB+ZiUzERyMrMXPBQSeqQzRYY1bN2zhHIpPH6mbR/nMsaGXaurvo/vPdwvmS7ItUra8X9cK4wDxHbObhdbD/ldlb79MHsn5gCasLYESifYPRMg5FS6lg/uwfZN6wLJhxWuIAXej1VDiud7a/0qv2uejOlXpnuS5EdlJAGW5SaI4iKZcu1ICRDd9EBJ9ufZRb9Ejg76Bvqdq+0PC4IIYea2ozxuX2UACBvoWh4g0g/NQljbE+RwdWeNkbYxn2+RnOokRxPmffTAzkikVp1lsMEuCt5nEopwEdy9Q1YaUpcOfF1YWRB9UxhqIHAi52d2kNRFbjdusMuJ7qyl12V/ZkFsEgt/ZI9X89SqXK5+cllwgmZ0e3GEtzJUZZRvyQm3biguvfjMUihKcqf1Oo1cSllkIEYy3WrIfaIQ5SFoIjvBe7K7KCLFdpo52iRySR8Jawi2kGbvD5D3aTqLlAP2NPOq7DHMgXgkECe3AVh9Ov/LtOnzw93TcC0u7LlciQt
+ rqD8btXb
+ TXNdzRyxRTZZeZoZFS/3IwfP8G8ZTA3vDFfrMyDXlqBACn7giOdEk4RUeMF1qsi5lJNVjv2TgMZ7YexNJ/YBb/qXMR4lBD2OnS/jY1xodsHbBoqpc6Ur+GUPVaikJBFjsv1nSED5s1Dhojck4KQhxSSCUPo/UONOo+MgfKXejp2A9Mti5dgqA8o9FrqIam0IWJEJpe22aN2aozevw9NHVkplflDN2YB34s4ASBsQ79fm6BvPnZtbyMpx70kTXDjKsNtJVjnOX8Wnn/4EkFUUNytlf2MfcW5RE74zOGs6AeCzvsU6eqopyK0cRkezjDo0/IP0DXxCM1ztuZVc3JioJ4xNO1vPS2I51JOhcJOkNVbDGTCk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,25 +89,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks Vlastimil, this matches what I found and is functionally the
-same fix I had in my v3. I built this exact logic (skip
-kfree_rcu_sheaf() under CONFIG_PREEMPT_RT in kvfree_call_rcu(), same
-dead-code removal in kfree_rcu_sheaf()) against commit 08dbfad3f504
-with the syzbot .config and reproduced the original splat with
-syzbot's C repro (writing "off" to
-/sys/devices/system/cpu/smt/control to trigger the
-__balance_push_cpu_stop -> select_fallback_rq ->
-cpuset_cpus_allowed_fallback -> set_cpus_allowed_force ->
-kvfree_call_rcu chain) — confirmed the exact same lockdep report as
-syzbot, then rebuilt with the fix and confirmed the splat no longer
-appears while the same code path still executes.
+On 26/08/31 07:35AM, Andi Kleen wrote:
+> I ran into the following scenario in a slightly modified kernel:
 
-Feel free to add:
+...
 
-Tested-by: ThangNN99 <ngocthang2710.1999@gmail.com>
+> 
+> That said I wasn't actually able to trigger it in a unmodified kernel
+> so far with stress testing.
+> 
+> The following old unsolved syzkaller report has a similar signature,
+> so maybe it was already seen:
+> https://syzkaller.appspot.com/bug?id=4c5268fbb1d6d508a4c34dc425e2693d1ff9911a
 
-Thanks for picking this up and for the pi_lock/waitlock explanation,
-that's a much more precise description than what I had.
+Did you look at that syzbot?  He has 1 reply on-list pointing to the
+discussion and remedy of the issue - which was debug validation code
+running outside the rcu lock.
 
-ThangNN99
+> 
+> I guess in many cases where it happens for real you don't notice it
+> if you don't have KASAN active.
+> 
+> The patch fixes up all callers to maintain the RCU reader lock
+> regions correctly during the VMA walk. If they cannot be maintained the
+> iterator is refreshed by a new VMA address lookup in a new region, unless
+> it is proven safe not to.
+> 
+> In the cases where there is no sleeping it is strictly not needed
+> because this scenario could not happen due the existing VMA locking.
+> 
+> But I fixed them too to not violate the maple tree iterator
+> "rcu read lock or write lock" contract.
+> 
+
+Did you check this with lockdep?
+
+Any access to the maple tree without holding the write lock or the rcu
+read lock will cause lockdep to complain.
+
+Likewise, any sleeping while holding the rcu read lock would produce
+warnings.
+
+Note that you do not need to hold the rcu read lock on the vma maple
+tree if you have the write lock.  This looks to be the case for most (or
+all?) of the cases you have below.
+
+I suspect you have a locking issue in your modifications.
+
+
+> The ones that do not strictly need it are: count_mm_mlocked_page_nr,
+> remap_file_pages, range_contains_unmapped.
+> 
+> The ones that may sleep and clearly need it are: apply_vma_lock_flags,
+> do_mprotect_pkey, remap_move, mseal_apply, mbind_range, userfaultfd
+> register/unregister,
+> mwriteprotect_range (doesn't sleep in the walk itself, but uses iterator
+> after sleep)
+> 
+> In principle it could be optimized more, e.g. for example only do the
+> re-lookups when actual sleeping happened. Some of it could be done
+> with a new cond resched variant. But I tried to keep it minimal
+> for now.
+> 
+> The patch survived most of LTP, the kernel mm selftests and
+> my own stress tests. I didn't do any benchmarks.
+> 
+> For when it was introduced it's a complex area, but I believe the patch
+> that originally added the problem was
+> commit b2b3b886738f ("mm: don't use __vma_adjust() in __split_vma()")
+> Then
+> commit 17f1ae9b40c6 ("mm/vma: change munmap to use vma_munmap_struct() for
+> accounting and surrounding vmas")
+> extended the pattern to more places, and then later it was copied
+> elsewhere too. I'm mentioning only the first below.
+> 
+> No cc stable so far, needs some discussion first.
+
+Please send patches as RFC if they need discussion.
+
+> 
+> Fixes: b2b3b886738f ("mm: don't use __vma_adjust() in __split_vma()")
+> Assisted-by: omp:gpt-5.6-luna
+> Signed-off-by: Andi Kleen <ak@kernel.org>
+
+It looks like you have asked gtp to fix the locking issue you have
+discovered by editing the exit_mmap() function.  I suspect this
+functions complex locking dance has fooled things up on you.
+
+If any of these issues were a problem, lockdep would be reporting about
+missing locks and people would have hit these in the last 3 years (the
+last syzbot report which is resolved).  Your scenario isn't that unusual
+- most cloud vendors run machines flat out with as much ram used as
+possible.
+
+Thanks,
+Liam
 
