@@ -4,125 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F5ADC624A4
-	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 13:32:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B170C624C6
+	for <linux-mm@archiver.kernel.org>; Mon, 31 Aug 2026 13:35:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91F916B008A; Mon, 31 Aug 2026 09:32:34 -0400 (EDT)
+	id DB9CD6B0088; Mon, 31 Aug 2026 09:35:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F70C6B008C; Mon, 31 Aug 2026 09:32:34 -0400 (EDT)
+	id D6A076B008C; Mon, 31 Aug 2026 09:35:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80D3A6B0092; Mon, 31 Aug 2026 09:32:34 -0400 (EDT)
+	id C7FB76B0092; Mon, 31 Aug 2026 09:35:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 545AB6B008A
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:32:34 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B71B4A1F92
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:32:33 +0000 (UTC)
-X-FDA: 85161654186.14.59A3DCD
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D9C9C40010
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:32:31 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qq2kltg2;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of ngocthang2710.1999@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=ngocthang2710.1999@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id A71776B0088
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 09:35:46 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2B34E80113
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:35:46 +0000 (UTC)
+X-FDA: 85161662292.04.B6BD99C
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 53203140011
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 13:35:42 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=m2SKSnTB;
+	spf=pass (imf26.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788183344;
+	b=u7Jz39/Lxc0883IJO2f9DIcNJirmpOAt0Ssdstzmpi+StRKkkTefZ04z7XQU6YE473er+h
+	/GpO7UMd4cQbncOdjQK5nXpmh5DIjYvVyNPHKx3fmNFCWktqN0i+PsjW5zO+1JITRvitk4
+	xjXQbaJfjVSFjl7cty/jjq2JckfdQxY=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=m2SKSnTB;
+	spf=pass (imf26.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788183151;
+	s=arc-20220608; t=1788183344;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8iyuCMhGUpDra9S+DkJdLTa8SNwQ+om0mNosv5O74qg=;
-	b=aCmklLSNvCt+jlWhefpXrjAeY4ZjBJMdsUlVMPqBmvvrN/7EyxutjIDfWhOrDBGodfM7Jr
-	N2neFF0hNpdKt+usDpK42Cb7f/gphB8ojM1pPux+cuzdPyAZQrDidVWwMqWIZXGYE5/Rzq
-	iUB+8tVxj0CTNJllU0sfH1qBvDM6BZk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788183151;
-	b=7TzCWniBZastINK3xPThcoTeqDsF4/R3M3gckhw+r9iZW6ef7P5yLDH629l4QqurF5boY6
-	87r6EN5RdKPFELXLOtVzLbHcCurvI9Gs1Udwf4UTi6cpe8Fe4D+prNALWxPZhDhLGWa2rg
-	Z6z/pAJXfjwARbnX5sZwxHGUNnD+LFA=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qq2kltg2;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of ngocthang2710.1999@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=ngocthang2710.1999@gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2d71a50caa9so43367885ad.0
-        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 06:32:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788183150; x=1788787950; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8iyuCMhGUpDra9S+DkJdLTa8SNwQ+om0mNosv5O74qg=;
-        b=qq2kltg2Hi7lM+XYnPWiKEyYG7KINqBISj9a83zRdPTZnZk06UmrmC4jGogOiY68U/
-         duJrF9K2+WLpF3WlefHCeMEK4AIR+m4n83WKxGlPuk4wHEDshY6ijY3qs/r+iOGdtsCL
-         aVO3qMTZUG3t1mFq4ENVzeH2PsZkoVka2dQf1VhNHMK5M8OSjBrZ7NJ4f90EDZZcTJOQ
-         vb1IWEDAGFTg+Hob6q6TZ07h/yHo0rY5qXPCX1gTj5hfweQ9VRPck1IvdKWAPM68Hscp
-         WclZh7b0Cx5z3r75BNU8N66k3U0HqaIFhHU0hxMVBMGEKYXx1wYxksBMgOa51wAWhzcZ
-         PV7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788183150; x=1788787950;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8iyuCMhGUpDra9S+DkJdLTa8SNwQ+om0mNosv5O74qg=;
-        b=OgyiCzX4M10O4uiP1rXsI+HF5dvrFuF8p67Lhi5UfgTiW2E4MvElRQEF2LrmsCEch1
-         O88Hb61PR29xERjPgezEh2ZJVIbVycAeoI8M3K4ovJzZ+R7kFBkAO/LYbwZNKpeMfIN0
-         nnakdwCDBHLnb5k6gpWTPElzYj2f1+GtqYvIIBirCt9aIdRxQEgfXcVcJzozIiRAlhbu
-         d3tCQcv/mzPqy8bX2oBabXWG2/0RUA9pB10tQpBoW5ra0YY9QY7hGG9n4ARl2sTwkkkh
-         sBgaY1QTIR6D7PjaY/bau7SRAepoYeUywO8QG00h/Dhi5RdDE106YUnEUtr64CpWjDpx
-         BlMQ==
-X-Forwarded-Encrypted: i=1; AKwUvByEmLkmX933vRE7ElxhiyvwZ9XlWajhe3pkJkbOKZbIMDFbBtCxMvVjXA4GVBVbVkWZ/gOb9oH4Qw==@kvack.org
-X-Gm-Message-State: AFuF++nym1DrpAm7UMapp6WXwwNvqRjwTRqBeQRU/tpTj5H/qEnhiU5o
-	PzzW1QGv/V5GkGIwKPPVqT23+qdWgwjUpW3K3UtkKunzDccoz+oxtHlR
-X-Gm-Gg: AYBFou2iDRFJTI8uutu7E3cKDiiq9w0pvSTlsesFLyoGjCMa/+l+eyHzjRGy7dGYVWR
-	T+nQGxQ0PzAlraW56/H8CpsPYBBgl+TzrQ9kYAgLoPhFII4jE1dSS6HT/2nTj7HE0Eew/8kqnuJ
-	aLBryB6+CmPC74tjr9TtyzjPDTRTrV3yTeWQOjSCbckA1rYIiKKWHchJNIIMQcnSVMX5COEUzhI
-	JFwWFn7qvv2zSarVlxoEpvGA/zIaXxomEZLuVKuduWeh/xWHGfXIIUVxchHJ9pLrMB67a1RC9Hf
-	cyTszi9qkaKSPqU44l28IKymjr2WioJrj0XQrmrkinnM3HF90QL7YcogkhZOypWMq8C35qcQ+F5
-	WbM9neBgiZbHJu8C7WkJV4dtzqjg8NFadrKV0vZ/2z3LSIXK5Ql0G1af7Qk3XwdBhIz2rS8yHbw
-	9QRq+ZJv0OsEViIT/TzXh5KZkndVsJ6dQrhZfNO6VoZwXxsLnuS6iME4CYloT9/UO9NqFuX1ViF
-	FcBd3M=
-X-Received: by 2002:a17:903:2a8b:b0:2d7:1cee:3682 with SMTP id d9443c01a7336-2d74dc21e53mr406131505ad.5.1788183150392;
-        Mon, 31 Aug 2026 06:32:30 -0700 (PDT)
-Received: from thangnn-ASUS.. ([2405:4802:21dc:72d0:50b1:2f22:32bb:703])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d7598b8829sm36684125ad.73.2026.08.31.06.32.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 06:32:29 -0700 (PDT)
-From: ThangNN99 <ngocthang2710.1999@gmail.com>
-To: Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>
-Cc: Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
+	bh=SeR1+mALksfzVZt4agnwdff+4ehIP+rnZ95J6spXEug=;
+	b=NZlBZZW2zyBrPRB83Musef6z3526j/14iKpAaT30/i0Y+MMt6x4tKDeo09jwEHyRJF8YgR
+	uzigutzpjyNHMIPSs/XqTv3vU/YcZfsI4eiVJiqXDD1Md2C+/YE16a95bjNCowSWxsvEwX
+	QduRhCipB3BRiBlpogrvwAW+EyY7Cak=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Se
+	R1+mALksfzVZt4agnwdff+4ehIP+rnZ95J6spXEug=; b=m2SKSnTBFVwCNze2g6
+	hr979eG4m1npQqij6JEbCGskhQSApcqT1y/qW9WJ2rnN7ePjrdL6AvDwADMP9FS7
+	TyXUzEh7QdGfdy/PQW1wT71AUgm22mTrfRKUugjOanCjj5RzuVGdLwCH5P8VdQ2J
+	7M6RBeFwmBNrn4lJ+KtyYRXRM=
+Received: from XLL-9950X.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wBHHmEbg5VqFKS5Sg--.13223S3;
+	Mon, 31 Aug 2026 21:35:26 +0800 (CST)
+From: Longlong Xia <xialonglong2025@163.com>
+To: muchun.song@linux.dev,
+	osalvador@suse.de,
+	akpm@linux-foundation.org
+Cc: david@kernel.org,
+	mike.kravetz@oracle.com,
+	yuzhao@google.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev,
-	ThangNN99 <ngocthang2710.1999@gmail.com>,
-	syzbot+acf142088e0182172e58@syzkaller.appspotmail.com
-Subject: [PATCH v3] mm/slab: don't use kfree_rcu sheaves on PREEMPT_RT in kvfree_call_rcu()
-Date: Mon, 31 Aug 2026 20:32:22 +0700
-Message-ID: <20260831133222.8637-1-ngocthang2710.1999@gmail.com>
+	Longlong Xia <xialonglong@kylinos.cn>
+Subject: [PATCH v2 1/2] mm/hugetlb: preserve source surplus accounting during demotion
+Date: Mon, 31 Aug 2026 21:35:18 +0800
+Message-ID: <20260831133519.2505020-2-xialonglong2025@163.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260831130057.HLukQ-zm@linutronix.de>
-References: <20260831130057.HLukQ-zm@linutronix.de>
+In-Reply-To: <20260831133519.2505020-1-xialonglong2025@163.com>
+References: <20260831133519.2505020-1-xialonglong2025@163.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D9C9C40010
-X-Stat-Signature: fkd8ntuedx816g7oohdfgygff5saegko
+X-CM-TRANSID:_____wBHHmEbg5VqFKS5Sg--.13223S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZFykGr4fWFyDJw4ktryfXrb_yoWrCw17pa
+	yYkwnYkrW8Ar9xGr4Sq34qywn8G340vrWjya4fKr43J3ZxZ34UKr13Xw1UJayv9rWfJF43
+	Xw4DZFyDWF43ZaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j2v38UUUUU=
+X-Originating-IP: [39.144.46.203]
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC3B7n4GqVgx6CpgAA3D
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 53203140011
+X-Stat-Signature: 7kfm3sjnxw1wq73fzpg73con4p3s6os4
 X-Rspam-User: 
-X-HE-Tag: 1788183151-988963
-X-HE-Meta: U2FsdGVkX18Y8CcQO6O0Uch/d8Oc/HWCJ6dKq8eBXnN4D/WdM1JeivbEXw2zDAGkEgpYldcjTNDVtVppS5sb5Gdnpx5kpn0JNRq44F2O4UYBhA/BWdqwyoHhOYBliqan9oCCr5UbWA6uouzkyD61ynJI1GKWm2Rx6S7w79E9uECniERxnru5K5csLJtOgLWntk18TKM6REq4X0gkx57RCx4sLGjqAJnGgGZhDMkr8dGQ/nC/7dpFqWA/8SrvIus/6wfDpXirOfAGFecQUYzBge9VYbWNcAT2jvpFVLaH32BKejLtB2T6hjIPDuOLZzn86uQ3/BYATjVApfUcJgPOGURdx6XbANgxzypNHFuaE4MFwBA5/ka7PXjH9LlIUa4rqe5dAzGhol5wwZF1vcYqEO+t6CaJZUTl5ifs06NxMCw9Bz4qGmQptBbfE4Rs/ZnOXtg7BSPSebjXXR+OYrklTZtzD5VsZcM5PSvOSIWIPlkMAW1adLqpNxOzfHAfHAU9m9Mmx6i94VPCjzcIo2+0onSvwI0Wx9U06ujLQbGZ4tYLP1+9hZCLftIaJb0Sz8F3T4e12AENjk84SElOPmfvpG21NUH5gtxwtntz1dT/KolMljdYb85f8okCyUYp6sPChJ3pmMgbzX20UpX1GJKYxnKrq7CCzBVsYDNMhg2E5IA2/e6E626mASyxXIP58HvEhxF/Dfshq0gyTEkwEMVgPJlcx9QFNH3Y1Njvx5FwPiV2RnpgUErTFqWuPHaoPZM5vVx6yyxdtmXw2lnlq4V4MjTuGEEJq5lP67dHWh2UnnE5OUd6P964LKAJQ5IMj4zhxS+wRyQDdPEyxi15znBwOtSjblmtFCViWiiCVgKnk3XWDpkS+ktE+s0IQU7muiZ14B3JqRT/m/fxMpMSY6x4l/TXIeSHPAiXSdP6+umLsuWLsAnIsm8yoiNbp4imOB5cbrYZvN1i9bSh5VfKVkN
- lxa4V4hL
- O3td6ftbhyl431IrVz94dDLxs79dxiBnfbBfjD2ykV858xtqSe4Ujdn8tWERqK/3q8oGO5cWg44J9Ff1I8K16TFjK4hoqVPI4HJuvZhv7tk+SoQ9Wau6oxpmp+dY7gvnG3FrH7BkfzVb0rSwMPW9x8GkjkKL+dhpjrUIFI3I4qXXSBdN+fq460bycdD0DOpoTKfSKvhDRw/GNWmDkORGFyLW3hGgepbSvZbyu15ZDUvpiitviCzLLy1K8idSTHkBLzyYYJZwtU+ouC3/cBfoO8/lULro6zWAVUahoe8eN42NhYb3v1O9Dj7y40E8u797KAZP7k+sbOh7XQQSs/xDaQrSJcqd6++MkhXX1HEQ/F6N9HZKRxNMQJJzD8c39MPP8i7URYl7/UKSulE/UsCXLoLm5yFK+U/0nj1IzZj+C7pdp7rvrCpLs6R4T9y2FX96tEsgTDQRkByG77UN8BBFfzjLHzbNk/8Qn0xKKwl6cmuc7meD3xB7JBkRt9WEfmRz+Z81B1nOPOxFFxmzi+rGS7jT01AWTMT8u9CBvVGuKbfYId1UwjrSLul1Yxi74ZO/fJU3IHFfQuGAQOSk6CMJ+mQlZdNWd5qjgYfsfpIFYsuuWSlNVM2TLA02T8pRAWWUYqE9mDu4hSK6MJxRl0wyjWp96zRzTcDvRu8/BvhtU7orPRivJxs6s64dKq02/Xc4H/u47OQxnp0W/jTgWZfFSk0O/FA==
+X-HE-Tag: 1788183342-671731
+X-HE-Meta: U2FsdGVkX19t+1xIEvAA1uorIylVKBVnftroJBD05ORkA9DpOCJ4Jc0V8JYvgHJRFjPYFPbwC3H4qxYBTGAjKMD7sBbEZap0LR2HCD3WJI81jAkz49kYR9eK7sNnA10FZHdxReLDc5fJTmYYJ8eOXbYCUt26UPxmEvUq1As2PpiLOaWiIicXj6EcbEIzdFkT4prRRIqa+/TcMXXNcC2k/zuvEs/pgsFSbXfI2p7njF5KOKbQC6Cx5mA+aYm010meK2RG6/Q5UFVR76oNCFnU5i+mwQyvOurZ5yLJQonC2wiVAspm0JaFeLNk9HRTaUTlf4n4FBaPzzcgTdx34jHsMHZJrVn3IyVHLQxb9pueVEJpFJAy2Xw5MLkLr3iMAYovxB465QFO1DL/s4Z5qqFTSxoKgjqTA8RLZpUWklF2DKavTyb86qveqnPRDOaKBAeuwpTizOE12c5tZOZr/yQD67uOcDri9lB5Zm3Lz7v67T4+v1GHHXj2kvcLkytjxpZt1T2en57PNlcdYecINIe06y35L/2VovSIS8vQueV7ROML+8p/qUwHS2sZALnfUjxs/uDvoWNeQ75uOxKXWfUuPEQiRlD5EE/NvTa+/5Ip/SCesT6eo2b3BfNhjH0DzZLdrrBtFj7SmyxtxML16LQDggTot/OSDUXdn8B256QvR/LUbDZob2uYxcjclvp3IxCmamRybJXBB5T5WELH/LvSO9CopEfzwSEgqiWCYcY4pIi0dO11snUUTqSeYwZaHlMYlYkM9QtS0nE4okETgnwBrRVq3zEpZ2szGANxs/6YEqY01obACB1vah8aq3/fi94doqEPNeHKvarOStWkb+BT3gPO5J6hLp6K1iuCaMUTvofLtiifFBo5B96VFII9PlOYcFAY9FXC9tzZpT9vzZRDRg0PxgV8eDaeHQ/gk+XRTwRTHp7deuQzXOOAgsgqXiD1dexL9V2UAGtiupEAPHz
+ +R0tn58H
+ NiRwMuWjoRxeQSoQq+0rESoD7Wxegxnk+kZSiVvOaqQ8sRK6M7R8SLXVHhrKL5RSbGG/Sb1zbyz1e2Nhn0fDjP2kPjTIGg4FPN5neogdzbKD0iIdYjgb8jbnCsnvn/irYgR7bf3kERKwykP6P/0AlvCUWF6BDhWQhS44rN2Qbybyl5V9dGfAntS95THAgxlkvXwHAHOrfmeI9WprX8mVMR8/sQQbA+PUVuxMCUt1u8qtSr2YLGgsaO0sZQFqI9H5ohw/hE6QsMuVlHKCfmAMzDfEqJk5GffYyw3lRWNTrLFNs2km+w+2GqhD2XoZlHY2Khqt0U+EZeI5OqoXOCUEieNcLsQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,134 +97,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot reports a possible circular locking dependency between
-&p->pi_lock and the per-CPU kfree_rcu sheaf lock (_T->lock) on
-PREEMPT_RT:
+From: Longlong Xia <xialonglong@kylinos.cn>
 
-  __balance_push_cpu_stop()               [holds p->pi_lock]
-    select_fallback_rq()
-      cpuset_cpus_allowed_fallback()
-        set_cpus_allowed_force()
-          kfree_rcu(ac.user_mask)
-            kvfree_call_rcu()
-              kfree_rcu_sheaf()
-                __kfree_rcu_sheaf()
-                  local_trylock(&s->cpu_sheaves->lock)   <- _T->lock
+demote_pool_huge_page() currently removes every source folio as a
+persistent folio. A free folio can instead account for one of the source
+hstate's surplus pages, for example after a vmemmap restoration failure.
+Removing such a folio without adjusting surplus_huge_pages makes the
+persistent count underflow, and later subtracting it from max_huge_pages
+can underflow that counter as well.
 
-set_cpus_allowed_force() uses kfree_rcu() instead of kfree() here
-because all of its callers hold task_struct::pi_lock (a
-raw_spinlock_t), and plain kfree() may sleep under PREEMPT_RT.
+Classify selected folios against the node's surplus count while holding
+hugetlb_lock, and preserve that classification on rollback. Track the
+number of successfully demoted persistent folios separately so only those
+folios reduce the source max_huge_pages target. All successfully demoted
+folios still increase the destination target because the new destination
+folios are added as persistent pages.
 
-Commit 2a8bb29ec9b2 ("mm/slab: allow kfree_rcu_sheaf() on
-PREEMPT_RT") made kvfree_call_rcu() try the sheaves fast path on
-PREEMPT_RT too, since __kfree_rcu_sheaf() only trylocks there and
-so cannot itself block. True, but the sheaf/barn locks it trylocks
-are also taken as regular, blocking locks elsewhere, so lockdep
-still records a lock-class ordering cycle against any raw_spinlock_t
-already held by the caller, which is what syzbot caught.
+Testing:
+Tested on an x86_64 QEMU guest booted with:
 
-The plain kfree_rcu()/kvfree_rcu() API gives kvfree_call_rcu() no
-way to know the caller is in such a context, so keep it
-conservative on PREEMPT_RT and skip the sheaves layer there,
-falling back to the existing raw_spinlock_t-protected krcp list,
-which is always safe to nest under another raw_spinlock_t. This
-restores the pre-2a8bb29ec9b2 behavior of kvfree_call_rcu().
+  hugepagesz=1G hugepages=0 hugetlb_cma=1G
+  hugetlb_free_vmemmap=on
 
-kfree_call_rcu_nolock(), added later in commit 3bc999d944b3
-("mm/slab: introduce kfree_rcu_nolock()"), is untouched by this
-patch. Note it would not be a safe substitute here either: it still
-reaches __kfree_rcu_sheaf()'s local_trylock() on &s->cpu_sheaves->lock
-unconditionally, so a caller already holding a raw_spinlock_t would
-hit the same lockdep ordering cycle through that path too.
+For testing only, add a one-shot fault injection that makes the first call
+to __hugetlb_vmemmap_restore_folio() for an optimized 1 GiB folio return
+-ENOMEM. Set nr_overcommit_hugepages to 1, then allocate one 1 GiB huge
+page:
 
-Reported-by: syzbot+acf142088e0182172e58@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=acf142088e0182172e58
-Fixes: 2a8bb29ec9b2 ("mm/slab: allow kfree_rcu_sheaf() on PREEMPT_RT")
-Signed-off-by: ThangNN99 <ngocthang2710.1999@gmail.com>
+  nr=1 surplus=1 free=0 resv=0
+
+Unmap it. The failed restoration leaves the folio on the freelist while it
+is still accounted as surplus:
+
+  nr=1 surplus=1 free=1 resv=0
+
+Demote one page. Before this fix, the result is:
+
+  nr=0 surplus=1 free=0 resv=0
+
+After this fix, the result is:
+
+  nr=0 surplus=0 free=0 resv=0
+
+The fault injection is one-shot, so the restore performed during demotion
+can succeed.
+
+Fixes: 8531fc6f52f5 ("hugetlb: add hugetlb demote page support")
+Assisted-by: Codex:gpt-5.6-sol
+Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
 ---
-v3 (per Sebastian Andrzej Siewior's review on v2):
- - Say "raw_spinlock_t" instead of the vague "a raw spinlock"
-   throughout the commit message and comment.
- - State plainly that *all* callers of set_cpus_allowed_force() hold
-   task_struct::pi_lock, not just that it "can be called" with it
-   held.
+ mm/hugetlb.c | 35 +++++++++++++++++++++++++++++++----
+ 1 file changed, 31 insertions(+), 4 deletions(-)
 
-v2 (per automated review on v1):
- - Corrected commit message / comments: kfree_call_rcu_nolock() is not
-   a safe alternative here either, since it still trylocks the same
-   &s->cpu_sheaves->lock unconditionally.
- - Removed the now-unreachable CONFIG_PREEMPT_RT branch inside
-   kfree_rcu_sheaf() left over by this fix (it can no longer run,
-   since kvfree_call_rcu() already skips calling it on PREEMPT_RT).
-
- mm/slab_common.c | 20 ++++++++++----------
- mm/slub.c        |  6 +++---
- 2 files changed, 13 insertions(+), 13 deletions(-)
-
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index b19ba1b31484..015380ba8bcc 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -1667,15 +1667,8 @@ static bool kfree_rcu_sheaf(void *obj)
- {
- 	struct kmem_cache *s;
- 	struct slab *slab;
--	unsigned int free_flags = SLAB_FREE_DEFAULT;
--
--	/*
--	 * It is not safe to spin on PREEMPT_RT because the kernel might be
--	 * holding a raw spinlock and slab acquires sleeping locks.
--	 */
--	if (IS_ENABLED(CONFIG_PREEMPT_RT))
--		free_flags = SLAB_FREE_NOLOCK;
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index ed26105b84de..640df58be4e5 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -3983,6 +3983,7 @@ long demote_pool_huge_page(struct hstate *src, nodemask_t *nodes_allowed,
+ 	struct hstate *dst;
+ 	long rc = 0;
+ 	long nr_demoted = 0;
++	long nr_persistent = 0;
  
-+	/* Callers on PREEMPT_RT never reach here, see kvfree_call_rcu(). */
- 	if (is_vmalloc_addr(obj))
- 		return false;
+ 	lockdep_assert_held(&hugetlb_lock);
  
-@@ -1685,7 +1678,7 @@ static bool kfree_rcu_sheaf(void *obj)
+@@ -3995,22 +3996,40 @@ long demote_pool_huge_page(struct hstate *src, nodemask_t *nodes_allowed,
  
- 	s = slab->slab_cache;
- 	if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) == numa_mem_id()))
--		return __kfree_rcu_sheaf(s, obj, free_flags);
-+		return __kfree_rcu_sheaf(s, obj, SLAB_FREE_DEFAULT);
+ 	for_each_node_mask_to_free(src, nr_nodes, node, nodes_allowed) {
+ 		LIST_HEAD(list);
++		LIST_HEAD(surplus_list);
+ 		struct folio *folio, *next;
  
- 	return false;
- }
-@@ -2034,7 +2027,14 @@ void kvfree_call_rcu(struct kvfree_rcu_head *head, void *ptr)
- 	if (!head)
- 		might_sleep();
+ 		list_for_each_entry_safe(folio, next, &src->hugepage_freelists[node], lru) {
++			bool adjust_surplus;
++
+ 			if (folio_test_hwpoison(folio))
+ 				continue;
  
--	if (kfree_rcu_sheaf(ptr))
-+	/*
-+	 * Callers may hold a raw_spinlock_t here on PREEMPT_RT (e.g.
-+	 * set_cpus_allowed_force(), whose callers all hold
-+	 * task_struct::pi_lock), and the sheaf/barn locks are also taken
-+	 * as blocking locks elsewhere, so trying them here creates a
-+	 * lockdep-visible ordering conflict. Skip sheaves on PREEMPT_RT.
-+	 */
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT) && kfree_rcu_sheaf(ptr))
- 		return;
+-			remove_hugetlb_folio(src, folio, false);
+-			list_add(&folio->lru, &list);
++			/* Surplus accounting is maintained per node, not per folio. */
++			adjust_surplus = src->surplus_huge_pages_node[node] > 0;
++			remove_hugetlb_folio(src, folio, adjust_surplus);
++			list_add(&folio->lru, adjust_surplus ? &surplus_list : &list);
++			if (!adjust_surplus)
++				nr_persistent++;
  
- 	// Queue the object but don't yet schedule the batch.
-diff --git a/mm/slub.c b/mm/slub.c
-index f9b56cb439e7..1e8bad7a018e 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -6088,10 +6088,10 @@ static void rcu_free_sheaf(struct rcu_head *head)
- /*
-  * kvfree_call_rcu() can be called while holding a raw_spinlock_t. Since
-  * __kfree_rcu_sheaf() may acquire a spinlock_t (sleeping lock on PREEMPT_RT),
-- * this would violate lock nesting rules. Therefore, kvfree_call_rcu() avoids
-- * this problem by passing SLAB_FREE_NOLOCK on PREEMPT_RT.
-+ * this would violate lock nesting rules. kvfree_call_rcu() avoids this by
-+ * bypassing the sheaves layer on PREEMPT_RT.
-  *
-- * However, lockdep still complains that it is invalid to acquire spinlock_t
-+ * lockdep still complains that it is invalid to acquire spinlock_t
-  * while holding raw_spinlock_t, even on !PREEMPT_RT where spinlock_t is a
-  * spinning lock. Tell lockdep that acquiring spinlock_t is valid here
-  * by temporarily raising the wait-type to LD_WAIT_CONFIG. Skip the lockdep map
+ 			if (++nr_demoted == nr_to_demote)
+ 				break;
+ 		}
+ 
++		if (list_empty(&list) && list_empty(&surplus_list))
++			continue;
++
+ 		spin_unlock_irq(&hugetlb_lock);
+ 
+-		rc = demote_free_hugetlb_folios(src, dst, &list);
++		if (!list_empty(&list))
++			rc = demote_free_hugetlb_folios(src, dst, &list);
++		if (!list_empty(&surplus_list)) {
++			long tmp_rc;
++
++			tmp_rc = demote_free_hugetlb_folios(src, dst, &surplus_list);
++			if (rc >= 0)
++				rc = tmp_rc;
++		}
+ 
+ 		spin_lock_irq(&hugetlb_lock);
+ 
+@@ -4018,6 +4037,14 @@ long demote_pool_huge_page(struct hstate *src, nodemask_t *nodes_allowed,
+ 			list_del(&folio->lru);
+ 			add_hugetlb_folio(src, folio, false);
+ 
++			nr_demoted--;
++			nr_persistent--;
++		}
++
++		list_for_each_entry_safe(folio, next, &surplus_list, lru) {
++			list_del(&folio->lru);
++			add_hugetlb_folio(src, folio, true);
++
+ 			nr_demoted--;
+ 		}
+ 
+@@ -4029,7 +4056,7 @@ long demote_pool_huge_page(struct hstate *src, nodemask_t *nodes_allowed,
+ 	 * Not absolutely necessary, but for consistency update max_huge_pages
+ 	 * based on pool changes for the demoted page.
+ 	 */
+-	src->max_huge_pages -= nr_demoted;
++	src->max_huge_pages -= nr_persistent;
+ 	dst->max_huge_pages += nr_demoted << (huge_page_order(src) - huge_page_order(dst));
+ 
+ 	if (rc < 0)
 -- 
 2.43.0
 
