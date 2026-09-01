@@ -4,120 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6647C624D3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 16:36:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56904C624D3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 16:40:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 716B66B00E1; Tue,  1 Sep 2026 12:36:49 -0400 (EDT)
+	id 34CF36B00E4; Tue,  1 Sep 2026 12:40:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C8356B00E2; Tue,  1 Sep 2026 12:36:49 -0400 (EDT)
+	id 32ADC6B00E5; Tue,  1 Sep 2026 12:40:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B74F6B00E3; Tue,  1 Sep 2026 12:36:49 -0400 (EDT)
+	id 23BF36B00E6; Tue,  1 Sep 2026 12:40:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 320876B00E1
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:36:49 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AE4F980469
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:36:48 +0000 (UTC)
-X-FDA: 85165747296.13.05D7257
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	by imf07.hostedemail.com (Postfix) with ESMTP id D5E1440005
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:36:46 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ciq4P8YY;
-	spf=pass (imf07.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DB29D6B00E4
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:40:15 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5B843404C3
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:40:15 +0000 (UTC)
+X-FDA: 85165755990.03.4E71B26
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 782FC14000A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:40:13 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UVwL7oh7;
+	spf=pass (imf26.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=urezki@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788280606;
-	b=urS0aG6RTqdsw1Yc5OLEqfjqJMu7R9StfcPUniidG3WNhl4tNkSddJn4kTETgE7B8P/3Lm
-	FDMh/JFWy20cuI9msBWT7dx582rgiko7gbd44qnKbK+/Aul01wxepNYasbL935SZ1N/hcK
-	bsFaL8S4DMi6sayBC68sbM2z5QJVVOY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788280606;
+	s=arc-20220608; t=1788280813;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EaYIWIHvKvoOBpgj/nu30SFwaFUp3YGpCnKBsBQBa0c=;
-	b=EYgOZBg1M8pN5xjMV71ppzOTc+jxvJe7/S7FDaPXsO65crAMM6sZJVF8915hieCemrmxv6
-	ksf7j+sO5sWwoqMox8C9UZ1SpnfYsr97l0tZlb5Sv93qhO8JVNHkJxxA2ZDT9ThmmQpXR5
-	tvOZzkPmVuTSJbAgEbfJ/gAT00NLfmU=
+	bh=BFL2PnQFXGTwOtmj8ilJJ1QqFCeQkcb04bsOr6A5nS4=;
+	b=7SfKOZzJUgv2223cxVw/Nl/eIeFr90VlCdxcF2beG6NerWCO6euH2Y4gav5OwVNgRdDh5F
+	MH8tD84+OnZc0suY/ep86mKd+V+QXNdLrveyoPfgOmg0Usjt+KPCrVMWV2Df/qpn4FlQuX
+	Hf7rPX+JKbvMHraN9mmJS5nXlEBkxYE=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ciq4P8YY;
-	spf=pass (imf07.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UVwL7oh7;
+	spf=pass (imf26.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=urezki@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6a668cacdadso4437a12.2
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 09:36:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788280813;
+	b=IuE2V6GyYDGk8MdKZVj8xC67m8Nv09j9lQHDM6G9uT9rL7cjIlrJM3cAmpT6oNH9mDEwf6
+	j0XRn0iGL+wLqLZ16RhdxBFCT7kNMPzmFhm5rllrvnRE33JVxY7WXnaSfAXpqruT8MSRO6
+	ODB1vqjWEWr4vQYQrfHUE7AhThUGLas=
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c25420fe973so187738266b.0
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 09:40:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788280605; x=1788885405; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1788280812; x=1788885612; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:date:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=EaYIWIHvKvoOBpgj/nu30SFwaFUp3YGpCnKBsBQBa0c=;
-        b=ciq4P8YYbr79EaPlndw/6TxkbnMymDUWQD0XxEbr/ZLHlRglGAVVpNSRWoVBXttZIJ
-         YHYtqa1JUmtCxaxAZ23cJg0DAvPen0HFmd6c04tkfAGDaz2xByq2Oo2NeMceey++R7Ri
-         qgFIGhFqSbjHEhbcMQKysVAVdWWPzbcqgNnUewNXPPH2s65ithXr3toOYjhjmsevBivn
-         TtdxDTBdcdsYKya0v8POFj32RwyQKilBoVmBRD/n0K52D0Db3Ls8A3mQ8PwuARNUKryD
-         B+sy2n6x9HyAdVjLtAoU5tZsMvyP6Lppv5+HvPbFVbu2Em2Et+yFnBU3Dnilp+C3V4p+
-         oZnQ==
+        bh=BFL2PnQFXGTwOtmj8ilJJ1QqFCeQkcb04bsOr6A5nS4=;
+        b=UVwL7oh76TNmW/IjGZJN/gphOuXwYrqHN0sc75tPLlL07nWyO7AVNHZQMu98nx3iqn
+         vbyVPYxu1pyP5kd32aG7tHB8cOMoroIK735XyAz+ITYjKNelGC1i9k4T6Cs2kR+8x760
+         84duu+t1ZOtpkbgu3p78XlvCzm1BAA6XvPDcdLv7lqjgxFV9d+dKud67kM4Ymnovq0aw
+         gGjUQd7tGA/IjsbsfFZGKngRF5R83ADpL9VwNM+Giun8jTAmxpNXITkWC54kat5Bdlj9
+         hn5TmJvI/AgCXsybH55bHHSRpWPWPGKdkHxOaFwATy9sPnB+7hHZYQrBv7e1Fao68KQB
+         f7JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788280605; x=1788885405;
+        d=1e100.net; s=20251104; t=1788280812; x=1788885612;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=EaYIWIHvKvoOBpgj/nu30SFwaFUp3YGpCnKBsBQBa0c=;
-        b=lScQtqaD/Jktj1JftT2uCNaKzOVJ9N3Xf7LHy3d9UO95y3VLugZPCTvcDHx2WOi5sn
-         ElgQXPdgZupNeqpfJkfDIi11mBjJgrnBMlyk5ZV4ZhwwSjVo7oxlVexnOphFuUPL46Ai
-         v3HDZsA4dkr/MxAKdgRhA+3dlRW22UmVDS5wbTP80Eht783JsLrAEadgYeho9broRre4
-         TpFdLodYISOt1GcAUj/FgPIMmWvt7QpbUrCcRWsEExy1pQulUZN1+dWDg1DT5KZT3Qf6
-         kizdsCZn/qqL3mihPC/9lvml5ihCRFveJ9cCOYzEH9SZXA4UDTagJq7nAoKrUun0HwgJ
-         nDyg==
-X-Forwarded-Encrypted: i=1; AKwUvByma0CpF8vSrgPj3q19Y3/aoHiUD1CUhiq9bW/XURLvPFR/L0pfV2/e7zTiL0NL7KlTr+8aGSC2PQ==@kvack.org
-X-Gm-Message-State: AFuF++l+iTf2NvW7mPjyDSD1W9ymXkutgdopsMdLpdWUQwGyUMSL/mdr
-	Ze5Eoj59iS35RThO3m42YlVNmSYy15qBt6AacinTpucIBF9dqA71uCrA
-X-Gm-Gg: AYBFou399cnAwkW94mZF4xyFwIY1FbfotrauA4/ZyQwK07bWO9GAxqEDx/TU3AlqiuH
-	cuY2ILhyEHYWl5KhkY4TJZCrxpP2ITl+g2VtVfG3O0KQtNMlwuzrbFP5eMkCHDcRs4YDnyHfZSB
-	P5Xtzy/xoGmbZjf6iFdqoITNeT6pnBPJANcKXxovRsI3LfHuFXD+Chm4dgsRrDbMbWL+my7TEs5
-	+ZbRsd73OM+51JX8bxi4gwG/9sND9FUmYi8N9wkBQ33bHB3PBbH7LnS5vsWb0J/ufGeSs3ofgQa
-	sBZU16hQ30aaVIlMQxr9hGuDI0xBKJ1fsruU4R0hxy+EBrMmL8e4Cn5/Lt8N8PhoNFpwkW345Ab
-	Lb0eVfXMw6aXwaMrpHe/M5njtbGLtums8hMgGSWbWx6X6DM0CkdZKhw9Qw30EdHJhs+hUWsQFTV
-	azl/3Y9XMQMF1QU9t46ioKE4FaAw==
-X-Received: by 2002:a05:6402:24c1:b0:6a6:2419:8539 with SMTP id 4fb4d7f45d1cf-6a624198577mr14712381a12.16.1788280604911;
-        Tue, 01 Sep 2026 09:36:44 -0700 (PDT)
+        bh=BFL2PnQFXGTwOtmj8ilJJ1QqFCeQkcb04bsOr6A5nS4=;
+        b=iVpCNntZpseJrhAMb5izFNNTNGjrJ87mKQKDy9AAcfxAPP3kqhzHgROa/Qd4bDpk7a
+         P/ql7SOqpg+1O61Cy1kCU0j5/CO97Gi5ptOeuQXuSebnzoKOyj55siugCUvhORHc4yUR
+         EnuGPgkmyGhBVqwED0JJHKhCOXmqbQAnx/pGEkM0k7p85b2OZwVIizn42XZCvmuHU5T3
+         MnB4nTclImyw7+951ttTHFUSBGt1FKCgls3hfV0IUqnMYf2IwbYYkuVRK22npEbGswye
+         PeNnZX0UQwqAALtjtKOf+xuERDWJTzehLImqfucRd8tilXhefQkr0mmIbvLoyN41mgb9
+         pmGg==
+X-Forwarded-Encrypted: i=1; AHgh+RoyUeEXaKX3F7W48sq8iOpBlZ4WoNQQh6rMuJsbpPtSv1/+xQzcgyzzguk/Is0dgtG/1JE3PwAruQ==@kvack.org
+X-Gm-Message-State: AFuF++lOfiULDzCjcpOva65kcfy1F7Uwe/uVo5TIzBI/Q27s+tbsfDkO
+	y+MPhH/FrZcmV1ntr3f1+pJjfNI9P/w3Ywlj74jQE4JhA5aO+gMX99Elq2imlk5M
+X-Gm-Gg: AR+sD10nJN57/1PHTnmGsTDJnoHvUhlkV16ro+o3uJHbXH2SqdKxWqpwRJFRr4eW9WI
+	Jr7rRvZcX0TBpbBjJTGEQKITWBpFLY8mhmJXAqIgUUzWdqysLZX0QvP97mnAoJgQMNLx2IXenSP
+	tsqQjr8Cqeyg2KALq4TPqBwkj1S8j2ofLWQ+ywRcTr5Xt4bQsmeTY1jJFN9qYDYoNpzIqb1jdmP
+	mvcXx1w0W1bdq92SQuABwvp8GJb898HpyrQ4ezLDCIyJYL0et1w69hfM1G0nFI1xOUdw0aukvWn
+	kbIim0LZVAzt75VE6QPqS7aSPEtpCsm8QCfiqNlMX0s2dIOfEng1SQhekRil7daGyFC3gd4DROy
+	R52Xmc4i8d7Nsf7RIMpWGNn3LWA03pa4aQ7ZksWypkqN2U3CVrUz/7irwNBdO4Beoe0zgEOVtdl
+	3KPRKfrlcyMn6TL00O4heIDAIjmA==
+X-Received: by 2002:a17:907:f495:b0:c25:37e2:2d3b with SMTP id a640c23a62f3a-c25571b387emr2163930966b.10.1788280811791;
+        Tue, 01 Sep 2026 09:40:11 -0700 (PDT)
 Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a67f8b47f7sm24513a12.9.2026.09.01.09.36.43
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c255f1fb4c3sm629113266b.48.2026.09.01.09.40.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 09:36:44 -0700 (PDT)
+        Tue, 01 Sep 2026 09:40:10 -0700 (PDT)
 From: Uladzislau Rezki <urezki@gmail.com>
 X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Tue, 1 Sep 2026 18:36:42 +0200
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Uladzislau Rezki <urezki@gmail.com>, Dev Jain <dev.jain@arm.com>,
-	Ye Liu <ye.liu@linux.dev>, Ye Liu <liuye@kylinos.cn>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Date: Tue, 1 Sep 2026 18:40:08 +0200
+To: Dev Jain <dev.jain@arm.com>
+Cc: Uladzislau Rezki <urezki@gmail.com>, Ye Liu <ye.liu@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ye Liu <liuye@kylinos.cn>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v2] mm: vmalloc: fix vmap_purge_lock livelock under
  memory pressure
-Message-ID: <apb_Grl4I5o2dxKY@milan>
+Message-ID: <apb_6DUfmilJGsp1@milan>
 References: <20260828091753.299295-1-ye.liu@linux.dev>
  <20260828110503.e1eff32a9b7df9a8b2ddd4d6@linux-foundation.org>
  <bec5eaef-d084-467f-9bfd-43f7dedc1aa7@arm.com>
  <apVPTt9Xw8kSgmTU@milan>
- <20260831184252.15b978678820a94b106640ac@linux-foundation.org>
+ <54bd749f-04f5-4665-bd5f-d485e7197132@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260831184252.15b978678820a94b106640ac@linux-foundation.org>
+In-Reply-To: <54bd749f-04f5-4665-bd5f-d485e7197132@arm.com>
+X-Stat-Signature: 5jzxkr8yhaj3podd6mer4xwdaz1p3zyw
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 782FC14000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D5E1440005
-X-Stat-Signature: gpxncyz6wig6m9i74upw4n5oiefhkcui
-X-HE-Tag: 1788280606-885754
-X-HE-Meta: U2FsdGVkX197555Kew413+XuIqX44IKgidDeSGZL2BWNmJp3qo5I/6NLRHHtmqBVIQyt61ZcwGqkkaz8dJ4NMg0z1HFGbWhR8EUOxO6SKnHBdQgBOTGw0/PjpyxIBrnS1ERnLTDA5NsnP6Ioc2D5XaKuQVSLh/wD5WGou4YY2Qi4f3TiHqgf3oTIx2oWRfDloktvTK36M2YZ842CklPKgy+vXFHC/Z5Z+75ZowU1dJ/WQFriSaEKA5DJw7HiHMeAX4rPr2nwLwngxZqCQxS7Y6GuiELRn5gTk9Vm3iM19yWIt9Ri58lXjUNgtAYkqV3vtrzVhJVK2b32cqvXzRpnT/Iy11yYrAb3Fa9GvLWySTQ9ILxWmnv12Xl/wBPaRQLYgycXFwLo3MV4zjwzC1ocMGvogex4ur1wUrCvvTCkQiRO66Ep/isNFTJTWZPEMzOWIJRrEQ0laLZ7pa5JTMETAOzWCN0FDmWE8nPl43F1x7+HrwxdRCEnGjOHekPP4hQ0FMGYMfkUEB+HMFg4mVhAt3r5dWb/ky0E9Z2OY39gTWh9vJTKhuVn+W3p30Yk7/O4imfY9lMjfqX3ZU4UO+VEoXapUdGVy5I0f5zB7cnt1P0mBECnNgbzjeNjcmTzwoxtS/Yzpy9vwIIeYX+o8YFgIUOal89OiNpaceEAlwFbamY4q0cwXdCKuH8hh0qzl9ewkq9BmhfOOVEPknvHLywpqOtDkjuo0BUpmJAbHrunHKdagQzgqN8j5PYNouSwSyCWzoU+S6LTfVQyPVZe9NS+HUQjPSWUMatmH+zIHU8K5RJHMgbTonEsWU8S2/MQmg39cAgCGNyXDCKRCg9ULdYMw7ieWjXCCGo8rkvuhrZ9Qy4wsvBCO/C5aCR0fxeuu0TK9X3e3HH+DDkTJvGJY25rpIJU/d20Xcbr6RY0aRQ6MTQXDDgAWk8oWzPx/Gn4GGRcFOhgJYIzuNUohqlXzEg
- d/scjFon
- MLS++iR9+UHyJc2s5bC0oUphsXN+XMo4FTuduczK8w1hW7kUoYcF7WG5cvxfn+liG0PKdbK+qaZKjczUfoQneAQspffkaDQCW6bP49EIhD3uGRxIiAIPc64LLBNILM5i9spmfCZTHNdHgsTib+2WQom6ktUyl6b1nwykxF1/N/URzYSTY8vFLVYcKa0JkXNLqwd/G9QBXcLe8r0mPIHtjTXuy5iRaf59+9AUz99gMhnYcLsf1xN6Rccl2vMVkG16PNCZK1ucjdSr1WrUAVuxTFVFGj9JnQ9e4MDKYXvyObSt6lNtWTJsWTFXCRb+fCa6us0YpOLkNzC+XDVu5VG6dZwfq6hB39pZJgYZOe1xkdBRlZ5p7yyO2oP2EVGpSqf0I/48TxwvjoUoy+H9wm0O2HVPhGqt41TEyDwcErACwDiVCD3opJjsIaa97jV2mwbFojNoZIzb3ympHHS5Mzt+aBsBDlfb8oujdtwgNDI/TH3dYW7nC0H01Ih4vrTXtjHxbn5pP
+X-HE-Tag: 1788280813-374321
+X-HE-Meta: U2FsdGVkX1+YpuMmm4u8lW9raB/IH+Sz0vZXfOoB3WugyZ0uYOU/3Qw2HT+lFJx+lAcXVPp4v6rRzEekmckP/TqkH1ik5koteKoG3kPkwL4oqv9rgS0FZ+TnG0gjAwNja+Av7okHupeB6o0CL3AzKKmLntQuDXKeGmlKMd/5FkROYwClKITXWEqsOMcvZ8gwGDqbWsPri2mHNbKqajWdiYRtuF/2NP1OS71VyRgE7YsIwqE3kdfKdc/LtdqEu9D+abszCZP+2tAPnW2PEDPmac2Rck/cSYZUdae2WCoPevR4RneL7q+ly7RiV6cBEZfi8ARFEyZUCSby59vg7spmfOGPjeBKrMh7iMOXqSikkewFEF7mcQ6d3l2plTFTiOEf086W5IdHLZtGVEt88+ssQCWapGNie5Lj14k2lw1gf8X6Q+6LfbUYnd0tWfVCOuWu5ml3yYno1xdxSOi3txZ/KB66h8Od1QctBh2R362IBTPtCeOXTCIVESO9pvWF3+3N+6oc8DB34LSZzzc8NTderAtCntlYjDq6NQjC2Odkw1x5AbYgxiYOZPDgEahiabB1FgCB1F+QjPB7H26AYQ1L05BtP5YVnjS5lJHxX6S5y9/GJ/tjLQoortfKi2nTAVrofsvEgYCWPRky2O3lska13t5/YtF9K2Iv0WugIQXTsLmgNPcv5X2fAP1iRO0smDzIMRaNu/mn95qnTNqDp5hG4mL2mU1dmgYpynH+WiBH6ypVjqVfeBHmKbv67JSUbk+DeQ99gOGz0bsqMEUugtVrS00ltdet3TWPjN0oV3mrQAk9dSFjltEa9sq7dv6269Z4v0u1/ad9FtRETsbYdtnlWnoegLnHGIaS+P1EEKEMYShTjFvAC1nn0ZQjr1BT48Vr/U/z6CHjhxddntmWc8UMJ9bCW3qpaNFZmRI175htrBlSx68UFvoN6VzfSjGyhLyyIkAtDS7Hn8BMIhO4iKA
+ pq7kL6Rc
+ 7LqFI5L9Q9lhYkmZ8I8Wp6JhktD4d2M/H817EuGB4i8xTFV8x/rxx7tTiaia2/sD5qsQE/ipo0co1y/s46+FZ3UJ9LP3mHTsgA/qZTmsx9JVkZgcl8a4jaqjbWJsRvq8nwcBc3jfdUwZrumKbSjwB6Yw2BBc9HDM8f86tjqmjVl0HKMMeIbEybkzQ361aIiGeUaeR+jUFeI8k7dO1obFqK+QiuQtLfNWaI6kOAdHMQxpi5NGknK0u2D32PhSSOtYGNNBEgN+1wgggUzt4ZelqrKowZ3ETlY3GP1q3kTuFbikE0PWgakLXXKUkvlNEz9RZe9r3XJ5eS1M4D+NcLuoS8jHWmSvE0ycq5EQ9swyt/RdNi8wiWMZcc0NQ/cP9ie5ffPky0sDyDJcKQuYiAO/0ZO79G6rTYTk/PcZL/HzFsq4vk5eWuQvo35zDuWRrjoxkPbhCytWDwa11U1nQz+0sB73X9vxhzL/HeGgTlCQ4KhnRyB/fibnjICk0M4fEIIP9T14Lgqsm4TFhJeSG0UPay+POipcMLaCbAzvUuYexrIC6KlA/E5TfO33i5jJ9wtP1MCrfXIRy89j6wfc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,9 +126,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 31, 2026 at 06:42:52PM -0700, Andrew Morton wrote:
-> On Mon, 31 Aug 2026 11:54:22 +0200 Uladzislau Rezki <urezki@gmail.com> wrote:
+On Tue, Sep 01, 2026 at 11:52:11AM +0530, Dev Jain wrote:
 > 
+> 
+> On 31/08/26 3:24 pm, Uladzislau Rezki wrote:
+> > On Mon, Aug 31, 2026 at 11:39:14AM +0530, Dev Jain wrote:
+> >>
+> >>
+> >> On 28/08/26 11:35 pm, Andrew Morton wrote:
+> >>> On Fri, 28 Aug 2026 17:17:53 +0800 Ye Liu <ye.liu@linux.dev> wrote:
+> >>>
+> >>>> From: Ye Liu <liuye@kylinos.cn>
+> >>>>
+> >>>> The vmap_purge_lock mutex can be held for an extended period by
+> >>>> __purge_vmap_area_lazy() which calls flush_work() to wait for
+> >>>> purge_vmap_node workers while holding the lock.  Under memory
+> >>>> pressure, those workers may themselves be blocked in direct
+> >>>> reclaim trying to acquire the same lock via the
+> >>>> vmap_node_shrink_scan() shrinker callback, creating a circular
+> >>>> dependency that deadlocks the entire system.
+> >>>>
+> >>>> Two places acquire vmap_purge_lock from paths that can be reached
+> >>>> during direct reclaim:
+> >>>>
+> >>>> 1. vmap_node_shrink_scan(): replace blocking guard(mutex) with
+> >>>>    mutex_trylock().  This is a shrinker that only decays the vmap
+> >>>>    pool and returns SHRINK_STOP without freeing memory; skipping a
+> >>>>    decay cycle when the lock is contended is harmless and prevents
+> >>>>    tasks from piling up on the mutex in the direct reclaim path.
+> >>>>
+> >>>> 2. reclaim_and_purge_vmap_areas(): replace mutex_lock() with
+> >>>>    mutex_trylock().  This is called from the vmalloc allocation
+> >>>>    overflow path; if trylock fails, another thread is already
+> >>>>    purging and the allocator's retry will find freed space.  The
+> >>>>    notifier chain provides a fallback if the retry still fails.
+> >>>>
+> >>>> Both trylock failures break the circular dependency: the lock
+> >>>> holder's flush_work() can complete because workers are no longer
+> >>>> blocked on vmap_purge_lock in the direct reclaim path.
+> >>>
+> >>> Thanks.  AI review expressed a couple of concerns:
+> >>> 	https://sashiko.dev/#/patchset/20260828091753.299295-1-ye.liu@linux.dev
+> >>
+> >>
+> >> Sounds legit to me. Now there is no guarantee of purge being successful, and we
+> >> can get a spurious failure.
+> >>
+> >> How about using a WQ_RECLAIM workqueue:
+> >>
+> >> vmap_purge_wq = alloc_workqueue("vmap_purge",
+> >> 				WQ_MEM_RECLAIM | WQ_PERCPU, 0);
+> >>
+> >> I see the same pattern in __lru_add_drain_all() and kmem_cache_init_late().
+> >>
+> > WQ_MEM_RECLAIM makes sense but this is another patch.
+> > 
+> > I copied here AI comment:
+> >>
+> >> Does replacing this blocking lock with a trylock break synchronization for
+> >> the callers?
+> >>
+> > No it does not. If someone is doing reclaim we do not wait and do not try
+> > to do it again thus fail allocation.
+> > 
+> >> When vmalloc space is exhausted, alloc_vmap_area() calls
+> >> reclaim_and_purge_vmap_areas() and relies on its blocking behavior to ensure
+> >> that free space has actually been reclaimed before looping back to retry:
+> >> mm/vmalloc.c:alloc_vmap_area() {
+> >>    ...
+> >> overflow:
+> >> 	if (!purged) {
+> >> 		reclaim_and_purge_vmap_areas();
+> >> 		purged = 1;
+> >> 		goto retry;
+> >> 	}
+> >>    ...
+> >> }
+> >> With this patch, if another thread holds vmap_purge_lock, mutex_trylock()
+> >> fails and the function returns immediately.
+> >>
+> > If reclaim is in progress and trylock fails a caller repeats only one
+> > time to retry an allocation. There is no any infinite loop.
+> > 
+> >>
+> >> The allocator then retries
+> >> instantly without waiting for the concurrent purge to complete.
+> >> Because the retry fails and purged is already 1, could this cause the
+> >> allocation to abort and return a spurious vmalloc allocation failure
+> >> (-EBUSY or -ENOMEM)?
+> >>
+> > vmap space can be fragmented and not avail for 32-bit systems. For
+> > 64-bit system it is likely impossible.
+> > 
 > > But, i think we can overt mutex_lock() into mutex_trylock() just only
 > > in the:
 > > 
@@ -142,13 +232,20 @@ On Mon, Aug 31, 2026 at 06:42:52PM -0700, Andrew Morton wrote:
 > > 
 > > 	return SHRINK_STOP;
 > > }
+> > 
+> > so the reclaim path is not blocked. It should also address an issue
+> > reported by the Ye Liu <ye.liu@linux.dev>.
 > 
-> I *think* that means we can expect a v3.
+> IIUC you are suggesting mutex_trylock() only in the shrinker path. But
+> then, the following is possible no: take purge lock, try to get a
+> worker thread, worker thread is stuck in vmalloc -> alloc_vmap_area
+> -> reclaim_and_purge_vmap_areas -> take purge lock?
 > 
-> Ho hum.  I guess I'll queue v2, under the assumption that my
-> assumptions are usually wrong.
->
-Yep :) 
+It is possible what you describe. Usually when no memory, the work item
+can be delayed for a while. As it was noted WQ_RECLAIM and separate WQ
+which has a rescue worker.
+
+IMO, it should be a separate patch.
 
 --
 Uladzislau Rezki
