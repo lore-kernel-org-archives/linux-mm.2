@@ -4,127 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8283BC61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 14:31:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CAB4C61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 14:33:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8551A6B01FB; Tue,  1 Sep 2026 10:31:51 -0400 (EDT)
+	id 54AD26B0255; Tue,  1 Sep 2026 10:33:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8089A6B0252; Tue,  1 Sep 2026 10:31:51 -0400 (EDT)
+	id 5239B6B0256; Tue,  1 Sep 2026 10:33:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F5786B0253; Tue,  1 Sep 2026 10:31:51 -0400 (EDT)
+	id 438E76B0257; Tue,  1 Sep 2026 10:33:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 413B56B01FB
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:31:51 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BF54216041D
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:31:50 +0000 (UTC)
-X-FDA: 85165432380.27.C5DB09B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 2CD4F4000A
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:31:49 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="My/Zkw7E";
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788273109;
-	b=etsE8aITDypWF20K989K7SwztMD4KT2NYAhDua5TklpM8sSSzGtnAv+CyQ7sKKHQjYuxJz
-	qj8HkDD0sHEhn13epXFEek1nvV2ilK50qq9Lf+8EbSWvnZ4biESVl7THjoHviokS6Wlfk/
-	+ZswyMg2Dm9srQUROOCaQIkQMbREC7U=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788273109;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 151FD6B0255
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:33:43 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6F15C40433
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:33:41 +0000 (UTC)
+X-FDA: 85165437042.09.2E705E9
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 4C5B3180004
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:33:39 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Y3JF4QjP;
+	spf=pass (imf06.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.161.54 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788273219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+SM87dKxgHKoTgR6BSYO1fL6Rd9rD874uyPlzcJDnuw=;
-	b=S9EEYuCn93owV2Uc5AZodfiM6M1NACe8uvy6r/evuRBeFxYANCHsj4XGMtqTe1e4YKKuF6
-	C5Vifsf23YG4Z1PNtordWv87mL1NHcpj5to24tqAlGjwT8z4iHlX7Kz4aOQE0yGG3DbGE+
-	Bcrs0BQEOrDzoEoqCwlmcp4fkD0+5CM=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="My/Zkw7E";
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B07AB60267;
-	Tue,  1 Sep 2026 14:31:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5767E1F000E9;
-	Tue,  1 Sep 2026 14:31:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788273108;
-	bh=+SM87dKxgHKoTgR6BSYO1fL6Rd9rD874uyPlzcJDnuw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=My/Zkw7EkDQLUSB5jkacAppt65djuYrOjFPJWtAE+uuNKaseNbscCeIJiLFL5tjOF
-	 zK/l3KkQ2N9S29hI3UzfgzFa0i3rNCpVRYFstyNcwPJV5mzts5D3rGRQPGBcL2r5sl
-	 M4LoV6VJ/3D2KAGExFMGP7y9KIyumhdCGZjgQtts1w0HwS2NaKaLtzngF9+7NuNxTq
-	 97Ypv59rrpwA8Xfdjav2hWACORC+/7eWDiEOl7fC+2HguCIpqRQRocLFjIYq8tNPwN
-	 1Rl+PvXhytTcmeBeZ03XozFMVE7XZhTphKZmP8mF89keRLxkpfMQ1iGRJldtR0luyc
-	 IzD2SuW+PoJHA==
-Date: Tue, 1 Sep 2026 15:31:26 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Guo Ren <guoren@kernel.org>, Brian Cain <bcain@kernel.org>, 
-	Geert Uytterhoeven <geert@linux-m68k.org>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Simon Schuster <schuster.simon@siemens-energy.com>, Jonas Bonn <jonas@southpole.se>, 
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Stafford Horne <shorne@gmail.com>, 
-	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Russell King <linux@armlinux.org.uk>, 
-	Vineet Gupta <vgupta@kernel.org>, Michal Simek <monstr@monstr.eu>, Chris Zankel <chris@zankel.net>, 
-	Max Filippov <jcmvbkbc@gmail.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Peter Zijlstra <peterz@infradead.org>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Richard Henderson <richard.henderson@linaro.org>, 
-	Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Richard Weinberger <richard@nod.at>, 
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-snps-arc@lists.infradead.org, linux-arch@vger.kernel.org, sparclinux@vger.kernel.org, 
-	linux-alpha@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
-	linux-um@lists.infradead.org, Hugh Dickins <hughd@google.com>, Qi Zheng <qi.zheng@linux.dev>
-Subject: Re: [PATCH 12/12] mm: change the contract for free_pgtables(),
- update docs
-Message-ID: <apbfzUwBQyxe3P9R@gremlin>
-References: <20260901-rcu-pagetable-freeing-v1-0-5456a81c8212@kernel.org>
- <20260901-rcu-pagetable-freeing-v1-12-5456a81c8212@kernel.org>
- <apbUpMDJglS99_yK@thinkstation>
+	bh=cBS1K3vH89cPPG1M+AQoc4jw9SKxnYkckGnojIfP1qw=;
+	b=7OjslRctECgsd+FdV7QRH5ca/D0DhDiCQQKrKbW6urpv9EV2TZ+rcLg2eqVVkVJYCG87cD
+	njqEwLxMSPVX5jusvcltSELgiuEGmcF47Qz+bFH7xf/fJC+e2rjaAzqyVDIOKwpeVFzoHo
+	VNnuG49GSJOjGA+M+PGfS6/3jFl4+rI=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788273219;
+	b=Co4crslJ8NjcTiLfEr1G/B36ciZfQ2gXgC7pfo9HtWsj3mGHpOkAlx6j8gPOKVlEXVYThL
+	fw8SbxUdPNDIPFiYEK32E9acOHUhcmPCjJorHWnnU8acqXBETPiUzMpDARqqnEyZrd2Yv3
+	qkyasDpfXFPMz64EHG6v6v/tZF6HgFs=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Y3JF4QjP;
+	spf=pass (imf06.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.161.54 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-6b1b1d128a0so685854eaf.0
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 07:33:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788273218; cv=none;
+        d=google.com; s=arc-20260327;
+        b=SO05K3rtygni9qC5F1s2Z3quyhhrPGlU06S/uJTEx5V/24iCEnMquxwr3Rtr139kSt
+         wKN/T+a5qCHs3WHmEdjpfvHZks+RYs1WFLliHl7qJX+SD6AvUxH5hytS2byd4M9oGgFU
+         6j+7xtoM9LcWu79s5uI6BC0qS1cViLj9qpAdfZEondav1n6CTAZeHle7ljuEDiNh9R/+
+         2e2kinDEjnuukUjBK9dv8e3X5NIHWRSrYv/2P2jyED94TsADR7CMxrTU9l0c+kdvH6xG
+         sMrG1OHhzKAvW5TalT+ICxz+3XQf/AWkKmCCq7qRnYmhmp/+pSEFaC8/86+ppf4ivPk8
+         gKHQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cBS1K3vH89cPPG1M+AQoc4jw9SKxnYkckGnojIfP1qw=;
+        fh=iHcdiLU8UPMEwoQULaeXyVDf+/awcONQY0Dv119UBKk=;
+        b=DhSFqTDTEeQBmNTprlZVrQyy6HM0ntJsft5WA0ejy2ScbR2biM7UkKtxpBuydRk8IF
+         UGjmfvuqCEwA3Mu1tAkwvrK6eF5/LpoLliF0/eTRk4Jn7Q+XjiOszVuTvxqLwHr48lvE
+         EJ/eK655U9TVsHDC6SqyfF0qM4TmmqTtKYGX6/+TuGUTHvsL8lVnYWoSAVxMF6r06LQO
+         YBbBy19xTGPuLhGm+NUsKDg6ma9rtkrIVImjb4zsYl425R8Lu4VtzmJnEdfwAiqy0KhM
+         6uciZJKTMMGINZRjLd4xmiOePtmsTk+kPSQSfacXObEiAlhfflrR1Ea+/xuwyPlYbVf6
+         nftg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788273218; x=1788878018; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=cBS1K3vH89cPPG1M+AQoc4jw9SKxnYkckGnojIfP1qw=;
+        b=Y3JF4QjPjT/1Fmrd5hn1haTa0BgTcoYQlPB3QQnBmXQouxp3SJOYPbBHZ9HaPs4xXg
+         qoYtMNVJGB4xq8Jh1Uig24EJghn7UF/Bp1KGfDLB7LIepZ3raT9ttiIIZts5weg15rwh
+         ecPwrq7Q/Lhg4rB/j9WXcSzfPEvJIjVGEp5oRIoaDPx2HoVFMOfYoGnuSwQSZeteGy3u
+         Z9Udmp7UacHQqDQBsYOLUX35O1TufPMIk9GLtO3tcpzf3/FD/TZfa4nRR3NHTFcRaaWm
+         MFc6auHH4PotT2VUeQ7VAIfHcMmX8Qge/VHQESxn+3dZEiKu9qsI1t9yTQOzVCJ4yYcE
+         GwQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788273218; x=1788878018;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cBS1K3vH89cPPG1M+AQoc4jw9SKxnYkckGnojIfP1qw=;
+        b=hbqQBbjFOf7SZo4GqA92yhbi9sfPwQRwIMB3f5hQmdtw5LOJeyXupnjO2C1dEP5PhE
+         2StsLHU/LACCQaBf0IcdmvBIcrXmsOGIcCCvJbfROwH62K9OEXdL4aWb94eDarkcdiQS
+         n+qnPeHJGVkx41OlPmiTB/6dEgAc0ntRCGc9JUokcrCi0KZC/h62iI6dO+CVA/AfO5q2
+         UPqvNQMurTWrn4PRMBDCgYVtSCZp9Fwpar2Tqrxwkj9WUREAVL6+1Cv1RFHX4cSLTjkO
+         j1lic9lyZFWnMl4QT7A/Od3ATxfezEIMeHEHG/P/9E83O36+vZ/BmuRrxxermrqxxV3J
+         Ik8A==
+X-Forwarded-Encrypted: i=1; AHgh+RrSBrdMMcI3BnG/NGjjfAMj1hYlrd6KqNcAsWnc9oGtdwe7mYwLUJtRASdP28kspVcRU+gX0klbaA==@kvack.org
+X-Gm-Message-State: AFuF++kLkfg2JPm57v/u/9Dx6AVIIr7jqIsKySol+RLRmT938uwsb9+k
+	PZzMd7nLgCEE363H/pA5igTSM+Nux3cE5DoWZwPq1Iy6vs6Ca2ki2qJ/z0gTgmko+/Fkm1kKIW/
+	TupAmvOOTCXqs6z7ywaqcg1FU6wpVwOpuOnaQw4E=
+X-Gm-Gg: AR+sD12a6gjw+pqmnIPBSnJO5O/MRoIhXOxnbiVQITXrgpP9TgL6oU2f8xCR8dK3mSc
+	4Ei+GjpgfcH4Fr1f0Z7hRsNlhcDcimSLH1bXNjMpFyed9CJX82ieHO4h2ARjGhyX60nNLY37y2m
+	T7VgH+H4FbSpSXizcDjbSxllHSC17DQlOhrT6Wni6qGDeh5C9yhayW3bHhavKfSzQNrMXyCyO5i
+	yVChpcu7KGZbJS9WsWIdOG9ksA+bTFSqUdkIjSgn74JZ9sz4w+f/YsEcRpy9B3hWCaV062W9K4t
+	M3U2YcK1lTV5lZIx6kI8XZaCb8cgeFxCes+9CaktnynL5t4IfpQbKpZIXRHUnnDB/jJ1Yn4gkQ=
+	=
+X-Received: by 2002:a05:6820:628:b0:6b1:9b72:213c with SMTP id
+ 006d021491bc7-6b378158e73mr3825454eaf.3.1788273218048; Tue, 01 Sep 2026
+ 07:33:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <apbUpMDJglS99_yK@thinkstation>
+References: <20260830114731.8322-1-wujianyue000@gmail.com> <20260830114731.8322-2-wujianyue000@gmail.com>
+ <CAO9r8zPYZqZ9UsSU9xVcB6=m-uTkucSoPvA5xCB=mMrb9yVD_w@mail.gmail.com>
+In-Reply-To: <CAO9r8zPYZqZ9UsSU9xVcB6=m-uTkucSoPvA5xCB=mMrb9yVD_w@mail.gmail.com>
+From: Jianyue Wu <wujianyue000@gmail.com>
+Date: Tue, 1 Sep 2026 22:33:25 +0800
+X-Gm-Features: AcwNN1XmqDuQ2Lon7txlynZyRZzsoaJEbZa1ROihp9wk8nxKntpYq9IK_bmAxm8
+Message-ID: <CAJxJ_jgiNTBxjojc0XVbd5Bx=veDJQSA8YaeVH=QMBzWzrO8vg@mail.gmail.com>
+Subject: Re: [RFC PATCH v4 1/3] mm/zswap: release retired pools via
+ queue_rcu_work() instead of synchronize_rcu()
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 2CD4F4000A
-X-Stat-Signature: pcbj36tpgn4u4q3mrzu7hwrcj8xbyrrt
-X-HE-Tag: 1788273109-426860
-X-HE-Meta: U2FsdGVkX19x4CW6I4vHuAQHCNzBnD5EHMzvfiBi0d3Ye1ia1WGSyxJObXhZ2lIjDg7qTmAkf6JihPhRaUsRF0Y+x5jE5O3oYKu+XqUjjgWBhxaF85m/D9oV74CrNDqmDJ55IUJO6EL4ZAcZ/tvs/9aLYPp13fvFC9bNJD4QWaRr6kZOJ58FoIsSggcimC5odELok+nZuEpgWsAmWzI3P2noAvF6u8aeXr1aaV7nFPTXelmP9SwEKlC3jmY5FpvLxs1TkHp6jS4IJP2WIPm001/L7pvCmGKz48e29CNJzUMLXZlh91+DyqtIvaUqTehYVWdmpuQZGmaaWW0tOthjzIPM/oUMez/F7A57p3C+EyeOhOg1mGAIEVU1eLyoAMgl1/fYxyMq/9tfBEEZ/N99ftBjl7tDGREAkFc8GUXPQp7+5Exp6u+79/HNOPE5XHcwBNuA7LgFJ+wXEEyFxNFlq+IdgP0bKviEMTa4mell9IJZuCEdOgabWiIsNm0R9c4RWvAhYw5pIdfETnwgU3Lt73p24L2FeiUVaMa8jm+h5I1Cg8t0EBKSCeTnI2sZs96k54DL4iXv4GxWxIg5oaEx8+ng05a3A+2hHmyRH+7vbIPNWS6UNfIwGAv27z/L+S60mCOuwWLCJVTmOtVen95kkuPaQR6Ibz3Rt6eM0Z4kpOuKMtadqzxRaf3duSCIwup30wd0jigaXCDwbuod3urZie1TVnty+yBqJnOtY3YPSPpyNctiBmTNZ8ANE5pMUSnmK4cyhOoSQNtGl4arxy1Rv7nLAWMEfDt/aPCI7Y7MKV7x5IkuGYO8uMJpBpqBDMD5kHDtc3nxDxhgdABgIFioTIVTmcZb00+KhTXnX57spwD4N54dO81mURyxSijNfVQMP7zz/odVpquPszvDatUII+zMHs9911C30+6Bx5gVvxDNYXsHzs9ZvxE330W0C86axlpmtLvnqWaNbeQcP81
- TzsVtMwm
- szKT2WasxzWlelDPOTPmRlP8PZUyVouCSMn4UvaubDuKAe4o7df5HZo+hriW1BuqFJgfUUzk/cvTW33jVRcYQhAaOJlCedJWvWPqf2WlhdD5umvgVZZVXkOMeVso58pE6+DdW1nJUliR6lVQhR3llGFGVhcrUxYhCByRrATcAuoD9/9vA05HrZFGtL/G6yKWxIpik1aJhYjNrK0+sn3zeZVUY2XIxwNxAMLHEW6VTBxLbm8QE39lLjz5OK8S1UJiGyd2lT8v2Uo1i0DWz9LINaNX0EhDUCXg5vDtH1rrDOCd6+a4bbjwBUqZP4Z+ltltO1ajZe/37CN9YtHm0t+x0W5vgUwD5HquR/OA1XX7wp4xAmcCtBDIUT2g+6A==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4C5B3180004
+X-Stat-Signature: qrggzaycdhue3etb4m3yjdgf76yc7ifx
+X-HE-Tag: 1788273219-701654
+X-HE-Meta: U2FsdGVkX1/NNXsAC3Au8s1uo1z0YItYNjPerRseJCGMkA1tlt2765uJFH+v/U3SF3LZEsGvYpYxFt5wwUAdl5Ct0ROarllRaDKI20kcjHFJopb1BmUdPqarWZsz4uMT3Zuegc3J2NQez2LV/y9CXlppD6QvnUsk6abrlv5YprC1iXucP6Dq62ro7AEWekL93ngm6w5trYE0i9m3mQhqRBNU2/vu7a5gWsf4Yz+YEat5nLNUOdyh8H+ccjeoy+fQZ7yBmytxl5hxM5KYlTLJi/H8i9OEGaLu/XL08SzkADENeZu9Hb3wCJU11xcBlXDMnolqT3Wk9wPFWLQqMdbgLZaVn2YHJTPVFIMolNqY4m9025BCJm5d7BDAfSGTTSg/2KtUu70zNfKmUMM3GdyRGiQy5gRo0YxfRViNJhoj1AQ/HY86Qjb0lP9gQdzXp5KgV8pz5wBqH0EgxCHdtB7sRxCMnPIZTsjPwLR/7AQXvDdxGf5pKYE3XlhQInfiLfasBDP0JLovua8OkXYeuGAfKuSG1ael7Lqov34Y3FLfZWJt1GldymRNmGC6RGNMyKyN/r5mHws+TqelCi4BdYshpwnPdEQA9yGjNXilCSAL1uXkqCRZX21YszQM7ufEIT6DeQ2H17bhGmUZ1moN3LWLZP8znSACZD51SqTfY4T7XdUcPXLQLxgFjvfm2S46U95Fk22YEz9GH4rMcSxR1XmNxX5yj0b4aGlPVxDolUKErZbz3JRkFF9eAjOA19pD/bP1AoztguhOJj3fT4qHwFf4nV0VknL9E44CvRiPxbARmSl4S3K4ptQBLcnqyXY6whxPIqC0X5dooGM2E10nw3hWtVGvSYSuDvgScdHhlpAKrH8FJ30yCVqxvN7NgiQSq1iOV3Tpm59xXkkKbynXBe2IhAQZ7EQfmk9sy/N3DwHmXGrcvacLVY8zrH0kHkaDLTwririLvLsGt+wcv6aOtk2
+ XPZepKGh
+ nxwvPmsuUleKkJ7C7XoP1lfQ6mYc3XyKU6IHG64LQLAhScdN98FfwpZFemQKqgegQD5GPvSHwIBG1aPm8YEp0NyGr3JOY2xsRlfPh2w9yipba/Ky6OLhcWu8Vh7h6tHVTNJiPdkkRDTddNlrRWLM/KAEA/tsDgPWQGTDdTUlS78BOBB/8DXRcnpXJfRkyjW+lO43MC9uXhLcXOFc8PO9h95ADheBXPXiivnwcFIdWd8mDvhHzoLl9my+qOAdRWkARowMNnNzG/fMmsy5OMeFddFZcTxNoCgvHBST21NjXWnqweIuvlWzbwOzs6A+/01wU+oKKhoRgRCC3CNPP+DUdVvhvEuEMpzxUJy3OgI4bRetFIK2smeD/SQYcvH3KJdXUodomi7sxmTqeU5BH7yaDVmMbSvJ5PkQONrGk2vdFVjn6MsM3RmdakrMVanRGfayNzYbqp4loUb3eCMSVscoZX0UED8K6P1r3wngEytC/NPk1a49E6iMJQRx/EliBYsigiKmIkZ9wh5tPsWM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,68 +143,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 01, 2026 at 02:57:13PM +0100, Kiryl Shutsemau wrote:
-> On Tue, Sep 01, 2026 at 12:01:32PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-> > index b91b1a98029c..ff8ff3706485 100644
-> > --- a/mm/pgtable-generic.c
-> > +++ b/mm/pgtable-generic.c
-> > @@ -386,9 +386,21 @@ pte_t *pte_offset_map_rw_nolock(struct mm_struct *mm, pmd_t *pmd,
-> >   * be read-only/read-write protected.
-> >   *
-> >   * Note that free_pgtables(), used after unmapping detached vmas, or when
-> > - * exiting the whole mm, does not take page table lock before freeing a page
-> > - * table, and may not use RCU at all: "outsiders" like khugepaged should avoid
-> > - * pte_offset_map() and co once the vma is detached from mm or mm_users is zero.
-> > + * exiting the whole mm, does not take the page table lock before freeing a
-> > + * table.
-> > + *
-> > + * However, the PMD entry is cleared first, and the table freed only after
-> > + * an RCU grace period, so a walker that mapped the table under
-> > + * rcu_read_lock() stays safe, and the pmd_same() recheck in
-> > + * pte_offset_map_lock() detects the teardown.
-> > + *
-> > + * Therefore it is safe for "outsiders" like khugepaged to use
-> > + * pte_offset_map() and co. for VMAs that might be undergoing page table
-> > + * teardown.
+On Mon, Aug 31, 2026 at 11:20=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wro=
+te:
 >
-> Is it strictly true?
+> On Sun, Aug 30, 2026 at 4:47=E2=80=AFAM Jianyue Wu <wujianyue000@gmail.co=
+m> wrote:
+> >
+> > When a pool's last reference is dropped, __zswap_pool_empty() removes i=
+t
+> > from the pool list and schedules __zswap_pool_release(), which calls
+> > synchronize_rcu() to wait for readers before tearing the pool down.
+> >
+> > synchronize_rcu() is a synchronous, potentially long wait.  Replace it
+> > with queue_rcu_work(): __zswap_pool_empty() hands the pool to
+> > queue_rcu_work(), which waits for a grace period asynchronously and the=
+n
+> > runs __zswap_pool_release() from a worker for the sleepable teardown
+> > (__zswap_pool_empty() can run in atomic context and must not block).
+> > The grace-period guarantee is unchanged; the retirement path just no
+> > longer blocks on it.
+> >
+> > Suggested-by: Yosry Ahmed <yosry@kernel.org>
+> > Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
 >
-> free_pte_range() clears the pmd without taking the PTL, so the
-> pmd_same() recheck in pte_offset_map_lock() can pass and the pmd gets
-> cleared right after.
+> Why are the patches still tagged RFC?
+Exactly, should be removed, I dropped the RFC tag in the new version.
+
+> Anyway, with one nit below:
 >
-> Readers are fine -- __pte_offset_map() holds rcu_read_lock() until
-> pte_unmap(), so the table cannot go away.
+> Acked-by: Yosry Ahmed <yosry@kernel.org>
 >
-> khugepaged is an odd example here. collapse_pte_mapped_thp() and
-> retract_page_tables() don't rely on this recheck -- they take pmd_lock()
-> plus the ptl and do their own pmd_same() under both.
+> > ---
+> >  mm/zswap.c | 12 +++++-------
+> >  1 file changed, 5 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/mm/zswap.c b/mm/zswap.c
+> > index 37f34e406c8e..0bb30e58950a 100644
+> > --- a/mm/zswap.c
+> > +++ b/mm/zswap.c
+> > @@ -155,7 +155,7 @@ struct zswap_pool {
+> >         struct crypto_acomp_ctx __percpu *acomp_ctx;
+> >         struct percpu_ref ref;
+> >         struct list_head list;
+> > -       struct work_struct release_work;
+> > +       struct rcu_work release_work;
 >
-> Can we say walks are safe and leave the write rule where it is?
+> Seems like the convention is to use rwork in the name instead of work.
+Good point, I renamed it to release_rwork in the new version.
 
-Hmm yeah, ah page tables, what a rabbit hole of horror :)
-
-I guess this is effectively a reflection of the 'write lock on write, RCU load
-on read' pattern in RCU itself generally.
-
-So, maybe something like:
-
- * Note that free_pgtables(), used after unampping detached vmas, or when
- * exiting the whoel mm, does not take a page table lock before freeing a page
- * table.
- *
- * As page table freeing itself is RCU-safe, page table readers can safely run
- * concurrently with page table teardown. However, writers cannot, as without
- * a lock nothing prevents concurrent teardown.
- */
-
-Instead? What do you think?
-
->
-> --
->   Kiryl Shutsemau / Kirill A. Shutemov
-
---
-Cheers, Lorenzo
+Best regards,
+Jianyue
 
