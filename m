@@ -4,128 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD7B8C61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 20:44:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA73DC61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 20:49:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B0D36B0092; Tue,  1 Sep 2026 16:44:58 -0400 (EDT)
+	id 43B396B0088; Tue,  1 Sep 2026 16:49:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 968926B0095; Tue,  1 Sep 2026 16:44:58 -0400 (EDT)
+	id 413DA6B008A; Tue,  1 Sep 2026 16:49:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 850856B0096; Tue,  1 Sep 2026 16:44:58 -0400 (EDT)
+	id 303256B008C; Tue,  1 Sep 2026 16:49:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DF4B6B0092
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:44:58 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B55E98053E
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 20:44:57 +0000 (UTC)
-X-FDA: 85166372634.15.EF5B2E8
-Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 8E2B44000E
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 20:44:55 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=lFJZkDHm;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf11.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.44 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E26D46B0088
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:49:34 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 52A4E40550
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 20:49:34 +0000 (UTC)
+X-FDA: 85166384268.20.A63F796
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 324A4C0004
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 20:49:31 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=iKq90zGZ;
+	spf=pass (imf28.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788295772;
+	b=jhCCQZhT5AHLvK/98Q7n9XKoyv07AFAHem6eZGlLtEljd9cLgcPH4vhKJek88+hI/aejLS
+	SVY4wbhV+Qdf7W7UUqIBK8LwBr+oDlUQPP9BFipRmyiOxhaVg3QPQzsIRTEROCZffggDah
+	C2dD7pF9mRkAhB2yFZB3ZEbHIKL+d54=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=iKq90zGZ;
+	spf=pass (imf28.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788295495;
+	s=arc-20220608; t=1788295772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EH/NfLg4aACwiLJhYAQ0D2cKDfAytCBjkGxmccPidO8=;
-	b=SuLZ2cd56ptNsG0Fr/NuNXOzXdY6lEqV3zkTKBaf/bLAqU6+3uxx9Lvw39LDX5Nr/34i2d
-	N5Gz2brBDqtjTDM7tteYskwL7fHymerlWB4/q9if0rUdAM9dApqR7Jj6y1bMNPQxA1mrvE
-	FntvRG+07gc9/eRztd3EBc8e7tp8LeY=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=lFJZkDHm;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf11.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.44 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788295495;
-	b=606TGoypLZcXFLogkwArrodFjgZT8OBnxqNixAZ9LVqmsTKNgqkD2Zk/RrRg01FM/SU8iP
-	1rmh5MM2OtxdcyR2CPmOhMm/wPhiS/+2TyoYTvQEUHRc+vQIcRTntJgfQAiUev3lvdBNAG
-	K0RcsOSosS5WT3bnLX8rEY27tvwuWrs=
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-66e5d39cfe1so437428d50.3
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 13:44:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1788295494; x=1788900294; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=EH/NfLg4aACwiLJhYAQ0D2cKDfAytCBjkGxmccPidO8=;
-        b=lFJZkDHmbLrPPE50vA2GQC9ysAzShcWKYZ0jOGBkfzi8U1ljmZVFvGNWY8mGs0DZvX
-         vtHKKgnSKsH5ZaI5KyqFEKeIEcSv7vlGPtm2C2vNxA2nfeDBm4ovlL+hn7K4DQr0X45w
-         gK3xDZpqLWuPUTznCb4ujYraC8BjXpXRwLQZs9jfwYK7Fg4qN13n/lBib2ecEvBF9N4s
-         BtVa5iGDlrVVYsUBwXyqRf9XLtOomX2q2EqnzSYpz9itYfGmkpri/tLl8+AxzvjCK8JI
-         98NAasA+jvmbWnsdrchSPx9JeCobMlgUCDkOyBSBU5r/evOz+uwvPzQZQlFPPee3MKCQ
-         neqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788295494; x=1788900294;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EH/NfLg4aACwiLJhYAQ0D2cKDfAytCBjkGxmccPidO8=;
-        b=mj0mE/KCgiOilcmYPhAkLMBwbl+B38PxuYhDA1u1GFJ3rSYR0rjk80+IxmLkzspMSd
-         rnxTZtGrjg3qIJxuCAM6M2DIfAEdk6NdHqAXDithYZXT0ICMPfVOVpxyECDIZSwd7iQh
-         RkdJS0ChsPbXMQm3ZJGM95qp78aNoJGKA2AxjvsB+dB4CRUBgNLEbQcdPAZNg8sFWLPD
-         TwgFLZh4yOKUuoW4TmknT92z4WApHc+8PcbeVJbrHo7bTMt/7+n2ex+BKYoh+GiloZ3c
-         LsBxpbDmGmSzdRO0zPysQJsOD0cMrlYRa8ERcCxhbPRZCvsO9U5UgnN/SYb3Vo7Tg4nO
-         ZuhQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxOvSZxGSqq5OReWzOP3smZoUEYod4FikSDF8jiSKNUbxvc8mu5WpYPa2t5pRTURSepwuDUngF3lg==@kvack.org
-X-Gm-Message-State: AFuF++k+7uuP3CNq0LJVNZKegkCLswvQcYGnH4ks3Z5/o7wkGBe2OgT5
-	CLnb7HSBgWciolsNazfK6bvoNrE4sqQqI/R7yFDTIq4vb919w4llKdFyIzlmlPPLO5A=
-X-Gm-Gg: AYBFou3Lg+EBDUsH0x0w63QqNbVZ/0tEPsuzC2p+LWl4WdGVaw7wexAnCWe/IVX/9lf
-	wt0hyuSA9e38d9weJPqbLSfmwsbQCVVPhCyiKhAgpANivXF1wEpwZPas7DB7bxofmcuk6L2i1Pu
-	lLf8KS+cWVxmRShASZ0HUA1s+rHXRcQ7TtS3lSSAUn1R3TmUr8hnP9c7B8P2bXR8rygdCKOSa0K
-	cm67qQYUgEiYf4uSuLDXh3WjEIueWNToerHZIvR18JObZKgwd9iBNSTeLIinQMqMs65004w4nbe
-	GZDkErFs2cJWseHf8VBXg25zAb1QZXUWE4mBGOBI4k3SdOlX+zr20yMKl+v1GnXlk6Jt/XVAsxO
-	gj+4JYPcCBBI3gQqfD/vfoUHLcdTr7GFF4k6fJtNYYvkd056JG8yqej4h8qilwh5hcsNo1IqlYj
-	5TmWzHlZSAhU7HsxARYaoatOvrU7n4QwJ8dw/+8Dt1fUlbcU7V2T5gYZpXJGao
-X-Received: by 2002:a53:a484:0:b0:66c:e472:c792 with SMTP id 956f58d0204a3-66f988480bbmr298480d50.31.1788295494303;
-        Tue, 01 Sep 2026 13:44:54 -0700 (PDT)
-Received: from localhost ([2605:8600:200:1a83:fe59:7385:2855:8588])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66f98656dddsm432178d50.10.2026.09.01.13.44.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 13:44:53 -0700 (PDT)
-Date: Tue, 1 Sep 2026 16:44:49 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Nimrod Oren <noren@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Hugh Dickins <hughd@google.com>, Nirmoy Das <nirmoyd@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm: remove min_free_kbytes adjustment for THP
-Message-ID: <20260901204449.GK3004@cmpxchg.org>
-References: <20260901190123.3511535-1-noren@nvidia.com>
+	bh=vDXCxj7I+sVb7zh1yxEoCiAxGk8ZRa14+CEIOCwmMvA=;
+	b=WV2wG4634qmmBTJAsFFhlNbtz2A62OBDdbXbMkG423ahumiE/EV9vLKP/HTj9PvqBOQra6
+	NjYfu4wPyrEBSm+zXGYVlUs3O7fTypmICIQWpuUC0Y1VK4GlgjKZer0RTl1HKPke0qg5f2
+	ELtelXqntJ/mmuvwvRAgk+pkEbQpws8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788295772; x=1819831772;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=b1lfp27dRUw6lA2IESdgIZCHySDmes3STZlmXmvTcf0=;
+  b=iKq90zGZe/ZUfGSsIjVwvmlViewKA/pQVljU6b3018+rU7NjNXwvXzy4
+   3dL+fCZREFis2d4ltXaFfycRGVzI/HwnRjqs8NyvGG203K4e5HdmdKN6D
+   1OUj/9xgnBJV/yAJi/AdeTvSM8Z1N659IrdVwgZd3RpsgGvCXaxu/wnh1
+   tUssoedbFs3wKxOYO147669wD8lPDgBxcs9YM9jVijwvNBkPTAPGHHMQe
+   oo+OTsE/cQOYPT9PopQ6GDsrDWKSKZGYxE6oEIIHRwDsRttZFmtQaIGqu
+   pj+y1r3OPieO3LUV6QtPMYmBpiKNgQUQuoPRjFxx0FfVV0eKGjjCqTmkD
+   Q==;
+X-CSE-ConnectionGUID: lNllak2qTwG3VMEqbhHsWQ==
+X-CSE-MsgGUID: Ej8tRd8rS1+wFH8CQy+3kQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11893"; a="92612553"
+X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; 
+   d="scan'208";a="92612553"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 13:49:30 -0700
+X-CSE-ConnectionGUID: NhaGJ78DRnCyx+pDWKNomQ==
+X-CSE-MsgGUID: UiHCEyvRSAyIavxS4UlTLw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; 
+   d="scan'208";a="267435304"
+Received: from unknown (HELO [10.241.243.185]) ([10.241.243.185])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 13:49:30 -0700
+Message-ID: <17afb1540240d267023aba1706bd7659d1a50197.camel@linux.intel.com>
+Subject: Re: [PATCH] sched/cache: Fix use-after-free of the mm replaced by
+ exec
+From: Tim Chen <tim.c.chen@linux.intel.com>
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: "Chen, Yu C" <yu.c.chen@intel.com>, Kees Cook <kees@kernel.org>, 
+ Christian Brauner	 <brauner@kernel.org>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Jan Kara	 <jack@suse.cz>, Juri Lelli
+ <juri.lelli@redhat.com>, Vincent Guittot	 <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,  Steven Rostedt
+ <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman
+ <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, K Prateek
+ Nayak <kprateek.nayak@amd.com>, Shrikanth Hegde	 <sshegde@linux.ibm.com>,
+ Qais Yousef <qyousef@layalina.io>, Aaron Lu	 <ziqianlu@bytedance.com>,
+ Srikar Dronamraju <srikar@linux.ibm.com>, Vineeth Remanan Pillai
+ <vineethr@linux.ibm.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ 	linux-fsdevel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, Peter
+ Zijlstra	 <peterz@infradead.org>, "chen.yu@linux.dev" <chen.yu@linux.dev>
+Date: Tue, 01 Sep 2026 13:49:29 -0700
+In-Reply-To: <apasjygjnsg1n6em@v4bel>
+References: <apPb-Dr4nPYuHQOK@v4bel>
+	 <825d9dcc-b052-4367-a9c7-15efc4b354f8@intel.com> <apXV6t-7drLDf-lL@v4bel>
+	 <a1a0bc24108e68656041dc17824d6b88b4120058.camel@linux.intel.com>
+	 <apX1ufR1reYZ9LBc@v4bel>
+	 <db2436d91e2e04a8a1063553ce64acc74b533f5c.camel@linux.intel.com>
+	 <apasjygjnsg1n6em@v4bel>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.1 (3.58.1-1.fc43) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260901190123.3511535-1-noren@nvidia.com>
-X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: 1sxmosipgdzgdsro48ch18owizox6zh5
-X-Rspamd-Queue-Id: 8E2B44000E
-X-HE-Tag: 1788295495-690825
-X-HE-Meta: U2FsdGVkX18dxLD+YGhqtUwBEpqWAUPkqdB0RgyKh1QBPeZxPYEtVYC8jlduqNDVV1c+kUy9FNVBaQPxoDiwHdqc94P6RASLc3WmK5iDT/OapJ9wxcggIAFHNFw1M3fQ8G8lexUFX1OVi1lw379gRpn6jzGonjNuRfWEl0NVXMBdro5wYB7ZYL3dnaAgjkHJeg0n7EPCnF4aYAN+iaW+FqNTLv5UDItbrdiliNR9ccxQN1AayNTFJ6yidk3nuBcrh3Zsv8UukGxqPEbI81G07QDpmC+P7zjFtieu7omYrHiShO09s6ofFbgWIrnzjCsFNcgogva00U8VdrKgVjloRrVRgVoD2ku5pqIJ5GkTfjy2VZXP1dnBpQfFoJr25EB+b5RPvZM93E8+Fn0ZW/l/i2DLP/2HZfS/yV2uy4Yfavu9WLbWMBkKkIiWtgXxW5yPsIwnfBic84a2dvGBfQYh1IyyjIpkgVIVddYRxFtVQXm3zPuIno9anQn/8xSOGGbssTDfsNiAnqGYiBlTM2yTD4RD4EUh7pQRIfEqPHQWMDdImOtjQgFsPjg9MOFXVMz3Xuj1MWXGXKqs4JlCaq1uq0mExNHxS4XX5p+y03+2MeK4ETYO7pZOoEPxya+L40liCim5hUPDIKYUl+kPd60fhXppzJZ+UPoknyQEFbGYS9je9f8454qtx7oLmJqAaoOf81EF9G+UaemxkZehKtAEF6+lf40i9a4f3Cb0Enu3Nv1e4KzKO3o7VkKJ9zD21BJgA8hs3qh8cgU2UrM9QZYcvZ1ZUU64lFu1PPn/zDPF6qv35kT3bVig887ghX0qmTdfZE0J8hqHZRrz+wyTuSZVcqKiKqaKjVXyr6KBT/wU89CbJuqamVI1Dzev/VLcamD2K4pvVUYY72COcGJATSQwlEB6iEq+Jj8led7XJG2zznbLuxAWjeJpGEF1fMyR/TrFsC0VnG1rdvcwvEmmpCl
- UTF/lzc3
- Z9M7JOSBasKXBBdmW3fx1D7AmiKMDXvylCPgX7nRc9vU1XmIL98wHw1bb+b2YgdPxDppT1ALjMG/V21aTfFoEg1VSlIjLIcgl12sFoWrKjb764gcKfyppnrs6plvC1nHERdU9Vi9OU/EiZaVSxvc3WQaWmfvSFyv2zpX2VFGeXsJ5CG6ifOPTWIJ2xsyMSlVstpwQGmelskWmkZyZ46FvOwBlKJB+0dqzcrq9GCTrdVD/MF6zo7gmO7QOl3rZNxNjgBa5QpQGJdMXgRmtc3ioXKKyKYEOBjmLcGM40zavQqjL4YCqEH2HWQLmb0CJpg8uqO3XdZoj+LqR8P5m0HRxHFXdjWINb3yh8SA1WOHegj3Xg+lnwFxg7oJkivvyPbZ+ijuEqSyd21FSg2oce8M6NkKDBVMIplq4RiVZWsKWBd4N/CGpBSssFoFdmNlHu6mDmdqF0lggi9TZvpc=
+X-Stat-Signature: eyupgr3r98s48a9bt8pwncx1ewrxoy11
+X-Rspamd-Queue-Id: 324A4C0004
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788295771-141
+X-HE-Meta: U2FsdGVkX1+FF8gYWYpLblw6Z7HfOo3XEUfElJ8aGudu5SNvBT1V6zt1//9In9m0LyIeDINE92f4cEIRDBhyo9oPGb0y2cpPu/ZQJph976S3lv2cxM07nSbUJatroVrjO7k4GCxlTrnBGEpfec+6aU2ilci8LbZFUdl/vxRBesAUMf9ICFgW1CFugB0FVY4GcM1jCqoSBwgK7HL5zUiaCiI3/wFoYX0ZLdH05HAqE/oIHq9lY9zKndBLRFPvM8RZQ5dW9j9Z4WpxvFMwlIi4mGhQjKsizdKql7I/xuoYI/a8odoFIIIk+yW6nsGzDyMkvRm1YdXoR9ZqkqoNGeaIdAdnM5yt+XKmmX1349V7WQPWlgRemwEtPgwJkrfAm5Bd5YKxQykyveGJFvhXEfRJVkxN6gidtU/NBFy6Szew0y/zvNEcfOnsAmnbQoBktA7SqW7CRzZouIVB+SbHNyWBN8BGkJYAPKs30X+IhTJz5NlaxxhdPsB3VlzCO7jzPALrJ7GmlMd8gplGgmSqZcNVIozmjw57fQovYt3daNz5+ghcN5rWcmQyge7wS/e7lkbry7ufNjKdP/cNvSW2CzPioxSlvnXUbLScY0Gn6+teRpzib+XfsHKhpdmr00Ip2MyHZh3DJBJDFaYn/hPHiW9kyKu9N4zdhDUIDNPgPCDvMGz5VyZdGUqIZbqoYngPYM4vShdCNSdW9yuA/sx2Juh7kifNrl/4QZgLC9/lKeH+fbNIvoTbEiodOn5KhcftQpVr/S0IxzS1ft1evu/vXlyDsvs/boe6Tc9lPRUggGettzkwIfxYU27kFBblWtc/6ER8AfqlQldzRKo7W1Or3aVnNbgEo+8+SOIRPdSYSylISZ0wGG8ZCqQpsmujXwp2doA5O7tXPno0Rt9v9H+wYfjekAvHtuTA5A66QkNI2Fj6EnvspSmJkWATJz6GxXPEzNw9BqVEgNWv2K2g1oyR4tj
+ hqJritKw
+ Ceyd50bTT+NH72bhwebP/O1el/Hb4WTbKkXbCA9taJWx/ogoXj7YcIk4vgXQy218QQLajrCh6xcZiGgBFKBizajQfLq0R8dF8xNuHBIzBKv+p2oJ1yIZElkydGNanhZ2HvJ6VKZqAVS3p7j8Gfrw+Jg1wYJeOTjMVBwGjW84VqrcOgKgzIK/OR6KhAmYok2oH3QVkrpRbmXFyXNdIdeeQlitBnzE3Aoohf2rKeQRlt2pZt1/WtsYAg6x+irU7rrcp8YZI4Qx+nroOTLvdGgCkp7eOC3HUcjKt4yvFd3KDMwHwqEg1py9oOwVquh/YBylal1k1+wXfBb1FbHc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,46 +121,247 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 01, 2026 at 10:01:23PM +0300, Nimrod Oren wrote:
-> When THP is enabled, set_recommended_min_free_kbytes() may raise
-> min_free_kbytes using a heuristic that scales with pageblock_nr_pages.
-> Commit f000565adb77 ("thp: set recommended min free kbytes") added this
-> heuristic to help keep pageblocks free and reduce fragmentation for THP
-> allocations.
+On Tue, 2026-09-01 at 19:44 +0900, Hyunwoo Kim wrote:
+> On Mon, Aug 31, 2026 at 03:10:40PM -0700, Tim Chen wrote:
+> > On Tue, 2026-09-01 at 06:44 +0900, Hyunwoo Kim wrote:
+> > > On Mon, Aug 31, 2026 at 01:25:06PM -0700, Tim Chen wrote:
+> > > > On Tue, 2026-09-01 at 04:28 +0900, Hyunwoo Kim wrote:
+> > > > > On Mon, Aug 31, 2026 at 12:22:45PM +0800, Chen, Yu C wrote:
+> > > > > > Hi Hyunwoo,
+> > > > > >=20
+> > > > > > On 8/30/2026 3:30 PM, Hyunwoo Kim wrote:
+> > > > > > > When the waker cannot use the wakelist, ttwu_queue() takes th=
+e target rq
+> > > > > > > lock and goes down into update_curr(). If the target rq belon=
+gs to another
+> > > > > > > CPU, the task handed to account_mm_sched() is the one running=
+ on that CPU,
+> > > > > > > not the task being woken.
+> > > > > > >=20
+> > > > > > > account_mm_sched() reads p->mm and updates mm->sc_stat. Nothi=
+ng keeps that
+> > > > > > > mm alive. The rq lock and rq->cpu_epoch_lock it holds have no=
+thing to do
+> > > > > > > with the lifetime of the mm.
+> > > > > > >=20
+> > > > > > > If that task happens to be in execve(), exec_mmap() points ts=
+k->mm and
+> > > > > > > tsk->active_mm at the new mm, and exec_mm_put_old() from setu=
+p_new_exec()
+> > > > > > > drops the old one. free_bprm() does the same when exec fails.=
+ On the way
+> > > > > > > from mmput() down to __mmdrop(), mm_destroy_sched() calls fre=
+e_percpu() on
+> > > > > > > sc_stat.pcpu_sched and free_mm() returns the mm_struct.
+> > > > > > >=20
+> > > > > > > Whoever already read the old pointer keeps using it. It adds =
+to runtime in
+> > > > > > > the freed per-cpu area and reads sc_stat in the freed mm_stru=
+ct. Depending
+> > > > > > > on the condition it also writes sc_stat.cpu. That is a use-af=
+ter-free.
+> > > > > > >=20
+> > > > > > > Commit 9f23469401b0 ("sched/cache: Fix potential NULL mm poin=
+ter access")
+> > > > > > > changed the remaining p->mm dereference to the local variable=
+, and said the
+> > > > > > > active_mm reference keeps the structure allocated. That holds=
+ for the other
+> > > > > > > paths that detach an mm, since they take an mmgrab_lazy_tlb()=
+ reference.
+> > > > > > > exec reassigns active_mm to the new mm as well, so that refer=
+ence is gone.
+> > > > > > > What is left is the mm_users reference in bprm->old_mm, and d=
+ropping it is
+> > > > > > > the free.
+> > > > > > >=20
+> > > > > > >               CPU0                                CPU1
+> > > > > > >=20
+> > > > > > >                                        write(pipe)
+> > > > > > >                                        try_to_wake_up()
+> > > > > > >                                          ttwu_queue()      //=
+ takes rq0 lock
+> > > > > > >                                            enqueue_task_fair(=
+)
+> > > > > > >                                              update_curr()
+> > > > > > >                                                update_se()
+> > > > > > >                                                  account_mm_s=
+ched()
+> > > > > > >                                                    mm =3D rq0=
+->curr->mm
+> > > > > > >                                                          // o=
+ld mm
+> > > > > > >    execve()
+> > > > > > >      exec_mmap()                       // tsk->mm =3D new mm
+> > > > > > >      setup_new_exec()
+> > > > > > >        exec_mm_put_old()
+> > > > > > >          mmput() -> ... -> __mmdrop()
+> > > > > > >            mm_destroy_sched()          // free_percpu()
+> > > > > > >            free_mm()
+> > > > > > >                                                    read mm->s=
+c_stat.epoch
+> > > > > > >                                                          // u=
+se-after-free
+> > > > > > >=20
+> > > > > >=20
+> > > > > > Ah, thanks for catching this.
+> > > > > >=20
+> > > > > > > ---
+> > > > > > >   fs/exec.c             |  1 +
+> > > > > > >   include/linux/sched.h |  4 ++++
+> > > > > > >   kernel/events/core.c  |  2 ++
+> > > > > > >   kernel/sched/fair.c   | 16 ++++++++++++++++
+> > > > > > >   4 files changed, 23 insertions(+)
+> > > > > > >=20
+> > > > > > > diff --git a/fs/exec.c b/fs/exec.c
+> > > > > > > index 745f6eb5279e6..6194c38807980 100644
+> > > > > > > --- a/fs/exec.c
+> > > > > > > +++ b/fs/exec.c
+> > > > > > > @@ -916,6 +916,7 @@ static void exec_mm_put_old(struct mm_str=
+uct *old_mm)
+> > > > > > >   {
+> > > > > > >   	setmax_mm_hiwater_rss(&current->signal->maxrss, old_mm);
+> > > > > > >   	mm_update_next_owner(old_mm);
+> > > > > > > +	sched_cache_exec_done();
+> > > > > > >   	mmput(old_mm);
+> > > > > > >   }
+> > > > > > > diff --git a/include/linux/sched.h b/include/linux/sched.h
+> > > > > > > index 8b3d47a325cca..6ae31bffe049e 100644
+> > > > > > > --- a/include/linux/sched.h
+> > > > > > > +++ b/include/linux/sched.h
+> > > > > > > @@ -2415,10 +2415,14 @@ struct sched_cache_stat {
+> > > > > > >   	int cpu;
+> > > > > > >   } ____cacheline_aligned_in_smp;
+> > > > > > > +void sched_cache_exec_done(void);
+> > > > > > > +
+> > > > > > >   #else
+> > > > > > >   struct sched_cache_stat { };
+> > > > > > > +static inline void sched_cache_exec_done(void) { }
+> > > > > > > +
+> > > > > > >   #endif
+> > > > > > >   #ifndef MODULE
+> > > > > > > diff --git a/kernel/events/core.c b/kernel/events/core.c
+> > > > > > > index a6c8e38a31104..2f29cbccf03f1 100644
+> > > > > > > --- a/kernel/events/core.c
+> > > > > > > +++ b/kernel/events/core.c
+> > > > > > > @@ -5427,6 +5427,8 @@ attach_task_ctx_data(struct task_struct=
+ *task, struct kmem_cache *ctx_cache,
+> > > > > > >   	if (!cd)
+> > > > > > >   		return -ENOMEM;
+> > > > > > > +	/* @old, loaded by the try_cmpxchg() below, is only stable =
+under RCU. */
+> > > > > > > +	guard(rcu)();
+> > > > > >=20
+> > > > > > Is this change related to this UAF issue?
+> > > > >=20
+> > > > > Duh.. that one is unrelated. My mistake.
+> > > > >=20
+> > > > > >=20
+> > > > > > > +/* exec() has switched to the new mm and is about to drop th=
+e old one. */
+> > > > > > > +void sched_cache_exec_done(void)
+> > > > > > > +{
+> > > > > > > +	struct rq_flags rf;
+> > > > > > > +	struct rq *rq;
+> > > > > > > +
+> > > > > > > +	/*
+> > > > > > > +	 * account_mm_sched() dereferences rq->curr->mm under this =
+rq's lock,
+> > > > > > > +	 * so a remote CPU can still be using the old mm. The lock =
+cycle waits
+> > > > > > > +	 * for it, and the store to tsk->mm cannot be reordered pas=
+t the
+> > > > > > > +	 * release, so later acquirers see the new mm.
+> > > > > > > +	 */
+> > > > > > > +	rq =3D this_rq_lock_irq(&rf);
+> > > > > >=20
+> > > > > > A smart fix, learnt! It behaves like a synchronize_rcu() to pro=
+tect against
+> > > > > > the read in account_mm_sched(). Small open: since the context o=
+f invoking
+> > > > > > account_mm_sched() is preemption-disabled, I wonder if we can s=
+imply use
+> > > > > > synchronize_rcu() directly instead of this_rq_lock_irq() - just=
+ to avoid
+> > > > > > contention for rq-lock in heavy system?
+> > > >=20
+> > > > Thanks to Kyunwoo to show this potential use-after-free problem.
+> > >=20
+> > > It is a real, triggerable issue.
+> > >=20
+> >=20
+> > Appreciate if you can check whether the first 2 patches in=20
+> > https://lore.kernel.org/lkml/cover.1787955777.git.tim.c.chen@linux.inte=
+l.com/
+> > fixes this issue.
+> >=20
+> > > >=20
+> > > > While synchronize_rcu() avoids rq lock, it could introduce a long d=
+elay
+> > > > of a full grace period that will be undesirable.
+> > > >=20
+> > > >=20
+> > > > I think a better fix is to decouple sc_stat from mm and make it its=
+ own structure.
+> > > > Then we can do proper refcounting and rcu management on sc_stat its=
+elf.
+> > > > We will let task points to sc_stat with proper ref count and change=
+ the access
+> > > > as task->sc_stat directly nstead of via task->mm->sc_stat.
+> > > >=20
+> > > > Then we will know sc_stat exists in account_mm_sched() execution
+> > > > as long as a task points to it and do not have to worry that sc_sta=
+t is
+> > > > released due to the mm life cycle.
+> > > >=20
+> > > > In the first 2 patches of the prctl control series for cache aware =
+scheduling
+> > > > we posted, we introduced the change I described above and should=C2=
+=A0
+> > > > fix this issue without additional rq locking or synchronize_rcu() o=
+verhead.
+> > > >  https://lore.kernel.org/lkml/cover.1787955777.git.tim.c.chen@linux=
+.intel.com/
+> > > >=20
+> > > > We should probably prioritize to merge the first couple of patches =
+from
+> > > > that series now in light of this issue.  It will make maintenance a=
+nd future
+> > > > modification of the cache aware scheduling code easier.
+> > >=20
+> > > That is a fairly large change.=20
+> >=20
+> > However adding rcu synchronization will slow down the launch of a new p=
+rocess
+> > too much.  The rq lock solution has less latency in my opinion.  But I
+> > think decoupling sc_stat is the best solution without adding latency in=
+ the
+> > exec path.
+> >=20
+> > Wonder what is Peter's opinion?
+> >=20
+> > >=20
+> > > If you add a Reported-by: tag for this UAF to the patch, I am fine wi=
+th=20
+> > > handling it that way.
+> >=20
+> > I'll be happy to do that. If you let us know if those two patches from =
+prctl series fixes
+> > the bug you found in KASAN log, I can also add a Tested-by tag in addit=
+ion to Reported-by.
+>=20
+> I confirmed that patches 1 and 2 of your series prevent this UAF.
+>=20
 
-We've had problems with compaction before when min_free_kbytes was too
-small on large machines. Competing free space scanners do a lot of
-work only to fight over a very small set of possible target pages.
+Thanks for confirming that patches 1 and 2 in prctl series fix this use aft=
+er free issue.
+I will post those two patches separately and update the commit log
+with reference to this UAF problem. We will try to expedite getting those t=
+wo patches merged.
 
-So I'm a bit uneasy that you didn't include any benchmark numbers with
-this that prove basic functionality on larger hosts isn't regressed.
+Tim
 
-> The recommendation scales poorly with larger base page sizes. With the
-> default arm64 pageblock sizes, the contribution per eligible zone
-> before applying the existing cap of 5% of low memory is:
-> 
->   4 KiB pages:   2 MiB pageblock,   22 MiB per zone
->  16 KiB pages:  32 MiB pageblock,  352 MiB per zone
->  64 KiB pages: 512 MiB pageblock,  5.5 GiB per zone
-
-I question whether pageblocks need to be 512M on those machines to
-begin with. After this patch, you're still asking the page allocator
-to optimize grouping such that 512M pages can be allocated at
-runtime. Only now you took away part of the mechanism to do so.
-
-If you're using 512M THPs, I would kind of assume it's on machines
-with a memory size where 5.5G for defrag purposes isn't devastating.
-
-And if you're not, it would make more sense to lower the pageblock
-size to the mTHP size you're actually using. And that would fix the
-"excessive" min_free_kbytes issue as well.
-
-> The automatic min_free_kbytes increase predates proactive compaction
-> and many subsequent changes to compaction. Given those changes,
-> increasing min_free_kbytes for THP by default is no longer clearly
-> justified.
-
-That's pretty handwavy. How would these changes specifically eliminate
-the need for compaction scratch space and allocator fallback options
-to stave off fragmentation during placement?
+>=20
+> Best regards,
+> Hyunwoo Kim
 
