@@ -4,107 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C4E6C61DD6
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 05:56:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CACFC61DD6
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 06:22:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C6216B008A; Tue,  1 Sep 2026 01:56:14 -0400 (EDT)
+	id 8C0566B00AA; Tue,  1 Sep 2026 02:22:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 077306B009E; Tue,  1 Sep 2026 01:56:14 -0400 (EDT)
+	id 8713E6B00AB; Tue,  1 Sep 2026 02:22:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECF6A6B00A1; Tue,  1 Sep 2026 01:56:13 -0400 (EDT)
+	id 7604F6B00AC; Tue,  1 Sep 2026 02:22:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CF9EA6B008A
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 01:56:13 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 568B1A3EA0
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 05:56:13 +0000 (UTC)
-X-FDA: 85164133026.04.3720919
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A5035100005
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 05:56:11 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ou7BODbI;
-	spf=pass (imf05.hostedemail.com: domain of xiang@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=xiang@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AD886B00AA
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 02:22:19 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CFE6CA023D
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:22:18 +0000 (UTC)
+X-FDA: 85164198756.07.5CE4864
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 35EE41C0005
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:22:16 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=tRJQnl6J;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788242171;
+	s=arc-20220608; t=1788243736;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3Mnj837MmtIz++Lx3CjViaHZJuFNdZX481goDRHR5Jo=;
-	b=NThxo3OEzM9p9IBqbge3ezhRIz8OCXiem437dZ+04tK4ElodxMr/5ZkmxwIdCRgcPsul4U
-	x9O0hs+thExdQOD1jvmYC8WeJ5Jk67mNnFrJ2uTkYTTYam6pK3fG8TvMZ9US2Rmh9v7xu5
-	8dEPSCj6kj5l/0pSHb0gZjfQD7kcqkM=
+	bh=xVEo3DRGGCSdCvn8moEHUtteQuA8cdjiwaf12LKHABY=;
+	b=XzvEu7VNRADXvmrWjE4nEuo0pDPhgl964SXuHKILwr+GozScH/Y1dAu6b/Z+WmfDnvlzo8
+	/PtwXx8LcBGfdIUApiTdjsbrowxBoYJrL//GPVJ0JW2gQQnW7co/xp/2TyIaMhTrD7o4SN
+	Gvi8OkknF7xV9sqpd1oyradZHb205UI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788242171;
-	b=zifDN1y0Gk8U8s0ljTctyMpnceEgy1DUFFFk6jBPRaVm2m/6bnBwr6ic+97OISmPhRxtNh
-	aUifuV3lYq6NZsrp74afOZ03R0Z1crQYCJNP/RBRe9IHCr0h/lRI5D/5piN2KsyOZQX3Qr
-	340fzxcs/vaqHx7iXdDyqMpwudWyAWU=
+	t=1788243736;
+	b=JwmvniEhcsyXNpEdInUw3ZMwLPeZE5ICvt7pEfD/SVZGaYu76zpQDr5hxV6eW5U1oAt4lp
+	0p1npQxG+Ejhubayk+OPUsuo2dydCaRwPRlJbXbgiuhzdXTYD/MRPLHpwvEHJS9yBLUwdt
+	/ETHuorPzw9pnuNi+fdtnj0zazRehFY=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ou7BODbI;
-	spf=pass (imf05.hostedemail.com: domain of xiang@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=xiang@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CC3FB40338;
-	Tue,  1 Sep 2026 05:56:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 494581F000E9;
-	Tue,  1 Sep 2026 05:56:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788242170;
-	bh=3Mnj837MmtIz++Lx3CjViaHZJuFNdZX481goDRHR5Jo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Ou7BODbIZicrSpeSM00EfOJQrJABefs9Kuf2EhFYV6gK2dq64CXKdSuL3RyZbLucK
-	 TPg17Tyz0+5ncdV6c1HL6WGWK3QRh4+wm6tY9EoV1ldMeb65SaokB3SYllaBh+BMU+
-	 k3fxxYQqKpob1eGKNeK6NERFb4+ExYOKE40Jru2B8rYntpuKlNuC0j8YO4qOVeoRfS
-	 0Gai2YDP4tJxaz3XlpWyH0B+gdt6KErKtSPMpBpFla9M4/VF7fFDFR9rb7sXCytJmv
-	 hvNVEuFK2QwrR66uR+fQsxbPPuwkUO9XsB0pubH/TfXp4lry7WXlo5qdiAM9FijGEM
-	 OmAyFu0d6q/4A==
-Date: Tue, 1 Sep 2026 13:55:42 +0800
-From: Gao Xiang <xiang@kernel.org>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Christian Brauner <christian@brauner.io>, Jan Kara <jack@suse.cz>,
-	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
-	Theodore Tso <tytso@mit.edu>, Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Hyunchul Lee <hyc.lee@gmail.com>,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	linux-erofs@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	linux-ext4@vger.kernel.org, linux-nfs@vger.kernel.org,
-	ntfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 3/9] erofs: Remove redundant FGP_NOFS
-Message-ID: <apZo3lDaDp3hQhRq@XiangdeMacBook-Pro.local>
-Mail-Followup-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christian Brauner <christian@brauner.io>, Jan Kara <jack@suse.cz>,
-	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
-	Theodore Tso <tytso@mit.edu>, Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Hyunchul Lee <hyc.lee@gmail.com>,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	linux-erofs@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	linux-ext4@vger.kernel.org, linux-nfs@vger.kernel.org,
-	ntfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-References: <20260830041901.2668-1-willy@infradead.org>
- <20260830041901.2668-4-willy@infradead.org>
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=tRJQnl6J;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9D0151756;
+	Mon, 31 Aug 2026 23:22:11 -0700 (PDT)
+Received: from [10.164.19.53] (unknown [10.164.19.53])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B0E1D3F85F;
+	Mon, 31 Aug 2026 23:22:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788243735; bh=bRwEjPB8J1SjKC3oPG9e9HzL/U1SyH/SEHquXWa+ZBo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=tRJQnl6JSh2o7IqeJ2FWMR9/vm89y7lkqOowGY30fN7wWGWyNd7EbfWGSKAMI21XF
+	 eaXX+Y50GLxB3qa7dL66KFS6W2PlaH7q0E6sHhNpPR8RIJwisDDptjJb4XyVudCQHk
+	 +JZRRhN+w34Ljsi5l6j5jjepxFiuEqtZq5EYtHGQ=
+Message-ID: <54bd749f-04f5-4665-bd5f-d485e7197132@arm.com>
+Date: Tue, 1 Sep 2026 11:52:11 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260830041901.2668-4-willy@infradead.org>
-X-Stat-Signature: zto1a7kbb71c64ocyob3e9t7qysbmhd7
-X-Rspamd-Queue-Id: A5035100005
-X-Rspamd-Server: rspam02
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm: vmalloc: fix vmap_purge_lock livelock under memory
+ pressure
+To: Uladzislau Rezki <urezki@gmail.com>, Ye Liu <ye.liu@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Ye Liu <liuye@kylinos.cn>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260828091753.299295-1-ye.liu@linux.dev>
+ <20260828110503.e1eff32a9b7df9a8b2ddd4d6@linux-foundation.org>
+ <bec5eaef-d084-467f-9bfd-43f7dedc1aa7@arm.com> <apVPTt9Xw8kSgmTU@milan>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <apVPTt9Xw8kSgmTU@milan>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1788242171-387654
-X-HE-Meta: U2FsdGVkX1+wup+tuKE1SvgJecputGQlg4JyQOVECpl1riL/NGgWdSCWXE7WzD3V4Zs8ysYcwyMtOB8rGhhRF+aMQhNAT0USOgi/hBCpsT9BwB+s/pAN7kXI8VOjM0edgtnyN+0lVpQde41+rDyLvSthA0/gwYHNQw6pp7CYF7RJX7l7yOjt/Bn6qvh3hL1BMC084rI66voQiHNIe9GAVuboqJmlp62CpZ2JMiX16O4h9AiX1A/KQuA/Wo+vEZrtjYd08gbHGUznJol+ogMudnBBJjp4HiY2HGZcgLbrPQd8dxC52Ix18bWpLu3/i9qnHzKa/s3eODSRtZuKp5DPvHvXI5hn2/sqZSzurTpvzdw8nqZQAd2TdWtITujQ/UnnPiFZG4cxCb8aXOPm1/MqMBXUqhwyUZhmFW3nfnP3IWRo89jqq9pJLcck4nUd2dWwbdAdxRGY+AeHTzJwt7NOOrfqggtQzXeZnFW3xycAX+D08YYtcoIB37mF/Lem8lsmLWmvJohn8jqXi1secEMbRQM+/dNYswdkY4nLeZxSKW2uST+D4h4mT0b7qtS6k0pukqdBNFyCoZvFG5+eza05/wmH47zu4eC0du2bKionyrF86TK/YLdhjL1JwyOIhJtAIuhKdpKdxql33rbAgPERjWRRGyEsj3ZqNSvs82ymDpTdz4J56/dJPirJVZqGchcGX9mN57x79LhMZhuxzA5YFqhxuk9eQE9Ui6EXqFhZaOVCjmI2UbNL+IyGjRnqvZviu+p4HkOAQ3VnbIIgr1BQkr/CjplYsYG+f9cvDQZVHymJwRej9d0Be+RsYWS5U64lf9w5n/egxlsl+oqcg3G9htZLASHMLl8UB/UFvqvPt7XoOc4RChMnRSlXuXmE/hrfQHZ/+whBHRc5YPne6F4oLZu312FoIRAZJ0iBF59BC/gKjEkRIpxyfnDzbtiEXWhNWd/5qVo+/3EUXlxJz2/
- kpP+1ZnD
- GZkssFaM2c3qmASIJutc4s9iPKiD1YSR1EhOXkxIYa583ugjLj5D6EIEOrw93cJUWfMhm8s2ElMbaUTKVJ4adZjb7XqTOdaCTcalS9hL1tpeAy15LIpGT+YlYfPZXK/MBSj/3kkjVcoFOs0razIn9cP+5DjVkVU4+wg3MyATaqJchvE20AAxMm7TtBGcIAtztLt+qBia+neWGHH6Cn7wh/JhKE2aaS6ooFADtKA9/CDdfkKzsbLpOgjZ3auLGzolK3UHKhVT9hs3C75GnhjZDUJO2JMuLN4ba0bpUo4WA1t1ceY5uW27puLN2cHqvUy3tJULiPa/s3VamXXZFHw/532jeI1xkU0lxDvrSCx5cAxbRFkUM5Ud7KrGZepvF8YI175x5k+Ra7vgCB7xfEtKW4OC94Cyj30WRFrSbWi/dqgwW4O413sYtUgm+gZ0FmgIeAVe+u2515F2qpCYCiMC6+QgrfA==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 35EE41C0005
+X-Stat-Signature: 1ieimb9xhcqqstwtjugcde6ishy98wgi
+X-HE-Tag: 1788243736-722593
+X-HE-Meta: U2FsdGVkX191AG0m5168mf6PO4Ct8qX+JndTYMenetZ4+T4UMC7qIVLKzX/xSCMw9w0EAJx1vypvPEIN2uckxiXFXUskqL/SFHab1ub7ygxw9xq/PxVgQUsDmWJnodCZQwQurfjqL6rP4Xaeyl1B0sin5AWPAhhRCpdXXLIIvFcqiwT8ktJc2kVvn9V69giU2J8Ac2o/yPK5wosFedd/TTFXxanV1bVMY9Ucc1yR4aHkPZeh0blBfbnyjzY5SUwh3jdkB7C+qC2OpCxy00s67yDhtybv/NIGAL7PjPaltNnyGAQ9CyQmF1hcFJEsUs55ErROsjtnyHfl/wXImXZnNZgtm64CbnRQMdGstzif4O9jjn6HizH0jHRlH19HSiocgEGrwdinMhvpdhp57pMbPR9tP48+Lk7Xdb42s7rajuSYKWhBNlohbs0CCIWxGnH+ovl7EysZyla8BlED9hDwhqkHXmKkdboWpBUJD++ax8B/rmZI5Jkio4eJm4TR1wizSsTRBRYeVCw/SD/Aw3k69jfXlloPefREl/Wi3/YYPQY9/xTvzTyPoZOPUIC6Ri5T+qYsc9oivFbORc8KL+b8HL5YrdfoRWF0Kzj0phMirP1AjIKUU6xXx2opnI+op5y4b+aCkhPTkqVWiSI42VHXJ0c0Eq3dcwD4dEo4c71F4Z7Wx3ooBNQI92eHdOOClwL9X6jjYA4kI8m2JCx5VMoYe/+JvvU3xtHSBoJ4TnnbJMd5th1L7F0YvDzpH1EqgofZqw/CCJ4kmWUqAyhFHKlwxJfjTycLGjmq3JjlWJKJduY0rcjYjo4CmbNe+P/nBbZbVc6rQ0ogfz5cWlKtYlXgL+gRmiv+iSydZP0Y6jpnyOpfgFtc+fQcvczZjjsa6cNYi5MRiquFBz6kN9D1dtVWl+0REpd0s/eJSQRQigTVL61CRvcrTiiR9joaQ4pCdpDC29QDH9X/a07wHZvzCrO
+ Z2ePsfFD
+ W1MLM9relsDk9z4MUqn5hRGojZ+ohsInpRz/yEEPz0RyZle4NVTj/VCFiGucBr72l0+h3Dt6z+b5MAIZFVnCDMBzui/ZuXvtYSLlSLsxvGinecTXqBEJWrci2eU0+K5PzqLRPWLW0zG+7TT8lCw4+6601q7lHEB58IYpbV0nSYkbLHMdZly/5i0lJZKkXrSGeM0Ny3ohd1I8GXeAKh7doBhQhr/GS/0HVpHDKzxTsrr5tryCuhOzDuXkAyKy2va5pcasAlRVvfXqzG1VjO9Ej5DY64OP0UwevbCTmDMihID3IhmzFFYuSJn2RkbUaKanBCUGvcuykX+scnGqLwSJVIxMcDg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,14 +93,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 30, 2026 at 05:18:50AM +0100, Matthew Wilcox (Oracle) wrote:
-> The flags already include FGP_NOWAIT which prohibits all reclaim, not
-> just reclaiming from the filesystem.
+
+
+On 31/08/26 3:24 pm, Uladzislau Rezki wrote:
+> On Mon, Aug 31, 2026 at 11:39:14AM +0530, Dev Jain wrote:
+>>
+>>
+>> On 28/08/26 11:35 pm, Andrew Morton wrote:
+>>> On Fri, 28 Aug 2026 17:17:53 +0800 Ye Liu <ye.liu@linux.dev> wrote:
+>>>
+>>>> From: Ye Liu <liuye@kylinos.cn>
+>>>>
+>>>> The vmap_purge_lock mutex can be held for an extended period by
+>>>> __purge_vmap_area_lazy() which calls flush_work() to wait for
+>>>> purge_vmap_node workers while holding the lock.  Under memory
+>>>> pressure, those workers may themselves be blocked in direct
+>>>> reclaim trying to acquire the same lock via the
+>>>> vmap_node_shrink_scan() shrinker callback, creating a circular
+>>>> dependency that deadlocks the entire system.
+>>>>
+>>>> Two places acquire vmap_purge_lock from paths that can be reached
+>>>> during direct reclaim:
+>>>>
+>>>> 1. vmap_node_shrink_scan(): replace blocking guard(mutex) with
+>>>>    mutex_trylock().  This is a shrinker that only decays the vmap
+>>>>    pool and returns SHRINK_STOP without freeing memory; skipping a
+>>>>    decay cycle when the lock is contended is harmless and prevents
+>>>>    tasks from piling up on the mutex in the direct reclaim path.
+>>>>
+>>>> 2. reclaim_and_purge_vmap_areas(): replace mutex_lock() with
+>>>>    mutex_trylock().  This is called from the vmalloc allocation
+>>>>    overflow path; if trylock fails, another thread is already
+>>>>    purging and the allocator's retry will find freed space.  The
+>>>>    notifier chain provides a fallback if the retry still fails.
+>>>>
+>>>> Both trylock failures break the circular dependency: the lock
+>>>> holder's flush_work() can complete because workers are no longer
+>>>> blocked on vmap_purge_lock in the direct reclaim path.
+>>>
+>>> Thanks.  AI review expressed a couple of concerns:
+>>> 	https://sashiko.dev/#/patchset/20260828091753.299295-1-ye.liu@linux.dev
+>>
+>>
+>> Sounds legit to me. Now there is no guarantee of purge being successful, and we
+>> can get a spurious failure.
+>>
+>> How about using a WQ_RECLAIM workqueue:
+>>
+>> vmap_purge_wq = alloc_workqueue("vmap_purge",
+>> 				WQ_MEM_RECLAIM | WQ_PERCPU, 0);
+>>
+>> I see the same pattern in __lru_add_drain_all() and kmem_cache_init_late().
+>>
+> WQ_MEM_RECLAIM makes sense but this is another patch.
 > 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> I copied here AI comment:
+>>
+>> Does replacing this blocking lock with a trylock break synchronization for
+>> the callers?
+>>
+> No it does not. If someone is doing reclaim we do not wait and do not try
+> to do it again thus fail allocation.
+> 
+>> When vmalloc space is exhausted, alloc_vmap_area() calls
+>> reclaim_and_purge_vmap_areas() and relies on its blocking behavior to ensure
+>> that free space has actually been reclaimed before looping back to retry:
+>> mm/vmalloc.c:alloc_vmap_area() {
+>>    ...
+>> overflow:
+>> 	if (!purged) {
+>> 		reclaim_and_purge_vmap_areas();
+>> 		purged = 1;
+>> 		goto retry;
+>> 	}
+>>    ...
+>> }
+>> With this patch, if another thread holds vmap_purge_lock, mutex_trylock()
+>> fails and the function returns immediately.
+>>
+> If reclaim is in progress and trylock fails a caller repeats only one
+> time to retry an allocation. There is no any infinite loop.
+> 
+>>
+>> The allocator then retries
+>> instantly without waiting for the concurrent purge to complete.
+>> Because the retry fails and purged is already 1, could this cause the
+>> allocation to abort and return a spurious vmalloc allocation failure
+>> (-EBUSY or -ENOMEM)?
+>>
+> vmap space can be fragmented and not avail for 32-bit systems. For
+> 64-bit system it is likely impossible.
+> 
+> But, i think we can overt mutex_lock() into mutex_trylock() just only
+> in the:
+> 
+> static unsigned long
+> vmap_node_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
+> {
+> 	struct vmap_node *vn;
+> 
+> 	guard(mutex)(&vmap_purge_lock);
+> 	for_each_vmap_node(vn)
+> 		decay_va_pool_node(vn, true);
+> 
+> 	return SHRINK_STOP;
+> }
+> 
+> so the reclaim path is not blocked. It should also address an issue
+> reported by the Ye Liu <ye.liu@linux.dev>.
 
-Reviewed-by: Gao Xiang <xiang@kernel.org>
+IIUC you are suggesting mutex_trylock() only in the shrinker path. But
+then, the following is possible no: take purge lock, try to get a
+worker thread, worker thread is stuck in vmalloc -> alloc_vmap_area
+-> reclaim_and_purge_vmap_areas -> take purge lock?
 
-Thanks,
-Gao Xiang
+
+> 
+> --
+> Uladzislau Rezki
+
 
