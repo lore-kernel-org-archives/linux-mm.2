@@ -4,98 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 832D9C61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 07:11:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D320C61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 07:13:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A92C6B00BA; Tue,  1 Sep 2026 03:11:53 -0400 (EDT)
+	id 4B51D6B0095; Tue,  1 Sep 2026 03:13:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 859D06B00BB; Tue,  1 Sep 2026 03:11:53 -0400 (EDT)
+	id 465B06B0096; Tue,  1 Sep 2026 03:13:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76F836B00BC; Tue,  1 Sep 2026 03:11:53 -0400 (EDT)
+	id 3A2E56B009F; Tue,  1 Sep 2026 03:13:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 574616B00BA
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 03:11:53 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DFAE41A0366
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:11:52 +0000 (UTC)
-X-FDA: 85164323664.06.9CF5A42
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0073B80004
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:11:50 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z0Uv1bVT;
-	spf=pass (imf30.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 171176B0095
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 03:13:41 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DA6ED40351
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:13:39 +0000 (UTC)
+X-FDA: 85164328158.09.F2D8FE1
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 18045180007
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:13:36 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=U0fkqFji;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf06.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788246711;
+	s=arc-20220608; t=1788246818;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pYd+AmENN7bAFVPF+YgWJegBKmXG80GfPgevNF8Tk5I=;
-	b=6pYkAAeI5tIs41/xj22p2KQIAEDfRH4T2iYqO1/mCsRMUyejLnxw2tkvEn+p46eVNK3T0b
-	uMJp5znhxiTtQXv1k8iTLVWY3vXAs6FKy4zXioXlJ9QD2wBnDhl/Fjmlx48IsYXdSKCvER
-	+ItGPG6DqyuM5lUDS4LiZNMIncIYrKA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788246711;
-	b=rN/U6L/Z36+xoxoNC/g08HOqYc1PNi83di2Z9gxrBkWo6lKFcB0hQpu5nb5B4yR7HX4dE3
-	qtRK3h7Sz5CKC6dpV/i9NOgoZF2Q1xSPxOaGEgYjYVZbvOLG3H2EkrLvkv7vJqSwbHg+KA
-	XlMYd7Sa/lTeoEt3WvpKQdRSI5TDltI=
+	bh=iWhfzyQgaYUJtonCqs7Hc3xCwG5I/OFdVxQZLlY0m4E=;
+	b=xSBKNaNXhKMj2CgqTa9lzz+J6CKdk7qiYMmIYvsekrdG0FdmNA6kPaJA79AzaBiEFI+dqu
+	JY8x9YtCxG7MJKdJPyYh/ATYRepDuSxblrW90hiRrRGuz4S/Z4OG22J5CJRHFvxrqiICfw
+	Fral3b13S8dB184mtqm3ICKjeEOfsaw=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z0Uv1bVT;
-	spf=pass (imf30.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2553E40F00
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:11:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09CF61F00ACA
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:11:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788246710;
-	bh=pYd+AmENN7bAFVPF+YgWJegBKmXG80GfPgevNF8Tk5I=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Z0Uv1bVTmwNSe2MG4zBZ/kangfL5DrGJqCNG/6ct5GnHKZHWUSwEMwwNj4pTpVOlY
-	 vzTpNrYGcucfa8jnKRTpQ+ZnYpxlyClnyOuP5+tAtU6+JvqWHuUgegvjlLhKwEarfi
-	 ppWog9b+ApOwXPSWjKv53yC2veI+vngUvIa/sjCMCCiynJ43HIZE2FEM+kLCuPOWkV
-	 OSxcyUViy/ADlXnYS0iOSci9XZunbLiVHTCTAo/nAYQ10BFsGF1lM6xQW2kgEIANtl
-	 +BfWFb9w7eaeov88N1e0ydbBrjDZCN/Y4HVyOm0vOZ4+8ZALCJM27a77uwS8iGBZ0Z
-	 Fa/D8xo+lXk6Q==
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-93906e8a5feso450984285a.1
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 00:11:49 -0700 (PDT)
-X-Gm-Message-State: AFuF++n6nUPqkML60i5829kKDgvOTA2HZhPNZTXMo5HxZX7LAJ9MDthH
-	S99ZkwDKPkBnC9gF6imgvLUBFxfrwirxFV+If7DiTUK783yk4TzlvnhocUsiP4DanmkBsjG+bWd
-	5awg1fwK+03szBidRWVJGWj0dCRz0GJI=
-X-Received: by 2002:a05:620a:3c09:b0:939:409:708a with SMTP id
- af79cd13be357-939137d1dc3mr2947753785a.13.1788246709416; Tue, 01 Sep 2026
- 00:11:49 -0700 (PDT)
+	imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=U0fkqFji;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf06.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788246818;
+	b=cSG2REs1yIVptkyz6NRxKZOHrSLNnchC7jgQuC5lzuX5jgvjdRJu9tKIsYguW9nfbsc8UZ
+	rj9blMWpBsSdIzSZ9rvHies9zn25n4k3dFYNE8Gspz6VWZZBfpOrrGerPuRXAZOtpOR13G
+	lBboS/T0f1ZMx4QwpdhZJAxGEQqfBYc=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=iWhfzyQgaYUJtonCqs7Hc3xCwG5I/OFdVxQZLlY0m4E=; b=U0fkqFjibEL2Au50BwXhiEMpAJ
+	FHdHxlsHRfE9ddPoa8rf7lCgMRKv8R0QHofEwjFYQmJBCmC+Tolg8GG1fPwUsxRuvRa+YJ74Ppfo6
+	QcV27MIXjoNFh35D0OeU3+S4DrKRdwj2JfZRsncSeUjbFH1zsZyH3a50+FYXplGfj/KaPDwlmz7ke
+	7heeXq4AYy4kz0AegnczpiqBVkKaneioL+asAzJKQQlIcOlgvmcsrbnaMS6b4wL68taHvyHYZgElp
+	ye/iitKbCj9JSY5/4mMsC/2tH32SNuwcadBDQEO/hQiKw363WcDtQyH/9kDltW3nWQo+QPXyFxTgo
+	uqa2PJKA==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1x1IgP-0000000AgGO-1l2R;
+	Tue, 01 Sep 2026 07:13:25 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id E32853002ED; Tue, 01 Sep 2026 09:13:22 +0200 (CEST)
+Date: Tue, 1 Sep 2026 09:13:22 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Jianyong Wu <wujianyong@hygon.cn>
+Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Chen Yu <yu.c.chen@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Phil Auld <pauld@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"jianyong.wu@outlook.com" <jianyong.wu@outlook.com>,
+	Yuan Zhong <zhongyuan@hygon.cn>, Huangsj <huangsj@hygon.cn>,
+	Fengyu Wang <wangfengyu@hygon.cn>,
+	Zhiwei Ying <yingzhiwei@hygon.cn>,
+	"justin.he@arm.com" <justin.he@arm.com>
+Subject: Re: [RFC PATCH v2 02/23] sched/topology: Introduce a NUMA distance
+ matrix with unique distance values
+Message-ID: <20260901071322.GX687043@noisy.programming.kicks-ass.net>
+References: <20260827122816.756234-1-wujianyong@hygon.cn>
+ <20260827122816.756234-3-wujianyong@hygon.cn>
+ <20260831115004.GF776954@noisy.programming.kicks-ass.net>
+ <ee97dce1db374f50b8e87e51ad133d96@hygon.cn>
 MIME-Version: 1.0
-References: <20260901063755.1519710-1-hebaoquan@kylinos.cn> <20260901063755.1519710-2-hebaoquan@kylinos.cn>
-In-Reply-To: <20260901063755.1519710-2-hebaoquan@kylinos.cn>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 1 Sep 2026 15:11:38 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4x=sZcc0+wkAbS02YJUdpzxTTpozh7o7CSozWL=1K0rNw@mail.gmail.com>
-X-Gm-Features: AcwNN1UnSP_OGFmVLmU7cRt9Fi7orb_pKKOsQ_ctPA0p92Y5WcWevpVu-uiCQvw
-Message-ID: <CAGsJ_4x=sZcc0+wkAbS02YJUdpzxTTpozh7o7CSozWL=1K0rNw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] mm/mglru: add MM_WALK_EMPTY stats and tracepoint
-To: Baoquan He <hebaoquan@kylinos.cn>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com, 
-	shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
-	weixugc@google.com, david@kernel.org, rostedt@goodmis.org, 
-	mhiramat@kernel.org, hannes@cmpxchg.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ee97dce1db374f50b8e87e51ad133d96@hygon.cn>
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0073B80004
-X-Stat-Signature: os7pkjqzfdt5wz654g6jk858a8x5qotz
-X-HE-Tag: 1788246710-56824
-X-HE-Meta: U2FsdGVkX1+bTTwi2xZHSE3tn1e+vfVj4Q60ZRkn0sNWTU9i6xSZ5o2N3bNU0KFgHv+4RNPla46Y89+PqCssU4/f1kTmV7NzHiimJ93l8i6mRZC/clb6vhLy5GaQgyBFgIOv7oVlHPTTqQB59tJ0jaM0YFlswT2EIKe0gyikcCfn9S5NVHjVdcqKUC5fmfegLbT12r7m+kZLm69d22zwveIZvcEnbPs5FtPE2DAVRS8btxfJRw3RX2QYnqcrFgiUFdvR3E9fgELytrzu6eIqiKWyEvlMMmPFfHagDOSfGnFmFL7S8jJAbbBlozOYG9lgrwkak3P+5pdRIqHX2/NMhPEmogjRiWspl/bJKdWLOoAZttxYSo5Mw8AO2Xckgzf2UObl9AcoVkbthHxs92DeNkeKkuuiYPp6FIndHBjF0UyFrhidl3a+TjUDW+Whs0edaxMDK3xezs3Tzegu1BaimX2KpnTFKXKkvUZCOV6VfTlf9CT22aunlC8Iad5UJSBf+E/acT/g1rLiUp8R/6FMUUL/oNjdVjrNzyA77K2QwCkonmb/D05HUF49euVLkp/N5LElWo88vL3n1MjAdsmMB6UKKevroOLprwjEU8c9HssAafLKC3QXC+ODZja6nQgX03i4usp9ywnzBhN+eUtfb75Or726vbywA0Njc0DSVL8U3HI/ulRP89ve+oKY4Std4zUKbkVmATkYaXb9te4gfyjbNxpPu4I6RbSWhFlVq/pCuq3JJKJ191YiDNb6GJv+jodWfV86YmctAjFvXlmJ8d8oXYg+ksIQIRYLtD0MmikClMzNY9eZ8NKmieriSsOyjqP3t4tRT7F2MKlNF7ru1me1FyySrXmF5go13kQBeQ1yWbBo0u0Fhq8CXGsSydWm26906Zj/bzIYJHTNWLiOROEWzLJxMBBp8JYOdGworObG4bWBrysGQ6mEhAQ8Gf0fn+hDQ9WBf23xiVRg8H0
- MBDz2aWW
- 8KFzSYgJvVWiKvn3P0bly1aZfe4+9Jt5rAB2BmpJZEoK6XPvobg4AT2OGzBVb2nIIKAX5hE9qLvokWy1h4eS5bABVdlTHqzO3DUBpHAb3cFzRrIdLGdG1ZRsgSWs+OQZfW2EZdPWDr3OZZRmL6DijL3vqDdbAI4UEP9GPGBKUzGHPRXqoZGcbZUV8YrWks0XllwFyN4CbB4bt78NLjvJSnnoK8ZJM8ejEgldtp+AIP8Sg0I9H9y8iKRzAJUilYLYlOGQHkZAE3nkJBvC+xTXhL1fWTecr//CvjD+G+9129FpgcsGXhhxjrSAb2z3pMM3bpQMQY9Uv9pLInnQ=
+X-Stat-Signature: a8stz8imbquyxnj48gzajw6m144gj69i
+X-Rspamd-Queue-Id: 18045180007
+X-HE-Tag: 1788246816-445511
+X-HE-Meta: U2FsdGVkX1//TD0L02tu8/O4csH7h5FtlPN8QWCL6CJRIQ8HD77unGEw8uILQMqNHBYMLn4B20+DYx5UyGGm+PPjankgmOKTYzyQche5Yo9Q5Oh3Fh9f7bkNn0k9+OeF2cQKYMki8GzgNQI7Fa5gL1xuFqUl6lHkG9U88auBKBYbVy7suWBs2nqcX4zpHgFbjhWw91ml9V2qNzL7EyxmCIHqZassKdsnYHfrWqrKOqiVBNrUO85aXwS/S5eH+qUq8IPfOTnlDBXSvTRFCZZbrwqzGwdtjescQ6pB4JlMABS7HmE1FaLGCQSvujwvL+Dc+z9caiR+78yct46hB3VIgunhBPJRdBTyLfXzofT9a826H+KKwT7cTng8/e6/JpUpDGUiXFBEUO19BOGxu05OiLRgphUWInaAPotI+6nF/5Po3hTi7P6dMu+1diE5+N7FdT3CBnFwe+iglCqzZJRy7ha7xT64mXza27d0X7YxCHyN7hnbeHLNOZllcC+KdSg1BFruHwZN7dzE8blWBkg21L6Yy5gVAGS/oEz37DgKdbpi5L1ID94Qc4LRAaxQfnjsWYLNGZcxpVodpI8wZ6MQrPuazjSYFk5c2Yehh1GYZhqER5d4svjEm9UswpjDVjIjiDXWP7wee0hCnItKOIR8SH+qB5c5ymIzcY+Q/qpFZPDTp/IrqFnMcU1HDcPzuC3MeY8+m6k6rWlu6xVTl3W0vKSmFHfUAzGprf8ECioWe+ouWq0tFrOBYWav5G6uN5FUOHeW0XEqLx7eEjRp1pZNfslBbGH7hPnDncv0OrAbwWjFWKSMkD+SrmdXqILziN00TsyeRfttZQhltNNsEoOLwmErxo9KSy7yIrIqRxz4gPH/unrX+ANrF0WTtNH44xOEN4zI8rf3FcPBtzvXpNvvuuq13xjTd0++ACtaZNr4O44YdAg6h/2ogeCotv86PlOXZlWlOmGbdMSlxLFJIOK
+ RvA+zwm+
+ Vk4HGKeOAJGeLOnjs07Isuw60/b5E74XWJonjHp1Nitm81TRrg5nLIwOdaaunqsX0HUwtp9kIt41Pen+eRoO6dqeyv62bMc7w4hgSgnhrARASEgd30Y9JA3aTxG72wDvPFpR6dzdxgiFV34Si7kjIQrZ9SBfFV2v1XS4F9DwFjVArGLIUUIEpY6UC+LcotxCsI7znkmI4UtyRs0BjxJqRmUmYoYhH77uVpNEsp9P19ZolPoZvRFH6YFD8iw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,79 +113,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 1, 2026 at 2:38=E2=80=AFPM Baoquan He <hebaoquan@kylinos.cn> wr=
-ote:
->
-> Add per-walk counters to measure empty aging walks which traverse
-> an mm's page tables but find no folio for the current lruvec (node+memcg)=
-.
-> These are common on multi-NUMA node systems because lru_gen_use_mm() mark=
-s
-> an mm for all nodes at every context switch.
->
-> New counters (accumulated in mm_state->stats[]):
->
->   MM_LEAF_ASSOCIATED   - leaf entries whose folio is in this lruvec
->   MM_WALK_TOTAL        - page-table walks completed
->   MM_WALK_EMPTY        - walks that found no folio in this lruvec
->   MM_LEAF_EMPTY_WALKS  - leaf entries scanned during empty walks
->
-> A new tracepoint, mm_vmscan_lru_gen_walk(), fires after each walk, and th=
-e
-> debugfs lru_gen output ("TYFALWEE") exposes the new counters.
->
-> Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
-> ---
-[...]
->
-> @@ -4109,8 +4113,28 @@ static bool try_to_inc_max_seq(struct lruvec *lruv=
-ec, unsigned long seq,
->
->         do {
->                 success =3D iterate_mm_list(walk, &mm);
-> -               if (mm)
-> +               if (mm) {
-> +                       bool empty =3D false;
-> +
->                         walk_mm(mm, walk);
-> +                       /*
-> +                        * A walk that traversed page tables but found no=
- folio
-> +                        * belonging to this lruvec (node+memcg) is pure =
-waste.
-> +                        */
-> +                       if (walk->mm_stats[MM_LEAF_TOTAL]) {
-> +                               walk->mm_stats[MM_WALK_TOTAL]++;
-> +                               if (walk->mm_stats[MM_LEAF_ASSOCIATED] =
-=3D=3D 0) {
-> +                                       walk->mm_stats[MM_WALK_EMPTY]++;
-> +                                       walk->mm_stats[MM_LEAF_EMPTY_WALK=
-S] +=3D
-> +                                               walk->mm_stats[MM_LEAF_TO=
-TAL];
-> +                                       empty =3D true;
-> +                               }
-> +                       }
+On Tue, Sep 01, 2026 at 06:57:43AM +0000, Jianyong Wu wrote:
 
-Hi Baoquan,
+> > This example uses Node only, but the code in question is specifically
+> > aimed at Cache granularity; might it be better to use a cache example?
+> > 
+> > A little something like so (I got tired of prompting Gemini to generate
+> > more complicates / less broken examples)...
 
-Where are we clearing these counters between different
-mms?
+> Originally I tried to use a single big LLC distance matrix. But once I
+> realized how much memory and computation time it would cost, e.g. when
+> calculating affinity scores in later patches. I dropped it in favor of
+> a two-level scheme: the first is a NUMA node distance matrix, and the
+> second is an intra-node LLC matrix that only encodes the LLC distances
+> inside a single node, so it is very small. This way, both memory and
+> time are greatly reduced.
 
-It seems the previous mm_stats will affect the next mm
-if they aren't cleared.
+See, that would've made good Changelog material :-) But yeah, fair
+enough, the matrix will get rather big I suppose. And going to
+triangular matrix storage will only save half, while you still scale by
+n^2, so that's not going to help.
 
+> > > Each row of this refined NUMA distance matrix is sorted in ascending
+> > order to
+> > > generate a unique per-node affinity sequence. This sequence will guide
+> > > thread migration logic introduced in subsequent patches.
+> > 
+> > IIRC greedy has significant worse bounds than many other schemes. This
+> > would result in more unique distances than strictly needed here, right?
+> > 
+> Yes, Greedy edge-coloring is simple but can't guarantee to get the
+> optimal result in theory.
 
-> +                       trace_mm_vmscan_lru_gen_walk(
-> +                                       lruvec_pgdat(lruvec)->node_id, wa=
-lk->seq,
-> +                                       walk->mm_stats[MM_LEAF_TOTAL],
-> +                                       walk->mm_stats[MM_LEAF_ASSOCIATED=
-], empty);
-> +               }
->         } while (mm);
->  done:
+Right, so the theoretical count is :delta: or :delta:+1, but the greedy
+bound is 2:delta:+1. But IIRC (and I really am not well versed in this
+particular area) there are algorithms that are still relatively easy to
+implement and get better bounds.
 
-Best Regards
-Barry
+I just asked Gemini (so take with a big pinch of salt and consult your
+algorithm book) there are simple algorithms such as Eulerian paths, that
+exploit topological constraints, such as hypercubes or 2d meshes, to
+still reach :delta:.
+
+> > Since this is all on slow paths anyway, does it make sense to pick a
+> > slightly better algorithm in order to reduce this bound and get better
+> > results?
+> > 
+> This matrix currently has two consumers:
+> 1. it is sorted to build a unique per-node affinity sequence;
+> 2. its values are used to calculate the affinity gain in patch 12.
+> 
+> Therefore, when changing the de-duplication algorithm, I need to
+> consider the requirements of both Consumers, For the first use, any
+> symmetric matrix with no duplicate entries in a row is sufficient. For
+> the second use, however, the actual values and their differences may
+> affect the affinity score.
+> 
+> It is not yet clear whether using a more optimal algorithm would
+> provide any real benefit for these consumers. I will investigate
+> whether a tighter matrix can be generated without introducing too much
+> complexity, and then decide which algorithm is more appropriate.
+
+Right, fair enough. I'll continue trying to digest the series.
 
