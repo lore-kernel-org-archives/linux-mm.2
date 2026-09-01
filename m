@@ -4,85 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01A5DC61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 23:50:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5D3AC61DD6
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 23:53:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D076F6B0088; Tue,  1 Sep 2026 19:50:21 -0400 (EDT)
+	id BD3466B008A; Tue,  1 Sep 2026 19:53:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB74B6B008A; Tue,  1 Sep 2026 19:50:21 -0400 (EDT)
+	id B84896B008C; Tue,  1 Sep 2026 19:53:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCD786B008C; Tue,  1 Sep 2026 19:50:21 -0400 (EDT)
+	id A4C0B6B0092; Tue,  1 Sep 2026 19:53:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E5456B0088
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 19:50:21 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1D0851A0539
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:50:21 +0000 (UTC)
-X-FDA: 85166839842.28.E15E35C
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 88EC66B008A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 19:53:13 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 216081C1728
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:53:13 +0000 (UTC)
+X-FDA: 85166847066.10.487BA83
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 4FA7640003
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:50:19 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=taf78+zi;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf14.hostedemail.com (Postfix) with ESMTP id 780B010000A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:53:11 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I5l1te8n;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788306791;
+	b=kbDLW4sPQwLWE/LyzWk/Vaji58TqXxZZR+Txlc1YN9bgvGiJplVvlP2n8P/pzLLFT9GQDN
+	JQjFbucyXgjcnEd6WncEp2ilQk5EIZByQe09VM2PhApVFsdkdfzf51NNNmKodroD6Zg7Jh
+	PgAa9MsYg8DOhao2EGczouHozYhPWoQ=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I5l1te8n;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788306619;
+	s=arc-20220608; t=1788306791;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cO2NQpTqNyksv7OnpDCOabiznLBIQ5ThRsjNguJQrl4=;
-	b=Vq3ZO9C+dGeJsb2GGAKTj/ECv0hWKAy0623tL0nnSoy6zBdOli+BcVCeyT8GaCqDLVnjCc
-	YMu43L9rAOkus7GD1IzqXb1RGAI31rEH7hEhtx1lI2woAYgk1AyCBgPLBPJ9B1SzbD7XVC
-	oMuBgUec/EGae4+JnDe251u9wGgrENA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788306619;
-	b=yIp2Vw6+k8oFfXzgoLle9KTVcJi4Jh56SSU3RDJHcD6GVT+rM7d/hnROsqU8gzdU0I/P5H
-	ACAMoGlAFXcRUYyP3k7fBaRFq2b1nFv8rvu6kA0V2VrVoOkEhRjrr81LonxnLun9n7Mz2B
-	PU+Ss4nbj/7NJ5VoE66AEN4wa++iJVI=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=taf78+zi;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	bh=qwo/oxJowOK5NCuSw9/wxwXOLTwjKgO41GHpF7gUkAo=;
+	b=lcdDpJYj1IZpckKwFtrkUheet1k0jkhp/Vx6rJzJMNDrUfpveLH5p5Fv4/IxeIB8T/BH4e
+	fAcpk+doWTD4p0bNrOu3OwRXDOTiQyHFKJpt1PqnHf7er2H7ENs/CHerHb5RrQBlQWj99u
+	Ho0KE4gpSh2+ZO+56KGxft3gBh4pTXQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 71D85436A9;
-	Tue,  1 Sep 2026 23:50:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313211F000E9;
-	Tue,  1 Sep 2026 23:50:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788306618;
-	bh=cO2NQpTqNyksv7OnpDCOabiznLBIQ5ThRsjNguJQrl4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=taf78+zi66bkZebf7dLDJOwNcMfwFaFJ1quVuqATGJUR2HutI2NHyhDf9PFUgC33r
-	 nUGUG8JiAx+KGoEwgeLRzvAiCe0kpwhl4RS8LMm45jlCZYI1DEKbWxxcyJdZcM04ih
-	 qlrwrTQPrkiG1GfHnGMBK6ivJoYgkn9kz+RxUtVs=
-Date: Tue, 1 Sep 2026 16:50:17 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Ren Wei <enjou1224z@gmail.com>
-Cc: linux-mm@kvack.org, pasha.tatashin@soleen.com, vega@nebusec.ai,
- roxy520tt@gmail.com
-Subject: Re: [PATCH 1/1] mm/page_table_check: widen map counters
-Message-Id: <20260901165017.78b57617473af4c4c60b0825@linux-foundation.org>
-In-Reply-To: <b4414b588418c52a99d959d35a40e064ae8b6e72.1784337674.git.roxy520tt@gmail.com>
-References: <cover.1784337674.git.roxy520tt@gmail.com>
-	<b4414b588418c52a99d959d35a40e064ae8b6e72.1784337674.git.roxy520tt@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by sea.source.kernel.org (Postfix) with ESMTP id A631840BC6;
+	Tue,  1 Sep 2026 23:53:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2CA1F000E9;
+	Tue,  1 Sep 2026 23:53:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788306790;
+	bh=qwo/oxJowOK5NCuSw9/wxwXOLTwjKgO41GHpF7gUkAo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=I5l1te8nyBGdwEKr1MLPS4uV0mJRTy6THlxjrphsJBK8B6R6L0vFvepMGAFim/ea3
+	 HZqx1yzImxla/z2lPgHCf+N68TyJHoSygquTqNiblWau0Cg1kItC+3WV97Zbtc7WYe
+	 MA6cZIQerAzA2dLFjvkC6FyVLkvtxYR5RDZp0cy9jARPAMJ5liyog7zQRyB0xY4lZj
+	 QTrOB8hYU54uiNDarQfwBAoHf1jRVuZn1HRYwrhmi96pPtPP5hYQWYOgkCCFpj1YhH
+	 vMQjCkrZpREBgWrEvBeRFUioa5v4FluEeFS8SpyMB+VUxWoZvAKjh5Huj9IgGaSR1J
+	 qKGQKv7mEs6vg==
+From: SJ Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SJ Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v1.1 00/17] mm/damon: introduce data access-as-a-data attribute
+Date: Tue,  1 Sep 2026 16:52:57 -0700
+Message-ID: <20260901235258.103447-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260901101800.0d76452eb310a4b958d792fd@linux-foundation.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 780B010000A
+X-Stat-Signature: nc5wcgu6fo6exoheb1jfjri4n7cdnx4g
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4FA7640003
-X-Stat-Signature: 39yisuxc6o365e7s991ofxb7raqby78t
-X-HE-Tag: 1788306619-351152
-X-HE-Meta: U2FsdGVkX1+kJN1iMH0vO18Mj+SRg/g272+seuhtrFVUBVWypSYzbrhtSaXJFqsUkNIKKeD7mxH/B/6MT4ejQ/1Z2wbEmaA4lzc+j0U8vqwW1DBHSin9b3tUjiJjHs3SIdZj62yXbCYVDHjZOPkIrx+RNnPsR85tV/OjElwvel+T1tmKiho9Y7idvQluE1gZQ0uFpchJOX/5WUaIktsBgOHje8iA+rIng+QdDUrUAakpNcB2ImhFhRwgoK/HEyfjbU/KPIcT5GXWsTH7gd/HQLJGWd+lYpZbzBVeupM8jQwWXeCEjIbZzArX1shqYi5Slwo1DbUjgxbNjdJ6sosIBmQ6jH7UinSVuuXXXzj6TrNlFOaC+gyOxtNqyvJ/WgH4ZvN35vVyHq8ROBG7S7wIyktGhHnHk/FqrfkAmYb3YBH1B51Dw1KhuUq2Nymo6wtrlwYZeA2jrusGWr+ZwXmWBHQev4VergPoIKjhnYGcOD1vWMuAI8m7Hr4AraPZi5OOyxQz66xKkIEtm0oscPG6Q2/OOk1v/FkAVPcv/d9XJQxzxlzVcvNVhwJmWOcHAH6og6YkZgiAwfgdCUIqck5/9vjaDFO++dNnXG24+B5sI/zKJ7+T2VaRgQgnLGBfISb7Lhiw8zwXpbw0WJddFxdWRFj/DFq9MHHETsaZdoYYfy139eiwNgSwUPadk5KkmCGxMpGeKnJMLuS7me84CVzUS0DxgEtsjAaiepWvgWYO0mLgjGX69GVj6Ck0hyG05GhGBHbxZl3kJlo78Ms3nlLh4tNtXj+QK7gC1NsWYLHzWo+7V7JN1fiWdUblSpv+ueBeV7AfnGdAu0xFRIJNr+saGYrE0jxuEe/N91EdPOt1uj4uFsLYT3n9ohdrZwK8g5VfTMLndiqwVzQnLzYkAEOoiBwUVYtiGa25qvhRPxX1C7euNDGnoqzzl3xLtO3CGBdRI0ilb8ZgFqY5ZpHz3ag
- tU/3UpTK
- pweFtliV1YFFr8h0YxxKHm4g5SR/EtHhMLKdvt8lQ/IchTzOUbkk2jJkrAb5X4iqD9JlS750TLD3QZkqZCb0HW1y002XlzffWwWW9HwCItJEkcmZ/1YeMbiiAZ9R6a2NH0gMPGFWpaaLjpBizK1H679rZVN46YPRJSk5UFxMjSu+3D79rrCEIYfj/XzAbse+rH4oNxTTFtAkocOOZ+8koe8WOgNv18Ld9gX2//DUzcL55Rtxy8/D84RmzRJbwrsmgRZSyFbi0J894GG9MKIJ+IaFSbRx0DQRxnPNnkvWfGi1H2nDg+IaDrg3QX6+KDUaHzzMRCv+XnEqoLN+1tLTJ7R6picun+5Tn7TN3RwUC5WKz0dBvNdDMmRe99xaLxEfBOAwoIJyEMcwFkkpMcE7oK7psJw==
+X-HE-Tag: 1788306791-990924
+X-HE-Meta: U2FsdGVkX1/6pHfMrojX0sOSITTDVHLjZhiAPhQCItcc8pTsS6uD4QfMB24uTDlbU2uEWO2E0flTsfMcm6RCLlwk1Z7G0+EevyuMG4Ty1hNB4A3gxUnTlSRFcbwtWgIAc9uElMKFwU4o5aiyvS0M8iLPh4pU0X6AuL9r9W7IgCeeHBa2QYq5FcgBpRKmiD2kP6JD955Z1QH1spqD83d7PwSK8szbUxgck0/W/k40oTtSCOTD87M+G63cBdWjt9Fxb7Mhu4askKqYmziZAZ1Klz/8IHnkq+F+fmhTIUjapLd305facNbiOCxJ9dfJPDUJmds0z6UHujRPrHlESOEc56/pKZY00jooN6lIo84ahS/v1FLMxUn/2XQsqSVe+E+XJk5+wFNuqZ6RmL+LIbkrWB4H/B/qYpdc4EJVEd99IX1jqSFNxgrP/qmGjqJ9cgi7rPUtpJUPLnCGbAjPA2DBhlFNRhhyFkQ2R4eo5xAaL1UKs3IrhEs4RLsq6ibvRMWVwwi5M1LPOhGo+tiy8nHZ3EzxyXzA96bYul472UpBMYh8a6YEKgE1iW2uWXBs7gimuoLlmBWt+fSXfKdvOE0CsKGlyFRakiAJMCYv+6fhB2zEhmbKGOEWNKDoocRzHfIwGY2eSOxLX5inJj2FnNeuCJXDf/TuOA4v409NSaPdLJBaRzoF9zt7V6/P+oH/JiaFf0shamVlaT2H9wvhjlXqq8DJHyGK1EOIkWuQu/THqcoFMYAYbVaP+BQSq8LhVBxfKzvxvPq3EG9nyBd0+lgVWVPqDeD6yrLYSp7ErDxy+kVHf3gpYr+55BdVG6yzhoRLXhAks1l61x5hEtcYwyjsvzf4dGNDjmlYeD9GrIjyGU3W3knxKmPbxIJbmxjxCOS6OYvD7YefVD/UbFv0tfMkZXCenWdM7CSuw4AGsRG2GP5n/6Lp2f8+BdmQKjFjwGd0pkvhE2mKxK2NYyUaoz5
+ QZ0Zsll2
+ DlnNYfLq+G77oKHmMhlXNasIJGvC1rnunoGlh3xhEWHR6CXqf41XRMClGzNxByeU6P4DbQz2j8UOJKF6REJc+odsiTufMkS/P/DU4KE9xr/xYQruy09kLhq0KVareT2jXvSoBxnoUE5viM1CzWbNKgjhoJz4CG5Sn542Vo0vi7t6yjc3usOpI1V3l7TiHAOtysAycIy2tBj4tIZ9VEkDAV4O4030Qazo+D7ce/ZR1xB/FRfurn8wmHXzmmLjtRcdBu4xBEYy5kCgxGX8Eivh7mGp5rH4EzUbRsFHNcDU/Y17d2gPaQGZPiK1exu8yvO68jg0Q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,104 +105,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 18 Jul 2026 12:27:20 +0800 Ren Wei <enjou1224z@gmail.com> wrote:
+On Tue, 1 Sep 2026 10:18:00 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
 
-> From: Zhiling Zou <roxy520tt@gmail.com>
+> On Tue,  1 Sep 2026 06:24:47 -0700 SJ Park <sj@kernel.org> wrote:
 > 
-> page_table_check_set() and page_table_check_clear() store per-page
-> anonymous and file map counts in signed atomic_t counters. A page can
-> have more than INT_MAX read-only mappings while still being mapped
-> legally.
+> > TL;DR: extend DAMON's data attributes monitoring system to support page
+> > table accessed bit and PG_idle based access monitoring.
+> > 
 > 
-> The global zero page is one example: repeated read faults on private
-> anonymous mappings install read-only PTEs that are accounted as file
-> mappings. Once file_map_count wraps, the next set or clear observes a
-> negative count and trips BUG_ON(), allowing an unprivileged user to panic
-> a kernel with CONFIG_PAGE_TABLE_CHECK enabled.
+> Thanks, added.
+
+Thank you Andrew!
+
 > 
-> Use atomic64_t for both counters so page_table_check can keep the same
-> type-conflict checks without overflowing at INT_MAX mappings.
-> 
-> Fixes: df4e817b7108 ("mm: page table check")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Assisted-by: Codex:gpt-5.4
-> Signed-off-by: Zhiling Zou <roxy520tt@gmail.com>
-> Reviewed-by: Ren Wei <enjou1224z@gmail.com>
+> What does "v1.1" mean?
 
-Thanks.
-
-I've merged Zhiling's "mm/page_table_check: prevent map count
-overflow", which appears to address the same issue. 
-https://lore.kernel.org/1f8848512d2e3ded944f8d595c29faee8fdaeab0.1784645969.git.roxy520tt@gmail.com
-
-But the patch I merged is very different from the below.  I assume the
-patch I merged is the one which you want because it was sent three days
-later.  Correct?
+Sashiko found a low priority issue on the previous version.  Before the Sashiko
+era, it would be fixed by posting a fixup as a reply to the thread and asking
+Andrew to handle it.   But that cannot get review from Sashiko.  So I did
+reposting of the series, but with minor version update.  I use this kind of
+version scheme nowadays.  If it makes someone be confused, please let me know.
+I will be happy to adapt.
 
 
-However my question regarding the possibly missing barrier remains
-unaddressed:
-
-	https://lore.kernel.org/all/20260721135614.7aa2d8d9a8a732a66ba623c3@linux-foundation.org/
-
-
-> --- a/mm/page_table_check.c
-> +++ b/mm/page_table_check.c
-> @@ -14,8 +14,8 @@
->  #define pr_fmt(fmt)	"page_table_check: " fmt
->  
->  struct page_table_check {
-> -	atomic_t anon_map_count;
-> -	atomic_t file_map_count;
-> +	atomic64_t anon_map_count;
-> +	atomic64_t file_map_count;
->  };
->  
->  static bool __page_table_check_enabled __initdata =
-> @@ -79,11 +79,11 @@ static void page_table_check_clear(unsigned long pfn, unsigned long pgcnt)
->  		struct page_table_check *ptc = get_page_table_check(page_ext);
->  
->  		if (anon) {
-> -			BUG_ON(atomic_read(&ptc->file_map_count));
-> -			BUG_ON(atomic_dec_return(&ptc->anon_map_count) < 0);
-> +			BUG_ON(atomic64_read(&ptc->file_map_count));
-> +			BUG_ON(atomic64_dec_return(&ptc->anon_map_count) < 0);
->  		} else {
-> -			BUG_ON(atomic_read(&ptc->anon_map_count));
-> -			BUG_ON(atomic_dec_return(&ptc->file_map_count) < 0);
-> +			BUG_ON(atomic64_read(&ptc->anon_map_count));
-> +			BUG_ON(atomic64_dec_return(&ptc->file_map_count) < 0);
->  		}
->  	}
->  	rcu_read_unlock();
-> @@ -114,11 +114,11 @@ static void page_table_check_set(unsigned long pfn, unsigned long pgcnt,
->  		struct page_table_check *ptc = get_page_table_check(page_ext);
->  
->  		if (anon) {
-> -			BUG_ON(atomic_read(&ptc->file_map_count));
-> -			BUG_ON(atomic_inc_return(&ptc->anon_map_count) > 1 && rw);
-> +			BUG_ON(atomic64_read(&ptc->file_map_count));
-> +			BUG_ON(atomic64_inc_return(&ptc->anon_map_count) > 1 && rw);
->  		} else {
-> -			BUG_ON(atomic_read(&ptc->anon_map_count));
-> -			BUG_ON(atomic_inc_return(&ptc->file_map_count) < 0);
-> +			BUG_ON(atomic64_read(&ptc->anon_map_count));
-> +			BUG_ON(atomic64_inc_return(&ptc->file_map_count) < 0);
->  		}
->  	}
->  	rcu_read_unlock();
-> @@ -139,8 +139,8 @@ void __page_table_check_zero(struct page *page, unsigned int order)
->  	for_each_page_ext(page, 1 << order, page_ext, iter) {
->  		struct page_table_check *ptc = get_page_table_check(page_ext);
->  
-> -		BUG_ON(atomic_read(&ptc->anon_map_count));
-> -		BUG_ON(atomic_read(&ptc->file_map_count));
-> +		BUG_ON(atomic64_read(&ptc->anon_map_count));
-> +		BUG_ON(atomic64_read(&ptc->file_map_count));
->  	}
->  	rcu_read_unlock();
->  }
-> -- 
-> 2.43.0
+Thanks,
+SJ
 
