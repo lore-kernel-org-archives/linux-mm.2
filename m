@@ -4,136 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2407C624D4
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 14:11:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8CEEC624D5
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 14:13:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03F586B00D5; Tue,  1 Sep 2026 10:11:43 -0400 (EDT)
+	id 91B0E6B01F3; Tue,  1 Sep 2026 10:13:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F32606B00D7; Tue,  1 Sep 2026 10:11:42 -0400 (EDT)
+	id 8F3586B01F9; Tue,  1 Sep 2026 10:13:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E211F6B00D8; Tue,  1 Sep 2026 10:11:42 -0400 (EDT)
+	id 7E3466B01FB; Tue,  1 Sep 2026 10:13:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BB2126B00D5
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:11:42 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A783F8045B
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:11:41 +0000 (UTC)
-X-FDA: 85165381602.03.801437E
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C5B242000E
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:11:39 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ToRJ74fL;
-	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.43 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5902E6B01F3
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:13:11 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EE29F400FE
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:13:10 +0000 (UTC)
+X-FDA: 85165385340.04.D001E25
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 52A6218000D
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:13:09 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ojh3C4HD;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788271899;
+	s=arc-20220608; t=1788271989;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LHkkshZ3PVxOZzqbwKcqNzDLof8u7Tm/vxYAm4UhRQc=;
-	b=QWaZhLdS1VwyfShKZ4x4TyxskDUERj1hW0nPfkQN7yd54KV0Ck6JVuJ38DXt/yusD+xRAe
-	QoUKa+D52FaCZKUqycEIMHk3G6pcda//8RDCWpJdsGh7SLFDZBT1ZBu5sbX+g58aU9oGNA
-	m+tYo06MKoRnDDQbyaxeW5HFS9ZiYc4=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ToRJ74fL;
-	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.43 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=zIFNccvs+atFhWftoJEJD5wmod58xIW+qFgefX0BOCg=;
+	b=zeObTtaE/WY2P8idOe3lh8tSSRtjaK396FjcH3vNtwZUBBx0nWK0QR9CdR8n1vLQ8LyL5c
+	X72oTu3wUmnqc4iFJ3NDU+XFDR/7r7y00AXk6l2YCyflEqlhWoAZJ+yKYJgdw0tmXUeJka
+	/B4eGOg+Li7qToN1pym+Iq51biqLxNE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788271899;
-	b=1x2trr4G9cIDPIw4dEJMkJaU/tYCgVLfjMFx279emhzNFY16vaOQG3txlI6GedNGYCkDIX
-	HCYQs46hwWvWaEiGFlOoJenD4fPK2MRszLCSrWaEHoGwK2zggedymhQMh5d2kBDQZUjo3p
-	RUA4JN5wQARh2eMuamb8KzaABsonRWU=
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-6b145a9623fso1164258eaf.3
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 07:11:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788271899; x=1788876699; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=LHkkshZ3PVxOZzqbwKcqNzDLof8u7Tm/vxYAm4UhRQc=;
-        b=ToRJ74fLN5vQyGoaIw7GztDSeLVijqsmNhFVAR1iq9GMy1mG32lF43fKVzs6Le5Owt
-         lAn2KCBiAWc0gWSBzjXyg4SVbxTphKfKEwv/YEkHhO/FE0KBJOqLU05CLQnSoh5Oxmdo
-         M+EmT2PsiRsY/rCuRmmxI4ISoAeXoapzyXlZ94xmG+JrvA9GwPebXTVXfcv5Y+/HlOQe
-         m65Xpb447RZ5I+YzPeiKYjGv0lkwY+CqjTZ2yezfLrFk3hleJNQpbfhnWlmFVnAOzP2m
-         sLQHwvV8PhtAG+gglAqjasomgDBoHIyyu0Lte4ZeLAh5SXM2BHo9X5FVi+kDosRi6+2h
-         V2/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788271899; x=1788876699;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LHkkshZ3PVxOZzqbwKcqNzDLof8u7Tm/vxYAm4UhRQc=;
-        b=ct3CXA7rbcJowNjhac/egYqt6pgyDJnpxLGtnAIJGaCOkJ/bG+ji6nAmcRbKsAmZxP
-         uGJILasWNfJ0tqZl9EGNuvlVnC9Q6JB9MbhxfUw+gLc1n8ZSr2ZfroLm5aZm4YknelzA
-         TQFzOyrjk3avfczNEwFPisoqWp4zxrbQ76F/BANGozNfX3TpuDYOmCaAxJo3rqKNMXTc
-         GEurB+UEbLT3WWIlUjv4yJtHCkNPxqcynZ1nAQHO6G4YbjFv98wCOIEc6F7j+6hco3TB
-         STsdGOnqQ0ZVN6LEij6AmhlJb2+Oi5ohMqUL8BruxIcEwh96SU6oVzfImZSie6AZCOzH
-         FUVA==
-X-Forwarded-Encrypted: i=1; AHgh+RqwEQhKPoqWMqKaUmoOZPMeVqE7LyN4VFCsASj4kOniLhyKtQlg2HzLhozO5haRe3HUGeQsafeYuw==@kvack.org
-X-Gm-Message-State: AFuF++nsNR6n+LukRvoPkmhKtPk6I3YVuKPbcodYoiwyW50UcVl9AKfg
-	1xDvvTKrMjBN4GAEgAnyfH+AQro4tbZBf1oGkgqEnYdkNkCmDiB2VSTB
-X-Gm-Gg: AR+sD135T1Ilc68Do2SAMsnqSFYCwkxnwf4lEq4TMoXnnEEoNNmWD8vmbVxfE9cC0aZ
-	7y+YkmLzMLpuBM4RfbdTbHZzIGMcNc0Eyr9/o3BCsaxd/Cskdg14sXWkdQ0wFyFAMmduOKYfLfK
-	oaNBouLMqaP/paL0sX3N5h107NUxS8k9qLQL3zNsu5YYQaHTdQjBu4JmWeiXeFPqHYZ3dQ2nBgj
-	Krmp4OKTphtaFlrtpkoz17RsgRT9TsQva0hFhyb+SlimV7DphOg5H9++/vz65YDeGml+WFsN2Ir
-	PuB82lED7YPbhwAzaMc8f4bk/DpVscP0vkpSDAdIyp2/hZQcn6/wZ/nfzmuHIbvLAi9QGuHooB0
-	IbiCpEJtnSSftm6Yv1Zkbw8Q475cZv2+L3zZIQoql/6nOhTAAdJy1La0lBaVBl34jkWyo13Xdet
-	m5yNDRoItBeByftyG+7y+hOnj4l2s7xOPjfxSAUKjmZF9xjLnI3L3mBFjJdng0qvizk+9Rz1KcH
-	AvOGT7qr4tyi0RiFuE=
-X-Received: by 2002:a05:6820:160e:b0:6b1:464d:4d1d with SMTP id 006d021491bc7-6b1c65bfcd0mr34936183eaf.11.1788271898644;
-        Tue, 01 Sep 2026 07:11:38 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:49::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6b1ce359f82sm13402124eaf.14.2026.09.01.07.11.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 07:11:38 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: =?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>
-Cc: hannes@cmpxchg.org,
-	shakeel.butt@linux.dev,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	muchun.song@linux.dev,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	dev@lankhorst.se,
-	mripard@kernel.org,
-	nat@pixelcluster.dev,
-	tj@kernel.org,
-	osalvador@suse.de,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v5 7/7] mm/memcontrol: add stock to the memsw page_counter
-Date: Tue,  1 Sep 2026 07:11:35 -0700
-Message-ID: <20260901141136.1871423-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <apaZdbM_l3kJIiyK@localhost.localdomain>
-References: 
+	t=1788271989;
+	b=nAawXSSMklozRZ+ScmMhxEwQYHAVtkFJ0KfKVvOobtfaxKY8Xc5aduWhMsGo5WgDI16Edw
+	5ra9x8X9KnTjoZGM3hDLMuypnH9ZW+2FcmPy0kQjNn8KpYnlV18nl1GAMKqhIERuZjZFvJ
+	BqHnNQ784UE6Bku4bDqgXCziU+MkT3g=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ojh3C4HD;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6350043228;
+	Tue,  1 Sep 2026 14:13:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C071F00A3E;
+	Tue,  1 Sep 2026 14:12:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788271988;
+	bh=zIFNccvs+atFhWftoJEJD5wmod58xIW+qFgefX0BOCg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ojh3C4HDmqZjOi1pkhDSDGdV7SfRfNfWGZdomRJtqMccy2x0v2yndUbLTlFfoma31
+	 dXPCD/3iuiFmrOyTzvDFsi3JMSQci44mXNjMW5aZrX1wksJI6YrjjSO9AmUv57cBYV
+	 9z8GlCwH5Lcq8HdHGJ0PhyaJV91X1hhmLlTYoLDJyqV5tpAA3OmuNtzuupyJ9NgXA9
+	 UJ1DFYAPUuZI2d/93NYxQqW7uJLFNFyZWGMt5ve018yg00i9qrJwXbMtHXQVNemoe6
+	 vmWZlNLESArFUgZ4rroUvf022k6zvA9BUurkwbyrW+S7uSnPMqBoCZlDQJvO6b3uMa
+	 s/wAJaE9PbDug==
+Date: Tue, 1 Sep 2026 15:12:45 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Guo Ren <guoren@kernel.org>, Brian Cain <bcain@kernel.org>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, Dinh Nguyen <dinguyen@kernel.org>, 
+	Simon Schuster <schuster.simon@siemens-energy.com>, Jonas Bonn <jonas@southpole.se>, 
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Stafford Horne <shorne@gmail.com>, 
+	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Russell King <linux@armlinux.org.uk>, 
+	Vineet Gupta <vgupta@kernel.org>, Michal Simek <monstr@monstr.eu>, Chris Zankel <chris@zankel.net>, 
+	Max Filippov <jcmvbkbc@gmail.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Peter Zijlstra <peterz@infradead.org>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Richard Henderson <richard.henderson@linaro.org>, 
+	Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Richard Weinberger <richard@nod.at>, 
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
+	linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-snps-arc@lists.infradead.org, linux-arch@vger.kernel.org, sparclinux@vger.kernel.org, 
+	linux-alpha@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
+	linux-um@lists.infradead.org, Hugh Dickins <hughd@google.com>, Qi Zheng <qi.zheng@linux.dev>
+Subject: Re: [PATCH 01/12] mm/huge_memory: zap deposited page tables after an
+ RCU grace period
+Message-ID: <apbcoMTVlL42G5tg@gremlin>
+References: <20260901-rcu-pagetable-freeing-v1-0-5456a81c8212@kernel.org>
+ <20260901-rcu-pagetable-freeing-v1-1-5456a81c8212@kernel.org>
+ <apbOlyF77yDCV4cF@thinkstation>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: arzq58ian8zbw5hzuak3tpq461zy869c
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C5B242000E
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <apbOlyF77yDCV4cF@thinkstation>
 X-Rspam-User: 
-X-HE-Tag: 1788271899-35197
-X-HE-Meta: U2FsdGVkX1+axHiLhNi6HwqC75MhbMhGQL4MImQjSImg7Qjg+k03FF2Uzi39XEA1OxsqPdpALtoS3r6j5Qk23+ysEDzTWFe5hMXLQoCtfzdsv7/eoIn4PtwX/0gyDr4QRE36nAA93SrOUIligbOornxzKinGCJtMlcPSVuqKu1ewl5qR6RMM+l8M4QDgv9WocY6L7x4xMSJHtUOsNoYiHGgl1+58/4PR/PbfxT+s/MOul+/+RqHG7vC7yucxKVEx0IEaQChUxPWXeeOkHsRH1Q8dzqLwCypC4j4t98jUmG9vnKpc0PnLq34aYmb8ztLxZKuI+kCViEL2Puy93GdVD4VvL4Kv/B4ZAYSn/IlFdmCOLbRhiiZdnkA3E8WOeWmruyVLzEPQQFWqHCGUyWW9irXnME1aJLGEhSxyguSFNCIjdr56ibHebEcMRlrskLPFcvP0nd70Swb/WT6h9ppxtwoWIroCSOE7Ry6XHBNl7mXCSKXZSFUgVVfn1gs27xUfpqC/B3QixmaQBi/Utg4GLq1vTezUdXT3eRaCwLSlVRzxz3lH5jZWTzCiDSw7qJa//E9FzP+cp4Wyhwu1rKB1nVvt7fsW+Va2IW3IoaVWuOutY/x5WWGKiavVjsuZC/67BmevdDrGPp/XhbNad+sBBJr8MyaeVEgJTq9P0S90LI20rscEiMUq82262PkyJIpHgPQeQSMoKm1iiX8A0kwZ+ZD+bH5IZS1rHbBy0/8K8BS+RhhnHqcmALqsDSSjTckhcr4v1z5qZAFs8TaIJTfV25IiFD309Ng+mR6hTXlkdQ44UI6AOc3dWUmSFQWw6fp2eyWqrs2ACqhHeK1cA3mibYBO0xgvhk4qmNxFEzAcJHKkpYtiIXaT9v/sNzCF39cMBrtP67HKrZGOWoVcuG1SW+3O8eg3pqShdl+tzB9htt9M4kMoyMkr0MY7iR5iZbYy3V28UW8XrlMKfrC7wLo
- tS0AgT9O
- cTgVGi7+93U87bUYzVJHHrrwDsvIGjxlLRoAcJ16T7K1JRgFW2Xohu4P+otm5h+DMyq2tZ7yTU7F262QcePCpxH9EedOsCa1J/1a+oTXXt41eUnp4RaNL4b1FInMoR+206N1IrkKSeJ0B0TIc+9QRlYpq4Zi8bAVUL51pBYGNoOMISG19tDX6FvlQp3lrJCfWu5WQmPDauGaVgBeqdzw4e09wT/eFvmB3XR8L4mC7IvgSPKLxgnquHSxh1gBanTHm+Pd9W6KMs+YF1I8dUdxvQGT3jIJAWH+YvDmZ8TBV8bC3b0Mro7QDUyFbeHrwVPRvF0E51mLsm16LnFkoP/D5U96v81Ie18UpdOjI2/YvWf59CuLDMjucHGrlcVFygz7m5PkOjJjRNkKzHzz7xsAgkP7AIHBmVrWH2wfD+sMFoJNS8GGfZ5cBJ7uws6US437hM3Qi5ynLBe4SeloL84hhnm9TnSiw1Vcrmhlu8t72TmAPum3s0ykUc26cJn4iyWQD8gN5ftGc/LykYQHKjC6/dQzezX3XdGQCfk4Lo1Ae1kB6esjE4z0zFdFuNMX8cwJw68LM74dESvfTdx0Ukta4Zevmw2r6kWDFNDdnaCa5O5JE/9zoYFdKAQKAqSHr+3Em90oKccFptMWyMOI=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 52A6218000D
+X-Stat-Signature: hc197ht4a9izyd11tjckofgyk1nkiu3h
+X-HE-Tag: 1788271989-231249
+X-HE-Meta: U2FsdGVkX1/7UzY1BSY4RyE+egrBiBWZy8ThmUEUjurvP6dlgRtYeMUfO6/urCWDGUy98ZMbswSd/gbdU/5o3z5PIcNxsMm2uVScr4OY4zO3TWciSjyoh+brN+M7elbZagWRWT+YRcQw3qRswJmtHE3ux4DHxj2qZT3f2fML8Y5IUL41CfYwcYnzqRIzDLsesvi0i0miH+nPVcffJW56fLNeNTmXTLiRovHtMeymyNbgkbFWwrHwc14pEKnaIy6/HkLzToiK5ChjoKA56xAlHGOMlzsm+Bb9UQWlp8FnhwaetkytMCdpOYQxbcH3ClUog3qJBLVxG0eLtLYuK32DSbqThqekPeBKPyuKUVYhwafpeOCwPiRbNBv0kEhGE1wvoeEwJqFToy9dl913G8CcSsHQgd1NTESV0Ui93rjNZh75CJ/11uDprErXW3sifxPIxg6ZJlufaIa5KbST3HAUUkJcWGHwKtLCsmYYIDsacNQOY5pwlM3RkiYoRBpQ2M3eHAOEmVPk8bRRe5luBnQUqxAoVVJ0DYkEUyoOj2wY5FflI6xX9feD322IcMbpP37/BbEGX+iEgeJelWY/SEY1bmtpHRy/ga8ccbJijWNcvByVDKIeU5UkQdyvT4HewTvuwek3fbGA8vRU6Xm8tjrC95Bior/Rn2QygxH47WEBuiR1gym426vkmvL9HnhjCw0vmO26MShnfHOXDfzmyqM6ejYRukADTnvLMkSsF5lu6bS4xk/NQLRVoA8gbiqLynvxrfbjD4Ftnnn2VRi7nO2jn2ViMR87xBe8j9MZ/wAdpru0iT533yVuoNf8nNOTUd0yg6tU4kM0BqVKJjuP/0cgd/4vhzEk/wQ9c0Yp6Cyeui+HUyB6vUnVTOBpY3xmu8NdytvXb95u7rkW4jgi8fE1/ADxtQoZeYNrIWyswhUqNf6GvdTu+A6nFuqJk4QzxENLFT0qKfolD9BPzfRPXBn
+ 35X4ssw4
+ QWHo+WLAIIYTWo4ib8skZRgfyvgaGcJSkQuZPcUopGP7xzAY+yz3Gg/KNfwG+l5JxjyxjO/iyijHrEKvgMQG1h2jX4P7OXKgJmhC7d9QVjzp7t5jBxzd5/sYA/P1Q7Hw130TIHlEgz7s6Tc17g7y9Sjqr8U25t1XdbwkLgjmycB8RiGtCid9zX4ruP/1fntP4NX089mUtAjAtqZQqRteDaDbxa5giDw6JWCaSagiMODaxRAmjnEw7F9cRH0+JPMS9WK9rPKasWZJrn7kkFlPOXv+2WksEUMXi0v6GLUNH5E5eK6z9fRu8kJ70RSj1ska2wP0hxDUuWGwSrgsnpcDLhi4UPWqE/6nZ7CBFvq1Apji7SOHWDC1nIi7Vi82IoqHtmLG2i4ontns14SQULJA3ETvRiw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,55 +132,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 1 Sep 2026 11:40:31 +0200 Michal Koutný <mkoutny@suse.com> wrote:
+On Tue, Sep 01, 2026 at 02:19:36PM +0100, Kiryl Shutsemau wrote:
+> On Tue, Sep 01, 2026 at 12:01:21PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > When an anonymous mapping is collapsed for THP, a PTE page table is
+> > 'deposited' with the installed PMD entry.
+> >
+> > This is done in order that a split can be performed without needing to
+> > allocate additional memory.
+> >
+> > The freeing occurs in zap_deposited_table() and is done directly without
+> > any delay via pte_free().
+> >
+> > This is currently not a problem as existing page table walks are protected
+> > by the mmap or anon rmap lock.
+> >
+> > However this becomes problematic in a future where RCU-only page table
+> > walkers exist, as there is nothing to prevent a page table walker that
+> > started the walk prior to collapse having its PTE table freed underneath
+> > it.
+> >
+> > Commit 13cf577e6b66 ("mm/pgtable: add pte_free_defer() for pgtable as
+> > page") already provides us the mechanism by which to solve this -
+> > pte_free_defer().
+> >
+> > Therefore, as a prerequisite to a future commit which will permit fully RCU
+> > page table walks, update zap_deposited_table() to use pte_free_defer()
+> > rather than pte_free().
+> >
+> > Note that the IPI sync in collapse_huge_page() is still required to ensure
+> > refcount correctness against a GUP-fast operation.
+> >
+> > This is because GUP-fast might increment refcount, but
+> > __collapse_huge_page_isolate() determines whether it is safe to proceed by
+> > checking folio_ref_count() against folio_expected_ref_count(), so the two
+> > must be mutually excluded.
+> >
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > ---
+> >  mm/huge_memory.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> > index 54494c3fa983..505f7b62ff28 100644
+> > --- a/mm/huge_memory.c
+> > +++ b/mm/huge_memory.c
+> > @@ -2476,7 +2476,7 @@ static inline void zap_deposited_table(struct mm_struct *mm, pmd_t *pmd)
+> >  	pgtable_t pgtable;
+> >
+> >  	pgtable = pgtable_trans_huge_withdraw(mm, pmd);
+> > -	pte_free(mm, pgtable);
+> > +	pte_free_defer(mm, pgtable);
+>
+> Hm. So it is call_rcu() on each PMD. It might be costly, especially for
+> zap_huge_pmd() path: 512 call_rcu() per-GB of unmapped THPs.
+>
+> Do we want leverage mmu_gather if caller has it?
 
-> Hello Joshua.
-> 
-> On Mon, Aug 31, 2026 at 09:37:51AM -0700, Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> > Before this series, each memcg had one stock shared by all its
-> > page_counters (memory + memsw). Now that the memcg stock was folded
-> > into the page_counter level, give memsw its own page_counter_stock
-> > so that it can benefit from caching charges as well.
-> > 
-> > Note that while the allocation is conditional on do_memsw_account(),
-> > the freeing is not; the freer will only free non-NULL stocks. This
-> > matters because do_memsw_account() could have changed in between the
-> > allocation and the free.
-> 
-> (Just a passerby comment, I have no remarks to the overhaul.)
+I mean, I'm not sure in which respect that'd be costly, 512 is not a big number
+to a computer, and repeated call_rcu() invocations should just queue more
+operations no?
 
-Hi Michal! Thanks for taking a look at the series.
+It won't be costly at the time of the calls obviously as its deferred. Maybe
+increase some time spent in softirq but again is 512x that big of a deal?
 
-> The change of do_memsw_account() is because of re-attaching the memory
-> controller between v1 and v2 trees. That's not so common operation (but
-> not ruled out), pre-condition for that is that there's only a single
-> online memcg, namely the root memcg. So it needs treatment especially at
-> memcg offlining (which is what drain_all_stock() (also) does).
+I'm not sure how you'd both defer the free and somehow utilise mmu_gather here
+either really, certainly not without it becoming extremely messy.
 
-Wow, that's good to know. To be completely honest I dont have much
-experience with cgroup v1. I didn't realize it wasn't a "switch whenever
-you want" type of operation. Good to know that there is some more
-guarding there.
+But yeah I'd want to see hard data on that before I really believe that's a
+problem :)
 
-> I don't know how expensive page_counter_drain_stock_async() is going to
-> be [1] but the v1 parts here could could be guarded with
-> !cgroup_on_dfl(memcg->css.cgroup).
+>
+> >  	mm_dec_nr_ptes(mm);
+> >  }
+> >
+> >
+> > --
+> > 2.55.0
+> >
+>
+> --
+>   Kiryl Shutsemau / Kirill A. Shutemov
 
-The function itself should be pretty quick. It just frees one CPU's
-stock, but the rest is just scheduling a job item.
-
-> Regards,
-> Michal
-> 
-> [1] Now, I see in 5/7 that there's the counter->stock check which should
->     be quick bailout on v2 (maybe quicker than the cgroup_on_dfl()
->     I proposed above).
-
-I'm not entirely sure, it's probably similar : -)
-I think they should achieve the same goal, and hopefully it wasn't too
-difficult to understand why we don't have the cgroup_on_dfl() there.
-
-Hopefully the rest of the code looks good to you too. Thanks again for
-taking a look Michal, I hope you have a great day!
-Joshua
+--
+Cheers, Lorenzo
 
