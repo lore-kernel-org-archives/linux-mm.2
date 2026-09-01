@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BAC6C61DD6
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 16:09:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEC93C61DD6
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 16:09:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33BA26B0292; Tue,  1 Sep 2026 12:09:22 -0400 (EDT)
+	id D74646B029C; Tue,  1 Sep 2026 12:09:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 316A26B0295; Tue,  1 Sep 2026 12:09:22 -0400 (EDT)
+	id CDF946B029E; Tue,  1 Sep 2026 12:09:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 201956B0299; Tue,  1 Sep 2026 12:09:22 -0400 (EDT)
+	id C131F6B029D; Tue,  1 Sep 2026 12:09:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D6DEA6B0292
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:09:21 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C09D5804BE
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:09:19 +0000 (UTC)
-X-FDA: 85165678038.11.DEAB86A
+	by kanga.kvack.org (Postfix) with ESMTP id A09166B0295
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:09:22 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1E6808049A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:09:22 +0000 (UTC)
+X-FDA: 85165678164.30.644FF49
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 91CE820015
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:09:17 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jX33c9XY;
-	spf=pass (imf03.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 290511C0007
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:09:20 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uskcNA54;
+	spf=pass (imf18.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788278957;
+	s=arc-20220608; t=1788278960;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WtppRdw7TipZz+3QwoNbnLj4cuUecMzZllIo67MEJbY=;
-	b=tNtPvkzOWofO8OfRBVYQQWjjUeOaxYOKLygaxFfWLgEwqDqeDtL89ziFfMKp/RD6/49qeK
-	LnPSg9lxhoI+FI25twToIqVoWGSvl3AhTCwUDUZzUufn+Trgz+DmS6kgpBIAtiMvJ0E31c
-	u7TA84gmV4Z7Pfc+yQYxsSN8Db3rlpY=
+	bh=Fo46M5lOhRXCyOMZRhNjQcuNwgYvfdhAtwpLKHtX+nU=;
+	b=VvHbYtJagLILqpEAJExcnrfaqkcVXBgrYZLs6oSdjI7esCH/1MulUGMEFhPLqWC30PIEFg
+	23Di57k8XMTIq37skvkb6zSBF+g6L7o9Z15YzLK5icfmN0uWN4MwWUs7kEXO+bBa3QyGm7
+	W2/g7uCTSzbOZkoGMp6O32AVz0Bfzt8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788278957;
-	b=RF8wsc1vbVdo5JCr7BrEW1GEjD6zkQTWNJy7jIAOt29je7lZeMjeG+CH/mpG1l2Eimu9GQ
-	Y04yp/VrVsj0dU1NG0FtK7YS4OksoTlTQqQo7WVC47GyrVKqFuvtX1bWV5I7kpz+Y2lEFm
-	x6OZl3BDWU+gKRgB6l9mRaQ0s2djEzs=
+	t=1788278960;
+	b=KkJoNpwdV1xTY2Vo26fmaQeH+UmFVeMSEB4MJO46ZitZnt0DZxXbW/fIwedpVOqGZwa1mu
+	Lf0BXYpOmOtQ1lolTU942MHlSNmrmaGEJn1C1aga1gqpEP8vQm9gvVGa4DyLpFUpTxG522
+	PWwco8neXkzV+YVy1J+fZ1gxM7uVrOI=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jX33c9XY;
-	spf=pass (imf03.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uskcNA54;
+	spf=pass (imf18.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 89ED0435A1;
+	by sea.source.kernel.org (Postfix) with ESMTP id CF2C5435D8;
 	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 522E6C2BCFB;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A9130C2BCFD;
 	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1788278956;
-	bh=HCzDlkK0nf8Z76dEe91GoDU2vHhNj6rRuUesVWHafOw=;
+	bh=tGulbdEu3dRFWulYij37FRo+LIbl4tpCnnrPz5XH21w=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=jX33c9XY5g4KGOiSmG2AnOP383Z/xJUqQrbv1Wkj61BWYTJHfz9wmsSFslCWuBrKQ
-	 7tk8Jgn796rG3a5yBrMbnXcq5MzA32kq7dyo3MyczCnzIjMB8hXbLcK7kdEQhFO0YO
-	 vt/t0dLjZ6DqGXJu29XVtu9hQX4BFkmK9CPFh2grBP9L0DJODRfkx+NO3pzdQYau7P
-	 Qwx+uhtrEmbO3LZvbdxa3eTsNcSjHehgYj/WmlgIa8D+G2n4JX9voc1VdsZc4i7Rkr
-	 ms8gN8lfztRTF9Cle9nzY6x9UN0ZTYYCTUgS0dtc/h2QZhNzpnlY86lyq7ZS2lXjZv
-	 0L/+RmXsLn0ag==
+	b=uskcNA54RBdpVd3VvbmnwJbbOtPvcMgEFDpY+U8yPaqk6VL9D35lb95YcI7duvTl1
+	 XrLvSmxZ4znTOKl85rwaB7ZCu766PJvjMm/2iUpUZzgZk4lE0cL6HVVSoOWlfyuIwH
+	 8ox6RK4+ktlE+2el2EjE8p6SoauF+nh1V29Hg4QWE/qecJdf7IW+slxHFOKCrGOF/g
+	 mNTzW7UNmTGOQLejvZoZ8VzUiD6lJhomXgBFdX44df4JJ1OOgk6lI55017I4Rnca03
+	 sWCgTmVGtNSWZUl2Vl1Vehgsi/RqyyCU1B/9YjBPUGLJbuUmXkF6GtHX8fHiF0Wayi
+	 o34vIcilV2igg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 34902C61DD6;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 962C2C61DD3;
 	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
 From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Wed, 02 Sep 2026 00:09:00 +0800
-Subject: [PATCH 1/9] rust: sizes: add SZ_4G constant
+Date: Wed, 02 Sep 2026 00:09:06 +0800
+Subject: [PATCH 7/9] drm/tyr: refactor new_dummy_object to use new_object
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260902-tyr-ioctls-v1-1-e0fdbf8bd108@kylinos.cn>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260902-tyr-ioctls-v1-7-e0fdbf8bd108@kylinos.cn>
 References: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
 In-Reply-To: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
 To: rust-for-linux@vger.kernel.org
@@ -93,11 +93,11 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
  linux-mm@kvack.org, dri-devel@lists.freedesktop.org, 
  Ke Sun <sunke@kylinos.cn>, Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788278954; l=1486;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788278954; l=1139;
  i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=dYFc5/veCaNNg8MQU+9cuPLHHyO8FGpKl5rFntX1WcU=;
- b=665RQwJmoeo0nrNVmNip20fm5N4zGkoBukodL5WY0TTyTfeVY/eNtHvU8BWWPfC/6vzciEs6k
- 9wfe94ky53RBThFvDgMjbDYxxCtTUb/RhJlfk4M+oPk0Kzj7p0de1UC
+ bh=Ej92qQwFTpPtrIg4SAbvIlKuALoNm6gS9q8GLNp1YDQ=;
+ b=+rvDr8eIgCszYK0KN0VFmkfXWahqtsVwtgx8CXqR+iJjCYkPEJsiRv5hYWJIDWEiIAxxnCCeq
+ Wc/8K2eTe6EDzkVKNm6yRvYo252RjG/JDEoeTp/q173HXGhHdq/SF6K
 X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
@@ -105,13 +105,13 @@ X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
 X-Original-From: Ke Sun <sunke@kylinos.cn>
 Reply-To: sunke@kylinos.cn
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 91CE820015
-X-Stat-Signature: 7am1h57d18onbwfgpair6qm997kc3s18
-X-HE-Tag: 1788278957-556771
-X-HE-Meta: U2FsdGVkX18eEEGpIS1ZYu5rLqVdJPhWjWEd7jAVjkRTMST62ONxUapHUXyiTqFPlMAXzoPb3ERHrFuJ+IR91v1fE4e05izRoSqDn291TUTY0Ex22w+nomfpWfsXg1CtQkVz0OJIYpv4toF2BYVfRlqadZQYgHHCV2dPc7yDjFGEq5wTR9AlKFnApxbpTdIkgB1qzCWl/ZCranorDau08idty6UwASvOMZ2QrIPG0CZgc/WsAFv6vIEfgaLJnMTp7uJJwWnoRI7HiDsW1ocf9r8KgFKB9G0jZ+jxm4gVFQFzqtoPtKQsL+pAHRw21O5NQGWGh0BzR2rBKnVFN5n2q5dBL9Tpgn0sECh1d6OxmcFh8GMWlAbDK+cfxbwvVLSJDOCcMyUEbTjhBdBSX49Az8W5L1M99LxNBUowGl3uTHHuY5xiK4Of4hCBHNCjlqKnjY75AhUdmXDoMirYTS6ijT+KRXo1Q3xRG7d48abXLsD3HgYmqasCxhSEV0bvKNw7LFuZ6VsM0W9N7+BBeUbobZAcxPJin91eu0KjGOHtRBM4hkF7U3Z0U4vzTPyB1kCLtvMJCNKiYh+7ZDm3Lpm1LzsCa5M+SVuLZ0gHjpDdtyiaNJRD8AGeQqB/JsuATpnqwo1sqLo+2QUQULJZFKJZlXO61l7uZTvEzpugf6YDx+G3LO91PFZaLjzGmfVG/ukQzOUJyMNpG6KJf196eoT4S55oX5NrX64iocF04hv53I2+q3BqeWYB38L2ME47HT508OZ72AGJCa1klFivZAt7ua1WZaEvPf/D8Ig7B9XDtKVvBAEkIWYpFpOlXdaS/2jDD2ym3tfzeuwY3VeQVeVwN1tI7FnUASmYWoF52Y702pbeASBMmxS9wgcFtm2x8nJocO4ZrMwp5UGMVRID5XScJNiAGrI42q3X0xpFXVKjdNIB9hFt/Re9kbr61L+wcmJeUkjPOcmTSZLOXl4FnwA
- oBRDn/L7
- eUKcWQapSbRGVeh6TXcM8K6zp4vZEczhkBadu1BO8x13w4LWr6xGsAyIuSfmJXq2+mO882UVF7p+pOLvNyXywOzVzYNI7mVkEi7vz/aFKJsTNbVWkAyGunjQ1YeBvggaqlxEV3H7/0TtPzIuZv4lNDQLoe6Bb5TiDSTS8bbpk2WmJS1qUkb6lZ0GzFJ4ZEnboIfq5KiwjJIrakd9ZXHCh7nQh8TuMygOW+oa7qNqEAgae6sCY74eGcuOR2pZSgHW7qCaQ1djuOTqj8oXbvb4mM8Mi+9Fwa99gDZ+xP2Brm7Te7vtpqZpOYqGiu2v0LpecSQIFjxD3VK5nQdvTevHIAiEPRgbJPBjyvZlmPElm5j6zn8DZVsFvNaBmd81XFZMQdL99JLOJF+G1TsQpeLZ/a7dZsxsL0T8v+TupCoQMs9y21g+NyRNvSHnTsrURtR/JhaR8
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 290511C0007
+X-Stat-Signature: sewe4qeji836uti5ifyfhhbotjucbya5
+X-HE-Tag: 1788278960-761822
+X-HE-Meta: U2FsdGVkX19o1Ry1vyd4VZI/vDSahj2SKinoyuIZfFmE6WtR9bkmZXX1tVDw7ZpcymKOipaWwRMluhsgBS9qsYBwd4xRR/C9UPw36mRvUIv9dbRaWVzRdLz2q3L8FkN4wUpq+cy45mXX6uq88WRYx5E6Cd/57+ofHSkVhgdkkEcbrt2zIu37GQZeoXi4ElBuYjYmSd2S4lmuUQlmC6Ye2QZHUb4jpLvXb14Y06W/9/1ErlXopheso1O+aEqrymft2fJ2vAjYRu6KG8ef+a77l7O9HKFiPLEOVNHJom44Hth8k8nECcNAjmIg471sDtNjta2yN7xE93S6A2BSjCwbUxUzaVjZr9MsxJamlf4fGVHYtw3ANYkt68SLnyh/+4A7zgUJfKzaRwUfRxbThWx+O1AV7DFtTNjMVBtDiVJTk8+eIk0/529uVbrxh749+q+IJed/uwMsHAoJ3vZnxYB6VH50z8D6aHejQGDkZQj9jjXQlkyxlA7M6+++SWm3nYginVO3jHoBbxMntUZAU53V16Dp1rW1QL7/8Gl1n5dnBDcpwLx3nWtosS18/RLm/yMnzNgzIhbQaYAd25bBrbTDC4dW3pwtcO9cLNnpo9nfcmDesHSCUAEaTa0YwZKsmnW9vfh0QoS9A4rpHnpIKS5qolHFzYUby4DN4Ja6ulEeQA4jhwbkri4X6yVAeVBx/ZY3Yuos+I39Ymn3Rsjh/g8KFEqAcXMEfTTYhkh3BLOyz3znF9PugSbWftmkV6m3GhPsPnt3dGE09znqh65IoH3nm27KTzy1KDgo1BJQkjiBoAakXpXpO7XSnIiZgneT1kZnPjiy8R5BThwLfFbxoxQ9JW5LdKIkyubK8WVRyhKtnr7W2Rnsp9RgfnvB/P0FSoXfYsgELR7DkrakMwKE+EgyPsOr/3EyljKt38Q10SoFxmgGXnJ9XlYGdZqrny+QI02KK6NMKH6+P3X81GS9hVH
+ ltPa2sHy
+ mQaaKlJop60BgIAzdtUH7mW9Cl1Kg/yREuQgtil04dDE+LvlH2y/w0VjNwb62zZSFIg+ikxdsq05BQjyWR4b4WwMs46syPAqMNJMERVG4VuJrdj6F/i64mmFMYs6oS7VHv/qgRFIG5KKP/Y6i6htbqojqFJgjTTpSZ+mmEuHHgBOfKWSNyO2l1BOFHIAGToUdzUk7NxuBL0APFcip3VOnj+/z7eLQ4ologehegX9FW0CxTx5Q1XYS9P6b8j6ASwtU5KtkbsOllxeX5ecKqV8TWhJNmm6FrQcSqdMvT6ZvQt/tfXfo2q3jkI2Ju9Aa2QULkBIEDQGCjA6FbnI9R7xSWOQKSfLrqQD4f2IXFsw8kDduGaDBOQ0JEx07GxfusTZfJW2eR6e78cydjWF7Utix3VjoLwjYXYiF/MZby1VicAEDCU8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,47 +121,38 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Alvin Sun <alvin.sun@linux.dev>
 
-SZ_4G is used by the Tyr driver when splitting the GPU VA range into
-user and kernel regions.
+new_dummy_object() duplicated the BO creation code that new_object()
+now provides; call new_object() instead.
 
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 ---
- rust/bindings/bindings_helper.h |  1 +
- rust/kernel/sizes.rs            | 12 ++++++++++++
- 2 files changed, 13 insertions(+)
+ drivers/gpu/drm/tyr/gem.rs | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 1124785e210b3..3c37993991b1e 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -110,6 +110,7 @@
- const size_t RUST_CONST_HELPER_ARCH_SLAB_MINALIGN = ARCH_SLAB_MINALIGN;
- const size_t RUST_CONST_HELPER_ARCH_KMALLOC_MINALIGN = ARCH_KMALLOC_MINALIGN;
- const size_t RUST_CONST_HELPER_PAGE_SIZE = PAGE_SIZE;
-+const unsigned long long RUST_CONST_HELPER_SZ_4G = SZ_4G;
- const gfp_t RUST_CONST_HELPER_GFP_ATOMIC = GFP_ATOMIC;
- const gfp_t RUST_CONST_HELPER_GFP_KERNEL = GFP_KERNEL;
- const gfp_t RUST_CONST_HELPER_GFP_KERNEL_ACCOUNT = GFP_KERNEL_ACCOUNT;
-diff --git a/rust/kernel/sizes.rs b/rust/kernel/sizes.rs
-index 521b2b38bfe77..b236573f0792e 100644
---- a/rust/kernel/sizes.rs
-+++ b/rust/kernel/sizes.rs
-@@ -132,3 +132,15 @@ impl SizeConstants for $first {
+diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
+index be1affe80db1a..d9ddcb287f52b 100644
+--- a/drivers/gpu/drm/tyr/gem.rs
++++ b/drivers/gpu/drm/tyr/gem.rs
+@@ -82,17 +82,8 @@ pub(crate) fn lookup_handle(file: &TyrDrmFile, handle: u32) -> Result<ARef<Bo>>
+ 
+ /// Creates a dummy GEM object to serve as the root of a GPUVM.
+ pub(crate) fn new_dummy_object(ddev: &TyrDrmDevice) -> Result<ARef<Bo>> {
+-    let bo = Bo::new(
+-        ddev,
+-        4096,
+-        shmem::ObjectConfig {
+-            map_wc: true,
+-            parent_resv_obj: None,
+-        },
+-        BoCreateArgs { flags: 0 },
+-    )?;
+-
+-    Ok(bo)
++    // FIXME: use a Rust resv-object abstraction once available, rather than a real BO.
++    new_object(ddev, 4096, 0)
  }
  
- define_sizes!(u32, u64, usize);
-+
-+/// Large size constants (≥ 4 GiB).
-+///
-+/// Only implemented for `u64`.
-+pub trait LargeSizeConstants {
-+    /// `0x1_0000_0000`.
-+    const SZ_4G: Self;
-+}
-+
-+impl LargeSizeConstants for u64 {
-+    const SZ_4G: Self = bindings::SZ_4G;
-+}
+ /// Specifies how to choose a GPU virtual address for a [`KernelBo`].
 
 -- 
 2.43.0
