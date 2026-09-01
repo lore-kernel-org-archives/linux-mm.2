@@ -4,106 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 176CCC61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 14:48:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C6BBC624D3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 14:50:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00F766B00D0; Tue,  1 Sep 2026 10:48:45 -0400 (EDT)
+	id 4F55D6B026B; Tue,  1 Sep 2026 10:50:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F020B6B00DD; Tue,  1 Sep 2026 10:48:44 -0400 (EDT)
+	id 4A6686B026C; Tue,  1 Sep 2026 10:50:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF15C6B00DE; Tue,  1 Sep 2026 10:48:44 -0400 (EDT)
+	id 3BAD16B026D; Tue,  1 Sep 2026 10:50:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B85036B00D0
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:48:44 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A9537C044B
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:48:43 +0000 (UTC)
-X-FDA: 85165474926.22.659FB9D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C89601C0005
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:48:41 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=JEltKYEX;
-	spf=pass (imf20.hostedemail.com: domain of linu.cherian@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=linu.cherian@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 158DE6B026B
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:50:46 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B02B5140458
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:50:45 +0000 (UTC)
+X-FDA: 85165480050.16.86BAD80
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 390BA120006
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:50:44 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kp6Id2ek;
+	spf=pass (imf29.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788274122;
+	s=arc-20220608; t=1788274244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H9GxEc7XssMRAghG8DyBdsxTfLc1nEoVFJVs0vitzQY=;
-	b=mhJalWN386jB0eg4m1osseBIBxowWjADZT0P7I6QT/+JjZUF6+Ql5xsDMl8EWJTmMCWmyC
-	6ViIeAjApatgWvWEYBvo/I+Zv5Y9ae9OLyqfZzPybjT+RG/2vvGaBm0x9uT4WvTdjFncWZ
-	14tyUEoDVpFFm3f3DOXbYgahYFarJC0=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=JEltKYEX;
-	spf=pass (imf20.hostedemail.com: domain of linu.cherian@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=linu.cherian@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	bh=48z4Zn3y11CKh0cUVxT7sUV2cA21GxR/DgLrBaE8Xmo=;
+	b=4LN2vRe+HKgvaEVZT9Fipw3LRz+DzMnzVMjxnWUOtnvnrqyjo/D7S74Y44rcm2TP8N6gYa
+	nEMYZyhjd4ICvqf0K65ohBdPlVSy7pJjsCokm2hGhfFW46WhsgjmEHLk+asJe/5Ve0mbgY
+	Jx/BM/+8kMqBSbJVMjoIKBoJIaS/o0g=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788274122;
-	b=m9ncvW+fRMbzKx8GILLqYVgzPXZfg2hwPfuoXp9Kz1OrMFpmcklLU5a3AzhDTfAfRkH26t
-	UDFw7D7rZP4WuAXO2S6Blhog0CYvACjvY6/t3hBWf8wtHZC0fxuWT1/di2a8A30ZtgkE1N
-	wjjZWrRLLOzB8+ZnbpkKdDODlRr9bPs=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 283171756;
-	Tue,  1 Sep 2026 07:48:37 -0700 (PDT)
-Received: from localhost (a079125.arm.com [10.164.21.43])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2AFB33F882;
-	Tue,  1 Sep 2026 07:48:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788274120; bh=5GY+SQc88euWmJgqoN2XFz/ZgVOv0qHEWYmDyZeK5BE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JEltKYEX2C5ZZ/qepJmekcgZuDMHGo871Mo2hrh8BH4KmIGGofzXJ6IGQtgJXDhPp
-	 zKBCcEQPeq+Gu3WEP8GTg8CE3pXDpUyOQkTV05I4itu+glLuCCh7BuPty9T7FfTbkD
-	 rDKNjPsACVDZtvgM45KURU6FeTlEBy96apb3J4g8=
-Date: Tue, 1 Sep 2026 20:18:37 +0530
-From: Linu Cherian <linu.cherian@arm.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: linux-hardening@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>,
-	Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>,
-	Linus Walleij <linusw@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Maxwell Bland <mbland@motorola.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Pierre Langlois <pierre.langlois@arm.com>,
-	=?iso-8859-1?Q?Pierre-Cl=E9ment?= Tosi <ptosi@google.com>,
-	Quentin Perret <qperret@google.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	x86@kernel.org, Ira Weiny <iweiny@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
-Subject: Re: [PATCH RFC v9 05/25] arm64: Implement asm/kpkeys.h using POE
-Message-ID: <apblxUah9EcQox-Y@a079125.arm.com>
-References: <20260818-kpkeys-v9-0-743ad31b2c8f@arm.com>
- <20260818-kpkeys-v9-5-743ad31b2c8f@arm.com>
+	t=1788274244;
+	b=1SUmwQ1TkvrGBHZD0cxASwQzgSV4dCKij0QdB6x6Pk3kmm3yFd0B441mzPpq++ySdujLJB
+	84UVtQyHpzHfLodWJ8F4MeAQLyQXVdKWUJx5Js4+72Ivs2it94EuE2Npt4/zr9sR0DG39V
+	ERQXXRk4pk3Bmbk5XT9LPS72JY0JP6k=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kp6Id2ek;
+	spf=pass (imf29.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id AB3526013A;
+	Tue,  1 Sep 2026 14:50:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969561F000E9;
+	Tue,  1 Sep 2026 14:50:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788274243;
+	bh=48z4Zn3y11CKh0cUVxT7sUV2cA21GxR/DgLrBaE8Xmo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=Kp6Id2eknGGRo+fq2I807tlODOLi9jfsO59dHQkrSCV4evO2917O7y4ZtJyqm0YAN
+	 /w8I/T8xL/hnwjHgN6BPSB4LSBzhlUyjwCG0kotNPkpBtXRW3cKnZ6m0UxLDax31iU
+	 dpsen3FAtZ5ctvL6uzFJdZz0768+aE7JfN9rpjBJP/vOVSiklvT5DH3R0hBbq71KfD
+	 nXwbibGmAueMoKPa6qkT86WCTurIGcR5LOmdhDOZyNB4HYLvM1BVMbm4bwNjOCRedv
+	 OH5Wv8DWDKE6/TDZe0knRC5/KL2W0QukFMgcfFVipy2A+81M1/ae4I8XoPT9IQ2BC5
+	 WZxfVUZHgNXyQ==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: Hyunwoo Kim <imv4bel@gmail.com>, Frederic Weisbecker
+ <frederic@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Kees
+ Cook <kees@kernel.org>, Christian Brauner <brauner@kernel.org>, Peter
+ Zijlstra <peterz@infradead.org>, John Stultz <jstultz@google.com>, Ingo
+ Molnar <mingo@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Jan
+ Kara <jack@suse.cz>, "Eric W. Biederman" <ebiederm@xmission.com>,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org
+Subject: Re: [PATCH v2] posix-cpu-timers: Dequeue per-thread timers before
+ exchange_tids()
+In-Reply-To: <apXGzcA9BmrbrQZv@redhat.com>
+References: <ao7Q8miiuLAPVnWv@v4bel> <ao7iQ_wOLghOvTsq@redhat.com>
+ <875x0qclcx.ffs@fw13> <apXGzcA9BmrbrQZv@redhat.com>
+Date: Tue, 01 Sep 2026 16:50:39 +0200
+Message-ID: <87qzjdauv4.ffs@fw13>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260818-kpkeys-v9-5-743ad31b2c8f@arm.com>
-X-Stat-Signature: 8qz4hrm8dxxj34hsks9a3ceczfgsfojj
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C89601C0005
+Content-Type: text/plain
 X-Rspam-User: 
-X-HE-Tag: 1788274121-919616
-X-HE-Meta: U2FsdGVkX18gjHwMK7ZKje5fAvLdvGUBIODnlX6SSYYkAbqSGQqr/Kpq/r0RdYUC6900kzHHWZsy6o0BGOCuwEjqE8c3vvDlbWAYzRF626tZf69wqinDJ2iZ2lroNrF2xolxd2Dn3RQqXQjiuDqOUMrpJxdzmwZtGYLTLqUV9FFBVUBwbBx18dl5F5shYXSydWgrDEk/9MIXc0bq44JM9KoBDio3YVGzaZI60k+8hLfe+qY2ae+UriTtnI+Qud+PpspkOXrWloGwVySe5bS9thlO0y42868kGcBB/IOK2oFBLAaYXdoDE1A9+jAc2doJ5GKg0YDtSB6YoA/SFFmplqqDndWKWDOwIQ3eb5dXdAEuqfRWL61rrU1MOxZNCLpm+Hkxqwds35h88UI6Byx11FUtOt+nGefOp3M79uCwHOs6lnSxTGXL5WG+Qz8tbSaeO9qnXqqEjE9wfjBkh94hnRYyr/2pLl/6O3/7X9snMvTwxv6NvOdpLmyHEYkaeuGSAaXBIyBkVeDcpkYMDzzLAKjtDogMMeJ4+/IsOJ7FWnvRo9NgdcjxuRXODI7AZyITJV1UoXGter0Y35ox12fBjQBqoCb0SdM6JziTCsaf+7kqcTblIcGmPHDyhKS2lq3XPh/G2PwbvjVfj3hX8MrMVLMBjR2RHtyP07ptXK5efrR0PnhZ6pTclAB/i7kds2wToohcIzpllElqR38ZKaml5KxIADJ5L1D8d4xC6cQCfks5umRj+qOSu0ArcN2TiZ9LJPPw849cLW3VKGhbGRdHDOF3TjIJqLtKIVSjlzGZ6+s5gdF7ViDD7SpGdA5inMzohzPzY40yx19pZmrxS5YBSs0jP8od1fQbB8V7HZv7M/DIeLbaQe0V7BR4xyDDmrQ9shsEHiDpKwPK582B2dfYc+pC4xlL/GVPf6JFk3idj0cObbr+n/G/+6H3EcnrMXKL5jLTvUMmCVnYx6PhaN2
- OTL5OCjb
- yFTrz+VReSL0q11kevo0gxTtFQiyxyHyTiLJqgcGTb64/+lYuoTgx+0T06emscFWUY+aXwUIcIE9wrQ/8ABH6muE8/LnSNMJnfGb6zQCwz6rXd2R8eJlIESGWATvU9zZz9qDreDLkK6FspjdQY1rhl28mtA4ACQIAM6zwQfgCYYTh7phqdGZdIAgBcsoHM6gLLTo/fPc8RL0lFIh4eoj+2ulZjPvR4xSs1WKoB4V46Y406r1yHhgX5ibCAVuluEGRuRaFvu1HThW+TcxRU/53pJ75QXphRmGTwF55hbrbmxZaTk20KfataJCMYdXCkrDWULckDJGsZTN3/pCs6m9SDo7WlkibfBiN34mT6UdgiJq6zoFOLV0XgJqquBh2q1THh0Xe
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 390BA120006
+X-Stat-Signature: kitr7bx1kxsabyekkgoqedp8toxjwcfd
+X-HE-Tag: 1788274244-117425
+X-HE-Meta: U2FsdGVkX19QEZkxZUxrZ5ciUyPQ5bwId5TGBOEaICcauTOfWMMBa9WuiUd4cq1apL780wFVhvr/dSMwrAAboUSyCEYuO03ravLjnK95hKjd3CWI7f2YcBCQAxpZX6uqY3CW+WQyX22QFHOks/icxGFDxbMekWNxlR+lK3FPPW3akADzVsR5Mc0aaS9pjfTiMndUhQWvrWsISgJO4LzklsdIdoMtYkaoEgWDhbdISUx5cUt2n+q4tqLhUZAskGZtVLe1OESUEZThtIbZJs9M2LoMJIxmmbosCrj+T0y0mMziVeOAfu5/u6PHkI0d0jRMSZLVV+i8QHWbo6ZYLbZzcvx5oUUX4RmAO0MZCWoTd9rIzVg3hOZNq3Ptcb7qjS58kQgQa/WeQkrlmHQHxRLHvNoY27BJlVn90xUCbC2N9cQhgNT23H14EW2xtJzKr3wl2gxTb0PbXcFugqRHJvX24plH8Qd59fSKDMEkAusEYhwgLar38vs25cMthQZin+xoAfm3zyTgxb76J/v37YE4Ix0UYpVlV7H24mn5oOiWnvEurJnXMTy+j7a1xXiQonxLFdUAl0Q3NdwGBvIh8x3NxnPJhX7YHEGvSYeSvPlE031qTOru/2rWo4bgUjw7swx1Ic5K+6jQAouLFy5AZDXb8h1o0IyFGAFsP9Qd5QToUO0K1ZQwpK9foAa1UdOpZMNrsfuzciHoefrkKblHPKCIEuw/jjl0Trl/R2+/A9ePsXD7ibCuG3lfkFbLpdnArX3VMGUUo9oflC3zOwaaskF9ZSFs/OnyWcrdJOToIQjhCdiRJjQTl4x8K1s541Y02pPnw8yqJ4pLL86IJj1hOeLA497fWpFZaLrAbxxi+HCKYGmOtvCE+SxVoGfOaXQXLfSa/7/lFNeBtxo52T7j4tJ8n08YFG8jQZKBMehhT5NMOMfM9S1mt3sLl9kMnJ4yYCKGbV6Xtu+UrzXIkGFa+xQ
+ zKDT4m8m
+ 8vPaBjl27o9OVsISf+1bgaRdvjIiiBSWQArQ+eRMoCl+hplWLhE3ebCvRG9F9ne9VCrAY6uhLgrpcDKN+YiXSbQFax67o3rIWhRmHizovYdSNKf3BmU8UP/wFUxRP3bCK0zW4n/6Vc+DNJZcjdaIUaHqmtaYYtpMvR8NzwS5Uw9FILo4OK1gBSu4SIgaQvCB0MjkfdT41GLDW7QyjejzmtgYNIpe9H1EoBBfAV1/5tynzhIauZUD+u7u99UZaFspFZU+oiTYaLmFH1crlK6tPrIOqNBMIbu32mXp3C0YYcRn+fMMtNF8EJRFFnruC2B5LlemJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,69 +97,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Kevin,
+On Mon, Aug 31 2026 at 20:24, Oleg Nesterov wrote:
+> On 08/31, Thomas Gleixner wrote:
+>>
+>> On Wed, Aug 26 2026 at 14:55, Oleg Nesterov wrote:
+>> > Can we move posix_cpu_timers_exit() or the whole CONFIG_POSIX_TIMERS
+>> > sequence in begin_new_exec() up, right after de_thread() before the
+>> > "if (retval)" check?
+>>
+>> Yes, but that does not buy us anything.
+>
+> I didn't mean this makes sense, I just tried to understand the Hyunwoo's
+> fix, in particular the placement of additional posix_cpu_timers_exit().
 
-On Tue, Aug 18, 2026 at 03:08:47PM +0100, Kevin Brodsky wrote:
-> Implement the kpkeys interface if CONFIG_ARM64_POE is enabled.
-> The permissions for pkey 0 are set to RWX as this pkey is also used
-> for code mappings. POR_EL1 is left untouched if we have already
-> entered the requested context.
-> 
-> To allow <asm/kpkeys.h> to be included from assembly, also add
-> appropriate #ifdef's to <asm/por.h>.
-> 
-> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> ---
->  arch/arm64/include/asm/kpkeys.h       | 67 +++++++++++++++++++++++++++++++++++
->  arch/arm64/include/asm/kpkeys_types.h | 15 ++++++++
->  arch/arm64/include/asm/por.h          |  4 +++
->  3 files changed, 86 insertions(+)
-> 
-> diff --git a/arch/arm64/include/asm/kpkeys.h b/arch/arm64/include/asm/kpkeys.h
-> new file mode 100644
-> index 000000000000..09fd5a849cb0
-> --- /dev/null
-> +++ b/arch/arm64/include/asm/kpkeys.h
-> @@ -0,0 +1,67 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +#ifndef __ASM_KPKEYS_H
-> +#define __ASM_KPKEYS_H
-> +
-> +#include <linux/kpkeys_types.h>
-> +
-> +#include <asm/barrier.h>
-> +#include <asm/cpufeature.h>
-> +#include <asm/por.h>
-> +
-> +/*
-> + * Equivalent to por_set_kpkeys_context(0, KPKEYS_CTX_DEFAULT), but can also be
-> + * used in assembly.
-> + */
-> +#define POR_EL1_INIT	POR_ELx_PERM_PREP(0, POE_RWX)
+Fair enough. But as I was staring at it some more, I thought more about
+it. Yes, we can do:
 
-IMHO, moving this macro defintion to "arm64: Enable kpkeys" , would be better as
-this patch is about implementing arch helpers. 
+     ret = de_thread()
+     if (ret)
+     	goto out;
 
-> +
-> +#ifndef __ASSEMBLY__
-> +
-> +static inline bool arch_supports_kpkeys(void)
-> +{
-> +	return system_supports_poe();
-> +}
-> +
-> +#ifdef CONFIG_ARM64_POE
-> +
-> +static inline u64 por_set_kpkeys_context(u64 por, enum kpkeys_ctx ctx)
-> +{
-> +	por = por_elx_set_pkey_perms(por, 0, POE_RWX);
+     mop_up_posix_timers();
 
-Guess, we would want to set the pkey index 0 only when,
-ctx == KPKEYS_CTX_DEFAULT and it need to be set only once.
-IIUC, we wouldnt want to deal with that every time we set a new
-context. ie. update only what is relevant. 
+de_thread() only returns failure _before_ the TID swap, so that's safe
+and spares sprinkling this extra invocation into de_thread().
 
---
-Linu Cherian
- 
+What a mess.
+
 
