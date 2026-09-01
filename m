@@ -4,98 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CD04C61DD6
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 08:22:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94DC9C624C6
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 08:31:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5AD906B00C4; Tue,  1 Sep 2026 04:22:05 -0400 (EDT)
+	id 572836B00BC; Tue,  1 Sep 2026 04:31:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 584F96B00C6; Tue,  1 Sep 2026 04:22:05 -0400 (EDT)
+	id 54A1E6B00BD; Tue,  1 Sep 2026 04:31:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49A6E6B00C7; Tue,  1 Sep 2026 04:22:05 -0400 (EDT)
+	id 460FA6B00BE; Tue,  1 Sep 2026 04:31:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2969A6B00C4
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 04:22:05 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9FB30C0376
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:22:04 +0000 (UTC)
-X-FDA: 85164500568.21.C483FFC
-Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com [209.85.161.72])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E89791C0003
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:22:02 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AC186B00BC
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 04:31:44 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 66A0F14035A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:31:43 +0000 (UTC)
+X-FDA: 85164524886.27.6D812E5
+Received: from mailgw1.hygon.cn (unknown [101.204.27.37])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 3235040002
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:31:40 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
 	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf18.hostedemail.com: domain of 3KouWagkbAPUpvwhXiiboXmmfa.dlldibrpboZlkqbkq.Zlj@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.72 as permitted sender) smtp.mailfrom=3KouWagkbAPUpvwhXiiboXmmfa.dlldibrpboZlkqbkq.Zlj@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788250922;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=Fxsg3tyZFfDboYC1KLQNAGrb0RmxM442yXMbJyS8HSI=;
-	b=Mq7Dl2wnuxtXRnF/1/9+T6O6Ud7YF+nJbq1Ucogb5SW6f7TDZWQeZfwwtvjqqipHVpj+um
-	yOYmSaZpNn9L+Wdu4eL2LkTSdClsrIVoFZemgFBeREyk/tpEXSkq7R8PaPiLL7vzZwOqTt
-	BAwTot7RfDeBwD0zTOsh9o5olS9bEfs=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf18.hostedemail.com: domain of 3KouWagkbAPUpvwhXiiboXmmfa.dlldibrpboZlkqbkq.Zlj@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.72 as permitted sender) smtp.mailfrom=3KouWagkbAPUpvwhXiiboXmmfa.dlldibrpboZlkqbkq.Zlj@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	dmarc=pass (policy=none) header.from=hygon.cn;
+	spf=pass (imf17.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788250922;
-	b=39VBAVzjg7HO13+9omObW6uS4caVEF+vaRviIz6oRjf3IzIPyO0Rs1ZVJRR2TYungtjANB
-	q15WazzZs0g95Dul0hGo16KJmjvnQoHewjDzSBQ2AUaHNml30DY1ypHjoWpdFCJL4XzynH
-	E6bKs2qzYtRNRKmD2O/25HCvul1joaM=
-Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-6b1478e3546so516859eaf.0
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 01:22:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788250922; x=1788855722;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Fxsg3tyZFfDboYC1KLQNAGrb0RmxM442yXMbJyS8HSI=;
-        b=lfLFtJU/e7G5/BsG3x5YuOhNrFEFhE4DptX59Vy+QREJnDzD1680VXq4knzYX0uAY0
-         RHFtqog8JqurRv6akx8FoMfbXK4N724eZ9JtbYiLRj7cE+HDB2/1i4AUg2NaHHhHPf33
-         /OLtUTZ/RjtarSmJ++uQQBmhQ+eICd6KLALtBgcI8NvD43S0J0DMZ2BYJ5NoOoQ6giZh
-         6HlWkn11XoeiFQyAFIAbVbaEEmB53l/t/S4CxWnssttO6Uk3R9LBhl4ZUbcJxMux8Anq
-         610PSJoJs21DUYLyp9GGugfwdm0EpfmWnKL7H7DL8G9yjGSxYG4amN3xtDIkcrAAbXL7
-         Zpxg==
-X-Forwarded-Encrypted: i=1; AHgh+RrTXUwnBR/sGRjHASJXXg6eTX/iEH0lqHGOgQS5VZKT+XmQcGECpS8aSjfw4sb3Ruhl2nPVXyZ/UQ==@kvack.org
-X-Gm-Message-State: AFuF++k1FI7Us1ufYA22uaa/zW6H9NSxBBqz7qWuBQQ+5Xccav5Zbb10
-	kNYm/W56EpgJ2nOkfoG8pMvD5BTewZfeqmnwl9qL28xTc18Wtfw82NwSkE/0flMJhkO/I4cOdlO
-	h4O5pZ98FE6wY5Ko6STFD1l6rrGqawjEe/zDv2GVqNUBOTbh8IZxIJkuLpkU=
+	t=1788251501;
+	b=FxK50aXmIDyEYQFpKPRsb7psAA7u+aiO1u5nuAVNEz8XKxtMjNQay8hYgmLeUn8qJXZBtW
+	ulZxnJjXtLwRDgb3Poo9UN//GMr/wXgNcdYv8pTa7TwcoRKfF8GL73dD+UEf179MXosl0R
+	oUBZXfQFq4XGTHU9FaMjChSYwUAbp1k=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788251501;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=w4dXuQi6Jk9Z76VcireLxucjmD32filYi4k2zaMMbLA=;
+	b=rmJqBwn269mX257Li+Ly7PnfIYGCj6xuDDiIUaXdpyLrbPTTnm12RqO+zTVkb13n4elqgb
+	z7bHmD8tFbT8UZzLRuGwrchXLVS0ex4iJhci7WI5PwVfCSALLDoyIjSbAFY1R2QiiWyjeT
+	qz56BW1BgkQ66r7fh7lU9MCocKpF0zY=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=hygon.cn;
+	spf=pass (imf17.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
+Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hYzbt0QLfz19hDf;
+	Tue,  1 Sep 2026 16:31:38 +0800 (CST)
+Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hYzbq5Y43z1PvqV;
+	Tue,  1 Sep 2026 16:31:35 +0800 (CST)
+Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
+	by maildlp1.hygon.cn (Postfix) with ESMTPS id 87479B351;
+	Tue,  1 Sep 2026 16:31:30 +0800 (CST)
+Received: from cncheex04.Hygon.cn (172.23.18.114) by cncheex04.Hygon.cn
+ (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Tue, 1 Sep
+ 2026 16:31:35 +0800
+Received: from cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d]) by
+ cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d%10]) with mapi id
+ 15.02.1544.036; Tue, 1 Sep 2026 16:31:35 +0800
+From: Jianyong Wu <wujianyong@hygon.cn>
+To: Peter Zijlstra <peterz@infradead.org>
+CC: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>, Chen Yu <yu.c.chen@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>, Dietmar Eggemann
+	<dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, Ben Segall
+	<bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin Schneider
+	<vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, "Shrikanth
+ Hegde" <sshegde@linux.ibm.com>, Phil Auld <pauld@redhat.com>, Andrew Morton
+	<akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "jianyong.wu@outlook.com"
+	<jianyong.wu@outlook.com>, Yuan Zhong <zhongyuan@hygon.cn>, Huangsj
+	<huangsj@hygon.cn>, Fengyu Wang <wangfengyu@hygon.cn>, Zhiwei Ying
+	<yingzhiwei@hygon.cn>, "justin.he@arm.com" <justin.he@arm.com>
+Subject: RE: [RFC PATCH v2 08/23] sched/topology: Introduce a per-CPU tasks
+ NUMA preferred counter
+Thread-Topic: [RFC PATCH v2 08/23] sched/topology: Introduce a per-CPU tasks
+ NUMA preferred counter
+Thread-Index: AQHdNiBA7oAH9eDim06x96D0XIAuLra3pasAgAHCg5A=
+Date: Tue, 1 Sep 2026 08:31:35 +0000
+Message-ID: <8eb55be5c1e9497c9f34f15436b9d665@hygon.cn>
+References: <20260827122816.756234-1-wujianyong@hygon.cn>
+ <20260827122816.756234-9-wujianyong@hygon.cn>
+ <20260831132414.GN4120091@noisy.programming.kicks-ass.net>
+In-Reply-To: <20260831132414.GN4120091@noisy.programming.kicks-ass.net>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [172.19.20.45]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:7049:b0:6b1:a812:9871 with SMTP id
- 006d021491bc7-6b1c66855d6mr31267352eaf.18.1788250922028; Tue, 01 Sep 2026
- 01:22:02 -0700 (PDT)
-Date: Tue, 01 Sep 2026 01:22:02 -0700
-In-Reply-To: <20260901014303.417027-1-junjie.cao@intel.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a968b2a.08473e0e.15b4ac.0000.GAE@google.com>
-Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in exit_to_user_mode_loop
-From: syzbot <syzbot+2642f347f7309b4880dc@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, cgroups@vger.kernel.org, davem@davemloft.net, 
-	edumazet@google.com, hannes@cmpxchg.org, hdanton@sina.com, horms@kernel.org, 
-	jackmanb@google.com, jhs@mojatatu.com, jiri@resnulli.us, junjie.cao@intel.com, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	mhocko@kernel.org, mhocko@suse.com, muchun.song@linux.dev, 
-	netdev@vger.kernel.org, pabeni@redhat.com, roman.gushchin@linux.dev, 
-	shakeel.butt@linux.dev, surenb@google.com, syzkaller-bugs@googlegroups.com, 
-	vbabka@suse.cz, vinicius.gomes@intel.com, ziy@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: co8tk7477z8w8xyxy1u4drdafk44d5w1
-X-Rspamd-Queue-Id: E89791C0003
-X-HE-Tag: 1788250922-318759
-X-HE-Meta: U2FsdGVkX18K4VMDZBaJ4PoLhnZO2N0DQVU/mmLIj07iiZcrJ4aDqwb6MwSvqqoELb+gAhwJo5WUnjoNQ50Blrs9guRpDzXLbZUYzckp7FGMXMf38bCSKUVDloTcAadvM8MKbPDWwFB3ninTHay2WgTvOsKWf0xQPhWUlp67LpZJrJ6IxMlVYf4AJ634NG2eADH8zo8I+4kfovKAxvEATbS/10JOgAJEdCtlibTN3nylz0pvBup8JxO+l+lvYUyEKn7EdTOOtX0y8wcakR3tRe+eP83WZ9VGyBE9kEk3bRRSfXVA45NBGQPpMKyC8Y/7h/Fhk9cCAZY9C/MGZ/thanT6ka69lhoi/d/QRaER6pMbklZfyBnvRsv1GRL3m5AE17H0nqgqrLNETE/5Jnm/EyVAUpOg3s8Wyhjo/bY4wZJnfYnBCVwe2aKQ92qF8qNQ8zka4Uu0/jJocIsrnwOwendPBsvElkHBHaEQeLAXH+slTfyGpLQyBEGuswuET8zSFdfqHoJVJc96a+5JGRvoYYrAZg7gRBSiA3o1/TWzEphSpwXhlX2NIk1x3QCTbaqXrpn5mYxncpkdLP5IabtSsNUBpb0cup1rgrze1a451qZY2dyFwa6Q9y3Z2NGqiDVlZ5J9Fm7d/V33x+BmnD051MKpSL2dwjxz9sXz6L50V1OXMn4XdUP8g1OBgCVeQuvNnG+fGDn4ooGTvVpcHz6U6Ven6SdwRoIgxmWfkNXeliQP4mNeTbnWGq5vsDbj+T5KAY7NaDGsovwe1Zo3ZtxdozMOPVsFobRKG5jH2/0ntY+RfBoDTa0RALQfrZYZqtNqbEbrwEqlR130wbWJ7wZUgnfwE45TjXqMSpd4PFFIwnftVSQRHypEKrUsBlM2obfT0Hti9Pg1qx6y6yYPJPSN0m/FhhMOYTcHWMHve0mwZvEzYHUnIc0VvZxS5dLgZU7tNb19TVxg0Q4xsI7/M2b
- hUywW10c
- XXtOfYArLqT4qgflerwXfKYVbtNy7GqDEPhKnRDCPUtbdScA+6niAmgfJvOtQToXh2sidrB2mfzO7NsBFRRwYnCWstrGE2gP0obLrcQ8Jc4ku2YXtKCVxMwF0TO8LW3fn12+9kiG1W3i0iBNLmxYTkP1Bp9q1c0ggvOPsXxLsRT3NtYaVv46TQnDTtTzoNQswpzvan5SmNDliqrx4L9S6kcKeKBzLj9cp+YE0uShRLaQgzywbwJHaCQXsfjuZzSTZEX0rg2J4ElOdnPb0otTopgReP9+MLBXLABYcRiTAe+H0lSbsMlS+f0cvnrCdvDgnoitVNhGbb31N8IShw0rXF1QmCB8M1Dy9e835od5iAqRzKahnwAuM0n2tWyl3+apxw4Zw6h9g7KWNFd4gI6bIedfwqLSDFnYjxpYvbTw42QZtga/S3JcX21tJuC+nQ1CFWWRH6qhObix0YMerhXe50//Tk0mGwHDXh7gtCA0EHy7Z9/V5A+6lPmXUayyBHnKooN+pgFU1YV/GKL17sXcpYsPNxMZSvkFfTM/LFBGzfPC2mu6l25w5KG0fjHqUaGhOq1ISq5ppe5tKvmWC4Wr+TDJ1tyeZSmikiE3KAqISQ18q52ILtVsz1cFtH9c0AN4CTxjnnGsPyNsxEb9zH6WXLjh926sexf2vUQFZ8CS4GZmb4fLNSAHRi1+f26qBGT/E2R8Lyrheq0kogyqVQP8VF2Rsqp7KISX8/A11GRyF9ZVWELX0qu3rReLBbCRUAgGw8RppEXIOyGye78SNhJ/dtnNANLhxmYZKXDy6urPMaspkzBsNLbjjnWtJ4xnUDfyOsjqjPRgr1c9jVseQ/y98jrTivZxQtjBIHto0BwLEdYLHbMaU5YC7K6FlGpul+CfeWXK7QQ4yD5okAEBAjKq4DqpW74RCtV4HFHL2wE3fWJ+YH4pIZeLDad0TMNGYkEySGJ4Absh5WyhpJtQJfr3f/Iw90Fyc
- Om3kvwhc
- hMBZykkI0lB7/KzvfWf1ILlCNR/H6MSl69SYO0vp/cn/jKTgDIoZL6U9jx9yZ6VHlgwVuaKDCkHauY2/Mya05S+70y8j2R5g6Q3+6knt/bsgvJhfPBHJfYwDEJ06HXH9mM4dnCuS2VjTxw1nKttjuqHdLyvu+criW5b68pqwGQZUDorSTAA1RbS4mRR8RLUS
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 3235040002
+X-Stat-Signature: gz4abg9f4woydbetrpawzsqggk5uss17
+X-HE-Tag: 1788251500-765309
+X-HE-Meta: U2FsdGVkX18JTr3xlD4LjIEOp12HlO7qMsJYyq1/LeLlnlekKtoeC52BfvAgsTCzCoqZKEn7dJ0+on8immo/26HYoDVjfCatoMMT7tpGYOmx84pl9Amgz1MReSn3OBiuL6twPFUxy9bPJLGMs24cRkq8e1sAiQ+t+1b8bvQ4/BrgePrJUQiI+Qi9QJv8dBmMvvRDSapnWvn+bhauKkNECFEOq3hQxus/6z+/WfJuH8VmXEmQb22B+ubyFFsxkXhSanNXrQz/8zcp0KF/bS8J4vUxiJ6phOW1y2zjPUSv8CLyJyLmV8aaUwIM6ZsCj4DTh4VhKoHsQUOJQvfr8z8Q/sn9Ejxyk+YNPOxtJWn07qB020uGQegEiblO2j+eokT2b09Uq57hZeCt2UdUKnRdj1c+wlEobqgFXZLuwAxWofs5Eg3xgaacQ9o9MlU4/atKxdWfN2/KO73sOEA5NXegAihT67drBkFBg3MZOkqE4QvZ2ZXbhHmnZglrULvb60Bx7dzTkBE5+oryX8pypH3Jarh1XQZRfEE4nVCiz1DFmLLFwZXV285NtlqFc+V5M7Db9MbuHo+Cmx+7yqrSCfe5TVaNAzrTon/zK/bn4Rq/9NKAyXDZ6xFDJ7bPhZTKn5dANLzpQZQvPiCrNxI3XrUy3dhh+te2QLhYkaUvxBzwzRejoT8Ai/qzH0mu1Azn4VcuMo8P8yySCwAJ7d4atCEswZEPNRTbaytNHw8nRQmZ2d79sgGOQFRLm03gFO9a2IkAjaBiIr1FnkGS/NftWAMQG4lcVi5TcRfdSrmBAFQdatQpec/BrIog/9WnukYO/P2L0+5iEqQpsGwg8LsK1BIkOO1RBXc0Owfip2qGT6R+LJjV46u3cXMOCVVyNHZL7aPGtmWCCgqv2KiPhe+AMYZqIsxYdcjKwJZRv3xs39uUow4zsvCAmyA5WQVABAZYkA9yCm81rxuKULPUEXMRKsK
+ 3s9259R7
+ ypYL7EsHcNjDe3CUe/UPAg5XxSgzTjwNieHbojRvEwpLINlVsmKNmmxMbs/MnvYtAf+42p9/WW/eFSORpY4qvGi0J4khL2K4JrTkxs8k/xgJSHpuWnlORhxmF27Qs1/4DkuZYTz9pLnApt4s1B8hWUHGullhJNkvcmPj//YkFgL/bgS9EcfXDIcyOW+l6OkQUM7AHEEcykmfeC+aYk/WI1ohN/tAxLVaWDmntO87nMDSD1FyVgS0ehHuDjGgQjlDhvOLo2aKLIwB3ybPgUhzKMQRR5wDlJFQRUpbi3ATuAwL82aqBOaaQiCYUZ/e0qDdiwhKVLiDOrxOs2w9u4SrwUul4G1Tjn5ZuqtDb+d9yIeMfye0Ft1f6jrQmUfk39U5NVm0ovApS9bq9G8iFUTFTxAEFu4XW6U55mERNlY/BydOIzR3WiyCNCpOOXRNBcfLs9ENWMreO1Fed3y+wtA7udeXUFkUqzecQXxeR+OsL5EymdSVSP1ixAfqLcKcXnpaZXcPEV2AUqJbRUHLHEHDNu+ZVvm1bGm92M21L/a2H7yDSb0eY/nNW1r066da8EiLy9X1VcnIAcvgniPI3THCegcaY3YDep3mADVor0YUfzSmXkk28TnoMCnNZPfI8ffXBeyAWHvwpuj5BbaquB0u5Q3TL2VHTbHDrrc7BRalu7MCurB63uKODY0TtApZKTVGy58Lsh6e+9oidyfevtxlOar9nvhgqqVcE+TnZ/af5+GIk26MA4ZjTy1GMUyAZIRAgQ3JuGX8JiuInz7wLt760O94LxYa9VTTwT3CFaaF36gm//N61yO9ClA04RmvLkDUiTDchyaHBt9O6HHDbZDiaGGMYWg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,22 +114,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+Hi Peter,
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+> -----Original Message-----
+> From: Peter Zijlstra <peterz@infradead.org>
+> Sent: Monday, August 31, 2026 9:24 PM
+> To: Jianyong Wu <wujianyong@hygon.cn>
+> Cc: Ingo Molnar <mingo@redhat.com>; Juri Lelli <juri.lelli@redhat.com>;
+> Vincent Guittot <vincent.guittot@linaro.org>; Chen Yu
+> <yu.c.chen@intel.com>; Tim Chen <tim.c.chen@linux.intel.com>; Dietmar
+> Eggemann <dietmar.eggemann@arm.com>; Steven Rostedt
+> <rostedt@goodmis.org>; Ben Segall <bsegall@google.com>; Mel Gorman
+> <mgorman@suse.de>; Valentin Schneider <vschneid@redhat.com>; K
+> Prateek Nayak <kprateek.nayak@amd.com>; Shrikanth Hegde
+> <sshegde@linux.ibm.com>; Phil Auld <pauld@redhat.com>; Andrew
+> Morton <akpm@linux-foundation.org>; David Hildenbrand
+> <david@kernel.org>; linux-kernel@vger.kernel.org; linux-mm@kvack.org;
+> jianyong.wu@outlook.com; Yuan Zhong <zhongyuan@hygon.cn>; Huangsj
+> <huangsj@hygon.cn>; Fengyu Wang <wangfengyu@hygon.cn>; Zhiwei Ying
+> <yingzhiwei@hygon.cn>; justin.he@arm.com
+> Subject: Re: [RFC PATCH v2 08/23] sched/topology: Introduce a per-CPU
+> tasks NUMA preferred counter
+>=20
+> On Thu, Aug 27, 2026 at 08:28:01PM +0800, Jianyong Wu wrote:
+> > Like the existed task LLC preferred counter, sd->llc_counts, introduce
+> > sd->numa_counts to denotes the task number that prefer each NUMA
+> node in
+> > a certain rq.
+> >
+>=20
+> To what purpose? Is not the node occupancy the direct sum of its
+> constituent llc occupancy?
 
-Reported-by: syzbot+2642f347f7309b4880dc@syzkaller.appspotmail.com
-Tested-by: syzbot+2642f347f7309b4880dc@syzkaller.appspotmail.com
+numa_counts is used by the affinity score in patch 12. It holds, for each
+NUMA node, the number of tasks on this rq whose preferred LLC falls in
+that node.
 
-Tested on:
+You're right that numerically it equals the per-node sum of llc_counts.
+The reason to keep it is granularity: NUMA-level load balance scores at
+node granularity (numa_counts[node] * distance_delta), while NODE-level
+balancing scores at LLC granularity (llc_counts[llc] * ...). Maintaining
+the node aggregate costs only a single llc_to_node() lookup (an O(1)
+array read) plus one increment in enqueue/dequeue, whereas recomputing
+the per-node sum would have to walk every LLC of a node each time the
+NUMA-level score is evaluated.
 
-commit:         abdf623d Merge tag 'wq-for-7.3-rc1-fixes' of git://git..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-console output: https://syzkaller.appspot.com/x/log.txt?x=123d1379580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=9cc692b98d9b4fdb
-dashboard link: https://syzkaller.appspot.com/bug?extid=2642f347f7309b4880dc
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=16f7eb79580000
+Thanks
+Jianyong
 
-Note: testing is done by a robot and is best-effort only.
 
