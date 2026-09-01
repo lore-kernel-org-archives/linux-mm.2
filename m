@@ -4,95 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECE42C61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 07:27:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53AF2C61DD6
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 07:33:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B86D06B00B6; Tue,  1 Sep 2026 03:27:51 -0400 (EDT)
+	id 6AF646B00B7; Tue,  1 Sep 2026 03:33:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B37FD6B00B7; Tue,  1 Sep 2026 03:27:51 -0400 (EDT)
+	id 65FEC6B00BA; Tue,  1 Sep 2026 03:33:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A28B16B00B8; Tue,  1 Sep 2026 03:27:51 -0400 (EDT)
+	id 576B16B00BB; Tue,  1 Sep 2026 03:33:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 751306B00B6
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 03:27:51 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F0819A02F6
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:27:50 +0000 (UTC)
-X-FDA: 85164363900.06.95B4C60
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4FA7AA0007
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:27:49 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 34B0A6B00B7
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 03:33:45 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AA1841C1941
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:33:44 +0000 (UTC)
+X-FDA: 85164378768.02.033C2DB
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C9932A0008
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:33:42 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DZpOB8u4;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=TzXPT7Dz;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=j5HparhZ;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf25.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788247669;
+	s=arc-20220608; t=1788248023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YGa9MdY2HmilFhv3h7yAxaNr+XC2/lGA469m5Lsc+Ow=;
-	b=o2dhrjyYqLybmd5r4kRmSGhfqa4/J3XIus40weCnT7Oc6bcTvBwfynCfj5gvWJmhHLMY4b
-	XfTNWMp5lmuXQ3Uyi0LN8JZNxySmxpPHMFBhI1kLefAvZ1NQa3jOUSKtuWk8qg7tMVKTre
-	JYJspMd1i6CJZoaSRTzY8TwpI0sYLd8=
+	bh=27tX09Ku1yUGrS5nmgj4LhtsjBb7cHNJOk2p+V8FmWM=;
+	b=6M7owtE1fEBp41z0SF+FqtTYD5qT7p35hjPL8FYmXs83OeTBlvCA7WZuC2dwsUzAaTcBpj
+	06I/zMWHnhxIPwkH4u1sfKTR0C2lcgcxn2IwstZ+UmbmbRjr0UBNCARQEIKlQYzhUQ06fD
+	utx6F9OM8beAMp7wgfZh3QkxNm7wFJo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788247669;
-	b=YolAi4K2sqraLCMn0yDN+XE86RLcbCINVhMuR4Qd+Mn/iiXNUWGwu/SE/Bozo+qwWrHzpL
-	hTglKK0Xjn8NMASjS5ADa/oMl4njkgfaS0u/ejgoU6miBBVjLqDw3G1rwRzxAVIGsNL0l/
-	ZzFWHh9B9CLeUwODXFXoPS6HEDgKiQI=
+	t=1788248023;
+	b=FWW66M01gM9qb3Yg5IgQCC9B/uTTQNjKd8QL+ybMhdCvISZmAPIy4Hjac7vjgF6WDPhqzi
+	nPHS3Xersqi+4fC76rIrQsDEml21CoF4dD8MCilTg9NGsniB91CsKOBFQuTFRRDdJuntbk
+	UIr3YSQKBqDuSmHVmWk1VmP3SWDOlBc=
 ARC-Authentication-Results: i=1;
 	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DZpOB8u4;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C7D6E600D1;
-	Tue,  1 Sep 2026 07:27:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB951F000E9;
-	Tue,  1 Sep 2026 07:27:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788247668;
-	bh=YGa9MdY2HmilFhv3h7yAxaNr+XC2/lGA469m5Lsc+Ow=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DZpOB8u4FARtGbaeK+Zktx6F83IhDjixUWt+slRUvUXoCndjlaLxtFgKCavyv558i
-	 XMavzFhNg/6vhef3/+YX633G8e9jxWeDyVexxctyKidec2NvcfKyo/KeFnUW9Uq25/
-	 yTat+Ht/BsQAZxKuzrhoUwMiAa+rGu+9JxG0qdh2YyPgHRgr5hm8rEFM5VSp2pfOYd
-	 yseektNF4aXsRGgyF7tr+7iBeGSW9HYpZXd3A90vAwvhCWfjTHFbK8fI64tQNj6E6P
-	 WGQwJQzGDwhmzMnjCMkcebYa2pu1BlrcZymirMHkQv1I0CzQrNKpBvYfveBC6cvvFw
-	 2a6tBJq8DNUvQ==
-Date: Tue, 1 Sep 2026 08:27:41 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "zhen.ni" <zhen.ni@easystack.cn>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/8] mm/page_owner: Add PID/TGID/COMM and cgroup filtering
-Message-ID: <apZ99NHTmNI_nIwz@gremlin>
-References: <20260828031339.1270699-1-zhen.ni@easystack.cn>
- <apEx0wT_hWs1Q5Wp@gremlin>
- <20260828113654.d01abd8baed3f73e87506eb3@linux-foundation.org>
- <9fce3210-3548-4df3-ae00-730b666f5d57@easystack.cn>
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=TzXPT7Dz;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=j5HparhZ;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf25.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
+Date: Tue, 1 Sep 2026 09:33:39 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1788248020;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=27tX09Ku1yUGrS5nmgj4LhtsjBb7cHNJOk2p+V8FmWM=;
+	b=TzXPT7DznQcsARnerro9taiipvSEM2X4U6+EbW/xr0uCME3BEEanTcS3RZhQRaKNv0rNvk
+	xLbOEj2o7nhwUkqENBSWmmQaneC5z0upECKOVEg7ddZZgaiHc+F8OkPvYhI1M5XI+/rv7R
+	7+GCjWG1qrxKVUYbvb3qO9z7G8FBZ+EGBC0/PfmaIisZewxwvyzGN7T0pCBXk14Xh6vaMe
+	WoK+lp2PjmP+gSyE7q4G/BqhFM7RCl+iPxiG2tcFRmY7/FVMKvsEhq2pzWJKTu4WwgR4YD
+	tIYR9Oet+Deeo//rNW5xbdDusLTe39SixfjGT9K3QS3v/r89NkNBY2q9+mL4SQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1788248020;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=27tX09Ku1yUGrS5nmgj4LhtsjBb7cHNJOk2p+V8FmWM=;
+	b=j5HparhZ5Xj8SedssfmGWoPfae5sXvItOLzUQ2qVxQ1rNXl/NIuvUgxPjxIUaeOrCN+8f6
+	gF/WO4VMNvyDGuCw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexei Starovoitov <ast@kernel.org>, Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	syzbot+acf142088e0182172e58@syzkaller.appspotmail.com,
+	ThangNN99 <ngocthang2710.1999@gmail.com>
+Subject: Re: [PATCH] mm/slab: disallow kfree_rcu_sheaf() on PREEMPT_RT again
+Message-ID: <20260901073339.uyKHXWCX@linutronix.de>
+References: <20260831-b4-kfree_rcu_hotfix-v1-1-4f0fb882638b@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9fce3210-3548-4df3-ae00-730b666f5d57@easystack.cn>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260831-b4-kfree_rcu_hotfix-v1-1-4f0fb882638b@kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C9932A0008
+X-Stat-Signature: 13s3o4uwj57hukuytzkx3sjc9b3fgrwf
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4FA7AA0007
-X-Stat-Signature: 441atpjrkh896nppatjq3zbh4xsdi1sj
-X-HE-Tag: 1788247669-380097
-X-HE-Meta: U2FsdGVkX18xwjp0Cy2gBx65a1aztptAOkWM9M0zu8w1os7wipI4EqNeouVJ80JESh4+7k+UaJYeeuF8Cd4SJVVfq7MndCeq2F2ii3tKDapc4y568wgSMsxUNqRAX2s6/gzP4TB2EgPOYfP1YiQzmytXwA87x8jgoLxUJKfZlmMDt1w5Ri7bUgtCW0P10OnVbo9dzJ5ijxDhTprSq43txAAoy2rm116kYaKqqMErEDpdMddYuugx12Ee6W2yL3vrDtdqb/eklfGRFHK40b2prNCc0DyQiRvwmTYjJg56P8aQeBhBl7yGU/o4VoGgnnVRQnlXOcq2YoYK2SurnPXtFwC3M3uMZO1OlAoYxaldNYEZCGDL4I4e++YeFqnO2zdpkCSGLGPqlnXtPb8ZQPXocVr91//Miu310kjyO6sn+xQsfkuDucfqqrWQLeG6ahelUYugCbZ9HaQ4SqJyVzD5Uy++BlcRGuijmpDu7p4g+wA9n0Hy9v7nQa1925xdCH7ANI7JisCO+6TeXCN1C9b9cUG7NT7JfgRG4Sa7lmLEcCapd0t08SZQt+pegT8urdjChpOoweWxjwzsaEDTr9omKYqKx2zsHGcApGQ6FfUQeQyc9J+77BF5PF3OU3Z66SXLLMCuYAA7o/3ZIsCE168s8oU/UzIwhW3uWDZkEVbg+zAX+d1QdTE0xaHDwQ0V4zX/S70GDp+j3PdacegT/mxlq+v+I/yJGMFsgOGMWZLbnaqftvUgI1naD/t5MOvWiTEIxsUTFQpUVOYH8m6eghT5EnpQDKHyAY8JzD91ETZXyPitjqM5DTTb1HaX6kp1OTbfHoZdahVX5EWGofkXOLwsQdOzh5rcy6i5kZgbG2zPQgDt6Mb/9eYXXsdR0qX6UcyAkoxvXuzmLOR+0o90MPf6ZomASL1ZKV2zBBNs1y5EfoPEAv5L3m0RRTN7dTbK/m/TT05tQ4Lnlxo9co8Bf0w
- G9DeighF
- yJA/FT1qfIbhKXU6Iqj1fzo3/1PCPzf/1a55L1Z45UTFk/xBGKR9V45yVfuGnnDe631zYZXjjfivDdt+/FzDA1sF8tvaGUL029CbAATRw7mtICgPCznBP6rHiV8uNyeLTpGFH38CkWrdjOfHGuGuQmxCLCD4ehuqyCQMRmf+CzCB7k+UAmWh3PZIWl2oLzKyBGLkGDP0t9jiBCC1WPQqkMqd5eGYt4mUgio1bPvIDVYScf8vO0j0Hv7F5m/4rUhR/588pP/JzgpsCsuCgu8/6jPRh94l59342kve41yXAfqySFvDJT6dGpFcbdfi4bE5Ps9iKDJ712tbxYRTfxJLcURvn3ZVHbWWg0JkcCUMYCwSIA67a0OP9/N5k009KoNHycv++zaKXHCRZ3E82iyO34zZ4VyhRuIYot3QLnXn++L/Wpds2+VrKj3hytAj/nZ9u7Zx1ECHZGz/Cyss=
+X-HE-Tag: 1788248022-421516
+X-HE-Meta: U2FsdGVkX19YinKbMXG8Wsm3ekXTXhEKM7xNZ3LnSbQ5Mbu8hjcXSEBHLEobfJbfOlVuvr5Qv8HizlgoL+WAxchYpmWLk7TU05Ud+URuZPpwMZo4V3/JNCx9Srr4wLarSyiLX/EfMOlNbTi//mkciHtYRMDL8XB76tSSMFhh12U86GLe50ghR3G1f5+EHYvtcA+4MkA2y+0GOxftBcZVv3p71ZZGct7Z0X/yZinA+gaySQQHGQWZaGmt4N+JZzEm9Wd0+vbz3avsbGqP92D27riuOQpVvRqSyiF1MkAe24MnZmPkHWywpfD0yue9WnGC1eyToRW54Z3EjQv82bwmQ14xjyYrNeZxSic23S+g1+aNPYyyDuSRhRyIZ05yPdp05h+WbsBPUdPXR1Xkr8xxYpm/grpAa8wFz2htwMwCWuqG76gyihskpGXxl0nMfwntBsfIa1Gj8l7y4O6iLBHP88/PFAGYtTHXi+dbZVO9xJ79NavWliDDgPjkNXv/BE2DJOESTvMIxICVdR1cQvi3pG7j3PgFIziOyKR6v7V9CCLgMQGmJxd/F9UURDsoRONbpsb0rMVe2MhgTZl4RjxuA0JCObYk4fC99mAHtUv5htNVrL1SBdQC9EdZCaBDvaAsZPBzvncy4OWibdLbkARS0CFqOwAwuzU8vrmUZlbw/CwDxVEFBzmA5rCIMxe4TiUOroCytUGY0fxO1qR94wXTtS9G0+HdGfhKHzpj/ztczzqWZjZ2Py/7oTnW1zOaBRk5vDAg1II/Hc69yIfDP/m+K56M1cYz2ia5QHpyZ3jiEaKPp9D0OXJFupE0aZNWc+iEI9cw+lKpJFEWoxfsLHpe/qAElig5Lpmp/mni9sI90SAydIJX56pWVzY9fLQT4WD76v5fEzTs1uTx7SA9OX8c/tkQ8EEaEQF1E4tQ6eXhB93RiEAsmYQ0E7hl+AEUabsma+MzZpazgY38LrZwWdq
+ wadnaNcd
+ SL6g2ZMv/rMF8YU5L26FokSM+acrzGQPbGfOB+op0Cv4vdc1E0qhD5L66N43RM+0svSU5cKG7cVqe3ZemzNLkvZ1qjNWv2Z2BJzWDbBxTt0vvn60r20X8KZkxX6nMVyeEoAdHpkoDaTe19QdBMNnInbih3JDWpj6WqiZElORlV1OL7JfikFJ9oFGxBfW70tw8DL3osabVjye7JOU/YDri1gVlQYgHqOODEWZWm6MZr3OX1wmSqKuPL9RNvoMBjc2cJUdXx+ZUJon0zeOeMn+uIp4ZSQSoCmI5O3lalFI0wc4kcn0cOzDmttlqwpQFeFsf/f3/ItnBKrUyUdCfc9bMwe+hYtb4uvkWZsEeyIRkxlcIdhyRfbcwcMo3AedcjbVKuHAPv9y3pUxCPyM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,114 +109,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 01, 2026 at 02:34:34PM +0800, zhen.ni wrote:
->
->
-> 在 2026/8/29 02:36, Andrew Morton 写道:
-> > On Fri, 28 Aug 2026 08:03:38 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
-> >
-> > > On Fri, Aug 28, 2026 at 11:13:31AM +0800, Zhen Ni wrote:
-> > > > This patch series adds process and memory cgroup filtering support to
-> > > > page_owner. Following the previous series that introduced print_mode and
-> > > > NUMA node filters:
-> > > >    https://lore.kernel.org/linux-mm/20260707115411.1714314-1-zhen.ni@easystack.cn/
-> > > >
-> > > > This series adds filtering capabilities to page_owner, allowing users to
-> > > > filter output by specific processes and memory cgroups. Users can now
-> > > > filter page_owner output by PID, TGID, COMM (with wildcard support), and
-> > > > memory cgroup path. This makes page_owner debugging more focused and
-> > > > efficient for tracking memory allocations in specific contexts.
-> > >
-> > > The majority of this cover letter feels like it should have been
-> > > documentation put somewhere :)
-> >
-> > yes please.
-> >
-> > The only thing longer than the cover letter is the Sashiko report ;)
-> >
-> > 	https://sashiko.dev/#/patchset/20260828031339.1270699-1-zhen.ni@easystack.cn
-> >
-> >
->
-> Hi Andrew, Lorenzo,
->
-> Thanks for the review.
->
-> I have analyzed all the Sashiko report findings. Some will be fixed in
-> the next version, and for the rest I propose not to fix them, with
-> reasons below. If there are no objections I will send v2 accordingly.
->
-> Will be fixed in the next version:
->
-> - mm/page_owner.c: drop the kstrdup() copy in parse_pid_t_list(); the
->   token will be parsed in place. This also fixes a leak on the success
->   path and a kfree() of an advanced (interior) pointer on the error
->   path. cmp_int() will replace plain subtraction in cmp_pid_t(), and
->   pid values exceeding PID_MAX_LIMIT will be rejected.
-> - mm/page_owner.c: PAGE_OWNER will select GLOB so glob_match() is
->   always linked in; parse_comm_list() will drop its kstrdup() copy the
->   same way.
-> - mm/page_owner.c: the cgroup path buffer will be allocated once per
->   read() outside the page_ext RCU read-side critical section instead of
->   per page inside get_page_memcg_info() (GFP_KERNEL allocations must
->   not sleep there). The memcg= parsing branch will be guarded by
->   CONFIG_MEMCG so kernels built without memcg reject the command
->   instead of silently enabling a filter that never matches.
-> - tools/mm/page_owner_filter.c: user-visible input errors (empty
->   -p/-t/-c/-g arguments) will print error messages instead of exiting
->   silently.
-> - Documentation: the wildcard pattern in the -c example will be quoted
->   to prevent shell glob expansion.
->
-> Proposed not to fix, by design:
->
-> 1. Shared-fd concurrent read/write races (READ_ONCE around the pid
->    passed to bsearch, torn reads of pid/tgid lists, glob_match() racing
->    comm rewrites, concurrent write() leading to state->memcg_path
->    double-allocation): multi-threaded sharing of one page_owner fd is
->    not a designed use of this interface. The filters are per-fd state
->    meant to be configured once and then read, which is what the
->    page_owner_filter tool does. Adding locking to the read path would
->    put overhead into the per-page scan loop for no designed benefit.
->    This matches the semantics of the original filter introduction.
->
-> 2. No "clear filter" support (empty pid=/tgid= lists partially clearing
->    proc filters, empty memcg=/nid= being rejected): write commands are
->    incremental -- "keep the unmentioned filters" -- and there is no
->    clear operation by design. To start over, close the fd and open a
->    fresh one; the page_owner_filter tool already works this way. This
->    also matches the semantics of the original filter introduction.
->
-> 3. kcalloc() vs kmalloc_array() for new_comm_list: no consumer of the
->    list reads past strscpy()'s NUL terminator, so uninitialized bytes
->    are unreachable.
->
-> 4. char cgroup_path[512] in validate_cgroup_path(): acknowledged that
->    the kernel side accepts paths up to PATH_MAX (4096). The userspace
->    check truncates an over-long path with snprintf() and then fails
->    access(), so it is rejected, never silently accepted. Bumping the
->    buffer to PATH_MAX would only serve pathological paths; realistic
->    cgroup paths are well under 100 bytes, so 512 wastes nothing in
->    practice.
->
-> If this plan looks reasonable I will send v2.
+On 2026-08-31 18:02:38 [+0200], Vlastimil Babka (SUSE) wrote:
+> This partially reverts commit 2a8bb29ec9b2 ("mm/slab: allow
+> kfree_rcu_sheaf() on PREEMPT_RT"). It was based on an assumption that
+> local_trylock() is safe on PREEMPT_RT from any context.
+=E2=80=A6
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-Sorry but this kind of 'summary', 'do you agree with the plan' email is not
-acceptable.
+> ---
+> Incidentally I have posted a RFC [1] that leads to replacing that
+> kfree_rcu() from set_cpus_allowed_force() but now after back from
+> vacation I need to check the feedback and based on this bug report I can
+> already see it makes the same bad assumption that trylock is fine.
 
-You have your feedback, reply to people like a human being directly to them,
-thank you very much.
+free_to_pcs() has still this trylock.
 
-At this point, based on past experience, I have to ask if you're using an LLM?
-If so please disclose this as per kernel guidelines:
+What I am not so sure how good is that kfree_rcu_nolock() may allocate
+memory for the sheaf if there is none around. It could have a pool of X
+and if it runs out, it runs out and waits until the clean up process
+feeds the used sheafs back. There is fallback and the run out is not the
+usual case.
 
-https://docs.kernel.org/process/coding-assistants.html
-https://docs.kernel.org/process/generated-content.html
+I do remember RCU tried the same thing but then it got to the case where
+HEAD had to be supplied or it had to be preemptible so could wait for
+grace period and free it. I just don't remember if it had a pool pages
+to fill pointers to or allocated pages if it run out. And I am too lazy
+to look atm.
 
->
-> Thanks,
-> Zhen Ni
-
---
-Cheers, Lorenzo
+Sebastian
 
