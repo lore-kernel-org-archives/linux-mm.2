@@ -4,119 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AA20C61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 12:32:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0812EC61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 12:34:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECDCE6B0160; Tue,  1 Sep 2026 08:32:51 -0400 (EDT)
+	id 0ED406B0162; Tue,  1 Sep 2026 08:34:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7EC06B0162; Tue,  1 Sep 2026 08:32:51 -0400 (EDT)
+	id 0C6936B0164; Tue,  1 Sep 2026 08:34:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D95256B0163; Tue,  1 Sep 2026 08:32:51 -0400 (EDT)
+	id 0048C6B0165; Tue,  1 Sep 2026 08:34:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B5B2D6B0160
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:32:51 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 39A5B803FF
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:32:51 +0000 (UTC)
-X-FDA: 85165132542.04.D1DB695
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E7CFB8000C
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:32:48 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=m3LPIu+F;
-	spf=pass (imf02.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788265969;
-	b=G4bh/V9eiU99WEsoGw9/s8kQWPZw0QPOTa/VeNwre8H00gBImGQf0ERS+QLu6r4HtBarr6
-	Mp+nHF8njImVvxX4w10S2RuBf2hdq/MJR68TXogQN4OBF6Vdt+3veGw6FyOYQ2LagEroaj
-	OcNOBPLW/DLm/i5ERDAXS3HqhogA1/w=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=m3LPIu+F;
-	spf=pass (imf02.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D01436B0162
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:34:13 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6EA15A040A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:34:13 +0000 (UTC)
+X-FDA: 85165135986.25.F9C08BB
+Received: from mailgw1.hygon.cn (unknown [101.204.27.37])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B3EE240011
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:34:08 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=hygon.cn;
+	spf=pass (imf27.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788265969;
+	s=arc-20220608; t=1788266051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=11FIk8dcywNJhU7vX3fMrD3GTQv+b8U3zFVsgXjY8xM=;
-	b=VDL7K8KzwcQdh0T0FR+2MSPTqxrhhlIJ/rGYb1q8n1S3P1KfzFprtI1PAffDD0Xc7FO3ia
-	RtP80NCWatyKJlOXfki0JjGvT3wpOKvYsjUImw/vEj6RDsJrJvTp82e/B3RQ1X28fbCRH5
-	dY/ttAoNzzVi+qEnTX7EEuoNtTDmjKk=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=11FIk8dcywNJhU7vX3fMrD3GTQv+b8U3zFVsgXjY8xM=; b=m3LPIu+FoN9GPmQNL+JAbX4umA
-	RCUc+55B7wNBeD3QfRf+OKff006wPY1a+T19QUXMcQ8KZEi3a5TwgbOb6786lS+bW2TFXIYPIRHhE
-	qRIvsbkExCXz+DP7wtsi0aHN56mVl5brXaG+jkal7C/7mYPaczD+Rl6dK7M5b3vqIeRtlPfX4Hfl/
-	1LH04kzs9EHRGu7/dwrbDFrW48rrY6d1lX5LWfchOSIbd0HdayxTR9wg4Sf2mizckZ+LOabpUVMgo
-	wtG/mnhCfGBbWaYhgPcFuc5AAYBFFlZ38IjafUCrsAko73fIWQLqur2GNEBKog4d2Smxl6v7uXoAA
-	lF7siVdQ==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1x1NfK-0000000AwqP-2nSA;
-	Tue, 01 Sep 2026 12:32:38 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 7FE65300578; Tue, 01 Sep 2026 14:32:36 +0200 (CEST)
-Date: Tue, 1 Sep 2026 14:32:36 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	David Stevens <stevensd@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
-	Clark Williams <clrkwllms@kernel.org>, suleiman@google.com,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev
-Subject: Re: [RFC 06/10] Reclaim memory from blocked kernel stacks
-Message-ID: <20260901123236.GA687043@noisy.programming.kicks-ass.net>
-References: <20260827232948.2520558-1-stevensd@google.com>
- <20260827232948.2520558-7-stevensd@google.com>
- <20260828133620._x2XfJR_@linutronix.de>
- <20260828135947.GU776954@noisy.programming.kicks-ass.net>
- <20260828151018.HnR9xV1N@linutronix.de>
- <20260828150836.2d5b378c@gandalf.local.home>
- <20260828151313.5c4a5e4b@gandalf.local.home>
- <20260828151747.20035d50@gandalf.local.home>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=E+Kdsurt9s5GaQOrQb6srKJUmJBr9vDVOUNZUBneq6Y=;
+	b=NaOcKz8KkX0F50XEWBFtGiP59vkyiAHTJglv/3fK4cou4bX3oZTM4jday5mN0kc/oThn9C
+	yxoClAL00A5w0ojReU7kD0huEWD0rKnRZSaEg+IfgncWovywPysZ0I2FiuwwwhPVKVSGZH
+	qj22keaFwYZRFXrjK7C0gu29qdk+0WA=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=hygon.cn;
+	spf=pass (imf27.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788266051;
+	b=TZlWpQM3kEHZz76nwu0hgryvM+gwPPEkvh27asnDEnKrcKrVP0ZrrF6jQJ9Q7ssecQNczC
+	El5DupN3nDtU8Mz/AGGxKQpQ4ljKVajVOp2xs3dAkMpNat0Jm1U3G2chJGQsbmINJGTOuP
+	/08ZflGU1QBwyO1PRTrVsjOyKcFFszI=
+Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hZ4zf4DtTz1PGD4;
+	Tue,  1 Sep 2026 20:34:06 +0800 (CST)
+Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hZ4zc1rRHz1PGCm;
+	Tue,  1 Sep 2026 20:34:04 +0800 (CST)
+Received: from cncheex06.Hygon.cn (unknown [172.23.18.116])
+	by maildlp1.hygon.cn (Postfix) with ESMTPS id C6D60B355;
+	Tue,  1 Sep 2026 20:33:58 +0800 (CST)
+Received: from cncheex04.Hygon.cn (172.23.18.114) by cncheex06.Hygon.cn
+ (172.23.18.116) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Tue, 1 Sep
+ 2026 20:34:04 +0800
+Received: from cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d]) by
+ cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d%10]) with mapi id
+ 15.02.1544.036; Tue, 1 Sep 2026 20:34:04 +0800
+From: Jianyong Wu <wujianyong@hygon.cn>
+To: Peter Zijlstra <peterz@infradead.org>
+CC: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>, Chen Yu <yu.c.chen@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>, Dietmar Eggemann
+	<dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, Ben Segall
+	<bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin Schneider
+	<vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, "Shrikanth
+ Hegde" <sshegde@linux.ibm.com>, Phil Auld <pauld@redhat.com>, Andrew Morton
+	<akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "jianyong.wu@outlook.com"
+	<jianyong.wu@outlook.com>, Yuan Zhong <zhongyuan@hygon.cn>, Huangsj
+	<huangsj@hygon.cn>, Fengyu Wang <wangfengyu@hygon.cn>, Zhiwei Ying
+	<yingzhiwei@hygon.cn>, "justin.he@arm.com" <justin.he@arm.com>
+Subject: RE: [RFC PATCH v2 12/23] sched/cache: Introduce rq affinity gain
+ calculation
+Thread-Topic: [RFC PATCH v2 12/23] sched/cache: Introduce rq affinity gain
+ calculation
+Thread-Index: AQHdNiBG+fpHPMsZSUaXodgYa50Q5ra5A3GAgACsSKA=
+Date: Tue, 1 Sep 2026 12:34:03 +0000
+Message-ID: <e92cc24da4c94d6d9d20383921adf5da@hygon.cn>
+References: <20260827122816.756234-1-wujianyong@hygon.cn>
+ <20260827122816.756234-13-wujianyong@hygon.cn>
+ <20260901101607.GG776954@noisy.programming.kicks-ass.net>
+In-Reply-To: <20260901101607.GG776954@noisy.programming.kicks-ass.net>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [172.19.20.45]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260828151747.20035d50@gandalf.local.home>
+X-Stat-Signature: krpsgazr95uywef8yhmqiru7zbjc9bf8
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B3EE240011
 X-Rspam-User: 
-X-Stat-Signature: 4t5pa41mqopimbxo6tikrpzbf5gir8j3
-X-Rspamd-Queue-Id: E7CFB8000C
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788265968-100589
-X-HE-Meta: U2FsdGVkX18Jn3rtNK4gnjqcEeAJliQTszBEf7smr7fGLwRT2uZajZuCGH4FjWHgyOMoTmGDBiW5P9tTeT92D6U9akfFn/LpVafLs59kOw7La71rs/zKJgm5Kk6ZY8w55IqO9VVUAVZppVb5JWEuiJU2jy2AoFbxOH2yzArBrdzJYR4VHjsS6EmSrzQvh1Kw3ym5u0Voisnnh9VCn7mbvTmHZDBt7+1Upl+3MlgWOFA4M5Ysqg4DpVxlIgDymiZ+8PMXfgC2QLJE1lcZbCs9ruGaIpLdXhEQo3UqM/34f6G+sWMn7tUwg1HR9A7rx1hqzPO9b32Y0u0szdkUJngegJrnUrKDlsYhaupDxFzJ869QY8WVskB0i1LPtgrMUL2/LxeY0jel89Y9Ee9A8OjnqDrtKKuzjE4BQPczCHCHG5QsDW/sBj8q9U4EplN+nlPz9MBkgF86dUxVnmqQHpEbzo6gyJYRCwxzs24w7d5+6rkgO5xHOSrnVS5NiOf/5nuCIN8nX6aqvJrPvhdIU7Ka/DWhfF+iikgzmiPYn1yoS0AqBCTB4JPpFampajlBBrc43lX/XzxlS5nnUrpf8wVfslmPbDxD9OnPO2X+qmNEJVGNpqIb+hbhk35vp1g/PC+s8yQEdYj++z5t3SI9Qw3aE3/2u11EEQgMO6oQOWiYdkuGqxGkY07kKA6YNbDHe/bVulhT7Ms08PUw9r/oBi9RPFl+SsviePHIgSouchNLvzPtg0tBm3kpjxF4lWsPPtw/MS4QExSt80m6BYheojQwisg2G0yzYV2MxPxDSkgNKCj2xc9hgwWdxued6l6QdoOpQlANlSVH8eDXMr6nNvlmhSwOEbS+UdKUYHOi2Z4r02gztwJNQIqlk0Mjhf5Fc14TY8sN3b1ETj7z5gLpBtbp2ZxwvU5AS1xFZRBB4cAK3npfbJI9gZwzl+npRInuygoBu4CDovCsOx+X+yOp7+P
- sYbumGPz
- SSMwRUFCpTrNAoNcfOBU1v6FSWsvRyik1/vmT/ai4Mnveever6j6Hg5Qww30xV5ZL/LZI1UsOHIVYppZ/ShDJ5+5nfPhe2LY//FxrDsVxtJ3NRrhlVjub+gYBexLUdi3ZJLDQUS5zBQAVFUQzt9s8JzcM2tN9aROKyzOn6BksdIAZd5w81nnkdZITYrjHsTKw9m6IM27TS9AYzwT3ZJTbBzDB3SDC8zgzJMuj+FUNBPLow50=
+X-HE-Tag: 1788266048-357058
+X-HE-Meta: U2FsdGVkX1+zLoq8K6+TVZvg2q5etSromzGVzQrYXJZzMERrCs/mPr4d3ZVBsVcr1O60rkCnaafDy/FBwbBBTRQ8nFiM6R12N+hYsLOVHPavogASQ1qaiblSAtis+XpE298US6eo3rDUcOFEo7x3mHK01tbI7KdWU35hUcWW/XV/2ISn4dNWdYzvVwB3FWDdConrZ6HjxFkGMzT975x4lmleDZGu1TdkWh3vk8NmSWyugMcKBVnlnAlQeg7/VEtnpL+VRr3OCK90p1HxPyt19tRyG3lbTVGwxYz0YTUSHVYXhAaIwYPSGeNP5ksezKX8sQ8i3FKh2ohSWtWpQA7jrKde3x1IGSV5sAX2G0zcMUyqI3/f5BCLerPwa267P+c/hVjlPUb27rdMajg4IXG6L/quBzNmLCM5RfQss1qucDUfOvNwxzUEpqaw1d4tUJki6MHCoE9Ew+H29eqFoTdbtz1VDgdQ3RLuW5zzwGWj5iNAtMoE5VjMlAgmvvsPvyNf9X29nKGy12n0qPe3LRgCyyiJNd3Q16PbZTYzzLyCOsoXgclmR4RWnN/1rRjZEpCUeqAfIrBxh4EC06hNStBdeSzlptBLBGcXX56r5wbv91c6v9dMU8IOzpGMu31bFNhsJz2Yr5cMJgP9ZB+PcsKVh2gjnKpNFlKlEZkcWDfOLugW+URl5rPIFdmM1jwvaxiXM6iNkQ2pYiZsD7VZbELBVx5A/toJwZeskFzOV8PW5m93I1dBoLLgQKGKNxpg0WHeR66DFpMLwYqNZ4vzTDwrUqrX1Xpco+pIke5wwrU2zH++TscxOtM6UqGTlGAeS3nogz0zd8AEcvhyiRcOxm5KMLPpDjmt9NmiOF4olqCH+hlrrd34p/r/TSJvicFQUm1FGoDo8ietFPhVF6FKFzhgXcKTlCBOB+czfPANGfg9K3eTj7pwZkw8aLAFfTmAyxxKjDL8VQWebweREQ0spja
+ Sx0ltCjv
+ FfU6E8acbe2H6Lvi9csNiZe4+iud+nJdedSEGwCxsTP3OiBYFmVjP09T2xmcc5sYARhBZu8GCiClQrE8nYVCSa+q8IX+nxtv5HLLQieONNRcbCbbp58+UfaWDrJpw1t2wLalwv9eN/qRWclziSjt+rFOYK/wtQlCGDPDfldIBTGnSLU8DDsQ2lSnvfbuQZOhEW+Tmk/dtIMKDQltjeR7oIrrhpYbC14c5N1BOptMKT9W5LbGOtjtHB2TxEb7Fo9Ovp440lMQYbaxnOtzSX2fJpFxe0Ah1AJiHeCUQsnVj6DXUoSdPeS95F2ujd+RZ+WoKP0D0hyM1kJZPP/BXS9qgfhfCyGZcYZplk0hZB7yZd2HDf3X47KSVIsujnU3jAbaRAgkmyPiCxTi9OWUxWvZNe1kzP0mhMPL1mkTGWP8o8G95USX0k2734+wNuNpkmYrNnEDvygz7D2TIrtgE1UWdIxoiGC0ulGgk8+BAa+DLKyAksMc66gzCfgo5GKb7qZM/ksBUOfIsNXu3dOWgVC8gt6li0rQYGJks6V6sn0pRlHLMlxuO790qmRhSMl2ELFcG5F6Va5cTh8YqfiTjOAFGGIvEi52z9SK0vpwTuOw83xCloff+ZNlZy9sDK0mGy9vKM6/QTS2hpyKH1QRWKKBCDPU0n3DdMg1qZSJYw1cJlGtLzdG6BC3CxDeKMD1dE7KbGT+isVFOlkSB8MAJXG04pc/qRx+U6LACjVuQLwLbPjUKLCmAqnLqmPjVjgtX24kFYCr8rVBvSg1rXbppJFhQq+/nYG4lkTZQBmy/q3h82/7gTCrddFUUXc4nqZ6BGQVor4fTHjwJ9N2u1MBpYl9NRTI5LQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,277 +114,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 28, 2026 at 03:17:47PM -0400, Steven Rostedt wrote:
 
->   1)     8072     104   update_group_capacity+0x94/0x960
->   2)     7968     528   update_sd_lb_stats.constprop.0+0x426/0x39b0
->   3)     7440     424   sched_balance_find_src_group+0x8f/0x1150
->   4)     7016     552   sched_balance_rq+0x934/0x4130
 
-Bah, yeah, those on-stack statistics just keep growing.
+> -----Original Message-----
+> From: Peter Zijlstra <peterz@infradead.org>
+> Sent: Tuesday, September 1, 2026 6:16 PM
+> To: Jianyong Wu <wujianyong@hygon.cn>
+> Cc: Ingo Molnar <mingo@redhat.com>; Juri Lelli <juri.lelli@redhat.com>;
+> Vincent Guittot <vincent.guittot@linaro.org>; Chen Yu
+> <yu.c.chen@intel.com>; Tim Chen <tim.c.chen@linux.intel.com>; Dietmar
+> Eggemann <dietmar.eggemann@arm.com>; Steven Rostedt
+> <rostedt@goodmis.org>; Ben Segall <bsegall@google.com>; Mel Gorman
+> <mgorman@suse.de>; Valentin Schneider <vschneid@redhat.com>; K
+> Prateek Nayak <kprateek.nayak@amd.com>; Shrikanth Hegde
+> <sshegde@linux.ibm.com>; Phil Auld <pauld@redhat.com>; Andrew
+> Morton <akpm@linux-foundation.org>; David Hildenbrand
+> <david@kernel.org>; linux-kernel@vger.kernel.org; linux-mm@kvack.org;
+> jianyong.wu@outlook.com; Yuan Zhong <zhongyuan@hygon.cn>; Huangsj
+> <huangsj@hygon.cn>; Fengyu Wang <wangfengyu@hygon.cn>; Zhiwei Ying
+> <yingzhiwei@hygon.cn>; justin.he@arm.com
+> Subject: Re: [RFC PATCH v2 12/23] sched/cache: Introduce rq affinity gain
+> calculation
+>=20
+> On Thu, Aug 27, 2026 at 08:28:05PM +0800, Jianyong Wu wrote:
+>=20
+> > +static int get_affi_llcs(struct sched_domain *sd, int src_llc, int dst=
+_llc,
+> > +			 int *affi_llcs, int *affi)
+> > +{
+>=20
+> > +			if (src_llc > dst_llc) {
+> > +				affi[j] =3D clamp(src_llc - dst_llc, 1, 1024);
+> > +				affi_llcs[j++] =3D i;
+> > +			}
+>=20
+> > +	return j;
+> > +}
+> > +
+> > +static int get_affi_numas(int src_node, int dst_node, int *affi_nodes,=
+ int
+> *affi)
+> > +{
+>=20
+> > +		if (src_dist > dst_dist) {
+> > +			affi[j] =3D clamp(src_dist - dst_dist, 4, 1024);
+> > +			affi_nodes[j++] =3D node;
+> > +		}
+>=20
+> > +	return j;
+> > +}
+> > +
+> > +static int calc_affinity_numa_score(struct sched_domain *sd, int src_c=
+pu,
+> int dst_cpu,
+> > +			int *affi_node, int *affi, int *last_node, int *num)
+> > +{
+> > +	int src_node, dst_node, score =3D 0;
+> > +
+> > +	src_node =3D cpu_to_node(src_cpu);
+> > +	dst_node =3D cpu_to_node(dst_cpu);
+> > +	if (src_node !=3D *last_node) {
+> > +		*last_node =3D src_node;
+> > +		memset(affi_node, 0, (max_lid + 1) * sizeof(int));
+> > +		memset(affi, 0, (max_lid + 1) * sizeof(int));
+>=20
+> This and..
+>=20
+> > +		*num =3D get_affi_numas(src_node, dst_node, affi_node, affi);
+> > +	}
+> > +
+> > +	for (int i =3D 0; i < *num; i++) {
+> > +		if ((unsigned int)affi_node[i] < nr_node_ids)
+> > +			score +=3D sd->numa_counts[affi_node[i]] * affi[i];
+> > +	}
+> > +
+> > +	return score;
+> > +}
+> > +
+> > +static int calc_affinity_llc_score(struct sched_domain *sd_cur, struct
+> sched_domain *sd,
+> > +			int src_cpu, int dst_cpu, int *affi_llc,
+> > +			int *affi, int *last_llc, int *num)
+> > +{
+> > +	int src_llc, dst_llc, score =3D 0;
+> > +
+> > +	src_llc =3D llc_id(src_cpu);
+> > +	dst_llc =3D llc_id(dst_cpu);
+> > +
+> > +	if (src_llc !=3D *last_llc) {
+> > +		*last_llc =3D src_llc;
+> > +		memset(affi_llc, 0, (max_lid + 1) * sizeof(int));
+> > +		memset(affi, 0, (max_lid + 1) * sizeof(int));
+>=20
+> ... this. Why do we need the memset()? AFAICT the get_affi_*() functions
+> use direct assignment and the sum is limited to the number returned.
+>=20
 
-This should probably help. Very lightly tested. Also we can probably
-relax the assertion to bh-disabled and avoid the extra irq-disable
-around sched_balance_rq().
+Yes, the memset is unnecessary. get_affi_*() assigns directly from
+index 0 and the sum loop only reads the *num entries it returned, so the
+rest of the array is never touched. I'll drop it.
 
-Anybody got time to play around with this?
+Thanks
+Jianyong
+> > +		*num =3D get_affi_llcs(sd_cur, src_llc, dst_llc, affi_llc, affi);
+> > +	}
+> > +
+> > +	for (int i =3D 0; i < *num; i++) {
+> > +		if ((unsigned int)affi_llc[i] < sd->llc_max)
+> > +			score +=3D sd->llc_counts[affi_llc[i]] * affi[i];
+> > +	}
+> > +
+> > +	return score;
+> > +}
 
----
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 8dff37059faf..0c83b0856a95 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -11418,6 +11418,39 @@ struct sd_lb_stats {
- 	struct sg_lb_stats local_stat;		/* Statistics of the local group */
- };
- 
-+struct pcpu_lb_stats {
-+	struct sd_lb_stats sds;
-+	struct sg_lb_stats sgs;
-+	struct sg_lb_stats local_sgs;
-+	struct sg_lb_stats idlest_sgs;
-+};
-+
-+static DEFINE_PER_CPU(struct pcpu_lb_stats, pcpu_lb_stats);
-+
-+static inline struct sd_lb_stats *this_sds(void)
-+{
-+	lockdep_assert_irqs_disabled();
-+	return this_cpu_ptr(&pcpu_lb_stats.sds);
-+}
-+
-+static inline struct sg_lb_stats *this_sgs(void)
-+{
-+	lockdep_assert_irqs_disabled();
-+	return this_cpu_ptr(&pcpu_lb_stats.sgs);
-+}
-+
-+static inline struct sg_lb_stats *this_local_sgs(void)
-+{
-+	lockdep_assert_irqs_disabled();
-+	return this_cpu_ptr(&pcpu_lb_stats.local_sgs);
-+}
-+
-+static inline struct sg_lb_stats *this_idlest_sgs(void)
-+{
-+	lockdep_assert_irqs_disabled();
-+	return this_cpu_ptr(&pcpu_lb_stats.idlest_sgs);
-+}
-+
- static inline void init_sd_lb_stats(struct sd_lb_stats *sds)
- {
- 	/*
-@@ -12406,12 +12439,13 @@ static struct sched_group *
- sched_balance_find_dst_group(struct sched_domain *sd, struct task_struct *p, int this_cpu)
- {
- 	struct sched_group *idlest = NULL, *local = NULL, *group = sd->groups;
--	struct sg_lb_stats local_sgs, tmp_sgs;
-+	struct sg_lb_stats *local_sgs = this_local_sgs();
- 	struct sg_lb_stats *sgs;
- 	unsigned long imbalance;
--	struct sg_lb_stats idlest_sgs = {
--			.avg_load = UINT_MAX,
--			.group_type = group_overloaded,
-+	struct sg_lb_stats *idlest_sgs = this_idlest_sgs();
-+	*idlest_sgs = (struct sg_lb_stats){
-+		.avg_load = UINT_MAX,
-+		.group_type = group_overloaded,
- 	};
- 
- 	do {
-@@ -12430,17 +12464,17 @@ sched_balance_find_dst_group(struct sched_domain *sd, struct task_struct *p, int
- 					       sched_group_span(group));
- 
- 		if (local_group) {
--			sgs = &local_sgs;
-+			sgs = local_sgs;
- 			local = group;
- 		} else {
--			sgs = &tmp_sgs;
-+			sgs = this_sgs();
- 		}
- 
- 		update_sg_wakeup_stats(sd, group, sgs, p);
- 
--		if (!local_group && update_pick_idlest(idlest, &idlest_sgs, group, sgs)) {
-+		if (!local_group && update_pick_idlest(idlest, idlest_sgs, group, sgs)) {
- 			idlest = group;
--			idlest_sgs = *sgs;
-+			*idlest_sgs = *sgs;
- 		}
- 
- 	} while (group = group->next, group != sd->groups);
-@@ -12458,17 +12492,17 @@ sched_balance_find_dst_group(struct sched_domain *sd, struct task_struct *p, int
- 	 * If the local group is idler than the selected idlest group
- 	 * don't try and push the task.
- 	 */
--	if (local_sgs.group_type < idlest_sgs.group_type)
-+	if (local_sgs->group_type < idlest_sgs->group_type)
- 		return NULL;
- 
- 	/*
- 	 * If the local group is busier than the selected idlest group
- 	 * try and push the task.
- 	 */
--	if (local_sgs.group_type > idlest_sgs.group_type)
-+	if (local_sgs->group_type > idlest_sgs->group_type)
- 		return idlest;
- 
--	switch (local_sgs.group_type) {
-+	switch (local_sgs->group_type) {
- 	case group_overloaded:
- 	case group_fully_busy:
- 
-@@ -12486,17 +12520,17 @@ sched_balance_find_dst_group(struct sched_domain *sd, struct task_struct *p, int
- 		 */
- 
- 		if ((sd->flags & SD_NUMA) &&
--		    ((idlest_sgs.avg_load + imbalance) >= local_sgs.avg_load))
-+		    ((idlest_sgs->avg_load + imbalance) >= local_sgs->avg_load))
- 			return NULL;
- 
- 		/*
- 		 * If the local group is less loaded than the selected
- 		 * idlest group don't try and push any tasks.
- 		 */
--		if (idlest_sgs.avg_load >= (local_sgs.avg_load + imbalance))
-+		if (idlest_sgs->avg_load >= (local_sgs->avg_load + imbalance))
- 			return NULL;
- 
--		if (100 * local_sgs.avg_load <= sd->imbalance_pct * idlest_sgs.avg_load)
-+		if (100 * local_sgs->avg_load <= sd->imbalance_pct * idlest_sgs->avg_load)
- 			return NULL;
- 		break;
- 
-@@ -12545,9 +12579,9 @@ sched_balance_find_dst_group(struct sched_domain *sd, struct task_struct *p, int
- 				imb_numa_nr = min(w, sd->imb_numa_nr);
- 			}
- 
--			imbalance = abs(local_sgs.idle_cpus - idlest_sgs.idle_cpus);
-+			imbalance = abs(local_sgs->idle_cpus - idlest_sgs->idle_cpus);
- 			if (!adjust_numa_imbalance(imbalance,
--						   local_sgs.sum_nr_running + 1,
-+						   local_sgs->sum_nr_running + 1,
- 						   imb_numa_nr)) {
- 				return NULL;
- 			}
-@@ -12560,7 +12594,7 @@ sched_balance_find_dst_group(struct sched_domain *sd, struct task_struct *p, int
- 		 * up that the group has less spare capacity but finally more
- 		 * idle CPUs which means more opportunity to run task.
- 		 */
--		if (local_sgs.idle_cpus >= idlest_sgs.idle_cpus)
-+		if (local_sgs->idle_cpus >= idlest_sgs->idle_cpus)
- 			return NULL;
- 		break;
- 	}
-@@ -12647,14 +12681,13 @@ static inline void update_sd_lb_stats(struct lb_env *env, struct sd_lb_stats *sd
- {
- 	struct sched_group *sg = env->sd->groups;
- 	struct sg_lb_stats *local = &sds->local_stat;
--	struct sg_lb_stats tmp_sgs;
- 	unsigned long sum_util = 0;
- 	bool sg_overloaded = 0, sg_overutilized = 0;
- 
- 	env->dst_core_idle = !sched_smt_active() || is_core_idle(env->dst_cpu);
- 
- 	do {
--		struct sg_lb_stats *sgs = &tmp_sgs;
-+		struct sg_lb_stats *sgs = this_sgs();
- 		int local_group;
- 
- 		local_group = cpumask_test_cpu(env->dst_cpu, sched_group_span(sg));
-@@ -12929,21 +12962,21 @@ static inline void calculate_imbalance(struct lb_env *env, struct sd_lb_stats *s
- static struct sched_group *sched_balance_find_src_group(struct lb_env *env)
- {
- 	struct sg_lb_stats *local, *busiest;
--	struct sd_lb_stats sds;
-+	struct sd_lb_stats *sds = this_sds();
- 
--	init_sd_lb_stats(&sds);
-+	init_sd_lb_stats(sds);
- 
- 	/*
- 	 * Compute the various statistics relevant for load balancing at
- 	 * this level.
- 	 */
--	update_sd_lb_stats(env, &sds);
-+	update_sd_lb_stats(env, sds);
- 
- 	/* There is no busy sibling group to pull tasks from */
--	if (!sds.busiest)
-+	if (!sds->busiest)
- 		goto out_balanced;
- 
--	busiest = &sds.busiest_stat;
-+	busiest = &sds->busiest_stat;
- 
- 	/* Misfit tasks should be dealt with regardless of the avg load */
- 	if (busiest->group_type == group_misfit_task)
-@@ -12965,7 +12998,7 @@ static struct sched_group *sched_balance_find_src_group(struct lb_env *env)
- 	if (busiest->group_type == group_imbalanced)
- 		goto force_balance;
- 
--	local = &sds.local_stat;
-+	local = &sds->local_stat;
- 	/*
- 	 * If the local group is busier than the selected busiest group
- 	 * don't try and pull any tasks.
-@@ -12986,14 +13019,14 @@ static struct sched_group *sched_balance_find_src_group(struct lb_env *env)
- 			goto out_balanced;
- 
- 		/* XXX broken for overlapping NUMA groups */
--		sds.avg_load = (sds.total_load * SCHED_CAPACITY_SCALE) /
--				sds.total_capacity;
-+		sds->avg_load = (sds->total_load * SCHED_CAPACITY_SCALE) /
-+				sds->total_capacity;
- 
- 		/*
- 		 * Don't pull any tasks if this group is already above the
- 		 * domain average load.
- 		 */
--		if (local->avg_load >= sds.avg_load)
-+		if (local->avg_load >= sds->avg_load)
- 			goto out_balanced;
- 
- 		/*
-@@ -13009,9 +13042,9 @@ static struct sched_group *sched_balance_find_src_group(struct lb_env *env)
- 	 * Try to move all excess tasks to a sibling domain of the busiest
- 	 * group's child domain.
- 	 */
--	if (sds.prefer_sibling && local->group_type == group_has_spare &&
-+	if (sds->prefer_sibling && local->group_type == group_has_spare &&
- 	    (busiest->group_type == group_llc_balance ||
--	    sibling_imbalance(env, &sds, busiest, local) > 1))
-+	    sibling_imbalance(env, sds, busiest, local) > 1))
- 		goto force_balance;
- 
- 	if (busiest->group_type != group_overloaded) {
-@@ -13025,7 +13058,7 @@ static struct sched_group *sched_balance_find_src_group(struct lb_env *env)
- 		}
- 
- 		if (busiest->group_type == group_smt_balance &&
--		    smt_vs_nonsmt_groups(sds.local, sds.busiest)) {
-+		    smt_vs_nonsmt_groups(sds->local, sds->busiest)) {
- 			/* Let non SMT CPU pull from SMT CPU sharing with sibling */
- 			goto force_balance;
- 		}
-@@ -13054,8 +13087,8 @@ static struct sched_group *sched_balance_find_src_group(struct lb_env *env)
- 
- force_balance:
- 	/* Looks like there is an imbalance. Compute it */
--	calculate_imbalance(env, &sds);
--	return env->imbalance ? sds.busiest : NULL;
-+	calculate_imbalance(env, sds);
-+	return env->imbalance ? sds->busiest : NULL;
- 
- out_balanced:
- 	env->imbalance = 0;
-@@ -13958,6 +13991,7 @@ static void sched_balance_domains(struct rq *rq, enum cpu_idle_type idle)
- 
- 		interval = get_sd_balance_interval(sd, busy);
- 		if (time_after_eq(jiffies, sd->last_balance + interval)) {
-+			guard(irqsave)();
- 			if (sched_balance_rq(cpu, rq, sd, idle, &continue_balancing)) {
- 				/*
- 				 * The LBF_DST_PINNED logic could have changed
+
 
