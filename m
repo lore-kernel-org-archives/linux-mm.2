@@ -4,109 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0812EC61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 12:34:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED909C624D3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 12:47:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0ED406B0162; Tue,  1 Sep 2026 08:34:14 -0400 (EDT)
+	id 6D3CE6B00BB; Tue,  1 Sep 2026 08:47:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C6936B0164; Tue,  1 Sep 2026 08:34:14 -0400 (EDT)
+	id 685806B00BE; Tue,  1 Sep 2026 08:47:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0048C6B0165; Tue,  1 Sep 2026 08:34:13 -0400 (EDT)
+	id 59B4C6B00C0; Tue,  1 Sep 2026 08:47:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D01436B0162
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:34:13 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6EA15A040A
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:34:13 +0000 (UTC)
-X-FDA: 85165135986.25.F9C08BB
-Received: from mailgw1.hygon.cn (unknown [101.204.27.37])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B3EE240011
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:34:08 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf27.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 342716B00BB
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:47:49 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A8DF71403E0
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:47:48 +0000 (UTC)
+X-FDA: 85165170216.13.1F9B3E3
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 90A5C80008
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:47:46 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="LRH/L1Jd";
+	spf=pass (imf02.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788266866;
+	b=OinDJBd8jxim2wGSjnr1CbDa4zaKKP2hdUvWCrQh640CvItalS44jtzsq17GghNgRqojOl
+	bTzqLH2Y0uu35ugbfjwcwTITccrbUhtH1gj1BWAeerIHCKo7Ec6ZsNVTw+kQwZVkTFq0V6
+	WeL5xXS4RiBmQ8d7l4MAn8b9/l3EygY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788266051;
+	s=arc-20220608; t=1788266866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=E+Kdsurt9s5GaQOrQb6srKJUmJBr9vDVOUNZUBneq6Y=;
-	b=NaOcKz8KkX0F50XEWBFtGiP59vkyiAHTJglv/3fK4cou4bX3oZTM4jday5mN0kc/oThn9C
-	yxoClAL00A5w0ojReU7kD0huEWD0rKnRZSaEg+IfgncWovywPysZ0I2FiuwwwhPVKVSGZH
-	qj22keaFwYZRFXrjK7C0gu29qdk+0WA=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=sCcI1xDRgy13rJLNRCaipdSq/zHJb80XoO4QrN/D7d4=;
+	b=ZQli/wmnvdXFjGU4C9TEkNbDNYNE0IP3TZ+dQNhrBBGoQeOjZvdbZk/NHaNgwBsIRRDB0i
+	B6INA/mjuLahbhgODGwzRV6iyMzPFm/2/WwWLX/kR+JyJ6/d7tNVo3jiyt44hZwSnJYqgN
+	VNsu3u32DW7VE9XOyeRT+iQcaiMt/IM=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf27.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788266051;
-	b=TZlWpQM3kEHZz76nwu0hgryvM+gwPPEkvh27asnDEnKrcKrVP0ZrrF6jQJ9Q7ssecQNczC
-	El5DupN3nDtU8Mz/AGGxKQpQ4ljKVajVOp2xs3dAkMpNat0Jm1U3G2chJGQsbmINJGTOuP
-	/08ZflGU1QBwyO1PRTrVsjOyKcFFszI=
-Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hZ4zf4DtTz1PGD4;
-	Tue,  1 Sep 2026 20:34:06 +0800 (CST)
-Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hZ4zc1rRHz1PGCm;
-	Tue,  1 Sep 2026 20:34:04 +0800 (CST)
-Received: from cncheex06.Hygon.cn (unknown [172.23.18.116])
-	by maildlp1.hygon.cn (Postfix) with ESMTPS id C6D60B355;
-	Tue,  1 Sep 2026 20:33:58 +0800 (CST)
-Received: from cncheex04.Hygon.cn (172.23.18.114) by cncheex06.Hygon.cn
- (172.23.18.116) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Tue, 1 Sep
- 2026 20:34:04 +0800
-Received: from cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d]) by
- cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d%10]) with mapi id
- 15.02.1544.036; Tue, 1 Sep 2026 20:34:04 +0800
-From: Jianyong Wu <wujianyong@hygon.cn>
-To: Peter Zijlstra <peterz@infradead.org>
-CC: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>, Chen Yu <yu.c.chen@intel.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>, Dietmar Eggemann
-	<dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, Ben Segall
-	<bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin Schneider
-	<vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, "Shrikanth
- Hegde" <sshegde@linux.ibm.com>, Phil Auld <pauld@redhat.com>, Andrew Morton
-	<akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "jianyong.wu@outlook.com"
-	<jianyong.wu@outlook.com>, Yuan Zhong <zhongyuan@hygon.cn>, Huangsj
-	<huangsj@hygon.cn>, Fengyu Wang <wangfengyu@hygon.cn>, Zhiwei Ying
-	<yingzhiwei@hygon.cn>, "justin.he@arm.com" <justin.he@arm.com>
-Subject: RE: [RFC PATCH v2 12/23] sched/cache: Introduce rq affinity gain
- calculation
-Thread-Topic: [RFC PATCH v2 12/23] sched/cache: Introduce rq affinity gain
- calculation
-Thread-Index: AQHdNiBG+fpHPMsZSUaXodgYa50Q5ra5A3GAgACsSKA=
-Date: Tue, 1 Sep 2026 12:34:03 +0000
-Message-ID: <e92cc24da4c94d6d9d20383921adf5da@hygon.cn>
+	imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="LRH/L1Jd";
+	spf=pass (imf02.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=sCcI1xDRgy13rJLNRCaipdSq/zHJb80XoO4QrN/D7d4=; b=LRH/L1JdeSKQMpoPSr2wSN7WmB
+	fzfB+ZCm1SNnodEdvJo3EBXK75+WWQQafDgDQ8yfgf3JgaoNkOEXqPTlUgtMO0HGNWxmYaC9Ku8gf
+	aosrdu0gtHg4dwmYEVeALhBdXOWm4Mi/QMQIWtCpcOT1CSMix16u5+Z9SPT8DCXSaLfhcwf3Z0Dpf
+	DvLZKPjEnPkW7Nf0rSlqZtcfAVLB2ogBxaNR03gnTSNH/eENs3gRA6EYLzKplJT4DC19r0+zy5oEU
+	4wtVD4h0wBReSJV9HSeB68YseXCQPWG2faqwhXNgRU5Rr7KnaPz3lYsfgvcK0Rlz4GYCpMvqOoRIa
+	NMFfFyVg==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x1Ntp-000000057uY-2PPd;
+	Tue, 01 Sep 2026 12:47:37 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 5EF67300578; Tue, 01 Sep 2026 14:47:36 +0200 (CEST)
+Date: Tue, 1 Sep 2026 14:47:36 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Jianyong Wu <wujianyong@hygon.cn>
+Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Chen Yu <yu.c.chen@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Phil Auld <pauld@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, jianyong.wu@outlook.com, zhongyuan@hygon.cn,
+	huangsj@hygon.cn, wangfengyu@hygon.cn, yingzhiwei@hygon.cn,
+	justin.he@arm.com
+Subject: Re: [RFC PATCH v2 17/23] sched/fair: Fine-granularity NUMA balancing
+Message-ID: <20260901124736.GI776954@noisy.programming.kicks-ass.net>
 References: <20260827122816.756234-1-wujianyong@hygon.cn>
- <20260827122816.756234-13-wujianyong@hygon.cn>
- <20260901101607.GG776954@noisy.programming.kicks-ass.net>
-In-Reply-To: <20260901101607.GG776954@noisy.programming.kicks-ass.net>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [172.19.20.45]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ <20260828020731.785556-1-wujianyong@hygon.cn>
 MIME-Version: 1.0
-X-Stat-Signature: krpsgazr95uywef8yhmqiru7zbjc9bf8
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B3EE240011
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260828020731.785556-1-wujianyong@hygon.cn>
 X-Rspam-User: 
-X-HE-Tag: 1788266048-357058
-X-HE-Meta: U2FsdGVkX1+zLoq8K6+TVZvg2q5etSromzGVzQrYXJZzMERrCs/mPr4d3ZVBsVcr1O60rkCnaafDy/FBwbBBTRQ8nFiM6R12N+hYsLOVHPavogASQ1qaiblSAtis+XpE298US6eo3rDUcOFEo7x3mHK01tbI7KdWU35hUcWW/XV/2ISn4dNWdYzvVwB3FWDdConrZ6HjxFkGMzT975x4lmleDZGu1TdkWh3vk8NmSWyugMcKBVnlnAlQeg7/VEtnpL+VRr3OCK90p1HxPyt19tRyG3lbTVGwxYz0YTUSHVYXhAaIwYPSGeNP5ksezKX8sQ8i3FKh2ohSWtWpQA7jrKde3x1IGSV5sAX2G0zcMUyqI3/f5BCLerPwa267P+c/hVjlPUb27rdMajg4IXG6L/quBzNmLCM5RfQss1qucDUfOvNwxzUEpqaw1d4tUJki6MHCoE9Ew+H29eqFoTdbtz1VDgdQ3RLuW5zzwGWj5iNAtMoE5VjMlAgmvvsPvyNf9X29nKGy12n0qPe3LRgCyyiJNd3Q16PbZTYzzLyCOsoXgclmR4RWnN/1rRjZEpCUeqAfIrBxh4EC06hNStBdeSzlptBLBGcXX56r5wbv91c6v9dMU8IOzpGMu31bFNhsJz2Yr5cMJgP9ZB+PcsKVh2gjnKpNFlKlEZkcWDfOLugW+URl5rPIFdmM1jwvaxiXM6iNkQ2pYiZsD7VZbELBVx5A/toJwZeskFzOV8PW5m93I1dBoLLgQKGKNxpg0WHeR66DFpMLwYqNZ4vzTDwrUqrX1Xpco+pIke5wwrU2zH++TscxOtM6UqGTlGAeS3nogz0zd8AEcvhyiRcOxm5KMLPpDjmt9NmiOF4olqCH+hlrrd34p/r/TSJvicFQUm1FGoDo8ietFPhVF6FKFzhgXcKTlCBOB+czfPANGfg9K3eTj7pwZkw8aLAFfTmAyxxKjDL8VQWebweREQ0spja
- Sx0ltCjv
- FfU6E8acbe2H6Lvi9csNiZe4+iud+nJdedSEGwCxsTP3OiBYFmVjP09T2xmcc5sYARhBZu8GCiClQrE8nYVCSa+q8IX+nxtv5HLLQieONNRcbCbbp58+UfaWDrJpw1t2wLalwv9eN/qRWclziSjt+rFOYK/wtQlCGDPDfldIBTGnSLU8DDsQ2lSnvfbuQZOhEW+Tmk/dtIMKDQltjeR7oIrrhpYbC14c5N1BOptMKT9W5LbGOtjtHB2TxEb7Fo9Ovp440lMQYbaxnOtzSX2fJpFxe0Ah1AJiHeCUQsnVj6DXUoSdPeS95F2ujd+RZ+WoKP0D0hyM1kJZPP/BXS9qgfhfCyGZcYZplk0hZB7yZd2HDf3X47KSVIsujnU3jAbaRAgkmyPiCxTi9OWUxWvZNe1kzP0mhMPL1mkTGWP8o8G95USX0k2734+wNuNpkmYrNnEDvygz7D2TIrtgE1UWdIxoiGC0ulGgk8+BAa+DLKyAksMc66gzCfgo5GKb7qZM/ksBUOfIsNXu3dOWgVC8gt6li0rQYGJks6V6sn0pRlHLMlxuO790qmRhSMl2ELFcG5F6Va5cTh8YqfiTjOAFGGIvEi52z9SK0vpwTuOw83xCloff+ZNlZy9sDK0mGy9vKM6/QTS2hpyKH1QRWKKBCDPU0n3DdMg1qZSJYw1cJlGtLzdG6BC3CxDeKMD1dE7KbGT+isVFOlkSB8MAJXG04pc/qRx+U6LACjVuQLwLbPjUKLCmAqnLqmPjVjgtX24kFYCr8rVBvSg1rXbppJFhQq+/nYG4lkTZQBmy/q3h82/7gTCrddFUUXc4nqZ6BGQVor4fTHjwJ9N2u1MBpYl9NRTI5LQ==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 90A5C80008
+X-Stat-Signature: p6116f9dym3mncb9kof17faqaugerxw3
+X-HE-Tag: 1788266866-493891
+X-HE-Meta: U2FsdGVkX1+z6+MurQCQjZZfSnt5CSqrjzOp9glxBoXCGMIPWL/QdJhk8gPR3JEYsXVIOBK/hxnFdFKBsBnppC04Vime2PV4vnllk8OSRU/nhD/hMECBspoSM9AobZWq1LoCWpOV9zcFccncah5o2qFhs42DS0zAqBWKfX2A7NGyMnoEdQ9IQNoiZFfqkrjg+TFI0DyekkaU5aAFvnK5od7SNaxxXtB+A7+bRJc4hHJhk7wluE1/m/R166sZqiQaZctqgdaTimxsNXoQfrnhNBdA+a6e3eVOlym/5njh1aLh/G1CiVglPlkjTuSYbz8ETKkVcVvVqcxu5mhIJJkj83nKeM8EkEvvbt/PIxXsqewIqJP6DE+Egu4NEomQy9ULVatmXpBoFo3TDl7F5Xl4DGDruT8DzSR20GUe3TkVOuUJ7UHhvKlkZbtW+ztE+UBVhiVm0tAwXhpxbFJ7le2e92Aes3DaUNVef7eBMprUrMf+mZ5H+dhcXg0aWNip/NQc+8J6xly1T8amM4z0stFXh+iOzEb+gPCUCMVrvCR0dn869vPR0o29L4RgSnvyavxEkhc8bEC4RNdRuenzb1gJObJVC5Ni6xurqAi5HDZ75dzX7tkwobwlhYX8U723afbAImjdeYY1CdsgRr7Lsigw5P380wubn5NPhFtSJWirYlXxAdI9cQDzmbT1mzum60EYEHNO/jb3EDfxGML2vC3tWsX3Jk2gDKVprxnXar8GCRFPpZMwXdVU+RoD/FNUz7GrfZ58eEn4zObxK3IARTTBrZ1ax0CBV0OborAPy9mdQlJiSrQp9uvEJ6BBdZE5YJRyfno56pnFmzBsE9UDjbPMROosA/RWYxqb3o9LAs2NZ4Oi6YTobX3fpbVKkPaj8mtcQChQBHc9R+tC8wPvOeMQmkn63Ud58+SdXEXTfNMaKQX+64obIsit7xiXl0k8jLPFZEeaOK7kzndizkUPvtS
+ dh7wZ+NK
+ gk5+6ZSYTuj4KIDCDWFfT3Y/GlRYDtIRXvc9dk9W2qmKZiSf1obYiHXkhSIa+JcEps6R5fZeaacQB4vdgiqqMaOnel0sGaIVdbMyqJ1xS7LiHfo0TIxhHu9IZ+RmhC5jOfBFvX+vJWpG7gZDHa3BgzofskTDkSIw3y2BfEF/4iBwB6g2aleXSPC+7Z0M9o/RrTAHFb3vwKmz/jITQXQMfqWn9UkWppbeEj/8OSHMyGFw94ac=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,118 +106,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Aug 28, 2026 at 10:07:31AM +0800, Jianyong Wu wrote:
+> NUMA balancing currently consists of two coupled components:
+> task migration and page migration. These two mechanisms work in tandem.
+> However, task migration may conflict with other subsystems such as CAS,
+> which aggregates tasks solely via task migration. Conflicts arise when
+> both CAS and NUMA balancing are enabled simultaneously.
+> 
+> This patch addresses the problem by introducing a fine-grained NUMA
+> balancing mechanism, allowing task migration and page migration to
+> be enabled or disabled independently.
 
+Sorry, but this doesn't make sense.
 
-> -----Original Message-----
-> From: Peter Zijlstra <peterz@infradead.org>
-> Sent: Tuesday, September 1, 2026 6:16 PM
-> To: Jianyong Wu <wujianyong@hygon.cn>
-> Cc: Ingo Molnar <mingo@redhat.com>; Juri Lelli <juri.lelli@redhat.com>;
-> Vincent Guittot <vincent.guittot@linaro.org>; Chen Yu
-> <yu.c.chen@intel.com>; Tim Chen <tim.c.chen@linux.intel.com>; Dietmar
-> Eggemann <dietmar.eggemann@arm.com>; Steven Rostedt
-> <rostedt@goodmis.org>; Ben Segall <bsegall@google.com>; Mel Gorman
-> <mgorman@suse.de>; Valentin Schneider <vschneid@redhat.com>; K
-> Prateek Nayak <kprateek.nayak@amd.com>; Shrikanth Hegde
-> <sshegde@linux.ibm.com>; Phil Auld <pauld@redhat.com>; Andrew
-> Morton <akpm@linux-foundation.org>; David Hildenbrand
-> <david@kernel.org>; linux-kernel@vger.kernel.org; linux-mm@kvack.org;
-> jianyong.wu@outlook.com; Yuan Zhong <zhongyuan@hygon.cn>; Huangsj
-> <huangsj@hygon.cn>; Fengyu Wang <wangfengyu@hygon.cn>; Zhiwei Ying
-> <yingzhiwei@hygon.cn>; justin.he@arm.com
-> Subject: Re: [RFC PATCH v2 12/23] sched/cache: Introduce rq affinity gain
-> calculation
->=20
-> On Thu, Aug 27, 2026 at 08:28:05PM +0800, Jianyong Wu wrote:
->=20
-> > +static int get_affi_llcs(struct sched_domain *sd, int src_llc, int dst=
-_llc,
-> > +			 int *affi_llcs, int *affi)
-> > +{
->=20
-> > +			if (src_llc > dst_llc) {
-> > +				affi[j] =3D clamp(src_llc - dst_llc, 1, 1024);
-> > +				affi_llcs[j++] =3D i;
-> > +			}
->=20
-> > +	return j;
-> > +}
-> > +
-> > +static int get_affi_numas(int src_node, int dst_node, int *affi_nodes,=
- int
-> *affi)
-> > +{
->=20
-> > +		if (src_dist > dst_dist) {
-> > +			affi[j] =3D clamp(src_dist - dst_dist, 4, 1024);
-> > +			affi_nodes[j++] =3D node;
-> > +		}
->=20
-> > +	return j;
-> > +}
-> > +
-> > +static int calc_affinity_numa_score(struct sched_domain *sd, int src_c=
-pu,
-> int dst_cpu,
-> > +			int *affi_node, int *affi, int *last_node, int *num)
-> > +{
-> > +	int src_node, dst_node, score =3D 0;
-> > +
-> > +	src_node =3D cpu_to_node(src_cpu);
-> > +	dst_node =3D cpu_to_node(dst_cpu);
-> > +	if (src_node !=3D *last_node) {
-> > +		*last_node =3D src_node;
-> > +		memset(affi_node, 0, (max_lid + 1) * sizeof(int));
-> > +		memset(affi, 0, (max_lid + 1) * sizeof(int));
->=20
-> This and..
->=20
-> > +		*num =3D get_affi_numas(src_node, dst_node, affi_node, affi);
-> > +	}
-> > +
-> > +	for (int i =3D 0; i < *num; i++) {
-> > +		if ((unsigned int)affi_node[i] < nr_node_ids)
-> > +			score +=3D sd->numa_counts[affi_node[i]] * affi[i];
-> > +	}
-> > +
-> > +	return score;
-> > +}
-> > +
-> > +static int calc_affinity_llc_score(struct sched_domain *sd_cur, struct
-> sched_domain *sd,
-> > +			int src_cpu, int dst_cpu, int *affi_llc,
-> > +			int *affi, int *last_llc, int *num)
-> > +{
-> > +	int src_llc, dst_llc, score =3D 0;
-> > +
-> > +	src_llc =3D llc_id(src_cpu);
-> > +	dst_llc =3D llc_id(dst_cpu);
-> > +
-> > +	if (src_llc !=3D *last_llc) {
-> > +		*last_llc =3D src_llc;
-> > +		memset(affi_llc, 0, (max_lid + 1) * sizeof(int));
-> > +		memset(affi, 0, (max_lid + 1) * sizeof(int));
->=20
-> ... this. Why do we need the memset()? AFAICT the get_affi_*() functions
-> use direct assignment and the sum is limited to the number returned.
->=20
+At every point NUMA migration should take precedence over LLC. The
+remote node penalty is much greater than the 'other' llc penalty.
 
-Yes, the memset is unnecessary. get_affi_*() assigns directly from
-index 0 and the sum loop only reads the *num entries it returned, so the
-rest of the array is never touched. I'll drop it.
+It is always beneficial to get tasks placed near the memory, and if
+tasks cannot be so moved, to move memory near to where the tasks are.
 
-Thanks
-Jianyong
-> > +		*num =3D get_affi_llcs(sd_cur, src_llc, dst_llc, affi_llc, affi);
-> > +	}
-> > +
-> > +	for (int i =3D 0; i < *num; i++) {
-> > +		if ((unsigned int)affi_llc[i] < sd->llc_max)
-> > +			score +=3D sd->llc_counts[affi_llc[i]] * affi[i];
-> > +	}
-> > +
-> > +	return score;
-> > +}
+As a secondary concern, it is beneficial to keep tasks constrained to a
+minimal set of LLCs inside this node.
 
+Disabling page-migration or numa task-migration separately completely
+wrecks things and you might as well just disable NUMA balancing. 
 
+Now, if the process spans multiple nodes we should go do the same again
+as this patch set does for llc, spread/interleave over the minimal set
+of nodes that do fit.
 
