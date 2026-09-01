@@ -4,172 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53137C624D4
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 12:59:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E2E2C624D4
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 13:02:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0CF996B0167; Tue,  1 Sep 2026 08:59:35 -0400 (EDT)
+	id 4A5126B0173; Tue,  1 Sep 2026 09:02:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0559A6B0168; Tue,  1 Sep 2026 08:59:35 -0400 (EDT)
+	id 42FCD6B0174; Tue,  1 Sep 2026 09:02:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E899C6B0169; Tue,  1 Sep 2026 08:59:34 -0400 (EDT)
+	id 2F92F6B0175; Tue,  1 Sep 2026 09:02:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C3CA56B0167
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:59:34 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 41CC8C03F3
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:59:34 +0000 (UTC)
-X-FDA: 85165199868.28.F0125E4
-Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C8712C0007
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:59:31 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=JaMguPbw;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b=0FGmIS2d;
-	dmarc=pass (policy=none) header.from=columbia.edu;
-	spf=pass (imf28.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0881F6B0173
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 09:02:51 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0FCF680414
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 13:02:50 +0000 (UTC)
+X-FDA: 85165208100.23.7602021
+Received: from mailgw1.hygon.cn (unknown [101.204.27.37])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 2FF4980006
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 13:02:44 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=hygon.cn;
+	spf=pass (imf02.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788267571;
+	s=arc-20220608; t=1788267768;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7WZmHAi6QqDEwX5KYkSzxenVKPjdYPs1k6x2NVtDC4o=;
-	b=aZ0vHGBglilPXgNNn0PXoYyN0pSXpW/kpOcK/elg9gABme8VnOzQ1ip9lOf911pQjjPpwQ
-	3sXBbobuWugGGbGDlVorVSkN0mlBA9WuI/slbnJnFqVhT/ygMVForlaejz9nB+ekMLPD5F
-	YLb8Mr9WCuQ99FrM+a2B9/BmbExUWpk=
+	 in-reply-to:in-reply-to:references:references;
+	bh=sI0Z4AmXxY1lZ7xDIPNV6mCKNYnkz787wrfj2YigtF8=;
+	b=Xq5Y9VHv8+eKeC3SUbuY/gN4+YLqEqxDkpCNcoxA+gzMGdBRfSBhsIs2ltJ3KuW3L7M2lf
+	cDRePNxxYA5tf9rTqb3If/Etw+hb9NAd/2K0B65T7WuSrHt64LhAJrsVhFI4I5pGjncaRy
+	IrHO+jGHN+bOLNhObBDpkMZDZRNTQiY=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=JaMguPbw;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b=0FGmIS2d;
-	dmarc=pass (policy=none) header.from=columbia.edu;
-	spf=pass (imf28.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
+	imf02.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=hygon.cn;
+	spf=pass (imf02.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788267571;
-	b=u590bmzyHRvxhlG9pUHrnNNtpW8fV+c2SbAvDBv3S94yUdb3cI1+pnKqjU6v04AnAjF6MY
-	aAy3Zj2B7pF3RiI4xcqUybC/g6QeGZBYRi3Mmn0coPQc4drny9B/vuj2VzONUiM1cEOAaL
-	D9W8+OUClK9ALOK4z8npejVMe2GED6M=
-Received: from pps.filterd (m0167077.ppops.net [127.0.0.1])
-	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 681CggmO1107110
-	for <linux-mm@kvack.org>; Tue, 1 Sep 2026 08:59:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=7WZm
-	HAi6QqDEwX5KYkSzxenVKPjdYPs1k6x2NVtDC4o=; b=JaMguPbwMV1th5bp6TMT
-	vuhB0KqmvDZ9dm5bVcT+26M7s1Pg/rcbUNJJhBsF5DcmdSGONwZ6dFJzEL41RS/e
-	NWTngHjphi5Qg4LXe+ZoNfRjoeTNVnFESz7WnMNUNHp5zMovxAHWfcv6SuYaP9tK
-	AKV/2L1Btpw3eNer9DagkVWgKOD048GI5SUJ5Pyl7V9i6G7QfPegjlLTIgZdCqjc
-	tb/FS0YhnA/+mAcC15tp7wCF2L+Kt5judT2Y6aoi0bNI5oaUXdz3ABBNL4NGwV3c
-	WK1qNpriJlF2AUUSJM5vA8R4TMZFHvHyeXPOyMnfaHv2U/TUk6XIB/ueos+vgxOx
-	fw==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4gdxxyr2ud-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Tue, 01 Sep 2026 08:59:30 -0400 (EDT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-51bfe3fa93bso74438071cf.2
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 05:59:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=columbia.edu; s=lionmail; t=1788267570; x=1788872370; darn=kvack.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7WZmHAi6QqDEwX5KYkSzxenVKPjdYPs1k6x2NVtDC4o=;
-        b=0FGmIS2dSonxSKsDAFNobCXXjQidi9FHSy71yPrBqUpGNc0WLZPURJ3c8S0uqXeQuy
-         CtBjunUwhvYZi84yqbllx5R5g+sI6E3rQSfWOzR9ilU8ydxNQldz/61EwOEilbh0GqNH
-         Wb01IfFeDad1dyt8UGP4Lg71JoT7ZHOIx/Re3GddrTi2jNH7fJd/osRjH3uCqsYO8Llz
-         ua/UcsAjMi+Y9X0Qxz2IKZBoffjvR+6bCm87gHcmn8EY2minDL+4FJbke+mOZWBXeWrN
-         0GOUmGNxgoYMMf4UMJ4xkRj/FVc6GiU8F+evvVNy5IWc3bQ6YFgtYy8T7G0khUJGrPOo
-         aCqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788267570; x=1788872370;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7WZmHAi6QqDEwX5KYkSzxenVKPjdYPs1k6x2NVtDC4o=;
-        b=ACN/QWlqfq8BKub0lVBIaF1PJ/YBVEFUQpPPcGHTtKkga0M46fCaRKnDuATnBWnZzr
-         gTc1KC+uDs/Cdsva0hiR2pA/Z7yOYQ+SiF0X4VsIu/3prxh8aiwMFXTv4nuNK6WoaMaq
-         zuBSQR3f3EmwOiN5++pkeDexdJ+PP/C3IMHIFUsYVx9mtUp0iBAi7ZxS0jocSm19oDyc
-         hiJKSkclsGpOKYhBq665bDcMOeCdatUHyELnD2lRgQR9czkKJcOAZEORga0M4Wac8Nfi
-         igOfDU+NADThmDG5NFchtD+dDd4iU6nSgYHDQfrnscYEIbDhBaCtSz3dtQ0sI75AgsVt
-         de6A==
-X-Gm-Message-State: AFuF++lNuuc5OzWvO1KdZNHNZJSr7qEqvPboD4uA/OKb+XEkFX+OW0Mz
-	kA9PNQ6lfQo/l3mNlw2b8w+91WLF7d1KJwcCRvfHGYPqJEg2Fc0ABrj3GNu6YlZ4U8ZKccHk0r4
-	QWKq8Aa/J+oJWBjWv0m9nHRSW6XDhNhcMW1LJWjbPo3YLjeyD
-X-Gm-Gg: AR+sD11UadluX0GPUKAex/PZWZfAIdsp1lmXhDsLkG9cor7paaShkKS/kOlHRD0/Q3V
-	S8Q+guHP6gWzHN1XBJK/vQx3SxJoG8O1RK/3ObZz67GLlOqlVm0lbqegF3SEJz/eUQ9MpbfRZ3p
-	GTr0SHzktljs62StHJ4FI7augaHRzW64CzRYRxFxKSY/We8mZu+toRW6qQvIFnn9v0Cc9vEZf8J
-	Skf+t1fy49ziRcuXHus0DFAL3Usx0XfYdkymnGg9WvuLVMesYW+qp39yuq4mXmi1xI2dKIYMYj3
-	O9nlrR3CepEFkyV+iupdAobIG+iN9rjI/dNps5khcFlE85/aZgHOhvvEbvJv5D34WyeUb7EMer4
-	uznMWo7OHOI6VZnuPx+aKg2yM0cFxoT1cC6WvkNGk8GFxssaCsns=
-X-Received: by 2002:a05:622a:260f:b0:52d:f12c:59ba with SMTP id d75a77b69052e-53021d43dfbmr104265941cf.33.1788267570285;
-        Tue, 01 Sep 2026 05:59:30 -0700 (PDT)
-X-Received: by 2002:a05:622a:260f:b0:52d:f12c:59ba with SMTP id d75a77b69052e-53021d43dfbmr104264311cf.33.1788267568677;
-        Tue, 01 Sep 2026 05:59:28 -0700 (PDT)
-Received: from [127.0.1.1] (dyn-160-39-33-242.dyn.columbia.edu. [160.39.33.242])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52fbe830222sm96194331cf.20.2026.09.01.05.59.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 05:59:28 -0700 (PDT)
-From: Tal Zussman <tz2294@columbia.edu>
-Date: Tue, 01 Sep 2026 08:59:20 -0400
-Subject: [PATCH 2/2] mm: remove unused totalram_pages_inc() and
- totalram_pages_dec()
+	t=1788267768;
+	b=QOhB2W3igA40xcYFkHajPL+TKXhsRhSLoZiKGip/y7ozIOhsY7M8hMDoe9vFI8Yi1YB5cx
+	F2DI+0WOQjJ7/0CuQkPAG50ytO20syygeFoI895bJJ2PHXy7x5dXjGrAMfX2Q6w4xZRBny
+	KL28kyHCJDsY8whZLE3eIl2oy1zb12A=
+Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hZ5cS5Rgsz1PvqP;
+	Tue,  1 Sep 2026 21:02:32 +0800 (CST)
+Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hZ5cR38pyz1PvqP;
+	Tue,  1 Sep 2026 21:02:31 +0800 (CST)
+Received: from cncheex06.Hygon.cn (unknown [172.23.18.116])
+	by maildlp2.hygon.cn (Postfix) with ESMTPS id 40F5531D0309;
+	Tue,  1 Sep 2026 20:58:40 +0800 (CST)
+Received: from cncheex04.Hygon.cn (172.23.18.114) by cncheex06.Hygon.cn
+ (172.23.18.116) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Tue, 1 Sep
+ 2026 21:02:32 +0800
+Received: from cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d]) by
+ cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d%10]) with mapi id
+ 15.02.1544.036; Tue, 1 Sep 2026 21:02:32 +0800
+From: Jianyong Wu <wujianyong@hygon.cn>
+To: Peter Zijlstra <peterz@infradead.org>
+CC: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>, Chen Yu <yu.c.chen@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>, Dietmar Eggemann
+	<dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, Ben Segall
+	<bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin Schneider
+	<vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, "Shrikanth
+ Hegde" <sshegde@linux.ibm.com>, Phil Auld <pauld@redhat.com>, Andrew Morton
+	<akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "jianyong.wu@outlook.com"
+	<jianyong.wu@outlook.com>, Yuan Zhong <zhongyuan@hygon.cn>, Huangsj
+	<huangsj@hygon.cn>, Fengyu Wang <wangfengyu@hygon.cn>, Zhiwei Ying
+	<yingzhiwei@hygon.cn>, "justin.he@arm.com" <justin.he@arm.com>
+Subject: RE: [RFC PATCH v2 08/23] sched/topology: Introduce a per-CPU tasks
+ NUMA preferred counter
+Thread-Topic: [RFC PATCH v2 08/23] sched/topology: Introduce a per-CPU tasks
+ NUMA preferred counter
+Thread-Index: AQHdNiBA7oAH9eDim06x96D0XIAuLra3pasAgAHCg5D//5zAgIAAsU4w
+Date: Tue, 1 Sep 2026 13:02:32 +0000
+Message-ID: <80ded281acca43a28043b261e850250c@hygon.cn>
+References: <20260827122816.756234-1-wujianyong@hygon.cn>
+ <20260827122816.756234-9-wujianyong@hygon.cn>
+ <20260831132414.GN4120091@noisy.programming.kicks-ass.net>
+ <8eb55be5c1e9497c9f34f15436b9d665@hygon.cn>
+ <20260901102127.GY687043@noisy.programming.kicks-ass.net>
+In-Reply-To: <20260901102127.GY687043@noisy.programming.kicks-ass.net>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [172.19.20.45]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260901-mm-remove-unused-helpers-v1-2-f092d086f7dc@columbia.edu>
-References: <20260901-mm-remove-unused-helpers-v1-0-f092d086f7dc@columbia.edu>
-In-Reply-To: <20260901-mm-remove-unused-helpers-v1-0-f092d086f7dc@columbia.edu>
-To: Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-        "Liam R. Howlett" <liam@infradead.org>,
-        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        Tal Zussman <tz2294@columbia.edu>
-X-Mailer: b4 0.17-dev-db0b7
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788267565; l=1028;
- i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
- bh=sL+jb7+lqh12+chLIhZYYQGjMOmxWpBF3iD107xUVHU=;
- b=xsOLRMv+pMGfbkOAUjgN8bpn4nfoA0liC93toFzefiHg1Tkzckd38swBwwetPdujEEXSOsQf5
- TROxiPprUILBzVu1edVu3JpWx2kw6hcVN3DU+Ikgig9jewCJJMe/ypD
-X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
- pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAxMDExNSBTYWx0ZWRfX9bZoLNbE1mbs
- OrPC9Fj87YRuL5gjLpDcl5K55WGWGAmHXFd/yt1tTUmHrnrbdyHEjpLglyWNq9T+xCwexZDAyeX
- KT3XO+001hxqBKNIe4p+ZpYS/J/HZH6JgFABhB9HF7W0TZzpPgLgKhwwEGT/Pz3V2agQ7G3mX83
- OOaX0NxDEh/KCOyyy1jK/kHw1SCGu3cOVVJ6RaRiQJDfSl7qAcFkoyv9UoRkAdbXvcZJXX+p0gv
- 0kM8IKEt3W0/6eF57CsRJDDHGB9Kofuw2J34U3xDndZL9ozBKS5rv9k4wkwtp7Nlt20HOwSNrEj
- r5uJn1oios6UrJFHjDoFI7jNAHucl87aiqwQMo69dYSkr4NjwOAiuA7WJYCj91GNNpQZfOESUph
- Ztegj3bdp9jccSNGGoqWfdGFNu7kI9Og3U+0LkeKVJCNWAum5k3CQwgrp86R4m1CDWpbXjV218k
- U5WOR4ddTGR1kBj7jTA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAxMDExNSBTYWx0ZWRfX8uPPpEssBlWS
- Y1LKUuAZjlfprMIo6dv+MfCvPDeFLpxES22q5kfBSWEt+ZHL3aMr8kvL2YAzLJOaItRenNJKjW3
- veAz3POobgrV4lkJuQ9xI+SrGCgk0mEjmvl2CJnkhfGzF8Xc+ARF
-X-Proofpoint-ORIG-GUID: y7Xte8C8l0t__Gi23DIZ9Ea3_wHCOAim
-X-Proofpoint-GUID: y7Xte8C8l0t__Gi23DIZ9Ea3_wHCOAim
-X-Authority-Analysis: v=2.4 cv=fOgJG5ae c=1 sm=1 tr=0 ts=6a96cc32 cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=GaPK54s0Se3oFqK5NkZy0g==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=QOCMdifcju39GKoXhKua:22
- a=89-YPgm_5HLP6wdRpfQA:9 a=QEXdDO2ut3YA:10 a=dawVfQjAaf238kedN5IG:22
-X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11892
- signatures=596817
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 priorityscore=1501 suspectscore=0 spamscore=0
- impostorscore=10 clxscore=1015 bulkscore=10 lowpriorityscore=10 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609010115
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C8712C0007
-X-Stat-Signature: 5ytatefixk36wecbueht5qqcyb9oiwsr
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788267571-475662
-X-HE-Meta: U2FsdGVkX1+N/dmeEyMJysgi2ehlw+Vmdd6Ywdv+9pHpg4YJ4iCWihN1LlHQdWlIGvasmxUO+IQtNVq4HwfBoVoFJAbJgjmDJpq5Z4uYj41uUBDsdctK7J60Ra8EBUa3g6DLm2vefARFOpmNy0Kag1ADKzF6wFjIvQiq1NnuXXle0eOsTycmh0D6gNBNSRDHK4cOoN6VKeT6MqaqzLc81r+0gge4c2JRXjRw21atyqlHdgdzhZPggZIkk7HGWCC8Fxd1DcQNrTdHy1iDyTDzbLODqTVlBqW+tMHiww7/KBAK0lKQDlSUxIoURPP2DUeRnZ0zeDjAXhq3ztMZT07SMsJgBHBhce7x7leuNHahgrMene6Kmt88cnSWar6kQsxdz6YKFAdpBbipCF0oJHZOj6B9H0YrmuEVTT8xcO1zteYycURMkjZDXMob2nKJUb75iXS0OLLnvePZUogRE5F+ciE2zMzqnynuNoxfkYFAsjniGBmXstIt+urK4rbdoozKwMc++cZ33jN94An2kPhxHjUF1IMfLD0WRcuYJHUTwzsS372C6LTUbS6OkKizH3VEn+p4iN2D5tOoi1OmBmGboxZsdoiycKBL3QDsBDxJlCtbLfKpOxlXNQE36msxTdxpE2SC3/viPZMm77rvXtKD7PR0SsveVfn5I4AWSt0POUYZWAu+SQY/+hgznr9bCsSUrGn192MGQwyOHFIFOGtmkozayq1KqnY4VCrAwvb/qfNyTzYYFBzR1EcZe2oVSnKirT33st6yQ2S2cN0e1kRb/RoQ8OcQuxyu/pKLSNVd/wtlUlhtgMcT4yJ9jf98tkYvZjTlTlcmaFljBSSTvR/C5kdV7Ut/CcSCqvVQydNq6XX5bRM++qKci7mpa++KXjn0Ws9NInzPoDBgRKSi73a1WPwNgEBSuPf5RGiwj8eYDFnvReuSk0Hi2x6rP3Gl9fooU0zL1T7WLKR8zvLdCiI
- 4Xao5Oqj
- IqR1BHSVd079evXTfZ+6Oul5jh3h35LzRSUwUvuNrqlKuzrJHokH3/GZEQSQNyBTpiHMWkDf5CVvpLhwPZ9etjbAOvmh7OwxHVw6o1q5DVxOptcTcB778/cUmD5zq0PrctnztT9b1r6JtVAbwrJx2Zq8Xu1hqF/8oQzF140utNGJSh9m0W9KPcTV6bzLBWixtLydo96nzRkHx/iEnj5TQ+y3P8t67qrk67dmwXPJAAkRp0r+EyXSSqnrxkBYjUSK7kM9qjE41UKgwTevlb94KxG9lKnyVezrVe416RTFLeEkUb4GUePWWp/KBgvQjakFiZXiCt01XDnU61w/5GnZff8ddkklx4Dt/XGJsi11OvCmywOwW7AGzOJzHbSceMv0Q8HA3QgPKP6hCyLyvO/in0clVmsXAH2JftJv5Df1cf+3O25E=
+X-Stat-Signature: jgcbazy94obmxmbhixwynngstgr9ufok
+X-Rspamd-Queue-Id: 2FF4980006
+X-HE-Tag: 1788267764-558294
+X-HE-Meta: U2FsdGVkX19Uf3eyb3mPqYY8U7ihxuUPdlZyc2lSjAAiHsUXc44houJbR7VUSz3K15VkCwHuZWDCofvaJu/KJkKx8pw/nGvsSLXnub6lMhCM9HSmIVHkQsDNf8GtaGyWIfrQM1i2gTuMp8vJagSMIqoq3NFMdVzX3pHrOxNTzy7eIng2eXFiNcB8htRuajOC9RYLzPaNnvz6yXI6buNhRK7RoBwFF+S0JcB+kcBmAtId23lpLxRf5qus0r7d8xdvhpulP6YVm86hB0LAf2YKJPqsZAkUG9WvbGvABsCzN9XCNe44Qf54LLEkNNG/7nscErLBBmlNhuOgjHMU5KmV+BEL8Lz7jHWkOuEu9FRPRXuGsbz1ScF036GVeLmeAXZDlwa/HVekPakyLN0if5j/RSCSopKAP/qJwPtBqwSizwFiHiUQU3G70j1zQDjHs5i9D/hwnOfgcAYxHQUfQR7SyI/WTPLaGo+V29ii5+pQkbhsiRYeA4afv6AvtN/BSO5ayb4NEOFvdHT4d2TBht6lukjccjgCezWxNlQ3T/JJ2z3K2jZBV5UrMHNDAuXy8VcancQmoEdfj5nkwAduuV0kfiJSPUs7CRytoFJNGdB7MmDiHz3Ds344FsgbcUD2BTsSxq+qSUDGMjkO2ICLGaCUfuQjZj3v6qNGhqDts7fLscXK1pmfBAbD0TpaRHBXIDacFCckVn8NXTLDH3VXYsVMSaJ1G4Sw/E+eRlCQBcR2ggkqjtcH33SH6Lxm39vMM2n1OljLRwoIwv61RbGp5y5aBKrrEUNYwUkYRob1quiHUkxkKUQXtZnYRsisTLqex3lKys9+KJ5YYUGVFapNVq/c1LWh6FLauCr90Yqt1iMLaQEr2YjO2YOvHwgy7aXGh4M3tUs8aEUWyOS0blq6KxC8909onk8wE0kmbvQWPWa23U6q7SzAl6tTO3ZwflY8pg31zPo2CPV2TaajIDjUZ3r
+ iLVWWSDA
+ aZaOCdbnolXcYWdbqAA3G1yzv/2RXcbMW71TFUdONOhtz4eV01xbABrKa/mByFXtpWlJ6wsUS/oshxmoFaT4ugdXxILMMtGVzHhnoJPgQ2nD/N4r2tJUY1z/qLcLgpi+Ni2NhwYlSZLjsrwj7JoupJE0LL7i5eoeBO9exjno18GG3O139IYSsghJODQWnPIHeLBl3iXzILSmT/xqrOdqjSWd2J0gzV0F6UqhTejBSTHiRjXl1lOv2R9vr7leWAyhwsIC3nzIzPS5e4rqDe+jz2788Arysmf4dwEK7LpjkY2I0ImqNwM0hm0SlKXQnmFWGNECnKGrStfyAB+HkSXP8O3CVwhGvGH/6dG/30d4vZQ3Mpxc/TB33Xd4TORmwpQl3+u52+3Q/Ct1brKS3+5jWzCoAHvV7ALoJS4fTm0hJzicKhMEPRluJxgoXGsk1g8gnoQf4pCbaZ9Z72TRTTyZ7RLhotU8ijXUedCMRfPPPNyF/Qg2niE7IGYw5Xz9fN6eA5z88HZjmH45BXkjGtbVPAfowCouHZrcgM5q5xrEnRJ4PGl2hliqqia5FSh6MxTgt30XqfnBOFRv1IQEYf6jKiv7TF3wa129Ld6qv3Dsbn1ZBWiz68O5xNhCT7W8rIWlABEC3AYabosQQK3AP3Yil5y9M53+3GIDbPqPSw2hfiLz5UBJrXjIJUjEEQIIsDtFCaw9rbPSw5bmyzEdhaJroi9Vg6qWu7nCrVChTmElG52jF5V0vDXLm+GfXvxK8CkL4JcbDLMrGknlj6QBeYC/eYZBldRt4vYeYbhSZM7GqUc3HvdaGvhE4LtpPjJBf8dLtqCaEfb/XMwYFrwgRlTCZxTyAgA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,40 +116,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-totalram_pages_inc() and totalram_pages_dec() have had no callers since
-commit 7fbc5e26123e ("memblock: extract page freeing from
-free_reserved_area() into a helper") and commit 287b89773d81
-("powerpc/pseries/cmm: Use adjust_managed_page_count() insted of
-totalram_pages_*"), respectively. Remove them.
 
-Signed-off-by: Tal Zussman <tz2294@columbia.edu>
----
- include/linux/mm.h | 10 ----------
- 1 file changed, 10 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index e3736c42c4db..c105a3758915 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -57,16 +57,6 @@ static inline unsigned long totalram_pages(void)
- 	return (unsigned long)atomic_long_read(&_totalram_pages);
- }
- 
--static inline void totalram_pages_inc(void)
--{
--	atomic_long_inc(&_totalram_pages);
--}
--
--static inline void totalram_pages_dec(void)
--{
--	atomic_long_dec(&_totalram_pages);
--}
--
- static inline void totalram_pages_add(long count)
- {
- 	atomic_long_add(count, &_totalram_pages);
+> -----Original Message-----
+> From: Peter Zijlstra <peterz@infradead.org>
+> Sent: Tuesday, September 1, 2026 6:21 PM
+> To: Jianyong Wu <wujianyong@hygon.cn>
+> Cc: Ingo Molnar <mingo@redhat.com>; Juri Lelli <juri.lelli@redhat.com>;
+> Vincent Guittot <vincent.guittot@linaro.org>; Chen Yu
+> <yu.c.chen@intel.com>; Tim Chen <tim.c.chen@linux.intel.com>; Dietmar
+> Eggemann <dietmar.eggemann@arm.com>; Steven Rostedt
+> <rostedt@goodmis.org>; Ben Segall <bsegall@google.com>; Mel Gorman
+> <mgorman@suse.de>; Valentin Schneider <vschneid@redhat.com>; K
+> Prateek Nayak <kprateek.nayak@amd.com>; Shrikanth Hegde
+> <sshegde@linux.ibm.com>; Phil Auld <pauld@redhat.com>; Andrew
+> Morton <akpm@linux-foundation.org>; David Hildenbrand
+> <david@kernel.org>; linux-kernel@vger.kernel.org; linux-mm@kvack.org;
+> jianyong.wu@outlook.com; Yuan Zhong <zhongyuan@hygon.cn>; Huangsj
+> <huangsj@hygon.cn>; Fengyu Wang <wangfengyu@hygon.cn>; Zhiwei Ying
+> <yingzhiwei@hygon.cn>; justin.he@arm.com
+> Subject: Re: [RFC PATCH v2 08/23] sched/topology: Introduce a per-CPU
+> tasks NUMA preferred counter
+>=20
+> On Tue, Sep 01, 2026 at 08:31:35AM +0000, Jianyong Wu wrote:
+>=20
+> > > On Thu, Aug 27, 2026 at 08:28:01PM +0800, Jianyong Wu wrote:
+> > > > Like the existed task LLC preferred counter, sd->llc_counts, introd=
+uce
+> > > > sd->numa_counts to denotes the task number that prefer each
+> NUMA node in
+> > > > a certain rq.
+> > > >
+> > >
+> > > To what purpose? Is not the node occupancy the direct sum of its
+> > > constituent llc occupancy?
+> >
+> > numa_counts is used by the affinity score in patch 12. It holds, for ea=
+ch
+> > NUMA node, the number of tasks on this rq whose preferred LLC falls in
+> > that node.
+> >
+> > You're right that numerically it equals the per-node sum of llc_counts.
+> > The reason to keep it is granularity: NUMA-level load balance scores at
+> > node granularity (numa_counts[node] * distance_delta), while
+> NODE-level
+> > balancing scores at LLC granularity (llc_counts[llc] * ...). Maintainin=
+g
+> > the node aggregate costs only a single llc_to_node() lookup (an O(1)
+> > array read) plus one increment in enqueue/dequeue, whereas
+> recomputing
+> > the per-node sum would have to walk every LLC of a node each time the
+> > NUMA-level score is evaluated.
+>=20
+> Consider the trade-off. Adding the accounting adds a cache-miss to every
+> enqueue/dequeue, while re-computing the value on-demand adds some
+> little
+> cost to the balancing (slow) path.
+>=20
+> If the llc_counts[] array is dense in node order, then it is likely all
+> relevant numbers are in a single line and computing the sum is in fact
+> fairly cheap.
 
--- 
-2.39.5
+This is a good point. I was considering the number of operations, but not t=
+he fact that the additional accounting is performed on every enqueue/dequeu=
+e and may touch another cache line, while the summation is only needed on t=
+he load balancing path.
+
+Since numa_counts[] contains no information that cannot be derived from llc=
+_counts[], I will rework the NUMA-level score to sum the constituent LLC co=
+unters on demand and remove the additional numa_counts[] accounting.
+
+Thanks
+Jianyong
 
 
