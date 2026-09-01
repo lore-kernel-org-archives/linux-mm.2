@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79B35C624CF
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 01:53:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF3F1C624CF
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 01:55:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DBF46B008C; Mon, 31 Aug 2026 21:53:21 -0400 (EDT)
+	id A6F036B0096; Mon, 31 Aug 2026 21:55:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B2A66B0092; Mon, 31 Aug 2026 21:53:21 -0400 (EDT)
+	id A46D16B0099; Mon, 31 Aug 2026 21:55:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C9976B0096; Mon, 31 Aug 2026 21:53:21 -0400 (EDT)
+	id 983C76B009B; Mon, 31 Aug 2026 21:55:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 066E36B008C
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 21:53:20 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8911480320
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 01:53:20 +0000 (UTC)
-X-FDA: 85163520960.01.0F52AD4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id CC5DF14000B
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 01:53:18 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Zq8VpLup;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788227599;
-	b=fQSlLUGc1EPDdEU3lcf82N6Q/0d65WpkHGramngI6jyoe/7BirzIK2ASAshS7xZSpvqJcj
-	m5Mgo1FMXZwpmXh7Ipddw2S41aabLtkh/SC+zrWOe2MVdiwxB/dOFoa3CA7e+4BinVikdD
-	4K3jkoSnzFJx1JxYBo7uLFlcFYVIhMs=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Zq8VpLup;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7066A6B0096
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 21:55:23 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D56F01A0282
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 01:55:22 +0000 (UTC)
+X-FDA: 85163526084.17.A4C5A5A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 410E1180003
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 01:55:21 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QTvMOsLY;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788227599;
+	s=arc-20220608; t=1788227721;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nfPoQFWa5XJK2n+gLXq+InLZ1SHvMm2K6VuNoOpddPc=;
-	b=pw96sjdAWHHsJCiLg1aSPSe+oLMFnblu6cyGu0AsVp+t3yCyyuJnQzd7vURB8Jjd0FtCSw
-	L+U2i6JFstHGO/aDWAKLZuT2mIltyB9DASIxdgXapF0x8aQ9Cx9IJaWpE5Y15CDUrq9/T4
-	B4kelDc9An2A9joUbVjkF0T66A1DukQ=
+	bh=CbUFClJ4i3J7LjCwTB/35AHxIba4ym0JuMW7MLg9RkU=;
+	b=LFGrG7QHK0nEiBk/fVYvrinTzRPfBupGEjC5bmpXlxuTmiiI2QY0ehz96IvngxRgX7Sn4C
+	t7iW2oTLDvxeni2EH9JL8a5onaXKzOD++2RhNtLmWLrYWUip0EPhgk9PDNv4UP0NC0VJwE
+	goDFSTC7MUVgvXUTi/HpSLePcX5FLKA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788227721;
+	b=qqOZMtohzFcaXdx7zhqDG0jAJ4LJrcULDpnW+jCoTstCYkwMl7Jim4Ggbx/J/UlpvF/jei
+	kbzGdj2wXO/zSWgseXxWLsIJ2n0pOntz/tdPcwlGsJFGSAFZ5zfKU3NcOB3HTvE46z0xdI
+	wxGkcXc+gRVdaNRI5eRDxEKgptQgA0Y=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QTvMOsLY;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 22D17409AC;
-	Tue,  1 Sep 2026 01:53:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E38F1F000E9;
-	Tue,  1 Sep 2026 01:53:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A24CC601DE;
+	Tue,  1 Sep 2026 01:55:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79FF81F000E9;
+	Tue,  1 Sep 2026 01:55:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788227597;
-	bh=nfPoQFWa5XJK2n+gLXq+InLZ1SHvMm2K6VuNoOpddPc=;
+	d=linux-foundation.org; s=korg; t=1788227720;
+	bh=CbUFClJ4i3J7LjCwTB/35AHxIba4ym0JuMW7MLg9RkU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Zq8VpLupvgE2yRJw1KQGeavVibzTXHtpjCONjfoal2aDB/f32LHC+a9EHOOObR2dz
-	 XMrE7NHF4NkTlRLOvkXFK75juHDjUVcCkQ7WguvUjYiW12f7gOk81DFIAVNvWoojWS
-	 hStPm28T4PEXRZKb5fXVKK4E/erKvPmWGFqjKOw0=
-Date: Mon, 31 Aug 2026 18:53:15 -0700
+	b=QTvMOsLY/HyZChL07OeBST7evAmOyQDdqEsNG8IojIx94RZcYBwP8DgxztrD6FxPx
+	 UxNXGzD1L06crgm/t6O7u1Azv9jZngQt1/ls6DYB8X15tavuE8dNV9b/ojCvXtSt3F
+	 /qmxq+B/hEDiFvYVf1+pwfxpoT/BJ9uJYAxsblw0=
+Date: Mon, 31 Aug 2026 18:55:19 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
 To: Anshuman Khandual <anshuman.khandual@arm.com>
 Cc: linux-mm@kvack.org, samuel.holland@sifive.com, David Hildenbrand
@@ -80,23 +80,22 @@ Cc: linux-mm@kvack.org, samuel.holland@sifive.com, David Hildenbrand
  linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
  sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
  linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6/8] sh/mm: Stop using [p4d|pud|pmd]_ERROR()
-Message-Id: <20260831185315.ec745606e7eeae6d1116b7d1@linux-foundation.org>
-In-Reply-To: <20260831054331.625505-7-anshuman.khandual@arm.com>
+Subject: Re: [PATCH 0/8] mm: Drop pxd_ERROR()
+Message-Id: <20260831185519.66c6e6e83ce62d0fd9aee945@linux-foundation.org>
+In-Reply-To: <20260831054331.625505-1-anshuman.khandual@arm.com>
 References: <20260831054331.625505-1-anshuman.khandual@arm.com>
-	<20260831054331.625505-7-anshuman.khandual@arm.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 5redsmtpp1nuquzw5o3ggafibn7k4f1c
-X-Rspamd-Queue-Id: CC5DF14000B
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788227598-460498
-X-HE-Meta: U2FsdGVkX19nA1OhCV6Br/wtu1liZPpoacSch6mEqz0QSPAn98/oGvGYhBrUOS5Pzm7j4SGCU3f+YRMa5k3fOYcyFFabuIqLEzmRqDfea+MSZejFvE3gEPhpaULPxJOWSeKylLg3O8t13d9tdcHpVTj2KqnMRzp7fJdujewKUjzbXG7c32N+BL+QsEA8YRogYj+KXbaaj5Q97ImA42xHwDEC1kCEbYpvkxZTUt3eE9LrpEjr3sgUzmHYb9xTDxBekxLleNKgTJqHdVKYKrM5ydGDfwi/ii3JRSLFBG4TQLrZ3Dd5AVQPrzpxcY/CPiEkaaMs1pdfcGb50flZ6CK5GqcbXYb4u0ns+rVrjzY70bkB/X7JWOsBrfHSi50LdqgEgTPR8fHsqP/+r80F6CL/RsKq++Wls21cmyI6WksXZY19DW9Rg+sOI9d4H7Utz2JolFBN6Fp4eItniExJvm8RKcCVO8qHN74222wezRMdmJDnw4b5d28u2/TD5wkBzWWyA+xn06elIA1oF8PCcG8/JnQPGi1q5D+9QoBh5zPpwhT7W797YgM1D+Kkq9azP5d/F5e2mCH5t8ut+5wE9+s/PAcB1oU5xgIq8eI9pYhY3MyvzOdKHOe4BemlUIimaOlzOjeIyJQiuv4NndQu5jj7qD7lFBXn7iRucZY9wJioa3YKksCo2iElAVQm5fxA3bL9YJL7W39sEodetTRvLYx1C+bwQnOMJKUucvWP3XkyWKXsyBzvBsPSBHHjRRC5ub034oLdWpoMU9OlWWSul/Ht3LLpR/LIbLBG/6qzZMCe2DZ6Z50bAzBSWNDUbPYL6P/WxS1GDa1Kf4Po1eeiuiLNdKboMTADo1mWoR2IHS7mW+VUlHZTeFdtjbGK6IOOu6m9r4Ru4wObaxrxFD6u2NUiGSOib0lnY16HZwGVPSDHEUJxuXx8FTigBZryAvtRky70Qavb1xOHJcyuHHGR+Hf
- sbyhtVfA
- ZM75q4NHO/RmMLAKn5IxDYZ409r0Idc4/+i6WIn2+mlr/dLX0gAXx08TVy0OT1z/gUaGRgPKVwDFDpfdAmCAMjYW3RTFM1mpIwzxd7BkZkfeMsnLZRnXA4Ashgir6O1ZQeBdMp6LiO8Ft0evgkd6BiJcCcF2IdWOR1Kt4nquWkRjRybPD3/A8P0uh8sLeeVZzp/bM57Z5cJXZqSLVwUktHzP6GO+7HwikWBUYxBT+5x5NEgbJ0mUMhaowb1FV1lmSruqQPENfAUEX+HXYf2ORnrcC3zyzgUiyZlTtiTBuYqsUcK4E+KYS8csYGs3T5z7OxTExzIXi1XIoy9Ty444MikDmskCO+PsVHCWJqNg3CrRNVGZJqazBn5lAlRT+yQsSc9wDZyXeS2o35XSwv7ekrjCXaDGi56A/R5sQdzvDBborpX62kjU+ZWd2BWvon6IURkC9LKYy0yvmO3vLVBEH9SUqMifncPpbA6+VriKD1f8/ncw=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 410E1180003
+X-Stat-Signature: r51oeodzyeozczehuhq8pdzmj6yr8j15
+X-HE-Tag: 1788227721-560681
+X-HE-Meta: U2FsdGVkX1+d49hFXwmtzh4WJMx7sErPg6oxfAp9AxAIyHdHnsNib+GqcVU4YC+oloNnv02WfnD0RkDLYLI98LLK+aQ8VfSF952RCGjwC3IbEWZANrKVF8MGC8H82Elo2nlYUmnM3QR/VM7l6Fq/KdWtqD2VLAtSEDI7uiEiR079jHwFcy4SeckRpTpQiRlKIzswAn8E4PSaoUgxfJkQIo1xE15gCUbqJ3ejU1uPHZbT/LOort64IgiDhWbTiE0C1Rsnz2m0J6fZ0Sz/gMdMGhQB+/Gt9L34CYQ5vOsCiy2UKloAhLynHrtzfb85U6uRwYjDvIXmMKNFvoaoUc2Iyo1ejO8dZ0JYFH4O84Oy3/H0MM90Kh5rSBD0MuKsUQopT5+i4XbLEJcmggsedBAVnfxmzq+Q7sZOR948fZqJkztWuHVu1kTh5ikA4XnfVTcUm/e7W8FcLnxtTpDOJQce/MUnxROLxU3rUSwRvN5icSd7VW4LSRT5oIUrUFwwqwevXe1tejdTAxnOzitRCBZGngDSJVpF7viu4HSEtwNHDe3QiWMJc9FRdKCGfJLAGBFRTRXiCT4VST8h2skFnha20tUaPKJBJ9yTo3RJ0JGuA5u+LagkQpljD4s200iMwjf0811qt/GU/AMTQMOYsgYnfrUZCSNrIRHSxNzNgV7JyS1rpQWOZ/EJjXHjngZQZvYD9DMhP8b555dOODtiZUNHIn+wjiB8vGB05WKPCKXOGi75F2JkUWMf4MxSMDl5zDumWvJjI6D6E3VhsWdOYI2V1OK/8zOrwDm5mlnZlvaF/eWMkyChHdU2uPAkHLfdylBs8DdmAx2zGiNi+HYmgRD+KF7swCXZ4FNKwvkcFYYaneJCESmNgZZkTUP/WoxqMXmbTCaD06QO++5N7yYrESzsZH8jtZ6dAyBj+8UwCD7Vz6WdHnOcQGlEUGNhk+P5U4OIC95el3W3PgLuGLwW82U
+ c7KA6XW0
+ mtQS/eRWhwPPc+nLNmITihqwCOB/6+m23Io3Ds+GcSoFWAh7euXsbQG6K8Hz0W8mIjv+ln5DlUDiN/1Am9+Q+Utyh/+x8CGRV0X7w8IOIH13x4yG8d1z+lRJcP2eHDLNFlOb1qOQ2olyeBpgLKQOA+dczf8ftceJdHYC7NSgfy6xay8PtHedK9LLhq/nnbhdS7B20Br7rt61SbCRpRzWTnUEPV3cR7mrLjI5AutWsjamXWGGp5gimoYMZTWkmVaoZ8pOEKmQcTDX0I9185T22BK6374pSHYg17K0z7hCe44pqCtrYkMGI2qLNzYdWUiFy7QLugEc9FFrCcEQVfdLUExRt7kSWh3BYebPWysGP9kyPJZUMMKYpOuJpaoIImfWaEY2O72d5PbgPG0rXtR6Q8DW0lG2QIx6ZXFswVeqNy2o3NKg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,13 +103,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 31 Aug 2026 11:13:28 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+On Mon, 31 Aug 2026 11:13:22 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
 
-> Stop using [p4d|pud|pmd]_ERROR() in __get_pte_phys() as the pgtable entries
-> are known to be NULL and hence could not really be accessed.
+> pxd_ERROR() macros have been provided by all platforms, which are very much
+> identical and can be dropped off completely if these pgtable printing could
+> be moved to callers in generic MM aka all pxd_clear_bad().
+> 
+> But first cleanups and re-organizations are required in some platforms that
+> are using these macros internally. Afterwards [pte|pmd|pud|p4d|pgd]_ERROR()
+> macros have been completely dropped from the entire tree.
 
-A note to the sh maintainers: Sashiko might have found a couple of bugs
-in __get_pte_phys():
+All was going nicely until...
 
-	https://sashiko.dev/#/patchset/20260831054331.625505-1-anshuman.khandual@arm.com
+> This series is based on v7.3-rc1 after the following patch and has also been
+> built tested on multiple platforms.
+
+*what* following patch???
+
+Oh well, I'll queue it all up and shall hope for the arch maintainer
+acks to roll in.  Please.
 
