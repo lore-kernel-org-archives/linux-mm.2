@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1680C61DD6
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 23:24:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80A4DC61DD6
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 23:24:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 81A6A6B0088; Tue,  1 Sep 2026 19:24:31 -0400 (EDT)
+	id 9535E6B0095; Tue,  1 Sep 2026 19:24:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CB356B008A; Tue,  1 Sep 2026 19:24:31 -0400 (EDT)
+	id 92BA16B0096; Tue,  1 Sep 2026 19:24:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BA806B008C; Tue,  1 Sep 2026 19:24:31 -0400 (EDT)
+	id 841086B0098; Tue,  1 Sep 2026 19:24:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 47DB06B0088
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 19:24:31 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C6C3C80401
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:24:30 +0000 (UTC)
-X-FDA: 85166774700.09.7C8FAEB
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 65AF66B0095
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 19:24:39 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E7B01C0524
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:24:38 +0000 (UTC)
+X-FDA: 85166775036.18.B6CD38B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 25C11C0004
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:24:28 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C4gEmpXX;
-	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788305069;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=0IfPqucy8DfnTKp/2gWMiMi8WWSj25F+64egVqUdKRg=;
-	b=z/rT9vzB/CS0olJdFMBWnDx0rkXjgEjD9lwft+3XCzuLjEzeVVtqhzTgw/fw5VG46gbUl7
-	qGpLMa7bWh+1D4rMJ0yUz6TCW3DCqtoKdwG9cqiMTT+uYfZuFYgbORSPHvjnyuLm+olnH9
-	dqMrQCWXKv/T/FOuMatTW10o8D8JJWw=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C4gEmpXX;
-	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4C87D80002
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:24:37 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TXAQ3QSm;
+	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788305069;
-	b=nh97NWteBMJrBSVxnjc+HDVA6bWfL10506IG5LZKzcVRwvz39ThlPO8UePuqQcv52kBl5c
-	GKkMMjhFZro5F7G0Nip9vFJqW5oNczZ7vj+lpbzxVi7Bym++h590bnlUVjnQdwr7RvF9hg
-	2flhsOCi544VZ9s67wONs88zxMAjf7E=
+	t=1788305077;
+	b=BjYwimfOb/JOSHC8hsUppwfi9SiY4HKSFHJEF8nApyuLqyI62+mPf2i6I+4+ZQaVlN3BoW
+	gmgSidv+VBJRRjSkufeAlSeOTWP7L1ueyl/4HXeqVW3odew/Xnhw2zZ67kN0cwsOArIxwf
+	c1m4z/3LJfj+PhDO+8IV6+zvGWBhEEQ=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TXAQ3QSm;
+	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788305077;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=3mrvoCwf3JhHo6/B0HvRbUVwX76oJvSOJSq8DmmzItY=;
+	b=Glx0KbU7hDkrwF0MuQQfL+2ie0cT8Wu755UW1MYnPq9He17NscD32SXVReljJIrFVFSvDY
+	6Rs9E14N8gAgVyatg75f77pa5v91ICx0ufHeY7a7DN3CawsiWTB4vr5s/HRZy1J0hQPfhR
+	IiJovTIy2QaYvZv3TUjRqeFjNeMUh7c=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 071F843D54;
-	Tue,  1 Sep 2026 23:24:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 374AC1F000E9;
-	Tue,  1 Sep 2026 23:24:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9D6AB43EDD;
+	Tue,  1 Sep 2026 23:24:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A611F000E9;
+	Tue,  1 Sep 2026 23:24:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788305067;
-	bh=0IfPqucy8DfnTKp/2gWMiMi8WWSj25F+64egVqUdKRg=;
-	h=From:To:Cc:Subject:Date;
-	b=C4gEmpXXqmYDM1Pm09UQVGKITgrhJdjZsiAnmp3HJa8cNs89U2PzZhLUasWcH1i8e
-	 iarqtP0CcSSnLhbKbZoobAandpBpJJjcIV6qQc1fYcapPBO3sY6L/uOWEUmzJjmQSm
-	 NjZVpT1WPZqplcg6HcbpAoJ0KF4vnb/A6+tifct6qKqpq71xCFoGRsFnRCi1Iqol+n
-	 jq3r5Iz1PqE3q/Sa/xZ3sIEY3QNidmiAh6LSQLTiI4GDrnWKjo6NJsTeBEpCFdRCBV
-	 PaSz4OFOkKT/xAojq2Nv+LutVg18X6/iNdXFnWK0dgVKR/3xK6wXXoYScYAkBGzKZK
-	 hFNNUhD22iu5A==
+	s=k20260515; t=1788305076;
+	bh=3mrvoCwf3JhHo6/B0HvRbUVwX76oJvSOJSq8DmmzItY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=TXAQ3QSmW1kL0/7w7FaPW8RnsDkCuqPXbtBoqB0y2WXus7vg1zrqEl/L0Q9l4bFNl
+	 ri6q7uhCpuIhvRBdIjis6rb2sE9cN1rdK//O9NnxouQgBFBkHYVcliV0NisEKwbKed
+	 O6H0SpjWaCY9ptsqg0RI9Hgkpm3K0n/9OjVK7PigCLKdp0HbR3EtbEjHziSrN9wFqb
+	 YahoOIrYqne51/guURoNXtmcDMcZ/7j++r1/CM3q8wHS+CU9JTsWkCrbH69xgLaWVq
+	 v5TROxmYjEv9+W9pIxioG92t0dslVeEDrNNUXZ4ibzKWFR2n1zTLfcWd3SUJpMVblx
+	 C25N/pdk72h3g==
 From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 To: akpm@linux-foundation.org,
 	linux-mm@kvack.org
@@ -85,22 +85,25 @@ Cc: axelrasmussen@google.com,
 	weixugc@google.com,
 	yuanchu@google.com,
 	zhangbo56@xiaomi.com,
-	"Barry Song (Xiaomi)" <baohua@kernel.org>
-Subject: [PATCH v3 0/7] mm/mglru: speed up inc_min_seq() and fix cold/hot inversions
-Date: Wed,  2 Sep 2026 07:24:14 +0800
-Message-Id: <20260901232421.40157-1-baohua@kernel.org>
+	"Barry Song (Xiaomi)" <baohua@kernel.org>,
+	Xueyuan Chen <xueyuan.chen21@gmail.com>,
+	Kunwu Chan <kunwu.chan@gmail.com>
+Subject: [PATCH v3 2/7] mm/mglru: batch update lrugen->nr_pages in inc_min_seq()
+Date: Wed,  2 Sep 2026 07:24:16 +0800
+Message-Id: <20260901232421.40157-3-baohua@kernel.org>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20260901232421.40157-1-baohua@kernel.org>
+References: <20260901232421.40157-1-baohua@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 7drg5mg19i1rbojngq5x94gpsjc4uccc
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 25C11C0004
 X-Rspam-User: 
-X-HE-Tag: 1788305068-165643
-X-HE-Meta: U2FsdGVkX1+ao5SddzJ5pYnvdPkgr5yS7ES9vLDH9EpFckRnWFlhygO4vejccen0xQFPLBH3Ne/9VfQJjzlMkimbK2wLChWKjKXnLymoRHyug8kxuzSGHHU2v7ZUjAujJg7HCDkxRhr73F8sRD//1yfm6eA/2NHgSYttfTsUjPQgLWxFa7DRBXQAHYUXu+z5OhpWbCWGOLrgEg9f+kSKGCq+IWsFE3bEvrqepS3KXTVotSihTdRe/P51Bwr27vVJvWOwAU7b2bQidqak7gvR8cisUlMzrT50a40LLysedoyy3cYP2H/daUe/4UG8vg4ZcoK5mmSYq/I2jDYhVHOH+jiNayLLCyveBJ851s7DvIyBowhovbM5UrK7f313UbvnYm1Y5KlEFL4eN98iN5CIzXEOLSa0bVSJfXo9GLhegBYvfafSwX2i3OFq3wwsECBmivFMJ5EdM84Cfm+NalNwFa4K2SflorObKU+6FOZlOsfQyQgFDcYF+8lVcqumty1YCr7p9gxYnbiIHikW8fazllPhBRt8tttGCs6M81SqN65g9T7nG/sFXgJfojWC0wvuE7iYoduDaxSLAp4lj+0ai7jpm7l/SszcUTKy5+sMGmU7rIKpSC1LUAWw03SKNKGNP0Ju75BaBuqIOjRae1cz9TSSbfXdJjZRrUD7JuKtdhaElUcxbIErKiCPUyYnV0la/T/TSqWMzh+ObbTBh3Ke7wJPYGgojhz13mrHjHOCh5JI/qq8Be5JFajGUqF/vD6P28Eou2t02AOROjNKhTw9241VSSrwO18NM49YljeU8g2xD80TEuZ1/hDrJvlCp7jvGdJIChOnc+zE6W3fevMpW7fBur8na+Ue8tWEEjhNcH9SZScuKmyXRzWsnL724coTvT9DGnfv1C6HSkZv/0Rhw1hVIXcnK8L4AEodPFM6q2+KHxBvVb0zpsFE/zbKWXDFCTmhcQmnmDZiCoh6+52
- eH0W0vav
- quJWaLgFleAV8Av/kjI6tLr21bxsdoZVrYakKtgZhdQr5/X0ySd3O357r2O2o693TymnGNxSJDgUnfzKQelbJjx8KMWEz55xHTN+G+DIIarhyJTFgKeuaYrzK8BMOOP52cxhMtWzLArWeA2RCcIOFTKjh2p+lIEA9J7Hr8sAlJ+QP6Jq+jbitwDeSFMINaQPV3HGAzPLBT2YlKO8bhU5Zb+sinOLWK8XBMaRqyGe45vTxngHvjNJCtcQE+jwRRpnry6LxBpLoH+hZlh6hJAD8RMYakAR16tYn6j3sVy7gql5cJiuiXyPi71bYH/XV0CMoREnTEnOPkNJ1E8azMYw5qG59y62+kJp3x2m23/tVi/x8uPyTl9yfl278gnjBKUv2FVYLcAcPUNIxjohmLoNV7+07BEJjnYiW1brx
+X-Stat-Signature: cbymgndg6yx4e3dk1bg8jbpa7xkckbod
+X-Rspamd-Queue-Id: 4C87D80002
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788305077-835864
+X-HE-Meta: U2FsdGVkX1/9i+UOwStkPAPTBhQIOva45GEI7H+9eL8iQVT0apwzfoNaOa6iw13Gp6a7t0KqegOjs4ptNb704Nj1beHc8P5brpZWrafp2KoLNOnSA5aW830ehQTUbHERnbDrQYsIigUJTVa4BrasH7Z4H3F1lafg7Dp65Wi+WlsRI1r6iRnwN1Y/NyswiIoQnN+f1oy5ctfPZpozVB+ADDLY6kK7VnNMyEYuftj2yJA0mhBr8B5t/t64p+0suFr1/5f3hn9wh7cpEc6ebV+VxdLvPgnoFcKGPb5+WlH/Q9LOrOVeVLWHaJ05ca31cbbAnBop468z07a3/l0S3ys3SaMghI4wOMpy/ue5+j8JoRg2jm1pOhmiKfWhpCrw3DW8HMUwK/jQQeRIkmI3/mf1vf3KZtb7vdgxzRAf/FMzl/mtZ4iGf76jRyXWjhxb0kggvq5Hler8dElxFhrkOCX9LwnYYgsle2IF3uNmgk4ou1CmjpJYgwWcimgvKy2+wELt4sBMYaYweiiMHo3CQOniCxx5ibhkEChrFAcfbSlSlU/RNI3K0V0ue7DabHiWer8/Nx3KIyeZeeqy2SPaH76sWGSGfiZMBOAAYiUGtFsUCaBJbNwGW9Mb4ZjxOXJPqLa6oWlyINwxV3/nfmPZZYxntf3HKZqS5qVzrd6Qdku0m9ONvoPenNtMhRCECQ0dTtOKYC4v8APIU2F3Fk98JZ+n3RX0ZyFXJH/H2ZzKM14nKFBpezH0sN0TpVtY5Hf9OHeRmxy0rSRuBsJqdUSX3KjAFLIs5xJtlHp/6x2wZ758aig/U7lC7L7TuFM5EFodJuXceByqP0DFaz4YsAtdfgKOIjreY8IFSgdtGp+ck5ExABaydFThuN5HnPBm0nMPrr/s+PxhkEeZk9OyYe8Cp0N6pWRczngUPGIewdylYM5rTGYgS73jU417PvInJdZ2cZ/EJq0ZgwPiiJpEAVWTUPD
+ zdpK63f8
+ LxxQCxlTDO5ClU8Rm8ox4VWhtIerf74I1NTqoosmOVzKSk5LL2FVdZd/1ZltUXJaeKR72MvtaLPYg6FElaJofEhWBSOVHL9yRXaYdnxy/f/t757oveazb9tpbPW4wmC1jxD4e6zAup3ikW55wfXsvTCWopXHoLptbWqiHrw2+fbb+mwBj9VaNMWPa5it04/2AqonYbL6O0wrxJ3mfoEDK9r2fiKMyr8Pw4vwYELKFLp0A7FZQ3Tcb30qdbjhhp4US29xRItCI8AM/sPCFMJUJyKyRTX5csDnzjRwbu5LIBg6AsyfNCy8bV2AzBJgPHbD1yBxxK+W/aTo71fL0yNevIRsFbzW9R8glPb6C1msABXqsu7Emsjiwcp4jc2KfG1516hDy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,285 +111,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an aging speedup series split out from the MGLRU swappiness
-series [1], with the inc_min_seq changes separated to make them
-easier to review.
+Currently, folio_inc_gen() updates lrugen->nr_pages for every folio
+as it advances generations. Instead, accumulate the size changes
+and update lrugen->nr_pages in a batch after scanning the entire
+oldest generation, or when the scan stops because remaining reaches
+zero.
 
-Currently, inc_min_seq() has two primary issues that affect both
-performance and folio hotness assessment:
+Since we only move folios from the oldest generation to the second
+oldest generation, the active/inactive state cannot change. We can
+therefore skip __lru_update_size().
 
-1. It processes each folio one by one, while many operations can be
-batched or skipped. For example, a batch of folios can be moved together
-from the oldest generation to the second-oldest generation, and the
-associated counting can also be done in batches.
+Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+Reviewed-by: Lian Wang <lianux.mm@gmail.com>
+Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
+---
+ mm/vmscan.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-2. It may cause potential cold/hot inversion by placing promoted folios
-(which have been scanned and found to have young PTEs) behind
-non-promoted folios. A similar inversion can also occur among
-non-promoted folios, as tail folios from the oldest generation are
-placed before head folios when moving them to the second-oldest
-generation.
-
-This series tries to batch operations as much as possible and fix the
-potential cold/hot inversion by keeping promoted folios ahead of
-non-promoted folios, while also preserving the order of non-promoted
-folios when moving them from the oldest generation to the second-oldest
-generation.
-
-Minor issue: inc_min_seq() also counts protected folios
-improperly, as promoted folios should be skipped, as in
-sort_folio().
-
-We need a stable workload with a stable number of folios to measure
-aging and evaluate the speedup in inc_min_seq(). So I asked ChatGPT
-to generate the microbenchmark below. It ages an LRU vec containing
-512 MB of memory 100 times:
-
- #define _GNU_SOURCE
-
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
- #include <stdint.h>
- #include <unistd.h>
- #include <fcntl.h>
- #include <errno.h>
- #include <time.h>
- #include <sys/mman.h>
-
- #define SIZE		(512UL * 1024 * 1024)
- #define LRU_GEN		"/sys/kernel/debug/lru_gen"
- #define TARGET_CGROUP	"/system.slice/agetest.scope"
- #define START_GEN	3
- #define END_GEN	103
-
- static long long nsec_diff(const struct timespec *start,
- 			   const struct timespec *end)
- {
- 	return (end->tv_sec - start->tv_sec) * 1000000000LL +
- 	       (end->tv_nsec - start->tv_nsec);
- }
-
- static int find_memcg_id(void)
- {
- 	FILE *fp;
- 	char line[4096];
- 	int memcg_id;
-
- 	fp = fopen(LRU_GEN, "r");
- 	if (!fp) {
- 		perror("fopen lru_gen");
- 		return -1;
- 	}
-
- 	while (fgets(line, sizeof(line), fp)) {
- 		char *p;
-
- 		if (strncmp(line, "memcg ", 6))
- 			continue;
-
- 		p = line + 6;
-
- 		if (sscanf(p, "%d", &memcg_id) != 1)
- 			continue;
-
- 		/*
- 		 * The memcg path follows the numeric ID.
- 		 */
- 		p = strchr(p, ' ');
- 		if (!p)
- 			continue;
-
- 		if (strstr(p, TARGET_CGROUP)) {
- 			fclose(fp);
- 			return memcg_id;
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 54bce2f608ef..27494505cecc 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -3918,6 +3918,7 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
+ 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+ 	int hist = lru_hist_from_seq(lrugen->min_seq[type]);
+ 	int new_gen, old_gen = lru_gen_from_seq(lrugen->min_seq[type]);
++	int target_gen = (old_gen + 1) % MAX_NR_GENS;
+ 
+ 	/* For file type, skip the check if swappiness is anon only */
+ 	if (type && (swappiness == SWAPPINESS_ANON_ONLY))
+@@ -3927,35 +3928,47 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
+ 	if (!type && !swappiness)
+ 		goto done;
+ 
++	VM_WARN_ON_ONCE(get_nr_gens(lruvec, type) != MAX_NR_GENS);
++	VM_WARN_ON_ONCE(lru_gen_is_active(lruvec, old_gen) !=
++			lru_gen_is_active(lruvec, target_gen));
+ 	/* prevent cold/hot inversion if the type is evictable */
+ 	for (zone = 0; zone < MAX_NR_ZONES; zone++) {
+ 		struct list_head *head = &lrugen->folios[old_gen][type][zone];
++		long delta = 0;
+ 
+ 		while (!list_empty(head)) {
+ 			struct folio *folio = lru_to_folio(head);
++			long nr_pages = folio_nr_pages(folio);
+ 			int refs = folio_lru_refs(folio);
+ 			bool workingset = folio_test_workingset(folio);
++			bool gen_increased;
+ 
+ 			VM_WARN_ON_ONCE_FOLIO(folio_test_unevictable(folio), folio);
+ 			VM_WARN_ON_ONCE_FOLIO(folio_test_active(folio), folio);
+ 			VM_WARN_ON_ONCE_FOLIO(folio_is_file_lru(folio) != type, folio);
+ 			VM_WARN_ON_ONCE_FOLIO(folio_zonenum(folio) != zone, folio);
+ 
+-			new_gen = folio_inc_gen(lruvec, folio);
++			new_gen = __folio_inc_gen(folio, old_gen, &gen_increased);
+ 			list_move_tail(&folio->lru, &lrugen->folios[new_gen][type][zone]);
+-
++			if (gen_increased)
++				delta += nr_pages;
+ 			/* don't count the workingset being lazily promoted */
+ 			if (refs + workingset != BIT(LRU_REFS_WIDTH) + 1) {
+ 				int tier = lru_tier_from_refs(refs, workingset);
+-				int delta = folio_nr_pages(folio);
+ 
+ 				WRITE_ONCE(lrugen->protected[hist][type][tier],
+-					   lrugen->protected[hist][type][tier] + delta);
++					   lrugen->protected[hist][type][tier] + nr_pages);
+ 			}
+ 
+ 			if (!--remaining)
+-				return false;
++				break;
  		}
++		WRITE_ONCE(lrugen->nr_pages[old_gen][type][zone],
++			   lrugen->nr_pages[old_gen][type][zone] - delta);
++		WRITE_ONCE(lrugen->nr_pages[target_gen][type][zone],
++			   lrugen->nr_pages[target_gen][type][zone] + delta);
++		if (!remaining)
++			return false;
  	}
-
- 	fclose(fp);
-
- 	fprintf(stderr, "Cannot find %s\n", TARGET_CGROUP);
- 	return -1;
- }
-
- int main(void)
- {
- 	void *addr;
- 	int memcg_id;
- 	int fd;
- 	long long total_ns = 0;
-
- 	/*
- 	 * mmap 512 MB and touch every page.
- 	 */
- 	addr = mmap(NULL, SIZE, PROT_READ | PROT_WRITE,
- 		    MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
- 	if (addr == MAP_FAILED) {
- 		perror("mmap");
- 		return 1;
- 	}
-
- 	memset(addr, 0x55, SIZE);
-
- 	printf("mmap: %p, size: %lu MB\n",
- 	       addr, SIZE / 1024 / 1024);
-
- 	/*
- 	 * Find the memcg ID automatically.
- 	 */
- 	memcg_id = find_memcg_id();
- 	if (memcg_id < 0)
- 		return 1;
-
- 	printf("memcg: %d (%s)\n", memcg_id, TARGET_CGROUP);
- 	printf("aging generation %d -> %d\n",
- 	       START_GEN, END_GEN);
-
- 	fd = open(LRU_GEN, O_WRONLY);
- 	if (fd < 0) {
- 		perror("open lru_gen");
- 		return 1;
- 	}
-
- 	for (int gen = START_GEN; gen <= END_GEN; gen++) {
- 		char buf[128];
- 		int len;
- 		struct timespec start, end;
- 		long long ns;
-
- 		len = snprintf(buf, sizeof(buf),
- 			       "+ %d 0 %d\n", memcg_id, gen);
-
- 		clock_gettime(CLOCK_MONOTONIC, &start);
-
- 		if (write(fd, buf, len) != len) {
- 			perror("write lru_gen");
- 			close(fd);
- 			return 1;
- 		}
-
- 		clock_gettime(CLOCK_MONOTONIC, &end);
-
- 		ns = nsec_diff(&start, &end);
- 		total_ns += ns;
-
- 		printf("gen %3d: %8.3f ms\n",
- 		       gen, ns / 1000000.0);
- 		fflush(stdout);
- 	}
-
- 	close(fd);
-
- 	printf("\nTotal:   %.3f ms\n",
- 	       total_ns / 1000000.0);
- 	printf("Average: %.3f ms\n",
- 	       total_ns / (double)(END_GEN - START_GEN + 1) /
- 	       1000000.0);
-
- 	while (1)
- 		sleep(1);
-
- 	return 0;
- }
-
-Run the above microbenchmark with:
-systemd-run --scope --unit=agetest -p MemoryMax=1024M ./agetest
-
-I’m seeing a significant speedup in inc_min_seq() on my x86 PC:
-
-W/o patch:
-
-Running scope as unit: agetest.scope
-mmap: 0x72c1b5a00000, size: 512 MB
-memcg: 12673 (/system.slice/agetest.scope)
-aging generation 3 -> 103
-gen   3:    7.433 ms
-gen   4:    0.949 ms
-gen   5:    2.535 ms
-gen   6:    5.043 ms
-gen   7:    5.041 ms
-gen   8:    5.027 ms
-...
-gen 100:    5.035 ms
-gen 101:    5.011 ms
-gen 102:    5.029 ms
-gen 103:    5.056 ms
-
-Total:   503.946 ms
-Average: 4.990 ms
-
-W/ patch:
-
-Running scope as unit: agetest.scope
-mmap: 0x775ec5200000, size: 512 MB
-memcg: 12717 (/system.slice/agetest.scope)
-aging generation 3 -> 103
-gen   3:    7.558 ms
-gen   4:    0.916 ms
-gen   5:    2.277 ms
-gen   6:    2.328 ms
-…
-gen 100:    2.303 ms
-gen 101:    2.297 ms
-gen 102:    2.305 ms
-gen 103:    2.312 ms
-
-Total:   236.635 ms
-Average: 2.343 ms
-
-The average aging time drops from 4.990 ms to 2.343 ms!
-
-Thanks, Xueyuan, for testing this on ARM[2]. It actually shows an even
-larger improvement.
-Xueyuan tested this series on his arm64 machine (24 cores, 4K base pages)
-and reproduced the improvement:
-
-THP=never (PTE):
-  baseline: 7.644 ms
-  patched:  2.964 ms (-61.2%)
-
-THP=always (PMD):
-  baseline: 0.0373 ms
-  patched:  0.0292 ms (-21.8%)
-
-[1] https://lore.kernel.org/linux-mm/20260812121658.69965-1-baohua@kernel.org/
-[2] https://lore.kernel.org/linux-mm/20260827035416.3012015-1-xueyuan.chen21@gmail.com/
-
--v3:
- * Collect tags from Ridong, Lian and Kunwu, thanks!
- * Add some comments as Ridong's suggestion in "enhance cold/hot
-   inversion handling", thanks!
-
--v2:
-  * Collect tags from Kairui, Baoquan, and Xueyuan, thanks!
-  * Split `__folio_inc_gen()` into a separate patch and add
-    `VM_WARN_ON` checks for the generation and active state, per
-    Baoquan and Kairui, thanks!
-  * Make `delta` a `long` instead of `unsigned long`, per Lian Wang,
-    thanks!
-  * Fix checkpatch issues by converting macros to `static inline`
-    functions, per Kairui, thanks!
-  * Drop the batched protected update since it doesn't show a
-    significant performance improvement, following Baoquan's comments.
-  https://lore.kernel.org/linux-mm/20260827234704.63163-1-baohua@kernel.org/
-
--v1:
-  https://lore.kernel.org/linux-mm/20260821102538.22642-1-baohua@kernel.org/
-
-Barry Song (Xiaomi) (7):
-  mm/mglru: separate folio generation update from LRU accounting
-  mm/mglru: batch update lrugen->nr_pages in inc_min_seq()
-  mm/mglru: enhance cold/hot inversion handling in inc_min_seq()
-  mm/mglru: exclude folios promoted by aging from protected in
-    inc_min_seq()
-  mm/mglru: make LRU folio prefetch helper an inline function
-  mm/mglru: move folios from oldest gen to second-oldest gen from head
-    to tail
-  mm/mglru: batch move folios to the second-oldest gen's LRU
-
- mm/vmscan.c | 136 ++++++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 106 insertions(+), 30 deletions(-)
-
+ done:
+ 	reset_ctrl_pos(lruvec, type, true);
 -- 
 2.34.1
 
