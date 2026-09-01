@@ -4,118 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84665C624D0
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 18:21:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3A21C61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 18:26:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9192C6B0095; Tue,  1 Sep 2026 14:21:25 -0400 (EDT)
+	id 6B3586B008A; Tue,  1 Sep 2026 14:26:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F1566B0096; Tue,  1 Sep 2026 14:21:25 -0400 (EDT)
+	id 68B876B0092; Tue,  1 Sep 2026 14:26:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BA686B0098; Tue,  1 Sep 2026 14:21:25 -0400 (EDT)
+	id 582EF6B0098; Tue,  1 Sep 2026 14:26:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 49B306B0095
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:21:25 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B0761C04CB
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:21:24 +0000 (UTC)
-X-FDA: 85166010888.14.DBB3B37
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	by imf17.hostedemail.com (Postfix) with ESMTP id CFBC540003
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:21:22 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Gr7KVnad;
-	spf=pass (imf17.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DD2D6B008A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:26:50 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7EA8A1A04D9
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:26:49 +0000 (UTC)
+X-FDA: 85166024538.27.3ADB228
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C8F4220002
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:26:47 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=lu4oJEvH;
+	spf=pass (imf13.hostedemail.com: domain of 35RiXagYKCM4Cyu73w08805y.w86527EH-664Fuw4.8B0@flex--seanjc.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=35RiXagYKCM4Cyu73w08805y.w86527EH-664Fuw4.8B0@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788287207;
+	b=KSILX12yJr5fxmR0PKdQazYaRfvl1wnJYGegAazJ517gPvuy0rw8A4EaHklIL0IwYYKiz8
+	NrDhVJ3f1flW7bbTwsulfZLQaR6jCtvf9vZLT0XwHXe2bdVsn9KMQd9rtrd7oo/xMYghgV
+	dmsU6HUm1iIH9DNTMW6HasnJDvRu/dc=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=lu4oJEvH;
+	spf=pass (imf13.hostedemail.com: domain of 35RiXagYKCM4Cyu73w08805y.w86527EH-664Fuw4.8B0@flex--seanjc.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=35RiXagYKCM4Cyu73w08805y.w86527EH-664Fuw4.8B0@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788286882;
+	s=arc-20220608; t=1788287207;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zwtKl7Zg7TrJlKVsQMpgHVHuRB/fv/tJD5LyzuV86W4=;
-	b=jMCmLoAZMuFmbqX2tUg/RcjUisgrvo72gEzgdUV1r9wum4IVPOmdeZ1B7h5hzwWEfOyJOa
-	FfgxN2J/iCU1ZaDq2xR/kNyrLqMdcVphntflJcBeTEz73PMC56P+cqh8B3e1moL82m6F3T
-	hN49/rnVPj3YMjrPPOAHo6GnYDxoJLw=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Gr7KVnad;
-	spf=pass (imf17.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788286882;
-	b=fu+TNMaq1itFqTM227AynhptPiyWEjBVrvkFJQnWqTcLYizZkfFnUJnnYAP7zdBnfg5v8x
-	NKYnKDp1M0a592I9358y/7ZTlHfRtxZ4c+NGNLdw3wx6cpNI9ckuphNGV1dExitODiiOOt
-	bVGCq7dchJjEbefCtKCtZUUh7kplKcQ=
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cc1b838f9b6so193833a12.3
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 11:21:22 -0700 (PDT)
+	bh=5v8dwO4qIccjpXs9ZdhBw1lluA5t2BNdQSYlylga9bQ=;
+	b=3+LIgcqfF4QTxLLSPWqT9ddyxFedpbIqceRfoa8LOL1V763YEupO3d9RFqGubXJLe4uI9b
+	Qctg+vvX95hqEFawbuKnSc36MxeE3U1ThzUpWcSDz5Cger0KVBFUf0JrprTCQrqMyCbUuT
+	XoVxvE0uGu2H+cMncro7STqQ2WUtT24=
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cbb92868263so150896a12.2
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 11:26:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788286882; x=1788891682; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=zwtKl7Zg7TrJlKVsQMpgHVHuRB/fv/tJD5LyzuV86W4=;
-        b=Gr7KVnadE+IVWQfA8BXKZyZznP7sr/k10Yqj2iMe20QMtyyzb7mjYTXmkHPQZrHB85
-         7zn2Q2pqYlhfViVHTM8yVl0rv1KZxn68/M7uNinQ+k3KwlyK5+TO+TUrPaWhTnp2ke5+
-         GI/47unedqQ24SEtxPHV8zMxTTKSnQrIfWKopkwcYlpz5gfCCcMdQS92CGyAs76KPaEf
-         oeEG+AGeYXV3SE9e2x4DcCt8d3ZCX3a+7XnEE4c9/Cr021mj/d/SpezQyB1KMXODenGv
-         0/AG2qmUklsN0Bz+8tb1eURd3kf1ShrZzMBhef5jjFQDdD9GiXbOGOSvZwmQq2OlU20L
-         Q7CQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788286882; x=1788891682;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1788287207; x=1788892007; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=zwtKl7Zg7TrJlKVsQMpgHVHuRB/fv/tJD5LyzuV86W4=;
-        b=cpEe7IBIJNR3nq00q4cCmwr+PW5v+VyYcJ7im2dK79ay8I6WbMCL7uaaTVMpL9TGAe
-         O5KEO49zaa8AB+WnykpbpFRgHJ7P7nXWcp70xZiRLXFCPEunDfuC87RlRmuO8BzCJeXA
-         clg8PdxIcdmIWGxNXP94CYS7ReNk+LQsrtQL0LpMM6DwIb/I5LDPWx2SztKBQD3eWoPO
-         mUpIKxnQvTisAQfA8zThq16ettiGFzlDkf1bC3ZqMNd+HRxtza6iQcSXh2CSWuDxA010
-         /LGxVGsEa9v1LjGlrkEHQoEsSIHJtBZJyKicNxMaCwbuRME366YtLvIYOJ50UEcdBFQp
-         G3VQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy03SFzihl4CD5Nabe1S+1f5AETzZ5OvpZprbR9LGAvW6szvUWmj0dHd8UApGXJvSm4XEUmXSjWCQ==@kvack.org
-X-Gm-Message-State: AFuF++nxlsQlhfW4hi2dD5xgH2mpCRvxodslzeYU8Ox80G01EBX9n9TP
-	H4DW7yjOxrfowfFtv7Z1jQ7sV1Mrt4V4AeBIe4VFou3z/yIKqbpYWYO1
-X-Gm-Gg: AYBFou0gWpDuTcSeyHrrbFjBShydoe3OPCH6bYs9hCL1dgY+CLjKze5lIS8paoqplr0
-	xpiulkmSspEfm51Bi2GEboFDTWmc3gi6It1IwiaOfv/NrhTVkUukPoknJ7E/+776LDGYuDdCZXC
-	luBE55CMriPBauG3sr56PgE64Pl2ryIMip6wchtb/uZvpMJXqJEOa4u7QxsbqIkuWEoRc9UYj49
-	sDZy9Rx8rmNrR1LXl3lbZA45CHOrO2qydFIkdLqjAcqq3evmwcvTBO3VGJPaokGmIqI9e2DEHL/
-	QZRCdewu8zY9SFaUV8eQC18onN8NofOmvjjbvd/zK+LlwRMK/Nxj+GBO0yfAYNwDhjNK6o8QgGA
-	m8qKmxeLwm6VzoIkum6zaZ1aMi+p7HmgoHVawDX4FeZK1VJQ2XyInVF5499O56sICrtle4iwOAm
-	IMYvxlNV0VQcIF2ERcHW8IaM+blzggJJEzWEXh0pYbowOr/Q2YpIjSvyIzZJ90d4k2HCJpcilza
-	PxjPaKpz7n0/+AS/PXhyXCh
-X-Received: by 2002:a17:90b:1b0d:b0:396:b918:c2a with SMTP id 98e67ed59e1d1-39907e0f7ccmr14889557a91.12.1788286881524;
-        Tue, 01 Sep 2026 11:21:21 -0700 (PDT)
-Received: from KASONG-MC4 ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39ae0f28b19sm946573a91.6.2026.09.01.11.21.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 11:21:20 -0700 (PDT)
-Date: Wed, 2 Sep 2026 02:21:14 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: Ehab Ababneh <ehab.ababneh@intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	Yu Zhao <yuzhao@google.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH] mm/mglru: dynamically protect readahead fault folios
- under refault pressure
-Message-ID: <apcVhWzEwkwHYjB1@KASONG-MC4>
-References: <20260901180704.168106-1-ehab.ababneh@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260901180704.168106-1-ehab.ababneh@intel.com>
-X-Stat-Signature: y9mrqxhynx81sfdq9xcbw3nexmh58t54
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: CFBC540003
+        bh=5v8dwO4qIccjpXs9ZdhBw1lluA5t2BNdQSYlylga9bQ=;
+        b=lu4oJEvHkdt6oecYn67M6nuerlnHXDKwqCHcuqq9JrT8LgRvqWuqTTE5heBxb0oWYy
+         ZW5Zjk0gtzuKXK59r+VDqJq+ptl8v+DeA0zbZY+c2B4p3nnIBJuprmXH4E9wleRnraxp
+         ppy6WprpG1CQU0AxM2dc32CnVAUiucVq7Wz8rmiMYqBNdlUEznUCVGrafmvB98eJ5B/I
+         t+CSwSyP4B+8GZcdhh3LDpcT9NbkZ/LzXGuPU34vIE1LG3YYox1d1XS6CmuCRXSwt2nr
+         Lqq1uknHIHR94VqY4+Mkt30XF0aoqaxBJleedBr38NTj6I1jbi7e0ema+JFxCgJkuPKY
+         SElg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788287207; x=1788892007;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5v8dwO4qIccjpXs9ZdhBw1lluA5t2BNdQSYlylga9bQ=;
+        b=NXtWK8MVm0D7RKN96J3iizek7FffoDW9ZTK0CNVMutjYZ65m0+atIfHoopXcBhS4XV
+         MmSsJOxCBEhNVViGfmCYW4KM9jwc6f4bIpn00MON4snaOa03uqwZ8Q07xFfntzB4bDFs
+         K2K7r17nFAmlRADwrwO173Z8pUakZLLZ4GtxQ/WB2GJHyCuZAoFilWXLuJ1BN+3B4uxB
+         AW5lSasUKz18fojyammCfJuK9xaFGrrYxwczGYaRpjkQB4RNnAtwel43JYQO6inMlHJc
+         y5vqKujdATp1F5+xBRoalVfVRG6ugXk+ygxjBu4k59J5lnZB4EXe+9p9CKjSIoXC/+Gj
+         D/mA==
+X-Forwarded-Encrypted: i=1; AHgh+RqlfoBiGkj1Biu6Ho7B8q/UR19iH2Gg5gA8TsLJZdRW1LUhZqsRp2xMt37kjhccjNRIUCrA8pt1RA==@kvack.org
+X-Gm-Message-State: AFuF++n31vDjONFS8EaQaCgSk7gdnp0LkfWR+p8XIX0SfXCHPSqRHoGZ
+	Q7D3uJdBNd24Ue4DHojVXqPW6lTDJ/yZlSv8hvcPWVqiUlNMWg680Zdt3jLsi5PtC+RV98s/ZSr
+	6nNpzaw==
+X-Received: from pgbd18-n1.prod.google.com ([2002:a05:6a02:64d2:10b0:cc3:28ba:e8b1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7284:b0:3d0:cc29:ff63
+ with SMTP id adf61e73a8af0-3d7ae4ed97emr13763648637.12.1788287205983; Tue, 01
+ Sep 2026 11:26:45 -0700 (PDT)
+Date: Tue, 1 Sep 2026 11:26:45 -0700
+In-Reply-To: <CA+EHjTzALzghuG5J-LFuG5pXJ4WgEfrMHgwkMHnq1U-D6yS7Pg@mail.gmail.com>
+Mime-Version: 1.0
+References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
+ <20260830-gmem-inplace-conversion-v12-23-85e5fd25252a@google.com> <CA+EHjTzALzghuG5J-LFuG5pXJ4WgEfrMHgwkMHnq1U-D6yS7Pg@mail.gmail.com>
+Message-ID: <apcY5b2o5k04XffH@google.com>
+Subject: Re: [PATCH v12 23/45] KVM: Let userspace disable per-VM mem
+ attributes, enable per-gmem attributes
+From: Sean Christopherson <seanjc@google.com>
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev, 
+	Xiaoyao Li <xiaoyao.li@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C8F4220002
+X-Stat-Signature: 3daniqa5aujk9hr7rj3tifswrbrpncgz
 X-Rspam-User: 
-X-HE-Tag: 1788286882-185167
-X-HE-Meta: U2FsdGVkX191t6Gt06ivPwluGVNAKSFpX3f3CPINd3WHrb4o8pgGx8eQkZuzsV5/S+5/VuHDnxYL7Gm7uDGM2ZZjmsvjYqGqrBbulhIHRMoMUePN8QdPXqDfIHmFkfApUHjkUtNKnIBizL0eJ7WNXXWUHOpO5OXLILYVMMhU+aYChyhO5CjGGil8dpZ6sEuYRPwVcDNXFppPoU4JQEktBLY7pzIBNe2u1is1HOCk7PVTbTnTycihYjrD9Rfs+t0PmaNvlK2R2Olo81L/M7sIv4iWeOYC9M5XUarFg1VdlhzajzbGDchhFaAMItS1ktZt8Wx+Qb1HWyP2DBDx5fRJYipcnj56Dz5QREmr7zDYSbSipq2bfKWwNotPwwaCdYVuutXp61ag2lXHJ3OYbI2ya8iPK8Y9hkyDEFPE7LxQ+dnXuIfHCgOtPM00g/8+oN/ZuJ3T/ggqnu5Bv+X1JFq5UZrVf933IOiHcuQFjaAufom8c8W5qc+N4aDR95jRAEzEsKHVhyRYYCEE+BR4mnTw05mFrBA9DQo2iujvI0a4ttKxMbCBRDKBppEAfNarFXbV6noef6weHXxZZgSNuEmb8khrmF5NQZcf6gYRV8R2b6x4LeP23QM/HDXuakaIdAn97NUHo3eht5u1VAxTx6EflvgDjV4KB7yJG595k3t40Udrxgk1eIFP0zDBlFBpDSKfxQzDP3qwEZfeXTIVONj+D/gtbYAQIAkHQcKUDZ7eAPlG7lcPVNR6aRbYW/CZU2BGRjkeaUElSjp3vb67AAv2roujkWX0UNuRakU/7t7S0yQsEVub+JL83ViNC+iirHbg2MTvFWhmPN+poDpSi5rQ+FXeSY2pdwmpRAgQJ0d8lpr8xaMr4ll8Vh5bvZbB+2/k9nOWsK9UW+6oRcgfk+WJo9RchKOU1dbSqikgkufLSyMFYEc6rVP90LnXnimwjZnLquxUrswuEo4ffrdrjIL
- uhMdzFXN
- yYQ/nerkDCTosDS8KhTNGhhfWRI+3Nb5XlVhskzT9mn58Nml9LrfOciySVbaMtp+JxqjsH4Nzk4KDf5wGkDw4qXqkqaJ54s5xMC2xfvnpf4jTN+KnybGnNtX9Nh6JvKY/TdW12R2EGoO//6oj8U8l3mi8VEibprGkfm6GxWRyEYGcwfPWKcrbz3rFeLU1hASmCGbLuAHICg6soGRp45U/5/xBf8zThy8JdOwdsv+aV/Oupv4wx7k5VSxOmb3UyNHcjzNzgmK9s/rH7A0UZ0/E6e3hyr/Y5uv/9LnzBHE/kEyPJWavTkpIjxzF8oLDnfvYkNMH2PDeuJPKwG0ucAFhttFZEn5jbypvEzkt7frFHudZicoXnKY1vI8YDKmZSh6TfzhgWqLEr4uX5F3+hCXVrF3ccbvQDw5QPrdJ/pKruDm9Iwq5ysj6VFiIb7t9VK6771GxZbhexG3BIeh66h2hT+7f2qKGZYO/Af3y0XFzmE1yDtrtb3eLVZqpGsB4OX62OmHoTxttVj0+40CWcU0Bio2Gmw==
+X-HE-Tag: 1788287207-56856
+X-HE-Meta: U2FsdGVkX1/WHJfGfQzOsQ/6IBTCtY5QHTlpbzFMfYdU3tPs3MgP+LaOCajlJVQnJxwfRjz1kPYcoredO8KD02+HDV6waGvOMd83ziBn65VUzzYxLWylDfDzQoD6ky9sX75hfIRyVpMzWw8aD/4zz35nwSndox/vVXeFTh0AdJSDYF68CY1phJu23/OVltbkB58o/VLd0D0sNynbVCJMX+q/GYD7ExKe+H5OYpBGr9NMe3j8LhZArGKXfQ8qGxwvoPOX6Xcs8lTO7h13mBUHYg6nUQwrTu4s49usVFOCJ37gqP5N7yN6Z8oAEmR9ghgkjvjWd6VYYO6lF2N/M+nL7IAm5guYVfygkTMcMh0vp81nulFkXJljPUsIwKvt/QLZR/6QVDRPTBxr4edjlCXZ/Gxx1KqOMfaRXkIxdAqw0l5LouLxLyJ0L+uHyrPsNK5OJoV33NlJXILA5xJerTu9wbWkpZYAUoi+d+fjAAY50YRC2napsClI6HIehPBfwJYJND79QkxMlPuSsJB85q5/o6oUHHCGdebzKFZRi5vXwkUxXNk2TDIN1ryzs1BIQtr20krBr6N2MVaFG7oDv+tSozFGmxQhLgPbbv/0mJfZRiQS7j2snE9g9bEz7C3FOrrpaFLqrpeLW/W1UckFNRDYcuXjRiQpUwItMq64J5bKeDDtKwFMN9Ozctu5Xvej47wmIXEqcUHS/WGoNTCpOFXymkadggjub+HHVZPTqE5I87VPLG9mwYrRpuIu4nISidQkVV5piUG9jbjGF6swiYW/bqMKuSsNyXqBqnpeilcPKRERiZQVIBtafVbdWhYK3lBzaT3+pRGaeoV+jIBVwAXvU4BhrUE0plh2Gs6oUd7t9+7DTp9zld+KwHY16v/2u0P9YR/6PWKs8HLmyFCql8BLM6o5cxA0q4Ffd7CCC295n1gvNZK9v0TKqwrQaIWDoO0mSFx1Kqoimm0GYXbc7Me
+ dTinB1Qv
+ F1w8ZTI8ZMHrMHMzNxEWeT5ZU2Ey2n8X6lT4CUCvLoxTYaLdRdPoAZENHPs+jgeoQIjPADb8Ifi7y05Cbw6RvWk1rt/FvbHs+5VwOeP/XPL8WrTaPnnkh9Sc66PAcceIa5x3rBMGrKZtzXDcIGw7F3qMAtG7HNs3ii4U1oUZOl7jI5izfv3AOfL1KDkYQfIpQZqT4QgD60wu6/il+CoRsemanei23LkixNs2bEyBtlxyNZ7u1WD0vKACqtAnybhLQaeRsvKOOtJ0bpf1Kse+0ZGmL7ulHsVyaYYQMNSkRcuan7IyEkIgmceDdkcwytfF5msvH1kycGZoVCYjrZqqILenuEu4LfxjfRiyiCb5gbELFbWapWU0G1XCLOTGx1lXuueZaCmz1JCDgdJFH8HxB04QZZyeGf766aRyqA5oaOY7+yJgbZsPcT4KeoSip5qCU3p7Q+vMnWzPICLHjSVTOx+h9kmtDEvjHFJaAgumRGIZ2rrJEp+6ZJranCQAVCLo9Or6FOnrDbniri41oOb2ezcLtvljKn/RQo0whWiDsB8TE9X2kOfhGKQkZm/aUrOhgwlXFDT7xFj1eQpBeJ4pVeX4gPmDHHYW0DOCuihBvOFDZx0GNiDPBBEmxn789uyWQoatVG+gAXfik/As=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,171 +138,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 01, 2026 at 11:06:43AM +0800, Ehab Ababneh wrote:
-> Commit 6cbdd9726fb5 ("mm/mglru: use folio_mark_accessed to replace
-> folio_set_active") introduced a regression for workloads that rely on
-> readahead to keep sequential file access efficient.
+On Tue, Sep 01, 2026, Fuad Tabba wrote:
+> Hi Sean, Ackerley,
 > 
-> The problem is that MGLRU can place fault-path file folios in older
-> generations, so memory pressure can reclaim readahead folios before the
-> workload touches them. In our Cassandra read benchmark, this raised p99
-> latency to about 9.2-9.5 ms and cut throughput to roughly 41.8k-43.6k
-> op/s; the revert restored the workload to about 5.5-5.6 ms and
-> 51.9k-53.1k op/s.
+> On Mon, 31 Aug 2026 at 01:25, Ackerley Tng via B4 Relay
+> <devnull+ackerleytng.google.com@kernel.org> wrote:
+> ...
+> > +       kvm.gmem_in_place_conversion=
+> > +                       [KVM] Controls whether KVM enables in-place conversion
+> > +                       support for guest_memfd and tracks the private/shared
+> > +                       state of memory per guest_memfd instead of per VM.
+> > +
+> > +                       If enabled, KVM enables the KVM_SET_MEMORY_ATTRIBUTES2
+> > +                       ioctl on guest_memfd file descriptors and disables the
+> > +                       legacy VM-scoped KVM_SET_MEMORY_ATTRIBUTES ioctl for
+> > +                       private memory state tracking. Only the
+> > +                       KVM_MEMORY_ATTRIBUTE_PRIVATE attribute moves to
+> > +                       per-guest_memfd tracking; other attributes remain
+> > +                       per-VM.
+> > +
+> > +                       This parameter toggles KVM's in-place conversion
+> > +                       capability support. Whether a VMM uses separate backends
+> > +                       or out-of-place memory management is determined by
+> > +                       userspace VMM design.
+> > +
+> > +                       Note, this parameter is only available when
+> > +                       CONFIG_KVM_VM_MEMORY_ATTRIBUTES=y. When
+> > +                       CONFIG_KVM_VM_MEMORY_ATTRIBUTES is not set, in-place
+> > +                       conversion is unconditionally enabled.
+> > +
+> > +                       Default is Y (on).
 > 
-> Readahead is important for sequential I/O and mmap scans, but it should
-> not be retained when the workload does not benefit from it. The goal is
-> to keep the optimization without keeping readahead pages alive forever.
-> 
-> This patch provides a middle ground: keep the original behavior by
-> default, but temporarily protect fault-path file folios when repeated
-> file refaults show that readahead is actually helping.
-> 
-> The mechanism is dynamic and self-tuning:
-> 
-> - add a per-lruvec readahead/refault credit
-> - accumulate credit on file refaults in the MGLRU refault path
-> - consume credit in folio_add_lru() for fault-path file folios
-> - keep the folio active while credit is available, and otherwise let the
->   original behavior stand
-> - decay/reset the credit as generations advance and when an lruvec is
->   initialized
-> 
-> This means we only protect fault-path file folios when refault pressure
-> shows that the workload is actively benefiting from readahead. If the
-> workload does not need that protection, the original optimization
-> remains intact and we do not keep readahead pages around unnecessarily.
-> 
-> Benchmark results for the Cassandra read workload
-> (4 nodes, 720s, 100 readers):
-> 
-> - with commit 6cbdd9726fb5 ("mm/mglru: use folio_mark_accessed to
->   replace folio_set_active"):
->   p99 ~9.2-9.5 ms, throughput ~41.8k-43.6k op/s
-> - with revert of commit 6cbdd9726fb5 ("mm/mglru: use folio_mark_accessed to
->   replace folio_set_active"):
->   p99 ~5.5-5.6 ms, throughput ~51.9k-53.1k op/s
-> - with this fix: p99 ~5.8 ms, throughput ~51.9k-52.7k op/s
+> The parameter is only settable when CONFIG_KVM_VM_MEMORY_ATTRIBUTES=y, and
+> in that config gmem_in_place_conversion initialises to
+> !IS_ENABLED(CONFIG_KVM_VM_MEMORY_ATTRIBUTES), i.e. N, not Y. Is the doc line
+> wrong, or is N-by-default not what was intended here?
 
-Hello Ehab,
+The doc is wrong.  The intent is to maintain backwards compatibility with existing
+deployments if KVM_VM_MEMORY_ATTRIBUTES=y.
 
-We ran into the same issue on our side too. I hesitated to report or fix
-that as I'm working on MGLRU-FG which fixed the problem on my side:
-
-https://lore.kernel.org/linux-mm/20260804-mglru-fg-v1-0-4d8dad39dad6@tencent.com/
-
-I especially mentioned it, see the parts after:
-"recent change in lru_gen_folio_seq that bumps new folios with refs == 1"
-
-Latest version still being tested which you can use directly:
-https://github.com/ryncsn/linux/commits/b4/mglru-fg-v1.8/
-
-Do you mind have a look of that as well? I think in the long term that is
-the right direction. With our test the regression is gone and performance
-is even better.
-
-And is there any easy way to reproduce the specific case you are reporting?
-
-> The fix restores the readahead protection lost by the regression while
-> preserving the original intent of the optimization: do not keep
-> readahead pages around if the workload does not need them.
-> 
-> Fixes: 6cbdd9726fb5 ("mm/mglru: use folio_mark_accessed to replace folio_set_active")
-> Signed-off-by: Ehab Ababneh <ehab.ababneh@intel.com>
-> ---
->  include/linux/mmzone.h |  2 ++
->  mm/swap.c              | 82 ++++++++++++++++++++++++++++++++++++++----
->  mm/vmscan.c            |  7 ++++
->  mm/workingset.c        | 18 ++++++++++
->  4 files changed, 102 insertions(+), 7 deletions(-)
-> 
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index ca2712187147..c998b1e0b8a7 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -578,6 +578,8 @@ struct lru_gen_folio {
->  	/* can be modified without holding the LRU lock */
->  	atomic_long_t evicted[NR_HIST_GENS][ANON_AND_FILE][MAX_NR_TIERS];
->  	atomic_long_t refaulted[NR_HIST_GENS][ANON_AND_FILE][MAX_NR_TIERS];
-> +	/* credit: file refaults indicate fault-path file folios need protection */
-> +	atomic_long_t ra_refaults;
->  	/* whether the multi-gen LRU is enabled */
->  	bool enabled;
->  	/* the memcg generation this lru_gen_folio belongs to */
-> diff --git a/mm/swap.c b/mm/swap.c
-> index 588f50d8f1a8..a31c9000868a 100644
-> --- a/mm/swap.c
-> +++ b/mm/swap.c
-> @@ -70,6 +70,70 @@ static DEFINE_PER_CPU(struct cpu_fbatches, cpu_fbatches) = {
->  	.lock_irq = INIT_LOCAL_LOCK(lock_irq),
->  };
->  
-> +#ifdef CONFIG_LRU_GEN
-> +/* Refill two default readahead windows to amortize shared-counter updates. */
-> +#define RA_REFAULT_LOCAL_BATCH	(VM_READAHEAD_PAGES * 2)
-> +
-> +struct ra_credit_cache {
-> +	/* Batch shared credit per CPU to avoid a contended atomic RMW per folio. */
-> +	/* only compared for identity, never dereferenced */
-> +	struct lru_gen_folio *lrugen;
-> +	long credit;
-> +};
-> +
-> +static DEFINE_PER_CPU(struct ra_credit_cache, ra_credit_cache);
-> +
-> +/*
-> + * Spend readahead protection credit from a per-CPU bucket, refilled in batches
-> + * from the shared per-lruvec counter, so the fault path avoids an atomic RMW on
-> + * a contended cacheline for every folio.
-> + */
-> +static bool lru_gen_take_ra_credit(struct folio *folio)
-> +{
-> +	struct lru_gen_folio *lrugen;
-> +	long nr_pages = folio_nr_pages(folio);
-> +	struct ra_credit_cache *cache;
-> +	bool taken = false;
-> +	long old, new;
-> +
-> +	rcu_read_lock();
-> +	lrugen = &folio_lruvec(folio)->lrugen;
-> +	cache = get_cpu_ptr(&ra_credit_cache);
-> +
-> +	/* credit cached for a different lruvec is forfeited, bounded by the batch */
-> +	if (cache->lrugen != lrugen) {
-> +		cache->lrugen = lrugen;
-> +		cache->credit = 0;
-> +	}
-> +
-> +	if (cache->credit < nr_pages) {
-> +		old = atomic_long_read(&lrugen->ra_refaults);
-> +		while (old > 0) {
-> +			new = old - min_t(long, old, RA_REFAULT_LOCAL_BATCH);
-> +			if (atomic_long_try_cmpxchg(&lrugen->ra_refaults, &old, new)) {
-> +				cache->credit += old - new;
-> +				break;
-> +			}
-> +		}
-> +	}
-> +
-> +	if (cache->credit >= nr_pages) {
-> +		cache->credit -= nr_pages;
-> +		taken = true;
-> +	}
-> +
-> +	put_cpu_ptr(&ra_credit_cache);
-> +	rcu_read_unlock();
-> +
-> +	return taken;
-> +}
-> +#else
-> +static bool lru_gen_take_ra_credit(struct folio *folio)
-> +{
-> +	return false;
-> +}
-> +#endif /* CONFIG_LRU_GEN */
-> +
-
-Just an idea. For an short term and easy fix, what if we simply revert
-than, then only protect in_fault && folio_test_swapbacked folios with
-PG_active?
+> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> > index 05c518c9b8078..929fd3e1a01e6 100644
+> > --- a/virt/kvm/kvm_main.c
+> > +++ b/virt/kvm/kvm_main.c
+> > @@ -103,7 +103,10 @@ static bool __ro_after_init allow_unsafe_mappings;
+> >  module_param(allow_unsafe_mappings, bool, 0444);
+> >
+> >  #ifdef kvm_arch_has_private_mem
+> > -bool __ro_after_init gmem_in_place_conversion = false;
+> > +bool __ro_after_init gmem_in_place_conversion = !IS_ENABLED(CONFIG_KVM_VM_MEMORY_ATTRIBUTES);
+> > +#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+> > +module_param(gmem_in_place_conversion, bool, 0444);
+> > +#endif
+> >  EXPORT_SYMBOL_FOR_KVM_INTERNAL(gmem_in_place_conversion);
+> >  #endif
 
