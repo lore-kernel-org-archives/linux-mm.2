@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 939A6C61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 23:24:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C6DDC61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 23:25:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8C046B009B; Tue,  1 Sep 2026 19:24:52 -0400 (EDT)
+	id BC4CA6B00A0; Tue,  1 Sep 2026 19:25:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3CE96B009D; Tue,  1 Sep 2026 19:24:52 -0400 (EDT)
+	id B75D76B00A1; Tue,  1 Sep 2026 19:25:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97A656B009E; Tue,  1 Sep 2026 19:24:52 -0400 (EDT)
+	id AB2366B00A2; Tue,  1 Sep 2026 19:25:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CA876B009B
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 19:24:52 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B7292120554
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:24:51 +0000 (UTC)
-X-FDA: 85166775582.19.8DE5DEF
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 885536B00A0
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 19:25:00 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 23C77C0538
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:25:00 +0000 (UTC)
+X-FDA: 85166775960.09.F823EC0
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 275AF40004
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:24:49 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ibSekCGB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id 73B90160003
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:24:58 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UgcS4yZ0;
+	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788305090;
+	s=arc-20220608; t=1788305098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dD8NdLX7k458iQXtwaaXdMdVjxLHPxreylsAIMI2VEQ=;
-	b=ebjZp13EgCMBZeoFwfbAujAsi1lstVKn12Fn3bmiQQ50/MvEujEhTJIQe+9ydZCCaWnPeG
-	SIUN5wV++X6PM265tMxU9cj37999lSOcfZec3gqtwZXbxyrdLkCBMweV+PessZSjBdGTRM
-	ydc7OUFLOhkMmuEbUdiPzp8wT/jjd3o=
+	bh=jk2RFe/XVKJiusQmuo8ChyovasaBl76wwu4zIL3Vsv4=;
+	b=yjqgZ03uZDj6p5pjKHUKTDf2K+G0cTDNkgbT06YzafDuCPSdw4OFIcUMxmkqlZoi8Q4dTS
+	OSLkdAUup/Ef/FWrqhhYdxIijasRNy4GsUS3S09rIrjR7urOrriX68QZ4zEnlnW3moD8ra
+	jjqDhZ+RZzEJoqquqtH2SjAk6DyRkVg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788305090;
-	b=zeoal7PbIRW/fwpt200lh/2DTI811QCETUT/w84oQrt0SnuA+AyBsQ/fy2/3pXf5eiYXxw
-	HDBtxBSuD35Hkmbo0y5N8egcR8myt2h6epJexlt17WBkpQyJkfQRzXZiFbUyvS8aW8Rkk4
-	3rUFkLk2iBr4++MIbsRTiWWdKspayR0=
+	t=1788305098;
+	b=BFhFmWtAF7vz6N+r8PyTj4t+kjiPryezD+/lqGBZdmGS1Jgtrb3kmXjldu7xoyttECMk0i
+	27VvDCnm6twDOQt4gfZCHLE93wQ5iPk6Ugej0RrrwIROQkQW2ZrIHtctU2JtVArtc/QSC2
+	fEKnnIOrsWaRvQ1E9PAtSsbeIOF3qi4=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ibSekCGB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UgcS4yZ0;
+	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 78B26436DF;
-	Tue,  1 Sep 2026 23:24:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90F941F000E9;
-	Tue,  1 Sep 2026 23:24:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C1BB8434D4;
+	Tue,  1 Sep 2026 23:24:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E0D1F000E9;
+	Tue,  1 Sep 2026 23:24:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788305089;
-	bh=dD8NdLX7k458iQXtwaaXdMdVjxLHPxreylsAIMI2VEQ=;
+	s=k20260515; t=1788305097;
+	bh=jk2RFe/XVKJiusQmuo8ChyovasaBl76wwu4zIL3Vsv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ibSekCGBXiuyZPZB+TrUcrTvmAVz4J6blUZQSkuuhDcLDR9ixnqf+520nUiUdNc6T
-	 /cpaWjlXga/eXeMvWhdiJdjIq5EufHp0OkMW012RFkqkkeR+Lr7Z+U8P3LKYiPRRyR
-	 dOBRbhWd8KtLI007ns+Kd4ST8tbyD0yo/O5kzHGxZGFpRpOga/W8TMY/QblqcaC8Ny
-	 mchLUVU7GQlymWA6adU+ZBXG1OEHfMZU6ex7wEs3LpwhePv5+aAmVavwglaYKnv+d2
-	 HAf4VC18aG9u8u4oldXleMhgNffeppkJBDl3iii0bdGyOBwLfUkW25gCsqXguV4Y3l
-	 Ar+vE10FgAfpg==
+	b=UgcS4yZ06pssXbFHHgG3+Ba+Bbr3x3lwd8ymNYfhY8aNnW+fzhwjTE19IIdLf3Sbt
+	 /m4VP+4uYyt8LOV1zRCYv/cYeVi4Vek0sUaMdYHVc2IlCjkRp3vS1Cjgyau25mxUY8
+	 bwh7uq2MFhTrAQR+r+Zj0aO6vgdKbxMPBMc3qERLkgpyUZJytfp07A4i95Il+ODhqe
+	 CM3yE2H6QZVkEGDb25z8NtTRBm9YdvWbnecC2zBCWXX7LzNZtlXn+71xRLFJPMIs1g
+	 9RK51c7UNMO8stCGfu1jVeMzO9TY8zHr4C1miE8AZT/dVutp1osI9/cTZheaIrSSrj
+	 tbhlffqX8dzVw==
 From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 To: akpm@linux-foundation.org,
 	linux-mm@kvack.org
@@ -87,22 +87,22 @@ Cc: axelrasmussen@google.com,
 	zhangbo56@xiaomi.com,
 	"Barry Song (Xiaomi)" <baohua@kernel.org>,
 	Xueyuan Chen <xueyuan.chen21@gmail.com>
-Subject: [PATCH v3 5/7] mm/mglru: make LRU folio prefetch helper an inline function
-Date: Wed,  2 Sep 2026 07:24:19 +0800
-Message-Id: <20260901232421.40157-6-baohua@kernel.org>
+Subject: [PATCH v3 7/7] mm/mglru: batch move folios to the second-oldest gen's LRU
+Date: Wed,  2 Sep 2026 07:24:21 +0800
+Message-Id: <20260901232421.40157-8-baohua@kernel.org>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20260901232421.40157-1-baohua@kernel.org>
 References: <20260901232421.40157-1-baohua@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 275AF40004
-X-Stat-Signature: 8bztc1eoynwguda9gac6e3ctaxqyzktp
 X-Rspam-User: 
-X-HE-Tag: 1788305089-478261
-X-HE-Meta: U2FsdGVkX187P8Ax4NChFMcMZvyCzfUXzvOdhLeSrmYx5nr7Tg8EIJ9G4605g0XAfMuamVbL2M3mkOaQdvv+GWbVIt4LNjhHxOrM593sYIulgxBFF1qwg5p+YcSs90p3npwrbtjrRftd5wTprLEugYhxzRW9X7DFVjdPnf0TtnkJOiF7Tb99P49KhHqhU9ie9By18wXod0dVFQsERmaRka6KD7Kg0DTIXbg+d8DRB9f1OAcyPMgAL2DnwTQZgIWqYHO+yTmZgDwpiKcRHGBj63eqL/lvUPZMDriFBWpr7Ea74fjTwaDssogUIfjZEBHGq48BxGkG7AflMnZTABz9nvUZ+MdqU69HPTzONqdAt6VylxLFKfLw2lo04ZBP1FbQrGVIRjZT10IiRz/sEUoN5eSwOi0uvObnjrW3lLESwlaA42m+CWI0q9EqYy7Ee0mqLTUlnUG7rqOhNRaBdkhifzYFl+PEZhuCFFpODqQrFFYCHpkLHZ+tffHVttyTqvDerpWHjNggt7Z64FBGOhJX+RxupgU9uTkPh7V+22wqUJ25n5riwaViL2gHtYZVhuuCmSEhub8/phLsQbSGPV7PVufBPlZTSa54XlaCKs8NuflFHZ9R8jEMsg8BRlDNs9Rj8Bsz7j1eTWz4KTGhUz6OvMybiO8qOj3jsCHTAKx58bM4T//NV7pawqsaTAqurBXfw9wm7UbxrR88EyY6xGhCbxaVDcTcDrfggK7LnH9mzp6KzYCikxT+QP+9dD5HUxwSbGVP+gK2nZLRvnpnc69N5oTCorF5jykjbn3wHSA/bCGcIKapuhtOvKGU07yg6ILF+Y14bBITxQSe7R3IvKXYMJkNmkhQ/bc5tYMjVdT0iRJiqObQhEziGG7Mz/S1HEcVsC023tTrsg6S7L1M+7h4eIDTrPFVk9uEFvZvfoq/2oj1tLWLOoQDrsdaDa3uAYZJjZFOHb303yEtX9JZJaR
- JWnUIAK3
- xas44c0VqmF94pVXxpN2hJuAzCZAQNE2uAbgBKMGeMVduXk3J3uF7wRSPxBexs+hFHILdNkTLmBAzrbiKuU1jhuoEPy8QZ/BKjFwkyxgtPfjAyGXYQbKPdXGjnbZhKIKhB4SfVOW6iAqcuqkSpCrMgMgqk6F6Hmuqqujg9L6+/uBf/fKsNYJbqctYEnVUnUx6Sbq8d3RHK3dXT1ll3+G2qwT3Vtrw1LDJJIv0OGqTaGgyFvcmYYkM+Fgw8Df8yXuo+5y24PTGxJ8BsUNyIivPeVupM0MAIZEGn0iK3zRolufXofq5anIaIxgQvq95rKuUl3o0zmJT9MAsPhc=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 73B90160003
+X-Stat-Signature: g41dyu3cyjqnxkmyumfgxue1d9r4ef3m
+X-HE-Tag: 1788305098-923421
+X-HE-Meta: U2FsdGVkX19wMGziFA49WwxbPPbd2oYHaxOTJW82uGM71FmbZ8u5lxENb0iEJvtM3Vtwd6pGj8RjORalBdW+uPCJW9wHnocNmrFD143tstM6Wc+G2zgTRYMR+6CsYNLO/0fTNUkZNgYQvqPHrzL294VFq2/gKNT0TW9GyxuKvpl66RofIAm9swIUN8zfsY7xd3hoM+SGBtgeIACxOTQhs5l4KTMjdLIMLnnV1Us1q9bhxS0fl0A6DAVODjDwEBgjj790k1yxaGNyRnMvrFauv1bujL92Be8mMoalgIPKqOkq5ADREP4FhKqWXY0E7OTF4q44QOrJIVtofItL5tSI++QxNX1f8Q/SYgjHF1OFLlZxXuU5Qt3IoHRylA3kzJ6oafEgq0SJ6t/UN+duOs0xDTrcrQ5wav6MFU+q/xOeS4SJE0efD3w8N+EEKsH9HfjehRqa1Z4nGJLrRfr6Lg1Af+NgUUhZPW3hMwdj7F0NS1DpJm4BlYBQPS1a4RDjZ1Lp34od+R3LnQAHI0Kf+DInPiR0HXmciTynb3/tq8p6z9/8sCPOZbEg5g1qUOn2zrmTlLhUGs8wAZ3PuwLId7Wd7K17RXhSoMNfF7gQ6ZKt1rJkdvXg8YIdsaBkV5ZodVFriFgd0pmleSpk1I5g/xuyJWdgbpWofMZ2pfxMUHM7P/XahTNDZlNhXf2Pm5d2ayXjNE21sXWklt8EZIbPNuVV7WIRAbxgBNli+MA5hlKhjfddjZQ73Ie+9qpBhcu/0+9NOZi7pZLRiUH/C+GRHTrWT7NnSuO7hxc0iY+GcwLen/uH5ZuHjGvcks7SctnZxka/wzse+YvYEkmfRrN3oC+Tao+AU19KC8wFV0axD8Q4af4heqklTNdpzBxF9vAz5TAaSiESQadeLIg/1Ro4FoZB0Jp9nVIfKfr7Yi5LXpcO3Hfgv2tOUH9h+GcQze3zpI1ufvhKQMvcJnZyoFwYSsF
+ l7vc+swZ
+ Ac2kDzWMwtlnhbyH8TgiPB+0k4nXkwXCXXQNhMOE1Pta97to+wcIoF1xaYp+bej9FlCoe3nk53td6SeobnFXsOSkkIHeFZIwg1hqDYkCYATlPNHwiZe3a0DOK4l0osASxwYfNwfTu3r5jjhSHeHL3Hv0pZMT+vAKK6XVNplk/7y+MTNjHnvarikeaHo1x/JKKw4ImS5+mfQLfcH56l/hYrvDy1xoKIeiXVcmxq7HLdR1IZnNxVUS8rCFV7bkExRWQgs0H0ax+EEdrTOXeMZmQ2yPhEtSpaf4H/abzi3kgI4cdGFDx1GVBSnoKfi322P/5TwM6vSzrTbgkPJQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,66 +110,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-`prefetchw_prev_lru_folio()` is currently implemented as a macro with a
-potentially unused argument. This makes the helper harder to read and can
-also trigger checkpatch warnings about unused macro arguments.
+Detect folios that need to move from the oldest generation to
+the second-oldest generation, and batch-move them together.
+This can significantly reduce the sys time of inc_min_seq(),
+especially when the other type is significantly behind the
+preferred type.
 
-Make it a `static inline` function and remove the unnecessary `_field`
-argument. The helper always prefetches the previous folio's `flags`, so
-there is no need to make the field configurable.
-
+Assisted-by: gemini:gemini-3.6-flash
 Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+Reviewed-by: Baoquan He <baoquan.he@linux.dev>
 Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
 Reviewed-by: Lian Wang <lianux.mm@gmail.com>
 ---
- mm/vmscan.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ mm/vmscan.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index ca57f6095b37..1907a946840d 100644
+index 76dfa9575852..79defbb44c6e 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -182,17 +182,21 @@ struct scan_control {
- };
+@@ -3931,6 +3931,19 @@ static void clear_mm_walk(void)
+ 		kfree(walk);
+ }
  
- #ifdef ARCH_HAS_PREFETCHW
--#define prefetchw_prev_lru_folio(_folio, _base, _field)			\
--	do {								\
--		if ((_folio)->lru.prev != _base) {			\
--			struct folio *prev;				\
--									\
--			prev = lru_to_folio(&(_folio->lru));		\
--			prefetchw(&prev->_field);			\
--		}							\
--	} while (0)
-+static inline void prefetchw_prev_lru_folio(struct folio *folio,
-+		struct list_head *base)
++static inline void flush_lru_batch(struct list_head *head, struct list_head **batch_end,
++				   struct list_head *dst)
 +{
-+	if (folio->lru.prev != base) {
-+		struct folio *prev;
++	LIST_HEAD(movable);
 +
-+		prev = lru_to_folio(&folio->lru);
-+		prefetchw(&prev->flags);
-+	}
++	if (!*batch_end)
++		return;
++
++	list_cut_position(&movable, head, *batch_end);
++	list_splice_tail_init(&movable, dst);
++	*batch_end = NULL;
 +}
- #else
--#define prefetchw_prev_lru_folio(_folio, _base, _field) do { } while (0)
-+static inline void prefetchw_prev_lru_folio(struct folio *folio,
-+		struct list_head *base)
-+{
-+}
- #endif
++
+ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
+ {
+ 	int zone;
+@@ -3953,8 +3966,10 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
+ 			lru_gen_is_active(lruvec, target_gen));
+ 	/* prevent cold/hot inversion if the type is evictable */
+ 	for (zone = 0; zone < MAX_NR_ZONES; zone++) {
++		struct list_head *target_list = &lrugen->folios[target_gen][type][zone];
+ 		struct list_head *head = &lrugen->folios[old_gen][type][zone];
+ 		struct list_head *pos = head->next;
++		struct list_head *batch_end = NULL;
+ 		long delta = 0;
  
- /*
-@@ -1695,7 +1699,7 @@ static unsigned long isolate_lru_folios(unsigned long nr_to_scan,
- 		struct folio *folio;
+ 		while (pos != head) {
+@@ -3979,7 +3994,7 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
+ 			 */
+ 			if (gen_increased) {
+ 				delta += nr_pages;
+-				list_move_tail(&folio->lru, &lrugen->folios[new_gen][type][zone]);
++				batch_end = &folio->lru;
  
- 		folio = lru_to_folio(src);
--		prefetchw_prev_lru_folio(folio, src, flags);
-+		prefetchw_prev_lru_folio(folio, src);
- 
- 		nr_pages = folio_nr_pages(folio);
- 		total_scan += nr_pages;
+ 				/* don't count the workingset being lazily promoted */
+ 				if (refs + workingset != BIT(LRU_REFS_WIDTH) + 1) {
+@@ -3989,11 +4004,14 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
+ 						   lrugen->protected[hist][type][tier] + nr_pages);
+ 				}
+ 			} else {
++				flush_lru_batch(head, &batch_end, target_list);
+ 				list_move(&folio->lru, &lrugen->folios[new_gen][type][zone]);
+ 			}
+ 			if (!--remaining)
+ 				break;
+ 		}
++		flush_lru_batch(head, &batch_end, target_list);
++
+ 		WRITE_ONCE(lrugen->nr_pages[old_gen][type][zone],
+ 			   lrugen->nr_pages[old_gen][type][zone] - delta);
+ 		WRITE_ONCE(lrugen->nr_pages[target_gen][type][zone],
 -- 
 2.34.1
 
