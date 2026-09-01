@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2700C624D1
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 07:37:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 067FCC61DD6
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 07:44:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0E9E6B00BD; Tue,  1 Sep 2026 03:37:36 -0400 (EDT)
+	id D52F86B00AF; Tue,  1 Sep 2026 03:44:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE7706B00BE; Tue,  1 Sep 2026 03:37:36 -0400 (EDT)
+	id D03CC6B00B0; Tue,  1 Sep 2026 03:44:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFBFD6B00BF; Tue,  1 Sep 2026 03:37:36 -0400 (EDT)
+	id BF9266B00B1; Tue,  1 Sep 2026 03:44:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 81A726B00BD
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 03:37:36 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CB060C0370
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:37:35 +0000 (UTC)
-X-FDA: 85164388470.13.2798199
+	by kanga.kvack.org (Postfix) with ESMTP id 9D01D6B00AF
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 03:44:14 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 28D83C0370
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:44:14 +0000 (UTC)
+X-FDA: 85164405228.23.BD93C55
 Received: from mailgw1.hygon.cn (unknown [101.204.27.37])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 8DCB020004
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:37:31 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 6785980002
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:44:11 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf31.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
+	spf=pass (imf30.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn;
+	dmarc=pass (policy=none) header.from=hygon.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788248652;
+	b=VQS+hVhTgFrI89eXt2lk+HQl5WwX7XJiHT/V+6lnEpONb5ENyWkqKlmEpYO4NPbhRvId/l
+	XK699K589y0NCahCeb3j4I0LRiA0Xfp6cb4eOODbtyKNnIA1vIHNl2t1Oo0yY+dFthC3zE
+	A5lqs2fJUJkFN3vhKGUGsOkRIl0aSng=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=none;
+	spf=pass (imf30.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn;
+	dmarc=pass (policy=none) header.from=hygon.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788248253;
+	s=arc-20220608; t=1788248652;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=idrQ73kwv4S5/0jMgAlSIU6uQg9mX3ir4nWJY+LoBS4=;
-	b=jG5fCUaH4/2qQ9i+XH232XiKG480pm7YP756l1eFfqFHumCbVWjZTXWkys2MtapVNSELls
-	RuPj4Q1MaZ/XuSewCdKKpEJK87pqYR2p5wwRfGfiFqwzjRjRLPgxxDI3hSEOCFgzYSlzj6
-	b+funNDPz6SV51LqjD9N6U8z1sGCbfk=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf31.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788248253;
-	b=hHYYLfYbNuHrsdHdiUWd6vd9ksrbgX9mRSmnPwAP9l7nMBJRxerw306rdzE1p/199pblnY
-	Mr6gpoEb3v13gABU5sd4O2ciij49gR3tJrMpa0303jCwm2eY5BMxPfGbU9hMGQTVRj60PK
-	TuBhZiPQpHNTAi9Qawn0V3xPT9KnKts=
+	bh=yY6Y+yJBejTLiAp8PQ80g9KRnOAtMy7HCIws0SlPznU=;
+	b=7eaaLpWcEqEtNNTNGV0ZFlEX2u88CGdSgyD1RgKWZseDWyWQ36m3k5/00zme7IZ8N8wMQv
+	WP4aIieaH/h8PUWXSjXaSKYQNJUncwX7YJfeAZpebnMr1meKom3ZRBCbyEslEFQ44sq5kP
+	5/eadXHXAO5jZqfIfc5XMC5ToCmjSas=
 Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hYyPM5ShSz1PvqX;
-	Tue,  1 Sep 2026 15:37:27 +0800 (CST)
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hYyY25fKwz1PGCN;
+	Tue,  1 Sep 2026 15:44:06 +0800 (CST)
 Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hYyPM24Chz1PGD2;
-	Tue,  1 Sep 2026 15:37:27 +0800 (CST)
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hYyXz6XqWz1PGCN;
+	Tue,  1 Sep 2026 15:44:03 +0800 (CST)
 Received: from cncheex05.Hygon.cn (unknown [172.23.18.115])
-	by maildlp2.hygon.cn (Postfix) with ESMTPS id 7F17E31F55DC;
-	Tue,  1 Sep 2026 15:33:36 +0800 (CST)
+	by maildlp2.hygon.cn (Postfix) with ESMTPS id 24A5330004D2;
+	Tue,  1 Sep 2026 15:40:13 +0800 (CST)
 Received: from cncheex04.Hygon.cn (172.23.18.114) by cncheex05.Hygon.cn
  (172.23.18.115) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Tue, 1 Sep
- 2026 15:37:28 +0800
+ 2026 15:44:04 +0800
 Received: from cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d]) by
  cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d%10]) with mapi id
- 15.02.1544.036; Tue, 1 Sep 2026 15:37:28 +0800
+ 15.02.1544.036; Tue, 1 Sep 2026 15:44:04 +0800
 From: Jianyong Wu <wujianyong@hygon.cn>
 To: Peter Zijlstra <peterz@infradead.org>
 CC: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
@@ -80,19 +80,17 @@ CC: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
 	<jianyong.wu@outlook.com>, Yuan Zhong <zhongyuan@hygon.cn>, Huangsj
 	<huangsj@hygon.cn>, Fengyu Wang <wangfengyu@hygon.cn>, Zhiwei Ying
 	<yingzhiwei@hygon.cn>, "justin.he@arm.com" <justin.he@arm.com>
-Subject: RE: [RFC PATCH v2 02/23] sched/topology: Introduce a NUMA distance
- matrix with unique distance values
-Thread-Topic: [RFC PATCH v2 02/23] sched/topology: Introduce a NUMA distance
- matrix with unique distance values
-Thread-Index: AQHdNiA3jheQVPdvikWpN4gB9aTKG7a3i1wAgACO1RCAALYwAIAAigwQ
-Date: Tue, 1 Sep 2026 07:37:27 +0000
-Message-ID: <c1c4cf3afa434a3e90768444e57703d9@hygon.cn>
+Subject: RE: [RFC PATCH v2 07/23] sched/cache: Prioritize preferred NUMA node
+ selection over LLC selection
+Thread-Topic: [RFC PATCH v2 07/23] sched/cache: Prioritize preferred NUMA node
+ selection over LLC selection
+Thread-Index: AQHdNiA/Gl7/wvc7qkaJjcGUBBSfi7a3o5GAgAG7IQA=
+Date: Tue, 1 Sep 2026 07:44:04 +0000
+Message-ID: <62e8081a9432407893fb6a9a8e397d87@hygon.cn>
 References: <20260827122816.756234-1-wujianyong@hygon.cn>
- <20260827122816.756234-3-wujianyong@hygon.cn>
- <20260831115004.GF776954@noisy.programming.kicks-ass.net>
- <ee97dce1db374f50b8e87e51ad133d96@hygon.cn>
- <20260901071322.GX687043@noisy.programming.kicks-ass.net>
-In-Reply-To: <20260901071322.GX687043@noisy.programming.kicks-ass.net>
+ <20260827122816.756234-8-wujianyong@hygon.cn>
+ <20260831131643.GK4120091@noisy.programming.kicks-ass.net>
+In-Reply-To: <20260831131643.GK4120091@noisy.programming.kicks-ass.net>
 Accept-Language: zh-CN, en-US
 Content-Language: en-US
 X-MS-Has-Attach:
@@ -101,14 +99,14 @@ x-originating-ip: [172.19.20.45]
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-Stat-Signature: z16rom9z9qkxgeq7bcqz3e8yew63caqk
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8DCB020004
 X-Rspam-User: 
-X-HE-Tag: 1788248251-597376
-X-HE-Meta: U2FsdGVkX18CjvOWb3rj+Xc+kkK58D/HARYdAYdLWN12hkTeYhT42KnpHOyiRKaAkV1lUYX3uJ3DNcoMUoT/4XymgCChvcc35h4Qb/xHiHw8ThzSZ2pW8KUAEqsXlGdloC3KmRMh/jAs/ccicTs8oRUbL4Sa1ejOdA/0ZRJmcyEtW/UECln+aXm9A592UOByWfYNzCFzFn1P9umDMTd/mdg3nAL8HUCcm35WSLCYZ9Iu/MwAz/zCJyxKpW8VWsQCPFLXiATw7fTLWaegsSKnCRsxBTRfbAIsQbXpkr7qlSfXq4V0NSTiAlSTbS+q5OPUh1IfFdMSmCZ39X+z3L2Yo1JxTBWrTsag4cvZciRpKOlzRFTtLobRmKjtlnc025H5gorTo3pgAg+mqkyrBaqG9Ot8kr5LJY0t2fD6+SqBbGpVTrB+HLOq/CRMiQc1AYFhzRBK3kW/MnJAlDpSfK1cqTZB26WVh/9qXLnGeKerdjwgmqc21aWxgXUgCkCVa5JJ58MWFLt8Iq8s2XJgPMRJlpV2XY7SE07smEE6S7zfN6S82UDAu6+wJzH2hCNSxLlCVXh7/xnplB1Sraa5jKFkhTqWwy74Br+V13U1Tlp7+0qBBAPjyEws6k+KE4h0Sl7ul/SBhi2fRNR0/JeUPMZV4Fcmx193f3iZJ2l7ZUfnNsQ7n5ZK6ZLwj1qyKWYksMNqEQjzmWoyWIClfcW0PDXHNY1Ml9cAQRvZcUSv3iOE09NXb7ZU8HOaOHJMa3nYLV64M/syOa5F6494DyqyqNBEbHHvF2qt/Rjee0uESqEhz9tjARr4C7ma6cZc6WcmlzFd5UmRy/tdjRKqnu+bCeA56UZEttVJQnv2dB18foZDY8Ocp/fvl6LCPc75F64BgS1daDffH/nVdXwqepOx/2Q2/kXGHV4pTio7RweWPPmXQjglwhVOCfPknmyJOTqBrP7lO/xYrqjmBX+FHIiR8bX
- Zlz7xk5Q
- hq2ADkS7tktVPtl72WmcRZHwY0LGzdPpLASEGBL62Gs/qXf29DZ7Gw8bxTr3JN449SD1GzInQeH8kCQj8ZFmksgm7/ZVdHOxyE8q4wtfQdOdRmbl+JaO6O66wPwWfZSG1+6B7a6eP7Fh3zUpCLeIyl7F6vSgMjvhNiG8snT0bKCpaZMU0DrAl3+E8iz8AoTTs9jOgDiVsRSOiJHJR46ZCsr8J9nQ5IWNX057iPIbayWMxf6RW3zjOIw7zjgMqw/Z87f4NFAQza+bRZ7aTsuWsNUASLHKpogZbfBeiZ7HYW9gV552cLfg8H8v/zIzzXnB4myPeWkEK5jDgLtKNS1Bmxjgco6YDzCSKh3EhMJfP+3qKv69OyQhddS8joOohGsWlqM1OC1vJuUIvfyrBKQI3524wEFd8R+Nl0BbGrl2p9A3C0oBFJqCkBSJnKMjy8G2uSSUmbMO3zVDc7maoyppLlJhRxIJXMx0omJWDCzcXnwuswZ3Mo0+Zs/7wDqLLOdksz/A+coSbaqj2sxm7z1vQFO1B7bQPYJHmifFttcBSstANscxAErOzEiZTG/ZmtcjcZnecf3ZNH18lMBQ3FsDAS8i/xadnMS4cQ6IWHXOQmDMFrlxaAO1qD+yY8X+0IVIUdoFRYsFzbA8BB1FdKX44s3X3Joi2mdylr98IfuWfrmUGSlYnYD69z8OZfEn/tBg2QkZj/8lfsQJv3SY+vqoq1wumW4Redo9LGukv/1S2Nw/zxMAz/XUtiqLCSiGmBWWDuZ76oXaAUYIoMjFWq+LghlHZaUJzqTksDrP7
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6785980002
+X-Stat-Signature: 4eu9uh58b7gwpo7fq463t5ibuqofuekf
+X-HE-Tag: 1788248651-691493
+X-HE-Meta: U2FsdGVkX1+3MoCx5RpB1vKmStU7rsgNE8Nqszh8Uo/+er/TEe9tJvwCxqbedWPkHd8jSk/UVq5kgM9D3s3tMHIGX2KYrf8l28zE5dVyuNrcHXb/5jmrjcL5PFOc6zlmRxOnWRFW9b48Gp2NsOfFh9wFnDN/MjWrL1cIyvnGs7s+HG2Y0xVZO6kaoTh02tjbbwJR/eomquB1Z4uke6o/Sucowcw1+hCwKIuVjhSSFaCN29CG1A0bspe6DREr+HHwFg5gS0iviQjn1yWVCRlwqk4nUH5YpCU+3x22JSEUL6szpxl05+RqqHV7y9/MZXQ2mNcGlZuyCIp8LavLDdR1Kzh4luGLutimXvV2dADxy+zmQ2MzsIf0WbTTXxfsGnTH569Ne0aL5DF7cB+QmRaeYy2LBlgLrWz6PMs2/MNAGCkRyOI2Yfm8YrF7O88yT96/3PQNLm7dJbV7L7ofncNIa2EpZjYEp9xhzmQDMgyjf11rhhH9bI+pZl++1urNVpDg6nlNAgw6DWZe0EllheuKs5SXirJSxtvbQXJk19rnsm6Iok9+EBiVZ/f/tpoPTQcsu9CQpBMGSZ05rNYDVfk0kzWLa/C3SzXCTDjtGig89YC4KR5TcRaplPbMmUzOrCDnvzC8JtFLWe5BhxQbxdErvElTXCbdGDxzoFqQaTutm16Juc9Pd+9ndl1K0gZHfsL6mudVqmMJsXeVtaN+ZL3LNuY8UeshD9YhRnfT1vMf0eSWef1qdyYynro9y7Skpi56YcgFEskPSxVBmnC1ZOYR/3+6S2zzEYcbsf5Cz/bOf7G9jllOLKlGB4RwaIKNXf5icvuGpGwwf1PCpvb0WcOMAiha0JguLkEsP1KFcMpAvTCQYc6iiFFjfFBqF+Ac9Nfdu8l8NmopQkD/kGSM8IX+9rL4kUEWruGi17QKd1pjghXN295xPtYWEJSRZ9tI53iWrp9JIfGjOrnLc3BEHhK
+ 4m2HS9Se
+ OIMLMP6AOFaxtVtYPcPtYY0ntWZf4/13auxIWArxYtXNeL0mw6DoATHr2e/tkAAihdaoVGsOtKT7yWeub4LCwnNDiHpgo1yB8t2/IwDdv/K7HaNwD8JxxJbRqhvB9Rf/+waXfNvfXFVrnKeaPZigit9U3ayUCJ67meVA//1NhS/aispz10prZinOJryYE1ifYTQ0h/VjoOQ9xrVu3Jjghi2mUXp1IfOqJAJULIM1mZ0GPK7NyyWD6lwwfB/0Q15b90GPJpiSyZtvp1s9DqMcXBA9Je+b5mnUAtNCOgsbocbxs4FEOGZSo9ReaRs3d1Iwgmy8EgxXtuLjZDGOvni3fDt2EG3CrXJ6glfujPR0LXfSQ+EeuzYlp3G8FaXlItYgUmRPnyAKM6kEh9KJuUEy67tC7+ZmFDEGt3e+/ccVh/08JtMtoGm1UdGm+9K8Iru8vO3kvDAAw0rHZWW/rqreXyWseu5PZr2tc1iFaK5sJeSUMFRnfH5MUT0PMKxmkm2S9VBV3b2Da5hyiwDTM6EOQiA47MRBCqJX2OENqILHCrztMBTiPAFeqEQWXk4a4uOcIEI2CFZX7jwIFoy9ylD+K77VBS65PkeDKPHzOFV0+KZu1cJRE5Tj5tanFeZXyaO1isP17TD90DOeTZzDF9Vtp1AmR4D/EQ6egd8wk+B4GOCiwXkkmdPGZcw490FuBErzLJijzibnH0jnx8AAOoV81FnGtJsOJyJUPQDH3YmzJFQpgd2K4WYcyXZrjI13r/3mEVpZZ7+tjd5wqDf3Rw2gxIWiG/ZXF1Gm/mX1WjEAUI9bR+XA8vpgJg68WzMrCH2mXz2j8nyzZ5ZmzK+kx9Y1n/aSvlw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,11 +114,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
+Hi Peter,
 
 > -----Original Message-----
 > From: Peter Zijlstra <peterz@infradead.org>
-> Sent: Tuesday, September 1, 2026 3:13 PM
+> Sent: Monday, August 31, 2026 9:17 PM
 > To: Jianyong Wu <wujianyong@hygon.cn>
 > Cc: Ingo Molnar <mingo@redhat.com>; Juri Lelli <juri.lelli@redhat.com>;
 > Vincent Guittot <vincent.guittot@linaro.org>; Chen Yu
@@ -135,95 +133,51 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 > jianyong.wu@outlook.com; Yuan Zhong <zhongyuan@hygon.cn>; Huangsj
 > <huangsj@hygon.cn>; Fengyu Wang <wangfengyu@hygon.cn>; Zhiwei Ying
 > <yingzhiwei@hygon.cn>; justin.he@arm.com
-> Subject: Re: [RFC PATCH v2 02/23] sched/topology: Introduce a NUMA
-> distance matrix with unique distance values
+> Subject: Re: [RFC PATCH v2 07/23] sched/cache: Prioritize preferred NUMA
+> node selection over LLC selection
 >=20
-> On Tue, Sep 01, 2026 at 06:57:43AM +0000, Jianyong Wu wrote:
+> On Thu, Aug 27, 2026 at 08:28:00PM +0800, Jianyong Wu wrote:
 >=20
-> > > This example uses Node only, but the code in question is specifically
-> > > aimed at Cache granularity; might it be better to use a cache example=
-?
-> > >
-> > > A little something like so (I got tired of prompting Gemini to genera=
-te
-> > > more complicates / less broken examples)...
+> > +	/*
+> > +	 * Avoid switching sc_stat.cpu too fast. The reason to choose 2X is
+> > +	 * because:
+> > +	 * 1. It is better to keep the preferred LLC stable, rather than
+> > +	 *    changing it frequently and cause migrations
+> > +	 * 2. 2X means the new preferred LLC has at least 1 more busy CPU
+> than
+> > +	 *    the old one(200% vs 100%, eg)
+> > +	 * 3. 2X is chosen based on test results, as it delivers the optimal
+> > +	 *    performance gain so far.
+> > +	 *
+> > +	 * Moving to another node takes precedence over moving inside the
+> > +	 * current one, as it did when the two updates were applied in that
+> > +	 * order.
+> > +	 */
 >=20
-> > Originally I tried to use a single big LLC distance matrix. But once I
-> > realized how much memory and computation time it would cost, e.g.
-> when
-> > calculating affinity scores in later patches. I dropped it in favor of
-> > a two-level scheme: the first is a NUMA node distance matrix, and the
-> > second is an intra-node LLC matrix that only encodes the LLC distances
-> > inside a single node, so it is very small. This way, both memory and
-> > time are greatly reduced.
+> Comments should never refer to old code that no longer exists. Comments
+> are for the code as it is now. If you want to expand on details of the
+> transition from one implementation to the next, that's what the
+> Changelog is for.
 >=20
-> See, that would've made good Changelog material :-) But yeah, fair
-> enough, the matrix will get rather big I suppose. And going to
-> triangular matrix storage will only save half, while you still scale by
-> n^2, so that's not going to help.
-
-Right, I'll fold this into the commit message. And agreed on the triangular=
- layout - it halves
-the storage but stays O(n^2), so it doesn't really change the picture.
-
->=20
-> > > > Each row of this refined NUMA distance matrix is sorted in ascendin=
-g
-> > > order to
-> > > > generate a unique per-node affinity sequence. This sequence will
-> guide
-> > > > thread migration logic introduced in subsequent patches.
-> > >
-> > > IIRC greedy has significant worse bounds than many other schemes.
-> This
-> > > would result in more unique distances than strictly needed here, righ=
-t?
-> > >
-> > Yes, Greedy edge-coloring is simple but can't guarantee to get the
-> > optimal result in theory.
->=20
-> Right, so the theoretical count is :delta: or :delta:+1, but the greedy
-> bound is 2:delta:+1. But IIRC (and I really am not well versed in this
-> particular area) there are algorithms that are still relatively easy to
-> implement and get better bounds.
->=20
-> I just asked Gemini (so take with a big pinch of salt and consult your
-> algorithm book) there are simple algorithms such as Eulerian paths, that
-> exploit topological constraints, such as hypercubes or 2d meshes, to
-> still reach :delta:.
->=20
-Thanks for the pointer. I'll look into Eulerian path based coloring and che=
-ck
-whether the per-tier subgraphs in our topology are regular enough (hypercub=
-e/mesh-like)
-for it to reach delta. If so, that should let me tighten the bound without =
-much extra complexity.
-
-> > > Since this is all on slow paths anyway, does it make sense to pick a
-> > > slightly better algorithm in order to reduce this bound and get bette=
-r
-> > > results?
-> > >
-> > This matrix currently has two consumers:
-> > 1. it is sorted to build a unique per-node affinity sequence;
-> > 2. its values are used to calculate the affinity gain in patch 12.
-> >
-> > Therefore, when changing the de-duplication algorithm, I need to
-> > consider the requirements of both Consumers, For the first use, any
-> > symmetric matrix with no duplicate entries in a row is sufficient. For
-> > the second use, however, the actual values and their differences may
-> > affect the affinity score.
-> >
-> > It is not yet clear whether using a more optimal algorithm would
-> > provide any real benefit for these consumers. I will investigate
-> > whether a tighter matrix can be generated without introducing too much
-> > complexity, and then decide which algorithm is more appropriate.
->=20
-> Right, fair enough. I'll continue trying to digest the series.
-
-Thanks, appreciate the thorough review.
+Sorry, I'll remove the "as it did when..." part and keep the comment to the=
+ current behavior only.
 
 Thanks
 Jianyong
+> > +	if (m_a_n_occ > 2 * curr_m_a_n_occ)
+> > +		new_cpu =3D m_a_n_cpu;
+> > +	else if (pref_llc_cpu >=3D 0 && pref_llc_occ > 2 * curr_m_a_occ)
+> > +		new_cpu =3D pref_llc_cpu;
+> > +
+> > +	if (new_cpu >=3D 0)
+> > +		WRITE_ONCE(mm->sc_stat.cpu, new_cpu);
+> >
+> >  	update_avg_scale(&mm->sc_stat.nr_running_avg, nr_running);
+> >  	free_cpumask_var(cpus);
+> > --
+> > 2.34.1
+> >
+> >
+
 
 
