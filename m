@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E167AC624D0
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 18:07:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFDA7C624D0
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 18:07:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C4EA6B009B; Tue,  1 Sep 2026 14:07:31 -0400 (EDT)
+	id 222C36B009D; Tue,  1 Sep 2026 14:07:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 702326B009D; Tue,  1 Sep 2026 14:07:31 -0400 (EDT)
+	id 1D1816B009F; Tue,  1 Sep 2026 14:07:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63DED6B009E; Tue,  1 Sep 2026 14:07:31 -0400 (EDT)
+	id 0C02C6B00A0; Tue,  1 Sep 2026 14:07:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E5036B009B
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D2F836B009D
 	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:07:31 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 938BD80516
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:07:30 +0000 (UTC)
-X-FDA: 85165975860.16.1EEA171
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by imf27.hostedemail.com (Postfix) with ESMTP id DF1A640006
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:07:28 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=GWaHkUeK;
-	spf=pass (imf27.hostedemail.com: domain of 3XxSXaggKCEAfocvncemiqqing.eqonkpwz-oomxcem.qti@flex--dmatlack.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3XxSXaggKCEAfocvncemiqqing.eqonkpwz-oomxcem.qti@flex--dmatlack.bounces.google.com;
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 65542C04B3
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:07:31 +0000 (UTC)
+X-FDA: 85165975902.10.3B2465A
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	by imf30.hostedemail.com (Postfix) with ESMTP id A557C80003
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:07:29 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=EbIAk9db;
+	spf=pass (imf30.hostedemail.com: domain of 3YBSXaggKCEEgpdwodfnjrrjoh.frpolqx0-ppnydfn.ruj@flex--dmatlack.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3YBSXaggKCEEgpdwodfnjrrjoh.frpolqx0-ppnydfn.ruj@flex--dmatlack.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788286049;
+	b=wIaJwxcnBgechEWnqUk6QHQkeRlBcSelLx4QRLwZsr81MFY8Kw6mlVw/1oVxnwf9dm23Fc
+	ETL3CKOybS4ZBD1RRNqEeTbACp2LkqrNyzATBiYEBSB+Vv3bH4VJ7/YEpXIlvQa1RzAZIb
+	yHYHsw+Z5B9pWs1Qu++uAOUCHIRTjlc=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=EbIAk9db;
+	spf=pass (imf30.hostedemail.com: domain of 3YBSXaggKCEEgpdwodfnjrrjoh.frpolqx0-ppnydfn.ruj@flex--dmatlack.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3YBSXaggKCEEgpdwodfnjrrjoh.frpolqx0-ppnydfn.ruj@flex--dmatlack.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788286048;
+	s=arc-20220608; t=1788286049;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=abQNPJxLdJSbNwggArhdklh2mCXd2+hz+eKc3bSV4GE=;
-	b=Zt2qC+++n+PoWbNKCgr6QRmiU/+SOJOs/DpUKUDOZv+tq8uAaJKq5kAaqauCA8qeoKuJxG
-	HXVCD4K/MXY6JUbsOWLwQjIKeWlKsxgt7h3VO0dTdOc0h8VCmVxT/MrLfkJVkTzpoj2tT/
-	vLEAr03cqmkiFTmcG6rOxHOTzE6Yo74=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788286048;
-	b=AOfwFhSkvOjbShgD4d7kpb1aXU6qgEYEcAYW71adhYGctlEFtYi4uHA5t9+sKJu03d1Dso
-	kUzjoSB2KNOBQOnX3ItjV3/7rkFemuCBRtpYXCptbksOSJxTYcGSgVe8Z1aF+lG5Mh/7gA
-	Xn20cwBTfNEFh6oi+tKecoJUo7DNPsk=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=GWaHkUeK;
-	spf=pass (imf27.hostedemail.com: domain of 3XxSXaggKCEAfocvncemiqqing.eqonkpwz-oomxcem.qti@flex--dmatlack.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3XxSXaggKCEAfocvncemiqqing.eqonkpwz-oomxcem.qti@flex--dmatlack.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cb11535e6a1so208220a12.0
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 11:07:28 -0700 (PDT)
+	bh=EEIZgCOB2hl947kqAMQSV91Zoox41yoYUfb/qDb9/EY=;
+	b=pzEmxTaqdRwe0yKvIqFRXdLUkp9Tl8sIdc+7KuXeTpG58HAgoM+H3NaQiWcdpdbByaGHWh
+	xQ3gOIsUHcB7zTcb/c4MrkBBbp3M2pzbH/czXh8qETNS2wi7y+N4vpJYgfvm8MonP23K/H
+	/hrpOP5m9M21HE33h5x7X3FnDWsnw0M=
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38ec0f510a9so227042a91.2
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 11:07:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20251104; t=1788286048; x=1788890848; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=abQNPJxLdJSbNwggArhdklh2mCXd2+hz+eKc3bSV4GE=;
-        b=GWaHkUeK/quhtr3vLUZBZCrunV4oA4+aKEb+kRosgXl4phYIpeKaGkMBHDtbfESqxi
-         MS+/1ofED6V5bhTwpWuxK7XNrwCgFqNP4TmX6V17tXRBjMAGreCB5q4z0bWzSG2xKoXR
-         J99LAA1n+9r4X9SnjPTZ8WxMU+xN0O9jLe5YgkCVgAN9buveBBemKur6UyeeOUuybNPU
-         L4eaTcv+e3DfOSOAW5bfkxp/4xATAx1AXzrDnOG0vlnvV37CRc9jHAvQf81tySSrqEKj
-         zZQ9ylHoaVfldOP3Imf7TUU7sc0OZznYjEdRaWkAV2hhzE3/QvbSl72DkcJ97iNN5Wp8
-         Sulw==
+        bh=EEIZgCOB2hl947kqAMQSV91Zoox41yoYUfb/qDb9/EY=;
+        b=EbIAk9dbMrEr3//qosw+JA9LYZEh1qQpPNxAlihWTfuVsHh2oqWlRbeMsxEXZr7r81
+         Y7HuAwnlDfDUMzlhitmrXZq1On/ZdCgvAX+m3kDqhVl0YTHNc2NDUGVJJ1sL3I6l3/Mf
+         PvIENu+q3SK9Xxk77cSJoPYTA8pFOwJ3SOXatKoKqiMJhZ67i30dxDYxMPCbWLiF5P9f
+         eRXgh1VIUdEs9+UwUHNoOVAwiOMnx5WTWZ+jvTibcDcqk2vxqNW2zyHQWPB3KWBUp53T
+         i7kofqMUmdzuCB+8M5QhvSVc+iMV+KgmTWBpezC5yYzitIrSNtDGs36i+LZUu7sSSSjq
+         9N6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1788286048; x=1788890848;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=abQNPJxLdJSbNwggArhdklh2mCXd2+hz+eKc3bSV4GE=;
-        b=Kyb+aZMRdMol+zFGt0X1lqdZE/Ow7Cgbxy0IDED/2cUMeI8De84XHv237SNeZQ+cDc
-         jznbb60t7OLG2h7cnmqb/BUDU/kq/cItq7XQ7IyXHIQqfiad/4ihhxsUdIsRZ2VEQE47
-         XkpTHlNuiwbnuCqRSe1nCkaWryeknXdCxKYdcayooBhCBG/r5BLHbBGQLJHmzeo2c9EB
-         OosCHFUtrIlX6A/gVfnyc8ajCPkB2pnwfNoO9pLvklqYTIrAMKXchFgqNRGFzXTYYQyt
-         BAG4vybJgEIie42aqmS56cdTD26p/BOBPoU6FJAFBZEMkaLiMArIxODQr3ykpOb40XEH
-         SEBA==
-X-Forwarded-Encrypted: i=1; AHgh+Rqr1YCBKdICWaCLdJKrLt8U7e2NM5L2miaHH2XDIEV7ZQCsk+3oainOXnBE67IsdzHk+7VOdFBA/g==@kvack.org
-X-Gm-Message-State: AFuF++nYfVFtRlZUnpjYXusye6nRdjW1OM7tEJFB5JILVKO16EmL9tkr
-	iSA45XT/rxW0D4dj5kxB9jCcD86xkVeN4Pcau0ieevFXFwIKuQ8q1RyBr5Fj1kABdYcnx4Yfdlo
-	LQp37v6T0FaqCsw==
-X-Received: from pfux35.prod.google.com ([2002:a05:6a00:be3:b0:848:7bbd:284b])
+        bh=EEIZgCOB2hl947kqAMQSV91Zoox41yoYUfb/qDb9/EY=;
+        b=s1oOKhJJ4wNUPWjLlN4Dm+LR4asJZ1Nen4G3n4muOVTPuyezwkY+tfJnVJ9LRe9fWh
+         lFlz5ijE7eO6v/Ae7XT5gshCQWjweg2euvU6LtWoRtVykOe5Wn34Ff7GSwXuGzApOiUH
+         udgJP3Lewnb6cuUk9pYmeclbj97zoiiRu8RV7CcGb0qw7gBHqmey/GOcqpxi4+i1XYIr
+         kYrmnEQwbAy9UnaUPgK4gVzRreml6kxOMkXFXa13fP5IqB7/vfyZAv+8b6dP/d+eadxr
+         YY3GEInwfD0bLw/7XYJvVwsy2+U9HwyMaCHlYuoxnzav/rZ5wzv6C2394cj2etcbt/iP
+         3lyg==
+X-Forwarded-Encrypted: i=1; AKwUvByuN4ajOpYPZQ5/JyLCMh3+DpduhFV0JfYjs5wHrqOC5QroPTCxTosmj6UK5LURk9YRI3mCHCGEFg==@kvack.org
+X-Gm-Message-State: AFuF++k0pO3iYYRFfVPtIzt5/Sm0Qf4XXrlMdQRjHhdsJkbFJzy6fzZg
+	tkzzRAl8AKcYQlqrOCOnz38JLBdhEyJFiORRnbIBw8+YIjrr+0iDOfi+K8LdjEQQuH9I5wrJFYG
+	Ar3WFBOOmmiklJg==
+X-Received: from pjbiy13.prod.google.com ([2002:a17:90b:16cd:b0:38e:b470:e6db])
  (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:3309:b0:835:6388:655d with SMTP id d2e1a72fcca58-8562ba7dae0mr58420543b3a.14.1788286047461;
- Tue, 01 Sep 2026 11:07:27 -0700 (PDT)
-Date: Tue,  1 Sep 2026 18:07:12 +0000
+ 2002:a17:90b:3fcf:b0:398:9be5:b419 with SMTP id 98e67ed59e1d1-3989be5b4camr43204014a91.20.1788286048322;
+ Tue, 01 Sep 2026 11:07:28 -0700 (PDT)
+Date: Tue,  1 Sep 2026 18:07:13 +0000
 In-Reply-To: <20260901180713.4185641-1-dmatlack@google.com>
 Mime-Version: 1.0
 References: <20260901180713.4185641-1-dmatlack@google.com>
 X-Mailer: git-send-email 2.55.0.966.g6673acef38-goog
-Message-ID: <20260901180713.4185641-5-dmatlack@google.com>
-Subject: [RFC PATCH 4/5] mm/memfd_luo: Expand support beyond memfd to all
- generic shmem inodes
+Message-ID: <20260901180713.4185641-6-dmatlack@google.com>
+Subject: [RFC PATCH 5/5] selftests: liveupdate: Add multi-session test
+ coverage for session_retrieve_into
 From: David Matlack <dmatlack@google.com>
 To: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
 	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
@@ -99,13 +99,13 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
 	David Matlack <dmatlack@google.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DF1A640006
-X-Stat-Signature: bdgeoj4nxmjac13dbai7h8fx9673p9tb
-X-HE-Tag: 1788286048-845644
-X-HE-Meta: U2FsdGVkX1/o4UZacwxRKByItI5Xi872r7q9vJSUdvyHRJ63xzszJNH8ujRmhSzZP9320DPfMFdtyOIpc9HU5iHOVfwb+X3KxIs7Hk8sdZqu5qGknFegsmfacooC7HoJPsXHlDRgMIbulY/Qt/aGm3N1NYXWYSqRRHg5MVkAoCfzQ6gPiZtd5iYRbEk1SeXTuCnXRDHTG0+LGBSZ3kkokGL23quLdY8l/5C5X+G7TWs4sUwx21s8RCJIG2rwbIBwpzSt8yPY9wCXH86m+xi/0SkLCWEcqaZj/64R43XrIDsCv4uninH6Uz/uuav4Vu7Ip/TIKXRDVNnMDUcN2hH2hNOvE6bZz7CdHlsLCEfX1bcvs9wR2Axfno/nIXh3B8IEyH4ahqP7o5AtsrNZIWiJ9Jh8wm8ApYrJlQcJhIMmm6Rc1Z98huZdZ7crJM1qNoBHQNVzWuLoEjWDkG3k5y1n29/FH3fV5x8AM5kzMe0khsNZTW+UoIqYdPrBVmoDTY7SfWnsKlOQDw01zpxGABLuams2iPUEhRpsMYuVQa5/c7oe6eD80Fl5JY7HO4kon8cERN0nYXRWBetH7UxRzk/cv5v4Ewz8ZAz0tNaMe3IOQPLVGmghnJjgzz/jEs5qs5t/1EbMfDboE54zIR6Ol/VrMm66LtA9sCCKsZykMbnkRhn7ZVxZt0uM1hqoUd+lJh4BJbBj1vKwrsqRezVZgpnnNc8gku0ELHA/24JiqsO2/h2F6XzaKIkZUcinJuhoteXEQy9OrjAoDjIvNvniLWF2OshQF6jtxxEvHjZc7VImu81/JSKvRAutuBhAHz5C0V/+IASuBDxJtatzYIOyiuJaZwqBSEgRCI706Kl8PDhdfwGgnfsQVRBQYka2OaSws0MZgfFhAeUI4AexGz9G7r0Ozmxq+KZ4Qvqfu0YmRGk4x2kr70vJHm+JTHfzHKlLyD8hNOg7MWqoTFzID1qqhlX
- KmmrKKrs
- LfFA18gXkzr8vMICt3gPLKvmgVCJrdPtkG4OGkF2xtCfxRwyJGmXvJxLivSKseBWO1uRFR01sg8cTd7ulp3CwrTksOSYVUWlM9QRncruAiBH5cUM755ULrvX/rhHcpD+JvlR+HETs2JPrE6JihGunJBBeqlcFo+A4I/O26TaF56y713S9B+hX4DncRVV05VlHm4c2BGQ4g9IBv2FYH4GN9wnOv2Pltgs3+ZWBGeNyKZpFSgwG6oSebWgMc0riHoQ7ZKy5epQ/FCThtOYr1MYfhGsMfK/wBGlmkLAL+HlkqFuQO0nj4b3pr1Yvt9lAsH2huhBu1GNaOKCj7vQMfkzi3CZuynbJqlKB7cNcPaE8WoFHScErNTyiT48Mb4c78Q3r/R0TBZ5VTKJM0V3lXcIG+dxUVZCKcLOI/yWl6T/MnoSOqumevV2Nk9MZxAVRsqeZ20dGp+W8Ha3mF8AhWnei1O8JltNR0srDigiLtbmosCG+c4wu1fSZDaX2UytrdpXGvIGs5pMG3Ev8vgoYlRS3I/8ktosG6u6i7UaetpfDXMuUCjKo+06LDJTARiP4Y/c/Z/3Vmf/ZVZza+cBfBHdx1MO1q4X+YTQTeYx1OkxZzjBQ6nNXvHEnxQt1iINPG2+oH8uqiNVequAKSdM=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A557C80003
+X-Stat-Signature: 3aa1d3sdok5yopcct93hp1kug56ywrbs
+X-HE-Tag: 1788286049-991508
+X-HE-Meta: U2FsdGVkX1/eXxAD/U1H6Ph3nMrMDvA9p+nBXRS5Ucfo3nYtEWFsMZvfvyY++ZTDGLts228q+ypEtBQuDiEouSTAXWfwOerC2oZRjbUfVRjsYyJRMdrygR4c7tdMq7XKw6S2XQcsl6SC+G9kY6OHUPkvjNak9iqtwGpJh8IxQAR1k3zTmDFeDAWhZfiSBvS3cAyURXobo7xsaon8vbWaMuMlHnYbUnF4hJWcGGvvZnkSr1JBQfIQ7bw3fDpe4w55xMD2PbXV9gkCF0CCe39zlXSD2LWYu7xbxDbnsiC2rbbmrXJ/RMymiCVSapAE52DyTIFHJkvBfIswaZ5YaDOUH/hpfZBc7T6QR7ER6N4CkHCMLQM59ZvxadFFnKqK34KNRAu2DtV2F466h4nhxkqBBnNy30fES7ml4Ahm9EK/HdAVrQigJiZWRhqrjk8LBTMgz2zl8mcXnXRgxLsd3cAMX0dTRa0MC2203L5krAVoLEOC2580XKpfwj7faszY8V8i3790CqmH1Gph+sMNOFTltebDpDsm9OMK2+QT5eAT5KUmyl7cisPeDpnZDh3Nd9cL4QtN0oG79YnC/w2pII/7GhkzqLFjSdva0uDX2tunfMmLMTUzYyFCcqUmr2pz6Xt8AgBvV5SQ4iH0+Lkjh5XdbyOMPknoPpOcYCyLCGy+p4LOfkyBSVz2QJodmVYEDNhgb3PQV3k/KSvtFjpok2Ac4VvP6xIM6DcTE06A1mw8NBiaKDohintUamv3+dIQCWyOYYZcu3hyYwV7RnLWyVKSD+1fUJIfQdnwJIQR8uNqtQfYuC1moyUPM5++vjFLIbw/Pb/fp2KaPrEHIcHVNkGxEv9IChhAeMLtbgdQvqQptDjpIWjP180ua3CAYtvxn1+ZqkbkNz/3YMyyn4vICrRTUQrVeAAHJ0+RlSydp5qLxDyOuv7eM2TeuYVYEo1qCF7Pum1q5+xLbE4qtjthcRa
+ BhBcFgF8
+ bEH1anOIcsAPcNxuHXLSjT8VI/Gy5KRRcET9wl2JQv/h/vc6gjBLRs27Iu9zFwfaXm6xQ8xRplQHv3EPiGdXr0OO/rTP3tXLjzhyuB8TiIivizs6p1MNwUC477ZpSvxEo5LRRsrCOVh883roi+ATSumRgdjopXIKDFLdCi/7bVQ//voFet7oai2EARLTEAsUncl0l1tS47E6urgJG49LIwQMO8ExP0JFDDKzfE01JdmJBrViPEWT/Fcop02TF0mEwtnof2D6O/SwFft2sHe3hyInaMc/lXftrzRToaUhbBLq5/PTfDeB5r6WVVrO0e7sNT51cfM+LOtTE/QA38loZIGsAqkv+TN+hDINl21D/oKCSYFfMTLHgtBxGrGLkE5geuV/1hzaY+MW8WhuT65DewPR3zcOAfBIWQJS4CiBCCq0vjYNMzh83zmYlmnhxkyVA4Fo/+sqYkVAEi8weVQSPOKwWXSp7BpDcM2bxNc/Eo08Y2hZi8UPQzs+kSkQqy0kXERANxKg4aaMdRp6XJlbNmI5NLXfEzJt4z4yEKhFOFj/5XM7pXsBcQ40tAMdJBvD9G+DeufH7rgTCyS9E7IzGG7iOUq5rECEpm+Biz2CpsoD9sFvbacTW3dNHY/VZvnRaWSzluCIsgkruqnI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,75 +113,185 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Relax the early validation checks in the Live Update preservation path
-to allow general shmem-backed files, completely dropping the requirement
-that the file be unlinked (!inode->i_nlink).
-
-This officially enables userspace to push standard, path-backed tmpfs
-file descriptors through the LUO session ioctl instead of being
-artificially restricted strictly to anonymous memfd pseudofiles.
+Extend the multi-session Live Update test to specifically verify the new
+LIVEUPDATE_SESSION_RETRIEVE_INTO_FD ioctl path. In Stage 2 of the kexec
+workflow, the test explicitly delegates topology by allocating a clean
+tmpfs target and driving the folios into it through the new API,
+verifying that the data preserves identically to the native KHO mapping.
 
 Signed-off-by: David Matlack <dmatlack@google.com>
 ---
- mm/memfd_luo.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ .../liveupdate/lib/include/libliveupdate.h    |  1 +
+ .../selftests/liveupdate/lib/lu_utils.c       | 33 +++++++++++
+ .../selftests/liveupdate/luo_multi_session.c  | 56 ++++++++++++++++---
+ 3 files changed, 83 insertions(+), 7 deletions(-)
 
-diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-index dcda5bf98646..107115c97bd8 100644
---- a/mm/memfd_luo.c
-+++ b/mm/memfd_luo.c
-@@ -9,14 +9,15 @@
-  */
+diff --git a/tools/testing/selftests/liveupdate/lib/include/libliveupdate.h b/tools/testing/selftests/liveupdate/lib/include/libliveupdate.h
+index fa07fed08364..8ab1e662eeaa 100644
+--- a/tools/testing/selftests/liveupdate/lib/include/libliveupdate.h
++++ b/tools/testing/selftests/liveupdate/lib/include/libliveupdate.h
+@@ -33,6 +33,7 @@ int luo_session_retrieve_fd(int session_fd, __u64 token);
  
- /**
-- * DOC: Memfd Preservation via LUO
-+ * DOC: Memfd and Tmpfs Preservation via LUO
-  *
-  * Overview
-  * ========
-  *
-- * Memory file descriptors (memfd) can be preserved over a kexec using the Live
-- * Update Orchestrator (LUO) file preservation. This allows userspace to
-- * transfer its memory contents to the next kernel after a kexec.
-+ * Memory file descriptors (memfd) and generic tmpfs files can be preserved
-+ * over a kexec using the Live Update Orchestrator (LUO) file preservation.
-+ * This allows userspace to transfer its memory contents to the next kernel
-+ * after a kexec.
-  *
-  * The preservation is not intended to be transparent. Only select properties of
-  * the file are preserved. All others are reset to default. The preserved
-@@ -24,16 +25,17 @@
-  *
-  * .. note::
-  *    The LUO API is not stabilized yet, so the preserved properties of a memfd
-- *    are also not stable and are subject to backwards incompatible changes.
-+ *    or tmpfs file are also not stable and are subject to backwards
-+ *    incompatible changes.
-  *
-  * .. note::
-- *    Currently a memfd backed by Hugetlb is not supported. Memfds created
-+ *    Currently a file backed by Hugetlb is not supported. Memfds created
-  *    with ``MFD_HUGETLB`` will be rejected.
-  *
-  * Preserved Properties
-  * ====================
-  *
-- * The following properties of the memfd are preserved across kexec:
-+ * The following properties of the memfd/tmpfs file are preserved across kexec:
-  *
-  * File Contents
-  *   All data stored in the file is preserved.
-@@ -580,9 +582,7 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
- static bool memfd_luo_can_preserve(struct liveupdate_file_handler *handler,
- 				   struct file *file)
- {
--	struct inode *inode = file_inode(file);
--
--	return shmem_file(file) && !inode->i_nlink;
-+	return shmem_file(file) || shmem_mapping(file->f_mapping);
+ int create_and_preserve_memfd(int session_fd, int token, const char *data);
+ int restore_and_verify_memfd(int session_fd, int token, const char *expected_data);
++int luo_verify_retrieve_into_memfd(int session_fd, int token, int mfd, const char *expected_data);
+ 
+ void create_state_file(int luo_fd, const char *session_name, int token,
+ 		       int next_stage);
+diff --git a/tools/testing/selftests/liveupdate/lib/lu_utils.c b/tools/testing/selftests/liveupdate/lib/lu_utils.c
+index 74d41115c281..8ed9c367f92e 100644
+--- a/tools/testing/selftests/liveupdate/lib/lu_utils.c
++++ b/tools/testing/selftests/liveupdate/lib/lu_utils.c
+@@ -324,3 +324,36 @@ int luo_test(int argc, char *argv[],
+ 
+ 	return 0;
  }
++
++int luo_verify_retrieve_into_memfd(int session_fd, int token, int mfd,
++				   const char *expected_data)
++{
++	struct liveupdate_session_retrieve_into_fd retrieve_args = {
++		.size = sizeof(retrieve_args),
++		.token = token,
++		.fd = mfd,
++	};
++	long page_size = getpagesize();
++	void *map = MAP_FAILED;
++	int ret = -1;
++
++	ret = ioctl(session_fd, LIVEUPDATE_SESSION_RETRIEVE_INTO_FD, &retrieve_args);
++	if (ret < 0) {
++		ksft_print_msg("ioctl LIVEUPDATE_SESSION_RETRIEVE_INTO_FD failed\n");
++		return -errno;
++	}
++
++	map = mmap(NULL, page_size, PROT_READ, MAP_SHARED, mfd, 0);
++	if (map == MAP_FAILED)
++		return -errno;
++
++	if (expected_data && strcmp(expected_data, map) != 0) {
++		ksft_print_msg("Data mismatch! Expected '%s', Got '%s'\n",
++			       expected_data, (char *)map);
++		munmap(map, page_size);
++		return -EINVAL;
++	}
++
++	munmap(map, page_size);
++	return 0;
++}
+diff --git a/tools/testing/selftests/liveupdate/luo_multi_session.c b/tools/testing/selftests/liveupdate/luo_multi_session.c
+index aac24a5f5ce3..7882f49aadaf 100644
+--- a/tools/testing/selftests/liveupdate/luo_multi_session.c
++++ b/tools/testing/selftests/liveupdate/luo_multi_session.c
+@@ -1,4 +1,9 @@
+ // SPDX-License-Identifier: GPL-2.0-only
++#include <sys/mman.h>
++#include <fcntl.h>
++#include <unistd.h>
++#include <sys/mount.h>
++#include <sys/stat.h>
  
- static unsigned long memfd_luo_get_id(struct file *file)
+ /*
+  * Copyright (c) 2025, Google LLC.
+@@ -31,6 +36,8 @@
+ static void run_stage_1(int luo_fd)
+ {
+ 	int s_empty1_fd, s_empty2_fd, s_files1_fd, s_files2_fd;
++	int tmpfs_fd;
++	void *map;
+ 
+ 	ksft_print_msg("[STAGE 1] Starting pre-kexec setup for multi-session test...\n");
+ 
+@@ -53,25 +60,50 @@ static void run_stage_1(int luo_fd)
+ 	s_files1_fd = luo_create_session(luo_fd, SESSION_FILES_1);
+ 	if (s_files1_fd < 0)
+ 		fail_exit("luo_create_session for '%s'", SESSION_FILES_1);
++	ksft_print_msg("  -> Preserving memfd (token %#x, content: \"%s\")\n",
++		       MFD1_TOKEN, MFD1_DATA);
+ 	if (create_and_preserve_memfd(s_files1_fd, MFD1_TOKEN, MFD1_DATA) < 0) {
+ 		fail_exit("create_and_preserve_memfd for token %#x",
+ 			  MFD1_TOKEN);
+ 	}
+ 
+-	ksft_print_msg("[STAGE 1] Creating session '%s' with two memfds...\n",
++	ksft_print_msg("[STAGE 1] Creating session '%s' with memfd and tmpfs file...\n",
+ 		       SESSION_FILES_2);
+ 
+ 	s_files2_fd = luo_create_session(luo_fd, SESSION_FILES_2);
+ 	if (s_files2_fd < 0)
+ 		fail_exit("luo_create_session for '%s'", SESSION_FILES_2);
++	ksft_print_msg("  -> Preserving memfd (token %#x, content: \"%s\")\n",
++		       MFD2_TOKEN, MFD2_DATA);
+ 	if (create_and_preserve_memfd(s_files2_fd, MFD2_TOKEN, MFD2_DATA) < 0) {
+ 		fail_exit("create_and_preserve_memfd for token %#x",
+ 			  MFD2_TOKEN);
+ 	}
+-	if (create_and_preserve_memfd(s_files2_fd, MFD3_TOKEN, MFD3_DATA) < 0) {
+-		fail_exit("create_and_preserve_memfd for token %#x",
+-			  MFD3_TOKEN);
+-	}
++	ksft_print_msg("  -> Populating custom tmpfs file at /mnt/mfd3_source...\n");
++	mkdir("/mnt", 0777);
++	mount("tmpfs", "/mnt", "tmpfs", 0, NULL);
++	tmpfs_fd = open("/mnt/mfd3_source", O_CREAT | O_RDWR, 0666);
++	if (tmpfs_fd < 0)
++		fail_exit("failed to open tmpfs_fd");
++	ksft_print_msg("  -> Preserving generic tmpfs file (token %#x, content: \"%s\")\n",
++		       MFD3_TOKEN, MFD3_DATA);
++	if (ftruncate(tmpfs_fd, getpagesize()) < 0)
++		fail_exit("ftruncate tmpfs_fd");
++	map = mmap(NULL, getpagesize(), PROT_WRITE, MAP_SHARED, tmpfs_fd, 0);
++	if (map == MAP_FAILED)
++		fail_exit("mmap tmpfs_fd");
++	strcpy(map, MFD3_DATA);
++	munmap(map, getpagesize());
++
++	struct liveupdate_session_preserve_fd preserve_args = {
++		.size = sizeof(preserve_args),
++		.token = MFD3_TOKEN,
++		.fd = tmpfs_fd,
++	};
++	if (ioctl(s_files2_fd, LIVEUPDATE_SESSION_PRESERVE_FD, &preserve_args) < 0)
++		fail_exit("preserve tmpfs fd");
++
++	close(tmpfs_fd);
+ 
+ 	close(luo_fd);
+ 	daemonize_and_wait();
+@@ -110,6 +142,7 @@ static void run_stage_2(int luo_fd, int state_session_fd)
+ 
+ 	ksft_print_msg("[STAGE 2] Verifying contents of session '%s'...\n",
+ 		       SESSION_FILES_1);
++	ksft_print_msg("  -> Retrieving memfd (token %#x) from session...\n", MFD1_TOKEN);
+ 	mfd1 = restore_and_verify_memfd(s_files1_fd, MFD1_TOKEN, MFD1_DATA);
+ 	if (mfd1 < 0)
+ 		fail_exit("restore_and_verify_memfd for token %#x", MFD1_TOKEN);
+@@ -118,14 +151,23 @@ static void run_stage_2(int luo_fd, int state_session_fd)
+ 	ksft_print_msg("[STAGE 2] Verifying contents of session '%s'...\n",
+ 		       SESSION_FILES_2);
+ 
++	ksft_print_msg("  -> Retrieving memfd (token %#x) from session...\n", MFD2_TOKEN);
+ 	mfd2 = restore_and_verify_memfd(s_files2_fd, MFD2_TOKEN, MFD2_DATA);
+ 	if (mfd2 < 0)
+ 		fail_exit("restore_and_verify_memfd for token %#x", MFD2_TOKEN);
+ 	close(mfd2);
+ 
+-	mfd3 = restore_and_verify_memfd(s_files2_fd, MFD3_TOKEN, MFD3_DATA);
++	ksft_print_msg("  -> Creating empty tmpfs file at /mnt/mfd3_target...\n");
++	mkdir("/mnt", 0777);
++	mount("tmpfs", "/mnt", "tmpfs", 0, NULL);
++	mfd3 = open("/mnt/mfd3_target", O_CREAT | O_RDWR, 0666);
+ 	if (mfd3 < 0)
+-		fail_exit("restore_and_verify_memfd for token %#x", MFD3_TOKEN);
++		fail_exit("open tmpfs target for retrieve_into");
++
++	ksft_print_msg("  -> Validating LIVEUPDATE_SESSION_RETRIEVE_INTO_FD (token %#x)...\n",
++		       MFD3_TOKEN);
++	if (luo_verify_retrieve_into_memfd(s_files2_fd, MFD3_TOKEN, mfd3, MFD3_DATA) < 0)
++		fail_exit("luo_verify_retrieve_into_memfd for token %#x", MFD3_TOKEN);
+ 	close(mfd3);
+ 
+ 	ksft_print_msg("[STAGE 2] Test data verified successfully.\n");
 -- 
 2.55.0.966.g6673acef38-goog
 
