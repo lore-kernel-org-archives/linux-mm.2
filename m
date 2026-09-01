@@ -4,114 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC2E2C61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 06:52:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6320EC61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 06:55:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB5826B00C5; Tue,  1 Sep 2026 02:52:49 -0400 (EDT)
+	id 619556B008A; Tue,  1 Sep 2026 02:55:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D8D046B00C6; Tue,  1 Sep 2026 02:52:49 -0400 (EDT)
+	id 5C8ED6B0092; Tue,  1 Sep 2026 02:55:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA3DD6B00C7; Tue,  1 Sep 2026 02:52:49 -0400 (EDT)
+	id 506566B009F; Tue,  1 Sep 2026 02:55:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A78A86B00C5
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 02:52:49 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 13459402DB
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:52:49 +0000 (UTC)
-X-FDA: 85164275658.09.18EB815
-Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 76FC820006
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:52:44 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=klssIaOx;
-	spf=pass (imf13.hostedemail.com: domain of zhaozhengzhuo@uniontech.com designates 54.207.22.56 as permitted sender) smtp.mailfrom=zhaozhengzhuo@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788245567;
-	b=pb7hiEhGtgjqZSWT+fYxaP6+JP34uV1/s4/6ezJIkCtACQkRUS/I2CjKz04J/gD+FY4dm/
-	POAdhNYnzqCes0Nm2zG9afGCphluUt0Hu6qgUKVD2ooGuENc7Y30QM1SZnLjottlQGic9l
-	lAlmSWgelJOoSEX0O6GAzNLGVrv52OY=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=klssIaOx;
-	spf=pass (imf13.hostedemail.com: domain of zhaozhengzhuo@uniontech.com designates 54.207.22.56 as permitted sender) smtp.mailfrom=zhaozhengzhuo@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 30C2E6B008A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 02:55:03 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8C23F16030D
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:55:02 +0000 (UTC)
+X-FDA: 85164281244.13.3DAC73D
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id AD4861C0002
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:55:00 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=iVCF8hbH;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf20.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788245567;
+	s=arc-20220608; t=1788245701;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=FKNpdY0y49xeNECExSigP6VaPuOeny46D+aFWqWtap0=;
-	b=Wc5Lo+NjoIws+G0qONmVyUclzaYIhQutkj2TfjcKyXgNCSIEU8QrdUihfU4QWr8JZ5oy/4
-	HQnumg/vOTgDjIPZFpDxrNczWgpoetXNxuh9Da63n5lpuIg61qYykhOJAhdzo4p8cxu0Aa
-	V72TFPYwKtbpHs4XHy3dsppNb3sstbo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1788245525;
-	bh=FKNpdY0y49xeNECExSigP6VaPuOeny46D+aFWqWtap0=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=klssIaOxnQGAIvxsbgwaiB0uHbjeoodZ9Ydb1V62fz6SrAiFALLHPgdNl6J9R/G8O
-	 TghtATYHvKnM3WZyPCEJL6e0AaXveAEzcVi6c5mn6KSbEJ9g8mL1wLcO7trGkHKu32
-	 IhBjU3e71QCpSRFcTOZBiT+Usva/sVr8WAbFdyZE=
-X-QQ-mid: zesmtpsz9t1788245519t6bfe178e
-X-QQ-Originating-IP: GTVdNpFJNH4oufvYI/kV5iPVNhwkBzEpbgcvoMUGl6g=
-Received: from zzz-PC ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 01 Sep 2026 14:51:51 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 15009900098412866890
-EX-QQ-RecipientCnt: 13
-From: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org
-Cc: David Hildenbrand <david@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
+	bh=ZqHJxMj9cZZ6xGbdiah9c7VOBxKeP9sXbxqvcW+iWvc=;
+	b=6scZ4OXYzRJTYdNqg0kXtS6GdIEWDSSDGvxWoJjUK0vkYl3HCLfXKh81W7apE0QMWGee+a
+	LEwJCwPWMmAILhlaHOExjiJ/rMLNkocC+Qf7prPScapBPd5lS+/XfCLlCg1hew3UiR7aBE
+	noL8cd9ttggU1Xt3Uguy1Ng9Icb16RM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788245701;
+	b=Q14JvJV2Qmbu68iuQCvFMs0hFK+jO+DgMcMaNYDc9yNB8Hn5zJm+7CJtj+LcpC2frldUc3
+	jIy2ilCRFxUEgkIPguuqhMnEMNGg7RraTzbBFDVk/dSpoVoM46dz0CU4vIGcYVgIkqiat8
+	TC3YyNPQ4IuRQpUBMN1xJgi+dzOYMFU=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=iVCF8hbH;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf20.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BE94D1AED;
+	Mon, 31 Aug 2026 23:54:55 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C0D243F85F;
+	Mon, 31 Aug 2026 23:54:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788245699; bh=ce/DLlpHBRa0sOyR5fJVD2nnBUjY9hH50UmSGmi9zDo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=iVCF8hbH09QwEoLLCy5nDqwnQnUTRnYnxct0R9KGT2fNm28OZNlKPL5y/ZVYyLarR
+	 G97VWOjRF0iMyiyBQyL+rUoh+K5lW9l0oQHRuBhT9ntBgfqe+6OndnwbdmNSBBFsWo
+	 ltBmtg/ObqlFYO+SYLvq4upKKiNCWbiCa+XhNDso=
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
 	linux-kernel@vger.kernel.org,
-	zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
-Subject: [PATCH] mm/migrate_device: fix function name in kernel-doc
-Date: Tue,  1 Sep 2026 14:51:31 +0800
-Message-ID: <7D206FC95BDCAA0F+20260901065131.1759298-1-zhaozhengzhuo@uniontech.com>
-X-Mailer: git-send-email 2.50.1
+	linux-mm@kvack.org
+Subject: [PATCH 0/2] arm64/mm: Standardize printing for pgtable entries
+Date: Tue,  1 Sep 2026 12:24:52 +0530
+Message-ID: <20260901065454.1906343-1-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5b-2
-X-QQ-XMAILINFO: MxUsbsd+F+abrwtEfkCkJqgekDuECFw+aREl2OG5bpJZj9IcXCf1GIeO
-	KC1xqhezxOUfLhRFWQqzDzcrDhF0QAnCU19ufcRhfzvBWgheVfzCG22KWyPGu1ZivI23lx2
-	492avRA7EclPpCOmXpRbHDLaqzmCZT4qc4XiBymLVXSq1qmOsj0PpgSVV9HYOSOsf2KM/jo
-	qBaY44EeV67cof8B3wgdQZWDzjzlwNcvEP0WH1zBNDQPJyqwy6fdOhvKfjS9AkJhvy3muCi
-	hESkkTONP7wHWw7FMo61YNR1AhYByjzyI9oJXX3bfEqJrYEA8iFFuvGHM+S0+1zUAFpVX+G
-	mSCedA4+uIg1cSK19ikUOmjffSqhjJArdIgcLHn70vhw5eIoq4A0MrkjVfxc2g8ibZF2UR+
-	CZIKnwKbMMAL/yhgjw5xlbyDms/PybK4QgIafItfE4WvOnLJZP3txmQUVTmqNgyfLIPeAlN
-	rSVQT16Z0nJwtlV2Lut59a7XG2ZcKihzLyN890GCnCVSK1MlmZOviiHawxjiDgxt+CfynuV
-	foyiY35mtlJHl2LS7fK5yN+2la1YVhm7V2097/8DLhIAYC1yMTMGkOvf6un3SMRbGsNpnfd
-	hEpkvavVhiJ6lXwKR/BhFC41CBAeW3js6Pd09rUHOZG8xD+IcZhQuUSx4M3N6M+7RZHhVOM
-	bvlwqAOC8+BCPp13l32W2zGooWH6RpFpQD3TzTC+FqvjMpVBrnTV9tY3OqJ8VIHZRK9pciT
-	7GJdeR7u36P/OMLb9mHdWS4759KTD4v233sImEe97JRH95VVawIuVRFdujFBITA4bXFRal4
-	oUawxpX3iLwu9I3BHqEXlDStYYi22D8gpkHye8XsDS7/s+WArIIW2naAxDYTnfxVaLJMn/M
-	b4LPKyFlGcj+mfjVifDkpg0BqGJJKKB7fV/vjFGuzvEJnAGm8AjPwojbN/FGYUYzk0D5Kvn
-	VL9RYzFsplymjiVMei1Lx24r+pc1xh3MNXxu0bW2Hv9cQdI5ycLCpkyxJJpYedFDz1T1yMV
-	z/jbukpYl6Aum31vmHC7r00VHfkX13sRa6LZzk+g==
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-X-QQ-RECHKSPAM: 0
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: AD4861C0002
+X-Stat-Signature: payre6dq3zdjubgwnaqrcaomyhzgy4c5
 X-Rspam-User: 
-X-Stat-Signature: gpxrccjt8nkp843w7dmkm7fgfru35ewk
-X-Rspamd-Queue-Id: 76FC820006
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788245564-832241
-X-HE-Meta: U2FsdGVkX19mT57wrwtmdLXtj74SIHU4WvXn8HQwSHbPC3oO3DEFUaJJAnqbCfEFwlsaegbRAO/Hbf+yQ2jlZzO42Vya1+pjBprix0z43b747zZraQveAPaZyqJtDO7WYYk74L7KdE6fU9YGsq6G8ykfSc8ijJtXsLcmZ/EbV2KQMo+lcXQYjg4Ro9EZTuMi98yVMeAur5ZBLdgp7DA1JyCr6xfsBChgms15moN39erohz4hy3mEFXgza+h7Z3ecJkeMDeIVsr69YxM5VqgbOA1VWu7qkD5Q8gULyaKQoPmcDczNcMnnD93rgJOnXurq97uzNVVZSivLrEVZ57Jiqp1n8k3p3sDKVYzL6zLpqrmtsB7Ldb21jINQLacgmNYl+jShPscB2q9M2igYFm1HUtmi64wfUuO1iCSdrHCCzKm5iXVjGbDIZoijICwkUPG8PRQH5aaoJcA4TRPCZ2J2u55yDJ9wvrCUa3jImJn2iDfp3gtBwhmpbA/RzTBtbLHr4RhDwqxN2LIK7v6ULFc1EqAgYmmkHfwd2/wjwlVkjLUYZNOYixY6B7XngMqnjtOrtyAim6xRkwrstIt0i0R2Xi4/fl6KqAQkbTGjrjXPPMeS5b0UdkObb+2u0B5UiQ80+JOccivgBNx8CtGAltwuTc1jKbj369RQTkRknWvii8Qllj7vQDHXnGRhw0ixv5yj/ofPetZvDBKWWhklzsWhvtnjkolUXfZdm7TdhY+msnqW3l9tdu9MSIUGSljJItIpIQaG4qu7xo9QKbzwbHEFs9YA0Cz4b49/GFoQTyt+DDKwPh4859N3/wcOSDuXTMJkvobYy7ZK3O3Afv3sIvzfEX6/+hvKJUQNLUzutBvDKtvY70l30X9AchxQBegoSIJ21CLsNlYB/D203hLGegQxvL6lnj3PrP4m0ii/voHjwW/GjPgA3CdYAT+pps3oOLgq/fu4fkNMQB933yzuzvb
- vFFv1lVP
- PfJw7p2BqZzDhfsGHM8kpKneak+GWM6laBTSQ4+3sA1ZeR/nyIInCNapoJ7F/FKcu8EMzA1J/+TZHSeDD5jf3iFyNUMhkp3p9uIJDZ7Jj16unDCs+ETClyEYctUZp+24IH5vkYSP3otqJ0CRwX1f2ko1P/uSzFhkOwzJPLZW0VzUcLOqKm4MjhKyZGUXLrw87u+zRMxZf7MEXqWetpEOxYHe5eGYgvXpPlMCf3fYrZFV/tSlZ90Sn1sFb6XU6eNyxu4f7kRrz4egcU3OgxIP8VXLqn7yiOmymUNmw6nMBNLnNpNPOLYjE598t2ynw/6W+CTqx8rO93hMBoSlMizQyz7vc7Qn0vrZELZhKHqLwFgpbsC2qwIebFn+R2ph2UjSeXdv+p9W+9TnHvLyZZJvwBfd7u5qnGMXTfxhFdjAoeGTC/LCH940NRE4AO8gsG8an8A5qB19u6aslYPikq2cJKfEtIA==
+X-HE-Tag: 1788245700-659126
+X-HE-Meta: U2FsdGVkX18KOSq677U6sL9A+e3M2auS4vu2pXs2fYKanFyZijudfYbdp3hlaL4RXwesbLgiQ7SvmkKpwQycMk2jBqLkWoIfiodA+WdG/arcRHH5RRfv412zCloictAs1pTSDQ0eSNSP10xYuB9dgosT3PUjWPx1poxMTkI0AsZt26FgapcAK3/lFRl6vT9X4+GTW5XVk/tYND5OzbcodeokC24HTfJC4vUlHhina1rikcvE9PzRr014OORhftJyxLi4VqyK/umWhaG+/qK44P9iFofu2np0g/lsqPG1A1F/ecpjPAReuB5N//QH9hXGhUo6Ia0KJVqfl+gVJ8iDHhC3lnXuafocXlaiXWPmNv3fe1QSbmKzRt0dyPq5zjyFRtzMfbk8Sfw/kBJ53zjPevJQ6cARizrcjEXlR656jMaVa5rq+r+o6xCEiy1qgXlyR5BbnTiptZ59yN2Z+68gGwC1VvldOoJ6C3JQ3f4dfDffN8dvR8/fdpZ981lt48GOmpLNfmLzkFt+CbrOB0Db+D4smawC52hi+/3wrtAQmSE9wc7mC6rr8CFQV9qOsG6f56AhRP51fhcyOAkveZFXfVGdw4YPWaA8cobHEau5s77lKezHcMxgFIB5OhvbMOg+FEUHKg7Iv/zcSoRjkQwI24BNl3HB51Bled2/2J2jR5qJBCNHvgXv7ZtNFl3PljMlWCfhBJbxL79JWpPMk76Z9iP6xVrG4IkYCYy8XmYHwe0MjVyoELVXqAzrOGkvqxmdFu4Tvz0so7OoMHAPquKbA24Jp6g5CYHnVvKPFZjwkIexbALw3tnmtz9YkCnHgER5m878wn7v6lEin2u/P5eM5RKxXCTNYcJ8AXZFFCf1MeSj6FZIIqGTztB7DkW+wDdwP4uVWULYDEKIJclRmaHHjvAoq7uoZv0VUNhpBTp4z+43pBjLarGS1tnmYnuKrRyE1DE8TjQPOJ1u7rlEEaQ
+ +nsg1eVR
+ Gw8Th8c524t7WB2v88hzBjylUNIVmACoVKJhAxxgOK89vQGs498wJrurHUrgZxVoiLkxZdxHMyOd9mHHpOQS9byz84Fn12DjSKOjoKFd3+PNesBD6o/CTGtJ0KGPeQ0ldh6gAM6rgqqj8ntcVmCk5k3vr0omvBx8bX/M3V5qvADoUd5xn6nlDSxc6HRck18fq8p7t2WY6rlTuuQE9CuRJSgdT+Rs86VKdtk5njkdT8rp/8T7P7YX1MyI0Ci04lQkCsTCWjzYKBMzHD6GCEbQW9mP6WuXwpIwv7eD/33LUr55qUemv7KuAdEcbB7u4uLUXV7COPSkTUDytoxx14QhLxv0yf8QFJCVmVqYKJE/XIsZXi9Ier24Mj0TU6nvRSVsXjpmujCaXZ4S6aKaSzW1GsstiGOcYecBBdzH6H/2s2znCEqNUoeL44PRybhZ3+tvI5VvNTH2Da7yh/WcW7wgNYLNJTXd6E5OqDmlPUFOMO7sfRo4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,35 +92,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The kernel-doc for migrate_device_range() says that migrate_vma_setup()
-is similar to itself.  Refer to migrate_device_range() as the subject of
-the comparison, making the distinction between virtual-address-based and
-device-PFN-based migration clear.
+Standardize printing for pgtable entries using recently introduced generic
+helper ptval_bytes_to_hex_str() in core MM which automatically enables 128
+bits entries when added later.
 
-Fixes: e778406b40db ("mm/migrate_device.c: add migrate_device_range()")
-Signed-off-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
----
- mm/migrate_device.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+But first move __check_safe_pte_update() outside <asm/pgtable.h> to avoid
+a cyclic dependency while accessing these afore mentioned core MM helpers
+defined in <linux/pgtable.h>. This replaces the original page table entry
+print standardisation proposal which was earlier part of the D128 series.
 
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index 009bfa8b212d..4a614a3488ed 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -1398,9 +1398,9 @@ static unsigned long migrate_device_pfn_lock(unsigned long pfn)
-  * @start: starting pfn in the range to migrate.
-  * @npages: number of pages to migrate.
-  *
-- * migrate_vma_setup() is similar in concept to migrate_vma_setup() except that
-- * instead of looking up pages based on virtual address mappings a range of
-- * device pfns that should be migrated to system memory is used instead.
-+ * migrate_device_range() is similar in concept to migrate_vma_setup(), except
-+ * that instead of looking up pages based on virtual address mappings a range
-+ * of device pfns that should be migrated to system memory is used instead.
-  *
-  * This is useful when a driver needs to free device memory but doesn't know the
-  * virtual mappings of every page that may be in device memory. For example this
+https://lore.kernel.org/linux-mm/20260729122452.3797443-11-anshuman.khandual@arm.com/
+
+This series applies on v7.3-rc1 but after the following.
+
+https://lore.kernel.org/linux-mm/20260831054331.625505-1-anshuman.khandual@arm.com/
+
+Cc: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org
+
+Anshuman Khandual (2):
+  arm64/mm: Move __check_safe_pte_update()
+  arm64/mm: Standardize printing for pgtable entries
+
+ arch/arm64/include/asm/pgtable.h | 47 +-----------------------------
+ arch/arm64/mm/fault.c            | 20 +++++++++----
+ arch/arm64/mm/mmu.c              | 49 ++++++++++++++++++++++++++++++++
+ 3 files changed, 65 insertions(+), 51 deletions(-)
+
 -- 
-2.50.1
+2.43.0
 
 
