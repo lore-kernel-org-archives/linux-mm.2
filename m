@@ -4,86 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEA21C61DE4
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 06:38:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D00EAC61DD6
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 06:43:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5DA96B00A9; Tue,  1 Sep 2026 02:38:30 -0400 (EDT)
+	id DA2BD6B00AE; Tue,  1 Sep 2026 02:43:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E35DA6B00AE; Tue,  1 Sep 2026 02:38:30 -0400 (EDT)
+	id D53AE6B00B2; Tue,  1 Sep 2026 02:43:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFCD76B00B0; Tue,  1 Sep 2026 02:38:30 -0400 (EDT)
+	id C1B576B00B4; Tue,  1 Sep 2026 02:43:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id ACD006B00A9
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 02:38:30 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3AA14120361
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:38:30 +0000 (UTC)
-X-FDA: 85164239580.22.CC836CE
-Received: from mta0.migadu.com (out-24.mta0.migadu.com [91.218.175.24])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 37CB280007
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:38:27 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	spf=pass (imf02.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.24 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 956916B00AE
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 02:43:05 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0CFADA3F27
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:43:05 +0000 (UTC)
+X-FDA: 85164251130.29.CF7D64D
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 3CF59180006
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:43:03 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eMxazzka;
+	spf=pass (imf24.hostedemail.com: domain of tahasezer.is@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=tahasezer.is@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788244708;
-	b=meUkidi88MLw6bcE/gNcnUjfPXV9a5bKVOOWpqmk0wKIMv7+TU0v2swNk6SCPclDPDhpnv
-	xNbOPSIqzGnPRQXDRIj3qFD6/HVMyB/ZPdnVgLlCyUGz5EuK9dKhoaNSR0UCaBqPhtRI7L
-	U3XQUoUE4IMoQ2TDUf8xOL4IvFfHUY4=
+	t=1788244983;
+	b=xzSo7LfB18Gkh49Crb59I1H1QXLcRwT895mlY1RpG5lwp+BopAYJfpB1LrAWsBgVtVXZ1a
+	u3m1cgFdhAiQfjQlTl028NeJpO78VwCdNE5UppFNYSNYuKn0VqiR45HoNI9OE9YqNHwHG8
+	PIO4Q/89llH4zLoRPb/wZeK1eYWlpRI=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.24 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=none
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eMxazzka;
+	spf=pass (imf24.hostedemail.com: domain of tahasezer.is@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=tahasezer.is@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788244708;
+	s=arc-20220608; t=1788244983;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Au3HySE7i/GQnk1tiOZZwgh7jN1CwFQPIHncYIHBT9k=;
-	b=uBIx8yBmOGRoAJQ7aHg0MWkOJz1NSqdxELTZW9MhskqT0NXqMmiv/BuU7pdLg1N/XUAFtb
-	Sl/C+IwwXmrdjhtxHiT2BjnDfmzGb0Xfng6fpdOpObp6AwYf7rdeSHOF6FYXROIPty7Id/
-	Y2Wfr6nEUGp+369exrQaQ6HvDpKbyXY=
-X-Envelope-To: linux-mm@kvack.org
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 07372f654a95b094;
-	Tue, 01 Sep 2026 06:38:26 +0000
-X-Mizu-Trace-ID: 07372f654a95b094
-X-Migadu-Flow: FLOW_OUT
-From: Baoquan He <hebaoquan@kylinos.cn>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	baohua@kernel.org,
-	kasong@tencent.com,
-	shakeel.butt@linux.dev,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	david@kernel.org,
-	rostedt@goodmis.org,
-	mhiramat@kernel.org,
-	hannes@cmpxchg.org,
-	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH v2 4/4] mm/mglru: count PUD subtrees skipped by the PUD-level filter
-Date: Tue,  1 Sep 2026 14:37:55 +0800
-Message-ID: <20260901063755.1519710-5-hebaoquan@kylinos.cn>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260901063755.1519710-1-hebaoquan@kylinos.cn>
-References: <20260901063755.1519710-1-hebaoquan@kylinos.cn>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+0mkAKxF+MYjQouhURxCh1vledmCnXNSmvpvHTqzwp4=;
+	b=qCmV6TFyAXOXVcL0Sep4rLcXn499zxr186kxEmuaizWhmARXIsOIZIb/xjAnhbgfnVj8ON
+	Dtflv7avRRZBzSy7KoleCtVhvEXk7HXqyM9n2Zx6GjpMqDp34GR2U+5TDHot2dmxzhZ2j8
+	nqNhS/XFG4QBoC74XYAO99FS9unD6SE=
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-48441a2ba1bso359069f8f.1
+        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 23:43:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788244982; x=1788849782; darn=kvack.org;
+        h=references:in-reply-to:subject:cc:to:from:content-transfer-encoding
+         :mime-version:content-type:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+0mkAKxF+MYjQouhURxCh1vledmCnXNSmvpvHTqzwp4=;
+        b=eMxazzka10nStAyQiZTRbTD2KbnxdehIHN/XbIjF4rt09jFQUBc+TmuMrx4j9ShDTN
+         q9CiLeKTYrGsjC3+6txm+gVLlfsY1pIUIkGop4Y18LQA/CgVe+5WsgnQIDgYw3iDc3jn
+         9D5uZJxGOc9dg8Lzn2LZUCbmXigRlRrNm2WzLhWOfBgTaWXsCLn02Wrxghx+J9Ab2zgO
+         /RsCMZpr05SegCP9C6hOuVuXwFwrbGcsdb/MalnVa63QPcX0YAplzDL2+ETGL4rEfCNn
+         ItOawAiU0xgvQ8w9rrnlJIeFXoou8pm+n061D+Hi0zVuEw5PNPMu2g8mpvUeKJHWp8A3
+         H90Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788244982; x=1788849782;
+        h=references:in-reply-to:subject:cc:to:from:content-transfer-encoding
+         :mime-version:content-type:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+0mkAKxF+MYjQouhURxCh1vledmCnXNSmvpvHTqzwp4=;
+        b=a3kKiGG2V1HsY5HT9K0jSLaAnz1wfV6lcHm7u54nMEdcU3Hm8L6UlwKyczabNSrWRw
+         2jQdAyqbV3Aqa092AVpkT5MK9QnNlbjbJqc0WqDqUHK+vibLPQcm5vhEBKMm43q174tW
+         LrAu7mHmxEyfX+BgjRmZJA1rNxXcNW4W58SDiu3oLNxG5aczO80lDN+9onGQOCrZtcqG
+         W2fmVfvNwa/AkvMzmAt5eonZkMj3PHdQs4UyeGrfFEPN7FiF1/6rZHmxQHVtenYIbzO7
+         +QjQS7iZtnMrTl6OUi+W9t3LNxBPpytF9kErRj6LKf2JJ6ycU4aTqcQv888VnBzSc8wO
+         nVRQ==
+X-Forwarded-Encrypted: i=1; AKwUvByHrhykl9hQFmyNV8G5jGI5u6t5knnNpJOHMki5dI30FOifHfx19XRgF5wsDqBYyNhF/+m7J77ywA==@kvack.org
+X-Gm-Message-State: AFuF++ma5ihFBloAVNaJiF1Cwq9FHVeRNlS/jrDpQ2EF1ffurUABwEeT
+	b6DikdAvU7c47O1YaQXL+u6r9evKuumVS6RHd6FP78oSgOb23vfRavVh
+X-Gm-Gg: AYBFou32yGZBhem6N/1fNEvsCkpxvA4Pb4G8dnSqIQcEJH05t5csB3dQzzkYWbr7ciJ
+	tTwabCqP9KpxuCrbCNrJPS9wZkDhupuo/RYoq2NyoFExNjV2y9lMYst2N2hGsaYxD0OPHJxiqHQ
+	mKq0vIkppWGK+fL4fKRNY+8CEgtbPEIM5Sm/AKatcnSrVenfpH/PI3QjbF7uQvNj2lfjW5nC5Er
+	PSC+6Q5zD/mrzApVjI2GfyFHT0y4bKqkDP1WI3gDUQBC7JozPANkfdbfrZew7twyYX80uYsFDFS
+	MJGk5qebmY8RQU2oUK/uAcoFCy35PyTX+/zWdLSRgJ7KRP0+a4XzUlYJZLPidIEF6tAnDoJfMFi
+	BM3ibUIqgIsrRad3uJfy3+xX1geZvOlN6kukKwwiB/2biIHzbTZ6jwizgTTkb7p0FSDLsCjWZ0Q
+	bjHLgsPin107R6iM4N4U3kOmrISTlIMN/xRqBDxS65mGL4/j2Uu4Z1Abmx5US/mygWDpobmo9qQ
+	e9muxNDir85osa+Lion4wPNepltquVP
+X-Received: by 2002:a5d:6dd2:0:b0:484:416b:7590 with SMTP id ffacd0b85a97d-484416b764emr6601921f8f.10.1788244981559;
+        Mon, 31 Aug 2026 23:43:01 -0700 (PDT)
+Received: from Minno.localdomain ([193.192.121.123])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48442d3c460sm2724832f8f.13.2026.08.31.23.42.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Aug 2026 23:43:00 -0700 (PDT)
+Message-ID: <6a9673f4.cbade83c.66f7c.3d66@mx.google.com>
+Date: Mon, 31 Aug 2026 23:43:00 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: base64
+From: Taha Sezer <tahasezer.is@gmail.com>
+To: ljs@kernel.org, akpm@linux-foundation.org
+Cc: david@kernel.org, vbabka@kernel.org, mhocko@suse.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: vmpressure: scale window size based on machine memory
+In-Reply-To: <20260831130316.448-1-tahasezer.is@gmail.com>
+References: <20260831130316.448-1-tahasezer.is@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 37CB280007
-X-Stat-Signature: fita13sxsngnmw19yiujqguqcoiuj3ps
-X-HE-Tag: 1788244707-702403
-X-HE-Meta: U2FsdGVkX1865vzrR2vSX8slxuFmuhsIz2WiUza1vf4c5yPtyxOS5lx+U2++BNA7bTB20ctaEnvB/H6xObCa+YY1BbBj93pKmhm86opKQEvSezHvB9mLc9XBQ8dl9FUPrOrDkHSnDUOhEhfNHPKvRSsaWRN6skJbTUnFBJAbEHRRNVTSRmDrgBO5NBMJGbdwSvBhlE+RokbM0BmuC1yk2N5l7hdS5p9pmsQ0e4XHeWU+v5D/NUNFQRC6kIYdRgPTXk5awZQEwktX+lSix9duHfW5EboOqCi8M7obPZzJZK6DXV1OBSST3tQHNfSRe3mhbJ8VtRpxznHwoKCVWGzZmBOv03nep1a2BLUKWeg0Jc4tQZZhKEnlBPpqaTChnX4nAG82JUtVun7DWDeqnQ9JeRTvbEQ73xIoux8PyXxrVrXUTOmGdgjokz4JIjzkBo5AaLvt+it4dpqbr/clxjuzcDjeMvFv1OmV2oxgnjnF1BZMOmQsuwGi/gsAXvKHb1F24O+9akn55GEci6XhAIYsVj8y84fM7ehTg8YxxNU5yHc6NokAye1s3T3DF273o0yHplifcTVnVrRBvp1n4JoaRLN+0JWQsxMo9Z/FP+aVanC9aRYuZplhWNPbfmB2hLUbe+yEbujYM2CFR3GINH3EyxUK9N4s/6T5K6HMdXW7ChORGd26XrNTl0U7ogbRNNjBInU+Kj2xw+fVkXAVzTc1TzbAAgOknjm1XtSk/a6Amz8UJ/dboYXbTHR8OgUVG5bl54/mx+5I/kRuX+TykgHqQWwOf+Z7B8eiT/wQeo9+4tIHyA5b/Vdf9PXQlnGILpoSGpO9YTkfkQiU2LcLjLib/MipW79x9x4GcuX8Xn8jlqNr2JeTa1sUnAXXkObz0r+9BR/MMEqSQv6fJxdIPdfYPTc2X6r1oR75gr3V6Sc5qVy1ez/yX1ZQbW7ZcCwgiwN/BYC7fBY3jUBqYwFQnEp
- LB9bQY7x
- 1neKsfAKBxPp6R1ZboW62DSmnrWbibsEemwWisQ6qNY2QKiIV7XdpdBe/DpLcKJXCq0WLUx+HRk0Wv3rTLZwLIPQuN36eaUJ0arSwLHqD9nRdj59W0eaqm3C9takJ62Lu6tCBeXiQfeyyHQhD+2akhZA53uVLhcJLBUc2s0YEyPJLTgsqpn8e9vIhcY9MYH6jdoDUmEExIum1LykhuNvmYR2lrthxUyhXfcdD
+X-Stat-Signature: enqaqczkz3cnuimnbdfeiuc1bry3ujcm
+X-Rspamd-Queue-Id: 3CF59180006
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788244983-169950
+X-HE-Meta: U2FsdGVkX18lbbpYvHIl3b9mmQYBv6+C2gl+tWb95QmTfYjbE+5Ag/29s4YsVp7NK3dvwg2bbivq6AhsF0fqv8b4/7mYjQDsRgUbPDw533eQsXBxE+5jV6qAuUKKd0rtPDxmjJnBdg6x4BY/NDLL63PgP/SkCDuHq1cGXHzxuANdsMSEXAPhDWHqpKN5+4xJbuzHCHIwvgQnVr9KI+r3efopy9Jg2WFtl54pH29LxYVsaRkijdvvgXTHjohRfW5oA5iUPo1SVzAw4cUcBm+gCJ//i1BXaE3i/1vXXdzA47suD7s8euB+CVbREEsE+TbXmTasmWlk9d89/g+FnzVJHHV7872R8fS7qvKJdvJW4a+AFwUquyOjLcrhsPAPqWk80b82X51o7hphdT2rerR7mR44cXaLnk7ej69h5zXZz1JIGcHWf1H/Gg7srmleyKW10XoqelM+2vEnruqZfG2vhfduvYiKNgvSRLT6W0SsFfCSuND9V+Mok5Fi5UkEjaVm3CI1L65wAQeUTJEYtuP/7uMUZ9waMQEUD+JZ/9GzgpYT+HxJ8f54fiMheTJTsWOfqwO9YpBJS6k9aWMATzQC9rYtw5jwfuI12iCgEh/Wrp9qUkPsUvtdBSzMzVJr0wg4TQJmjYdF0ykDhLZUSA9+aDHU+V1V/ss8nKyhmsd7IXoVqWlX1nwgTiQVX2onBtmQmZPiqZO27vs9dxiZl4eYlbWfDjZvIJ6uTY7lMtuoDNOQ/XUJXj9KnH4dT+CUzlBQG8ZV9DUOwnOtM0JIBklX80EHEnENnjjxcP33iX+T6wDOzbqYdosgmoBG3Z0hoZ3hRWMdpTB3TwNNxs/+BAK9EaEEzjj5IYGlCnUhZXTgPUxhz5DhOsz61cySFhdKVjSnKtI+cHjTa5PQqYDRQwMLfRdCQIG1m1h7HmPxCeIpqJHqnW0TUEdcYuiSPUnWFeVeQbgco/cMB0dA70ZNvzp
+ JFytgS/v
+ fOvGfsKhDts6oqpvcu/JMHXIIfYyYqCXEQc0CcxNEnvsoHU+N2/KJM9c2XeJ+aShb8vaPyOAQCf9txPgRfwpCGDMo7Lxxk0vH3AXLAVsEX78EfTq0Iq9tKe67+lKf6XSU6kEb+pmv3B5RBiJNvhpr5ozrzB2OwR7y2KYs6pqKyXjkeMP8KfAOhR1xANVK2Zyk2hbq15RAFEYTuCz8QTRli7KrRi+tUWUoa07X8Gp2qbXiueHmzVFqgkkbQPOybKZ2KJReiKsxMRwYqpeNq9tfghy1BxaFAO8JoTJZRrfYbrKGyrz+cQ8Vz1CCQHrLsNCI8qPgD21TOljzeAbFgC4iV7ZT2VVudgK0kh7MESeLopG0lUXRUhfXAAjLMqTr6y5VEduLHd0UFtXydGiikuU/tE6DEx+6MkUahxIJalVFtUkhQHNxru4qTsm+RIGdhKz6XmJE1iIby5c0j6nqETKlQdoR97HLsXwdFD8I5pi9YO/SOYI+bUm42w7/pcQIhbeJyuFFcwDZATSe2yU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,115 +119,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add MM_PUD_EMPTY_SKIPPED, incremented in walk_pud_range() whenever a PUD
-subtree is skipped by the filter. Like other counters accumulated
-per walk, shown in debugfs lru_gen output (the "S" column of TYFALWEES)
-and via the mm_vmscan_lru_gen_walk tracepoint, so the avoided cost
-by the filter can be measured directly.
-
-Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
----
- include/linux/mmzone.h        |  1 +
- include/trace/events/vmscan.h | 10 ++++++----
- mm/vmscan.c                   | 13 ++++++++-----
- 3 files changed, 15 insertions(+), 9 deletions(-)
-
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index faf28d35065d..276d0ca8d1c1 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -599,6 +599,7 @@ enum {
- 	MM_WALK_TOTAL,		/* page-table walks completed */
- 	MM_WALK_EMPTY,		/* walks that found no folio in this lruvec */
- 	MM_LEAF_EMPTY_WALKS,	/* leaf entries scanned during empty walks */
-+	MM_PUD_EMPTY_SKIPPED,	/* PUD subtrees skipped by the PUD-level filter */
- 	NR_MM_STATS
- };
- 
-diff --git a/include/trace/events/vmscan.h b/include/trace/events/vmscan.h
-index 695d6fefc606..1cf031d88290 100644
---- a/include/trace/events/vmscan.h
-+++ b/include/trace/events/vmscan.h
-@@ -662,9 +662,9 @@ TRACE_EVENT(mm_vmscan_kswapd_clear_hopeless,
- TRACE_EVENT(mm_vmscan_lru_gen_walk,
- 
- 	TP_PROTO(int nid, unsigned long seq, int leaf_total,
--		 int leaf_associated, bool empty),
-+		 int leaf_associated, bool empty, int pud_skipped),
- 
--	TP_ARGS(nid, seq, leaf_total, leaf_associated, empty),
-+	TP_ARGS(nid, seq, leaf_total, leaf_associated, empty, pud_skipped),
- 
- 	TP_STRUCT__entry(
- 		__field(int, nid)
-@@ -672,6 +672,7 @@ TRACE_EVENT(mm_vmscan_lru_gen_walk,
- 		__field(int, leaf_total)
- 		__field(int, leaf_associated)
- 		__field(bool, empty)
-+		__field(int, pud_skipped)
- 	),
- 
- 	TP_fast_assign(
-@@ -680,11 +681,12 @@ TRACE_EVENT(mm_vmscan_lru_gen_walk,
- 		__entry->leaf_total = leaf_total;
- 		__entry->leaf_associated = leaf_associated;
- 		__entry->empty = empty;
-+		__entry->pud_skipped = pud_skipped;
- 	),
- 
--	TP_printk("nid=%d seq=%lu leaf_total=%d leaf_associated=%d empty=%d",
-+	TP_printk("nid=%d seq=%lu leaf_total=%d leaf_associated=%d empty=%d pud_skipped=%d",
- 		__entry->nid, __entry->seq, __entry->leaf_total,
--		__entry->leaf_associated, __entry->empty)
-+		__entry->leaf_associated, __entry->empty, __entry->pud_skipped)
- );
- 
- #endif /* _TRACE_VMSCAN_H */
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 955585626387..035bd9ea49aa 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3857,8 +3857,10 @@ static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long end,
- 			continue;
- 
- 		/* Skip a subtree whose 512 PMDs all failed the PMD-level filter last gen */
--		if (!walk->force_scan && !test_pud_bloom_filter(mm_state, walk->seq, pud + i))
-+		if (!walk->force_scan && !test_pud_bloom_filter(mm_state, walk->seq, pud + i)) {
-+			walk->mm_stats[MM_PUD_EMPTY_SKIPPED]++;
- 			continue;
-+		}
- 
- 		if (walk_pmd_range(&val, addr, next, args))
- 			update_pud_bloom_filter(mm_state, walk->seq + 1, pud + i);
-@@ -4182,7 +4184,8 @@ static bool try_to_inc_max_seq(struct lruvec *lruvec, unsigned long seq,
- 			trace_mm_vmscan_lru_gen_walk(
- 					lruvec_pgdat(lruvec)->node_id, walk->seq,
- 					walk->mm_stats[MM_LEAF_TOTAL],
--					walk->mm_stats[MM_LEAF_ASSOCIATED], empty);
-+					walk->mm_stats[MM_LEAF_ASSOCIATED], empty,
-+					walk->mm_stats[MM_PUD_EMPTY_SKIPPED]);
- 		}
- 	} while (mm);
- done:
-@@ -5664,14 +5667,14 @@ static void lru_gen_seq_show_full(struct seq_file *m, struct lruvec *lruvec,
- 
- 	seq_puts(m, "                      ");
- 	for (i = 0; i < NR_MM_STATS; i++) {
--		const char *s = "xxxxxxxx";
-+		const char *s = "xxxxxxxxx";
- 		unsigned long n = 0;
- 
- 		if (seq == max_seq && NR_HIST_GENS == 1) {
--			s = "TYFALWEE";
-+			s = "TYFALWEES";
- 			n = READ_ONCE(mm_state->stats[hist][i]);
- 		} else if (seq != max_seq && NR_HIST_GENS > 1) {
--			s = "tyfalwee";
-+			s = "tyfalwees";
- 			n = READ_ONCE(mm_state->stats[hist][i]);
- 		}
- 
--- 
-2.54.0
-
+SGkgTG9yZW56bywgQW5kcmV3LAoKVGhhbmtzIGZvciB0aGUgaG9uZXN0IGFuZCB0aG9yb3VnaCBy
+ZXZpZXcuCgpMb3JlbnpvIC0tIHllcywgSSBkaWQgdXNlIGFuIEFJIGNvZGluZyBhc3Npc3RhbnQg
+KENsYXVkZSkgdG8gaGVscAp3cml0ZSB0aGlzIHBhdGNoLiBJIHNob3VsZCBoYXZlIGluY2x1ZGVk
+IGFuIEFzc2lzdGVkLWJ5OiB0YWcgZnJvbQp0aGUgc3RhcnQgYW5kIEkgYXBvbG9naXNlIGZvciB0
+aGUgb21pc3Npb24uIFRoYXQgd2FzIGEgbWlzdGFrZSBvbgpteSBwYXJ0LCBub3QgYW4gYXR0ZW1w
+dCB0byBoaWRlIGFueXRoaW5nIC0tIEkgc2ltcGx5IHdhcyBub3QgYXdhcmUgb2YKdGhlIGRpc2Ns
+b3N1cmUgcHJvY2VzcyBmb3IgbXkgZmlyc3Qgc3VibWlzc2lvbi4KCkFuZHJldyAtLSB5b3UgYXJl
+IGFic29sdXRlbHkgcmlnaHQgYWJvdXQgdGhlIG1hdGguIFRoZSBvcmlnaW5hbCB3aW5kb3cKaXMg
+U1dBUF9DTFVTVEVSX01BWCAqIDE2ID0gNTEyIHBhZ2VzLCBhbmQgbXkgZm9ybXVsYSBjbGFtcChm
+bHMobWVtKSwKNCwgNjQpIHByb2R1Y2VzIHZhbHVlcyB3ZWxsIGJlbG93IDE2IGZvciBldmVyeSBt
+YWNoaW5lIHVuZGVyIH44IFRCLgpUaGUgcGF0Y2ggc2hyaW5rcyB0aGUgd2luZG93IG9uIHZpcnR1
+YWxseSBhbGwgcmVhbCBoYXJkd2FyZSwgd2hpY2ggaXMKdGhlIGV4YWN0IG9wcG9zaXRlIG9mIHdo
+YXQgdGhlIGNvbW1pdCBtZXNzYWdlIHByb21pc2VzLiBFbWJhcnJhc3NpbmcsCmFuZCBJIHNob3Vs
+ZCBoYXZlIGNhdWdodCB0aGlzIGJlZm9yZSBzZW5kaW5nLgoKRm9yIGEgYml0IG9mIGNvbnRleHQg
+b24gd2h5IEkgY2hvc2UgbW0vOiBJIGhhdmUgYmVlbiB3cml0aW5nIGEgaG9iYnkKa2VybmVsIGZy
+b20gc2NyYXRjaCAoQ2FlbHVtKSB0aGF0IGluY2x1ZGVzIGEgVk1NIHdpdGggQ09XIGFuZCBkZW1h
+bmQKcGFnaW5nLCBhIHNsYWIgYWxsb2NhdG9yIHdpdGggTlVNQS1hd2FyZSBhbGxvY2F0aW9uLCBU
+TEIgc2hvb3Rkb3duCnZpYSBJUEksIGFuZCBTTVAgYm9vdCAtLSBzbyBtZW1vcnkgbWFuYWdlbWVu
+dCBpcyB0aGUgYXJlYSBJIGFtIG1vc3QKY29tZm9ydGFibGUgd2l0aC4gVGhhdCBzYWlkLCBjb21m
+b3J0YWJsZSB3aXRoIHRoZSBjb25jZXB0cyBjbGVhcmx5CmRpZCBub3Qgc2F2ZSBtZSBmcm9tIGEg
+YmFzaWMgYXJpdGhtZXRpYyBtaXN0YWtlIGhlcmUsIGFuZCBJIHRha2UgZnVsbApyZXNwb25zaWJp
+bGl0eSBmb3Igbm90IHZlcmlmeWluZyB0aGUgb3V0cHV0IGNhcmVmdWxseSBlbm91Z2guCgpCZWZv
+cmUgSSBzZW5kIGEgdjIsIEkgd291bGQgYXBwcmVjaWF0ZSBhbnkgZ3VpZGFuY2U6CgogIDEuIElz
+IHRoZSBnZW5lcmFsIGlkZWEgc3RpbGwgd29ydGggcHVyc3VpbmcgLS0gc2NhbGluZyB0aGUgd2lu
+ZG93CiAgICAgbG9nYXJpdGhtaWNhbGx5IHdpdGggdG90YWwgUkFNIHVzaW5nIGZscygpLCBvciBk
+byB5b3UgdGhpbmsKICAgICB0aGUgZml4ZWQgNTEyLXBhZ2Ugd2luZG93IGlzIGZpbmUgYXMtaXMg
+YW5kIHRoaXMgVE9ETyBpcwogICAgIGJldHRlciBsZWZ0IGFsb25lPwoKICAyLiBJZiB0aGUgYXBw
+cm9hY2ggaXMgd29ydGggZml4aW5nOiB3b3VsZCBrZWVwaW5nIHRoZSBvcmlnaW5hbAogICAgIG11
+bHRpcGxpZXIgb2YgMTYgYXMgdGhlIGZsb29yIChzbyB0aGUgd2luZG93IG9ubHkgZXZlciBncm93
+cwogICAgIGJleW9uZCA1MTIgcGFnZXMpIGJlIHRoZSByaWdodCBkaXJlY3Rpb24sIG9yIHdvdWxk
+IHlvdSBwcmVmZXIKICAgICBhIGRpZmZlcmVudCBzY2FsaW5nIHN0cmF0ZWd5IGVudGlyZWx5PwoK
+ICAzLiBBbnkgb3RoZXIgYWR2aWNlIGZvciBhIGZpcnN0LXRpbWUgY29udHJpYnV0b3Igb24gaG93
+IHRvCiAgICAgYXBwcm9hY2ggbW0vIHBhdGNoZXMgbW9yZSBjYXJlZnVsbHk/CgpJIHdpbGwgaG9s
+ZCBvZmYgb24gdjIgdW50aWwgSSBoZWFyIGJhY2ssIHNvIEkgZG8gbm90IHdhc3RlIGFueW9uZSdz
+CnRpbWUgd2l0aCBhbm90aGVyIGhhbGYtYmFrZWQgYXR0ZW1wdC4gVGhlIG5leHQgdmVyc2lvbiB3
+aWxsIGluY2x1ZGUKYSBwcm9wZXIgQXNzaXN0ZWQtYnk6IENsYXVkZTpjbGF1ZGUtb3B1cy00IHRh
+Zy4KClRoYW5rcyBhZ2FpbiBmb3IgdGhlIHBhdGllbmNlLgoKQmVzdCByZWdhcmRzLApUYWhhIFNl
+emVyCg==
 
