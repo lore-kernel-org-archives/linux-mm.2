@@ -4,103 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D406EC61DE4
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 05:49:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C4E6C61DD6
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 05:56:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEA936B00C3; Tue,  1 Sep 2026 01:49:44 -0400 (EDT)
+	id 0C6216B008A; Tue,  1 Sep 2026 01:56:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9BC76B00CA; Tue,  1 Sep 2026 01:49:44 -0400 (EDT)
+	id 077306B009E; Tue,  1 Sep 2026 01:56:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB1E96B00CC; Tue,  1 Sep 2026 01:49:44 -0400 (EDT)
+	id ECF6A6B00A1; Tue,  1 Sep 2026 01:56:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B9ACB6B00C3
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 01:49:44 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4EE7B1402A6
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 05:49:44 +0000 (UTC)
-X-FDA: 85164116688.12.A867691
+	by kanga.kvack.org (Postfix) with ESMTP id CF9EA6B008A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 01:56:13 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 568B1A3EA0
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 05:56:13 +0000 (UTC)
+X-FDA: 85164133026.04.3720919
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 4A36B40008
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 05:49:42 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="iOm5pX/1";
-	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id A5035100005
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 05:56:11 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ou7BODbI;
+	spf=pass (imf05.hostedemail.com: domain of xiang@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=xiang@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788241782;
+	s=arc-20220608; t=1788242171;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uYLfDNhDWWaiAca3YsvDlwUL0hP6uL2nUvfLd7YMwqo=;
-	b=kRCW+LZo4d5VNqDNsIpjuDikwgAIlVgKDUgjsokJs0vbHijOimvMTY4GpUmALFU6GZOpmi
-	wmh+30DWxLX9/AuDnu7QIt+aWgj7Dt/sohwX0L3vYou3qmYmzVwlZy9s2X+Y/pjNipiGN/
-	GI207fHNksWnSTa3u3G45722XMhV/os=
+	bh=3Mnj837MmtIz++Lx3CjViaHZJuFNdZX481goDRHR5Jo=;
+	b=NThxo3OEzM9p9IBqbge3ezhRIz8OCXiem437dZ+04tK4ElodxMr/5ZkmxwIdCRgcPsul4U
+	x9O0hs+thExdQOD1jvmYC8WeJ5Jk67mNnFrJ2uTkYTTYam6pK3fG8TvMZ9US2Rmh9v7xu5
+	8dEPSCj6kj5l/0pSHb0gZjfQD7kcqkM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788241782;
-	b=AaaKv0tMq7R1hmk7qvt9wtHn6b4pfdSOgMa4xqgRnty1ITdVSfp4+MsFFBKAoDj4Q+dDkF
-	hgF16CA37sp4fu/A0nYXqaZqeW7R0BkSPhfBhKaYyDN4twYUjPapHYkZHWtLF7UMIsx7NV
-	1StHhD+4dsoUBuSszVkQ3rGN8hK4sfM=
+	t=1788242171;
+	b=zifDN1y0Gk8U8s0ljTctyMpnceEgy1DUFFFk6jBPRaVm2m/6bnBwr6ic+97OISmPhRxtNh
+	aUifuV3lYq6NZsrp74afOZ03R0Z1crQYCJNP/RBRe9IHCr0h/lRI5D/5piN2KsyOZQX3Qr
+	340fzxcs/vaqHx7iXdDyqMpwudWyAWU=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="iOm5pX/1";
-	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ou7BODbI;
+	spf=pass (imf05.hostedemail.com: domain of xiang@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=xiang@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 75EE1408F2
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 05:49:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597D61F000E9
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 05:49:41 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CC3FB40338;
+	Tue,  1 Sep 2026 05:56:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 494581F000E9;
+	Tue,  1 Sep 2026 05:56:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788241781;
-	bh=uYLfDNhDWWaiAca3YsvDlwUL0hP6uL2nUvfLd7YMwqo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=iOm5pX/1JGT6og1tC01LvrFRUmLHS7UcCU2wNRh7rtdA1z6kBAI35mPLBXTVnvbwz
-	 QWJ9MMaiWFzlxIF8ATKVzHRFvJuk/Nx+3qXfaFTyrN4tXTmQr74moa68szFvMvP0hx
-	 IKGR2NpY00zyXCUXlgtcaV5BXFY7pCG95YWIK6IhV3gO+FXbGnYNkIE4CSfAAFEvqO
-	 Es5U/sJfI5Hyn8bmoFseqphvnlEEdxgPFd1VtKi8kTHuNKRAp+twjL2mqWhtqwqkQq
-	 fy78I6TyxUtPefMB0H0NUXjPiIfk6bvKx3Cw9kQz80iYenhGULtMt/6f/90a61Bp7z
-	 XWm+Fx0FDf7dg==
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-930f618435cso382064085a.3
-        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 22:49:41 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RosAKwpynv96HkpcPhxovFpGvjqbEsgI4ZeuXdjDyZfVZt7+fvlTh8G83YbOUAwgEVwzKeN8BdPhw==@kvack.org
-X-Gm-Message-State: AFuF++mC3X1BnbJRS4SX0HS+f061LyPB+XB4dr4kuC0ZJz4KzMzooQU1
-	+z+OSJV+b2aTQWL2eQQRi9ypghhH94UogWNIaGOH5GwEKUWlavfDTCagKcVf1Vq3Sdrpt3XJzrm
-	dOJEclevMIqLIlkuz4Ln9YoN6D5RkL68=
-X-Received: by 2002:a05:620a:72c1:20b0:939:124c:b7d8 with SMTP id
- af79cd13be357-93913799c53mr2764427185a.18.1788241780772; Mon, 31 Aug 2026
- 22:49:40 -0700 (PDT)
+	s=k20260515; t=1788242170;
+	bh=3Mnj837MmtIz++Lx3CjViaHZJuFNdZX481goDRHR5Jo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Ou7BODbIZicrSpeSM00EfOJQrJABefs9Kuf2EhFYV6gK2dq64CXKdSuL3RyZbLucK
+	 TPg17Tyz0+5ncdV6c1HL6WGWK3QRh4+wm6tY9EoV1ldMeb65SaokB3SYllaBh+BMU+
+	 k3fxxYQqKpob1eGKNeK6NERFb4+ExYOKE40Jru2B8rYntpuKlNuC0j8YO4qOVeoRfS
+	 0Gai2YDP4tJxaz3XlpWyH0B+gdt6KErKtSPMpBpFla9M4/VF7fFDFR9rb7sXCytJmv
+	 hvNVEuFK2QwrR66uR+fQsxbPPuwkUO9XsB0pubH/TfXp4lry7WXlo5qdiAM9FijGEM
+	 OmAyFu0d6q/4A==
+Date: Tue, 1 Sep 2026 13:55:42 +0800
+From: Gao Xiang <xiang@kernel.org>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Christian Brauner <christian@brauner.io>, Jan Kara <jack@suse.cz>,
+	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
+	Theodore Tso <tytso@mit.edu>, Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Hyunchul Lee <hyc.lee@gmail.com>,
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	linux-erofs@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	linux-ext4@vger.kernel.org, linux-nfs@vger.kernel.org,
+	ntfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 3/9] erofs: Remove redundant FGP_NOFS
+Message-ID: <apZo3lDaDp3hQhRq@XiangdeMacBook-Pro.local>
+Mail-Followup-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <christian@brauner.io>, Jan Kara <jack@suse.cz>,
+	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
+	Theodore Tso <tytso@mit.edu>, Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Hyunchul Lee <hyc.lee@gmail.com>,
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	linux-erofs@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	linux-ext4@vger.kernel.org, linux-nfs@vger.kernel.org,
+	ntfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org
+References: <20260830041901.2668-1-willy@infradead.org>
+ <20260830041901.2668-4-willy@infradead.org>
 MIME-Version: 1.0
-References: <20260901054358.4049095-1-dev.jain@arm.com> <20260901054358.4049095-4-dev.jain@arm.com>
-In-Reply-To: <20260901054358.4049095-4-dev.jain@arm.com>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 1 Sep 2026 13:49:29 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4yGFBRv-C3UV-G1tB0HUmhVvJL6ac5x_Dtu9NSGk9BGzw@mail.gmail.com>
-X-Gm-Features: AcwNN1WUPeFIq5gB7k0X198Ne-gqn5RAagtInfIzkUUme2aYxDr3aJIXcRpjR3o
-Message-ID: <CAGsJ_4yGFBRv-C3UV-G1tB0HUmhVvJL6ac5x_Dtu9NSGk9BGzw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/8] mm: move anon-exclusive batch helper to mm.h
-To: Dev Jain <dev.jain@arm.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	hughd@google.com, chrisl@kernel.org, kasong@tencent.com, riel@surriel.com, 
-	liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com, 
-	lance.yang@linux.dev, baolin.wang@linux.alibaba.com, 
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev, 
-	youngjun.park@lge.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, pfalcato@suse.de, 
-	ryan.roberts@arm.com, anshuman.khandual@arm.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260830041901.2668-4-willy@infradead.org>
+X-Stat-Signature: zto1a7kbb71c64ocyob3e9t7qysbmhd7
+X-Rspamd-Queue-Id: A5035100005
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4A36B40008
-X-Stat-Signature: 7tiuyidi7mphcwwpzomnua8j41qzxm9n
-X-HE-Tag: 1788241782-85210
-X-HE-Meta: U2FsdGVkX18S5G67/wCnJbZSVEg4/s/iWZZ36JY8TgVLdRCPwfe5dfeANpBEr38g51UaS9zh88DdzeHFIX/esw+/nP3FUHAnL32vFErn81UCUv2k/0IYQDU/NU0gEuU7BlDkkH9ZPTDOivAxe+mcC1OrafNPFlKt0wrrtcvnOATiiorYRnntda1cFE3xxccsMjWbOgj1s2Wv6jTHnIqhEOHJfZDr9g+lzmQASPAd4AnUrDB+UtxXArssoJZerjLxz71w7zHbH8pRvjB4Yo1gNU46NDkBHe49kOJ4lFN1ayBsuTpc4thI7i3s5L4itC2okQ6OLbmzljBngyItJLehqf1Jt7Edf5zQP2jaVmyfKEesjLEtXyYJN5ZbCcJKcf+fnOWaPOgwUktYFfsiNXCRaD01tG8G6vhZwhv61gqbtWqj92Ff1DoDGRY8+EThThMGNG/xi0pAqdKxb+HCkcywTquvv3q+ZgBRw8ju41iBdSz4Tjv5Zm+RC8bXzcgZdhJs9hGCjxJZ/5itjafMO4ovxMMq7lEacn16DxYqeKrlD8qHQsn1OwV1iCDVLkG1tbAt0TrUKbwYR2rK0vGI/g1NkzSMmwf+oGE3XOWzhbVvhVyXk+RxP331NaL9SFQ3goNWpvVtxy2WGL80Y/XRFzvXaaY4E0+a4Ru3FlSZZ/VYlVzdvdFsT6Sa6Ph+jaTKIZQIjWK8umTNKZ5twc3TCk64rJOuKOeJbg1qW2BSGq2wO3r6cfLaY3+iIszfmWJhZ+QnWe1tda0s+vTj0pKGHDbnRkXIBaLMtSShdhwJ4hCBqtJVuPecpOZIpQLKLz1yaxeIEsQk9jcYDCkP3Jo5+IxOHrUaA/oP+1uSKmtZkJDA7yY/oOCbuutbcXUSpv4qKq78TBrtC00QuDIFX3RJFjovmw52jX1OYOPwu4EwQ8K0zKvgHuEz0M62eOuMG1iBeTD+MYYQyCP/HFP2RGbzCAq
- U3bn/cYT
- pg/MQ5Uu1X1PabVXeqtwfA7GDAdA4BXloZ+r9Us2b4PviwmQxi8rIrz1r053Q060u7S55KLWIicKPRbVukYA2W6u7pR6C81bMp2yMprA2kNa/qTU3Qm03+HiNIriKdh4QLDANwOm3TpKsHypfRLPKSWEW+mZJhWsVR6ZuFZGcUugYSA3SMRULswn75+QXT6rJQoPdXUcajJG6aBF306DHuvn+qYFNRRZCihJXoaGha8L57RN4/Bv2eHKRSOubTTwz04vfV4OHauXlw43bGm0PqgICTretocXNgssJOolrumYZo7D0I8dltxyudxJBPwJYISHJ+CBVoVO6Xd/N+YDtHtbwxg==
+X-HE-Tag: 1788242171-387654
+X-HE-Meta: U2FsdGVkX1+wup+tuKE1SvgJecputGQlg4JyQOVECpl1riL/NGgWdSCWXE7WzD3V4Zs8ysYcwyMtOB8rGhhRF+aMQhNAT0USOgi/hBCpsT9BwB+s/pAN7kXI8VOjM0edgtnyN+0lVpQde41+rDyLvSthA0/gwYHNQw6pp7CYF7RJX7l7yOjt/Bn6qvh3hL1BMC084rI66voQiHNIe9GAVuboqJmlp62CpZ2JMiX16O4h9AiX1A/KQuA/Wo+vEZrtjYd08gbHGUznJol+ogMudnBBJjp4HiY2HGZcgLbrPQd8dxC52Ix18bWpLu3/i9qnHzKa/s3eODSRtZuKp5DPvHvXI5hn2/sqZSzurTpvzdw8nqZQAd2TdWtITujQ/UnnPiFZG4cxCb8aXOPm1/MqMBXUqhwyUZhmFW3nfnP3IWRo89jqq9pJLcck4nUd2dWwbdAdxRGY+AeHTzJwt7NOOrfqggtQzXeZnFW3xycAX+D08YYtcoIB37mF/Lem8lsmLWmvJohn8jqXi1secEMbRQM+/dNYswdkY4nLeZxSKW2uST+D4h4mT0b7qtS6k0pukqdBNFyCoZvFG5+eza05/wmH47zu4eC0du2bKionyrF86TK/YLdhjL1JwyOIhJtAIuhKdpKdxql33rbAgPERjWRRGyEsj3ZqNSvs82ymDpTdz4J56/dJPirJVZqGchcGX9mN57x79LhMZhuxzA5YFqhxuk9eQE9Ui6EXqFhZaOVCjmI2UbNL+IyGjRnqvZviu+p4HkOAQ3VnbIIgr1BQkr/CjplYsYG+f9cvDQZVHymJwRej9d0Be+RsYWS5U64lf9w5n/egxlsl+oqcg3G9htZLASHMLl8UB/UFvqvPt7XoOc4RChMnRSlXuXmE/hrfQHZ/+whBHRc5YPne6F4oLZu312FoIRAZJ0iBF59BC/gKjEkRIpxyfnDzbtiEXWhNWd/5qVo+/3EUXlxJz2/
+ kpP+1ZnD
+ GZkssFaM2c3qmASIJutc4s9iPKiD1YSR1EhOXkxIYa583ugjLj5D6EIEOrw93cJUWfMhm8s2ElMbaUTKVJ4adZjb7XqTOdaCTcalS9hL1tpeAy15LIpGT+YlYfPZXK/MBSj/3kkjVcoFOs0razIn9cP+5DjVkVU4+wg3MyATaqJchvE20AAxMm7TtBGcIAtztLt+qBia+neWGHH6Cn7wh/JhKE2aaS6ooFADtKA9/CDdfkKzsbLpOgjZ3auLGzolK3UHKhVT9hs3C75GnhjZDUJO2JMuLN4ba0bpUo4WA1t1ceY5uW27puLN2cHqvUy3tJULiPa/s3VamXXZFHw/532jeI1xkU0lxDvrSCx5cAxbRFkUM5Ud7KrGZepvF8YI175x5k+Ra7vgCB7xfEtKW4OC94Cyj30WRFrSbWi/dqgwW4O413sYtUgm+gZ0FmgIeAVe+u2515F2qpCYCiMC6+QgrfA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,66 +112,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 1, 2026 at 1:44=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
->
-> In preparation for optimizing large folio unmapping, we need to reuse
-> the page_anon_exclusive_batch helper in rmap.c and rmap.h and obey the
-> existing use in mprotect.c .
->
-> Therefore, move it from mprotect.c to mm.h. Gate with CONFIG_MMU since
-> both rmap and mprotect users are built only for CONFIG_MMU.
->
-> While at it, change start_idx and max_len to unsigned long type for
-> future proofing against THP support at >=3D PUD level. Also shorten
-> expected_anon_exclusive -> anon_exclusive.
->
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> ---
->  include/linux/mm.h | 19 +++++++++++++++++++
->  mm/mprotect.c      | 17 -----------------
->  2 files changed, 19 insertions(+), 17 deletions(-)
->
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index dd09c438fa23e..63da8813bc5df 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -244,6 +244,25 @@ static inline unsigned long folio_page_idx(const str=
-uct folio *folio,
->         return page - &folio->page;
->  }
->
-> +#ifdef CONFIG_MMU
-> +/*
-> + * Get max length of consecutive PTEs pointing to PageAnonExclusive() pa=
-ges or
-> + * !PageAnonExclusive() pages, starting from start_idx. Caller must enfo=
-rce
-> + * that the PTEs point to consecutive pages of the same anon large folio=
-.
-> + */
-> +static __always_inline int page_anon_exclusive_batch(unsigned long start=
-_idx,
-> +               unsigned long max_len, struct page *first_page, bool anon=
-_exclusive)
-> +{
-> +       int idx;
-> +
-> +       for (idx =3D start_idx + 1; idx < start_idx + max_len; ++idx) {
-> +               if (anon_exclusive !=3D PageAnonExclusive(first_page + id=
-x))
-> +                       break;
-> +       }
-> +       return idx - start_idx;
-> +}
-> +#endif
-> +
+On Sun, Aug 30, 2026 at 05:18:50AM +0100, Matthew Wilcox (Oracle) wrote:
+> The flags already include FGP_NOWAIT which prohibits all reclaim, not
+> just reclaiming from the filesystem.
+> 
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-Hi Dev,
+Reviewed-by: Gao Xiang <xiang@kernel.org>
 
-I really don't want everything to become a top-level header
-file. If these are only mm-internal things, could we move them
-to mm/internal.h or another more appropriate header?
-
-Best Regards
-Barry
+Thanks,
+Gao Xiang
 
