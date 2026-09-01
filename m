@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6320EC61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 06:55:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E07B7C624C6
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 06:55:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 619556B008A; Tue,  1 Sep 2026 02:55:03 -0400 (EDT)
+	id F40506B0088; Tue,  1 Sep 2026 02:55:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C8ED6B0092; Tue,  1 Sep 2026 02:55:03 -0400 (EDT)
+	id F17B36B0092; Tue,  1 Sep 2026 02:55:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 506566B009F; Tue,  1 Sep 2026 02:55:03 -0400 (EDT)
+	id E2D916B0096; Tue,  1 Sep 2026 02:55:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 30C2E6B008A
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 02:55:03 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8C23F16030D
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:55:02 +0000 (UTC)
-X-FDA: 85164281244.13.3DAC73D
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AB6906B0088
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 02:55:06 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2A2B612012D
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:55:06 +0000 (UTC)
+X-FDA: 85164281412.01.0A1D627
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id AD4861C0002
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:55:00 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=iVCF8hbH;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf20.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5ED4C20007
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:55:04 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=D8VzCyXQ;
+	spf=pass (imf13.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788245704;
+	b=K/zbqoic9qnG+O9VnPPIyAcESI/U5Vj2ikAYZtdXVWg/P/sdmy4btKJtrJynu3lHRj2sXm
+	QSu+BoyyP1JGwLZSZ3T5u7DLiWHWhEOYt41pv8eBQY3l1U0E5RKL9+HQbjamecFZVokK/Z
+	gsnHtfBgMVDXLUeVxITnAS/0hXArLCE=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=D8VzCyXQ;
+	spf=pass (imf13.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788245701;
+	s=arc-20220608; t=1788245704;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ZqHJxMj9cZZ6xGbdiah9c7VOBxKeP9sXbxqvcW+iWvc=;
-	b=6scZ4OXYzRJTYdNqg0kXtS6GdIEWDSSDGvxWoJjUK0vkYl3HCLfXKh81W7apE0QMWGee+a
-	LEwJCwPWMmAILhlaHOExjiJ/rMLNkocC+Qf7prPScapBPd5lS+/XfCLlCg1hew3UiR7aBE
-	noL8cd9ttggU1Xt3Uguy1Ng9Icb16RM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788245701;
-	b=Q14JvJV2Qmbu68iuQCvFMs0hFK+jO+DgMcMaNYDc9yNB8Hn5zJm+7CJtj+LcpC2frldUc3
-	jIy2ilCRFxUEgkIPguuqhMnEMNGg7RraTzbBFDVk/dSpoVoM46dz0CU4vIGcYVgIkqiat8
-	TC3YyNPQ4IuRQpUBMN1xJgi+dzOYMFU=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=iVCF8hbH;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf20.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=SqK9HEQqgYxMaiv/dCQgnMMYaXllk6u0l0T8DENOTXk=;
+	b=Q3Cmh8WcdzVQSmqhiO5ZVq9p5ygJLfXSixu1+u1S8HmIQ5qZ7nOhFrPzYTu78KbGw7E4qY
+	7QFADrTVO5Nj7qaBcmulBKM50SAKC7MIoYNI6YKRzxY05g/BV1Ff+X04fCkFmJpMBB/xqz
+	cA6CgkS6oPkMRxeaQ6H0bg++oTS5riE=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BE94D1AED;
-	Mon, 31 Aug 2026 23:54:55 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8BBBF1BD0;
+	Mon, 31 Aug 2026 23:54:59 -0700 (PDT)
 Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C0D243F85F;
-	Mon, 31 Aug 2026 23:54:58 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8F35E3F85F;
+	Mon, 31 Aug 2026 23:55:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788245699; bh=ce/DLlpHBRa0sOyR5fJVD2nnBUjY9hH50UmSGmi9zDo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=iVCF8hbH09QwEoLLCy5nDqwnQnUTRnYnxct0R9KGT2fNm28OZNlKPL5y/ZVYyLarR
-	 G97VWOjRF0iMyiyBQyL+rUoh+K5lW9l0oQHRuBhT9ntBgfqe+6OndnwbdmNSBBFsWo
-	 ltBmtg/ObqlFYO+SYLvq4upKKiNCWbiCa+XhNDso=
+	t=1788245703; bh=azovFHyuoM3M1QIKlu9UrG4EHV9CqavEpXrZmiNGkU0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=D8VzCyXQSX+7dZrHhOE9ruOuTTvVRHuCsBZT4IBYETdjEN5AUxk4hf97bBbfq44i6
+	 c81fpEHWqkkoFgJebUuaxtqbXrlleRNOMTq1hHOKQny5lC8f4bZ212nNNJxmQ3vxR1
+	 eNDWhuP0YWkeTVNMjzpIn/zyLe0t0bw6nrxVxvcg=
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
@@ -71,20 +71,22 @@ Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
 	Will Deacon <will@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 0/2] arm64/mm: Standardize printing for pgtable entries
-Date: Tue,  1 Sep 2026 12:24:52 +0530
-Message-ID: <20260901065454.1906343-1-anshuman.khandual@arm.com>
+Subject: [PATCH 1/2] arm64/mm: Move __check_safe_pte_update()
+Date: Tue,  1 Sep 2026 12:24:53 +0530
+Message-ID: <20260901065454.1906343-2-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260901065454.1906343-1-anshuman.khandual@arm.com>
+References: <20260901065454.1906343-1-anshuman.khandual@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: AD4861C0002
-X-Stat-Signature: payre6dq3zdjubgwnaqrcaomyhzgy4c5
 X-Rspam-User: 
-X-HE-Tag: 1788245700-659126
-X-HE-Meta: U2FsdGVkX18KOSq677U6sL9A+e3M2auS4vu2pXs2fYKanFyZijudfYbdp3hlaL4RXwesbLgiQ7SvmkKpwQycMk2jBqLkWoIfiodA+WdG/arcRHH5RRfv412zCloictAs1pTSDQ0eSNSP10xYuB9dgosT3PUjWPx1poxMTkI0AsZt26FgapcAK3/lFRl6vT9X4+GTW5XVk/tYND5OzbcodeokC24HTfJC4vUlHhina1rikcvE9PzRr014OORhftJyxLi4VqyK/umWhaG+/qK44P9iFofu2np0g/lsqPG1A1F/ecpjPAReuB5N//QH9hXGhUo6Ia0KJVqfl+gVJ8iDHhC3lnXuafocXlaiXWPmNv3fe1QSbmKzRt0dyPq5zjyFRtzMfbk8Sfw/kBJ53zjPevJQ6cARizrcjEXlR656jMaVa5rq+r+o6xCEiy1qgXlyR5BbnTiptZ59yN2Z+68gGwC1VvldOoJ6C3JQ3f4dfDffN8dvR8/fdpZ981lt48GOmpLNfmLzkFt+CbrOB0Db+D4smawC52hi+/3wrtAQmSE9wc7mC6rr8CFQV9qOsG6f56AhRP51fhcyOAkveZFXfVGdw4YPWaA8cobHEau5s77lKezHcMxgFIB5OhvbMOg+FEUHKg7Iv/zcSoRjkQwI24BNl3HB51Bled2/2J2jR5qJBCNHvgXv7ZtNFl3PljMlWCfhBJbxL79JWpPMk76Z9iP6xVrG4IkYCYy8XmYHwe0MjVyoELVXqAzrOGkvqxmdFu4Tvz0so7OoMHAPquKbA24Jp6g5CYHnVvKPFZjwkIexbALw3tnmtz9YkCnHgER5m878wn7v6lEin2u/P5eM5RKxXCTNYcJ8AXZFFCf1MeSj6FZIIqGTztB7DkW+wDdwP4uVWULYDEKIJclRmaHHjvAoq7uoZv0VUNhpBTp4z+43pBjLarGS1tnmYnuKrRyE1DE8TjQPOJ1u7rlEEaQ
- +nsg1eVR
- Gw8Th8c524t7WB2v88hzBjylUNIVmACoVKJhAxxgOK89vQGs498wJrurHUrgZxVoiLkxZdxHMyOd9mHHpOQS9byz84Fn12DjSKOjoKFd3+PNesBD6o/CTGtJ0KGPeQ0ldh6gAM6rgqqj8ntcVmCk5k3vr0omvBx8bX/M3V5qvADoUd5xn6nlDSxc6HRck18fq8p7t2WY6rlTuuQE9CuRJSgdT+Rs86VKdtk5njkdT8rp/8T7P7YX1MyI0Ci04lQkCsTCWjzYKBMzHD6GCEbQW9mP6WuXwpIwv7eD/33LUr55qUemv7KuAdEcbB7u4uLUXV7COPSkTUDytoxx14QhLxv0yf8QFJCVmVqYKJE/XIsZXi9Ier24Mj0TU6nvRSVsXjpmujCaXZ4S6aKaSzW1GsstiGOcYecBBdzH6H/2s2znCEqNUoeL44PRybhZ3+tvI5VvNTH2Da7yh/WcW7wgNYLNJTXd6E5OqDmlPUFOMO7sfRo4=
+X-Stat-Signature: di5puu5nuonezxurfa68jmxcqd4sf9kq
+X-Rspamd-Queue-Id: 5ED4C20007
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788245704-404638
+X-HE-Meta: U2FsdGVkX1/UEi2kkvnZU3iKRQfSvh9sNW86NGU80WKhNWuAnsX51pm3fMPNAYae1CpY1ymgB4hEgoziElJnpcd4m+rZM96bbqyCpO0uNpL2kb+jamQTh7tFKKiLqzcMfaZHdoWp3Gdt3xhyqnwyt8parDwDiQBNfaH2hz4qU4z6lFJddWPCAfHvg3mxHWeU+4VDGU7wKpl9s829V5FHm6jISufU6BSdJEi1x8DFIbl+rkk4zvzwp69932fWd2jeAxOYREbVEYvmlmQERwp0OTCqizqHWbMECzdJSz4qyXjVTLVl3Nt18sXn7KfCjNvcHUslpxHKEGNCTzTB3d0BiAc4Rl43AvXQXnUyiTG/W6iK4XI9CVQpkgS7SGFYqjcehKMTRhqOs5AiaGJKNvN7R2D6ltmZmSF9LwsAYr7pa6OnICvk0/MSjsgTJSbdPPBTh1SwBHpgPVFDFdlQpqIfBsHsTThAkHJuUhFwd5NUr0u0ZThMBcG6vXM0MvflYN/umfHz1nzGaOrYAvxNQ4cT3PpCnd6foFVbRnf0K0eLNtTkQdzZBt/sX8YnlzoRitL9hGnLUIt8f6Oszv8AXaDT8hmbYxeHHliw+rM0LZzXxX8eJoBoCWufZZ55Zaf3MPEUd6GsJuc3zFkvzBx47icrj6k6IGhXN/Xuh9aJUDt6RrUikIx6QjjspRFh9huiD18CRc+FUADHbJkhx1pq8gHXV1zBcadPuBC3XrnQ2DJ2N2G1mFd6qRM9TfB+bczuQOuDQ2yajjFswh0qZIXFGRpk8l6KonbjQP6h7WDjGKzMNsHwPRFeTnKxJ1pF8G/P+/vKFZx1yXN+CdOeIAuxZEykyFMNuEZDpYCkeclyISOiagY0DW/gBvMdHeXYoxC8Fm/XboBOKiOKDySVhTwBupCNuYMwYYugD8xpeTE1NIbPJR6YWKVUzo16Naxg5IAwM054OsHayQ5DnuLfq4IlLho
+ vRyUws8m
+ aSNkiSzFMsBslJ9PWzjssaEMdfwYE86zLuat5OOOy7kNtH7K92/W7LXCDNaQQlZv4828KfhUHvSSuGCGgiYaE0TsLtDuqceFV7GEqki0qPGMOv2jfC8w5H7jlSE/y+gqAvlYLQfP/PJjto5cTvzjrWTsm+ERMd0HGWGcBDtU3oaPMAcEnBpZkJ0UofEhgPUimTSsgyzBfVRrKg6uFizxltw666kVkuYCszUA9LbSCnH6PYeeRPMJwavaFl/MGw9xdGtIoNs5R0tOTXpZ1YxhJvgYaR4d2LbRRItefGilZNVdjZ9Zd+AZaYtdHTRZfl2Moi6N1McGOvB7tkKrxvM7usRe6FWmUOuqGkOk86todD2yEBVSYBa3wFaOW7eGb11tAM4zUAXMZjK6H2Mw+YE8gV2e//pd6arAzi90/14N9RYK02qs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,40 +94,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Standardize printing for pgtable entries using recently introduced generic
-helper ptval_bytes_to_hex_str() in core MM which automatically enables 128
-bits entries when added later.
+The page table entry print helpers and related macros which are defined in
+<linux/pgtable.h> will not be accessible in platform <asm/pgtable.h> which
+is basically caused by cycling dependency.
 
-But first move __check_safe_pte_update() outside <asm/pgtable.h> to avoid
-a cyclic dependency while accessing these afore mentioned core MM helpers
-defined in <linux/pgtable.h>. This replaces the original page table entry
-print standardisation proposal which was earlier part of the D128 series.
+Move __check_safe_pte_update() inside arch/arm64/mm/mmu.c as a preparation
+for subsequent usage of the afore mentioned generic MM helpers.
 
-https://lore.kernel.org/linux-mm/20260729122452.3797443-11-anshuman.khandual@arm.com/
+This does not cause any functional change.
 
-This series applies on v7.3-rc1 but after the following.
-
-https://lore.kernel.org/linux-mm/20260831054331.625505-1-anshuman.khandual@arm.com/
-
-Cc: David Hildenbrand (Arm) <david@kernel.org>
-Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
 Cc: Catalin Marinas <catalin.marinas@arm.com>
 Cc: Will Deacon <will@kernel.org>
 Cc: linux-arm-kernel@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+---
+Should __check_safe_pte_update() be wrapped in #ifdef CONFIG_DEBUG_VM
+along with dropping off current IS_ENABLED() test. That would ensure
+the function never gets called when CONFIG_DEBUG_VM is disabled. That
+will preserve current behaviour as the inline function gets dropped
+when CONFIG_DEBUG_VM remains disabled.
 
-Anshuman Khandual (2):
-  arm64/mm: Move __check_safe_pte_update()
-  arm64/mm: Standardize printing for pgtable entries
+ arch/arm64/include/asm/pgtable.h | 47 +-------------------------------
+ arch/arm64/mm/mmu.c              | 45 ++++++++++++++++++++++++++++++
+ 2 files changed, 46 insertions(+), 46 deletions(-)
 
- arch/arm64/include/asm/pgtable.h | 47 +-----------------------------
- arch/arm64/mm/fault.c            | 20 +++++++++----
- arch/arm64/mm/mmu.c              | 49 ++++++++++++++++++++++++++++++++
- 3 files changed, 65 insertions(+), 51 deletions(-)
-
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index e89ec5f4787b..61fbfab3e06e 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -387,52 +387,7 @@ static inline pte_t __ptep_get(pte_t *ptep)
+ extern void __sync_icache_dcache(pte_t pteval);
+ bool pgattr_change_is_safe(pteval_t old, pteval_t new);
+ 
+-/*
+- * PTE bits configuration in the presence of hardware Dirty Bit Management
+- * (PTE_WRITE == PTE_DBM):
+- *
+- * Dirty  Writable | PTE_RDONLY  PTE_WRITE  PTE_DIRTY (sw)
+- *   0      0      |   1           0          0
+- *   0      1      |   1           1          0
+- *   1      0      |   1           0          1
+- *   1      1      |   0           1          x
+- *
+- * When hardware DBM is not present, the software PTE_DIRTY bit is updated via
+- * the page fault mechanism. Checking the dirty status of a pte becomes:
+- *
+- *   PTE_DIRTY || (PTE_WRITE && !PTE_RDONLY)
+- */
+-
+-static inline void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep,
+-					   pte_t pte)
+-{
+-	pte_t old_pte;
+-
+-	if (!IS_ENABLED(CONFIG_DEBUG_VM))
+-		return;
+-
+-	old_pte = __ptep_get(ptep);
+-
+-	if (!pte_valid(old_pte) || !pte_valid(pte))
+-		return;
+-	if (mm != current->active_mm && atomic_read(&mm->mm_users) <= 1)
+-		return;
+-
+-	/*
+-	 * Check for potential race with hardware updates of the pte
+-	 * (__ptep_set_access_flags safely changes valid ptes without going
+-	 * through an invalid entry).
+-	 */
+-	VM_WARN_ONCE(!pte_young(pte),
+-		     "%s: racy access flag clearing: 0x%016llx -> 0x%016llx",
+-		     __func__, pte_val(old_pte), pte_val(pte));
+-	VM_WARN_ONCE(pte_write(old_pte) && !pte_dirty(pte),
+-		     "%s: racy dirty state clearing: 0x%016llx -> 0x%016llx",
+-		     __func__, pte_val(old_pte), pte_val(pte));
+-	VM_WARN_ONCE(!pgattr_change_is_safe(pte_val(old_pte), pte_val(pte)),
+-		     "%s: unsafe attribute change: 0x%016llx -> 0x%016llx",
+-		     __func__, pte_val(old_pte), pte_val(pte));
+-}
++void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep, pte_t pte);
+ 
+ static inline void __sync_cache_and_tags(pte_t pte, unsigned int nr_pages)
+ {
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index 79d90226fd5d..e9c66d26bc0a 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -2392,4 +2392,49 @@ int arch_set_user_pkey_access(int pkey, unsigned long init_val)
+ 
+ 	return 0;
+ }
++
++/*
++ * PTE bits configuration in the presence of hardware Dirty Bit Management
++ * (PTE_WRITE == PTE_DBM):
++ *
++ * Dirty  Writable | PTE_RDONLY  PTE_WRITE  PTE_DIRTY (sw)
++ *   0      0      |   1           0          0
++ *   0      1      |   1           1          0
++ *   1      0      |   1           0          1
++ *   1      1      |   0           1          x
++ *
++ * When hardware DBM is not present, the software PTE_DIRTY bit is updated via
++ * the page fault mechanism. Checking the dirty status of a pte becomes:
++ *
++ *   PTE_DIRTY || (PTE_WRITE && !PTE_RDONLY)
++ */
++void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep, pte_t pte)
++{
++	pte_t old_pte;
++
++	if (!IS_ENABLED(CONFIG_DEBUG_VM))
++		return;
++
++	old_pte = __ptep_get(ptep);
++
++	if (!pte_valid(old_pte) || !pte_valid(pte))
++		return;
++	if (mm != current->active_mm && atomic_read(&mm->mm_users) <= 1)
++		return;
++
++	/*
++	 * Check for potential race with hardware updates of the pte
++	 * (__ptep_set_access_flags safely changes valid ptes without going
++	 * through an invalid entry).
++	 */
++	VM_WARN_ONCE(!pte_young(pte),
++		     "%s: racy access flag clearing: 0x%016llx -> 0x%016llx",
++		     __func__, pte_val(old_pte), pte_val(pte));
++	VM_WARN_ONCE(pte_write(old_pte) && !pte_dirty(pte),
++		     "%s: racy dirty state clearing: 0x%016llx -> 0x%016llx",
++		     __func__, pte_val(old_pte), pte_val(pte));
++	VM_WARN_ONCE(!pgattr_change_is_safe(pte_val(old_pte), pte_val(pte)),
++		     "%s: unsafe attribute change: 0x%016llx -> 0x%016llx",
++		     __func__, pte_val(old_pte), pte_val(pte));
++}
+ #endif
 -- 
 2.43.0
 
