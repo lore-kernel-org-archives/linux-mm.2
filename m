@@ -4,121 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 912E2C61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 11:12:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADDE6C61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 11:14:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FB0E6B013F; Tue,  1 Sep 2026 07:12:13 -0400 (EDT)
+	id 896686B0140; Tue,  1 Sep 2026 07:14:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D3DE6B0140; Tue,  1 Sep 2026 07:12:13 -0400 (EDT)
+	id 81FE56B0142; Tue,  1 Sep 2026 07:14:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E9756B0141; Tue,  1 Sep 2026 07:12:13 -0400 (EDT)
+	id 6C02E6B0143; Tue,  1 Sep 2026 07:14:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 176526B013F
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:12:13 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7A183803C7
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 11:12:12 +0000 (UTC)
-X-FDA: 85164929304.17.64F9C84
-Received: from mta0.migadu.com (out-73.mta0.migadu.com [91.218.175.73])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 2F3A318000C
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 11:12:09 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Y4r7+eDh;
-	spf=pass (imf24.hostedemail.com: domain of fuad.tabba@linux.dev designates 91.218.175.73 as permitted sender) smtp.mailfrom=fuad.tabba@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788261130;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B8F66B0140
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:14:00 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C7C2E16035A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 11:13:59 +0000 (UTC)
+X-FDA: 85164933798.11.C2FADAB
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	by imf09.hostedemail.com (Postfix) with ESMTP id DA518140008
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 11:13:57 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=geZdjMDo;
+	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788261237;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M70jN9N5gL9EX0+iIRuVi2ADMY/yayaUKf2oArYwo6M=;
-	b=HnIwcbV9X99rN0ocMdion1Hra3I2JT/23eyiAyY0bjfxHA60KpLyWEvhUSWHQnx09PE+fB
-	cwbL749uR0JERQAx6ebrmmJIj8zOHq0GaWnIpZOa0AX2ZQS7gXnFnElsQ/EWMVtBHmHFLh
-	5ICUwh5pwc9vFl6fH0+K4VR5S3hR5mw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788261130;
-	b=hLb4ty+sw7ORs8vljI9RVREltK8HBpCqyY+sg+Y56ojjuHMcP/Zwas8oiN7PX7k1cnbZm7
-	aFGgXksAAULZO/VxtcegZ8K7T3kpBywqvqN/sHreBN0I1DOISKsFhjJz8tl5bpWnm8o/Ku
-	6TvSNw0xtqXL0JHsFraUQP45Ju+pETQ=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Y4r7+eDh;
-	spf=pass (imf24.hostedemail.com: domain of fuad.tabba@linux.dev designates 91.218.175.73 as permitted sender) smtp.mailfrom=fuad.tabba@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=CsioD9lZ+yh5tHGXfu+MRuQR2cyaW3t4YdYHU6hudFc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788261128; v=1; x=1788865928;
- b=Y4r7+eDhd1LxClrS2QBkx2ZNhmITI1JMjs3J0foyAH6u0nZkaJybE03m+aSnQTKS13NqzhUh
- 36ytSm700m0Gy+3vekPB2+StjLS/+8rh2Gkst518rVYSbLsOs8HMTq24cqe85JxKD3dRzr/sx4v
- 3HXE/+Q/oGjR+Hnvm87iAEFk=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id a4ff266edd5492a0;
-	Tue, 01 Sep 2026 11:12:08 +0000
-X-Mizu-Trace-ID: a4ff266edd5492a0
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5aeb688ae83so4893e87.1
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 04:12:07 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwCiK7xi3E75e63fKONHGQEIqGxfs1o1q9uFL6WKuNi76Pk1dP02WKPKdP1T6NITMnvmInHQjuIpA==@kvack.org
-X-Gm-Message-State: AFuF++lEGBQ0coaXEQ97P9kY3jEYfhMO/f6qNl9VTXO2INMd9u9FBZVy
-	qvXVDWS1fgGiFYtwcT8xiItElYH5oUpaWm/pi0D4BVivdEAlleFgkRcX0uRqF9gSgaLn6ZTg2He
-	kkrlVKyE2oEDMrTmpbPhDpC4mgMh9KrAJBJh3S0e8
-X-Received: by 2002:a05:6512:b8d:b0:5aa:79d6:b559 with SMTP id
- 2adb3069b0e04-5b5fefc86c9mr146222e87.0.1788261126243; Tue, 01 Sep 2026
- 04:12:06 -0700 (PDT)
+	bh=Zo2PPYoJf8/8P2lpcn6RCiPhS+p7e95CjAJ1PNJ8eY4=;
+	b=8rscACPm5rt/qq7LWTo/iMiaBferPThicVclc4ptXa4i9mkBbL/cOMP/audCTmuC5tq2Jr
+	bhg/W7aXMLphvNoHp7/OnL02xENwmfH6/gqgodxHE3TfFaO+LjzG+MkWdHbLCt4pz0vEL2
+	NOAWzHsiFSFIpjZpG6xrK9CeqN1JLm4=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788261237;
+	b=3j27upbIgZquqHua6pOjlzQ+V6YViR3dl+6/c1hUaEO8P89zy0SVaLwUH5KU76a/9XBVCj
+	CEPJx2B6Qj1xRPpCQBoqUgwKTOSrvKV01tdZKKihGaa06E84gKW9kyqkF/IZH0iE25+dfq
+	Mb5OOTtfe46MaiitIXkQevuqm+elh+A=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=geZdjMDo;
+	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c207cb16cf5so762660866b.1
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 04:13:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788261236; cv=none;
+        d=google.com; s=arc-20260327;
+        b=aVJHnfSZL9gdwYky8KSu9EAG47y4hAiBrx8LlHnFF62RfVbW7G7bsvs8uxTCqWhDig
+         vEHosKwxIk+GDK23JhR/ciUL8Bv/pasQO7EIHpx9QdHI95c30qB7TeY2xj50QZCqKML3
+         hOaSqK+mzimQmfY2jlG1rMuqKzGit70mo+fj3Ysdn6M7M6dTqPl6aTmCvgZLip+iMnxq
+         Cl4lvKtXJd7X9WbMlOV0ygW0ibEXoKfLwkvsAuQGNk58fMm1QhLZ3LHO/dNgdT9fNi52
+         +2omQgSnTCoWmK2+pjbbh+UkIOPyxLtescGQffK8l+kulD+x3OjAQlCaq6tyP1ZDEw5v
+         +Yeg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Zo2PPYoJf8/8P2lpcn6RCiPhS+p7e95CjAJ1PNJ8eY4=;
+        fh=81Y0rrjAe3LxU/1tyZoOABAVvqIHcl+84cGlS7E5yjw=;
+        b=oX9B7TYPBJiprsKbxhtfUJg/nah6l2SZJ73eaz3vKRHNVjy2OxXRE5JqDEs8TjN5Us
+         UTyv5/Eub70mwidpuv9EREYRTU/NPFWvth5r+ncYn1OBoBE3pSNo4g50EDOkoVHSCF2g
+         LbmXJs3RRNYx2FRcC5a74JLFmWqVpJV9ABfUTkFOtSx3jKtesIJiQsjwa2Sbc8J5RUcb
+         VHUNuiC/eqLMecikBhuSutxh9sZugsXUs7c3yl/p6C0xRCJ/myV3+1NShmzYU/j+4HzI
+         4SbBfbaZz5Rq4TDxR4snS/5NBx2e9hVJqXoGy54EjTyNK8rNDPBoJpOHGTV4jCRD+i0A
+         mgPQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788261236; x=1788866036; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Zo2PPYoJf8/8P2lpcn6RCiPhS+p7e95CjAJ1PNJ8eY4=;
+        b=geZdjMDoXDtIF1eSeIUmPjSs7nP9SXNvrPInEMWFB6+n6FL+YWLE6oPOxjWL7NVjXK
+         PqNTOh3CjQ4GGkIGbbdcrJgUXs2ZsYsvvYjJ12KCxJSxopRpBclnIEAzKww28FWY9uzZ
+         HEXYG5PlZravdfnUmT1BZn2L4Tw5W2A9gssBAcRAfF/R7Nolq/VniGwJMMEectu4tddt
+         otdnbYcYbEttqN9Ap02x5N5RJI1mGhSgZHncYCimX2s1+v3a6cIq6AtSjvdNIsInD6r5
+         KChJsBxhsay0Rn4P8JcJ2+XViJD8mxdpXtXTijGuvhVz6oGfrB23WX8yXN5aPh3FkQqt
+         bXVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788261236; x=1788866036;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Zo2PPYoJf8/8P2lpcn6RCiPhS+p7e95CjAJ1PNJ8eY4=;
+        b=puMMdaiZW+e1padE3ohWTCK1kNz0uBIlCxUJyA3HzXTVEkZFfBudj+0PfYBpMrFlZY
+         tNYI12pMiyIU1zEQLnrcppgSK0T47ex6hw3tzIehAycbMyaizIlC0AAnd2vCZ9CCjs0V
+         5DEZ7ZNPbrxbYZg3jMgEHmgFV0XCBXtiNvsNhlP5QLqU06oBwAKcpkQMKU0EyShCLUl5
+         vu1G0L5Ar9KVp2r2JubaOoHmtXpXL9+g490xl9zXhKPUb0EgjQQiWJOQPRwJ0+3HQ92H
+         vlS/WY2CrEb1N2Gd4LCnBvoCWH9hmvaKlPDZmj+6iTpXwySQzBFjrcL0SBweFkn0Qqul
+         peww==
+X-Gm-Message-State: AFuF++l2UkbtXV8VazfyCS+tD8zOdMTruNDnyeTAIEL0eu269YRN/Ten
+	G1Mxs93luPTWPv0hRDCFX3OqAMxWSbn/ophwfeMS4FZ3l1dzpxdyY/FyAdSQFekUOjauxUfMoMR
+	sksV1M41OYvoPdsvpL6INBguceDYkCTw=
+X-Gm-Gg: AR+sD10Fs081AI7XbOyouBuEiW8s029YsIygxYbVeq+3kR3Fgc5KUnUygU+E5X03TC8
+	A3AZtRv4bBE69Ulu72gf5jyTAHao1QWTTl6U/gCbvJCGjJ2smmoPZfqJiapIidfXfz8UDbUbM++
+	G2nlUhK/xDVnuhTs0pClEqORjH3sO67DtiVJQWJQJrlmysZzAHxZnnDwaddNllr260D7fa4/YXW
+	T8X1TJH1TC/M+fJEzbO0MzOJT6zffWI+WMNVg/Zmr6Z5n9IAr+zdqpAiIDU7V9rp1gsY5Zp3FR+
+	u8VJMUKlt4jk6mnksIJkhiVeUUxmivDRUXrQhQKqwChWZyzsBq/DD1Fzz3tsN7t3STD16FzX37P
+	j
+X-Received: by 2002:a17:907:934a:b0:c21:34a3:4df9 with SMTP id
+ a640c23a62f3a-c25b3b0003cmr478506666b.3.1788261236124; Tue, 01 Sep 2026
+ 04:13:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com> <20260830-gmem-inplace-conversion-v12-44-85e5fd25252a@google.com>
-In-Reply-To: <20260830-gmem-inplace-conversion-v12-44-85e5fd25252a@google.com>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Tue, 1 Sep 2026 12:11:00 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTz+nwFCn66MG2QjiB84_OyOoJowTHr-Ru2uSEpvO+yLCg@mail.gmail.com>
-X-Gm-Features: AcwNN1Ub9J3hFyuS9Dks6Hz8-OwxznQ12Dvlx31FuOxfKnRbAtrjNgxw2UfRugY
-Message-ID: <CA+EHjTz+nwFCn66MG2QjiB84_OyOoJowTHr-Ru2uSEpvO+yLCg@mail.gmail.com>
-Subject: Re: [PATCH v12 44/45] KVM: selftests: Update private_mem_conversions_test
- for in-place conversions
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+References: <20260831-mglru-flags-cleanup-v4-0-2d15dde0d7ee@tencent.com>
+ <20260831-mglru-flags-cleanup-v4-6-2d15dde0d7ee@tencent.com> <CAGsJ_4y7MrUeHn4NvtpyyZ3EY-6dTUD4vhitw6Sy6tfRq6Tf9A@mail.gmail.com>
+In-Reply-To: <CAGsJ_4y7MrUeHn4NvtpyyZ3EY-6dTUD4vhitw6Sy6tfRq6Tf9A@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Tue, 1 Sep 2026 19:13:19 +0800
+X-Gm-Features: AcwNN1X-j4abCvg1T2GB3Ar-5P2Ua0p1HBjUPKbFFW5g6FNochd-6przwbyCyV4
+Message-ID: <CAMgjq7CiewVYOsBoXMjg+tgbUMsXgYoTe1gJiEoADQdusffeng@mail.gmail.com>
+Subject: Re: [PATCH v4 6/6] mm/mglru: fix potential generation folio number leak
+To: Barry Song <baohua@kernel.org>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
 	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
+	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Ridong Chen <ridong.chen@linux.dev>, Lian Wang <lianux.mm@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: u34agzcnmnsg3k9i37o1aypx5aedgizt
+X-Rspamd-Queue-Id: DA518140008
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2F3A318000C
-X-Stat-Signature: qyhqgz5esed1rbbpgog37xuf65zbtysm
-X-HE-Tag: 1788261129-618575
-X-HE-Meta: U2FsdGVkX1+GM4rvX4PodSbPcmuiL6X7av2W7SKwgrYdG/KkK3vtT8M5VN+yzFMRo7jANe9E9rLrrFk/7JEU/2yw38mCwA3uBTjZO5uFj8IAybDw3SNlHbdugnZCOxUoiV3kV9JDZRVMQ2b4NpiE7nkx+8uHwPtoZ2siA1Njqhwxv/B6tjWmKnTMDni9pvk1VkLr4KCpB/od6xp8rzI9MBp4VNw8NOOjKweFrk3Ge5fggQ+6Mfls6PzbLO5T2R75bAGm2heLaLvVkZpEXBBxZnmjNnKCAHjq0g+TrcHEHIq54zo3dBYtkEPeTA33vB9M5dhSe/3Yzt3Qkpz0LDC0xOugW5CiY4iyHl/46HW7vYrlprMqF5Y3NEsx4ssyXLzlDRjC0NoiV5P7n1ijMt7aoWAprn3Jze4fYpbJfPRo+PAb/LvTA/PeSI4FJh37gl7lm1q7W727AZql9rW/7FA7BEuNlYCq5Z3wPvLOtaPWLXEKjHmZFG/OMpCzUTH+SozDjj17jSU8UsqDIPWM5NSeztpH1rLfNFE+Aczk3Q7l9eLjsAW6wndDhNX79u8XtKeAAfFRknrgXu+HSJwssnc0hkMlClxA9vbYAEvp/8HXPiScr5eDFcIUlibKb3TRidl5SUsamUT7Qpda5P9sZgg5kIi0TeFlyicIn6j5eKR6Ps3CtyHxmJhPSa03JncbtQTvjetJkY/vSEDrrdXoL76y4G1jiXA1x7FWtRfTntmU8LaPwD0Q5B6JmWxK9IMqdi8v7JZOcZB90D+fWcvCmDXttCu4NHrHp+CJXeUwNMLMeI09zeufor1c0YXthh/HULP+/CSKr0QORigyngEHzIez3tok/i0OKHZU2BCvPrpJjb0lIbOkDssP6++/JcGENsVCDMlntBkl2Mg6C3dn7y/t9YFAVF/nYlqTuoTzAKa68Dy5AyiL+TwfhSnSF49h3b/CoxRzHlJ8mbGmEUwNRV8
- gk4wy9PY
- HPZaxZ+Bf06d25IW5muJvrRosuULhbURU/yftUTFkFk9h1DmbFXrcEeem8oGlTb0AZRLtm+eibI4dVMTo5lReqGYY/Iywf+Q0/eZZE9WZBE2/c12YyOAhovG7eIAmAjF/e1lO2hKJ2FcQuRiIq4YPWo7KWfDqxtSKZY6MI/1aItUi/INsaSVcdwuHCXJQx6G5XbF1fn8lrDmMPc6jRjeXRDptJ1Nt4ohYEdKiV3yJ1EKEdnA9BqCUNL1iNMBRaD5NTMimDWh471pVY2sgS+pnoE0ZLdhffR5pAGKJ49w4a1yoIXxQ98JObRJ1K/pACfVJf4qc8fijRKRxsoUWXG02ePlYAfdCNQLlEBURv+ObnnT1yRc=
+X-HE-Tag: 1788261237-586646
+X-HE-Meta: U2FsdGVkX1+YsFRVuheX7s3P7V1YUutjjRD8sHCd866t3sDacLYqZprfQm29DgIFsfRq9oNZsx25VjKsdBp4E+5shYPQfI6mmzgeBxxoYytxQsi7Ob89c0fqa2fEqRxOCRz31aPpTDM4WcfA3kWLESjeFqXVJX1jSSJK9ZWKutinzhzaJkJlkYwtmyboFUd2Z6Dy16hEWVBY6wz99iTqKsARUuwD1myPGdnMV+zwK+Pi5BXgIDlB70ck9ep9v6Fl7soEEhhdMQZqLUhof5CLYZ8whEGkkxZGmuKpk+NKUlbQA1ofCwSLhAFFIw/jTDq2uFJ5CXBDvT6gG8nz465OuFFTjot3T4n0ud9SAoTT6rd8OsvVOe/awupAZjFShfxdJB8WGpLqD+D36rUE/Dj0t/5grpjq4L8v7rIYGoq4HmV8Pu9dQXvziQAJwqX5f/TN59PuLlpkZBzRFxZGnb9Sk873DpdhNEWhV++5qVMIvko1POvGaPLEL+vTZrs73iMViA005WHXW33KzF9+h3bar1+H8ULugJynksdJxxxyCvmyU+ISxha2hrLHnyN9mehnUKi6P+6yXJfQAaXmoF7moKibcTZMbbB4I0ITq/wHPtOgrQfOViDTt+EX3g0su+0Zx/cG9y05Rn7CSdagRBV2Zmz7vfSOwQQkXrE305ooutKOUQWZAYUMaiStyS+jMblnrh0Zo19dXQ6wRV8z1IwS++8Ef+ESrSXPwSH6aERIf3gwib4Z7KZrpvkXYQybgJ3DqDPkdozRWA+poMjHnNgw1abGl2tHDjz9VvHqm08xQG96KmLtED2Nuvlzy4Ny741o2tdIOq4vQs+r7UwbKe5EfLNmJExMfg6tX9YAExLYCB/QK1WYDtveH1UEgz5V/TGUpqT7Vl/6M2Aa4DH8XTIgDoaU5GiFMuj2lwX1Bp9Jmb3F+uzRaSFfn/0VJDDYZ1rZ9TsqA8u3dvn+f9n8D5p
+ TPqM8/oS
+ XL8/w6TDs2sbx9ZETsA3AEtVjrZjayzbGo9lTcaqfemgD3l/yzKMlRG6FZSOcg5Qub9grok+kKgzKm5GLsJpyjSqk7EZ3DSGOW0xPxmXawMfKwD/ryypeVv71Yqwy9qEgA+eJIThqvhTXoRBQWdPS4DI0ML3FHPYRp9pcBPVcgJoJrSm0LcX0KDhCFxkrXH+1JW3+x9yVAZW3bEe/Voqbs+wjiKdYiHh3lgwSW5BIue5s9lYj7cm+Ufl/Lnis78ISaZ4HeIfOBVLvGb/Euvik1yWEPb03KxkaPIkkVmyZgIn551shFRo5UdjiZh0kZetHUh4YNN7C/f6mDuqXGyxer0GztgRa3lZZ0lfng/j91AXDuExNidqv/R2IrGEERY0Z/Sf8SziAylLpHgeO64jkQAriszPly3AM5kUc3PPixollePtXnwFp427mRWuKnT6c0u5CNMSb18Bi4EnDqA39IuDnro/aaCpPopze2cUhyt75QtzIzRMqrRzB0rJyoAbaBCufREhQH2bYMQ9Y0ul7hF1AXw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,162 +149,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 31 Aug 2026 at 01:25, Ackerley Tng via B4 Relay
-<devnull+ackerleytng.google.com@kernel.org> wrote:
+On Tue, Sep 1, 2026 at 6:56=E2=80=AFPM Barry Song <baohua@kernel.org> wrote=
+:
 >
-> From: Ackerley Tng <ackerleytng@google.com>
->
-> Update private_mem_conversions_test for in-place conversions. In-place
-> conversions support is detected in selftests with kvm_has_gmem_attributes.
->
-> With in-place conversions, specifying userspace_addr from some other memory
-> provider that is not the guest_memfd associated with the memslot is a user
-> error, since KVM will only use both shared and private memory from the
-> guest_memfd.
->
-> Hence, when kvm_has_gmem_attributes, only test in-place conversions with
-> single backing, where guest_memfd provides both shared and private memory.
->
-> For single backing, guest_memfd must be created with
-> GUEST_MEMFD_FLAG_MMAP. Initialize the guest_memfd as shared to align with
-> how memory would default to shared when shared/private state was tracked at
-> the VM level (the test expects this, it was written for
-> non-in-place-conversions).
->
-> When handling a hypercall to set attributes, use
-> vm_mem_set_memory_attributes() to send the ioctl to the guest_memfd instead
-> of the VM.
->
-> When testing in-place conversions (single-backing), don't allow the user to
-> configure src_type, since src_type will be ignored. Don't use src_type to
-> determine alignment for rounding up per-cpu test memory size, since
-> guest_memfd's backing page size is always the system PAGE_SIZE.
->
-> Co-developed-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> On Mon, Aug 31, 2026 at 2:43=E2=80=AFAM Kairui Song via B4 Relay
+> <devnull+kasong.tencent.com@kernel.org> wrote:
+> >
+> > From: Kairui Song <kasong@tencent.com>
+> >
+> > Each generation of MGLRU accounts anon and file folio numbers
+> > separately, and the page table walker updates each generation's
+> > counters in batch once the walk is done. The walker promotes a
+> > folio's generation with a cmpxchg on folio->flags, and
+> > update_batch_size() then reads the live flags again to pick the
+> > anon/file column to charge. The walk holds neither the lruvec lock nor
+> > the folio lock, so the type can flip between the cmpxchg and that
+> > read: the lazyfree path clears PG_swapbacked, and reclaim sets it back
+> > on a dirty lazyfree folio. The batched delta pair is then recorded in
+> > the wrong type column. Nothing reconciles it afterwards, permanently
+> > skewing lrugen->nr_pages and the reclaim budgets derived from it.
+> >
+> > Fix it by capturing the type from the flags snapshot the cmpxchg
+> > linearized against: folio_update_gen() returns the type of the state
+> > it transitioned from, and update_batch_size() accounts with that.
+> >
+> > A folio's type only changes while it is off the LRU list, inside a
+> > del/add pair under the lruvec lock, with the gen bits cleared in
+> > between. The generation and PG_swapbacked sit in the same
+> > folio->flags word, so the cmpxchg snapshot captures them together.
+> > Let G be the generation that snapshot captured (old_gen) and G' the
+> > one it wrote (new_gen); the CAS can land in only three places:
+> >
+> >   - before the del: the folio is anon at G; the batch records anon
+> >     G -> G', and the del later removes the folio from the anon
+> >     counters;
+> >   - between del and add: gen =3D=3D -1, so folio_update_gen() returns -=
+1
+> >     without touching the flags and no batch is recorded; the del/add
+> >     pair accounts for the move alone;
+> >   - after the add: the folio is file at the fresh generation the add
+> >     charged; the batch records file, that gen -> G', matching that
+> >     charge.
+> >
+> > Unlike the drift of lazy promotions, which sort_folio() repairs under
+> > the lruvec lock, the phantom deltas from before this fix land in a
+> > column the folio never occupies again, so nothing ever repairs them.
+> >
+> > Fixes: 018ee47f1489 ("mm: multi-gen LRU: exploit locality in rmap")
+> > Signed-off-by: Kairui Song <kasong@tencent.com>
+> > ---
+> >  include/linux/mm_inline.h |  7 ++++++-
+> >  mm/vmscan.c               | 13 +++++++------
+> >  2 files changed, 13 insertions(+), 7 deletions(-)
+> >
 
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+Thanks for the review!
 
-Cheers,
-/fuad
+> > diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+> > index 047295ae6e8a..7e487c23aff7 100644
+> > --- a/include/linux/mm_inline.h
+> > +++ b/include/linux/mm_inline.h
+> > @@ -10,6 +10,11 @@
+> >  #include <linux/userfaultfd_k.h>
+> >  #include <linux/leafops.h>
+> >
+> > +static inline int folio_flags_is_file_lru(const unsigned long *flags)
+> > +{
+> > +       return !test_bit(PG_swapbacked, flags);
+> > +}
+> > +
+> >  /**
+> >   * folio_is_file_lru - Should the folio be on a file LRU or anon LRU?
+> >   * @folio: The folio to test.
+> > @@ -27,7 +32,7 @@
+> >   */
+> >  static inline int folio_is_file_lru(const struct folio *folio)
+> >  {
+> > -       return !folio_test_swapbacked(folio);
+> > +       return folio_flags_is_file_lru(const_folio_flags(folio, 0));
+> >  }
+>
+> I guess we don't need to change this function? It seems more natural to
+> me to keep using `!folio_test_swapbacked(folio)` here.
+>
+> In `folio_update_gen()`, you already use
+> `*is_file =3D folio_flags_is_file_lru(&old_flags)` to get the type from
+> `old_flags`. I guess that's all we need?
 
+Yeah, that's all we need, I was thinking that using
+folio_flags_is_file_lru here can avoid any further change to
+PG_swapbacked causing inconsistency of folio_is_file_lru and
+folio_flags_is_file_lru, seems a bit easier to maintain.
 
-> ---
->  .../kvm/x86/private_mem_conversions_test.c         | 57 +++++++++++++++++-----
->  1 file changed, 44 insertions(+), 13 deletions(-)
 >
-> diff --git a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-> index cf50e9a332c5b..33b610383693b 100644
-> --- a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-> +++ b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-> @@ -306,9 +306,12 @@ static void handle_exit_hypercall(struct kvm_vcpu *vcpu)
->         if (do_fallocate)
->                 vm_guest_mem_fallocate(vm, gpa, size, map_shared);
+> >
+> >  static __always_inline void __update_lru_size(struct lruvec *lruvec,
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index 724b6e034e69..87e667c410ed 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -3269,7 +3269,8 @@ static bool positive_ctrl_err(struct ctrl_pos *sp=
+, struct ctrl_pos *pv)
+> >   *********************************************************************=
+*********/
+> >
+> >  /* promote pages accessed through page tables */
+> > -static int folio_update_gen(struct folio *folio, int new_gen, const vm=
+a_flags_t *vma_flags)
+> > +static int folio_update_gen(struct folio *folio, int new_gen, int *is_=
+file,
 >
-> -       if (set_attributes)
-> -               vm_set_memory_attributes(vm, gpa, size,
-> -                                        map_shared ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE);
-> +       if (set_attributes) {
-> +               u64 attrs = map_shared ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE;
-> +
-> +               vm_mem_set_memory_attributes(vm, gpa, size, attrs);
-> +       }
-> +
->         run->hypercall.ret = 0;
->  }
+> Rather than is_file, I feel was_file would be more accurate here,
+> since it doesn't represent what the folio is now.
+
+I'm fine either way, is_file seems more natual to me. Or maybe simply
+rename it as "type"? Just the below:
+
+> > @@ -3532,9 +3533,9 @@ static void walk_update_folio(struct lru_gen_mm_w=
+alk *walk, struct vm_area_struc
+> >                 folio_mark_dirty(folio);
+> >
+> >         if (walk) {
+> > -               old_gen =3D folio_update_gen(folio, new_gen, &vma->flag=
+s);
+> > +               old_gen =3D folio_update_gen(folio, new_gen, &file, &vm=
+a->flags);
+> >                 if (old_gen >=3D 0 && old_gen !=3D new_gen)
+> > -                       update_batch_size(walk, folio, old_gen, new_gen=
+);
+> > +                       update_batch_size(walk, folio, old_gen, new_gen=
+, file);
 >
-> @@ -352,8 +355,21 @@ static void *__test_mem_conversions(void *__vcpu)
->                                 size_t nr_bytes = min_t(size_t, vm->page_size, size - i);
->                                 u8 *hva = addr_gpa2hva(vm, gpa + i);
+> This is one more place where we rely on `LRU_GEN_ANON =3D 0` and
+> `LRU_GEN_FILE =3D 1`.
 >
-> -                               /* In all cases, the host should observe the shared data. */
-> -                               memcmp_h(hva, gpa + i, uc.args[3], nr_bytes);
-> +                               if (kvm_has_gmem_attributes &&
-> +                                   uc.args[0] == SYNC_PRIVATE) {
-> +                                       TEST_EXPECT_SIGBUS(READ_ONCE(*hva));
-> +                               } else {
-> +                                       /*
-> +                                        * If not testing in-place conversion
-> +                                        * (dual backing), the host should
-> +                                        * always observe shared data, since the
-> +                                        * shared memory is a separate page.
-> +                                        *
-> +                                        * For SYNC_SHARED, test that the host
-> +                                        * can see shared memory.
-> +                                        */
-> +                                       memcmp_h(hva, gpa + i, uc.args[3], nr_bytes);
-> +                               }
->
->                                 /* For shared, write the new pattern to guest memory. */
->                                 if (uc.args[0] == SYNC_SHARED)
-> @@ -369,20 +385,29 @@ static void *__test_mem_conversions(void *__vcpu)
->         }
->  }
->
-> +/* Align each vCPU's chunk of memory naturally to the size of the backing store. */
-> +static size_t compute_per_cpu_size(enum vm_mem_backing_src_type src_type)
-> +{
-> +       size_t alignment;
-> +
-> +       if (kvm_has_gmem_attributes)
-> +               alignment = getpagesize();
-> +       else
-> +               alignment = get_backing_src_pagesz(src_type);
-> +
-> +       return align_up(PER_CPU_DATA_SIZE, max_t(size_t, SZ_2M, alignment));
-> +}
-> +
->  static void test_mem_conversions(enum vm_mem_backing_src_type src_type, u32 nr_vcpus,
->                                  u32 nr_memslots)
->  {
-> -       /*
-> -        * Allocate enough memory so that each vCPU's chunk of memory can be
-> -        * naturally aligned with respect to the size of the backing store.
-> -        */
-> -       const size_t alignment = max_t(size_t, SZ_2M, get_backing_src_pagesz(src_type));
-> -       const size_t per_cpu_size = align_up(PER_CPU_DATA_SIZE, alignment);
-> +       const size_t per_cpu_size = compute_per_cpu_size(src_type);
->         const size_t memfd_size = per_cpu_size * nr_vcpus;
->         const size_t slot_size = memfd_size / nr_memslots;
->         struct kvm_vcpu *vcpus[KVM_MAX_VCPUS];
->         pthread_t threads[KVM_MAX_VCPUS];
->         struct kvm_vm *vm;
-> +       u64 gmem_flags;
->         int memfd, i;
->
->         const struct vm_shape shape = {
-> @@ -397,12 +422,16 @@ static void test_mem_conversions(enum vm_mem_backing_src_type src_type, u32 nr_v
->
->         vm_enable_cap(vm, KVM_CAP_EXIT_HYPERCALL, (1 << KVM_HC_MAP_GPA_RANGE));
->
-> -       memfd = vm_create_guest_memfd(vm, memfd_size, 0);
-> +       gmem_flags = 0;
-> +       if (kvm_has_gmem_attributes)
-> +               gmem_flags = GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED;
-> +
-> +       memfd = vm_create_guest_memfd(vm, memfd_size, gmem_flags);
->
->         for (i = 0; i < nr_memslots; i++)
->                 vm_mem_add(vm, src_type, BASE_DATA_GPA + slot_size * i,
->                            BASE_DATA_SLOT + i, slot_size / vm->page_size,
-> -                          KVM_MEM_GUEST_MEMFD, memfd, slot_size * i, 0);
-> +                          KVM_MEM_GUEST_MEMFD, memfd, slot_size * i, gmem_flags);
->
->         for (i = 0; i < nr_vcpus; i++) {
->                 gpa_t gpa =  BASE_DATA_GPA + i * per_cpu_size;
-> @@ -462,6 +491,8 @@ int main(int argc, char *argv[])
->         while ((opt = getopt(argc, argv, "hm:s:n:")) != -1) {
->                 switch (opt) {
->                 case 's':
-> +                       TEST_ASSERT(!kvm_has_gmem_attributes,
-> +                                   "src_type is only configurable when testing without in-place conversion");
->                         src_type = parse_backing_src_type(optarg);
->                         break;
->                 case 'n':
->
-> --
-> 2.55.0.897.gb25b4bd76c-goog
->
->
+> We do this kind of thing quite often in MGLRU, such as `type =3D !type`.
+> It relies on the numeric values of the type constants, which is sort of
+> a semantic abuse, but it's hard to find a shorter way to express it.
+
+We also ahve WORKINGSET_ANON, WORKINGSET_FILE, ANON_AND_FILE. I can
+rename the newly added parameter to "type" here if that looks better.
 
