@@ -4,112 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7B1CC624D3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 16:53:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93A1DC61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 16:53:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A91EC6B0098; Tue,  1 Sep 2026 12:53:21 -0400 (EDT)
+	id 847FA6B009F; Tue,  1 Sep 2026 12:53:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A42556B009B; Tue,  1 Sep 2026 12:53:21 -0400 (EDT)
+	id 7F8A96B00A1; Tue,  1 Sep 2026 12:53:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90CFB6B009D; Tue,  1 Sep 2026 12:53:21 -0400 (EDT)
+	id 673A16B00A2; Tue,  1 Sep 2026 12:53:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 64CA36B0098
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:53:21 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DE6FDA3F3D
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:53:20 +0000 (UTC)
-X-FDA: 85165788960.01.B4B4A1D
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4563E20006
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:53:19 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DDXr5TC3;
-	spf=pass (imf13.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3236F6B009F
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:53:28 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BB4FF1C1F01
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:53:27 +0000 (UTC)
+X-FDA: 85165789254.07.7B20393
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	by imf01.hostedemail.com (Postfix) with ESMTP id E7E2840009
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:53:25 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FzfR2KQG;
+	spf=pass (imf01.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788281605;
+	b=6nBHFVcqKZrB4MIFcAs/Hdbcdjyr5bv/LyBjMALOp05BSAMUHOudbYsOKIR7h2Pqv+W2+k
+	WmFzSs52qYqNxv313Z5vS1MlQRZ2/vPYl1hQDAKCzVoX3JGbbDukSLmUmXrdbYBYtpfmJr
+	GMTaNexCIIx96pxToKLnnKP/pyeIRt0=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FzfR2KQG;
+	spf=pass (imf01.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788281599;
+	s=arc-20220608; t=1788281605;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=pJjngWo89DVxd6ai/hkg9rTN/tcZiu9r0IP6u0ad9gw=;
-	b=FYDy1s71sPv+MnqOiCrXcXHQpJFpsxRROXazSna4xp+Bkks15wvIutvcVfhpVI3uUD3Dn9
-	smWNNHrTGxvGWlbuCcwxEv59gw/dsUy0dNQMnXCmrFbjhIaMP1ydgi7bbapYeCpsquqR0e
-	hxe2ny4M8zR19lU8J84Yu3od06dLW6c=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788281599;
-	b=4SPwXQwjNzigu3xt6cpA2GS/S76oaMlZ+zggnrz0gvNfl+pGYeIOsIpnX9eJl5ItKeG/Fw
-	8iVThE0FTEQunuMfnO29QN1+LsoArBApFUnlPRqf5ve22+YG63/Osq5D2WL9zwZitQoddH
-	8y0+bOQLeXb7nR42I5iIszk/mggbCl0=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DDXr5TC3;
-	spf=pass (imf13.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2caced6038eso484155ad.0
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 09:53:19 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=c76z+PrPPREZ6S8eX0Uy0ClqkcdAnrOnB8Elz/LsQjk=;
+	b=aynQ187T7jr0EhKDhi033eHlDyJ0XCtiTtShDIG8Ccb+tLknG45RjqFqhIDn1Q/Ol3+lf6
+	LksRfzY5msnvGYWjU0aWhwk3mupfqt8aLOxmRZ0ojXdy5DYnBq5oCyoiIbGAorVyrrR4q+
+	Ygiq1cqHOrvVzKWkB7rclOA7lWEVFfs=
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2d6fe26ef1cso53073005ad.2
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 09:53:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788281598; x=1788886398; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pJjngWo89DVxd6ai/hkg9rTN/tcZiu9r0IP6u0ad9gw=;
-        b=DDXr5TC3jnyBO8dLiNCiD0cYHQOoT5BjStTsXuPlCjGCsZKG4vry37o8RcDNYpJqXx
-         xj3Y5yib4XwmnEFcalsqkgcxHjjIWf4DXNjuZTszS1yaoUxlNI2lqPKky7w/D3yPk+Mb
-         Gzn5QdQ5cLt+XqN4RlIr1VIrbrReNDTroW/A36lpAjts7i62xJqCPF5U2lb5aIX0SDKZ
-         QLOwER+KI5v5c/CX0SkDNf3yNr+DJgWqNEpjfYaVAPlmVhgvwNr7UGv9GPsHXoCiIq+n
-         +DXSFKuLCNQVl+gJTaVAPoUyQSvF+WZrLHBdZ18Y6vUc9/tRCRcQzPWFK+X1qQfK9dov
-         atwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788281598; x=1788886398;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1788281605; x=1788886405; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=pJjngWo89DVxd6ai/hkg9rTN/tcZiu9r0IP6u0ad9gw=;
-        b=aapENsMIHYXaSa1dM7DH99En1tINVMZSahTVJB6X5QU1JPL9mZJzbaP17NJ+zTz7UJ
-         /upDdQuAnvYnT3zC+L8IUYsyjFsOVQl+Qw5JwSBW4Ez/fgj8lqEFQ89e+5Ya4kBUxSMv
-         dIyIaYvzhy9gEaT+3SV5b3de9EsPX6Mnaj4640MVneRniZ7+HjWIJTYQFcpt4jN+XazE
-         25b/wfPfW3GZxpWtWZ36AydjGDkvSEzZM8Z4cz1Jt1kCXX3Dq9TcJO9fLVx4HQC1bDF6
-         EREB2c/OA/X2kePp+EsqMSP+tQHIgqikZsCbbs+ibWai1IXWlmxF92iXpRCBfnrVhCHp
-         3abA==
-X-Forwarded-Encrypted: i=1; AKwUvBzud/bxTk3i1Y8RiWdAzRuTuehuBOgvaZ9ZSsvNzkmUM3OskUuNEhA9QcjRFSqqRsxNUPFC9nP9ug==@kvack.org
-X-Gm-Message-State: AFuF++mS6awrIz+2P4v69wjEy+yUmziektPHRNiSZ5zXBiH/NHJHCsRV
-	ZacccJwbVZglU0+2SEwsmOfjhc8e+BeVnthxtpaDBJeUTyC95INOEVeQ8v5KZ/Ji
-X-Gm-Gg: AYBFou06ag8lb+vwidZQxAEP3JxLM0NIvNwORM/jvl9nFtjU9hb7AqgyYMtxGfP3Awn
-	MA9zaibp53JaeO9Ujukui1OqO3SRGLMJ+oKL9X74rt343bYgwmpDQjbZlAIkb8XUIOq5ZNTNFu4
-	BehykGNFvZ5kUeIGLLEnGFQ1lZbjLd1wKFrC48aU6LEEMJeYj4eG+P3DMz3jiWEKNbB7kWoHwXD
-	EGKrhqbGX7r8SEywB2UDXdjY0s+DyWo+puRzb32Sp+qBYRZ/EqasdjI3A+76BzyeB9EC8s0TZW1
-	qmMAaTZkoxj/1mWYX3JSPxOtW7Fl37KGzHyUA5wPbL5+26WoZT7MYM8VoGAqSqNAP/Y8wBZidZP
-	8X4KCWoj1rzdSvMaxKVbisZ2RN3L+dNpVhS1kVR8RVbC41uZp0NH8iDrHLa/Zu7cOYBJSA7ZF8x
-	AxiJZZ+hHWY7TPklNUXzJEtPHhW//Zs1zqHCBSbIYe7do/dxHGWCBxCI0=
-X-Received: by 2002:a17:902:fc4c:b0:2d0:401c:2edc with SMTP id d9443c01a7336-2d95268a82fmr70377805ad.1.1788281597897;
-        Tue, 01 Sep 2026 09:53:17 -0700 (PDT)
+        bh=c76z+PrPPREZ6S8eX0Uy0ClqkcdAnrOnB8Elz/LsQjk=;
+        b=FzfR2KQGUbVf9l1ljvZBqUVXawxQqIr4vU2coYnxHfyXex5QTQxbO3Yo4RNTCJcNUf
+         secDRnCCbE2JmWiDN5DX1hoEhaBIroEaFD5k2AlRaTYPRjWLJw/W4W6F/y6/CdzVTWXS
+         OCetBsVXuEDqz8yl+JTIBYQBELK76kHOcOPS0YvliKOwHmAxfKz6Ef/DJe9686o2gp/9
+         nOxqaLFZzz6JI6GPs6t+60nkekMU4Jl2x1vjPB6SYifUvSHSar44OchNtFbpsgftUaCX
+         nwbZXWfDVSuNiDrgBQb+xzeuKXxq7tuR5KusGvS4+GLgIduCRKhg97lxDMnT+Nb+ShQP
+         rFJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788281605; x=1788886405;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=c76z+PrPPREZ6S8eX0Uy0ClqkcdAnrOnB8Elz/LsQjk=;
+        b=qZ+CWavPY8SvaN68jz5yHVogU3De1SU5ZM658Yf46yAJ91fotFCHIxk9LR8TnK9UVR
+         A5naG+RstyNh8WiLutExk7H7ojqaDSHKc75lPu6icivYavLR6VHEmxcWvBdWfJVe2q7m
+         Esqo5hQezFOzcvlk+XJEMIzFDPhiV7l3sTIDIY8hYBxAj0Qc4gQ4uu+Skj0xa0UmjLyb
+         EQdWDlTMR4k79XkS4h19AdsFTPcNJoftOzSTSwxjK35kxGyx4MTsHwJjVR9bnw8y06FN
+         mVo3n4KtAQDYNcbTT9VUz7OPKJcZyYkEZPavUBVyB3WYc+mtfYPcy6dUUmXC5CEMc36a
+         Zg2Q==
+X-Forwarded-Encrypted: i=1; AKwUvBx+wUq0VDOTuLiApPIlyTxT1dICSoBuh85rxxI6rjJ2g8N/DhgHgfbeqMuRwIRI0ffuQmXfC56eaQ==@kvack.org
+X-Gm-Message-State: AFuF++kpr5Sa+sWLCq7Boj2JgfAg1pg+byLdSZqs6FrbDyh6DWqEere+
+	BrUQHfjKGiTOfnuyTT6RVwEzD23Uolw5SrDQPpAfw5h/3SYIx1vmDvy5
+X-Gm-Gg: AYBFou2ehp699uVr0nsFwOPjx3rkGDniML4xEyaFX8dij3TzKflkX6n9lQzgHf4ZJ6e
+	M+dYGqaKAAK1eBkHy3LbU4MMS/xXD1hmGK9TYZpRhwoDu4KAwvftElyqdwLkfVFU5P/WFVHxtPK
+	M5kzisDacAbeRsxZTr9TqKXwFSjDS/WNLkYVjYLA413A8uB+9mX/CeTWk9kf6SOR6JJcO1WxSmB
+	G9L1EVk801x4mZW5S4oAp/7NmpzKKDTUOM7kBduaYSH9gnMhGuazSiWlEfzOvuiPS51DC+kljGS
+	rjCVOijEKAOHfyLDcci91G/qETlHdOzATCZDqMp/g0JMzkiyM1Xani2nBGC4DAUVfQHc+yPFK6E
+	tRYcrfco6eWKy4XIjd1Felo+BGjMNutvq4pGCedPRTj1T/qo3s/bDDafYV0hUe/r+zPZD0YbAZQ
+	gaB6mrkgGzmMbnXEjKFO+RcKUVAVHuAMmEzOT+avGND2dCGHo0jK2XIPU=
+X-Received: by 2002:a17:903:3d0f:b0:2d8:d4ce:7e3b with SMTP id d9443c01a7336-2d95d5fc28amr90581935ad.16.1788281604498;
+        Tue, 01 Sep 2026 09:53:24 -0700 (PDT)
 Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dadd357efbsm1762325ad.4.2026.09.01.09.53.15
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dadd357efbsm1762325ad.4.2026.09.01.09.53.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 09:53:16 -0700 (PDT)
+        Tue, 01 Sep 2026 09:53:23 -0700 (PDT)
 From: Sang-Heon Jeon <ekffu200098@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
+To: Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
 	Christoph Lameter <cl@gentwo.org>,
-	Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>
+	Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 0/4] percpu: remove code with no effect
-Date: Wed,  2 Sep 2026 01:53:00 +0900
-Message-ID: <20260901165307.1026248-1-ekffu200098@gmail.com>
+Subject: [PATCH 2/4] percpu: remove unnecessary initialization in pcpu_build_alloc_info()
+Date: Wed,  2 Sep 2026 01:53:02 +0900
+Message-ID: <20260901165307.1026248-3-ekffu200098@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260901165307.1026248-1-ekffu200098@gmail.com>
+References: <20260901165307.1026248-1-ekffu200098@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1juuwpe37nazxiucxjudt4g4du84343i
-X-Rspamd-Queue-Id: 4563E20006
-X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788281599-532684
-X-HE-Meta: U2FsdGVkX188H4RQ1RMfOBQB8GvJC2a6ydpECFxI+Wy6Xs4h0XjEXLyoLqDh7K0cRi58/eoeBYK1dNwTmqD5OnYgGz24ns2uA7IakbbFFLMmXnrMsmtsVlMDKRkK8mbE5Ao5hr8dTyljpmfqJ9bVnexQ4KsC+qnao79BY6ikrQKI3133NHKiA7RSyg/s8af25hryzVTwkMqeC9ratBUGO2n84EFWoGr35c8E+EIhQVzZSgm5HL5rOO5p1VrZukCaGKZzKmeTjZ0tGqr3T7WP4gQ36PQlYO/FgkJ/TBCI9hzQGCpdL02y4dyW4z7wxdlYCwWojGbjCPHipXYSm+uqHZMksxaXz2CvMpkkeUvzOibtuWUn6TE2HWDAq60hxXfe7oVvN+4+6Gi+hRUFnI+rmydIgcnXtpMTnpKl600M0l1uRQb7Ox529gVGNGuVCdTdHwaNstpgX7LFXPdXrLjA8WAb1R9lCY8roPkhNl//9SzIzGbu0J1g8bwpKjW1AZKzmorHLPbSGnZM6HPoJk7Ke6TfqqkXYSVwUNrM6AAVnwb68ODOPkuz0nmkKRRVnfWUAVD+M2AyknyQ9c/ASksUGMv+CrTPst9ITo80J/jls00ZPTAvlJqHWz+km7YF3NE8n3dFFLZyW54BKVCINj+L+POSuKBf/6bXHAYNFwuzFVk0IiCxJhOMt1jGvEnKSlylI0jwZV4lW11yZCum1wCUX+gESdzrbuLNIvZJLn6hfXF/K6gxDXqs4p1TNE/5ssl/RbXkrwfNjnj5xNlJ4kSHRHQiIV7mjUYgF2JUd3M9a02COF42Z0Gmdmm/9otNv7dGozHjvwHM4JnPWkPNb6ySnwosk/3lK4MgEr/9APxswyErm4fMC1Szhnzd/0bpWFKNG8pVh+lIZ9F82VjAVurM5HJHgw3Sjn9p+0mPj2ifkHWyOYHk8h760QPFfjm0uTMHXtkt6AG+y1epIKj9Xx1
- yjGWfpsR
- nLuHLubDswq1D2+ix+Caa8lY+Wug9gKyYAbnuIDkHQTi77FlKOjltaocCMbMexOc+YELmL3yBI5V+PtWOPR7yQONZO2jWgb4/74E6qMJFjZ04D9xVBd6uFFM/mRevTHLY7SL2+4QJiWgU8pqY0fg9oTpKIay6KFSa2pwF9daCXfDpU97pnQlyrpRQUk5t/9LSMQlti8NGDlcm1BBq2b65x5EDwhLiqPn5jI8rCvibG+c9X0wQoTllXLe9jupy7SaPL3OyEuSpiVsR6vpNzxl4yp08smWKP0nfPE2F9LuznrkhtjSzMIVTb0NcL16j/OVUsbfCNsJFZrJWsQYGcwi6CbpRXtaegVPf7YSUeeUFPs85vDUM+zqKpZnVwAWrRSaUCfIy
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E7E2840009
+X-Stat-Signature: 589rfafow5jceydfaszdb5f3trfgfnzt
+X-HE-Tag: 1788281605-776720
+X-HE-Meta: U2FsdGVkX1+TwXldxEgZFE+T3e8K1ywuHMFfzG+QJA1nWIMCYPa+dglCkltsHZAknnTVf1mJ7OBINycO4EPltI29XBRkoKgm/OuPsvmu2eow/nCXyLDbBpiHbR8JM84tSVfV0gNeLUQxzDzesmGZt7XR9Qv8eiNxwivvDElXNKh3DfsynwvYzku8bqDkY0gJqFjgr5jUOqa0gvHUedS0IoIhLzP4k0usXwKyj8hw0ECjm6eWW8nC1BcmvFY9jUdcDuYHszRL3dXNsuLzeDO1+tQunUT7q4+rm56icy+WgpEY2joHqcHq4RJCCuljT1PTnNypnsLoYMvUYwPQvAHm9f4DuF1xHx185EAPuEIUJ0gPoaoNn+tiGaENDtuvfqPzA8dvoFmQaBbTu9OkUUsAUtxHuaoxKQOAeOL1AAA1QC7+jQiTEsLsaSP/aHDhQ99xqIelWbCtCV0rJf7s40DaUbDTt6isc1VRLv65AW8rcc10G/IMkcWkGaaOgIuPtzY28HOF8iiBDTAzXKeS7GTtu4DhwUp8xdbpv20klFVAaYOjBOImsQl+zEbUKF3A4MuKh3F9vANIC4h74+W04hf5qm3wf4s6WaanMn6J3CMdCFq5aiHKLAzdME1oe8sOprBaTxcN4x9GVna3xCqn+/VqwaRIssFEgLz5UoGjnAkQtpFMV85qPngNEyyj1Vw8dFl1v22VWBQGF6PkfHNYQwrv2Fc1EXOlxAMdRABsKOT+bbtzg0LIXfKHXlb6/jAahYflT/Yh/GJprt2MZXy4hqLIt2jvKdkzYEIMEpOjpuj7jqCI20ITtL27pNrUMeIGEADLgAaPOD3F5rwLd0raEvpFnSTAgL9ad6xrcgqtZ8ed+FKBoLMpWjUvAP4PGG4PyvI7ujU0AIgg8Fwg02CW8uPX8+BHb6MzxpvlU3xwMh34BMtg6C4IqrP7vO9WWKpvvZE5Uu4dtsPZDiY7JW6tbZS
+ QL+7gymj
+ ArOmRwjQ+tysz1rBwvodK6L218ft9vtIBRVaRIZFr3SOYZqaZVjX4VT4Uaw3VPZGADbm2tw9WqME7Ri/LQh34ULYzh1GZ+TTSy4S45tSB111ujyMYSlAMyTsrwTnx4WWsovEtY1+Dxo2HwEksl4JeAsJCgvR9mwvG1KRgFzZpqa+aImylpXcEq9cAUlF5TJ5w2F/Sv+tVpAaROHbjrVaJTP60ONZpnGMIYb1cuBRGVuRT6Wdbr5HzJnqrvhj9CZJZxRkSahr4PHJbLa9LznemPLRtlNI2sj5mCyLnrk+47JrwFaYE/rtTCw3olNnMs3azS/x+hCb9WlbsZqm41Wv7SBB3KNW/WezuNyI23Y993Ut264kNDEBZ9a0nvNULgJpQ5FM41SG4itvqXr9QWEUVNGSr2TNXdGsSmGk/gZkdoM5XPUN7BjBrzLBl4CRJ4EyPDDN4DLUGihTZm/k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,23 +120,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+pcpu_build_alloc_info() initializes nr_groups to 1 and unconditionally
+sets it to the number of groups. Nothing uses it in between, so the
+initialization has no effect.
 
-While reading the percpu initialization path, I found some minor
-cleanups for unnecessary initializations and an obsolete return
-statement.
+Remove unnecessary initialization.
 
 No functional change.
 
-Sang-Heon Jeon (4):
-  percpu: remove redundant assignments to bits
-  percpu: remove unnecessary initialization in pcpu_build_alloc_info()
-  percpu: remove unnecessary cpumask_clear() in pcpu_build_alloc_info()
-  percpu: remove unnecessary return in pcpu_populate_pte()
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+---
+ mm/percpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- mm/percpu.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
-
+diff --git a/mm/percpu.c b/mm/percpu.c
+index 5700385fe6a4..f222b43cc90a 100644
+--- a/mm/percpu.c
++++ b/mm/percpu.c
+@@ -2817,7 +2817,7 @@ static struct pcpu_alloc_info * __init __flatten pcpu_build_alloc_info(
+ 	static int group_cnt[NR_CPUS] __initdata;
+ 	static struct cpumask mask __initdata;
+ 	const size_t static_size = __per_cpu_end - __per_cpu_start;
+-	int nr_groups = 1, nr_units = 0;
++	int nr_groups, nr_units = 0;
+ 	size_t size_sum, min_unit_size, alloc_size;
+ 	int upa, max_upa, best_upa;	/* units_per_alloc */
+ 	int last_allocs, group, unit;
 -- 
 2.43.0
 
