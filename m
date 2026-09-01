@@ -4,106 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F3DFC624CF
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 10:33:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D12D0C61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 10:34:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25B906B0114; Tue,  1 Sep 2026 06:33:01 -0400 (EDT)
+	id CE7936B00B7; Tue,  1 Sep 2026 06:34:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E55A6B0115; Tue,  1 Sep 2026 06:33:01 -0400 (EDT)
+	id C71306B00B8; Tue,  1 Sep 2026 06:34:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0ACC36B0116; Tue,  1 Sep 2026 06:33:01 -0400 (EDT)
+	id B37F96B00BA; Tue,  1 Sep 2026 06:34:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DBBE06B0114
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:33:00 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 49E3C1202E4
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:33:00 +0000 (UTC)
-X-FDA: 85164830520.04.C51099A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 734EAC0009
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:32:58 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZaqD2/r7";
-	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E9A36B00B7
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:34:56 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 23EB31A02DD
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:34:56 +0000 (UTC)
+X-FDA: 85164835392.06.A870E8B
+Received: from mta1.migadu.com (out-197.mta1.migadu.com [95.215.58.197])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 97C391A0003
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:34:53 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Fko/KJTG";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of fuad.tabba@linux.dev designates 95.215.58.197 as permitted sender) smtp.mailfrom=fuad.tabba@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788258778;
+	s=arc-20220608; t=1788258894;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kz2UKluoElEtbtcr6f/jgfNgmNiv9DhwSNGNfkgr3+s=;
-	b=zc6id3mTVt1ADtiK+IelsY4NgGnVhEjWtN47L/WDe6GQ3jDBhTETHWyB3YaG17iULfaDLs
-	AyvZFguXhkvqYNRaALfEy7C8vQ3A80YTNz8fyRPZzFIGc4jHvKRJPqnpgeL8D88eoU0n+u
-	fRstW6Ib0HCt2eFmLKttIj0FHZTmKZY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788258778;
-	b=PNa+fwTQMVaLfqFUt6IP8e/JhD0+39TwRe7YUMDxi06LNuFL7iWJDAbIrLc93R3sQgMd+p
-	Y5uwzqRRckWT9MVLFZZjQVIjC4ihx6W8Gy6yt9TwDuPKLDMiTBu7xgM98l0ZJqlWdW6/Y0
-	bN1B8hdjV8dh2qKXq2ZKg93jOXVVrJ0=
+	bh=i972GG/DrZKuZfQXxZQ+goAiJ8LgEGFcE7AVKjeLI5A=;
+	b=FotvMhvipFAfaiN1NYfax8NRgywZd53u94/rRnAbLscfxGraYoQqkjC1+3zkS6vHzRBX8/
+	6ZZs+tKhU3+YOAvMqV9A1m25vpQEbkuX79rFrDxNsOjHESmrbzE2flytqKEFLOP7GEvkjk
+	1Gl2qvFS7Mx6oyzPSTM3lgXPZd8MhxI=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZaqD2/r7";
-	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4C3EA429F9
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:32:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F6E1F00A3E
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:32:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788258777;
-	bh=kz2UKluoElEtbtcr6f/jgfNgmNiv9DhwSNGNfkgr3+s=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=ZaqD2/r7DOFhHjl3Rwijm+UVxqJOCWeFYyAuth1jKdEaSwgX50/BRaHJ7PDb884aH
-	 VdBZsDI7gTFyvvjMplFzrrfv+TXrux6NhVTT0HTF1qx+tvxU2w+d2YijZj+gf6ohOk
-	 ER8cZ7J+1qlOb0Hlg4ov1mDlck0NQ9vn+4rfTJNdHRelnkwR+BMqOe+Q1Z0Xx1jnpa
-	 U+LzaZLsAitBO+eRMa04FUz0WfCAvIN1iFrds9GtUeSe1KNamkywZ5OhiSPNLfiM7g
-	 OfS84d2PNLPxKjEcXij0qmUmr6fAub7FeTX/Jj4nrctAPFC/Ue12sKvrnXWBXGMq4y
-	 xPzC4xCx38Zrg==
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-936e393176fso65283885a.0
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 03:32:57 -0700 (PDT)
-X-Gm-Message-State: AFuF++nNzL3SfM6H+SJ1W5W/5Qb7UbfjlQOf7mzw1yjQycEFR5DjwzQf
-	uXoi07bqcdQ2IvCSuziaVVhvMrztcXNckYwo1iSWNBIAmb1rH7IySAuooiC0ePb8+cxQCXmWngB
-	Ea3E0PNDWnNY5Uv0zx57EMrENJycZ3bo=
-X-Received: by 2002:a05:620a:4487:b0:937:6ed3:78d with SMTP id
- af79cd13be357-9391390b4b4mr2930150285a.20.1788258776414; Tue, 01 Sep 2026
- 03:32:56 -0700 (PDT)
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Fko/KJTG";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of fuad.tabba@linux.dev designates 95.215.58.197 as permitted sender) smtp.mailfrom=fuad.tabba@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788258894;
+	b=mGVawqkgTBWm+8iDFbD8jY945twuRc56PyZxoC3jfM4tFUNGsJRy8b5Dq8LQH5JAVrzoeN
+	cZ5bnv0oJY1VebAU3DatB2ZjTDXQuOevQfIHatsTiQtA0pB5B5nFTz8o38MhqxH1Ge/dzN
+	WTgMmJqMbndCijhzZkPCnpwy+nYwE7o=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=hGwrqJibjsI979lLLZMh7q1FzrzRBk6jSe5g0u5F2Qc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788258892; v=1; x=1788863692;
+ b=Fko/KJTG+UgOPW6fXQx2paHTq6dn+386Qq+Xn+RJnQCYXxWdShpUlJQmcF5MRYvlsGfky2iA
+ jKdWSVk/oeeMIMp4BDA9u1DuGIdhk/gQ7vv8yt3Bn1HVztql3qW2vpfJQ9zCN+AmqU7AD+eAp6O
+ pLruDk2f2KtcUrQbdw1uOdgQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 917e2f0b78a20bac;
+	Tue, 01 Sep 2026 10:34:52 +0000
+X-Mizu-Trace-ID: 917e2f0b78a20bac
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5b5e5aaf7deso7032e87.0
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 03:34:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzhbuMEbj/YCatkrH64NeJX8jj0DUCsiM7/dC8zqwD4aH6oQJ2c7Y4d/LEQkYnX5z9Vl1xvjtgScQ==@kvack.org
+X-Gm-Message-State: AFuF++k01WnUIbGSV5tgJ5wToVdWb3aU8MtWRHe0/elYPjdhv+/oq8Rp
+	G5qOhlnhuTUIhJG/CK3/enWzVowko/v2CVGN+NPa/MPtDkFg46BCIIFoP2Mmc6GqM6i7QTJtLNM
+	/6BAAwtrYC9CEpCQWSMMdp+yOwo4lSS3l31Wp/CV2
+X-Received: by 2002:a05:6512:ac4:b0:5a8:6646:d7b4 with SMTP id
+ 2adb3069b0e04-5b600a0b6f4mr114181e87.1.1788258889928; Tue, 01 Sep 2026
+ 03:34:49 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260831-mglru-flags-cleanup-v4-0-2d15dde0d7ee@tencent.com> <20260831-mglru-flags-cleanup-v4-2-2d15dde0d7ee@tencent.com>
-In-Reply-To: <20260831-mglru-flags-cleanup-v4-2-2d15dde0d7ee@tencent.com>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 1 Sep 2026 18:32:44 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xbXhWfAv1EaTW81yyNRDHO7HVpcR3uRcB9v5Afeck-5A@mail.gmail.com>
-X-Gm-Features: AcwNN1XHWhtzaukFlsh3FhGGQunilwYP5RcrWIDVoEx7eVnU4Ym4-Iqdeoh4g2I
-Message-ID: <CAGsJ_4xbXhWfAv1EaTW81yyNRDHO7HVpcR3uRcB9v5Afeck-5A@mail.gmail.com>
-Subject: Re: [PATCH v4 2/6] mm/mglru: introduce helpers for manipulating gen
- and refs flags
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com> <20260830-gmem-inplace-conversion-v12-13-85e5fd25252a@google.com>
+In-Reply-To: <20260830-gmem-inplace-conversion-v12-13-85e5fd25252a@google.com>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Tue, 1 Sep 2026 11:33:00 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTxdJmjBu8vJqbZks3ANP7QFZzGvp4J7kqxvTNR-fKMmJA@mail.gmail.com>
+X-Gm-Features: AcwNN1W_H4CnVusKniYHLtrTvE9k4_Zq5YT-PzaJWqqbnOmAYps19c1F8GBPWTQ
+Message-ID: <CA+EHjTxdJmjBu8vJqbZks3ANP7QFZzGvp4J7kqxvTNR-fKMmJA@mail.gmail.com>
+Subject: Re: [PATCH v12 13/45] KVM: guest_memfd: Pass mapping type filter to
+ invalidation helper
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
+	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
+	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
 	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Ridong Chen <ridong.chen@linux.dev>, Lian Wang <lianux.mm@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Kairui Song <ryncsn@gmail.com>
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 3dx86j4x11e9dek33yfz4orf5xyswcnu
-X-Rspamd-Queue-Id: 734EAC0009
-X-Rspamd-Server: rspam02
+X-Stat-Signature: 9us5drtwkzh6ym5nb99w7gg5dwoc753x
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 97C391A0003
 X-Rspam-User: 
-X-HE-Tag: 1788258778-7603
-X-HE-Meta: U2FsdGVkX1/Rrzc28LG8gMqqed06BphHrYX7DAwznduLbJKZKXVKpkRqbGSJxWBxFff6gUEuOxCvkSOnIpPUdWEbEVg3U0q+Bf0PlYeX1BUkClg550CC9LelnQBhnyUpynNFOkeZScuGUT7S85Qx8Rd5gh3NJ6OrXWSmk82OWH4UNQN6Yfw1gywjJrCyAGvlYwMC3IKCqx7HW1r/kO5vdAuByCOa8fueIA3KpOcz1Txn6hhskKtEPtuqt+SJTw59KOT9ssCSVyxsCDrY/avkWidnS07BfIhLlH1Dy+C0Ogv40D7qku2oOWOE8/6By23Xinktd/5N/nFM9nhbN6UF+GYPE9I581stpfRMUbnFJEMjm5G51Iw5ps0FtXXq6AjVyAq/TkuD6c1avu5DZ/Dt/AuLuPj0HmuRrlmavU0lngu6ezAq/YiVe7DEmvIi1Copn5wzTtJuqU7YpjlMhGnGwYzDmynwjS2x56V5XAKgedU49NTtR0DigYwyzynf0RIT8chw9XPT5CSwZdHtyF+hSTdfyP3aioN2+FUl1SXJ7l/AQBoNsdR/mpVk4AM0P0Bb4fmySDSDju0LsD0ibdQg4bf2DrWSInGbpPgyLP/cBQrP8i0cJv/mfLiHcADzEKrXCSOg8FO42A83y1yeTBbYuxDzb/1aYYhvWo70cCJa2eSZ+48bbNDQWh/MNFbScoHeVRx/4IwmpEx/oWZ2zqYtmwF/1slf7fWQWLOmdgohQ7KYBY2XoOZeBgr29m36bw/9sRhHC/d4VrqrIaiMaglu1LfvtPb6+2U4Kzmts+KTRvSDb0mWbXNQc70RjqsThWMftJqH1Np+k+3CVVEgS3/kW7uZgV+DHYW1bHc5vQ7lIoUxsE6SiF4qaFwbQPMgjVN9l5WPbODwBA8avmeDYgIQg35NIM0fxMwWGF8sfcCHXEiWNboRy67LOnVzxR88bQh1eFqpI2yseLROABfNc7p
- 3ANVQUxo
- W0cdA7mGIAbs195lfpVup5IMfkA1W25oCdZI+4w20NKoDxmqxitlQI9k5DR+1HPkOa9eDwHXXJyIambqdsEn3He8sj760cptctvb7AbTLBaH94prkhwGokqBz9q3b35d0DyzruyaN4rY1FEg8UNvkB5E+ZUyFHHEo81tVX9Z04lNiqSXHAVjK1SifkeJ41KCcCUWC5Nq6mBMlYOFN5THTx78Ue/wlnKHDexaGg2TSsgRTRuOq3KKJjB6wAePUb2zTatu9Vmy//ql+/4yTtwjwrMP5UAuKyLwbaRrTwYLjxeBRuP2/5vyJjeW3SZRgc05+CBq/TPqNg4fYDZog2UOylCsg1H9jrNF3eItUpTFeuDME+aVW4/qlQ3SVOsDu+gi4dRiiOG9wktMBXTV6PDom7RaHxw==
+X-HE-Tag: 1788258893-346822
+X-HE-Meta: U2FsdGVkX1/2MYLZ/yplyiswOBPu3XRyGyzyD7ZNpLD/d9jV5V9eY9oWFzGvNwkdKsE/4/9EoT1+maJsJZqt5p5Fi3adiZ0RAwMGOVFr/rRlHpBKLt+LMXeGWtdjQU6VJH6vPEXLli2kZUjF5sOfa5khOzk+PXCWHFTbVNA0LEXiqZpABUFJxcpoEB9WrS0WbvRQ2QkRFm+lDdeBUEnLlGar0gce+XBF8+t5eiWWQl8+Kfj0dxb2T48DnlwRMAFAtVOGutJW+yd1qlA9NvRLwkOmwvvzJ5EWH+7fy9FgZ0jeQlWPe9X9IRu9wuUaUVYVpPD8C8mx3vkr1nvYVT5+EYoSwaVxQ1CZE0xHsOn54QWvWCYuPbVW8aveE80ByAp5vjmm9CyLxI5XZNmcX3tGDNSsNodBCV4QDzqJf+ykswvvaplrYlwcp2JVJO7wmHMaycZjSHhGmrf83RUSGEFtbN46UhqIsvUp/X03YGCuBzw8iNkBF4nNysURRE7xAGdvBd0djFKvYPznSPKhNp2lCtsvBszfrSZd/iiiEI/FNAyLMmNm2IvcIk27/S96QPHp4hmqyAmFDkrpuq+sM0ICOXEOyJfvIBEF9EKcarVGh80kF8ueYq5WPqtqOKLSH9XVkeLCjS8Zpebndor2DltMD7AhxDraKO+awR2DiihCDVxUxvSHE+OKEwdPVcj2H4sWznf7zsnNiCWvXbxE8HrwGPrfQwl35RPd1unlU+k0GzwKjH998G/Xbv5QhyqiLgAWsOtKiqL3KnFvy6k1+otEimnEOzXmPYE5O/VgiYHawkAanHZVXHXqnnbJKSlvY5RIl5boWBzuQt9wfXU+8oq73w6PhDbZGSgpsCAaIb2CRA0H/GTlAJ2K0ADX8UQUSDjqqSJyQbzKJftWpapT9qcia/6TMCWUjJkWQSEiCAeW3l1ErPwHDNBb1pdMhAM2KqB5dMznGPUjRWAZsBd2xzl
+ aIc4A1Ej
+ Fx0IRmOblQYZSaiACPJnfqQIQyuat8orzW6SSKpQuEdp2ldroJ3k31KK3l5K3McIimbQNIdUHyAUTqRwCLEEKoh4CkaBfwDOR90X8PrOr3sflx84r6ckI2A49NaEW3szwM3uZaCpBWNzv0O0htNRCwFwDsiWQ/UnlRUuL1fvigtoFKBbqIAIlIgAzLyuqHFfQCbb7jpH6dtgyKBbAsH/8lu8kzn8W2KI2p83+scCYme16L5gsYwljleubqsg76/W69GY6ZhDg7/0K0YCpULk5xbmabIbalWckuh2tRz89urW4wnghLZ3Nm1yYkcnlEIBe82aFWkgNVs877LPPV4VB7iGbAGpvJvgY2F4mVfFwZswf50Dsf7ozG17cQ79J6eiHbUT3UxnrlXWg0rQWlpdwg0kLhw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,25 +126,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 31, 2026 at 2:43=E2=80=AFAM Kairui Song via B4 Relay
-<devnull+kasong.tencent.com@kernel.org> wrote:
+On Mon, 31 Aug 2026 at 01:25, Ackerley Tng via B4 Relay
+<devnull+ackerleytng.google.com@kernel.org> wrote:
 >
-> From: Kairui Song <kasong@tencent.com>
+> From: Ackerley Tng <ackerleytng@google.com>
 >
-> Instead of doing bit ops on folio->flags.f, introduce helpers for
-> adjusting a folio's refs and generation info, making the code easier
-> to debug and understand.
+> Accept the mapping type filter as a parameter in the invalidation start
+> helper instead of querying it internally. This allows callers to specify
+> which mappings (shared, private, or both) should be invalidated.
 >
-> No functional change is intended: some combined atomic operations are
-> split into two, which only creates harmless transient states. There is
-> no measurable performance impact, and some paths even look slightly
-> better in the generated assembly.
+> In the next patch, the conversion process will use this new parameter to
+> invalidate mappings only when they're different from the target state of
+> the conversion, i.e. invalidate only shared mappings on a shared to private
+> conversion and not both.
 >
-> Acked-by: Qi Zheng <qi.zheng@linux.dev>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+> No functional change intended.
+>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+
+Cheers,
+/fuad
+
+
 > ---
-
-LGTM, thanks!
-
-Reviewed-by: Barry Song <baohua@kernel.org>
+>  virt/kvm/guest_memfd.c | 14 +++++++++-----
+>  1 file changed, 9 insertions(+), 5 deletions(-)
+>
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index e41802944756b..e19de803149c2 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -192,13 +192,13 @@ static void __kvm_gmem_invalidate_start(struct gmem_file *f, pgoff_t start,
+>  }
+>
+>  static void kvm_gmem_invalidate_start(struct inode *inode, pgoff_t start,
+> -                                     pgoff_t end)
+> +                                     pgoff_t end,
+> +                                     enum kvm_gfn_range_filter filter)
+>  {
+> -       enum kvm_gfn_range_filter attr_filter = kvm_gmem_get_all_gfns_filter(inode);
+>         struct gmem_file *f;
+>
+>         kvm_gmem_for_each_file(f, inode)
+> -               __kvm_gmem_invalidate_start(f, start, end, attr_filter);
+> +               __kvm_gmem_invalidate_start(f, start, end, filter);
+>  }
+>
+>  static void __kvm_gmem_invalidate_end(struct gmem_file *f, pgoff_t start,
+> @@ -224,6 +224,7 @@ static void kvm_gmem_invalidate_end(struct inode *inode, pgoff_t start,
+>
+>  static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
+>  {
+> +       enum kvm_gfn_range_filter filter = kvm_gmem_get_all_gfns_filter(inode);
+>         pgoff_t start = offset >> PAGE_SHIFT;
+>         pgoff_t end = (offset + len) >> PAGE_SHIFT;
+>
+> @@ -233,7 +234,7 @@ static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
+>          */
+>         filemap_invalidate_lock(inode->i_mapping);
+>
+> -       kvm_gmem_invalidate_start(inode, start, end);
+> +       kvm_gmem_invalidate_start(inode, start, end, filter);
+>
+>         truncate_inode_pages_range(inode->i_mapping, offset, offset + len - 1);
+>
+> @@ -522,6 +523,8 @@ static int kvm_gmem_migrate_folio(struct address_space *mapping,
+>
+>  static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *folio)
+>  {
+> +       struct inode *inode = mapping->host;
+> +       enum kvm_gfn_range_filter filter;
+>         pgoff_t start, end;
+>
+>         filemap_invalidate_lock_shared(mapping);
+> @@ -529,7 +532,8 @@ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *fol
+>         start = folio->index;
+>         end = start + folio_nr_pages(folio);
+>
+> -       kvm_gmem_invalidate_start(mapping->host, start, end);
+> +       filter = kvm_gmem_get_all_gfns_filter(inode);
+> +       kvm_gmem_invalidate_start(inode, start, end, filter);
+>
+>         /*
+>          * Do not truncate the range, what action is taken in response to the
+>
+> --
+> 2.55.0.897.gb25b4bd76c-goog
+>
+>
 
