@@ -4,118 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91F4DC61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 18:29:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D65EEC624D0
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 18:34:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE2826B009D; Tue,  1 Sep 2026 14:29:15 -0400 (EDT)
+	id F25DF6B008C; Tue,  1 Sep 2026 14:34:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D93146B009E; Tue,  1 Sep 2026 14:29:15 -0400 (EDT)
+	id EFDF36B0096; Tue,  1 Sep 2026 14:34:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5A966B009F; Tue,  1 Sep 2026 14:29:15 -0400 (EDT)
+	id E13ED6B00A3; Tue,  1 Sep 2026 14:34:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 97EF66B009D
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:29:15 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 921B9A049A
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:29:14 +0000 (UTC)
-X-FDA: 85166030628.27.1B66E2D
-Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E076E40007
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:29:12 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=FNSSxZHa;
-	spf=pass (imf11.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C1CEE6B008C
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:34:55 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 50CE5160480
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:34:55 +0000 (UTC)
+X-FDA: 85166044950.21.D4C1659
+Received: from mta1.migadu.com (out-140.mta1.migadu.com [95.215.58.140])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 3C66420002
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:34:53 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ksBLc3Iw;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.140 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788287352;
+	s=arc-20220608; t=1788287693;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MVIkjcqq74IZZNU1n5Q5hTuCbDzAa7ExJXxmdI4hdXI=;
-	b=t/YGLFD75thvlc0spjCsi/H4ZrkWkZOdydN9hY29T2nLKGjDFTwJ77OD9KLZGI8vsvPTdd
-	TwnPfYAz6wsyHUgY3UyNVs7andNn9AwJT1Rmrz6RltRWIVhiexoKxcs/++X8wvER7wID9R
-	MZ64FLKyfx7HfaojGFUlTQaue2xvFfI=
+	bh=bFvzdJ+vmOz3/LRA8hSn3Ym3XS5Gm7Jm1h2XNwZCvZ8=;
+	b=zMtypUN0FZLub2P6pYkG4BM6IQEx4S0I1THaYcEAirz/gqXagbjdDrISaz7eI2b4IzvAbb
+	71ZF55AWhFuK9WQxY1YC8WYD73sUxyMIPmy9yWu0w6WUjD0zbMYSwMhmkepy4S8qFMoM+W
+	U0SrATYZ+Zwbqah74erCdz70PJaZMgk=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=FNSSxZHa;
-	spf=pass (imf11.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ksBLc3Iw;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.140 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788287352;
-	b=aY2JlKFreVOeLsK/Uk8MIztfoh7COHQ0O3tn5lgKYq1VJvQl1TDa6MvKpyOjSBggGX/29l
-	4QWj0agGM+0cseZ9K2UZzhdTfBBvzrhi74zo3XfmL2/w0JNl/zm4+c25EOyZbjo8GqEynb
-	+mjzd6O1Kr+jZEbJ5e0BYdwWEJBBzT0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
-	s=smtpout1; t=1788287350;
-	bh=MVIkjcqq74IZZNU1n5Q5hTuCbDzAa7ExJXxmdI4hdXI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FNSSxZHa5FtuOKibtrS9mmnbzAdIGiGFwDVNJJu4Gy1huXHzsDX+deS22Nh88XhmW
-	 zIx7o38HaJgbKJWIeUrU8U1JFgBsq8rh92gT/IkrUWKQPrrkTjfjIksnxwAiky0atk
-	 GMoQTkYHJh6yqZCZNytGeyGOmoSAxRrBq/3jYe+qdW/ib8GuKj69hZkzFRU4oLFn8/
-	 DJ061TyjoawwTY2GAjq6TxrjQeV+S0VVOKGiuzGwj6Tm6kupgbYleOKpljDtTIE/VZ
-	 OwZw8BCTpwAVwjnCzsYwDjjqBMrSPUoGeQWP89Ykz2Sox6M8aWz2JV8csPyp9oAGmn
-	 8Ic3jJsgihd/Q==
-Received: from compudjdev.. (mtl.efficios.com [216.120.195.104])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4hZDsL625lzWP7;
-	Tue, 01 Sep 2026 14:29:10 -0400 (EDT)
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>,
-	Martin Liu <liumartin@google.com>,
-	David Rientjes <rientjes@google.com>,
-	christian.koenig@amd.com,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	SeongJae Park <sj@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	David Hildenbrand <david@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Yu Zhao <yuzhao@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	David Carlier <devnexen@gmail.com>,
-	Josh Law <objecting@objecting.org>,
-	linux-mm@kvack.org
-Subject: [PATCH v21 5/6] init: move percpu_counter_tree_subsystem_init() earlier in boot
-Date: Tue,  1 Sep 2026 14:28:50 -0400
-Message-ID: <20260901182857.26690-6-mathieu.desnoyers@efficios.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260901182857.26690-1-mathieu.desnoyers@efficios.com>
-References: <20260901182857.26690-1-mathieu.desnoyers@efficios.com>
+	t=1788287693;
+	b=77gjWzyGhLlnjR+qclu/r3Rxen7FrfpVkRMeJigS4ZZusj20I4JKeKJGXTPmWADaLMZcpI
+	axB+PIdtqfVxqFzWkrgOM0JL7m3HcZQeUjle8XI/EUGdJeDHsnj+d7EEP7UdZW+zaepQKO
+	5ltiTZYHZ1hCdhjxaaJN8BtoLTHZgAg=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=i8KGEh8F0loJtG5JjmD9+5HBTb4SrwJLAbH39rt2vZY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788287691; v=1; x=1788892491;
+ b=ksBLc3IwcOtRrtNbP4D3rgHZC0o6pEEunOy0nsQ9HMIyQ9rQ3CC9FDkiHRRqxSqdlYsbWuFq
+ 3EHPv/GUDNgYak34Kkt9N1O/4LAaz3ZM+iEC+udNNziWhEop+N1QIvpDNN20s5SK72tJDqa3oyK
+ tuVFbs80JuBDPU1G6+XyNb0Y=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 031645a98e7cbdab;
+	Tue, 01 Sep 2026 18:34:51 +0000
+X-Mizu-Trace-ID: 031645a98e7cbdab
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 1 Sep 2026 11:34:50 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Chris Li <chrisl@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Ridong Chen <ridong.chen@linux.dev>, Lian Wang <lianux.mm@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/6] mm/memcontrol: make lru_zone_size atomic and
+ simplify sanity check
+Message-ID: <apcalL6-QoWVVdhv@linux.dev>
+References: <20260831-mglru-flags-cleanup-v4-0-2d15dde0d7ee@tencent.com>
+ <20260831-mglru-flags-cleanup-v4-1-2d15dde0d7ee@tencent.com>
+ <apZVe8UHZ1CNo4r1@linux.dev>
+ <CAMgjq7D6V4eTZJ1Q1Xf2J6yTCq=JjvzT-W-HHX6EnMfzm3BK1g@mail.gmail.com>
+ <apcJgcFLHKZfI40m@linux.dev>
+ <CAMgjq7C=k_nzwiM_MTcjVjWMTGf=s8oRaUBY00dCvLbP4EiHnQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: kdm44ejsit8zkgnurjzj58sdtmnd9qtr
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E076E40007
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMgjq7C=k_nzwiM_MTcjVjWMTGf=s8oRaUBY00dCvLbP4EiHnQ@mail.gmail.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3C66420002
+X-Stat-Signature: tjuqic1yzh43af1b4f8e3o4ru8ok5ptc
 X-Rspam-User: 
-X-HE-Tag: 1788287352-410489
-X-HE-Meta: U2FsdGVkX1+u0RrJsSd3zu+Oy/uIn7yjZoGYhOYDoNF2foIwt0vpWizhvsnfzY0xDSBcYoUoS4bh+py/71QO2ujyGiFf5QppBSpXvwRMLQ83ADfd3nXqEhDzgRGctKkNXAmHgxbB4JCPL2KpCK7ZerbsNOiQ3KPS7zas3ioKLU3rewISwng2klpHzdCEOG3PL6SK9YgweiFPnHIPlpQYTd5CLIuTXE9BVeuJAeywduYZdkXhG4Sk6vk3Z5mkbRYiH9NaQvdG9B0L5aNEvhTZZe++U+xBm2RlSZb5G4itaxYjns1h9kGpR/YLgGkRlVnlAGIcotiYn3UdWbnFvliZUyHGcwR2m+z4ZF0HfyYKzheOoZ34/SGGpDCfWHMTSPdARQ6TYa7e1V63W/n9PEWceDJezj0B9SsfySbF+FIwDiwKpERJFmbRQ59eoml83ZEqOK/TLTY2x7w4EByKVouiQkKOUG/8Ka65PedE6qh8yi6ucZ5ywWOJxDK+zJQwUgHHYnMRSAdIHCX1bn6FQyPyP5MvxonyOJMrhDxwW73GDIYj64RUFvgWMS/SDR0Pn8aZgYlisNX980c+/35ATBWYSTNSKonMbtk2qHsYv1+8lWDt1snDQERvDLswbBYHg1ltBHDN76pd14OqNZSDEKx4u4ax7CiNqkUnhiEMI/xjNOTjLSnSqek6rXu/K0QJMtt2mrKPsgD2B6lzRKwPRABGDWL3pJQdeNbbqC4jLBHgovrSX1FLZr3dAxYlW29qYRpvu2nknckem88guCqMVq3StLX8qJagy3NB+QS6m3Rz5nqZMnI0QaVYesP6Bs0F3ZhhDFWAZJYkWLteAgMvEdSBGO16YvOjCiEbtVbmdrElf43Ona2VJhYwajlK2nnLPNJwwW4aU4VksDyW/ckQsAd9Yq5unIxVwfcuqTaIGPzcMkHb26OzaRSCC+vTz0EqSIbazOFG/y68vSRg0VsabbI
- 4GD5brnk
- HfZCYWf4YFQYC4eGFF/qS7t3UTO8f56wl4DAg6OLj5kEw+01AlAZGZDjZaKzMu81+yB6Si5PSdP98GsbbjDNAePj49AH3WWxtKJiFV53MQtXCSvKjhhCagIAAbsrO1fHwteyEvY5NGRKNam2xBwPf5k1fv7dCaT6747HSSqbwu+Yf2gkVRLy8EkP1SZkcLd114Mrzd3VlJTWxb7wSr7euUbftN8OVzNouV9S2SwqGJdcrr2wbtp6W9jMrTBH8edFyrW/zgjLk/Nev1x0pnd6rIbmjvAcXi/LUgRaJ/vW2Wq1Ysos+tlU2lB/5r+4EhzjGioHpVrKal4hqu00+2b8pTRKTM0kFWI0kXPjtSRRBaasMk7r1T3l+tE8eSaPHOPF0OuLs+g1lCBR4EpKE8ihJe77ZtiEb+5QlROIdAN7vqV+djOoPs9Qr/YZ/9qdW8OOQgTtjAxHvnmSq6IEBZvCmGVBFPF7Ac4DtxbsK6tfjXOsLnspHPpbSTuIq11/xtlcG0GnlIphp7ZwkTUN3bxMWi8MVyC4Scus1MX5xePWA4tTUQjx94/mpof/Xso7ley6gn5tV02W/pdT2HjzDEqFz14xmsBXnka4WJQJ2WTXa/CYMWX9W4MTQdVrq1NwXQXNLbz8Rr3H0qki7lipATSLThXRBW9pcS7NpCe26AYuDmYsFJmn5YcRvliXNjX26ucsuEQQF4SS7t7uhtYpYYrU9XxcUAtdw1AYLljg45X3BMkL7vdASTM75L7aGd9tdI7jMdkPwnKzKMDcb/MLIRTFWhdXnAxLzUBqHslJjT+31hGPuaWx8/esu7jExH4RtqQzqfKbSRrWgj05hTajcSk5/Dkx9PYe8MF4ydbSc4RnsU6RARrAeXtVx+FmDHC6GppTVb5CVeJh4XUcB9guq+nswGiN8jkAL6XiD9lHBqLD+I7jL5VnHzWZpv3iL7KfMnDAG5gjKyppbjfd4rq3SB2TEKc8qVchy
- b+PcpaRt
- Rp3QfWLuFqae96y373U7diwafLGL/m02DW74OuuAaD1HtO/t/oyauv5qwTXyQGBqxKdBMkqPH+af1eiT6Bjpdf723PEP88xP2TQ1saYvuLEShMDHcRYUB3TAqQJJ8OwGOlwGB/l26Ss0o59YssLVoA==
+X-HE-Tag: 1788287693-531359
+X-HE-Meta: U2FsdGVkX189H7FpDj+KneUhgYzr0IXznvwWi/92tXw1BFUySr8nB2E8u8umcK0aFp4VQqDAQd+0NVWsufmPHDsjJodGm3MrEZcXxDKtf18hlkM626OLUg7624D3JbpeKgEEr0bqOWcm3+VT7kMqquQbV1Y8QRnK896drfHer7D32BbmjWdDtXSD53HBM61XhsaLL7yZtPF8+F6dUZh4c0UA3QjaiKHnL6XKMtO5Qvdxe5tZjrSd+po2OQy/PVQ2g5aqC+M8cKziLeSgnuuti9ln6sBs9+JC7xosdgX0v5f2JkIhA0dps9YY25R1y1Jg51mrwfQHqDy/WtfOyiFjYl4ey2vHhYcGyaEQ08jYHibyDpyZJoP1bgASNJF5m7dfkctqXVcJCSYRBNcRZsKlqf6LVFIZsKT+dy/hEDTzCz9ZYKn5YmAzGCdhw8SSJSIPktItO9l6QbtTWdgIwgzz1jb29/JB9F0NBkPHOr23TOPkfWgdTeGBaewP8xjhI2e5X6L5JD8yvHKU3MFl+o/fZ+k7y/kQNgRMILhIpmYQaF5gIDllWr818+wj/uZ9Wmyweq8/nSbZLuvR/b8f+Vnm3Hu7/P67aF0A33JcmVZI5WnK2VDCxcxgMVmUrLsX/4byZroY6Qmapkyvk2GkmLX85i8gOfRa6I2CRMioJJgcr2Kv/zHhgB28pQe8uriTYrw99bMHdoi8PRmAc1TFu4BzfGK5yooL5gI9V2yA2XQaDKQXfnmlApxbA0jhe87LfrEPCJ4BHT0IV5v56ed06VPdkkJQACHmn2q5QVcjtkuy5W0KPWoG53BfEUGnuef2rOlgcchhBQhm1mBXre+wzK3TGWJMnig4RJWYxiW0qmwreEWICox6Rjk6H0aWxEQ16BZTqjBk++Cu6tezltof7Mrxc6YA6KTr6aMxiTZD47YK7oGjx6/1/p5l+1eJ66Ntj2zZmUPUoV4aREQeJqQiMqe
+ XLLUJOHj
+ 9Jt4Sxpne4XU6xkxkOXGjVk13KHlko0jbC/vOvTTc4zhP6EPRllTQ0Wgw8Dm5wi95UA4uZWs/j0M7wGrvGz27+3O4oF2RAfqZbh4Rt6RqEGzP1MZ1rhJ64/bByht+BGpucIVNeVaEu8TIC/ajDEO7AevcXLtz/d5k4uneiNxfXA6ZbUPAu4sHHIrIrXQ70xKsMQTAbWpV3BoF7VAK9+uogHLixb/9VjEkFY02oZWMf2VHQgxhBIXbVrs9p478QEz245OvP0oEEW9SVnIdJaMH9kfP2VYi+Nj2oLLWAoiHsOKvKqkFNv64005o3z9XvTOJXsa/yP0T5oO3L0AW02unUZEzj6ocfT4iS+FPaTA2ebanbcIZ2Xy9jeNvF+8eZQv8oQQ/NrGEaW+7cCU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,79 +103,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Move percpu_counter_tree_subsystem_init() from after trap_init() to
-immediately after setup_nr_cpu_ids() in start_kernel().
+On Wed, Sep 02, 2026 at 02:11:24AM +0800, Kairui Song wrote:
+[...]
+> >
+> > Another question: why is this patch part of this series? Just some orthogonal
+> > cleanups or are they related?
+> >
+> 
+> These were all part of the MGLRU-FG prerequisite, so I sent them
+> together. I can split it out.
 
-The function's only dependency is nr_cpu_ids: it calls
-get_count_order(nr_cpu_ids), indexes into a const configuration table,
-and performs arithmetic to derive accuracy parameters. It requires no
-memory allocator, percpu areas, or other infrastructure.
-
-Initialize the subsystem as soon as its dependency is available rather
-than deferring until later in the boot sequence. This ensures
-percpu_counter_tree_items_size() returns the correct value well before
-its first use in mm_cache_init().
-
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Dennis Zhou <dennis@kernel.org>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Christoph Lameter <cl@linux.com>
-Cc: Martin Liu <liumartin@google.com>
-Cc: David Rientjes <rientjes@google.com>
-Cc: christian.koenig@amd.com
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Cc: David Carlier <devnexen@gmail.com>
-Cc: Josh Law <objecting@objecting.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org
----
- init/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/init/main.c b/init/main.c
-index eda2170bb21f..845cb57e9096 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -1011,6 +1011,7 @@ void start_kernel(void)
- 	setup_boot_config();
- 	setup_command_line(command_line);
- 	setup_nr_cpu_ids();
-+	percpu_counter_tree_subsystem_init();
- 	setup_per_cpu_areas();
- 	smp_prepare_boot_cpu();	/* arch-specific boot-cpu hooks */
- 	early_numa_node_init();
-@@ -1042,7 +1043,6 @@ void start_kernel(void)
- 	vfs_caches_init_early();
- 	sort_main_extable();
- 	trap_init();
--	percpu_counter_tree_subsystem_init();
- 	mm_core_init();
- 	maple_tree_init();
- 	poking_init();
--- 
-2.43.0
-
+Nah, this is fine, no need to split.
 
