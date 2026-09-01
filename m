@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64D8BC624D4
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 14:05:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D420C624D4
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 14:07:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6ED2E6B01FF; Tue,  1 Sep 2026 10:05:39 -0400 (EDT)
+	id 2CFB16B0200; Tue,  1 Sep 2026 10:07:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 676D16B0200; Tue,  1 Sep 2026 10:05:39 -0400 (EDT)
+	id 27FDC6B0202; Tue,  1 Sep 2026 10:07:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58CE16B0201; Tue,  1 Sep 2026 10:05:39 -0400 (EDT)
+	id 16F5D6B0203; Tue,  1 Sep 2026 10:07:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 361216B01FF
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:05:39 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CC3FD1A0414
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:05:38 +0000 (UTC)
-X-FDA: 85165366356.19.A6ECF5E
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E87F36B0200
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:07:04 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2CAEA8044A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:07:04 +0000 (UTC)
+X-FDA: 85165369968.21.294A7CE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 377C5A001A
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:05:37 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UI4TX5wD;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788271537;
-	b=Wfidb4wlH7vh/IA2r29swgLG1d726txp6jeDlE8fCH7IpktkZKyVpIcTOf5U2lveOC0pz/
-	aFPto760Xuh8dHOvqa0sf08WGYrgASFclWDtDVgF0J4+YEmTLAHxmVVODqnetGqLo5LugM
-	8Fs62evtQLA0AAuLS/LxF3wqoNvDCqA=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UI4TX5wD;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id 77A00100019
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:07:02 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KZz21cI9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788271537;
+	s=arc-20220608; t=1788271622;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dcrb6sbDX8NQf4xXudAfBvNwwKe9AztSJMBpfmSsyxo=;
-	b=gy3Bc59RREO+zuM9m2RidmFrjQ6D0sWGrMeMwxTbP917Lu3vzK59aJ2hms0PtDCSbWywOQ
-	YaWhEpHtxX/HwnHaXI0G26hTflpN9Jn993lSy9ot71yuTMxX8NnZ37+Y9KB1uUtpyTRsPp
-	xSeDlILOvEQfBQf5VcQbcsV2PeMxsXM=
+	bh=U694HL5ojZa8uw66A72yukjcRjflrodlQXMrYuMj1do=;
+	b=DdWr6P5+sMgwyUYmPF8/OkaPbisuLiHw5+vbcRHpuUQdq+sAwIK4ZS8OHyohjQMNTjpUxS
+	lAH2ExfRSM/NiorC8MRJNGOXC9owCQxLGfhcAAn2DQ8V0z3jAjmq5QBPgchXd6w35Ny3iC
+	QKO130OU0zJu6WcYScnnJ93rF0BqydU=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KZz21cI9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788271622;
+	b=g8WwlChU92K4GFix/Nc78TyPydR7wTfWup+/eI73IQRLGDZWjQ2SnUghSQVb6bUvc3O+t7
+	xPetILONToPcq1+g/pYVw+H8aXDqqR8l0vdIE1nVkKOK0wyLb9Y0apLWQn9W8gL4T6VbDn
+	Gk8kCgpz2kEwcCDGo02I21WS3a077yM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 509B4404F8;
-	Tue,  1 Sep 2026 14:05:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE0141F000E9;
-	Tue,  1 Sep 2026 14:05:33 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 91E5240368;
+	Tue,  1 Sep 2026 14:07:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 882191F00A3D;
+	Tue,  1 Sep 2026 14:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788271536;
-	bh=dcrb6sbDX8NQf4xXudAfBvNwwKe9AztSJMBpfmSsyxo=;
+	s=k20260515; t=1788271621;
+	bh=U694HL5ojZa8uw66A72yukjcRjflrodlQXMrYuMj1do=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UI4TX5wDFdPchD1XedrjbbD26i6ZK6ISiCdqAq9XMEM+b/MIXgrjKE9b03bv83i25
-	 nz1fDVKIy09MDCFDcZor9KgQtWzfiCFTbS7vsZUcYVcDDV6cEPMq9Ax2GkQ2ekf8ld
-	 O174WYoT5WcV5/rg9wl7Ix84GP5ShYP04ueQsJ5asi5YiGBJz+vZ3VCqzh3c6HyRUB
-	 QqIWLXKaIQi4VPmIzqtgaYqMzsGHt99c45je3yMSWg/PnLfvR+PuDD6CEaOm0Ze7gK
-	 KOdiZCKGq9QLEBj1yO6zPu9GwdrPJ2IZF73TVuRVK/qlYaJS29vb99VoOsDdxvS9Kt
-	 s2Uj3CLaasoVg==
-Date: Tue, 1 Sep 2026 15:05:31 +0100
+	b=KZz21cI9D+NN9OF0A//H6XEzlV3SxcJjEPiGFrlS77mbI0Lb3NK/tlxmleC6UUeQE
+	 1zZ6YhL3ZXCjB4MrJnjHG69Wg7bJ2JwK8ImtTUSewyoftUaH2CQv8GoCxW5l59/8tf
+	 /DyjSchVeYoqHbDubAU+9jERc5CXMGW8KW/1aDhTUQaIXaybJUdq+2Y3xcoTVDJkxk
+	 2nZuk5COkxFaiq9u+1n/dFr6nDsUAe4axVdacY8VR/9x2FJNow7zbaLxOwIyt9UpfZ
+	 MRD1Dyl38DezY2IZCNZyv0ZI6ieHleMwsPP4sXM1g0ofh2+iaG5WI8CQztjzISz9g2
+	 CWxFb6xprc9PQ==
+Date: Tue, 1 Sep 2026 15:06:56 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: Tal Zussman <tz2294@columbia.edu>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -71,22 +71,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
 	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm: remove unused mark_page_reserved()
-Message-ID: <apbbpAiai6kXuWOL@gremlin>
+Subject: Re: [PATCH 2/2] mm: remove unused totalram_pages_inc() and
+ totalram_pages_dec()
+Message-ID: <apbbw0A0f98nlVol@gremlin>
 References: <20260901-mm-remove-unused-helpers-v1-0-f092d086f7dc@columbia.edu>
- <20260901-mm-remove-unused-helpers-v1-1-f092d086f7dc@columbia.edu>
+ <20260901-mm-remove-unused-helpers-v1-2-f092d086f7dc@columbia.edu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260901-mm-remove-unused-helpers-v1-1-f092d086f7dc@columbia.edu>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 377C5A001A
-X-Stat-Signature: 9tei34btoqk1ziofqye76u98huw353c1
+In-Reply-To: <20260901-mm-remove-unused-helpers-v1-2-f092d086f7dc@columbia.edu>
+X-Stat-Signature: qmhq17epwdtxn1mhujqmi6cyig77x5a9
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 77A00100019
 X-Rspam-User: 
-X-HE-Tag: 1788271537-126601
-X-HE-Meta: U2FsdGVkX1/X7+5R3WQ2bSytAlR8VajD8ilwUurB1m3OZ0BMlYUQJpmHwGZ87XBNV6iE2Qln113scnpuzMF5og73Fp4zLydUK7zolmXfpOfaA5T9ZmK092CL7UaThwAzqQhWjgutK4u0tyqcAPGeBwsYoUc7+Bmm/68tUOPOHhCTZqsDUsQNLuPaiP+yKJ0b+IFs7Yi0NT9dpCDxsSSQFOTRxQ8drpw/DQC74Z4IOeU/5AFIGHPqH7de2+JFCvywmp0ru9eu+/VFVMQL8ZveBYooEFwJKicquMmoukfx6hd6Iy1EYde5/2wrZrcHZBfQrRtPGOymeNTeu9fOuaTnMxZTWDJebJhQi+i4f820pG1uA3IES2oxSSPyuFaz6A8Bd9rt329UfgsaQ6Wh8aN5Ey4uYMdmnqct+sxrEMd8WHHcW0iyEEcsMy4V+emnWCHpwnFMypnvy7BnY3ImjiymeAlwCeQry80kqu5U2chkcYuwNFy/bfw3FKp2oNN0xr6c8CmBhHLOlGDCZN2FI1vqlABI29wz5cm8U5DXZrM7T4ur1ofY4nSNcUyg2Jc1q+v7rButWlpqICM50OoXzyISxjeTjipZbGG5rN0uaG5Bwdsj9N/da9K+5ECjfuBZq5TEoEb3+vrN/Yzu68QG+YQ8So0QXeiiz4TbVlhQ3PMuBTzwdZr2wPeHXG3Qa3W9VvdInfAQTWiESZB4SKYmCvdTqO8d8BAXr43qu5cuSySyfuzkL9jb0pW68SrI3vcLVRjGFgjYdOJ3Razdapyzyk0HzKWaCAKH7bCyr+jtL46ZjTNZ7M8sg9LcQVzzxLzUDM8fTniYveSXyCGk3BQ5NlD/oZDdK3BBsRXwYmxp/ljxEyWbewrIN9UEzdGFphO38AxGbjOq2/04oy/9b93dEy7NloviBCRWtzr+jwyhvo6QnuEWjCmwvXaHB3KJaBlfPiq+wUFjv9KnHivmg4WFgAe
- eE5jw2S8
- GtAuy/STxnTrfHpoEY9u50axoTt4toXA4IQF8AlLX1+q4D9T1sng9CiJ/dvUBPXsTn+Ya1wpoHXT3ylXQ9dhLP4y5IQzO41Pjg25BP7ZsfHslF8lLsbMbCUlEGRoMwcyvMFnnOYYZjGX7upNH0L8I/EwTdkC9xJlLuSFX+pNqnqx3xCLZi8kL+0vnIKiGkGl0MiRo3lok/VU61R8oKj1+oY9a0iCrwQaQtVSvBGJKyiLQv5emU0dstIevauybCeQ/p/CM/9jpeoeJYSFXZiIx3YyoyOw4OruexYoxi2ZoPzqleCA3jOEWT6XpBpr+zIDgmTii
+X-HE-Tag: 1788271622-903010
+X-HE-Meta: U2FsdGVkX18Q6O4A60TojZ8AoXLOgBl0AnYHPUjGxF8U27XTL3fi0pLtV8CZ1D7xrvK7u3Hy2KdCBlZcVmp2UTsNbEBPMh/n0FEVuM0Bci4GCAIfFCo2jMXguESIj75wcPn6wnpy+geqlj94b7BdK3np4FlDUqDyQhixD07u69H7i6aDyvhIcPTo6T34kQKJQ2X/L4MwCSXXl3B3OKQA87X7QfgEJWLJ06VKVe2BM9nzhqJtPr5Tc8XpF67iZwguJSXs5QcOPIjCngnUNx2HI07HGCsp+7Y/5mjRDZgk8ORBqCdCz/LgXPrDwLPS9kXfW3aY+tJzttHjD5FywEjl9NggY2o6OPjMxtwGPBKAgFurASIsjtg4Pt02Nbhy8KYNJeEsIJmH9vA/zzSATu2FGahrPkkKf9SkLhSlKsuA9JJ9Q/SA6uHbeUADZtFG4MIvZ7hVX5AQ1JVTN7pIx4CSocnvR91g68VPb31nBqiS8GkbqX6C1zeJ3M+25tRQwICFMIDrrQ7g9JNm0eUPLj1fqoH+sKvGyXk5Zh6tD80StRzQs6ktWzRn25k4wJjEg9qHllub87bR/QpY2yBJTFrOgXPA2Ky0SPu4eWnmdPZ2rhW+FloDQH/eSR5k6lMf3j9c8exd4s/XFR8+J/T9CE/eiD2XMOZ0ZVVgfZ7rAhBZLtugL+qOnx2L7inm216c8igO+i+7xBXBC7ztUgUk9D2b5RK0+kSL7OORG1hxOVzbY076P27/Xt5h0nUrTEV/OfiTQaeYMBeKuNp5wUdWJglwwu+xMeCON2yIvev3yhV6p8wkC2GX26pa/v6Tj300oK69Cc5ZUHAXorhorM/6UKfheneYaKMpHNa6fSKLSOWdShjQHYsikUmYqjAN/gwMgJK8YoyH6BjbMxZRuzCUnDXVwjocnBSZy2ynxU0pQ95JnuxLXKkEuDM3oqBwe4Nk/HbJ1p1X/bgv0UropSpA1yw
+ AZ7HST/O
+ UXZ039NzOI3hxbmyGxqnIqVp0NmX/hNaNJdwQNS2/g7OpYsreXDUKzqYYvP5ucOeWnHdqLC+q7rge/PiAaRnsQKsexe4YKEErKOqLjbiAKTqeH96Et/ownq1KOPK9MOwprwgHKI/72TBIDYLj79Tv9P3TZ5DdrTXU+IKvQdsfSfRfTpU+qOGuLWKspsLCUq9MU4vRFJJ7zBO4eFzVe1OHzRvnJKik3o+FT0FFiUHCCqbwMre3fM6WY7DmWzw/pYqVFtzbOTImY1DlFtyW8ToMuT3k4XIsaIYb7KfsIezv0OaUafV3atzrCbVaZybHU7uCGC80
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,37 +95,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 01, 2026 at 08:59:19AM -0400, Tal Zussman wrote:
-> mark_page_reserved() lost its last caller in commit 6215d9f4470f ("arch,
-> mm: consolidate empty_zero_page"). Remove it.
+On Tue, Sep 01, 2026 at 08:59:20AM -0400, Tal Zussman wrote:
+> totalram_pages_inc() and totalram_pages_dec() have had no callers since
+> commit 7fbc5e26123e ("memblock: extract page freeing from
+> free_reserved_area() into a helper") and commit 287b89773d81
+> ("powerpc/pseries/cmm: Use adjust_managed_page_count() insted of
+> totalram_pages_*"), respectively. Remove them.
 >
 > Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 
-LGTM, so:
+With additional change requested below addressed, LGTM and:
 
 Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 > ---
->  include/linux/mm.h | 6 ------
->  1 file changed, 6 deletions(-)
+>  include/linux/mm.h | 10 ----------
+>  1 file changed, 10 deletions(-)
 >
 > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 1b28e6fc8d5d..e3736c42c4db 100644
+> index e3736c42c4db..c105a3758915 100644
 > --- a/include/linux/mm.h
 > +++ b/include/linux/mm.h
-> @@ -4080,12 +4080,6 @@ static inline void free_reserved_page(struct page *page)
->  	free_reserved_pages(page, 0);
+> @@ -57,16 +57,6 @@ static inline unsigned long totalram_pages(void)
+>  	return (unsigned long)atomic_long_read(&_totalram_pages);
 >  }
 >
-> -static inline void mark_page_reserved(struct page *page)
+> -static inline void totalram_pages_inc(void)
 > -{
-> -	SetPageReserved(page);
-> -	adjust_managed_page_count(page, -1);
+> -	atomic_long_inc(&_totalram_pages);
+> -}
+
+I also see totalram_pages_inc() in tools/include/linux/mm.h - could you remove
+it too to keep things consistent? Thanks!
+
+> -
+> -static inline void totalram_pages_dec(void)
+> -{
+> -	atomic_long_dec(&_totalram_pages);
 > -}
 > -
->  static inline void free_reserved_ptdesc(struct ptdesc *pt)
+>  static inline void totalram_pages_add(long count)
 >  {
->  	free_reserved_page(ptdesc_page(pt));
+>  	atomic_long_add(count, &_totalram_pages);
 >
 > --
 > 2.39.5
