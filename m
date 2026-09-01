@@ -4,94 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E671C61DFD
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 02:06:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11143C61DFD
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 02:11:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5529B6B008A; Mon, 31 Aug 2026 22:06:07 -0400 (EDT)
+	id 24F586B0088; Mon, 31 Aug 2026 22:11:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DC5C6B008C; Mon, 31 Aug 2026 22:06:07 -0400 (EDT)
+	id 205EE6B008A; Mon, 31 Aug 2026 22:11:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37D076B0092; Mon, 31 Aug 2026 22:06:07 -0400 (EDT)
+	id 13CC16B008C; Mon, 31 Aug 2026 22:11:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DE2F6B008A
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 22:06:07 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8089A1A030A
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 02:06:06 +0000 (UTC)
-X-FDA: 85163553132.10.111E92E
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5831540005
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 02:06:02 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=iz7B612J;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788228364;
-	b=5URSDun3LJ8I+jZ57+6U9cKB5tsSLAjGsrLuUFNLq/1Mc6aEs7Uix29exK+VBMATaf/ABb
-	rJXFZ1f8aqKkEccCY2NY1a4WOoackTLnoWu2B09orsKYtTylsZSZoucY2Oporp9FCokZn1
-	YRTDCsaCUQ5YWIIX54K1WkfDao+eQIk=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=iz7B612J;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E29E56B0088
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 22:11:30 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 608918020B
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 02:11:30 +0000 (UTC)
+X-FDA: 85163566740.02.6BB49FC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id AC72340005
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 02:11:28 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Xitnv9nV;
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788228364;
+	s=arc-20220608; t=1788228688;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ky50rSgY5tzco+q1f2XF8OoC/+HTORaE9naTNqUCG6g=;
-	b=WQc4w1HPH+Tv49v0ygJYRo8U+SgY/GLYpRA5Q0n6SGP0/QbkqlEA/yU5jBKKga6GBTto+/
-	ZPhH5Ghwy/Ky7VDMnEw1IEQHNrPLf8HEhKaPgri74WhGNLB58GOPuC91v462UL9kNl5dBD
-	izeEQ55co9fPgWEgbWdTj+zztDx3p1M=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1788228359; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=ky50rSgY5tzco+q1f2XF8OoC/+HTORaE9naTNqUCG6g=;
-	b=iz7B612JhbR5yFrTsyLKOGwQNY6F858DkilwT4IvgVAfKhOuPky2/MMOJaDEPKbnYr9ng0TqzCGHJeVWDGpB6KDmJ7pMWV+cLxiIYboLB/H7+w41Dze01UpqaM7uomubC3y8zQKGN+w8IonSKje4zMJShOAKMx8e3ui4AkdNmbA=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=26;SR=0;TI=SMTPD_---0XA0imgg_1788228356;
-Received: from 30.74.144.116(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XA0imgg_1788228356 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 01 Sep 2026 10:05:58 +0800
-Message-ID: <07013ca0-a7bf-40ac-837d-e60e6b6b82d2@linux.alibaba.com>
-Date: Tue, 1 Sep 2026 10:05:56 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/6] mm/mglru: introduce helpers for manipulating gen
- and refs flags
-To: kasong@tencent.com, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Barry Song
- <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baoquan He <baoquan.he@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Ridong Chen <ridong.chen@linux.dev>, Lian Wang <lianux.mm@gmail.com>,
- Yu Zhao <yuzhao@google.com>, Zi Yan <ziy@nvidia.com>,
- Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org,
- linux-kernel@vger.kernel.org, Kairui Song <ryncsn@gmail.com>
-References: <20260831-mglru-flags-cleanup-v4-0-2d15dde0d7ee@tencent.com>
- <20260831-mglru-flags-cleanup-v4-2-2d15dde0d7ee@tencent.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260831-mglru-flags-cleanup-v4-2-2d15dde0d7ee@tencent.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+	bh=/NslkO98xS3KFNCbusFgiupbdzSsexpBcgAmyvPBir4=;
+	b=EtvGy1hM2j61/blgxlWGpc1+7VUeS5U3kNxpTFFemB9SyTNv8si0y0j2/J5BSExmGLTz6b
+	EqgHAqbLdM4cceNI4J0fuc5F7wiKjrcLlDJr+/hEP4X0dMe1sHtDHxK9dmO/MpruglltS6
+	AUTZ7Hzp8t/mwEJE0bzi4h7WIVy3VoA=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Xitnv9nV;
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788228688;
+	b=LqQ4iBSCoBA0c9z8iWnD+5x8VyUzE+o6/mp3O9gbm5mnhvUBcJTkgUsEtGZUENSHmkP5Na
+	SBpHWIVKNJE7fbH3gBDERi1HU8tfd7KWu4sABmuN3jsWZopk0r+kO8t+LDumCnlTG95NZR
+	lCArzSoIqZin6/TIUyK+pMxQzs/c8uE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 276E3601DE;
+	Tue,  1 Sep 2026 02:11:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3325D1F000E9;
+	Tue,  1 Sep 2026 02:11:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1788228687;
+	bh=/NslkO98xS3KFNCbusFgiupbdzSsexpBcgAmyvPBir4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Xitnv9nVAb7cLa7yB+vxqTcyFGeNeXm1J0wHfMigyUjeDeuyfGOCBxDFDrHJJ2w8M
+	 7k0BZr05c2knXOqnJGm+gmlOwQJjUYn0GeCgmBQAIOrJNryGED9BM8XWpCuFFnuQ+d
+	 jn4koTWL3ngHERQ/9HCVohH1479IZwj38dMo4veM=
+Date: Mon, 31 Aug 2026 19:11:26 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: bingfangguo@tencent.com
+Cc: Bingfang Guo via B4 Relay <devnull+bingfangguo.tencent.com@kernel.org>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng Shi
+ <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
+ <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, Youngjun Park
+ <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Johannes
+ Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal
+ Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Bingfang Guo
+ <bfguo@icloud.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/memcg: clear folio memcg after changing per memcg
+ stats
+Message-Id: <20260831191126.6ced4642c6cc92ca96cf0803@linux-foundation.org>
+In-Reply-To: <20260831-memcg-swapcache-stats-fix-v1-1-1c0819ebdb86@tencent.com>
+References: <20260831-memcg-swapcache-stats-fix-v1-1-1c0819ebdb86@tencent.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 5831540005
-X-Stat-Signature: dq6dpubiycepca4qd9hepj78e41qcto5
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: AC72340005
+X-Stat-Signature: na6z1opaksagsr98i83iehdkh5iq95yw
 X-Rspam-User: 
-X-HE-Tag: 1788228362-103933
-X-HE-Meta: U2FsdGVkX1+sts1SuzDZjrgK1k1pA2amY0omSiYzh3DPLRzAxnoZ9w5+nn4wCLR3sztp46etVcemajrXQLzzsGJttceHP+meWY4fN9QQ3PnCrkIRjz3lf3dD61HS2kFstV9QYCP98TxoM8aHo/kPCBR9BKuY/UI69wGnUo6JTno14JG1ZAmFpO3aYELYA5V1DpG/fNGpkRcZ63zTbf54i5M6ERAZlBoFRbMZqSMS2HhCbThRhI77/WI0o2rPeaxvsqOBNudQQuDgbWZNXSrs6VrlWgzhu8uKvcXF+1Er0ydsDwwplPbrF9/+0G240heUaG2cAY9uf4CsV6NUWxt3oXn3rz41eKO5nH1DVS7EoKiyIuf1b+gHwxo0HHF0pEYC1CspTqW3Laqi1qM9mW3iMLNINF1uWSqzAj3RUijyfmjK9EcHjRQAlY0I6NTTCisFZNxdB9MbKONmpcR68Jq8VV24jN7Lht5mTkHM25xsnB+vQmEB8MOld6HfZxvBYLQFW9/hjKylGGaYwPe9/XURHmrl9NT0UW3GMZXt0Gv2qTfnLdd5Wg5KSF6ruvcqnp/4Vd+Uv1ea4FUDCAQD6bj3v+ngm/AbU5fB5RUI9KeU/PqWu4iRMfw+bseHj4MRxsl/X7RWPHondDh8Cy7E2NDWsYv6+29VdYn9vs6gqRSYCr37fk0ihx8wTI+Tlph00dlQDsnjLIYcxBiPLhJd9RSE0WC5UAwgCqhEewY5K4kDVBaMEiCJsnDXu7MitRT4yBrL5hnFiPzWgh718ExrZTHEhBlAUQQKgseeJPw/wwkn7a3E7ASeM3aZlYaHe0kvDjugfqzcn0/YdjCM+k055/UiEV6CfTrQhi/s8xTRfDyom0OgZMp+O4ewBbeyT8W757m5Z2xyJsWZrjKI2Ubzl1Ctwf1gftVg+yWOmPs1Yh2aNZBFtM5WV33ACaouKLw71o00h6Ylsu4tvipN2OTowMJ
- azb1tbiG
- x6gE+3gRRdxS5um0WUBts7aQJ2XG/xRdIv1X8vZiaoxf3Gh+as4Ie5ZEiuGi6LW9MeCew55wVm5GNzeC5Eet1GPDpB09s0V6UMIrf9bNT0sCyupwD+2tgQoXVCjrS/YxPYxchBF4JMvo2FUOPqBesmcKgtiUVSBh9QUmoejmJ5r9p2be6Ozh3GnOyRcIK4cjxejFlWOU4Q3/ObPw+Yw0lhqMqBczkamgsK6wa04hWd4FXfHpMl85sERTcVP8vpvKwhRHbhMO7NdOqbkoRpPaLfL0StGhZblKUOcOYbvkWn3wozKOIsK9mIbQZU91BV6S+cEv6cYy9/fYLSFbLIn80tG656eco9ZNhFDorvC7aIMX5yw1ooFymvGVnaZOXPdHu+o9LeYV5+ASXkY4beuBEhnzw/g==
+X-HE-Tag: 1788228688-551616
+X-HE-Meta: U2FsdGVkX1+Ggl1sUWwI6ei+JBh1Y1pho2V9xEQfe7K7npm29tjKO02upJZ6PoXI6jMQnRQLqlNxvlg7abAZU9h0XkuFvMR2ty0hoNuJ8uKKCN0kxQV2EacESl/ZzdwbgXELswcAGP5xSbsSwwnPDk5zHdy45rXQ7M7axpEU4mO2hEt+UxG11RwQrIlRmE7/BxIPZ2ichzlaXJEc79AH1riJtGIRy+S+lbELaXm4ysXFZIKkl0dDpEHpQZPP5zE+BsMpFrmSsg3Z/QsojuU9k1Bj7iCVifvxIoeGEkHYufF/o5c2LrkRg0cJcncVp8kqRZJvYJOBZejoufeQR3dJXr3k4hpQ/IreOmJ5j+oFrGvWvT8tzFvGoan3IO4sn1UeGYGhfgILxmE3CyezWhpKEQaDPFMA1zfBDdhcBsN4y6gJyI7c84sHLzKaXOm/mJNtuDnnihmfrdFJg7YtQM2t5J8GxKP+zfytZ7Mv/4Eq2E1JVYoiloDxiTcezbrMGs0TCeYJ5yP0WixCjKK3Y4oPGGz8iclq+DW083DycDdmjtWE6jbDO3Lc3RMvVN/hOfbBMIFwk7ucLioEj95t8pLMDab02VQ5Xec+hEnViMQOgtUzKn1BbYrxRpdDItyUML6zYQU7JEXfPlENUCgWdP7GicZ3b8+QSN1uVihZiApp6qadzNTbxbp4lKUFA7Wl/zdQFScTn1pEi7HLdQ55vR1gDIje15O2ZspKfTERjhUXkWreXgJQQxFZP36kNNAME3Y3d3BynJSMuBkcSoO5dS9K94t4xsCx4LIEWjIGUOiubsfHL/W9rnjYb4EPfwmEZlptsKdV167zONxQmU3LWbAIVw6pDDenIhoj2K5TCKWNvacwVOVJ3z0Y2Sc7PsRZynvpQbZBA9NbA+hSK8JmKnIA1fqK+vI1MtLS+ZPRsu6/MGl05aE4vnNC1qb9tZT/xUM0VfTxxUdgw/MrXSrdGa0
+ sgoP6+DM
+ bOBSKkXRWbNsMBVwz/ZasjMxAtmKkuKeit7MP5F2q8bGz4zP9PXKC8cAGwDzLCIzBjAQlvz9cIMNR2J1jNeNbfmfz783bVJEqokiLYXDJl0jKnm5Y5y6nglnOMdkXbR3wmEJy1l7UpjcfBQQuoLz7FmnxSxqS6m7foVsF0ylq/jd7+SgtzYR6NSBqO0/hVbSnM2QaINmrYh2kRzBPnwCX+dLpZC2Pz/o3pJchTiOCzmZ7tvdpoiMEEgjGekwNPxMAjNAcXf4/iv3cBQEaAQVlhA6e0qR2c2I1IbWNKq/pOnGH2fgWeZHLRxaZcpV6KeYrirx4wto6qbOQsLwMrwao5brq3Wg1lCdlqQq3A5iAtN2aA6jilKlQe+LzQrns0N9E7VDoooBJ+bmhE6jrNgDVveSlk5LkNli2oOpECBn85mdXjC9Hf5qsKZm0hKveSHU6x+XSJwPR6XEnuXnMh4zEpwk8IXwpus1j1pD2HDQKl13e7KZzqttdyk6Rwg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,24 +98,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, 31 Aug 2026 11:32:43 +0800 Bingfang Guo via B4 Relay <devnull+bingfangguo.tencent.com@kernel.org> wrote:
 
+> From: Bingfang Guo <bingfangguo@tencent.com>
+> 
+> __memcg1_swapout() transfers the memsw charge of a folio to its swap
+> entry and clears folio->memcg_data as part of that.  In the vmscan
+> swapout path it runs before __swap_cache_del_folio(), which then
+> decrements the swapcache stats through lruvec_stat_mod_folio().  Since
+> folio->memcg_data has already been cleared, folio_memcg() returns NULL
+> and the NR_SWAPCACHE decrement only updates the node-level counter
+> instead of the memcg's lruvec, leaking the per-memcg swapcache count.
+> 
+> Move the __memcg1_swapout() call into __swap_cache_del_folio(), after
+> the NR_FILE_PAGES and NR_SWAPCACHE updates but before
+> __swap_cache_do_del_folio() removes the folio from the swap cache.  This
+> keeps the stats attributed to the folio's memcg while still recording
+> the swap cgroup with a valid folio->swap.  Add a swapout parameter so
+> the plain swap_cache_del_folio() path is left unchanged.
 
-On 8/31/26 2:43 AM, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> Instead of doing bit ops on folio->flags.f, introduce helpers for
-> adjusting a folio's refs and generation info, making the code easier
-> to debug and understand.
-> 
-> No functional change is intended: some combined atomic operations are
-> split into two, which only creates harmless transient states. There is
-> no measurable performance impact, and some paths even look slightly
-> better in the generated assembly.
-> 
-> Acked-by: Qi Zheng <qi.zheng@linux.dev>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
+As always, the most important thing to tell us when fixing a bug is
+"what are the userspace-visible runtime effects of this bug".  Please
+update your prompts to always tell us this, in the first paragraph.
 
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Clearly the immediate effect is messed up is messed up stats
+(memory.stat?).  But what are the subsequent runtime effects of this?
+
+> Fixes: b197d41462c20 ("mm/memcg, swap: store cgroup id in cluster table directly")
+
+Quite recent.
+
+> The problem is reproducible using the following script and program:
+
+OK, thanks.  I agree with putting this info below the "---".  It's
+probably too detailed for the changelog - curious people can find it by
+following the Link:
+
+Anyway.  Sashiko points out that a CONFIG_SWAP=n stub wasn't updated
+(this happens often):
+
+	https://sashiko.dev/#/patchset/20260831-memcg-swapcache-stats-fix-v1-1-1c0819ebdb86@tencent.com
+
+so I'll take no action at this time.  Please do update the changelog to
+include the runtime impact and I'd like reviewers to suggest whether we
+should backport.
+
 
