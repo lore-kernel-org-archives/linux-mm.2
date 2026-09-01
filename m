@@ -4,30 +4,35 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E44E7C61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 08:58:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06254C61DD6
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 08:58:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F1DDF6B00D9; Tue,  1 Sep 2026 04:58:20 -0400 (EDT)
+	id 120456B00DA; Tue,  1 Sep 2026 04:58:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE2986B00E6; Tue,  1 Sep 2026 04:58:20 -0400 (EDT)
+	id ECD0A6B00E8; Tue,  1 Sep 2026 04:58:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B23626B00CE; Tue,  1 Sep 2026 04:58:20 -0400 (EDT)
+	id C5BA36B00EA; Tue,  1 Sep 2026 04:58:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A5A56B00D2
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C42E6B00E6
 	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 04:58:20 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F2E7840344
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:58:19 +0000 (UTC)
-X-FDA: 85164591918.17.83B95E6
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1F7411C1E84
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:58:20 +0000 (UTC)
+X-FDA: 85164591960.29.B89AC06
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 065D01C0002
+	by imf23.hostedemail.com (Postfix) with ESMTP id 1D496140007
 	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:58:17 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q+wPWbMJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of devnull+bingfangguo.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+bingfangguo.tencent.com@kernel.org
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FKbRx7OB;
+	spf=pass (imf23.hostedemail.com: domain of devnull+bingfangguo.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+bingfangguo.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788253098;
+	b=Ojm2MZqgeV/d0r0D5SdZbt25CfcKP/HIAgzuhD7J7/ncGIRiGTSOv6jQ5ygGX1uQz5UngT
+	FWQJR8w7eONAhnao9Cb1ht9lbPAnkDXzkt+wOJJnd8SB95npHrRYgmfnifSfYzkjN0cyta
+	URAM1ldHgpwgmuEBXvm3tu8Y7044/X4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1788253098;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -35,46 +40,40 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m7RKFhM7DKt8Tz328qe7qgNoYXTPWXPrwSWTo9vCt5A=;
-	b=QpLc48zWoaGsvaNOzpzRstDauD1dubOV+bvICgH8FDOUdb9sxHMSbS+pcJSKIFkoXIopPP
-	55W/9jjNKo6fBggnb32aDMCQME/dmFGAAoQhn4cuxSqNcPZnLY9F9hcNf4zYOKlkydGx2y
-	Wza0kSQC7idBV64YO5jyfATnb6SL7yc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788253098;
-	b=Ao6/L54qkop9BecZ4fXAMS7rp9a6+aKG9j4KcRI8MkrFo6UzIySbCOwpvfBMdjtYexPLQM
-	1iTUfqm3NzbRbQTfRTA9zO06cFJ0UyB3Kwb7vpoH1dFRI+ELVX1SX5t5SoAIjXUyiQ4swT
-	YPiakVcH39UvYrom4+ky3B+aUgjsAjU=
+	bh=hzFam+ZYlGaokSMN4UXblBa8dLDiVcmEpUdr0MeDDKo=;
+	b=W21rhgBSscRATFPh03+twjhdK7YSzlzG00NEc/Oz6BJmBK5fPKCoXxRRty+uiH/Wi8yTTm
+	4WcPCjf4CvlzS7eH9yVruy6jvsmsgvypAVM5ejcVspgjBmbFoipcsicSlp4NNnpAcSJF1F
+	ESdP2eZreIPSVi2QQ4O0ugg2CeKLWew=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q+wPWbMJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of devnull+bingfangguo.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+bingfangguo.tencent.com@kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FKbRx7OB;
+	spf=pass (imf23.hostedemail.com: domain of devnull+bingfangguo.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+bingfangguo.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F2398419D8;
-	Tue,  1 Sep 2026 08:58:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CA886C2BCFA;
-	Tue,  1 Sep 2026 08:58:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 31ACE419E5;
+	Tue,  1 Sep 2026 08:58:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0D05FC32786;
+	Tue,  1 Sep 2026 08:58:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1788253096;
-	bh=KlUxJ5Oj10Jo6f53V6E/JY8gDtVIZbewdVdCgVfLshY=;
+	s=k20201202; t=1788253097;
+	bh=e48zmxDz9kiWmbI8h/PlXtcqt9ITTR5UArZLJzZ8S+M=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Q+wPWbMJCk+meNviZObyUyWu0S1q5aygcJ0vIBA5TP5zHaOm4TplJAiH4BpPFySeO
-	 jXDscHzc0zAOG/HMcwRWXD9XpaWU93ZFF0tfmWiw0bJ01q7Uceqo3IIq7xd/WZuxB9
-	 2swdeXcjeKwomMGwC/lknTFwPgKJfI7c7T+t4n/aNYeh79wtPAmtVgF0ldq5pYhaXl
-	 zghGJbbDc7WYzAwYaqBJsvT/po3TeYmWpCJJ6/qmBVrboEDpdyYxkxcnC9pRBO6LIb
-	 VMVqTb+uDMcXtZ4aPdts5DLvfNV9kFrqi2EdAlj0GaZe/2w3bF9Vh9tn8+amJ8MHri
-	 2tz4YIm78FBEA==
+	b=FKbRx7OBlFSonSo5DUXAwFKpi3N6sW1nqpa6N/s7w1GujUVkcsgUjiW5bBrBolTld
+	 I2zMqn9o3ILxUJ1dbl7HEPwQ+kg4GefQbdE8gu5NJ9Bid967ZyrWFsy85inIn1MAPz
+	 dgYw/+CZ6NmBy3aec6QMVw3kZRyLgCPWl4msCWzeakivNWjgH1VSyYXRmXH7GJrOzL
+	 6tL6B2fe5YOAZXDmU96Gc1WqpMppP7Bp0V6alvfdWh1JIFB5i11abW78xPGNAMpw4d
+	 d9etcydeRFwgG/qiApsIZgQcFzLRq/yZ32o6LihXjaRpOP1DziB2Bbbv6fj0ARoX9M
+	 MK0kJiaKighag==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B8B06C61DD3;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F1D00C61DD6;
 	Tue,  1 Sep 2026 08:58:16 +0000 (UTC)
 From: Bingfang Guo via B4 Relay <devnull+bingfangguo.tencent.com@kernel.org>
-Date: Tue, 01 Sep 2026 16:58:00 +0800
-Subject: [PATCH RFC v2 1/6] mm/memcg: add a helper to kill the memcgid on
- offlining
+Date: Tue, 01 Sep 2026 16:58:03 +0800
+Subject: [PATCH RFC v2 4/6] mm/memcg: return the memcg when putting memcgid
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260901-bingfangguo-memcgid-rework-v2-1-8edd7f7a7251@tencent.com>
+Message-Id: <20260901-bingfangguo-memcgid-rework-v2-4-8edd7f7a7251@tencent.com>
 References: <20260901-bingfangguo-memcgid-rework-v2-0-8edd7f7a7251@tencent.com>
 In-Reply-To: <20260901-bingfangguo-memcgid-rework-v2-0-8edd7f7a7251@tencent.com>
 To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
@@ -89,25 +88,25 @@ To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
 Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org, Bingfang Guo <bingfangguo@tencent.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788253095; l=1251;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788253095; l=2395;
  i=bingfangguo@tencent.com; s=20260812; h=from:subject:message-id;
- bh=3jIkwaCFjFq8QjiGq9DEwjO0Gl2r32Hxoi06xqqEo54=;
- b=fFy5sTfWuAG/5jEHRJE44WgGDDn7U5jjh+8LxOBk/3EumTxFbZ9fB/Db50YLW6h5pywsH36vd
- pgSY2DJLajRDGHE5DuQDgcZ12R0BvZh2CcatUZ1nsRPAiD576IfDQcW
+ bh=A1qQqLP5yDMt8FsMtFOg0bivZFdxXUGUKPpa8uP9vSI=;
+ b=SDxnNZGTvufnF2pzh/K+4XYnYFWQcDEg+BL0G/Mxc0c0jXuvvOso6qj3wfuU3pFeXELjN/juH
+ /qvaZjgC7g3BEC0Brs8fdvQp+grYKljsPUo0sOADm4168oeOHGOopSQ
 X-Developer-Key: i=bingfangguo@tencent.com; a=ed25519;
  pk=q7u9S7d5e7VijWrYF9O+vv9/XvqWduVGtwGtuCObAHE=
 X-Endpoint-Received: by B4 Relay for bingfangguo@tencent.com/20260812 with
  auth_id=942
 X-Original-From: Bingfang Guo <bingfangguo@tencent.com>
 Reply-To: bingfangguo@tencent.com
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 065D01C0002
-X-Stat-Signature: mkso3pgqodcn7pkfyah5joxpzju6i1ju
 X-Rspam-User: 
-X-HE-Tag: 1788253097-662259
-X-HE-Meta: U2FsdGVkX19Tsd4YiK32XCG8wm6W1XBdoWDbSUM58GFfJ57xh8/bvv5EXrdMQPCtsqz1jPo9cl1JXcqhh3v0FMEsJ6nvVKNvh5FaCRs/+zep4vTihNMAQKQ97CJGu0aJb/QEoOQcs3kOKYvtLUaaoKjheH6ZRMik0WfZ12WVquAqClv9bpkRyzgc9Y21AkgfBi5/9OCeUdpathxlkfCOBdnqxL+IsjwQm0ZrHUDq34L+1GbAl5ifuFjpL2RfidxuIq7+TRoZDjUMo8iXeibzLYvhS9b977/IFakpBunhfDXyOE0W1T0dn1NRmQMmWebCLZylOdgruk1BVAW4mVGF9uI5YGT3skliv9gxEUXHYZA32xW8yeAIofjI7MwQ3mx6iUc6nvid2WJz01fMfk0DX/MLSKoZEo2tOaw3OowbVo3K1gwpCPI5OeCGqGpJLTl4gckPxPLP3F4kko2BFRMPJJnVGcb2Vnhj0tTl+M1Ce6kvGom2Pwh5AdpRmWtjAU+53TC5ISNW60jN1MIvE3S0SCETnfufw10At3SGMQ0uiVHff1RFyyDW54HOJJtRLL6fcznR8MH/2YxTFFlhemA8TYneHu4rNKJpkWEP7bJDaJa+XlZJcj+uw7NAjeJPi2WkSLcfqf7LdPe+J+Wms4CRRP4rByrjIPvnGZwIGFDuOntzfw9k8xs0LuQAM0TOPuVHBeq8l6Q9uJBQQYMYb5cwsSSJwsranNrS/fgq7YTNIRPCamsPDBHxyxNzfR8OlYUdIOrIL7PQyhMdWt3/Hjq1iVStWX7OQ7bq8IBZcHNwXyRExOceZYYie4qlpTtY4We45ez573K848QR8NsSlVWsnaGrA4DWywCAfmNmWvg1T5SgqtZAn/6r38ZiX2htadSvLF5fs5cQRBffBGQKxGP/Bm+ciUnSsQ73oTDAyETFYmsaxKC2kYtqLvbT6xtoWdpKCdNBYaA7VegHyq/KmIj
- 9zFAoCy2
- pvXEf0oQwcTd4i+OXQqrkoj72VW+wW+wcxEKVKT9+BEWL7AxuFCMIye5ZyAto3CF6S5Q9nivjRYb0LyG2TXJmuPYkucv+xO/BQiaaWkU619s2uuuFYwg9ukvbO27Dn5a9wq2HAt5sZX4/1B4osFhixd0TvmdIXTYPsgiPnC87xGG3a53VnYYrNhj1laAVTcqwexi53e3/WuESZRWlXAK7iCqRw2Qnccg+I8eZjXy52cZ+xmrQpxb/ff1KEBZv1Vsnuln5hK58l14lpTJqdi+ij5nj0Ued/R3fclfbiUir4WEP9VtEz3ojK6vf41MKzYQMLyzU9dOc6J3uKOoTvMdg5nuRASTG6RcqhbEdpdoZTs5+JLWlag6hosJcR3WLTHrgxK91ALFMju5E1dpqe62Tob8WUynmFZXegKoNfXQxDW1UGT8=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1D496140007
+X-Stat-Signature: rkjsc4kff69buf1iir1ppr197ttpkpnh
+X-HE-Tag: 1788253097-887225
+X-HE-Meta: U2FsdGVkX19dmIyJHELddEjGl2rfOx3hx75Sf+vUnOR0O+A/Z5JFXWjQAU8oxgZs6YM6dHmAIDpfQnZMGdN/PjdiGkyJ38F8I8atz79ujtKl+yU18vAqbY5EBH+rg4Z30zCoA50BolizE6f/WhWL3/oWC+fvKFwXIOykyOwJV/T4kGOXFaNhyXmm/WsZBVKosq5rlNNMIS0jjFOm1cKqiJiPJr0AHTgg6GDcIl7NE4K+MWGuvFDMyGa2U2ql+3356X5Ul4M6bsyoRfJ61s8D1vEP2Kqc3HYfTfqY1zz35d/SpIrLEUY3Ch7vEVEB95qUn4syDqMviY9n03v30iD50VnBtQqTdDVmK2awON0ZwczF9wXpIaksoewD7O3gdqFh4ugCaSx0LBJ+y8wwvwKv2ezJGu8YJqBdA6EaRPFgyAJRNLK0YgaAi9AhqlwgB7jq7+kXQ8a5JJlCBb0IOyQRUihCFfnpj05LBYMm7YNax70z0akQzsYK0LNw1yqkWMUcvIrp7JR5wrNlQ+emjjiawIlvfiFG4Cq/r4uKavgfY1q97nCAU4ow6wKaz07WN5MAE8o5y+2saop6FDQ/S1Vf3l1wemZExGupLOQ+ZOTkzU6SYT95yb/WijMYRgKGFToP8SPlEc5aHdoE58YeCX7K48I8VzMIJ5irkxddVpj4ufBU9L/SRly9CLZJpL5Oyk3mt1LhklshaS9lxHaD/Dw6lliRxqFtO+PxwJAODrTWmmRHUGsRIsx63iBYLulH57MfrD8lMRHUTGfZWwtUjZselh2elF4IY+dha65GMmI4jkdpIhDulO+XQrp3q2CNiA+2fOTU+g8ANv3rMlglWM+WHATzuOO9l92EzdBs1ZPiiqg0UWXPwNrHN7YXr6YZWKg5AmtFLvreVgBQbcGuYZ2ng5rgciz+0MrSIu23XxFEWcJ0ix8MiYzjpuygIOCen+LnVeg/Hm3Qqn2qE73lUI1
+ Jx4jtwNi
+ m2UCL8Cv0Fec+/xQAeyGen4oh7yKNJfN+sNyX8D/Gp8iW/0pRcTAt5sIO0tjl8RisduEUFJM6XylWsVXuCjgPkfqRkfL/SqnGAdjkN8tkRnCFcds9qpEeX+UyeGYiMRHZeNAMBXW21pLUZ8A0ocQkBLzcEdN+yD3uhq64G2EiaUjIUDvA44TLq/bVAbgLPYjt/xlWpWb79mjy/1E0jHrZoVjLdxxtSFtImGI+Ndt0hexVhlXxHUQEczBNyhciOOXp66Hosc1ghNZ26b8B2Ku53cUePuSqr86jLDBtNWNtiJtLj+TuNPF/8hF7Vy19piTvb1L3SNg7qW5EOQqVtMTA1RxSqDkxHALT8vJrj10Igv5sM1war2t14Hb4dCQ93fj0AyJoluyo10S+hbhtcL64z01jMaeAwVw02nIUjiEJTgSq5/8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,42 +116,76 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Bingfang Guo <bingfangguo@tencent.com>
 
-The online state holds one reference on the memcg private id; it is
-released when the memcg goes offline. Put that release behind a small
-helper, mem_cgroup_private_id_kill(), so css_offline() reads clearly
-and the id refcount helpers stay symmetric: get_online() / kill() /
-put().
+__mem_cgroup_uncharge_swap() needs both the memcg and the id refcount
+drop.  Right now it looks the memcg up by id, uncharges it, then looks
+it up again inside mem_cgroup_private_id_put() to drop the reference.
+
+Make mem_cgroup_private_id_put() resolve the id once, drop the
+reference, and return the nearest online memcg with a reference held for
+the caller.  __mem_cgroup_uncharge_swap() then uses that memcg directly
+and drops the reference after uncharging, avoiding the second xarray
+lookup.
 
 Signed-off-by: Bingfang Guo <bingfangguo@tencent.com>
 ---
- mm/memcontrol.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ mm/memcontrol.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 256b68ffca70e..31cec9dde55f0 100644
+index 048c9bb0fad79..f0503a1e5492d 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -4048,6 +4048,11 @@ static inline void mem_cgroup_private_id_put(struct mem_cgroup *memcg, unsigned
+@@ -4048,14 +4048,28 @@ static void __mem_cgroup_private_id_put(struct mem_cgroup *memcg, unsigned int n
  	}
  }
  
-+static void mem_cgroup_private_id_kill(struct mem_cgroup *memcg)
-+{
-+	mem_cgroup_private_id_put(memcg, 1);
-+}
-+
- struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg, unsigned int n)
+-static void mem_cgroup_private_id_put(unsigned short id, unsigned int n)
++/**
++ * mem_cgroup_private_id_put - put memcgid and get the nearest online memcg
++ * @id: the memcg private id got from mem_cgroup_id_get_online
++ * @n: count of references to put
++ */
++static struct mem_cgroup *mem_cgroup_private_id_put(unsigned short id, unsigned int n)
  {
- 	while (!refcount_add_not_zero(n, &memcg->id.ref)) {
-@@ -4385,7 +4390,7 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
+ 	struct mem_cgroup *memcg;
  
- 	drain_all_stock(memcg);
- 
--	mem_cgroup_private_id_put(memcg, 1);
-+	mem_cgroup_private_id_kill(memcg);
+ 	rcu_read_lock();
+ 	memcg = mem_cgroup_from_private_id(id);
++	if (!memcg)
++		goto out;
++
+ 	__mem_cgroup_private_id_put(memcg, n);
++
++	while (memcg_is_dying(memcg) || !mem_cgroup_tryget(memcg))
++		memcg = parent_mem_cgroup(memcg);
++
++out:
+ 	rcu_read_unlock();
++	return memcg;
  }
  
- static void mem_cgroup_css_released(struct cgroup_subsys_state *css)
+ static void mem_cgroup_private_id_kill(struct mem_cgroup *memcg)
+@@ -5816,7 +5830,7 @@ void __mem_cgroup_uncharge_swap(unsigned short id, unsigned int nr_pages)
+ 	struct mem_cgroup *memcg;
+ 
+ 	rcu_read_lock();
+-	memcg = mem_cgroup_from_private_id(id);
++	memcg = mem_cgroup_private_id_put(id, nr_pages);
+ 	if (memcg) {
+ 		if (!mem_cgroup_is_root(memcg)) {
+ 			if (do_memsw_account())
+@@ -5825,10 +5839,10 @@ void __mem_cgroup_uncharge_swap(unsigned short id, unsigned int nr_pages)
+ 				page_counter_uncharge(&memcg->swap, nr_pages);
+ 		}
+ 		mod_memcg_state(memcg, MEMCG_SWAP, -nr_pages);
+-		mem_cgroup_private_id_put(id, nr_pages);
+ 	}
+ 	rcu_read_unlock();
+ 
++	mem_cgroup_put(memcg);
+ }
+ 
+ long mem_cgroup_get_nr_swap_pages(struct mem_cgroup *memcg)
 
 -- 
 2.43.7
