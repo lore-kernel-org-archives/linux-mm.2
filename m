@@ -4,131 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD154C624C6
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 09:19:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 421A9C624C6
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 09:27:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BEDB86B0106; Tue,  1 Sep 2026 05:19:20 -0400 (EDT)
+	id 2E6926B0109; Tue,  1 Sep 2026 05:27:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B97AB6B0108; Tue,  1 Sep 2026 05:19:20 -0400 (EDT)
+	id 27FF26B010A; Tue,  1 Sep 2026 05:27:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A87216B0109; Tue,  1 Sep 2026 05:19:20 -0400 (EDT)
+	id 1956E6B010B; Tue,  1 Sep 2026 05:27:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 88ACC6B0106
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 05:19:20 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 020AF1C1E2A
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 09:19:19 +0000 (UTC)
-X-FDA: 85164644880.16.B87B500
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 21B7F140007
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 09:19:16 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="Ax9/nMk0";
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf23.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id EB1676B0109
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 05:27:36 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6586E1C1EA3
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 09:27:36 +0000 (UTC)
+X-FDA: 85164665712.02.0AEE168
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com [209.85.218.72])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B294C180006
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 09:27:34 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=EmSKNhgG;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf16.hostedemail.com: domain of 3hJqWagkKCG8NYVPRelUYTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--aliceryhl.bounces.google.com designates 209.85.218.72 as permitted sender) smtp.mailfrom=3hJqWagkKCG8NYVPRelUYTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--aliceryhl.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788254358;
+	s=arc-20220608; t=1788254854;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G7Brk22IX8ivgVeznwARkHfXlRRqoPxVQ4XrLKm2tU0=;
-	b=E6ZhwBTikyhzcfsuwEIO0y4cGuN7hsVz5eo8pCwtjwcYCl1IN+NdEkXmPN+KgzMnhrOT4v
-	R08q37/LiE2SwC+ckjbm7HogvPNDFTkBlgHP7FMPpn4kQHIi9rx8rxq4jFU1ynZ9i0SF9c
-	rsf3LzwvpUSuKR2zFJRS5bH5axsLrIU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788254358;
-	b=f326F6y2E+JZhI1G5SSH0zmUykbtWR2ZGDNHh19OeAKKiLgIzih4U8UT0E87rybLu+UQba
-	pAyeX7qP+gL7kddB3C9nRdLZOwiXIeX9tpcBMij0QSynL2baQV5pt5JBoC7/feHPpbRdPS
-	SqY4R4q4Zk/DuuIJLocVenr5PcMzfdA=
+	bh=KdC630qSepMOzA2lVAlUNAGtTB350vu7dUwfU0LuExI=;
+	b=6Ni/Aj8YvCE0Dei0uScSb0P8XAfCStPhX0i0B88ikLNxuWLMkPsZs+3mno3VQ56B4bhrAw
+	dkDdbWG+Q4icJCzDtcw00zNsh/8LJFVVaZEZ+rYpqFa5x3rDBDBaoXaiXnifCfRjnP9xJV
+	oQLDaLn5ZJHf46lTiS02Uvchn8Eeu08=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="Ax9/nMk0";
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf23.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788254357; x=1819790357;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ybzLPBq1Kqmn0Fx88mmu2PUfpGn2KPU3cTB0rl4kSD8=;
-  b=Ax9/nMk06l/n5r+H4V72BLuKqdgI1QxK/y75W8rSy0+UKzYirXZTKhEC
-   ea67dnXukhUbq2ToN7kcyDFMwzDqkJlzRpyxOxovq8QzX7vCDOrON4iGi
-   QX+5JwF8WLTLU7x7CgjABUOCExTvlxwbfDh8CmBnfK8ZXFmk1barrLdWJ
-   2i+CCMU8mK8Rr79UlOOhN9/OqrDYHrJTV1VzmdtS5sivwYMt4Lh72reM2
-   2LdZ5zqswl1iKz0MX5vny2CEFvejRBAlDl7b5xP26BZeFRpcQbUzX9qV2
-   IcE/LCkA7MO7ENue9FZKH8wxIVY6A1g338i37XVOVf5s439IMqIGSki3A
-   A==;
-X-CSE-ConnectionGUID: uA7UPBvaQOiRulExhoqIsg==
-X-CSE-MsgGUID: MLl7RCdFQV+5JCNgPcNpfw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="92493111"
-X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
-   d="scan'208";a="92493111"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 02:19:15 -0700
-X-CSE-ConnectionGUID: dk4Yv7r8QdSTMtXqf1bkOA==
-X-CSE-MsgGUID: phpUd5YHQ8+X4qWG9ERdUQ==
-X-ExtLoop1: 1
-Received: from unknown (HELO [10.238.2.33]) ([10.238.2.33])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 02:18:59 -0700
-Message-ID: <ad5ff907-d468-4556-bfb3-d930b97b2c2c@linux.intel.com>
-Date: Tue, 1 Sep 2026 17:18:57 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 07/45] KVM: Rename kvm_mem_is_private() to
- kvm_is_private_gfn()
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
- Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Fuad Tabba <fuad.tabba@linux.dev>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, linux-coco@lists.linux.dev
-References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
- <20260830-gmem-inplace-conversion-v12-7-85e5fd25252a@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260830-gmem-inplace-conversion-v12-7-85e5fd25252a@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 21B7F140007
-X-Stat-Signature: gnqf131fjeqfmkibqsykjpcu99cupahj
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=EmSKNhgG;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf16.hostedemail.com: domain of 3hJqWagkKCG8NYVPRelUYTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--aliceryhl.bounces.google.com designates 209.85.218.72 as permitted sender) smtp.mailfrom=3hJqWagkKCG8NYVPRelUYTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--aliceryhl.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788254854;
+	b=e8mgSS8DuQn3HiSJpms+uCOuW+k3y5b4tSrqf8r0qU9GvSUowoXFcpmPgl6ibS0S4uyheA
+	jz4xLTolc5NljIQYThjxuLyx+OZIpAkLbaHIny0Q3lKzyms4LnN9y5Lztzf+a3wNUgsJ5T
+	/pwsgfw4W4brCK9rsKIDP5cOPRbWMNc=
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c251c140b41so337566266b.3
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 02:27:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788254853; x=1788859653; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KdC630qSepMOzA2lVAlUNAGtTB350vu7dUwfU0LuExI=;
+        b=EmSKNhgG62ciOn9XOu18qqV6eqQl0f9BiZw5BGgGMsh+t0zYLD91z6y+KYNNBEgdeJ
+         PaKW7gmRd3+n/d2piY46hWYAAMBAkfnJRIjXjfJP2phH8X5sCK9mbSYD6No9BNHvIN5A
+         gxvL6M3uxzZ3aaObN8vfGKNUYy7IZUOd5GbkxoRgky5PBtgqoOaYxtGqJpJIIC/oegs/
+         yHhoH7ZiX5uMWGoyZtC5jcg2oq8oYXcIvH0sGCY0hXOAh+0GdeBFxqscfM+NyZQ6Y9Mx
+         dcjKtIq8BS+J5DEjwd8rWJQ09RWeEfNeKswdblB/43kz5n03U3s275FtfkFDLpAXvzkj
+         74HA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788254853; x=1788859653;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=KdC630qSepMOzA2lVAlUNAGtTB350vu7dUwfU0LuExI=;
+        b=lYzTAc5P6zjaTibcfEslnB2R7nq8iKyo9lD8Y4QRWK8jQv5BJprjnQBaFAy7b6tdj3
+         x2GmCVaFLcgtvdTNQjmCxX2IO9E8YSfq81B3p7IhHSY/RNLgDPkS2zxjYFQyMTkeqx9l
+         flGkkS3ZFKjyk97mxQaRYqElzNqFIPnmfZaAMMkOLCtpufFLsygtzc7tgBcSj6N8m+K8
+         nSgjO4rARHroo/gZfoCGhVItdavUcYEQGlrR6XcIxGosDBqse3t91DTU6zPSzNbA2MMF
+         zjgwv+Wj4UDETY/WP2kEIsvgdvuCVNFqymdw7ZKi22rXI1ngOqNj59EHSpGDAqpNsJCg
+         Q9vA==
+X-Forwarded-Encrypted: i=1; AKwUvBwZqh194r1LX0qgF9oUabhfV4odIX2OvJ0I+bt6GopZPUf1xwD/PWcQqp3seLlzWBo1z47nPd7Smg==@kvack.org
+X-Gm-Message-State: AFuF++lOoa/YGXN6B47aKkagRwzUO8dZHSD3+eC9guwiA5943w5MeOhm
+	f6lQQiZH7JS9XDoLV80L9eEdnvGSPhqiVIo3pBZPI8rPCOtqbRqrbZzWiIREpYj6MXTelS0s5To
+	7eAa5skfFJBTPnuTEjw==
+X-Received: from ejblv5.prod.google.com ([2002:a17:906:bc85:b0:c20:221c:9ee2])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:18cb:b0:c25:848a:4a8d with SMTP id a640c23a62f3a-c25848a4edamr1140296766b.5.1788254852741;
+ Tue, 01 Sep 2026 02:27:32 -0700 (PDT)
+Date: Tue, 1 Sep 2026 09:27:31 +0000
+In-Reply-To: <20260827232948.2520558-9-stevensd@google.com>
+Mime-Version: 1.0
+References: <20260827232948.2520558-1-stevensd@google.com> <20260827232948.2520558-9-stevensd@google.com>
+Message-ID: <apaagy0KJRPVtwHM@google.com>
+Subject: Re: [RFC 08/10] Set PF_RECLAIMABLE_STACK in various places
+From: Alice Ryhl <aliceryhl@google.com>
+To: David Stevens <stevensd@google.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H . Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
+	Uladzislau Rezki <urezki@gmail.com>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, suleiman@google.com, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B294C180006
+X-Stat-Signature: zb9e9gkfuzh1bd65a9dkwjubc8hurnuy
 X-Rspam-User: 
-X-HE-Tag: 1788254356-465415
-X-HE-Meta: U2FsdGVkX1/0izeTX7N7+oJaliIgItOew8I9sNz9MnC++V+PkMwCZeLnokz0dpgQH9VkCgXjnN5sAVygzKkDBOH7e6+vrgwRwxQH8emd22b52XPBz6+145jjlFYjtKStOk1/36/aGFkw9gBtVCEQKIS5uPtACAMF4+AAsEDlVZCxUZQ2kYCwwoESRdTPjlTIqAFu5sIKLD6x4Sx6zjWIIjoBl3HPHQ9etG27JAdRgGRyXtrfwVI26lJ9oBuytTXMDnxk+GJBMJ5HkblMfTT5B6xby56tKBwmxCR9s65VcnRpcAYHEOi+7fXTR4fx6OfQuBMQ2TUTtyVeFJjPtMVEqwknaaoi3uYC0mWt6fhTVErwM0DyUcak7RxmZQFSMPcb+x7rHoeYehxkSmU46nbGEm/6/vDUi2FNOD5El0OYag42Tw9CdSws8qcCNKAFW46dDJHhvghnawIVjAOslDLtaoqgAlxMx2JlncR+0kgWbr4Xfr3jQK7Kj5B/2ASf6oZUyoJ6qArTH7Ujgxo5JhtUqbMkov4cNa50LIjnf/uDV2M1jOUCgwTVq5j1WiK3qW5gLiNIyToW34i8fLoz9C80YNeKq7TvhHqwJjcxfnWN+g9NwCS+nBXeLQl7oVIXpU6oekbdGjisqB/VkHgtSS0n9VndiBN4+DiyOs/wrvYup1i1VbDPlw/Be7l+mSDqs0A7AwIAhAEhcSuR18BtL2bG9xC0COQjgvCI+FRxXNy3X6GNvSQ7izyM1GC/le4HeKBX1LmXPRlE+ZEVxcZ3VSjD9fy0S5op+a+nrsOJJac0KjrsbG9N8zoV6D+h28RELGOCXsl5Xpj7zPNVPfPBCau/I/2wxeo9aQJ0AVHtZtQ2FXpHQsbQa2KvHZdR1j9g4u587ygF9MAHBCYWWGZPtC1AMrYpKpsF9M+EWC8PWPBbHIblp68B9Fq2kTfLGCs4OioDdXdOhSOczckLrTZBP94
- eDLCvwMw
- VGCXp1rxShsZ9+Zzw8PEop9l4Z1a3ITFr5zteUqizVTpu95FGGZMqnfd/5dz5ju5eI7nwNqb2kySqXOVaWYrRxJqmITlUgpjn8IGvXyUXQp1GzH/x1R2avsNrojHYZDqdU31U/blRj3PZSWS2XXF5WmuvTAmtEIpqfQUwEi2C5GDioFHp1qas3xYSfsKtHqMeafP+QhbSIoLAmHya5fX3DkbRJvofbZbTeUMH0no4yDljbZcT2A8ICN2B+GMW+kpPleA8fRnCay2HkxRWeoAB/yg7bBEkC7zrjaz2XQxLRKTdhIgNgmCq2Y8HZ9xZ1KFGROkxBION1merFNdFWhS7R73cog==
+X-HE-Tag: 1788254854-231781
+X-HE-Meta: U2FsdGVkX19yMED/Tpla0l3GxEMaPwKY0+TE66xaTcwVIWcpt/UjbJwipGSvaDP1ZfIwswphrqT0/FdbLdYuJRSVBIsh2BDAFUjkNTs5dwOb3FGfRu350e0LHMTLHK0pum4c47DgnJ+cF5yupMXb97wHgSzmoiL+P3OuTAjSY+MGD9L5QFA0bvrkcOVv4mwwNyH18MF+UmOy8cfLU4lgTvdxNiAzmJA8FsKGkNyuFSqsGcfvabKcPfvI41cqAmr4A2ywJnv0S7IY+gRZS76DlnrYXi/u4LnqVRaoiDZPRD7s6yBzT2tZzZ0pzybzuYmH9U2hIbYSeIQsHA7UZ81pa+SJoGxUV9KWDp/fScutunjlAAxoQDusHBNQujn50geyOQqhQ3KzOHhzv6/m8xItzrRghFXqEXs64Z9+4ybkUfuJaXLeBGmkoXH4mQ8r3iKJcgRp13FcFWr267VCXj0N4OW6sW8qo4b6cMLkgFZ9xm0mKQ/mScGGedZzp2DMPn4owG0AthKSgaMzMcvI1kfatu78IxUa4/KHcHbqe2mKfR2OAqpruWeMCDvNpBjsFQIILH4p3D9btjdeqmw9A3D82kTtvPej3M5UOg+up5+4Ul0R9jtE4XMBusaZNQ7JT3Kj78QAPLlvTECTXtw3A+BhS6p/Lx8kZOiMRiXA7QLuex51BirwC5v0gA7iFvmUPS390Dppz53BV8Aw/yt2CUZo8NKJB/f8X9y0/LaPUEFkvgeuHdypCqv8gKbAAHypobtEAq/RD1CapgNB1VJCafMFAjkh3ZvFKhbMX/9RG5WTvo9qZT5zWZ1rzSzaChLN+1FQiXRI8I/Q4pZohfYSfM+5zebZtXWmsakf8+H0NPuHoOVj6FZxsUe4CS/dDg4JlMKSfHpv7j6ppgap8A4ay7s4m70ISjoXr+vghULrVl9Gi2mUV2hGH90OzYTKDIb60nZMKN0JKf+2fLcL322M4vp
+ YQxd3RFf
+ 42sN904sE+6tJ0K3C9/jiUDiVczB9YfGrREIbYrTp5xkfZ7D+mtLdQetGNNj2dhM4SY914dg3hKY9cWxkvX4qvhBfN+7ma9CsbUhB4xK710qPL96jn6ADBc1Cutqyeb8Cr/d0vtLsrRHcyn+JTKMshjzQmCX/LQqAZ0CwlIX3MzEd4BXcErHKbhUPaYdhfhU5eYWN9zKSLdVBjuXp+6PcjY6Kld9KZzDw1VAGGrAy3X1F5xV+oQGP9hlF0E/6I3hYKPDoSjPypiW3HgiuGk4M5+Y44BzGR9q4nIK4cWyc14HKFBV1irlcUEcJVTFSfhgWMpR6qyEGkPV/3a/1hTtquKrUVNRtbfaZnMNfgakrv5ZC5Fyns/1hIyEM0rwec+uUavq2/19R+gfFfC3leQc4mDXqs52siI9P4WaM+a3dVGfbOBjsAZUw0Qkvndff48z8zBCVUVDjDdIXQlCF6aGV8HnYu9VqT4z+APKNYIUDu9pDLsOE7SalmDZhbxb7ilfGNwrInNsvGBVPC8Yy1ou3WcmDwTxqvvlwtyozHuaV1NzxfPhtu4iVUtDp6wjepczODXX1uDb1WYl1uuIjvGiVApKxvrFX1+5zC20I/vYFoB3RnGdtVCGVYKIVbIYYxVBk7Wwrds6VSyidqG5vrA9SV78KCylPSod1SSr7OxcToZ4QroHfQOpH2kHjVQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,18 +122,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/31/2026 8:25 AM, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
+On Thu, Aug 27, 2026 at 04:29:46PM -0700, David Stevens wrote:
+> Annotate various blocking locations with the PF_RECLAIMABLE_STACK.
 > 
-> Rename kvm_mem_is_private() to kvm_is_private_gfn() to prepare for in-place
-> conversion, where there will be two lookup functions,
-> kvm_vm_is_private_gfn() and kvm_gmem_is_private_gfn().
+> Signed-off-by: David Stevens <stevensd@google.com>
+> ---
+>  drivers/android/binder/thread.rs | 14 +++++++++++++
+>  fs/eventpoll.c                   |  3 +++
+>  fs/pipe.c                        | 28 ++++++++++++++++---------
+>  fs/select.c                      |  3 +++
+>  kernel/futex/waitwake.c          |  3 +++
+>  kernel/signal.c                  | 36 +++++++++++++++++++-------------
+>  kernel/time/hrtimer.c            |  3 +++
+>  rust/kernel/task.rs              | 16 ++++++++++++++
+>  8 files changed, 82 insertions(+), 24 deletions(-)
 > 
-> This renaming allows consistent prefixing of "vm" vs "gmem" for
-> kvm_*_is_private_gfn(), as opposed to kvm_gmem_mem_is_private(), which
-> looks like a typo.
-> 
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
+> index bc0ef8927905..be62f7fd43ca 100644
+> --- a/drivers/android/binder/thread.rs
+> +++ b/drivers/android/binder/thread.rs
+> @@ -538,13 +538,21 @@ fn get_work_local(self: &Arc<Self>, wait: bool) -> Result<Option<DLArc<dyn Deliv
+>  
+>          // Loop waiting only on the local queue (i.e., not registering with the process queue).
+>          let mut inner = self.inner.lock();
+> +        // SAFETY: Only accessed locally in this function
+> +        let current = unsafe { Task::current() };
+
+You can invoke kernel::current!() instead to avoid unsafe here.
+
+>          loop {
+>              if let Some(work) = inner.pop_work() {
+>                  return Ok(Some(work));
+>              }
+>  
+>              inner.looper_flags |= LOOPER_WAITING;
+> +
+> +            current.set_flag_bits(bindings::PF_RECLAIMABLE_STACK);
+> +
+>              let signal_pending = self.work_condvar.wait_interruptible_freezable(&mut inner);
+> +
+> +            current.clear_flag_bits(bindings::PF_RECLAIMABLE_STACK);
+
+It would be nicer to define a guard type like you did in C so that this
+is less "manual".
+
+> diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+> index 38273f4eedb5..6168f058343a 100644
+> --- a/rust/kernel/task.rs
+> +++ b/rust/kernel/task.rs
+> @@ -344,6 +344,22 @@ pub fn group_leader(&self) -> &Task {
+>          // only be used while `current` is still valid, thus still running.
+>          unsafe { &*ptr.cast() }
+>      }
+> +
+> +    /// Sets the given task flag bits on the current task.
+> +    #[inline]
+> +    pub fn set_flag_bits(&self, set: u32) {
+> +            // SAFETY: The `flags` field of `current` is not modified from other threads, so
+> +	    // the non-atomic update isn't a race.
+> +	    unsafe { (*self.as_ptr()).flags |= set }
+> +    }
+> +
+> +    /// Clears the given task flag bits on the current task.
+> +    #[inline]
+> +    pub fn clear_flag_bits(&self, clear: u32) {
+> +            // SAFETY: The `flags` field of `current` is not modified from other threads, so
+> +	    // the non-atomic update isn't a race.
+> +	    unsafe { (*self.as_ptr()).flags &= !clear }
+> +    }
+
+It looks like the indentation here is a bit off. Please try invoking
+'make rustfmt' to reformat this code.
+
+Alice
 
