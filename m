@@ -4,173 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4E40C624D4
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 13:20:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C88C7C624D4
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 13:25:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BCBEA6B019C; Tue,  1 Sep 2026 09:20:04 -0400 (EDT)
+	id D328C6B0098; Tue,  1 Sep 2026 09:25:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA3D56B019E; Tue,  1 Sep 2026 09:20:04 -0400 (EDT)
+	id CBC826B0178; Tue,  1 Sep 2026 09:25:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB9856B019F; Tue,  1 Sep 2026 09:20:04 -0400 (EDT)
+	id BD2DD6B0179; Tue,  1 Sep 2026 09:25:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 88C176B019C
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 09:20:04 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1A5B81C2113
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 13:20:04 +0000 (UTC)
-X-FDA: 85165251528.16.74FC9EE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 09B228000E
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 13:20:01 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LztPPiMV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 93B3C6B0098
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 09:25:17 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 24FC71603C8
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 13:25:17 +0000 (UTC)
+X-FDA: 85165264674.08.A40BB82
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A2530C0004
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 13:25:15 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y259m33w;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788269115;
+	b=QIWaL78bxUA/gDtZ7lM8gUvCey6Qq5dEOtGUWjoD7bTn2yZwbIBQOyAQzj82thIr9vuLZu
+	I+wUG5gyh2sgBxQ9NFAWDpOFGSlEk+SbzRVR9xI7rtHh6UqFbUkVeB01vEgVAyAOvwVj91
+	3nqJ0sGeU5R9Y+D3oX84XoNr3t9ztJk=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y259m33w;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788268802;
+	s=arc-20220608; t=1788269115;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4K0ioKV5pbE4Ef4e+GKU9dV30pSsLWe3AR7B9Tx4qSs=;
-	b=ckswyCALlJyfw6V0JBKJ6/q7J7ZLtnIZjsf2PZx7f1Rp/MHHdd5egQMrwl7Naop6ZdKASQ
-	3VGBddFo0va4KV2uhDRWWg2vrFg57g0qJPWLVpPI4ekcGXF6qbe5cvXIkEgePqaoWmWaik
-	zqjUc5zZILldXX8FLl1wjva1rTzJ/gs=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LztPPiMV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788268802;
-	b=CvK5Ux2rxtXK2XWFswIKOBjV+9Z2B+mp0Tnhm4M0BziHQApwqDKfaaX4pP6PpU1kTwzsG3
-	DsOY3yTuFBHWNLTXkfYibghLr/IboG03H/q2RlM8s6qUUNumoCH0uXLwzJH1MqeXNA99Bb
-	i9VY7R6MdSH/JZ5UMpDIgCu6F5/Zxwg=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=iKaykvSVFIelvzxrD/j+8wQNprXmphpbUgzmXQCwYfg=;
+	b=nxzM73jRv78cu7LIxGk4nEIPjQCjn0GuWvz9IqlN6u9qFdxdpbcHtSVaogLgNRpbiEQ5rE
+	NbopalcY703jFMmHcwWPHVS15t6ngmwgSqVFVnrTfuAmp3owloEiq3EY4CGtauZ4R3/Laz
+	e/xvOeZwn3mLS47hQ2e0zjiU3EksgBM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 37DAF40B91;
-	Tue,  1 Sep 2026 13:20:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531F01F00ACA;
-	Tue,  1 Sep 2026 13:19:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 215E86053A;
+	Tue,  1 Sep 2026 13:25:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 356391F00ACF;
+	Tue,  1 Sep 2026 13:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788268801;
-	bh=4K0ioKV5pbE4Ef4e+GKU9dV30pSsLWe3AR7B9Tx4qSs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LztPPiMV0JqOpNGcM41RcGzmbo2W1gJcf9SI62leim+lngFeaunkaW+2nY2NDVI1m
-	 ULsGIJWi3F4NrXyL/AqwzQQiFjHV5Yx1hxefG7V4xPPGDn1pMAwntNN7JIu/Rix+9Z
-	 7ZSlk1HEz2LWrV8N9Fu/mC7Kq55lUG/A/Jv+D6SD6i66T2Kyg57qnFA+Duqze1ZSnY
-	 YIXrZoxooTwzySNTMwxqPLe5CV6rfaKw3uBfTa9eNKWB0Kt+VtTqKKXruYHd2qsjYA
-	 iphxkHzHGvAM6eAxohN/0yj4STTgQskoh0AiVqyhuCVt8DYTqViwQa/mrRPa8fkGUY
-	 5UprRaTjqGrKQ==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 2F80A1980077;
-	Tue,  1 Sep 2026 09:19:40 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Tue, 01 Sep 2026 09:19:54 -0400
-X-ME-Sender: <xms:69CWaij5CIKvTS9JuyLleD9s3d7G5S5Cj7oKCUXn13hGseHouuUSag>
-    <xme:69CWalGYd0dc4bcEB3etN9RaYjD7HYzO3v8zVyh93Vx39I_dw7XkZfKP4mbB2pf7a
-    yCC0ABYtDzS2RhTTaZ8dfYsqjhrn_rW7zK2cNPqftkFgUuGuUM2EbU>
-X-ME-Received: <xmr:69CWakpbzJqHJeJRbHpsk7ongNC4txO1ZIIt3gTXSf5VUVWH2Pd6FvJ1H9I>
-X-ME-Proxy-Cause: dmFkZTED3aWKojbGUYTqgDI4X4V0F1d+uDC9XUKSeGM5bAtqyf5WoNCcWI8qt7irq+Ycdg
-    bP5uMN9J8wue1zj+h4Z5VdmIt5CyC8BtMot40mK2bNoOWP05XNwub7F63HzCejIFCNIwU/
-    RwHR/oPnELuI/pgmRue+HPnpkTdxXI2tXXPwQ2XhlfjvZIyZNXMaGXgwL56LFN8ekEPBpX
-    QHxLvpjiYjeppSsNC9jkLgljlvJ1f2Rzug/Wzpp30FOzo3biGRK3SJKG4JlcSiSKZV9ApN
-    zrblGjeaDfaFoFocDCMSOSTBkwTuSjYQbyrO3U+OcC3IfSEQwCfo2jZutbaEZD8ORHkhOE
-    WPvmJHx9cOwRkRzLLHMzt61/y2dH4FBScykL+eQjNlgsUwsdGo8YayjIDE2cNUryQs77Zd
-    37yui7ur2Ub4PTGWPTH9vPA/z72KJMVvxVCmJnutZO95zEQmQXdIrYDwRwD/10g1bSXWZv
-    5p+rN+4d/l5/jwP9h6pMcwNHnHfrSrfKBvZnNqJN04rROPvVro5LWQHKMqJWCKH7KIqXhO
-    kz5cBC197p3oqrUj3bWQUgF9WsFamkEjWJi6OvK/8e1HSfRwBSOXnE0kOoNrxeox4eX16r
-    l1yAPWeATBw9u3K+ZxIBaBaFYwt+eQJwZRgzLVYgXvtgrAI3wFtXeAw7uu+A
-X-ME-Proxy: <xmx:69CWajFHifz_SIwkxD4BIVpzvuUpvQr-YiTHagPH4og2FD21YdNJgQ>
-    <xmx:69CWaoqTHEsNOtjshNsJ3CUngn2ZISAQFdZ45ashJ5fK9S2FYQS66w>
-    <xmx:69CWagU-DnjgEXTEnpw6CxzSrHONzOkLH3mSJLYWP1eBStWX0ICgLw>
-    <xmx:69CWaoLp9cwfEDd-J-UDdiyYEdkf-I-D6oSdqcqGEGBYulbHTZ9FeA>
-    <xmx:69CWap2dwNlx9UBv3N5Z9oAH2VG7dOj0tP6mz8BbcIQFsrC4b0Y4wIoG>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 1 Sep 2026 09:19:37 -0400 (EDT)
-Date: Tue, 1 Sep 2026 14:19:36 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- 	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- 	Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>,
- 	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, 	Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, 	Usama Arif <usama.arif@linux.dev>,
- Guo Ren <guoren@kernel.org>, Brian Cain <bcain@kernel.org>,
- 	Geert Uytterhoeven <geert@linux-m68k.org>,
- Dinh Nguyen <dinguyen@kernel.org>,
- 	Simon Schuster <schuster.simon@siemens-energy.com>,
- Jonas Bonn <jonas@southpole.se>,
- 	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- Stafford Horne <shorne@gmail.com>,
- 	Yoshinori Sato <ysato@users.sourceforge.jp>,
- Rich Felker <dalias@libc.org>,
- 	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Paul Walmsley <pjw@kernel.org>, 	Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, 	Alexandre Ghiti <alex@ghiti.fr>,
- Russell King <linux@armlinux.org.uk>, 	Vineet Gupta <vgupta@kernel.org>,
- Michal Simek <monstr@monstr.eu>, Chris Zankel <chris@zankel.net>,
- 	Max Filippov <jcmvbkbc@gmail.com>, Will Deacon <will@kernel.org>,
- 	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Nick Piggin <npiggin@gmail.com>, 	Peter Zijlstra <peterz@infradead.org>,
- "David S. Miller" <davem@davemloft.net>,
- 	Andreas Larsson <andreas@gaisler.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- 	Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>,
- 	Catalin Marinas <catalin.marinas@arm.com>,
- Mark Rutland <mark.rutland@arm.com>,
- 	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- 	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- 	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- 	Michael Ellerman <mpe@ellerman.id.au>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- 	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- 	Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- 	Sven Schnelle <svens@linux.ibm.com>,
- Richard Weinberger <richard@nod.at>,
- 	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- 	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>,
- 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, 	Arnd Bergmann <arnd@arndb.de>,
- Vlastimil Babka <vbabka@kernel.org>, 	Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, 	Michal Hocko <mhocko@suse.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, 	John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
- 	linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
- linux-hexagon@vger.kernel.org, 	linux-m68k@lists.linux-m68k.org,
- linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org,
- 	linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- 	linux-snps-arc@lists.infradead.org, linux-arch@vger.kernel.org,
- sparclinux@vger.kernel.org, 	linux-alpha@vger.kernel.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- 	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, 	linux-um@lists.infradead.org,
- Hugh Dickins <hughd@google.com>, Qi Zheng <qi.zheng@linux.dev>
-Subject: Re: [PATCH 01/12] mm/huge_memory: zap deposited page tables after an
- RCU grace period
-Message-ID: <apbOlyF77yDCV4cF@thinkstation>
-References: <20260901-rcu-pagetable-freeing-v1-0-5456a81c8212@kernel.org>
- <20260901-rcu-pagetable-freeing-v1-1-5456a81c8212@kernel.org>
+	s=k20260515; t=1788269114;
+	bh=iKaykvSVFIelvzxrD/j+8wQNprXmphpbUgzmXQCwYfg=;
+	h=From:To:Cc:Subject:Date;
+	b=Y259m33wZ0SkNhjJHqIdHrS3Nqg0mb23/qke/Cba9sSb+hfSzNVKR2g4FF0bJc5s1
+	 LHrkeYApIvmhxmymyVYAmnTGsttd6xfgZTlpU/2zvB7oNgz3+stfd04PDhFYai84S0
+	 fXFdfyMGQeLMQhukodYaEVn7BPz45bvzLt3F7Z90Q+kUzq7p5i0OTHf5CsJR+81yh4
+	 hnLbE3g3F4kLxcOr+E85BOIshEw/0Qzt+OnHLOCXry+ERY4GsO6c9eAmRz6J727+/W
+	 Lb2Qgcf+LMVFaVbjMTm5VSB8PgbwMWvKRHiVhGO8mReL2OjWtQbpO+NckOtaYFLOtm
+	 xks0qJNQeu+OA==
+From: SJ Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SJ Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v1.1 00/17] mm/damon: introduce data access-as-a-data attribute
+Date: Tue,  1 Sep 2026 06:24:47 -0700
+Message-ID: <20260901132506.99243-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260901-rcu-pagetable-freeing-v1-1-5456a81c8212@kernel.org>
-X-Stat-Signature: 9mt8xjrmqib89mnombs3uagbyo1rqzbx
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 09B228000E
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A2530C0004
+X-Stat-Signature: rz9pcuwa1f97u9ygby8hqfg6jd194d1m
 X-Rspam-User: 
-X-HE-Tag: 1788268801-81849
-X-HE-Meta: U2FsdGVkX19cTKZQrgNZ5tbOyEj36/QJPPdLb52LYzMZYUEOCs+Q/BlAjab5kYILSkkfn3VJ7JlDVtKAVhCTyLwTBPRf6pQiv1SRKKWXj1z3p35mFsgz4LYKRxpYARHZn8Bw7mjjTpLJdU5yMw7XhmymZ2OH1rjFbWqvVVg4TNqICDzQFI6ZmzVjJOpKvLsSpjbthlb28zsIPgwCXexgOTpaOLPzdtcM/xFMaMY2UB0VxIGzg2M7rgOSk/jAuft574XYiqc1SsJCVyDHkkMO7wf79YfyiRuztf+Am2FNutCQSdjBBaw8q+Ca5HreoOOWoOfqK+T5Kc3C4q7HrFXjncL+IU25Ect5y8fQVxbrRXMIENRwnO+qjjS5w0r4dhk5Lme4yJsyV7v0SwFIrC4Swkiyk6X11ydToa1A+loKUgXvr1g+ijpU5DlQeumys+wX7QkrsRoumxChHl9f8AHyFn9pxiJwJmk0//PmaLZFnuov4GwGLt9KcZ0tfzszplvShzRcMFUYC6N9RZRHMQMbKAfMVGKeY+uKW5laWZGk2UZbv255GDpPvcIW210uhMpy9nyyzeV73nfBd+lRssOXWYNDZ134Exxiq1Pyj7xnGSMk2IkI4OVX+Ow9NcRmn78gxHm5RoWbwqdOkgHxpHNfg3vdsTts+zDvChyab4YzLxJNyZSxgZzBiwBEl+86L8/uYg5a917ntPvNAZnZ1P7Cqjrq1cmZ1RAKjMRcRWl3fRh9i6mcsJP1KYzWSVvanGyYyqkNUDLbeMdRPUENNmJj4EeJsuOcKZBt0/90HTmEofcgfaf8ED5B4gMab3PZYlYexsv1wsrBPGmVwgqhrUMz8QeGHnxfE84sigNG5UTCGIyFTvUK99KD9ts/LpTNl0DYRns1/9yXyJNRv4/UUN8ufZa8ZdkNnO8LJ8Fc9vFDFX2MKsmEcQTazli3ka45UQGMvv5ZeyOZT9iYCPUd9Tg
- qAK6rTy5
- eoN4Fvhmc/kuoDpLrN/YYxdSB/Vvwj3dWEKcagKn2Oe8bF9uiADVuGX8sb2qugW1WXtuGx94LIXcVnHVMz+7eve86Wb+FMu4WugbanPUNKatMPqFzjeQj51pzmRFWyZXB8ukESbLSii+4Km0NEZEJXafjy9yWQRG9BKsKXkgHHZSPA1EPrLZhIFCCrkBQ8GRAhEi6OIGnw+xEcbgyVmzlRMH6t787s13rGQNXb6QRW3Kx3UnnQyAQ12y0S7dm0QqIwDnkdf+JPI6Pd+HmlmsSbcV7YsCphnSvLZUm80XN2BpR7IA/PycewsTo2aZgVP5bhJwtkhUmDm/Xu0EMn/mddP0pL+cp/smmBFd8PBp4Ep8CG8XaF0YB01QYOSy8iXFGBw5UFdk2jiWimYeG10hETaOW4JrK44j467DrUNGXPi8t3f0=
+X-HE-Tag: 1788269115-605093
+X-HE-Meta: U2FsdGVkX18qgoLGekdJzr30k7mBVjUCnxpD8mMbjMdmLQn/DsTNc1GEIyaQic5e4nICKw/I4t1EIg1p5eKrsGiu1/MUUrl+hEkfwofAgwbIREEsfWHo0qJEEul6rA3RsV7CHU/f2xgpeNudQqWS2EzT7074cMWh3Ow/QyUC8XqN630oWDxwMNz85+GgUhwtknWGrpGqHjMAObPx7dgPP5wWLcq6m9b0JyrloWI8Sgmquh5p/hyLMSaykiuT2zfjOVPFoZG0bVUQbjNkpo3mjdf1WvKcjy8in2s6v0P6em7STxsC55K65EGuxaXiKLf8+tcMDFgYuL8R6MQY04u/xma1+pRz/ovjAtMUr5A1vFIeLCTMV2FbeCMJV9W4Y/6PkZ/c4RHwlw2dze81yq32tokPtSpZalHjZ7gpBdm10vR5Zt3xXhSINr1RaYoQiKnC3wH1GRARg7JW4FiUedpJgtTCjR2qh4RIpO80ovBUhRqOoO2iQQEMod9zb7VC/TZuuDI238p7buALxoVL+mm2XGXRX1Y1lm3Ot7Yj4i5bfmL5lqc40ceRI7xzYHtLV1vPj4+aHdOvzHtP0VSIGEOs1mFCRwGw6GX6qBpW1uIvQ0bckKjuTQ2bliRc7tQ1DgLBfB1umnQ8P0aGtrgASOpF4OXA+AdEPFqTHx5F2SIJARM+ZcbpM2ulPyNDcUachjCcjMTu6n0tFl53UMgIHAi5ideu9OnGMG4mv/4utK7JvDahBROLYg7kklkk4YLPEmIvel0OUeCugekavGlxh2YaoVi4jd+iTz7fCFK80wyllUdSOvaLliMn757yL2F2UU5Dr0Rdjo+hASmQllheZ/eCf3a7+3UTq3PzyjFcIBckSnQlYr1qGzkx0Qe/htgR+aFyKTqb3x51HK8NVWJJCMeQd36PO1zmzAU7jRYOzUleYWoiNqQXE/tqPUbR1NTgcX+ucMFZfE0lvc/T396za5J
+ gcFZNyb7
+ sRgCIyt/rl4I70D06Yh/OQyXRNqHh7rxwl4yE9+BK287N8D/VH8XXJrc2gjj7k6M06bOnMsh7Vu/Twuvm8baNwQ74hrj5YNGFMh/Lp1Ka2hksCVb6tUkBiRHyG78iglMaeepj1aPNUEGUT4W4Pb/dhCssezfoiicKARcfComx4TQfz0MtJQL2dS4o+Ps2LRLUkQd8kaDAlnzx84VKJZZqTHgahE1xKIwlauMRI3F8wByygQAuzYmVbfJEkJyKh/9TzMOM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,69 +103,236 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 01, 2026 at 12:01:21PM +0100, Lorenzo Stoakes (ARM) wrote:
-> When an anonymous mapping is collapsed for THP, a PTE page table is
-> 'deposited' with the installed PMD entry.
-> 
-> This is done in order that a split can be performed without needing to
-> allocate additional memory.
-> 
-> The freeing occurs in zap_deposited_table() and is done directly without
-> any delay via pte_free().
-> 
-> This is currently not a problem as existing page table walks are protected
-> by the mmap or anon rmap lock.
-> 
-> However this becomes problematic in a future where RCU-only page table
-> walkers exist, as there is nothing to prevent a page table walker that
-> started the walk prior to collapse having its PTE table freed underneath
-> it.
-> 
-> Commit 13cf577e6b66 ("mm/pgtable: add pte_free_defer() for pgtable as
-> page") already provides us the mechanism by which to solve this -
-> pte_free_defer().
-> 
-> Therefore, as a prerequisite to a future commit which will permit fully RCU
-> page table walks, update zap_deposited_table() to use pte_free_defer()
-> rather than pte_free().
-> 
-> Note that the IPI sync in collapse_huge_page() is still required to ensure
-> refcount correctness against a GUP-fast operation.
-> 
-> This is because GUP-fast might increment refcount, but
-> __collapse_huge_page_isolate() determines whether it is safe to proceed by
-> checking folio_ref_count() against folio_expected_ref_count(), so the two
-> must be mutually excluded.
-> 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  mm/huge_memory.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 54494c3fa983..505f7b62ff28 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -2476,7 +2476,7 @@ static inline void zap_deposited_table(struct mm_struct *mm, pmd_t *pmd)
->  	pgtable_t pgtable;
->  
->  	pgtable = pgtable_trans_huge_withdraw(mm, pmd);
-> -	pte_free(mm, pgtable);
-> +	pte_free_defer(mm, pgtable);
+TL;DR: extend DAMON's data attributes monitoring system to support page
+table accessed bit and PG_idle based access monitoring.
 
-Hm. So it is call_rcu() on each PMD. It might be costly, especially for
-zap_huge_pmd() path: 512 call_rcu() per-GB of unmapped THPs.
+DAMON was initially introduced as a data access monitor.  Users found
+data access pattern becomes more useful when it is combined with other
+data attributes such as belonging cgroups and backing page types.  For
+such cases, DAMON has extended to support such data attributes
+monitoring in addition to the original data access monitoring.  The
+DAMON probes system was introduced for this purpose.  Users set probes
+for filtering data attributes of their interest.  For use cases where
+the primary interests are the attributes but the access pattern, probe
+weights system has been introduced.  When it is used, DAMON applies its
+adaptive regions adjustment based on the monitored data attributes.
 
-Do we want leverage mmu_gather if caller has it?
+However, DAMON stops access monitoring when the probe weights are used.
+DAMON cannot optimally help users who have interests in both data
+attributes and access patterns.  Data access can also be thought of as
+another data attribute, though.  Extend the probe system to support data
+access as a data attribute.
 
->  	mm_dec_nr_ptes(mm);
->  }
->  
-> 
-> -- 
-> 2.55.0
-> 
+Introduce a new probe filter type, pgidle_unset.  It shows if the page
+is not set as idle.  Specifically, it shows the page table accessed bit
+and the PG_idle flag.  It can inform if the region is ever accessed. But
+it cannot say when it is accessed.  To answer the second question,
+introduce a new probe feature, prep actions.  Using the features, Users
+can specify what preparation actions should be made to each region for
+each probe.  DAMON executes the preparation actions for each sampling
+interval, like it is doing the preparation for access check in the
+access monitoring mode.  To help 'pgidle_unset' probe action use case,
+'set_pgidle' preparation action is introduced together.  The action does
+exactly what the access monitoring was doing: clearing the page table
+accessed bits and setting the PG_idle flags.
 
+Tests
+=====
+
+I compared the access pattern monitoring results from the classic way
+and the probe based way.  As expected, the probe based way shows the
+results similar to that of the classic way.  More detailed test methods
+and results are below.
+
+First, do the access monitoring using the DAMON user-space tool [1] in
+the classic way.  The system is idle.  It shows no access as expected.
+
+    $ sudo ./damo/damo start
+    $ sudo ./damo/damo report access
+    heatmap:
+    00000000000000000000000000000000000000008999999811111110000000000000000000000000
+    # min/max temperatures: -640,000,000, -100,000,000, column size: 99.800
+    MiB
+    intervals: sample 5 ms aggr 100 ms (max access hz 200)
+    0   addr 4.000 KiB    size 3.898 GiB   access 0 hz   age 6.400 s
+    1   addr 3.898 GiB    size 787.301 MiB access 0 hz   age 1 s
+    2   addr 4.667 GiB    size 773.457 MiB access 0 hz   age 5.800 s
+    3   addr 5.423 GiB    size 2.374 GiB   access 0 hz   age 6.400 s
+    memory bw estimate: 0 B per second
+    total size: 7.797 GiB
+    record DAMON intervals: sample 5 ms, aggr 100 ms
+
+Start an artificial memory access generator (masim) [2] in another window.
+
+    $ ./masim/masim.py run --config_file ./masim/configs/zigzag.cfg
+
+Show the monitoring results.  As expected, it captures accesses.
+
+    $ sudo ./damo/damo report access
+    heatmap:
+    00000000000000000000000000000000000000011111111111111118888888833378988888888888
+    # min/max temperatures: -1,470,000,000, -12,482,536, column size: 99.800
+    MiB
+    intervals: sample 5 ms aggr 100 ms (max access hz 200)
+    0   addr 4.000 KiB    size 1.542 GiB   access 0 hz   age 14.700 s
+    1   addr 1.542 GiB    size 788.324 MiB access 0 hz   age 14.600 s
+    2   addr 2.311 GiB    size 772.844 MiB access 0 hz   age 14.200 s
+    [...]
+    50  addr 6.839 GiB    size 1.742 MiB   access 0 hz   age 1.300 s
+    51  addr 6.840 GiB    size 8.000 KiB   access 100 hz age 0 ns
+    52  addr 6.840 GiB    size 1.496 MiB   access 160 hz age 0 ns
+    [...]
+    97  addr 7.162 GiB    size 1.199 MiB   access 40 hz  age 400 ms
+    98  addr 7.163 GiB    size 1.199 MiB   access 20 hz  age 400 ms
+    99  addr 7.164 GiB    size 2.004 MiB   access 160 hz age 0 ns
+    100 addr 7.166 GiB    size 646.004 MiB access 0 hz   age 400 ms
+    memory bw estimate: 26.148 GiB per second
+    total size: 7.797 GiB
+    record DAMON intervals: sample 5 ms, aggr 100 ms
+
+After the artificial memory access generator (masim) is terminated,
+restart DAMON with the probe-based access monitoring.  As expected, it
+shows no access since the system is idle again.
+
+    $ sudo ./damo/damo stop
+    $ sudo ./damo/damo start --probe_prep set_pgidle \
+            --probe_filter allow pgidle_unset --probe_weight 1
+    $ sudo ./damo/damo report attrs
+    heatmap:
+    00000000000000000000000000000000000000008999999711111100000000000000000000000000
+    # min/max temperatures: -600,000,000, -430,000,000, column size: 99.800
+    MiB
+    probe prep: set_pgidle, filter: allow pgidle_unset (weight: 1)
+    intervals: sample 5 ms aggr 100 ms (max probe hits 20)
+    #   addr         size         age           probe_hits
+    0   4.000 KiB    3.898 GiB    6 s           0
+    1   5.285 GiB    2.512 GiB    6 s           0
+    2   4.659 GiB    641.816 MiB  5.700 s       0
+    3   3.898 GiB    778.375 MiB  4.300 s       0
+    memory bw estimate: 0 B per second
+    total size: 7.797 GiB
+    record DAMON intervals: sample 5 ms, aggr 100 ms
+
+Start the artificial memory access generator [2] again.
+
+    $ ./masim/masim.py run --config_file ./masim/configs/zigzag.cfg
+
+Show the monitoring results.  As expected, it captures accesses similar
+to the classic monitoring mode.
+
+    $ sudo ./damo/damo report attrs
+    heatmap:
+    00000000000000000000000000000000000000011111110000000177777777777777878798887777
+    # min/max temperatures: -1,330,000,000, 84,847,514, column size: 99.800
+    MiB
+    probe prep: set_pgidle, filter: allow pgidle_unset (weight: 1)
+    intervals: sample 5 ms aggr 100 ms (max probe hits 20)
+    #   addr         size         age           probe_hits
+    0   4.000 KiB    1.508 GiB    13.300 s      0
+    1   1.508 GiB    794.684 MiB  13.200 s      0
+    2   2.284 GiB    764.555 MiB  13 s          0
+    [...]
+    50  6.711 GiB    4.625 MiB    0 ns          17
+    51  6.716 GiB    2.504 MiB    0 ns          17
+    52  6.732 GiB    796.000 KiB  0 ns          17
+    [...]
+    90  7.162 GiB    512.000 KiB  2.200 s       2
+    91  7.061 GiB    700.000 KiB  2.300 s       1
+    92  6.935 GiB    316.000 KiB  2.300 s       4
+    memory bw estimate: 0 B per second
+    total size: 7.797 GiB
+    record DAMON intervals: sample 5 ms, aggr 100 ms
+
+Patches Sequence
+================
+
+First four patches (patches 1-4) introduce the new probe filter type for
+knowing if a region is accessed.  Patch 1 defines the new type in the
+core.  Patch 2 implements the execution of the new filter in the
+physical address space DAMON operation set.  Patch 3 implements a user
+interface on DAMON sysfs interface.  Patch 4 updates the documentation
+for the new filter type.
+
+Following 13 patches (patches 5-17) introduce the probe preparation
+actions feature.  Patch 5 defines the data structure for specifying the
+preparation actions.  Patch 6 completes setup of the API parameter for
+the prep.  Patch 7 extends the DAMON operation set callback list to
+connect the parameter with the underlying operation set.  Patch 8
+implements the execution of the prep in the physical address space DAMON
+operation set.
+
+Following five patches (patches 9-13) extends DAMON sysfs interface for
+the new prep feature.  Patch 14 adds simple selftest for basic file
+operations of the new sysfs files.  Final three patches (patches 15-17)
+respectively update design, usage and ABI documents for the new feature
+and its interface.
+
+[1] https://github.com/damonitor/damo
+[2] https://github.com/sjp38/masim
+
+Changelog
+=========
+
+Changes from v1
+- v1: https://lore.kernel.org/20260901043417.2165-1-sj@kernel.org
+- Fix the race between the prep action sysfs write and the context build.
+Changes from RFC v2.2
+- RFC v2.2: https://lore.kernel.org/20260728041242.187380-1-sj@kernel.org
+- Update test results with latest version of damo and masim.
+- Drop RFC tag.
+- Rebase to latest mm-new.
+Changes from RFC v2.1
+- RFC v2.1: https://lore.kernel.org/20260727143829.86236-1-sj@kernel.org
+- Evaluate ops.prep_probes first for do_prep.
+- Rebase to the latest mm-new.
+Changes from RFC v2
+- RFC v2: https://lore.kernel.org/20260726173935.94046-1-sj@kernel.org
+- Rename prep iterator macro param names to make more sense.
+- Document set_samples param of prep_probes().
+- Set do_prep after kdamond_wait_activation().
+- Use const keyword for sysfs prep action-name structure fields.
+- Fix typos in documents.
+- Restructure sysfs interface patches for no build warning.
+- Rebase to the latest mm-new.
+Changes from RFC v1
+- RFC v1: https://lore.kernel.org/20260725210225.129944-1-sj@kernel.org
+- Fix wrong sample_addr setup condition.
+- Fix build warnings from sysfs part.
+- Fix typos.
+- Rebase to latest mm-new.
+- Add the tests section to the cover letter.
+
+SJ Park (17):
+  mm/damon/core: introduce DAMON_FILTER_TYPE_PGIDLE_UNSET
+  mm/damon/paddr: support PGIDLE_UNSET probe filter type
+  mm/damon/sysfs: support pgidle_unset probe filter type
+  Docs/mm/damon/design: document pgidle_unset probe filter type
+  mm/damon/core: introduce damon_prep struct
+  mm/damon/core: commit preps
+  mm/damon/core: introduce damon_operations->prep_probes()
+  mm/damon/paddr: support damon_prep
+  mm/damon/sysfs: implement preps directory
+  mm/damon/sysfs: implement preps/nr_preps file
+  mm/damon/sysfs: create directories for nr_preps writes
+  mm/damon/sysfs: implement prep_action file
+  mm/damon/sysfs: pass preps to DAMON core
+  selftests/damon/sysfs.sh: test probe prep sysfs files
+  Docs/mm/damon/design: document probe preps
+  Docs/admin-guide/mm/damon/usage: document probe preps sysfs files
+  Docs/ABI/damon: document probe prep sysfs files
+
+ .../ABI/testing/sysfs-kernel-mm-damon         |  13 +
+ Documentation/admin-guide/mm/damon/usage.rst  |  18 +-
+ Documentation/mm/damon/design.rst             |  15 +-
+ include/linux/damon.h                         |  43 ++-
+ mm/damon/core.c                               | 105 ++++++-
+ mm/damon/paddr.c                              |  41 +++
+ mm/damon/sysfs.c                              | 283 +++++++++++++++++-
+ tools/testing/selftests/damon/sysfs.sh        |  27 ++
+ 8 files changed, 531 insertions(+), 14 deletions(-)
+
+
+base-commit: d153c4c92de32f97b155e3b6418c29094f81b99f
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.47.3
 
