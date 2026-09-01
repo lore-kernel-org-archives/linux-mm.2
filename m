@@ -4,87 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C570FC624D3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 18:07:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58109C61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 18:07:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBC2F6B0096; Tue,  1 Sep 2026 14:07:28 -0400 (EDT)
+	id 9251B6B0098; Tue,  1 Sep 2026 14:07:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF4786B009B; Tue,  1 Sep 2026 14:07:28 -0400 (EDT)
+	id 8D5726B0099; Tue,  1 Sep 2026 14:07:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBBA16B0098; Tue,  1 Sep 2026 14:07:28 -0400 (EDT)
+	id 6B28B6B009B; Tue,  1 Sep 2026 14:07:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 91DCA6B0096
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:07:28 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1834B40504
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 402306B0098
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:07:29 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D4BCA140502
 	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:07:28 +0000 (UTC)
-X-FDA: 85165975776.27.3CAB894
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6BB26A0011
+X-FDA: 85165975776.02.B89567B
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 0F8EEC0012
 	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:07:26 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=m9SUp6KN;
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=efbmdEZM;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of 3WxSXaggKCDwbkYrjYaiemmejc.amkjglsv-kkitYai.mpe@flex--dmatlack.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3WxSXaggKCDwbkYrjYaiemmejc.amkjglsv-kkitYai.mpe@flex--dmatlack.bounces.google.com
+	spf=pass (imf22.hostedemail.com: domain of 3XRSXaggKCD4irfyqfhplttlqj.htrqnsz2-rrp0fhp.twl@flex--dmatlack.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3XRSXaggKCD4irfyqfhplttlqj.htrqnsz2-rrp0fhp.twl@flex--dmatlack.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788286046;
+	s=arc-20220608; t=1788286047;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=lAVN67JT5h8WIfFlQUOkXfv2BuxQF89IX1lkYdIpCWw=;
-	b=6vlHbBXHOIBTTrBIsrCKboLXMDJMqv7sgO/b80LiqCi+1eshY3haa+QO1iqP1RMbfj1vqv
-	AAEGsaoCDiZ3jMc/i2LMkryKViDa64h5b7Hh0UmopotjrkmuMWSRpDo5m19hSxM30dX7DR
-	CmokZxXGVwUGQHsYhdncSwI26gI7XYE=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=falXxVt1CqmyncILPaUG22UQuDMsfEGdQdvwDGt8XFI=;
+	b=hz4QudDfeGUPsivCJ+JMJR2Rjn0IGMkPRrk1pk+zNtQh3ExRjzyLb2bzhD+Ve5UQvaoUxC
+	O5hh2ftll+HeYQwgsf9y4kPYDZGArbHGPKsr1zxSQ8Wby5EOrlX4PmcvJOGYN80zw8dmP8
+	Ma09edGtEt7HpXoArK20OAjtZNsm9MI=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=m9SUp6KN;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=efbmdEZM;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of 3WxSXaggKCDwbkYrjYaiemmejc.amkjglsv-kkitYai.mpe@flex--dmatlack.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3WxSXaggKCDwbkYrjYaiemmejc.amkjglsv-kkitYai.mpe@flex--dmatlack.bounces.google.com
+	spf=pass (imf22.hostedemail.com: domain of 3XRSXaggKCD4irfyqfhplttlqj.htrqnsz2-rrp0fhp.twl@flex--dmatlack.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3XRSXaggKCD4irfyqfhplttlqj.htrqnsz2-rrp0fhp.twl@flex--dmatlack.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788286046;
-	b=NAx8flGfV2CUbUdgpsGYmtiOvaQmnV+e59myAAerqv6BgY6SjeWtU1QOBsbuf1ym799baK
-	g+oEtmOZgEyJ6gFnU3XWA7akTp+ujulXB6xL5aSpWSa1xJHuFwAAIovEWcSCzk+35gj/Yi
-	mvyMhBGYUmNF/ptRiF6GZCoG8OBpAh4=
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-398e1f7d1a5so207685a91.0
+	t=1788286047;
+	b=6r4wrk9EkJqRvZhl6w7K5SZlbiy1phQ5Ew3KCHM91Pa+u04aZgU2G5sIjAg0HKFfL7s0Vo
+	3GMQX3zuiN1QS7m2KgcuCVFVLCUOQiJWWlJ+PfsU/amSfSaYovV4nhFAr/XsZiBO1Brmf2
+	oD4OM7bnz1/LfwBA9QlsGcQ1/il/LsI=
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2d55d8cd938so1291575ad.1
         for <linux-mm@kvack.org>; Tue, 01 Sep 2026 11:07:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788286045; x=1788890845; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lAVN67JT5h8WIfFlQUOkXfv2BuxQF89IX1lkYdIpCWw=;
-        b=m9SUp6KNNywK20bxyszFiGd9WwdjI7eLiiBtE8+biPUWMmKVgz4cRPJeVYr/DrRVhy
-         VmECeJWpjBVPF2nfB0cePNfB5Vw8SS2DYHeaSYgvdrxuMwGqrE5+KFLs9WeIzDIPgcUN
-         7luaY25MI3k88ukdUkt9gKIIyn+izvhWGHky1euRZbr0h8gzD1H3WeEYdYvCibncWvov
-         +0zvawhcriJWyqL/A8948bx194ZDqAuTP0hvRyLcnS3TZTL6E5yKH/ElcTlwOTHkZGzF
-         xnjuUTrRkyT1x54rPijH7GHFP348sbdpXEhUsOF6cUQvHh6Z+81HSZ5I25BvTGCrm6Ug
-         WiTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788286045; x=1788890845;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1788286046; x=1788890846; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=lAVN67JT5h8WIfFlQUOkXfv2BuxQF89IX1lkYdIpCWw=;
-        b=NvuhcwrMt7QI+aC7EuMS/1TxvxrmevOtKBheu5+WUq40WjGL0NqA2ltZfax3mqBo85
-         V3w+71Ps8P6jOw7pI2klR2iffAgpVIKNJQ/9tCzCyi2AUGoFP9eupRQvczn43IQlBRSZ
-         NzbEmguDLYdPM4lef1BM3p71xhdYqrOZjfRy7O3xi4y1pz8GpAxxn/DTB8EzguN48iUP
-         8U9LRiQOCP1m1Om1RM4hzz8aCG0Lw1Dk1kuwbzY0sooMIBYPbY2mFlkTIQDUrjokheb3
-         TWhD8eQUN8fMEj9sGLERWfknn6yh5DIx91AaDLVVbbQP3XS+AGc3ghmMApVKNXggQhUe
-         H8zg==
-X-Forwarded-Encrypted: i=1; AKwUvByeQkfHjfc11s0+ukzbc0atWjXbznOo+buOOnaa4v38tD08rW8NG6lH7JHxMaCTylQA20FGvqUGQA==@kvack.org
-X-Gm-Message-State: AFuF++nBpJH3nIYVkiC8i0/c5SK4r4E19hvUo5i0ZNJfnbmCpI1VUVas
-	NEweb8OUOJLGraCzvsXZAx5a1uULKWxuoAJaaaeMwh4+pUxOdVnJxe8k/aq495lSnVs2mfCynzp
-	qYleWN2YV8QoFPA==
-X-Received: from pjbnu6.prod.google.com ([2002:a17:90b:1b06:b0:396:61d1:58c7])
+        bh=falXxVt1CqmyncILPaUG22UQuDMsfEGdQdvwDGt8XFI=;
+        b=efbmdEZMRXYkWxH/0UMbVZmR3A/wCz8n7d+I9jo0I/9tb8FEo6bcm9DFxNlPjALUzP
+         7LP/YW4jVYYNUkbeZ1T8UOTeIyXWkPt9YJ285dxulA6RtWWQSdY+tQJHxMJML3qav18t
+         6Leme4u33HgCP7UlFkSwvPUxRcgQqaGxrzGWd9blRInlO2QX/1IklQ91d6NBgCacOr5B
+         uwDtei0crBgtvyoPl2R+wFiha4QwC4z5o5G7bh/GJbfwrpXX5F0mEeN4jQt57Pe8pfeD
+         XRWJRjVG8Y+xEx9fm1fph1nIbqP6xEjTLlSW9K5uTjRqydWnulg+19ByWZWC2+V1JQIx
+         lAsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788286046; x=1788890846;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=falXxVt1CqmyncILPaUG22UQuDMsfEGdQdvwDGt8XFI=;
+        b=gksnMxBqPuSGpJtJ8hR60ic3864UYfV4DHXITjIqPYy0fct+7yHOMo4PYIBPh5xZhL
+         Tem9N2XTaX0UBuL66M/PlEr5/yQOQ956iDM248V2NhwKvxvU87yHTvZHAWcpo6FwMPXQ
+         eYrsf0I3hJ5XEaHDV+AJ4TOPIl3LEnmXGXoADybJOHTwUE6x/WPRO2buJhzBS6XMyapg
+         ZrWATfREddNvciPFa4O3+GEZLVFtkbEnxHomRBsAEMn4U9iWRvF/hRAes+9nXO9Zv0x4
+         a32yXQnJo8ob0gZ61hfRWlIKJsAyi/GS5HQKWpoIAAwFl8tFJYTCgu8/y9B6d2ThqVfy
+         5jUQ==
+X-Forwarded-Encrypted: i=1; AKwUvByfsKFJn3g4tEIGu/A1iOW1Ltr8pxJc8ugrCXX4u3/JsHQYjuY6hR+owl/eFObsAoygNxLPE78LRQ==@kvack.org
+X-Gm-Message-State: AFuF++ntoE8l/B1vjmjgs76BH/tO8TJ8jnAXW+IJHnE83gepqNH043r4
+	h7SGmcXa29OSRj05PbnU9Ge1ZCvyV04FKjaE5VoPrI5aZ6FKfgV7+ybDxkFsJaQQcbbaMXsEQm3
+	cnLL/XDVlWbm7fQ==
+X-Received: from pjyv9.prod.google.com ([2002:a17:90a:e989:b0:396:5ba1:a6dc])
  (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:5544:b0:398:bd37:6a49 with SMTP id 98e67ed59e1d1-398bd376c65mr32646461a91.12.1788286043659;
- Tue, 01 Sep 2026 11:07:23 -0700 (PDT)
-Date: Tue,  1 Sep 2026 18:07:08 +0000
+ 2002:a17:90b:3c44:b0:398:dcef:c040 with SMTP id 98e67ed59e1d1-398dcefc24amr26801689a91.19.1788286045592;
+ Tue, 01 Sep 2026 11:07:25 -0700 (PDT)
+Date: Tue,  1 Sep 2026 18:07:10 +0000
+In-Reply-To: <20260901180713.4185641-1-dmatlack@google.com>
 Mime-Version: 1.0
+References: <20260901180713.4185641-1-dmatlack@google.com>
 X-Mailer: git-send-email 2.55.0.966.g6673acef38-goog
-Message-ID: <20260901180713.4185641-1-dmatlack@google.com>
-Subject: [RFC PATCH 0/5] liveupdate: LIVEUPDATE_SESSION_RETRIEVE_INTO_FD
+Message-ID: <20260901180713.4185641-3-dmatlack@google.com>
+Subject: [RFC PATCH 2/5] liveupdate: Introduce SESSION_RETRIEVE_INTO_FD API
+ and core support
 From: David Matlack <dmatlack@google.com>
 To: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
 	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
@@ -93,14 +98,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
 	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <shuah@kernel.org>, 
 	David Matlack <dmatlack@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: ydar4cxoetgoabk48j9jzn4753fm7jwh
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6BB26A0011
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0F8EEC0012
+X-Stat-Signature: cdogc8tnmedzzf141c1irk9xodhiprgp
 X-Rspam-User: 
-X-HE-Tag: 1788286046-459545
-X-HE-Meta: U2FsdGVkX19lG4hgjnHOGKcAopa4pUq/jSf5JPa9Ih2GjW5fXnq4XVQ1JOWN3CO9+TvLqTmoY98+CefqfJiZmmMuZrJc0jsSaZ+lrGV+eHHdaKWDeQnp1cRU9dt57eplf2gRYrHIdGUXC7jUmr3DzcoT+642KxzDvNAe6Yg4MJK9f/8K5DQI4xLQ9ePIYGAN74r48Vdj7AHSggE7jyAdALczqqIWKWrmizaIWBuwERujjLxPHEXBhrwmug+iyclz4INVXPX9Cb8d2ZGRM8vXwaYxHF2Pzg4vXG03M3FF/31iZAi0x1xivTrPzpgvM09sJL2T7V7DmRoLR800e2pC7+88/BTSkYzd/LW4zJdrdMU752kEQhg3WHmPGm5VrCktIUks17X/3lKSsbjDy7EvqmCeW+Ou2CI8ry4yYTgrvSdo/jfx6uaFwmdC6DfrWjIPdOCc7ulimsQ1bvuoYfqt6fMuvrP/1dqrZprWV0e6Qf5a8DS2fl77RE6UO8xq8FMGX+NBt0eLS5E6mbHCLgQxWa59yOiZUmYYBrBw53cHpM+7npNyVvjzvBkwcUuWN038VB835xObx5Hek3UMeK6k+4IvymO1XRMMpeUxgNTtKEtzyYaQY2UlF9JOnzjUpICQ7v4zILzcLBekUx4xD3nb2eJPXh62IXpqfXjLp0+gGO895pj2mybAuVxTlbjx/10w/U5tHlZpnu382Pzcw7feW4Gm6XPUHZtdSBnrXP03eeqztlWA19A7bHaIjJO97B4UuZKMnQheheHLJ4AexzlgZocp9GxYOs5eTEkT1cTkwWZx9plFB2r/lzJ88Bl6SfhFdo+tQxiZbXxE4Bp/lqBc2pOsmtJTgraKhZQZtWfSIlL6LyyGkPs7Vs3n7LFsqWYekUP5wAliv2yMlBxc0mZVxn/gtxanMHI4zK1wiKk/YMJgTvhkaplWRv9fnpY/QLuVHT5M8CIw9pbhHgxDi5l
- KlQt59h3
- np2qUz4/7dCY5b6pwaWvyKWfTtAQ633xF1e04BA7LAKAwD92D9AKphBA4In7xEp/kOZMIWWd7K78VFCRuh65PIiolHJ4cp/PHVk36v8K/zZffh0oYfA9Gz2UMPn8qARAxd4WzvuGdqU3+/xJJnXKONRa7VroKjWsVoH0weI8tXjCDkilH5upqaf4hhBL/El80XCCaQi4ULF/j+WhscEYwszetjkiiMttmddzNEzGcsFYEOa6qjEc4AR2btHghbtFIgNJuFQFM/01tlim/eyQGRAp5Xqa3MGsipxvrBDWkYgthuLo55LH9Hj7v7D0Qgd8pWDAZdV+emG7GPJuDCCj4zrIEiQ6o0op+rz6NkGAULt0d5Jq5vzfRLdadoV4WhvTxpTlNJ77VqWK35qp2RQotJm656mIlhDRYx5w9aGcsJos5FXqIO0QoPkRKap6RmnTXl/vzfV306CrHSXjfz6o35apl0QXKhkWG7kIYhZ7A3zv4c7u1o1sBvA76IjeOj/FRw3sTFZA5DGnYdsRFZIjM/O7q0FBj4vb7htVHCvEMml+0YNTOPabNUnR/Q0qyQ9rUBLRWXsWIPTXodsAxQv/DqGO51WJe0uqGmKqOsl1ETyXMCTHUFNju66fQDjRzQwTdFYCxURb5AbrP6DLUcEHQ3j9EMg==
+X-HE-Tag: 1788286046-753449
+X-HE-Meta: U2FsdGVkX19d+gQ9O4KQa4uvDy32Nc3b7oSTeVwO9T7XqFyVhhnUf84AQtXOIeRu9kvknEV4Jx30tfkgwQ2SkpeK5hBch1bgyxgicbAw0iYMOjrnD7dRNYXJ4dgYV25tdpE1dzlrqE6g6athDbPzE2d2ppGeSMTitqqfYyc+Ex9KFLLKB62hyTuz1r9Tm3iTlvG9vD9LYdKrWsdMZRKqj0DvQKjNOalAv2/0dMI2QQ85dI1BPUAOMQVCu9gHWZ6NXsguth3vyiqouUHX83BIitJw0Cbr8wH6wI7ln5XeFKD+OLRvPzeE4K5hr39t7VCH8ENvnR1X+nu3vV35W9JwakAOppi1S1XyXRe1BC5fvOO3rc/nhXXduxikY7yyBcyx74nRkvuYJZEvDNO4bp72ww+L/sdZksCdm4oq+l0vTOVLWsjpCcDn9Rrel6cfAU464UDmg6OUlcVKMciIevfTKEaqCqv+uUdnx7H9zuv5AtMpV5oOJNZNUhmVsiB4kokkST/Zs5KPnEFI8TrdVkvjbRGroRaiPexAPARtQGr8sCF2+rB5O77P3wfAAUGKDKTb1Mw+zVCMNEYGdUVHhWaByLzYMRqhSmMx9ERW3peZyE7gQM1in4dXAa4updFiun9Ej/T/j28jM6QdVfaNcGQSV6+IV/6SmWzBGQeTEqNuOxFzeK8KFCKi0VLBWaCgIexSCPPe2mnlGR90jFQ/hmPca51bIGTjiwWxCljxolDBYeAkaFEyOvcDGtEE43ySeCvw6KglauyI4pBGfDXEVF0iNTmHwfS9CpwOkqR/dXseFqEMRhG5IIBpSXUyXfIhXX55YCw6SgxAvVhkMuHwgmtUT4ly0qnIUNyu9Z8J/x0HfthY3eLOAA5GoEKspfHK4/cgTG2dp6NNjQUeQA8zFOU9hMhaHVqrBvJgiWTypv8yCo1X8NrTbxzIdaK+poJx3WWjVC2cvt586SbRbL8H6QN
+ meHdm9Ol
+ 3zJDm6NTYPr4P6mdODctci/tWx37sodVCZA2y6jevtHOHsV34aRSuND/eVasjzXtVnrUqtesiootHK4G4HvPoZ9bf1I+x3Om57vAaocs9dJB1GvdNMq+fJatkOy/erR3LPalENyPGyljUgKiryPeJKlaBmqOxPTbEJJwxYl/zSzUY93Ioa1hAf3k06gz3fIeH9/SCos3DoYEE9prXEv2aS7KrhnW5E1ShmlOrliPr2p0p1al3710BP1LsYWCVPAUYTALgcUROfvlRFMk1lwvUBp1ykhKfKYwwlEtkAXyLgLbq+GTfwu5SeXULBJ+if6SoB5cZzrGhXw4cGkDAw/pe7RbwPQtLArB5fS7YgGna7ISzeysgLzayiYDnw98bJrk1TnY72lg3maFEMJug/5QD9C2dmnh3l8MgG/x+bkykrxF82xBl1Va88jaHtEhJHAw4x1mLMIX8nRdQXCQK9n5g7hAamJNTioU6Fs91zt4pjed/gLNRGrlQM1sxKIMSgfrS25lSg300TmxR3/IQQfuwbBCLyfLu0QVP9XPBoVDTpQe6t9pFMKsitRsRfawSJuSqrr2ChH0YnVjKg9jcTWhn3y5N91LqvqsWYjWs4r8PpaCYtSDGklV5IZiMv6ZCwYyQbdqwHQa7MOfynXw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,72 +113,184 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series adds support for LIVEUPDATE_SESSION_RETRIEVE_INTO_FD, a new
-UAPI to enable preserved files to be restored into a userspace-provided
-file instead of a kernel-allocated file, and uses this to support
-preserving tmpfs files in-place without any changes to the LUO ABI.
+Define the LIVEUPDATE_CMD_SESSION_RETRIEVE_INTO_FD ioctl in the UAPI and
+implement the core support into LUO sessions. Add a new .retrieve_into()
+callback definition to struct liveupdate_file_handler but do not yet
+implement it for any file types.
 
-The Live Update Orchestrator (LUO) API currently explicitly returns a
-new struct file for every preserved file during retrieve() (e.g. via
-memfd_alloc_file()). This then forces userspace to use anonymous memfds
-for all in-memory files it wants to preserve. This works reasonably well
-for VM guest memory but does not work well for other types of files that
-userspace may want to preserve (e.g. in-memory logs, binaries,
-configuration files, etc.).
+Delegating VFS topology recreation to userspace across Live Updates
+requires an interface where userspace can provide an empty target file
+descriptor, and the kernel can inject preserved memory into it. This API
+supplies that missing routing. It uses the new luo_retrieve_into_file()
+helper to safely look up tracking structures without duplicating backend
+locks.
 
-Preserving entire tmpfs mounts in-place would require a large amount of
-kernel support and would effectively make tmpfs an ABI, which is a
-non-starter (or so I hear). Instead, we can delegate the reconstruction
-of the tmpfs mounts (directory structure, permissions, etc.) post-kexec
-to userspace. The kernel just needs to preserve the contents of tmpfs
-files and provide userspace a mechanism to restore those contents back
-into a specific file on the filesystem after the kexec. Hence,
-LIVEUPDATE_SESSION_RETRIEVE_INTO_FD.
+Signed-off-by: David Matlack <dmatlack@google.com>
+---
+ include/linux/liveupdate.h       |  1 +
+ include/uapi/linux/liveupdate.h  | 21 +++++++++++++++++++
+ kernel/liveupdate/luo_file.c     | 36 ++++++++++++++++++++++++++++++++
+ kernel/liveupdate/luo_internal.h |  2 ++
+ kernel/liveupdate/luo_session.c  | 30 ++++++++++++++++++++++++++
+ 5 files changed, 90 insertions(+)
 
-An alternative approach to restoring data to a named file would be
-supporting a zero-copy sendfile() that can be used to convert named
-tmpfs files to/from memfds across the kexec. But this poses significant
-challenges on the *preserve* side since the preserved file might still
-be actively in use. The benefit of the retrieve-into approach introduced
-in this series is that it does not require dealing with two different
-files. There is only ever one file that owns the preserved memory.
-
-By leaving file and metadata allocation purely in the purview of
-userspace, programs can create the target files where they want, with
-the names and security permissions they desire, before directing the
-kernel to restore the preserved folios into them.
-
-Currently, only tmpfs shmem files are allowed as valid target receptors.
-Attempting to target populated files, or anything other than an empty
-shmem file, will trigger -EINVAL. HugeTLBfs files could be supported in
-the future.
-
-The coding work for this series was done with assistance from Gemini. I
-am not sure what is the latest recommendation is with respect to adding
-Assisted-by tags, but I can add them when I send out the real patches if
-this RFC looks acceptable.
-
-David Matlack (5):
-  liveupdate: Extract luo_file token lookup logic into helper function
-  liveupdate: Introduce SESSION_RETRIEVE_INTO_FD API and core support
-  mm/memfd_luo: Implement retrieve_into callback for shmem folios
-  mm/memfd_luo: Expand support beyond memfd to all generic shmem inodes
-  selftests: liveupdate: Add multi-session test coverage for
-    session_retrieve_into
-
- include/linux/liveupdate.h                    |  1 +
- include/uapi/linux/liveupdate.h               | 21 ++++++
- kernel/liveupdate/luo_file.c                  | 66 ++++++++++++++----
- kernel/liveupdate/luo_internal.h              |  2 +
- kernel/liveupdate/luo_session.c               | 30 ++++++++
- mm/memfd_luo.c                                | 68 ++++++++++++++++---
- .../liveupdate/lib/include/libliveupdate.h    |  1 +
- .../selftests/liveupdate/lib/lu_utils.c       | 33 +++++++++
- .../selftests/liveupdate/luo_multi_session.c  | 56 +++++++++++++--
- 9 files changed, 249 insertions(+), 29 deletions(-)
-
-
-base-commit: 4e1b74c6004371b046338325011a47cd7ab9dcc1
+diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
+index 63ea5417de84..7b595e0f53bc 100644
+--- a/include/linux/liveupdate.h
++++ b/include/linux/liveupdate.h
+@@ -79,6 +79,7 @@ struct liveupdate_file_ops {
+ 	int (*freeze)(struct liveupdate_file_op_args *args);
+ 	void (*unfreeze)(struct liveupdate_file_op_args *args);
+ 	int (*retrieve)(struct liveupdate_file_op_args *args);
++	int (*retrieve_into)(struct liveupdate_file_op_args *args, struct file *target_file);
+ 	bool (*can_finish)(struct liveupdate_file_op_args *args);
+ 	void (*finish)(struct liveupdate_file_op_args *args);
+ 	unsigned long (*get_id)(struct file *file);
+diff --git a/include/uapi/linux/liveupdate.h b/include/uapi/linux/liveupdate.h
+index 4043d4038712..ed2049529cc0 100644
+--- a/include/uapi/linux/liveupdate.h
++++ b/include/uapi/linux/liveupdate.h
+@@ -59,7 +59,11 @@ enum {
+ 	LIVEUPDATE_CMD_SESSION_PRESERVE_FD = LIVEUPDATE_CMD_SESSION_BASE,
+ 	LIVEUPDATE_CMD_SESSION_RETRIEVE_FD = 0x41,
+ 	LIVEUPDATE_CMD_SESSION_FINISH = 0x42,
++
+ 	LIVEUPDATE_CMD_SESSION_GET_NAME = 0x43,
++
++	LIVEUPDATE_CMD_SESSION_RETRIEVE_INTO_FD = 0x44,
++
+ };
+ 
+ /**
+@@ -184,6 +188,23 @@ struct liveupdate_session_retrieve_fd {
+ #define LIVEUPDATE_SESSION_RETRIEVE_FD					\
+ 	_IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_SESSION_RETRIEVE_FD)
+ 
++/**
++ * struct liveupdate_session_retrieve_into_fd - ioctl(LIVEUPDATE_SESSION_RETRIEVE_INTO_FD)
++ * @size:  Input; sizeof(struct liveupdate_session_retrieve_into_fd)
++ * @fd:    Input; The open file descriptor (e.g. empty tmpfs file) to inject the resource into.
++ * @token: Input; An opaque, token that was used to preserve the resource.
++ *
++ * Retrieve a previously preserved file descriptor into an existing file descriptor.
++ */
++struct liveupdate_session_retrieve_into_fd {
++	__u32		size;
++	__s32		fd;
++	__aligned_u64	token;
++};
++
++#define LIVEUPDATE_SESSION_RETRIEVE_INTO_FD					\
++	_IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_SESSION_RETRIEVE_INTO_FD)
++
+ /**
+  * struct liveupdate_session_finish - ioctl(LIVEUPDATE_SESSION_FINISH)
+  * @size:     Input; sizeof(struct liveupdate_session_finish)
+diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
+index 5e160836a165..c4abfd25e149 100644
+--- a/kernel/liveupdate/luo_file.c
++++ b/kernel/liveupdate/luo_file.c
+@@ -932,3 +932,39 @@ void liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
+ 	luo_flb_unregister_all(fh);
+ 	list_del(&ACCESS_PRIVATE(fh, list));
+ }
++
++int luo_retrieve_into_file(struct luo_file_set *file_set, u64 token,
++			   struct file *target_file)
++{
++	struct liveupdate_file_op_args args = {0};
++	struct luo_file *luo_file;
++	int err;
++
++	luo_file = luo_find_file_by_token(file_set, token);
++	if (IS_ERR(luo_file))
++		return PTR_ERR(luo_file);
++
++	guard(mutex)(&luo_file->mutex);
++	if (luo_file->retrieve_status < 0)
++		return luo_file->retrieve_status;
++
++	if (luo_file->retrieve_status > 0)
++		return -EBUSY; /* Already retrieved */
++
++	if (!luo_file->fh->ops->retrieve_into)
++		return -EOPNOTSUPP;
++
++	args.handler = luo_file->fh;
++	args.serialized_data = luo_file->serialized_data;
++	err = luo_file->fh->ops->retrieve_into(&args, target_file);
++	if (err) {
++		luo_file->retrieve_status = err;
++		return err;
++	}
++
++	luo_file->file = target_file;
++	get_file(luo_file->file);
++	luo_file->retrieve_status = 1;
++
++	return 0;
++}
+diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
+index 64879ffe7378..1af9aebe6623 100644
+--- a/kernel/liveupdate/luo_internal.h
++++ b/kernel/liveupdate/luo_internal.h
+@@ -92,6 +92,8 @@ void luo_file_unfreeze(struct luo_file_set *file_set,
+ 		       struct luo_file_set_ser *file_set_ser);
+ int luo_retrieve_file(struct luo_file_set *file_set, u64 token,
+ 		      struct file **filep);
++int luo_retrieve_into_file(struct luo_file_set *file_set, u64 token,
++			   struct file *target_file);
+ int luo_file_finish(struct luo_file_set *file_set);
+ int luo_file_deserialize(struct luo_file_set *file_set,
+ 			 struct luo_file_set_ser *file_set_ser);
+diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
+index f48e9a4185f9..2b967f720ef5 100644
+--- a/kernel/liveupdate/luo_session.c
++++ b/kernel/liveupdate/luo_session.c
+@@ -278,6 +278,34 @@ static int luo_session_preserve_fd(struct luo_session *session,
+ 	return err;
+ }
+ 
++static int luo_session_retrieve_into_fd(struct luo_session *session,
++					 struct luo_ucmd *ucmd)
++{
++	struct liveupdate_session_retrieve_into_fd *argp = ucmd->cmd;
++	struct fd target_fd;
++	int err;
++
++	target_fd = fdget(argp->fd);
++	if (fd_empty(target_fd))
++		return -EBADF;
++
++	guard(mutex)(&session->mutex);
++	err = luo_retrieve_into_file(&session->file_set, argp->token, fd_file(target_fd));
++	if (err < 0)
++		goto err_put_fd;
++
++	err = luo_ucmd_respond(ucmd, sizeof(*argp));
++	/*
++	 * If we fail to respond, we cannot easily undo the retrieval. Let the
++	 * normal session cleanup logic handle the file reference eventually.
++	 */
++
++err_put_fd:
++	fdput(target_fd);
++
++	return err;
++}
++
+ static int luo_session_retrieve_fd(struct luo_session *session,
+ 				   struct luo_ucmd *ucmd)
+ {
+@@ -382,6 +410,8 @@ static const struct luo_ioctl_op luo_session_ioctl_ops[] = {
+ 		 struct liveupdate_session_retrieve_fd, token, LUO_IOCTL_INCOMING),
+ 	IOCTL_OP(LIVEUPDATE_SESSION_GET_NAME, luo_session_get_name,
+ 		 struct liveupdate_session_get_name, name, LUO_IOCTL_ALL),
++	IOCTL_OP(LIVEUPDATE_SESSION_RETRIEVE_INTO_FD, luo_session_retrieve_into_fd,
++		 struct liveupdate_session_retrieve_into_fd, token, LUO_IOCTL_INCOMING),
+ };
+ 
+ static bool luo_ioctl_type_valid(struct luo_session *session,
 -- 
 2.55.0.966.g6673acef38-goog
 
