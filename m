@@ -4,101 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B06EDC61DD6
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 23:37:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 050B3C61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 23:42:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC75A6B0088; Tue,  1 Sep 2026 19:37:19 -0400 (EDT)
+	id 04EC16B0088; Tue,  1 Sep 2026 19:42:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9EBB6B008A; Tue,  1 Sep 2026 19:37:19 -0400 (EDT)
+	id 0262B6B008A; Tue,  1 Sep 2026 19:42:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB4896B008C; Tue,  1 Sep 2026 19:37:19 -0400 (EDT)
+	id EA55E6B008C; Tue,  1 Sep 2026 19:42:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8ED996B0088
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 19:37:19 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0A6AEC0589
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:37:19 +0000 (UTC)
-X-FDA: 85166806998.21.C22A0D8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 31D14140006
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:37:17 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I0++MUSg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BE4706B0088
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 19:42:34 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3B84C80588
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:42:34 +0000 (UTC)
+X-FDA: 85166820228.30.8FA0348
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2230A100005
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:42:31 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ahVsk5ab;
+	spf=pass (imf05.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788305837;
+	s=arc-20220608; t=1788306152;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uycN0jge1thyUm7Z7rd9G0rkfYUWwSL3IX+xY1TgKHA=;
-	b=FS2bs1VytLPjXA/J+jBaURCcXZ8JKD3xU0N7l8sNxbOaeIa6nFak7wEQHCbbJGs2pWVzAb
-	Bm7FpdQak5+wARyGsOFTfj6c8Z1zlDJi9xbuR4pw25tdgHhwx+Vzijc2oCSm6zDWf59Gfu
-	7Ir4C5ZPzgC8GHpX1te4/HuPsbnjeKY=
+	bh=GjwEru2BaocN4L4JOnAlUtxbfajrtGVgmkUYz0mgZkc=;
+	b=VdDe0MX8swDz/zUz6OXxdwWjD8PhhAxjog0usdLgPVGajy9Bb2+iIfG56CIiAbxDhb16D8
+	YWXLTz7WfFWe58EfmoBaCDZu7l7ng6g/67qF7oMeMmLgQfhCLAm1uWP6M1/AXenomktH40
+	WXukNZQj/q4OwCWIFU1zYcKLVUKZzho=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788305837;
-	b=Hxcwu+aiP3YCDD/bH0c2FChTjbbwP54oVOi5u90x2HkWEIuh8Zkdhwbb4MNSJkXyP8xVU5
-	jUvHOppZK9nygzESKg6zUSXIe7w6EnLuMwLmmF/gGo80hF3NuT3WU8HfTwscuoVI+1nTd2
-	GTMaDSV6EIfGXGAr9XoZPYqSCStmZ50=
+	t=1788306152;
+	b=hC1S5kp+S8vWHF5poXFg5AHE6vlXc9N+vFub35a7gVjXupkwM2VJSrephRmQTgouvgZnQi
+	Lf4OzvrXMsCbpYIg4ELwJhLxyH4qwma+KEL0PAtc+vBKogqlelGNrnOLOWN5AiUCc07yd+
+	6hDnnkQ7aAO2QdU3N6HcVVfAmy/GaxE=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I0++MUSg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ahVsk5ab;
+	spf=pass (imf05.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B1C23601EF
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:37:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69AE51F00ACA
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:37:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3ECA74132E
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:42:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D2F1F000E9
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:42:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788305836;
-	bh=uycN0jge1thyUm7Z7rd9G0rkfYUWwSL3IX+xY1TgKHA=;
+	s=k20260515; t=1788306151;
+	bh=GjwEru2BaocN4L4JOnAlUtxbfajrtGVgmkUYz0mgZkc=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=I0++MUSg5oGjf7KmLlyewaL7U8XCr298s7M8XVZH2qd5tZQJdeEcCjmD0R70nMVw1
-	 XpnBOCgjNVSa/KXKgJDv4fV/n2DEDRRMhu28j/kXalJ4d7vjtp/eJB9ye3cGyUYtGL
-	 /gp/pDro7lasJQ49tGvTZM2DzP1bdFGhGniNhNmDRRvHAB1cONgOrL19sbpveYgiR3
-	 unf40UZTUkA+mIl52OfPl92Zacfm0f0tQlX1gvFJ+Q4CS61HDJQVOPav7G5u1fmonN
-	 eQT9RELjt7gT+qrxrjsygadfYkBLuRXOBUaFRLebcKRuePBeBS1EeqMaCle5pIo5qT
-	 UlRmcjlaGEmsw==
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-92edb12cdf2so46601485a.3
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 16:37:16 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rq0cHi72M2XxruZlm7+lhAGDP9zt7Po3RWXAjbkoPHy0ja2hxoMd1rntVpyAEn909XY/NN81B8pCg==@kvack.org
-X-Gm-Message-State: AFuF++kTPu5RNBKWoCMs4jEOEKMZLtPSQ/jfgmE11mlseHo8HGFVNW+E
-	EZr1jgnXWYZB+UiPIwmrznmKuCpUdTrxvsUf95b6qMG98Xm4Oxy62Rj0tfz8gKb0YjeoBZzCE4W
-	06wSTRbyepqG7wdzLxLGKTSYlkhG0dmo=
-X-Received: by 2002:a05:620a:1a24:b0:939:b99:eec5 with SMTP id
- af79cd13be357-93960ca46admr97554285a.1.1788305835695; Tue, 01 Sep 2026
- 16:37:15 -0700 (PDT)
+	b=ahVsk5abrzmFa2pS9IiNOFAkAgZIO6VRkFSkjcpU2U7X9srVrCDBYinXUJsorILY6
+	 zHPGD0M2coV1PSCGAv/sDgvpAl7dyoBoBxFICkCpzAhN8aCO8/ENUMfv9tP/C/XsXP
+	 vzkvovUutVORbzIUwUDPEzV0QfDc8OnrHX6ms+vf3lXd+O5tTpL6h/dyITJ8NeKw7B
+	 B1r8bQrkPvxu5chtsz9M9L019kl3WhSxxzb3IFFVbq1Y1t87c716monSkZ+jM9ZeGS
+	 uunYjT7U6b5xW1/CRxRA/BPh4iPyHk1skZN2Apr9L1AsVVglZifuvdhMMeNTfwQBk/
+	 mEd9IUGrr+01Q==
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6a5ded53570so658047a12.3
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 16:42:31 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rqv/nrsxtC/x4xKPQISQTmZ17BrNszYXAZ4aY6IDR/VtOWcGXZGeDsFwYlnR9Gug8k7rybeiMpqrg==@kvack.org
+X-Gm-Message-State: AFuF++ljEmAZmWYJxn+FRCJ4AsKSUIAqJrnCkJHC722TV5r1bvRmUda8
+	kulhM+WohG92Qfh+c3aqwA8Q5ENbKrH5R3tRQU6C6l7t3PmYscv6QXTLAnSTApGmfwnh+BLAS7/
+	F8oPAU9tl+vHRPQE8dmBB9/Ziaa2ON60=
+X-Received: by 2002:a17:907:3f9e:b0:c25:32ae:a6e4 with SMTP id
+ a640c23a62f3a-c25d5276c08mr47951766b.9.1788306150004; Tue, 01 Sep 2026
+ 16:42:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260901063755.1519710-1-hebaoquan@kylinos.cn>
- <20260901063755.1519710-2-hebaoquan@kylinos.cn> <CAGsJ_4x=sZcc0+wkAbS02YJUdpzxTTpozh7o7CSozWL=1K0rNw@mail.gmail.com>
- <apaKQvME_y3K2bQx@fedora>
-In-Reply-To: <apaKQvME_y3K2bQx@fedora>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 2 Sep 2026 07:37:04 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xZuHAD0NX5Ren2hAJP_Vz=CGc+pbQ4Z3Y1dvOFS8RDwA@mail.gmail.com>
-X-Gm-Features: AcwNN1XdmCBLhU1TUhp5c7JLrJYKh5QqQqgDy86wSbx3fMzDrLUaBjjGzwETQDo
-Message-ID: <CAGsJ_4xZuHAD0NX5Ren2hAJP_Vz=CGc+pbQ4Z3Y1dvOFS8RDwA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] mm/mglru: add MM_WALK_EMPTY stats and tracepoint
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org, akpm@linux-foundation.org, 
-	kasong@tencent.com, shakeel.butt@linux.dev, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, david@kernel.org, rostedt@goodmis.org, 
-	mhiramat@kernel.org, hannes@cmpxchg.org
+References: <20260901232834.22221-1-joannelkoong@gmail.com>
+In-Reply-To: <20260901232834.22221-1-joannelkoong@gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 1 Sep 2026 16:42:17 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zOTd5HjbDfMXuh+VHLGCAkHwyKx4CV-rjgBuxTpEZ6THw@mail.gmail.com>
+X-Gm-Features: AcwNN1VLQyfDp7XP9T9t8iAAeQ-yNELmTvSOCFEKyDLZtzmygwMEeQQ_pzGaRBY
+Message-ID: <CAO9r8zOTd5HjbDfMXuh+VHLGCAkHwyKx4CV-rjgBuxTpEZ6THw@mail.gmail.com>
+Subject: Re: [PATCH v1] mm/memcontrol: drop non-hierarchical memcg-wide stats
+ in non-v1 kernels
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org, 
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, 
+	linux-mm@kvack.org, cgroups@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 31D14140006
-X-Stat-Signature: zpboup574roieupb3fsojr88tbo7smte
 X-Rspam-User: 
-X-HE-Tag: 1788305837-115361
-X-HE-Meta: U2FsdGVkX19OBtk2mL/G2VM0Q9cV4iVvYhGyYJkDd5TWEFdR0w38wE3j5SV/mspjbBA9L+uoPkLDoPGjrR2NI09AnV2KXWOAf2U9/OOOVBF6AUpTnJBPnzlpVM1onM9ELQyVm0zZ6vuOy27qFrt5INirzQdHqRPII+ucRKqUxk+6+K6JRQaqbqmG5jYGeRC1ntR/RD+zV4xJp4AxIz8LJL4SWBMfR6+arJF2wkW4/9vilFkVmTBrLyFk5Kn6s743Ab4En4S4uEtIyO9ihfO/IclCJGZFC8fHHJaKV5KwY00Bysgk+YcyCxcFGpexuI8oIgA9e+89Av/nv32up6kWZbrlActOhnw0MEmkRQgzSfsmyRCMQe0+bUpt1APjirGLb+t7ilpMHZyKfEDo3LhFR2OMIBT4muH4M4a1O2MXsAzE8Ec5lYtOefLsgZvmRZpewsqSiEsEwCySWMkJwChcjzLZPaI4GeiflKPKaUQX2MjhVT8nP59CYiP5vOLKcaPKQnGzWC39gqTRShG0k6lXcQ8M5/7sgEle6x9EkhtioHbU6aU0O5ljYDmvSsd2ugX2c0V/B12tsyRO6WcBMQX4MteKBzDJGqdTI1fj7loe4x+MbmOYfh1+SwO4vt85ZX7gt8Zu8WFe1fnu4iKFjhWN48ClgPu9/KjA4yloDh1HCMr39FegHsAagkBgMcpAEeuhF5FUxThm7XaxZbb6q+RxgpGLU8+EUQjDjBaEAQxgk26oCBmCOFy3Fc7kXOGkKL/1K2RbogTpAsiNecvHtdf/IckXLrrq6v10hY/Fea9df7GCdtj7/CJjwMZP9DUP1mk+xq6qes+8yaabkR7tIa4I5VAI0rxVGlfnofqgmBPQeN2fku6d5i5pxAXCSCQTcPRZk5krCJsn3kGZV1LbpbEFUkitcQ9p6s7Hj8Q3rYDXvrgvy05g5+q3Zv4GHOTr5P/1xHqi2fYJ5l3zHrfnHzS
- FINNAxts
- eNMcZIWUxDd4RoRPGMxFzUaCJ2pCF7/uWCafmhhNiSeO1DsKvVxsI1fbzrcJF53PBnQRcazotMuoNzGiqcdsHRLWjQYFhg41ijiZ8+kcnDn1XKEMSYajvbFyUeV2q8DPxHhvbk9tiIV8M91YdPuBIB3qJbWfLQs5w0LjxXH9A487WvfaFrdyacexLQZRMThXBGeoducGN8t1pLT3Am2Gaj5/gY3FPwVZHWGgkKQMzenX/ahs8plOUTbQ4DQS2nJQX5OmSioWOcPbh9sYJUjZQBNApfeOBwNyy+f7fs9mwEqioCfxDdIzgzBu1La5Ko2CgQOYGdZepA+Dw0ubni7mjr95DcmaY2hG/zSZ2UYhwtSKLLdvJstd6SOubHVwM0jvCbFpZns3A8jUZPII=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2230A100005
+X-Stat-Signature: f6n1bnj76hwuz4ptb597srnprt9j7ia4
+X-HE-Tag: 1788306151-343740
+X-HE-Meta: U2FsdGVkX1+r2otHm23+2Cz7ii9s6c0wBOUZ7g7vVbP6aMVM6ZC7Lr70nD1PlQTmpZsT9twGG4UwgTsurW9b1Q3wbcvNMdrE27ePDXR4I8tY+OD+VHd02LX+SI8VfbM0WmW8LS/KPAS5kBTXqNM1moOuuMmRLHavScADMmUtkNtaM/pk1lnRanwHTyyl+Flk+aICnvEPRX9+jCP+3Dm1cY4WE14nePSB4MyzhJYtZnMouzgYTRSN8UDt8H/QnfJJ9JXYpGcRLjUVKRjrzM6MdqqQzgEiSBG88eZ4Ts0xPHv/GM/QZo+ynOTyPnbgPBiEdRavl+DpqZPKMSs/23LyyL2Qk3nrjiZBpGs4INWysoCLG9fuOeAt7hOPdqR/bhj0Bss0nvflAMi39MmzqiaqvkigLyEwu5zSrGXu6n14ykYN1StHFh+o/T4pwyeBd2YVGE1ur9EzUYDL74rwM/iMuvPbeP3uDCqtwK7Xp2mO6HSkIACjt9X+GQSBEmqwc9UfHEOBoTpUwAI3ZvgStkawVKN45w+MV4QBQz6SezpXHoKQFSqlxL29Q1Q7pMqTgQ97jqfS45AsowvFVAF6S0thAHkBPaLfA3M05LemJTN9oJU+KVMdZXKkKNXJFIu5I4yeOL4zhL48V40B7WlNudhQeGFOm3k3Yjv0NtSbw2luotohTsz1/nr40LuMAzny1LfrrQasWUFyIWX0+gWM26nCIP2zKiZ3R/GY1F6HZYwUL8PpoJvsXiRUqpeUDd/yYWMuEzp5xxQ8PXyMnGnCW2o4Hi8G4ouPKphb7por4rDfikaPatnzsHa+S0AZu8GbKbu4cVq+ferY5YIlUKCmNNseazsVIApqiyK/psc4efhRC7QZWj5YMT3P6B6rkYgDG/+r+I/ICsa4ZDp0bbqjiH0kzSh3HPEC4ww1o72fpuDVegQ7xHLNHl60dHySk4GwHmoZw/51BKkQkPIEV3ZSGQq
+ 8OYoUjXX
+ zJ/QcN/ILPzRnY6wMOmfTuxImXioyNefKEZr/5bISGiWvex0AxUUSUIEcWn0pu6rKQOc87tGGfKhSq3hIkno/H8YDa6GCgstflfvduQkL81ioXHOhIZ0PZRqzjYXfAKlwChzSAd3PHcCc1+WwiZkZAjoUN2Ik8DX3nxojSWvCuuUdNGoCx/hHAUVPyNPW1DZ9Jmd75DsRQOfTHDi7qHhlOJiY/a/h705wCUU00UwcM+yKMm2k2MbqJEZAJ7mXXWwLo8OklmsXDZmCc8aQnQN2dY4KrdIZJ8G6nHkKk1X6DbrIeA6/mXHludyxTA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,80 +104,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 1, 2026 at 4:18=E2=80=AFPM Baoquan He <baoquan.he@linux.dev> wr=
-ote:
->
-> On 09/01/26 at 03:11pm, Barry Song wrote:
-> > On Tue, Sep 1, 2026 at 2:38=E2=80=AFPM Baoquan He <hebaoquan@kylinos.cn=
+On Tue, Sep 1, 2026 at 4:32=E2=80=AFPM Joanne Koong <joannelkoong@gmail.com=
 > wrote:
-> > >
-> > > Add per-walk counters to measure empty aging walks which traverse
-> > > an mm's page tables but find no folio for the current lruvec (node+me=
-mcg).
-> > > These are common on multi-NUMA node systems because lru_gen_use_mm() =
-marks
-> > > an mm for all nodes at every context switch.
-> > >
-> > > New counters (accumulated in mm_state->stats[]):
-> > >
-> > >   MM_LEAF_ASSOCIATED   - leaf entries whose folio is in this lruvec
-> > >   MM_WALK_TOTAL        - page-table walks completed
-> > >   MM_WALK_EMPTY        - walks that found no folio in this lruvec
-> > >   MM_LEAF_EMPTY_WALKS  - leaf entries scanned during empty walks
-> > >
-> > > A new tracepoint, mm_vmscan_lru_gen_walk(), fires after each walk, an=
-d the
-> > > debugfs lru_gen output ("TYFALWEE") exposes the new counters.
-> > >
-> > > Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
-> > > ---
-> > [...]
-> > >
-> > > @@ -4109,8 +4113,28 @@ static bool try_to_inc_max_seq(struct lruvec *=
-lruvec, unsigned long seq,
-> > >
-> > >         do {
-> > >                 success =3D iterate_mm_list(walk, &mm);
-> > > -               if (mm)
-> > > +               if (mm) {
-> > > +                       bool empty =3D false;
-> > > +
-> > >                         walk_mm(mm, walk);
-> > > +                       /*
-> > > +                        * A walk that traversed page tables but foun=
-d no folio
-> > > +                        * belonging to this lruvec (node+memcg) is p=
-ure waste.
-> > > +                        */
-> > > +                       if (walk->mm_stats[MM_LEAF_TOTAL]) {
-> > > +                               walk->mm_stats[MM_WALK_TOTAL]++;
-> > > +                               if (walk->mm_stats[MM_LEAF_ASSOCIATED=
-] =3D=3D 0) {
-> > > +                                       walk->mm_stats[MM_WALK_EMPTY]=
-++;
-> > > +                                       walk->mm_stats[MM_LEAF_EMPTY_=
-WALKS] +=3D
-> > > +                                               walk->mm_stats[MM_LEA=
-F_TOTAL];
-> > > +                                       empty =3D true;
-> > > +                               }
-> > > +                       }
-> >
-> > Hi Baoquan,
-> >
-> > Where are we clearing these counters between different
-> > mms?
-> >
-> > It seems the previous mm_stats will affect the next mm
-> > if they aren't cleared.
 >
-> No, they won't. The counters are cleared between mms. iterate_mm_list()
-> calls reset_mm_stats() from its "done:" path for every mm. reset_mm_stats=
-()
-> accumulates walk->mm_stats into the per-hist mm_state->stats[hist] and
-> then zeroes walk->mm_stats[i].
+> memcg_vmstats keeps a non-hierarchical copy of every memcg-wide stat item
+> and event alongside the hierarchical one. The only readers however are
+> the legacy memory.stat and memory.numa_stat, and reparenting on offline.
+> All of them live under CONFIG_MEMCG_V1, and their accessors
+> (memcg_page_state_local() and memcg_events_local()) are already compiled
+> out with it. This means on a CONFIG_MEMCG_V1=3Dn kernel, memcg_vmstats's
+> non-hierarchial arrays are written to on every rstat flush, despite
+> their values never being read / accessed.
+>
+> Compile this out and only carry the non-hierarchical memcg-wide stat
+> arrays if the kernel actually supports v1.
+>
+> This makes flushes cheaper. mem_cgroup_stat_aggregate() can now skip the
+> read-modify-write of ac->local[i]. Nothing else on a kernel with
+> CONFIG_MEMCG_V1=3Dn accesses state_local or events_local, so those
+> cachelines get pulled in solely for the writes, and they are separate
+> from the ones the loop is already walking / accessing.
+>
+> On a 80-cpu x86_64 machine with 500 cgroups each running a workload that
+> dirties anon, file, dirty/writeback, slab, kmem, mlock, and reclaim
+> counters, timing mem_cgroup_css_rstat_flush() in-kernel in TSC ticks per
+> flush showed roughly
+>
+>                          before   after    delta
+> memcg-wide aggregation   1231     1180     -4.1%
+> overall flush function   2452     2397     -2.2%
+>
+> These numbers are from taking the median of 70 samples, one per 20s
+> window on each kernel. The 95% intervals observed on the two deltas are
+> [-5.41%, -1.76%] and [-4.53%, -0.14%]. The values above include the
+> timing overhead itself, so only the delta is meaningful here.
+>
+> Counting the items that actually changed, a median of 1.5 of the 77
+> memcg-wide items (57 state + 20 events) had a non-zero per-cpu delta at
+> each flush, which means the benchmarks above are with one or two fewer
+> cachelines pulled in per flush. The count is low because the benchmark
+> reads memory.stat in a loop to keep the flush rate up. For cases where
+> flushes are triggered only by the 2s periodic worker, more changes will
+> have accumulated between flushes, so more cachelines are skipped and the
+> per-flush saving should be larger.
+>
+> Please note that the per-node lruvec array is left unchanged, as that is
+> not v1-only (count_shadow_nodes() needs to read
+> lruvec_page_state_local() under CONFIG_MEMCG rather than
+> CONFIG_MEMCG_V1).
+>
+> This adds no functional changes to kernel builds with CONFIG_MEMCG_V1=3Dy=
+.
+>
+> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> ---
+>  mm/memcontrol.c | 49 ++++++++++++++++++++++++++++++++++++++++++-------
+>  1 file changed, 42 insertions(+), 7 deletions(-)
+>
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 7ce50bccf126..b98b2d68c62b 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -675,9 +675,11 @@ struct memcg_vmstats {
+>         long                    state[MEMCG_VMSTAT_SIZE];
+>         unsigned long           events[NR_MEMCG_EVENTS];
+>
+> +#ifdef CONFIG_MEMCG_V1
+>         /* Non-hierarchical (CPU aggregated) page state & events */
+>         long                    state_local[MEMCG_VMSTAT_SIZE];
+>         unsigned long           events_local[NR_MEMCG_EVENTS];
+> +#endif
+>
+>         /* Pending child counts during tree propagation */
+>         long                    state_pending[MEMCG_VMSTAT_SIZE];
+> @@ -687,6 +689,32 @@ struct memcg_vmstats {
+>         atomic_long_t           stats_updates;
+>  };
+>
+> +/*
+> + * The non-hierarchical memcg-wide counters are read back only by the le=
+gacy
+> + * memory.stat and by reparenting on offline, both of which are v1-only.
+> + */
+> +#ifdef CONFIG_MEMCG_V1
 
-You=E2=80=99re right. Sorry for the noise=E2=80=94I missed that part.
-
-Reviewed-by: Barry Song <baohua@kernel.org>
+Can we query the boot parameter instead of the config option here?
+IIUC this should work even if v1 is only disabled at boot.
 
