@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 295E5C624A4
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 03:13:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01FC5C624A4
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 03:13:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C39A26B00D4; Mon, 31 Aug 2026 23:13:38 -0400 (EDT)
+	id 953626B00D6; Mon, 31 Aug 2026 23:13:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9BC96B00D6; Mon, 31 Aug 2026 23:13:38 -0400 (EDT)
+	id 8DCB06B00D8; Mon, 31 Aug 2026 23:13:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A15D26B00D7; Mon, 31 Aug 2026 23:13:38 -0400 (EDT)
+	id 77E7E6B00D9; Mon, 31 Aug 2026 23:13:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 583016B00D4
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 23:13:38 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B0866B00D6
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 23:13:43 -0400 (EDT)
 Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C3E98A02B6
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 03:13:37 +0000 (UTC)
-X-FDA: 85163723274.23.5AC5F39
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C0D7FA3851
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 03:13:42 +0000 (UTC)
+X-FDA: 85163723484.23.61C5FEA
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D8D88160003
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 03:13:35 +0000 (UTC)
+	by imf08.hostedemail.com (Postfix) with ESMTP id CEE5516000B
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 03:13:40 +0000 (UTC)
 Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="JwmvH/NZ";
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IparpftD;
+	spf=pass (imf08.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788232420;
+	b=3ajRUnQoduzVbQJw4LFDR5hsqOGtXmRpVOw0+bXQRStj2bFN/XiSCPeqdcLrbC8+7XZmfK
+	rXirtcMQYUoDM/85mfKdieY++B5mhBUM3rX4iLuj6L75pyEoIXbE+IcfQB5poykhwx4oHo
+	QGG3ikUYAtVAysvAzaB+qlYxwnR8wTI=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IparpftD;
 	spf=pass (imf08.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788232415;
+	s=arc-20220608; t=1788232420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KHn9TD6sOT1RAi8FF05petGcyHv8TIvSIsX6lDHGiZs=;
-	b=u5PZkAn6cmXy5AGHeS3OM/M8+6IhdoFSODBDYsfhcaEuyy+CHz1kpeMDntTnUERhlTQEnS
-	CpkX8IYaA1iMyvXZEXm2WcivJrD+CEtzYBv+TZDmCVTu+THWPoptwuafBCj6qNrXwnAfUI
-	7cztXYuzhKZK8igkpVYNPVHEjjrPHt0=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="JwmvH/NZ";
-	spf=pass (imf08.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788232415;
-	b=pB0eT179sbwEpag/03VTCxpM7JcfqOt7OyGppY3RnBlOgWf6JObZrOvMPrjAt7MFBr3voc
-	DCIOgEmYllmn4q+2g1PWvXKITJKLrD+eB91bDqUTlGq7luQeUImsDVSz1itAGf46DoAlha
-	oenUii2L4/ZnQ2IUHtTXJLqh9B3MzQA=
+	bh=FfgDDE8CEmW1Q+z8UseKVnUMAM5pqEP/DOHTfkRU7Ug=;
+	b=rtue8tmiIINReWwRWMA6ZY3eSokClSxXIHpX5KTEv/97JAB334o6n/sR/BMgSHB3A2vSDQ
+	tUFBvQCsjLilCCWAda67XOXXGp81eTKO4vCrJsF67vwnCRF+nC5KKxyXm2+RNAJ15LGjq4
+	9pYYh4No1MjFQjU8xwydfdShwmXtpq8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788232415;
+	s=mimecast20190719; t=1788232420;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KHn9TD6sOT1RAi8FF05petGcyHv8TIvSIsX6lDHGiZs=;
-	b=JwmvH/NZw6Dxn7ykDnMOVBdFdUgl7CW4/Y6D7Tgse24SoqPm4CVokNYbJZAmww1UNhYFHt
-	gesoUhY0LWcwGJOIIGg/ZX/iKZcGIzHKnpkfnEeSNK4CdLf3vdOxW3LCX68OIGb5jmuBIz
-	5NaKRI/suJajx0cjfMWM0NLMZPJxQ9g=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=FfgDDE8CEmW1Q+z8UseKVnUMAM5pqEP/DOHTfkRU7Ug=;
+	b=IparpftDRcfLS5Y9CINNx59O/ZK1Tz4KY4NX9PMmGfJSu/tLptTd0+V58E6bThr3qwvE2s
+	tbvB1QnJseqU8ogwkHNU8SxxYWFpzWp8gNqGRwa12fbbvDZImcw7F+SvmdII4Y0bDzICqJ
+	RLMtK63BaRJ5bCTvo3H/voNtowUVrq0=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-255-rHF_4iuPM1ObqYEwEMvJhw-1; Mon,
- 31 Aug 2026 23:13:31 -0400
-X-MC-Unique: rHF_4iuPM1ObqYEwEMvJhw-1
-X-Mimecast-MFC-AGG-ID: rHF_4iuPM1ObqYEwEMvJhw_1788232408
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-241-6imlDJqgPaWD4O50xf4G0g-1; Mon,
+ 31 Aug 2026 23:13:36 -0400
+X-MC-Unique: 6imlDJqgPaWD4O50xf4G0g-1
+X-Mimecast-MFC-AGG-ID: 6imlDJqgPaWD4O50xf4G0g_1788232412
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BAA10192E266;
-	Tue,  1 Sep 2026 03:13:28 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 75CD218345AD;
+	Tue,  1 Sep 2026 03:13:32 +0000 (UTC)
 Received: from fedora.redhat.corp (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4D27018005B7;
-	Tue,  1 Sep 2026 03:13:25 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EF52518005B8;
+	Tue,  1 Sep 2026 03:13:28 +0000 (UTC)
 From: Luiz Capitulino <luizcap@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -103,25 +103,25 @@ Cc: corbet@lwn.net,
 	yintirui@huawei.com,
 	dev.jain@arm.com,
 	usama.arif@linux.dev
-Subject: [PATCH v7 12/14] treewide: introduce arch_has_pmd_leaves()
-Date: Mon, 31 Aug 2026 23:12:16 -0400
-Message-ID: <e0b69f7a9c99dec84b297cac6e478286c9fa4770.1788232334.git.luizcap@redhat.com>
+Subject: [PATCH v7 13/14] mm: replace thp_disabled_by_hw() with pgtable_has_pmd_leaves()
+Date: Mon, 31 Aug 2026 23:12:17 -0400
+Message-ID: <aff69c99f6679c4933103b86c0e3dbe19dc6ce05.1788232334.git.luizcap@redhat.com>
 In-Reply-To: <cover.1788232334.git.luizcap@redhat.com>
 References: <cover.1788232334.git.luizcap@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: _-wXrJxTuPPgiqCf949ruXnB4qREwAjak_2GVSmMMko_1788232408
+X-Mimecast-MFC-PROC-ID: YTyKP_HRdjEEg1yVJadvBQHMKLWkEGAiEAuEvrz66rY_1788232412
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Stat-Signature: dn9yrhgqfjkj8rgmbam7xz8qexepunbn
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D8D88160003
 X-Rspam-User: 
-X-HE-Tag: 1788232415-632748
-X-HE-Meta: U2FsdGVkX1804uCjFEkhT+TidPHZwdUAkmj1aWXhte920leJONrRLRaQWKORZlDYhH7Dfdf+EbHfTaAoyuUO5nEoyyrOu/v365wDDqJG743NolkYgfgnRj3wdaWgLy9QAcCFoOPE5gE02FoRkk0KWOy9ePRMinDfS2YfQLruIaBKEBeIeJZ24MvbYTcdzWbUOLgcU9FzqhOEl7M9VxYtuKRRin+NPnPBSW06/PnnW9G1lLdPt2FIpkzjXwGpoepZ54Gu0JSC8unmaklTSXdSOCOZdzZ4CaTLbCIffrxS4gjtFc9EvaJ58bPRWYaDdOj7Sevjx3tcoKEw+26oZTXO2o7ofsbzLYK18SlNKvxoerEUtiPK41mV9r4GeA95uBmQEd5Sp4tOlbolE90oXgfYKc5qjA0ECFGktj/JGiKAMzJkFZLH2PsTlRYrCjYx/4Ckull8FNan9TFPwLz49n1U+8CQAeNIzCY9zNlo6aM43HzcvJPep6VJg9tuFWZgYyy+RniKWCMr7825rSZQtgJKLzpczniX0VyU21YUPF6/9scuUpA7bxHKdPWPAhxXc/CCcyl9Wv20x4ink7LBZz4dAqyZEOIP5o4dgActjpUR4Z/LFMOKNmSDJxdocv7D+d6mNn9w/KsnzvHQTXUzTEi5IujmrBQeRY67TBOzrSUc8d5buJpcFDhIAvLl8ZSj015Yhy1tptEbAMOOuz9waPkQmQn638Kzu/ErTIWThSG/WT/nb+/w5q+dyAwI7+VqWN+wkUU9IJeIPYsQiwkN/adx84QioPY9aIL7wVgiZCP26v+XVydDT9CWK9Hl3h/uVr948tTWkdyrspEcIFOxUgeDygHt/HNoBP5FEw7AU0RXRWQ0e9/RtxJmroK0e7Ys1LdIBnMktTHHS+UG0nvFglLfBBsZwu21dcrxcG0FQEsH1zJVwtsbM4oVYDOQN0VrxAouk+X/kcb9TZvUbDlXvio
- bxoRE2qH
- 2qo4IDswbFNnwCWZZlSwxr1STIHmkuyrSNS6a4qgawa8DcwBrvbJ1NhxtKvc4CWAGHXpyKVDn7e3/bqOIFOX6atTl5ufQHVgD3qJESrPTiNk32cTQy5T3tME9cVc4I38T1lbz8MxDbcpKXlhTPwfz4JUK62KcIffA004z4UosTaBpf0ipY+UMEQhQxncAPTvlkaDmQJKDY14i81BA5ODc97QdNDCOzsZVvfr5iw2Nvek78ZWYmEIpPKGbZPwAS3AevG2WkEfq0E7Bst3+BEwlJrnWSpCHiA+STPdYSxwWoIXVYxW+NN+kT3p+ewlwIDh6kOPgVCMxtWr8A3BlBOQcnf5vxNlMmxuprJG89rv7kKmVKJ+RZEdXDK/dsUYCfAV5iRclYcXgJ+xV7E0=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: CEE5516000B
+X-Stat-Signature: io7ksrc175pche1unjxfedmox1g93xxk
+X-HE-Tag: 1788232420-985625
+X-HE-Meta: U2FsdGVkX18i/ITfgShMUA6pPQ94mFt7ksfD8O0dreyG3HAzRbPULttIDGBUX4FLedFwzp/YOJXoUKXvZh1xBRgejejv0FosvNZeRzzn6PsBCSM9lKEVQ8LnhhqfsEzL8HBWerkuuCXTG46A/9VxeSxsNK/yJ5T/dAsng4xZ/aSBYyagIss+6U9O+dXxWB0IktnbO47lHtd5n8DPpANtd375XjazuRrcTwi8aqUSJC5WYpLisut89YQ97cbPs5nLRVB65OQkYuyeN5SPC2FtFaEZ6nj7IkuorEP3EkfYUBLYJgclMZXJND4MB2oTc7ArhAkDu9WkKefG7rMXx6UV7nbbKv3D2L74UAy+/lBXgGXZsjCdbiYVwJkwIkvyl2l+yta2/JCHfxmBg1aQpYa2aQM2q86SG///odOLcnS2l1/l7jMJaFoMsPVMuPAFUGAJARmdXzv5s20pL93FOkKOBw1sJnDfGFWr3iVEWkw3JpEERfHSk1nWP01aNa+YRSrpXV9cFsEwiOWCgPe3bfo3lF/Bv+0OmcEJ119YqsNR43vJCqlnfdTo0nXMwXt7/oNBk1JW7+j4HFtYTMOgo1cyPG8xoeyQL4XDfu3b66a0dGssJPp2fAip6KIaKjZgRuZAZWyszHz1WAMzS9jiN8WcAeGZjKX5CM9mlabKszHHGZ37WQhAIsy0+1hfA7FLcK5ZtepG005qYab7ku/R5c0bP5yqUj8N4E///o1v2FGLb/wVVRR3FlsZYW+SLyGX2SRF/u1URdHnLUWg2Q3cxs90zJ1QjJ5/5D/JbqrtsTd3/lisTywIxUOMdO/Y7R9xF4b4V3S7q4EARDdaobpEX133qpphOSMkuAIEcrClL2233zddLUNFa1nC//vr4B6ChUtxExidXrLPIOoDc4XicO3bZeNpgo06Y1E4o2QJ/ljRESrkiqLh5ltS2aa3Ayjl+fMasgAnlpxazNtDJEJB534
+ KZptt7Pj
+ o2oMElmA4CfJAe/Sj/xTRVyjHzKjLqNZcxqICm9WIoZyCvl4T1S/IJTQiyq4I6mlEm6VTGXbAwYoFvODK9vFqdtVwyh16ucwu614J7trwboCZEDc5QSxRbUjUGZteRq3ueJs9/88JlmjswJbyO0zQapu1SD7rMc6qdoVbS2EKNkwU254iO4mGadAaNiIxbo4KU/3NTtIb/JZOxtAdcvXrec70l+hrM1Gkcer5TZrXZtXRb1FdORsDKM8fE0JhPXOTSQ/rEblGoqcc4KuS7CwdmhIcDDIYzo6wyDqNDv3ol4gLFqcsjjVIyzMozwbwdZwqF2QqBFfdn8n42XnUKGxADHWyPoqjFKPeFZlJLl9DwR95wDkFPr9KVO31RwyxeaA7KjG98V5W8pkBQjNdt3NZkZyAOsjlLKx3zcnd4MlpJLldyI44dG2tesfe8e/vyaCX9mKo9xWYCmtsvhP7CCVGMy2/nA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,231 +129,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that all the has_transparent_hugepage() callers have been converted
-to pgtable_has_pmd_leaves(), this commit does two things:
+Despite its name, thp_disabled_by_hw() just checks whether the
+architecture supports PMD-sized pages. It returns true when
+TRANSPARENT_HUGEPAGE_UNSUPPORTED is set in transparent_hugepage_flags,
+this only occurs if the architecture implements arch_has_pmd_leaves()
+and that function returns false.
 
-1. Rename has_transparent_hugepage() arch implementations to
-   arch_has_pmd_leaves(), since that's what the helper checks for
+Since pgtable_has_pmd_leaves() provides the same semantics, use it
+instead.
 
-2. Introduce the default implementation of arch_has_pmd_leaves() as
-   IS_ENABLED(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE). This means that if
-   the arch doesn't implement arch_has_pmd_leaves() we default to checking
-   CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE as a way to determine if
-   PMD-sized pages are supported
-
-Note that arch_has_pmd_leaves() is supposed to be called only by
-pgtable_leaf_support_init(). The remaining exception is hugepage_init()
-which will be converted in a future commit.
-
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
 ---
- arch/mips/include/asm/pgtable.h               |  4 ++--
- arch/mips/mm/tlb-r4k.c                        |  4 ++--
- arch/powerpc/include/asm/book3s/64/hash-4k.h  |  2 +-
- arch/powerpc/include/asm/book3s/64/hash-64k.h |  2 +-
- arch/powerpc/include/asm/book3s/64/pgtable.h  | 10 +++++-----
- arch/powerpc/include/asm/book3s/64/radix.h    |  2 +-
- arch/powerpc/mm/book3s64/hash_pgtable.c       |  4 ++--
- arch/s390/include/asm/pgtable.h               |  4 ++--
- arch/x86/include/asm/pgtable.h                |  4 ++--
- include/linux/pgtable.h                       |  4 ++--
- mm/huge_memory.c                              |  2 +-
- mm/memory.c                                   |  2 +-
- 12 files changed, 22 insertions(+), 22 deletions(-)
+ include/linux/huge_mm.h | 7 -------
+ mm/huge_memory.c        | 6 ++----
+ mm/memory.c             | 2 +-
+ mm/shmem.c              | 2 +-
+ 4 files changed, 4 insertions(+), 13 deletions(-)
 
-diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
-index b038da872ec6..2a0a7ddf8bee 100644
---- a/arch/mips/include/asm/pgtable.h
-+++ b/arch/mips/include/asm/pgtable.h
-@@ -740,8 +740,8 @@ static inline pmd_t pmdp_huge_get_and_clear(struct mm_struct *mm,
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index c745f7ad2298..525acea2eb59 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -47,7 +47,6 @@ vm_fault_t vmf_insert_folio_pud(struct vm_fault *vmf, struct folio *folio,
+ 				bool write);
  
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
--#define has_transparent_hugepage has_transparent_hugepage
--extern int has_transparent_hugepage(void);
-+#define arch_has_pmd_leaves arch_has_pmd_leaves
-+extern int arch_has_pmd_leaves(void);
- 
- #ifdef _PAGE_HUGE
- #define pmd_leaf(pmd)	((pmd_val(pmd) & _PAGE_HUGE) != 0)
-diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index f4e369342a56..9339ebb0815f 100644
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -432,7 +432,7 @@ void add_wired_entry(unsigned long entrylo0, unsigned long entrylo1,
- #endif
+ enum transparent_hugepage_flag {
+-	TRANSPARENT_HUGEPAGE_UNSUPPORTED,
+ 	TRANSPARENT_HUGEPAGE_FLAG,
+ 	TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG,
+ 	TRANSPARENT_HUGEPAGE_DEFRAG_DIRECT_FLAG,
+@@ -383,12 +382,6 @@ static inline bool vma_thp_disabled(struct vm_area_struct *vma,
+ 	return mm_flags_test(MMF_DISABLE_THP_EXCEPT_ADVISED, vma->vm_mm);
  }
  
--int has_transparent_hugepage(void)
-+int arch_has_pmd_leaves(void)
- {
- 	static unsigned int mask = -1;
- 
-@@ -448,7 +448,7 @@ int has_transparent_hugepage(void)
- 	}
- 	return mask == PM_HUGE_MASK;
- }
--EXPORT_SYMBOL(has_transparent_hugepage);
-+EXPORT_SYMBOL(arch_has_pmd_leaves);
- 
- /*
-  * Used for loading TLB entries before trap_init() has started, when we
-diff --git a/arch/powerpc/include/asm/book3s/64/hash-4k.h b/arch/powerpc/include/asm/book3s/64/hash-4k.h
-index 79511e6abfca..d532e3f0dfc3 100644
---- a/arch/powerpc/include/asm/book3s/64/hash-4k.h
-+++ b/arch/powerpc/include/asm/book3s/64/hash-4k.h
-@@ -167,7 +167,7 @@ extern pmd_t hash__pmdp_huge_get_and_clear(struct mm_struct *mm,
- 				       unsigned long addr, pmd_t *pmdp);
- #endif
- 
--extern int hash__has_transparent_hugepage(void);
-+extern int hash__arch_has_pmd_leaves(void);
- #endif /* !__ASSEMBLER__ */
- 
- #endif /* _ASM_POWERPC_BOOK3S_64_HASH_4K_H */
-diff --git a/arch/powerpc/include/asm/book3s/64/hash-64k.h b/arch/powerpc/include/asm/book3s/64/hash-64k.h
-index a4a44a112ff9..d523c80f44f7 100644
---- a/arch/powerpc/include/asm/book3s/64/hash-64k.h
-+++ b/arch/powerpc/include/asm/book3s/64/hash-64k.h
-@@ -280,7 +280,7 @@ extern pmd_t hash__pmdp_huge_get_and_clear(struct mm_struct *mm,
- 				       unsigned long addr, pmd_t *pmdp);
- #endif /*  CONFIG_TRANSPARENT_HUGEPAGE */
- 
--extern int hash__has_transparent_hugepage(void);
-+extern int hash__arch_has_pmd_leaves(void);
- #endif	/* __ASSEMBLER__ */
- 
- #endif /* _ASM_POWERPC_BOOK3S_64_HASH_64K_H */
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index 2a795f6d9263..41166d44fa75 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -1432,14 +1432,14 @@ static inline bool arch_needs_pgtable_deposit(void)
- 
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
--extern int hash__has_transparent_hugepage(void);
--static inline int has_transparent_hugepage(void)
-+extern int hash__arch_has_pmd_leaves(void);
-+static inline int arch_has_pmd_leaves(void)
- {
- 	if (radix_enabled())
--		return radix__has_transparent_hugepage();
--	return hash__has_transparent_hugepage();
-+		return radix__arch_has_pmd_leaves();
-+	return hash__arch_has_pmd_leaves();
- }
--#define has_transparent_hugepage has_transparent_hugepage
-+#define arch_has_pmd_leaves arch_has_pmd_leaves
- 
- #define __HAVE_ARCH_PTEP_MODIFY_PROT_TRANSACTION
- pte_t ptep_modify_prot_start(struct vm_area_struct *, unsigned long, pte_t *);
-diff --git a/arch/powerpc/include/asm/book3s/64/radix.h b/arch/powerpc/include/asm/book3s/64/radix.h
-index 50545cf519bd..e8b74528953f 100644
---- a/arch/powerpc/include/asm/book3s/64/radix.h
-+++ b/arch/powerpc/include/asm/book3s/64/radix.h
-@@ -307,7 +307,7 @@ static inline int radix__has_transparent_pud_hugepage(void)
- }
- #endif
- 
--static inline int radix__has_transparent_hugepage(void)
-+static inline int radix__arch_has_pmd_leaves(void)
- {
- 	/* For radix 2M at PMD level means thp */
- 	if (mmu_psize_defs[MMU_PAGE_2M].shift == PMD_SHIFT)
-diff --git a/arch/powerpc/mm/book3s64/hash_pgtable.c b/arch/powerpc/mm/book3s64/hash_pgtable.c
-index 50316f3fc5d3..a67bc1723404 100644
---- a/arch/powerpc/mm/book3s64/hash_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/hash_pgtable.c
-@@ -393,7 +393,7 @@ pmd_t hash__pmdp_huge_get_and_clear(struct mm_struct *mm,
- 
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
--int hash__has_transparent_hugepage(void)
-+int hash__arch_has_pmd_leaves(void)
- {
- 
- 	if (!mmu_has_feature(MMU_FTR_16M_PAGE))
-@@ -422,7 +422,7 @@ int hash__has_transparent_hugepage(void)
- 
- 	return 1;
- }
--EXPORT_SYMBOL_GPL(hash__has_transparent_hugepage);
-+EXPORT_SYMBOL_GPL(hash__arch_has_pmd_leaves);
- 
- #ifdef CONFIG_STRICT_KERNEL_RWX
- 
-diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
-index 5aa8f621df04..24ee90c7e9bf 100644
---- a/arch/s390/include/asm/pgtable.h
-+++ b/arch/s390/include/asm/pgtable.h
-@@ -1827,8 +1827,8 @@ static inline int pmd_trans_huge(pmd_t pmd)
- }
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
--#define has_transparent_hugepage has_transparent_hugepage
--static inline int has_transparent_hugepage(void)
-+#define arch_has_pmd_leaves arch_has_pmd_leaves
-+static inline int arch_has_pmd_leaves(void)
- {
- 	return cpu_has_edat1() ? 1 : 0;
- }
-diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-index f207e5268918..17b060184b1d 100644
---- a/arch/x86/include/asm/pgtable.h
-+++ b/arch/x86/include/asm/pgtable.h
-@@ -331,8 +331,8 @@ static inline pud_t pud_mkspecial(pud_t pud)
- #endif	/* CONFIG_ARCH_SUPPORTS_PUD_PFNMAP */
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
--#define has_transparent_hugepage has_transparent_hugepage
--static inline int has_transparent_hugepage(void)
-+#define arch_has_pmd_leaves arch_has_pmd_leaves
-+static inline int arch_has_pmd_leaves(void)
- {
- 	return boot_cpu_has(X86_FEATURE_PSE);
- }
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 4c00cf53e183..98b0a8759ab1 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -2344,8 +2344,8 @@ static inline void __init pgtable_leaf_support_init(void) { }
- #endif
- #endif
- 
--#ifndef has_transparent_hugepage
--#define has_transparent_hugepage() IS_BUILTIN(CONFIG_TRANSPARENT_HUGEPAGE)
-+#ifndef arch_has_pmd_leaves
-+#define arch_has_pmd_leaves() IS_ENABLED(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE)
- #endif
- 
- #ifndef has_transparent_pud_hugepage
+-static inline bool thp_disabled_by_hw(void)
+-{
+-	/* If the hardware/firmware marked hugepage support disabled. */
+-	return transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_UNSUPPORTED);
+-}
+-
+ unsigned long thp_get_unmapped_area(struct file *filp, unsigned long addr,
+ 		unsigned long len, unsigned long pgoff, unsigned long flags);
+ unsigned long thp_get_unmapped_area_vmaflags(struct file *filp, unsigned long addr,
 diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 54494c3fa983..469d98e01b5f 100644
+index 469d98e01b5f..d5e65cac6a16 100644
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
-@@ -1095,7 +1095,7 @@ static int __init hugepage_init(void)
+@@ -204,7 +204,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+ 	if (!vma->vm_mm)		/* vdso */
+ 		return 0;
+ 
+-	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vm_flags, forced_collapse))
++	if (!pgtable_has_pmd_leaves() || vma_thp_disabled(vma, vm_flags, forced_collapse))
+ 		return 0;
+ 
+ 	/* khugepaged doesn't collapse DAX vma, but page fault is fine. */
+@@ -1095,10 +1095,8 @@ static int __init hugepage_init(void)
  	int err;
  	struct kobject *hugepage_kobj;
  
--	if (!has_transparent_hugepage()) {
-+	if (!arch_has_pmd_leaves()) {
- 		transparent_hugepage_flags = 1 << TRANSPARENT_HUGEPAGE_UNSUPPORTED;
+-	if (!arch_has_pmd_leaves()) {
+-		transparent_hugepage_flags = 1 << TRANSPARENT_HUGEPAGE_UNSUPPORTED;
++	if (!pgtable_has_pmd_leaves())
  		return -EINVAL;
- 	}
+-	}
+ 
+ 	/*
+ 	 * hugepages can't be allocated by the buddy allocator
 diff --git a/mm/memory.c b/mm/memory.c
-index 69ab1bb54853..ed5029745dfb 100644
+index ed5029745dfb..6be55fc39383 100644
 --- a/mm/memory.c
 +++ b/mm/memory.c
-@@ -169,7 +169,7 @@ EXPORT_SYMBOL(__arch_has_pmd_leaves_key);
+@@ -5611,7 +5611,7 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
+ 	 * PMD mappings if THPs are disabled. As we already have a THP,
+ 	 * behave as if we are forcing a collapse.
+ 	 */
+-	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vma->vm_flags,
++	if (!pgtable_has_pmd_leaves() || vma_thp_disabled(vma, vma->vm_flags,
+ 						     /* forced_collapse=*/ true))
+ 		return ret;
  
- void __init pgtable_leaf_support_init(void)
- {
--	if (!has_transparent_hugepage())
-+	if (!arch_has_pmd_leaves())
- 		static_branch_disable(&__arch_has_pmd_leaves_key);
- }
+diff --git a/mm/shmem.c b/mm/shmem.c
+index c285cb7fd32e..73281fa060ed 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -2047,7 +2047,7 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
+ 	vm_flags_t vm_flags = vma ? vma->vm_flags : 0;
+ 	unsigned int global_orders;
  
+-	if (thp_disabled_by_hw() || (vma && vma_thp_disabled(vma, vm_flags, shmem_huge_force)))
++	if (!pgtable_has_pmd_leaves() || (vma && vma_thp_disabled(vma, vm_flags, shmem_huge_force)))
+ 		return 0;
+ 
+ 	global_orders = shmem_huge_global_enabled(inode, index, write_end,
 -- 
 2.55.0
 
