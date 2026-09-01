@@ -4,88 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7593FC61DFD
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 00:42:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3D79C624CF
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 00:46:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2445A6B0088; Mon, 31 Aug 2026 20:42:38 -0400 (EDT)
+	id 8B3C26B008C; Mon, 31 Aug 2026 20:46:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1CD7F6B008A; Mon, 31 Aug 2026 20:42:38 -0400 (EDT)
+	id 88C286B0092; Mon, 31 Aug 2026 20:46:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0708E6B0096; Mon, 31 Aug 2026 20:42:38 -0400 (EDT)
+	id 7A1756B0095; Mon, 31 Aug 2026 20:46:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D41766B0088
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 20:42:37 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4452D1602B9
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 00:42:37 +0000 (UTC)
-X-FDA: 85163342754.28.DE88C79
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A7B41120008
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 00:42:35 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nbVgy6Pt;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788223355;
-	b=1S4hSRi0N6yXGizyHHZXvYUwXNQzu09BKXN4ItIMQsLgaDFYN611Mt0HlwaQJyRAjx5KKi
-	ZTVKecl8JdTwuDqPRRshL0yCaaoB7Hjx6zwyWs32laG5UKoehvmCF/oYxn+peUncf4OVBv
-	yUjXO9ZK2HJUNbE3SyQT1NCNksT5GEE=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nbVgy6Pt;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 55EB06B008C
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 20:46:11 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 92F9D140324
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 00:46:09 +0000 (UTC)
+X-FDA: 85163351658.05.AC0E50F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D7842140008
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 00:46:07 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Hq5cMU1S;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788223355;
+	s=arc-20220608; t=1788223567;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nfiaelhoKXS6U8IAM1Cx+D9jl8jdDr5cDRVvdKuWEJE=;
-	b=yNVfSreLdJOvb1CrgYyQkGD2Vtek7DaWHZldxqqE7EFeqB//xNvx29DXDCkNp/S1q+eROw
-	AppGTznJ4x/X2ji3PMGzHyyPWHZ0giyA9XY513mAqetozObd0UQmGs23r+rx2hTnNVjuwf
-	mrCSqu6wXTTp45vpmbBXIwYDdtErONQ=
+	bh=wfI4nJW4NZXTURLLniIaQtBfHGjWmn+gqY78i2JXq1g=;
+	b=lptvQ4EBI054lx755NelZFCifA2KmaiGFYYg3BhAptLFmoyE/EwuvIV4M1vfrWnkAVRwsK
+	TyMPK1F7CPKhBC4LgayOaDMtIRaTiul2yLfA64KJZ9irVeo0vc7H7ZHQ8drOnWVXtu8EMA
+	tqu78zXbXxNA14PSTTb9a+vNfO8PWPQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788223567;
+	b=3hXDTGF5eUoWPM/USdpVGacua3sptXWVu01tSEYckuyYABA30+jrZf7afeMFhekdG3bwDu
+	RKl44KELFT15MlbgMezPzyGmFUNe8ES6sZqB34X6cM97e3m07rHUHN0D7eZ4UxD0kNaN9Q
+	K6lwAXcQq7quEat2GC/35RdmLWMfVI4=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Hq5cMU1S;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DD60F4052E;
-	Tue,  1 Sep 2026 00:42:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 907151F000E9;
-	Tue,  1 Sep 2026 00:42:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788223354;
-	bh=nfiaelhoKXS6U8IAM1Cx+D9jl8jdDr5cDRVvdKuWEJE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nbVgy6PtpGfLQR8Pd/E0YXCDhX/7ZWVtMik/SHpvQnw247r6i0j7vL2Qj/8EBmp0d
-	 iHVExvU4k+CcxAMzMQBbNjt4S+FQ50OP0pgfbocO6x6SpET7vrv6HtsJdI1R7haktx
-	 HF+/LCRIGNQft7goMWMO2OkoI/5BbrBHb+2jw8mLimzWaBoN5+tiuwCMoAKmUtZB1r
-	 3yMMYGWqL/+ThP7yHrXdVnJl4UUUH+hgjtNi4+kJUKBIjqTwTW+tLHbo3MapB/oz8N
-	 uyn/nDPtafUbjmmh8/4MDJr/IOxWQ7P4zdH/WPKuqpcgHQN6jBVK5Ij3KubRbGx1Rv
-	 NyN+UeBuD/BsQ==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Cheng-Han Wu <hank20010209@gmail.com>
-Subject: Re: [PATCH v2 1/2] mm/damon/core: remove unused damon_targets_empty()
-Date: Mon, 31 Aug 2026 17:42:27 -0700
-Message-ID: <20260901004227.89243-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260831161907.890b5e2d6c9a005205506674@linux-foundation.org>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	by tor.source.kernel.org (Postfix) with ESMTP id AFF5E601DE;
+	Tue,  1 Sep 2026 00:46:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 973F31F000E9;
+	Tue,  1 Sep 2026 00:46:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1788223566;
+	bh=wfI4nJW4NZXTURLLniIaQtBfHGjWmn+gqY78i2JXq1g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Hq5cMU1S8uQbYuvCrodD6jKmSm+wxowLUmyrGzsBsHCmq4D3xzPMTIi4Q/BnBxm80
+	 JtL7GP8is89pIBLJGtMFrDDaxmAKdnDP8dQo/uLQhHxF+1yhsoB/wUgdYfuthBFmjk
+	 tppIR+WsAf7ommFZeRL6lw0jdWpBKDxTpsuvCxks=
+Date: Mon, 31 Aug 2026 17:46:05 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Ziyang Men <ziyang.meme@gmail.com>
+Cc: Shuah Khan <shuah@kernel.org>, Tejun Heo <tj@kernel.org>, Johannes
+ Weiner <hannes@cmpxchg.org>, Michal =?ISO-8859-1?Q?Koutn=FD?=
+ <mkoutny@suse.com>, Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires
+ <bentiss@kernel.org>, David Vernet <void@manifault.com>, Eduard Zingerman
+ <eddyz87@gmail.com>, Viktor Malik <vmalik@redhat.com>, Andrea Righi
+ <arighi@nvidia.com>, Changwoo Min <changwoo@igalia.com>, Michal Hocko
+ <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, Shakeel
+ Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, JP
+ Kobryn <inwardvessel@gmail.com>, Mykola Lysenko <mykolal@meta.com>, Nathan
+ Chancellor <nathan@kernel.org>, kernel-team@meta.com,
+ linux-kselftest@vger.kernel.org, cgroups@vger.kernel.org,
+ linux-input@vger.kernel.org, sched-ext@lists.linux.dev, linux-mm@kvack.org,
+ bpf@vger.kernel.org, llvm@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/4] selftests: shared lib.bpf.mk for building BPF
+ progs and skeletons
+Message-Id: <20260831174605.4f76fe0a643fac90fce740b5@linux-foundation.org>
+In-Reply-To: <apX9zb+3awc99Pfh@devvm16600.scu0.facebook.com>
+References: <20260814075054.507089-1-ziyang.meme@gmail.com>
+	<apX9zb+3awc99Pfh@devvm16600.scu0.facebook.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: zsnap4ixzindhfm65ftqpnb88z1bykny
+X-Rspamd-Queue-Id: D7842140008
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A7B41120008
-X-Stat-Signature: kedf3gdozyw85st4zracbsfozkr8n3o3
-X-HE-Tag: 1788223355-650429
-X-HE-Meta: U2FsdGVkX19S1DX4xsA/TtO+9cYF3qyfkpk6twO4NB475XRjcESRUy4uRtaBghd63ie+e0vfmsMi/PUSar6oOA5vts1tcqVjXn207Lkf+N5Fx7hY1iuYElikTMXLTeeKolDK+g8NIeFI1WtpYvBu2ruZnm80JsOvAVVByBpzo1aF47WeY1tyeqNjqvWHxyQJbrBxAlgJagMNBAZxtYmrVqkbKWniLpMbSAMlDyuK93/+7cWhWL8fLIT2GlsHggD5XjJceygITSLS6Q0NZ9totsvaf60SWau5J4Zl8u5n+Fi5E5z4VxI08b2tm/xE4JFOE3IxrzwcKO3evhvJLdu3AemUbIF6GHgotcmEW/WBL1AiFMiDn5GIke9JCTO/R4F0zwOe81K25TwvMMer8B90vyO1bDH23E0B4SmH/MkypR3ANCRe4Ex6ABVIdgw0EaBCRnZqm+gEDFOGlLvGlFptGDSq69H44N4XmKvcHXTeZuz/Bna9kdEMk350jT8vahGIkCrvGxhdLkgi89Ld9cNdSuU5+MT59qF+AOflbPVxY7R+3ajBjmQbWYtJsi9hl0IDhJ5U75Oeo/RUV9UlHiYYPKqW/Rx4H0893rpWx83JVau7MLXN5eGZhZk94UKmC1+xQAcXnmgmbfpzgHEB1C0hHren4AeDEB0BBpaP++m0W/ONvzQbW5wJw+vajLCq7XAmY0GthjV5bXGnsHa6pdXYUHdfBpm7bUYLzW0TmSXdtGRkLPvMjiJuqLVcqmgqS4uF+1HHYMKIpge/0N1aIDEET9ivC+UDAcasDXLSe/lftJ3zgZ8zqB6U/8MMeelZdWb8eGj5t+tNR6182VxHoY1h12/O0np97JmEVMJYBDkjsHj8OX0ew9hgjQWdOoQDNxTn9t/N02DpwTqWKM8cbfrMaZV3YkE6y3Tx3j1ZIF4yzPfVxYbRIVBVQEx9VvWG6RJk17zuOYcMapiYLqkmUgC
- 7EH6FR4s
- CZuyOq+CQ+7EQ073ciNhiHNUIA0b0ng3+mhiKBeTLbtWLXemnvo9KyKYUCyrIqcV6ItfQErsr1GbR8ZK6HYGc/Ib9rW+JKb4abYxTUx0M6lRKe0wSS9py6DG0V+Q4aBxxIl5Trf63M90fLReqDqjh0CRSAarxEpYYo0zYkD/D5WxxegqPWkOj9g31+25/maTtlgsUgk1QGvhwl6WBR1kyOagSxWdxXcMa70+uaIU0nlrRL7KPlqcts7yH9oP30VVTSKCSNYgzx0i4cDCEYglALki1CMKUqD3xol2WI9MId2m+4mIZZL44FxiTjTunEquUEX/2eYcG5DrfpwxWAB3mYQJGjCLupVgqeJtQDQnxmQPzxXg=
+X-HE-Tag: 1788223567-522144
+X-HE-Meta: U2FsdGVkX18tc8xoQ/WeRSuZxnOfoyZRBxzEOPN2PFwoZ9AWQ+Jn9D4wIiLhDG4+mJOG25GuZ2X2dpLWfVjKyvR7TcLoR6BVGJvQLszZ20r5QqaR9X9dspDy9bBV/Zde+KtOrt+NEJp9A338AY2UIUXH528G6uJcSNn9wSMeNbG8fs3MKBksl/R6XA3YN6u7tPZeOwa5xxxhss4TAXt3eRwRz7RljOrnY8lblHaNgHpdcZuVVrSKEk5ZrVsYdoE1CfXt4+p771FO0tZ0Scfj8+lJ91UJqKUg483azSg61VOGpDKXr0nVS43mnavd6onsdfishvOxm2Wxznsoxw0e9fcVVlYEGMaMN8FwA2IC92ca+M5sPVFwllKWGjgl/L/nhxNuEsZMHZMjnLoUdMq++VYNnS2zFKE/KxWTrTZTcb3MtOG9EKGMS9LqdgmG6g7NoQznZhI825nNSmj/aqHIQ9N2EsQMjXfSjNMY0qGV0AalYIxkWJkOLhD7paEBsCMWVW3FMLRkA0AsMwiu2yr389Dx3ACJsIxqhMiFjiUnP3LM47O1Dhb+DIihy28+Jjydd6jl6cj/54nkLx6wDlVM5Y159UEzM/9JiA24djY2PVOKaYAV0hnoAQPZq4k0KEUFz4VulsT7gbdwCFdO69QFmlOfRGbxvCzcYaFL4pSAfHrxTvToxeJFXC/lPGJvZaJYn1LfKyiWJjGz+j+1EWBgroXqp0lIhnEHQnkp3g4mMT5I+OdCATedPNVohkz+PwSCVNPaXnxco0pbK/1jmGSqHesOIl8QjNHPfO7+HgO0+fuFT8Z9t8qrbtLHhtNnIuZlUYjAHlXzTwz6LNCdcxEy+4Ht9LUrwxfGM0qP9nH60OvJlK7plPXatNvrsy8V7c/51E9++Blfruuc1TPMvZx6OiBC5Aba0+nhst67dh9258azXM6SMJ9fh+ehiuCufdcPsYs95t2MzlJZVy5BZ98
+ LLmRV1GM
+ uc6z6fsDcVfF7kXo/0Vt9/AfrK9ZcUQPbs4jFsZW3ghlXB7LfjwPXPEFtDOJ275ZEGjXgwMnsHxTShBZwY7mE2qDPMEF5omQDzlIbsJOa4+228+gR/Q7F2SDFXllwpZifZaQIT8abT/Ck/efDT+Cfqs69O5sku8LjXHrQuuwXtSM+TJtYdPXLmwcpLcoRnZExSFGV1PXAx/UfwYdJ9LM/nuTssQKqiYdwvnoJfVWmyjC1Y/y0LnTmjPBvpHYq0eCHOU2Alu91PXwooQMqJIGvzDbFMl1CU52Mwl8caUolRX5VUFqjgGXrR63ww2T3KQhpSXUv51ImC6qjGVgg/DnEG5bJX8dVYTNsEKcLQMxqTwecberOeQ3yHk4EVshkbQbP1R+giQp7/wgUrD4Alo89oHwmUfZgNWZp7e/A
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,29 +102,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 31 Aug 2026 16:19:07 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+On Mon, 31 Aug 2026 15:18:53 -0700 Ziyang Men <ziyang.meme@gmail.com> wrote:
 
-> On Mon, 31 Aug 2026 07:57:21 -0700 SJ Park <sj@kernel.org> wrote:
-> 
-> > damon_targets_empty() has had no in-tree users since commit
-> > 5ec4333b1967 ("mm/damon: remove DAMON debugfs interface") removed
-> > its last caller.
-> > 
-> > Remove the unused declaration and definition.
-> > 
-> > Signed-off-by: Cheng-Han Wu <hank20010209@gmail.com>
-> 
-> I assumed that a From:Cheng-Han was intended in this patch.
+> Just want to follow-up on this patch series. Please let me know the possible
+> issues and I will fix them.
 
-You're correct.  Seems I mistakenly dropped it while resolving a conflict.  I
-will keep this in my mind to not make same mistake next time.  I found you
-already fixed this when you applying this to mm-new.  Appreicate!
+It was sent two weeks ago, during the merge window and bpfbot said lots
+of things and Sashiko said more:
 
-> 
-> > Reviewed-by: SJ Park <sj@kernel.org>
-> > Signed-off-by: SJ Park <sj@kernel.org>
+	https://sashiko.dev/#/patchset/20260814075054.507089-1-ziyang.meme@gmail.com
 
-
-Thanks,
-SJ
+Under these circumstances I expect most reviewers would choose to await
+the next iteration!
 
