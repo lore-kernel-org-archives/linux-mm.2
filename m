@@ -4,117 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B683EC624D4
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 13:41:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B4F0C624D7
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 13:57:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1E2C6B019C; Tue,  1 Sep 2026 09:41:55 -0400 (EDT)
+	id 819EE6B01F8; Tue,  1 Sep 2026 09:57:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 980796B01F1; Tue,  1 Sep 2026 09:41:55 -0400 (EDT)
+	id 7CACE6B01F9; Tue,  1 Sep 2026 09:57:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 896326B01F2; Tue,  1 Sep 2026 09:41:55 -0400 (EDT)
+	id 6B9D16B01FA; Tue,  1 Sep 2026 09:57:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 63DC56B019C
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 09:41:55 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E24B414041C
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 13:41:54 +0000 (UTC)
-X-FDA: 85165306548.21.BD5001A
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 13102180006
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 13:41:51 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=a2x4MF0q;
-	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id DF5B76B01F8
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 09:57:41 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5808680444
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 13:57:41 +0000 (UTC)
+X-FDA: 85165346322.04.2C5FF2E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 508541A0008
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 13:57:39 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="MtJhN/fn";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788270112;
+	s=arc-20220608; t=1788271059;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pkBqQIbzItUlb5ul9BtUyQnTsn7O7onQD+B4jNcuLG8=;
-	b=VSzIXfo3MLfU77xp7+vcr8bDiy2ywVbeNwPM0c/5reA/64T5zWrz1/qbryhzjeRCWlTFk6
-	J2zHZZCctLL4bNsOtVg+PlxYin28g8uDnAd4UqyK1Tck8GWdFNUnn1YbapHVhxgcOhRio4
-	LMAdPcNNOwO0+ZF01bg117MxTyMiI8o=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788270112;
-	b=S7qPnXkCOCU2ilslu9njC1MvXR5k896j6ZEi5GXpKJBxIcTwYFIZWiC9UDI326IMvZ8UuK
-	zD2XTGxBa8T0PbodmTVHfGkJ9BTU2PfYc1uIjI65JDWw4F4Wcso0g4c0fF0fIjh8VBTwoU
-	kPuk2qaASsUNWbVQi6xmbdV3isTiJXo=
+	bh=agwo4ogI1pqxdy5iNzHZWMq9fgC/4O+9PRQpyNWft68=;
+	b=GdRERrNANizs71hXifIUokM745A8wVfI8/XGwRvq4lQUzhOjebYLxyqbKSldzQ/00C2Jzz
+	QCeCEFYBU8Js/FKR9szr15Cl5mVZ4eB26mSrnndhPo2T/Xwmhh46iEMeqJQCYXuzQXHJBf
+	ZzV2sq7MrQF3Qty0TchjLHyU+jrtC8I=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=a2x4MF0q;
-	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788270112; x=1819806112;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ef4X3KrThBCfzNj00N82Bs0EyfQsa2udrQuRrXWCqew=;
-  b=a2x4MF0q4nq5XgWfwjBqv+tWEWi63sWIsVP4ootd0pJd/wqvLqgUGHYR
-   QBhtB3ERJbf4YSG1KlrkYNTIUsWx4BGk6b+5ybzgShrU9FxJJzOJC1m0s
-   QHl2PAsSG5RP68rSOo7TNbS+map2i1jU3D+tE88IDk7o/gixfyMY4jxR/
-   j8/A08YuBLvVsoGsxpaR1Rp0TrFuRdQ97kNyQNdJ9ABnlw194GxGcK2vV
-   5NBl3b+TUCCGsSMai8ymYu9PZ2uvhCFt1ZN4KxA+UO4XNe/KdWJnwVmyr
-   qkThQiDiEqGJzZ5QwgGR0bY0bAgZ+ylyZU2wh/6K3wg+mID3ZWySKYo0x
-   Q==;
-X-CSE-ConnectionGUID: eA9V5PcqTQKjutzPj1lapQ==
-X-CSE-MsgGUID: X635MU2ZSjC+OwuB32kKGA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="106218183"
-X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; 
-   d="scan'208";a="106218183"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 06:41:51 -0700
-X-CSE-ConnectionGUID: xF4XZyquQGWdm/NY+bcZhQ==
-X-CSE-MsgGUID: Vi3SeTLPRMK1o+3SmmDfRg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; 
-   d="scan'208";a="268571051"
-Received: from lkp-server01.sh.intel.com (HELO bfac249b2189) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 01 Sep 2026 06:41:46 -0700
-Received: from kbuild by bfac249b2189 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1x1OkB-000000000rE-2GDC;
-	Tue, 01 Sep 2026 13:41:43 +0000
-Date: Tue, 1 Sep 2026 21:41:34 +0800
-From: kernel test robot <lkp@intel.com>
-To: Bingfang Guo via B4 Relay <devnull+bingfangguo.tencent.com@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Bingfang Guo <bfguo@icloud.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/memcg: clear folio memcg after changing per memcg
- stats
-Message-ID: <202609012136.TM23t7zi-lkp@intel.com>
-References: <20260901-memcg-swapcache-stats-fix-v2-1-9caad330459b@tencent.com>
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="MtJhN/fn";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788271059;
+	b=3cgWAQeqQPpraS2oPwGkRDqoG3hzIzmaMz5zvx7RG8TXOiItvqpYn22xKe32xoH9MfTj1u
+	5kwXi1H15o9PiiHHPNphorMGBlrUoN3PSnKIvmyejPPaMSVV862jPJ1QG56f8T0JiQyyI2
+	RS67r88Et9wT5Xy4zOIK1wzFKn3oKz4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3BF6343200;
+	Tue,  1 Sep 2026 13:57:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CA531F00A3E;
+	Tue,  1 Sep 2026 13:57:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788271058;
+	bh=agwo4ogI1pqxdy5iNzHZWMq9fgC/4O+9PRQpyNWft68=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MtJhN/fnwJpQ0jDMdX9aHpHd1KWLdoQ8RNyZmmbTur0MWWXkmPyj3DHXvlsvmWwoM
+	 iSU3lqn5xllXqxFm2mSgQzIn8ghlKSIaO0g5Rmtqs9Znc70lZf3Af0QFtWE66UeMmD
+	 hqK7yAgo/u0x5eWbnXk7HhHlszEZwZ6B3Xb9J9B/Y3l/S+1652MVDWGO7/3KgSHbSA
+	 t7TKwr333d6Pek6ziq9tPkoZLuqMJqbrsiIWEM5cbbXgrruzzallxiqLoLW6sxnjAx
+	 oNcctNxr/JWwdomR51woir0FpdUhsXHafeDZzCiqTZzSoXNrhOjyF05PMcuMDQvUYs
+	 x8tUh8Jwj5I+g==
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 177151980075;
+	Tue,  1 Sep 2026 09:57:17 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-08.internal (MEProxy); Tue, 01 Sep 2026 09:57:31 -0400
+X-ME-Sender: <xms:vNmWahMoRfGHJylVp69tkl0ZxHuyu14twTOMSzDVmUdqODOOFCaOUA>
+    <xme:vNmWamC04sA7HLbhLFXFetRTQirQ4BCq3h9mf_X9eZoWhHHweJXfeNQnDFEkN-eZU
+    TNHprwg5j4bwG2-RtgLS24xR65NPMHQ58PhK4w0lkjNf7M__AtigCJf>
+X-ME-Received: <xmr:vNmWaq3HcGhSb341ukDeOtyXnIIR93_LM4ZWQrR0RvGyHQIkedHYy9DG-ho>
+X-ME-Proxy-Cause: dmFkZTGhE4xc2F35+/cH9QWJSP+T2sSz31kKWkLnMEla92oo5cnqKuXMLiYgktGt0fz0/P
+    1nAHqKz2XC4RLt0sZBuXgNoB+I3Lv5/lZeidGsyd69PUr2tNaXTbLl4Hq1jVnQD2pxKsB5
+    RUmimEN9ymjBpSBDK05+FgJk8e63uei569IciHBQw1D9FCH5SBdcJBtIvv01IcUYKhgTIS
+    f90WviMk+GkUmSBdkywQGyAi+Kb+Qs4cZvbCzXW86phJx62/9vfGS9f/B1vGm3MjEXgufi
+    xD125CxPznssp42WHeX1rGj2+Px0NTxJU25KbS651lVg+nwXVCAiD9QMRn4oxFx34KkMYx
+    /ylDM1rHu63l41H8z2zMGbuFg+bbu5OoPfGY964XH8pFkw0h2B5akZ5tb7ZRd15sBoxvJ5
+    9ZPlIQHmBss5JGvVitt5oDAdab0/sDuOhYj6IGcWNKZc4l5IguhFNv0eBdiZ2XkP48/xyz
+    q6bQQrm1dnGYKm/bGEuYX/jvKq3w6ZA5D0pVnRf58fwOUna5/8IR1fgu8jrX3MTvyrkxwQ
+    2WRtxks1DmwJsWM60SDXg8t4yPY+L4AyFb79enpcuanRGGerAd74MDz5L2Upjp9/rU+vza
+    OvhtVRTr2CvEdlW0VE/ceLVnrcS0aqrnoB++f7ZsN6y8Joe2E6rYjhbsCAXw
+X-ME-Proxy: <xmx:vNmWalhfMApERZzjpc7TJG7GtCgdX_4w67qtsX1G62pSARN2GZWDIw>
+    <xmx:vNmWaiXm6FAPUBkUzXVBQI0eO7tHb2vPP-rixD6Ad7WIkQTws5E-Kg>
+    <xmx:vNmWagSsKBNh9mcPCUFna8QpbE6wA1vVhKB8VhCwB5se-N496qRphw>
+    <xmx:vNmWahXZHR9XIJgivKj91oeRT0NDLSv9qe3xafv6It9647nhJIe3lw>
+    <xmx:vNmWajSxgwuhyjaLfEEt6Ejf2oTMeCpXSZHSN-d4vScBLmiRwr-9557Q>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 1 Sep 2026 09:57:14 -0400 (EDT)
+Date: Tue, 1 Sep 2026 14:57:13 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ 	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ 	Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ 	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, 	Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, 	Usama Arif <usama.arif@linux.dev>,
+ Guo Ren <guoren@kernel.org>, Brian Cain <bcain@kernel.org>,
+ 	Geert Uytterhoeven <geert@linux-m68k.org>,
+ Dinh Nguyen <dinguyen@kernel.org>,
+ 	Simon Schuster <schuster.simon@siemens-energy.com>,
+ Jonas Bonn <jonas@southpole.se>,
+ 	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ Stafford Horne <shorne@gmail.com>,
+ 	Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Rich Felker <dalias@libc.org>,
+ 	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Paul Walmsley <pjw@kernel.org>, 	Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, 	Alexandre Ghiti <alex@ghiti.fr>,
+ Russell King <linux@armlinux.org.uk>, 	Vineet Gupta <vgupta@kernel.org>,
+ Michal Simek <monstr@monstr.eu>, Chris Zankel <chris@zankel.net>,
+ 	Max Filippov <jcmvbkbc@gmail.com>, Will Deacon <will@kernel.org>,
+ 	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Nick Piggin <npiggin@gmail.com>, 	Peter Zijlstra <peterz@infradead.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ 	Andreas Larsson <andreas@gaisler.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ 	Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>,
+ 	Catalin Marinas <catalin.marinas@arm.com>,
+ Mark Rutland <mark.rutland@arm.com>,
+ 	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ 	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ 	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ 	Michael Ellerman <mpe@ellerman.id.au>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ 	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ 	Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ 	Sven Schnelle <svens@linux.ibm.com>,
+ Richard Weinberger <richard@nod.at>,
+ 	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ 	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>,
+ 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, 	Arnd Bergmann <arnd@arndb.de>,
+ Vlastimil Babka <vbabka@kernel.org>, 	Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, 	Michal Hocko <mhocko@suse.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, 	John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
+ 	linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, 	linux-m68k@lists.linux-m68k.org,
+ linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org,
+ 	linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ 	linux-snps-arc@lists.infradead.org, linux-arch@vger.kernel.org,
+ sparclinux@vger.kernel.org, 	linux-alpha@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ 	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, 	linux-um@lists.infradead.org,
+ Hugh Dickins <hughd@google.com>, Qi Zheng <qi.zheng@linux.dev>
+Subject: Re: [PATCH 12/12] mm: change the contract for free_pgtables(),
+ update docs
+Message-ID: <apbUpMDJglS99_yK@thinkstation>
+References: <20260901-rcu-pagetable-freeing-v1-0-5456a81c8212@kernel.org>
+ <20260901-rcu-pagetable-freeing-v1-12-5456a81c8212@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260901-memcg-swapcache-stats-fix-v2-1-9caad330459b@tencent.com>
+In-Reply-To: <20260901-rcu-pagetable-freeing-v1-12-5456a81c8212@kernel.org>
+X-Stat-Signature: k35np49n1yro4q7yogq19js9aknu6gur
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 508541A0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 13102180006
-X-Stat-Signature: jbrdagro318djp6fz6hae8cfmss3zots
-X-HE-Tag: 1788270111-130397
-X-HE-Meta: U2FsdGVkX18GBp1P5jyZ4RCMpb9kwYvXQO6l+9w1Xv5avjfkQc/aFbD2nlc+YeyP+4qlmjHj2mmvsZA1N3dekm3hfgA3fcpenZALAZ+dkNWPFMeQCR2w7ztBw2omkdJamCKohsZkjPOSpBkBtmUcBZOOuqlgtSxShc2uA360ADQPGYpWy4itEMn9u7E/yxZSMoxzMUeNPZJvFNOm/pJzkOjk0S6J5sKeRM6o/yfgPAq5AOOZ2gsaj60QLSaYKLblBi2/YJ9Gbwi8Mov3mbxbdxkNzUKprTWZ2KgIdB0GpvGTme6DUyH5JdyuGTc8hQOHtfYUe6yXpEnlgtyQReg0HrWXVlJ04bgKieQe0K+ypnKK55drctSibmZBHaOs1uEOjhrViU2FEhNBP7l2ZZXJSrdeOFctOJFV5Tra1q65xxaL0gmYz1OnDuuH2q9IJEQMVNTm5xICEcFBDEPJ/bhZCBddxyU0+6NCu1wPSidy1xifPhqsNS0LyrgTphvMyH6++VtYDQSl69HTBqgyUFO31N9rFsjxRRfaoI+T/elaflCdfsOL9WJm7y/26SN5woqNNBwhUs3XPY97MfMVfPKGDuiBYtVUBSd+8y2srWocVlDMD7wfZ242MGkaR61Q9nl4u1IvzuYjT9ZWsVKAfUbvt/2SsY2nD2PB/ZlHXds5YQKS8+J7JEeApbc9b/ONxC3ArdSjTgpZOZGHPX/C5D4X4cxbaRkJhdjrIbetHFiUvxc0f/Keite2sWzQeVtTmd8HMJMxLVOBhuKxoLJwmHr4fuTBhV+/06fy3IR4zA2fQWRMl3lJce2b5l2w7E/xk3JNTKmFU0Mh6r1r0MU9VPE5WeXl0NztvUfUeNuMrBIU+QZ3I3yJ66n/wPh+GGgSI9DtwZTue1MvbdNANqSju9LNuIBSdxmnyp98Atrl5QNmVO1QoYV2Z+aF52SEknKEWjL0RzXnTCzDJJr01L3/lmr
- D4Vx1Tbv
- qUJSLrsxYU6IUn4W8aor/X+66HbvsKYUiZGdHYrx1h4MM+0Q2yl6M9tBl2jQvAUWFnIA/f1TqzCXR7Xi3fmO/S5ul1q0xnYyg+PHuEJ6dtoGTTN3E69O2kjKA0TS8CrZKW+RJk289Z0c50N7ulG9beXhSM0JaAcAasSUy94gid1nFrgdfeUlh2UVS9XlP5nsbtOAud2+1DkgkCn/8lKwEkBIhp+pK0ggkccU2pZ0bbF+PKDp+6ZKwP2EW6auBGJLRikrTFDCm2opSN2dNOQMY/8wu0hxrYH+DfPBhLXof7tJ0NZ1x9m/Th/lFnMCTSQZ/DMecI3HNgItrBxgKUn36Y/GzDa9zflMx6JnJGqP5gHfIHgroZ8Vuo7CPO0tgvNC3DcZD8Vz/WcBYewuHOP7E93iXVPBgfxSeseMULE/pyVi3+osuXRyGoScwpBy9frVkDY5WNC/yid/8J+8/R9O+j9UDUsJMRebxeHQBHiA765BFu6A=
+X-HE-Tag: 1788271059-592185
+X-HE-Meta: U2FsdGVkX18cwEkLzapC+RCW5DltnCekIBWDJcttcXFWYE93lsSsWpyz19WDUzUh65IHNeVti6ykKlqCww9q9W45Kg+TRUo+m1mMRK9ZMg0NIKFB7G5SeeYlGq9Kk6cQFNaIXpNJebRRQ889dkYu/tgzs9SPZu7gif4M0aD4quamJklOQ9MZPFUMWKt3u/XkiA3Ek7U/qisQRtVVYKgJApYcsq/4PV7fBrGOGoTAfb1dSPoznQBHcrpnWH0C3lz8psud9l2TuBHi0unskqjeutX1DKAvXCHf9cJHChyiRfWq2VuUvSfupnDAHghD+fzh0t56VY+IKjylQnwuQJ0diV4NWF3I99DOmFMF7UIxFrSVlizNj2WPDb4sSGxlHgReqxMBKgEo+WgofrVPawMniKGkYmRRAnphQ2bMA+x/uHcViDt9SYk9fjV6IpMJYi030BNhSkpaf4KyeqS1TuaSANXjqdUH9uXxPhoRYNXbMapC+R6p0GquS21k8mhAXayv4sK6o+/kZKwExmfmGbVn1Yp5tj3PG/xiMAjYPfpTFT5nU486hw7DDqLTD5lNXvX1Qn1IWE/NtrKS4ey0OjZWoHlwgSVSZ7a42k+4aC/sAlRrFcwbMDngUV/FsxpFr99h3w9udne6BimSNrL3pc7pk2JikVlmqk2sP/OhLG5Vkgo7wv2fTzxqwQkohHRIaBpApINUkk6dEGz9f1eSqX1jEfN6snBsXcRYbmOm2eAxYuqFmagE9ZtStE2amidjOoboqCkkLfI4TDz0/o4JzPLtJgYsOMbAFKDy94tVlUfwfQnIeDNYHSUMv+Gc76Ioy4ZTPdZZqi4lfskPEDfGaonqX1Fr0d36O86I8OsIPHq7Fv/SY26Df5uyiSjgzhfYoTkTDyCdlh/wOuGRG4p4zjJjOVxQ0MxCci4wEEXrPBgbnBB16+O6nuOM1YoesveVvLH+ewBTsGpEhjMiN/JKW+s
+ p4QEfhIv
+ BP/CDa5YyhYxEwzgsq2B6oKI22XSYenqpvKTx7VlG4/rSBP6N6RrEe1zo4ythgmHlLn8A2WS9LjBFutRa3WKUMtLkKTZA9qlu88mJ36RBuiy2Az3SMlsLUm3Ft713ifT7HPlauK6M8m3x9XVjVe94gjctkCpllqX92gWgpniJW8WE2pwZrdAxRkXosm1u31Xsl4i2Wg4ZrBNgKcVJX3M8x3G2BTzFQTM3zq6NWjj6itvtvdFkXNv0vwW51xdZZlLUV+aGC1n6gCuVnDt5eOvI/Qh8DUh1owjIED1Oty8w/dd3mf6XCx0cQw6MandHcOoYg0aXwmWCFCdRjR7usGe2IRXkG/Bwp3XafUYODfEzPLkUXUKXZOQEAmwqgI8oH4wUdxT1NXz8eX8SjgX5pfj2zQuOYQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,32 +178,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Bingfang,
+On Tue, Sep 01, 2026 at 12:01:32PM +0100, Lorenzo Stoakes (ARM) wrote:
+> diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+> index b91b1a98029c..ff8ff3706485 100644
+> --- a/mm/pgtable-generic.c
+> +++ b/mm/pgtable-generic.c
+> @@ -386,9 +386,21 @@ pte_t *pte_offset_map_rw_nolock(struct mm_struct *mm, pmd_t *pmd,
+>   * be read-only/read-write protected.
+>   *
+>   * Note that free_pgtables(), used after unmapping detached vmas, or when
+> - * exiting the whole mm, does not take page table lock before freeing a page
+> - * table, and may not use RCU at all: "outsiders" like khugepaged should avoid
+> - * pte_offset_map() and co once the vma is detached from mm or mm_users is zero.
+> + * exiting the whole mm, does not take the page table lock before freeing a
+> + * table.
+> + *
+> + * However, the PMD entry is cleared first, and the table freed only after
+> + * an RCU grace period, so a walker that mapped the table under
+> + * rcu_read_lock() stays safe, and the pmd_same() recheck in
+> + * pte_offset_map_lock() detects the teardown.
+> + *
+> + * Therefore it is safe for "outsiders" like khugepaged to use
+> + * pte_offset_map() and co. for VMAs that might be undergoing page table
+> + * teardown.
 
-kernel test robot noticed the following build warnings:
+Is it strictly true?
 
-[auto build test WARNING on 88297631d4d42f6004cb39c0ba3da7d2d10a616f]
+free_pte_range() clears the pmd without taking the PTL, so the
+pmd_same() recheck in pte_offset_map_lock() can pass and the pmd gets
+cleared right after.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Bingfang-Guo-via-B4-Relay/mm-memcg-clear-folio-memcg-after-changing-per-memcg-stats/20260901-144911
-base:   88297631d4d42f6004cb39c0ba3da7d2d10a616f
-patch link:    https://lore.kernel.org/r/20260901-memcg-swapcache-stats-fix-v2-1-9caad330459b%40tencent.com
-patch subject: [PATCH v2] mm/memcg: clear folio memcg after changing per memcg stats
-config: powerpc-randconfig-r071-20260901 (https://download.01.org/0day-ci/archive/20260901/202609012136.TM23t7zi-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-smatch: v0.5.0-9187-g5189e3fb
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260901/202609012136.TM23t7zi-lkp@intel.com/reproduce)
+Readers are fine -- __pte_offset_map() holds rcu_read_lock() until
+pte_unmap(), so the table cannot go away.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202609012136.TM23t7zi-lkp@intel.com/
+khugepaged is an odd example here. collapse_pte_mapped_thp() and
+retract_page_tables() don't rely on this recheck -- they take pmd_lock()
+plus the ptl and do their own pmd_same() under both.
 
-All warnings (new ones prefixed by >>):
+Can we say walks are safe and leave the write rule where it is?
 
->> Warning: mm/swap_state.c:317 function parameter 'swapout' not described in '__swap_cache_del_folio'
->> Warning: mm/swap_state.c:317 function parameter 'swapout' not described in '__swap_cache_del_folio'
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
