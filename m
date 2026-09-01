@@ -4,102 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01A0BC61DD6
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 08:48:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43137C61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 08:56:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0E266B00B0; Tue,  1 Sep 2026 04:48:15 -0400 (EDT)
+	id 380E16B00A7; Tue,  1 Sep 2026 04:56:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C96B06B00B1; Tue,  1 Sep 2026 04:48:15 -0400 (EDT)
+	id 358796B00B4; Tue,  1 Sep 2026 04:56:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B390D6B00B4; Tue,  1 Sep 2026 04:48:15 -0400 (EDT)
+	id 26E446B00B7; Tue,  1 Sep 2026 04:56:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 899646B00B0
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 04:48:15 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 10052A031B
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:48:15 +0000 (UTC)
-X-FDA: 85164566550.28.D8CD5DB
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf13.hostedemail.com (Postfix) with ESMTP id DE2C920003
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:48:12 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=crpT1F+U;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf13.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788252493;
+	by kanga.kvack.org (Postfix) with ESMTP id 079816B00A7
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 04:56:25 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7CC8AA02DB
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:56:25 +0000 (UTC)
+X-FDA: 85164587130.26.5BB5663
+Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 88184C000B
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:56:23 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=SmFACr0S;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf22.hostedemail.com: domain of sun.jian.kdev@gmail.com designates 74.125.224.42 as permitted sender) smtp.mailfrom=sun.jian.kdev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788252983;
+	b=P17Jcdj0GvnecO5zXfQ2Y6a4h78rlX9R1vXCTyiJRx4gprHsJoJn29rMadDWwCGLipNZlz
+	ZgS8+zMWC5k7Fvabyhuhr6NEAF3RMXVxFF8ZdbHcvoEZfEgDCvebNSmk5wNE6id/twI/F8
+	w9I1+rOEL98m82+Kd8q8dVqBVAt0AkA=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=SmFACr0S;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf22.hostedemail.com: domain of sun.jian.kdev@gmail.com designates 74.125.224.42 as permitted sender) smtp.mailfrom=sun.jian.kdev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788252983;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rpu/fdT1/zQmBW2aWFatHbtf3Lbyi0UgKBAQFFYR+/8=;
-	b=Um/5a3y9KuFaw7GjoZ6KroQGyrhFfm3SCbY7Cklfgakg1DiTwBt4GY1YwzWgVDHxFp5NDm
-	71OSaY5gCgz2x9/yTjN3peIcu7WtXT29zmdLVKFiJafAzfR44zdcc82sHyCdB3hlB/zX8w
-	gtZgQvIceyVYbht2lUJuDUNMwTxSQOw=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=crpT1F+U;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf13.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788252493;
-	b=W2725PryHGCYVFUzeo38y9WdolzUPscmpjQLebxHSpIriJD2kmpVcsVLFPaBgywx5ByZKf
-	7GshoYwBMk5hLO+M7gXYbTBJWPMDRWoZ2WkVbeZ79Rtn+/gOisN62abTuBK/u8b3X1dnlB
-	ctS3wYL65yVLqnRT5Pxwv+8YIxw5QVs=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=rpu/fdT1/zQmBW2aWFatHbtf3Lbyi0UgKBAQFFYR+/8=; b=crpT1F+UAX0B64FPtk3BPp45rL
-	WOezknIaCCTAx8c0mbtWllpYwAhnPrEUj1Dw2yNcqHBJoMNNsoXvgyopZ3oE5E46OnA3TV5aLsCmf
-	qjtj9YFWseWAVp7NdLvBthCj+SJ/DYkji7LJsRv8jbMDxUtT0co6JL8UDEivWcGM/wKahhwf+kTV/
-	Aa9oEEuBOBJ7/KuIIkmkMUQ+ACck6r+vLqUbOaqngRlUHX7K0/PIiv/0uuecPishpyR8Y8ArkXiKY
-	CsxDpBdAC1n9+G5DTQTKvvxZq249yEn1SO06VMNWiQtEOaz752NQZLpfuZElaZgfORuC0MIsJ+VBd
-	jq38t8rw==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1x1K9y-0000000AlQg-2bQH;
-	Tue, 01 Sep 2026 08:48:03 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id C3B5E30031E; Tue, 01 Sep 2026 10:48:00 +0200 (CEST)
-Date: Tue, 1 Sep 2026 10:48:00 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Jianyong Wu <wujianyong@hygon.cn>
-Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Chen Yu <yu.c.chen@intel.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Phil Auld <pauld@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, jianyong.wu@outlook.com, zhongyuan@hygon.cn,
-	huangsj@hygon.cn, wangfengyu@hygon.cn, yingzhiwei@hygon.cn,
-	justin.he@arm.com
-Subject: Re: [RFC PATCH v2 02/23] sched/topology: Introduce a NUMA distance
- matrix with unique distance values
-Message-ID: <20260901084800.GI4121339@noisy.programming.kicks-ass.net>
-References: <20260827122816.756234-1-wujianyong@hygon.cn>
- <20260827122816.756234-3-wujianyong@hygon.cn>
+	bh=b0cVoKLvyKRi4arSpTI3Loc6vRV6gV/RZyzB2+ewkXs=;
+	b=sVAWkpWdVhFcnnXkUxEnLBBEnUX5DXd9BisvZYCRYqIhE10CAI/jRARVz8j/p8+aiFVS2N
+	sqUg+1ioywQzi5rKtKwP7OvSfQDkUFrpkNWpnWj3yEMVXO0ND7CcK+jgSYyulyRDdjqtvD
+	jOgy7CJPdafwtGeqW+XThm4qQ1v5QXs=
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-66e5e33a9d0so964533d50.1
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 01:56:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788252982; cv=none;
+        d=google.com; s=arc-20260327;
+        b=l1AWFjDR209py6i1+PGj9EF2gYyUMwNBoo7I9Tws+ZljPc0OdYUNk7V45kqs06w9LV
+         O01J9AqLmFNRkKgzBJZR48m0eZ4AWtwlZOegsnk9AkyBhp7Md+XO8Odl/XWL/euIJd/F
+         oFmRG5pqrimt6pvtUM6FfWluUr0yAjb6X/V6js5htXjNMxdolQc5mlURju/2rUtMeA4g
+         sBEy2ykdEy8vtGUPHxgOd+DKx/lQKdaUJBrjxqOIlkTvjOMT2F5CrMTPie9KnUSlxQ/j
+         3cBNeObZ1OA1yfSZInywXnlDz2sji1bvnGmQqwZQFYGermVqjGw08BX/0ftCs0rrk3rr
+         ZPPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=b0cVoKLvyKRi4arSpTI3Loc6vRV6gV/RZyzB2+ewkXs=;
+        fh=5JuOlmeVarfmGO6EYS5WzLjKwTAmlGz6XKECYaHuS4U=;
+        b=IfG+Ss54c7VfokaRCfao77G4jZ6JA3LBWCtbwekVjFo7x1MdXlPd3gkZRQCQMQAZIs
+         FuDYQpsG3IRPGtpFj7+1CgmOc90qX8d7o7pc8UaTgy5YTqwjo8UOOBnnKWur+F64CBLe
+         6I7d992KsR5IFx7Kr6ZEit0N55C/wulJboTggbd2SgV9vYKpwVJGZZPXz16fHqiTVvv3
+         PmLxjgD3QEzbXRIgbQbD5g3EIJj8+Jz0PA7grxqnL2pLKqa79EOauRuJQy87fgJbf6wF
+         rXYY5+9/ktmd6jPw+1vo/7jgMizHrJ21EYeHZfqnYl5vhaV/vEFY3XuMyc2C/IyzoKNE
+         Peww==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788252982; x=1788857782; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=b0cVoKLvyKRi4arSpTI3Loc6vRV6gV/RZyzB2+ewkXs=;
+        b=SmFACr0SP9QMneArokDhpoO9bsIo3cp3gOIS4dyw/u5y3LJEkWEwzcCb+SLt1tLSyb
+         4Cdc9GO1rXa1PzrXRQ0VXlxwiRDl2lWV2++zyDb5F7C/YRkHecQdZsBeL6jHBxBlKxuf
+         2zlKP3jfpvYT992nxQjAQF9mMeUq2OU9lzGQcQQlqczWaxxC3SFZu2tQHEKydUYeNfaE
+         hC5Ci6s8y7l86nwYKisIu2ysngI9y2g5ekERmPqYHwPBAtJuLeh8bD0wduzxzfDEWU/D
+         anMM5MfBMo1aoWaxHm5AKxk4IpBpTFYuhXfoGVIcRzaa3TxXT7QORvkwkWwhuw8m8tqa
+         qQvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788252982; x=1788857782;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=b0cVoKLvyKRi4arSpTI3Loc6vRV6gV/RZyzB2+ewkXs=;
+        b=fcdwX1NV7+M3lRi6JfbkJBKGRFQPzwzEMgap4GjEji5Lp/lNiAI5X26BR5jmgLdyTa
+         HJzZujZO0lZv+fjW8Y+jR2aVFM62Fd+fIsp0B6dhm9TPMdUlJchTbVhV0fBELF8Qrduq
+         5DD+zar36xmRM6WbY44HxFrqbWp0BrhQar5cCmOOJE3yv8BwKSTC4ymV25zCrAz62RlJ
+         tJN5qOraMyTeqj66r6UKVmBiggX1Wemh39srSGiKX+sOsS1WMUr7BWMfyJRZ6efgcBS1
+         eJFuE46K1QkqjInLkZLXJUdqY0L3QfHhsIsffWrLXbn2OqNzs/xY0y/pCTthgWXmDdWB
+         cdvQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxwJ7KQSC6AXvUCpYc7SYfdM4ZYhPDrSSXdwnX+btQ/Sl8QAeMjCvTbGvk7vYP5HDPxBPazjlHW2Q==@kvack.org
+X-Gm-Message-State: AFuF++msWNM7XB9fpaA7qnaRMNkQk9CEAkQn2MgKH+P5na00FHwMtGr1
+	0QPL2svRB/xs2fhW9CDM5OWdcEnpP99XNznDHQtDWQ3nbnbY/8ew3Mesih0EDyHWWXfiFzg1sy/
+	0tQ6XsfYQwtIZ63C+LLOIRFRKGHSD/os=
+X-Gm-Gg: AYBFou1MSCJVv/nvoVHbr4miVlpybtO7bPfwy47RiAxWwZJn/0Ds4RrU2U3TJ1myKpU
+	jdNXNlVPIDQWsoJgfh7VYw2vuk2xClkujon4zsS5hANjWjIWREM2MET+b4RqcVWtR4YqfWGN5mP
+	uwjP92FJ5mpQ1kkV0FP+1XzZg/ytOpaH8uD53ZLRw4KgxZOGWVuU++OBch2/EMfrufItEEYiugs
+	r59u4+pTsiPob7d7GB8r86lOTMTtjSS0jpO57YiSAybnYQ693XyVX1YBUWVG8iihWuj/anjTlzC
+	TeKH2EKt5YrXCqWvHoliZi1N7V/rWHihdtZdTbSgz4BYTez9N4HJvKmHTAtIDqRwzt9qcukAVCe
+	lVGYWtc0BGMjSnB8coCQbx2M=
+X-Received: by 2002:a53:d7c1:0:b0:66c:85e3:7f28 with SMTP id
+ 956f58d0204a3-66e4c7cb058mr7321594d50.48.1788252982426; Tue, 01 Sep 2026
+ 01:56:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260827122816.756234-3-wujianyong@hygon.cn>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DE2C920003
-X-Stat-Signature: 6o5x85wfmi5ofpgupqges838xmu8aqfx
+References: <20260831092305.42062-1-tasos.papagiannnis@gmail.com> <20260831092305.42062-4-tasos.papagiannnis@gmail.com>
+In-Reply-To: <20260831092305.42062-4-tasos.papagiannnis@gmail.com>
+From: sun jian <sun.jian.kdev@gmail.com>
+Date: Tue, 1 Sep 2026 16:56:17 +0800
+X-Gm-Features: AcwNN1XIzpApr53ZwDAkoriLyAfCiPBC9rJXu6HlLdHYqQbCNPiAd7kuMexr5Xk
+Message-ID: <CABFUUZHEJ0Bbu9QvT3AVkxAY=kgFzSA6fDj0hOwgQJ==bEaA=Q@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v3 3/7] exec: Clear bprm->mm before dropping its reference
+To: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
+Cc: bpf@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org, 
+	akpm@linux-foundation.org, david@kernel.org, ast@kernel.org, 
+	daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, 
+	kpsingh@kernel.org, matt@bobrowski.net, song@kernel.org, 
+	utilityemal77@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 88184C000B
+X-Stat-Signature: 5dm1jx8tpwcpa4dbfch8cn3xgrcxzsr6
 X-Rspam-User: 
-X-HE-Tag: 1788252492-340962
-X-HE-Meta: U2FsdGVkX1+nXI7XQaDhMQZSHUyNoIHxWiVF1TuUb/NrPCzjw+1VoXcnDAyg22zoNzbu4zfcjt6wTpgPuL7JzWCeIYzfABKiFyToGT+gaLCHE7agZkpRvJ4e+awBi2frmbRjlH3KfKjwLTD209aCvok8DBMAPT0JgmNzHcI6GmeovTohKY7LS25/f/0kJUHLUZRn5fIlpNJrj3BRblnkHxLCr8DFhkwMM6RKj6GwqjNJKkhYYHJYFfEzR9EY/jgYacFwLPVwhoiIS0DD0X1L4jV8XXAlgZKLjUmN4UbXs+6fYz7rUNWH6nV1M56vRqhoNbFWSs+/JykeAKcPiwNhfmeqzukIkwnv9n6Potpx9oHgE6Nolp7FT3mhQaMaOrixHJfEyeV9fznRQAEowX3vbUsMJhFW1J0HsTKWDUM4+qAp1Ava7AFksPMbXfaDn19nb7OF2ceJcr27UwDRrDXPnWSst2W8pbvu2D3TZXeURLw90I7wQXn4ozr5hBy8IrJOq3jaS1yeA9F5OxQ6rCncHwgVLI8vOkcT/uV44lopsHPbQlp/E9tYJcPmoFr3ZQxsV6AsYyPmMlkgkW3c1b4+0vWd8+YFBA6sAhExqep84qH/5VKWJdTy1wdQMQwubevDz6GVv39h7GZUwH6ax+5HFjxKP1T9bbu7bKww/cBXD+z/wGDRd083BOMpelO1rLc+RUm1KE1J9Z9MIqKOGhEGLV+dXSP3RL9/V4fraY+bT8q+YhOxOkckEJpwhsbrHy6QWW50sX3gDynCawQDMotCYAvb3ao4KSi39Rw9uVtYhALIpkLNbvBHjk4NEQi/gT0vGcDxa3toUwq3DyY75EX0YigI8i2DspgTMZppny9wcm07+Br91+UcIfg2eW0gpSXlCqwvHdgtsIzOT3yTFkpv5E55GL6gjThyghdghfugXqWjHML3xS+YfyghkpZK5mrx9JBpYg9HsvIwy+76cja
- Foi8JQzp
- 18TBdeq+YAAv1W8iE6cq08ei8T3UUiCTJeaDGHNdtMaNGWmiW09jNbeEFvN1RD1bS97hIqDUOBLG7WpT94H/Qt/wvE/+T6+BjbnpfYw5K0/FTqJd6NCspYATbg1Gg5kGP9nTLRdqtUD9QJVYDlFV0dNDGKQAJ1y3tKDL/cEU9stH67PCov8Qtbh0HF0JDWkNaqNe7/H+sdgUxfGY=
+X-HE-Tag: 1788252983-388849
+X-HE-Meta: U2FsdGVkX1/mVorGBYHgp6sPjrQsYmbFp3NbTcyKM7Fw0YjNeOq05UFKCMZvdmHwBpgD9vcDcx3GKu2okp5XmYaDctSNoBasH+9SHlYFBt+AAimboD5+1/w3e3GhTH9rfWPiLyupZGtGR8ifQ8CuiQhwspMmMwdUEsJ4DOR+vNpZN77KUzw5bGIkRFZ41ev6bBcxcLIoSWVVbC8SS+F6TQ+KZYgAVKvcduIM7Uc67nxRMBjZ0g1Uejj1YEO3asmPsCAlzzDxPogtQCKzSTFlGWR69CVHX6vKxXxerceqIZ6jaF6ORGgbL3lcdsQ13kZOxIGeR1d8zrDlxRS41QL07IBHPyV8Iun27+4sazjXAB8cg7lZStxnzsrwWu+u7vdP31AKoQkfl5wl6i4IrHafWR/vJr3isWsVN3DD8dJzwGD5RNzpSZX9iF4L0Abe9bXntQQS8fv5KErU8pIQE2RIv7oAGyLSWxDfS8//0NsUhe92Oc66A27eQ1dSRM9YKgBdIKf3Ili7LuVI/XBx7CnHG6JOrrKvyu1o9/ET9AoK4iGD/DGRsvfz+m4oY90Ak0THOXfn8zBVvecY77sfo+F5MZKeqNNlvX8PVn6j+1LD6aPq5zmYnA+kEqUr20mSjXq1Cv6OV0gjNxKrA9uDPdzKM4Rxm0FGKEUuysHV+zBRWt46bnATyy/IF4lC1oqOvEeUmIvxNlJ8JJkVRwTnlIkTuXwtDmfknznoqZTzphnlaOqJ03Z6Lq0hjYcMUdFJ58l79cRjE6jmFLSmSYx0hzOdOLqu8oK+bDh7eoVh/kr1AKojEywKO3LzHvcn3HZYb0eRAMkajl5tp424fRv/9ZeTx8obi2FwkD2vRLvVTieqQBV9o8gr87uNxgMRE2ut5RRN5sJ2sCl8IwlxSTsBpnHNY/bjULatDuc2jyqBUODgsS2F0U6oLm2/V+uY+dDj8aZlujAe8nKkfnUdEGF6KhR
+ pIMi9WZ7
+ R/mHhNB14YzYoiJ0J3LPEXMDbAYZiLyt0KF7MfaX4quJCjj2rqkBMwRVj/NQoeGuEUddJIeA/fqlHxLoLo//YHnkCsMc1n2XWkq2uYNIQUZ26A+BLpkipSG9nrdI7F604+KBc/SmcydY5J4exGNsYnwkmIeiidR9t6oKKXwiIAaHiNEm9tB968Y4XBxVSE1IZsDUuCgZzBi69ccWP78IiNzmo0+JhQm6UIbC/XaQqbZQMqC/fXS/f0YDdSawkhBW6CbEdQXPP1zK6D+axln8SfnFkHrYA0TSfnaffadpmA54UMsQetNEwSN3tIBqJQsy3ErhwbPjeUxPRH3MhSGIFMTX70Nxs+jIZv3Kjy5Iu6C/9RTQ33EiKGQeB6CZLiPQIzZtRHkx1lnP4VSsOHA/6+nOvi7C2AApMK3vVgvj4OLfCyj7uhMDNSjNfWWJvef1nlDdpUi5fLNbOrrgo8eP4sgWOwEUAtFXMLmxNtL2nDHYCBBXS5d1nzbH7XfQRFFNDGdu2GoFOuI/YAf7YeqKtZD4nBf8rWMuSWqo7grmmLVekPzgyNvRjf2v1fQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,45 +144,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 27, 2026 at 08:27:55PM +0800, Jianyong Wu wrote:
-> Builds a refined node distance matrix based on the raw NUMA distance matrix
-> provided by BIOS. The refined matrix preserves the relative ordering of
-> NUMA distances, while assigning distinct distance values to node pairs that
-> originally shared identical distances within each matrix row. This matrix
-> is exclusively used for cache-aware scheduling and has no impact on existing
-> NUMA topology logic such as sched domain construction.
-> 
-> For example, consider a system with 4 NUMA nodes. The raw BIOS-provided
-> distance matrix may look like this:
-> 
->         NODE0  NODE1  NODE2  NODE3
-> NODE0   10     20     20     30
-> NODE1   20     10     20     25
-> NODE2   20     20     10     20
-> NODE3   30     25     20     10
-> 
-> Multiple duplicate distance values exist within each row. After the
-> deduplication step, the refined distance matrix becomes:
-> 
->         NODE0  NODE1  NODE2  NODE3
-> NODE0   10     15     20     30
-> NODE1   15     10     12     25
-> NODE2   20     12     10     15
-> NODE3   30     25     15     10
-> 
-> All entries in each row are now unique, while adhering to two core principles:
-> 1. The relative distance ordering from the original matrix is preserved.
->    For instance, original distance(NODE0, NODE1) < distance(NODE0, NODE3),
->    and this relative relationship is retained in the refined matrix as well.
-> 2. The matrix remains symmetric across its main diagonal. Maintaining
->    symmetry is critical to guarantee consistent pairwise node distances.
-> 
-> Each row of this refined NUMA distance matrix is sorted in ascending order to
-> generate a unique per-node affinity sequence. This sequence will guide
-> thread migration logic introduced in subsequent patches.
+On Mon, Aug 31, 2026 at 5:52=E2=80=AFPM Anastasios Papagiannis
+<tasos.papagiannnis@gmail.com> wrote:
+>
+> Once mmput() drops the final reference to bprm->mm, the pointer must no
+> longer remain accessible through struct linux_binprm.
+>
+> The successful exec path and the bprm initialization error path already
+> clear bprm->mm when ownership is transferred or released. Do the same in
+> free_bprm() before calling mmput().
+>
+> This is required for eBPF kfuncs where bprm->mm is either NULL or points
+> to a live mm_struct to ensure safe access.
+>
+> Signed-off-by: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
+> ---
+>  fs/exec.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+>
+> diff --git a/fs/exec.c b/fs/exec.c
+> index a14f28b15607..4b4d8f0627a7 100644
+> --- a/fs/exec.c
+> +++ b/fs/exec.c
+> @@ -1453,9 +1453,12 @@ void bprm_drop_loader(struct linux_binprm *bprm)
+>
+>  static void free_bprm(struct linux_binprm *bprm)
+>  {
+> -       if (bprm->mm) {
+> +       struct mm_struct *mm =3D bprm->mm;
+> +
+> +       if (mm) {
+>                 acct_arg_size(bprm, 0);
+> -               mmput(bprm->mm);
+> +               bprm->mm =3D NULL;
+> +               mmput(mm);
+>         }
+>         if (bprm->user_ns)
+>                 put_user_ns(bprm->user_ns);
+> --
+> 2.55.0
+>
+>
 
-Hmm, I wonder if __build_all_zonelists() wants to use this, rather than
-the unmodified distance table. This would ensure the node fallback order
-is distinct between nodes.
+An automated review by Sashiko [1] reported a potential UAF involving
+bprm->file. The report identifies a real but narrower lifetime issue.
 
+The specific PF_KTHREAD/delayed-fput scenario is not reachable through
+the current in-tree path: kernel_execve() rejects PF_KTHREAD before
+alloc_bprm(), and usermode helpers use user_mode_thread(). In
+addition, bpf_get_file_xattr() is not available to TRACING/fentry
+programs.
+
+However, free_bprm() still drops the reference held by bprm->file
+before calling bprm_drop_loader(), which is instrumentable.
+linux_binprm->file is marked BTF_TYPE_SAFE_TRUSTED, so a tracing
+program attached to bprm_drop_loader() can pass it to the common
+bpf_dynptr_from_file() kfunc. Once the reference has been dropped,
+bprm->file is an unowned raw pointer; the dynptr retains that pointer
+without acquiring a file reference, and later reads dereference
+file->f_mapping.
+
+This is independent of the bprm->mm change in this patch. I plan to
+send a separate fs/exec patch against the current bpf-next tree for
+this issue.
+
+[1] https://sashiko.dev/#/patchset/20260831092305.42062-1-tasos.papagiannni=
+s@gmail.com?part=3D3
 
