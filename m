@@ -4,100 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5D3AC61DD6
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 23:53:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1925BC61DD6
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 23:53:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD3466B008A; Tue,  1 Sep 2026 19:53:13 -0400 (EDT)
+	id 348E96B0092; Tue,  1 Sep 2026 19:53:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B84896B008C; Tue,  1 Sep 2026 19:53:13 -0400 (EDT)
+	id 3209B6B0095; Tue,  1 Sep 2026 19:53:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4C0B6B0092; Tue,  1 Sep 2026 19:53:13 -0400 (EDT)
+	id 237936B0096; Tue,  1 Sep 2026 19:53:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 88EC66B008A
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 19:53:13 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 216081C1728
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:53:13 +0000 (UTC)
-X-FDA: 85166847066.10.487BA83
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 780B010000A
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:53:11 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I5l1te8n;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788306791;
-	b=kbDLW4sPQwLWE/LyzWk/Vaji58TqXxZZR+Txlc1YN9bgvGiJplVvlP2n8P/pzLLFT9GQDN
-	JQjFbucyXgjcnEd6WncEp2ilQk5EIZByQe09VM2PhApVFsdkdfzf51NNNmKodroD6Zg7Jh
-	PgAa9MsYg8DOhao2EGczouHozYhPWoQ=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I5l1te8n;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 022C66B0092
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 19:53:35 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8465640553
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:53:35 +0000 (UTC)
+X-FDA: 85166847990.05.C6B32A9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B67D1120009
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:53:33 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RmYYgg+H;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788306791;
+	s=arc-20220608; t=1788306813;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qwo/oxJowOK5NCuSw9/wxwXOLTwjKgO41GHpF7gUkAo=;
-	b=lcdDpJYj1IZpckKwFtrkUheet1k0jkhp/Vx6rJzJMNDrUfpveLH5p5Fv4/IxeIB8T/BH4e
-	fAcpk+doWTD4p0bNrOu3OwRXDOTiQyHFKJpt1PqnHf7er2H7ENs/CHerHb5RrQBlQWj99u
-	Ho0KE4gpSh2+ZO+56KGxft3gBh4pTXQ=
+	bh=5i7vD/a41ONmfi39O5D4lxwhtO96kafP4uadj166A64=;
+	b=4FsNp4HuHwvTzEQxYXCYJgG6fxslLdaZzeHJQQjMfMFtB29pAI0mnUw2RCxrGGlq+s+PW+
+	6i2X5btmkEnGGAAoO66sbj6TJ+RTiw/uvOj2Ec3uGvi9Whdfpvg4uSQ7hk6snSeBvimDnp
+	b4Boo2Cl2RhfujxR0OaV1BPy5lIuwZ8=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RmYYgg+H;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788306813;
+	b=N6JWPYfxPXySQKru5MJAXa/ILDwusPDZcPYWbV53iN3XwnVInBhxEPV1T2pZKBW5k0aeSr
+	E0cBs+kDrG4kUjhEteoBxuj/sPyWPJ+sdZyy9yNH09mg3x7cVLHAF+SzE8X3OnKjQkGhiN
+	CPfsEO0CxiqYi4ubpvHAmVnpi7aUk5Q=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A631840BC6;
-	Tue,  1 Sep 2026 23:53:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2CA1F000E9;
-	Tue,  1 Sep 2026 23:53:09 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4A079600D9
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:53:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 019F51F00A3A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:53:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788306790;
-	bh=qwo/oxJowOK5NCuSw9/wxwXOLTwjKgO41GHpF7gUkAo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=I5l1te8nyBGdwEKr1MLPS4uV0mJRTy6THlxjrphsJBK8B6R6L0vFvepMGAFim/ea3
-	 HZqx1yzImxla/z2lPgHCf+N68TyJHoSygquTqNiblWau0Cg1kItC+3WV97Zbtc7WYe
-	 MA6cZIQerAzA2dLFjvkC6FyVLkvtxYR5RDZp0cy9jARPAMJ5liyog7zQRyB0xY4lZj
-	 QTrOB8hYU54uiNDarQfwBAoHf1jRVuZn1HRYwrhmi96pPtPP5hYQWYOgkCCFpj1YhH
-	 vMQjCkrZpREBgWrEvBeRFUioa5v4FluEeFS8SpyMB+VUxWoZvAKjh5Huj9IgGaSR1J
-	 qKGQKv7mEs6vg==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v1.1 00/17] mm/damon: introduce data access-as-a-data attribute
-Date: Tue,  1 Sep 2026 16:52:57 -0700
-Message-ID: <20260901235258.103447-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260901101800.0d76452eb310a4b958d792fd@linux-foundation.org>
-References: 
+	s=k20260515; t=1788306813;
+	bh=5i7vD/a41ONmfi39O5D4lxwhtO96kafP4uadj166A64=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=RmYYgg+HR691cDZtwkrx+YrR9vQObhUrquCIRaEYy33HX1AANpnsLhDz/HwUxkPTa
+	 TEcV4ztyM71VpVUTfSnxAwJP+ZIDWge/MzDzfXNacC20MdNCk6q46dEbqO3liWvZLE
+	 mb6iYW3hAZQJpfYgzKwfmSa+AJqyJT9Hi1hn29RD0uwUBkVJGk+kHf3YZ+ejjXuZKB
+	 4U4KvWYndxra/Pl4bpFc8l2c7wvzikOuQOOlJB6tqn1iIDP3fZ0XK2ZnC72BSB2X3I
+	 dC7Qhbnx6V4Z5dfOeSRt1l4kJnX+BKFCiIKoyrfxPu9GnX67XOoR0d8I03BaZrPmdt
+	 pl2jTHHdR065A==
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-92ed19f4d60so45214185a.0
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 16:53:32 -0700 (PDT)
+X-Gm-Message-State: AFuF++mkaHSGNwmXUQaFUPObOmLDDSVle/mlO6qpfLlrFDJhsOHlJ4l8
+	O7rHT5kxAHJOzYG3znn18RZ52biOYHiBINzWy6gq09imYA5EUPhRe2iaMe8zw7tU2I7nIHkb0aH
+	Uc2j4QaM2CEt/0NogZu40u/YlUTQ+L54=
+X-Received: by 2002:a05:620a:4706:b0:939:5d22:d1f0 with SMTP id
+ af79cd13be357-9395d22d30cmr415757785a.2.1788306807453; Tue, 01 Sep 2026
+ 16:53:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 780B010000A
-X-Stat-Signature: nc5wcgu6fo6exoheb1jfjri4n7cdnx4g
+References: <20260901063755.1519710-1-hebaoquan@kylinos.cn> <20260901063755.1519710-4-hebaoquan@kylinos.cn>
+In-Reply-To: <20260901063755.1519710-4-hebaoquan@kylinos.cn>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 2 Sep 2026 07:53:15 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zFoYNuuVsTR=T4Qtxc5iVBPCK8rgiKa75VqNWqqcO=3g@mail.gmail.com>
+X-Gm-Features: AcwNN1XtnEq0yidYElvmZgI-ZA_zAwEf8gcBMwVoGR_9R92qipcL6I197I_mMDc
+Message-ID: <CAGsJ_4zFoYNuuVsTR=T4Qtxc5iVBPCK8rgiKa75VqNWqqcO=3g@mail.gmail.com>
+Subject: Re: [PATCH v2 3/4] mm/mglru: skip cold PUD subtrees during aging
+To: Baoquan He <hebaoquan@kylinos.cn>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com, 
+	shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, david@kernel.org, rostedt@goodmis.org, 
+	mhiramat@kernel.org, hannes@cmpxchg.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788306791-990924
-X-HE-Meta: U2FsdGVkX1/6pHfMrojX0sOSITTDVHLjZhiAPhQCItcc8pTsS6uD4QfMB24uTDlbU2uEWO2E0flTsfMcm6RCLlwk1Z7G0+EevyuMG4Ty1hNB4A3gxUnTlSRFcbwtWgIAc9uElMKFwU4o5aiyvS0M8iLPh4pU0X6AuL9r9W7IgCeeHBa2QYq5FcgBpRKmiD2kP6JD955Z1QH1spqD83d7PwSK8szbUxgck0/W/k40oTtSCOTD87M+G63cBdWjt9Fxb7Mhu4askKqYmziZAZ1Klz/8IHnkq+F+fmhTIUjapLd305facNbiOCxJ9dfJPDUJmds0z6UHujRPrHlESOEc56/pKZY00jooN6lIo84ahS/v1FLMxUn/2XQsqSVe+E+XJk5+wFNuqZ6RmL+LIbkrWB4H/B/qYpdc4EJVEd99IX1jqSFNxgrP/qmGjqJ9cgi7rPUtpJUPLnCGbAjPA2DBhlFNRhhyFkQ2R4eo5xAaL1UKs3IrhEs4RLsq6ibvRMWVwwi5M1LPOhGo+tiy8nHZ3EzxyXzA96bYul472UpBMYh8a6YEKgE1iW2uWXBs7gimuoLlmBWt+fSXfKdvOE0CsKGlyFRakiAJMCYv+6fhB2zEhmbKGOEWNKDoocRzHfIwGY2eSOxLX5inJj2FnNeuCJXDf/TuOA4v409NSaPdLJBaRzoF9zt7V6/P+oH/JiaFf0shamVlaT2H9wvhjlXqq8DJHyGK1EOIkWuQu/THqcoFMYAYbVaP+BQSq8LhVBxfKzvxvPq3EG9nyBd0+lgVWVPqDeD6yrLYSp7ErDxy+kVHf3gpYr+55BdVG6yzhoRLXhAks1l61x5hEtcYwyjsvzf4dGNDjmlYeD9GrIjyGU3W3knxKmPbxIJbmxjxCOS6OYvD7YefVD/UbFv0tfMkZXCenWdM7CSuw4AGsRG2GP5n/6Lp2f8+BdmQKjFjwGd0pkvhE2mKxK2NYyUaoz5
- QZ0Zsll2
- DlnNYfLq+G77oKHmMhlXNasIJGvC1rnunoGlh3xhEWHR6CXqf41XRMClGzNxByeU6P4DbQz2j8UOJKF6REJc+odsiTufMkS/P/DU4KE9xr/xYQruy09kLhq0KVareT2jXvSoBxnoUE5viM1CzWbNKgjhoJz4CG5Sn542Vo0vi7t6yjc3usOpI1V3l7TiHAOtysAycIy2tBj4tIZ9VEkDAV4O4030Qazo+D7ce/ZR1xB/FRfurn8wmHXzmmLjtRcdBu4xBEYy5kCgxGX8Eivh7mGp5rH4EzUbRsFHNcDU/Y17d2gPaQGZPiK1exu8yvO68jg0Q
+X-Stat-Signature: r9m9qc938cipysdsbwizwob3sohcabrn
+X-Rspamd-Queue-Id: B67D1120009
+X-HE-Tag: 1788306813-871093
+X-HE-Meta: U2FsdGVkX19iy5ScEpc/Q5jYNArxFbO+nF35/g4P1wCogxsEqbMduIKeIpk+tVwRtY+kl+FN63kKhFY8g8b7ru7H2V2LdTa81BUP0dVvVNyJictQXSHWq/q+RxjCPymAxW31t9SE3iwRxh+41xPNI0Ypadb1F657678wkLmXexQn3zFIVqijnm6IaVlViw6Mkxm8oB1if8elIFb/ysl0ZMwa73lsVlimRfyh+qBI8qi1yNZA6ROqegZTQQpaJGnVByecxpG6y2LIRZAmDZpjChgx2k9vZrZFYlN2cNOrbPD4hM/pnTQrZr9O9ERt1/XiyFWOgmGz79ErIxSDbPy7Y8LhSOlZeX+FPH4xdMFvasFtwrvGFd2eVavTtI5NiQGxfRzN0Z2R+SlZhA2JxcDgDr/vGZypsPyvGBqB95U7mHjGOncAbUCrDLeT/soH5hv4atMa3QzOd/gC4kMJf4SD8CsCH0/Jqbu+Q2/egDd6OHprbVRURqRqWITpl1xynWi61IPZr1TficM5l3dHz2xWbtmM11mPEBDE1pFIRDoznvJEqp0LHs6yKnYboMSr+45IkguBdDa8MMuqCD+aauaS31Q+jxA+cksCVZh6wUoLve0IlnTwylITTgneXDy5PoFVmnbkXBNaf614XC4ZKKGk0MsOa6oEh7FX8qHi1+KxeHF3xM75JY1MJi/Y6wwEyi5i2lzP6Ga5nGTltEgZJK0upHdHy3ToorOufgaD2KXW7SvSjWQsTc8AnWiZ1H5Zg3nhCnJIXL9bmXVi5XalMn/dZfzc4CtD3JaftqpuK8QB+LFvXC18SKr2sDy1yljIqWc4WKUL9UQtj85T+De5L7JVSoymtgcDNvhJZcRD80zEtbs9A+SaFAG295EKs/HrZ8m4K8lxPcQWRbuxZEffP/KpMLGJXPqzbt7rnVi1BFBxTut+mGhva9qJ/5ld9Cq6WassheIJNev/u9rJsVutcWy
+ Wpn0JPmc
+ Y8xA7m9oX3vdEjoX+oFdJTDW4aMePIoDKgfZvb5ndouNiiZUFAg39ljvsPeuAP8qEBr9OtVFKyYyqSVC8hEsGCAjRMJAuGW3GinBiRdrEjNB9+ewNzqpHimKMZYji4A26TzDzJ6pmLG41c7FnfnNsiEZR3RCE3kuMbwpMnWvvB44g3yZST2BOgIxusDtwjW9ch7EeYfZxRXZpXaTzpOJVSKu6bJ34T6Atk677u37klMDOVrBKS7JqanWmyimpHtSZsi/ogZ2gnwyf6/GxTniWl009xsd2qzCyafPi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,29 +103,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 1 Sep 2026 10:18:00 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+On Tue, Sep 1, 2026 at 2:38=E2=80=AFPM Baoquan He <hebaoquan@kylinos.cn> wr=
+ote:
+>
+> The aging walks into every PUD and runs the PMD-level Bloom filter
+> on each PMD. Add a coarser PUD-level filter (pud_filters) one level
+> up:
+>  - walk_pmd_range() now reports whether it found any young leaf entries,
+>  - walk_pud_range() records that in the PUD filter, and
+>  - on subsequent generations, skips the whole 1GB subtree when the filter
+>    says it had none last generation.
+>
+> The double-buffered filter flips with each new iteration, so newly hot or
+> migrated-in pages are re-checked promptly rather than suppressed
+> indefinitely. force_scan walks bypass the PUD test, so manual aging and
+> newly added mm's always rescan and re-populate the filter.
+>
+> To keep hot regions marked, also report the covering PUD from the rmap
+> feedback path (lru_gen_look_around()), so regions whose hotness is only
+> observed by eviction will be re-scanned.
+>
+> Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
+> ---
+>  mm/vmscan.c | 52 +++++++++++++++++++++++++++++++++++++++++++++++-----
+>  1 file changed, 47 insertions(+), 5 deletions(-)
+[...]
+> @@ -4397,8 +4431,14 @@ bool lru_gen_look_around(struct page_vma_mapped_wa=
+lk *pvmw, unsigned int nr)
+>         lazy_mmu_mode_disable();
+>
+>         /* feedback from rmap walkers to page table walkers */
+> -       if (mm_state && suitable_to_scan(i, young))
+> +       if (mm_state && suitable_to_scan(i, young)) {
+> +               /* the PUD entry covering the young PTEs scanned above */
+> +               pud_t *pud_p =3D pud_offset(p4d_offset(pgd_offset(vma->vm=
+_mm, pvmw->address),
+> +                                                    pvmw->address), pvmw=
+->address);
+> +
+>                 update_pmd_bloom_filter(mm_state, max_seq, pvmw->pmd);
+> +               update_pud_bloom_filter(mm_state, max_seq, pud_p);
+> +       }
 
-> On Tue,  1 Sep 2026 06:24:47 -0700 SJ Park <sj@kernel.org> wrote:
-> 
-> > TL;DR: extend DAMON's data attributes monitoring system to support page
-> > table accessed bit and PG_idle based access monitoring.
-> > 
-> 
-> Thanks, added.
 
-Thank you Andrew!
+Hi Baoquan,
 
-> 
-> What does "v1.1" mean?
+I am really not against this idea, and I believe it can benefit
+NUMA cases.
 
-Sashiko found a low priority issue on the previous version.  Before the Sashiko
-era, it would be fixed by posting a fixup as a reply to the thread and asking
-Andrew to handle it.   But that cannot get review from Sashiko.  So I did
-reposting of the series, but with minor version update.  I use this kind of
-version scheme nowadays.  If it makes someone be confused, please let me know.
-I will be happy to adapt.
+That said, I might be being overly cautious, but I'm a bit concerned
+that this re-walk of the page tables could slightly hurt machines that
+don't benefit from the PUD filter at all. For example, Android devices
+typically have relatively small amounts of memory, so a PUD covers a
+really large range of their address space, which is unlikely to be
+useful on an 8 GB Android device. Also, `lru_gen_look_around()` is a
+really hot path. On Android, we've observed that it can consume a
+significant amount of CPU.
 
+Is there any possibility of implementing this in a low-cost way?
 
-Thanks,
-SJ
+Best Regards
+Barry
 
