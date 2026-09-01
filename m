@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D91DC624D4
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 13:19:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 196ACC61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 13:19:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB79A6B0190; Tue,  1 Sep 2026 09:19:02 -0400 (EDT)
+	id 5DAA26B0192; Tue,  1 Sep 2026 09:19:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8F496B0192; Tue,  1 Sep 2026 09:19:02 -0400 (EDT)
+	id 58B606B0194; Tue,  1 Sep 2026 09:19:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A5856B0193; Tue,  1 Sep 2026 09:19:02 -0400 (EDT)
+	id 450236B0195; Tue,  1 Sep 2026 09:19:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CD0F6B0190
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 09:19:02 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E4162A042E
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 13:19:01 +0000 (UTC)
-X-FDA: 85165248882.26.9C58F26
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 43B9B40009
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 140A86B0192
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 09:19:03 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9256B1203FB
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 13:19:02 +0000 (UTC)
+X-FDA: 85165248924.27.EC86F45
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0101D20009
 	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 13:19:00 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nggKh11a;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788268740;
-	b=wZvWg9Te6PMzKedcntm9czdYS4GlZ9q6ez7ozVzJ/tJuIUWdznKhAY4J37arsgBtcnlDpW
-	raO5UL0a8vRINAHB4iGIMoUmBwVNN/+CIEFwYKIMH1qJ3oTENQbyyZJENMim7QQDOXGVNf
-	EWlT8t5K93KopKGMm6sKIe6Q4cG3PSk=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nggKh11a;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LKaTg89x;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788268740;
+	s=arc-20220608; t=1788268741;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l4DJBfV8Ln2wiu4MTHaklCvhtPpo+9nKnYvuVasq3nI=;
-	b=yJk17Q5dKCeVlJ91DMbsvI+FfDaqte9mtltsfrN7eaD8p5i//5rw7mdxLI6S8tuFuSBATL
-	Et4HYRuP+dSFDR4SjLqXbtgLu5pJf37FpLLN5Uj24Xf2XjNHZOLptGzh5m8xDbutNVsubr
-	i8hjk+fvx8LHsmYuTR4Kqfos0sLUVyQ=
+	bh=nSTjwnDV8A+NiGPVQu+FC6bukzN4Edj/bjp5VqLzRxU=;
+	b=7vEYaUPbCU1kn6iN2FxskELG01Ri9BLycPjfb31lxGUVZz1iaFj5eYMtu/ekZUunHxDC1t
+	pa+SuUnMjO348kEMzvuGY0Y5tFAozJ18EGZd7fGrrzCIp4IW7UAcIAkK3qvvpdjWjQk53L
+	DwZ/XrsDq/DPvSbQ9UUXM0XcIvJdRaM=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LKaTg89x;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788268741;
+	b=3qVAZ/z27nJ3MZpWUUXZKBpPw9wPjyTqdPN2N1mzDxHaabflwsKnHMq75FYb2EjkOrFVR8
+	Yunhhq5agXYa8B/6PLfF7pGqClI8sI42CkHtI1ekpiwEkxfC4dPeet34hCfOn9Do9ZMiKI
+	mQ0j6nxzddmDE8ta3byAXaE+aeggaLE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D97636053A;
-	Tue,  1 Sep 2026 13:18:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 586211F00ACA;
+	by sea.source.kernel.org (Postfix) with ESMTP id 1649741F9E;
+	Tue,  1 Sep 2026 13:19:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B645C1F00A3F;
 	Tue,  1 Sep 2026 13:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788268739;
-	bh=l4DJBfV8Ln2wiu4MTHaklCvhtPpo+9nKnYvuVasq3nI=;
+	s=k20260515; t=1788268740;
+	bh=nSTjwnDV8A+NiGPVQu+FC6bukzN4Edj/bjp5VqLzRxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nggKh11aISb6Edpze86CzVlB4WBkZ3fPZ+n/O/cHOag+W5A+rql6O27cDz3C2pvYC
-	 1QhBjHHEW/DjEwkGXVPzDlWClgNwV8yIe07WhxXH0dHqMZWCbZ7gDiQFgsHKav/Gty
-	 Wb/988mjBSPtVmlxQh4nWp7OUIm+s2j6fuAK2SgFQJ8rpFQO5bkXdO2nAD4yGBSVQb
-	 KInfTX0G1tWJx2JhhM7yqE9RLa+gB+jbd1wEx+FbydFDkDzXjACkibCqytHJrWAshW
-	 95hyaE9AXB+Ops7olWTX51woHk3Mqs9k3BnUuaEnUvO6awgn+aie9+/iqqqZGE5BEH
-	 hOvv0Sc3CGyHQ==
+	b=LKaTg89xFTeHYyTU0AYlP5vP6CBoCrQY+li5Smev5n/gqRqavoXXXL2OkN/kD6Vgm
+	 XgbB27M94hUc2eLdsd64j9MYA/F1dC3ikoy+VUUqSCyem0Xwq9qW5R/55RRwsfqF5o
+	 MH5W7MLxavzLWxZmFKmrVaU1opKhs8Y3LvivBsF1hsd0KYQrdmd+sw9Di30uVWhtIX
+	 dtQ5N7irsZmSpYO3RoKtDHp7fBf8fjvZVPx3QLA8+f4UK4fX0AC6a7ZBYPjo/J9Qjy
+	 Yx0bVYJG/yQ+n8bqIXUn5flvjNOzeIqisuHGjajW+S1xBGBUM/s9NcJekTBTYSdHCc
+	 MazJtTNWXOctA==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
 	stable@vger.kernel.org,
-	Usama Arif <usamaarif642@gmail.com>,
+	Yueyang Pan <pyyjason@gmail.com>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 3/8] mm/damon/paddr: respect folio end for DAMOS actions except STAT
-Date: Tue,  1 Sep 2026 06:18:44 -0700
-Message-ID: <20260901131850.98037-4-sj@kernel.org>
+Subject: [PATCH 4/8] mm/damon/vaddr: respect folio end for DAMOS_STAT
+Date: Tue,  1 Sep 2026 06:18:45 -0700
+Message-ID: <20260901131850.98037-5-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260901131850.98037-1-sj@kernel.org>
 References: <20260901131850.98037-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 43B9B40009
-X-Stat-Signature: wuk6wbekxjhkydxup5wxqzshdybgd1k4
-X-HE-Tag: 1788268740-235352
-X-HE-Meta: U2FsdGVkX1917snuMBhBZ5Vd9U512TRG+t62wF/c5bFh24X8zu69LB5racRtTyJvmkAlWiSnKCqag1LvWM9jzv9Kpd9yUy7Ml3IIuaITrerL5HYvPYe4zEWhlkmLWoA6kQ7kCyY73vlQaojr85XP2+xSIioZcrmu092ztryHUagNtAiFdal1pBsTN4qpFOZfV06hAfxU/I+NczhzC0Ewupg2Fr4E/0rFgSkL9oHCUvsrVbx4bTE9s9SPhdlqPSeC+/ozp7NDKQJJC3Xz8/zz+ML63smUPIhAmAuNezTsoYcfL03vm7T7Wa6cBjiIDjgIB9YehHB0Ve5WyM1L22kP1NZ3rks0mnZBvn9Shyxt+JyMADlChZnmLYU1P98P90UeebBPUrGBaO1yXXT2jdyBfEPzBbe10HPFF9nh+on+EHWZdC7u6uAeACYeGgncDHUWmjHYt/lM9wEFP+vFxeCmaS73KHqJ+7S9pTZjdB2Q9IPtJz+EcgevoGNnsNNoaAChHn8vSGQw3wSitaeqL+xyw4YPUyqqMbvMbO9kv0jf33fXrclz0Vr8hOGinMhG1SlKx13z8SI2OCmAM6HYqvgaLizKQYg2YJxqAiUkiC4sdNyBtZSE5Zto6PHqV3J9oLzPHLk05gBiwe28+2aFRAdXMHVrtVFz/nOpq2BTGVw7QxE4ZZP5VYzPrh/qyErEpA7T4ocI6rP4jR8MQEWNXC3J7crS1aCpXs6bMz2lBfCHhfAg5LvVeFpUCp1Rnt2Tylfr94GcvloZArQ6DlbQS//SbJlRyVEW6cfepfhRbUn2RseeGwFSYSlHUd4aqr0DmsLwZOhVF8YHilR2jpgic61qTKgShNnQNnYEg4X1Ttrhjf9nNdoho/yEItn+DnXvF/whM6d2rTMBPntTLD23i2naYYXQR0CJSlBIBRyuRovN/O3xvU8SD3riQRYMGEccj/alxtUWNlTPo6OoyE5M6t7
- V3SmM3El
- fGoOrS7xWVmBlbUX12bZCDmhtdTZbx616ZYRJ8HxZUcR6990LrfYoVDzYwQEs40y5xAtYrIVsjEaR5iKkl7bM/URq6Izy2taFa7MUlVU4Lqh4HhUGA0nx9aIwslYAwTTZ47/hww2ZGqHVH7Z3Zdx4HtfK/dzWus7Z5u4Jn83+xWWfAIdyVrtYR1WVYcs/Yvblj1n3DOpzePvdJznnw4PYJxvLcPF7lLRSJ736Jd9Hzoahklk=
+X-Stat-Signature: ags9wstgtr78oaej1pbe6s6od1r8a53i
+X-Rspamd-Queue-Id: 0101D20009
+X-HE-Tag: 1788268740-280385
+X-HE-Meta: U2FsdGVkX1/xqtM2DRy/dJW08oD0jPvRcY0mnLA1SlDoOqEofl28YSD1jzPPt9OcT7BJdPzcPJQZJ1RX5DaAHZfsLsi0PuGy9R+b9Uw2un4siADahNytrrakj2mtpu0SjN6MJet+cqtMRpOrUVDVxY90HmIBABtsyPnMCAljhpCpPXAlRf6HeBbbIOAhoD3gRwQ2oxfybJs2z81ZWM8dXGgKqLvt/OAmirtYFAJKqyTI/4yAHojyuA8LyJtWJmGbWymYO5s073hIwP5Mun40d+yQilFcUcPYEJUjSNpq/iW/nIpNrp/5BdHssjlXDvFM61J/JtTzSl/n92sMArgR1BjlY5es7fWCYrWnxgoGsqDD0wj0diltPtvxqqGyiCVCDKRF4JWxCPl2V8WzCkleK9/W32YUS0+f5pmlw95UzKPYKSN91FYoyx59Hit+lolSgxmGbd4eDBk1i46YFmES6RWDd/yd/RomUA5iEV1DbwngH3ZNsjdBY4RDI+MjJA+QGeZKLG8hhojVvybAJxX1pro6/jiTGfsKepUYgoUiPuNENjaPVk5Tu+PZH/4w+cPUHoaFoUF2H08PwqJjnaaIvDsSHL6gsZkiClNYjUk92FkDKvIADMzsWybK7eUkQtB7xkQ/oZnlkDIyerWP9N+5RXE8fBfVidXSzrk/scn2UBHPC+R3VinqGjqIgfortxVL4AWuW+JpTqyYX7KXZuiJBGyj4XH+nMEBtvEhleoU60+g6/7NfX7cCZzfiHWDtEjWboYtKxMNrL9NIyNhY0dG1UWMk2aDNogA8zT+FbI+CnBKFfWFef8aNi3rIX/bSY4hNFF6RVAninNz+7WbBRokuSIIBimmGBHQmjsDpiiXhv1ZKFVuZsCve8pQdtJ61gZ0yQTiCefEqsF/GnKQZBcehMi2v8afiPqt3Wbmh1IUHoemKfCxIxx0fmhUia5FIouHc6hVzvZgzxpZaklfHsq
+ UAU8Q0lv
+ rnKxr3ZEbklsWPb2vYuPIT/XKoysb6PliRyOjdnZAg7JPhVcjxQKjYYIyK6jin/NZgtOAoSKu9Teew+TIlnNSndpKgNXJUqtO+1FBJyZbOHhPE1R9hviTJ+gJdXC+1+b8XTovZwt4vgBkobbFHEOdAlKe//PU0lQnutFC+ou6hIisOAN93Yyb6VVN2rVJC8ASc0HREGmYANobNSfthgF93GvI2J8qfAcW/DqgTMEu4YCXLku0zKGIQniYPgjFW3yVbfKSc5FU2DTXvbwma8oGYSV6XA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,63 +94,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A few functions for applying DAMOS actions including pageout,
-lru_[de]prio and migrate_{hot,cold} in DAMON physical address space
-operation set (paddr) collect folios of the given region by getting the
-folios of region-internal addresses.  Then, those functions apply the
-action to the collected folios at once.  The collection starts from the
-region start address and advances the address by the size of the folio
-of the address until it goes out of the region.  If the start address is
-in the middle of a large folio, and if the next folios are small, some
-of the next folios could be skipped.  Fix the issue by advancing the
-address to exactly the start address of the next folio.
+For applying DAMOS_STAT action to a region, DAMON virtual address space
+operation set (vaddr) calls walk_page_range[_vma]() for the region.  The
+pmd walk entry function, namely damon_va_stat_pmd_entry(), applies DAMOS
+filters to folios of addresses of the region in the pmd.  It starts from
+the walking address and advances the address by the size of the folio of
+the address until it goes out of the pmd or the region.
 
-The user impact is that DAMOS action is applied to less than expected
-amount of memory.  Given the best effort nature of DAMON, it is no big
-problem, but it is clearly a bug that is better to be fixed.
+Let's suppose it is for the first pmd of the region, and the region
+start address is in the middle of a large folio.  Also, the next folios
+are small.  Then, some of the next folios could be skipped.  Fix the
+issue by advancing the address to exactly the start address of the next
+folio.
+
+The user impact is that the DAMOS_STAT-based page level monitoring
+results become inaccurate.  Since the page level monitoring is supposed
+to provide relatively high precision, this is definitely a problem.  It
+is arguably not critical since it is only monitoring quality
+degradation.
 
 The issue was discovered [1] by Sashiko.
 
-[1] https://lore.kernel.org/20260517234112.89245-1-sj@kernel.org
+[1] https://lore.kernel.org/20260514015053.149396-1-sj@kernel.org
 
-Fixes: 3a06696305e7 ("mm/damon/ops: have damon_get_folio return folio even for tail pages")
-Cc: <stable@vger.kernel.org> # 6.15.x
+Fixes: 63f39737d1e3 ("mm/damon/vaddr: support stat-purpose DAMOS filters")
+Cc: <stable@vger.kernel.org> # 6.18.x
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/paddr.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ mm/damon/vaddr.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index 2ab7b3842701e..9ddd1ec8202b7 100644
---- a/mm/damon/paddr.c
-+++ b/mm/damon/paddr.c
-@@ -264,7 +264,7 @@ static unsigned long damon_pa_pageout(struct damon_region *r,
- 		else
- 			list_add(&folio->lru, &folio_list);
- put_folio:
--		addr += folio_size(folio);
-+		addr = PFN_PHYS(folio_pfn(folio)) + folio_size(folio);
- 		folio_put(folio);
+diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+index 0648400b2d65b..4b0b5edf67952 100644
+--- a/mm/damon/vaddr.c
++++ b/mm/damon/vaddr.c
+@@ -831,6 +831,8 @@ static int damos_va_stat_pmd_entry(pmd_t *pmd, unsigned long addr,
+ 		return 0;
+ 
+ 	for (; addr < next; pte += nr, addr += nr * PAGE_SIZE) {
++		unsigned long page_idx;
++
+ 		nr = 1;
+ 		ptent = ptep_get(pte);
+ 
+@@ -844,7 +846,8 @@ static int damos_va_stat_pmd_entry(pmd_t *pmd, unsigned long addr,
+ 
+ 		if (!damos_va_filter_out(s, folio, vma, addr, pte, NULL))
+ 			*sz_filter_passed += folio_size(folio);
+-		nr = folio_nr_pages(folio);
++		page_idx = folio_page_idx(folio, pte_page(ptent));
++		nr = folio_nr_pages(folio) - page_idx;
+ 		s->last_applied = folio;
  	}
- 	if (install_young_filter)
-@@ -302,7 +302,7 @@ static inline unsigned long damon_pa_de_activate(
- 			folio_deactivate(folio);
- 		applied += folio_nr_pages(folio);
- put_folio:
--		addr += folio_size(folio);
-+		addr = PFN_PHYS(folio_pfn(folio)) + folio_size(folio);
- 		folio_put(folio);
- 	}
- 	s->last_applied = folio;
-@@ -350,7 +350,7 @@ static unsigned long damon_pa_migrate(struct damon_region *r,
- 				folio_is_file_lru(folio));
- 		list_add(&folio->lru, &folio_list);
- put_folio:
--		addr += folio_size(folio);
-+		addr = PFN_PHYS(folio_pfn(folio)) + folio_size(folio);
- 		folio_put(folio);
- 	}
- 	applied = damon_migrate_pages(&folio_list, s->target_nid);
+ 	pte_unmap_unlock(start_pte, ptl);
 -- 
 2.47.3
 
