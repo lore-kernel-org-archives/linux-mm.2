@@ -4,147 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 723E5C624D0
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 18:12:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A8A5C61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 18:13:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 77FA86B00A2; Tue,  1 Sep 2026 14:12:06 -0400 (EDT)
+	id 734606B0088; Tue,  1 Sep 2026 14:13:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 730DA6B00A3; Tue,  1 Sep 2026 14:12:06 -0400 (EDT)
+	id 70C746B008C; Tue,  1 Sep 2026 14:13:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 620EE6B00A4; Tue,  1 Sep 2026 14:12:06 -0400 (EDT)
+	id 5FBF86B00A3; Tue,  1 Sep 2026 14:13:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A3FC6B00A2
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:12:06 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BAA75A0505
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:12:05 +0000 (UTC)
-X-FDA: 85165987410.30.28ACEF0
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D5DBE80011
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:12:03 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="ND/iOWU9";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 341BB6B0088
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:13:36 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B535F1604A8
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:13:35 +0000 (UTC)
+X-FDA: 85165991190.09.5A59E25
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D0B981C0007
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:13:33 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rmxZ+fzw;
+	spf=pass (imf21.hostedemail.com: domain of nsd.project.dev@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=nsd.project.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788286323;
-	b=FIfQrCDrwQT/3F+3tesWc0RwqDqXHybDGZBTYoOf3VFei4Wfi0aRFAlJdLS49QZoc9z320
-	gmamezJuiFYx3ldUkX3qIEOlBV01y6dGdMlf8ovUou5mXMTd1UshSAj4P+M1N7cuYbeIXw
-	HTEmfCnDpgFdc/wmVJvbkZYtEmJRit8=
+	t=1788286413;
+	b=KjbiWHcN9fKMZW5gjE/HWsD6cAMas/LZC6JTnX3SV/IojEWpeg/gIXw8g32wJlfo2Df+cz
+	AFb8ubyvVE7QF5d478sTxJY/iPe8wInR0IZUTHINsd2BtaXyKH33Ed+o2IDXOZiMvKKEJY
+	t4xLiVY4URgpKLASqnX9cvQ+UyvmAC4=
 ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="ND/iOWU9";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rmxZ+fzw;
+	spf=pass (imf21.hostedemail.com: domain of nsd.project.dev@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=nsd.project.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788286323;
+	s=arc-20220608; t=1788286413;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OYDHwPtRS/urJTrcJcJyVU92g7dRNXopeu0W3B+ow1I=;
-	b=CmKu3chd4g80p/qvD63m60a5jRWBKS+7sh/W/a0WRWSDKMjeTNCHnyirO3GL38qm12WjE+
-	uLJnanh1w5WD9oh9TUkNj/qlTH6zEpS2kEtLiduhKX59icBuMyg4Xdw/lmuRyuXxvrqE3X
-	q60rcLNK7iDr0gImlpyEkA61yGzo0oY=
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c1670dad7a8so9601866b.3
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 11:12:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788286322; cv=none;
+	bh=xKVx3FFqSm9L/iLUNqED5EbA9fzc0BWq3+4jXNxzr+8=;
+	b=Mji6CbsQ/F7ONrjNHxVmIoA7UINVzvuj0I2hkAbRwoXKfn+4vql8/uEmZHwp8aB2P4eBPl
+	GsQG9f/et3nLVOWk30/KgerEgRflfEwQE8W55CQbDOz4NNqkZ981cXN14NAlyb+ttwFavR
+	DHjzsC0P7zm8Rd+XppfP96SKI14iZ4c=
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6a6165b4402so197010a12.3
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 11:13:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788286412; cv=none;
         d=google.com; s=arc-20260327;
-        b=e+b3DdV7kc+9gaELWtK03XtGp1iX/vRN/qvFCErgP4RMtvLgGQ+zRcQQ4M9Rm8rn0W
-         UTLZavj/wp3bT7h/8reKACb4vhuXvPRYFSyt3TVGceOuZp58As5ch5KfDXCqSpzM8Nf1
-         bgf7RpJ1BZqawdVB5H5OQRNO6gtGkPrMqQ4kR3qKQfrGA2x+LxwAwvHyYUdk+CPmKrip
-         VRU7JINgey6zZk4v01Xy65KUDYCxOBmPXTbiWx8PZayvbQPB4xLcPvzHwbvCca6Tf3JY
-         ZDL6/s9sxgUMQch3Y+n4eCFg4AP+xcZSqMs537GJ/1RXP6YnlWMq6q4cgAC2GOVBS9xk
-         wdUQ==
+        b=X6jTUDpfRUW6mL8X427G25KMDDpcIrd1/zfPt9vPAuegJv1hBiNHvnivf6251/KCGv
+         FgjxxTmzJPfpEn7ZwuYmk7UXG4filrkrEJvFAhEIrQMEQlWXSm1/vXpPD6IoGPzBiLGq
+         v8dJfyrLbyLDRWUnRECSVo525hoFwL2ZIFcEhOmJBvq+vVqQVI/ctLD3mEcxr8VLFEsK
+         vAMXq0kFxUIR4iWuy5QFsOUUIH9aUOpnqeaVibjGUCV5JBOEjeYC4s+wWcuFNHh9BBQx
+         wJVDz8/EZZUx2d0cU9jDx3vo9+/mqndtPgJ1A5oCeIHrqhc/ES8TMXjyih6DMXT8QaYV
+         lPVw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=OYDHwPtRS/urJTrcJcJyVU92g7dRNXopeu0W3B+ow1I=;
-        fh=9OtubVzT62RuDK+UzaUPHULs4CVlPa6sMix+QhbQvNk=;
-        b=Pa2dAZXwCE8Xy5hsuChFtZW8V6e5Kq3nK071FEwvy8zAKc2oc9R95oDy/fmaWNrvWk
-         m5xQLreVDlt5JygNCizah85OZObb9LO+lg+/cb5h8AalzHILIRID1bjXptjR872uhSRL
-         jRftw9/lUAb41qc6pVDoiyO3QR5Wv3QmfpBHzWyz9jtwRVtvb4tl9jaLjN0iOUfCmmPR
-         B/ES9ZMDS0K+V+qxSmQ+iBPEZsrWL4VrrzClvVYRU79UlA7uksr9PrD2YaiZPwOJL7u4
-         jskdsFGvVuZxW5xmWvRkdbSU4yVpWpR24z6c3uz6FtFCL903QC0ycvOSS3i33+QPPRBD
-         jHog==;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=xKVx3FFqSm9L/iLUNqED5EbA9fzc0BWq3+4jXNxzr+8=;
+        fh=jWR0dV1wiYj1OvtXxdceEgjerUAyrRuRo5dAC0SyQ9A=;
+        b=F/7z9H7wOP1RNpI/mmDjwtmDMQl8rK3j5aeXLOjO15WF/U+QKLPzhE3WWcqiTrWDCl
+         8tRxpYxfKX2134qawnyfnrH7KBLBMzLrOB6A4k7QYu/OZ4cxJOyxAlAg3tYMLyfq/lVo
+         oL0QxSzIgFq0DDlLICcpYpNWfvA+98LJ9nJXynbgmb3FYFa6NW1U2sFX+SRy88k3sPIf
+         B7c3RpuEJoWPHRN5fLpDqAT5g94CZN3yAnL3GKxEy9Y9DPaYWMoOEIR/lX7GYkxfXNcL
+         GN1ptuHyQb7T8A5+iGK5HVMiMgAz2Ypd9+BZzDW/Fn7Qpr87VKQOVani4ULifRP9UBJ2
+         MEJw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788286322; x=1788891122; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=OYDHwPtRS/urJTrcJcJyVU92g7dRNXopeu0W3B+ow1I=;
-        b=ND/iOWU9JJ4fVzg9bH5JZvdNuH3rzNQ8P0tzZJzFH9W7YMNVUwy8Qrk70twH5r8pMF
-         02acQ5zpTxPVXdTH1bWlcrCUgQpLT8DoLI3ZT0TnXUXSPVf5C+q7xTG79pfY3zWi1WaE
-         HBmOeBl1N4bjKIhj0aU+Im2j5zXeJRduSTXldfUq77eFwP+7eLpXljeDncqyeh/RRYp2
-         IFI4tYtF+tZVnr56ltJw1SirnFWPgBWpbLu/4UahtCrjtCURc6psYaNxMwZpJclJfyNM
-         aTbAf0wqAlbndV9Yg2iAl3aGBMjv1CdSoLEppxOPMxjmGtc7Ok/Pwvo3oK+NpCJF2niP
-         qBrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788286322; x=1788891122;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1788286412; x=1788891212; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=OYDHwPtRS/urJTrcJcJyVU92g7dRNXopeu0W3B+ow1I=;
-        b=dOEQX5K82j6e5Bio3aWEJoQCliJxc/+YHHQZHqpxG6DqpXl76eaSB0hpYyMEPDWY/m
-         47zZ6IFbVPiJHRgCRLaGHH4+pEqaTaOmrCiX/MlKZ/SnPDn8S6QlPabfu627UnrZlK8I
-         2Gi5Oa4smHQIX8ZK3aP488xJMipcKyb+3zr/jcnnJx8ZUCJQhdquo6Io27HMXlwRPC0P
-         vyty0EeUQPbOR5v1BgETzL0POJUFkhCYcN8C3xfEk3faFGGL+eZQ/GhXeekRsLjn6gbf
-         ha1AknysFX2mJE135yWrdMlB1btYZY4PaROKp6aidvkm3XH44/9dsdr1aK5GqCho3Pa0
-         Vzxg==
-X-Gm-Message-State: AFuF++nAntMqvfjUiI7waS+Z+a5yLacael9DMtk508vQUv3jA+C3Nitj
-	q/lOvK4w5Muv9QG1PzPz/BNUvyd8P0goNVO2DOy0irjeB9J7jZRgfHH650AUgNBFffba+Z7YqeB
-	xpQcPI9q2oeq7xtxs+STsrLqTkvtNTL4=
-X-Gm-Gg: AR+sD10WIDaK5QBYg8065ksynYJv1OndWe+k435dshYaicYiuEfrRYcoGO4b5wU78gZ
-	pmgNi/ZhP4FfL8Xc1nLhM+rjgBd4D7ekStfs1bhsAP+MMPtub9T9UE96DrDPJLymR7VTn9evC6M
-	jmrns9Y8TSUMJXGIyAzBjd4cFqEdgWjxN02k5POsbjPwjI+4JjFVZduVyWJ0XAJLmOZIRvT0RjL
-	LF4PsVwBTc/YplLHFBt53L1eL3OCmMPi+AynMwl7irvBVzBi9hPufbkKLT5KwZF5MaXjW+af6wR
-	puNagdaFaNMTrAmNsWTj6zPWta4sRtQGqS6acwhicbw9pfAdo8ugzyu1u5C8pwTGmCuuUP7WSik
-	u
-X-Received: by 2002:a17:907:c714:b0:c24:d6f0:2071 with SMTP id
- a640c23a62f3a-c255742f97emr2437697666b.12.1788286321995; Tue, 01 Sep 2026
- 11:12:01 -0700 (PDT)
+        bh=xKVx3FFqSm9L/iLUNqED5EbA9fzc0BWq3+4jXNxzr+8=;
+        b=rmxZ+fzwSPT6Oh5ko/t1jYlQZwseRYRipRCFyLmCX4nPAFrjEYMozdVI1qP/PLLvB8
+         W3F3JgGNfgKleRbHzVn7BrUmsii5yaQBBNpMYXBYVwtN5ve0mSoMJuEgfykaVlT1LQZb
+         bblp7ywaxhNzopPDMp3/Ha/Hs5YuEqilubuj65R2V5RQXRZVsw95769WdjtSd2j7mAyy
+         edje1y5b4hGc7obSXnsBtRbYuPzvc8NWHz9B+pDVHdA91EK6EAG5aBRAtr0Xs6710ZRu
+         OdrVizV5JlAMhSEmmyUQIjm5X5HOet8OoemlIizevOF5HE+FUsOm1SXNG4FyDFOGqoZE
+         7f+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788286412; x=1788891212;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=xKVx3FFqSm9L/iLUNqED5EbA9fzc0BWq3+4jXNxzr+8=;
+        b=QddCVw3dZ0AFIBzN5iCpUeMc/URLCwbarKa27KSgOZXSdoBimqrzwgWefd02jcqO8V
+         WZVWONwDUGH09v/J+wVlMWI20X/+V9EMF8YQdWAw0vsbOzP5/a7reSYW+Susj41UweQV
+         /kktDv4ShvYH9r/hxtFGk+7KOnnA4hai+gOcjLWtp5AwqWsv0bHZvczirIKEbBH3UCk9
+         Uf2dw4guHIA4U2uIbmLVd2sXEXpIA7+2S2h9GEvvt3lPXRwYabvcLPOmuL1WhG49qDPf
+         SWFhc59wX/CauYxNuthXDQV3am4rDzTu6M3eWOQ8HU0U+gPTkzjUyRi3NqjZfBUfAneK
+         GQAg==
+X-Forwarded-Encrypted: i=1; AKwUvBzZjngCXbH0den1kxvYPBPIsy8JRq9S9/DiTh9THR7fUxDmc/QbBgGW3KK4Wcj4hRiFkad1D02nnA==@kvack.org
+X-Gm-Message-State: AFuF++lqzmGdqqTcFWCM3p5paV3V66We3CD/sdI37TLBvIGGuU9aJcHn
+	+kMFFzlIfvbEumNSQgteVwRH3AWF3QxMDq7JwlH7yu08m16ocjk5E4eXBxBHlaYJ384J6W1CW+L
+	bfhFcvdBmexm0tjfOnu4K1RKSg2iBQclY/xCK
+X-Gm-Gg: AYBFou2tLgPIeL+yFZWkvuwHtCjROKDi/F76jjG0jSxjgH/F3xpDAcamrIR8PxsZxTV
+	uOjcuIBvqKrNoBWw2aCsjwg9R5Jl6e30s7btD2QkJjfeyDTpRHOOpqXW9TaWMzrVX0cWmZXX6Ce
+	xQfuxdA2W2a4cOd5GvAovjwou1dq8VntA3AXmar3ItMEjqUjFSgDK00fuzaW+8Dj6QxvAV0YOwE
+	XKz4a2U5Bpo/hbw+EjQE6RzKTm00I1MzCcQlFmTT4HzWpC5p6PjhQ30Pr6dVdlQR0kSl1y7zlFZ
+	lHiAJHETxRCtIiXyYm9a4A+NYxM7s3o8UNR7QfsUrQ==
+X-Received: by 2002:a05:6402:24c9:b0:6a3:714e:f5b4 with SMTP id
+ 4fb4d7f45d1cf-6a60d3a5f5cmr18630295a12.9.1788286411922; Tue, 01 Sep 2026
+ 11:13:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260831-mglru-flags-cleanup-v4-0-2d15dde0d7ee@tencent.com>
- <20260831-mglru-flags-cleanup-v4-1-2d15dde0d7ee@tencent.com>
- <apZVe8UHZ1CNo4r1@linux.dev> <CAMgjq7D6V4eTZJ1Q1Xf2J6yTCq=JjvzT-W-HHX6EnMfzm3BK1g@mail.gmail.com>
- <apcJgcFLHKZfI40m@linux.dev>
-In-Reply-To: <apcJgcFLHKZfI40m@linux.dev>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 2 Sep 2026 02:11:24 +0800
-X-Gm-Features: AcwNN1XLuero4S-u0uv2ETgMcz4JXom2ZmkXeiEroEYDvMkv4dB11HBSW6z7Bos
-Message-ID: <CAMgjq7C=k_nzwiM_MTcjVjWMTGf=s8oRaUBY00dCvLbP4EiHnQ@mail.gmail.com>
-Subject: Re: [PATCH v4 1/6] mm/memcontrol: make lru_zone_size atomic and
- simplify sanity check
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Ridong Chen <ridong.chen@linux.dev>, Lian Wang <lianux.mm@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+References: <20260725182628.221603-1-nsd.project.dev@gmail.com>
+ <CAFLp9PEQQVuDpJPwrNvLN1-u3w3TMwZPUUrf0+rOBrvDjBBf1A@mail.gmail.com>
+ <anlByPDZmvEhWeXI@casper.infradead.org> <ffcij36vnozf3rginqd2opd2dwqyki7xhtdo4veuty734hhgba@utjav2k263o6>
+ <nsd.1787001235.35928@mail.gmail.com> <w7vte4itudtkw2yf4vbmuofiumfffmp2y52dpu2bqvqtdgjvpd@5femyiozss3e>
+ <CAFLp9PGkVYZcQT5qAx-RKFOF-urZ92m417zpAeF7ZQempbS1HQ@mail.gmail.com>
+In-Reply-To: <CAFLp9PGkVYZcQT5qAx-RKFOF-urZ92m417zpAeF7ZQempbS1HQ@mail.gmail.com>
+From: =?UTF-8?B?YXloYW4gYXlkxLFu?= <nsd.project.dev@gmail.com>
+Date: Tue, 1 Sep 2026 21:13:17 +0300
+X-Gm-Features: AcwNN1V22bGPbMhIlSnvavlCYf_tFkyCNbIoZKs7OuDlgoLcbih34LFhVX-fmpE
+Message-ID: <CAFLp9PF_EyESt1HbBphwKgcNd5E901-bhF3sEpk-f8XTpfGBDw@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/3] Neural Storage Driver - learning page cache prefetcher
+To: Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org
+Content-Type: multipart/alternative; boundary="00000000000056ddc3065a6fe07d"
 X-Rspam-User: 
-X-Stat-Signature: b3jxumoah5gp173peas7w13b36oti69c
-X-Rspamd-Queue-Id: D5DBE80011
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788286323-759647
-X-HE-Meta: U2FsdGVkX1+avF2yC/Lct86FejiQi/Xf/vraGFrC6d1ltu40BP7g68VoH7nIhy137MjdA2eAqjo3dXtcjwhX6ZHkQBMvgNiltwvOQnNuknXWPOZNIJU1c8n3KmXSHqjPRd3FYbrTrgJWmElCGmFJMIaogGCg1+jrhrEfA5fMW9h8h7Cu4xrJeyYzP+nGdTXnU5XkvtBQTTAd9hbLQzVe9Qt732Wg+9nPsd3h/KRUG3qAft3vlX/5LMCVs+81lEw+A5W1c5SY7smrHyGyTMevs1yOLo8Pgj37gMAExfB79guNT76dx0tC4eJuWc6tSq1KeqFBPp5pwvD0Kzkks4aT5wKx5P89nLL1JkW8u8lLeXksyHDsFyouCoG23Pug54Rm8pXYyaAvAQDDqVf5RnDTRDG0GGyi3z97fb38qB9iKYZ5L8ichFZhGa3P8/s1jZLqj/ktC7UDYmhNOfN44hUVnEqfzk0e5Z+eBUC/697/CUFDadNTmbBseIKkqUpQ5JgdAIBQsx8tHodAXFiEdoOX9CiuGDBnOG3fmsvr/EkhFP1LouGvuN/3tfjd8OTKYVFn4SfdjD9TKsLZLdbLvUZEbPYAm0X9bt1qkreUZhnNTJJUC1RLl1B1mbWviMwcfZqycFXiciBKW+SRthXc6eUkUJ3CWN2Cxhpm3fOyma4pHGiZHbUx8Qgm6bMInXOnrpuX3aP5DKcCFKkI2tCCZ3L7isFY9upbxZsJEbHqsRj2PAO+UMuxqZI3Md4uChfO2dswCrAFuLEfb5TirMptcpfH7jT9jTSns3c0T7nuRmAH+Mo0SKc1uIiioVqj+iJ0xiPNYw/BAFepeJH29MMB+MM/R1ApS6mxr5ehWW3FxdrQ/jxwJcYg+grWQZi4WkWBiD5/R+v1ykMzSv5HGGqnUJ1AMULJH2ZqVOVjTxbLvnSuZEX12MESFZorEsdZxIqkoEHIfQ1DY4zVeXFkYFOtzRO
- bSkLeJvG
- XK1wUC9jkc+r6nsaPxr4ePo1ItMIRrJguWtCcoSSS6siKKOuRNyELxc46HRMAL7oBTAXY07ZtKfEEV8IHIGI/+p59ilf7dpWWtUEhhwF22Gyi/bM9PI636IVFI+hV4TBdXnSFmcToaavLOJ2JLTVp4PV5HBAZ1aBUtvYD/ePB4pW2L5ya1urEMqeWOcPztDh+GAnp7brMwW3PaIWQzPOl40PN7KqtjVfDaf5sEY1K3TYIA3nx3cfeG4/T/iJSUA+cON7ls50MTKcZPdKZWW3hX99uItNB/n3IfBJZ91d+pQrbhCSMcU+Fq45IikD2MnPn5jxx+jeiyWQvwkiy+k8XBDcqudqf4SWIx48VChSySgjPdR9sa9P5XDbfumNADN5FjGy6FIAcUSLhjqCxWD4GdTw5c17w1HNLeQbBYbpg63Nm+ExIMfA2Rv+mgEuc99zNpjfgYWRaO5GWG8STEpWWXv6G9lOusdRkFx/bgMR97t51qRTNJQbHB+nDj0MilgNHudDq3iZ9vybq71P7g+TYN7uGScHkj4M8L2fFDNMzuss+13I=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D0B981C0007
+X-Stat-Signature: eh91n3rs8yhp9qq14joob6s8itogqidn
+X-HE-Tag: 1788286413-275113
+X-HE-Meta: U2FsdGVkX18umKPk59LziRYO2BiyJULHcAM8KCvJEO5oBArEbQ9QisCx/6iZbokWJG7W2Xr0FLnXSvmyy792QByUIKR58HMdyFBlWScCBR4KdnZV0AyYqmqLtC6wgtek+LKT4ZeHBctvmMJQnGpjbHtoiwdBiote9Fo6X4fHoTcGhznNAN3uoYNzIwmcwbYfqG42GTFdBUMrj9HHF/IfYhJ32b7MqQytPkXmq5D2UqpPAOa8+8niDDw0/fdDy0l5cfZl+0daf8if63ZkV+iVJZyLjYz6YeWIcujiwlDhNYuAUAwdZnoeLUDjKknrhAyygTYhWDTtYMUNrhWtTUYYW/gAT53FOY3+c6R/FqsVa1ocuvD7KlkKu2pMjuV7JQd0+ct7aeQUZdL3J6HMdZjIjfxUc52DRKhVwzz9tCOeA4GQpm0IdpAJr9unaII3r65AivF8oqdC/XUsV1jYQaQel48IGqBfz4lYY8R1eXkS8jDazUms1qqN1S+rz//3nF2Td5pVqTMbu4klDWhkqxpz/XClJl3S8jLFRb1HEfyrGWFswM0IBoaqm2dzGBgAmzP0UJl+58Ghflm4+5e9ShRtVOTdlhRYKEu0/lCRBiYmwshCuvil9XX/itCFeltM9+OMCJ5PGeye9moHf0enkm91oFR6o6ak0YpqMsmZjTu1wC/WHzWS4QNtBjv+w3y0dv7YIB9Yt1DocnPu5q5uCBt3r3F8bA21/Bct5g+COkkmbvG4g2yX81sH7/5XewmYA4rXWbVL+3d0xfGd4njLAvxnjmAN42OKtrp6W7sZSFX6K8bvcscUxU2j1687MBkGKe18zu2MX1NMtEN5QnsQZ+TaBWTibDC431JYfD7PEOkBJmnsjlZ3aTxeZB37y9HRRuup8W2pXzhA6Mw991t/ZPA9t1fJfs0ySigf+7EJb97t9zImwBE8esx79G6r5E0loJFq4HhrsF6wx40LFkznL+E
+ J18w7u3Z
+ 5psIXFm2FLswhLBBwiRhLxP7FEsUsP5VsghiMbDx3lFXrd6+OTJtStDng5tdLCJzC+UNMjZZj4b5Ep7XSSCJh3t4Hkp6G04Xs+QqB0t6boJCaME0M+2Ck8GYDUH0dMUj+BQRmEAPPlRwEFt32PqR3CRSVixid+4p4CvihkeecKLcaEQ8ocL90yIYR0aeeUm6MUVoYTPL9Rf6WAFa8fYmNvcblLj7NuE4+A1on6DGyonEYSBRi+0Rzg1MnWThxrDbekp9kxJ73s9du1BujqX8VvibauvByghXdpjnC9tXme09crxqMTc1d4XcajcVex/X2j0nAo3rlWYC7CpiM4o//JBg/ToM+ASssdV/+OZY2uBnAkSOrMomxRwzs3dEVuV+/l4+BVZpxqFYgkVW4l9fH8IUnljnCMgnpx50Zk/0a0rvJNvJ/Z3WAXIX4BCD3II50GKYltZng6izFzNBpXNEWpCzj4CreUAdup7WfIw+c0sQGD4YocGO2NkopSj4+iyR4kBkOaJxX+11yhOm/kfUH/h1zGjh3D/FwZ4tf38N01e7keTOpcq38DVdCl2AK90oMjKUCvyDvyDS3vlM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,95 +140,319 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 2, 2026 at 1:37=E2=80=AFAM Shakeel Butt <shakeel.butt@linux.dev=
-> wrote:
->
-> On Tue, Sep 01, 2026 at 01:20:33PM +0800, Kairui Song wrote:
-> > On Tue, Sep 1, 2026 at 12:38=E2=80=AFPM Shakeel Butt <shakeel.butt@linu=
-x.dev> wrote:
-> > >
-> > > On Mon, Aug 31, 2026 at 02:43:31AM +0800, Kairui Song via B4 Relay wr=
-ote:
-> > > > From: Kairui Song <kasong@tencent.com>
-> > > >
-> > > > commit ca707239e8a7 ("mm: update_lru_size warn and reset bad lru_si=
-ze")
-> > > > introduced a sanity check to catch memcg counter underflow, which w=
-as
-> > > > more of a workaround for another bug: lru_zone_size is unsigned, so
-> > > > underflow wraps it around and returns an enormously large number, t=
-hen
-> > > > the memcg shrinker loops almost forever as the calculated number of
-> > > > folios to shrink is huge. That commit also checked if a zero value
-> > > > matches the empty LRU list, so we have to hold the LRU lock, and
-> > > > handle the positive and negative deltas separately.
-> > > >
-> > > > But later commit b4536f0c829c ("mm, memcg: fix the active list agin=
-g
-> > > > for lowmem requests when memcg is enabled") already removed the LRU
-> > > > emptiness check, so handling the deltas separately is no longer
-> > > > needed. And if we just turn it into an atomic long, underflow isn't=
- a
-> > > > big issue either,
-> > >
-> > > Why atomic long and not just long?
-> >
-> > Long is fine too; I was just trying to be defensive. The original
-> > check was a defensive design for leaks or races, and atomic long is
-> > more immune to race conditions. See below for the other conditions.
->
-> Unless we really need it, let's stay with "long" for now. As you mentione=
-d below
-> this is busy/hot path, no need to add overhead of atomic here.
+--00000000000056ddc3065a6fe07d
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-OK, no problem.
+Just bumping this up in your inbox curious if you had a chance to look at
+the window-size matrix from the 19th, and what you think about the three
+questions at the end.
 
-> >
-> > So checking it in the reader side is much lighter and cleaner code-wise=
-.
->
-> So, one motivation is cleaner code?
+Happy to run more numbers if that helps.
 
-Right that's one of the motivition.
+Best,
+Ayhan
 
+
+20 A=C4=9Fu 2026 Per 15:26 tarihinde ayhan ayd=C4=B1n <nsd.project.dev@gmai=
+l.com>
+=C5=9Funu yazd=C4=B1:
+
+> Hi Honza, Hi Willy,
 >
-> >
-> > Checking in the reader side also tolerates deferred accounting false
-> > positives: if a folio is added to / removed from LRU but have the
-> > accounting happens later, that's fine, but might cause a temporary
-> > underflow (there shouldn't be such usage right now, but cleanly the
-> > oldest commit I mentioned is trying to catch something). It should
-> > just proceed without performing extra operations on the counter or
-> > raising a warning on the updater side.
-> >
-> > The underflow won't affect anything besides the two readers mentioned
-> > above (reclaimer and reparenting).
-> >
-> > Besides, I don't think warning on the writer side will help catch the
-> > real leak either, it just adds overhead to a busy path. The folio
-> > triggering the underflow is very unlikely to be the one leaking the
-> > count. And if that leak is actually caused by a race, the atomic long
-> > change should cure it.
+> Thanks for the review and for the questions =E2=80=94 they pushed us to g=
+o back
+> and measure this properly. Since the last exchange we ran a full
+> window-size matrix with complete latency and overhead numbers, and it
+> answers directly what both of you asked. Let me start with the data.
 >
-> I think you are going and looking too much into the history of this warni=
-ng. I
-> think you just need to explain that the current warning in the update sid=
+> These results come from our current in-development tree. We wanted to
+> share them with you before pushing anything, so the tree referenced in
+> the RFC (upstream-prep-v1, 2026-08-17) is still the earlier snapshot.
+> Since that snapshot we made three changes that led to these numbers:
+>
+>   1. Jump handling =E2=80=94 when a prediction lands outside the kernel's
+>      readahead window we now always issue WILLNEED|NOREUSE explicitly,
+>      instead of leaving the strategy branch to decide.
+>   2. Kernel-window awareness =E2=80=94 when the kernel's own readahead wi=
+ndow
+>      is already >=3D 1MB the module detects this and completely silences
+>      itself (confirmed by its own counters), so it never competes with
+>      or disturbs a kernel window that is already sufficient.
+>   3. Full instrumentation =E2=80=94 per-run p50/p95/p99/p999 latency, per=
+-pass
+>      usr/sys CPU overhead, and disk-I/O accounting.
+>
+> We'll push the updated tree to GitHub once this discussion settles.
+>
+> Full metrics matrix =E2=80=94 methodology: interleaved ON/OFF on the same
+> machine, drop_caches before every run, 3 runs per configuration, 6.2 GB
+> SQLite database and an 8 GB sequential file. Disk I/O is byte-identical
+> between ON and OFF in all 96 runs =E2=80=94 NSD never issues extra I/O.
+>
+> seq64 =E2=80=94 8 GB sequential file, 64k requests, n=3D131K/run:
+>
+>   kb    | OFF avg  ON avg   diff  | p50 OFF->ON  | p99 OFF->ON   |
+> overhead (usr+sys)
+>   128   | 22.02s   17.11s   -22%  | 50->23 us     | 812->805 us   |
+> 5.94->4.33s
+>   256   | 17.08s   17.22s   +1%   | 20->15 us     | 824->1129 us  |
+> 4.07->4.13s
+>   512   | 16.81s   16.96s   +1%   | 16->14 us     | 1092->1903 us |
+> 4.24->3.60s
+>   1024  | 17.25s   17.03s   -1%   | 15->16 us     | 1903->1883 us |
+> 3.67->3.74s
+>
+> SQLite Q2 full-table scan =E2=80=94 6.2 GB:
+>
+>   kb    | OFF avg  ON avg   diff  | overhead (usr+sys)
+>   128   | 24.51s   20.48s   -16%  | +0.95s
+>   256   | 20.05s   16.60s   -17%  | +1.26s
+>   512   | 15.31s   12.18s   -20%  | +1.06s
+>   1024  | 12.22s   12.09s   -1%   | +0.26s
+>
+> random4k =E2=80=94 100k random 4k requests:
+>
+>   kb    | OFF avg  ON avg   diff  | p99
+>   128   | 25.0s    25.5s    +2%   | ~0.98ms
+>   256   | 26.9s    26.0s    -3%   | ~0.99ms
+>   512   | 25.7s    25.5s    -1%   | ~0.98ms
+>   1024  | 25.4s    24.7s    -3%   | ~0.99ms
+>
+> random_repeat =E2=80=94 100k offsets x 3 passes, n=3D300K:
+>
+>   kb    | OFF avg  ON avg   diff  | p99
+>   128   | 26.8s    25.1s    -6%   | 0.39ms
+>   256   | 25.1s    24.0s    -4%   | 0.38ms
+>   512   | 24.5s    24.4s    0%    | 0.37ms
+>   1024  | 25.0s    24.7s    -1%   | 0.39ms
+>
+> Honza, you asked whether the difference goes away at 1M =E2=80=94 and yes=
+, it
+> does, for both workloads. The 128k default is the dominant factor; at
+> 1M the kernel alone already reaches this SSD's bandwidth ceiling, and
+> NSD recognises that and silences itself entirely at >=3D 1M windows.
+>
+> But the 512k row is the one I'd really like your view on. The kernel
+> with a 512k window alone (15.31s) trails the kernel with 1M (12.22s)
+> by about 25%, yet NSD with a 512k window reaches 12.18s =E2=80=94 the sam=
 e
-> already can't always catch the actual leak and is costly. Moving to read =
-side
-> make the code cleaner and warnings will be at the location where the cons=
-umers
-> we care about are going to consume it. Also add couple of sentences on be=
-havior
-> difference it will have i.e. warning on flipping into negative vs we will
-> continue to operate even in negative but only warn on negative consumptio=
-n.
+> throughput at half the window. Our block-layer traces show OFF@512k
+> keeps issuing ~512k requests, so the device is not the limit. It looks
+> like the kernel's window growth is capped at ra_pages, while the
+> fadvise-driven expansion NSD triggers is not =E2=80=94 which, incidentall=
+y, is
+> why distros end up hand-tuning this value. Is that cap deliberate, for
+> latency or cache-pollution control, or is there room for the growth
+> policy to self-adapt?
 >
-> Another question: why is this patch part of this series? Just some orthog=
-onal
-> cleanups or are they related?
+> Willy, on the architecture: hooking only vfs_read and skipping the
+> fault path was a deliberate choice to bound the first iteration, but
+> you're right that it's a gap =E2=80=94 filemap_fault bypasses vfs_read
+> entirely, so we're currently blind to mmap'd workloads. Hooking it
+> with the same fprobe is the next step. On replacing the PG_readahead
+> folio marking: the matrix above convinced us this is the right
+> direction. The kernel's growth policy, not the device, is the real
+> bottleneck at default settings, so we're moving toward a design that
+> manages ra_state directly and measures its own waste =E2=80=94 per-file
+> tracking of consumed versus expired prefetches with adaptive
+> aggressiveness, which is really just replacing the implicit
+> assumptions behind PG_readahead marking with explicit measurement.
+> Backward access patterns are already handled by the stride predictor
+> (negative deltas, forward/backward counted separately); a dedicated
+> backward-pattern benchmark will be added to the suite.
 >
+> Two things we're still working on, for honesty: at 256-512k the
+> sequential p99 regresses (~0.8ms -> ~1.1ms and ~1.1ms -> ~1.9ms) as
+> the prefetch regions push the device queue =E2=80=94 the usage-tracking w=
+ork
+> above targets exactly that. And the random_repeat gains (4-6% at
+> 128-256k) suggest the predictor does help beyond what window size can
+> fix; p95 there improves from 296 to 243 us.
+>
+> Questions we'd value your input on:
+>   1. Is fadvise-driven expansion beyond ra_pages acceptable as a
+>      mechanism, or should the growth policy itself change?
+>   2. What would a minimal integrated design look like =E2=80=94 replacing
+>      PG_readahead marking with direct ra_state control?
+>   3. If we iterate: fault path first, or usage-tracking first?
+>
+> Per your suggestion, we'll cc the page cache maintainers from
+> MAINTAINERS on the next revision.
+>
+> Best regards,
+> Ayhan
 
-These were all part of the MGLRU-FG prerequisite, so I sent them
-together. I can split it out.
+--00000000000056ddc3065a6fe07d
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><div dir=3D"auto">Just bumping this up in your inbox=
+ curious if you had a chance to look at the window-size matrix from the 19t=
+h, and what you think about the three questions at the end.</div><div dir=
+=3D"auto"><br></div><div dir=3D"auto">Happy to run more numbers if that hel=
+ps.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Best,</div><div dir=
+=3D"auto">Ayhan</div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" cl=
+ass=3D"gmail_attr">20 A=C4=9Fu 2026 Per 15:26 tarihinde ayhan ayd=C4=B1n &l=
+t;<a href=3D"mailto:nsd.project.dev@gmail.com" target=3D"_blank" rel=3D"nor=
+eferrer">nsd.project.dev@gmail.com</a>&gt; =C5=9Funu yazd=C4=B1:<br></div><=
+blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px=
+ #ccc solid;padding-left:1ex">Hi Honza, Hi Willy,<br>
+<br>
+Thanks for the review and for the questions =E2=80=94 they pushed us to go =
+back<br>
+and measure this properly. Since the last exchange we ran a full<br>
+window-size matrix with complete latency and overhead numbers, and it<br>
+answers directly what both of you asked. Let me start with the data.<br>
+<br>
+These results come from our current in-development tree. We wanted to<br>
+share them with you before pushing anything, so the tree referenced in<br>
+the RFC (upstream-prep-v1, 2026-08-17) is still the earlier snapshot.<br>
+Since that snapshot we made three changes that led to these numbers:<br>
+<br>
+=C2=A0 1. Jump handling =E2=80=94 when a prediction lands outside the kerne=
+l&#39;s<br>
+=C2=A0 =C2=A0 =C2=A0readahead window we now always issue WILLNEED|NOREUSE e=
+xplicitly,<br>
+=C2=A0 =C2=A0 =C2=A0instead of leaving the strategy branch to decide.<br>
+=C2=A0 2. Kernel-window awareness =E2=80=94 when the kernel&#39;s own reada=
+head window<br>
+=C2=A0 =C2=A0 =C2=A0is already &gt;=3D 1MB the module detects this and comp=
+letely silences<br>
+=C2=A0 =C2=A0 =C2=A0itself (confirmed by its own counters), so it never com=
+petes with<br>
+=C2=A0 =C2=A0 =C2=A0or disturbs a kernel window that is already sufficient.=
+<br>
+=C2=A0 3. Full instrumentation =E2=80=94 per-run p50/p95/p99/p999 latency, =
+per-pass<br>
+=C2=A0 =C2=A0 =C2=A0usr/sys CPU overhead, and disk-I/O accounting.<br>
+<br>
+We&#39;ll push the updated tree to GitHub once this discussion settles.<br>
+<br>
+Full metrics matrix =E2=80=94 methodology: interleaved ON/OFF on the same<b=
+r>
+machine, drop_caches before every run, 3 runs per configuration, 6.2 GB<br>
+SQLite database and an 8 GB sequential file. Disk I/O is byte-identical<br>
+between ON and OFF in all 96 runs =E2=80=94 NSD never issues extra I/O.<br>
+<br>
+seq64 =E2=80=94 8 GB sequential file, 64k requests, n=3D131K/run:<br>
+<br>
+=C2=A0 kb=C2=A0 =C2=A0 | OFF avg=C2=A0 ON avg=C2=A0 =C2=A0diff=C2=A0 | p50 =
+OFF-&gt;ON=C2=A0 | p99 OFF-&gt;ON=C2=A0 =C2=A0| overhead (usr+sys)<br>
+=C2=A0 128=C2=A0 =C2=A0| 22.02s=C2=A0 =C2=A017.11s=C2=A0 =C2=A0-22%=C2=A0 |=
+ 50-&gt;23 us=C2=A0 =C2=A0 =C2=A0| 812-&gt;805 us=C2=A0 =C2=A0| 5.94-&gt;4.=
+33s<br>
+=C2=A0 256=C2=A0 =C2=A0| 17.08s=C2=A0 =C2=A017.22s=C2=A0 =C2=A0+1%=C2=A0 =
+=C2=A0| 20-&gt;15 us=C2=A0 =C2=A0 =C2=A0| 824-&gt;1129 us=C2=A0 | 4.07-&gt;=
+4.13s<br>
+=C2=A0 512=C2=A0 =C2=A0| 16.81s=C2=A0 =C2=A016.96s=C2=A0 =C2=A0+1%=C2=A0 =
+=C2=A0| 16-&gt;14 us=C2=A0 =C2=A0 =C2=A0| 1092-&gt;1903 us | 4.24-&gt;3.60s=
+<br>
+=C2=A0 1024=C2=A0 | 17.25s=C2=A0 =C2=A017.03s=C2=A0 =C2=A0-1%=C2=A0 =C2=A0|=
+ 15-&gt;16 us=C2=A0 =C2=A0 =C2=A0| 1903-&gt;1883 us | 3.67-&gt;3.74s<br>
+<br>
+SQLite Q2 full-table scan =E2=80=94 6.2 GB:<br>
+<br>
+=C2=A0 kb=C2=A0 =C2=A0 | OFF avg=C2=A0 ON avg=C2=A0 =C2=A0diff=C2=A0 | over=
+head (usr+sys)<br>
+=C2=A0 128=C2=A0 =C2=A0| 24.51s=C2=A0 =C2=A020.48s=C2=A0 =C2=A0-16%=C2=A0 |=
+ +0.95s<br>
+=C2=A0 256=C2=A0 =C2=A0| 20.05s=C2=A0 =C2=A016.60s=C2=A0 =C2=A0-17%=C2=A0 |=
+ +1.26s<br>
+=C2=A0 512=C2=A0 =C2=A0| 15.31s=C2=A0 =C2=A012.18s=C2=A0 =C2=A0-20%=C2=A0 |=
+ +1.06s<br>
+=C2=A0 1024=C2=A0 | 12.22s=C2=A0 =C2=A012.09s=C2=A0 =C2=A0-1%=C2=A0 =C2=A0|=
+ +0.26s<br>
+<br>
+random4k =E2=80=94 100k random 4k requests:<br>
+<br>
+=C2=A0 kb=C2=A0 =C2=A0 | OFF avg=C2=A0 ON avg=C2=A0 =C2=A0diff=C2=A0 | p99<=
+br>
+=C2=A0 128=C2=A0 =C2=A0| 25.0s=C2=A0 =C2=A0 25.5s=C2=A0 =C2=A0 +2%=C2=A0 =
+=C2=A0| ~0.98ms<br>
+=C2=A0 256=C2=A0 =C2=A0| 26.9s=C2=A0 =C2=A0 26.0s=C2=A0 =C2=A0 -3%=C2=A0 =
+=C2=A0| ~0.99ms<br>
+=C2=A0 512=C2=A0 =C2=A0| 25.7s=C2=A0 =C2=A0 25.5s=C2=A0 =C2=A0 -1%=C2=A0 =
+=C2=A0| ~0.98ms<br>
+=C2=A0 1024=C2=A0 | 25.4s=C2=A0 =C2=A0 24.7s=C2=A0 =C2=A0 -3%=C2=A0 =C2=A0|=
+ ~0.99ms<br>
+<br>
+random_repeat =E2=80=94 100k offsets x 3 passes, n=3D300K:<br>
+<br>
+=C2=A0 kb=C2=A0 =C2=A0 | OFF avg=C2=A0 ON avg=C2=A0 =C2=A0diff=C2=A0 | p99<=
+br>
+=C2=A0 128=C2=A0 =C2=A0| 26.8s=C2=A0 =C2=A0 25.1s=C2=A0 =C2=A0 -6%=C2=A0 =
+=C2=A0| 0.39ms<br>
+=C2=A0 256=C2=A0 =C2=A0| 25.1s=C2=A0 =C2=A0 24.0s=C2=A0 =C2=A0 -4%=C2=A0 =
+=C2=A0| 0.38ms<br>
+=C2=A0 512=C2=A0 =C2=A0| 24.5s=C2=A0 =C2=A0 24.4s=C2=A0 =C2=A0 0%=C2=A0 =C2=
+=A0 | 0.37ms<br>
+=C2=A0 1024=C2=A0 | 25.0s=C2=A0 =C2=A0 24.7s=C2=A0 =C2=A0 -1%=C2=A0 =C2=A0|=
+ 0.39ms<br>
+<br>
+Honza, you asked whether the difference goes away at 1M =E2=80=94 and yes, =
+it<br>
+does, for both workloads. The 128k default is the dominant factor; at<br>
+1M the kernel alone already reaches this SSD&#39;s bandwidth ceiling, and<b=
+r>
+NSD recognises that and silences itself entirely at &gt;=3D 1M windows.<br>
+<br>
+But the 512k row is the one I&#39;d really like your view on. The kernel<br=
+>
+with a 512k window alone (15.31s) trails the kernel with 1M (12.22s)<br>
+by about 25%, yet NSD with a 512k window reaches 12.18s =E2=80=94 the same<=
+br>
+throughput at half the window. Our block-layer traces show OFF@512k<br>
+keeps issuing ~512k requests, so the device is not the limit. It looks<br>
+like the kernel&#39;s window growth is capped at ra_pages, while the<br>
+fadvise-driven expansion NSD triggers is not =E2=80=94 which, incidentally,=
+ is<br>
+why distros end up hand-tuning this value. Is that cap deliberate, for<br>
+latency or cache-pollution control, or is there room for the growth<br>
+policy to self-adapt?<br>
+<br>
+Willy, on the architecture: hooking only vfs_read and skipping the<br>
+fault path was a deliberate choice to bound the first iteration, but<br>
+you&#39;re right that it&#39;s a gap =E2=80=94 filemap_fault bypasses vfs_r=
+ead<br>
+entirely, so we&#39;re currently blind to mmap&#39;d workloads. Hooking it<=
+br>
+with the same fprobe is the next step. On replacing the PG_readahead<br>
+folio marking: the matrix above convinced us this is the right<br>
+direction. The kernel&#39;s growth policy, not the device, is the real<br>
+bottleneck at default settings, so we&#39;re moving toward a design that<br=
+>
+manages ra_state directly and measures its own waste =E2=80=94 per-file<br>
+tracking of consumed versus expired prefetches with adaptive<br>
+aggressiveness, which is really just replacing the implicit<br>
+assumptions behind PG_readahead marking with explicit measurement.<br>
+Backward access patterns are already handled by the stride predictor<br>
+(negative deltas, forward/backward counted separately); a dedicated<br>
+backward-pattern benchmark will be added to the suite.<br>
+<br>
+Two things we&#39;re still working on, for honesty: at 256-512k the<br>
+sequential p99 regresses (~0.8ms -&gt; ~1.1ms and ~1.1ms -&gt; ~1.9ms) as<b=
+r>
+the prefetch regions push the device queue =E2=80=94 the usage-tracking wor=
+k<br>
+above targets exactly that. And the random_repeat gains (4-6% at<br>
+128-256k) suggest the predictor does help beyond what window size can<br>
+fix; p95 there improves from 296 to 243 us.<br>
+<br>
+Questions we&#39;d value your input on:<br>
+=C2=A0 1. Is fadvise-driven expansion beyond ra_pages acceptable as a<br>
+=C2=A0 =C2=A0 =C2=A0mechanism, or should the growth policy itself change?<b=
+r>
+=C2=A0 2. What would a minimal integrated design look like =E2=80=94 replac=
+ing<br>
+=C2=A0 =C2=A0 =C2=A0PG_readahead marking with direct ra_state control?<br>
+=C2=A0 3. If we iterate: fault path first, or usage-tracking first?<br>
+<br>
+Per your suggestion, we&#39;ll cc the page cache maintainers from<br>
+MAINTAINERS on the next revision.<br>
+<br>
+Best regards,<br>
+Ayhan</blockquote></div></div></div>
+
+--00000000000056ddc3065a6fe07d--
 
