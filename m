@@ -4,98 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E08FCC61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 22:04:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0A27C61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 22:09:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF2646B0088; Tue,  1 Sep 2026 18:04:38 -0400 (EDT)
+	id 14E1B6B008A; Tue,  1 Sep 2026 18:09:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA35A6B008A; Tue,  1 Sep 2026 18:04:38 -0400 (EDT)
+	id 0D8126B008C; Tue,  1 Sep 2026 18:09:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB96D6B008C; Tue,  1 Sep 2026 18:04:38 -0400 (EDT)
+	id E960C6B0092; Tue,  1 Sep 2026 18:09:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8963C6B0088
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:04:38 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F3CF514056B
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 22:04:37 +0000 (UTC)
-X-FDA: 85166573394.19.503C53A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4D7718000B
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 22:04:36 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="F3gy1o3/";
-	spf=pass (imf30.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AA2FA6B008A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:09:25 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3AC35A0573
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 22:09:25 +0000 (UTC)
+X-FDA: 85166585490.18.1FF1FDD
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 160E81C000B
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 22:09:22 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=Pl541Ad4;
+	spf=pass (imf20.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.182 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788300276;
+	s=arc-20220608; t=1788300563;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dg7/of7miGca+ll6oxzY618HVXmMqM3sY+D0h0edBJ4=;
-	b=EClo2YlglWWouJ63eCt1Qnq8mlDokXbQWa/mjCeXFN735nPVUI4fm0F/QUSaj6IMDThmze
-	WXCXeAGQ3bmie1B2jAMpPbl4DrhWiXw7BRMg/Q786r7ZOzmkKnn/hegmrqioaTB5cOg06v
-	f2Mt5Nr8/p5Z9H7vdWRc1DcskFTnjZk=
+	bh=M4+niubgl505BkFKhEwPKEaItzjdUcc0IlA8qi6slv4=;
+	b=z28VuADDAuJXoRXnjHXOcJjO+aK8L4UWCSmPmBI/JbJsCDOSs02HndYz/YuF8USLE9TBuq
+	8SwGSuVQ7Uf8xFwQDJrUJPoSnuNVns1nSqKPs2/40DcxJ4joHcLAaZIBOpq3TZcc8XnpoV
+	1mZp4ci6zM0Zc6kKzlw80VWXCLQSRs8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788300276;
-	b=x1RfypWU2gvTYEY03oF7nEOKjl6hvqy+qj2Z7nv1dVHELosTImTAIOQ/XlTWEWoh/4ZPIa
-	n5dxH1aYZnO56PiOgstEZ7dmL54mBttUhrzUWGFJEdYE1J3wpOC9mDoktolvDiA8GyVXJZ
-	quF41zOm1zpiSp8SwR8uCOCfIqxsSKk=
+	t=1788300563;
+	b=ts/myTQE+PN6OllrxIHwpLDIahm2D0Mgh6sgZNw+qtZENdA5s+hb2NAsVAki35NqaZh00C
+	SKQcgFEID9RL7nJ42tdYm8kixM+R6je3tWZ5pQCRFCfxw8/FNxdvon7wM/uPLwDj+J7yU7
+	jCGXoosulp30ah/AvVSEj7LqGacZBA0=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="F3gy1o3/";
-	spf=pass (imf30.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 76399600D4;
-	Tue,  1 Sep 2026 22:04:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC0F71F000E9;
-	Tue,  1 Sep 2026 22:04:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788300275;
-	bh=Dg7/of7miGca+ll6oxzY618HVXmMqM3sY+D0h0edBJ4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=F3gy1o3/cFWrfD+9K/D7IPHj3VpxhwGJXIV8zmLNSnFFRu3RUUSdzcMPTrA2fy0My
-	 TjZer9gWanz8wijtc4uEikcLLucirkmpF15DfN9MxEFd6uEtoPnw47KlJDOVEpP538
-	 vVOlyhH0xUqWDzTAPHAOcGTMrFFwQ427xkhCn398v8F2BC4MNoIyGeiQt+dv4xAF3x
-	 X7DLkSt9DFOIPJm+YNs+pPgdf20xASR150o13Nfl8BEcPXXfPiWIB1JxsFQuuBXa31
-	 aywyTM3Wi7I/Jt5OL1/XWXO80FesDtUM6qdSm4/20T43CEZB6q1C8BEM97/wgw0i1C
-	 6EjKQ53zHBY3Q==
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-To: ryncsn@gmail.com,
-	ehab.ababneh@intel.com
-Cc: akpm@linux-foundation.org,
-	axelrasmussen@google.com,
-	baohua@kernel.org,
-	kasong@tencent.com,
-	lance.yang@linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	weixugc@google.com,
-	yuanchu@google.com,
-	yuzhao@google.com
-Subject: Re: [RFC PATCH] mm/mglru: dynamically protect readahead fault folios under refault pressure
-Date: Wed,  2 Sep 2026 06:04:30 +0800
-Message-Id: <20260901220430.79810-1-baohua@kernel.org>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <apcVhWzEwkwHYjB1@KASONG-MC4>
-References: <apcVhWzEwkwHYjB1@KASONG-MC4>
+	imf20.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=Pl541Ad4;
+	spf=pass (imf20.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.182 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-836ce6cbe1eso5709217b3.1
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 15:09:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1788300562; x=1788905362; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=M4+niubgl505BkFKhEwPKEaItzjdUcc0IlA8qi6slv4=;
+        b=Pl541Ad45D2OZFkbvHXTwWyBqBjrwmEMJKmErU3UlvNAlZUcXd8Sj+eI244QsWPj2j
+         nMvLJaTQxAKQsAUcXt6gv+d/pepaHz0VBGNdD8dutmzipVzRL5mCi19g1GZmkETOyQ1j
+         z0LqU+MjnWr9ZvDt8vLHtkl0CrUPfFYRc6rr3Vo6dhtFftss1TAKYnygBcwQtFckebJp
+         4zjbOIvsTl7eJSlstZSQTxYprx0UBCLtE6bKPpBhBnJk2qTEjWYduOJXCazg/pX58Rhc
+         HWmB4eagfcOee2tfvfu5E2uDUOZyI9+S4ExrQ2Yjy6xedj+bfq4KPGumfmvLUsFQgR0a
+         dxzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788300562; x=1788905362;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=M4+niubgl505BkFKhEwPKEaItzjdUcc0IlA8qi6slv4=;
+        b=JdYD3TOYY2CLIriXWDxC0ZLX8SKyKypaLmx0xb553WmOAobVwVvDUZKJjHdLzUjefm
+         YNrB6c9h76uZ1AHowjy/mQz0C91N483QOCoK3+9qcaK51++re0J2vkI+vDFLdiqA9J6O
+         f1zR+iP6mG7GaE/fJeB3CSnGPfS0cxfbohYuutJmNg7MWTUCe3H9fErMX2KyJsvmejyu
+         HtO7fHHTCB9lwk8i2uL2nglOrFtwvEW+1UOPtXvW7cidsp0FVnoh8XJYafUiwsrCi7bx
+         p6UiuwNIMOBYEysDDQZsI+3kGakmIg6U8LvFa8YWUKvFo7jXoBm8dlLFxIl3FCs039o8
+         aEdg==
+X-Forwarded-Encrypted: i=1; AKwUvBxHseefmgUOtlQDAcH7AGo4uHQzd3VyTt+7sG4UGG8liHWzom+ugl3/pkvHBVEM/h+aWmyC4LBWCA==@kvack.org
+X-Gm-Message-State: AFuF++nYBL8UFEj1+ND9oinJnKdnXCFdxW4+IbutHJHr7QttCw4HzE2c
+	FcFrUaSdyEoMhRMJ6+1CWrmpxaqb6uDGuCnOy/yndYwBZ0oC9VxbknByi0ObQ6ALy4k=
+X-Gm-Gg: AYBFou3SIPrNGYEuyJ0XcJSQ5rfdQbzskFo9q5nDvvGR1SwZj1zTuvraAMiT2m71W5N
+	m8DpRBQX0IMrpblsJFEkno0hfoUk00tdB6ER/heOAWbOSfo9NfdNN61IV8BH7T01bLSDoX8XNKv
+	2Pf9MsOEDKEz6/aNaF7+tWfAHbeggu1QSuMBQ/ha76mg1IUu6by1E/MUYtS02DGzrhzB5lzHPmK
+	NLIlj3M+UlMTZHej/cJkEUSHCGIheoko5ZIYRvpQRswS6TvswLXaY62gNQe7CcXFbyCcdNYBCZi
+	IEv67goPNzyFR765vj420noKNQ4ecOi4ME0w7yrpIw3ReGuKIZsJVneuZaQj1CLbULmJY8MjkK9
+	jgGne5ntQoOfp8sme0Op0TvpebaSKc3cYTVcTl7NGss8eSOuWT/vunRxSeNdMKnFY1u40cmcKPW
+	ickdhzpdKdxLHpLAvdcGiq620KgMey9Pt5ZYE+L6CDK4IT/krQxvsDbZFE8zdCHRGa62+iWEA=
+X-Received: by 2002:a05:690c:d8a:b0:81d:6af3:b9b5 with SMTP id 00721157ae682-86c4e7d322dmr2445717b3.9.1788300561871;
+        Tue, 01 Sep 2026 15:09:21 -0700 (PDT)
+Received: from localhost ([2605:8600:200:1a83:fe59:7385:2855:8588])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-86c10c93fa5sm4188977b3.3.2026.09.01.15.09.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 15:09:21 -0700 (PDT)
+Date: Tue, 1 Sep 2026 18:09:17 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Nimrod Oren <noren@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Hugh Dickins <hughd@google.com>, Nirmoy Das <nirmoyd@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm: remove min_free_kbytes adjustment for THP
+Message-ID: <20260901220917.GM3004@cmpxchg.org>
+References: <20260901190123.3511535-1-noren@nvidia.com>
+ <20260901204449.GK3004@cmpxchg.org>
+ <C8541A2F-D6A9-41B0-A3FE-52339A6601F0@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <C8541A2F-D6A9-41B0-A3FE-52339A6601F0@nvidia.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4D7718000B
-X-Stat-Signature: 45ewjqwnwn9cew7k35aiqp4j43xp7rje
-X-HE-Tag: 1788300276-166355
-X-HE-Meta: U2FsdGVkX1/XmAbGgYUJeXIjR25lYsQjkIwlCIkzn0tpkfnkhQFTEZhNLAss3SB5yzTw2De4bjcKjMraGMFhkD15JULSsEzY/Sq2o2QUME24ARMErVtZHCqSEvDpuIU+af0YIpbG9HVReG6EgcngNlVgOQbSBO9Yxi2HyUwiScl5gMrLoS2fgAexS5be0s0jR2DSuux6XhR48fNPWhgQHEhc9BV5XnuCsnPL91YMPgEv/LqVGgjnua+vBZUn7lrbSyL95GMXGk1L0RLzVTudUUliAAakGTDpLcbIn56/nvLS9C+zlaaNXBmu9ln92QtCHCbulko6FzvLuQUKlUxWH9VuGDjhw3yBwGz9D57jlYlqjVSzBXfswztX1AD3eB8Ojyq0Id1sTnq0KIRh/9y3DqNNTwWYBNNZ9ht0+5imheDggZvICNIEnFNbvOos4lvCtwKjOBkXfOq+dL3YRT3GSwRspZNszxgLSUpeJE5t2nG983vMAvmXKx0SMmvScGrUs1HCQIwuPkXi0aZHAw0hi8Ebuig/HkVo3xKzVek/VNIimLPKFq5NMY+6UOJsiyakZiiRzKgBjs7rDD15vqoE20ZYp2UfxJzuDcN3oXe0a8jSU1wAu47ex95AJcnW1YbLQhPDuqGB0x3uOv7iguFoqMHiShIUyqm2frDktZhY55u7Tkyp25M7B5bjvGYQzDFING694gc5+tEllsdMK/SvnLthRClLO35hx18be1AcEum2JYkorIEvWx8hpn5QFNxqRlYfFkdmm8hNtZog5qggV1zkyL+xYiOC/o4HVsM62tM3koACFjxXfkSLtshG2C0v1bPKPDqL2waAwluBE6Pbt+KeMScOLGsNeZN6LfyEmrXeBY1lROuJ5azdEoJ4zA9jwLtorTkamcHZ0Ed42P/EGLPNXetmw+AvU1NRO+t22+U0PVI8XCcUk+fOXJjsPa4+AebrHkG7TiHw62H4OAC
- FLn4KHSh
- HdBdCOUEQ3cfZ5A3sVc9W5GsdfBEGXVx5XvR0iYDXjPpEZp4991wO1Kbk/Oa/ckfnTx9qKjsKb0sVpUqzThjFR0ubFLFAfqUX1rv/FJ+IU1oxqK5OJSz+uZDPoxknZcW9VCwP6w+2Fsj9U1APKSEEEiZnMbOo8ffOFE7ijtvG1n0XCFXdOca/VKlCgaaYtXoyssdD4Ogvjq2aOrMLSVpfYeZT/Nl6JtzUhoDwWIDl42f8nE2SMahseZYeK5mlHC3ms02nTFZ0frKr5hU=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 160E81C000B
+X-Stat-Signature: b19kyinc5yxeygfo7xcfrfta11tp5ytc
+X-HE-Tag: 1788300562-338399
+X-HE-Meta: U2FsdGVkX1+11IZuwgpR8OpTGR/KfHpv/iJvE12dq2HOMRaudwANq9hZRhe24cEivr4vHQdyb6MilmqVaGAONkk0XC3YNMcIEKDDjgpZJe91IcmPfI/cijFnebLg5i1QBfsTZPG7rdT7sPkPO04HZ+WraE8uxRT87rxxJZ8v8viMneJjWXGhP6/JeU77JiML+Xkg5wiJDHFS4r33armUwq8CujH5ZxUXHqdF5tDV13ce/ZPE5GQ6YvH34nJoLnDTw0BWEA+U1MXY+UdQwhmv/nWwCV7dRBuo4NJDVFSPxlqtFhx2OLuO9b1iRznzAIu1LZiZv9CBgfpduTFOs9UnYHfbgnwDYnsCRfrUcV90z/Yq3OugXHnjBMet0rgg4XA3YtSSuM7Mfk+lY1HyaU/sLGtJbEfjbcXu31YxVqaBIiA8zTWvPhqHKpv1wPFwYisH8xptMoUgjk5sr3JtLPVGKDvD3WGfc2l+53KH2VsS9ZZ7ksYRKifHgHbLzsX35x7PfknxUbBL2UeiOru7TEObI7gIgjQerA7ta4/7xNoNe/Zxbb20lGHncCzzpzUjJxLPvg9ST3uuHH4Ckh/IUkma6KnqaqzHcVvUWZZ0SqvKCZR/86vyxzfcH6LvwIYOUS+c7jGvP5znesIPh4ua8AHGvdU6erDWuWaNUDqhcHiMwQg+jHH/eGZfyjAoqlE5u52k8kd7zA2fIni7P0BCOf7XE+MD7v8tig07p6CzW0WtxbWOSz+rLHxCI7AvbLMdNuIOKlHkW5A/pr8mMjKnI11ZhbWvIBTADWbNkU8OgtzayzcYVaiCI5K+eIiA99TKUS1vuGUINWi7EvPUAYO5Xfz62Fw8Th2i5CXVSFNNRyZYj5fXP0tk5/ECRVbFwnCF80OTynyf7mSoGMjoAdgFsph5CkmawqhUmKbCXgRXUPEl2sdaFQQJR1DL5DDfVg50JbVbetasPqtxlO/mvKXzANV
+ b5SyY8XQ
+ FJqHo75nc8+3bnwMOEV/U5DA8nOHaUQIPZfeo2YIaSpNhu06RiQ5cHElKH/oVvWC1lxT0xTu+bvAw33o5+5BlHOcQJXcBrUBMP3hp4vSD4xEzhcMfqTjCwYNpM1hLowNpdA7Gt8/SVl7Aq+nDu/ilDGWkf+G8aYnFu8Gd/h3RD8Ly7BU9xKteUxFe9bqYXkX/4D3VcKiifiUlPa1oraBoyKiLyb+EntoDnUVuevIT3hLGt3nmFOYS4bSJXZFjT1oC3hrjbPr/AfN3rleTTugT+N/EKzJHyO0sq6imRFK7gwBd4q4xD2vKC/4yC3kH1JLWkbjDwzRLAPbzkZJJuXysK6WY/2wFKFVrbAjxZi3G5LkciDR4PzHCo8IUGLunLFu35g7uCt7STcvEE75rLzYgvniztdJdtfPlPozftqfLlT/ad1BoXBNPNmhqWdiH0H0Ohx4lNQfV+g3sG1w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,170 +136,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 2, 2026 at 2:21 AM Kairui Song <ryncsn@gmail.com> wrote:
->
-> On Tue, Sep 01, 2026 at 11:06:43AM +0800, Ehab Ababneh wrote:
-> > Commit 6cbdd9726fb5 ("mm/mglru: use folio_mark_accessed to replace
-> > folio_set_active") introduced a regression for workloads that rely on
-> > readahead to keep sequential file access efficient.
+On Tue, Sep 01, 2026 at 05:09:52PM -0400, Zi Yan wrote:
+> On 1 Sep 2026, at 16:44, Johannes Weiner wrote:
+> 
+> > On Tue, Sep 01, 2026 at 10:01:23PM +0300, Nimrod Oren wrote:
+> >> When THP is enabled, set_recommended_min_free_kbytes() may raise
+> >> min_free_kbytes using a heuristic that scales with pageblock_nr_pages.
+> >> Commit f000565adb77 ("thp: set recommended min free kbytes") added this
+> >> heuristic to help keep pageblocks free and reduce fragmentation for THP
+> >> allocations.
 > >
-> > The problem is that MGLRU can place fault-path file folios in older
-> > generations, so memory pressure can reclaim readahead folios before the
-> > workload touches them. In our Cassandra read benchmark, this raised p99
-> > latency to about 9.2-9.5 ms and cut throughput to roughly 41.8k-43.6k
-> > op/s; the revert restored the workload to about 5.5-5.6 ms and
-> > 51.9k-53.1k op/s.
+> > We've had problems with compaction before when min_free_kbytes was too
+> > small on large machines. Competing free space scanners do a lot of
+> > work only to fight over a very small set of possible target pages.
 > >
-> > Readahead is important for sequential I/O and mmap scans, but it should
-> > not be retained when the workload does not benefit from it. The goal is
-> > to keep the optimization without keeping readahead pages alive forever.
+> > So I'm a bit uneasy that you didn't include any benchmark numbers with
+> > this that prove basic functionality on larger hosts isn't regressed.
 > >
-> > This patch provides a middle ground: keep the original behavior by
-> > default, but temporarily protect fault-path file folios when repeated
-> > file refaults show that readahead is actually helping.
+> >> The recommendation scales poorly with larger base page sizes. With the
+> >> default arm64 pageblock sizes, the contribution per eligible zone
+> >> before applying the existing cap of 5% of low memory is:
+> >>
+> >>   4 KiB pages:   2 MiB pageblock,   22 MiB per zone
+> >>  16 KiB pages:  32 MiB pageblock,  352 MiB per zone
+> >>  64 KiB pages: 512 MiB pageblock,  5.5 GiB per zone
 > >
-> > The mechanism is dynamic and self-tuning:
+> > I question whether pageblocks need to be 512M on those machines to
+> > begin with. After this patch, you're still asking the page allocator
+> > to optimize grouping such that 512M pages can be allocated at
+> > runtime. Only now you took away part of the mechanism to do so.
 > >
-> > - add a per-lruvec readahead/refault credit
-> > - accumulate credit on file refaults in the MGLRU refault path
-> > - consume credit in folio_add_lru() for fault-path file folios
-> > - keep the folio active while credit is available, and otherwise let the
-> >   original behavior stand
-> > - decay/reset the credit as generations advance and when an lruvec is
-> >   initialized
+> > If you're using 512M THPs, I would kind of assume it's on machines
+> > with a memory size where 5.5G for defrag purposes isn't devastating.
 > >
-> > This means we only protect fault-path file folios when refault pressure
-> > shows that the workload is actively benefiting from readahead. If the
-> > workload does not need that protection, the original optimization
-> > remains intact and we do not keep readahead pages around unnecessarily.
-> >
-> > Benchmark results for the Cassandra read workload
-> > (4 nodes, 720s, 100 readers):
-> >
-> > - with commit 6cbdd9726fb5 ("mm/mglru: use folio_mark_accessed to
-> >   replace folio_set_active"):
-> >   p99 ~9.2-9.5 ms, throughput ~41.8k-43.6k op/s
-> > - with revert of commit 6cbdd9726fb5 ("mm/mglru: use folio_mark_accessed to
-> >   replace folio_set_active"):
-> >   p99 ~5.5-5.6 ms, throughput ~51.9k-53.1k op/s
-> > - with this fix: p99 ~5.8 ms, throughput ~51.9k-52.7k op/s
->
-[...]
->
-> Just an idea. For an short term and easy fix, what if we simply revert
-> than, then only protect in_fault && folio_test_swapbacked folios with
-> PG_active?
+> > And if you're not, it would make more sense to lower the pageblock
+> > size to the mTHP size you're actually using. And that would fix the
+> > "excessive" min_free_kbytes issue as well.
+> 
+> But lowering pageblock size requires a kernel compilation. That means
+> maintaining two sets of kernels for different needs.
 
-Hi Ehab and Kairui,
+That depends on whether anyone actually wants 512M pageblocks...
 
-Thanks very much for your reports and discussion.
+> The ultimate solution is to enable better compaction to generate
+> THPs bigger than a pageblock size, like Rik's super-pageblock
+> proposal.
 
-I'm not quite sure we want to revert it entirely, as that would
-immediately regress the workloads improved by the commit, such as the
-kernel build.
-Also, for example, Kairui's cover letter mentioned the LevelDB benchmark:
- "I also retested the LevelDB benchmark from the cache_ext paper [5].
-Interestingly, mainline MGLRU already beats CLRU on this one after a
-recent change in lru_gen_folio_seq that bumps new folios with refs == 1
-to the second-oldest generation."
+...or whether we can say, at that point, use gigablocks/cma+hugetlb.
 
-I guess we could instead try to mitigate the cases where some workloads
-are negatively affected while preserving the original intention. Does the
-fix below address both of your cases, or is Ehab's case actually different
-from Kairui's?
-(The kernel-build test on my machine looks quite positive. It not only
-preserves the original optimization, but even provides further gains.)
+And then the static pageblock size for the fallback logic etc. can be
+a smaller, saner default for everybody.
 
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index 621c8653d8f7..91396c796a34 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -239,7 +239,8 @@ static inline unsigned long lru_gen_folio_seq(const struct lruvec *lruvec,
- 	 * |<---------------------------- MAX_NR_GENS ---------------------------->|
- 	 */
- 	if (folio_test_active(folio))
--		gen = MIN_NR_GENS - folio_test_workingset(folio);
-+		gen = MIN_NR_GENS - folio_test_workingset(folio) +
-+		      (type ? !folio_test_workingset(folio) : 0);
- 	else if (reclaiming)
- 		gen = MAX_NR_GENS;
- 	else if ((!folio_is_file_lru(folio) && !folio_test_swapcache(folio)) ||
-@@ -247,7 +248,7 @@ static inline unsigned long lru_gen_folio_seq(const struct lruvec *lruvec,
- 		  (folio_test_dirty(folio) || folio_test_writeback(folio))))
- 		gen = MIN_NR_GENS;
- 	else
--		gen = MAX_NR_GENS - (folio_test_workingset(folio) || folio_test_referenced(folio));
-+		gen = MAX_NR_GENS - folio_test_workingset(folio);
- 
- 	return max(READ_ONCE(lrugen->max_seq) - gen + 1, READ_ONCE(lrugen->min_seq[type]));
- }
-diff --git a/mm/folio.c b/mm/folio.c
-index c02dcea9c03c..2fd835b3b50c 100644
---- a/mm/folio.c
-+++ b/mm/folio.c
-@@ -470,20 +470,10 @@ void folio_add_lru(struct folio *folio)
- 			folio_test_unevictable(folio), folio);
- 	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
- 
--	/*
--	 * For refaulted workingset folios, set PG_active so they
--	 * can be added to active generations.
--	 * For prefaulted file folios, folio_mark_accessed() sets
--	 * PG_referenced so lru_gen_folio_seq() places them into
--	 * the second oldest generation.
--	 */
-+	/* see the comment in lru_gen_folio_seq() */
- 	if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
--	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC)) {
--		if (folio_test_workingset(folio))
--			folio_set_active(folio);
--		else if (!folio_test_referenced(folio))
--			folio_mark_accessed(folio);
--	}
-+	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
-+		folio_set_active(folio);
- 
- 	folio_batch_add_and_move(folio, lru_add);
- }
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index f11491ee9ed5..aa500ae9371a 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -851,11 +851,7 @@ static bool lru_gen_set_refs(struct folio *folio, const vma_flags_t *vma_flags)
- 		return false;
- 	}
- 
--	/* Promote on second access */
--	if (folio_lru_refs(folio) > 1)
--		set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, BIT(PG_workingset));
--	else
--		folio_mark_accessed(folio);
-+	set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, BIT(PG_workingset));
- 	return true;
- }
- #else
-diff --git a/mm/workingset.c b/mm/workingset.c
-index 7ac2b88c80ae..a79b73ee9762 100644
---- a/mm/workingset.c
-+++ b/mm/workingset.c
-@@ -319,13 +319,11 @@ static void lru_gen_refault(struct folio *folio, void *shadow)
- 
- 	atomic_long_add(delta, &lrugen->refaulted[hist][type][tier]);
- 
-+	/* see folio_add_lru() where folio_set_active() will be called */
-+	if (lru_gen_in_fault())
-+		mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + type, delta);
-+
- 	if (workingset) {
--		/*
--		 * see folio_add_lru(), where folio_set_active() is
--		 * called for workingset folios
--		 */
--		if (lru_gen_in_fault())
--			mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + type, delta);
- 		folio_set_workingset(folio);
- 		mod_lruvec_state(lruvec, WORKINGSET_RESTORE_BASE + type, delta);
- 	} else
--- 
-2.34.1
+Because the point you didn't address: it doesn't make really sense to
+have 512M pageblocks on smaller machines, beyond the min_free_kbytes
+issue: Fragmentation events will poison half a gig at once,
+should_try_claim_block() becomes harder which results in less
+conversions and more allocations falling through to stealing, page
+isolation is more likely to fail, compaction locks and operates on
+oversized chunks which is bad for latency and concurrency...
+
+Seems to me the excessive min_free_kbytes is just a symptom of a
+deeper problem.
+
+> After removing automatic min_free_kbytes boosting, user can still
+> increase it via sysctl to restore the old free memory head room.
+> It is much easier, right?
+> 
+> >
+> >> The automatic min_free_kbytes increase predates proactive compaction
+> >> and many subsequent changes to compaction. Given those changes,
+> >> increasing min_free_kbytes for THP by default is no longer clearly
+> >> justified.
+> >
+> > That's pretty handwavy. How would these changes specifically eliminate
+> > the need for compaction scratch space and allocator fallback options
+> > to stave off fragmentation during placement?
+> 
+> Extra free memory is still necessary. min_free_kbytes can be adjusted
+> at machine boot time to achieve it, right?
+
+That argument cuts both ways, no? ;)
 
