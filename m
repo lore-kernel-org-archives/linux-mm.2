@@ -4,99 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF6F4C61DD6
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 05:31:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FC3EC61DE4
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 05:44:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C097E6B00AA; Tue,  1 Sep 2026 01:31:51 -0400 (EDT)
+	id CE4F56B00C5; Tue,  1 Sep 2026 01:44:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE11A6B00AB; Tue,  1 Sep 2026 01:31:51 -0400 (EDT)
+	id C95856B00C6; Tue,  1 Sep 2026 01:44:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1DDF6B00AC; Tue,  1 Sep 2026 01:31:51 -0400 (EDT)
+	id B879D6B00C7; Tue,  1 Sep 2026 01:44:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 93DEF6B00AA
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 01:31:51 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 141AF12034D
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 05:31:51 +0000 (UTC)
-X-FDA: 85164071622.06.311FA70
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 6C71DA0003
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 05:31:49 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KJiopimI;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 810836B00C5
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 01:44:14 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D00B41C1C9D
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 05:44:13 +0000 (UTC)
+X-FDA: 85164102786.22.4B3FDF2
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1E972C0006
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 05:44:11 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=dX1ar1mV;
+	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788240709;
+	s=arc-20220608; t=1788241452;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5yv5dZp1OovU3o/tMe/s53rqpohnpt5v6m7qLxX7u8Y=;
-	b=C8BQ9NMnPa3LrE3XvvMHek3zGbx3GD+SgMV7RpxuChX8pBs9v5x0oOzdS50QUsI5V7TNx8
-	3Q8WwtaWNpBXKeuAKuZdNH4iAldV2LNZmBGd6u59GZx0QDS/c4c/x1rGn2WFpdvxz5hm++
-	KN5+HABku+saXOUw34V9cH4KquPKctQ=
+	 in-reply-to:references:dkim-signature;
+	bh=ccxIYO2hOy0q1yGAf5wzMtkfCqP9D7PlI/JJ7p573BY=;
+	b=aV9oF49xxLAHmEf/pdeAjs8HyU4uARVLVzPTEBCyt92TNbVOO2W9r/xXdQBjS7IVhPb5Mx
+	bQv+hg9vpuIozTq3sZqpWr1FtELbyG8YZtmAZZ+LUKH9HKJXODoCJt2XvAU7r6OsOrUyot
+	8cURovtXu40r7ajN+N+cadG/UwB0wts=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788240709;
-	b=7kox2NjiemDDeAOt7/Jgo74cJUj6vy6vZbg70OQMgxnCuWE/VpBWSMmfMxbpbIqLb9Hfbb
-	XVw8GvH9pe/v1Zh+0/6WdFkDrtwVqVj1qAnAtfpyqQ865nqEOAnhRijxuh0ZbIDZ4Zx0Vp
-	jgyUq0IrMYQYriggSFSOMvpYD0IX2hA=
+	t=1788241452;
+	b=Pbm8fx3BjZm3MKvZa6TdLWIaG2t/iZoOuQBKlsfJ+NGeL0jeecoURJWErLmHIgW777gfTg
+	rnWzTLQdudoFURsYDaegTLoPruD3LhOW1cG9ydNSMWtqv4Rj/0HPhuA2aAs5925dfS7w1j
+	zvtSafMR0cSTzanjtbtdVScN9kdORV8=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KJiopimI;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9F441406CA;
-	Tue,  1 Sep 2026 05:31:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD4381F000E9;
-	Tue,  1 Sep 2026 05:31:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788240707;
-	bh=5yv5dZp1OovU3o/tMe/s53rqpohnpt5v6m7qLxX7u8Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KJiopimIdEwNANCZnewWxQ09EWw42GY1qt1ibcigOZuwffyD2+SajimU8l1c0qrFf
-	 hSYl9hcluqz9sisuiVH4ucu4xfhA9VPnp7+qbSwQqE3iCdTGG04eddL0xC1eghNKS/
-	 Vh+8oxsvug8FQEA+jc2DQ6juo7zgNvAFmjDKueln85HS0QH8X6yCBAop0vt4JrHDmB
-	 RDZY4NsJwBxGSh1fytV1LmIJ0CRuURf7t9Nwz/R1t2t4pWSxdZR109V3Z3A89i9TUB
-	 smPDsNCwEFqdhzbop9L/bfUkXzXdXhjRFIGZ4K2WS0q+tB0rWRswv5MiDeuix8Q1qv
-	 wuRBFVomwGgyQ==
-From: SJ Park <sj@kernel.org>
-To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-Cc: SJ Park <sj@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
+	imf28.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=dX1ar1mV;
+	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 176641756;
+	Mon, 31 Aug 2026 22:44:07 -0700 (PDT)
+Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.33])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id EF2D53F85F;
+	Mon, 31 Aug 2026 22:44:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788241450; bh=z7SnY/TZcfUbJoxXT3hWEUw/QWVK2bD8Px83AhPKn9o=;
+	h=From:To:Cc:Subject:Date:From;
+	b=dX1ar1mVnXf7HIsO6+jtrW8k2z+MuNX8sdIo503mCQWJFqJC7UYVjHnU2lUwECCrt
+	 HiBaEyk/3gSZN+CutLEcl5kmeRIq6/20yjyLHcF/HVnRyqW58vjFMKRCUR96OUbDnS
+	 tO6kLX5luNQ26ME5RzGA4GyNvwOm1a7TUK6PA30s=
+From: Dev Jain <dev.jain@arm.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	hughd@google.com,
+	chrisl@kernel.org,
+	kasong@tencent.com
+Cc: Dev Jain <dev.jain@arm.com>,
+	riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	lance.yang@linux.dev,
+	baolin.wang@linux.alibaba.com,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	baoquan.he@linux.dev,
+	baohua@kernel.org,
+	youngjun.park@lge.com,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v4 3/3] Docs/mm/damon/design: Document hugepage_mem_bp target metric
-Date: Mon, 31 Aug 2026 22:31:39 -0700
-Message-ID: <20260901053139.24079-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <893af75e-690b-48f0-9cc9-afe07c05565c@huawei-partners.com>
-References: 
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	pfalcato@suse.de,
+	ryan.roberts@arm.com,
+	anshuman.khandual@arm.com
+Subject: [PATCH v2 0/8] Optimize anonymous swapbacked large folio unmapping
+Date: Tue,  1 Sep 2026 05:43:47 +0000
+Message-ID: <20260901054358.4049095-1-dev.jain@arm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: yics9m8wxgsnkgbnzjhsgzom5y4ork8m
-X-Rspamd-Queue-Id: 6C71DA0003
-X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788240709-256299
-X-HE-Meta: U2FsdGVkX1/fcT3EZ82vHweL0tOWE2YTD7DVRdGVWNi6nZ7rPfkVtAZOMN5zLZNyFxBKS9JbzDgJB4bHCh9Ox0D6cx/6Os0T4S8JVMfelfMG36l67An4I0JOPd/JFNcYDEriC88lW+pVLOpp3jDkN8GjReBNO5WmlfEA0W1zeAba5AnLQeL6lT2Meu9K5kx8gb3dDNR8TihRr+Zo/cUmIR3wVOkjzDBRNruQKdpfUokFG0yjgx3JgxRBSw8TjWxPd6j8z81RYoIWyEtqO3B/NNJtxosWLY3PvBGTBqmS5Dx0BcJNBZwWmNSwg/0pPgzpxOHvsk1PRsc+SrLPB1A+9wPPHUCG0RBJ7rcZ8v/Yaw/8+GKZ+LuFC9844/bRXhm95didHV7GYdTqZs3fGNzrw3UMi5ofwhE5NhbWpXU/iXXjIzJj9bRJ7EtQZq6obmxiO39JdSXUu9yeRNWVFzKQTsiTe7SUGlZDkwB9JRTdG0nMQ6SHB9GKLsyYRc3ZhSkvtIRcgZF9zoR5o8phUTyvCNDJ6Z4VLs+tmi4+5n87EU2OXE3ZuueE9FEyaG3MnN4ZDaLX4vC3pgSgaHA2N3oIAMhcetQhM5mqNLY83tFJycgklC/voyiWPrP5aXzwGyIIze+i8ezux8Z8yyHsWN8LV9fAE0kb/wk2IeKSJ2YH9NjpkA/rVndTQu2dgaQ+4gps/NbKI3RXMxq80E4pghNQsWQuhMFzmzt4c/U4+kCjYAKsNXMX8Ldwthb4OTi6riUZEY5XI7Ps/jsAWrt2e3niQDml9ps3XrMniFxutrIELI8KX2RKwD1dOo1Hf+HYm6p+HqQPRuv5u1GrgtlRpzOTSYxSuVTgRNFvcAfImPJp61KDGXA/BJfRHmDX5+8ta1X+BZCpRo1f59R3M+VpwCHQLHwievYIWUPqxbFpJDfWojtj6pZ5/JQoKUtYBbXcj1VfxdkYhGX6NNhcqdZre7T
- 1RgTBE/C
- 65hv7cycZKq9u5vvoALDnDxrpofA29B5B1enU5oI5Of3cGsjrWNgRrDmvqea94k8peDJgoVr/KT5Aw9zsgdQlPHH4gIqZl7NtTQn7c/gvcCz1kfrdJfMHj1qI0bx0HR5NkDgeWGGwJJOGXF6UjFBHhw37EYWOOMw3wo3D82CNLWAYfuRCwhG/zG+lK5/EoLkDNaYl0PsYno/35bKGOUqY0uKw4ctJNjcwBMkrF0AVcPapECz7fiyF1B3rDE2deXc/PBtoCeHCvQaaI/EAwP9lpPhsk1vi66mEQgB2O0zSiX+DfZxUGnE6d+CvUPDj6DNkWU/Riwr5ebNStdyOM6TPaS4J3cpEAlZQ1ESPe4gbtp0pgs9JX6SwUqmB5oxHID+iMMryl9GgzCekTHuH4Ifg3UNPQQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1E972C0006
+X-Stat-Signature: g715t1wz1e4ywtpns1ixiicw9z9t3fn7
+X-HE-Tag: 1788241451-739332
+X-HE-Meta: U2FsdGVkX1/3QhLxwwC18A+HbPk/CD8hLUD3IHKx+ujWGeFNJZkL81ldu/q7Co9TF1Ip6+IA07iItWFuONWbfD4rAMv2t1W7hmVADaREEb5642TKC0utop0ozTPZkdm6TMwIwTk5J465RHCqXzq0C6Du0vzXnt0Mk+48m9ht3LY4UfZ84Vwiht9d/NjdDYESU2pAVdJXI0pqJbTb7rsQZ08dlKXxfBqabRkHOVHbmc9jt37oPgXpxFhW5LhQuXvPCdgHie5EPRGnhZ/82IozcPgsk7qI9G243K4r/FZz2nh2iWq2TvkZ0qjpfYJBhsdQmVO0vPLZ+41PKZa/vQUK8nrrCLAuMIkYFPS2rqBJXgPxZSCET+uQUe341WWwgh+RamWJDxDCMvjFh/onWujON9QFEVKM/wKFK/QRaO0wuc6KAJ8UwXNs6lfr3zNl4QBZeTAE6XHJU4/L6COCj/6DO6UeyC7ocdzIFSHzz9DmY2hhyRNYPRkJQtHpGKgc5lMlElmbHf43v+NB9DaRCmY25p6cjOFx5jn5TMBZF8RbwLMb9AsB7yLVgJ/hK5lG9UsIETVjamP3dcqyGd1Ly9wwwi9BsSThfvMthSa1Er2bxlDAWIFMBvQDsVFm00ZQbCmD3cS3fl87qq3tkNwKCuvVR35mjdG23GGBEYEnXCM6GW/XQqPKzxTlRQW09nIH27G8JCin9qRYl7ZVr1Y9QwlwFcqMhr8gsbytitT1ELqxD2sUWj4SasnuiMKU+sP1twbJNhVa2oMxP64XtIbBxppPOXZBuz0ViG5lAGJp/ZTbjPSDZ5h4AMw5k+IovCw+vc8r8A1GHG1Nhx4V5DmE+5Z5vL7vS2CInzFA/leUzfyLvPBtlyQymHXVsBu35a9Uwj4gioDJ7Xov7D7+R1eqZXg67226vtZOqjwhJ0K86gz7iiAfasCghynr4WaZfYfwQ7YsIo+qdeBkGxO93pKUU1c
+ u9GQrfxq
+ GDhNRTVDIEG2mzTBOUVgJSJnK+S1/l9DBGkaR3WbEAjd8CATPYmqQz5s3mbYWFGp1gsZ6EKiPk1oHOXFIYkwxNVFJTsChWH1XPCoPYUl64TfBxr5pM7sqw79CLbeFMh3SzudcEQkYSAULj5EmBc6e1lya+4yViznImU36SOINvGyLkiZyaR9i/pRsiPdNSxFm49qlOuR0ywleCCJMF/D+jZubiBB4kEJak5eBn1gCAjLcXgw6iwtElh5rP4SvzbRSHaT8Y6Z7kQENfwU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,72 +109,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 1 Sep 2026 08:20:50 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
+Speed up unmapping of anonymous swapbacked large folios by clearing
+the ptes, and setting swap ptes, in one go.
 
-> On 9/1/2026 3:47 AM, SJ Park wrote:
-> > On Mon, 31 Aug 2026 13:00:26 -0700 Randy Dunlap <rdunlap@infradead.org> wrote:
-> Hi,
-> > 
-> >>
-> >>
-> >> On 8/31/26 8:45 AM, Randy Dunlap wrote:
-> >>> Hi,
-> >>>
-> >>> On 8/31/26 7:47 AM, SJ Park wrote:
-> >>>> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> >>>>
-> >>>> Document hugepage_mem_bp metric exposed by sysfs.
-> >>>>
-> >>>> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> >>>> Reviewed-by: SJ Park <sj@kernel.org>
-> >>>> Signed-off-by: SJ Park <sj@kernel.org>
-> >>>> ---
-> >>>>  Documentation/mm/damon/design.rst | 2 ++
-> >>>>  1 file changed, 2 insertions(+)
-> >>>>
-> >>>> diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-> >>>> index aed6cb1cf4831..a8c163475ef2b 100644
-> >>>> --- a/Documentation/mm/damon/design.rst
-> >>>> +++ b/Documentation/mm/damon/design.rst
-> >>>> @@ -713,6 +713,8 @@ mechanism tries to make ``current_value`` of ``target_metric`` be same to
-> >>>>    bp (1/10,000).
-> >>>>  - ``node_eligible_mem_bp``: Scheme target access pattern-eligible memory ratio
-> >>>>    of a node in bp (1/10,000).
-> >>>> +- ``hugepage_mem_bp``: Total huge page to total used memory ratio in bp
-> >>>> +  (1/10,000).
-> >>>>  
-> >>>>  ``nid`` is optionally required for ``node_mem_used_bp``, ``node_mem_free_bp``,
-> >>>>  ``node_memcg_used_bp``, ``node_memcg_free_bp`` and ``node_eligible_mem_bp`` to
-> >>>
-> >>> I've looked thru the entire design.rst file and cannot find anything telling
-> >>> me (or anyone) what "bp" means.  Explain??
-> >>
-> >> OK, I found it on the internet. I still think that it would be a
-> >> good idea to say "basis point" one time (the first time that it is used).
-> > 
-> > You are right, and I agree.  I will add that clarification before the next
-> > merge window.
-> > 
-> >>
-> >>
-> >> -- 
-> >> ~Randy
-> > 
-> > 
-> > Thanks,
-> > SJ
-> 
-> SJ, should I submit a new patch to fix design.rst?
+The following benchmark (stolen from Barry) is used to measure the
+time taken to swapout 256M worth of memory backed by 64K large folios:
 
-The lack of the clarification of 'bp' was introduced before this patch.  So I
-don't think you should do that on your own.
+ #define _GNU_SOURCE
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <sys/mman.h>
+ #include <string.h>
+ #include <time.h>
+ #include <unistd.h>
+ #include <errno.h>
 
-Of course you could do if you want to.  But that should be a separate patch in
-my opinion.  Let me know if you will.  Otherwise I will do.
+ #define SIZE_MB 256
+ #define SIZE_BYTES (SIZE_MB * 1024 * 1024)
 
+ int main() {
+     void *addr = mmap(NULL, SIZE_BYTES, PROT_READ | PROT_WRITE,
+                       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+     if (addr == MAP_FAILED) {
+         perror("mmap failed");
+         return 1;
+     }
 
-Thanks,
-SJ
+     memset(addr, 0, SIZE_BYTES);
 
-[...]
+     struct timespec start, end;
+     clock_gettime(CLOCK_MONOTONIC, &start);
+
+     if (madvise(addr, SIZE_BYTES, MADV_PAGEOUT) != 0) {
+         perror("madvise(MADV_PAGEOUT) failed");
+         munmap(addr, SIZE_BYTES);
+         return 1;
+     }
+
+     clock_gettime(CLOCK_MONOTONIC, &end);
+
+     long duration_ns = (end.tv_sec - start.tv_sec) * 1e9 +
+                        (end.tv_nsec - start.tv_nsec);
+     printf("madvise(MADV_PAGEOUT) took %ld ns (%.3f ms)\n",
+            duration_ns, duration_ns / 1e6);
+
+     munmap(addr, SIZE_BYTES);
+     return 0;
+ }
+
+Performance as measured on a Linux VM on Apple M3 (arm64):
+
+Vanilla - Mean: 37401913 ns, std dev: 12%
+Patched - Mean: 17420282 ns, std dev: 11%
+
+resulting in more than 2x speedup.
+
+No regression observed on 4K folios.
+
+Performance as measured on bare metal x86:
+
+Vanilla - mean: 54986286 ns, std dev: 1.5%
+Patched - mean: 51930795 ns, std dev: 3%
+
+I tried magnifying the difference on x86 by using 1M large folios, but
+can't spot an obvious improvement (looks like my system is too fast to
+benefit from batched atomic operations!), hinting that the benefit lies
+mainly in the reduction of ptep_get() calls and the reduction of TLB
+flushes during contpte-unfolding, on arm64.
+
+No regression is observed on 4K folios on x86 too.
+
+---
+Applies on Linux 7.3-rc1 plus below:
+https://lore.kernel.org/all/20260831082849.3573957-1-dev.jain@arm.com/
+
+mm-selftests pass.
+
+This breakout patchset is the final completion of
+https://lore.kernel.org/all/20260526063635.61721-1-dev.jain@arm.com/
+
+The extra addition is the generic set_softleaf_ptes() helper.
+
+v1->v2:
+ - Add WARNs for folio span in folio_*_swap_pages
+ - Trivial changes to page_anon_exclusive_batch
+ - Add two sanity checks in patch 4
+
+Dev Jain (8):
+  mm/swapfile: add batched version of folio_dup_swap
+  mm/swapfile: add batched version of folio_put_swap
+  mm: move anon-exclusive batch helper to mm.h
+  mm/rmap: Add batched version of folio_try_share_anon_rmap_pte
+  mm/internal: rename swap offset helpers to softleaf offset
+  mm/internal: add set_softleaf_ptes
+  mm/memory: use set_softleaf_ptes for uffd-wp markers
+  mm/rmap: batch unmap anonymous swap-backed large folios
+
+ include/linux/mm.h   |  19 ++++++++
+ include/linux/rmap.h |  56 +++++++++++++++-------
+ mm/internal.h        |  62 ++++++++++++++++++------
+ mm/memory.c          |  20 +++-----
+ mm/mprotect.c        |  17 -------
+ mm/rmap.c            | 110 +++++++++++++++++++++++++++++++------------
+ mm/shmem.c           |   8 ++--
+ mm/swap.h            |  35 ++++++++++++--
+ mm/swapfile.c        |  35 +++++++-------
+ 9 files changed, 247 insertions(+), 115 deletions(-)
+
+-- 
+2.43.0
+
 
