@@ -4,121 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A90BAC61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 14:26:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98025C61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 14:29:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FB826B020F; Tue,  1 Sep 2026 10:26:01 -0400 (EDT)
+	id 828936B024D; Tue,  1 Sep 2026 10:29:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 785936B0246; Tue,  1 Sep 2026 10:26:01 -0400 (EDT)
+	id 7D98E6B024E; Tue,  1 Sep 2026 10:29:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 673986B0248; Tue,  1 Sep 2026 10:26:01 -0400 (EDT)
+	id 6C8696B024F; Tue,  1 Sep 2026 10:29:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 395226B020F
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:26:01 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B8B31403CC
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:26:00 +0000 (UTC)
-X-FDA: 85165417680.14.3083C04
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 711F440005
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:25:58 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=qrd8WxLm;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf11.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.169 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+	by kanga.kvack.org (Postfix) with ESMTP id 4320C6B024D
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:29:09 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C8E091A03D3
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:29:08 +0000 (UTC)
+X-FDA: 85165425576.25.728471A
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D56CF8000B
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:29:06 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=sipsolutions.net header.s=mail header.b=YlzrbHTy;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of johannes@sipsolutions.net designates 168.119.38.16 as permitted sender) smtp.mailfrom=johannes@sipsolutions.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788272758;
+	s=arc-20220608; t=1788272947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ObgpNp4xsh/An8XTcvl4h2cgfsJnES05kTjlUzeTPjo=;
-	b=aMYRIGzZbNxh1AiSzzST3VKtNxYu/bHA05WlHPvKgZwM2JTTXfN+NPxvhD8+Q0MhLSGdqw
-	5emwog5CBJM4f1fqF/DNNCP3SDUjf5bkjPGABcAXxJsb+ZydGyExJEgiwXnv6U98np7pcu
-	s50QgMrOiQ8Q8ay65U7MwIBoj52Iowc=
+	bh=ROFHdh5YcxFRur32+u++7A9cnHI72YhPCUV519Syh7k=;
+	b=SaYc2P1wqOhyIEp7ctPAM/Ps+/q6vE5PMRR9fkF9p/ceoGfslMTRniH4WQSjqClWLMKGHR
+	9g0owvDID4CyKINcdnmvb+in65OK7IhRU2FwN8pK0lpzXyb9AmWwmS9r/CIAgFIQwUQiBt
+	1rD+8MUup36f3W2m5c7CBa0TjeC2GxI=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=qrd8WxLm;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf11.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.169 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=sipsolutions.net header.s=mail header.b=YlzrbHTy;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of johannes@sipsolutions.net designates 168.119.38.16 as permitted sender) smtp.mailfrom=johannes@sipsolutions.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788272758;
-	b=QuMmwHtrXpkpXiRX7C+SJExRDNxU39oElQKryBGfgjJVBzC4dig8ecOYlIBi4vcXmNKBOn
-	RT44Kqm9XeYE3/JknTCKFI2Vb7LglCUcQ7g41MDt4gkyulONYnvOmes7cYTKNkO2pDRca+
-	SoV0cqKBA8g6MT612jW8DyIGsqi5dRg=
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-857ff9fef54so11028657b3.1
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 07:25:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1788272757; x=1788877557; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ObgpNp4xsh/An8XTcvl4h2cgfsJnES05kTjlUzeTPjo=;
-        b=qrd8WxLmJgKf8p2x4VxFC01iCtf2nb8cndxYtiU3ogivsdqEMUmp/PnwQU9V+pk5sP
-         8J7Z2P3+MZbglm0dl+Ai93GkkgpK1zHEI1EgT1iztMRfCNNNUW1g0n07+5csSf/hLGag
-         y0zfUpFbR/RHfvBHnsIX7e6WI/Lw2ivVDMsKFBdffdP0v+WkbZgTmUJoQPfjotXwOzL4
-         loqKWZyMeYsSGoHnPAMfibuwIZ1fYzfRYehUBlsOfl/RuOUFkBBUihJhq934tBCm/G93
-         rPlFN1dFIGK6KXwE4sIniFCfvcJTzaDyY3PwQ7WLV1Lf95vJJykIvdX6APn7VadC85kd
-         C5xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788272757; x=1788877557;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=ObgpNp4xsh/An8XTcvl4h2cgfsJnES05kTjlUzeTPjo=;
-        b=l4/se6mU+3hAybnI4o9eGwSizBQUIsI1Y+EaryH+SjB8OMtnykas8Y3/1U+3JHZHak
-         ZAxqPX22ztYot9pIUuo3scYQDKpgdX990zszzqO/Cs5R1gzwyMqZoPaXFU4QbvsqSAhj
-         iKcdMpIWNkvCvm7EfcxAJjMjXbLU7kwAxe9+1J0L6phjq2gFZMuWhQrau5jZSaaNZBZb
-         n1kiQkwhIHWhmgYs3lojfyKWc8UScNpWOUhDoOQ5aqv0fgZzIn055FKiu1B7gOPb1h8R
-         uECFMyjxrF9ythavkyouPYyha8zP1ADf+Y5hqt+15ZjLRJmakfUX7XeeMMa8YuVZ45Hc
-         ow2g==
-X-Forwarded-Encrypted: i=1; AKwUvBxxwAOrOlaL+7rmM8/4I1Hx1Lc4+bBUjerlw07SfM1tdK+LkId3cPUSy43tW2Nf+qQd9+w+qhly0A==@kvack.org
-X-Gm-Message-State: AFuF++mwI2gVXKnN/NgSP7ADGxLXjtdjVSxkzw5UGqlmHzq/+F7fOxyV
-	ocls+x8U5h/7qNFFLOnTcBnPgMfxG4q63ovfaS5bchmlppDaVAvCXioS5GGZcyU0D78=
-X-Gm-Gg: AYBFou1tIybWQTOn6bEAh08NulBxf7BTipHW5wsjZJfbzCUfr7p57nDmCudQMBTCZPx
-	9JjnCXyBlGS46tRU46dCyu9KPDmfSc0Fg8M/Ql29ENc//UqN0Q80ZQzIO1XFfvXZYb7UhiEaLDJ
-	OrpvOq0PpNEgzjYvTrRElvpdpME9NT2W8148gFvMW2TFD0ZcsrWw22GXO/Bi7+5Efs8BO5yO/QD
-	ZQUIlf6pdUwjGWcqgwMIEFwLzT6ed77VVQx+2+CUXiA1eFPQGHuHurLgfZhJGsyfUgaRbjGCQX4
-	afnjJ5lQd6Du5VhhQxHimtEnJ2HumgvmRVr0/+ienP5zeJ88RQc+T32UUkbTxEXecDFr4JHjr1Z
-	NDukcaYn9C/F95kS27BF9fXxhg2p8PPaq6iREIUEDXOZNj+DfeJo36z/sASI2vvE6Pq2LCOvfMD
-	p5mKPdkAnleA5h31dMm05QrpkAZ4gqDYjTz6cOh34VLbccJZdYlMxi1WjzxT8pAOVeY8CeAJQ=
-X-Received: by 2002:a05:690c:c619:b0:854:d9d0:467b with SMTP id 00721157ae682-85d6cfc160fmr112291277b3.22.1788272757290;
-        Tue, 01 Sep 2026 07:25:57 -0700 (PDT)
-Received: from localhost ([2605:8600:200:1a83:fe59:7385:2855:8588])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-85e65f146dcsm75394907b3.23.2026.09.01.07.25.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 07:25:56 -0700 (PDT)
-Date: Tue, 1 Sep 2026 10:25:52 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: David Stevens <stevensd@google.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] memcg: Don't call schedule_work when no spinning is
- allowed
-Message-ID: <20260901142552.GG3004@cmpxchg.org>
-References: <20260831234339.280376-1-stevensd@google.com>
- <apYXCL_GJs9Ovu0v@linux.dev>
- <CAOiLmNEV8b3TW_Q7+h5mYrZ1Nw73XcPFPUsapeYObLYajq_PJw@mail.gmail.com>
+	t=1788272947;
+	b=0pEd32cgdKzBk+dvkc01ylmU02ENt7B6oXLscIe8dGbaswKxDy8qmJZXeVVeh3A2oICE+/
+	4pmxa5uOUW1I81W2qUeDihHwF0u1ZepY2Mz96qipc7CGsBNbatBngG3WCt4Zeng3wTIZo4
+	hokWHnnFLHKJ3vHptHSJXiN5hAG4Ekc=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=ROFHdh5YcxFRur32+u++7A9cnHI72YhPCUV519Syh7k=;
+	t=1788272946; x=1789482546; b=YlzrbHTyy5KElcFf+Dgqru5ng16qu5fFa44Ww7laQyO40RP
+	E6VaMyNWQIBcrEsPwTHHbuof0ArBNwYGUwr6RdQvXZ743uk0zbVbsRYuvM/u0cuseaD1BcoYuGEr7
+	ZxhbuVIRuGtNWrmAZ5gfiRMbheTFHXvtUqc223EjNK9c2GB098GzSWQL8Iidc3BWuWjPRxLT3ENa4
+	GcLp7B2oBlqg6ixMaGp6LxJ1GvLBznaLCgdM5itVvSHJdGP19M85dFyO+04gFYDZmga/NA8WV7nHP
+	rG2OeyMbj0JmdffIQkMCcoKIIMmWFShBPHFvjchM3GFbrIWVEf5dvdpBttY9rjew==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1x1PTm-000000062mY-3a8R;
+	Tue, 01 Sep 2026 16:28:51 +0200
+Message-ID: <40e95edb8dafd88fd13c3003c0e76df6a2f124d9.camel@sipsolutions.net>
+Subject: Re: [PATCH v2 0/2] support kselftest on nommu platform
+From: Johannes Berg <johannes@sipsolutions.net>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Hajime Tazaki
+	 <thehajime@gmail.com>
+Cc: david@kernel.org, linux-mm@kvack.org, liam@infradead.org, rbm@suse.com, 
+	akpm@linux-foundation.org, luto@amacapital.net, brendan.jackman@linux.dev, 
+	liuhangbin@gmail.com, corbet@lwn.net, kees@kernel.org, broonie@kernel.org, 
+	mhocko@suse.com, rppt@kernel.org, shuah@kernel.org, surenb@google.com, 
+	vbabka@kernel.org, wad@chromium.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-um@lists.infradead.org, 
+	geert@linux-m68k.org, daniel@thingy.jp
+Date: Tue, 01 Sep 2026 16:28:49 +0200
+In-Reply-To: <apAgQJ5p8LEDj1c5@gremlin>
+References: <20260825015945.141739-1-thehajime@gmail.com>
+	 <f2ac9432-4fea-4007-aab0-ad80597b284c@kernel.org>
+	 <ao2Tl9CLL7WjHYun@gremlin>
+	 <bb9a3add-4849-4928-8b6a-0afc0c73b112@kernel.org>
+	 <ao2l9Ao7BQI6uRKC@gremlin> <m2y0dsuf1d.wl-thehajime@gmail.com>
+	 <ao_541nBaa3SJS9F@gremlin> <m2v78wueir.wl-thehajime@gmail.com>
+	 <apAgQJ5p8LEDj1c5@gremlin>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOiLmNEV8b3TW_Q7+h5mYrZ1Nw73XcPFPUsapeYObLYajq_PJw@mail.gmail.com>
-X-Rspamd-Server: rspam11
+X-malware-bazaar: not-scanned
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D56CF8000B
+X-Stat-Signature: h6tjujsy5swf374jxqbj5trftxnjzc5e
 X-Rspam-User: 
-X-Stat-Signature: gmxtxd8q4wkjo4qptmiix1tanyrtkegw
-X-Rspamd-Queue-Id: 711F440005
-X-HE-Tag: 1788272758-362720
-X-HE-Meta: U2FsdGVkX1/mW6bDuZw245176IL04mC5lucUDvGQ8rFFShCPcSiCBDi+CsvLkcf+9CUxIEQopAOnHumeOAGRi0aooPRXFmXF5z1nLhsRrOP0S/MW4h4upFH0XVVtEWb2YbIk3AteSctV1Nmi0e8H4aOIRH4ERVVkBzt7HxhOAJov146cV8yIU3g+rnkHFlsuhSGbuChtWON3UzzyNy8fzIo2NEBS/DPPaQaUng8TCRuYf5cFRFgOaAXuEb9tsl46O7RICq/dh76N9t5P77H8VCinyBblkal8BytoZGdEKP13khHCFpEyVu8KIBbr6SLeJaRY7UzwTlsQ74xHVDGsUj3jCx5wQR1tAFzpMTgGdHyZqNZxRrnfqo7Oo0lSzmVIaqJtsgu6EF8VfPgCQagBMCGUNzL+w4GSLbmkWZISLuRW4BitP0g3iVpEcLUyFg8VGr5z8oX3zncsJzl+isYngqNDm4o4IaurA6uH0bkQzr1/uFkmo5Un2Ly5+7O6yWTPlqjv0UvQk0uWVddu5AiUOX1LRCPGZmSbqhc7xWNn82cPc8sBLtfU7/6ITioSfP2jFI1P1Y5Ef7c0fTG1rhHO7nalJ1I1PGocv7JcUOjEdh7Yc90HzR/IaV5jOFjCaDq8S/uPeJpM5acTG+GJmfVBt61hpFhgO0GvDKWdL5RvmgFk5Yc0/QEviwTHy0LKDJ9s6rGXSE81wdYXbhJdF02oO1DqsroVv4Iy55zAaTiGPdnKQf6jrX5FPjhUIncj7mnw6hqKOMwuGQuzp4nr6UoOn8y9E7T6VdUxVOKhIvuDYI7vkXFluFJsymwFySc8MSKowC6djaYufaej9wWfqrxtMwyfIY61rTP7ueI0TH/dnmnSUEnfVG9aU5y/2r7ucZ6rR9IxChGVu4qzJqo3XaEayylBxQofoENfY5tS7o23CgN77qhl32gG1l2XZP2wRuElMZUavmUUtK623ny0rFf
- 1vRGM5v5
- NjXYa0znkzVpNm9q1Etmq3SSHHhVM+WzOIWVPiIxI/i6rloJcGo63me3BU/fM2JQ/W0AmCyAueB4Dio8ifUo/reAF5/6Hs4xq+ruyVIPk/zrWg5A6Iuy+XOVuvVZhD7wSFb+a/9CpB+6m1AQfpokToDp1KwV+pMbgZ2sK5W1/8f+7WK0mOdk2l4ieOSXStJaiZrbfapjNxnKLsNlUnYT/SNikMJDrPFfk26CE1c3m2tmUwc7RBIBP7Q7fE62JUsIw1e9yBroSaUq6dcNnPT+G487MOISV8DstivweIBdnvq99s7YrPtbH45pDERBESIf/4qU+2HPvw3buRkqm6ba5IT0zHYLFbSAe0M6BrD4NCBrqelz6gSjgmNYaye+CYVE/Aq1l8FnTEzoMEOk664cxVgFhCyMMIcQZFrLCW4+wma+U/KCUGxvA7NFJdpojgSbKoliMYjo3rUz5ByRC4Tp4YyC2g911HAsenxSZlpQWZWURfyzBwIZmeZokrQ==
+X-HE-Tag: 1788272946-148323
+X-HE-Meta: U2FsdGVkX1+tt/KlvsmVI7iHyzpAuXNAI7YnNnjN/JXbs5qnQuY/XQAiCXZhZHcga4BZuUx7M8KOxKoPXTatlICyuUzLFoej1KyVKJo47MkzhJE+ixcR54K4RcdwXee8LkyAzTlBrPSM5JbxhyQWAnHuUAKWYIATvsAEtQ6UgqFeIocnzPOlJTOFVkNSOXamkZoN4Np7sM8a712PR+djbcmy3Ak1WSKxnP0+t1gEveH0W6auQaUl5P16M2GH6OCK4U8mJ2hUzGaUg3w/ZAsmgZMEtzsdZ2vi7Wib7bHT7c6hkqfauSYxMYNSKFJ/1s30ujyklsnHSwd4S2zjD74/KpGekPlpc00frbXOHH4W9ROKKyO7wcEjOb0M/EkxeSzc/ihvkic1tJSW59CKCxw+QmBr10e1NOTic1wsPsFNYcWEp0dM1hAGnHCrtOIxWfXX5eCyhKiY1mao3zmpW/+WlPzMyiwkJEfAwNYj2Lfzpf9qOZBoibVEoLET2MA5+c7d9VvMVNvaxqiIVNonwJ06Z6f2cDW/WJ2Tg8vInZ5z12W9NI8O2eKJUU5MbPE3sqELhAxyka/VhMN5wRsBhpNsMpCH6QSeMCXBIGisJUTEjHr6L1v/PxRxcKRwx5lMwmaZQuJVKeWEfR1Xv4myvBCbGwXqoj9ONBhX1+5rpTNSUlADUtbSNimWfvI717+y/PLrLxQaTuAAFgsZPkmJYGh/VSdy6TqmhmMHQJaIOFMFJgTxbfdXyCvD+OupAme6KKjBz+GF65AsR+b+kEMIhf0SRd1B5jQCQqFUG48Fx481cbFWkPVZGgUtQISDnQHknSsvSpMXg50tCcHfg++yseBiiF6Cu2BZFy7GvCkD74ZCpcL5BIlTR74/EDWysrTSU0kQaOD7Ff8g8kTblAxMqNNOhtjAWEeFHbp17uo50R1rlvXedBahzBxYE2nasmbM19kF8zisaL9Ns1o3leF2YF9
+ Qz8wK0qk
+ G3E1upToAryoUm0h+ZBfPUxfGgwr6Ju22CjZ+LUMkfczBdSxkJH52izATgNzeVlPfqsT1LbJVqthFmNHOZsTU3EjgGASaMdVhNhKXMLyuoJ5+JhEaKr46tM623Bb8nEdPbW+PYv2ryXQ0V71nCaVbtKVe9XvSt/OSKQTxm+dCHYj5x5SnS9faxbXVrmb5xgN2qITe+hxNbJPdhwiQZGPabOO260UOwFFCuov3JdUsy+wCxu9v3/WpraqnCquzNF5qZxn86SwKcT/kedbrHxCvQ1dJmg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,52 +105,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 31, 2026 at 06:04:57PM -0700, David Stevens wrote:
-> On Mon, Aug 31, 2026 at 5:10 PM Shakeel Butt <shakeel.butt@linux.dev> wrote:
-> >
-> > On Mon, Aug 31, 2026 at 04:43:39PM -0700, David Stevens wrote:
-> > > Memcg charging can be done from any context, but calling schedule_work()
-> > > isn't safe from an NMI. If memory.high is breached from a context where
-> > > spinning isn't allowed, use irq_work to schedule the reclaim work.
-> > >
-> > > Fixes: 3ac4638a734a ("memcg: make memcg_rstat_updated nmi safe")
-> > > Signed-off-by: David Stevens <stevensd@google.com>
-> >
-> > Did you hit this issue or just code inspection? I assume this is the
-> > done_restock code path.
-> 
-> I just found this via code inspection. I spent a little bit trying to
-> trigger it for real, but the only way I managed was by writing a hacky
-> driver absuing alloc_pages_nolock().
-> 
-> > > ---
-> > >  include/linux/memcontrol.h |  1 +
-> > >  mm/memcontrol.c            | 12 +++++++++++-
-> > >  2 files changed, 12 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> > > index 8170bb8066a2..036d973ceca6 100644
-> > > --- a/include/linux/memcontrol.h
-> > > +++ b/include/linux/memcontrol.h
-> > > @@ -219,6 +219,7 @@ struct mem_cgroup {
-> > >       spinlock_t       peaks_lock;
-> > >
-> > >       /* Range enforcement for interrupt charges */
-> > > +     struct irq_work high_irq_work;
-> >
-> > Instead of adding more complexity, let's just return if we can not spin on
-> > done_restock path.
-> >
-> 
-> There would be no guarantee that memcg reclaim would ever be
-> triggered, which also would also stop MEMCG_HIGH events from being
-> generated. Overall that seems a more serious than just dropping
-> userspace notifications like is done for MEMCG_MAX.
+On Thu, 2026-08-27 at 12:32 +0100, Lorenzo Stoakes (ARM) wrote:
+>=20
+> Ah ok cool, thanks! Is that headed to 7.3 or more like 7.4?
 
-I'm leaning that way too. It's an indefinite error, and it's a freely
-programmable surface.
+Seems everyone was on vacation (I just got back) so I believe it missed
+7.3 since -rc1 is just out.
 
-IMO, a few lines of relatively straight-forward, self-explanatory code
-is better than code that needs a comment and leaves a problem that
-somebody in the future might run into.
+I hope to have enough time in this development period to the merge
+window to figure out all of these things and get stuff merged - UM
+wasn't on my priority list with all the (LLM) security(-ish) stuff going
+on in wireless.
+
+johannes
 
