@@ -4,145 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39367C61DE4
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 05:21:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F13DDC61DE4
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 05:22:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB8C96B00B0; Tue,  1 Sep 2026 01:21:15 -0400 (EDT)
+	id 1237A6B00A1; Tue,  1 Sep 2026 01:22:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C90556B00B1; Tue,  1 Sep 2026 01:21:15 -0400 (EDT)
+	id 0D4926B00A2; Tue,  1 Sep 2026 01:22:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7FA16B00B2; Tue,  1 Sep 2026 01:21:15 -0400 (EDT)
+	id F07216B00A3; Tue,  1 Sep 2026 01:22:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8056F6B00B0
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 01:21:15 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C2E37120311
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 05:21:14 +0000 (UTC)
-X-FDA: 85164044868.09.48DEA12
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E90631A0003
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 05:21:12 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TGyncSPq;
-	spf=pass (imf19.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788240072;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BF2B56B00A1
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 01:22:56 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3AC1580305
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 05:22:56 +0000 (UTC)
+X-FDA: 85164049152.29.A088D25
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 75B7D180002
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 05:22:54 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=QNXC8Qgg;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf06.hostedemail.com: domain of 3LWGWagcKCKQaJIPMTIKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--wfelipe.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3LWGWagcKCKQaJIPMTIKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--wfelipe.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788240174;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9z10EeSNeIlyZFnhXWLzQdFpOPihH3ow6K97VqCgdXo=;
-	b=Q5gZsKGnZpkjldlA6oVY8C5eakH9n/5obpl53B/jJKLGEkNRJ01jsdfyvYyGe7YYDXWBN7
-	SFrqVDwt9NJMk8vuFVU5MMAwzgCY5EWvT4IQYTT6QZgNa6HFKP+fid+VIBTd9rCU+3twgQ
-	MsiIKR6bH4GseI6iTZU0jgBxyetkfJo=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788240072;
-	b=oxDLkxl0DNBmmVYlfCIie/evo4IxA8ceq36/C7iqNSttqJvhO53r/wF7hOvLdogrxCIGID
-	1xA8QOyQ6B6LZzTFpV026uOnU+5rmd8vH0+BYOZ63FBcwDItUgVf15AKY5Q1OjV09GIwgU
-	9V70N04LnX8QBzbgZ9XtsJZ2/Y30Ol8=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TGyncSPq;
-	spf=pass (imf19.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c1600d040e4so119132566b.1
-        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 22:21:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788240071; cv=none;
-        d=google.com; s=arc-20260327;
-        b=UYUvQv04LfIWUE3v38KcVoWTSgaNGnyzNMDgufD1f07lSkulCmxLdjzlubnaRWWR8Z
-         urtR24A9jEIXmJy1IpICF7zVdgle2vIZ2Kbfx1Wi1VcJp5Suh58pHDzPp3v311LUcMNE
-         VaAH3cqgr9LVbNa4xqYB19+kFHyAALDoELljDwz2JYub6ZG4DgS/tEXqBvhABTR/5BcE
-         4b5XS9+gJZAq5C6xcH5H8jhbwkYVdL6kW6IDF0juRvk/eqv7ZhZZ69dtw8wlVx+g0Ei7
-         q/oCZk2jjYQ0kkUqKBBnhclkv/U7W5Bi8QQEzcl/Q1XTMADbWIqvyKtLEdQYw+39RFet
-         8iFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9z10EeSNeIlyZFnhXWLzQdFpOPihH3ow6K97VqCgdXo=;
-        fh=9OtubVzT62RuDK+UzaUPHULs4CVlPa6sMix+QhbQvNk=;
-        b=lFc4sf/9L9P7CVQVdasyylk7rgpGY0Ai/AtvCJ2Icom+3eDfeqgxYAea7RHA+4znB/
-         GUhl4E4gp1fHKlWuBMWmyf91WH/fQoYEZ6bTE5vrX618wp+HbV+rN+EbgWBd1myH0r4S
-         DPqmmpAN9lIWcj2xTWOIpF3EWA4DzxKydFwNBFf+0GMbiVJTTdmNeT6aU0+kEH4Fzgan
-         Z1j0GlROwUkcBrTiDUY2bMdhGBOxUtS2EIe9YVXT5lTHaZ8e0n7iHUKMRKS1X5KX3Azm
-         DVJWVtHuKO+qNPLMynyUIuufwnarIrdmB7JbFIYb1oPMqHcCVA8rGMet/fvy5ttYqQO9
-         RRqA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=pSEvj+MC1crqw1bkvOqmX0QxnYX53YLokZZ2psek5FY=;
+	b=JqeUd47ZW2cjdE1YFx93x9+/DHo8oy7ADsYP6BStAh3wFFI10LmG++66cmsy2woMtTEv8T
+	pmaOB2OieGav3942Jk2XlEOoBCYpOJ7302o5u4oharMcycTQ62QH4q54yt31yMLEHUqBGC
+	94/33i0a9ZyMKXvjtW/FEg8bw2HpksY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788240174;
+	b=StTSq//6NMmmuUrAG1LXSRPnNmJLCZLcPzrLKl06D8daMvsQXhonydmRORy0QQ7hehxvr1
+	ekjIv74qtu1dQLyJKNLcrsER98rU9sWwSSkZJAmNSaKwz+lyhMsMdG1cGOm/oAjauITnBS
+	3CQ3DJF9XL/fuuT1I736jrhPrjJxaZY=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=QNXC8Qgg;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf06.hostedemail.com: domain of 3LWGWagcKCKQaJIPMTIKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--wfelipe.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3LWGWagcKCKQaJIPMTIKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--wfelipe.bounces.google.com
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2d6f75c1219so10335485ad.3
+        for <linux-mm@kvack.org>; Mon, 31 Aug 2026 22:22:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788240071; x=1788844871; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9z10EeSNeIlyZFnhXWLzQdFpOPihH3ow6K97VqCgdXo=;
-        b=TGyncSPqiYCTks9kyI54PTt7MfqqnI3gy2U6gMOozZ0EuIc50Z9E7Vdi/OktZDk4pf
-         eDTw41VVQPDBCi0BtpCYmJ938ea4zZVVknubFRR5jDTzL8aHI81g9gp45Q2coQG367am
-         BlU086EOQJPIJAy2V9HzjrLDvAVWsyW5n75xRLg1nrrE0YXLW97/9p+ja479wIH/gLwm
-         YT00pwDYXQy45A8gB99LWXIWqSV28hp8SUKSP7uNNqc3oJp+dsvSABfKFxUjwqkc800R
-         0kKfYnBYmWs8QOz3t2eJ+LKBrwtkGP0WyfdFbAwdzwVr6NnB65dd7yQxdOrKVYDZyNcx
-         cDIw==
+        d=google.com; s=20251104; t=1788240173; x=1788844973; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=pSEvj+MC1crqw1bkvOqmX0QxnYX53YLokZZ2psek5FY=;
+        b=QNXC8QggGPKn3TsLsAUcjFXNfA/9MvDjdd5TX9Qxh3nNG6Z/5xxrUqL7SiU5kHXBL6
+         uSs8LHXGFYwzmSQZnqGAh5u3GpgtNnsExjrAXJq8EFM/mQqVB2ZjFYOHZpGbLIANcRZ4
+         89YxXMdE2UjNTSHm4GXey6DPsLqw1xgiD6aJIKRy/+5i+1X1OTC9EWF0A0YzkGq+6kGU
+         3tuHIzUDAUUGFmvvIa0ZjqArOm29JLQdhTNdKq3fkbpe3T+WWllg3/WGvjKUYHL/QodO
+         lHXpuYLzbNg6Z4R2W5jjY5XuhcDc13yIUENXp9Bjd7lRUUgRwV6L9nsuy2jaWgyN/2te
+         Z4cA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788240071; x=1788844871;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9z10EeSNeIlyZFnhXWLzQdFpOPihH3ow6K97VqCgdXo=;
-        b=HmKN6SejupXeSrUnnmgMYSP+VzjQyo4YhultwGOGWnmRK05r2RS0dTW6xqk26bEuQF
-         FsfceeE7fPW6+3Yo1FZwBeJ87ZUwsRsnSH2H2FQeRiYssKnoO3vzHLrCKY0IFydkbic5
-         YPVBI0HLMWdHdixpq/eyzYFCXG+nlC6VugdAXtlIuR/NAs0bpUOqv+AKozQGJ0ybW2fi
-         /2/h128OK4gozJai8XhmfPyIUhUf5QqIsUpm73JCW353IM6bcJssa6obHmKUxysZKtUb
-         t7fVciQPBVBwbFnMJBiiKioquUvDxMDHSehh/sE1A77RLNokAnbhAWNGmMP67ScFeh1d
-         EuAA==
-X-Gm-Message-State: AFuF++nbsxm79qrt5EQmRSRvA/lrsKpg8mQFfNo7I2+z3kQMZyDyuvkI
-	Yq3J0/67H1XjZbt8ZHZtJN4jhtUZk1Vyu5P1j/3M88XYvfvRNltWEG/kPDeahBo0bp/R4Jr5gaK
-	Ji7ET9NT4MY+CpBMwNwLOAByythnpb0M=
-X-Gm-Gg: AR+sD107ymoINTyUHgMJPAob8lOXkCuE9BnFJyoVSalrHVLkfQ0FFvm6qHJdnIXadms
-	9U7oX9rs/NxIj01uMB+eHrEqkMibreBEERbPJQ9FlxeSU+Kb+RBnMGoVX05Kc7A1lWPeyjhUVMg
-	b3KnP+uaXjFT2tyLbGWxhF5fVvVshWnNma4SGa/O088HL7p6AFhSgxpLdw2+/Z4xryez/nXb31A
-	LB+3vJeNK0CCyqo7IKotXoUO3qlRrg2/v8eLO0TQGt4wHW9teSNbWIdw+3Mb/IOBWE6RTixH1k1
-	axpb0U951JWVKDCqptlTTVaGal2SijiMNniFcGAUt1I93rJeuludzi8gPxLBVCbxCup7VYeP3nH
-	r
-X-Received: by 2002:a17:907:7253:b0:c25:8bf0:36e2 with SMTP id
- a640c23a62f3a-c25b91a2114mr161539966b.10.1788240071158; Mon, 31 Aug 2026
- 22:21:11 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260831-mglru-flags-cleanup-v4-0-2d15dde0d7ee@tencent.com>
- <20260831-mglru-flags-cleanup-v4-1-2d15dde0d7ee@tencent.com> <apZVe8UHZ1CNo4r1@linux.dev>
-In-Reply-To: <apZVe8UHZ1CNo4r1@linux.dev>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Tue, 1 Sep 2026 13:20:33 +0800
-X-Gm-Features: AcwNN1XYYZEVuDsFVysPBXGQM2_96ZhDLvR26kiyIMr2QMBACwffo8RrchKnu5k
-Message-ID: <CAMgjq7D6V4eTZJ1Q1Xf2J6yTCq=JjvzT-W-HHX6EnMfzm3BK1g@mail.gmail.com>
-Subject: Re: [PATCH v4 1/6] mm/memcontrol: make lru_zone_size atomic and
- simplify sanity check
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Ridong Chen <ridong.chen@linux.dev>, Lian Wang <lianux.mm@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+        d=1e100.net; s=20251104; t=1788240173; x=1788844973;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=pSEvj+MC1crqw1bkvOqmX0QxnYX53YLokZZ2psek5FY=;
+        b=PKdLCznUNvmoLEXURIe3C2Io56en/ndlC7EUq0Vox+Ad3Mw9eFb/A8LWbwDX6bFCLD
+         BEzSADmzEkmLvEw9dqdlaKGVpSqZJobla+eZperJebIZgBD70V2x920Q7NvI/eQRqfVn
+         q5+TbgSb3sRA1LiLPM/fkuDcr6uO2JIQi7m8eERqEs9eA2hALvktmnxI3ygmx0msH0zf
+         X/cOGq3oeDhekfq8vkjRZ22npe3RmFlJcTlzvoK2GGksyxyNGdfVNrrwl2/ptIGS9urV
+         QRyDwsXLMsyWWnIRPh42/sp53yXmRCBu0aPWSMTu6qVrENOUj71R3ikqnO/iSbRsW6pZ
+         MHLA==
+X-Gm-Message-State: AFuF++lW49IGy29E4ZYUTn3QJBW0eB5+MxHs8SFtWuKy56MSUKe412jJ
+	0jNJgt76xjQGzHbAjRbxi3kmHnlh66Ox7ou/91RlnNzYwdT+EJEXWpgDck/Bb1ZkWTo3xeV13vM
+	vJ/0kLaBOvQ==
+X-Received: from plbjy16.prod.google.com ([2002:a17:903:42d0:b0:2d9:1541:2cac])
+ (user=wfelipe job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ef52:b0:2d9:383a:30f1
+ with SMTP id d9443c01a7336-2d9383a326bmr129023445ad.4.1788240173018; Mon, 31
+ Aug 2026 22:22:53 -0700 (PDT)
+Date: Tue,  1 Sep 2026 05:22:26 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.970.g62bdec98f9-goog
+Message-ID: <20260901052250.154532-1-wfelipe@google.com>
+Subject: [PATCH v5 0/2] selftests/cgroup: fixes for test_zswap on single core VM
+From: Wilson Felipe Pereira <wfelipe@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Tejun Heo <tj@kernel.org>, 
+	"=?UTF-8?q?Michal=20Koutn=C3=BD?=" <mkoutny@suse.com>, Shuah Khan <shuah@kernel.org>
+Cc: linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Wilson Felipe Pereira <wfelipe@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 75B7D180002
+X-Stat-Signature: nuhc4as8w377ycx1spa131pgrbz13qqw
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E90631A0003
-X-Stat-Signature: kix1sdhynd85bstw8iw48ww1npkyssug
-X-HE-Tag: 1788240072-925668
-X-HE-Meta: U2FsdGVkX18k5mLsZ+nWxlxqYvncPp+UNAlBADQvyRQLR7zkJGl+G5Efoc+uIED3KwRf2ka9NECcRwjlaRXqv2O7k6fSQmk1FJFYehhjsgi/VodaJ/ux6LieM/sMkFsxp79JZ0MQYV1fu1OpK3E7CVhfj5MR8rJR6bdTTqoesRq0i35B53PEZ5RACoU+sYoAcU+s+BrCFGYzWCd67OMrQ+Wp+Xfm5W3mtRx7tAx8Y6VmvQXP0aGbI/53GnRxa5z/k1JaJPH5F+OFaKlqNhGezmpIG+38k+bk+5jIbANBOYFU9D+kTPyTPyy6vNrkdIZjNeHjKeq3TVJtXp+HRkD5P6OavW99Wcgqn3wn3CHFkonXYIFGgTAseTJnkuQgSIk+RNAMhJ5dr/GzuV7fKJdj4zk0Uc27dtTJ5KZ7nGBw5ObjKV1qkkVaY81zQzPrzOSKnnj3Qbtp6LxyZTC1B6o38n7GGBfqSOz/DDtQ69bqtDq5ToVPkHZ4ogFQeh6Lmmd6yL8G0NghqG3TCdvL1z9WgiYiZMJ8ZWkCSeziN5rO4e6dMns0JM7EZ/EIwkOwf7VnkiHvrIgoEpfxdZkZUXS1lO72oHYadpPkOAQaHxbXhsexAujIsTlMjAzMDoecZ+fmD1+ZCVb0vazsgA9GOPywhxR+GlS6gBx9rQuIH4vyxcph85meRn+WDlet/1Vk17e2mZPK7PrXtuxnCiSfkVcQWiu6CNhuy3DE1OuE1qUXMTLZjJSA978qWDXWtEhdAng5ISfVgdyaMH2wc0O/tbHmm0/wEAHk1DkTWjIyDh51vm10LKrtWGAqCeDKn8OaxPMUMpX/dd1x+DM5pREQdpD+Ju5bB17Rhe2c3e6n3xICEoED5n0jat3ZgmqUWw+6O+kFo2BxrsH0HX2SeHT2x+ajYKi/JC/y68I0VHtoerMIWSFkU5rbobNaNlGZt3pLtIK2NMwO5IZPyPY7yJOjjo/
- cBDAk2Bi
- 3XpaPzxvo4ZQ176xie1XL7Bezn2bg9fNk8fsXM1FVep6G5wASCaYmHQUKFUUA5yHGmMazRkwfbWmWctBdBfXAkDq1bjifUf75f69Wv6B4ZBPB922LGPvYnpTWqwD99uoE0nyW6WOrhPOXmskmMo86hOTKsNMQoKl8HNfIFEw/eQrMkJxWQLQ4FlrGn5CstaznMbqFNZPVbOlkkaebVqTvalktHHFiMJ1KBaon93sEM6ttWt399TVDPXuwh5aB/NKZoMw5ai7EN3E6c1G4u88sHa0l6iNl8+zhYGofuzVx4V3NPimdToLO9qaUCMUcsizG7IDb9nhOIJZaRXkcREXHORqVu2HcclD7joQ6ekcA7AsGaUm5Pr8955R3qxZPdBmfK6Guf5TLyPqbmEjqVg1B0y9oTujwsNaxO7+A0vVKq9Zqp2eeOMm5XHN/GRLSCs0JtuRKSpojTbWcyxD9JgQFe74ya5hnJ4lcJRPRdM52DLsYNsloswg0GI2v2NceqcQAjPkdPlLVqHAeo9F2+wXRwHaT/hVHD0DZNjaEV0r8yN9kqHE=
+X-HE-Tag: 1788240174-713950
+X-HE-Meta: U2FsdGVkX1/hGzCBgg+gj57wcJUB492efOSmTEuX94PA8C4NouV1ivIiCwzSJxd3x00pnMGkEH0R9dINU9WyO2PoB9sZEh+9v98YvxXFufIL6dQYXdjNMWbw5S9c0Z4NvkwMkng6nj+KRWGsn0Ee8VCgCeFlRgkUIEwXClhxhtWbtvTOyUXPig4zLSielTQP5Y4+bq/An2mp0SgAmFbri5kMSYOl0D31YyTu24zvR5FHFavMGV/SEYgr8OnGF563TA7VfuFI0XJNkEvbBPyFkSu7cDXbkPIkcZI4X3mC6pE6BWPLFZqhXIuNiak34fX8kGIbSfzwF+vcNWXSNGVDHakDLzuQR+aYR4rK6OoyRWZga9by6rgc3ISv+n2mVQolxj23QqxTqy/gh8sqGgBCCP0VeX7NgDSOJaxGdv3EkXhbH2dgDqXySwMtojpcSSWRistyj9wVoKj85o/lgUru8lvMPtio4tD4lbSAk4YWXWdti+eEBYRPqzA4ycm59yjURVC1inTt1eW9p5VSXC1k9UPB+5QnGrqVaP+1b/0PIF1SEM/VBzVR5I/A+OV9W6e3NtE1KzkvYOIINO6N9z3eh/s0r+anFwb1RiRU8nxW8qTIx2Tj21mWF4l1xjYUXE47YuWUblqhn65ExdxMHkeE9h50+fEUTZEb+exkurQgb5am7vYEpbkWjLGII14myRb0j3NB9VzT4TtwhX2LhUaq50Ti+1Mi43w0L2wAO41wgaoaXkPgLNxD1jc4MuPIWbRLM4ZkY0Ep698BYW0BSyyBdwUIIn8yCF3BY1ISeLlGtEE3fUZlQgM8AuaqGtXf/Y0mONEEg9gTVZ5Y7PVklu+UUWQchfyMb9YMjNJqzgqaXZMyFZw96RONmNy/CRvS6a5sYDUcDVQDbkkrxRxuBcT8DnL0vEJXl/yIHeeRsDgMYN8+qVg/q/JZoXK1G+J4V3zyPRH182x/lFzuuc3gyEg
+ KPBs54Q0
+ zxmwSqg2t70qOrc3r12tKTmTXqWnRGL937yFVNh33B9BU19UgYDDntkzLBVY0jQz7GchPit2jcaFNwZZiU5HRDkfRZYB8ccyfXH9eu1/sG3V23fzwMR2KYbKtj3MHlkJc73Fbuk4tJQV6SIjv///cIuRgsvTi8N5icZJ3Z1gQn14HDDtaL8KEg0aHSvbOi53nNdu9op2p3l8IiaRR4yGW7qy/AZo2bYuXjY9Juxp4mDnSiEJ7H4VzRJPQN4qGg0qkyrJBLBO5Yt3eVt4ptLMNCSrWhkJ+NjY8MKOfsizFfeZr+sSW2zxLGRVueOW/Dmg6FQA+NCg9hfxQxFKiJwDetG0lnyiFwXop4dimH5jBXaO0iq7IlfIp7xs/s6s9VSuCPYr8lR3BiYfgpGvuNTe0F7DE/6dhQ6Qb6db3PF0NDZmZCsfiXvkQ73AYoL5+9DsErCwuu/OY71TS85mW0gmX7erLWSRTHqFmIyBLOX26SI3p0S2sWUifcnJRFl/K+OLaotAX+2NzjYVk9v+vt9pAkxenyC7WflhhrGu+4wg3C+/pwWUWEktyTAeD81Yu6AaFNPPosmTQs5Y4tGHGTHARLD1+W/pgECBTu8Lmr1g3flGcUUXYeyIVHrRayUrzWTrNQ3ofYzaRwcIZeSGiA9Al92HlzQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,85 +111,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 1, 2026 at 12:38=E2=80=AFPM Shakeel Butt <shakeel.butt@linux.de=
-v> wrote:
->
-> On Mon, Aug 31, 2026 at 02:43:31AM +0800, Kairui Song via B4 Relay wrote:
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> > commit ca707239e8a7 ("mm: update_lru_size warn and reset bad lru_size")
-> > introduced a sanity check to catch memcg counter underflow, which was
-> > more of a workaround for another bug: lru_zone_size is unsigned, so
-> > underflow wraps it around and returns an enormously large number, then
-> > the memcg shrinker loops almost forever as the calculated number of
-> > folios to shrink is huge. That commit also checked if a zero value
-> > matches the empty LRU list, so we have to hold the LRU lock, and
-> > handle the positive and negative deltas separately.
-> >
-> > But later commit b4536f0c829c ("mm, memcg: fix the active list aging
-> > for lowmem requests when memcg is enabled") already removed the LRU
-> > emptiness check, so handling the deltas separately is no longer
-> > needed. And if we just turn it into an atomic long, underflow isn't a
-> > big issue either,
->
-> Why atomic long and not just long?
+This series fixes two test failures in test_zswap observed when running on
+a single-core VM (-smp 1) with 4GB of RAM.
 
-Long is fine too; I was just trying to be defensive. The original
-check was a defensive design for leaks or races, and atomic long is
-more immune to race conditions. See below for the other conditions.
+Patch 1 addresses a race condition in test_zswap_writeback() where
+waitpid() returns before the exiting child process is switched away by the
+kernel, causing an immediate write of "+memory" to cgroup.subtree_control
+to fail with -EBUSY. We fix this by waiting for cgroup.events to report
+"populated 0".
 
-> > So let's turn the counter into an atomic long and check at the reader
-> > side instead, which has a smaller overhead. The underflow correction
-> > is removed: a massive leak of the LRU size counter would indicate
-> > that something else has gone very wrong, and one should fix that
-> > leaking site instead. Besides, the updater-side sanity check is
-> > unlikely to catch the leaking site anyway: if a folio was removed
-> > without updating the counter while other folios remain on the LRU,
-> > the WARN only triggers much later, from a likely innocent callsite.
->
-> Do you have any data to support your claim that updater-side sanity check=
- is not
-> that useful? Also can you explain the motivation to move the check from t=
-he
-> update side to reader side?
+Patch 2 fixes an implicit unsigned conversion bug in test_no_kmem_bypass()
+where small negative timing differences between debugfs stored_pages and
+cgroup zswapped bytes caused the comparison to falsely fail due to
+unsigned promotion.
 
-I think I described that in the commit message. Commit ca707239e8a7
-introduced the original emptiness check. The goal was to fix an
-over-busy reclaim scenario: upon underflow, an unsigned long returns
-an extremely large value. The reclaimer calculates the page number to
-scan based on that value, and thus enters a busy loop trying to
-reclaim much more than the actual usage. It's really a defensive
-design or workaround.
+v4 -> v5:
+- Patch 2: Introduce `cg_read_key_long_long()` to return a `long long`
+  value, and have `cg_read_key_long` use it and convert to `long`.
+- Patch 2: Make `zswapped` a `long long`. This prevents a overflow on
+  32-bit platforms (Andrew Morton, Sashiko).
 
-And later commit b4536f0c829c just removed that emptiness check,
-leaving only the underflow check. So at this point we are just
-defending against underflow. Currently, I don't believe there are any
-known leaks or underflow issues in mainline, still purely a defensive
-design.
+v3 -> v4:
+- Patch 2: Use `long long` for `delta` and `max_delta` and explicitly cast
+  `stored_pages` to avoid integer overflow and implicit unsigned promotion
+  warnings on 32-bit platforms (Andrew Morton, Sashiko).
 
-Reading these counters (mem_cgroup_get_zone_lru_size()) is much rare
-than updating them: the only readers are reclaimer - per loop, each
-loop will scan a large chunk of folios. Or during reparenting - per
-child.
+v2 -> v3:
+- Patch 1: Collect Acked-by from Michal Koutn=C3=BD.
+- Patch 2: Explicitly cast stored_pages to (long) in delta calculation and
+  inline the return comparison (Michal Koutn=C3=BD).
 
-Writers, however, operate on every LRU folio.
+v1 -> v2:
+- Patch 1: Replace EBUSY retry loop with cg_read_strcmp_wait() waiting for
+  cgroup.events "populated 0" (Michal Koutn=C3=BD).
+- Patch 1: Clarify task lifecycle in commit description (Yosry Ahmed).
+- Patch 2: Remove abs() and declare delta/zswapped as signed longs with a
+  signed threshold comparison (Michal Koutn=C3=BD).
+- Patch 2: Add Fixes tag (Michal Koutn=C3=BD).
 
-So checking it in the reader side is much lighter and cleaner code-wise.
+v4: https://lore.kernel.org/all/20260828033741.2184560-1-wfelipe@google.com=
+/
+v3: https://lore.kernel.org/all/20260827034807.2822234-1-wfelipe@google.com=
+/
+v2: https://lore.kernel.org/all/20260824033533.2147900-1-wfelipe@google.com=
+/
+v1: https://lore.kernel.org/all/20260804042053.56940-1-wfelipe@google.com/
 
-Checking in the reader side also tolerates deferred accounting false
-positives: if a folio is added to / removed from LRU but have the
-accounting happens later, that's fine, but might cause a temporary
-underflow (there shouldn't be such usage right now, but cleanly the
-oldest commit I mentioned is trying to catch something). It should
-just proceed without performing extra operations on the counter or
-raising a warning on the updater side.
+Wilson Felipe Pereira (2):
+  selftests/cgroup: test_zswap: wait for cgroup to unpopulate in
+    test_zswap_writeback
+  selftests/cgroup: test_zswap: fix implicit unsigned promotion bug in
+    test_no_kmem_bypass
 
-The underflow won't affect anything besides the two readers mentioned
-above (reclaimer and reparenting).
+ tools/testing/selftests/cgroup/lib/cgroup_util.c       | 17 ++++++++++++--=
+---
+ tools/testing/selftests/cgroup/lib/include/cgroup_util.h |  1 +
+ tools/testing/selftests/cgroup/test_zswap.c            | 13 ++++++++-----
+ 3 files changed, 21 insertions(+), 10 deletions(-)
 
-Besides, I don't think warning on the writer side will help catch the
-real leak either, it just adds overhead to a busy path. The folio
-triggering the underflow is very unlikely to be the one leaking the
-count. And if that leak is actually caused by a race, the atomic long
-change should cure it.
+--
 
