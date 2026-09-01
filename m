@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E601BC61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 15:18:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6060FC61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 15:18:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B1C216B00DD; Tue,  1 Sep 2026 11:18:33 -0400 (EDT)
+	id 7C0356B0278; Tue,  1 Sep 2026 11:18:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF3306B00DE; Tue,  1 Sep 2026 11:18:33 -0400 (EDT)
+	id 798096B0279; Tue,  1 Sep 2026 11:18:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0C046B00DF; Tue,  1 Sep 2026 11:18:33 -0400 (EDT)
+	id 6AE116B027A; Tue,  1 Sep 2026 11:18:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A9BE6B00DD
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 11:18:33 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 19D7540436
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 15:18:33 +0000 (UTC)
-X-FDA: 85165550106.30.D635DFE
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 528B180002
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 15:18:31 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Kn+BF6ja;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 469956B0278
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 11:18:42 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 45E6080480
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 15:18:41 +0000 (UTC)
+X-FDA: 85165550442.05.8C9E3FA
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 54EB418000F
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 15:18:39 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bmTf5nVc;
+	spf=pass (imf06.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788275911;
+	s=arc-20220608; t=1788275919;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=8WFJH0ESiWBm+RbvdI7K60WSeg5h8yrXuENGkm3xh5c=;
-	b=iagA1jmJSNzfqu6vtAQdNkB5yjIF41iVJ0IRkGEToffwl+CiwbdVnfTQ2IQHigOMRiXB8P
-	9pJP6CGFgaceob1ftAYoEcU7kuootLjQeVURiRYCFVxeq9bsCTe8EE+Q+is0PfD3TRN6BN
-	uFrdlGM6G9Os2SdLoOrYzL0bXkjyuq8=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Kn+BF6ja;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EcnqIGbKAVtdyFI4AnAxKNCEqkoHQsPJ+QMG1G+XIUo=;
+	b=222ggTUxHkoiaZF8lYEJo2/uWSRJChUBbMultJ5GXmIY458Glq71H3EHSlHEMKOlBCUfV0
+	6yDphJGg7dc/giVqMjMv1a8saV6ua9efBa99P7RYXJFHAAqahwP1RdyBSJMbP8pIbJZvuU
+	Qhsntslci7al7M4JjTFHVJG9sLoJHOg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788275911;
-	b=L1C3XhlOpmp52Clfju2ri3/iGt+3DA96JjcA+HR4DwXA19AERzXd+F6d1fDNs0MA6ubGX/
-	i32et/XrLWadAcF/rK8vKk3olS8vupkgQDKPdxO1AVMlEWBNyo7Z+UlZqXE9ExXhH/MHIR
-	wyGGMSvfWAngSRWjD3k2Kuz8bFvCmzY=
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8552619b869so297878b3a.1
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 08:18:31 -0700 (PDT)
+	t=1788275919;
+	b=vkWAXNY/jE+5Ri2yJwtDGRnFKvUxbb+C2X3ZgXWN4mjeqwswn+XyKhn/JLsbcM4VcN6/Ac
+	aNoDf9TJkBOCL+iP3L/tlbVnY86TSz6VvYS/ao2XbvWlzyjDJU6g3eNamIOr4VOHcpWsth
+	qlHeoPv2gtT62586lfIA8bGjMnfUPDc=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bmTf5nVc;
+	spf=pass (imf06.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-85457d780adso282474b3a.2
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 08:18:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788275910; x=1788880710; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8WFJH0ESiWBm+RbvdI7K60WSeg5h8yrXuENGkm3xh5c=;
-        b=Kn+BF6jaFunYL66jx5u7tRIKJcd2mIqwM+B9bAr2YGX86fLNXQZgjRHSy15VG6l+Xo
-         4y1+N6WtEBevtNsUkJeclU9zgEjcIBLGh0b/6WPGxXEQQIylaC3e5E9Py0oeG/9jzcZH
-         p81y9lIA5YKlZKrDCnx+E+AqmL2dRzgD0xrFRSiJM1W5bQ348H9VLMCvwSiQyJCuqrLe
-         qiX0w1pGkdrKwqd6jExDKUS0xT+7J+qQKvOupJV8CzYak8ACPgdr+oZOLkbXNbSD5CV2
-         S4XXEySj9uZvKdchN6AacXZ4sftesAGzIuNqq1zGSpwihE79xhKC8zSalwMdZb1kCNqR
-         /ZmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788275910; x=1788880710;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1788275918; x=1788880718; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=8WFJH0ESiWBm+RbvdI7K60WSeg5h8yrXuENGkm3xh5c=;
-        b=WalZnXnUFljQLKU24H/zh1ctbo0BJAzEaqDcQEbJwoFA7nWCRR7FSNzlBdoC4bMZ4O
-         g25FRiTkiluZq8GEIDv0bFBxnFdTfEItZ6ym2hM8HZHTITcMShwywXxi3EtAGP2W8FOb
-         0CQ3ddbLnIMaLmmUk48HZch5DSDL8UMt68CEhUIAdZs0suNL/R24BJKvveVJJENqoNPN
-         wybak/aSMXPU2+dEPhb3XRu7qCuAgN7wBQIBE3sgTboux05GF6fMszmv/GApIkX2vOKU
-         C0MrsVbQ8Eqwvv59dp+lfrcVv2vHYgncG3YwJYfVvgWTaXJ2Sr3ZItvBrVErMJRT+8AR
-         aBAA==
-X-Forwarded-Encrypted: i=1; AHgh+RrcUIKN/4coEprOu2wmxiVew41NGAgUztCAYRgUreYgzVtYOoMOFSAa/e5MBUqD8wPN6MTypTXBoA==@kvack.org
-X-Gm-Message-State: AFuF++lBu8OL4OGZ5oSsTUs9B2nFk2CLuiJJDvfGbRXSZ8jwVc8dIYGQ
-	yiUrXaHPE3x0IKNwdRoY9DXgYn+DRi5EDMYT+dojP1k7mVKgl0Dag+mz
-X-Gm-Gg: AR+sD11c7HCPjdUhgHNaTB28wlR+FoEn90LCqhq+2L8H4DNmX55uIkZf4JMN8C9hQDk
-	eLkt1PoFjK7JdO6HwfqMFGZjWOO2JJa8FwC25XGt6lrzAW+U/rPt1Gb28bH0u2qvpy6GcqX08LZ
-	eeLIw7XLGYTq+j1zseV8/ARs3k66jYwu74PENYTp0DPBSDCgQJzv07LbuWk/Xo4nKgu08fjNdrQ
-	CGvArRAUGazeqaN9LZYSXb/k8em3f4DD5Hurct5Pb5Ttu4pRi/TaaN0P9uw8eazy1bTk+MXVCGi
-	LRpS/bt8M0K51ZQIEXbR0G59+IKxOrJxQPnlBRN+xRWwJJ4tzAnRiWpinUXy3Ucq3J7+XWJYHrr
-	o0IfMfqlM/TJZJdnj8wwJ+DcvcPGssEz8fQo4HHGOaDQY9zJS3LAjrmSCKnpRaogLrGHlJJ9Irk
-	m5BVWgR65Yzkol95N+VZoilmczJVMDi+btynHy61ikmqi7XBgYtvDaeuBIL3+yxBZeFUTR0Aop7
-	WkMhei6/VviSKTVdDi3N+wRbg==
-X-Received: by 2002:a05:6a00:4a07:b0:850:a86b:6ce1 with SMTP id d2e1a72fcca58-85625c2c844mr22271937b3a.0.1788275909909;
-        Tue, 01 Sep 2026 08:18:29 -0700 (PDT)
+        bh=EcnqIGbKAVtdyFI4AnAxKNCEqkoHQsPJ+QMG1G+XIUo=;
+        b=bmTf5nVcm3satu4XyD4qgtRL08XKAqC99TS8v2hOYTDiVxnfChabA3UCaTrBvWbItw
+         2BNP8/ORdLyNrwfmDhCbcAHMoy85OmG5tOwK8xamp6hiVMH2+rfK2JgAOvGGMy7EadpF
+         NVWnXVPIHqBFXjXABujcW4V1lyA4xo3zgRiQcEOe/i0m3hH57lWCvyrxO4KaoqRhK/8e
+         +7qvuBb/Z0sgdtgynGbJ37eugrWaibz18gmgHI25sdrZh1u8U11Qu6V8y6JuGZtKrUjf
+         ICYA11m3yF9W8PGR0Q+mk1yJqSufzAxVNYK334zNw7dsH+rN2rSSNRR4FH/IVyWkUnTh
+         16RQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788275918; x=1788880718;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=EcnqIGbKAVtdyFI4AnAxKNCEqkoHQsPJ+QMG1G+XIUo=;
+        b=LypAspJF9B9gYBzoHlccOhQlEiZz1Fo6Y68Dx/aYWSiK/hIIm2lnL2w0iWzSv/esyX
+         HHGuw5LdQCqiAaLTK14UC032WKUPuiwVma+gRB91aFNSuR/+G1khv7/Tj1sIJ3VQUE8G
+         ZQMDh/XdVAfi2mVKFqHgJiBpgMufdMn4CljqlYU7XSjvQuYd+4qON1HeJ+qCiAqMg6hP
+         i9ol1CYMfZIhK0Va8kcfPLypIac+tfmXYy+dYWoSkav0xyZtAsVj5foa1T/3FHI/vN7B
+         SH9zIJIWH6+OG4I54rkcRbLVgyhK6iYfonQc/lWh7OUmRhNJ96qcPvLPzV8yXe2Im0Ub
+         iH9A==
+X-Forwarded-Encrypted: i=1; AHgh+RonhhYdc7tQBWgsZ8SCfQs2NFegm+4epu2BCLcCDmihhEGs4399Rihg0QyO7dvE/vKNOJ9OS2RPSA==@kvack.org
+X-Gm-Message-State: AFuF++meBk4Z9C47vA1mXtx2RH9OTA/1CicGAGdXutm/smUofWGv1bWc
+	yOkRfWioclNg1oXUr/MiiuR/pckHfSUkc/rrnVc5k+1yJO7Bwv+4pNqu
+X-Gm-Gg: AR+sD12buZk/pjjdxkPwSuF6JwgZrcAB+5yFEtucfMkL2EU9epZnn74eoA2ei8oHyqo
+	/1shdEaZGislGdjdJs0x4/jHtVmd7zwkC3cLBBpVrjuMu58oDap0eKTnwhnLg0IdxRFAHnGvZGs
+	z6ow17qWM3aH6JNfbhIagwInd6I4FDhg3rpEuQxNTn74msMoxN4OYgzvGKzGt/qepn56WatWwpn
+	2/I7OQBqEQoFKaRkRm55h97yL1JavCyP3/+E7KkDoXsacQ/cJx+mQ6wsvFpMmeXmvxp1y6iZnkb
+	kYpacQxiNaVQRi5i7qgZ42SbDHmNsltT2QQ6269aJM469xNtAhiFTD4N3fHP9vTEY/J0Jc5tGXo
+	i+1mRKOsXybTO+/q52Hs+oWL0cL60JeKzROx+v4luNbMzSEDEug+7Bcp4WNoXFVNKWw6PfdqNG2
+	ARBJQHOwyFzdgKLcScdnMfx0BqiCq50yTkmM5i739QBr3DjAUxO3mRG78oGhxi+Xm7mdAcULOzT
+	jbITFXNJtsb6/av7Hubc6P77W6QkRIHmUFs
+X-Received: by 2002:a05:6a20:7f82:b0:3bf:b228:10b4 with SMTP id adf61e73a8af0-3d26795f2e7mr31819840637.2.1788275917973;
+        Tue, 01 Sep 2026 08:18:37 -0700 (PDT)
 Received: from o6.lan ([240e:391:ed0:47d0::1])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85db24f33a0sm89911b3a.9.2026.09.01.08.18.20
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85db24f33a0sm89911b3a.9.2026.09.01.08.18.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 08:18:27 -0700 (PDT)
+        Tue, 01 Sep 2026 08:18:37 -0700 (PDT)
 From: Xueyuan Chen <xueyuan.chen21@gmail.com>
 To: akpm@linux-foundation.org
 Cc: david@kernel.org,
@@ -119,20 +120,22 @@ Cc: david@kernel.org,
 	peterz@infradead.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v7 0/3] mm: make persistent huge zero folio read-only
-Date: Tue,  1 Sep 2026 23:18:15 +0800
-Message-ID: <20260901151818.3191443-1-xueyuan.chen21@gmail.com>
+Subject: [PATCH v7 1/3] mm: make persistent huge zero folio read-only
+Date: Tue,  1 Sep 2026 23:18:16 +0800
+Message-ID: <20260901151818.3191443-2-xueyuan.chen21@gmail.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260901151818.3191443-1-xueyuan.chen21@gmail.com>
+References: <20260901151818.3191443-1-xueyuan.chen21@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: 17x7j9rogsaa4yaayg47b8kge14ydzt1
-X-Rspamd-Queue-Id: 528B180002
-X-HE-Tag: 1788275911-616295
-X-HE-Meta: U2FsdGVkX1+NbQc9w6IVQxokepk41ez0xk8b329NY1v9E7gsxuCsKivFXWvt1Ha2pVd1opljBSIA4u2Yhd/gbnKbA6cAlFkW3htYWwvjdwxmZNYMKuM95TaM61dqfeEAwsXOkKU0rFIRiOLsN2CYlLlkwAbb6RYUch4X/sRXFQQvCg9o64cbpQf7IAHJ1odzhb+MQ7+sZqi2ZvOEKEOlLelnJm8g74hya+ym7Rldp8Ghw3/W+msq3JkuPXXnSY6H1OD7CC8UfdMuIfohlkLdzcCxXXM/ZPSAMuqhVCxhsjH/YS5OBQsvwkg/8TBfJRhJ7hc8H8q3oQvt1l739oEgcOfFLWwYWg+FyrS5e0aW7CpIsVuspbbT6c/pT8Cwn++20Em3p55m77wBVJbNOTK2sgA7NyujuXMc+HsIE9MNkt4I6q6v+vOTI3JCP90znpBd8Xwkg/JXXOeK07uabKTLlt83fVf/57CK7blszDlpmDglaVZPfZiDtaqJ+bXiixZMLWcVYnoSOB+iO/GXix9xmJwgZEdEAg5uVSuYs1v8C+mPR84gcACD1GZf10sp+i+CkOK3sgaM8UdcuWRv/KXcLvi5BI5ncq/8kyA/buI7EAKL9s0Tfz6vi7q3oQE6sOuDb9qcdUipP3vXu21PdS5zXAxd/SDbsoX9Yppu8ior09CBMh96UMPDnWwZg8iUhdl1AN4CKp5h8j3XoKLu/z9zjkOAkC5m1PuAHv8yEl/wrLKdxHPm88SpmMuas7MeywToTaABl2axFy0o9ZAbDyC7lS8SUJ/xJpy5JmdbWZT99zJjPqf/iKdmS4pQ2Fn5f+UY8vGl38wrj2Tq1V/gZ18EmdwZX55+YsQD1ea9SY8716M8Ko2WLHdWLU2+veft4HhhvjYr4KN6XmJSz9YpcJgXhNNS27+b1lqGY4vQueseJv9YQBVZuToflwninKH608Klh3GzH0AnKbv4jzPA17r
- nPx581Qu
- hYvxw68g/tPFGF/6a5jLrY9kfYgBlDkgrNHpZXoWfEa8zlQkN+DiC0S+/xIM0My1uTXOOR+B0DZsqrG9kgM1zY+qH4ylj6HayKvt9DnWX7hs2+iSnnXLAkTei+CHVf0JYpB6ZCjmz/r3beePsxEoa4NYGFifm7CIxcoV/oILrjrKzYifkxlbe4sZNf0W+RfW3w4FCza3UVhHr+0FjJUzPnV/zvovX402Z2DAXV5FzgXbwxyRp56AUKepMn1NXodreI/JDBs3W2Zl6lgjdLqi4v7hbmpBffVhPqzUdzVkHONTtXYIxY/OHgVZGVNXzvxu09yWsa/zu7kYcNxdXIubOte4CfEATbeG32nrecMCgwC6laQCl11oawDGK8TJtEeHWwfR1nzLvvh8ae8+F7NMuFQN7hANXd4vqVNDzgxNS2aRISVzXib8p8CXndfIgGMDi54JQb6qgTBogOcDFlfqTviR81g==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 54EB418000F
+X-Stat-Signature: a8dthnc1a9am78u4o3jkiikjnmjmd86x
+X-HE-Tag: 1788275919-933285
+X-HE-Meta: U2FsdGVkX192OfM8x466GSxtQidJn83VYZJm8280RJRCGMIK4sYII9+m9cBcAS1zSkGU/n3Q97ZpYJviICE1/D1NH7a7KRKekRbGUncVFQUKtNvWIG/eZmW9badWq0m2rpWkvPQm4NKnkTAFHypmaR2aqH9kpoR552u+h0073QDhcrKWL90XEG1SbIYm/HONIubVEyy6ubRiKFEvHStRxHy2W0Em/C8kzS2fouWxqfZ6RpKfN0K9XOS1614sq19nXE17523mrCrXcvj8YhVsKqmJl0af1ZEySfDAdNJYGwQQkXYvxDXUyInciikjuHyJJezT7HzyCDqgiU8wSUKjpOam1h1bEpxXRq71CSg59I/e1XtnT+ilUD1cX73PJq2zN1n66vjrW6rY0VZ9m8jTSqcJNETEvg4X4ZkUGg7O4PDa7ttPodwyF11cRLB6pK0lSMj1ZDzIrLVJcJYadpE1l7l/lrxdRWIuXcwxLjTWv5Wc7Us7RX0xW8kvHkeZ7IGjSlVgumJuHPWp94XMZ+3rvwuFH466KELmIx+5spQi28F+IU7jTSehBycPYyrtocyC4sw/8Gm76NVc0VVMwX/NKGDAQNV8LfSo562IcsaeFeNlxUZCGmE1p3dijXEbqo9B7Wyz4rbZtvwEKcBpM037oQp74gzJJggbbmEmvseZ41sb5/8zM+N8GZ7IKw0J0A9PiLDENlP54v9ALNAcu2kp/RUW3BaTwpLur+Fa/zfjNVxKOSg/D6L45UqW9Tq9c6ec3d9GUT36W5vrHWTpS1hObyBb7j7yT82Q5CSfE/1m0kajX0eIBcB5koiRNq3jJRzWzmCXJLIMXdvovSNhzjbKtR4l2qNRxy1j+UsqBeJumh1OQGQqizebTEHORH19bD+ZsnjKU6iMKD3aUt7xw3P2tO9JKL7L1X8nTpxF1ZipYa6gfU3K3yWSDMe9EGzWM92L4E+ssQLNZpI2wdTtqJJ
+ wdL7xq0V
+ 13SoTDXwP9PLjlNNUSBX5pxlNz7AKl8JD1kaqUTvGCQj6qWHGa9VDGcyJByxtRVaJ1krhIsU9rM1nX91RrdNIfnx7RQmmHKx65i+p66ftOmhIJ+7MbeVo1YlEXUYhLuyLNTXfs9tshC9fPRN9pxfNRQDuM7VB1e9YIu/HGSSPfHU5TTcOHMW0Ir68q/mYs36LwP89mPbiJeVKPSj5iSbNVddlAk54p9j1X26deZDoqXO4WhKFsYgWlCQvdqyFpT5eKa1i8EOTvB7gGOEJqD5Avaj7bS1pIoHaq9yWkIsDV4RtseLhUk4TFHNlk8/o0ocuo6Pvto1Y80/Ct9Fq4pkjFQdnxYpgSPNMriErUDU2X2BNdQLxlKc7czfCx4jREbyfWYbR3WcPI7gXIGKoiABpdTMyI7yTvphx8V2Uj5uNeIWXn6n+rl6XYjis2eFE44++VUNOrADcpjDGj6aet9rSlaENpA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,90 +143,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The persistent huge zero folio is shared globally and must remain zero
-after initialization. As Jann Horn pointed out [1], kernel bugs can write
-to pages that are intended to be read-only, including in security-sensitive
-paths. Protecting the folio's direct-map mapping turns such writes into
-faults instead of silently corrupting the shared zero page.
+The persistent huge zero folio is shared globally and should stay zero
+after initialization. As Jann Horn pointed out [1], kernel bugs have
+ended up writing to pages that were meant to be read-only, including in
+security-sensitive cases. Making the folio read-only in the direct map
+turns such writes into faults instead of silent zero-page corruption.
 
-This series makes that protection available to MM code and applies it to
-the persistent huge zero folio. It is best-effort: arm64 and x86 protect
-the permanent direct-map mapping, while highmem folios and architectures
-without support retain the existing behavior.
+Add a page-based helper consistent with the existing direct-map interfaces.
+Handle TLB invalidation in the architecture implementation; unsupported
+architectures retain their current behavior.
 
-The interface remains page-based to match the existing direct-map helpers.
-The wider address-based conversion discussed in [2] can be handled
-separately. Permission changes and TLB invalidation stay together in the
-architecture code, avoiding a noflush interface that is easy to misuse.
+Protect the folio after initialization. Skip highmem folios, which have no
+permanent direct-map mapping.
 
-Patches 2 and 3 add arm64 and x86 support. The approach follows the
-huge-zero-folio discussion in [3].
+Inspired by Jann Horn's read-only zero page work [1] and follow-up
+discussion [3] with Yang Shi.
 
-Link: https://lore.kernel.org/linux-mm/20260508-ro-zeropage-v1-1-9808abc20b49@google.com/ [1]
-Link: https://lore.kernel.org/linux-mm/0e5b23a6-4895-454a-9dfa-6dc21adc2991@kernel.org/ [2]
-Link: https://lore.kernel.org/linux-mm/CAHbLzkrXXe7r3n3jXgDKtwZhRqj=jDx9E6dLOULohnhBguvi9A@mail.gmail.com/ [3]
+Link: https://lore.kernel.org/r/20260508-ro-zeropage-v1-1-9808abc20b49@google.com [1]
+Link: https://lore.kernel.org/r/0e5b23a6-4895-454a-9dfa-6dc21adc2991@kernel.org [2]
+Link: https://lore.kernel.org/r/CAHbLzkrXXe7r3n3jXgDKtwZhRqj=jDx9E6dLOULohnhBguvi9A@mail.gmail.com [3]
 
-v6 -> v7:
-- Rebase onto the latest mm-unstable and adapt to huge_zero_init()
-  (per David).
-- Switch to a page-based interface and move TLB flushing into the
-  architecture implementations (per Will, Dave and David).
-- https://lore.kernel.org/r/20260730090647.2401252-1-xueyuan.chen21@gmail.com/
+Suggested-by: David Hildenbrand <david@kernel.org>
+Suggested-by: Usama Arif <usama.arif@linux.dev>
+Co-developed-by: Lance Yang <lance.yang@linux.dev>
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
+Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+---
+ include/linux/set_memory.h | 17 +++++++++++++++++
+ mm/huge_memory.c           | 13 ++++++++++---
+ 2 files changed, 27 insertions(+), 3 deletions(-)
 
-v5 -> v6:
-- Patch #01: Skip the direct-map permission change and TLB flush for
-  highmem folios, which have no permanent direct-map mapping.
-- https://lore.kernel.org/all/20260727143426.1077133-1-xueyuan.chen21@gmail.com/
-
-RFC v4 -> v5:
-- Drop the RFC tag.
-- No code changes.
-- https://lore.kernel.org/all/20260718095647.182592-1-xueyuan.chen21@gmail.com/
-
-RFC v3 -> RFC v4:
-- Patch #01: Flush the direct-map range after changing it read-only, since
-  the folio was cleared through writable mappings after SMP initialization
-  (per Usama, thanks!).
-- Patch #01: Keep the flush in the caller to preserve the
-  set_direct_map_ro_noflush() contract and make the flushed range explicit.
-- Patch #01: Clarify the noflush API contract and the reason stale writable
-  translations must be invalidated.
-- https://lore.kernel.org/linux-mm/20260706130440.9295-1-xueyuan.chen21@gmail.com/
-
-RFC v2 -> RFC v3:
-- Patch #01: Replace arch_make_pages_readonly() with
-  set_direct_map_ro_noflush() in the existing set_direct_map* family
-  (per Mike and David, thanks!).
-- Patch #01: Use a direct-map address and number of pages, and document the
-  direct-map-only and no-TLB-flush semantics (per David, thanks!).
-- Patch #02 and #03: Update the arm64 and x86 implementations for
-  set_direct_map_ro_noflush().
-- https://lore.kernel.org/linux-mm/20260609143801.7917-1-xueyuan.chen21@gmail.com/
-
-RFC v1 -> RFC v2:
-- Patch #01: Drop the READONLY_HUGE_ZERO_FOLIO Kconfig option
-  (per Dave, thanks!).
-- Patch #01: Replace the huge-zero-folio-specific hook with a generic
-  page-range hook (per David, thanks!).
-- Patch #02 and #03: Update the arm64 and x86 implementations for the new
-  hook.
-- https://lore.kernel.org/linux-mm/20260527035607.14919-1-xueyuan.chen21@gmail.com/
-
-Xueyuan Chen (3):
-  mm: make persistent huge zero folio read-only
-  arm64/mm: add set_direct_map_ro()
-  x86/mm: add set_direct_map_ro()
-
- arch/arm64/include/asm/set_memory.h |  2 ++
- arch/arm64/mm/pageattr.c            | 12 ++++++++++++
- arch/x86/include/asm/set_memory.h   |  2 ++
- arch/x86/mm/pat/set_memory.c        | 10 ++++++++++
- include/linux/set_memory.h          | 17 +++++++++++++++++
- mm/huge_memory.c                    | 13 ++++++++++---
- 6 files changed, 53 insertions(+), 3 deletions(-)
-
-
-base-commit: 88297631d4d42f6004cb39c0ba3da7d2d10a616f
+diff --git a/include/linux/set_memory.h b/include/linux/set_memory.h
+index 3fe293cfed8c..ed9ce04b18a1 100644
+--- a/include/linux/set_memory.h
++++ b/include/linux/set_memory.h
+@@ -54,6 +54,23 @@ static inline bool can_set_direct_map(void)
+ #endif
+ #endif /* CONFIG_ARCH_HAS_SET_DIRECT_MAP */
+ 
++#ifndef set_direct_map_ro
++/**
++ * set_direct_map_ro - make a direct-map range read-only
++ * @page: first page in the direct-map range
++ * @nr: number of pages in the range
++ *
++ * Make the direct-map range starting at @page read-only and invalidate stale
++ * writable translations before returning.
++ *
++ * Return: 0 on success, or a negative error code on failure.
++ */
++static inline int set_direct_map_ro(struct page *page, unsigned int nr)
++{
++	return 0;
++}
++#endif
++
+ #ifdef CONFIG_X86_64
+ int set_mce_nospec(unsigned long pfn);
+ int clear_mce_nospec(unsigned long pfn);
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 54494c3fa983..742283b36d74 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -42,6 +42,7 @@
+ #include <linux/pgalloc_tag.h>
+ #include <linux/pagewalk.h>
+ #include <linux/cleanup.h>
++#include <linux/set_memory.h>
+ 
+ #include <asm/tlb.h>
+ #include "internal.h"
+@@ -291,10 +292,16 @@ static int __init huge_zero_init(void)
+ 	huge_zero_folio = alloc_huge_zero_folio();
+ 	if (!huge_zero_folio) {
+ 		pr_warn("Allocating persistent huge zero folio failed\n");
+-	} else {
+-		huge_zero_pfn = folio_pfn(huge_zero_folio);
+-		count_vm_event(THP_ZERO_PAGE_ALLOC);
++		return 0;
+ 	}
++
++	huge_zero_pfn = folio_pfn(huge_zero_folio);
++	count_vm_event(THP_ZERO_PAGE_ALLOC);
++
++	/* Highmem folios have no permanent direct-map mapping to protect. */
++	if (!folio_test_highmem(huge_zero_folio))
++		set_direct_map_ro(folio_page(huge_zero_folio, 0), HPAGE_PMD_NR);
++
+ 	return 0;
+ }
+ 
 -- 
 2.47.3
+
 
