@@ -4,144 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADDE6C61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 11:14:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 431EDC624CF
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 11:17:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 896686B0140; Tue,  1 Sep 2026 07:14:00 -0400 (EDT)
+	id 455D66B014B; Tue,  1 Sep 2026 07:17:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81FE56B0142; Tue,  1 Sep 2026 07:14:00 -0400 (EDT)
+	id 40BE66B014C; Tue,  1 Sep 2026 07:17:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C02E6B0143; Tue,  1 Sep 2026 07:14:00 -0400 (EDT)
+	id 2CE366B014D; Tue,  1 Sep 2026 07:17:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B8F66B0140
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:14:00 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C7C2E16035A
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 11:13:59 +0000 (UTC)
-X-FDA: 85164933798.11.C2FADAB
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	by imf09.hostedemail.com (Postfix) with ESMTP id DA518140008
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 11:13:57 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=geZdjMDo;
-	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788261237;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 05CE86B014B
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:17:09 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 85375C03B7
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 11:17:09 +0000 (UTC)
+X-FDA: 85164941778.05.DC7CA33
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 323881C0005
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 11:17:07 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=RdK4W4Ok;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf20.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788261427;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zo2PPYoJf8/8P2lpcn6RCiPhS+p7e95CjAJ1PNJ8eY4=;
-	b=8rscACPm5rt/qq7LWTo/iMiaBferPThicVclc4ptXa4i9mkBbL/cOMP/audCTmuC5tq2Jr
-	bhg/W7aXMLphvNoHp7/OnL02xENwmfH6/gqgodxHE3TfFaO+LjzG+MkWdHbLCt4pz0vEL2
-	NOAWzHsiFSFIpjZpG6xrK9CeqN1JLm4=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788261237;
-	b=3j27upbIgZquqHua6pOjlzQ+V6YViR3dl+6/c1hUaEO8P89zy0SVaLwUH5KU76a/9XBVCj
-	CEPJx2B6Qj1xRPpCQBoqUgwKTOSrvKV01tdZKKihGaa06E84gKW9kyqkF/IZH0iE25+dfq
-	Mb5OOTtfe46MaiitIXkQevuqm+elh+A=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=geZdjMDo;
-	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c207cb16cf5so762660866b.1
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 04:13:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788261236; cv=none;
-        d=google.com; s=arc-20260327;
-        b=aVJHnfSZL9gdwYky8KSu9EAG47y4hAiBrx8LlHnFF62RfVbW7G7bsvs8uxTCqWhDig
-         vEHosKwxIk+GDK23JhR/ciUL8Bv/pasQO7EIHpx9QdHI95c30qB7TeY2xj50QZCqKML3
-         hOaSqK+mzimQmfY2jlG1rMuqKzGit70mo+fj3Ysdn6M7M6dTqPl6aTmCvgZLip+iMnxq
-         Cl4lvKtXJd7X9WbMlOV0ygW0ibEXoKfLwkvsAuQGNk58fMm1QhLZ3LHO/dNgdT9fNi52
-         +2omQgSnTCoWmK2+pjbbh+UkIOPyxLtescGQffK8l+kulD+x3OjAQlCaq6tyP1ZDEw5v
-         +Yeg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Zo2PPYoJf8/8P2lpcn6RCiPhS+p7e95CjAJ1PNJ8eY4=;
-        fh=81Y0rrjAe3LxU/1tyZoOABAVvqIHcl+84cGlS7E5yjw=;
-        b=oX9B7TYPBJiprsKbxhtfUJg/nah6l2SZJ73eaz3vKRHNVjy2OxXRE5JqDEs8TjN5Us
-         UTyv5/Eub70mwidpuv9EREYRTU/NPFWvth5r+ncYn1OBoBE3pSNo4g50EDOkoVHSCF2g
-         LbmXJs3RRNYx2FRcC5a74JLFmWqVpJV9ABfUTkFOtSx3jKtesIJiQsjwa2Sbc8J5RUcb
-         VHUNuiC/eqLMecikBhuSutxh9sZugsXUs7c3yl/p6C0xRCJ/myV3+1NShmzYU/j+4HzI
-         4SbBfbaZz5Rq4TDxR4snS/5NBx2e9hVJqXoGy54EjTyNK8rNDPBoJpOHGTV4jCRD+i0A
-         mgPQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788261236; x=1788866036; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Zo2PPYoJf8/8P2lpcn6RCiPhS+p7e95CjAJ1PNJ8eY4=;
-        b=geZdjMDoXDtIF1eSeIUmPjSs7nP9SXNvrPInEMWFB6+n6FL+YWLE6oPOxjWL7NVjXK
-         PqNTOh3CjQ4GGkIGbbdcrJgUXs2ZsYsvvYjJ12KCxJSxopRpBclnIEAzKww28FWY9uzZ
-         HEXYG5PlZravdfnUmT1BZn2L4Tw5W2A9gssBAcRAfF/R7Nolq/VniGwJMMEectu4tddt
-         otdnbYcYbEttqN9Ap02x5N5RJI1mGhSgZHncYCimX2s1+v3a6cIq6AtSjvdNIsInD6r5
-         KChJsBxhsay0Rn4P8JcJ2+XViJD8mxdpXtXTijGuvhVz6oGfrB23WX8yXN5aPh3FkQqt
-         bXVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788261236; x=1788866036;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Zo2PPYoJf8/8P2lpcn6RCiPhS+p7e95CjAJ1PNJ8eY4=;
-        b=puMMdaiZW+e1padE3ohWTCK1kNz0uBIlCxUJyA3HzXTVEkZFfBudj+0PfYBpMrFlZY
-         tNYI12pMiyIU1zEQLnrcppgSK0T47ex6hw3tzIehAycbMyaizIlC0AAnd2vCZ9CCjs0V
-         5DEZ7ZNPbrxbYZg3jMgEHmgFV0XCBXtiNvsNhlP5QLqU06oBwAKcpkQMKU0EyShCLUl5
-         vu1G0L5Ar9KVp2r2JubaOoHmtXpXL9+g490xl9zXhKPUb0EgjQQiWJOQPRwJ0+3HQ92H
-         vlS/WY2CrEb1N2Gd4LCnBvoCWH9hmvaKlPDZmj+6iTpXwySQzBFjrcL0SBweFkn0Qqul
-         peww==
-X-Gm-Message-State: AFuF++l2UkbtXV8VazfyCS+tD8zOdMTruNDnyeTAIEL0eu269YRN/Ten
-	G1Mxs93luPTWPv0hRDCFX3OqAMxWSbn/ophwfeMS4FZ3l1dzpxdyY/FyAdSQFekUOjauxUfMoMR
-	sksV1M41OYvoPdsvpL6INBguceDYkCTw=
-X-Gm-Gg: AR+sD10Fs081AI7XbOyouBuEiW8s029YsIygxYbVeq+3kR3Fgc5KUnUygU+E5X03TC8
-	A3AZtRv4bBE69Ulu72gf5jyTAHao1QWTTl6U/gCbvJCGjJ2smmoPZfqJiapIidfXfz8UDbUbM++
-	G2nlUhK/xDVnuhTs0pClEqORjH3sO67DtiVJQWJQJrlmysZzAHxZnnDwaddNllr260D7fa4/YXW
-	T8X1TJH1TC/M+fJEzbO0MzOJT6zffWI+WMNVg/Zmr6Z5n9IAr+zdqpAiIDU7V9rp1gsY5Zp3FR+
-	u8VJMUKlt4jk6mnksIJkhiVeUUxmivDRUXrQhQKqwChWZyzsBq/DD1Fzz3tsN7t3STD16FzX37P
-	j
-X-Received: by 2002:a17:907:934a:b0:c21:34a3:4df9 with SMTP id
- a640c23a62f3a-c25b3b0003cmr478506666b.3.1788261236124; Tue, 01 Sep 2026
- 04:13:56 -0700 (PDT)
+	bh=heZuoH5WNq7Ky57sj0mge+ooE7iNQyWbPKcl/3fcmoc=;
+	b=NbyJ6LEGPT2IuJokO2T26ScO5C+8ez76QIPCsfuzLAhK3GCm5EZbIdaquEyLsXH3TLfVvD
+	10BW8OGtuAtqtj8OlZ5/nYyqjRreSEDyMbZMp/0TwgVdE/d+zZMf59b+Rsr8EYcw7uH/l9
+	XTdT6L8/N7X4h4+evl7RSwnG9B8URcs=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788261427;
+	b=CJflFYyu7HV/EFFRoJLjWewXFhAbAU3tbwsI8JbEZGfm8DzyIAn3DBCo88GmGtEF+B+4xR
+	+R86m0d2GhZLIcWBD21BKbtqAjyqX2q3vUeI7eUfdt1uTcBS0EkR5mJDsR+kqziFtlGyMI
+	m7m1tma6w7qOsKgbW+4klhANCSrjCi0=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=RdK4W4Ok;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf20.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 681AVc1X4009568;
+	Tue, 1 Sep 2026 11:17:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=heZuoH5WNq7Ky57sj0mge+ooE7iNQy
+	WbPKcl/3fcmoc=; b=RdK4W4OkRDy82b847YJzW5eKGwrIooerZHxla8TPKiMgy6
+	T65VI4rotYSpYzGjfaq2fZbIXGlIi/94ihocaL2Uxc/o8lzqICtGVTC9nr06dNOh
+	z0162RN1D8bqf7hAJwNuvEInqBrW/wOPib/NA1tN/DNzdtW0W4Bsw2ReXRvUl5Y8
+	M6o/jd+D/M9x9iAAKoYKirtJd43rKpq5RLM0nYmlDSFpiduAOE93o55G9BI3R67r
+	ix+3nQP+QEtSnI+JWn2BS6mRQN9j1NZNyeA61UpETNSso8FAJBom1ox7mdbP6lji
+	7P8JtT8uPmieo6TNAvgCHw/w/Jp2xayHuGCkksVQ==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbnudq8jk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 01 Sep 2026 11:17:04 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 681BBHjQ017948;
+	Tue, 1 Sep 2026 11:17:04 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gccey34ew-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 01 Sep 2026 11:17:03 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 681BH0hh29884816
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 1 Sep 2026 11:17:00 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2EF2A20040;
+	Tue,  1 Sep 2026 11:17:00 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B3AEF20043;
+	Tue,  1 Sep 2026 11:16:59 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.87.153.37])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue,  1 Sep 2026 11:16:59 +0000 (GMT)
+Date: Tue, 1 Sep 2026 13:16:58 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Heiko Carstens <hca@linux.ibm.com>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>, linux-s390@vger.kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        kasan-dev@googlegroups.com
+Subject: Re: [PATCH v7 2/4] s390/mm: Batch PTE updates in lazy MMU mode
+Message-ID: <75462b8e-b190-4870-8fd6-22d1e4d89139-agordeev@linux.ibm.com>
+References: <cover.1786956464.git.agordeev@linux.ibm.com>
+ <d7fd78377a7278108ef501cf76571e80caef5968.1786956464.git.agordeev@linux.ibm.com>
+ <20260824104048.11040Cdc-hca@linux.ibm.com>
+ <73a0a916-b39f-4ebe-bffe-448928b13bef-agordeev@linux.ibm.com>
+ <20260826130257.21444B1a-hca@linux.ibm.com>
+ <87a3147f-e993-4629-b0dd-a54aefbf20b1-agordeev@linux.ibm.com>
+ <20260827081156.3869103Abc-hca@linux.ibm.com>
+ <b0d59b27-8d15-499a-aced-e5b247ed40c1-agordeev@linux.ibm.com>
 MIME-Version: 1.0
-References: <20260831-mglru-flags-cleanup-v4-0-2d15dde0d7ee@tencent.com>
- <20260831-mglru-flags-cleanup-v4-6-2d15dde0d7ee@tencent.com> <CAGsJ_4y7MrUeHn4NvtpyyZ3EY-6dTUD4vhitw6Sy6tfRq6Tf9A@mail.gmail.com>
-In-Reply-To: <CAGsJ_4y7MrUeHn4NvtpyyZ3EY-6dTUD4vhitw6Sy6tfRq6Tf9A@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Tue, 1 Sep 2026 19:13:19 +0800
-X-Gm-Features: AcwNN1X-j4abCvg1T2GB3Ar-5P2Ua0p1HBjUPKbFFW5g6FNochd-6przwbyCyV4
-Message-ID: <CAMgjq7CiewVYOsBoXMjg+tgbUMsXgYoTe1gJiEoADQdusffeng@mail.gmail.com>
-Subject: Re: [PATCH v4 6/6] mm/mglru: fix potential generation folio number leak
-To: Barry Song <baohua@kernel.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Ridong Chen <ridong.chen@linux.dev>, Lian Wang <lianux.mm@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: u34agzcnmnsg3k9i37o1aypx5aedgizt
-X-Rspamd-Queue-Id: DA518140008
-X-Rspamd-Server: rspam02
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b0d59b27-8d15-499a-aced-e5b247ed40c1-agordeev@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: hs7d3-6MQjDp_eiwbGAR4xcNOQ5WnlGb
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAxMDA5OCBTYWx0ZWRfX88u47uMfQfrZ
+ LP6rGMlUTZdkv6bl6RQXjd1K61ljd+zk4UqKb/icLllUzxE6MGIubLsiqS9WDqfBiaeaGTipJ+d
+ K0XyJCx6BgVABWJQ3mPcggCnDK0paaz2oXJUGIC+0ty2uDLHZp8/FsR7h2OYeqewdFaB2Vm1M+Z
+ AWIF1k4WtZKqd9homuU0YB5T0S0UYMEuokdyINW3kDwp+SY0pcr2oF82RE1+hpItE1Mf+lQIO16
+ 0WqBvCwcmQHCnUBd8sX8Psov85nv+JOfJS4lemeisMRYhr9oiZmD+QvHz6EsVQ3Fu2kUp/vZruZ
+ YQjZQH1nJIqtlCghZ47M+EUUlfCOF+u57RSWsOV4AlXK1GJSJ1oFWVsVsjlKE1n6sU7m9tUes0w
+ fZv2rmQ27QiNXV3T2S5ejsd0JSkitFFRWXxjL76NOmY9JBGHA11B/J32KEFZ+0JAQqtlb5g0mNw
+ wEHe+DvuqhefedqyVgQ==
+X-Proofpoint-ORIG-GUID: n5-Zt-cctCU9bxLguMqemFjkB2ILLHhd
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAxMDA5OCBTYWx0ZWRfX5FuK/NZHr8/C
+ Bz0H9ybnmkvV5su8dM9YoQdjUwGUh7Fm5nBTpc5Ql9aD3/HDq8NetwX+9q/d8t74vjijdlgWucn
+ EHTkZxrGYwxeFtf1ImCXcd56+C4EazI=
+X-Authority-Analysis: v=2.4 cv=B92JFutM c=1 sm=1 tr=0 ts=6a96b431 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=pcEAdAQOjQnE0BrEI2IA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-01_03,2026-08-31_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 spamscore=0 clxscore=1015 suspectscore=0 phishscore=0
+ lowpriorityscore=0 bulkscore=0 priorityscore=1501 impostorscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2609010098
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 323881C0005
+X-Stat-Signature: cwszhiei73umhwkmipik4dkyqi74omoe
 X-Rspam-User: 
-X-HE-Tag: 1788261237-586646
-X-HE-Meta: U2FsdGVkX1+YsFRVuheX7s3P7V1YUutjjRD8sHCd866t3sDacLYqZprfQm29DgIFsfRq9oNZsx25VjKsdBp4E+5shYPQfI6mmzgeBxxoYytxQsi7Ob89c0fqa2fEqRxOCRz31aPpTDM4WcfA3kWLESjeFqXVJX1jSSJK9ZWKutinzhzaJkJlkYwtmyboFUd2Z6Dy16hEWVBY6wz99iTqKsARUuwD1myPGdnMV+zwK+Pi5BXgIDlB70ck9ep9v6Fl7soEEhhdMQZqLUhof5CLYZ8whEGkkxZGmuKpk+NKUlbQA1ofCwSLhAFFIw/jTDq2uFJ5CXBDvT6gG8nz465OuFFTjot3T4n0ud9SAoTT6rd8OsvVOe/awupAZjFShfxdJB8WGpLqD+D36rUE/Dj0t/5grpjq4L8v7rIYGoq4HmV8Pu9dQXvziQAJwqX5f/TN59PuLlpkZBzRFxZGnb9Sk873DpdhNEWhV++5qVMIvko1POvGaPLEL+vTZrs73iMViA005WHXW33KzF9+h3bar1+H8ULugJynksdJxxxyCvmyU+ISxha2hrLHnyN9mehnUKi6P+6yXJfQAaXmoF7moKibcTZMbbB4I0ITq/wHPtOgrQfOViDTt+EX3g0su+0Zx/cG9y05Rn7CSdagRBV2Zmz7vfSOwQQkXrE305ooutKOUQWZAYUMaiStyS+jMblnrh0Zo19dXQ6wRV8z1IwS++8Ef+ESrSXPwSH6aERIf3gwib4Z7KZrpvkXYQybgJ3DqDPkdozRWA+poMjHnNgw1abGl2tHDjz9VvHqm08xQG96KmLtED2Nuvlzy4Ny741o2tdIOq4vQs+r7UwbKe5EfLNmJExMfg6tX9YAExLYCB/QK1WYDtveH1UEgz5V/TGUpqT7Vl/6M2Aa4DH8XTIgDoaU5GiFMuj2lwX1Bp9Jmb3F+uzRaSFfn/0VJDDYZ1rZ9TsqA8u3dvn+f9n8D5p
- TPqM8/oS
- XL8/w6TDs2sbx9ZETsA3AEtVjrZjayzbGo9lTcaqfemgD3l/yzKMlRG6FZSOcg5Qub9grok+kKgzKm5GLsJpyjSqk7EZ3DSGOW0xPxmXawMfKwD/ryypeVv71Yqwy9qEgA+eJIThqvhTXoRBQWdPS4DI0ML3FHPYRp9pcBPVcgJoJrSm0LcX0KDhCFxkrXH+1JW3+x9yVAZW3bEe/Voqbs+wjiKdYiHh3lgwSW5BIue5s9lYj7cm+Ufl/Lnis78ISaZ4HeIfOBVLvGb/Euvik1yWEPb03KxkaPIkkVmyZgIn551shFRo5UdjiZh0kZetHUh4YNN7C/f6mDuqXGyxer0GztgRa3lZZ0lfng/j91AXDuExNidqv/R2IrGEERY0Z/Sf8SziAylLpHgeO64jkQAriszPly3AM5kUc3PPixollePtXnwFp427mRWuKnT6c0u5CNMSb18Bi4EnDqA39IuDnro/aaCpPopze2cUhyt75QtzIzRMqrRzB0rJyoAbaBCufREhQH2bYMQ9Y0ul7hF1AXw==
+X-HE-Tag: 1788261427-729121
+X-HE-Meta: U2FsdGVkX19CyVYmnQ8lfPSn9ffOQp7h/5FujgW8l6GV3h1vIr7etJDKQ03NrT16gUaJbUeGnSc73aKKmnyGOlswD5nlfdZY1939WH1SFOJBk7psC1Il9VW6ihIf39v8FE/3BY+xtV6Xv0cbb10dR2etosvWAiYp/itKFQiXiQr/kpZO1RK1V7wZGOj49432FT/i6/bncvrypcgcLkLvOCp2RSQfH4rhvqAXv3oJE2TeyLGZmD7qHIMuYjGaBWsb4zVFQbbMCRvRDO6IjJ70xND/SAf4kf9biVDSOUSB/BofpuhPpYIbXGAZ6NlTXwodAUj6kPFSd1QI9MDru426HQmHnzoi9iuf44RFxWU1nZFSFYvYh8962RGvBe5757VaKOTqhrbbMd+d5JYI5pWlmD+7/PAcwz98q7czER+LoQNQa2FsCX+oyAo54Bi5NVpKAY5WIdz4QWUdSus9kQx/lrOnuRAdM/seMkAMNVn/ts5o6qkLfPpR4eHhVy5FV3cnwWIvEV2K3RtcpM6n4ylh0mnbBPSkU3k5jWQIEOpKAEMpux+Lpw6sAHBOfXVh6KW7uCqJqJnOFwMim6c4Q9c7PBPMFxVShKElvT9P09iQlvt7iwd23yeImNjX6XrK2irgHYhC6mvqrRImv2YXCadtYYX/PjD5ahR8oszAxkOANGZYUClDmRxn5VP3PkyeAyBCkg29yeFudnVz3EOGlFR9r/7sLVAlOS8ZDkGAEihCWgUVqMoWYtkz3jKWqOtR4HEDQvU02wxJpefbF9WBvBF6dZgwsLByo9749eYjjuqcaY080RimAGgo0Sx00S81EjKGZFi/HskrOA2688jE81vYXA6P0lhdx/v8f6oMy+1VSdWnM7/C+sIFJfFzOfrRitR3U6gfLuoHSH+I/eL4tEoVSFstENYrlKRv1ts8S+BIXYaX2Vgi5cfugR6IMkg5q305MFPzQcoiOMhvNx2B+Rz
+ XfS5Y1pD
+ WqLJcXNlp64LPbfzRc1YrujSlXvoEieoLl7N62PP+pxgFPcw0OhN2mXuxgjyS4RNpEPEIAVGhcEgHMsRwcItyGSwZs3NswXmrOeN2ZQLgphn3uCYVyIYmg/YnXjgQVNWAr+296Xhpz7CkBfQyRCn81GC62pb1ArwkvkfbQazRNWZYbXgZ1MDNEg9e5qj3AZkJ+T+jdDn8HMHcPyUeyEEv4hL7UJm5HbBrSBhwhsgb1M372TNgDCp38PKFwh9DQHRHqkEAq8nPfx5HJyl+nzgB6o8SsDoCG+Jznw9LK8rphFS/wsc0HRe8TipDxtpxMXk98nNyk5KklbpaLBNo5j69TXQ3rWHE0quq+C+3niGu6KUdVG8WlSuFd7D5qAxocnljIiQ9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,144 +152,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 1, 2026 at 6:56=E2=80=AFPM Barry Song <baohua@kernel.org> wrote=
-:
->
-> On Mon, Aug 31, 2026 at 2:43=E2=80=AFAM Kairui Song via B4 Relay
-> <devnull+kasong.tencent.com@kernel.org> wrote:
-> >
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> > Each generation of MGLRU accounts anon and file folio numbers
-> > separately, and the page table walker updates each generation's
-> > counters in batch once the walk is done. The walker promotes a
-> > folio's generation with a cmpxchg on folio->flags, and
-> > update_batch_size() then reads the live flags again to pick the
-> > anon/file column to charge. The walk holds neither the lruvec lock nor
-> > the folio lock, so the type can flip between the cmpxchg and that
-> > read: the lazyfree path clears PG_swapbacked, and reclaim sets it back
-> > on a dirty lazyfree folio. The batched delta pair is then recorded in
-> > the wrong type column. Nothing reconciles it afterwards, permanently
-> > skewing lrugen->nr_pages and the reclaim budgets derived from it.
-> >
-> > Fix it by capturing the type from the flags snapshot the cmpxchg
-> > linearized against: folio_update_gen() returns the type of the state
-> > it transitioned from, and update_batch_size() accounts with that.
-> >
-> > A folio's type only changes while it is off the LRU list, inside a
-> > del/add pair under the lruvec lock, with the gen bits cleared in
-> > between. The generation and PG_swapbacked sit in the same
-> > folio->flags word, so the cmpxchg snapshot captures them together.
-> > Let G be the generation that snapshot captured (old_gen) and G' the
-> > one it wrote (new_gen); the CAS can land in only three places:
-> >
-> >   - before the del: the folio is anon at G; the batch records anon
-> >     G -> G', and the del later removes the folio from the anon
-> >     counters;
-> >   - between del and add: gen =3D=3D -1, so folio_update_gen() returns -=
-1
-> >     without touching the flags and no batch is recorded; the del/add
-> >     pair accounts for the move alone;
-> >   - after the add: the folio is file at the fresh generation the add
-> >     charged; the batch records file, that gen -> G', matching that
-> >     charge.
-> >
-> > Unlike the drift of lazy promotions, which sort_folio() repairs under
-> > the lruvec lock, the phantom deltas from before this fix land in a
-> > column the folio never occupies again, so nothing ever repairs them.
-> >
-> > Fixes: 018ee47f1489 ("mm: multi-gen LRU: exploit locality in rmap")
-> > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > ---
-> >  include/linux/mm_inline.h |  7 ++++++-
-> >  mm/vmscan.c               | 13 +++++++------
-> >  2 files changed, 13 insertions(+), 7 deletions(-)
-> >
+On Thu, Aug 27, 2026 at 01:40:01PM +0200, Alexander Gordeev wrote:
+> On Thu, Aug 27, 2026 at 10:11:56AM +0200, Heiko Carstens wrote:
+> > On Wed, Aug 26, 2026 at 04:34:25PM +0200, Alexander Gordeev wrote:
+> > > On Wed, Aug 26, 2026 at 03:02:57PM +0200, Heiko Carstens wrote:
+> > > > Would be nice if we could avoid the not so obvious local_bh_disable()
+> > > > and local_bh_enable() pairs.
+> > > 
+> > > Calling ptep_get() from BH context was certainly unexpected, but the way
+> > > local_bh_enable|disable() pairs are used is actually straightforward.
+> > > This is a slow path anyway, so I would think the simplicity prevails in
+> > > this case.
+> > > 
+> > > But again, I will try to avoid that.
+> > 
+> > I do agree that ptep_get() being called from BH context is not what I
+> > would have expected too. But then again, nothing prevents people from
+> > doing that from irq context too, no matter if that is sane or not.
+> 
+> I am currently looking if any interrupt handler does such a crazy thing.
+> If not, I hope it would be possible to nail this requirement with the
+> maintainers and e.g. add VM_BUG_ON(in_hardirq()) to ptep_get()/set_pte()
+> implementations.
 
-Thanks for the review!
+I did not manage to find any code path that does something like this.
 
-> > diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-> > index 047295ae6e8a..7e487c23aff7 100644
-> > --- a/include/linux/mm_inline.h
-> > +++ b/include/linux/mm_inline.h
-> > @@ -10,6 +10,11 @@
-> >  #include <linux/userfaultfd_k.h>
-> >  #include <linux/leafops.h>
-> >
-> > +static inline int folio_flags_is_file_lru(const unsigned long *flags)
-> > +{
-> > +       return !test_bit(PG_swapbacked, flags);
-> > +}
-> > +
-> >  /**
-> >   * folio_is_file_lru - Should the folio be on a file LRU or anon LRU?
-> >   * @folio: The folio to test.
-> > @@ -27,7 +32,7 @@
-> >   */
-> >  static inline int folio_is_file_lru(const struct folio *folio)
-> >  {
-> > -       return !folio_test_swapbacked(folio);
-> > +       return folio_flags_is_file_lru(const_folio_flags(folio, 0));
-> >  }
->
-> I guess we don't need to change this function? It seems more natural to
-> me to keep using `!folio_test_swapbacked(folio)` here.
->
-> In `folio_update_gen()`, you already use
-> `*is_file =3D folio_flags_is_file_lru(&old_flags)` to get the type from
-> `old_flags`. I guess that's all we need?
+But few archs call ptep_get_lockless() from the hardirq perf handler,
+bypassing the per-cpu cache on s390 and (as I read it) violating their
+hardware lazy mmu mode. If this is an issue, then it is pre-existing.
 
-Yeah, that's all we need, I was thinking that using
-folio_flags_is_file_lru here can avoid any further change to
-PG_swapbacked causing inconsistency of folio_is_file_lru and
-folio_flags_is_file_lru, seems a bit easier to maintain.
+> But even with BHs we have an interesting situation: calling ptep_get()
+> from a BH while in the lazy MMU mode is actually a read hazard. IOW what
+> I hit looks to me as a bug in generic code, and one that looks very
+> difficult to fix. So staying with local_bh_enable|disable() would be
+> still a good tradeoff.
+> 
+> > Imho the "final" version should either be implemented that it can go
+> > without disabling bottom halves, or, if that is not worth the effort,
+> > even disable interrupts, just to avoid other surprises.
+> 
+> Yes, that would be the last resort.
 
->
-> >
-> >  static __always_inline void __update_lru_size(struct lruvec *lruvec,
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index 724b6e034e69..87e667c410ed 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -3269,7 +3269,8 @@ static bool positive_ctrl_err(struct ctrl_pos *sp=
-, struct ctrl_pos *pv)
-> >   *********************************************************************=
-*********/
-> >
-> >  /* promote pages accessed through page tables */
-> > -static int folio_update_gen(struct folio *folio, int new_gen, const vm=
-a_flags_t *vma_flags)
-> > +static int folio_update_gen(struct folio *folio, int new_gen, int *is_=
-file,
->
-> Rather than is_file, I feel was_file would be more accurate here,
-> since it doesn't represent what the folio is now.
+So leaving local_bh_enable|disable() while adding VM_BUG_ON(in_hardirq())
+could actually work.
 
-I'm fine either way, is_file seems more natual to me. Or maybe simply
-rename it as "type"? Just the below:
-
-> > @@ -3532,9 +3533,9 @@ static void walk_update_folio(struct lru_gen_mm_w=
-alk *walk, struct vm_area_struc
-> >                 folio_mark_dirty(folio);
-> >
-> >         if (walk) {
-> > -               old_gen =3D folio_update_gen(folio, new_gen, &vma->flag=
-s);
-> > +               old_gen =3D folio_update_gen(folio, new_gen, &file, &vm=
-a->flags);
-> >                 if (old_gen >=3D 0 && old_gen !=3D new_gen)
-> > -                       update_batch_size(walk, folio, old_gen, new_gen=
-);
-> > +                       update_batch_size(walk, folio, old_gen, new_gen=
-, file);
->
-> This is one more place where we rely on `LRU_GEN_ANON =3D 0` and
-> `LRU_GEN_FILE =3D 1`.
->
-> We do this kind of thing quite often in MGLRU, such as `type =3D !type`.
-> It relies on the numeric values of the type constants, which is sort of
-> a semantic abuse, but it's hard to find a shorter way to express it.
-
-We also ahve WORKINGSET_ANON, WORKINGSET_FILE, ANON_AND_FILE. I can
-rename the newly added parameter to "type" here if that looks better.
+Also, I do not see how the code could be rearranged to avoid BH disable.
 
