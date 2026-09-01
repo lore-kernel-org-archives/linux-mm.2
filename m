@@ -4,139 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 222EEC61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 10:44:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C225EC624CF
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 10:56:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04F0B6B0121; Tue,  1 Sep 2026 06:44:42 -0400 (EDT)
+	id 9B1816B011B; Tue,  1 Sep 2026 06:56:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 025936B0122; Tue,  1 Sep 2026 06:44:41 -0400 (EDT)
+	id 961B06B011D; Tue,  1 Sep 2026 06:56:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7F816B0123; Tue,  1 Sep 2026 06:44:41 -0400 (EDT)
+	id 8500A6B011E; Tue,  1 Sep 2026 06:56:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C887B6B0121
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:44:41 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 51E67160359
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:44:41 +0000 (UTC)
-X-FDA: 85164859962.03.DCE9B17
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 7F0AE20003
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:44:39 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jdE7AWvi;
-	spf=pass (imf31.hostedemail.com: domain of imv4bel@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=imv4bel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 545986B011B
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:56:36 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9DA92803A9
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:56:35 +0000 (UTC)
+X-FDA: 85164889950.06.D3F11CA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id A30DE40002
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:56:33 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MjCLmWal;
+	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788259479;
-	b=sNI9m6VW4PR+IBHLkuWYFmFNOU+m46ESKR0jd/VHxlembn/j4JM+sPhSX730xP5TFTLTN6
-	w8tR+1XAYJUpNvk7GreeJdv9RVEh/rJUaVPwM0Q7RotyRVrWIKksT81n30VFf86oWzIL4W
-	dUKvQSnAfZXidIPALUxh3puwUD8OEVk=
+	t=1788260193;
+	b=PNcCkyqiZUnXVooykny1nLYQv/z2X6l46tqOYq7TFnNWwfc/fxzgez6cl2vuUDbKUy4Npt
+	uyhdPovxi7I447wITzL5ByDMorrptKswIKON1O+nap68/WCOJw9yycddCntVb6ia7G5Xjt
+	3XnItnvrTiXyY20VcVRY7iK/gk9hqLY=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jdE7AWvi;
-	spf=pass (imf31.hostedemail.com: domain of imv4bel@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=imv4bel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MjCLmWal;
+	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788259479;
+	s=arc-20220608; t=1788260193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jZloK1QMVfYTr7lw3fYmKao90elb4bik95MvHlyNxNk=;
-	b=FYJ5zsCuFg/Nl2ZGbNsQS7imY7leFJKsimVkPUNNCq+b6aGN/McS9nrxCCX2uIkmiaregN
-	VJd6wZ/SsjlDuLqpafUMmrssg13Chvw1K9JKy6RzgUFBdZ+UWpfk2JpMmcSX2O/YGWhIur
-	0xcUglerJ1UfSQwx37wz6541xVnr1gY=
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-39266382df6so3909406a91.3
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 03:44:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788259478; x=1788864278; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jZloK1QMVfYTr7lw3fYmKao90elb4bik95MvHlyNxNk=;
-        b=jdE7AWviwogowk+ATs2rF2CrsiuTEKHhEui9NCWceGliC0x/BwSHBYAKNejDFDUb7A
-         BxmvAKHFjNR3ZJkhALujwzfbhpFLIp59vM3lWOesf3tt0LuEv886jmcNezmRnMfKMja2
-         ZBGOuXAcMHT1yvX2z96W/3wy92Px/L3avP2lLY396TwxtJLpMfMBV31ExxAXiFwM/MNz
-         vuRZTjCEl9Fp417caaxVl9pis3AbhVeX12bYYkHtHJuE3QgS+wAzvdJWCNDIERkGmbXq
-         7Ouz5Jp9gp8ldPQpnAWk9SztovMoazH+d4cFN8MNMgOrUmf91WOiRuAbMHFfUC1ZfR/7
-         fUuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788259478; x=1788864278;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=jZloK1QMVfYTr7lw3fYmKao90elb4bik95MvHlyNxNk=;
-        b=jOPS9DgCGC5mZf6n/QSX4tOTLfUXvAfGmqYrjuSi092IIdqAqPMBLSuIzasdnEp6U6
-         I62TNlwohYPuP01IODHwtoenv9lPSJuouDzZUmdj0/4sBQfGP7CJNVZUvDNjbepLgpvg
-         NJ6lDd19EwTr5DHfSz41lpaycfRKdj/5tFF0J9w+67lwzIW+29JMZxIQIjll2RcywYXo
-         /eY4jZsJUcdk9TqVxQ28rbI9cfGVPxxWcclLzinasp7NmwNdSfjnOdtwOEph8kelaWXy
-         6fjJZ5cyeAzTxIFEWGZ59fNw0pa2Pavv/OQIqrRGJULm0GLnOywfOW4TIXQEodeQDFju
-         ++ag==
-X-Forwarded-Encrypted: i=1; AKwUvBxPj77FvxIUIfIpmJpk9rlABzgNESnf6E7mI4HaY203LveI9Jrl8VLHiebbQ+xYnx9gTa/3Cu6qzw==@kvack.org
-X-Gm-Message-State: AFuF++lDoPbuho/2ehV4Fx5pD8UV8xPYpAFOpS79mbpZfdrsoYjfk5Rh
-	TV404389WQyojTPzHcvWx5WKnWfBDl5HjB7QZyhZBQ3ZJIT7TlasJ7Nf
-X-Gm-Gg: AYBFou0wliR7XkvL+rYRVWS0qDSUtcxWtj4/9S/chjCEOvFmljzXqg3aDWtX3HJhEUe
-	NOgpSNZyljuqV0MUqIhSjpfpMSfKD83/VEsWlDyz29lEIDJ6wZe3tc/q2ZE10pWqmBtXV4nTAIq
-	KqICQY8BKDmgviJPBMkn/68qNK6DukYGhtqd0Q9cZutvxvbhunCx635oHt9g4bgS04xNuYy283L
-	OyodP7c91X6TmuDVdemjpPrpSTLB2baExYT3211HT98lsQluxbbt6VZSr72WKqBZ0ZppdrpQp7v
-	Dqw7ID+nMU9ulGGRatG+vpD8DWOLnEYscgn/LJXs09c7HC0M14N8ic+BoD5B2RXFOlEPeEFw6vw
-	0GgKoCUxb0JMLbeeJu5WsI2nKCG8soUEGNmO2BZaKIpgB6hcM7NMxRF2GZGqcJUWkcSP8td8raK
-	fd2XHiCPBohsqIj6r5mRnJsV+KEySmLgIbYzXACx6j5jBIaN8CcS3Ad7zxqIqWcmARM3/auscHL
-	5C7Owxp912MUIfpXBo=
-X-Received: by 2002:a17:90b:3ec5:b0:398:e6b6:acc1 with SMTP id 98e67ed59e1d1-39907d6563cmr10056321a91.15.1788259478120;
-        Tue, 01 Sep 2026 03:44:38 -0700 (PDT)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3990d471e75sm5591120a91.8.2026.09.01.03.44.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 03:44:37 -0700 (PDT)
-Date: Tue, 1 Sep 2026 19:44:31 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: Tim Chen <tim.c.chen@linux.intel.com>
-Cc: "Chen, Yu C" <yu.c.chen@intel.com>, Kees Cook <kees@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Qais Yousef <qyousef@layalina.io>,
-	Aaron Lu <ziqianlu@bytedance.com>,
-	Srikar Dronamraju <srikar@linux.ibm.com>,
-	Vineeth Remanan Pillai <vineethr@linux.ibm.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"chen.yu@linux.dev" <chen.yu@linux.dev>, imv4bel@gmail.com
-Subject: Re: [PATCH] sched/cache: Fix use-after-free of the mm replaced by
- exec
-Message-ID: <apasjygjnsg1n6em@v4bel>
-References: <apPb-Dr4nPYuHQOK@v4bel>
- <825d9dcc-b052-4367-a9c7-15efc4b354f8@intel.com>
- <apXV6t-7drLDf-lL@v4bel>
- <a1a0bc24108e68656041dc17824d6b88b4120058.camel@linux.intel.com>
- <apX1ufR1reYZ9LBc@v4bel>
- <db2436d91e2e04a8a1063553ce64acc74b533f5c.camel@linux.intel.com>
+	bh=IrG48nudf8Db8eH9Q2rYlGxrD+mM6V+4qGZaDfjF11Y=;
+	b=XYPOvwPhDWH+KXf6xOGz6rJsxd4h+13y7Xtf3HRbmaKQvW+WB0P2bC8kFIbV+dI/Ej8sCV
+	D5mrWKUa8DEYdRevFsvT8QjjeHvI9OetlQi/aFb4MBk+z81nj9ki+iJpuWeTYS1oEhaPlU
+	1XdYBGEvojzG6wBFm2xY92KNgoLVONQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 762BC42A4F
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:56:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8F991F01558
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:56:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788260191;
+	bh=IrG48nudf8Db8eH9Q2rYlGxrD+mM6V+4qGZaDfjF11Y=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=MjCLmWalYXlLWJxWXjbT6tB96cG5bH+PfZ0C2w/5CrWMRAV6oJbWAPkTXlMvGyQ7z
+	 XDBMtzAIES0WhC8xRLIuLXN105B2KDNFGHy5ZJ4gmcMf5P+D3tq7fwHCM/WEvV4w/M
+	 VaX6hHXwrrBuoXSpzzHNH77U4SbN8Id889Xet+lcoiaNplbrBnv8bIzdhh4+pvIUbL
+	 hODxPbU3bKzdlb8r368n8BaKY0PdboqyNadv1BnWDJQqQdpR8F5UWUREjqJUaz3+rK
+	 X4RGGbmJT7vDxz6+vDXhFv+vAI9UNTfLPiHFkc4wHd9bFE30ioGt4A94O3SKMxWKLl
+	 E9e6RRbQ9Nxqg==
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-9391252b5caso274800785a.3
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 03:56:31 -0700 (PDT)
+X-Gm-Message-State: AFuF++nKvdiD+m+0wLomO3SuMIbBWdzaRVER7Mf2C8Dt5/JeDy5eu8IY
+	TSNyZPnGfCIo4G8JmCaH5EeNHjIuOm+cniA3JEMXn1q1wKQ5uTP309ObGuZ3k9ng0fAI5A7Pzzi
+	r+5NYamHpsM14NmAPV49EmKJ/krDK7nY=
+X-Received: by 2002:a05:620a:a409:20b0:936:9f47:e908 with SMTP id
+ af79cd13be357-9394805aa9fmr798556785a.19.1788260191171; Tue, 01 Sep 2026
+ 03:56:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <db2436d91e2e04a8a1063553ce64acc74b533f5c.camel@linux.intel.com>
+References: <20260831-mglru-flags-cleanup-v4-0-2d15dde0d7ee@tencent.com> <20260831-mglru-flags-cleanup-v4-6-2d15dde0d7ee@tencent.com>
+In-Reply-To: <20260831-mglru-flags-cleanup-v4-6-2d15dde0d7ee@tencent.com>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 1 Sep 2026 18:56:19 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4y7MrUeHn4NvtpyyZ3EY-6dTUD4vhitw6Sy6tfRq6Tf9A@mail.gmail.com>
+X-Gm-Features: AcwNN1XnJ-vUwtXvUynuDK4bSBGCxwvSia1E-LheZ-OirsmZyvEnKkM9ehQEeH8
+Message-ID: <CAGsJ_4y7MrUeHn4NvtpyyZ3EY-6dTUD4vhitw6Sy6tfRq6Tf9A@mail.gmail.com>
+Subject: Re: [PATCH v4 6/6] mm/mglru: fix potential generation folio number leak
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Ridong Chen <ridong.chen@linux.dev>, Lian Wang <lianux.mm@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Kairui Song <ryncsn@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: n4kf8945dd6qf7b7ipje1prc6w6im3p1
-X-Rspamd-Queue-Id: 7F0AE20003
+X-Stat-Signature: eitspaztamc8gj59q7og7cgt7ytkfu73
+X-Rspamd-Queue-Id: A30DE40002
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1788259479-381488
-X-HE-Meta: U2FsdGVkX1/V3tzXNJJdjJG7tGW4sYcWeOe3ZTP8qu6TZH3MWApOf6czsAY76ILfVgzT2KjMTSlTdqXbjgjM/ObL8G4VLJ9zkuVvhXeUxO2ei+S0vp2K5PqiB3o1xCoJeboRVK8gNSN9aEW+JfNJr/BSyu9HbW12Gg0QrxbR5Lr8brYfQFjhkWz3aQ5DZYN892QSdULzx1RVS/tAWEEEpa6Y7ffuhiQxj/6QmX5zbtrkEyh8T4RPF3w+NwuQPKWR6l1LFVhHskc6ayLn4X+RR38Eq2vfzjSQ0Ehue7JEe+3w6CfkBtXoDa5naioiel0M4jt3cChKJ/XLoAUKTcErtRAcM9CoaSq+T71quYz7bvm/SypKZz4h9x0qcLU1d1u1vRULtgUHoEzimosbf5lIB/Q1PJfmeG3HJVX8gGrp99AK/IUOvI1j22O9REiDt19EvFb4Kowr9jy+SEc1btPdMaIZl2SC+DDY6NLywIA0Z9cDprYipmmgzEqVTAgS1dIAUFneJU5ImBQAGf5fAZR93T9pQLMu+vtnAdLyVvqYhhWpMGdyVyEarJuQIy+f+KlApJpd0XCIrdypHBdN/BrcWmuLy85uQhBcCr92G80pUl/DKLVArEDjT/6JAfhMdzn+/gZu2f1nr08n1oRMWy5B4G3Eatdvaktl6Sn6iHDYsTVmJeElwrgISS8utV+2fN5Li6dvt6Mm0f+xjU6b1sv9cmDDnCeUp4x4D/iB9GEZKUCef2WVH/KEAZJBVr54m6y3M7OuAdP6K/QGeys9yDOR+7bSWVoJtSXWHTPkfOrSXcAbVQKqEk8qcHmHuLZZEKJKyz17AIzEqKKB8oCQrtyStd2ixt8WQZko/oB/Npy6Z2lt2IRTGjbIFUFCiqJc3xZ8QNIUVZ7kzNxGgCk86txGBlUbGsqz9xE9Uzs69fPgGbdHQRxjuwJPmSwIzyC84009tcROkwufGQDyA8u1w+o
- BWsPmS6x
- WAlP0RG2SAyb7tkSkNAbWgCrq+cRnlJpWorMM7CgSf1O03rhqCzHPOLg6/hFDsMLQTcMFfKBNGlR2/fxEWckCZj+p/aH/cNpenZK1tSB4+ND0J7t4JnxcgywF1IUtIIyr1D78V6KBWzByqABHhndFO3u8O4QBIp+GqUwA5Tnpb/MYykfuVrbwVDUim6/gg3jsfKVAvUC3qxOpx8H7cUbfaeS0KS9EVfFOJ2e77aeyXV6bywPAPtYjERgVmqIeZ0EdDjaccQj85cOG2783JdOJ5Hq/k6dO/XhlDlmRo4CAC7ZCEZ3IoqIAVhRMydU3uzhcZIkIRYtvTzOgZjMu5+wgGZidjdJ5LUz7lGlN5HfFAzizfaz2iZx2QPbT1XgEqHIVZ0Ik7MopfRV+U5VNQhIvmhVwoWXkflN9oq2oX/Zv2UrBFVaATOQ073CJgkQPSHgodsFMoXuySknltV+03TGE1iAITK0dT29Ks6B+rLHrYc7NpSS4bgWjPr/JJQOI7qz9D6svjc6ctv0MV5i2LARJdZQTu1Y120RcH/kxESUtMc7hUZjHpgYxvidAV7/CP9h3XePy
+X-HE-Tag: 1788260193-760432
+X-HE-Meta: U2FsdGVkX19xNK2DeJBWP30hgMlqrTJyKE0QnEbyIYG+gfu2GKJLBydeMUNEnEzW+OpCCdZkeKi8ttirstH+IjkrVZy719uuOYJYDslN5DvvoUWeUVCiPbK2X5HY5powMrDxC/SgremythOxZCZ9OtKqRSGLJRPaDU9MW/zfECyzQnYTv/kkTcUYgS+qJ8sHQWnVncME7jPVI0Wr9NBMYivnLxuSJdWT5KJr03N7SN1Vpmvr+JDYX9CVuTbBoPNrOQVV/ZGLbxN/IXi5b8LLfRyBd7cLAiuP/B7KxD9z1BjVDmHvwHIAj5IH1Q0zIZ5FLbofqZMJtYo+Am3dVH0moalVi3dfvx6t+bo2ZATTMruzcEErb2P1JW1k97EHW9BKnPbXIzrGsOJUcIC+Z66a4BRMFYqO8mB/z7e7HP0gSPhXkz7Em5AauHy6ZV0roFGFusnC00Q6nR4Tjic+iBIt9d9JT8ZboHral7gB+CoCa4G0x07EYPEH1nJyfoCNqtO6AQKu/KmviaTxAtiT/iR/kEobnn3Vl8A+tG4D3mTpOv1QFshlaNBRTHwUjGnCHqeJWwb2qs1KO4dhr5WmrEIgPCe7t4hnROjlXK2u3ylLRBVSEdgh78DQ3weuZJ3g4LNP6WN6vnoDPajNcE6rWFqgN6CTJMxVzTkJHZpBJMWKj7Hwk6iRqc6KhzP5qgkBuu4DgyRbjppUg8pQ1GjvJOxvZHs+057Ghxe8/Zvmc7jYr8MBFUdMW7RTR4bUJhQfGLnqbyQKj8R6GtvCFYz5VKlRYhZi0o69iUTXwX4MNmaNegSUNS8IkevxIwX0txtZtR4LfsN9UvEzRjZ5K2CFpcQLMvuVGEy0UiVKcHCr5TcvNgL3w/JxuartaHJsAU4jotw12EIksadOgwoNSfQYxUBOx0s1CcO9knvNjYIcrBI8GZT7H0hq7CZnpzBMcYTHp0rJtOv49jUdHcQeaxK1mYR
+ cpgil7KF
+ yHLzjA0Rs49YaYLyFQcM9UIGYz00PGonOQ+6aTv0nmZSeQwMDUW+gulNCfy/YPVc+7engQ8ZEZl/gmHZKCytk7NOeXQDsY1lIQkhEHxus6nzVdfIB94c4ILaO/Hoaj7UYSrhxDvjIvmkpYVH61WhdrX5bOjuaAgOVfhHRo2pBR1EXEbGXhb03mfGArmGfbVFMXQMERmIKFihl9GL25V3WsesiqXQmKWheGzBaAKD6PKRvE+I1Vz2zo/oiOpMgRzOMISi2iSe0ffQerS9qG49b/FnxP2b8Q5YGuDvnA4CDrhaI2j0T+cqdOqHteSmNJOdlKptJDNJrjIPm9SmQCRjzmNkYlYvSRhviGVaNRn2eop1VcvfnQPxAiWQEJ8OU0KQeLjjy5wQ0AOJvtplGftkIlQLsmA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,184 +110,165 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 31, 2026 at 03:10:40PM -0700, Tim Chen wrote:
-> On Tue, 2026-09-01 at 06:44 +0900, Hyunwoo Kim wrote:
-> > On Mon, Aug 31, 2026 at 01:25:06PM -0700, Tim Chen wrote:
-> > > On Tue, 2026-09-01 at 04:28 +0900, Hyunwoo Kim wrote:
-> > > > On Mon, Aug 31, 2026 at 12:22:45PM +0800, Chen, Yu C wrote:
-> > > > > Hi Hyunwoo,
-> > > > > 
-> > > > > On 8/30/2026 3:30 PM, Hyunwoo Kim wrote:
-> > > > > > When the waker cannot use the wakelist, ttwu_queue() takes the target rq
-> > > > > > lock and goes down into update_curr(). If the target rq belongs to another
-> > > > > > CPU, the task handed to account_mm_sched() is the one running on that CPU,
-> > > > > > not the task being woken.
-> > > > > > 
-> > > > > > account_mm_sched() reads p->mm and updates mm->sc_stat. Nothing keeps that
-> > > > > > mm alive. The rq lock and rq->cpu_epoch_lock it holds have nothing to do
-> > > > > > with the lifetime of the mm.
-> > > > > > 
-> > > > > > If that task happens to be in execve(), exec_mmap() points tsk->mm and
-> > > > > > tsk->active_mm at the new mm, and exec_mm_put_old() from setup_new_exec()
-> > > > > > drops the old one. free_bprm() does the same when exec fails. On the way
-> > > > > > from mmput() down to __mmdrop(), mm_destroy_sched() calls free_percpu() on
-> > > > > > sc_stat.pcpu_sched and free_mm() returns the mm_struct.
-> > > > > > 
-> > > > > > Whoever already read the old pointer keeps using it. It adds to runtime in
-> > > > > > the freed per-cpu area and reads sc_stat in the freed mm_struct. Depending
-> > > > > > on the condition it also writes sc_stat.cpu. That is a use-after-free.
-> > > > > > 
-> > > > > > Commit 9f23469401b0 ("sched/cache: Fix potential NULL mm pointer access")
-> > > > > > changed the remaining p->mm dereference to the local variable, and said the
-> > > > > > active_mm reference keeps the structure allocated. That holds for the other
-> > > > > > paths that detach an mm, since they take an mmgrab_lazy_tlb() reference.
-> > > > > > exec reassigns active_mm to the new mm as well, so that reference is gone.
-> > > > > > What is left is the mm_users reference in bprm->old_mm, and dropping it is
-> > > > > > the free.
-> > > > > > 
-> > > > > >               CPU0                                CPU1
-> > > > > > 
-> > > > > >                                        write(pipe)
-> > > > > >                                        try_to_wake_up()
-> > > > > >                                          ttwu_queue()      // takes rq0 lock
-> > > > > >                                            enqueue_task_fair()
-> > > > > >                                              update_curr()
-> > > > > >                                                update_se()
-> > > > > >                                                  account_mm_sched()
-> > > > > >                                                    mm = rq0->curr->mm
-> > > > > >                                                          // old mm
-> > > > > >    execve()
-> > > > > >      exec_mmap()                       // tsk->mm = new mm
-> > > > > >      setup_new_exec()
-> > > > > >        exec_mm_put_old()
-> > > > > >          mmput() -> ... -> __mmdrop()
-> > > > > >            mm_destroy_sched()          // free_percpu()
-> > > > > >            free_mm()
-> > > > > >                                                    read mm->sc_stat.epoch
-> > > > > >                                                          // use-after-free
-> > > > > > 
-> > > > > 
-> > > > > Ah, thanks for catching this.
-> > > > > 
-> > > > > > ---
-> > > > > >   fs/exec.c             |  1 +
-> > > > > >   include/linux/sched.h |  4 ++++
-> > > > > >   kernel/events/core.c  |  2 ++
-> > > > > >   kernel/sched/fair.c   | 16 ++++++++++++++++
-> > > > > >   4 files changed, 23 insertions(+)
-> > > > > > 
-> > > > > > diff --git a/fs/exec.c b/fs/exec.c
-> > > > > > index 745f6eb5279e6..6194c38807980 100644
-> > > > > > --- a/fs/exec.c
-> > > > > > +++ b/fs/exec.c
-> > > > > > @@ -916,6 +916,7 @@ static void exec_mm_put_old(struct mm_struct *old_mm)
-> > > > > >   {
-> > > > > >   	setmax_mm_hiwater_rss(&current->signal->maxrss, old_mm);
-> > > > > >   	mm_update_next_owner(old_mm);
-> > > > > > +	sched_cache_exec_done();
-> > > > > >   	mmput(old_mm);
-> > > > > >   }
-> > > > > > diff --git a/include/linux/sched.h b/include/linux/sched.h
-> > > > > > index 8b3d47a325cca..6ae31bffe049e 100644
-> > > > > > --- a/include/linux/sched.h
-> > > > > > +++ b/include/linux/sched.h
-> > > > > > @@ -2415,10 +2415,14 @@ struct sched_cache_stat {
-> > > > > >   	int cpu;
-> > > > > >   } ____cacheline_aligned_in_smp;
-> > > > > > +void sched_cache_exec_done(void);
-> > > > > > +
-> > > > > >   #else
-> > > > > >   struct sched_cache_stat { };
-> > > > > > +static inline void sched_cache_exec_done(void) { }
-> > > > > > +
-> > > > > >   #endif
-> > > > > >   #ifndef MODULE
-> > > > > > diff --git a/kernel/events/core.c b/kernel/events/core.c
-> > > > > > index a6c8e38a31104..2f29cbccf03f1 100644
-> > > > > > --- a/kernel/events/core.c
-> > > > > > +++ b/kernel/events/core.c
-> > > > > > @@ -5427,6 +5427,8 @@ attach_task_ctx_data(struct task_struct *task, struct kmem_cache *ctx_cache,
-> > > > > >   	if (!cd)
-> > > > > >   		return -ENOMEM;
-> > > > > > +	/* @old, loaded by the try_cmpxchg() below, is only stable under RCU. */
-> > > > > > +	guard(rcu)();
-> > > > > 
-> > > > > Is this change related to this UAF issue?
-> > > > 
-> > > > Duh.. that one is unrelated. My mistake.
-> > > > 
-> > > > > 
-> > > > > > +/* exec() has switched to the new mm and is about to drop the old one. */
-> > > > > > +void sched_cache_exec_done(void)
-> > > > > > +{
-> > > > > > +	struct rq_flags rf;
-> > > > > > +	struct rq *rq;
-> > > > > > +
-> > > > > > +	/*
-> > > > > > +	 * account_mm_sched() dereferences rq->curr->mm under this rq's lock,
-> > > > > > +	 * so a remote CPU can still be using the old mm. The lock cycle waits
-> > > > > > +	 * for it, and the store to tsk->mm cannot be reordered past the
-> > > > > > +	 * release, so later acquirers see the new mm.
-> > > > > > +	 */
-> > > > > > +	rq = this_rq_lock_irq(&rf);
-> > > > > 
-> > > > > A smart fix, learnt! It behaves like a synchronize_rcu() to protect against
-> > > > > the read in account_mm_sched(). Small open: since the context of invoking
-> > > > > account_mm_sched() is preemption-disabled, I wonder if we can simply use
-> > > > > synchronize_rcu() directly instead of this_rq_lock_irq() - just to avoid
-> > > > > contention for rq-lock in heavy system?
-> > > 
-> > > Thanks to Kyunwoo to show this potential use-after-free problem.
-> > 
-> > It is a real, triggerable issue.
-> > 
-> 
-> Appreciate if you can check whether the first 2 patches in 
-> https://lore.kernel.org/lkml/cover.1787955777.git.tim.c.chen@linux.intel.com/
-> fixes this issue.
-> 
-> > > 
-> > > While synchronize_rcu() avoids rq lock, it could introduce a long delay
-> > > of a full grace period that will be undesirable.
-> > > 
-> > > 
-> > > I think a better fix is to decouple sc_stat from mm and make it its own structure.
-> > > Then we can do proper refcounting and rcu management on sc_stat itself.
-> > > We will let task points to sc_stat with proper ref count and change the access
-> > > as task->sc_stat directly nstead of via task->mm->sc_stat.
-> > > 
-> > > Then we will know sc_stat exists in account_mm_sched() execution
-> > > as long as a task points to it and do not have to worry that sc_stat is
-> > > released due to the mm life cycle.
-> > > 
-> > > In the first 2 patches of the prctl control series for cache aware scheduling
-> > > we posted, we introduced the change I described above and should 
-> > > fix this issue without additional rq locking or synchronize_rcu() overhead.
-> > >  https://lore.kernel.org/lkml/cover.1787955777.git.tim.c.chen@linux.intel.com/
-> > > 
-> > > We should probably prioritize to merge the first couple of patches from
-> > > that series now in light of this issue.  It will make maintenance and future
-> > > modification of the cache aware scheduling code easier.
-> > 
-> > That is a fairly large change. 
-> 
-> However adding rcu synchronization will slow down the launch of a new process
-> too much.  The rq lock solution has less latency in my opinion.  But I
-> think decoupling sc_stat is the best solution without adding latency in the
-> exec path.
-> 
-> Wonder what is Peter's opinion?
-> 
-> > 
-> > If you add a Reported-by: tag for this UAF to the patch, I am fine with 
-> > handling it that way.
-> 
-> I'll be happy to do that. If you let us know if those two patches from prctl series fixes
-> the bug you found in KASAN log, I can also add a Tested-by tag in addition to Reported-by.
+On Mon, Aug 31, 2026 at 2:43=E2=80=AFAM Kairui Song via B4 Relay
+<devnull+kasong.tencent.com@kernel.org> wrote:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> Each generation of MGLRU accounts anon and file folio numbers
+> separately, and the page table walker updates each generation's
+> counters in batch once the walk is done. The walker promotes a
+> folio's generation with a cmpxchg on folio->flags, and
+> update_batch_size() then reads the live flags again to pick the
+> anon/file column to charge. The walk holds neither the lruvec lock nor
+> the folio lock, so the type can flip between the cmpxchg and that
+> read: the lazyfree path clears PG_swapbacked, and reclaim sets it back
+> on a dirty lazyfree folio. The batched delta pair is then recorded in
+> the wrong type column. Nothing reconciles it afterwards, permanently
+> skewing lrugen->nr_pages and the reclaim budgets derived from it.
+>
+> Fix it by capturing the type from the flags snapshot the cmpxchg
+> linearized against: folio_update_gen() returns the type of the state
+> it transitioned from, and update_batch_size() accounts with that.
+>
+> A folio's type only changes while it is off the LRU list, inside a
+> del/add pair under the lruvec lock, with the gen bits cleared in
+> between. The generation and PG_swapbacked sit in the same
+> folio->flags word, so the cmpxchg snapshot captures them together.
+> Let G be the generation that snapshot captured (old_gen) and G' the
+> one it wrote (new_gen); the CAS can land in only three places:
+>
+>   - before the del: the folio is anon at G; the batch records anon
+>     G -> G', and the del later removes the folio from the anon
+>     counters;
+>   - between del and add: gen =3D=3D -1, so folio_update_gen() returns -1
+>     without touching the flags and no batch is recorded; the del/add
+>     pair accounts for the move alone;
+>   - after the add: the folio is file at the fresh generation the add
+>     charged; the batch records file, that gen -> G', matching that
+>     charge.
+>
+> Unlike the drift of lazy promotions, which sort_folio() repairs under
+> the lruvec lock, the phantom deltas from before this fix land in a
+> column the folio never occupies again, so nothing ever repairs them.
+>
+> Fixes: 018ee47f1489 ("mm: multi-gen LRU: exploit locality in rmap")
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>  include/linux/mm_inline.h |  7 ++++++-
+>  mm/vmscan.c               | 13 +++++++------
+>  2 files changed, 13 insertions(+), 7 deletions(-)
+>
+> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+> index 047295ae6e8a..7e487c23aff7 100644
+> --- a/include/linux/mm_inline.h
+> +++ b/include/linux/mm_inline.h
+> @@ -10,6 +10,11 @@
+>  #include <linux/userfaultfd_k.h>
+>  #include <linux/leafops.h>
+>
+> +static inline int folio_flags_is_file_lru(const unsigned long *flags)
+> +{
+> +       return !test_bit(PG_swapbacked, flags);
+> +}
+> +
+>  /**
+>   * folio_is_file_lru - Should the folio be on a file LRU or anon LRU?
+>   * @folio: The folio to test.
+> @@ -27,7 +32,7 @@
+>   */
+>  static inline int folio_is_file_lru(const struct folio *folio)
+>  {
+> -       return !folio_test_swapbacked(folio);
+> +       return folio_flags_is_file_lru(const_folio_flags(folio, 0));
+>  }
 
-I confirmed that patches 1 and 2 of your series prevent this UAF.
+I guess we don't need to change this function? It seems more natural to
+me to keep using `!folio_test_swapbacked(folio)` here.
 
+In `folio_update_gen()`, you already use
+`*is_file =3D folio_flags_is_file_lru(&old_flags)` to get the type from
+`old_flags`. I guess that's all we need?
 
-Best regards,
-Hyunwoo Kim
+>
+>  static __always_inline void __update_lru_size(struct lruvec *lruvec,
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 724b6e034e69..87e667c410ed 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -3269,7 +3269,8 @@ static bool positive_ctrl_err(struct ctrl_pos *sp, =
+struct ctrl_pos *pv)
+>   ***********************************************************************=
+*******/
+>
+>  /* promote pages accessed through page tables */
+> -static int folio_update_gen(struct folio *folio, int new_gen, const vma_=
+flags_t *vma_flags)
+> +static int folio_update_gen(struct folio *folio, int new_gen, int *is_fi=
+le,
+
+Rather than is_file, I feel was_file would be more accurate here,
+since it doesn't represent what the folio is now.
+
+> +                           const vma_flags_t *vma_flags)
+>  {
+>         unsigned long new_flags, old_flags =3D READ_ONCE(*folio_flags(fol=
+io, 0));
+>         int old_gen;
+> @@ -3298,6 +3299,7 @@ static int folio_update_gen(struct folio *folio, in=
+t new_gen, const vma_flags_t
+>                 new_flags |=3D BIT(PG_workingset);
+>         } while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flag=
+s));
+>
+> +       *is_file =3D folio_flags_is_file_lru(&old_flags);
+>         return old_gen;
+>  }
+>
+> @@ -3328,9 +3330,8 @@ static int folio_inc_gen(struct lruvec *lruvec, str=
+uct folio *folio)
+>  }
+>
+>  static void update_batch_size(struct lru_gen_mm_walk *walk, struct folio=
+ *folio,
+> -                             int old_gen, int new_gen)
+> +                             int old_gen, int new_gen, int type)
+>  {
+> -       int type =3D folio_is_file_lru(folio);
+>         int zone =3D folio_zonenum(folio);
+>         int delta =3D folio_nr_pages(folio);
+>
+> @@ -3519,7 +3520,7 @@ static bool suitable_to_scan(int total, int young)
+>  static void walk_update_folio(struct lru_gen_mm_walk *walk, struct vm_ar=
+ea_struct *vma,
+>                 struct lruvec *lruvec, struct folio *folio, bool dirty)
+>  {
+> -       int new_gen, old_gen;
+> +       int new_gen, old_gen, file;
+>
+>         if (!folio)
+>                 return;
+> @@ -3532,9 +3533,9 @@ static void walk_update_folio(struct lru_gen_mm_wal=
+k *walk, struct vm_area_struc
+>                 folio_mark_dirty(folio);
+>
+>         if (walk) {
+> -               old_gen =3D folio_update_gen(folio, new_gen, &vma->flags)=
+;
+> +               old_gen =3D folio_update_gen(folio, new_gen, &file, &vma-=
+>flags);
+>                 if (old_gen >=3D 0 && old_gen !=3D new_gen)
+> -                       update_batch_size(walk, folio, old_gen, new_gen);
+> +                       update_batch_size(walk, folio, old_gen, new_gen, =
+file);
+
+This is one more place where we rely on `LRU_GEN_ANON =3D 0` and
+`LRU_GEN_FILE =3D 1`.
+
+We do this kind of thing quite often in MGLRU, such as `type =3D !type`.
+It relies on the numeric values of the type constants, which is sort of
+a semantic abuse, but it's hard to find a shorter way to express it.
+
+Best Regards
+Barry
 
