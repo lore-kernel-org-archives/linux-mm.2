@@ -4,105 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B219FC61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 18:04:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B946BC61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 18:07:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA6256B0092; Tue,  1 Sep 2026 14:04:55 -0400 (EDT)
+	id CA7386B008A; Tue,  1 Sep 2026 14:07:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7E736B0095; Tue,  1 Sep 2026 14:04:55 -0400 (EDT)
+	id C57796B0096; Tue,  1 Sep 2026 14:07:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 994576B0096; Tue,  1 Sep 2026 14:04:55 -0400 (EDT)
+	id B1F8F6B0099; Tue,  1 Sep 2026 14:07:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B89A6B0092
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:04:55 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 90E186B008A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:07:28 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 02FB64050E
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:04:54 +0000 (UTC)
-X-FDA: 85165969350.20.7EE7701
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D278340016
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:04:51 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=glUN2h8V;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf17.hostedemail.com: domain of ehab.ababneh@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=ehab.ababneh@intel.com
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0B21180518
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:07:28 +0000 (UTC)
+X-FDA: 85165975776.20.8B0FED2
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 405C840006
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:07:26 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=W5jk8k1Q;
+	spf=pass (imf01.hostedemail.com: domain of 3XBSXaggKCD0clZskZbjfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--dmatlack.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3XBSXaggKCD0clZskZbjfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--dmatlack.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788286046;
+	b=3MmQlbyap13Ddsc9RlduNGIbQF1WfZ6Tcg8TZyPJe4tQeXiT2N80nlqiB1HM5PxHJ16sTt
+	AcVyql9y1ET6KBlQXrZatT/m3dCgSRG8sBQDeKLAVRMiLdVTZ7Zd2faVR0V1FLqEmSaTB3
+	8lJEemnv3uSdkUsUoIqqcPgBuMDa2kw=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=W5jk8k1Q;
+	spf=pass (imf01.hostedemail.com: domain of 3XBSXaggKCD0clZskZbjfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--dmatlack.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3XBSXaggKCD0clZskZbjfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--dmatlack.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788285893;
+	s=arc-20220608; t=1788286046;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=dOz1krN267PV7V17AIqqrWGTGxRYupDIfzMS/Lg6eMw=;
-	b=nf6r5OYygtPTFkg/r+WO5doK5+aaMghk+nZnS+ToeE2VpOXUJjWE1VZTHJkfUKblaWGRKL
-	nNZJN2/SGRi3oPQD69nDJRqLczLQpbrXvdgqSuGjKZUtYZ1GVni98Z/7Lygn52N/k4JFiu
-	x5UC09IAjM88EEPy53/yDbT9A+hP3bw=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=glUN2h8V;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf17.hostedemail.com: domain of ehab.ababneh@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=ehab.ababneh@intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788285893;
-	b=KvCy12dOAoAhL2QuUChBn744yVFSwYlNiwRLAWLO+kAXfBmpWytme7rQcrVFD3nmb3bQDo
-	Q69e8OfeovPHig/Qup+eEDzJUqLS3r9blcs4DKpZAA9e+BZODMZY/EkyoKWJWtqRfUDRcP
-	ZohmIfOiK/I8iGSMvO3Ea59JFVOaDck=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788285892; x=1819821892;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=nNUOQ53mCgMpPjgv1qlY+smXo0g2ub8CG3rXMPfCGKU=;
-  b=glUN2h8V47xpu4+6HmdvRbyVi0EMDOyHWKH1nlJoH4C2pYXPCMN7kaGh
-   yS/CW3U0bY1hSeQ0VtzDG/xxd9poN5TTmml9HmB4r49nsAnrMV4680p09
-   oOgdG73iu/w3gYhSFoqDMag2SI3Xs7y34ctPCBWt9JKl5TXcHvxRzeja3
-   DI39cjIgS5WqhQaM3h8iDtlEUOA5KFSFgRXUD4atmeaeu7iiq7kmGSXZx
-   qWnqadmGBNr45Pn+XXDELdcWHxqMNzNTnIB1tRcmmj3AirnX42RrJsSaz
-   hR1d+oyNJOQIUjfXUp/mOJqE4rqmRHfrE31eS/YkY1weUxDu1iFZxnMoz
-   w==;
-X-CSE-ConnectionGUID: uq1j8IvcSfmIEbiAuJNj2g==
-X-CSE-MsgGUID: mguY9VhRQZmsO6JeOFzT0Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11893"; a="88776756"
-X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; 
-   d="scan'208";a="88776756"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 11:04:51 -0700
-X-CSE-ConnectionGUID: NFPKzk6/S9CCfkjjhZM3fQ==
-X-CSE-MsgGUID: 7NKwwtBCQqGdY3BjvqLHUA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; 
-   d="scan'208";a="299058696"
-Received: from jf.intel.com ([10.165.154.102])
-  by orviesa002.jf.intel.com with ESMTP; 01 Sep 2026 11:04:50 -0700
-From: Ehab Ababneh <ehab.ababneh@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org
-Cc: Yu Zhao <yuzhao@google.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	linux-kernel@vger.kernel.org,
-	Ehab Ababneh <ehab.ababneh@intel.com>
-Subject: [RFC PATCH] mm/mglru: dynamically protect readahead fault folios under refault pressure
-Date: Tue,  1 Sep 2026 11:06:43 -0700
-Message-ID: <20260901180704.168106-1-ehab.ababneh@intel.com>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rnt3y5ex5kxx7prdnowzh83jw6ar1zt9
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D278340016
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=j3UHjUhSHEFs3BDPKTwtfBJ57unvd2KtLqU4zpNQnvE=;
+	b=jzXfcNJP39FO6K8IEJoVCcRiyZDf/ERzUwYdywcmfH1AMIAAZJZV6g6UoiZ8acwg4UKct7
+	AjHuLYqk4nwWUnNwIWPyNSWMpb+kNQlvZDygYUY7i16RSIp9x7YAsjLh2Pb8p/nq3W2Pw6
+	AIJEKKIfFV4tyIRhbVa9ZkxNhSwtBsY=
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc1c62f0d60so252830a12.1
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 11:07:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788286045; x=1788890845; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=j3UHjUhSHEFs3BDPKTwtfBJ57unvd2KtLqU4zpNQnvE=;
+        b=W5jk8k1Q6A+X9UlEHgaenWsS2t2B1lkCus0Gp5/Vw6F2BIjRY0eikft46SeQfuBF35
+         jH5cETuTW7bxAMJyjKlO/XbQAEOvEyccrlG2dp5RYPXvRsQcLqmg+nzN7JDcAi8wC/qv
+         P0NbvRwewX2iwF7ixPbClEu1DqYTnqJ30jXElWVBlrPO4O0qWS0+pmLE9r69Gw1ZP0jf
+         R7bksEs7gJH+MSWVEJArQ6onhcNJzLT4y/ZHZvV5RzUC+1tnvkLUqHVME2g/3P2IcP2o
+         VtS33LMlRsEFbrPjCXQNjSmNv2pTbbXIh2aM6YvNMNRbw1D2tI7f/2lKPOjx8iEABj5H
+         v7wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788286045; x=1788890845;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=j3UHjUhSHEFs3BDPKTwtfBJ57unvd2KtLqU4zpNQnvE=;
+        b=BPGAb1BqMJsKT9oAxfkpXpLdFffT++DN61OcUS2x6PTBD2tliKuetidP2Oq/eAmOrF
+         5w5US7lknenQsQVCG4MBj7h4wa74UWkLENfGcu3vntwmPkrzLzmT6dDUSLi7dWwxO6hH
+         5EpebZ0G7SH9J+8PBG03PO6KLpawhNJX4pz1fXx4sM4Ml0oH6fjcEpls6hYulzOgf8aP
+         WQZq/h05veQQ5ug7zkNH7NCyj79m4roGHJicqlThQF2pUN2q+Jt9ilAQYtB9Hucp8Hae
+         nhFhwu2hDRZlQXRRBMs28smUiy4L3GA53poXWMhF26JONB8fPyWlI2mmjQe3vjQ3wTGt
+         olMw==
+X-Forwarded-Encrypted: i=1; AHgh+Rpb9MiPbUeq/DhCynH3WuKuH4dVi9kUSEncfZMWFveegtSJuIlj1BqHP/9V/vm1096kHDXkCSN2Tw==@kvack.org
+X-Gm-Message-State: AFuF++mx616LI9qgMMJSOc828FtIGMAoSPPfQxhP1sCsY25KWASO/UIL
+	4CxBbEXUTyIGRDqdTwC+mpa7oet1Um1Ah2mobI03wM3AAVWBYfEgtAj64aeWSyDsBQheoUTEKwm
+	x4zOqd+b+a+4taA==
+X-Received: from pgp10-n2.prod.google.com ([2002:a05:6a02:62ca:20b0:cc2:2955:6540])
+ (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a21:7a97:b0:3d0:cc29:ff64 with SMTP id adf61e73a8af0-3d7af8303a1mr17251598637.15.1788286044618;
+ Tue, 01 Sep 2026 11:07:24 -0700 (PDT)
+Date: Tue,  1 Sep 2026 18:07:09 +0000
+In-Reply-To: <20260901180713.4185641-1-dmatlack@google.com>
+Mime-Version: 1.0
+References: <20260901180713.4185641-1-dmatlack@google.com>
+X-Mailer: git-send-email 2.55.0.966.g6673acef38-goog
+Message-ID: <20260901180713.4185641-2-dmatlack@google.com>
+Subject: [RFC PATCH 1/5] liveupdate: Extract luo_file token lookup logic into
+ helper function
+From: David Matlack <dmatlack@google.com>
+To: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <shuah@kernel.org>, 
+	David Matlack <dmatlack@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1788285891-579030
-X-HE-Meta: U2FsdGVkX18ukaIZmZK6Tj+klZHu9c/Bl4rDkKS3Q66IGOYLr/VWhj9tWDYYC//R2m7JlPlwZiaJNPG5S/3PIL6JJ8BoxG4JEqLAeTb7vGg5aqsirHZNiKKMxgZ3TmT/CcMUql1FaGsyAsxsoOnE10SkhCwcs9fCih1iVgmbkxC7c0yHJATueQfC7hoi8ovcqh5nMt7CGpn5weXkbsuRcaUmakwFfM+TP0rbggc/WyT+l4Xll0K6mgLtVbh8OsHWnY0bufEhKuLB0uFTG0RlNEOp8vVbvPJUZ3AeLCKL+1Q6XpddOKk12KqMYHGDTqcUu35A8SkcaYE8ZyBymKTKNBbreJm1j5sN7fhn5T6uYOT0c/TLasNoXr3duVz4q+w+Dgq2HUEkEatj/04dREcFvKzW1BchN1Rudz1UUVowR61rTerKCOr0BIkgenub8Ff0z+kiDdCvt1MI6nEIONlYa1sCvMxsehcgLp1CJZD8Znw2MddMYERPdTwusXQLJ+4TQMi42r2S6g3JlW81uFtteKezRTif3bFSbfJBgcv1y5xlOjzgu4hBfQt9+RD5tWeSRnhQCob6jK5tE2dv7rU1K/LvmLePd5h7o1mwVo0vwz+Ueop0t6/k1gnb5jHNKkmkrTcxuh7/2KrVQE2rjvmhVgVYHaD6AIWwUl1ya1Ai/MziuuAXcNTOqtYhdSqN99lAx3cAjV3ooSGF+yEOZvapQ9AbMN971Wz5aI+kz1B33RWi1ddzzwWqgCnvdqD51yregWQs+U9Kcqh9JlSnxmPd4p1tGLN7KyXj6oRCoAGbb9ebJxAejoTguMsXzI3NsUZ6f3xQ+8kK8MZv30UmGTKhlK8VenYleVYyeEXa2aIAXROslX1bSb/NjlAKiaPUj9dtfFYBQJXz3XOJwhSvoEx9ju8DDGQEYhEYBHmA66jelXpdF7tYQ/3QUq/0gqEZR6tg+9xhIYK1C2X4B80dOjO
- Xsezv7cD
- KCw6Gjx4pCU1eNRh6FXKu+1SzGPpmi8/wfdowQiLwKamMI+SY2ojizxyvu5WDqcuAAv17WvdZipfw0gKrLWSWfIZYKImQ0BCQ+m+xfA02PYrmIFGK/ugGXb6z7LeRpy7CQL8UKlbhWBpcVJDsMhkd8nzAEij1CJDcRYDcE0ivQR9uc965uwj+45ZhRSWuOpb/J19CPHUNsn9Fjsj726QoBrf8KQ==
+X-Stat-Signature: gtnwzfmk6p1tf3rjm1y9mfxxk3su914i
+X-Rspamd-Queue-Id: 405C840006
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788286046-633652
+X-HE-Meta: U2FsdGVkX1/ZJfN4HSJJCajFc6MlsoTs//1aUqCIsgR05BpROoDMIAAc0kzyoRER5WJ0hJtKZ5GNCUGoXCD+yVjkEWppjDUKfg4lbekGpKfrHVvidr//VxsXncyjBU1AzFaTWi4HMro4HoSPKN9Gtd/Yo714XBlMMD1I005Zj1UAWKRYLaHrEzQk4IFsj/bjquXUhNHfNMExEdj31hog4VfFfZzlrd+7nTUl6n8p+gwR+n9fYoMaKuOZseVSmZvU5Jgk9DZ0yRy3mFilZLVoMSSwM+j/Vptboe8IkVbXPF+epuZ6DyM2iZdqS6KtMiHfwjqMYa38zOLFsjEvruK6TJl9Evuw2LiU7HC6cXfTCuia29tN0vFXlclSc3FBGE9dBqBg6VKUNjm3IQ5k46DIinoduQNOi1T3YNZTJueW79Hf+HTxn8eFUKB7fQfvFGkE9+65UxekYx7HyHhHSoIBz2TIlpTTKHrhzb+BdytThrZo8W7anTmBXyshzeMCBc6j6yLoZfW+q1Mk70iLGb37HSDanaBRd4LZ4LwMXMW/6Ph0je/TxowihaSPl6D773tGgJO8Z52x//GCdRBb7XQTvaNUdeyWecLbZmitkSxuCEDlDJPpEg9uQdSEOs+0GR+Eg9Cwl/MEyd7uUTwyVukFiwuI6vk7VUMPUHDa+16+v7kl/q/ivoJLBsQMw4xwtO3bI4B4qtm1k0REyuyIxNcHzmfeyymA02SeW6jX+69GujM88yMA21sAi/ljAWpG/LFOX/1l5njNI075wykmLxxwJZ9Bvhv8BRA1X6gFXdnNesPb4uAUqDednme5MXDc8hIUYDlqmDB6Nf7o10V2/nyQsZ3cXRWPvNyp5CGUnwSWxJJkuPy4qxjIZRI7K7Rtz3hZAHPe5RVaMrEevJs5b9whIaKEhzVLbl6d4AvDZzPjsRZ+n0T3NrB33itmn6M7alS97YYb5h6UlVuSslz2JUs
+ 9z04NNWg
+ 561j0OEuoATzxuw3x1qX/zYHB6VWqa14gw5XTxMPFKbqtj0mAvv9KP7BZTSsnHrighJ6O5tqRpxJFdz+MHkak3tkNLm5W50Ntig4wqHTqukdKbUMFuOhzMEv2or+kil94plZOto9A8+/lubDVbVmnh1mUUo4j3GzP7LiHktnLf9A9zKgJeQ3su6fx8sEUYMZNUQr7gZO+kVDHNCLu+1cqXQciL4vAQFLOL0GBeqFzg7XsqntFw+0JkDY5WzVGjNnRzWhjw704gNBj7PLM8wSmtstxI0wGxypvkNSDwOkG1+xgIVjkgHe2JYOQ4Lv59M0gCs2a8iBrzXEoe3YqP1C78+BVmCTHIEPCjrAoWwv8nUJbtHhT1Ohuq40Dh1Kls+/Iu36jvQGpYEJ20G0nzNlho4JGa+eF1IbBG9i+Ws1YP2Wks9EQ/whBWQCBMDz0mNTpewqV7HaX/6Y2oJFYaS4R1DW2Qd0j80m82dls4vTDnLvJrWD7EcL3IN5GOehCtd9RKdnAC3+Icg+SB9FZ+j8CDE1y2DxLTJ48i0jBkz5xprICmiOZJ8b66obSoMI9HwwPOLxCfawrP0+yzi2QhRPYDhExtr1B8uw7zeQMlDncZDORUk7xL24/JmFyVfTJ8tmToc68XgVoN5218Tg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,244 +113,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 6cbdd9726fb5 ("mm/mglru: use folio_mark_accessed to replace
-folio_set_active") introduced a regression for workloads that rely on
-readahead to keep sequential file access efficient.
+Extract the token-based list iteration inside luo_retrieve_file() into a
+standalone private helper luo_find_file_by_token().
 
-The problem is that MGLRU can place fault-path file folios in older
-generations, so memory pressure can reclaim readahead folios before the
-workload touches them. In our Cassandra read benchmark, this raised p99
-latency to about 9.2-9.5 ms and cut throughput to roughly 41.8k-43.6k
-op/s; the revert restored the workload to about 5.5-5.6 ms and
-51.9k-53.1k op/s.
+This eliminates code duplication by paving the way for additional file
+retrieval modalities (like retrieving into an existing file descriptor)
+which also need to safely lookup file tracking structures from the token
+list before bridging payloads.
 
-Readahead is important for sequential I/O and mmap scans, but it should
-not be retained when the workload does not benefit from it. The goal is
-to keep the optimization without keeping readahead pages alive forever.
+No functional change intended.
 
-This patch provides a middle ground: keep the original behavior by
-default, but temporarily protect fault-path file folios when repeated
-file refaults show that readahead is actually helping.
-
-The mechanism is dynamic and self-tuning:
-
-- add a per-lruvec readahead/refault credit
-- accumulate credit on file refaults in the MGLRU refault path
-- consume credit in folio_add_lru() for fault-path file folios
-- keep the folio active while credit is available, and otherwise let the
-  original behavior stand
-- decay/reset the credit as generations advance and when an lruvec is
-  initialized
-
-This means we only protect fault-path file folios when refault pressure
-shows that the workload is actively benefiting from readahead. If the
-workload does not need that protection, the original optimization
-remains intact and we do not keep readahead pages around unnecessarily.
-
-Benchmark results for the Cassandra read workload
-(4 nodes, 720s, 100 readers):
-
-- with commit 6cbdd9726fb5 ("mm/mglru: use folio_mark_accessed to
-  replace folio_set_active"):
-  p99 ~9.2-9.5 ms, throughput ~41.8k-43.6k op/s
-- with revert of commit 6cbdd9726fb5 ("mm/mglru: use folio_mark_accessed to
-  replace folio_set_active"):
-  p99 ~5.5-5.6 ms, throughput ~51.9k-53.1k op/s
-- with this fix: p99 ~5.8 ms, throughput ~51.9k-52.7k op/s
-
-The fix restores the readahead protection lost by the regression while
-preserving the original intent of the optimization: do not keep
-readahead pages around if the workload does not need them.
-
-Fixes: 6cbdd9726fb5 ("mm/mglru: use folio_mark_accessed to replace folio_set_active")
-Signed-off-by: Ehab Ababneh <ehab.ababneh@intel.com>
+Signed-off-by: David Matlack <dmatlack@google.com>
 ---
- include/linux/mmzone.h |  2 ++
- mm/swap.c              | 82 ++++++++++++++++++++++++++++++++++++++----
- mm/vmscan.c            |  7 ++++
- mm/workingset.c        | 18 ++++++++++
- 4 files changed, 102 insertions(+), 7 deletions(-)
+ kernel/liveupdate/luo_file.c | 30 ++++++++++++++++++------------
+ 1 file changed, 18 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index ca2712187147..c998b1e0b8a7 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -578,6 +578,8 @@ struct lru_gen_folio {
- 	/* can be modified without holding the LRU lock */
- 	atomic_long_t evicted[NR_HIST_GENS][ANON_AND_FILE][MAX_NR_TIERS];
- 	atomic_long_t refaulted[NR_HIST_GENS][ANON_AND_FILE][MAX_NR_TIERS];
-+	/* credit: file refaults indicate fault-path file folios need protection */
-+	atomic_long_t ra_refaults;
- 	/* whether the multi-gen LRU is enabled */
- 	bool enabled;
- 	/* the memcg generation this lru_gen_folio belongs to */
-diff --git a/mm/swap.c b/mm/swap.c
-index 588f50d8f1a8..a31c9000868a 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -70,6 +70,70 @@ static DEFINE_PER_CPU(struct cpu_fbatches, cpu_fbatches) = {
- 	.lock_irq = INIT_LOCAL_LOCK(lock_irq),
- };
- 
-+#ifdef CONFIG_LRU_GEN
-+/* Refill two default readahead windows to amortize shared-counter updates. */
-+#define RA_REFAULT_LOCAL_BATCH	(VM_READAHEAD_PAGES * 2)
+diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
+index c39f96961a85..5e160836a165 100644
+--- a/kernel/liveupdate/luo_file.c
++++ b/kernel/liveupdate/luo_file.c
+@@ -549,26 +549,32 @@ void luo_file_unfreeze(struct luo_file_set *file_set,
+  *         -ENOENT if no file with the matching token is found.
+  *         Any error code returned by the handler's .retrieve() op.
+  */
+-int luo_retrieve_file(struct luo_file_set *file_set, u64 token,
+-		      struct file **filep)
 +
-+struct ra_credit_cache {
-+	/* Batch shared credit per CPU to avoid a contended atomic RMW per folio. */
-+	/* only compared for identity, never dereferenced */
-+	struct lru_gen_folio *lrugen;
-+	long credit;
-+};
-+
-+static DEFINE_PER_CPU(struct ra_credit_cache, ra_credit_cache);
-+
-+/*
-+ * Spend readahead protection credit from a per-CPU bucket, refilled in batches
-+ * from the shared per-lruvec counter, so the fault path avoids an atomic RMW on
-+ * a contended cacheline for every folio.
-+ */
-+static bool lru_gen_take_ra_credit(struct folio *folio)
-+{
-+	struct lru_gen_folio *lrugen;
-+	long nr_pages = folio_nr_pages(folio);
-+	struct ra_credit_cache *cache;
-+	bool taken = false;
-+	long old, new;
-+
-+	rcu_read_lock();
-+	lrugen = &folio_lruvec(folio)->lrugen;
-+	cache = get_cpu_ptr(&ra_credit_cache);
-+
-+	/* credit cached for a different lruvec is forfeited, bounded by the batch */
-+	if (cache->lrugen != lrugen) {
-+		cache->lrugen = lrugen;
-+		cache->credit = 0;
-+	}
-+
-+	if (cache->credit < nr_pages) {
-+		old = atomic_long_read(&lrugen->ra_refaults);
-+		while (old > 0) {
-+			new = old - min_t(long, old, RA_REFAULT_LOCAL_BATCH);
-+			if (atomic_long_try_cmpxchg(&lrugen->ra_refaults, &old, new)) {
-+				cache->credit += old - new;
-+				break;
-+			}
-+		}
-+	}
-+
-+	if (cache->credit >= nr_pages) {
-+		cache->credit -= nr_pages;
-+		taken = true;
-+	}
-+
-+	put_cpu_ptr(&ra_credit_cache);
-+	rcu_read_unlock();
-+
-+	return taken;
-+}
-+#else
-+static bool lru_gen_take_ra_credit(struct folio *folio)
-+{
-+	return false;
-+}
-+#endif /* CONFIG_LRU_GEN */
-+
- static void __page_cache_release(struct folio *folio, struct lruvec **lruvecp,
- 		unsigned long *flagsp)
++static struct luo_file *luo_find_file_by_token(struct luo_file_set *file_set, u64 token)
  {
-@@ -545,18 +609,22 @@ void folio_add_lru(struct folio *folio)
- 	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
+-	struct liveupdate_file_op_args args = {0};
+ 	struct luo_file *luo_file;
+-	bool found = false;
+-	int err;
  
- 	/*
--	 * For refaulted workingset folios, set PG_active so they
--	 * can be added to active generations.
--	 * For prefaulted file folios, folio_mark_accessed() sets
--	 * PG_referenced so lru_gen_folio_seq() places them into
--	 * the second oldest generation.
-+	 * For refaulted workingset folios, set PG_active so they can be added to
-+	 * active generations. For file folios in the fault path, consume refault
-+	 * credit to temporarily protect folios that are likely useful readahead.
- 	 */
- 	if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
- 	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC)) {
--		if (folio_test_workingset(folio))
-+		if (folio_test_workingset(folio)) {
- 			folio_set_active(folio);
--		else if (!folio_test_referenced(folio))
-+		} else if (folio_is_file_lru(folio)) {
-+			if (lru_gen_take_ra_credit(folio))
-+				folio_set_active(folio);
-+			else if (!folio_test_referenced(folio))
-+				folio_mark_accessed(folio);
-+		} else if (!folio_test_referenced(folio)) {
- 			folio_mark_accessed(folio);
-+		}
+ 	if (list_empty(&file_set->files_list))
+-		return -ENOENT;
++		return ERR_PTR(-ENOENT);
+ 
+ 	list_for_each_entry(luo_file, &file_set->files_list, list) {
+-		if (luo_file->token == token) {
+-			found = true;
+-			break;
+-		}
++		if (luo_file->token == token)
++			return luo_file;
  	}
  
- 	folio_batch_add_and_move(folio, lru_add);
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 56708d1d2dfd..767311593296 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3931,6 +3931,7 @@ static bool inc_max_seq(struct lruvec *lruvec, unsigned long seq, int swappiness
- 	bool success;
- 	int prev, next;
- 	int type, zone;
-+	long old, new;
- 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
- restart:
- 	if (seq < READ_ONCE(lrugen->max_seq))
-@@ -3983,6 +3984,11 @@ static bool inc_max_seq(struct lruvec *lruvec, unsigned long seq, int swappiness
- 		reset_ctrl_pos(lruvec, type, false);
- 
- 	WRITE_ONCE(lrugen->timestamps[next], jiffies);
-+	/* decay readahead protection credit so stale signal doesn't persist */
-+	old = atomic_long_read(&lrugen->ra_refaults);
-+	do {
-+		new = (old * 3) / 4;
-+	} while (!atomic_long_try_cmpxchg(&lrugen->ra_refaults, &old, new));
- 	/* make sure preceding modifications appear */
- 	smp_store_release(&lrugen->max_seq, lrugen->max_seq + 1);
- unlock:
-@@ -5784,6 +5790,7 @@ void lru_gen_init_lruvec(struct lruvec *lruvec)
- 
- 	lrugen->max_seq = MIN_NR_GENS + 1;
- 	lrugen->enabled = lru_gen_enabled();
-+	atomic_long_set(&lrugen->ra_refaults, 0);
- 
- 	for (i = 0; i <= MIN_NR_GENS + 1; i++)
- 		lrugen->timestamps[i] = jiffies;
-diff --git a/mm/workingset.c b/mm/workingset.c
-index f351798e723a..63baa7220136 100644
---- a/mm/workingset.c
-+++ b/mm/workingset.c
-@@ -319,6 +319,24 @@ static void lru_gen_refault(struct folio *folio, void *shadow)
- 
- 	atomic_long_add(delta, &lrugen->refaulted[hist][type][tier]);
- 
-+	if (type == LRU_GEN_FILE) {
-+		/*
-+		 * Cap credit at total file pages to avoid runaway while
-+		 * allowing sustained protection.
-+		 */
-+		long cap = lruvec_page_state(lruvec, NR_LRU_BASE + LRU_INACTIVE_FILE) +
-+			lruvec_page_state(lruvec, NR_LRU_BASE + LRU_ACTIVE_FILE);
-+		long add = (long)delta * VM_READAHEAD_PAGES;
-+		long old, new;
+-	if (!found)
+-		return -ENOENT;
++	return ERR_PTR(-ENOENT);
++}
 +
-+		old = atomic_long_read(&lrugen->ra_refaults);
-+		do {
-+			if (old >= cap)
-+				break;
-+			new = min(cap, old + add);
-+		} while (!atomic_long_try_cmpxchg(&lrugen->ra_refaults, &old, new));
-+	}
++int luo_retrieve_file(struct luo_file_set *file_set, u64 token,
++		      struct file **filep)
++{
++	struct liveupdate_file_op_args args = {0};
++	struct luo_file *luo_file;
++	int err;
 +
- 	if (workingset) {
- 		/*
- 		 * see folio_add_lru(), where folio_set_active() is
++	luo_file = luo_find_file_by_token(file_set, token);
++	if (IS_ERR(luo_file))
++		return PTR_ERR(luo_file);
+ 
+ 	guard(mutex)(&luo_file->mutex);
+ 	if (luo_file->retrieve_status < 0) {
 -- 
-2.43.0
+2.55.0.966.g6673acef38-goog
 
 
