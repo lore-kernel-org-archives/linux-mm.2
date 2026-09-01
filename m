@@ -4,82 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B098C624D0
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 09:13:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD154C624C6
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 09:19:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 220256B0104; Tue,  1 Sep 2026 05:13:27 -0400 (EDT)
+	id BEDB86B0106; Tue,  1 Sep 2026 05:19:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C8C76B0106; Tue,  1 Sep 2026 05:13:27 -0400 (EDT)
+	id B97AB6B0108; Tue,  1 Sep 2026 05:19:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06A9B6B0107; Tue,  1 Sep 2026 05:13:27 -0400 (EDT)
+	id A87216B0109; Tue,  1 Sep 2026 05:19:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CC74F6B0104
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 05:13:26 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4BED8120293
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 09:13:26 +0000 (UTC)
-X-FDA: 85164630012.22.18E9C79
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 79166120004
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 09:13:23 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=AFSK0xwO;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 88ACC6B0106
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 05:19:20 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 020AF1C1E2A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 09:19:19 +0000 (UTC)
+X-FDA: 85164644880.16.B87B500
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 21B7F140007
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 09:19:16 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="Ax9/nMk0";
 	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf29.hostedemail.com: domain of binbin.wu@linux.intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com
+	spf=pass (imf23.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788254004;
+	s=arc-20220608; t=1788254358;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E7aX4rgBeA1eOu9xDDLkRzZv35ZNUEa/k90j/kqoYLs=;
-	b=yR/EzKwgVxe7LF2wvopE2DGXnlUMZuPXbby1/GPJyN7/PXlokNqiOfxcDZ4e+fkfaZQL3S
-	2uUXl/GLcnYh7VmzKkkzlVWmzrdQBgok8KHowwNWo/H/2Bcxo0o574hYFLmZZT9sFejhUC
-	7f8lj/3ewzIuLZTdJsUk5CpdkTU38/w=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=AFSK0xwO;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf29.hostedemail.com: domain of binbin.wu@linux.intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com
+	bh=G7Brk22IX8ivgVeznwARkHfXlRRqoPxVQ4XrLKm2tU0=;
+	b=E6ZhwBTikyhzcfsuwEIO0y4cGuN7hsVz5eo8pCwtjwcYCl1IN+NdEkXmPN+KgzMnhrOT4v
+	R08q37/LiE2SwC+ckjbm7HogvPNDFTkBlgHP7FMPpn4kQHIi9rx8rxq4jFU1ynZ9i0SF9c
+	rsf3LzwvpUSuKR2zFJRS5bH5axsLrIU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788254004;
-	b=uM+dbrBThShDK6Qfy5gW73PkC+8hjeXZNLmJzJkgdT8FWF0EUoSJXZgMZrn8yfjHv43ngQ
-	nsYWE9lM2q5pv/Odr8fgg2BsCl0Mc4zPP3Q8XNPaLZrYpASOlRbSNd8Dx2ay1DMj5rieAn
-	eQoq5s9BHxI85c77hXIhMisjFvoFYSo=
+	t=1788254358;
+	b=f326F6y2E+JZhI1G5SSH0zmUykbtWR2ZGDNHh19OeAKKiLgIzih4U8UT0E87rybLu+UQba
+	pAyeX7qP+gL7kddB3C9nRdLZOwiXIeX9tpcBMij0QSynL2baQV5pt5JBoC7/feHPpbRdPS
+	SqY4R4q4Zk/DuuIJLocVenr5PcMzfdA=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="Ax9/nMk0";
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf23.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788254004; x=1819790004;
+  t=1788254357; x=1819790357;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=pd1acZ0l+zUOeZobkaoqxgpVJGbI2mEIMZ+5P/Tso5Q=;
-  b=AFSK0xwOShJaRGFmZj0eX5IUmzoDmktPPfiOJXn3pxGvfB9x75oQU8Pm
-   rESmtmi00vHkN5zzYwMLi3CMG9yMJrXeE26yjdM1Wo7EV9IFrv3RlX6fh
-   6rTt0naxyvQzcH812kBF4pZxjrOngRpT+iGvF6qnnmO895dp5VuQ8JBK3
-   kLykgi8wCRfdCaaahfmGOzrdgefJois/PQTzjK5eL7Bqwvt+cDYrqKto8
-   Gpw9vZcSIRZblxH16GbywZPivoArkblDbSwqxEDmusEMBccf9IvxHnVBp
-   zcr/TqhRjbiSYV44bJ9krxBlcaNBywlDG0s27vrZVLApnxgvNOiUX+4ym
-   w==;
-X-CSE-ConnectionGUID: H+g3EU67SOK0HNiViIrN1A==
-X-CSE-MsgGUID: g9pOdlD9QymiYSG75xyd+A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="88603761"
+  bh=ybzLPBq1Kqmn0Fx88mmu2PUfpGn2KPU3cTB0rl4kSD8=;
+  b=Ax9/nMk06l/n5r+H4V72BLuKqdgI1QxK/y75W8rSy0+UKzYirXZTKhEC
+   ea67dnXukhUbq2ToN7kcyDFMwzDqkJlzRpyxOxovq8QzX7vCDOrON4iGi
+   QX+5JwF8WLTLU7x7CgjABUOCExTvlxwbfDh8CmBnfK8ZXFmk1barrLdWJ
+   2i+CCMU8mK8Rr79UlOOhN9/OqrDYHrJTV1VzmdtS5sivwYMt4Lh72reM2
+   2LdZ5zqswl1iKz0MX5vny2CEFvejRBAlDl7b5xP26BZeFRpcQbUzX9qV2
+   IcE/LCkA7MO7ENue9FZKH8wxIVY6A1g338i37XVOVf5s439IMqIGSki3A
+   A==;
+X-CSE-ConnectionGUID: uA7UPBvaQOiRulExhoqIsg==
+X-CSE-MsgGUID: MLl7RCdFQV+5JCNgPcNpfw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="92493111"
 X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
-   d="scan'208";a="88603761"
+   d="scan'208";a="92493111"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 02:13:22 -0700
-X-CSE-ConnectionGUID: 2eKjT+udSB6mMZPX1dBpZA==
-X-CSE-MsgGUID: y9fKTNKyTUOUmNAApqtZXQ==
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 02:19:15 -0700
+X-CSE-ConnectionGUID: dk4Yv7r8QdSTMtXqf1bkOA==
+X-CSE-MsgGUID: phpUd5YHQ8+X4qWG9ERdUQ==
 X-ExtLoop1: 1
 Received: from unknown (HELO [10.238.2.33]) ([10.238.2.33])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 02:13:06 -0700
-Message-ID: <a11190b1-908f-48a0-9f75-1d4472b2007e@linux.intel.com>
-Date: Tue, 1 Sep 2026 17:13:04 +0800
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 02:18:59 -0700
+Message-ID: <ad5ff907-d468-4556-bfb3-d930b97b2c2c@linux.intel.com>
+Date: Tue, 1 Sep 2026 17:18:57 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 01/45] KVM: guest_memfd: Optimize away conversion
- overheads via dead-code elimination
+Subject: Re: [PATCH v12 07/45] KVM: Rename kvm_mem_is_private() to
+ kvm_is_private_gfn()
 To: ackerleytng@google.com
 Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
  chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
@@ -115,20 +115,20 @@ Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
  linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
  linux-mm@kvack.org, linux-coco@lists.linux.dev
 References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
- <20260830-gmem-inplace-conversion-v12-1-85e5fd25252a@google.com>
+ <20260830-gmem-inplace-conversion-v12-7-85e5fd25252a@google.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260830-gmem-inplace-conversion-v12-1-85e5fd25252a@google.com>
+In-Reply-To: <20260830-gmem-inplace-conversion-v12-7-85e5fd25252a@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 21B7F140007
+X-Stat-Signature: gnqf131fjeqfmkibqsykjpcu99cupahj
 X-Rspam-User: 
-X-Stat-Signature: ncn6jemkairkzo3gf7qpu8nrptajsmts
-X-Rspamd-Queue-Id: 79166120004
-X-HE-Tag: 1788254003-12581
-X-HE-Meta: U2FsdGVkX1+3NiwkYEZkUQfDUfsgGgRSnPIer9AqVrDk5pzxtk3N0g861bLYRudkV7CCBN+xvi64s7hug0zLxvhLkqbIZf0vqal8NuZmwzHJi3kYCFF31D8RHQUuqgUJMHquh2ZBcElJ772ubTGgb7NAVfOAqR3PouLKRLo/ZSMQ+S4l0MVriSDYxK/E2UNfnE5xu/5PvNMEMlqEwsCKWVvp/zPfeLKgddRLrDfY9wMsgq71az93BzLNN3lmhuNKRe38m/J++VN8JQ89RP0tLjvr4FZ10avSh3tUIjqwRRMMandA/iftsTFUeSVrafY605xuZAshIUHYKmfr+AswdI4Y0LhzPlq/lohgM80XYdiV0iI1RYAK/vvHam4ajIVd4ZMUrXlb7Ai08Sc4g3v6Ff20BZyMP9qXxg6SeM7QsELIGcSfjv+EeMVrJkoyQqAqBLHzE4Sv6e15t/fKwQ22X1JCRRXW2SxzafWCyRKuZrwPA5c6PmSqJD9Ic7XetTfCXHO3WJ2iL+JUYttgF2aWvJ7GPnKYWckmS/rbkhVvHo70ra6EVO7EDuY/llswFtLQ5ij9kc9dAcnn/rtB12veUWa0oBIED5HiGJ8O96TEGL4ZzIFOGhIEPwTkaAFLtX2qHMty7yzNy+LKqH8Hps0ntG7cLBCVLxMcD9C2Lpse7Y/eXxIEmIEi0vWTfdiivxSZd8I3jvgHkRuGt5nWcyDrhwVUrZKoenPLZmsONGwRVJo+nnlKkmB9+Q5ApX49zQnaQtJF4Y9NC5KwPKufcGDIdQVjw8z3sr+fCCi09hxViXy5OUyUWhqKcw68zqSm0+1V8YUC7ByvwPUFN3DooHja9++Rd+AIsZvuQjbE7SNJZXcmSd2NoJ9hRK0Fh7demsAwTEZbQ73DkHmoboq/XFfzygNRQ1kFJVi5dqrmEUI4DUXwIe4FdqZ5CUs3hCsmwHZJmvasYdUJdNTytHDp0BQ
- GLmeCrCc
- ni+4vTIODLDbqkSofofs/KTDJhB8QhTBG0uZRV+7ubnENb1FJKXPMx274dO7Mz84xsTM6oGhxQigTkeNLrx5YiGAFzMlNVOgqt3h2/c0NsXsGB7ynKZ2qYevaNlsT7ePS/7PvvCtmJ3veBLW4HAbzu9L9bsfPC/GoZZWyv1SNUUosXCpgq1f8UaSWNXwLJ3nQa+GWMGKhg8JQqLdxSjzUuWulikrR/NtZIoo66ojujQJGNbT4iTcRvruyHDHaCkqxX2Hl+rX5p2H7WeLQsqHuGBdFW2U+dSBjUyxnkJDTRv/4dUWTh976dGxnhkLmNgRV8deyCTFGg4oC4tLIjDFtbKMMoFrwj8mSIpkSzcAeuNTwiHc=
+X-HE-Tag: 1788254356-465415
+X-HE-Meta: U2FsdGVkX1/0izeTX7N7+oJaliIgItOew8I9sNz9MnC++V+PkMwCZeLnokz0dpgQH9VkCgXjnN5sAVygzKkDBOH7e6+vrgwRwxQH8emd22b52XPBz6+145jjlFYjtKStOk1/36/aGFkw9gBtVCEQKIS5uPtACAMF4+AAsEDlVZCxUZQ2kYCwwoESRdTPjlTIqAFu5sIKLD6x4Sx6zjWIIjoBl3HPHQ9etG27JAdRgGRyXtrfwVI26lJ9oBuytTXMDnxk+GJBMJ5HkblMfTT5B6xby56tKBwmxCR9s65VcnRpcAYHEOi+7fXTR4fx6OfQuBMQ2TUTtyVeFJjPtMVEqwknaaoi3uYC0mWt6fhTVErwM0DyUcak7RxmZQFSMPcb+x7rHoeYehxkSmU46nbGEm/6/vDUi2FNOD5El0OYag42Tw9CdSws8qcCNKAFW46dDJHhvghnawIVjAOslDLtaoqgAlxMx2JlncR+0kgWbr4Xfr3jQK7Kj5B/2ASf6oZUyoJ6qArTH7Ujgxo5JhtUqbMkov4cNa50LIjnf/uDV2M1jOUCgwTVq5j1WiK3qW5gLiNIyToW34i8fLoz9C80YNeKq7TvhHqwJjcxfnWN+g9NwCS+nBXeLQl7oVIXpU6oekbdGjisqB/VkHgtSS0n9VndiBN4+DiyOs/wrvYup1i1VbDPlw/Be7l+mSDqs0A7AwIAhAEhcSuR18BtL2bG9xC0COQjgvCI+FRxXNy3X6GNvSQ7izyM1GC/le4HeKBX1LmXPRlE+ZEVxcZ3VSjD9fy0S5op+a+nrsOJJac0KjrsbG9N8zoV6D+h28RELGOCXsl5Xpj7zPNVPfPBCau/I/2wxeo9aQJ0AVHtZtQ2FXpHQsbQa2KvHZdR1j9g4u587ygF9MAHBCYWWGZPtC1AMrYpKpsF9M+EWC8PWPBbHIblp68B9Fq2kTfLGCs4OioDdXdOhSOczckLrTZBP94
+ eDLCvwMw
+ VGCXp1rxShsZ9+Zzw8PEop9l4Z1a3ITFr5zteUqizVTpu95FGGZMqnfd/5dz5ju5eI7nwNqb2kySqXOVaWYrRxJqmITlUgpjn8IGvXyUXQp1GzH/x1R2avsNrojHYZDqdU31U/blRj3PZSWS2XXF5WmuvTAmtEIpqfQUwEi2C5GDioFHp1qas3xYSfsKtHqMeafP+QhbSIoLAmHya5fX3DkbRJvofbZbTeUMH0no4yDljbZcT2A8ICN2B+GMW+kpPleA8fRnCay2HkxRWeoAB/yg7bBEkC7zrjaz2XQxLRKTdhIgNgmCq2Y8HZ9xZ1KFGROkxBION1merFNdFWhS7R73cog==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,27 +137,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 8/31/2026 8:25 AM, Ackerley Tng via B4 Relay wrote:
-> From: Sean Christopherson <seanjc@google.com>
+> From: Ackerley Tng <ackerleytng@google.com>
 > 
-> Add and use kvm_arch_has_gmem_convert() to guard guest_memfd's invocation
-> of arch hooks related to converting memory between private and shared, as
-> only one half of the x86 CoCo duo needs the runtime hooks (any pre-work is
-> pure overhead for TDX).  At this exact moment, the overhead is negligible,
-> but that will change when in-place conversion comes along, at which point
-> to-shared conversions will "need" to find all affected folios prior to
-> calling into arch code.  In quotes because very technically that work could
-> be pushed to arch code, but that would bleed guest_memfd details into arch
-> code and would be far worse than adding yet another kvm_arch_has... hook.
+> Rename kvm_mem_is_private() to kvm_is_private_gfn() to prepare for in-place
+> conversion, where there will be two lookup functions,
+> kvm_vm_is_private_gfn() and kvm_gmem_is_private_gfn().
 > 
-> Opportunistically provide the kvm_arch_gmem_make_private() declaration, and
-> rely on dead-code elimination to eliminate the call to non-existent code
-> when CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT=n.
+> This renaming allows consistent prefixing of "vm" vs "gmem" for
+> kvm_*_is_private_gfn(), as opposed to kvm_gmem_mem_is_private(), which
+> looks like a typo.
 > 
-> Reported-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Closes: https://lore.kernel.org/all/1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com
-> Suggested-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Suggested-by: Sean Christopherson <seanjc@google.com>
 > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
