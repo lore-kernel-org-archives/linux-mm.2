@@ -4,99 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27C54C624D4
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 14:45:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72CF7C624D3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 14:45:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 252D96B00CB; Tue,  1 Sep 2026 10:45:03 -0400 (EDT)
+	id 02F786B00D8; Tue,  1 Sep 2026 10:45:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22A0F6B00D0; Tue,  1 Sep 2026 10:45:03 -0400 (EDT)
+	id 004E76B00D0; Tue,  1 Sep 2026 10:45:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1404E6B00D8; Tue,  1 Sep 2026 10:45:03 -0400 (EDT)
+	id E62066B00D0; Tue,  1 Sep 2026 10:45:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E86426B00CB
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:45:02 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 743F714041A
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:45:02 +0000 (UTC)
-X-FDA: 85165465644.09.B9C1BEE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id DBCBC1C0008
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:45:00 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JbQsYQQT;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id C1ABA6B00D0
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:45:03 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 451C28026C
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:45:03 +0000 (UTC)
+X-FDA: 85165465686.23.15682F8
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2B7D01C0007
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:45:01 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=JwJXK0dz;
+	spf=pass (imf20.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788273901;
+	b=FoEhF7+i8WTG7TBrZC2lwxWnwwnb9lY/gtb9f/wQsxmKRQy+idXKC6mK/yRR96j+QyLI6R
+	TRHzcYaUYDwWkKF/hvUKX3+Aoyi4MS0aEURm24czMxS+Nr/f8OEBUVDoSS5dz2+a8fVLQK
+	VikCrCHV1EF6K5KKrkNc+9z3c6U8Ey8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788273900;
+	s=arc-20220608; t=1788273901;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fAIsm/HteRf3YKYFv2nKHjUIchlu3eaENoAxwWG8aEY=;
-	b=Bz8YeinVM/5IpZ+HjN8u92NUffrOT5e3aWxWEBzV6qahaJXMTw+qvsr5mGGHrzOTsKUimJ
-	YoD9PHmWGTfoT0dTyc5vKDD5RAipOQVNZFeJfaFgbUZqm+6Z1lIbbiPRvaSWbJIYglZKiC
-	CwRYF5T/OWPPxhyi+3k+1vc/MoiCBN0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788273900;
-	b=HCUg7SWJ8vcU+vb0FocpAPWV2Id7QUAYPowP4tBAQpjwQ1Q69ToK7Oca7fgexyaWdYv+RH
-	9DZICGy1YnXg7mMe8w4/weofJTZnyx+HewN4g5d17wMYmI+I4l/GtykTHjsMg/3sMKazqC
-	hB66T1dkk6ZglaOY8GBCbJKfflrL7Uw=
+	bh=zi1O63veibWmbpQLKyNgIo0W3ylRtY8+gyDmMJt2ycI=;
+	b=Snmy0UnNS03bHlRzwl2CVdgn3ouawMDjSyC7oIy6QGJYardMFMvepCz1kzWaf4mhscf1IE
+	o9SWDID8+fq+d/svtOeAUleZ7PcdwwTyH6lOEcpxf6HCCqRJP3ooje+BlDwunXyaceO6y5
+	xTposLUHM6tgb3t/kJ6nWc0viu7eYBQ=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JbQsYQQT;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3FDE6602C2;
-	Tue,  1 Sep 2026 14:45:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D871F000E9;
-	Tue,  1 Sep 2026 14:44:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788273899;
-	bh=fAIsm/HteRf3YKYFv2nKHjUIchlu3eaENoAxwWG8aEY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JbQsYQQTryTJccngjQ6sMGW5kFfCavhUFjLzV4MjqkHi+BCzDmSYL5sVMBrrEt8h6
-	 ktgB1GV43LZv/WsX/Cvn1eGJsTE9h2i0ss//1pzBa8nQq1CuANiviKerSRkcVhQ368
-	 rVsBLyMjr6sQfWasTsIczZFZPpDR0E3U3SjQOi98KqMhYvzEWFqzVAw9aN7vDSnLRS
-	 pgLTqQXL/riVvYdkKcamGBovzkNxn9/95svzBrkDubdasz4HNTM3W9B/ZIb/xeIBIb
-	 jut2js8skF45pnqjTJ/o6Vr4ukAjg6/C6XVq9xmOMilcFlaTnMQn19gUcg6KHB5gPx
-	 PbkOK5Iq8sWoA==
-Date: Tue, 1 Sep 2026 15:44:52 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Hajime Tazaki <thehajime@gmail.com>, david@kernel.org, 
-	linux-mm@kvack.org, liam@infradead.org, rbm@suse.com, akpm@linux-foundation.org, 
-	luto@amacapital.net, brendan.jackman@linux.dev, liuhangbin@gmail.com, corbet@lwn.net, 
-	kees@kernel.org, broonie@kernel.org, mhocko@suse.com, rppt@kernel.org, 
-	shuah@kernel.org, surenb@google.com, vbabka@kernel.org, wad@chromium.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-um@lists.infradead.org, 
-	geert@linux-m68k.org, daniel@thingy.jp
-Subject: Re: [PATCH v2 0/2] support kselftest on nommu platform
-Message-ID: <apbknMd-vv6jliZu@gremlin>
-References: <20260825015945.141739-1-thehajime@gmail.com>
- <f2ac9432-4fea-4007-aab0-ad80597b284c@kernel.org>
- <ao2Tl9CLL7WjHYun@gremlin>
- <bb9a3add-4849-4928-8b6a-0afc0c73b112@kernel.org>
- <ao2l9Ao7BQI6uRKC@gremlin>
- <m2y0dsuf1d.wl-thehajime@gmail.com>
- <ao_541nBaa3SJS9F@gremlin>
- <m2v78wueir.wl-thehajime@gmail.com>
- <apAgQJ5p8LEDj1c5@gremlin>
- <40e95edb8dafd88fd13c3003c0e76df6a2f124d9.camel@sipsolutions.net>
+	imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=JwJXK0dz;
+	spf=pass (imf20.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=zi1O63veibWmbpQLKyNgIo0W3ylRtY8+gyDmMJt2ycI=; b=JwJXK0dzcOpJ1IqGXLqFdbDbzU
+	FRVvk7bxSI7Ah2AIvWIVHI0FQeDIxyvhBFuif1zx+VQHuFp16/DlXHo2RHfVYN/M33r1OaY28HQYH
+	YEmCVsImkX6RXOkITQl8fKcn0KVKj2NbXGRVlElbHUk6yVzylPBm9E4ZnivF2JtkpQj+J452Cv+jj
+	6TNPEDVjlRWVQp6qSifGX/eET4yxUOcrR2+LAnCpNUK9aqU+8CN7EmIK4ycWr0EgYRADIT2gT/y0n
+	OUA/iRTiOTpYAV3M60vrTx48lxLP/Ewaqud6W0SZSM8J+MvPd0XpYr+s0Mu6bCY4WCOtXed0sCYQr
+	ALxy9PNw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x1PjG-00000005Gto-2EOO;
+	Tue, 01 Sep 2026 14:44:50 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 728C430031E; Tue, 01 Sep 2026 16:44:49 +0200 (CEST)
+Date: Tue, 1 Sep 2026 16:44:49 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Jianyong Wu <wujianyong@hygon.cn>
+Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Chen Yu <yu.c.chen@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Phil Auld <pauld@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, jianyong.wu@outlook.com, zhongyuan@hygon.cn,
+	huangsj@hygon.cn, wangfengyu@hygon.cn, yingzhiwei@hygon.cn,
+	justin.he@arm.com
+Subject: Re: [RFC PATCH v2 20/23] sched/cache: Estimate utilization of the
+ whole thread group
+Message-ID: <20260901144449.GJ776954@noisy.programming.kicks-ass.net>
+References: <20260827122816.756234-1-wujianyong@hygon.cn>
+ <20260828021156.785662-1-wujianyong@hygon.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <40e95edb8dafd88fd13c3003c0e76df6a2f124d9.camel@sipsolutions.net>
+In-Reply-To: <20260828021156.785662-1-wujianyong@hygon.cn>
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DBCBC1C0008
-X-Stat-Signature: 61dn3qrp5ktc7qzruyaj8gqpio15p393
-X-HE-Tag: 1788273900-981593
-X-HE-Meta: U2FsdGVkX183w/iPEkDxHDltF5j0Pah4gu3sbKxPru6KjrqsYpKV4g94ovol+eg+plvh7RBgFB65McEw9aUY9wxEiLntiRnYzh7hrSqycZJZKCoH9w0ad2NrxffC+N8yfWY43Qwmkb/aUOi/ggqY/RDLkmznC9rA7Xs09ecKKXtV4S+VZJsJOn6mKnkqwz2IOluCK2qL7368y+kA1xutuuKFhHOv3UI+bubF/IFTaWIWESiMDJL+dGf1G2tidxqYNDqRI3hlqxJjJW78iPrtg7f6ZGywmmzVWTZVstRdb1NwpnyvDE9Da7nN/wd1kVOeeSg0gUYjjRmkbSw7LtDJed938PWgLxW93za6di3+Mwh8RGQps7t2i+4ZPiDr4gQAbpD5SQEnA1TljEQtRDQ+x8Hi8OyuL8V2LJ8UYKcZo/dBLBZgB5LE/w/d/msEYJHQ/li89BI6JKacfRM6cUJsUBXaWK2cfwf1U4MCdKsXupAPQZOgFL/2cAIRkle9lLAiT4XxTtoxathq11mNvFbxqHS3btr69xa2OtJFuExkl5N1S46Va//5scqRghHRHMlfzGxxZ/EkE0/kmgqZMAdSpCKIBMx7tWAwRJeXgWNfcXdsj1+4z3SfpSJkvHqjdS3/KFDSGGF2D5fGia+v+YvjCuisrCNqnlx3rRHSYEkOBt8d9j9qNF4AfacO6RsOHf/SYx1HF8zAQPfeqGZslmkp5Y82m5vG6fx75GXm+R3r9Zq+oHOJNzv1xXQwhTsrIEggL1GhOJ4l3/DDNUFwX0jEw+EYczHMYzwHQssFVmxkLzEQus8gKEHqsvT9IwipS7kcI7vumQjvpkCwTVxakmjg1QJ08rUxWeN0uncLOaMtP+HJ+xrwSX5l1E3Lvp1Jb6tSfEg0fpK6GCfoPaA/bphbBw1JpI9IAAIvejfQytKe4EzfXVsuj/3Df7UXHi8MGSHzA4TWfB3iYJAqW7SWN/T
- 0HnDV7PR
- Kle3ighPKDb0s/r/HB/NK1ixihVqyHikSRdW1FB7zTfFB7up7p6wIR299LPX/1fA9TyBtfqozCM0yPVmVw9I3y4BVr7GWBEx78rnEPIVcVwZn1yth+bY9dfQPkJQXDPSDYUG6vszcXs26qh2GJnBeXnKDVSkwjhiWNu3UxIxzGDe1DkuHLP2m//SSjm9STLKuhbK95hfgolmUuIIcapV3WG/TKVt+TkhsOrFSYpwhPV/pWZ7/zvF88B2heIWCcC9wH0WCORell2aizv7lr59jYyrSgQ==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 2B7D01C0007
+X-Stat-Signature: abxpcpc19ffh5yjw1isbgp7ons9nojsd
+X-HE-Tag: 1788273901-131175
+X-HE-Meta: U2FsdGVkX18cXjXEmLipMCo7iWVkOsSefpV9i0eY/Uk/un23UrjU0P/58GNfyNpE/lXeHkbBopQvOOMoGO1z/VWLVxdK4Z6jWF7lEYZziTDDeIyJz+7XX8H/mkiJXkpp1PfjheZmuL5VVuA9h48yCe3GDqsmtvgYpyE299ynYR26m6h6eWRpPwfKH2QkuySctfBLEhw1Tb3zsRKAvRiTpLTXg4/qKrD6Dnyoonj4j7wqWxv0INdAO3Y6RIVK1+lHeJW8K8+e7XuyKm8hVpjFsADFCXNJW+XXQ5bM00jiFV1JQSndIKdlc8aXjL0daWPp2wh1SzuzR/JtNdoGUsXgdL1DE0nZ/UQwDXVchtT8kVUCqBLw5hzvm0kBTXHjo+qQRrQ6nt2s+rHxTsfEhy/sFb8DQ2MTi13DC8oxMuSF6KlfE1WYCVOvRQ/CTOOYW66LUNmsmFjw95hapQZ7zyaaJ0lapNKtAdLYmV2eRNcBRCKwpBdd5nIqA0xNtoj9CAhW4Lk78xOa1mKUOdrqtMvxkZBgY8jZb41AhMJ8/y7YqOHwGesrPrLvHiqG9ejIf/fhLL+lg94namNms7bD062KGW1hm25Y+nEuBTQcqdn5WQlAhyTtpq5zKEf7ScrHMDSBKlHiDcaadM/GQVNpa0qZXUH4C7j4OLqgsk6SDPLpynSZd7zZk1c5/0bB3fkycOx2ZtVNp1hEwxSgbsvpyUFhbhBZ7jhCrAXSFADO2c6SXWDCdh3yI0zVUZB6ha3SJy1ysvdV8u6/QRh/dP3QqtUV2v3EfvrqxDkMJ7MT5vfKKMa8PlPczMCyN/FBMLHo33Vgi26FOkm1EezdOgOymWHHDXCj7w48EzQ5TpRVcxtKEy3wsdyXxcvtapCbsuNPb3CZHnY+vD3tPkw5VPcNGsES6MkwsUmG5yhoK1qJuIiswH8MqW4xqVEaaI9Z2KnkYofoXRhd9wQPRJGAxZzPH5L
+ 0YKH/bY5
+ 0kLzNzS+pmfg4kVHinfLP0zKGmFg1SdRi3toDCf0RjDXdB3mw7d26a7oFOD0+kx+aFc079n/+DF7voDfuVZdb4b8/vn6BWJ4L6so0VoC/NKfvG8buRdXlZ8DNiF5BY2m5NBMEtbsKgJpcP3P2fw0dfn7tGXb/FhXaLQUYH94F1L1SizSomGVtz3Xaf5r+p/aHw1OvymG1HmBmjxs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,31 +107,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 01, 2026 at 04:28:49PM +0200, Johannes Berg wrote:
-> On Thu, 2026-08-27 at 12:32 +0100, Lorenzo Stoakes (ARM) wrote:
-> >
-> > Ah ok cool, thanks! Is that headed to 7.3 or more like 7.4?
->
-> Seems everyone was on vacation (I just got back) so I believe it missed
-> 7.3 since -rc1 is just out.
+On Fri, Aug 28, 2026 at 10:11:56AM +0800, Jianyong Wu wrote:
 
-Ah damn! But understood.
+> +					mm_util = mul_u64_u32_div(cpu_util,
+> +							min_t(unsigned long, occ, NICE_0_LOAD),
+> +							NICE_0_LOAD);
 
->
-> I hope to have enough time in this development period to the merge
-> window to figure out all of these things and get stuff merged - UM
+mul_u64_u32_shr(..., NICE_0_LOAD_SHIFT);
 
-Ah that'd  be great!
-
-> wasn't on my priority list with all the (LLM) security(-ish) stuff going
-> on in wireless.
-
-Yeah entirely understandable, I think we're all being pummelled by AI
-lately :)
-
->
-> johannes
-
---
-Cheers, Lorenzo
+will probably generate better code -- I *think* the mul_u64_u32_div()
+ends up being inline asm and as such cannot optimize the divide
+properly.
 
