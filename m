@@ -4,131 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AAB3C624D6
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 15:45:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EAD1C624D3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 15:54:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD5576B0276; Tue,  1 Sep 2026 11:45:45 -0400 (EDT)
+	id 286156B00A0; Tue,  1 Sep 2026 11:54:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAD416B0277; Tue,  1 Sep 2026 11:45:45 -0400 (EDT)
+	id 236BB6B027F; Tue,  1 Sep 2026 11:54:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC4306B027F; Tue,  1 Sep 2026 11:45:45 -0400 (EDT)
+	id 14DD56B0280; Tue,  1 Sep 2026 11:54:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7640B6B0276
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 11:45:45 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D5450160441
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 15:45:44 +0000 (UTC)
-X-FDA: 85165618608.18.73BAD54
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 2D352C0002
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 15:45:43 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZTvYdEaL;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E2E8F6B00A0
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 11:54:48 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6D3111A048A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 15:54:48 +0000 (UTC)
+X-FDA: 85165641456.28.65BBED0
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 891B940003
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 15:54:46 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=EBROAqcf;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.49 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788277543;
+	s=arc-20220608; t=1788278086;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UVHtz6Elr1SZh1A7h5PnNFYa2TvXIJLXLTfOMhtO9T0=;
-	b=ksAr4wlsuUVGr049r1b4IIZUr5XXatXUbnFh5gwxek0pZYynQwwLZn82lMhQxkaSWD9ZHg
-	kpNUwgqmkXRbIuKUMV2mDGm9i+PJ/iObDU8ob1NKQfI2Udj2cKW0ncKP9ZVhm4DdK6h5TK
-	tLEf6Ie1BYfkkFSKjY+SQkee7OIVJ0Q=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788277543;
-	b=GF0u/pbFjaWYD3xu4YIQ38DQn7/3DnCkU2BWjDxeYeRZArNX8HW627+004HTH+LgSpkinH
-	tQ3DMG0CMd3QN4kF8bdRRk1IO6HcJOVbGqiVEt1r4qRCcKhuhl3XdLLFE9HeJm7O05lF4S
-	S052u9hbgoPjpD9k/W7dorXrUbErLrs=
+	bh=Ucz+U5vH56qFJK/L4c9McNdRpbMBTFsKxX9xAzx9wCw=;
+	b=Nca2TXMPtAlUAXyAudMzmYaZFDKcETLbUGl9zi+N21TXEj2sBoJ1SsJVc6+whNVULlO8bH
+	zUAbYe+BfI9K3JERpLMmwSMnODCBrSiOhv559eEzk3YM+L1qWF0qMZBZpQehUENthEFkPq
+	IN+KS0QMlYOVf5fJp7uZfFPI4fe9QbY=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZTvYdEaL;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2AC84434B4;
-	Tue,  1 Sep 2026 15:45:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951D41F00A3A;
-	Tue,  1 Sep 2026 15:45:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788277542;
-	bh=UVHtz6Elr1SZh1A7h5PnNFYa2TvXIJLXLTfOMhtO9T0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ZTvYdEaL17Xe57XD8vyZST14VBPRctjf28yyFGBI5rdY8BhdwP/dFY55tWjPYAROH
-	 wHw1cZaETEpdGFMWKgfrhKvyrIXd6bJDtcydcX3/fPqK8Kfi5IfzcyNr//cMw16txd
-	 HFiCeAX5f/1+Nu/YL3SO5aPns4ylRzukBeENUY24mi7KCFX+k7s14AOxgxiOOtHlum
-	 W6G9F88xDUVcAEipO83iD5JtJTIZcqLoGsvrFg6C9MQ0JUePRMRswDgKmoAF/Vk71T
-	 gM3PMpQT/NErJ7UkLFICeRZsY2Bjhj6d+sZWTtE2+9Pnuydiw13BrWhOWFQOR8QNap
-	 Lu8bcy8/bQcbQ==
-Date: Tue, 1 Sep 2026 16:45:14 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Guo Ren <guoren@kernel.org>, Brian Cain <bcain@kernel.org>, 
-	Geert Uytterhoeven <geert@linux-m68k.org>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Simon Schuster <schuster.simon@siemens-energy.com>, Jonas Bonn <jonas@southpole.se>, 
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Stafford Horne <shorne@gmail.com>, 
-	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Russell King <linux@armlinux.org.uk>, 
-	Vineet Gupta <vgupta@kernel.org>, Michal Simek <monstr@monstr.eu>, Chris Zankel <chris@zankel.net>, 
-	Max Filippov <jcmvbkbc@gmail.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Peter Zijlstra <peterz@infradead.org>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Richard Henderson <richard.henderson@linaro.org>, 
-	Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Richard Weinberger <richard@nod.at>, 
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, 
-	linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org, 
-	linux-sh@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-snps-arc@lists.infradead.org, linux-arch@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-alpha@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-s390@vger.kernel.org, linux-um@lists.infradead.org, Hugh Dickins <hughd@google.com>, 
-	Qi Zheng <qi.zheng@linux.dev>
-Subject: Re: [PATCH 01/12] mm/huge_memory: zap deposited page tables after an
- RCU grace period
-Message-ID: <apbvoN6ttgHfI_xg@gremlin>
-References: <20260901-rcu-pagetable-freeing-v1-0-5456a81c8212@kernel.org>
- <20260901-rcu-pagetable-freeing-v1-1-5456a81c8212@kernel.org>
- <apbOlyF77yDCV4cF@thinkstation>
- <apbcoMTVlL42G5tg@gremlin>
- <20260901142408.GA56830@ziepe.ca>
- <apbiB51hjm-9pRzf@gremlin>
- <apbuO_QveZNAz3ns@thinkstation>
+	imf11.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=EBROAqcf;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.49 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788278086;
+	b=GqBXUdeLvgkxxaPTq60/yd10TlNBECS/Y68PF+jOM3ALMexjB+vFPwIA0XGmk9O1ObB0EH
+	5V8qtSpgJzhv6agDs/bugoQORa0gT2dXT/CbQ70BPrXXj5PXWYpXpnC1UdPf3LpA4A9KXh
+	w7bb1nkjhNxQ4Y8G4RxjTASLniQlN0Q=
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-90cc64570deso14702076d6.0
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 08:54:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1788278085; x=1788882885; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Ucz+U5vH56qFJK/L4c9McNdRpbMBTFsKxX9xAzx9wCw=;
+        b=EBROAqcf9VGRGy8L72LuHbOwXtF+7FHS70IzxOMhP4AFsawdtjXNCfSLTxQwmgq+WC
+         sNYhsrIbWTsHlC38tqfD7wwnWXVtZ1W3wMjfn/2DubWJwWoxSTRq67veKgy9REnGzIse
+         mEIcuB061Mb1dQV88QRm5Y+17G+LQ41nIHP8F7snln01C6NpDVmC2BT+LD3jI/CYSWv1
+         Mp5V5WOY1/yfrnuG1D7f+C8u3/iTPNzmRDaZNekLhVX2UzF+rA8d22QH3RSzzSf4c9ax
+         HGL1J+iLjR780c1gOW8Z452yLdOISVbq+r2oB/AFi70lGWo+c2zj7DdHxBp2zc8B0r2A
+         /lNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788278085; x=1788882885;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ucz+U5vH56qFJK/L4c9McNdRpbMBTFsKxX9xAzx9wCw=;
+        b=R/HfME6ofw9ZcIXGs3Fz0ImQ4CZUcdhLoZc+1fNrrLqpVWT/INfwhxkV0SudVELHOw
+         XUuH9cQV9B/P+BNbEpFITvwyux7MygtQKKl3ECwCsRrXH5kkBlQUtf5u6PChSzyo5CdZ
+         CZCO0yAqgObi3bcpr39oqldd3m3c9aoDV+n3c6Awj1LAAhoSzNWE92NH13jDpVIsEkS3
+         8c2WSAsV/dmU7CaKDNCIX4n0LVAQamO3J/DOOCLqQE1NZ+H5SayAxm3mf6W6V/FEogJR
+         LHlDO3bRwMCX+GPb1HbCSX+Y8rIbzHSE+lXx7Xg3GO0UU9BsAs9jva1xMXlqU/0vJ7qm
+         uLsA==
+X-Gm-Message-State: AFuF++k9egC4fONeL+0rKnVMUstwpImx3z6NWnnfcxFd5yp0quK2+KdU
+	xqa3BzDhQsrovO11CeDzW7B/wF3qpW/4QklzaS1UPrxTuchzjtyQD/SLfYrQKqyDj4s=
+X-Gm-Gg: AYBFou1Ck+e0r3kyI45LC9fR6wA/bxEWcXVYYmIW8Eksmo1PtUWedLgrYva/zc8P3S4
+	/n5fqDhtMpB9YGorLI2+b0zUb/W8zXn8Bg3JQG3n5xIMXxPuPXXEwU0L1lry8W1lb6BZqfBIXST
+	rxa50qRzAwX2jDZAriHaOp6zQZlITcGGi9spdE8uj0kDu0eJZ5apHgi3sJ9g8QDONs2XKJRYLjF
+	HQWSTrsmSPV/Ql/Wvuva/6mPkKHqGcBEPhyAaRRRqG9JBRvqSthpyB2bYUb3POV+zuLmvd3QlB1
+	subLA2mP3fVMOrtSJCKq94+nS2CAhgahm8Rwisx1ltif7KwxmBAuajJq2V0vHlJM3q8D8x5MjS+
+	F2rE3HTn60ucA0Cwos1W4UhgV0IIHU+R4ttksqylLd7+JKWlqt0zncPmyNjy669nHQxtZIIiAJX
+	xHU0/GOCe/xAyff4pnjx3qTGONSmVkePoVxq+jwJa96lgsPRM5DCF36vr64hls9gj70MQUQ+ORw
+	sPuZQAZWaw1pZ7OHDd438BrBqMdsQQrY9DgIcgxLUGb
+X-Received: by 2002:ad4:5cc7:0:b0:90c:c1eb:ae42 with SMTP id 6a1803df08f44-90e9579ed9amr72405516d6.13.1788278085601;
+        Tue, 01 Sep 2026 08:54:45 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90ce4512dcasm111045856d6.34.2026.09.01.08.54.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 08:54:45 -0700 (PDT)
+Date: Tue, 1 Sep 2026 11:54:43 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, matthew.brost@intel.com, 
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, apopple@nvidia.com, 
+	urezki@gmail.com, chenwandun@huawei.com, 
+	Chelsy Ratnawat <chelsyratnawat2001@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/mempolicy: take a cpuset cookie for the interleave
+ node count
+Message-ID: <apb1Mq0rJfNwh7Xa@gourry-fedora-PF4VCD3F>
+References: <20260828193111.1023497-1-gourry@gourry.net>
+ <877bl5qknu.fsf@DESKTOP-5N7EMDA>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <apbuO_QveZNAz3ns@thinkstation>
+In-Reply-To: <877bl5qknu.fsf@DESKTOP-5N7EMDA>
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2D352C0002
-X-Stat-Signature: yz4tx6iy87mfam14uj8o55bzf8z6oz9d
-X-HE-Tag: 1788277542-243050
-X-HE-Meta: U2FsdGVkX183Ow3eZJxO5Ko55h7A8BwXbqAqI0aSp4qWtEsVwFDLdOsvzTmDxIVYrYFgKonIBODuHsuv6mo8a8aT7RJfT0UTiv/BrIU/mB6AJ7ou7jrU976VxxfrSoO34z9kWRwGj8YE6LiiqOdJQyv19Bz7v+ViiUA0A+8IGstgSUsdNR0m6LJ8Lz7bFvGNoIJdczK8DCDQcxof5DIqhK+EcUVsRALJ8QTLgW+XqO4EOY70cRtuktj+NZFv7ZdaR59W48NLPgQohtpvxpPLztnm7ujfsZtWs0bWu3+ftyrwDfRn6KtfxbYjie1bhmPpk78595nKIrKP5v+K44S3ARPtmcP82JbXEZ8bWdwwcWzWfOfO4HYP162JLlyC/fL+zAF1wawInjdoON2t0ZSW/F6eEPKQ32WGNGoOMjevmBmKRMZ/wQbWE/H08krl99bY7CGRKK8F9/6OVOAdHasA+VPrFJ/VqgOOYDMmprbB0YpxAjzhCj9UdnO8hMpqEBFtLDjXsCqkcm4ubGH1HG6q9ssU6QL3yJ4++ZOzyzu94eMfrQGTkS1/vCoqKAj6GdESMeW/QJ8j+OQcAi6srwO6J2PXsajH4NPDYzomk6sFjqHm3QFcv0MmHVa+er5u9yjJx5bCE2qeYZKhXdY9xrNLEXxqK7E5k03LugDTu/09pKp3+JHpcFdas7U1V9pgonmltbkYFiD3b240DvDIeFTjKLO9vwfIYLtx4z3u63g8+yUSKCbsRP9eNFniF/UpFQ/L95sHSZ9pz8rSB0aQwaLUKeWD1fzUbiPgzulKYTaC6hqT93oCIHzsCKmNAAYyUdfZImx736K3BhLam+tEy0gwq5T2sONagVkJCltcxIQDQ9KCUGPDpe7ED9qJ8iyoUGwOdog7PPI6j8wXG8bjH2iNVY5nuqYNZ0nvU4HVSdJgESx6Ho8lZkT2yQI5SE0ZzynW233RboklFMoUmhGEUoz
- 34BAtbnY
- GVEWNXI0ek1FDTPjATsKqaSrtn8yRnlFtuP14evd1+dhMzzaDk447N1zZCKe1MG3aArzBDePRGzvJImXmbFz57HG0RVY+kwpElh3heGFCa95hLVX8V1+VLeFk22Y0iKQJDlESK8M/h/Jni8qrZ0DIlQs/lQqXm+8at8qVzGeyD2KhRV+Gfwe9N+8Z4efkfzv5//Us3T6InPEwu3WH6FfnTJ2NLf55HHoF4HGaUEITUOOWfnbRRQkPgBc1S944NA1QYc1N+uyUyMbAI8QJYMnNZsxjfEfvo+cks2lRQ/opqvEVHtK7MGt+IH8E9aA9kW2RZ7Z8PKO7Z+DL+H3tqYFUrxsXK42mptaA3WHR2pEndfcLc4rARb+X5mz/0A==
+X-Stat-Signature: 4k6h9tzc5tqhkakmm5xuhiosx4wu3653
+X-Rspamd-Queue-Id: 891B940003
+X-HE-Tag: 1788278086-363038
+X-HE-Meta: U2FsdGVkX18wLffSjlHoJhuOC1T1bHEksZ7i6xVDJeAxTzLh6dipf2vtW+qhplEwl7ZfVp+o5ljKaNEbhFr+1DF6+WUUxKFWt5G/XeHvaIA2WEjwYnOlerwqQ6lRrRK9oNwBmaFnYWaeX40d6c36phEECTa3+XTK9V7SjUQ0ABZsAr4Xs7ccwyXOL7G+PUorcdKP4l7CVUVT1ljP0zFwVALeYP3nHBuiZEHNQl2X7IltcfoycoZNZhcJVJ8Ko8ckCGR2NwPx2tiJQvAY0w8A2yj1V4DiChd4B9aHw70680D1JIG0hvmRErMAWvesvHVOXMvK1ZwAfA67nFKsw0xyJiRGbsUlDiq9J38EEdvP4nGUkBKhbcxPL2I2HbJyNFcATvLMakXzAJp8qEkGDmQpZeNKGeC3lCT4W9YVe+9eRZwvLWVJKaML0E1fzpSOMwKBofsnXceayNtGIRq89mlLa7GHED5Hr6Y6Bb8zpxNKMpOI9pmwpq/w80C4MTZKEN2IKawkQZruTHjQq1uGvTI5VDYdmPQita4KGzuTjYy0dgLftVc6kgTubP8St++jeSTFrg8yBMqNIRd1j2e3L574dR8/vo23BX12QnjMYVePOJE4+oa+I1DWXTHqQ20u4TxQtvOwMm04PKFxZ9Sst0MeDmTWsw7wTlT2jvF97B2wpWrXQwd8uEH8Qaf4+wO5HQ8lZgN7E7o6iKaOIxFeNTqm/N1PihxT2bKKRHcl61iUA3kueeW9gVFqYn3FVRkQGIq6BrRWpxk5xrxXudFMXaBpGizXyA0u+17kvpEosYGPD+defEplsuH3U/zvLfipaCYizmfUomkhSkiVZNQYzJAgBngnFOktN90E9JAXIpqCFZFcC7lHwTf2p1xXmRHuXoWTkOmwwWGCkgYA9ywqwiIxIyN8tgbqmTzJ59qMDEBUeHCXxqZrJc1TZLmGbK9uee04UjxGp/tsix3UDUhQetl
+ u93O2ccM
+ BihGohEuSJS7mpKGdI98NBld1yPxT6bBewlCKXRHbNN6E4LNB7Ek8e4AeGESPeRXqpRCTP6xR+lMhs7aMDi9+sRtGjS3u+Pe+7oB+KFdhGvRqUR/Zt8b8qz4YyoXw3xTDfjflymUxTAe8pThFpM1l5UYyJojcieUg8AuablivX542POy2MQRJHC566iYjCpONcltVMc1DQ0qpYu4TKTXOkV5AvYKoeXzEFowIn1WjXdwERR7xOVyZshdsYe35BugaE+q53VK+iH9snjqrFqAJFK3uSWTrLwmA30Or/4HV+xdyl+OXZKLLYeLWB+rIoA3oug5AqnT+d5k4UlJwbElJYiZrObYi+hFHTiM06HulV05rvqGQpMI32U7DhIYCLfOMPEAsmBopll43y4ZTZxBUmQBz5+ocDh2g9lpvPgAoxWTt5I2wk6RTWOuTz/u48NEkF4jE+lONgY3vdZn3PKSQiIlQU5OBPmml+R2BITZoULTNVvbHSmBHKGcu6o2DttUJfv4R
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,99 +123,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 01, 2026 at 04:28:48PM +0100, Kiryl Shutsemau wrote:
-> On Tue, Sep 01, 2026 at 03:41:17PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > On Tue, Sep 01, 2026 at 11:24:08AM -0300, Jason Gunthorpe wrote:
-> > > On Tue, Sep 01, 2026 at 03:12:45PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > >
-> > > > It won't be costly at the time of the calls obviously as its deferred. Maybe
-> > > > increase some time spent in softirq but again is 512x that big of a deal?
-> > > >
-> > > > I'm not sure how you'd both defer the free and somehow utilise mmu_gather here
-> > > > either really, certainly not without it becoming extremely messy.
-> > >
-> > > The less costly version is to thread the page to be freed onto the
-> > > mmu_gather through a linked list in the struct page memory. This is
-> > > super cheap since it is just a singly linked list operation.
-> > >
-> > > Then when the mmu_gather is flushed it does a single call_rcu using
-> > > the rcu head of the struct page of the head of the list. The callback
-> > > clears the entire linked list of pages.
-> > >
-> > > Since you have to tlb flush anyhow, it makes sense to always use the
-> > > mmu_gather. For example the design I ended up with for iommupt
-> > > accumulates all the invalidations and all the free-able memory into a
-> > > gather then invalidates and frees.
-> > >
-> > > This allows maximizing the tlbi efficiency too. You can't do call_srcu
-> > > until you flush the tlb and if you call once per table then you are
-> > > also tlb flushing once per table too.
-> > >
-> > > So if the kernel really does want to clear out 512 leaf tables the
-> > > optimal implementation is one range tlbi for 512 entries followed by
-> > > one call_rcu to free the memory. Hence the gather..
-> >
-> > I think there's some confusion here.
-> >
-> > This isn't the path in which a page table is being freed, the _deposited_
-> > table is zapped, in zap_deposited_table().
-> >
-> > That is, the page table kept in reserve for THP split, that is not
-> > currently mapped.
-> >
-> > It amounts to a __free_pages() call.
-> >
-> > The TLB operations are in e.g. zap_huge_pmd() etc. and nobody has
-> > complained about inefficiencies there.
-> >
-> > So, unless I'm missing something here, TLB flushes play no role in this
-> > whatsoever.
-> >
-> > The issue Kiryl raised was that instead of immediately freeing page tables,
-> > they are now batched up individually by call_rcu().
-> >
-> > I personally find it difficult to imagine the numbers here would be
-> > problematic or certainly cause anything observable beyond what is
-> > observable now.
-> >
-> > So I'm going to have to say, unless it can be clearly demonstrated this is
-> > problematic, I don't think there's any reason to add additional complexity
-> > here.
->
-> It would be nice to measure munmap() overhead here.
->
-> I am worried about hitting DEFAULT_MAX_RCU_BLIMIT and trigger
-> rcu_force_quiescent_state() which can be disruptive to the system.
->
-> DEFAULT_MAX_RCU_BLIMIT is 10K, so it is ~20G of THP unmapped on x86.
->
-> munmap() of 64G worth of THP should be enough to demonstrate the
-> problem.
+On Tue, Sep 01, 2026 at 07:24:21PM +0800, Huang, Ying wrote:
+> Gregory Price <gourry@gourry.net> writes:
+> 
+> LGTM, feel free to add my
+> 
+> Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
+> 
+> in the future version.
+> 
 
-I mean you're going to hit that from RCU freeing page tables already, which
-most architectures already do right?
-
-So if RCU saturation is a problem, that problem already exists, but I've
-not heard of that being a problem at all?
-
-So you're going to have to demonstrate why this situation is markedly
-different from that. And it's the same scale.
-
-Overall I think freeing 64 GiB of mapped memory all at once will inevitably
-be a slow operation, freeing them directly will also be a lengthily process.
-
-And also it seems to me that RCU mishandling heavy load to the point of
-causing system instability should a bug filed with RCU no?
-
-Also note pte_free_defer() is already used in retract_page_tables() so a large
-collapse could also hit this problem?
-
-I'm not sure I'm convinced there's an issue here.
-
->
-> --
->   Kiryl Shutsemau / Kirill A. Shutemov
-
---
-Cheers, Lorenzo
+Thank you!
+~Gregory
 
