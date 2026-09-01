@@ -4,100 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9194BC61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 17:49:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC76BC624D0
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 18:01:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 61D696B0096; Tue,  1 Sep 2026 13:49:45 -0400 (EDT)
+	id BD8096B008A; Tue,  1 Sep 2026 14:01:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F3CC6B0098; Tue,  1 Sep 2026 13:49:45 -0400 (EDT)
+	id BB0796B008C; Tue,  1 Sep 2026 14:01:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 532436B0099; Tue,  1 Sep 2026 13:49:45 -0400 (EDT)
+	id AEF236B0092; Tue,  1 Sep 2026 14:01:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 363566B0096
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 13:49:45 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B774C120498
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 17:49:44 +0000 (UTC)
-X-FDA: 85165931088.29.5CA8834
-Received: from relay.hostedemail.com (unirelay09 [10.200.18.72])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E20F9C0009
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 17:49:42 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BE836B008A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:01:24 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1F36C1A04E9
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:01:24 +0000 (UTC)
+X-FDA: 85165960488.26.3729334
+Received: from mta0.migadu.com (out-161.mta0.migadu.com [91.218.175.161])
+	by imf31.hostedemail.com (Postfix) with ESMTP id CB2E720009
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:01:21 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=q6d6LXw5;
+	spf=pass (imf31.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.161 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788285682;
+	b=q9Vh/9gYmzCM7Yjns4iK9h5Qb0TL7DjR6GDDNDstI3Coi7rzf2XuXyYyFMgwyw+cpIVvag
+	5nH/sS0T+dlP+DwV+FhAuQsWdfVRBAM7g6iy4Yz0QmxoMQpUgfDWV/eD/HGh6estYvJQ3A
+	+IGIw33ioqu3WCOSjq6dMRjWE6eaIpo=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=q6d6LXw5;
+	spf=pass (imf31.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.161 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788284982;
+	s=arc-20220608; t=1788285682;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ygP2WicIyxvIfgiulI4Z+w98tf+NFr5YAyeGttsc9pU=;
-	b=Cvacowr7o6RSsUCF9HH8zYr/zImahkRaJdJr7h85hsH43c4jrFUQ77nTAFT8wltueHuk3k
-	Lf5cH/cLel1fWKw5D9erMIqhxPT82Q49NULMD0yMEN1wjNMSECT3AoI0mnPOoSug71235+
-	2GUEHaHdAmG1jskj3leSSsBsWc7mq+0=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788284982;
-	b=6+uHU831MTreYTufpV5BlKDYjSx43kmX/cZobEeU0ut+88C17h/+5TAYYeKFBiBmO/vBAF
-	8u9DyzhDtB3kA4dZjbNStpw4AbfmHtufeUctNLq4hzqgAVO3C7REbJgMNapDv18XSWFloj
-	gBfSc4aI5LwqsPd5PUw6mE6NykpfVi0=
-Received: from omf20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E5B95804FF;
-	Tue,  1 Sep 2026 17:49:38 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf20.hostedemail.com (Postfix) with ESMTPA id 18B6320027;
-	Tue,  1 Sep 2026 17:49:28 +0000 (UTC)
-Date: Tue, 1 Sep 2026 13:50:27 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: David Hildenbrand <david@kernel.org>, "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, Muchun
- Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
- Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike
- Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
- Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Nico
- Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain
- <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
- <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, Gregory Price
- <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
- Popple <apopple@nvidia.com>, Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng
- <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song
- <kasong@tencent.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Baoquan He <baoquan.he@linux.dev>, Pasha Tatashin
- <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, Jonathan
- Corbet <corbet@lwn.net>, Jan Kara <jack@suse.cz>, Masami Hiramatsu
- <mhiramat@kernel.org>, Dave Young <ruirui.yang@linux.dev>, Shuah Khan
- <skhan@linuxfoundation.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, kexec@lists.infradead.org,
- linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 14/14] mm/page-flags: remove PG_private
-Message-ID: <20260901135027.028ea9e4@gandalf.local.home>
-In-Reply-To: <21998471-74B7-4799-9E8C-D75003D1A4CB@nvidia.com>
-References: <20260831-remove-pg_private-v2-0-3668159cd9e8@nvidia.com>
-	<20260831-remove-pg_private-v2-14-3668159cd9e8@nvidia.com>
-	<20260901115542.35cf337f@gandalf.local.home>
-	<21998471-74B7-4799-9E8C-D75003D1A4CB@nvidia.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=7pL/VhErMJQJZR+yiMVDUlqvytwoHX6RdOY2/5ueRvI=;
+	b=q9zx8Xot+vLD18xRdJXr2FvIm5ggmvK7gMLfxBMJlILcdfcmaiSQ5J31ChI2J/XAe5FZPF
+	RwB7cXc6+SHaPoBHewHJr8vg3S8ew5UfkWk0XOrqqkw1hD8qezkjCdqpeoOCcY52vuqX1t
+	OyUNpiXutps+a+ZA4mmvtOpN7FKiDuw=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=nqYmKjd9b9ej6SRWcnIOWJeONPy2vtwt8S3/sMfIUtY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788285680; v=1; x=1788890480;
+ b=q6d6LXw5C7LRW32fkzga2wLw7TSXkpXDll/8iUnvQEoZ14NRnxa41tilgeEnscAopuufaDKV
+ Kde3G4BMAos8MOxMYnZy0mrzOmr4bEtRvzXCpqilDG5DZ2mKe66DWsRDQIaDaEQ527BwOvUUd0U
+ tBY/fp83+1EuC7Zj3egqFu74=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id dc1bc49c649213e5;
+	Tue, 01 Sep 2026 18:01:20 +0000
+X-Mizu-Trace-ID: dc1bc49c649213e5
+X-Migadu-Flow: FLOW_OUT
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Hugh Dickins <hughd@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>
+Cc: "Liam R . Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Matthew Wilcox <willy@infradead.org>,
+	Meta kernel team <kernel-team@meta.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] mm/mlock: use the IRQ-safe accessor for NR_MLOCK in __munlock_folio()
+Date: Tue,  1 Sep 2026 11:01:09 -0700
+Message-ID: <20260901180109.3797944-1-shakeel.butt@linux.dev>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX19gFCgDW4g7ez/BxoPyHANfn1/41/yL2k8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=ygP2WicIyxvIfgiulI4Z+w98tf+NFr5YAyeGttsc9pU=; b=1mgqFkkrL4Js3FsbhN/khvoOEvnHVh/aadmAMTCUde9xGE7BUvdArUa1RFWye4SH2Ctek4vS4gXiMbJcZCGFh5DVr4gJ1YyJQrfjy3W7IYtjDzLOP7asP560ZaX5A29U3FwYxXzeZu3rRui/fC5b+U4Jy3KfK07GTDhVffGq7Bg=
-X-HE-Meta: U2FsdGVkX19FFDvFfWjTCdlnsQZ6K9ZDH4G8yyE+mLes3dBmHWO8NPu6yEW8XXzWgHsuxMDRFSptqXWfMG/Mc+vYMqM5I7IvoIiQAb8UocwUi/mhVmxt81zskgiVGnoXtfTLsJnPK2S+57J8V1WnQFXxP6OtVQ7C3JQiqyk6GHKdnEceDMmgU8UvEa1Vj0wlxj76LZY6CogJO8meStEy2MeviQuBcRNaEP1/lsb0/kCfQ/lF+Pw1bHZfL8fAaIqQ9wHGLY9MM3CVEabUY6AJmK8sY0fn0jiO4bl6CHHeOt5dG97E3JSrappl0A9/PWW3XYCVCivoJPwoLVwpncq/jSqtrYDYGvgG
-X-Stat-Signature: rxq65jotboo5e8ifu6pp6esabk9rnwg7
-X-HE-Tag-Orig: 1788284968-292977
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E20F9C0009
-X-HE-Tag: 1788284982-912504
-X-HE-Meta: U2FsdGVkX1/BD503TEmadSAbpxrDg7IJa78c3UjrYdHiw8EFczmXUKS4UGeobXJKtq07zm0lZ+WoY2iK/vwIStx3BR8tkXmAD48Ssuz/Af+bf82JEQyAUuAGw+OzX4sCiUXaZlPkh4qu1XyDC7Gk2Xqho8zru3DAtR9ArCMWGY6GWViJplGMx8bbAFd4OPh5Zv+P4NuSkrgBN0ecuqZmkvADv7fzN7SogMzKcyf6KwNB2Tij+snGmKrbjHI+TtpZ/4ei9LBG8s61kKYigJ8BPQw9R9z+wu86w/reiAHEIhYYXiJoIRvlpBXL61g1nDdNIk6P9QhW9X34JAKLz1g55qC5HJiCTbNAU1ZnjHz+KTcor2pNmBm+CxsqvHh0hqFG9nI03S4FOYSXId0nQ/Ro4j3yp08nTB+AYGD+cM66+hSAKZ2nFj/wwNAnoieTtasb/ts+zWOpbtnEdFdPtuIVoIijCJFQaoePGOIBb2hqpIcgR4oJo+jb6dnIv0leWX8ehfS2assADoErtc1MqNxrhFeCU67X+F/eVgRwuRkRZVWtumbVxJH7fXl4oGjLYKFDdnGp5mDdHgB0EPrTUwHHXRCN8CkgHQOFUNyiIzUOap5js6WTf931Px3GCch4XenLsXBAT1SDXHHDmTY0qivCsIOFIpkiMKdkeo7GC7vPVn97mvo/eiiA1dfAECqY0cm6Na05cyjyVB1MUgDrZLb/Im7+J5uAvHkeVLoz2OifZALeZPOqJ1z9a/r1NeuUJQKY4yM4LMhMcdv1splGN+17KOSbwu0WEBTHVmRwCy18cwV4gmnkjORSj/DxF5T1VEZHQVBiZnAEQHEvyIQREtZEnQ49M4eO9tliUrbiUke74tLolKB31lKi2eX6/JQ3IxTG+DWkyUZFJYAAYerF8ftpKE6AC0mzAqUcjs/7+jwwpzKNWVpJ7iSVi9sIEX/AkM0Ew38NbMZeL4rk7PLnomq
- RMiuq8AO
- 4Ua1zf0zEElf2j2E975+WeAtlxHOU45k2Ug2KkO0s6vszfwT3DsZ1mB21Wuqb/H/Pr6ae3H84KGQQRNoPPmEdVghRVPqSYWts5u9fDVuIN1yu5ChajOMNNv4HYnTMWAEAiUbQ
+X-Stat-Signature: bfoixkmmusfeqmwc84cn1u61d8i5xcdm
+X-Rspamd-Queue-Id: CB2E720009
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788285681-235559
+X-HE-Meta: U2FsdGVkX1+GhtHhOo3soxwgObI0xredCnI/FIrLoyul7HUJSRUSw6raCWHsgjopXOA+njHuzk6IfTE5QCsjOmWRLKzMRjLEbAblgYmS1TZZP7rWqfTXDW/x1hw8JvFOa7l63EIeUWUe1j8kzcvnPx9TsxicYmw2IU3AdZ+TChYgkGicaGHh+F1tSdIv6xWCg0RGy4vh8a1xGWFtRI9xexwpKSNKh9kpDO6bYQPIXlFuIXQkwOiJVTEM78bwwqgJYLNXbH8itUL+AWK5jSOgyuRbZ5/OqdRA0WnP91vASTWfBwCMw63A56ylHyon76dlljrImEm8jUlac6Q3auUzLsv5aptss6+hxsYoAPslXr0ukXAfzc0enJJQH26UPORc1uA3ZEW1pBptN2YslAsfy5zRilc3VdCWYh1H+s2zA+5HTgHbSueIZ4RKuoEhtNqFIgRt8C09vyFjoHlX0+XIMuggRPrAsmVvFM8FBQyI+VckuYERvh39iSwL9CC/qN7azDRzV7nv6wv8D/xhTi2tpgTBg08ghtLC5GM9cpd5ViCH/PrNm/TqilaviebfSzsM8+oEzyIVXFMdww40JC5Q+IcNSy++wGVhGhukFLWyBurLsYqNZz/F79LDSPixgKmsAQdYl+oBaV89yUAbceMjDWmCAtdo1Z3spqAZ5UQ++yCeopyA1MlToavWg9REoE1wiqqYsQb75FdaWegGkL3TLQAFiae0asYFh8v17qBNr/Di/DxXF2nMOGLAJzZksNeNjK/T9fatCBX052JCJct9UMRvgj5L0pjzS6FtTSy1OaGU94fdUSnP8NpWccl7HBy6VfxNWE8hpmFdA0nO+2vZRXtKlpatU8ODEzn9u/nfKWuikH+fXEEzRZ9Pv6/VFy6VbdLNVdDUairHh8Tk7oO/nGzrEIeuDxTGKWivij1jFdN+NHk4pR8mR753fopW4KUL4uri4w/LQN6DGo/lJer
+ rQnNMDFL
+ 7ZB+UmbbF4wPSdk/Yao/B+mxN06zlLbl+IYUoMHlzE42tdwRyDUH/9O0MWV5bTOozXJCZ4qp/5pc6gE+qA25p9sskG/4z/7oLCgmmOH4Ootq95OQaVpVseMgBqJ+FVcPuyxgJ7z2gy/wur72/FPSv+TtUwzIZzkuL4Kr+rk1RTEAyz08Yqu3yBJ8urL3Afw7UYEvKIigHghO+Gi+cGkYK2dW8U8rb0htkQaNT8M643nkh+lyIuOTMnUj0JA4QwKfNVSTrztq0pZtKol7aluSj8vvqYVFv1g5ggH39HQppJyMvBLQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,19 +95,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 01 Sep 2026 12:01:24 -0400
-Zi Yan <ziy@nvidia.com> wrote:
+NR_MLOCK is updated from interrupt context.  __free_pages_prepare() clears
+a stray PG_mlocked and adjusts NR_MLOCK, and a folio can reach it with the
+flag still set from a bio completion handler:
 
-> No problem.
-> 
-> BTW, the plan is to add PG_folio after this series is picked up by Andrew/David.
-> So the new __DEF_PAGEFLAG_NAME() will have no user then and can be deleted.
-> It should be fine, right?
+  __free_pages_ok+0x6af/0x7a0
+  <IRQ>
+  __bio_release_pages+0xde/0x260
+  __iomap_dio_bio_end_io+0x16e/0x1a0
+  blk_update_request+0x14b/0x3d0
+  blk_mq_end_request+0x18/0x30
+  blk_done_softirq+0x49/0x60
 
-Yeah, then we just remove that macro and change the one user of
-__DEF_PAGEFLAG_NAME() to DEF_PAGEFLAG_NAME().
+The folio gets there like this.  A MAP_SHARED file mapping is mlocked, so
+its page cache folios carry PG_mlocked, and an O_DIRECT write sourced from
+that mapping GUP-pins those same folios.  munlock() then runs
+mlock_vma_pages_range(), which clears VM_LOCKED before walking the page
+tables to munlock each folio.  A concurrent hole punch reaches the folio
+through the rmap (i_mmap_rwsem, not mmap_lock) and can land inside that
+window: __folio_remove_rmap() -> munlock_vma_folio() sees VM_LOCKED
+already clear, so it neither queues the folio on the mlock batch nor takes
+a reference, and the pte it clears makes the pending mlock_pte_range()
+walk skip the folio at its !pte_present() check.  filemap_remove_folio()
+then drops the page cache reference, leaving the bio's pin as the last
+one, released from the completion handler above.
 
-It will make that patch even easier ;-)
+So __zone_stat_mod_folio() here needs interrupts disabled, not merely
+preemption, and __munlock_folio() has a path where they are not: when the
+folio has already been taken off the LRU by somebody else the function
+jumps straight to the counter update without taking the lruvec lock.  The
+read-modify-write of the per-CPU NR_MLOCK diff can then be interrupted by
+the softirq above, and one of the two decrements is lost, leaving Mlocked
+in /proc/meminfo permanently overstated.
 
--- Steve
+Use zone_stat_mod_folio().  mod_zone_state()'s this_cpu_try_cmpxchg() is
+atomic against a same-CPU interrupt and retries, and on the path where the
+lruvec lock is held its cost is negligible next to the lock itself.
+
+The UNEVICTABLE_PG* events are deliberately left on the __ accessors:
+they occupy different vm_event_states slots from the UNEVICTABLE_PGCLEARED
+that __free_pages_prepare() bumps, and nothing updates those two from
+interrupt context.
+
+Fixes: 2fbb0c10d1e8 ("mm/munlock: mlock_page() munlock_page() batch by pagevec")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+---
+ mm/mlock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/mlock.c b/mm/mlock.c
+index efa6716e4dfb..39215a3eab1f 100644
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -141,7 +141,7 @@ static struct lruvec *__munlock_folio(struct folio *folio, struct lruvec *lruvec
+ 
+ munlock:
+ 	if (folio_test_clear_mlocked(folio)) {
+-		__zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
++		zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
+ 		if (isolated || !folio_test_unevictable(folio))
+ 			__count_vm_events(UNEVICTABLE_PGMUNLOCKED, nr_pages);
+ 		else
+-- 
+2.53.0-Meta
+
 
