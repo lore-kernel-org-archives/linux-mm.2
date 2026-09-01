@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F63CC624D3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 18:29:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3E96C624D0
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 18:29:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA9E46B0092; Tue,  1 Sep 2026 14:29:13 -0400 (EDT)
+	id 2BF446B0099; Tue,  1 Sep 2026 14:29:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBE046B009E; Tue,  1 Sep 2026 14:29:13 -0400 (EDT)
+	id 296CA6B009D; Tue,  1 Sep 2026 14:29:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AADC36B0092; Tue,  1 Sep 2026 14:29:13 -0400 (EDT)
+	id 15E236B009E; Tue,  1 Sep 2026 14:29:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 542016B009B
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:29:13 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E2D6DA42FB
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:29:12 +0000 (UTC)
-X-FDA: 85166030544.18.6EDA60D
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DFA1A6B0099
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:29:14 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6B5AD1C21DC
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:29:14 +0000 (UTC)
+X-FDA: 85166030628.21.26E26E9
 Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 54E2BA0008
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:29:11 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=Xd5Vb38D;
-	dmarc=pass (policy=none) header.from=efficios.com;
-	spf=pass (imf25.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
+	by imf12.hostedemail.com (Postfix) with ESMTP id CC56940010
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:29:12 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b="qggSTP/b";
+	spf=pass (imf12.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788287351;
+	s=arc-20220608; t=1788287352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hjDwQHd1TIkqr3Ad7cKo//QgmO9EQnnm4D2U1FbPu7k=;
-	b=q0YJmDANeZJsYO0oYvpEkm1nMN24IebldB5pjqXLI/gQxbzG6nPVgj0JDOwTDZ1qKXMVhb
-	UXzuOerFIB9kUGva/lWKnkYIN25v42k/CyJUPQ/eFebQKNNcjzegaq16gs9pTDdIZGtYNe
-	+gZxSUcaueMZfoF2bpfLESrpKWfuTW4=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=Xd5Vb38D;
-	dmarc=pass (policy=none) header.from=efficios.com;
-	spf=pass (imf25.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
+	bh=Tup5QvhrUxBuHbOp/mUBjVWrl1apXEgoVpX9q/lsPY8=;
+	b=qJvE6yGOanLGJqC1bRdW/C/TUa8wawNpbygqzsIj9xcd6L/MfiytqTeeb8dyIYcAHJou7X
+	h/6RsPXMfgYQJB9sjni/N+Dbf96JxK3uoXn0BEF8/sz2RfED+/Zp1fKvFapL0IzHLgJpGT
+	AFeZ4pmYF2phjYMnKg65Vw/zOXFiggg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788287351;
-	b=pRn97InQzIrinEF3eCEwifVsKGNJ9dUWfYZECRRRub8CQTCADhrUH2m7ix8DvawpBImPAi
-	bAvM+4CWoRNx3x5+nnEWDXl/Tey+VeSjKP661SmbTTjm/zT9A6PaO5SYz4YIUuKwgMFQPi
-	IAzZS/v5F+HgtiWyqjg7CGSXwdm8jcc=
+	t=1788287352;
+	b=jnuRBycKysxGFIdN34sgVxgbTTeSt4UGk+jHUyDd7N2mZDcYa0swynzpWwh3Q2oewr0GPd
+	dSCEuv8ZdySsT7Zw1a/BEDmev4/viSurXeJeiNcJVthVQk8T8yEMVUqAsEFMSLkY3RxlC9
+	wGoR6spO2GvbnJ2TgCKU4vfrCo3sAsY=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b="qggSTP/b";
+	spf=pass (imf12.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
-	s=smtpout1; t=1788287350;
-	bh=hjDwQHd1TIkqr3Ad7cKo//QgmO9EQnnm4D2U1FbPu7k=;
+	s=smtpout1; t=1788287351;
+	bh=Tup5QvhrUxBuHbOp/mUBjVWrl1apXEgoVpX9q/lsPY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xd5Vb38DOHYqf5jsTX1OBL+XUPeo0hHAoghwuBZciNUCRhXiDYAyxd6pFmlef4HVE
-	 tHBMDb+HaKLbtKDPcHOVJ6k+sYFn5RqYb2ntCV1Oy+b3e3zM5MvAq1YToHABCvKdkk
-	 eaMN4SxmTkSiUMfjcESTBhstBDNuUZCEX3p2S23Fq8MXLALsdrMxTtOEWyXnyObG0I
-	 cL5MpnlfkRzQ6y1BGyaeuTwvFStA0la/KwaN+hFn+q/So+nPxBzUxVw6XAbe1EYc5s
-	 TfoEukUdQc8yH2Gxy6D0pNdzPk1WR5DKKFcSSexlFahl6vxCc2CHz701X3ZO9Pw9kt
-	 oQRT3B0hndkYw==
+	b=qggSTP/bMcWpRasG0WnaP9ws1YJFtVdzjObT99OSRwUR65maTBgJBaqTOQbc0wDeL
+	 25QqSwuqF/o9a+SL8TEJBKSUiAxdk+MbcNlDACdQ+9N6JHsHeDThh8N/Wp/FmRu2sY
+	 1Qwi/Bh+MvObtuU9Xt7CHHgq5+e4MGXlVSRPAQR2KE66n8bnwbXbG5lz5aq/fF71LQ
+	 GaLUslwndIoe4WqGLpRYkP//V8t6vrVPKiocXYPyq1xESgzxyGl7wNA23o6WCons/D
+	 9lIZ6nPcfP8LZl7OYaG8cLoQVBn9IN5QmlDsFxZwiOkO4QY4X9vx7tnkR4HROZwP6l
+	 cscrNHFYhbIrA==
 Received: from compudjdev.. (mtl.efficios.com [216.120.195.104])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4hZDsL4tHhzWP6;
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4hZDsM00XdzW6M;
 	Tue, 01 Sep 2026 14:29:10 -0400 (EDT)
 From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 To: Andrew Morton <akpm@linux-foundation.org>
@@ -98,24 +98,24 @@ Cc: linux-kernel@vger.kernel.org,
 	David Carlier <devnexen@gmail.com>,
 	Josh Law <objecting@objecting.org>,
 	linux-mm@kvack.org
-Subject: [PATCH v21 4/6] mm: reorder mm_struct flexible array to place mm_cpumask first
-Date: Tue,  1 Sep 2026 14:28:49 -0400
-Message-ID: <20260901182857.26690-5-mathieu.desnoyers@efficios.com>
+Subject: [PATCH v21 6/6] lib: inline percpu_counter_tree_items_size with boot-safety sentinel
+Date: Tue,  1 Sep 2026 14:28:51 -0400
+Message-ID: <20260901182857.26690-7-mathieu.desnoyers@efficios.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260901182857.26690-1-mathieu.desnoyers@efficios.com>
 References: <20260901182857.26690-1-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 54E2BA0008
-X-Stat-Signature: nstzuk59w4g8im14x68xk4s4oo3ei5os
 X-Rspam-User: 
-X-HE-Tag: 1788287351-223942
-X-HE-Meta: U2FsdGVkX1+5SpXyt1Pbm0j7RIQbDIrzfxCVr/6/4YkdEa7yIBp9a1EhDxJrC4usIgNvvOupLNugN6Ou1iO0LgMVK6nhzHnz6nW942a0mQ/asaYZrN+NH2A8vdPUT2w0YlBHY/cwADdjLGd7YQ4K2stFYMAqF2LfTBAL7XhgBOpmWdgtWiNXQqcj3NLJOXSq4wBiajy+gjfgTCfWgkr+XoYJfXs+JRKodFSDivssMFheO+xMEj/cR1Kc97TMhxTJzVDdvzAn95OsfZsdXwehmAOOY7nSdL7iTOCdfci7NIhUM5BwNrHrC5muXiRgEYjDSjAYZG6nMtKGGfhOXIRYylnka4FIQvsVsWPY4E3+nivXAcVMfVe/dauyYCC73xXESk7kpsPMkF+B0hqHiG+zrlkB4wwS80bSA0dx4rQpO6+a75OApn0RxrfQwlBu8YI65KTPu1k7ABgEGttKmMOzOnR8Tqt15NG6GmNO/sr/87D/sBpsv73I9hHBtAN24tdFhU3+TYuAMcWTSsVC70YeETFjGwrPF4OgyIP5L9W0IdUGJUfMlSajd7exutEDhfND8MqseTczQefyTy2bo2vowbU5v48ZjM7bPpVf6RrE2hqAUkaBJb66crB1wMobATurE0TNzxGRwCi7UvX1WYp3YxFp+jnA2+nNJgwK2FP1uQSLZ/CFkw7+p+OKOMtad9TIMyttxYGyHd/qpeOKMjHesCSJFr5GpYySDvRsDJn2uM/pm4RcUbboJkKdSXiNJ8ZVgCxMZCNd5bk+ZRrL/fuG7Qa85fZtl8i/cgp+hnLsU6CgFORiTtKYuAE8JIPLmqarqxM2rNvur/xf6y9go3xPtqdYnz/JTTodX3CQFS2fWyHaua/mBH0r1WqHzOYLU7r/f203JwmSuhmR1DzqSbq9TXOuCgkfQkqv0pfir+t/jjnSTngQjPB/xsCxsUnhgCY/jcNDvDPFzMpTqvrJAg3
- vJmkdGVI
- ZTE964WhkmXW8orU3zeZ6GGm3EPqoXXbYsBqs7O2djcQlKbgGwoF6GGYne6pJML93d+NOHWXJq8lJTEn/PreDUfmwaszrYDymyBgw8wQRv95teu8RxO5oGgCg4zR6sOP/k7Jh+GH3eE/eDkL6CZMOMYv5h/KxigaaeP0Aa7yhhZoJokFBmEMmFo+xe1QB/BQAD2CyqCBqZoCWITXp8r8KjTZJA00J/U9XmDOIb7TTK8RJPGDOs/v3K4JCrlMX5CQjhSuK7+bbmegkdJZW5L2UUuOB3MAKmXt5A9c/5em6BuH/ng5dR79eTObxMlJMv2oe34GGoV4wFlhj9gc7wbZRHQOXMMop5+pwCykrPCCbM0lkyif1RLo06p07rvXnm+4vRienR+9MybskAgeM8re4nE0MctMCeQVnLr75xRa51sEG9BUyRGpHkcXYQHS4PaMtNwDQaHYGKXH9ZAWtTBIfLboJxM6ye3Z82QmdfZEaa8EGRFsXk+qU0l93gwxpnlaFNQsoU6WCxEKdX6emNYVo9IKya+uID44SqhycZZ08nhNNx5OSIg1/wclNPA+uZ3qMYFBLYvZkjmadfinGZuW9ABevl98QtI30hec0NiD7HjYCq5aUMyD8/XVbLyOpeV3hquSFktFS47WXcKLdVzxjv0UAnlIrLgJi3pmwrzov9fikFQxnYy5/zFUJGhM79KrYjdpqczhuqGbUs2Nyy9sKh+NNnlPFcNu4py/in6vpMAxgLT1ulBm+Zh2DUg1fGkyOw7REh0ToQWi9rGGQf8cTLU7U94kNQ/atTqr6aEDhSFiP/w6sZMFMSrIpisqYlR3RkKXH1CW1dqxUcw8DEPxt+9cPuSV8Opi+/czZp4RGSDHWAaf10F0EU80fMhhR29PvOfQ66k3pQemyxY3GpQ19kISIhzpHAD+9c/Xwron2QVpzKPk3ZG2OIWeANz/cB9BBKgTu8hatCAM2WnB52IaFLEjqp8//
- f3Sly3JU
- dFef5eH3ZZ4TWcnsTgpGWX8s46D3rc6qPHgX+vqdlL+zJs/3oZXvcLHOnoQeuQJZ3MdJJE9IarB0c19MvJV6SgMdyluwhSGgZaG1wU1gzywndDqlHrA9Zc0xZ/Rdy8TnGmp+MOdKOKyQSkdHB60GeA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: CC56940010
+X-Stat-Signature: s3ox6usienqnqwfh5p7ohx9e3qwyp11z
+X-HE-Tag: 1788287352-70323
+X-HE-Meta: U2FsdGVkX18Nzufd2AZ+XVkhCoOeycSQUcxN/aICo2JhxHgfHmQh0DjuGlNy/v0awJ97qRkoxnmCirmipG99dcmJq/YihqYpTEFpJh0i2eYjzIw9Y4IlSEyw9eeQZG2FcwaW/vhm5KOK955L/vtJIgLLAxRYGZYJ3gOsb76/R1ZmyXmvOfrqVUGFdqNXC1J9Q8KMGrN5y+KzEhfDEpz1MNBC0qKJiAwcckuQP0yebsD4ez9eBRdlgZvkqfH+F/QLBja3xyPe431gVVxhi1pJS6UGWsisCJ70bUqsZAlsqKWQXzmoQrkxTjqf3sqfvl0LAs92NDILagNtbNzvrIcT1dBnnaZRoDKrmWxOAxOMUqhEcZ/d1qLsmInz9ytl5cEXwhcWJjiF3c1EmantopFtRATu49uMrvdLjmOzSJxlw7GCGdibB2Bt8WFCNrYkWJSff5lVKWgrEvzeW0LUCZfBZsD2UmARUJRRbqWL2KEieseTf9dfRjUYGOFX9PkHiU63DbGEaqo/5MchtCII3J9aMpj25ySm+bZI9dMlwCShhHvX+NKCBUjuZXj47yewJjySMzdw//QJuLmQsYwBmBhl8wWlIjqr/TkGMSmIuph5fqdFRk+NY8Dznwiv0Hi4xGg2Q6O6Sh6DBkrm9YlwCGDG0aqzKYy+cCLV56x2wB7/ZGiDrZJLng1sGRq04xnWvYyb3SsbwxR1bKEGZCnxkFsmdPLNLrgRugGfYVpQBf9xjhOcDvoSmaHIwplf+gIX7c8rYf0Q8+vTlAl4EeeURnq7cor+toiF1YyRxbNqYcJ+hkH283tHROUh3khK8sh/QpZS1HzAR5CgCUeUhzZlxzngCnzxpCOIvmX1SkIBr9Y0G5tgKgiF7SAa8CciQeNvM1r39aRrVJrbg5vX4FhHoB3+8xmk2Jgo6FWHkgFADgIYcy6ork4V8G2DeETJLKWgckluKNhm/MVx4P/fQFUhY6X
+ iJERa2Rj
+ I96jv4rgA6Sji0DjlXYBMt4RscpBFuo0g8JRIhdWhZC58PhUxLL0XuoB1C5vnQAWhPxUb6k05TWeTNCV6kIrgA2dPsrHL3iB6+MIRcQuR0Y/3C/AqF9qmpXphlD8LwubSEcYFjd7HQrKL1S4TsIpkp0DIz5QmFDSEH2IP1fAmwyu9jvIvkN8QedQKqg3YeiYFq8FVkaq/GNIsaySBK5Ccig5AoYf1nN2YXbEuKzahkAwHz5FBoBRDupHfi6Q8TOcYhaoOJDvU0is0G5ygVK21rhqtahq1gSlDF7sBGOZlXXyBk2LbAERysl5NW8Soldj8YyJ8aexaDvB68M2KXFJVn4MPlH75RBnr8c1pBIYhY5LZxacEdJC7m30IM8TUBu4ZukQdCP0qgyDMdyw4M3wQkZSmYfAUOfGvqpSDDRdrYOK2/gvSDWA34UdQnHUcP0HFBUs95cvdQs1Yp6j4+uwv+0hi2z10Sv5f8eEw6IF3eP0FLdyCnWqH/t9CzOgAKj84uWIuqMoLkpQ0oY/30u72d3NZ0rCISUTPUrvNMLlUW9AL8fVwxWYP5bBMVsgVDuQ3CM2pZ7/WYO6WXwY5HDyuzzl1uSM0Uf4GAPTOtAi8fnu4H+WNeN9KyJipRbEW46AS20YCaJvw/LUyShkpqK72OE1UKft/e+iUSWz6hMmDhnbKvZrjAcFPWACxHYu5TM/o4LI4va6tq+yPQD9T3HmYSHsYb6XViNFaWBNxoMc9Q93/AvPTcYXWLuLrGxg2jaOLaGNDLM3yRkzVtqINVQr2R8drEhN/CT/uu74Qq78UoucPCudUl7Qhzh4IQDqQsD0I6ikutrjNeG0ppliCDM+4JxkVKJOH31p5um2PZaE//QzRdj7EiA0Li0+9UU3XPrFQ/s8b1LgF/nLKLLuEMkm0m0fF3GMbOjlAkLl0WqpKIXQz3AYHP/8+m1SffGfXOCsRJZk6Te+8vIGzEDhrpk/RUSxHDddj
+ kK0RkxPc
+ 7nQpoiyknqMzXhcCCM9SQJuUeGP2e42wHn0DxB5+GqJ/otPw+xZ2yGmlE5Vc4yuQL3hbNgU8iYgILe+AVCxMfQTm7Y76hlZVnJvgaix2W7okCi99igdxq51QzSo49hdLPw+8myP4g64D3GE4GHBcDg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,41 +123,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Reorder the mm_struct flexible array layout from:
+Replace the out-of-line percpu_counter_tree_items_size() function with a
+static inline that loads the __ro_after_init variable
+__percpu_counter_tree_items_size directly. This eliminates a function
+call on paths that compute mm_struct flexible array layout offsets.
 
-  [HPCC tree items][mm_cpumask][mm_cid]
+Initialize the variable to SIZE_MAX as a sentinel value, and add a
+WARN_ON_ONCE check in the inline accessor to catch any accidental use
+before percpu_counter_tree_subsystem_init() sets the real value based on
+nr_cpu_ids. An early misuse would produce an absurd offset that triggers
+the warning with a stack trace pointing at the offending caller, rather
+than silently computing wrong memory offsets.
 
-to:
+percpu_counter_tree_subsystem_init() sets the variable to the runtime
+value immediately after deriving counter_config from nr_cpu_ids,
+before calculate_accuracy_topology(). After boot, __ro_after_init moves
+the variable into read-only memory.
 
-  [mm_cpumask][mm_cid][alignment padding][HPCC tree items]
-
-The previous layout placed the HPCC tree items first, which required
-mm_cpumask() to skip past them using percpu_counter_tree_items_size().
-This created a boot-time initialization ordering dependency: any use of
-mm_cpumask() before percpu_counter_tree_subsystem_init() would compute
-the wrong pointer offset, reading from or writing to the HPCC items
-region instead of the actual cpumask.
-
-On powerpc, switch_mm_irqs_off() accesses mm_cpumask() early in boot
-via VM_WARN_ON_ONCE(!cpumask_test_cpu(cpu, mm_cpumask(prev))), which
-could fire spuriously or cause silent memory corruption if the HPCC
-subsystem was not yet initialized.
-
-By placing mm_cpumask first, mm_cpumask() remains a simple
-&mm->flexible_array with no runtime dependency on HPCC initialization.
-The HPCC tree items are accessed via get_rss_stat_items_offset(), which
-skips past the cpumask and mm_cid with appropriate cacheline alignment
-padding. This accessor is only used during mm_struct initialization
-(percpu_counter_tree_init_many), not on context switch or other hot
-paths.
-
-Introduce the PERCPU_COUNTER_TREE_ITEMS_ALIGN() macro to handle the
-SMP cacheline alignment vs !SMP no-op in a single place, used by both
-the static init_mm flexible array initializer and the runtime offset
-computation.
-
-The cost is at most one cacheline (typically 64 bytes) of padding per
-mm_struct between the mm_cid data and the HPCC tree items.
+On !CONFIG_SMP, the existing inline returning 0 is unchanged and
+requires no sentinel.
 
 Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Cc: "Paul E. McKenney" <paulmck@kernel.org>
@@ -195,145 +179,82 @@ Cc: Josh Law <objecting@objecting.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org
 ---
- include/linux/mm.h                  |  1 +
- include/linux/mm_types.h            | 47 +++++++++++++++++------------
- include/linux/percpu_counter_tree.h |  3 ++
- kernel/fork.c                       |  4 ++-
- 4 files changed, 34 insertions(+), 21 deletions(-)
+ include/linux/percpu_counter_tree.h | 19 ++++++++++++++++++-
+ lib/percpu_counter_tree.c           | 24 ++++++++----------------
+ 2 files changed, 26 insertions(+), 17 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 7dd6fdda9bc8..ffbcd18c4ecb 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3453,6 +3453,7 @@ static inline struct percpu_counter_tree_level_item *get_rss_stat_items(struct m
- 	unsigned long ptr = (unsigned long)mm;
- 
- 	ptr += offsetof(struct mm_struct, flexible_array);
-+	ptr += get_rss_stat_items_offset();
- 	return (struct percpu_counter_tree_level_item *)ptr;
- }
- 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 96ad6ac20b11..b26160b85f93 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1435,11 +1435,12 @@ struct mm_struct {
- 	} __randomize_layout;
- 
- 	/*
--	 * The rss hierarchical counter items, mm_cpumask, and mm_cid
--	 * masks need to be at the end of mm_struct, because they are
-+	 * The mm_cpumask, mm_cid masks, and rss hierarchical counter
-+	 * items need to be at the end of mm_struct, because they are
- 	 * dynamically sized based on nr_cpu_ids.
--	 * The content of the flexible array needs to be placed in
--	 * decreasing alignment requirement order.
-+	 * The HPCC counter tree items are placed last and aligned
-+	 * with PERCPU_COUNTER_TREE_ITEMS_ALIGN to satisfy their
-+	 * cacheline alignment requirement.
- 	 */
- 	char flexible_array[] __mm_struct_flexible_array_aligned;
- };
-@@ -1478,25 +1479,18 @@ static inline void __mm_flags_set_mask_bits_word(struct mm_struct *mm,
- 			 MT_FLAGS_USE_RCU)
- extern struct mm_struct init_mm;
- 
--#define MM_STRUCT_FLEXIBLE_ARRAY_INIT									\
--{													\
--	[0 ... (PERCPU_COUNTER_TREE_ITEMS_STATIC_SIZE * NR_MM_COUNTERS) + sizeof(cpumask_t) + MM_CID_STATIC_SIZE - 1] = 0	\
--}
--
--static inline size_t get_rss_stat_items_size(void)
--{
--	return percpu_counter_tree_items_size() * NR_MM_COUNTERS;
-+#define MM_STRUCT_FLEXIBLE_ARRAY_INIT						\
-+{										\
-+	[0 ... PERCPU_COUNTER_TREE_ITEMS_ALIGN(					\
-+			sizeof(cpumask_t) + MM_CID_STATIC_SIZE)			\
-+	       + (PERCPU_COUNTER_TREE_ITEMS_STATIC_SIZE * NR_MM_COUNTERS)	\
-+	       - 1] = 0								\
- }
- 
- /* Future-safe accessor for struct mm_struct's cpu_vm_mask. */
- static inline cpumask_t *mm_cpumask(struct mm_struct *mm)
- {
--	unsigned long ptr = (unsigned long)mm;
--
--	ptr += offsetof(struct mm_struct, flexible_array);
--	/* Skip RSS stats counters. */
--	ptr += get_rss_stat_items_size();
--	return (struct cpumask *)ptr;
-+	return (struct cpumask *)&mm->flexible_array;
- }
- 
- static inline void mm_init_cpumask(struct mm_struct *mm)
-@@ -1593,8 +1587,6 @@ static inline cpumask_t *mm_cpus_allowed(struct mm_struct *mm)
- 	unsigned long bitmap = (unsigned long)mm;
- 
- 	bitmap += offsetof(struct mm_struct, flexible_array);
--	/* Skip RSS stats counters. */
--	bitmap += get_rss_stat_items_size();
- 	/* Skip cpu_bitmap */
- 	bitmap += cpumask_size();
- 	return (struct cpumask *)bitmap;
-@@ -1677,6 +1669,21 @@ static inline void mm_destroy_sched(struct mm_struct *mm) { }
- 
- #endif /* CONFIG_SCHED_CACHE */
- 
-+static inline size_t get_rss_stat_items_size(void)
-+{
-+	return percpu_counter_tree_items_size() * NR_MM_COUNTERS;
-+}
-+
-+/*
-+ * Return the offset of the RSS stat HPCC items within the mm_struct
-+ * flexible array. The items are placed after the cpumask and mm_cid,
-+ * aligned to the cacheline boundary required by the tree level items.
-+ */
-+static inline size_t get_rss_stat_items_offset(void)
-+{
-+	return PERCPU_COUNTER_TREE_ITEMS_ALIGN(cpumask_size() + mm_cid_size());
-+}
-+
- struct mmu_gather;
- extern void tlb_gather_mmu(struct mmu_gather *tlb, struct mm_struct *mm);
- extern void tlb_gather_mmu_fullmm(struct mmu_gather *tlb, struct mm_struct *mm);
 diff --git a/include/linux/percpu_counter_tree.h b/include/linux/percpu_counter_tree.h
-index 828c763edd4a..3e8a820e2d1d 100644
+index 3e8a820e2d1d..4095acdc879b 100644
 --- a/include/linux/percpu_counter_tree.h
 +++ b/include/linux/percpu_counter_tree.h
-@@ -66,6 +66,8 @@ struct percpu_counter_tree_level_item {
+@@ -101,7 +101,24 @@ struct percpu_counter_tree {
+ 	} approx_accuracy_range;
+ };
  
- #define PERCPU_COUNTER_TREE_ITEMS_STATIC_SIZE	\
- 	(PERCPU_COUNTER_TREE_STATIC_NR_ITEMS * sizeof(struct percpu_counter_tree_level_item))
-+#define PERCPU_COUNTER_TREE_ITEMS_ALIGN(offset)	\
-+	ALIGN((offset), __alignof__(struct percpu_counter_tree_level_item))
+-size_t percpu_counter_tree_items_size(void);
++extern size_t __percpu_counter_tree_items_size __ro_after_init;
++
++/*
++ * percpu_counter_tree_items_size - Query the size required for counter tree items.
++ *
++ * Query the size of the memory area required to hold the counter tree
++ * items. This depends on the hardware topology and is invariant after
++ * boot.
++ *
++ * Return: Size required to hold tree items.
++ */
++static inline
++size_t percpu_counter_tree_items_size(void)
++{
++	WARN_ON_ONCE(__percpu_counter_tree_items_size == SIZE_MAX);
++	return __percpu_counter_tree_items_size;
++}
++
+ int percpu_counter_tree_init_many(struct percpu_counter_tree *counters, struct percpu_counter_tree_level_item *items,
+ 				  unsigned int nr_counters, unsigned long batch_size, gfp_t gfp_flags);
+ int percpu_counter_tree_init(struct percpu_counter_tree *counter, struct percpu_counter_tree_level_item *items,
+diff --git a/lib/percpu_counter_tree.c b/lib/percpu_counter_tree.c
+index 5c8fc2dcdc16..cfa5b04e05d7 100644
+--- a/lib/percpu_counter_tree.c
++++ b/lib/percpu_counter_tree.c
+@@ -653,22 +653,9 @@ void percpu_counter_tree_set(struct percpu_counter_tree *counter, long v)
+ }
+ EXPORT_SYMBOL_GPL(percpu_counter_tree_set);
  
- struct percpu_counter_tree {
- 	/* Fast-path fields. */
-@@ -167,6 +169,7 @@ void percpu_counter_tree_approximate_accuracy_range(struct percpu_counter_tree *
- #else	/* !CONFIG_SMP */
+-/*
+- * percpu_counter_tree_items_size - Query the size required for counter tree items.
+- *
+- * Query the size of the memory area required to hold the counter tree
+- * items. This depends on the hardware topology and is invariant after
+- * boot.
+- *
+- * Return: Size required to hold tree items.
+- */
+-size_t percpu_counter_tree_items_size(void)
+-{
+-	if (!nr_cpus_order)
+-		return 0;
+-	return counter_config->nr_items * sizeof(struct percpu_counter_tree_level_item);
+-}
+-EXPORT_SYMBOL_GPL(percpu_counter_tree_items_size);
++/* Initialize to SIZE_MAX to catch early boot misuses. */
++size_t __percpu_counter_tree_items_size __ro_after_init = SIZE_MAX;
++EXPORT_SYMBOL_GPL(__percpu_counter_tree_items_size);
  
- #define PERCPU_COUNTER_TREE_ITEMS_STATIC_SIZE	0
-+#define PERCPU_COUNTER_TREE_ITEMS_ALIGN(offset)	(offset)
- 
- struct percpu_counter_tree_level_item;
- 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 5bad7a24d186..db398b6c5288 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -3126,7 +3126,9 @@ void __init mm_cache_init(void)
- 	 * dynamically sized based on the maximum CPU number this system
- 	 * can have, taking hotplug into account (nr_cpu_ids).
- 	 */
--	mm_size = sizeof(struct mm_struct) + cpumask_size() + mm_cid_size() + get_rss_stat_items_size();
-+	mm_size = sizeof(struct mm_struct) +
-+		PERCPU_COUNTER_TREE_ITEMS_ALIGN(cpumask_size() + mm_cid_size()) +
-+		get_rss_stat_items_size();
- 
- 	mm_cachep = kmem_cache_create_usercopy("mm_struct",
- 			mm_size, ARCH_MIN_MMSTRUCT_ALIGN,
+ static void __init calculate_accuracy_topology(void)
+ {
+@@ -697,6 +684,11 @@ int __init percpu_counter_tree_subsystem_init(void)
+ 		return -1;
+ 	}
+ 	counter_config = &per_nr_cpu_order_config[nr_cpus_order];
++	if (!nr_cpus_order)
++		__percpu_counter_tree_items_size = 0;
++	else
++		__percpu_counter_tree_items_size = counter_config->nr_items *
++			sizeof(struct percpu_counter_tree_level_item);
+ 	calculate_accuracy_topology();
+ 	return 0;
+ }
 -- 
 2.43.0
 
