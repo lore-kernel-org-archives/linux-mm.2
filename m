@@ -4,107 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D909EC624D3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 14:42:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 010A1C624D3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 14:43:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B28D96B0259; Tue,  1 Sep 2026 10:42:58 -0400 (EDT)
+	id 0C7F86B0261; Tue,  1 Sep 2026 10:43:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B00996B0261; Tue,  1 Sep 2026 10:42:58 -0400 (EDT)
+	id 0A0456B0269; Tue,  1 Sep 2026 10:43:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3DB16B0269; Tue,  1 Sep 2026 10:42:58 -0400 (EDT)
+	id EAA8D6B026A; Tue,  1 Sep 2026 10:43:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 844826B0259
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:42:58 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 19F628045D
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:42:58 +0000 (UTC)
-X-FDA: 85165460436.10.400C197
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5BF0112000F
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:42:56 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=fSf+J4Un;
-	spf=pass (imf29.hostedemail.com: domain of linu.cherian@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=linu.cherian@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CE8D56B0261
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:43:02 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5D7B5C042B
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:43:02 +0000 (UTC)
+X-FDA: 85165460604.07.AF5253B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id A7DAD180011
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:43:00 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mUmYi5Bb;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788273780;
+	b=CvC8JR9CKcsAmYAVfI7PbH2cukTLXDYkWFhIoJi2QA6j4LMnpqLeRzyNXg2t7NZleqYR7J
+	wtJOJLFUrxAbrTgtxP2m4JijxK+CAdzuew+TL/cFiWLIui4Nwgh9QhV7XeXTSDyAX4K1Un
+	GBkPj+JZGkElZN7mdTqQBUSXMTUowA0=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mUmYi5Bb;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788273776;
+	s=arc-20220608; t=1788273780;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PyIEf+L5wpgMc9pVz0HpDIzIC04Zw4Z63bkTn3LXy6M=;
-	b=arWa4iaBL7wADn7A25/+CgVjdkA/+nQWvjVAPEd+VE4isG0BsHKiQ3QRCzxd7Apd4TreS+
-	gLGoIPHvbi4A/I2kXOhGh69Iog8CDmN6RKhyYe0570rYSpOKaqBbeymKq8R9pdrB4uEYJ7
-	c0rodt1I/n3OE1UHK+CCFtx4zh5ixaY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788273776;
-	b=Qsp/ggphplwOaBTAXgwwU6tAs+GZfLiCsfxkRRkFIeYazhcwLJzzygw99ZJ2X+sQBK3Fxt
-	Xn3zZvgdOohkN4OTiFPFS2tJdkE8DaKmoNz4VRc3GQorje/xOQy46W4GREyi051Nk8MZQ4
-	BCabFIniOifrtD5IgZ77g/+mL/a3rpY=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=fSf+J4Un;
-	spf=pass (imf29.hostedemail.com: domain of linu.cherian@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=linu.cherian@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DE2BD1756;
-	Tue,  1 Sep 2026 07:42:51 -0700 (PDT)
-Received: from localhost (a079125.arm.com [10.164.21.43])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E20CA3F882;
-	Tue,  1 Sep 2026 07:42:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788273775; bh=NZvEgAQVOI7lQrreQcbXEtrWMnYe52kjfKk59Vp8xtY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fSf+J4UnW13FN1pFvQV4UEn0YkoWj8JEfy5U3rKMvbTohcXug4Ea3BWkGSt+8ZqZS
-	 o5+uj/rcTvrdP0ExVcQ1IlNYH9v/rqsXHNIAm4jVX3qI4omAM3yFbz2Xqd0PButF3W
-	 pPrGdJqssc1yVvF6PH0iCjeXSJCJwq2wSyeOvLJ4=
-Date: Tue, 1 Sep 2026 20:12:52 +0530
-From: Linu Cherian <linu.cherian@arm.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: linux-hardening@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>,
-	Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>,
-	Linus Walleij <linusw@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Maxwell Bland <mbland@motorola.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Pierre Langlois <pierre.langlois@arm.com>,
-	=?iso-8859-1?Q?Pierre-Cl=E9ment?= Tosi <ptosi@google.com>,
-	Quentin Perret <qperret@google.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	x86@kernel.org, Ira Weiny <iweiny@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
-Subject: Re: [PATCH RFC v9 04/25] arm64: Introduce por_elx_set_pkey_perms()
- helper
-Message-ID: <apbkbH6Q4p5KYmpE@a079125.arm.com>
-References: <20260818-kpkeys-v9-0-743ad31b2c8f@arm.com>
- <20260818-kpkeys-v9-4-743ad31b2c8f@arm.com>
+	bh=vNFqOdBLfVl9p4V0gB3fi8mbb5maVqgyZ8oGsuYhh4k=;
+	b=diPnr0tBRXmaYYixUj30K44LqnvcrGZq2/Z5hjh5glt7rDdUzHqYh0bc30gOC/+4xkzsID
+	89G5iOUqnWY7V02k4ePnpDEeexCK4wtCHDURyee0PZQr2Kk5psVMLRkEyBo2ZE/LTl6G0q
+	2IbF/4vEVQHGCy4Tul/6j7/UzwBUq6k=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C5D2B40205;
+	Tue,  1 Sep 2026 14:42:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 331541F000E9;
+	Tue,  1 Sep 2026 14:42:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788273779;
+	bh=vNFqOdBLfVl9p4V0gB3fi8mbb5maVqgyZ8oGsuYhh4k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mUmYi5BblRiOOYwxdx9bqjWbEjf5OaIktMr6qQ4fkHdQvbz3NBkGuvgzcN6ZEnXIp
+	 Du0TTP70YtdMgnrNYdQfUHCMP5rVz5e38jfz8cy5f1BV5osKx2l2tujbzFoEkP7/Ds
+	 uUfVbNgHo3/jxIhciafJ+Vh++lPdYtOOQJf29/Qouc8vhmzx7qDTiTE2GOocnmxRNc
+	 anZQbnOOflmoACC/YpagMJqkxWkP52TxE+C+zkHZnyyWatRcIcLxmDbJszGdO0Et6H
+	 D60Urk34s40tTOIuvO6+8mdvKbFRyarDC8Q7O7eG2s7N8EC4ejBsNBjvB+IxvIkllm
+	 B0I4H6AcWz7eA==
+Date: Tue, 1 Sep 2026 15:42:54 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] mm: remove unused totalram_pages_inc() and
+ totalram_pages_dec()
+Message-ID: <apbkQIz1A03W-wps@gremlin>
+References: <20260901-mm-remove-unused-helpers-v1-0-f092d086f7dc@columbia.edu>
+ <20260901-mm-remove-unused-helpers-v1-2-f092d086f7dc@columbia.edu>
+ <apbbw0A0f98nlVol@gremlin>
+ <3a494e29-fad1-48cb-8ac8-d9a20d97f020@columbia.edu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260818-kpkeys-v9-4-743ad31b2c8f@arm.com>
+In-Reply-To: <3a494e29-fad1-48cb-8ac8-d9a20d97f020@columbia.edu>
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5BF0112000F
-X-Stat-Signature: e6tir97zfmstpt96a5ff9ywn7g6ek4ff
-X-HE-Tag: 1788273776-954641
-X-HE-Meta: U2FsdGVkX1+cbIonaSDNWUonaBYiW9o0qkBPk1IvD6VE0WTKwrbQdBaTyeRuooayCjSh0329MOZJhga2U04/GWGEepflNaqcjzwegZWJAE/doDvbUZP2DPX0yqzGZsr+qq522TuK6bGkOOlgCuvjbG/3ZLUTvwwa8l8ut59Sf+slu7eOsMpY2IQdKGvbnMxtkqp7nSXlwaI1EDZP4XvciaBXmkS6Bow+x0byq+CtLoe9bIE6x0HCstYuUxRUGj7pqs85SbTJbJhnfau41a37jtFSVMmyCqqGm6t1DHMLA0sQt2SaYGMXmW0oLJHdw5b+sELK/6voroAW9tgHGiaJfCKtrDHIu8P3lFD/J/um4IPtsx/qQHLcs/54uTqBOmyvfFRxiPp2xkQ1sqacTGToiQzbokYIydt4AHLEHZrZ1Z7Rx6Fyfcgvtoy2ZcINTYU29y5MtIcsiy7MQwjbiNzjXqnIeOOzbGshx9HhRjrCuehOxQBbjVjkkWeosHEWsG+Q919jU3aY1mSxWoaNIloWWswKEJG/dvi0rR8HG9ZIqwPPQwnj2O8szQNHfdGMUuKBR0oC3dZIzkNReIRVZXf6u/XsN8hmJRvLHC7jJAr3UCW5/Mq1/XrhiS1V3koNejfH3ZBo1CNnJKyZKCewlaWj2hMpQxPw/2zeN7cJFZdQK/4rShF8StNljem4faf2B9u0vp6Rd3rUQMPpuOiNoNHKuiWpjc0uJepJvGYcugN0QvzwJg9OJ1kSgUzzrZxUKGsbu0cYtyen/gAkIxlYu3uXeu3BpqHevAjiLxVook3qNdq8aST3+CEKsim0uBAn5dCsFopWRmyz6/LHuLFgNkf0QBLPEk3smibqs6PFCmmaBKuDqXYKjNGjdhXL8AmVuAYDuKcnq6eJ6LJeHFRvdp19yYeOcXrGwZjnxPOQFOu/HvrcHc3qxYsvy+BkUfeMZMF9/xQbxn1wgcoPPOG5nsK
- OojvnadX
- Ipw9QXPXE9hUSctS6WzRHnNUAXvAjPYgLOfTntt7supDz0vYCO2xRh3fOrTX/3/NGaTPOsSzcv7v5j5J+Kb1ZpneIuU0Qr/puRWXhOJCWJypBCy9XLOC+u6iXiuLEsSKaVJrOgYwAGvs9y1Qlg50etaGbH/7x6wSYbS4Wzkrh/BD+qpjGHYBfq6NUc6rMkYvgxnvcxqwXVehruoGfhvChnjltxHJNH16YopGB4q//NTSadl7zfXzZamKCivtakgkD1x8kFRIOpoSfWYMObZAHycXbe5sP+uD5hBPdpEsI20yVaAChJhKWvLibfbflaELjHEMYARWty8H4wqv0mp2jTWJiFft9+QgiqSjASd4Un12gVnDdQBvFYHPDfWzGfCVtDywZ9reAFjqDg6JWMJ/uawgKWv7+MRy5W7j95E22ePtnCfUq7RYBtrqtSQ==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A7DAD180011
+X-Stat-Signature: sqmd5z4uj4ctanadjwr6tg7xd4sobf6a
+X-HE-Tag: 1788273780-838026
+X-HE-Meta: U2FsdGVkX199pNOJyAiUSrakxm16pLL98UuS2Qg9i8pY5Raz5u6CgKxUy7779qNZICO1oIkA/Kysr05SdJ58zE5HeQpNuNQRpXGnnGEbmU7Ac6SxiK4m6hQE46jC8vW2kaWL+xkWpeKcJwu4x81xAolVmyS9MCovWX6PAGEU+jAJ7FYnWk7rcx6uAIQkXIlRPp0wqYqmUwmapyNjqbYp6NL1by7ENUr7CeMA4sa2vrh9CoWASQ2MZxEHqzqPiej+DjiKly6+5KhvrQme+zcYKZbWbxSFeJlBafc8wyQptYupb0uxtoA26HmkQmCKUMf+26lZAfTsdP4H2sQ9Hu+wKvVUyKGz6QcBLX9o2n0PFEcLPESHAOs6hMJW2LSntzm8UBwXwUAT/uQpSrRt+Q3VoCX5NHrNUN4Tuvfv206PB2DSG57nJO2andkQR2UBWbVoR8yZTjxrp2wV7bNYYUoWlXKVIVML8K13D6In/tEGmvYc7UO+UYU5BmeHI424IR5olTafIvhoF6sP5g42TE6WFVhRVd3Su19rDVScFKLlJmy8QMHpzGAVlLfFvyY5xty4S2YTcAV8AN91bsO8HL8V3nAOn4Nj9e0DAlg78NPyvAItMEQNdIQVPw5yFsiK+X+x1732wHfBnpb/1rnLCp2jPGhTbL0NukR1bRPL9KgVIh3rvpGugoiEcUUFFPZo5nVycQDYpBMyqdLFsR132Re6FXyT8QSxSyK1rPNs6vMj69bqRZBd+iJ7f28Z9sxO+EAKsBg7ENzhT6LniCb7z5/kO8rDxtQyGL7dxlGcGBrKWq2DOPcrWDBMsdutsDfxfy4AhfNHyK7RK9ZQpNbT4KZh5FuXsR+e+cVlnUctBS5fQ1gIEUhl9Php1+woMh5gkxgoaAOr2v6qWA+u0UuO6++OIwQ2XptNM2p4CSuhisOOmIkoU4UwVORt64X9pspbdhn5A2vRCQq+6wdQ5m7ZQgk
+ l7Vhc9iA
+ ygRnjHARQIg7GJ+/DSOW0x8FHUCatON8ea+T4SVoe0tFWRcguRyMqb4ZhDKRFPAsj0UjZ6KOpGtM/o5KuCwJgj4pKFYfpDT3VvXJu2DqHVlxFF61V9wGOnP8uhLyGMEORyq+IFwFWXNtZX/pKnK2sWY48+q55cnnKcC31Lrb29LeB51qKvrQGINNZYSvFQ/KmfHWc6Ws9KTcEfSXR4CI6h7uT7m1N49B+68h/IipJt6FntrVPAmPmVEyzCD1T6/c8P8e//Kl7lZykoMAhBWPVhuDkcjilN2mS5iw3gOZBSarmzk4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,39 +97,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Kevin,
+On Tue, Sep 01, 2026 at 10:29:38AM -0400, Tal Zussman wrote:
+> On 9/1/26 5:06 PM, Lorenzo Stoakes (ARM) wrote:
+> > I also see totalram_pages_inc() in tools/include/linux/mm.h - could you remove
+> > it too to keep things consistent? Thanks!
+> >
+>
+> Yes, will do. For some reason I was under the impression that tools headers
+> are generally synced separately as needed, but that's clearly not the case...
+> Maybe I was thinking of the tools uapi headers.
 
-On Tue, Aug 18, 2026 at 03:08:46PM +0100, Kevin Brodsky wrote:
-> Introduce a helper that sets the permissions of a given pkey
-> (POIndex) in the POR_ELx format, and make use of it in
-> arch_set_user_pkey_access().
-> 
-> new_por now represents the permissions of a single pkey, so rename
-> it to new_perms and change its type accordingly.
-> 
-> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> ---
->  arch/arm64/include/asm/por.h |  7 +++++++
->  arch/arm64/mm/mmu.c          | 26 ++++++++++----------------
->  2 files changed, 17 insertions(+), 16 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/por.h b/arch/arm64/include/asm/por.h
-> index d913d5b529e4..19b3dd1d43a0 100644
-> --- a/arch/arm64/include/asm/por.h
-> +++ b/arch/arm64/include/asm/por.h
-> @@ -31,4 +31,11 @@ static inline bool por_elx_allows_exec(u64 por, u8 pkey)
->  	return perm & POE_X;
->  }
->  
-> +static inline u64 por_elx_set_pkey_perms(u64 por, u8 pkey, u8 perms)
-> +{
-> +	u64 shift = POR_ELx_PERM_SHIFT(pkey);
-> +
-> +	return (por & ~(POE_MASK << shift)) | ((u64)perms << shift);
-
-We could use standard bit field access macros here ?
+Well they usually are, or should be (kinda) sometimes. But since this is being
+removed it's a good point at which to sync at least this known-no-longer-needed
+bit :)
 
 --
-Linu Cherian
+Cheers, Lorenzo
 
