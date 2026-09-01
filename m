@@ -4,103 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6796C61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 08:12:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB41BC61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 08:14:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C0D46B00B6; Tue,  1 Sep 2026 04:12:15 -0400 (EDT)
+	id D18B06B008A; Tue,  1 Sep 2026 04:14:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5985F6B00B8; Tue,  1 Sep 2026 04:12:15 -0400 (EDT)
+	id CC9446B00A1; Tue,  1 Sep 2026 04:14:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AF336B00BA; Tue,  1 Sep 2026 04:12:15 -0400 (EDT)
+	id BE12E6B00A5; Tue,  1 Sep 2026 04:14:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 221A96B00B6
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 04:12:15 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9C7DB1401A3
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:12:14 +0000 (UTC)
-X-FDA: 85164475788.25.D304305
-Received: from 1.mo576.mail-out.ovh.net (1.mo576.mail-out.ovh.net [178.33.251.173])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 1890A20004
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:12:11 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=quelquesmots.fr header.s=ovhmo4049951-selector1 header.b=YO+VOiUT;
-	dmarc=none;
-	spf=pass (imf31.hostedemail.com: domain of l.wandrebeck@quelquesmots.fr designates 178.33.251.173 as permitted sender) smtp.mailfrom=l.wandrebeck@quelquesmots.fr
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FD896B008A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 04:14:11 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0193FA0383
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:14:10 +0000 (UTC)
+X-FDA: 85164480702.02.4EFAB33
+Received: from mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+	by imf06.hostedemail.com (Postfix) with ESMTP id E3AAA18000A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:14:08 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Z4nRn4e3;
+	spf=pass (imf06.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788250332;
+	s=arc-20220608; t=1788250449;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RUaynCIfI2k00quB79erNLXXPtwh5LI+gQzFVcNXhSM=;
-	b=KzKUciL4hmf+acy1P/2wigxkoDuBe134uYchwamNQAHqMC12nUeaqsbHETovvLuO+tjmlS
-	SUi3Z079RTBBXO99n01e4jk1ElR0E9I/9fU4lwX9vk0v51VvU8TEuh9pEDk2gaplCv99S5
-	i4cUn1XVkkEhyvftgYY6UicNgxL5rss=
+	bh=xYPzEf3zjyaKVKOnNrhOtNlD5nTR4dNzBBL5BCBVfpg=;
+	b=gChy8IPfgZt6m1j5fxDK7tDMxAFNyEGMM6IrzViZ4w8LSBEY+kvIZN3TyWw/tlLH2nTHwa
+	Iqt6Q+RgRsjW4DiBxSW6CavOU8cG35iorzAgHB5q4uVJ+DYL18nj2j6QV0Tk8DZdLmft6X
+	y8XLGoY2D2Ua16tBlvdi4adKh8gxMCk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788250332;
-	b=eaGQwy4XC/xNworiyDYfxcqYwU4Yc3cOxmSwDEcl4cr9Eud+dyee1uNX5b07pGmSMwjgEQ
-	KXtPNLqJEZbzVI/0LJkng6esDcqQDho32ZrSD7gQWYXdP8ztwUeK6xTBE4mtVSWEC3/A1E
-	bRVxyvZXozrFuQc8fFC3WEeVSmONdes=
+	t=1788250449;
+	b=P+QD/KKwAI40KQk+LozO12KYRTxUxhPKSeAV16RTM+1TLwQTmzSHQeum4xgNn6x4HM/00y
+	agZ4jxGX7d86iHtd89zNd8Iw1Iw0spSWrA/LUiCyfIBzSfVI5r/KibSVjofLfnY3qzxxoU
+	vwpyL5kYgQYLy56doeCBfHH4Q2vWO6U=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=quelquesmots.fr header.s=ovhmo4049951-selector1 header.b=YO+VOiUT;
-	dmarc=none;
-	spf=pass (imf31.hostedemail.com: domain of l.wandrebeck@quelquesmots.fr designates 178.33.251.173 as permitted sender) smtp.mailfrom=l.wandrebeck@quelquesmots.fr
-Received: from director5.ghost.mail-out.ovh.net (unknown [10.110.43.80])
-	by mo576.mail-out.ovh.net (Postfix) with ESMTP id 4hYz9Q34wnz5wkm
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:12:09 +0000 (UTC)
-Received: from ghost-submission-c7b579475-ct55h (unknown [10.111.182.37])
-	by director5.ghost.mail-out.ovh.net (Postfix) with ESMTPS id CD200100109;
-	Tue,  1 Sep 2026 08:12:07 +0000 (UTC)
-Received: from quelquesmots.fr ([37.59.142.113])
-	by ghost-submission-c7b579475-ct55h with ESMTPSA
-	id Vk3ZJNeIlmrHvBwAxQ/CHg
-	(envelope-from <l.wandrebeck@quelquesmots.fr>); Tue, 01 Sep 2026 08:12:07 +0000
-X-OVh-ClientIp:109.190.254.62
-Message-ID: <78225f07785ed89e0c3e5def8a8bb1a48e444322.camel@quelquesmots.fr>
-Subject: Re: [PATCH] x86/mm: don't apply va_align to hugetlb mappings on AMD
- F15h
-From: Laurent Wandrebeck <l.wandrebeck@quelquesmots.fr>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@intel.com>, Thomas Gleixner <tglx@kernel.org>, 
- Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Oscar Salvador
- <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,  stable@vger.kernel.org
-Date: Tue, 01 Sep 2026 10:12:07 +0200
-In-Reply-To: <20260829185120.GBapMqKFM35KtL0Mod@fat_crate.local>
-References: <20260828135747.724789-1-l.wandrebeck@quelquesmots.fr>
-	 <3faecf65-7edb-4cec-be7a-e5266dd3a649@intel.com>
-	 <20260829174704.GAapMbGAZMwImcvIN7@fat_crate.local>
-	 <0B48BE2C-2E72-4961-91D9-35E215F537A9@quelquesmots.fr>
-	 <20260829185120.GBapMqKFM35KtL0Mod@fat_crate.local>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2.1 
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Z4nRn4e3;
+	spf=pass (imf06.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=bV4kcBvH/DWH/5vJ1R7+0iB1kjHHNS7RhB31HwS5w6E=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788250447; v=1; x=1788855247;
+ b=Z4nRn4e3So7F5EGRLac5Ypi0WLnBdMDgBE/1FXKDk6TwxkfJDalOb7ZBwDMElSwlFZedtIn6
+ DDiqnvmXtam/mutNQrfoSRkY0eRVmC7Pcy3SotRRS6bcwKDHQoF1oIKPIWzXSbHsRMm266m6POy
+ gwtwaZwLfCWVuXN3dmf457d4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 569a57e56a310cb2;
+	Tue, 01 Sep 2026 08:13:57 +0000
+X-Mizu-Trace-ID: 569a57e56a310cb2
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 1 Sep 2026 16:13:47 +0800
+From: Hao Li <hao.li@linux.dev>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Hyunwoo Kim <imv4bel@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/slab: take n->list_lock for the list_add() in
+ __refill_objects_node()
+Message-ID: <apaIWBnTJkM52hMy@fedora>
+References: <apPa-cGLcyt90l-E@v4bel>
+ <apQU8wjMlvbKBQgh@dev>
+ <apQ7osHcRj3vdJPn@fedora>
+ <ae25c193-b95f-40c1-83b6-1c2546467e41@kernel.org>
 MIME-Version: 1.0
-x-ovh-tracer-id: 9860912862624480539
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTE8Ay7Pd3mgj9+Qc6lwFaY76eU0vJut+sn3595gpSzk/DYX0M4NxS1EwI+hz7IR3cb5FqieCB6ahFV9nqnXcp9O/J+XRcoQxejrvM9UB+l7IH51R9mNhRQ6VHZzoaJWDOZjimS8re33Tqp3+AF1CXQUq3w+gvzxJGHFt2bwLb8TEGPZ4l1ts3s1czfTSOICv8X5Ysv8puQMC0+gnupaVpiyvmOkCsXNTW6/xcqFnsK9EL+kt1yys03qJwohTnqQCFVtLmZJyJPFJBdd6SN9CjOHjvHhTXYhiAf/Oo/RPRC/KkF2tlwQ7qjxHxZaEbRPWZgA8GQ5cnWxCDxW9Jj7T1MuKirEuyHvKgAJ5HMQzr5sk9QtLOuTDX+c900kjRqeFolBBKHaJ4pDMcUUqVZR4Luil8UMrkvh2eQvUqUbewQDTsYPs6EwFPacuw2uGCp1Ef3fbQW+YELcj+fp3jFbixgx10/mDgJaInyqBsvBZWhaG+b5bY1ZkcYcOUn7F6eF3gUpEXS2PBKbY4BgjuymyEjrePI+93DOg6sFEI2iWmwAyK/kzce+BBoAuZU41++LIB7f6SZwPlx91onLzm/y18Wzn/zuyPRE1i+O4hE5HUOuUXcbudy75+C5uvjZWnAA1gxvt/KRIgkTBpFvdZ6NM43lYsOJS+PyCxAiWsTaP9qA5Q
-DKIM-Signature: a=rsa-sha256; bh=RUaynCIfI2k00quB79erNLXXPtwh5LI+gQzFVcNXhSM=;
- c=relaxed/relaxed; d=quelquesmots.fr; h=From; s=ovhmo4049951-selector1;
- t=1788250330; v=1;
- b=YO+VOiUT4XZ8qoDOI0Sv/3sl7ux7MlR1c9FPLb4+gbU6h8q9lAxlS6tp/xFtxh1jkkT8QKkE
- /zxMZs+6DItQA4fnklzYurD//FrJ9OE935U1MsVOu81gYq00Sv/GQFGmPg282ir2KfgLkV2iA1E
- jXXJ5758nEK5fcsBkgrUcGvQGxi/Rt1Kf16HvXxL4rTbl8a5aaPKl5QbK/y+NXYT8Co25kaIL+8
- R5Lyy4gu67PhyqbIli2LKPvRbbQgOLmtnwJEbQ6k68uk0CkgA/Knxzy6MaJSOhFrmb2BykAcR6r
- gNP6PUjosKEBX2vD9UqJS9Be0nJ7z0MPMdLJBZg+aiG0g==
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1890A20004
-X-Stat-Signature: 7wzxcged1fmdpbhympaqf4nrwc57ai38
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ae25c193-b95f-40c1-83b6-1c2546467e41@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1788250331-746098
-X-HE-Meta: U2FsdGVkX1+uOrAHlYwpDKy7J5lHftAvBlzjn8X7UB0OopkBU8b2jeB1wzEtvpMIMhpOswNvFxgC/OyMnH6nu3s+kyl+3VRPf1rSKEmZtLn7HJ8RcaTJhQ9SxwLnG/zvHukm2HCRG5BPS0xA98S3Nd39Bkg1oiNFncaTNyxyewCa/DR1JXExPMcqseoUz5OZXJPr00qCCdiIbxlOaUdOiCqVUX6vFAnGeIPxB14sTq0HSG34n5EFbgSoRCySIsUQHlaD3eaZQkos8BSlvuq2Ny+8Ob7AYHZqffDcA3Gl5ZO4Lxz0grBOV0ZPQuJSOVpQaIu3oY/zGTfPndDmmljvWek10xZxrGLresQu7qorb6nyMdUV6n60JBhWmjmz/4amFNU1kT7cvZH/FW7OZEbsKRYvyr73vO7+jLI+rLZP13lebZ0NzUs3gtlfvshCeQes7pb5oQZicFEx+Kaxe/iCjBtu12LC7Eqx28HHFBR1e4nD0rlLtrc1V5ljdYVWgGBT8ZtPWr+ndv8zZKofbP/QohmkPaqYD1nSwTi9B4XJJb2rkx81MqQOTGiLygJ3n3bmGs7wMtDaJQCr7uBd4qB6ASV4dsVod5n49PxF2v83+DWcRRP5NsiF5lQDCxVSsGE3xSFzioEelhwRByfKcMUcHM1yvSwOSNAkypV/E9iENOkP/OCH0VpUbfZsL287vOB52Dy2lR7INy+Zakfz3Fqly9mHKuN+C1biF5ZHldezPLSzpKbMMATQ0Y2MpJV9wm5zuNFSAjfjLWZwTn+niUdjP9NveT0a0TzddNRFUH9YvZzyUk8N6ptS9wJ5WobMrR2fv7WzJXmjUWqwXYZt0Dp8qdj4X4RNoO5hZi0rULBL9aR7780vW/WCRS7aRZkWuNvMW6zmrItranoCZihUeY0l8WQwIkWNEXkDEydveXCLR86GkbXjbJZXLmoyJWSmybYlconXjn1vByrEidIc9RQ
- npDs3lbm
- qLT5QK34CFoiCQcI0gNCb4q8ADEwxtwrIRtl28EY6aPOSK0IS/uAnS5pVYiDcueY4ehtjIAoz0VTfR02lQ3tUweYw4oAjzsPveEM/dizFIEzLvnybTYR/4S3INcstRqH45nG6v87RRtwaHFzBTLqUCRuzxdUKBW00ENLhVTmSTo3gJsxVBoLQoUdwlydBYEceD9GiYCfKDRY9NcMQH9incVLsDM3ScjcaZP1hSf/nmp9UQ6m4N20tCiK4iuFPtL3Ubc60FlJeElE/yd6AaGBIBBqlA2tjZ4f28lfip3c1+C+1nXZSJ74SJJPTcv567Z0t5f0VYwx+tjx8Q5+fiV6sRi9oIRI55aUD60BElrCieTbDC8WNtRltunolmlLxo7PGCO2f
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E3AAA18000A
+X-Stat-Signature: jnk41bftojnhrc9fua7ob54pj3f9ocgf
+X-HE-Tag: 1788250448-299899
+X-HE-Meta: U2FsdGVkX1+zB7eROccP1ty+/h4JFqkbhutK07VX7ukxqpabBOqYgh+tEmzCW25663JlhbTwx8JwKrURkhbnB3M7znW3Jyao5ioOKBvnlQhZauPGprogM7xHwZcaSObCB7fdULUsNaWHn2x92aTJCMKRe7EGbS+sP7mijLCftRljzJbOTkkFosnrLDAyNXD5Emt6G3B3ZOCm3njyD3LUieY3dsOMj4KVupPxcF/SkCVCpao4ImPLGDIns2+7NR405gdrxp0IbDJTbd8N1kxqNXQMN4752Oc/pDsLFwMdCWvn+hegnpZBV9k3ic8AL9dDdqq6+TXl4moIfSZz6q9Y9PWTenNJd8HvBDgqRdw3d1xbdMCye2qvLaVvj3rAT10mACufG97/21NaeE8JRbSDuyU+0DIc16QCibivpSHH+nNEPp8JhlloE3J/4UYb3LOWOdyaQY2iG6QcKw0oBufKPlkdNVcdonPGpM7+vhgN7dlELwHH5L0yHOoelQC99p7bp4TZxrSlHxG/zqR84dF7F0VJL1M3hzeX23xzTrof7T7gttGqswO13gPLzNTmLvUNiPdpBOUiF60xIDzqYiscZ1HpRoRKXEJfGHhgDEVu22mjowG4Mm+dAAS/dmsN/MCU/SlzcTS9IGLN9AevtjW6zIVLED2EaC/BZXg0G9/LgTin+Dvm7cRj69cz4PwRSdz+QiTaomQVDNixqz8EN6p9EM6WZ9WA4dmwcRImKNN7X21T2dDalzKY/HJiZS5h4ju0Zd6RDGMsAZhg2PuWCrfTBKz8ksiqekZuuhE5lyHE2dXvKPfFOiRMQAUWnC+JwPUCoBXnUQtsz2jaligYBEdXuowZKsshpzNHKLuMiuGHjX60ADu9IJ3EIQr/IhiFvA8evDXsLaX1k3RsIJmITTvJiDpXUDyu/U0j2pQNQzY/OKWM/r9oY43IloykwYMPwh3FRjSKWs5bHeH04/nMS4C
+ Z6oI9lWN
+ Z3o74YCGog036SCDiZWx4g/KeO++mhpGjTO0ZkvAZLElLTzFk+Yxz6ZmgA0T0BFq9kGxxVtuA3yf80VZ1oBG5x0I2yaAyGs80dBLoidlSveAbH9y3Cke6BRtUR5kkmw9xWKPtMBsaXif4UfP5H+jPglQ+yqwKDU5XsLRViuxeMlTfoLkECUVEW71eaGSk4dF6jivRNMBXlCG1IJ/EfCEfOr00w3EphlGQH28zI1b/kPjxLFo8f5e2Gw7PGozJZHTNC1noVcKo+UDj9DP52gi4GWJfRh91aItu7G1mNdefysPcEoNRNRQAQMNVwygwia3AMAHB86JiF8YAjrbM1Io5nEEZQnnkBQj7Eyuz0ESps1CDQpo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,39 +94,218 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 2026-08-29 at 11:51 -0700, Borislav Petkov wrote:
-> On Sat, Aug 29, 2026 at 08:15:40PM +0200, Laurent Wandrebeck wrote:
-> > My homelab is indeed composed of 5 thinkcenter with a10-8770e, and
-> > desktop has fx-8370e. Actually I hit that bug running 26.04/7.0 and
-> > reproduced with 7.1, 7.2 so I dug a bit more and AI (I'm no kernel
-> > hacker) proposed this patch. I'll happily test and report on
-> > whatever
-> > you'll propose if that one does not fit. SSH+sudo access is
-> > possible too
-> > if you want.
->=20
-> Thanks, just please do not send HTML mails and put your reply under
-> the text
-> you're referring to when you reply. Like I just did.
->=20
-> Thx.
->=20
+On Mon, Aug 31, 2026 at 02:55:06PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 8/30/26 16:35, Hao Li wrote:
+> > On Sun, Aug 30, 2026 at 12:45:17PM +0000, Harry Yoo wrote:
+> >> On Sun, Aug 30, 2026 at 04:25:45PM +0900, Hyunwoo Kim wrote:
+> >> > In __refill_objects_node(), the list_add(&slab->slab_list, &pc.slabs) that
+> >> > follows a successful __slab_try_return_freelist() is done without
+> >> > n->list_lock.
+> >> >
+> >> > __slab_try_return_freelist() only succeeds while slab->freelist is NULL. The
+> >> > slab we are refilling from is taken off pc.slabs by the list_del() at the
+> >> > top of the loop, so at that point it is on no list.
+> >> > 
+> >> > If another CPU frees an object of that slab, __slab_free() sees the slab as
+> >> > full and puts it back on n->partial. If a third CPU then takes that object
+> >> > in get_from_partial_node(), the freelist becomes NULL again.
+> >> 
+> >> Ouch. Good catch, Hyunwoo.
+> >> A classic ABA problem :)
+> 
+> Ouch, indeed.
+> 
+> >> > A slab that sits on n->partial with a NULL freelist only exists while
+> >> > get_from_partial_node() holds n->list_lock, between its cmpxchg and its
+> >> > remove_partial().
+> >> > 
+> >> > A list_add() in that window overwrites slab_list to point into pc.slabs.
+> >> > The list_del() in remove_partial() then follows the overwritten links, so it
+> >> > unlinks the slab from pc.slabs and poisons slab_list while leaving the
+> >> > n->partial side alone. n->partial is left pointing at the poisoned slab.
+> >> > 
+> >> >            CPU0                        CPU1                  CPU2
+> >> > 
+> >> >   __refill_objects_node()
+> >> >     get_partial_node_bulk()   // n->partial to pc.slabs
+> >> >     list_del()                // on no list now
+> >> >     get_freelist_nofreeze()   // freelist = NULL
+> >> >                               __slab_free()
+> >> >                                 add_partial()
+> >> >                                 // back on n->partial
+> >> > 	                        // freelist is not NULL
+> >> > 
+> >> >                                                     get_from_partial_node()
+> >> >                                                       lock
+> >> >                                                       cmpxchg
+> >> >                                                       // freelist = NULL
+> >> >     __slab_try_return_freelist()
+> >> >     list_add(&pc.slabs)       // overwrites slab_list
+> >> >                                                       remove_partial()
+> >> >                                                         list_del()
+> >> >                                                         // off pc.slabs
+> >> >                                                         // slab_list = POISON
+> >> > 
+> >> > panic log:
+> >> > 
+> >> >   list_add corruption. next->prev should be prev
+> >> >   (ffff888100000248), but was dead000000000122.
+> >> >   (next=ffffea000416e410).
+> >> >   kernel BUG at lib/list_debug.c:29!
+> >> >   Oops: invalid opcode: 0000 [#1] SMP NOPTI
+> >> >   CPU: 1 UID: 65534 PID: 144 Comm: poc Not tainted
+> >> >   7.2.0-16172-gcf72cbb39da8-dirty #1 PREEMPT(lazy)
+> >> >   RIP: 0010:__list_add_valid_or_report+0x80/0xd0
+> >> >   ...
+> >> >   Call Trace:
+> >> >    alloc_from_new_slab+0x183/0x300
+> >> >    ___slab_alloc+0x31c/0x890
+> >> >    __kmalloc_noprof+0x3d4/0x800
+> >> >    lsm_blob_alloc+0x2d/0x50
+> >> >    security_msg_msg_alloc+0x26/0x90
+> >> >    load_msg+0x1aa/0x210
+> >> >    do_msgsnd+0x91/0x800
+> >> >    do_syscall_64+0x109/0x5d0
+> >> >    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> >> >   ...
+> >> >   Kernel panic - not syncing: Fatal exception
+> >> > 
+> >> > Do the list_add() under n->list_lock. Reattaching the freelist stays outside
+> >> > the lock. Once it succeeds the freelist is no longer NULL, so __slab_free()
+> >> > cannot put the slab back, and by the time the lock is taken remove_partial()
+> >> > has finished and the slab is on no list.
+> >> 
+> >> Yeah, this should work correctly. 
+> >> 
+> >> > The lock is held until the block below that returns the remaining slabs to
+> >> > the partial list. That block already took the same lock on this path, so no
+> >> > lock/unlock pair is added.
+> >> > 
+> >> > The unlock is keyed on having taken the lock instead of on pc.slabs being
+> >> > empty. With CONFIG_DEBUG_LIST or CONFIG_LIST_HARDENED, __list_add() returns
+> >> > without linking anything if its check fails, which would leave pc.slabs
+> >> > empty.
+> >> 
+> >> Well, if the check fails, it has a bug and should be fixed.
+> >> We should not make the code less readable to handle a bug.
+> >> 
+> >> I think it's better to have (diff on top of the patch, not tested):
+> >> 
+> >> diff --git a/mm/slub.c b/mm/slub.c
+> >> index 7a7f9935c711..eff96b992164 100644
+> >> --- a/mm/slub.c
+> >> +++ b/mm/slub.c
+> >> @@ -7216,12 +7216,10 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
+> >>  			break;
+> >>  	}
+> >>  
+> >> -	if (!locked && !list_empty(&pc.slabs)) {
+> >> -		spin_lock_irqsave(&n->list_lock, flags);
+> >> -		locked = true;
+> >> -	}
+> >> +	if (!list_empty(&pc.slabs)) {
+> >> +		if (!locked)
+> >> +			spin_lock_irqsave(&n->list_lock, flags);
+> >>  
+> >> -	if (locked) {
+> >>  		list_for_each_entry(slab, &pc.slabs, slab_list)
+> >>  			set_node_partial_state(n, slab);
+> > 
+> > Since introducing a new variable seems unavoidable, what if we temporarily
+> > stash this slab in a pointer like below, and then add it to pc.slabs once we
+> > acquire the lock.
+> > 
+> > struct slab *leftover_slab = NULL;
+> > 
+> > ...
+> > ...
+> > 	if (__slab_try_return_freelist(s, slab, head, count)) {
+> > 		leftover_slab = slab;
+> > 		break;
+> > 	}
+> > 
+> > ...
+> > ...
+> > if (!list_empty(&pc.slabs)) {
+> > 	spin_lock_irqsave(&n->list_lock, flags);
+> > 
+> > 	if (leftover_slab)
+> > 		list_add(&leftover_slab->slab_list, &pc.slabs);
+> > 	...
+> > 	...
+> > }
+> > 
+> > PS: If I recall correctly, Vlastimil's initial patch was actually fine. It was
+> > my suggestion to save an extra lock/unlock pair that accidentally led to this
+> > trap...
+> 
+> Ah, thanks for the reminder. This [1] was the original attempt.
+> 
+> [1]
+> https://lore.kernel.org/all/20260421-b4-refill-optimistic-return-v1-1-24f0bfc1acff@kernel.org/
+> 
+> I wonder if the fix should be to return to that approach and just have
+> __slab_try_return_freelist() handle the list_lock. The code would be simpler
+> with not "bool locked".
+> 
+> It should be really very rare that we would end up returning a partial list
+> and also have additional slabs to return on pc.slabs? So I think there would
+> be no noticeable performance downside to the simpler code potentially ending
+> up taking the list_lock twice instead of once.
 
-Sorry about, replied from my phone without thinking about it.
-FYI, patched kernel has run a couple more days without any problem, and
-I=E2=80=99m now running 7.3-rc1 with the same patch flawlessly.
+Yes, make sense, in fact, when I first looked at this patch, I did consider
+that maybe the original locking approach was best for readability and safety :)
 
-[Tue Sep  1 06:55:41 2026] Kernel command line: BOOT_IMAGE=3D/vmlinuz-
-7.3.0-rc1-hugetlbfix root=3D/dev/mapper/ubuntu--vg-ubuntu--lv ro
-hugepagesz=3D1024M hugepages=3D7 mitigations=3Doff crashkernel=3D2G-4G:320M=
-,4G-
-32G:512M,32G-64G:1024M,64G-128G:2048M,128G-:4096M
-[Tue Sep  1 06:55:42 2026] HugeTLB: registered 1.00 GiB page size, pre-
-allocated 7 pages
-
-Can I do anything else ?
-
-Best,
---=20
-Laurent Wandrebeck <l.wandrebeck@quelquesmots.fr>
+> 
+> >> 
+> >> > Fixes: ba7425312607 ("mm, slab: add an optimistic __slab_try_return_freelist()")
+> >> > Cc: stable@vger.kernel.org
+> >> > Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+> >> > ---
+> >> >  mm/slub.c | 9 ++++++++-
+> >> >  1 file changed, 8 insertions(+), 1 deletion(-)
+> >> > 
+> >> > diff --git a/mm/slub.c b/mm/slub.c
+> >> > index f9b56cb439e709..4f6d1a03a8ee46 100644
+> >> > --- a/mm/slub.c
+> >> > +++ b/mm/slub.c
+> >> > @@ -7260,6 +7260,7 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
+> >> >  	struct slab *slab, *slab2;
+> >> >  	unsigned int refilled = 0;
+> >> >  	unsigned long flags;
+> >> > +	bool locked = false;
+> >> >  	void *object;
+> >> >  
+> >> >  	pc.flags = gfp;
+> >> 
+> >> uh, I'm not a big fan of having a new variable to store 'locked' state,
+> >> but okay, this seems unavoidable with current implementation.
+> >> 
+> >> > @@ -7297,7 +7298,10 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
+> >> >  			void *tail;
+> >> >  
+> >> >  			if (__slab_try_return_freelist(s, slab, head, count)) {
+> >> > +				/* get_from_partial_node() may be mid-removal of the slab */
+> >> > +				spin_lock_irqsave(&n->list_lock, flags);
+> >> >  				list_add(&slab->slab_list, &pc.slabs);
+> >> > +				locked = true;
+> >> >  				break;
+> >> >  			}
+> >> >  
+> >> > @@ -7312,9 +7316,12 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
+> >> >  			break;
+> >> >  	}
+> >> >  
+> >> > -	if (!list_empty(&pc.slabs)) {
+> >> > +	if (!locked && !list_empty(&pc.slabs)) {
+> >> >  		spin_lock_irqsave(&n->list_lock, flags);
+> >> > +		locked = true;
+> >> > +	}
+> >>  
+> >> -- 
+> >> Cheers,
+> >> Harry / Hyeonggon
+> >>  
+> > 
+> 
 
