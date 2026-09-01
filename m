@@ -4,78 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D80FFC61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 16:09:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4683DC61DD6
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 16:09:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFDD76B0296; Tue,  1 Sep 2026 12:09:21 -0400 (EDT)
+	id 12A276B0293; Tue,  1 Sep 2026 12:09:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E84676B0298; Tue,  1 Sep 2026 12:09:21 -0400 (EDT)
+	id 0C9E06B0297; Tue,  1 Sep 2026 12:09:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CAFCA6B0296; Tue,  1 Sep 2026 12:09:21 -0400 (EDT)
+	id EFB046B0293; Tue,  1 Sep 2026 12:09:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A8E366B0292
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B034E6B0293
 	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:09:21 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2BA6840472
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:09:21 +0000 (UTC)
-X-FDA: 85165678122.01.2B6F4C1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 44CBB4000E
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:09:18 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PoHyfItD;
-	spf=pass (imf01.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org;
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AF4BD120441
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:09:19 +0000 (UTC)
+X-FDA: 85165678038.29.C88EF24
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 9FDBA10000D
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:09:17 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gyPkn1JE;
+	spf=pass (imf05.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788278958;
+	s=arc-20220608; t=1788278957;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n7ACu2XJEsSZAAxqJVx917CopAXQKREsyP9AUqL+5KI=;
-	b=AVZSQMIM9dKpPBOsaQNVJzOV3uPEJRj1HWKLY2pbrRjE85v8Yuc7957/sua357tT+MpeFt
-	qimS7uS6NfqT8X+hT5pVcim8dp/QkvndKj/rE+eRgjqGx54+Y8m8nSLEGs3z/ktmulsXEN
-	EnmeCMCOL2taeE6YS957MnkiVH8si/g=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=eBjX7J1tX22YxMaJ1V/x/J087jEpN/larc82e9WxjtE=;
+	b=6M2YB+QLWGG5IpjDJB670wCorXwM3EBhqiFRFKQEU6lBAlTY8w0hboc6SV5IRYVXq1QIlb
+	AQ9c6ptWOm9h4AzAtJxiUppLhjYsUPSLC4IRpZ4S03fA20UpzMumnVkVUa+4xGWp0vGwlO
+	o3jUA7kKAK/6+byvWbbTbW2ZNjhxhAk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788278958;
-	b=FAorn4uHjVTS4YDvmPxl/3eAxwatV8UK+O0XyWQbfa+QLOX2v7CGPvIehKvOJj5Mn+HEpl
-	3uZNCwCwM3N01RHNyIByVJ7tBhCZl1HEq/TW7TyagcIZEvezonKaWCXGLHYx/zwgqf6BDj
-	iT/1NrCcC5B6R6HEJVhqI+G7k/x12VY=
+	t=1788278957;
+	b=VSogQ6wT9EJhIN7hUeP5gl+ygf8l9FFK4sMA2Bnq80+VQcwwBtwRYcFZGPY+Oo3iEUPEUk
+	I4R+WkF14G3DDVcmUfMrAhBh8A9FQFPki5v3JwlGe9NwoeW6QlDjtqc7Z5RRezn1PSd9VU
+	FQLMWmpRN+CHdDVZh5FMK1vzpquiWr4=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PoHyfItD;
-	spf=pass (imf01.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gyPkn1JE;
+	spf=pass (imf05.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C89D660267;
+	by sea.source.kernel.org (Postfix) with ESMTP id 757E6408C3;
 	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 62C3CC2BCFA;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 48A8BC2BCF4;
 	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1788278956;
-	bh=Wt41fk7XzYRzVaO2AD9iXe5dEZ1C2sk1KBdtD95Axko=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=PoHyfItDv/cQMIf8jK0VhNkZYeFYGxny7MAWnM8rUzJjgoaRjj2fQtON9uWac2CBj
-	 PWYHpv37no8yuoRQ1eLjxPlaYw6MYUtaKTBzoT/Ftq2Tx2JYCpnaXWaHO5RbUcyXHk
-	 9tDk/aVmGdTf0kXSQ0xfh56ywP+yODcNuPWQ77Y3UXo0TM69gcA90JEKisNdG0PpYc
-	 OgexZXVp+JLqfIWXY86cvSX6fEhGixJOnKCWa8uOpVlV4NH+JpIONdNDnZDOmgIJoz
-	 UBmZlqPigqzooGA5gmlVY/Hq5TYh/ED2NIA1OKxG+EPFyUDxEYQ3CyoJZ0WRi9aiAH
-	 Rcv1BWNqOSEoQ==
+	bh=lhvqr0YNmYNoIT3ggMS891E1w+CGEgfi2rFuaQKH4aU=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=gyPkn1JEXJo3QyH8+uUaNRC6R6dXTKXcIUspzLl0VHEW7YygleQ6UX0DGAB/bx61B
+	 JLyzMV8V9w8dKES37a4+yxaasZLkzYFzbUvSou8aayMhGBqmKTKGRBnjyhjP+UAVdu
+	 2dxy/2FYEBi7DPaP7oEVVkjRp3AFZxLI7A1Bw+Nh2D9jnNOuWZ0OTDfoJrxJe7hKme
+	 ciL56OWimbUF3s+71pz/JIECOn5DXAeudMofPf6FMhldVPNZ02ySufe6G5OB2KWP7u
+	 bsXEqlgYwtBCbkG9ud9q12ZqM/ytT5AfLJfQ8Tgfo+LSt6n3cze3uL9xztnY4xJ6JV
+	 oerAI9G3/mvDg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 44897C624D5;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2281CC61DD3;
 	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
 From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Wed, 02 Sep 2026 00:09:01 +0800
-Subject: [PATCH 2/9] rust: mm: add `task_size` helper
+Subject: [PATCH 0/9] drm/tyr: add VM and BO ioctl support
+Date: Wed, 02 Sep 2026 00:08:59 +0800
+Message-Id: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260902-tyr-ioctls-v1-2-e0fdbf8bd108@kylinos.cn>
-References: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
-In-Reply-To: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
+X-B4-Tracking: v=1; b=H4sIAJv4lmoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDSwND3ZLKIt3M/OSSnGLdNEOD1DSDlOSktEQzJaCGgqLUtMwKsGHRsbW
+ 1AO+8sJJcAAAA
+X-Change-ID: 20260901-tyr-ioctls-f10ef0dcbfa6
 To: rust-for-linux@vger.kernel.org
 Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  Gary Guo <gary@garyguo.net>, 
@@ -93,25 +94,25 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
  linux-mm@kvack.org, dri-devel@lists.freedesktop.org, 
  Ke Sun <sunke@kylinos.cn>, Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788278954; l=891;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788278954; l=1522;
  i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=qqWFYnkUdOvaxzK249OpGaOu6UGHYSzktFTqj4uM+pI=;
- b=oHWDNasF+q42cZjuP7Vyzw0DKfYfsrBz1qiLDguWG+DGqzqQ2c8I3XwHLkj5Nv7tFARXpDbIw
- aU+eSOJuPDQDe41AF9ZIFWnYyr5WukFdVIFMSsNJps+nQQeVcfZydmr
+ bh=lhvqr0YNmYNoIT3ggMS891E1w+CGEgfi2rFuaQKH4aU=;
+ b=GbkfXIDW39GboxU034l9GzN9Tiqr6XulAfvPJh7sfrXyDINKCLMkm70knCQ9US4+CJvXzLMtP
+ 0dBNuorJ9UVDYn9ZADuaLj9cY/ophtfF2gmKfXQBW1qNlmPyVMCSMp/
 X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
  auth_id=950
 X-Original-From: Ke Sun <sunke@kylinos.cn>
 Reply-To: sunke@kylinos.cn
+X-Stat-Signature: 75aydsytptzk57qqgxbddwgap5wpqozi
+X-Rspamd-Queue-Id: 9FDBA10000D
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 44CBB4000E
-X-Stat-Signature: sdeigiyewtd3t94mqnmz3wkfztan3pan
-X-HE-Tag: 1788278958-142141
-X-HE-Meta: U2FsdGVkX19GgtuoWKgIKjw7TLAnmb9hPm015ARavMXsUuMMjkIzXGtA4nlx8etcoWo09Dq2CUN4mo5oCIuKJLs4w1rEBxNHDdS/nt8Ugcak3WhaRce9ViJGAgRvsWvZ9oyjV2tgA/Mp9avZzHmXPHjTKA2VkLmkOXczc0a0MhZjhFr3Xodsh/KH3NgPnF/Z1JBoYz21OcITl+3KHU0tq811DSdw04LYMu/eviXT33rLPgOck5kpU1E05JvNBD8AW49mw6Qq/ivZxdMyHgeX2o3ESKfD46l3T8sX+udSjJoCCHXm9Gbf35eahenyZpUoVOxX8w8ZQ5Vvkufubb9DkimZbu8zsE5cj9QK29qfi75qvXIsTjOZjp+ObDwH7AwLObqfiq2LmNYbhCj2SYsVxMn3ZvdK08mtMuvpPiEUICMZQUsILA+2ijpKYMsqwZzCMEWfwaVIlukLcHR8ZGPFkCEcFw6/RfJWj7UFjkP0fsAKyn9GF3oo8Yr93dV87+wCWZTwz0l3OMkyVEyJkQcTvr9Jpgk+GxmsubnqrDxmGKNm7ci9ZZQVzatkMQIMDA2GH21VproMcT8k2RqU/H3AAZHijyAIQ1pyw48jy1Gv+2mmJAY2iKTye36Tun0hFwXKOlikAkB9qg2be+UELf+O+zzJ1DTZjlMcF57JXlKccr77ovgkm7d/H+xbwYsuHDaPSPpXa4jtcp/tjFhabw9qkjuby4H5tfblr7RYImTHzJH7k5iIQk3Oy+3N8kuoe0QkXu/8PLmIH+93CsTl/Ors2Da64Y0Sm/Ptj1ohDSLHnSSx9r6zWr5LURRNT47uK9tSxrmQnILsHSWAIqDYapmiXoRrC3lfopyKfX9A7+d/5de7FNoto2XZstwAE9N+K/nsp97W6ynJI3T8k8V8k/e2BNO+Fv670eSad/5MYJSbjMHOEanxOFcQI7ztilhjD2D3wEGgp8QCQpcOeTV/RWs
- Wcpi9bEw
- bKVi1V+3uEQUEowWcVFIDpzG5YCNCd3XwiJPm3P8X/7sTbZlsywR6cRc7WoTfdasvBR/llDk/ACJd9WuDhFNh+8Ru0/NQiABTSFqKHOJMbWiXtKW0rhpbxJIITdRPwOIVmSNtjCtYe6/dNim2FRwc9Mnxi8EwDH2+xU4BDtYTZTQG3pPUlpzhv+cEO02JIXtjUNU3Uvek5JBkjU1v6kc2MgET3aQnM22fD2hxE8/opRkvsYckhJ6tfaF0bgIjDKlYYGw1iAmcg+JxKfQR5I901f65skscbmzUudXUw+nP27XF1l3DnjlVzMvzGpZ8+i5ur+Qg8ShalUqXiq9CaW+f9R2YZImdsnWVpAWGuj6mDmonqsEj7slx3nRu9/mmHZ55RA1QWQbHCcBItpduohEqHszS9YXoaAyjUXYFLR+SVD8D/u0=
+X-HE-Tag: 1788278957-34916
+X-HE-Meta: U2FsdGVkX1+3HO49Tp/amx+w2MjtQio+WFjTrrgIw0LCPmtE8Nq2GnhB+hhbSh9w7T3/4v+j/BSp5wD5bZtaSY7e451WmCJhjlD32bvrjjqVkZkS0sohVWVGNVpt0/yn3q6WZqfolFFmcZVl68ichPAta4BdnwCTeetjP8woxCvz6uteMEqABNl8RRRFabMgT9KN/dsQtmk1pSGuH2rkDzIT1enmDW+P0JGejSi9+OczfK2LD5kbCk60/6Qdwnx8tfZmVL7kbGXweFSAL7lSdKkAZygeIhiRw1yt1jfEEcCnpuppBSdaeYJ2SRZ2hLaX7sNEI3eOAQ0XPMV5rMpNfYSGS7r5lkKXTSTqDZHu2AAMhQ66TTUq1Z1L153bXWFFg0gOcZ6SiXh5IP1grSZsZJ1bcSHp/XPpq6Yok/c37K2PLtjRcyKirz6wbRlj18NIOK2NNYAz15sGgx7/xkxVew9f1A2PsuOJScSaEo70qvH6u9OU9BZmJYeC1K4pWSVwXme/anXc3h4Gtd01WGJCLe7Xqj6i2M5wH1+wSJYxeOer3z5HPYZbrkzx2wZ+W39SLP40Jb53Cpp+d7eRuujgRZsxjalDbUbVksCU3pBqCdHDSdTXloDhR/rWthkatDSNrIddDU0dRczqB6+2ROOTv+lwoCpMBZEyoNvgeT5WspTeI6cFcSo+gNsbLGjWotKpD/O8fyNTNcjjnaI1/ofUFna541oUxq9iAs5xpBEC4MfO+mxSQ24A2XkswEDp/EW/w1zbekv5G0J5T7QIrigrJjnpOF7kxTvR07HSNJu5YcIEKtCGyRS5Q1Rsz8rfC0ExEJz7us5Ukeiq1x4ymxSaNJkpJg6QRSIMoTE3fBQqlo6QU+wsN+Y26aPjz4iSURNEY8Bm3jahEYxhkB1tO1B+VazxMrs3d7YoShgd9kqu9KxET87+5pRkgcmPu4Sah7+HTbJg1Bp5Hr3i+iU2TVK
+ 5rCHRzOt
+ PVQOHNnvdWgDmQrsvS1oM1rsHZ731RJY5VXFOgw/4bbiqy+xpqznXJWqvbVJ/RYaYbX9y/I4mjRn6vLb1iGRLsWoq4GqL3oczS5furlB15x/2c/RwG1igj1N7BJDrLumxJHQy7FQgdR9KCQfUJIssAvuRiBta4JuIEd/A8timzm83O+pGmJOHOIbms2m1BDbQNH3YdPp62DNgQDmluHpVwppFBIVsPEMJwb0ewzK+XCHmJSnCnE5udXFIvqbTNWOrONXsuaPfqQY5NhR1DZnGtGpmU0LKQ8oFlvU6ChZ+B+/M1vu6Q+tWd1OJnqWg+ifYV2CVzTXjNAJntEKboIutUwOHbtIQFAUT5zCg9wxBZkRYhhjgQFgSGQ3rPOc2bCWda4GA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,37 +120,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Alvin Sun <alvin.sun@linux.dev>
+Add the VM and BO ioctls to the Tyr driver, aligning its userspace
+interface with panthor. The series is based on Danilo's `drm-file`
+series on `drm-rust-next`, and uses the existing IdPool and xarray
+abstractions for per-file VM management.
 
-Expose the task's address space size. It is used by the Tyr driver
-for splitting a VM's GPU address space into user and kernel regions.
+The panthor IGT tests pass on an RK3588S device.
 
-Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+Signed-off-by: Ke Sun <sunke@kylinos.cn>
 ---
- rust/kernel/mm.rs | 7 +++++++
- 1 file changed, 7 insertions(+)
+Alvin Sun (9):
+      rust: sizes: add SZ_4G constant
+      rust: mm: add `task_size` helper
+      rust: sync: arc: relax `ForeignOwnable` for `Arc<T>`
+      drm/tyr: add per-file VM pool
+      drm/tyr: add user and MCU VM specifications
+      drm/tyr: add BO creation and lookup helpers
+      drm/tyr: refactor new_dummy_object to use new_object
+      drm/tyr: add VM-related ioctls
+      drm/tyr: add BO-related ioctls
 
-diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
-index 4764d7b68f2a7..d2dfbb7d43972 100644
---- a/rust/kernel/mm.rs
-+++ b/rust/kernel/mm.rs
-@@ -149,6 +149,13 @@ pub fn mmget_not_zero(&self) -> Option<ARef<MmWithUser>> {
-             None
-         }
-     }
-+
-+    /// The size of the process virtual address space.
-+    #[inline]
-+    pub fn task_size(&self) -> usize {
-+        // SAFETY: `self.as_raw()` is a valid pointer to an `mm_struct` per the type invariants.
-+        unsafe { (*self.as_raw()).__bindgen_anon_1.task_size }
-+    }
- }
- 
- // These methods require `mm_users` to be non-zero.
+ drivers/gpu/drm/tyr/driver.rs   |  14 +-
+ drivers/gpu/drm/tyr/file.rs     | 394 ++++++++++++++++++++++++++++++++++++++--
+ drivers/gpu/drm/tyr/fw.rs       |   8 +-
+ drivers/gpu/drm/tyr/gem.rs      |  41 ++++-
+ drivers/gpu/drm/tyr/pool.rs     | 102 +++++++++++
+ drivers/gpu/drm/tyr/tyr.rs      |   1 +
+ drivers/gpu/drm/tyr/vm.rs       | 158 +++++++++++++++-
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/mm.rs               |   7 +
+ rust/kernel/sizes.rs            |  12 ++
+ rust/kernel/sync/arc.rs         |  12 +-
+ 11 files changed, 714 insertions(+), 36 deletions(-)
+---
+base-commit: 0b0aa9dcf17b6cffa9e325ff641e843b20d40c31
+change-id: 20260901-tyr-ioctls-f10ef0dcbfa6
 
+Best regards,
 -- 
-2.43.0
+Ke Sun <sunke@kylinos.cn>
 
 
 
