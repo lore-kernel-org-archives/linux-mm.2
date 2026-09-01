@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80A4DC61DD6
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 23:24:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 705DDC61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 23:24:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9535E6B0095; Tue,  1 Sep 2026 19:24:39 -0400 (EDT)
+	id 50D616B008C; Tue,  1 Sep 2026 19:24:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92BA16B0096; Tue,  1 Sep 2026 19:24:39 -0400 (EDT)
+	id 4E4FC6B0092; Tue,  1 Sep 2026 19:24:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 841086B0098; Tue,  1 Sep 2026 19:24:39 -0400 (EDT)
+	id 386306B0095; Tue,  1 Sep 2026 19:24:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 65AF66B0095
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 19:24:39 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E7B01C0524
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:24:38 +0000 (UTC)
-X-FDA: 85166775036.18.B6CD38B
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 158D66B008C
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 19:24:35 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 91528401BA
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:24:34 +0000 (UTC)
+X-FDA: 85166774868.17.5FC6587
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4C87D80002
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:24:37 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TXAQ3QSm;
-	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id DB5AC1C0002
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:24:32 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ONNpfGFz;
+	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788305077;
-	b=BjYwimfOb/JOSHC8hsUppwfi9SiY4HKSFHJEF8nApyuLqyI62+mPf2i6I+4+ZQaVlN3BoW
-	gmgSidv+VBJRRjSkufeAlSeOTWP7L1ueyl/4HXeqVW3odew/Xnhw2zZ67kN0cwsOArIxwf
-	c1m4z/3LJfj+PhDO+8IV6+zvGWBhEEQ=
+	t=1788305073;
+	b=U9cHrlXI5flpm3rPBNzviDvQvp77ChOgqOxFRd5KMXYptwBTeyq++bUEL5BhPVT4TDCtme
+	2NQZnGxBeO9gV2wF8tX6u4tIeQtaNDF8IVrM2LtWv/AmZh3XLjQIyjsj+3AGRZhn5OaPnx
+	81juCrPYROeBgMGYWohNm8nHrohnXsc=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TXAQ3QSm;
-	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ONNpfGFz;
+	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788305077;
+	s=arc-20220608; t=1788305073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3mrvoCwf3JhHo6/B0HvRbUVwX76oJvSOJSq8DmmzItY=;
-	b=Glx0KbU7hDkrwF0MuQQfL+2ie0cT8Wu755UW1MYnPq9He17NscD32SXVReljJIrFVFSvDY
-	6Rs9E14N8gAgVyatg75f77pa5v91ICx0ufHeY7a7DN3CawsiWTB4vr5s/HRZy1J0hQPfhR
-	IiJovTIy2QaYvZv3TUjRqeFjNeMUh7c=
+	bh=Z0X7OvF6yz6PTqxJmY35ICxOJAuUHhLkK951+WZcIng=;
+	b=8rBFJ46bwMj6nnmSakpvdC1D7CTyfDDcXYL7RYNEIrBmoO4leAiCuh3Kh5HGQpuPDxqS6L
+	otNdFcrKZ64jIDemoM1dE01FHomIwqiHfVBW1biWHXG0Ed+omhxF2Cxje2vFr8Qzq5Wnqg
+	AUWFrzrlGb0HysARr6AP+Tuv0GCVdtU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9D6AB43EDD;
-	Tue,  1 Sep 2026 23:24:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A611F000E9;
+	by sea.source.kernel.org (Postfix) with ESMTP id 2EC3443F60;
 	Tue,  1 Sep 2026 23:24:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C771F00A3A;
+	Tue,  1 Sep 2026 23:24:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788305076;
-	bh=3mrvoCwf3JhHo6/B0HvRbUVwX76oJvSOJSq8DmmzItY=;
+	s=k20260515; t=1788305072;
+	bh=Z0X7OvF6yz6PTqxJmY35ICxOJAuUHhLkK951+WZcIng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TXAQ3QSmW1kL0/7w7FaPW8RnsDkCuqPXbtBoqB0y2WXus7vg1zrqEl/L0Q9l4bFNl
-	 ri6q7uhCpuIhvRBdIjis6rb2sE9cN1rdK//O9NnxouQgBFBkHYVcliV0NisEKwbKed
-	 O6H0SpjWaCY9ptsqg0RI9Hgkpm3K0n/9OjVK7PigCLKdp0HbR3EtbEjHziSrN9wFqb
-	 YahoOIrYqne51/guURoNXtmcDMcZ/7j++r1/CM3q8wHS+CU9JTsWkCrbH69xgLaWVq
-	 v5TROxmYjEv9+W9pIxioG92t0dslVeEDrNNUXZ4ibzKWFR2n1zTLfcWd3SUJpMVblx
-	 C25N/pdk72h3g==
+	b=ONNpfGFzn7/T6wh+dIHvukw5pagye5MuBBVr0HN8zSArlZBW3NpZi89/Q2VTjz1Xu
+	 efTyofK06CMYGUYqzgpM0x/rEsRcvbNkiUNW/IQNcP+0c/Orb1+sTq2p/df5AntkE6
+	 YLaw1PIsQYaYlRqL0xHMxajJPelQ+WPNigtM/EEqAxb2iI108K6c+IJYbjJQy1pE1B
+	 QvdoXEq62EqTOXIcMaXdBX0stgWpI5ayA8z2IVg0feyRkgpzHWk1mTSYjgKILTg0HR
+	 B/TxgSKyq9pF7pZN2PM77xw3kMhEkbK2BHHpNw+Phfd9xafJWR70FE47gVJhALnIMb
+	 Dn1MS+JSVqdbQ==
 From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 To: akpm@linux-foundation.org,
 	linux-mm@kvack.org
@@ -86,24 +86,23 @@ Cc: axelrasmussen@google.com,
 	yuanchu@google.com,
 	zhangbo56@xiaomi.com,
 	"Barry Song (Xiaomi)" <baohua@kernel.org>,
-	Xueyuan Chen <xueyuan.chen21@gmail.com>,
-	Kunwu Chan <kunwu.chan@gmail.com>
-Subject: [PATCH v3 2/7] mm/mglru: batch update lrugen->nr_pages in inc_min_seq()
-Date: Wed,  2 Sep 2026 07:24:16 +0800
-Message-Id: <20260901232421.40157-3-baohua@kernel.org>
+	Xueyuan Chen <xueyuan.chen21@gmail.com>
+Subject: [PATCH v3 1/7] mm/mglru: separate folio generation update from LRU accounting
+Date: Wed,  2 Sep 2026 07:24:15 +0800
+Message-Id: <20260901232421.40157-2-baohua@kernel.org>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20260901232421.40157-1-baohua@kernel.org>
 References: <20260901232421.40157-1-baohua@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: cbymgndg6yx4e3dk1bg8jbpa7xkckbod
-X-Rspamd-Queue-Id: 4C87D80002
+X-Stat-Signature: dq3r4tauio9w94isdpsbjq836yt6mhfc
+X-Rspamd-Queue-Id: DB5AC1C0002
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1788305077-835864
-X-HE-Meta: U2FsdGVkX1/9i+UOwStkPAPTBhQIOva45GEI7H+9eL8iQVT0apwzfoNaOa6iw13Gp6a7t0KqegOjs4ptNb704Nj1beHc8P5brpZWrafp2KoLNOnSA5aW830ehQTUbHERnbDrQYsIigUJTVa4BrasH7Z4H3F1lafg7Dp65Wi+WlsRI1r6iRnwN1Y/NyswiIoQnN+f1oy5ctfPZpozVB+ADDLY6kK7VnNMyEYuftj2yJA0mhBr8B5t/t64p+0suFr1/5f3hn9wh7cpEc6ebV+VxdLvPgnoFcKGPb5+WlH/Q9LOrOVeVLWHaJ05ca31cbbAnBop468z07a3/l0S3ys3SaMghI4wOMpy/ue5+j8JoRg2jm1pOhmiKfWhpCrw3DW8HMUwK/jQQeRIkmI3/mf1vf3KZtb7vdgxzRAf/FMzl/mtZ4iGf76jRyXWjhxb0kggvq5Hler8dElxFhrkOCX9LwnYYgsle2IF3uNmgk4ou1CmjpJYgwWcimgvKy2+wELt4sBMYaYweiiMHo3CQOniCxx5ibhkEChrFAcfbSlSlU/RNI3K0V0ue7DabHiWer8/Nx3KIyeZeeqy2SPaH76sWGSGfiZMBOAAYiUGtFsUCaBJbNwGW9Mb4ZjxOXJPqLa6oWlyINwxV3/nfmPZZYxntf3HKZqS5qVzrd6Qdku0m9ONvoPenNtMhRCECQ0dTtOKYC4v8APIU2F3Fk98JZ+n3RX0ZyFXJH/H2ZzKM14nKFBpezH0sN0TpVtY5Hf9OHeRmxy0rSRuBsJqdUSX3KjAFLIs5xJtlHp/6x2wZ758aig/U7lC7L7TuFM5EFodJuXceByqP0DFaz4YsAtdfgKOIjreY8IFSgdtGp+ck5ExABaydFThuN5HnPBm0nMPrr/s+PxhkEeZk9OyYe8Cp0N6pWRczngUPGIewdylYM5rTGYgS73jU417PvInJdZ2cZ/EJq0ZgwPiiJpEAVWTUPD
- zdpK63f8
- LxxQCxlTDO5ClU8Rm8ox4VWhtIerf74I1NTqoosmOVzKSk5LL2FVdZd/1ZltUXJaeKR72MvtaLPYg6FElaJofEhWBSOVHL9yRXaYdnxy/f/t757oveazb9tpbPW4wmC1jxD4e6zAup3ikW55wfXsvTCWopXHoLptbWqiHrw2+fbb+mwBj9VaNMWPa5it04/2AqonYbL6O0wrxJ3mfoEDK9r2fiKMyr8Pw4vwYELKFLp0A7FZQ3Tcb30qdbjhhp4US29xRItCI8AM/sPCFMJUJyKyRTX5csDnzjRwbu5LIBg6AsyfNCy8bV2AzBJgPHbD1yBxxK+W/aTo71fL0yNevIRsFbzW9R8glPb6C1msABXqsu7Emsjiwcp4jc2KfG1516hDy
+X-HE-Tag: 1788305072-736129
+X-HE-Meta: U2FsdGVkX1+qdum8NdtxQR2K7jt7Ak14KeRjxQPfHXSXO84d/1v7JX9LffAonSOm0FH1kU4acE7WaT6wAH4UTcNCgkrhBH9DHR2TBJf53Of4Qr6KirPE445g56hw5eN3XsqWI8A0uaO73ijDD7hcbw3tYb4WAbRfF9XCQj/cykZVa6w2QMuv+uBovqwUzzj8SD+Hh8O2vNDAksy1EvhLAEugKHnLoadWQif14hWHNjwTqM2flWRMVlt8doDgRiRJcUNPtTZ9KXHZeYdm5p4+SyGc05gl6EQ+F5ZGvnCwpWRhYvBgh1givbdAReqCycVMT8CxjsX85wmCimkbXrsQczv7s7Eanu7yhke6hcLfAhzRtHGtdalONgP+bUAmbqIHDDML9JMRWWCnuPZfP2IJvKArVnCgzosGjUhHbqZx1xTDvTa4aFdznq4sWwRUOipve8yjeI5Art971GkQclVE+XcMhbW24ec3xqsJr1gV03dCz+cOIO23AEGgnKFpofw4NHIMLKGVYkTy2feehDsTK40UDtyQKu24Kz3jyCwRJdKG3smGVJ4Keufntx2ry2JewD6RHIXNC95A2/3w98BqpUtHxdPajmKOm21f1eKmDwuyVJxrwS5O5LVkFEHpeMkeJyHwsFqsnC90Zm6YAI9oUq6SmiSKqT2GLx3CBIKpK1BeIJZDp/0QX1uLGVnh0Q3m63aMzU35s0EzKnIT3qZlUpNZl8L0ipUrxgGgj8emxTEGIdijJc1D/eZEdQ+Opk3zdXh5UvOVzU92UITCZeeXD9ecfSau9QTr4oQ+GfVWwS5f1JnV12DF0eQbjGl2LTCjLH9xgpm4YJ1Q/QWuEyB30SGVQyUGd7pGVDtGwm6sRbr1il0M8iYSo82l5I2k4p6du803UecFioq+K3dCpJIVBnx9Sw5pXBq0zt179wX7BTfqNi4y+75u3YUYTZ0pjX+tebymosqcx7HFc1E6e/u
+ E+kmVVNZ
+ EBhHXvLYivLyCGzCX+z2E6JcvWsaXjnanz5oxfTTJ+cufR5KptTNs3ZB9HKUMYZX9Ke3+YQWiWEox0p+y+j7slHtIHcHADEAqkO9Mhal+Ui7+ixRwwKeKb8a2sqY3IM7Su2QY7/Q/3UhMcKtqYefxCQwDIo9fYvIqnFxTOnvfVXOqmD85L6ZNJrHvOroKNoGaPKkrZeZd9LzKPqe/ZvZPBYgj4NEKB7RtW2aSxtmTe8OZmShckJM1W54daYkQ68HHL3U7sS5rIg0NDC0o8jkAXS8SD145uWZw587SVYFwoGNYSw5qASmh54xCEHRYPE2wyLenZRwCi1U/LvU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,89 +110,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, folio_inc_gen() updates lrugen->nr_pages for every folio
-as it advances generations. Instead, accumulate the size changes
-and update lrugen->nr_pages in a batch after scanning the entire
-oldest generation, or when the scan stops because remaining reaches
-zero.
+folio_inc_gen() currently updates both the folio's generation and the
+LRU size accounting. This makes it difficult to batch the LRU size updates
+when moving multiple folios.
 
-Since we only move folios from the oldest generation to the second
-oldest generation, the active/inactive state cannot change. We can
-therefore skip __lru_update_size().
+Extract the generation update into __folio_inc_gen(), which only updates
+the folio's generation and reports whether the generation was actually
+increased. Keep folio_inc_gen() as the wrapper that performs the LRU size
+accounting when needed.
+
+This separates the per-folio generation update from LRU accounting and
+allows the latter to be batched by subsequent changes.
 
 Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
 Reviewed-by: Lian Wang <lianux.mm@gmail.com>
-Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
 ---
- mm/vmscan.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ mm/vmscan.c | 28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 54bce2f608ef..27494505cecc 100644
+index f11491ee9ed5..54bce2f608ef 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -3918,6 +3918,7 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
- 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
- 	int hist = lru_hist_from_seq(lrugen->min_seq[type]);
- 	int new_gen, old_gen = lru_gen_from_seq(lrugen->min_seq[type]);
-+	int target_gen = (old_gen + 1) % MAX_NR_GENS;
+@@ -3295,21 +3295,21 @@ static int folio_update_gen(struct folio *folio, int gen, const vma_flags_t *vma
+ 	return ((old_flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
+ }
  
- 	/* For file type, skip the check if swappiness is anon only */
- 	if (type && (swappiness == SWAPPINESS_ANON_ONLY))
-@@ -3927,35 +3928,47 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
- 	if (!type && !swappiness)
- 		goto done;
+-/* protect pages accessed multiple times through file descriptors */
+-static int folio_inc_gen(struct lruvec *lruvec, struct folio *folio)
++static int __folio_inc_gen(struct folio *folio, int old_gen, bool *increased)
+ {
+-	int type = folio_is_file_lru(folio);
+-	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+-	int new_gen, old_gen = lru_gen_from_seq(lrugen->min_seq[type]);
+ 	unsigned long new_flags, old_flags = READ_ONCE(folio->flags.f);
++	int new_gen;
  
-+	VM_WARN_ON_ONCE(get_nr_gens(lruvec, type) != MAX_NR_GENS);
-+	VM_WARN_ON_ONCE(lru_gen_is_active(lruvec, old_gen) !=
-+			lru_gen_is_active(lruvec, target_gen));
- 	/* prevent cold/hot inversion if the type is evictable */
- 	for (zone = 0; zone < MAX_NR_ZONES; zone++) {
- 		struct list_head *head = &lrugen->folios[old_gen][type][zone];
-+		long delta = 0;
+ 	VM_WARN_ON_ONCE_FOLIO(!(old_flags & LRU_GEN_MASK), folio);
  
- 		while (!list_empty(head)) {
- 			struct folio *folio = lru_to_folio(head);
-+			long nr_pages = folio_nr_pages(folio);
- 			int refs = folio_lru_refs(folio);
- 			bool workingset = folio_test_workingset(folio);
-+			bool gen_increased;
+ 	do {
+ 		new_gen = ((old_flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
+ 		/* folio_update_gen() has promoted this page? */
+-		if (new_gen >= 0 && new_gen != old_gen)
++		if (new_gen >= 0 && new_gen != old_gen) {
++			if (increased)
++				*increased = false;
+ 			return new_gen;
++		}
  
- 			VM_WARN_ON_ONCE_FOLIO(folio_test_unevictable(folio), folio);
- 			VM_WARN_ON_ONCE_FOLIO(folio_test_active(folio), folio);
- 			VM_WARN_ON_ONCE_FOLIO(folio_is_file_lru(folio) != type, folio);
- 			VM_WARN_ON_ONCE_FOLIO(folio_zonenum(folio) != zone, folio);
+ 		new_gen = (old_gen + 1) % MAX_NR_GENS;
  
--			new_gen = folio_inc_gen(lruvec, folio);
-+			new_gen = __folio_inc_gen(folio, old_gen, &gen_increased);
- 			list_move_tail(&folio->lru, &lrugen->folios[new_gen][type][zone]);
--
-+			if (gen_increased)
-+				delta += nr_pages;
- 			/* don't count the workingset being lazily promoted */
- 			if (refs + workingset != BIT(LRU_REFS_WIDTH) + 1) {
- 				int tier = lru_tier_from_refs(refs, workingset);
--				int delta = folio_nr_pages(folio);
+@@ -3317,8 +3317,22 @@ static int folio_inc_gen(struct lruvec *lruvec, struct folio *folio)
+ 		new_flags |= (new_gen + 1UL) << LRU_GEN_PGOFF;
+ 	} while (!try_cmpxchg(&folio->flags.f, &old_flags, new_flags));
  
- 				WRITE_ONCE(lrugen->protected[hist][type][tier],
--					   lrugen->protected[hist][type][tier] + delta);
-+					   lrugen->protected[hist][type][tier] + nr_pages);
- 			}
+-	lru_gen_update_size(lruvec, folio, old_gen, new_gen);
++	if (increased)
++		*increased = true;
++	return new_gen;
++}
++
++/* protect pages accessed multiple times through file descriptors */
++static int folio_inc_gen(struct lruvec *lruvec, struct folio *folio)
++{
++	int type = folio_is_file_lru(folio);
++	struct lru_gen_folio *lrugen = &lruvec->lrugen;
++	int new_gen, old_gen = lru_gen_from_seq(lrugen->min_seq[type]);
++	bool gen_increased;
  
- 			if (!--remaining)
--				return false;
-+				break;
- 		}
-+		WRITE_ONCE(lrugen->nr_pages[old_gen][type][zone],
-+			   lrugen->nr_pages[old_gen][type][zone] - delta);
-+		WRITE_ONCE(lrugen->nr_pages[target_gen][type][zone],
-+			   lrugen->nr_pages[target_gen][type][zone] + delta);
-+		if (!remaining)
-+			return false;
- 	}
- done:
- 	reset_ctrl_pos(lruvec, type, true);
++	new_gen = __folio_inc_gen(folio, old_gen, &gen_increased);
++	if (gen_increased)
++		lru_gen_update_size(lruvec, folio, old_gen, new_gen);
+ 	return new_gen;
+ }
+ 
 -- 
 2.34.1
 
