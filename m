@@ -4,100 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA9EEC624D3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 17:46:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75686C61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 17:48:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECADF6B008C; Tue,  1 Sep 2026 13:46:55 -0400 (EDT)
+	id 6B76B6B0092; Tue,  1 Sep 2026 13:48:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA2416B0092; Tue,  1 Sep 2026 13:46:55 -0400 (EDT)
+	id 6679F6B0095; Tue,  1 Sep 2026 13:48:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBB0D6B0095; Tue,  1 Sep 2026 13:46:55 -0400 (EDT)
+	id 557446B0096; Tue,  1 Sep 2026 13:48:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B1EFC6B008C
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 13:46:55 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3C8EB404ED
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 17:46:55 +0000 (UTC)
-X-FDA: 85165923990.14.6D31BC9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 815DD100006
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 17:46:53 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MM8rdnOG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EFF46B0092
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 13:48:43 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9F1131604AC
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 17:48:42 +0000 (UTC)
+X-FDA: 85165928484.01.002BFBF
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 978F0C0003
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 17:48:40 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=UVtis7e+;
+	spf=pass (imf10.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788284921;
+	b=tQe1r4x2LKH4B6PN8GXOF3cFUTAF4Mze8qHkYWCgAXrsemljLfFJfP8MqmTomUM0KqedrF
+	CIREhPv7/XUUI8RduDrPfBJUhCgNhY5cBnGPXp5VWILlDuVpcFrxcRPv6B8PzuCnP6Bbhm
+	hnRS7nVTrwVefNonVzLl6EXVroiLZ4w=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=UVtis7e+;
+	spf=pass (imf10.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788284813;
+	s=arc-20220608; t=1788284921;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Di7QTynNdwrefgWArR8x/gWtyxCUPTHCJ3Ml9Ox/wmg=;
-	b=lZaDzrsAhlaffrXneRcxEunJxsCxtDEIcyNaCB/vUnlpPnjCbWj6vEH+KikloCRQn38oqE
-	pMoJkZaSucpfnO7DVdNzlVYRDBo3ModAN+yZzR/8G/0+0cuLOJ1H28JS2in5zuCCmDbodw
-	1YMaJw9N0Ea+ZQHOTq9U37TmRIp9ipo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788284813;
-	b=vJ6bGNkF8VtetYxt8UoCB4ia/jahpk5zlZtFtR4jdGip3btygBUzpH3OAX7a98agjtb7qE
-	pB/1DBTNT4NfBVNwSbnr/tNa0XVpyEp/tqjNe+hGFNWuHdwDks5/JkfIMh66XMkEInkmhQ
-	0CB4DeA2frSuLeI7pLPoXGgaUIlZ9BQ=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MM8rdnOG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9F7E940A39;
-	Tue,  1 Sep 2026 17:46:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A3001F00A3A;
-	Tue,  1 Sep 2026 17:46:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788284812;
-	bh=Di7QTynNdwrefgWArR8x/gWtyxCUPTHCJ3Ml9Ox/wmg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MM8rdnOGJ8NlTTKLBF+ZWl4lOqzsu33URdTXUoJAJpM+r3LMdEnN32gB8oaIOp83P
-	 z7fAnqDfQSf6tUhZgpY4nWuMOnOy7OfNzElYFAYlsMu2dcBVtpp2mqJUbXPsNkvPxV
-	 11dRQjJ7g1neo95rCP6rPnh8KcRaPxitPJjADq9dyLpOgxG24g/VuDYURyR5Pqy8Eh
-	 COgDziYII4r37BFKQYvTyK1UzqfV5hd2eo61ezLxLtw6eNo/8Hp7OJIVWxoGYK7+t9
-	 7rtvqZ/IE+uWuuJPihziw49O8FbDUnDc5Ycrl6Ydu8kO3O5Kd29Z2yQnBOLRiTMiRZ
-	 Mv+NLrts5eGrg==
-Date: Tue, 1 Sep 2026 20:46:43 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Eli Billauer <eli.billauer@gmail.com>
-Cc: David Laight <david.laight.linux@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>, Brad Warrum <bwarrum@linux.ibm.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Michal Simek <michal.simek@amd.com>,
-	Ritu Agarwal <rituagar@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 2/4] char: xillybus: replace __get_free_pages() with
- kmalloc()
-Message-ID: <apcPg_y-HsMki7we@kernel.org>
-References: <20260830-char-misc-v1-0-05e2ce44f291@kernel.org>
- <20260830-char-misc-v1-2-05e2ce44f291@kernel.org>
- <f6001085-9234-4025-ff34-6cc4a66c293a@outbound.gmail.com>
- <20260831123937.32255a49@pumpkin>
- <apaF1HUtJnstuUN4@kernel.org>
- <1729fb06-6beb-f8ef-3e71-47fc3f00345d@outbound.gmail.com>
+	bh=PQNx8cP7/H92zG22iJw5UI7f9yq7f8zWrRV0yPrbUWI=;
+	b=ffcCTOCWPY3uhj4dNeab4Qao1SpjLWsj5pFFoz79Y3Gvld3YKpqA7IksIPcCCee/prIGS5
+	kW16UiG17K8+5zMsIbkZ1JTgBCJ+qHHTQCbagEfqir79nR2q638nWPHjDOE2NTq0JK7x1L
+	CO8c8/tjrtwvcghHWP+F/ngirMOhbmw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=PQNx8cP7/H92zG22iJw5UI7f9yq7f8zWrRV0yPrbUWI=; b=UVtis7e+r5/G27TIqfxZ+en6iD
+	ewP14Pe2h9SnqatfXnO6L1fC4qcBnFOELp+V8WjW5RT1xwY3uZi3XSEv9Vu+4qZ1jP6BGVn7PXBEA
+	4Uw0Phr831M7R4vLdI8REUIOdbiINbJ1LMU5Mje2MkkXTCbCEn9Xn2ArP+y9asBIjud478+zn1SSo
+	lebc9FLfrg1/y0a6m2dAyJLJ3yltmw6G3+vcRUXeO4yRAwAxeKznEDSHVJJRWpAMX3il8mcbEeTWo
+	3139sv5kbIIlk0Z/E868rddoQ5sSESOXVT4ZQj4kMrc2J++kPSB2h0IKqxPLn0UnyiWT6B5SeVd+c
+	852DOAfw==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x1SaY-0000000Crxj-16sr;
+	Tue, 01 Sep 2026 17:48:03 +0000
+Date: Tue, 1 Sep 2026 13:47:49 -0400
+From: "Liam R. Howlett" <liam@infradead.org>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, Guo Ren <guoren@kernel.org>, 
+	Brian Cain <bcain@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Dinh Nguyen <dinguyen@kernel.org>, Simon Schuster <schuster.simon@siemens-energy.com>, 
+	Jonas Bonn <jonas@southpole.se>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
+	Stafford Horne <shorne@gmail.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Russell King <linux@armlinux.org.uk>, Vineet Gupta <vgupta@kernel.org>, 
+	Michal Simek <monstr@monstr.eu>, Chris Zankel <chris@zankel.net>, 
+	Max Filippov <jcmvbkbc@gmail.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Peter Zijlstra <peterz@infradead.org>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Richard Henderson <richard.henderson@linaro.org>, 
+	Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Richard Weinberger <richard@nod.at>, 
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, 
+	linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org, 
+	linux-sh@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-snps-arc@lists.infradead.org, linux-arch@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-alpha@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-s390@vger.kernel.org, linux-um@lists.infradead.org, Hugh Dickins <hughd@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>
+Subject: Re: [PATCH 01/12] mm/huge_memory: zap deposited page tables after an
+ RCU grace period
+Message-ID: <px4uwbuq4ixucmjzudxulldk5l2tbuymaoaheyc624jdznnac6@px5wkmxqjmfo>
+References: <20260901-rcu-pagetable-freeing-v1-0-5456a81c8212@kernel.org>
+ <20260901-rcu-pagetable-freeing-v1-1-5456a81c8212@kernel.org>
+ <apbOlyF77yDCV4cF@thinkstation>
+ <apbcoMTVlL42G5tg@gremlin>
+ <20260901142408.GA56830@ziepe.ca>
+ <apbiB51hjm-9pRzf@gremlin>
+ <apbuO_QveZNAz3ns@thinkstation>
+ <kasi4mkjkt56wxsrmphm5o2qfg2lwsdxf3tlmzx5tq6t7uez74@kozleoavd6r2>
+ <apcHiE7jDQaFYXOM@thinkstation>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1729fb06-6beb-f8ef-3e71-47fc3f00345d@outbound.gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 815DD100006
-X-Stat-Signature: 68dsrr388ai56dmy5suah7e3xcamoxyi
+In-Reply-To: <apcHiE7jDQaFYXOM@thinkstation>
 X-Rspam-User: 
-X-HE-Tag: 1788284813-824252
-X-HE-Meta: U2FsdGVkX1+euS6IuovpGXRcrBBc8anY1aNCGsSJRNuydLk1HY663kouo5EsbcOVM7vjhg5cAMldSxHzcE2qCv1RVCiF+F9BEfr1mLGg9wd8iOzG+D1Ih6+iNdaPAQTScKtpZ2DAjTQcB9sKVfxmueS1D310AKEfWE7e6YElTGo4RjDtBexAMw5m/p6ewJYYJwJT8Q8A3oPLWSLC8ARckp2bX66QnIdGqpolu7ojT58AySaNbrjisbKJRoVXq7s028nHiRWDKQJZk635SZ4uMEybnoIDFpYVEc1wDHr8iYhsurL+xlCMcPtTSK9U5xDBXz0AnxqAk7tNcYVB5Yo/l614CpIZU3qeq4R8fJjlM8ZyCT9tz0XRyIbtq8o23ZUJu9A5KxB+Xa8RCqRNfYCxRjtdJZAJBSjk8C618v8ZXlJ/LxI6iLYtoAWSbYayaBVIGSRnK8w0Xf2SGygV37/l7Q3F8Y1ne6vbbxIeLP+09DauVwskAoWTi+3GwzfvHeobpIs9OMF4/jY7KEoFYF1D7Eqg46nbCZCf7D0jjaeCAR/4NXwpr/hshXOlRLzVRAPTL3KuqovDA1daqf/ZdKTS+owPusbBAoqUIBzjYDSy9n/7Srg/Glvk618/VaHHbheeZvdSiDHlqUSi6hZCXTBMxbEyz03hXg1PeCqnfnQ6JxY2kRV0izFepVRuWxWc8Ykh3sTuy26B22nkzOxeVe/pj4HwGw+eerl6n1mYE3vHlT4ovLW/UenjVy/ojbArFRHISaUE8MkJSCHjfRsckr12U69gRKNzB2Thy5cHcG8Qp9kp7uGn/F/7/DNClbpT9gKnGV5w842LMwaiBUumAh1j6uQnc1YDCWK9TjnTIJSE+AdPMV94IZQDSvy+lZE5tpsNaEXkujI7fLwlqP0M+MA0S6TLenm+1PJts7BvdBDEhMMSUBRpEHIIazP8K7gV1vIIgFeZDBVSqZl7xxXzZ1J
- Fl8EOAOw
- UaQkvHvaRHs8J+QHmu64Z1U2CHnOiEhosbELNDBteVk+OyeuOhU/RBG22hDszdhzCrRPCgZZLeisH+scOzjG9RTua9uv5JjgktDKrleRvnvPVJFuXRRVO0bdSRrQZpnScYEl1M7P1mHjId1wzQ8Zv/TrHGKYVHYqjxvICAl4jxqfraHK4l6Ac9nRyMeU6CQnbsX7tSeD7kSMWyWbSz/01Vm43ACUf2SgpD1kglphh8rWX9lV5skgXizYJtqdEk5b8CpaOPsuosa2dsd1BLki+mSurOjyOjCRKChAwiW+V41tA+xpRT6bWDIqWx2AJ5yUpNycWIcrwVrk3zgOrA7DGT6DBQsC4KaT/gwBhG+J0WU7kKvB0h19zkh5uDwsMf6UsUp6UGWSMImuXsWMhAvb9fIKtBCh3C5LLZJGSyHSMKfV1FwwrXw5jqeBOtA==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 978F0C0003
+X-Stat-Signature: brwiy8ixfkzi4wxmkscmsc8tqyuj5axf
+X-HE-Tag: 1788284920-327251
+X-HE-Meta: U2FsdGVkX19XlY0zTzfU3g7WA+iYmJRnSqQggxnII8STUUCgMKlqLCUNN3MMNDHiPchHsSyo5GR0jGb5S/c1Nhh/9rGaUob/TAaxC1HZtx5z7JqR3RhL8MjFag27F4lVB/zv0QQW99LbNBKl8WJTrE6MAFp9Id1/ARc96iRYK+qpF+9KrUAgxORyhaUVZYMsyc+sZWSeZqb2Vr8qbwbksyDSUO74pJhjjNCvObMwhrzfTV0t34gkm4I73sgITqDMJcoEBqDqwfiy0Wj61V70HRiibLaPFVn3ITmlRmxx78wSJVN9wpwIywDu0alY/Bc9MTlbWdxboFZ8hh9R7yTHkZyY7Nas4D83RDGZ+6febDTXxaLmpyU0AQzENXwJl313vK9utqSbBTARcAM/5LDTk8wS8VoDC1hKa5NNmashAjrA5X5UFxAfb3k7wtA2sCErNoihpt9NFdu5c7FKZCu0+U8+xphttFGzDf9uWJoNcJfFJCpvwzvVd7NTwVPL4LD6/knZRiWqHVtvzMqZAkDOdVEUQDJpKf1q+1w5sLMQvSA4HxL9DtSqZl28BE1hBJBCwYe5BoL2moGE+Am/cQtmDHB3YVKaJcNhgHAfO8nHT5reasHmOeS69HZs2lGL/tKEWzhvxcN4rF3sUebvul/uZPymeH312r5VD9ahZIVvaMlf8uVm4jqQRLa3HXqDXwX8R4VVeFpbYvAjRyOIGL74PzvNmDExuoX9hkWgtBE/lokyMVkVuO7YEG5KPxDs/XA6+s66gDcaNm6MnCMYlXGDDiDEPjmHCq4SDcdIcpwy7624wuqLIqz4LMYOZ6G/nYtgV8CuKkdSsyE5ohHQhMCggnRzuZ16Gz07o5EuiY+ViF+mwdS1sC9cVToU5K15cWSIKd6KnUITMpkYtlsMs6bdLd2Qd2Qd3hzBoHD9YJknh/IzxoDhKn1wa7gEGUBvDocuM83PcUzrBxRm0dhSGnM
+ aJ0aHuE+
+ MwXNo4ApC4NCDhsydhAMC2RWxLKOjNtttfjYFhN9WPtLxNzDT82VJkkECF7iMsxEhPW95qxByHdiHgsJcZB/oFULI/6nzFP3co8vtt5zc8ubcCIb4QpXztIYNT4nKOk6ChoGvCFNihbwl8ZEsM7Tok7A1ipMGX4IqxzXhFFn6PAqi5jrKmDa7cJvH0B6bBCo56a2P50PPlEU1Q1eduPxelpSEgvB8JpC3xhloz3f3GqaRKoUnNAiHAwVG0uqR+mawxnVM2sKqwEiY2WLIcPYX7sHMcEf+a0pw/4dUHsD2F6aAvJlj+3XMSSVA6zeecM/C/kEwoGjKEH3yruZnoVKA/zKp3V2Az7lcQ2DkI0LF1Y0TsGoIDdXbmukVm5L2KxTFEaf+xINAk+wVgxVZuzeCKe/ecg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,99 +138,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Eli,
-
-Thanks for the detailed explanation!
-
-On Tue, Sep 01, 2026 at 10:44:20AM +0200, Eli Billauer wrote:
-> On 01/09/2026 9:59, Mike Rapoport wrote:
-> > > Would it really make sense to allocate the four buffers separately?
-> > > And/or use vmalloc().
-> > My understanding is that the buffers don't need to be physically
-> > contiguous and vmalloc()ing the entire fifo->mem in one go should work.
+On 26/09/01 06:13PM, Kiryl Shutsemau wrote:
+> On Tue, Sep 01, 2026 at 11:54:47AM -0400, Liam R. Howlett wrote:
+> > Do you have munmap() performance dependent workload that you are
+> > concerned about regressing?
 > 
-> vmalloc() is an interesting point.
+> exit(2) path is performance critical for many workloads. Like, if you
+> need to restart VM.
 > 
-> fifo_init(), fifo_write(), fifo_read() and fifo_mem_release() implement a
-> FIFO in software that the XillyUSB driver uses internally.
-> 
-> The memory for this FIFO is allocated in fifo_init() by calling
-> __get_free_pages() with requests for up to 64 kiB. With the maximal total
-> buffer size of 256 MiB, we have a possibility of 4096 allocations into an
-> array of buffers. And if __get_free_pages() fails, the size of each buffer
-> is halved in the following attempt, which tries to allocate 8192 buffers,
-> each 32 kiB, in this example. And so on.
 
-With vmalloc() you'd get all 256 MiB in one go if there are indeed free 
-256 MiB in the system. Unlike get_free_pages()/kmalloc(), vmalloc() does
-not try to allocate physically contiguous chunks and it's not affected by
-fragmentation.
- 
-> This mechanism with an array of buffers complicates the implementation of
-> the other functions as well.
-> 
-> So why not replace this with a single call to vmalloc(), possibly asking for
-> 256 MiB in one call? That would mean simplifying all four functions.
-> 
-> When I wrote this driver back in 2020, I avoided vmalloc() because Linus
-> wrote "vmalloc() is NOT SOMETHING YOU SHOULD EVER USE!". (See [1]). He also
-> noted that vmalloc() is a restricted resource. But that's from 2003, so
-> maybe things have changed since?
+That is not enough to see any impact, although less overall work would
+be done during the exit call.
 
-I believe so, we have kvmalloc() that falls back from kmalloc() to
-vmalloc() for larger allocations and we do have about 1k callers of
-vmalloc() family.
+It would be very difficult to come up with a scenario that this would
+have a measurable difference and an even harder time to come up with one
+that is slower.
 
-In 2003 the majority of machines that ran Linux were 32 bit and those had
-limited virtual address space. And yes, vmalloc() is slower than kmalloc()
-or get_free_pages().
- 
-> Questions that arise in this context:
-> 
-> * Does vmalloc() guarantee that non-pageable physical RAM is allocated when
-> it returns?
-
-It's not pageable in the sense of demand paging. Some architectures lazily
-synchronize vmalloc page tables and this can cause page faults that will
-take care of the page table synchronization.
-
-> * Can copy_to/from_user() be used with memory allocated with vmalloc().
-
-Yes.
-
-> * Is vmalloc() guaranteed to successfully allocate memory in the same
-> situation that __get_free_pages() could have been used to obtain the same
-> amount of memory (in smaller chunks, as with fifo_init() )? Maybe they
-> allocate memory from separate memory pools?
-
-The pools are the same in the end, vmalloc() allocates memory using page
-allocator, just like __get_free_pages(). The difference is that vmalloc()
-does not try to allocate physically contiguous chunks, but rather a
-collection of assorted order-0 pages.
-
-This is actually more likely to succeed than multiple large order
-allocations.
- 
-> And most important: In what way, if at all, is memory obtained with
-> vmalloc() practically different from memory allocated by __get_free_pages(),
-> if it's never used for DMA?
-
-The memory is not physically contiguous and cannot be used for DMA.
-Some accesses may generate a fault to synchronize the kernel page tables.
-The memory is there, but some processes may have not-yet-synced page
-tables.
-The allocation itself does more work and it is slower.
- 
-> Does the API offer clear answers to these questions?
- 
-Thanks for the detailed explanation
-
-> Thanks in advance,
->    Eli
-> 
-> [1] https://lwn.net/Articles/57804/
-
--- 
-Sincerely yours,
-Mike.
 
