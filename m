@@ -4,76 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECF4BC61DFD
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 00:47:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94C69C61DFD
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 00:49:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A63BA6B0095; Mon, 31 Aug 2026 20:47:23 -0400 (EDT)
+	id 75C776B0096; Mon, 31 Aug 2026 20:49:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A14C26B0096; Mon, 31 Aug 2026 20:47:23 -0400 (EDT)
+	id 733CA6B0098; Mon, 31 Aug 2026 20:49:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 905066B0098; Mon, 31 Aug 2026 20:47:23 -0400 (EDT)
+	id 672D76B0099; Mon, 31 Aug 2026 20:49:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 661F46B0095
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 20:47:23 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F0E5A40140
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 00:47:21 +0000 (UTC)
-X-FDA: 85163354682.30.F253A35
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4ABDE6B0096
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 20:49:57 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C6C00A0245
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 00:49:56 +0000 (UTC)
+X-FDA: 85163361192.10.D19F8F9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 5DD8A1A0006
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 00:47:20 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dMFJw5GD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf25.hostedemail.com (Postfix) with ESMTP id 3A225A0006
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 00:49:55 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZJZR+0kn;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788223640;
+	s=arc-20220608; t=1788223795;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LXWsMKMXC2X8nJTY0s4XiZNYUo4FSqt+7Ykdy8yx0Sk=;
-	b=UT/zAjXzTjjOIJuCh0ZxQLvfhnAI7NqzRG87b0CxQqS5dB0yIS5aXRAuVF4KzVaPK58wnF
-	Hvd511JmIZs4d2F5KI4CosEfYMoQAJKfV4TNd1b5zPGPjOidX99LwmZCxOj2Vbziv+VP1/
-	0ExCuRufPyCowA+Iw/QQoYJzS+CTeUM=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dMFJw5GD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	bh=woKBEbIMFtOyK1GVl+xRrcz9+WTfKDI3xViqIZ1ByqE=;
+	b=gzZWHQJo45Hyx/w1u34gJdDWKEnUKvinktV3DRz7gM6jkhyyXASn0pj+7IxsNpyIpyPQvv
+	W7YQENK7MDMaY2XUjrNKr4oJ5TNCzNn0DTx/iWeUNzUFu8d3OMrqUup9X/Qr/6hU/dEn5q
+	XNdDHxb60f/6KdJlB6ySO7jWi+WuLa0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788223640;
-	b=LD/McbIs26j2/MmJd4MCK19mn1kHc/UdF3ByjUaTbm+01I5Ks429u17o0kwn4ht/0HKyhK
-	PE5x1AmYUD2QvWISJ5Tgc9VLFiCoeGTNv+4a0bQpqBgRKcnatYsazHBPNKZmrZQ6vB/8RI
-	6oMe85TKwwWMbF2cHf4qYb3iUlH0gpU=
+	t=1788223795;
+	b=HrYL3Ue02cc0z/p+Jtd3teMwHnLfW/H2YpuwAt0xWV3qM1/TgTv2X2nvzv6zXCUpoEyEd0
+	aLlI0Dxw6b0zc4p1SYFJbuiYMjupYVPXVJzlkWA9kd469Y6MgZdE1HU7o1nBW6SV3n91EF
+	X2CE2Gr/PV872az953UQnI+iXZm6Xkk=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZJZR+0kn;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A9CC7407E4;
-	Tue,  1 Sep 2026 00:47:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0112D1F000E9;
-	Tue,  1 Sep 2026 00:47:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 56B8840800;
+	Tue,  1 Sep 2026 00:49:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B17991F000E9;
+	Tue,  1 Sep 2026 00:49:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788223639;
-	bh=LXWsMKMXC2X8nJTY0s4XiZNYUo4FSqt+7Ykdy8yx0Sk=;
+	s=k20260515; t=1788223794;
+	bh=woKBEbIMFtOyK1GVl+xRrcz9+WTfKDI3xViqIZ1ByqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dMFJw5GDOK1LB/kthZUOEnAAk5yFHCpRNEXKwFWe0eTxnlnOlwLPa3YCrwpIhFsHq
-	 AZU1yChW2iRMUoqy6emQhhL1HcXbYi4vQS+HEsm3bQnll0mx7E654PEKh9wQhK32HT
-	 8I21k7vMrAcbErslUCMzEPRID7+x0DTB1sAqR04EM2ytotQM/oj1Z+oPKiVnkCKRhi
-	 H+t4LhO4IUfDQnUF0jSi70J3kX06dwGYXEwSOOGPfAGF6CgWzjRfquJ6Zml7WZDUrM
-	 GlVw9AP/7sBk58FlJVCULgBNlaoKs9vQ4947f8FCFGA7jOAoRqkBRIBuUXiHkqJjz3
-	 HZN2hkvu8S5NQ==
+	b=ZJZR+0knq0AL7vYLE5VQ4SxQHjEFRaMNjUH4EKagbUOTNB65IsCsrQgnLZC8ayDnc
+	 D7PY9JYGCm9e+owTZkC2iFTLQ7otxkK2A6b1E6z90sR0bjsyfg6K1qmKguZXoETfSO
+	 2h0Rrv0OJ424KhNTi41+CHj5WGvnjnBlzq1937+ynpU0dHwVhUFyNfCRfd+EBCwEvn
+	 1QtsBE7IUIbljcqnnX6oFn0sn3zyZdZjSdza/TMqDjAxJNRMEaWHWhetpTWf4DBJ0X
+	 6VBS1x0ahC1/UHvGkCYNOg91Nu4vfQouUbnZlw1klFTIbQcfav1VXpcpgVZVq+qZdV
+	 sYMX98emL2oNA==
 From: SJ Park <sj@kernel.org>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Asier Gutierrez <gutierrez.asier@huawei-partners.com>,
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
 	"Liam R. Howlett" <liam@infradead.org>,
 	David Hildenbrand <david@kernel.org>,
 	Jonathan Corbet <corbet@lwn.net>,
 	Lorenzo Stoakes <ljs@kernel.org>,
 	Michal Hocko <mhocko@suse.com>,
 	Mike Rapoport <rppt@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Vlastimil Babka <vbabka@kernel.org>,
@@ -81,22 +80,22 @@ Cc: SJ Park <sj@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH v4 3/3] Docs/mm/damon/design: Document hugepage_mem_bp target metric
-Date: Mon, 31 Aug 2026 17:47:11 -0700
-Message-ID: <20260901004712.89669-1-sj@kernel.org>
+Subject: Re: [PATCH v4 0/3] mm/damon: Introduce a huge page collapsing mechanism using auto tuning
+Date: Mon, 31 Aug 2026 17:49:41 -0700
+Message-ID: <20260901004942.89964-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <107dc6ba-697e-4b25-ba3e-8ce2499cac9a@infradead.org>
+In-Reply-To: <20260831144732.80910-1-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5DD8A1A0006
-X-Stat-Signature: 8the3pec75drrxo4b47ahagdbfm9b7r8
+X-Stat-Signature: 5q9hrmicezagkagn4xsfrcbbnpobmre3
+X-Rspamd-Queue-Id: 3A225A0006
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788223640-982278
-X-HE-Meta: U2FsdGVkX1/7/cqVQ5fKEAMxiuLOYhmwJqJCZfq/J9fDg2iWF0YWP/yETP3n16qdieX5RM7KvkAzP2JpfJ7QwSwwdP7Dx+f/DYI8vxCPircoolnwyGwKd1Nbol/A7fS8vjRnvqxV/0jIte8/wa3LNiD4Vgiltnm39yQu2GNIe5aUz2MmSY2oJ5Bx8+8fm+OwbHisfOuNBjAx68Sy+8IbV9y12temHy4V8OZp48Q0UJtc4EyPeOpENNplLOtE4iRLJHpZdRg7wxk/+h46UTJ1D58J4Yp/S0zBQ9a26Ss7AN4+3wr/mF7DUmQaku1wLFJ6E6LkIWL0AhsalqCVhkDa1wF5csm5RjxT1hNOBpJFQMdQxbuxUqA0EAQmarIXHIoFlO6I48Fzm65q6D5fU363NSyKNnAGvgQqNNgeyuNdFVQtlKNPpdeC2WyQvveZZmifsBeHmVryv0rSQq4PomX3jP9LXvITcd5GzMcXMfF4agDSGiBGd6BCD5sOO6y8HEnVRD3vGkucd3rlLkJZpnnRqgKT29Mvga3B7TeTR3D5tQjT0PMwSNKakOxdFBb9MsN2Btm4QX6/WgWCUpYsvIHiGiPjLJTWcBn5X9d3Jmzzdt2PT93O7frPypzUwm7sL5XHYyi6zTAUBHkpaLEVnmUIJqTUJiW27DvRmUczjXmWFT3n8+wahGe0jMBNvpgeN/zW8HhQlZl8wk2RkdjW+IeOCVrDx34wlIcdeCeOvL4RKK70j4WOK/kMY9sp3fk9BnAuYeC0j+uf3NzdBiZbhREMb2lPsGipekzcLqxZ0iDYFlGJKJQcbuPAFEyWGMIEzal8KhVx4OJoA+8alhuxZHxMKFIjaj3DkzUPNaZ7diUiJuC5YmuBCciv1MLPrvKDhmkCWNCu/ZXMVDVo93KYikUDsjosmrLp4QNAI2pvn+RsHmGHC5GYMZcMqsj6cvVeARZgnSfL5jG1HACzH0aRarn
- kvUgKKTr
- oAkD29jyyiJq/1XItyWjgx5OROzt4bIsca1oAf6tO/LMIiN02rStJ8gSQZ+EKETehTXjpnQ0cgL9JSBc5nTl/r427YMTysdc9Q/sDBnNcrUYnAG9hefMEcMX/boZgAjCq6H+flRu4/dsPqPIhKWVDtYLyDQy3M22EXtsJTwZluZDIIfXiltiRfEm9DDpEGy+gPKjQ7DYOoRCt62yZzuaPBK+KLMavgjkubXnoWPxCgFyxB0Ji/0bo/CzSlhq1aNOZ6UOTf7iudrv0XxWCh9rrJbgLL7BAdsOUpnz4j75Zruc1VIxSWeueBiZNzjE00kDDk8ZyoRV2nw1v7f2WYaWQ18ZulI3jKXxuD5r65ODE53moT8V4wZ+1DwrcDPrQhbZaFjLQiUVosZgprIDLPmmIN+eNwQ==
+X-HE-Tag: 1788223795-501160
+X-HE-Meta: U2FsdGVkX18NON1qLHy8qD+KfrSsE8z0MwCZKbSu2cEp4Y9FtBk3CFF5k3DXBGZPuZVIT3wlLqrTCjBNjXeXa2DAK+ms1NC3RzFzpBeq4lz6v8IevcXA+XJAkoE79INg/BiB2wDUHYptvJXMEZ3jvVTShM/dxouGxu4Q+5xvHZEBGxnwfX4NeTvMcRCHRI9+vsGigJVczWTOU0Z5hzfap97qAeWmFC4t5LICz9QRmxZQvms6wRNV3T4cQqITH6TSaWXLjwYdpEOFyNPIbDrITNgqe8MZxvw6uPeIIM85+QFfQ+q4o+ngo8FqA3Z9JBUWb019kiL57pfXhMsyLdHsmQ3eNMjxzoUfyw5JSS4xyyqJPr1UZAAB2zxILedXUW9dnh5u7U6599sv32CtF6wahXaoGcJ1eIUih2kiJGAUY+IR22ik4Rxb3MnaVbjf/ODSdI7s62n8DIt5ZDJoYsnwB17Bbci/uyreavAy4ipWLMCYYs5eHagGYhdgef4AdEyyyXChOPUUiPWtOISueaenGq3CQR//H2CZXviVr/rt0CfyBYyO8PNVTJr566JwFmZIp7io0gaEDIBxzADS7bBTjRQJVVeTkFSHOrUPFSoFjmYIU4vEGwNRm1tV65+AHjDCF99kf5hgmrQV+mKlEfo11s78rW1IyzAonYCw7qPp5Myufe1n3VUxyOjZrXeyKjr1jxh2d+yxW8CpFFnOmSrsDnPV6N/8qw51RQJoNMUHgdJ/MmvtrsC1ySUbrvtqS/HFXTqjlkbpnWIms2V/4lnvx5vpWflzZ4nxiEQXiwex7jMZd7Sd7ewJYh/q3vNLUKG81i/+Y6OT+sTxEd4/nJ+mhQg+EI4Q7GzhstWcyUBiiRuTwmjii31qcq1Tvd/Gz3xVfd/zkAfnmHbF/EFHCOGS83Hj0yp6z4PHt5c+Aom+3Ck/p6gciu7YyosmOE1E+VgopAeIRDTRQBDInkAJI6V
+ HJQ5xOLM
+ RgJjl8t+V4mXiu/KQFoFUYyfMuh6O1pvrHEZSg7O/wMh15qUIUeue1MDkhZqcuNY1vJIRjL393gDh2WVOf18OIesB6DcR+26CpXEzUHX+UkcKjHKWVNnN909FjICd2gEAWTf4RwAYrH2UxpyZY3Z6Nv4Hx/pJW3AMzemRW6rvvJEHd4UUjFKKf6z717Evai0dG4mIllCNzbdchFRLLIBVBV+G1tLzgQeaT65/eSqoflzdjVXo4lJ45Mzz/rQowUtO14oa9ulhHw/Z9ldX1oCeQmlYLBxA3Qck+0Mf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,54 +103,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 31 Aug 2026 13:00:26 -0700 Randy Dunlap <rdunlap@infradead.org> wrote:
+On Mon, 31 Aug 2026 07:47:27 -0700 SJ Park <sj@kernel.org> wrote:
 
+> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
 > 
-> 
-> On 8/31/26 8:45 AM, Randy Dunlap wrote:
-> > Hi,
-> > 
-> > On 8/31/26 7:47 AM, SJ Park wrote:
-> >> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> >>
-> >> Document hugepage_mem_bp metric exposed by sysfs.
-> >>
-> >> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> >> Reviewed-by: SJ Park <sj@kernel.org>
-> >> Signed-off-by: SJ Park <sj@kernel.org>
-> >> ---
-> >>  Documentation/mm/damon/design.rst | 2 ++
-> >>  1 file changed, 2 insertions(+)
-> >>
-> >> diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-> >> index aed6cb1cf4831..a8c163475ef2b 100644
-> >> --- a/Documentation/mm/damon/design.rst
-> >> +++ b/Documentation/mm/damon/design.rst
-> >> @@ -713,6 +713,8 @@ mechanism tries to make ``current_value`` of ``target_metric`` be same to
-> >>    bp (1/10,000).
-> >>  - ``node_eligible_mem_bp``: Scheme target access pattern-eligible memory ratio
-> >>    of a node in bp (1/10,000).
-> >> +- ``hugepage_mem_bp``: Total huge page to total used memory ratio in bp
-> >> +  (1/10,000).
-> >>  
-> >>  ``nid`` is optionally required for ``node_mem_used_bp``, ``node_mem_free_bp``,
-> >>  ``node_memcg_used_bp``, ``node_memcg_free_bp`` and ``node_eligible_mem_bp`` to
-> > 
-> > I've looked thru the entire design.rst file and cannot find anything telling
-> > me (or anyone) what "bp" means.  Explain??
-> 
-> OK, I found it on the internet. I still think that it would be a
-> good idea to say "basis point" one time (the first time that it is used).
+> Overview
+> ========
+> This patch set introduces a new autotuning which allows to collapse hot
+> regions into hugepages.
 
-You are right, and I agree.  I will add that clarification before the next
-merge window.
+Sashiko found no blocker for this series.  Sashiko sent findings to damon@
+mailing list [1], and I replied to all the comments.  Please read those for
+details.
 
-> 
-> 
-> -- 
-> ~Randy
+[1] https://lore.kernel.org/damon/
 
 
 Thanks,
 SJ
+
+[...]
 
