@@ -4,105 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C225EC624CF
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 10:56:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05119C61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 10:59:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B1816B011B; Tue,  1 Sep 2026 06:56:36 -0400 (EDT)
+	id D85EF6B0125; Tue,  1 Sep 2026 06:59:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 961B06B011D; Tue,  1 Sep 2026 06:56:36 -0400 (EDT)
+	id D36B36B0126; Tue,  1 Sep 2026 06:59:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8500A6B011E; Tue,  1 Sep 2026 06:56:36 -0400 (EDT)
+	id C26DA6B0127; Tue,  1 Sep 2026 06:59:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 545986B011B
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:56:36 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9DA92803A9
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:56:35 +0000 (UTC)
-X-FDA: 85164889950.06.D3F11CA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A30DE40002
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:56:33 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MjCLmWal;
-	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 98F7E6B0125
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:59:29 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 042AD1403AA
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:59:28 +0000 (UTC)
+X-FDA: 85164897258.19.3A0D3EF
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 49EC2100007
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:59:27 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TwQ1vxUU;
+	spf=pass (imf05.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788260193;
-	b=PNcCkyqiZUnXVooykny1nLYQv/z2X6l46tqOYq7TFnNWwfc/fxzgez6cl2vuUDbKUy4Npt
-	uyhdPovxi7I447wITzL5ByDMorrptKswIKON1O+nap68/WCOJw9yycddCntVb6ia7G5Xjt
-	3XnItnvrTiXyY20VcVRY7iK/gk9hqLY=
+	t=1788260367;
+	b=Za3QKsQUaIpMU4785F72/yQWx759Fq4xMk4QGxgn9HHl84mAuxOo+exioegn4CON3znxm5
+	njE0S+jrDwxW5Bs1/Mpzy0tTB0Yx8m9gz7OiQoaTsSqV9NZ7hm1S/y9geAY/cyztV2Hqdk
+	GV7lgF33MGtgGk9VCvtftNHIaBRf104=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MjCLmWal;
-	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TwQ1vxUU;
+	spf=pass (imf05.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788260193;
+	s=arc-20220608; t=1788260367;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IrG48nudf8Db8eH9Q2rYlGxrD+mM6V+4qGZaDfjF11Y=;
-	b=XYPOvwPhDWH+KXf6xOGz6rJsxd4h+13y7Xtf3HRbmaKQvW+WB0P2bC8kFIbV+dI/Ej8sCV
-	D5mrWKUa8DEYdRevFsvT8QjjeHvI9OetlQi/aFb4MBk+z81nj9ki+iJpuWeTYS1oEhaPlU
-	1XdYBGEvojzG6wBFm2xY92KNgoLVONQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 762BC42A4F
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:56:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8F991F01558
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:56:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788260191;
-	bh=IrG48nudf8Db8eH9Q2rYlGxrD+mM6V+4qGZaDfjF11Y=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=MjCLmWalYXlLWJxWXjbT6tB96cG5bH+PfZ0C2w/5CrWMRAV6oJbWAPkTXlMvGyQ7z
-	 XDBMtzAIES0WhC8xRLIuLXN105B2KDNFGHy5ZJ4gmcMf5P+D3tq7fwHCM/WEvV4w/M
-	 VaX6hHXwrrBuoXSpzzHNH77U4SbN8Id889Xet+lcoiaNplbrBnv8bIzdhh4+pvIUbL
-	 hODxPbU3bKzdlb8r368n8BaKY0PdboqyNadv1BnWDJQqQdpR8F5UWUREjqJUaz3+rK
-	 X4RGGbmJT7vDxz6+vDXhFv+vAI9UNTfLPiHFkc4wHd9bFE30ioGt4A94O3SKMxWKLl
-	 E9e6RRbQ9Nxqg==
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-9391252b5caso274800785a.3
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 03:56:31 -0700 (PDT)
-X-Gm-Message-State: AFuF++nKvdiD+m+0wLomO3SuMIbBWdzaRVER7Mf2C8Dt5/JeDy5eu8IY
-	TSNyZPnGfCIo4G8JmCaH5EeNHjIuOm+cniA3JEMXn1q1wKQ5uTP309ObGuZ3k9ng0fAI5A7Pzzi
-	r+5NYamHpsM14NmAPV49EmKJ/krDK7nY=
-X-Received: by 2002:a05:620a:a409:20b0:936:9f47:e908 with SMTP id
- af79cd13be357-9394805aa9fmr798556785a.19.1788260191171; Tue, 01 Sep 2026
- 03:56:31 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=cX7EjhloMvh87ibhYzHTwR5IMqnRMYO6qnjKtDs5XDY=;
+	b=zLpPH2tQrtDd8UwHwCx8qWwTlqMQOdcKalosinOvAl971C4ggN3Clg6TazsMmOAVcir98w
+	FaYl47jwvXaUU4LqqmmUu3uCOr3iA5E2BQVeMDSWKM0id+nr3nOQBMjc1u7gG+7s3BuZJ+
+	FMicWk+74YHX+6LWAoIyqXPj+aneohU=
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ceab75934dso54471565ad.2
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 03:59:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788260366; x=1788865166; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=cX7EjhloMvh87ibhYzHTwR5IMqnRMYO6qnjKtDs5XDY=;
+        b=TwQ1vxUU6NsENmb9Dy2epQfuH889Wy1cqb9CmxFTBLosc8RfPrTWBHDLNDQW4zOjEl
+         iYJVb6+0JZ6BQxLV/aLzhAcB2L8hCR8krgUtofCuXLCc65LMx0ev5FnxrduSUS52F5yW
+         2KxDcaNs8vJhoV9YZKCoOoBQIhwquy2HEBG2nc+mW+4Xk4Vy5nBZ5Hy2GKR++H8WkP44
+         fAJMeX9yteraw0m6ej5HH/1fCeHBRKSnJIJK/x332IBf6JArd1LzV39i+B3O58mLfyL7
+         SgA1LxzaxldPU7GSXbMKDlCYz6cPIBkCkX1uHNhZ0WeMQy7huhAP8GaL6rPfccbrrCby
+         KIdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788260366; x=1788865166;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cX7EjhloMvh87ibhYzHTwR5IMqnRMYO6qnjKtDs5XDY=;
+        b=bNWGHQTTQySpadAyXc8SfsNActzz2xo3L1nI7k1pXim0LTwqO8Wvc1vXIgYuRwsnO8
+         Ik1Kxe6dIATQuMQm5SP2XKq47OqUa8nweXwv2hKO7Zzv+T9LJQbbAfW7jkCr2ZRfSA84
+         UN0UgnzZMt9FflyhpMNVmKmpKws4ErfgErqL+qvRHxS9OnJvJLrEo2+cu5XAO+5H6C5i
+         Pon2AWW7Upm4KY4jft60nbIhdX2TVizqOuev1twOK+SO7G1GjwU762QY0tJa8OFJN5LO
+         ApN7DNufg3dQB4Lvl53llfl3FJGvdnZRvfSN3h/6MQRC9NTGAvFjIT6gF9eIhcuPN9Kr
+         TgIw==
+X-Forwarded-Encrypted: i=1; AKwUvBx3oCPFzw/u0eO1T6oVv5YBO5UKU+QHVF7hLdnyF684eJIZnOPK/hb4AX0rEQ8Y3FNmwdTyZPA4Aw==@kvack.org
+X-Gm-Message-State: AFuF++nmQUHAMv71ij46oQ3x1kb9+RcPYEtumGHEq0XVYlzmlg9jeeH2
+	BAi5LETWv+d82O9RiHy+gg1JcKWLK07bjUVmDkEPCBx6jMLwAVXluSfW
+X-Gm-Gg: AYBFou1PsDPVwPfy0wuTIMa+qlLyEypLQMy6xK4daajazyRZtO4IxRuKQ8kiwu0nSqT
+	nFmv6M3IkeKP8abFF3MPXROA54tzM55Zv18elFUBPddN3O2vdUfs8JithNeotWmVPu9HsskyL4E
+	o1TAJ9mLNyVHmWrRK++B2SBMaArMnEjKJFN7YWFAZNQQ1yjk+q/pdSD8kZwiiu9Q11TJN3s6YkX
+	ufUizsIk3mjXUctAcn72o3gBJfwmfup58DPyWF4h2yT7jStj9HDRrYFa2i25eUbZ0pYZORLQQfH
+	jtoRekeorFRLDrL+yaebkQRqHUsykVEiN1obT8u8Xf1nIA7FbUal0NDUq6xZHmQI1+4Hnl/lHGY
+	TOlPy93qpcvjWkalmzdSGx1+RV8csyAUrYImo6v/y362exSTk9MCyUKM8owM4I/q6wmsIuLPgIq
+	MraE9luNV99Oq9kiRsC0wd2QdtbHx1tH0khdRHic7JThHqe/CKBG0vQjtgpNuILGezrxh9tLyvx
+	isU
+X-Received: by 2002:a17:903:458b:b0:2d9:51bd:534f with SMTP id d9443c01a7336-2d951bd58e9mr63941605ad.10.1788260366011;
+        Tue, 01 Sep 2026 03:59:26 -0700 (PDT)
+Received: from celestia ([2402:1980:9c5:2de5:8b4e:3f3c:b637:4ca5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d9458299aasm20706695ad.43.2026.09.01.03.59.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 03:59:25 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Liew Rui Yan <aethernet65535@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] mm/damon/core: always return false when esz is zero
+Date: Tue,  1 Sep 2026 18:59:25 +0800
+Message-ID: <20260901105925.106186-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-References: <20260831-mglru-flags-cleanup-v4-0-2d15dde0d7ee@tencent.com> <20260831-mglru-flags-cleanup-v4-6-2d15dde0d7ee@tencent.com>
-In-Reply-To: <20260831-mglru-flags-cleanup-v4-6-2d15dde0d7ee@tencent.com>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 1 Sep 2026 18:56:19 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4y7MrUeHn4NvtpyyZ3EY-6dTUD4vhitw6Sy6tfRq6Tf9A@mail.gmail.com>
-X-Gm-Features: AcwNN1XnJ-vUwtXvUynuDK4bSBGCxwvSia1E-LheZ-OirsmZyvEnKkM9ehQEeH8
-Message-ID: <CAGsJ_4y7MrUeHn4NvtpyyZ3EY-6dTUD4vhitw6Sy6tfRq6Tf9A@mail.gmail.com>
-Subject: Re: [PATCH v4 6/6] mm/mglru: fix potential generation folio number leak
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Ridong Chen <ridong.chen@linux.dev>, Lian Wang <lianux.mm@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Kairui Song <ryncsn@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: eitspaztamc8gj59q7og7cgt7ytkfu73
-X-Rspamd-Queue-Id: A30DE40002
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788260193-760432
-X-HE-Meta: U2FsdGVkX19xNK2DeJBWP30hgMlqrTJyKE0QnEbyIYG+gfu2GKJLBydeMUNEnEzW+OpCCdZkeKi8ttirstH+IjkrVZy719uuOYJYDslN5DvvoUWeUVCiPbK2X5HY5powMrDxC/SgremythOxZCZ9OtKqRSGLJRPaDU9MW/zfECyzQnYTv/kkTcUYgS+qJ8sHQWnVncME7jPVI0Wr9NBMYivnLxuSJdWT5KJr03N7SN1Vpmvr+JDYX9CVuTbBoPNrOQVV/ZGLbxN/IXi5b8LLfRyBd7cLAiuP/B7KxD9z1BjVDmHvwHIAj5IH1Q0zIZ5FLbofqZMJtYo+Am3dVH0moalVi3dfvx6t+bo2ZATTMruzcEErb2P1JW1k97EHW9BKnPbXIzrGsOJUcIC+Z66a4BRMFYqO8mB/z7e7HP0gSPhXkz7Em5AauHy6ZV0roFGFusnC00Q6nR4Tjic+iBIt9d9JT8ZboHral7gB+CoCa4G0x07EYPEH1nJyfoCNqtO6AQKu/KmviaTxAtiT/iR/kEobnn3Vl8A+tG4D3mTpOv1QFshlaNBRTHwUjGnCHqeJWwb2qs1KO4dhr5WmrEIgPCe7t4hnROjlXK2u3ylLRBVSEdgh78DQ3weuZJ3g4LNP6WN6vnoDPajNcE6rWFqgN6CTJMxVzTkJHZpBJMWKj7Hwk6iRqc6KhzP5qgkBuu4DgyRbjppUg8pQ1GjvJOxvZHs+057Ghxe8/Zvmc7jYr8MBFUdMW7RTR4bUJhQfGLnqbyQKj8R6GtvCFYz5VKlRYhZi0o69iUTXwX4MNmaNegSUNS8IkevxIwX0txtZtR4LfsN9UvEzRjZ5K2CFpcQLMvuVGEy0UiVKcHCr5TcvNgL3w/JxuartaHJsAU4jotw12EIksadOgwoNSfQYxUBOx0s1CcO9knvNjYIcrBI8GZT7H0hq7CZnpzBMcYTHp0rJtOv49jUdHcQeaxK1mYR
- cpgil7KF
- yHLzjA0Rs49YaYLyFQcM9UIGYz00PGonOQ+6aTv0nmZSeQwMDUW+gulNCfy/YPVc+7engQ8ZEZl/gmHZKCytk7NOeXQDsY1lIQkhEHxus6nzVdfIB94c4ILaO/Hoaj7UYSrhxDvjIvmkpYVH61WhdrX5bOjuaAgOVfhHRo2pBR1EXEbGXhb03mfGArmGfbVFMXQMERmIKFihl9GL25V3WsesiqXQmKWheGzBaAKD6PKRvE+I1Vz2zo/oiOpMgRzOMISi2iSe0ffQerS9qG49b/FnxP2b8Q5YGuDvnA4CDrhaI2j0T+cqdOqHteSmNJOdlKptJDNJrjIPm9SmQCRjzmNkYlYvSRhviGVaNRn2eop1VcvfnQPxAiWQEJ8OU0KQeLjjy5wQ0AOJvtplGftkIlQLsmA==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 49EC2100007
+X-Stat-Signature: f9pwcfcqf5trejfi4j4o6z81tgmwn9f3
+X-HE-Tag: 1788260367-235815
+X-HE-Meta: U2FsdGVkX19cTMnWr0fcD0xHefZuQRGQOGqhIgqNF2FGd7KsgYtBdipyopI8W/DwArY86VSCsN4zhVDaCfyo13m+/fTvtuUyAiUHCaohBdRhgxviAaAQCzLhducHL7rfTvkQBmBOLDrTdAcNb4RiW854Uq05yHOzM/sUhnqZt5G06qwlgco/6oEpo7cQIDwPs6yvXnCd+5mtapBWaYYVFyrwpGc1+v8oJdW4YrRYj7+vkFrY7+kDJy2nlyGpO47HHcgmjzs0CN5Jbgr/YO//lnPDtO7LQtnZEQtF+8cJW36UetZ4mmdFQz7e2zTJGxhBLSuk0/bPaT8BnJ5bgcG0u98cKe5wJPExaCudrpwtauh+CUNlSBeQ3MweV7uOL6qe/Z3dvVFZKoNihsvAOb4jKF3qVVVRotZQ0n7J2LKKxFO958vCvXpDiEctW15KvlrnARncy2w+jYz9C5uIqfKbotDHHx3J1H9f6R0ihdLW7JL/Z0v7rIfxZub18KuJKAbQHOHaUpZIEdfO7uNsoPQZWwWXAQPjczfMjsLycWws9XP1BCaoGQccE/iyK+3tgAGEb0baV/uX+Bp9SgkgpMhuZs+eubrs7Z2jR0QBCpDaCpA1O/1ZB0k5mEUcCGpCF7VxO/KiVzowMD7LrNJKdfXLNgd+PwHHo5mPRmSbhLgtcTZoJVqF17zsBkoqr17w/U5SH+XoNNK5JvvTxXmVTWsVXuMKWNLqSiMxeF4mnajR+Y3WZqnjUvUr/cLOPi9oyhzsgNIP8CNWCDJDqsLkqQGsFZLTWC8vDwQS+mcpFD7oBWP2LzrlNBCcSHmdCgF3MLJ+P3Fb7CD8B4vITjFmhg7VrB04c45dDTxgG0nZ8TUnhUw5acMt1iYCNg1cI7eqwlc+ChXK1gUV5FSi65dlHuXsNTN44IDzolgNV+KnBsBDyD4Ajoaw7QP+7saNzueXCChYUDVCpNoLI44RfrGnYhb
+ x7QBOhAU
+ u7kuxEeJOUDieaxrYy064zGSF7O7LzxKEhzBzxgXjyoOK+Fereg0CteU0iaUyk5Uw8o8eaYZm3w7fjwzwBizk0cyGRKgICGV02ihzPVcPiGBgdhJGCaG2+VGcII8iURzd3b1qYkmPq4HIe+z+YVB+6egBbv97qs8EcpUX5RslAv/9Lq5XiN1Tz8cZRz7W46NvCI056O06KV/ceRKrjBw+DQJVQYQYR/G+oaVbg2Rg4TAY23nHTXD00ZQo73GlE24pxvlrzCU8T8jW/LZYSq7uFSPgCeLb+B81ML3AYgYv8E9VLzOHL73rUla0bpnD8WPv7N1j4qHaVjQ/Dio0WcvnHhUBc82+1i3aLQgK7kVksy+wJECR67Y1YWDu79d+833KxZi+Rx3TB4r+B+MgrX8sy1+IdyGDlaaIe9E2eLxWAlBovLDWls8iGMgAlHwJs1EjO6Nm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,165 +119,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 31, 2026 at 2:43=E2=80=AFAM Kairui Song via B4 Relay
-<devnull+kasong.tencent.com@kernel.org> wrote:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> Each generation of MGLRU accounts anon and file folio numbers
-> separately, and the page table walker updates each generation's
-> counters in batch once the walk is done. The walker promotes a
-> folio's generation with a cmpxchg on folio->flags, and
-> update_batch_size() then reads the live flags again to pick the
-> anon/file column to charge. The walk holds neither the lruvec lock nor
-> the folio lock, so the type can flip between the cmpxchg and that
-> read: the lazyfree path clears PG_swapbacked, and reclaim sets it back
-> on a dirty lazyfree folio. The batched delta pair is then recorded in
-> the wrong type column. Nothing reconciles it afterwards, permanently
-> skewing lrugen->nr_pages and the reclaim budgets derived from it.
->
-> Fix it by capturing the type from the flags snapshot the cmpxchg
-> linearized against: folio_update_gen() returns the type of the state
-> it transitioned from, and update_batch_size() accounts with that.
->
-> A folio's type only changes while it is off the LRU list, inside a
-> del/add pair under the lruvec lock, with the gen bits cleared in
-> between. The generation and PG_swapbacked sit in the same
-> folio->flags word, so the cmpxchg snapshot captures them together.
-> Let G be the generation that snapshot captured (old_gen) and G' the
-> one it wrote (new_gen); the CAS can land in only three places:
->
->   - before the del: the folio is anon at G; the batch records anon
->     G -> G', and the del later removes the folio from the anon
->     counters;
->   - between del and add: gen =3D=3D -1, so folio_update_gen() returns -1
->     without touching the flags and no batch is recorded; the del/add
->     pair accounts for the move alone;
->   - after the add: the folio is file at the fresh generation the add
->     charged; the batch records file, that gen -> G', matching that
->     charge.
->
-> Unlike the drift of lazy promotions, which sort_folio() repairs under
-> the lruvec lock, the phantom deltas from before this fix land in a
-> column the folio never occupies again, so nothing ever repairs them.
->
-> Fixes: 018ee47f1489 ("mm: multi-gen LRU: exploit locality in rmap")
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->  include/linux/mm_inline.h |  7 ++++++-
->  mm/vmscan.c               | 13 +++++++------
->  2 files changed, 13 insertions(+), 7 deletions(-)
->
-> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-> index 047295ae6e8a..7e487c23aff7 100644
-> --- a/include/linux/mm_inline.h
-> +++ b/include/linux/mm_inline.h
-> @@ -10,6 +10,11 @@
->  #include <linux/userfaultfd_k.h>
->  #include <linux/leafops.h>
->
-> +static inline int folio_flags_is_file_lru(const unsigned long *flags)
-> +{
-> +       return !test_bit(PG_swapbacked, flags);
-> +}
-> +
->  /**
->   * folio_is_file_lru - Should the folio be on a file LRU or anon LRU?
->   * @folio: The folio to test.
-> @@ -27,7 +32,7 @@
->   */
->  static inline int folio_is_file_lru(const struct folio *folio)
->  {
-> -       return !folio_test_swapbacked(folio);
-> +       return folio_flags_is_file_lru(const_folio_flags(folio, 0));
->  }
+After setting goal_tuner to 'temporal', if the goal is achieved,
+quota->esz will be set to zero.  In this case, damos_quota_is_full()
+will always return true, even if no regions have been tried at all.
+This causes qt_exceeds to increase unexpectedly.
 
-I guess we don't need to change this function? It seems more natural to
-me to keep using `!folio_test_swapbacked(folio)` here.
+Fix it by always returning false when quota->esz is zero.
 
-In `folio_update_gen()`, you already use
-`*is_file =3D folio_flags_is_file_lru(&old_flags)` to get the type from
-`old_flags`. I guess that's all we need?
+Fixes: c7ec7d5f6b3d ("mm/damon/core: handle <min_region_sz remaining quota as empty")
+Cc: <stable@vger.kernel.org> # v7.2.x
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+---
+ mm/damon/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
->
->  static __always_inline void __update_lru_size(struct lruvec *lruvec,
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 724b6e034e69..87e667c410ed 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -3269,7 +3269,8 @@ static bool positive_ctrl_err(struct ctrl_pos *sp, =
-struct ctrl_pos *pv)
->   ***********************************************************************=
-*******/
->
->  /* promote pages accessed through page tables */
-> -static int folio_update_gen(struct folio *folio, int new_gen, const vma_=
-flags_t *vma_flags)
-> +static int folio_update_gen(struct folio *folio, int new_gen, int *is_fi=
-le,
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 644daf5a1656..53cf32f1d515 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2560,6 +2560,8 @@ static bool damos_quota_is_full(struct damos_quota *quota,
+ {
+ 	if (!damos_quota_is_set(quota))
+ 		return false;
++	if (!quota->esz)
++		return false;
+ 	if (quota->charged_sz >= quota->esz)
+ 		return true;
+ 	/*
+-- 
+2.55.0
 
-Rather than is_file, I feel was_file would be more accurate here,
-since it doesn't represent what the folio is now.
-
-> +                           const vma_flags_t *vma_flags)
->  {
->         unsigned long new_flags, old_flags =3D READ_ONCE(*folio_flags(fol=
-io, 0));
->         int old_gen;
-> @@ -3298,6 +3299,7 @@ static int folio_update_gen(struct folio *folio, in=
-t new_gen, const vma_flags_t
->                 new_flags |=3D BIT(PG_workingset);
->         } while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flag=
-s));
->
-> +       *is_file =3D folio_flags_is_file_lru(&old_flags);
->         return old_gen;
->  }
->
-> @@ -3328,9 +3330,8 @@ static int folio_inc_gen(struct lruvec *lruvec, str=
-uct folio *folio)
->  }
->
->  static void update_batch_size(struct lru_gen_mm_walk *walk, struct folio=
- *folio,
-> -                             int old_gen, int new_gen)
-> +                             int old_gen, int new_gen, int type)
->  {
-> -       int type =3D folio_is_file_lru(folio);
->         int zone =3D folio_zonenum(folio);
->         int delta =3D folio_nr_pages(folio);
->
-> @@ -3519,7 +3520,7 @@ static bool suitable_to_scan(int total, int young)
->  static void walk_update_folio(struct lru_gen_mm_walk *walk, struct vm_ar=
-ea_struct *vma,
->                 struct lruvec *lruvec, struct folio *folio, bool dirty)
->  {
-> -       int new_gen, old_gen;
-> +       int new_gen, old_gen, file;
->
->         if (!folio)
->                 return;
-> @@ -3532,9 +3533,9 @@ static void walk_update_folio(struct lru_gen_mm_wal=
-k *walk, struct vm_area_struc
->                 folio_mark_dirty(folio);
->
->         if (walk) {
-> -               old_gen =3D folio_update_gen(folio, new_gen, &vma->flags)=
-;
-> +               old_gen =3D folio_update_gen(folio, new_gen, &file, &vma-=
->flags);
->                 if (old_gen >=3D 0 && old_gen !=3D new_gen)
-> -                       update_batch_size(walk, folio, old_gen, new_gen);
-> +                       update_batch_size(walk, folio, old_gen, new_gen, =
-file);
-
-This is one more place where we rely on `LRU_GEN_ANON =3D 0` and
-`LRU_GEN_FILE =3D 1`.
-
-We do this kind of thing quite often in MGLRU, such as `type =3D !type`.
-It relies on the numeric values of the type constants, which is sort of
-a semantic abuse, but it's hard to find a shorter way to express it.
-
-Best Regards
-Barry
 
