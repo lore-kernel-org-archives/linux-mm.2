@@ -4,120 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82F42C61DD6
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 08:01:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5504C61DD6
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 08:02:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2510B6B00A3; Tue,  1 Sep 2026 04:01:47 -0400 (EDT)
+	id E603B6B00AD; Tue,  1 Sep 2026 04:02:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 228AF6B00A4; Tue,  1 Sep 2026 04:01:47 -0400 (EDT)
+	id E380B6B00AE; Tue,  1 Sep 2026 04:02:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13E8D6B00A5; Tue,  1 Sep 2026 04:01:47 -0400 (EDT)
+	id D74B46B00AF; Tue,  1 Sep 2026 04:02:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E71AB6B00A4
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 04:01:46 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 761EB1C1E3D
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:01:46 +0000 (UTC)
-X-FDA: 85164449412.16.4A72AE1
-Received: from mta0.migadu.com (out-246.mta0.migadu.com [91.218.175.246])
-	by imf12.hostedemail.com (Postfix) with ESMTP id CBC4D4000B
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:01:43 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pJQa40UO;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of fuad.tabba@linux.dev designates 91.218.175.246 as permitted sender) smtp.mailfrom=fuad.tabba@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B4BBD6B00AD
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 04:02:29 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BCD2B1A0385
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:02:28 +0000 (UTC)
+X-FDA: 85164451176.25.240DC85
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf02.hostedemail.com (Postfix) with ESMTP id EC66680005
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:02:25 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=aG7jL0US;
+	spf=pass (imf02.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788249704;
+	s=arc-20220608; t=1788249747;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hTBrZZpx5zoPkhwnTnNjv/+juqMhukP5Qr6j58UXze0=;
-	b=X/l1JtoZ78FAFKaswX2BydCo9JmnLDE5ZWWnGEravuRYMauR6uBaYeqAs5TsQ4c1LcUyvn
-	XHrtv7EwJEDASIXMH+vbM31sPaBFqiHY8NYcRyEtQtdMAEOYWOHjApr6IKxE5MOMMCzR1w
-	2jTH5NHjR5jhGM/ZCztJGLKTbG5lRHE=
+	bh=hIORJwUFUu1xQvcDenW4pwSoxemSIs5615nsSp+Drl0=;
+	b=TSp53/wacYq6D/y1d6znSJofL2D1NNujNbEgarMBisgL8/KI25xRQbf/lsz8ZYAh4WApmb
+	ptg0eI8/XP2utFKxXBCBEqao8pUFtL1ocUHHjyEJiwarQHVHfgVXSUflE56bcBqN5dXn2t
+	p4wTX1D5P62Vy+64zZPyqbaDckU4BWM=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pJQa40UO;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of fuad.tabba@linux.dev designates 91.218.175.246 as permitted sender) smtp.mailfrom=fuad.tabba@linux.dev
+	imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=aG7jL0US;
+	spf=pass (imf02.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788249704;
-	b=tUeXK7PhQyxdcxDVT/GzzfPe0ovJFrOWTfDEaxG5tpQQwzwERGyj+NaWOO4KILkfNmqUiP
-	/P3Q3M2wpLM+KEgBS9CFk2YEJWz3QDTFjUgO+dznd7SedYWpKJaomAvFaj3jCLxsk1SiG/
-	av/RVJooIPgaPp5N99JfnOtRncFgI3U=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=3P9E5Gl1EjxsctRSZt48H99/ZpRYw60ocxNGWi1RFnI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788249702; v=1; x=1788854502;
- b=pJQa40UO9UQHN7ajDgxqllZtiBYy9OuWuBFtJlpyTkC82lJo0epx856D4xMKboHlkoZWFTOZ
- +8lLWYTPt418+NlO5zSETH+4LtmHq8xC2oeCDKNSkRyoJ7RFdGyed7gpwAC/G7W6ewwJsFY6cty
- 3JDz1TN2c51SfxykPgxdjjrc=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id a86daf4b28b58d77;
-	Tue, 01 Sep 2026 08:01:42 +0000
-X-Mizu-Trace-ID: a86daf4b28b58d77
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5b2a8173142so3361e87.1
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 01:01:36 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByvrQmry/LwTktqewgNTFyiRzwl8zqNZXk8QFXFBe2RiDUU7GGJqOoL61+c8zOArLMfbf6I5gnSqA==@kvack.org
-X-Gm-Message-State: AFuF++lkTuWcxCf6oRNq/kTeG8HheGsGo5djflgTks/gdJiKN2Lre/Fu
-	Aa4Rk4uqxuTlhrIGcPMw1kSF7IyiA3E8Xd8GFafUJUSo3KLo2VjjygOsXY7v0Dn3BjdUCDTO+xh
-	wKXEq+1VEFvJCmX6hBQJm1PjJudhDabxPwaec3bPE
-X-Received: by 2002:a05:6512:3b0d:b0:5b2:a967:c0e1 with SMTP id
- 2adb3069b0e04-5b5fefc71e5mr128710e87.0.1788249695751; Tue, 01 Sep 2026
- 01:01:35 -0700 (PDT)
+	t=1788249747;
+	b=bVLxzQzyzXkSL/bNqHqpPVcj4qtNiv3cn4ts/V1nKWP3U86lN2FQW9G70xPSWVy21FU3os
+	NwSy3EtNF7ssMb7qZclHwNP99XHuoPKP69D02E9KX4vqneu01zaPpMqOxj0Lpfd+3dKmk/
+	GQSzI5lKEGEv/ksFR1t4fAx7h7IAc8w=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=hIORJwUFUu1xQvcDenW4pwSoxemSIs5615nsSp+Drl0=; b=aG7jL0USdHAN6TCMpSVVc+AW4w
+	ASUjnslClIMVHwBGKOckVaM5Mc/uuBbNilYEmnJbIGHNshKJPaP2tRMWSV3fhlovewzXZX7wKhfbd
+	LMYm/6KMWd5LqmsGGB/UaUYzBwaCpbi/xO+GZ1s/NnDWj2pOy2dNw90Q+VxMrP5Q/Bj6pRN1UzbVC
+	EMwQtwFS99FAbO31C9E5onyJypc+m9WPYmhbzY43IuHm/7xrD/hQ/GYOlBigiwzIF4UB54fZegLK1
+	zbKQ6hVR7cGurIhJgwSWJIpt23+NXwOirlVw166bhP3gl8uiOaWPwPNRq98qtrTVXzW89uqxoD+ot
+	sIvdbTJw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x1JRb-00000004hjW-2D31;
+	Tue, 01 Sep 2026 08:02:11 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 2285F3002ED; Tue, 01 Sep 2026 10:02:10 +0200 (CEST)
+Date: Tue, 1 Sep 2026 10:02:10 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Jianyong Wu <wujianyong@hygon.cn>
+Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Chen Yu <yu.c.chen@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Phil Auld <pauld@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, jianyong.wu@outlook.com, zhongyuan@hygon.cn,
+	huangsj@hygon.cn, wangfengyu@hygon.cn, yingzhiwei@hygon.cn,
+	justin.he@arm.com
+Subject: Re: [RFC PATCH v2 10/23] sched/topology: Add per-sd scratch for the
+ load balance affinity score
+Message-ID: <20260901080210.GP4120091@noisy.programming.kicks-ass.net>
+References: <20260827122816.756234-1-wujianyong@hygon.cn>
+ <20260827122816.756234-11-wujianyong@hygon.cn>
 MIME-Version: 1.0
-References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com> <20260830-gmem-inplace-conversion-v12-14-85e5fd25252a@google.com>
-In-Reply-To: <20260830-gmem-inplace-conversion-v12-14-85e5fd25252a@google.com>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Tue, 1 Sep 2026 09:00:59 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTyU1Ldbw-qqdQOx_P8jrt85QEcKSGae2h+AahsDQdbmLw@mail.gmail.com>
-X-Gm-Features: AcwNN1U1NN91vo14dSs3E4M2DDFHxxtZ_83sNMiwJfMd7svq3f7bIIAQvr3cTJo
-Message-ID: <CA+EHjTyU1Ldbw-qqdQOx_P8jrt85QEcKSGae2h+AahsDQdbmLw@mail.gmail.com>
-Subject: Re: [PATCH v12 14/45] KVM: guest_memfd: Add base support for KVM_SET_MEMORY_ATTRIBUTES2
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260827122816.756234-11-wujianyong@hygon.cn>
+X-Stat-Signature: ruu1o5qigrm61tgcbnfpy9dch1k75m56
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: EC66680005
 X-Rspam-User: 
-X-Stat-Signature: y5y361673hgpns8atzh35ssh89b59m7d
-X-Rspamd-Queue-Id: CBC4D4000B
-X-HE-Tag: 1788249703-743703
-X-HE-Meta: U2FsdGVkX1+73kHomBjVhamN9YQYWoD8oIu3wjBQWay7HLkDo/ZakWz8Sm1Jl7yhPf4Rc5Bs5CYDztf+ZJhikQMazm6twImskn1rdah6A1cL6hryc2EWw04HLs8lW6XS9cptIknW1peK9C4UDhAzn6U7AqD5OptD35P0p6MUWhARaA3Hwek5NgLKQ/PQNYUhukKzovjmOVir8jyPFcnGiugON69d8vjmxSvzHWdY/E3q/gIZOsRKd3j8cGagcaitbZuInE4+kojcAFo6PdUb61btZgX1M9uJdgujzgcBK8AhkFAABmkeJWahbg7yFh8zgNdZL4yT9Brzz7acQHnaVefCNGwpipL87zL7ddib4QiugCX1ptDlcZoDKzXoH3sl5vK7DfhbnjrGGM2ryJVbP0vkNA16mqYnTH7FkxTI+MmnSzBki53voBWwMb5flF+LKRwYKvFUTHBE3CqeFG5S7PVE/Czi8HwhBDks5FSXSCQNjuCHgqUGwvBAW+dzP8/nBaBTVQ/Y59COkRmYnsAZyotzMwZ2+h7UcKWQ2ZLoxyHDw2DOpWrysc+USnfD2OEXjMWpRS+8T+2K3hOVxOFqkNFFoY3ILVCRaTK9b2M8qb2mKdUdU6G/mYNM5HonnnmFD+2Wblhia3fFK+3DWfxQaoDBF+bQF10BmBZz11jBR5AWzgKGQF8LKWve/b4RbUqMFrbonuWnE/C43zBSACkqsWa33naFTOewnbg8dDhD2q/hSyNw4xafsoTXnSNCVhQhJexK39nAo+dSmbHcUifxgv5deFx8ZFuC2oR1M9PVKuk8aIxMOvXZ6RUxGc93863u8s+EQ6Kp4RbW+cdLB/J6Hs9TFUhe7Z1cGSeQZqSxNRxWLSPH7acSnjRzB4tJsr6k8uF+lkDo+5BBu5kg1QD3Fs/qo23SPES0lSWovK4Z+12lNvuTmLmU8xhNrxIB/aVTJ9Fb7+8F61z3p+s9GK/
- QcLoKUt7
- taAyvh4XrzAkCpLefG5AnDAQRvM4Kr8nAfxsoDT/qZaTKB2UlG+MSn+hXizP4hBK8/L9geq36ot3Dv8AWW4FCj5iZbHppWLlZtpSDEmm37NLlhrebgw0QXdtCovZwN//aiKJy0L4Ivq9VuY5oFTsZhvjpYa0EQ98zwNjnY91rKeyXxnlJZAvJLoK7dVskf/P9TkMtklGJByxFxklMyN68uZcrDDBM9vrXXiCrxo5ILskzsF/sqkrMRMRiW9tqlNyyPWX6mnAQ/R0CJDi4jrC7aFYgRvseDRXYKDneTBeVeGxCP448s9NSDPVvoyk7crSIRd0V28WoML9CD1Btdtcy8XD3m9x3bii0pmxeC0Wm0827hd8=
+X-HE-Tag: 1788249745-909195
+X-HE-Meta: U2FsdGVkX1+lDV+QRuN7vT0t6i4xsBNOI9jhlKNoSQdKVJOxhwzwBCIv2m78RKI+NzVX9jWK5Lb16ydcZqpWmVcIaW8QvTwbu6dRv1lJNnc9DDvsRHxopA17lcePjkVJ+QutLgGBNfQ251QRZ1FtxXBfQulkFPpLC/SfGwiXZ0N8kOQy1oBz1GdUq0UfumJXKAVKjo3Nk17ja2X4C/4UmU9pxR9epGnTIRvMGnopZeKUhbXrPF9bYFy5NPJk8A+Jsi8IbvuH29n4K0/qCspop8Q6nyft/rvzN3v9iJUyQJmNFhw2+xmpLj8ibpMhO777vMQ1TEmFLMiDaOv2UugOKgJDw/vIu4fS67H5GcQ1LwolbG8wEtVtZveKB6CdH6I8AuYl2zC+BmDakcWkHJkQO2vlQIHzojpRrgWEKmubX0g2hNLMxp6/gvT+wcEWeTf1X4kZ4nDZZNVVXtivb6dVM2mG/XAv9gMS32YJ5XQ4n65AbQ9/7bGhUvL8RW7xVX6C4zXH5YGScU9OX9Kj4VdA0CME8+MQuQWuEViPJjuqV6KFfYapxzKH18PM+C4zeBmZDU52FkGtLVeXlei5V6sjA+DKAPl1J0O2cSm2qgUbKaZDfRRT0tzHSUdlMp5fm3V2yAbdGl2RJSFVcT+oVIvKnXdLOXImrpey+a1wx8I/qCQxXRgA5uRMzYSguhIW6VoK7cujPuskKJDk4F6UmWV1hAdL2fkW6EXxC1LKny46PbRZ/U2DB1AI11agHKcy43O1G8kyMd9WTB2tn4o3UOo74Ie4r3A+HDIXd/Fqv+s/bSFgQYVBub75eRV2E3vgTjZei9kNvhdmXNslU3UTsBomUAK3XQarC3+FSZvBv44vrMg49Lma8is+hq6GIITuetnN2cFhXhZEIJk+lZQgvG3eCsQQCoHFcIWf7f7lLALgPSsiT5G7VBWuc5xpVU9ggH/NfU4MxGiAUAN49zj/SL/
+ ZpBsKw9G
+ TJIFUFY7mGyG6oS12OmYlay0Xje3Sm9f/kI9XIb8kd3QsBXOKQYCCc9lnNJTj2auSCsTxe6pOuFgW1e1CFoLP9B/wpdACzzwQMkVKE6Gv7iTd1oSAjn1RuloPq8DypZjuv4znX7n013PyFscrn/izAtJTBhb1+hiP8G8eDQbG6KlrB529Xgq1Tj/Zv87uLPraHAT7JwvYUOkD0b6DeeFaCMT1Du286gHyb3vjr2aPsI+J3+M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,24 +107,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ackerley,
+On Thu, Aug 27, 2026 at 08:28:03PM +0800, Jianyong Wu wrote:
+> The affinity score computed during load balancing needs two small arrays,
+> one entry per LLC: the LLCs that sit closer to the balance destination than
+> to the source, and the weight of each. Their size is only known once the
+> sched domains have been built, which is why the load balancer currently has
+> to allocate them on every call.
+> 
+> Signed-off-by: Jianyong Wu <wujianyong@hygon.cn>
+> ---
+>  include/linux/sched/topology.h |  6 ++++++
+>  kernel/sched/topology.c        | 28 +++++++++++++++++++++++++++-
+>  2 files changed, 33 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
+> index b31d2cf16592..569ff562dbdb 100644
+> --- a/include/linux/sched/topology.h
+> +++ b/include/linux/sched/topology.h
+> @@ -122,6 +122,12 @@ struct sched_domain {
+>  	unsigned int *llc_counts __counted_by_ptr(llc_max);
+>  	unsigned long llc_bytes;
+>  	unsigned int *numa_counts;
+> +	/*
+> +	 * Scratch for the load balance affinity score, llc_max entries each.
+> +	 * Only the bottom sd owns them, like llc_counts above.
+> +	 */
+> +	int *affi_ids;
+> +	int *affi_weights;
 
-On Mon, 31 Aug 2026 at 01:25, Ackerley Tng via B4 Relay
-<devnull+ackerleytng.google.com@kernel.org> wrote:
->
-> From: Ackerley Tng <ackerleytng@google.com>
-...
-> +.. _KVM_SET_MEMORY_ATTRIBUTES2:
-> +
-> +4.145 KVM_SET_MEMORY_ATTRIBUTES2
+Per the below, these should also have: __counted_by_ptr(llc_max), right?
 
-This section number collides with the existing 4.145 (KVM_PPC_GET_COMPAT_CAPS)
-below, so api.rst ends up with two 4.145 sections. One of them needs
-renumbering.
+>  #endif
 
-...
->  4.145 KVM_PPC_GET_COMPAT_CAPS
-
-Cheers,
-/fuad
+> +		p_ids = kcalloc_node(max_lid + 1, sizeof(int),
+> +				 GFP_KERNEL, cpu_to_node(i));
+> +		p_w = kcalloc_node(max_lid + 1, sizeof(int),
+> +				 GFP_KERNEL, cpu_to_node(i));
 
