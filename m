@@ -4,133 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50752C61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 18:41:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7AF9C61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 18:49:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 485536B0099; Tue,  1 Sep 2026 14:41:49 -0400 (EDT)
+	id 9C2F26B008A; Tue,  1 Sep 2026 14:49:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 435586B009D; Tue,  1 Sep 2026 14:41:49 -0400 (EDT)
+	id 9737B6B008C; Tue,  1 Sep 2026 14:49:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3249F6B00A2; Tue,  1 Sep 2026 14:41:49 -0400 (EDT)
+	id 889216B0092; Tue,  1 Sep 2026 14:49:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F12D96B0099
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:41:48 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 78C3E80514
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:41:48 +0000 (UTC)
-X-FDA: 85166062296.07.93262FC
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	by imf02.hostedemail.com (Postfix) with ESMTP id D15B380006
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:41:46 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=RPjHNstV;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf02.hostedemail.com: domain of 3aRyXagYKCFoK62FB48GG8D6.4GEDAFMP-EECN24C.GJ8@flex--seanjc.bounces.google.com designates 209.85.210.199 as permitted sender) smtp.mailfrom=3aRyXagYKCFoK62FB48GG8D6.4GEDAFMP-EECN24C.GJ8@flex--seanjc.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 65D256B008A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:49:54 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DE36CC04D1
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:49:53 +0000 (UTC)
+X-FDA: 85166082666.30.08B692E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4CFA018000B
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:49:52 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nXvEGBMt;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788288592;
+	b=qs+S1UoTWOpUp76Yjd98ZX6NztP90/n0xAn+Krscj+C9ezXWlnooUePbU21BH5s1wh90ro
+	7+OP/y3XRLQg0Ab4fAWzxbcuHc9tRusBGZkJuxVW70xDrIY+UL18QeL4OS2hB645q5CDBx
+	Yp+zDSb26qMtQ4Y6bc0CM1tBc5VUNrk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788288106;
+	s=arc-20220608; t=1788288592;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T0nDJQnfFlnDLvDCZVuLzJX537jxkgQCnIHPdf7AiK4=;
-	b=rT7BcK4dors5R2aynsl2QxVGKZKUbBPcuGCoF1GD155eYcJfjB0YKuPZfwNRRgrJeX3LB4
-	XQCwwCUD/eEaS3AuZ7o0hXgOOQEP9CpDzsFOajfvfONTpUpE67Ksethma6AyvAb4G1T/t8
-	ILEotY1y+zIrT84KCUU0iPQ7I+FPBc8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788288106;
-	b=W1uw+6xwO4RsOfh8asgRUfanI5Gd9LovfB6CO2L4d+8Pll2r9x7TDnrtchNtAFJ1ilDfJa
-	nhDgaBbOkOsBk9HuE6gqEaW5uzuCt4/sHz3yiJ2FqPdaDOQpVPdrI492Foa09k44+tFs24
-	gNVbVYRgYSz8bld1tCusXXxkDo/UotA=
+	bh=GQfJLK2VIEkaTXMnxOJLe4f64C7BVo/SEWCYopPxAgs=;
+	b=JoXjZ+mGIho9Mes5o5PBmgnFU1yvBBEyiGKgCxQSlUKFdo6A5IoZMoB1ipMc7FtvGeB0cM
+	a6qKiVAUX+pZVSxgB5OBbjMo09ltm0G8AyTBXeEII6Cc+WukpfJej7QystCHrbmHepbU5A
+	xiP7i5JRaOvejzQTNgIPlGSY/KF3hz4=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=RPjHNstV;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf02.hostedemail.com: domain of 3aRyXagYKCFoK62FB48GG8D6.4GEDAFMP-EECN24C.GJ8@flex--seanjc.bounces.google.com designates 209.85.210.199 as permitted sender) smtp.mailfrom=3aRyXagYKCFoK62FB48GG8D6.4GEDAFMP-EECN24C.GJ8@flex--seanjc.bounces.google.com
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-84e375d9736so126343b3a.2
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 11:41:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788288106; x=1788892906; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=T0nDJQnfFlnDLvDCZVuLzJX537jxkgQCnIHPdf7AiK4=;
-        b=RPjHNstVAU6Fr+wPN6EruHU0GEXQ3R+c2giVGGNiIViy+7AdfbX467Vf+Ft2JydKCd
-         On88b01VjtfjWOC6qoYfVOhStyMMtrdUjAgjz3zaJfku9/8H36bIQiGxXh8HgEAvS7Cg
-         pnvxJaKUjxKZ+bw9v5PgcV0IKePgwfTq88npJUlbEV2vE5f/5amt0NBWSz6IbUPZ7JgV
-         TrZWhUX5rZgEYenRjXn1l8g+ALIVSM/lFiqPf45RhiDSOV/ixfJoMtB1LP0NwOUiA5Ke
-         8C8rgn9k9XV1BoNBwlduNqQp8tkHiGCTfhkmXg76vyAO4xPJ/MdCTDobt5Qwr8FooZ2Y
-         ITuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788288106; x=1788892906;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=T0nDJQnfFlnDLvDCZVuLzJX537jxkgQCnIHPdf7AiK4=;
-        b=jMQuHd0al/ri7QJgk8muBPupTAzjKrOHw3sc2/S3c6vV7R79iX/SW4AWaOF6sEnGNE
-         gOCaL6eu+CvMkszXMTW2IRktja/pSr5CMbQrA95/5paV4xDW+eW+trb7zUjPVGpyeqD5
-         Yt6AxE+1/63eK3M665NnrbMRaKOug5GmvPtv+HZMzm6glR4zDJyTgVVJpSmbDjv7ZEW1
-         9X2KOLexic+89xI4UQ6Cck2ssfY5IigmHZ/IbbfbJ8KYnjQensROKmN59BtqpsEoYeUR
-         Ajj7JXLolHhanVZBHu9Qqd49zFJ0zQwILF9ub2FwMw2dpEFIHCTx2ce1e5wWdN9mcOv8
-         Le6Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rqh7nE0i9lxg0H0n6GfsQD63JgJx09Wz4yEXFEQ69JuVc9snvjYqp6oPjuQHs/0+HP9RYVWmgfddA==@kvack.org
-X-Gm-Message-State: AFuF++khkBygnHIOfdwhRGSSL4oAtJYHcVotidSjz0NF014uSwQgniwI
-	3Ud2O9bpFcgjpb7YofqD+CDcfjvnRCUgab6hQSRMgoW1yHNl6KmiL7bAX8xGzgB8BQGbUa59SIR
-	5bXIRUA==
-X-Received: from pfcy6.prod.google.com ([2002:a05:6a00:93c6:b0:848:49f6:6f5c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:8016:b0:857:4dea:e20e
- with SMTP id d2e1a72fcca58-85b5693e833mr15207248b3a.0.1788288105188; Tue, 01
- Sep 2026 11:41:45 -0700 (PDT)
-Date: Tue, 1 Sep 2026 11:41:44 -0700
-In-Reply-To: <apca475JqemLUjlb@google.com>
-Mime-Version: 1.0
-References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
- <20260830-gmem-inplace-conversion-v12-15-85e5fd25252a@google.com>
- <CA+EHjTzJbC=ZvB3Mopw-TLf=13-iqxGw5RfTp6Gt5S1hi8WRRA@mail.gmail.com> <apca475JqemLUjlb@google.com>
-Message-ID: <apccaNCJ2lH5mbaY@google.com>
-Subject: Re: [PATCH v12 15/45] KVM: guest_memfd: Ensure pages are not in use
- before conversion
-From: Sean Christopherson <seanjc@google.com>
-To: Fuad Tabba <fuad.tabba@linux.dev>
-Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D15B380006
-X-Stat-Signature: tbgzuchtze58pxo6tf9rwgyzk7t98soc
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nXvEGBMt;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 80A1B60207;
+	Tue,  1 Sep 2026 18:49:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F1E11F000E9;
+	Tue,  1 Sep 2026 18:49:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788288591;
+	bh=GQfJLK2VIEkaTXMnxOJLe4f64C7BVo/SEWCYopPxAgs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nXvEGBMtNl8qgI84IB/MXFyHvTle71fwMSR3UZk245lcu+k8fPcRrYLtvKLoPkmZ+
+	 UMhhnIYbBWHDAe+dGhQh2Z5JL6VE6xoOWQUtUSSaVyLle30l1+udz8Y702tD4XihlR
+	 vj1aoLqgE7M4z3vTJxJM2Nu/C05GMMO+qLAXD3Br8hdHIAS+3+zOGWgrAJPpc4xQcc
+	 nv/b0iwf/33qIWhL83e6CWzozC4m81q0kXxlFm6q7gvMqKC9V2ZRYeTG6W/G6vwlAV
+	 TT9Po0BUmTTReeWVGEpK+lE4zFhJldWEFROfzm+GbsgXPKHij+cpa2iO+8cpT7CVn4
+	 6r4e/BxzqiHYw==
+Date: Tue, 1 Sep 2026 21:49:45 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
+	Pratyush Yadav <pratyush@kernel.org>
+Subject: Re: [PATCH] memblock: fix page count when preserving reserve_mem
+ regions
+Message-ID: <apceSXvb6soT2U1-@kernel.org>
+References: <20260901165237.1025973-1-ekffu200098@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260901165237.1025973-1-ekffu200098@gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1788288106-551413
-X-HE-Meta: U2FsdGVkX18NeQ1aoQCvd+dlRQg2/zqkDygCF6i/t2CKgkRNSGD+j6HFEX5dFaaMMmxUf48zdJfVrRiuPdmiu+7kgQs3v+FerzZBK3hQMOXu2Ftuq70kGaImQNeEIzFWcrjDjq/6MFmda0OWG92G8vG3loHHKg+9D6PwKLSEBruIjRDLGrF7VE9DeUAMMPp/gDXiLlRRUbThTjVevudeSyWYYuzCdcKpjSroUl5q1UXXdjY997sbyW9kjW0Eq31iwrHHvNi7zEgtqVON0+pshwloxP6YFWxiu6OJuR8lWO6L0J7gx+RXCnTez8Yf3A1KQV45GxZbnmmKazn2gwSOxwM6AQK4QkqtIOAEV4H/nGp2YfpS+Q1aThXOrfLcDGTNzdgR0BtmcIOJSQUg+tyG77wYydQGyi3VCYc3PqZRHtOwmANnsv9Llg4+aB+riiGWGVK/FHf2BS0L11KAsqJKXiUlcXoLjo0S0E3N+juVzyZIKCpViB1kOPv0IKwrEVKulCFYfA6voDYt+1YDGxGG5qfut/rjfbeJtkgA9vQ24EviZrWdeoJ6Fd6MmIYrEfNmGARfFILSLy9Y4E1mLAyugN0e8GXDeP6ll724PlvvLv3amjUEitxNRSSU3rvNGbvuo7tJfD8kCZ4SmFE05dPplZtKQDK/Q7ZpXXj6RT5IJANpLvK+JQcx1BCiyYtbQVeVjXvDk1PqmXMfrpj1W+vxRx1S6SqYjQrxd6VFCXtTUV3Zr4AzAenamT3+ZfXAH+bFfcEr3+uB72cruvr6YROzYlWC6HdFAkRUzL4QjjBtW1IMtgpcm3dL7pZo1miOGrYeEQDVbeGb81jybP41J6atIpWYK2hDoQEJZ/DKKW8J7T9thjrpwOHF5haKJGeRIrNtlp1uvjvhnhAMf3GaOlP/Vkcjgk7jkKy340J0f9JwZL8A+AdYihT0UaWj2aBvy+4KVL1I/S8XvkGjr7Iq73B
- ZvglXfqA
- 1qu3gDGOausDJPxkk2hxwE1zzLTRyM+4v3UAMvGCQvzxsQde4DiCk+m27I+rLnVdQXepa3BegFn+CRzU+0zmdlycrYgp6pYE9yTGSZjiO/kpz1jqCJ6qcVqlTeEOX+sfKlbTHLLSAhdvb9HMBefOH7HB58V3r2KPWpjfT5H2U9SacQa1QV/gVSxem5E8lPJwE2/OwoIvIlGYdL3/ITlDTvhJa4phIs2+bZfxACNnou0tfKQmrongK/vltBDuGLEOokoDIvqmBi7M4wQCUp+3oH2vmFarWEeX8nzvkHqZK9VUOqvKP2W5T5fqGa8RoKEj27sE+a0JwBEzdJqeils/D04frQipdSVdd3mGbObGqBOLhPALl1JWttIoHeY/fh6Jj4YfQj70JS9dJ/rR5UuD+j0+H7gkhzCYUjcS5z2uJXn+o4ltPJcF5AByBSR2TiQV258+lmLIJUJe0dTKqFPWFfBkAmwMaqpmGF2MRh7IubxtBp1Ugmw8I2rhme8uH87YFsdTfOfQB4H7Ia8vWoJ+AbwR0b6pUf6pNcBfKjmdcnntnzhuchCSjvzbCxRSOrMFcvBPVnfTVXIZt3DzGJef/nceq5YaYrop1e6Bo9ncQiqTkxGJ7VFys0l0nEcMHU9ZKNiTvbiYplV4s9aP5ohwLNLhHna2hMkfgjeEO+qn/Uv81pIE=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 4CFA018000B
+X-Stat-Signature: fe1mgsoem7zkacegj1in65oe5a5hsxb6
+X-HE-Tag: 1788288592-107546
+X-HE-Meta: U2FsdGVkX1++hXr3zTS3vM7B/D5aulVKjZ4neohr51E6BrOoiLakZjreKYbSitIVYMwQ+w6Kv7TpaGnFUSE3jhSGX8GcEZJpKCs0JJVlgj/F+bW98/52wef0Yp22i2lsto1LxZw/6LOhfANLwLfNp1gkgMhblit+rIROzyrVhZI9uHWOX+PDwNPNUp/s+GriSSX9AZdr49+UpamGNY9tmhn5TiVBAC1A+EC0PUDK1w0gOeshaKCXrL6SgMq0tm57ZtTGJpwftpLcFSR0ryjY9c5xe6sUGYW1g2tybmxVhvHHwkCHClBvd7nRe5DUc90et1BsEJ1LQgmKUwb3u3S1snAAybSNm8/Hq103x//YhpNiWCErmqVCYotEWkyZ9Z1Gkl/jITedbV3nxESiJxQ9wjKexXmofCozrJ5/GWb3w9nX9XvsCZHrYZ8SNxoRumxhrT7b68CNYaTMv0a7MFSeKMc8DXPRGgAia1nzIzzS5Q7YXDf8AWx0v66AIQqd/ILAo/feJl6bBAUFHe1heQQI6BVIFTMlhHOZ9Zskg+P12jLMQ1o1JlDQI03gaghI178luftynjDwjcYxHPOfKBqg9fpbcmKdO8jVaCt4Qj3M2U1h06XfP92NlwQH4H6YD7WiN7SgZXvumbiKVgzbcFy1VU4KAEVcjuAPOzw/QvnVJ9OFbdvtUHiQm+RLjg+bW7CSFeZEXG0Sqhuzbo43C1Kw8FoLOjSnvC72SUGu5LGX04j1MDkxtTNZffWAYVLLJCy91M6M80aJR9yqCNTC368ExzZwbsTIIuJ/MlHPKWGi2taCVedvb43MWvoYEJKVmdCqrboQDqtLqAE73tUiTIvRl1E2TX2sGF6Kytilpoe0DJhNi/ah/Nm46+InkJVuADEUhSQv9Yw0qLsXzon9NC5lftUFFg7GHABgsy9nOMMc3yK1ZObnwR3COkeTPg7OjNakM70ddmBIF/125KXbEiP
+ tTVqnPOS
+ ABgW/X+bjLqxkDhC8JIEMz8E6+3txNSwJxEzPiY9Emm7oduY+TH557x9IAiGFbYS0BuQ8xzWxOV5cRhIGm0FkC/Roil+jHxegESlPeO5b2tOGRZaFQyJBVMV92lH3wNl2inbjPfMufogP5RdsHoCSiJkAG8T1MEh/jDA1rM9bUCtl3hPtHK63ToGV9LD08hk42XvHSJ/aUpe+jSEGqFsxMKE4pznLeM9m79MULPPT24GMW8ZCXhMHmjwN5CA5lWR3QEkb1p/UlxvdbM3FfMsnX+RciB6gHHLxn1jeKhrqC7zGSxDj5o3eJx+C3pFX71zR4egp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,112 +92,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 01, 2026, Sean Christopherson wrote:
-> On Tue, Sep 01, 2026, Fuad Tabba wrote:
-> > > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> > > index 803c7cdbbe0f6..fe02c47c85fb5 100644
-> > > --- a/virt/kvm/guest_memfd.c
-> > > +++ b/virt/kvm/guest_memfd.c
-> > > @@ -538,8 +538,46 @@ static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attributes,
-> > >         return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
-> > >  }
-> > >
-> > > +static bool kvm_gmem_has_outstanding_references(struct inode *inode,
-> > > +                                               pgoff_t start, size_t nr_pages,
-> > > +                                               pgoff_t *err_index)
-> > > +{
-> > > +       struct address_space *mapping = inode->i_mapping;
-> > > +       pgoff_t last = start + nr_pages - 1;
-> > > +       bool has_outstanding = false;
-> > > +       struct folio_batch fbatch;
-> > > +       pgoff_t next;
-> > > +       int i;
-> > > +
-> > > +       folio_batch_init(&fbatch);
-> > > +
-> > > +       next = start;
-> > > +       while (has_outstanding && filemap_get_folios(mapping, &next, last, &fbatch)) {
-> > 
-> > has_outstanding starts as false, so the loop never runs and the function
-> > always returns false. The outstanding-reference check is dead at this
-> > patch, so a to-private conversion would not be rejected even when a page
-> > still has an outstanding reference.
-> > 
-> > It's fixed later in "KVM: guest_memfd: Handle lru_add fbatch refcounts
-> > during conversion safety check", which changes the condition to
-> > !has_outstanding. I think that fix belongs in this patch, so the check
-> > works when it is introduced and the series bisects cleanly.
+Hi,
 
-Wait, why are there even separate patches for this?  For all intents and purposes,
-"Ensure pages are not in use before conversion" introduces a bug and then the bug
-is fixed by "Handle lru_add fbatch refcounts during conversion safety check".
-Just don't introduce the bug.
+On Wed, Sep 02, 2026 at 01:52:35AM +0900, Sang-Heon Jeon wrote:
+> When map->start or map->size is not page aligned,
+> reserved_mem_preserve() does not preserve the last pages of the region
 
-I also recommend splitting the export of lru_cache_drain_for_folio() to its own
-patch so that it can be more easily Acked by mm/ folks.  If we want to squash it
-with the KVM change, then that's trivial to do when applying.
+I believe it's the last page, not pages.
 
-> Why even bother with has_outstanding?  Avoiding it requires copy+pasting
-> folio_batch_release(), but it's less code and IMO the end result is a lot easier
-> to follow:
+> from map->start to map->start + map->size.
 > 
-> 	struct address_space *mapping = inode->i_mapping;
-> 	pgoff_t last = start + nr_pages - 1;
-> 	struct folio_batch fbatch;
-> 	pgoff_t next;
-> 	int i;
+> After kexec the new kernel reserves only the preserved pages, so the
+> last pages are released to the buddy allocator. But
+> reserve_mem_find_by_name() still returns the whole region including the
+> last pages, so they can be allocated while the subsystem is still using
+> them.
 > 
-> 	folio_batch_init(&fbatch);
+> Preserve every page the region spans so the new kernel reserves all of
+> it.
+
+If there are two adjacent not page aligned reserve_mem regions, we'll
+preserve them twice, or worse unintentionally unpreserve one of them on
+error handling of another.
+
+I think it's better to restrict the reserve_mem alignment to PAGE_SIZE.
+ 
+> Fixes: 8375b76517cb ("kho: replace kho_preserve_phys() with kho_preserve_pages()")
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> ---
 > 
-> 	next = start;
-> 	while (filemap_get_folios(mapping, &next, last, &fbatch)) {
-> 		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
-> 			struct folio *folio = fbatch.folios[i];
+> QEMU-based test results
 > 
-> 			/*
-> 			 * Outstanding references are anything other than those
-> 			 * from the page cache, plus 1 temporary reference held
-> 			 * by filemap_get_folios() in the folio batch.
-> 			 */
-> 			if (folio_ref_count(folio) != folio_nr_pages(folio) + 1) {
-> 				*err_index = max(start, folio->index);
-> 				folio_batch_release(&fbatch);
-> 				return true;
-> 			}
-> 		}
+> - Booted with "memblock=debug kho=on reserve_mem=5000:64:oops"
 > 
-> 		folio_batch_release(&fbatch);
-> 		cond_resched();
-> 	}
+>   # kexec -s -l /bzImage --initrd=/initramfs.gz --reuse-cmdline
+>   # kexec -e
+>   # dmesg | grep kho_preserved_memory_reserve
 > 
-> 	return false;
+> 1) AS-IS (before fix)
+> [    0.188536] __memblock_reserve: [0x000000013ffee000-0x000000013ffeefff] nid=-1 flags=0 kho_preserved_memory_reserve+0x3d/0x70
 > 
-> and then we end up with:
+> 2) TO-BE (after fix)
+> [    0.076935] __memblock_reserve: [0x000000013ffee000-0x000000013ffeffff] nid=-1 flags=0 kho_preserved_memory_reserve+0x3d/0x70
 > 
-> 	enum lru_cache_drained drained = LRU_CACHE_NOT_DRAINED;
-> 	struct address_space *mapping = inode->i_mapping;
-> 	pgoff_t last = start + nr_pages - 1;
-> 	struct folio_batch fbatch;
-> 	pgoff_t next;
-> 	int i;
+>  mm/memblock.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 > 
-> 	folio_batch_init(&fbatch);
+> diff --git a/mm/memblock.c b/mm/memblock.c
+> index 777c69f05400..a17b1cccaf3d 100644
+> --- a/mm/memblock.c
+> +++ b/mm/memblock.c
+> @@ -2534,7 +2534,8 @@ static int __init reserved_mem_preserve(void)
+>  	for (unsigned int i = 0; i < reserved_mem_count; i++, nr_preserved++) {
+>  		struct reserve_mem_table *map = &reserved_mem_table[i];
+>  		struct page *page = phys_to_page(map->start);
+> -		unsigned int nr_pages = map->size >> PAGE_SHIFT;
+> +		unsigned int nr_pages = PFN_UP(map->start + map->size) -
+> +					PFN_DOWN(map->start);
+>  
+>  		err = kho_preserve_pages(page, nr_pages);
+>  		if (err)
+> @@ -2547,7 +2548,8 @@ static int __init reserved_mem_preserve(void)
+>  	for (unsigned int i = 0; i < nr_preserved; i++) {
+>  		struct reserve_mem_table *map = &reserved_mem_table[i];
+>  		struct page *page = phys_to_page(map->start);
+> -		unsigned int nr_pages = map->size >> PAGE_SHIFT;
+> +		unsigned int nr_pages = PFN_UP(map->start + map->size) -
+> +					PFN_DOWN(map->start);
+>  
+>  		kho_unpreserve_pages(page, nr_pages);
+>  	}
 > 
-> 	next = start;
-> 	while (filemap_get_folios(mapping, &next, last, &fbatch)) {
-> 		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
-> 			struct folio *folio = fbatch.folios[i];
+> base-commit: dde94c26af59f5020adafafa08ece21ccd32590b
+> -- 
+> 2.43.0
 > 
-> 			if (__folio_has_outstanding_references(folio, &drained)) {
-> 				*err_index = max(start, folio->index);
-> 				folio_batch_release(&fbatch);
-> 				return true;
-> 			}
-> 		}
-> 
-> 		folio_batch_release(&fbatch);
-> 		cond_resched();
-> 	}
-> 
-> 	return false;
+
+-- 
+Sincerely yours,
+Mike.
 
