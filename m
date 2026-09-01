@@ -4,138 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E303C624D0
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 18:08:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 723E5C624D0
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 18:12:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B24C6B00A1; Tue,  1 Sep 2026 14:08:42 -0400 (EDT)
+	id 77FA86B00A2; Tue,  1 Sep 2026 14:12:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88A756B00A2; Tue,  1 Sep 2026 14:08:42 -0400 (EDT)
+	id 730DA6B00A3; Tue,  1 Sep 2026 14:12:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79FC16B00A3; Tue,  1 Sep 2026 14:08:42 -0400 (EDT)
+	id 620EE6B00A4; Tue,  1 Sep 2026 14:12:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EDA996B00A1
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:08:41 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 874E41604D3
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:08:41 +0000 (UTC)
-X-FDA: 85165978842.20.349D391
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 8696820003
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:08:39 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=aOUO6OSl;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A3FC6B00A2
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:12:06 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BAA75A0505
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:12:05 +0000 (UTC)
+X-FDA: 85165987410.30.28ACEF0
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	by imf30.hostedemail.com (Postfix) with ESMTP id D5DBE80011
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:12:03 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="ND/iOWU9";
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of stevensd@google.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=stevensd@google.com
+	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788286323;
+	b=FIfQrCDrwQT/3F+3tesWc0RwqDqXHybDGZBTYoOf3VFei4Wfi0aRFAlJdLS49QZoc9z320
+	gmamezJuiFYx3ldUkX3qIEOlBV01y6dGdMlf8ovUou5mXMTd1UshSAj4P+M1N7cuYbeIXw
+	HTEmfCnDpgFdc/wmVJvbkZYtEmJRit8=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="ND/iOWU9";
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788286119;
+	s=arc-20220608; t=1788286323;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X8FXyGo/raPRkoKPVRflMF35yNw57qYqgXG+3mdOgbE=;
-	b=bNV4vuP2fxdZoPFzEctoBCBSMGy+/QVweMR+d5jD0sd6gGB5l+364P2222xAF5Yp5BrKwx
-	vn6mneLZWYAyrbsilaWEktE50OKAK9ff6g3ojilUCFg+qfyjjtv6aBx1AowtOUDFpYV9gd
-	CszvlyweKweuTwlMS+6sF7zkAbkJFo0=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788286119;
-	b=FK8rQzEA5UEOi9cQwVk7mKuzsNd4E0gI/gYl7LTsJLoDrn5SjHe2ElR8/3YFXtf+V3oixd
-	xNSsucuv7fZ9KDIU3T3vVTQiSHyQBGY7dUzzic+y6yCDcPEa0FlfBFG+ITj+3gJ4KHH/2G
-	nRboGuYrHinN31Ci6TRTC9z9IQI7LK0=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=aOUO6OSl;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of stevensd@google.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=stevensd@google.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-49ccf12bed0so5085e9.1
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 11:08:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788286118; cv=none;
+	bh=OYDHwPtRS/urJTrcJcJyVU92g7dRNXopeu0W3B+ow1I=;
+	b=CmKu3chd4g80p/qvD63m60a5jRWBKS+7sh/W/a0WRWSDKMjeTNCHnyirO3GL38qm12WjE+
+	uLJnanh1w5WD9oh9TUkNj/qlTH6zEpS2kEtLiduhKX59icBuMyg4Xdw/lmuRyuXxvrqE3X
+	q60rcLNK7iDr0gImlpyEkA61yGzo0oY=
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c1670dad7a8so9601866b.3
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 11:12:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788286322; cv=none;
         d=google.com; s=arc-20260327;
-        b=c/VdjlUECLK7B9yIiiXGbymA5VYyyuQCLB8GpxFgn1/EoyyJAxKAusYy6O3+eg447j
-         W38OrlfHE0E3PN51z03/dxSDwAXzS4jSDck0xDke8HzFZacmSLhVUSU002wBsJKq4sD/
-         XP83d8JUBcDpizAhmE1tFyhwbkCPD/ka409hDleBUSxlJJSoc96Zqc+ndasakkpVXLrn
-         IRirGlfj71f1aq116ecrMi3rKYJcobM7MJ3r3/sJcsyhtcsmPK0DotGMo5c1JWrFNFSS
-         cbRZl1llI1cMvnAc0ljkCDRUlboyw0W4p1d8uK6bV3RBt3atQHJ89mktPuPRtIKZ98h/
-         TPCw==
+        b=e+b3DdV7kc+9gaELWtK03XtGp1iX/vRN/qvFCErgP4RMtvLgGQ+zRcQQ4M9Rm8rn0W
+         UTLZavj/wp3bT7h/8reKACb4vhuXvPRYFSyt3TVGceOuZp58As5ch5KfDXCqSpzM8Nf1
+         bgf7RpJ1BZqawdVB5H5OQRNO6gtGkPrMqQ4kR3qKQfrGA2x+LxwAwvHyYUdk+CPmKrip
+         VRU7JINgey6zZk4v01Xy65KUDYCxOBmPXTbiWx8PZayvbQPB4xLcPvzHwbvCca6Tf3JY
+         ZDL6/s9sxgUMQch3Y+n4eCFg4AP+xcZSqMs537GJ/1RXP6YnlWMq6q4cgAC2GOVBS9xk
+         wdUQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=X8FXyGo/raPRkoKPVRflMF35yNw57qYqgXG+3mdOgbE=;
-        fh=zWNWOPUfUKlJWw6bKDGzA9sPqPgipab43WukAXc7DE4=;
-        b=pEbS9i/ozOktGGIFlPZvxO3KrUADtgU2fd4vj4M9YHdiSjzXrJcYfvSrpp5P9NTS1i
-         a1TUptwyjlAglj1ZNy07MUcZhKlguw6luG1p5Bva3bLRYUbp9o1cV5wVu83st6Sof93h
-         NxwTM1Inro+155zqXWRSJLtYzlYCPo9+gl2TiE8ptM4FJZ4JQgpqzbHm0NurHonDgfxp
-         2SORmc2aKAE8n8aGyodFDg1BZL6/AemXCE5Z08Hbzvhd5kcioECOPr0oO/jthW0W3onV
-         DFrF3bGyrn7n02qfk7BCmRiuFFw6w7cVHQS7ZYhxuuzLmOXF/O19B7z9nldvGHVvAQ5Z
-         dqCw==;
+        bh=OYDHwPtRS/urJTrcJcJyVU92g7dRNXopeu0W3B+ow1I=;
+        fh=9OtubVzT62RuDK+UzaUPHULs4CVlPa6sMix+QhbQvNk=;
+        b=Pa2dAZXwCE8Xy5hsuChFtZW8V6e5Kq3nK071FEwvy8zAKc2oc9R95oDy/fmaWNrvWk
+         m5xQLreVDlt5JygNCizah85OZObb9LO+lg+/cb5h8AalzHILIRID1bjXptjR872uhSRL
+         jRftw9/lUAb41qc6pVDoiyO3QR5Wv3QmfpBHzWyz9jtwRVtvb4tl9jaLjN0iOUfCmmPR
+         B/ES9ZMDS0K+V+qxSmQ+iBPEZsrWL4VrrzClvVYRU79UlA7uksr9PrD2YaiZPwOJL7u4
+         jskdsFGvVuZxW5xmWvRkdbSU4yVpWpR24z6c3uz6FtFCL903QC0ycvOSS3i33+QPPRBD
+         jHog==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788286118; x=1788890918; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1788286322; x=1788891122; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=X8FXyGo/raPRkoKPVRflMF35yNw57qYqgXG+3mdOgbE=;
-        b=aOUO6OSlZk76Pxz2rG5jn/j3NWNXVzhrTQ6dQFHB2619WBT8308rh0RicqLHCANduP
-         R+ck7PoRTO1e2tfvuLoi7SsTqsblnOrRlf2WaTXC5Bp0RNwZmVRI1EodnkuYz+zqKnof
-         rL2jQqo7v31p3WncBskEmJjEXO+ihxFiqlOy+C7xjs6wDYsSxKQjbzPKGayeEBOn/g3E
-         +IRbcsFFIAuV3BLzgM94BuYvORbnUJks+LrICU9BAq77mthEQReTIK4pIyWooHgTOgdF
-         d79rXChooUIB6PrYq/JWtQ3Cn2k2CAz0S7XW++0Qo2E3WPHfjs2G9wNHVrOG7vyQr5on
-         hd/Q==
+        bh=OYDHwPtRS/urJTrcJcJyVU92g7dRNXopeu0W3B+ow1I=;
+        b=ND/iOWU9JJ4fVzg9bH5JZvdNuH3rzNQ8P0tzZJzFH9W7YMNVUwy8Qrk70twH5r8pMF
+         02acQ5zpTxPVXdTH1bWlcrCUgQpLT8DoLI3ZT0TnXUXSPVf5C+q7xTG79pfY3zWi1WaE
+         HBmOeBl1N4bjKIhj0aU+Im2j5zXeJRduSTXldfUq77eFwP+7eLpXljeDncqyeh/RRYp2
+         IFI4tYtF+tZVnr56ltJw1SirnFWPgBWpbLu/4UahtCrjtCURc6psYaNxMwZpJclJfyNM
+         aTbAf0wqAlbndV9Yg2iAl3aGBMjv1CdSoLEppxOPMxjmGtc7Ok/Pwvo3oK+NpCJF2niP
+         qBrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788286118; x=1788890918;
+        d=1e100.net; s=20251104; t=1788286322; x=1788891122;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=X8FXyGo/raPRkoKPVRflMF35yNw57qYqgXG+3mdOgbE=;
-        b=N73MLQvmTwTWR5Lp7h2hmKScRL4IcFr2vsKYjCkNmw9X2eyKukPcR0rKx5AvrPTbJ1
-         ktYkKw6ceJifdAiYbdxKcTnhUUu3I/FHvIGEe6CiaIcXnZ7uIsVw6lANL2lm7OdvifMI
-         sqiwbWN/QVeNc+a8FcsH3irxddaraPUOyyWaSyGnsdIhOEdSKxxdxS5k/JJtSN8EUupy
-         oXLctBBcb8i6KxWgtqRZPUGS/XKWinr3quayXl4bZszRLCC4MRTpMcTf5AFaOpYOF7xE
-         0WrkhA9FxtAKBX7BvLboCVU1x9dRatdU6tQ0/2/KtC9p4JBpRGww/Z+KPEdymnHCPvMJ
-         eiSw==
-X-Forwarded-Encrypted: i=1; AHgh+RpvpsxRDrr7kenBL/5NYgZf6vEL9QMXdv/wVyd5vQfdwz/BSR5u9K9PF2qMpFNPxV4zcmuXQPnFFA==@kvack.org
-X-Gm-Message-State: AFuF++lADljhS35hqEYvauFiFicfnG2ZfIs9Qzddk17TQqoGpO0ZfP5I
-	MKHfEtIIfqHofouWz1YaiLmG/BcxGF8kz3vyg1bthQ5oEO4dnOVbrMJQfQmJG2qS7vZtYBVvUMo
-	ebavXbFg1GeIgG+pQP6Fp32IRKQ/aohfy1McqXyYg
-X-Gm-Gg: AR+sD11uKtaJuexQPDL4CYpv9dCngkyujVPA5d+seoNY6IZNcd24NrcKz6aHUCxz8go
-	wbP361Mwrpue8P4MdMvcVDLe4T05+52rSzP/B5WpvTsKBvKg12d8M5t1rqOD2kikxswv9HtT9nQ
-	e3XwEWTU59gz2ctex0d5JJJ0dJmkTqcum1WweAAoqem+v6XBA5/R6Jk4UCLjazOQ+Dgq3W21WwK
-	PvpicN6fvL5u+mn3eveorXBl7qs6A9RwibF/7pTTyv4Uxrtkkg3QcO1FUHMoqUKp3dHJ7pRJeiT
-	auXhuU7eIJW4um7rVpwq7MUvELecVvoH8/9F4BfgScKGYE5HG0Dari/HX3Awmo+4A8HfLYvO66Z
-	TuMbHyR4/y/ALG+FHxO/LU6xmNn/JqPX3+wGAcHQ9FnQ=
-X-Received: by 2002:a05:600c:c8:b0:49c:e41a:4c70 with SMTP id
- 5b1f17b1804b1-49ce47aad23mr50035e9.6.1788286117650; Tue, 01 Sep 2026 11:08:37
- -0700 (PDT)
+        bh=OYDHwPtRS/urJTrcJcJyVU92g7dRNXopeu0W3B+ow1I=;
+        b=dOEQX5K82j6e5Bio3aWEJoQCliJxc/+YHHQZHqpxG6DqpXl76eaSB0hpYyMEPDWY/m
+         47zZ6IFbVPiJHRgCRLaGHH4+pEqaTaOmrCiX/MlKZ/SnPDn8S6QlPabfu627UnrZlK8I
+         2Gi5Oa4smHQIX8ZK3aP488xJMipcKyb+3zr/jcnnJx8ZUCJQhdquo6Io27HMXlwRPC0P
+         vyty0EeUQPbOR5v1BgETzL0POJUFkhCYcN8C3xfEk3faFGGL+eZQ/GhXeekRsLjn6gbf
+         ha1AknysFX2mJE135yWrdMlB1btYZY4PaROKp6aidvkm3XH44/9dsdr1aK5GqCho3Pa0
+         Vzxg==
+X-Gm-Message-State: AFuF++nAntMqvfjUiI7waS+Z+a5yLacael9DMtk508vQUv3jA+C3Nitj
+	q/lOvK4w5Muv9QG1PzPz/BNUvyd8P0goNVO2DOy0irjeB9J7jZRgfHH650AUgNBFffba+Z7YqeB
+	xpQcPI9q2oeq7xtxs+STsrLqTkvtNTL4=
+X-Gm-Gg: AR+sD10WIDaK5QBYg8065ksynYJv1OndWe+k435dshYaicYiuEfrRYcoGO4b5wU78gZ
+	pmgNi/ZhP4FfL8Xc1nLhM+rjgBd4D7ekStfs1bhsAP+MMPtub9T9UE96DrDPJLymR7VTn9evC6M
+	jmrns9Y8TSUMJXGIyAzBjd4cFqEdgWjxN02k5POsbjPwjI+4JjFVZduVyWJ0XAJLmOZIRvT0RjL
+	LF4PsVwBTc/YplLHFBt53L1eL3OCmMPi+AynMwl7irvBVzBi9hPufbkKLT5KwZF5MaXjW+af6wR
+	puNagdaFaNMTrAmNsWTj6zPWta4sRtQGqS6acwhicbw9pfAdo8ugzyu1u5C8pwTGmCuuUP7WSik
+	u
+X-Received: by 2002:a17:907:c714:b0:c24:d6f0:2071 with SMTP id
+ a640c23a62f3a-c255742f97emr2437697666b.12.1788286321995; Tue, 01 Sep 2026
+ 11:12:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260831234339.280376-1-stevensd@google.com> <apYXCL_GJs9Ovu0v@linux.dev>
- <CAOiLmNEV8b3TW_Q7+h5mYrZ1Nw73XcPFPUsapeYObLYajq_PJw@mail.gmail.com> <apaKRS7TYhlGRRW3@tiehlicka>
-In-Reply-To: <apaKRS7TYhlGRRW3@tiehlicka>
-From: David Stevens <stevensd@google.com>
-Date: Tue, 1 Sep 2026 11:08:25 -0700
-X-Gm-Features: AcwNN1UXbwoF_SLVJgTUIv4PDetr6v3cnkw3nV8p3K9PhP-UrCNprRfCd1ZzSOk
-Message-ID: <CAOiLmNF6Qfc1M83fYFH030J7UKR=t8zKoW2pGbzeFakBnH9Ycg@mail.gmail.com>
-Subject: Re: [PATCH] memcg: Don't call schedule_work when no spinning is allowed
-To: Michal Hocko <mhocko@suse.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+References: <20260831-mglru-flags-cleanup-v4-0-2d15dde0d7ee@tencent.com>
+ <20260831-mglru-flags-cleanup-v4-1-2d15dde0d7ee@tencent.com>
+ <apZVe8UHZ1CNo4r1@linux.dev> <CAMgjq7D6V4eTZJ1Q1Xf2J6yTCq=JjvzT-W-HHX6EnMfzm3BK1g@mail.gmail.com>
+ <apcJgcFLHKZfI40m@linux.dev>
+In-Reply-To: <apcJgcFLHKZfI40m@linux.dev>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Wed, 2 Sep 2026 02:11:24 +0800
+X-Gm-Features: AcwNN1XLuero4S-u0uv2ETgMcz4JXom2ZmkXeiEroEYDvMkv4dB11HBSW6z7Bos
+Message-ID: <CAMgjq7C=k_nzwiM_MTcjVjWMTGf=s8oRaUBY00dCvLbP4EiHnQ@mail.gmail.com>
+Subject: Re: [PATCH v4 1/6] mm/memcontrol: make lru_zone_size atomic and
+ simplify sanity check
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Ridong Chen <ridong.chen@linux.dev>, Lian Wang <lianux.mm@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8696820003
-X-Stat-Signature: r16eetosk44w64q4s9upuka3d1x8u6o1
 X-Rspam-User: 
-X-HE-Tag: 1788286119-770950
-X-HE-Meta: U2FsdGVkX1+lfCSfT7wCTsbac7EKeG6DuxJQzYSHEr4DWuTY3mO70f+G6Y/xOG/EB3sWf/tcqVDE6aZfP3nSISXEdtqBCjK9sz3PcLKMTbMdovJioW54eB5VCEMqSuNPqnYU1QrRAt6iTbO7XnKpA3Gex8P5SZJBEkQHjOS2j19S8BJ6KeoDeMUEv/rt+61bA1V3l/Kb62mQ1JbqUO8F4UZkeqT+7+P8qNJlsOPq/pNmyHPEK2viy/feRJskuQzJ3IKBWINqusLrlkZy08BOkGvBNdgL2FZ9SHCSxrTZhlEscs2WHV91Q9jaoLvOAa4M7RK1BkOEljUSvo7cAP46NPvGLNpkQyauzVYQkY81koyPa0Tigj97XxM8oxor+LVLV7Q3TNaBKzhFEUwMrAEg2StQKa2tdJlLSXOaqk3zjOeT2cCYJOiALw6UqOvBP6Gn+k3HMmVQzJtkKQ2lOKdot/xAFC9Ri5xX1Ifho7HFpr4mKPCB3kP3lUcRZ0BY0ZJQ+3F7XLM/8YXwisJ58m3dpQPl8yb8NycRVXOmxBFA1xcnkb+N7MKu1Qf76AjuF/n5TzPmTzZMLZUn5vfIQEX9wcl/SquziijUAef4VptQ1YvNX63y3D+oED4FiRSPWNuoPRzzKmXaxjFHehpiXI69nMEEQxTNtgeQGnoOfe/xQRPoTLJ2rmIYr4nsZ81cTyFTxRqkL8MvnBcaVm9Kj+UrOGyvYHUzTUMLg0B9+9cuyq8ko/D5EdjWlYoi0aR/aBlyGjsRuP8hJE18PNPNt45qS2g4Y7bs6b7pv8ylATzwkvDD9ASsGbjP/3f4lVVVf0k87gf16s34QgbSq+/fE1029lTtKjWnYaGmBmHMj+IEVaYmC+DD6kimtsIm1/i0xvdZEqNaOvIaEHC1F20JZOAonIeFCDUmxO18phw6wmgg3MIUruey53knRs9NrNPx+MdB+KcHpdSqF3MfMdq/Skx
- qkaYXYMA
- t32jqQjMtgVC7oWA9o2IdIGTpH2q/Z76OPmvdcyhdHH3NJLk3ROopO0n4GgXf/Oy44MhLqd9ZiRG6+ji7w2NEKulnbuaUjvVC0twD8AJ1uoqOR6E2wRE5xDo2Kvkyt+k2X9kDGcwtGuZwZLeNDTXX3dfQIY36kxcz7k3WWA5PGWBXdnFkqCszzQLKeYcihZoMJqYCSN5yBKvdNhy7YCi/itJ4Pau5nsyHR9tM8mIVBwLfKG/bbVh35HKz1ZongS8xqOdNf8dgzlbqM1IdtWKw2i9utjtl/9zMGW58izcdOI7hekXye+tCKqO2n+ww0rRT51YzLcXnqGFaeyJIHEphJCRtWd6I+S0BKSfxn6MxJ2X/mig=
+X-Stat-Signature: b3jxumoah5gp173peas7w13b36oti69c
+X-Rspamd-Queue-Id: D5DBE80011
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788286323-759647
+X-HE-Meta: U2FsdGVkX1+avF2yC/Lct86FejiQi/Xf/vraGFrC6d1ltu40BP7g68VoH7nIhy137MjdA2eAqjo3dXtcjwhX6ZHkQBMvgNiltwvOQnNuknXWPOZNIJU1c8n3KmXSHqjPRd3FYbrTrgJWmElCGmFJMIaogGCg1+jrhrEfA5fMW9h8h7Cu4xrJeyYzP+nGdTXnU5XkvtBQTTAd9hbLQzVe9Qt732Wg+9nPsd3h/KRUG3qAft3vlX/5LMCVs+81lEw+A5W1c5SY7smrHyGyTMevs1yOLo8Pgj37gMAExfB79guNT76dx0tC4eJuWc6tSq1KeqFBPp5pwvD0Kzkks4aT5wKx5P89nLL1JkW8u8lLeXksyHDsFyouCoG23Pug54Rm8pXYyaAvAQDDqVf5RnDTRDG0GGyi3z97fb38qB9iKYZ5L8ichFZhGa3P8/s1jZLqj/ktC7UDYmhNOfN44hUVnEqfzk0e5Z+eBUC/697/CUFDadNTmbBseIKkqUpQ5JgdAIBQsx8tHodAXFiEdoOX9CiuGDBnOG3fmsvr/EkhFP1LouGvuN/3tfjd8OTKYVFn4SfdjD9TKsLZLdbLvUZEbPYAm0X9bt1qkreUZhnNTJJUC1RLl1B1mbWviMwcfZqycFXiciBKW+SRthXc6eUkUJ3CWN2Cxhpm3fOyma4pHGiZHbUx8Qgm6bMInXOnrpuX3aP5DKcCFKkI2tCCZ3L7isFY9upbxZsJEbHqsRj2PAO+UMuxqZI3Md4uChfO2dswCrAFuLEfb5TirMptcpfH7jT9jTSns3c0T7nuRmAH+Mo0SKc1uIiioVqj+iJ0xiPNYw/BAFepeJH29MMB+MM/R1ApS6mxr5ehWW3FxdrQ/jxwJcYg+grWQZi4WkWBiD5/R+v1ykMzSv5HGGqnUJ1AMULJH2ZqVOVjTxbLvnSuZEX12MESFZorEsdZxIqkoEHIfQ1DY4zVeXFkYFOtzRO
+ bSkLeJvG
+ XK1wUC9jkc+r6nsaPxr4ePo1ItMIRrJguWtCcoSSS6siKKOuRNyELxc46HRMAL7oBTAXY07ZtKfEEV8IHIGI/+p59ilf7dpWWtUEhhwF22Gyi/bM9PI636IVFI+hV4TBdXnSFmcToaavLOJ2JLTVp4PV5HBAZ1aBUtvYD/ePB4pW2L5ya1urEMqeWOcPztDh+GAnp7brMwW3PaIWQzPOl40PN7KqtjVfDaf5sEY1K3TYIA3nx3cfeG4/T/iJSUA+cON7ls50MTKcZPdKZWW3hX99uItNB/n3IfBJZ91d+pQrbhCSMcU+Fq45IikD2MnPn5jxx+jeiyWQvwkiy+k8XBDcqudqf4SWIx48VChSySgjPdR9sa9P5XDbfumNADN5FjGy6FIAcUSLhjqCxWD4GdTw5c17w1HNLeQbBYbpg63Nm+ExIMfA2Rv+mgEuc99zNpjfgYWRaO5GWG8STEpWWXv6G9lOusdRkFx/bgMR97t51qRTNJQbHB+nDj0MilgNHudDq3iZ9vybq71P7g+TYN7uGScHkj4M8L2fFDNMzuss+13I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,34 +152,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 1, 2026 at 1:18=E2=80=AFAM Michal Hocko <mhocko@suse.com> wrote=
-:
+On Wed, Sep 2, 2026 at 1:37=E2=80=AFAM Shakeel Butt <shakeel.butt@linux.dev=
+> wrote:
 >
-> On Mon 31-08-26 18:04:57, David Stevens wrote:
-> > On Mon, Aug 31, 2026 at 5:10=E2=80=AFPM Shakeel Butt <shakeel.butt@linu=
+> On Tue, Sep 01, 2026 at 01:20:33PM +0800, Kairui Song wrote:
+> > On Tue, Sep 1, 2026 at 12:38=E2=80=AFPM Shakeel Butt <shakeel.butt@linu=
 x.dev> wrote:
 > > >
-> > > On Mon, Aug 31, 2026 at 04:43:39PM -0700, David Stevens wrote:
-> > > > Memcg charging can be done from any context, but calling schedule_w=
-ork()
-> > > > isn't safe from an NMI. If memory.high is breached from a context w=
-here
-> > > > spinning isn't allowed, use irq_work to schedule the reclaim work.
+> > > On Mon, Aug 31, 2026 at 02:43:31AM +0800, Kairui Song via B4 Relay wr=
+ote:
+> > > > From: Kairui Song <kasong@tencent.com>
 > > > >
-> > > > Fixes: 3ac4638a734a ("memcg: make memcg_rstat_updated nmi safe")
-> > > > Signed-off-by: David Stevens <stevensd@google.com>
+> > > > commit ca707239e8a7 ("mm: update_lru_size warn and reset bad lru_si=
+ze")
+> > > > introduced a sanity check to catch memcg counter underflow, which w=
+as
+> > > > more of a workaround for another bug: lru_zone_size is unsigned, so
+> > > > underflow wraps it around and returns an enormously large number, t=
+hen
+> > > > the memcg shrinker loops almost forever as the calculated number of
+> > > > folios to shrink is huge. That commit also checked if a zero value
+> > > > matches the empty LRU list, so we have to hold the LRU lock, and
+> > > > handle the positive and negative deltas separately.
+> > > >
+> > > > But later commit b4536f0c829c ("mm, memcg: fix the active list agin=
+g
+> > > > for lowmem requests when memcg is enabled") already removed the LRU
+> > > > emptiness check, so handling the deltas separately is no longer
+> > > > needed. And if we just turn it into an atomic long, underflow isn't=
+ a
+> > > > big issue either,
 > > >
-> > > Did you hit this issue or just code inspection? I assume this is the
-> > > done_restock code path.
+> > > Why atomic long and not just long?
 > >
-> > I just found this via code inspection. I spent a little bit trying to
-> > trigger it for real, but the only way I managed was by writing a hacky
-> > driver absuing alloc_pages_nolock().
+> > Long is fine too; I was just trying to be defensive. The original
+> > check was a defensive design for leaks or races, and atomic long is
+> > more immune to race conditions. See below for the other conditions.
 >
-> Then this is not really a fix but rather a new feature.
+> Unless we really need it, let's stay with "long" for now. As you mentione=
+d below
+> this is busy/hot path, no need to add overhead of atomic here.
 
-I spent a bit longer looking, and this can be hit via bpf_arena_alloc_pages=
-().
+OK, no problem.
 
--David
+> >
+> > So checking it in the reader side is much lighter and cleaner code-wise=
+.
+>
+> So, one motivation is cleaner code?
+
+Right that's one of the motivition.
+
+>
+> >
+> > Checking in the reader side also tolerates deferred accounting false
+> > positives: if a folio is added to / removed from LRU but have the
+> > accounting happens later, that's fine, but might cause a temporary
+> > underflow (there shouldn't be such usage right now, but cleanly the
+> > oldest commit I mentioned is trying to catch something). It should
+> > just proceed without performing extra operations on the counter or
+> > raising a warning on the updater side.
+> >
+> > The underflow won't affect anything besides the two readers mentioned
+> > above (reclaimer and reparenting).
+> >
+> > Besides, I don't think warning on the writer side will help catch the
+> > real leak either, it just adds overhead to a busy path. The folio
+> > triggering the underflow is very unlikely to be the one leaking the
+> > count. And if that leak is actually caused by a race, the atomic long
+> > change should cure it.
+>
+> I think you are going and looking too much into the history of this warni=
+ng. I
+> think you just need to explain that the current warning in the update sid=
+e
+> already can't always catch the actual leak and is costly. Moving to read =
+side
+> make the code cleaner and warnings will be at the location where the cons=
+umers
+> we care about are going to consume it. Also add couple of sentences on be=
+havior
+> difference it will have i.e. warning on flipping into negative vs we will
+> continue to operate even in negative but only warn on negative consumptio=
+n.
+>
+> Another question: why is this patch part of this series? Just some orthog=
+onal
+> cleanups or are they related?
+>
+
+These were all part of the MGLRU-FG prerequisite, so I sent them
+together. I can split it out.
 
