@@ -4,30 +4,35 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1FCCC61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 16:09:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BC57C624D5
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 16:09:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DEA2B6B028D; Tue,  1 Sep 2026 12:09:20 -0400 (EDT)
+	id 510A26B0290; Tue,  1 Sep 2026 12:09:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC1466B028E; Tue,  1 Sep 2026 12:09:20 -0400 (EDT)
+	id 4E6FB6B028E; Tue,  1 Sep 2026 12:09:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD7336B028F; Tue,  1 Sep 2026 12:09:20 -0400 (EDT)
+	id 361CD6B0292; Tue,  1 Sep 2026 12:09:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A64206B028D
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:09:20 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0CB8A40469
+	by kanga.kvack.org (Postfix) with ESMTP id 16FC36B028E
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:09:21 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 784261A0468
 	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:09:20 +0000 (UTC)
-X-FDA: 85165678080.18.010F3A7
+X-FDA: 85165678080.02.75D12FB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E66D940008
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:09:17 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RtNnEY7h;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id 66389C0008
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:09:18 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="cU3Cnl1/";
+	spf=pass (imf10.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788278958;
+	b=4tB8HCL74H3l5kK7d4Dh+W6bHTjYgAzid2fSezOcgvBRiy4rWv0QkfxcfNmo6lBb+DMi3J
+	CtdK6UKUfQKIueMkIJBK3CBXGYAYBVkbHstjNbTtRPuFgquCXwRXsdMDpu7DEsMBtNvj11
+	j+cPc/YuXzqGjgyHSfbSpY0GDSvq51I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1788278958;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -35,45 +40,40 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Mz99eWq1invPFNouTi8ecn8aCY7wOTBsvojLW/naRpQ=;
-	b=WSt+Lyg34n6PcnGjHhDRUutEYD+IVO/dVVZuPnmDQZL38X2fT9fnb9j30IG2hhd9sHRvss
-	kIKJ8T0grLlaADVYOAlpMqoQU8IOHVjX+ZKYwX08vVKdzmnCyI3HtE9vFF+tRFFL2GXFBe
-	zBqN4hlDrebc/bn21K7HHaGywEeQIGM=
+	bh=hczcGYP1OVbgg1LlZo2FVOGOXbr1KaONKxYKnTcQM1A=;
+	b=5kpXeyDuzvmZ4WcZBFVpP1M5360TSpTHQnfCOebxmrV9thBvJu2UQg6vZ5lPZSgPbmBrM9
+	Gz/mx2smRuHeQ9bdag5YStqByjX6c9llPls3b0iUu4848ZL0UgEamRAlO3iSNduvdC8OJW
+	h/faE0p8MyjUIiRvRiDAbZAcK+zn8D0=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RtNnEY7h;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788278958;
-	b=HQAahNxLzai4ebhOlDqu9ScA7HLHaFeOO8x4mMBtp7ykFrEqhnreazOfLz2lOnKTUw9JX8
-	b7pnYV87UbBzD1KYz2Cbhz1RuEeQvqnKFXuKnnaPGPJl6zIRyYwoJ+eVTTwoFJELxRHHw0
-	RlU1zwIsOWzQS8B7oiGXXDzXD7rfil4=
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="cU3Cnl1/";
+	spf=pass (imf10.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A7699435AF;
+	by sea.source.kernel.org (Postfix) with ESMTP id AD3D8435B4;
 	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7C349C32782;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 72EBDC2BD04;
 	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1788278956;
-	bh=vVRTAJM2qAJtjzVNw7AfiDMOZQ6QUxUlTdr6404pWUc=;
+	bh=zA9tgWKf4SBtTBAhJRzDALR4sj2TbJPjvzc1j0kLi+0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=RtNnEY7hoph2NGV04fm7KqnQgfxO8XyXwmiTGUGtI3nVJfe16N40RwZkDYLT+ksZO
-	 2YY+rS0wl+a+/TsgI1fmeUZgiWHI+idrSNb+jMfzJSc+f7p5rqYHt+gtS1nGBEt+IQ
-	 dRR3YQt/Hkm0k0lq+vc9whkbty2GyDmdKXMhfr+Hcreqfr/NlHeuETdjUGbqFSo39e
-	 SNoFvcFY8ssqH8I5/kD0XGsv8IgmE43VcBeYNH6Mw5uGP91kgbiGcsWCMkvivJ5157
-	 W5XF6Y7c/8MUnW/r6hyHIp1Bo/d4MA3WA5xjWPleDxXUVo51o6H1b21u9574RPh0Oq
-	 8D6lZfwiTb+eA==
+	b=cU3Cnl1/XCHcPDdhbKsQkf8GKY7v5T2PGtfYkY15wwAgVlsUwjuwf8UHtvcLZoGrG
+	 do4N21kgV/k8mi+Wj6+GuNQC/oCEsDZjBoW12KcptuskpQ5kTzPXWwgFffzF4DQNIO
+	 thGQFCK6baOliEawFl1G8wR2yZ+SUkAW/dL1tKw0sdF5+nYuLyeKxCfRLPSwk3RoNP
+	 RMJHZtU26V2LljAZTejFiCmkQAoReIlgEmMylujcu+gxJuwScyZQbTmrsiUDjJCkw7
+	 ZpuunTc9CAL/2h7eQyXEN+MURonSafxnbjjoAK9ToK9cnnW06rnSY2S/SkaZpKixSm
+	 6/QXbxuc54kiA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 63CD2C624D7;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 545D1C624D3;
 	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
 From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Wed, 02 Sep 2026 00:09:03 +0800
-Subject: [PATCH 4/9] drm/tyr: add per-file VM pool
+Date: Wed, 02 Sep 2026 00:09:02 +0800
+Subject: [PATCH 3/9] rust: sync: arc: relax `ForeignOwnable` for `Arc<T>`
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260902-tyr-ioctls-v1-4-e0fdbf8bd108@kylinos.cn>
+Message-Id: <20260902-tyr-ioctls-v1-3-e0fdbf8bd108@kylinos.cn>
 References: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
 In-Reply-To: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
 To: rust-for-linux@vger.kernel.org
@@ -93,25 +93,25 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
  linux-mm@kvack.org, dri-devel@lists.freedesktop.org, 
  Ke Sun <sunke@kylinos.cn>, Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788278954; l=3857;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788278954; l=1287;
  i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=GYNt5fASDjvzxxgWZLDWPIxhdkvjI20iaVSTTPTfRwI=;
- b=zNDRrCK4SuOMnUEDGOcfEfklYsW34X7DcrbeHuulWK+S9BJ2TEp/jQ1FknCrKMDLdreWsyCD/
- nGswWYrR5lrDce2bdKmuXNKhOd67JYC7lkzIJftaHcELHGgPGNrZ0Jc
+ bh=VpFApDEE0ShMOm5bITUkvBMmnsmsJS6eNADKklXNSp4=;
+ b=uHDTxFGNUx1spLlyFI1jfXtWSsQ4Kct+pqNbd2CyQ94I8hDhvntBrOhaGdYAsbGexhRYLJ6WZ
+ 8/XubxirktGCH9ARwXTL8UZSFEUKMVeukuaBmnBA2/hj0TMY6/ZHIWS
 X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
  auth_id=950
 X-Original-From: Ke Sun <sunke@kylinos.cn>
 Reply-To: sunke@kylinos.cn
-X-Stat-Signature: 6eh8n8y3y1bjp7e4g6pw8rzcdabznn18
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E66D940008
 X-Rspam-User: 
-X-HE-Tag: 1788278957-244941
-X-HE-Meta: U2FsdGVkX1+unqgZrZP62eYFs9hZLp0UMWMsHNqIndHO05b5T7NGjHCPBDb8O4tgfFlz590y0C4xqlOnIBHXOIbmJIAAzv1I220+1djbL+I98j+yIi9CDJ5M195CGMaWEyXiYNKFDq8/qdSvi9+NI6F1bsk/SWdXoQBau1GeGmOEdQ/DL0MwTx2PX1lTEc8J2qUHrvQb/pABibF3P0GYnVtFUtRtTkghlPoFd22FKyWE0DtoZUEkewWYSU6xFlifI0OUAE5QNBsoxZvHKRCuB/urd+wqB8EgIQWh9DKvR/gDPymkLRKCmxnCc9Mh51rWzCmUgB/FLZ53rqxa8fcA+blb3BzXqLltU9RqozkvVqKExwUtOhoAp++2/xu1/IkaRTYUWr4R2aRQbEysXWcfPzOmTtxCm8Tqvws/f0Yh1XmCYSkQ9mDuVHvl7Mad2VYXBncPhPsIeG3tFknQURyUcSSGGtkGt5GZplI0zWJfAaHbkujWStE9ULs6u++kzfoZDofeVpGNXITlNmAYyjEr/DL6KNPYHNjqeqluhRIPhj0TU6uKNpuAVB5TSrCrFx96dDU+48tef9qwQGx9fSpKBkiTuyeZf6mHqVjrNAuxxeHJHi/O2s6IcIPkadi4v1Y2S3oFxKSbZvwNSmxy1D+lQNeBIpZhLfdq7YcbLbUl5P78Yqzis2G4lbdctKu2Ifgo4HXX1tgaQX5Af+b7rLNSzHPfl5qi3DICdmQMZDyzLwDKRrHufMtklli/ZmFqybb9KiM7kK4O0NHUpAfzdBskpQWGlWjsOJof9DoKb9mejU4yIg7mKcjSHDBjjiN2/lep3Pvwm84jaeMsSHu39P2RYZ7IdEidZEM8dWqknVww46ejUtCZb+gS16Qu/JzNypel1gmo2PpOxIyOoyK+0yRp2k/AGMQW5bU+RzuHub7aEHg24aNq6gzgJbPSxnfNAFflNIvGo1NJRKFhyGPQu8e
- MhRH9RCl
- ivO3yYO9RnGH4o0p7XovkMM54h3qvttt6AvdbJp9tK85bd/znlQuy630CLYXEELI65KrVUlwX94GPJ2En4e8mvYNNyaThYTMYK1gP//KEv/NiPJcgWr6h8/eIfUQRbEOsTVyvrcqMxzD56lAHRMz+DdqGZHIO9giOpdXawNJe5K1K+qUs1uFPh3xXjknnd9OSGqaBu9KczwrZMNQGq/agTcF+yKe65ef02zwgCaT2sq+HO/BJM2JClfDngniVsjHaXbmrXA4Ov0PxqLeAH0lMEaQU1fiCbaO3/xwt+cvvryWI4+wIAeGyvTY0qWxoNDj9hiJ0RYtUIP5ZkxViz8WsMV/GcrQPIp2zduTcHVQDLOCZIqb/V+ro8GfCrrD1l/RGsHDH
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 66389C0008
+X-Stat-Signature: wpg7udghnrpu69h6fw3z41b7qoorz44n
+X-HE-Tag: 1788278958-260661
+X-HE-Meta: U2FsdGVkX1+UilU4+5jZOkumj8OKyV3EFN9RvtyZy9zUnF9SgiRfoR/OWeO/rOFZ2H1qnl1PtQY3LqxdaVSNHaLGpgcIndPtU6c46guJtDhNG+2s+eYmXvs6nd6bBdQ3nqnNP6XKLq7V37pkn905U2X2yOCkHfAUf4r3wRQMuCkZ84Gd5KKrTohdh5HrBEXoKIE+rnv9mOJeGOL1LLhGB7gKVWpAIzwTxLl0mO/8F2WwDddYyKhBtDaYEHtXImePEXjcNXLEN0MgEwM12RLWiQceppWqA4wjbAclU8B5BVIbxg7QKeCuMR/EjB0YJPC5cXYJHxfMLo8qOTrzf1ULnFR9YsZOakrR36ctt68GMlIL/xrc1CjQQYxFDMAQ+R2RvstpRAutu4YMtHweWz81ADj1+9p2r0zSZ4YJ84AgWAWh8MIz81n2nWctgcNhAupBTbRuBWilkRm0hRhUBcGcjuzM3eFKARtH55fXNM30oGmXM2EBF8hniEZggZ1CxH0mjFoJ3a+y4fsTkgvv3hPLTcmBQlxLyzVEnVa9W7CnkegrVdECbP+ixvkUj1KQLR8rIW7RjLG+eE99s1j31UleIO1JnKu+v25xHR70fCX0wnRng3P9ea+eMAYWswOFnAQYUEd+Hi+bx1Cv741pp5kJyx1r4wZOur+KFpxMOLDTHXH/eWGi12LfldcyBVuFZotJgPkSB49U1EmDSYeogX1S6gFPYPqLTQZgJPKTdtd0cIcyizfBObt4knwDRyvUA8k+v1t6rY/oRGcR2KyYlAzLXO9o3egxEWmnVJOtxvGwz2igFu0jOs/XPLY88B4EurvH0i+LJyGsSffb1YkQ0iAz/CiqR7uazOxiczPSZRMgyV4v8Vz9DaZlpT/JnoDgTwMrW6ak0ze9ayr0hsiOo9PuDA0ez7KdmxV123sathKJXN/RIKUO9XW1+ObYNR244ss8Z9KaGipfUHsOzxS1ZSl
+ xC4SPbic
+ +lEoDwQ3V2M+3QdkWhy3hU0YVFEJPIxhz3/bNavFDK4UjlfiL0z+nKcngtlwy2y4b5pNd9zRtfmoteDE3uqvZ3cCCMnMZd+dN46rJknu7Jucskeg/HBUqApDpt3Q6ko17KssPiZdyA2mpH+62kZ6EVoJFf7Jg66qhBaa9Lrs3XF7m0O2OMBkoiLHCDkrSTR2js19ssW7PyO4RtiproGt+2EuubjteYNtAO/mPgwNsQAKkXrjl97Izx1SNlNJujW9KAUMfrGqyEudbnKhXn7v1RDwlS43V6eXF/gh5hxDEGWOE47t30YVTaIXCGuJKzunWeNKYZsuGlsQG+ivbEJ2smc8wC2buQOovwfhv5QoIRq361jtRTNqqpk6R54fWAKQ6W/0u
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,135 +121,40 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Alvin Sun <alvin.sun@linux.dev>
 
-Add a per-file VM pool using the IdPool for ID allocation
-and an XArray for VM storage.
+Drop the `'static` bound so that refcounted values borrowing from a
+driver registration scope can be foreign-owned by the XArray
+abstraction.
 
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 ---
- drivers/gpu/drm/tyr/pool.rs | 102 ++++++++++++++++++++++++++++++++++++++++++++
- drivers/gpu/drm/tyr/tyr.rs  |   1 +
- 2 files changed, 103 insertions(+)
+ rust/kernel/sync/arc.rs | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/tyr/pool.rs b/drivers/gpu/drm/tyr/pool.rs
-new file mode 100644
-index 0000000000000..1745116930c3e
---- /dev/null
-+++ b/drivers/gpu/drm/tyr/pool.rs
-@@ -0,0 +1,102 @@
-+// SPDX-License-Identifier: GPL-2.0 or MIT
-+
-+//! Per-drm-file VM id pool.
-+
-+use kernel::{
-+    id_pool::IdPool,
-+    new_mutex,
-+    prelude::*,
-+    sync::{
-+        Arc,
-+        ArcBorrow,
-+        Mutex, //
-+    },
-+    xarray::{
-+        AllocKind,
-+        XArray, //
-+    }, //
-+};
-+
-+use crate::vm::Vm;
-+
-+/// Maximum number of VMs per open file. Matches panthor's
-+/// `PANTHOR_MAX_VMS_PER_FILE`.
-+pub(crate) const PANTHOR_MAX_VMS_PER_FILE: u32 = 32;
-+
-+/// Per-open-file pool of VMs.
-+#[pin_data]
-+pub(crate) struct VmPool<'drm> {
-+    #[pin]
-+    ids: Mutex<IdPool>,
-+    #[pin]
-+    vms: XArray<Arc<Vm<'drm>>>,
-+}
-+
-+impl<'drm> VmPool<'drm> {
-+    /// Creates a new [`VmPool`] with capacity for [`PANTHOR_MAX_VMS_PER_FILE`] VMs.
-+    pub(crate) fn new() -> Result<impl PinInit<Self>> {
-+        let ids = IdPool::with_capacity(PANTHOR_MAX_VMS_PER_FILE as usize, GFP_KERNEL)?;
-+        Ok(pin_init!(Self {
-+            ids <- new_mutex!(ids),
-+            vms <- XArray::new(AllocKind::Alloc),
-+        }))
-+    }
-+
-+    /// Inserts a VM into the pool, returning the allocated ID.
-+    pub(crate) fn add(&self, vm: ArcBorrow<'_, Vm<'drm>>) -> Result<u32> {
-+        let id = {
-+            let mut ids = self.ids.lock();
-+            ids.find_unused_id(1).ok_or(ENOSPC)?.acquire()
-+        };
-+
-+        let vm: Arc<Vm<'drm>> = vm.into();
-+        let mut vms = self.vms.lock();
-+        match vms.store(id, vm, GFP_KERNEL) {
-+            Ok(previous) => {
-+                // Drop the previous entry (expected `None`).
-+                drop(previous);
-+                Ok(id as u32)
-+            }
-+            Err(err) => {
-+                // Drop the XArray spinlock before acquiring the `ids` mutex.
-+                drop(vms);
-+                // Release the stored entry and the pooled id.
-+                drop(err.value);
-+                let mut ids = self.ids.lock();
-+                ids.release_id(id);
-+                Err(err.error)
-+            }
-+        }
-+    }
-+
-+    /// Removes the VM with the given ID.
-+    pub(crate) fn remove(&self, id: u32) -> Result<Arc<Vm<'drm>>> {
-+        let mut vms = self.vms.lock();
-+        match vms.remove(id as usize) {
-+            Some(vm) => {
-+                drop(vms);
-+                let mut ids = self.ids.lock();
-+                ids.release_id(id as usize);
-+                Ok(vm)
-+            }
-+            None => Err(EINVAL),
-+        }
-+    }
-+
-+    /// Gets the VM with the given ID.
-+    pub(crate) fn get(&self, id: u32) -> Option<Arc<Vm<'drm>>> {
-+        let vms = self.vms.lock();
-+        let borrow = vms.get(id as usize)?;
-+        Some(Arc::from(borrow))
-+    }
-+
-+    /// Removes and returns the first VM in the pool.
-+    pub(crate) fn pop_first(&self) -> Option<Arc<Vm<'drm>>> {
-+        for id in 0..PANTHOR_MAX_VMS_PER_FILE {
-+            if let Ok(vm) = self.remove(id) {
-+                return Some(vm);
-+            }
-+        }
-+        None
-+    }
-+}
-diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
-index e7ec450bdc9c0..8c0c18c1a970b 100644
---- a/drivers/gpu/drm/tyr/tyr.rs
-+++ b/drivers/gpu/drm/tyr/tyr.rs
-@@ -13,6 +13,7 @@
- mod gem;
- mod gpu;
- mod mmu;
-+mod pool;
- mod regs;
- mod slot;
- mod vm;
+diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+index 5ac4961b7cd20..cd6faba84ffcb 100644
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -363,11 +363,17 @@ pub fn into_unique_or_drop(this: Self) -> Option<Pin<UniqueArc<T>>> {
+ 
+ // SAFETY: The pointer returned by `into_foreign` was originally allocated as an
+ // `KBox<ArcInner<T>>`, so that type is what determines the alignment.
+-unsafe impl<T: 'static> ForeignOwnable for Arc<T> {
++unsafe impl<T> ForeignOwnable for Arc<T> {
+     const FOREIGN_ALIGN: usize = <KBox<ArcInner<T>> as ForeignOwnable>::FOREIGN_ALIGN;
+ 
+-    type Borrowed<'a> = ArcBorrow<'a, T>;
+-    type BorrowedMut<'a> = Self::Borrowed<'a>;
++    type Borrowed<'a>
++        = ArcBorrow<'a, T>
++    where
++        T: 'a;
++    type BorrowedMut<'a>
++        = Self::Borrowed<'a>
++    where
++        T: 'a;
+ 
+     fn into_foreign(self) -> *mut c_void {
+         ManuallyDrop::new(self).ptr.as_ptr().cast()
 
 -- 
 2.43.0
