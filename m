@@ -4,109 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94DC9C624C6
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 08:31:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18764C61DD6
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 08:35:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 572836B00BC; Tue,  1 Sep 2026 04:31:44 -0400 (EDT)
+	id D68406B0095; Tue,  1 Sep 2026 04:35:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54A1E6B00BD; Tue,  1 Sep 2026 04:31:44 -0400 (EDT)
+	id D193D6B00A1; Tue,  1 Sep 2026 04:35:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 460FA6B00BE; Tue,  1 Sep 2026 04:31:44 -0400 (EDT)
+	id C2EF66B00A5; Tue,  1 Sep 2026 04:35:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AC186B00BC
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 04:31:44 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 66A0F14035A
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:31:43 +0000 (UTC)
-X-FDA: 85164524886.27.6D812E5
-Received: from mailgw1.hygon.cn (unknown [101.204.27.37])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3235040002
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:31:40 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf17.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9634A6B0095
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 04:35:04 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F10411602E7
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:35:03 +0000 (UTC)
+X-FDA: 85164533286.04.356D87E
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4BF4640003
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:35:02 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=uYgRFuVQ;
+	spf=pass (imf07.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788251501;
-	b=FxK50aXmIDyEYQFpKPRsb7psAA7u+aiO1u5nuAVNEz8XKxtMjNQay8hYgmLeUn8qJXZBtW
-	ulZxnJjXtLwRDgb3Poo9UN//GMr/wXgNcdYv8pTa7TwcoRKfF8GL73dD+UEf179MXosl0R
-	oUBZXfQFq4XGTHU9FaMjChSYwUAbp1k=
+	t=1788251702;
+	b=ul/mTGFvZy3h8P0mKM1pEeR2ih8U4K6E3VQwHKwP6I5HXNzOxLvwbR6OIDcmG4h2sU6zir
+	oSfqvV8INig8+n6iYaOcjnRjRkgZqg/uRaY9joCRTreKuO2adGXEHmp1njbg5ebCgnO1Sx
+	tpMAOcmfgTmmV6S6Sswf3FNf9++U61c=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788251501;
+	s=arc-20220608; t=1788251702;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w4dXuQi6Jk9Z76VcireLxucjmD32filYi4k2zaMMbLA=;
-	b=rmJqBwn269mX257Li+Ly7PnfIYGCj6xuDDiIUaXdpyLrbPTTnm12RqO+zTVkb13n4elqgb
-	z7bHmD8tFbT8UZzLRuGwrchXLVS0ex4iJhci7WI5PwVfCSALLDoyIjSbAFY1R2QiiWyjeT
-	qz56BW1BgkQ66r7fh7lU9MCocKpF0zY=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=UPTuIQ8stL79uXzsKP8rRyu1dtmrmdDexhTYWlIJE4k=;
+	b=H1vXa0pSZnfYcRkXIEOPgGmDr1rJS/NXUW/POjFWxSQNy/ZBaIYFCcoGKU0LLnQH3PHV2H
+	ZeKAdcwvYam77I2MxbfCoPZUZ0P4eSPVYKSrY2sEaGUCfvN3MUsK8V99ILLEuc1NuKlf4f
+	lCt+HLoYWkaGHtJqt55AbNB1keBBQ1g=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf17.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
-Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hYzbt0QLfz19hDf;
-	Tue,  1 Sep 2026 16:31:38 +0800 (CST)
-Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hYzbq5Y43z1PvqV;
-	Tue,  1 Sep 2026 16:31:35 +0800 (CST)
-Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
-	by maildlp1.hygon.cn (Postfix) with ESMTPS id 87479B351;
-	Tue,  1 Sep 2026 16:31:30 +0800 (CST)
-Received: from cncheex04.Hygon.cn (172.23.18.114) by cncheex04.Hygon.cn
- (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Tue, 1 Sep
- 2026 16:31:35 +0800
-Received: from cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d]) by
- cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d%10]) with mapi id
- 15.02.1544.036; Tue, 1 Sep 2026 16:31:35 +0800
-From: Jianyong Wu <wujianyong@hygon.cn>
-To: Peter Zijlstra <peterz@infradead.org>
-CC: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>, Chen Yu <yu.c.chen@intel.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>, Dietmar Eggemann
-	<dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, Ben Segall
-	<bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin Schneider
-	<vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, "Shrikanth
- Hegde" <sshegde@linux.ibm.com>, Phil Auld <pauld@redhat.com>, Andrew Morton
-	<akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "jianyong.wu@outlook.com"
-	<jianyong.wu@outlook.com>, Yuan Zhong <zhongyuan@hygon.cn>, Huangsj
-	<huangsj@hygon.cn>, Fengyu Wang <wangfengyu@hygon.cn>, Zhiwei Ying
-	<yingzhiwei@hygon.cn>, "justin.he@arm.com" <justin.he@arm.com>
-Subject: RE: [RFC PATCH v2 08/23] sched/topology: Introduce a per-CPU tasks
- NUMA preferred counter
-Thread-Topic: [RFC PATCH v2 08/23] sched/topology: Introduce a per-CPU tasks
- NUMA preferred counter
-Thread-Index: AQHdNiBA7oAH9eDim06x96D0XIAuLra3pasAgAHCg5A=
-Date: Tue, 1 Sep 2026 08:31:35 +0000
-Message-ID: <8eb55be5c1e9497c9f34f15436b9d665@hygon.cn>
-References: <20260827122816.756234-1-wujianyong@hygon.cn>
- <20260827122816.756234-9-wujianyong@hygon.cn>
- <20260831132414.GN4120091@noisy.programming.kicks-ass.net>
-In-Reply-To: <20260831132414.GN4120091@noisy.programming.kicks-ass.net>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [172.19.20.45]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=uYgRFuVQ;
+	spf=pass (imf07.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 84065143D;
+	Tue,  1 Sep 2026 01:34:57 -0700 (PDT)
+Received: from a081061.blr.arm.com (a081061.arm.com [10.164.19.84])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id A204D3F882;
+	Tue,  1 Sep 2026 01:34:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788251701; bh=ETkI6KJwrnZVt7KfNbAKEIpYILxfFfSNE/VjjwuUITY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=uYgRFuVQUMgMQG7UwlgbJDgKFs5OSgi9I/EkkKtaj90JAbxq3XDpY9tqH0aOMPn+W
+	 9sqS2bUvRH6RmFm/7qXLqUpah8AQ9CneKlG0kiw4UyqxUryDzee2ftGbFmSI4qqVPQ
+	 vTlavXRxVp3pLtfLhXQRZjgKiooAj+MIVuhuJ1ss=
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Sarthak Sharma <sarthak.sharma@arm.com>
+Subject: [PATCH v3 0/2] mm/gup_test: prevent overflow and report actual pinned bytes
+Date: Tue,  1 Sep 2026 14:04:50 +0530
+Message-ID: <20260901083452.115365-1-sarthak.sharma@arm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 3235040002
-X-Stat-Signature: gz4abg9f4woydbetrpawzsqggk5uss17
-X-HE-Tag: 1788251500-765309
-X-HE-Meta: U2FsdGVkX18JTr3xlD4LjIEOp12HlO7qMsJYyq1/LeLlnlekKtoeC52BfvAgsTCzCoqZKEn7dJ0+on8immo/26HYoDVjfCatoMMT7tpGYOmx84pl9Amgz1MReSn3OBiuL6twPFUxy9bPJLGMs24cRkq8e1sAiQ+t+1b8bvQ4/BrgePrJUQiI+Qi9QJv8dBmMvvRDSapnWvn+bhauKkNECFEOq3hQxus/6z+/WfJuH8VmXEmQb22B+ubyFFsxkXhSanNXrQz/8zcp0KF/bS8J4vUxiJ6phOW1y2zjPUSv8CLyJyLmV8aaUwIM6ZsCj4DTh4VhKoHsQUOJQvfr8z8Q/sn9Ejxyk+YNPOxtJWn07qB020uGQegEiblO2j+eokT2b09Uq57hZeCt2UdUKnRdj1c+wlEobqgFXZLuwAxWofs5Eg3xgaacQ9o9MlU4/atKxdWfN2/KO73sOEA5NXegAihT67drBkFBg3MZOkqE4QvZ2ZXbhHmnZglrULvb60Bx7dzTkBE5+oryX8pypH3Jarh1XQZRfEE4nVCiz1DFmLLFwZXV285NtlqFc+V5M7Db9MbuHo+Cmx+7yqrSCfe5TVaNAzrTon/zK/bn4Rq/9NKAyXDZ6xFDJ7bPhZTKn5dANLzpQZQvPiCrNxI3XrUy3dhh+te2QLhYkaUvxBzwzRejoT8Ai/qzH0mu1Azn4VcuMo8P8yySCwAJ7d4atCEswZEPNRTbaytNHw8nRQmZ2d79sgGOQFRLm03gFO9a2IkAjaBiIr1FnkGS/NftWAMQG4lcVi5TcRfdSrmBAFQdatQpec/BrIog/9WnukYO/P2L0+5iEqQpsGwg8LsK1BIkOO1RBXc0Owfip2qGT6R+LJjV46u3cXMOCVVyNHZL7aPGtmWCCgqv2KiPhe+AMYZqIsxYdcjKwJZRv3xs39uUow4zsvCAmyA5WQVABAZYkA9yCm81rxuKULPUEXMRKsK
- 3s9259R7
- ypYL7EsHcNjDe3CUe/UPAg5XxSgzTjwNieHbojRvEwpLINlVsmKNmmxMbs/MnvYtAf+42p9/WW/eFSORpY4qvGi0J4khL2K4JrTkxs8k/xgJSHpuWnlORhxmF27Qs1/4DkuZYTz9pLnApt4s1B8hWUHGullhJNkvcmPj//YkFgL/bgS9EcfXDIcyOW+l6OkQUM7AHEEcykmfeC+aYk/WI1ohN/tAxLVaWDmntO87nMDSD1FyVgS0ehHuDjGgQjlDhvOLo2aKLIwB3ybPgUhzKMQRR5wDlJFQRUpbi3ATuAwL82aqBOaaQiCYUZ/e0qDdiwhKVLiDOrxOs2w9u4SrwUul4G1Tjn5ZuqtDb+d9yIeMfye0Ft1f6jrQmUfk39U5NVm0ovApS9bq9G8iFUTFTxAEFu4XW6U55mERNlY/BydOIzR3WiyCNCpOOXRNBcfLs9ENWMreO1Fed3y+wtA7udeXUFkUqzecQXxeR+OsL5EymdSVSP1ixAfqLcKcXnpaZXcPEV2AUqJbRUHLHEHDNu+ZVvm1bGm92M21L/a2H7yDSb0eY/nNW1r066da8EiLy9X1VcnIAcvgniPI3THCegcaY3YDep3mADVor0YUfzSmXkk28TnoMCnNZPfI8ffXBeyAWHvwpuj5BbaquB0u5Q3TL2VHTbHDrrc7BRalu7MCurB63uKODY0TtApZKTVGy58Lsh6e+9oidyfevtxlOar9nvhgqqVcE+TnZ/af5+GIk26MA4ZjTy1GMUyAZIRAgQ3JuGX8JiuInz7wLt760O94LxYa9VTTwT3CFaaF36gm//N61yO9ClA04RmvLkDUiTDchyaHBt9O6HHDbZDiaGGMYWg==
+X-Rspamd-Queue-Id: 4BF4640003
+X-Stat-Signature: w8nb8psx48fqo3u3za4axsmaijd8qe4i
+X-HE-Tag: 1788251702-383612
+X-HE-Meta: U2FsdGVkX1+coh7ft1GWHVUzzRRvxB6bJ78NLJvGR1Imsf+WsvSY7X1XT/p3U0yGhCtYbOqvEf3MrKyWeUmFtiaIRqPlpD/kNmbn0/kgHMWlmbljt8nnlhnwEObZ/GBqMEJ/cldZMw6/1esqM53oevVNwlskUlShV5nAhc0e0toL/lGCQ8/iP3yOyVg/oflsKajiMIQgmSLt3mRRW32llwhMnNTWPXlihjQGm4g/HUSxcxzZuANQsQqWriiYl8hNpKI37l9fynvK/owATcKW3rU5zr2/9Sjy6eBH3lWFMOgMsNnETMq/W/EmTxmxF4OHvMBK+zzsPYPVFyzeBUZghO6r7xKWfopmX5CE6pj1AyPrwgSXUkX/2iaHFVZ3LzMvDFpEq4hn/IFl4CcT0Z1T8RYsna1JypdM0kJ03F0M80HNDfOcjTNzaUARMHzCvPwT2o+BBAeQC57MBVW+7wLiQxQ3FfwsK+XugchTKsWLCATZKF/AkwW1/MK5T5kjUCE/qDAejdEMI9jn/cEvQLHvB+foy0MAmME4XhSWW2JQ7DC3r7vjWk/kEa34iKitIUrb/ARGaZM1aJT4ssC7jYcH/66MsUhFHlniyPy8G3SiNqEUgY/zY9XMTrUXE8pP4a6SXHFsU7T0kIFQhVNq9FHuPD2a0iddJkJyq1eJRHP7YehYOeApyWNXgOeYut+xuetPa0RAAdTXONzNf4BNQWciGe54/jGeadlJ2GWdJl+iso1MwGA02c+orEWnop/L+SEksX0eSeQbL0dFsBXeTCEIM4JAX/5HOsrofHi2pCUiIFBB+yVVrt+mqm5ioBf55UoSRSPatcRaU7cw6Lcw43KwJuZabJmeAQ/8fb92zzyrHlOCJuvNS1SnWtYZzZfmZTCftNT0Lwww6fHT08466Okz1xYx1rbBZYKySBolv3eh+ic4HXrO7+kw1/YS9JSefYQzA/H1b4UQ99MNzznIi4q
+ z8psBs4a
+ hgScGjmx6yJsHoMip820HdilZEx03/AoVXfUfheS85rEQdV6fC5mwVwbOEHoDq4pSmuMHxmfHglOd4o5ZUhqqM6U6GxzyI7J0tXWNAzC+vtTF4G4NGGyIWJj6Z+ZqlOncolJDDHaw9AkqwnpvQLsPvX/sWiYxXMYRLU3YWMp0q/yb09fpNpgtlmY1GK9EQ/1O42+9koJKkxffqQK1g0800Mphwh3nxA14I1krJiLFup3pPh4MfL8iPPLYqi8ky53jys9GV5Twia11pLcmTgM8oA8k8UZZjU/TiTm4moLSbYj6fBvbaXitEAeUjQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,52 +91,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Peter,
+__gup_test_ioctl() accepts the number of pages per call from userspace. Its
+batch end calculation can overflow and wrap around, bypassing the existing
+check. This can cause GUP to write beyond the allocated pages array. This
+issue was reported by Sashiko.
 
-> -----Original Message-----
-> From: Peter Zijlstra <peterz@infradead.org>
-> Sent: Monday, August 31, 2026 9:24 PM
-> To: Jianyong Wu <wujianyong@hygon.cn>
-> Cc: Ingo Molnar <mingo@redhat.com>; Juri Lelli <juri.lelli@redhat.com>;
-> Vincent Guittot <vincent.guittot@linaro.org>; Chen Yu
-> <yu.c.chen@intel.com>; Tim Chen <tim.c.chen@linux.intel.com>; Dietmar
-> Eggemann <dietmar.eggemann@arm.com>; Steven Rostedt
-> <rostedt@goodmis.org>; Ben Segall <bsegall@google.com>; Mel Gorman
-> <mgorman@suse.de>; Valentin Schneider <vschneid@redhat.com>; K
-> Prateek Nayak <kprateek.nayak@amd.com>; Shrikanth Hegde
-> <sshegde@linux.ibm.com>; Phil Auld <pauld@redhat.com>; Andrew
-> Morton <akpm@linux-foundation.org>; David Hildenbrand
-> <david@kernel.org>; linux-kernel@vger.kernel.org; linux-mm@kvack.org;
-> jianyong.wu@outlook.com; Yuan Zhong <zhongyuan@hygon.cn>; Huangsj
-> <huangsj@hygon.cn>; Fengyu Wang <wangfengyu@hygon.cn>; Zhiwei Ying
-> <yingzhiwei@hygon.cn>; justin.he@arm.com
-> Subject: Re: [RFC PATCH v2 08/23] sched/topology: Introduce a per-CPU
-> tasks NUMA preferred counter
->=20
-> On Thu, Aug 27, 2026 at 08:28:01PM +0800, Jianyong Wu wrote:
-> > Like the existed task LLC preferred counter, sd->llc_counts, introduce
-> > sd->numa_counts to denotes the task number that prefer each NUMA
-> node in
-> > a certain rq.
-> >
->=20
-> To what purpose? Is not the node occupancy the direct sum of its
-> constituent llc occupancy?
+Also, gup->size is calculated from address difference instead of the actual
+pages pinned. This can report partial pages pinned as covering the whole
+requested range.
 
-numa_counts is used by the affinity score in patch 12. It holds, for each
-NUMA node, the number of tasks on this rq whose preferred LLC falls in
-that node.
+Prevent overflow by clamping each batch before calculating next and
+report the actual bytes pinned.
 
-You're right that numerically it equals the per-node sum of llc_counts.
-The reason to keep it is granularity: NUMA-level load balance scores at
-node granularity (numa_counts[node] * distance_delta), while NODE-level
-balancing scores at LLC granularity (llc_counts[llc] * ...). Maintaining
-the node aggregate costs only a single llc_to_node() lookup (an O(1)
-array read) plus one increment in enqueue/dequeue, whereas recomputing
-the per-node sum would have to walk every LLC of a node each time the
-NUMA-level score is evaluated.
+Changes in v3:
+- Add a new patch to prevent overflow in GUP batch calculation
 
-Thanks
-Jianyong
+Changes in v2:
+- Fix a typo in the commit message
+
+Previous versions:
+v2: https://lore.kernel.org/all/20260831101304.162867-1-sarthak.sharma@arm.com/
+v1: https://lore.kernel.org/all/20260831064808.77768-1-sarthak.sharma@arm.com/
+
+Sarthak Sharma (2):
+  mm/gup_test: prevent overflow in GUP batch calculation
+  mm/gup_test: report actual pinned bytes
+
+ mm/gup_test.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+-- 
+2.53.0
 
 
