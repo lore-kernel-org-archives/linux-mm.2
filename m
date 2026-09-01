@@ -4,92 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05119C61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 10:59:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80E3AC624CF
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 10:59:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D85EF6B0125; Tue,  1 Sep 2026 06:59:29 -0400 (EDT)
+	id 6F6B46B008C; Tue,  1 Sep 2026 06:59:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D36B36B0126; Tue,  1 Sep 2026 06:59:29 -0400 (EDT)
+	id 6A7BB6B00B8; Tue,  1 Sep 2026 06:59:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C26DA6B0127; Tue,  1 Sep 2026 06:59:29 -0400 (EDT)
+	id 596CD6B00BA; Tue,  1 Sep 2026 06:59:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 98F7E6B0125
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:59:29 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 042AD1403AA
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:59:28 +0000 (UTC)
-X-FDA: 85164897258.19.3A0D3EF
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 49EC2100007
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:59:27 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TwQ1vxUU;
-	spf=pass (imf05.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FF856B008C
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:59:47 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A5EEC160329
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:59:46 +0000 (UTC)
+X-FDA: 85164897972.03.6A25386
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0484B180002
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:59:44 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="iK3pD/73";
+	spf=pass (imf16.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788260367;
-	b=Za3QKsQUaIpMU4785F72/yQWx759Fq4xMk4QGxgn9HHl84mAuxOo+exioegn4CON3znxm5
-	njE0S+jrDwxW5Bs1/Mpzy0tTB0Yx8m9gz7OiQoaTsSqV9NZ7hm1S/y9geAY/cyztV2Hqdk
-	GV7lgF33MGtgGk9VCvtftNHIaBRf104=
+	t=1788260385;
+	b=SmHMVPXIzQLx74Obp35Mp2JxvTPxEN0w6iprbUnf1x3/vEXL1J8TBQzq/9incydw5xXV2J
+	6q2QfM59ngWpRrmQdYOnXz2m3ySC+kITWfjZp0TQOdpXqBoRTs8iy/T3mWk3fYgldDmbgU
+	ayRl9cyF5sRpAt3H3TNd4lZ/J+Cn+2I=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TwQ1vxUU;
-	spf=pass (imf05.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="iK3pD/73";
+	spf=pass (imf16.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788260367;
+	s=arc-20220608; t=1788260385;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=cX7EjhloMvh87ibhYzHTwR5IMqnRMYO6qnjKtDs5XDY=;
-	b=zLpPH2tQrtDd8UwHwCx8qWwTlqMQOdcKalosinOvAl971C4ggN3Clg6TazsMmOAVcir98w
-	FaYl47jwvXaUU4LqqmmUu3uCOr3iA5E2BQVeMDSWKM0id+nr3nOQBMjc1u7gG+7s3BuZJ+
-	FMicWk+74YHX+6LWAoIyqXPj+aneohU=
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ceab75934dso54471565ad.2
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 03:59:27 -0700 (PDT)
+	bh=5kRAIEtptDuoDIWPjplgkKnNy7su8uVe41K8WELHNS0=;
+	b=jAsOmcNGggRRRguVEnQmaWBxPdt56fmbB4h3SzCdJflCEQf82IZa64QYjyPped1Me8yPJY
+	U77Mq2XoaMkrUF5QerMlBWI1yRKCbATEc9Cb+YgH2bYKRwyj93oL0coSf2/STEyGcME3g8
+	cGHEZfq98C3BgdezAsVy50vanXfrVEs=
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-395cf2535acso1035444a91.1
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 03:59:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788260366; x=1788865166; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1788260384; x=1788865184; darn=kvack.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cX7EjhloMvh87ibhYzHTwR5IMqnRMYO6qnjKtDs5XDY=;
-        b=TwQ1vxUU6NsENmb9Dy2epQfuH889Wy1cqb9CmxFTBLosc8RfPrTWBHDLNDQW4zOjEl
-         iYJVb6+0JZ6BQxLV/aLzhAcB2L8hCR8krgUtofCuXLCc65LMx0ev5FnxrduSUS52F5yW
-         2KxDcaNs8vJhoV9YZKCoOoBQIhwquy2HEBG2nc+mW+4Xk4Vy5nBZ5Hy2GKR++H8WkP44
-         fAJMeX9yteraw0m6ej5HH/1fCeHBRKSnJIJK/x332IBf6JArd1LzV39i+B3O58mLfyL7
-         SgA1LxzaxldPU7GSXbMKDlCYz6cPIBkCkX1uHNhZ0WeMQy7huhAP8GaL6rPfccbrrCby
-         KIdA==
+        bh=5kRAIEtptDuoDIWPjplgkKnNy7su8uVe41K8WELHNS0=;
+        b=iK3pD/73OUy9j6cUCOFSuVSN0SrgAV/2EWjwsp4vNfweicmuOVAGYPTySyv8ad3143
+         Bnfg9d41BI9qVOohDHaxc2QTfD9j5K3ADtKJSlyvdsEZF9e/QSQm8cRcNLpq8MJRL0cq
+         4EU1NFV7f91Qe5/KZxSEKDjUhPRiSBaLavKqzd+NIstz00hLkjQLxnXFi9FCZPkJIj9Y
+         y7h3phjhsHYHzK1DNGTqcI4H/jba0rFRndZCNkXHERcW9IkDI03yXBAg/3SvyQ/W4pjQ
+         7z83/tiBgqrtgMJSP8SOQ5I3JyQc+P0lk/Jt2lANWuQ/Vj464X0H+pjZwl1xmARuJvCH
+         AHMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788260366; x=1788865166;
+        d=1e100.net; s=20251104; t=1788260384; x=1788865184;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=cX7EjhloMvh87ibhYzHTwR5IMqnRMYO6qnjKtDs5XDY=;
-        b=bNWGHQTTQySpadAyXc8SfsNActzz2xo3L1nI7k1pXim0LTwqO8Wvc1vXIgYuRwsnO8
-         Ik1Kxe6dIATQuMQm5SP2XKq47OqUa8nweXwv2hKO7Zzv+T9LJQbbAfW7jkCr2ZRfSA84
-         UN0UgnzZMt9FflyhpMNVmKmpKws4ErfgErqL+qvRHxS9OnJvJLrEo2+cu5XAO+5H6C5i
-         Pon2AWW7Upm4KY4jft60nbIhdX2TVizqOuev1twOK+SO7G1GjwU762QY0tJa8OFJN5LO
-         ApN7DNufg3dQB4Lvl53llfl3FJGvdnZRvfSN3h/6MQRC9NTGAvFjIT6gF9eIhcuPN9Kr
-         TgIw==
-X-Forwarded-Encrypted: i=1; AKwUvBx3oCPFzw/u0eO1T6oVv5YBO5UKU+QHVF7hLdnyF684eJIZnOPK/hb4AX0rEQ8Y3FNmwdTyZPA4Aw==@kvack.org
-X-Gm-Message-State: AFuF++nmQUHAMv71ij46oQ3x1kb9+RcPYEtumGHEq0XVYlzmlg9jeeH2
-	BAi5LETWv+d82O9RiHy+gg1JcKWLK07bjUVmDkEPCBx6jMLwAVXluSfW
-X-Gm-Gg: AYBFou1PsDPVwPfy0wuTIMa+qlLyEypLQMy6xK4daajazyRZtO4IxRuKQ8kiwu0nSqT
-	nFmv6M3IkeKP8abFF3MPXROA54tzM55Zv18elFUBPddN3O2vdUfs8JithNeotWmVPu9HsskyL4E
-	o1TAJ9mLNyVHmWrRK++B2SBMaArMnEjKJFN7YWFAZNQQ1yjk+q/pdSD8kZwiiu9Q11TJN3s6YkX
-	ufUizsIk3mjXUctAcn72o3gBJfwmfup58DPyWF4h2yT7jStj9HDRrYFa2i25eUbZ0pYZORLQQfH
-	jtoRekeorFRLDrL+yaebkQRqHUsykVEiN1obT8u8Xf1nIA7FbUal0NDUq6xZHmQI1+4Hnl/lHGY
-	TOlPy93qpcvjWkalmzdSGx1+RV8csyAUrYImo6v/y362exSTk9MCyUKM8owM4I/q6wmsIuLPgIq
-	MraE9luNV99Oq9kiRsC0wd2QdtbHx1tH0khdRHic7JThHqe/CKBG0vQjtgpNuILGezrxh9tLyvx
-	isU
-X-Received: by 2002:a17:903:458b:b0:2d9:51bd:534f with SMTP id d9443c01a7336-2d951bd58e9mr63941605ad.10.1788260366011;
-        Tue, 01 Sep 2026 03:59:26 -0700 (PDT)
+        bh=5kRAIEtptDuoDIWPjplgkKnNy7su8uVe41K8WELHNS0=;
+        b=dvub7CJooPygvhssJszxjTQEr4FhKz1WxW7e7FmC/N5pHmemXNT8Nmfknro5v8Pbl1
+         x/twNJJ1kyvyyR/IqxT1x8GKKw3n1CJYhIn6y+xD1VOYSVYtWcZUm4n6zoLMYoEolRdE
+         W07b0ovUXB7jWgIttCPcSWd8TIkvrwGZRGeaFnnc8fxOpkr4SS6V0XkSUHgOf2Z7vr+v
+         Bqtp7LYdwQCQzfKH3887iWurUFEtGFh1r64AMTY88ezEpiN/G15dyJL0NNYeOS6HJdMR
+         jzTtu6GjWtPXW+ivO2MoHzlmFAkxdxN9RsZi6XEza6lcjVZ6x1aNFnKhi/Kle63wdhQe
+         Mxvw==
+X-Forwarded-Encrypted: i=1; AKwUvByySJbrJVxnqfF2Cbzj5hz5gOwhwIIykpbz2srTxxYYF5EPX2WNcwVJMglXB0cE8ztoQZzwyfcIRw==@kvack.org
+X-Gm-Message-State: AFuF++m201bpmxOZIfiRYGMaKxaceplYN0fnbutAUd77lQER4hG/Kg5q
+	FvW+tuV/EN1h00eFSDz6QORbgMW3urvutPC4qr0JoyICVgNa9brpaYnhLNs/4g==
+X-Gm-Gg: AYBFou1UTmmXK7SziP05x/19Zy27hHbAdL49CZTNnGBf8+XSgUnmVV7E5lrxMkHqUfo
+	CWizlKEr2K8mU1RQaD99PmW4GM3jwGQypQ6dftTbp08HwSsbBVWQ2cpjnAygxDSwW1SJdWhO9IZ
+	kKcax1OlYF6osn27Oivd+mJl58X0s1CxmZKMYbAZfUcRwFA77D0OAz7wgGK+usP4wjtrrG6YIjm
+	wLrkZshDO76KNPUASXxgid3EIY/N61i5THnlaM7HA+VwRM+dlSGK9ps++zDRWaE7aYG+IPenop2
+	7RDImp0CTZzJUtJnduljXYxPo8pIm4DJXhCuFaeC2TpWDDHj4JFbJNKhrjKH7VOnFyYZ428RQHE
+	ebcgaon78i7FCTdkhHF/JOQeqMl6YycX2Se+PPoWMFE684XEq0ThfbOfohVm3hloafEUut+DCZP
+	/oR/NcvRhuAeEAyJvt38FqAIlhudT25LGpyfECv1afiHEfeWZ3JgbTwU2eAn0Vy9ei
+X-Received: by 2002:a17:90b:4a01:b0:398:c6e8:3fc2 with SMTP id 98e67ed59e1d1-3990f772f5emr3422761a91.4.1788260383779;
+        Tue, 01 Sep 2026 03:59:43 -0700 (PDT)
 Received: from celestia ([2402:1980:9c5:2de5:8b4e:3f3c:b637:4ca5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d9458299aasm20706695ad.43.2026.09.01.03.59.23
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3990d499811sm6303184a91.10.2026.09.01.03.59.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 03:59:25 -0700 (PDT)
+        Tue, 01 Sep 2026 03:59:43 -0700 (PDT)
 From: Liew Rui Yan <aethernet65535@gmail.com>
 To: SJ Park <sj@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -98,20 +97,20 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	linux-kernel@vger.kernel.org,
 	Liew Rui Yan <aethernet65535@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] mm/damon/core: always return false when esz is zero
-Date: Tue,  1 Sep 2026 18:59:25 +0800
-Message-ID: <20260901105925.106186-1-aethernet65535@gmail.com>
+Subject: [PATCH] mm/damon/core: fix quota could not be set to zero
+Date: Tue,  1 Sep 2026 18:59:51 +0800
+Message-ID: <20260901105951.106246-1-aethernet65535@gmail.com>
 X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 49EC2100007
-X-Stat-Signature: f9pwcfcqf5trejfi4j4o6z81tgmwn9f3
-X-HE-Tag: 1788260367-235815
-X-HE-Meta: U2FsdGVkX19cTMnWr0fcD0xHefZuQRGQOGqhIgqNF2FGd7KsgYtBdipyopI8W/DwArY86VSCsN4zhVDaCfyo13m+/fTvtuUyAiUHCaohBdRhgxviAaAQCzLhducHL7rfTvkQBmBOLDrTdAcNb4RiW854Uq05yHOzM/sUhnqZt5G06qwlgco/6oEpo7cQIDwPs6yvXnCd+5mtapBWaYYVFyrwpGc1+v8oJdW4YrRYj7+vkFrY7+kDJy2nlyGpO47HHcgmjzs0CN5Jbgr/YO//lnPDtO7LQtnZEQtF+8cJW36UetZ4mmdFQz7e2zTJGxhBLSuk0/bPaT8BnJ5bgcG0u98cKe5wJPExaCudrpwtauh+CUNlSBeQ3MweV7uOL6qe/Z3dvVFZKoNihsvAOb4jKF3qVVVRotZQ0n7J2LKKxFO958vCvXpDiEctW15KvlrnARncy2w+jYz9C5uIqfKbotDHHx3J1H9f6R0ihdLW7JL/Z0v7rIfxZub18KuJKAbQHOHaUpZIEdfO7uNsoPQZWwWXAQPjczfMjsLycWws9XP1BCaoGQccE/iyK+3tgAGEb0baV/uX+Bp9SgkgpMhuZs+eubrs7Z2jR0QBCpDaCpA1O/1ZB0k5mEUcCGpCF7VxO/KiVzowMD7LrNJKdfXLNgd+PwHHo5mPRmSbhLgtcTZoJVqF17zsBkoqr17w/U5SH+XoNNK5JvvTxXmVTWsVXuMKWNLqSiMxeF4mnajR+Y3WZqnjUvUr/cLOPi9oyhzsgNIP8CNWCDJDqsLkqQGsFZLTWC8vDwQS+mcpFD7oBWP2LzrlNBCcSHmdCgF3MLJ+P3Fb7CD8B4vITjFmhg7VrB04c45dDTxgG0nZ8TUnhUw5acMt1iYCNg1cI7eqwlc+ChXK1gUV5FSi65dlHuXsNTN44IDzolgNV+KnBsBDyD4Ajoaw7QP+7saNzueXCChYUDVCpNoLI44RfrGnYhb
- x7QBOhAU
- u7kuxEeJOUDieaxrYy064zGSF7O7LzxKEhzBzxgXjyoOK+Fereg0CteU0iaUyk5Uw8o8eaYZm3w7fjwzwBizk0cyGRKgICGV02ihzPVcPiGBgdhJGCaG2+VGcII8iURzd3b1qYkmPq4HIe+z+YVB+6egBbv97qs8EcpUX5RslAv/9Lq5XiN1Tz8cZRz7W46NvCI056O06KV/ceRKrjBw+DQJVQYQYR/G+oaVbg2Rg4TAY23nHTXD00ZQo73GlE24pxvlrzCU8T8jW/LZYSq7uFSPgCeLb+B81ML3AYgYv8E9VLzOHL73rUla0bpnD8WPv7N1j4qHaVjQ/Dio0WcvnHhUBc82+1i3aLQgK7kVksy+wJECR67Y1YWDu79d+833KxZi+Rx3TB4r+B+MgrX8sy1+IdyGDlaaIe9E2eLxWAlBovLDWls8iGMgAlHwJs1EjO6Nm
+X-Rspamd-Queue-Id: 0484B180002
+X-Stat-Signature: ohqfg49g6556gtfny8yxirg435gc3n4r
+X-HE-Tag: 1788260384-991678
+X-HE-Meta: U2FsdGVkX1+1Ezh0O+QYefiEzw0Nr/oEuPZcm2/LNTThDrVX8qLsIAEMLfHptdG0iWGOK5ScnrEX8D2Qll9+xce7nS8ogIejpEyLxTosraF1bfW61ihmXDMxb6/thfVnFqP3yMfYXzK/nbj7A16zEcyOuB2d/LNykCU5LXdd8AiLCzrBdaywgFR2TivXwNstg0HgQei8bBSitbJ+EkrKH72+TPveOiSoJa08CmLRx0SVn7Drw2N+8JvgFr97XLgNrr5QTCGNMyLjQIQauCFaB8tVSf8UyKJcMOnzy51jF/EtjTtkS3/E400wM+WKhYBWcHWNmpPl2ISbEFBZ2ZAx0WWVt5fTpFWyv1LBlPEuckmvvrMue1LHhQOFKJzpGcBEXwLTIhNBZMjJbDTjxA+/d759tz2O1bSh9FPBX1zOPnGg4xmcsheNOTtodIPUfrxwU7LV93fIldwpIVslxgWVHYRVVZFXxJ1taFFUew8bIy9sgNdy/YrZ1RW2nEvCo8LKyejSuRlDPWeqyYUr9Qzwk61DguVHlEOdfp+6hNlyBlUngAVj6gzAvNKa+/NtvnPErG23sZJGoPn0oOON2QItc/9fbQBjKdi5nUuNErxcWF1U+koo8B++ClGQz27apmijY51BjYwYDtzHOBPkQh+f2pYPJu0vTVQZSMcpSH6RIl2QZ8ApyXTwDk3mevzlCVUsD547IWQOX7UJ7yPY2ju+gcy/JQcfmCW96candEHMNNZ9nVvrGfW0Lc707MgYbyqvEKufMWsJZA1xKC1Eida8pYPKYOkk09LAjcWLWZpU8/8iNb5OpJ3YnFgNbfxe7SNbdkvtgS9lPkDtrYw9FYSgbuN94mHNYIHGvNx/2y5SRXqWBrjCvYwmLii21k2THjmumJ3IvWOF9z6gwe8s3Dxq0e++s3BYUvanE4SvCf2TUNph1yti6jF1+cyXINemNx5TofqOgDL8n9LzK/zXONF
+ 6fCZfgu+
+ 3hONgxN71OcPKt0rF/Q8ppTIi4Qcffg05GyWnIRrNDCYfl/fRsCK/cqPZjk5axescvAQTDsRiiYRX+p5DOpy2BI1G9LvVlqEWIP7v43vRFo/2dB2VS4NSgkyqxLf1AI4MpPbkjvXLf7vXkSbl/bDlkSxGnLYhPcrqOvrPwgizMswbMyaOleSzcCKhZ4Q4sWI7CW8EasXLf/tcEhP55XJz+oIV70Dsbxr1bS/0auyL+imsMabtYIiIXKaIeLkLi++XCtJDOPd6sUgRDkhfqIxLxwMojsT+OZ+lScXaZNv3T0v4b/bAkLw48sfsFUrLSi/uKGLsffxu2H1w/MUR39To3YCpAyZvmuy6xmubZFrrA2GmhwxnppU8cuBv+OOZTHek+AYiCTPkTgQMX15wnK9c6dJasVFm+OKZTqOKc/ILXF8JHmlpdhhCAQdknOZuIT1t2O5v
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,33 +118,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-After setting goal_tuner to 'temporal', if the goal is achieved,
-quota->esz will be set to zero.  In this case, damos_quota_is_full()
-will always return true, even if no regions have been tried at all.
-This causes qt_exceeds to increase unexpectedly.
+When the temporal quota goal tuner determines that the goal has been
+achieved (score >= 10000), it sets esz_bp to zero so that the effective
+quota becomes error.  However, damos_set_effective_quota()
+unconditionally clamps the quota to min_region_sz, preventing the quota
+from ever reaching zero.
 
-Fix it by always returning false when quota->esz is zero.
+Fix this by skip the min_region_sz clamping when esz is already zero so
+that the temporal tuner's intent is respected.
 
-Fixes: c7ec7d5f6b3d ("mm/damon/core: handle <min_region_sz remaining quota as empty")
-Cc: <stable@vger.kernel.org> # v7.2.x
+Fixes: 8bbde987c2b8 ("mm/damon/core: disallow time-quota setting zero esz")
+Cc: <stable@vger.kernel.org> # v7.1.x
 Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
 ---
- mm/damon/core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/damon/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 644daf5a1656..53cf32f1d515 100644
+index 53cf32f1d515..0258769b8727 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -2560,6 +2560,8 @@ static bool damos_quota_is_full(struct damos_quota *quota,
- {
- 	if (!damos_quota_is_set(quota))
- 		return false;
-+	if (!quota->esz)
-+		return false;
- 	if (quota->charged_sz >= quota->esz)
- 		return true;
- 	/*
+@@ -3114,7 +3114,8 @@ static void damos_set_effective_quota(struct damon_ctx *ctx, struct damos *s)
+ 		else
+ 			throughput = PAGE_SIZE * 1024;
+ 		esz = min(throughput * quota->ms, esz);
+-		esz = max(ctx->min_region_sz, esz);
++		if (esz)
++			esz = max(ctx->min_region_sz, esz);
+ 	}
+ 
+ 	if (quota->sz && quota->sz < esz)
 -- 
 2.55.0
 
