@@ -4,98 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C8FEC624D3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 15:55:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9632BC61DD6
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 15:55:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 370976B027F; Tue,  1 Sep 2026 11:55:00 -0400 (EDT)
+	id 6A6416B00E0; Tue,  1 Sep 2026 11:55:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 320B16B0280; Tue,  1 Sep 2026 11:55:00 -0400 (EDT)
+	id 656F36B00E1; Tue,  1 Sep 2026 11:55:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2117E6B0281; Tue,  1 Sep 2026 11:55:00 -0400 (EDT)
+	id 51F546B00E2; Tue,  1 Sep 2026 11:55:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F01296B027F
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 11:54:59 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6D10A1C2101
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 15:54:59 +0000 (UTC)
-X-FDA: 85165641918.05.B456A6C
-Received: from relay.hostedemail.com (unirelay04 [10.200.18.67])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 8008B2000E
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 15:54:57 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 208196B00E0
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 11:55:45 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D2EB0A3EDB
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 15:55:43 +0000 (UTC)
+X-FDA: 85165643766.23.E6D43D1
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 57D8320006
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 15:55:41 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=VuetgL2D;
+	spf=pass (imf13.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788278142;
+	b=UPfs4SKTkIG7mUbWmfnbTLB2fGgR7pLa9T6jzGGA3phHZ2TTCJQzyK3ouv7PpSOvzA4dtS
+	vnbPd27QN6sw58hL3FgYgri8d1cIiiNZKzUhKwofSARgND64Qv+dv2glLsrk1fP7KQpkg5
+	qwGUq4CHD8OXvMwjTuQ+1zWeF8qfAr0=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=VuetgL2D;
+	spf=pass (imf13.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788278097;
+	s=arc-20220608; t=1788278142;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PMQPDVPJ0tCxO93gmrhVyeG5Oa0anovLBVYtrsBizkA=;
-	b=Iulw+r1Wgny1sC8fg5WAfaY0ef2l+PLIy18dqHNu9Ny6FvpfRZm0440Sv3LCe4ZedTye4R
-	NXya+qWhiTWyLnqhXZviqCQaYV7Cz5eOExJRQ8eLHEJNE34tKdcCA2L3c+IAD8g3TyUdG+
-	/WcTgXFAv58c9b6eUrwx40gKAh44TPU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788278097;
-	b=zgJHGid3IeDUuvAB58wz2AujO40cW3ogrRzIR/Eh72r71WH3Fvs1pZTtChClIEqIVyOWoN
-	xBxRizCNUexGg4IMBjw1h0mLjZJrj9slQUc1cYtDD6YvBWNEmuMRxHiXUzqtUvibrIMDe8
-	Sqju/cQwaOfNznKW5ScdCjr4MdcgKbI=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	none
-Received: from omf10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C29301A0469;
-	Tue,  1 Sep 2026 15:54:52 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf10.hostedemail.com (Postfix) with ESMTPA id 8E80930;
-	Tue,  1 Sep 2026 15:54:43 +0000 (UTC)
-Date: Tue, 1 Sep 2026 11:55:42 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: David Hildenbrand <david@kernel.org>, "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, Muchun
- Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
- Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike
- Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
- Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Nico
- Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain
- <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
- <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, Gregory Price
- <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
- Popple <apopple@nvidia.com>, Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng
- <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song
- <kasong@tencent.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Baoquan He <baoquan.he@linux.dev>, Pasha Tatashin
- <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, Jonathan
- Corbet <corbet@lwn.net>, Jan Kara <jack@suse.cz>, Masami Hiramatsu
- <mhiramat@kernel.org>, Dave Young <ruirui.yang@linux.dev>, Shuah Khan
- <skhan@linuxfoundation.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, kexec@lists.infradead.org,
- linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 14/14] mm/page-flags: remove PG_private
-Message-ID: <20260901115542.35cf337f@gandalf.local.home>
-In-Reply-To: <20260831-remove-pg_private-v2-14-3668159cd9e8@nvidia.com>
-References: <20260831-remove-pg_private-v2-0-3668159cd9e8@nvidia.com>
-	<20260831-remove-pg_private-v2-14-3668159cd9e8@nvidia.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	bh=QVII+cUuHDdwf9Z3P2TCkoJU717I3TDa444aSejj2Fk=;
+	b=lnpHCQ6xmc6pefqLkqV3ntO7/iVcOSnqVGWQcVYMSt2m4yV4DifIewBqKme/DqS6oXjlNh
+	J3kNc9/buDD8qlnT2LN6zrOutse7lE6HmgaIDmpChnlZGQM1t0EmQqNpugU2jipR3eBhO3
+	TH6az17oRPuXY2ozQtzDNjDvxJOFnVE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=QVII+cUuHDdwf9Z3P2TCkoJU717I3TDa444aSejj2Fk=; b=VuetgL2DlX2s22gGISfExiPA9t
+	9DR1WYg6YZMiQdCRfQ+bclFFmqJlamray7mTao+UhH5uHuDqMjg0If3EcpdK8CT6uAbV8Evx6e3qN
+	9LKEiBOSP64GFOxx0Cep1mNRyBIuVmmcKSTv8HQZQ9qWi8T/h/J5gA+nhMhRR79oe1SuMqDRuJhz9
+	pRpKL7TL03xwEzunbCrbhKOYuAtJaLW6NfzQtbWbRGbuZxvcEga7a6JSS4BRz+hheJF51YvaJp+Zr
+	D/J641qvz7Z+tlxTfhJCmdiErtoEU9UpGW4Y1LUR3UybIWIjAgSbUj4dMePbLb0JYsVZUKGih4aiC
+	1qamG5Tw==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x1Qp4-0000000CazZ-3xgl;
+	Tue, 01 Sep 2026 15:54:55 +0000
+Date: Tue, 1 Sep 2026 11:54:47 -0400
+From: "Liam R. Howlett" <liam@infradead.org>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, Guo Ren <guoren@kernel.org>, 
+	Brian Cain <bcain@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Dinh Nguyen <dinguyen@kernel.org>, Simon Schuster <schuster.simon@siemens-energy.com>, 
+	Jonas Bonn <jonas@southpole.se>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
+	Stafford Horne <shorne@gmail.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Russell King <linux@armlinux.org.uk>, Vineet Gupta <vgupta@kernel.org>, 
+	Michal Simek <monstr@monstr.eu>, Chris Zankel <chris@zankel.net>, 
+	Max Filippov <jcmvbkbc@gmail.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Peter Zijlstra <peterz@infradead.org>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Richard Henderson <richard.henderson@linaro.org>, 
+	Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Richard Weinberger <richard@nod.at>, 
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, 
+	linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org, 
+	linux-sh@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-snps-arc@lists.infradead.org, linux-arch@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-alpha@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-s390@vger.kernel.org, linux-um@lists.infradead.org, Hugh Dickins <hughd@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>
+Subject: Re: [PATCH 01/12] mm/huge_memory: zap deposited page tables after an
+ RCU grace period
+Message-ID: <kasi4mkjkt56wxsrmphm5o2qfg2lwsdxf3tlmzx5tq6t7uez74@kozleoavd6r2>
+References: <20260901-rcu-pagetable-freeing-v1-0-5456a81c8212@kernel.org>
+ <20260901-rcu-pagetable-freeing-v1-1-5456a81c8212@kernel.org>
+ <apbOlyF77yDCV4cF@thinkstation>
+ <apbcoMTVlL42G5tg@gremlin>
+ <20260901142408.GA56830@ziepe.ca>
+ <apbiB51hjm-9pRzf@gremlin>
+ <apbuO_QveZNAz3ns@thinkstation>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1/zWbvIDz+3Hi5z7GDK/fNqzAPKpw/khW4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=PMQPDVPJ0tCxO93gmrhVyeG5Oa0anovLBVYtrsBizkA=; b=tGc4Z9sCnIntcGcWtJ1kOvYe5256jqS1DsWodW2sqCKQLdl8Y8nHkKMI+/bZHJCQztdMhcSkJj8YVjXCQshVK+Dgc2EYzxp1kQ+nPt/MKxXAHxYAr/fN2B+/kb850ZrxY0100q3DUUBwY4s7EFwq4xvvaRIiE/XmnNIq0jxhRxw=
-X-HE-Meta: U2FsdGVkX1+zDlnR6QN6MUglWJjwZx5iCWUM+krVLXlc2zuUtd2IG2DLx1JPwqlTPq6HywJagZIVfhFWq44D2aDRr8CqPASzgDg55B72H7mSnF5ikilDHz6BwtU39295NFtcyv6lgavetSPz7y1L0g1K1zuV3ydBJ2a0X+t/9iTl4lf+jI9pSLCyfw2TQI05jjgMqbeUDhSMlamHBWoJCJ9h/PNz2A75JPoGpqGqH4tC/s8xhJUmsTXFGe6/YTY1Ki/+liODnEmp1JpspQt4nrByo2d4u2HwgRpO1hcQFU+FSiTYj5enzhApbGNiHUuTn+pvjGsLrpU3m7+D/3dcDhPAQVDdzRzZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <apbuO_QveZNAz3ns@thinkstation>
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag-Orig: 1788278083-807407
-X-Rspamd-Queue-Id: 8008B2000E
-X-Stat-Signature: b6ytfgjtokst1jc1aabs95dwf5ejwe1f
-X-HE-Tag: 1788278097-781547
-X-HE-Meta: U2FsdGVkX183UU1mOmYIYZGP9ySgXXv9or+7nkjIKg3vwhu/F2LaT3rfSIkyrfyczuWmq/wM7PmdeY/yEHL771U9lBOWdJR2Srq/kBVbIC3xug83HhOEdMJo/C7eDeeyPCgS8b9i9wYROEh8uCIOK60iXN/xlHm2L83mUyQwZD05/b82pbk6BC1mVPIonhD8rOi9tq3qqQ4ipob3TSqeKn5+U3oMWje1gaBaurwuAy5S3OblUqFbeVmjfZS/Tlo10ByPc9jL1YdRVjG9wCJmupwc+r+ayib7JOQXF0ln/0+JGrGYleEHLWCwwmFaDJFi0z4C1BHsAFCF7EgMWTaXbCmKVXQl1hKplv7Dvkka0qf07UaGarNKJF4zC9BBwTyYweBugclET03L4U0VkEoVydg9X14Fkpf1Hx6DK1uEaYxiK1+7/iz61I9Jc++QvfW+vyllknXrX9YHWxzKDVmEy8SWfIFf7g4oQt2Xr15nwdyDeN3qBq2C73t5GkURx92fziZUGh/tNhHTzMZ+WQ9C8u0e4lm4hNaEk8HjeXcZxjprEjUx3IC1CJtxa0fPCIM04oH06OCHvihIu5AOBS/IAcdHyNk8NGrkWq2rZGUYbwHCOSQGxWGYvRv4/y8JoRNdC0LazsHB3APlviYaHBZ2W0EDQp/PaspeULs+8pce+/KEaYFInqU58L1bpL6sNZvGVikA+IYQz4sxTXjJ84tF8bJ/6OnUJRC5FMnbJLUzUk9M1dLCy9eDqtOE7sFf87c3YTlnWea7md2XLh9BfS63SQSqU4zrJdPOTDDUJhRDED9EvL1rdwk6lN2YoIGIXtr+F1rsOoirSEaQWhOjlAeN9bb4K+CNr/RS5bJTq4TD0jTvtg7kV7LoZ2tZ7WEPiox2dE2Fljuvw3Z+XypTgtwU5mzYLomYbmfzY9tgnS7c8DPc3QSOy4bmuT3AYPLUMR5sLvIBLowI0z/o+kZpkmg
- 3+LhQu2M
- sfG9GYF6SgO/UDdFxUdZKFhR5QQfwQZQMJub5Z3NzSCtZET3qt2+2/AlWQMlzFGRGYloxB0HUR7A2qSCwp1f7rXOtfl6uNBsxOZaLDtvvxCaph9xx+MSpcY7mbdMvtaxIgD1o
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 57D8320006
+X-Stat-Signature: r7ccddhd1xshbak944otm7rnebsbybjh
+X-HE-Tag: 1788278141-841930
+X-HE-Meta: U2FsdGVkX188lOhIxyQrhheT9jFIQgjNtpEKgPgaWPIViB9JYsyRcVWr62ku5mhUmUGZYpcWotG9f/oC36ar7IyMe9PU4pJSDMbssOo3aw7pJT8/4nsMHeRjVFH3mswzNpXwWZ4zwxH/v/Ubmb/D0WN15w7UEywpNOL2Tj34XV0AnawCEgxtVecDBtEDdGZgeKCDECmt5+oYIqPB3/T7kSMby1V3v4u2mSQvMG7qXNvAipESHeZCYgjdcG/S1lO/jcyPD43Vm2ApGzNQhzKwaj28c2H/SweDhBxzQRe6nKdFpAZ9Z+UF4nBf1rzSPTDRIXRK14CvCKESpHnw74e/0LxHytWlTC5xx5RKIPPU3bjEaXpr5OX69OAYk6MmrsLB8ahBkHkCZoWHWhdjLNRnowbEHMtiMjszYZ2JPJC8FAvoDXl/LuRENw7iJ6mbdGOmugJ0/K1FNnyq2FfLpK4TNoYCGS4mh+xA97aM1j3ZHsjbt4As1VV9vtCFjoLH/DiCA2HjyLKXEAfL0t4R/rRiDAEdfEKOXz6I+X4lafX/x566Vo35LcgPe2rquRe90SOIu6n2Ty8mx0N9+f/65+CfuCH9nb3vbPj1zqEYy9RvyKB4Jox4mu0gHSaEqgX1gXFUI3WDFf/E7XVLgVG6WLdXG4zFCIWIhg45vsLdcqSV4wTtZdcyN7MXYI5D78HAWV9syjFMpQadMPwoqLDmZ+9xNmoD1E+cXO0A7bhnc13R0Dhub5LqGnvvfnYU8ccc1sRegS83cgDRxruaB/TdiSjb94uLFGeRLN2hVTpEeSJZYYgT8r+oUSlinAeTb2v0jcsvU36BAYH0zrcQJRU/byUICkWFPJW7YXtHEnAD7B3J62we013iZdaJ57y18a9GQ7v66idniWY9XG8Vd7zs5jkr8yK3xixPdv7LzMnuXOgPQ1i4veQ7sPXddZztuygarqZFjCnoEXNcBo1E1Z3Ipcq
+ EpvI3Ltj
+ bT8ZeQwJLQ9LOMJFDQRQKMuFxcyY6JWFiGtgw4tZbJ3qVvFWKC4wwmGMsSSePX7JO8a7sVMRKQn2byBjlE0TA9BwkWREZVR4HknhqpY3X+4XOgVp8G0j6uIQhf8vMkrYc8tNHswzbRzVf3G1GT/u6YtaKw6ZnMsfg7XRff7H9avqQgoeGeXi2+jhPGVphc1BACHM+sxCaFA3V2UauUS8sahxzKbHbDfn4yLnqARedyy630ekmO2b/OgSxeownpj3qGQ6LJEXKvehIoWC3e9UaycBIBrStxcVW6zO01O8WsUhZRW+uDCMbQdeHP0nQN63z3WmjFDwuUQOleA1dkLKIyAW9CbxCcMMO1FQfGxLNenfJvrBPUr/NBvN761KzpIM5TTZHHj3rClOyK20uhrmBNUWy9w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,41 +136,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 31 Aug 2026 15:25:37 -0400
-Zi Yan <ziy@nvidia.com> wrote:
+On 26/09/01 04:28PM, Kiryl Shutsemau wrote:
+> On Tue, Sep 01, 2026 at 03:41:17PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > On Tue, Sep 01, 2026 at 11:24:08AM -0300, Jason Gunthorpe wrote:
+> > > On Tue, Sep 01, 2026 at 03:12:45PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > >
+> > > > It won't be costly at the time of the calls obviously as its deferred. Maybe
+> > > > increase some time spent in softirq but again is 512x that big of a deal?
+> > > >
+> > > > I'm not sure how you'd both defer the free and somehow utilise mmu_gather here
+> > > > either really, certainly not without it becoming extremely messy.
+> > >
+> > > The less costly version is to thread the page to be freed onto the
+> > > mmu_gather through a linked list in the struct page memory. This is
+> > > super cheap since it is just a singly linked list operation.
+> > >
+> > > Then when the mmu_gather is flushed it does a single call_rcu using
+> > > the rcu head of the struct page of the head of the list. The callback
+> > > clears the entire linked list of pages.
 
-> diff --git a/include/trace/events/mmflags.h b/include/trace/events/mmflags.h
-> index 935893e5ea53b..caf090cd6f85e 100644
-> --- a/include/trace/events/mmflags.h
-> +++ b/include/trace/events/mmflags.h
-> @@ -144,7 +144,7 @@ TRACE_DEFINE_ENUM(___GFP_LAST_BIT);
->  	DEF_PAGEFLAG_NAME(owner_2),					\
->  	DEF_PAGEFLAG_NAME(arch_1),					\
->  	DEF_PAGEFLAG_NAME(reserved),					\
-> -	DEF_PAGEFLAG_NAME(private),					\
-> +	{ 1UL << __PG_folio, "folio" },					\
->  	DEF_PAGEFLAG_NAME(private_2),					\
->  	DEF_PAGEFLAG_NAME(writeback),					\
->  	DEF_PAGEFLAG_NAME(head),					\
+If you are going through the trouble of doing this on your side with a
+custom rcu callback, it might be better to pack the pointers in a way
+that does not need to pointer chase through a linked list.
 
-Hmm, just for consistency sake, can we create a:
+> > >
+> > > Since you have to tlb flush anyhow, it makes sense to always use the
+> > > mmu_gather. For example the design I ended up with for iommupt
+> > > accumulates all the invalidations and all the free-able memory into a
+> > > gather then invalidates and frees.
+> > >
+> > > This allows maximizing the tlbi efficiency too. You can't do call_srcu
+> > > until you flush the tlb and if you call once per table then you are
+> > > also tlb flushing once per table too.
+> > >
+> > > So if the kernel really does want to clear out 512 leaf tables the
+> > > optimal implementation is one range tlbi for 512 entries followed by
+> > > one call_rcu to free the memory. Hence the gather..
+> > 
+> > I think there's some confusion here.
+> > 
+> > This isn't the path in which a page table is being freed, the _deposited_
+> > table is zapped, in zap_deposited_table().
+> > 
+> > That is, the page table kept in reserve for THP split, that is not
+> > currently mapped.
+> > 
+> > It amounts to a __free_pages() call.
+> > 
+> > The TLB operations are in e.g. zap_huge_pmd() etc. and nobody has
+> > complained about inefficiencies there.
+> > 
+> > So, unless I'm missing something here, TLB flushes play no role in this
+> > whatsoever.
+> > 
+> > The issue Kiryl raised was that instead of immediately freeing page tables,
+> > they are now batched up individually by call_rcu().
+> > 
+> > I personally find it difficult to imagine the numbers here would be
+> > problematic or certainly cause anything observable beyond what is
+> > observable now.
+> > 
+> > So I'm going to have to say, unless it can be clearly demonstrated this is
+> > problematic, I don't think there's any reason to add additional complexity
+> > here.
+> 
+> It would be nice to measure munmap() overhead here.
+> 
+> I am worried about hitting DEFAULT_MAX_RCU_BLIMIT and trigger
+> rcu_force_quiescent_state() which can be disruptive to the system.
+> 
+> DEFAULT_MAX_RCU_BLIMIT is 10K, so it is ~20G of THP unmapped on x86.
+> 
+> munmap() of 64G worth of THP should be enough to demonstrate the
+> problem.
 
- #define __DEF_PAGEFLAG_NAME(_name) { 1UL <<  __PG_##_name, __stringify(_name) }
+I'm not sure what that would prove besides checking if your number is
+correct?  You'll see a slow down once you hit 10K of objects in the rcu
+linked list.  And that will depend on what the system is doing as well,
+so there will be a slow down since other things are happening on the
+system before 20GB of THP is unleashed towards munmap().
 
-Which is similar to:
+One of these does use 5.12% of the RCU items that need to wait for a
+grace period to be released, but testing it would be rather tricky and
+the numbers won't really show much..?
 
- #define DEF_PAGEFLAG_NAME(_name) { 1UL <<  PG_##_name, __stringify(_name) }
+Form my understanding and experience with rcu and freeing massive
+numbers of objects, you gain more from the lower lock contention than
+you lose when you hit 10K objects.
 
-But adds the "__" to the name. Then the above would look like:
+The trade off is in the Android setup, where they have restricted RCU to
+a slower core.  Combined with another RCU setting, it was causing slow
+down when we overwhelmed the queue multiple times.
 
-	DEF_PAGEFLAG_NAME(reserved),					\
-	__DEF_PAGEFLAG_NAME(folio),					\
-	DEF_PAGEFLAG_NAME(private_2),					\
-	DEF_PAGEFLAG_NAME(writeback),					\
+So this should actually be faster unless you are doing 20GB of THP
+unmapping on Android or a device configured the same way.  Considering
+the cost of RAM, we should be okay for a few phone iterations.
 
-Where the __DEF_PAGEFLAG_NAME() with the "__" still stands out, but the
-code looks better than open coding it in the middle and making one wonder
-why it was open coded. (It took me a bit to noticed the "__" difference.)
+Do you have munmap() performance dependent workload that you are
+concerned about regressing?
 
--- Steve
+Thanks,
+Liam
+
+
+
 
