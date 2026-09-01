@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76066C624CE
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 00:32:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9D40C61DFD
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 00:35:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E2086B0088; Mon, 31 Aug 2026 20:32:24 -0400 (EDT)
+	id 7DE4A6B008C; Mon, 31 Aug 2026 20:35:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 193486B008A; Mon, 31 Aug 2026 20:32:24 -0400 (EDT)
+	id 7B3B26B0092; Mon, 31 Aug 2026 20:35:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AC5C6B008C; Mon, 31 Aug 2026 20:32:24 -0400 (EDT)
+	id 6CA786B0095; Mon, 31 Aug 2026 20:35:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DF2C86B0088
-	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 20:32:23 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 651DB1C1BF3
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 00:32:23 +0000 (UTC)
-X-FDA: 85163316966.03.B6CB721
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id A8C441C000A
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 00:32:21 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2qXrlVs2;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FAAE6B008C
+	for <linux-mm@kvack.org>; Mon, 31 Aug 2026 20:35:17 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CD8F1C030B
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 00:35:16 +0000 (UTC)
+X-FDA: 85163324232.25.5D82D56
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 20F6080002
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 00:35:15 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tEEnlXgt;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788222741;
+	s=arc-20220608; t=1788222915;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ej1c6AoFPjQMIw+5zOfshNKpOua/gygGA7jm7nCkot8=;
-	b=d9/xUrJSWW8/Obs1sfT6fFShUQxbvrClWdWAilgL2pLOfngKknQUVp81VXMeZ/xFwGk+mJ
-	dThR2euu8X4WYTfFp1x8OXdm2xAaCiFvf0EYgn/kPdB3DTDpIxdPzYB7OpMccspCXimKxb
-	Gp9xF0mTRWPPFttqTYPo5RPEVm8KF0g=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788222741;
-	b=vJ2WshUg2W6GySHmmJjEDXgLUqVqrDvZYHXb5XJHKr3FvG/ClqBGSWN6EMPLurShPQ9FV1
-	36NeVSgxBZXT8A5cP6LmmZJOFvvfaKb54Y7LbYwqraRa92+7og8sDototUX9TU3lwqWkvu
-	F85cC+WuxurlH7+GJhahsVLxgjcrAGw=
+	bh=TtgnC0qQbwgwZqX+/7An9hPq7Lj/TxBIjcu6YHD7uns=;
+	b=gSE8JjlUPvdLrQVfr4G650UvxvOfEUrCST4XBdh2CrpAL0xGlpHx2bRsRzVfQq+Cq9UT8p
+	R7i1dsvbRyxT8qrNtzOklxSZJm7BC0KJG2Dd4KeG3rSY5Tdjs98sUtafKjWY6UknPbKsln
+	45PbqtXzWgCW/t/5n9HCQT+kB2nbc8A=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2qXrlVs2;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tEEnlXgt;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788222915;
+	b=3+WNswGWIb5zC+LXkvbsq9CZ7fSrpoPKN25hh/MHWP3tOxsnMjJIzT5P47qqwZmPmHAzU6
+	qdGxw5htBHUh3n0tjQnwF1MdyFDcNd+smBCYjC7Zdj/+cVPgLDeBFf1MH5XAPTFsYowNpZ
+	YNTlPJWbQJ02DM2oRBgPYpqqP0Cmu6I=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3393A602C3;
-	Tue,  1 Sep 2026 00:32:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A224F1F000E9;
-	Tue,  1 Sep 2026 00:32:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3EF9140480;
+	Tue,  1 Sep 2026 00:35:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E367C1F000E9;
+	Tue,  1 Sep 2026 00:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788222740;
-	bh=ej1c6AoFPjQMIw+5zOfshNKpOua/gygGA7jm7nCkot8=;
+	d=linux-foundation.org; s=korg; t=1788222914;
+	bh=TtgnC0qQbwgwZqX+/7An9hPq7Lj/TxBIjcu6YHD7uns=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=2qXrlVs2fhXNgTqd2sR9uZkQ5O2Yslv+EERU+0QsDYkAkoy7UNb0+3ytgseHd6ILX
-	 44/UC9k6O+U3nqBRr6VZhckZ8RHhPe4TCj42a/qgTFp/FKx5JrkNRA2SzydOoXaiI5
-	 /ItHu84ouETd4nzWh/GoQHdYJEgkAMXUqrMIo/es=
-Date: Mon, 31 Aug 2026 17:32:20 -0700
+	b=tEEnlXgtDQRrrkftouMH2JPPiUrbmkYxLIp2aqFb6fCxflQywXO2RqerlU5uKj9EI
+	 Miwux2yRLUWC69s+9tPG8Gh3scHiXuoc+gp5ZTejr+N8lbCdZzfSWZ63s8yaLCu8t4
+	 KSWX0p7SRQyLe4Dj7izBfdjC5ZHQx2CCa31Ts5rc=
+Date: Mon, 31 Aug 2026 17:35:13 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: "Li Zhe" <lizhe.67@bytedance.com>
-Cc: <muchun.song@linux.dev>, <osalvador@suse.de>, <david@kernel.org>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
- <aiqi.i7@bytedance.com>
-Subject: Re: [PATCH] mm/hugetlb: fix overbroad MMU notifiers for unshared
- PMDs
-Message-Id: <20260831173220.72ab28190a44a305dacf4d04@linux-foundation.org>
-In-Reply-To: <20260831091023.66581-1-lizhe.67@bytedance.com>
-References: <20260831091023.66581-1-lizhe.67@bytedance.com>
+To: Hongfu Li <hongfu.li@linux.dev>
+Cc: hughd@google.com, baolin.wang@linux.alibaba.com,
+ vivek.kasireddy@intel.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Hongfu Li <lihongfu@kylinos.cn>
+Subject: Re: [PATCH] mm/memfd: don't unreserve hugetlb pages on -EEXIST in
+ error path
+Message-Id: <20260831173513.41184f1d27cd83f2c8f9b935@linux-foundation.org>
+In-Reply-To: <20260831090631.29227-1-hongfu.li@linux.dev>
+References: <20260831090631.29227-1-hongfu.li@linux.dev>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A8C441C000A
-X-Stat-Signature: rxubi8sgzet85jbjdwx1uw5fxx7brb48
+X-Stat-Signature: bgke5m4a8uh94tyitr8983rpye5ac1md
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 20F6080002
 X-Rspam-User: 
-X-HE-Tag: 1788222741-414688
-X-HE-Meta: U2FsdGVkX19U6KQ4QtDD4Om7bN8NVRGRtRq6KD5yl7fqYPZbuKrNiKbdWUrzCwVpwptdMWpcG+KJOj00MLf9ZOttUrBFxgxlUXjFi6tR0v1xQST1HMHsaNI9koCz8kMLUuE/IejkzV6OhQq8dBgLtco1yWoJGsn6BhEvNEgwHfEI/TLF8tQAvp9KGNELm2XY/ODs+ySvAk+P/uNMC0HMrRNvIWsyFGyUHy2VsL6kXHFMOptykslNY+o1bZ7H6DnKGFT135RT32IL7xLGhOrp8GQNRODjWYZuM4cEu844cw4sDhk9J0PdAX/THhnP1wFn4z8YXXTDdMP2nllfmy4KIJdp8SD8q2sgoDjM2I3F85MwNVT1UiGL4rCGiXKf6xhL07D3zYJunn4pZtDtoxAlH45DxEjVLpbX4603OBcsfuscwexTQWXRFmTCe81Ldej8XpltwMfo45nQcw4nGILJyj8/xFnjimm2huXcdrmgOlsQ+EFoXUDVjnllrYRl9dKIWVAyi9oW6hlAK2wlDSwYamp9mi5kWHMQpsvSxDJ59LcxjeIloK8Z9bLvVjvMYq8u3fHCeVjb6eUxabyw/8il13WIF/Mw59id9YMgVryJhn1EydtUV+JdtfOBSANPSbFgRfQZw8tgGGkUWieE7g60GnONB8sm6Qok8uErBHtVxN7+GMawoRLa/W73n7WR4iRkac9nprGYaBUrDC7pvh6YqZn6zm7ozWQECH73Om70oK14QKzJ2ImVi1iGvqT9errZztXoGFEMSNApYkbbwBvVhqRpkw1l1FggN5SMERTrjOpaOOpXnvnXi85G2P5ETZFExlU80kbhPGKtAyAljT+tVWEHg6jQlnhJqi8U4ZFHysHzTi6mte3b1+g3HPXqS8KQESkah5BWU4xyJQqD2gRoLgotrTgM6LAA8eN7XHbdh14Z+XA5yxudzT7HYLoMO/VBKiz+wFGwNuWKKhYb7Up
- hGSQ0HMT
- 6el3ICaWAFXtRtYmxlhQ+4YJfDzxF3BsYQSB5kjK39SboyYxX6FJaB/1zZF2rKqTNzf+kCINVSHHbN9viT25iIUpH7Y1d8gxnG7jFVI+iCbg1C8VieIzRWKzi/7vhhTrYibl2Qg9EINBKL5IyNCuqs1VRIFRdHwCHGBee4upK7aYUm1mDlO8Bnnfvbotoza9BLXNRvnPeurm1v7Gb/xrkXnlzeoPAIkgyO5sTPAbrQhmocOocQU9O4kwuu7A2AJTFiNcK0XGDb2JKYMXZBb38Jh79HLaQqZAtC9BedJ8GTTyhq2Xk/2JOPXQ2t2dLinKe3oPtd5qSEOBriOw=
+X-HE-Tag: 1788222915-998982
+X-HE-Meta: U2FsdGVkX1/xeq1aDvq3ufqpUBei9lwAMkUlHTmQKNhv53F7WlBGfT4Kdw/6y/x9BsmWVEL2bf9u7MK6lBjxkN+gborSJzKlI3swpBQIUcJYVUJxd9/unpQQKe6BDHy/Kf+1hWBDxjqTEsXf46bdW0c88Y10BHf+W1nR4kPO6wji4jBzEAznH4V7bH52D1zu5jBT3w9Ov+hKmTov2PaiF9/qcNmwXlC6cKOUhIvZofyW/5rmcEUoJVi2oY7nZi4T+L1aCBbxjaF6eKbaA5/uME+S2nO88j/KtC4i/9ZNJiCKtjjyGpK2YH/T/elPgLZhSQSRiuAF6hzVoHX+H/YxA/3mBqT6v09v0fAkGvDVC6tX/MNySs6o7A53xJdYVD/abFB2cVcY5fMBeECnm08ACLs5AQ1ubLFY1cb4Zh7VJNXX/8CYJ0NYo4Cemr98me8YIDtoOkE1qW0IcM83qaaP2ckpqsGyFvG4C5pW2KapBhYiYEvcgaibnoVVddu1szl8OsbvVWtiykWI6JaRm39e2A6vbcX+QPXcmtg7A2nBj94mh7zV5kRfu/408RY8rcBCsF+kpsY+w7WvW6+Y8dfpr+jXlvd09QLECClq765zswKDCfqohlnC3w/qnTVNLdH4c0hRilK5B4BfQRTsYSGypoIghOFCQ8uFekiXWTOf5OeZy5PYprGajTVc3eIwjtQjkKMEq+rsgn/PQw49Zy88RTwREbz8GWAG9WsXL43nepgYyX9lZDdHawpfVRHpcMpjuRGSoLMJm3r6kOhEKtjbaYEzGv61svP+BvphxwUZ0F6MqxdOEY08Kf02VI2PtEce33NBhnXnLmZZREA1w4lkgqZ6/rHdFzmASfJ7S6Gg59ku02D01TghUUqfYY23BONLThvHvjxQcOV4I/tabWz6wShBY6XaN3Jwx3cbqnXtiBqr5dQNiJAZZer2a5z5nXxKh2s8IhMFvWhfSEa3DPu
+ Hj0piTe+
+ 0ffSuVbmhDC9HvTpyNLTvR48/fqoGd3oODsLv1+bzujAUnEBAuXsvdrMyuFqNoKqlYCcHqoC0Eq94EA5/pQ8Drj2wxchyirpsYh6p1KAWkw/qTiF7XkuWspL6CONcWAWgFMNdbNuvACr9REfCZ2fYPtyeE7U/OV6urSeHh+Yd5F45JArJMoVn1I9ID9K0DyO/dREp+UPr6N/FauTNhgmIUB+LNqAXgT/FBHze3PSNOKzeD4xhiPftZB3Ydh9NkN9XEydIGe9u9nx9yjsSSVgHK+Rx46gpaiVkGvFlk2F7mWGd/jJSKsQ1s+4QPQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,37 +91,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 31 Aug 2026 17:10:23 +0800 "Li Zhe" <lizhe.67@bytedance.com> wrote:
+On Mon, 31 Aug 2026 17:06:31 +0800 Hongfu Li <hongfu.li@linux.dev> wrote:
 
-> Hugetlb currently expands MMU notifier ranges to PUD boundaries whenever
-> PMD sharing is possible. That is only needed when huge_pmd_unshare()
-> actually detaches a shared PMD page table, because clearing the PUD
-> invalidates the whole PUD-sized virtual address range.
+> From: Hongfu Li <lihongfu@kylinos.cn>
 > 
-> For hugetlbfs hole punch and MADV_DONTNEED, a shared mapping can pass
-> the "PMD sharing is possible" range test in function
-> adjust_range_if_pmd_sharing_possible() even when the PMD table covering
-> the target 2M page is not shared. KVM then receives a 1G invalidation for
-> a 2M operation and zaps unrelated secondary mappings, so the guest has to
-> fault them back in.
+> If hugetlb_add_to_page_cache() fails with -EEXIST, a concurrent fault has
+> already instantiated the folio in the page cache, and the reservation now
+> belongs to that folio. Calling hugetlb_unreserve_pages() in that case
+> incorrectly removes the region backing the cached folio, and a later
+> truncate or inode eviction passes a negative (chg - freed) into
+> hugepage_subpool_put_pages(), corrupting subpool and resv_huge_pages
+> accounting.
 > 
-> Fix this by using the existing cheap "sharing possible" test only as a
-> gate, then inspect the candidate PMD tables under the locks held by the
-> hugetlb unmap paths. The notifier is expanded only for PUDs whose PMD
-> table is actually shared, while the other callers keep the existing
-> conservative expansion.
+> Skip the unreserve on -EEXIST; failures other than -EEXIST leave the
+> reservation unconsumed and still unreserve it.
 
 Thanks.
 
-> On a Redis-in-VM workload that punches cold 2M hugetlb pages, this
-> patch improves P99 QPS stability while punching pages, reducing the QPS
-> degradation ratio from 7.09% to 1.45%.
+AI review might have found another bug and it suggests that your
+proposal only partially fixes this bug:
 
-So a modest performance improvement?
-
-This led Sashiko to perhaps discover what it considers a "critical"
-pre-existing bug.
-
-	https://sashiko.dev/#/patchset/20260831091023.66581-1-lizhe.67@bytedance.com
+	https://sashiko.dev/#/patchset/20260831090631.29227-1-hongfu.li@linux.dev
 
 
