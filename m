@@ -4,133 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3A21C61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 18:26:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4ABD3C61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 18:29:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B3586B008A; Tue,  1 Sep 2026 14:26:50 -0400 (EDT)
+	id 4BB3A6B008C; Tue,  1 Sep 2026 14:29:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68B876B0092; Tue,  1 Sep 2026 14:26:50 -0400 (EDT)
+	id 44BA86B0099; Tue,  1 Sep 2026 14:29:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 582EF6B0098; Tue,  1 Sep 2026 14:26:50 -0400 (EDT)
+	id 2BD586B0092; Tue,  1 Sep 2026 14:29:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DD2D6B008A
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:26:50 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7EA8A1A04D9
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:26:49 +0000 (UTC)
-X-FDA: 85166024538.27.3ADB228
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C8F4220002
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:26:47 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=lu4oJEvH;
-	spf=pass (imf13.hostedemail.com: domain of 35RiXagYKCM4Cyu73w08805y.w86527EH-664Fuw4.8B0@flex--seanjc.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=35RiXagYKCM4Cyu73w08805y.w86527EH-664Fuw4.8B0@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788287207;
-	b=KSILX12yJr5fxmR0PKdQazYaRfvl1wnJYGegAazJ517gPvuy0rw8A4EaHklIL0IwYYKiz8
-	NrDhVJ3f1flW7bbTwsulfZLQaR6jCtvf9vZLT0XwHXe2bdVsn9KMQd9rtrd7oo/xMYghgV
-	dmsU6HUm1iIH9DNTMW6HasnJDvRu/dc=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=lu4oJEvH;
-	spf=pass (imf13.hostedemail.com: domain of 35RiXagYKCM4Cyu73w08805y.w86527EH-664Fuw4.8B0@flex--seanjc.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=35RiXagYKCM4Cyu73w08805y.w86527EH-664Fuw4.8B0@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 07E366B0088
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 14:29:13 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 943B8A0454
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:29:12 +0000 (UTC)
+X-FDA: 85166030544.16.2EDEB10
+Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
+	by imf11.hostedemail.com (Postfix) with ESMTP id F17AE4000A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 18:29:10 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=QajWR+kJ;
+	spf=pass (imf11.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788287207;
+	s=arc-20220608; t=1788287351;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5v8dwO4qIccjpXs9ZdhBw1lluA5t2BNdQSYlylga9bQ=;
-	b=3+LIgcqfF4QTxLLSPWqT9ddyxFedpbIqceRfoa8LOL1V763YEupO3d9RFqGubXJLe4uI9b
-	Qctg+vvX95hqEFawbuKnSc36MxeE3U1ThzUpWcSDz5Cger0KVBFUf0JrprTCQrqMyCbUuT
-	XoVxvE0uGu2H+cMncro7STqQ2WUtT24=
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cbb92868263so150896a12.2
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 11:26:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788287207; x=1788892007; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5v8dwO4qIccjpXs9ZdhBw1lluA5t2BNdQSYlylga9bQ=;
-        b=lu4oJEvHkdt6oecYn67M6nuerlnHXDKwqCHcuqq9JrT8LgRvqWuqTTE5heBxb0oWYy
-         ZW5Zjk0gtzuKXK59r+VDqJq+ptl8v+DeA0zbZY+c2B4p3nnIBJuprmXH4E9wleRnraxp
-         ppy6WprpG1CQU0AxM2dc32CnVAUiucVq7Wz8rmiMYqBNdlUEznUCVGrafmvB98eJ5B/I
-         t+CSwSyP4B+8GZcdhh3LDpcT9NbkZ/LzXGuPU34vIE1LG3YYox1d1XS6CmuCRXSwt2nr
-         Lqq1uknHIHR94VqY4+Mkt30XF0aoqaxBJleedBr38NTj6I1jbi7e0ema+JFxCgJkuPKY
-         SElg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788287207; x=1788892007;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=5v8dwO4qIccjpXs9ZdhBw1lluA5t2BNdQSYlylga9bQ=;
-        b=NXtWK8MVm0D7RKN96J3iizek7FffoDW9ZTK0CNVMutjYZ65m0+atIfHoopXcBhS4XV
-         MmSsJOxCBEhNVViGfmCYW4KM9jwc6f4bIpn00MON4snaOa03uqwZ8Q07xFfntzB4bDFs
-         K2K7r17nFAmlRADwrwO173Z8pUakZLLZ4GtxQ/WB2GJHyCuZAoFilWXLuJ1BN+3B4uxB
-         AW5lSasUKz18fojyammCfJuK9xaFGrrYxwczGYaRpjkQB4RNnAtwel43JYQO6inMlHJc
-         y5vqKujdATp1F5+xBRoalVfVRG6ugXk+ygxjBu4k59J5lnZB4EXe+9p9CKjSIoXC/+Gj
-         D/mA==
-X-Forwarded-Encrypted: i=1; AHgh+RqlfoBiGkj1Biu6Ho7B8q/UR19iH2Gg5gA8TsLJZdRW1LUhZqsRp2xMt37kjhccjNRIUCrA8pt1RA==@kvack.org
-X-Gm-Message-State: AFuF++n31vDjONFS8EaQaCgSk7gdnp0LkfWR+p8XIX0SfXCHPSqRHoGZ
-	Q7D3uJdBNd24Ue4DHojVXqPW6lTDJ/yZlSv8hvcPWVqiUlNMWg680Zdt3jLsi5PtC+RV98s/ZSr
-	6nNpzaw==
-X-Received: from pgbd18-n1.prod.google.com ([2002:a05:6a02:64d2:10b0:cc3:28ba:e8b1])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7284:b0:3d0:cc29:ff63
- with SMTP id adf61e73a8af0-3d7ae4ed97emr13763648637.12.1788287205983; Tue, 01
- Sep 2026 11:26:45 -0700 (PDT)
-Date: Tue, 1 Sep 2026 11:26:45 -0700
-In-Reply-To: <CA+EHjTzALzghuG5J-LFuG5pXJ4WgEfrMHgwkMHnq1U-D6yS7Pg@mail.gmail.com>
-Mime-Version: 1.0
-References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
- <20260830-gmem-inplace-conversion-v12-23-85e5fd25252a@google.com> <CA+EHjTzALzghuG5J-LFuG5pXJ4WgEfrMHgwkMHnq1U-D6yS7Pg@mail.gmail.com>
-Message-ID: <apcY5b2o5k04XffH@google.com>
-Subject: Re: [PATCH v12 23/45] KVM: Let userspace disable per-VM mem
- attributes, enable per-gmem attributes
-From: Sean Christopherson <seanjc@google.com>
-To: Fuad Tabba <fuad.tabba@linux.dev>
-Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev, 
-	Xiaoyao Li <xiaoyao.li@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C8F4220002
-X-Stat-Signature: 3daniqa5aujk9hr7rj3tifswrbrpncgz
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=FOcNzTawBpX5g45f7ywapH98j8rGtWxKx3lq/TqFmkY=;
+	b=Yy8p75vDtfnKYfkeI05uIUWnk8aqgTqh1YuODX+OwsOl51c4KHOzAVNJbk4uV1RheKW9i9
+	aHnBmnVUiQxmT4HWwB1/B9zeOo26oOXAmiMsmMKUgVtyg/IEAaFSpcIg9tn6dqKFjTx4bO
+	HI4tOM8wrUa170lIp0gh8neWEiNCcag=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788287351;
+	b=r1CLcIsejgwp0GQ7Wq1iC+yMwm9Qh6lhFMicqzg6HEY909MNeGro2lBUVznedMWar2t43D
+	0M5+zrlaJlwCCMa0kAi+rBs6Xjs5ts4en0CQV9aQPNQwYNvB2483DuoUxMkidtn40i6W99
+	qBte04RkLTzrhrIuuuUiodwEDNH+kTg=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=QajWR+kJ;
+	spf=pass (imf11.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+	s=smtpout1; t=1788287350;
+	bh=FOcNzTawBpX5g45f7ywapH98j8rGtWxKx3lq/TqFmkY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=QajWR+kJdHwkjna4g3bEa6+p6wAOZ4Ed8kxzCLylLQOnUsbr/HSrzL2jEK8qcHmvu
+	 jag9LUbVt5w+5foekmrQRUJ6kfOcAOQ6FIYStpSQDAv/mg6B5XYj48vKpRVIC0qZmT
+	 Ba//F3JqNoQlsKvj64FvObhl6E5a5gvmTAYZETRqY5RvYFhqURhvWXbCSQ0yCw5t7I
+	 b+C1GqKGOfYp9JpGwrGAMYw6e9OzSYDEm63yH9u5ofB71csJyO48xdW/eAdYEgLKvM
+	 z4BLi+LydGEiueTObZrIU9yOsAJW9WlimU6BbOPHTxI0r8phOdnZCpx5xcpyPIKxSk
+	 rp61voO3nkqdw==
+Received: from compudjdev.. (mtl.efficios.com [216.120.195.104])
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4hZDsL0JtGzWHJ;
+	Tue, 01 Sep 2026 14:29:10 -0400 (EDT)
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>,
+	Martin Liu <liumartin@google.com>,
+	David Rientjes <rientjes@google.com>,
+	christian.koenig@amd.com,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	SeongJae Park <sj@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Yu Zhao <yuzhao@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	David Carlier <devnexen@gmail.com>,
+	Josh Law <objecting@objecting.org>,
+	linux-mm@kvack.org
+Subject: [PATCH v21 0/6] Hierarchical Percpu Counters for RSS
+Date: Tue,  1 Sep 2026 14:28:45 -0400
+Message-ID: <20260901182857.26690-1-mathieu.desnoyers@efficios.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 81eqomnaf9s8fwnhh3kbgcwtqpqngu7e
+X-Rspamd-Queue-Id: F17AE4000A
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788287207-56856
-X-HE-Meta: U2FsdGVkX1/WHJfGfQzOsQ/6IBTCtY5QHTlpbzFMfYdU3tPs3MgP+LaOCajlJVQnJxwfRjz1kPYcoredO8KD02+HDV6waGvOMd83ziBn65VUzzYxLWylDfDzQoD6ky9sX75hfIRyVpMzWw8aD/4zz35nwSndox/vVXeFTh0AdJSDYF68CY1phJu23/OVltbkB58o/VLd0D0sNynbVCJMX+q/GYD7ExKe+H5OYpBGr9NMe3j8LhZArGKXfQ8qGxwvoPOX6Xcs8lTO7h13mBUHYg6nUQwrTu4s49usVFOCJ37gqP5N7yN6Z8oAEmR9ghgkjvjWd6VYYO6lF2N/M+nL7IAm5guYVfygkTMcMh0vp81nulFkXJljPUsIwKvt/QLZR/6QVDRPTBxr4edjlCXZ/Gxx1KqOMfaRXkIxdAqw0l5LouLxLyJ0L+uHyrPsNK5OJoV33NlJXILA5xJerTu9wbWkpZYAUoi+d+fjAAY50YRC2napsClI6HIehPBfwJYJND79QkxMlPuSsJB85q5/o6oUHHCGdebzKFZRi5vXwkUxXNk2TDIN1ryzs1BIQtr20krBr6N2MVaFG7oDv+tSozFGmxQhLgPbbv/0mJfZRiQS7j2snE9g9bEz7C3FOrrpaFLqrpeLW/W1UckFNRDYcuXjRiQpUwItMq64J5bKeDDtKwFMN9Ozctu5Xvej47wmIXEqcUHS/WGoNTCpOFXymkadggjub+HHVZPTqE5I87VPLG9mwYrRpuIu4nISidQkVV5piUG9jbjGF6swiYW/bqMKuSsNyXqBqnpeilcPKRERiZQVIBtafVbdWhYK3lBzaT3+pRGaeoV+jIBVwAXvU4BhrUE0plh2Gs6oUd7t9+7DTp9zld+KwHY16v/2u0P9YR/6PWKs8HLmyFCql8BLM6o5cxA0q4Ffd7CCC295n1gvNZK9v0TKqwrQaIWDoO0mSFx1Kqoimm0GYXbc7Me
- dTinB1Qv
- F1w8ZTI8ZMHrMHMzNxEWeT5ZU2Ey2n8X6lT4CUCvLoxTYaLdRdPoAZENHPs+jgeoQIjPADb8Ifi7y05Cbw6RvWk1rt/FvbHs+5VwOeP/XPL8WrTaPnnkh9Sc66PAcceIa5x3rBMGrKZtzXDcIGw7F3qMAtG7HNs3ii4U1oUZOl7jI5izfv3AOfL1KDkYQfIpQZqT4QgD60wu6/il+CoRsemanei23LkixNs2bEyBtlxyNZ7u1WD0vKACqtAnybhLQaeRsvKOOtJ0bpf1Kse+0ZGmL7ulHsVyaYYQMNSkRcuan7IyEkIgmceDdkcwytfF5msvH1kycGZoVCYjrZqqILenuEu4LfxjfRiyiCb5gbELFbWapWU0G1XCLOTGx1lXuueZaCmz1JCDgdJFH8HxB04QZZyeGf766aRyqA5oaOY7+yJgbZsPcT4KeoSip5qCU3p7Q+vMnWzPICLHjSVTOx+h9kmtDEvjHFJaAgumRGIZ2rrJEp+6ZJranCQAVCLo9Or6FOnrDbniri41oOb2ezcLtvljKn/RQo0whWiDsB8TE9X2kOfhGKQkZm/aUrOhgwlXFDT7xFj1eQpBeJ4pVeX4gPmDHHYW0DOCuihBvOFDZx0GNiDPBBEmxn789uyWQoatVG+gAXfik/As=
+X-HE-Tag: 1788287350-766115
+X-HE-Meta: U2FsdGVkX1/ZbIn32CQRSjFdkL0E7aBWlzLBdjWGwS3CSo8udA9s4J8SQflMNE7IDIHSeYek+8xLeoCES1MzvbpPuXDOZPjD3jjhKR9Cf674UHAc1nn24d04H3zS/SNUWBE1eOezrzbwQB2HcQ9Ho95sWhZiaavw9t+zqkURmk/H0GL73eTvhzMsOahktjPBlVjbJPW+b2pQNcY5U47yc5pTltI9av4BMhMwheTG84tRRhZlyfO/IsfRbpK31JjnaQq35ZgTxBLTvwGeeRFe90rHQGGjUlcD6qby1G5xfp/MYPD1FU1lObHYK0RoQlJyD9S5x/h1c3t5tzZnpVOzCJUpzdCFgpKW7cdCacOg4SaE8PoS3oZXmdGL2ixetM833pY/FZfdt3ghduJCn9g6k9wGnFMAj1Q0ByvNH3Mdw1sGrjCePvUphs3P5Hm9STbdyFn0BQ+998GPTxx1VyDFVFa4IuGVI2Mq4SNE+73jKU16MXkfyDkusw2rjB8LZibE9wKv0Hkj1q9RQmDwbNvLEKD15EjlSXXYOOE1Y8iKzSpn0UkLdNn7pm/7AKEa7kLWuk5ef7jkRE+orCdfmX1EIzV1u/yr/g+lPdEGrxhYeLvdJNiKeyjHwFpZ2Q3tzDVRO1ZFfzbwQAK4zauIKQGcxO+8LoeVbXPTrMbmDCgpFMo1n3n9yrWsp+X0EKpls90AkmXsMUmHC7j7Y4YZ1D3TtysB+tsj6MYrwU6Duuzosqjdsb74UIEjqBG+n8OVQLB0HnK6ZnYXFixgfdiekBxzu4YRuMtA1sapAg3XJAudUBwx01UQBmWfqqU9cghGzPOv4nDJnwJ0T1nQjd1r/q7KD8EAKvsZ60mUXIvO0Xi18k0In4FBqQ6GVo8CytPC8a8cowfuDd30DUq7Oo6PTUMAIsbois3+Vw6HrSM+1XS4yWKjid/q4EyafUgWCRnVisfRWimMhZtNB1YNS1d+g+c
+ mQp/18hZ
+ LpoJLtsKYfCSUCQWkx0AMuqEewJuTn29m0olYvEqMJXNIQdpzcsYdT18r1CrMJZQNJss6pFYVKLDNe7opxd8OelMmWfw8Mm69gVLhXgxrRi81eQvpgKhdNps3FYbgz34lSqDRnJaP27iF/+COWmsD32cy04s+kLQQtCzm7ahI0RIdrt0bV0usYcdmZtalmERvdTnvnQTCHvmAQQ3srrbtj4dMHB6yXMir8gVrmrf+FvVI6r6PTBrFHNUJNzfEcH0OUJOPxamA4FQ0IZBBWYnGs/zQKa5CHRdSXd8DY5MHHzZE/fde+KS3fRNMeSUj1HkR3TMNDL0jWmxCmy53aJ9iQ3OX5ou+QZL/U28TL4vg3Tbyuh/btN1C3eLFNIxlirrOuRnByx02PY35BNlMu8kQUWwxZzBiXQiJcbAkfSlViiVYQeHQDTtnEuadSc5U2PBpSCujAB8jmAR8hE1nOvAW7nBYMJZOxC2Zi+e9kp3wYcx0jZY2buFDe4tKwJk8LP8S3G0DgJB0v3Rgr40jg4uYJIgL4kFWVh9/C9r1dUcusU/P8VVQCOZ8kYK+7M+N/fYymb8VfjpbmhlzaMUDYDF+QY6Ol58OOWrmmijfoVNAjhCN0Pu/gHC0sJa40HLtL5erjboO+/msGlddj3ALfoFgCgpqcREJCTzkQU0hXRUdUjKHRHzFph4BN249hutBQfday3qYJ/7rTgTh7AJPUDAMvWRDtid6NkIhFyadL++XZz7nj0rDMOGwANC1Ab64/3DcEiaGtNkiQ6o6fzFArYHnWGvQWMpqj/sEiP66fn7ZX22F+z+O46ZPBuiGrOnKjI68aEdENZeYdzsjr6IQqXbx8vbNMPb9OuH+wqNmgVWCcjAbhVQPgtbLJBZ9g2mMsABFl3nvzp/TUlsIEqEv/WszjcNgbz1IjkYpRPpyrF8mMnuzhCc7URZ+QdY++fDOCP5U6JP/ULVBmcQzap2ZBmlvf6aeJavi
+ xsokItF2
+ y+eBm1X6fLng0yCmZLGAOiU0fP1/jJEp0fLO+XHp1hk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,58 +121,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 01, 2026, Fuad Tabba wrote:
-> Hi Sean, Ackerley,
-> 
-> On Mon, 31 Aug 2026 at 01:25, Ackerley Tng via B4 Relay
-> <devnull+ackerleytng.google.com@kernel.org> wrote:
-> ...
-> > +       kvm.gmem_in_place_conversion=
-> > +                       [KVM] Controls whether KVM enables in-place conversion
-> > +                       support for guest_memfd and tracks the private/shared
-> > +                       state of memory per guest_memfd instead of per VM.
-> > +
-> > +                       If enabled, KVM enables the KVM_SET_MEMORY_ATTRIBUTES2
-> > +                       ioctl on guest_memfd file descriptors and disables the
-> > +                       legacy VM-scoped KVM_SET_MEMORY_ATTRIBUTES ioctl for
-> > +                       private memory state tracking. Only the
-> > +                       KVM_MEMORY_ATTRIBUTE_PRIVATE attribute moves to
-> > +                       per-guest_memfd tracking; other attributes remain
-> > +                       per-VM.
-> > +
-> > +                       This parameter toggles KVM's in-place conversion
-> > +                       capability support. Whether a VMM uses separate backends
-> > +                       or out-of-place memory management is determined by
-> > +                       userspace VMM design.
-> > +
-> > +                       Note, this parameter is only available when
-> > +                       CONFIG_KVM_VM_MEMORY_ATTRIBUTES=y. When
-> > +                       CONFIG_KVM_VM_MEMORY_ATTRIBUTES is not set, in-place
-> > +                       conversion is unconditionally enabled.
-> > +
-> > +                       Default is Y (on).
-> 
-> The parameter is only settable when CONFIG_KVM_VM_MEMORY_ATTRIBUTES=y, and
-> in that config gmem_in_place_conversion initialises to
-> !IS_ENABLED(CONFIG_KVM_VM_MEMORY_ATTRIBUTES), i.e. N, not Y. Is the doc line
-> wrong, or is N-by-default not what was intended here?
+Hi Andrew,
 
-The doc is wrong.  The intent is to maintain backwards compatibility with existing
-deployments if KVM_VM_MEMORY_ATTRIBUTES=y.
+Here is the hierarchical percpu counters for RSS accounting series
+rebased on top of v7.3-rc1. It includes small bootup fixes which were
+needed to fix bootup sequence on specific architectures, and a rename of
+the test config option to include "KUNIT_".
 
-> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> > index 05c518c9b8078..929fd3e1a01e6 100644
-> > --- a/virt/kvm/kvm_main.c
-> > +++ b/virt/kvm/kvm_main.c
-> > @@ -103,7 +103,10 @@ static bool __ro_after_init allow_unsafe_mappings;
-> >  module_param(allow_unsafe_mappings, bool, 0444);
-> >
-> >  #ifdef kvm_arch_has_private_mem
-> > -bool __ro_after_init gmem_in_place_conversion = false;
-> > +bool __ro_after_init gmem_in_place_conversion = !IS_ENABLED(CONFIG_KVM_VM_MEMORY_ATTRIBUTES);
-> > +#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-> > +module_param(gmem_in_place_conversion, bool, 0444);
-> > +#endif
-> >  EXPORT_SYMBOL_FOR_KVM_INTERNAL(gmem_in_place_conversion);
-> >  #endif
+This aims at replacing the prior version of the series you had
+in mm.
+
+As a reminder, the goal here is to provide more precise RSS counters
+through /proc. A future step would be to also use these counters to
+speed up the OOM killer task selection when OOM is triggered by
+memcg. In whole-machine OOM situations, latency introduced by the
+OOM killer task selection may not be too much of an issue, but for
+memcg, where cgroups may routinely depend on the OOM killer, the
+acceptable latency tradeoff is quite different.
+
+Thanks,
+
+Mathieu
+
+Mathieu Desnoyers (6):
+  lib: introduce hierarchical per-cpu counters
+  lib: test hierarchical per-cpu counters
+  mm: improve RSS counter approximation accuracy for proc interfaces
+  mm: reorder mm_struct flexible array to place mm_cpumask first
+  init: move percpu_counter_tree_subsystem_init() earlier in boot
+  lib: inline percpu_counter_tree_items_size with boot-safety sentinel
+
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Dennis Zhou <dennis@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: Martin Liu <liumartin@google.com>
+Cc: David Rientjes <rientjes@google.com>
+Cc: christian.koenig@amd.com
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Wei Yang <richard.weiyang@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Cc: David Carlier <devnexen@gmail.com>
+Cc: Josh Law <objecting@objecting.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org
+
+ .../core-api/percpu-counter-tree.rst          |  75 ++
+ include/linux/mm.h                            |  20 +-
+ include/linux/mm_types.h                      |  65 +-
+ include/linux/percpu_counter_tree.h           | 387 ++++++++++
+ include/trace/events/kmem.h                   |   2 +-
+ init/main.c                                   |   2 +
+ kernel/fork.c                                 |  24 +-
+ lib/Kconfig                                   |  12 +
+ lib/Makefile                                  |   1 +
+ lib/percpu_counter_tree.c                     | 694 ++++++++++++++++++
+ lib/tests/Makefile                            |   2 +
+ lib/tests/percpu_counter_tree_kunit.c         | 399 ++++++++++
+ 12 files changed, 1651 insertions(+), 32 deletions(-)
+ create mode 100644 Documentation/core-api/percpu-counter-tree.rst
+ create mode 100644 include/linux/percpu_counter_tree.h
+ create mode 100644 lib/percpu_counter_tree.c
+ create mode 100644 lib/tests/percpu_counter_tree_kunit.c
+
+-- 
+2.43.0
+
 
