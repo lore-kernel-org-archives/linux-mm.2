@@ -4,134 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 877C8C61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 10:18:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64C12C624D0
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 10:21:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 798F16B0119; Tue,  1 Sep 2026 06:18:31 -0400 (EDT)
+	id 63F6D6B00C6; Tue,  1 Sep 2026 06:21:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 770206B011A; Tue,  1 Sep 2026 06:18:31 -0400 (EDT)
+	id 616136B00C7; Tue,  1 Sep 2026 06:21:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65FC46B011B; Tue,  1 Sep 2026 06:18:31 -0400 (EDT)
+	id 52CC06B00C8; Tue,  1 Sep 2026 06:21:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 41A886B0119
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:18:31 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C8109160363
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:18:30 +0000 (UTC)
-X-FDA: 85164793980.28.1F70F26
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 05E8616000F
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:18:28 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IJCZACXJ;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788257909;
-	b=6k3MrEvIu/vuqzC3KIzuT1XVtsxVnCLbrqWofwa/5PEMqrC3znLxV6ROJyzEhboUP5gqhq
-	kBohroqG6peyXzXE+W7m50lLa6t9n5MleE+2mkru5y2ndeuxLgpectcMMhQn2Wr5GmyLXL
-	dK9fHcSj7xHpRBAZouVhMpUd0MhMnww=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IJCZACXJ;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 313246B00C6
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 06:21:43 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 90DB580212
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:21:42 +0000 (UTC)
+X-FDA: 85164802044.11.C0F2248
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf14.hostedemail.com (Postfix) with ESMTP id B5C56100004
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 10:21:40 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=Azliz5Ri;
+	spf=pass (imf14.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788257909;
+	s=arc-20220608; t=1788258101;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ka+EzEk2oJ6Jd08jco3fylL/LVEMBlnehzUs03r5tcI=;
-	b=vr4JcwOMgx2QnIv8kLTEfqHH9TYSvNEMuUTf/nreLc8rAUApPA4O/eWklsVttMt9Bp1ysh
-	9JZeSmhN4fqY6b4qVbutTZnJo9Ta4x4PYIxEJPdltor6tjzqy2HJnGnwdp6V+ajB1U21rw
-	h8KG99qzJQWSkgf4Rq7ndNu/MLmM3Sc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 765F5601DB;
-	Tue,  1 Sep 2026 10:18:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A2C1F000E9;
-	Tue,  1 Sep 2026 10:18:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788257908;
-	bh=ka+EzEk2oJ6Jd08jco3fylL/LVEMBlnehzUs03r5tcI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=IJCZACXJ67zF1pP8dvGxQNa4GwnXJMvRkCQF5/Aaz1+/jO7mEeYhBBMpr262Vx3R7
-	 hvUxMxn7xPTn7h08Ivw4uDAQ2Oiwu8nv4h+C7KgBDBqpNv6SSLgK7TxT4KhSEL/QPR
-	 KuFGzNITSjD6ET1I9BS58d9FKuzXm9ESg6QHbypR2RcEO5PzGan9VBw/zwl1r/5X0F
-	 dmFRXM76SeeEC3Lh75SkTywsYKUFQIXPhFKkTcSMPhRuFVR4pVbql34roRGvkVpDkC
-	 rM+fhberaKHhVuqr7mTsXdfFFDpumMNSYBwj8AhdsZwtR8JUBLCm3WeeUQPD+A7tbp
-	 Q8JAeDwfbmrpA==
-Message-ID: <75d51a99-b9b7-4e0a-adb1-c8a002fb0b05@kernel.org>
-Date: Tue, 1 Sep 2026 12:18:24 +0200
+	bh=UpdeMGfd8b+o9KqD26nR/EnRAqCD0c+UXHsElmYi9Kc=;
+	b=Kk7qjUgL4pvmoYyNPoEPVTyVS4iYHIEtTQklKDopIBBpThMFP4brdKD+NTkxDgeCYyT0lP
+	LUcs7OGV01q/A3ZoZrrUe7FpH0IMCq2xc07UGksC5HRrOhulr3xtApyZjNC81bBYmsElx8
+	IutpWwwEadgpxRkBNlxViRcoSlTraRI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788258101;
+	b=KCiS1ipYsqSMr6p+dgisTsPq9v0rzvqSugndVI0o62RJHrO6yVfipF6y44qP7oLfTLsz28
+	CU3zlX7HaBVxe59f9ZJVkeINb+0IWvVCHbjXrbCIKLA1/I5NAhSx8QbrVsLcJ1Nn4qlE7G
+	Gf0m/MQ21kg/cmUsbvrvd9PM1NKu8+o=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=Azliz5Ri;
+	spf=pass (imf14.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=UpdeMGfd8b+o9KqD26nR/EnRAqCD0c+UXHsElmYi9Kc=; b=Azliz5RiKxMn72G8mt17665AVO
+	zpTiqmOt8IT5ymxcithw/Mwjj9BlR2HWjn8pQRKcEhUXXzisvVwjFAee68KPIbURnUoSG9pqHaXYu
+	RSyC39k+6+phOvdvtrEaEX1FK/ActlGwfx4gNkHoUHQk1OvOUYMNxLqSzqLnq5fY9fobKWhQRhljF
+	oDgWJwXLqP+RwVVIyUBycWtpmjRfNhC4a4rtC1CUunjVuG+EWWtvjYOpJznbP2sUTtyPYWEUlLU6v
+	lyx3xSNM56wD7kd5Za0FfI8gOabLrTSk6Kt3APAupcTzZq72c6e24hX9srKWrQ7Vg3vVXnc2ywQE9
+	tPYQMj8Q==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1x1LcP-0000000AqjP-1FAU;
+	Tue, 01 Sep 2026 10:21:29 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 9339D300578; Tue, 01 Sep 2026 12:21:27 +0200 (CEST)
+Date: Tue, 1 Sep 2026 12:21:27 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Jianyong Wu <wujianyong@hygon.cn>
+Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Chen Yu <yu.c.chen@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Phil Auld <pauld@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"jianyong.wu@outlook.com" <jianyong.wu@outlook.com>,
+	Yuan Zhong <zhongyuan@hygon.cn>, Huangsj <huangsj@hygon.cn>,
+	Fengyu Wang <wangfengyu@hygon.cn>,
+	Zhiwei Ying <yingzhiwei@hygon.cn>,
+	"justin.he@arm.com" <justin.he@arm.com>
+Subject: Re: [RFC PATCH v2 08/23] sched/topology: Introduce a per-CPU tasks
+ NUMA preferred counter
+Message-ID: <20260901102127.GY687043@noisy.programming.kicks-ass.net>
+References: <20260827122816.756234-1-wujianyong@hygon.cn>
+ <20260827122816.756234-9-wujianyong@hygon.cn>
+ <20260831132414.GN4120091@noisy.programming.kicks-ass.net>
+ <8eb55be5c1e9497c9f34f15436b9d665@hygon.cn>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] MAINTAINERS: add memory related docs in core-mm/ to
- MM - MISC section
-Content-Language: en-US
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Randy Dunlap <rdunlap@infradead.org>,
- Shuah Khan <skhan@linuxfoundation.org>,
- Suren Baghdasaryan <surenb@google.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260831-docs-memalloc-guide-v1-0-547718c274c1@kernel.org>
- <20260831-docs-memalloc-guide-v1-2-547718c274c1@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260831-docs-memalloc-guide-v1-2-547718c274c1@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8eb55be5c1e9497c9f34f15436b9d665@hygon.cn>
 X-Rspam-User: 
-X-Stat-Signature: t6griskrwfpopsocjaoerihz954oosgr
-X-Rspamd-Queue-Id: 05E8616000F
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788257908-494575
-X-HE-Meta: U2FsdGVkX1/NkRx5rg08yWa3ac4ItFDb0I7koCj9jhVqZJvTrlyp8yathJIycMoE/KgnlitZfhHn80q6X+NNvPjDefDEFq9sDxHDWJos+3AFI7/mNH+Q1oyWUhuYDoH79ii3DLAQ2Wn8M63sOujOWIGQfsv1VXNJuF92HzEDgTmdtvTFIk+5dCajGMjJMRF1zdrZJmhgVPelRGoyIv14qk6Iqdd2ezWQtkMaWwYpnVxK2Ika3GtjbBQW5SL+j4w4PkJz0GXntHOOMQSY5e4qF9ve23EZWc4O6rn3KqFKd7/pQL8zsbN5ypRqSUr7IGVvUuh9pxH31ct2s8WO+vitpB0y2FTkSnN02uDh9ynum1SZT7EIuWe4hAtNdxQ0qgZxNBkPyrgO87D7EYKmEK0UgYv3QoQqmTuLx2GB8mMwqu6Y/MkKz5q0f3jSI1jq246wxDOWPp5ulVKc0XyWFyYryRKYtjJywG5iCtyA31rG3C9h3v9v/VmPbdrSqPDSRMLSq+LAP8ALgxoVq/SxJMFQT247iDypOaJR+ZWT91DmErXoweMvcWINUk2XLDpAZq2zSAtWK4xq4IVGGwGeiVnMaUz+tcgxfEnSZ+Pk2t36w4RyW+LkKUwniWF6iaUUGPgrcDB5a6uGSpqq9SR9Uh7mKk6mrzFVSUvcP4gDYWwgl0cQ16Cm5915BmhOwUWfauQzVPwybWg0qM6MdfkA4Ip08ar8BBbQqTULFrhY3WO23vLNfonDL2P59rrHolTkIvP8JsuD9ttch/modzBXMaMCAZNCwn1chTX2MIaiQwZsG1TLKEfU9akmUGFaGjFRBCYpaXGJtJBs7a/gzkb/OKBiMeGCu++0s93bLmOCZYWtWXKFxLwtpaeEPbYN+1XjEZoqMzi8fpU9iBe9dadDGQLh1DKihG2kLK+l8fcKlndZjD8dpAl3kAK69C0w4zPokpqa+1HPpycs8izOVyrT4IZ
- VC3B1Td0
- mczaxycabz5i9REQcqA51F0XqYbPr6/vkEltY//xgSyQW454+pkP/kLbW4vGgp7VHD2D6hWc7hzV0LmBfMkBahG3POsJ4YzvMrN54SaC80pVC/P9WENASRTEHWgt92tT5gtWmDgihSyfwRl5Wi0cL3B8c5s4afl6o12LpkZtVJyZt/hdiMW2ohrYvRsqnLdqT5StM6L4B7cdfwIu5YL5gkRK3uSM9a13nyccVD4k2TkmTBvn+s+hngRHFwvrsuldMKycYunGIwE9av4ILCB92W2oE9YnMhupg65Dx
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B5C56100004
+X-Stat-Signature: 8kmn8pft3hhw6ieqfbe479o4rjffwqqk
+X-HE-Tag: 1788258100-177274
+X-HE-Meta: U2FsdGVkX1/a907/x4638mZ7TKdb78rehll5vHIbFea0ypXRIWCUc7Gw3p24agsdleTqgJ20qbPlq/wMoSCSob6W5B9K8JEV1NvewzNTo6rxe7+s/+k3jQ9EEJ7H5Td008M0njRtJgyzm9jC7w4/Bpg6KgEVlBnke1sL6MD6MqVz9ePstMsNkCmx9SxBYdEeKXMu4GJrUdO7kg5+EaJOU/X6zuMzA0JvHw51JV6/NeI0HwLUFIztFYO1U7JE/Db02cKnyhaGA4yc17d3dEiE5LDl2Z1GBfHfhoRv02dITBRZvKpp+X9KSDZJRIEgzZZSW78yv2Ak9Y5u2WHTYrOUdkLmzxK5cSqT76FgroFky9bpQt9DwW4l/7H6xbR8vDw5ANg677wyzLy0zGTWoJvsjsHzN5UexiZ+ZBXPLsBg5YSDAJSZpF93wSol07fYpr+S4xb9Ns4BVzlYt0gjhRnknpCYhetnTQ2kunmyxqeI3yndiuOr3mrJmfLYnby6Mu4csyzNQVC3n5Xuy5QVDYNSFOCWVqya/gDyII7hxGmgIDqcJoXwJsgZSDL1/08j2nOsDif5kYY915FFTuPJ/WdArUaVOrzGLaJkX5oynUDJnm+937Dcl3hh5Dzv8Jr/dP4P3RUBRU7x0fvGV2e53vJWObj7zx9MMo8Ny4uRXOnMssTitnW4MHP6b1eYz7Ab/qHXQMGqzgER0j+ksIM2O68uY/ssKROQZdu9l5+jU+RbXHoSR1oe87DeOdTxoGPF4DxmnC/IzbPpPmaWfT0eqNAu1WyONy/PFQn52Tq0CLdA6lIU46TRQWzwYhlfoA4GfinFkTzZGszQWswfTl8yWeR6ZyCuq+icyO2cCBrv6NGXJNycqCipfkPtxtU2FesB/UEB0NqC01JVQWH0TqjHqSIavyuB1SQEiSKHN+7PXX/sB7+GluleAOcZdtNx7Nzoa4RmpckO0mTEoPeTNm24dBq
+ WeZiZ8nw
+ 2YPtQZUBZjwnWgkj8IpsvpyF6tfG5HyXEIOQesdYWP7HVJzvOhRpPPQAfviHpga28ymHyX+xbsYloiAxK0zD6vO9RPL7HPeHYlKE1hQ6NYoIxqjIS5LwB6EKjSG3is2gg6VdomU+VofUW/e/Gd2UmqtvDLmFsLybCWp10/JIcwm1Dl+dh050gOh3WB1HDwh6TgbwltAPOguzM79I2dLHa60AiFyBCSerX03wN4iYGL6mTwUHpn3aDWBGi5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,39 +113,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/31/26 17:13, Mike Rapoport (Microsoft) wrote:
-> Previous efforts to make sure that mm files are properly listed in
-> MAINTAINERS missed
-> 
-> Documentation/admin-guide/mm/
-> Documentation/core-api/memory-allocation.rst
+On Tue, Sep 01, 2026 at 08:31:35AM +0000, Jianyong Wu wrote:
 
-These partially don't match the actually added lines :)
-
+> > On Thu, Aug 27, 2026 at 08:28:01PM +0800, Jianyong Wu wrote:
+> > > Like the existed task LLC preferred counter, sd->llc_counts, introduce
+> > > sd->numa_counts to denotes the task number that prefer each NUMA node in
+> > > a certain rq.
+> > >
+> > 
+> > To what purpose? Is not the node occupancy the direct sum of its
+> > constituent llc occupancy?
 > 
-> Add them to "MEMORY MANAGEMENT - MISC"
+> numa_counts is used by the affinity score in patch 12. It holds, for each
+> NUMA node, the number of tasks on this rq whose preferred LLC falls in
+> that node.
 > 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> You're right that numerically it equals the per-node sum of llc_counts.
+> The reason to keep it is granularity: NUMA-level load balance scores at
+> node granularity (numa_counts[node] * distance_delta), while NODE-level
+> balancing scores at LLC granularity (llc_counts[llc] * ...). Maintaining
+> the node aggregate costs only a single llc_to_node() lookup (an O(1)
+> array read) plus one increment in enqueue/dequeue, whereas recomputing
+> the per-node sum would have to walk every LLC of a node each time the
+> NUMA-level score is evaluated.
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Consider the trade-off. Adding the accounting adds a cache-miss to every
+enqueue/dequeue, while re-computing the value on-demand adds some little
+cost to the balancing (slow) path.
 
-> ---
->  MAINTAINERS | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 3a19da74d00c9..707f93320ad72 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17275,6 +17275,8 @@ F:	Documentation/ABI/testing/sysfs-kernel-mm-cma
->  F:	Documentation/ABI/testing/sysfs-kernel-mm-memory-tiers
->  F:	Documentation/ABI/testing/sysfs-kernel-mm-numa
->  F:	Documentation/admin-guide/mm/
-> +F:	Documentation/core-api/memory-allocation.rst
-> +F:	Documentation/core-api/mm-api.rst
->  F:	Documentation/mm/
->  F:	drivers/char/mem.c
->  F:	include/linux/cma.h
-> 
-
+If the llc_counts[] array is dense in node order, then it is likely all
+relevant numbers are in a single line and computing the sum is in fact
+fairly cheap.
 
