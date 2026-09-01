@@ -4,195 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91D16C61DD6
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 16:06:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1FCCC61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 16:09:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88CB26B00E1; Tue,  1 Sep 2026 12:06:21 -0400 (EDT)
+	id DEA2B6B028D; Tue,  1 Sep 2026 12:09:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83EA96B028B; Tue,  1 Sep 2026 12:06:21 -0400 (EDT)
+	id DC1466B028E; Tue,  1 Sep 2026 12:09:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72CE06B028D; Tue,  1 Sep 2026 12:06:21 -0400 (EDT)
+	id CD7336B028F; Tue,  1 Sep 2026 12:09:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B8616B00E1
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:06:21 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C9C11A0463
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:06:20 +0000 (UTC)
-X-FDA: 85165670520.19.7B283D9
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	by imf22.hostedemail.com (Postfix) with ESMTP id DBC9AC000F
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:06:18 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=JbXfhSQN;
-	spf=pass (imf22.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.171 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A64206B028D
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:09:20 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0CB8A40469
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:09:20 +0000 (UTC)
+X-FDA: 85165678080.18.010F3A7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id E66D940008
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:09:17 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RtNnEY7h;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788278778;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1788278958;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wqCXc1d2wL50duIrdszOJfzq0EqANvFRgXietPv5nSU=;
-	b=ff/1Lv8zIhmqdqf6oS9+FAoHzTaprG7bCsPGjMmqz0ZJtDN0+eMlkN10R+MJi7pT4pPnJW
-	ujCR7gMFKDEYYViilOcnkxiaBZNPWkH4loMSQtEbirWBDj1CX9hpRArUzs9+VE8LuZ37yd
-	4ChuwOzkh2exNyZCBMoOtAs4ys8eR3U=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788278778;
-	b=uqglzpx1WyhKlK+0dzBFjppJesScG/CuXOLct00TSl0pYwnRYpU9vvQn4ObsQUxypI7MVa
-	nMEVt7XNWWR1kEPT+SLnzTtbas/+x8pQNRaBvb8qceLXJn8NCVg0z8W2QPLUWxi+Q5AZV6
-	+KadgbjOFd4rLxtoPb4cYDthsIDSktI=
+	bh=Mz99eWq1invPFNouTi8ecn8aCY7wOTBsvojLW/naRpQ=;
+	b=WSt+Lyg34n6PcnGjHhDRUutEYD+IVO/dVVZuPnmDQZL38X2fT9fnb9j30IG2hhd9sHRvss
+	kIKJ8T0grLlaADVYOAlpMqoQU8IOHVjX+ZKYwX08vVKdzmnCyI3HtE9vFF+tRFFL2GXFBe
+	zBqN4hlDrebc/bn21K7HHaGywEeQIGM=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=JbXfhSQN;
-	spf=pass (imf22.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.171 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-92ea24a2dbfso10714485a.0
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 09:06:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1788278778; x=1788883578; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=wqCXc1d2wL50duIrdszOJfzq0EqANvFRgXietPv5nSU=;
-        b=JbXfhSQN6wXI17AF2KmQAAwG2WZnQ9kGg0zLeYQWB4mctvWWOzJDR0Jv81oII6FnZP
-         neis/nL/pWFQbNpaoeTbzmdjumbQF0eY/KaDsxQXdfHCCjImd1PKeOrwEIdUPHUDEFTa
-         lfPSaeXtxwf/RwV8kqPHSWBddgDB3+RB4mBB+7HzauKKUVacTKXUmo2IQXGRUXs8OZfX
-         viASvhEaThFMQohZ7WRb5APi7hldtpKSvjFHKruV6ljgv+rn5dzPNOwG/NGWSnGL4fAt
-         +HtX5ulaCHhXC+qHippn8ntvz913nWX2HSJwFGzkgBGzIPVTbJuI2WR+9QvXgh9pcSVA
-         zHvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788278778; x=1788883578;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wqCXc1d2wL50duIrdszOJfzq0EqANvFRgXietPv5nSU=;
-        b=qX9a78GfiEApksPsJYK7u4opPNv14CX+SqMtv/ifJZrZqYT3bR7+D8wRdHQkBWfP5f
-         lbBRYKJNntB9Sj0he9Or469NmevWi5+PGJ2Ov5LAoO2QItbb0i7PcFkJBgUDHYWCC1ud
-         FftTcHghCP0tIoP7uFKTcJrf4wp9YP3JNTEzAuuXMrNCs4B9aYd93K4csnj2M+AGL+hi
-         N58cf1JWyLlEW6VMUEMbW9TNvkr0R4mefsqkmK1VlmsSjXQOdtm22CKVhar0B0GsXUTJ
-         c+3Cl4u6uevVXrdSFeeM/WtcOyIfg4yQM4btMRXeXbxXxwac/KepawHLKnqRf1+kClxL
-         lBTA==
-X-Forwarded-Encrypted: i=1; AHgh+Rqmi5V1rFeOCLJsMF9THaFyosXG06c15BuAhidBtVnhVHkECJB4QhQinS0O5mR6D7kuO3Y7ly9m5A==@kvack.org
-X-Gm-Message-State: AFuF++lUjGAUhlr7CSOBMlvF8ubJqvXxBqLS74zf4jRqPImIqHvqcIxp
-	WeMjkKHgw5Ma2J//pMgNNCjSOwwOPdDPGj5e5y87w8Hf1U8KO8bOhkbbhpSrnA42n/s=
-X-Gm-Gg: AR+sD12ak6FSViqMV3m7mM9czL1bjzNtNGJBX+aKZ/K+qyClYj2l0kuTdL3OxK+FMUa
-	R8nPlCUmwRCj6QP/3ICvqHhv2ViuPRZF1bn/0EYSljhDH8RszXk8ML9ngNS38nvFqn8rMpRyx0h
-	WT9RaPc69FFa533AoXuIL7qKN6LJyqP8lSu+J6TZ4YgTu4eYn5MBZDdT1QE8jy/XdT0AkpwNGeV
-	ri7Cf5E7CfKlLy6oyGIoA8zzoXSUNW5q67Mc3jikxJDi1XEIES8GewQPlvZ20+CkLaAFVF0qnJp
-	tfVKjIBUdJ2bTaMbBty5DqRQYV7zga4DUgOROD96DMXdj9mAx4D36JPOFNUnnXRB/UK8pU+RuBL
-	upmdNWnlzbp4ivY79SZ+oIBtMhClRLpyqGnqFRg6rUKTKTIpty66Le/IyNzQBF6rzXIHJLXa9JM
-	1vz1neLwg1r7YjcKnUccRbojuAWmxGmn3nvpRb6VnIcmr9WzMWprhh3v/fw0KlFjayMzc797tWd
-	Cxkq1F1IIDtvnUsDA1jKXM5LKCioJJf77buTmbwWhdYDQ==
-X-Received: by 2002:a05:620a:21d2:b0:936:ea0d:ffc3 with SMTP id af79cd13be357-939139002d3mr3178331885a.22.1788278777843;
-        Tue, 01 Sep 2026 09:06:17 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93922e5278fsm886283685a.14.2026.09.01.09.06.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 09:06:17 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1x1R04-0000000BtB8-1Fgr;
-	Tue, 01 Sep 2026 13:06:16 -0300
-Date: Tue, 1 Sep 2026 13:06:16 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Liam R. Howlett" <liam@infradead.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>,
-	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Guo Ren <guoren@kernel.org>,
-	Brian Cain <bcain@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Simon Schuster <schuster.simon@siemens-energy.com>,
-	Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Russell King <linux@armlinux.org.uk>,
-	Vineet Gupta <vgupta@kernel.org>, Michal Simek <monstr@monstr.eu>,
-	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
-	Will Deacon <will@kernel.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Nick Piggin <npiggin@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Matt Turner <mattst88@gmail.com>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-	linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-snps-arc@lists.infradead.org, linux-arch@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-alpha@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
-	Hugh Dickins <hughd@google.com>, Qi Zheng <qi.zheng@linux.dev>
-Subject: Re: [PATCH 01/12] mm/huge_memory: zap deposited page tables after an
- RCU grace period
-Message-ID: <20260901160616.GD56830@ziepe.ca>
-References: <20260901-rcu-pagetable-freeing-v1-0-5456a81c8212@kernel.org>
- <20260901-rcu-pagetable-freeing-v1-1-5456a81c8212@kernel.org>
- <apbOlyF77yDCV4cF@thinkstation>
- <apbcoMTVlL42G5tg@gremlin>
- <20260901142408.GA56830@ziepe.ca>
- <apbiB51hjm-9pRzf@gremlin>
- <apbuO_QveZNAz3ns@thinkstation>
- <kasi4mkjkt56wxsrmphm5o2qfg2lwsdxf3tlmzx5tq6t7uez74@kozleoavd6r2>
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RtNnEY7h;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788278958;
+	b=HQAahNxLzai4ebhOlDqu9ScA7HLHaFeOO8x4mMBtp7ykFrEqhnreazOfLz2lOnKTUw9JX8
+	b7pnYV87UbBzD1KYz2Cbhz1RuEeQvqnKFXuKnnaPGPJl6zIRyYwoJ+eVTTwoFJELxRHHw0
+	RlU1zwIsOWzQS8B7oiGXXDzXD7rfil4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A7699435AF;
+	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7C349C32782;
+	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1788278956;
+	bh=vVRTAJM2qAJtjzVNw7AfiDMOZQ6QUxUlTdr6404pWUc=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=RtNnEY7hoph2NGV04fm7KqnQgfxO8XyXwmiTGUGtI3nVJfe16N40RwZkDYLT+ksZO
+	 2YY+rS0wl+a+/TsgI1fmeUZgiWHI+idrSNb+jMfzJSc+f7p5rqYHt+gtS1nGBEt+IQ
+	 dRR3YQt/Hkm0k0lq+vc9whkbty2GyDmdKXMhfr+Hcreqfr/NlHeuETdjUGbqFSo39e
+	 SNoFvcFY8ssqH8I5/kD0XGsv8IgmE43VcBeYNH6Mw5uGP91kgbiGcsWCMkvivJ5157
+	 W5XF6Y7c/8MUnW/r6hyHIp1Bo/d4MA3WA5xjWPleDxXUVo51o6H1b21u9574RPh0Oq
+	 8D6lZfwiTb+eA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 63CD2C624D7;
+	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
+From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
+Date: Wed, 02 Sep 2026 00:09:03 +0800
+Subject: [PATCH 4/9] drm/tyr: add per-file VM pool
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <kasi4mkjkt56wxsrmphm5o2qfg2lwsdxf3tlmzx5tq6t7uez74@kozleoavd6r2>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260902-tyr-ioctls-v1-4-e0fdbf8bd108@kylinos.cn>
+References: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
+In-Reply-To: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
+To: rust-for-linux@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+ Lyude Paul <lyude@redhat.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, dri-devel@lists.freedesktop.org, 
+ Ke Sun <sunke@kylinos.cn>, Alvin Sun <alvin.sun@linux.dev>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788278954; l=3857;
+ i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
+ bh=GYNt5fASDjvzxxgWZLDWPIxhdkvjI20iaVSTTPTfRwI=;
+ b=zNDRrCK4SuOMnUEDGOcfEfklYsW34X7DcrbeHuulWK+S9BJ2TEp/jQ1FknCrKMDLdreWsyCD/
+ nGswWYrR5lrDce2bdKmuXNKhOd67JYC7lkzIJftaHcELHGgPGNrZ0Jc
+X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
+ pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
+X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
+ auth_id=950
+X-Original-From: Ke Sun <sunke@kylinos.cn>
+Reply-To: sunke@kylinos.cn
+X-Stat-Signature: 6eh8n8y3y1bjp7e4g6pw8rzcdabznn18
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E66D940008
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DBC9AC000F
-X-Stat-Signature: t976xeprstszr8g9imfs4hz3c1nfh8w9
-X-HE-Tag: 1788278778-510562
-X-HE-Meta: U2FsdGVkX1+DYmGBEN6D2lb83xegPVntUd0w6V93NDUUxI07YiPsa+lqvic6i2kZPPvbc84sK1XU+VDUtPtknCoOp5NzwrvEmG7LkLHuxyJM3vG9n9SsDJzJVGBOnQtURPWEux7ZmyWVoEvIkYU9E9iGrXgfYDZ9b5Kx5vGe+pfGrr6GWv9mJSgRa1sA5ZW8AjTlleaUiz4+90u0hbwcSDzJrQuSxZQl7FMy3emR0LWMMsDTbuaYjhkHdK5VZG8ZfM9gmyRRKybX6fHy2wjM2Lsyxhq4F9Qi1PqCMchpfutYKMdxgnpnxuudEUtqNDx9799sKE1cv24Rwm2iAYSV0kxbWUflY2AwkLIRcuRi6wpXeeFs1k19ivrSObcFWWMD2Ul7zXz7MUC5GNiroDY7n97t/SC7SVLrG+qDG+E9EmDyzjAeDXWtCy0OidkmObvnXk8SDqwyh2yu4793jhX0XXY+d4Jl0n5z6sQotm8DRKEUwEoO+E5g6B2pX1GHwwgAsF9+bKa8fj8Yt03K1hDq1KovTpHR9h+rkMNjZC/ELI7V9qH4NSQpWyDWzwmIDVNzTOQ4t6zOnK7vGOKyrlEw6lIHY0BdDXIkQZJfd1IbKujvbqDT3yHimfrKfoC+pCc8hJHzLOBufazaeihV8betlurgSW1AKJzkukKTFmBAblENU18z0L+MISbttEIASKw6CSKjofj2zBIhYcn0mZSiyWlMc7FY9TpGAiCHKY+9kfDTuejzc2socYxAGzj5cG94wmKlDOPA1HkmjlIkw+o1Fyl6YMM1pe9n+ys/pemAQ2eEVnlQr5p97aM1pERKqrMvub2JOQnQ9acodNCkeUs1j7+ziFXnMaPTdONABqx9XB62lnAtvl/nX2RAXo+/yRkx7tETy+ubbdLomGcc80R++QFOA0twLmQcCOlZdi7FNNtiJnagmG7ZR16TI45ojklO689FI3pu/JDoC54T/zH
- JLLnUJ4/
- KYdMmIvbJZaAdFcQOInin2C7S5z3mZBMGyYd+UhDRafYZR6sfUT+oZAulNVpB1XFE8sblx5piHBxGCrQ3BN+vv+emyd6Krx1RnWv/ah+BHf2skxtNxyCAURcRr5ujGgyDm/av/arbyCKLqUekKkyClkzn4n4nRmJaZOTupbYZA8vMru9WdgpHgADKLBJnCbft3O23sNcYJNYpU2eENMsX30bzGhA2aJWUcVGi0hzt44tOuD9jGZJJw9uprPJATUL9L4jGkYX959NC/KClt6PZlFKSCcEdHHaxNuB1T6lCEiPP3ywXFfw5gMKLAL936SgiRmu76xc1zh4a65u3V5jGfNIOXWdCLEiw1SuBx8dfEExVbakVIIVhPGiaRe+kABbPDlKaDECTHJulSr175fDjJxK7JA==
+X-HE-Tag: 1788278957-244941
+X-HE-Meta: U2FsdGVkX1+unqgZrZP62eYFs9hZLp0UMWMsHNqIndHO05b5T7NGjHCPBDb8O4tgfFlz590y0C4xqlOnIBHXOIbmJIAAzv1I220+1djbL+I98j+yIi9CDJ5M195CGMaWEyXiYNKFDq8/qdSvi9+NI6F1bsk/SWdXoQBau1GeGmOEdQ/DL0MwTx2PX1lTEc8J2qUHrvQb/pABibF3P0GYnVtFUtRtTkghlPoFd22FKyWE0DtoZUEkewWYSU6xFlifI0OUAE5QNBsoxZvHKRCuB/urd+wqB8EgIQWh9DKvR/gDPymkLRKCmxnCc9Mh51rWzCmUgB/FLZ53rqxa8fcA+blb3BzXqLltU9RqozkvVqKExwUtOhoAp++2/xu1/IkaRTYUWr4R2aRQbEysXWcfPzOmTtxCm8Tqvws/f0Yh1XmCYSkQ9mDuVHvl7Mad2VYXBncPhPsIeG3tFknQURyUcSSGGtkGt5GZplI0zWJfAaHbkujWStE9ULs6u++kzfoZDofeVpGNXITlNmAYyjEr/DL6KNPYHNjqeqluhRIPhj0TU6uKNpuAVB5TSrCrFx96dDU+48tef9qwQGx9fSpKBkiTuyeZf6mHqVjrNAuxxeHJHi/O2s6IcIPkadi4v1Y2S3oFxKSbZvwNSmxy1D+lQNeBIpZhLfdq7YcbLbUl5P78Yqzis2G4lbdctKu2Ifgo4HXX1tgaQX5Af+b7rLNSzHPfl5qi3DICdmQMZDyzLwDKRrHufMtklli/ZmFqybb9KiM7kK4O0NHUpAfzdBskpQWGlWjsOJof9DoKb9mejU4yIg7mKcjSHDBjjiN2/lep3Pvwm84jaeMsSHu39P2RYZ7IdEidZEM8dWqknVww46ejUtCZb+gS16Qu/JzNypel1gmo2PpOxIyOoyK+0yRp2k/AGMQW5bU+RzuHub7aEHg24aNq6gzgJbPSxnfNAFflNIvGo1NJRKFhyGPQu8e
+ MhRH9RCl
+ ivO3yYO9RnGH4o0p7XovkMM54h3qvttt6AvdbJp9tK85bd/znlQuy630CLYXEELI65KrVUlwX94GPJ2En4e8mvYNNyaThYTMYK1gP//KEv/NiPJcgWr6h8/eIfUQRbEOsTVyvrcqMxzD56lAHRMz+DdqGZHIO9giOpdXawNJe5K1K+qUs1uFPh3xXjknnd9OSGqaBu9KczwrZMNQGq/agTcF+yKe65ef02zwgCaT2sq+HO/BJM2JClfDngniVsjHaXbmrXA4Ov0PxqLeAH0lMEaQU1fiCbaO3/xwt+cvvryWI4+wIAeGyvTY0qWxoNDj9hiJ0RYtUIP5ZkxViz8WsMV/GcrQPIp2zduTcHVQDLOCZIqb/V+ro8GfCrrD1l/RGsHDH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -200,32 +119,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 01, 2026 at 11:54:47AM -0400, Liam R. Howlett wrote:
-> On 26/09/01 04:28PM, Kiryl Shutsemau wrote:
-> > On Tue, Sep 01, 2026 at 03:41:17PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > > On Tue, Sep 01, 2026 at 11:24:08AM -0300, Jason Gunthorpe wrote:
-> > > > On Tue, Sep 01, 2026 at 03:12:45PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > > >
-> > > > > It won't be costly at the time of the calls obviously as its deferred. Maybe
-> > > > > increase some time spent in softirq but again is 512x that big of a deal?
-> > > > >
-> > > > > I'm not sure how you'd both defer the free and somehow utilise mmu_gather here
-> > > > > either really, certainly not without it becoming extremely messy.
-> > > >
-> > > > The less costly version is to thread the page to be freed onto the
-> > > > mmu_gather through a linked list in the struct page memory. This is
-> > > > super cheap since it is just a singly linked list operation.
-> > > >
-> > > > Then when the mmu_gather is flushed it does a single call_rcu using
-> > > > the rcu head of the struct page of the head of the list. The callback
-> > > > clears the entire linked list of pages.
-> 
-> If you are going through the trouble of doing this on your side with a
-> custom rcu callback, it might be better to pack the pointers in a way
-> that does not need to pointer chase through a linked list.
+From: Alvin Sun <alvin.sun@linux.dev>
 
-Well, I have 8 bytes of memory in a struct page and can't allocate in
-these paths, so IDK there is another option..
+Add a per-file VM pool using the IdPool for ID allocation
+and an XArray for VM storage.
 
-Jason
+Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+---
+ drivers/gpu/drm/tyr/pool.rs | 102 ++++++++++++++++++++++++++++++++++++++++++++
+ drivers/gpu/drm/tyr/tyr.rs  |   1 +
+ 2 files changed, 103 insertions(+)
+
+diff --git a/drivers/gpu/drm/tyr/pool.rs b/drivers/gpu/drm/tyr/pool.rs
+new file mode 100644
+index 0000000000000..1745116930c3e
+--- /dev/null
++++ b/drivers/gpu/drm/tyr/pool.rs
+@@ -0,0 +1,102 @@
++// SPDX-License-Identifier: GPL-2.0 or MIT
++
++//! Per-drm-file VM id pool.
++
++use kernel::{
++    id_pool::IdPool,
++    new_mutex,
++    prelude::*,
++    sync::{
++        Arc,
++        ArcBorrow,
++        Mutex, //
++    },
++    xarray::{
++        AllocKind,
++        XArray, //
++    }, //
++};
++
++use crate::vm::Vm;
++
++/// Maximum number of VMs per open file. Matches panthor's
++/// `PANTHOR_MAX_VMS_PER_FILE`.
++pub(crate) const PANTHOR_MAX_VMS_PER_FILE: u32 = 32;
++
++/// Per-open-file pool of VMs.
++#[pin_data]
++pub(crate) struct VmPool<'drm> {
++    #[pin]
++    ids: Mutex<IdPool>,
++    #[pin]
++    vms: XArray<Arc<Vm<'drm>>>,
++}
++
++impl<'drm> VmPool<'drm> {
++    /// Creates a new [`VmPool`] with capacity for [`PANTHOR_MAX_VMS_PER_FILE`] VMs.
++    pub(crate) fn new() -> Result<impl PinInit<Self>> {
++        let ids = IdPool::with_capacity(PANTHOR_MAX_VMS_PER_FILE as usize, GFP_KERNEL)?;
++        Ok(pin_init!(Self {
++            ids <- new_mutex!(ids),
++            vms <- XArray::new(AllocKind::Alloc),
++        }))
++    }
++
++    /// Inserts a VM into the pool, returning the allocated ID.
++    pub(crate) fn add(&self, vm: ArcBorrow<'_, Vm<'drm>>) -> Result<u32> {
++        let id = {
++            let mut ids = self.ids.lock();
++            ids.find_unused_id(1).ok_or(ENOSPC)?.acquire()
++        };
++
++        let vm: Arc<Vm<'drm>> = vm.into();
++        let mut vms = self.vms.lock();
++        match vms.store(id, vm, GFP_KERNEL) {
++            Ok(previous) => {
++                // Drop the previous entry (expected `None`).
++                drop(previous);
++                Ok(id as u32)
++            }
++            Err(err) => {
++                // Drop the XArray spinlock before acquiring the `ids` mutex.
++                drop(vms);
++                // Release the stored entry and the pooled id.
++                drop(err.value);
++                let mut ids = self.ids.lock();
++                ids.release_id(id);
++                Err(err.error)
++            }
++        }
++    }
++
++    /// Removes the VM with the given ID.
++    pub(crate) fn remove(&self, id: u32) -> Result<Arc<Vm<'drm>>> {
++        let mut vms = self.vms.lock();
++        match vms.remove(id as usize) {
++            Some(vm) => {
++                drop(vms);
++                let mut ids = self.ids.lock();
++                ids.release_id(id as usize);
++                Ok(vm)
++            }
++            None => Err(EINVAL),
++        }
++    }
++
++    /// Gets the VM with the given ID.
++    pub(crate) fn get(&self, id: u32) -> Option<Arc<Vm<'drm>>> {
++        let vms = self.vms.lock();
++        let borrow = vms.get(id as usize)?;
++        Some(Arc::from(borrow))
++    }
++
++    /// Removes and returns the first VM in the pool.
++    pub(crate) fn pop_first(&self) -> Option<Arc<Vm<'drm>>> {
++        for id in 0..PANTHOR_MAX_VMS_PER_FILE {
++            if let Ok(vm) = self.remove(id) {
++                return Some(vm);
++            }
++        }
++        None
++    }
++}
+diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
+index e7ec450bdc9c0..8c0c18c1a970b 100644
+--- a/drivers/gpu/drm/tyr/tyr.rs
++++ b/drivers/gpu/drm/tyr/tyr.rs
+@@ -13,6 +13,7 @@
+ mod gem;
+ mod gpu;
+ mod mmu;
++mod pool;
+ mod regs;
+ mod slot;
+ mod vm;
+
+-- 
+2.43.0
+
+
 
