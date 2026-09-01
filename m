@@ -4,98 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C17FC61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 13:26:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F11B1C61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 13:26:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE1096B019F; Tue,  1 Sep 2026 09:25:22 -0400 (EDT)
+	id 08B896B01A0; Tue,  1 Sep 2026 09:25:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E69DC6B01A0; Tue,  1 Sep 2026 09:25:22 -0400 (EDT)
+	id 060666B01A4; Tue,  1 Sep 2026 09:25:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D598F6B01A3; Tue,  1 Sep 2026 09:25:22 -0400 (EDT)
+	id DCE256B01A2; Tue,  1 Sep 2026 09:25:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AF4266B019F
+	by kanga.kvack.org (Postfix) with ESMTP id B5B3A6B01A0
 	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 09:25:22 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 36B531A0402
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5EC891A0405
 	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 13:25:22 +0000 (UTC)
-X-FDA: 85165264884.15.220DE28
+X-FDA: 85165264884.03.2456E41
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 9E9302000A
+	by imf10.hostedemail.com (Postfix) with ESMTP id B70A7C0013
 	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 13:25:20 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GMSipk8U;
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bGFNrxpm;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1788269120;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CpXkgOmW3GSwhrOkMdO/S1mj76NXWWV8m3WM4J70bcE=;
-	b=TILAza06osa7WlBbpkpHClLUVTi6M82UsZP2ho7gSw3nf3xWm7C77d08MI/JahOxOq/B4w
-	XwLPbGw/tjjAqzj/ELHj9487ai+5Vkb0+F2bkHyj7fyU5Cq5qoovMjrD+h76SlezcSiuOS
-	L2LTN+Ci7KpWorePC/OM0z8oD6LCb54=
+	bh=m+OX/QoubOtPs5CYX5dE9pYfjfAmb4FTinvx7UvjP30=;
+	b=6Qh7E+/dG7tv10DKaVzx/XDFajBPKEFQ/yssWit440AXVmGiGxpHV9PNtQPqpO/pYuv0ip
+	4eVFYmT+PJMnktwuMGVBEsXmvgGvO1AmWmLDTIQXc8EtVbro325Yr5EXY9Qxqm1UAgn9e9
+	Vkm+Re2N8GrS55dYIh3NMQT/2LlXrR0=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GMSipk8U;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bGFNrxpm;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1788269120;
-	b=i7mB0O+DimQ5aBkTxuuY7Gcm68+G66MtLs6dJXOfJkZBFxG9yMa8Y0m5nxFvP5euBxg7qI
-	NBivFPjAPKvyPbdQqpSrEiMMolMyAaL7iCi0tt0aLOkHcmsH0PnlvGIfKXunSOU2pqIldZ
-	g41OMaQ5d8xVGCzkS7oil8ACux0hEQA=
+	b=pNhtzRXfW1qOiVWchm1aTDEppCXVgoADcE0jQ08WGSTTTiw0KjROlAHDgm1Fno34CrfimA
+	Wj3fUBAdaqRkNj0VGB2/Zow9M8cjgpVgjHdUIwZSCJ1xBX2vmHf9ZDjlltD1xlQaLc2Ej2
+	RRNpK/JyoIyMM1cuj+A+1pFCBo1I8aU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 68FAC41A1F;
-	Tue,  1 Sep 2026 13:25:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF59F1F01559;
+	by sea.source.kernel.org (Postfix) with ESMTP id B4BFB41A4A;
+	Tue,  1 Sep 2026 13:25:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6395A1F000E9;
 	Tue,  1 Sep 2026 13:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788269120;
-	bh=CpXkgOmW3GSwhrOkMdO/S1mj76NXWWV8m3WM4J70bcE=;
+	s=k20260515; t=1788269119;
+	bh=m+OX/QoubOtPs5CYX5dE9pYfjfAmb4FTinvx7UvjP30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GMSipk8UkfFIcDDvF7JZOpQ51OlDWE7AOEaYd09MsYdaYHkkpPXXCCoqVV7aN89la
-	 57z2pqMr+WWOj6RieHPXnhPpP6e04h3p0BuAdUHBkTQt7rnyI3B3uLs0qzYe9Sgzxx
-	 zOelOFLUtOdrdche2+1I3cLfGOzGwOO6diu735898YqgOqb5jUBldpRlsZw/wu4r7y
-	 72e7X1zV/j5GM2ETzVC7IdrY4AuRDHaqJ0BsOldg5PiGnB3afG7XvPwGGSDmdVNSHJ
-	 f5i/sRhT0sNVX3RnwKRTeDiwMoFPe+WIrbN8VWpLYy/VLrrtAqcyPpvVcMxhsx/nF/
-	 CcC7v1hGjZCfQ==
+	b=bGFNrxpmY2vl87nkgJ+iyG/FQAuLseRmz4SqqzqS3r6ZEXj5vsMmRWjaWHZIvTsQG
+	 Yd/YVWDr6Uxiz7+F3/KFqpn0ut2agNQJUEj5BygiPsuqEpkJVXzY+Egt2tcqWKAFc3
+	 lZVUUGxqYPDlHxv7B7F+rVn7aSASQoLG9nd1CsQUeTsRguHPWWimE1IPtJwpqyujnI
+	 LsGynk8HiVPHLeZnIS1iWe+ku2ZoZURBcZXJ7g2NmzCBeA/tTuJJOQSqIgCYY3013N
+	 /hfDeOGkYcxoYM5/Qd+BBidhnSE2SxLMRdOaSjsIi5frS3/xKjnytPApPU8tJPt/9G
+	 PcZdytCk8W4pQ==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
 	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v1.1 15/17] Docs/mm/damon/design: document probe preps
-Date: Tue,  1 Sep 2026 06:25:02 -0700
-Message-ID: <20260901132506.99243-16-sj@kernel.org>
+Subject: [PATCH v1.1 14/17] selftests/damon/sysfs.sh: test probe prep sysfs files
+Date: Tue,  1 Sep 2026 06:25:01 -0700
+Message-ID: <20260901132506.99243-15-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260901132506.99243-1-sj@kernel.org>
 References: <20260901132506.99243-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9E9302000A
-X-Stat-Signature: bsebxsmg6b51cg4r9b6zfmsooug9uufj
+X-Rspamd-Queue-Id: B70A7C0013
+X-Stat-Signature: 1uib56mi6decr3xpkoxssfk6oe1bnye9
 X-Rspam-User: 
-X-HE-Tag: 1788269120-606601
-X-HE-Meta: U2FsdGVkX1/z9mSiBV4MU97R3HCMb5RSM+aqNm+7ganmdr8y7diA1bkCrSewrbkQJYe5kUAg1aiYQae/Ifh+/OwA9vQ4gnNYGVv54T2fhtB7S9SHjcqv6sNykgY9bv51q+ZsBf8yAJX9QNGRottQHYy1lX3xPNWqOuGuKjEUKGlZ/V0lyfATNNE37iIYATKrcgD+pqzXwNQNZGcWf2UyBQkemsA/tNwM62kxtlrD0386qBdYwz+ITmmEvB3OKLeKM2TYF5FKvl5wG6ge5yPHFTM0K2kwHtEL4gzVhg9DgRGCV4v8zdfGP89JWEqhMTkCYqvc6en4afV90OTDl9dINmWbm8TD31DzsrUfqlbF8ww4xWDQwr8RXclTVOIE73mbk9TBNfIPQwNU/c5sTGHMpnTcEF7/i1xDt5d4KfrRjSNPmWona9vNOE28H+27hcY0omvEoYdQxReDENNWgZaH2SGr9b/7UzkAnJrnGq+2MfR5oKr/1+indBpZnGEUXWs1cCJGtd+fGcUp5XvptEFvyPwcTON+3BKIKVrE3EMPYZ8Uaixc3SmKOYSfGoiks/VMquiKboPR3d8iXaGzsi5yADTn17RZEykAXW+ufHaGmN2DkMrbFowAelIeFgCeuN/KgAl1wumg4JbB6f4i50YLJ5hBCBmHBEd03NaR8YRmjrgVAhd/Hq/zQ76t0ogS+OPvgVNYicKjOTqzZs1GPcHy9P51vJ04IxnBDRBwTmm8r6li9Yr2wGkcDlwhUDFgrltTMY0ApSseqyvOviQaxG7d5K6N7lNg+j6DdxYQK7OtR3iMJ5/J2JPLo6chJz/vLfDMCgYweQ5vae1ZftE05L7PqSyJE1mkjO9TWU4Vs6dU3gIgczsQidIGK5pt+ZBVgrmOZqWnzifoIKB7vAUi0LJiYVLHY1JzY2zoVqyXPt3fie7d0GE4zqGMy4Bk0kObHcF0FeoTJlaf5SdHs1qu/s6
- XO6GYZm6
- uio7In7woivK/CWCVzHhicoaACgRvDsRxJcLy8ldW58dkDVnpWijbg/2aXN4UusZQmW7BsvyAxf/sobY36orfwpnfZhGNMfmayJftE73iCB+LfcZ4GaJAeB3bVg31xhgtz9swVAWVLo17IYFKIpLL2UgqgEQTassnUkVREOuZ4/eM3a5N5zxxviNzaoZ55uQuDpatKjYwL74QF+6hWwTMpq/ecKOethmFjRDEf8KCCECiqbE=
+X-HE-Tag: 1788269120-108564
+X-HE-Meta: U2FsdGVkX1/PLsLGt0MAx7M1i0k6Ow//NxgZmpRxW/qGeQh47RsdAIqB8npXIxn+E4jqin2K33bvPfME9uVOFA7OmbHxH+7SI4Hko4XtEv2mZvU6lYhq3zrtSrvSJR5hi4Er1qrsf2a42VisNAKBvRz4049dgr7iq/pg6VCc8TYlMPY9LflmjJGiuPxT7YsNQ4qsaonZXqBz1jII8R1vHY+OG64pIq1JwSgtFQcHTRmiRYap6umCgn9FqjR51yuvbZRE/K4hDDakO97YcKStwZcEvcmKdvgpXjep8fv9CfP/gbgY2JTmKm5fmrcUz12IyUBHCYvm5aBJ77+GjFeCngOx0ik1P+UjY6HbThvfVdRqhOa5XrCcnntNcdxP7iMzWVQka85pgEcRZbBIsLF6/O1Ot/ruDsa9NJ+J8BgOULSaCy7XM6c1YR3j6OFdvO7Hyue82qAj6/mAD1Qk3wRvmNRTDjFdXr6i57Gk5n49YGcJzOZMca2uEE7BIlBUHtkRhs2c5KmffbAmhqwtNHNNFExG7k1RxwbRD1vF8oywOsTXCmjhwqQ0zV0lDgfmwZcnG97CUfiJykPLP5rgSjjAV7JJ5/ZXPe6r/gHQ7oEdNnOQDaCXtYKAxwzlVJ8Gtxv7kOjpdvBQojGlSf/8dJx+1MpXtwcT07Uw9RtZDkiUtFhjCfUcCTo7+v8AUDPDRtVJtOGkxtDWm4SQKag6bzJ3UBNF8hna5aTQ4KFtidh+iPNovxh7KUHGk5y/Qi4wxE1sBfLiJsyDuwsHg9+xd8xbsfn9/pLUenEfkBHvuo/ffh2Gjro3S3acPPK4CsoLtXYdvvhsbxtJfiGUlG4R6v0wP6dzKtwOq948cGp82bABEIRfrjTMMFzsYsfriPlQw/N0ZqyxynSvGfvP60uNJck2lT8y8we55Wg6uVRZMBiclLKaDSduXG1ONfjQMxlJOfcsr+KSsYD3FbhajTrTyK3
+ /48rjIu5
+ LjbecKTo/XAqfp2lUgdNFc0XSGHj9Lg0BGeU1JG16nY/5Af+9n3JGpoG8pKjaRKXDIMMRM7d2GD772d1KWZMI6XNvg/0/DN4p+M4rv/nO4+ERP7sZAYOHFhUhsnfbhLrpT6Eh0+fpLasVFcO+ZJxnPPOxMhCxP3hPX5Ayc8f6vJu8f1fIdO1aPkpgns1GQcDfZsDy3Wy3/6McQlQauDmzlg2zIs3eJV12phJJhGGsETKF+wQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,32 +94,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update DAMON design document for the newly added DAMON probe preps
-feature.
+Add basic file operations test for newly introduced DAMON probe prep
+sysfs directories and files.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- Documentation/mm/damon/design.rst | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/testing/selftests/damon/sysfs.sh | 27 ++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index 947d91ae24a39..d036340dae8af 100644
---- a/Documentation/mm/damon/design.rst
-+++ b/Documentation/mm/damon/design.rst
-@@ -309,6 +309,13 @@ Users can therefore know how much of a given DAMON region has a specific data
- attribute by reading the per-region per-probe probe hits counter after each
- aggregation interval.
+diff --git a/tools/testing/selftests/damon/sysfs.sh b/tools/testing/selftests/damon/sysfs.sh
+index f7fb94b84e716..ddebde6edabe4 100755
+--- a/tools/testing/selftests/damon/sysfs.sh
++++ b/tools/testing/selftests/damon/sysfs.sh
+@@ -361,6 +361,32 @@ test_intervals()
+ 	test_intervals_goal "$intervals_dir/intervals_goal"
+ }
  
-+Users can optionally register probing preparation actions per probe.  If such
-+actions are registered, DAMON applies the actions to each region's sampling
-+memory before starting the next sampling interval.  Currently only one action,
-+``set_pgidle`` is supported.  The action marks the page for the probing target
-+memory as access-idle.  This can be useful to be used together with
-+``pgidle_unset`` probe filter.
++test_damon_prep()
++{
++	damon_prep_dir=$1
++	ensure_file "$damon_prep_dir/prep_action" "exist" "600"
++	ensure_write_succ "$damon_prep_dir/prep_action" "set_pgidle" \
++		"valid input"
++	ensure_write_fail "$damon_prep_dir/prep_action" "foo" "invalid input"
++}
 +
- This is a sampling based mechanism.  Hence, it is lightweight but the output
- may include some measurement errors.  The output should be used with good
- understanding of statistics.
++test_damon_preps()
++{
++	preps_dir=$1
++	ensure_dir "$preps_dir" "exist"
++	ensure_file "$preps_dir/nr_preps" "exist" "600"
++	ensure_write_succ "$preps_dir/nr_preps" "1" "valid input"
++	test_damon_prep "$preps_dir/0"
++
++	ensure_write_succ  "$preps_dir/nr_preps" "2" "valid input"
++	test_damon_prep "$preps_dir/0"
++	test_damon_prep "$preps_dir/1"
++
++	ensure_write_succ "$preps_dir/nr_preps" "0" "valid input"
++	ensure_dir "$preps_dir/0" "not_exist"
++	ensure_dir "$preps_dir/1" "not_exist"
++}
++
+ test_damon_filter()
+ {
+ 	damon_filter_dir=$1
+@@ -392,6 +418,7 @@ test_probe()
+ {
+ 	probe_dir=$1
+ 	ensure_dir "$probe_dir" "exist"
++	test_damon_preps "$probe_dir/preps"
+ 	test_damon_filters "$probe_dir/filters"
+ }
+ 
 -- 
 2.47.3
 
