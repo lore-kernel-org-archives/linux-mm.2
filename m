@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F159DC61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 08:35:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42A9BC61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 08:35:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2BDB6B00A1; Tue,  1 Sep 2026 04:35:07 -0400 (EDT)
+	id 3567F6B00A5; Tue,  1 Sep 2026 04:35:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E09526B00A5; Tue,  1 Sep 2026 04:35:07 -0400 (EDT)
+	id 306E26B00A7; Tue,  1 Sep 2026 04:35:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA42C6B00A6; Tue,  1 Sep 2026 04:35:07 -0400 (EDT)
+	id 1CEE26B00A9; Tue,  1 Sep 2026 04:35:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F7A66B00A1
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 04:35:07 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 04C881401A3
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:35:06 +0000 (UTC)
-X-FDA: 85164533454.28.4A552FD
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E26326B00A5
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 04:35:10 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 64A22160171
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:35:10 +0000 (UTC)
+X-FDA: 85164533580.22.49AED29
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 38C2780002
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:35:05 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=RVdmaqYB;
-	spf=pass (imf02.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	by imf13.hostedemail.com (Postfix) with ESMTP id A66B520002
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:35:08 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=O4JL6jpa;
+	spf=pass (imf13.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788251708;
+	b=ADPYVPWs7zQftCWQQORivlR+T4dq0P9IcUZqAjUzYfrhkSlpAU6hx5tXHGUS6rKwES78yd
+	8mpOa2WIZTHjoOoibigtPGX5WnaLGtSNDWZYwrHLsPQfW4RGD9ZgBDGnVg/vY/PZf34tVL
+	kfmdaEwbAidb9wyk4jFH4/K02AVvAa8=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=O4JL6jpa;
+	spf=pass (imf13.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788251705;
+	s=arc-20220608; t=1788251708;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Oq0AQTfqbuYthhT2zNJ8SjlzOv5rTBfPmcsaD89dz6o=;
-	b=X1SRlT4yEppqvTq2xTfI/HuCZu2V0kYhBp9CGP8KtL/JIZDg6rykIL2RjI6xBz2JSJmjcV
-	5tDsf9BM4Tb1mewuK/ganfOpo32FHPxaxdNUmVdjjOknz4Cyl+ExY/7XI/qtbPvh//2ELj
-	h5pYotrAdydVECHRJdnR6R3ndUvr1V8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788251705;
-	b=B/y3jzZhndvZ5V0RLj4nDzNQnZx7HT5GT2wfxSgAVJwKphQtOfL76FFsU/oMYZCJe7I9Je
-	gk9pTfh86NQ/z3Eg1CDMHjsrBeYJ361Egu4r7yMIvmzNLJiCv6Usz73g/nuN85UG5qWgWK
-	LjFWkOZnWCdMexH/UK514PY5LMXmMs4=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=RVdmaqYB;
-	spf=pass (imf02.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	bh=vWmDuGu2C8GsQhqeiaROh/RTcyLd9b8SuD7Alh5Ou8I=;
+	b=0Z7tcqYzVofXD1tvNc/3Z8CBLsC5jq0OXlhl1ozz2nnaBDxK4zKNXoLDGfBcU5r+GuVJ9o
+	aNiq711YO6R8PHX6PSVYok/YgmviPEmXcmNk9npuoutLlvEnP8pNwqPuYkxxSkIMz0hDkd
+	sqAl3cJEdfQMrN3UL6MpiVbfHHtw5oQ=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ACE8C143D;
-	Tue,  1 Sep 2026 01:35:00 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D6513143D;
+	Tue,  1 Sep 2026 01:35:03 -0700 (PDT)
 Received: from a081061.blr.arm.com (a081061.arm.com [10.164.19.84])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id CBE093F882;
-	Tue,  1 Sep 2026 01:35:01 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 00C053F882;
+	Tue,  1 Sep 2026 01:35:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788251704; bh=01OSK1dnvT0YlysA5p5+l4Ifl3lB+5p66nSfIvzM40I=;
+	t=1788251707; bh=GvLjJUcXhtcVH8wJW846Q0j/NBaak9ZJzUMfNxwi5y4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RVdmaqYBgbzZk60+h641RIfkq7oZFXC/JfsuqxHADWz3/2LUzWEqUdz9TltVgKPiF
-	 w1ODnyplswTEaj9K/mpBHIqcyW5sG/YjUyDk9ND6XhMFBE2kLiB4kbM96JL1jGVPR6
-	 3Awzd3MeVhS2DtbOm1Iir07g4w+02o7eJ44JVjZs=
+	b=O4JL6jpav4DOxUbUtj6dHl9/2XGZ0dy6ktHBRQzd6qiG/7S+BKcnt/QSqp+AMtziH
+	 W6KpXsJBUyv3fP0pZav4p0c2jn26hAQ52OjbFLADmdG3oSviStp10QcfnbNiMZGwmG
+	 XjPlU1KItQWTnsvW0AZE7qcUrI7KWI+rGIj410Ws=
 From: Sarthak Sharma <sarthak.sharma@arm.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
@@ -70,22 +70,22 @@ Cc: Jason Gunthorpe <jgg@ziepe.ca>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Sarthak Sharma <sarthak.sharma@arm.com>
-Subject: [PATCH v3 1/2] mm/gup_test: prevent overflow in GUP batch calculation
-Date: Tue,  1 Sep 2026 14:04:51 +0530
-Message-ID: <20260901083452.115365-2-sarthak.sharma@arm.com>
+Subject: [PATCH v3 2/2] mm/gup_test: report actual pinned bytes
+Date: Tue,  1 Sep 2026 14:04:52 +0530
+Message-ID: <20260901083452.115365-3-sarthak.sharma@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260901083452.115365-1-sarthak.sharma@arm.com>
 References: <20260901083452.115365-1-sarthak.sharma@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 38C2780002
-X-Stat-Signature: bhmtdkh34zkc5qbukfnh51mf57qz1784
-X-HE-Tag: 1788251705-411432
-X-HE-Meta: U2FsdGVkX192ocRgvE54ORsRkKnLmvwRVSrnFE/322wFO6VhNVO46+Em0aa1Fc0iRXe3UrHrOZ2jq1XptN9WybP6+OU/CRz5LBIAD90GL24P+dD3//hCiRPbAG6RsUThwulN9ua6+7bLjaAGjft7jR3xHfMx8TYg9clFBVve7ZZedQuk8ry3opmcwIQUmQVQSA4U5VPWale4Gz1rW1UPGw8GCk52eah+8+60R58ueExUgIZe0n/Sg7HDdSibxIzKnETApMjv8RO/UiFJLgcvxAKKSAf0IMSGvQODUDXaUyuTGch6m9UnyI5zdkuhh0EA4TGX6kVsGsZHpNZurKDyiqHD/pXoQwhX3zFsu3t6yQSMOQQgamXCpOICQYv84k9F20IJq32K8Vo4jYkzOi4rSIlYI/LgHzgKQ7VmrjixdimYE9cMKw8twHI1zant2QBuaqpwSMicZEZh7/QmFdVRlS7bPqxvX4phly6zO84IdnfX8b+NEGXAffj7yMXqkx3wdRlicY8S14FPEdwLK5//3UIAqYru9/hb2IvqhlcRIjS+iBgaBAI9UQfSQ9iQiJur05lo/1YvRsC5EM/JbyKLRvmS9dBRyTEMDHIR11pKnLe5IFk4NJ6drtUYaqhLmHejaYaouUf4PXfuPb0j4SXBxNdDLNlFf9QBNWSG3AsoKVs51FiFlOL3CJE65sUiYVnA3rnDuWjaGXgFX5BlUsf/O17LJMPhy7gCp+UhVmF7FJ9OJ/8Cvjk97eF8SmNFnlHv6BVhG/hXANhEOa3qRPAAyGIEYpdFqmBlk7Vvc7Fl3pkGvmHbx7bjl/5Nxgh/RTIaDQjjYWBsVvoAIJN1DrH3LF+Sp6z4yMfyziKQ156uoRi7SugnaPRM0oaGzSoGc1KqmLXJy6uRH3Kxi/YvC7d4LJBLPFt5KK7Axm19hxs/9KwbLF05hR8R13IwwhC0ZVyf93kLh5xivW3Q1RXIUiu
- iHgxI8Pb
- Tet9e2+Q5nkcTwc1nKvTh3ZhsZWYNytQGqkZywmiZatXu5Yzy6iGg08xbKBFgz2/6/e9Z9RbEbU0Fyw78OrsG+3hJfldxchvxgoU+k6ZAEzzk5o/fUG4qnX7rQMx6M3Nep8tHIysTqR4SZAndTnjuPxgDheyE4kNdtYZEqm5a58eVPJhPviGLfUt4L70b9b88WepmGeEduxaM++z/XU5OggcTi5heQaJ1RLO4ZNFJhq0Lvx/SFxgLVEgxK1ZSTMqopG0lVbByLMdEEfXNiKv+FqbMBFNmwkFHDaMf
+X-Stat-Signature: 9auxw6fix9s8awac7jeo83pq69ire36n
+X-Rspamd-Queue-Id: A66B520002
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788251708-420881
+X-HE-Meta: U2FsdGVkX1/K0GVpXrAnaBcAofRuwyQ0BkpFV82lhK5gVYTYK9VWcW9Eb6c/L/0JTUBSAGdG/SiY1p/xUClwuOatcz1WL+Fh3j+bZ08eNqj8Sd59f6XPEo9eTOg5lMuS4tJn4kEWn+3eMpqMeZxsvlewcFiLn2M+PX86bpS02wHI5F5+R7V6t4KIeTbMGsaGHPBoaNR/GFPyODndVGiI6AtEqFS+6ZhTEda9eAmxeQqtDbSpU5Osj6RTFRPbR+PSyFJ+xIammkfJt48v2LI085/3OhqWiGl5nV4younwx+id0Rvjx1OgDkRJgn+Vyyhf61fvLqCdwCaQeXJ1JyjgkN7XhpB2s4IboN9bSniyiZUAmwhAXIwVbT75lrGRrjijcvldEdjhsItULiTUpJilFtsicq3pqWaRv0UaHH33Ng0bCVByaZOvwVtA2CDoPaof9tFKasOXCpidSBjWKo9NdxtkMig58uXrUz65jQ24tPK2TlBWNnYVhQfAy0gD8JC3IX5uqk5BnNz0fGyrQr3+7yL7ATnJj/7SZOBzkLss3BgXlW73UVFU57O/+H5ziDIN1GaolLloCYEFyk58KcPpoN+/UTqsVjSYnTUidSJ3/7rMlwEPqJez2gnWgTG4M3TLtss88Xkw3YLukbWr5BPSt28k3IUc6EYbqlhSToTgAus68ecxtd1zlcSVhMKiu3Ds1kzfVufWUwjWrNODVdkrj3S8YRB/XEzgh+L1HOetJR8iYV7j1Lgf8c9rcnn8ffOpFJSjArmWZ9gorJF44vz3R504IgpUswRm/TUhGL8QxT5Jzgz9MCF8VHh+ZitjMdJqkto/A07BGKpGHVy+mfDBUW5ZlhLY/cAPACoEo7fhlCjcodDap42IKJVzLB101cVEa+RB+enq87cghKGc5QFVuMRyP5wSEpezqFIvxrlC1HRCVdMTZjF/9mHNGenzfAowKv4wpNoV22HdunojjYd
+ gwuI4gNZ
+ JjK7SSrO0lgxs+sA9zc7iBaNibH8sZhu/S/vBPCqnU+XrAnoJSEYB4diD2OlzEiWOpIUO6iVf0bMjzl2FgJz7h/uJBHWK7IYtB/RBbySHfFzQJmmTIX+YqWnfKnfRtvrT53AtARSyQwRhSZhYK4RSC10qa0RUISl1PgHkiKLk9uaXwYqsasdAilnk2FXeWrmiAQZrGzAIhBepdOOWHG4gl96DoA6wwwzYZ4FAB6rfDNBghd0TfUzeUAdmgoktKiyPOI7aYQTGgmdCrFl8EWBznqxCyR17Cn7NacLZM+fi2waGS/00fwZIX2+QZA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,43 +93,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__gup_test_ioctl() calculates the end of a GUP batch using:
+__gup_test_ioctl() advances addr to the end of the current batch before
+checking if GUP pinned the entire requested batch. If GUP pins more than
+0 pages but less than the requested batch size, addr still advances by
+the requested batch size.
 
-next = addr + nr * PAGE_SIZE;
+The next iteration detects the partial pinning and breaks out of the loop.
+Again gup->size is calculated using addr - gup->addr, so it also includes
+the unpinned pages of the requested batch.
 
-If nr is too large, it can cause the next to overflow and wrap around.
-If it wraps, the next > end check is bypassed and a large value
-of nr is passed to the gup call, even though the pages array was
-allocated according to gup->size. This can lead to out of bounds writes.
-
-Compare nr with the number of pages remaining before performing
-the multiplication. Clamp it to remaining range so that next does
-not overflow or exceed end.
+Calculate gup->size using the actual number of pages pinned multiplied
+by PAGE_SIZE.
 
 Fixes: 64c349f4ae78 ("mm: add infrastructure for get_user_pages_fast() benchmarking")
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
 ---
- mm/gup_test.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ mm/gup_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/mm/gup_test.c b/mm/gup_test.c
-index 44c1cdfb9c37..910cbef709b4 100644
+index 910cbef709b4..b72f59a89c1c 100644
 --- a/mm/gup_test.c
 +++ b/mm/gup_test.c
-@@ -139,10 +139,11 @@ static int __gup_test_ioctl(unsigned int cmd,
- 		if (nr != gup->nr_pages_per_call)
- 			break;
+@@ -189,7 +189,7 @@ static int __gup_test_ioctl(unsigned int cmd,
+ 	nr_pages = i;
  
--		next = addr + nr * PAGE_SIZE;
--		if (next > end) {
-+		if (nr > (end - addr) / PAGE_SIZE) {
- 			next = end;
- 			nr = (next - addr) / PAGE_SIZE;
-+		} else {
-+			next = addr + nr * PAGE_SIZE;
- 		}
+ 	gup->get_delta_usec = ktime_us_delta(end_time, start_time);
+-	gup->size = addr - gup->addr;
++	gup->size = nr_pages * PAGE_SIZE;
  
- 		switch (cmd) {
+ 	/*
+ 	 * Take an un-benchmark-timed moment to verify DMA pinned
 -- 
 2.53.0
 
