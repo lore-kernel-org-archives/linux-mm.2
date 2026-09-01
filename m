@@ -4,79 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBC32C624CF
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 08:58:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E44E7C61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 08:58:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D08506B00D2; Tue,  1 Sep 2026 04:58:20 -0400 (EDT)
+	id F1DDF6B00D9; Tue,  1 Sep 2026 04:58:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAAAF6B00E9; Tue,  1 Sep 2026 04:58:20 -0400 (EDT)
+	id DE2986B00E6; Tue,  1 Sep 2026 04:58:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5FE56B00D9; Tue,  1 Sep 2026 04:58:20 -0400 (EDT)
+	id B23626B00CE; Tue,  1 Sep 2026 04:58:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AC596B00D1
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A5A56B00D2
 	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 04:58:20 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0666116030C
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:58:20 +0000 (UTC)
-X-FDA: 85164591960.20.1571093
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F2E7840344
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:58:19 +0000 (UTC)
+X-FDA: 85164591918.17.83B95E6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 15100C0009
+	by imf21.hostedemail.com (Postfix) with ESMTP id 065D01C0002
 	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:58:17 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kRCDP9kR;
-	spf=pass (imf22.hostedemail.com: domain of devnull+bingfangguo.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+bingfangguo.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788253098;
-	b=YR66zkm+/vWdeCUOjHBKZckLk/5tsNhwh8hp1vQOVzQe1oFyO46qb99FF+7inzxyV0l7fO
-	CjPiFCKTC8nvzGd6MjMPHoylfZESf4WnrzCy2lOE8Ubl8ao5CgtyexJqJ7O+bU1z7v8EyY
-	/QOCxv+PtpCwTCZiKymndWurDr9F0G4=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kRCDP9kR;
-	spf=pass (imf22.hostedemail.com: domain of devnull+bingfangguo.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+bingfangguo.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q+wPWbMJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of devnull+bingfangguo.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+bingfangguo.tencent.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1788253098;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=84huNxLkELVQlU/eNcQEwxG8ezQjUmmAP7CmYgdQbys=;
-	b=nmZcxfaU2IMSoujviaLnhPHgNL7ReByDMAhqJy/pcZ5HpuUFg3LMqToI29b8ncCGEB/VMX
-	POIZeiOfK/LnRESL8N4CLlw1bepe1+/V3CQQ2d3y706r+ZjvPZs5JkfP/u/Qp0JqTr8n34
-	hoS2NxewH0JL7+Ubz4mVDcV5bZoZMsk=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=m7RKFhM7DKt8Tz328qe7qgNoYXTPWXPrwSWTo9vCt5A=;
+	b=QpLc48zWoaGsvaNOzpzRstDauD1dubOV+bvICgH8FDOUdb9sxHMSbS+pcJSKIFkoXIopPP
+	55W/9jjNKo6fBggnb32aDMCQME/dmFGAAoQhn4cuxSqNcPZnLY9F9hcNf4zYOKlkydGx2y
+	Wza0kSQC7idBV64YO5jyfATnb6SL7yc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788253098;
+	b=Ao6/L54qkop9BecZ4fXAMS7rp9a6+aKG9j4KcRI8MkrFo6UzIySbCOwpvfBMdjtYexPLQM
+	1iTUfqm3NzbRbQTfRTA9zO06cFJ0UyB3Kwb7vpoH1dFRI+ELVX1SX5t5SoAIjXUyiQ4swT
+	YPiakVcH39UvYrom4+ky3B+aUgjsAjU=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q+wPWbMJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of devnull+bingfangguo.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+bingfangguo.tencent.com@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DD4FB419CC;
+	by sea.source.kernel.org (Postfix) with ESMTP id F2398419D8;
 	Tue,  1 Sep 2026 08:58:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B6801C2BCF4;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CA886C2BCFA;
 	Tue,  1 Sep 2026 08:58:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1788253096;
-	bh=2rsNpbbKndbyocdYHBqGvoSTRhCZGAVV39aajeiQvbw=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=kRCDP9kRglnPQjyJSzcjD4Abzpt2HdWFARfsP7NYOJvQKKtr5fswRRJjnxHfiF6wy
-	 gsPJRleHQdLRUIE7ZNGRH03IN/HReQQ5pG89j46UBJC260PPX5gIGZyEH2ylX0S06U
-	 Y9//vQqqc+Cl5ROtPFzvW12eXNSJgqy/EHZXh2jEbEJ5uDZ72VZnZ25r7jyNOQqGNX
-	 d4A/+MSH+2BuqjL09iBrFAZGDITjX5blBvXJnwCAMJCKlxGv9Qgpmon0tqZup1Usn/
-	 EuKpyXd1KNiGvMLYUFviX+aJYITSMdDZ+4dnFHzFZsXjwutIv65hGTPepWREHP0xVH
-	 TBYTpPCGqMUrw==
+	bh=KlUxJ5Oj10Jo6f53V6E/JY8gDtVIZbewdVdCgVfLshY=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=Q+wPWbMJCk+meNviZObyUyWu0S1q5aygcJ0vIBA5TP5zHaOm4TplJAiH4BpPFySeO
+	 jXDscHzc0zAOG/HMcwRWXD9XpaWU93ZFF0tfmWiw0bJ01q7Uceqo3IIq7xd/WZuxB9
+	 2swdeXcjeKwomMGwC/lknTFwPgKJfI7c7T+t4n/aNYeh79wtPAmtVgF0ldq5pYhaXl
+	 zghGJbbDc7WYzAwYaqBJsvT/po3TeYmWpCJJ6/qmBVrboEDpdyYxkxcnC9pRBO6LIb
+	 VMVqTb+uDMcXtZ4aPdts5DLvfNV9kFrqi2EdAlj0GaZe/2w3bF9Vh9tn8+amJ8MHri
+	 2tz4YIm78FBEA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A33A5C61DD6;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B8B06C61DD3;
 	Tue,  1 Sep 2026 08:58:16 +0000 (UTC)
 From: Bingfang Guo via B4 Relay <devnull+bingfangguo.tencent.com@kernel.org>
-Subject: [PATCH RFC v2 0/6] mm/memcg: move memcgid refcount to objcg to
- unpin dying memcgs
-Date: Tue, 01 Sep 2026 16:57:59 +0800
-Message-Id: <20260901-bingfangguo-memcgid-rework-v2-0-8edd7f7a7251@tencent.com>
+Date: Tue, 01 Sep 2026 16:58:00 +0800
+Subject: [PATCH RFC v2 1/6] mm/memcg: add a helper to kill the memcgid on
+ offlining
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJeTlmoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
- vPSU3UzU4B8JSMDIzMDCyNz3aTMvPQ0oER6ab5ubmpucnpmim5Ranl+UbaupbFFqpFpanJiUqK
- REtCAgqLUtMwKsOHRSkFuzkqxtbUA5Vvo4HEAAAA=
+Message-Id: <20260901-bingfangguo-memcgid-rework-v2-1-8edd7f7a7251@tencent.com>
+References: <20260901-bingfangguo-memcgid-rework-v2-0-8edd7f7a7251@tencent.com>
+In-Reply-To: <20260901-bingfangguo-memcgid-rework-v2-0-8edd7f7a7251@tencent.com>
 To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
  Roman Gushchin <roman.gushchin@linux.dev>, 
  Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
@@ -89,25 +89,25 @@ To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
 Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org, Bingfang Guo <bingfangguo@tencent.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788253095; l=3096;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788253095; l=1251;
  i=bingfangguo@tencent.com; s=20260812; h=from:subject:message-id;
- bh=2rsNpbbKndbyocdYHBqGvoSTRhCZGAVV39aajeiQvbw=;
- b=niyCOO6I31iqWLWbba9BN/RcyJmA4XUdfG73eXvhi2yvhf4G3il5zEqKw7xURsTT+nbknaOgH
- SEQtesn+OCHCSrV8AwoIdhtMQMgrZm5lhO4im7A0OvH0B6Hj8Ev/k12
+ bh=3jIkwaCFjFq8QjiGq9DEwjO0Gl2r32Hxoi06xqqEo54=;
+ b=fFy5sTfWuAG/5jEHRJE44WgGDDn7U5jjh+8LxOBk/3EumTxFbZ9fB/Db50YLW6h5pywsH36vd
+ pgSY2DJLajRDGHE5DuQDgcZ12R0BvZh2CcatUZ1nsRPAiD576IfDQcW
 X-Developer-Key: i=bingfangguo@tencent.com; a=ed25519;
  pk=q7u9S7d5e7VijWrYF9O+vv9/XvqWduVGtwGtuCObAHE=
 X-Endpoint-Received: by B4 Relay for bingfangguo@tencent.com/20260812 with
  auth_id=942
 X-Original-From: Bingfang Guo <bingfangguo@tencent.com>
 Reply-To: bingfangguo@tencent.com
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 15100C0009
-X-Stat-Signature: rfdtkp4i3onckxarcp5xzfcuo158mpi3
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 065D01C0002
+X-Stat-Signature: mkso3pgqodcn7pkfyah5joxpzju6i1ju
 X-Rspam-User: 
-X-HE-Tag: 1788253097-706016
-X-HE-Meta: U2FsdGVkX1/Nf6hqbNfitvCSY49Yzymq/UBwCvaavAKwLEUEdFCG4vo7IROk1RaLow3xh+VCU+d1pgRjVYzttk539KjY6vW6Upi1wUvwvqWzyDI/w49NlurWk8IpfGxnEW1DpnI4k+KyUTY2Q/0Hb7VMUEgDjNkVQWZYTCn6D6Zko/xDzYB57tVp7Aryz9nNwcm8OgGNV7T1+LUMnnyPWDEAYyP3yvb3tVPJGXrDhMZpc7F6MKDVrHwAnfPnBtEEJy7JyrH3PCbVvV+9wu78jpF9bFqfKWk2uTbOpsQ8KO1RwjTE9lcBhataCvrJS4PXKSj2sLrXIBAyvueatb1kCi1NmZzB8kpLqOC0M7K19K74PQWEDtI9DSKt7JMA77zLQ8v12c4ReHSAQJgsC5VrmuYA/m2zUqKRIsv+Foy9UUXu/76FtchAoPQBGV4qpsglhYaJtsUw9DIXDzBVhVJIXL/9cy6Xjr6QyrDuaCHPKxMlP8g2qnRyYt72vIAlrOn+R2qu3qOY8rYZ5yVrVQr/isRus3TiJesyfjzLg1XLMhqOuS3I00J1eJuUgKuSCjeTz4u6kYevozxd77EDpRNKp7oVnQJX0YdANkqeiV5SnaypgA3AURV34BkDhCWKiZDFZ3eQqdnCtTUGG/fyLFkDaetApTZf9RjoRvyiamrlwEqxBjgzJAy6WrDmVaCbQv4vApihauOgSx5Vi8etDwVfRJizsaCu9HaP7Gf/cpRnbKJ6DSiF596nfw3EbiekEZt6NNrk2BVPnydRT7fiv3FtsC0XHlVxyTwOfi/S5A+ekgGMWoWnxOAIpJ9iP1s25CzFe+W2Fd8+71xqZ52ARdRZOAG2vQXdmo1HvHeL5ra+xLcKoginDFh0rF8XPxXJTy2xttVAw6T7/QJrrQXP2QFByUFRaOjneOT8dggY2rlFR4k/tK3Sls5a27wLH9trHrH4OOzkGHYOJUn7yJwAqDS
- qy/gpjKl
- B9i75ne1tuIl1duVGLgSFfFoHI4gmV6+P/NSu+acL2KgDSwCsoMSplBhd2nwABIMwq9sLx6CixMGC+38r7DIy48Rm4J2gxquifIDbs3b3FROI9BAyJnbHtlohpl8npSoqzRTI7qOBWINPSqlZZv/wVEjCgKtP8xjiIkYtUGQ6cz+6fksACitGAfyT/hYwSJRDC5VFQEjFK5SQ+9injxjzbg5HwFlyUkK2P7Bki4u+er4IRNrekVYUQvxxKp6kr7Fr+sE9ueloZpjuz4AvaiI/qTaZh/qv1EPzsyr770p9Z9zh4zyOK74cU/zg5jxCkQTLCzMa+6eqNNIiFweRlwOQZbjj2tisbthqE9ucSGRWrxW5OCuFo9jJKDkc9dwUn1nMD9s7VsknFS11RamFoIfSw0jYF+EeB1lMzUfYbZCZtDU7GZddsRd7oLK5UuG8RdwI9ejh
+X-HE-Tag: 1788253097-662259
+X-HE-Meta: U2FsdGVkX19Tsd4YiK32XCG8wm6W1XBdoWDbSUM58GFfJ57xh8/bvv5EXrdMQPCtsqz1jPo9cl1JXcqhh3v0FMEsJ6nvVKNvh5FaCRs/+zep4vTihNMAQKQ97CJGu0aJb/QEoOQcs3kOKYvtLUaaoKjheH6ZRMik0WfZ12WVquAqClv9bpkRyzgc9Y21AkgfBi5/9OCeUdpathxlkfCOBdnqxL+IsjwQm0ZrHUDq34L+1GbAl5ifuFjpL2RfidxuIq7+TRoZDjUMo8iXeibzLYvhS9b977/IFakpBunhfDXyOE0W1T0dn1NRmQMmWebCLZylOdgruk1BVAW4mVGF9uI5YGT3skliv9gxEUXHYZA32xW8yeAIofjI7MwQ3mx6iUc6nvid2WJz01fMfk0DX/MLSKoZEo2tOaw3OowbVo3K1gwpCPI5OeCGqGpJLTl4gckPxPLP3F4kko2BFRMPJJnVGcb2Vnhj0tTl+M1Ce6kvGom2Pwh5AdpRmWtjAU+53TC5ISNW60jN1MIvE3S0SCETnfufw10At3SGMQ0uiVHff1RFyyDW54HOJJtRLL6fcznR8MH/2YxTFFlhemA8TYneHu4rNKJpkWEP7bJDaJa+XlZJcj+uw7NAjeJPi2WkSLcfqf7LdPe+J+Wms4CRRP4rByrjIPvnGZwIGFDuOntzfw9k8xs0LuQAM0TOPuVHBeq8l6Q9uJBQQYMYb5cwsSSJwsranNrS/fgq7YTNIRPCamsPDBHxyxNzfR8OlYUdIOrIL7PQyhMdWt3/Hjq1iVStWX7OQ7bq8IBZcHNwXyRExOceZYYie4qlpTtY4We45ez573K848QR8NsSlVWsnaGrA4DWywCAfmNmWvg1T5SgqtZAn/6r38ZiX2htadSvLF5fs5cQRBffBGQKxGP/Bm+ciUnSsQ73oTDAyETFYmsaxKC2kYtqLvbT6xtoWdpKCdNBYaA7VegHyq/KmIj
+ 9zFAoCy2
+ pvXEf0oQwcTd4i+OXQqrkoj72VW+wW+wcxEKVKT9+BEWL7AxuFCMIye5ZyAto3CF6S5Q9nivjRYb0LyG2TXJmuPYkucv+xO/BQiaaWkU619s2uuuFYwg9ukvbO27Dn5a9wq2HAt5sZX4/1B4osFhixd0TvmdIXTYPsgiPnC87xGG3a53VnYYrNhj1laAVTcqwexi53e3/WuESZRWlXAK7iCqRw2Qnccg+I8eZjXy52cZ+xmrQpxb/ff1KEBZv1Vsnuln5hK58l14lpTJqdi+ij5nj0Ued/R3fclfbiUir4WEP9VtEz3ojK6vf41MKzYQMLyzU9dOc6J3uKOoTvMdg5nuRASTG6RcqhbEdpdoZTs5+JLWlag6hosJcR3WLTHrgxK91ALFMju5E1dpqe62Tob8WUynmFZXegKoNfXQxDW1UGT8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,71 +115,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Although the dying memcg problem caused by LRU pages is fixed, I can
-still see the issue on some workloads that use shmem after those pages
-are swapped out.  This series binds the memcgid refcount to objcgs so
-dying memcgs can be freed normally in this case.
+From: Bingfang Guo <bingfangguo@tencent.com>
 
-The memcg private ID identifies memcgs for objects that can outlive the
-cgroup itself: swap entries and workingset shadows.  Today the ID's
-refcount is embedded in the css, and every outstanding ID reference
-(mostly swap entries) pins the css, keeping the entire memcg alive,
-which brings a problem: A swapped-out page holds a memcgid reference
-that pins the css, so the memcg cannot be freed until the page is
-swapped back in and charged back to its online parent.
-
-The work done by Muchun Song and Qi Zheng already charges folios to the
-objcg, which is reparented to its parent when the memcg offlines.  This
-series applies similar idea to the memcg private ID: the ID's refcount
-moves from the css into the objcg, and the memcgid xarray holds a
-reference to an objcg instead of pinning the css.  When the memcg
-offlines, the objcg is reparented and any remaining memcgid references
-resolve to the ancestor, so swapped-out pages no longer pin the dying
-memcg and get the online parent naturally on swapin.
-
-Patches 1-4 are self-contained preparatory cleanups:
-  - add a helper to drop the online-state reference on offlining
-  - take the memcgid reference only after swap charging succeeds
-  - make mem_cgroup_private_id_put() take the ID instead of the memcg
-  - return the memcg from mem_cgroup_private_id_put() for uncharging
-
-Patch 5 actually moves the refcount to objcgs, and patch 6 makes the
-remaining callers (list_lru, workingset) to filter out memcgs that have
-already been reparented.
-
-Changes in v2:
-- Rework the logic to try to keep changes small.
-- Change order of the commits to make it cleaner.
-- Fix problems reported by sashiko.
-- Reparent to mm-unstable.
-
-RFC v1 contains some scripts and codes for reproducing the problem and
-testing the fix:
-
-https://lore.kernel.org/linux-mm/20260813-memcgid-objcg-v1-0-83d21c685b77@tencent.com/T/#m0e8ce07568e16239ba113c803f27caf308b299e7
+The online state holds one reference on the memcg private id; it is
+released when the memcg goes offline. Put that release behind a small
+helper, mem_cgroup_private_id_kill(), so css_offline() reads clearly
+and the id refcount helpers stay symmetric: get_online() / kill() /
+put().
 
 Signed-off-by: Bingfang Guo <bingfangguo@tencent.com>
 ---
-Bingfang Guo (6):
-      mm/memcg: add a helper to kill the memcgid on offlining
-      mm/memcg: get memcgid reference only after swap charging success
-      mm/memcg: pass the id itself instead of memcg for putting ID
-      mm/memcg: return the memcg when putting memcgid
-      mm/memcg: move memcg private ID refcount to objcg
-      mm/memcg: filter out reparented memcgs got from memcgid
+ mm/memcontrol.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
- include/linux/memcontrol.h |  15 +++---
- mm/list_lru.c              |   2 +-
- mm/memcontrol.c            | 117 +++++++++++++++++++++++++++++++++++----------
- mm/workingset.c            |   2 +-
- 4 files changed, 100 insertions(+), 36 deletions(-)
----
-base-commit: 88297631d4d42f6004cb39c0ba3da7d2d10a616f
-change-id: 20260827-bingfangguo-memcgid-rework-938e25ecaba2
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 256b68ffca70e..31cec9dde55f0 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4048,6 +4048,11 @@ static inline void mem_cgroup_private_id_put(struct mem_cgroup *memcg, unsigned
+ 	}
+ }
+ 
++static void mem_cgroup_private_id_kill(struct mem_cgroup *memcg)
++{
++	mem_cgroup_private_id_put(memcg, 1);
++}
++
+ struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg, unsigned int n)
+ {
+ 	while (!refcount_add_not_zero(n, &memcg->id.ref)) {
+@@ -4385,7 +4390,7 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
+ 
+ 	drain_all_stock(memcg);
+ 
+-	mem_cgroup_private_id_put(memcg, 1);
++	mem_cgroup_private_id_kill(memcg);
+ }
+ 
+ static void mem_cgroup_css_released(struct cgroup_subsys_state *css)
 
-Best regards,
 -- 
-Bingfang Guo <bingfangguo@tencent.com>
+2.43.7
 
 
 
