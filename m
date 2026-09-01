@@ -4,118 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EAD1C624D3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 15:54:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C8FEC624D3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 15:55:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 286156B00A0; Tue,  1 Sep 2026 11:54:49 -0400 (EDT)
+	id 370976B027F; Tue,  1 Sep 2026 11:55:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 236BB6B027F; Tue,  1 Sep 2026 11:54:49 -0400 (EDT)
+	id 320B16B0280; Tue,  1 Sep 2026 11:55:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14DD56B0280; Tue,  1 Sep 2026 11:54:49 -0400 (EDT)
+	id 2117E6B0281; Tue,  1 Sep 2026 11:55:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E2E8F6B00A0
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 11:54:48 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6D3111A048A
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 15:54:48 +0000 (UTC)
-X-FDA: 85165641456.28.65BBED0
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 891B940003
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 15:54:46 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=EBROAqcf;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.49 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F01296B027F
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 11:54:59 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6D10A1C2101
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 15:54:59 +0000 (UTC)
+X-FDA: 85165641918.05.B456A6C
+Received: from relay.hostedemail.com (unirelay04 [10.200.18.67])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8008B2000E
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 15:54:57 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788278086;
+	s=arc-20220608; t=1788278097;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ucz+U5vH56qFJK/L4c9McNdRpbMBTFsKxX9xAzx9wCw=;
-	b=Nca2TXMPtAlUAXyAudMzmYaZFDKcETLbUGl9zi+N21TXEj2sBoJ1SsJVc6+whNVULlO8bH
-	zUAbYe+BfI9K3JERpLMmwSMnODCBrSiOhv559eEzk3YM+L1qWF0qMZBZpQehUENthEFkPq
-	IN+KS0QMlYOVf5fJp7uZfFPI4fe9QbY=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=EBROAqcf;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.49 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	bh=PMQPDVPJ0tCxO93gmrhVyeG5Oa0anovLBVYtrsBizkA=;
+	b=Iulw+r1Wgny1sC8fg5WAfaY0ef2l+PLIy18dqHNu9Ny6FvpfRZm0440Sv3LCe4ZedTye4R
+	NXya+qWhiTWyLnqhXZviqCQaYV7Cz5eOExJRQ8eLHEJNE34tKdcCA2L3c+IAD8g3TyUdG+
+	/WcTgXFAv58c9b6eUrwx40gKAh44TPU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788278086;
-	b=GqBXUdeLvgkxxaPTq60/yd10TlNBECS/Y68PF+jOM3ALMexjB+vFPwIA0XGmk9O1ObB0EH
-	5V8qtSpgJzhv6agDs/bugoQORa0gT2dXT/CbQ70BPrXXj5PXWYpXpnC1UdPf3LpA4A9KXh
-	w7bb1nkjhNxQ4Y8G4RxjTASLniQlN0Q=
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-90cc64570deso14702076d6.0
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 08:54:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1788278085; x=1788882885; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Ucz+U5vH56qFJK/L4c9McNdRpbMBTFsKxX9xAzx9wCw=;
-        b=EBROAqcf9VGRGy8L72LuHbOwXtF+7FHS70IzxOMhP4AFsawdtjXNCfSLTxQwmgq+WC
-         sNYhsrIbWTsHlC38tqfD7wwnWXVtZ1W3wMjfn/2DubWJwWoxSTRq67veKgy9REnGzIse
-         mEIcuB061Mb1dQV88QRm5Y+17G+LQ41nIHP8F7snln01C6NpDVmC2BT+LD3jI/CYSWv1
-         Mp5V5WOY1/yfrnuG1D7f+C8u3/iTPNzmRDaZNekLhVX2UzF+rA8d22QH3RSzzSf4c9ax
-         HGL1J+iLjR780c1gOW8Z452yLdOISVbq+r2oB/AFi70lGWo+c2zj7DdHxBp2zc8B0r2A
-         /lNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788278085; x=1788882885;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ucz+U5vH56qFJK/L4c9McNdRpbMBTFsKxX9xAzx9wCw=;
-        b=R/HfME6ofw9ZcIXGs3Fz0ImQ4CZUcdhLoZc+1fNrrLqpVWT/INfwhxkV0SudVELHOw
-         XUuH9cQV9B/P+BNbEpFITvwyux7MygtQKKl3ECwCsRrXH5kkBlQUtf5u6PChSzyo5CdZ
-         CZCO0yAqgObi3bcpr39oqldd3m3c9aoDV+n3c6Awj1LAAhoSzNWE92NH13jDpVIsEkS3
-         8c2WSAsV/dmU7CaKDNCIX4n0LVAQamO3J/DOOCLqQE1NZ+H5SayAxm3mf6W6V/FEogJR
-         LHlDO3bRwMCX+GPb1HbCSX+Y8rIbzHSE+lXx7Xg3GO0UU9BsAs9jva1xMXlqU/0vJ7qm
-         uLsA==
-X-Gm-Message-State: AFuF++k9egC4fONeL+0rKnVMUstwpImx3z6NWnnfcxFd5yp0quK2+KdU
-	xqa3BzDhQsrovO11CeDzW7B/wF3qpW/4QklzaS1UPrxTuchzjtyQD/SLfYrQKqyDj4s=
-X-Gm-Gg: AYBFou1Ck+e0r3kyI45LC9fR6wA/bxEWcXVYYmIW8Eksmo1PtUWedLgrYva/zc8P3S4
-	/n5fqDhtMpB9YGorLI2+b0zUb/W8zXn8Bg3JQG3n5xIMXxPuPXXEwU0L1lry8W1lb6BZqfBIXST
-	rxa50qRzAwX2jDZAriHaOp6zQZlITcGGi9spdE8uj0kDu0eJZ5apHgi3sJ9g8QDONs2XKJRYLjF
-	HQWSTrsmSPV/Ql/Wvuva/6mPkKHqGcBEPhyAaRRRqG9JBRvqSthpyB2bYUb3POV+zuLmvd3QlB1
-	subLA2mP3fVMOrtSJCKq94+nS2CAhgahm8Rwisx1ltif7KwxmBAuajJq2V0vHlJM3q8D8x5MjS+
-	F2rE3HTn60ucA0Cwos1W4UhgV0IIHU+R4ttksqylLd7+JKWlqt0zncPmyNjy669nHQxtZIIiAJX
-	xHU0/GOCe/xAyff4pnjx3qTGONSmVkePoVxq+jwJa96lgsPRM5DCF36vr64hls9gj70MQUQ+ORw
-	sPuZQAZWaw1pZ7OHDd438BrBqMdsQQrY9DgIcgxLUGb
-X-Received: by 2002:ad4:5cc7:0:b0:90c:c1eb:ae42 with SMTP id 6a1803df08f44-90e9579ed9amr72405516d6.13.1788278085601;
-        Tue, 01 Sep 2026 08:54:45 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90ce4512dcasm111045856d6.34.2026.09.01.08.54.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 08:54:45 -0700 (PDT)
-Date: Tue, 1 Sep 2026 11:54:43 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, matthew.brost@intel.com, 
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, apopple@nvidia.com, 
-	urezki@gmail.com, chenwandun@huawei.com, 
-	Chelsy Ratnawat <chelsyratnawat2001@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/mempolicy: take a cpuset cookie for the interleave
- node count
-Message-ID: <apb1Mq0rJfNwh7Xa@gourry-fedora-PF4VCD3F>
-References: <20260828193111.1023497-1-gourry@gourry.net>
- <877bl5qknu.fsf@DESKTOP-5N7EMDA>
+	t=1788278097;
+	b=zgJHGid3IeDUuvAB58wz2AujO40cW3ogrRzIR/Eh72r71WH3Fvs1pZTtChClIEqIVyOWoN
+	xBxRizCNUexGg4IMBjw1h0mLjZJrj9slQUc1cYtDD6YvBWNEmuMRxHiXUzqtUvibrIMDe8
+	Sqju/cQwaOfNznKW5ScdCjr4MdcgKbI=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	none
+Received: from omf10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C29301A0469;
+	Tue,  1 Sep 2026 15:54:52 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf10.hostedemail.com (Postfix) with ESMTPA id 8E80930;
+	Tue,  1 Sep 2026 15:54:43 +0000 (UTC)
+Date: Tue, 1 Sep 2026 11:55:42 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: David Hildenbrand <david@kernel.org>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, Muchun
+ Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
+ Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike
+ Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
+ Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Nico
+ Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain
+ <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
+ <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, Gregory Price
+ <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
+ Popple <apopple@nvidia.com>, Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng
+ <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song
+ <kasong@tencent.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Baoquan He <baoquan.he@linux.dev>, Pasha Tatashin
+ <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, Jonathan
+ Corbet <corbet@lwn.net>, Jan Kara <jack@suse.cz>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Dave Young <ruirui.yang@linux.dev>, Shuah Khan
+ <skhan@linuxfoundation.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, kexec@lists.infradead.org,
+ linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 14/14] mm/page-flags: remove PG_private
+Message-ID: <20260901115542.35cf337f@gandalf.local.home>
+In-Reply-To: <20260831-remove-pg_private-v2-14-3668159cd9e8@nvidia.com>
+References: <20260831-remove-pg_private-v2-0-3668159cd9e8@nvidia.com>
+	<20260831-remove-pg_private-v2-14-3668159cd9e8@nvidia.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <877bl5qknu.fsf@DESKTOP-5N7EMDA>
-X-Rspamd-Server: rspam11
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1/zWbvIDz+3Hi5z7GDK/fNqzAPKpw/khW4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=PMQPDVPJ0tCxO93gmrhVyeG5Oa0anovLBVYtrsBizkA=; b=tGc4Z9sCnIntcGcWtJ1kOvYe5256jqS1DsWodW2sqCKQLdl8Y8nHkKMI+/bZHJCQztdMhcSkJj8YVjXCQshVK+Dgc2EYzxp1kQ+nPt/MKxXAHxYAr/fN2B+/kb850ZrxY0100q3DUUBwY4s7EFwq4xvvaRIiE/XmnNIq0jxhRxw=
+X-HE-Meta: U2FsdGVkX1+zDlnR6QN6MUglWJjwZx5iCWUM+krVLXlc2zuUtd2IG2DLx1JPwqlTPq6HywJagZIVfhFWq44D2aDRr8CqPASzgDg55B72H7mSnF5ikilDHz6BwtU39295NFtcyv6lgavetSPz7y1L0g1K1zuV3ydBJ2a0X+t/9iTl4lf+jI9pSLCyfw2TQI05jjgMqbeUDhSMlamHBWoJCJ9h/PNz2A75JPoGpqGqH4tC/s8xhJUmsTXFGe6/YTY1Ki/+liODnEmp1JpspQt4nrByo2d4u2HwgRpO1hcQFU+FSiTYj5enzhApbGNiHUuTn+pvjGsLrpU3m7+D/3dcDhPAQVDdzRzZ
 X-Rspam-User: 
-X-Stat-Signature: 4k6h9tzc5tqhkakmm5xuhiosx4wu3653
-X-Rspamd-Queue-Id: 891B940003
-X-HE-Tag: 1788278086-363038
-X-HE-Meta: U2FsdGVkX18wLffSjlHoJhuOC1T1bHEksZ7i6xVDJeAxTzLh6dipf2vtW+qhplEwl7ZfVp+o5ljKaNEbhFr+1DF6+WUUxKFWt5G/XeHvaIA2WEjwYnOlerwqQ6lRrRK9oNwBmaFnYWaeX40d6c36phEECTa3+XTK9V7SjUQ0ABZsAr4Xs7ccwyXOL7G+PUorcdKP4l7CVUVT1ljP0zFwVALeYP3nHBuiZEHNQl2X7IltcfoycoZNZhcJVJ8Ko8ckCGR2NwPx2tiJQvAY0w8A2yj1V4DiChd4B9aHw70680D1JIG0hvmRErMAWvesvHVOXMvK1ZwAfA67nFKsw0xyJiRGbsUlDiq9J38EEdvP4nGUkBKhbcxPL2I2HbJyNFcATvLMakXzAJp8qEkGDmQpZeNKGeC3lCT4W9YVe+9eRZwvLWVJKaML0E1fzpSOMwKBofsnXceayNtGIRq89mlLa7GHED5Hr6Y6Bb8zpxNKMpOI9pmwpq/w80C4MTZKEN2IKawkQZruTHjQq1uGvTI5VDYdmPQita4KGzuTjYy0dgLftVc6kgTubP8St++jeSTFrg8yBMqNIRd1j2e3L574dR8/vo23BX12QnjMYVePOJE4+oa+I1DWXTHqQ20u4TxQtvOwMm04PKFxZ9Sst0MeDmTWsw7wTlT2jvF97B2wpWrXQwd8uEH8Qaf4+wO5HQ8lZgN7E7o6iKaOIxFeNTqm/N1PihxT2bKKRHcl61iUA3kueeW9gVFqYn3FVRkQGIq6BrRWpxk5xrxXudFMXaBpGizXyA0u+17kvpEosYGPD+defEplsuH3U/zvLfipaCYizmfUomkhSkiVZNQYzJAgBngnFOktN90E9JAXIpqCFZFcC7lHwTf2p1xXmRHuXoWTkOmwwWGCkgYA9ywqwiIxIyN8tgbqmTzJ59qMDEBUeHCXxqZrJc1TZLmGbK9uee04UjxGp/tsix3UDUhQetl
- u93O2ccM
- BihGohEuSJS7mpKGdI98NBld1yPxT6bBewlCKXRHbNN6E4LNB7Ek8e4AeGESPeRXqpRCTP6xR+lMhs7aMDi9+sRtGjS3u+Pe+7oB+KFdhGvRqUR/Zt8b8qz4YyoXw3xTDfjflymUxTAe8pThFpM1l5UYyJojcieUg8AuablivX542POy2MQRJHC566iYjCpONcltVMc1DQ0qpYu4TKTXOkV5AvYKoeXzEFowIn1WjXdwERR7xOVyZshdsYe35BugaE+q53VK+iH9snjqrFqAJFK3uSWTrLwmA30Or/4HV+xdyl+OXZKLLYeLWB+rIoA3oug5AqnT+d5k4UlJwbElJYiZrObYi+hFHTiM06HulV05rvqGQpMI32U7DhIYCLfOMPEAsmBopll43y4ZTZxBUmQBz5+ocDh2g9lpvPgAoxWTt5I2wk6RTWOuTz/u48NEkF4jE+lONgY3vdZn3PKSQiIlQU5OBPmml+R2BITZoULTNVvbHSmBHKGcu6o2DttUJfv4R
+X-Rspamd-Server: rspam01
+X-HE-Tag-Orig: 1788278083-807407
+X-Rspamd-Queue-Id: 8008B2000E
+X-Stat-Signature: b6ytfgjtokst1jc1aabs95dwf5ejwe1f
+X-HE-Tag: 1788278097-781547
+X-HE-Meta: U2FsdGVkX183UU1mOmYIYZGP9ySgXXv9or+7nkjIKg3vwhu/F2LaT3rfSIkyrfyczuWmq/wM7PmdeY/yEHL771U9lBOWdJR2Srq/kBVbIC3xug83HhOEdMJo/C7eDeeyPCgS8b9i9wYROEh8uCIOK60iXN/xlHm2L83mUyQwZD05/b82pbk6BC1mVPIonhD8rOi9tq3qqQ4ipob3TSqeKn5+U3oMWje1gaBaurwuAy5S3OblUqFbeVmjfZS/Tlo10ByPc9jL1YdRVjG9wCJmupwc+r+ayib7JOQXF0ln/0+JGrGYleEHLWCwwmFaDJFi0z4C1BHsAFCF7EgMWTaXbCmKVXQl1hKplv7Dvkka0qf07UaGarNKJF4zC9BBwTyYweBugclET03L4U0VkEoVydg9X14Fkpf1Hx6DK1uEaYxiK1+7/iz61I9Jc++QvfW+vyllknXrX9YHWxzKDVmEy8SWfIFf7g4oQt2Xr15nwdyDeN3qBq2C73t5GkURx92fziZUGh/tNhHTzMZ+WQ9C8u0e4lm4hNaEk8HjeXcZxjprEjUx3IC1CJtxa0fPCIM04oH06OCHvihIu5AOBS/IAcdHyNk8NGrkWq2rZGUYbwHCOSQGxWGYvRv4/y8JoRNdC0LazsHB3APlviYaHBZ2W0EDQp/PaspeULs+8pce+/KEaYFInqU58L1bpL6sNZvGVikA+IYQz4sxTXjJ84tF8bJ/6OnUJRC5FMnbJLUzUk9M1dLCy9eDqtOE7sFf87c3YTlnWea7md2XLh9BfS63SQSqU4zrJdPOTDDUJhRDED9EvL1rdwk6lN2YoIGIXtr+F1rsOoirSEaQWhOjlAeN9bb4K+CNr/RS5bJTq4TD0jTvtg7kV7LoZ2tZ7WEPiox2dE2Fljuvw3Z+XypTgtwU5mzYLomYbmfzY9tgnS7c8DPc3QSOy4bmuT3AYPLUMR5sLvIBLowI0z/o+kZpkmg
+ 3+LhQu2M
+ sfG9GYF6SgO/UDdFxUdZKFhR5QQfwQZQMJub5Z3NzSCtZET3qt2+2/AlWQMlzFGRGYloxB0HUR7A2qSCwp1f7rXOtfl6uNBsxOZaLDtvvxCaph9xx+MSpcY7mbdMvtaxIgD1o
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,16 +103,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 01, 2026 at 07:24:21PM +0800, Huang, Ying wrote:
-> Gregory Price <gourry@gourry.net> writes:
-> 
-> LGTM, feel free to add my
-> 
-> Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
-> 
-> in the future version.
-> 
+On Mon, 31 Aug 2026 15:25:37 -0400
+Zi Yan <ziy@nvidia.com> wrote:
 
-Thank you!
-~Gregory
+> diff --git a/include/trace/events/mmflags.h b/include/trace/events/mmflags.h
+> index 935893e5ea53b..caf090cd6f85e 100644
+> --- a/include/trace/events/mmflags.h
+> +++ b/include/trace/events/mmflags.h
+> @@ -144,7 +144,7 @@ TRACE_DEFINE_ENUM(___GFP_LAST_BIT);
+>  	DEF_PAGEFLAG_NAME(owner_2),					\
+>  	DEF_PAGEFLAG_NAME(arch_1),					\
+>  	DEF_PAGEFLAG_NAME(reserved),					\
+> -	DEF_PAGEFLAG_NAME(private),					\
+> +	{ 1UL << __PG_folio, "folio" },					\
+>  	DEF_PAGEFLAG_NAME(private_2),					\
+>  	DEF_PAGEFLAG_NAME(writeback),					\
+>  	DEF_PAGEFLAG_NAME(head),					\
+
+Hmm, just for consistency sake, can we create a:
+
+ #define __DEF_PAGEFLAG_NAME(_name) { 1UL <<  __PG_##_name, __stringify(_name) }
+
+Which is similar to:
+
+ #define DEF_PAGEFLAG_NAME(_name) { 1UL <<  PG_##_name, __stringify(_name) }
+
+But adds the "__" to the name. Then the above would look like:
+
+	DEF_PAGEFLAG_NAME(reserved),					\
+	__DEF_PAGEFLAG_NAME(folio),					\
+	DEF_PAGEFLAG_NAME(private_2),					\
+	DEF_PAGEFLAG_NAME(writeback),					\
+
+Where the __DEF_PAGEFLAG_NAME() with the "__" still stands out, but the
+code looks better than open coding it in the middle and making one wonder
+why it was open coded. (It took me a bit to noticed the "__" difference.)
+
+-- Steve
 
