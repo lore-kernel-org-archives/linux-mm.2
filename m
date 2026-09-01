@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A60BC624D3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 20:14:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 850F2C61DD6
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 20:14:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46DE06B008A; Tue,  1 Sep 2026 16:14:34 -0400 (EDT)
+	id 9022A6B0096; Tue,  1 Sep 2026 16:14:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 445836B0095; Tue,  1 Sep 2026 16:14:34 -0400 (EDT)
+	id 8D99A6B0098; Tue,  1 Sep 2026 16:14:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3834E6B0096; Tue,  1 Sep 2026 16:14:34 -0400 (EDT)
+	id 817046B0099; Tue,  1 Sep 2026 16:14:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 19FD86B008A
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:14:34 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7C38E1C218E
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 20:14:33 +0000 (UTC)
-X-FDA: 85166296026.11.0B98F94
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 61C106B0096
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:14:46 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E79FB404C7
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 20:14:45 +0000 (UTC)
+X-FDA: 85166296530.02.C2EFF5B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id CF04B4000E
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 20:14:31 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lbice+wL;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 52E0414000A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 20:14:44 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oK7KIXR6;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788293671;
+	s=arc-20220608; t=1788293684;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aEZEmYZMoaqekOPk8qqP2ODpRIO0XT0q9KzPXapNk2g=;
-	b=4d9I1ajBl8Zatna0EQ0IuNtsOioru/nyLfEbsbK2K776HU3ps8+zJsJOya25wsE1MlGtNg
-	nKKRHC/7bdwXcMARG7qzO/CggjUXMhh9tbZo3d47CVtWt8PXnJJ2sdAg+fWCnILPYLxbyj
-	uuRl19YAVMBXMBBfPje6EXJT/IxgNr4=
+	bh=XYAL/uAoi+EN4roiOHSrXabP2vbnl7qcOw3MP41npbU=;
+	b=x7H+3TrCBxQa+mKzpb2FOjG/571Q+FV0bDa6R0pRhEcs4jDymXFqJPGcUDlhGBLbPkBtd/
+	VwQ075yjR/TLT25dxlA0mG63aDGxu+a9LZbb3VtUCo8n/XWs7A7EiXi6P+biP5sY9LJR3i
+	3asvMP6mkvlelHHWN40FJQZOyoTMSJY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788293671;
-	b=c6+EjIPp5i6pabxdqqMJ4LTAu852figas2CcX4sEjAa+nrtTSRTF8/Bj39GMA3+c0v8X0X
-	Y9PrdayKkQOqVRC7DcNAGfu0+szQX6PkKQIwgxOsWZRTCJb6qgnZP2+xOzGXUgciD3WY5F
-	00OdsvvJ81VtrlP84M1GBJrqZWquZUw=
+	t=1788293684;
+	b=4oyatAUG1cL8+JxsY/xHXeQmW8CuLHfpF4mpGSSpLf3XuTh10GVfaNMRKE1hfseiKRdZvB
+	XR3ww0bLhkcJkYF5+7usgO9UYFfEEiZGjhH8Ntc2B4DHI2jylwUsCDTQCDOVShI41qGEl7
+	ykdS8FMVsSyNBDXg1DVsbg5xjONgGqg=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lbice+wL;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oK7KIXR6;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8B951600D9;
+	by tor.source.kernel.org (Postfix) with ESMTP id D443760232;
+	Tue,  1 Sep 2026 20:14:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C30A11F000E9;
 	Tue,  1 Sep 2026 20:14:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F541F00A3A;
-	Tue,  1 Sep 2026 20:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788293670;
-	bh=aEZEmYZMoaqekOPk8qqP2ODpRIO0XT0q9KzPXapNk2g=;
+	s=k20260515; t=1788293683;
+	bh=XYAL/uAoi+EN4roiOHSrXabP2vbnl7qcOw3MP41npbU=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=lbice+wLj+lCT8QM98ULT3hhnoph1ybVba4ki8BaTAtUERzwAFL3Q3ECL7S5NT1Bw
-	 af2GJr4OE3roJ0CS54vKzLOApz5rbUWlstAZhqaAhUNZ+JAnPt7rSJsk7J5froWi6z
-	 n6f784ysOfk8nLzxDJ3tgE66oJGb46pYShdqP6dF53A4x5gCcAGnWTkm2AlG7GUgbe
-	 7psRiBXFRCeVSoQRgDSVpVkwPSeHbJYdpqYtqhOmr7exMFXhudxgQCLL7hmUTZebm0
-	 wspK7+0gVSANfLCupzkEWgZLef4c9lQ7lAmSrFa9KB3Su9TirvLHRfJcxRMW4GPASs
-	 HWsZUWUQSNuLQ==
+	b=oK7KIXR6KUMFaGOJIUsL9dZOFAkwrVf2yKPCXU01KHGex01sBreWT258WZzUfcFn5
+	 N93Z1YC0ijmCWwzdoNGAU4G9utTIZGp5IgWf8X4H4hbfF5zVWFBqKBg4YeUMPjN0IR
+	 GRqaT6bQ/HcAeFBzveARB1bTlhtt6tGhp5xI9YMBwzO/d1SEgK960i+4ONjpEjdAwa
+	 7tG2nwlX09g2Zqlhw5BescVjXG5aZz+VId6dbPlddwI3F+7kLFJCguutYFwbYGa2Rb
+	 BvAnrQEVhQOr9OmQCQw70saSaDN2Yet3d9/+LJIvw+JtUjv3/nv6xht6k1tPEvBw4K
+	 3vqUArPhf7QvA==
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 02/17] kexec: Extract kexec_free_segment_cma() from
- kimage_free_cma()
+Subject: Re: [PATCH v3 08/17] crash: Extract crash_get_memory_ranges()
+ helper
 From: Mike Rapoport <rppt@kernel.org>
 To: Jinjie Ruan <ruanjinjie@huawei.com>
 Cc: catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, 
@@ -90,20 +90,20 @@ Cc: catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com,
  loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-mm@kvack.org
-In-Reply-To: <20260826092541.3905933-3-ruanjinjie@huawei.com>
+In-Reply-To: <20260826092541.3905933-9-ruanjinjie@huawei.com>
 References: <20260826092541.3905933-1-ruanjinjie@huawei.com>
- <20260826092541.3905933-3-ruanjinjie@huawei.com>
+ <20260826092541.3905933-9-ruanjinjie@huawei.com>
 Date: Tue, 01 Sep 2026 23:14:00 +0300
-Message-Id: <178829364020.3691424.17302958503793700435.b4-review@b4>
+Message-Id: <178829364020.3691424.10343800427604677653.b4-review@b4>
 X-Mailer: b4 0.17-dev
-X-Stat-Signature: qid5fruikmq4541u6cf4bzuuc1we1quo
-X-Rspamd-Queue-Id: CF04B4000E
-X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788293671-415689
-X-HE-Meta: U2FsdGVkX19bPhuJoT0P0J/G+cHU9g5s/9vnVmYFUByJvxk1KUTYRbgIWdCWYS9LLsNt/Yf3qiNLrBf0U0wozwbnlQqxiBsNnHqO74A4UFbd9TuFQvRz1WDXuRCH2scheGgO8Ww+tcuwmbI1n/Do2hfci6aQFOUPILDzuy/zTiWrBgZFUEt/qIjxDxNutSdeRjbjrIt/phKflQUoyDT3P1J51CU6Pvr2ZTujNyHogzZtJGmUf1P+eWI2cLsYjTCyiTFpwbwBY6+u//rYT0EZbMEq5OVPsH9+pSvIeG0UOZ3fZPJhUso+ITPyMJwerVB8GGlEBZ1kMgB+cNR55wHosA5YULU6t4KnsaW9INo2A7GqYzxYuTyIibT9Mkt9ttcP54lM7BvXEuNSvpobYeSn/pW/Zg8WOvMDLP9Cce05c/S6ZmszT6WgyR/SE6CmFNnhpULCD2VTI24U661LBw9pQMsGyJ2ZdudSCArOQtAS5gbPyRUieFXY6hHbe4wMP3i730mrAWLHQ4kESwaDvQfDQg0NZwXDMHd7RfQW9tuu8vmAOEsaB2c/SucKLX1yJDWKPL0/5jaoAJZW+eWgJMLkg3ReASagtz3UxwNXOmOgtG3xJqGRVc/36yz/15s6STsLAVFg4FJSldDD8EtGnaqOPSgQQoO82KVORDDxi2IqYs27bOqzX5+XJuMYmuxm5cRc4O/IGYEpmUgcXu2a7iVnZ/f/RR0E9Ji96TnSwn3y6givOXEICmY+cUWomSh3dHXP9mBICSDxGX1DCo7fmLcvXGXhNTl07WvbTi0ggyytz+BvcBLhqyWyOpbxr1OOR0PDDV3mXScwZeHttxeGpDD2pvyOKpHL28wxAkcFSSpJ/fYwargGxJBE1Q1efZp2y4i7GPLRFWpmD/2McJ4YtNyZAVuxXxAZfV0xiuS7LIFbmOe1Zrlmraq64EISGb2qnzneO+jiYjgmiWvajtKSpVf
- htmFaunw
- Vjsu7DCPuxNb9zupBHvHf/XcLHoz2krkesY5ucNBMn6ci+69tL2DtIr05y7MjM6Z5pjxNdjAGJgaq7uem3ZdC/lq3QtXJ5c18PwI7Pp2S2VNMnDO3vu2Lqyas2oHa2lSNjd4vjHgXgOCJnB58Hr+AlwzveM838mKq537DMrixzAoBqRDg8nKFidtIUxL/XVpa1BlM3MeOiUJQCA/vpSwQJgsDpQzMXI8sV/+YZcAb4ysLEqYQKrM0umRRcKWreFSXKW6nlu/S8aEMd7Bp0ef9+9iDyTd/oJgmppVFjiNDhgB+fJ6RMeN2+/3VTLbBA7TpCDKWf7KU3BmQGX+HZaVpV3YgXWOuu4n6k2JKqx7qSOdoOb1TZYq0J/8UtMXRdKz3bJFXAIS3WlW5l7T5eNEchEi+h3KdTaAwFp9BQrMj/+Y53/M=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 52E0414000A
+X-Stat-Signature: e37x9o5pf6nci83yqb8x7jyxci568b15
+X-HE-Tag: 1788293684-859325
+X-HE-Meta: U2FsdGVkX19PTMGF07XPfnFabbUDpDFb2+jXuF3kU4RPB8PcdN2HkqyJFQGiV6DnJ+6L58TTzwQ+9ygYgwhBTBRQBpq6Mld4/tWkiEzOD+oCEtUJZgKGI6BDHOCSPn5z5wW22RqVIAkU5G36e1rlBnxofqkshJF3XALZ4gzk5jycDyA4TQX6aegIYw/qHg5Vfn/nb7R1MF/qLLNybMbjO3Pjn4csRvGC/SmTXe16qvqB/ZNbVK+zekSZNouvOfHfUvuuRO1/vuiR8Y3SL7OzOPV3qcX1h+BpZ/1MqrZsWRbsYjHQX2S8LJlY9lRvMDLBwc1I25wWTXIckDyyaYyvnqJwd+YCqr5mpAvP5/Jf2zPWLnRj37m7OSL/FAy50ggw2d4xNdtjSIMV5jIteeVtK2HT26jn0NmvRMPiXS9J/SKkfeCZnAXdoFXQGzbMhhFLiQMjQp50lbI+pUHSsl8xnK8lu/HmzCLEcg4p3e8DwMPrjIfmnsGCUCSKgVTgz9wq409yKVJsE2hs1bIMAQqlVg0ur1xFr5MvI24UOauIIuoxGBkk/iQbLYiyEOscyqp1jwYPGE8H7RDU3ifEnZcNNnhEWLrfJFolH4J5TD1KFj0h/XUktXstBo4PWxW+/CMCVOehhUoFjxvechDcf3rnpRsbanQW6ZA84GthdsSMTu2rt9iSAeeek87DcPOwbqhKTemvyZg+kFucwvtR5V0nHH9RGTHeZt7dcRk3cxbNji1XGbROidrXBg1Ij1o3q/alcfD3VulA65LEQmWEF27CHO10XLazX5ZAesWp3vdW+Ya61w7/QWnn6ezuY++V8SPaQDykTVfip3n5btMrgrjtTPO+FxZmCupsFsfXX3rYp7uccfIyvR3d4ZS5WPkmFGol/TftESf1QLFydTKxWzalSjtu6kqbXFBZmzLZkQ93QT1iv4Xj186OS4uZqC250/beWjld4Qign+mU5wLF3P3
+ NOi3oJOx
+ l5YmeNsoIL4oUXDwQIDS7q1DlqSVUbn/V7RL9q07awX6R5e8+BHp7FfMpRuSZEo8DS4SAvsB3FrSuvafS6NdBNLLou+NRBfNQtJV3JoFd/QWqbCFSpAzV3SmkGkSwRABKZ/YCCVqOAKBa/Z4zB0gHPu60WiGWo3b3qUNrUXJItwImIAjkeHJ5zuYKOYh4qRp7RI8aEBN7sUh7QkaO6OoJoVDxyk6u+5x8mZvwcy52G7wxuKKQrp2+uudw5d/Bgsvaiku3/Zw+h2Nj3DLSdVYNTqEf5NC81Ihzf9anXzeMvRZPWPfbvqpZlmQnGbbF0EJLwjlOXj31+/ITQqs8W3jNYIhHp73hEDEt4mMsikicDgZyG2o1pXPnMqRCEu3NK7ljeTpQi62wtEJkqmXKsz/PHth0pNM/cmUxNQgHG3BSVgNZTNo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,35 +113,30 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Hi,
 
-> kimage_free_cma() relies on image->nr_segments to iterate over segments.
-> When an architecture loader (e.g., arm64) truncates nr_segments on a
-> mid-way failure, CMA pages allocated beyond the new boundary become
-> unreachable, causing silent memory leaks.
-> 
-> Extract the per-segment freeing logic into the exported helper
-> kexec_free_segment_cma(), so that architecture loaders can release
-> individual segments before nr_segments is truncated. Refactor
-> kimage_free_cma() to loop over the new helper, preserving existing
-> behavior.
+> Factor out the crash memory range collection logic from
+> crash_prepare_headers() into a separate function. This allows
+> the memory hotplug path to obtain and modify the range list
+> (e.g. remove offlined memory) before generating the elfcorehdr.
 > 
 > Cc: Andrew Morton <akpm@linux-foundation.org>
 > Cc: Baoquan He <baoquan.he@linux.dev>
 > Cc: Mike Rapoport <rppt@kernel.org>
 > Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
 > Cc: Pratyush Yadav <pratyush@kernel.org>
+> Cc: Dave Young <ruirui.yang@linux.dev>
 > Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 >
-> diff --git a/include/linux/kexec.h b/include/linux/kexec.h
-> index 83c296c0eb6cc..d7c83938dfd3d 100644
-> --- a/include/linux/kexec.h
-> +++ b/include/linux/kexec.h
-> @@ -533,6 +533,7 @@ extern bool kexec_file_dbg_print;
->  
->  extern void *kimage_map_segment(struct kimage *image, int idx);
->  extern void kimage_unmap_segment(void *buffer);
-> +extern void kexec_free_segment_cma(struct kimage *image, unsigned long idx);
+> diff --git a/include/linux/crash_core.h b/include/linux/crash_core.h
+> index bc087124cd78e..619af312bd9a5 100644
+> --- a/include/linux/crash_core.h
+> +++ b/include/linux/crash_core.h
+> @@ -62,6 +62,7 @@ extern int crash_prepare_elf64_headers(struct crash_mem *mem, int need_kernel_ma
+>  extern int crash_prepare_headers(int need_kernel_map, void **addr,
+>  				 unsigned long *sz, unsigned long *nr_mem_ranges);
+>  extern int crash_exclude_core_ranges(struct crash_mem **cmem);
+> +extern int crash_get_memory_ranges(struct crash_mem **mem_ranges);
 
-No need for extern, even though it's inconsistent with old declarations.
+No need for extern here as well.
 
 -- 
 Sincerely yours,
