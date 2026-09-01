@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 850F2C61DD6
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 20:14:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 656E3C61DD6
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 20:15:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9022A6B0096; Tue,  1 Sep 2026 16:14:46 -0400 (EDT)
+	id 1B03B6B0098; Tue,  1 Sep 2026 16:15:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D99A6B0098; Tue,  1 Sep 2026 16:14:46 -0400 (EDT)
+	id 187B36B0099; Tue,  1 Sep 2026 16:15:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 817046B0099; Tue,  1 Sep 2026 16:14:46 -0400 (EDT)
+	id 09DD66B009B; Tue,  1 Sep 2026 16:15:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 61C106B0096
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:14:46 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E79FB404C7
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 20:14:45 +0000 (UTC)
-X-FDA: 85166296530.02.C2EFF5B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 52E0414000A
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 20:14:44 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oK7KIXR6;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DB9256B0098
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:14:59 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6F2E814051B
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 20:14:59 +0000 (UTC)
+X-FDA: 85166297118.05.868B536
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id B2548C0005
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 20:14:57 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bur9NIA5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788293684;
+	s=arc-20220608; t=1788293697;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XYAL/uAoi+EN4roiOHSrXabP2vbnl7qcOw3MP41npbU=;
-	b=x7H+3TrCBxQa+mKzpb2FOjG/571Q+FV0bDa6R0pRhEcs4jDymXFqJPGcUDlhGBLbPkBtd/
-	VwQ075yjR/TLT25dxlA0mG63aDGxu+a9LZbb3VtUCo8n/XWs7A7EiXi6P+biP5sY9LJR3i
-	3asvMP6mkvlelHHWN40FJQZOyoTMSJY=
+	bh=f1/Jwq5+t6tQe5v6CVe+ERoBwhfQo9XFyVXChFbscQ0=;
+	b=e3H17/yXQ66fN9/7Vu2RH9xFsBDbt+9xLeQ0kCdAqtEOOPWMdVAc53y+cJ3sz/fFWj4+op
+	g5f8TdXDO9tQKWED1zxxxsUux7vHRq22vxAo5rj89Dx+dYqbThcXdf+3ajKnAZvaQmNWS7
+	YQjXxAC2gQuZz/FZTc1zTtOGiET6z9I=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788293684;
-	b=4oyatAUG1cL8+JxsY/xHXeQmW8CuLHfpF4mpGSSpLf3XuTh10GVfaNMRKE1hfseiKRdZvB
-	XR3ww0bLhkcJkYF5+7usgO9UYFfEEiZGjhH8Ntc2B4DHI2jylwUsCDTQCDOVShI41qGEl7
-	ykdS8FMVsSyNBDXg1DVsbg5xjONgGqg=
+	t=1788293697;
+	b=LGVWnR9OqS/jobLKdSOIXhelE3yhFIsA7sCvz8/mDsHOPsB3puSU09V+BaBgqwtsndfHYE
+	c7D8FpT7YaMPiv+kBoI7DbNaz6n7+3PoWwXR7OjW1LJDGpZD2cwgV9fW0nTVK+pxZPdGYh
+	S3ZQOU7I4MO+hgnTexFzJaFgw/gCXTg=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oK7KIXR6;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bur9NIA5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D443760232;
+	by sea.source.kernel.org (Postfix) with ESMTP id EF20D43345;
+	Tue,  1 Sep 2026 20:14:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C7A1F00A3A;
 	Tue,  1 Sep 2026 20:14:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C30A11F000E9;
-	Tue,  1 Sep 2026 20:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788293683;
-	bh=XYAL/uAoi+EN4roiOHSrXabP2vbnl7qcOw3MP41npbU=;
+	s=k20260515; t=1788293696;
+	bh=f1/Jwq5+t6tQe5v6CVe+ERoBwhfQo9XFyVXChFbscQ0=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=oK7KIXR6KUMFaGOJIUsL9dZOFAkwrVf2yKPCXU01KHGex01sBreWT258WZzUfcFn5
-	 N93Z1YC0ijmCWwzdoNGAU4G9utTIZGp5IgWf8X4H4hbfF5zVWFBqKBg4YeUMPjN0IR
-	 GRqaT6bQ/HcAeFBzveARB1bTlhtt6tGhp5xI9YMBwzO/d1SEgK960i+4ONjpEjdAwa
-	 7tG2nwlX09g2Zqlhw5BescVjXG5aZz+VId6dbPlddwI3F+7kLFJCguutYFwbYGa2Rb
-	 BvAnrQEVhQOr9OmQCQw70saSaDN2Yet3d9/+LJIvw+JtUjv3/nv6xht6k1tPEvBw4K
-	 3vqUArPhf7QvA==
+	b=bur9NIA5VjZqJ3jA9kvUAsKCinpmhYAyRbr8Hb1A0OQctcuO7N9DscX1sNVWHL1V7
+	 T80F+vdakutewH2IMUKIulhBeYbTt74ZvhHoMosmzBE80N+qc3JJtFqfa+UOgi4b5H
+	 nhJt07pq+F5fJOJSXkLDfT4qSN/I+piV60qOEI6PAZyKdu1ycpYXmW4JdbL3YGBRSO
+	 QhxKekth0A8llYBOSGx9oqJNnoi3gtqRLBPJlVRvjImiywEubcsr5hoj1xB8ayZBwy
+	 q8rGlbxN+AW6qnyVN4sOrSL4v4mH+oG0IpyaHj57TG+k/Vbf4tA5+oKuV69TJt709Q
+	 ed/bhiUFFcOQA==
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 08/17] crash: Extract crash_get_memory_ranges()
- helper
+Subject: Re: [PATCH v3 15/17] crash: Simplify CRASH_MAX_MEMORY_RANGES
+ handling
 From: Mike Rapoport <rppt@kernel.org>
 To: Jinjie Ruan <ruanjinjie@huawei.com>
 Cc: catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, 
@@ -90,20 +90,20 @@ Cc: catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com,
  loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-mm@kvack.org
-In-Reply-To: <20260826092541.3905933-9-ruanjinjie@huawei.com>
+In-Reply-To: <20260826092541.3905933-16-ruanjinjie@huawei.com>
 References: <20260826092541.3905933-1-ruanjinjie@huawei.com>
- <20260826092541.3905933-9-ruanjinjie@huawei.com>
+ <20260826092541.3905933-16-ruanjinjie@huawei.com>
 Date: Tue, 01 Sep 2026 23:14:00 +0300
-Message-Id: <178829364020.3691424.10343800427604677653.b4-review@b4>
+Message-Id: <178829364021.3691424.12328056849597833403.b4-review@b4>
 X-Mailer: b4 0.17-dev
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B2548C0005
+X-Stat-Signature: b113doq5jqce4kfjozimew7sz3qgawne
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 52E0414000A
-X-Stat-Signature: e37x9o5pf6nci83yqb8x7jyxci568b15
-X-HE-Tag: 1788293684-859325
-X-HE-Meta: U2FsdGVkX19PTMGF07XPfnFabbUDpDFb2+jXuF3kU4RPB8PcdN2HkqyJFQGiV6DnJ+6L58TTzwQ+9ygYgwhBTBRQBpq6Mld4/tWkiEzOD+oCEtUJZgKGI6BDHOCSPn5z5wW22RqVIAkU5G36e1rlBnxofqkshJF3XALZ4gzk5jycDyA4TQX6aegIYw/qHg5Vfn/nb7R1MF/qLLNybMbjO3Pjn4csRvGC/SmTXe16qvqB/ZNbVK+zekSZNouvOfHfUvuuRO1/vuiR8Y3SL7OzOPV3qcX1h+BpZ/1MqrZsWRbsYjHQX2S8LJlY9lRvMDLBwc1I25wWTXIckDyyaYyvnqJwd+YCqr5mpAvP5/Jf2zPWLnRj37m7OSL/FAy50ggw2d4xNdtjSIMV5jIteeVtK2HT26jn0NmvRMPiXS9J/SKkfeCZnAXdoFXQGzbMhhFLiQMjQp50lbI+pUHSsl8xnK8lu/HmzCLEcg4p3e8DwMPrjIfmnsGCUCSKgVTgz9wq409yKVJsE2hs1bIMAQqlVg0ur1xFr5MvI24UOauIIuoxGBkk/iQbLYiyEOscyqp1jwYPGE8H7RDU3ifEnZcNNnhEWLrfJFolH4J5TD1KFj0h/XUktXstBo4PWxW+/CMCVOehhUoFjxvechDcf3rnpRsbanQW6ZA84GthdsSMTu2rt9iSAeeek87DcPOwbqhKTemvyZg+kFucwvtR5V0nHH9RGTHeZt7dcRk3cxbNji1XGbROidrXBg1Ij1o3q/alcfD3VulA65LEQmWEF27CHO10XLazX5ZAesWp3vdW+Ya61w7/QWnn6ezuY++V8SPaQDykTVfip3n5btMrgrjtTPO+FxZmCupsFsfXX3rYp7uccfIyvR3d4ZS5WPkmFGol/TftESf1QLFydTKxWzalSjtu6kqbXFBZmzLZkQ93QT1iv4Xj186OS4uZqC250/beWjld4Qign+mU5wLF3P3
- NOi3oJOx
- l5YmeNsoIL4oUXDwQIDS7q1DlqSVUbn/V7RL9q07awX6R5e8+BHp7FfMpRuSZEo8DS4SAvsB3FrSuvafS6NdBNLLou+NRBfNQtJV3JoFd/QWqbCFSpAzV3SmkGkSwRABKZ/YCCVqOAKBa/Z4zB0gHPu60WiGWo3b3qUNrUXJItwImIAjkeHJ5zuYKOYh4qRp7RI8aEBN7sUh7QkaO6OoJoVDxyk6u+5x8mZvwcy52G7wxuKKQrp2+uudw5d/Bgsvaiku3/Zw+h2Nj3DLSdVYNTqEf5NC81Ihzf9anXzeMvRZPWPfbvqpZlmQnGbbF0EJLwjlOXj31+/ITQqs8W3jNYIhHp73hEDEt4mMsikicDgZyG2o1pXPnMqRCEu3NK7ljeTpQi62wtEJkqmXKsz/PHth0pNM/cmUxNQgHG3BSVgNZTNo=
+X-HE-Tag: 1788293697-902137
+X-HE-Meta: U2FsdGVkX18yexNB0DkRF4+1w8nD8G1Q4Z1ImjnJipkLCdyUHWfn61ZChCBUQYE8zTAWlsLr19AvjfpzU39i+nG9QQQMEhXFGSiqlgegFEfDt7XiW7qpQos2mH7dWh6o4A4Hy4PRWvIz7rxvpcS66XK1y45bX/jqLc2AKDdfx+oOkbI1kHH2SeiejKEacjtvEZNDREh9RxoqdLffax01s8iDF4E5Hy/zTZXho/2Ua2eAeuTDeRmOsk4R77capJJBCh+6i2zGrWngnM434lCgC4S3hu6+Z18Hn4kLPjFBa03diSFDXoitefC+JRVT3Nr6yn3bybAHgis1VG/eIkCbvNKM8arj+IuSYWPKZDcbdKtwcjufCVc3aPqAFeRGC0puqcTKbxYO78eOS0/+CKHMuwhCHfR1pDBKhRn95KqXBPWNofgb1okUo2EPR6g9GGhV4X2713uGOR1f0crenqDm6xfoQ7YwPRFnGF8BgXAcnradKa7KhGfgQXdj4PL7EXhg+ltdsSurK+G+k5KhoGXrsMR8XYamiVIWXV/lw73I3m86ZfTtMG0N5coa61YcQwEJR8C1oCamspwxzkkYlwrNZ9yr4ZVaq0bv8iF8a9/HGLM1ZTqeg2KukqSzVi/PqwxXw0lm0CoBUW2hWTjlRlSYyX6qw39aiLVK6QMVRThqP/dkNHqNqRHSEt9xjCWVsrmosT+f6HFMeeuMH2ph5I7sHDvThI3j8F19oZPIvpsctFVh5IEXDXf2Yoyi5bgA5Wczqg7PFHBSrwEmkS2X7cmZasExc76KBdIYUfNWGHTgMl2D751K/o225Z/YIrYZbw7F+Kl1YdnsEb0XrxuWHxVPpnTHXwJa1VWnXkPqc6rOMGxGI22KI6JJSpZMvZTfh1dPHgUM/jGsPb7YRsH3nFN3MfabwedeJYZkInp9zWYzXvuZjpGXrBd79asCZ+D6XPQM7ZwdEIDXS1S0u2eAuOn
+ mDdh9cph
+ 8tzke8XcKDcqqbfuNGRomtrAH+sdGesWkI7dL57X7hfzEkSCvVK/3Sics9CBEzI3jQvG7hXO4VawqD2DrZWE0wlCZ+hRDQIfZNga/Mhe7JtIi2qfZemOkepedMQBuQ/l5M/MASmKWnT8ivpTVFZnWjrL3tWemHVUPpspVQ5scNng8pC+pEUeDjMAICkhxuQoLp+1UAHVqY2hPY+ZrJJL0l8QMwCABuGwL3H5o+2B4CB8OMycY7nzNpUyWlFbGPQ8z3tLgv6OcflaFTQ4G+1xtVbJDnmrf1DWufrZO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,30 +113,57 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Hi,
 
-> Factor out the crash memory range collection logic from
-> crash_prepare_headers() into a separate function. This allows
-> the memory hotplug path to obtain and modify the range list
-> (e.g. remove offlined memory) before generating the elfcorehdr.
+> Set CRASH_MAX_MEMORY_RANGES to 0 when MEMORY_HOTPLUG is disabled, then
+> remove the now unnecessary IS_ENABLED(CONFIG_MEMORY_HOTPLUG) checks in
+> powerpc and x86 arch_crash_get_elfcorehdr_size().
 > 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Baoquan He <baoquan.he@linux.dev>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Cc: Pratyush Yadav <pratyush@kernel.org>
-> Cc: Dave Young <ruirui.yang@linux.dev>
+> No functional change intended.
+> 
 > Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 >
-> diff --git a/include/linux/crash_core.h b/include/linux/crash_core.h
-> index bc087124cd78e..619af312bd9a5 100644
-> --- a/include/linux/crash_core.h
-> +++ b/include/linux/crash_core.h
-> @@ -62,6 +62,7 @@ extern int crash_prepare_elf64_headers(struct crash_mem *mem, int need_kernel_ma
->  extern int crash_prepare_headers(int need_kernel_map, void **addr,
->  				 unsigned long *sz, unsigned long *nr_mem_ranges);
->  extern int crash_exclude_core_ranges(struct crash_mem **cmem);
-> +extern int crash_get_memory_ranges(struct crash_mem **mem_ranges);
+> diff --git a/arch/powerpc/kexec/crash.c b/arch/powerpc/kexec/crash.c
+> index fc0105c7af4c3..c47e3f867ea1f 100644
+> --- a/arch/powerpc/kexec/crash.c
+> +++ b/arch/powerpc/kexec/crash.c
+> @@ -474,9 +474,7 @@ unsigned int arch_crash_get_elfcorehdr_size(void)
+>  	unsigned long phdr_cnt;
+>  
+>  	/* A program header for possible CPUs + vmcoreinfo */
+> -	phdr_cnt = num_possible_cpus() + 1;
+> -	if (IS_ENABLED(CONFIG_MEMORY_HOTPLUG))
+> -		phdr_cnt += CONFIG_CRASH_MAX_MEMORY_RANGES;
+> +	phdr_cnt = num_possible_cpus() + 1 + CONFIG_CRASH_MAX_MEMORY_RANGES;
+>  
+>  	return elf64_phdr_size(phdr_cnt);
+>  }
+> diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
+> index 99eb8583d9321..116410ac90fb4 100644
+> --- a/arch/x86/kernel/crash.c
+> +++ b/arch/x86/kernel/crash.c
+> @@ -407,9 +407,7 @@ unsigned int arch_crash_get_elfcorehdr_size(void)
+>  	unsigned int sz;
+>  
+>  	/* kernel_map, VMCOREINFO and maximum CPUs */
+> -	sz = 2 + num_possible_cpus();
+> -	if (IS_ENABLED(CONFIG_MEMORY_HOTPLUG))
+> -		sz += CONFIG_CRASH_MAX_MEMORY_RANGES;
+> +	sz = 2 + num_possible_cpus() + CONFIG_CRASH_MAX_MEMORY_RANGES;
+>  	sz *= sizeof(Elf64_Phdr);
+>  	return sz;
+>  }
+> diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
+> index a97ed9605602f..e6251dfe451a8 100644
+> --- a/kernel/Kconfig.kexec
+> +++ b/kernel/Kconfig.kexec
+> @@ -160,7 +160,8 @@ config CRASH_HOTPLUG
+>  
+>  config CRASH_MAX_MEMORY_RANGES
+>  	int "Specify the maximum number of memory regions for the elfcorehdr"
+> -	default 8192
+> +	default 8192 if MEMORY_HOTPLUG
+> +	default 0 if !MEMORY_HOTPLUG
 
-No need for extern here as well.
+This only sets the default, but a user can change the value explicitly.
 
 -- 
 Sincerely yours,
