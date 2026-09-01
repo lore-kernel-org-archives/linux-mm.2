@@ -4,108 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBF25C624D3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 16:52:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25DCBC61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 16:52:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F24476B0088; Tue,  1 Sep 2026 12:52:14 -0400 (EDT)
+	id 27B5A6B008A; Tue,  1 Sep 2026 12:52:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED54E6B008A; Tue,  1 Sep 2026 12:52:14 -0400 (EDT)
+	id 22B4B6B008C; Tue,  1 Sep 2026 12:52:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9C966B008C; Tue,  1 Sep 2026 12:52:14 -0400 (EDT)
+	id 11C8E6B0095; Tue,  1 Sep 2026 12:52:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A82426B0088
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:52:14 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 252BFC0425
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:52:14 +0000 (UTC)
-X-FDA: 85165786188.04.0ABB379
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 7617E20007
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:52:12 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sXawFtKp;
-	spf=pass (imf03.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id DA0AF6B008A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:52:53 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 621FFC03E8
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:52:53 +0000 (UTC)
+X-FDA: 85165787826.13.0895F81
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A72F118000D
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:52:51 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UbjbsdLR;
+	spf=pass (imf24.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788281532;
+	s=arc-20220608; t=1788281571;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=Xlhjv74JKDRq/CdVQy+k9ZQqiUsDAvlRmVP2/IgXB6s=;
-	b=uegZVIiqPu5qd6Q2DLVj74kuuPQqxayMTPg74BXANIKIVV/Rk/zJEPgZeUKrjdD5fhmA6m
-	kZdjuJn6KbaJtPgHY0ydcTmDUJ1UFCCAhyP2eHAboACUljiaoGfeO2xfZNuaBzcQNsXwPB
-	r3MfXqyBSC2JE1TypilsvzlVsWNSA0o=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788281532;
-	b=BxztjxSxoBGH7eyM6lRzJpgqqJiM47VZZoQAuUsR6zkQDSsXEBICoyZlwnbQkYypduvOJd
-	a/iGeMIAGgi/fWc+iCktB+XEjxTsUQkZ274+/lkupI+DTA4RfqI5snxNiu/iHwp7plvpV3
-	2IOJAZWUr7fYH1Cpj+FUxo57blL/VHE=
+	bh=RHHQttzmL/RMe7qqTs0lkFSMfGHWu89ckwe8EHNKjuE=;
+	b=1U/txvN3RWUBgOBiqw3jAuEjRAJene006mcFVWQVFhjk24m1k4Kq9WW1AyyZUfiEP9lVSW
+	pJgBdU/nYlI28WWNfUjaXANRvYsfgzYtqR0+y0dYOQ3eyGHlhap759XhN5Ledajl4Yf8yR
+	JU07Fn5gzplrPr//jOqW2O7cjYob5yY=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sXawFtKp;
-	spf=pass (imf03.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UbjbsdLR;
+	spf=pass (imf24.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-39647184c73so1318821a91.1
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 09:52:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788281571;
+	b=fChlkcxnK7TzBqRsZgti9KJz7Hf1/A1HT2wfJ8ITukz0jfwNVjCwLOSEvWc+83G0ROWGLx
+	NteoWWDhweqUBxLT575fBz2f9P6Yo4sEKpshRWFd17UgAhwLCxspFnH0fsfdnV9sZXYSiR
+	fZxthrWofCa/BoJ3S1yu0j+m9kwc1eM=
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-cc1c7364550so98655a12.1
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 09:52:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788281531; x=1788886331; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1788281570; x=1788886370; darn=kvack.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Xlhjv74JKDRq/CdVQy+k9ZQqiUsDAvlRmVP2/IgXB6s=;
-        b=sXawFtKp58URXgWvtN9Ev+fGi2aK68R5l6OqBlGl2zK0e3+0lTRPy9gXCXD4bWXJB4
-         csD/XN/GfKF/DLtY/s8RWD+zzhsn90DxEXGBoZijYQVHowB6QOX3j9sbEryjmoBrtYHh
-         bJFfdpK3T3q1X4+Z7DNHzyxruRnsJ9Nf/61p+BBQk/2HU2dwszXiuvuqBAkxZWabDLz5
-         W31m8gqs1dBAwS9dkbL2p0GRZwC+lnQZv0J/ogu+t5sDj6Ne0Cwgc6yG7+sJBqruLsFL
-         /WHoQIm0Dp2hWeiC9vRH01VeBn6CQoc34Cd7L7vT1Jbc7B/tnu93UnSoKF1Jo0yThaVY
-         WxZw==
+        bh=RHHQttzmL/RMe7qqTs0lkFSMfGHWu89ckwe8EHNKjuE=;
+        b=UbjbsdLRGfEcNvOf30+pKll8+NKBDrN+/mq6tXJmBRe+TiZf/SPVXn1ZiIUDQDpmOq
+         eZUm5NARqN/nii/UhWBa78VlSZ2RERnj/TNaVD+73bB4otUsEo5FswLm8pjlMe8slzfk
+         xNctBnC6POWIX5G/pmuUAYFm+FiztZ6rfyr2w6fxKB5/ztJp26zQXbH69U5AMM0HDK8u
+         d5xxmI5SoKFXGdzHcYt/7+h4GGnrJWLB6RPIx8T49JdXwcNvyDfjl+aRjg1HGiiGxHg3
+         IBMMlR+ZvndujYtv7DuI7AvqIm2c3joiUMsSCG9/SOfqmC8R5L+ooIJYUkt7xm7ORh5f
+         iW0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788281531; x=1788886331;
+        d=1e100.net; s=20251104; t=1788281570; x=1788886370;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Xlhjv74JKDRq/CdVQy+k9ZQqiUsDAvlRmVP2/IgXB6s=;
-        b=F01S2h8IUA6nOkJ05N51b1lzQ6K5CiVFu1dQnTfTqhjQQskFrf3cQuDCH4A58mzT3W
-         RAIvt9kbWxSy7sTpRaY7O3bd+ADlvC0Q87gtFNp2shnt8AC8yJMTzpTNLTksE2mGcoCZ
-         LoYlneS/x1kPW905BUm/M6wLQ1thfPhW0KmAi21qeCb432KjnP0Q6AFDliDK2nx4kUJj
-         b7XGiwOUgmIAt+S/dMVaRo6IrBAvqsWYWvnhBJPvkXPxrGfPRO35vvtbT3iWm5IvcSvS
-         qCLnxCRzLrXbolsS7OeZOUaykZoRS9JA0AzvHbFVOsk5T54Aev2mOfEU3ht2QKdOIMaV
-         bjLQ==
-X-Gm-Message-State: AFuF++ne5Nhg/xwjYFaWtTMKr4TstUUc49uj99UZulbout1JiGZhkqMR
-	OQ9QxjeequqAYz8BgoSUcRTsScern8Elbdf2BNy6O8LLaaCyk5sJhyk1
-X-Gm-Gg: AYBFou13KN0ghgLJ3kQKCaqmCg9uP/wz49xmEc+vf36yUnMJP5nJb83aOAWDq3lR65f
-	97YrJJvjk4drp2mG0f6mXGYi08FKjkkPB18ftcK+ajvvxFO/JZfwYTqDVL8VeqweLHxhVK2ZGQV
-	uPdoKT9clBEI5z+Lx82ZibfUJwiy44QxLu4I1ZrISnkdoDevSg/WybHtwctQj+Ao8hhYTddWyR5
-	wgJ2y/irLo2H/S4//xgDmKEhLvBX14jdewtDq7vfFcEg3hJIC3kiDwzn8UveTSd7TVWz7XtxrvA
-	gTNqkuJLRezT4/wCQZJTPmspWm0JwctUimSFBeiKy7f3GvR8BNX7ScUwDSDfYawqNKCxT1YNcGn
-	mWFpqFTMYDAmU0z825DWXCCJi9pPyhrwXgLJDIEhqEBZ3rWoDYgp1iXN39ovqctmP0NSHDNE4Mu
-	cf/jkRhYPNnpgxiqEPbvyEtVbAgle60A7iL0bxAfZHVEC+3CjdUmU5f68=
-X-Received: by 2002:a17:90b:164c:b0:398:baa7:4c2f with SMTP id 98e67ed59e1d1-3990f79ddfcmr4165008a91.5.1788281531057;
-        Tue, 01 Sep 2026 09:52:11 -0700 (PDT)
+        bh=RHHQttzmL/RMe7qqTs0lkFSMfGHWu89ckwe8EHNKjuE=;
+        b=ARqgTOnz0WIOIUBwLsCIhuT2QcnEktqc/ceUybsMBEdppSBMg5SCQviaDtW+bOZLXl
+         iClVpFZhQtHe7plHjAALolnBej5MAs//07sdQuhDRYDzkHZsiLigahyTDuRhe1sc1bcY
+         ARhMEA6/dT0YE2PhYj307fo5OAzuZqvzbXYyYOSiBtWmDrfLsnP1EtfWefAsV+tgZjGG
+         IthWZedMvCW2N5EJc8VLwWiS+pd477r26ByyuzpPifs+MJ2owU5o5Ce1TekNeXQWfGKc
+         ylGUFmQE60H8BjO6EvrLYA9uYlbKb8DRpfEkgsWxHsSSpqWHFKONLdEUY/ylfHhUKhrB
+         qmsw==
+X-Forwarded-Encrypted: i=1; AHgh+RoopvN+tejyvVSYVzXyLnQqwPMOokOSYL0J96+97yb/V2sLuivtnRIGpCQ3aSjW2QLtp6zk3QZHkw==@kvack.org
+X-Gm-Message-State: AFuF++mG4pkOMpyvM0QoxRBtSE/EoDDCA93+SHnT8pWMmnBh+6sr0EsF
+	R4l3ufvF34UdECU50REtevoeM8fhxo4ZLgA40MtokMus8gyUkkPlpJPz
+X-Gm-Gg: AR+sD12v2npaPTP/DdI5AXEQNECwEsJIieWZ1g3P8HK8c3Nzb71Y5Cck6kAEBBOF4Io
+	Mgu7n+xnMVX4wMidyXZDfk4H080xmIzpCWsVrVxClSQdBMdGwONXN/w9PaiPr8AeF5QbpnEBPd2
+	GZ4hzO4vV+TXXcnFDgk80PlZVXiKaZWmlfH/zcjLzHozMPRXl4x3YBX7LVNkHj0918w4w3/LkG3
+	oR+Ti18jFQdxaMah/KE5JBBBgkDiK36prEXcuwiSC6d7gDyDzPm6fYxP8+yrjfLkWWGhAqXCjrx
+	vE5SqHkDRPnPMAJFjYPS3mp6rxEpoYW8KIOvgFZhiNXx+OeTeLjAj59RT/Sm62Ze8w85FazJ3wd
+	xJEbwUAHz4LhCI5yhX8rUjzQf4lR5WOrROx0xO1oIPtV+YfNkU+Ot+F5OWb3NBUCvg4FlPwHOJn
+	qY07QyXQa5LsbexNNRq69qnfFad1Q6F2CTSdFbmhJfyDxCdA0+OeCQ+R4=
+X-Received: by 2002:a05:6a20:9396:b0:3c3:791e:5e18 with SMTP id adf61e73a8af0-3d7ae4ee59bmr15597749637.7.1788281570393;
+        Tue, 01 Sep 2026 09:52:50 -0700 (PDT)
 Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39ae0dfe6b6sm524219a91.1.2026.09.01.09.52.08
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc1f36ae4ccsm6732204a12.19.2026.09.01.09.52.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 09:52:10 -0700 (PDT)
+        Tue, 01 Sep 2026 09:52:49 -0700 (PDT)
 From: Sang-Heon Jeon <ekffu200098@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org
-Subject: [PATCH v2] mm/mm_init: remove zone_absent_pages_in_node()
-Date: Wed,  2 Sep 2026 01:51:49 +0900
-Message-ID: <20260901165205.1025640-1-ekffu200098@gmail.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>,
+	linux-mm@kvack.org,
+	Pratyush Yadav <pratyush@kernel.org>
+Subject: [PATCH] memblock: fix page count when preserving reserve_mem regions
+Date: Wed,  2 Sep 2026 01:52:35 +0900
+Message-ID: <20260901165237.1025973-1-ekffu200098@gmail.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 7f6dpqy8aycrgz4jecbby7weqdxdfenf
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A72F118000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7617E20007
-X-Stat-Signature: ijb89y31yjindjz8nu5iczihry6wsbdy
-X-HE-Tag: 1788281532-753782
-X-HE-Meta: U2FsdGVkX18mYhZSShhBwOFfU0Vp0ag2e8BQoL49Wdtzody2uEzpQBQvkXw1lfnzFLdHhBjL8ymxw3vxOMKs8H0fVwzep4T6Idt6MbWCY4zhUik0W9rto6MeSCK7apJilVyh9li4oDGNpferLrtTVJhqm2cshxe+MdIekc+p3pDTSZ7umIBK4UlvUkgcsBNvb29A6JJpkwvabsnA3ADJ7mKjTJbcBqBo7Jk9C/mBGjqGZbAKY1xmjYbRYDIokCCgHbDq43aDi6xT5Z3LucMjI516ZMVSIHVflbDpriK3o6azYEYLBHDw58q2blQSBJQnifbK+Km0s2NqNDi/ceKdn/cS/qSx5uxI7qEev3vLVCIvWkKNyc3SmClO2vZ9Ev3FmJN/doZRHtMXML42t3dPYGjwE3Mh6M9ykGovmJqnnEjCoWdYCQ2v4wyOwhu65zH8eQOJuZO734ini2QIpkZamaYGS7CbImMh9CeGaBCVbb/9ekcdr7NK6pDs2RmDslbEQekFxcvVYSC90gmC5T4P62BxcJUL3y1us2oPdkyIhje1DNNo0FQi2QJbmwGSRwV4thTnEpmmO9UAVps2dZ6MwwUk0psugr5REdtOiz5PxHOIYpM15kLKWl0vVc/mTMv1TRg2K+1TZ7LAS32s7cuuyWJWUS8kxv2AM0/dWsrp5XrXagFZKrViEzy3vNHgch/49YUKA6l9is/+0SGPi1Jf2kBa1qTO3owYnRrEHryr2ofhM9VCP/GlSDbtBIX6GdGu5k53X37s3BhgZLvHFl06RSKy0AxW9H1Fd8zYMIhJMvolX89BCKSXtY3IkjzyibjCD/Db08WVXve+wa7C8y4pdCAay+ov0vSQ2vr3qTfYWIRAOTbNZolnjLT0MPZVZzCvocwri7DZLIRAlrZDmYmqJ0BysZqPwR3RVzujLhQPew+o/GQI697daGFYwv8zQX1YyFPY8wK7CDesNTSJcLy
- lZL62Dk2
- /uYrijxQuEp2DaLol6e/vkIulTAEBwve/DRGWLzXtCotgOBxCUlhVw9LcyxFb7lIB6dQwmVtpiQVDfqL5IYAq9bm1zKQz1KFwwdBM/4Ro+KXYlxPygIm0KpCRcoqOkqHwzvTNMQ2gw2BupuytlpL09GGxa8QGkHt8Lf3TzpQ3dTqT2YAEFgsE2Tylgn10GsyyA5v6WhM1d9Cqe5i9EKLJ93w7M3OldnvjrKgDiwJsE1qOyOEj2SpAfWslXDrUjHURASHWAcFF00tUUqLl4REU8dLUuU7CoIy61AypJzDC/bXG+o4Zzx+1yNdjaaq9zKFIObmy5MO1KL20O5CpdgBKZ+txrawUIttGHfvumb9mJnX6vdJC4JOytNxaStQpALjAnrGUxrPxD43SknEicvr5xQW5AQctEZ3JgTtggiKOvBeCLPq+WWbYODOBNBw+OnzKdt2f8l8lH4nr0MPRrOIK6hhi1pK1YJuMEGPlNIn+PKJiyp8=
+X-HE-Tag: 1788281571-637585
+X-HE-Meta: U2FsdGVkX1+Bs6jpNtkkON3gPwyCpDtiNjncUuA9Fx1RXsUJ6/rikgHUXXZQXX8goBgiit9NeGZwAtGFZyYJjStCy9mzab22rSsoEq9tenc/nBmXdqyxkKvajJV1Zy3HO2WZEa91VV6UTDL7kTbb/dM5yGTwJ5fpVrXr14eIOd5peA47Akn1aFtqBPCwV3pk0jbNBLukG1Elr2hfmsPA5emjXf3BMd9PA6GQN5Zj7PWA+ohWyekj5YWmWRCPdkbiSRHrKYyQgMOcMpjTwD1iiFGiHk22bxqT7lJ/lW/1GASrCOexw4HQFYJ3urnPjIZyFpJ91oilRLDyoDZyR5EBpPlqrYpS/8IvXDfkojNEw582sluRD6nWTHq4YJUFn1pK800FwwZGS+MkJVI7lG+8u32d6/7VKp1Qup6OZ6b72BCGRrwTiXaQs/wbk+1xGO11EM1ZJU054TVgWNdloCDjz838WoEAu4i5mLZXY9MP6CVTVgfjsIP7s4n1lRvTW7Dp9VDN/DunlLml4+v/nZWMOgUEvfxy4WYpIBaH8BM/YYIHMWjpRDBG/fQaCmt7yPvxsr+kVnWdTJsELK0NvNxtdgCZjtGPRK/CpjX7I/BRKQZc2dqXfAmgQ2MgypOEJxnQ9ZHYbGfbuSBzfWceFhLsYqR8fz4vcppj9v9zxzRmQOh/6ewBPPJQjciKXq6ip7gIt0w/fswXwyXntaRa6MiK132asCKh7sOhW/uHX2hGud028xmGkg/MgcM984Xs9aXqD2RMCZiBDx9v8zb464JQaf6QP4shQNaCCiXJjF+wbuYn/MzM42defYTQwnnKd71BREun2JFkuRTVb3MkRFBUxx9ToGxvfQgb1ouNKZCT77uZAB9jDPCzlK+n/wk1a3yf7mJnnpzHKE/wFhwmSspxSzw43bjQoh2Yinj7OAWjPwDeP0mAuWcXquKVjnqBKvHXz3V2CtDXSaAc5VrMRpa
+ 3Lv6JahF
+ Wc4tU2942RqF1y3qdlVysivVw3ClRAn8fhxmJgPLa42KBpQeDvbGNI8GX/944Y1Ie2PFfGaAm8yvX//+JiRKGBOEv4HL2lhaJoPFwvgRXwSbWNbvlkNZ1e1o6ym07uON+VAa+nZ6OzqdA38wixfgKp0zr/ixdZNcqcjXNrKVm0V5c8t8wxB8/ICho2TKwKIkT666Pg8hANdzdV4Yl5h+tXyzlMv77J38Bvy7DVcreXIGcom4r90NdTVJ+WtDR7OtgcDFgwP8xvv3gnl9A7YDFFk1mKKHVMK9/zjq3gwfTlS34O5+m3qVwHzE94CNoaP3WOkx31Bl6dlrHWs+4x9bHzLrIwhmWeVQ5QSXWm4vF9uO0BpVV8CUCol5fp647V7NivIvZP6dA+oXFDPhDIIL2rZDJH0zCikf+PdMGuXNJONqz75OUH1TkSXmSxJ6Xr4xViuFteGvGqHTDWZScpKaj2BwJzlJpkSKBWhYdoOLCLb7N+IdtEXONUB4KCQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,77 +116,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-zone_absent_pages_in_node() returns 0 when the zone is empty and
-otherwise calls __absent_pages_in_range(), which already returns 0 for
-an empty range.
+When map->start or map->size is not page aligned,
+reserved_mem_preserve() does not preserve the last pages of the region
+from map->start to map->start + map->size.
 
-So add an early return to __absent_pages_in_range() to avoid looping over
-the memory ranges, then remove zone_absent_pages_in_node() and call
-__absent_pages_in_range() directly.
+After kexec the new kernel reserves only the preserved pages, so the
+last pages are released to the buddy allocator. But
+reserve_mem_find_by_name() still returns the whole region including the
+last pages, so they can be allocated while the subsystem is still using
+them.
 
-No functional change.
+Preserve every page the region spans so the new kernel reserves all of
+it.
 
+Fixes: 8375b76517cb ("kho: replace kho_preserve_phys() with kho_preserve_pages()")
 Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
 ---
-Changes from v1 [1]
-- Add an early return to __absent_pages_in_range()
 
-[1] https://lore.kernel.org/all/20260827144151.486192-1-ekffu200098@gmail.com/
----
- mm/mm_init.c | 24 +++++++-----------------
- 1 file changed, 7 insertions(+), 17 deletions(-)
+QEMU-based test results
 
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 1533aebafb68..c00ac947a7d6 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -1166,6 +1166,10 @@ static unsigned long __init __absent_pages_in_range(int nid,
- 	unsigned long start_pfn, end_pfn;
- 	int i;
+- Booted with "memblock=debug kho=on reserve_mem=5000:64:oops"
+
+  # kexec -s -l /bzImage --initrd=/initramfs.gz --reuse-cmdline
+  # kexec -e
+  # dmesg | grep kho_preserved_memory_reserve
+
+1) AS-IS (before fix)
+[    0.188536] __memblock_reserve: [0x000000013ffee000-0x000000013ffeefff] nid=-1 flags=0 kho_preserved_memory_reserve+0x3d/0x70
+
+2) TO-BE (after fix)
+[    0.076935] __memblock_reserve: [0x000000013ffee000-0x000000013ffeffff] nid=-1 flags=0 kho_preserved_memory_reserve+0x3d/0x70
+
+ mm/memblock.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 777c69f05400..a17b1cccaf3d 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -2534,7 +2534,8 @@ static int __init reserved_mem_preserve(void)
+ 	for (unsigned int i = 0; i < reserved_mem_count; i++, nr_preserved++) {
+ 		struct reserve_mem_table *map = &reserved_mem_table[i];
+ 		struct page *page = phys_to_page(map->start);
+-		unsigned int nr_pages = map->size >> PAGE_SHIFT;
++		unsigned int nr_pages = PFN_UP(map->start + map->size) -
++					PFN_DOWN(map->start);
  
-+	/* range is empty, nothing to do */
-+	if (!nr_absent)
-+		return 0;
-+
- 	for_each_mem_pfn_range(i, nid, &start_pfn, &end_pfn, NULL) {
- 		start_pfn = clamp(start_pfn, range_start_pfn, range_end_pfn);
- 		end_pfn = clamp(end_pfn, range_start_pfn, range_end_pfn);
-@@ -1187,22 +1191,9 @@ unsigned long __init absent_pages_in_range(unsigned long start_pfn,
- 	return __absent_pages_in_range(MAX_NUMNODES, start_pfn, end_pfn);
- }
+ 		err = kho_preserve_pages(page, nr_pages);
+ 		if (err)
+@@ -2547,7 +2548,8 @@ static int __init reserved_mem_preserve(void)
+ 	for (unsigned int i = 0; i < nr_preserved; i++) {
+ 		struct reserve_mem_table *map = &reserved_mem_table[i];
+ 		struct page *page = phys_to_page(map->start);
+-		unsigned int nr_pages = map->size >> PAGE_SHIFT;
++		unsigned int nr_pages = PFN_UP(map->start + map->size) -
++					PFN_DOWN(map->start);
  
--/* Return the number of page frames in holes in a zone on a node */
--static unsigned long __init zone_absent_pages_in_node(int nid,
--					unsigned long zone_type,
--					unsigned long zone_start_pfn,
--					unsigned long zone_end_pfn)
--{
--	/* zone is empty, we don't have any absent pages */
--	if (zone_start_pfn == zone_end_pfn)
--		return 0;
--
--	return __absent_pages_in_range(nid, zone_start_pfn, zone_end_pfn);
--}
--
- /*
-  * Return the number of pages a zone spans in a node, including holes
-- * present_pages = zone_spanned_pages_in_node() - zone_absent_pages_in_node()
-+ * present_pages = zone_spanned_pages_in_node() - __absent_pages_in_range()
-  */
- static unsigned long __init zone_spanned_pages_in_node(int nid,
- 					unsigned long zone_type,
-@@ -1292,9 +1283,8 @@ static void __init calculate_node_totalpages(struct pglist_data *pgdat,
- 						     node_end_pfn,
- 						     &zone_start_pfn,
- 						     &zone_end_pfn);
--		absent = zone_absent_pages_in_node(pgdat->node_id, i,
--						   zone_start_pfn,
--						   zone_end_pfn);
-+		absent = __absent_pages_in_range(pgdat->node_id, zone_start_pfn,
-+						 zone_end_pfn);
- 
- 		real_size = spanned - absent;
- 
+ 		kho_unpreserve_pages(page, nr_pages);
+ 	}
+
+base-commit: dde94c26af59f5020adafafa08ece21ccd32590b
 -- 
 2.43.0
 
