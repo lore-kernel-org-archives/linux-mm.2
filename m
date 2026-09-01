@@ -4,98 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 579E3C624D3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 17:37:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA9EEC624D3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 17:46:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 36B896B0088; Tue,  1 Sep 2026 13:37:21 -0400 (EDT)
+	id ECADF6B008C; Tue,  1 Sep 2026 13:46:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 31BFE6B008A; Tue,  1 Sep 2026 13:37:21 -0400 (EDT)
+	id EA2416B0092; Tue,  1 Sep 2026 13:46:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 20C3A6B008C; Tue,  1 Sep 2026 13:37:21 -0400 (EDT)
+	id DBB0D6B0095; Tue,  1 Sep 2026 13:46:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EF3246B0088
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 13:37:20 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7F3071A04C9
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 17:37:20 +0000 (UTC)
-X-FDA: 85165899840.23.DAFEC30
-Received: from mta1.migadu.com (out-67.mta1.migadu.com [95.215.58.67])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3D3ECC000B
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 17:37:18 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Y7GCVbGI;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.67 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id B1EFC6B008C
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 13:46:55 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3C8EB404ED
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 17:46:55 +0000 (UTC)
+X-FDA: 85165923990.14.6D31BC9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 815DD100006
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 17:46:53 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MM8rdnOG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788284238;
+	s=arc-20220608; t=1788284813;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6XOYZSTmEQnVU8KlDzTJ5aH2mhlAFFry1TrLDBd8Z1Y=;
-	b=MlnkPwccHyo3UUoH3zqEbOSn9WUSfyCKtwSeEc/DqaWE+6miECKHhcrxSa/O/CvEP/8STk
-	wrWsP/lS5Z+BZkIBNWnd7ddxnc1FIXy9+W4DQ4/7YFqZK9Usps4SgxOyHiLSVLUzFpu3bt
-	IIaI+ZS68grRIEhCw4QFcpc730WrQK4=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Y7GCVbGI;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.67 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	bh=Di7QTynNdwrefgWArR8x/gWtyxCUPTHCJ3Ml9Ox/wmg=;
+	b=lZaDzrsAhlaffrXneRcxEunJxsCxtDEIcyNaCB/vUnlpPnjCbWj6vEH+KikloCRQn38oqE
+	pMoJkZaSucpfnO7DVdNzlVYRDBo3ModAN+yZzR/8G/0+0cuLOJ1H28JS2in5zuCCmDbodw
+	1YMaJw9N0Ea+ZQHOTq9U37TmRIp9ipo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788284238;
-	b=4wSUGnQ6dGlEISQexFb+UCTbzWKdSeYoqEryztMonXPn1TX8SW4UtedfmjI5M0kB9GDnA/
-	ZmNgGPAS34FI3Beh1H5dSbI23cpCL7ey8IOfj8qcRehtIPfM7zQxYfCB1PrdNPK3ibe2Qj
-	H53mPcU+0sXDZ3Pyn/eE0RSSYoyUZzM=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=6zo0vD0WrMxDTrLkYi5SZlZp0oHj/c0Lu7P8MC3D64I=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788284236; v=1; x=1788889036;
- b=Y7GCVbGIEXLYVUd79jHtVQQqb+uBUWPuth9NYQmo6v5EAfHQ7tZSk2S6fa+0ez6f00vUj0nd
- aBFMZZR2tPO4xr3NjVhOh7PxBHZHxGuzip0tn0zpHpPGmn09eLJrd1mrL3q061ELjFruiaqFdoI
- CTFnd7yCBk67B0NrKgluxrng=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id c386ce8340dde776;
-	Tue, 01 Sep 2026 17:37:16 +0000
-X-Mizu-Trace-ID: c386ce8340dde776
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 1 Sep 2026 10:37:14 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Chris Li <chrisl@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Ridong Chen <ridong.chen@linux.dev>, Lian Wang <lianux.mm@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/6] mm/memcontrol: make lru_zone_size atomic and
- simplify sanity check
-Message-ID: <apcJgcFLHKZfI40m@linux.dev>
-References: <20260831-mglru-flags-cleanup-v4-0-2d15dde0d7ee@tencent.com>
- <20260831-mglru-flags-cleanup-v4-1-2d15dde0d7ee@tencent.com>
- <apZVe8UHZ1CNo4r1@linux.dev>
- <CAMgjq7D6V4eTZJ1Q1Xf2J6yTCq=JjvzT-W-HHX6EnMfzm3BK1g@mail.gmail.com>
+	t=1788284813;
+	b=vJ6bGNkF8VtetYxt8UoCB4ia/jahpk5zlZtFtR4jdGip3btygBUzpH3OAX7a98agjtb7qE
+	pB/1DBTNT4NfBVNwSbnr/tNa0XVpyEp/tqjNe+hGFNWuHdwDks5/JkfIMh66XMkEInkmhQ
+	0CB4DeA2frSuLeI7pLPoXGgaUIlZ9BQ=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MM8rdnOG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9F7E940A39;
+	Tue,  1 Sep 2026 17:46:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A3001F00A3A;
+	Tue,  1 Sep 2026 17:46:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788284812;
+	bh=Di7QTynNdwrefgWArR8x/gWtyxCUPTHCJ3Ml9Ox/wmg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MM8rdnOGJ8NlTTKLBF+ZWl4lOqzsu33URdTXUoJAJpM+r3LMdEnN32gB8oaIOp83P
+	 z7fAnqDfQSf6tUhZgpY4nWuMOnOy7OfNzElYFAYlsMu2dcBVtpp2mqJUbXPsNkvPxV
+	 11dRQjJ7g1neo95rCP6rPnh8KcRaPxitPJjADq9dyLpOgxG24g/VuDYURyR5Pqy8Eh
+	 COgDziYII4r37BFKQYvTyK1UzqfV5hd2eo61ezLxLtw6eNo/8Hp7OJIVWxoGYK7+t9
+	 7rtvqZ/IE+uWuuJPihziw49O8FbDUnDc5Ycrl6Ydu8kO3O5Kd29Z2yQnBOLRiTMiRZ
+	 Mv+NLrts5eGrg==
+Date: Tue, 1 Sep 2026 20:46:43 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Eli Billauer <eli.billauer@gmail.com>
+Cc: David Laight <david.laight.linux@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>, Brad Warrum <bwarrum@linux.ibm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Michal Simek <michal.simek@amd.com>,
+	Ritu Agarwal <rituagar@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 2/4] char: xillybus: replace __get_free_pages() with
+ kmalloc()
+Message-ID: <apcPg_y-HsMki7we@kernel.org>
+References: <20260830-char-misc-v1-0-05e2ce44f291@kernel.org>
+ <20260830-char-misc-v1-2-05e2ce44f291@kernel.org>
+ <f6001085-9234-4025-ff34-6cc4a66c293a@outbound.gmail.com>
+ <20260831123937.32255a49@pumpkin>
+ <apaF1HUtJnstuUN4@kernel.org>
+ <1729fb06-6beb-f8ef-3e71-47fc3f00345d@outbound.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMgjq7D6V4eTZJ1Q1Xf2J6yTCq=JjvzT-W-HHX6EnMfzm3BK1g@mail.gmail.com>
-X-Stat-Signature: u91pbqocjx3y6p9qcbwxrxip5fj3a94m
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3D3ECC000B
+In-Reply-To: <1729fb06-6beb-f8ef-3e71-47fc3f00345d@outbound.gmail.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 815DD100006
+X-Stat-Signature: 68dsrr388ai56dmy5suah7e3xcamoxyi
 X-Rspam-User: 
-X-HE-Tag: 1788284238-361117
-X-HE-Meta: U2FsdGVkX1/YXaRhCKpDnFNTMDUbfhKTwmPX4UQnWuAEZAJSLkS4yGST57d73iD3jIxBE3Gasjt4mB61OOMWGL/0SBDg+wbSyUVWk3QXsamSYMJt/4TI6yLvF26ksMnybxkoQEAMaZdXQomOcnlWqf3TGoGoMl9AxyzEK1ufufiKG/B8OFdj5GHv7YQ5ZKdknjYuewIPih9nzgfXTNs6mq/hgwo2I+AiIUwGN3hDjtDL85zfbABqftvudaJZHkn+XWKFwctJnN+MdUXi9zVKMlcO0s1LNFlA+v/UBdzEthfjkNj7UxjUUawrH7IklI9hd6003mF/koBtgXJHJtgUL++vdGTZsTVE023VuLWBH3Mw6ogMNTJesr/v9WonC0HbjJKTU7AcmVeNpABSlkqrMiVYhhEvBglZ2gRGn206tg+0lli04Hrmh9Apbke0JiXIAt6Ip8MnTW0Izn1uxbY6IaOFHa52AaWEsYCvXw32XY8X3VHRngt2uFRyiilO83rfH/0lm7+cm2ziUGk+y1LtEUDO3Tgs6Piwk5vYIglf5GFMJSCbR3kBBvpOm3iHHnTE6VewDi/d18gv+VSGOZplw+uSadVs1J3xf8pwi7XVZdLbkS2zTqxqPR9O7u/3Pcsn6fZqoEmKMDt3JCsXQdU7mSROjkz5GCZdFQcDxKdU4P9p0AFSqki0BJSV/nq16Gq7rCUW9r9mif+FzvH11VD8Qx2BWdthhyoPIYhHuaXhKDwxpKgI/nQTk/60CSasH9BtwNK9sBgrTCx55CZP90z4rcB4AgUJSDWy6iZwnN17iQJCdNKnmC8gJy2okCIUi0Dj3TDnSjx58aFQAyjPvQNX4fjKoNWoIqG3cJ+i/65xIcUeGJC9QSkT1ODhLZKiQQzKcSwLkv3e1135/fly6m4nTMUqwf0m/46CPnWnWJHMuLqztiXzXd3xCaTZO+39au1dQVnohtzRtH7q1OMCqOs
- d57tSmyW
- pY0IMhQpn7ncymHkC3xG9zxsoSs85KNeOqsdJwICTi4pzzgtr7OV17wHxYXaItIXUWp3fBC5O4xcvzsRJP0kWmWepArEeE+e4ezNbpFBa+97LAKiLfc75RKt95UmD0p/56F0bFtKsH/TClDAZOIbtBq1Pg+2H52nL/CklXhyptg7R4sqFnDHLbZ2ukw1eZIkwA8FqNGGIr5URjJtDyLZI30dMBIy8xqLTDDIgKlFVILaS4yu9SNMz57gTKGtW0lzw47Lvm71OgSFBkJsZES91uD3dGWm8KY5+LtZ8NoqPTkf/ZyslsBSL6AUvjvy83wRee6mNuOCR7wFeA2wsZ4nUKuPJTeNbjlnou8DCfKWxvNMkVulN/NrCOfURAqkACmP8C6yujjcGqx8ul+P64Y8k49EdXcoI95IWMoLB+ALOiPevDY3vMrdNR1FhitkixE7JprMt
+X-HE-Tag: 1788284813-824252
+X-HE-Meta: U2FsdGVkX1+euS6IuovpGXRcrBBc8anY1aNCGsSJRNuydLk1HY663kouo5EsbcOVM7vjhg5cAMldSxHzcE2qCv1RVCiF+F9BEfr1mLGg9wd8iOzG+D1Ih6+iNdaPAQTScKtpZ2DAjTQcB9sKVfxmueS1D310AKEfWE7e6YElTGo4RjDtBexAMw5m/p6ewJYYJwJT8Q8A3oPLWSLC8ARckp2bX66QnIdGqpolu7ojT58AySaNbrjisbKJRoVXq7s028nHiRWDKQJZk635SZ4uMEybnoIDFpYVEc1wDHr8iYhsurL+xlCMcPtTSK9U5xDBXz0AnxqAk7tNcYVB5Yo/l614CpIZU3qeq4R8fJjlM8ZyCT9tz0XRyIbtq8o23ZUJu9A5KxB+Xa8RCqRNfYCxRjtdJZAJBSjk8C618v8ZXlJ/LxI6iLYtoAWSbYayaBVIGSRnK8w0Xf2SGygV37/l7Q3F8Y1ne6vbbxIeLP+09DauVwskAoWTi+3GwzfvHeobpIs9OMF4/jY7KEoFYF1D7Eqg46nbCZCf7D0jjaeCAR/4NXwpr/hshXOlRLzVRAPTL3KuqovDA1daqf/ZdKTS+owPusbBAoqUIBzjYDSy9n/7Srg/Glvk618/VaHHbheeZvdSiDHlqUSi6hZCXTBMxbEyz03hXg1PeCqnfnQ6JxY2kRV0izFepVRuWxWc8Ykh3sTuy26B22nkzOxeVe/pj4HwGw+eerl6n1mYE3vHlT4ovLW/UenjVy/ojbArFRHISaUE8MkJSCHjfRsckr12U69gRKNzB2Thy5cHcG8Qp9kp7uGn/F/7/DNClbpT9gKnGV5w842LMwaiBUumAh1j6uQnc1YDCWK9TjnTIJSE+AdPMV94IZQDSvy+lZE5tpsNaEXkujI7fLwlqP0M+MA0S6TLenm+1PJts7BvdBDEhMMSUBRpEHIIazP8K7gV1vIIgFeZDBVSqZl7xxXzZ1J
+ Fl8EOAOw
+ UaQkvHvaRHs8J+QHmu64Z1U2CHnOiEhosbELNDBteVk+OyeuOhU/RBG22hDszdhzCrRPCgZZLeisH+scOzjG9RTua9uv5JjgktDKrleRvnvPVJFuXRRVO0bdSRrQZpnScYEl1M7P1mHjId1wzQ8Zv/TrHGKYVHYqjxvICAl4jxqfraHK4l6Ac9nRyMeU6CQnbsX7tSeD7kSMWyWbSz/01Vm43ACUf2SgpD1kglphh8rWX9lV5skgXizYJtqdEk5b8CpaOPsuosa2dsd1BLki+mSurOjyOjCRKChAwiW+V41tA+xpRT6bWDIqWx2AJ5yUpNycWIcrwVrk3zgOrA7DGT6DBQsC4KaT/gwBhG+J0WU7kKvB0h19zkh5uDwsMf6UsUp6UGWSMImuXsWMhAvb9fIKtBCh3C5LLZJGSyHSMKfV1FwwrXw5jqeBOtA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,104 +105,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 01, 2026 at 01:20:33PM +0800, Kairui Song wrote:
-> On Tue, Sep 1, 2026 at 12:38 PM Shakeel Butt <shakeel.butt@linux.dev> wrote:
-> >
-> > On Mon, Aug 31, 2026 at 02:43:31AM +0800, Kairui Song via B4 Relay wrote:
-> > > From: Kairui Song <kasong@tencent.com>
-> > >
-> > > commit ca707239e8a7 ("mm: update_lru_size warn and reset bad lru_size")
-> > > introduced a sanity check to catch memcg counter underflow, which was
-> > > more of a workaround for another bug: lru_zone_size is unsigned, so
-> > > underflow wraps it around and returns an enormously large number, then
-> > > the memcg shrinker loops almost forever as the calculated number of
-> > > folios to shrink is huge. That commit also checked if a zero value
-> > > matches the empty LRU list, so we have to hold the LRU lock, and
-> > > handle the positive and negative deltas separately.
-> > >
-> > > But later commit b4536f0c829c ("mm, memcg: fix the active list aging
-> > > for lowmem requests when memcg is enabled") already removed the LRU
-> > > emptiness check, so handling the deltas separately is no longer
-> > > needed. And if we just turn it into an atomic long, underflow isn't a
-> > > big issue either,
-> >
-> > Why atomic long and not just long?
-> 
-> Long is fine too; I was just trying to be defensive. The original
-> check was a defensive design for leaks or races, and atomic long is
-> more immune to race conditions. See below for the other conditions.
+Hi Eli,
 
-Unless we really need it, let's stay with "long" for now. As you mentioned below
-this is busy/hot path, no need to add overhead of atomic here.
+Thanks for the detailed explanation!
 
+On Tue, Sep 01, 2026 at 10:44:20AM +0200, Eli Billauer wrote:
+> On 01/09/2026 9:59, Mike Rapoport wrote:
+> > > Would it really make sense to allocate the four buffers separately?
+> > > And/or use vmalloc().
+> > My understanding is that the buffers don't need to be physically
+> > contiguous and vmalloc()ing the entire fifo->mem in one go should work.
 > 
-> > > So let's turn the counter into an atomic long and check at the reader
-> > > side instead, which has a smaller overhead. The underflow correction
-> > > is removed: a massive leak of the LRU size counter would indicate
-> > > that something else has gone very wrong, and one should fix that
-> > > leaking site instead. Besides, the updater-side sanity check is
-> > > unlikely to catch the leaking site anyway: if a folio was removed
-> > > without updating the counter while other folios remain on the LRU,
-> > > the WARN only triggers much later, from a likely innocent callsite.
-> >
-> > Do you have any data to support your claim that updater-side sanity check is not
-> > that useful? Also can you explain the motivation to move the check from the
-> > update side to reader side?
+> vmalloc() is an interesting point.
 > 
-> I think I described that in the commit message. Commit ca707239e8a7
-> introduced the original emptiness check. The goal was to fix an
-> over-busy reclaim scenario: upon underflow, an unsigned long returns
-> an extremely large value. The reclaimer calculates the page number to
-> scan based on that value, and thus enters a busy loop trying to
-> reclaim much more than the actual usage. It's really a defensive
-> design or workaround.
+> fifo_init(), fifo_write(), fifo_read() and fifo_mem_release() implement a
+> FIFO in software that the XillyUSB driver uses internally.
 > 
-> And later commit b4536f0c829c just removed that emptiness check,
-> leaving only the underflow check. So at this point we are just
-> defending against underflow. Currently, I don't believe there are any
-> known leaks or underflow issues in mainline, still purely a defensive
-> design.
-> 
-> Reading these counters (mem_cgroup_get_zone_lru_size()) is much rare
-> than updating them: the only readers are reclaimer - per loop, each
-> loop will scan a large chunk of folios. Or during reparenting - per
-> child.
-> 
-> Writers, however, operate on every LRU folio.
-> 
-> So checking it in the reader side is much lighter and cleaner code-wise.
+> The memory for this FIFO is allocated in fifo_init() by calling
+> __get_free_pages() with requests for up to 64 kiB. With the maximal total
+> buffer size of 256 MiB, we have a possibility of 4096 allocations into an
+> array of buffers. And if __get_free_pages() fails, the size of each buffer
+> is halved in the following attempt, which tries to allocate 8192 buffers,
+> each 32 kiB, in this example. And so on.
 
-So, one motivation is cleaner code?
-
+With vmalloc() you'd get all 256 MiB in one go if there are indeed free 
+256 MiB in the system. Unlike get_free_pages()/kmalloc(), vmalloc() does
+not try to allocate physically contiguous chunks and it's not affected by
+fragmentation.
+ 
+> This mechanism with an array of buffers complicates the implementation of
+> the other functions as well.
 > 
-> Checking in the reader side also tolerates deferred accounting false
-> positives: if a folio is added to / removed from LRU but have the
-> accounting happens later, that's fine, but might cause a temporary
-> underflow (there shouldn't be such usage right now, but cleanly the
-> oldest commit I mentioned is trying to catch something). It should
-> just proceed without performing extra operations on the counter or
-> raising a warning on the updater side.
+> So why not replace this with a single call to vmalloc(), possibly asking for
+> 256 MiB in one call? That would mean simplifying all four functions.
 > 
-> The underflow won't affect anything besides the two readers mentioned
-> above (reclaimer and reparenting).
+> When I wrote this driver back in 2020, I avoided vmalloc() because Linus
+> wrote "vmalloc() is NOT SOMETHING YOU SHOULD EVER USE!". (See [1]). He also
+> noted that vmalloc() is a restricted resource. But that's from 2003, so
+> maybe things have changed since?
+
+I believe so, we have kvmalloc() that falls back from kmalloc() to
+vmalloc() for larger allocations and we do have about 1k callers of
+vmalloc() family.
+
+In 2003 the majority of machines that ran Linux were 32 bit and those had
+limited virtual address space. And yes, vmalloc() is slower than kmalloc()
+or get_free_pages().
+ 
+> Questions that arise in this context:
 > 
-> Besides, I don't think warning on the writer side will help catch the
-> real leak either, it just adds overhead to a busy path. The folio
-> triggering the underflow is very unlikely to be the one leaking the
-> count. And if that leak is actually caused by a race, the atomic long
-> change should cure it.
+> * Does vmalloc() guarantee that non-pageable physical RAM is allocated when
+> it returns?
 
-I think you are going and looking too much into the history of this warning. I
-think you just need to explain that the current warning in the update side
-already can't always catch the actual leak and is costly. Moving to read side
-make the code cleaner and warnings will be at the location where the consumers
-we care about are going to consume it. Also add couple of sentences on behavior
-difference it will have i.e. warning on flipping into negative vs we will
-continue to operate even in negative but only warn on negative consumption.
+It's not pageable in the sense of demand paging. Some architectures lazily
+synchronize vmalloc page tables and this can cause page faults that will
+take care of the page table synchronization.
 
-Another question: why is this patch part of this series? Just some orthogonal
-cleanups or are they related?
+> * Can copy_to/from_user() be used with memory allocated with vmalloc().
 
+Yes.
 
+> * Is vmalloc() guaranteed to successfully allocate memory in the same
+> situation that __get_free_pages() could have been used to obtain the same
+> amount of memory (in smaller chunks, as with fifo_init() )? Maybe they
+> allocate memory from separate memory pools?
 
+The pools are the same in the end, vmalloc() allocates memory using page
+allocator, just like __get_free_pages(). The difference is that vmalloc()
+does not try to allocate physically contiguous chunks, but rather a
+collection of assorted order-0 pages.
+
+This is actually more likely to succeed than multiple large order
+allocations.
+ 
+> And most important: In what way, if at all, is memory obtained with
+> vmalloc() practically different from memory allocated by __get_free_pages(),
+> if it's never used for DMA?
+
+The memory is not physically contiguous and cannot be used for DMA.
+Some accesses may generate a fault to synchronize the kernel page tables.
+The memory is there, but some processes may have not-yet-synced page
+tables.
+The allocation itself does more work and it is slower.
+ 
+> Does the API offer clear answers to these questions?
+ 
+Thanks for the detailed explanation
+
+> Thanks in advance,
+>    Eli
+> 
+> [1] https://lwn.net/Articles/57804/
+
+-- 
+Sincerely yours,
+Mike.
 
