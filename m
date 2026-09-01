@@ -4,119 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56560C61DD6
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 08:57:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CCF8C61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 08:57:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72C186B00E5; Tue,  1 Sep 2026 04:57:12 -0400 (EDT)
+	id 5F48D6B00CD; Tue,  1 Sep 2026 04:57:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DBE66B00E6; Tue,  1 Sep 2026 04:57:12 -0400 (EDT)
+	id 5A4BB6B00CE; Tue,  1 Sep 2026 04:57:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F2726B00E7; Tue,  1 Sep 2026 04:57:12 -0400 (EDT)
+	id 4937E6B00D0; Tue,  1 Sep 2026 04:57:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F9786B00E5
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 04:57:12 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 27A7E6B00CD
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 04:57:49 -0400 (EDT)
 Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 15B4B80373
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:57:10 +0000 (UTC)
-X-FDA: 85164589020.12.2B0F41F
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf17.hostedemail.com (Postfix) with ESMTP id DF8A640005
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:57:07 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=VrcrAe6R;
-	spf=pass (imf17.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8ABAD8037B
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:57:48 +0000 (UTC)
+X-FDA: 85164590616.12.2022E6F
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D555B1A0003
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 08:57:46 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FAP146J+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788253028;
+	s=arc-20220608; t=1788253066;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xrf2I5rwuZTtUj0/BgFzlW7VpIjkJf+F8+X2M3EKpgI=;
-	b=72svZkDjv07Kg5DqmhUwNiPzed/QCpyT3nr6QhyWwhSpAhRXfiagX6s3aW5xH8FauXb6nt
-	CuuxRca/RPG4dDls7ii2r011LHnBLGVHX82uE61/aKw8ilVjnsaxBW95dybcQpajsqxZWG
-	0wWrSwPYcvnp7HTUDJ1M7Y2IsxFFi+U=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788253028;
-	b=yqQ8doaeBngAg1I75dDp3Oejw2U5sQdQ7mdBjnFkJLbNVF2LD/0XKJ6WybtFxk0kh8E49q
-	tCGywI3/bPJfRoJzCxCvxpiDAjhHJyaDz1A1s2ztZJeccWcU1y6QEbWw6ZmfhOrXUIpnBU
-	HBWQttFcJNH71fRyfWs8nKJ0srxznzU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=g6gNF1L2W2DbFnprEAmekbeKiRyxpCj5ws+3FN1RDWk=;
+	b=KuenvaconM/82fiHJqT754r5o0hOitfyqdQTJjHgI80wVJAeTyBS28Gt0LtURqUmAmhq00
+	wf2+l2ReY+HAQJu8MkNAMgdUUF7siWguv2X2/owtpeHxl8wsOSH+8W3BRVaUh/UAs3sanL
+	3SMz9IC+B0l5z2yv6vOmk/Bc+b4u3sQ=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=VrcrAe6R;
-	spf=pass (imf17.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-499b2981a7bso51484305e9.3
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 01:57:07 -0700 (PDT)
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FAP146J+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788253066;
+	b=MADGNMuO9XsuDjmNHePOL38HJQWF0lZReyrmJL579opZxp8CPWDLK5bF7QVGyKNvm+EZla
+	01nB+YctcV1STpJ0clcQb8MHK6Lrc8cH/205bioWvPSG6bRZc6+doxS1jok3sgcnmxzgNf
+	XaFh3ZEAjScGtgBGXgerXEMX3mAd81U=
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-498028b3d5eso51731015e9.1
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 01:57:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1788253026; x=1788857826; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Xrf2I5rwuZTtUj0/BgFzlW7VpIjkJf+F8+X2M3EKpgI=;
-        b=VrcrAe6R97DW3ZxSvr2vWMjGL7fYk3Gz3WydgWowtMnytMdkLi7odgG08PdejvhMxG
-         cSUch8E5Lzs57xKVgDqwkv3QpQWGm1eFsFZIfuWHefkQ3P3Zmm+gtvXTnz8J/JpTTpSb
-         IZhyk+UrJuCDLyiPXlm+v1AC5+apzE7M9GG3Do1YA+XNunP0J8TqC6j0DnkWFOW/y8Xu
-         f4swQ6mDsaetMt6KzkfUdWGIhCgpveABwq9etajfibqJ+zLNVKMuOH0t30c7Evil77V6
-         otF53VrH59ZNQDC6FoJNECsTavJY+xnUxxTzixFNU8L+FoWpKbfHfhfgBCTGDr58borT
-         aYqw==
+        d=gmail.com; s=20251104; t=1788253065; x=1788857865; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=g6gNF1L2W2DbFnprEAmekbeKiRyxpCj5ws+3FN1RDWk=;
+        b=FAP146J+aOsYsLimwMnwB0xh+tvRICLUduWvhXFhe5mWBwGX92jLA4iCZApeLtKAci
+         m/PwazjWI3YKhbcbun2HliRIvMOcFIW1MJfz6HDIFSqFDxtd2mRXIIeS0S3AYA0rbFe6
+         u/KS/dTjNm9LYGYBTg8YN5lTe7wpDecfVHYcQtpAFkkmkSldd5q7QMlDPx2W9DT+b61k
+         MI9Rmto6ZyiJLW12yYh3Rr5WM9szZHVe4+fa8yP3GpxPZr/DAXhryPIkwE3Ka6lKyIKR
+         xk6GLPiiIdi/o89MoyNPEe49qiegRE2mnMAlZBt2BpMzkRy4gNbAAuI7MTV2wAvwoxN6
+         dxrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788253026; x=1788857826;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Xrf2I5rwuZTtUj0/BgFzlW7VpIjkJf+F8+X2M3EKpgI=;
-        b=J0k0e7TFenp5W0Njzu5QDGs4cTMMKPxLI7XT6t+7Olwc42sZmXKOYR4/V7Cbpnlmc0
-         S8UsiTZyreFop1m7oQBVI0/qVqWQnnDnfgBLekjZMC0bUE+xUpS56qSE2nEdBIrfL05T
-         6HLmeioPdn183yeMv+ajuzOZ79r+g6Lsje2Kh8BcbkQEiV93tG+LIRlO87IG4GgAqhSO
-         nGFKvxaIkz09CPxAndZMh7Gh049y2EjMnw478HvpQrPKDYr3dV8XR6M7c3A3rrO6uwjZ
-         VirUuxa5bL7PWfOp3O1kwcSixNrcX14lLZhDcd1+PnXw9Lr84ljhozPL8erMS6hFDRMT
-         1V0g==
-X-Forwarded-Encrypted: i=1; AHgh+RoxVzTF81NI9isoMlbETlcd+ZlKisfi98p7Kknwr7x8jApOkFavbVEzChQ2Ow8FYv7AbUzbz0d8Kw==@kvack.org
-X-Gm-Message-State: AFuF++kgXlKP9znky94f4Z70GQGBVzYBuT5dadAMAfoIkMsO0/DjrEjC
-	Dt6cKCFpgKW/jv97d5FdO30hw4EBoIRfJdRyyFk9pIC4T7x02g13uMLl2wuMflVwQnQ=
-X-Gm-Gg: AR+sD12i/wSupKFBfFe23festnmmXsnnl+/QiuconCxZ6XSKNP6FBK36VmGwp/D/BtB
-	uhfoOr0oZTHL042651bGIHZV7zjZYFnnlEG4XH0whvz8sK2Nd0ZvWMWDa2I9/7W/l9zgjEaexCN
-	olX3ZY+MbR+gD/W4fIVnTa3p5aE1s8Kaym24sHJJA0TgW8fE1XxHpiNYGd6NkwG2IPvuB6KZnr2
-	5/pv4yd9j5ImHkHJO+81IJcypgqNqqxtwku6g7RkSVovKgZcoVlFvbYmeh82ZufQ3O2M4AMB0vS
-	xZXO7rouAnwJsyJ8jCWxC5WfAxSVY2zEHHyV6zQ4x7uLSlF6PvpsAgMd9eDEi9z/S9wWVXToPI5
-	B2GOmgmGZVlWrMqQmUwMorOlYp5KLFIClZ8Ff+hzZ7Hd+nxejc8MKoTKrGd4kF1V30aNEHLStP5
-	Pc41Fln+JQR1Q4jeBtz0JzDDFAXQt8fZOk1Lg1r5ayJXFVHNNWxha2KIVxKYgus5k=
-X-Received: by 2002:a05:600c:64c6:b0:495:52a5:8829 with SMTP id 5b1f17b1804b1-49cdc558470mr121172455e9.11.1788253026345;
-        Tue, 01 Sep 2026 01:57:06 -0700 (PDT)
-Received: from localhost.localdomain ([2001:af0:8000:1409:193:86:92:181])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48442c4259esm3313283f8f.7.2026.09.01.01.57.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 01:57:05 -0700 (PDT)
-Date: Tue, 1 Sep 2026 10:57:03 +0200
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: Wilson Felipe Pereira <wfelipe@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Tejun Heo <tj@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+        d=1e100.net; s=20251104; t=1788253065; x=1788857865;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=g6gNF1L2W2DbFnprEAmekbeKiRyxpCj5ws+3FN1RDWk=;
+        b=WBvY0TJy3F9EGmwBcQU9dZBHBjGbDQtVAn7WMWHCZ72hv0T15QQeJU1b6/6NREfqy+
+         wZiLIOmL91i2J7dH2W3WOebdrH39ZOqENXLIcJsaHRAOOZWK9u41AgE9l0CKJF41gb6z
+         SBIvjn2LPcOoXfclZ6uahYbxvDnvxTV22+NHgsUTZgitnEFJ88mxtMFGj3D2S7WTXeVF
+         +k3CLIP1wvLmp8Sv5LNcp5QCCe0OcJlggybM5A/J62ShkQdp+pTc6jjxVITGPVAXW1dX
+         fI75WRX1vyOU0oewoVoiTb5/mGJJg1EX/vsmdMnSilhiSmgJz5DwjnP8XWsaI6X8Cj1g
+         +eIA==
+X-Forwarded-Encrypted: i=1; AHgh+RrtH3R9MVnPjhVHd3JTjC92BNnxV1K1bCIkHe1NQXMESxWgpwlc4aHLrkgdV2JELy6nmCDOeDCzYg==@kvack.org
+X-Gm-Message-State: AFuF++mYG1cyvpXJE9x9XyotXg5lusr+Tyfm9Pd1SfQe7kvyzPJN769d
+	rLC+aMLVXHTcXAF5dbwwEc9lYlfO/SgIKS9eA61eJMOMKBtj7PdNahy4
+X-Gm-Gg: AR+sD10V3/TyfammmWDL206DiJtxvLzGu2q6r71LYu8D986zDnJlHPaS913WUyn8pYe
+	V0GOWKUnjxMZ68Y13EtwZqW+MZGE5NM1rNVRyiIkoHMeCQ2/KPQ3vR6arQqD+1mvxjtb3v1UwxC
+	GT7k8lRWRyVrvBbD//a5ha+/OcNopNaV4oBlY8hDD+8UbveJum41+uiJliTCd2RSoVd9NUvMmhA
+	TEWxlKeksOm208kFXWn+UV4MZc311IDs3a/8b4t3iDNKdUyBWeJ7CkGHfWaMovS0XOQrGmA/sS0
+	fl+mGveo7jnmu12ukA5+C7yViyzTMxUoFksZ4aObpppruSOj8STPRGmGOa8W2k5TCIFwmYHpqvh
+	SSXLlJwxZF0W7cN/xPB4xLsppHn17hpgcsDvSPF+V+7VvhQxGpZoD8ccxq05B2pjKBH4/+0IrCL
+	gNWpqdFxe+hkdGz7Cwr3YXbjX/qI44WVUE21uP1b322SlWaqXPpzl6KZNdAeQ1+pjaUrOHQOz6H
+	/aDmmZaOXciQMs0HenCHelX6EPD0JFR40TqB/fMVZN/bAkaJC6UrsRH2o8uEEqBPir9CVpgNBDs
+	o95vJnNFrc4vly4Sb3kBiUG29wSmAEPzJTtZR4zSDuzeYN1MJC6On7tdYScaD2x5h+g=
+X-Received: by 2002:a05:600c:4f8b:b0:49a:2c4b:403f with SMTP id 5b1f17b1804b1-49b91c46494mr428394385e9.13.1788253065376;
+        Tue, 01 Sep 2026 01:57:45 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a02-3100-a16a-7801-fd8c-4b37-36b4-e53a.310.pool.telefonica.de. [2a02:3100:a16a:7801:fd8c:4b37:36b4:e53a])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cdd73f7a4sm45023365e9.12.2026.09.01.01.57.44
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 01 Sep 2026 01:57:44 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Russell King <linux@armlinux.org.uk>,
+	linux-arm-kernel@lists.infradead.org
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 2/2] selftests/cgroup: test_zswap: fix implicit
- unsigned promotion bug in test_no_kmem_bypass
-Message-ID: <apaO1OHVQWJCuJDE@localhost.localdomain>
-References: <20260901052250.154532-1-wfelipe@google.com>
- <20260901052250.154532-3-wfelipe@google.com>
+Subject: [PATCH] ARM: mm: align hugetlb mappings to the huge page size
+Date: Tue,  1 Sep 2026 10:57:40 +0200
+Message-Id: <20260901085740.66283-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="nuwu7tagmytj5izv"
-Content-Disposition: inline
-In-Reply-To: <20260901052250.154532-3-wfelipe@google.com>
-X-Stat-Signature: kcpbnh1b45e54xztfmiw3xfyg99ihadt
-X-Rspamd-Queue-Id: DF8A640005
-X-Rspamd-Server: rspam02
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D555B1A0003
+X-Stat-Signature: fkkcd4wtrfc843w1ab6rj9iekgwucx44
 X-Rspam-User: 
-X-HE-Tag: 1788253027-33416
-X-HE-Meta: U2FsdGVkX18fkIMECEPKntwaJkZFf4e2Gi9AyK+WkdF4T1d8zhu8ooFN2YFiu6+kJ4kPUAcaQ1WAl+QFQkyle5feTCmhOUQ58KrBody9XZMT85NpDbQoKizEEQY3L9wCbN50XG9L+uxFuuWq1+q9VEfrN2OSYzjvpm0wuyhWQRPEDC8dxn8wC3qC2jV7RBm6vo4J/tF9kl8hTgTSoR0JDCOvZxZahO7sQvBKwvdDzrZLQa5dV2nRP/h8/n8PQ5iAjKRHNEQW2aRttpG1D7770z26RHO3cy3LqY18YVSXjpg0vk4+worBZN3cfSyvYeumYJSblleXKy9hWcyzFfbU+vtzR9bdlQ+vmWcWWaKIJN6AZOpGr3ME1h5LAl/iPBVZ0RdXfMv6M3Wujh2d97/p7IoTzUdJH/KABeEftJZEXbzTXf6f+w72bBwSLpNCs/w+FYv0mtCqL+YDmAs5xNiUH2An/wQ/xHwlt125ZdpF5Wg6HK0sp4QcfDxzefqW3KTjAlTCXnI+HjHzyruDxP+jSAzovEb0LatSPw251QI8VbkjGrTNMSjPYfMxPqG39UwmD5nrjVOkDXtdUbcZjeh+VlrEAVYukYH38jEYZ2dj2TFaxmyFxgkEuJkU3k2imfsKzsRFbA679BAUw/p54y11Dm7lEhiciqmx1u3/BXdnpMtKZbESYu24DvP8T0fFWHMdinZc/PfW0bXRVFBzaLUO53EE9Y0clI0gu/XUN/Ou/Jtdr4yGLUJHbqzYX5EyYKIie0GU9/HXGIebEJMIScXci3VF+EBjJoKkukoXloR1Z08yYXTzU8wiE8A6AO8lTNJPz1F6OX+EaAd7cGgRHiVtqZSB743zDYmM76DHbnBYGMqzRN1Vc5fseNt11zAcUWogwXztyi+yGqHdqWt5akBfP34Du/k6wCUc9U82afkFAH9sZlqt9IF8Y+O/4p96wvtZtvVyKYQcrKgcqD2IYbn
- S5kmK6EW
- N3djkmFwlvH0UdaUa+CqBau8ebzTYs/3PpN/PTTEVsyPkWoQITPsyZY8XazNNpKtWIPNa12fRolgDFY0iZwbatKYiakBIJQv1KoTd6ZOmPymT8mArU2qYU4AmFO3KVH0yUH+ZV2+QQ7QoVY2equOaRm5slYMtpVWVQsZjEyeOGygQW/pTj/D60qedCGSsoKUCE9M7wG6R/zSVRrQA8pGPJlriKxT5zDuSCNrTXk6/Xtv156dr2s7VxKBceNkTS1ETYf5drvsb1E122lH2g5ZFFzTnAzzSC8MjcUnJXMwSzEy5o83v+m3Grd0nn78+u4QkyE0YZ557rS6TgiQfhJb2zRN/r4Z7v20NJSvkTHTaAijzD3I+Q090DCcQUz3qnYKtJWG2WauO0gBbW6WA0d5PDUH1ovvfxKXvppDwp2TcXt+ERASDkKvSNQWDd0oHvePDD3Jv1WGQ7qNXN6+Za+n9aAh4YZswechaSw9nZiJ0BPysxt5QW+2psTo2IGrXdRrn33gMqKuYJrpA7EMDQgXjsbDD/Q==
+X-HE-Tag: 1788253066-642145
+X-HE-Meta: U2FsdGVkX1/RiiQeSlDpCFEpYBt0Qe1Pnv7vndz0tUxdwB+8rGPa0oxxPw02HPnmn0j/eGW73OuktXs5EDlAzbqVvBCJiDfzwKSW4zwvxU/Wge0s4XN1oncds6k3mVxUxnDLE7jAEZ05dGyTpVdF+l4KgdZNq8ZJgN5oFLaHbY30jmF3axG2hpi2fm+ejvK60uO5boXHJnRGAGNsb3z9Ekk8JQ2Aku8d/BHJGRj7PC1U0o+GL8ebzBfrWOqrou+B0+k15RsD34TJi4cPiDEeuSDYJR4xA6Io52OTrPeb7J+nUtO0lqiDoz3ADkW7FzhDKX2zOiSieryrHHxo0LjrHfocNIbKud2rJ0YJR8a1vSJmbTUBpFqLnS4+9tO7L0wmIqTh9C7yHhshPE7KexJHkDsmIn9+7nSIn4rxB476affW75G/s2GDJpsAdLxy6N+x5Nub4KQbqzPibwlH1ePmtmn9JZU2C5k0iFS6vjpRyz/SYBnoXVVXEAxS4xTnY3+gDLHZokPa3JW7L0yClB1B36dTc6NhxFGEFkgNDOtzpa04nW4oVdTnYdDmjXdZwDDo6ho85yveNS/B1S+tpiJ6TH2kxdzpL3zxZWC/Mfn/vvjYPM41c2UKhHxCWZ7B+ZtFFII5LUNqGPCgrjT0kE0NDlV4VAGmZfzm59bSJVdBuRzv//1wFHxSuzWnhONq1ztBw1wHPqW1dXsi1f9SfplQgX1vlhxNFezn3JNTDAaQNSOVRSncJnlrN+SA1t6FjsQTq0vIdxm5pdQLemtkAQwMzeU3SpodQtT5HY8KfVuTltXTvbMJ6llk80Jy7YfZjTpXifuZ5PMTOB5/7pvMOm+IHRLCOUVK6OMyTTk6voxNYJg0QtOONEhT97rjwr8zqojIAaqjOHFCj9sF79BwVo8KUnD9R0EkZKQGuUt4RkyvOyGbc0bqOvdFv+irH7fFFyEzLne1EHxO0j3SSeaIhtq
+ WPC2NT/N
+ snzXYPT6XJgZxHmepJBdv2cgOnJzFuUc5jJVaSFJlDtepw2lQJQnUPkTR6Xse/tiqszY0lrrz5h/MJPlM7SO911ztc6J43k8YLaIf/LbnGvg9oTfGphE369sugP1Eppj1iDtm7DUKAL3a+Q6UbGt/QG6Wb5cZ61kxTV37qpVVc59VDTeTb7QK300lHVfOEgCR8On+VCtIzIE8hZIUbxQ8WDEiXLwi9GTls3ITr4vo4wICY/96ECQiErxJXSnS0ea4dPk5TyWJEWE7ZobBe/+fI++7R+D7aZT1axbyQKWn0PuEAm4/w8hOmsuBsqa9Dh5/S+G7v+LMLSCVH3SppJ42St4MMnUCM5p6Nu/X9bbpjBOIFxm276c4t4ye72rcrO9XOtB1RP7REZM2/OPvRomFRUxcfgXcg9hqHKWZROKMoNuJIlEe2JIWtGVuzRN0sIenkqvn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,75 +122,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+mmap(MAP_HUGETLB) on 32-bit Arm can return an address which is not
+aligned to the huge page size. In a QEMU virt guest, unmapping the VMA
+then hits the alignment check in __unmap_hugepage_range():
 
---nuwu7tagmytj5izv
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v5 2/2] selftests/cgroup: test_zswap: fix implicit
- unsigned promotion bug in test_no_kmem_bypass
-MIME-Version: 1.0
+  kernel BUG at mm/hugetlb.c:5213!
+  Internal error: Oops - BUG: 0 [#1] SMP ARM
+  PC is at __unmap_hugepage_range+0x540/0x584
+  LR is at __zap_vma_range+0x13a0/0x1410
 
-On Tue, Sep 01, 2026 at 05:22:28AM +0000, Wilson Felipe Pereira <wfelipe@go=
-ogle.com> wrote:
-> In test_no_kmem_bypass(), delta (stored_pages * page_size - zswapped) is
-> checked against stored_pages * page_size / 4 to verify that the pages
-> pushed to zswap belong to the test memory cgroup.
->=20
-> Due to slight stat update timing differences, delta can evaluate to a sma=
-ll
-> negative number (e.g. -5MB out of 1GB). Because delta is declared as a
-> signed int and stored_pages is an unsigned size_t, C's usual arithmetic
-> conversions implicitly promote a negative delta to a large unsigned 64-bit
-> integer, causing `delta < stored_pages * page_size / 4` to falsely evalua=
-te
-> to 0 and fail the test.
->=20
-> Fix this by declaring zswapped and delta as signed long long and comparing
-> against a signed threshold, ensuring negative deltas correctly evaluate
-> to true.
->=20
-> Fixes: a549f9f31561a ("selftests: cgroup: add test_zswap with no kmem byp=
-ass test")
-> Signed-off-by: Wilson Felipe Pereira <wfelipe@google.com>
-> Acked-by: Michal Koutn=FD <mkoutny@suse.com>
+Commit 7bd3f1e1a9ae ("mm: make hugetlb mappings go through
+mm_get_unmapped_area_vmflags") made hugetlb mappings use the
+architecture's arch_get_unmapped_area(). The generic implementations
+handle hugetlb alignment, but the Arm implementations only account for
+the optional SHMLBA cache-colouring constraint. A 4 KiB-page kernel can
+therefore align the mapping to 4 KiB or 16 KiB instead of the required
+2 MiB.
 
-(The long long helper is a non-trivial change, so the ack should be
-stripped on this version (unless you can convince me ;-).)
+Set the alignment mask from the file's hstate for hugetlb mappings in
+both Arm implementations. Huge-page alignment also satisfies the
+SHMLBA constraint.
 
-I'm afraid this bitness propagated too broadly.
+Fixes: 7bd3f1e1a9ae ("mm: make hugetlb mappings go through mm_get_unmapped_area_vmflags")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+---
+Tested an LPAE multi_v7_defconfig kernel on QEMU virt with
+-cpu max,aarch64=off and -cpu cortex-a15, using both the default and
+legacy VA layouts. The LTP hugemmap01/04/05/06, hugefork01/02,
+hugeshmat01, hugeshmget01, and hugefallocate01 tests gave 16 TPASS and
+no failures on either CPU model.
 
-The long vs long long difference is only relevant on 32b, right?
-And the bit-width issue only appears because of the product, not the
-values read from memory.stat [1].
+Also tested on a Raspberry Pi 400. The unpatched kernel returned a
+misaligned address and became unresponsive while touching the mapping.
+The patched kernel returned an aligned address, touched the full mapping,
+and unmapped it cleanly.
 
-I'd consider three ways forward:
-a) Consolidate the helpers into one cg_read_key_s64() (same explicit size
-   regardless of arch),
-b) keep single arch-dependent helper and tackle product(s) only,
-c) do not bother with 32b in these selftests (I have a hunch that
-   they're not so relevant on such archs).
+ arch/arm/mm/mmap.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-WDYT?
-
-Michal
-
-
-[1] At least the values derived from available memory, memory events
-    could grow indefinitely. It's true that kernel uses explicit u64 for
-    all of the entries.
-
---nuwu7tagmytj5izv
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCapaTXBsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+Ag6rAD9F+z0oXfuQAC+NJQ52/69
-Wy9h9jBokjfFxG+tYku4HusA/A3LjZsf4+90ciLSyVy6BFPvXQx3uN958bN5VesH
-mjUK
-=8Zx/
------END PGP SIGNATURE-----
-
---nuwu7tagmytj5izv--
+diff --git a/arch/arm/mm/mmap.c b/arch/arm/mm/mmap.c
+index 3dbb383c26d54..dbb3f07a77852 100644
+--- a/arch/arm/mm/mmap.c
++++ b/arch/arm/mm/mmap.c
+@@ -11,6 +11,7 @@
+ #include <linux/io.h>
+ #include <linux/personality.h>
+ #include <linux/random.h>
++#include <linux/hugetlb.h>
+ #include <asm/cachetype.h>
+ 
+ #define COLOUR_ALIGN(addr,pgoff)		\
+@@ -72,7 +73,10 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
+ 	info.length = len;
+ 	info.low_limit = mm->mmap_base;
+ 	info.high_limit = TASK_SIZE;
+-	info.align_mask = do_align ? (PAGE_MASK & (SHMLBA - 1)) : 0;
++	if (filp && is_file_hugepages(filp))
++		info.align_mask = huge_page_mask_align(filp);
++	else
++		info.align_mask = do_align ? (PAGE_MASK & (SHMLBA - 1)) : 0;
+ 	info.align_offset = pgoff << PAGE_SHIFT;
+ 	return vm_unmapped_area(&info);
+ }
+@@ -123,7 +127,10 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
+ 	info.length = len;
+ 	info.low_limit = FIRST_USER_ADDRESS;
+ 	info.high_limit = mm->mmap_base;
+-	info.align_mask = do_align ? (PAGE_MASK & (SHMLBA - 1)) : 0;
++	if (filp && is_file_hugepages(filp))
++		info.align_mask = huge_page_mask_align(filp);
++	else
++		info.align_mask = do_align ? (PAGE_MASK & (SHMLBA - 1)) : 0;
+ 	info.align_offset = pgoff << PAGE_SHIFT;
+ 	addr = vm_unmapped_area(&info);
+ 
+base-commit: abdf623ddb75b24659018d3952d8f61937306ae5
+-- 
+2.53.0
 
