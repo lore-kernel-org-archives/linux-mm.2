@@ -4,119 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9785AC61DD3
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 16:13:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D1B0C61DD3
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 16:13:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 601D96B02A3; Tue,  1 Sep 2026 12:13:22 -0400 (EDT)
+	id 42F6E6B02A4; Tue,  1 Sep 2026 12:13:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58B996B02A4; Tue,  1 Sep 2026 12:13:22 -0400 (EDT)
+	id 3B8F96B02A6; Tue,  1 Sep 2026 12:13:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 454396B02A5; Tue,  1 Sep 2026 12:13:22 -0400 (EDT)
+	id 2A8AC6B02A7; Tue,  1 Sep 2026 12:13:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 09C916B02A3
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:13:21 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6472DC0479
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:13:21 +0000 (UTC)
-X-FDA: 85165688202.21.AC3A05A
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9D7DC4000B
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:13:19 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 017846B02A4
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 12:13:37 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 802EA803DD
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:13:37 +0000 (UTC)
+X-FDA: 85165688874.25.FC0C870
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5D6CD40004
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 16:13:35 +0000 (UTC)
 Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=laOFvJ5m;
-	spf=pass (imf12.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.49 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=YO4vl+zP;
+	spf=pass (imf12.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.170 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788279215;
+	b=EzKqMudZWbZviNPYgIj8I4Jpy+SbqgNMLDIZnlclSt/hpQfWrn+9yUfaQ9+hnh32bsL3Du
+	D8UqfG4E1sIzjsOZJRn5CcE5U2IrX3Tvd382h2oz7sXAzDy8kmZEX8c4zWtRvEi+WqMs8X
+	r5JLjRQ9LlI7ujtYMwBw4fVyeQ5Vw8U=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788279199;
+	s=arc-20220608; t=1788279215;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=UrvqQXAc4Rj6TaVLaR+TE3DlGs7BEo7vSNB4Ui+eyI0=;
-	b=hD+LUycbsSkLNZt3d8pT2EibcljJzcQTUjajZO48oBebqgtbm43o13MF2rNwQ/kfcO/WBn
-	kjKqPpga5izEckaDbqRDsVyu4WmOYDvYkGripgfAftoKLDnV51NGCyD8gzv8LTMOcj2MmB
-	3Z5CIPkVUK+2QUPbiSf5Cr8PYQkBzGc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788279199;
-	b=fW3F/CsAYptnY0KP91TY4IfpaE5WoYML3NrAt4MaqpEAMfx6TQgFei4wT8VrDrbYmM/wCT
-	PzK2cHjxgHXKERBIZgDIFysPJvWXQftA8blyXGxEHQ0cimcZw3Ld4pHtuWm/uq6480qq9R
-	rPzYe0B5aQ9aKzezTR9ErwV/SEh73Y4=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ONke0gJOgNHGc8+HNAj15P6+4xEqz5FFd8jzahTO8SA=;
+	b=gtODDbuQtuu/5mPfvNleLqDqqs7TQx9Jbx1toJ7gV6detC5janDtRV89G/b1NfaiSjrtQJ
+	ryXfI9xj+NCl4qbs/SWQoRC1qc/Q9pm22vC+vNze44PIUXPlVrwKycbabJG5F/6i2YrPGx
+	Cq4O6r6eypPy/M1h1FDcbFBZLvZXkaU=
 ARC-Authentication-Results: i=1;
 	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=laOFvJ5m;
-	spf=pass (imf12.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.49 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-469d76ce704so17424fac.2
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 09:13:19 -0700 (PDT)
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=YO4vl+zP;
+	spf=pass (imf12.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.170 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-855de2d0d4dso49467b3.0
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 09:13:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788279198; x=1788883998; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UrvqQXAc4Rj6TaVLaR+TE3DlGs7BEo7vSNB4Ui+eyI0=;
-        b=laOFvJ5mSXCs0sZxBzs9NBXiFmf14AXXWzZJknG12saP9xDJFz8yY2/Z0igAsO4dON
-         aWMp4ssrQwqdimidJkN7F5P++Q5R4PeVnmya9OBunvse/EmcNwvIDsGP07MbOONUjxl/
-         8CApYpe9BoI9Fm8QrNkHOoZVQuWogNuf4Q+aIZ2M8oMfzGqlf5S+VmsdFtl0JLXkXCeF
-         zn+SSgPERUO8Tnnqjqs0uA3EMHtPfNHUBznPjt0eUQ6opqKxsdK2bUrm2aaPfC6RfQOP
-         6MHHl0gSmENLJEoEoFzvdWfs3FmIZvAnNGGnHkrK1dau8LsxS7SNvSbe1em+8dsbzdDx
-         nR9g==
+        d=cmpxchg.org; s=google; t=1788279214; x=1788884014; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ONke0gJOgNHGc8+HNAj15P6+4xEqz5FFd8jzahTO8SA=;
+        b=YO4vl+zPuRk04Y/ShOq/QpWUdbtU4in8bRmuMJCfY12EHd3S6NGz9wvhTiVwzbjQNd
+         8N1HVKspQCBVq504Lk2pW9qom3K1OcOgl59W1ypGO9mDSgVvucLRnr0Iq3v0zi5SCuFm
+         wJroYsKjepEEIGeJmEU/HeHuEUFbov0uhO75BjdYqMYsLPs9rvQOvvwb+dfMU4gGK0fs
+         jkQdcKP49pPZ0NP8Z5wqm4H2+fOhLglpLCjXrHqaMabycV8oOxm2F+QG5SUeS3Psm3Fz
+         Ii+7KrbljSq0u9/32XkiGIK7iEA46GXNx2ZNusIPi4eVeAGh1VGgIbpNIrnM0nzCH91z
+         y3lQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788279198; x=1788883998;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=UrvqQXAc4Rj6TaVLaR+TE3DlGs7BEo7vSNB4Ui+eyI0=;
-        b=cN3vJkrwMG/NmJlTWfrTyJ25OYb2KyYkLnMxSoVrBd1tJwwkENPu9n3peiAGDX/cA9
-         qJwT88okt5LSHP2hpMtHWHJG8P3Ze+rsMkamxsU4v5dT6Zcp/zT446qI4075uCjxd2NZ
-         IHX97V3k9MoYWOxcjxbFzd7zKwyiu/JCXw90/NSuIfqW06+AU93ZjQ4MWoUrU0zXMEqh
-         QyMVIAW6vBEfPoLb/HDIW2hVcBSRTNLU83KbGk6FD4zvWfvn3uaRemNo0glm/U2DZMfp
-         ATD9FKyNILp1Lqc+of92o0xj1yE1sJojvJv1awspYZMMBPo2FJe3uMoNNYWfL9yVUmA0
-         5oeA==
-X-Forwarded-Encrypted: i=1; AHgh+Rox/01qDfiHaLt2QDuW31pC5GKknHhLHpLGUFaE42e+zjdsc8EUrvOw/HZLNjeZPw7rR3Nw8mtkgg==@kvack.org
-X-Gm-Message-State: AFuF++m3mEUVn1/XT7ye7qXaCovLK8rtsbEFcJWEwANiympvcLz9jisU
-	49h9ATYailIGrcDRbDOYzfOFrqGJrl9BenLLvPSkbtIhKrFl80O6zPjL
-X-Gm-Gg: AR+sD1061qRVaK1cT66Qseap8w0Rvd9Y2sFZzbI9rjkingHeY2MnDJzrDMi+CWr+VIh
-	KaHHhiEHnAQzlA4dyIutyqXFhzfnPBMFzJog6Osy9F67cRvNC1k49PjQ0SSTyGZoFlyPZBk2U9U
-	2kxAto+NtyM0vdA81bu7o0sLpBw1HPn8O7CLtR4XyuQPBxx/6qD076h8vmIWRv+H3oGJCVXYmB5
-	FNpxp8jhChdDYf/ljRSwVZHgUeYJXEQD4j1HNOELYSwPhEoe78wxa31jzPxC8jOb5OIYiRDGbty
-	VD/JWeJaAq7TwLIEtO/iCr3wxjguAYSKr4a0yva3fbFDdWwi4d3t3MFi8ZdyQsFFeab4022KLKp
-	5sYKDSTqzwUcl6FHIpTbJBj72svgRuoa6yAnKaA1KMD5cHK/WKJxcF638pOUhETlaVd8oxJ1Uds
-	KqrkyNmmanX99JHHghcLCpMHY9SlAuuIwLuWjPueGTciBW11kq8min6BIaejIRsjsfCThcd8YB+
-	oyuTaCJd5uzn7jPaHaEKbpbcUaCYQg=
-X-Received: by 2002:a05:6808:508c:b0:4b2:8da1:3be4 with SMTP id 5614622812f47-4b398124cc7mr41327362b6e.9.1788279198361;
-        Tue, 01 Sep 2026 09:13:18 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:28::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4b3a19949c1sm11563412b6e.10.2026.09.01.09.13.17
+        d=1e100.net; s=20251104; t=1788279214; x=1788884014;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ONke0gJOgNHGc8+HNAj15P6+4xEqz5FFd8jzahTO8SA=;
+        b=U9ANSiREHb0YeTccI3gIWp2BLwfyWKJCX8chusGDNzOJtzKhxfTD2VVdEpRsX1OKuO
+         3hgyHssvteV72/Q5ICyqZfIYB1yVui2cF3duYMsfPwRfle1T8PkSNJi/PoI09K3py24v
+         cMnaHpOnBdt5kb//Ikj2Jk3gCcB85RTxepz3CRDV0aC3+TCjMlaySSrIuYGYerzymzMp
+         UmKuP2QTYS6hcD8QexocioWwBqjaPjZtwnvEmFoyGKNkC2KCYk87RoX3nQjGR3lyZw1p
+         H8TMrkbeOYaoc2DAky1mc9so6KtRXgx/xeCeHVaUJjZv0gsV2//+njQDvBEs5FjYs5ag
+         RByg==
+X-Forwarded-Encrypted: i=1; AKwUvBzm2Xv/yKGDs2OFrp4QJ9ruEFb/SkqhbxtVsgVL/WzSqYbTb6Sj3wcWgwPc5NcS3Q5tFHyby+l1vg==@kvack.org
+X-Gm-Message-State: AFuF++k9e5Oognv4r3GJ5pCheRh7eqvGk7UZEf9Yybye+Dab09l7J55v
+	wgzFVwJ7T341Tx96clj8HMS1cZs1vlbncXWs3whPmW+6upoWY2BY9P97HRd/DHMPM/8=
+X-Gm-Gg: AYBFou0oFhYoMRU6fhJXTcQsyuRqEc0p/38W9Fj7Jy+9fGMTor9Y9l2aG8Kox2bVSC5
+	EtYr6wIjraPku+q1lo+31n1SwHdE39hbyxFnPcbvIj7wsqvQkpJjHTmsbO64e1GsSNPsp9LEeVf
+	l5pigpPnwccYt3Ag9Aj/StctHM6lh0f/zbdVWeK2sXsyFVj28sI08910KdMFKMkoqjS5MqYuvrb
+	9K2trXfsrIpARi2ym8XPX/3b/yUMK7qr0kVpqJvEnRtZ/K/DJX6qlS83BtINFM9Gyh3Gs7mClEd
+	YXhp8l5ygWhdWiJgvK8hpOUfF52zRAsOHLs9MFZNmNJmMOI25rInXo+94S6Fq8mQzulmQyRKRVL
+	d00JSZrR5WhqGnyZ/ESJvq94csSjgi5sAkk8u1RWUksZOHM6gyI8NuHFNAigi8uPxmA3QYFNSTO
+	SyZHJqkRVbjfMxlsCcwNmRHW+oE4DwFwRKelywBKI1i0ZZNxyoc1D+Ga3bv8DV
+X-Received: by 2002:a05:690c:e15c:10b0:861:850e:dd59 with SMTP id 00721157ae682-8694c637510mr20838267b3.9.1788279214223;
+        Tue, 01 Sep 2026 09:13:34 -0700 (PDT)
+Received: from localhost ([2605:8600:200:1a83:fe59:7385:2855:8588])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-85e66abc938sm76771227b3.37.2026.09.01.09.13.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 09:13:18 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Nhat Pham <nphamcs@gmail.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry@kernel.org>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>,
-	Tejun Heo <tj@kernel.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org,
-	cgroup@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: [PATCH] selftests/cgroup: Skip test_no_invasive_cgroup_shrink if zswap shrinker is enabled
-Date: Tue,  1 Sep 2026 09:13:16 -0700
-Message-ID: <20260901161317.3468233-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        Tue, 01 Sep 2026 09:13:33 -0700 (PDT)
+Date: Tue, 1 Sep 2026 12:13:29 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Jianyue Wu <wujianyue000@gmail.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v4 2/3] mm/zswap: replace the zswap_pools list with a
+ fixed pools array
+Message-ID: <20260901161329.GI3004@cmpxchg.org>
+References: <20260830114731.8322-1-wujianyue000@gmail.com>
+ <20260830114731.8322-3-wujianyue000@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: s9n4dpf5fekioekb97yajx4q6xa4gjr9
-X-Rspamd-Queue-Id: 9D7DC4000B
-X-Rspamd-Server: rspam02
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260830114731.8322-3-wujianyue000@gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1788279199-815100
-X-HE-Meta: U2FsdGVkX1/M78WG1Mq4zJ4wWEtk+We6v2CcTqAE3nSK7GtlEYzJk03kTtNeSsbSzaWHLmKFzsgnQO6J19K30SlrkZmZcNoqb1y/3/flrJPd0nyaktcsqRr2fUMACdFC/yEJoT420ozzvXD5ZLde32DuSuuTpKJ+kvNWWo7v8QK+SeUgyAF84WW7RrhIKzGlLWSzVzRWY9YYccQ1kaMi9B2y5r8U26qKqy7PYNiqDZf/iurSjHDyzOZ5XmXZS+K2hrAIHk6Z4lsXVaFSLbCEzylAvAXnhXbL1nI+OvLVSXTB8m2vlc7jY14WkCWIlXEWzV2hOBHlsikU+2NJFg/N3u+S2ui0u5Mr0OsZpTCrQ0fozRYDmxH/KgrSzBEQR+/Z4Faqis1Dow72Dg2TFqqL7AuquxmPYzBM4QkGH5EtotwPjcguSdQ3geHyoJacvyqn0Z0Iplcmgt72yhd6a5ozz2Bv0xLbujG2ti6pZ1tbzTvEWkn0vQQWji60NMAB3H1jp+76Zv0Ez3E7bo3ojCyNvhJHukQByIvzF9QY8ai9wIxt0OL261UZGTL7Q85JYOK/zsvxho/AzT8fpv1nrUqkr//41tEYIznqkpT13rD2belSfVtqv2qaXc6dou919TLmuscMwOPyeM6qDcMhibg/KmyynlOTc7tZWnFdXtARxOx8cxsQiNHjOMqYU/qFlWK34GwPp7VIRqnyspJ636zoKZbnWL8RW+YnDypaCiIGoJC7cqCbz4Eyqd5rOrbvODs20Ig2AUkxnTkQGRNgkIAoIReZL3KUOh/lh2p2sNdTykHU+6aVXHDwnzZg/1UUIPPK8TW+9M9if8k2NPYw/nifme9foK1MxKW27kEjB76KWLOSOofM7z0LlVGoFlsm3aLnIk1SBKbhzF4UIa5l7iXKSQTtFhevr3wW3hvR16p/7DmeZD242Ea21J0i1KH9tDVXThMLDGh4W8TjzdMmWoM
- AJfT85s3
- l8jK2b6ymlcH9wG7mrASndwLre4iJNgaH0BPDrIZOYgmPIif7x8Hadz3L9P1isdC+H5TC9pL+ejFcQwgu9JEpMmszHBFcff0eeOZRruzoUASEsm2P5MPT/PH8xRv/AVcLpQkqCX0F43Sk3/Ujzzyir3sQvAnTBVWw7LUrQ30HNVM7v1sEUGSpMLz93Hc/NH4EYUc36XIbchfTJt7aWLti8ZUSad7xCxFjuQz8n5G2JCi9UGxRSSLSK6XAR+TqJFra77IQ3UjZ9neHkUYNu96G1VaWmNTM5VZgQmMvKNtP1gnRTpkBl3KuF22wY80jhSQRSa1eb5nmR7Wo12jtoticXC3LxGC9dmHt9v2uqhi16YC5UVdwsjqIN+aGpzExkRTVqo47IaLsPDz+Ts+hKZWiiCN5juhakPUx11RROB3seOh/ZTyofpHCtwEa+q4rLuFXW8O9bznuxcIOW2ZHaUiDb6nl51SffVhvKMSkSX2XZ/a665X1n3S89pk4OPZ7/bcmIR0PucWQGKaNNVqog1hNMQFRnqhkBJWTG8CzoX/GE+T3OcU=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5D6CD40004
+X-Stat-Signature: p6b5beheccbyp8m3fudssr8jcwfuaa84
+X-HE-Tag: 1788279215-963135
+X-HE-Meta: U2FsdGVkX18vjDm8R9m3ImmolZKdtQ141lmMgYPLpsy9XCqqvJa62RKbFISQqQqThjkYR9EviAoGUbxWceIH7ozi9gYJvExjT5w9tKnqPB4ruVQ5fyUeN6Qe/9UsW//VB1UrFJT7tCtqOEVF+UeEM8FOUteYgBMcqVkLJnCA0x7BO5Udr5oIZKl1lribCIRoM/L9RCI28JeeJprTBEyV9NqBrnboLy8qnAwZyfeW3P/Kd0oh7CZFD9raZd6T7Zq9zAOVcCD6a7a6op9fTHkC35gYUX54eLra9mdtrk8Y9+YvW9gRwMZmfXUok9pPjvnIyFmeLa3ad4+3Zx9fnAya3mggcfQsflFnG1u3UHQ4p5IC6VctoVILpbF+HAZltC4J60TEBOQZfUl4tjim1EqlLdkHhDVz3OBu+RLJ5Q2pbFNjX3MS2JguQJveD8ilOIRYX/FS0CRJr8XNMRy40vJiZDiv25IL8oW5sTJ0fCfsrvvjclTe4xweWR0CRkf26F6cKErhH63frlY9t5/t9L2XhGXCCcQcf2Xl6gA/C1eMt6PHG90HbuDsi9gV7/nOemMD3DQPUxV6B1VhoysKs2FpOcoCngwu0CIOLJWPYsUspZxN2bFMcga0k5BOxWK8J70BERJAI4znMnEiWd7xCqTq4obXTj+jux6ERwo2vtnhkWjWV8EDNYBvxrb7sEgBZyzxvagHYuNZVGBHbBWY1MQ/HNALakY8rDVsgM9VSPry1nilnbwQiIYkwD+Y9nBS6UxkKh505e3ccQD7vNtEc1eqSqkfJqebdeppdnzi9Bjnz6Wpwnf7cfwCt4SLqodPlORpfDuZAtgvEzXZnSxur2hQ/4TrhzoPUjcJQygO9CRwbnYhv8CHbVBXUzPLASMjrDhAiNpNBN8SXdzn2hqhVHdQNkHCx8Mhj3gDsUMSXNZllJw3BuWTBLU4Wj/GWYKLCNLMEGeyFW0sjPgR+c4IFry
+ vb7M/tCd
+ egZFfmWqEaeReFAPCaW3WCpWB/H6RJ9wtG6+anFJhAFwQj6r/78Pb7GuB2SJA8SLt27sQdSNC+WY8qOleA/GpqJNcaKfEWQsVnC7NCP4Zy16sxLLMabsNKhNenv8WyK7vQvKijhpqLgs4Z9V6ww3Dt+OFiy9bKrFa7wDJaz6xE9O5NpcOVbfqobQ3i0Wgjtr2xObWQFJ3y0AEsUAS4qiYjx+TcUrm0cJytI0rHxwlpZdetb2PdhoDRIfkriFOBfb4mD2NpJP+QMkQM6+pXyx9Ke3jZUPJOiFhK+l8NLOuVqMgedHw//IPzyNZPil6UAiJJy9idbj0dCFx/b6uq8rc7mUcCVGhPSh3hkV9SpV5AMp2mO6f8+Z8lcDoHIzl3owSOVKOUPy8J+Y9njBDEIjACWamz27ARFrHMbNIbULD8ebN5Y7wRFtYT4yDW8g9yIO6kdSWRHRgMr5Q7JWM6uBQgRAeqeXBuetEdkEXTvivdRe0HXXzoZhXTrYipA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,76 +123,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The test_no_invasive_cgroup_shrink selftest checks that when a cgroup
-has zswapped out more pages than memory.zswap.max, that it does not
-trigger writeback for other cgroups. To do this, it compares the
-writeback count in a control cgroup and makes sure that it is 0,
-and compares it to the writeback count in a aggressor cgroup who
-does expect to see writeback.
+On Sun, Aug 30, 2026 at 07:47:30PM +0800, Jianyue Wu wrote:
+> Originally zswap holds its pools on an RCU list whose head also serves
+> as the "current pool". Only a handful of pools are ever live at once,
+> since a new pool is only created when the compressor is (re)set and
+> pools are reused across compressor switches.
+> 
+> Hold the pools in a fixed ZSWAP_MAX_POOLS-element array so each pool
+> has a stable slot number, and track the current pool with a separate
+> rcu-protected pointer.
+> 
+> Slot 0 is intentionally left unused (always NULL): a zeroed or
+> incorrectly initialized pool index then resolves to NULL and trips a
+> WARN rather than silently aliasing a live pool in another slot.
+> 
+> The array keeps the same RCU publish/retire discipline the list had,
+> so lookup and teardown stay equivalent. A fully-constructed pool is
+> stored into its slot as the last step of zswap_pool_create(), so array
+> walkers only ever observe a NULL slot or a ready pool. Pool creation
+> is serialized by the module-wide kernel param mutex (all built-in
+> params share one lock) and otherwise only happens during
+> single-threaded init, so no two creators race for a slot.
+> zswap_pools_lock still serializes the store against a retiring pool
+> clearing its slot in __zswap_pool_empty().
+> 
+> Behavior change: the fixed array bounds the number of simultaneously
+> live pools at ZSWAP_MAX_POOLS - 1 (15, since slot 0 is reserved),
+> whereas the old list was unbounded. A pool is only live while it is
+> the current pool or still has stored pages referencing it, and pools
+> are reused across compressor switches, so 15 is far more than any real
+> configuration needs. Once all slots are occupied, creating a pool for
+> a 16th distinct compressor fails: zswap_pool_create() errors and
+> returns NULL, and the compressor switch is rejected with -EINVAL
+> rather than silently succeeding. The cap can be raised by increasing
+> ZSWAP_MAX_POOLS (bounded by the u8 slot index, so up to 256).
+> 
+> Suggested-by: Nhat Pham <nphamcs@gmail.com>
+> Suggested-by: Yosry Ahmed <yosry@kernel.org>
+> Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
+> ---
+>  mm/zswap.c | 97 ++++++++++++++++++++++++++++++++++++++++--------------
+>  1 file changed, 72 insertions(+), 25 deletions(-)
+> 
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 0bb30e58950a..b3b5e2887c00 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -13,6 +13,7 @@
+>  
+>  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+>  
+> +#include <linux/cleanup.h>
+>  #include <linux/module.h>
+>  #include <linux/cpu.h>
+>  #include <linux/highmem.h>
+> @@ -154,12 +155,27 @@ struct zswap_pool {
+>  	struct zs_pool *zs_pool;
+>  	struct crypto_acomp_ctx __percpu *acomp_ctx;
+>  	struct percpu_ref ref;
+> -	struct list_head list;
+>  	struct rcu_work release_work;
+>  	struct hlist_node node;
+> +	u8 idx;
+>  	char tfm_name[CRYPTO_MAX_ALG_NAME];
+>  };
+>  
+> +#define ZSWAP_MAX_POOLS 16
 
-When the zswap shrinker is enabled however, there is an additional path
-to zswap writeback, which can happen independently of reaching the
-memory.zswap.max limit.
+It's unlikely to happen, but this is a super annoying failure
+mode. User would have to kill something, delete shmem/tmpfs, or
+swapoff. And it's not obvious which entries are in which pool.
 
-The writeback counter cannot distinguish between invasive noisy-neighbor
-driven writeback and the zswap shrinker work, so the test becomes
-invalid.
+Wouldn't an idr make more sense?
 
-Skip test_no_invasive_cgroup_shrink if the zswap shrinker is enabled.
+> @@ -270,6 +283,31 @@ static void acomp_ctx_free(struct crypto_acomp_ctx *acomp_ctx)
+>  	acomp_ctx->buffer = NULL;
+>  }
+>  
+> +/*
+> + * Publish a fully-constructed pool into a free array slot.  Pool creation is
+> + * serialized by the module-wide kernel param mutex (all built-in params share
+> + * one lock) and only otherwise happens during single-threaded init, so no two
+> + * creators race for a slot.  The pool is complete before it is stored, and
+> + * zswap_pools_lock still serializes this store against a concurrent retiring
+> + * pool clearing its slot in __zswap_pool_empty(), so array walkers only ever
+> + * observe a NULL slot or a ready pool.
+> + */
+> +static int zswap_pool_assign_slot(struct zswap_pool *pool)
+> +{
+> +	int i;
+> +
+> +	guard(spinlock_bh)(&zswap_pools_lock);
+> +	for (i = ZSWAP_FIRST_POOL_SLOT; i < ZSWAP_MAX_POOLS; i++) {
+> +		if (!rcu_access_pointer(zswap_pools[i])) {
+> +			pool->idx = i;
+> +			rcu_assign_pointer(zswap_pools[i], pool);
+> +			return i;
+> +		}
+> +	}
+> +
+> +	return -ENOSPC;
+> +}
 
-Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
----
- tools/testing/selftests/cgroup/test_zswap.c | 22 +++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+It was kind of overdue, but with this now requiring a pool walk as
+well, it would be better to factor out a find_or_create function?
 
-diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
-index 9c5bd503c3f73..6f9b5c631d030 100644
---- a/tools/testing/selftests/cgroup/test_zswap.c
-+++ b/tools/testing/selftests/cgroup/test_zswap.c
-@@ -20,6 +20,8 @@ static int page_size;
- 
- #define PATH_ZSWAP "/sys/module/zswap"
- #define PATH_ZSWAP_ENABLED "/sys/module/zswap/parameters/enabled"
-+#define PATH_ZSWAP_SHRINKER_ENABLED \
-+	"/sys/module/zswap/parameters/shrinker_enabled"
- #define PATH_ZSWAP_STORED_PAGES "/sys/kernel/debug/zswap/stored_pages"
- 
- static int read_int(const char *path, size_t *value)
-@@ -446,6 +448,16 @@ static int test_zswap_writeback_disabled(const char *root)
- 	return test_zswap_writeback(root, false);
- }
- 
-+static bool zswap_shrinker_enabled(void)
-+{
-+	char value[2];
-+
-+	if (read_text(PATH_ZSWAP_SHRINKER_ENABLED, value, sizeof(value)) <= 0)
-+		return false;
-+
-+	return value[0] == 'Y';
-+}
-+
- /*
-  * When trying to store a memcg page in zswap, if the memcg hits its memory
-  * limit in zswap, writeback should affect only the zswapped pages of that
-@@ -461,6 +473,16 @@ static int test_no_invasive_cgroup_shrink(const char *root)
- 	char *zw_allocation = NULL, *wb_allocation = NULL;
- 	char *zw_group = NULL, *wb_group = NULL;
- 
-+	/*
-+	 * The shrinker can write back zw_group's pages despite not hitting the
-+	 * zswap limit. Skip the test if the zswap shrinker is enabled since the
-+	 * test cannot distinguish invasive writeback from shrinker work.
-+	 */
-+	if (zswap_shrinker_enabled()) {
-+		ksft_print_msg("zswap shrinker is enabled\n");
-+		return KSFT_SKIP;
-+	}
-+
- 	snprintf(zswap_max_buf, sizeof(zswap_max_buf), "%d", page_size);
- 	snprintf(mem_max_buf, sizeof(mem_max_buf), "%zu", allocation_size / 2);
- 
--- 
-2.53.0-Meta
+Something like:
 
+static struct zswap_pool *zswap_pool_find_or_create(char *compressor)
+{
+	struct zswap_pool *pool, *new_pool = NULL;
+	u8 id, new_id = 0;
+
+insert_new:
+	spin_lock_bh(&zswap_pools_lock);
+	idr_for_each_entry(&zswap_pools, pool, id) {
+		if (pool && !strcmp(pool->tfm_name, compressor) && zswap_pool_tryget(pool)) {
+			if (new_pool) {
+				pool_put(new_pool);
+				idr_free(&zswap_pools, new_id);
+			}
+			spin_unlock_bh(&zswap_pools_lock);
+			return pool;
+		}
+	}
+	if (new_pool) {
+		idr_replace(&zswap_pools, new_pool, new_id);
+		spin_unlock_bh(&zswap_pools_lock);
+		return new_pool;
+	}
+	spin_unlock_bh(&zswap_pools_lock);
+
+	new_pool = pool_alloc();
+	if (!new_pool)
+		...
+	new_id = idr_alloc(&zswap_pools, NULL, 1, 256, GFP_KERNEL);
+	if (new_id < 0)
+		...
+	goto insert_new;
+}	
 
