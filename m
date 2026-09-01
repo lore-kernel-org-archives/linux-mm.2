@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB9BAC624D0
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 11:07:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D3FBC624D1
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 11:07:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E8AD6B013C; Tue,  1 Sep 2026 07:07:18 -0400 (EDT)
+	id 46CB56B013D; Tue,  1 Sep 2026 07:07:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BFFE6B013D; Tue,  1 Sep 2026 07:07:18 -0400 (EDT)
+	id 4434E6B013E; Tue,  1 Sep 2026 07:07:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F192E6B013E; Tue,  1 Sep 2026 07:07:17 -0400 (EDT)
+	id 332E36B013F; Tue,  1 Sep 2026 07:07:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C6C966B013C
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:07:17 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 0FE076B013D
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:07:36 -0400 (EDT)
 Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6AD4F1C1F68
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 11:07:17 +0000 (UTC)
-X-FDA: 85164916914.14.90D5012
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 9F8528000A
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 11:07:15 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fKcC35If;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A6BB91C1F73
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 11:07:35 +0000 (UTC)
+X-FDA: 85164917670.14.D9C3D6C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D0671C0009
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 11:07:33 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H1Cp4bcm;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788260835;
+	s=arc-20220608; t=1788260854;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NpWdcIey4xCI1AAiZQP3vw2H/6eRNpO9q4dcacOYsLQ=;
-	b=rAaAFFW7Uivg2fCnFyeR+eccYkvA3IltLBgqiL0bJxOANr23hhnyO6fM8eYcw1cZNcbvli
-	/mtjs7iDTMBzwEXMxlfVWfKFkF9dy2FV/csCZWylMCh7SsTgz1CujQl59yJWGl4c5OQeIM
-	RpVEW6NedeplsGgXorLjKwNnPss1k6g=
+	bh=r59pxQpc2HnO7g8Xd7SmTRKFCMfW6qlwbRKzNqikO1A=;
+	b=n9d9D+TAuJCnNGq0B1U5Y+7Vc73gsN7IAXdqGNKa9KmF31utg+6FOy4RoA7UOnJ0fowhdz
+	FeNGuK/dzW8S54xBJzCFt5P6Uk7nauy3IKXKoT+Kj4f01X5V0LKqMVCgkgZ3dEpeA413kC
+	jgnT1hrqn3x+v9BirIco6R0iqyajDAk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788260835;
-	b=LThUkmf/ngxrQwP3MRgpZc4aA0WB/PscwE/GgXJEolWrazaySBxppTc2OqCh8thoUv5Iao
-	1qq9p0nhFlrwECqVO2nrnYEh9+cE3HLi6F4RM+LXrDVwfLiWNioQ3A+GHpGHoWEEBTEM2S
-	A/S+25fIWOtXb50D+dIRllsEPIfuLMo=
+	t=1788260854;
+	b=8KQO7wqVlzE6+erwPNp7c2qcy1p6JmdhZGTKAntSx6LXTo8MGA7Hb2W302G+VZVUgAtJ1O
+	apU+7EiAn7FcIQcdXWr7fawzW+STZdgk9mK6KsxC3LcGTsd0Q4ebtAImjrnhgbe9hba+kO
+	eiDielF1zrsJSbklmlYXSrHS/2Kvrcc=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fKcC35If;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H1Cp4bcm;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0A83B60204;
-	Tue,  1 Sep 2026 11:07:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB3661F00A3E;
-	Tue,  1 Sep 2026 11:06:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4824D42A81;
+	Tue,  1 Sep 2026 11:07:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22BA41F00A3D;
+	Tue,  1 Sep 2026 11:07:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788260834;
-	bh=NpWdcIey4xCI1AAiZQP3vw2H/6eRNpO9q4dcacOYsLQ=;
+	s=k20260515; t=1788260850;
+	bh=r59pxQpc2HnO7g8Xd7SmTRKFCMfW6qlwbRKzNqikO1A=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=fKcC35If/CtvKChvqt5gUvqvorcc35uBsHqFaoGPqLbiuylQdAEfGO/G5E+6idRQN
-	 34UBrVl0XrBauS51NgMCTWbZU0DLB7faiJbbqAB7l0KmaZOMIY7Ulwpk3r5RuNtz0N
-	 eCm7a/Rk3wqb5TFyn0BlOEXPprS22p9u9qa5KPK9ow489ArtoKwNG0RygpFPB5fdjD
-	 xE2TDdfkkTxWDpZ5LX4CSAN6qksgUVkiaekknySbV4Bxdpm7H7bkGacdSps6MCu8mN
-	 1S20jBBhqJlJA+jIArUyFc7z8VBwFYgsNH5bZv/ggaKXNYDy32b9Z5G6IbLpu2LLtH
-	 pUdonUJS5p+6g==
+	b=H1Cp4bcmyCtPW3T967T/dgqInT+lD+ja2MqM8qvjYKkjn2y8MQTBvrVCi43cnoMXJ
+	 lxDSQMKkx8p1rA+yfYLyqUJEM5wnp1buvYhxr8/h3sjljAFHjsvRB6CkC+D0/6kJvp
+	 V8zJ7ykWZV1H8L9XGaqV5WgYAizOoUUwD6HDxUF5s/SvGnESx8vadxQtv8oKbJcss8
+	 iaA6UgU3ggYAwwS0JavyArsKHm5ifn06ozLQn2Z7iFmC6mxogJ/9yLfBa13YI9JDZH
+	 /sJkWHceVV10ham6kQffhRSd9kFVD8F2MdTdTXjFO8eY84x/9WftMvuGeCLR44cMiQ
+	 ZIRGFY9AOpPfg==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Tue, 01 Sep 2026 12:01:28 +0100
-Subject: [PATCH 08/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for sh-X2
+Date: Tue, 01 Sep 2026 12:01:29 +0100
+Subject: [PATCH 09/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for
+ m68k-motorola
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260901-rcu-pagetable-freeing-v1-8-5456a81c8212@kernel.org>
+Message-Id: <20260901-rcu-pagetable-freeing-v1-9-5456a81c8212@kernel.org>
 References: <20260901-rcu-pagetable-freeing-v1-0-5456a81c8212@kernel.org>
 In-Reply-To: <20260901-rcu-pagetable-freeing-v1-0-5456a81c8212@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -133,22 +134,22 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-um@lists.infradead.org, Hugh Dickins <hughd@google.com>, 
  Qi Zheng <qi.zheng@linux.dev>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4126; i=ljs@kernel.org;
- h=from:subject:message-id; bh=wpROf24w3fAQ7cNDxi2SGsbF1TZYrv0Ll+LdZO5C4PE=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLKmbfTY3rBju4Bd4BKvOA7GJCfm9T3b5ft/f1wYWJjuG
- z0p5uuyjlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAExE/jDDf4+p69lmSPrUvtu7
- JHk1e3DdtdYCzhnb7DJOt1oujv9/u53hD39LvqLvpsWJzapJ87dcr3/goHf2zLSK0s+T9P21Vjz
- bwwwA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9513; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=YPp0BOY0cp4Ahu0Pm+BSyaylIhdW6d3HcAy3HzwYfuo=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLKmbfTQn/30mM/8yPBbvc8OX2I78TfwT55CxB7fpCxHL
+ XPTC5JnO0pZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCR1UcZGa57Nuob+61nWhNw
+ j0dBZPIbnrq50Tc3Cj024tnCFMMZepCR4drlO3d7e8szGCwPsScfybkb6D+/NuVfRcbZWxz/3Jm
+ +swMA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Stat-Signature: udfbc3z3bt4nhmurimtn6zus4itd1p5j
-X-Rspamd-Queue-Id: 9F8528000A
-X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788260835-84434
-X-HE-Meta: U2FsdGVkX1+OjeHilrdb8Edic/zoR66fVCrFECjl1suPPn69Ewu+51Pf+ikS1c+kVtEK9oVuBisLqemJIVxxrG84pR/vYSe9SF7E/INSBL+OgzBjTIadcinhobdD5vZJ2OT8g5rsv2XMx42XLGqedPJJmrAad6gueh8u56W+2dNHc9ewS3sgU/5yyT4m1NTYRDfk77D16coWQAUFZjP5RniK4Ikzr24OFJmzXC+SyNfTTt5fNuj2/a3hxnPLoJUPNdYoHIH6KfsNOdYajym2Wsah2YlNIUZLVXZ/jEvJrWIOjMNnq0PwajQs4vVZQhYPb1SU6C0O84Xd9czOXB/Lz/++GcAKET+BLpPqkdJCEa+KUhPBaEnc+Gm0ltKpuhcUK6aJW/LhYgY+cAvJJJTeBmCGehLehLkUgbnPA3P3qL0stuuo0uBMAYP3bWEP6knUX8pye5ZZp1u0xJiU31QtYTJmiCO068R0BKnyWQgP1uVGx8nJ+FR9x6T0rCzKwKlCsuY9OOAYVvKU/MLN+RMqpXgfPfVeO1Q8FzxeUTl9MN6PufDs5BP9lgbOdkr1Lb+YKY/xlhPboYw3f9hRHi4Sg1QuxrAdb295V07SmWcDxRP+lvU+Q431DX1OeESnSLVaMHqudX7OPZhzZDxQcT2KhYKrQEHwcjq22PFPeqNUzMcRrcnFjma6TV3C+gi4YSSBTTHDkPu3tO4SlyrbV8RNtFqL6qQ0VK5Sm6EFZhIhHEGM8KT5y+aEUnpE2v7izGpsk1dQMgn13JlXOA7RPKbjfSNxNjP3co/25nIdKFK0vjTBj2Ieso1Je07HBgAmBRIxkgeVCugPAE6staRnj3kPpUMtApuViei6FSfBnq4JvGmp8xFcpFs801VxGQAJLcqJHndpT9W9g616Lj3qI8/yC15x81RqowzLP6OHyKLgi9HVhWtpG2TabJT0ToTEJC6lRfr4jxVYaenqjDJmN9I
- 03Uyv9gL
- uYC9Ywpc3XpPJsyR4c7n6EHek9ZiCXlRV3oXhxYI24DY/jT0U5riFd0GAahepMcRvC/ec1FD2wqyjfHgjPmy1gfeYK2HgtlcaHJYIppEFRRsHMUODXNxRQTcsfdzzZyJw4riylR7101eaKmi1/aYS1Rt26e///QLL9UpRCuTSPiUVOTRdywgIq7nn8ouUcpgP8BjuAhx9HVjFYw0jGwxjSLGQT0y4mo/nUbWOhVM2B8DceJGXoJPBTccBvrumF3AjwNCRJwuytmnqqgfX/HAFFdygFLY+KD+45MhByv9Ecuas4KcGfJJm7duV6sfTkXRjCzz3I1gCxvaKbkPmngF8wApgy6qfy4WqL2aD8tIEfmkklVE=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D0671C0009
+X-Stat-Signature: f433ybkiinmjbog6p1wefmfh3bgbcgyh
+X-HE-Tag: 1788260853-250674
+X-HE-Meta: U2FsdGVkX1/F9/LUyl5zD/poy1ZbXpgEQdfqQLBe0AP5qC/+mHxzBp0Leg5qM8t0eQMV9+u5WtSkBhhyhtS0G0Y+TvEgFSpy2Ea6rgRy14SKHzU80VqEPrpj9G3Jms7way5Vn8tUDZ6Hphbt77VOzBQb7U+m5prg8FCNeIIdtHtBh1/Ib+ZsHrVBe2tacvoJY3auEexWcSJVZyQbBr5UPLDRyKwx+HlSIomLEpzIOtTA3qjNwAseS+rpmAkJ0Knyf5s2NKASY3NFuSGSWz5jwh2wbq/eydCkDgfG9drvZF/yglsF5a21asJDXefyiKsmV+lbvouOVsIzuC0BKUKXKtW6IoE6lBxZwpufe40a8zh6mMQ+X7S9gR2S9yU9NSAXOH8EN34aF8A3erZA30N17jQNVk8vw/udmyS4rvCCfEp9u1jm7N0VnUaektG82bY9mduFVlbcjWsSlmYrCpxC5h7F4+ZvLoTf8NIpHZS4O/4iVIfKX3p7bWCUO6bG17sZSmPXGkIafTKx8PqvaZRe3kRIDm8iaEyvE8I/EHCNsfpoNYHV34w6WBWwvM97EhxD7yRiN7QIGXVk3YcDyADzRiqGszj5VyDbLjLAzBuDzG8mWVRMCnIFotZ8/ZUkPF5IVuvvBtWmdQvjF2FxQVs6lhUhgvAk8hAcSEeQ24hLs8urJSI6IkqdUOzjffEgoveMuOUO1r/2pCJVGpU7ltQJ3j1/D8NTq3VunaLNmiRJ2S+7fcrzm9LPxTrDRUMNMHE2JjZ+28+5fmKB8m3uZIAXNiGvend7U72XYFcpEz1ApCQ6bEEFBAtBmgJVeBHRZUNC19Vjo2jd3t1guIKNvZzfajcDe9rFmqlj5+Wmo0C3O2bpTaN9/h21JFE89qPyrYxo/qbuoOz1QTOFRvAI33OE3s1Fj2c+kr5FIdWdpkbYVDDTo0vuMao5z3hn0/9Z0yO9be2z2h3cVQ5jQkUym9q
+ BJCoQA8w
+ 59wDOAippFYrTyLwRSUXPZAY3bR1uvUrdVyO5JeuBZZjWYRLxtxa2liXmcZa802w4OgmeSpahldPiletsExdcIO+Iit4FnQ6dN8fj/ShWPZiK95LhXa2GhQfb8CmM+xihE8gNUki02PqjEJ4tkg8qe/EZYJzSGfMTSAWSx98Wpilvs9MTqAnKulWWxv2yYLCOmqeJEwJb3VMA9I+MUqi+U9IZXS5KtuZJkazi3jCWSAc3Nexr3lJoG119FfBeu45exV2xazFNU83NNKDyDjFnYwngfcbgCcITzyQAJpQkQGt/apS6pRWw0SLr7ZvzE7LtL7VVFTB361g3ZhQsSE9Xg5WU8jxrrZeushpR/1mdyY5eRDcH5pDerIqnXZ4BbMk5Wm/O4Asv26XB4NE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,114 +157,293 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, non-x2 sh specifies CONFIG_MMU_GATHER_RCU_TABLE_FREE allowing
-RCU page table freeing.
+sun3 and coldfire are already supported, however motorola requires a little
+more care.
 
-sh-X2 is problematic because it utilises slab-allocated PMD page tables,
-and thus tlb_remove_ptdesc() cannot be used in these cases.
+Here, custom table removal logic is required, so
+CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE is enabled for m68k-motorola.
 
-All other sh variants are fine as commit e3ecf7c7d082 ("mm: pgtable:
-convert some architectures to use tlb_remove_ptdesc()") already converted
-page table freeing to use tlb_remove_ptdesc(), which does so after an RCU
-grace period when CONFIG_MMU_GATHER_RCU_TABLE_FREE is specified.
+Firstly as part of this change, the page table level must be communicated
+to the underlying __tlb_remove_table() implementation.
 
-Resolve this issue by firstly specifying CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE
-for sh-X2, so the arch can provide its own __tlb_remove_table()
-implementation (called after the RCU grace period).
+Take advantage of the fact that page tables are aligned by more than enough
+to permit setting TABLE_PTE or TABLE_PMD in the low bits of the pointer,
+and store this there.
 
-Then, convert __pmd_free_tlb() to tag the pointer to the PMD, and have
-__tlb_remove_table() check this tag to determine whether to free via the
-slab or to use pagetable_dtor_free().
+Then update __pte_free_tlb() and __pmd_free_tlb() to pass this through,
+then have __tlb_remove_table() decode this and pass it to
+free_pointer_table().
 
-This follows the pattern used by sparc64 as implemented in commit
-4a0100f7546f ("sparc64: use RCU page table freeing").
+The page table freeing is performed via call_rcu(), so free_pointer_table()
+now will be invoked from softirq context, and as such may be re-entrant.
 
-Previously __pmd_free_tlb() freed PMD page tables immediately, before any
-TLB flush IPI. This seems to be a pre-existing bug, which this change also
-resolves.
+Introduce an irq save/restore spinlock to handle this, and hold it over the
+time a given ptable entry is being referenced in both get_pointer_table()
+and free_pointer_table().
 
-CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE is only specified for sh-X2, as setting
-it disables CONFIG_PT_RECLAIM and causes __tlb_remove_table_one() to call
-tlb_remove_table_sync_rcu() and synchronize_rcu() in turn, and this is not
-necessary for other sh variants.
+In order to make things a little easier in this respect, separate out the
+logic for adding a new ptable entry into add_pointer_table() and only hold
+the lock during ptable entry insertion in this case.
+
+Note that original list_add_tail(new, dp) added new prior to dp, which is
+ptable_list[type].next, i.e. after ptable_list[type].
+
+The equivalent therefore is list_add(new, &ptable_list[type]), which adds
+new after ptable_list[type], only without needing to make reference to dp.
+
+Note that, as m68k-motorola specifies CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE, it
+does not enable CONFIG_PT_RECLAIM. This isn't meaningfully impactful.
+
+With this applied, all of m68k implements CONFIG_MMU_GATHER_RCU_TABLE_FREE.
 
 This forms part of an overall effort to switch every architecture to this
 mode.
 
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- arch/sh/Kconfig               |  3 ++-
- arch/sh/include/asm/pgalloc.h |  6 +++++-
- arch/sh/mm/pgtable.c          | 20 ++++++++++++++++++++
- 3 files changed, 27 insertions(+), 2 deletions(-)
+ arch/m68k/Kconfig                        |   3 +-
+ arch/m68k/include/asm/motorola_pgalloc.h |   9 ++-
+ arch/m68k/mm/motorola.c                  | 121 ++++++++++++++++++++-----------
+ 3 files changed, 86 insertions(+), 47 deletions(-)
 
-diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-index 204f64912f0e..75236bef6f16 100644
---- a/arch/sh/Kconfig
-+++ b/arch/sh/Kconfig
-@@ -33,6 +33,7 @@ config SUPERH
- 	select HAVE_ARCH_AUDITSYSCALL
- 	select HAVE_ARCH_KGDB
+diff --git a/arch/m68k/Kconfig b/arch/m68k/Kconfig
+index 6b8ec67c86fd..fa5d39549da9 100644
+--- a/arch/m68k/Kconfig
++++ b/arch/m68k/Kconfig
+@@ -29,6 +29,7 @@ config M68K
+ 	select HAVE_ARCH_LIBGCC_H
+ 	select HAVE_ARCH_SECCOMP
  	select HAVE_ARCH_SECCOMP_FILTER
-+	select HAVE_ARCH_TLB_REMOVE_TABLE if X2TLB
- 	select HAVE_ARCH_TRACEHOOK
++	select HAVE_ARCH_TLB_REMOVE_TABLE if MMU_MOTOROLA
+ 	select HAVE_ASM_MODVERSIONS
  	select HAVE_DEBUG_BUGVERBOSE
- 	select HAVE_DEBUG_KMEMLEAK
-@@ -61,7 +62,7 @@ config SUPERH
- 	select HAVE_SYSCALL_TRACEPOINTS
- 	select IRQ_FORCED_THREADING
- 	select LOCK_MM_AND_FIND_VMA
--	select MMU_GATHER_RCU_TABLE_FREE if MMU && !X2TLB
+ 	select HAVE_EFFICIENT_UNALIGNED_ACCESS if !CPU_HAS_NO_UNALIGNED
+@@ -36,7 +37,7 @@ config M68K
+ 	select HAVE_MOD_ARCH_SPECIFIC
+ 	select HAVE_UID16
+ 	select MMU_GATHER_NO_RANGE if MMU
+-	select MMU_GATHER_RCU_TABLE_FREE if MMU && (SUN3 || COLDFIRE)
 +	select MMU_GATHER_RCU_TABLE_FREE if MMU
+ 	select MODULES_USE_ELF_REL
  	select MODULES_USE_ELF_RELA
- 	select NEED_SG_DMA_LENGTH
- 	select NO_DMA if !MMU && !DMA_COHERENT
-diff --git a/arch/sh/include/asm/pgalloc.h b/arch/sh/include/asm/pgalloc.h
-index 6fe7123d38fa..67ce7fa23fa1 100644
---- a/arch/sh/include/asm/pgalloc.h
-+++ b/arch/sh/include/asm/pgalloc.h
-@@ -17,7 +17,11 @@ extern void pgd_free(struct mm_struct *mm, pgd_t *pgd);
- extern void pud_populate(struct mm_struct *mm, pud_t *pudp, pmd_t *pmd);
- extern pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long address);
- extern void pmd_free(struct mm_struct *mm, pmd_t *pmd);
--#define __pmd_free_tlb(tlb, pmdp, addr)		pmd_free((tlb)->mm, (pmdp))
+ 	select NO_DMA if !MMU && !COLDFIRE
+diff --git a/arch/m68k/include/asm/motorola_pgalloc.h b/arch/m68k/include/asm/motorola_pgalloc.h
+index 1091fb0affbe..dcde40e8b5c6 100644
+--- a/arch/m68k/include/asm/motorola_pgalloc.h
++++ b/arch/m68k/include/asm/motorola_pgalloc.h
+@@ -17,6 +17,7 @@ enum m68k_table_types {
+ extern void init_pointer_table(void *table, int type);
+ extern void *get_pointer_table(struct mm_struct *mm, int type);
+ extern int free_pointer_table(void *table, int type);
 +extern void __tlb_remove_table(void *table);
-+
-+/* PMDs are slab-allocated, tag so they are freed correctly. */
-+#define __pmd_free_tlb(tlb, pmdp, addr)					\
-+	tlb_remove_table((tlb), (void *)((unsigned long)(pmdp) | 1))
- #endif
  
- static inline void pmd_populate_kernel(struct mm_struct *mm, pmd_t *pmd,
-diff --git a/arch/sh/mm/pgtable.c b/arch/sh/mm/pgtable.c
-index 3a4085ea0161..f6184b86b89c 100644
---- a/arch/sh/mm/pgtable.c
-+++ b/arch/sh/mm/pgtable.c
-@@ -56,4 +56,24 @@ void pmd_free(struct mm_struct *mm, pmd_t *pmd)
+ /*
+  * Allocate and free page tables. The xxx_kernel() versions are
+@@ -47,7 +48,7 @@ static inline void pte_free(struct mm_struct *mm, pgtable_t pgtable)
+ static inline void __pte_free_tlb(struct mmu_gather *tlb, pgtable_t pgtable,
+ 				  unsigned long address)
  {
- 	kmem_cache_free(pmd_cachep, pmd);
+-	free_pointer_table(pgtable, TABLE_PTE);
++	tlb_remove_table(tlb, (void *)((unsigned long)pgtable | TABLE_PTE));
  }
+ 
+ 
+@@ -61,10 +62,10 @@ static inline int pmd_free(struct mm_struct *mm, pmd_t *pmd)
+ 	return free_pointer_table(pmd, TABLE_PMD);
+ }
+ 
+-static inline int __pmd_free_tlb(struct mmu_gather *tlb, pmd_t *pmd,
+-				 unsigned long address)
++static inline void __pmd_free_tlb(struct mmu_gather *tlb, pmd_t *pmd,
++				  unsigned long address)
+ {
+-	return free_pointer_table(pmd, TABLE_PMD);
++	tlb_remove_table(tlb, (void *)((unsigned long)pmd | TABLE_PMD));
+ }
+ 
+ 
+diff --git a/arch/m68k/mm/motorola.c b/arch/m68k/mm/motorola.c
+index b30aa69a73a6..ffc80483440b 100644
+--- a/arch/m68k/mm/motorola.c
++++ b/arch/m68k/mm/motorola.c
+@@ -20,6 +20,7 @@
+ #include <linux/init.h>
+ #include <linux/memblock.h>
+ #include <linux/gfp.h>
++#include <linux/cleanup.h>
+ 
+ #include <asm/setup.h>
+ #include <linux/uaccess.h>
+@@ -103,6 +104,8 @@ static struct list_head ptable_list[3] = {
+ 	LIST_HEAD_INIT(ptable_list[2]),
+ };
+ 
++static DEFINE_SPINLOCK(ptable_lock);
 +
-+static void __tlb_remove_table_slab(void *table)
-+{
-+	kmem_cache_free(pmd_cachep, table);
+ #define PD_PTABLE(ptdesc) ((ptable_desc *)&(virt_to_ptdesc((void *)(ptdesc))->pt_list))
+ #define PD_PTDESC(ptable) (list_entry(ptable, struct ptdesc, pt_list))
+ #define PD_MARKBITS(dp) (*(unsigned int *)&PD_PTDESC(dp)->pt_index)
+@@ -139,52 +142,66 @@ void __init init_pointer_table(void *table, int type)
+ 	return;
+ }
+ 
+-void *get_pointer_table(struct mm_struct *mm, int type)
++/*
++ * For a pointer table for a user process address space, a
++ * table is taken from a ptdesc allocated for the purpose.  Each
++ * ptdesc can hold 8 pointer tables.  The ptdesc is remapped in
++ * virtual address space to be noncacheable.
++ */
++static void *add_pointer_table(struct mm_struct *mm, int type)
+ {
+-	ptable_desc *dp = ptable_list[type].next;
+-	unsigned int mask = list_empty(&ptable_list[type]) ? 0 : PD_MARKBITS(dp);
+-	unsigned int tmp, off;
++	struct ptdesc *ptdesc;
++	ptable_desc *new;
++	void *pt_addr;
+ 
+-	/*
+-	 * For a pointer table for a user process address space, a
+-	 * table is taken from a ptdesc allocated for the purpose.  Each
+-	 * ptdesc can hold 8 pointer tables.  The ptdesc is remapped in
+-	 * virtual address space to be noncacheable.
+-	 */
+-	if (mask == 0) {
+-		struct ptdesc *ptdesc;
+-		ptable_desc *new;
+-		void *pt_addr;
+-
+-		ptdesc = pagetable_alloc(GFP_KERNEL | __GFP_ZERO, 0);
+-		if (!ptdesc)
+-			return NULL;
+-
+-		pt_addr = ptdesc_address(ptdesc);
+-
+-		switch (type) {
+-		case TABLE_PTE:
+-			/*
+-			 * m68k doesn't have SPLIT_PTE_PTLOCKS for not having
+-			 * SMP.
+-			 */
+-			pagetable_pte_ctor(mm, ptdesc);
+-			break;
+-		case TABLE_PMD:
+-			pagetable_pmd_ctor(mm, ptdesc);
+-			break;
+-		case TABLE_PGD:
+-			pagetable_pgd_ctor(ptdesc);
+-			break;
+-		}
++	ptdesc = pagetable_alloc(GFP_KERNEL | __GFP_ZERO, 0);
++	if (!ptdesc)
++		return NULL;
++
++	pt_addr = ptdesc_address(ptdesc);
++
++	switch (type) {
++	case TABLE_PTE:
++		/*
++		 * m68k doesn't have SPLIT_PTE_PTLOCKS for not having
++		 * SMP.
++		 */
++		pagetable_pte_ctor(mm, ptdesc);
++		break;
++	case TABLE_PMD:
++		pagetable_pmd_ctor(mm, ptdesc);
++		break;
++	case TABLE_PGD:
++		pagetable_pgd_ctor(ptdesc);
++		break;
++	}
++
++	mmu_page_ctor(pt_addr);
++
++	new = PD_PTABLE(pt_addr);
+ 
+-		mmu_page_ctor(pt_addr);
++	PD_MARKBITS(new) = ptable_mask(type) - 1;
++	scoped_guard(spinlock_irqsave, &ptable_lock)
++		list_add(new, &ptable_list[type]);
+ 
+-		new = PD_PTABLE(pt_addr);
+-		PD_MARKBITS(new) = ptable_mask(type) - 1;
+-		list_add_tail(new, dp);
++	return (pmd_t *)pt_addr;
 +}
 +
-+static void __tlb_remove_table_pgtable(void *table)
++void *get_pointer_table(struct mm_struct *mm, int type)
 +{
-+	pagetable_dtor_free(table);
-+}
++	unsigned int tmp, off;
++	unsigned long mask;
++	unsigned long flags;
++	ptable_desc *dp;
++	void *ret;
+ 
+-		return (pmd_t *)pt_addr;
++	spin_lock_irqsave(&ptable_lock, flags);
++	dp = ptable_list[type].next;
++	mask = list_empty(&ptable_list[type]) ? 0 : PD_MARKBITS(dp);
 +
++	if (mask == 0) {
++		spin_unlock_irqrestore(&ptable_lock, flags);
++		return add_pointer_table(mm, type);
+ 	}
+ 
+ 	for (tmp = 1, off = 0; (mask & tmp) == 0; tmp <<= 1, off += ptable_size(type))
+@@ -194,7 +211,10 @@ void *get_pointer_table(struct mm_struct *mm, int type)
+ 		/* move to end of list */
+ 		list_move_tail(dp, &ptable_list[type]);
+ 	}
+-	return ptdesc_address(PD_PTDESC(dp)) + off;
++
++	ret = ptdesc_address(PD_PTDESC(dp)) + off;
++	spin_unlock_irqrestore(&ptable_lock, flags);
++	return ret;
+ }
+ 
+ int free_pointer_table(void *table, int type)
+@@ -203,6 +223,9 @@ int free_pointer_table(void *table, int type)
+ 	unsigned long ptable = (unsigned long)table;
+ 	unsigned long pt_addr = ptable & PAGE_MASK;
+ 	unsigned int mask = 1U << ((ptable - pt_addr)/ptable_size(type));
++	unsigned long flags;
++
++	spin_lock_irqsave(&ptable_lock, flags);
+ 
+ 	dp = PD_PTABLE(pt_addr);
+ 	if (PD_MARKBITS (dp) & mask)
+@@ -213,6 +236,8 @@ int free_pointer_table(void *table, int type)
+ 	if (PD_MARKBITS(dp) == ptable_mask(type)) {
+ 		/* all tables in ptdesc are free, free ptdesc */
+ 		list_del(dp);
++		spin_unlock_irqrestore(&ptable_lock, flags);
++
+ 		mmu_page_dtor((void *)pt_addr);
+ 		pagetable_dtor_free(virt_to_ptdesc((void *)pt_addr));
+ 		return 1;
+@@ -223,9 +248,21 @@ int free_pointer_table(void *table, int type)
+ 		 */
+ 		list_move(dp, &ptable_list[type]);
+ 	}
++
++	spin_unlock_irqrestore(&ptable_lock, flags);
+ 	return 0;
+ }
+ 
 +void __tlb_remove_table(void *table)
 +{
-+	const unsigned long addr = (unsigned long)table;
++	/* The bottom 2 bits are used to encode page table type. */
++	const unsigned long encoded = (unsigned long)table;
++	void *addr = (void *)(encoded & ~3UL);
++	const int type = encoded & 3;
 +
-+	if (addr & 1)
-+		__tlb_remove_table_slab((void *)(addr & ~1UL));
-+	else
-+		__tlb_remove_table_pgtable(table);
++	free_pointer_table(addr, type);
 +}
- #endif /* PAGETABLE_LEVELS > 2 */
++
+ /* size of memory already mapped in head.S */
+ extern __initdata unsigned long m68k_init_mapped_size;
+ 
 
 -- 
 2.55.0
