@@ -4,109 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 067FCC61DD6
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 07:44:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5854CC624C6
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 07:45:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D52F86B00AF; Tue,  1 Sep 2026 03:44:14 -0400 (EDT)
+	id 343466B00C1; Tue,  1 Sep 2026 03:45:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D03CC6B00B0; Tue,  1 Sep 2026 03:44:14 -0400 (EDT)
+	id 2F3516B00C2; Tue,  1 Sep 2026 03:45:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF9266B00B1; Tue,  1 Sep 2026 03:44:14 -0400 (EDT)
+	id 1E2C86B00C3; Tue,  1 Sep 2026 03:45:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D01D6B00AF
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 03:44:14 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 28D83C0370
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:44:14 +0000 (UTC)
-X-FDA: 85164405228.23.BD93C55
-Received: from mailgw1.hygon.cn (unknown [101.204.27.37])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 6785980002
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:44:11 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E19216B00C1
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 03:45:05 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 42C3F1A01D6
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:45:05 +0000 (UTC)
+X-FDA: 85164407370.09.62B42BB
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 981F840005
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 07:45:03 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
 	dkim=none;
-	spf=pass (imf30.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn;
-	dmarc=pass (policy=none) header.from=hygon.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788248652;
-	b=VQS+hVhTgFrI89eXt2lk+HQl5WwX7XJiHT/V+6lnEpONb5ENyWkqKlmEpYO4NPbhRvId/l
-	XK699K589y0NCahCeb3j4I0LRiA0Xfp6cb4eOODbtyKNnIA1vIHNl2t1Oo0yY+dFthC3zE
-	A5lqs2fJUJkFN3vhKGUGsOkRIl0aSng=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	spf=pass (imf30.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn;
-	dmarc=pass (policy=none) header.from=hygon.cn
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf01.hostedemail.com: domain of 3foKWagkbADkntufVggZmVkkdY.bjjbgZpnZmXjioZio.Xjh@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3foKWagkbADkntufVggZmVkkdY.bjjbgZpnZmXjioZio.Xjh@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788248652;
+	s=arc-20220608; t=1788248703;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yY6Y+yJBejTLiAp8PQ80g9KRnOAtMy7HCIws0SlPznU=;
-	b=7eaaLpWcEqEtNNTNGV0ZFlEX2u88CGdSgyD1RgKWZseDWyWQ36m3k5/00zme7IZ8N8wMQv
-	WP4aIieaH/h8PUWXSjXaSKYQNJUncwX7YJfeAZpebnMr1meKom3ZRBCbyEslEFQ44sq5kP
-	5/eadXHXAO5jZqfIfc5XMC5ToCmjSas=
-Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hYyY25fKwz1PGCN;
-	Tue,  1 Sep 2026 15:44:06 +0800 (CST)
-Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hYyXz6XqWz1PGCN;
-	Tue,  1 Sep 2026 15:44:03 +0800 (CST)
-Received: from cncheex05.Hygon.cn (unknown [172.23.18.115])
-	by maildlp2.hygon.cn (Postfix) with ESMTPS id 24A5330004D2;
-	Tue,  1 Sep 2026 15:40:13 +0800 (CST)
-Received: from cncheex04.Hygon.cn (172.23.18.114) by cncheex05.Hygon.cn
- (172.23.18.115) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Tue, 1 Sep
- 2026 15:44:04 +0800
-Received: from cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d]) by
- cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d%10]) with mapi id
- 15.02.1544.036; Tue, 1 Sep 2026 15:44:04 +0800
-From: Jianyong Wu <wujianyong@hygon.cn>
-To: Peter Zijlstra <peterz@infradead.org>
-CC: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>, Chen Yu <yu.c.chen@intel.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>, Dietmar Eggemann
-	<dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, Ben Segall
-	<bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin Schneider
-	<vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, "Shrikanth
- Hegde" <sshegde@linux.ibm.com>, Phil Auld <pauld@redhat.com>, Andrew Morton
-	<akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "jianyong.wu@outlook.com"
-	<jianyong.wu@outlook.com>, Yuan Zhong <zhongyuan@hygon.cn>, Huangsj
-	<huangsj@hygon.cn>, Fengyu Wang <wangfengyu@hygon.cn>, Zhiwei Ying
-	<yingzhiwei@hygon.cn>, "justin.he@arm.com" <justin.he@arm.com>
-Subject: RE: [RFC PATCH v2 07/23] sched/cache: Prioritize preferred NUMA node
- selection over LLC selection
-Thread-Topic: [RFC PATCH v2 07/23] sched/cache: Prioritize preferred NUMA node
- selection over LLC selection
-Thread-Index: AQHdNiA/Gl7/wvc7qkaJjcGUBBSfi7a3o5GAgAG7IQA=
-Date: Tue, 1 Sep 2026 07:44:04 +0000
-Message-ID: <62e8081a9432407893fb6a9a8e397d87@hygon.cn>
-References: <20260827122816.756234-1-wujianyong@hygon.cn>
- <20260827122816.756234-8-wujianyong@hygon.cn>
- <20260831131643.GK4120091@noisy.programming.kicks-ass.net>
-In-Reply-To: <20260831131643.GK4120091@noisy.programming.kicks-ass.net>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [172.19.20.45]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=cO+IF/roQ735VVx8QXTPGBRUMv96ABeB97I7jAxa+8I=;
+	b=VZHHcv5Mgp82DVrx4SJAVIwv/ElYr8PsDSrw4617hYH0EACJm5z1ee3pY+QoSIKtl1I5AW
+	KYHv9ZKt4cePbAXmwlSydJtSPoxStJrL9nN2n2o5XLlqkyJ/m4GaMr3ZDQQHTa9mhBAYwz
+	MABBzXMJSNQuttsEFGR3lER2APDVVrE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf01.hostedemail.com: domain of 3foKWagkbADkntufVggZmVkkdY.bjjbgZpnZmXjioZio.Xjh@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3foKWagkbADkntufVggZmVkkdY.bjjbgZpnZmXjioZio.Xjh@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788248703;
+	b=YAXNRjfQqvPDVqalXzn0SvnjKnz2e0JbROk9QbMO1fSgSvHwVz4ypJIB1ffcjBM3hniEcD
+	9gE8cOV+l9ux8Mvs5nwisKWhXsvH/F4OFS0yBFEjW2q6lGCWyMRkVLF6wrRcOHcmIpTzAI
+	axFrp1/7faiXxUN8NM8gm8rCuDc4ujw=
+Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4b37620eb73so9098918b6e.1
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 00:45:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788248702; x=1788853502;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=cO+IF/roQ735VVx8QXTPGBRUMv96ABeB97I7jAxa+8I=;
+        b=URKaAgIyCSfVipD3VVLKwraHhKorQB2t/Yz8PWWNiEgI9rI7FCrPyLGsHqk8emHSX1
+         cLgIOy6M4I34/Ht+2L1qdURYEyvt4l3cLDA4+cIdhutRRBna34whXPmgOTxCOIHlcKVh
+         kVdRPreeKq6iFNavZ9Vd/T/iqxs14BRCvHA14GrcL308b4eAnD+Iy5+QU+XoajnWS/t0
+         L0TrEPPNsGiqJQbKQ/k2xzFIAR8GQnIqBXMzLjEOwJc/JVvammw/rqRRShochxBedlKZ
+         iNAQqmsZbg2/57tNSGgkQu08NJ1+gQVxXGbdFDuKMKwuQZrDWF2K4uWklcz7YUCF09H1
+         dmng==
+X-Forwarded-Encrypted: i=1; AHgh+RqSmBNm4qE3nYyMWUaxpeLhhMSydTnYQ42c/i+C4IHs7LiaU/TazxJRlvdpiFC7GOSWfpzBY6XN0g==@kvack.org
+X-Gm-Message-State: AFuF++ln/uFojOLB9lLGRodyZvkM6xF1Gh/jOGu1bL3HKGKVlpsEfeeP
+	o7GzeICFekMz3iKvG+Rzki3dOUIf0bWUGx0ENZ7PBlF46ZwXqbmtLiID9uCsiD4enCBw1aAFyPu
+	qbULC5COFvy8oGHCJ+ffv5l8auDVeYMIY3kKr3eJQi6XnPZHnaIonHUObabM=
 MIME-Version: 1.0
+X-Received: by 2002:a05:6808:1a11:b0:4b2:8d9e:de11 with SMTP id
+ 5614622812f47-4b5b837c725mr6942194b6e.19.1788248702670; Tue, 01 Sep 2026
+ 00:45:02 -0700 (PDT)
+Date: Tue, 01 Sep 2026 00:45:02 -0700
+In-Reply-To: <20260901014117.416981-1-junjie.cao@intel.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a96827e.04428c52.29b18.0003.GAE@google.com>
+Subject: Re: [syzbot] [kernfs?] INFO: rcu detected stall in kernfs_fop_open (7)
+From: syzbot <syzbot+19d01f6082ec61dd45b2@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, davem@davemloft.net, edumazet@google.com, 
+	gregkh@linuxfoundation.org, horms@kernel.org, jhs@mojatatu.com, 
+	jiri@resnulli.us, junjie.cao@intel.com, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, pabeni@redhat.com, 
+	syzkaller-bugs@googlegroups.com, tj@kernel.org, vinicius.gomes@intel.com
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: m4e4je7nymhcxbaaxrggp6gn1qn1wgde
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 981F840005
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6785980002
-X-Stat-Signature: 4eu9uh58b7gwpo7fq463t5ibuqofuekf
-X-HE-Tag: 1788248651-691493
-X-HE-Meta: U2FsdGVkX1+3MoCx5RpB1vKmStU7rsgNE8Nqszh8Uo/+er/TEe9tJvwCxqbedWPkHd8jSk/UVq5kgM9D3s3tMHIGX2KYrf8l28zE5dVyuNrcHXb/5jmrjcL5PFOc6zlmRxOnWRFW9b48Gp2NsOfFh9wFnDN/MjWrL1cIyvnGs7s+HG2Y0xVZO6kaoTh02tjbbwJR/eomquB1Z4uke6o/Sucowcw1+hCwKIuVjhSSFaCN29CG1A0bspe6DREr+HHwFg5gS0iviQjn1yWVCRlwqk4nUH5YpCU+3x22JSEUL6szpxl05+RqqHV7y9/MZXQ2mNcGlZuyCIp8LavLDdR1Kzh4luGLutimXvV2dADxy+zmQ2MzsIf0WbTTXxfsGnTH569Ne0aL5DF7cB+QmRaeYy2LBlgLrWz6PMs2/MNAGCkRyOI2Yfm8YrF7O88yT96/3PQNLm7dJbV7L7ofncNIa2EpZjYEp9xhzmQDMgyjf11rhhH9bI+pZl++1urNVpDg6nlNAgw6DWZe0EllheuKs5SXirJSxtvbQXJk19rnsm6Iok9+EBiVZ/f/tpoPTQcsu9CQpBMGSZ05rNYDVfk0kzWLa/C3SzXCTDjtGig89YC4KR5TcRaplPbMmUzOrCDnvzC8JtFLWe5BhxQbxdErvElTXCbdGDxzoFqQaTutm16Juc9Pd+9ndl1K0gZHfsL6mudVqmMJsXeVtaN+ZL3LNuY8UeshD9YhRnfT1vMf0eSWef1qdyYynro9y7Skpi56YcgFEskPSxVBmnC1ZOYR/3+6S2zzEYcbsf5Cz/bOf7G9jllOLKlGB4RwaIKNXf5icvuGpGwwf1PCpvb0WcOMAiha0JguLkEsP1KFcMpAvTCQYc6iiFFjfFBqF+Ac9Nfdu8l8NmopQkD/kGSM8IX+9rL4kUEWruGi17QKd1pjghXN295xPtYWEJSRZ9tI53iWrp9JIfGjOrnLc3BEHhK
- 4m2HS9Se
- OIMLMP6AOFaxtVtYPcPtYY0ntWZf4/13auxIWArxYtXNeL0mw6DoATHr2e/tkAAihdaoVGsOtKT7yWeub4LCwnNDiHpgo1yB8t2/IwDdv/K7HaNwD8JxxJbRqhvB9Rf/+waXfNvfXFVrnKeaPZigit9U3ayUCJ67meVA//1NhS/aispz10prZinOJryYE1ifYTQ0h/VjoOQ9xrVu3Jjghi2mUXp1IfOqJAJULIM1mZ0GPK7NyyWD6lwwfB/0Q15b90GPJpiSyZtvp1s9DqMcXBA9Je+b5mnUAtNCOgsbocbxs4FEOGZSo9ReaRs3d1Iwgmy8EgxXtuLjZDGOvni3fDt2EG3CrXJ6glfujPR0LXfSQ+EeuzYlp3G8FaXlItYgUmRPnyAKM6kEh9KJuUEy67tC7+ZmFDEGt3e+/ccVh/08JtMtoGm1UdGm+9K8Iru8vO3kvDAAw0rHZWW/rqreXyWseu5PZr2tc1iFaK5sJeSUMFRnfH5MUT0PMKxmkm2S9VBV3b2Da5hyiwDTM6EOQiA47MRBCqJX2OENqILHCrztMBTiPAFeqEQWXk4a4uOcIEI2CFZX7jwIFoy9ylD+K77VBS65PkeDKPHzOFV0+KZu1cJRE5Tj5tanFeZXyaO1isP17TD90DOeTZzDF9Vtp1AmR4D/EQ6egd8wk+B4GOCiwXkkmdPGZcw490FuBErzLJijzibnH0jnx8AAOoV81FnGtJsOJyJUPQDH3YmzJFQpgd2K4WYcyXZrjI13r/3mEVpZZ7+tjd5wqDf3Rw2gxIWiG/ZXF1Gm/mX1WjEAUI9bR+XA8vpgJg68WzMrCH2mXz2j8nyzZ5ZmzK+kx9Y1n/aSvlw==
+X-HE-Tag: 1788248703-373815
+X-HE-Meta: U2FsdGVkX1+Go6Gq9qnsQFjKMwPYl75Z4mFDRao3CMOcxtAdUZBdqbiv8YtRgEPGqt1eI+LTmUML44AdAqAPCWzqZzMjOnYXtzwbfG2vDmTSdTjq0uSfNcax+9rM0O9KMNryt9d7zEMqdM/VeU9uJQ4AN/BMgcErIy3OWONr4+fClRO6/RiILu5vNJ9ZZsu1ohESmkn5XMSxfEvGztgCSuOpP2Mk8uR0bepxrFEhHGG48b0iGTdrLW7j/RgoBJ//0liCWM5P/dYSCfT/nX7TTVh9vTV8aU27AAO0E86Vz0OVqQYz0NmDoCK7ZTvhyAfEAJVsghAilpHn1wGwE9ddtMMP25YB6mUmGu+dO0N8P43/VJqVqscexiav8BPm/yobOk76vqCL5tWp2Jw3H2cs0FMcQr7fLn7+POFdJgQMUvQm9wdq5wSfQ2YG736BPtFUrnIk6OtOVfHB7NWnB9dQ1kB4WMeJOlFKMMN7bww9Jxb5oI6aWlVBa1quhXyep6PIRC6IJeN+uwJ7v0Jgl6yB6H04qV+dIVfBluMXLTAmbdUa651CCXQAkzPxqZZcKWN+BTBy7PMyNmP5Qbooz+ZOZHUYvLvCwIk68lcnz9zLa324r3+stYYDRJ5RbtClkgjCRixTSBNMTh2MaNVi0kMprLII1ClmpdqS/gpXIAxo2F2NZIsRdW84h2InrW8s+cRcSbGhEnpJskxFX+Zb9xTXEk2CkkKO1gMFTga8U5AHwTZsmPRv/f7ZNgdVL64sbryyEI5hvowV4I5otfUYrngDJoQtYus3wV577EVIf5WN+r9/kDbxsZTtwuu+7sixjFjSWZxvdow32vvbnolQbcH/jVACjMD+FlfOZMs10YkHFyc7evA9vrhbHdYE73avnh6YzUJGFnKo3EXWX5ZGRh8BsF6wAKQHor4GaZgGUMEG7EjrYhiHQyvFdGru9k7OrrttX91KflifbVwcJlTqB0/
+ nb5JsS9T
+ 7iNc98hXN8+kMghTlGE73HVJHJCt3XdbfvxMD4rse++Jc2eggAdgKTusCzikVmgrM36d+We+T7boPOJ50YJZ5OqJ2k/J+OZyrpqZm+Kckrcll/Hd6FG1Lo7XCtiTSy79nm6Rr4AlxnNvfovI3dAYLFrBtGY2Y5/2hhu6Mjo9sbu6tWfkAJqwmPs+yXCnLFP7PwXS+0ipMtZLtL3GjmrEailQINID33gRxt6NcrislbV6GfqOxlCUt+FxN8uZu4EDg2Ggjba4f73Fzzu2YHvoO7Uni1S13OIlyx/EfVY6Hghn+wcvYPFQKPc59brtTnwlryLr4OUybwCUqJFIbhuRD3/3fmz1Fcjgg8id5+oOb+EP6X5muI3LipmPR12DeF7aeL7VnpsfjfW+31/QwNht5Hz3yj71vz9Btsz0Eg9VJF9IQS8GFnly+XsSoFGW6AvMh5yJjsTkvrMPa5uADvXM+dXtLw4/hrPg7Lvbpm2V1Urj8Lp/zSSm2YpCNwxN3+AW05zXiiQkn34W8UteelVUwm3g8ZQopOQxQb8/hzTh3nU4GTD4xRdiQEThgiNhW6RoMgLOSGSf3kMtOfNAq1OvcFqj1A6fo4Y7sjcixm9bbRXx/lr0quFe48PNJFZ9A70c+lVkPx3+oFhphnk7vRjeLLYeiiDZh4fbhNTWuKtvI8eX1QqVvDzqVzmaSMCg+gKJMr101thkmnwguT849XyYzPLUcp3Bcz0TwpOYFWrTVnmHaX6rweyGMyzKxi9zfWvvMF5tAZpcz+mDfznYG/76YmnyuKR1ZAYbxD5TXLbqI5wtTjaQCbMQP4kkvo0dQHacQ/AQgsep5oluDHlZmPLZI5mwKwcYCZo7vD4cXC72G7/ib8zXfa6d2qEE3nfRd8LucJNvU5HAkWin9Oqw20j0WZ25sHKhCDqWd54fpEXhMkuYmxDASfPBePl1Jb2NIu6qtA5H0GUUZ4KPvw7gaJn/sxFifBdtM
+ N2/E3gU2
+ nmUErlfDGKPBSbo+KVT+AZOoGh+tkv+q2CDdtVb1wJI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,70 +100,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Peter,
+Hello,
 
-> -----Original Message-----
-> From: Peter Zijlstra <peterz@infradead.org>
-> Sent: Monday, August 31, 2026 9:17 PM
-> To: Jianyong Wu <wujianyong@hygon.cn>
-> Cc: Ingo Molnar <mingo@redhat.com>; Juri Lelli <juri.lelli@redhat.com>;
-> Vincent Guittot <vincent.guittot@linaro.org>; Chen Yu
-> <yu.c.chen@intel.com>; Tim Chen <tim.c.chen@linux.intel.com>; Dietmar
-> Eggemann <dietmar.eggemann@arm.com>; Steven Rostedt
-> <rostedt@goodmis.org>; Ben Segall <bsegall@google.com>; Mel Gorman
-> <mgorman@suse.de>; Valentin Schneider <vschneid@redhat.com>; K
-> Prateek Nayak <kprateek.nayak@amd.com>; Shrikanth Hegde
-> <sshegde@linux.ibm.com>; Phil Auld <pauld@redhat.com>; Andrew
-> Morton <akpm@linux-foundation.org>; David Hildenbrand
-> <david@kernel.org>; linux-kernel@vger.kernel.org; linux-mm@kvack.org;
-> jianyong.wu@outlook.com; Yuan Zhong <zhongyuan@hygon.cn>; Huangsj
-> <huangsj@hygon.cn>; Fengyu Wang <wangfengyu@hygon.cn>; Zhiwei Ying
-> <yingzhiwei@hygon.cn>; justin.he@arm.com
-> Subject: Re: [RFC PATCH v2 07/23] sched/cache: Prioritize preferred NUMA
-> node selection over LLC selection
->=20
-> On Thu, Aug 27, 2026 at 08:28:00PM +0800, Jianyong Wu wrote:
->=20
-> > +	/*
-> > +	 * Avoid switching sc_stat.cpu too fast. The reason to choose 2X is
-> > +	 * because:
-> > +	 * 1. It is better to keep the preferred LLC stable, rather than
-> > +	 *    changing it frequently and cause migrations
-> > +	 * 2. 2X means the new preferred LLC has at least 1 more busy CPU
-> than
-> > +	 *    the old one(200% vs 100%, eg)
-> > +	 * 3. 2X is chosen based on test results, as it delivers the optimal
-> > +	 *    performance gain so far.
-> > +	 *
-> > +	 * Moving to another node takes precedence over moving inside the
-> > +	 * current one, as it did when the two updates were applied in that
-> > +	 * order.
-> > +	 */
->=20
-> Comments should never refer to old code that no longer exists. Comments
-> are for the code as it is now. If you want to expand on details of the
-> transition from one implementation to the next, that's what the
-> Changelog is for.
->=20
-Sorry, I'll remove the "as it did when..." part and keep the comment to the=
- current behavior only.
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-Thanks
-Jianyong
-> > +	if (m_a_n_occ > 2 * curr_m_a_n_occ)
-> > +		new_cpu =3D m_a_n_cpu;
-> > +	else if (pref_llc_cpu >=3D 0 && pref_llc_occ > 2 * curr_m_a_occ)
-> > +		new_cpu =3D pref_llc_cpu;
-> > +
-> > +	if (new_cpu >=3D 0)
-> > +		WRITE_ONCE(mm->sc_stat.cpu, new_cpu);
-> >
-> >  	update_avg_scale(&mm->sc_stat.nr_running_avg, nr_running);
-> >  	free_cpumask_var(cpus);
-> > --
-> > 2.34.1
-> >
-> >
+Reported-by: syzbot+19d01f6082ec61dd45b2@syzkaller.appspotmail.com
+Tested-by: syzbot+19d01f6082ec61dd45b2@syzkaller.appspotmail.com
 
+Tested on:
 
+commit:         abdf623d Merge tag 'wq-for-7.3-rc1-fixes' of git://git..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=12f51379580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=d7588e5a39260ad2
+dashboard link: https://syzkaller.appspot.com/bug?extid=19d01f6082ec61dd45b2
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=14a46d9e580000
+
+Note: testing is done by a robot and is best-effort only.
 
