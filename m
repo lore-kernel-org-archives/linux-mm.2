@@ -4,131 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9632BC61DD6
-	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 15:55:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0707EC61DD6
+	for <linux-mm@archiver.kernel.org>; Tue,  1 Sep 2026 15:58:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A6416B00E0; Tue,  1 Sep 2026 11:55:45 -0400 (EDT)
+	id 1CA796B00DF; Tue,  1 Sep 2026 11:58:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 656F36B00E1; Tue,  1 Sep 2026 11:55:45 -0400 (EDT)
+	id 17AFA6B0280; Tue,  1 Sep 2026 11:58:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51F546B00E2; Tue,  1 Sep 2026 11:55:45 -0400 (EDT)
+	id 06A746B0281; Tue,  1 Sep 2026 11:58:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 208196B00E0
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 11:55:45 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D2EB0A3EDB
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 15:55:43 +0000 (UTC)
-X-FDA: 85165643766.23.E6D43D1
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 57D8320006
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 15:55:41 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=VuetgL2D;
-	spf=pass (imf13.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C82596B00DF
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 11:58:54 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5B0F6A021B
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 15:58:54 +0000 (UTC)
+X-FDA: 85165651788.04.3FD97E2
+Received: from outbound.ci.icloud.com (ci-2004j-snip4-3.eps.apple.com [57.103.89.96])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 66A0510000C
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 15:58:52 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=YpsQsOIF;
+	spf=pass (imf05.hostedemail.com: domain of bfguo@icloud.com designates 57.103.89.96 as permitted sender) smtp.mailfrom=bfguo@icloud.com;
+	dmarc=pass (policy=quarantine) header.from=icloud.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788278142;
-	b=UPfs4SKTkIG7mUbWmfnbTLB2fGgR7pLa9T6jzGGA3phHZ2TTCJQzyK3ouv7PpSOvzA4dtS
-	vnbPd27QN6sw58hL3FgYgri8d1cIiiNZKzUhKwofSARgND64Qv+dv2glLsrk1fP7KQpkg5
-	qwGUq4CHD8OXvMwjTuQ+1zWeF8qfAr0=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=VuetgL2D;
-	spf=pass (imf13.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	t=1788278332;
+	b=R4ccUdY42jm+rY9N5yh2fJZgpTrCaXktSP60SBKbF1kndkHthL7mQNdLp92yWaPF0JCG3f
+	m6RBXZhGAo7VaXxeK+MDmRqL5qg6LuZmXWiuLAmEG3HaTLMDmAitR5vTiGgqshazfALOPb
+	yDlubBZLYwfnvlwYxjO7SPvJderOEHM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788278142;
+	s=arc-20220608; t=1788278332;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QVII+cUuHDdwf9Z3P2TCkoJU717I3TDa444aSejj2Fk=;
-	b=lnpHCQ6xmc6pefqLkqV3ntO7/iVcOSnqVGWQcVYMSt2m4yV4DifIewBqKme/DqS6oXjlNh
-	J3kNc9/buDD8qlnT2LN6zrOutse7lE6HmgaIDmpChnlZGQM1t0EmQqNpugU2jipR3eBhO3
-	TH6az17oRPuXY2ozQtzDNjDvxJOFnVE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=QVII+cUuHDdwf9Z3P2TCkoJU717I3TDa444aSejj2Fk=; b=VuetgL2DlX2s22gGISfExiPA9t
-	9DR1WYg6YZMiQdCRfQ+bclFFmqJlamray7mTao+UhH5uHuDqMjg0If3EcpdK8CT6uAbV8Evx6e3qN
-	9LKEiBOSP64GFOxx0Cep1mNRyBIuVmmcKSTv8HQZQ9qWi8T/h/J5gA+nhMhRR79oe1SuMqDRuJhz9
-	pRpKL7TL03xwEzunbCrbhKOYuAtJaLW6NfzQtbWbRGbuZxvcEga7a6JSS4BRz+hheJF51YvaJp+Zr
-	D/J641qvz7Z+tlxTfhJCmdiErtoEU9UpGW4Y1LUR3UybIWIjAgSbUj4dMePbLb0JYsVZUKGih4aiC
-	1qamG5Tw==;
-Received: from [38.23.173.23] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x1Qp4-0000000CazZ-3xgl;
-	Tue, 01 Sep 2026 15:54:55 +0000
-Date: Tue, 1 Sep 2026 11:54:47 -0400
-From: "Liam R. Howlett" <liam@infradead.org>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, Guo Ren <guoren@kernel.org>, 
-	Brian Cain <bcain@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Dinh Nguyen <dinguyen@kernel.org>, Simon Schuster <schuster.simon@siemens-energy.com>, 
-	Jonas Bonn <jonas@southpole.se>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
-	Stafford Horne <shorne@gmail.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
-	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Russell King <linux@armlinux.org.uk>, Vineet Gupta <vgupta@kernel.org>, 
-	Michal Simek <monstr@monstr.eu>, Chris Zankel <chris@zankel.net>, 
-	Max Filippov <jcmvbkbc@gmail.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Peter Zijlstra <peterz@infradead.org>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Richard Henderson <richard.henderson@linaro.org>, 
-	Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Richard Weinberger <richard@nod.at>, 
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, 
-	linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org, 
-	linux-sh@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-snps-arc@lists.infradead.org, linux-arch@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-alpha@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-s390@vger.kernel.org, linux-um@lists.infradead.org, Hugh Dickins <hughd@google.com>, 
-	Qi Zheng <qi.zheng@linux.dev>
-Subject: Re: [PATCH 01/12] mm/huge_memory: zap deposited page tables after an
- RCU grace period
-Message-ID: <kasi4mkjkt56wxsrmphm5o2qfg2lwsdxf3tlmzx5tq6t7uez74@kozleoavd6r2>
-References: <20260901-rcu-pagetable-freeing-v1-0-5456a81c8212@kernel.org>
- <20260901-rcu-pagetable-freeing-v1-1-5456a81c8212@kernel.org>
- <apbOlyF77yDCV4cF@thinkstation>
- <apbcoMTVlL42G5tg@gremlin>
- <20260901142408.GA56830@ziepe.ca>
- <apbiB51hjm-9pRzf@gremlin>
- <apbuO_QveZNAz3ns@thinkstation>
+	bh=ybQXHOgwqQY3giufa/UxVrNvxC3cSoVBlqpWl4wWBxk=;
+	b=ZukNd505NAcUVjfku5alu9eTQ96kflKZGnAN16OsnJDtzpWdMJUBmFuW+fuyI0HctyPrT6
+	E6BQXopPJ5WGNE30xl8PDMoSd1atkTD5uYCw1wO2wsjDhyL+RjzHDZjYYx3FElDRHlo+x8
+	OsmqZE+M0gMWYs2WHyFmxWIHde2IhNo=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=YpsQsOIF;
+	spf=pass (imf05.hostedemail.com: domain of bfguo@icloud.com designates 57.103.89.96 as permitted sender) smtp.mailfrom=bfguo@icloud.com;
+	dmarc=pass (policy=quarantine) header.from=icloud.com
+Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-central-1k-60-percent-6 (Postfix) with ESMTPS id 131A51800103;
+	Tue, 01 Sep 2026 15:58:48 +0000 (UTC)
+X-ICL-RepId: 01a05db1-cb06-7078-bd79-5be0a932770f
+X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQtPHV4PRQNECFYCVAVLVxQEGlUKQgRyGVoUXBhTRVEfVFhVCQoCURxWDVdDVARfUEsbDlwOS1oVVRcOAkIfUB9MFldDVAIcGVoUXBhTRVEfVFhDGUVWaUELTx1dGVscQmRYVwkKAlEcVg1XQ1QEX1BUEVdQCwpCEglLSylhUgQyUx9fJnorcDl3P3UseSx1JXZVfi4HVRIEQAhWUF4IXh9MHA==
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1788278331; x=1790870331; bh=ybQXHOgwqQY3giufa/UxVrNvxC3cSoVBlqpWl4wWBxk=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=YpsQsOIFj3l9XE15NFhq0Ln3oKgj3N51FPAyjexqoDPo5gesvujX+vcqV3/Kwk8Nlkg4bKWelvS7OeBl/Z0YJvH7uPxQl/COGkXURBeCGyqjztYLpJYWzhgcxe43cF0j/ndgdHNE1Qi9iiMovzGju/QHeWcrRIR5sa89SAaHreASFnnQPgqf7x78JJ2H6++igZdE6Ws+7n6w4rGfBKgHm5xWsHh8a6wjAhNN3QbSLyqr8tL/+tfGe6YjDQbnRSY0DlkvcuAVCKdlMlbuW8HNnP7aI5g8FD5miqHLmStT34/Hup8ny8eHeNuzioI0PqCvrustVyHR1wscp/cSL9g10w==
+mail-alias-created-date: 1772519804199
+Received: from BINGFANGGUO-MC0 (unknown [17.57.156.36])
+	by p00-icloudmta-asmtp-us-central-1k-60-percent-6 (Postfix) with ESMTPSA id 44FEB180017F;
+	Tue, 01 Sep 2026 15:58:42 +0000 (UTC)
+Date: Tue, 1 Sep 2026 23:58:37 +0800
+From: Bingfang Guo <bfguo@icloud.com>
+To: bingfangguo@tencent.com
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC v2 4/6] mm/memcg: return the memcg when putting
+ memcgid
+Message-ID: <apb03xDV96BjglKM@BINGFANGGUO-MC0>
+References: <20260901-bingfangguo-memcgid-rework-v2-0-8edd7f7a7251@tencent.com>
+ <20260901-bingfangguo-memcgid-rework-v2-4-8edd7f7a7251@tencent.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <apbuO_QveZNAz3ns@thinkstation>
+In-Reply-To: <20260901-bingfangguo-memcgid-rework-v2-4-8edd7f7a7251@tencent.com>
+X-Proofpoint-ORIG-GUID: 23wBunoIQJWpTUzCIm1_BOyVJK2MfEsk
+X-Authority-Info-Out: v=2.4 cv=SMZPlevH c=1 sm=1 tr=0 ts=6a96f638
+ cx=c_apl:c_pps:t_out a=2G65uMN5HjSv0sBfM2Yj2w==:117
+ a=2G65uMN5HjSv0sBfM2Yj2w==:17 a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10
+ a=x7bEGLp0ZPQA:10 a=vu5NlEYW-o8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=GvQkQWPkAAAA:8 a=8EPpdoJjjQM0g-z0e8YA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: 23wBunoIQJWpTUzCIm1_BOyVJK2MfEsk
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAxMDE0MSBTYWx0ZWRfXzb6H9RiVBKJy
+ 5IPQESsxcN6TbFCP0T8WL7QvR85Tb6136y5zaTjXrRAebeWP+K5BW3rNTHizbkW7P1FUmZap0kY
+ g9q81wu3NcYfB3+D0buq5HA7roso/as1lLEzucZLkVcZAtwtsGCQJ+I8/Bz26pyuRJ8YHAeR6yX
+ 2qaORIczwi8sc4m/9iPHEmM80AxDgt2YA+5lYcix2Rh5d1PDY16pY40sOlJBjYF5/r4RtMIFeaK
+ i/C+mfutvIRRfbAFOG5LuK4oCgwNYcJSZd57OPTqXMYUWy+UJziXcH8fqIuTWQpYhvQbMvL1n5E
+ LO4Ms8wp8+lXVoxqdINYemP8M+Jmk/pawTZWhqtI5xC+Y0tl3IH+BOQYhabSgE=
+X-JNJ: AAAAAAABwh+PmhrxwrDgdqcD9N3PP1q4zbD1FFu9zXZwZnW14cEq8RH21X8eski700mgmcf1yFDlBzIqQZDTwUaAXPnyVE1UwmJigB/VeSFU2yvZNARqsbdB4p1HSwYdaQO51zDNKW0iRS77eO+m0NQKVVWKPadep+N0PKpApshDnUP7TEe9W4J2x87A2RsQzAr2WSE+3ar6VLQmqAqKS026HrK7++71jcJsBSGblgiHdnRZ6M3Qj19odyn/A6qEsENrxRmeGN6vsthY9DmvVgcCj0888+cpMjDpv6GiYppqgbLKMDCYtktCqnKwEc+/LKNtFyZVHnwbnf3Btqf4aByLLfoNpZxMAGgVOmtxrWsqOVBn4AipAdzGkE4/7iGw+fUmbc981ZlB/9Bclitc0af0W1c2avdni2SSIoRs5EeKzzHopLlLx8VeLBXuPh/y8JL4+kNJLN8hXwpjwUTDd7vc80EOgQoQ40MbnGu/1Cw/Eo9qwVlWDWYSkikurw3gwDgoV07k43qf1q5UzW1ZMfs6cH0imeB4xnFRv48KS0ZdvtaOp6U3cBRkzyL4nYPwYZvJTwZK9mIP/+z4UG7ffB2LvRvqHm70stFUtP+tCLBu1K0+gf7fh/BIY77eHEJcYRdsQG89iGYvYywyKMHkoyc7Mj5zrb0blWZGemv+pwOJiEt5uy8M31Hb5zjjjq/a4grG3fWgedOAcoMT2PMJrnKACQ+zP+DYaOysWZEGBvr9kwUlWKx1VW6m+WYCiXvFXxR0Fhzo4ty7HO34yG0y1AOyu5RJT/Z0Zu0jSb3bqPspcQlkk/SPIJsh7neqkmpAU1w9+dACXJxDHFt6GzAeq5H8bpbrNNYYgEFMRkWC5ZaLXdTHKn6MjYmMthxRhYPRKXSwjCNLOOwEAh+vrnC14cQKVK3Ane0A3BQncJyLuKjeOC4uzpheZH9eaub/ApdnpOeJyyQO7r0umWD1XN+dLEb
+ BQO2ZHed
+ QWxxRRCnOID6fx4+7DhOV9ATiuxVeC9VZCh18wo/uIrAWyA02IAYObPT4CsIqKbCazATV926T49ttAyuENNXqF/SzJVe12tPtohKU/Knrx67T8OiORKzu4yHoE+631KsQ5IYUVL7wTkomR8LNBgQgBYSQxsDE5iYEUDV09Vk/DDLHol/Nw3DLMs53VwwyAmUzgIjC/a+j5KVlgmO5d1oiAoGpx97nFsoqDzIC3oUkdGVveNhM/oiKfCeoZXlTtLZJomrRJH1KnOohxIAABtKzbODkHkHWzH0MspX7pHoKBnwvC4DQmnl4mGUy0XxrHlorkDAWdWuiu7kxbAHAkRBA4uzbqYEuMt31i5byPXE8M0rxUfinGWnKb0kpcsQYsztegetPt+ECm15aUioIc/ZT2bLebGlFst5PrnVquucpXE4SFlN8sJZlPze9TqCIEZKn4YSxeiLqkVCjm6LtSA==
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 57D8320006
-X-Stat-Signature: r7ccddhd1xshbak944otm7rnebsbybjh
-X-HE-Tag: 1788278141-841930
-X-HE-Meta: U2FsdGVkX188lOhIxyQrhheT9jFIQgjNtpEKgPgaWPIViB9JYsyRcVWr62ku5mhUmUGZYpcWotG9f/oC36ar7IyMe9PU4pJSDMbssOo3aw7pJT8/4nsMHeRjVFH3mswzNpXwWZ4zwxH/v/Ubmb/D0WN15w7UEywpNOL2Tj34XV0AnawCEgxtVecDBtEDdGZgeKCDECmt5+oYIqPB3/T7kSMby1V3v4u2mSQvMG7qXNvAipESHeZCYgjdcG/S1lO/jcyPD43Vm2ApGzNQhzKwaj28c2H/SweDhBxzQRe6nKdFpAZ9Z+UF4nBf1rzSPTDRIXRK14CvCKESpHnw74e/0LxHytWlTC5xx5RKIPPU3bjEaXpr5OX69OAYk6MmrsLB8ahBkHkCZoWHWhdjLNRnowbEHMtiMjszYZ2JPJC8FAvoDXl/LuRENw7iJ6mbdGOmugJ0/K1FNnyq2FfLpK4TNoYCGS4mh+xA97aM1j3ZHsjbt4As1VV9vtCFjoLH/DiCA2HjyLKXEAfL0t4R/rRiDAEdfEKOXz6I+X4lafX/x566Vo35LcgPe2rquRe90SOIu6n2Ty8mx0N9+f/65+CfuCH9nb3vbPj1zqEYy9RvyKB4Jox4mu0gHSaEqgX1gXFUI3WDFf/E7XVLgVG6WLdXG4zFCIWIhg45vsLdcqSV4wTtZdcyN7MXYI5D78HAWV9syjFMpQadMPwoqLDmZ+9xNmoD1E+cXO0A7bhnc13R0Dhub5LqGnvvfnYU8ccc1sRegS83cgDRxruaB/TdiSjb94uLFGeRLN2hVTpEeSJZYYgT8r+oUSlinAeTb2v0jcsvU36BAYH0zrcQJRU/byUICkWFPJW7YXtHEnAD7B3J62we013iZdaJ57y18a9GQ7v66idniWY9XG8Vd7zs5jkr8yK3xixPdv7LzMnuXOgPQ1i4veQ7sPXddZztuygarqZFjCnoEXNcBo1E1Z3Ipcq
- EpvI3Ltj
- bT8ZeQwJLQ9LOMJFDQRQKMuFxcyY6JWFiGtgw4tZbJ3qVvFWKC4wwmGMsSSePX7JO8a7sVMRKQn2byBjlE0TA9BwkWREZVR4HknhqpY3X+4XOgVp8G0j6uIQhf8vMkrYc8tNHswzbRzVf3G1GT/u6YtaKw6ZnMsfg7XRff7H9avqQgoeGeXi2+jhPGVphc1BACHM+sxCaFA3V2UauUS8sahxzKbHbDfn4yLnqARedyy630ekmO2b/OgSxeownpj3qGQ6LJEXKvehIoWC3e9UaycBIBrStxcVW6zO01O8WsUhZRW+uDCMbQdeHP0nQN63z3WmjFDwuUQOleA1dkLKIyAW9CbxCcMMO1FQfGxLNenfJvrBPUr/NBvN761KzpIM5TTZHHj3rClOyK20uhrmBNUWy9w==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 66A0510000C
+X-Stat-Signature: s7m4etpdt5su6p1xdhgzwa5ac3ujuhhw
+X-HE-Tag: 1788278332-53480
+X-HE-Meta: U2FsdGVkX1/EsXz+XGDg9zKjcQGyuRmn+pNdOoZcZRp6z64cmiFAu0Cf/Y7SrVROyIq3c5TJ9qYzJHJwD7tFqBbfzrTJ7M7QeYlqFvuUhWJUW8DmZBypaS6mpLh+gGj/pm0/yAZXPArkM1wvVseI44ZT8NZMepq/wggNpSe6D9KgGfyh8yj8+NA/rwb+47q5OAIJQRVvUAKKeNRj90UBN8TQESt8tQNt9I5DLFUjfcwqP/05jzhVI+rlBtlgr00sJY1uavXMEQtXwYn/ihzr5Z2hWpxlhneEAPkVULBJUvAKWaU2iIRjKsxdr0wdqpslGWn9VOQqfUx4vqCAOtFvSH8GLzZJ9WGck+cyptjpWKzY57yLi/02lULJBBFo0+ejcxYqG/rTiEr5HYVrpJsiuATHne3cK+XzHvsHDh3aUFo8zf2FZc5ziTn0j1oEb9ZfRq1/yhQsTsl5CxhXOkP3zUGb3T2y3F7uJ35xjyy6pK0yBiTDPwmg7S7xWkqh5RJyNbK6686fYO1GO9JA7aMFpxWoOYBI4X1qIhi7bZRQ/JYhtgMH+BGJ4kFhl5rOkmMO4RaWmlPjwV006s9e30H/wsiqMy4zY9rawsefoq3QQnZsyNWMGBwpftMGkGK5MeZQGQPEYqxB8W7iw453cZvnnLfEDYhtUEbBGYaolzxMMJQQvPRfC4pX8l59KLAQ4y27ZRxgaqoQ0ajryobS/bN23UkX1fhMgv+cOrLfa6FNPMVug8CcLv1Tl/vDAtP2nEH5wk5yA/QN3gqOaAolGZ1/hSNMWh/go9hTaUcu3L+/cP1v8HeiuyuMPLaOzq9mHbSaj3RQHLJH5GrhgnUzRY1avFbWPTGtaSvwuTrFVY2ht9n/y/J+f09lr1LGlamMXvCS4JD9Jp6nrKCp06g/y2yV1Wxgl/rDrk7IYqv9ifFXsPywVTnpdJmMFszjVL/77OCdt/1t+GLl6fFtXus4Sab
+ 6aI47Wtj
+ zPOApGpqVlnxujAtNWMNgOKk6m3NrRFVEfzKUCk3I54KYarC2opshD+EwjC4aGqqJl6tnO6Du2QPC5YYP4MPpQyBjSgsa541ZZltd5Dw1Tc+moR2sb5Zh/az1oma8NPYzSny+wVGjQtIjU9lSD0YLTdGdgL9nT++OFIHfYa5KT03HfQhe5rqkZjLTzgakOCKankNjKsq+xCj3yA/bJ+2T6vnZVDRvDaT20TZbgjlBd7/vWZddF34OMiyAiOQvWtxJD9MqcvrIcuWOVCPOT/+CZYkepllcvqWngktB6ZvqkTSYobLrGWMDGqOFMid3nuUOltOJcZa3eLU6N+p6G44gak5T5FYcsBhoOCem6hGMqeftkiY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,107 +113,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26/09/01 04:28PM, Kiryl Shutsemau wrote:
-> On Tue, Sep 01, 2026 at 03:41:17PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > On Tue, Sep 01, 2026 at 11:24:08AM -0300, Jason Gunthorpe wrote:
-> > > On Tue, Sep 01, 2026 at 03:12:45PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > >
-> > > > It won't be costly at the time of the calls obviously as its deferred. Maybe
-> > > > increase some time spent in softirq but again is 512x that big of a deal?
-> > > >
-> > > > I'm not sure how you'd both defer the free and somehow utilise mmu_gather here
-> > > > either really, certainly not without it becoming extremely messy.
-> > >
-> > > The less costly version is to thread the page to be freed onto the
-> > > mmu_gather through a linked list in the struct page memory. This is
-> > > super cheap since it is just a singly linked list operation.
-> > >
-> > > Then when the mmu_gather is flushed it does a single call_rcu using
-> > > the rcu head of the struct page of the head of the list. The callback
-> > > clears the entire linked list of pages.
-
-If you are going through the trouble of doing this on your side with a
-custom rcu callback, it might be better to pack the pointers in a way
-that does not need to pointer chase through a linked list.
-
-> > >
-> > > Since you have to tlb flush anyhow, it makes sense to always use the
-> > > mmu_gather. For example the design I ended up with for iommupt
-> > > accumulates all the invalidations and all the free-able memory into a
-> > > gather then invalidates and frees.
-> > >
-> > > This allows maximizing the tlbi efficiency too. You can't do call_srcu
-> > > until you flush the tlb and if you call once per table then you are
-> > > also tlb flushing once per table too.
-> > >
-> > > So if the kernel really does want to clear out 512 leaf tables the
-> > > optimal implementation is one range tlbi for 512 entries followed by
-> > > one call_rcu to free the memory. Hence the gather..
+Forwarding review from Sashiko:
+> > From: Bingfang Guo <bingfangguo@tencent.com>
 > > 
-> > I think there's some confusion here.
+> > __mem_cgroup_uncharge_swap() needs both the memcg and the id refcount
+> > drop.  Right now it looks the memcg up by id, uncharges it, then looks
+> > it up again inside mem_cgroup_private_id_put() to drop the reference.
 > > 
-> > This isn't the path in which a page table is being freed, the _deposited_
-> > table is zapped, in zap_deposited_table().
+> > Make mem_cgroup_private_id_put() resolve the id once, drop the
+> > reference, and return the nearest online memcg with a reference held for
+> > the caller.  __mem_cgroup_uncharge_swap() then uses that memcg directly
+> > and drops the reference after uncharging, avoiding the second xarray
+> > lookup.
 > > 
-> > That is, the page table kept in reserve for THP split, that is not
-> > currently mapped.
+> > Signed-off-by: Bingfang Guo <bingfangguo@tencent.com>
+> > ---
+> >  mm/memcontrol.c | 20 +++++++++++++++++---
+> >  1 file changed, 17 insertions(+), 3 deletions(-)
 > > 
-> > It amounts to a __free_pages() call.
-> > 
-> > The TLB operations are in e.g. zap_huge_pmd() etc. and nobody has
-> > complained about inefficiencies there.
-> > 
-> > So, unless I'm missing something here, TLB flushes play no role in this
-> > whatsoever.
-> > 
-> > The issue Kiryl raised was that instead of immediately freeing page tables,
-> > they are now batched up individually by call_rcu().
-> > 
-> > I personally find it difficult to imagine the numbers here would be
-> > problematic or certainly cause anything observable beyond what is
-> > observable now.
-> > 
-> > So I'm going to have to say, unless it can be clearly demonstrated this is
-> > problematic, I don't think there's any reason to add additional complexity
-> > here.
+> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> > index 048c9bb0fad79..f0503a1e5492d 100644
+> > --- a/mm/memcontrol.c
+> > +++ b/mm/memcontrol.c
+> > @@ -4048,14 +4048,28 @@ static void __mem_cgroup_private_id_put(struct mem_cgroup *memcg, unsigned int n
+> >  	}
+> >  }
+> >  
+> > -static void mem_cgroup_private_id_put(unsigned short id, unsigned int n)
+> > +/**
+> > + * mem_cgroup_private_id_put - put memcgid and get the nearest online memcg
+> > + * @id: the memcg private id got from mem_cgroup_id_get_online
+> > + * @n: count of references to put
+> > + */
+> > +static struct mem_cgroup *mem_cgroup_private_id_put(unsigned short id, unsigned int n)
+> >  {
+> >  	struct mem_cgroup *memcg;
+> >  
+> >  	rcu_read_lock();
+> >  	memcg = mem_cgroup_from_private_id(id);
+> > +	if (!memcg)
+> > +		goto out;
+> > +
+> >  	__mem_cgroup_private_id_put(memcg, n);
+> > +
+> > +	while (memcg_is_dying(memcg) || !mem_cgroup_tryget(memcg))
+> > +		memcg = parent_mem_cgroup(memcg);
 > 
-> It would be nice to measure munmap() overhead here.
+> Does returning the nearest online ancestor instead of the originally recorded
+> dying memcg cause issues for callers that need to uncharge the exact memcg
+> that was charged?
+
+This seems to be a false positive?
+
+The page counters are charged recursively to the root. When we get some ancestor
+of the dying (or dead) memcg, the dead ones will never be accessed again so just
+uncharging the online parents should be enough? And these counters are also left
+untouched when the memcg is offline and pages are reparented to the ancestors
+together with the objcg.  So I think this should be fine.
+
+> > +
+> > +out:
+> >  	rcu_read_unlock();
+> > +	return memcg;
+> >  }
+> >  
+> >  static void mem_cgroup_private_id_kill(struct mem_cgroup *memcg)
+> > @@ -5816,7 +5830,7 @@ void __mem_cgroup_uncharge_swap(unsigned short id, unsigned int nr_pages)
+> >  	struct mem_cgroup *memcg;
+> >  
+> >  	rcu_read_lock();
+> > -	memcg = mem_cgroup_from_private_id(id);
+> > +	memcg = mem_cgroup_private_id_put(id, nr_pages);
+> >  	if (memcg) {
+> >  		if (!mem_cgroup_is_root(memcg)) {
+> >  			if (do_memsw_account())
+> > @@ -5825,10 +5839,10 @@ void __mem_cgroup_uncharge_swap(unsigned short id, unsigned int nr_pages)
+> >  				page_counter_uncharge(&memcg->swap, nr_pages);
+> >  		}
+> >  		mod_memcg_state(memcg, MEMCG_SWAP, -nr_pages);
 > 
-> I am worried about hitting DEFAULT_MAX_RCU_BLIMIT and trigger
-> rcu_force_quiescent_state() which can be disruptive to the system.
+> When a swap entry is charged while a memcg is online, the original memcg's
+> local MEMCG_SWAP per-cpu stat is incremented and its swap page_counter is
+> charged.
+> If this memcg is subsequently offlined, it becomes dying. When the swap is
+> eventually freed, mem_cgroup_private_id_put() now returns the nearest
+> online ancestor instead of the original dying memcg.
+> Will applying the uncharge to this ancestor permanently leak the counter in
+> the original dying memcg?
+> Furthermore, does this erroneously decrement the ancestor's local MEMCG_SWAP
+> stat, causing a permanent stat underflow since the ancestor did not receive
+> the corresponding local charge?
 > 
-> DEFAULT_MAX_RCU_BLIMIT is 10K, so it is ~20G of THP unmapped on x86.
-> 
-> munmap() of 64G worth of THP should be enough to demonstrate the
-> problem.
 
-I'm not sure what that would prove besides checking if your number is
-correct?  You'll see a slow down once you hit 10K of objects in the rcu
-linked list.  And that will depend on what the system is doing as well,
-so there will be a slow down since other things are happening on the
-system before 20GB of THP is unleashed towards munmap().
+We are holding rcu read lock and checked !memcg_is_dying(memcg) in
+mem_cgroup_private_id_put(). When the css is being offlined, CSS_DYING is first
+set and then mem_cgroup_css_offline() is called behind call_rcu, so no
+concurrent offlining of this memcg can take place here.
 
-One of these does use 5.12% of the RCU items that need to wait for a
-grace period to be released, but testing it would be rather tricky and
-the numbers won't really show much..?
+For cgroup v1, MEMCG_SWAP stats will be reparented so eventually we will get
+consistent result. And for cgroup v2, the stat is not visible (and therefore not
+reparented) so no problem as well.
 
-Form my understanding and experience with rcu and freeing massive
-numbers of objects, you gain more from the lower lock contention than
-you lose when you hit 10K objects.
-
-The trade off is in the Android setup, where they have restricted RCU to
-a slower core.  Combined with another RCU setting, it was causing slow
-down when we overwhelmed the queue multiple times.
-
-So this should actually be faster unless you are doing 20GB of THP
-unmapping on Android or a device configured the same way.  Considering
-the cost of RAM, we should be okay for a few phone iterations.
-
-Do you have munmap() performance dependent workload that you are
-concerned about regressing?
-
-Thanks,
-Liam
+> > -		mem_cgroup_private_id_put(id, nr_pages);
+> >  	}
+> >  	rcu_read_unlock();
+> >  
+> > +	mem_cgroup_put(memcg);
+> >  }
+> >  
+> >  long mem_cgroup_get_nr_swap_pages(struct mem_cgroup *memcg)
+> > 
+> > -- 
+> > 2.43.7
+> > 
+> > 
 
 
 
