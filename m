@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24F2BC624D4
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 19:47:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1050AC624D4
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 19:47:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A6B16B00E2; Wed,  2 Sep 2026 15:47:12 -0400 (EDT)
+	id 2436F6B00E4; Wed,  2 Sep 2026 15:47:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15E636B00E4; Wed,  2 Sep 2026 15:47:12 -0400 (EDT)
+	id 21B986B00E6; Wed,  2 Sep 2026 15:47:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 047256B00E5; Wed,  2 Sep 2026 15:47:11 -0400 (EDT)
+	id 0E2ED6B00E7; Wed,  2 Sep 2026 15:47:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BDE6F6B00E2
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:47:11 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 387781A0378
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DB9306B00E4
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:47:13 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5CCA4C038C
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 19:47:13 +0000 (UTC)
+X-FDA: 85169855946.28.A700BCF
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8F4A2180003
 	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 19:47:11 +0000 (UTC)
-X-FDA: 85169855862.23.73498F8
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 7A489A0006
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 19:47:09 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="T/06PPcE";
-	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Fqupuf08;
+	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.51 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788378429;
+	s=arc-20220608; t=1788378431;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z0iWDp9wFRQQy4gDc5F5inYbcQx9NkSfWa5yO100B34=;
-	b=Z16d7nucS5ibOnPYMPuf4Ttf5QZy3YECVI2r1WKB0d3/XU13iqu6IUBiDEMcFmUbtuRq5f
-	04o2SejaQFfihqDPD4ZIeWrylIUnLUOCgwlPjchFr8LXdwUFzLI4rYmbLAYFoUYcE+O2qO
-	M1snhaIb5fNrkYuN+KagJ3XcDjBifGU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788378429;
-	b=QNZCYqXBCblXaB0hUPo/ZEkggw0+DTM54UUR7nKH4ORtn4v+zN6cYtd6IVhynY0kAMVobe
-	3ZodI65Eq5v6T1HePXloldBl5IhGGGJV39EpmJziGHk/1unWeyy51j2uhpxgkwKHslmE0v
-	uABGpyFXDtZBB/MBuBQLQJH6l63lAMw=
+	bh=jK2MmrU5PHerjBBjkrNgI0UI4L0yhiHtWM989h7yfSE=;
+	b=3XQPNxmKZkGoPP5g+BO6SfB9TzbBDGKPVBWc8di+eYSwu2Pr12sp/19HX2OxY7bE56tAYu
+	qCc9oujTU2eo7sKa55HphV/AgLE/7JFR5AG+WQ+ff3MxjjUfexiLbRA5TNRhTOFHD34+F1
+	/NQRrMXTEvgEI+jfY6LdvDfabHG+MxQ=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="T/06PPcE";
-	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Fqupuf08;
+	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.51 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-9087fb771d3so13119976d6.0
-        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 12:47:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788378431;
+	b=CQHuFucx+/7Cd5OL5SFzdJxXJYeCcJvc0nFpU/0427lzTuCedovxgUsiOkRkBE4dFQ2e6d
+	t8Jis70IlcNvbcezQ5JFDeOo1WdAMlR34jE47eBg5IBpfurbcWmOH6woXaRJSK4vwnGHtc
+	5aB/IOOBO5wUCNgdjG2uBlvtAz9g4p4=
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-910317dc2e9so6360546d6.3
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 12:47:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1788378429; x=1788983229; darn=kvack.org;
+        d=gourry.net; s=google; t=1788378431; x=1788983231; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Z0iWDp9wFRQQy4gDc5F5inYbcQx9NkSfWa5yO100B34=;
-        b=T/06PPcEgU+vMqnpxRDnDDeRQkc+jPpAAQZ9M2TkXCtuwNlCX8cjHQHriYAUPHPps5
-         81hu2aX8Cj4xiygczrKV6K90oJjmHzMfBnv/f8Xxi46FJpEx36QSgO8VufOwKtaXFJZl
-         SA+z/wSs8/F87vA2SNpRJSVQVGwMTE6ecONaRdlj0PeyDvx8Br+ToyTXxok6p1fpnH4f
-         Fs4pauYXSZNh7BIJ++I8q8b0VPS0KaeXwMiuXPba6O6WjI9hGhjrbnszQ7cKew7hHUff
-         J+9oHXEs880EEIFCOMeqrJkHhIu9IXxPsDmx6IdRSzGRroMBEvei4new314TOyfpcRx2
-         5/LQ==
+        bh=jK2MmrU5PHerjBBjkrNgI0UI4L0yhiHtWM989h7yfSE=;
+        b=Fqupuf08ZWNVRlnvwaO1uR08iTp+hHrds1sufzW/7SJMs555wV3T2IXzt1EMOuawi2
+         E7hX7ihC4o3BciGd/EauWrtt9BXnG56Ni5urh+6RuKS1ZNVIpZEnosAyPIUa2LYFur58
+         4t5tdfMp8RtPK7c9s+lEzIqDOc7oc4YLoCIUIRZTJLFIShO7tpxhlRQIH1E9VKH9vXv9
+         4YM9FN4ABGruRGhS5qIpzPXnwhF/BvRuFu/SVC2r55S5DxhidgjdPE0650WPPt3aL8HN
+         UOsHKuuMsLte5pqmbsmYB5Nln2VwXQBtrxMkwxjyFjFEqDRBX4jLWKnB3IyudQKcBn+H
+         c6FQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788378429; x=1788983229;
+        d=1e100.net; s=20251104; t=1788378431; x=1788983231;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Z0iWDp9wFRQQy4gDc5F5inYbcQx9NkSfWa5yO100B34=;
-        b=XjxuLY4ZQXh91B8d/tRmJWPC6zh7ulmwEUcF+VG68g180ftmI+9XQsDL87ORhFvpgp
-         3C+JrPma/4OfZwBrCeSrN7LYk6QkN14WpCESIJ6Lax/czlTC2WXs8zG3OvNpt7cVIIaL
-         A6F54WdE50gPSEhw9XoNHqE3AWfeVriLYfBdmxaY4w7BtDP7hSaBY8nw4RJx8yvuKMT4
-         ThkAcc1tiQPsXVJUbFcrJE98BkO720msmku/9XyoUZRAREYegA95T5tTmzA0psHBozpp
-         yNz+Gz3BtrevnKY4qrdqeJh84Gh/uR0W3kVO2Y28jA5TvkNKFEwXhJNkP9SqmXNy82/y
-         Sp6g==
-X-Gm-Message-State: AFuF++m/QMCc577Y085me5kdgp44CNhKOnNQBxIJTrv/YqloC9AX5ynn
-	OlhB9YeGPXxXVLhia+xaJ1Xw0RQNFGNWb7SexIFcqZjefBycz7pIc1KjsbeCLlsXRKT/wwDOb4n
-	Z/iL1czw=
-X-Gm-Gg: AYBFou0Rl2L93dlKfonEEYfVNAyUPSZ8iCD9l9Dpf9YAevrkltIuAjeGeoFLVzjdLo1
-	8fypa4FGrS3GeJ9kffI88pOOZZhTmMzuU4oTMAOXbcyA1BToGInfFxzOzpaHgzKC33ZlSYGlwGM
-	TOBacP3sfQtYDVgVVB83536QLPafM2XD7YMwqyUiQI0kWQF3XOcbW+rMk+YSAqf+f6f48gLJSlX
-	y//a/czkdc8tnk0vaIm9SWMMGLeLSVBv6YwCol+l1HTt83tIBgtHz2oPQIyVpiOwEnKmQmXlWMZ
-	a5aw4RYjWM6ou1CdmqK2urjGAxtkxQi3gfTS40fzV7GFMaQYY4un5CNsrAIICg5WzRGvBIMaUOS
-	QQNQPXMEsHyJAJ2ZeIOmO03byJzSzHbIoTYoLFPYxZboSOaiocKzAWpr6xGhrFDpnuVyKawZ8a2
-	vrSXlSrD6WrfJvOlrsSIxleH1nBCKy2hCS0cA03cI1/+nx5XwXrObWtYn8iX/YFBkPaYGYmoZQr
-	Xn29Q3YSLynD5+zEwjCRcPifkJmFJ+03qPh2tc35xJ9XrWUrg==
-X-Received: by 2002:a05:620a:7002:b0:933:aa0:bb83 with SMTP id af79cd13be357-93960f69d21mr852874685a.34.1788378428558;
-        Wed, 02 Sep 2026 12:47:08 -0700 (PDT)
+        bh=jK2MmrU5PHerjBBjkrNgI0UI4L0yhiHtWM989h7yfSE=;
+        b=ju+QMvjMZZ5n3+FUU8LPQ2lQ2lVJox9nm451TEJvSSYhXiw+BwnCJ0lt5II1xV5PCd
+         7mC8FOhRqcgoQv0vIKdOSCaJwshAmqiRvdivkPpNsd0gP252T9YeZjXSrDWo+0JMT019
+         lX+pD3eH8MmJLMtIAC13M9p+D4oEY99rEf+tJqGmVO/G9zHTO0uFWrHAsKCvY8e4Dm/t
+         G+oRL2klIs2Yoq5u0VuloGuRe1s6g9CR1ZkuPU7y1NaS40YRY4d33Y2uqdyqdJNL0KnS
+         t/9O2bPcOiSuXKJvr4FfTiofJgTlWvnwN7U8adIE9EKaw0i7ADytatVAIn0HnJaOXGRk
+         BX3w==
+X-Gm-Message-State: AFuF++npI8nVJAJCiaSabnkia4IJp7S84Fa3CebzlvRpd9t0/eS0Ff4A
+	dcW401AZm1N6NXRuT8f/ddixTWqLlnT7sVCbE1ZmreKqhBqIQEbKEPDbsPfqS6wEeoMk8TIPS5j
+	6k5pZd8o=
+X-Gm-Gg: AYBFou2+4EmuKfz+lCODiZrTEKsgd5brJl0HHHEE08ycGv8BnmwmCbC3n440ibYbAfR
+	IcBPpqulgHaw33SHe1QC+XmETXzL4Jxfem6A0sN/b7ag2iJzVAbB8xhVtDWw8A13iFZZtNtNcVK
+	CQuvlhsnDP6V4eBZjmMUDt9+2kgH0tzke/02+xR+mdiKraiujzwy4+Jjh15VKqknEwxghj0hXPq
+	3oqAsNFU/WUIdz6A19MmUqPNG47a3swuR9KOQ8woGd1ED8KICBDkGospstHWB5y9iLrsQug6Aiu
+	ymZ/QgWUaDtbW+K7Ysz1ODSZEX1nY/lCMp3f59PezQrvGATKPXr4brcbmgrjUngKIXiqD+V+1Jx
+	lGKNeD0/e5JxlnJZriA3v+PxBVJ1tCZF4+bctHn1cWVgeeAwHz9lCkFTsgMKXWUCkzGEhHXzFEr
+	L5vU8hRp7jKeDy02xg5lYopKdLtAj6cMMri3zBNIxLPRAHp0mUAjGhzWBmSBNHNP6fi76gksxNs
+	6EEGjPUxB9qh9kM8VYDzFtsPYerYWym7/u5uvycVXJMc/Ig7Ith/DOhBsKj
+X-Received: by 2002:a05:620a:3192:b0:936:ea3d:9313 with SMTP id af79cd13be357-9396ef7c45bmr114112385a.20.1788378426620;
+        Wed, 02 Sep 2026 12:47:06 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9395f18801asm299300585a.16.2026.09.02.12.47.07
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9395f18801asm299300585a.16.2026.09.02.12.47.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 12:47:07 -0700 (PDT)
+        Wed, 02 Sep 2026 12:47:06 -0700 (PDT)
 From: Gregory Price <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: kvm@vger.kernel.org,
@@ -110,22 +110,22 @@ Cc: kvm@vger.kernel.org,
 	ying.huang@linux.alibaba.com,
 	apopple@nvidia.com,
 	shuah@kernel.org
-Subject: [PATCH 5/5] selftests: KVM: guest_memfd: test GUEST_MEMFD_FLAG_BIND_NODE
-Date: Wed,  2 Sep 2026 15:46:57 -0400
-Message-ID: <20260902194657.79075-6-gourry@gourry.net>
+Subject: [PATCH 4/5] selftests: KVM: guest_memfd: let the gmem_test() harness bind a node
+Date: Wed,  2 Sep 2026 15:46:56 -0400
+Message-ID: <20260902194657.79075-5-gourry@gourry.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260902194657.79075-1-gourry@gourry.net>
 References: <20260902194657.79075-1-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: z7hbpfgw48ziqjwqgn5muy15pjfr5rzf
-X-Rspamd-Queue-Id: 7A489A0006
-X-Rspamd-Server: rspam02
+X-Stat-Signature: i1kpqqr7scfz79snhu7m3ef1ajcktn8g
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8F4A2180003
 X-Rspam-User: 
-X-HE-Tag: 1788378429-835737
-X-HE-Meta: U2FsdGVkX1+R2ZSdeMVxmKO1zp0HgzboSAf0QBZQGicwb/LrodLyXNhotwZDUT2IFhInZfdQNGNnvc6SxAqG+kGYQMar6/Rlsa5usTeE7J4OkVsHmm1A8NSduRgzXJgNDGnAj0+C8e6aRVdPZ+H/0qYETuRiAll1WcCmWk4/0sgWnZWOdCm8DOGy/65Tjsfat6ijsn0pS+uwyCTBHgXdXL+zIOD+9sHvJXayk+j4p8hio4NupQoOlar6aezi8izTB+E9hEQAnN2e5MrGHGbdHrUJigREjW+GeKG03n4wv5VutKoFQf1+5hTD5vHtMYip6/2jRyHkj+Ve/sXMsTqXh/OIAu5gnrEYa1SB8eu9dNaQy7IOU3vJQRmMk0Kqvd8gymdZcYPGGODXMEpen+N58TJOSUTJvH8ggL2xEfkELOt3wDhLiVSmkbxwYZBuGTVpi37at8exyX5TQoSfiLcbK8M6vIhYFuiHnoswkRY+KGoEY+nbZ62OBj7kR2OOQyRBpSFq21ANWTr6A/UvrdR0SiJeHslny8XOOo1cjMhahTyvf7pPz2kgHxZSip8ZTyYQ89oNx7iKnX4/zQiDpEap9DJsYy/FTdYByZtwj0oq9mXf/PEBrjMwTkHuIUOaPC7teZIUAM3mKspYoat2TyxhJvvD5gle9d4TFPXbYVvj2js8HQ07NG6n18QzBRAMYA7LQk7l0UvjzVsRbDOv7AM02KNDpTR+PfkWCSy7pT2rRwrmlO4/mDIQ+lmQamsZZ2Y1Sg2zHPEF3xmwKWRGe/fNVsucCzWccLPCP5KcBn0xmhrJ4ttOTA9v2RlqTMWtKBWVNR47kPfxbjIhxW/WPlwckN2GKkaSiRQNGafdHGwrvgP2DofA+IMsHnzMr+3ztorEXkxtvqMh0Ds/2wUyr7aNWEz9MzBg6VIQRhAGxt4ciRxEy+WJHtPtEXH6tc7iahW2+2/waIBpvmX6qkurDwi
- Lsf4OJNP
- lQ9hKsokCuToPBqJm0cbK0dH2Srtw8lfMThRCAEVqRwm5d9p9it/3o7ckvSU2tGoKrgJVDsDn5ya8kxSVepJYevxxwa2n0vdaj+oG9VrjXbmtiAVa0NjFPw3TgoAyVQi3uRlh9X1iN0vNtS14wZAvJsJ1Bh0mG+lI6nSIvNE7niFHjJxC92eCiQMyBwVdjOpvKPb3C6RerlRdFNDPDZZ2/Z1VNkzW7N5Vs5T8/vvdAWez0+ky7WL2kL+8UXB5Ig/lUzPS+LFIdj/Tvm3syd3mJETTX/JLNUZ9KvDIfr767XbZBrfVYLBgG3N6hvNE8nZFnSloA2xFRbOKFt9jwkGYwhv+v1ZdZwAmV9nhCEuZdctwaxGjvZ0N7F3XblApfrZ4ZbK/Ec/UR4evm8NlbPVYd0AYJS3btcoCgMaZAAYYp/ohFKc=
+X-HE-Tag: 1788378431-419233
+X-HE-Meta: U2FsdGVkX18pX7fPud8dvgBnfi1SZaY+Xikl9xWem7K4gKCcjiBHcHYtRsmE3OTwhHPihB5QDyDgkV6wDoj82f19mR86p+AW6FznJaayMTGpdu4ALE6j5NLr2C7Cwe4VBxf8woivJ9MwvWwEbXtR/2YV4Lb7Yax6KPYckN+6Iftw1I6B6QYcU9Lcwmp0oLChi40RGZFQO0fleKQdVtgeiOaR89n3nvA4JFen+oq598bx750EccHfZ4Ou4l1/guPyMtehUKRNnE+AinJArTf7oeaU26aYBW1FQIpp3NeAeiL9wc68XKOPxkjHEHHGi5MlqbQVMbuVdCldgY4QSkfD4ngsMsRKG5UKT11pNEnFSNlN15C/3VR/boj4T7ntb0DiZIfAtrhGYs0U/N/JXG9AkRRxWn3NTS1oietRyrwzoEIwCpcgx1MS4QsaZcviZS94QHSWZhRBrzaGY2ukxErjfZMITQpA7mo0WdrDZgZM5ylgmBzokrHFG/8uXOOL/hAOMJ5ssatQdITz6DkGrif1ae114DnhDUcx6VZaBXGsEqxLPOmFXa+uzA5qFEktNN+KrdhSVIJK1LRBuUc5pToEHtVMIVPSKSH48OPbEXyTLoZb3wiJlIMfoUiyjBEkvLYWINdptt3c8L/MjrGidruzSfI7Inov3Z6MlenSMsOTidW3RzAkW0sHKTbtlbecmetLUPKw7x6NuPFd7L9/dxJx7FA9kLp46pUvNtMx3sdTyuKsk7kjfAU0zv/dHK8M1Pv2eyGGAn9cwRUo9wGnvAp5AQw/pO9fyGJjmijWLi4DWV1RqwY4DAcV+CpD6iSYqWrdgh4JxO5cgDPyj2mEUHX9089qAjpLDaFgBP2i/pXSBjAESlrlAfzKl1LyUj1p+IW1bmkcfVn74l/B4Eu5iVuLPe3prJr9TkP44MwdAOQNVfUqeEgRn/ln4/CpE/FfLckOFUL8tloRqA8iS039zA+
+ ZXVxJKpm
+ AR0JeI0DywKbYp1O/TmYdGFXu9COLXv9LMuVsARyRyE92E4WnZf2AZuWoSS/axSEAeNCFgDing+Ke+ECtw04bzRuamV0ckCzkZ9N/okLMs5Pe5cpQNc6AqOEsoMHa9+HWxwfyEjQ6SN/ARxy3JqWAHkn1WtsouKrTG77eNV5KOl+LKpr3D7Q8nVlE3rgyxEYOvzQ3CR9oakQhezoMn7fayp1dBNRbwq0GJz0mEYalZ4n6/J1bTpw4zJbc8QasF5rGwp8w9jwdGCMURi281Lgo0yhowzltW7+fKVX4/PExX2mDJoh5ApSEczVvA/DW/gwgPjmbPG8GzNierT0ix21Yfd5CUjDyq8f/EhkeMjfGHvQF/rNs6VIrGc9m9Mxw0jVxRVgq7p0jTj9OtODx+4yHMo8D1nl+BcR2MZr6bzBC4pOA83k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,141 +133,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add tests for an umapped guest_memfd mempolicy configured at
-creation via GUEST_MEMFD_FLAG_BIND_NODE.
+To test GUEST_MEMFD_FLAG_BIND_NODE - extend create_guest_memfd() to
+accept a node.
 
-Handles:
-  - !CONFIG_NUMA (skips)
-  - single node system
-  - multi-node system (faults onto remote node)
-  - invalid arguments (non-zero pad, bad node, node w/o flag).
-
-BIND_NODE is skipped in test_guest_memfd_flags() and testing later
-because that loop asserts every advertised flag succeeds on its own,
-but BIND_NODE is the only flag that depends on a second field.
+Ignore the node argument if the BIND_NODE flag is not provided.
 
 Signed-off-by: Gregory Price <gourry@gourry.net>
 Assisted-by: Claude:claude-opus-5
 ---
- .../testing/selftests/kvm/guest_memfd_test.c  | 84 +++++++++++++++++++
- 1 file changed, 84 insertions(+)
+ .../testing/selftests/kvm/guest_memfd_test.c  | 50 ++++++++++++++++---
+ 1 file changed, 42 insertions(+), 8 deletions(-)
 
 diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index 1818e0fea5690..b333cb42fab29 100644
+index 2233d871a38f4..1818e0fea5690 100644
 --- a/tools/testing/selftests/kvm/guest_memfd_test.c
 +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -196,6 +196,83 @@ static void test_numa_allocation(int fd, size_t total_size)
- 	kvm_munmap(mem, total_size);
- }
+@@ -25,6 +25,31 @@
  
-+static bool has_bind_node(struct kvm_vm *vm)
+ static size_t page_size;
+ 
++static int __create_guest_memfd_node(struct kvm_vm *vm, u64 size, u64 flags,
++				     u32 node, u32 pad)
 +{
-+	return vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS) &
-+	       GUEST_MEMFD_FLAG_BIND_NODE;
++	struct kvm_create_guest_memfd guest_memfd = {
++		.size = size,
++		.flags = flags,
++		.node = node,
++		.pad = pad,
++	};
++
++	return __vm_ioctl(vm, KVM_CREATE_GUEST_MEMFD, &guest_memfd);
 +}
 +
-+static void test_bind_node_invalid(struct kvm_vm *vm, u64 flags)
++static int create_guest_memfd(struct kvm_vm *vm, u64 size, u64 flags, u32 node)
 +{
 +	int fd;
 +
-+	if (!has_bind_node(vm))
-+		return;
++	if (!(flags & GUEST_MEMFD_FLAG_BIND_NODE))
++		return vm_create_guest_memfd(vm, size, flags);
 +
-+	fd = __create_guest_memfd_node(vm, page_size,
-+				       flags | GUEST_MEMFD_FLAG_BIND_NODE, 0, 1);
-+	TEST_ASSERT(fd < 0 && errno == EINVAL,
-+		    "guest_memfd() with non-zero pad should fail with EINVAL");
-+
-+	fd = __create_guest_memfd_node(vm, page_size,
-+				       flags | GUEST_MEMFD_FLAG_BIND_NODE,
-+				       1 << 20, 0);
-+	TEST_ASSERT(fd < 0 && errno == EINVAL,
-+		    "guest_memfd() with out-of-range node should fail with EINVAL");
-+
-+	fd = __create_guest_memfd_node(vm, page_size, flags, 1, 0);
-+	TEST_ASSERT(fd < 0 && errno == EINVAL,
-+		    "guest_memfd() with a node but no BIND_NODE flag should fail with EINVAL");
++	fd = __create_guest_memfd_node(vm, size, flags, node, 0);
++	TEST_ASSERT(fd >= 0, KVM_IOCTL_ERROR(KVM_CREATE_GUEST_MEMFD, fd));
++	return fd;
 +}
 +
-+static void test_bind_node(int fd, size_t total_size, int node)
-+{
-+	const unsigned long other_mask = 1UL << (node ? 0 : 1);
-+	const unsigned long maxnode = BITS_PER_TYPE(other_mask);
-+	bool steer_away = is_multi_numa_node_system();
-+	void *pages[4];
-+	int status[4];
-+	char *mem;
-+	int i;
-+
-+	mem = kvm_mmap(total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd);
-+	for (i = 0; i < 4; i++)
-+		pages[i] = mem + page_size * i;
-+
-+	/*
-+	 * Bind on a different node if possible order to check whether faulting
-+	 * happens as desired. Without a second node use the local node and
-+	 * just get coverage of create/mmap/fault paths.
-+	 */
-+	if (steer_away)
-+		kvm_set_mempolicy(MPOL_BIND, &other_mask, maxnode);
-+
-+	/* Deliberately no mbind() on this mapping. */
-+	memset(mem, 0xaa, total_size);
-+
-+	kvm_move_pages(0, 4, pages, NULL, status, 0);
-+	for (i = 0; i < 4; i++)
-+		TEST_ASSERT(status[i] == node,
-+			    "Expected page %d on node %d, got it on node %d",
-+			    i, node, status[i]);
-+
-+	/* Dropped memory should fault back onto the same node */
-+	kvm_fallocate(fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE, 0,
-+		      total_size);
-+	memset(mem, 0xaa, total_size);
-+
-+	kvm_move_pages(0, 4, pages, NULL, status, 0);
-+	for (i = 0; i < 4; i++)
-+		TEST_ASSERT(status[i] == node,
-+			    "Expected page %d back on node %d, got it on node %d",
-+			    i, node, status[i]);
-+
-+	if (steer_away)
-+		kvm_set_mempolicy(MPOL_DEFAULT, NULL, 0);
-+
-+	kvm_munmap(mem, total_size);
-+}
-+
- static void test_collapse(int fd, u64 flags)
+ static void test_file_read_write(int fd, size_t total_size)
  {
- 	const size_t pmd_size = get_trans_hugepagesz();
-@@ -429,6 +506,10 @@ static void test_guest_memfd_flags(struct kvm_vm *vm)
- 	int fd;
+ 	char buf[64];
+@@ -418,26 +443,35 @@ static void test_guest_memfd_flags(struct kvm_vm *vm)
+ 	}
+ }
  
- 	for (flag = BIT(0); flag; flag <<= 1) {
-+		/* BIND_NODE depends on a valid node field, test separately */
-+		if (flag == GUEST_MEMFD_FLAG_BIND_NODE)
-+			continue;
+-#define ____gmem_test(__test, __vm, __flags, __gmem_size, args...)	\
+-do {									\
+-	int fd = vm_create_guest_memfd(__vm, __gmem_size, __flags);	\
+-									\
+-	test_##__test(args);						\
+-	close(fd);							\
++#define ____gmem_test(__test, __vm, __flags, __gmem_size, __node, args...) \
++do {									   \
++	int fd = create_guest_memfd(__vm, __gmem_size, __flags, __node);   \
++									   \
++	test_##__test(args);						   \
++	close(fd);							   \
+ } while (0)
+ 
+ #define __gmem_test(__test, __vm, __flags, __gmem_size)			\
+-	____gmem_test(__test, __vm, __flags, __gmem_size, fd, __gmem_size)
++	____gmem_test(__test, __vm, __flags, __gmem_size, 0, fd, __gmem_size)
+ 
+ #define gmem_test(__test, __vm, __flags)				\
+ 	__gmem_test(__test, __vm, __flags, page_size * 4)
+ 
+ #define __gmem_test_vm(__test, __vm, __flags, __gmem_size)		\
+-	____gmem_test(__test, __vm, __flags, __gmem_size, __vm, fd, __gmem_size)
++	____gmem_test(__test, __vm, __flags, __gmem_size, 0,		\
++		      __vm, fd, __gmem_size)
+ 
+ #define gmem_test_vm(__test, __vm, __flags)				\
+ 	__gmem_test_vm(__test, __vm, __flags, page_size * 4)
+ 
++#define __gmem_test_node(__test, __vm, __flags, __gmem_size, __node)	\
++	____gmem_test(__test, __vm,					\
++		      (__flags) | GUEST_MEMFD_FLAG_BIND_NODE,		\
++		      __gmem_size, __node, fd, __gmem_size, __node)
 +
- 		fd = __vm_create_guest_memfd(vm, page_size, flag);
- 		if (flag & valid_flags) {
- 			TEST_ASSERT(fd >= 0,
-@@ -476,6 +557,7 @@ static void __test_guest_memfd(struct kvm_vm *vm, u64 flags)
++#define gmem_test_node(__test, __vm, __flags, __node)			\
++	__gmem_test_node(__test, __vm, __flags, page_size * 4, __node)
++
+ static void __test_guest_memfd(struct kvm_vm *vm, u64 flags)
  {
  	test_create_guest_memfd_multiple(vm);
- 	test_create_guest_memfd_invalid_sizes(vm, flags);
-+	test_bind_node_invalid(vm, flags);
- 
- 	gmem_test(file_read_write, vm, flags);
- 
-@@ -486,6 +568,8 @@ static void __test_guest_memfd(struct kvm_vm *vm, u64 flags)
- 			gmem_test(mmap_supported, vm, flags);
- 			gmem_test(fault_overflow, vm, flags);
- 			gmem_test(numa_allocation, vm, flags);
-+			if (has_bind_node(vm))
-+				gmem_test_node(bind_node, vm, flags, 0);
- 			__gmem_test(collapse, vm, flags, pmd_size);
- 		} else {
- 			gmem_test(fault_private, vm, flags);
 -- 
 2.53.0-Meta
 
