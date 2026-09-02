@@ -4,116 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E70CC624D7
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 22:32:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00556C61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 22:32:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6ACEC6B00CB; Wed,  2 Sep 2026 18:31:59 -0400 (EDT)
+	id EC3CC6B00CE; Wed,  2 Sep 2026 18:32:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65E8C6B00CE; Wed,  2 Sep 2026 18:31:59 -0400 (EDT)
+	id E9B8C6B00D0; Wed,  2 Sep 2026 18:32:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54F8E6B00CF; Wed,  2 Sep 2026 18:31:59 -0400 (EDT)
+	id DB1546B00D1; Wed,  2 Sep 2026 18:32:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D4B06B00CB
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 18:31:59 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B94871403D4
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 22:31:58 +0000 (UTC)
-X-FDA: 85170271116.11.C895822
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E72D9160006
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 22:31:56 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=KI48qx2d;
-	spf=pass (imf08.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788388316;
-	b=dsTz2Yo8YZKT8+wVSmGY/iCG9wTOo6Djm36/fTml8ojunhRVIMs+XQnHh5ArQajqrdxMq1
-	ma+7+zNM4F478KwXq6dtk6iRdhEgUbY/+8RZ+h+lbuwrve7zos/N28K+m2FHqzINUZkQm6
-	XN0yVNsrjwHGH6BYiBwp4hPU2yZ5nik=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=KI48qx2d;
-	spf=pass (imf08.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788388316;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B13DE6B00CE
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 18:32:06 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5CDBB1C1EE9
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 22:32:06 +0000 (UTC)
+X-FDA: 85170271452.03.06312C1
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 97E5340002
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 22:32:04 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dLSeTILm;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of orsonpeters@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=orsonpeters@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788388324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Rfj489snHAgcjqYCzxpw7R2gTXTEyikU7ldTqChZJq0=;
-	b=YhmZquNXsiIRJcGJLyc6DjeA6qw8cgelhDDwS+zs96lbbrG+81vxDQqc25t346nIxjeC0T
-	KDy5Bi7CMYmzuJ++BpsIH5jjZ7xQHbMWQjbAQbSjFSRlas+pHjAGfn0COoXJ2ae5kUW09N
-	oEjias6WHZJKR8/XFbuFQpiMjtDD+h4=
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2d8fd3b729dso15032095ad.1
-        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 15:31:56 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=+AGt0gHLT0g+cl7JRWIp/qBg8bwWi3hEDvesCPNnUHA=;
+	b=WGYI5LdaGSEJ9h0VzNx8eJWAPtoTRLuKVGk0DMMqnUTeoF11l8TLu2riyrZenJTC2aczSs
+	zKVT2kyOt7ZME0/KAL+c6uA+0ido7OcpZOQrWWnTo8dCHWnpEdxaBVJduw5z0dGJ5FmF7W
+	DT3tJpVABlvk86pXXeXbp5b5s8QbqcI=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dLSeTILm;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of orsonpeters@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=orsonpeters@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788388324;
+	b=NKcljS8uEQdjLdJp8JGiOhttWDBVK6iT5fdxPQo2QJ12Y+bscv0SYmz7TMLfDT8vemrASm
+	HQA+owfSSyfqbmTuESOv/s1T8IJkjyElKRAt2qveeVmQusnIngM0DdlqUN545Qdx7aiUr3
+	/NRaBqy5/ye2T4ZPf/6qoiKbGga7DQQ=
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-66825847b2cso1458585d50.3
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 15:32:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788388324; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Dwb8JxzWVauBvbnyZjfJs4R33dgktxVVYU9GSNldQWPANOT3WilgUqjYv/2PMs2vBX
+         zHz+7LPrVDI/+zYARzQhTZtaXePm3aQNeLJaaAUeJh0oz9atdNC8ExttNA6ZGSUibhXr
+         WpfoxXpluwZ1j6oV/Szp9v7k116n+7rvpwSjs37dyhHwWSPGDaNwhUJP2MEPAtQahWTX
+         VNOcnzsv7H5cDO2fxdQE56mj9OKOyF7HNust9a/ra4JzXgX+cUE3rEvgCrs42W5HuhR/
+         PQ6sbvzo7YgMxJc0t6MkoOpuAjr055X1aVz5JDtlJLA9jWtPBqxL3wVaBx4NcnFbATS6
+         Qq4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=+AGt0gHLT0g+cl7JRWIp/qBg8bwWi3hEDvesCPNnUHA=;
+        fh=YxaQX7GTjfBsN7A2Jl+A9yP6mmGOQanoqU6QROKhVaA=;
+        b=aWMDaoQNgyOeepV7xzsJHoYlZ8qDZ8bFizjuKTzSdwO4pYkXMqcK5gzO8Vxg4WiPtU
+         wngz0fBtBS3pXkZSFk6kb6YFrtJ66XN6JY+ssN0usa2E6uM85QyInMHXAH3SJjB5fYG+
+         aNL7dcvo6la10AmRVfrXPYuuGwdcYwcwbh6Mo2xDN8OL5bQXeYtwa7TW66LgBp5kQcWs
+         l8wTzmjlSf2D7oJ8HhjS4yvyaIFT0Gztr8zy6fbXomwR06daxz8OLkvA4xWdUx4ot0a+
+         X4lQAFVUN3L+7hIyKFXh20sowhkA9kL9e9o2RoZaV37gOzjF1ldP4I44I2JT9HzWwz2v
+         tpQw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788388316; x=1788993116; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Rfj489snHAgcjqYCzxpw7R2gTXTEyikU7ldTqChZJq0=;
-        b=KI48qx2dQ1PMQ8ZYiIO4vuO48CLc8P2AHBkeed5CXMDjn/07ic9L6cyyJu45hpucEe
-         Nx0cAGWf3EQOJn0RbP8u+2RQNDnt1s1Xs3ADEysEv6mbQiEEgoSKBOGW9gUccsasv7Gr
-         RGg34mIb64NWOoESMurNRwr8m4TegnKxOdlbqzK+6O25uc0FjHyEGr+Bho2TeTbjQiGL
-         nn6EhDjNSzKj/diYM2/F88tjYXa0XBG0S0EKu/j8Fc0WYALVLm2KJNXbq9hBC0j5n38F
-         jCQVBLV8jACDBF4WE4mflnJWzzLCvmnoSoFsY+/68Qk4Tvmta+IMyBv1WFwDzowIVA9p
-         Iddg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788388316; x=1788993116;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=gmail.com; s=20251104; t=1788388324; x=1788993124; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Rfj489snHAgcjqYCzxpw7R2gTXTEyikU7ldTqChZJq0=;
-        b=ndrGmKxfv2CzHYu5IYnXZJGV7/ZulRc9ae3wtR3LR/gaOv5AKWYhsHESgl/uznQWZR
-         Iwu+RhUx2/jUQmf8UV4zrrijCDKZFr2UXXR9ck3r1OoAdvNDec4RtGjj0kKiQ5dlpRQ2
-         pdVPiAH3encrKfHQEnaVy9wn74v50m2lZo6T6t/z97//y/MmpNMXpROeYBJqoGIyWUHU
-         oxxkkH6UC3Tcyp/3PYjztIoI6y11XFf+6QQtjL3Qq2MrNFouJJPdrgXVBN95vJ+0WKsT
-         Deon8Cu5j+KCJcSXOWLHV58InUieIUkugjm9kNjB50PkMSVpRsKUwB6MnhSasApm+Ne2
-         ragA==
-X-Forwarded-Encrypted: i=1; AKwUvBwqvQmFKrsoZjmWmqishwqZ24H01R7nHxHBwWGDyBY3A8NQi5W5V2Bu9FrW89peiiD36f7wAZGnvw==@kvack.org
-X-Gm-Message-State: AFuF++lang+Hr5c+lZ9itrCI4dHNhZptWbVrbSGCJvqSG8ZgQmqg6h1M
-	9dsJyOmqkNUiwpno0MAtRw0khWVYHjqRB9Ud9p/B8H75id+SeydmDnVO
-X-Gm-Gg: AYBFou1ULkP+YnZtgSoIROrCuz5JdCcU6YRk6AaJoevzUvg0dcKPsuBwEsFWGYQP7/d
-	ASVL/wkR/67hk4F1vlKzhedcXYkC+kme8OUuCl4OoRgCkXiK1rGWYGSA88DeMSNW6on5TTANoni
-	2W2RCjseLuXX2CAxuYj2FIGCo0FtNGqEOQDDLKrNJXr1nZYnCdn93BbB1E/QQxC1PcYIFKVJZ4T
-	wQXZbu9zapABsPOkscdbjX+nONTn2qyPhGVvlG4+xwC+DGytEZ/IYPhqv6YtiY450PzQh1ZUKXG
-	qlR/Moj+lX9pG5Ww4/A6xm1Jlvq5rC+pfqmgb5TnYI6Bp+8t8iSXwdeVezSZ2pwyOq8sAvEZJCj
-	m0LIiadd23MISy2NaZXJvAYM3kmlzRtsjToE4PTjWbMnkrGMZPqXGIUbTJcJp45ZN7e+x+pzrfK
-	MowtA+6pA0rZzigwsUXDOl4QGRKOu2QJCTdEeW+Jp4wYKnHAQuwBJQeZdy8WcxGcbH
-X-Received: by 2002:a17:903:1a0d:b0:2d8:d4d3:da50 with SMTP id d9443c01a7336-2daec7a70a2mr111190875ad.20.1788388315442;
-        Wed, 02 Sep 2026 15:31:55 -0700 (PDT)
-Received: from celestia ([2402:1980:9c5:2de5:8b4e:3f3c:b637:4ca5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dafe0e24basm1215945ad.2.2026.09.02.15.31.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 15:31:55 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: sj@kernel.org
-Cc: aethernet65535@gmail.com,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2.1] mm/damon/core: fix false positive in damos_quota_is_full() when esz is zero
-Date: Thu,  3 Sep 2026 06:31:38 +0800
-Message-ID: <20260902223203.14871-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260902144804.88298-1-sj@kernel.org>
-References: <20260902144804.88298-1-sj@kernel.org>
+        bh=+AGt0gHLT0g+cl7JRWIp/qBg8bwWi3hEDvesCPNnUHA=;
+        b=dLSeTILmfwKIN/fvPh2LirH7SL5eM5x95+sMDo2Qv+LTSmuIM1KquTv0FXqzXWdMMb
+         qafccMB53fWJTJauyBdJ9FSO/cQp2oMzn8qlOQ91M1aW9T2p5y6MLQoDloZSA4pqPn/G
+         L/Y1mXFh2o0QS2QhntOabDyrvopMqKh8g4PJSYvf1RWaVCnWHVf2wdQToe0wjkBITbvC
+         vX3BL1brMwQM4OYIN98qL4HXAnmNv37+GltWXjyNf5qmgn5eHJIouXv2TP262g1rbW3w
+         SmGTIyVnGmaBe2DpkROW6dXOo/SiYVKQwGfGaHtKUdgWGoRGoMbBokj0+3YQ1wRARjD+
+         BBzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788388324; x=1788993124;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=+AGt0gHLT0g+cl7JRWIp/qBg8bwWi3hEDvesCPNnUHA=;
+        b=ezQitQFaF0veVdRRneiYL1+kmUCnQhHWDlZRNm6W0E1n5HfStMauOZzSLYCyZh6leP
+         wRcJsvMMf//Kyc3RaEsIHNNw4U2JyHBWblxkGdmPNuFASWbrHov+NdNh7nIFALV67jKa
+         mAEVpeAOKmlQslOA39CyURFpOzv2h7MRPA0rBnu51T+GgAEI1551hltAtYI9D9YMYNGV
+         C5ptTaNS0iaPH7murcyCUkxk+tLZa1mU+dNQw3/iNf64Z5S//3mx71PBWAOPbu/Xmmq5
+         MCCTNWX4FVNWqAsMhKIJq7/zSDeg5YJ7hD0ZOJtjGyK5Sf/YJy3ZvXxY3p2iuvEF5C0V
+         H81A==
+X-Gm-Message-State: AFuF++mhTTdkF72jf4eQhXthVqP5NNqNWepRo+nOwDdc+IcQoK4gn3/k
+	YYgCZIzhT0q17JId+vPN3X2qPCnJAXlVXc7p2D6nKvOqVXmW37Ud0HS7Wu8YcLrKMkCtTO3RfUB
+	HEJ7PxHjgeMzD1WXbKtxYYSqddGOLwWI=
+X-Gm-Gg: AYBFou2YsdFMOunTAiaU2Sts8ShJsB3PygV/SQTmjPocaK26WwdZWFuuek/k95C07mB
+	KZP2S1hH4at5kK36TActhvomIfRc8BQrGmJlbtmQCjQxWDgb2mDc6fsEgdYv+nJMeQElQmtEt7v
+	snCZhT141v/EA2hZu41cpquO0umHdomBairuj18BqbBl/1buxFDS2kHiFniMYE7SvP8eRUqb6A/
+	5EmDgX5wCpyaOZelKj0SKQxdBBibAVmVEwrAvd3uY1EtLfT1X9JA+0oG18rAj6ehhM1WyDdt0Zn
+	DEwxozFyzT4BM7XyImUA8gdy6YGO/eVQj9OcoE4U9AwZinfT89iN3Ld3flxWHbhVk86LRjo=
+X-Received: by 2002:a05:690e:12c4:b0:66d:1913:d40 with SMTP id
+ 956f58d0204a3-66f9bb5e1afmr2528594d50.19.1788388323569; Wed, 02 Sep 2026
+ 15:32:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E72D9160006
-X-Stat-Signature: 56g584yrnyggtqy7c8ce64yb6rza3nbf
+From: Orson Peters <orsonpeters@gmail.com>
+Date: Thu, 3 Sep 2026 00:31:51 +0200
+X-Gm-Features: AcwNN1V60FGAsFXTdLKDMw3TertitPAE8Ih8JeKNL1i5S9CD6ZtphO7QhQuic6g
+Message-ID: <CAJxLxMUGu1-L+O_nAONOwOXnS=cNbNApCWqdthRjd76LThtSPg@mail.gmail.com>
+Subject: [BUG] mm: writes after MADV_FREE get lost in THP pages under cgroup limits
+To: akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788388316-393886
-X-HE-Meta: U2FsdGVkX1/IWpDhi1kj7WUfRzrtE0Jd4KfP1KD45rZgCQPesHAlO4oUgfFnxMsDvUYR9J5y7Kgxuk+AmlmGzMoReYquCX+l8MVJaCpq7VnLzHhHnD8YYs5jGwInrTQR6fD7ilZwZHlMV9/i9R+w4JkK+eaY/yqOu4RTjF8TnuuRp95O3hDTi5M7t47fvV1Hd+qUTHOOhd8bGe2tKHUTvP+FIE4D8lzg5HVPlJN36UwbNZvT6vETt/nREVfF/YC/oUANaFxlCQBJLOtomxLzP7BDTAd1FDiVoDteU1jBtf09vwosOY8zoTd6rl48YTzdqMotL+dF8DqP7xsLGm4vc8P92ghEilc8b5l1EMUqWJJly82H1eWOTIj1X3QScVC+IPpIYNMwWdZqYADR4mVDFWNcfkL7oJjTCPffBNzkmVwqu4BXkqnbXNI0pxvu1g3/C0856vn8XFceXe5ZRIHE0RnvcfeAeGIgV0iF1mZVHDcVBISzktmyvkfGmQHLHlfKFqmw1NfiTfp8DyFBaWltIZsi+UFPi6izT2GcRmkaqOFGnX3HP7dTEqhtEqYrM4wgnN4eCeXmUmkgt6VPd9TuOT+nNhXkS40tLwgCH58+opOH8w41Msx0Js9TrOrt/41eNrhyxNW0YV7yDi9QhCJvOqHR8gft3bCgEDi/Y4fEiVeLkGiNMXA9FDyYDQoLvwBEa52F+OMBjDnhiNQGgMwsFwN/RVjgZMSV9+6+6Mm3SYGfVeGoe7w0nbtEEK9FrFKCr0LcSOfHifiahDceXpuevU3Vey/31FWSdVhOeKUAts9fjT1YZMgnK38jj3Y07WTj5dCPOA4GrkTE3l0nekhIXQQ9V5cFOjjzPujwug3TktXV5WYgFIS/0A5m3cVmMx22DOje35YR/d7uySTV8gvXRAVznCH7aXLfK22HSKqbpXXYIa7TX65BD7v4+yOvPdjTjIS5twtnoTqNMkERtql
- iyiiv+pM
- wLin9KqhkplvSTYae6e+f2mTWOXUkmMl8h5gLBcfsE/m08e8k2N1kFAUci4ufUI23GbAyTqbwMA4qzXBSKg8twqKCR4coRQko97+ZSVfTU+7rSOuPUTapt3CJOBpdV7WAPMbiYEVyh2TK3tVvY3BpDBetIEU7TbdOEj/ruZWWJFm8Dv0gt0oSg2HiZl9Q90vnAw+gOFxzXvJ+oR/KEmgQQUC6QbAwhhIUdhGNBlBhDcJGhB8K5A5ST3gQHxUxqtusGixBh+GvpVV/9+w/iyqXbH8xnqh4zHJLwTG73FVXju8PCIGMophCc1SCic++ZGd9+YjXkM9o0fTXr8KiaXiBOqI4n8XyXINDigX3vB06vEipP1MbwcGlo8JNBfLfo8G/XtsDi/6PSFTMCgneueNNV5Yb7eYLCDtDmx0PaZQXwJSS8H6B7OrsD8IUjxlMiwHWlksIB+ehbm6kNLcAabkB8iv1BseO3M6N7WB8oFDQfmb5tJI=
+X-Stat-Signature: xre63prpdg7taf4pjkohwxdy8z4fij8m
+X-Rspamd-Queue-Id: 97E5340002
+X-HE-Tag: 1788388324-315031
+X-HE-Meta: U2FsdGVkX18S4IEJWH+RjpIEvv3sTC5zamKkTAxFI2a8NVwLAjvq8DUQRtuRqcne12Va/3+LYi7sXuZW9M/BpZ4s//JEbQw2hdYeUAUr9OdeBzhqdXwbQNL4mCauWRFYY16CX4HaQ6WS0YigokfwsuU0MZuSSPuF7VF7w+Sg9AaKI+g9VPpcBfFt4zeQsgegX5HrOh5xQrB4MYatUdaiU2zBnFLEQ/7nmO6jSHerDhKjfSXpMkEQSkz8YgNt2jeSVgfUfOgxhdzGK0l87i8dhecVQ9mBekUXxR3WQif9wFBdkVAX7miyDgxc0k9oiCZxyZr0Vsa4oQiU40k0s/u0A5cyWRX6EYemo39Bykkaxm54oVsp3kYSbJ1JJcRpRAtTJyrjn+lyHoV6rA8CrLz8BbX61Dbd4Oqn5uyJ1L3M1uzeDVjHoYyEBwoN+q70rjrBiOCx32ynn+21jzylv72b85YVNpMm6mYcejAyyf2jQeNVKYE5i9VNTZapY+eQj3Qtz9Hww+iiHOiJdK7HOSjXhBI/d6BkTjWBJZLwgBoVCIQD3WAGKQu7JHsTtxD57fzufIWigNCSwgMe55g8cAKV9jC82f0MXtnv9kM3UlG9NV6MdkmKCnr7xxHPB58t6VmAHlM5KMtH9JbQqaNyouGMKKzvSr1Q2LEVFlptw4IfBaKKMgJQbr6n+bpiVAEQOORr21RPTuCCGWaywZyOiw0X3qkFpEDjyVMwSylcOD3jaHrhCuB3MW1vGpetNgGG7WK4s1e6Tof6iN2We+9KKAbP3vLfJJUE3JWIOCn8Yr0CWq1kGPVlB/EYNwV4w/oz0DTl41wPNE2AV37qgTezsl5KT4GHtBBZN93Hk+eaJS//0ZaFLEiz5VIx9ONQb1lsvygouQ4EPXIbNP1iD4s9GpyvACrAe6Q7IPxU2/VJC7sGqDztas15zBcmNi0TGYSJRkMh1ErnTmN0c0JzSI+Dk1f
+ 2SeLPKeY
+ Z3Mp/XLSvqfXR4HZtPPUb3zGbQbl+iNt8PSIzdX2hdi9HtK46ICTWCJKcQLFZzsYxjeVOsZQIY6ki2ewdW64eQ6mRRSaqac1fTiuKmHvHZIn2QOXof5WklZV2xvZrmHlq1OqrHl0nWUdhLxGBGPJplhYSzLyf4I3YRxfoKqUiIgA6FYLGwbKixoQqVP6fWDD1N7hQ006OoTvda90Gz5x63e0jt595HsyZUKWJ+7yVY5B5sV6hR5pyYokJ0c5nb1HhZpIvd5C4uxqvLkpHCtooDqCXxINlHvbOkUBgxjYYf7BaJtSTSulgEWGVIpwsDqVIxObJet5UZofpDGoj6zpplqfxX82L2Q41z1PGSjTuMxljy5Ip/LnJHrHwCy713YJouXkB72EbFZrGUa35DuVOdIvxxJ7HzghM8eIwFyuwP8AY9oJCNAigrYJASwAq4kryvBDd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,95 +129,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 02 Sep 2026 07:48:03 -0700 SJ Park <sj@kernel.org> wrote:
+Dear reader(s),
 
-> On Wed,  2 Sep 2026 22:22:31 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> 
-> > On Wed, 02 Sep 2026 07:10:00 -0700 SJ Park <sj@kernel.org> wrote:
-> > 
-> > > On Wed,  2 Sep 2026 16:44:45 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> > > 
-> > > > When setting goal_tuner to 'temporal', if the goal is achieved,
-> > > > quota->esz_bp will be set to zero.  In this case, damos_quota_is_full()
-> > > > will always return true, even if no regions have been tried to apply at
-> > > > all.  This causes qt_exceeds to increase unexpectedly.
-> > > 
-> > > To me, this looks logically correct.  Could this cause any user issue?
-> > 
-> > Yes, I think this might cause unnecessary confusion for users,
-> 
-> If it is _might_ kind thing, please ask questions first, or add RFC tag at
-> least.
-> 
-> > at least
-> > it did for me.
-> 
-> If it confused you, definitely we need to fix it.  But if it is just confusing,
-> let's try to clarify by adding documentation, rather than changing existing
-> behaviors.
+Below is a small user-space C reproducer that, when run with
+transparent huge pages and under cgroup limits, causes writes after
+MADV_FREE to be completely lost. I have reproduced this on
+7.3.0-070300rc1-generic on an AWS c7a.8xlarge machine.
 
-I agree that we should avoid unnecessary code changes if the issue is
-merely a matter of confusion.
 
-However, I believe a code change is necessary in this specific case,
-rather than just adding documentation, for the following reasons:
+Best,
 
-First, this distorts the semantics of qt_exceeds.  It is a statistic
-meant to track actual quota full/overflows.  Incrementing qt_exceeds
-when the quota is completely unused (because the temporal goal is
-already met) misleads users and could break user-space monitoring tools
-or scripts that rely on this metric's accuracy.
+Orson Peters
 
-Second, considering its original behavior when it was first introduced,
-the recent changes [2] have inadvertently altered this behavior.
 
-When qt_exceeds was first introduced [1], the conditional check was:
 
-    if (quota->esz && quota->charged_sz >= quota->esz)
-            s->stat.qt_exceeds++;
+// Reproducer showing writes to madvise(MADV_FREE) pages getting lost. Requires
+// THP to be on and cgroup limits.
+//
+//   $ cat /sys/kernel/mm/transparent_hugepage/enabled
+//   always [madvise] never
+//   $ gcc -O2 -o madv_free_repro madv_free_repro.c
+//   $ systemd-run --user --scope -p MemoryMax=2G -p MemorySwapMax=0
+-p OOMPolicy=continue -- ./madv_free_repro
 
-Later, to handle cases where 'remaining quota < min_region_sz',
-damos_quota_is_full() was added [2].  When this function was added,
-quota->esz was replaced with !damos_quota_is_set(quota).
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <sys/wait.h>
 
-    static bool damos_quota_is_full(struct damos_quota *quota,
-            unsigned long min_region_sz)
-    {
-        if (!damos_quota_is_set(quota))
-            return false;
-        if (quota->charged_sz >= quota->esz)
-            return true;
-        /*
-         * DAMOS action is applied per region, so <min_region_sz remaining
-         * quota means the quota is effectively full.
-         */
-        return quota->esz - quota->charged_sz < min_region_sz;
+#define SIZE     (768UL << 20)
+#define PRESSURE (1536UL << 20)
+#define PAGE     4096UL
+
+// Touch PRESSURE bytes in a child so the cgroup has to reclaim the
+parent's buffer.
+// The child volunteers as the OOM victim, so it dies instead of us.
+static void squeeze(void) {
+    pid_t pid = fork();
+    if (pid == 0) {
+        int fd = open("/proc/self/oom_score_adj", O_WRONLY);
+        if (fd >= 0 && write(fd, "1000", 4)) close(fd);
+        for (size_t done = 0; done < PRESSURE; done += 64UL << 20) {
+            void *p = mmap(NULL, 64UL << 20, PROT_READ | PROT_WRITE,
+MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+            if (p == MAP_FAILED) _exit(1);
+            memset(p, 1, 64UL << 20);
+        }
+        _exit(0);
+    }
+    waitpid(pid, NULL, 0);
+    sleep(1);
+}
+
+int main(void) {
+    int bad_rounds = 0;
+
+    for (int round = 0; round < 10; round++) {
+        char *buf = mmap(NULL, SIZE, PROT_READ | PROT_WRITE,
+MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+        if (buf == MAP_FAILED) return perror("mmap"), 1;
+        madvise(buf, SIZE, MADV_HUGEPAGE);
+
+        // Set buffer to 0x5a, again after hinting MADV_FREE.
+        memset(buf, 0x5A, SIZE);
+        madvise(buf, SIZE, MADV_FREE);
+        memset(buf, 0x5A, SIZE);
+
+        // Trigger the bug - on a multi-NUMA region machine simply
+reading the buffer in a hot loop
+        // for 2 seconds also worked, likely due to migration.
+        mprotect(buf, SIZE, PROT_READ);
+        mprotect(buf, SIZE, PROT_READ | PROT_WRITE);
+
+        // Trigger cgroup oom killer.
+        squeeze();
+
+        size_t lost = 0;
+        long first = -1;
+        for (size_t off = 0; off < SIZE; off += PAGE)
+            if (buf[off] != 0x5A) {
+                if (first < 0) first = off / PAGE;
+                lost++;
+            }
+
+        printf("round %d: %6zu of %zu pages are no longer 0x5A",
+round, lost, SIZE / PAGE);
+        if (lost) printf("  (from page %ld, they read 0x%02x)", first,
+buf[first * PAGE]);
+        printf("\n");
+        fflush(stdout);
+
+        bad_rounds += lost > 0;
+        munmap(buf, SIZE);
     }
 
-With the introduction of DAMOS_QUOTA_GOAL_TUNER_TEMPORAL [3], quota->
-esz == 0 carries two meanings: "unlimited quota" and "should not
-be applied".  This overlap causes the damos_quota_is_full() check to
-return true incorrectly in the temporal goal scenario, leading to the
-false positive in the statistic.
-
-> 
-> I feel like we also found similar case that people send patches to change some
-> behaviors that confusing them, but not really problematic.  That sometimes
-> waste unnecessary time for understanding the intention of the patch.  Please
-> feel free to ask question first, if you found some confusing behaviors and
-> don't know why it behaves in the way or if it is a real problem.
-
-I will ask questions on the first in the future when I encounter
-ambiguous behaviors, to ensure we are aligned on whether it's a real
-problem before drafting a patch.
-
-[1] 6268eac34ca30 ("mm/damon/schemes: account how many times quota limit has exceeded")
-    (Fri Jan 14 14:10:202022 -0800)
-[2] c7ec7d5f6b3d1 ("mm/damon/core: handle <min_region_sz remaining quota as empty")
-    (Mon Apr 27 18:33:50 2026 -0700)
-[3] af738a6a00c1f ("mm/damon/core: introduce DAMOS_QUOTA_GOAL_TUNER_TEMPORAL")
-    (Mon Mar 9 18:05:19 2026 -0700)
-
-Best regards,
-Rui Yan
+    printf("\n%d of 10 rounds lost data that had been written\n", bad_rounds);
+    return bad_rounds != 0;
+}
 
