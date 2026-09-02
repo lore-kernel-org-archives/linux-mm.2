@@ -4,97 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89805C61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 13:03:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7009C624D3
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 13:17:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4384F6B009B; Wed,  2 Sep 2026 09:03:10 -0400 (EDT)
+	id 784936B008A; Wed,  2 Sep 2026 09:17:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40F136B009F; Wed,  2 Sep 2026 09:03:10 -0400 (EDT)
+	id 70D9C6B0095; Wed,  2 Sep 2026 09:17:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34C6A6B00A0; Wed,  2 Sep 2026 09:03:10 -0400 (EDT)
+	id 587356B0092; Wed,  2 Sep 2026 09:17:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 014B46B009B
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:03:09 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 815B7401AF
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:03:09 +0000 (UTC)
-X-FDA: 85168837698.06.244BFCC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D54531C0010
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:03:07 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fhgap0Td;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788354187;
-	b=XfTlKXEMFgh1XcFyl/OgigfjH17QEve9pNih+ho5IVw30iBPOce0eupxuBsRZ1P+H3qYEq
-	nmkuFoaPDwkXXHMufFrDnX1zRa6Dphg/KIV1mXflVr0rbS/EPWT4QUaRLTRnpGxbK+wBFJ
-	n22e9qtAVR0lZB1GkLg+uPtSwal+G+k=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 28E7C6B0088
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:17:05 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B2A0C1C0DAF
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:17:04 +0000 (UTC)
+X-FDA: 85168872768.18.1A83C25
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 11EC3A0009
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:17:01 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=2RG9sDFc;
+	spf=pass (imf25.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788354187;
+	s=arc-20220608; t=1788355022;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=55piGikadtmJH1rIAu+iSuv/SoXijTMBydHFoHOIF78=;
-	b=u2NpPQHKnFfJzVqnvI1AsBzafW1zpsEpI6XgVk3dVviV6I/vaRjujuhj0Qo1wqo8jHhnj7
-	zFN09W7JP2ql1lhdwBgpWnbhG/BfbA+fhnyHCkOO3YCpU+xn5wMbWy92SZWBKb6wi7VCN+
-	OTZ28zXGUN8MH7W48dpk8+wFTC9y92g=
+	bh=nsItdggoL/pH70R61fsubbblLKE8u/0wryCQVrxs0VM=;
+	b=D61mBQvJYoIVN1MUD290GS8d6jVzFm4hJ17cIt6gcRdAe03EKPKjwqV2JtkUaXVEO/nQo0
+	r3fr7s/t8Fpc2AWVUPFyYtJ2qDpNMJQvDrzkpl8/7T7wFY8Zck35eXt0mrSe0SEs10d64A
+	S6zzFzLakgzQ6zGAQjeP6SS3RaDAfkA=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fhgap0Td;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E2B30412D1;
-	Wed,  2 Sep 2026 13:03:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82FAA1F000E9;
-	Wed,  2 Sep 2026 13:03:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788354186;
-	bh=55piGikadtmJH1rIAu+iSuv/SoXijTMBydHFoHOIF78=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Fhgap0Tdy96ASi/jfo0oS4aNZPngYqI6TtOna07FCUaWWn+eE8binwwGqEM+9LyQ6
-	 JXKT0t7wxQ5+kj+hmV2pt06nXrKDXw+HIgy3FTTMeZLXSyiYt09LRXZmw/HM98+mDc
-	 QLTuZdumxNEl5gVqmNMGYuC8ulx41fJ4pqyle3Ajub4W/XZo5uUFv9Z+kHtMRF4E77
-	 TOZn4KHK9Gv9hQ4XrFHTxOQT+Na+lTnC2V3yvjYoZNkqUY5CG+JyAyerrk6LZLp5xN
-	 fNOlbJQkTI7ekBmEYHJGM4Ex1Y389cGI2hthXggIL6Xg+YyFcThLbsojMR2t0EQFBc
-	 wyYAMX1R2oTAQ==
-Date: Wed, 2 Sep 2026 14:02:58 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Nimrod Oren <noren@nvidia.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Hugh Dickins <hughd@google.com>, Nirmoy Das <nirmoyd@nvidia.com>, 
-	Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm: remove min_free_kbytes adjustment for THP
-Message-ID: <apgdNQgHw4BW3bPG@gremlin>
-References: <20260901190123.3511535-1-noren@nvidia.com>
- <20260901204449.GK3004@cmpxchg.org>
- <C8541A2F-D6A9-41B0-A3FE-52339A6601F0@nvidia.com>
- <20260901220917.GM3004@cmpxchg.org>
- <69C018F5-A1C8-47AD-9567-3497AA6808EC@nvidia.com>
+	imf25.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=2RG9sDFc;
+	spf=pass (imf25.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788355022;
+	b=GLktDe9sqDCXyMVY5R6vfud/tHKDwlUXpuk74bGtxZT1xn9yuIfCS5mmahJm/KHEirdP4V
+	Ftvgem5oD2+VI2ShUUBj/yuevonq638jcuZ523grFt+LXFqXe7bWVGa7XsznWMeAzXhn18
+	CvBiKbtq8ySmHb7vd4e8zNIauniPiUA=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=nsItdggoL/pH70R61fsubbblLKE8u/0wryCQVrxs0VM=;
+	b=2RG9sDFcgMpmLnKYwyCd+Aat75j5gFfE2K+rc2lyv6wU3o2Lnnetiw/ZC4yS+kihU5WUmZbe4
+	o5KIP8sxOK31IxMMaFG84XSa9pv4RE0SRfYSAymq2wlfboEwxY20a5x/dyYI8mR17lIslcRVKvJ
+	MQYc1jht7/h6/RE7RTFEF1A=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4hZjfB3RfCzcb0T;
+	Wed,  2 Sep 2026 21:06:10 +0800 (CST)
+Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
+	by mail.maildlp.com (Postfix) with ESMTPS id 71F94202E6;
+	Wed,  2 Sep 2026 21:16:56 +0800 (CST)
+Received: from ubuntu (10.50.87.83) by kwepemk300003.china.huawei.com
+ (7.202.195.93) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 2 Sep
+ 2026 21:16:55 +0800
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+To: <brauner@kernel.org>, <djwong@kernel.org>, <cem@kernel.org>,
+	<akpm@linux-foundation.org>, <vbabka@kernel.org>, <surenb@google.com>,
+	<mhocko@suse.com>, <brendan.jackman@linux.dev>, <hannes@cmpxchg.org>,
+	<ziy@nvidia.com>, <david@kernel.org>, <qi.zheng@linux.dev>,
+	<shakeel.butt@linux.dev>, <ljs@kernel.org>
+CC: <linux-xfs@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+	<linux-mm@kvack.org>, Kefeng Wang <wangkefeng.wang@huawei.com>
+Subject: [PATCH 2/4] iomap: simplify writepages reclaim guard
+Date: Wed, 2 Sep 2026 21:16:51 +0800
+Message-ID: <20260902131653.1338227-3-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260902131653.1338227-1-wangkefeng.wang@huawei.com>
+References: <20260902131653.1338227-1-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <69C018F5-A1C8-47AD-9567-3497AA6808EC@nvidia.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.87.83]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemk300003.china.huawei.com (7.202.195.93)
+X-Stat-Signature: zwfep9nwsufw5rt4ss33zm9hthsgwrrw
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 11EC3A0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D54531C0010
-X-Stat-Signature: 3b66tyzxpimr7mzxu6yoh9shf99gaog4
-X-HE-Tag: 1788354187-479213
-X-HE-Meta: U2FsdGVkX1/g+2K1UmcncRNorFwwnwo8iUeTlGP1bwctNxDDFSieS3868RUZ8LJ26s1MYbW4GJMzfcM7tac0OzVNOBnO/YgwY5UmkR8gGVqh199pbMwZOuq9ItCuvnEYCBPNlJlnFtQybPkmKDXNdZXlAEYnHGbM8aJo6GdzUGtXgD0ypjyJ7o3UzlvnHZMawq5AjRxDfmCMxiK8u6ToMmaTTi1PFfD6XBmXpac/+oi+obPzb8jNb03IZEDgtOnPIuVby8OtSaaQ6hyclybirVAJPpazHZB7Hh+GVK/Echt4XTGw4lRZHq5rfhJChNoH6LVPc/gSNXozl0VJCAZahaoEZfBhc3mFQE7roCzNhtcqi2wCj/Af2el1zbnFUmXXHVStuwKcAaTggN2ctKGCy/dvTtgOS1Jd+V+MQglKQz5xaIWDACHP7G5XFKWpSm77ZeAGFrFwotDS7OYdM8hcgXBlBrWUGolHLVzEzd1G3es3dGLEpe9vNMsosypmkAwRPwJSMlki3mgysAAm9eOCMBkWqCH3neq5sGsjJBRk/ke68imVEs28pyJ96c4R5qv4+nDBA5DSUknYfTGIlZqvtATJsyvQjrEiwySYIdQEFcw+tuW80J/gt4qR/mItA8ZVHgzqHl6sQI7qVQImPRJNn9QYRi7yeyDfp1YTk759L8hjHYcJYdgED6l4N+3f/q4XixCO8XoWvWnXycW9VJZhCXkyF9yCjnEDVd3OehOeDDwh8eqqXpjP4u/VpA6LqHrugsvEDFmx2yIdXR/+g57bpw4nafssaWrr77b7DG+z5Z5E36dMEQ4UCdTDpjoipSOPa5ToxTNao3uJ3bTqnlQ8NZquraTssSKhwBUYQa3X2BW0QKgs0CmZYombWAKZhpRLm4wXN1uL4oXChgXfUhTrIf/0BYt+PugKvucGO9WOkZKI33xubC6XcHl77Q55TTrE84ENldpYLfxymtZFF3C
- 5cA+7eEG
- SpMqohbmuW2mPnLpKx9EXFyVi3LoZtLDzR/fwfsBP+KoiYTc90lzkMEaB7NhpkJpUkuyfMjFKaoNzUSNSLrGW9E3ieqSKCl/ACa5d5s3LUnCis9FY+QE59qebrBvhvl7gS0bKQVPDW9/eVZWHb7L36Kjcg64eS1Fk1A98tRo4KVh8p5bNVHksnHzexEv9tEZX+0pVORGX/B6V2Fyx/SJld6ckeDFGPCb6eB1f6U5J31vCcq7M+D1qslugf+zNDHC86mEirgmk9wobPf24vhQ2sRCblNXwnYugKhngfU7p+V9ayec=
+X-HE-Tag: 1788355021-630764
+X-HE-Meta: U2FsdGVkX1/9lQQLzZuSRwYLXtXxxotZO8ldUntV6u40uMHNsLfftaxvigR8X5uKXY6V8K8Z9lFEDCidkf5I20guGYLoJzmf1zc3VabNm06GeIZu0G6qcJUVY0XqU/gv1nPmgf8uZbAVcfHkbVotFMZtIydW710nADNfBSjDZ9AWCSTTStasvTXhrRW+KOPswAY5Ixh3jd32rV77q3eNkqkhzQDbTrfPzcXo3v5axHzQTUuJ+BqFRQR9xI+fyJcAQG/V9J9AkT2czYZambtLm9maen34gJkJ+nTsueol/Vw0vZetRsTO1vP9mTkxynLlhiPlZjvdOV/xuE+qe2NsqnGP7KG290lOSlDq7dO7vgj8Z2qV5+Xp7eNEdk75fxYTYnGD70t2MRuiznGu1IZQt38FWLN9Lf6t5j9NchNPWmmLxOoFY88xbqKwSC0d7i6RdGgw6eDFAHTXLK4rAMvgpE9QL8pQmHuPMSp+py11nGEaxXif2wwQyuAde6jqRXFwHKbFEnGnEl2JTTJHz/gHTMDt1VR6O5xIxsG5kzN9vUaTFvTowfYUSJaqIpFV2OM8sRgC66P/EFT52O8P5R/+HlRAyEoLVAby0QEmCxavisG8uF8KnuVAjdEk0VDjnZ8l645RgNGI8nWiKndwcSSUispPaWtc7YZ15dwZnQppDH8HhEbM+/HACyzPzM2XNmmo5TEXE83S5UqgBqCojAsgNqAWeGv6RkZ3zetvw3LvNAK9kBQj7gJ3GycOzX1svapvto1Lsb68fsU9RWH+fjb0/hsQNdUjtfIswXs7TzXDclbPbxMwlZjvTtKyfn8z8CtLCrGYDvmIyUHluseRFPXjRdm7OpRp6jstlj4/PLYQcBqhJH3/HmHb+MyPxswdBUCWaCglxc74bm47SxDis36RtTGJ8eWzh02CsG6hTQGRtTIk89XHwDsF78uSPgce8ERfJmNgx6+pZNF8LYfkdp2
+ PDR5HW/J
+ dylXifWsIAw3dEf55pFfFe1+MIzlwWdl3ZKibO5o0SZYBpWl/qU1AALEDNsaMmFFZ1de9f7v6eDJk1jFom9OmsZ8caf29scw2uzdiU4g+9bHLK+k5HjGLjfjTUCjhWiLnqQpdF7FT00IW26skW3Dw2WXOvKzKVbWpoBJ3r7JYvq+PgDtvlDdIpr5Pi8tgXndTIp+RYPx0A16OIu0HFVAG/2uYKeBMeqQUlSOCHWMUd+tYefZ5YcifDemLw+rxnqzoPQGs4I1WoMzL9ijX7Fu+kxGaxpJZL7W6PvZW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,150 +101,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 01, 2026 at 09:49:58PM -0400, Zi Yan wrote:
-> On 1 Sep 2026, at 18:09, Johannes Weiner wrote:
->
-> > On Tue, Sep 01, 2026 at 05:09:52PM -0400, Zi Yan wrote:
-> >> On 1 Sep 2026, at 16:44, Johannes Weiner wrote:
-> >>
-> >>> On Tue, Sep 01, 2026 at 10:01:23PM +0300, Nimrod Oren wrote:
-> >>>> When THP is enabled, set_recommended_min_free_kbytes() may raise
-> >>>> min_free_kbytes using a heuristic that scales with pageblock_nr_pages.
-> >>>> Commit f000565adb77 ("thp: set recommended min free kbytes") added this
-> >>>> heuristic to help keep pageblocks free and reduce fragmentation for THP
-> >>>> allocations.
-> >>>
-> >>> We've had problems with compaction before when min_free_kbytes was too
-> >>> small on large machines. Competing free space scanners do a lot of
-> >>> work only to fight over a very small set of possible target pages.
-> >>>
-> >>> So I'm a bit uneasy that you didn't include any benchmark numbers with
-> >>> this that prove basic functionality on larger hosts isn't regressed.
-> >>>
-> >>>> The recommendation scales poorly with larger base page sizes. With the
-> >>>> default arm64 pageblock sizes, the contribution per eligible zone
-> >>>> before applying the existing cap of 5% of low memory is:
-> >>>>
-> >>>>   4 KiB pages:   2 MiB pageblock,   22 MiB per zone
-> >>>>  16 KiB pages:  32 MiB pageblock,  352 MiB per zone
-> >>>>  64 KiB pages: 512 MiB pageblock,  5.5 GiB per zone
-> >>>
-> >>> I question whether pageblocks need to be 512M on those machines to
-> >>> begin with. After this patch, you're still asking the page allocator
-> >>> to optimize grouping such that 512M pages can be allocated at
-> >>> runtime. Only now you took away part of the mechanism to do so.
-> >>>
-> >>> If you're using 512M THPs, I would kind of assume it's on machines
-> >>> with a memory size where 5.5G for defrag purposes isn't devastating.
-> >>>
-> >>> And if you're not, it would make more sense to lower the pageblock
-> >>> size to the mTHP size you're actually using. And that would fix the
-> >>> "excessive" min_free_kbytes issue as well.
-> >>
-> >> But lowering pageblock size requires a kernel compilation. That means
-> >> maintaining two sets of kernels for different needs.
-> >
-> > That depends on whether anyone actually wants 512M pageblocks...
-> >
-> >> The ultimate solution is to enable better compaction to generate
-> >> THPs bigger than a pageblock size, like Rik's super-pageblock
-> >> proposal.
-> >
-> > ...or whether we can say, at that point, use gigablocks/cma+hugetlb.
-> >
-> > And then the static pageblock size for the fallback logic etc. can be
-> > a smaller, saner default for everybody.
-> >
-> > Because the point you didn't address: it doesn't make really sense to
-> > have 512M pageblocks on smaller machines, beyond the min_free_kbytes
-> > issue: Fragmentation events will poison half a gig at once,
-> > should_try_claim_block() becomes harder which results in less
-> > conversions and more allocations falling through to stealing, page
-> > isolation is more likely to fail, compaction locks and operates on
-> > oversized chunks which is bad for latency and concurrency...
->
-> I actually wonder why such a big pageblock would still result in a lot
-> of fallbacks. Basically it indicates at some point kernel allocates a
-> lot of unmovable pages that use many 512MB pageblocks and the life time
-> of these unmovable pages are so diverse, leading to all these pageblocks
-> remain unmovable and free pages spread across all these pageblocks. I
-> thought bigger pageblocks can keep unmovable pages constrained within
-> fewer pageblocks, leaving more contiguous free memory.
->
-> Do you mind elaborating more on bigger pageblocks cause bigger issues?
-> Maybe it is something more fundamental related to our unmovable page
-> management (which almost does not exit)? It seems to me that the large
-> pageblock amplifies the issues.
-> >
-> > Seems to me the excessive min_free_kbytes is just a symptom of a
-> > deeper problem.
->
-> Yes, our anti-fragmentation mechanism does not work as we expected,
-> so that we need an excessive min_free_kbytes to get khugepaged working.
-> I wonder why reclaim cannot get the extra free memory instead of
-> reserving it via min_free_kbytes. Maybe we need a watermark boost
-> when some consecutive THP allocations are seen to achieve similar
-> effect of boosting min_free_kbytes?
->
->
-> >
-> >> After removing automatic min_free_kbytes boosting, user can still
-> >> increase it via sysctl to restore the old free memory head room.
-> >> It is much easier, right?
-> >>
-> >>>
-> >>>> The automatic min_free_kbytes increase predates proactive compaction
-> >>>> and many subsequent changes to compaction. Given those changes,
-> >>>> increasing min_free_kbytes for THP by default is no longer clearly
-> >>>> justified.
-> >>>
-> >>> That's pretty handwavy. How would these changes specifically eliminate
-> >>> the need for compaction scratch space and allocator fallback options
-> >>> to stave off fragmentation during placement?
-> >>
-> >> Extra free memory is still necessary. min_free_kbytes can be adjusted
-> >> at machine boot time to achieve it, right?
-> >
-> > That argument cuts both ways, no? ;)
->
-> Yes, but with current khugepaged code, min_free_kbytes is recalculated
-> whenever any of THP, mTHP, and shmem THP enablements is changed. After
-> the change, min_free_kbytes is basically a set and forget thing.
+Now that kswapd can no longer reach filesystem writeback (pageout()
+returns PAGE_ACTIVATE for non-shmem, non-anon folios), any PF_MEMALLOC
+context in iomap_writepages() indicates a VM regression, simplify
+the check by removing PF_KSWAPD.
 
-Yeah, overall we have gone back-and-forth on the 512 MiB page block thing,
-different solutions have been proposed (Nimrod included a list of these in his
-initial patches), and each one has not ended up suitable because they all seem
-to hack in things that violate the assumptions built into the pageblock mode.
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+---
+ fs/iomap/buffered-io.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-So I see this as a 2-stage thing - firstly eliminate the reservation issue so
-people can practically stop having to deal with problems there. The second -
-look at pageblocks/compaction more carefully.
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 0a5ebfda90f1..6306ca747f3b 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -2077,8 +2077,7 @@ iomap_writepages(struct iomap_writepage_ctx *wpc)
+ 	 * Writeback from reclaim context should never happen except in the case
+ 	 * of a VM regression so warn about it and refuse to write the data.
+ 	 */
+-	if (WARN_ON_ONCE((current->flags & (PF_MEMALLOC | PF_KSWAPD)) ==
+-			PF_MEMALLOC))
++	if (WARN_ON_ONCE((current->flags & PF_MEMALLOC)))
+ 		return -EIO;
+ 
+ 	while ((folio = writeback_iter(mapping, wpc->wbc, folio, &error))) {
+-- 
+2.55.0
 
-And as Zi says, if you need a bigger min_free_kbytes, set a bigger
-min_free_kbytes :)
-
-My suggestion here was the 'so dumb it kinda makes sense' approach of - hey if
-we want to limit reserve size to X just express it like that, don't play games
-with page blocks.
-
-But I like this solution a lot more - as Michal points out, with proactive
-compaction and changes in how that code works, it doesn't really make sense for
-this 'if THP is enabled set to arbitrary value' stuff.
-
-So I'm absolutely for us just cutting this out now, and that frees people up to
-solve the bigger issue underlying this that in an mTHP and ma-hoo-sive PMD size
-world, pageblocks == PMD size makes absolutely no sense any longer.
-
-I think Kiryl's upcoming work to make THP no longer treat PMD as the unit of
-measure for everything will help, and hopefully if Rik can find a way to put
-forward his GiB superpageblock stuff in a way that can be iteratively taken
-upstream that could be some way forwards on compaction.
-
->
->
-> Best Regards,
-> Yan, Zi
-
---
-Cheers, Lorenzo
 
