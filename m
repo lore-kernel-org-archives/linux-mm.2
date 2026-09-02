@@ -4,111 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F9C3C624D0
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 02:07:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B17CC624D0
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 02:21:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 249856B0088; Tue,  1 Sep 2026 22:07:00 -0400 (EDT)
+	id B3F4A6B008C; Tue,  1 Sep 2026 22:21:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FB5E6B008A; Tue,  1 Sep 2026 22:07:00 -0400 (EDT)
+	id AF1366B0092; Tue,  1 Sep 2026 22:21:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C5E56B008C; Tue,  1 Sep 2026 22:07:00 -0400 (EDT)
+	id 96BA16B0095; Tue,  1 Sep 2026 22:21:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C31066B0088
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 22:06:59 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2DA87A0695
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 02:06:59 +0000 (UTC)
-X-FDA: 85167184158.13.DCE6112
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 54A5E20002
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 02:06:57 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c7w+hL4c;
-	spf=pass (imf13.hostedemail.com: domain of devnull+bingfangguo.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+bingfangguo.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 60FE86B008C
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 22:21:27 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AA388C0692
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 02:21:26 +0000 (UTC)
+X-FDA: 85167220572.03.0789F42
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	by imf14.hostedemail.com (Postfix) with ESMTP id D3AC0100004
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 02:21:24 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=gYBcjymV;
+	spf=pass (imf14.hostedemail.com: domain of hughd@google.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788314817;
-	b=Azukux/xoe/VH1nRu/3OVy1oZXYGPWzOxrOtyO+VajGQ/Hok/QpNytGyT0XV7vyTUTuQcW
-	z7rzjRhHxAibd5/rFdLN9JhwBel5gomFEcskNfRaKb3SaSHFSKcBYIMwVusDVBatYWKIDK
-	cRWOYN/C2a1kvdKX9Do5UmGZ/QVgb98=
+	t=1788315684;
+	b=eO1TcUJKCFyiVlWg9lXo3cRRHniY6j5O5JOJ5sBEhlGlQRYKXhIl7jQplP1d+gDldDDHtk
+	prf3XnrdlxLwiwD/Ipiyf8qKoWfnHomNqGW7TSFpGyip7EIpyrcQ2TLDnxNNU1Usgi5F/+
+	7Y0V9tNir9LROusP+Z2gRCs90ykCpI8=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c7w+hL4c;
-	spf=pass (imf13.hostedemail.com: domain of devnull+bingfangguo.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+bingfangguo.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=gYBcjymV;
+	spf=pass (imf14.hostedemail.com: domain of hughd@google.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788314817;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1788315684;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=J1JJ7wmygYc1d3vkS2FdVjeOWkfpe+02p5qo7IACeNU=;
-	b=niG529z7Z90I/nM8qJoNvIDJUkCNqR5mr4kZXtXuicrLOvVyOpWQGUMqjiwHShadEvhf3o
-	50o8x+e8dc5ZJlRA7PcXHsTGjSwmN5/o565XPG4w7jnJGgka6c0i8AxOyJt0KVZcbQiqWJ
-	2IKdgdxxwOB0TUL/7b7+SPI4MOzhruk=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 77B7C600D9;
-	Wed,  2 Sep 2026 02:06:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 21A8CC2BCFA;
-	Wed,  2 Sep 2026 02:06:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1788314816;
-	bh=W+UV8TiDB9hxCbUmT2Z+NnTHOSsKdjCuL9atiZ/pwTE=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=c7w+hL4crM7ahLXqISQQNg2oF7dv7MfiH0BjQg4I6dZc4a7X6l3apCW6x2C1srNR0
-	 V96GCPjxMweYug1wmSo6OmqzcJCF5iWguiHSq2AUAptdEWEWYE5VaFCssINoNH8xrC
-	 EE69A5SBp94UDyNCkGvq9WWA67Kr6az7c9MbdU9qcqwnbod5YYi5lzpf3HrZw2VcFn
-	 m7c5eL6DDcGd8UjExzBlPFo+FZKKhONMO3Eqp5zureF5YTyUVGn7dTSy+0yqWYc4Nt
-	 DX0R1TyzmSWG6487Jn1Jn/sKZUYxf8+KP7IumJAPUr+2An3iwnX3lZEflzS42p6sWx
-	 06tLoA+LVEyQw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EF3DEC624D0;
-	Wed,  2 Sep 2026 02:06:55 +0000 (UTC)
-From: Bingfang Guo via B4 Relay <devnull+bingfangguo.tencent.com@kernel.org>
-Date: Wed, 02 Sep 2026 10:06:46 +0800
-Subject: [PATCH v3] mm/memcg: clear folio memcg after changing per memcg
- stats
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GP2nihoXTh44eq0onDqBGjACptMCLq276d/ZwwaKLtA=;
+	b=z7Pzqmj7HZ9bqNpBWYFmqQuUNsVLuSRWymSG0vQBxUosR6l3nLMZggu2l1R/uP0gAl4I/3
+	PwPY11LfZi84pKW8DQ3oY3KGh/1/T8zfrVnbCcwWm4KvT+3QM4t3N+nawd0Q5+OutX7HAJ
+	/dOvnZ9V5Siw7Sb47yBUc8K3PWAXGtI=
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-865bdc6ed72so10618817b3.2
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 19:21:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788315684; x=1788920484; darn=kvack.org;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GP2nihoXTh44eq0onDqBGjACptMCLq276d/ZwwaKLtA=;
+        b=gYBcjymVHGJO0fDkYzoWLKc3pQXyVd+Jwxadm3O1QXPifSCqRNUYl09BZ2bf9e+U9L
+         cCEXC2hGVNhTUoJlILeQdlA//JUbqTk7TpJ49CcpoJStB7BM6FGNHnoyZi0Ng+xDX/a7
+         uLvkBSOKFyeO+hbKVY53PRmICEutzAR54HuTTDvOaVz4CaV9I7lqHTQgExu+/W9kqaK3
+         /SBnfxp+cPUvJYN6GOkTN3wurdwDbSO93TOBnKNxxtQZhPTR0r7w6rDNMy1/CrLEPDN9
+         0oqxDxXZ9xlY8nnRXk0sGRegwIuf3qROjYx36ni3oGLhvitA6opHFkuYL0O4s6IqfWOm
+         3naA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788315684; x=1788920484;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=GP2nihoXTh44eq0onDqBGjACptMCLq276d/ZwwaKLtA=;
+        b=riBA6Xt9q75X3jAjkUh7A4S7gjtlBcUVHR+bXIPeCbGrzvsX4CZns3ua1FQZYDRNXf
+         MxZMQlsfK1Bbyd82lvMJxesRzKHSR1YK/crD9fI2XxaWaetsBJVnt6w0XJMwyrUqc+ta
+         uMdRzbes2VgJ/JaWMyL9inQu+qPXtPrnhCJNJml5nCKBIkYjf8KWr63QSJLy3Qe28/ql
+         m67Yuko9/Gkj+vufs2SgY2Hz5xj7KBnn2KFLl5iZycD/ovQQ/0ArZX0xL7e0VJ5XCJy9
+         SndTb4sJR9cTm48dTm2lcaAA0njtAnbkdebsxUTqbyHLXcM+5W87WL/trDDFS11oY+su
+         jfzw==
+X-Forwarded-Encrypted: i=1; AKwUvBxuvTIbG9Sm5MTszuqMZVgAUflsK03n2hdJA3anBK4U99ybRoY6XoeL14oWkBGd6oYO6IdVHPyrWQ==@kvack.org
+X-Gm-Message-State: AFuF++mWBOsth0QF0AYAM/b36iPPDdO23iqoCzZ8+oLo/bvJ7S0qMOuw
+	cb0e6b7hXvoBGk4s42tiLDgvl+gs/TJQQa7jDfDFR7kA5ivubaxXiBkUwRnlNcF1+w==
+X-Gm-Gg: AYBFou2WD1OjKutNhXjDL2puCcInGJSNiYP8QjF84KtgJclFM3EXfYMl52ztHOJaSZp
+	IzEuk/ryqxCpQg6Px3hNxMi/0T/yjksrXGw78mnojxyZX1r4KtyLqoSnLAv2hsCiqRiUMQtX83k
+	s9+PxBON2cQOTszjIAs0t+kuxYYWyDDU1b9wZuDGl0g4tRJMv0+xmnvQsfVfMzFtgbkpLfFsUX8
+	HvtSc8F8gNAWE+PphqzFXFpQqe9p8wKFCGWUoyORu/HpeLQJN65GpmAHmfKL9585K0wc/UPNOfi
+	OkVpBYft4eFxZTlYo9lO4/hTgfT/BiZq+KnedfsNga7ZHZnWX2bXfH1sLOqrpL+hZOmHwArdT1i
+	oRFop0GRcOh6MWfYWKeQEEBICHFnDS7jWrItpeKYCnpAXX4YJJjjaCtl2dGvSFld9bSFl7NX3tp
+	YqsH3DD/gX+W7I/FbTIdPfnLr4cgYtup2GH3MPaLJGrU435T0rY5iwLVqB/biIPZa3MeWB2hrvj
+	go9EOn5nLTXBKzLkZUW1+DT6Qrj0Zark+lTbzUHGj9uYMyF
+X-Received: by 2002:a05:690e:4419:b0:66f:7d51:b5ef with SMTP id 956f58d0204a3-66f9b90a9d6mr365005d50.3.1788315681539;
+        Tue, 01 Sep 2026 19:21:21 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66f986b612esm893663d50.21.2026.09.01.19.21.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 19:21:20 -0700 (PDT)
+Date: Tue, 1 Sep 2026 19:21:05 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Ackerley Tng <ackerleytng@google.com>, 
+    Andrew Morton <akpm@linux-foundation.org>
+cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+    brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+    jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+    oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+    rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+    steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
+    yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
+    suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+    Paolo Bonzini <pbonzini@redhat.com>, 
+    Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, 
+    Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+    Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+    "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+    Masami Hiramatsu <mhiramat@kernel.org>, 
+    Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+    Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+    Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+    Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+    Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+    Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+    Axel Rasmussen <axelrasmussen@google.com>, 
+    Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+    Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, 
+    Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+    Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+    John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+    tarunsahu@google.com, Randy Dunlap <rdunlap@infradead.org>, 
+    Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+    Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+    Michal Hocko <mhocko@suse.com>, Fuad Tabba <fuad.tabba@linux.dev>, 
+    kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+    linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+    linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+    linux-coco@lists.linux.dev
+Subject: Re: [PATCH v12 18/45] KVM: guest_memfd: Handle lru_add fbatch
+ refcounts during conversion safety check
+In-Reply-To: <20260830-gmem-inplace-conversion-v12-18-85e5fd25252a@google.com>
+Message-ID: <bd6c9c74-e374-a9d3-ba1f-8b6f430894fc@google.com>
+References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com> <20260830-gmem-inplace-conversion-v12-18-85e5fd25252a@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260902-memcg-swapcache-stats-fix-v3-1-795f5d455f7b@tencent.com>
-X-B4-Tracking: v=1; b=H4sIALWEl2oC/33NTQrCMBAF4KtI1kbyoyVx5T3ERTKZtlk0LUmIS
- undTYsgbsqs3oP3zUwSRo+JXA8ziVh88mOoQR4PBHoTOqTe1UwEEw1TQtEBB+hoepoJDPRIUzY
- 50da/KLeIrXQgTWtJ3U8Ra73Z90fNvU95jO/tVeFr+1Ul31ELp/WAKa7ROquaW8YAGPIJxoGsb
- hE/S7NdS1RLgzFOSna+aPtvLcvyARjIpw8QAQAA
-To: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
- Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, Bingfang Guo <bfguo@icloud.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Bingfang Guo <bingfangguo@tencent.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788314815; l=8591;
- i=bingfangguo@tencent.com; s=20260812; h=from:subject:message-id;
- bh=2wL0CIVj+NumZ4jS21cH6aQlJclRk7X+OAm/clFB4c8=;
- b=fcHvD8Ml1Jpyd2jCE8ru20/mr66E0sgeh97kx0WqWyL3elbRz4LPQfUYPousj2Yc44IpoNrGC
- PBf/irpcQR3AAqRw4MxgkGay3OVc2OiZIytxK0zwy5z5Arco2INWCYq
-X-Developer-Key: i=bingfangguo@tencent.com; a=ed25519;
- pk=q7u9S7d5e7VijWrYF9O+vv9/XvqWduVGtwGtuCObAHE=
-X-Endpoint-Received: by B4 Relay for bingfangguo@tencent.com/20260812 with
- auth_id=942
-X-Original-From: Bingfang Guo <bingfangguo@tencent.com>
-Reply-To: bingfangguo@tencent.com
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D3AC0100004
+X-Stat-Signature: bq6hfz31qup98no9ctj9or5iio9x81tn
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 54A5E20002
-X-Stat-Signature: mpx6j9umz99q5bkib3sktbqc7ybjb4kk
-X-HE-Tag: 1788314817-420695
-X-HE-Meta: U2FsdGVkX1+wWf+IT/ImcDXWyCd4NUKIwcqKo4XbPpuFrOmXRg3A4KiY/dxk8b0nnKhHDAHU+8ufaLkhj5k3UnuAvCK7yF0C/90ETIObYctIoGEiLrpAADFq5JGKVbAKfIzX9qA81umH0Ya3WdrkDeqENSftPDShV/Rs0A3pHonKmaGEu0DoYBGmheW2Pubv+i7Z922yiK32T7l/2hjqpheEMi8LSria2vUOvUD8My5JRArKTsEh9qzby2XIgRw+iKIAYH2z04T/IhgvDi0cuR1QHSMWoQKCGhH0LtgmP/jOLubYpIqOWSI0mCS8gS95ImPheRFsiRbuq5wxCUHG8hvkZIJy2Yg1eZhU6L1S9nxDuFiYJT0DNgi57zUk2Xd8xndqb2exYTcK9AwyjMzCJ9eQ3tYHsTSi3ao2wPpTSLyKev/lodej6cD86gHg18FsqoEqBOmyhf4g8FiEs7l/t0NDkyAHfL43ppi+9BOch1vJTkihy270Dh6GLw3uazCv8cNvfkdPxVrSxOCS+o+8VQvpSg+PL8/N1AP6dTWc5GEeMl4VzqjYw+bgHs1CriDYPTJh7QaxPtFaUqWVCFat0c21lFa83EJr85DsBL+hvcaVkzc6YIzaR4O8zX0kakLzBMOnlXhNLBN6q5Ua/in0JpRtRE8opZNJ2S6IeRLjrWEvzlNhd4oSBl63f+Ewtgo+Rux9ARYwXlYeuauBji6NL5KjC5SE8VXu/xsN1+xbrRqaSU3Slx6iE/BLxZoIOTFZvw0tVyo4aVQjcsPvWopTfE2YzPg7KUUWQ9JS0nVhnPyBbHWQNAbSMJ9yShL0w9503/QZ3mtmV8vnq3EL94mq4TtaZGSCw4ftFOJ8XKKs8XG6DEGkah3+lJI9sbLwYPvUGlfZjAtI8A/2EB2qwFaK1dn8Q8vRvlheFmYl317wE/ih+r14rAOKU8qeaSSXcCdwjCutkM9u4bmBAX1u2LX
- oU5uA5yv
- YDHFz0JY5ZnIo+f37sjnyfnu6C26nD90D5q1nLExI8k2rUflDimVGPPoN3XUQ4xWbFAkEGL7X2MJlipOXxppWlVJk/PsscRzT6dHXzhCNgkwDtwtTYR/AXcBcimEJVFkY7WbQrozAelI+SLxHQI6ynDgSuVbJ5+2GfFaAVWpKtkQd2VADQMS1VjeIp4+xkQdX7IrVlU3DmEwckmT1ZFm9lPzkibvjBki3uPqlz06q4rDd/3mo7/cHwxW9Qry/NXhi0gKFoVodJue2kEnE+Y+ANhdsY4TvKIKUcwdRSGKwDSs4s4ABj2JzQ2TXGyzpQolHkg8HkN6rJZfmSsIgNsgN7FbEdR4Rf+KFk+uK5+nYzsH/Do87qU38MJY8SfmJjxVTq16rHkI9mN4KwKoEb9SGriVhJp8NQTOpoRwXtOicQW+KHP2uL1LiiN1XRT7xNNVJBzbD
+X-HE-Tag: 1788315684-411445
+X-HE-Meta: U2FsdGVkX18bzwxLjxWZwqYH+WQJREXJpJY4t2Zu84pgsF0FLTU4AGYVFJLlTrmkhbXr3zRzbBd+GCJDM6HfLKP59OLIoXWzGkiddvvJMe14qqnxSbEKeN50DG841AgRmNTzJ5UHpXI2LcJzlC1c05GBexfyPxg2k9l8NTFlRShZ/NrAgs+rVpPpTKht51dCM//t7h68Jh9xMM+lyTSmS7wcQge1+KBMyEglR08foZ7f2kGo0Rpf29mhxvWJ3BqFJQdJjyuMXyj22MOxfxYz81EMq/dX87f65eXLbs3mYpM9ijLgxVqIxA/KR63u59Bfjmp1YkTwdkhd/UkGFdzPTVaSv84wyrKw1tmPWMI7+TYAH/fOJmovGCl2YwyWu/fiEmDfGjSw/39MH1jfrYRH9mPfKakWiYE4ek05y+yVLQxa4Nrbr0l8LxNpzzmJwOtr3N5VbAl3QFnSIWvL80bzck+UZzAjnTa6YEOiefur5WLpNUJqhfLJyuxwiC6xpNi8YAHyl5za1ZIQelNwPvDrgs2AvTubYTTgWODawKynAzboiP2Xh1YPoTnnUg/HYPEDsR01n895d43TTAdTbvpxMpZVE6Ylxvmq5Q1n4gEKAM1QU1gIZLfh4BcuL+IteAikiXc7P7ihUls/TjaSqRamm7Gj98GWW4Jm8p/akF11TXWGiJCV3NH7W7AegQ/7Vf1FQxobhBdv8itPGBtEBFGV1Fouj+z5ljZUfJJOAxyC7xhVpnB3QpZJ3pSOqFCBcZofZZUmA3dsacnRg04iGNxRyyE/z2vr8FAaOXeimiaqIpBfJX6cZJBG2+xojnQX1gjPe5q4/VFIAad8bsrjkXlUVcug3vbJGiqE7tNdn36gYrqyUOOSpkY0pcjghc9OxpNAY4dBQJUfL/bzCS2G4CoWaswCR9V/JyjxJvxhkl8Wf/XO0o8MR/8ILV4X5LVhoeVpBeSlIOgdUrTOc0QuENM
+ yhyUXPes
+ Spk4kKaZxOYXuPBqilJrYDQ2OFb28ioGgJ1F6/tiQxedEj4YE8f+0/Ug3/JpGlxHIzxUHLotpVyZD1gEGNkQChFpPfQN/5pxasTVXN/kmlLc2mj/qg1YKRw9Ptsk8uVPqrtM9Ab4XDgJi3gnCLvJymO0irJVCRH22kXsMhCd7Ynvs96FHWBHvr76GQtvAS2FOatJoUK/qUGXDceOduG1Cdwv4jGFOGTUUCqB0MOZo8Vq8hBIno3GHrb9B8499owt3qIBSmMZVnLr2gvvYOkxNO3sLIaqJjelrb6/KjBlpFh5yQKHYt3upKzSBgKSfIAGszln2QdYySnPEc7CeqjWXc/cuFv7HxxiuBMFv8AzDxQuMd713i+0rBGqNSXK//KE4EafKb6EzKxVbNdfaYeDwQjoUB3IaU0sg0c1R25DLPuv13ReulfuZ6f2WHrc4/7JuRAO1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,254 +151,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Bingfang Guo <bingfangguo@tencent.com>
+On Sun, 30 Aug 2026, Ackerley Tng via B4 Relay wrote:
 
-I notice extremely high swapcached count in the per memcg level
-memory.stat when running tests with cgroupv1 setup by swapping pages in
-and out.  It seems that the counter never gets decreased so the value is
-rather useless and confusing to users reading it. So I think fixing it
-so that the value can reflect the actual swapcache usage correctly could
-be helpful.
+> From: Ackerley Tng <ackerleytng@google.com>
+> 
+> A guest_memfd folio has no outstanding references if guest_memfd holds the
+> only references on it. Any other references on the folio may indicate
+> another user, and guest_memfd cannot convert it to private if there may be
+> an existing host user.
+> 
+> A folio will have outstanding references if it is present in a per-CPU
+> lru_add fbatch. guest_memfd does not actually participate in LRU, but
+> freshly-allocated folios are still added to the lru_add fbatch for batch
+> LRU statistics processing.
+> 
+> A folio may also have extra refcounts if it is on the mlock fbatch.
+> 
+> These two known "usages" of the folio are handled by calling
+> lru_cache_drain_for_folio, which drains both the lru_add and mlock
+> fbatches. After draining, if the refcount is still elevated, then there are
+> truly outstanding references.
+> 
+> If the page may be dma pinned, DMA is using it and hence there are
+> outstanding references. folio_maybe_dma_pinned() can have false positives,
+> but that's only with a significant number of refcounts, at which point
+> draining LRU is not going to move the needle - it can still be concluded
+> that the folio has outstanding references.
+> 
+> If the page is still mapped after guest_memfd tried to unmap it earlier in
+> the conversion process, it also has outstanding references.
+> 
+> Return true and exit early to avoid unnecessary draining in these 2 cases.
+> 
+> Provide a drain status to only drain once ever while processing a batch of
+> folios.
+> 
+> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> ---
+>  mm/folio.c             |  2 ++
+>  virt/kvm/guest_memfd.c | 30 ++++++++++++++++++++++--------
+>  2 files changed, 24 insertions(+), 8 deletions(-)
+> 
+> diff --git a/mm/folio.c b/mm/folio.c
+> index c02dcea9c03c2..50a6dbe55998e 100644
+> --- a/mm/folio.c
+> +++ b/mm/folio.c
+> @@ -33,6 +33,7 @@
+>  #include <linux/page_idle.h>
+>  #include <linux/local_lock.h>
+>  #include <linux/buffer_head.h>
+> +#include <linux/kvm_types.h>
+>  
+>  #include "internal.h"
+>  #include "page_alloc.h"
+> @@ -926,6 +927,7 @@ void lru_cache_drain_for_folio(const struct folio *folio,
+>  			*drained = LRU_CACHE_DRAINED_ALL;
+>  	}
+>  }
+> +EXPORT_SYMBOL_FOR_KVM(lru_cache_drain_for_folio);
+>  
+>  atomic_t lru_disable_count = ATOMIC_INIT(0);
+>  
 
-__memcg1_swapout() transfers the memsw charge of a folio to its swap
-entry and clears folio->memcg_data as part of that.  In the vmscan
-swapout path it runs before __swap_cache_del_folio(), which then
-decrements the swapcache stats through lruvec_stat_mod_folio().  Since
-folio->memcg_data has already been cleared, folio_memcg() returns NULL
-and the NR_SWAPCACHE decrement only updates the node-level counter
-instead of the memcg's lruvec, leaking the per-memcg swapcache count.
+I don't mind about the virt/kvm/guest_memfd.c part of it, but I'm finding
+a KVM patchset modifying mm/folio.c there hard to deal with: and notice
+Sean also suggesting to separate this part out.
 
-Move the __memcg1_swapout() call into __swap_cache_del_folio(), after
-the NR_FILE_PAGES and NR_SWAPCACHE updates but before
-__swap_cache_do_del_folio() removes the folio from the swap cache.  This
-keeps the stats attributed to the folio's memcg while still recording
-the swap cgroup with a valid folio->swap.  Add a swapout parameter so
-the plain swap_cache_del_folio() path is left unchanged.
+As you know, I've worked up a patchset "mm/fbatch: drain lru_add_drain()
+and _all()" which finally removes the problem lru_cache_drain_for_folio()
+works around. In the initial version posted a week ago, there was no
+lru_cache_drain_for_folio() in the tree. Now 7.3-rc1 has it, so I
+intended a replacement 13/25 in my series, giving you just an empty
+inline lru_cache_drain_for_folio() stub (and enum lru_cache_drained)
+in linux/swap.h.
 
-Fixes: b197d41462c20 ("mm/memcg, swap: store cgroup id in cluster table directly")
-Signed-off-by: Bingfang Guo <bingfangguo@tencent.com>
----
-The problem is reproducible using the following script and program:
+But that won't work for you, if you're adding an EXPORT_SYMBOL_FOR_KVM()
+in mm/folio.c, and of course conflicts with my removals (in context both
+above and below your EXPORT line). It's easy for me to remove what's in
+mm/gup.c and mm/folio.c, but I cannot remove what is not yet there.
 
-```
-#!/bin/bash
-set -e
+I've wasted hours on this, hoping not to trouble either of you; but
+seeing now that I shall have to rebase anyway (an unrelated mlock fix),
+I'm electing to take the only clean way out: I'm going to submit this
+mm/folio.c part of your patch to Andrew tonight (with a shorter Cc list!),
+in the hope that it can be accelerated into 7.3-rc2 (or at least get an
+mm-stable stable base-commit id) which we can both work off independently.
 
-CG=/sys/fs/cgroup/memory/swapcache-leak-test
-SIZE=$((256 * 1024 * 1024))   # 256 MiB of anon memory
+Whether that's acceptable to Ackerley and to Andrew, I don't know
+(just as we don't know when either of our patchsets will go further),
+but let me try.
 
-[ "$(id -u)" -eq 0 ] || { echo "must run as root"; exit 1; }
-grep -q . /proc/swaps <<<"$(tail -n +2 /proc/swaps)" || { echo "no swap active; run: swapon <dev>"; exit 1; }
-
-cleanup() { rmdir "$CG" 2>/dev/null || true; }
-trap cleanup EXIT
-
-cc -O2 swapout.c -o swapout
-
-mkdir -p "$CG"
-echo "+memory" > /sys/fs/cgroup/cgroup.subtree_control 2>/dev/null || true
-
-echo "== before reclaim =="
-grep -E '^(swapcached|anon) ' "$CG/memory.stat"
-
-# Put ourselves in the cgroup, allocate & touch anon memory, then wait to be reclaimed.
-(
-        echo $BASHPID > "$CG/cgroup.procs"
-        # Allocate and dirty SIZE bytes of anonymous memory.
-        ./swapout
-) &
-WORKER=$!
-sleep 2
-
-echo "== after reclaim (swap cache should drain to ~0) =="
-grep -E '^(swapcached|anon) ' "$CG/memory.stat"
-
-SWAPCACHED=$(awk '/^swapcached /{print $2}' "$CG/memory.stat")
-echo
-if [ "$SWAPCACHED" -gt $((1024 * 1024)) ]; then
-        echo "LEAK DETECTED: swapcached = $SWAPCACHED bytes (expected ~0)  [BUGGY kernel]"
-        RC=1
-else
-        echo "OK: swapcached = $SWAPCACHED bytes  [FIXED kernel]"
-        RC=0
-fi
-
-kill "$WORKER" 2>/dev/null || true
-wait "$WORKER" 2>/dev/null || true
-exit $RC
-```
-
-swapout.c:
-```
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/mman.h>
-
-int main(int argc, char **argv)
-{
-        size_t mib = (argc > 1) ? strtoul(argv[1], NULL, 10) : 256;
-        size_t size = mib * 1024UL * 1024UL;
-        long page = sysconf(_SC_PAGESIZE);
-        char *buf;
-        size_t i;
-
-        buf = mmap(NULL, size, PROT_READ | PROT_WRITE,
-                   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-        if (buf == MAP_FAILED) {
-                perror("mmap");
-                return 1;
-        }
-
-        /* Fault in and dirty every page so it becomes reclaimable anon. */
-        for (i = 0; i < size; i += page)
-                buf[i] = 1;
-
-        printf("allocated and dirtied %zu MiB, paging out...\n", mib);
-
-        /* Force the whole range out to swap. */
-        if (madvise(buf, size, MADV_PAGEOUT)) {
-                perror("madvise(MADV_PAGEOUT)");
-                return 1;
-        }
-
-        /* Give reclaim a moment, then stay alive so the cgroup can be inspected. */
-        printf("paged out; sleeping so memory.stat can be read. pid=%d\n", getpid());
-        sleep(30);
-
-        munmap(buf, size);
-        return 0;
-}
-```
-
-Test result:
-
-before:
-```
-== before reclaim ==
-swapcached 0
-allocated and dirtied 256 MiB, paging out...
-paged out; sleeping so memory.stat can be read. pid=4778
-== after reclaim (swap cache should drain to ~0) ==
-swapcached 268435456
-
-LEAK DETECTED: swapcached = 268435456 bytes (expected ~0)  [BUGGY kernel]
-```
-
-after the patch:
-```
-== before reclaim ==
-swapcached 0
-allocated and dirtied 256 MiB, paging out...
-paged out; sleeping so memory.stat can be read. pid=2601
-== after reclaim (swap cache should drain to ~0) ==
-swapcached 0
-
-OK: swapcached = 0 bytes  [FIXED kernel]
-```
----
-Changes in v3:
-- Add doc for the new parameter.
-- Link to v2: https://lore.kernel.org/r/20260901-memcg-swapcache-stats-fix-v2-1-9caad330459b@tencent.com
-
-Changes in v2:
-- Update the commit message to describe the problem in the beginnning.
-- Change function declaration for !CONFIG_SWAP as well.
-- Link to v1: https://lore.kernel.org/r/20260831-memcg-swapcache-stats-fix-v1-1-1c0819ebdb86@tencent.com
----
- mm/swap.h       |  6 ++++--
- mm/swap_state.c | 11 ++++++++---
- mm/vmscan.c     |  3 +--
- 3 files changed, 13 insertions(+), 7 deletions(-)
-
-diff --git a/mm/swap.h b/mm/swap.h
-index 0b5d507739bcb..b3b54c28929a1 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -319,7 +319,8 @@ struct folio *swap_cache_alloc_folio(swp_entry_t target_entry, gfp_t gfp_mask,
- void __swap_cache_add_folio(struct swap_cluster_info *ci,
- 			    struct folio *folio, swp_entry_t entry);
- void __swap_cache_del_folio(struct swap_cluster_info *ci,
--			    struct folio *folio, swp_entry_t entry, void *shadow);
-+			    struct folio *folio, swp_entry_t entry, void *shadow,
-+			    bool swapout);
- void __swap_cache_replace_folio(struct swap_cluster_info *ci,
- 				struct folio *old, struct folio *new);
- 
-@@ -452,7 +453,8 @@ static inline void swap_cache_del_folio(struct folio *folio)
- }
- 
- static inline void __swap_cache_del_folio(struct swap_cluster_info *ci,
--		struct folio *folio, swp_entry_t entry, void *shadow)
-+		struct folio *folio, swp_entry_t entry, void *shadow,
-+		bool swapout)
- {
- }
- 
-diff --git a/mm/swap_state.c b/mm/swap_state.c
-index 305877e1f4d7b..99985208b529b 100644
---- a/mm/swap_state.c
-+++ b/mm/swap_state.c
-@@ -306,6 +306,7 @@ static void __swap_cache_do_del_folio(struct swap_cluster_info *ci,
-  * @folio: The folio.
-  * @entry: The first swap entry that the folio corresponds to.
-  * @shadow: shadow value to be filled in the swap cache.
-+ * @swapout: whether this operation swaps out the folio.
-  *
-  * Removes a folio from the swap cache and fills a shadow in place.
-  * This won't put the folio's refcount. The caller has to do that.
-@@ -314,13 +315,17 @@ static void __swap_cache_do_del_folio(struct swap_cluster_info *ci,
-  * using the index of @entry, and lock the cluster that holds the entries.
-  */
- void __swap_cache_del_folio(struct swap_cluster_info *ci, struct folio *folio,
--			    swp_entry_t entry, void *shadow)
-+			    swp_entry_t entry, void *shadow, bool swapout)
- {
- 	unsigned long nr_pages = folio_nr_pages(folio);
- 
--	__swap_cache_do_del_folio(ci, folio, entry, shadow);
- 	node_stat_mod_folio(folio, NR_FILE_PAGES, -nr_pages);
- 	lruvec_stat_mod_folio(folio, NR_SWAPCACHE, -nr_pages);
-+
-+	if (swapout)
-+		__memcg1_swapout(folio, ci);
-+
-+	__swap_cache_do_del_folio(ci, folio, entry, shadow);
- }
- 
- /**
-@@ -339,7 +344,7 @@ void swap_cache_del_folio(struct folio *folio)
- 	swp_entry_t entry = folio->swap;
- 
- 	ci = swap_cluster_lock(__swap_entry_to_info(entry), swp_offset(entry));
--	__swap_cache_del_folio(ci, folio, entry, NULL);
-+	__swap_cache_del_folio(ci, folio, entry, NULL, false);
- 	swap_cluster_unlock(ci);
- 
- 	folio_ref_sub(folio, folio_nr_pages(folio));
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index b4c9b8f3dfe99..af7dfa905cb50 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -735,8 +735,7 @@ static int __remove_mapping(struct address_space *mapping, struct folio *folio,
- 
- 		if (reclaimed && !mapping_exiting(mapping))
- 			shadow = workingset_eviction(folio, target_memcg);
--		__memcg1_swapout(folio, ci);
--		__swap_cache_del_folio(ci, folio, swap, shadow);
-+		__swap_cache_del_folio(ci, folio, swap, shadow, true);
- 		swap_cluster_unlock_irq(ci);
- 	} else {
- 		void (*free_folio)(struct folio *);
-
----
-base-commit: 88297631d4d42f6004cb39c0ba3da7d2d10a616f
-change-id: 20260828-memcg-swapcache-stats-fix-1beef3dc3afb
-
-Best regards,
--- 
-Bingfang Guo <bingfangguo@tencent.com>
-
-
+Thanks,
+Hugh
 
