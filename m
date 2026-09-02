@@ -4,88 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B8B3C61DD3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 03:20:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FA45C624D3
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 03:22:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 595E66B0092; Tue,  1 Sep 2026 23:20:54 -0400 (EDT)
+	id E73846B0088; Tue,  1 Sep 2026 23:22:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 546C36B0095; Tue,  1 Sep 2026 23:20:54 -0400 (EDT)
+	id E24556B008A; Tue,  1 Sep 2026 23:22:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45EBB6B0096; Tue,  1 Sep 2026 23:20:54 -0400 (EDT)
+	id D39F66B008C; Tue,  1 Sep 2026 23:22:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 175446B0092
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:20:54 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 84CB91206EB
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:20:53 +0000 (UTC)
-X-FDA: 85167370386.05.9D14819
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 21D4DC0007
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:20:48 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=RB6lHacI;
-	spf=pass (imf28.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788319251;
-	b=KI2SGxVPXXvHBTybcYQTmckP+SWw+kiU9GqjezM06jNeEYFhVr1e+xORcQ++VF2Re/u4Bb
-	u0vNbipoz8ybMGkqGlIJa8fPpx0fOYs9nY4NgC/9f+dC/xWYPvi4Cr3xUnGKottKZutoBm
-	EwkYEpbDk/MG0jhH8VwfO3IMmI+psx8=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=RB6lHacI;
-	spf=pass (imf28.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AA4CC6B0088
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:22:46 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1EA811A0714
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:22:46 +0000 (UTC)
+X-FDA: 85167375132.24.4196BBB
+Received: from mta1.migadu.com (out-125.mta1.migadu.com [95.215.58.125])
+	by imf19.hostedemail.com (Postfix) with ESMTP id CDFE21A0006
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:22:43 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YZEueczw;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.125 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788319251;
+	s=arc-20220608; t=1788319364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OLAjDGuF8OXoX4Kx5ZvQEJnyRPp4ec5ri2eE/T7xMg8=;
-	b=QdaFVIZD1mlLjqhl+Svpl3qtwR1lY8bi+Zd9sJDKuU+KW+1A7RiKlIYx+hxdp2rial/C8s
-	GkNUbiUg6/VnbRa730/C175n9Mbm9qf+bKaNS+g6RuEkyJorVMy0rsXI1w3gy53f+OJOiL
-	4ybYpUy5X5b9HRY38ULOFJ2na/jv/0w=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1788319246; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=OLAjDGuF8OXoX4Kx5ZvQEJnyRPp4ec5ri2eE/T7xMg8=;
-	b=RB6lHacIhSzrMcD4AolxPf4x/4t7TL5rrRKvD1Hw9nAKn91sEg+hrEEZdNjaDW7JkRCtagl8n/Sy7cDZSCErqbmwd8XNOQKtwCcVqRp3AOnc/g7hRGFY/r5V35WKi6G0mePFVMO61hOtDWzT8TNeACb1mNuS+GOm54mB5OL00y4=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0XAB4.Wb_1788319242;
-Received: from 30.178.84.37(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XAB4.Wb_1788319242 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 02 Sep 2026 11:20:43 +0800
-Message-ID: <cc69f57b-47f3-4842-829e-df1d49158884@linux.alibaba.com>
-Date: Wed, 2 Sep 2026 11:20:40 +0800
+	bh=554NjEDQbsjom/BkdeweuSKKeLIDFYd7fXDT2z5cuT4=;
+	b=ma+UBwllFicR4RFZ2QqlYpErrHeYDnuuFu5v05oZ6Mx1hKNw8vyq8ao+UGSYxJNyiUj2pA
+	Nk/a+o5E8vz0ZeKeq9SxIU/9skdPGJgCgJ9b9mYTyOUshDvTfZ0skPx7piUbfX678YW67B
+	wvkGt8xLqhsLxUDHAEFaSMo8fyBM2gA=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YZEueczw;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.125 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788319364;
+	b=4I+dU+KadDuBzEOosp5UQ7RU924N62brUqKvm8/6cXLoixv/Z8Vip7MPXL+Mr+zUGnJewc
+	2M65IDO0zO0KelGTkZ1V4AsuKWB+FD2cWJE/oi8pz8SwueXguIlo2mVaIEvbey+QNsdIBw
+	JqZ4e22kadKa30mXytq+hgPeF28iwco=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=7mgBphxysEsczLG5IEkPdVyi4Pv6bNrjCdlgQoFHKQ8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788319362; v=1; x=1788924162;
+ b=YZEueczwVSVHCliEyGBAW2tC4Y6ey+fiT6Aub2HZWKw2EYse3B+rYQwEQtfJAT+0nO49jLVJ
+ ta/rCP8DHFp7TgL+AEjZFqpYDf+s5NKGXY717NjmXKclRZk3bmHuRPWXv/WoD0FWIdNpxsQNLUv
+ KUGqknEUyqXMhqQ8NUjjJpN0=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id 1658734fd711a9b7;
+	Wed, 02 Sep 2026 03:22:32 +0000
+X-Mizu-Trace-ID: 1658734fd711a9b7
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 2 Sep 2026 11:22:27 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Barry Song <baohua@kernel.org>
+Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org,
+	akpm@linux-foundation.org, kasong@tencent.com,
+	shakeel.butt@linux.dev, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, david@kernel.org,
+	rostedt@goodmis.org, mhiramat@kernel.org, hannes@cmpxchg.org
+Subject: Re: [PATCH v2 3/4] mm/mglru: skip cold PUD subtrees during aging
+Message-ID: <apeWczinE0zVkDAG@fedora>
+References: <20260901063755.1519710-1-hebaoquan@kylinos.cn>
+ <20260901063755.1519710-4-hebaoquan@kylinos.cn>
+ <CAGsJ_4zFoYNuuVsTR=T4Qtxc5iVBPCK8rgiKa75VqNWqqcO=3g@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/list_lru: don't copy stale shrinker id from
- non-memcg-aware shrinkers
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
- <mkoutny@suse.com>, Lance Yang <lance.yang@linux.dev>,
- Qi Zheng <qi.zheng@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Dave Chinner <david@fromorbit.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- David Hildenbrand <david@kernel.org>, Xunlei Pang
- <xlpang@linux.alibaba.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260901115104.2944996-1-qinyuntan@linux.alibaba.com>
- <20260901102913.5c571bf153bc3830905c6770@linux-foundation.org>
-From: Qinyun Tan <qinyuntan@linux.alibaba.com>
-In-Reply-To: <20260901102913.5c571bf153bc3830905c6770@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGsJ_4zFoYNuuVsTR=T4Qtxc5iVBPCK8rgiKa75VqNWqqcO=3g@mail.gmail.com>
+X-Stat-Signature: m79r87idih9oqp49kq4citrzdwm4srg9
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: CDFE21A0006
 X-Rspam-User: 
-X-Stat-Signature: ouzihuqt3n36cuz5s3ic6q8gacquttox
-X-Rspamd-Queue-Id: 21D4DC0007
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788319248-901542
-X-HE-Meta: U2FsdGVkX1/Tp4bmpkp2o5jDVx/nMlAKqRlygCKuKHXq0ukJCke12E67C02dXKiBt1cztJJSXv+XbnnrNY0amucQ53LlNqdnPg9/io346rXpnUyIHiw04StP7EwajZCoM1w8DuAN+uAyPXQ+j3de3EcLEOvY++fMjIlmnss5j44lwACLTFeHtavW2ff/dnH2lOkhxHI5roIuf9qSyM0kFKyb98X5RnuWFh8G239rszSrr90A7v1Rg0Eg/7n2bnJ7BPSA++cBU9EdmqdEygeNawAQqeHkIFWK8eEwcTIO2nUqO5V4qGbK4lYR9OyKnNBI8+eLGKqXkmD0homVbDlxS1Y3WODHqaI+TYmzhkwXYi2pmyhfnV9qnd5rvxVFLLmmIhXq5FZwgbI0EqG8S2JGhv+dVHbdolj6lopASaY+n4lEnbu3UiH5696s/UeVz47Uj/gEEjDj2tp5WGW1cIwQwnYIi16Ejix4Kz2lsBI6whxPns4tXG6Mlht3Tl8ocuxE+U1QJPMiqecztbxBzdsquXYBkDgy/BRs5K+YdxaJ1sIE1EkkzVWfcPtRNWJUeWBhdnscAp6BDtKWzs0/l5Nf4596pJaA2Yhm/gWDez6Q+N3B0UTv669IcPMjM7CqRjRXP+BHumMxrIsWGh/lJYkpOjqLIS7wLZDlAU/HGBYpfVfWd5shv+4/tN2DqpkuAx5jcpiAPpUYN2AL/H4DIxqtllavJyRwhMapdY+3/+RHTfS+qLuGHrL+u7ah9jzsZ7BfWmCKiGSHB+SRWjApoZx41Io1jRb9CAceknNQ5g++AYrfIhLQy/sLJxqdxwKKWFuxAkfOAYNcptonC/dgny/p461aQREIyMJZbK/KyIUe2xYCeQDIQ/OMu4wUuEIQQWSZ603M+iw9ZPr2vq/YTLpnTx0Bp3MMBfZCgMWizLLzcgyjqoC9i72oSzgseFULSuf9geDLh8sCxA9HkRcclJG
- muXacQqR
- aMhjZVzvKTIxPlkGeDQ1+nN9dKKyT0fykW/9Cc6N89/KUQlC8ffCl3xwT70KIFiSCTyRQGmD04ybqCNloTJkEhStWe+IfdyX7/tQlS/gFikw53jjpAUFPnTTu2zCCwl1QFtEIY8i5iOWdXVPQGjx5Tfg/lXLHdvtV+oP45HPK7Sa+zZ1fcJUIhfBY/iRVepQRMMzENBHTWfRcG5oWt01vS2L2W1Jvayy7qLTPmxZbAiGNaLgWXYn/ydFTi8cEeS730RgK7cCuR+J2PCmlYCzYmm56SSVv5hM62ZdWb1gaDg7+7pRYtPuwFyY1OoMk3P/liVhv/3m+FaDodYn6oDOHOCpaOImqye4rQcElXLRN5E9w8t0KLk4McaznMmgAGt8UDuNDrxPQIeckjpI0sYFyybJ59FqJ5IYSHqR9
+X-HE-Tag: 1788319363-489337
+X-HE-Meta: U2FsdGVkX1+i9oEMLSvP9oxma4FHCmPU5yhRDW4lm5he0oOTvdTUYbmLjVHF7jRDBRFIGtzIXgRqmPfs3d0Ysn9lWNkHGgbdCl1y0fu77evDbV5ti/rgM5knMiRy2yyECZ7x86OSWB8jAlh9qO/6kUz35pxnQJxmnXucIiwVdj1goA00LkjgI6IW4ioQJoATmjoNDex0VKHa9VS70n9eCwdD2GluBK47e2aAw2fj4z70Xozu761S867LKLnAku5ML3Z8cusIjOm6GnFBA+IejqWKifqBndzAsyGbJ1Bn9zA8+Vnjea47ZBn50PB7tXK7Vkn9TKIF3dW8qoePIVBLD4sZIVh3/kcePTCSExIeRD/XDNwPm/n+olVn7OQBJhA5MsIIm5r+D1ndQODTQuDw78gWZO2AgZhIfGRZdTOmtYhasket5uqlRvhIMdhHzMW88y0XlDNzXCe5MzVNClACFrJ4Na5mctuOGlAs+LD6LSaY24l+GGdDnQNEnKtTEJ44BtCsiWr5BAo17g/z+MIHHUNMnBbXMaRsrYvTxYg/0nNDn3DWohdcLfYMXpnBVNtlW3Xzo73emRSQPIPs50TUnZi9b8/FqWKKsDmjuDekssU1MMs10RLdiPblp6FOtild4wojD8L5L1FNzOEjiUVO0puupDMWfI5Pl3EzNu+N+cgGrD6lVn6mjFMOtDI3Dr7zR5sBrrihPJ8zdfigbp39WQeSTYRt62uQvkSkTjee4o4fqjDVewpm/hOq73LR8yfxzPCKt/CQCSfA3zr6iY8GZxJamvW78OXZKcSajCLPC5fMsLNJCQQyZMspVp7MBDIgbzVJZZQfIAgihiI+DTOrUe7ZScjRyhABKHmOWdAVh+PJUDam1HGmBHaH3JS4pGjWVMhY8AtiQbjq9mBPjrHmfvH2jF5ZAUAUFC0JqlN1IJEkbmQzjS8B6eLYA+rYF07gVdH0gNEp0LOJt5g8W7w
+ ikvU0kEA
+ vJiZRpEfTWwXJrcnWVcx/p8CAWiYjSl+KA1n2JPMsgqn/13VcwqoDZ+rL0oMPpK8B3HVUPXNAuO0sQpoxcRHgQfB/prMx32D4KAxEIPlBOGA6PNyvfOHT66glYp9APu+TWxV+yBw3/o4f6fZVMfTpHLG68gh4W2omC37ib7GZJXXxLfsRJAO5yKWve2fuY7oNuy3FEluDc7r0+i3XO71+Y0m+7zBmWLTYfCIYlk3DHKou2GMHz2OJgfUlidgvCmofYgJFwvmnenkizZnqDRJLC0MLECXHb8r9xM4TyHG6oJdalDA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,106 +95,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-Hi,
-
-On 9/2/26 1:29 AM, Andrew Morton wrote:
-> On Tue,  1 Sep 2026 19:51:04 +0800 Qinyun Tan <qinyuntan@linux.alibaba.com> wrote:
-> 
->> With cgroup.memory=nokmem, shrinker_memcg_alloc() fails with -ENOSYS
->> for shrinkers without SHRINKER_NONSLAB, and shrinker_alloc() falls
->> back to a non-memcg-aware shrinker.  On this fallback path,
->> shrinker->id is never assigned and keeps 0 from kzalloc(), which is a
->> valid id belonging to whichever memcg-aware shrinker registers first.
->>
->> __list_lru_init() copies shrinker->id unconditionally, so every
->> list_lru backed by such a fallback shrinker (thp-deferred_split,
->> zswap-shrinker, workingset shadow nodes, superblock lrus, ...) ends
->> up with lru->shrinker_id == 0 instead of -1.
->>
->> Under nokmem the list_lru collapses to the shared per-node lists, but
->> __list_lru_add() still calls set_shrinker_bit() against the memcg of
->> the added object.  Most list_lru users are unaffected because their
->> objects resolve to a NULL memcg without kmem accounting, but the THP
->> deferred split queue holds user folios, which are charged regardless
->> of nokmem.  Since no memcg-aware shrinker can register under nokmem,
->> shrinker_nr_max stays 0 and every memcg's shrinker_info has
->> map_nr_max == 0, so the first folio added by khugepaged triggers on
->> every boot:
->>
->>   WARNING: mm/shrinker.c:212 at set_shrinker_bit+0x99/0xa0
->>
->> On systems where a SHRINKER_NONSLAB shrinker (btrfs, xfs) did register
->> and expand the maps, there is no warning; instead bit 0 is set
->> spuriously for an unrelated shrinker.
->>
->> shrinker->id is only meaningful while SHRINKER_MEMCG_AWARE is set,
->> and all readers inside mm/shrinker.c already check the flag before
->> using the id.  Make __list_lru_init() do the same and fall back to -1,
->> so set_shrinker_bit() is never reached with a bogus id.  The stale
->> shrinker->id itself is left as is; cleaning that up is a separate
->> topic.
-> 
-> Thanks.  I'll queue this for test and review.
-> 
->> Fixes: 03375203e1da8 ("mm: do not allocate shrinker info with cgroup.memory=nokmem")
-> 
-> Worth a cc:stable, I assume.
-> 
->> ---
->>
->> Verified on a machine booting with cgroup.memory=nokmem and
->> CONFIG_TRANSPARENT_HUGEPAGE=y: the warning fires once per boot from
->> khugepaged, disappears when nokmem is removed from the command line,
->> and no longer triggers with this fix applied and nokmem set.
-> 
-> That's useful info.  I'll move it into the changelog.
+On 09/02/26 at 07:53am, Barry Song wrote:
+> On Tue, Sep 1, 2026 at 2:38 PM Baoquan He <hebaoquan@kylinos.cn> wrote:
+> >
+> > The aging walks into every PUD and runs the PMD-level Bloom filter
+> > on each PMD. Add a coarser PUD-level filter (pud_filters) one level
+> > up:
+> >  - walk_pmd_range() now reports whether it found any young leaf entries,
+> >  - walk_pud_range() records that in the PUD filter, and
+> >  - on subsequent generations, skips the whole 1GB subtree when the filter
+> >    says it had none last generation.
+> >
+> > The double-buffered filter flips with each new iteration, so newly hot or
+> > migrated-in pages are re-checked promptly rather than suppressed
+> > indefinitely. force_scan walks bypass the PUD test, so manual aging and
+> > newly added mm's always rescan and re-populate the filter.
+> >
+> > To keep hot regions marked, also report the covering PUD from the rmap
+> > feedback path (lru_gen_look_around()), so regions whose hotness is only
+> > observed by eviction will be re-scanned.
+> >
+> > Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
+> > ---
+> >  mm/vmscan.c | 52 +++++++++++++++++++++++++++++++++++++++++++++++-----
+> >  1 file changed, 47 insertions(+), 5 deletions(-)
+> [...]
+> > @@ -4397,8 +4431,14 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
+> >         lazy_mmu_mode_disable();
+> >
+> >         /* feedback from rmap walkers to page table walkers */
+> > -       if (mm_state && suitable_to_scan(i, young))
+> > +       if (mm_state && suitable_to_scan(i, young)) {
+> > +               /* the PUD entry covering the young PTEs scanned above */
+> > +               pud_t *pud_p = pud_offset(p4d_offset(pgd_offset(vma->vm_mm, pvmw->address),
+> > +                                                    pvmw->address), pvmw->address);
+> > +
+> >                 update_pmd_bloom_filter(mm_state, max_seq, pvmw->pmd);
+> > +               update_pud_bloom_filter(mm_state, max_seq, pud_p);
+> > +       }
 > 
 > 
-> Sashiko thinks there's a problem with cgroup_disable=memory as well:
-> 	https://sashiko.dev/#/patchset/20260901115104.2944996-1-qinyuntan@linux.alibaba.com
+> Hi Baoquan,
+> 
+> I am really not against this idea, and I believe it can benefit
+> NUMA cases.
+> 
+> That said, I might be being overly cautious, but I'm a bit concerned
+> that this re-walk of the page tables could slightly hurt machines that
+> don't benefit from the PUD filter at all. For example, Android devices
+> typically have relatively small amounts of memory, so a PUD covers a
+> really large range of their address space, which is unlikely to be
+> useful on an 8 GB Android device. Also, `lru_gen_look_around()` is a
+> really hot path. On Android, we've observed that it can consume a
+> significant amount of CPU.
+> 
+> Is there any possibility of implementing this in a low-cost way?
 
-Yes, the observation is valid, and it turned out to be a real crash
-on mm-new, not just a semantic inconsistency.
+I made a draft patch, could you help check and test if it's performing
+better on Andriod device?
 
-__list_lru_init() only checks mem_cgroup_kmem_disabled(), which
-covers cgroup.memory=nokmem but not cgroup_disable=memory.  With the
-controller disabled entirely, the lru stays memcg aware while
-folio_memcg() is always NULL.
+From 5b92a88925a7fe1733ca54595ece7be1bd122909 Mon Sep 17 00:00:00 2001
+From: Baoquan He <hebaoquan@kylinos.cn>
+Date: Wed, 2 Sep 2026 11:07:10 +0800
+Subject: [PATCH] mm/mglru: gate the PUD rmap feedback on filter engagement
+Content-type: text/plain
 
-On mainline this is unreachable: the only caller of
-folio_memcg_list_lru_alloc(), folio_memcg_alloc_deferred(), bails out
-on mem_cgroup_disabled() first.  But the shmem unused-huge shrinker
-conversion in mm-new ("mm: shmem: make unused huge shrinker memcg
-aware") calls folio_memcg_list_lru_alloc() without such a guard, so
-booting with cgroup_disable=memory and writing to a huge=always tmpfs
-oopses immediately:
+lru_gen_look_around() updates the PUD-level Bloom filter so that regions
+whose hotness is only observed by eviction stay marked and are re-scanned
+by the aging walker. But on systems where the PUD filter never skips
+(e.g. small-memory devices where a PUD covers too much address space to
+be useful), this is pure overhead on the page-fault hot path.
 
-  BUG: unable to handle page fault for address: 0000000000000488
-  RIP: 0010:folio_memcg_list_lru_alloc+0x41/0xf0
-  Call Trace:
-   shmem_get_folio_gfp+0x1cd/0x7c0
-   shmem_write_begin+0x5d/0x100
-   generic_perform_write+0x89/0x2a0
-   shmem_file_write_iter+0x82/0x90
-   vfs_write+0x256/0x410
-   ksys_write+0x61/0xe0
+Gate the PUD feedback on a per-lruvec flag that is set when the aging
+walker actually skips a PUD and cleared at the start of each generation.
+look_around() then pays only a single flag load while no PUD is being
+skipped, and the feedback engages exactly when the filter is active.
+PUDs are only marked from the eviction side when the aging is really
+skipping them. So hot regions stay protected where the filter is active,
+and machines that never benefit get zero extra cost.
 
-The faulting address is the offset of mem_cgroup->kmemcg_id,
-dereferenced on the NULL memcg in memcg_list_lru_allocated().
+Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
+---
+ include/linux/mmzone.h | 2 ++
+ mm/vmscan.c            | 9 +++++++--
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-I've verified that checking mem_cgroup_disabled() in
-__list_lru_init() fixes this: with the lru collapsed to plain
-per-node lists, folio_memcg_list_lru_alloc() returns early, the
-inode is queued on the per-node list with a NULL objcg (which the
-shmem code and obj_cgroup_memcg() handle fine), and the shrinker
-still reclaims via the global scan.  Same reproducer runs cleanly.
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 276d0ca8d1c1..803431dfac80 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -617,6 +617,8 @@ struct lru_gen_mm_state {
+ 	unsigned long *pmd_filters[NR_BLOOM_FILTERS];
+ 	/* PUD-level Bloom filters flip after each iteration */
+ 	unsigned long *pud_filters[NR_BLOOM_FILTERS];
++	/* whether the aging has skipped a PUD this generation */
++	bool pud_filter_used;
+ 	/* the mm stats for debugging */
+ 	unsigned long stats[NR_HIST_GENS][NR_MM_STATS];
+ };
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 035bd9ea49aa..22851b02264f 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -3143,8 +3143,11 @@ static bool iterate_mm_list(struct lru_gen_mm_walk *walk, struct mm_struct **ite
+ 	if (!mm_state->head)
+ 		mm_state->head = &mm_list->fifo;
+ 
+-	if (mm_state->head == &mm_list->fifo)
++	if (mm_state->head == &mm_list->fifo) {
++		/* new generation: reset the PUD-filter engagement flag */
++		WRITE_ONCE(mm_state->pud_filter_used, false);
+ 		first = true;
++	}
+ 
+ 	do {
+ 		mm_state->head = mm_state->head->next;
+@@ -3858,6 +3861,7 @@ static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long end,
+ 
+ 		/* Skip a subtree whose 512 PMDs all failed the PMD-level filter last gen */
+ 		if (!walk->force_scan && !test_pud_bloom_filter(mm_state, walk->seq, pud + i)) {
++			WRITE_ONCE(mm_state->pud_filter_used, true);
+ 			walk->mm_stats[MM_PUD_EMPTY_SKIPPED]++;
+ 			continue;
+ 		}
+@@ -4434,7 +4438,8 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
+ 	lazy_mmu_mode_disable();
+ 
+ 	/* feedback from rmap walkers to page table walkers */
+-	if (mm_state && suitable_to_scan(i, young)) {
++	if (mm_state && suitable_to_scan(i, young) &&
++	    READ_ONCE(mm_state->pud_filter_used)) {
+ 		/* the PUD entry covering the young PTEs scanned above */
+ 		pud_t *pud_p = pud_offset(p4d_offset(pgd_offset(vma->vm_mm, pvmw->address),
+ 						     pvmw->address), pvmw->address);
+-- 
+2.54.0
 
-I'll send the fix as a follow-up patch shortly.  Since the
-triggering commit is only in mm-new, no stable backport is needed;
-it may make sense to keep it ahead of (or folded near) the shmem
-series.
-
-Thanks,
-Qinyun Tan
 
