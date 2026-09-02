@@ -4,137 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 701E6C61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 07:58:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60710C61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 07:59:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30DE06B008A; Wed,  2 Sep 2026 03:58:05 -0400 (EDT)
+	id 55C6E6B00A2; Wed,  2 Sep 2026 03:59:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BECB6B008C; Wed,  2 Sep 2026 03:58:05 -0400 (EDT)
+	id 4E54C6B00A3; Wed,  2 Sep 2026 03:59:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1622C6B0092; Wed,  2 Sep 2026 03:58:05 -0400 (EDT)
+	id 3AFD36B00A4; Wed,  2 Sep 2026 03:59:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D40F66B008A
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:58:04 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8AE2912076E
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 07:50:50 +0000 (UTC)
-X-FDA: 85168050660.30.FD4786F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B422B160002
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 07:50:48 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ytq25x9Z;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788335448;
-	b=SEpCUu0XDDmeHWSr5jBO91oykw7GJG+BmIofJIfi4RpHzmrGyj4501SI1I6Oh3vVCVnta8
-	L5v5Zl/XLFF7AXY0dl7OgcqIWtNh+V4gDSOupn+6aMX5lCor5AZn/KR3LpB4j/JM3XNGlF
-	v7wzuwCLpyUxtRIWtCOKNnhcCqMzEtU=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ytq25x9Z;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C8E96B00A2
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:59:58 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 79128160731
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 07:59:57 +0000 (UTC)
+X-FDA: 85168073634.02.B4120D7
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C7590140007
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 07:59:55 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GdaBV6fo;
+	spf=pass (imf23.hostedemail.com: domain of zhaomeijing100@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=zhaomeijing100@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788335448;
+	s=arc-20220608; t=1788335995;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HQKQi6BjlLM/tFqlWQgDt+Hy+RAahli1Ac/ry6Tye0s=;
-	b=NoUWMJPYBmKo3Whyt8Cj98SAj4WwX04Upbrj9hvElalFOr8H7914+cjzyfcWQl/Fww16vF
-	eTlR+8CL6W9v2vxQZ3MmPazNNi1+qwQPYGGJDQvXDdmqy1IuzhSsC21GwOsE+MpZZukHJt
-	NIr4alZs4/y2TOf8rUBX49UFlxMHMUQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 136E340B48;
-	Wed,  2 Sep 2026 07:50:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA171F000E9;
-	Wed,  2 Sep 2026 07:50:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788335446;
-	bh=HQKQi6BjlLM/tFqlWQgDt+Hy+RAahli1Ac/ry6Tye0s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Ytq25x9ZypLI7pvIaWHby9YN/2xI3l2sCJNs7/09WI9M8Ijbrbm45iedYNdUZdYwJ
-	 YztvJIkDFUF1FiiaArXjCDsuESH6MV+5J6IIL5xBG8TvYOr3lw4MRTy8RexGYD3lzk
-	 ln7QNhswSQEXCWNIDEIeM/JMOGUVQ0/q2P4Ejmak4GMDG5NhoII6UUeBEOBfyHcbe2
-	 NLurCHI6pSVyhUALB5kApFa1C13Ypo0/vMZm6cV5lND6j2RuKWh0dXlzkRlUlzfOGB
-	 vukMqtASOWsB19/gDNEMKMBN+2kVygD42YfageoaNr2sjyvPzdVxNdL6VsMwzRiK3U
-	 3NijN9UwqG6vA==
-Message-ID: <f0b194b4-6f41-455f-b807-de7c24fa8184@kernel.org>
-Date: Wed, 2 Sep 2026 09:50:42 +0200
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=k5YpQCAyGRMzg7W5xJsgx73Wgp3x7Yj1lZctIlmSQaA=;
+	b=5BzAspL/S/sOCPnr8zLmtUtFDJANZZHdN/+dusS2OGbzHKQdy2qCHRufYtBAuIZHI/Qsk/
+	Oj5/QoXRdwu1P0u+oT7AWxNHRf5LwZ+HKEhsnDZM2qnW268ARJaJHm2SMY2Z4N285gC9Fd
+	/1fBQaOXcs7nFrnDG7TXQf/XP4/GRxE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788335995;
+	b=M6xkWLChLIr+dhYsLzlEz6jIGJ0x/rYEYhQp665FTUIvxwh3OipzvrL0+XHVYd53c/3khs
+	BFEIdZ8oO3Olqlu0u8t95GZy0lnQVShucuXAasXCaKC3qICnstPoxcFquam2sLoFXQ16Gg
+	W97UpVF+08ozpoGviQzRuyCNOdClRgU=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GdaBV6fo;
+	spf=pass (imf23.hostedemail.com: domain of zhaomeijing100@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=zhaomeijing100@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c9e607d81fcso514430a12.2
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 00:59:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788335994; x=1788940794; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=k5YpQCAyGRMzg7W5xJsgx73Wgp3x7Yj1lZctIlmSQaA=;
+        b=GdaBV6foBJqO68oXZkpDrew2QC5+P3ObD9aP46oVjWZPpvRth/HnpRv1SD3wThWvvi
+         MIt4I79nLJVt/W2Lx484tqmA7X8P8A2LzXo006cdKc6FFySat68wLkSCppnn3pnG4fqY
+         Hp9dx4QpWrrKdlGZmuU4/P3IqPxoQWbcgvV45VSu2cwvQFChMOAENoelPyWq80jZNMjl
+         P6dDs014N6XMMA5AcF2yFatnK7tnFxt9hHgvaP0CqQvfw/YeJg5l6MiH5YaSZXpfb1f2
+         OoaFwKhKMH7NflfOMC+05LBvnrDZeUfRm8vCJUwh7aY5zwXkpuPkqReBHsHCKz4NvrU8
+         Emww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788335994; x=1788940794;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=k5YpQCAyGRMzg7W5xJsgx73Wgp3x7Yj1lZctIlmSQaA=;
+        b=TuF1djSe9aoI6yvjCtLHJlcFg7EhtNMot1YKePciTEAPCRKGxtJ+vLojSbHgz4JOGg
+         XN6JozGhkps4DDjQwH4Re7eEafTaajFHFgCN4n8+NbRNys+uZmpjwKltxN+8JTdjIjCS
+         snRVjqH2c2krsdWNPGmRwtGyQlXiFGEtj8iZU5pq0FLuA5Mcs2XBWFs7DvJni7OjzODE
+         KaFBq79QtD6tzEZ9xGJinXtFwnIxK21S061t8HXKBG4Vt3wRYnkBN+qYBR+C9RA1ulqK
+         NkE3NS6Lm/TUSZSX9lIKXRgUThsPRa2mbb92Wn9H5oMKjgs0CACqkSrB2LB02L5DrTtV
+         D8DA==
+X-Forwarded-Encrypted: i=1; AKwUvBwR6vyG7hTteVm10DCQld4YJZ7ul15zApgl/qkzF+xtIcUUE6DXfjriZ+VAwWADmmXkxFDAnVZR0g==@kvack.org
+X-Gm-Message-State: AFuF++kkL9BhZdRZWNoBrzYDMaQdQyzndiU9hpnHw8iW1I7tRV5fYU8B
+	TSJ2CBSgz8orbApuqDGm5KseksN3izvi+UCrpQGw1N8bazCgs8Xdr+p9FqSfoQ==
+X-Gm-Gg: AYBFou3GO5i9bMkZX2dZo/n/UpJZ5sHQ++5wcTHO60pdi3jFtPVWRYucpNkstNezPlD
+	g2ACQSrNMdIoyTp4EGB3G3V+P6KUKA1p4u3GzQDGZDbnk0U1MaPkr3iKEDQqLutYfYIfIyE1w7W
+	fvU7VuWr1+oS+00OzONr4Jnsx3neBQsEHWqNnByptF3t4INnnD0al+z23VPtQ3sDHfvF1xb3wLq
+	LrShhqR0Jlrc4xmg5DH11P05HQKN35erMRMup9TLCLN79Hw/kuZfdIoYYhQrQm5IOuhx1f6y8Dt
+	HMu5xXEGY9kjys8nY9C52Rchwx2tlWybj+Mo/MNg/Xn8wKf4FBAPxHV/ypdCY6OTfAVq8/VWr9T
+	8GeKfLeQRNHEeV7LK12LhP3AWDgzRdMFBDf+g8+yV7B2MHXs0oW1wEH3KGKiFuv4yoMlsGhTR6c
+	L1AuYCRIWNkd6iHeiqwz0QBJ4+iiCpc7jPjgv1sB6Y/GEb0bZlpCeJeNnwNd5HMUy6GgJbbYI36
+	W9YaNi0bwUyamvqkg==
+X-Received: by 2002:a17:90b:2705:b0:38e:524:8797 with SMTP id 98e67ed59e1d1-39aee084cd1mr4681912a91.13.1788335994476;
+        Wed, 02 Sep 2026 00:59:54 -0700 (PDT)
+Received: from PC-2B0BA31200898.company.local ([122.11.210.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39ae0f28b19sm4496659a91.6.2026.09.02.00.59.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 00:59:53 -0700 (PDT)
+From: Meijing Zhao <zhaomeijing100@gmail.com>
+To: Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Meijing Zhao <zhaomeijing@lixiang.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Wandun Chen <chenwandun@lixiang.com>
+Subject: [PATCH v3] mm: memblock: show all region flags in debugfs
+Date: Wed,  2 Sep 2026 15:59:44 +0800
+Message-Id: <20260902075944.3742866-1-zhaomeijing100@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] docs/core-api: memory-allocation: add
- k[mz]alloc_obj() and clarify kmalloc
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Randy Dunlap <rdunlap@infradead.org>,
- Shuah Khan <skhan@linuxfoundation.org>,
- Suren Baghdasaryan <surenb@google.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260831-docs-memalloc-guide-v1-0-547718c274c1@kernel.org>
- <20260831-docs-memalloc-guide-v1-1-547718c274c1@kernel.org>
- <23db34a1-ba1b-495d-91ea-18419e0dc8df@kernel.org>
- <apb47Rsnz1H36SOy@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <apb47Rsnz1H36SOy@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: y1se4nyh4yuotkkoiongya6d1o1fgqbi
+X-Rspamd-Queue-Id: C7590140007
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B422B160002
-X-Stat-Signature: kx7bfo7umdnwbcqspmaijb81zgzgd9ya
-X-HE-Tag: 1788335448-847521
-X-HE-Meta: U2FsdGVkX1+r9D1wtL9L/3O5NeJn7um/2GF1FT8GAo1fHXxAhfv7sk9VDYEjWqlwFzGse5rQp2WGj1pbttGjoXZv50jwpzEKOAzAJ+8gK0oA32PLiR1PsuKmMj+IlgEtg3YAHCWg15/uDwavbO8nK3UNhS/sVtozmV9rpJlNBLGOo5FaS1SjzGOZLHyGd0JKPtdIzFBAham4KHhnEhGaKh3Dx+/64Qcv99QQrvrQw8wuNQjgHv0n3Cekd3S5BZqGPD2X8Qe01Aen3ugurdIgVGBaGyV3ZRd8nJlf3SmDJX6ICCAMkpXXO6DWB113fxBJvP4Fx08BrpHUjUz6AVvRSXjZLYwSGkYHtP2KKw09Rse5OAKO7QS2qXK86yKVz/eCoFDQHdCSZEz48X+of1ODJoWSHlk2Vm4xVZDzD8eJKF1iwLm5VYW8zaX8pc6w0UCRfPe0aloYm0BdC9bP7XAJa8JYsW1rMUSzGNXc3DvG/nlwGYRUhut/JYfJbh0+RAWwSFHdPUmixy6bqV8xhaG6YXEoG9ZVlg4UyOJdULtx1BLB75lNLP2aiF0h8J2pEdYfHlympD2kRHLCjPKaSExQbanPuNDYCTKneJxFEshJ5KwieoYZKCaW7mrdj31zRw9JikX4DHg7Yy4agaX3IwIzpps45JHuoqARTxlGVNmjhDdiSpAJKyCmcRP3i3wSr435GE5MRMrttnsidn0oJfDQlH9Co5R7i6tnHsqTNztp25zseq9qd3Fvf2cBSPN9wXDS5Af+6FG4ejAXdGeM8yT/rgGnYs5COJz5kqVNHJI1M0rri76XeCzlnVmXlHOov7H51v8q2Js1LdsKtXolh/6IiVMaW2s4ZI8CHEVcJjUh4O36x4wCjOCp7l8PYrywn9+dzpJWR83KM6vgestbin8WsYteaDw9sndAKZ9N/oqMiOV0Q2QNv3d8KOG3C9uxcZV3Z+STWD1kXMTeOd/xtk9
- KJcT8ymr
- JhrWyXlhL8NRSbz4jGw+15Kxfn5Sm6E1+Z7aBJcUwVZkZOk0/mwKSeBYZc3KF1GhRTcCBH8crjvfb8bgDkSvxQPd9waBw28Q0Kw5EBLzttXeufrcUPhU8ePmfzmmNe8e77vD/iR45d2a2Nip+KqZE/GCtFjdUA3LUS2pwMxFKd5Wfm2v5o6fd7KFDY3m37rCMogdcEp1yGn1vHewPrA7XLhimY3xn92PJvTxdX+gQveA1sQt/yTpj3EUgfWeVkmR9EcJDop0b8ORm1DaYJ2piBQGTag2gvYLzSdfwRPxeKK8mlZyqct5+71U/AF0zSeAl5RXb7eil4PBbf3o=
+X-HE-Tag: 1788335995-305830
+X-HE-Meta: U2FsdGVkX1/DK/pmCxViDPzK3/0qOKeyVnxv4JRmnEjsEXlqA8jqnk3XkTuByL4uc0Nnc6wuSTLzWkJw0X8ub91QPlx5EX0672JCaPTuOc8CE2mLkWeJXzM++FCGJpJVV4XoLJesVzw9If2oQ/VJwDM29G+tjkiTWoKjJUugXD0z+49hEXUGTExtc+3UPL0lh+UBwRf5UoiKmd2Xlq7Oshk9k49kLBdOj4XVUdtgU9ziFHrsY+YrWkj46XQ1E7vWsYKRu2LZ2WZuHjOR6rbGIQRS4ZXa5+IcALDX3hF5GYZ9t0seHJQZUWbrpU7ZgA0/WnTSYYGAoCaohPZIzH1ZnsYAm42eRZW2fXo1hUgzTuQQC/C5jvCEAVVpGGGF85avdm6pvdy3+6rCpE3KaoR4Vvx4gpNrE9NkAPw7AZeM/z6SmfC3skCUUvMppiEnwvOh8WsdF2qe1MdEVjlX/9MzefBfhTRXxoBgOwecmP735LKGFNJdFTCFhFAvzeAJ8Tjc/UxWx/BLpnFx4ASpPgCoDs00b82HarzOyL9e6Ak6HwF4pyIPmM3Fi+8qrwclFJlh+B7QsixmYIdFICMSMJbLxQ36t/NY1ML9QXFWXg2JWV8FIyiWFgHIxmnWZWw1brWcFHSJejSvw83thuAOSP/rzhH1c6eHuiTFywPo6GUcVafwDwrlX1e869zgx+oyXeuZViRlSUwBSoj22eYKy7pL09Ls6++4RrfP986znCXdP7wV5gdj4rLQlySiTv0I8B11Y50LjxEAD4mQEZdcr8bPdZQrCLBwn+TfySXXCBPfYtfchrJ/rDnrfzk3yYALGjqF9JjrKjIgxfj8t+YG5euYz4jlsg6/WkYc3z3pJ/3iTeg+iq8QeiamGvzY0I2KUQSpkDjL+pxYQ4igbHNkxVtLudCaCcB37mL1yGlPJNcLqr3g6yaEyXGONDo6hDG6bViJLO40Q/KSimIfPrVrXo0
+ DRE8PEhV
+ cvU1VftChRv4kKZppo4S440M9+RrkIbk4nYtCl8O1jaEjLyIuqC82KUeyz4uL+YuH5nSjQxdm1N07yHdXeXsJ2PH7/e1NC9sawjCK9nqwhirC6J3ARbSDhngTANgoX0m6XYdlAmvtleBWeSHbSrtCQQ4lM3bSAdBxyWptrBjF6zJ6leht2qy3U2w6k9QQ/VdA2qk+/2/EOUksUuKo2YgpcNl7FJMI1iFwcVca4iT1jfCE72yJ9YF5fUBHp8KKGEaKa4X/OeF9oymK1rISuV+9Lcu+RTh1guL47tyK4rrGPk80G9wxRtJ232ysRCwDzUgFFXMmCiRkt56eJFIZWteohPTUa7SoDAFFAKOAb72l/QPBnUK8amfiMJtfiUReTHFR3fFwDchaBSXxSJPEYrMj2kewEvKThldBuAvtyj6FXAjzMtPffZUhliX67pMDyPnZOsdl/ZYNtLRNnoqyceO6yPq4OBaE+0/boL5tXVshOfivTMUyAu6Dekt54axh7VNKdlZ9wv1FqcjLmM8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,66 +118,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/1/26 18:10, Mike Rapoport wrote:
-> On Tue, Sep 01, 2026 at 12:17:02PM +0200, Vlastimil Babka (SUSE) wrote:
->> On 8/31/26 17:13, Mike Rapoport (Microsoft) wrote:
->> > Since v7.0 the most used memory allocation function is kzalloc_obj().
->> > 
->> > Update hte memory-allocation guide to describe k[mz]alloc_obj() family
->> > and make kzalloc_obj() the first answer to "How should I allocate
->> > memory?" question.
->> > 
->> > While on it, clarify description of kmalloc() size limitations.
->> > 
->> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->> 
->> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> 
-> Thanks!
->  
->> Suggestion below:
->> 
->> > ---
->> >  Documentation/core-api/memory-allocation.rst | 30 +++++++++++++++++++++-------
->> >  1 file changed, 23 insertions(+), 7 deletions(-)
->> > 
->> > -For large allocations you can use vmalloc() and vzalloc(), or directly
->> > -request pages from the page allocator. The memory allocated by `vmalloc`
->> > -and related functions is not physically contiguous.
->> > +`kmalloc` always allocates physically contiguous memory and the maximal size of
->> > +a chunk that can be allocated with `kmalloc` is limited by `MAX_ORDER`, the
->> > +same limit also applies to the page allocator.
->> 
->> Would it be better to say the maximal size is KMALLOC_MAX_SIZE which is
->> derived from page allocator's MAX_PAGE_ORDER? 
-> 
-> My point was that whenever you allocate with kmalloc() the limit is
-> MAX_PAGE_ORDER, not necessarily for actual slab allocations.
+From: Meijing Zhao <zhaomeijing@lixiang.com>
 
-The actual slab allocations limit is KMALLOC_MAX_CACHE_SIZE and that's
-indeed not the point and hence I wouldn't mention it here. KMALLOC_MAX_SIZE
-is literally a conversion of MAX_PAGE_ORDER to bytes, and since kmalloc()
-takes bytes and not order as an argument, it seems more natural to me, e.g.:
+Commit 493f349e38d0 ("memblock: Add flags and nid info in memblock
+debugfs") made memblock_debug_show() stop after finding the first set
+flag. A memblock region can carry multiple flags, so the remaining flags
+are hidden from debugfs.
 
-`kmalloc` always allocates physically contiguous memory and the maximal size
-of a chunk that can be allocated with `kmalloc` is limited by
-`KMALLOC_MAX_SIZE`, which matches the page allocator's MAX_PAGE_ORDER limit.
+Walk all bits in the region flags and print every set flag separated by
+"|". Keep walking beyond flagname[] so that a set flag without a known
+name is reported as UNKNOWN rather than silently ignored.
 
->> (Also `MAX_ORDER` doesn't exist anymore)
-> 
-> Will fix.
->  
->> > +Internally, slab allocator differentiates allocations of different orders and
->> > +delegates larger allocations to the page allocator, but for the users of
->> > +`kmalloc` family it is entirely transparent.
->> > +
->> > +For large allocations that do not require physically contiguous memory you can
->> > +use vmalloc() and vzalloc() family.
->> >  
->> >  If you are not sure whether the allocation size is too large for
->> >  `kmalloc`, it is possible to use kvmalloc() and its derivatives. It will
->> > 
->> 
-> 
+Fixes: 493f349e38d0 ("memblock: Add flags and nid info in memblock debugfs")
+Signed-off-by: Meijing Zhao <zhaomeijing@lixiang.com>
+---
+Changes in v3:
+- Rebase onto v7.3-rc1 and send the former patch 2/3 as a standalone
+  patch.
+- Move flags and first into the reg->flags block.
+- Remove the redundant flagname[j] NULL check.
+- Keep the existing NONE output unchanged.
+- Drop the debugfs synchronization change. As discussed during the v2
+  review, proper locking for runtime memblock accesses needs a broader
+  design and will be addressed separately.
 
+v2: https://lore.kernel.org/linux-mm/20260821020910.3428585-1-zhaomeijing100@gmail.com/
+
+ mm/memblock.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
+
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 9ce86349a29f..021db49eb7fc 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -2908,14 +2908,18 @@ static int memblock_debug_show(struct seq_file *m, void *private)
+ 		else
+ 			seq_printf(m, "%4c ", 'x');
+ 		if (reg->flags) {
+-			for (j = 0; j < count; j++) {
+-				if (reg->flags & (1U << j)) {
+-					seq_printf(m, "%s\n", flagname[j]);
+-					break;
+-				}
++			unsigned int flags = reg->flags;
++			bool first = true;
++
++			for (j = 0; flags; j++, flags >>= 1) {
++				if (!(flags & 1))
++					continue;
++				if (!first)
++					seq_putc(m, '|');
++				seq_puts(m, j < count ? flagname[j] : "UNKNOWN");
++				first = false;
+ 			}
+-			if (j == count)
+-				seq_printf(m, "%s\n", "UNKNOWN");
++			seq_putc(m, '\n');
+ 		} else {
+ 			seq_printf(m, "%s\n", "NONE");
+ 		}
+-- 
+2.25.1
 
