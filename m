@@ -4,117 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93303C61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 14:36:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFA25C624D3
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 14:36:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57F696B00AA; Wed,  2 Sep 2026 10:36:00 -0400 (EDT)
+	id A61F36B00AB; Wed,  2 Sep 2026 10:36:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 52FA66B00AB; Wed,  2 Sep 2026 10:36:00 -0400 (EDT)
+	id A3A076B00AD; Wed,  2 Sep 2026 10:36:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46C176B00AD; Wed,  2 Sep 2026 10:36:00 -0400 (EDT)
+	id 950766B00AF; Wed,  2 Sep 2026 10:36:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 17BA86B00AA
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:36:00 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 95A02160229
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:35:59 +0000 (UTC)
-X-FDA: 85169071638.06.83323FF
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C3250180005
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:35:57 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rVZZsbF9;
-	spf=pass (imf24.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 65C246B00AB
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:36:14 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BBFB740245
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:36:13 +0000 (UTC)
+X-FDA: 85169072226.01.0DF39C0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E99A616000F
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:36:11 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Qz2Ew/Fo";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788359757;
+	s=arc-20220608; t=1788359772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hr6y/ERn9mwLYkItat9vlE3A943++Ow9sTB6oJwTNEA=;
-	b=28fAIILGrsdwW42brU+3sMf47qGQOP+jHikcDCSfvCW64YxFOZzrguB8i11iQ6C7WmtZ8I
-	7QheF9Yb/PUot5IMkpMG23z00UWvpAR3O+jDmGHtv+Uvw423Dm7pFFJLaMfaETiEo9CP8I
-	YV+cmwNSjAqhGu+ZHt5qB3JXyXGOh4U=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788359757;
-	b=0xzi5y5Gdo/hgp4fpU/qeZQOAoaP8jsKBMuUobpZQp+2cxb3q/OKFjDmu8BAHk10R/lbFl
-	QGeHI0rkmOp6SP4zK3mrIG/b5IpOKPxk8UfHxyJ4r7c+rChOqSC4m86wrxnCA0F9gGfzQ6
-	qMtJR92Sqrxc4qETxE5TL6HhxUrBfCA=
+	bh=uzzpWL0xLJV4HxgXaJDCRpeFEK+cpnvsfs6kVzVfAak=;
+	b=udekm6Y4YaUjd8kR+XKwz6xExKtcrn1uVXfaHBjXqAc41X6PPwAoAvy+C1yYSrxZIJoxDQ
+	78HqEgR97O883St1WMjbKfFZ2HbKCKtb6AIMzcGsa/wreMbG1lWy3pjsBaU+3rid+wiRkJ
+	+euZw7wjn0Bd4OdfpnAv6Ypmhqr1xxA=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rVZZsbF9;
-	spf=pass (imf24.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-851cbd64814so433982b3a.1
-        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 07:35:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788359756; x=1788964556; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Hr6y/ERn9mwLYkItat9vlE3A943++Ow9sTB6oJwTNEA=;
-        b=rVZZsbF994GnJ1CSmNS3S+pPbVvbuIJXeWMtbw7abvVPd6lxqLJ3qRoVIpb7WZUrsF
-         WT4m3zT2R7FkxabuoBoY4otLNK8TfhQbndtt7yxE+asU52J2t2ijlBynuJ1cKk27GJWN
-         8gQBPCY13gUwr/hbfSGrmGXDJCVOPifqyncfZNTiW50VH+lve/ZZ6vzRLXbN7ewgKNJS
-         DGgyYPU88Kji5u479b4D8T7Es9p1Ynbo93x7XKAfZZyb8bXTaZwIZldPSbTA16f8DtEq
-         Bx76SUdDFyU7ZiSrgT5noLjsuzgYpgu0ms+T+X5mcsU4gpMTh+Osy30Thl+7oasxbptW
-         wpwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788359756; x=1788964556;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Hr6y/ERn9mwLYkItat9vlE3A943++Ow9sTB6oJwTNEA=;
-        b=PsN2jvYtEX8elZCDFCJmQSbBHmJ0yrzTSjxfS3LGK1hGs0CxG27p0ob5uSn2fVyuj7
-         sD3porgpFNXfgxCNOw8T9QyEydU5M0SD0ufdTz3s1K7kZRDQitjH/AaDdh5B+hiTwxFE
-         eDu8NREUuWmJzuyJSXvXhDsQZtb4tjUmY9m08itNR2Z3tuw+rwYn+C3vGmKalS20XAoR
-         vGCe1vkQgWIJmnAdDj1TGFB8EzYxDFV7JpmRCcR1xIkfWOsPYBAyH9Lr79kLa+JRRPvk
-         OQZcp0w0viloNHxfvHVMkgaAANEJd5NmMkYJv39hpw8u5044IP4ZKP0fWljO16/IyCVU
-         72aA==
-X-Forwarded-Encrypted: i=1; AKwUvByTSUegQPmDX9iZD58q5LTk8zr+D4um8QDEx3QzirDVEuH4zehvb7VmLtSgfQBOS2luvpKh7tKq1w==@kvack.org
-X-Gm-Message-State: AFuF++ntpAFm/Z2nqBy793fOZ8STAax3krX5+igctFivc03CGZFibTyM
-	6B6yEC22gPvs5Llx3lrLRTF6SQGHWrk3GG7AvdYjL0Clm9dkDj05NoEe
-X-Gm-Gg: AYBFou0O06wcpltF+fEJERig1ciEjul0ZPMWvLrxhF3Nw/TsO2VQnOU7Iwo2D2AxGjT
-	Gf2qG8FJd505PfQFaOHcUz1V76k578RYYjAba/Mo17K8F/DQL5zRLp9Hcb8HC/QuIQ0u97i8+Bj
-	e0MmQG0IwphkjtVcEeUbRzsjSBiE24T2V5RwJFoaC0wl4OYkxdaXmnHA4xhzl70ROxy8dGf1zQf
-	a8dbuGs5lqoEvDoA7ASO/k93vBCElIyJTUXpFJaOt7XkcWplQOW2j3lZoRUcqk9CrVP8QSYTIbf
-	kVq7geBw9WiWJwQyOKDS3xt1Emj9O7J8mU1scM4iBYkeWNqak2Z5p47KGgb5Gt6l8AkiIrmLZtb
-	p2g3luqYTHyWWwnGArZZYSmfntaAlnsQQ3bSezAciwUkC4cMHbd2406+50/BjMC86GXaRD97gRe
-	BHlwMp52t5PtmXoX5so9/RZ01ZifrVQszRvZ37wzKwR1070aqvxY3Sy3N5Y/Vi+bw+wsUWMskDi
-	Yhc6FYnp2Id8TFm
-X-Received: by 2002:a05:6a00:1c9e:b0:857:73e2:9104 with SMTP id d2e1a72fcca58-85ed94bb41amr7949304b3a.20.1788359756325;
-        Wed, 02 Sep 2026 07:35:56 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:9c5:2de5:8b4e:3f3c:b637:4ca5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85db24f2076sm1560348b3a.4.2026.09.02.07.35.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 07:35:55 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: sj@kernel.org
-Cc: aethernet65535@gmail.com,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/damon/core: allow esz to be set to zero
-Date: Wed,  2 Sep 2026 22:35:20 +0800
-Message-ID: <20260902143605.6785-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260902141349.86896-1-sj@kernel.org>
-References: <20260902141349.86896-1-sj@kernel.org>
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Qz2Ew/Fo";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788359772;
+	b=Vf96FLxY1HI+98QiIEGHfDYgmYUmdHJTg96a4Qi+3SUnZ3XM+ii5vU5yX3iKXL+wavU3oN
+	ECRjCoHSY8RQA8rSEN5EAwWTDxP3mzjgeU76PH1mrMawVY/axLRjc1JoQOH2StIZudhnyt
+	Uh0jN65plcDoQjBs50dGVi4aVYKFEiY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id CE8154009D;
+	Wed,  2 Sep 2026 14:36:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1DAE1F000E9;
+	Wed,  2 Sep 2026 14:36:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788359770;
+	bh=uzzpWL0xLJV4HxgXaJDCRpeFEK+cpnvsfs6kVzVfAak=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Qz2Ew/Fo96WKMMFECtw6AcGedth0FeblIay9/D+sibhjAK2/BTaqye6hTBWLs8zRw
+	 qXakXIrkxjuU89HS4vq0KEDl4x5Z+5neqSP1lPuX0OLciuKdgyqjd9FTsSHKpkKbON
+	 +rEI4WgECsqIzEjtNQqxUwhobsANlSwbLo0+gejc7TXvcdF2esdVnYMH+viUhY4Vxs
+	 I5YPwI+B873UPnl851liAilmTnKwoRgKEBL/Qkp67CXcRlVxi7w0cHqyTfePTjs2ij
+	 SqS2cmlvhnjlis8DLSAigHIQ3woqHE6gL5snkeJGrQ1zoiv/+OdHptqVqSk/XgvaGn
+	 Hno8waIJ7Q4NA==
+Message-ID: <d3ca9ecd-768a-48fc-805b-cd50efa639af@kernel.org>
+Date: Wed, 2 Sep 2026 16:36:05 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] USB: usbfs: replace __get_free_page() with kmalloc()
+Content-Language: en-US
+To: Alan Stern <stern@rowland.harvard.edu>, Oliver Neukum <oneukum@suse.com>
+Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Chas Williams <3chas3@gmail.com>, Duncan Sands <duncan.sands@free.fr>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Johan Hovold <johan@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ accessrunner-general@lists.sourceforge.net,
+ linux-atm-general@lists.sourceforge.net, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-usb@vger.kernel.org, netdev@vger.kernel.org
+References: <20260830-usb-v1-0-aa349c302246@kernel.org>
+ <20260830-usb-v1-1-aa349c302246@kernel.org>
+ <ea165ff8-cda2-4fed-9354-1d14ac2d87ca@suse.com>
+ <8cbe558e-7f53-4ce4-be8e-52fdba9105d4@rowland.harvard.edu>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <8cbe558e-7f53-4ce4-be8e-52fdba9105d4@rowland.harvard.edu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: w64tqfcjpipstgiskf757mdq5udt58zu
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E99A616000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C3250180005
-X-Stat-Signature: dq1rwot5po7g3gbibaj71pwk83ma14yn
-X-HE-Tag: 1788359757-621708
-X-HE-Meta: U2FsdGVkX1/eAYkYRXPUj0XZHoeL2IToJApzUne7ZN2s/M9nxXWdUhd3ixXz46wcABgDc9FTWOsjF4E/N99KSSL7sqSqwrBTrSDn9HWG+N47H5jWvSLqjE0p9KIxtHuh3AffDvo+x5NxOFOH8iOOr1hqwz/afYNe3JTDWXBUkFFa2b3+mQ2em17yTIVRNmeM5/uiCHwL7Q9s+C5efhBDwbF7yG9/5cjJxLTMjG1kBKXac3bkuY2Jk4WL3v3FbmYzK79VWUx6UCMjQnZaq+6jN7sqGitNywy+MbLZYM3CmTlP4TX5rmP7noNY8i/KMPQfvYK6xKrGCBzzsxIHtQTiiJLcK8vAZ+WYpiQmLxtUOBtgp+65Hh8f6Wp7xEJNmvKZthmMxXxIwWHXeFzLtesbu0pJzE0Buyg9N9ZwbrFUVr+uSBmQ4vADZUkeIC+MBMbiT1smCU713kYeJZmzfQJYSTopCEu1gq2RPzKOQtJFUnziP5nVOrhd5nrxoH1YbDEKLij26wcX55rMWz/AuQP2YN+JFrZRHOQy9GyN+FgvFOk+PVarZJWg786LEX/myV9krr5rS+mI5e8DqkQswdMDAdJD8qfHctKa0VI6S8ERUF6I83YRCGfCW+jjPS8Is0VMhR2WapJQjDd/URm+KHVrM7GsGKDSz3Zl1apLH3o/ewr7YLtZRL6ogtvqdnwdA4OaxNP5Jmi886dUFqSCJNk2CTh7z7goi1lhyRhVunA9G8bBoob7AeJQwXZDxrJa3Mjj8dCXaBOQZOy0swfGL79kWU62D4IvHy6PmecHmWYgWgwz1j8bcUovuNZuTkp4GD3nK/UWujBrcADu91UxJaWSqSFoIVJcE7O8tV4idgbweXWdmi5jgjHEEdDxhhYEFzlnyGJSZ7o/iGVjkv/V62aUEcBhr2xtLTJNqc4fWqGIE/fmW6IxkCKwQI4igEuYzkIBQAKXnZf9XnS7t41qTON
- h4yk/M2w
- jSSgpvwKLPShyxcH77L9VelTa8b+1mpG94WnZEwGHQgHH0NsZznxQYNZkLTGAglNzFk2cZTOAeyTdRk6gPJn2f1ZyTXrH2RZ0rgVZ/mgtLr/sC8HBF89Im0DxdKF1mMoKvepo2O+qOHlA/Afueh3LfSpVu+pHxu39R7tk4yJA10HudmSWTmlUoT1k8BEq6jjgFRMPmRCiNXUaaiY1a0VFSYoI6gafKY7KmMWOIMjojMn1XxsWxBcNtwxrQg11KxPdK60s6kEQVlUfZ9ExkxiCb0X+j9fDL/drvvLTIC/0BNUTeKnOiBj4tc6NUfBzlMKM4uXvhqEKg9KfZPzEfa1mF3p+JKHwGHuiiMaCPWjqUm+AVLq9uNZAdFQDaehvBPANBEEdPXRCsGgUJ4mFsIuTmYGs7ratS0h4cc5n9YpmyyAR5Ttgb8WkPyaTNBQ51c+d7U9+
+X-HE-Tag: 1788359771-516503
+X-HE-Meta: U2FsdGVkX19WT3vFpWmK0hljh8p2/jlA0qn0tjD3xkoU4fdUayhYefomWB0UWhzv7BSKUiE9dyIPE0Y91abNvspFwCtXT/pwglcjn2d32UGMlCMlorvN4cvNPslws95r2B4Cf6uuxTlF0OneIfTXwVJ7c35IArt6tmh2Pd1Yj7ZdqloRVs4c02nH0cchcr1lpvJcdk9jahygY+DXx7SMpMVfzFwy13GocDULIVCT2hZn5RzFG7OiBp7SrLC6vEXDFDIcI6yhWWJivc9IiUrjhO28jsImRqxePeVoYhPgUWqdZ/cZyu1GasDYGprrxY6lhpdMkIy+YjTS1BQFMiVZlLCHdXmw+lcgo3F+UviVzexXBz0TuuVJevFyaCMPhnyTBO5cBpK1tkhZ5tnIkldUHZ+0KLTROILLpiYxZzNg9Zkf74fR6cY8ZCNjMk3sje5uw71kTESCqKwAHlUwocXXHN6j1neMP838QvLmOXcVTkLy3xUL1xNKJnJttQupXFYszTjbBFJS3yY7PJR5HkGol5psgYAmI4hRDJ2uUY3c1Ou5iV3mvM+TArHHxsH4Bq1H8lKXrHJvZdGIHKD9FI1y5uW9z70ZEilAMRyV44uG59n1n6xaCB8hj4emc+NeAZF78OqqS+fn8boliyNNkjSsNsy8PwWgjbOE3ETPg2oio0dmnXiygug9iEJsZnnQIObHYsvwm+bWgHwJG5KDymcboEetI270SQF8WER5L8jhndEaDSfsO5/1bndW5xQ++BckFcKkEGkpuPlsVtGCWFOgyR1vc5jI+ZaRkCteTq7VM3fSGwo3u65Tnk/imX8oLN4BvibxrzYaCNhVI+Rr/7zR9NUEgD72NdYn0+FHvjk8IBBhAqbaj8YkWonXQcRm6ghLc2zjkeYLnpVfCkmyaRaWfKlD1+/9TiizGkGLP05wGCJQb2yW4a0EFaAXGQq1z7756IXazGKOoREZfofxSwN
+ MhbrBHmQ
+ w0OVllBJOhqEijfw8IC9A456nG53KIt/gRUfULLmeS7iWk1hAnoLKf8hjAfHyYSY2PvffDfVFQF5Ci5JNzqQBBOXpZ3GNBSPCNtWzFIKTzlNOnWGXdqgdyqK7Niwr0E5A0A9gkKC0fyYg8KoJO8c7t0a84zA0GPHMKa8fzyDYqrspm6X6F5bqQdHL4KmtBGhq3yTCotlPDIeRxsAQsqZIX3/qGntBeSIDmtHLNdSfSymHaDBsFx8/Oe3eJHe0DlCBBBY/2n8PPb+Eh4ReLiSn5kU7qAW2JgNzz+Uj8XfJ2B5xJApBFbiII7gCTw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,45 +141,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 02 Sep 2026 07:13:48 -0700 SJ Park <sj@kernel.org> wrote:
-
-> On Wed,  2 Sep 2026 16:20:50 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+On 8/31/26 16:30, Alan Stern wrote:
+> On Mon, Aug 31, 2026 at 03:27:07PM +0200, Oliver Neukum wrote:
+>> On 30.08.26 10:10, Mike Rapoport (Microsoft) wrote:
+>> > do_proc_control() allocates a temporary buffer for the data stage of a
+>> > control transfer issued from userspace.
+>> > 
+>> > This buffer can be allocated with kmalloc() as there's nothing special
+>> > about it to go directly to the page allocator.
+>> 
+>> You are breaking the calculation. A page has a size of exactly
+>> PAGE_SIZE. A kmalloced object of PAGE_SIZE is larger. That is
+>> a bad idea.
 > 
-> > When the temporal quota goal tuner determines that the goal has been
-> > achieved (score >= 10000), it sets esz_bp to zero so that the effective
-> > quota (esz) becomes zero.  However, damos_set_effective_quota() clamps
-> > the quota to min_region_sz, preventing the quota from ever reaching
-> > zero.
+> By "the calculation", are you referring to the 
+> usbfs_increase_memory_usage() call in do_proc_control()?
 > 
-> Where in the code it is clamped to min_region_sz, when?  And what user issue
-> this can cause?
+> The overhead in kmalloc allocations doesn't really matter for this 
+> purpose -- it can be considered a rounding error.
 
-In damos_set_effective_quota(), when quota->ms is set.
+FWIW, the overhead will be zero for a PAGE_SIZE size, unless slab debugging
+is enabled, but you can ignore it.
 
-'''
-	if (quota->ms) {
-		if (quota->total_charged_ns)
-			throughput = mult_frac(quota->total_charged_sz,
-					1000000, quota->total_charged_ns);
-		else
-			throughput = PAGE_SIZE * 1024;
-		esz = min(throughput * quota->ms, esz);
-		esz = max(ctx->min_region_sz, esz); /* <- HERE */
-	}
-'''
+>  Besides, we don't 
+> know how big the overhead is, so we can't account for it.  You can see 
+> that in the same call, we don't try to account for the overhead involved 
+> in usb_alloc_urb() or kmalloc_obj() either.
 
-This is a minor issue, the main problem is that it doesn't match the
-description in the documentation, which states that if the goal has
-already been [over-]achieved, the quota will be set to 0.
+ksize() exists but I wouldn't bother indeed.
 
-Original documentation:
+> I'd say there's nothing wrong with this patch.
 
-    - ``temporal``: More straightforward algorithm.  Tries to achieve the goal as
-    fast as possible, using maximum allowed quota, but only for a temporal short
-    time.  When the quota is under-achieved, this algorithm keeps tuning quota to
-    a maximum allowed one.  Once the quota is [over]-achieved, this sets the
-    quota zero.  Useful for deterministic control required environments.
+Agreed.
 
-Best regards,
-Rui Yan
+> Alan Stern
+
 
