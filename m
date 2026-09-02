@@ -4,39 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48577C624D3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 14:03:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B932CC624D3
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 14:03:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 123846B00B3; Wed,  2 Sep 2026 10:03:42 -0400 (EDT)
+	id 6A1F06B00B2; Wed,  2 Sep 2026 10:03:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A6256B00B5; Wed,  2 Sep 2026 10:03:42 -0400 (EDT)
+	id 6764A6B00B4; Wed,  2 Sep 2026 10:03:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF9A76B00B4; Wed,  2 Sep 2026 10:03:41 -0400 (EDT)
+	id 4A4DB6B00B5; Wed,  2 Sep 2026 10:03:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B327F6B00B2
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 006FC6B00B2
 	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:03:41 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2A3121C0DFA
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 63F99140243
 	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:03:41 +0000 (UTC)
-X-FDA: 85168990242.22.409158A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 78E0D14000C
+X-FDA: 85168990242.20.C49A9DF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id CF38318000A
 	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:03:39 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A8GMKvau;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788357819;
-	b=b/hhZepi6ugmFdn3n9e8RDthCQGUrORaG61gZDDuEFuG5Icur+xnvz5LxVkstijNPGUSPZ
-	W1gE2ZVH98u+sYGVUarh0MbhXRF05lXEU4FLHkRJccPMHFggpa7+c5n+nkNFoTSMkE4WDP
-	NHkv9OlXHN+zTkKFiglO6dct977RRVA=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A8GMKvau;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=idvUACI2;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1788357819;
@@ -44,51 +34,59 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w+y2YGAE9dCS66KlFXJ1CfqA9PNhGVCbFRiU+z6GWB8=;
-	b=fm9fMukfdCJwraKUsepo1utYRuxewzqWtzWc+kjCX5XmlVSrIM+qYG9eljlRPIVS+ng8nj
-	4jZrJ3qQReIr335aOycDewl4kCp5yAa55bojpjkbppe3ku95MbqxGyEubggFDwIZVOovCM
-	TSzVcU6K80MGHwhQqGQ0HxAf4ATnRWA=
+	bh=d7E8/+9tPmws87WGovoxRC/oQMT8cFB9YIJxkAr2MhY=;
+	b=D7FbCihmb3KkxWt4Pv61c54rA873GLxgeiHAiyI3k7tr6PAuk4Z5l/reRXE/g6x9FRiarR
+	X1gjw6u3l4PFMmFlk0Lh6+VAPwiD8JB/jL1WBfkZSnBQNzrVwZTOTfA3r0Vf59elW+CRUT
+	LQ3fRIhiREcECVsO7Fq25x+h1QYSWXk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788357819;
+	b=ccdpwWMQSbCS1epdds5a0xRg5tqjivbDrQ/N9L1LIKr0n3z63z3n7ZUEL39j5Egm69MvLt
+	GsF0F+Ys6PjsuyMD20yWUM0A9kbyIGq2/NKZ58POkFw1KkR327r7HJo9KSmfMvpXL/e51/
+	dxSPdGjgtsfyE2r6zRwTUrfgAhh056Q=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=idvUACI2;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AF75E43A64;
-	Wed,  2 Sep 2026 14:03:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E0D01F00A3A;
+	by tor.source.kernel.org (Postfix) with ESMTP id 4FF716020D;
+	Wed,  2 Sep 2026 14:03:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA0AF1F00A3F;
 	Wed,  2 Sep 2026 14:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788357818;
-	bh=w+y2YGAE9dCS66KlFXJ1CfqA9PNhGVCbFRiU+z6GWB8=;
+	s=k20260515; t=1788357819;
+	bh=d7E8/+9tPmws87WGovoxRC/oQMT8cFB9YIJxkAr2MhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=A8GMKvaur5A0pGiCYcRq25dH9g8ieYXqvdJV7+FJTx227q0RwkObIse7UVbq8E52B
-	 wsGio2tAGIeJImnBWe930VkihgttsxasQNoolrwco2tMmdTjC946GflB60YrJOBCJE
-	 6PujGNQOkx18GuRX46w9/DdLvFPHwh/AOBM9S1fqD2bJfbICQwJwS58HQ9+Vm4skFW
-	 GS+tgCIKssbWirh9QIi/61bIyMrMqCH19z/v7kZTLxTEVEuUjETXoe7HmqtC4JfrEZ
-	 a3047oU+oe3oOmxG702GvYLytWS6KCzGCXD2jhOJmpSjWm/j+iXBXDAyXsrZLvlaxZ
-	 c9e5sWL6PEXIw==
+	b=idvUACI26/k1C0XqqOqWLVI4Rmd9LGPJ9tmtyN0+S0BIaSijEBokM8ybeEcPKqkur
+	 oSl27LswLlmXfrrdEo3aKSQOYEMks9MGB4DaSFKN76JIynYpO8lHIcbMn0xj9ErOSY
+	 xXaJXh6YEohELcOQIRfkca8J5XKHDp6fegGNeTXAaHV1kxDxxQWMMKA7A1jSwyNmIG
+	 k69Eg+VgQiPtbYVCcKn3SI0tWaCENb53qOA0UCH/VkUMmZY37Dy6rLnt3dL72B2wFj
+	 nYqf/a8IBpk3u9T7GP1AhBBltHkKBNZsz9GwDzHGSvOt8TMYmPZN0EIAq67hua6vCn
+	 iIUu3APb6htcw==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
+	Shuah Khan <shuah@kernel.org>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 2/6] mm/damon/tests/core-kunit: add damon_commit_probes() test
-Date: Wed,  2 Sep 2026 07:03:08 -0700
-Message-ID: <20260902140313.85983-3-sj@kernel.org>
+Subject: [PATCH 3/6] selftests/damon/_damon_sysfs: implement DamonProbes
+Date: Wed,  2 Sep 2026 07:03:09 -0700
+Message-ID: <20260902140313.85983-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260902140313.85983-1-sj@kernel.org>
 References: <20260902140313.85983-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 74p8igqpx6jubf3rsrqdwxcxusbo397b
+X-Rspamd-Queue-Id: CF38318000A
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 78E0D14000C
-X-Stat-Signature: uid9gf8dhzfyr4t4k5a6uhm1eg6xgynh
-X-HE-Tag: 1788357819-242965
-X-HE-Meta: U2FsdGVkX1/7sttGOZw2IxyU1dpQJV6Guyk6cgtcQAeup/yTM10Y9PHhJAftZjIE4lgniXs78Ipo+hxscXU08dxgt3QDHmZP+vocsOM0JbbrzHs6ROc0Djha6zwKkU4/9HD+1tZ7P508vbqc9JsU71DVlIK/XEW2788hRd7axzhZvAezaxxEffpQ4+6o7PLfEZ9cYR9SQXezhYPhab1Sg9iqOVVOJ5sJv+N+Nk4TwXf5/Ked+IG/AZ+prj0Mw7RXLcUtlmAraeNeVh69osoNuNOGlYf4TZGWemWzD18r9KnZ9MnzQ2WMReU6hoACSARdPjRPrPkogf2YpP+3BVEG0/I7EY3BAQe9ua4pVqM/Fkw/yfa0R+910BBrAXEGMmkGJSVkZsKjqlV0m3w7alinXgx5bEimAhlEtHtvvXFi/JqyHwp0MriZzsrtectqRNv7vrMe/hnNLZBAqng8UVlqqGTYpsbEzXGfdh3N7u5ZdVa2LKvZc6vGP6xt6+aiJPtc5l5aHys+0wTk9wNgCo+b52IReYYgBdeddVETJnVkq0lGjChYwu2a2enx6ZJNtzaz6jgKehd3BuDRBgcB34YM2ws90Zbt5A/oQXM2NYSVEflE3aG7XMAuEJqiAshFUyENiR69fN3d4z5JfUaw8KdXRUfgOAQHWwncev4dvuGaXv5SlTabQ01uFXhGhiOKkXgeqDEvT235vHeBBAskGPdEPfJF/F4Z23B2A3bGlTa6q9Y7E0qNe+k5rbDTrG2LiTbX0hXtlqTBeY18jWdFVHQKu2Ef1WqdKT8vYrdQzb0CTjt6Z1UuAvfFhZpqaLRHMdSBlYn6uMgtR5+ip6eCaN/iyNNTdYGyQbXmvaIti2gkPcoLsS3s5cEFEFP3PmwMyZRqKBX2mDDrDrqCmJ/u2Zl+h+RX9E6VmbV2ZB9joWZ/ugmMLldYRtrdIYjNtq/3QtvgL4nC4dc+MINGQupJEEB
- gKQBM+nj
- ppIBdjud/81wr34nTAkFBoih+3tXRQox+pUVrR+mXXaQBl4vgQibhJaoDMdNsf8rZ1+/2yIaWG8FpRpqU7CT9S2HdXIdu70JzAFydUyrcu4Jv/5OvzSGUylCAb4JLX8L3tkoyf4ETJ1oO8vxSs4j36FWoD5kozJXXat5FunNe7QB2FpaiUkNbA+ZHLlbkEvMRrdOidQ6MsM//z56Bp34QnKU9gSG/WW9N7QTCd35Xs3rXm/2qlI8RUqVaqya0PI/OrSoFcRGicC6cdvx3T2RHJZehaPWLNhhblx2V+Tk3RY6JJZ4imyip78Secv2L9/us032x
+X-HE-Tag: 1788357819-925309
+X-HE-Meta: U2FsdGVkX182xct/5fNM68UZZewAOH2YG7tNOWOMvyrQ14HZCT+9dtE7X+YjIbuWK4n7j31OX+Sanigfzma1cCqbIsFMHlVuonGG7TMDc80TgK5P4gkyLoGp4IfxNCTCtRo90mW9yIAkwRD6V5ilrK2AUpTrgynryoHwvDo1uHbZ58xBYq4j7MNqiq9HEahCEE+o5b23IaRBeLPr0bjphwfNFVX1TNzDWMoIjjcDbYaQBvpJMG5lEq68iEKEPrwNza1EzYC/4PgvtPsjRXsBKqF350305Qdjk+Dtjwtd4Wu62tHl9c+9g0wUdpJtKGn93WeD4Du+syffPkO8rMw+Tv/5TamaGCMVjFX7Fl/+gJPoP/GqY1W2EaHjsVaF0iFUV0NDmA/JrvxwGFW+NWlUN1UFD6gbp1dGw4ZOCvEU997y5FURkHPw5ij28d+Zn3mqd/5Sv0zhN0bkFzTQ8v49xiq232dNEKYQ4z07+C54jyyZr4z2dPub8mzkjFCq5zkpGpr9HcR9m05BoOBA/h23xkKucbs4cmcygOXrqNLnetMd95ePU4TPF6epBlahlLuubduhCmR4uVChX2vuYCear0YoLtrWcPiIeM+P1ceMUSo9jUmU+M/s3Rco5xu6QgV4mAdkGH2hIzW34CxUjVm/1YhabJHjifCCK2tF5BUSXnLLGV7oSNk75w0BAbyypzzGKiwItk/7Zr8QUZo/3IReEXd/BVQ3xJz2/C6pNxzpBzl1NIyub1FZ2cFPLY7LKqWwRNmAegfdQZzjbpvgoGJyZi5U0hgFoik2H4KpBAe6CRiri2Wv+o7cXoZWct8OrABvtslVZ7yuvzzCWtiy5lIyq32WOGI2kfhqdXX1YuNjhwKMHd633qRanEA9OlgC4xDI7Gbd8rc91xeBxOtqlgsXZsgLsTrd4VpzK0r7S+1ZDMy7RLF5dqzPlcuZo9bcRFOWyQDd7BL0RUMdFxSPoNm
+ ze2b78Cx
+ DjMisFERBZi5yHBmC1SJkNZWPTmTjwom4MMLz4ih/YEnO56rvWzql5XgTA/yfCJOIz55Na+7Eng1XKIfeTrpVb7N8c2+Q22tcvqLUuebXMjIKAjH7FoKWKGv1cdcm7VFy+AXr5qFz0ge/H1SWse0NQfeWa0YcoCK9a4yBOShcZ3as1nqVxgsTzP3WZ+V9Gi1EMhfO++cGs6ycnJ7ZnEZYfej9VNJ+N5FXR9426J4qnoXReEqyDGzPMc8p6NIMjpMUea2CwxchfWXTxXOmxxJzCMB+GQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,116 +94,183 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add kunit test to ensure damon_commit_probes() updates destination DAMON
-context with source probes as expected.
+Extend _damon_sysfs.py to support staging and committing DAMON probes.
+It will be used for setting DAMON probes via sysfs changes for testing
+purposes.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/tests/core-kunit.h | 84 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 84 insertions(+)
+ tools/testing/selftests/damon/_damon_sysfs.py | 125 +++++++++++++++++-
+ 1 file changed, 124 insertions(+), 1 deletion(-)
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index c2ddef3c76d35..c01e6a75cadc1 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -1403,6 +1403,89 @@ static void damon_test_commit_filter(struct kunit *test)
- 			});
- }
+diff --git a/tools/testing/selftests/damon/_damon_sysfs.py b/tools/testing/selftests/damon/_damon_sysfs.py
+index f604b7d6530b3..e7095c3365245 100644
+--- a/tools/testing/selftests/damon/_damon_sysfs.py
++++ b/tools/testing/selftests/damon/_damon_sysfs.py
+@@ -570,6 +570,117 @@ class IntervalsGoal:
+             return err
+         return None
  
-+static struct damon_ctx *damon_test_help_setup_probes(unsigned int weights[],
-+		int nr_weights)
-+{
-+	struct damon_ctx *ctx;
-+	struct damon_probe *probe;
-+	int i;
++class DamonFilter:
++    type_ = None
++    matching = None
++    allow = None
++    filters = None
++    path = None
++    idx = None
 +
-+	ctx = damon_new_ctx();
-+	if (!ctx)
-+		return NULL;
-+	for (i = 0; i < nr_weights; i++) {
-+		probe = damon_new_probe();
-+		if (!probe) {
-+			damon_destroy_ctx(ctx);
-+			return NULL;
-+		}
-+		probe->weight = weights[i];
-+		damon_add_probe(ctx, probe);
-+	}
-+	return ctx;
-+}
++    def __init__(self, type_='anon', matching=False, allow=False, path=None):
++        self.type_ = type_
++        self.matching = matching
++        self.allow = allow
++        self.path = path
 +
-+static void damon_test_commit_probes_for(struct kunit *test,
-+		unsigned int dst_weights[], int nr_dst_probes,
-+		unsigned int src_weights[], int nr_src_probes)
-+{
-+	struct damon_ctx *dst, *src;
-+	int err;
-+	struct damon_probe *dst_probe, *src_probe;
++    def sysfs_dir(self):
++        return os.path.join(self.filters.sysfs_dir(), '%d' % self.idx)
 +
-+	dst = damon_test_help_setup_probes(dst_weights, nr_dst_probes);
-+	if (!dst)
-+		kunit_skip(test, "dst alloc fail");
-+	src = damon_test_help_setup_probes(src_weights, nr_src_probes);
-+	if (!src) {
-+		damon_destroy_ctx(dst);
-+		kunit_skip(test, "src alloc fail");
-+	}
++    def stage(self):
++        err = write_file(os.path.join(self.sysfs_dir(), 'type'), self.type_)
++        if err is not None:
++            return err
++        err = write_file(os.path.join(self.sysfs_dir(), 'matching'),
++                         'Y' if self.matching else 'N')
++        if err is not None:
++            return err
++        err = write_file(os.path.join(self.sysfs_dir(), 'allow'),
++                         'Y' if self.allow else 'N')
++        if err is not None:
++            return err
++        if self.type_ == 'memcg':
++            err = write_file(os.path.join(self.sysfs_dir(), 'path'), self.path)
++            if err is not None:
++                return err
++        return None
 +
-+	err = damon_commit_probes(dst, src);
-+	KUNIT_EXPECT_EQ(test, err, 0);
-+	if (err)
-+		goto out;
-+	nr_dst_probes = 0;
-+	damon_for_each_probe(dst_probe, dst)
-+		nr_dst_probes++;
-+	nr_src_probes = 0;
-+	damon_for_each_probe(src_probe, src)
-+		nr_src_probes++;
-+	KUNIT_EXPECT_EQ(test, nr_dst_probes, nr_src_probes);
-+	if (nr_dst_probes != nr_src_probes)
-+		goto out;
-+	nr_dst_probes = 0;
-+	damon_for_each_probe(dst_probe, dst) {
-+		src_probe = damon_nth_probe(nr_dst_probes, src);
-+		KUNIT_EXPECT_EQ(test, src_probe->weight, dst_probe->weight);
-+		nr_dst_probes++;
-+	}
-+out:
-+	damon_destroy_ctx(dst);
-+	damon_destroy_ctx(src);
-+}
++class DamonFilters:
++    filters = None
++    probe = None
 +
-+static void damon_test_commit_probes(struct kunit *test)
-+{
-+	damon_test_commit_probes_for(test,
-+			(unsigned int[]){}, 0, (unsigned int[]){}, 0);
-+	damon_test_commit_probes_for(test,
-+			(unsigned int[]){}, 0, (unsigned int[]){1}, 1);
-+	damon_test_commit_probes_for(test,
-+			(unsigned int[]){}, 0, (unsigned int[]){1, 2}, 2);
-+	damon_test_commit_probes_for(test,
-+			(unsigned int[]){1}, 1, (unsigned int[]){2}, 1);
-+	damon_test_commit_probes_for(test,
-+			(unsigned int[]){1}, 1, (unsigned int[]){2, 3}, 2);
-+	damon_test_commit_probes_for(test,
-+			(unsigned int[]){2, 3}, 2, (unsigned int[]){1}, 1);
-+	damon_test_commit_probes_for(test,
-+			(unsigned int[]){2, 3}, 2, (unsigned int[]){}, 0);
-+	damon_test_commit_probes_for(test,
-+			(unsigned int[]){2}, 1, (unsigned int[]){}, 0);
-+}
++    def __init__(self, filters=None):
++        if filters is None:
++            filters = []
++        self.filters = filters
++        for idx, filter in enumerate(self.filters):
++            filter.filters = self
++            filter.idx = idx
 +
- static void damon_test_commit_ctx(struct kunit *test)
- {
- 	struct damon_ctx *src, *dst;
-@@ -1811,6 +1894,7 @@ static struct kunit_case damon_test_cases[] = {
- 	KUNIT_CASE(damos_test_commit_migrate_hot),
- 	KUNIT_CASE(damon_test_commit_target_regions),
- 	KUNIT_CASE(damon_test_commit_filter),
-+	KUNIT_CASE(damon_test_commit_probes),
- 	KUNIT_CASE(damon_test_commit_ctx),
- 	KUNIT_CASE(damon_test_valid_probe_params),
- 	KUNIT_CASE(damos_test_filter_out),
++    def sysfs_dir(self):
++        return os.path.join(self.probe.sysfs_dir(), 'filters')
++
++    def stage(self):
++        err = write_file(
++                os.path.join(self.sysfs_dir(), 'nr_filters'),
++                len(self.filters))
++        if err is not None:
++            return err
++        for filter in self.filters:
++            err = filter.stage()
++            if err is not None:
++                return err
++        return None
++
++class DamonProbe:
++    weight = None
++    filters = None
++    probes = None
++    idx = None
++
++    def __init__(self, weight=0, filters=None):
++        self.weight = weight
++        if filters is None:
++            filters = DamonFilters()
++        self.filters = filters
++        self.filters.probe = self
++
++    def sysfs_dir(self):
++        return os.path.join(self.probes.sysfs_dir(), '%d' % self.idx)
++
++    def stage(self):
++        err = write_file(
++                os.path.join(self.sysfs_dir(), 'weight'), '%d' % self.weight)
++        if err is not None:
++            return err
++        return self.filters.stage()
++
++class DamonProbes:
++    probes = None
++    attrs = None
++
++    def __init__(self, probes=None):
++        if probes is None:
++            probes = []
++        self.probes = probes
++        for idx, probe in enumerate(self.probes):
++            probe.probes = self
++            probe.idx = idx
++
++    def sysfs_dir(self):
++        return os.path.join(self.attrs.sysfs_dir(), 'probes')
++
++    def stage(self):
++        err = write_file(os.path.join(self.sysfs_dir(), 'nr_probes'),
++                         len(self.probes))
++        if err is not None:
++            return err
++        for probe in self.probes:
++            err = probe.stage()
++            if err is not None:
++                return err
++        return None
++
+ class DamonAttrs:
+     sample_us = None
+     aggr_us = None
+@@ -577,11 +688,12 @@ class DamonAttrs:
+     update_us = None
+     min_nr_regions = None
+     max_nr_regions = None
++    probes = None
+     context = None
+ 
+     def __init__(self, sample_us=5000, aggr_us=100000,
+                  intervals_goal=None, update_us=1000000, min_nr_regions=10,
+-                 max_nr_regions=1000):
++                 max_nr_regions=1000, probes=None):
+         self.sample_us = sample_us
+         self.aggr_us = aggr_us
+         if intervals_goal is None:
+@@ -591,6 +703,10 @@ class DamonAttrs:
+         self.update_us = update_us
+         self.min_nr_regions = min_nr_regions
+         self.max_nr_regions = max_nr_regions
++        if probes is None:
++            probes = DamonProbes()
++        self.probes = probes
++        self.probes.attrs = self
+ 
+     def interval_sysfs_dir(self):
+         return os.path.join(self.context.sysfs_dir(), 'monitoring_attrs',
+@@ -600,6 +716,9 @@ class DamonAttrs:
+         return os.path.join(self.context.sysfs_dir(), 'monitoring_attrs',
+                 'nr_regions')
+ 
++    def sysfs_dir(self):
++        return os.path.join(self.context.sysfs_dir(), 'monitoring_attrs')
++
+     def stage(self):
+         err = write_file(os.path.join(self.interval_sysfs_dir(), 'sample_us'),
+                 self.sample_us)
+@@ -629,6 +748,10 @@ class DamonAttrs:
+         if err is not None:
+             return err
+ 
++        err = self.probes.stage()
++        if err is not None:
++            return err
++
+ class DamonCtx:
+     ops = None
+     monitoring_attrs = None
 -- 
 2.47.3
 
