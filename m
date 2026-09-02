@@ -4,95 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DDCBC624D3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 15:15:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9BC4C624D3
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 15:15:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A83AF6B00A1; Wed,  2 Sep 2026 11:15:27 -0400 (EDT)
+	id C33436B00E1; Wed,  2 Sep 2026 11:15:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5B716B00A2; Wed,  2 Sep 2026 11:15:27 -0400 (EDT)
+	id C0AC06B00E2; Wed,  2 Sep 2026 11:15:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 971DB6B00A4; Wed,  2 Sep 2026 11:15:27 -0400 (EDT)
+	id B23456B00E4; Wed,  2 Sep 2026 11:15:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F8486B00A1
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:15:27 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0804F1A0257
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:15:27 +0000 (UTC)
-X-FDA: 85169171094.08.7E20D22
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 952086B00E1
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:15:58 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 30589120255
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:15:58 +0000 (UTC)
+X-FDA: 85169172396.04.2FE4A8E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 6E2E720008
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:15:25 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jA50Z6Fg;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 9C39AC000B
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:15:56 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="iKE/XKpp";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788362125;
+	s=arc-20220608; t=1788362156;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=geLLc9OYOHH6RJHOH7p2OvUwcIlLmy1uLQiXbiK2XfE=;
-	b=qmdO+UJM0HKvSEdx4VCNUYlweIi4jMy/4LdoNsGYoKVeJp2PDz5BvAO7l0cFLOMA5Qc/B6
-	Tk0fFsuDVodfrPfZV+Td0Z58fqNAVcaRMd6O0bFSJzg8UVpwdFvXyKih4rKwcazZul8EUc
-	dyMb5RKXtjwJ9n4N1CaO4qTuf+JxEJ8=
+	bh=vE/Cggwy78pImngvxsbAxzUqhSZmdOdF6pnB66mIkJk=;
+	b=pVMLNLhfLeW0zd/gt5I3O4Q+NH1bpaLixyR8PF9gO81PisZaR83Ydoa4YKbDPAft0Oqo5f
+	WJJ5GLP7zonb4w82/ZrpNsdztGUNj4mhCdR9SHELA8x243PjJYBcUCWe1pYxe7c2gk0sk6
+	jPUSYCnZ/aEmPmzziBIJMJYcWJvWigk=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jA50Z6Fg;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="iKE/XKpp";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788362125;
-	b=Lg03JSkZAM/AY9FInUAvKqn9AEyYaX0TUS952h6w+J4j23xMXzcpLNgdn588LJ6Dd8dAhB
-	LW8jZqofmVoJfElZYPuNZ8YAPq+PdXMW+UpFb0YzQKu2b7HpC7p6RsgTiBadosMrQ+hYRa
-	hsIY+ZsrqaSFV8ckxSLl7jELeW0qY+M=
+	t=1788362156;
+	b=wrBEAmGktgEBbTMUoeKIClomiOp27+GZn34NwvnW3Kff3OIpOq5TI4Jo4NlREfjrWGEahO
+	9ZGF19i/hWhym4eaO7N0384wwQyGaMUN9UgdJCN3BvViSTk40ICLr7dM2D4EzgYvSrvD2f
+	kZVjLcorYT/xOvlMUK2lBSlhgBuRshs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E71B7600C8;
-	Wed,  2 Sep 2026 15:15:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00DDD1F000E9;
-	Wed,  2 Sep 2026 15:15:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2A7C4600C8;
+	Wed,  2 Sep 2026 15:15:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99CEF1F000E9;
+	Wed,  2 Sep 2026 15:15:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788362124;
-	bh=geLLc9OYOHH6RJHOH7p2OvUwcIlLmy1uLQiXbiK2XfE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jA50Z6FgFOKtz4B3l8//fub6qKXdyUdDE5W7bOPXPB7K0hAdVjfJB9790JMkQ9tS0
-	 FDb6SW92xBK/9UzaF6r3H4sJuvwp9xV0MD2h+NTDnYxfa7Hdpbabz+EVeWqOlGmd/I
-	 jFRgtyJRex0uZ1/JRBfaPwFMHjhjrGOWdqfcAKDr7wicaGosAExmxJT6oiFzMq6Cx6
-	 3dzI6+V8Mavdpm7AMMKbVvTAHZZ11ZDao34wA/BNAYROpvuhRvQ8rcxHVM4aJ5BhzL
-	 MHjwtCXqXTccM8A+7FPNSejUlzocVjb9VS1FPSP77GrAIMZud9fCDgB+rhEznmQ6D2
-	 jWr6+PZrV5toQ==
-Date: Wed, 2 Sep 2026 16:15:17 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/3] kselftest: mm: prevent random failure of huge
- page split for khugepaged
-Message-ID: <apg7FNLtFO3Ea5qC@gremlin>
-References: <20260902-fix_split-v4-0-85f03905f7b1@arm.com>
- <20260902-fix_split-v4-1-85f03905f7b1@arm.com>
+	s=k20260515; t=1788362155;
+	bh=vE/Cggwy78pImngvxsbAxzUqhSZmdOdF6pnB66mIkJk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=iKE/XKppWbSzjEt/knKYntQMNUjU3xxyGzG/qqWR+NjqD77xwNrloFoFmpEUo0H42
+	 roqpGnzg/ZLZSqyjVveOpTZCbABjNrSjLZSWz7qyeQNTfHZT+bzmgpID1DYDQ/kCtX
+	 aehIQzFzOxyaKZX8vE86cvy1wKe8GVf2THmdarEShk9FErMaLsEroyi1y7nSTrZGkM
+	 mTb6qKQSPEah//6s9yXgPifJZ9QYU7LkeavHkqOkGj1b8M2cOMO5TmoUkoyR0pt++p
+	 wiPnM9goFqsFH7vGYwOKMYLBeb1N6bnbPenlz7dGCKZxumg8CeTDclFwx39Bk33cAp
+	 16Ex83MlBaJiA==
+From: SJ Park <sj@kernel.org>
+To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+Cc: SJ Park <sj@kernel.org>,
+	Lian Wang <lianux.mm@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v4 1/3] mm/damon: Introduce DAMOS_QUOTA_HUGEPAGE auto tuning
+Date: Wed,  2 Sep 2026 08:15:48 -0700
+Message-ID: <20260902151548.88735-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <9ac2a10f-1551-410e-a9c0-173a1daeb1ab@huawei-partners.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260902-fix_split-v4-1-85f03905f7b1@arm.com>
-X-Stat-Signature: ikeaysi94tkb7q8dazxf4kosn31r6xyg
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: tm6g3gxkg45xkpwf6mq5u75i5wsz19ni
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6E2E720008
+X-Rspamd-Queue-Id: 9C39AC000B
 X-Rspam-User: 
-X-HE-Tag: 1788362125-94840
-X-HE-Meta: U2FsdGVkX1/d+ALqT9BjPUm2DK5HtjJ7OI+Dr10s+omPPaNi8HdTNxZQUHO7k+wkG06GHoTu5DNuK5dxiJYAL7rMS0qLk/1p26Qk+AVRqcV8IWyxScT1jKJvAax0wkQxW1CxI0wiJbONSGA/CAhjtrssxzSy6g4NBFgFcmplffVMHG5E3aJGE2Qw0eIcX9QNR0C+gSuQyEXcdm8e7liGNKC0ZC9bpDd0oDXPT5qOczUJqOY3lRMw7EyW4LnKx9W0qOtCYHAmSLp68JKntaPYrqtgnZLNJGbtK00mrZyeDXWph6dWzAVT9DjHSAWC+kG6AVN8xAgYPS4J3aKqRfyUphQnFWmUnnVy/wjimMCxsvA6CYCPzkPoMEIi0k6PSe8IAiGyqtw5f74IxgVZ6SWyG/ZOE3hIVt51ZEOh8WbAPGoBbqBDA3w2OCwaHCt9zp5dHqcM13wQu8DbgnePO8cuoF3RUaJqA8LVcrq2adpfWkKoOOjHCMXEclMxuyxcTzdEfrvbDaJES2z94kzbf2BDR3s1xBAQIGx3ILdn0M8KPd1gVJzbiGE/e+Z8Vgb3GWWzbQn6RiNA1pwV9+fE5QzU7hQpbmKfdAKuQwiD8UnXqoR8f0pPX1VwO/DKy+9NpNfi+ECvPSsfET4gvP2254FzJW/GJ/Ye+j54wMag/wZpCInn2BM3RYCsJyv1vxQFlEL/CGtZFGSdRhrhe42FX7D0RpXNhuPCkX7wXCZko4iFEsxQVP+5gBqA/diUNdVzCGWoCTkLDtjT1yuGtnihebfsgVqwBlGivQTg1OGu42CQ2x417pq7g5aHluzXg/j/HPMrPLVSl1nRWG0tIODj/AzfZYsq41B9Lkp3SAs4Sx0CzsHehnCWCjvGlYK6jRcX9sWiuiCf58S2ryqh5nlE6L7YS/eN3NMKDUA3hBr5EzZbe10SlnJsZoozY3+nuzFdJXBLOH4ddZdJHlxzk+mUpiT
- exOLi388
- EdBEcRpbqigXbUp1QKVQiL9cpnqTak5oekAq12wWRlZw+OqZSi+Kz9VpSxPEVeo9lQO/g/9VpBC0LRzBRQui1wlJVra3b0MAmEvshgyE70DwTJWsC4QjrLsVhWoUbJymbjvn4AKrNCzKarSuTB26RDS9Y5yhexmKhtj2TGWnQw+N6wic7M7tzRbRsmx98W14ycgxzk/K1C//wpeSu5LpylseJ9b5A5lcfEoxW8VKJF5WIiDvCIy1vIMZgxIyX7ihTBMCeWWmFjJXkvHNjbu/owy1Heg/d+QUbDCOW1gRBSjy2i7f62KGuvNpq//CVyBRVefinn+GiZf/xWv8Ct/UKXk3eMQ==
+X-HE-Tag: 1788362156-642630
+X-HE-Meta: U2FsdGVkX1/zUxvLQUZX4T8gqIWYu0DpLcOkH4iHNheEi0ifdhPhpEobnwDnwhAc5zjxoF190D6fBRTy8T2NLOKf+T86z0aCQc01ugy887vEdWaLDGIk4YKF+I8tJM9eYoRBfALkS8axu0Nr4I/vqFj7YZwkan4o0oBu3f74cO2zhXHSK/43h+pYXmIIbU8gqNG6nSamuBGgpSHjfWILV9reizp/EmcIUk0bfkTGH405Y/M1RUXl+nzDZj830h2sta0CoyZz4LNCl6CVVPqJYda3kALVpWymV7uup6EFGwE7TchFrXYsq9jobtA0u+iOGa7CavTlVGMr0/IFHQ2mfPEzk4Dq1X3XwCHnuC/cVVTGSY3R2WLbvcxgFD0w99+tOW8HKg9Gr4hPALTg6q24/ycMoUWFeDTc6gXFA3hYyuC9oIqK3Md2fWrqDZt9/8ujTyBXYZuQBgBjdDX00hTtsoO4QVzt48u5SeAcRlgfvfoCVTUDdTQaLG0P0YXGyG6qR5V2CXQY4gmRgjapU8W4JzQGH9iIPhakna2r5FZU1oVITQxb7f1Pdn7r8dtuSOVKlmeKVAo7lv66DBDz0hxvhG1OvTBryzTpB65jH1BksVCw4VrF7n/aS16faV07Or54X+bAnFCXosGgvlzKR2XYk4Hps3lnme3RqjTMIMzHtP/QlFIZo35xJe0ObxbqE9CqLcwnFFbRcPsjQUuSSThT8Q4ExO7bAgC7L5nUc00+wxZeFyA3z15iUaoDsnB1pxJACbHRgB8QtWFQYYZqHRqUjay2vNqxqYYB3WjVDq65egvTOHTeZPBEG3oeuKYKTU9CYjfS7rFgkDviTrp8MeUd2z+eiJCh1MMJpNWwT4aBw05OdgfNL2LwPUKLMyuMLGowRM3Hn436CCzUKUjaLnRn+CqAnVL+QFWOENtIMB2p+HjxFAu+hY+P+ZvUnSsh12O0xlOjM0N481+wAhtsHOk
+ iNwdI/1P
+ CHvezZrsRxopUj5dz6/boGXRNmNx8RwB+INNpIzBGsX84FAt6VfJjqUNsMb91y6JRiJ6ji7Wtm36DGzwmgwq2y5BzE/EOPv3029p2cx4Lhg2YpNvzAHC2N/L7ktjRQHIIXPvziro8VJAfpe/8ryCkPoaY9GuVa7aU5ebz1k/rH7qorNRJ5S/EGQ7+t+JhUHNbQoqGUijwmqcQ3xwrfO3sEvwoi1+NocxCP6h3PM4oOBwpMgvcY1ACZhPWTJ/zQHXIwTyQbIcfryRGRAOduj6iqTHo/odbi80N0mSQLz5ZCSE2iaZpW5xYeTTNGZ0f+b+c1Dy2G7clCEv2LFsxNPUf0YCOoXR1r09OFmjpEhqyooi4VLsPAPRaF0dfz3zVssKLzzL8kDYtcuGDmLBff0GqUGPiVLBqTEmgvcjOFukqroURbAKeCep0D0bjuYDubMKUeke8qqcz02nfZs9FfHhCmbVQHhCrXYS/KK7RACqylhf2HkFilnrJzvy6JRyFiRa0rrA1l6xel2nwHaU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,104 +94,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 02, 2026 at 01:09:35PM +0100, Yeoreum Yun wrote:
-> There're some random failure for split_huge_page_test when khugepaged
-> collapses pages into pmd again which had split by the test.
->
-> Prevent the khugepaged's collapses for split page by setting the
-> mapped pmd-huge-page with MADV_NOHUGEPAGE before split.
+On Wed, 2 Sep 2026 18:03:39 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
 
-Maybe worth saying that MADV_NOHUGEPAGE doesn't immediately split anything, just
-prevents future khugepaged collapses?
+> Hi SJ and Lian,
+> 
+> On 9/1/2026 5:23 PM, SJ Park wrote:
+> > Hi Lian,
+> > 
+> > On Tue,  1 Sep 2026 14:58:35 +0800 Lian Wang <lianux.mm@gmail.com> wrote:
+> > 
+[...]
+> >> Second, the metric is global while a DAMOS scheme can target one process.
+> > 
+> > Actually it can target multiple processes if those are in single DAMON context.
+> > 
+> >> THPs from other processes or NUMA nodes can satisfy the target or dilute the
+> >> monitored process's changes.  Is this intentional?
+> > 
+> > I think it is intentional.  The user should have the control on collapsing
+> > hugepages, or believe the uncontrolled collapse mechanisms.
+> > 
+> >> If so, documenting the
+> >> scope and testing a background THP workload may be useful.
+> > 
+> > More documentation and testing are always welcome :)
+> > 
+> >>
+> >> The temporal results approach the 10% and 25% targets, while the consistent
+> >> results overshoot the 10% target to about 20% and 45%.  I would describe this
+> >> as control-response data.  TPS, latency, TLB, fragmentation and collapse CPU
+> >> data could further show the workload benefit and cost.
+> > 
+> > Yes, those would be helpful.  That's not mandatory for this simple change in my
+> > opinion, though.  I would let Asier decide whether and when to make and share
+> > such data.
+> The idea of this patch was to introduce auto tuning. I think I submitted thebenchmark results when I sent the DAMOS_COLLAPSE feature.
+> 
+> Anyway, it shouldn't take long for me to get more data. I think it may be useful
+> for people to know the actual results in real application.
+> 
+> SJ, what's the best place to publish all those data? I believe you have more
+> experience sharing this data and which platform is the most useful one.>>
 
->
-> Suggested-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+I'm never an expert in visibility :)  But if I should recommend, I get three
+places off the top of my head.
 
-LGTM, thanks, with a few nits above/below (sorry! :P)
+First, you could simply share the data with plain mail on DAMON and wider
+kernel mailing lists like linux-mm@ and linux-kernel@.
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Second, if the data is matured, sharing those in conferences like LPC,
+OSSummit, FOSDEM or DAMON (nano) Conference would be nice.
 
-> ---
->  tools/testing/selftests/mm/split_huge_page_test.c | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
->
-> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
-> index 86a603692826..4bbad892bc57 100644
-> --- a/tools/testing/selftests/mm/split_huge_page_test.c
-> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
-> @@ -168,6 +168,14 @@ static char *allocate_zero_filled_hugepage(size_t len)
->  	return result;
->  }
->
-> +static void madv_nohuge(void *addr, size_t len)
+Third, if you prefer text, LWN or personal blogs like medias could also be good
+places.  I also maintain DAMON porject blog [1].  Kunwu and Lian actually
+contributed an article to the blog before.  If you want to submit an article
+there, let me know.
 
-Maybe call it disable_khugepaged() to make it explicit that's what this is doing
-rather than eliminating any THP pages in the range?
+[1] https://damonitor.github.io/posts/
+[2] https://damonitor.github.io/posts/tlb_flush_policy/
 
-> +{
 
-Maybe a comment here like:
+Thanks,
+SJ
 
-	/*
-	 * Disables khugepaged from collapsing THPs in range, existing THP
-	 * pages remain.
-	 */
-
-> +	if (!madvise(addr, len, MADV_NOHUGEPAGE))
-> +		return;
-> +
-> +	ksft_exit_fail_msg("MADV_NOHUGEPAGE failed, err=%d\n", errno);
-> +}
-> +
->  static void verify_rss_anon_split_huge_page_all_zeroes(char *one_page, int nr_hpages, size_t len)
->  {
->  	unsigned long rss_anon_before, rss_anon_after;
-> @@ -180,6 +188,9 @@ static void verify_rss_anon_split_huge_page_all_zeroes(char *one_page, int nr_hp
->  	if (!rss_anon_before)
->  		ksft_exit_fail_msg("No RssAnon is allocated before split\n");
->
-> +	/* Prevent khugepaged from collapsing the pages. */
-> +	madv_nohuge(one_page, len);
-> +
->  	/* split all THPs */
->  	write_debugfs(PID_FMT, getpid(), (uint64_t)one_page,
->  		      (uint64_t)one_page + len, 0);
-> @@ -227,6 +238,9 @@ static void split_pmd_thp_to_order(int order)
->  	if (!check_huge_anon(one_page, 4 * pmd_pagesize, 4, pmd_pagesize))
->  		ksft_exit_fail_msg("No THP is allocated\n");
->
-> +	/* Prevent khugepaged from collapsing the pages. */
-> +	madv_nohuge(one_page, len);
-> +
->  	/* split all THPs */
->  	write_debugfs(PID_FMT, getpid(), (uint64_t)one_page,
->  		(uint64_t)one_page + len, order);
-> @@ -275,6 +289,9 @@ static void split_pte_mapped_thp(void)
->  		goto out;
->  	}
->
-> +	/* Prevent khugepaged from collapsing the pages. */
-> +	madv_nohuge(thp_area, thp_area_size);
-> +
->  	/*
->  	 * To challenge spitting code, we will mremap a single page of each
->  	 * THP (page[i] of thp[i]) in the thp_area into page_area. This will
-> @@ -542,6 +559,8 @@ static int create_pagecache_thp_and_fd(const char *testfile, size_t fd_size,
->  		ksft_test_result_skip("Pagecache folio split skipped\n");
->  		return -2;
->  	}
-> +	/* Prevent khugepaged from collapsing the pages. */
-> +	madv_nohuge(*addr, fd_size);
->  	return 0;
->  err_out_close:
->  	close(*fd);
->
-> --
-> 2.43.0
->
-
---
-Cheers, Lorenzo
+[...]
 
