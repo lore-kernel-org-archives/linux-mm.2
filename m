@@ -4,133 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C94AC61DD3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 03:27:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6712C624D0
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 03:28:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F5946B0092; Tue,  1 Sep 2026 23:27:24 -0400 (EDT)
+	id D9C626B0098; Tue,  1 Sep 2026 23:28:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37F7F6B0096; Tue,  1 Sep 2026 23:27:24 -0400 (EDT)
+	id D45C46B0099; Tue,  1 Sep 2026 23:28:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24A696B0098; Tue,  1 Sep 2026 23:27:24 -0400 (EDT)
+	id C5E246B009B; Tue,  1 Sep 2026 23:28:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E2DB26B0092
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:27:23 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5FE41A469F
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:27:23 +0000 (UTC)
-X-FDA: 85167386766.16.402F0D5
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 49C85180003
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:27:19 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kZI5kPyk;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf24.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A30606B0098
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:28:50 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 33DCB1C2513
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:28:50 +0000 (UTC)
+X-FDA: 85167390420.01.5C3D336
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A55A01A0003
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:28:46 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=jciDB06X;
+	spf=pass (imf19.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788319640;
+	s=arc-20220608; t=1788319727;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1v2pL6B5TRGM5v13WI+H6IYvJpdytNXJVEbp9UKzoi4=;
-	b=0n6smSVCs4CdZKsoqHjAE+t8pb9+r1TjiDwmN3W0k5W20R0X0zpPxh7gi93BD/iMnhKvVC
-	hBBcVTZrwRx7kmbj/rqUSpMNPO3C2beo7jjoTlEC4gWS9JX1T6pXDzuAKPDAh5jXbSRlnO
-	94BZsBrWdpyIjla/U945PNeoxuS71ng=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kZI5kPyk;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf24.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=pMvIKLAGFtBlf8v0ZL0jUkwTBxIKdH+TsX1qwT3x62w=;
+	b=7Ta8s8I2zYxJB/TRO4NdiFu6KpORxdVBG/uXfr5SHz3zZ/m+NGCpThsZHmCXyDD/NpxtDe
+	p+9Hf4crjNYeoXAKxo1am2/CoXnpD9XvhMDopMQ0mNIzxHRu7+xRCVbIjIzcbaCKvE6JsN
+	dnrb7TMun/Aftp6dYs2889vAgO80784=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788319640;
-	b=MaQ1WgWnvZoXFQ4BY8RO3y+ETq3p40TZNOgsTP/y13cAaHFb9qAO9ddxSiakpmJMq9a7PY
-	eIMopNg+YbbChyQ4Cwk/Y8SiYhiQGZnjtFWFogt7rJ7x32v/jLrQBrfrxV08VQeOVVun7A
-	Kpbm3gvjUMmnMV7n8KLxpvFIGi5EtCM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788319639; x=1819855639;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=TUJHEOBl3U7XWWW3kQmwva+BBRdNdtlcHkUtD6k5bq4=;
-  b=kZI5kPykEsGy+8P0A11yINzZeuTaSxSbdA05TOKIpaxOjFm88AcZGhpl
-   l6fk3bm7CmSGZkpVoirtkuj76quEcQ8nN51PvAwX++Camdzl3N1qPO6gT
-   K+GL1zdZe8sqA3CIJn6XSFwiBV9ZGE/u2pHGgSkqcCKnMIhxMIPzBv/Iv
-   Bof4S+dQNH1xdP1iRZhFCudsV0AkA7Prrh0mva0v9qtvqC8Cr3G3kJxrH
-   mEIPRpN7gPUHUgECJ2iL0Ub4QJKhrjoU7YWof7B04HK54ZiiJLzz36Xnx
-   zSPUnW8KdMUi+IILNKiCg2Na9fXqEUM3lRgu5RExYUC8wTRhXGJj9DBJQ
-   w==;
-X-CSE-ConnectionGUID: sAyiVUxXRJe4zOtir7xqvA==
-X-CSE-MsgGUID: Ucz5TJ/vQv2Lc+cNOn5c8Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11893"; a="76317682"
-X-IronPort-AV: E=Sophos;i="6.25,257,1779174000"; 
-   d="scan'208";a="76317682"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 20:27:17 -0700
-X-CSE-ConnectionGUID: AGeB1hPEQT+hgLB03500lw==
-X-CSE-MsgGUID: TM+113I7RAS5hRz8VK5CNA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,257,1779174000"; 
-   d="scan'208";a="266677621"
-Received: from unknown (HELO [10.238.2.33]) ([10.238.2.33])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 20:27:03 -0700
-Message-ID: <cb2705d4-8494-41b3-b018-1a1e3d776e17@linux.intel.com>
-Date: Wed, 2 Sep 2026 11:27:00 +0800
+	t=1788319727;
+	b=dUXOzPk7+CVCq7uq7u3wnlCYCpdBD2d+GX0Se0oyq6PW2dSzycNLNXu4FRf5JY1hTTS+Dn
+	1qBqNbGG4dql7JvSMG1M2q4SdR3Kv7WuEZwibbNBbfARb96u0kOgLW2+JAzXVtgM1GRn8M
+	0GZG7HA0UVmdb5uUTr/aeJFkLOQhJN4=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=jciDB06X;
+	spf=pass (imf19.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1788319723; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=pMvIKLAGFtBlf8v0ZL0jUkwTBxIKdH+TsX1qwT3x62w=;
+	b=jciDB06XBViAdt9cHnHT1o69SfhYujgcGby7qdl/8JlTaVvEuuk1YhQf35ZjyTlMqZojz1evNCc/XnW55yjhHL79pL7lWw4qyCTna4mAihKxtDFW6c5oKtgzfKN3DL4v/Wmgf2JDy+ytzwyK01irsBQtTab0LpYdpCP7ZliaWY4=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0XAB4RlG_1788319721;
+Received: from banye.tbsite.net(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XAB4RlG_1788319721 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 02 Sep 2026 11:28:42 +0800
+From: Qinyun Tan <qinyuntan@linux.alibaba.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Dave Chinner <david@fromorbit.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Xunlei Pang <xlpang@linux.alibaba.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Qinyun Tan <qinyuntan@linux.alibaba.com>
+Subject: [PATCH] mm/list_lru: disable memcg awareness under cgroup_disable=memory
+Date: Wed,  2 Sep 2026 11:28:40 +0800
+Message-ID: <20260902032840.30250-1-qinyuntan@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.7
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 11/45] KVM: guest_memfd: Invalidate both SHARED and
- PRIVATE mappings for in-place conversions
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
- Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Fuad Tabba <fuad.tabba@linux.dev>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, linux-coco@lists.linux.dev
-References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
- <20260830-gmem-inplace-conversion-v12-11-85e5fd25252a@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260830-gmem-inplace-conversion-v12-11-85e5fd25252a@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: d1sqz8mb8h8orgo3w3o5c4bqxcg3htxj
-X-Rspamd-Queue-Id: 49C85180003
-X-HE-Tag: 1788319639-360996
-X-HE-Meta: U2FsdGVkX18NPHTzCkFUG/FXmDm7+zcPtbIQb4UscmEYSyQjNoErya+89Oa4WGA1IGLg23+WI6f1wdHQ8sDcqFICq1eWbW9KljCHfVjV2QZNGYADda2YIxNhpwRthxFUZQJjDF1ovmy/DkRSmh7BG03mbI2+N/LqUX+a8K+W4csJKK9H7TsEXnuuFbIGVQb8DSuRufM8Fwq3sOKKvo47HFET1zrhsaDrVTNLgKIUlGdxoyCWO5QOzfMIyz8Yh7Sx99i1pVX72LJ5ey6me6yo5EjXIbdoDmdM+0GwyxCSRqU6lGEiFvDv/bHUjDO6mizr4KtidZ/hX1QRpH5GXtvGTSHvhE5hvJnTAu2oHh07EmIwJc5FjNOLs0KFd9WzGvFRD8btO0bnFBk8H4+DcNmkbDnpVRdNVIOgiqHlVoYyWgBAjFnot1KodCU+b9I0Vqd6fFgs4Dng3DP9dVcKsEeHgbH9EwFp8jJTIS5mbhCzzLHPNYeVJ8WAezvBuZWNK+djyn0cefmgjsI7rU+o0xLLh5x99TrMrZlv7NnKZQnmDI4pKI53bnkVW0rIwS2p4BXr2Ux1Pa9EN2xMNwW3BIQo/cg28FhU3PwhTZLVFOHUiSYWr499IhwZCZBg4aY+80vc6mGFTK12D1vkb7Yy+60Qc9ayTnvwq8/9wc907L2/yVtlPsQ1SyT38Chw8L+lEPKD9PnR/jjW6/hZMN4b6ORQXFwksSVfjIPa1/rDLtOCJ4AlWMHR/ariF43IPJH6aYfEy7NSHAZ3/5e7hcU0rRdM+abSq/M5CnnSzL72lW+ttbzMCY8f6SHKONiDLEv82WBtV7/2jdBf6L4Yp5a8+QZhfn08hWryDH0KIAY839hLX+q6LpbEAvamaGb88/zfsljwc2uzQDFqOEIpQdy7T0RjAnKS5uiZfaEFlLF2kM3ctTDvPUaVPy9nZPClmsMx9ZWEu+AOljJETzHeuaNeVOv
- GCWz2DhC
- C0/khj6bDqKVRNU4Wyu5cOhHSp3u/w/iDb+TxgynnE2AzY1dWwFB0jWNSfhGCMK8+XokVb3NrYR09U79St9Nfat9yuni5FpLvgwOetp51YBkIwx65Vgm8XDj/LOd2+suCvKy+uS+/KRr2A1L73EOYpXCl+MAKZjeb4oSPLg+8UNNz15BNTka27Uyqga8VXEZ+v86OFKX985zGlu4+Ycc34MR6erM1SBtH0u2nhDzsW17F+TUG1DfkjMLws74h6jdN13ZIFf6q5gGrVMuiS75HDG/2Rhr5J+lAEZxGE49IBiURhpTvMtqjPLsbPjJl/I0m1IFxZ3pZX/HvpkG7lkjXRNap7g==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A55A01A0003
+X-Stat-Signature: m4pwqmbqmj1ysx14cxw9kw7y5t4xxunx
+X-HE-Tag: 1788319726-586888
+X-HE-Meta: U2FsdGVkX1+5cxtWQjSeMkHsztI4a7kV4F4p96xmgigsPG5dN66MgU+R/ll2lMfY2RF+w0GHPjXUz+quYnKsmDCwZwOLe7XcRYeGznU7v/Q6WTnr6AknV7xFoQlsw5JokxDVLanNIhvZHYeLoQY4jF6W98QRp228V3mPD/QtIWeAb/g36sRfGeCIFYK6dhxFygyE/irtZafS+sUZ6FMG4W1CthXd3mwtdoSE0ue/8jmplWZ3nus/UmjsXhf6L3+03OlFp2ldjZX/ee5P80XJ/mGgIz4gCmIhKTM9c7cmfo8KXlOLzHtPsdy56PedJJk/LLnq2iSD6UEmsBLBUtw0UIe61WfW3VxJ6Ts682i0WArE792WkAUzFbnQU8+3ZUkxuoJEmKc/0jsySAOCYvedOol42qfgXXj3tiMrlOf/7wb7gDaVe/xHSnX7tBDMAPX/pNNLJbrGb9yJGW2PCYqFZn0t9jhRVNygAnDRwItv0fqE/gJHsCiiJ4UwNwtpASe7iNJ5YdjYtzPEvef0ZxKC+S11AESGQfFcez828HQjk/vlgWxWubU1Vno6LwSyV0Qj1kezZgPtdoZSdVaW8/WGhUKg2EGRMOTxChJLfE4QCBP1uMsXZ+bvJD/hghSkopoEuddD7w80v31//CV3kOO/kYbYciLGUgBLQ89TXt0VKCSTfB236wt0HAWos4xaG8M8kR8tGIJa4dGZIArsUWZ2LKTV7ibNu/59V38tXkCxUf5Eeo7tgp9fCV6251yf8myS2vqEl7EnkH67qNihpo+TgBgytDJDwLhqOTzz9fOEAcPphPYvRJI3em1aa/qc7YRvAfEuk0/FG7ERGsIwVS8cm1QSP2T6zgWp3ou9A7Y/6LtkcG94dgR2Sl8owv34eQTNGX9MS0YjsxfNElibES4alLR8uBC3tKz8k6o79yNRKSXiUVgu95OM97r0ilAFaoKuQMKCbbpbBRUAgLjaZ3u
+ n9UkAFv/
+ YN4KZHBCpXewb3zUmjBJvAFm2VgDptzeQ0Fv09Y9KnrcHtCQuxBnvBgH7qIDXaZk2+5+RMblNgS1uXI9fl6ET1q/7YrDrEl300g35cB0MpTxykJ4Xww+SrngUvI+0TW8im9pZAPPPyTQVux7OYn4XiTt1PsrkPIuWMAIptYvX35x6l9U46cFVEsr8AO3FV/APs09PO6ijgu9kDhctRhzP8bpozWpGUx+Rd5iqVg//MCk04nOrUPj7w+9erWsNB0ea9FfcuxSs83PF2BpeHCapM/E6M6e5kWRGF8v2Q9r9D87C9hFsBdhKWD65z8OkI5prEwx5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,37 +89,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/31/2026 8:25 AM, Ackerley Tng via B4 Relay wrote:
-> From: Sean Christopherson <seanjc@google.com>
-> 
-> When removing one or more folios from a guest_memfd instance, invalidate
-> both SHARED and PRIVATE mappings if in-place conversion is enabled, because
-> stating the obvious, KVM needs to ensure that all mappings to the folio(s)
-> are dropped.
-> 
-> Opportunistically rename the helper to capture that it returns a filter for
-> all gfns in anticipation of zapping only the previous mapping types on
-> conversion.  I.e. when doing in-place conversion to PRIVATE, only SHARED
-> mappings need to be zapped (ignoring that KVM would ideally not invalidate
-> ranges whose attributes aren't changing in the first place).
-> 
-> Note, precisely zapping only the possible mapping types when in-place
-> conversion is disabled is important for functional correctness, not just
-> for performance.  Specifically, if KVM zaps both when SHARED vs. PRIVATE is
-> tracked per-VM, then a PUNCH_HOLE operation on a PRIVATE guest_memfd will
-> incorrectly zap SHARED mappings that have nothing to do with that gmem
-> instance (because they're mapped via a VMA, not a gmem fd).
-> 
-> The incorrect over-zapping of SHARED memory that doesn't belong to the gmem
-> fd requesting the zapping will be resolved in a later patch, where, if
-> in-place conversion is enabled, KVM will use both shared and private memory
-> from the guest_memfd. If both shared and private memory are from the
-> guest_memfd, invalidation will only zap memory belonging to the given gmem
-> instance.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+__list_lru_init() only collapses a memcg-aware list_lru into plain
+per-node lists when kmem accounting is disabled
+(cgroup.memory=nokmem).  When the memory controller is disabled
+entirely (cgroup_disable=memory), mem_cgroup_kmem_disabled() is
+false, so the lru stays memcg aware even though no object will ever
+be charged to a memcg.
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+This is more than a semantic inconsistency.
+folio_memcg_list_lru_alloc() trusts list_lru_memcg_aware() and
+dereferences the folio's memcg, which is always NULL with the
+controller disabled.  The only mainline caller,
+folio_memcg_alloc_deferred(), papers over this with an explicit
+mem_cgroup_disabled() check.  The shmem unused-huge shrinker
+conversion ("mm: shmem: make unused huge shrinker memcg aware") adds
+a second caller without such a guard, so booting with
+cgroup_disable=memory and writing to a huge=always tmpfs oopses:
+
+  BUG: unable to handle page fault for address: 0000000000000488
+  RIP: 0010:folio_memcg_list_lru_alloc+0x41/0xf0
+  Call Trace:
+   <TASK>
+   shmem_get_folio_gfp+0x1cd/0x7c0
+   shmem_write_begin+0x5d/0x100
+   generic_perform_write+0x89/0x2a0
+   shmem_file_write_iter+0x82/0x90
+   vfs_write+0x256/0x410
+   ksys_write+0x61/0xe0
+   do_syscall_64+0x8d/0x460
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+The faulting address is the offset of mem_cgroup->kmemcg_id,
+dereferenced on a NULL memcg in memcg_list_lru_allocated():
+
+  folio_memcg_list_lru_alloc()
+    list_lru_memcg_aware()               <- true, only nokmem checked
+    memcg = folio_memcg(folio)           <- NULL
+    memcg_list_lru_allocated(memcg, lru)
+      memcg->kmemcg_id                   <- NULL pointer dereference
+
+Check mem_cgroup_disabled() in __list_lru_init() so that all
+list_lrus fall back to plain per-node lists when the controller is
+disabled, matching what the shrinker side already does
+(shrinker_memcg_alloc() bails out on mem_cgroup_disabled()).  This
+makes the mem_cgroup_disabled() check in callers unnecessary rather
+than mandatory.
+
+Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
+---
+Applies on top of mm-new.  No Fixes: tag since the commit that makes
+the crash reachable ("mm: shmem: make unused huge shrinker memcg
+aware") is only in mm-new; no stable backport is needed either.
+
+Reproducer, on mm-new booted with cgroup_disable=memory
+(CONFIG_MEMCG=y, CONFIG_TRANSPARENT_HUGEPAGE=y):
+
+  # mount -t tmpfs -o huge=always tmpfs /mnt
+  # echo x > /mnt/f
+
+Without this patch the write oopses immediately as shown above: the
+freshly allocated huge folio extends beyond i_size, so
+shmem_get_folio_gfp() queues the inode via shmem_unused_huge_add()
+-> folio_memcg_list_lru_alloc(), which dereferences the NULL
+folio_memcg().
+
+With this patch the same steps run cleanly: the lru falls back to
+plain per-node lists and folio_memcg_list_lru_alloc() returns early.
+From code inspection the rest of the shmem path handles the NULL
+objcg fine (obj_cgroup_memcg() and obj_cgroup_put() are NULL-safe,
+and list_lru_add() with a NULL memcg lands on the per-node list),
+but I have not exercised the shrinker reclaim itself under
+cgroup_disable=memory.
+
+Discussion: https://lore.kernel.org/linux-mm/20260901115104.2944996-1-qinyuntan@linux.alibaba.com/
+
+ mm/list_lru.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/mm/list_lru.c b/mm/list_lru.c
+index 36662d02ff963..f8be119351cca 100644
+--- a/mm/list_lru.c
++++ b/mm/list_lru.c
+@@ -671,7 +671,12 @@ int __list_lru_init(struct list_lru *lru, bool memcg_aware, struct shrinker *shr
+ 	else
+ 		lru->shrinker_id = -1;
+ 
+-	if (mem_cgroup_kmem_disabled())
++	/*
++	 * With the memory controller disabled entirely, no object is ever
++	 * charged to a memcg, so collapse to plain per-node lists just
++	 * like under nokmem.
++	 */
++	if (mem_cgroup_disabled() || mem_cgroup_kmem_disabled())
+ 		memcg_aware = false;
+ #endif
+ 
+-- 
+2.43.7
 
 
