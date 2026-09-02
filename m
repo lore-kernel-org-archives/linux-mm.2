@@ -4,137 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79ACFC624D3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 14:33:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6CF8C624D6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 14:34:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A38D6B00D1; Wed,  2 Sep 2026 10:33:46 -0400 (EDT)
+	id C5A7E6B00D3; Wed,  2 Sep 2026 10:34:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57A146B00D3; Wed,  2 Sep 2026 10:33:46 -0400 (EDT)
+	id C31A46B00D5; Wed,  2 Sep 2026 10:34:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48FE36B00D4; Wed,  2 Sep 2026 10:33:46 -0400 (EDT)
+	id B202D6B00D6; Wed,  2 Sep 2026 10:34:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 17B596B00D1
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:33:46 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A0CD91A0223
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:33:45 +0000 (UTC)
-X-FDA: 85169066010.24.3A156C0
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	by imf04.hostedemail.com (Postfix) with ESMTP id AA6A140003
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:33:43 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UQ3a1Z51;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf04.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788359623;
+	by kanga.kvack.org (Postfix) with ESMTP id 8EA9B6B00D3
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:34:14 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 310F440245
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:34:14 +0000 (UTC)
+X-FDA: 85169067228.26.5199FD4
+Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9433A100004
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:34:11 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=leWXjE2R;
+	dkim=pass header.d=columbia.edu header.s=lionmail header.b="ee7EKx/E";
+	spf=pass (imf14.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788359651;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gqyxGctT5FdtxpqEQF1rjk19nIvIrXbfFFAKolYzW0I=;
-	b=G3eCQ9wmivuN8bbPOE+Y1NUEeIqUWBya9WuTf1FF/9sBf0mWvvf4wv63nylq07JQ7wuC5P
-	TcyNm0AE5ILXeMsvEWTM4x9h8uohcCp7EMCmCxfsIIOhp8uboB70VpY2C3USBCk/qotTTk
-	ieP++YPfcMFIyM7s9uGsskcQCg44oKQ=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UQ3a1Z51;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf04.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788359623;
-	b=rDAYYOvVukrUBw6uyE0ouydGoeHeh2nhLf7vXuhzjorfDcy8fEiijNO3N1kqX2G290wVsX
-	Ir/xCOCcdN7tcxO2vcEACz5unKof+iVq/mEOlusbnuaTF4CbhqEX//dRdL6RLpVrek6BSN
-	tC53G/9rf7K2pGIYaCWCfg9kRZC3f3M=
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-482f2ee53e7so729275f8f.1
-        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 07:33:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788359622; cv=none;
-        d=google.com; s=arc-20260327;
-        b=sdApYhlEsmTnr/jRLvE6gqS+FywGcTlcj3yFlno3nEFec60OXPLJMKkX43gP8drj9g
-         snGidUZwtmgg44m4TfR8P8MDv5AELGQA44ORdQ7QhyaXHhYEJTEqxhDDKQIN+FNADx9+
-         TaJdOtwPzEPYaB5jD5zavAnAecoIrgmW2p6ViCrCl+bWSWAynMtmuXWcSIgyWefkRIWR
-         KWuCzHu3OfHqvfWfb2b+b1tFn7PGQbgOVtCD4M8rUjy6CKzDk950O69TxJW+OtIFD89B
-         4CX9uJ76vukdhD5vij5k5a0wrbBDQeBf0kOSreO7PEzbQJVfcVULRmrFztiZ86gCc8kH
-         bnJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=gqyxGctT5FdtxpqEQF1rjk19nIvIrXbfFFAKolYzW0I=;
-        fh=KewnQt8I1RGzkGmgAsxpY598ouhBlUDawARPe163as8=;
-        b=KM1FxaOF387uIGJKbDqF1XTAUkalQDIlXkvbXCVPGUW43xTLWY0gZ4WHaa8XxxoGxu
-         N3wbwWb1TyzXPA+p0iX5HyvkK4mgZ7wnS1zGZzBA/MGF3YK2C0DImgkakc/ey+X/285U
-         TZvzpHOoPG/Pq7G49NvUSOHkRhVwi+u4z9pdFvyPmtLJ5C1kcauUFnZ41xX8OBU7TMCk
-         kgET+uOy88vgAjwpzBpviI8b5Y9J6XraySWcpssvSng8ZQfYBLEKBzuDmj+8g1MhYEpJ
-         wqtdZdyOQYQ2l3VxIq+rsYJJPbvBxv3T0OPZFPfTtqj/TMuTm74BRN/aEAeYvpZ/ikSd
-         0s6Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=5nq8F0xboXei8La9m4xhYCwKh6IJ8CtNFoD7hWN6IF4=;
+	b=SGKIKe2dRx0LUq8DQSCL+AdCE9wtLV+ScG7QOw0z2cwj97jUqQ94Tojdmyo1KEXFW/STw3
+	S73E5axOysxbL0iIR2OUbu5sqyYkSJ98rrenkoduhZNJh/G1grEcRCUxMg3Sx9gIUK8TC/
+	Etq6TmDA68odCUI0s/pm4Ne1miHzkkY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788359651;
+	b=3aNMQDmh9pKBOEvVDH6oOXPjCi6V9AGjHFHPlcF1xOB2v130b24CCu8fj1fCPeC2opJKM0
+	aJDcjuKS6stSsoZeFnU4saJIoijBQs2gbrdj27IXvKxMkndVjrPCR/QSlz/z1uncnSIajb
+	27KcaqfUQweo5fzD+sYMew+tcncyP8o=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=leWXjE2R;
+	dkim=pass header.d=columbia.edu header.s=lionmail header.b="ee7EKx/E";
+	spf=pass (imf14.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from pps.filterd (m0167073.ppops.net [127.0.0.1])
+	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 682EWIZU336495
+	for <linux-mm@kvack.org>; Wed, 2 Sep 2026 10:34:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pps01; bh=5nq8
+	F0xboXei8La9m4xhYCwKh6IJ8CtNFoD7hWN6IF4=; b=leWXjE2R9OMgS3Kr0MGQ
+	pxvMVDL8XeBDSu8+tM3NjwSGeKHPK/86EjabJLTaUdwjcOSc6YCNjyAw59bFet6l
+	slMFCA2Jbtpu453vxYOn0S9QBcmFmrc0gq4P2iBRc8CsONhhH153FBkBoZHUFWU0
+	hED/3nH+IC68PvBWJUIgOET0yyDcdzYF58uAeJ7UfWnpaQtEEoHFhzSrg/QLPDKN
+	w1CROv6PeuNr3zPiAYkl3wMFIyaai93LdbcTcmAiDFBqkgXQWZKAFtxMJ+2N9LIM
+	C86ETTwNnCaUqH9PEa3+OitF6/CUInUyrWuWzu72yWxkfSI1+kMD94DLaI3DqLPM
+	xw==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4ge833v191-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Wed, 02 Sep 2026 10:34:10 -0400 (EDT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-92e820609d9so237811685a.2
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 07:34:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788359622; x=1788964422; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gqyxGctT5FdtxpqEQF1rjk19nIvIrXbfFFAKolYzW0I=;
-        b=UQ3a1Z51CqcWkxz1KKIB1t//purWG9oqzRvIDRFXyKfHLt9CBrsB/d7dfoZeW7Pdk7
-         iiu9TELfbzWyma2Rt+Qto7nIoGezzCyOkSK9Kp6SXjnJUaoq0fenFITPKsJckxk37CYM
-         ZcOwjFtZSMOuEptYyfembbEZM45SG4Tt1tFYoQgVNKoEJyF9OBLePl+CzxzVmL/g2gn0
-         9IU5bsiq/iVj0Y3MR6ncXqkbwnpaN261pThVtV+easgvYq4tEhezei37bo7GWoHXmrMt
-         QrUl3BZ4m855y4+uZjMrR/9KcDR99caKZ/+n8vI6l+2WgyZSjjPQCSLEi574WiT03U+w
-         1GwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788359622; x=1788964422;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=columbia.edu; s=lionmail; t=1788359650; x=1788964450; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gqyxGctT5FdtxpqEQF1rjk19nIvIrXbfFFAKolYzW0I=;
-        b=lRB6LovHq07nKzJaToAnd5ui5r+k3usXrvNRSmb7//+tfqLD9LaWzOVPzLlgJUuzBP
-         XRqzLVITyZEro/nur/+EUd85y4HFq22+pEuBHCDIxChmDmHeLIju2rWYsmUFeA7xo7ov
-         MTGG3MHUfonIEwcd5lqppPugpG+2IP2bMEZyYUomluZ6mlSsi1WyOCW4xN/xIebT+fBF
-         A/sMkHq6cm9O3PH8DzooaBAn0WbDqfR8IPOsnSen2P6LSiE7dtz/nR+ImM5U2VwKoKuY
-         49NhRcqKKXvqAliCLiXCp3kS3S3QOZ8+QDxwJGGMwCVIVnou+q2XvioCsCbLiBfav9qS
-         sNXA==
-X-Gm-Message-State: AFuF++kdWkXqkQk6kzeoYjWTixbDkvVKIvHm0nHp/MYd8E3Tt998AdMD
-	KAynQMI+7w/1IWAkCZS+bnQH3fToiOJVC3lUKb4+oBRfaCidmGkiRh43c1/d1J2senZuV4JMKHQ
-	u2zMC4enVpd+in3DrtfFX6eMr9rR1LVw=
-X-Gm-Gg: AR+sD112nSnxWrlr0WZS4Y0ak8AVHx07TBs4c/P3bwqy3ZxWNn31fHYQxAKHhku391p
-	xC4E8WOdjBpmnx6vdlFz0pudDQZolkC4gO1sBNfZ6RIZSyTrst2VG1+Wly6l/22H/I3UoDt34yO
-	yiI1cJEYfo6XNLaLKuqLLzNCDVnkReAzD1FtIBmuR7Q2Tz9j0VAo6b4Xvu7748+eGX9SWgVixLl
-	qwQSqs/eDixaMpVrXS5B/8fqMXY9VdGg22jrrBlDYzJCJj0FkBvxNnXVIadLbPHe9St8Av3aIWD
-	3+jqN68w1D+R2zaM4tqHkKs7RM7H1uUmDOiAlkk9eDBOvgW0zQbeG+mLxZas2LNvuDWwERZCZB9
-	4Mg==
-X-Received: by 2002:a05:600c:621b:b0:499:dbae:86be with SMTP id
- 5b1f17b1804b1-49ce58352ccmr109404795e9.14.1788359621781; Wed, 02 Sep 2026
- 07:33:41 -0700 (PDT)
+        bh=5nq8F0xboXei8La9m4xhYCwKh6IJ8CtNFoD7hWN6IF4=;
+        b=ee7EKx/ELv0bSgEyaa1AUTuo2eufWrgeDh/Z7SAtlHUsTn7CF9nIAqqoy7mziuhxQZ
+         YRci2sKGtqegI1XmZdj5sx901JCZxrQqktB/Aegq0JG9TdVAzLwv7szTwJiE1pMNlRoC
+         Y6e6/3kzUUT2Ul10b0C5mw68Yg8GKFfaTCtpmV1nyuqHbLdNb+Xu0apekwGpgAUC5/3S
+         lAb7iQ12RbxhtD8KVhOX93EMcAd1wTAmK4V2raOt0OeKiJ9wvO77U3u70JKWUDtP/xMS
+         tsmKwsGEWcSBLafoeUPSpJSLc9OA1yelnh+VgGQgRS+A/0vH3nkSaSHdVCZjfw5M2dwu
+         8rHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788359650; x=1788964450;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5nq8F0xboXei8La9m4xhYCwKh6IJ8CtNFoD7hWN6IF4=;
+        b=ZCc+W3JiKLys1f5bfUblAFGtn9s2qo60aXTGGZAmaoweZEFjc87CaO3pslWWs1klEB
+         VBXeACWtdrbMZCJFgdpbPWwmLSqZ7sJaoXDimMNP6bdo0x3H2mumy0M6urH0LCOWiYEi
+         PHY05E2abqNc7xnYGw3RaNHoYlmcDBqUPAg7Zy0AwmXJGMFlHvaSkZTEiuLPrsCPWlMb
+         plmCA9K+ABqNpPfFFvLOfvK7xvBxwTIHJHG1S2AsR3AwEEEIDuUICBg601l3N8HSHAb8
+         2iQJwpwBTdaplQolah5AenxPYOQa/dRjybFTD7ruh+aR+6PbB2ptQQxLlJuxErkz7HjQ
+         I8Kw==
+X-Forwarded-Encrypted: i=1; AHgh+Ro0+BYEutiTqv2pHX/owXvJeMBiTB2PrI9GVMzZBpCkVc921H1toH+tek0lDw4sTkD80HoADDp3qw==@kvack.org
+X-Gm-Message-State: AFuF++kd6PnvTOKYzyLLrO3YNnv1BjeeeEtPhGYIRhkKJ7aa4m2nLWLv
+	/5o/+ymezGS+ZmyQULXmyyRRHdtZzbE7dCTFjqPL0K593VPknW4QNKfn02tUB+tY3ozYdvTC+1y
+	NYBFHoSEQE4ZfizpF92Z2CCyGALHl/1o5qG3ZDC7l19JMUWsH
+X-Gm-Gg: AR+sD13vowJ855mRNuiPc+uFSOIJZ4EGdy4pzXme4uVtCNyWBqgyX/jmLn7jbPgJS82
+	vR+2XeJ/N6YnV58Z3/ZdtUY4GUtL9ksxjK9yqj9EWQBGyBqol8hDd6orfSgdkixRMMgx40t8dcD
+	PmqqjKO47K6BGJe80TR5TkHUKKVNcFsJNZTeFHpahuRCekq5ltUBYSlAv/K6HcNILsY9NjWBDqT
+	GSsScVHGil65bYEc1Y0Que3IHi9Z+YF4NghE7OhTQet1+y9pZRxK/DeKtT6SoWE9vuHv7lnW3sr
+	EY5nHSYBhmL1CZgHiSGuxwyoL/NWSwY+1Yc3NdZWmo1jE19g3Aek7tT8i8pYCSl7mcAqQllO6my
+	E6D6O9jLhj4rT2Yn70B2bEil1OIn8gjohcwdx37ZsjY4nG3YNqeI61EPjSw==
+X-Received: by 2002:a05:620a:3196:b0:92e:71bb:d1c0 with SMTP id af79cd13be357-93960dea964mr622057785a.15.1788359649517;
+        Wed, 02 Sep 2026 07:34:09 -0700 (PDT)
+X-Received: by 2002:a05:620a:3196:b0:92e:71bb:d1c0 with SMTP id af79cd13be357-93960dea964mr621987485a.15.1788359646377;
+        Wed, 02 Sep 2026 07:34:06 -0700 (PDT)
+Received: from [10.207.49.22] (nat-128-59-178-193.net.columbia.edu. [128.59.178.193])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c25d043e6bcsm152362966b.61.2026.09.02.07.34.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Sep 2026 07:34:05 -0700 (PDT)
+Message-ID: <dac0f543-4687-49eb-87ae-500ecf32112d@columbia.edu>
+Date: Wed, 2 Sep 2026 10:34:01 -0400
 MIME-Version: 1.0
-References: <20260827094509.1016740-1-hebaoquan@kylinos.cn>
-In-Reply-To: <20260827094509.1016740-1-hebaoquan@kylinos.cn>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Wed, 2 Sep 2026 10:33:30 -0400
-X-Gm-Features: AcwNN1UFWiuIst1_M2Ly-qV46cbouLxe69zvYrfE_S4pNwJojMnhxWhVG9iKlpo
-Message-ID: <CAKEwX=NNzX=sXdqPATrWw7cw7sdG-vOO5LqjH=JnV1YiZLO5MA@mail.gmail.com>
-Subject: Re: [PATCH 00/16] xswap: extendable swap device backed by zswap
-To: Baoquan He <hebaoquan@kylinos.cn>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org, 
-	kasong@tencent.com, baohua@kernel.org, youngjun.park@lge.com, 
-	hannes@cmpxchg.org, yosry@kernel.org, shikemeng@huaweicloud.com, 
-	chengming.zhou@linux.dev, baoquan.he@linux.dev, david@kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: f3d59agfo6ngs5otgjpdnx9bkzmf3fej
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: AA6A140003
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 01/10] ceph: fix error handling when the OSD client is
+ stopping in ceph_submit_write()
+To: Ilya Dryomov <idryomov@gmail.com>
+Cc: Alex Markuze <amarkuze@redhat.com>,
+        Viacheslav Dubeyko
+ <slava@dubeyko.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Zi Yan <ziy@nvidia.com>, Christian Brauner <brauner@kernel.org>,
+        David Howells <dhowells@redhat.com>, Jeff Layton <jlayton@kernel.org>,
+        ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+        Sashiko <sashiko-bot@kernel.org>
+References: <20260817-remove-wait-on-page-writeback-v4-0-0e5e53d47eb0@columbia.edu>
+ <20260817-remove-wait-on-page-writeback-v4-1-0e5e53d47eb0@columbia.edu>
+ <CAOi1vP8SCZaFTodwm3_c9cFfc4UB5X8J8vF-sxh+4TuhCS8iog@mail.gmail.com>
+Content-Language: en-US
+From: Tal Zussman <tz2294@columbia.edu>
+In-Reply-To: <CAOi1vP8SCZaFTodwm3_c9cFfc4UB5X8J8vF-sxh+4TuhCS8iog@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: HsTYzg3d6FT6I18JymO7up3sHGIJsWK7
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAyMDEyOCBTYWx0ZWRfXxAbnwqsfMfpM
+ XB0Kmh7X0Q93GV4ufsdpJUydRh56ceaORP9YsXvofQRSAfTDx6p3hIwUtsIkjPdiYofxgdQ3DvS
+ tuvCRmi0DzihU3q75HGlYUEGItVYNvcFy8Xpi0slvKdvYpZXdsir
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAyMDEyOCBTYWx0ZWRfXwW68n0g6NSFO
+ 9PDn+6NCb1LCGCJtjlOSFXx75zyGHwngtbwBZFr3P4bN1+2iihys4Ece9i3WmtfGLwVrY1+KUky
+ GjIXN5KsoF9WzyNwr+y9exTX/TE4wn1iIQYbZX3bu1JXXlKkYNQO9Lh+6vhI0GEjm1ugHg9PYMc
+ WoKVVyqfjIAF1XZoDtjm0OAW+JnzEsZqHCkbxTYIiCVxBNjqUHeMlNgMTeXfknjRfGRcK/6B7Bm
+ AUtbb+kfJThTV0duSqqvLT/HUdGW6pdIknuXPolqKdKbsJhJkpAXKMiqGwtUaLL6uPxRG602k1/
+ j1hJaG0sX0J7QLQfkLkNCWJxS7q6KBlTQXmszo6ua4YuJAFXeg3xx8pJcnLKzVtm3zmhvkYuir8
+ SGKfhO7cW853lmaFqnI/m5uCYORQ64NhAJIxKN8Hnt1dIAkKPMJDRC3Obw9nTiDcWeNU7BIEZvG
+ QA+vQ9GSQ8vYMUWmdhw==
+X-Authority-Analysis: v=2.4 cv=ZpPd7d7G c=1 sm=1 tr=0 ts=6a9833e2 cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=XwBYxoxBwSosfWEfMcqm5A==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=jHxIr1HyPKZ_Q5_91PL3:22
+ a=uherdBYGAAAA:8 a=c92rfblmAAAA:8 a=VwQbUJbxAAAA:8 a=TZ2kbKYv5CYyi6T0hQQA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=NFOGd7dJGGMPyQGDc5-O:22
+ a=GvGzcOZaWPEFPQC_NcjD:22
+X-Proofpoint-ORIG-GUID: HsTYzg3d6FT6I18JymO7up3sHGIJsWK7
+X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11894
+ signatures=596817
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=10 suspectscore=0 adultscore=0 clxscore=1015 spamscore=0
+ phishscore=0 impostorscore=10 priorityscore=1501 bulkscore=10 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609020128
 X-Rspam-User: 
-X-HE-Tag: 1788359623-885446
-X-HE-Meta: U2FsdGVkX19q6aeewhzIlQwwkoQBz2UdHuRKYJx7sviqZ6fUXqZ/N9QipmfxzQj6oSvC97Mg0ME/KGpocrjGFAriXi5Ggqon5/61hhaFUKFshpaljztEiYawauVycCMdnzq6KT8/7uXHhlY6gZ3jAWFNjtYzPl9fFXJZscMroOPjZAEGNgODf6jFKfQ9CIPnlAiy7+1NAHEtMA/csw9TsD/5fpDHVdb6DjQGL4C0hoYDYLiblLZWJLuj79FzscDw9ihqOCOHkEan+IdBhWABacSGPs5Xzia6yQPEglwMMjlzlQYrE/zNxmkkOs8McBU7eQ9Q0w1yaWVJ+I0NB9yD6OVoWyjrY0orBRV/aVUctGP+PdDccsfWO1wN2Arz78S0Wd3gBTWR052OAbHwoJwTgnIaFC+K16AG5/1QBWTk91tt3xViQMJt9Gm16n1FRgaqYQr0wr66cO6NFipNGNBwieHGZjjINoxk2GMVB3K52/7/BZ/AWFEY6ajJqlTt+weNxjMeK0zduS4DuFtJ4F7Wupirm79QMV8aAWx7UIf2fh0WHTHffGgjy29jOK5k2KvVvPfCjaoWw+NiwrdMtKWfG95CSgKlP536c+2B2PlJM1u86xU30AmCrDEy2JrA8HMmNBrZDhHinYJdEY9C8CzljCOBlZRapmEsMLJQZFU/ntrmrLOHjuuii/B3ijfrOSbHK3e62j5JZBUiK1f3f8lWmzcBanTsjiXAa1mQPBtzzO490UDX60LQdNFb0+ZZuY3m38aMt5+dmqmuELzAsk8qhKu54tmWfueUPxh9Artf79m6qXo9RASXpChyD2lw+LIEO/Mk6ypOeZx5ZHmBi5+fg7YaVCZCFILgM13fEzRExK6zZtDg3Fop8izCtWenzUJbEsK15QIElTvMqypPdh3bc099R2G1Gefj0E9h6UM04mkuB97ZYGzYxxb7+9oIdg8VFHq4e7mvjynmo01NCXu
- /USN8SSe
- VIrGBgJh3QOES9t7coIEA1x4fZd3nPhllNSHkejktU1Fob8NVywrodBq8pjUcO+rnrbftjgIhSYnKn5I7LOJJg3eO91Dk74sDHK8UBG8XqWTzBPgBM3DFBykdqtfMYQc7x1irI1jTkDLAOaF9Y5Etw/WqLLMWk3aJUI7EtjKmf28R1X8LPqyrC5uIgog29WX5MXt3MpapeQ5xe3evds9aFsHfuobhb4xUbL7IuwTJ/pxbrDplxvMAOzlFeTD1ai1mQN+aFHfJl5U/Tyx2EnQN5H+SVFnfmzvMRbD8cMy2JTR6uj9J5j1WJJYsjNzA4i3eQvMbGwrbdczOMu+eNDPpGU6o88MBMbpB2ZYoT9wfT/QWKDpeOl6urMPJLfzfuENLMb/elXCJJuAL0Gq0ltZ468IMonT5fLkYZRmS
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9433A100004
+X-Stat-Signature: wka4xrtf6sdfnfinhp9sse9sjy9pke6r
+X-HE-Tag: 1788359651-941818
+X-HE-Meta: U2FsdGVkX1889DHaieCIetJjjcw4aaG7a0YgyCBW8KaU1iDGtD/qgaQkFccKxDrwgFXA1Ti9d66l+19nJ3Ti+YsngnyFfxyQM9Kf85+BEAKGX8xE/30/qcGzb0QUTswkk8MUMsZQ94/93DXQw9MQEp7TZ9mPJdUfqj/r4H9l45KXMxf0YDjcgKhjfyG/mFhf1crGu1NSAOhZMwfTa6Kf8pzG+NXqmMChZ9Z433y2DfuusuwQI/V7HIxPR2Wvu+Byc7arGHfrKsTq/0XzgVsDTuxhJPrMnGIuyIlmbvxN72f1gJfcihEfpgFD95tgQfZBnUFpuMsaANok250USDUdiHdeyl2sv/EJCG8F54nKQ43G+opaQL9d+J2mB2dCIi0k2zT09/xyDdB0WLgBOvWbbvH6h5Lj2cAi7K+10aKk2A1+HGwdftXc910B3DoLbyeua41GdIkObdDoMJFVXVJMa0f+/tKPmQiVpyhLkCCbrqNC7XlOHshzwewSv83VcJPZ+d2husirz0EIE4w+ILzF5RabZieXNVzQs2hdg7bU1iVE7eTilO58RlffsgRoUjH0S8E0CVPAJIY4fpZ9tQdw8xjGzaBLAQAvDqO3iq/XE/ztcB0LYd5HVrIqy0+NvxmWgcMZ4gRayxYoh8gU6q4IRlIWbCnYyglBY6D6FQRQC2GXveCj5UfeZPO98PL9dALoNU3e06Zjo//HT2TbW7QcnXfsyo8MQOYak0bVjjisQrWgbYHHxwGLyZYJMZw06I4WHUmbZp5Jq6tCrihlv3Y2i+HWBe74pAp8DNdGttW/UKGxBtZOypPepVe9oPLE1FE+4q6oWlO1gBwkE6x21aqt+O7tvEB9A8J4t0mvuLEsmFai+nRcsxGG4y43bxANHm90Mo05X8vn/1SfIwrwJCh5MxP+/2ENpz0C+foCT6IwEHEHSzDrNvNy3/ckeqKRpcKhv0EDDaGCBV8PggpyY2Y
+ Pwe9jVMZ
+ seH8cfFAVJ3C6rT2hWe5lFprbxKSfcPDXiy5uGeDdcXSX0upHUzzv96kXyhuhBTItMBTTGJ4BXu9unkvcjJBEixqTfqP782Zx+m0dl4wzTY7T5b85arZW7vkIcuYh1SIcATMJ66/u6z3XoNQ34rV5MAKKm885MUcwE6KVbhvk6e1IyRTjL2NQKXf2UsCZt+X/WiPEXEmktnWnchhi2U3QmHFBIHNI4xXCUJdXAuXLINL0QUqmTZS0tKExWWyFToTXszT5ueSsPKByUR4HFTQ+VSNRMU29EqrVADk+jIqXYqFDnYTvrKMJqzWBcm+8kc9O9ttzpLpq52YGV/aGdmm7w/C98+ec/GSk8OegOMutwO1+LN6I0VpuGh5ssWDjyBhqSop/b9S7GzE2RjdD6R4n/Kkh1AlfLFM+xrxIIfpwr2Ou0e9Z+HYHodt9hzsXmwBTiLhTt15JZmwZhYcNrX3gwrGnxWACcKwb3svDi19PvcWBMS3W3nQzUGBWHntbkq7gWB2GULWGh3iirt1e3tWHhxe4RsaKW5uIup+rDVSAdBpNAlNjiQCx05e34Gt1fsbu9Fsaj6pHoHV950JOHwdlQgOAft23xGp9nyQ4BNmtXlRYTWa/JrmPIsbw8Jfu4E29f6PV7z8ltyaL24+BfADeFr6bhU/YTmyPT3+Z
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,177 +186,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 27, 2026 at 5:45=E2=80=AFAM Baoquan He <hebaoquan@kylinos.cn> w=
-rote:
+On 9/2/26 4:44 PM, Ilya Dryomov wrote: 
+> On Mon, Aug 17, 2026 at 9:15 PM Tal Zussman <tz2294@columbia.edu> wrote:
+>>
+>> When ceph_inc_osd_stopping_blocker() fails, ceph_submit_write()
+>> redirties and unlocks the folios remaining in ceph_wbc->fbatch.
+>> However, none of those folios are locked at this point: locked folios
+>> were moved to ceph_wbc->pages[] and removed from the fbatch by
+>> ceph_process_folio_batch(). Unlocking them triggers
+>> VM_BUG_ON_FOLIO(!folio_test_locked(folio)) in folio_unlock(), or
+>> unlocks a folio locked by another task.
+>>
+>> This error path also returns -EIO without fully cleaning up the folios in
+>> ceph_wbc->pages[]: their references are never dropped, fscrypt bounce
+>> pages are never freed, the writeback congestion count is never
+>> decremented, and the pages array is leaked. ceph_wbc->locked_pages is
+>> also left non-zero, so ceph_writepages_start() loops back around and
+>> hits BUG_ON(ceph_wbc.locked_pages).
+>>
+>> Leave the fbatch folios alone, as ceph_writepages_start() drops their
+>> references when releasing the batch, and unwind ceph_wbc->pages[] the
+>> same way writepages_finish() would have. Abort writeback in
+>> ceph_writepages_start() instead of continuing, matching the handling
+>> of ceph_inc_osd_stopping_blocker() failure on entry, as the OSD
+>> client is being torn down and further writeback cannot make progress.
+>>
+>> An LLM was used to verify that the cleanup was comprehensive, and
+>> suggested aborting the writeback instead of continuing.
+>>
+>> Fixes: 1551ec61dc55 ("ceph: introduce ceph_submit_write() method")
+>> Reported-by: Sashiko <sashiko-bot@kernel.org>
+>> Link: https://urldefense.com/v3/__https://sashiko.dev/*/patchset/20260804-remove-wait- 
+> on-page-writeback-v2-0-81f0ab065284*40columbia.edu?part=5__;IyU!!BDUfV1Et5lrpZQ! 
+> WQ0-twAxqcZ2nQ5MBrBDnqIxwPV4RXuFNZvUldEY6jTQafdUjhi46Zgym70Ltd8gwAKpSl92mam7YO- 
+> tlU-7hw$ <https://urldefense.com/v3/__https://sashiko.dev/*/patchset/20260804-remove-wait-on-page-writeback-v2-0-81f0ab065284*40columbia.edu?part=5__;IyU!!BDUfV1Et5lrpZQ!WQ0-twAxqcZ2nQ5MBrBDnqIxwPV4RXuFNZvUldEY6jTQafdUjhi46Zgym70Ltd8gwAKpSl92mam7YO-tlU-7hw$>
+>> Assisted-by: Claude:fable-5
+>> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+>> ---
+>>  fs/ceph/addr.c | 36 ++++++++++++++++++++----------------
+>>  1 file changed, 20 insertions(+), 16 deletions(-)
+>>
+>> diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+>> index 1f77aec8e960..d5a349daf4d0 100644
+>> --- a/fs/ceph/addr.c
+>> +++ b/fs/ceph/addr.c
+>> @@ -1482,27 +1482,28 @@ int ceph_submit_write(struct address_space *mapping,
+>>         BUG_ON(len < ceph_fscrypt_page_offset(page) + thp_size(page) - offset);
+>>
+>>         if (!ceph_inc_osd_stopping_blocker(fsc->mdsc)) {
+>> -               for (i = 0; i < folio_batch_count(&ceph_wbc->fbatch); i++) {
+>> -                       struct folio *folio = ceph_wbc->fbatch.folios[i];
+>> -
+>> -                       if (!folio)
+>> -                               continue;
+>> -
+>> -                       page = &folio->page;
+>> -                       redirty_page_for_writepage(wbc, page);
+>> -                       unlock_page(page);
+>> -               }
+>> -
+>>                 for (i = 0; i < ceph_wbc->locked_pages; i++) {
+>> -                       page = ceph_fscrypt_pagecache_page(ceph_wbc->pages[i]);
+>> +                       fscrypt_finalize_bounce_page(&ceph_wbc->pages[i]);
+> 
+> Hi Tal,
+> 
+> fscrypt_finalize_bounce_page() was removed in 7.3-rc1, so this one and
+> patch 8 need to be reworked now.
+> 
+> Thanks,
+> 
+>                  Ilya
+> 
 
-Ah I think I used the wrong msg-id in my other response:
+Hi Ilya,
 
-https://lore.kernel.org/all/CAKEwX=3DOW6M5n8u3L_oigD3Ffn_BcB2L7p=3DROfmJCxM=
-KQFH7tXg@mail.gmail.com/
+I'll send a v5 today.
 
-My bad. I'll recap my comments here for your convenience.
+Thanks,
+Tal
 
->
-> xswap is an extendable swap device with no backing storage. Swapped-out
-> pages live only in zswap, so the device wastes no disk space and its
-> size is independent of any physical device.
->
-> xswap decouples PTE swap entries from physical backing storage. The
-> cluster_info array is backed by a sparse vmalloc (VM_SPARSE) area that is
-> grown and shrunk on demand:
->
-> - Grow: when cluster allocation runs out of free clusters and the device
->   is below its ceiling, more physical pages are mapped into the VM_SPARSE
->   area and their clusters are added to the free list.
->
-> - Shrink: when contiguous free clusters accumulate at the tail of the
->   mapped range (tracked in O(1) via nr_free_tail), they are unmapped and
->   the backing pages freed.  Shrink is deferred to a workqueue to avoid
->   lock recursion.
->
-> A per-device ceiling (nr_clusters) bounds growth and is adjustable at
-> runtime via debugfs.
->
-> Interface:
->
->   /sys/kernel/mm/xswap/create           write "<percent> [<prio>]" to
->                                         create a device; percent is a
->                                         percent of RAM (0 for the default=
-),
->                                         prio is an optional swap priority
->                                         (default DEF_SWAP_PRIO)
->   /sys/kernel/mm/xswap/destroy          write a swap type to tear down
->                                         a device
->   /sys/kernel/debug/xswap/type<N>_cluster_limit
->                                         read/write the per-device
->                                         cluster ceiling
->
-> Since xswap has no backing, swapped-out pages are stored compressed in
-> zswap: physical writeout is skipped, and zswap writeback is disabled when
-> every swapfile in the system is an xswap device.  xswap requires zswap, s=
-o
-> device creation is refused when zswap is unavailable.
->
-> Naming:
-> =3D=3D=3D=3D=3D=3D
-> I'm going with "xswap" (the "x" for extendable/extension) rather than "vs=
-wap".
-> Chris suggested this name, and this aligns with the "VFS-like swap layers=
-"
-> direction Chris Li described in the first swap abstraction LPC talk
-> (co-hosted with Yosry) the swap ops and the xswap extension interfaces in
-> this series are moving toward exactly that. I don't have a strong prefere=
-nce
-> between xswap and vswap, so if reviewers object to the name, please comme=
-nt.
->
-> Note:
-> =3D=3D=3D=3D=3D
-> This patchset only build the base. On top of this, the subsequent core co=
-de
-> implementation of xswap writeback, rmap etc can be done more easily. E.g,=
- we
-> only need add one field in struct swap_cluster_info to let xs_table point=
- to
-> physical swap entry, or zswap entry etc. On top of this patchset, no need=
- to
-> stir core data structure too much or introduce extra data structure.
-
-It's functionally equivalent. I think it looks cleaner to separate
-vswap-only bits into a vswap-only struct (technically saving 1 word
-for the cluster that doesnt need it too).
-
-That aside, how would writeback, rmap be simpler? The complexity comes
-from the operations around it, not the actual vtable/xs_table
-operations itself.
-
-
->
-> --- a/mm/swap.h
-> +++ b/mm/swap.h
-> @@ -57,6 +57,9 @@ struct swap_cluster_info {
->         u8 order;
->         atomic_long_t __rcu *table;     /* Swap table entries, see mm/swa=
-p_table.h */
->         unsigned int *extend_table;     /* For large swap count, protecte=
-d by ci->lock */
-> +#ifdef CONFIG_XSWAP
-> +       unsigned long *xs_table;
-> +#endif
->
-> Testing (taken on qemu kvm guest with 8G memory):
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D
-> 1. enable zswap and create/destroy xswap device
-> ~# echo 0 > /sys/kernel/mm/xswap/create
-> -bash: echo: write error: Operation not supported
-> ~# echo 1 > /sys/module/zswap/parameters/enabled
-> ~# echo 0 > /sys/kernel/mm/xswap/create
-> ~# swapon
-> NAME   TYPE  SIZE USED PRIO
-> xswap0 xswap 2.3G   0B   -1
-> ~# echo 0 > /sys/kernel/mm/xswap/destroy
-> ~# swapon
->
-> 2. create xswap device and tune the zswap size
->
-> ~# echo "50 10" > /sys/kernel/mm/xswap/create
-> ~# echo 0 > /sys/kernel/mm/xswap/create
-> ~# swapon
-> NAME   TYPE  SIZE USED PRIO
-> xswap0 xswap 3.9G   0B   10
-> xswap1 xswap 2.3G   0B   -1
->
-> ~# cat /sys/kernel/debug/xswap/type0_cluster_limit
-> 1990
-> ~# cat /sys/kernel/debug/xswap/type1_cluster_limit
-> 1194
-> ~# echo 2048 > /sys/kernel/debug/xswap/type0_cluster_limit
-> ~# echo 2048 > /sys/kernel/debug/xswap/type1_cluster_limit
-> ~# swapon
-> NAME   TYPE  SIZE USED PRIO
-> xswap0 xswap   4G   0B   10
-> xswap1 xswap   4G   0B   -1
->
-> 3. under heavy memory pressure tune swap size or destroy xswap device
->
-> ~# stress-ng --vm 1 --vm-bytes 8G --vm-keep --timeout 120s &
->
-> ~# echo 1024 > /sys/kernel/debug/xswap/type0_cluster_limit
-> ~# swapon
-> NAME   TYPE  SIZE USED PRIO
-> xswap0 xswap   2G 2.6G   10
-> xswap1 xswap   4G 182M   -1
-> ~# echo 1024 > /sys/kernel/debug/xswap/type1_cluster_limit
-> ~# swapon
-> NAME   TYPE  SIZE   USED PRIO
-> xswap0 xswap   2G   1.4G   10
-> xswap1 xswap   2G 315.4M   -1
->
-> ~# echo 0 > /sys/kernel/mm/xswap/destroy
-> ~# swapon
-> NAME   TYPE  SIZE USED PRIO
-> xswap1 xswap   2G 1.1G   -1
->
-> I tried create/destroy and grow/shrink xswap device under heavy
-> memory pressure, all passed.
-
-We have something that has performance benchmarks, including on a
-real, production workload:
-
-https://lore.kernel.org/all/20260825153238.2695446-1-nphamcs@gmail.com/
-
-And somehow, we decide to implement a different data structures,
-without concrete numbers to show that it is more efficient than xarray
-(only intuitions)?
-
-At the risk of sounding like a broken record - I have to ask: why
-don't we land use case first, optimize later? Especially since, we
-have data showing that performance is fairly close (better in some
-aspects in fact), AND users who do not want to risk it still have the
-old code and can do A/B testing before they decide to switch?
-
-A lot of the complexity in this patch series comes from the fact that
-you don't get a lot of what xarray gives you out of the box. Which is
-fine for an optimization, but I don't see any A/B data to compare?
-Doesn't that sound like pre-mature optimization?
 
