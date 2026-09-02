@@ -4,121 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31393C61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 13:28:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62BEBC61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 13:29:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DD946B00B0; Wed,  2 Sep 2026 09:28:39 -0400 (EDT)
+	id 79A8B6B00DC; Wed,  2 Sep 2026 09:29:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28E786B00B3; Wed,  2 Sep 2026 09:28:39 -0400 (EDT)
+	id 771B96B00DD; Wed,  2 Sep 2026 09:29:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A4046B00B4; Wed,  2 Sep 2026 09:28:39 -0400 (EDT)
+	id 6B2676B00DF; Wed,  2 Sep 2026 09:29:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E8F916B00B0
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:28:38 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 79CBB1C0035
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:28:38 +0000 (UTC)
-X-FDA: 85168901916.26.D5547C3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 92F9EA0002
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:28:36 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lm0rohuP;
-	spf=pass (imf25.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 3DB466B00DC
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:29:12 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B713916020E
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:29:11 +0000 (UTC)
+X-FDA: 85168903302.12.6A1CCA7
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by imf10.hostedemail.com (Postfix) with ESMTP id EE939C0011
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:29:09 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=TUrxo7F4;
+	spf=pass (imf10.hostedemail.com: domain of 3pCSYagYKCKkbNJWSLPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--seanjc.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3pCSYagYKCKkbNJWSLPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788355716;
-	b=PPLAqSeIHhpq87N7H9pRVASUCWeaXZ0x+V5Jfn8RSs8cBAJeG0ifEL2+wSjeg5ieDsFiOz
-	MFZfwYhU2kHDf77PJGqdLwd/0O07a3PblIsFQUm5ujIR4fOTZHaGq1OE0gDnbEtC6Mkesm
-	bR2FJyN0gcb6X2rgLZ67tc+rQCKbiL8=
+	t=1788355750;
+	b=ONM6kBqCYFX4FP04ZqthDJXLLP2xLRIlHrxKDO0UB0sAPkTO7pQnawZLmEBQjfgG6gRcrr
+	odKVuXmjOZmBfb8ZBYKrvwyfn3pFhfDn2zYhHODucZffIYnoaMXd3JbFWJG3pr9O1jyCsT
+	lowpO90J0GWLHg4QtVkk6g6EYOJlNOY=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lm0rohuP;
-	spf=pass (imf25.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=TUrxo7F4;
+	spf=pass (imf10.hostedemail.com: domain of 3pCSYagYKCKkbNJWSLPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--seanjc.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3pCSYagYKCKkbNJWSLPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788355716;
+	s=arc-20220608; t=1788355750;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dd8siENsqtHhQzXPZF0LKxm97fALr2t5Pd26+e10O2o=;
-	b=JhE+29EYjr8GC7F2fvbpIuLUJjNmS5XGN6xHvjqlcqlfCK4sGFDrNSTCT7ggHp5oR6aVDK
-	BscTPdn45+vFQwu2ded2zmSPW3VRwKWwjB8bZdwXbnW0LLOxFawI6wsB7pN2W0kz6XiJzQ
-	HsHiprm1c8RffYvbTct1L4l83XMSUwQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DE0ED43C58;
-	Wed,  2 Sep 2026 13:28:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F4C1F000E9;
-	Wed,  2 Sep 2026 13:28:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788355715;
-	bh=dd8siENsqtHhQzXPZF0LKxm97fALr2t5Pd26+e10O2o=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Lm0rohuP6ISavxKdLUcodpGsLZ35LIfEfFgviN75v83FXuw7EgygD65gM6GLUyGZY
-	 gDUftNOffZpkrhrXf4H0OLW7BoSl4QFXeuLj+M3LhJ+ZwIeQvNKdj6pgNPN7GBgZBX
-	 FxiHHsWHlUfTuVSUyMly7Z/1mSWzTOFXHqIYSQJr2rnEa3W3VHxf7OB90QKnZU06y1
-	 lXKYJtPkdUJ9yS6Vkaz+NCBaLnQ6ov27PGmV6JrJU792vLc8lTQEnwEJIHiySCHAhB
-	 lrMc05SplsUftNtFpG7F8+Xk4UOgquQKVu+NPvf3jQho1uRyYd0cmtVRnNRksN4Ci0
-	 5zW+xzYq4enxQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Wed, 02 Sep 2026 15:25:57 +0200
-Subject: [PATCH v5 01/12] rust: xarray: minor formatting fixes
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260902-xarray-entry-send-v5-1-d18adae40708@kernel.org>
-References: <20260902-xarray-entry-send-v5-0-d18adae40708@kernel.org>
-In-Reply-To: <20260902-xarray-entry-send-v5-0-d18adae40708@kernel.org>
-To: Tamir Duberstein <tamird@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Matthew Wilcox <willy@infradead.org>, 
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
- Daniel Gomez <da.gomez@samsung.com>, 
- "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2371; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=+omDfc9TL/XAqCElB1ECov07Wz53Bjd9L1vrszIACpU=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqmCQawZH0SGA2p5ke/OiKg/3VhhXiRaJhAB+XD
- XruU96yNTiJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCapgkGgAKCRD6UCkIqsW9
- 0P50D/4iu74xgFGoPRqYXhC28GSw5li89gEWBMELQwbtd37y7DiKm4hsVD/JbvDhAySxNOPcKhY
- 3eKCjD3RcaZfmpBH71/DViwRdJ8tlHt8tTqzlA3ovdM9ck6v7Yfel55OaXcRTHm54+H7BXQSBnD
- 5yMll5okuX3iDijeDKXWdrxUWoJl7hBUEjKK8vybks+uuNFVczRVeXkKwqyT3CyUrHVLn1V4KMP
- RdDBJFxj6OwrIZsiNfcMCudWMQUJG/onFXCx3U68Z+ehIkOob7fgN/VOcJNn2t965Y7sYPUMOoN
- O9//Evx9jynx2ZuRBiF/1UmgahJee8SFUjc9m14llAhhIO+M1PeX6z6hJQJqaldgm9Qdy6jqndD
- OxCyUPALpVpUdvb9XXFJNcxofJxB0BY687RxgRgEu0WztaPZ76QcnNawY2dW0wjdQQhHaHBmrnW
- dWi0dhVHd1pW2zd5mJInLzyJm598EsjCYyAHyRhx0aSmDEhiob9gW7Pwa9K5cGqIOkNu/+2ivLD
- nb3iy7mqO82EfMZUcRabMDSpPI4zLGis+bCLVosrvetRa73KwyXeS9ZIjr4ohalgkD6jn8nnpXR
- O6xbyhDUhDXsje6gCw634mB56nB51QY0Kij2FWVCTRI7wjuNo4UDQtNZJRRWye+JH6AroE8oK/n
- lp4H2sXM7jXm+Mg==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+	bh=ipWz6RsGTzunItby4GsbJNxElWjk3oalhREfbMO20mA=;
+	b=bSMxogCR8/MfvtRMKXHOdnBgMn5BfB4OF7qgBfJsnWz6Q5H/RxfNKj8CwxkEijWgRncp3k
+	cgL7h7e+gH9ouRJzS1mB1p9c6al8hT0ODXASnPmiKwJJnjkbl98BTPnGJKlTov2IBySJES
+	Q5l4mSx0FspckvE4sp6lmx2fRete7YU=
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cec4226c70so13401905ad.1
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 06:29:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788355748; x=1788960548; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ipWz6RsGTzunItby4GsbJNxElWjk3oalhREfbMO20mA=;
+        b=TUrxo7F4cEFvuqdIseAdKIxGC8DX1AO/ljL96rYvM30cyaE6wF0W/AUdvcKqiu2z1t
+         Xfwe3QvMi2SEyJ1nzUiIS8p/ipPefBlksBSWv3rCn3djTwqkfmXUg/ltC9VJejmfQIgh
+         mLq8lwZEch6+99vwVqsoMRDjqKa+xjPDOh2Fq/XUn9wx6BWUMSWJPXbstsrm9K9MareK
+         vxeYhnfGwoN3V0xXImTIk8SOJmpqZwUZMttwM+UcIWLGxqfv1JixndHxjpL5D4Lpu/9T
+         IGMMRw3SkNDNzEg8LPSmRMbQgEQtQwx+Q8dVwTmh5ZH+79d6fUMDkcZny1CV/XW9Vc+N
+         5CYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788355748; x=1788960548;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ipWz6RsGTzunItby4GsbJNxElWjk3oalhREfbMO20mA=;
+        b=T4e+HwAtSzZwNFffw4/xF+6YxPjbH8CxkpX/BqEudb2SMCeI9wT1FCRjTFe3uHystL
+         Zz121GP/haeN+AOF2+lcluhhTtX/I4eE/ozkdeIr7wBjQOnfRUvpA23u+UbaewMOX4sl
+         RllKm+nkVa+KXZAX4c+80CoUrMrKqLKtkk5+W00nq/z+T+XQiIPHaEcEsLbJcrPjB2Uq
+         zQQgPgChrJ1nx2ZVJyBr7qyLYkVquzKb8e1QGYyZyxKtHUvWsZbrxWh/1WuIJyd+gkIR
+         VXT/sCKiObAUFO58h3J1Sve94WdF4t7Nbj/ECChDz0U6Iro+fl8rXEpGMbT95Mn31V4F
+         2cew==
+X-Forwarded-Encrypted: i=1; AKwUvBwyGx0EGpqLSPGh6k+omX6YSqx6NFolqdJvh+eZnkxecEuPkggbZq7HjRuWmsm8DaK+NIBUe2j+Rg==@kvack.org
+X-Gm-Message-State: AFuF++n8GGQRytY5Qa5G9K9z3xXVIuBfGtya0/WRO46Htb5Qc/BQcBKH
+	ozi82s7nHpDLtJr+99XCPnDM1TD2FHNNR4n5PosjhzYst7u5i5ifVDStx02OC8xlb6j5wVs76w8
+	n9pVriw==
+X-Received: from plxe5.prod.google.com ([2002:a17:902:ef45:b0:2c9:b703:3bfb])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3887:b0:2cc:864b:539
+ with SMTP id d9443c01a7336-2daec625d64mr73388455ad.6.1788355748310; Wed, 02
+ Sep 2026 06:29:08 -0700 (PDT)
+Date: Wed, 2 Sep 2026 06:29:07 -0700
+In-Reply-To: <02876cea-5727-2ca4-bead-73659ea6fec4@google.com>
+Mime-Version: 1.0
+References: <02876cea-5727-2ca4-bead-73659ea6fec4@google.com>
+Message-ID: <apgkowGgWeWQPz0m@google.com>
+Subject: Re: [PATCH] mm/folio: EXPORT_SYMBOL_FOR_KVM(lru_cache_drain_for_folio)
+From: Sean Christopherson <seanjc@google.com>
+To: Hugh Dickins <hughd@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Ackerley Tng <ackerleytng@google.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, David Hildenbrand <david@kernel.org>, 
+	Fuad Tabba <fuad.tabba@linux.dev>, Matthew Wilcox <willy@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: EE939C0011
+X-Stat-Signature: kqpjdzj4wrumoyf7pgesiexfhma7c5y5
 X-Rspam-User: 
-X-Stat-Signature: rhaaedjm96ragwunrokwewyc6tuizwef
-X-Rspamd-Queue-Id: 92F9EA0002
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788355716-443545
-X-HE-Meta: U2FsdGVkX18gVsCO2JEwrUgVvhi/AQkL2ArIkacWckqqcSw0YqW/9KINHnKKv8BjctKH8NXc4Yw6pHVcxUw4gYO7azkZHI1h2gFoWGHU4poiwZrrW3+UyRDWrjWpEoCKRQncIq1OnYSrCUiWPSKQFiTyXuC/IKQuup941Ius725BJYYTwI0b7bRn6GS2Q4x6pgDTpCF87pbIvmYzlKI3GwvxhmSL8yp+XYB1zriqiJOo2eu7Q0IlIkrlbSSdWAQGmH+igHv75c6vipYvQD8mslPcUSgNQS5vja83RTZ2kWkJZcyY3qUPkTaV1r2IdTY4r/3bxOZ9QYO62OcwKpezWrKRbIizTqq0gBaB5kP47rNWjBj6LvNCc2ItNCAVUVJoiCUZTEkmYun8CJGtG0FO4os9/4J8C0tblaE1Fjn6EhObboSJcT+LCElW8cXtK8DvqGjPJhE7ve7BN9xXMwKvpuosI7JpfK2h8NEFvJRA8cuIIRIIG8kxyC2gm1T4sRD8lUtSOh6S4I/UdgweNRXjLt2Bte+bJp/KYEzzuSfzNRy0z6RR47LrrLMd+NKlTjTbWe+RWUeM9toLW4ulWZkxVEoTeCfj3c1wqdtNKJSnUOK7NncDP3063+0MexBUBSMkezfjzOJARhb7bs7TBsHfC5FE4TlA4GlBBiyHQwM/hPtC6nF4pEsNTgjdVKTj87nzjcwGJdIfHywGHpd5vnCbDhmxx9kjAz/6olxdtGbQGQPr+lL6jr/44cN25JDisxO86RM7tSxo7Osthlx9ApuaKBn4TUKcpP73cVXcDPTzgNmf0XN4pDG8JUDGT57BhQgDOSlTFTAh9+HGCRPyxqvqt5x86cTpoKuROmWHax5vbiE7uniNTRC3KLA6etxM87o6wlOs2taRCWKnLvVbr1mCCtZL/AVbXve4zPhklDszagQCJ2+sqhNUcwntIysKtgAYmdHwiotnIc4B5TU9imz
- phr1Y5CK
- iSZzAe+Twhd3Nw3sjfBYr2q1eJpX79hlc3kv8MjbALioOMt/ZyhiHUIsvQ4m4iEweWqwJ79BmkIR2yxNHL+2mm4ma8zLu94iuJD5p+daO1Ots+K/7MOfIxJHEuEutGLt4bj+ble/LZ55zlxXkPWkFzHKr2x2afSElXKfQvl63agnipoSmJScFSgDL+4hBfu75SCLCcwnQTBd7J9H85sN/cylWY0gd9cbJt8tD3+qvQy3gFGcHsdzhdWlNcDXvp8/h0Mx+Z1TZQ/+9wbt/8P/v/QGpShVdHqlSljbcoi7xFnGdLO+bZ7yFfRVxREU+MANVmNNWArB/KLfjoHVKrFEp3Jf5NovMr/dNUIxcGvPPoIQbY0l2Ds2Vu3bol5zcU1asyQ7AikyJjilr31lc1QTmw1rtfTVPByILfyu+HEmeYTv18rayzaebp6UX9Q==
+X-HE-Tag: 1788355749-350113
+X-HE-Meta: U2FsdGVkX193nDtVqONQ6rBWRmjpNBpKZPzrzNXkXY303ktcG1ItP0Fgy1QvnvIevjUp9xNp296VgeoYrnJL8rkuRoozXb0p+jUbVI/tgMaOqwgqKuKWHSJIMEQGFB6INsdu+w8ULdpp2Lf6SS/rPvZ5bfHVgg2gqfo2R9aArhx8NzrqVFMd70fnX7Vb42Z3DuWLUPHlaV/ZuLi0jnC8TY8uENs1EslMNtXXPvjDlfzwHt7gNf7u+RsKNVE/Pw8sPSPO/FhquXGaCA9tbritZy3jknpQx8kdHxrIEgHCENLCwIQfEdwWEiPhcp3+RAkqURBdIuO9Jy0qp9Ke1cTQtkfgTjmUy18MI7GMxUEsbPrkrCX7KQfFhg59/GvSw+Pp7xlKlkzDmvTGwRDImqL1/ofHmFVUGgHmqXNEldVHlYvWuk11nT6wtTt7uKnE2bGITBxsm9B33l3Lbab2qtASreeHP72qJZueLpzPxV3NtJ91RLxH6Gt9JSj8LfUU03LQO/K0lkyPDtny2O/O2tjkIczxnuxHmXkgesfzlK5/P0ynb60oqn9uouIiQ/5rvHOvAl8IXFAZLli/cz42zKaWAavD83Fruz7mbLxN6H7bN+oknVXfp4kRb6Nm+eLwA7EKhsyL8B50rFLyys+GDhD/u6erlE4fID3Hmg6YfzOup7X6a0IV3kJDHI5su5EDCsI5zvWlYgQOGRYajKAjG/XXagCeK2l9ndjIrA4joQdGGwubDevPho/DSXpcvmJLfcBS70oL4UB8nsjUCkpczbiM3ke+b3naAJ949x3WqvFzxyiYQE/Bz0UC7Hj4a8HgE2lZYQ/zeQv3GzXX2ZVYY4Jlzup9hPublzkzlZlNLsyDB+wfENZD8P99tamWtt/whX9g5OKYq3NaUhQr5zk6eDKCT5XQsfaccOoPHCbu0EGrzh+m2cITa9LBk40oxyskpYQLPNp/Z+Zlhq5rngIV30j
+ Nz+hUt4Y
+ 6y5GW61xFTpoQbpLZ2aUNOOj0D6V9/kCQjmjeRvv7eGDxz6EyygFxvKmjCWVDWyAIsJPWw2DVKR7zqxJ5lOBtjPJxnPvaP7e8I13Cn2eU1XiV3RlB9L2hdmbyjkD5bv5VQqvHpmw1MTSFOND3FzwNXaProj2J2raHVkkpVw6se4XGqtEw2fBBNPEY6f1EsDDzKGXd3ZFk4E5ooyPUDcMO8BNiB1VJKZI0nErACPR5FSeRO/GvJ6N2+9ZmWBnyhGyskTbTXV2FFQzau5piNskgUZuXxbc0WLBlj+6E4nk4f502vI4vUnDR83eQlH6axTFCXUe/Bqx316S3GifGarIzckbPrNAfd9b9/+wi+u3tePKbP9BiIDswv1llSxyXSmlHUEEFVMmwN/voB9Py+7kvrJVz8CbhmyAxGrm15jsZl9pbVTW0kArFx+b194zj9OebNzW7mEvOiagppkp6oRHWKeP92owAUiKQuuqlbm5OXnUcY2DB4eIns/Gtq79o28jSLZsIr4FX/nvHIselu3/vo6oIJv76Z0fUHtlBsMCd5qdux7FRf+gvtYOmAprVx2qEMHQg726aZdUR1bVusbDu57+QlDD0gJI1UHQIq4AorGFOKJ8mOCrFwWOFeB8I4fnCpJgWXSf6M7kGEUe70KNkQJEcbRYNjzIAYA/QadHBHkFrY1hXGHnzDVgaJ0gnHII4gUmdCHMIX7/ZXL0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,88 +111,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Fix formatting in xarray module to comply with kernel coding
-guidelines:
+On Tue, Sep 01, 2026, Hugh Dickins wrote:
+> From: Ackerley Tng <ackerleytng@google.com>
+> 
+> To simplify independent development in the KVM and MM subsystems, now
+> export to KVM the lru_cache_drain_for_folio() which MM added in 7.3-rc1.
+> 
+> Link: https://lore.kernel.org/lkml/bd6c9c74-e374-a9d3-ba1f-8b6f430894fc@google.com/T/#u
+> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Hugh Dickins <hughd@google.com>
+> ---
+> Hoping for 7.3-rc2, which would make my life easier: thanks!
 
-- Update use clauses to use vertical layout with each import on its
-  own line.
-- Add trailing empty comments to preserve formatting and prevent
-  rustfmt from collapsing imports.
-- Break long assert_eq! statement in documentation across multiple
-  lines for better readability.
+FWIW, squeezing this into rc2 would make my life (marginally) easier as well, as
+this is the only non-KVM change in Ackerley's guest_memfd series.
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Tamir Duberstein <tamird@gmail.com>
-Acked-by: Tamir Duberstein <tamird@gmail.com>
-Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
-Acked-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reviewed-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Assisted-by: LLM
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
- rust/kernel/xarray.rs | 30 +++++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 7 deletions(-)
-
-diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-index 987c9c0c21989..02f93ae1f92de 100644
---- a/rust/kernel/xarray.rs
-+++ b/rust/kernel/xarray.rs
-@@ -4,20 +4,33 @@
- //!
- //! C header: [`include/linux/xarray.h`](srctree/include/linux/xarray.h)
- 
--use crate::{
-+use core::{
-+    iter,
-+    marker::PhantomData,
-+    pin::Pin,
-+    ptr::NonNull, //
-+};
-+use kernel::{
-     alloc,
-     bindings,
--    build_assert::build_assert,
--    error::{Error, Result},
-+    build_assert::build_assert, //
-+    error::{
-+        Error,
-+        Result, //
-+    },
-     ffi::c_void,
-     types::{
-         ForeignOwnable,
-         NotThreadSafe,
-         Opaque, //
--    }, //
-+    },
-+};
-+use pin_init::{
-+    pin_data,
-+    pin_init,
-+    pinned_drop,
-+    PinInit, //
- };
--use core::{iter, marker::PhantomData, pin::Pin, ptr::NonNull};
--use pin_init::{pin_data, pin_init, pinned_drop, PinInit};
- 
- /// An array which efficiently maps sparse integer indices to owned objects.
- ///
-@@ -50,7 +63,10 @@
- /// *guard.get_mut(0).unwrap() = 0xffff;
- /// assert_eq!(guard.get(0).copied(), Some(0xffff));
- ///
--/// assert_eq!(guard.store(0, beef, GFP_KERNEL)?.as_deref().copied(), Some(0xffff));
-+/// assert_eq!(
-+///     guard.store(0, beef, GFP_KERNEL)?.as_deref().copied(),
-+///     Some(0xffff)
-+/// );
- /// assert_eq!(guard.get(0).copied(), Some(0xbeef));
- ///
- /// guard.remove(0);
-
--- 
-2.51.2
-
-
+>  mm/folio.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/mm/folio.c b/mm/folio.c
+> index c02dcea9c03c..50a6dbe55998 100644
+> --- a/mm/folio.c
+> +++ b/mm/folio.c
+> @@ -33,6 +33,7 @@
+>  #include <linux/page_idle.h>
+>  #include <linux/local_lock.h>
+>  #include <linux/buffer_head.h>
+> +#include <linux/kvm_types.h>
+>  
+>  #include "internal.h"
+>  #include "page_alloc.h"
+> @@ -926,6 +927,7 @@ void lru_cache_drain_for_folio(const struct folio *folio,
+>  			*drained = LRU_CACHE_DRAINED_ALL;
+>  	}
+>  }
+> +EXPORT_SYMBOL_FOR_KVM(lru_cache_drain_for_folio);
+>  
+>  atomic_t lru_disable_count = ATOMIC_INIT(0);
+>  
+> -- 
+> base-commiti: cee9395acd8043be0644b25c34bfa86623f2b935
 
