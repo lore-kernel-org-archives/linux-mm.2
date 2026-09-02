@@ -4,98 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9544C624D4
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 17:13:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81F55C624D4
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 17:13:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F30956B00EA; Wed,  2 Sep 2026 13:13:42 -0400 (EDT)
+	id A75BB6B00EF; Wed,  2 Sep 2026 13:13:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE0E46B00EF; Wed,  2 Sep 2026 13:13:42 -0400 (EDT)
+	id A26396B00F1; Wed,  2 Sep 2026 13:13:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD0AE6B00F1; Wed,  2 Sep 2026 13:13:42 -0400 (EDT)
+	id 963286B00F2; Wed,  2 Sep 2026 13:13:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AA5696B00EA
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:13:42 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 35655A02E6
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:13:40 +0000 (UTC)
-X-FDA: 85169469000.14.EDE263C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 934A11C0003
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:13:38 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WeTJKXiE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 73DD76B00EF
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:13:48 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0B6E7A41E5
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:13:48 +0000 (UTC)
+X-FDA: 85169469336.13.EA39992
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 361CD20008
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:13:45 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=PsRDGgd7;
+	spf=pass (imf31.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788369218;
+	s=arc-20220608; t=1788369225;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f3nwn87c4Lpe8vKpDrR7AuSrNKE1exH0c3AsnhQC674=;
-	b=gHyzWuVv7RKH068MW6PFYPnr0rn1mPRttk4cEQlU/4QXM3XoSngTN3ptkPk6wYqrN5Sj1+
-	Hqn+JUJAeWweGJUlKYlidemx+FuodejROsc8CFKXvQr7t0Wrg/fPgg+1b9dJySTogIm5jG
-	92ooKWvSeiH3AyNp3WdawPUhj8roh1k=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WeTJKXiE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	bh=tPYPDYewNeawBi07p/nAs1ibrnpGT5ATVl7N1IHg4KQ=;
+	b=ZVTpIxssaQOl7k9EoQyjFUs7wyucfF7sxKBc38iakslw1+mo9TDor6bRG02cDKJHklJ3i/
+	iMTi0LEP927atbWS8kaN5/50JYnHBwV4fmVoD4S6EtK6Y06M/cT5/lqdDVqc1Eyy0Thj6u
+	sgjPq/ghRIkEgLrEUjcc+NcloOA/v84=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788369218;
-	b=0AYAM5Ch0pLQFjesrnbNPH8v6pMFoUeHI3iHCnkLS0NZdFIGbzQgHFSofmuPTBYXg6c5tj
-	CXxlIH6tzlLcn/CVUXgqNRtF+TabXFuFq7QkmnKItfX0a9pEzQUb62HAG50PDNRy8zlxnj
-	kcl+WSFVYlgTLYhu8zFV1ge1hSzuowI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 27A0E600C8;
-	Wed,  2 Sep 2026 17:13:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E581F000E9;
-	Wed,  2 Sep 2026 17:13:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788369217;
-	bh=f3nwn87c4Lpe8vKpDrR7AuSrNKE1exH0c3AsnhQC674=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WeTJKXiEAAgVeCmFM7XaKiqi5fZ+Y3lNsfTK/Bq8aBKIC4WQ+3BTzNnia733l5ix6
-	 AST44JtLrtspR3BPEwZ5Bs9PfINVL9AmYLP/HSiU9+RZy1JgVRHMQvOEaRMFdLPrTf
-	 ak/FYGrNQeNNyVwzzjHkFmLsmvUD0Lny4efliBEe2ukoey4EtzOS34eWP47aPU6ttJ
-	 MGulQsimJNVx0gyeVXTGMHN/D1V62hIvLy6t/Yq/GPvN9uf2q0tg1ehZLGTDsGclKz
-	 /zFtjpyeeWtfr0RIf3emP1pU98Sf7OXPzmnXeY1tm9ZdBsb/QR0ZM6UEzAge0XPjub
-	 Lqx26o60RmGqw==
-Date: Wed, 2 Sep 2026 18:13:30 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Zi Yan <ziy@nvidia.com>, Nimrod Oren <noren@nvidia.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Hugh Dickins <hughd@google.com>, Nirmoy Das <nirmoyd@nvidia.com>, 
-	Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm: remove min_free_kbytes adjustment for THP
-Message-ID: <aphWz3Ww41jIG7Bs@gremlin>
-References: <20260901190123.3511535-1-noren@nvidia.com>
- <20260901204449.GK3004@cmpxchg.org>
- <C8541A2F-D6A9-41B0-A3FE-52339A6601F0@nvidia.com>
- <20260901220917.GM3004@cmpxchg.org>
- <69C018F5-A1C8-47AD-9567-3497AA6808EC@nvidia.com>
- <20260902160417.GN3004@cmpxchg.org>
+	t=1788369225;
+	b=eEsi5hq/Ph0ljL/1FVAqgKYSIGnsKX5+BXFG28WcPPzsEVaBnU4pkghKBdxST0PuPytakb
+	0sJ53KHO7xJZ5sK+OqgWT9rawVF02w31yLDEGUP7qLPa7jNpBB+zvR6pcDWMJx39AWGsrQ
+	JEcmbcsqYRfo/jRLHOBp3wcw39K0In4=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=PsRDGgd7;
+	spf=pass (imf31.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=tPYPDYewNeawBi07p/nAs1ibrnpGT5ATVl7N1IHg4KQ=; b=PsRDGgd7vGLOAFVuJrqFJWrV98
+	0tjx9MzA56CZk0CQ9Iduswwhk73iSP37LRiKXrX7S4hmKECQ97qJLr9B7AKNwiXyOzirfkVc4dNLh
+	Oqeb84I4URhLK3vKCocw86Ht1T+OAs+oIurk+ssjJZGWhVpYXfjoxxo+XHlxZmdxO6k+DgdtaRZ5r
+	CtYnuS8AUH/AMwYUZ8g1ddjYJUxRTs1jsyG6mJFLmLc7LkuWViqqBzYS5/L+ZSKWD6Y5yjkZ+jM40
+	iBrirKdew1l0TKEW2nf+ihFWZEXpwoPsxxax3wXKMReQFztuoEeQkpdeong/65tdMapiZWIN81Mie
+	qOv61AKQ==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x1oWr-0000000FPZl-3jei;
+	Wed, 02 Sep 2026 17:13:41 +0000
+Message-ID: <e0c0ab31-8f19-437b-b8c0-3ed6963e9064@infradead.org>
+Date: Wed, 2 Sep 2026 10:13:41 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260902160417.GN3004@cmpxchg.org>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 934A11C0003
-X-Stat-Signature: hqcixcbz6htbou4q1w8t3n5ky6x5u37q
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs: locking: Fix bracket
+To: Jan Kara <jack@suse.cz>, Manuel Ebner <manuelebnerli@mailbox.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260902143936.703665-4-manuelebnerli@mailbox.org>
+ <ffoup27vuua4yo5weeyhgdjevtb4c2nkoz45lkk5kzipnnhzsn@wckefd3i2vv4>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <ffoup27vuua4yo5weeyhgdjevtb4c2nkoz45lkk5kzipnnhzsn@wckefd3i2vv4>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: oru4di9x47hnruucysxcttczhbfkuhtz
+X-Rspamd-Queue-Id: 361CD20008
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788369218-182974
-X-HE-Meta: U2FsdGVkX1+PlwhdVYIpUxaVGbjYFIeIdFzx8O4y079zzfYG6rdxchmu67pKLQ0nPvIJHLWUGsHk7kEZpjQGc25stYRjvUAauKnAyU0QxXX6nlJm5aNtclnmxnLve7j+zBO6B7raWzTHwwmFEG5GAa9e5wckWayQ2DFI7/cqy+dvA/aKxlLS9tE0vjR60dMPEx8ZjPr00v9mZ+cli00+CmRQCpPUX9YpbiJVCfv7DlspTug9HqoPlIitsTMXZfeqobrfA3mpozlIz+HRJLmvRKzsq44omYqjxQkN3Qj5P6t0trh4X2XcKmhsG/noxvmHWCLXpVXgcZDXfWBlidEE1rTAi6EVhyHk+f7aPrx69PaTUYrgWx3XwABeu548Zehe713KofYVkyBWGGt6vUe0n7zQDX2ORly7fEwHuahSYkKkPn9ms8MEdWgUzxyfICJOA96s+TfiutK513Hl4tUttzHI3fTMr3Fv9XAHpnNtgDczgoOmU0jQpcx2oSXVdUP/CVspc3te+BTrxdSXH/5fxLDNa2cZWtRb37uONkLaZIBqCMJFkpwpvJ+yoHWjpXyyVTIugPJ6y3xMtEz6iTlg5YbV5DpvnuEvcss9sSD+PE64xsn1zsdYPiYJIq8/WsZRSzOL71n+pUagokTGhcpYSYEnOTko+Hsf1Rx8abfh+wrsVQvfy+f4Mc7tmAyI4/s/+giEiOy5bl9JoWn4vkmD/MFkLb6QO/1ijSFTapPQcwbDGk0CtL2P3dMfGNrMK/okCumOLKazI477QUODn1HyY4w+Ch+wfcv73ENadjyypsBWuW0KoOiIKuYn1RLbcmv8omwbNDwbTIXRE9a7UVIUUBIvNuqCnv0h8IY212+cHeDnITR5qQb67zhnoMZkm0RC7tCYVgZu+fAbSQEa+XvjqIJjoQ20H57z6wlw3ebQFHbsggMt8miT/GXaoI/for/VtMnL/hmhVgT43Dsegnv
- MymR5jla
- 1LKQatHPeARzdBdS5zMmBk/TogyTyibodYbO9A6a+RbuNakz1k06B8m6/BzyfCMtEx5nlENexOl+SO3t7v4mOc9ZAsmgeUZaxqVcK01YGt1UjM3+SjyNi5Hi/bek1OecS04oLXE4VF8UuqkiqOd6Mer3RlWP2KakHjoeMRpbWQm6up3yF8ralARjcYrbINmChHPwGwP5MutmHJhxb0QFsmGWkoNDNXz86mbZ83N/AN+x3SyvkiW5lk2lyMZlow4Nkyq9dtniYf8eyjgf2dV06Xu3odMHZpOcSrnuDJw77Jyc5afz/LrWWiX2/sEN40/aI+92vNpA+KMn67QmXGlrzfdLCDzf0B6h6KyYF
+X-HE-Tag: 1788369225-932639
+X-HE-Meta: U2FsdGVkX19HHCqtYXmzTki2mCGekzbYc4LzkTIcde0rkyZwucZp2bcsrl1v6a5oGXemKRYeefwzE9NJmiGIsQqk/TMDXr+jQCITfW8AbB5lUxD93D3PUbfsr9lEbiaHIWMSduyt04jRx7Woz3tjOE7wIB2fPTyOlJlsFmZ/NO8qUS12OL8SejIf9RlFmanZZc5v6jNpnHImTVPRb6HUKVpwe616Ayeg86r70Gmp7WrDhf2q9Egv6Clk1fwYHIpwIfO56sl1CSYJaSJQBVdPjG/1R+1kLkG6bJOsxWytkRnVcL9UhUeYsDipSdtODmz6fLR7AGEiJtFaTKInEq8vVf0oAtas7ora0+IMK7A3TEJos0D9t0wule9W9CE/R6dzuMhYs/5CQ93o5J4GS67CJcc9qJZ/rg09w5L6BruPSTMtwveEV7Fc9kCSEMMrNIyNE9/vWE4xM98ovgQNU3+4twHGvnyfmXwIAfMvauYeTbFKVAfZ2mcLMsshr2tnOQ2ySCAl85IX2R6/H53uslbqDGxxSknhn2I7OliuocegTSOIN+jN1hXHOy/skNblxLbZ0ZySv8N+hDEiAMPlGlhXl2zebjLfui4G5ZSWC4Yr3XMo6/zoMyRrSflxyW76lmERJGHeoY46Y/Ejm+x4Db0aLlG8eXk34VtDPLwa89w4DE0xBUQht0lvyfMJs0sMjj/N9/Gj6aFzn+UCL/DM1LVy9qd8SNr3chicDx3SeIU1NkXb9AYbxYVye5sFAJmnn4RG72iEWHMWGzOg0I5WyYCBKJHcUKCtYZdoBe4fudIolIcB4kIuCN/lWnJnRbsAv4ZCit2HLfjHCIRnZ4jWWeCPn1YWSaQ6u9YMLEV2WBYHUojrQL1VkNT+xv5HwwJp9DtbOFFu9xM2Azr+Gas/eNvXseUTbVjQjNDOqK87EcbvEFHq92rarmLEhZwNOusM9UksrkOfG9q44OAQX9bpnkr
+ Vo6lYZQ+
+ Dmggv1OVtllq4wXS4bs0tJ1lphAhnbrXW7fC/nJ71EKEK48JW34w5x1H58k++dwy9kHfsPHxoRBKsP8yM7SQiPoMAHAbV5c+KamcZn8ALReRsbA4nK46nLRQ2FyStrEEgxfn9HgYvHOw+H4SAXlT2qcXjmsIAMAZ3qgPREUtD0dCsd+mMxWh7aLPMCOwh0QQ3XYLvHbnTQcXuUYQCCzBg1P+vDfYMWlNXhFleavr1O5AxitHbB5y+cANV8t2ow6Cb1eXqerLF3tdCYgvBmCd5yzuFQ0691ED5p07ZPyzL8uLdcQF+E5MRYq+r0GmyEOp+SpYe7pQx0GaG8IrI+5yoZhfGJIVMpJrDn6QlWh/j3KFuY5hgfkhOc0E09OznJ2d3/BYifHGokR89NSVMESei5BRHWw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,121 +95,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 02, 2026 at 12:04:17PM -0400, Johannes Weiner wrote:
-> The idea is that the pageblock maintains contiguity for the largest
-> size you routinely expect to allocate.
->
-> The page allocator is very passive right now, and it doesn't work
-> super reliably. But even in the current regime, smaller blocks have a
-> better chance of containment.
->
-> For example, when the ever-growing page cache runs out of movable
-> block space, it spills into unmovable free space. When the next
-> unmovable request finds no space, it runs LRU reclaim - which is more
-> likely to free space in one of the many movable blocks. And so the
-> next block is poisoned. Smaller blocks have a better chance of filling
-> up natively, means less pressure to spill into incompatible ones.
 
-It strikes me that a lot of THP problems are really compaction problems.
 
->
-> And the higher min_free_kbytes, the more likely there are still native
-> options when the zones are down to the watermarks. E.g. better odds
-> there is still unmovable free space, you just need to reclaim some
-> movable/reclaimable space elsewhere to satisfy the watermarks.
+On 9/2/26 7:58 AM, Jan Kara wrote:
+> On Wed 02-09-26 16:39:38, Manuel Ebner wrote:
+>> Remove needless '(' from code block.
+>>
+>> Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
+> 
+> Looks good. Feel free to add:
+> 
+> Reviewed-by: Jan Kara <jack@suse.cz>
 
-I mean in general, yes, but the question is how much. This isn't really an
-argument for retaining what we have, and as you say below, it's not really
-clear what how much is.
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
 
->
-> I've been working on making this more robust with the huge page
-> allocator / defrag_mode stuff: instead of falling back and poisoning a
-> block, invoke reclaim/compaction to produce a neutral block that can
-> be converted entirely.
->
-> It's the same idea as the higher min_free_kbytes and watermark
-> boosting, but it is more targeted at the end result: readily available
-> space in compatible or convertible blocks.
+> 
+>> ---
+>> Should I also replace ')(' with ') (' as it is in the second code block?
+>> It would improve readability in my opinion.
+> 
+> Dunno, at least I'm used to the way which is written here :)
 
-I wonder whether compaction needs to be improved before we can do that
-sanely?
+I agree - this looks typical to me.
 
->
-> But with that active regime, oversized pageblocks are even
-> worse. You'd pay ongoing compaction work to produce a level of
-> contiguity that you don't actually need.
+> 
+> 								Honza
+> 
+>> ---
+>>  Documentation/filesystems/locking.rst | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/Documentation/filesystems/locking.rst b/Documentation/filesystems/locking.rst
+>> index 844d65eb4..1598cf555 100644
+>> --- a/Documentation/filesystems/locking.rst
+>> +++ b/Documentation/filesystems/locking.rst
+>> @@ -27,7 +27,7 @@ prototypes::
+>>  	int (*d_init)(struct dentry *);
+>>  	void (*d_release)(struct dentry *);
+>>  	void (*d_iput)(struct dentry *, struct inode *);
+>> -	char *(*d_dname)((struct dentry *dentry, char *buffer, int buflen);
+>> +	char *(*d_dname)(struct dentry *dentry, char *buffer, int buflen);
+>>  	struct vfsmount *(*d_automount)(struct path *path);
+>>  	int (*d_manage)(const struct path *, bool);
+>>  	struct dentry *(*d_real)(struct dentry *, enum d_real_type type);
+>> -- 
+>> 2.54.0
+>>
 
-I agree having 512 MiB page blocks on 64-KiB arm64 is a bad idea, but I
-feel like the entire mechanism needs some degree of rethinking before that
-kind of change is done.
-
-Like I said in my other reply, I see this problem as consisting of the
-short term (resolving real world pain people experience now) vs. the long
-term (reworking compaction, reclaim, and how page blocks function).
-
->
-> > > Seems to me the excessive min_free_kbytes is just a symptom of a
-> > > deeper problem.
-> >
-> > Yes, our anti-fragmentation mechanism does not work as we expected,
-> > so that we need an excessive min_free_kbytes to get khugepaged working.
-> > I wonder why reclaim cannot get the extra free memory instead of
-> > reserving it via min_free_kbytes. Maybe we need a watermark boost
-> > when some consecutive THP allocations are seen to achieve similar
-> > effect of boosting min_free_kbytes?
->
-> I'm just wondering what the easiest way forward is to fix the ARM 64k
-> page problem.
-
-I mean you're not alone :) we've had a whole host of proposals all of which
-were rejected, and you just rejected another...
-
-This is why I suggested the 'if you are concerned about reserves being >X
-then cap them at X' proposal.
-
-(v2 of this patch)
-
-https://lore.kernel.org/linux-mm/20260831075635.2244437-1-noren@nvidia.com/
-
-That way nobody is changed, and only really huge page size gets capped.
-
-I mean that's still a possible short-term way forward given this approach
-was rejected?
-
->
-> Yes, optimally, reclaim would work to satisfy compaction space by
-> itself. We've seen it fail at that before, though.
->
-> How critical set_recommended_min_free_kbytes() is today is a question
-> that neither of us has a clear answer to. It's from 2011 and a lot has
-> changed. However, knowing Andrea, I'm willing to bet he added this
-> based on seeing a need in testing data. And I would actually expect it
-> to work better now with proactive compaction, since that has a better
-> chance of turning low-order chunks of that volume into pageblocks that
-> can be converted instead of needing a poisoning steal.
->
-> It's a change of long-standing behavior for everybody. It has a
-> regression risk and requires careful evaluation and testing.
-
-See other mail for thoughts on this :) I mean I share your concerns, but I
-worry that we continue to persist in doing things because 'that's how they
-were always done'.
-
->
-> Meanwhile, adjusting the pageblock size on 64k page arm configs has a
-> much smaller blast radius, appears to be the right move ANYWAY given
-> what pageblocks are for, and makes the min_free_kbytes a non-issue.
-
-Well it doesn't make it a non-issue, it redefines the size of page blocks
-while the rest of the THP code continues to treat PMDs as first class
-citizens.
-
-I wonder if Kiryl's work to make PMD _not_ be the 1st class citizen of THP
-will make such a change more reasonable.
-
-Perhaps he has thoughts?
-
---
-Cheers, Lorenzo
+-- 
+~Randy
 
