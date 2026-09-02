@@ -4,124 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83837C624D4
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 17:09:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9544C624D4
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 17:13:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C0AB6B00ED; Wed,  2 Sep 2026 13:09:42 -0400 (EDT)
+	id F30956B00EA; Wed,  2 Sep 2026 13:13:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8705A6B00EF; Wed,  2 Sep 2026 13:09:42 -0400 (EDT)
+	id EE0E46B00EF; Wed,  2 Sep 2026 13:13:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 760206B00F0; Wed,  2 Sep 2026 13:09:42 -0400 (EDT)
+	id DD0AE6B00F1; Wed,  2 Sep 2026 13:13:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EA6936B00ED
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:09:41 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 39E4712032F
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:09:41 +0000 (UTC)
-X-FDA: 85169458962.05.8D7A183
-Received: from mta1.migadu.com (out-40.mta1.migadu.com [95.215.58.40])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E92381C0009
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:09:38 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AA5696B00EA
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:13:42 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 35655A02E6
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:13:40 +0000 (UTC)
+X-FDA: 85169469000.14.EDE263C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 934A11C0003
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:13:38 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DBKs3ZGx;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.40 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WeTJKXiE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788368979;
+	s=arc-20220608; t=1788369218;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=520V5YZKa4W4p+rS1XuM5gpyArdQHv9WMOMWdi+ZzB4=;
-	b=6tm8yEuHhSArn03QbVNjeFyupK76PqZfW5O7VA4SDkjD9gf8Yq7Bc0Zg693dTExa3Z4Adr
-	DjARTruTFve+HJn9FpBnUwRxtQwVDn0F3d8HR26Oyo99/d8X45RbZ4bu3QUGwCDiplE8AD
-	y9HXAXuIeF9UhqgeYSlcd1qvNclO/7I=
+	bh=f3nwn87c4Lpe8vKpDrR7AuSrNKE1exH0c3AsnhQC674=;
+	b=gHyzWuVv7RKH068MW6PFYPnr0rn1mPRttk4cEQlU/4QXM3XoSngTN3ptkPk6wYqrN5Sj1+
+	Hqn+JUJAeWweGJUlKYlidemx+FuodejROsc8CFKXvQr7t0Wrg/fPgg+1b9dJySTogIm5jG
+	92ooKWvSeiH3AyNp3WdawPUhj8roh1k=
 ARC-Authentication-Results: i=1;
 	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DBKs3ZGx;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.40 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WeTJKXiE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788368979;
-	b=XU+sXh05XYbiYwa/J26rFvB7x8BuASQiUurjpG6bvLCteUhE24Zk0mhyT9wldlJvKjn4I8
-	kVRfUzpQ+c6OO+uUcmSeNxstVKnlJGuDXhgeCeDwnBbOPSUY+ntdLA3p0tmg7YfdbQznGI
-	SCG/KEOva4tFPxEUmczi+J5QT71X814=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ZFXv+XpeuJG4l4p41D/Mf1mufjNw3LILnzU9t7FD6bk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788368976; v=1; x=1788973776;
- b=DBKs3ZGxMBqZGCGiWFmqE9V/6QHGQ8HF2QIDG7PB32zdiZX/GhH5bO1f4gTKnRFwXnq1b6Mv
- nnwZt2NOftB4AX5OKSGG2ogRABIw4ttJg3gT30Xrmi/2cfuuF09vMfDlFRwzPF0dmOGIt8wlSfw
- qHApdOToZWnvwfU2hb9LJNUs=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id c8ccc08d494f655b;
-	Wed, 02 Sep 2026 17:09:35 +0000
-X-Mizu-Trace-ID: c8ccc08d494f655b
-X-Migadu-Flow: FLOW_OUT
-From: Usama Arif <usama.arif@linux.dev>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Kairui Song <kasong@tencent.com>,
-	bhe@redhat.com,
-	vgoyal@redhat.com,
-	dyoung@redhat.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Baoquan He <baoquan.he@linux.dev>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Jan Kara <jack@suse.cz>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Dave Young <ruirui.yang@linux.dev>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	kexec@lists.infradead.org,
-	linux-doc@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 14/14] mm/page-flags: remove PG_private
-Date: Wed,  2 Sep 2026 10:09:27 -0700
-Message-ID: <20260902170928.2227054-1-usama.arif@linux.dev>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260831-remove-pg_private-v2-14-3668159cd9e8@nvidia.com>
-References: 
+	t=1788369218;
+	b=0AYAM5Ch0pLQFjesrnbNPH8v6pMFoUeHI3iHCnkLS0NZdFIGbzQgHFSofmuPTBYXg6c5tj
+	CXxlIH6tzlLcn/CVUXgqNRtF+TabXFuFq7QkmnKItfX0a9pEzQUb62HAG50PDNRy8zlxnj
+	kcl+WSFVYlgTLYhu8zFV1ge1hSzuowI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 27A0E600C8;
+	Wed,  2 Sep 2026 17:13:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E581F000E9;
+	Wed,  2 Sep 2026 17:13:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788369217;
+	bh=f3nwn87c4Lpe8vKpDrR7AuSrNKE1exH0c3AsnhQC674=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WeTJKXiEAAgVeCmFM7XaKiqi5fZ+Y3lNsfTK/Bq8aBKIC4WQ+3BTzNnia733l5ix6
+	 AST44JtLrtspR3BPEwZ5Bs9PfINVL9AmYLP/HSiU9+RZy1JgVRHMQvOEaRMFdLPrTf
+	 ak/FYGrNQeNNyVwzzjHkFmLsmvUD0Lny4efliBEe2ukoey4EtzOS34eWP47aPU6ttJ
+	 MGulQsimJNVx0gyeVXTGMHN/D1V62hIvLy6t/Yq/GPvN9uf2q0tg1ehZLGTDsGclKz
+	 /zFtjpyeeWtfr0RIf3emP1pU98Sf7OXPzmnXeY1tm9ZdBsb/QR0ZM6UEzAge0XPjub
+	 Lqx26o60RmGqw==
+Date: Wed, 2 Sep 2026 18:13:30 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Zi Yan <ziy@nvidia.com>, Nimrod Oren <noren@nvidia.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Hugh Dickins <hughd@google.com>, Nirmoy Das <nirmoyd@nvidia.com>, 
+	Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm: remove min_free_kbytes adjustment for THP
+Message-ID: <aphWz3Ww41jIG7Bs@gremlin>
+References: <20260901190123.3511535-1-noren@nvidia.com>
+ <20260901204449.GK3004@cmpxchg.org>
+ <C8541A2F-D6A9-41B0-A3FE-52339A6601F0@nvidia.com>
+ <20260901220917.GM3004@cmpxchg.org>
+ <69C018F5-A1C8-47AD-9567-3497AA6808EC@nvidia.com>
+ <20260902160417.GN3004@cmpxchg.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260902160417.GN3004@cmpxchg.org>
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E92381C0009
-X-Stat-Signature: 89z7pkpzzf6dm4t8xyohhbcghyhibpjg
+X-Rspamd-Queue-Id: 934A11C0003
+X-Stat-Signature: hqcixcbz6htbou4q1w8t3n5ky6x5u37q
 X-Rspam-User: 
-X-HE-Tag: 1788368978-669385
-X-HE-Meta: U2FsdGVkX18BERFBZcUSOmuMkdsShskrsqMMvr8RpLqdDEQvphocxjQO4PtXfKm/LLqMUC4eHK7zvAzrkdGdvb73cdbEZZeZZzRFIvIVW3erqKHSq7uQukkgM6IuMnxDtOqJnChhxD/MXQuiw6SA9e0zB6T4PECgrrViiwi4weBsFGJIZQogTAIt0BAGvcK5nhjKEPffrgDRxh5oG7A3MK8aBkqcvRoxZSmshuNCZxjRidu2zgbfCOq3FXJlwFpPedHqQ6IlKp1Cq/ve7v8nVw4c1dvauT/Vx/YHVCuBU0j9kMppJhPxPg83MgZ+N0Rxy/j5DgtaFwQx/sKYE9KnPrzc7ca3uDm9WdKvMSAFgjsNulSHjucIB9Nm+W7X/Tyx3rldiagKMdGesdO7/NZ5Ht0XhAupBLxFUpiUhmJtTFn2wqZCD8ObeqmyBDS+vUXzUOLjccZ5OJSmkCg1B1e60tZj9LD7GD1Sn4K3dSIYc9FSGgwPYtfB6D5va86MzuWdA23RYptDgu9L0T/k+hHZRb2iyJQdXCmL+YFPgHFtDpIKKE4PI+IUiFh/mvSm5hKDq3Ewx7Gznas2YKvTgRTRzF4d246SI5vmD/3h4XoGbSSbmYr2CBPQFRFZV6GEPHiuHjmMXp64mkHmZJNuSqhCZx2foTHFNJtzxQnKQBSV/1sViYhyKPI2w/+8v+5UfchvjKP+wTgBW+dglAAN8TNlTxN0Tge0cz0+z716B+ZoKz6wOmgPtABdM/IxLUBrOwMp0MTZcXpbOyiwEdsH9BT+e9WzPBATNeR5zrvQvqdyDaXG0cYtV9B3GuUGt1ukbQZSD2HpuDeXL3/Z7cKTMVaDXomUGNlqaVCSSe8Tfb4TrDBK48+BvI4mQDqgZURnr/wr+DHH78bdkYRfA6P4zvaB1iQeOpRnCd/RDEV8FYIlyjGIKWjCQ2MNPv2TYdLwfkJ0t+/0FNeVXSVPWcYq8/0
- l2y9aLK7
- m2zqu/XZjmdUbfrjnVmNHXqj/TCWAfo8QCzJtVIchY7SIhx0xU2uJOW5B0zPwFk5vmI90kFOiCClvc6lZdS1UuBUunKf2DO60eFrAbuots6tRQG+pPOY0ybDGJw3D0RCUMmX4acvB2ETK05e9FXYI7SzgYPhhVPxJk145e4XgEZlp2/pQR5CgyUp/r9gxD7ZEWAoJsTQH+qrouLIW24FQQ3a/JJahYPv8fhau5sagC5zu15fMFK/hAQeuZ4P4pIrizfxeIsp36JjCvuv1n4pEAlHweM8HkV+q+EqpsX9ASQ0VWmSWyzp0PqOO/pbvgrrjntfQKJag7i/871cQi04hPth0dCvZ8aeN3R71hdBA0/7bqIQfQE5ON9FH46HkWX/V+DcTBD2ZtlxxTOUOlYeoLTk6Xa7Kfss49fT30dsF+wr54l83DjlqZSBTisUIbWkTj24fCAaBDHde+Yi/dU3BJrKZPgfwEgW13IYM+pSXqK09F8wXoUEtqh6cU9j2hcuMN0E4dmRy98ErotV/dcqUlZ/SZqrwdX5sKawE7sZESIO/tBOBAfFtDKVwlQva0ODvXapIfA3hJx7Fy2kGJ/EfscGse+/75nYHIYaVB06t0lalPxemKafWORtQ/kgTqJp+qbs2xnLymw317fDA2whuJknKXDyorKUVm776A1H5tVcFGdbNdP4Tpk6+uVLLdwPeAJ6aPjkZRmMOiEzrYDve1d1pW3u7VLp96kAQmFHWdMUsPafLPOYLTa2ic2vLTHYQ4LlyV+lL0L5gSswsfGk30JaZQUdmhoxQb3P6IDcZ0sotlD45zc6ojtBuZPSYJi5gPmmlno5Ai+k7dMhbJhTbzqBb/3Ee5cKG/7T9EQxj/DblHgjtUAMn5QYi6Q==
+X-HE-Tag: 1788369218-182974
+X-HE-Meta: U2FsdGVkX1+PlwhdVYIpUxaVGbjYFIeIdFzx8O4y079zzfYG6rdxchmu67pKLQ0nPvIJHLWUGsHk7kEZpjQGc25stYRjvUAauKnAyU0QxXX6nlJm5aNtclnmxnLve7j+zBO6B7raWzTHwwmFEG5GAa9e5wckWayQ2DFI7/cqy+dvA/aKxlLS9tE0vjR60dMPEx8ZjPr00v9mZ+cli00+CmRQCpPUX9YpbiJVCfv7DlspTug9HqoPlIitsTMXZfeqobrfA3mpozlIz+HRJLmvRKzsq44omYqjxQkN3Qj5P6t0trh4X2XcKmhsG/noxvmHWCLXpVXgcZDXfWBlidEE1rTAi6EVhyHk+f7aPrx69PaTUYrgWx3XwABeu548Zehe713KofYVkyBWGGt6vUe0n7zQDX2ORly7fEwHuahSYkKkPn9ms8MEdWgUzxyfICJOA96s+TfiutK513Hl4tUttzHI3fTMr3Fv9XAHpnNtgDczgoOmU0jQpcx2oSXVdUP/CVspc3te+BTrxdSXH/5fxLDNa2cZWtRb37uONkLaZIBqCMJFkpwpvJ+yoHWjpXyyVTIugPJ6y3xMtEz6iTlg5YbV5DpvnuEvcss9sSD+PE64xsn1zsdYPiYJIq8/WsZRSzOL71n+pUagokTGhcpYSYEnOTko+Hsf1Rx8abfh+wrsVQvfy+f4Mc7tmAyI4/s/+giEiOy5bl9JoWn4vkmD/MFkLb6QO/1ijSFTapPQcwbDGk0CtL2P3dMfGNrMK/okCumOLKazI477QUODn1HyY4w+Ch+wfcv73ENadjyypsBWuW0KoOiIKuYn1RLbcmv8omwbNDwbTIXRE9a7UVIUUBIvNuqCnv0h8IY212+cHeDnITR5qQb67zhnoMZkm0RC7tCYVgZu+fAbSQEa+XvjqIJjoQ20H57z6wlw3ebQFHbsggMt8miT/GXaoI/for/VtMnL/hmhVgT43Dsegnv
+ MymR5jla
+ 1LKQatHPeARzdBdS5zMmBk/TogyTyibodYbO9A6a+RbuNakz1k06B8m6/BzyfCMtEx5nlENexOl+SO3t7v4mOc9ZAsmgeUZaxqVcK01YGt1UjM3+SjyNi5Hi/bek1OecS04oLXE4VF8UuqkiqOd6Mer3RlWP2KakHjoeMRpbWQm6up3yF8ralARjcYrbINmChHPwGwP5MutmHJhxb0QFsmGWkoNDNXz86mbZ83N/AN+x3SyvkiW5lk2lyMZlow4Nkyq9dtniYf8eyjgf2dV06Xu3odMHZpOcSrnuDJw77Jyc5afz/LrWWiX2/sEN40/aI+92vNpA+KMn67QmXGlrzfdLCDzf0B6h6KyYF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,175 +103,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 31 Aug 2026 15:25:37 -0400 Zi Yan <ziy@nvidia.com> wrote:
+On Wed, Sep 02, 2026 at 12:04:17PM -0400, Johannes Weiner wrote:
+> The idea is that the pageblock maintains contiguity for the largest
+> size you routinely expect to allocate.
+>
+> The page allocator is very passive right now, and it doesn't work
+> super reliably. But even in the current regime, smaller blocks have a
+> better chance of containment.
+>
+> For example, when the ever-growing page cache runs out of movable
+> block space, it spills into unmovable free space. When the next
+> unmovable request finds no space, it runs LRU reclaim - which is more
+> likely to free space in one of the many movable blocks. And so the
+> next block is poisoned. Smaller blocks have a better chance of filling
+> up natively, means less pressure to spill into incompatible ones.
 
-> folio->private != NULL indicates a folio carries private data, replacing
-> PG_private. All PG_private users are converted. Remove PG_private and
-> reserve the space as __PG_folio for future use.
-> 
-> Also update files in Documentation. hugetlbfs_reserv.rst is outdated and
-> left unchanged. It should be rewritten.
-> 
-> Assisted-by: Claude:claude-opus-4-8
-> Assisted-by: Codex:gpt-5
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> To: Andrew Morton <akpm@linux-foundation.org>
-> To: Baoquan He <baoquan.he@linux.dev>
-> To: Mike Rapoport <rppt@kernel.org>
-> To: Pasha Tatashin <pasha.tatashin@soleen.com>
-> To: Pratyush Yadav <pratyush@kernel.org>
-> To: Jonathan Corbet <corbet@lwn.net>
-> To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-> To: Jan Kara <jack@suse.cz>
-> To: David Hildenbrand <david@kernel.org>
-> To: Steven Rostedt <rostedt@goodmis.org>
-> To: Masami Hiramatsu <mhiramat@kernel.org>
-> Cc: Dave Young <ruirui.yang@linux.dev>
-> Cc: Shuah Khan <skhan@linuxfoundation.org>
-> Cc: Lorenzo Stoakes <ljs@kernel.org>
-> Cc: "Liam R. Howlett" <liam@infradead.org>
-> Cc: Vlastimil Babka <vbabka@kernel.org>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> Cc: kexec@lists.infradead.org
-> Cc: linux-doc@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-fsdevel@vger.kernel.org
-> Cc: linux-mm@kvack.org
-> Cc: linux-trace-kernel@vger.kernel.org
-> ---
->  Documentation/admin-guide/kdump/vmcoreinfo.rst |  2 +-
->  Documentation/filesystems/vfs.rst              |  6 +++---
->  include/linux/page-flags.h                     | 19 ++-----------------
->  include/trace/events/mmflags.h                 |  2 +-
->  kernel/vmcore_info.c                           |  1 -
->  5 files changed, 7 insertions(+), 23 deletions(-)
-> 
-> diff --git a/Documentation/admin-guide/kdump/vmcoreinfo.rst b/Documentation/admin-guide/kdump/vmcoreinfo.rst
-> index 7663c610fe901..5f1df6d080508 100644
-> --- a/Documentation/admin-guide/kdump/vmcoreinfo.rst
-> +++ b/Documentation/admin-guide/kdump/vmcoreinfo.rst
-> @@ -325,7 +325,7 @@ NR_FREE_PAGES
->  On linux-2.6.21 or later, the number of free pages is in
->  vm_stat[NR_FREE_PAGES]. Used to get the number of free pages.
->  
-> -PG_lru|PG_private|PG_swapcache|PG_swapbacked|PG_hwpoison|PG_head_mask
-> +PG_lru|PG_swapcache|PG_swapbacked|PG_hwpoison|PG_head_mask
->  --------------------------------------------------------------------------
->  
->  Page attributes. These flags are used to filter various unnecessary for
-> diff --git a/Documentation/filesystems/vfs.rst b/Documentation/filesystems/vfs.rst
-> index d3a93eec3945f..dec7816303c6a 100644
-> --- a/Documentation/filesystems/vfs.rst
-> +++ b/Documentation/filesystems/vfs.rst
-> @@ -649,8 +649,8 @@ Writeback.
->  
->  The first can be used independently to the others.  The VM can try to
->  release clean pages in order to reuse them.  To do this it can call
-> -->release_folio on clean folios with the private
-> -flag set.  Clean pages without PagePrivate and with no external references
-> +->release_folio on clean folios with folio->private set. Clean pages
-> +without folio->private set and with no external references
->  will be released without notice being given to the address_space.
->  
->  To achieve this functionality, pages need to be placed on an LRU with
-> @@ -674,7 +674,7 @@ filemap_fdatawait_range, to wait for all writeback to complete.
->  
->  An address_space handler may attach extra information to a page,
->  typically using the 'private' field in the 'struct page'.  If such
-> -information is attached, the PG_Private flag should be set.  This will
-> +information is attached, non-NULL 'private' field will
->  cause various VM routines to make extra calls into the address_space
->  handler to deal with that data.
->  
-> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> index 9b585e68127a2..eb2961ed61018 100644
-> --- a/include/linux/page-flags.h
-> +++ b/include/linux/page-flags.h
-> @@ -44,10 +44,6 @@
->   * Consequently, PG_reserved for a page mapped into user space can indicate
->   * the zero page, the vDSO, MMIO pages or device memory.
->   *
-> - * The PG_private bitflag is set on pagecache pages if they contain filesystem
-> - * specific data (which is normally at page->private). It can be used by
-> - * private allocations for its own usage.
-> - *
->   * During initiation of disk I/O, PG_locked is set. This bit is set before I/O
->   * and cleared when writeback _starts_ or when read _completes_. PG_writeback
->   * is set before writeback starts and cleared when it finishes.
-> @@ -105,7 +101,7 @@ enum pageflags {
->  	PG_owner_2,		/* Owner use. If pagecache, fs may use */
->  	PG_arch_1,
->  	PG_reserved,
-> -	PG_private,		/* If pagecache, has fs-private data */
-> +	__PG_folio,		/* Do not use: reserved for folio identification */
->  	PG_private_2,		/* If pagecache, has fs aux data */
->  	PG_reclaim,		/* To be reclaimed asap */
->  	PG_swapbacked,		/* Page is backed by RAM/swap */
-> @@ -576,7 +572,7 @@ FOLIO_FLAG(swapbacked, FOLIO_HEAD_PAGE)
->  /*
->   * Private page markings that may be used by the filesystem that owns the page
->   * for its own purposes.
-> - * - PG_private and PG_private_2 cause release_folio() and co to be invoked
-> + * - folio->private and PG_private_2 cause release_folio() and co to be invoked
->   */
->  
->  static __always_inline bool folio_test_private(const struct folio *folio)
-> @@ -584,17 +580,6 @@ static __always_inline bool folio_test_private(const struct folio *folio)
->  	return folio->private;
->  }
->  
-> -static __always_inline int PagePrivate(const struct page *page)
-> -{
-> -	return !!page->private;
-> -}
-> -
-> -/* no-ops during transition */
-> -static __always_inline void folio_set_private(struct folio *folio) { }
-> -static __always_inline void folio_clear_private(struct folio *folio) { }
-> -static __always_inline void SetPagePrivate(struct page *page) { }
-> -static __always_inline void ClearPagePrivate(struct page *page) { }
-> -
->  FOLIO_FLAG(private_2, FOLIO_HEAD_PAGE)
->  
->  /* owner_2 can be set on tail pages for anon memory */
-> diff --git a/include/trace/events/mmflags.h b/include/trace/events/mmflags.h
-> index 935893e5ea53b..caf090cd6f85e 100644
-> --- a/include/trace/events/mmflags.h
-> +++ b/include/trace/events/mmflags.h
-> @@ -144,7 +144,7 @@ TRACE_DEFINE_ENUM(___GFP_LAST_BIT);
->  	DEF_PAGEFLAG_NAME(owner_2),					\
->  	DEF_PAGEFLAG_NAME(arch_1),					\
->  	DEF_PAGEFLAG_NAME(reserved),					\
-> -	DEF_PAGEFLAG_NAME(private),					\
-> +	{ 1UL << __PG_folio, "folio" },					\
->  	DEF_PAGEFLAG_NAME(private_2),					\
->  	DEF_PAGEFLAG_NAME(writeback),					\
->  	DEF_PAGEFLAG_NAME(head),					\
-> diff --git a/kernel/vmcore_info.c b/kernel/vmcore_info.c
-> index 8614430ca212a..5a417f8a922ab 100644
-> --- a/kernel/vmcore_info.c
-> +++ b/kernel/vmcore_info.c
-> @@ -216,7 +216,6 @@ static int __init crash_save_vmcoreinfo_init(void)
->  	VMCOREINFO_LENGTH(free_area.free_list, MIGRATE_TYPES);
->  	VMCOREINFO_NUMBER(NR_FREE_PAGES);
->  	VMCOREINFO_NUMBER(PG_lru);
-> -	VMCOREINFO_NUMBER(PG_private);
->  	VMCOREINFO_NUMBER(PG_swapcache);
->  	VMCOREINFO_NUMBER(PG_swapbacked);
->  #define PAGE_SLAB_MAPCOUNT_VALUE	(PGTY_slab << 24)
+It strikes me that a lot of THP problems are really compaction problems.
 
-+ kdump maintainers and reviewers.
+>
+> And the higher min_free_kbytes, the more likely there are still native
+> options when the zones are down to the watermarks. E.g. better odds
+> there is still unmovable free space, you just need to reclaim some
+> movable/reclaimable space elsewhere to satisfy the watermarks.
 
-I believe makedumpfile reads VMCOREINFO. Removing it here, might cause issues
-for older makedumpfile versions at crashdump?
+I mean in general, yes, but the question is how much. This isn't really an
+argument for retaining what we have, and as you say below, it's not really
+clear what how much is.
 
-Hopefully kdump folks will be able to comment better.
+>
+> I've been working on making this more robust with the huge page
+> allocator / defrag_mode stuff: instead of falling back and poisoning a
+> block, invoke reclaim/compaction to produce a neutral block that can
+> be converted entirely.
+>
+> It's the same idea as the higher min_free_kbytes and watermark
+> boosting, but it is more targeted at the end result: readily available
+> space in compatible or convertible blocks.
 
-> 
-> -- 
-> 2.53.0
-> 
-> 
+I wonder whether compaction needs to be improved before we can do that
+sanely?
+
+>
+> But with that active regime, oversized pageblocks are even
+> worse. You'd pay ongoing compaction work to produce a level of
+> contiguity that you don't actually need.
+
+I agree having 512 MiB page blocks on 64-KiB arm64 is a bad idea, but I
+feel like the entire mechanism needs some degree of rethinking before that
+kind of change is done.
+
+Like I said in my other reply, I see this problem as consisting of the
+short term (resolving real world pain people experience now) vs. the long
+term (reworking compaction, reclaim, and how page blocks function).
+
+>
+> > > Seems to me the excessive min_free_kbytes is just a symptom of a
+> > > deeper problem.
+> >
+> > Yes, our anti-fragmentation mechanism does not work as we expected,
+> > so that we need an excessive min_free_kbytes to get khugepaged working.
+> > I wonder why reclaim cannot get the extra free memory instead of
+> > reserving it via min_free_kbytes. Maybe we need a watermark boost
+> > when some consecutive THP allocations are seen to achieve similar
+> > effect of boosting min_free_kbytes?
+>
+> I'm just wondering what the easiest way forward is to fix the ARM 64k
+> page problem.
+
+I mean you're not alone :) we've had a whole host of proposals all of which
+were rejected, and you just rejected another...
+
+This is why I suggested the 'if you are concerned about reserves being >X
+then cap them at X' proposal.
+
+(v2 of this patch)
+
+https://lore.kernel.org/linux-mm/20260831075635.2244437-1-noren@nvidia.com/
+
+That way nobody is changed, and only really huge page size gets capped.
+
+I mean that's still a possible short-term way forward given this approach
+was rejected?
+
+>
+> Yes, optimally, reclaim would work to satisfy compaction space by
+> itself. We've seen it fail at that before, though.
+>
+> How critical set_recommended_min_free_kbytes() is today is a question
+> that neither of us has a clear answer to. It's from 2011 and a lot has
+> changed. However, knowing Andrea, I'm willing to bet he added this
+> based on seeing a need in testing data. And I would actually expect it
+> to work better now with proactive compaction, since that has a better
+> chance of turning low-order chunks of that volume into pageblocks that
+> can be converted instead of needing a poisoning steal.
+>
+> It's a change of long-standing behavior for everybody. It has a
+> regression risk and requires careful evaluation and testing.
+
+See other mail for thoughts on this :) I mean I share your concerns, but I
+worry that we continue to persist in doing things because 'that's how they
+were always done'.
+
+>
+> Meanwhile, adjusting the pageblock size on 64k page arm configs has a
+> much smaller blast radius, appears to be the right move ANYWAY given
+> what pageblocks are for, and makes the min_free_kbytes a non-issue.
+
+Well it doesn't make it a non-issue, it redefines the size of page blocks
+while the rest of the THP code continues to treat PMDs as first class
+citizens.
+
+I wonder if Kiryl's work to make PMD _not_ be the 1st class citizen of THP
+will make such a change more reasonable.
+
+Perhaps he has thoughts?
+
+--
+Cheers, Lorenzo
 
