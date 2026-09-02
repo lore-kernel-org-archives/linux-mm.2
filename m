@@ -4,110 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38A4BC624D3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 15:24:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 903D4C624D3
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 15:31:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3E696B00EB; Wed,  2 Sep 2026 11:24:23 -0400 (EDT)
+	id 598FB6B008C; Wed,  2 Sep 2026 11:31:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEEF26B00ED; Wed,  2 Sep 2026 11:24:23 -0400 (EDT)
+	id 549C86B0092; Wed,  2 Sep 2026 11:31:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB8CB6B00EE; Wed,  2 Sep 2026 11:24:23 -0400 (EDT)
+	id 4633B6B0095; Wed,  2 Sep 2026 11:31:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EAFF6B00EB
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:24:23 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2662C120265
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:24:23 +0000 (UTC)
-X-FDA: 85169193606.28.759CD2B
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 34E441C0007
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:24:21 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=P+pU8I64;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=Z6ATPzeP;
-	spf=pass (imf20.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.161 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
-	dmarc=pass (policy=reject) header.from=mailbox.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788362661;
-	b=Fo6PNj+1UJI1PgbrQxLi/MNzB1S801csBmgOQUfqjkWxk0135SX7nMo6i04wod7f6vSnX7
-	TrGAljo/vXag2P3CnP9d04NvdveVj8Wqg5v5FXOYFY9lnGTBXGno9muqLZRppbdF+3GhH9
-	NC1SY5QVjdNBUPvTnwpwoHEE3c8x110=
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 28BB66B008C
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:31:50 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B02FBC026C
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:31:49 +0000 (UTC)
+X-FDA: 85169212338.10.0FE8E18
+Received: from mta1.migadu.com (out-244.mta1.migadu.com [95.215.58.244])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 69AFD18000C
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:31:47 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=swoV9l9Y;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.244 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788362661;
+	s=arc-20220608; t=1788363107;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=wjBje/KFV1Sml0wtdUTK7NRrAEQ7HaA06Bpw7iU4znA=;
-	b=mfMF7DANNFhsQdVllFbr8idcBgn5RR2FKAI/HzioIs7ZGhFAmncNCb51l3JajRm7X0QbzL
-	mGNn3oEh8Hg6X+0hO401Bwhu2IBs8XhbYY7i0BsdiC0L9hGIuAKUCCKSqe2QbyOblKNMXg
-	ybUmCcf3V2hMaSDD/bS35NIylegeHMc=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VldnDiGQ/mI/c2rmsWiz7o4B9kg+zdXv799I/nlAbs0=;
+	b=UCF2nBM1Hhn8LJfj6OEkU7+7QBbZ8NyU+iW467KBKA5dcAHPM7oNtckeYIW4T7PLTDLDJk
+	Wv3dPSqGk7fIc2X9vzi2PKIp1t0aIDeWHei3OTInZL4mKEJWOAnSp4hg3D7FOCj3DW0mj6
+	uQYU9C+F0l5+L5i+dHj9x/eRWHrqN/g=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=P+pU8I64;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=Z6ATPzeP;
-	spf=pass (imf20.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.161 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
-	dmarc=pass (policy=reject) header.from=mailbox.org
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4hZmjb38GpzKmTr;
-	Wed, 02 Sep 2026 17:24:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1788362659;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=wjBje/KFV1Sml0wtdUTK7NRrAEQ7HaA06Bpw7iU4znA=;
-	b=P+pU8I64/YzT1ptN5r0xo3zWPioDdM92Hy2Ancv10qrrgrj9N5/DYeueNUiDhZIlOPQXVT
-	z+dIxVKPNuTjBjjMQ7JRntMlFw2a7QdpkdtgeTiTRwASjoRzrdwwiVbLuRPBjph2nM62dU
-	hAxZohGwGI5nxDOPpLjg6DaMefYrHtr2MJs02fY7DIfIdhr9r7z6Sa0pxj7w0b1Sn6JVZb
-	AK+w0C47zgI3jvupm3HS72h5XBgUeFd2txVWMix9NCtt/vUyy23h0soaYpDj/jBgysVZZQ
-	Wce0be1bxHOb/eRsGw1cbEi6d9MuLCnrKIXzWTv5ik7mJsTKOQBgr2v9+uBCRw==
-From: Manuel Ebner <manuelebnerli@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1788362658;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=wjBje/KFV1Sml0wtdUTK7NRrAEQ7HaA06Bpw7iU4znA=;
-	b=Z6ATPzePoFX6gva05LDtPw+F3y+fx7FW/OBldTkyofW+vCwA/Y94xh9x9mVITqgjtzn3t5
-	GsVj+kOkqJU5H82NX9X3GyqMysi86iRLJBc1VvsewAAXKH4HUAPPg8UbWtaTLzgX4KKbH9
-	PHKG4VQ8+uYQMCp5TbkivsASK8b2eEAzU2jd9hfI9q4fYWlVqsRwhXmXsQ/cpVHTBX/LHp
-	1iIgiuaRe/mafl9LD6Mg/dG9i7kqDBIFxbEp88g83DiSruRJIJh5aqeLDT82XyVGuZkV1m
-	fhtDkaUrXbSLQoVxd8gw/hF1/3LKbokxW/tnDrrRWMmn98ZSv4TJNr8HrMPQcg==
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Cc: Manuel Ebner <manuelebnerli@mailbox.org>,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] Documentation: admin-guide: Fix bracket
-Date: Wed,  2 Sep 2026 17:23:47 +0200
-Message-ID: <20260902152347.708070-2-manuelebnerli@mailbox.org>
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=swoV9l9Y;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.244 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788363107;
+	b=ZdIqAwlDeAJjH7l1j1RakjLZCyicc3aIkKlfYL5QoQ6BhzQ9Nv+cs6BJ3v7fnUJ5KYctAe
+	HSSXu9hqBnUg8ZYE1BjRdPK3LqVceIG38atMnbCd71NlM5nQTjvs8Gvv1IA9AZXuE+eMso
+	ERyb3FNatrBzNhSM/sImBolcesj2mz8=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=Hiru+gE5U/tTPNwMNfjfi3EaG0xWxlNq2qi5LPCEe18=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788363105; v=1; x=1788967905;
+ b=swoV9l9Yio1mlNL29YUx6wmKu5PnLWNdnzH/Pyo9VE5WsT0UyWPythPJxDzE8T3DwW4V7gZ0
+ tmmdpF3ZSmv0wXWZDmQXC+Wfzl/zvYXgKkPQCCelh8UJo5T5terFKy9pZuWRuWaK6Glddb8VhfZ
+ RmKfiL+CrtaP+FaoEGDjXdVk=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 8935c3cd496893e1;
+	Wed, 02 Sep 2026 15:31:45 +0000
+X-Mizu-Trace-ID: 8935c3cd496893e1
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 2 Sep 2026 08:31:44 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: brauner@kernel.org, djwong@kernel.org, cem@kernel.org, 
+	akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com, mhocko@suse.com, 
+	brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com, david@kernel.org, 
+	qi.zheng@linux.dev, ljs@kernel.org, linux-xfs@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 0/4] mm: replace PF_KCOMPACTD/PF_KSWAPD with
+ kthread_func()
+Message-ID: <aphBHnm7ejNM3aNR@linux.dev>
+References: <20260902131653.1338227-1-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: 5b8ti7wdu137crny6pbb88wff1qcbep7
-X-MBO-RS-ID: 2e771efcf8e80c989d1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260902131653.1338227-1-wangkefeng.wang@huawei.com>
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 34E441C0007
-X-Stat-Signature: yuz4oz18ku5nzky635f6s385xke36aku
-X-HE-Tag: 1788362661-973573
-X-HE-Meta: U2FsdGVkX1+wzcV6ik1Bepqhv+zCRyUL9+amaAR9KI1zHWKK1QrDGPfMKs2PwMMS+ZDj61o4/JQn/iS2jJhSjYKuy/JlwnQh6E1xeySSfSLTA3oYKYryVmPODwToarRczZhf137yqhIe3VsJ1AtOoHORiLP13Fr5adhgk9OCUlRsd4QwpoaDuYUo5OZMaahu4pESEG0aGaoRNAYc0OSHEZaHMPFmLvM5CV8JXTdrnIIHOrLskIkxWbMBhOqalwHI+pLy0aIOw/o1TMgoefWlE5X8v1fx1aetqvM3zAXUFSb+35AlgWPzQFtD7TbD0yiIqkrm5j3XFl5Vm3k2hET3f+Wwy6Ns3sTKdh39rYfWzs8/YUAE6eU3w8VLPoLW48XcToD9TmheYLlpOJCAeRuhtVunvfo9WYVyjB3/zdH76X0fMmVeFGvMMqTUCGZNh/umUQdt54fEe7zTiI2y0K+xBWirsD+8gzfyI9gBabyRZN/7CXwTrNjZ++QlmBhHporMHY2HeEk+AmE822CUR2K3/aJs6zJJ6Kdyjf0ISLOiEG58T4PD7JL2hjMsEt/3H+0etxvl4QLS5cCR5rzkVcrlv3UtgoOihxOsB2+jtTB4pOh14BFZXKlqHDxEJoQdZRzIVMz40+OXw9CH6ba3waFdgzklytmWU1heD76wteXWdfvFCwd/5VE8V81EQEC6pG5mV3H/M/Z1DAWoKWF7cN7MfTnmN0mnjrBtDyZUJTsDPrXfM/whYpYIClFGAYH3y3K9esIkpqqEfdODV7InQAMjihYoxM/3xN0SQswqxG5CZV2czPhMZV/jWBurWmJpAmzTd+X2yBMhuxPTWVwKW1GOSKaK764y5llkZoyoZsIf2dKJCm19QTlEYE34//d1SabZvVvx4uGoAMegA1ElzHt45LmZCkL/6rBZ0ispVzdqk3QOkZcvt3jjHS86YZ5rzEFWkOCKzS8Ul3HHtKGqz1O
- i2F8TEPT
- XzRT9P38klbYECZTeARKbIDYlq81L4H13dwzTC6d3smtfXNbW6g2J7QIP7CDvysls3U+fDj4/+CW0uChc1Dz+g96Hyf2Gi306Xvq0GJWpTwN1OH0okMdAAbTh4Upu77QElF9hvbLkn6vX6X0Per2UQWluOrqwefc1Hj3hl49h2xI5Oq2VWcL2fT3K9izvsNUumXzsaJemYPOxvc1dmHXNLuArfKFSSchGQs2xjHT9a9g0d9HolstqC0JBJ7okdzWTDStLp8nbaXgAD5nqEwaqCiIUDCuD9xyd1tqzsws8yZMKTsxxlYU/98swOQ==
+X-Stat-Signature: hwqomyg8rbh4oe54hke1oi3xd7aognj7
+X-Rspamd-Queue-Id: 69AFD18000C
+X-HE-Tag: 1788363107-812148
+X-HE-Meta: U2FsdGVkX1+hP7crG52K/niovbzUo07qU6S//rwkREt0ZalINP8t1L8Q5n8jkCw229gH9sQuTldHdFyo9oYPAodueajxg7Yvo311skAbud6mCUficbv7IO180JRvLFHy6W9d58SXv4Oz1QUDaAW3q2Wnjb8ln67v+thy26scCcEnuPBK1+woXNjL6EqxUDSGXlcb+u3O9AYwwhgoLO/Ts2G2BiTxy5GJ/c7yLBXgzGYEDjB5fHUqOTaojmK6RJwxJwUx9vFCHzD5fFQQAbdztY1RbrRy2skt7Uz4sMnr+h50AQTft+FW5WZg/Q2FyUCjxRMoJSpBkg8wEIoRp6Rsg9pIjP4+iEeYhiOHt6iRuaNiHGIQslcsn0J3/FbyAhVspp/NQKx8MExaLQDFJpSnL9tHEwov3mfQRetqr5etKzs+Ji7fEFN4uQH2RLAMCSDNEDHvKhvydd+U4pCiua4R+6Pe0XtfC1USw1+XPW9XVLzpfoQ+oPu6yZyfaxw1UgaguB3o8q8+Z8AaMB6GD/eWgUMYCL6xfNeBq1t2Am8aDjtR19B+J77/MHMVDs0AUAoJUfQCWAv4Bvr705Vak0IJoku8h99YYPe61nFsHJQaX3igV7Pq/WJC0VvXjq4TiRp1f/UFgJRIF8flRbDU1c5kTOe0naGuQi4GtiqynhrwTFDEBDAILJdjVGIFI7BYAI/lhirop7D9SGlLCLCG11iBOxDzqWx3mu8CI6orRdhvRNE9nrJtORjGqCAyf1hzG/Vt9D1bckl6f3ODsiqtE5R3lLqgwbJaHkG99+giE1ffAqfTSnZjRc1+hLCaIqX8iTuCcELQD5wCj2/tdm69fjYFkB2dXdlE7CZ/yA1kMoxFcLjecAsoHAgM8lSQ138Ye52OxvY8RuKNHEj+TLGgPVdi/ttn4pgmzqMTb32A5BOSDtfFiRI4T3dQUASWHRoeq2cPjTeO+Qtk3jyfDn2RopE
+ j20IuUeV
+ F0tnO0CsMf4/1VorphI1aZIAdNhrW6IKavhVbaHalpsE4LpmruSxTfREFWYHHhBRLHkaO5dkFD55L7Rfa6txI/fddl29QplzDxaMUdQe5pMeSBoVHGMVVhMXDswSMRGkHyem2WTBxHC7NlKHD6f9XYw93nnTXv9UQRO6gIDHkwh/xtJYNBMKJKvjjRqkXx0wsGzjiec/4OQqnsyVD6H5HKOOf5pS4usE6ObC+zw+PjxIoeMnLPPDjCPdXPl7Nw83XHVd5CHrNc2be3DnIR5/0GdlA35vrpykV9ZtgDz+opFtqKhghYaRDn9dQSXJld9QF364u
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,27 +92,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add missing ')'.
+On Wed, Sep 02, 2026 at 09:16:49PM +0800, Kefeng Wang wrote:
+> The task_struct->flags field is a limited 32-bit resource. Two flag bits,
+> PF_KCOMPACTD and PF_KSWAPD, are used to identify whether a kernel thread
+> is kcompactd or kswapd. Converting these to use kthread_func() frees up
+> two valuable flag bits for future use.
 
-Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
----
- Documentation/admin-guide/sysctl/vm.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I wouldn't call it a limited resource. We can have more fields in task_struct
+but I like the cleanups.
 
-diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
-index 5b318d17a..ebc281e6d 100644
---- a/Documentation/admin-guide/sysctl/vm.rst
-+++ b/Documentation/admin-guide/sysctl/vm.rst
-@@ -438,7 +438,7 @@ zone[i]'s protection[j] is calculated by following expression::
-     = (total sums of managed_pages from zone[i+1] to zone[j] on the node)
-       / lowmem_reserve_ratio[i];
-   (i = j):
--     (should not be protected. = 0;
-+     (should not be protected. = 0;)
-   (i > j):
-      (not necessary, but looks 0)
- 
--- 
-2.54.0
-
+> 
+> Kefeng Wang (4):
+>   xfs: remove dead kswapd flag inheritance from btree split worker
+>   iomap: simplify writepages reclaim guard
+>   mm: replace PF_KSWAPD flag with kthread_func() check
+>   mm: replace PF_KCOMPACTD flag with kthread_func() check
+> 
+>  fs/iomap/buffered-io.c                   |  3 +--
+>  fs/xfs/libxfs/xfs_btree.c                | 18 +-----------------
+>  fs/xfs/xfs_platform.h                    |  4 ----
+>  include/linux/compaction.h               | 11 ++++++-----
+>  include/linux/sched.h                    |  4 ++--
+>  include/linux/swap.h                     |  7 +------
+>  mm/compaction.c                          |  9 ++++++---
+>  mm/vmscan.c                              | 10 ++++++++--
+>  tools/sched_ext/include/scx/common.bpf.h |  2 --
+>  9 files changed, 25 insertions(+), 43 deletions(-)
+> 
+> -- 
+> 2.55.0
+> 
 
