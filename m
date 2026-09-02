@@ -4,115 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E1B6C61DD3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 02:57:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F353FC624D0
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 02:57:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBE7E6B008A; Tue,  1 Sep 2026 22:57:08 -0400 (EDT)
+	id 36C8E6B008C; Tue,  1 Sep 2026 22:57:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAB7D6B0095; Tue,  1 Sep 2026 22:57:08 -0400 (EDT)
+	id 344E16B0092; Tue,  1 Sep 2026 22:57:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF6B86B0092; Tue,  1 Sep 2026 22:57:08 -0400 (EDT)
+	id 25B606B0095; Tue,  1 Sep 2026 22:57:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 755736B008A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D55CE6B008C
 	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 22:57:08 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5F1431606BF
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 02:57:07 +0000 (UTC)
-X-FDA: 85167310494.09.BD6E5B7
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 81F5AC0007
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 02:57:05 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=crusoe.ai header.s=google header.b=eNYTL9YB;
-	spf=pass (imf28.hostedemail.com: domain of kiyer@crusoe.ai designates 209.85.214.171 as permitted sender) smtp.mailfrom=kiyer@crusoe.ai;
-	dmarc=pass (policy=quarantine) header.from=crusoe.ai
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4B2BDA465C
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 02:57:08 +0000 (UTC)
+X-FDA: 85167310536.11.0D157A2
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6C04540005
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 02:57:06 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=crusoe.ai header.s=google header.b=NunT2goU;
+	dmarc=pass (policy=quarantine) header.from=crusoe.ai;
+	spf=pass (imf01.hostedemail.com: domain of kiyer@crusoe.ai designates 209.85.214.182 as permitted sender) smtp.mailfrom=kiyer@crusoe.ai
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788317825;
+	s=arc-20220608; t=1788317826;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L+aB6s1JzdbmAf+ykqnt3gF+KENR2kL9PYAKepasbfI=;
-	b=vEg8nVVSLKluCHqFVjbfAiWYIDivBp8LFbqd8RPpyWbOBW2buGHmz7iX9qtf0l99gphxz4
-	j1C/WjuSFHcb2FbuDqfREwP2jibUB6tfTGtEUQsqNRyvpP5CINUYfkBFY9CNBFCPPvluPI
-	qZryAcyD7gD5UVYnxMPoqxH34wyH6aY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788317825;
-	b=kM8wbCQnuqcHOC2B/I6RrSQdD6rC6Cy8nl3TH7/dXs+Wo/Hs4P8doj1A66ChrLIO3tnXfh
-	yxLrYP8bUsXHlCcY/KcjfWxQcM1pq/elXVqphblqS30mV2sTMCbJlSamELsuSWztv4a7Nw
-	4DZQpV80rwtd1slNfxeliGbRQoQ1Bbo=
+	bh=1AfIUElBfsBuc32fcVrUuC+qxuGAKqGDmpiNow6bdW8=;
+	b=H3dnj61OsCXBiGb6Kq0UAkl9J8/I1n6HciRMGo9M9Llf8SqM5X4oce2WzhFeGKSP+tW5cW
+	9W1UMO/fUaCg50wFHuDmmWybbGIVsRwSaPUmd5rsrMXfk9vYmOYzgdiXcAQjD9FiCJ5sdQ
+	MXB5SaAuj4TBM6SqghxNWoI3+R1e0Yg=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=crusoe.ai header.s=google header.b=eNYTL9YB;
-	spf=pass (imf28.hostedemail.com: domain of kiyer@crusoe.ai designates 209.85.214.171 as permitted sender) smtp.mailfrom=kiyer@crusoe.ai;
-	dmarc=pass (policy=quarantine) header.from=crusoe.ai
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2d6e954afbdso3095325ad.2
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 19:57:05 -0700 (PDT)
+	imf01.hostedemail.com;
+	dkim=pass header.d=crusoe.ai header.s=google header.b=NunT2goU;
+	dmarc=pass (policy=quarantine) header.from=crusoe.ai;
+	spf=pass (imf01.hostedemail.com: domain of kiyer@crusoe.ai designates 209.85.214.182 as permitted sender) smtp.mailfrom=kiyer@crusoe.ai
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788317826;
+	b=3kd1m1suXQHkBGKMJP3j52Ltu2gDw1hIURQ3mkMP06kb0skkIUrR0WrwBID/26aO+E/Jks
+	dW/lWk9HcO2VKHoq7PUoxMj6NQ/KRoBIaC0U12SQ4SCJMqLoPGbKSqEUUU5PZnYot9/vvw
+	yiiKY5zvJ8C+f24f+eneqP43KCQ7xE8=
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2d91ded8174so4115425ad.1
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 19:57:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=crusoe.ai; s=google; t=1788317824; x=1788922624; darn=kvack.org;
+        d=crusoe.ai; s=google; t=1788317825; x=1788922625; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=L+aB6s1JzdbmAf+ykqnt3gF+KENR2kL9PYAKepasbfI=;
-        b=eNYTL9YBjuG3Y7gI9gNNMvMo+JpfbKzRQUeApLDhmfuh9XOb7+An1bSGlt6RHtl0A0
-         hlzofsquzE08r0IIFRt+D1CxoUI3/Wzp+eA/uUJ6lM1F2C9Nfcg2wlRf7QqXVparOy7z
-         jXMXjFuyfri+h9dDEWO3SHhgPCH2xWWGN7gAS1ErUMFWBncwC9DmfD4dfJUOikTXZEVx
-         tyhV4piDgA6aDMg+TlYaOYnxoFJ6ysJvx1bcEMn7TqT8KizWsVvF+y4uC91jZts53jx7
-         rj/+4JhVjS/9AQXWJItHgxX/kWVc+l/VUzHBvhl/TWN2wLyH1IRo/CRuAyfd9aRJAMZx
-         ipsQ==
+        bh=1AfIUElBfsBuc32fcVrUuC+qxuGAKqGDmpiNow6bdW8=;
+        b=NunT2goUG5kjtAQzWuXNOTfPBnYg0XH2/E2EAwHLfI5mP+ekhd7boxl2uPoiMQGR9q
+         rIsVJKbNIXu6H8C+MSmToBhvzJD6liBROR2rWvZjDXx0z560seEq/l9mPj1yb6qnEBiN
+         94BuWHKsbi0cdMGMupxzvmW9wpyTEYU7ZxzNpiJhBvcZ7uOlz2LPl1KRn/xK55J1IoZf
+         yBmQjM667cI/HNpC/KLGLeBkunZVB3WGuRvBUvtbI8HpviUIMpNJkMsh7beaHjnJ5Dyz
+         5b1DbM/UHHE9zdllTssW6Xf4ibG7hrd4tSeoSgH5UqYiSIxSTW78GHbDMujpynDwgH4D
+         FfcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788317824; x=1788922624;
+        d=1e100.net; s=20251104; t=1788317825; x=1788922625;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=L+aB6s1JzdbmAf+ykqnt3gF+KENR2kL9PYAKepasbfI=;
-        b=KF585d7qnZaqOI5yZtV5EP+RI7hzJD5q/FXWRF3o3hshn4Wl5+TOs882Azf5mIl8OK
-         Jsits4gMbaDoNBHks2k+4+rJKVXp2U4twmT5fJJJ+a+mvGpcsVftFDRlG/ecUQ2qPk4X
-         h4Xjt5EfRTuQCcA8GU8gdJ0o1hIbnsIPhl2fW+i9WlW0S8Sya04ZxNsrG3JUDoIHjvvg
-         39LgdxcrMmrZrt/dJg+5BsGAs+L/2067pF2Fo0+hTzmwm70Uyi1ecnbRJaMCrhARdlfR
-         XcbMZEi3BYArr1WwpYyVUEHh3omf7Bt2QlkXsR1/7F/U0QR1afjiKHSL6Z2uWGjqiV+4
-         OH+g==
-X-Forwarded-Encrypted: i=1; AKwUvBzlGTmvDXrM1TJk3fjZoZpKNBhfFPu/FG56dPQCPHTP/TngUQBQW44jo3z4NtTzbz8UKPEP5JkF/g==@kvack.org
-X-Gm-Message-State: AFuF++mDNQ4XIODZo80aARSpoh8CsVQ/nh8nIn8na0nvhrqpb2P/1IJh
-	hMuQn8EeFDyLC9wyle4ZI6Mkt1xIR544TkbB7Xio+RkI8CHmyAyXZFN8y0h4xnNhJZA=
-X-Gm-Gg: AYBFou1wt9FqD2H0g5t5dVAvGzqMcGAIFFYJ7Pf5dvqr0wNAlDbDEMCJPtslHb3U7x0
-	F5zGJ3AsYKQVkioSc0GwLdjlA7ICE6klVJMQW/Z8oG02YO0xUJPUoT/Mvr7flt4Wgonq6Dk1hM7
-	+3+3fvFARFLPQYahLr2ktj2LAoG3iUaQzqc8Ly6bUlDWjGxl3h3d+7AtVjCIpIBfYDkiIeIxvCr
-	nRAP8UmvYSRKhtRXmiEyRcuR636Cq1Pp8ajm+Uo6nk5ykRwwbs9JpLyuJ0lFqoGABX7YRJzn+lr
-	xvDh2itF8cRgi+P3jc0khQDamMapjpISXls4URXX/+i+rsmX5w+QNwRgcnHboT6gYLb7Wfp9mUs
-	N1nMgTMDMSMPxMwm7ygg3LwjUdpn2kpgIawYK7DjB36MJ2xcEcZT6e6eAW6nSj1ttBoXOC2JC9t
-	j4VsifqT5j3Gl9pCGLPkTpJr2qiJ3x1xNYtlqvsuOOOxUPnyREMAWLWrOtv8LLIUlnZi0JPaPJ2
-	0kWsZOSLvrYsLGcCDeU8FyGJDShpiZbTW0QFg==
-X-Received: by 2002:a17:902:e809:b0:2d7:4b42:9352 with SMTP id d9443c01a7336-2daec60af43mr22931655ad.3.1788317824344;
-        Tue, 01 Sep 2026 19:57:04 -0700 (PDT)
+        bh=1AfIUElBfsBuc32fcVrUuC+qxuGAKqGDmpiNow6bdW8=;
+        b=rn8dWvSlrKYsc0x59ekRcblicNmqF1Z0EkDVL0ErCCtjqXykGmxArcbRSHjiP4MXV5
+         nqtH/itqZBB3rO88uiSysejQUpPmo2mjPRb6Nq5H/XattRAHCowwaI89gZiPp9/XX9Vo
+         plkXPwTCzdQOxRQjY0zDLMHjv7l/u8lwT9MJvi1WhQBhu/jvoM9PDMxSwHpFUtXeTDRw
+         6fTheh0GhGxBvzzk2pO0RGNrGa4AKL8Mt4LCOFJuSvr6zkxs+gwgzt0dc2QnghU+YQKk
+         TN+qh3ohyMsz/Ypt974cTbbvmtZPk3z0v5ciM3eBVCuN8QjBEK9TG/Msw2r8pb3OTh7B
+         Kh+Q==
+X-Forwarded-Encrypted: i=1; AKwUvBwi92uk5uLVPcB/MF0LuyjLjzyJsDNJi1BKJRFx0THDTLFOTT3as1kCvLopb8by0tvCONdr+1bo6Q==@kvack.org
+X-Gm-Message-State: AFuF++kCAx6DrLPXFlj1t9APVLB+0gmsArjzJm3Dgw0x+GV9JkNCE3zw
+	qDL0b/hTL0W7O3Pxe+RsIAA99fZ7N6wjnE4FkwTkBWNRTqliNgJ8TYy/EELm6oQhkQ4=
+X-Gm-Gg: AYBFou113kDm0PNupT6XkqpVDpvosSRAKyQ+zolgLjTLchX6dJs2rgHwYuQOyjHao5N
+	1uchIsVTo0HvEuJI3YCH3koGUOpmcyfUzdQ3ewX/ewAx0v38Z0V+MFcaOljVQZOGknOB41RF5D8
+	jACIsxuKn8H2r4IktafB6DqYAbQyTelIN8BrVOVs6Zbp89kz0+ylM15bt5SASV0cqyCnlV2qMqL
+	/NIkF1oNMf+PZ6WFXRs35n2A6VFpCI2cX7EoN4pYmp2nhVrjW8BCMQkFinMfKcZhGjWwGRBfL+I
+	SHEjcbPfIVQeTLk2ay6anHv1GiB0/f01ykSDVo7AjF3XAym7uSz6ZppNjkfDL8Ta5jnkv4JrJRi
+	dBxMXtOZ/LJoAR2z+iVSMUawUyikPTCSvWQxVdhPtW7fssK3Ab73MgLOPMoFzVFljYkAJmYYq93
+	ZD7M69PdeyVHPIYWwEbAJORqrNwCuhhWYsELb2iC3EM7q1k5zVgTKaE6ec0r+H8nzxt74r+gONT
+	mcpnMRP3/awq1HBZUmUKb0C0qbOJs7T7374
+X-Received: by 2002:a17:902:d491:b0:2d9:3636:d01a with SMTP id d9443c01a7336-2daec74e5e3mr22490315ad.15.1788317825337;
+        Tue, 01 Sep 2026 19:57:05 -0700 (PDT)
 Received: from MBP-Krishna-Iyer.civet-hops.ts.net ([2601:645:c68a:b830:a1c2:77c:7ab7:f9a0])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-32f07bde5bfsm2066469eec.27.2026.09.01.19.57.03
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-32f07bde5bfsm2066469eec.27.2026.09.01.19.57.04
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 01 Sep 2026 19:57:04 -0700 (PDT)
+        Tue, 01 Sep 2026 19:57:05 -0700 (PDT)
 From: Krishna Iyer <kiyer@crusoe.ai>
 To: SJ Park <sj@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/3] mm/damon: move damon_hugetlb_mkold() from vaddr to ops-common
-Date: Tue,  1 Sep 2026 19:56:58 -0700
-Message-ID: <20260902025700.17975-2-kiyer@crusoe.ai>
+Subject: [PATCH v2 2/3] mm/damon/ops-common: handle hugetlb folios in folio mkold/young rmap walkers
+Date: Tue,  1 Sep 2026 19:56:59 -0700
+Message-ID: <20260902025700.17975-3-kiyer@crusoe.ai>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260902025700.17975-1-kiyer@crusoe.ai>
 References: <20260902025700.17975-1-kiyer@crusoe.ai>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6C04540005
+X-Stat-Signature: 3xbehwo6wbisbkj8zgesicpidx11b3ss
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 81F5AC0007
-X-Stat-Signature: mdoa9na78tek1apdyat1bgcqpxeknt4z
-X-HE-Tag: 1788317825-912408
-X-HE-Meta: U2FsdGVkX1/EsilCm3A32rolRkAEycVvm7oCL0ej/h2ifCM1UIgkdWFj+WeQfSCqX6rF5H3nn8RO0RuwzFCTLOIkSc58W1rD1tR4oNLPvUDRkytP1jO1aE0/LBxm4S9r1Op08TIoSq6+UwkxBtdtySw8M9LwcOgTWL/mf31yDvRoiMDDjN6MgDNBsrGTvofj2h4y7OqTzWlc/5iry4r4j3mPLOPRu0SIQJuC0PPhUjGHPO8UxTlSfXdqxeiBLV1uOFR30grG3eIMo8r/RtFI/IDLF0tkQSndaxzi2H4iwJlPY3Knt0A3uvYXSyjb0ixQgU06Ee/pwm88qADILpvmkovIuc0XuwaMCmac18G/CUo9BUaLJOQOJ+4sbEeQIFUtj8Tj2Gj+oSeOHGl9jPZ9BfYfIvdDswUwsdZ4GqJpuaZOgxjjtOUbMWxTtUwISA7D4Bw/msBI4nUmFPn+qKfPbvNDA6H6x63ekOhovM6LrLJiPoP3HO4tWxxofI8eQo62qaf8tVjbspKqwYD8R5lwFyRRLGwFWyvsmb5bP5zRhjuuCsWIwsZNdy4DvxkEnIV3BeGlPvSdWRFZlxhEmZC+i+xo/98DI8GJJDLufi1Eg9piDcSZlR/Sdtb46et9OLBN/ixv4UkL0OM+2gZUWWOExVkSnEnu9lB607TNowV32O2BF09ieLQBZuKTmEksjUpN9UGOINF4n2UKyh8/eDxvWcAdna0TEfgkNKX1+eJcpo/Bw9A0x9aiQQbC5SNK4N1oDESlH+GWqMhuTxBba7K2lwhpyN6xDgHRkYgY16YkO0aV+mGR6u1nmIHv1lSZkFTaMhOyiya248Ox+WZ/D7Tplt0oEj9zpepE8RglA66L2QtDAEzdon+6kcCXJUiXmQo5h/TawFI3o56CIiOhDLXJDEuxW4JoGfQWdZMR+lQHDERdBxkzD9OyHkAEtc0jn1svduxtkCaSsXnp4/PpL54
- 1wcA3jrN
- nEmC14eXRXMKVRunTi6DZ06NN4aYt8jWlCy/jD7v/qm6GrhhUyD70eAIWVvXFDlwnx/yuGbFG1dYFTffY5MoMfMAZeCui3V8xMshG3lxTp3+AlrztYIhb57NF8C3ZOmRZEgGrg3M/lpFoKWl4zE7ifTI7qD0SWfRNyAKfk6sEoaUSjdP2IhWBz4fTsb0AKs3ZJ4gMXBKd6PyGqek8DTJK1tyMQ2cpP3dYfJkluJ2zV4iOjKHwgVcxhtssWC858mUIWQ2JiNYIneInVqZ3tptG52KTbWRTEDR1ZEfisY51doF5PV6V8+dMGWls3F4YHEhEEKuHZ2lWLpKxwkyuTcxlVD8RavAk+9CCREr1j5yWjzek5zIvPbA9OliPags5/+g09tvO7npgSy4tA6g+HVG8k63wzN4jqTYgYXo5idjkd7xmVfM=
+X-HE-Tag: 1788317826-529408
+X-HE-Meta: U2FsdGVkX18Io6w+ptN8QvaEHT2FlpwEzvCXQQABzax1TOzcvL5sIdLuiqHwNYkCeCpXednK3dQmBYN/bA2LYj0bEsdeBG0i/KYlrqlCGn+E2uFj4nY84YM4YWWC6iw9LI4GwaQKn3rRvgkQKPeCNwSiDb3giPEairQI1v5bBfrk7+bPSiFj9Z4EcXXTojoOvKvh93JvfbN2r1pFyMqqBXS0TE9DoICgsUi7a+fec6bjxwEitTJAZs0Do1b3O62ur7ZpYNuJCr9IjRl9JP5A50gHOmz6nG9LDCQkEJm00KtMkl9w/Y7rrusBDHt4wmrhDRCewhE2DJf0gDbuditZXYt2L2pe1oatkWqGwqWrhj3fDV+ELnPR6AMCRTqn9hopcMNuBtnEE8pIJxIneeg5ldZp8NRqstecFBpLSKpLL/MU/J4idLgX2WT9tsjSu6OkaOwYtxgmd5PP2Lf1p87idqtH2Ul5WSGDrJpU0KsCKi0dy/2zbl3l1R//4WQhyEpaGEwWUAjftYNkSY+VGlXCNlxwbaYgHdWQV371BXkE+vRxGn3GUgTlXCNrWK5lwkYV84UprzFtftx9SfM4ZmWY6eoGZ+x9ggwbsPWiZ24UN96VOYeWZp3wqvta+ity/GLc3d7k+SSl6tIVy30Zos2giaQbB6Z/q6oAPMfP7cqIsOEdaslzL7heE9bqo+eymOQtTjiWVutwVbbw5PRwpdNKZl1DAwWoifOwYBSwnNURph2w/Jj2ftowFQt7Exmjk3jVlr9tktu58g46HPP0aLdRuIEPSnWr2bB0yMtRMEL7NfEj8YCqj+59ZT/3+qtab/G+6eoiRKsKhoEvT71K2tax74NGC+Pe+ttHiql6CLNGT7oBucxSPotPPN/8LrnS7ePZAo0k6akM19TgF8+vhIl3gHJkhlMBePTGGp2fym3kLl+6iZ8XzkwjG+k6ubpf7WIAXUdBY9HliRvK3zR/4ra
+ hCHUXi0c
+ myPEMfzS7X2sV2ll+4dbnGmzOma7V/amXFL6276C806mNOx8S/8bV0ZRBGx0Ak6D2dDamuUMv4wysqdS5ASo676zv6An6BpldDL0VpPjHM4VArVhfud7dMYICzlwOJUdEaZqL7G9o2IyZMAtqzzpmyPaEuOFCR/6keUbUW46QIDci4IkatS7VJqqwgtYywMbW4PEH+fED+pm1K33kHRlS3TGIE777BwU5H7/xnrNhkQS8a5TtTQZbBz0e1yNoJeJPdqdqUGNMuKo3yqVkRuDj0KIuSwHXuFh8UQvi8P/oZPogo2EH18Sjs1vhwA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,132 +120,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_hugetlb_mkold() clears the accessed bit of a hugetlb-mapping huge
-PTE and propagates the aging to secondary MMUs via
-mmu_notifier_clear_young(), spanning the whole huge page size.  It
-currently lives in vaddr.c, and is thus usable only by the virtual
-address space monitoring operations set.
+damon_folio_mkold_one() and damon_folio_young_one() assume the folios
+they walk are mapped by normal PTEs or THP PMDs.  When the folio is a
+hugetlb folio, page_vma_mapped_walk() returns the huge PTE in pvmw.pte
+with its page table lock held, but the walkers treat it as a normal
+PTE: they read and age it with PAGE_SIZE-granularity helpers, which is
+wrong for huge PTEs (up to PUD level), and notify secondary MMUs for
+only PAGE_SIZE of the mapping.
 
-The physical address space monitoring operations set will need the same
-logic, to support access monitoring of hugetlb-backed memory.  Move the
-function to ops-common as-is, with no behavioral change.  A follow-up
-change will use it from the folio-granular rmap walkers.
+Add hugetlb branches to both walkers.  The mkold walker reuses
+damon_hugetlb_mkold(), which the virtual address space operations set
+has been using for hugetlb aging: it clears the young bit of the huge
+PTE via set_huge_pte_at() and calls mmu_notifier_clear_young() spanning
+the whole huge page size.  The young walker gets an equivalent new
+helper, damon_hugetlb_young(), which reads the huge PTE with
+huge_ptep_get() and consults the page idle flag and
+mmu_notifier_test_young() like the existing PTE branch.
+
+Locking mirrors what page_vma_mapped_walk() provides: the huge PTE's
+page table lock is held inside the walk, and for shared hugetlb
+mappings (the only ones subject to huge PMD sharing), rmap_walk_file()
+already holds i_mmap_rwsem, satisfying hugetlb_walk()'s locking
+requirements.
+
+This is currently dead code: both rmap walkers are only reachable
+through damon_get_folio(), which rejects hugetlb folios since they are
+not on the LRU lists.  A following commit will let the physical address
+space monitoring primitives opt in to hugetlb folios.
 
 Assisted-by: Claude:claude-fable-5
 Signed-off-by: Krishna Iyer <kiyer@crusoe.ai>
-Reviewed-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/ops-common.c | 30 ++++++++++++++++++++++++++++++
- mm/damon/ops-common.h |  9 +++++++++
- mm/damon/vaddr.c      | 27 ---------------------------
- 3 files changed, 39 insertions(+), 27 deletions(-)
+ mm/damon/ops-common.c | 61 +++++++++++++++++++++++++++++++++----------
+ 1 file changed, 47 insertions(+), 14 deletions(-)
 
 diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
-index fbda70d8ea4d..f5fe92b825bb 100644
+index f5fe92b825bb..373b25db5950 100644
 --- a/mm/damon/ops-common.c
 +++ b/mm/damon/ops-common.c
-@@ -3,6 +3,7 @@
-  * Common Code for Data Access Monitoring
-  */
+@@ -193,10 +193,15 @@ static bool damon_folio_mkold_one(struct folio *folio,
  
-+#include <linux/hugetlb.h>
- #include <linux/migrate.h>
- #include <linux/mmu_notifier.h>
- #include <linux/page_idle.h>
-@@ -98,6 +99,35 @@ void damon_pmdp_mkold(pmd_t *pmd, struct vm_area_struct *vma, unsigned long addr
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+ 	while (page_vma_mapped_walk(&pvmw)) {
+ 		addr = pvmw.address;
+-		if (pvmw.pte)
+-			damon_ptep_mkold(pvmw.pte, vma, addr);
+-		else
++		if (pvmw.pte) {
++			if (folio_test_hugetlb(folio))
++				damon_hugetlb_mkold(pvmw.pte, vma->vm_mm, vma,
++						addr);
++			else
++				damon_ptep_mkold(pvmw.pte, vma, addr);
++		} else {
+ 			damon_pmdp_mkold(pvmw.pmd, vma, addr);
++		}
+ 	}
+ 	return true;
+ }
+@@ -221,27 +226,55 @@ void damon_folio_mkold(struct folio *folio)
+ 
  }
  
 +#ifdef CONFIG_HUGETLB_PAGE
-+void damon_hugetlb_mkold(pte_t *pte, struct mm_struct *mm,
-+		struct vm_area_struct *vma, unsigned long addr)
++static bool damon_hugetlb_young(pte_t *pte, struct vm_area_struct *vma,
++		unsigned long addr, struct folio *folio)
 +{
-+	bool referenced = false;
-+	pte_t entry = huge_ptep_get(mm, addr, pte);
-+	struct folio *folio = pfn_folio(pte_pfn(entry));
-+	unsigned long psize = huge_page_size(hstate_vma(vma));
++	pte_t entry = huge_ptep_get(vma->vm_mm, addr, pte);
 +
-+	folio_get(folio);
-+
-+	if (pte_young(entry)) {
-+		referenced = true;
-+		entry = pte_mkold(entry);
-+		set_huge_pte_at(mm, addr, pte, entry, psize);
-+	}
-+
-+	if (mmu_notifier_clear_young(mm, addr,
-+				     addr + huge_page_size(hstate_vma(vma))))
-+		referenced = true;
-+
-+	if (referenced)
-+		folio_set_young(folio);
-+
-+	folio_set_idle(folio);
-+	folio_put(folio);
++	return (pte_present(entry) && pte_young(entry)) ||
++		!folio_test_idle(folio) ||
++		mmu_notifier_test_young(vma->vm_mm, addr);
 +}
-+#endif	/* CONFIG_HUGETLB_PAGE */
-+
- #define DAMON_MAX_SUBSCORE	(100)
- #define DAMON_MAX_AGE_IN_LOG	(32)
- 
-diff --git a/mm/damon/ops-common.h b/mm/damon/ops-common.h
-index 38d295488fa1..f7811c9c7a02 100644
---- a/mm/damon/ops-common.h
-+++ b/mm/damon/ops-common.h
-@@ -9,6 +9,15 @@ struct folio *damon_get_folio(unsigned long pfn);
- 
- void damon_ptep_mkold(pte_t *pte, struct vm_area_struct *vma, unsigned long addr);
- void damon_pmdp_mkold(pmd_t *pmd, struct vm_area_struct *vma, unsigned long addr);
-+#ifdef CONFIG_HUGETLB_PAGE
-+void damon_hugetlb_mkold(pte_t *pte, struct mm_struct *mm,
-+		struct vm_area_struct *vma, unsigned long addr);
 +#else
-+static inline void damon_hugetlb_mkold(pte_t *pte, struct mm_struct *mm,
-+		struct vm_area_struct *vma, unsigned long addr)
++static bool damon_hugetlb_young(pte_t *pte, struct vm_area_struct *vma,
++		unsigned long addr, struct folio *folio)
 +{
++	return false;
 +}
 +#endif	/* CONFIG_HUGETLB_PAGE */
- void damon_folio_mkold(struct folio *folio);
- bool damon_folio_young(struct folio *folio);
++
++static bool damon_pte_young(pte_t *pte, struct vm_area_struct *vma,
++		unsigned long addr, struct folio *folio)
++{
++	pte_t entry = ptep_get(pte);
++
++	/*
++	 * PFN swap PTEs, such as device-exclusive ones, that actually map
++	 * pages are "old" from a CPU perspective. The MMU notifier takes care
++	 * of any device aspects.
++	 */
++	return (pte_present(entry) && pte_young(entry)) ||
++		!folio_test_idle(folio) ||
++		mmu_notifier_test_young(vma->vm_mm, addr);
++}
++
+ static bool damon_folio_young_one(struct folio *folio,
+ 		struct vm_area_struct *vma, unsigned long addr, void *arg)
+ {
+ 	bool *accessed = arg;
+ 	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, addr, 0);
+-	pte_t pte;
  
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index 0648400b2d65..15379d984689 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -293,33 +293,6 @@ static int damon_mkold_pmd_entry(pmd_t *pmd, unsigned long addr,
- }
- 
- #ifdef CONFIG_HUGETLB_PAGE
--static void damon_hugetlb_mkold(pte_t *pte, struct mm_struct *mm,
--				struct vm_area_struct *vma, unsigned long addr)
--{
--	bool referenced = false;
--	pte_t entry = huge_ptep_get(mm, addr, pte);
--	struct folio *folio = pfn_folio(pte_pfn(entry));
--	unsigned long psize = huge_page_size(hstate_vma(vma));
+ 	*accessed = false;
+ 	while (page_vma_mapped_walk(&pvmw)) {
+ 		addr = pvmw.address;
+ 		if (pvmw.pte) {
+-			pte = ptep_get(pvmw.pte);
 -
--	folio_get(folio);
--
--	if (pte_young(entry)) {
--		referenced = true;
--		entry = pte_mkold(entry);
--		set_huge_pte_at(mm, addr, pte, entry, psize);
--	}
--
--	if (mmu_notifier_clear_young(mm, addr,
--				     addr + huge_page_size(hstate_vma(vma))))
--		referenced = true;
--
--	if (referenced)
--		folio_set_young(folio);
--
--	folio_set_idle(folio);
--	folio_put(folio);
--}
--
- static int damon_mkold_hugetlb_entry(pte_t *pte, unsigned long hmask,
- 				     unsigned long addr, unsigned long end,
- 				     struct mm_walk *walk)
+-			/*
+-			 * PFN swap PTEs, such as device-exclusive ones, that
+-			 * actually map pages are "old" from a CPU perspective.
+-			 * The MMU notifier takes care of any device aspects.
+-			 */
+-			*accessed = (pte_present(pte) && pte_young(pte)) ||
+-				!folio_test_idle(folio) ||
+-				mmu_notifier_test_young(vma->vm_mm, addr);
++			if (folio_test_hugetlb(folio))
++				*accessed = damon_hugetlb_young(pvmw.pte, vma,
++						addr, folio);
++			else
++				*accessed = damon_pte_young(pvmw.pte, vma,
++						addr, folio);
+ 		} else {
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ 			pmd_t pmd = pmdp_get(pvmw.pmd);
 -- 
 2.54.0
 
