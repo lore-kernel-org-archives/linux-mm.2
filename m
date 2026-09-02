@@ -4,116 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC986C624D6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 14:05:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E539DC624D6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 14:07:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBA0E6B00A1; Wed,  2 Sep 2026 10:05:02 -0400 (EDT)
+	id 08EB06B0088; Wed,  2 Sep 2026 10:07:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E91796B00B9; Wed,  2 Sep 2026 10:05:02 -0400 (EDT)
+	id 066256B008A; Wed,  2 Sep 2026 10:07:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA86D6B00BC; Wed,  2 Sep 2026 10:05:02 -0400 (EDT)
+	id EBED06B008C; Wed,  2 Sep 2026 10:07:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B94586B00A1
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:05:02 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5D77A80217
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:05:02 +0000 (UTC)
-X-FDA: 85168993644.03.FB7D659
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 8866520006
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:05:00 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=EAsNlzLt;
-	dmarc=none;
-	spf=pass (imf31.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.41 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CEC206B0088
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:07:26 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 787F21A0238
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:07:26 +0000 (UTC)
+X-FDA: 85168999692.12.D1EB438
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf08.hostedemail.com (Postfix) with ESMTP id A4F8516000F
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:07:24 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cNDe4sQB;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788357900;
+	s=arc-20220608; t=1788358044;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Why+id/p3RNpzcV3QpTHawTDpT4ABQ4KUVboBTGGWGA=;
-	b=iI2O2csq+Zc5abtS58rqSp+kjpXago+m1JtCUivYdVLMJFaOWLm12bH1GJJYn92+RLl13k
-	annRD0JB1InhQhxKtw3KD5EIS6nmNP4WPUi/s9f8Wsi0hYUC1sv8+XJuyMRwdq4IUXGfP/
-	421YTpzqKmd7hP37R84xUgi/w/GYm9Y=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788357900;
-	b=uGZ9FEQWv3y0WDesqS1ESOQbefGCAR9kV0eJU0K2Vzzuz1LyuPSlY7fT+aOkDTsseCV+W1
-	TqDr8MwNBqeonHG3qx4C1Zttz0kQoX/vBUmFv8gvbVnDJO+eiSShLJtsFmdzQFSGcv4f3E
-	4Tpl/dtnXsGUlrroA1R2czEHAF7CF9E=
+	bh=Cu79MV34wPsRG2WV//Qk9X9lwsBT7aOPE1XdtKONwGs=;
+	b=uYoNXcyzN8Z/xNdW0rxbGvaz1ngjJGVzDBrCKRwC79CumaSIJOjOE2hAITwssuZV00Nobf
+	1kBQ22qjhxUHOa7exIsWUYq95MevydhXLkHOlyXFM0oUyFfdf5qQdc0TBdSHFU86mvKtG0
+	geQvd4uPHOR6ox2ogbmNfzNyhsX2UTY=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=EAsNlzLt;
-	dmarc=none;
-	spf=pass (imf31.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.41 as permitted sender) smtp.mailfrom=gourry@gourry.net
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-90e95a18c92so16371596d6.2
-        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 07:05:00 -0700 (PDT)
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cNDe4sQB;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788358044;
+	b=qS9zMdlWxSNk5HnYBAq5bsB0Pa7RgVRmw2kA+PcfQiNGBYy1j7gg6bejZ1+Jgr/E2as6D8
+	xiHu60qzNY/VsKz3+tojL0eFnSqwWz5r93uLoV5rV8dOWFl3rDi/LeJa1Lry5uJTtiiW7Z
+	AnHBg9Az6Th64l1RUF4dXyIluhSU5u0=
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2d72ae08fa1so9312005ad.2
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 07:07:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1788357899; x=1788962699; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Why+id/p3RNpzcV3QpTHawTDpT4ABQ4KUVboBTGGWGA=;
-        b=EAsNlzLtqXLF/Zyw5zyjr0J2ElQDMAdiII5ejzwu5mOOdXsw2E/2bPmpWtvgZzayfy
-         I0NIqGILf5pRE4xsiVSkJg2Qh2ZmYXxnFDRSYVeM/0Hve0Bvp7MLgJ+ttly7tE2A/Wic
-         QqU8fUmMrUFiFlLLzUuuMsNgzL1ga2VRiHQpIVPP4tNGhwVVw8TAZ9WdkiRl4zBuRvzF
-         B0iMFE/6A2XoQPbh989NdPyWipXhd6zrVS/6FnU6sNhPrupfv7L4GkIMY5GOyaqjhVMx
-         MidNXHt9reAY9qwzOogdEZZHZA2GIx0He9AJe50zFxeRCrYH2XoHeD5Hkn1vXpCHUVrB
-         jEwA==
+        d=gmail.com; s=20251104; t=1788358043; x=1788962843; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Cu79MV34wPsRG2WV//Qk9X9lwsBT7aOPE1XdtKONwGs=;
+        b=cNDe4sQB2wC1rKYwGr3qzvQkM4DmN4q9RIYbBGoIYwZz+c0if11I/O9yCoFG57sW9i
+         DzTwMRJ8woAZcdHrrfrp5QNt9ND6u1iWEg8HR+lWowdQ5KdJlqUt4E5ZISzy5IbAPmcb
+         MzKtYpcDg35rFfmn8AvE1PyXUUZrSiDwESdmsla24FF5Vubzdpr4R9L1BqEUQMRJXjhs
+         gp3x3KoJ7k2OpDz2A0hzKoKDtjyn0ebeV98zmjt9LbgTqxNgcLftqA4/xSP53kumrzKd
+         +1STdJw+j0DdYcKvEw/V4q2sjqBZ2xrjwpOtpdmLakHOGVJcZ9Kw3pcfmRTOR8TDO464
+         6gNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788357899; x=1788962699;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Why+id/p3RNpzcV3QpTHawTDpT4ABQ4KUVboBTGGWGA=;
-        b=cpZce3LYtAED5GeXSZBtQpUQs7IGis9M4tyCeCKB9RmPoIr3sa4WCvDwubo+RqLetG
-         QOXfJrDmfRuURYwtCQdve7oh+EiCaTq96uHj3D9fms94LkeVxOpfkFW7QAoHEBooQsUI
-         J+aW8lb+9JtmBkHYAPzOmepCW+JIZ9xE49LWRvHRKkwMuSdoxV6s/5XAudukmh+2Xulq
-         hQ/NRgW9UX41ttyUMttbUfaQU6pYaCzIkP2HV3z/zvQ9UubMJT9aSIRxe6Yrruh1GwEQ
-         F2JRVcr0B8GzCcNmLArGQTD5xH8yuTJ6Zd/SqSpeWU11Zft//I4zwX6LyvkJU4AiP5U0
-         2Ekw==
-X-Forwarded-Encrypted: i=1; AKwUvBxC2o1Yr0bMEMrLd9e/jYA1MthwbHysgRrXjDs0YBTZpXGimJS/7YFG3y1ZBW1xbbb5DXVZZIIFuQ==@kvack.org
-X-Gm-Message-State: AFuF++njAH6jQHTAA7lcMV9sWp7cNdVfAFwbmjfxDoKb1uQov8ODAEfn
-	6LtRmY2sytT9h/J6u4I88WiF3vlccHO4B2cT5JBtyjFgW8Rs9RFYFtGHay5+120u1Q0=
-X-Gm-Gg: AYBFou0/iolmtl8aNaU79zRn3I4PZQas8YUPkqJ1BMtPMkxe/HpI3zEcC+J0KXhEOnf
-	jYSL0WThDTJfKgI/beTcc1gmDKcseaDRK8pqomzkisL2tjSy9ga0eqwhCubWufF7y9adQufVB/S
-	gK9gpBesWwsIMClpou2SaWKXLxL5XTQA0ryZ5oj2Rj56NBU5TbT4s7LvCaonuF0cuP4e526dcyJ
-	bL5tNpFpBTthfqqmWlnGI+2SuuwDZj3Nu8k+exd3TCgEHyvEd9c6qwI1fII1Z5VUETwY8SYTIWX
-	WJqIDV88AR+PVf6w/Dg+xLnQ6+L1JVI4nVfE/n69J4OHaYlPOgupZD639/hDah2Jv6nz0E04Rok
-	Yc/ooDxk0iokIdzof9XZdjyGpXGxgSlMoT/eInqQn4EGdk/nHoA0ZQEBTyYswI+dGK71tEBTuqU
-	acEbqxhZS68cq9SDOo5EoYgCF/23uLpv4dO8XDqpGh7ujp6g8mBqZRH089jya/J1a46sp6Cy0Va
-	t5vtaxzY43zCAnnwE2McB7tqBS7hPX6MAf7r2bxz8nl
-X-Received: by 2002:a05:6214:b6a:b0:907:bfc0:781e with SMTP id 6a1803df08f44-90eca3d4856mr65248836d6.30.1788357899289;
-        Wed, 02 Sep 2026 07:04:59 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90e9eec7ffdsm18809156d6.25.2026.09.02.07.04.58
+        d=1e100.net; s=20251104; t=1788358043; x=1788962843;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Cu79MV34wPsRG2WV//Qk9X9lwsBT7aOPE1XdtKONwGs=;
+        b=NizT6Qf23oL81j9c2mZglt4luv38kd2NGjE3qHGuIracsUb++azG1ns16CnoOicaMO
+         jKnNB5c39MANuAAzqZ8wXHI+/XUhUugBEZ52DisP0h7PGHEypvPPJLNWelTQOyz4Bxqp
+         QFIbbvaTTcaGU/63fupGOoD1nBZUHkl1rIZPAGxdEVvbQ9q957VsyCE4F5flDGt5KQsO
+         2ecRfKBzsdOjuBd7YEgymZUNbusuU8fonsWg9ZPShgyUctr3RT5u5ypEtqPS8UU4LPmb
+         UJdMgZZbVO7Ux7iYxzuMa5gVd0JMu0Mwv/sqytOkjSJygQHMz/MTdk6C8BtrX7uAlM5r
+         S3Dw==
+X-Forwarded-Encrypted: i=1; AKwUvByzfg2OZoYQjpPeVqMx++GMKXVr/wyDCf+FbQkJv8K/idmuBbwJSzLXfJZrdFWYH2SR4JgKegyBPg==@kvack.org
+X-Gm-Message-State: AFuF++kUwea6F4ynX5ZXcsMeE66CTRqv3Rlrop+PYGnibMzYGad3FB0r
+	qSZQLDGEOMrSIBOjJk8CJLNBuVHqHNKEy/kwkCOBzMR4PyoTVzNonyD8
+X-Gm-Gg: AYBFou2CVDOLy6PEkmv1MQDP2zPEjOhz4XDtLyTysjjEirCw9RDcbZgWCsviWhxcqov
+	DZXPjwv2M7F+ldDfupz4ZSDLnvve+Fzodr44z9tayagAWqItdvPgH1402STbKogbD4QiIEqQycd
+	Q5V3LGJqNB2MShLVq58/dfHPNkim/8e7EbhrRMxC8Xl1QYuYfFkWSlKT5VhiA2D1EnJWRAWiQvc
+	vHlUzksiSMN4osFc1uwzWfduoyXNayAkNGpTs8D0L6ZiXxDQYym06mFo2vTY+iC55EuI+uElSfI
+	qjCB0BbMBeWNNeFrMsGmmLdxqP8K2re/SNpW5r8RRTooN/7d7GvHDJ01Ibi6Rlg8dP3Klk2cl7z
+	aKEt22Zze4ks5MAy3l7kQoM5UBe5scUkEWs/+94uPlmDup09X2I8CImpVALpRrZCs9s5q+aDpAe
+	UUXxh+8Zt5s5c9L+c0g8iTtsL0W1X1RmyPGeh1VCA3Quv28hvrbnCFny5HzrU=
+X-Received: by 2002:a17:90b:35c8:b0:393:194d:5366 with SMTP id 98e67ed59e1d1-39aedf43130mr7799632a91.10.1788358042526;
+        Wed, 02 Sep 2026 07:07:22 -0700 (PDT)
+Received: from gmail.com ([185.220.238.35])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39ae380d7a9sm5579972a91.12.2026.09.02.07.07.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 07:04:58 -0700 (PDT)
-Date: Wed, 2 Sep 2026 10:04:57 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Liu Jing <liujing@cmss.chinamobile.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, 
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mempolicy: fix div-by-zero in alloc_pages_bulk_interleave
-Message-ID: <apgrrQM5cFWRA4HR@gourry-fedora-PF4VCD3F>
-References: <20260902090245.16411-1-liujing@cmss.chinamobile.com>
+        Wed, 02 Sep 2026 07:07:22 -0700 (PDT)
+From: Kunwu Chan <kunwu.chan@gmail.com>
+X-Google-Original-From: Kunwu Chan <kunwu.chan@linux.dev>
+To: SJ Park <sj@kernel.org>
+Cc: Kunwu Chan <kunwu.chan@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 05/12] mm/damon/sysfs: remove probes number validation
+Date: Wed,  2 Sep 2026 22:07:13 +0800
+Message-ID: <20260902140714.4023700-1-kunwu.chan@linux.dev>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260902054747.99370-6-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260902090245.16411-1-liujing@cmss.chinamobile.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8866520006
-X-Stat-Signature: xwb7bd8ptra9g4e3bbdkqqsw8cagsmtp
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A4F8516000F
+X-Stat-Signature: djxkdptc1qq5m6bitf9xkd3dotsq6jpz
 X-Rspam-User: 
-X-HE-Tag: 1788357900-679157
-X-HE-Meta: U2FsdGVkX18usQRaLrpKe/wRhlE6/GAXiaYLmZ/KpNZq9cyhPTwOtp9nlTxia7g9OH2qLyBAbDmYhGpDE6uIrMhgLLhz11DXqcN5YMBQozSbr49mSJX6CRyH3hMT8uzE8aoqiL5OKXOZ+EBd9Bcy2JTUyeKE/YBIUJvdj+MmntEfjy/tRtQ1o2XdjHNO1X6mge29V8cHOWo3U3Bydkg2mn5k45rf/y5ThK5vlFx2/WRCzpUgMipMJGozEZS50o7ojD1wX+6Qyzsbq9FbWaW8lSXT9YFsRNJ7bkvKJm9cE/1Wg1EzWaVyiHBpXP/qfRgPlaRGiy9Ox97EiWvwdep6JnxynUwIOFAklrFNqaalNH3dDj+TvmWABRgRoSUNbAMF7nHCSdTFAldikCHEn80nzWXgI0QXrWcCJsZmEJ0KGJ8xAELIXcUtXLjZamBAh/wBVjcRQxJmBy7oF8sm2CnCortIrI1vhBYjd6QIR5XHweOKc5NVNaLCH4kjSRVaMY7crxtHjfHwsZbkEd9U2lg5BjyaTRe5o4NdRT54fBq4H+DTxsYhQwSQ+9/0LJNMhaAFEOwFb0ziITy7aNCGVjFKgJX4S8K6NE6o2SOeV0a/3426ajwC8npxvf0QlfXkZ2am1GQOfYUx2eum04YtvYLZgQ1tmE+LeHIRywbBuzT2xX4KrhgG5l35vuiA82X0p1LWxXHdvAwf2CNOpuQ8UrWm9yblqzKcEEi7EXdeAicuj0bc5l+uxnVY4Lm23e9dqtu/6daswAKThfyETRrc9iTGxW2CV4SZuv53R6JEJrVmqSKgtP/qXGGnIU7TLzgtFApjYKJhonslKxR4mg/C4JTGHXNWFQtt6fR+27hIlRLFKrWX/M005iK5fn+DZV5JRQOhQwSP5fd6Nmo7tqxeKRVNZi+jBftIqaYoh8Ni+BnGS9i3NkjmKNPQG+QM2PmpmbrtP4dtvd9VMloUSOlAjeJ
- YPrV1qbF
- Hm2hcHAk1Snwm7N/QfEjog7CNhRD5DkAHVWP57ZtSfMHtRzNkY0g+4ch5WkXFpeyumu4qjuOZ042tO8WSQmN5DRGjiN3lFJ9md2hARBOT/DMpIvmRg35Aqb/8N5TM4t25deozjBedhEDKiCMLbAamkBXR2GzSANFKFkQClA/jyWcAJNPf5E2SqFW/AaXE0xAkd/hcU8z62VzSPwvXZMZG5d38v5Iey6YA4zxv3L/0nzOn0ZApnXq9TUf1KJxX04MX3AsE13KNY+N0vKtKwmWjQ/QuU+xeE9ePdxSK/KWzxzoouYOleB/dV9eb7Eall+gcQSBmNx8RMSvVYUzulRaOTCyjASfeFYvIwfdiC/3sghsvmvnwj4wMVrBUalVUQ2CAcwdupukJFVPoz3MV5P9FfzNKFSAlhe1VU/rXqN5pfK+xytY53J3NZmEuSlqMeDblKqOATbmCEhhLCZUbD9xpL4VxLyHtrsLMgGO2
+X-HE-Tag: 1788358044-489226
+X-HE-Meta: U2FsdGVkX18VuGnE93dzVmlx1Ez6CHnkPCVYDwPDn5qpgxG3q0rePD7qHio6UxpwsGKwpGsr0CSPlTTYrG6G1E/htSBtZkgpIPN8mWzQGH+7aAP1HcD+WgK9ApAuQea4F76UMO68GPvx151rJT8hAzyOTvFwu25CqloRDCSM8HwyTor6xirx0dILJ7E9PVJs5KXnq7Lrs23VNmB+2yOnKt0NT6UBt6dgZ5Wwc3+cyHEwuGqM9JX9N+os2t+yF66bLPzj29zZfFJozsDHvCDWoAw4UX02ubKyTnAPB5hi7acdDFSyfAxmZAMbMFbitz6o1bLB4+RqfIDzsWvGhyjrz7tPDFtEgIEd+gFtjqeBAH1pEyCiqKMzU0zsdczM3R4rGCuPAnJhfJj0FJEP1256zj+OMIlBqKiYOMdkfRY0zaMFmO4U9/nVBOVgOoiD9hPtUBD1hQ9QYYE5tptkHTHt+W/Sh/8jVgXNUAsM0cqB9ETc0DKFHlBvP+4mwD/T4rxh7rwheMRbUWPxAozPHVpt+y+XWVp32gfesZVSXZ9Ya5OzZOEuMbyfCGt6u2n4K9TveM1Pt7lTWgsJuhStQKy+Ucvg/1hVSn3Tv30AGkrn6teTqfTj1XkiE8Xfg/UiJC8ADJN4+QdP3oTjM1mfoH6HEHFlDNCBhtl8ngireDLcbziVrtZdWzGfPgRP4wSKQYQgdq0ddCB/aGErtdTdhkmssWH0RpkT4MI+l4r+ayNWGOna5H4A5hhI8hLouhwQ7+npeSB/KARoCCgYZnuZlu6+7w9b3GcxOpp5bsz1Ev9LzcvwFV5yD6og9Ee3zi4RJPmeNT+d3jFpmD3kd3XEhoPsPK1OATpU5W0rmkL78rU7FEVyrfAsvpahcADy+CH53xd/571zHkE+xQD54xRNFtlS6ugkRKjcCtOglwTBwyfTJXlA6mpx09/VaWZSbki1GX6fJfPxmCEo75+nwEWXoK+
+ UrTfLWpT
+ +zYLLce4o6ZQt7e5akguMsvOP+ReaCpSn5bTly01ox5LPleIFHkK0u0cZ7/mIVR4VB/1uAqJIKGy0assGFmNfH310PTfh2sGH6pdttHRQrox6XxO+JiHRSPQpc6OmZ0RoxurIWVY13C7iRZ2K4m8SSWCK7/1D1RnbHgWY9h/nAjm14RIbBSOK3pNB+J24k4dGYo1PPQVVb6maZ+k1kM29zEHrJZ+lLh+YBqHpnbdkeB0ugrm1UImsalK3c3tdX6AzuXt7QbELSlOGK6joKsgugG9jGUp/nOFl/bFCYxb3OYFYkzMa7Jd/ecivvOOLul2PUoErn4L/RpLTuvvYyF3Px2c2EANveCF8Oyn96nbhUSI2TRx6LBme6YOfptVP63+VK9ZS4mXuRyhj3gQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,54 +121,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 02, 2026 at 05:02:45PM +0800, Liu Jing wrote:
-> In alloc_pages_bulk_interleave(), nodes_weight(pol->nodes) may return
-> 0 if all nodes in the policy mask have been offlined at runtime. The
-> subsequent division "nr_pages / nodes" triggers a divide-by-zero
-> panic.
+On Tue,  1 Sep 2026 22:47:38 -0700 SJ Park <sj@kernel.org> wrote:
+
+> DAMON sysfs interface is disallowing >DAMON_MAX_PROBES nr_probes input,
+> since DAMON_MAX_PROBES is the upper limit of probes per DAMON context.
+> The core layer is validating the upper limit again, though.  It is
+> preferred to let DAMON API callers such as sysfs interface to set
+> parameters in flexible ways, and do parameters validation in the core
+> layer.  Drop the duplicated validation in the sysfs interface.
 > 
-
-now i'm positive this is LLM produced without understanding the
-component.
-
-A policy cannot have an empty nodemask, it can either
-1) have no nodemask (default policy), or
-2) be perceived as empty during a torn-read during a policy remap event
-
-If you are running LLMs to search for surface level bugs and try to
-hot-fix them without taking time to understand the underlying component,
-please at least:
-
-1) tell us that
-2) generate reproducers
-
-these "quick fixes" based on surface level observations are going to hide
-real bugs and just degrade the overall state of the system.
-
-> Add a zero check returning 0 (no pages allocated) when the nodemask
-> is empty, consistent with the guard in
-> alloc_pages_bulk_weighted_interleave().
-> 
-> Signed-off-by: Liu Jing <liujing@cmss.chinamobile.com>
+> Signed-off-by: SJ Park <sj@kernel.org>
 > ---
->  mm/mempolicy.c | 3 +++
->  1 file changed, 3 insertion(+), 0 deletion(-)
+>  mm/damon/sysfs.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -2600,6 +2600,9 @@
->  	unsigned long total_allocated = 0;
+> diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+> index 7ec14f48d157a..b576e97cbfdb8 100644
+> --- a/mm/damon/sysfs.c
+> +++ b/mm/damon/sysfs.c
+> @@ -1479,7 +1479,7 @@ static ssize_t nr_probes_store(struct kobject *kobj,
 >  
->  	nodes = nodes_weight(pol->nodes);
-> +	if (!nodes)
-> +		return 0;
-> +
->  	nr_pages_per_node = nr_pages / nodes;
->  	delta = nr_pages - nodes * nr_pages_per_node;
+>  	if (err)
+>  		return err;
+> -	if (nr < 0 || nr > DAMON_MAX_PROBES)
+> +	if (nr < 0)
+
+Hi SJ,
+
+Thanks for the cleanup.
+
+I was wondering whether DAMON_MAX_PROBES is purely a core invariant
+or also an interface constraint.
+
+With this change, sysfs allows nr_probes larger than
+DAMON_MAX_PROBES and damon_sysfs_probes_add_dirs() will start creating
+probe objects before the configuration is later rejected by
+damon_valid_probe_params().
+
+Since nr_probes directly controls the number of sysfs objects created,
+do we still want to keep an early check here?
+
+I agree that the core validation is required for non-sysfs callers,
+but I am not sure whether this particular limit should be duplicated
+at the sysfs layer.
+
+Thanks,
+Kunwu
+
+
+>  		return -EINVAL;
 >  
+>  	probes = container_of(kobj, struct damon_sysfs_probes, kobj);
+> -- 
+> 2.47.3
 > 
-> --
-> 2.43.0
-> 
-> 
+
+Sent using hkml (https://github.com/sjp38/hackermail)
 
