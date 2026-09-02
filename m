@@ -4,93 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E13E0C61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 22:42:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51045C624D4
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 23:13:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 932866B00D0; Wed,  2 Sep 2026 18:42:40 -0400 (EDT)
+	id E9C436B00D1; Wed,  2 Sep 2026 19:13:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BBED6B00D3; Wed,  2 Sep 2026 18:42:40 -0400 (EDT)
+	id E4D306B00D3; Wed,  2 Sep 2026 19:13:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D0D56B00D4; Wed,  2 Sep 2026 18:42:40 -0400 (EDT)
+	id D3C046B00D4; Wed,  2 Sep 2026 19:13:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4797C6B00D0
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 18:42:40 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id ABCAB140169
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 22:42:39 +0000 (UTC)
-X-FDA: 85170298038.26.199F396
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id EC06E2000A
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 22:42:37 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=prHzxbiE;
-	dmarc=none;
-	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by kanga.kvack.org (Postfix) with ESMTP id 9ED346B00D1
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 19:13:05 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 281F08039C
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 23:13:05 +0000 (UTC)
+X-FDA: 85170374730.30.FA55881
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5A0C812000C
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 23:13:03 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=enMkLhYT;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788388958;
+	s=arc-20220608; t=1788390783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pqO5LZhvHBtRdvbWaz/wBxjW/GfD1kqiQ2C9og7aMqo=;
-	b=4M6uOGJeYVZOciUuuuCjC/1wrzU/kKayatbHgsXGVz6SxNQYk4afhO+DY/uESLG9+cKu1q
-	t/+S5S6GRtJL7vpJzJkLzh1ewuCeNTRAyVSlKNhrt/Oh7WHwo+IE5fdJ8eS6fdiM0I9joF
-	+AxCTpmqfUdnN2Ojw3GVkbb4TnKXrZs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788388958;
-	b=40WeM/fUUwonX3Jv9RRdDeJa84K/8H5xO/NmK0SFylMjeFpQ3ae1+EeqEvoFNdxLkAwDx0
-	LHFGBbof+mwr/arRLP8Pvz3wILS54UzX9Nr6XD4TPcOtfMcqUogwzK87CZX6QCNUtaDs2o
-	0CmUSXa+zsHtUc0mruYzUBvrzyNmBzc=
+	bh=oANsTqPYV0zfdfhrNmsez3y2Ei2vdqKIizOLng4NKB4=;
+	b=0+WrkeCNM1hiRz/mJfHnG147bPk/staEzPMsD//C6JOqzmRTJ7eOThmur6AVYEc7Zi0rQN
+	/MJuEWXnXPPux6szCNpJWUUxXoEmBufVupmXEgkuVva1ZIQfZiD7lySYys5tJUCHXLAxkG
+	xis2tbTc8fo07yweD8AhyersDvEVvuk=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=prHzxbiE;
-	dmarc=none;
-	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6B3DC601EF;
-	Wed,  2 Sep 2026 22:42:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C62C1F000E9;
-	Wed,  2 Sep 2026 22:42:36 +0000 (UTC)
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=enMkLhYT;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788390783;
+	b=690ExjOJenyuM7NbH5MIRFD0SKEIBc1PSUEZMywJ0GBmOnY1OB12DsRhSPKogqDEglS7o5
+	AnCJ5fmjka08W1LwmmYcLgTAURf3uKCP/7UhvIg/l4mLHThKn9RNqcSJCcchpy+9qqxOK0
+	YjoirMIzj9pCX65BK7fSHfw1ZvBfGng=
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-382ef647e20so2046195a91.1
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 16:13:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788388957;
-	bh=pqO5LZhvHBtRdvbWaz/wBxjW/GfD1kqiQ2C9og7aMqo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=prHzxbiED94HyIQ7ik1B7ECmS7zcOCMeXkIHkC818VXVBLbk/R/jMpD/lxm7iERyM
-	 uoGFJiqDb8MLxSYNs7OcvlydDZAkz2sGR1uqYT6kYhsuDJciw9PQ3XGs22Z8U+dk6k
-	 K/AjesgeV+b5K/D0P3ZrrQXATJNrGeukzLcE1iAs=
-Date: Wed, 2 Sep 2026 15:42:36 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: SJ Park <sj@kernel.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>, Brendan Higgins
- <brendan.higgins@linux.dev>, David Gow <davidgow@davidgow.net>, David
- Hildenbrand <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Lorenzo
- Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, Mike Rapoport
- <rppt@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, Shuah Khan
- <shuah@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, Suren
- Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
- damon@lists.linux.dev, kunit-dev@googlegroups.com,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 00/12] mm/damon: cleanup code, add test cases, and
- update guidances in docs
-Message-Id: <20260902154236.3f59f36fb51f3345a0f21906@linux-foundation.org>
-In-Reply-To: <20260902054747.99370-1-sj@kernel.org>
-References: <20260902054747.99370-1-sj@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EC06E2000A
-X-Stat-Signature: tfea7a7fodri8ib8u4m3sa6pdp1o6o3e
+        d=gmail.com; s=20251104; t=1788390782; x=1788995582; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oANsTqPYV0zfdfhrNmsez3y2Ei2vdqKIizOLng4NKB4=;
+        b=enMkLhYT6mPeII5yxjafx35FbE1E53E8MajeFW4Bhr1TIcKnbAmKY3BE9sW7Tp2fXG
+         5/TDEE3wCDcIEez7D0iK+3UchMwlzwbme0XbaZ5x4OzIDiWI5yd/AJcM7GoEA4IGN/Iw
+         CRSAwAkeJLPYiNuK8d+2mSmauYhWJizcs+o0FN92uz1eTL9SyjCeb3/vm7GAT7Kz8AaI
+         408CAUhs773aiIN88KidTASdM1rzs3+YhWS6lDRazM2Wvm3PDVWyUnOz4iVqRIHOIkVR
+         ge4mpW4LqeKRH9dX5RSFnF4xa4R7Q06ZK+sZTv7iOrYF45mIEqtJajLuP3/T2lwvVgDV
+         9BYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788390782; x=1788995582;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oANsTqPYV0zfdfhrNmsez3y2Ei2vdqKIizOLng4NKB4=;
+        b=MmR6CBqi68wOokpc5PJmvObREbRsQsc7Ad9nqYkfbEi+tWYrC2GCyqmsR1+c3aXHa2
+         DJCgWsCewe9E4PD3KeYPZ07aX1BdQ9Sq3we046zmvs8h9xYAsuoRotGmoQ2m2UMB4pKo
+         wMPU/JdbscgcysCwyCDSwSCM3PadrKu0Po1O2d7TrPDmLAuViuZJlI3qr3idTgl4abd5
+         q6tmnTNpQTrT9VufpPwul+b+4gZni3XPR80rPXltkVWZkulRWnowt5CkqKrlCSnZ3wEO
+         5Y6YrhaEkh2b6s8IbjiRGPxcSBb1dcp1y1NX1SZYNB/ksNy8l80oXJ0CNJyCMMAUwNnP
+         pIXQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx5gSnkYhjyDGUJ7+7HyTqSidnRFx3hsAwRgdJrpNLkO1sDEIgc2BRVR9X76d/Y1gld91Quhc31Jw==@kvack.org
+X-Gm-Message-State: AFuF++msPOfBEPJsOlsfkRn3RVPXJY4rZQhdHv/qbCK5wY5lhvjppe5j
+	NICvS/c7ISxUqyLiscxdH+FkCaUAwZPOHcAoBkDcOct0qfB2CQM07Hdk
+X-Gm-Gg: AYBFou0TS0eXNVLmuP5/zKpSzpY2HjQ+8d/LZGEGb77GctGbeoz6kZAbmGA1ef7F2Nn
+	gn6VGQzN8U3oyXyT4D3ILvCZYC7/6OpvBweZvIPprZPQBG7X/aDLG0zubqyqMILKU3oNbOOVTXv
+	R28OtfQuWweA7/OC9TFUDZIqSWK/K/ENfPh4npyBsXoxyoQVGd/H807vBFIjOdXPOpBTfpSfj3Q
+	0tj12w2Pj5k6/N+oNC29++e7sO1ip+jg1Z52CYmLQuxrVRrYeqRmHbXh4k4GRl0+HauXt4frDPQ
+	462biIWANTbxGMdR3PFPZjDZwenEF+3l1VDsg/kSJPAyKL0USOX8LozG9gV7cNIN42mCoEmcmbv
+	kZTvg0DRHS2/DxmN83tzyGWZLnBgNJCc1aU5X7W/ysRmF7Vh+LuArsgi8DXY0Sx+OuQRiHIvQDF
+	aHb4AsjNWssu36Nx8tD8hlwC7SlVmR3c9fyJpQO7YEJXug/e1EAOwnu1/WR8qUsjtj
+X-Received: by 2002:a17:90b:4ac9:b0:398:9bd5:490c with SMTP id 98e67ed59e1d1-39aee0b498dmr10034854a91.19.1788390782043;
+        Wed, 02 Sep 2026 16:13:02 -0700 (PDT)
+Received: from celestia ([2402:1980:9c5:2de5:8b4e:3f3c:b637:4ca5])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b083f04d1sm1501603a91.8.2026.09.02.16.12.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 16:13:01 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: aethernet65535@gmail.com,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm/damon/core: allow esz to be set to zero
+Date: Thu,  3 Sep 2026 07:12:15 +0800
+Message-ID: <20260902231311.17490-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260902150301.88535-1-sj@kernel.org>
+References: <20260902150301.88535-1-sj@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788388957-367615
-X-HE-Meta: U2FsdGVkX1+DdIE57t2qPTpnem7lmAaoPJJRiYNoCUEWr4Jg6FOdaZ3gNIcR0M56+SWcsKhWODeMo8jMH2LyG4Us4WlXKZyB7fY5QXYUIZg3D9F4dHXLHixvi15Lo9aZPVFcS2UMOsLqb8lfY77c+mMfLO+xvHygp4S0gElAV/NuF1x8aYmQJ80JbopOnKOS8/mQ6zbaN9FeZ0efubxfrP9CywV3qNgczcMNc1Hr+YrP8xVUVMYYQ9jBpVf/4daxX/8jx0k/aDICt/n+wcpZLvyAJXLevlI7iaa4AvlSFU2N8pnMjlfMbEkePZ8lgm0qSCYbSc6JEmq9UWjSPC6CU8F7OtrxW0wSua/kK0+EWGPmDRSnSS7f6SsjH3FXTvfBoanlmtirPJ7yJU262325kXvgrxNtD7Opeojln84UjPD96dLbM6yidqtfc3gXaJEd2V2JFT0rxXxgvLhIro0CZwYDivfBpuswe0nnd9sHJV7bgCFBV8VAnVxgRmPYdz7+e+/tNb+OFhs+7d0RBGcNTp392XcD5+rnzV062zxSWd1aISnTwK3mYnFQW98cMl8Dvpc+ANStAMUUuC6juYmdSqTQQfzHR/wKlXKLfdM4CMc9OS/O03yLw+XD/twUy7arDK36s9KxUyWerA59r9w8Rt9A0zxGWKPtnVaJhpIrZCTapEe3Ce+qXmEGubS2LKSAA2yOrcUUmRmdK4+G7m2t/qYx1QiHVh74NH3NFHhhWMVA0gE7UU6DcjegEgngDpzMcn0AKDV7uDv3GmhFm4OmLU9W8wZNyzlET5M3MtHsGqsIfkXD3L6T1VCpRd1NOC6KNGwfbFwS++erZIF1RQq7h9ZXydbhLbC36D/CQcnHEA6puiWHiUlV4OtXmtauBfTLma10SW7hzeiN4CJRdcl409O+AWkTwCAPfBVY5blqicoAfp/fIn0KcSAYoB9lWQn1zu2HtM0UmSDLEkA4Opa
- nMMyODxY
- sbqe1PrdIgyp+9Yo5pbZp/MgXSd7lc75vMkVNa2FO7PPNgEyoJrjcMDle4yhpsKz89ymNTaU5v18Z6J2+eeff6t+8riEHCTpXi4GzsbGANcfbum8WlaBhFIbY2Z8n8oIb5GvFqJllbhamALgpd2MXztllxTvyy/8g2BjVb6+1wOarmJ3S4CTy/QXid37WdqqcCmX5GwIAPqIY5UbBighSWmwQ6QZj+4pJT1mPqKpFH9pqw1YrzJj2kQAndFX4/zr4kwP9ozAQKLBTni5eXyXNdURqnQ==
+X-Stat-Signature: 9uax4rz64zyz8wuyr4zy8mrwxr7kzhei
+X-Rspamd-Queue-Id: 5A0C812000C
+X-HE-Tag: 1788390783-133292
+X-HE-Meta: U2FsdGVkX19go5NnDXCgnxvQiy0tF0W5gTgkW7Afjf1c5dNA3lz/pqphcpWtOgJ1IsproSOXs7Rj017dx4JMbjfMKtJQXzkie3QOAlMDUncSbw6sHnqlTW9q3m5hN2BD2d/HxYJI8+LI2+zxX2MK5A+WtUpsezc0wrXeokpwI0a/lqJVsMoNnWgCGvLB+1lhy7MVyULGCif3VT+bcG8i9G/ymk/6GdgtnAU8o2hO3BA9pG0SUioFWSMQDe6u/kXEwFeAeUi2GkmN69T66DB44YP4ntHbRg2dlorqM5JnCldrdCFcPyHLPUuMNfUqTNH5wPRNlhm6YeQCkpVe7Rb9/VBGFuDZVLKcXrEoNKyQKNmTxTSxiUj7Yf12SN7McF3krAgyh+uVDeuZwCJViW/CD2y6zILaD4OdmtnjEVDXvpL6wJQUvckpxaNF/dAqWakeqQAa6mwi3ivFN84M9uEPCExbTtckjpQ1feLabmhmazi3cXxhHHUNfbFO/kjqT6lYYb/+oorTHkOxFfkkEXopjpJl1V2na9q2xG1Ticnwpd9MZBIulRuuO7fX5Hon1cagBhEDaQxGYHlOK2Fpp59QctNvyr19X6MbA365igLkBXkGbk2EIy1e+I7qYdO5GcoQknJ77OfYHvVQiXmr4g2VBJEw/pferYq15iEbZB6n4NSCgniEmTxGmFAq+Nl/ewjJWMV8Mm0EmvOQxw94kOndB717dulThM7FxNVteceZp00llu1CgvdGrQo4D+wE/dIO2Wsis65rAdAShs/Ocf7ALvpaqbQDhXTlcpo5NTou5snXCbnM35QyUBejeatdQ9UpzIopVkaJ/BCxUDlyDmpYXainNGpWmqa9oWN3GDFgYYNSh9UkZe8myKzG8Lbj3Vo/sINQbv3vlVb/4j6tTa1FcGXHZuWz3F8DTGdrjv48ytAHLNE8DwASRuCs/7M68c5Zbji5IPlQ2dpgnp1mShb
+ xNoNXviR
+ uwpCtDwW+TEhRR1+K65Yox6Ccmo9WtGDgsrZB00LgxAOiqT9U3p6TnDlp4TRJ9VrkYUO+RF+UgiNQE6Bt5HE7Hzs9NX6hwcYo+ftoF41vB0ul0BXO2fVwZVIwTMfD9hsjmx49HZraL2eN6WVDUVlDrhSDaS+FzzPUQf62ULpojnJPkSmb/pXA6fJktmaGeF1HbHJnY/I/o/hg/q8dyzkhIlfHjtucZJdG9etwNpUyVgVqAk10lEWlhVR2JdzcXibDsNyVdSMTUme7MAXPL1WDQdzZt0XqogCb6XludT+O2NAtUjJ2jFc00StYxQ2gfhXMfeZlhKlWtOLoBCw2/oIpkaOFlWDNYxESQFt3L8Bfe8QjYA3cnCuawJXS7TqNcoooMQUG15lCdhMEnmZxAUyvn6hK9lLeRt5fNr+wW6v+gQ9su56BULv6jQuP+QqonKSC6S8F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,14 +121,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  1 Sep 2026 22:47:33 -0700 SJ Park <sj@kernel.org> wrote:
+On Wed, 02 Sep 2026 08:03:00 -0700 SJ Park <sj@kernel.org> wrote:
 
-> Misc cleanup, improvements and updates of code, test, and documents.
+> On Wed,  2 Sep 2026 22:35:20 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 > 
-> Patches 1-5 cleanup DAMON code.  Patches 6-10 adds kunit and selftest
-> test cases for recently fixed bugs and a new feature.  Patches 11 and 12
-> update guidelines for AI review and what document to read, on DAMON
-> documents.
+> > On Wed, 02 Sep 2026 07:13:48 -0700 SJ Park <sj@kernel.org> wrote:
+> > 
+> > > On Wed,  2 Sep 2026 16:20:50 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> > > 
+> > > > When the temporal quota goal tuner determines that the goal has been
+> > > > achieved (score >= 10000), it sets esz_bp to zero so that the effective
+> > > > quota (esz) becomes zero.  However, damos_set_effective_quota() clamps
+> > > > the quota to min_region_sz, preventing the quota from ever reaching
+> > > > zero.
+> > > 
+> > > Where in the code it is clamped to min_region_sz, when?  And what user issue
+> > > this can cause?
+> > 
+> > In damos_set_effective_quota(), when quota->ms is set.
+> 
+> Please clarify this kind of thing (when quota->ms is set) from the next time.
+> 
+> > 
+> > '''
+> > 	if (quota->ms) {
+> > 		if (quota->total_charged_ns)
+> > 			throughput = mult_frac(quota->total_charged_sz,
+> > 					1000000, quota->total_charged_ns);
+> > 		else
+> > 			throughput = PAGE_SIZE * 1024;
+> > 		esz = min(throughput * quota->ms, esz);
+> > 		esz = max(ctx->min_region_sz, esz); /* <- HERE */
+> > 	}
+> > '''
+> > 
+> > This is a minor issue, the main problem is that it doesn't match the
+> > description in the documentation, which states that if the goal has
+> > already been [over-]achieved, the quota will be set to 0.
+> > 
+> > Original documentation:
+> > 
+> >     - ``temporal``: More straightforward algorithm.  Tries to achieve the goal as
+> >     fast as possible, using maximum allowed quota, but only for a temporal short
+> >     time.  When the quota is under-achieved, this algorithm keeps tuning quota to
+> >     a maximum allowed one.  Once the quota is [over]-achieved, this sets the
+> >     quota zero.  Useful for deterministic control required environments.
+> 
+> Thank you for clarifying.  Please clarify what is the problem like this from
+> the next time.  Without it, reviewing spend unnecessary time.
 
-Thanks, I added all this.  Along with the fixup for [02/12].
+Noted.  I will ensure future commit messages and descriptions clearly
+state the triggering conditions and potential user impact to make the
+review process more efficient.
+
+> 
+> I feel like your recent patches tend to lack such clarifications and spend
+> unnecessary time for reviewing.  If you unsure, please ask questions first or
+> use RFC tag at least.
+
+Understood.  I will use the RFC tag or ask questions first when the
+nature of the issue is ambiguous.
+
+> 
+> I agree this behavior is not matching with the documented one.  The point of
+> quota is making DAMOS not unnecessarily aggressive.  Hence it is designed to be
+> set as minimum as possible.  How about below?
+> 
+> '''
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -3485,6 +3485,7 @@ static void damos_set_effective_quota(struct damon_ctx *ctx, struct damos *s)
+>         struct damos_quota *quota = &s->quota;
+>         unsigned long throughput;
+>         unsigned long esz = ULONG_MAX;
+> +       unsigned long esz_time;
+> 
+>         if (!quota->ms && list_empty(&quota->goals)) {
+>                 quota->esz = quota->sz;
+> @@ -3505,8 +3506,8 @@ static void damos_set_effective_quota(struct damon_ctx *ctx, struct damos *s)
+>                                         1000000, quota->total_charged_ns);
+>                 else
+>                         throughput = PAGE_SIZE * 1024;
+> -               esz = min(throughput * quota->ms, esz);
+> -               esz = max(ctx->min_region_sz, esz);
+> +               esz_time = max(throughput * quota->ms, ctx->min_region_sz);
+> +               esz = min(esz_time, esz);
+>         }
+> 
+>         if (quota->sz && quota->sz < esz)
+> '''
+
+This solution is much better than my initial approach.
+
+I will incorporate this change into the next version.  Thank you for the
+review and the improved fix!
+
+Best regards,
+Rui Yan
 
