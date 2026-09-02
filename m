@@ -4,135 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B3A1C624D3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 13:30:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01D21C61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 13:37:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E5926B0099; Wed,  2 Sep 2026 09:30:39 -0400 (EDT)
+	id 0F2376B00B3; Wed,  2 Sep 2026 09:37:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BE0E6B00DD; Wed,  2 Sep 2026 09:30:39 -0400 (EDT)
+	id 07CF56B00B5; Wed,  2 Sep 2026 09:37:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F15DF6B00DF; Wed,  2 Sep 2026 09:30:38 -0400 (EDT)
+	id EADF26B00CB; Wed,  2 Sep 2026 09:37:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C44266B0099
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:30:38 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 429B51A021D
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:30:38 +0000 (UTC)
-X-FDA: 85168906956.07.EC4BCAF
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 8759E2000A
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:30:36 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="eo0/Ov4Z";
-	spf=pass (imf03.hostedemail.com: domain of 3-iSYagYKCAEtfbokdhpphmf.dpnmjovy-nnlwbdl.psh@flex--seanjc.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3-iSYagYKCAEtfbokdhpphmf.dpnmjovy-nnlwbdl.psh@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788355836;
-	b=E/tfBOmj70nCO+x59FJfn1DxR91Qna/KHAn9GOk0UZvfuL9m9D/IgMoXFR3orj5G9da24D
-	LLDrkjSenIl9f7Yl7n0Ptkr3fyT94vpOWvtizIGEv9MLPOr2t0B0d53gamAe8oK/D2ptf4
-	5RKe4Hs0vureZ94H+1hIZLVb0lkGsg8=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="eo0/Ov4Z";
-	spf=pass (imf03.hostedemail.com: domain of 3-iSYagYKCAEtfbokdhpphmf.dpnmjovy-nnlwbdl.psh@flex--seanjc.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3-iSYagYKCAEtfbokdhpphmf.dpnmjovy-nnlwbdl.psh@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C60266B00B3
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:37:30 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 94AB7A0227
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:37:25 +0000 (UTC)
+X-FDA: 85168924050.26.0F087F2
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 6E45240004
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:37:23 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kFeJI7Fa;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wEgnbpYw;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=igvW0iwd;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PwtNXQkN;
+	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788355836;
+	s=arc-20220608; t=1788356243;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mjYXG96MoSl8fTQZ7UxomEUfCMCHuYclL43aTeN6TlM=;
-	b=kQm6KynZuJ+KuJKVByfecxQMkc+Jpzk9jUsEwJ4bghGMlm1pQOybSp3CPXPJbV8L+U72l4
-	aHuU8C09vx1s0OZGWD7+xVDy7/n+SafK0KEHcQVlbNhbJ4ZNOv6SiWwDI7A4ODvV9qy+17
-	3s/RgCE2/2WcgyICiPD9IpUXoGk70yM=
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2d70d8839f0so13233305ad.0
-        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 06:30:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788355835; x=1788960635; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mjYXG96MoSl8fTQZ7UxomEUfCMCHuYclL43aTeN6TlM=;
-        b=eo0/Ov4ZWYvQXfmgYqcAckIYkDj2OGJ+YzFX51ZTv9buY+c3mxuqZAUfN7HlAYVdOe
-         wDhHGUh3fQk7SpH6Kt6IiPijWQ7M9JynuM9+nDCvf2MqL7Vf3AMfnGaRtpYWq+p363Zt
-         q5oUOzQrkVytzPQL5QRQ5NMZceBbAXq50j258ACXfwBeyoTQYGqbQ4nZrWn+e6vhpRUt
-         eFqMvJFF4j4RUvX8qnkxeJHWL4p7TlSg0po4AeeVhfDjhQfE9rsbMkx2o8YRrOItIm9r
-         nS1TP3cZOvfLiily4RKv27ZBkKjsBJaiBoVgNEGpF6mtCPCWqSGicNMKxZFjozbUNXEU
-         dq0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788355835; x=1788960635;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=mjYXG96MoSl8fTQZ7UxomEUfCMCHuYclL43aTeN6TlM=;
-        b=ZGVwgLl4JS+lEbOh4+Ri68WZfQRgjER3aifuMimLtzy3hjzrRXF14RD76pUSI7L5uT
-         6pAKgsnLXOwyO0zp5nt7epupGG09eNOK8nyyFBFN6tBM6dK8CbcUVVHXwkBLW44oOvkv
-         UPArHyZ5oEfN2VMfEV7cUTl6IK9HQ1yYdRqvv/8WoK5lGALXRLR4CFeV813sbluaSFoK
-         pQFIh9JgAEf29VLM1fF5VAzhxZ4oApyKwWz/TsuVI6P4YqaPe31sK2b3u57K4yKWxTQn
-         A7E+Kw6tEUiWVGD+hedyaCxeDgLAsZSZs4qpiMJVYR1y+qXsf72pmYS2I1JdTKjvpuMi
-         Ye4A==
-X-Forwarded-Encrypted: i=1; AKwUvBzjPx+HEJp5+/ke7NacVQZUNBYIoL0RMdgGgvIluSlH3SCBYrA66j0X8+7F/vj7s4uI1T/nwmVBsQ==@kvack.org
-X-Gm-Message-State: AFuF++nRriB+eihMiTqJaHHOPIm0M6uSekAQQwXWTXZFtEMFtORy/RnY
-	AVv6GC/B1PtXXoTWXpI+RfoICu34g9o1NI0RU/jty2ZjVtjG7mxC+CYn051ICmrZw5e/OhVdfje
-	qYFCR4g==
-X-Received: from plnt11.prod.google.com ([2002:a17:903:196b:b0:2d3:7166:b1a6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ec8b:b0:2d9:43f6:59f0
- with SMTP id d9443c01a7336-2daec7bae38mr68887665ad.22.1788355834704; Wed, 02
- Sep 2026 06:30:34 -0700 (PDT)
-Date: Wed, 2 Sep 2026 06:30:34 -0700
-In-Reply-To: <33431813-fc94-48fb-9042-5cfc68af05b8@linux.intel.com>
-Mime-Version: 1.0
-References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
- <20260830-gmem-inplace-conversion-v12-23-85e5fd25252a@google.com>
- <CA+EHjTzALzghuG5J-LFuG5pXJ4WgEfrMHgwkMHnq1U-D6yS7Pg@mail.gmail.com>
- <apcY5b2o5k04XffH@google.com> <33431813-fc94-48fb-9042-5cfc68af05b8@linux.intel.com>
-Message-ID: <apgk-nKsB31WVCWp@google.com>
-Subject: Re: [PATCH v12 23/45] KVM: Let userspace disable per-VM mem
- attributes, enable per-gmem attributes
-From: Sean Christopherson <seanjc@google.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: Fuad Tabba <fuad.tabba@linux.dev>, ackerleytng@google.com, aik@amd.com, 
-	andrew.jones@linux.dev, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev, 
-	Xiaoyao Li <xiaoyao.li@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=sDedlMCOvuW3EuoVUGCGcUVQWdalOVctmMo52iR6yfA=;
+	b=AVOqLO8ITss8/dc98y4/C609hQLvKjvzp2GpA4Zfb+WrKdihKWfCVsLfRasz6z4dXxdtA4
+	I054YdKfR8U/YfE3ZSf361jV/BeXmH5aHS2CbJhl0AfzrPFmB1bhjKhblEq4TA/pbYmkC4
+	lBd7pozB8HX+cElfVQLfHUn6ZXX2yxA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788356243;
+	b=roX5+lISGlWv0whHfoKgCfiIofrty+B7Q7bD2BLBEXw4+r8fRhIEppBIWBGA/y+saPKSci
+	XNHeLcg1NUIzth62NI4f8EmEGloHYbQb+PEYA3qqwVcQ5Ma2E1Rm8pv+PbtLJiKAp8w3Xq
+	wLfQlTS7n1kVHOHQNlmI5iI8l61weOc=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kFeJI7Fa;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wEgnbpYw;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=igvW0iwd;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PwtNXQkN;
+	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 791981F7F9;
+	Wed,  2 Sep 2026 13:37:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1788356237; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=sDedlMCOvuW3EuoVUGCGcUVQWdalOVctmMo52iR6yfA=;
+	b=kFeJI7Fa3DhbCAVEHKHilo19tMTpdMJkRx6xn2UT7/LP9xp7WOxdBFJ+9Rg9HACBuK0HL9
+	5fMLIO1/4H3/OKQCp8GtkrWak0dYeiEHJGNnKCL46H+sbyHQWAC0pmHPgdQ2u9MExiURcC
+	QThkqQX9sBHq0hwgyWH86sspj5k4r70=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1788356237;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=sDedlMCOvuW3EuoVUGCGcUVQWdalOVctmMo52iR6yfA=;
+	b=wEgnbpYw5Lxg1SPixxID+ZWVZlB/UljwKlgMMrKFy4EP3m1MOfozgDxVcNic2nTfnPwXdB
+	xTgdAifV1oi63vBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1788356233; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=sDedlMCOvuW3EuoVUGCGcUVQWdalOVctmMo52iR6yfA=;
+	b=igvW0iwdrxCnf6k+H+Bmt4wWEuRIFsatDloZb39czqxS21A0ZXeqcbfRxjAw8I7fVlZhV5
+	yfi/JeScBaspSVbs6Yey/4ygM2K1dCM6DKQvwjqtmPlZKpqZ7B4ddHOd14XewZbaceaLFk
+	cvxUMelMN3EVLoruBzXJsESiFtUPWv4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1788356233;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=sDedlMCOvuW3EuoVUGCGcUVQWdalOVctmMo52iR6yfA=;
+	b=PwtNXQkN4GvkX2GYghSltfo1a1JrvNYni0Da+xfbpeh/51iZSSQotlc5zj9l3eUz2KL2zH
+	oYrfebUy1JxiyJDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 45FB813736;
+	Wed,  2 Sep 2026 13:37:13 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id /rQDEYkmmGrAYAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 02 Sep 2026 13:37:13 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id BA25FA13B5; Wed, 02 Sep 2026 15:37:08 +0200 (CEST)
+From: Jan Kara <jack@suse.cz>
+To: <linux-fsdevel@vger.kernel.org>
+Cc: <linux-mm@kvack.org>,
+	ocfs2-devel@lists.linux.dev,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Farhad Alemi <farhad.alemi@berkeley.edu>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 0/2] quota: Verify special quota formats match sb type
+Date: Wed,  2 Sep 2026 15:36:58 +0200
+Message-ID: <20260902132458.23590-1-jack@suse.cz>
+X-Mailer: git-send-email 2.51.0
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=938; i=jack@suse.cz; h=from:subject:message-id; bh=rhIIYZj1gDRfV0Zzn4IWd+CiaRTCYW8nS183KX0IZFk=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBqmCZ5ZBNRLRaTvLmR1BJv3UcV7BS6owiHdQlkN TOgWyUOkyqJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCapgmeQAKCRCcnaoHP2RA 2YidCACr/oac7mhnqq7jMWaceCGKrOqWSpp5PIRyDM61jGoSKjN+YvfTWvh+a0HlOO8ND3J6JBa 4+N0GjFjudQRqsOtzqr2zdGRvyJXZBOBM4YfLkjEufpbxLwawOMPfI2f4aET5Af3zixP1pX8p8p MHELEEb5x/bJ71wTmc4CPkT5lpzGRxAjHE/MRMhf9alxRSnMPnlHhvTZIu+VUO59N/Yh0URPVCW 7Of1ssp4OJKYqK6ZmD7+50M+paALliTCS0jZmF/ko+2SzbIAn1qFgBd63DDCs5IrB1pgGudROwb ZhWcIYaZdiHX3jwedReBvFFqwBYMAkoSWqoa6ZAB5I05kQJY
+X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: k4zs6noh3gfuaskjmy73rio9jxfh9j7q
+X-Rspamd-Queue-Id: 6E45240004
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8759E2000A
-X-Stat-Signature: wb7zcbmeasrh58qiyykacddhntz9fotw
-X-HE-Tag: 1788355836-274308
-X-HE-Meta: U2FsdGVkX1+YaQ//9BklVXikd6uYxkT7eA+BUqgMqrIOmwFMi0eM+jcgMY8TiZM0najb8WMbx27PgC5lIGvHTf52WZdtuAhFcRPTjmCiSFMMnI/ZvYXq6wiFu8lrCjOntxwvR+AakUF2ew+Uf8aCIay4vdDGbUXyZsAhTOjv2np3gall8sr9upTzmHrt149bCMqiudakYPeRzX2pUeu4i7YaxPMNqs95rkmyYfSCuQJRcO9cCwnF1gEpRNqrMKq98uyL5/h43N7GYChRrx6QwrhyKCyQhvCidk1E5f+E3y5r4DYLdB8L+XcPhIX55vWAK5GPaW9rlbLlbgt+LBiuC3qI14a6ccO+q8iGKjIApkIcka+5ndm5FcswXmdPNm+Y5ZyuqGNh8N5R1QTIavBT1U4kx/3d2+rWx3R1y1izzJbJOgINC4puMwQJDKxWXdYAtDRGvXAq58/cOQIpRgtzUn6Y8y0pPMUOOGJ/8YzwF/54SgSGZl6zjPZYAPF8POPig1wwbpIaQ1wWdBPr4RCXS7hEDggKw6zRtmISelyFmMlvp9gAbjbKSUFnfaBcn488zeUuh0WvA8qJwSj02DJ8i2O0nVl8fTnqYGXILOAXGmdvWAOrXBLT9MQAPSS01c0g23eVhLgad5VZqDQqYE4YPob5VAWI3nvfyXELQmJCqo4K8uC9PJncfEHW80CyXoLU47mBHBEjV2jW6dzYaTHxzHpF631K9mgJ5TUfOu+0Rox0FJmBy37+oXh74P8H2+BicrTv7D0H5lg32b36va2FqlMoHsygqwpGqPpidG/8EqCNMEkm1VK/gGtZalFj5j18dxS4WtOhFuKo+zTIEVRPjwrdR/KUo3tru3fHngVs5rDYd+Od3HENmQwGCbVK4g1wcsZ0DXcu5KE7ypKzJTNCbbW+3hfsjnXu7CypMQdLDz/h3usVraA/wKbhhTOjzFmFr9D52VT/u9Fa6k/GuOu
- Imh2cjZH
- 7Nn94rDyWnqHfH/iqV9ua07/Kde7sjqcH+AbLgPgjyAdCYrbOnYIw/axW4sFRyqjaDMrTmuDzvbrLScJpfbqhvJATA+NDCUgrJu12UOxW/O/4Lc7mwUrUtPa9krIfYWBTOSd8L2TVtHmLwXyVEvXVMQIoej9ZPTi1ISG2CoZtxIuJBM+3fvulE/uYEL8Er6jpfxZu2zTTaxftW7wxBXlO6jvaU+oq6E3i82CNbIeaepQy7P92uRMqUGeuUsyzs59z+zGiNcOPd40vrvVPYxkE0ctHd0KPWmrqVezrFygZZw0HUGXMcl/gigZTuaZjMcwyDFa5SmUjBBNjgvhlAxIZ3+Pcw71nPXgf+c245qOHWUzu+FFxOHheBWlts4BHxD9bpVznzjx+2BalbQPO2HIFFB2le3eM0DqzPPLoYLqg7v5QDMj/xw5CvwnwvrkLa9lQ8elwZCtUMzADQQ1abvPzmtmSvDnetqZ5x1V5CWhb5BAIjkLCtfV9SPU3lx4YWpp47BlIZnctpx+mKVdpK3Q34cEm7JdCy2bEp4CCfzs5Wt0uHcEYfYigaWvW/vWDxOoxeApOfhQX2sZim3HN7B8TxpYc9kZglDiP9XxheMfKv3q8DxNUG7UjkT+DyqZfSIxvYLZyEHqfFn68Jqc=
+X-HE-Tag: 1788356243-535425
+X-HE-Meta: U2FsdGVkX1/sKiOqT1a+YY50lOmvOyFeZ1w4xXo+7w4MRR4rUxny172x6wCTntCyCgpt4ymB23+K2hcvMUjC4kAoaV96/rdhZfW0A3WzMxSf/hPB6K9CQJJ/yUkRi+a5jKgVcok/PINdZMFTWnNv0RXnNb6yJn4IoR8VkFuWGnKriTrOMIjnVccqQiC7zIS/mCxjFGx+JNiZW6U4yfDki6nnO5gcAkyUbT/uywq9ie/eVAa5xV1QvA49nEjlLFQU4DTyuQm7j3zr/F8x9M5h5sRI73a76CqE714HcXfMJNakzndIADx8PqIdkVQlBjFyTR5O0+si+nMQJRyFoViiAlc32ziiN82L0I0HrD24Qvf5BGnVeFbLs0gNSS5M/LsQXHmQbjpadd114YoB+RWHu3ykpvZxUquyYXyE0P2Ys5I8u4EmzUnAIQbrYj3+A5qpMIgOf+NWNhKg0rKiY4siCz8rL/TKA7Fc9K6fGtspDXk19QPPUSff8t5EaMfjC1W2ulUGlUyrr0fSy3ndO5N+3h+aciqO+4Nq74L+mlHJScHiiRp4Lf+/4zQJm4SOU9qUnG1FwzUuFmMz4d+Nbifm5gJrswI7tH6REx81mhG1nVn135SlQ0OHxKlIN/gdQ9TRhawvYlUXnDBRK3DsFB45RFDSVE3vaR9QmLqKOYpj+joFpIOYOBW5BZrCOtkpOfw0Lbf659QQ8IyR6PhPFdJDu2KAjIiF543RcxPZ263MBSH4PhIovhtSnZcs9bHzyGKT2EcH4eBfmbGYXSrMQ9OLJLdfcb3a2hesqad+gXFMi0o2o1TvHkUnEkfGl0Ztx6SSfbune2BtySpKuFHk20q0unMCDbyFKozVCKjEhFNMqJzSBmnI3t2m6+PkliYVIaSoZbeNvf69/G0xL1iIRldYSILAxo1Qs4dMwiIpk2fwwzicz4/a3Q0cP/M59THuorX80F5+SJawID9AvxI5ph/
+ fLvqMV9b
+ eu7pC6pgF6AUgLdllv6k1/NiDfOFoxWkH2yI6vi5SQ3A2ak5j8z4KQaSwlGJwT6BztkqOEKFDSNrouh06ys7m21lXVDVC0FprwIzeUZunVD9DVZoVqovddl3bGD76v+F7t1ry74DLXDb3azEj6QVOlLr20Lg3T/6d5cT8i/9CceYheW3BOw5iBBYy93QXxKO3lZMdl8RFUNyasfDHhrUALmQmADob/lutj7BxlN6dAYiQQ3M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,63 +132,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 02, 2026, Binbin Wu wrote:
-> On 9/2/2026 2:26 AM, Sean Christopherson wrote:
-> > On Tue, Sep 01, 2026, Fuad Tabba wrote:
-> >> Hi Sean, Ackerley,
-> >>
-> >> On Mon, 31 Aug 2026 at 01:25, Ackerley Tng via B4 Relay
-> >> <devnull+ackerleytng.google.com@kernel.org> wrote:
-> >> ...
-> >>> +       kvm.gmem_in_place_conversion=
-> >>> +                       [KVM] Controls whether KVM enables in-place conversion
-> >>> +                       support for guest_memfd and tracks the private/shared
-> >>> +                       state of memory per guest_memfd instead of per VM.
-> >>> +
-> >>> +                       If enabled, KVM enables the KVM_SET_MEMORY_ATTRIBUTES2
-> >>> +                       ioctl on guest_memfd file descriptors and disables the
-> >>> +                       legacy VM-scoped KVM_SET_MEMORY_ATTRIBUTES ioctl for
-> >>> +                       private memory state tracking. Only the
-> >>> +                       KVM_MEMORY_ATTRIBUTE_PRIVATE attribute moves to
-> >>> +                       per-guest_memfd tracking; other attributes remain
-> >>> +                       per-VM.
-> >>> +
-> >>> +                       This parameter toggles KVM's in-place conversion
-> >>> +                       capability support. Whether a VMM uses separate backends
-> >>> +                       or out-of-place memory management is determined by
-> >>> +                       userspace VMM design.
-> >>> +
-> >>> +                       Note, this parameter is only available when
-> >>> +                       CONFIG_KVM_VM_MEMORY_ATTRIBUTES=y. When
-> >>> +                       CONFIG_KVM_VM_MEMORY_ATTRIBUTES is not set, in-place
-> >>> +                       conversion is unconditionally enabled.
-> >>> +
-> >>> +                       Default is Y (on).
-> >>
-> >> The parameter is only settable when CONFIG_KVM_VM_MEMORY_ATTRIBUTES=y, and
-> >> in that config gmem_in_place_conversion initialises to
-> >> !IS_ENABLED(CONFIG_KVM_VM_MEMORY_ATTRIBUTES), i.e. N, not Y. Is the doc line
-> >> wrong, or is N-by-default not what was intended here?
-> > 
-> > The doc is wrong.  The intent is to maintain backwards compatibility with existing
-> > deployments if KVM_VM_MEMORY_ATTRIBUTES=y.
-> > 
-> 
-> Will it result in the situation that kernel builds with CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-> enabled by default for backwards compatibility, which requires users to explicitly enable 
-> gmem_in_place_conversion by the kernel option? Then it effectively disables
-> gmem_in_place_conversion by default.
+Hello,
 
-Yes.  My intent/expectation is that the only reason to build with
-CONFIG_KVM_VM_MEMORY_ATTRIBUTES=y is for backwards compatibility, and so it makes
-sense to have the existing behavior be the default.  If a deployment only wants
-the new behavior, then it can simply build with CONFIG_KVM_VM_MEMORY_ATTRIBUTES=n.
+there are certain quota formats that are created only for particular
+filesystems - ocfs2 and tmpfs quota formats in particular. Make sure these
+formats are indeed being enabled only for filesystem of appropriate type.
+Otherwise quota format operations can easily crash as was spotted by fuzz
+testing. The only gripe I have with this solution is the recognition of
+filesystem type based on sb->s_type->name looks a bit hacky. Another way to do
+this would be to directly compare against e.g. shmem_fs_type but that is a bit
+cumbersome since struct file_system_type is generally declared in a relatively
+narrow scope (not available where quota ops are implemented) so the filesystem
+would need to provide a helper to compare against it. Let me know what people
+prefer.
 
-Folks that want only the new behavior but are using a distro/pre-built kernel will
-need to manually enable in-place conversion, but that's not too onerous, and it's
-simply not feasible to provide defaults that work for every possible scenario.
+Once reviewed, I can merge these patches through my tree as they are only quota
+related and very unlikely to clash with anything.
 
-> But I guess it's OK for CSPs since they know what they want.
-
-Yep.
+								Honza
 
