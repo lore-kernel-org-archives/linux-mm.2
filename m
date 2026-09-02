@@ -4,98 +4,180 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12174C624D3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 17:56:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85851C624D3
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 17:57:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B13C76B008C; Wed,  2 Sep 2026 13:56:19 -0400 (EDT)
+	id A2B636B00E3; Wed,  2 Sep 2026 13:57:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC41A6B00A5; Wed,  2 Sep 2026 13:56:19 -0400 (EDT)
+	id 9DD046B00E4; Wed,  2 Sep 2026 13:57:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B2CF6B00B2; Wed,  2 Sep 2026 13:56:19 -0400 (EDT)
+	id 8CB396B00E5; Wed,  2 Sep 2026 13:57:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6856D6B008C
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:56:19 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E65201C19EA
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:56:18 +0000 (UTC)
-X-FDA: 85169576436.22.CCC23D9
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 1F9EE1C0005
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:56:16 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=YYPV8z3k;
-	spf=pass (imf20.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788371777;
+	by kanga.kvack.org (Postfix) with ESMTP id 686686B00E3
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:57:33 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 002971C1BE8
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:57:32 +0000 (UTC)
+X-FDA: 85169579544.11.CE36177
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011012.outbound.protection.outlook.com [40.107.208.12])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E3F6940004
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:57:29 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=OMJvBiQl;
+	spf=pass (imf12.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.12 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788371850;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Xvgo+8rjqMYsKTxud1dIQ28nMewW0VWQbI288q0m7Ps=;
-	b=hhpYaG6CBYi6t5oALpC9bZLbFafElGHS70Qb0iXFaHf4kTbSXMYVTxPPRYd7KsQ/TCPKqw
-	zQHm13cTy8iL7c6FLefxDDEDh0PHuKOykpObB1Ts3f4sYJ0INqMlaEbaerzk7Un3oEXXLg
-	1shXUZO9XYTkc0Fa3tK5KrqMdnUsHSI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788371777;
-	b=maZ4R4lF66wRqDaL9I5Yyoi61hTtnFue1t736C1oLgGSJjwuqtCS9dcQ2dzJbpvGSs7MZf
-	YkKdSDdDBrUW3IzM47a0SRFC2pKw2zEMInYx7OFgNeKej0qmmTzkTNdAPK5lNuRUtLRPXu
-	7GE/SAwE2WzKYJqPC1M55bmYiRPVe94=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=YYPV8z3k;
-	spf=pass (imf20.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 109511682;
-	Wed,  2 Sep 2026 10:56:12 -0700 (PDT)
-Received: from e129823.cambridge.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3BAAA3F7D8;
-	Wed,  2 Sep 2026 10:56:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788371775; bh=LAnTQ69tY5Vli8yxrVCyumF2uSHglLEcIh02wQisKRM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=YYPV8z3ko7iwxPcRCE27SIaV2TOoGloOeKBhHHBrmkesCpJPCXQGoX/9UPeVf+VIu
-	 IUiOD8ry74TdC4k5PhaovPNu8DLZepWfyGpcmJkP2TI8ku3Ec7uMtai4T/p4UIfIyu
-	 3a6li5ov6M5XLBkSzDudBdvPq72Eb2uPia0NkpKM=
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	usama.arif@linux.dev,
-	kas@kernel.org,
-	Yeoreum Yun <yeoreum.yun@arm.com>
-Subject: [PATCH] kselftest: mm: remove HPAGE_SIZE and HPAGE_SHIFT macro
-Date: Wed,  2 Sep 2026 18:56:11 +0100
-Message-ID: <20260902175611.1241118-1-yeoreum.yun@arm.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BX+nrfmcjXNaxoIIwlqBQcZbjBTEfLxhDAVC8ShLeRY=;
+	b=pfUy3/ioTEALmBsk+OAy5juprBwmhPKKKs+hyftlGULYu8RvmB4bSvaM8P6CWNX3j2rvl7
+	BmfdYyZZdWxtTS1jiZ/j+qkiZ+GYUtoqFLiKwOSdozaBVdMBUTSC60V9g7IiBtNFrXpl+Z
+	Tj28qdkjMEV0H8ZJszURrUywctqyQA8=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788371850;
+	b=vNQl61hwWgNlo32mYaqkifiImx+I4N4rzhUPuCVjsfXX5ZHJN44P6nnMFblsP8kLmT0Shj
+	etXW8ObK1xUL0+DPyoIbwZu1mvSV4E2C0xfSkx3Ged+JeZpv/B+0iMV8zzWOTV149Syqsp
+	IYEq+UMHSWYuG5VSe/CvyEkKMN8zqs0=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=OMJvBiQl;
+	spf=pass (imf12.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.12 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tMiBmahXk31agWsWFWn7Wth4QipRQg2TvmMu5QB7Y6x8+9YyN+rVqO/iDJEgNbr4Z8fFQLcLCWARD27khEjzx7WsUI7IOZ4c5EGD+W+45z7XikSaVmtRYaX9+iutey22U3kw4TbnhAnZ2vTB5RV/dk157FwIAcdvYk53ecActKL+huk6ugPihwd7RaLIcn7U1ihciOL2PORxnKpDliebK742oLGgX5E59i+wYpVdEEP6uAp6dIE4o8QbnJf5VoOad0HcSnz+cG5vG3ire5ZUR+iilxirkx3JgPt+aefm1wCmvknDNj8w5J7oyCJvK0BiOeiPaonRCvgw++T/p81S8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BX+nrfmcjXNaxoIIwlqBQcZbjBTEfLxhDAVC8ShLeRY=;
+ b=nCN9IlW49vPipwSnyk/2kpfYL5Y1ZygDV2gO2dkpPNGboJcPoBQX7k2HQ7Nj/ANdGOi33s4iGf+My9llqxkhZ9BYO57mNHZDfb7KAAljhaBybB+2aBnXAZjBoYVaclNtDxLZ+73V2fKxZEAUWp5Ln2QTzDT3KROK/AmW+VzTYhKmSyrFC7KnSFmrekyPkhRwrki3lqwCW1VYXGkqFcxRa9W98UDYl4y3jjnSPoSp85KQxGFMQPm/8cuHMNvQ0anRBaqnNCJ0cLlvqxg1HyBORUdtOU1dnGMbo/pkUBsrfV2a6XYvV/IZByWJ8F9spv+HmHOCoV7n6GW0aXzZVdiX8g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BX+nrfmcjXNaxoIIwlqBQcZbjBTEfLxhDAVC8ShLeRY=;
+ b=OMJvBiQlgUbqvgPqUVkwAqAjfZny3ZYsS3YEneHMTzqA5UIUm+om56TyU+9um1AwhU+QDD3RcXym0nuAnPrW2r5PTR9CVLmCNYWzYBl9DXfvi32Qz75q2obcbSRGhA9SuZ65lM/5rDq4G8tYCMvc8zTJouEK/kowNIJE5VCWLZDcH41RDQAUgNt46rvmLOThX2AJWQyQwPF/6mbFP0E8/9SuHoVY/ns6c31a1wOnNFcZ+p3ZZp5siJVwKV2ObD6y9Puh8ijv8FzEBRRaEcAOBH3RYkBnFE2nr+W427sGRUnNjQ4RkMLugfHGaVVj65U2Znw6jYQAW5x2L4WUvlh+Lw==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by LV3PR12MB9166.namprd12.prod.outlook.com (2603:10b6:408:19c::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.10; Wed, 2 Sep
+ 2026 17:57:17 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0360.008; Wed, 2 Sep 2026
+ 17:57:15 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kairui Song <kasong@tencent.com>, bhe@redhat.com, vgoyal@redhat.com,
+ dyoung@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Baoquan He <baoquan.he@linux.dev>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Jan Kara <jack@suse.cz>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Dave Young <ruirui.yang@linux.dev>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ kexec@lists.infradead.org, linux-doc@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 14/14] mm/page-flags: remove PG_private
+Date: Wed, 02 Sep 2026 13:57:12 -0400
+X-Mailer: MailMate (3.0r7027)
+Message-ID: <9A7F8677-8B08-4E91-B311-DC8C8602830E@nvidia.com>
+In-Reply-To: <20260902170928.2227054-1-usama.arif@linux.dev>
+References: <20260902170928.2227054-1-usama.arif@linux.dev>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-MS-Reactions: disallow
+X-ClientProxiedBy: BN9PR03CA0498.namprd03.prod.outlook.com
+ (2603:10b6:408:130::23) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: po9u7rg9g4gxnmrqdqyjzzp4dh1u8e65
-X-Rspamd-Queue-Id: 1F9EE1C0005
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|LV3PR12MB9166:EE_
+X-MS-Office365-Filtering-Correlation-Id: 116ed408-a7b9-4568-ef53-08df091b9f8a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|23010399003|366016|7416014|10067099003|6133799003|18002099003|22082099003|56012099006|5023799004|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	mxEdFtoZCegLj1M18i8mALhHe87irVmplB+qc/mkWBN0CrVVYN50Ll2LqpuD49XtxANAiove8JsiMXMfAdGm02ooEZ7GdJ7P6+DJhikLgCDdU3dp/68xGgbYFQ+ev13ZaWQz9YD3h6qEwQBWgXEQyp5yOlbGci9XdXhrWCACe2qEaA+3Xp/7BPdy9MwDzHpuytL7V5iCQAQlU96+0fWZzCtU7OBDEPN7ydyQMsMsWrW2qjEa5lGnR4ZUnZqY3J0PsltFcR5xeO2Aga7WtvWZOwXwDiqOe0xrgaSVzLqauqGPMsmn6mekRWg/s4NLDQwWip9EtmDT0ky2/lCVsyXlqr5FYcymi1l95xjmJQtgoS3UCCu3fy2t5EHRzc5K9g5r8t2mO/yCcuVEcWFhSXb3ktFozp7157ujX0UKzFHXKJpCsZfvbGwmvb1Q4EL/tDv/mjKPEw9w7bLtxjrJ/MUgS3S5R2B/WnuMNa6hpsQgw7nbSNINhqJK3XiM/tVfCeNhkUDN+39k0ZJfKgI1swdG5t7S409VmB89ClB/fsd+wwihGSF6gvZ2YEcNoWAs8AErXUa0y4zVeBMpjfCjSY85eZT1wo60b6hMEn7z5swLQlOcWNNO5RKK6x4WsfBWuIfcBKh89htCkluInP7Vwwnb1ySLiyTGv/Ai+Fk3zVlG0jU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(366016)(7416014)(10067099003)(6133799003)(18002099003)(22082099003)(56012099006)(5023799004)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?OWts1b110W0MyRegJjRax6wXrH3uoafA6h6xM+XFFsnVj7E4Rw4FArl4HRpN?=
+ =?us-ascii?Q?6e/ie7UbmQgtPxsLLcv8HgllHH80oE2+m7Rt1hEwV6LdvNk4716raKiW/i6d?=
+ =?us-ascii?Q?q9dwFVBpi38hv5XWu76DjA4170GQZwxyLtJYneY8k1PywWD+1ekCLcLMqCMk?=
+ =?us-ascii?Q?VpTeiYhlBHvsjsPdWFMKC5PL4i7aWkDZ7A5SCl5lyhUNQrcqLap86NkAKrM8?=
+ =?us-ascii?Q?AYBABgICIojd/NU9d7gydnA9q/H16IhpxkmueLMUiiYJRrstoaEnRaroghUJ?=
+ =?us-ascii?Q?qwJh8GfjM1O2sKJxrwzMbleFaubFfVVKhpNXAWRh1gaMfkYBxzVOOyJllnpw?=
+ =?us-ascii?Q?TYRh5QiLB8z3fNAKI42ytjbq9eW3Mhf1FGO6RlOUGSmAPf6bqYUmRkeOLLke?=
+ =?us-ascii?Q?9J+B2fhaCBa+mjepCUmqVX8sA8O+bLFvAASlnNorcDQrRv9JCp7HaJ9ueF0c?=
+ =?us-ascii?Q?bSIatBkBTYF0JfMhZir5DjN69jC8HjtIgY1lT1Ss06CvFgxUFriuU5wTZk+A?=
+ =?us-ascii?Q?7N9+SxFpUQsdaFuskjQh2mZkCLRR8E8TbqLME1Ha/NMacbMAGt4aGsEGF903?=
+ =?us-ascii?Q?zzZb6sg4UUutWpASiOkMrcD8UgY6iZBnMSvEgyaNHyWE83u8hexfmY1zV9Lp?=
+ =?us-ascii?Q?CO8cDO0Ll0r/5PfMLXt8AfSEb7kbpV6Qp60k9vh9dAI9EkpPjV5pO2+l2v36?=
+ =?us-ascii?Q?0orRO2Uhh7An75mIp5sB5TQzB0LiSJdTez62tViodQv58TUPPqth2l9jV0nF?=
+ =?us-ascii?Q?AbwDm9XdKrEbX+YSYH5/itwE9mU0WR5rkPB9NdchC1Rr8r2CTWYT+QgNA61I?=
+ =?us-ascii?Q?qbKcmG6AY46iDO7t3P3NKUw5pZs1jweAeDakc3ewmGS6qVoXmL0/Dd8uTGiG?=
+ =?us-ascii?Q?3/geSmV/gZCyK4b6PHVLE+OjbXsVgYGrWKBE0lKmfX+NAtt6MeWkdSFNgKyt?=
+ =?us-ascii?Q?ekLq5lX865XVYG21WCUdM5iqF7iVVHkLhN8tp57grgIQYofk0LVV0/EbhtOh?=
+ =?us-ascii?Q?ive5iiC9g5bqeo+Ae6fnRpnkhS94qjehrI8ZzVBE1EoyYA9yUg5lSs4HMgl/?=
+ =?us-ascii?Q?6MdYV8k+IEyaoDHtO9lkVDlXMCKLWYd8e59IQCXvGXrbYoFlcYtW+iNVN96O?=
+ =?us-ascii?Q?ugz4Zs/VCP3/Ndyx/DdNbD23F7MfLBYOc1CfjZo4JHYoYfU7CApbKT/Iua13?=
+ =?us-ascii?Q?JIm05AOCV0c3GGvDAbyLJz1Xp9r7CJX/CXM7Mmui5i85jSGanCADHVWisGwc?=
+ =?us-ascii?Q?a1mlJJcmis0RRmQfleYAg6fOV6SbMC+7Snyt+XFnM3zR8EzV8Oq8CQmdPohr?=
+ =?us-ascii?Q?3qJ0/qKH1sBnm8/lC2YIqxOa6ZeqfaWbO7xZ3zoZqow1pYZHzjpEBEDRNtqR?=
+ =?us-ascii?Q?VddWAJ9VuTFF0iLg8sE8ZWZYRWYgDPna5hX5HHklunU19qkZGRruEtWxXK64?=
+ =?us-ascii?Q?5obaxDkq4KTpdzBXl/W+PcPrUSWugOs2/pylNNoCBc+yekpHn4BJlS7ULjE+?=
+ =?us-ascii?Q?4E8QaTK2CPncb3IHvvVCXHVntlXK7aomXazJmm+4LIRwGcKbRn2ARbDXB+ZA?=
+ =?us-ascii?Q?tUW3Hjcxs+iLupkW0SAdQAP7Tqcbs8W4tqBnZvFaEiKIlhLDerkoknEb3D1z?=
+ =?us-ascii?Q?qmw8E5xcIQLCXMnDptoZ1AmiJpbQHO2iw0i82rj/UmyZLvPAk0C2sDuwWvau?=
+ =?us-ascii?Q?wNsmvIlv0V9ZOJsYmCHJS20SEBoeMae10eib14IBtuWPR/jNMIeO5VPw7/EY?=
+ =?us-ascii?Q?xO0qoMZlVg=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 116ed408-a7b9-4568-ef53-08df091b9f8a
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2026 17:57:15.8213
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LAfb34tefFSDoffWUnF3I+upDhmdWwHhVmZt/CCxYCwsI4fStXyCjPgRd6cnsaho
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9166
+X-Stat-Signature: jan7ak98nedt6zxiku97fencty5posgn
+X-Rspamd-Queue-Id: E3F6940004
 X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788371776-109737
-X-HE-Meta: U2FsdGVkX18PkBfXjxSiCtyskOBP1vxL4fXvoP1wB9GllSOeuPwZReT7vqrYXhbypjSBVqEkfgCKXCeJ9p9Ve6+LWNFiXZsi8ku9opKQrMu7VprD9onXbGZNWp2hZugnEC8eynGfct/c8/H8tGar0klHSIV5bOXn+NWBeWj70Z818c8l2KlHqN2BtHbPKV/aJvwkI/F9Ws/EIZFDP3upPGHkpoouafwaiDx/bdDjErMaz+NIALMz3wy/n6zox9Bs88FCTDdk1N1SpgV+2gL8PflDcNuwbvuBl5O+odbEKDx9oxeeOkivQJ55OL77FVurvba/PIrX27bBufRMKU5vM1o51V3HjG0msw9i6wWEOVqLZ8XAhaKIFOAJTvLxR13lDJFoVkUjnGXdNIh1a6oiuwFFVkr4OBwJQLY0uvkqUzmxbwTOO9TwzVaqwZAm7kIcfHXV4Rqrl+OK7xMY6vbK11v+vCJ89SUBOvYaQF6P0+NRhlS0Hs6EzKMD6MEOOQ5RL6xfgJvWomfIW20kW5/4tb3jemaZoLdohsXhFh0zU2jVVMFu5NRbejUzZe6GYvmAxFmQomXEzy6vvUrX/Bw0AuPfNUYlmt28XoPp/7ZAR+pas1+aM7gG3oQngQOEB01ow6rCjmFb3/0yvpMSzU/CtbL/l60QKuh+skBpSySoMp+ctKKh8M0JidynZtzg60gnOseVlGSMW/2DnsJ93/HMxWSNPUtnZZf5AdDpgtOT2rF/ouvd1/JzahlbFtzELYclDyytn+Jh9dKePmaQy5ChTQXVokcEFmeVHJhuVdkwoL35G8gMeugpYGwxBFuiC1faa6Q6oJKErCDVaB5AxD3QyL7jXpQd8ej9pkJIwBPZd+qaFbVzV4FAyZ6mJUo8ds8rPaasUrw8MGbNi9zrf95TEVMUI3A8OrgkiGPyHBzkm6T8EFBA6GU7DiipHpei71JXigEEM6UmLwRGtsDn6lY
- WBjaDmjs
- S6L7q99NTy6JcWpxkTbaypxvgSQsPm1gFGMmQCvLxs062Fs8M/jyhuj5RyQcigYh9uubu661cn4o4G1aoTaLdYbEfC600t4v4lX6DnKAeKiOEJyBwGv5MMcfOAcN1qKdHMLh2UEfrrxu2+wOW4WAG49BgGpCNRny8fMxf6EYhLzKLu1LVcwCylYDYyE/dWBKjPWQLdS2EHBdhPZ2q9NX496Zyk0t8FrjaI6pR5ja4IzuLDCeSvSr8wC0apYtm/lm7JiqQiPgWgr1K1AnT7TqR+KdcJfzCvuSagOU9pay7GjspS9s4fwfBDmZ9kZMrtI/PeKTs
+X-HE-Tag: 1788371849-542442
+X-HE-Meta: U2FsdGVkX1+yjdNWlBjAnZmj624JwFnJ0LQQeiFw2IOHTEKQT/bv39+0+aIA+izGy8/ASJ8zmhiuYHZt0fZjT6ZAwt7HWTuIXVLAKEJs3lzVaOA/W3wNRuNaLtIJNZB29jSB0/2PwOjFBbSxkRWHq1u9PXajbXYUSqEkr7BLHUFT25w5CuQyEiNktrQx0oyzOsvFlo36oMfmIPoWdmbDmwH1KzbN+XRr0ixoox35b+1oaqI2HJ7/VyH6uVPPbQ6vHpfuC9/1yo3JWqa5UE915J1FGQRzBNb5GNq3mLgCyX8fvt29sTlSBiQPDa9EXnxX6X4F+GtMo53ms8Dk9CRPVEKFK5fArCK3EpzD4l/RKx2ixl/6ATjJEJmpDodXD+OFrSY+SGNyovVBCqxlEvXw0sAhuEfOqNRFkd6klpwtweu32BRGI5pXsEjeuVvx7C85bvLCIxO5DTwjKooFplCzmGM7W3Jn/kW7VFQfGwDNEznwzHJ/RwLE4M2HQ8hPU/KoU40L379HKwEgHu9UOpfieoV1JDtBQCDJ4ZAB/j4/9vKKUQKH2bbkHQsBg+095bYeiTn8hqJ9KjPwGhfvwN9hxPkThMZZCXcLpH0w0u0xOUSy6jLOXr/Nfy+HENBsEVaIk3VmsFN1Ama/fU0sEDURc4HzQ+esCBn1KL9rRsbuK96QqDG1zXcvHQplTe46eCHEVZuTrFXF1QRE9hhT0pYBMOipPb+b/tosL29SWGyc4KbHwIjnl3po5ZYh7ohkGUQ0z3qaegmlJn09fnucZ6dKEmgCZwr2t0+w0fhjQEn+rxZ97ArPiTbAOe9UI/mY10TAjyA+aueW6+UJBPY0Zolc6sxle3V+Sj6npztHTtNTuK457Z/np4vUs/QdahIpgr66gnqT5fl/kt2o0U3ChYxxwv188oOB9ofBscGttiyhZk/qb3yq0rovgPSx1+wn02vnrWgq8F5amO6+HqCJQV6
+ SYKELVNF
+ vsbYL77WSRJfr0zogQmH+NsIXqvF8jz/X0kljVX6ri7/3LRogqPEgLg08tRVKBarmNwRFMppZJkI3ZppK1w8mGo0STLm+Dw7h7TpuhZNbIQmIUTwiB7j6LQ8IZVQWX4k87e5o+EKP9MU4Vpt5CC21bvwUz+N8lAe7UmhUBMokz4yOn3XWn2F7k5UEj5IhBsVmAKus4OGLP1nbOQMpKDh70yTv7M5ZjJb550xsXP6Wyyx8SRZBvgm1ht92lAbsAXfi7EBU3USGCswsprD57RlURaUNg/sfXdMRE3bMFsbeXrJJNBInZ3tQPbcL9hvGUQyeR/q9cUUEsSdJa77w/2qWkdEiIHpjKGF5lcK3Wj4Gs5BcgQYNB6qyUBOS9FZiX15Eif+tOf/FK1xczaYaVHsvEfqbP7YT/NA3/AjpyGbaq+ysSX6Ac2S+DbV8J7CpOv8kViDpAOzHiur4HtQG4+/k1B+x4WpS8fcuFLqDp0uJwPHtDEUp5rPXxkOwXjMR4zuYx6nWL20KPoxCKIwumeaQAyZD6o9UaKR9iO6N+fJXX5qRf9RtgysXloZDw5GX9V9oEhATX7sTq9MNlF5FiL2KwCbMQep7FeoZzwapurd6Iloe+fVnKL8ZfEeC4YrgSNjTV4fsIJrkpXurIU87oWcb3DmFzs6H6HBHBTcriMQKDu2l66NMvD7GeMD86mTHZJpUOgtytnSQ97iukxxM9LjDLO346LGR7C6UuNf9PaQ5zHP2Z5w6FsUnxfmzcKiUq4r9kp+Ef8suk1nYtr8iT0TfHnnmq7KIuvOnmrMuOBHFuA43TuMShXbjg3pG2hLqt/+fauTEy6klGkoO5wM9aoZiMVlWU6Et01733r9BRUGaj4tfzj6OxBwIiTiadQL4mxeDFMVzi+kr1TrbrD9WZcopZZJRWI/kec+uxmMfgomcK+LGjRIcMnezPgiP1XYB5tmUgdbPl3JZcOA/28rVcuEeDZZa8DvC
+ A8hmlXzG
+ vkJFm8cjNI7HBGz5uUa4vUpkn0zeU+7b
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,343 +185,211 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-HPAGE_SIZE and HPAGE_SHIFT macro is written based on the 4KB PAGE_SIZE.
-When this macro is used in some test, test result would be strange in
-the system where PAGE_SIZE is more than 4KB.
+On 2 Sep 2026, at 13:09, Usama Arif wrote:
 
-Here is example with transhuge-stress test with 16KB PAGE_SIZE:
+> On Mon, 31 Aug 2026 15:25:37 -0400 Zi Yan <ziy@nvidia.com> wrote:
+>
+>> folio->private !=3D NULL indicates a folio carries private data, repla=
+cing
+>> PG_private. All PG_private users are converted. Remove PG_private and
+>> reserve the space as __PG_folio for future use.
+>>
+>> Also update files in Documentation. hugetlbfs_reserv.rst is outdated a=
+nd
+>> left unchanged. It should be rewritten.
+>>
+>> Assisted-by: Claude:claude-opus-4-8
+>> Assisted-by: Codex:gpt-5
+>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>> To: Andrew Morton <akpm@linux-foundation.org>
+>> To: Baoquan He <baoquan.he@linux.dev>
+>> To: Mike Rapoport <rppt@kernel.org>
+>> To: Pasha Tatashin <pasha.tatashin@soleen.com>
+>> To: Pratyush Yadav <pratyush@kernel.org>
+>> To: Jonathan Corbet <corbet@lwn.net>
+>> To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+>> To: Jan Kara <jack@suse.cz>
+>> To: David Hildenbrand <david@kernel.org>
+>> To: Steven Rostedt <rostedt@goodmis.org>
+>> To: Masami Hiramatsu <mhiramat@kernel.org>
+>> Cc: Dave Young <ruirui.yang@linux.dev>
+>> Cc: Shuah Khan <skhan@linuxfoundation.org>
+>> Cc: Lorenzo Stoakes <ljs@kernel.org>
+>> Cc: "Liam R. Howlett" <liam@infradead.org>
+>> Cc: Vlastimil Babka <vbabka@kernel.org>
+>> Cc: Suren Baghdasaryan <surenb@google.com>
+>> Cc: Michal Hocko <mhocko@suse.com>
+>> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+>> Cc: kexec@lists.infradead.org
+>> Cc: linux-doc@vger.kernel.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Cc: linux-fsdevel@vger.kernel.org
+>> Cc: linux-mm@kvack.org
+>> Cc: linux-trace-kernel@vger.kernel.org
+>> ---
+>>  Documentation/admin-guide/kdump/vmcoreinfo.rst |  2 +-
+>>  Documentation/filesystems/vfs.rst              |  6 +++---
+>>  include/linux/page-flags.h                     | 19 ++---------------=
+--
+>>  include/trace/events/mmflags.h                 |  2 +-
+>>  kernel/vmcore_info.c                           |  1 -
+>>  5 files changed, 7 insertions(+), 23 deletions(-)
+>>
+>> diff --git a/Documentation/admin-guide/kdump/vmcoreinfo.rst b/Document=
+ation/admin-guide/kdump/vmcoreinfo.rst
+>> index 7663c610fe901..5f1df6d080508 100644
+>> --- a/Documentation/admin-guide/kdump/vmcoreinfo.rst
+>> +++ b/Documentation/admin-guide/kdump/vmcoreinfo.rst
+>> @@ -325,7 +325,7 @@ NR_FREE_PAGES
+>>  On linux-2.6.21 or later, the number of free pages is in
+>>  vm_stat[NR_FREE_PAGES]. Used to get the number of free pages.
+>>
+>> -PG_lru|PG_private|PG_swapcache|PG_swapbacked|PG_hwpoison|PG_head_mask=
 
-  transhuge-stress: allocate 61073 transhuge pages, using 122146 MiB virtual memory and 1908 MiB of ram
-    3.292 s/loop, 0.054 ms/page,  37106.002 MiB/s	2566 succeed, 58507 failed, 2566 different pages
-    0.591 s/loop, 0.010 ms/page, 206850.792 MiB/s	   0 succeed, 61073 failed,    0 different pages
-    0.527 s/loop, 0.009 ms/page, 231895.107 MiB/s	   0 succeed, 61073 failed,    0 different pages
-    0.527 s/loop, 0.009 ms/page, 231839.704 MiB/s	   0 succeed, 61073 failed,    0 different pages
-    0.528 s/loop, 0.009 ms/page, 231544.782 MiB/s	   0 succeed, 61073 failed,    0 different pages
-    0.528 s/loop, 0.009 ms/page, 231462.074 MiB/s	   0 succeed, 61073 failed,    0 different pages
-    0.527 s/loop, 0.009 ms/page, 231770.300 MiB/s	   0 succeed, 61073 failed,    0 different pages
-    ...
-  ok 1 Completed
+>> +PG_lru|PG_swapcache|PG_swapbacked|PG_hwpoison|PG_head_mask
+>>  ---------------------------------------------------------------------=
+-----
+>>
+>>  Page attributes. These flags are used to filter various unnecessary f=
+or
+>> diff --git a/Documentation/filesystems/vfs.rst b/Documentation/filesys=
+tems/vfs.rst
+>> index d3a93eec3945f..dec7816303c6a 100644
+>> --- a/Documentation/filesystems/vfs.rst
+>> +++ b/Documentation/filesystems/vfs.rst
+>> @@ -649,8 +649,8 @@ Writeback.
+>>
+>>  The first can be used independently to the others.  The VM can try to=
 
-Remove the HPAGE_SIZE and HPAGE_SHIFT macro. and introduce hpshift()
-helper to get the HPAGE_SHIFT properly. For HPAGE_SIZE, use pre-exist
-helper, read_pmd_pagesize().
+>>  release clean pages in order to reuse them.  To do this it can call
+>> -->release_folio on clean folios with the private
+>> -flag set.  Clean pages without PagePrivate and with no external refer=
+ences
+>> +->release_folio on clean folios with folio->private set. Clean pages
+>> +without folio->private set and with no external references
+>>  will be released without notice being given to the address_space.
+>>
+>>  To achieve this functionality, pages need to be placed on an LRU with=
 
-Also, do KSM_MERGE_TIME_HUGE_PAGES test with size of 512 MiB which
-is the LCD pmd_size among 4KB, 16KB and 64KB page_size.
+>> @@ -674,7 +674,7 @@ filemap_fdatawait_range, to wait for all writeback=
+ to complete.
+>>
+>>  An address_space handler may attach extra information to a page,
+>>  typically using the 'private' field in the 'struct page'.  If such
+>> -information is attached, the PG_Private flag should be set.  This wil=
+l
+>> +information is attached, non-NULL 'private' field will
+>>  cause various VM routines to make extra calls into the address_space
+>>  handler to deal with that data.
+>>
+>> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+>> index 9b585e68127a2..eb2961ed61018 100644
+>> --- a/include/linux/page-flags.h
+>> +++ b/include/linux/page-flags.h
+>> @@ -44,10 +44,6 @@
+>>   * Consequently, PG_reserved for a page mapped into user space can in=
+dicate
+>>   * the zero page, the vDSO, MMIO pages or device memory.
+>>   *
+>> - * The PG_private bitflag is set on pagecache pages if they contain f=
+ilesystem
+>> - * specific data (which is normally at page->private). It can be used=
+ by
+>> - * private allocations for its own usage.
+>> - *
+>>   * During initiation of disk I/O, PG_locked is set. This bit is set b=
+efore I/O
+>>   * and cleared when writeback _starts_ or when read _completes_. PG_w=
+riteback
+>>   * is set before writeback starts and cleared when it finishes.
+>> @@ -105,7 +101,7 @@ enum pageflags {
+>>  	PG_owner_2,		/* Owner use. If pagecache, fs may use */
+>>  	PG_arch_1,
+>>  	PG_reserved,
+>> -	PG_private,		/* If pagecache, has fs-private data */
+>> +	__PG_folio,		/* Do not use: reserved for folio identification */
+>>  	PG_private_2,		/* If pagecache, has fs aux data */
+>>  	PG_reclaim,		/* To be reclaimed asap */
+>>  	PG_swapbacked,		/* Page is backed by RAM/swap */
+>> @@ -576,7 +572,7 @@ FOLIO_FLAG(swapbacked, FOLIO_HEAD_PAGE)
+>>  /*
+>>   * Private page markings that may be used by the filesystem that owns=
+ the page
+>>   * for its own purposes.
+>> - * - PG_private and PG_private_2 cause release_folio() and co to be i=
+nvoked
+>> + * - folio->private and PG_private_2 cause release_folio() and co to =
+be invoked
+>>   */
+>>
+>>  static __always_inline bool folio_test_private(const struct folio *fo=
+lio)
+>> @@ -584,17 +580,6 @@ static __always_inline bool folio_test_private(co=
+nst struct folio *folio)
+>>  	return folio->private;
+>>  }
+>>
+>> -static __always_inline int PagePrivate(const struct page *page)
+>> -{
+>> -	return !!page->private;
+>> -}
+>> -
+>> -/* no-ops during transition */
+>> -static __always_inline void folio_set_private(struct folio *folio) { =
+}
+>> -static __always_inline void folio_clear_private(struct folio *folio) =
+{ }
+>> -static __always_inline void SetPagePrivate(struct page *page) { }
+>> -static __always_inline void ClearPagePrivate(struct page *page) { }
+>> -
+>>  FOLIO_FLAG(private_2, FOLIO_HEAD_PAGE)
+>>
+>>  /* owner_2 can be set on tail pages for anon memory */
+>> diff --git a/include/trace/events/mmflags.h b/include/trace/events/mmf=
+lags.h
+>> index 935893e5ea53b..caf090cd6f85e 100644
+>> --- a/include/trace/events/mmflags.h
+>> +++ b/include/trace/events/mmflags.h
+>> @@ -144,7 +144,7 @@ TRACE_DEFINE_ENUM(___GFP_LAST_BIT);
+>>  	DEF_PAGEFLAG_NAME(owner_2),					\
+>>  	DEF_PAGEFLAG_NAME(arch_1),					\
+>>  	DEF_PAGEFLAG_NAME(reserved),					\
+>> -	DEF_PAGEFLAG_NAME(private),					\
+>> +	{ 1UL << __PG_folio, "folio" },					\
+>>  	DEF_PAGEFLAG_NAME(private_2),					\
+>>  	DEF_PAGEFLAG_NAME(writeback),					\
+>>  	DEF_PAGEFLAG_NAME(head),					\
+>> diff --git a/kernel/vmcore_info.c b/kernel/vmcore_info.c
+>> index 8614430ca212a..5a417f8a922ab 100644
+>> --- a/kernel/vmcore_info.c
+>> +++ b/kernel/vmcore_info.c
+>> @@ -216,7 +216,6 @@ static int __init crash_save_vmcoreinfo_init(void)=
 
-After this patch, output of transhuge-stress:
+>>  	VMCOREINFO_LENGTH(free_area.free_list, MIGRATE_TYPES);
+>>  	VMCOREINFO_NUMBER(NR_FREE_PAGES);
+>>  	VMCOREINFO_NUMBER(PG_lru);
+>> -	VMCOREINFO_NUMBER(PG_private);
+>>  	VMCOREINFO_NUMBER(PG_swapcache);
+>>  	VMCOREINFO_NUMBER(PG_swapbacked);
+>>  #define PAGE_SLAB_MAPCOUNT_VALUE	(PGTY_slab << 24)
+>
+> + kdump maintainers and reviewers.
 
-  transhuge-stress: allocate 3817 transhuge pages, using 122146 MiB virtual memory and 119 MiB of ram
-    2.558 s/loop, 0.670 ms/page,  47755.759 MiB/s	2585 succeed, 1232 failed, 2585 different pages
-    2.640 s/loop, 0.692 ms/page,  46268.432 MiB/s	2585 succeed, 1232 failed, 2585 different pages
-    2.635 s/loop, 0.690 ms/page,  46360.298 MiB/s	2585 succeed, 1232 failed, 2585 different pages
-    2.782 s/loop, 0.729 ms/page,  43899.795 MiB/s	2616 succeed, 1201 failed, 2616 different pages
-    2.692 s/loop, 0.705 ms/page,  45380.876 MiB/s	2627 succeed, 1190 failed, 2627 different pages
-    2.612 s/loop, 0.684 ms/page,  46765.812 MiB/s	2628 succeed, 1189 failed, 2628 different pages
-    2.683 s/loop, 0.703 ms/page,  45520.990 MiB/s	2630 succeed, 1187 failed, 2630 different pages
-    2.727 s/loop, 0.714 ms/page,  44789.321 MiB/s	2631 succeed, 1186 failed, 2631 different pages
-    ...
-  ok 1 Completed
+Thanks.
 
-Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
----
- tools/testing/selftests/mm/guard-regions.c    | 12 +++++--
- tools/testing/selftests/mm/ksm_tests.c        | 17 ++++++----
- tools/testing/selftests/mm/run_vmtests.sh     |  4 +--
- tools/testing/selftests/mm/transhuge-stress.c | 22 +++++++------
- tools/testing/selftests/mm/vm_util.c          | 32 ++++++++++++++++---
- tools/testing/selftests/mm/vm_util.h          |  9 ++----
- 6 files changed, 66 insertions(+), 30 deletions(-)
+>
+> I believe makedumpfile reads VMCOREINFO. Removing it here, might cause =
+issues
+> for older makedumpfile versions at crashdump?
 
-diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
-index 5c8ec3ca75d7..d370592b291f 100644
---- a/tools/testing/selftests/mm/guard-regions.c
-+++ b/tools/testing/selftests/mm/guard-regions.c
-@@ -2195,14 +2195,22 @@ TEST_F(guard_regions, pagemap_scan)
- TEST_F(guard_regions, collapse)
- {
- 	const unsigned long page_size = self->page_size;
--	const unsigned long size = 2 * HPAGE_SIZE;
--	const unsigned long num_pages = size / page_size;
-+	uint64_t hpage_size;
-+	unsigned long size;
-+	unsigned long num_pages;
- 	char *ptr;
- 	int i;
- 
- 	if (!thp_available())
- 		SKIP(return, "Transparent Hugepages not available\n");
- 
-+	hpage_size = read_pmd_pagesize();
-+	if (!hpage_size)
-+		ksft_exit_fail_msg("reading hpage_size failed\n");
-+
-+	size = 2 * hpage_size;
-+	num_pages = size / page_size;
-+
- 	/* Need file to be correct size for tests for non-anon. */
- 	if (variant->backing != ANON_BACKED)
- 		ASSERT_EQ(ftruncate(self->fd, size), 0);
-diff --git a/tools/testing/selftests/mm/ksm_tests.c b/tools/testing/selftests/mm/ksm_tests.c
-index 5fd7792a0d47..278e77055007 100644
---- a/tools/testing/selftests/mm/ksm_tests.c
-+++ b/tools/testing/selftests/mm/ksm_tests.c
-@@ -521,6 +521,11 @@ static int ksm_merge_hugepages_time(int merge_type, int mapping, int prot,
- 	struct timespec start_time, end_time;
- 	unsigned long scan_time_ns;
- 	int pagemap_fd, n_normal_pages, n_huge_pages;
-+	uint64_t hpage_size = read_pmd_pagesize();
-+
-+	if (!hpage_size) {
-+		ksft_exit_fail_msg("reading hpage_size failed\n");
-+	}
- 
- 	if (!thp_is_enabled()) {
- 		ksft_print_msg("Transparent Hugepages not available\n");
-@@ -530,10 +535,10 @@ static int ksm_merge_hugepages_time(int merge_type, int mapping, int prot,
- 	map_size *= MB;
- 	size_t len = map_size;
- 
--	len -= len % HPAGE_SIZE;
--	map_ptr_orig = mmap(NULL, len + HPAGE_SIZE, PROT_READ | PROT_WRITE,
-+	len -= len % hpage_size;
-+	map_ptr_orig = mmap(NULL, len + hpage_size, PROT_READ | PROT_WRITE,
- 			MAP_ANONYMOUS | MAP_NORESERVE | MAP_PRIVATE, -1, 0);
--	map_ptr = map_ptr_orig + HPAGE_SIZE - (uintptr_t)map_ptr_orig % HPAGE_SIZE;
-+	map_ptr = map_ptr_orig + hpage_size - (uintptr_t)map_ptr_orig % hpage_size;
- 
- 	if (map_ptr_orig == MAP_FAILED)
- 		err(2, "initial mmap");
-@@ -547,7 +552,7 @@ static int ksm_merge_hugepages_time(int merge_type, int mapping, int prot,
- 
- 	n_normal_pages = 0;
- 	n_huge_pages = 0;
--	for (void *p = map_ptr; p < map_ptr + len; p += HPAGE_SIZE) {
-+	for (void *p = map_ptr; p < map_ptr + len; p += hpage_size) {
- 		if (allocate_transhuge(p, pagemap_fd) < 0)
- 			n_normal_pages++;
- 		else
-@@ -578,11 +583,11 @@ static int ksm_merge_hugepages_time(int merge_type, int mapping, int prot,
- 	ksft_print_msg("Average speed:  %.3f MiB/s\n", (map_size / MB) /
- 					       ((double)scan_time_ns / NSEC_PER_SEC));
- 
--	munmap(map_ptr_orig, len + HPAGE_SIZE);
-+	munmap(map_ptr_orig, len + hpage_size);
- 	return KSFT_PASS;
- 
- err_out:
--	munmap(map_ptr_orig, len + HPAGE_SIZE);
-+	munmap(map_ptr_orig, len + hpage_size);
- 	return KSFT_FAIL;
- }
- 
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index d09f9f6a384e..24aa1de27c25 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -360,8 +360,8 @@ fi
- CATEGORY="memfd_secret" run_test ./memfd_secret
- fi
- 
--# KSM KSM_MERGE_TIME_HUGE_PAGES test with size of 100
--CATEGORY="ksm" run_test ./ksm_tests -H -s 100
-+# KSM KSM_MERGE_TIME_HUGE_PAGES test with size of 512
-+CATEGORY="ksm" run_test ./ksm_tests -H -s 512
- # KSM KSM_MERGE_TIME test with size of 100
- CATEGORY="ksm" run_test ./ksm_tests -P -s 100
- # KSM MADV_MERGEABLE test with 10 identical pages
-diff --git a/tools/testing/selftests/mm/transhuge-stress.c b/tools/testing/selftests/mm/transhuge-stress.c
-index 8eb0c5630e7e..66ae94afaf8d 100644
---- a/tools/testing/selftests/mm/transhuge-stress.c
-+++ b/tools/testing/selftests/mm/transhuge-stress.c
-@@ -35,6 +35,8 @@ int main(int argc, char **argv)
- 	size_t map_len;
- 	int pagemap_fd;
- 	int duration = 0;
-+	uint64_t hpage_size = read_pmd_pagesize();
-+	uint64_t hpage_shift = hpshift();
- 
- 	ksft_print_header();
- 
-@@ -70,23 +72,23 @@ int main(int argc, char **argv)
- 	}
- 
- 	warnx("allocate %zd transhuge pages, using %zd MiB virtual memory"
--	      " and %zd MiB of ram", len >> HPAGE_SHIFT, len >> 20,
--	      ram >> (20 + HPAGE_SHIFT - pshift() - 1));
-+	      " and %zd MiB of ram", len >> hpage_shift, len >> 20,
-+	      ram >> (20 + hpage_shift - pshift() - 1));
- 
- 	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
- 	if (pagemap_fd < 0)
- 		ksft_exit_fail_msg("open pagemap\n");
- 
--	len -= len % HPAGE_SIZE;
--	ptr = mmap(NULL, len + HPAGE_SIZE, PROT_RW, mmap_flags, backing_fd, 0);
-+	len -= len % hpage_size;
-+	ptr = mmap(NULL, len + hpage_size, PROT_RW, mmap_flags, backing_fd, 0);
- 	if (ptr == MAP_FAILED)
- 		ksft_exit_fail_msg("initial mmap");
--	ptr += HPAGE_SIZE - (uintptr_t)ptr % HPAGE_SIZE;
-+	ptr += hpage_size - (uintptr_t)ptr % hpage_size;
- 
- 	if (madvise(ptr, len, MADV_HUGEPAGE))
- 		ksft_exit_fail_msg("MADV_HUGEPAGE");
- 
--	map_len = ram >> (HPAGE_SHIFT - 1);
-+	map_len = ram >> (hpage_shift - 1);
- 	map = malloc(map_len);
- 	if (!map)
- 		ksft_exit_fail_msg("map malloc\n");
-@@ -99,7 +101,7 @@ int main(int argc, char **argv)
- 		memset(map, 0, map_len);
- 
- 		clock_gettime(CLOCK_MONOTONIC, &a);
--		for (p = ptr; p < ptr + len; p += HPAGE_SIZE) {
-+		for (p = ptr; p < ptr + len; p += hpage_size) {
- 			int64_t pfn;
- 
- 			pfn = allocate_transhuge(p, pagemap_fd);
-@@ -107,7 +109,7 @@ int main(int argc, char **argv)
- 			if (pfn < 0) {
- 				nr_failed++;
- 			} else {
--				size_t idx = pfn >> (HPAGE_SHIFT - pshift());
-+				size_t idx = pfn >> (hpage_shift - pshift());
- 
- 				nr_succeed++;
- 				if (idx >= map_len) {
-@@ -123,7 +125,7 @@ int main(int argc, char **argv)
- 			}
- 
- 			/* split transhuge page, keep last page */
--			if (madvise(p, HPAGE_SIZE - psize(), MADV_DONTNEED))
-+			if (madvise(p, hpage_size - psize(), MADV_DONTNEED))
- 				ksft_exit_fail_msg("MADV_DONTNEED");
- 		}
- 		clock_gettime(CLOCK_MONOTONIC, &b);
-@@ -131,7 +133,7 @@ int main(int argc, char **argv)
- 
- 		ksft_print_msg("%.3f s/loop, %.3f ms/page, %10.3f MiB/s\t"
- 			       "%4d succeed, %4d failed, %4d different pages\n",
--			       s, s * 1000 / (len >> HPAGE_SHIFT), len / s / (1 << 20),
-+			       s, s * 1000 / (len >> hpage_shift), len / s / (1 << 20),
- 			       nr_succeed, nr_failed, nr_pages);
- 
- 		if (duration > 0 && b.tv_sec - start.tv_sec >= duration) {
-diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index 4821a3563036..4332f8fb2104 100644
---- a/tools/testing/selftests/mm/vm_util.c
-+++ b/tools/testing/selftests/mm/vm_util.c
-@@ -21,6 +21,8 @@
- 
- unsigned int __page_size;
- unsigned int __page_shift;
-+uint64_t __hpage_size;
-+uint64_t __hpage_shift;
- 
- uint64_t pagemap_get_entry(int fd, char *start)
- {
-@@ -161,6 +163,9 @@ uint64_t read_pmd_pagesize(void)
- 	char buf[20];
- 	ssize_t num_read;
- 
-+	if (__hpage_size)
-+		return __hpage_size;
-+
- 	fd = open(PMD_SIZE_FILE_PATH, O_RDONLY);
- 	if (fd == -1)
- 		return 0;
-@@ -173,7 +178,24 @@ uint64_t read_pmd_pagesize(void)
- 	buf[num_read] = '\0';
- 	close(fd);
- 
--	return strtoul(buf, NULL, 10);
-+	__hpage_size = strtoul(buf, NULL, 10);
-+
-+	return __hpage_size;
-+}
-+
-+uint64_t hpshift(void)
-+{
-+	if (!__hpage_shift) {
-+		if (!__hpage_size) {
-+			__hpage_size = read_pmd_pagesize();
-+			if (!__hpage_size)
-+				ksft_exit_fail_msg("reading __hpage_size failed\n");
-+		}
-+
-+		__hpage_shift = (ffsl(__hpage_size) - 1);
-+	}
-+
-+	return __hpage_shift;
- }
- 
- unsigned long rss_anon(void)
-@@ -452,14 +474,16 @@ bool check_huge_shmem(void *addr, size_t len, int nr_hpages, uint64_t hpage_size
- int64_t allocate_transhuge(void *ptr, int pagemap_fd)
- {
- 	uint64_t ent[2];
-+	uint64_t hpage_size = read_pmd_pagesize();
-+	uint64_t hpage_shift = hpshift();
- 
- 	/* drop pmd */
--	if (mmap(ptr, HPAGE_SIZE, PROT_READ | PROT_WRITE,
-+	if (mmap(ptr, hpage_size, PROT_READ | PROT_WRITE,
- 		 MAP_FIXED | MAP_ANONYMOUS |
- 		 MAP_NORESERVE | MAP_PRIVATE, -1, 0) != ptr)
- 		ksft_exit_fail_msg("mmap transhuge\n");
- 
--	if (madvise(ptr, HPAGE_SIZE, MADV_HUGEPAGE))
-+	if (madvise(ptr, hpage_size, MADV_HUGEPAGE))
- 		ksft_exit_fail_msg("MADV_HUGEPAGE\n");
- 
- 	/* allocate transparent huge page */
-@@ -471,7 +495,7 @@ int64_t allocate_transhuge(void *ptr, int pagemap_fd)
- 
- 	if (PAGEMAP_PRESENT(ent[0]) && PAGEMAP_PRESENT(ent[1]) &&
- 	    PAGEMAP_PFN(ent[0]) + 1 == PAGEMAP_PFN(ent[1]) &&
--	    !(PAGEMAP_PFN(ent[0]) & ((1 << (HPAGE_SHIFT - pshift())) - 1)))
-+	    !(PAGEMAP_PFN(ent[0]) & ((1 << (hpage_shift - pshift())) - 1)))
- 		return PAGEMAP_PFN(ent[0]);
- 
- 	return -1;
-diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-index 9a49af88702e..20a6334605c7 100644
---- a/tools/testing/selftests/mm/vm_util.h
-+++ b/tools/testing/selftests/mm/vm_util.h
-@@ -31,6 +31,8 @@
- 
- extern unsigned int __page_size;
- extern unsigned int __page_shift;
-+extern uint64_t __hpage_size;
-+extern uint64_t __hpage_shift;
- 
- /*
-  * Represents an open fd and PROCMAP_QUERY state for binary (via ioctl)
-@@ -89,6 +91,7 @@ unsigned long pagemap_get_pfn(int fd, char *start);
- void clear_softdirty(void);
- bool check_for_pattern(FILE *fp, const char *pattern, char *buf, size_t len);
- uint64_t read_pmd_pagesize(void);
-+uint64_t hpshift(void);
- unsigned long rss_anon(void);
- bool check_huge_anon(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
- bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
-@@ -157,12 +160,6 @@ int ksm_stop(void);
- int get_hardware_corrupted_size(unsigned long *val);
- int unpoison_memory(unsigned long pfn);
- 
--/*
-- * On ppc64 this will only work with radix 2M hugepage size
-- */
--#define HPAGE_SHIFT 21
--#define HPAGE_SIZE (1 << HPAGE_SHIFT)
--
- #define PAGEMAP_PRESENT(ent)	(((ent) & (1ull << 63)) != 0)
- #define PAGEMAP_PFN(ent)	((ent) & ((1ull << 55) - 1))
- 
--- 
-LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
+The expectation is that kdump userspace tools will adapt to this change.
+Later, PG_folio will be added to identify folios and has the same value
+of PG_private, so preserving PG_private will not work then.
+>
+> Hopefully kdump folks will be able to comment better.
 
+
+
+Best Regards,
+Yan, Zi
 
