@@ -4,89 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0D85C624D6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 14:10:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAE9CC624D6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 14:11:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D15C16B0092; Wed,  2 Sep 2026 10:10:11 -0400 (EDT)
+	id D1F4D6B00B9; Wed,  2 Sep 2026 10:11:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC66E6B0095; Wed,  2 Sep 2026 10:10:11 -0400 (EDT)
+	id CEFA16B00BC; Wed,  2 Sep 2026 10:11:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB5836B0096; Wed,  2 Sep 2026 10:10:11 -0400 (EDT)
+	id C05276B00BD; Wed,  2 Sep 2026 10:11:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 913796B0092
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:10:11 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 215A912022B
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:10:11 +0000 (UTC)
-X-FDA: 85169006622.03.DECDA2C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 88761160014
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:10:09 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LAhB4egW;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788358209;
-	b=Q4vYmeuAfHJSJl0L5ObBFn+eGHosww5hTKXL7dSQbqoNW3Y6n/5ODZlp7V5MZW4uGhOS+/
-	7M6Y+8qPefkGGcPe9rAq35AN+MpsvZlXLQD3Equys4WlmUSEqlWeOnONBtmfeCNTP25Lfy
-	cD7gK/InArTZeQjJF6Xm+itnMgVShB4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788358209;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 94F986B00B9
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:11:01 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 38F7A401DF
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:11:01 +0000 (UTC)
+X-FDA: 85169008722.19.1586E38
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 3FC0020002
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:10:59 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ECd0AAgX;
+	spf=pass (imf03.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788358259;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oihjsCCaHvHV7Ff/eBY5FAk8c0jiEhpNBZtjuRbpKTc=;
-	b=KUWaui6WZqbr77TNFKflm5urMiKWCeRLwfRQ1Rp9ojj6aFnYSMSEpPUnwxPBj1vtViJNwh
-	ZnF2MW3xS2erSKSn/5aFWcB/yyngm0ijA8nvIcfFgKN8JUm/qc7DBXIX2OFY0sy5pYXC+r
-	2cugN/39HDZzmX37ND46l4cdmd/NBlk=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LAhB4egW;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 955FB41232;
-	Wed,  2 Sep 2026 14:10:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B551F000E9;
-	Wed,  2 Sep 2026 14:10:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788358208;
-	bh=oihjsCCaHvHV7Ff/eBY5FAk8c0jiEhpNBZtjuRbpKTc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LAhB4egWDVKTZbo/WjNpEn1Ptf02oJWczukKKktsE1y2dTGpRlXs4Np28vHY1QNHI
-	 K+S1q2j2GIlwhDnAUWDXKjFmrUYPPAh6o0YFjC+AzGuJfuOu4GS8oQibhtbpI6jLt6
-	 ZIdMAkFVc8n8B9DeyY1F7iWv51s1kYW1bK8XERhVA3xLT8mKHeCz5pUP4qd8dPHN4p
-	 YHIJG5tykKEbSVIdhLiEEHuEHgwROeUnDx31ozmjtbOdH4Mta57efgCv36ezivH5KX
-	 p9pPj8kNZvyVDSwFrUkvSEAesHaRzBKqM6s8NoICC3VJaFxXypTOwM+6aAB6DIROZw
-	 fYWRdlCPXI9Og==
-From: SJ Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2.1] mm/damon/core: fix false positive in damos_quota_is_full() when esz is zero
-Date: Wed,  2 Sep 2026 07:10:00 -0700
-Message-ID: <20260902141001.86733-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260902084445.27170-1-aethernet65535@gmail.com>
-References: 
+	bh=ebSLBU8UfHrQpTdooqoDv4OrjDjrNDcCYGDv+r9oP8E=;
+	b=6urRKKOGfkJFx/5+16yF/UCmg820881XNySZVq9WH/kmc2l6Wh6aocaGDQf+/l5eGuUwG0
+	vKAAC/HD5iX38FaGTOuyCt3OFUmYwDRdS7bjrAS4i1VwvWoN2Lc2fg2+58Ul6sfv2UrdyS
+	fODcKhIG4WxOCm77WLGrKrIrS18fIWg=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788358259;
+	b=QObUeoyJKg3VdSLGiNqnD/ZP8B+yzvjMMEc9zAll6gk1xT5IkqBt3rr2sjb0yKMy3mqQHf
+	qtVMECbTAiu1LfMaNLFJI9lwpdyQa0Bl3jQfoAPsdvke/d1rP4L69eyOI3rWkEj/IwxlZU
+	41nmV4lJVwzQT3QKOAiens+ikxKc9CU=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ECd0AAgX;
+	spf=pass (imf03.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-485538d3499so689775f8f.0
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 07:10:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788358258; cv=none;
+        d=google.com; s=arc-20260327;
+        b=EvrngAP80dtUzhpwx9LIt7ig/hzCAxbTZUv+ycetKnzLNWeGv1powmiq7iDzp15vwh
+         GqLeyrYAdYvzCVaZSiySSfxwDIerkPrKnR9f7vC5CxUX+hFKfVTrpAcfUn0X955vSzfh
+         ymJtfuxFS2HLvwynTjNKRFHTq0rUONXGTxPTqkRtoJSwJgc6XN+jZ0q0jEB+E8jU24M8
+         HzUfs2RHy1ziPrAbxuj7sX2ESc4csQTb3SC/ZKdbFENeeqfY5Fz+udyX4vqHicawTYrx
+         auqgzATl0Z9QEShUKb8oiaTNxr5JO+GwIxLHcNan7veCtfjitBfLh7lxpojvkEiZsEd2
+         3gZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ebSLBU8UfHrQpTdooqoDv4OrjDjrNDcCYGDv+r9oP8E=;
+        fh=ZvJEo4bxULAnNlxUBVxh+iohpRVmUu2MwKLkBdZBJGo=;
+        b=jxq/+jp23xT9mgw0oVoS++HQD1HxHgRwtoZcK/EPKHNSOWikvJdiyeaLqb5g2LyrRs
+         T6IzDZQneCARiwX4K50UZAtCeW4dqbl8pXdv/An/9lhjD3o1I9H8bKLg6sUP8NxD9tQR
+         /jq8ogpDUDQNPbA3dwkkZxkmG6VoECRavDxf+yZ75cV5Y1JEwWtL2lgUmO1ERJJUwbAV
+         Ll2U7rOfMMxhO1KZqOE14uLBOBnHUXTovXn7wYjWiWv4xvVuEgLzbQIE8hZD3TqMRA4x
+         YxqWfKpPMX1LsGl0F+yd4Qi6TN9dHYgwJJSBHX4eYJS4g/DOhcrpy9o8SpyDyx9Gcaq6
+         z2oQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788358258; x=1788963058; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ebSLBU8UfHrQpTdooqoDv4OrjDjrNDcCYGDv+r9oP8E=;
+        b=ECd0AAgXOgf8VHIJnS6Mb9mglQk3uSHu8D+1p1q3w7IatXPxXda56Du5UDsyia2uNe
+         DdL9IAfXWVLT5zpK2EiZEbFBJyeH7F0AXl/F6dn0G27+RvoTToelv9Ey7LIdi027geDj
+         TUUHrCc6yZXbXeUtQRLmL25AIkF0zButHOChKGqr3kBEC6EZYDO6VwFu2HsXUc52zg1W
+         VhJ4t3oMuqHazppVIqRwKqbzqZHcCvwJfedJVoev3dSrHZTRL5m2YPeCg9ZjcjPfaB/X
+         zgMpsbyh8TMZzaipaL9fZRBfx45KpHh2zDtaNy//KBPKbOyyEL/+dubrGL4MHcaPbYQY
+         +oyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788358258; x=1788963058;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ebSLBU8UfHrQpTdooqoDv4OrjDjrNDcCYGDv+r9oP8E=;
+        b=iiDQQGWHcdDPDmdaBJcV5GZJMANt6nKzHSuITo5hajp01E546oHvrZVkJ6x3tGQrra
+         Ufokkh+5qhVxw7I5lcItKiAFLKf682zeKyCEIBI+l2Gnq4vtnsX+JgnzHuYnjtADNFcu
+         Cg3UKBuY6G0snOIGhI+ymxMII7XWsdDv0UsRD/+pINb2ZkR780hQ6ElvdBG+9k5HGl8T
+         X63bTmVFeM0CVKm80i2vDTJWQnkOa0JeWkokr3mYYTHUm1dhFdZikD17wONsGmMYa9bi
+         0DabjxE2A0trliL4FlR5tUQNqohlqua079vcbrdFCkFnUUWuFxLC7qrENYj4x2n9bOOg
+         p/qA==
+X-Forwarded-Encrypted: i=1; AKwUvBzFF1paQzvbTS9JKHgJBRGmrx+tHr9/XKVLe/cli6jNPp4Jq1EaElyHh/7NXFJkDOS+oQ4UkcDxNg==@kvack.org
+X-Gm-Message-State: AFuF++nERiNZcfXnYeaaEk0y5mtDArcnNq/7RvGDSgnJDw3ZpOuQTAV4
+	Vu9bxnTnzMGz6gbP/VOFLt7r60XpwTxqFmYWfJ5p1zohE3cUcnj3QNhVDCPbXpdUlHWXiGuW+cJ
+	1qHEozbzY596nG40fqYVHuMA9d6KTE/8=
+X-Gm-Gg: AYBFou315AJfzDsg+A9dFxssO0X1/likZlxSnCs5zZVZiJN+n8zqQNqPpNJ2t+Q6QFV
+	eqqqTB75R1MSeYURW2DXa2NhFp1Hjy6E3lvk0J2M1CJrzzLdaxcEj02uYOQom0ioK4l6jJ9H1uh
+	KKqsOyXnBSQZr42c7+hSDryj/bEijt3lQ11e2iArBXg8DlD2AbaZcvSnzb+hss8GA1TKfCKTXyo
+	PY5NEkWeK816svew6AneCt1Ft/Z9zf2Y+WL1bVA0oy3PIP6znRQc76/SsfzchEFEKt4pWXbW0pr
+	pLJmlqiNQ85qJjH4MlRXBepGV6FdOzoyA4Vhx8DG51vqG1C/1h06oRmR9dv+ewx1RAaLx9C5//H
+	zFfU=
+X-Received: by 2002:a05:6000:18ab:b0:481:512b:f0e7 with SMTP id
+ ffacd0b85a97d-48488f1898emr9592102f8f.17.1788358257484; Wed, 02 Sep 2026
+ 07:10:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260827094509.1016740-1-hebaoquan@kylinos.cn>
+ <apVNB2FRTFMDtvGP@KASONG-MC4> <apaw_XmqnEcY8sv7@MiWiFi-R3L-srv>
+In-Reply-To: <apaw_XmqnEcY8sv7@MiWiFi-R3L-srv>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Wed, 2 Sep 2026 10:10:45 -0400
+X-Gm-Features: AcwNN1WYya8eMurhgXTECj7Nz3qh8FEbpdAoE296wjpQB5CRlBuJqO6z1kGHWtw
+Message-ID: <CAKEwX=MU9uXVenEu7he+h-Pq7K3BmCGvvKS-KiPK61Xd0ox_mQ@mail.gmail.com>
+Subject: Re: [PATCH 00/16] xswap: extendable swap device backed by zswap
+To: Baoquan He <baoquan.he@linux.dev>
+Cc: Kairui Song <ryncsn@gmail.com>, Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org, 
+	akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com, 
+	baohua@kernel.org, youngjun.park@lge.com, hannes@cmpxchg.org, 
+	yosry@kernel.org, shikemeng@huaweicloud.com, chengming.zhou@linux.dev, 
+	david@kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 88761160014
-X-Stat-Signature: ot5ow6s4kzc6w1naqbw4n9q6xjej8ayf
-X-HE-Tag: 1788358209-78679
-X-HE-Meta: U2FsdGVkX19Bm4/1ZpBrFTRFH2g5lvUUG9yIqzjbAjf1yAYTqlNewmQUDY+RJwcOuAKfrKMIY2ByQtC+HfJyr5WC55wN3fGmtbIfjI0AG0AHQfbj1Nxb/ptWpwdunwedZobtJpp+cIOeEiqH/TLM3HFxubwGwLda/zjk0dKZZxRf0nTK9Jn3aR3Xs2vJ51zEkpwuQgzSJcE499Zk4IKf3Cs2wVcZTsTgueTQp4WqCY7OIiVnJSn6LqYXXtgCglpC+LPqZU2qjw/yaWD2Yt9uKNbCZgUiAzeAvca/GS9GvfYWjlAjwvd6VFoYTgh1OwGhrBD9WInZ+a9xvNzAX6bvb4RDLMvcne4VLk+QgjmBrsjVkH1ghDtti0b4qc23brmpLxHPP5WrBn0s9gDw/jTAtTaHHbSccw4Pm6GM5h26IlWkBAiCW2siVwiCs/oYsLA6JoqsRCBPS8kv6p9Mt6QN1CzU2e2n+TRPyofNM9qwOB7PDz0wFk2a1/MsjY6kyLYGz743HWqQFUOXRStchx6CZT0the7kU03DOHtukrX/o/FTZjDHiywY8FfeA1/TiV51CxewSy418GXE9U6cHFqpOypALkhp32F60cQC+L1smtKAUDZSmklLE43d5daWSsh5FHDxsh1STnuN9HDL/2nc0L5gJ74/hH0t97K+uUyqjZe5ZGPIs9w/t3dzPpcNembURQK4C9onMCIMsChO9NVZTbFKOgWh2rqzFXOWxpG0Wud3eoj3NLaLLpa38yqYqX8tER+d/jmW7Ugq9bbSiHIbbIaz3SmwsiWB6TflYV3Kwa1vCGILFUYS9lUEpjFpVAvaSX31LocMcdhtDNqSvdWgQkDw3aMQMZpd46H/ptat3CTZthpX1MMZ2Tza5WJUAywDJ7D4hTT98W4C+LotijVPloheo2U7aFVjiA9I4qKS3KA9btOrIN1aLKC7W2ZFv7BgvGfRVps6H+AAZtvo0Sx
- GE5cvnHI
- f5GdoFEf7nt97MkMX1fhyKTHMU6u0BNXHfx1EWpsAkeOt7ez0MaPHmEZGpLqXa4/viVbUif/j0rRpA0u5V61BRR6QKRLhwAH9CoTwOdEi+6OVuLF1qTeeD4UEslL59j1yk/FKppIVjvfTtxVmh7wZ49HZ6LCPwIT4F/j+rZfi2SIwVX3QTOgLJTpoRxGb6BoDETPC6rdAKVmWsYcNZwY0PuadlfJIpdd7FWBTUaixpAtonUDmLt5t+3MnMw94GdTfxQ5eo3DI0OdjKIM8obHLLKtZ8w==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 3FC0020002
+X-Stat-Signature: 6xans4zdngs76r3buuigmd113s11mm3a
+X-HE-Tag: 1788358259-79407
+X-HE-Meta: U2FsdGVkX19MSQoI78LnRguthoE7LSSfsXQ+GGOscyY+kEgMHfTJOmuX8jXG5qcZFiuMurzRsGW95WyvlM0tnUMJxsj9Wb3EoHd2X0EIXceqAMZdpMi7sYJ1DniJDwuvzwH/M/ryYcXX0JO4ajlLqKktH1rF9lNwmPNoQqYDuClaq8Fj0Y0679yuHJaCmoSzlgxBGCUX+l73L0PKhOpLqMQ7pi+83RsYER62v/TWGyGzRFZao6ry+TYCB4OcFTSe8ASrKBSaelfHwgiSZrwAgXCITzuVJtjVnGKN6O/gX0IvGSfZsb5IUfduJ2IgbuTCR36UQgEfXLx80EJDLyUJzmPykS7krDcS5+Rh6C/m6CLdZxcbGMluESjOqIkNxPifjYKu7PCM7kCohH7JQFesJiWI3+OIdOlqjKgmVfRa/2PzhsOy+vl9x6jqkMw3g741zTFt34HXPD8ywEKwSvTt/9tVclsI37TJByIyDn6Bh7lE7ms9ytmDDROS88og9F88GJRz2pdu1d1bUJrNyCtFhxZcwdUzg4UhIKVi7BjMi05INljZzanqr5nNbgbZUz4NrRpa2zCZpsjRnzGuUS9jgOifMyas4WoLVjxYpRUg6DT5JwknRKLsjfBJqVq8s8cT1RuiyXSbqJo5rRWehqagpmBHqmmN+CmOIm2iTHcviPnG+wB2WYnGaOKkFH6MA0+oY79iLSmiD+W9k0nZxmjMBtOf6hhq5sKpHqxn+Rq6swARXmOS25jJJvKPvxzN4sdt4KtKePI9Iei8ZbVNMzUiWTxF+IzT/7cMX9ak3o1ISnHK652WY+FJ8KXnhGMNhwyfr9KwXhJI/RAqXX6aq8PUnu1oj/AKtb1sOt5KJhFIYUs4tUjAr9T+ErTkH1JJwVGSxPI3nw6d+NXyfkz5iTTpNqlkVXJR8wTtxigz0OWu2LJQadF4R3DKcb4BTB36+5mJ9viFbutJauqlIyz7W5+
+ b9txk1ra
+ 0vRcvcbpj/B/nzasXnvgnhEX8fQr8qfJKPXDO/TF7tSu9GBa39oYVmI9oaBbbkCttjUiYpoEOfowZO07loPhxaTy+kXcx2LmSfGUt+e6R08jRH1rfGxDiRsd5Wk82wpSvvCA5N06710TzlvvhSpA/S6zDvlJfcg4vmQy/luVoxDbaaAi1bsc6InSwixwf6P88GedZzsqHfcub+jS+zyC1c5GPy6I5KfTU56mqko+mWjy/GGKi4DDOJZq3R5b6RijKNFMlbb5Aa8lqES80Tr7KS7HAHR4DKoABRZSxk+PmyVsmFzzweVMux5l6GWl1OMoGb6d/zEzc8ajA67q/XEO9wNgMFT5bmqszaTTElFGN1JY5j39/OtKw9YYDq9Hjw/J/GDfLZWPkftqD9iNkw47XFc9gYA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,18 +144,154 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  2 Sep 2026 16:44:45 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+On Tue, Sep 1, 2026 at 7:03=E2=80=AFAM Baoquan He <baoquan.he@linux.dev> wr=
+ote:
+>
+> On 09/01/26 at 01:54am, Kairui Song wrote:
+> > On Thu, Aug 27, 2026 at 05:44:50PM +0800, Baoquan He wrote:
+> > > xswap is an extendable swap device with no backing storage. Swapped-o=
+ut
+> > > pages live only in zswap, so the device wastes no disk space and its
+> > > size is independent of any physical device.
+> > >
+> > > xswap decouples PTE swap entries from physical backing storage. The
+> > > cluster_info array is backed by a sparse vmalloc (VM_SPARSE) area tha=
+t is
+> > > grown and shrunk on demand:
+> > >
+> > > - Grow: when cluster allocation runs out of free clusters and the dev=
+ice
+> > >   is below its ceiling, more physical pages are mapped into the VM_SP=
+ARSE
+> > >   area and their clusters are added to the free list.
+> > >
+> > > - Shrink: when contiguous free clusters accumulate at the tail of the
+> > >   mapped range (tracked in O(1) via nr_free_tail), they are unmapped =
+and
+> > >   the backing pages freed.  Shrink is deferred to a workqueue to avoi=
+d
+> > >   lock recursion.
+> > >
+> >
+> > Hi Baoquan,
+> >
+> > I didn't check too many details on how the implementation in previous
+> > RFC until now, After looking at it, using VM_SPARSE to setup the cluste=
+r
+> > info area is a really smart idea, really good job!
+> >
+> > I think many info are missing in the cover letter though so I wasn't
+> > sure how this grow and shrink works from the description, after
+> > checking the code, it looks much cleaner to me now, correct me
+> > if I'm wrong:
+> >
+> > Every xswap device will have a huge and fixed "hard limit"
+> > (si->max and si->nr_clusters_max), and practically can be considered
+> > large enough to hold any workload, and won't change once swapon
+> > is done.
+> >
+> > The actually data (si->cluster_info) of xswap device is completely
+> > sparse and dynamic using VM_SPARSE, and so we don't need to change
+> > any existing routine. It grow/alloc and shrink/free automatically by
+> > the kernel, limited or driven by a "soft limit" (si->nr_clusters
+> > and si->pages) which you can modify using the interface below.
+>
+> Thanks a lot for careful checking, and you are quite right about the
+> mechanism and details.
+>
+> >
+> > Once concern is that the "hard limit" is now the total RAM size. Isn't
+> > that actually a bit small? Will be better if that one is tunable too?
+> > With a parameter, and before swap on, as the hard limit is hard to
+> > adjust once swapon is done. Any thing limiting this?
+>
+> Chris and I talked about this, we both think the total RAM size is a
+> good hard limit. Because xswap is similar with zswap/zram in essence by
+> compressing memory content to save memory. So the real limit is the
+> zswap pool, not the slot count. In fact it's never able to utilize the
+> total system RAM, right? Making it larger than system RAM is
+> meaningless.
 
-> When setting goal_tuner to 'temporal', if the goal is achieved,
-> quota->esz_bp will be set to zero.  In this case, damos_quota_is_full()
-> will always return true, even if no regions have been tried to apply at
-> all.  This causes qt_exceeds to increase unexpectedly.
+No. This is not quite right. The size of this device is the size of
+the "swapped out" data, which is multiple times the post-compression
+size (i.e zswap pool size). The multiple here depends on how well the
+data is compressed.
 
-To me, this looks logically correct.  Could this cause any user issue?
+This is not to consider the other swap backends:
 
+1. zero-filled swap pages have effectively 0 memory footprint.
 
-Thanks,
-SJ
+2. disk swap pages (I know this is not currently supported yet, but
+it's a consideration for the overall design).
 
-[...]
+>
+> Memory hotplug is a case in which system RAM can be enlarged during
+> system running, while that can be taken into account later as a enhanced
+> feature if it's really wanted.
+
+A lot of these problems are self-inflicted. If we design a fully
+dynamic swap device, then it's not in consideration.
+
+>
+> >
+> > And I think these details better be mentioned bit more too.
+>
+> Sure, I can put these thoughts into cover letter or patch log for
+> reference.
+>
+> >
+> > > A per-device ceiling (nr_clusters) bounds growth and is adjustable at
+> > > runtime via debugfs.
+> > >
+> > > Interface:
+> > >
+> > >   /sys/kernel/mm/xswap/create           write "<percent> [<prio>]" to
+> > >                                         create a device; percent is a
+> > >                                         percent of RAM (0 for the def=
+ault),
+> > >                                         prio is an optional swap prio=
+rity
+> > >                                         (default DEF_SWAP_PRIO)
+> >
+> > With what I have read so far, the mandatory percent limit here is kind =
+of
+> > strange, even with 0 as default. Why not make both args optional and ju=
+st
+> > let it grow without any limit by default? It looks more "fully dynamic"
+> > that way.
+>
+> I'd like to clarify why we default to a soft limit rather than "no limit"=
+.
+>
+> The soft limit is the administrator's deliberate size choice, similar
+> to how zram requires an explicit size. On a multi-TB system the
+> cluster_info array is not free, so planning how much of it to allow is a
+> real decision. The current behavior is: grow up to the soft limit as usag=
+e
+> demands, then stay there. We do not shrink on idle, and shrink only happe=
+ns
+> when the admin lowers the limit. So there is no grow/shrink oscillation i=
+n
+> normal operation.
+>
+> A default of "no limit / fully dynamic" will instead let the device grow
+> without restriction under memory pressure. While allocating cluster_info
+> pages exactly when memory is scarce, relying on shrink to reclaim afterwa=
+rds,
+> which is the oscillation we want to avoid. So we'll make both create argu=
+ments
+> optional, but the default will be a sensible ceiling rather than unbounde=
+d.
+>
+> >
+> > >   /sys/kernel/mm/xswap/destroy          write a swap type to tear dow=
+n
+> > >                                         a device
+> > >   /sys/kernel/debug/xswap/type<N>_cluster_limit
+> > >                                         read/write the per-device
+> > >                                         cluster ceiling
+> >
+
+What's the point of having multiple xswap devices if it's going to be
+dynamic, cluster-based anyway?
 
