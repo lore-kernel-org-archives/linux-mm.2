@@ -4,121 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF72CC624DA
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 19:45:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B478C624D4
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 19:47:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B20BE6B0088; Wed,  2 Sep 2026 15:45:25 -0400 (EDT)
+	id 131E06B00DA; Wed,  2 Sep 2026 15:47:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ACB3F6B0099; Wed,  2 Sep 2026 15:45:25 -0400 (EDT)
+	id 0E3BE6B00DC; Wed,  2 Sep 2026 15:47:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E1696B009B; Wed,  2 Sep 2026 15:45:25 -0400 (EDT)
+	id 002A16B00DA; Wed,  2 Sep 2026 15:47:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C8BF6B0088
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:45:25 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EF86E40382
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 19:45:24 +0000 (UTC)
-X-FDA: 85169851368.10.C2A2D42
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 40B171C000A
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 19:45:23 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=n9s1Sdzw;
-	spf=pass (imf21.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.47 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788378323;
-	b=6A/t6zKbWPpllCi07vAV30obLPwtn4Fpszcwx3Ib8OshoxTU1U2ez4oVqkvTpa6kqXNCIY
-	NOUDZXmbJQd7oneKoCf2+grdP5MbC7op07oxbUgsJfDr2Tp/Eh69qpZBcYPVm87Isl39J3
-	PVrGRiszOYNPYQCpcSDAsXii899rJH0=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C1D116B00DA
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:47:03 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 333A8A4294
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 19:47:03 +0000 (UTC)
+X-FDA: 85169855526.04.E1A2F6B
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 5E759100004
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 19:47:01 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=RwNLnTqH;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788378323;
+	s=arc-20220608; t=1788378421;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=tGCfm32JlUmtMotIy6qoQBTUO4f6h2sqplyq+pgz4JI=;
-	b=hnAg+kZN5IS9DK+aN2jjZ5bUnYlNGEypxmzJqXZmCkFVWBw+BsspLPdpbI/+2qZfL0eCXH
-	tZL1YCfYn5U7L9EN6d3RhQ4rID/OP4xEoF5hASayNw2fQaTGyoyfAZYv5bdgrdwDRBB8fP
-	Jh2Eh7bRFBS0tvlVk7qq1ovu9H/kucQ=
+	bh=043T58xMxK5U0+nF6j3a8AXR/ljZlHLZb140yWsthLI=;
+	b=2yu2s7+KzhGtPsbCQ2M2jcEORmUTgJQqkHGTyaiBXH0Jr6Q3pUsbHCJ1nMkFq714GMpHm+
+	gFWxqQ1oVN+I8trOq6RYTdfgnply4ZMaYfF5CX+BGcnzyb5ofqcbXoEjY8AGdJZ+7jiX9K
+	0gidN1zudX1pX6rUoetbiL+EgfW2mS0=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=n9s1Sdzw;
-	spf=pass (imf21.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.47 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-7f4df360cc9so275753a34.1
-        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 12:45:23 -0700 (PDT)
+	imf14.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=RwNLnTqH;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788378421;
+	b=Dnx0NvZd3sTw9L8xPFO80AhF+w3+vQRSukb9OHnqglgXMyvHwz/Itf4crH8U1/MKHVYYas
+	wM+eaOXvSxQZt0C+lN3x34wxfTbxndVYrJf/KmjNPdathRBBHAMPDO4AzHlmE21VqDQWIC
+	iSxO/jBdVEI+aqT9kXXJSrKmiTZ8pcs=
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-9387752a4d0so133992185a.2
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 12:47:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788378322; x=1788983122; darn=kvack.org;
+        d=gourry.net; s=google; t=1788378420; x=1788983220; darn=kvack.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tGCfm32JlUmtMotIy6qoQBTUO4f6h2sqplyq+pgz4JI=;
-        b=n9s1SdzwUXk+ufUCVl1YiMGkyxZEO0FQ0+rcgfSIpr4Z0b9NCMjLTE0wKMNgft9cFt
-         bDdcCdOOxAJbG/OqvB80EcsnrY0yW/OMr0KZAD2ehHfvOOPZhim16RydjlH20rgHw70o
-         MmPeqaZXiV4Iu91PKBseDHPYi6LpTzDIgRY31gqNnbcfFBVE9Y8Je41xuPSptVfyMGUp
-         TyuvgOoMIZft41qqiF0cvWL9hCyRELtmJpD49IPAjeWcTb1nvGYpG0msDgIgxyoztlsk
-         cBapIoPIhJb+T3EeuP/6JdQk6HR9+9/1igNal3hgv6R1R6/KlDsxg1ytE7CQGt/1kT3q
-         WxsA==
+        bh=043T58xMxK5U0+nF6j3a8AXR/ljZlHLZb140yWsthLI=;
+        b=RwNLnTqHsO5Iul9KI6xVc/zoDESP7v6ewrD/ObG5KJ03U54/Yiro18RbaItZnXkRER
+         8v+Rs2MA/AothYBKQTpmvWdKyEnH3I4/21JzxJG4TW0FJXLhpr92mbI420Hh3BegLxPX
+         J36uF3UWHjXPUGO94pcqaT3x/7qq2VHYm1PTxuAnlGnlNkqCRpzUzksQD+d4yzu9JYar
+         VysalcAKbiko6YnjRpyU9c33zpeIr82DnZGmq7RcFjUyueR/QjWiTRGyyjlM4SBqWEzx
+         QMCmtL5b5KTy78LkjNLwP4w/SzySpVlOcm/Ha4tgZc+jBphQpNHE4iCNbW4XPGfZsDpH
+         I/dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788378322; x=1788983122;
+        d=1e100.net; s=20251104; t=1788378420; x=1788983220;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=tGCfm32JlUmtMotIy6qoQBTUO4f6h2sqplyq+pgz4JI=;
-        b=DZQrhtADQhgLYTM0333Sirn806nu6AQYZ3lz05KceST9bNSJ6TI14b5Tj0yAgrM2rC
-         IikXR2gzPC97rMTsZBh6oi8jGCdgayH39F9+FGZ/aSBoWXillcncdQ+/SxG1BV2YCHEC
-         U+tCMXkflZiLcQZiaDDCNFBTOdlg+nBnvlbrRWEYEG1xJjlQIrV0YOCTYpaEeUfWOCuj
-         ZoQwfrKCKHqsSWI7htjVlWPer4Our0yRNQbbo9sths7gUYRCqUxHWhrnbqTlkIgC6Wyg
-         FikNBV2clpelNhairr95hkzhclkrI45aOQEGNnsEcPedc1hilXrw6+agcS3Z04zqaAeb
-         Xwvw==
-X-Forwarded-Encrypted: i=1; AHgh+Rq+L/tvesrkZM0yNZwnCg3KvGbgkaxFWawbUNWmsHvb26wJcLPJ9RZyc5UtR8kVkG/cZsxnNo284w==@kvack.org
-X-Gm-Message-State: AFuF++mWoHE4+g1JS10nlz3g5LYYVsvLAEnFP2l7ginmcN/d4fVnRBHa
-	ZSP/VpFwbIN+zfRzsaP2py4S6p/Z3Od6rWe7/FQSoazzKjCVtkPjZXmQ
-X-Gm-Gg: AR+sD126t6qNm192ubBopJ45QeRDHTqIaK3eBYmWlZ9IZ6qA25Fv3SgUWmyreCaPtqF
-	sNNLszj1BwBQFK5wQf+idJnkuPbHW4z3XrovZhCtKeYDGTxrOGnkC1Q43y2FpKHQqYc8M/hBPkm
-	1k5sSXQjkjlKoH1Pm20s/QQnZK64R4ek65K/7ENokJuaFhVjuf95rIxkUynA6JPTFxeJVc0vj7t
-	tOkYOtMrVWVxJzBWvlG/xFY+awWyGrSqooeSeWv3iu/hu1vqeKcGqQY9Thi83vAnZH4h4KAr/6M
-	str3csrbf9ROobAvHysatMKIyBxyGK6GxzjIQdJVcKY27+H5C+5COgh2uWBigl7F1BL6FbJ+txr
-	nk630Z6VPOifYQQ2brSqm/AnWwf8gjZtSSbWI8eshGHGBquaOBkV86A1uQD98KOo/BGCvsTVnv7
-	PYQusCWOTWIg2dKw6u4i5yIFj1i+QM8Jeua+SfflSQBs9wEUUtJbs0fcCqSC1QwCOXRghbiYA4i
-	mEJ2D7pzzXcna9ibdc=
-X-Received: by 2002:a05:6830:488f:b0:7f4:3902:3a26 with SMTP id 46e09a7af769-7f899b8d376mr1482293a34.1.1788378322092;
-        Wed, 02 Sep 2026 12:45:22 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:17::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f74f9ec644sm2999492a34.24.2026.09.02.12.45.21
+        bh=043T58xMxK5U0+nF6j3a8AXR/ljZlHLZb140yWsthLI=;
+        b=e/Ycne6u10S0Ut0tP4/5ysN9xD5hXVBmwoSxk2W1rHJdA0gYFoRm6hhTA45aJQO3hh
+         DvYc6ugcD54L/eQuu4V45QGxx1OVevnBkbJbsmJ4N77VK4qJ2IlUKJ2i1IZXqe2REYn0
+         y5Jstnb9Ri/aID2Jl4QFwsNKSrIhLH+dKnWo3+41hiHweJdjipBq8hZeqXdLzLqdx27u
+         +VwvfcuZDrjgUT6ozWfRbylhcXlOgH7jhYrDO9ti5scF6LaE21vn9yEaL61w6ONm83G4
+         dj0Rb0tEvIGtfLiN3Dg3WBIwKnTqfYFYi/swhDyPsIWDivfrEnL9I9xyuqZaYpkZx/qm
+         RM8A==
+X-Gm-Message-State: AFuF++mzrvCeFWScPwf1pDZS2vS0Uvt+YQMS7PJEVOsmwyIvWn3NG7lm
+	7OfcKuZMqlgvT6soVAdVvH3l05zz4VqueYkmamFsdzihVB2Z7Ag7f2H9gOknLaOzHzMnRaUwq0c
+	kDfahhy0=
+X-Gm-Gg: AYBFou1d0A7PWYvX63/RYwa2ZOf7wZFzlA9UHDNs1NwDxT+mF/dyJdy1y6d1ao+oaGP
+	Y8O/JykZ5SdORUT4fPgiHUa7dUI5z6YE9j6EYrtthNOxitHPRp/oLQD5wKniHUTOte8+YY/j7SK
+	XrK+Os/82DHr9p+60gYi1Bsc40EFAacq43CWKI3A1K82r3leYJnDmyyCiBYSVEuOVzo0MYhCb44
+	grsRgBesnq6UHcBxv993j+ZgK7rreeyItWwk93CZbdCoKTFsdGNHC0XjbP/wfVha1M2P8A9V+Wd
+	4Qd4mLwo99+Zk8+fYdkzpxNiep2YfL3f8Jrhxy0gQ8Rjav5B8H2lo9knlnPsl393vNQhtAzapUw
+	C+7xbqb7goXCL+kc/PQy9z2/IUuDyV+l/9/YSFc1l/O4Thw26zzwLelYBb9MASH57wL3zPaV3S4
+	dQRQRJR2AeQv5WrpjCTbJI2uM819GSzW2/LhZ3hd1re7njh6fBcWTpFnVt9FGZLpvwc9U+K/RUG
+	25EjqmKEL+A+woBuv+vqbvCJw0I1NJ9iS891+4N8L4lZs/KlynBPnRwSQuh
+X-Received: by 2002:a05:620a:5bd3:b0:939:6de7:a623 with SMTP id af79cd13be357-9396de7ccf2mr158269885a.47.1788378420256;
+        Wed, 02 Sep 2026 12:47:00 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9395f18801asm299300585a.16.2026.09.02.12.46.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 12:45:21 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Nhat Pham <nphamcs@gmail.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Krush Chavan <krushchavan@outlook.com>,
-	"Chengming Zhou" <chengming.zhou@linux.dev>,
-	"Tejun Heo" <tj@kernel.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	"Shuah Khan" <shuah@kernel.org>,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
+        Wed, 02 Sep 2026 12:46:59 -0700 (PDT)
+From: Gregory Price <gourry@gourry.net>
+To: linux-mm@kvack.org
+Cc: kvm@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: [PATCH v2] selftests/cgroup: account for zswap shrinker writeback
-Date: Wed,  2 Sep 2026 12:45:20 -0700
-Message-ID: <20260902194521.3652178-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	kernel-team@meta.com,
+	pbonzini@redhat.com,
+	seanjc@google.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	shuah@kernel.org
+Subject: [PATCH 0/5] KVM: guest_memfd: bind backing memory to a NUMA node
+Date: Wed,  2 Sep 2026 15:46:52 -0400
+Message-ID: <20260902194657.79075-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5E759100004
+X-Stat-Signature: zbckpdfghcd5xr7pw556t7naxnw9wjkk
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 40B171C000A
-X-Stat-Signature: n7x11eh7b8t5u7aj7hjb1zndsfm6cifx
-X-HE-Tag: 1788378323-255506
-X-HE-Meta: U2FsdGVkX18PW7Zu5F36ehsC4vp3PAHhM80J6jOS3L8xwjDR92haS0+Ke2cGqKVT2kzBroIb+MNudfSRVaBq7HswHFQtuOodPeVr113h/OTc7+YQt35bCSw1jUhwO+r0JlRY48+siX5FklcIX181MzCKua2RWXx9aFND65bLGsHgBrpVhcreUjGYActjRPxAiO4hNrubnIfbps7Q6a49PPJQDQKkWGIkLmPtqZPrjzFaWWrdz8u7/8eqiheGD3Xw7vAIatsjh9+KgJZT/YesSlRNhT1uHwB/xpIY5lXGsFueb7quPY39UnX7+pLYp/qc7NZrgy82AJ2N8RYtznYhDVTs5w2lRTa64IFgkAprtwL/q1TU50iXLijLBJEvoZHTV9z9Kd1U4M5ERlRbnka7xssVmJ1bUW+0rCK5ah0R6vzVl42GVj5Pxw93tblxC/6SwypwNUqAElGM8wcmARCwO9ltZ8fAE1az3Pg296cVDvnU4Y+bK+8vkSmTyc4BJ5w5TTYf2bZF//O621un5+IcO9i143mN//JxEuzJx35jVxrfv/JacsXo2vIZ4pfoGrmcob1wSDtoOPodeEYAKckYXH+1YqWww4kavIjDadiGSmrBvfr3K41J5B8wHZyrY3zuH6xz7FbM4H04qxA6nVcELE5QSLOEuKtuHjpQQxoD9aUbkpBHx8tOJ6sQ6ZQVlClG/qnVi7Qf67syHqInsZiHa2/tT16oSJFo1qzVCtEj8fRfrGaJOhBGHWSfqbgFg5ZeTP3EA+jjxMJwWuZJr6Qnd0nzIfzXaD1GUiFPvYPPvfslTco3EvNcgm3GcYHikWx6UW6/l6q2GgQnXnIQnayo9dP0eVL8pipumV7oS5dpZlV0ZdKMm/CoI3h2ViXt3b2zkeRLRf9sOy/8cy7jgaTZJg6PuJGQnmbhD63xR9uNeXqAFlre+T5qGl61WrLmeMIoplKvHdXiDJG5J/EQd/Z
- UtXlmax8
- 1/6nIotrbILtyz/oNg7rY4iEj+wKpxnEXurkVOiO16J3Wm9Axh8lcRy/Cj38tdcm0gU3vZwjZVWYGUUBZDHQY6oi2n8W9vX2ojXkF+K7T+HGnuiwpbpLl7dDi8c1FdRUSdHfmRsg6JlbqhXfjk62n2zJ3HpMAaRdW52bKn74PdpuwbRII2Cik0cqrkve52Xwb99IEqQnm/6dyQDz4TN4AcKIS0ggbaaa2GGqVLl87kXp9+y3xZ0hFABYXfFfzUDbTPIQMVvRvalUY0pauEE6QhZxKxTqZ/MAI4IlHjOzTVdLtgF+KeB7+ZnuN8XJ+Z9sCzuP7eY5q/SgkW4pXLMf4GWXhMTG1m3PN5e/HhuCwqsMqPLbQth1uLlsa4YxtTK+awmLb4EakcGW+QtK7mTjZi0jommbA8DuNxqWT6TamPfeZH0i9irqaemxB1LMszC/ordj5a3kfaRj+a3lgOWwoik3hl/FUBVHDTaptGrwCPWBqluunSt+eY4dRxD1zVELMvqPUZL1CAG8uzKYE0Kun56N4dw==
+X-HE-Tag: 1788378421-908236
+X-HE-Meta: U2FsdGVkX1+wu1HIyX5HhEfu0rP35A+NepQrr6p+wFOopfo7xprdahmhI1KHk/+5332WMh5VfeJuRSCl16mtRy46i89JiBmDsyXEw9ZtqXe+2xE4gHkAxsU/OkhhSNS8ZpFfzSx12YZbcTgAo4++lTTu2GLfSSYR7d6SwNr8Mt0taiMKyBq2gdVF8ubGRET5ZHQLbW6xgKf0ymxZn0uWX4jZfTo9ppIBXINbzthQ3EZI8jjSO0OhrFCAyRi0d4J3y7KkY0tB71XGVbfJfygd18AFroMcJT+rKKF3OAKUD4F6kaxWhIUp77mkc+crOXzBWQepMF0eAefk6K/Y/0DPv05GnLeJJXDnKOIq/nzBsXGttD/8cCVs1FEBpZEVVS4a4kgaEl/9A2Mf9axoISdPwdLcbyW+IOB45e6FKQoiMBU+JH8Xg4LVqeDw3BBPgB4+YwChx8amt/SlGzsD4SEOqSvwReIoT4QH/FFoJXqjW7QKvP8eiPjGUNiT69DVQ9EID9ke4sHyL9oDWEuCt6slhGtQRaDsq+U+wk1FYmPbAycCgkAqjHhZMthi04va1USbOspWiZn+130oo8YffK3HbQImh3z5hrEdzr7fp/FxnevftttOxKxALu3ZF2ynyBxAyBGqmd6pu03kV9yoTDRV8tEiieGvoaKKuAFtgjeJbDKQWncPylJsbG8Y1/gUP81gkXU3mj7lsd8vsBavFn8GIbocm9zYOdOqqTiQ4aPXMu3MgpWWIL/5WNbVZ21ItVk6ncitZM0YKmO/uItVI4tSAbmkmTLTMnejRmNPt9STqpxp5betLe059gVRF+QI1ARmZ219Mz48qoh7GCm5mIIdg9hieVUZVVVBLJDqJ5jPyXQuC7KDRsrV/qIuUzAMGM0JAJ17on2uaGKVlzQRReSLiYYr4MoLLYFw+soRkivV5ZHObwLN3S3eCyQKuaAJI80xL+emuaQ1/39rZ7toCRo
+ h2Ta3MOA
+ P7dOMuUnxba09TqfDfAehZA48s5fvOVlPJ6SqB3/G6i6exoNjJHueYc9JZnwcvTqFFyWV6nDANdQNhhBghEpE01rIC8bRssjT8jBqJy+f8Zqn4Mgc9lyibtFoyNlwZMed6IF0p6WfUw1hETcwC4IufiH0bYCN1L6JwBA2yUeJHIYrfczBDPq+LxkH1dJzGeeJmFrW+5eNubQweaXE/7StEgwrMKbS6L+aBGhnhl/zRmYIefHKMdINlOVPNp7RWyYuBq91riNiJVEOWoBGM2g0BfyRyxtm2eZ2136igVRx8pQxgSj9Tt23ovMl33+BcPVdDosHpsX3IXUYwqyfTzWioGYXvZjdOgzw8isil+65n0GV3YA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,104 +130,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The test_no_invasive_cgroup_shrink selftest checks that when a cgroup
-has zswapped out more memory than memory.zswap.max, it does not
-trigger writeback for other cgroups. To do this, it compares the
-writeback count in a control cgroup and makes sure that it is 0,
-and then checks the writeback count in an aggressor cgroup who does
-expect to see writeback.
+guest_memfd allocates its folios through a per-inode shared mempolicy.
 
-However, when the zswap shrinker is enabled, the victim cgroup can see
-legitimate writebacks not triggered by the aggressor. In some Meta CI
-tests, we have seen this failure mode happen.
+Today that policy can only be set after the fact, with mbind() on a host
+mmap of the fd. That requires the fd to be mappable, and it cannot reach
+folios that are only ever guest-faulted. Neither holds for a
+non-mappable (confidential) guest_memfd.
 
-Instead of checking that the victim cgroup has 0 writeback, compare the
-writeback values before and after the aggressor runs and check that
-the victim cgroup did not perform any additional writeback. Note that
-this can still lead to probabilistic failures if writebacks take longer
-than 5 seconds, but this should fix the systematic failure case.
+Add GUEST_MEMFD_FLAG_BIND_NODE and a node field to struct
+kvm_create_guest_memfd. When set, KVM builds an MPOL_BIND policy for the
+requested node and installs it over the whole inode, so every folio is
+allocated there with no userspace mbind().
 
-Fixes: b5ba474f3f51 ("zswap: shrink zswap pool based on memory pressure")
-Reported-by: Krush Chavan <krushchavan@outlook.com>
-Suggested-by: Nhat Pham <nphamcs@gmail.com>
-Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+  1-2  mm/mempolicy prep. mempolicy_create() builds a validated,
+       cpuset-contextualised policy without installing it into the
+       calling task. mpol_set_shared_policy_range() installs one over a
+       pgoff range with no VMA.
+  3    The KVM flag.
+  4-5  Selftest harness support, and the test.
+
+
+Why a single node and not a full mempolicy?
+
+  The fd is the unit of guest NUMA topology. A multi-node guest is one
+  guest_memfd per guest node - or one range per node, since
+  kvm_gmem_bind() is offset-based and mpol_set_shared_policy_range() is
+  already range-capable - each bound to a host node, with the guest
+  placing memory on top. This is the shape QEMU already builds with one
+  memory-backend per guest node.
+
+  Interleaving a single fd across host nodes would model a guest node
+  whose pages are scattered underneath it. That defeats every placement
+  decision the guest makes: guest NUMA balancing, tiering and weighted
+  interleave would all be reasoning about a topology that doesn't exist.
+
+  This narrow implementation enables the only clear use case.
+
+
+User-visible behaviour:
+
+  mempolicy_create() constrains the request to the task's cpuset.
+  A node outside mems_allowed fails the ioctl with -EINVAL - the same
+  constraint mbind() carries. A task cannot grant a guest_memfd access
+  to a node it cannot reach itself.
+
+  Nothing rebinds an inode's shared policy on a later cpuset change:
+  mpol_rebind_task() walks tsk->mempolicy and mpol_rebind_mm() walks
+  vma->vm_policy, and neither reaches a struct shared_policy. The bind
+  is fixed for the life of the fd. This matches shmem's implementation.
+
+
+Testing
+
+  guest_memfd_test under virtme-ng, nested KVM:
+
+  - 2-node guest, test pinned to the CPUs of the node it is not binding
+    to, with the task mempolicy aimed at that other node. Pages land on
+    the bound node, so the placement cannot be explained by the fault
+    being local. Stripping the flag from the harness puts them on the
+    other node, confirming the check has teeth.
+
+  - CONFIG_NUMA=n: the flag is not advertised and the tests skip.
+
+  - Single node: create/mmap/fault coverage, no placement claim.
+
+Gregory Price (5):
+  mm/mempolicy: add mempolicy_create()
+  mm/mempolicy: add mpol_set_shared_policy_range()
+  KVM: guest_memfd: bind backing memory to a NUMA node at creation
+  selftests: KVM: guest_memfd: let the gmem_test() harness bind a node
+  selftests: KVM: guest_memfd: test GUEST_MEMFD_FLAG_BIND_NODE
+
+ include/linux/kvm_host.h                      |   3 +
+ include/linux/mempolicy.h                     |   5 +
+ include/uapi/linux/kvm.h                      |   5 +-
+ mm/mempolicy.c                                |  75 +++++++++-
+ .../testing/selftests/kvm/guest_memfd_test.c  | 134 ++++++++++++++++--
+ virt/kvm/guest_memfd.c                        |  44 +++++-
+ 6 files changed, 248 insertions(+), 18 deletions(-)
+
 ---
-v1 --> v2:
-- Instead of skipping the test when the zswap shrinker is enabled,
-  compare the victim's writeback counts before and after the aggressor
-  runs, as Nhat suggested.
 
- tools/testing/selftests/cgroup/test_zswap.c | 28 +++++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
+base-commit: da6c37ed8beb273e3308e42d4bca3ce11b4432fa
 
-diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
-index 9c5bd503c3f73..1ac7790727757 100644
---- a/tools/testing/selftests/cgroup/test_zswap.c
-+++ b/tools/testing/selftests/cgroup/test_zswap.c
-@@ -20,6 +20,7 @@ static int page_size;
- 
- #define PATH_ZSWAP "/sys/module/zswap"
- #define PATH_ZSWAP_ENABLED "/sys/module/zswap/parameters/enabled"
-+#define PATH_ZSWAP_SHRINKER_ENABLED "/sys/module/zswap/parameters/shrinker_enabled"
- #define PATH_ZSWAP_STORED_PAGES "/sys/kernel/debug/zswap/stored_pages"
- 
- static int read_int(const char *path, size_t *value)
-@@ -446,6 +447,16 @@ static int test_zswap_writeback_disabled(const char *root)
- 	return test_zswap_writeback(root, false);
- }
- 
-+static bool zswap_shrinker_enabled(void)
-+{
-+	char value[2];
-+
-+	if (read_text(PATH_ZSWAP_SHRINKER_ENABLED, value, sizeof(value)) <= 0)
-+		return 0;
-+
-+	return value[0] == 'Y';
-+}
-+
- /*
-  * When trying to store a memcg page in zswap, if the memcg hits its memory
-  * limit in zswap, writeback should affect only the zswapped pages of that
-@@ -455,6 +466,7 @@ static int test_no_invasive_cgroup_shrink(const char *root)
- {
- 	int ret = KSFT_FAIL;
- 	unsigned int off;
-+	long zswpwb_before, zswpwb_after, zswpwb_target;
- 	size_t allocation_size = page_size * 1024;
- 	unsigned int nr_pages = allocation_size / page_size;
- 	char zswap_max_buf[32], mem_max_buf[32];
-@@ -490,6 +502,14 @@ static int test_no_invasive_cgroup_shrink(const char *root)
- 	if (cg_read_key_long(zw_group, "memory.stat", "zswapped") < 1)
- 		goto out;
- 
-+	/* If the shrinker is enabled, try to let the writebacks finish first */
-+	if (zswap_shrinker_enabled())
-+		sleep(5);
-+
-+	zswpwb_before = get_cg_wb_count(zw_group);
-+	if (zswpwb_before < 0)
-+		goto out;
-+
- 	/* Push wb_group memory into zswap with hard-to-compress data to trigger wb */
- 	if (cg_enter_current(wb_group))
- 		goto out;
-@@ -502,9 +522,13 @@ static int test_no_invasive_cgroup_shrink(const char *root)
- 		getrandom(&wb_allocation[off], page_size/4, 0);
- 	}
- 
--	/* Verify that only zswapped memory from gwb_group has been written back */
--	if (wait_for_writeback(wb_group, 5000) > 0 && get_cg_wb_count(zw_group) == 0)
-+	/* Verify that only zswapped memory from wb_group has been written back */
-+	zswpwb_target = wait_for_writeback(wb_group, 5000);
-+	zswpwb_after = get_cg_wb_count(zw_group);
-+
-+	if (zswpwb_target > 0 && zswpwb_before == zswpwb_after)
- 		ret = KSFT_PASS;
-+
- out:
- 	cg_enter_current(root);
- 	if (zw_group) {
 -- 
 2.53.0-Meta
 
