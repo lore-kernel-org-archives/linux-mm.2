@@ -4,123 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5312C624D4
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 19:28:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41F95C61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 19:28:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 63FE46B00A4; Wed,  2 Sep 2026 15:28:31 -0400 (EDT)
+	id 926126B00A6; Wed,  2 Sep 2026 15:28:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A2476B00A6; Wed,  2 Sep 2026 15:28:31 -0400 (EDT)
+	id 8FDBA6B00AA; Wed,  2 Sep 2026 15:28:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 469C76B00A9; Wed,  2 Sep 2026 15:28:31 -0400 (EDT)
+	id 7EC736B00AB; Wed,  2 Sep 2026 15:28:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1860E6B00A4
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:28:31 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id ABA821C1DB1
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5ADDD6B00A6
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:28:33 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E02B640369
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 19:28:32 +0000 (UTC)
+X-FDA: 85169808864.11.B1C8F9B
+Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 4CA39C0008
 	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 19:28:30 +0000 (UTC)
-X-FDA: 85169808780.17.2C18A6A
-Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 29BF7100003
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 19:28:27 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=hVsrrlYc;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b=B5TUGhJT;
-	spf=pass (imf05.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=XHD8wSIc;
+	dkim=pass header.d=columbia.edu header.s=lionmail header.b=ZicShGdz;
+	spf=pass (imf10.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788377310;
+	b=1WNscQnnZqhgCRATO8B/3YrqbBtUSvMGfUwjgPFstVl0W2NQbo86G4cdrurXzGjAGHL6Q/
+	vYskyZ+7pV42HpBKMCR4VgLZtDAZ5WxPH0+ZMlux70dFCazSSMSa+vn/xrgFWLeKDWKkkG
+	bp5TOt5jegjMxp2QU1c4QuFYvux+6mU=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=XHD8wSIc;
+	dkim=pass header.d=columbia.edu header.s=lionmail header.b=ZicShGdz;
+	spf=pass (imf10.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
 	dmarc=pass (policy=none) header.from=columbia.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788377308;
+	s=arc-20220608; t=1788377310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q9N4IW0Q0HkN9KT6h8CVRGegPfku8TwgZZjZ8yH7Mw8=;
-	b=b1mZpLBbkjRYwMIGvVfpYuZuV+SdzKfrWQDWK3Uf6KqBWTZiNYI9pg9MaT5kAksZzg8qhl
-	El2XzKMufc5KzYqYz8jj1hKKGz6BL+ypdioUVqg+UA4nB4f2trtSewac7dX3jWNohJT5eL
-	3qCV8ShqWMk7YPbMBGgy+Eddu6BtSlE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788377308;
-	b=2blPupwPgMdTRO/mZ51d8HVOT1SxKPh4keh+NdxF/pYih3CIgdDfXMVVJO/YyGU21fAHmP
-	hTh9/OfV/FrtC4PJwZ5RcXQn2KwQ/+rwXsnbFdRXcWp7zRvK9DxzEsD2AxR2F3AATa2IlI
-	WYEZdeG/qD0PoEuQ8qunFg7Igns0wCA=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=hVsrrlYc;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b=B5TUGhJT;
-	spf=pass (imf05.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
-Received: from pps.filterd (m0167075.ppops.net [127.0.0.1])
-	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 682J6jCc805167
-	for <linux-mm@kvack.org>; Wed, 2 Sep 2026 15:28:27 -0400
+	bh=0VAfiqCv4eQS4h3nZSDuv6RC9EOG5S+Brh1R9wZYHWs=;
+	b=FV8ydWf9R5dlkjO303Ig0p0dZe2B7q4rNdBNDAkMDeqsoMIEW4//g1QbHaPmywmoOtwb54
+	KcicE1gj2CDEf8npMEKgBz9wWcyVfCCZWyyECu+G/wHl50h2L3dOl39JUppAk1qPknsONJ
+	GmCDAVzvE3XEaSf7NxqM2qVFA3veb7Y=
+Received: from pps.filterd (m0167072.ppops.net [127.0.0.1])
+	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 682IYiSU538594
+	for <linux-mm@kvack.org>; Wed, 2 Sep 2026 15:28:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=Q9N4
-	IW0Q0HkN9KT6h8CVRGegPfku8TwgZZjZ8yH7Mw8=; b=hVsrrlYc59XuGvwMLBIB
-	79hF1PI9iXwfcm63Ba1eZwxd/Fbs7FreqXrwsb8TTjULXlpYWKxGzaKJ3pyGpVKg
-	VsHUeNz9wzapy2ZAdNCzluWCQjTVjcSwQ3jImhqREivNoqu6zhk+dS+ytImdiu3D
-	k/YR02g0i06qnTSTHiEpEH5oKyA9ZOLmvDefOspbZBDH7EV9dYl63cNpXi4YcXky
-	GRwLFl0+VjkxNCuFaRcseKqydKfQpXoZJR4lkO18uo9aHWWpBxiMPIv9RdMUrUDQ
-	uiYn0VlKBw2/8SpolixLs/UstwsHtSREwFrz/7As9/3QeUQBuRikiu7RKfL1Cfwu
-	AA==
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com [209.85.219.72])
-	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4gesp0g54s-1
+	:message-id:mime-version:references:subject:to; s=pps01; bh=0VAf
+	iqCv4eQS4h3nZSDuv6RC9EOG5S+Brh1R9wZYHWs=; b=XHD8wSIcL8iM08UN/g/6
+	dIoF8wDgXZJ4Dnlg9+79gn9pf70m/nnqjC/OHKQpxxHI1SHWwsYJzkxnZsmU4Mss
+	CRV/C6DkaZvnXRTDQcrg60W9/361LGUz9RJJmiUSHsyRhaULNUBqFU3ljokdNG0S
+	rtfVpeupCo8yKCtQmpamprXqf1M7BTku95awlwwBK52HE5YcfRJYJEFOrhDZbViT
+	gwrUzT5lP4EbLyrk1jjQd/7xXfS8j/Mue6yCMDBSJCKutDeCi71fE0yvkrzFZWT0
+	u9afCEMWmtwZzfaBuJdkV6XeiaPrPcZ41hxu7LsXU/J/SLxk79mfucz///VrjnWZ
+	pg==
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
+	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4gefkbmu2n-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Wed, 02 Sep 2026 15:28:27 -0400 (EDT)
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-90ceabcd64aso30765556d6.3
-        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 12:28:27 -0700 (PDT)
+	for <linux-mm@kvack.org>; Wed, 02 Sep 2026 15:28:28 -0400 (EDT)
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-52d33c89a29so37708231cf.1
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 12:28:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=columbia.edu; s=lionmail; t=1788377306; x=1788982106; darn=kvack.org;
+        d=columbia.edu; s=lionmail; t=1788377308; x=1788982108; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Q9N4IW0Q0HkN9KT6h8CVRGegPfku8TwgZZjZ8yH7Mw8=;
-        b=B5TUGhJTrVW8zeRvIBybJY7iTCBum7kK3AzDYDzCEYNjL8D8xG2IYq6iwbwd7OU4mN
-         TIiNc+8ncYKcC0/M3LC4YlaoHBKj/MM4KQBcjIQo8kP4tmPUVhbpSX7o5td05gMIgVE+
-         FYgC8JIQ/VB9LnXlepuIyT2hQTSBWRyrNV0CHuwp0l5RBsJBcb2LIQCgzcDNKhStpAXU
-         ZMu0B4PczUDbkcLWUy+7PxArD+3vDm7iCJxz94J86FYyE8npWffqX5XjR/3jQZAmohEk
-         pu+IXDSAS1BLrxd+Q583WrsvSx5MJEVY7GJjTVrc6vk4hNG8lY41gBvCrTHowH3vud7J
-         r1Nw==
+        bh=0VAfiqCv4eQS4h3nZSDuv6RC9EOG5S+Brh1R9wZYHWs=;
+        b=ZicShGdz/MUDKqgyXUjZfoMkgkkCteiLvt0M92j0BkJOIPmpKz+NSZoCjJgJBuDvPx
+         O9LuQ5OHn9GogPdJQqlGp8SeL6BDN97hQCQeC4XNseRuzheK9/Bj77yEQUxRt5QqCet7
+         OcdFCgu21RDZ+cFbcaYGN2xZzlEe9RV60fW7xPJe1/AYUJ9k6f9qqIcsErahsk/RxVY/
+         k3bsr1Kg19Uet1H8GCIj2Gle/b/hTiElcJ6rUInyBWv7gd7bvu5OyiwsmNf93jlFLCC6
+         xAyschj3g2VXZ5QUWhV6yluMgl4FDZmRNeT+XgRRtGlBjKFlIZNqJLTKrOTAkln+dz4Y
+         /ZIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788377306; x=1788982106;
+        d=1e100.net; s=20251104; t=1788377308; x=1788982108;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Q9N4IW0Q0HkN9KT6h8CVRGegPfku8TwgZZjZ8yH7Mw8=;
-        b=WbY/jbIJ6yYPvANFXbrKSBXuXbgYTj0bEieebrXVcHtYhZNVxWd9M6RHIkb+iXMYE8
-         6wtD19ZAPIsBO4ybwmPrJyxWRHfPidCqQ66AhShTVsJj5ht4Jo3aLOwLnlolRwB3ZUam
-         mYIx+F9Ho5SVQHRrodEdn3PVxvHjFtQjcMzwZsr16I7BAoz4GHHyArVk+2+ExcMUkTiu
-         JWWhCBdJhYFYka47ziY+yeg6j+9DAXdaVFSnFZonFPGT6FZxsVHbTBKltdWvnB6JtMQD
-         Oge58baqPOBdiY6ho3j8gp788Vxbif4NdPE1EMxe0ZS1YcH4OfkfEvuMGBdFbH06Sfzr
-         EXfQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw3KcsfPreJTERLfom0Bi4ekvDGpQQ1lb6lOsmwllOiYv33/CJrQ6HaE0HLQzRLbGtZOTot5yFAzQ==@kvack.org
-X-Gm-Message-State: AFuF++nGtQ+HR/lKY7uctdZAolbaci4daiKwIIMWxuclkFm06CLTYT/1
-	2JsNi/XCwj40UOZmZQjnbl0zhuWpdFKQr84HQzblzH/JuHrXoTrR9kjrhZ9cR9rcorBRyAOvj4H
-	DZu1fSjaIoX/i+ibgvWHAwYloPmbwDOY2nUJnzE9gu+92df0G
-X-Gm-Gg: AYBFou3ZqIpVleAd32cF2b5aQGIQo8wKKKVYBVjOAIuS3iDHW3PeASNttbC8RtZnmnq
-	gvkfBnW06SDJrDHOlQrP17DPU7rsCENnOTH1cQwGtXowjS7xqHJipglTvIMBKoOiCMK6t+j+W37
-	xNBM4h84xEeKuz/toqwauZPcfUZy/vPqGmNlLxHWL/BlvfTuTlcpV60/pLK6o9qDqsXR36keD9T
-	vz/d9heRFq0Ea8Kt4nFkwrf37SAEEUa9+EXU9UghRMWXLiCJ+JEDfXg61S3vNtaeumrpw/d654z
-	NT/d+ZqchuIBHIF9asGu8cXCpUFnRbVxfniTR8njTp3nEX8ycmJbTx1qbvDlPVgy18ULt90QCvz
-	lHpnQMQfMbyylrVL44OQkGUiYBu8fmz6eMuV9duwGGIK3mYPaDmOv3Q==
-X-Received: by 2002:ad4:5d6f:0:b0:90e:95ad:ba56 with SMTP id 6a1803df08f44-90ebaff078fmr101878166d6.9.1788377306338;
-        Wed, 02 Sep 2026 12:28:26 -0700 (PDT)
-X-Received: by 2002:ad4:5d6f:0:b0:90e:95ad:ba56 with SMTP id 6a1803df08f44-90ebaff078fmr101877186d6.9.1788377305632;
-        Wed, 02 Sep 2026 12:28:25 -0700 (PDT)
+        bh=0VAfiqCv4eQS4h3nZSDuv6RC9EOG5S+Brh1R9wZYHWs=;
+        b=PEtqRxecT/YTbKLcZCfeQakrJbItw+PH68SU5mlgA56IxiUQ5QSL+msHGxfGotyikB
+         8gjk+WaouCCmPjpwwAN4LZ0of5sC0kGuqJ0A+i488q8ziPEfBHOZebiLQd3VM07EJFYR
+         /wIXxa9p83Ot99JmuzrdRFbUz1gyOn5IIPHHLj5+3kQHGSOGDNLGhl8O7jcoO25q/dIB
+         9RbbRlPVY7ymp+BfzfsT04qbBiZt2W2ktfhIUsR02IUbv+2I5Ny01ZZjm/3ybPCS2ZVN
+         VTQGlQFdPNkRsJrsBlRi7IQkLGMZ2eibuupuxPS3k5rkfxE5DpXUCjbhlljh9XLGmQ4j
+         UOLw==
+X-Forwarded-Encrypted: i=1; AKwUvByG0xO26gbnd4GhekbrcdAXIex4Cn/xrGEC6rvagru7M7D+LOXjkupfS5QQN544fenfNNzCd1bx6w==@kvack.org
+X-Gm-Message-State: AFuF++mhpkok4ycJCBOSiIDxwV0skxDDXswzIeEVbAlosUYUBwUI661X
+	XlBw22Udqy0tfJhoR0BAnKtU1dM1QLGev3owv2f6s8Fo5dB53y1Fn7DGfO4n/eXrh2X9KNZTESC
+	B7fP3Xfnm+wCzBpftYn0MOvmpgjr6vqtVvnrfkD47nNZHGc6b
+X-Gm-Gg: AYBFou2mc1NlcQzDLzf+gc9Q4UmRqaFE7dy0l0VbM4AstGMc2rsHxRMPwFkBG/iIwPP
+	VVeWUWsk/UoYzisV0RwMcg6rVoji5daSPIb7L0x3wNNcnxeiHkpBkUAo7cY/DB1ZT25rr67qZFv
+	5skSiuhgHGqVUYLHEC+4MGgsJWm0SGDwXdIKkBk3JWdvkLzOIM9IWHHymeKTHfoncV6qhEMOpS4
+	+0f4Fs5gVv6aW+dPfy/oWR9im5POIIQ6WczkWZy7O2UFb5GoX6gN7SX1DkmGe8haWeAXPx0RUFh
+	a7Gsx/TB9AGivyNWn1nPc9Rb5MlYxvNUk1WeAGrNa77xzeRRyYtIvBhphJhfBoSnjmR0tOzOaSK
+	wvWd3we2s3VYaVUpn5sQAIlAH+tw99s19AIFQuEnMUXVm1OgZQMwNJw==
+X-Received: by 2002:a05:6214:d0c:b0:90d:3c75:138e with SMTP id 6a1803df08f44-90ebab5f849mr91931096d6.17.1788377307485;
+        Wed, 02 Sep 2026 12:28:27 -0700 (PDT)
+X-Received: by 2002:a05:6214:d0c:b0:90d:3c75:138e with SMTP id 6a1803df08f44-90ebab5f849mr91930346d6.17.1788377307002;
+        Wed, 02 Sep 2026 12:28:27 -0700 (PDT)
 Received: from [127.0.1.1] (nat-128-59-178-193.net.columbia.edu. [128.59.178.193])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90e9eec85a0sm25420936d6.29.2026.09.02.12.28.24
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90e9eec85a0sm25420936d6.29.2026.09.02.12.28.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 12:28:25 -0700 (PDT)
+        Wed, 02 Sep 2026 12:28:26 -0700 (PDT)
 From: Tal Zussman <tz2294@columbia.edu>
-Date: Wed, 02 Sep 2026 15:27:52 -0400
-Subject: [PATCH 06/11] mm: page_counter: constify page_counter_read() and
- page_counter_margin()
+Date: Wed, 02 Sep 2026 15:27:53 -0400
+Subject: [PATCH 07/11] mm: memcontrol: constify the reclaim protection
+ helpers
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260902-folio_memcg-const-v1-6-e2c1da22246d@columbia.edu>
+Message-Id: <20260902-folio_memcg-const-v1-7-e2c1da22246d@columbia.edu>
 References: <20260902-folio_memcg-const-v1-0-e2c1da22246d@columbia.edu>
 In-Reply-To: <20260902-folio_memcg-const-v1-0-e2c1da22246d@columbia.edu>
 To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
@@ -142,46 +142,47 @@ To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
 Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
         Tal Zussman <tz2294@columbia.edu>
 X-Mailer: b4 0.17-dev-db0b7
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788377294; l=1723;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788377294; l=3509;
  i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
- bh=ilFeF7WzmkT3DE3smE1F3wtCBJfDaUSUcaDgXIyabqI=;
- b=7SvjOSnQHJqga+RWSYxTfjhpAi2s6De4EDJuTDdt12VyGEw9fCStCgXHcbh3kEzsD2y3neQth
- Ez75ezd5GfbCGX281htE3Y9/bLU4GHSZi9xp5qDT8cGrFVNQSwXUwV0
+ bh=YiGk7IcTyC0Eps0s3N/NbbC9x/40tMeZu+bwBaHwqiY=;
+ b=+WNVrqutl1n0CQduNp4rYfXSeoz4yiffisjzUinopL3RaPXOQZV9JDwvQLXCYFHMgo2xokdY5
+ lcqg5i9omW/CqrsaFK/UszHRH5fR0tR1CM3irMoIXnvbmUTPXB6vbRk
 X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
  pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
-X-Proofpoint-GUID: QP83LUbaL9gZwHYpzPVm8rOvCOQJjOfg
-X-Authority-Analysis: v=2.4 cv=PqejqQM3 c=1 sm=1 tr=0 ts=6a9878db cx=c_pps
- a=7E5Bxpl4vBhpaufnMqZlrw==:117 a=XwBYxoxBwSosfWEfMcqm5A==:17
+X-Proofpoint-GUID: Y0AHbavIH9vAyXKR6FZ-VjkHA3yRD9Ju
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAyMDE3MiBTYWx0ZWRfX9CJpWvMNNCXN
+ EhnsiwKTF6x7orsrrlJmVNlblF86CHPYVkJrIha71r4Cpl+FJJv8ri5wlmvKU+BuMBnZZOgTPCm
+ M57Xn6qZNBkK8/327aIDZPvHwgngHBBumfH9tKtbGB2EiaBrb1U9
+X-Authority-Analysis: v=2.4 cv=aIzAb79m c=1 sm=1 tr=0 ts=6a9878dd cx=c_pps
+ a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=XwBYxoxBwSosfWEfMcqm5A==:17
  a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=HpS3TJQ9O3Ob1ozEcmik:22
- a=qClW_BUTj_2nsftnHKoA:9 a=QEXdDO2ut3YA:10 a=pJ04lnu7RYOZP9TFuWaZ:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAyMDE3MiBTYWx0ZWRfX9/rOop3fhVaZ
- LZs7zDLlu1Xt0XpqIOsA0Mj433P6b3IBiv3QfS3XvD6WRncHNfQxU9Gl+Pyr828zHQm4IFsOaFR
- vc598IGMoiknWGS5QfOBcWQj9oeu6UKPR/5FRXmwl8vmjeIZBapK
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAyMDE3MiBTYWx0ZWRfXw1smSa3oFj+Y
- Afz7NDWmMQpsdcGRToJidh0TAyA2Ck+noWtYwp3JiOPCFZ9VhUl9NgfAMLR0gCfgFzU26CrYvAZ
- gcz2r7+vbuOD9d7RkZgFL0WZtznl7Qxw8UTCazvpe3Ec8v72KEQq3wXu79YsJ5va6ykygBaHeP+
- mfdDFdQNDYi+59pCVI9Xk3nV9p+11pOL/SyG9H42f1++ZczvmFSI5IxltPfhsRom0mW8pi4NWxk
- iRGk2gr7sA792ARqzuDpydZe/al7sdTUN0c/M+8CWGKxCgIVJUVUbeekBqXJFq3MzkrHigDs9Ig
- R89Xm4A96WmwT5c48EaDFQF8zR3eeZwZDW/vCPxhYPkyY/7JUa96+5709JGB0BQjPV/N3Zp09CI
- FYqCfPA6qwkCfe7HKjNSK8uPyvF03nAAm9LbhpPvvssY9GZTILhdMKeYwx4V3I7X/tIUxEgyPP5
- Fsfg0RKChXcNveKpwQg==
-X-Proofpoint-ORIG-GUID: QP83LUbaL9gZwHYpzPVm8rOvCOQJjOfg
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=SsB-OO3BMngHh3ZO9fOt:22
+ a=Qozanl9KyY-oOybludYA:9 a=QEXdDO2ut3YA:10 a=a_PwQJl-kcHnX1M80qC6:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAyMDE3MiBTYWx0ZWRfXysZ3VBAdBKOX
+ nayzaSA6Pmh7YcxGzNkBQSY+omgVMY2Esk43k8FeQAu60J3cu8lT3mRZXVVYcSOjl2rc13ApnEM
+ j8kaL7QCU/rnU/U9OmoxDXcL6EAFoXe0UdLEVeK6kR1/hjNvNlNKWQxz6oEfGtaUHFuJUo5wnBM
+ WjPaOZFHdJi26rHgdbyR9TqV+TBWqJxCxQTNJ4VEF8dwLzml8XoGwxIIzLdE5W57U5SN7j766fd
+ vZqsBi5szoj7JU24oolOZ5URIi9VqVu45YG4bJf6EfP3Am+bgQHxQ/Ryz4J5YhIcM/M4vY+mxNQ
+ ZgahgTl5XCSqJ/ukpTkPrX4jOlawXo91LUUWk3E2Fj6N4F6zrAvJIg0U9etShgkER1YprB4tAM7
+ 9YAuxNx5p8ycuRc4YJqoGVAd+GxDsbCr+frKRJlb9fNisFbnyt4oNSyzEc6lqCsd7VsYGWxn+AD
+ iqWFO4NRLW8AJUhEoxA==
+X-Proofpoint-ORIG-GUID: Y0AHbavIH9vAyXKR6FZ-VjkHA3yRD9Ju
 X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11894
  signatures=596817
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 adultscore=0 impostorscore=10 priorityscore=1501 malwarescore=0
- lowpriorityscore=10 bulkscore=10 suspectscore=0 spamscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609020172
-X-Stat-Signature: c8kth4th5kgfqr9btozmsbnqcmdjm7xf
-X-Rspamd-Queue-Id: 29BF7100003
-X-Rspamd-Server: rspam02
+ priorityscore=1501 lowpriorityscore=10 adultscore=0 malwarescore=0
+ bulkscore=10 clxscore=1015 impostorscore=10 phishscore=0 spamscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2609020172
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4CA39C0008
+X-Stat-Signature: kgrbu3rfwpfxqb6z6w8cj5o5wfwp7zsb
 X-Rspam-User: 
-X-HE-Tag: 1788377307-95910
-X-HE-Meta: U2FsdGVkX1+ijc1SAeBESTE1LvZUplTK2UJ6fCbOHMFp2fyXpPWYg6gz3pTPGzOpcnF34fQLJ12AfTCWp9e9fHvm4CJjmErzoAFNDmtUaLhfqklopPoeVbevSlunS5qBWUZOk9hDJ7NnyuM1vC9WDxFlx9/ZtA7UcGYxZPeP5LENQPzPAy7nLQTZfvIItNiCNMseaBf/r88gARrM/le822D8hPNitsgU3f9+BcInvfXWsQ54IJvjQDDILstVauVMdFB2dptWJzD0EW9H5+ZoeecUDNePpNQiLLtYC5HAsLD7eCn9w0glnZBcxUMvxnfnO7nNzGZOz2bSLGjz9K00FN9ullPdgOHM8KYaDazrZdiHmRQ7/Np/r5LJbNRGbQfzTt2ojlrOUsuAjYYs8Lt6Ga6qWEztiHQQoAcdiSyM7qsHGHJkG3SNoRyBxfyEzlQjN6J9xBcYr+EttSU43VxS4gFzQgxjWE/1eXBAnC+FfHKoBJTyYLxKQKhdDLufW25n3OpAnZdUYW9+RvZj9neDCIQONfMr8hqQmFMuzo4NIE81H3q2CtZ34GOa5EbhE9KrmbyElFHpTy/OMu8mJTsVUTudMx/dJWPINvuDMqUpAQvxINB9Bu2HuhrXFnuSQ32iA302fGyB5N2YVPml8YC9EC3j0ez4CShuvj3FThOEwgNFiXU0+/7w0OXPHnUufUIXDhZNLhUG5q3a8E/M7HANKe77kIfFsn7ms/meRfa0JKGFPOZFMFDc6Cf4Fhnfb8VFoviWdtjdKt+tAA62e4CEowsoJysx5ms7of9yVo6kl9NImaM3OKSiOxVGxE3gLFNoF3Z48zyi0b3+YMGPCgSHcVwiIWtQZLbjt1Xjap1kg4GbOdwm1iCEBDk77yoMklFymyE0hXAGpk9qjFgKKfU3P24SsC7tDGFbXtAF36pUCCNKHUVCQf3ncl1oNVdvRRA38IIKQdjQuMZmrDufLO2
- LBZypvAc
- /U0C3OURmYJvi5TWL4jk5g4Gm9Xcl0FYgS7qp/+eqZR7V2TBJpAInz6nDfSj/lBgB7K6yANTpq3P8IwJFdzxEzhTi9MmKfn0pM/uqClkUPqKfm3oX6+lQxdszdUpKG/lr+4197LmORKOyafF/bEjtcD+6aymo/dkuvyLh8+25iCsVioFlaKMbBhBMSQwNuS/Y9/LgBFEVJ6qIW09x2PksGUzowqMob1CB8ZeUMiwTxG5zbsuUCHJ3zrbMn1Nc3r4BP+YnMqvxCGzEpKmTDK0POzvJwsfQm8/L6sCJkjnZcwDasv0P7pLT5h+CRb2O/51iDl6IL7RZgGLa/HYtPLomSJoPMWFCfmSPN7CMEKxLGo6Y3fCmJQaF31iPpKYJNXrqzKxlKoumjZfhde2JJxm5lSNzjSRuqELWtCvUwCN1uTJF6Jk=
+X-HE-Tag: 1788377310-500123
+X-HE-Meta: U2FsdGVkX1+rMHgZBeN18X+pO4D4RVYuHNwV9LQImjQrH1zgMn93JDfvDbv5VvMhLQUqA8p+rSUNU1hRjWmRSDZY3gfx1fXN8kxw2oyw8i8cEeOYgou4zHyczI+D+gB+OiDYdyMRHoOC6S8Au9wgQGBTnvu0DRxXIku3GHi6rKfpXbGgIjXOgWXgC9uB7sQnjhrDly2sWmqyIMG9nIvj//WUEcOW8FTP/evL67xZo8iWkJBQaETSoYW7IoCJfOQ/rASWcyWakg3bNcXh6kamhLN1KjJEH1KQv5uCQbudM4vfbLbBv7IpbM/xBEiRvGMkgfWKnPL/E6UTbAqXsuJkyBdQxfHVuLG0OaQzY/T6Uz4LOTI2lZHnxavFz661fB7n5cdAI3AsiBvA0eaxFHayVl84O8B7XnMKxA0j+u61MDDBAHYODNY8hPkkjgF8gzEGsViLtyNK/jT5JFgZC0+CA1hJgcWTydzkfg+NVPDQMJc1kh5sO/i/fW8N+eHmlOXYkDTjBHzbsU3V/XNvp8A2tNJ046OP+SKCqHNXbTE8cH8uvV7rPPC7CTUCM/Y4/Zvs1UY2EQl8j5WUJm7QwL/81qaXiYQgv3AXIJapaaTzM1r4t62D1ohP7YL4upPwiFkO7mj8ty1WeHrUwUEcxlVjDQK5gQfONhBt4uJxHZFbevgDr6NhNS+9+a8xzAgtJEgNDOHdTh/PFEiNWaAvQnuPKNqU8q2MI8gXMfuDjxhNY7RHVB8sQT6zaIcuNxZVykzzG4Pk1y3Hqhwh0argT6K1660+MZe6hjVsAZ76LQL4eydUCLnjrJNuSwi2/HY2ziGOqCGk502m0rgPTuA60UWfNoYHERI/T2h0J+nEMBZEVDKR+mcIzapRPqyXwlqBRwxWPMxbdnvKyWhyvMSgu+9U+//ojVYQrJBu/hwQ5KV3SQt6CB/ziZwp+5hsEKZaIySR1lwKfRJUmkoO8oS/M08
+ HA/9lcAQ
+ PfLCiwCVwhGTJdW71AKRC9cO90mHIGfZ+Eo2mtShud7TSnUB9YumLZhK/lHHruZbCknwuvxn+y26e3SvFsNkTpAj2FWZH8hBkgkSa6qk79pNcF58/2IiV/5LffDfNN9OyYjSi/zqBlkfeFWOf2B/qnpjxrYInsw9sJ7Od0Z1PGjaN8K2zEvW2tykufdeudQ2BrLD+J9AEodzpBfCspGVNRIJGAXhk3HQVz+c1SZHrcbV0F5FkeGFGKrxszLwu71JZudMdaD/ICWbGXxf3JUHFewW71lsbC8QlHRXvKrlvXwlhCXsa2tnuVVkJKllRE230HxncroRFso9iXDuV3aaKRkkB2jYK+Mxp0JzWzOfBpc5y/7np37/DPjfmDBSelRApOvbl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -189,47 +190,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Both only read the counter. Constify them so that users can read
-counters from const memcgs.
+mem_cgroup_protection(), mem_cgroup_unprotected(),
+mem_cgroup_below_low(), and mem_cgroup_below_min() only read the
+protection state. Constify them.
 
 Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 ---
- include/linux/page_counter.h | 4 ++--
- mm/page_counter.c            | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ include/linux/memcontrol.h | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/include/linux/page_counter.h b/include/linux/page_counter.h
-index 07b7cb12249c..2baf7a2b29b2 100644
---- a/include/linux/page_counter.h
-+++ b/include/linux/page_counter.h
-@@ -63,12 +63,12 @@ static inline void page_counter_init(struct page_counter *counter,
- 	counter->track_failcnt = false;
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index bda969b3e1d9..bd82628d0d72 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -537,8 +537,8 @@ static inline bool mem_cgroup_disabled(void)
+ 	return !cgroup_subsys_enabled(memory_cgrp_subsys);
  }
  
--static inline unsigned long page_counter_read(struct page_counter *counter)
-+static inline unsigned long page_counter_read(const struct page_counter *counter)
+-static inline void mem_cgroup_protection(struct mem_cgroup *root,
+-					 struct mem_cgroup *memcg,
++static inline void mem_cgroup_protection(const struct mem_cgroup *root,
++					 const struct mem_cgroup *memcg,
+ 					 unsigned long *min,
+ 					 unsigned long *low,
+ 					 unsigned long *usage)
+@@ -592,8 +592,8 @@ static inline void mem_cgroup_protection(struct mem_cgroup *root,
+ void mem_cgroup_calculate_protection(struct mem_cgroup *root,
+ 				     struct mem_cgroup *memcg);
+ 
+-static inline bool mem_cgroup_unprotected(struct mem_cgroup *target,
+-					  struct mem_cgroup *memcg)
++static inline bool mem_cgroup_unprotected(const struct mem_cgroup *target,
++					  const struct mem_cgroup *memcg)
  {
- 	return atomic_long_read(&counter->usage);
+ 	/*
+ 	 * The root memcg doesn't account charges, and doesn't support
+@@ -604,8 +604,8 @@ static inline bool mem_cgroup_unprotected(struct mem_cgroup *target,
+ 		memcg == target;
  }
  
--long page_counter_margin(struct page_counter *counter);
-+long page_counter_margin(const struct page_counter *counter);
- void page_counter_cancel(struct page_counter *counter, unsigned long nr_pages);
- void page_counter_charge(struct page_counter *counter, unsigned long nr_pages);
- bool page_counter_try_charge(struct page_counter *counter,
-diff --git a/mm/page_counter.c b/mm/page_counter.c
-index 450543f4b318..8c6f3b45136b 100644
---- a/mm/page_counter.c
-+++ b/mm/page_counter.c
-@@ -53,7 +53,7 @@ static void propagate_protected_usage(struct page_counter *c,
-  * Return: The minimum value of max minus usage across @counter and all of
-  * its ancestors. The value may be negative during a concurrent charge.
-  */
--long page_counter_margin(struct page_counter *counter)
-+long page_counter_margin(const struct page_counter *counter)
+-static inline bool mem_cgroup_below_low(struct mem_cgroup *target,
+-					struct mem_cgroup *memcg)
++static inline bool mem_cgroup_below_low(const struct mem_cgroup *target,
++					const struct mem_cgroup *memcg)
  {
- 	long margin = PAGE_COUNTER_MAX;
+ 	if (mem_cgroup_unprotected(target, memcg))
+ 		return false;
+@@ -614,8 +614,8 @@ static inline bool mem_cgroup_below_low(struct mem_cgroup *target,
+ 		page_counter_read(&memcg->memory);
+ }
  
+-static inline bool mem_cgroup_below_min(struct mem_cgroup *target,
+-					struct mem_cgroup *memcg)
++static inline bool mem_cgroup_below_min(const struct mem_cgroup *target,
++					const struct mem_cgroup *memcg)
+ {
+ 	if (mem_cgroup_unprotected(target, memcg))
+ 		return false;
+@@ -1110,8 +1110,8 @@ static inline void memcg_memory_event_mm(struct mm_struct *mm,
+ {
+ }
+ 
+-static inline void mem_cgroup_protection(struct mem_cgroup *root,
+-					 struct mem_cgroup *memcg,
++static inline void mem_cgroup_protection(const struct mem_cgroup *root,
++					 const struct mem_cgroup *memcg,
+ 					 unsigned long *min,
+ 					 unsigned long *low,
+ 					 unsigned long *usage)
+@@ -1124,19 +1124,19 @@ static inline void mem_cgroup_calculate_protection(struct mem_cgroup *root,
+ {
+ }
+ 
+-static inline bool mem_cgroup_unprotected(struct mem_cgroup *target,
+-					  struct mem_cgroup *memcg)
++static inline bool mem_cgroup_unprotected(const struct mem_cgroup *target,
++					  const struct mem_cgroup *memcg)
+ {
+ 	return true;
+ }
+-static inline bool mem_cgroup_below_low(struct mem_cgroup *target,
+-					struct mem_cgroup *memcg)
++static inline bool mem_cgroup_below_low(const struct mem_cgroup *target,
++					const struct mem_cgroup *memcg)
+ {
+ 	return false;
+ }
+ 
+-static inline bool mem_cgroup_below_min(struct mem_cgroup *target,
+-					struct mem_cgroup *memcg)
++static inline bool mem_cgroup_below_min(const struct mem_cgroup *target,
++					const struct mem_cgroup *memcg)
+ {
+ 	return false;
+ }
 
 -- 
 2.39.5
