@@ -4,113 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60710C61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 07:59:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA999C61DFD
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 08:07:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55C6E6B00A2; Wed,  2 Sep 2026 03:59:58 -0400 (EDT)
+	id D32A56B00A4; Wed,  2 Sep 2026 04:07:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E54C6B00A3; Wed,  2 Sep 2026 03:59:58 -0400 (EDT)
+	id CE3396B00A5; Wed,  2 Sep 2026 04:07:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3AFD36B00A4; Wed,  2 Sep 2026 03:59:58 -0400 (EDT)
+	id BF95D6B00A6; Wed,  2 Sep 2026 04:07:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C8E96B00A2
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:59:58 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C36F6B00A4
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 04:07:57 -0400 (EDT)
 Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 79128160731
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 07:59:57 +0000 (UTC)
-X-FDA: 85168073634.02.B4120D7
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C7590140007
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 07:59:55 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GdaBV6fo;
-	spf=pass (imf23.hostedemail.com: domain of zhaomeijing100@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=zhaomeijing100@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 29D58140790
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 08:07:57 +0000 (UTC)
+X-FDA: 85168093794.02.E8B0687
+Received: from mta0.migadu.com (out-15.mta0.migadu.com [91.218.175.15])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6C481100008
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 08:07:53 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vrNbpTiq;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.15 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788335995;
+	s=arc-20220608; t=1788336475;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=k5YpQCAyGRMzg7W5xJsgx73Wgp3x7Yj1lZctIlmSQaA=;
-	b=5BzAspL/S/sOCPnr8zLmtUtFDJANZZHdN/+dusS2OGbzHKQdy2qCHRufYtBAuIZHI/Qsk/
-	Oj5/QoXRdwu1P0u+oT7AWxNHRf5LwZ+HKEhsnDZM2qnW268ARJaJHm2SMY2Z4N285gC9Fd
-	/1fBQaOXcs7nFrnDG7TXQf/XP4/GRxE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788335995;
-	b=M6xkWLChLIr+dhYsLzlEz6jIGJ0x/rYEYhQp665FTUIvxwh3OipzvrL0+XHVYd53c/3khs
-	BFEIdZ8oO3Olqlu0u8t95GZy0lnQVShucuXAasXCaKC3qICnstPoxcFquam2sLoFXQ16Gg
-	W97UpVF+08ozpoGviQzRuyCNOdClRgU=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ZY8R74Fm39i1k0E48gd0fqduJgs7wRK0yUa+fC7PFIk=;
+	b=tSdCMPoA7bAGKY9fhv1S5P5YWhzg9oHqYMPS1L7TwhTljXt8GYGTlan8UkXd3iDV9rcRyx
+	ccEDQXiMaFIG4nXHPdq6HsKSkMXOQpWK0Gm0n0PTyvaFFxRDC1eXorOQJP3Yp0nBQc6D6F
+	kFh10nWt0d8hqQR94NwXTpL0XOx3/IA=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GdaBV6fo;
-	spf=pass (imf23.hostedemail.com: domain of zhaomeijing100@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=zhaomeijing100@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c9e607d81fcso514430a12.2
-        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 00:59:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788335994; x=1788940794; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=k5YpQCAyGRMzg7W5xJsgx73Wgp3x7Yj1lZctIlmSQaA=;
-        b=GdaBV6foBJqO68oXZkpDrew2QC5+P3ObD9aP46oVjWZPpvRth/HnpRv1SD3wThWvvi
-         MIt4I79nLJVt/W2Lx484tqmA7X8P8A2LzXo006cdKc6FFySat68wLkSCppnn3pnG4fqY
-         Hp9dx4QpWrrKdlGZmuU4/P3IqPxoQWbcgvV45VSu2cwvQFChMOAENoelPyWq80jZNMjl
-         P6dDs014N6XMMA5AcF2yFatnK7tnFxt9hHgvaP0CqQvfw/YeJg5l6MiH5YaSZXpfb1f2
-         OoaFwKhKMH7NflfOMC+05LBvnrDZeUfRm8vCJUwh7aY5zwXkpuPkqReBHsHCKz4NvrU8
-         Emww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788335994; x=1788940794;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=k5YpQCAyGRMzg7W5xJsgx73Wgp3x7Yj1lZctIlmSQaA=;
-        b=TuF1djSe9aoI6yvjCtLHJlcFg7EhtNMot1YKePciTEAPCRKGxtJ+vLojSbHgz4JOGg
-         XN6JozGhkps4DDjQwH4Re7eEafTaajFHFgCN4n8+NbRNys+uZmpjwKltxN+8JTdjIjCS
-         snRVjqH2c2krsdWNPGmRwtGyQlXiFGEtj8iZU5pq0FLuA5Mcs2XBWFs7DvJni7OjzODE
-         KaFBq79QtD6tzEZ9xGJinXtFwnIxK21S061t8HXKBG4Vt3wRYnkBN+qYBR+C9RA1ulqK
-         NkE3NS6Lm/TUSZSX9lIKXRgUThsPRa2mbb92Wn9H5oMKjgs0CACqkSrB2LB02L5DrTtV
-         D8DA==
-X-Forwarded-Encrypted: i=1; AKwUvBwR6vyG7hTteVm10DCQld4YJZ7ul15zApgl/qkzF+xtIcUUE6DXfjriZ+VAwWADmmXkxFDAnVZR0g==@kvack.org
-X-Gm-Message-State: AFuF++kkL9BhZdRZWNoBrzYDMaQdQyzndiU9hpnHw8iW1I7tRV5fYU8B
-	TSJ2CBSgz8orbApuqDGm5KseksN3izvi+UCrpQGw1N8bazCgs8Xdr+p9FqSfoQ==
-X-Gm-Gg: AYBFou3GO5i9bMkZX2dZo/n/UpJZ5sHQ++5wcTHO60pdi3jFtPVWRYucpNkstNezPlD
-	g2ACQSrNMdIoyTp4EGB3G3V+P6KUKA1p4u3GzQDGZDbnk0U1MaPkr3iKEDQqLutYfYIfIyE1w7W
-	fvU7VuWr1+oS+00OzONr4Jnsx3neBQsEHWqNnByptF3t4INnnD0al+z23VPtQ3sDHfvF1xb3wLq
-	LrShhqR0Jlrc4xmg5DH11P05HQKN35erMRMup9TLCLN79Hw/kuZfdIoYYhQrQm5IOuhx1f6y8Dt
-	HMu5xXEGY9kjys8nY9C52Rchwx2tlWybj+Mo/MNg/Xn8wKf4FBAPxHV/ypdCY6OTfAVq8/VWr9T
-	8GeKfLeQRNHEeV7LK12LhP3AWDgzRdMFBDf+g8+yV7B2MHXs0oW1wEH3KGKiFuv4yoMlsGhTR6c
-	L1AuYCRIWNkd6iHeiqwz0QBJ4+iiCpc7jPjgv1sB6Y/GEb0bZlpCeJeNnwNd5HMUy6GgJbbYI36
-	W9YaNi0bwUyamvqkg==
-X-Received: by 2002:a17:90b:2705:b0:38e:524:8797 with SMTP id 98e67ed59e1d1-39aee084cd1mr4681912a91.13.1788335994476;
-        Wed, 02 Sep 2026 00:59:54 -0700 (PDT)
-Received: from PC-2B0BA31200898.company.local ([122.11.210.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39ae0f28b19sm4496659a91.6.2026.09.02.00.59.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 00:59:53 -0700 (PDT)
-From: Meijing Zhao <zhaomeijing100@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Meijing Zhao <zhaomeijing@lixiang.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Wandun Chen <chenwandun@lixiang.com>
-Subject: [PATCH v3] mm: memblock: show all region flags in debugfs
-Date: Wed,  2 Sep 2026 15:59:44 +0800
-Message-Id: <20260902075944.3742866-1-zhaomeijing100@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vrNbpTiq;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.15 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788336475;
+	b=orqkqe/nw2/8YqtXhLWYwZLIknFz0f7b0tClaKSuelL7RHzT1RHczbMNGwm0hDOIvoCHHU
+	K0M6TnQiYhPSQErP66rWNP30Wy42Dd110Hup8dPKbXhRriiK9Pa7cYAPzQ4iOkZS/c/iLz
+	MsBX6aNVq2KhCXW3OINUdic0PERBkOY=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=T/bumzJM3d5jlXTPAtKTEE9Yljf9oHesSte5DKZj6XA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788336469; v=1; x=1788941269;
+ b=vrNbpTiqYHdEi98jAkI2TgeQLQVqMKzTwNfgq7qJVKczuFX6G8ADAcVEfbfsSc7ICgsZKjX/
+ +IOVKpG8Y4awYJBcD7GpABj4QjnzLmdYCOT6M6IWND5o307obZ2OMcjh2t+mFGsLmBHAzKdozCe
+ VadzBYRUhvl4Fc19hELvYgkQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id f6d858a2dbb51460;
+	Wed, 02 Sep 2026 08:07:39 +0000
+X-Mizu-Trace-ID: f6d858a2dbb51460
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 2 Sep 2026 16:07:28 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, axelrasmussen@google.com,
+	baolin.wang@linux.alibaba.com, chenridong@xiaomi.com,
+	david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com,
+	lianux.mm@gmail.com, linux-kernel@vger.kernel.org, ljs@kernel.org,
+	lyugaofei@xiaomi.com, mhocko@kernel.org, qi.zheng@linux.dev,
+	shakeel.butt@linux.dev, stevensd@chromium.org,
+	wangzicheng@honor.com, weixugc@google.com, yuanchu@google.com
+Subject: Re: [PATCH v2 2/2] mm/mglru: make retry logic explicit in
+ isolate_folios()
+Message-ID: <apfZQE1X6zGAsBb_@fedora>
+References: <20260829074204.45304-1-baohua@kernel.org>
+ <20260829074204.45304-3-baohua@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: y1se4nyh4yuotkkoiongya6d1o1fgqbi
-X-Rspamd-Queue-Id: C7590140007
-X-Rspamd-Server: rspam02
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260829074204.45304-3-baohua@kernel.org>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6C481100008
+X-Stat-Signature: 4xfmr8n3oco3m4ow7ebxjewmh5errba8
 X-Rspam-User: 
-X-HE-Tag: 1788335995-305830
-X-HE-Meta: U2FsdGVkX1/DK/pmCxViDPzK3/0qOKeyVnxv4JRmnEjsEXlqA8jqnk3XkTuByL4uc0Nnc6wuSTLzWkJw0X8ub91QPlx5EX0672JCaPTuOc8CE2mLkWeJXzM++FCGJpJVV4XoLJesVzw9If2oQ/VJwDM29G+tjkiTWoKjJUugXD0z+49hEXUGTExtc+3UPL0lh+UBwRf5UoiKmd2Xlq7Oshk9k49kLBdOj4XVUdtgU9ziFHrsY+YrWkj46XQ1E7vWsYKRu2LZ2WZuHjOR6rbGIQRS4ZXa5+IcALDX3hF5GYZ9t0seHJQZUWbrpU7ZgA0/WnTSYYGAoCaohPZIzH1ZnsYAm42eRZW2fXo1hUgzTuQQC/C5jvCEAVVpGGGF85avdm6pvdy3+6rCpE3KaoR4Vvx4gpNrE9NkAPw7AZeM/z6SmfC3skCUUvMppiEnwvOh8WsdF2qe1MdEVjlX/9MzefBfhTRXxoBgOwecmP735LKGFNJdFTCFhFAvzeAJ8Tjc/UxWx/BLpnFx4ASpPgCoDs00b82HarzOyL9e6Ak6HwF4pyIPmM3Fi+8qrwclFJlh+B7QsixmYIdFICMSMJbLxQ36t/NY1ML9QXFWXg2JWV8FIyiWFgHIxmnWZWw1brWcFHSJejSvw83thuAOSP/rzhH1c6eHuiTFywPo6GUcVafwDwrlX1e869zgx+oyXeuZViRlSUwBSoj22eYKy7pL09Ls6++4RrfP986znCXdP7wV5gdj4rLQlySiTv0I8B11Y50LjxEAD4mQEZdcr8bPdZQrCLBwn+TfySXXCBPfYtfchrJ/rDnrfzk3yYALGjqF9JjrKjIgxfj8t+YG5euYz4jlsg6/WkYc3z3pJ/3iTeg+iq8QeiamGvzY0I2KUQSpkDjL+pxYQ4igbHNkxVtLudCaCcB37mL1yGlPJNcLqr3g6yaEyXGONDo6hDG6bViJLO40Q/KSimIfPrVrXo0
- DRE8PEhV
- cvU1VftChRv4kKZppo4S440M9+RrkIbk4nYtCl8O1jaEjLyIuqC82KUeyz4uL+YuH5nSjQxdm1N07yHdXeXsJ2PH7/e1NC9sawjCK9nqwhirC6J3ARbSDhngTANgoX0m6XYdlAmvtleBWeSHbSrtCQQ4lM3bSAdBxyWptrBjF6zJ6leht2qy3U2w6k9QQ/VdA2qk+/2/EOUksUuKo2YgpcNl7FJMI1iFwcVca4iT1jfCE72yJ9YF5fUBHp8KKGEaKa4X/OeF9oymK1rISuV+9Lcu+RTh1guL47tyK4rrGPk80G9wxRtJ232ysRCwDzUgFFXMmCiRkt56eJFIZWteohPTUa7SoDAFFAKOAb72l/QPBnUK8amfiMJtfiUReTHFR3fFwDchaBSXxSJPEYrMj2kewEvKThldBuAvtyj6FXAjzMtPffZUhliX67pMDyPnZOsdl/ZYNtLRNnoqyceO6yPq4OBaE+0/boL5tXVshOfivTMUyAu6Dekt54axh7VNKdlZ9wv1FqcjLmM8=
+X-HE-Tag: 1788336473-167623
+X-HE-Meta: U2FsdGVkX18n7YdZUqZNkwl7q/EEC3HeeWuXVZ7mKvayxD2XEARCMp8fuKA04N5VXDk4ulw85ihZh+Oj04YRZSxGmDeGRhMNXspTp7oSteMRD6gdJ6NW9A2of9fM2wIm1SUSpUjU58w3//6JS7Yw04CtI0aHAiZPgqLXCiyjJwdgKfEx8ORvLsSGert6RLYRxIH3Q7YPlAkGhr5SXKtudOX64N7k/SY0Ay46n9gVai2FRjWFts1zDeRf9Hc11/utLjeJ5IsonEthcPIyEt+xfL3+q+E6cKjUFvz0z/wpXs80d4xVaVBElmNNQVIx/zlJHnbnRy4qtHWhoNQ/H5CG4YoCxJruTGfm5bfAzO/Fj2LoQFwqGNUpEW4cZRu/1tBmM6htZu80FApw3ZDoUQBqc3AsR9iV336q7czylV84hG+ekf/7k9bEQZMNyCFCfttGYuT+b/LylVRS/URWV/KkSRs581+bQkGbsQel+XN9SNcBNuCH0ivmr0Yj7ohy8Z64r88c1kIsHAlmbFIhwNUODnk+zMU+umVNJPJVcg/+i2YscSMSrtAicVFckgmZRGozemhQMXwIrAlouC3Fz3PLA+RWUYsnZigxnTF7/tzssMv7fgKxYZdc5q7Peu51Khp690UmB/T+Ke2QCibZyMOclSbN06pGOF05nl6LVCYJ2vtRI97lyDD9jjCd9YJph0xjg4WahIQbFJSbePzYYQxWl6LUisGoavhBdYnGT+eIJ4avYqkblCyTMVxe2UuObWlSeo67PGJLuqz317n0qYGwrW4w5PgKlO3CD9XRrOt6K3xObyp/wFq8KNsHilvP86VEEQiqh77BdiKZD24Jqnxbd/4UM7y+ug35k1u1uCSkKyEr9dud/Gf4K+Ru2BtaqWlyJKZR0W/Nq46bUXX664YQgRzCRiByJsVN1fiTsmvVA2Ce9Ncs67HzQwOHWbEdhEeRz6hvNj8jIyIP2HbEeXB
+ mGzENEs6
+ +605J+g5MdeBZHkoF5a6H0WtMk4oVurJvIcZY2YGefIX0lJQAk4qKbh4L7ZNiExj88a7RHSeiLBL41H70fxiDiB/kCT1Y1AoVWARPbpJPUvC2+bihbnZ2qpduGKgZuEs5cScdO6faPldjDnm4x6WNpqPHVcJWJVemZ9U46yPDRy4ZGlRV6juEMKx5O4icMADeUxFwDo57Q/B9LVK8/dtneHHpwRDS4RagYnbnqGcH8VBwPmsHeVioipFhulghq69FQCyU6FsNr7SewFAr1prZSaQMWspmTr7dHjv4qjgYmqfN9vB9+EDIdQMwy2m5DSJXkeEiO6la6xbDGtZ0L2MIwN7Jh1aFrpEnazFt7XTsFz8j5w4M6SowMAr22fEsO2MTFlJFr8QqDuWlSVM+d09WNemFyqd8eyk1NVML
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,65 +95,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Meijing Zhao <zhaomeijing@lixiang.com>
+Hi Barry,
 
-Commit 493f349e38d0 ("memblock: Add flags and nid info in memblock
-debugfs") made memblock_debug_show() stop after finding the first set
-flag. A memblock region can carry multiple flags, so the remaining flags
-are hidden from debugfs.
+On 08/29/26 at 03:42pm, Barry Song (Xiaomi) wrote:
+> The existing mainline code retries the same type once in a rather
+> subtle way. `for_each_evictable_type()` may provide one more iteration,
+> allowing the same type to be retried if we scanned some folios but
+> failed to isolate any due to protections, promotions, or races. This
+> patch makes the retry behavior explicit.
+> 
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> ---
+>  mm/vmscan.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 35a233623368..718f59ffc688 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4852,6 +4852,7 @@ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>  	bool type_fallback_allowed = !is_single_type_reclaim(swappiness);
+>  	int type = get_type_to_scan(lruvec, swappiness);
+>  	int total_scanned = 0, scanned, tier;
+> +	bool tried = false;
+>  
+>  retry:
+>  	tier = get_tier_idx(lruvec, type);
+> @@ -4871,9 +4872,18 @@ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>  	 */
+>  	if (!scanned && type_fallback_allowed) {
+>  		type = !type;
+> +		tried = true;
+>  		type_fallback_allowed = false;
+>  		goto retry;
+>  	}
+> +	/*
+> +	 * We scanned some folios but failed to isolate any due to promotions,
+> +	 * protections, or races. Retry once to avoid a larger loop.
+> +	 */
+> +	if (scanned && !tried) {
+> +		tried = true;
+> +		goto retry;
 
-Walk all bits in the region flags and print every set flag separated by
-"|". Keep walking beyond flagname[] so that a set flag without a known
-name is reported as UNKNOWN rather than silently ignored.
+Seems patch 1 and 2 makes not minor difference than mainline kernel on
+behaviour.
 
-Fixes: 493f349e38d0 ("memblock: Add flags and nid info in memblock debugfs")
-Signed-off-by: Meijing Zhao <zhaomeijing@lixiang.com>
----
-Changes in v3:
-- Rebase onto v7.3-rc1 and send the former patch 2/3 as a standalone
-  patch.
-- Move flags and first into the reg->flags block.
-- Remove the redundant flagname[j] NULL check.
-- Keep the existing NONE output unchanged.
-- Drop the debugfs synchronization change. As discussed during the v2
-  review, proper locking for runtime memblock accesses needs a broader
-  design and will be addressed separately.
+1, if swappiness is 0 because no swap, it will run two times if
+(scanned != 0). This is not corner case, but usually seen on some
+systems w/o swap device. The 2nd no gain run could decrease efficiency.
 
-v2: https://lore.kernel.org/linux-mm/20260821020910.3428585-1-zhaomeijing100@gmail.com/
+static int get_swappiness(struct lruvec *lruvec, struct scan_control *sc)
+{       
+	...                
 
- mm/memblock.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+        if (!sc->may_swap)
+                return 0;
+	...
+}
 
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 9ce86349a29f..021db49eb7fc 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -2908,14 +2908,18 @@ static int memblock_debug_show(struct seq_file *m, void *private)
- 		else
- 			seq_printf(m, "%4c ", 'x');
- 		if (reg->flags) {
--			for (j = 0; j < count; j++) {
--				if (reg->flags & (1U << j)) {
--					seq_printf(m, "%s\n", flagname[j]);
--					break;
--				}
-+			unsigned int flags = reg->flags;
-+			bool first = true;
-+
-+			for (j = 0; flags; j++, flags >>= 1) {
-+				if (!(flags & 1))
-+					continue;
-+				if (!first)
-+					seq_putc(m, '|');
-+				seq_puts(m, j < count ? flagname[j] : "UNKNOWN");
-+				first = false;
- 			}
--			if (j == count)
--				seq_printf(m, "%s\n", "UNKNOWN");
-+			seq_putc(m, '\n');
- 		} else {
- 			seq_printf(m, "%s\n", "NONE");
- 		}
--- 
-2.25.1
+2, for swappiness (0, 200), the behavious is minor changed.
+
+Mark one scan_folios() result as one of:
+      iso     *isolated > 0
+      empty   scanned == 0 && !*isolated
+      busy    scanned > 0  && !*isolated
+
+mainline:  T(busy) -> T(empty)         -> return   (2 scans, no fallback)
+v2:        T(busy) -> T(empty) -> !T(...)        (a 3rd scan_folios())
+
+Maybe we can go like below:
+
+static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+                          struct scan_control *sc, int swappiness,
+                          struct list_head *list, int *isolated,
+                          int *isolate_type, int *isolate_scanned)
+	...
+
+      for (attempt = 0; attempt < 2; attempt++) {
+              int scanned = scan_folios(nr_to_scan, lruvec, sc, type,
+                                        get_tier_idx(lruvec, type), list, isolated);
+
+              total_scanned += scanned;
+              if (*isolated) {
+                      *isolate_type = type;
+                      *isolate_scanned = scanned;
+                      return total_scanned;
+              }
+              if (attempt)                /* already retried / fell back once */
+                      break;
+              if (scanned)
+                      continue;           /* retry the same type once */
+              if (single_type)
+                      break;              /* no fallback for 0 / anon-only */
+              type = !type;               /* empty: fall back to the other type */
+      }
+
+      return total_scanned;
+}
+
+This preserves mainline for 1..200 exactly, keeps the intended 0/201
+same-type retry, and cannot produce a third scan. Just personal opinion.
+
+> +	}
+>  
+>  	return total_scanned;
+>  }
+> -- 
+> 2.34.1
+> 
 
