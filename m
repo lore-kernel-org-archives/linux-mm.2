@@ -4,89 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19925C61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 11:51:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC41CC61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 11:56:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C691C6B00F0; Wed,  2 Sep 2026 07:51:48 -0400 (EDT)
+	id 8CEB36B0088; Wed,  2 Sep 2026 07:56:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C199D6B00F2; Wed,  2 Sep 2026 07:51:48 -0400 (EDT)
+	id 878B96B008A; Wed,  2 Sep 2026 07:56:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B07A96B00F3; Wed,  2 Sep 2026 07:51:48 -0400 (EDT)
+	id 740FE6B008C; Wed,  2 Sep 2026 07:56:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 807396B00F0
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 07:51:48 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EFAE38019B
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:51:47 +0000 (UTC)
-X-FDA: 85168657854.06.D397AA5
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B2846B0088
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 07:56:39 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BC73F1C0860
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:56:38 +0000 (UTC)
+X-FDA: 85168670076.20.C0A7B67
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf27.hostedemail.com (Postfix) with ESMTP id D684340002
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:51:45 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=utU69Eaw;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf27.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
+	by imf02.hostedemail.com (Postfix) with ESMTP id D43BC80007
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:56:36 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Xxjg4fJp;
+	spf=pass (imf02.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788350197;
+	b=dobnA+QwxznSTxrcW0/IVujv3LvJ8dj0WKg6l/JFIzWMuw1/SinEo5i0ro6hfw4uMWhX6y
+	8/snRKQVjVDeOv9oG3PqC5WxZogFrAVDEhSkYeuXg+1Ys7Mda+o0Xo6uqc62gvW2RRkhIX
+	7hiMjc/KgHZXHfBsGXOBa4HjfGlJGxo=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Xxjg4fJp;
+	spf=pass (imf02.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788349906;
+	s=arc-20220608; t=1788350197;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=adsSQxYfF/J3n4w7pf0UDM1LQF011MuhCMak8/JCl2U=;
-	b=aPxl3cWLtyHIz1lNufDhI+3m8KRQ2JveOeFWMBIRm1FZZJmoxyzenZjiWoquIUQ4O1bb5F
-	TVneql2AlsOL2+irT5HfTvQcMULu787XqBsOY0ODOjvyuaXDsA79miDsJIzSD9ckrQFIMR
-	23PtREvjTgQ9JhjA6WQSob1nbAATgu0=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=utU69Eaw;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf27.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788349906;
-	b=wDafhBVL41IQK/J11M0mtCoPOnwMgxr6lP4wYjmvU8jvjDPy8PWG2tDohwwxvNKmg9l+LQ
-	QZBbMSKOTZStOEZB2+BtJlBCgtqQZ35Ypx8EQX4C4yBaci2/gIJ6rITDMJKAaG+rpuXhJB
-	s5Z9Os+nq539q2hjRTHs1Zi5E2UVT58=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=BNUXC83e/vjzs+qw7ZJxZhuls+achbQBYXPnbl8LL30=;
+	b=usGnmYrMCx/81WSklZnP/K9mACbGr8m7/u2fCfhEYyVVgLXXGVhgsCAqkopPhQ/noM2+HD
+	njYPvIfEsyPTQKE0t9w27o+aM+am42FZFSeoFjvx516gP/0FGGh+jklHMvbeLsmh+JKctn
+	6CYamlQ7HqugTr2qn9C/3DkAlCk40sA=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0E86A1596;
-	Wed,  2 Sep 2026 04:51:41 -0700 (PDT)
-Received: from [10.2.198.93] (e142334-100.cambridge.arm.com [10.2.198.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AF1183F85F;
-	Wed,  2 Sep 2026 04:51:42 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 386AF1596;
+	Wed,  2 Sep 2026 04:56:32 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 92A023F85F;
+	Wed,  2 Sep 2026 04:56:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788349904; bh=OjkabxlGKBl4aBEOm+nXp42/GtJAc32K6YElqplzSCg=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=utU69EawSHaIa7SifqAKJTpR/T+bsUhLWBR5ZKDTTro4gizFsDJp84nnp/c6rT1g/
-	 KXukxy0jCqxIlB9g/21gg997lnhA5oFhGl4LMkVGHiLaXosfvT49e6vfe9+RX91dW2
-	 GBKKtOLaBMm9VvvsIRdmomZxT8uVg7leae7lIwQQ=
-Message-ID: <afe6eac4-c8db-4ec7-98be-1c7cb0d3c1de@arm.com>
-Date: Wed, 2 Sep 2026 12:51:41 +0100
+	t=1788350196; bh=YuonSXf6Kv6A3r5/HpLRgNYFjXuTFjIeFymIciQQgIg=;
+	h=From:Subject:Date:To:Cc:From;
+	b=Xxjg4fJpRJ8F5G+7cbkqdkGJjWatdFv/Ov5DeTu8h9BJf2J2coeOwj/INJ5P+pVED
+	 2qhO3ib5wRtEVRSDMIHofLwkFvhmcK5eq5jD/Ko+dLLqeQDW4AYHJ9BKS/3Cdbode0
+	 ctD+ffUCqGOB6s28nyAPSM2ecQMkC8q3HpHlE+U0=
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+Subject: [PATCH RFC v3 00/21] mm: change behavior of pXdp_get()/pXd_page()
+ in compile-time folded pgtable
+Date: Wed, 02 Sep 2026 12:56:02 +0100
+Message-Id: <20260902-dummy_ptxp3-v3-0-5d8f5b17c25c@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: usama.anjum@arm.com, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
- for this series)
-To: Yang Shi <yang@os.amperecomputing.com>, cl@gentwo.org, dennis@kernel.org,
- tj@kernel.org, urezki@gmail.com, catalin.marinas@arm.com, will@kernel.org,
- ryan.roberts@arm.com, david@kernel.org, akpm@linux-foundation.org,
- hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com
-References: <20260715180455.515692-1-yang@os.amperecomputing.com>
-From: Usama Anjum <usama.anjum@arm.com>
-Content-Language: en-US
-In-Reply-To: <20260715180455.515692-1-yang@os.amperecomputing.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4ue1ftyp4dit47ckjnh57tjcgs98iu36
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D684340002
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANMOmGoC/23PwWrDMAwG4FcpPtdFthLb2Wkw2APsOkpxZGX1I
+ U1wutBS8u4zgXYb7lES3y/pJiZOkSfxsrmJxHOc4nDKBW43go7+9MUyhlwLDdqA1VqG776/Hsb
+ zZUSJtlLBOiILnchiTNzFy5r2KT7e38Q+N49xOg/pum6Y9Tp6GjZrCTI0XLU+oGLwrz71Oxr6N
+ WXGv9L9l5hlSwbazmtmDA+5vR+OqhTOEzahck7VVAgHVSmsCQ0COAvclUI9EUz5nxqwDh5Koet
+ SKLSGlGkc0u+O/bIsP/ddlCSrAQAA
+To: Russell King <linux@armlinux.org.uk>, 
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+ Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>, 
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
+ Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>, 
+ Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Alexandre Ghiti <alex@ghiti.fr>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Jonas Bonn <jonas@southpole.se>, 
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
+ Stafford Horne <shorne@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+ linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org, 
+ kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+ linux-openrisc@vger.kernel.org, Muhammad Usama Anjum <usama.anjum@arm.com>, 
+ Yeoreum Yun <yeoreum.yun@arm.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9281; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=YuonSXf6Kv6A3r5/HpLRgNYFjXuTFjIeFymIciQQgIg=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqmA7hF91UJH19ihMYiSFd6MmKb/oB8b00GDLAW
+ UHYaZejF4qJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCapgO4QAKCRBt1cPRWsUx
+ M8ccDACIIBPnKxLvshr/NbigK+M7Y5yJaArlLvis3vTY8LkJ0KrOcOnQS1OGkruG3z3mRodyiOj
+ UPC4AAl4piHxpr2RrAQjZROJkZfzhVXwn0ZGJ6fJ8rlzNJlQBNLK/GA4q1PNekyb6M7nbCDwQLC
+ 7YXNX07Mnv77V6qWHh+59365sNkoBwrdewd4Mz0hadHuAw0ys0cQNTCz9esxfWt73LzAOow/J3N
+ SgJCM1Fuk4JEJkzl/AfS+/+NOAWdAn+y4CctwAsFbbLE5bWlzSpgqzBXfH3rXUQRBlBdT5MTNYQ
+ xocI1UnUpikoZpck5Ie1JvlkArsSXc9+l7dedk/sUdyOt+vx4aXKYUgSSmx3AvEBZeOWmiSUX+r
+ AImN2O7YeU3VwFPYsnqvD6FhJT+N5rCQrBHsnW1uhBJGgBFkxU9RcFsS3awOUoIGkCe5lbp2e8J
+ hPeBnjqqsQdLL0SXOVaYPATlLVN1J781gwFBqhUoZRBDwhMecb8EXWZ5ydQjzSGZ3n4sw=
+X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
+ fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
 X-Rspam-User: 
-X-HE-Tag: 1788349905-186933
-X-HE-Meta: U2FsdGVkX1+GjEyUqTmoRaFsldJODi1q6t0AaHxEyAwu5KaRBOy8q/a7k2dXk37jfTgD6liPMZ9Ztj0LffWOIetECOxXzpJ3LrfOMyM3r5OJZt6Y5hqh4TrEt3/sCciZhaitAfShkyvK+LHTvcS6ieJPgwgYmpMnQJQlb8G4tOjvOY5cTGz13X0lW/oaovNCzyE/YpryTbKU57Temsxm03iPZEKMlWAUOU1KjsaqE5PTmdqRWS4J3urVxCwIL2qseFyLRIE8PXfHW5Op5dXAjR0qcdpSAGV0xFSY7bAqwk8oBdr+umY3C4K7iE4i86NZ3OTcG9pYop5Vin26ghkTpOjEtNYRL3V6xVrIO4klbSLir+Rud5cgK+H7nDHQhHREek8QZNAZaHHRy6GY/SKzy4rqXjH83wBhvHYUCwym2WutgMbrzqEmtIdA9VuoFLqNqmFKtPppUc88Gv725hLXF6snw9Xpe7pAa6Dv0WdcWqkDTkLrxCBrXG4ybTQ+qvC6TBu+WkL3Hyssh+Zn7E4M0qnR+9Su0Yr+v47rCy69qFrskVvefSxfphW+NDf9U+DH2rjqsvM6gxExUtVopZfGAmJfDFgOulaa+Feyu9uO+AnvfBnn5eXt9Uiz92w9WUlBsl5hmNro0GLlDVnJM/894RfdZG/Zhf/8BYaShjhQTrndPKlsZQgmd501Hjfxuypc+FKlKQGhZzmlAsPRfdzd2r5TxRy0iuYN2FBfpQNrVH+mdr8aYUEsKUkOQ/9SGXNTa1Z/YNH2UU+1eiKt8cekj4PTNcj3uxZpOafBGOu89nYB9KJLnHf19Zz0SRqNpHjiMWD+90zhxGuoSfkxhRrADl6Bd55dlCzCav4FjeNCAQlfuLoO6ZV/06gz4fTbD7akSdW4dmWSBLcJc3kW8+s+N7Ox8gmXmPzmaAe7g6RI2A+pfwjXlCqpXmkPEY43JjpEPJqbAZ6OFsfXfcT5WuR
- 37CGb7AS
- 6tJJjM55FpJ2sb9CyLJqspgoxVoPagiM7EZ9+++tLkcuPuL5QnprKywqsbmGIiejrV4gm82RyWuz67zUYJ728Sk4igzKFDjVtVIqoYQba1Tynr5qt+O4l+4mQeO67WMr6HpIXLuIll7bpoO4HyzGOq7KjFLkDOXAaZYYH3rQOiO5XN62Rz9YAdlrY/Ui0u6v6mmVKmjIAuePVMMgRgS3OV0SyWROkxt7rx7qdWz2JbWD47eWL+H+WHDBboMeVtX35L2fSitaMjK70gLKB/9Tl21Ra/E1fl5n30CQYkzrUt+mD59luctbdseTfvqg3a+vIQB2PJm8Hkw8lch0wAY/be0dW2NuOoCpJw/nyoadIPND5NgSmKKpkJku5Sfie6b06wGYixkEvBVZQFBQ6xPQz4Ztwm3ehNfW3XERi9Acn2rk8JZVli+MqeAIEx17HKM5sZBSe
+X-Stat-Signature: fsiih96kzgqqa7ei5ui49gt9xsucn4h5
+X-Rspamd-Queue-Id: D43BC80007
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788350196-547871
+X-HE-Meta: U2FsdGVkX1/CROhKyRmZrmCMEo25wI2pQBBU0SbAU3olYdVEMDXZLw4BymEXj2p7DuhytwHmwb5ANKzYDBeuBjPT83C6XvDFNKcXQCQ0m8y+J2iukDPt4TyncRaHl/KhKwrvW2VyIbKzkL1b1lRtzmzwo07rJEfWnXt4DBVOdMWVWwCMS3nDbFHdKm6W+3UiWCC5jv6ie36AqLVEy8ZXHe7c4gLiPqIirpYXgOdeecl9bwn/Q0c7aQe6KmOJRocCqqVwSyXYOqmTqZwkltA62BCY+c6bHAmOZmCP+ZtOb4fblMMPNRNN4cUEftMs2eSvYGNHt66+0m7GRLlImtQC/uXfpyp8sJCTlFgLKzlnPng/tnb+Fgdoxyw88g3kzcQp9xojQRwWRBC4P6e3a7X/pjgeI9DA3KleGqTX65y/gwmS7bu+WzTzvdQIsEzGoqTUVLEELNwDP4JUCCrJsfpickq9tTDLG2DhP2zoD1v7IMBNf1ZFauVHzatSxZWRDzjWqqIOWJ+TtimEtOtF4gfyxOlUdTuwS62s8vRrp6EenMeHGTw1obxR2eBU8wQIwH4RPPSMwO84Y9P6STKYhfM8pdRzV9xUrx7EBGd1bPQ0N5D2x0tIYdG78zLBO5WF2Df+2fJaPhO3kfCcoxlPsmMtR7HcvwExIndFNDuCUJeTthRmCdimy2dbue4kV65qUJBBqmqjt1YCPpJHsJsIFs3g/yUNubibdZmp6FnOmTVwwESk6+I7OYKCxJWo6hRxkRWGawnb1lrrTw7dRsmK6CO/jLDo1b3AyjzG3mLizYJfdV/4Yz9USG4CgYFQ74k7SMD20eCQ2+nmbU4vipPaZYJ0PLNdkQYvsJBH8yHCM9tGn6hKHnnorBjXmHGI5zJQ4QB+dTu4T/lRV2jAs2ezfczCNG/L7Ge9O9nA2WnJdbR1C2+6BJY8k/OMjS+OJqJih0ACpTWZT/XfOK8fNJE4bWT
+ tKf/h/vt
+ HqsEwC6KolJ2sjirQkjd97++aJQ7X1sa3WzFEjv9YzYEC7J64FhQtjD+cMc7HN1H0/42QMmn1XDy2f6s9fFd9b1xxPBjWYR43hdqgKcHA2cmWwM4jvTR83RBexNyD6vD3Q+BvM7gh4eAUr7HgyoP2buAK6Kmbd00CNJJyT/u3nz0a91lxrJA1QA0TnCQ2Q0na/bkxSetkgEy7NwFfU+L0Ipzm/0Qj8iWDjfzda/3+IA84nghCh4HAjZ9PoVpksNJi0pah5VQqc5ahbGd7ZY5Vyaqj8NlTxxzQ/RpkK6lN19tXa4V4Q9fchjv4JpcgCMO8PJQg6vobBxmkWUfjHTVz6vW4uFF9hsiTpxJ//w18Q1t+cyCf+p8YQNV05SlghR7+sJti
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,314 +132,200 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 15/07/2026 7:04 pm, Yang Shi wrote:
-> 
-> Hi,
-> 
-> This is v2 RFC. In v2 a lot problems found out by Sashiko were fixed and more
-> feature gaps were closed (please see the below changelog for the details).
-> Although there are still some open issues, for example, it just can support
-> 48 bits VA (for 4K and 64K) and 47 bits VA (for 16K), KPTI support has not
-> been solved yet, etc, but I think the delta should be big enough and worth
-> a new RFC to gather comments in order to make sure I'm on the right track.
-> 
-> Some more benchmarks were done, for example, some latency related benchmarks
-> that I mentioned at LSFMM because I thought responsiveness should be improved
-> due to the removal of preempt_disable. Collected more PMU counters as well.
-> Please refer to the benchmark section for more details. 
-> 
-> Look forward to comments.
-> 
-> 
-> Changelog
-> v2: * Added 3-level and 2-level page table support.
->     * Tested with 16K and 64K page size. But we just support 48 bits VA (4K
->       and 64K) and 47 bits VA with 16K for now.  Please refer to the below
->       "known issue" section for the detail reason.
->     * Added support for memory hotplug.
->     * Added support for KASAN (generic).
->     * Treated percpu and local percpu area address as vmalloc address.
->     * Fixed build failure for x86.
->     * Fixed build failure for !CONFIG_NUMA.
->     * Added KASAN support for local percpu area.
->     * Some other misc bug fixes found out by Sashiko.
->     * More code refactor and cleanup.
->     * Regorganized the patches.
->     * More benchmarks, refer to benchmark section for more details.
->     * Rebased to v7.2-rc1.
-> 
-> 
-> Introduction
-> ============
-> This patch series implemented the LSFMM 2026 proposal for optimizing
-> this_cpu_*() ops on ARM64. For the details of the proposal, Please refer to:
-> https://lore.kernel.org/linux-mm/CAHbLzkpcN-T8MH6=W3jCxcFj1gVZp8fRqe231yzZT-rV_E_org@mail.gmail.com/
-> I didn't repeat it in the cover letter because there is no change to the
-> proposal.
-> 
-> The series is based on 7.1-rc1. It is basically minimum viable patches.
-> There are still a few hacks in this series and it may break something,
-> for example, KPTI, SMT machines which shared TLB, etc. But it shoule be
-> good enough for now to demonstrate the core idea. The main purpose of the
-> RFC is to gather feedback, figure out missing parts and risks, and make sure
-> we are on the right track, as well as hopefully it can help the discussion
-> for the upcoming LSFMM.
-> 
-> I broke the patches down to arch-dependent and arch-independent parts so that
-> hopefully the interested persons can do experiments on other architectures,
-> for example, S390, easier.
-> 
-> A new kernel config is introduced, HAVE_LOCAL_PER_CPU_MAP. The architectures
-> which can support this feature will select it. Allocating and freeing percpu
-> local mapping is protected by this config so that others won't pay the cost.
-> 
->  
-> Known Issues
-> ============
-> 1. KPTI
-> -------
-> We need determine what CPU we are on, then switch to the right page table.
-> Currently arm64 kernel fetches tramp_pg_dir via swapper_pg_dir - fixed_offset,
-> and fetches swapper_pg_dir from ttbr1. But ttbr1 may not hold swapper_pg_dir
-> anymore except CPU #0. So we need to figure out the other way to handle it.
-> Switching to tramp_pg_dir should be easy, but the reverse seems harder because
-> tramp_pg_dir just maps the trampoline vectors.
-> Maybe we can do two steps switch. Switch to swapper_pg_dir at the first step,
-> then switch to per cpu page table (for entry) or tramp page table (for exit).
-> Nobody should call this_cpu_*() at either userspace -> kernel entry stage or
-> kernel -> userspace exit stage.
-> 
-> 2. SW PAN
-> ---------
-> Has the similar issue as KPTI. It installs reserved_pg_dir to TTBR0 when running
-> in kernel space, but fetching reserved_pg_dir via swapper_pg_dir - fixed_offset.
-> Maybe we can save the physical address of swapper_pg_dir in a variable, then load
-> it from that variable instead of ttbr1.
-> 
-> 3. Shared TLB machines
-> ----------------------
-> Some machines may share TLB between CPUs, for example, SMT machines may share
-> TLB between the two hardware threads in one core.
-> The per cpu page table just can't work with it. Maybe we need a new
-> cpufeature to indicate whether per cpu page table is allowed or not. Then
-> just enable it for not-shared-TLB machines.
-> 
-> 4. Don't support all VA bits
-> ----------------------------
-> We just support 48 bits VA (4K and 64K) and 47 bits VA (16K) for now. For 4K
-> and 64K, supporting other VA bits is not hard, we just need to determine the
-> size for percpu and local percpu area.
-> But it is harder for supporting 48 bits VA + 16K page size. We just have two
-> top level kernel page table entries with this configuration, but we assume we
-> just need to sync up kernel page table at the top level for now. We need to
-> sync up kernel page table at the second level in order to support it. I'm not
-> sure whether it is worth it or not.
-> 
-> 
-> Benchmark
-> =========
-> The benchmarks are done on 160 core AmpereOne machine. The baseline is
-> v7.2-rc1 kernel.
-> 
-> 1. Reduction of kernel text size
-> --------------------------------
-> The patchset can reduce at least 11 instructions for this_cpu_*() ops. Both
-> preempt_disable() and preempt_enable() need 4 instructions to manipulate
-> the preempt count, and preempt_enable() needs more instructions (compare +
-> READ + compare) to determine whether reschedule is needed or not.
-> Because this_cpu_*() ops are inlined and called in a lot of places so we
-> can save a lot of instructions.
-> 
-> The size of kernel text is reduced by ~184KB with default Fedora kernel
-> config. This also helps reduce kernel icache miss rate and stalled frontend
-> cycles as kernel build benchmark result showed.
-> 
-> 2. Kernel Build
-> ---------------
-> Run kernel build (make -j160) with the default Fedora kernel config in a
-> memcg.
-> 13% - 18% sys time improvment
-> 3% - 7% wall time improvement
-> 
-> 5% fewer kernel icache miss, 5% fewer executed kernel instructions and
-> 15% fewer stalled frontend cycles for kernel.
-> 
-> 3. stress-ng vm ops
-> -------------------
-> stress-ng --vm 160 --vm-bytes 128M --vm-ops 100000000
-> 8.5% improvement
-> 
-> 4. stress-ng vm ops + fork
-> --------------------------
-> stress-ng --mmapfork 160 --mmapfork-bytes 128M --mmapfork-ops 500
-> 15% improvement
-> 
-> 5. Specjbb
-> ----------
-> The specjbb test latency curves showed the patched kernel has consistently
-> lower p99 latency (the lower the better) than the baseline.
-> 
-> 2.5% improvement on max-jOPS and 4% - 5% improvement on critical-jOPS.
-> The specjbb benchmark is quite sensitive to latency and responsiveness, 
-> particularly critical-jOPS result. The patches are supposed to improve the
-> responsiveness due to the reduction of preempt-disabled critical sections.
-> 
-> 6. MySQL
-> --------
-> 1% - 2% gains on read-only test, 2% - 4% gains on write-only test. Also see
-> 15% decrease on frontend cache stall.
+Using ptep_get() and its counterparts in common code is suboptimal on
+kernel configurations with generic compile-time folded page tables.
+By default, ptep_get() and its friends expands to READ_ONCE(),
+forcing the compiler to emit a load even when the value is not used afterwards.
 
+This issue was recently reported by Christophe Leroy [1] for ppc32
+preventing futher code conversion to ptep_get()/pmdp_get()/... helper
+and the same behavior can also be observed on arm64 when built with
+2- or 3-level page tables
 
-tl;dr
-Comparing GPR approach [1] with this series gives 8 improvements and 3 regressions.
+e.g) perf_get_page_size() in arm64 with CONFIG_PGTABLE_LEVEL=3:
 
-Fastpath is a Linux kernel performance benchmarking service. The table
-compares the both patched kernels: positive values are faster, negative
-values are slower, and (I)/(R) indicate statistically significant
-improvements/regressions. Unmarked differences are not significant after
-accounting for confidence and noise thresholds.
+00000000000052a0 <perf_get_page_size>:
+    ...
+    52dc: d53b4234     	mrs	x20, DAIF
+    52e0: d50343df     	msr	DAIFSet, #0x3
+    ...
+    52fc: d35e9a69     	ubfx	x9, x19, #30, #9        /* pud_offset_lockless() */
+    5300: f9403508     	ldr	x8, [x8, #0x68]
+    5304: f869790a     	ldr	x10, [x8, x9, lsl #3]   /* pudp_get() */
+    5308: f90007ea     	str	x10, [sp, #0x8]
+    530c: f8697908     	ldr	x8, [x8, x9, lsl #3]    /* pudp_get() */
+    ...
+    5360: 90000009     	adrp	x9, 0x5000 <perf_prepare_sample+0x548>
+    5364: 92746908     	and	x8, x8, #0x7ffffff000
+    5368: d3557675     	ubfx	x21, x19, #21, #9       /* pmd_offset_lockless() */
+    ...
+    5394: f8757ac8     	ldr	x8, [x22, x21, lsl #3]  /* pmdp_get() */
 
-+---------------------------------+--------------------+-----------------+-----------------------+
-| Benchmark                       | percpu-pgtable [2] |   gpr-fixup [3] |         gpr-fixup [3] |
-|                                 |    vs baseline [1] | vs baseline [1] | vs percpu-pgtable [2] |
-+=================================+====================+=================+=======================+
-| lmbench/lat-mem-rd              |             -0.26% |       (I) 1.24% |             (I) 1.50% |
-| micromm/fork                    |          (I) 1.10% |       (I) 2.46% |             (I) 1.35% |
-| micromm/munmap                  |         (I) 18.10% |      (I) 19.78% |             (I) 1.43% |
-| micromm/vmalloc                 |         (I) 11.92% |      (I) 14.68% |             (I) 2.47% |
-| mmtests/hackbench               |              0.27% |       (I) 1.09% |                 0.81% |
-| mmtests/kernbench               |          (I) 1.19% |       (I) 1.18% |                -0.01% |
-| mmtests/sysbench-cpu            |              0.01% |           0.06% |                 0.05% |
-| mmtests/sysbench-mutex          |             -0.85% |          -0.14% |                 0.72% |
-| mmtests/sysbench-thread         |         (R) -4.49% |       (I) 3.02% |             (I) 7.86% |
-| perf/futex                      |              0.55% |      (R) -2.80% |            (R) -3.34% |
-| perf/sched                      |          (I) 1.61% |          -0.39% |            (R) -1.97% |
-| perf/syscall                    |          (I) 1.54% |           0.98% |                -0.55% |
-| pts/memtier-benchmark           |          (I) 2.37% |       (I) 2.51% |                 0.14% |
-| pts/nginx                       |              0.42% |           0.96% |                 0.54% |
-| pts/perl-benchmark              |          (I) 1.83% |       (I) 1.63% |                -0.20% |
-| pts/pgbench                     |             -0.09% |           0.55% |                 0.65% |
-| pts/pybench                     |             -0.05% |          -0.07% |                -0.02% |
-| pts/redis                       |             -0.00% |          -0.04% |                -0.04% |
-| pts/sqlite-speedtest            |              0.15% |           0.44% |                 0.28% |
-| repro-collection/mysql-workload |              0.73% |           0.25% |                -0.48% |
-| schbench/thread-contention      |              0.42% |       (I) 1.04% |                 0.61% |
-| sockperf/echo-lat-tcp           |          (I) 2.88% |       (I) 1.69% |            (R) -1.16% |
-| sockperf/echo-lat-udp           |          (I) 3.93% |       (I) 5.11% |             (I) 1.14% |
-| sockperf/packet-tp-tcp          |             -0.41% |       (I) 1.37% |             (I) 1.79% |
-| sockperf/packet-tp-udp          |          (I) 1.45% |       (I) 1.49% |                 0.04% |
-| specjbb/composite               |          (I) 1.39% |       (I) 1.65% |                 0.26% |
-| speedometer/v2.0                |         (R) -1.04% |      (R) -1.04% |                 0.00% |
-| speedometer/v2.1                |             -0.10% |           0.10% |                 0.20% |
-| syscall/getpid                  |             -0.98% |           0.52% |             (I) 1.51% |
-| syscall/getppid                 |             -0.43% |           0.14% |                 0.57% |
-| syscall/invalid                 |          (I) 3.06% |       (I) 3.56% |                 0.48% |
-+---------------------------------+--------------------+-----------------+-----------------------+
+Though PGTABLE_LEVEL=3, since the pudp_get() still remain with
+READ_ONCE(), there's redundant load for the pud which is folded.
 
-[1] v7.2
-[2] v7.2-percpu-pgtable (this series)
-[3] v7.2-percpu-gpr [1] (Based on email review, we fixed SDEI to restore x26
-    instead of corrupting x22, and adjusted this_cpu_write() helpers to
-    avoid GCC overflow warnings.)
+To prevent generating suboptimal code, make pXdp_get() return a dummy
+entry for compile-time folded page tables, make the helpers such as
+pXd_offset()/pXd_offset_lockless(), set_pXd() validate dummy entries
+at compile time to catch the wrong usage and prohibit calls to
+pXd_page() in pgtable-nopXd.h.
 
-The constraints/workarounds for the per-CPU page-table series were supplied as
-this Kconfig fragment for all the different runs.
+This series does not change the behaviour of existing code that directly
+manipulates folded page-table levels using set_pgd(), pgd_page_vaddr(), and
+related helpers. Those helpers continue to behave as before.
 
-CONFIG_EXPERT=y
-CONFIG_ARM64_4K_PAGES=y
-CONFIG_ARM64_VA_BITS_48=y
-CONFIG_ARM64_VA_BITS_39=n
-CONFIG_ARM64_VA_BITS_52=n
-CONFIG_ARM64_PA_BITS_48=y
-CONFIG_ARM64_PA_BITS_52=n
-CONFIG_UNMAP_KERNEL_AT_EL0=n
-CONFIG_ARM64_SW_TTBR0_PAN=n
-CONFIG_KASAN=n
+The new restrictions only apply to code that adopts the pXdp_get()-based
+access model for compile-time folded page tables.
 
-[1] https://lore.kernel.org/all/20260804170503.3513916-19-mark.rutland@arm.com/
+As the pXdp_get() can return *dummy* entry, some of code using
+the stack value where saves the pXdp_get() could be a problematic:
 
-> 
-> 
-> Regression test
-> ===============
-> 1. memcg creation
-> -----------------
-> Create 10K memcgs. Each memcg creation needs to allocate multiple percpu
-> variables, for example, percpu refcnt, rstat and objcg percpu refcnt.
-> 
-> Consumed 2112K more virtual memory for percpu “local mapping” and a few
-> more mega bytes consumed by per cpu page tables.
-> No noticeable regression was found for elapsed time.
-> 
-> 2. fork test
-> ------------
-> stress-ng --fork 160 --fork-ops 10000000
-> fork() needs to allocate multiple percpu variables, for example, rss
-> counters and mm_cid_cpu.
-> 
-> Roughly 1% regression was found. However stress-ng fork test has quites
-> small address space, the real life workloads typically have much larger
-> address space and do more complicated works. The stress-ng mmapfork
-> benchmark saw 15% improvement.
-> 
-> 
-> The organization of patches
-> ===========================
-> The refactor and prepatory patches (patch 1 - patch 4)
-> Percpu page table support patches (patch 5 - patch 8)
-> Local percpu area support patches (patch 7 - patch 15)
-> Use local percpu area for this_cpu ops (patch 16)
-> 
-> 
-> Yang Shi (16):
->       drivers: arch_numa: move percpu set up code to arch
->       arm64: kconfig: make percpu related configs not depend on NUMA
->       mm: pgalloc: introduce {pud|pmd}_populate_sync()
->       vmalloc: pass in pgd pointer for vmap{__vunmap}_range_noflush()
->       arm64: mm: enable percpu kernel page table
->       arm64: mm: defined {pud|pmd}_populate_sync()
->       arm64: mm: sync percpu page table for memory hotplug/unplug
->       arm64: kasan: sync up kasan shadow area page table
->       arm64: mm: define percpu virtual space area
->       mm: percpu: prepare to use dedicated percpu area
->       arm64: mm: map local percpu first chunk
->       mm: percpu: set up first chunk and reserve chunk
->       arm64: mm: introduce __per_cpu_local_off
->       mm: percpu: allocate and free local percpu vm area
->       arm64: kconfig: select HAVE_LOCAL_PER_CPU_MAP
->       arm64: percpu: use local percpu for this_cpu_*() APIs
-> 
->  arch/arm64/Kconfig                   |  12 +++++++---
->  arch/arm64/include/asm/mmu.h         |   5 ++++
->  arch/arm64/include/asm/mmu_context.h |   9 +++++++-
->  arch/arm64/include/asm/percpu.h      |  37 ++++++++++++++++++++++++++++-
->  arch/arm64/include/asm/pgalloc.h     |  24 +++++++++++++++++++
->  arch/arm64/include/asm/pgtable.h     |  37 ++++++++++++++++++++++++++---
->  arch/arm64/kernel/setup.c            |   3 +++
->  arch/arm64/kernel/smp.c              |  44 +++++++++++++++++++++++++++++++++++
->  arch/arm64/mm/kasan_init.c           |  47 +++++++++++++++++++++++--------------
->  arch/arm64/mm/mmu.c                  | 165 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------------
->  arch/arm64/mm/ptdump.c               |   4 ++++
->  arch/riscv/kernel/smp.c              |  51 ++++++++++++++++++++++++++++++++++++++++
->  drivers/base/arch_numa.c             |  51 +---------------------------------------
->  include/linux/mm.h                   |  11 +++++++++
->  include/linux/percpu.h               |   4 +++-
->  include/linux/pgalloc.h              |  13 +++++++++++
->  include/linux/vmalloc.h              |   3 +++
->  mm/Kconfig                           |   9 ++++++++
->  mm/internal.h                        |   5 +++-
->  mm/kmsan/hooks.c                     |  14 +++++------
->  mm/percpu-internal.h                 |  14 +++++++++++
->  mm/percpu-vm.c                       |  94 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  mm/percpu.c                          |  58 +++++++++++++++++++++++++++++++++++++---------
->  mm/sparse-vmemmap.c                  |   4 ++--
->  mm/vmalloc.c                         | 138 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---------------
->  25 files changed, 712 insertions(+), 144 deletions(-)
-> 
-> 
-> Thanks,
-> Yang
-> 
-> 
+  1. Passing address of stack value where saves the pXdp_get() result
+     to pXd_offset() for example:
+
+       pud_t *pudp, pud;
+       pmd_t *pmdp;
+
+       pud = pudp_get(pudp, address);
+       pmdp = pmd_offset(&pud, pud, address);
+
+     (e.g. host_pfn_mapping_level() in loongarch).
+
+  2. Using the pXdp_get() result to use as argument of pXd_val() and
+     to check prot without checking pgtable is folded.
+     for example, x86's effective_prot().
+
+  3. Using set_pXd() with pXdp_get() will set problematic dummy entry
+     in folded page table like:
+
+       set_pXd(pxdp, pXdp_get(pxdp_k));
+
+  4. Using pgd_page_vaddr() to get the first-level pgtable.
+     passing dummy pxdp_get() for pgd_page_vaddr() will return wrong
+     address. Therefore, make pgd_page_vaddr() and pXd_pgtable() to
+     trigger the error for improper usage with folded dummy entry in the
+     generic compile-time folded pgtable.
+
+Thanksfully, above cases are rare since (1) most of usage using
+pXd_offset() with result of upper pXd_offset(), (2) it's extreamely
+rare to use pXd_val() for non-leaf entry in the kernel,
+(3) is to handle the vmalloc_fault or set the first level of page table
+and (4) to setup early page table and etc.
+
+Therefore, properly handle this uncommon and problematic pattern, and
+document the current design of compile-time folded page tables.
+
+This patch is based on mm-unstable.
+
+Future work
+===========
+ - print_bad_page_map() and show_pte() still prints dummy values
+   instead of printing the same content for all generic compile-time
+   folded page tables. We might want to skip printing dummy values later.
+
+ - We currently catch abuse of dummy values on the stack at compile-time by
+   relying on constant propagation by the compiler. Usama's work [3] on using
+   distinct types for sw vs. hw PTEs could help here as well."
+
+ - Clean up vmalloc fault handling by synchronizing the vmalloc entry on
+   32-bit architectures. This code is almost identical across architectures.
+
+ - Unfortunately, the current design of compile-time folded page tables appears
+   to be internally consistent but confusing. For example,
+   when CONFIG_PGTABLE_LEVELS is 2, p4d, pud, and pmd are expected to
+   be folded into pgd. However, the architecture code uses set_pmd()
+   to update the top-level page-table entry, even though it includes pgtable-nopmd.h.
+
+   In the future, it would be good to eliminate this source of confusion,
+   possibly by treating all folded upper levels consistently as dummy wrappers
+   around the highest real page-table level:
+
+         NOPGD
+   --> +------+           P4D
+       | ptr0 |-------> +------+           PUD
+       +------+         | ptr0 |-------> +-----+
+                        | ptr1 |-        | ptr | -------> ...
+                        | ptr2 | \       | ptr |
+                        | ptr3 |  \        ...
+                          ...      \
+                                    \        PUD
+                                     +----> +-----+
+                                            | ptr | -------> ...
+                                            | ptr |
+                                              ...
+
+Patch History
+=============
+from v2 to v3:
+  - repasre commit message
+  - move ptdump_pgtable_first_level() into pgalloc.h
+  - skip the huge pud operation when CONFIG_X86_DIRECT_GBPAGES is disabled
+  - docuemtns compile-time folded page table
+  - drop the applied patch.
+  - https://lore.kernel.org/all/20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com/
+
+from v1 to v2:
+  - Restore slient fallback to next pXd in set_pXd() and pXd_pgtable()
+    and add check whether they're called with dummy entry.
+  - Add some comment for returning first entry of pgd in arm with
+    2 pgtable-level
+  - https://lore.kernel.org/all/20260713135614.1618183-1-yeoreum.yun@arm.com/
+
+Link: [1] https://lore.kernel.org/all/0019d675-ce3d-4a5c-89ed-f126c45145c9@kernel.org/
+Link: [2] https://lore.kernel.org/all/20251113014656.2605447-1-samuel.holland@sifive.com/
+Link: [3] https://lore.kernel.org/r/74182e50-b54f-4d2d-a27f-3a59a538d6bc@arm.com
+---
+David Hildenbrand (Arm) (13):
+      ARM: mm: make nommu pgd_t a scalar
+      ARM: mm: make 2-level pgd_t a scalar
+      ARM: mm: remove custom pgdp_get()
+      LoongArch: mm: define pud_leaf() only when PUD exists
+      MIPS: mm: define pud_leaf() only when PUD exists
+      mm/pgtable: define (pgd|p4d|pud)_leaf() for folded page tables
+      mm/pgtable: define (pgd|p4d|pud)_offset_lockless() for folded page tables
+      openrisc/pgtable: drop __pmd_offset()
+      mm/pgtable: optimize pmdp_get() and friends for folded pagetable levels
+      mm/pgtable: catch abuse of folded dummy pgd_t/p4d_t/pud_t
+      mm/pgtable: disallow calling (pgd|p4d|pud)_page, pgd_page_vaddr() and (p4d|pud)_pgtable with dummy
+      mm/pgtable: disallow calling folded set_pgd/set_p4d/set_pud with dummy
+      Documentation: mm: clarify behaviour of compile-time folded page tables
+
+Yeoreum Yun (8):
+      mm: vmscan: remove stack copy address of pud/pmd pass in walk_pud/pmd_range()
+      loongarch: kvm: remove stack copy address of pXd in pXd_offset()
+      riscv: kvm: remove stack copy address of pXd in pXd_offset()
+      riscv: mm: use proper set_pXd() for generic compile-time folded patable in vmalloc_fault()
+      mm/pgtable: redefine PGTABLE_LEVEL enum with ascend order from PGD
+      x86: mm: use pgtable_level enum in effective_prot_pXd()
+      x86: mm: carve out the generic compile-time folded pgtable case in effective_prot()
+      x86: mm: skip collapse_pud_page() when CONFIG_X86_DIRECT_GBPAGES disabled
+
+ Documentation/mm/page_tables.rst            | 84 +++++++++++++++++++++++++----
+ arch/arm/include/asm/page-nommu.h           |  4 +-
+ arch/arm/include/asm/pgtable-2level-types.h | 20 +++++--
+ arch/arm/include/asm/pgtable.h              |  2 -
+ arch/arm64/include/asm/pgtable.h            | 23 --------
+ arch/loongarch/include/asm/pgtable.h        |  2 +
+ arch/loongarch/kvm/mmu.c                    | 20 ++++---
+ arch/mips/include/asm/pgtable.h             |  2 +
+ arch/openrisc/include/asm/pgtable.h         |  3 --
+ arch/riscv/kvm/mmu.c                        | 20 ++++---
+ arch/riscv/mm/fault.c                       | 52 +++++++++++-------
+ arch/x86/mm/dump_pagetables.c               | 18 ++++---
+ arch/x86/mm/pat/set_memory.c                |  2 +-
+ include/asm-generic/pgtable-nop4d.h         | 54 +++++++++++++++----
+ include/asm-generic/pgtable-nopmd.h         | 54 +++++++++++++++----
+ include/asm-generic/pgtable-nopud.h         | 56 +++++++++++++++----
+ include/linux/pgtable.h                     | 69 +++++++++++++++++-------
+ mm/vmscan.c                                 |  4 +-
+ 18 files changed, 352 insertions(+), 137 deletions(-)
+---
+base-commit: e3b5239afe1b8f0194db7436b17c33e94c1988c4
+change-id: 20260722-dummy_ptxp3-3741d78cc70f
+
+Best regards,
+-- 
+Sincerely,
+Yeoreum Yun
 
 
