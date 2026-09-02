@@ -4,80 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D370C624D0
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 08:23:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A3BCC624D4
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 08:23:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DCC56B00B6; Wed,  2 Sep 2026 04:23:04 -0400 (EDT)
+	id 32F196B00BC; Wed,  2 Sep 2026 04:23:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 166646B00BE; Wed,  2 Sep 2026 04:23:04 -0400 (EDT)
+	id 29EB46B00BF; Wed,  2 Sep 2026 04:23:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 006F76B00BD; Wed,  2 Sep 2026 04:23:03 -0400 (EDT)
+	id 0A3816B00BC; Wed,  2 Sep 2026 04:23:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C4A376B00B6
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C886C6B00BB
 	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 04:23:03 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5160FC0122
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 57A02400B8
 	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 08:23:03 +0000 (UTC)
-X-FDA: 85168131846.06.D0403BC
+X-FDA: 85168131846.10.860024C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 59239100007
+	by imf07.hostedemail.com (Postfix) with ESMTP id 638DF4000A
 	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 08:23:01 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eae+IDop;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WzsI+juK;
+	spf=pass (imf07.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788337381;
+	b=uN1P5F+53GrKlunOh3K2dlGPAu0m6/zJqM21n3UnvgMYZmNTD1KhZEZvGtw0y3NJG3ftcA
+	rLDf1ZIsPgTod91qjMU5bI5DeyzBjYIQxE7c7flQ7W4P82THCZaaR96tQ0j73VilY6EXNN
+	/y0ekLQcryyia8n1J7ZSxN8Go/fssOA=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WzsI+juK;
+	spf=pass (imf07.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1788337381;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=WsG1umXNBkZtcSPDoEuKxZOpN9hlpasrB4gbkcRIH8I=;
-	b=XqA5U6y2Zk11G6CR5J7v7aUqBnnhPsvaj0/sGKpzEF4wah1qAYKPRZ2mh0aOkZ5TL5j6co
-	QBHvitOo/SAkA1jG509/xvPj6mzavMPlViosWycc87WZlee+rPLXKmgZmg+ZIU4gndiHov
-	Z/TqljM7qA3wbtvKEBTpnJIYLv1i91o=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eae+IDop;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788337381;
-	b=BZIC6kcvcg10DDx31PdtrC2TWPV3gHkADfL5f+kVlpyBB2Jpd3OBsHo2EwjY6QGyto3wDW
-	AbMllqTg7aWgsMSMbQTzzAh62PZ9XJ7shfXkD2ahG7bR8lJzxxx+VRVB8qbnBDPMEHWHFv
-	7GZx6iTvcq/KDYfUdpDZcJSDy/DN30U=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+eHzsOkj/0JfxaeZyN12WBihi0qWx0qKn/p6JYm3qNo=;
+	b=TMAsPoYGA3S8ZHOU7dgttSuxG9Fch9B0vcLN/AfCS0cd+IWWHlzbnzEPW/xmsbxdGdi/dN
+	KP9o1V+7NnViG4KgqHD1lXXvuayTF8pb2VmrzCSDwrVo7ud55/Y+ds6XopgmLCvWlviDxd
+	KhvP+df9IFVe86GAxRZcf4JH72bi6tw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 83B47419E3;
+	by sea.source.kernel.org (Postfix) with ESMTP id 9471E438AA;
 	Wed,  2 Sep 2026 08:23:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5857BC2BCC7;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 661A5C2BCFA;
 	Wed,  2 Sep 2026 08:23:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1788337380;
-	bh=9s2vpaiXD6s4W26CbucrW3C0rPFnD/K26BzyCEp2oKI=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=eae+IDop8RQum/3tRAhM6zJOu0m+Qt5zsAiP0eQZLF1ZWgIab8mJO52bxYu1h73d8
-	 f4txXi4iMPdHSf/8+fIaAotI8HHVuhCnXqdkf2SpgzuUrygpJO85NPzgAXO6BaiQLD
-	 LGotZT0yQ/r4GGvdvhHXkNSOqZP2k8/cRRoSSSF0sV/VOUcUPa1pj0+Aqx7z9V19IQ
-	 g7WhBsab2/Vp+m7OxVBSjMJVDAZJdtqoRMmZ16mSOVxi96FFBRqOyNSPSY07fBTm2z
-	 Z/kyMT4AmTmtG//Uq3NzSHKKfv84FFHQC38QRy/qjO92pueJflaIwad9tQaX5vV+iy
-	 O9GKuYl1Bovnw==
+	bh=+5j0hNzbRt7EoX7vcWXrnLmcUDM4afqudgCGYcyrSqE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=WzsI+juK01svCEGlyGV1qbLaFotopPEguiB6aYIoA+luLq0V5Ey2VI/RcvLk0Pm2Y
+	 cxrYQnq1xBiqMWnLEmDlWrH/Xc5NmKRBUkoSGf7q2aLI5I16pUxu6eUKt98AS7DAor
+	 S+yzMmX7g9Y/0jXDNdUAKg62MILM8v+tHMrN6KCfRuDgGe+zwoZ//HCaN6HrmeYmXF
+	 Lxt5LeO7K3x9k/fvbxVFbYKIEiE0YVdPhNwNC0YYYOZxsXb6RcCAWuPkFnVmoeyG3q
+	 SHgmY0xXxveUwxI6TcLtC2NwN6b+7kP+eJ4rt17FLb+S4u7/PXFu+wuahVB+WK+ZyI
+	 B/FB0dtIoommw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2FE2EC624D0;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4592CC61DFD;
 	Wed,  2 Sep 2026 08:23:00 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Subject: [PATCH 0/2] Fix bugs in HugeTLB allocation when
- mem_cgroup_charge_hugetlb() fails
-Date: Wed, 02 Sep 2026 01:22:55 -0700
-Message-Id: <20260902-hugetlb-alloc-folio-memcg-charge-error-handling-v1-0-e3e8942c141b@google.com>
+Date: Wed, 02 Sep 2026 01:22:56 -0700
+Subject: [PATCH 1/2] mm: hugetlb: Return -ENOSPC on memcg charge failure
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAN/cl2oC/x2N0QrCMAxFf2Xk2UBXaVF/RXyYXdoFslbSKcLYv
- xt8PHDuuTt0UqYOt2EHpQ93btVgPA2QlqkWQp6NwTsf3dWNuLwLbfLESaQlzE244UprKmi+mk+
- qTdG2s3AtGC7RUzx7CjmAVV9Kmb//x/vjOH6S4QqagQAAAA==
-X-Change-ID: 20260901-hugetlb-alloc-folio-memcg-charge-error-handling-5862e632e5f5
+Message-Id: <20260902-hugetlb-alloc-folio-memcg-charge-error-handling-v1-1-e3e8942c141b@google.com>
+References: <20260902-hugetlb-alloc-folio-memcg-charge-error-handling-v1-0-e3e8942c141b@google.com>
+In-Reply-To: <20260902-hugetlb-alloc-folio-memcg-charge-error-handling-v1-0-e3e8942c141b@google.com>
 To: Alex Shi <alexs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
  David Hildenbrand <david@kernel.org>, Dongliang Mu <dzm91@hust.edu.cn>, 
  Hongxiang Lou <louhongxiang@huawei.com>, 
@@ -96,25 +94,25 @@ To: Alex Shi <alexs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Ackerley Tng <ackerleytng@google.com>, stable@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788337379; l=5404;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788337379; l=2356;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=9s2vpaiXD6s4W26CbucrW3C0rPFnD/K26BzyCEp2oKI=;
- b=2WFDdksKyvJUDYhmN6mhW3mHuuBJDYSVhnCKZRLzvGT3p8ao0/FZrWrDMPZmoSB6VWfrJvYfO
- ZqEvKDgvDdCDsVLiWbMo1LGxxx+0rHv9PX0GIJuxC/JRx33OyDcKnLS
+ bh=/vykoq6S6jD//j5trcHGMPdPAWTe6fd8Rz8OBB/ktN8=;
+ b=wfhCNMZJJPNgBW2NCuyx+S9kXKexZ/7agd6XgUhL9IqhUo4tUieNAIWP9hMWipNtrK3C44qW0
+ 13Wicfdb6QrCDmoerV5o/WOzDWglesoWpZgvyIRqJUraxYeITnwVTp2
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
  auth_id=649
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
-X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: eycbyu19qn1f7siouhjxxajs6u1knfg5
-X-Rspamd-Queue-Id: 59239100007
-X-HE-Tag: 1788337381-581268
-X-HE-Meta: U2FsdGVkX1+MGMYNJEJU3BVs3+A6rfBfKY6nxh2fsbxV0kZn9aqfEI7NP1s/LUD8lJKH63b/i8OjcwzFIu6bWJ63R33J3G/ic5TpIl5zGQrKDsO8jaRrGKoUE/fQzi4+lCsB2BQEip3yYpVzJ6Sii8Gn+5Zydg7I2shjYnxemCa7STGQMF+FLJp99xdAF2GHSpKzlc6BLkq1tOTSqNgT+jDLBiwc6PpV+WKdHXmj8q/er+gAUPZ1Y8imaqg2AfRaIg4oQio3ZACnkBqdlbJqeJX1keye4zFMzsGNKCath0/4HDl0l2wyOVzCFWSG1FGmSQIDFPgQOw4bWAISJ0RmTTPsWPVJaXMLi3OEsUVM0EMvprKKgzVFrMgouSaEmXpUf+Bat8ScjU2P01ijKC03CZNY09cyKoZ5ErkCSgaKyuGlpvX8Hq9sXBp2XXnb+F+xQZH1AJgcOf8f7xULlex/BjFs4Bhwyt9I1eqJRY9CCH/SpWdXFn+U7eLOLuVARK3/4VnNbT6sZIw2i8dZAo38rCNyqnkPfNTjgZLKWRNthHUv9yGCpeNO1jg9+0XT+4n/XVe9r8uq2MogKeNvpGYVPCFjRS9hILjbxszKCobiEqJyAEn3octra6MJMmMeq0T05gu9QpPBKCAK5PBpwOuNzt0AgZ6h3xYgYmUl1sUuYP4Uqvr1CjU3YNFm/6qUYzzEeqY7Q1HLcO74Wc/+I9wp3LqFdoYHsfm8K3QQcrfGZaUiEqs5nK3RRNYIoVanxYNmG2juqja6J4+mXBXV9mFoqJzVWNCofMZCRdvprkwaDe93ho9mjaTg6rMIRf3xvRlNWdC2YJh+xD/RdERZOjSkKOtv5b+rDOY9jZqWsujE157b3XQ4+lHOXCKc6HOZdsFwhUPCS0L2uad7RVsL0qEFPT3XVQCfXQ2BYdX8ZyRYGPxmr6Xul/Ux6kZUST3I3rMqjRWRyLSOSvdL7Rdfv+H
- foU74kof
- J202tHQpgl6n28hvYlqiwJ8JjReAi/off6kJo27UEkJHu3vGHMJmtGYEafOKrWTnhDnYx50qTOErckTJVlHzyrs5qWjo/MFW728T9o/v+Tb1M1MaBtcLuTIQFfxbCOGnhuqgTCEJw5A5VR2Fga0ENAwn2R6DRrtb/uGQNT4mNfY1HsptbNIifateYTtJhYhFV1iWUQPNpV5KXFd1UXO5cCmKdyX0CoW2pg30/cwwBiZW5iLdRlcftHFhTV9hj5LX65sxDEBr+GSOnAv0gx9+KCxaqO91SSOLfUgj/hgEyoJfWuegDACrd/H8jLHeQ97sv/2xaKZetFbC7Ut323kRu/cRwaKb34y3w2Z3tGHzcV72oy96EWVooLCtCzuUW906YFTgm/C8ioiaClOLjz+n72HKgAdpiCiQ/ZUs/FmZpi0ERUoD3yky051BBFs0RbBMIKmfSenl+ysmux7fACHKsxJlgwOCj+L382BRIZMMAME80Cu89wWuT5WYi0mxE9Q/42Ntg78yjWDWBRMZeVvAvs7DImg==
+X-Stat-Signature: 8q8e34fwnpf33texjbnkoq4qyut5qgeu
+X-Rspamd-Queue-Id: 638DF4000A
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788337381-816006
+X-HE-Meta: U2FsdGVkX1+RRTrzVgUvVx1Qrlw6azzFU9xGbdwfHCZyYPJ/xtrR3tBywPa2o4oN3IVnqAYwfwzcdx4xFB9R9ct5FTDxDKQKfoETWbuEr9l/9lJuncmmqgLODeEpyTRgL8u0kl5y2NexeWVSfqHI6v3slpc6nnQwyhD6aRN8nu+59RDsmxBk1z3cioO3gyx+GZMdYGRDIOW8oKRRWVpGzbhc1G9Azi9TGvX2DUEceTQl6jTkcKnMg6+PHNyxzYzUuqL6UDT9BZ3WtNtjnHJ/OKNWI/XAI6w3kFbdJFpqCI5W7LPQocenks0r3ecUW9Q+/v6lgP7REn+v3OEIvSmZqeT1bhl+DfGXQNQVD03l6VTJK05TKlaul7Nkm01POiHoltKOj4ej3e3ngPOPbOLCf22LA2W+Ccos3fXmuiiAtupL1YeUxitnuM3MX6s1NV0Kf3d8iLZcncb3gYqGJpm3uOttuxdiz9IT8Uzk7aN3dgM0R84rke7Tf4dEKs1jknnuPV1NSP4rynJw4rJ88wcdEs3eviho0/XQN0D3y9UT+hLl8aYqb04iKIUTyfMhM/Vaa6QnUybqKIL2HqpOx5GGSvBRghD9779Vs4dZ7oJny4hN9IakXuF4Gab7vN1jdXQHBfVANX7PcEX3aW+kJAz/UHTUBAufR2UiyXMak5/uYbfvwj1qld8Y0AhAZn9WsXh34jzunQ5wjyzjEBjlhdQQtaXset9x8kS+uUvWwEX4uj6sTjppp0N130lZeZ67wl/BXpFwEEEg3A7YtFhJzXvINpLYfJf7xuhqzk/V6Yt4ZlLLTrFlGDSYy4B8xVgd9nw7W4bBkz3ogv64RyRkXXYikmkgcl6rySX57+z71eSot55yR/0Su6R0Bdd1M4k03ocjikBfmPLDMrT8IjJslOb0xxDf3NIJvAgPOX8eIqw/0MrJawUq3ZiGf6JlthPahYBkluZM6TV+bLjEsZcAxCj
+ hlIaM8D8
+ iz3HJ8a8rrE/gU1LCIfv8XwMHd1SaWrQ2ooXzUkxHTg75VTiCqIWMeSO7GkwW5hMz0KL5ZhQqdmQROEFOTJFEpqFxChYpKohMNeip3eZOAG6QWE5Z5MIXcgasyfcVmTOyp5m5Xp7yj+Ys6jmLMzDtpCZaVO4YBOLZ1V1acPdV2ysi+riQ+yDBfT+cX/83kTDiY5nEcqegBh+X7cJYt3i/XJ7GlbF6rrHgIrihOzHIo8+AjmVktzeQ5tIsOfiuFaUWmOEsHNfoawjUqQSC7DFDWZcXsMMN0gajFeucKPxjXkAoU5Y0ctTtNf7ppHY/kNtYyEdz4HWzdaWcxXiFTdi4lbOjA0Yb8WOXQR6zoD766xG9PunMxy74OfIAydAQFmeGAEt/HqeXFOk7gZ5ZosGFNGs2khFwhJJd2iTMqtjVfslxbMxtUT7PJe5rwKclOwARVVijOaSUK3REKP+vKcduDJZxSn/beTTfvJNK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,201 +120,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In hugetlb_alloc_folio(), when mem_cgroup_charge_hugetlb() fails, there are
-2 issues:
+From: Ackerley Tng <ackerleytng@google.com>
 
-1. free_huge_folio() expects a non-refcounted folio and will
-   VM_BUG_ON_FOLIO().
+When mem_cgroup_charge_hugetlb() fails with -ENOMEM, alloc_hugetlb_folio()
+currently propagates this error. This results in the page fault handler
+returning VM_FAULT_OOM.
 
-2. -ENOMEM is returned, causing an infinite loop retrying the fault.
+Because HugeTLB allocations are high-order and use __GFP_RETRY_MAYFAIL,
+they bypass the OOM killer. Returning VM_FAULT_OOM to the #PF handler
+without triggering the OOM killer (or having it make progress) leads to
+an infinite loop of retrying the fault.
 
-This patch series is a subset of patches in [1].
+Avoid this loop by returning -ENOSPC when charging fails, which maps to
+VM_FAULT_SIGBUS, terminating the process cleanly.
 
-Note: [1] was applied on an earlier version of HugeTLB allocation. In that
-earlier version, VMA reservations were not undone on
-mem_cgroup_charge_hugetlb() failure.
+Make mem_cgroup_charge_hugetlb() fault handling use a common error handling
+path, the same handling used for hugetlb_cgroup_uncharge_cgroup{,_rsvd}(),
+which also don't trigger the OOM killer and hence opt to terminate the
+process with a SIGBUS.
 
-5737df3826dee: ("mm: hugetlb: refactor out hugetlb_alloc_folio()") fixed
-that, since returning an error from hugetlb_alloc_folio() causes
-alloc_hugetlb_folio() to execute vma_end_reservation().
-
-In [2], an earlier revision of [1], "mm: hugetlb: Drop refcount before
-freeing on memcg charge failure" was named "mm: hugetlb: Fix folio refcount
-mismatch on memcg charge failure".
-
-[1] https://lore.kernel.org/all/20260722-hugetlb-alloc-failure-fixes-v4-0-88e8b81970dc@google.com/
-[2] https://lore.kernel.org/all/20260708-hugetlb-alloc-failure-fixes-v2-0-c7f27cbb462b@google.com/
-
-Here's a reproducer to trigger mem_cgroup_charge_hugetlb() failure:
-
-static void write_file_val(const char *path, const char *val)
-{
-	int fd = open(path, O_WRONLY);
-
-	if (fd < 0) {
-		fprintf(stderr, "Failed to open %s: %s\n", path, strerror(errno));
-		exit(1);
-	}
-	if (write(fd, val, strlen(val)) < 0) {
-		fprintf(stderr, "Failed to write %s to %s: %s\n", val, path, strerror(errno));
-		close(fd);
-		exit(1);
-	}
-	close(fd);
-}
-
-static int is_hugetlb_accounting_enabled(void)
-{
-	char spec[256], file[256], type[256], opts[512];
-	char line[1024];
-	int enabled = 0;
-	FILE *fp;
-
-	fp = fopen("/proc/mounts", "r");
-	if (!fp) {
-		perror("fopen /proc/mounts");
-		return -1;
-	}
-
-	while (fgets(line, sizeof(line), fp)) {
-		if (sscanf(line, "%255s %255s %255s %511s", spec, file, type, opts) == 4) {
-			if (strcmp(file, CGROUP_PATH) == 0 && strcmp(type, "cgroup2") == 0) {
-				if (strstr(opts, "memory_hugetlb_accounting") != NULL)
-					enabled = 1;
-				break;
-			}
-		}
-	}
-	fclose(fp);
-	return enabled;
-}
-
-static int enable_hugetlb_accounting(void)
-{
-	int ret;
-
-	printf("Attempting to remount cgroup2 with memory_hugetlb_accounting...\n");
-	ret = system("mount -o remount,memory_hugetlb_accounting " CGROUP_PATH);
-	if (ret != 0) {
-		fprintf(stderr, "Failed to remount: system() returned %d\n", ret);
-		return -1;
-	}
-	return 0;
-}
-
-int main(int argc, char **argv)
-{
-	struct stat st;
-	size_t size;
-	void *addr;
-	pid_t pid;
-	int enabled;
-	int status;
-	int fd;
-
-	if (stat(CGROUP_PATH, &st) != 0 || !S_ISDIR(st.st_mode)) {
-		fprintf(stderr, "cgroup v2 not mounted at %s\n", CGROUP_PATH);
-		return 1;
-	}
-
-	enabled = is_hugetlb_accounting_enabled();
-	if (enabled < 0)
-		return 1;
-
-	if (!enabled) {
-		if (enable_hugetlb_accounting() != 0) {
-			fprintf(stderr, "Could not enable memory_hugetlb_accounting\n");
-			return 1;
-		}
-		/* Re-check */
-		enabled = is_hugetlb_accounting_enabled();
-		if (enabled <= 0) {
-			fprintf(stderr, "Failed to enable memory_hugetlb_accounting (re-check failed)\n");
-			return 1;
-		}
-		printf("Successfully enabled memory_hugetlb_accounting\n");
-	} else {
-		printf("memory_hugetlb_accounting is already enabled\n");
-	}
-
-	/* Enable memory controller in subtree */
-	fd = open(CGROUP_PATH "/cgroup.subtree_control", O_WRONLY);
-	if (fd >= 0) {
-		(void)write(fd, "+memory", 7);
-		close(fd);
-	}
-
-	if (mkdir(TEST_CGROUP_PATH, 0755) != 0) {
-		if (errno != EEXIST) {
-			perror("mkdir test_reproducer");
-			return 1;
-		}
-	}
-
-	/* Set memory limit to 1MB (less than 2MB hugepage) */
-	write_file_val(TEST_CGROUP_PATH "/memory.max", "1M");
-
-	pid = fork();
-	if (pid < 0) {
-		perror("fork");
-		return 1;
-	}
-
-	if (pid == 0) {
-		/* Child: Move to cgroup */
-		write_file_val(TEST_CGROUP_PATH "/cgroup.procs", "0");
-
-		printf("Child: Attempting to allocate and touch 2MB hugepage...\n");
-		/* Allocate 2MB hugepage */
-		size = 2 * 1024 * 1024;
-		addr = mmap(NULL, size, PROT_READ | PROT_WRITE,
-			    MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
-		if (addr == MAP_FAILED) {
-			perror("Child: mmap MAP_HUGETLB");
-			exit(1);
-		}
-
-		printf("Child: mmap succeeded at %p, touching it now...\n", addr);
-		*(char *)addr = 1;
-
-		printf("Child: Successfully touched page (bug not triggered?).\n");
-		munmap(addr, size);
-		exit(0);
-	}
-
-	/* Parent */
-	waitpid(pid, &status, 0);
-
-	printf("Parent: Child exited. Cleaning up.\n");
-	rmdir(TEST_CGROUP_PATH);
-
-	if (WIFSIGNALED(status)) {
-		printf("Parent: Child killed by signal %d (%s)\n",
-		       WTERMSIG(status), strsignal(WTERMSIG(status)));
-		if (WTERMSIG(status) == SIGBUS)
-			printf("Parent: Child got SIGBUS as expected.\n");
-	} else if (WIFEXITED(status)) {
-		printf("Parent: Child exited with status %d\n", WEXITSTATUS(status));
-	}
-
-	return 0;
-}
-
+Fixes: 991135774c0e0 ("memcg/hugetlb: introduce mem_cgroup_charge_hugetlb")
+Cc: stable@vger.kernel.org
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
-Ackerley Tng (2):
-      mm: hugetlb: Return -ENOSPC on memcg charge failure
-      mm: hugetlb: Drop refcount before freeing on memcg charge failure
+ mm/hugetlb.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
- mm/hugetlb.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
----
-base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
-change-id: 20260901-hugetlb-alloc-folio-memcg-charge-error-handling-5862e632e5f5
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 7857728457952..01b57f6d3b804 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -2823,7 +2823,6 @@ void wait_for_freed_hugetlb_folios(void)
+  *
+  * Return: A pointer to the allocated folio, or an ERR_PTR on failure.
+  *         -ENOSPC if cgroup charging fails or no folio is available.
+- *         -ENOMEM if mem cgroup charging fails.
+  */
+ struct folio *hugetlb_alloc_folio(struct hstate *h,
+ 		struct mempolicy_interpreted *mpoli, u8 alloc_flags)
+@@ -2896,7 +2895,18 @@ struct folio *hugetlb_alloc_folio(struct hstate *h,
+ 		 * were committed to the folio and freeing the folio
+ 		 * would have cleared those up.
+ 		 */
+-		return ERR_PTR(ret);
++		/*
++		 * Return -ENOSPC when this function fails to allocate
++		 * or charge a huge page. If a standard (PAGE_SIZE)
++		 * page allocation fails, the OOM killer is given a
++		 * chance to run, which may resolve the failure on
++		 * retry. However, for HugeTLB allocations, the OOM
++		 * killer is not triggered.  Returning -ENOMEM (or
++		 * anything resulting in VM_FAULT_OOM) would leak to
++		 * the #PF handler, causing it to loop indefinitely
++		 * retrying the fault.
++		 */
++		return ERR_PTR(-ENOSPC);
+ 	}
+ 
+ 	return folio;
 
-Best regards,
---
-Ackerley Tng <ackerleytng@google.com>
+-- 
+2.55.0.970.g62bdec98f9-goog
 
 
 
