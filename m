@@ -4,90 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D7CCC624D0
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 02:29:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BE32C61DD3
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 02:34:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C61DD6B008A; Tue,  1 Sep 2026 22:29:55 -0400 (EDT)
+	id 2809C6B0088; Tue,  1 Sep 2026 22:34:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C14C76B0095; Tue,  1 Sep 2026 22:29:55 -0400 (EDT)
+	id 231DE6B008C; Tue,  1 Sep 2026 22:34:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADB266B0096; Tue,  1 Sep 2026 22:29:55 -0400 (EDT)
+	id 147656B0092; Tue,  1 Sep 2026 22:34:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 843D66B008A
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 22:29:55 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0837BC06A5
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 02:29:55 +0000 (UTC)
-X-FDA: 85167241950.10.F504704
-Received: from mta1.migadu.com (out-5.mta1.migadu.com [95.215.58.5])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 07327160002
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 02:29:52 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=w7sdpu0s;
-	spf=pass (imf08.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.5 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E4A026B0088
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 22:34:50 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 522ED40693
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 02:34:50 +0000 (UTC)
+X-FDA: 85167254340.21.9A68B99
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 62E291C0005
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 02:34:46 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=xs9w9dsD;
+	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788316193;
-	b=zbRsK97diHsEvFQK+/lI4FQXg07qmk0sJVmJRt9VJNqUzS5N9/xlEVVCY3auvCOBi65grU
-	7AvjorXHOpvfLLw3EZOEIzE0fJIllyF+nWMiizSOHp3o5UviJCWgZYe15ANF9+Cm7um8c1
-	VSZju1ZnMRtvncmM76xwHfxWX/nZVOc=
+	t=1788316488;
+	b=I7EkFFhup8HpXpAmvVQVJ6ihVWwDe9sRCGxWSZNAZJofQ1139oX5yuqTzqLA0WYCpirB4X
+	Qppz5LM1d0864I18ksdaCwdHOEpEYzwTuZ2HCfJIn7ykLSKpauxUVXvYfa7/nZNM/IqAyR
+	azb/f32Qor+1dRkqaUKYeBUdY7X2B1s=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=w7sdpu0s;
-	spf=pass (imf08.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.5 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=xs9w9dsD;
+	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788316193;
+	s=arc-20220608; t=1788316488;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nexLiz4rfXN7fI5LGD2V01alUNtBIdIec95f+/YvB0o=;
-	b=zwDTEB3hecV3atDBst5M++m95Xa5izNbGRtpm6zE6i9t0o8oZdRICsWlG5AWZkRiTU1i8Z
-	/t+vU9bDDHXCzrHJ0tnmfI1AT1qjkCTHpXbzQRTdRzDv9w8Ph+rSSVStAOTCxEKwO3Bb5V
-	f+4GDgpFKmCOqiPacquNaYkhxzzMVVg=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Zln3qeJFlu5tVf/s/qZrMQOVT2ydcffaRFGbk94Wi+E=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788316191; v=1; x=1788920991;
- b=w7sdpu0s57FJw2c/QqICgJY4tGbqoFIoTb8mpEreTjExSHPoxVCgBxNUbGkjPkxZKHCS4WoC
- lDvqK0+1p/YPyt/5/uX/4t7SX19H0H6Ur9xXQMB9oiRp2/Nx6vULZxX5HHWvv608WLDbUP9MZqu
- 6dwetgejPF/2WpuPhwSk3888=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id df2715bc0385cdcf;
-	Wed, 02 Sep 2026 02:29:51 +0000
-X-Mizu-Trace-ID: df2715bc0385cdcf
-X-Migadu-Flow: FLOW_OUT
-Date: Wed, 2 Sep 2026 10:29:47 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Barry Song <baohua@kernel.org>
-Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org,
-	akpm@linux-foundation.org, kasong@tencent.com,
-	shakeel.butt@linux.dev, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, david@kernel.org,
-	rostedt@goodmis.org, mhiramat@kernel.org, hannes@cmpxchg.org
-Subject: Re: [PATCH v2 3/4] mm/mglru: skip cold PUD subtrees during aging
-Message-ID: <apeKG1-N0JBGl70b@fedora>
-References: <20260901063755.1519710-1-hebaoquan@kylinos.cn>
- <20260901063755.1519710-4-hebaoquan@kylinos.cn>
- <CAGsJ_4zFoYNuuVsTR=T4Qtxc5iVBPCK8rgiKa75VqNWqqcO=3g@mail.gmail.com>
+	bh=d2ZO4JyQfYg3YFJgj1rtHn543boKrzvkS+tanZwl4YA=;
+	b=JVn6ZG2gFA63qcW7Bym84xbX2BdFQM3nqFff+FDRgIIPpzKWmd3wl5ozCV2NgLZUz5CNbg
+	elFAdgGovk9c5fnlxxk+cD/MlHJVlbOoR8Lg7BEws8gcEDwdCwK+S2cS/gqt9/18wQ0sZ4
+	BGX/el4Wno3F0sg6vwZy3ND320OH0gQ=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1788316483; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=d2ZO4JyQfYg3YFJgj1rtHn543boKrzvkS+tanZwl4YA=;
+	b=xs9w9dsDnkQlsftYzciQ6IHVw8gNnfXGp3CE82PQbZ0y7Ev/Mvk7h4vHbK/krOIHoR4FJYBKuxZEyO+zZVVO9QBMFtRjK0zIRYCRESyKNXxgNLC3kL5rfFC7Eucjtsd0x30Yfa7cTfdEL7yx+ZN/Z9jJPBEFLl+xGq8shMxy4XQ=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R541e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0XAAqVXz_1788316480;
+Received: from 30.74.144.115(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAAqVXz_1788316480 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 02 Sep 2026 10:34:40 +0800
+Message-ID: <ee0f3f47-f6c0-4b3c-807c-db80385db3b8@linux.alibaba.com>
+Date: Wed, 2 Sep 2026 10:34:39 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4zFoYNuuVsTR=T4Qtxc5iVBPCK8rgiKa75VqNWqqcO=3g@mail.gmail.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 07327160002
-X-Stat-Signature: io33x9t7m9cpt8a5fikp75sd3aipmqes
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/damon/ops-common: use a page-aligned address in
+ damon_ptep_mkold()
+To: SJ Park <sj@kernel.org>, Nathan Gao <zcgao@amazon.com>
+Cc: akpm@linux-foundation.org, damon@lists.linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, david@kernel.org, ryan.roberts@arm.com
+References: <20260902001142.107226-1-sj@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260902001142.107226-1-sj@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1788316192-303638
-X-HE-Meta: U2FsdGVkX18YcqCY9QtnbSYzzPGYckVNqwTnORmWCblUDMmg6hZICtiUEdVm1/k77QsN5ivQWksabYI9rF/rBcne34KRx4SANoGtBwVTclSmc/a3yPFKOtTrD9iARFEvJ9vt98Y3NAu0k6EfXPssABgQ1o6LIiNDbtSEqecJM8lvhQGgL5+5bjtr1Ovek/0Qx1aVOycRZKOsQd3GWsyVutJZkGJtP5h5HBPtqcnN3qbMzjCfmg3ygOylaYg1G6n83FT6Ue5ysTqq5piaTKLvGEiVrlJ1jzr+wE2QkbRTt8ujmGa7EKCpBj00yJblwOrXAybFQN/oxUgA60boMWtpKh5gCI2m7Qy0QWmMipCAqzWOjqV7pinf5WjP1OTuc5HvTrbU/Ka4oPb4U3ZJ8ZHzQ2DUgr60ZvAvLtlqc805/6aXHvCiSilWrxId5nQkUPMSpULP9p9pliAxHA3iGfsMt+VoPielTUZmtcRvwNclkbcfVs7WFUcfi8+Uk5zIGXAsu+isSoc81jDYenYLSzBB7uevzuJvFvnJFvPRt39bIQIbvkr4dAHdH3VvbDDNfQca2cbQKnhKEDoa/ljuHM2FR4AtItWcs49Ozpl53FxfZZTzI7wMvwbxzfO2VdeDIY33FrfTgSDif3uaJEvFf4aIqnh5+ycCfudqI3vK1tootOhun7gqxoFyHrg9Zhagdv/o1BMPbgP8IL4G/wX1P02+rOfuN19T9SO3x/I1mejpHeH3cOvGkvYfDyUA/9PDoxbKIzthVk7lVnvf+lmT37JIRmSv7cGGBAWJmChwD8OJZ7Qn4MFpwUVgWpFVtKUQyYcv9mDYYY2CkgdlcHri1w9pOFu+FXj5A43K2VKvimHvK/HLU4OAq+1iOXAarHL0mJMNrygp9CTMsuzg8MaLS9D3+n5SSJk9j9vUfHAk1GofKuDaB337sdCUYPYieIIZZ2vxFrtUWZODD48ZJo3o/ze
- 3rg27HxY
- 7YiinJPW5WxA1Dk9V1fCiTi17L4Rdg+5H1tpP5q+1EBF4AJnNWjCmmRaVjwADEi4giHrqx12YZdUYlKhZIn0tWzITYhk9du5648YmLpWV0tIBJT7X4qSWlQXVVELu3bR6IO1/99YAr7AXAyPyo6D+JvtZpYOYavLGcN40v4x9BISPVJUeArNYQJzcq7N1WMrpODWDAEa7mZzqy4kN/9eTxLIvNo/DTywr6B+NUJu5uro33IDUOPzEvm9yxj83tgS328f9u8EO+ViFKOlnVIKHJsLhf1C6RlyizaucDloXe6uhox4=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 62E291C0005
+X-Stat-Signature: 158pw59m3wrjcop84hjimiq5quikpkz5
+X-HE-Tag: 1788316486-668796
+X-HE-Meta: U2FsdGVkX1/FapzzN69PlVOE4/TgmlnuU8xMGifETU3H5zUcWn5w5mBv8/asmBqUkpeLQF/O3B1jZNKlUcV1FjVRpYTzZ2Flst0E2RKdSkhmmlk9/vw7+bcJUjdOF6ZrLh3u3GyLpK7JtowT+E2OW079rI9lByYPTA/UVdfBIgmLiD++Y3MxCuSacUO9BlcpAzNpJRhHsGOU5N1XHFZOswCxybj9m5fFxXJjiFYF8quSeLY8C5+yEaxvCpBwKrzi4149UyjS5YJ57DfLq8nE7d07GzT//KoF0EmDYPMlWz/jYYuCLr38Rg6zypviomk+j/1s/av9D0P0l8+EOZ1lm+KvdCunbTZEyjk88bksIr3NO2PgdAmUsm1U+I0q40faKpWqGLvpShS4kP7FLP7kWjnGMfayt7Ps68zUuCQZrfm3BTTCa2fcVk7CmrIF+hF9AK/V/JouKk6+w3l2mnylQQh2cyt5pvz9IPup0WZrkUCGjWze1/87qzrpg/MGPXAcCWjesTWtGad9ZTspqziS2suoJZudxYd/4SqPimAlKfAT3ry2avkJQ6v1D3rHahnbdO3zTsP8Xy4FVXZK1TfeGaj4Of0PgYho4VWmBH8mfCILXD5lygWqkqZlfWlUtpArFKOynWZ/KXxRV9x6xKF2JYyfK7Wau8qs//bdgoYatVegPQRMCLg7GXbSGSBtYKoRx14k76WRPBypr9/N3y2ex+1nNr7ssUwMe00DFm0rKM3lbC+bDQELMHtLEVAt8v283jMOhPcGB5V1NWzyaV85nKge7ISvbN+a14tLp/jmLclBlMGPOl1adR55v4rFcNd6ubq1fqmfOuW1OZEuaE1mmP1bbBhRzQ33GiktXPphx5c2M7bwhU5yL4t5PWrgS/DDz09SoCcrNfYvKvSZiY/iuEx0k0Qde/sHRr/s6bZezcuphqCiqr8t6/OWsIYDdY8rj8vWYOmtjW/HPKRaRE+
+ htYoGMa2
+ V9oHjAICc6aq2K7PDjCNjnTgp/pFPPMog+MLFnD0FbXTOLOeUU9RrQTsfLu603pf5idjDXIcs9kaxibywGOZk95DuDG1KLz+8hpe35LuOpFpSy8ps4giKOdkVB8nE6jUOY9jFKwygfEyoxBQe2GPO1VjlHrN5TMXISOGJO9E/Cl9nW7Ejf00Luxl8PlQNrNf4DbZuQN7PsPtobflQTdctryO4ZosOByg7Cqyk0xrb6qG+d8FCwR4/qvbMaEHW8hEeYZw07/vs20zy6wSAFvi7B4I5iPkCF47ZaorblkttzW2boVw9x+Uhwv1V1KhpZbMT16b6Hi36keXxabs0GewhhxPD/IOhhJDtbQsGvupXgxkTQD41hNjwkxdpug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,107 +87,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/02/26 at 07:53am, Barry Song wrote:
-> On Tue, Sep 1, 2026 at 2:38 PM Baoquan He <hebaoquan@kylinos.cn> wrote:
-> >
-> > The aging walks into every PUD and runs the PMD-level Bloom filter
-> > on each PMD. Add a coarser PUD-level filter (pud_filters) one level
-> > up:
-> >  - walk_pmd_range() now reports whether it found any young leaf entries,
-> >  - walk_pud_range() records that in the PUD filter, and
-> >  - on subsequent generations, skips the whole 1GB subtree when the filter
-> >    says it had none last generation.
-> >
-> > The double-buffered filter flips with each new iteration, so newly hot or
-> > migrated-in pages are re-checked promptly rather than suppressed
-> > indefinitely. force_scan walks bypass the PUD test, so manual aging and
-> > newly added mm's always rescan and re-populate the filter.
-> >
-> > To keep hot regions marked, also report the covering PUD from the rmap
-> > feedback path (lru_gen_look_around()), so regions whose hotness is only
-> > observed by eviction will be re-scanned.
-> >
-> > Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
-> > ---
-> >  mm/vmscan.c | 52 +++++++++++++++++++++++++++++++++++++++++++++++-----
-> >  1 file changed, 47 insertions(+), 5 deletions(-)
-> [...]
-> > @@ -4397,8 +4431,14 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
-> >         lazy_mmu_mode_disable();
-> >
-> >         /* feedback from rmap walkers to page table walkers */
-> > -       if (mm_state && suitable_to_scan(i, young))
-> > +       if (mm_state && suitable_to_scan(i, young)) {
-> > +               /* the PUD entry covering the young PTEs scanned above */
-> > +               pud_t *pud_p = pud_offset(p4d_offset(pgd_offset(vma->vm_mm, pvmw->address),
-> > +                                                    pvmw->address), pvmw->address);
-> > +
-> >                 update_pmd_bloom_filter(mm_state, max_seq, pvmw->pmd);
-> > +               update_pud_bloom_filter(mm_state, max_seq, pud_p);
-> > +       }
+
+
+On 9/2/26 8:11 AM, SJ Park wrote:
+> On Tue, 1 Sep 2026 13:10:01 -0700 Nathan Gao <zcgao@amazon.com> wrote:
 > 
+>> __damon_va_prepare_access_check() picks a random byte address within the
+>> region and stores it in r->sampling_addr. damon_va_mkold() passes it into
+>> a page table walk, which hands it to damon_ptep_mkold() as the address of
+>> the page to sample:
+>>
+>>    damon_va_mkold(mm, r->sampling_addr)
+>>      damon_va_walk_page_range(mm, addr, addr + 1)
+>>        damon_mkold_pmd_entry()
+>>          damon_ptep_mkold(pte, vma, addr)
+>>            ptep_test_and_clear_young(vma, addr, pte)
+>>            mmu_notifier_clear_young(mm, addr, addr + PAGE_SIZE)
+>>
+>> For arm64, before commit 6f0e1142173a ("arm64: mm: support batch
+>> clearing of the young flag for large folios"), the contpte helper walked
+>> exactly CONT_PTES entries from the aligned-down page table pointer and
+>> used @addr only to pass down to each entry, so an unaligned value was
+>> harmless:
+>>
+>>          ptep = contpte_align_down(ptep);
+>>          addr = ALIGN_DOWN(addr, CONT_PTE_SIZE);
+>>          for (i = 0; i < CONT_PTES; i++, ptep++, addr += PAGE_SIZE)
+>>
+>> Now the range to walk is derived from @addr instead: end = addr +
+>> nr * PAGE_SIZE, rounded up to CONT_PTE_SIZE. For a sample in the last
+>> page of a contpte block, the sub-page offset puts end just past the
+>> block boundary, so the round-up lands a whole block further and the
+>> walk clears PTE_AF in CONT_PTES entries beyond the sampled block. For
+>> the last block in a page table page, those entries are past the end of
+>> that page, so the walk writes into the page that follows.
 > 
-> Hi Baoquan,
+> I just wanted to call out again that I'm wondering if we could restore the
+> unaligned address support in the helper.  E.g., as a very dirty hack that I can
+> imagine off the top of my head,
 > 
-> I am really not against this idea, and I believe it can benefit
-> NUMA cases.
+> '''
+> --- a/arch/arm64/mm/contpte.c
+> +++ b/arch/arm64/mm/contpte.c
+> @@ -30,6 +30,7 @@ static inline pte_t *contpte_align_addr_ptep(unsigned long *start,
+>                                               unsigned long *end, pte_t *ptep,
+>                                               unsigned int nr)
+>   {
+> +       *start = PAGE_ALIGN_DOWN(*start);
+>          /*
+>           * Note: caller must ensure these nr PTEs are consecutive (present)
+>           * PTEs that map consecutive pages of the same large folio within a
+> '''
 > 
-> That said, I might be being overly cautious, but I'm a bit concerned
-> that this re-walk of the page tables could slightly hurt machines that
-> don't benefit from the PUD filter at all. For example, Android devices
-> typically have relatively small amounts of memory, so a PUD covers a
-> really large range of their address space, which is unlikely to be
-> useful on an 8 GB Android device. Also, `lru_gen_look_around()` is a
-> really hot path. On Android, we've observed that it can consume a
-> significant amount of CPU.
+> I and Nathan have no strong clue, so we are looking for Baolin and others'
+> opinion.
 > 
-> Is there any possibility of implementing this in a low-cost way?
+> While waiting for the opinions, I and Nathan agree we should stop bleeding with
+> a pinpoint hotfix change in DAMON.
 
-Hi Barry,
+Thanks for the reporting.
 
-Thanks for the careful review, and both concerns are fair. Let me address
-them separately.
+IMO, we could let the arch low-level functions handle the alignment of 
+addr, but that would also require changing functions like 
+contpte_clear_young_dirty_ptes(), contpte_set_ptes() and so on, which 
+would cause a lot of churn? (they also assume that addr is page aligned).
 
-(1) Aging walker overhead
+Since the arch low-level functions basically assume that addr is 
+page-size aligned, and the addr handling in the mm core is also mostly 
+page-size aligned, I think the caller guaranteeing that addr is 
+page-size aligned is a reasonable fix. So:
 
-The added cost in the aging walker is one PUD-level bloom test (2 bit
-lookups) before walk_pmd_range(), plus a bool return from walk_pmd_range()
-and a bloom update when young. This runs once per PUD per aging pass, not
-per page fault, and is a tiny fraction of what the aging already does per
-PUD. The test is also what lets the filter discover cold subtrees, so it
-cannot simply be disabled.
-
-(2) lru_gen_look_around() hot path
-
-Agreed - this is the genuinely hot path (every fault), and on a
-small-memory system where the PUD granularity is too coarse to be useful,
-the pud_offset() + bloom update would be pure overhead. So I'll gate it
-on a per-lruvec flag that tracks whether the aging walker is currently
-skipping PUDs:
-
-    /* iterate_mm_list(), at the start of a new generation's walk: */
-    WRITE_ONCE(mm_state->pud_filter_used, false);
-
-    /* walk_pud_range(), when a PUD is actually skipped: */
-    WRITE_ONCE(mm_state->pud_filter_used, true);
-
-    /* lru_gen_look_around(): */
-    if (mm_state && suitable_to_scan(i, young) &&
-        READ_ONCE(mm_state->pud_filter_used)) {
-        pud_t *pud_p = pud_offset(...);
-        update_pmd_bloom_filter(mm_state, max_seq, pvmw->pmd);
-        update_pud_bloom_filter(mm_state, max_seq, pud_p);
-    }
-
-The flag is per-generation: cleared at the start of each aging generation
-and set again when a PUD is skipped, so the feedback tracks whether the
-filter is currently engaging. Before any PUD is skipped in a generation,
-look_around() pays only a single flag loading.
-
-I'll measure both on the 8GB test VM with a clean (fully unpatched)
-baseline vs the patched kernel, and on a 3-node / 1.1TiB bare-metal
-machine.
-
-Thanks
-Baoquan
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
