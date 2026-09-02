@@ -4,121 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FDECC624D6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 17:38:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74660C61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 17:43:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD7D16B00A6; Wed,  2 Sep 2026 13:38:37 -0400 (EDT)
+	id 619096B0095; Wed,  2 Sep 2026 13:43:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAFD86B00A9; Wed,  2 Sep 2026 13:38:37 -0400 (EDT)
+	id 5CA2C6B009B; Wed,  2 Sep 2026 13:43:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9F376B00AA; Wed,  2 Sep 2026 13:38:37 -0400 (EDT)
+	id 4DFF86B009E; Wed,  2 Sep 2026 13:43:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 935936B00A6
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:38:37 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1199840336
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:38:37 +0000 (UTC)
-X-FDA: 85169531874.12.70E3AB7
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E79E4A0004
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:38:34 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gEhTJrgR;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf25.hostedemail.com: domain of dhowells@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 1DC136B0095
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:43:30 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9BE834026F
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:43:29 +0000 (UTC)
+X-FDA: 85169544138.07.0AF51E1
+Received: from mta0.migadu.com (out-76.mta0.migadu.com [91.218.175.76])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 736F5C000B
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:43:27 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WULaBfaB;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.76 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788370715;
+	s=arc-20220608; t=1788371007;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x4GiOpymXcCnOnlIQLz3VcFoY9LdDvbwT8O6R33lWtY=;
-	b=E3/f/sNGaGwCYwdJ14BsE4G8MT0I7hs3cGFAlLs5os/VG9BdEHf+tFlUFXr+4ehtE9oLfC
-	c9PxVdy0ZcNw2cjbO8Bc0t2Ie8cUuD8NxLCH283p2CYKhjjHlvIh7kGGvzKzmnOPftSWfe
-	dd7l4v5X46GTH+liSv27sTNGoCCo5+U=
+	bh=9cK6rgdjGTJU0QUmEqRwXAZvNm5TgcXyOYbinwaS4fk=;
+	b=6LWdYBK9vYioVIz4sDEwN0aOxGh1NktPAMmomxwTeUdx2/RCdLPWT1Bf9OgWQrjAzxDr8L
+	SQO2pzcf5YdEkj7OsTBqNokRBO1y/bCeKwRqncG2U2bHm1YCcIzrVSn4N10dsPJb/4WBHD
+	UG9YbbeWqHADquNvI0yCLIMM9VKC9U8=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gEhTJrgR;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf25.hostedemail.com: domain of dhowells@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WULaBfaB;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.76 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788370715;
-	b=saBsCZkKP8YFmp4+Ag9Bc52qAY62ggLLW+6t48ggVpssTAjvelc/p+ohYLECRCfqoNdy8e
-	lbqY5jvnKUt5h0Q01+wdMk6ovhOjpE5VcYOaBb8awl4e6Qu9wDFtZVoTsMFrbcWBsFUKUt
-	eBWAq83INkHRgN2E+QBEZEreTiyT+N8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788370714;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=x4GiOpymXcCnOnlIQLz3VcFoY9LdDvbwT8O6R33lWtY=;
-	b=gEhTJrgR6E6K0h3DvrfyDgsDTgZXDyCfc3KmEaee3RYB08W+WcA9RVqoZcUDT03d+HOWVn
-	PYi1t4GRzFKBjXgdfgr4P1SKSUuRQgODfrjVCt/NwDG46U67ClXgc0wFYMQHosrbhgVPVY
-	Gnq3cVE3ILnjngUYeEo0RIjP0YHfUlY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-620-lJivZFv0PeqF6oApKchmvw-1; Wed,
- 02 Sep 2026 13:38:30 -0400
-X-MC-Unique: lJivZFv0PeqF6oApKchmvw-1
-X-Mimecast-MFC-AGG-ID: lJivZFv0PeqF6oApKchmvw_1788370707
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2AB5A195604B;
-	Wed,  2 Sep 2026 17:38:27 +0000 (UTC)
-Received: from warthog.com (unknown [10.44.32.158])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CE4421800765;
-	Wed,  2 Sep 2026 17:38:20 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Paulo Alcantara <pc@manguebit.org>
-Cc: David Howells <dhowells@redhat.com>,
-	Christian Brauner <christian@brauner.io>,
-	Matthew Wilcox <willy@infradead.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Leon Romanovsky <leon@kernel.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	ChenXiaoSong <chenxiaosong@chenxiaosong.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Stefan Metzmacher <metze@samba.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-erofs@lists.ozlabs.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v11 33/36] netfs: Set subrequest->source at alloc before trace emission
-Date: Wed,  2 Sep 2026 18:33:45 +0100
-Message-ID: <20260902173350.3468672-34-dhowells@redhat.com>
-In-Reply-To: <20260902173350.3468672-1-dhowells@redhat.com>
-References: <20260902173350.3468672-1-dhowells@redhat.com>
+	t=1788371007;
+	b=K9yCWHKQ7f03WA4jNWGhUo7hcXMmpXZxKP2jxaIFwmjYtfu+cQxUB5R0ouRRNFblurKsxv
+	pLb6svt8OgDKgJu0tqME90QuTZsO5ArYhQ2597ryqb1fHviYiKL1ZCmQI4joOdF8p1PxNJ
+	9ccyFeNpdkPBmVlXFVegSbLcnlGWSC0=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=loghd6j+nCeF3xm8tMD6bmZm3wHgeUImKiF7irSIGq0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788371005; v=1; x=1788975805;
+ b=WULaBfaBRpC/Q9OWFciuO2ivdzYd9SS7epDxphCXgFt5WF0zY/iFqyLgS4OAwIhUWhMizPaC
+ x8kZxJNagAemyS6lsfUk9NFHk2jMI0mWdnvcXXst3KB7XcnYH87HtjsnKq3Tt07xSjDUV0i+o9o
+ 1vPB/d9Spt0+ittxlAWCzX6c=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 5861c8020117319e;
+	Wed, 02 Sep 2026 17:43:25 +0000
+X-Mizu-Trace-ID: 5861c8020117319e
+X-Migadu-Flow: FLOW_OUT
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	tjmercier@google.com,
+	Meta kernel team <kernel-team@meta.com>,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/8] memcg: remove v1 soft limit reclaim
+Date: Wed,  2 Sep 2026 10:43:04 -0700
+Message-ID: <20260902174311.1772372-2-shakeel.butt@linux.dev>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260902174311.1772372-1-shakeel.butt@linux.dev>
+References: <20260902174311.1772372-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: dML2Uda06XEcve8W_Fu5vp3EaLxv_TcBAsT5F2JJqt8_1788370707
-X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Stat-Signature: rj53mcqt9irmr45jgmc9h8ub1x6tyt6i
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E79E4A0004
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788370714-667091
-X-HE-Meta: U2FsdGVkX19Wwe9fKEJYCAKtNWAKZU5eqcW2CcnHi7gpMiV76z2p6GGLUM+zFH1EMIBedBIXQL7XTVHZB8iF0MRN1Ih7l58PBpKq7HtweQ7Q5hwPRKE5uPBjAz/LTaXUN5OkeS+zRqjgpUdmw+G2Ns4Ibp/ABRQhsenhlSs1De+XCVghn+8YdGS1Gv7l3c8Za0OmF+No7xeRdZM6jlKm9zpYC2Tp4/jwgOW2srrQAUjzYCeFPwoOPfmmVnIwpSKUesH8bKwooYLeqw/oYmeQPeq7hoTZDkzfW9zuO7QGUomUL/dmyQaaIKlw1opBMH1bTt/gPApg+wNDdmDekmeKz3O2WtfD9AU3yJEwOgOEjdCNgZOBHCGujGu3xbu5VtA0zxlKh9bTyCQH+TLOzHtHKwsikAUl/iqA9dcsI/WV8UPgkz7W6O0jNjiLp93A5BaFbZOB9H76XhxcMxfIM8kelnOxuUCc5tkRtDWztPFAXiLnbB//CGNCB5iVH075rtTBNEx06BqCpS6IJRzfS7ZZ0+fTOgEA37t++AjWTOF0s1xYx+/ODUkOn4TxKTFx2pdZTualkhqbrpJfItuGE+hy6oxpkI9NDQW5bWuQVEKrFF8jIDXFEztzVXekwtRXMi0WwG8kAAfZJinUNZEQ8PQzIMW4I5RdhCFx0N2sg86NhRZvcldZYGJJjVE62X/TuOTtK16ePCmGIw0n1rdYk1z036OeB3PR5wk1ZghdvKoM3sYgMejNUZqo45SAsbU1nlCuWojtryeE7ViiMY1Efahj71Puk67TtKewlPuGL+ZKQDpcXH7MWIW0vnQV+xWYO229C5dryBarYxUvzEgXUydZ5NLhVRfeRq4TQOzgDdNELEBjGm1QN4kAwMDMSy7nCJUJHrh7FcyP7lMost857H2cD6gEqUKlLpQr+fC+MJBSGRJlLTFNZodJutMcZvUqJb3AAmnQCdxlbaZ+k6JZCbF
- grZseslW
- 1QxghYkZoW7mGcAuishNDA/vMsKMOrcr+IdS04pEZofhVp5IjMlNHJ7vDF48IY9YxK9GbnEO8UbGPYQPtSx30EY5lNbujBevfOWRMXSlzO4gxD/u8LcaQBA1YeA/sAJXKkMmiCYuRT7qJBgH5ACwFbsjaX/DYcUB0f3xP6PfQXH8YljUVZ6Wxf/hTCG0DTe8gV+1BccBAfxOWKMpkaPluSYnxIDnZ6NPntj+lJ8aXzk3wIs6nJ9veoEsNuCCF41ZgupEeOqsdBh786uYXge2hMOPInxYk+1vCh74WG0sdWS9FlEmGxdiAsmrDzcXUA3iuk/Ru3Lj+IGlbj5N5TA196+aFhecfvu6OB2HSLj1JLijtA9QEKYxAG6Oq7OabfuLCUvVvDdFPMKAg5U6Mj+M1+FLgGJy24/caQGu8zdMhBnV5MfhX9WLX3JEUmivHvLmxMDPTn4GMutEGKsBwnmqZEQ+U3Tsb9gtu7w4t
+X-Stat-Signature: imxkskihacr1ox56ijfz4pms6p41iffn
+X-Rspamd-Queue-Id: 736F5C000B
+X-HE-Tag: 1788371007-579899
+X-HE-Meta: U2FsdGVkX1+eVMNl4ylxQmlcB/TQPlen84zgfmISd5biZndJooPPSvqcXdQGPEAA5lgYlDxImqkrj0+USKlRhbGIYdc1FTc5+usgJ3/1KXuxFdH6PQMHiQR+I4KqypXAY/w0YRJDceBh7Fsm7wezxFVp4t5/K2nCIqW79Fx1Sam+qL/0BjTt+bjumSoyPSfaDPlO5FsXc9D//gJEghgqP5jMCJeiZ1b5aXFbl6ioOH4pOAyJTpq6+IKRqd5B84EQ6t9aOuUf4Nl+iugH68PB8krE5vVtGNM7jlKkXanfz5tY5wpH7n6amoFXNTulvr6DKXyHoI8DgML/hKndtTD69hWgPm6IhY+NoUYIK2pVl/LAJCxYUf4wfKyL/Yj+8kZgdQ/GpxQdL5ImsBlZiyJN5d13SViCatGGtAhAP1uWq93iANJ3Tb34OfN+BJ1p0TcEHdNxsWd4NwtLNXgTwdPcpkTD+GB40sAzLRYUfTsesQBcUoJJT+l6t0uQLphZQAZcRlYYNnnG1ovDarv+V0x/DF4bRDBIYTZMRaBbpQFhGS7OJHtvq13fxgNGUxQrnBA1NjMWRsjT1nmfsLOIUgEQoWtqEQMOI8e9PviNNmfEnORnQ7Lw2x/qmVLYN/8Krzc2p3uYd5WSxApmWMogjsEfL8idR13JaUmXOR7bRyfk/7QVmY2QzaIg5XvMS2y3+aw1rDG+FtiXd44vmLbX+pM9AlI4pxiE5c90rhZkwt/MjG1UJ1meYVmNHqHcRbygo3CXZUtALm4vh/lFiWqMU516tk37t51AAaWnura65guKeKmgVpeETGKebzxJVq/to1gJEJVrDAYWX+gjIKATqk9Fd9FiRJc1Kun3my1dmYhg228gyzCjgHmXLzn8JrNinTwmjg4y1yUcDypsgJqvagseZ0TAmou82OjGzToCYJ9U0Swszzl2ZZeOiT3CsGj+3STrDn0izOFQcZBDOUwIJIV
+ G+ED1rH4
+ 1OctkdA7/lnu4yz5q2MSWHC1Br2Xs8Pj1Q9/gFpfoQUrmG606VLyoXKowPjtB4m46x4FQ7kkwPEbiLWA6chfOkRq8Kj/QozZVtnuvdSuJs09lAJp6ezmA3q09jZWrDepHcY2qR1h7BJI43VRyJx9mC9OP/QR+75PkDUHxABEmh7WMVepbwi2i4pJDYJam+bBxYSLuoJhGXmAAQ3UVK3P7eJUlAQUWjJgBuSsZ7yxFcBiJLN1KRl7kNtliN5NahJ9j/sVElrcaz/p9g2yWZ3Wk2upx0Gu+VmaSMKKZRnjBOP5j6PVTNEnyVRFWsw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,287 +101,328 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Set subrequest->source in netfs_alloc_subrequest() before we emit the trace
-line indicating we allocated the subrequest.  Note that this requires the
-allocation of the subreq in netfs_read_to_pagecache() to be pushed to after
-the decision about what sort of subreq it should be.
+Nothing can put a cgroup on the soft limit rbtree anymore, so the tree
+is always empty and both callers of memcg1_soft_limit_reclaim() are
+guaranteed no-ops. Remove the reclaim pass from direct reclaim and from
+kswapd, along with its implementation.
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-cc: linux-mm@kvack.org
+In shrink_zones() this leaves the global reclaim branch with a
+last_pgdat check that is now redundant with the identical check right
+below it, so drop it and move the explaining comment down to the check
+that remains. That check could only ever fire once last_pgdat was set,
+which implies first_pgdat had already been assigned, so skipping it does
+not change which node consider_reclaim_throttle() gets.
+
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- fs/netfs/buffered_read.c | 69 ++++++++++++++++++++--------------------
- fs/netfs/direct_read.c   |  3 +-
- fs/netfs/internal.h      |  3 +-
- fs/netfs/objects.c       |  4 ++-
- fs/netfs/read_retry.c    |  3 +-
- fs/netfs/read_single.c   |  2 +-
- fs/netfs/write_issue.c   |  6 ++--
- fs/netfs/write_retry.c   |  3 +-
- 8 files changed, 45 insertions(+), 48 deletions(-)
+ include/linux/memcontrol.h |  12 ---
+ mm/memcontrol-v1.c         | 175 -------------------------------------
+ mm/vmscan.c                |  39 ++-------
+ 3 files changed, 6 insertions(+), 220 deletions(-)
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 94bf9a2c2321..5178d9bba453 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -295,8 +295,11 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq)
- 	do {
- 		int (*prepare_read)(struct netfs_io_subrequest *subreq) = NULL;
- 		struct netfs_io_subrequest *subreq;
-+		enum netfs_io_source source;
- 		ssize_t slice;
- 		uoff_t hole_to, cache_to;
-+		size_t len = size;
-+		bool copy = false;
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index da625d2edb3b..11c1fa88d6fd 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -1924,10 +1924,6 @@ static inline bool mem_cgroup_zswap_writeback_enabled(struct mem_cgroup *memcg)
+ /* Cgroup v1-related declarations */
  
- 		/* If we don't have any, find out the next couple of data
- 		 * extents from the cache, containing of following the
-@@ -327,48 +330,34 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq)
- 			continue;
- 		}
+ #ifdef CONFIG_MEMCG_V1
+-unsigned long memcg1_soft_limit_reclaim(pg_data_t *pgdat, int order,
+-					gfp_t gfp_mask,
+-					unsigned long *total_scanned);
+-
+ bool mem_cgroup_oom_synchronize(bool wait);
  
--		subreq = netfs_alloc_subrequest(rreq);
--		if (!subreq) {
--			ret = -ENOMEM;
--			break;
+ static inline bool task_in_memcg_oom(struct task_struct *p)
+@@ -1948,14 +1944,6 @@ static inline void mem_cgroup_exit_user_fault(void)
+ }
+ 
+ #else /* CONFIG_MEMCG_V1 */
+-static inline
+-unsigned long memcg1_soft_limit_reclaim(pg_data_t *pgdat, int order,
+-					gfp_t gfp_mask,
+-					unsigned long *total_scanned)
+-{
+-	return 0;
+-}
+-
+ static inline bool task_in_memcg_oom(struct task_struct *p)
+ {
+ 	return false;
+diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+index 05ef55cae4dc..b38b8d0f7f51 100644
+--- a/mm/memcontrol-v1.c
++++ b/mm/memcontrol-v1.c
+@@ -34,13 +34,6 @@ struct mem_cgroup_tree {
+ 
+ static struct mem_cgroup_tree soft_limit_tree __read_mostly;
+ 
+-/*
+- * Maximum loops in mem_cgroup_soft_reclaim(), used for soft
+- * limit reclaim to prevent infinite loops, if they ever occur.
+- */
+-#define	MEM_CGROUP_MAX_RECLAIM_LOOPS		100
+-#define	MEM_CGROUP_MAX_SOFT_LIMIT_RECLAIM_LOOPS	2
+-
+ /* for OOM */
+ struct mem_cgroup_eventfd_list {
+ 	struct list_head list;
+@@ -233,174 +226,6 @@ void memcg1_remove_from_trees(struct mem_cgroup *memcg)
+ 	}
+ }
+ 
+-static struct mem_cgroup_per_node *
+-__mem_cgroup_largest_soft_limit_node(struct mem_cgroup_tree_per_node *mctz)
+-{
+-	struct mem_cgroup_per_node *mz;
+-
+-retry:
+-	mz = NULL;
+-	if (!mctz->rb_rightmost)
+-		goto done;		/* Nothing to reclaim from */
+-
+-	mz = rb_entry(mctz->rb_rightmost,
+-		      struct mem_cgroup_per_node, tree_node);
+-	/*
+-	 * Remove the node now but someone else can add it back,
+-	 * we will to add it back at the end of reclaim to its correct
+-	 * position in the tree.
+-	 */
+-	__mem_cgroup_remove_exceeded(mz, mctz);
+-	if (!soft_limit_excess(mz->memcg) ||
+-	    !css_tryget(&mz->memcg->css))
+-		goto retry;
+-done:
+-	return mz;
+-}
+-
+-static struct mem_cgroup_per_node *
+-mem_cgroup_largest_soft_limit_node(struct mem_cgroup_tree_per_node *mctz)
+-{
+-	struct mem_cgroup_per_node *mz;
+-
+-	spin_lock_irq(&mctz->lock);
+-	mz = __mem_cgroup_largest_soft_limit_node(mctz);
+-	spin_unlock_irq(&mctz->lock);
+-	return mz;
+-}
+-
+-static int mem_cgroup_soft_reclaim(struct mem_cgroup *root_memcg,
+-				   pg_data_t *pgdat,
+-				   gfp_t gfp_mask,
+-				   unsigned long *total_scanned)
+-{
+-	struct mem_cgroup *victim = NULL;
+-	int total = 0;
+-	int loop = 0;
+-	unsigned long excess;
+-	unsigned long nr_scanned;
+-	struct mem_cgroup_reclaim_cookie reclaim = {
+-		.pgdat = pgdat,
+-	};
+-
+-	excess = soft_limit_excess(root_memcg);
+-
+-	while (1) {
+-		victim = mem_cgroup_iter(root_memcg, victim, &reclaim);
+-		if (!victim) {
+-			loop++;
+-			if (loop >= 2) {
+-				/*
+-				 * If we have not been able to reclaim
+-				 * anything, it might because there are
+-				 * no reclaimable pages under this hierarchy
+-				 */
+-				if (!total)
+-					break;
+-				/*
+-				 * We want to do more targeted reclaim.
+-				 * excess >> 2 is not to excessive so as to
+-				 * reclaim too much, nor too less that we keep
+-				 * coming back to reclaim from this cgroup
+-				 */
+-				if (total >= (excess >> 2) ||
+-					(loop > MEM_CGROUP_MAX_RECLAIM_LOOPS))
+-					break;
+-			}
+-			continue;
 -		}
+-		total += mem_cgroup_shrink_node(victim, gfp_mask, false,
+-					pgdat, &nr_scanned);
+-		*total_scanned += nr_scanned;
+-		if (!soft_limit_excess(root_memcg))
+-			break;
+-	}
+-	mem_cgroup_iter_break(root_memcg, victim);
+-	return total;
+-}
 -
--		subreq->start	= start;
--		subreq->len	= size;
+-unsigned long memcg1_soft_limit_reclaim(pg_data_t *pgdat, int order,
+-					    gfp_t gfp_mask,
+-					    unsigned long *total_scanned)
+-{
+-	unsigned long nr_reclaimed = 0;
+-	struct mem_cgroup_per_node *mz, *next_mz = NULL;
+-	unsigned long reclaimed;
+-	int loop = 0;
+-	struct mem_cgroup_tree_per_node *mctz;
+-	unsigned long excess;
 -
--		netfs_queue_read(rreq, subreq);
+-	if (lru_gen_enabled())
+-		return 0;
 -
- 		uoff_t zero_point = netfs_read_zero_point(rreq->inode);
- 		uoff_t zlimit = umin(zero_point, rreq->i_size);
- 
--		_debug("rsub %llx %llx-%llx", subreq->start, hole_to, cache_to);
-+		_debug("rsub %llx %llx-%llx", start, hole_to, cache_to);
- 
- 		if (start >= hole_to && start < cache_to) {
- 			/* Overlap with a cached region, where the cache may
- 			 * record a block of zeroes.
- 			 */
- 			_debug("cached s=%llx c=%llx l=%zx", start, cache_to, size);
--			subreq->len = umin(cache_to - start, size);
--			subreq->len = round_up(subreq->len, occ->granularity);
-+			len = umin(cache_to - start, size);
-+			len = round_up(len, occ->granularity);
- 			if (occ->cached_type[0] == FSCACHE_EXTENT_ZERO) {
--				subreq->source = NETFS_FILL_WITH_ZEROES;
-+				source = NETFS_FILL_WITH_ZEROES;
- 				netfs_stat(&netfs_n_rh_zero);
- 			} else {
--				subreq->source = NETFS_READ_FROM_CACHE;
-+				source = NETFS_READ_FROM_CACHE;
- 				prepare_read = rreq->cache_resources.ops->prepare_read;
+-	if (order > 0)
+-		return 0;
+-
+-	mctz = soft_limit_tree.rb_tree_per_node[pgdat->node_id];
+-
+-	/*
+-	 * Do not even bother to check the largest node if the root
+-	 * is empty. Do it lockless to prevent lock bouncing. Races
+-	 * are acceptable as soft limit is best effort anyway.
+-	 */
+-	if (!mctz || RB_EMPTY_ROOT(&mctz->rb_root))
+-		return 0;
+-
+-	/*
+-	 * This loop can run a while, specially if mem_cgroup's continuously
+-	 * keep exceeding their soft limit and putting the system under
+-	 * pressure
+-	 */
+-	do {
+-		if (next_mz)
+-			mz = next_mz;
+-		else
+-			mz = mem_cgroup_largest_soft_limit_node(mctz);
+-		if (!mz)
+-			break;
+-
+-		reclaimed = mem_cgroup_soft_reclaim(mz->memcg, pgdat,
+-						    gfp_mask, total_scanned);
+-		nr_reclaimed += reclaimed;
+-		spin_lock_irq(&mctz->lock);
+-
+-		/*
+-		 * If we failed to reclaim anything from this memory cgroup
+-		 * it is time to move on to the next cgroup
+-		 */
+-		next_mz = NULL;
+-		if (!reclaimed)
+-			next_mz = __mem_cgroup_largest_soft_limit_node(mctz);
+-
+-		excess = soft_limit_excess(mz->memcg);
+-		/*
+-		 * One school of thought says that we should not add
+-		 * back the node to the tree if reclaim returns 0.
+-		 * But our reclaim could return 0, simply because due
+-		 * to priority we are exposing a smaller subset of
+-		 * memory to reclaim from. Consider this as a longer
+-		 * term TODO.
+-		 */
+-		/* If excess == 0, no tree ops */
+-		__mem_cgroup_insert_exceeded(mz, mctz, excess);
+-		spin_unlock_irq(&mctz->lock);
+-		css_put(&mz->memcg->css);
+-		loop++;
+-		/*
+-		 * Could not reclaim anything and there are no more
+-		 * mem cgroups to try or we seem to be looping without
+-		 * reclaiming anything.
+-		 */
+-		if (!nr_reclaimed &&
+-			(next_mz == NULL ||
+-			loop > MEM_CGROUP_MAX_SOFT_LIMIT_RECLAIM_LOOPS))
+-			break;
+-	} while (!nr_reclaimed);
+-	if (next_mz)
+-		css_put(&next_mz->memcg->css);
+-	return nr_reclaimed;
+-}
+-
+ static u64 mem_cgroup_move_charge_read(struct cgroup_subsys_state *css,
+ 				struct cftype *cft)
+ {
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index fdd13299a04a..0e04eaf64af3 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -6439,8 +6439,6 @@ static void shrink_zones(struct zonelist *zonelist, struct scan_control *sc)
+ {
+ 	struct zoneref *z;
+ 	struct zone *zone;
+-	unsigned long nr_soft_reclaimed;
+-	unsigned long nr_soft_scanned;
+ 	gfp_t orig_mask;
+ 	pg_data_t *last_pgdat = NULL;
+ 	pg_data_t *first_pgdat = NULL;
+@@ -6482,35 +6480,17 @@ static void shrink_zones(struct zonelist *zonelist, struct scan_control *sc)
+ 				sc->compaction_ready = true;
+ 				continue;
  			}
 -
--			trace_netfs_sreq(subreq, netfs_sreq_trace_prepare);
+-			/*
+-			 * Shrink each node in the zonelist once. If the
+-			 * zonelist is ordered by zone (not the default) then a
+-			 * node may be shrunk multiple times but in that case
+-			 * the user prefers lower zones being preserved.
+-			 */
+-			if (zone->zone_pgdat == last_pgdat)
+-				continue;
 -
--		} else if (subreq->start >= zlimit && size > 0) {
-+		} else if (start >= zlimit && size > 0) {
- 			/* If this range lies beyond the zero-point, that part
- 			 * can just be cleared locally.
- 			 */
- 			_debug("zero %llx-%llx", start, start + size);
--			subreq->len = size;
--			subreq->source = NETFS_FILL_WITH_ZEROES;
-+			len = size;
-+			source = NETFS_FILL_WITH_ZEROES;
- 			if (rreq->cache_resources.ops)
--				__set_bit(NETFS_SREQ_COPY_TO_CACHE, &subreq->flags);
-+				copy = true;
- 			netfs_stat(&netfs_n_rh_zero);
- 		} else {
- 			/* Read a cache hole from the server.  If any part of
-@@ -379,22 +368,33 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq)
- 
- 			_debug("limit %llx %llx", rreq->i_size, zero_point);
- 			_debug("download %llx-%llx", start, start + size);
--			subreq->len = umin(limit - subreq->start, ULONG_MAX);
--			subreq->source = NETFS_DOWNLOAD_FROM_SERVER;
-+			len = umin(limit - start, ULONG_MAX);
-+			source = NETFS_DOWNLOAD_FROM_SERVER;
- 			if (rreq->cache_resources.ops)
--				__set_bit(NETFS_SREQ_COPY_TO_CACHE, &subreq->flags);
-+				copy = true;
- 			netfs_stat(&netfs_n_rh_download);
+-			/*
+-			 * This steals pages from memory cgroups over softlimit
+-			 * and returns the number of reclaimed pages and
+-			 * scanned pages. This works for global memory pressure
+-			 * and balancing, not for a memcg's limit.
+-			 */
+-			nr_soft_scanned = 0;
+-			nr_soft_reclaimed = memcg1_soft_limit_reclaim(zone->zone_pgdat,
+-								      sc->order, sc->gfp_mask,
+-								      &nr_soft_scanned);
+-			sc->nr_reclaimed += nr_soft_reclaimed;
+-			sc->nr_scanned += nr_soft_scanned;
+-			/* need some check for avoid more shrink_zone() */
  		}
  
--		if (size == 0) {
--			pr_err("ZERO-LEN READ: R=%08x[%x] l=%zx/%zx s=%llx z=%llx i=%llx",
--			       rreq->debug_id, subreq->debug_index,
--			       subreq->len, size,
--			       subreq->start, zero_point, rreq->i_size);
--			netfs_cancel_read(subreq, ret);
-+		if (len == 0) {
-+			pr_err("ZERO-LEN READ: R=%08x l=%zx/%zx s=%llx z=%llx i=%llx",
-+			       rreq->debug_id, len, size,
-+			       start, zero_point, rreq->i_size);
-+			break;
-+		}
-+
-+		subreq = netfs_alloc_subrequest(rreq, source);
-+		if (!subreq) {
-+			ret = -ENOMEM;
- 			break;
- 		}
+ 		if (!first_pgdat)
+ 			first_pgdat = zone->zone_pgdat;
  
-+		subreq->start	= start;
-+		subreq->len	= size;
-+		if (copy)
-+			__set_bit(NETFS_SREQ_COPY_TO_CACHE, &subreq->flags);
-+
-+		netfs_queue_read(rreq, subreq);
-+
- 		rreq->io_streams[0].sreq_max_len = MAX_RW_COUNT;
- 		rreq->io_streams[0].sreq_max_segs = INT_MAX;
- 
-@@ -418,10 +418,9 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq)
- 		if (size <= 0)
- 			netfs_all_subreqs_queued(rreq);
- 
-+		/* See if the cache indicated this should be cached. */
- 		if (mark_cursor.bvecq) {
--			/* See if the cache indicated this should be cached. */
--			bool copy = test_bit(NETFS_SREQ_COPY_TO_CACHE, &subreq->flags);
--
-+			copy = test_bit(NETFS_SREQ_COPY_TO_CACHE, &subreq->flags);
- 			netfs_mark_copy_to_cache(rreq, &mark_cursor, slice, copy);
- 		}
- 
-diff --git a/fs/netfs/direct_read.c b/fs/netfs/direct_read.c
-index 058cc6bb7124..40407bf9aa3f 100644
---- a/fs/netfs/direct_read.c
-+++ b/fs/netfs/direct_read.c
-@@ -33,7 +33,7 @@ static void netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
- 	do {
- 		struct netfs_io_subrequest *subreq;
- 
--		subreq = netfs_alloc_subrequest(rreq);
-+		subreq = netfs_alloc_subrequest(rreq, NETFS_DOWNLOAD_FROM_SERVER);
- 		if (!subreq) {
- 			/* Stash the error in the request if there's not
- 			 * already an error set.
-@@ -42,7 +42,6 @@ static void netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
- 			break;
- 		}
- 
--		subreq->source	= NETFS_DOWNLOAD_FROM_SERVER;
- 		subreq->start	= start;
- 		subreq->len	= size;
- 
-diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
-index bdf0f1ddcfec..e1e051ef60b4 100644
---- a/fs/netfs/internal.h
-+++ b/fs/netfs/internal.h
-@@ -93,7 +93,8 @@ void netfs_get_request(struct netfs_io_request *rreq, enum netfs_rreq_ref_trace
- void netfs_clear_subrequests(struct netfs_io_request *rreq);
- void netfs_put_request(struct netfs_io_request *rreq, enum netfs_rreq_ref_trace what);
- void netfs_put_failed_request(struct netfs_io_request *rreq);
--struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq);
-+struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq,
-+						   enum netfs_io_source source);
- 
- static inline void netfs_see_request(struct netfs_io_request *rreq,
- 				     enum netfs_rreq_ref_trace what)
-diff --git a/fs/netfs/objects.c b/fs/netfs/objects.c
-index 6852fa27eeb3..64fbb6e6c445 100644
---- a/fs/netfs/objects.c
-+++ b/fs/netfs/objects.c
-@@ -213,7 +213,8 @@ void netfs_put_failed_request(struct netfs_io_request *rreq)
- /*
-  * Allocate and partially initialise an I/O request structure.
-  */
--struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq)
-+struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq,
-+						   enum netfs_io_source source)
+-		/* See comment about same check for global reclaim above */
++		/*
++		 * Shrink each node in the zonelist once. If the zonelist is
++		 * ordered by zone (not the default) then a node may be shrunk
++		 * multiple times but in that case the user prefers lower zones
++		 * being preserved.
++		 */
+ 		if (zone->zone_pgdat == last_pgdat)
+ 			continue;
+ 		last_pgdat = zone->zone_pgdat;
+@@ -7171,8 +7151,6 @@ clear_reclaim_active(pg_data_t *pgdat, int highest_zoneidx)
+ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
  {
- 	struct netfs_io_subrequest *subreq;
- 	mempool_t *mempool = rreq->netfs_ops->subrequest_pool ?: &netfs_subrequest_pool;
-@@ -230,6 +231,7 @@ struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq
- 	INIT_WORK(&subreq->work, NULL);
- 	INIT_LIST_HEAD(&subreq->rreq_link);
- 	refcount_set(&subreq->ref, 2);
-+	subreq->source = source;
- 	subreq->rreq = rreq;
- 	subreq->debug_index = atomic_inc_return(&rreq->subreq_counter);
- 	netfs_get_request(rreq, netfs_rreq_trace_get_subreq);
-diff --git a/fs/netfs/read_retry.c b/fs/netfs/read_retry.c
-index 9dc531659259..08b0bf526759 100644
---- a/fs/netfs/read_retry.c
-+++ b/fs/netfs/read_retry.c
-@@ -210,12 +210,11 @@ static void netfs_retry_read_subrequests(struct netfs_io_request *rreq)
- 		 * and insert them after.
+ 	int i;
+-	unsigned long nr_soft_reclaimed;
+-	unsigned long nr_soft_scanned;
+ 	unsigned long pflags;
+ 	unsigned long nr_boost_reclaim;
+ 	unsigned long zone_boosts[MAX_NR_ZONES] = { 0, };
+@@ -7278,12 +7256,7 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
  		 */
- 		do {
--			subreq = netfs_alloc_subrequest(rreq);
-+			subreq = netfs_alloc_subrequest(rreq, NETFS_DOWNLOAD_FROM_SERVER);
- 			if (!subreq) {
- 				subreq = to;
- 				goto abandon_after;
- 			}
--			subreq->source		= NETFS_DOWNLOAD_FROM_SERVER;
- 			subreq->start		= start;
- 			subreq->len		= len;
- 			subreq->stream_nr	= stream->stream_nr;
-diff --git a/fs/netfs/read_single.c b/fs/netfs/read_single.c
-index 9fd07dbb08b5..46dc22c3859b 100644
---- a/fs/netfs/read_single.c
-+++ b/fs/netfs/read_single.c
-@@ -86,7 +86,7 @@ static int netfs_single_dispatch_read(struct netfs_io_request *rreq)
- 	struct netfs_io_subrequest *subreq;
- 	int ret = 0;
+ 		kswapd_age_node(pgdat, &sc);
  
--	subreq = netfs_alloc_subrequest(rreq);
-+	subreq = netfs_alloc_subrequest(rreq, NETFS_DOWNLOAD_FROM_SERVER);
- 	if (!subreq)
- 		return -ENOMEM;
+-		/* Call soft limit reclaim before calling shrink_node. */
+ 		sc.nr_scanned = 0;
+-		nr_soft_scanned = 0;
+-		nr_soft_reclaimed = memcg1_soft_limit_reclaim(pgdat, sc.order,
+-							      sc.gfp_mask, &nr_soft_scanned);
+-		sc.nr_reclaimed += nr_soft_reclaimed;
  
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index a12846a66a3c..08bc84182847 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -193,11 +193,10 @@ struct netfs_io_subrequest *netfs_alloc_write_subreq(struct netfs_io_request *wr
- {
- 	struct netfs_io_subrequest *subreq;
- 
--	subreq = netfs_alloc_subrequest(wreq);
-+	subreq = netfs_alloc_subrequest(wreq, stream->source);
- 	if (!subreq)
- 		return subreq;
- 
--	subreq->source		= stream->source;
- 	subreq->start		= stream->issue_from;
- 	subreq->len		= stream->buffered;
- 	subreq->stream_nr	= stream->stream_nr;
-@@ -245,10 +244,9 @@ void netfs_prepare_write(struct netfs_io_request *wreq,
- {
- 	struct netfs_io_subrequest *subreq;
- 
--	subreq = netfs_alloc_subrequest(wreq);
-+	subreq = netfs_alloc_subrequest(wreq, stream->source);
- 	if (!subreq)
- 		return;
--	subreq->source		= stream->source;
- 	subreq->start		= start;
- 	subreq->stream_nr	= stream->stream_nr;
- 
-diff --git a/fs/netfs/write_retry.c b/fs/netfs/write_retry.c
-index c61bed687244..7fa09e190203 100644
---- a/fs/netfs/write_retry.c
-+++ b/fs/netfs/write_retry.c
-@@ -158,8 +158,7 @@ static void netfs_retry_write_stream(struct netfs_io_request *wreq,
- 		 * and insert them after.
- 		 */
- 		do {
--			subreq = netfs_alloc_subrequest(wreq);
--			subreq->source		= to->source;
-+			subreq = netfs_alloc_subrequest(wreq, stream->source);
- 			subreq->start		= start;
- 			subreq->stream_nr	= to->stream_nr;
- 			subreq->retry_count	= 1;
+ 		/*
+ 		 * There should be no need to raise the scanning priority if
+-- 
+2.53.0-Meta
 
 
