@@ -4,94 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C4D6C61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 15:03:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADA49C624D3
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 15:08:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58BF36B00F0; Wed,  2 Sep 2026 11:03:53 -0400 (EDT)
+	id 940886B00F2; Wed,  2 Sep 2026 11:08:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53CAF6B00F2; Wed,  2 Sep 2026 11:03:53 -0400 (EDT)
+	id 918036B00F4; Wed,  2 Sep 2026 11:08:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4050B6B00F3; Wed,  2 Sep 2026 11:03:53 -0400 (EDT)
+	id 807836B00F5; Wed,  2 Sep 2026 11:08:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 12D1B6B00F0
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:03:53 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 290681A025C
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:03:51 +0000 (UTC)
-X-FDA: 85169141862.13.E710335
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf01.hostedemail.com (Postfix) with ESMTP id CBEFE4000D
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:03:47 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=huawei-partners.com header.s=dkim header.b=JjR28d8t;
-	spf=pass (imf01.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C8BE6B00F2
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:08:55 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 02AA3120190
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:08:54 +0000 (UTC)
+X-FDA: 85169154630.21.0AB2340
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 24B7B140015
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:08:52 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QKLX1l0W;
+	spf=pass (imf26.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788361733;
+	b=qXTZhZub/c3/YX+pEMP/zks7bxYutzwpwNhalQsbPHxfq9avTWkDewr2iqM8JDxFaSeDa0
+	sjMdH3x9rAEtQyy+mmUtb7cUb4xtl+7m8PBYaijxBgD4Q84KTTCiN50Q+zfXi5a8zpXApD
+	mM9OUUDY30yWayeD/AxWLd1i6Lr+QgM=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QKLX1l0W;
+	spf=pass (imf26.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788361429;
+	s=arc-20220608; t=1788361733;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4M78E0ObIENsRiRRK+u7y9UbS3R6BJ4hM9bzTVDKV7o=;
-	b=HaRd2Yv9+TU5wFNRiHAgr6vLHNFwWQL6TtxnHbc2fexsiRR17rIL54Wp0nklf273JbOSfX
-	4Xloza0F6KNwknPx6QcpIvhNolgtgxHFGFf4eRePwLytF8GT/fPmFkAoRCK+ZYAW7exQmV
-	otTeqme42K7HBhSqSFaFZsPgoVlpAJ4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788361429;
-	b=tLA6U5Umq1V9Cttk+j3c+BU8iCn0alpXIK3hR/Rb6bldCkm2twedRIuMblyxjiAO5N2ePy
-	Ul14BxMVVOUllkdiwXUR7t9mlPwTJK2wFmLaU1WSPr5qR82Fw7mPiaGJd8KetoUc0444QS
-	gaG4g20/oJ8n4IvlgORs8tBoQuTIPhI=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=huawei-partners.com header.s=dkim header.b=JjR28d8t;
-	spf=pass (imf01.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei-partners.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=4M78E0ObIENsRiRRK+u7y9UbS3R6BJ4hM9bzTVDKV7o=;
-	b=JjR28d8tmO/cLBZzM28RFnyU2knLbRFYR2FV3FdhZxKQvodPP9FwXxFlgM5Nga5o56RYcTtSl
-	+SXgpKW4RWSvwDgFcjgLOvZbttMeR80lVBOD5kRCJe2Z7U5Eb8Thv07bV288/Oxa6HWq3yDnegO
-	/EzpcIZ0a2YUXxpnir7u2cc=
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4hZmF93FJxzJ46Dn;
-	Wed,  2 Sep 2026 23:03:09 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id D5D4740571;
-	Wed,  2 Sep 2026 23:03:40 +0800 (CST)
-Received: from [10.123.123.154] (10.123.123.154) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 2 Sep 2026 18:03:40 +0300
-Message-ID: <9ac2a10f-1551-410e-a9c0-173a1daeb1ab@huawei-partners.com>
-Date: Wed, 2 Sep 2026 18:03:39 +0300
+	bh=EIdbnMs2RBr+E/C3ONkDjLCzcgL/LziyquabNv/nyLY=;
+	b=t0iTjirOc6j94EniQGCX+WIVHpgQLb5KGg2shJNlI5Oi9NKVQSdNhCeLCeoYQkdgYRTu+a
+	o9i+kj9w7jN7aylvXKe4zsmAybv09cF+Nh78jZxt6mNcpr0w3SCpa/hE3UhUQvGLtJfZpF
+	gt3Dg/Uq+0gsZSSHOCbuUDNsil49UDE=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2d01663d816so10314795ad.1
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 08:08:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788361732; x=1788966532; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=EIdbnMs2RBr+E/C3ONkDjLCzcgL/LziyquabNv/nyLY=;
+        b=QKLX1l0WAHDRL4b6aYKfG3DQhppCF6kOmzipacsnmntoIZAEBeKEBT4QrjrEk5s6gP
+         toGrUNenyU0voYL6mHEdJTPucQSUcwvCN+v/StNrs1SD6rzTZu7VJQqevnvq1pk9Adns
+         k4Gbg0/REGuKzY+5EnIyHL2hoNcBNfCmmMGocF9ViwQMP/XOPxYfGtL4wnJ28fc1fBO/
+         t4ICorTmneUqRi5mBom9YsvVfAygjdiK1m8Esx2/vTyL/h6C9nB/8/pL8+xDPrQJ/OGL
+         5sgvrfHNQ3gnKs/eG94eH5CL5HNvJoVq4+MyCnoO9XitHcCDVnPJPDbwmFJW6HpnwCZm
+         gBlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788361732; x=1788966532;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=EIdbnMs2RBr+E/C3ONkDjLCzcgL/LziyquabNv/nyLY=;
+        b=ihpC4Mqjd7HVdvFOPpRBbq9hLVdo0oJ5QjCAP+cMIZzSqNGCczm15Gqfr59zfRZCF+
+         S+t21h3oGvm1KjZ4FKGFDf9eh8b55/BC6qPrE2DcR5hMyeQt3lRRKOdK82zeTQsy/AaI
+         +5J/kqEkmQPREWFDs734fR0BV5IlkTl5O26RBV2Ie+1vUxI4uOb29Crd13I5e8rx81mR
+         nhnFaUcRPBJOyT/0AOjfygJoqfLYOA3nUjsta8Jj7PIbHeTv7Mon7YddhjBjFG77F61/
+         TVA8KYO0ouWHBAmvCqUxtQ7F3FAonI4EGeaBTwSpIsL34oHTJcsAg+7fNq7AIZnrPheq
+         NtSg==
+X-Forwarded-Encrypted: i=1; AKwUvBzYPaQ/lBbQBn95il19UWHQZxjh8JX2NVZ4Jwd8bDQGi6HquGbmNywxBWP8VCOvFz+21fqg94yXxg==@kvack.org
+X-Gm-Message-State: AFuF++kfTGgp4njp1xqxRnZcGFsTXSvt85xvERkSVBGBbs6nlS6xXrgX
+	ctj0Zu9oOONkiHx1xqlxfdpVIpG0ssufr1FFmtp4EZrnuIz1Tjpmqp5R
+X-Gm-Gg: AYBFou0BZCeMGBxr33i8Wm2Iycscc7O8XtWRRbBwLJxw3v5wFdbCtDIoPIF0m4nCWFM
+	GtvMp85ds1xe7ogaa7ImipmLqMURQE1e3SR26tsOFyLKt/ECapqm1APNCIApQrt5u/XxO5Q0njF
+	JOqTk/CqIC2Or+l5GRCvoUVG1XijwMsOS2XBd4xdBqh32pt62iCMPBn0UrQRdWpwCI0i9qT0rd8
+	XRtQgBdiI5ibdbG7iMUe8FqVPN+s4LSqbC7RAZuYG4mL1r7qgNqpom7Lm/8jKPacyqA3j0Fm9qw
+	JR8mcTqcnXVOTB4n6WhlsgK48n1m+ixhf3VejYXF0qp3u2VZAqqE5a+tiMtP4FgxqrJzd+7Krt3
+	hb2xeNrwxbGHr7jVZJXnTWIuWTJbT+lLLL+gC01WSqc/5/CeXtZPs+X/AjBfvH4VBKvwMeiwTbl
+	P7Xk5rE35LPg+ZvbmfazvC2zg/cP5BmEm2UGJZpp121ek59+nXeXzz+pgAy2Yd
+X-Received: by 2002:a17:903:19ec:b0:2d6:e4ff:9cad with SMTP id d9443c01a7336-2daec5ab9c5mr86317615ad.3.1788361731078;
+        Wed, 02 Sep 2026 08:08:51 -0700 (PDT)
+Received: from gmail.com ([185.220.238.35])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dadd488d18sm15030855ad.45.2026.09.02.08.08.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 08:08:50 -0700 (PDT)
+From: Kunwu Chan <kunwu.chan@gmail.com>
+X-Google-Original-From: Kunwu Chan <kunwu.chan@linux.dev>
+To: SJ Park <sj@kernel.org>
+Cc: Kunwu Chan <kunwu.chan@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 09/12] mm/damon/tests/core-kunit: test damon_nr_samples_per_aggr()
+Date: Wed,  2 Sep 2026 23:08:41 +0800
+Message-ID: <20260902150842.4033320-1-kunwu.chan@linux.dev>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260902054747.99370-10-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/3] mm/damon: Introduce DAMOS_QUOTA_HUGEPAGE auto
- tuning
-To: SJ Park <sj@kernel.org>, Lian Wang <lianux.mm@gmail.com>
-CC: Andrew Morton <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
-References: <20260901142307.100701-1-sj@kernel.org>
-Content-Language: en-US
-From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-In-Reply-To: <20260901142307.100701-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.123.123.154]
-X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Stat-Signature: 94dheuc9m1c1ou5cywj5w4awj5pud1wr
-X-Rspamd-Queue-Id: CBEFE4000D
-X-Rspamd-Server: rspam02
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1788361427-194571
-X-HE-Meta: U2FsdGVkX18sQzLUTN0I5UVJA36W63tajE9hJBa+oOjxozPT+rFS71kXPB177SqqiBdFlLgLHLbNYGc3hp8ndtXhlS7xq82fdDnJuyOf2XIuELIXJID1sIkX/dlzuewZUW7VSVUa6fChlsjNrpLqd330tM/2Nse0A5/RA1AcFR60LJokLvi0WiPJOXhzR7t5TVA7iHZi/nMg0qr9hpQ55Qykpc/5QVbLARoYHNoPPOAvkKcDKL0ErDzys4rwAk2Pku9C3ZT9p5sQadU0D+O4rcuJvxZIJmc7aSM9hrW71tUQJYkXVmFsIkHQvFqS4ypVLRUU+UOafplnW9MBr2eYt/cxy8jR+dTn4Pvz/b5jEq0do0pZqVhHCXfpRczpaWwrFF9OR0QdPYhh8cXJaRxs43eUgBIGrzgoOGHuDusHlmvOWuDZKrh8/qd5f4CBa7bwkB/Shn9TWDPTi9jAEfGJhX7c7s0sGlSG1Xa+lF/ETcWU3Bbaidd+LhOvxK9m/u+RKPmQQFra2zDI3jAis+Jx0tzvIm1EYDkn+T52j9OZlcLrKdJQpNa3EADCkMabSGZXC8AiYU1/YRh3oFucND2DyN5kFGLcowM9MyUIgc48PWqsD7gzcmS5Qi+BP+GeS3mtTWsq9WIzqvkvz8ME25DFvGMT0Rzqph7rEGLOUozVFXxOePSRG3+SGB5Kdn8MR+N4gfjOPZOCyA814093zngJSabrw+aoSuEGzUZRUbZTjyBpRIcR0Wonh87AOWLa5tkEWx/CbX7sAWouRCtbTGo71lXxKHuU67e0dgHRisOTXqHdEHXokKbr8QoVmsAVJLwZLGEfUH//Ee65TfzCDXT39hX2D60PjZzqW9UXnND99mKvt7x96xoKWVwN2gnCbWOyTxheDK9nj1m9INsOiPzJmBTZK+jBd+pXrmG9MB8F5zLq+CfQMMdKh8i1F72qeKB6Gwk9dVbn4SoIKGN7AQ4
- LPv+yljO
- VQ9XaR7kK7WTKrv2u3Vui6IYZeNmXE8N0Ch8SBP8cIqr0YJndwDiwondbpySICiojztxuquTr1+LS6228O5sEjSiHyYs6JvbdKrwwuzvuymSNKrWMTLViuZzjx6s/vPlAWLNKvRmFSTh+kU6BD5uwyxagcjl3Y5OqnuX2u5Iuu6VOcWw9HDynbORv3oEWAvHBh9Ca8BO7o2kH/ix+buaPnaSgML/+8KJq8Fk4VVBJEWmzXIPm7L4qQ85GKNJ/ZbT3aRVoCcklUvaUzaKL6xf9Rey2dYJkTndFZzlbX6TZO3acYnIJUkBeyqrpv9Va+zvhXU8ua33yKU0QlA0sCklgbIpTiE505WAj0nB+o6p3UeWWiBws51e2cBcWRm2jNwguwg47ZSJmVSpWXZcDnl2JWBKMzuW/EkLLgbZVdo9hco4I/DOJu9/mTOf+LQDkTtQbkurTxicS+1MTrtCRVpFniTo/fMRtqf+9LaEouMXeEEuP40r+tTg/W9PftqhQ0epYkhXRDGmE3x9nuok=
+X-Stat-Signature: 7r9dj9je3buguzqtha3pc11cg7dwgk4f
+X-Rspamd-Queue-Id: 24B7B140015
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788361732-453116
+X-HE-Meta: U2FsdGVkX18xuefHNBbtLI3LLi6PjbrmSDmEoBRQ517A/nxpUL650ylw7Zu08/BE+H236rPyZ0MueCFZR/dppO2JjT1b3tBDgcEdKtLKDpPD/6mOq9PfhGglonWjK+TdKW0z9dNaHzbt57HWR92p+6hg669raNa56UGbV7RrL6F5UnORawtBasZnmq/aOwfMnz40yZvg6q+S7lIu2WhUxqcfJLCXgPX/kBODBp4zVTDSo1MJZyC0wRAAZbucS+yXjcEIyhOW1TMAT18YlNs1iO7trJQrx0H8dVSrzLCPuSe65eTGHuE1VmcL0afDNRalZHMrGug/h8TZpq9H00/lSGoP9dA3zAglvDoyQVJqNdG3rIt/k8ysNZbI444et9BG+/8OMk5oHb9LkudIk7lK3de3Kxit2u31+JRH6EIIC3cVfYTat9SvmGmlj+PdvobJl1M4gGz9UX8mLUeV+nU5Xy/FEGgJ0ooqF3VtmU9qG0HJOQq2EPmXuF26oNnMabR1FQb1POmvLmTTTQWTrZDaJO0Ye8qUktxUSu/9iRZvADbA8Il/WEY4+hcqroCL26AbGZaE2JvPwlWi2INbMmjkPi+TInMrAV2I3ZOOeuVJOTknjetzjQG79WKlZ0r47YCQYQ3ou5GLu88lAVdkaMMbTBhaA/BeanJtauzFtoCbWfxnwq3RzBEMAI5SUczZVG9dj4cAUkSZsedC/fyGe4CwuEIjYWAvwSXskVRdu2BekjW3ZEx/OhWIubG7M5mzpEalVRi5Ln9vPIufjHOfL2tZTuIvHhz9tu0eXkJyF0UzoggJQSuYGpwVWz5HGe8ePJ/1avXnFMh/AJL7zWAfj2tTIM/XHJpN2z0Tw9iz/090jlh26cHzdvG0baNBdkhx+E5hXyYZxqcueNfMkl+T/1mSfQoOU0GwipA2n3SVXFhjUiQbvDBsIs4qX8AxpKdjf1a2lBejULAukwMEZPoDrKS
+ YrNfTxJr
+ Yd2G8s2mhCjSKb0RCg9IyKWLcgj5XupsZ5W3GryfdRF7SQqBeoTV816m8K7C4QxhjQ/HSVLF3LvfMx1uxmL5Zk9Nv5+AEONWPgdiKdvHyUMtAP/sQF0aqRkXPuO3M/wwcCPktC3yz+8guFlXyOO7RE/s5AcIngTuwjP5sWbtJaDAmoe8ASmJtyiRe94qRG/XvlgikCFrtrqd9JE3rjbOmw2XGKJr3kIFGT+5+g1rCanlt39AVng/z8BM6jnAt+QEI1uy1mlpy0Zh8wefNY4/NNqy2znT2JG/81blYg7ki1PjrON5uVV5pqLlr/TE9FGGgUZd/8vYy/So1QCpwn4lfGi4dJ7gJd7Ug71jtEyRKUPZ7mTVseqeFSdh/TxS1wdPX/Qa3oMgkiFSeMmB7+mQbnq8t2tELtHItVISougd2rTZGX8dQIE/uTMy/2A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,106 +125,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ and Lian,
+On Tue,  1 Sep 2026 22:47:42 -0700 SJ Park <sj@kernel.org> wrote:
 
-On 9/1/2026 5:23 PM, SJ Park wrote:
-> Hi Lian,
+> damon_max_nr_accesses(), which is a previous version of
+> damon_nr_samples_per_aggr() before the renaming, was wrongly returning
+> zero or random overflowed values for extreme intervals setup.  Commit
+> 35d4a3cf70a8 ("mm/damon/ops-common: handle extreme intervals in
+> damon_hot_score()") updated the function to return correct or more valid
+> values.  Add a kunit test to ensure it is working as expected.
 > 
-> On Tue,  1 Sep 2026 14:58:35 +0800 Lian Wang <lianux.mm@gmail.com> wrote:
+> Signed-off-by: SJ Park <sj@kernel.org>
+> ---
+>  mm/damon/tests/core-kunit.h | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
 > 
->> Hi SJ and Asier,
->>
->> Thanks for working on this and for providing the server results.  I have two
->> questions about what hugepage_mem_bp is intended to represent.
->>
->>> Introduce DAMOS_QUOTA_HUGEPAGE_MEM_BP auto tuning. Add a new DAMOS quota
->>> goal metric to measure the amount of huge page consumption to total
->>> memory consumption ratio.
->>
->> First, NR_ANON_THPS tracks anonymous PMD mappings, while NR_SHMEM_THPS and
->> NR_FILE_THPS track PMD-mappable page-cache folios.  Therefore, splitting only
->> an anonymous PMD mapping can change hugepage_mem_bp without physically
->> splitting the folio.  Is the intended metric PMD-mapped memory or physical
->> large-folio memory?  Clarifying this and adding a mapping-only test may help.
-> 
-> Good point.  I was just missing this.  So, hugepage_mem_bp is not accounting
-> anon mTHPs, right?  Since hugepage_mem_bp is for general hugepages, I think
-> this is better to be improved.  Seems using MTHP_STAT_NR_ANON that is exposed
-> as 'nr_anon' can be used?  Because this is an improvement rather than a fix of
-> a bug, I think doing this as either a followup or new version of this series
-> are ok.  Asier, what do you think?
-Agree, I will submit a new patch to fix this behaviour and account for mTHP.
+> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+> index a4164ac489a61..d0bed01a5b7fe 100644
+> --- a/mm/damon/tests/core-kunit.h
+> +++ b/mm/damon/tests/core-kunit.h
+> @@ -625,6 +625,27 @@ static void damon_test_set_regions(struct kunit *test)
+>  			(struct damon_addr_range[]){}, 0, -EINVAL);
+>  }
+>  
+> +static void damon_test_nr_samples_per_aggr(struct kunit *test)
+> +{
+> +	struct damon_attrs attrs = {
+> +		.sample_interval = 0,
+> +		.aggr_interval = 0,
+> +	};
+> +
 
-Lian, thanks a lot for the review and pointing this issue.>>
->> Second, the metric is global while a DAMOS scheme can target one process.
-> 
-> Actually it can target multiple processes if those are in single DAMON context.
-> 
->> THPs from other processes or NUMA nodes can satisfy the target or dilute the
->> monitored process's changes.  Is this intentional?
-> 
-> I think it is intentional.  The user should have the control on collapsing
-> hugepages, or believe the uncontrolled collapse mechanisms.
-> 
->> If so, documenting the
->> scope and testing a background THP workload may be useful.
-> 
-> More documentation and testing are always welcome :)
-> 
->>
->> The temporal results approach the 10% and 25% targets, while the consistent
->> results overshoot the 10% target to about 20% and 45%.  I would describe this
->> as control-response data.  TPS, latency, TLB, fragmentation and collapse CPU
->> data could further show the workload benefit and cost.
-> 
-> Yes, those would be helpful.  That's not mandatory for this simple change in my
-> opinion, though.  I would let Asier decide whether and when to make and share
-> such data.
-The idea of this patch was to introduce auto tuning. I think I submitted thebenchmark results when I sent the DAMOS_COLLAPSE feature.
+Hi SJ,
 
-Anyway, it shouldn't take long for me to get more data. I think it may be useful
-for people to know the actual results in real application.
+A small question about the first test case.
 
-SJ, what's the best place to publish all those data? I believe you have more
-experience sharing this data and which platform is the most useful one.>>
->> If I have misunderstood any of this, please feel free to ignore these
->> comments and correct me.
-> 
-> Your comments are very helpful, thank you for your review and comments, Lian.
-> 
->>
->> The enum, quota-goal wiring and sysfs exposure otherwise look consistent with
->> the existing DAMOS autotuning framework.  I consider the points above
->> follow-up questions about semantics and evaluation, rather than blockers for
->> this series.
-> 
-> I agree.
-> 
->>
->> For the series:
->>
->> Reviewed-by: Lian Wang <lianux.mm@gmail.com>
-> 
-> Thank you!
-> 
->>
->> Please feel free to Cc me on related follow-up patches.  I am happy to help
->> review the code.  Besides my own DAMON work, I have recently been reviewing
->> and learning from other DAMON and MM work, and I would be glad to continue.
-> 
-> I'm curious if you and general reviewers need or prefer to directly be Cc-ed.
-> I was naively thinking people can search and review DAMON patches by
-> subscribing to the mailing list or using the archives via lore.kernel.org like
-> tools.
-> 
-> 
-> Thanks,
-> SJ
-> 
-> [...]
+Both `sample_interval` and `aggr_interval` are zero here.  Since
+`sample_interval` is the denominator in `damon_nr_samples_per_aggr()`,
+would it be better to keep `aggr_interval` non-zero when testing the
+zero `sample_interval` case?
 
--- 
-Asier Gutierrez
-Huawei
+This would make the test explicitly cover the divide-by-zero protection.
+If the `aggr_interval == 0` behavior is also worth covering, perhaps it
+could be tested separately.
 
+Thanks,
+Kunwu
+
+
+> +	/* Zero aggregation interval doesn't cause division by zero */
+> +	KUNIT_EXPECT_EQ(test, damon_nr_samples_per_aggr(&attrs), 1);
+> +
+> +	/*
+> +	 * Too large aggregation interval on 64 bit system doesn't cause
+> +	 * overflow
+> +	 */
+> +	if (ULONG_MAX > UINT_MAX) {
+> +		attrs.aggr_interval = (unsigned long)UINT_MAX + 1;
+> +		KUNIT_EXPECT_EQ(test, damon_nr_samples_per_aggr(&attrs),
+> +				UINT_MAX);
+> +	}
+> +}
+> +
+>  static void damon_test_update_monitoring_result(struct kunit *test)
+>  {
+>  	struct damon_attrs old_attrs = {
+> @@ -1736,6 +1757,7 @@ static struct kunit_case damon_test_cases[] = {
+>  	KUNIT_CASE(damon_test_split_above_half_progresses),
+>  	KUNIT_CASE(damon_test_ops_registration),
+>  	KUNIT_CASE(damon_test_set_regions),
+> +	KUNIT_CASE(damon_test_nr_samples_per_aggr),
+>  	KUNIT_CASE(damon_test_update_monitoring_result),
+>  	KUNIT_CASE(damon_test_set_attrs),
+>  	KUNIT_CASE(damon_test_mvsum),
+> -- 
+> 2.47.3
+> 
+
+Sent using hkml (https://github.com/sjp38/hackermail)
 
