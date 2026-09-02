@@ -4,138 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2BE6C61DFD
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 04:05:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 962A0C624D0
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 04:06:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 74B366B008C; Wed,  2 Sep 2026 00:05:19 -0400 (EDT)
+	id B1EC76B0092; Wed,  2 Sep 2026 00:06:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7238D6B0092; Wed,  2 Sep 2026 00:05:19 -0400 (EDT)
+	id AF77F6B0095; Wed,  2 Sep 2026 00:06:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6395E6B0095; Wed,  2 Sep 2026 00:05:19 -0400 (EDT)
+	id 998F26B0096; Wed,  2 Sep 2026 00:06:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F9246B008C
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 00:05:19 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 54F101A073F
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 04:05:18 +0000 (UTC)
-X-FDA: 85167482316.16.3780769
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9AC351C0005
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 04:05:16 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Gimvmxs5;
-	spf=pass (imf20.hostedemail.com: domain of hughd@google.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788321916;
-	b=Htoo3x0TLmq2IBWh/SJ2x5AG7EXlrxkOnqCMc7TfuEEOHsqE4YsZYEvLvDkY5n7QthGXPw
-	VCE7CfPv/B2DgXwedTETZLTxSj2OMBkbOX5csSgGqkchzNnLjvoYlBOm4BFc5WSHv2EKzO
-	Uq3VPfe0yxEuWO7ePtx5U4SqjUsnshw=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Gimvmxs5;
-	spf=pass (imf20.hostedemail.com: domain of hughd@google.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CD106B0092
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 00:06:54 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E7FD2A074C
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 04:06:53 +0000 (UTC)
+X-FDA: 85167486306.29.5223638
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5457480007
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 04:06:52 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WZ1AADmm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788321916;
+	s=arc-20220608; t=1788322012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sggsj0swIY6SNlhR5Rlr4w6l9mVN7Mj25L4G93WgJu0=;
-	b=PelcFa1SBU3TmMP694iKqjIXpY9L4h7GaKKyqMujDc0a0PjltRz8LQemve88ELn+9q6e9g
-	Q7bLkj415EGaxTlGpFMTc2Az2926auezSaifhv4BAkDJD7ISb+TH6g/h/sXdTc51cPEux0
-	fE4NTFeRrhPKUk2LsSO9KaPuEUsS8+0=
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-861feb6d61bso7918837b3.2
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 21:05:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788321916; x=1788926716; darn=kvack.org;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sggsj0swIY6SNlhR5Rlr4w6l9mVN7Mj25L4G93WgJu0=;
-        b=Gimvmxs5K+QuNv/52D1yG4gWNjPwDv0JBm1D0+BKuYhI2LBbv8cfVScD8WWVzKcs58
-         g5nAvGVS2/Btyue8oJoaVegHWlkHMcWxmxfJ697R1CMLBf6BAyYmYL3F1oZMM+F8REdp
-         9eyE4Jvn896rx1VNmXcK0Rxi8YtgAmoJyfy+O1YNvKrl2haA9jKeGtat0o6O293mTRjb
-         oJ0IwsYpzaEGLHMh9PuezaqoUradGpSNXhHZ9bYgbTEgt87zdhkkdezO2bWrC6ToMXV2
-         rkerTknohzwM9vOkN20qNFOJh9xdU+saJ05Mr/db4b/3+dBWKHB66mTr+2OUCaaccqCY
-         Thzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788321916; x=1788926716;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sggsj0swIY6SNlhR5Rlr4w6l9mVN7Mj25L4G93WgJu0=;
-        b=H4ck0QR7qbwmcxIiJFnMaL3pIFDTTE+7uop42u+yClNgIhh6roj7QWyaXTnwI2xHGJ
-         n+d3TBbbzEN3vLpAONu8g9AtMErFtWrmOakMd3wA1PhPUODUqLKrjjHpR1AXzlCO39mU
-         z2/+ZQ66A3nULWggD8GhNdt1PCs++nUtbA3we4pwLgiQl/pdiVyXbqF8x9HtBQfm7/4B
-         ZHdNHRgZuBkrqec5aO/CuPK488jcJAFpyURrPg+//eEOe2PTv9oWulAz4LPJkM7kSsgr
-         h495VIcsfw0KhF4IL8rYv36qJuTiKi1wkxYxEIVrznTRke0kTVqQX2oogumnmGY90O6S
-         /9Bg==
-X-Forwarded-Encrypted: i=1; AKwUvBxXcGpdAdpNEyHr/OLuYrAOYWMiReuGQeEgINKGi4LaEss5lcD7IFYCuc27yHmaagodBBCbLZsHjA==@kvack.org
-X-Gm-Message-State: AFuF++nrTSaPjnV7aSr9l0ipIUmfGBly7EwTKL2WvYR3lnl7i303KToV
-	Rt1xzP5Ypo1FFeG90LmaXQwLpRZ2ejsrJY8c7oipuiIpapPU9JGCDaQhUBZo6sZ9Ig==
-X-Gm-Gg: AYBFou2WInh3Po/jgWD8HiM6nf89BNtr/I/C+eTGbFroyRJzP6Ar1lSU855LMEzEt+w
-	9M7Vbs9pBKhVjK5QR8aAZ1fs69WF/lxL6XpR02x6m72fXjt2f8GdBY4sqqbVtqMcEpS6INaQpJT
-	55L/LMnFJgKIAO+TJbXLukKaxeHpWS8pwc0736T/ctMxTjs8yBTKcpV0Q5JDbTJWJmLTUM6aCkl
-	2zIkKKqg/oN0elPwyBzF5g/9GoKlDhgYB+oa7NhLFMprRTYVmsyNP7FmGq3cTm/hFDsCB8ALG18
-	jU7Q9WwVcx4F1MlXcEkqtmkkZW/DoSYJXvKZShmvGA32qe279+Xj4GWBgH6RmpKduXc+b1dyVXy
-	IcItZS8UN632FEdFfIDe1+m68Wt9GYU2WdktVUgx1pXJ3XKbhOyVvpxy3ElBr88PGa1IcqJqd77
-	ixeLYStnKgNcgbSKn9EV7xRJcHcti44ma0q384gZs6tOjhLCh1YJub/0JKN27Uvy/8I9uhOUfd7
-	4sLKre1EZD/dycbPcCYwCQLIpjkOsxRzjJ6T8eCSD2h4Vvn
-X-Received: by 2002:a05:690c:81:b0:80b:9f4e:a70 with SMTP id 00721157ae682-86c526f66dfmr8698707b3.26.1788321915018;
-        Tue, 01 Sep 2026 21:05:15 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-86c1975dd91sm8720547b3.49.2026.09.01.21.05.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 21:05:14 -0700 (PDT)
-Date: Tue, 1 Sep 2026 21:05:09 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-cc: Ackerley Tng <ackerleytng@google.com>, 
-    Alexander Viro <viro@zeniv.linux.org.uk>, 
-    Baolin Wang <baolin.wang@linux.alibaba.com>, 
-    Barry Song <baohua@kernel.org>, Binbin Wu <binbin.wu@linux.intel.com>, 
-    Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>, 
-    Christoph Lameter <cl@gentwo.org>, 
-    Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-    David Hildenbrand <david@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>, 
-    Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>, 
-    Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, 
-    Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-    Leonardo Bras <leobras.c@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-    Marcelo Tosatti <mtosatti@redhat.com>, 
-    Matthew Wilcox <willy@infradead.org>, 
-    Mel Gorman <mgorman@techsingularity.net>, 
-    Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>, 
-    Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-    Oscar Salvador <osalvador@suse.de>, Peter Zijlstra <peterz@infradead.org>, 
-    Qi Zheng <qi.zheng@linux.dev>, Rik van Riel <riel@surriel.com>, 
-    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-    Shakeel Butt <shakeel.butt@linux.dev>, 
-    Suren Baghdasaryan <surenb@google.com>, 
-    Vlastimil Babka <vbabka@kernel.org>, 
-    Yang Shi <yang@os.amperecomputing.com>, Yu Zhao <yuzhao@google.com>, 
-    Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
-    linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-    linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 04/25] mm/fbatch: lru bit set, no extra ref, while folio
- on per-cpu fbatch
-In-Reply-To: <e0887417-85a7-453e-e733-561dc11db08f@google.com>
-Message-ID: <04101fb5-a723-1fe0-37ee-5e62b5fbb9d7@google.com>
-References: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com> <e0887417-85a7-453e-e733-561dc11db08f@google.com>
+	bh=rCDBGWhjOow6BVaXEWKL/bvhPOmCcwouuBw7qgvnDDI=;
+	b=WkFQ7tIRJevVu330QTLMW5tAYJrbVTuaOoYBYmKRUh2JxY2nXh7PwYq14rtw6BAhRX3vCg
+	HKR815v6C5UaLZHUuhLMzu1+EVjhZi6WhAO2AQoacFgKLFFAoaf4AbKfmpUk7WOdSqLs7z
+	JfLmKt9iB4mlGh8PRG0ww7VRFdIyHMY=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WZ1AADmm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788322012;
+	b=L6z7UiTh8gDKOODIo+FFHIEQHDXH8m+8rQ2GDL1ku9wfMd263lwNncoXNh6gGXYJE4A1xY
+	ZfVCW1DbtDzZRQtrNiXBFCO2X8zyH180S/nGevqo6ibE3WHy1FoZlKv192JjYTgDkp3vQx
+	TTlHGGW5B+ltfJBn+KTvZT6HfsmJWhc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3E3BD600C8;
+	Wed,  2 Sep 2026 04:06:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A27D81F000E9;
+	Wed,  2 Sep 2026 04:06:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788322011;
+	bh=rCDBGWhjOow6BVaXEWKL/bvhPOmCcwouuBw7qgvnDDI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=WZ1AADmmQSSKkceQoWmcRuNr2I+ritEKK0lzbaH2WL8WAtsQRXEA/HP/1V8mTLmA4
+	 wY9glCWTT9p+9d5dc10HVqE3WbWRdPCriT4WIU46oMIVfv/hsHYGOuvvWH2Ehbzv2c
+	 T4zotcImWkaRHriM4rztuOff+Szmh1twI+Xs3XaM4NC1Ja+1sU4PUEK3jPAdsMIU6+
+	 vqlM/Sd/wF7jDMqQrJEDfPoVKoEB1IaamSynXftgSEe1Ax8mgFUblaS1Jckrt3Bvgw
+	 KVq0umxJ5deFr4I8vpZCO83MgKUIYiqS7iVOqcvdZlC1UJag7Bb8sVJ2wUQISczts4
+	 YnhepOW6Ry6yg==
+From: SJ Park <sj@kernel.org>
+To: Nathan Gao <zcgao@amazon.com>
+Cc: SJ Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	baolin.wang@linux.alibaba.com,
+	david@kernel.org,
+	ryan.roberts@arm.com
+Subject: Re: [PATCH v4] mm/damon/ops-common: use a page-aligned address in damon_ptep_mkold()
+Date: Tue,  1 Sep 2026 21:06:42 -0700
+Message-ID: <20260902040643.83720-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260902031655.84721-1-zcgao@amazon.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5457480007
+X-Stat-Signature: 61og8jczqu8adqqhtp539qn9tjo9dgp4
 X-Rspam-User: 
-X-Stat-Signature: d6rpdptceiq8en54s9w5wh8ts3tfwapw
-X-Rspamd-Queue-Id: 9AC351C0005
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788321916-580037
-X-HE-Meta: U2FsdGVkX1/aInOzapA+OhJeLCp17lZDTY9dmln3MQdHOd8YByyp641YiKTYWxydDTdXCKXY3W+UUpFSe74sTtfmFpULjhZxhMxsgUqM/WJtw8ZVB08L9tfha9W4IravrrSCzkvZvT+5Gugmlr/09SR5yKb1sb/LJyju6kQjZea0eAwILi/jsefVsSlXWEImZb2HTe6phubXQ52BbAT38QhQK3yHmUnTsbvG2idHqDEXZprJ9kMIZoLPpIgZtDnDEGs15J4pTY6yNmuCDXucaMpcIU0vuktFnbE4bV6ZnQpZlUNuD4tRIngw88Hrbys51w2AWqC8UDUq2/8CKtmylyJrSx5IoiYn75mhFNRILrMlQHO9lbOJPoCmyYOVxJ7rY3FnmvB9V1IM32n1SoQQCGsiBrIL1kl9inNnx25g+1fl6ftc/V7Q9FQ2sw/li/hvLZDf5tNB1fNZxB6UGDPxmBHTN5kD7QWJUHXLUu26+fvJ+uK9TPUT7YdiUGYQFVnIg4p+/YjkSzxBBAfhjCQtuCRfiF3zsx4Zy5e8zxf9Gb5VqREaKXYN56jhyNNK0I8hMp7lYo42lpFGS5Crc0A2wu3D9eItjsok8e2urPQG92N52SCBBB/l2cWVq2vU9uBNmLsBBOiOqC/+68qpX5AkK3Bdw4OWqvayFxM4tNllrCt/wFkHO6ZTneeBJu6I/keE/ua3CRXuxTuJTfmshKtbHMmF0oZz61rWzi0/oyG6V60monKqSwpjroxxB9AqRDFs/lRU30BVaWWR7VolD3s50raCdFGkF6DJ/BLOE2Y7SeAiKomUOhtjZ5craFBih4945JvBALo2mRbVDFknT87LJ0CF8SKxrkvFpBJDRZWuq7R/upbQxt7+wA8yB6KKiKGZ7bIn6dsZYQ4fAN8swWGNUfHdISdlWgrM3o3SQRmwvm2NEVKUPxhCCKc85svp7vSo0Jk8I8FsrI1alwjw3df
- sCBX+bpl
- dpnscVjS4JORZw9iyTsTtC0xR/9XVMlC7A+AsRZS1pIptFSwpLuuA6QFKqbGRqDSWsKn+WTFlhI1P8ZKP8tN8s3PLLnY5lAGZsV6D3bA/4FOsgiWJdz1oIbWiZmoqB8Ge9xNWXbJw1bjkGAPsuEpmWa/2Hp2Pv/21UD+9YXrqO70skmi6NhPtYMcJIAzkFk0UIQF4WV2W321hNnpRIXTzY5Iu1zzImALSm68Mv3zjaIBRpQtm7IojwVUwbCNwAXVgvF7xd4fV7RvLjXJi28flAYnz6XctC/w0G/ow/S80ZiPrLomIPqbaX6rMLbt4cnCiS1z6exgyoHWaT3E6ct5xDHjtMTjVfNcpMMW+VwELo1Jzg5tK2Tl2VGg8vSJbmr3r1VK7XRwWX3KX/1/5uBoSmeEoJUxf0WJn2acSu37M6dR++2mjCASXpGVRag==
+X-HE-Tag: 1788322012-536759
+X-HE-Meta: U2FsdGVkX19mZG/6ki5NLW0VHgETgSftgOKqpq53cLwtgf4SWDWTBeSl0PQ1Lu0wHin41xXe8G5H/Amze1ETWEYxvPXHluh9MFQ664SdFqVILdEBx1Gou6IFh1DqY72PDHtmpDhL1lxM/0I8AV6LPplsNp4ltXiLyOLCbZj3tGX1NEQqabMQozE/y5jhBJlfpghnVBoYjLtyOeVIbYb2MRrZQlFvZ+mFw+HNOgMaU7eSI2q84dBm4K6n4EMeSXHiqb2Ipe6sb8E8GhOJ6Mp3A0gsbbInHJheiNYiJiq+rXUOubQU8/66pzpcXu6k0vlWE2WX4AqZob+love5kP07g0XSbXpkA9nPHIcVimls6QUt/2s4eoM+I0uTo7Ev9GR5uXgZuiaoWhAwcdb+apwI1jwy0NDuQpTY3hkVlJGI2o+3e5Gm63DrPXeEnnoJz1vetVup0yaPjPEos4jBI5YawjBcVvdPRlODOLFGcxeWf2gNv45dxFqwhmlCJ1s8r2Z8LX8JTGxtiW4YCTM/NXTN7w9+fcW6wxLzRm/Ge9pzGFgnRM/P+1rjw17nqDrUMt9dtwjyfVYHg6vWy19jFdoAkTPahEVbwSU75iO4PRKcuPkyH5zMdnQcg+6BORwGHr9AkjF4b/6WdZIzEpV1SUScP7vEWshaUGalz4jyou5EoOjMJ9iknNd0AEFPaKUEG9hEHITJgmZsmkL9EPRJr9uAXLgnYY6StlRzPCTHFGKLm/x52xtOcV0+F4ml0stks/9JEDSVqVpu3xbvTqQi7F8dRxO1K0BclK7bNiaSgXuCLn88XJ3KxGVakMro4K+axr5LdC887ryY5V4amuUq85/3Wf/OLDKMPXKyBLqKRIFBlL/oAKQP+7uv7oPpMt/+Nx5ohW5zLpkL3/rNPKrq6Uis6zgnl4oU2pitsP9Ch1huAuLSKpHmbPfPvmEAo6gQ4WBPYXMkMPAwe01ZH02fSs6
+ qarrtTdB
+ eKqKuo22ZsRsJ1B1npBVqRFK5YWyq14qcUFyUmt1p8XF51P3IYDudUjmvb0z+E5PpMRv/hE+wc9YEN0XUqsxx8kFJHR1Ulmj7+K16QPYpVLRB3xwl0amPcyyMR9MfcUk+J+nddZm/DBsNHmLfuTD/GWlWBamefBWm2rrH176iMzSxWDkaN86JVtJRbBTfhkLiJ1Ku5Llec9mPX1dZw9Deq6m0bpM82x6i95Z59nOJrevOl+0t96Pw8e0pb3FyFcJSodv9Ds5SHg3XGHOhS8/oI1B8C/VEMqG+m1WKuzNyMuUmDGfp7Dx2gBvaSOU0seSJMGJ3tF+OszuphELB71sGn1fQTjJrLH8gn7Kf0UskYxMD4xsH2sQIEf2WBpzFGhopsP9+ZlpeFubuB94DfEh0hO3/MS075LVr1Ycb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,37 +96,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 24 Aug 2026, Hugh Dickins wrote:
-...
-> --- a/include/linux/mm_inline.h
-> +++ b/include/linux/mm_inline.h
-> @@ -343,6 +343,23 @@ static inline void folio_migrate_refs(struct folio *new, const struct folio *old
->  }
->  #endif /* CONFIG_LRU_GEN */
->  
-> +enum {
-> +	LRU_NEXT_NEVER_TAIL = 0,	/* Used by a tail's compound_head */
-> +	LRU_NEXT_BATCHED = 1,		/* Not used by any aligned pointer */
-> +	NR_LRU_NEXT_FLAGS
-> +};
-> +
-> +static __always_inline
-> +bool lru_add_del_folio(struct folio *folio)
-> +{
-> +	/* BUG_ON(folio_test_lru(folio)); */
+On Tue, 1 Sep 2026 20:16:55 -0700 Nathan Gao <zcgao@amazon.com> wrote:
 
-That was a good statement of intent, but clearly I never booted
-a system with that BUG_ON uncommented: it actually needs to say
-	/* BUG_ON(folio_test_lru(folio) && folio_ref_count(folio)); */
-because once the refcount is 0, __page_cache_release() chooses to
-lruvec_del_folio() before non-atomically clearing lru flags.
-To be fixed when respun.
+[...]
+> Triggered by the full 7.1/7.2 kernel selftest suite on arm64 (EC2
+> c/m6g.4xlarge). The kernel sometimes crashes at or shortly after the
+> DAMON test.
+> 
+> What the overrun does depends on the page that happens to follow the
+> page table, so there is no single signature. If that page is read-only,
+> the write faults in the sampling path itself:
+> 
+>   Unable to handle kernel write to read-only memory at virtual address ffff0003c5d2d000
+>     FSC = 0x0f: level 3 permission fault
+>     CM = 0, WnR = 1, TnD = 0, TagAccess = 0
+>   CPU: 10 UID: 0 PID: 3487 Comm: kdamond.2
+>   pc : contpte_test_and_clear_young_ptes+0x70/0xc0
+>   lr : damon_ptep_mkold+0x1e8/0x1f8
+>   Call trace:
+>    contpte_test_and_clear_young_ptes+0x70/0xc0 (P)
+>    damon_mkold_pmd_entry+0x150/0x170
+>    walk_pmd_range+0x110/0x2b0
+>    walk_pud_range+0x10c/0x208
+>    walk_pgd_range+0x134/0x258
+>    __walk_page_range+0x98/0x1b0
+>    walk_page_range_vma_unsafe+0x90/0x148
+>    walk_page_range_vma+0x28/0x40
+>    damon_va_walk_page_range+0x114/0x2b8
+>    damon_va_prepare_access_checks+0xec/0x1a8
+>    kdamond_fn+0x534/0x770
+>    kthread+0x128/0x138
+>    ret_from_fork+0x10/0x20
+> 
+> Otherwise the page is writable, the PTE_AF clearing succeeds silently
+> and the damage only surfaces later, in whatever happened to own the
+> page, so the backtrace is unrelated to DAMON and differs between runs.
+> 
+> Pass a page-aligned address to the ptep_test_and_clear_young() call in
+> damon_ptep_mkold(), which is the only place DAMON can reach
+> contpte_test_and_clear_young_ptes() from. Nothing else sees the aligned
+> address, and r->sampling_addr itself is left as is, so the sampling and
+> region bookkeeping semantics are unchanged.
 
-> +	if (!(folio->lru_next & BIT(LRU_NEXT_BATCHED)))
-> +		return false;
-> +	folio->lru.next = LIST_POISON1;
-> +	/* BUG_ON(folio->lru_next & BIT(LRU_NEXT_BATCHED)); */
-> +	return true;
-> +}
-...
+Thank you for finding this nasty bug and sharing this great fix, Nathan.  Also
+appreicate again for your revisioning efforts that accepted my humble and picky
+revisioning requests.
+
+> 
+> Fixes: 6f0e1142173a ("arm64: mm: support batch clearing of the young flag for large folios")
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: David Hildenbrand (Arm) <david@kernel.org>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Nathan Gao <zcgao@amazon.com>
+
+Reviewed-by: SJ Park <sj@kernel.org>
+
+> ---
+> V3 -> V4:
+> - Align only the address that is passed to ptep_test_and_clear_young(),
+>   rather than @addr for the whole of damon_ptep_mkold(), so the
+>   mmu_notifier_clear_young() call keeps seeing the sampled address (SJ)
+> 
+> V2 -> V3:
+> - Move the alignment into damon_ptep_mkold(), instead of aligning in
+>   damon_va_mkold() and damon_va_young().  The ptep_test_and_clear_young()
+>   call in damon_ptep_mkold() is DAMON's only path to
+>   contpte_test_and_clear_young_ptes(), so damon_ptep_mkold() is the
+>   closest place in DAMON to the function that requires an aligned
+>   address (SJ)
+> 
+> V1 -> V2:
+> - Align inside damon_va_mkold() and damon_va_young() rather than aligning
+>   r->sampling_addr itself, so that sub-page sampling addresses remain
+>   possible for future non-PTE access check primitives (SJ)
+> - Point Fixes: at 6f0e1142173a instead of 3f49584b262c, since the
+>   unaligned address was harmless before that commit (SJ)
+> - Describe how the issue was noticed and what it does to the kernel (SJ)
+> 
+> v3: https://lore.kernel.org/all/20260901201001.33271-1-zcgao@amazon.com/
+> v2: https://lore.kernel.org/all/20260831221151.50561-1-zcgao@amazon.com/
+> v1: https://lore.kernel.org/all/20260827193821.46115-1-zcgao@amazon.com/
+
+FWIW, I insisted on this version to make clear the intention of this pin point
+important fix.  I still believe this minimum and clear change is better as the
+hotfix.
+
+Meanwhile, to v3, Baolin mentioned it would be prefered to keep page alignment
+from callers.  As I replied to the comment, that makes sense to me.  And it
+seems some DAMON code has unnecessary unaligned address usages that could be
+problem in future.  I will try to revisit such DAMON code and fix/improve as a
+followup.  As a result, the resulting code might more look like v3 or v2.  If
+you are interested, please feel free to send patches, too.
+
+This patch is applied to damon/next [1] tree.  If this patch is not added to
+mm.git in short term (~2 days?), I will ask mm.git maintainer (Andrew Morton)
+to pick this.  So, no action from your side is needed for now.  If it seems I
+also forgot doing that or you cannot wait for my action, please feel free to
+directly ask that to Andrew.
+
+[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+
+
+Thanks,
+SJ
+
+[...]
 
