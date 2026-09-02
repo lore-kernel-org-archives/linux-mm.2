@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7C57C61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 10:17:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60F30C61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 10:24:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B18576B00A0; Wed,  2 Sep 2026 06:17:05 -0400 (EDT)
+	id 6E02B6B00B1; Wed,  2 Sep 2026 06:24:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AEF846B00A1; Wed,  2 Sep 2026 06:17:05 -0400 (EDT)
+	id 690DB6B00B2; Wed,  2 Sep 2026 06:24:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A317F6B00A2; Wed,  2 Sep 2026 06:17:05 -0400 (EDT)
+	id 5A7946B00B3; Wed,  2 Sep 2026 06:24:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 810D86B00A0
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:17:05 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 20F9114016D
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:17:05 +0000 (UTC)
-X-FDA: 85168419210.01.6A0A438
-Received: from mta1.migadu.com (out-240.mta1.migadu.com [95.215.58.240])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3F311100007
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:17:00 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CU3ytxJI;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.240 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C5F06B00B1
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:24:38 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A132A16017C
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:24:37 +0000 (UTC)
+X-FDA: 85168438194.25.171C16A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 0699A180006
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:24:35 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EOvew3l8;
+	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788344676;
+	b=Tk5Z9NEKe8dtUC4sIGzDL62xSIobcR/zXB/2FPfChsfMWGSPTZXBp06qkdSh4Wesp/Rzis
+	SXqDLhN4/QzrEX+UNwQQBDuq3MhWRT7XY/OalUcnFc3FD93Re1wGUIZlP3+yRWRBEcMmWx
+	+FZsJ0YAUkREKtxgwxp4vV6WLV+Dcfg=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EOvew3l8;
+	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788344221;
+	s=arc-20220608; t=1788344676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=htKc8hs4ZStXVA1Cy8EA/kBreVsodNRZqCypYZ+gXxw=;
-	b=r0FQIO/8va/p4MF0SxGWO96k3eNSERwVlgCLIuaaa9x1vnfnYzmuvAHOc+5XoCE+sucJnN
-	7vpdeUeI2Aj20us5mHit7SeTVuHtpx8ViY8YEeWTMqQ0hvhRcH/H4BlUVKqr6NVajmyTty
-	A8RLk7mAPr+4sgHVZnBCKS1B5H23/mU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788344221;
-	b=d6YgdJ26Lvp7C3UkkQ1V+kJDBdeqP8tcZFie0PE6E1mSUJn+82NpgN4WTBFJZ7MmQ4M4x7
-	MYmvvbdAItGsluWhaqtqHkrNQR1+IjVcIZ+wcl7iStbLRkQW/qtIBRFxPEes+0zjNLqlUv
-	TI9+zzexAQIMGVIwQS0peLdj3h/fjo4=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CU3ytxJI;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.240 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=bOFmxMxZ2G90TQ5a51Gad1RBA6G3ru642cr75z4F2CA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788344216; v=1; x=1788949016;
- b=CU3ytxJIrI9sGj1xrKkl99nNiN7qo/kkz6CvoDr5t3F5yNOPwM4InwhL8p2nbzlo4LzxNfol
- WvQJJrjqDDkMNj8v8aNEVawSvCMFySRC0EbNioS8zjoHm5doxq8sn1CVcUvyjVlAYcLm8kJSgf5
- dLTkMjKLyB/N+oIDSlIf8acw=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id aa574cb511f2c5a6;
-	Wed, 02 Sep 2026 10:16:56 +0000
-X-Mizu-Trace-ID: aa574cb511f2c5a6
-X-Migadu-Flow: FLOW_OUT
-Date: Wed, 2 Sep 2026 18:16:42 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Barry Song <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, axelrasmussen@google.com,
-	baolin.wang@linux.alibaba.com, chenridong@xiaomi.com,
-	david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com,
-	lianux.mm@gmail.com, linux-kernel@vger.kernel.org, ljs@kernel.org,
-	lyugaofei@xiaomi.com, mhocko@kernel.org, qi.zheng@linux.dev,
-	shakeel.butt@linux.dev, stevensd@chromium.org,
-	wangzicheng@honor.com, weixugc@google.com, yuanchu@google.com
-Subject: Re: [PATCH v2 2/2] mm/mglru: make retry logic explicit in
- isolate_folios()
-Message-ID: <apf3ivSCu9kQfM9F@fedora>
-References: <20260829074204.45304-1-baohua@kernel.org>
- <20260829074204.45304-3-baohua@kernel.org>
- <apfZQE1X6zGAsBb_@fedora>
- <CAGsJ_4z=A3EGajzL8F5H+0fwyzh3qqMNACEzo20J83m+T8bbZw@mail.gmail.com>
+	bh=NaQwdMaMWyBaW+1JHeOi/GljyUWwMv+cdyTRLLUox2E=;
+	b=cWVr7hQQhvCvghaOq7K4mpFAQZCf9K41EQZvyJKuXLE/XWDfMNHrFb7gvmFCT/09EF7va2
+	BFYdO4NPBCGEVHLBRWa+fHi0l8/kTaCPjvq1l+yPLbuNAc/G9k2XwCGktNMl2O6XzABeTd
+	U0yG4QyGaNgwme9y2e5ZNclqbALr9lE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7431060213;
+	Wed,  2 Sep 2026 10:24:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A9E1F000E9;
+	Wed,  2 Sep 2026 10:24:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788344675;
+	bh=NaQwdMaMWyBaW+1JHeOi/GljyUWwMv+cdyTRLLUox2E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=EOvew3l83e06p6RB76xlMujpso/lVLUdS2hThNW4uCyyf6i7UFiit3bgubPkygPHv
+	 KPqzA3EDTjtV4rtdbGEcjnfYsMm5DAQYgJpXI1EYEoD3C6NWuhbZTs6WgVA/QABcTp
+	 wTPijWfibcwm3MTbrLwzFiJKEqg4Hm11nH5lxr1ZKt4JBafdB0BEshVxv0CKtlfKSo
+	 BJe8xZQH7aO7RZahvxSTk/ozNCsbNVMT34Ih1adzBGId7GzH0HLYj9372wV8tbfcDD
+	 Sf7DFcw0BJhB6VkjNsh7clAoTm9Gp5buJhpP7Cj3Y5svOrMPVQSL2BqvecbEOAi4hI
+	 pjhLLko5zWpng==
+Date: Wed, 2 Sep 2026 11:24:32 +0100
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
+	syzbot+acf142088e0182172e58@syzkaller.appspotmail.com, ThangNN99 <ngocthang2710.1999@gmail.com>, puranjay@kernel.org
+Subject: Re: [PATCH] mm/slab: disallow kfree_rcu_sheaf() on PREEMPT_RT again
+Message-ID: <apfwshahN_C6jBSn@nixos>
+References: <20260831-b4-kfree_rcu_hotfix-v1-1-4f0fb882638b@kernel.org>
+ <20260901073339.uyKHXWCX@linutronix.de>
+ <47aa459f-27d5-4b2f-9eb9-36ebca63d890@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4z=A3EGajzL8F5H+0fwyzh3qqMNACEzo20J83m+T8bbZw@mail.gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 3F311100007
-X-Stat-Signature: c4qn5rdjedcujgrcagpb3bo9i17ubfpk
+In-Reply-To: <47aa459f-27d5-4b2f-9eb9-36ebca63d890@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1788344220-475168
-X-HE-Meta: U2FsdGVkX1/UEWzaM915Jvq9CWqLlJ7Oj0zQeR6JbY+kt3hU+kHLmrC2IDZOYKoIgo12JTXDMPPE3qI11KsXtYoO50hUOwbzPJ+W1Weg8cHQvE8IEJnEjTxgQ3/0GqfpNU0HvGoTXevJQuONRVsyv34BaHe3s0xVaWfu3FS77u9DtDE6G14bcS2dPhDNAql+QxZP6vKEcTmF8u3pVMdCQdi6FkT8TXHHbQms9WD7bz6CVLjhQqMl5EFpYslKGdPDDquWmWTfmgLYr6ZCOOPke8K6c8K4wXHrf86b/YUSIJCO3nO48VBoAh9bnmN+AdxjxUp4ztNQc9ufDNbNu8GnPNhiFTIapzBNlR/ngurmSSQ9e3gY/HzP7wEJJMuwj9I7bEzZV64nS0YCzLrxQpd6QIlfg2m0gLpMJjTSyfVQubfTwymVSk5CVqDvu/pEeNI7zRIsj12jGZRSGBLlGft0brYpadBNcCtz0c1HXJa9FfGKf5zTa9Tm+6UgOplP3/ejtLt+NSIFr/BcRJUUPN3VTvRqghm1CFtMY7A8ce7+Fbs1VGlwvBQ6oNj26hojB6NVc7FlX+LDj1ePYbAvD73H33c8drgmA4vzwPmAcFeSwzi5whszK1S1gxVYEvK6HZGFJWWZmrn72Akp4ztD/G2jMxjNTKjbOqvM++4hLMjVe16g/s4aKqhq0Igqpkvt3D3N+Cqq+s/x/nPkudmd0+0C6YE3wvsyALE+ZoDbJAI78fBU/hKui4KT20C6DACyN9QrIks+NgHIrSZAZ/WH3Go7FHipjI93eOZCG422gVIfuF/aacGnEIbG3pp1/3vBcqWdoee3041k1ENmeCxdDbPrerszSOnFQMd27A8XlrtJJSxaJWXoRFV8nWtP3sv2ePcj3UgYlqaxbZVUxuO/HKVOvvwboHPpG5jO3SBclTty3QyslPk2kXiyENUN1n7CLWzrcTZ1J9ml3Mk1CDApH56
- VMv4IcWm
- 4nhzVjh+/46CwWBfoDP8r2EiIczCsxXniU3fIvreVPxTuFPLIRqxeGMvDo7Q4psZFkYCR4ad79VhIBbEb8DEsPdnyoP5EDftBSutRojaNssk42syX0NGDEHSE4EQECt6qFtAKCPRXa4Pln8bZ3bb/QyRKxpNm3dTdaYJD3KEvKHl0+Tk1oKO72zoRABEuxppNxYNTRPU7s7WIqrxO6Gog8XynYgmJEIZfqlq621PMXHO8Oa5r2i/d5FcIOteoKQzq2uKMBiDs1yAX4pVrqxTlM5cy5Rs/RPzibdDdZlDCNnkqXH5dvSQcprCCh0LLsCjX3r7apaBspeKFhzrZXnLCteniVNfRL/cAnWgyucNtlaxDiCMrqQ87PZW3AQncSX06tSxXkEYqwY5EDzBHa91FD+KGTpMgsHLp/jWfdEcTEQEjCFfJiXYhDbwL4W9xGbfDIttB
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0699A180006
+X-Stat-Signature: 8i39d3ox61aeakx7nfy57wstfz9q9ie6
+X-HE-Tag: 1788344675-835412
+X-HE-Meta: U2FsdGVkX1/K8aP+/VeJuH8wwU4EUmComR0+M3d0K5skNrgp75etO85FVd0Wpcs6SwOxUA4QE5Zs2dB3ZM9DLwJabVzlWTeTZlx9UhF5F9t1KP7S/zsPN5HrfBU+9NDA4lCdBDgEcu+VUH3R9/FIOOWmYFAqfOQmGySKakTlzvMqlTHcSOoDvx238xtvLFdgo6Zgxl9lMswv29XCWsIaItu22o7bzURjy14htjSulwXVeQHXK+x4Aj1dLj3UmBQN4SCZLquN/iaZOI19clZHdx9pwOYhB4hruRpLME5X79bhGMKBcGPtjKJMVrDjDlfUrLQ3+TCVrD7qRcX4Ued6HaTsGyVmMYZfg77IMcUvq9AlRBppf/kBov3EUySRntG8zh75t18E8yUZ+LLs0eQzwRpgIqY2Yf6ts6TN5WoaRA/yAXRUABT2C8koSB2S23hJfO3QPvvWSWLRhQZxNJCOk4+cruuSSym24I5qkaizrVGa0okzPXAIFqKx26Synsum/WExU/evnpC90Sir6YDi7zbT+r+yafPeBHFGT4+iG+/PPrytIs5ZOsln2HgRxC9FRIEPKymLtyCAF4wG/j+vDUr78rHrCl6CcD5t36Cznbm6NSCoLOeTenw4yjRwyrqKhAOZ+DJ4IpCHgPFLMP2RHs6Hf00P9OiqzxlucJOL9SxxYNXzc3gSnDhsZDvJxMjLKTB82lJPxSHjJw2ScyaH1h26hba4q2Ku4gnlDJn5hBobmNIy59pBY870Q9n+NHizWPozdE0qj2Mjgk7gIoiJ38ju2YmTGfkhW2qKtg4/fMQBCflbVoTjjNFPXijvEN7qvhYmo+0ZE+FkVL1jLJX6iibi02EumLXtDvOBSJwfhjv6Q3ZtHJKdJxnMXjqEi3RyDRxnIzRzjlQCdnJc06apTTYyjn4x8M6uv99oqeW2DIAA7HnBfyF1tib5UkzEzJAnNc4BtqmYB12jq+a0eXA
+ p8pWUlSG
+ hC7/3bOyjeX7cwSwtfz5br4HTGVcMYfJ4dQaJLxHPJ7Mm5JiAW6XZ0za7PPLJ9Yw9lB73JQ4WgZ81/zvZNnzyQRsQOCHhjRUgEP/3Ti5ljlzQpDn1CV6wV20s8nvIYYyXQrApbUo/aSLF+VTc23JTAi4WEvTYOk+s1V6fcg4XWkXxHzi/bzy7V5Mlk2w9XSV6m8XosajHccM4qNRaTzPYnAOvbVfRKmesBjnzaL0qTd/EgOX3wjF7BW+tcWqQzPIiFKJeQ5el9fcKVMgLp6R4Z8VNJllzQEz3TtFQsrNXBUNr8lhKMYvHyA4D01UtIUZ8QlWCjp0XNxPSSv9RTF3Vto8Hp9pJIcZ7etIzPDxT4yc+KZx3dBOI2ogJOEFo/6Zk62trLYSO0W8e5L91sXI8jV52C1p4bJzvyjyd3m8IKNopNAj9g1PY2cdpAQMX7Dm+Y0G9STU8vtbjaUDiLxmFqQXu1Ba2bVjtv3gO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,170 +99,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/02/26 at 05:20pm, Barry Song wrote:
-> On Wed, Sep 2, 2026 at 4:07 PM Baoquan He <baoquan.he@linux.dev> wrote:
-> >
-> > Hi Barry,
-> >
-> > On 08/29/26 at 03:42pm, Barry Song (Xiaomi) wrote:
-> > > The existing mainline code retries the same type once in a rather
-> > > subtle way. `for_each_evictable_type()` may provide one more iteration,
-> > > allowing the same type to be retried if we scanned some folios but
-> > > failed to isolate any due to protections, promotions, or races. This
-> > > patch makes the retry behavior explicit.
-> > >
-> > > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> > > ---
-> > >  mm/vmscan.c | 10 ++++++++++
-> > >  1 file changed, 10 insertions(+)
-> > >
-> > > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > > index 35a233623368..718f59ffc688 100644
-> > > --- a/mm/vmscan.c
-> > > +++ b/mm/vmscan.c
-> > > @@ -4852,6 +4852,7 @@ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
-> > >       bool type_fallback_allowed = !is_single_type_reclaim(swappiness);
-> > >       int type = get_type_to_scan(lruvec, swappiness);
-> > >       int total_scanned = 0, scanned, tier;
-> > > +     bool tried = false;
-> > >
-> > >  retry:
-> > >       tier = get_tier_idx(lruvec, type);
-> > > @@ -4871,9 +4872,18 @@ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
-> > >        */
-> > >       if (!scanned && type_fallback_allowed) {
-> > >               type = !type;
-> > > +             tried = true;
-> > >               type_fallback_allowed = false;
-> > >               goto retry;
-> > >       }
-> > > +     /*
-> > > +      * We scanned some folios but failed to isolate any due to promotions,
-> > > +      * protections, or races. Retry once to avoid a larger loop.
-> > > +      */
-> > > +     if (scanned && !tried) {
-> > > +             tried = true;
-> > > +             goto retry;
-> >
-> > Seems patch 1 and 2 makes not minor difference than mainline kernel on
-> > behaviour.
-> >
-> > 1, if swappiness is 0 because no swap, it will run two times if
-> > (scanned != 0). This is not corner case, but usually seen on some
-> > systems w/o swap device. The 2nd no gain run could decrease efficiency.
-> >
-> > static int get_swappiness(struct lruvec *lruvec, struct scan_control *sc)
-> > {
-> >         ...
-> >
-> >         if (!sc->may_swap)
-> >                 return 0;
-> >         ...
-> > }
-> 
-> Yep. For swappiness 0 and 201, this patch slightly changes the
-> behavior, as I mentioned in the cover letter:
-> "
->  There is a slight functional change for 0 and 201: with the existing
->  code, there is no chance to retry for these values because
->  `for_each_evictable_type()` only iterates once. After this patch, 0 and
->  201 have behavior that is more consistent with the 1-200 range.
-> "
-> I did this intentionally, as it makes the behavior more consistent with
-> the 1-200 range, where we retry the same type once to avoid having a
-> larger outer loop.
-> 
-> >
-> > 2, for swappiness (0, 200), the behavious is minor changed.
-> 
-> I guess you actually mean swappiness (1, 200)?
-> 
-> >
-> > Mark one scan_folios() result as one of:
-> >       iso     *isolated > 0
-> >       empty   scanned == 0 && !*isolated
-> >       busy    scanned > 0  && !*isolated
-> >
-> > mainline:  T(busy) -> T(empty)         -> return   (2 scans, no fallback)
-> > v2:        T(busy) -> T(empty) -> !T(...)        (a 3rd scan_folios())
-> >
-> > Maybe we can go like below:
-> 
-> Yes, you're right. For swappiness (1, 200), I didn't realize there was
-> this slight change.
-> 
-> >
-> > static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
-> >                           struct scan_control *sc, int swappiness,
-> >                           struct list_head *list, int *isolated,
-> >                           int *isolate_type, int *isolate_scanned)
-> >         ...
-> >
-> >       for (attempt = 0; attempt < 2; attempt++) {
-> >               int scanned = scan_folios(nr_to_scan, lruvec, sc, type,
-> >                                         get_tier_idx(lruvec, type), list, isolated);
-> >
-> >               total_scanned += scanned;
-> >               if (*isolated) {
-> >                       *isolate_type = type;
-> >                       *isolate_scanned = scanned;
-> >                       return total_scanned;
-> >               }
-> >               if (attempt)                /* already retried / fell back once */
-> >                       break;
-> 
-> This `if (attempt) break` makes the loop look rather strange,
-> especially for a loop with a maximum of 2 iterations, where we break
-> when `attempt` reaches 1 :-)
-> 
-> What about just changing one line?
+On Tue, Sep 01, 2026 at 03:59:09PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 9/1/26 09:33, Sebastian Andrzej Siewior wrote:
+> > On 2026-08-31 18:02:38 [+0200], Vlastimil Babka (SUSE) wrote:
+> >> This partially reverts commit 2a8bb29ec9b2 ("mm/slab: allow
+> >> kfree_rcu_sheaf() on PREEMPT_RT"). It was based on an assumption that
+> >> local_trylock() is safe on PREEMPT_RT from any context.
+> > …
+> >> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> > Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> > 
+> >> ---
+> >> Incidentally I have posted a RFC [1] that leads to replacing that
+> >> kfree_rcu() from set_cpus_allowed_force() but now after back from
+> >> vacation I need to check the feedback and based on this bug report I can
+> >> already see it makes the same bad assumption that trylock is fine.
+> > 
+> > free_to_pcs() has still this trylock.
+> > 
+> > What I am not so sure how good is that kfree_rcu_nolock() may allocate
+> > memory for the sheaf if there is none around.
 
-Hi Barry,
+At least it doesn't wake up kswapd... oh wait, but it does use trylock.
+But that's not just kfree_rcu_nolock()'s problem?
 
-Agreed on the one-line change for the (1, 200) case - I traced it and it
-now matches mainline exactly (no extra third scan). I personally prefer
-the for (attempt = 0... ) style because I feel that makes logic clearer,
-while everybody truly has different code taste, LOL, just a weak opinion. 
+_nolock() helpers can be called at any context, even under pi_lock
+(at least in theory). re: we should fix can_spin_trylock() and use it
+IMHO?
 
-For 0/201: my concern is that on no-swap systems (swappiness 0 is
-file-only), the same-type retry when the first scan is busy may be a
-no-gain run if the file generation is dominated by protected/ineligible
-folios - the retry re-scans the same sort results. But if you see a case
-where the retry does isolate folios on the second pass for single-type
-reclaim, keeping it for consistency is defensible. Do you have such a
-case, or should we drop the retry for 0/201?
+> Per sashiko review it's actually bad too under the pi_lock, because
+> GFP_NOWAIT means __GFP_KSWAPD_RECLAIM which can mean wakeup_kswapd() and
+> thus also need scheduler locks. And it's not a PREEMPT_RT-only issue...
 
+Right. That's a pre-existing issue that has been around for a while...
+I tried to reproduce it locally a while ago but it was quite tough.
+
+> > It could have a pool of X
+> > and if it runs out, it runs out and waits until the clean up process
+> > feeds the used sheafs back. There is fallback and the run out is not the
+> > usual case.
 > 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index bf2786c7247d..ba7adf36e69f 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4939,7 +4939,7 @@ static int isolate_folios(unsigned long
-> nr_to_scan, struct lruvec *lruvec,
->          * We are running out of the current reclaim type. Fall back to
->          * the other type if allowed.
->          */
-> -       if (!scanned && type_fallback_allowed) {
-> +       if (!scanned && !tried && type_fallback_allowed) {
->                 type = !type;
->                 tried = true;
->                 type_fallback_allowed = false;
-> 
-> >               if (scanned)
-> >                       continue;           /* retry the same type once */
-> >               if (single_type)
-> >                       break;              /* no fallback for 0 / anon-only */
-> >               type = !type;               /* empty: fall back to the other type */
-> >       }
-> >
-> >       return total_scanned;
-> > }
-> >
-> > This preserves mainline for 1..200 exactly, keeps the intended 0/201
-> 
-> I guess you mean removing the same-type retry for swappiness 0/201,
-> rather than keeping it?
+> I'd rather not invent new pools, since there's fallback and the sheaf+barn
+> is already a pool.
 
-You are right, it was a slip of the tongue.
+Agreed.
 
+> Could be enough to make sure the allocation attempt is
+> safe, i.e. use only __GFP_NOWARN.
+
+in __kfree_rcu_sheaf(), yeah.
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
