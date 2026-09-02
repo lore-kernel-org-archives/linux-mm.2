@@ -4,96 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 008CFC624D0
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 09:12:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F30CC624D0
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 09:16:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 100016B00CA; Wed,  2 Sep 2026 05:12:17 -0400 (EDT)
+	id 54E406B00CE; Wed,  2 Sep 2026 05:16:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D7566B00CE; Wed,  2 Sep 2026 05:12:17 -0400 (EDT)
+	id 4FEF66B00CF; Wed,  2 Sep 2026 05:16:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC6636B00CA; Wed,  2 Sep 2026 05:12:16 -0400 (EDT)
+	id 414FF6B00D0; Wed,  2 Sep 2026 05:16:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C26686B00CA
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 05:12:16 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A6871A09F1
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:12:14 +0000 (UTC)
-X-FDA: 85168255788.27.36AD377
-Received: from mta1.migadu.com (out-99.mta1.migadu.com [95.215.58.99])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A3D9580008
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:12:12 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1650E6B00CE
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 05:16:34 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6942916011A
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:16:33 +0000 (UTC)
+X-FDA: 85168266666.04.B5682AB
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7CFFE80005
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:16:30 +0000 (UTC)
 Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WQxnb1Qn;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.99 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Ae32Vid9;
+	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788340332;
+	s=arc-20220608; t=1788340591;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bve4OHLuwd8kvakx+wRH+4YISbHeix3UbXRjRI/cvdU=;
-	b=8jUF71UO4HSXzhSfEiIpvP7nB+P1vnMK9A+JiXCveijIi1M0ZzIwj+R26vzjwAQFu+wpSp
-	55I84M27SzJXxHwd+zrJxrzoIKuTRdavML+4+cflRf7bM2E63eRgrK2umcaP0WvsnWs7YF
-	16ZedII6nihxOZYoLKX9d+6Kx9/fXwA=
+	bh=/xWKMGzD5oNg8UWITXcf+NlpDdHUkl8dRMjiWqCZA7k=;
+	b=dwcRDRd3jDWw7AJ5dKGG8TQ4XrRDJTnEZz9m2Q9VpZBUhDFZBtAfdFbtC8xMuIuWz267nR
+	uZiHubyGSQ1H0vj2g5Qe2G8eTocsTvzUQ/vyQEdRLrlBKqyKw0eNdVBEWQ4Uff9P2SRMiI
+	n59nGQxazIt85GaECwWxk8lHRM5AGkw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788340591;
+	b=IhrtUXL8OAOW2QZlKs5md+Mbsm50stn0rICK5WWS4woCgq422SzrYy85vZx7N2nv+NsSnf
+	GW39r5pEgqDvNSkniyJ967UKjFroGchRwNFCHUqz3biyKYX3EH2IBZu3CtkwTdVJkvp4GU
+	AENR+B68QCBNUbPo4AMHY3q1C16BM4o=
 ARC-Authentication-Results: i=1;
 	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WQxnb1Qn;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.99 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788340332;
-	b=1n9WCtgC/lFRvHzO7YPA95AgVu5cpkFxhzNo6JdXOO7MglAk42dxVlmO+4DdYR0Zy/8IdT
-	zJ07A7uue1HcacjXmaT41/gOG7cgcqaEc9eXNhtbY8dNGJaYcI4qTVhMo7Vl+qgzwJ3Net
-	+cfI89aD82Lg8YHHhXR0W9W1iuV5w9U=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=5xV8ztEnZ6jxijrWoSRKEtSvwmLfTtZ6g4O9lPBwyng=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788340331; v=1; x=1788945131;
- b=WQxnb1Qnx41b1x+78xshMEChfC+UXbXVFZqzoTxnOXS1g32YwjaSSjXarwoVgj1WVVtSfQYO
- GwLgkq0aOccwOnrQJaSO785zfcSbXQ91d3kjhYXyDbxjrikgh8fqVdCi5bNkDbs5tUCTzJoFXJn
- OFrccp3ocJGBKkQwwDqyrPWI=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id fa3c778b352eda0d;
-	Wed, 02 Sep 2026 09:12:11 +0000
-X-Mizu-Trace-ID: fa3c778b352eda0d
-X-Migadu-Flow: FLOW_OUT
-From: "Hui Zhu" <hui.zhu@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-Subject: [PATCH RESEND mm-stable v5 2/2] mm/vmscan: throttle MGLRU eviction when isolated folios pile up
-Date: Wed,  2 Sep 2026 17:11:26 +0800
-Message-ID: <b437bf8f3c405fc1ada32b1fd279c13abca2f95f.1788339549.git.zhuhui@kylinos.cn>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1788339549.git.zhuhui@kylinos.cn>
-References: <cover.1788339549.git.zhuhui@kylinos.cn>
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Ae32Vid9;
+	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1788340588; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=/xWKMGzD5oNg8UWITXcf+NlpDdHUkl8dRMjiWqCZA7k=;
+	b=Ae32Vid97IVB/ED0UMSwePQjhjeOih06lyXrUBfBDFt7EgTFFXuzpqX7VZpUZv1iS3pTFHHJYKKah7H5cLYDW6ytJ9ReNVU1HfNp8jor/DCrDf0AnLYLakPUy5RRwDH6vo/MyhIoI9BziPasd0LobDstC17ysGN38fh4MmPOb4c=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R591e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0XACEJlP_1788340586;
+Received: from 30.74.144.115(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XACEJlP_1788340586 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 02 Sep 2026 17:16:27 +0800
+Message-ID: <ef76e85b-dc8e-40b7-9a7f-a071d54ca7fe@linux.alibaba.com>
+Date: Wed, 2 Sep 2026 17:16:25 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A3D9580008
-X-Stat-Signature: zp6otk3azsg9umhkp9iiwobt7pbuemy1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/list_lru: disable memcg awareness under
+ cgroup_disable=memory
+To: Qinyun Tan <qinyuntan@linux.alibaba.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Xunlei Pang <xlpang@linux.alibaba.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260902032840.30250-1-qinyuntan@linux.alibaba.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260902032840.30250-1-qinyuntan@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1788340332-906250
-X-HE-Meta: U2FsdGVkX19FklGmKUaH5eMlS39xsBKEvkhoV06yyPvD0/xUHHB1/yEmvcSoE6MF+xDRhxmQ81NSG0V6/1ytcODqHdWQ7IkkDYnFBi/fkdVMJrHEXIprD+p/7tRlDacHz/yPUZ7EMZxdF6iFIpY97JpYsg5eNKkgUqr2U8pujl44AtlaVJwFaHBLnVk1HJbwliP2mQ80Ts6Aic8sgaCabSpoDziTxrBuuccb6a+NuzFK/Z5zVeQv31i1j+mxUtmdeI5j4xdmDHRKA9nDncPTkx/rrd5yib/pgw/q4s/7RpFHmfLLqvXFWAo1QmVhl0tSY+OAZgYTIN7aw1/RVU5HodSCgkssjyd0bD0BittvwG82/u89HHVS+quwflKzwzjcALMRnfoJ1BtwiyxhHci7Z8KUvDWAGdEGdCiA9Z4Y96aDse2sz6N2EUxHs6RY6VAn5FiwccaJuLxwdze2Xb8EasKVwWOjtPY9fMjld0fzgSC67d1LC9ZQNUybQfDg9w5LQjV923bUaLiTZRoz4tnbBwFdNjX1zq9I8w3cfFeBj1OuJ0BqaHLVmdfQU3q1EyU7M9Uock6RZkuAriEOd5Vso0ONaMbxv3g5YSkJ3CPqnm1xnwda29IrTVH2zK8qCNv1eW0laYizNaxL0PuRSalB5vB0c4IARrF3VVQYIH4z4rwGMJJWu2oK1ck+QGLj+Ds1amTjUIsBsEabHydPYEUjSGY+uwgCCtFnP3iogvH+wrRPN48m5Fd8exhzlemyY95WcAwhVYAPhUzbN1fqArOC4/1+qg26ZFF+3hks2Dv6wFPLW2+BzZAofa4TcS07jCeO8h4I/NG2snVdoGgheoJyEpkE0MGnkGrabRkqJQaTMrmY5YqIL4ce2FQs9Wn8LqgpCNLKF4xXjSBMHAYVvCkaPaX0lr/GXQF5V/GKv5nPGZ8DK7D7qEWq2BNqZfghhaFBPp5i9bdKMSn30Ogs6Eq
- nilOgv7V
- IcVhn7VEN3e2Ca3itsrU5vlaEUYK/Lb29O9OhLhWsFQHpAYrIjbE/J1VAyVf0Sr1oqDFQASIMtVvYekB2lOCCa/2JChSppNVLFlwuO+2ydOERchS+BQV+3Q712pLOmDT4MDBh8i6PHDzwCUGegaWUGFWsplY0lFD5UuUosqOF0ywq6HqKabpT28y4JDdOteaAgaF9
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7CFFE80005
+X-Stat-Signature: 6nzjiwn15zpiza8p87kjfsmsiabdrp9m
+X-HE-Tag: 1788340590-572903
+X-HE-Meta: U2FsdGVkX1831jo4f4YqiisQVsNYd+GDp8jbCEBpgArd1QKokSMq+RZYzbDmtxb4MAl72z33nE9GurBpFVgTpd0cMYBUjgziFFIyoef/tCVw8+OFJbkCfwVU+PisPVn7vXtigdU0Jz7bnGgJ6ROE/meyilDxz4SShoBp9o/Ky3PQ5+Pon+/2Iu87u+N4MckpxAtJyApG4LX2WIjIOrPbQPhf4LrXIp5hK1igjEq0vAXdbjA24d4ht0cGfiXPA7yOef9VVoZK4qhplm3tcVilM9vbifMWvY5WMb5Bm0LN/3RcYCxjLzvLpGCJQn8abs4lWuXPx1eE0hvwtYIzI6ZrImfCq30G488JC3Peu+1wyzi+kCvmhsAPxO9/hpGvznA7l9DFS+yFKqeulOe4k4M7yPiYCxtept4st4k5Jg4+qWti8VAEM5YWVcdtpkYgiX8vHb/1SSr/LxGS5cuJrzJiX/TbzNRgeMtHt1ecn/4qtoJOoFNyW2sZFBDotyX9inWhNGRi3AGTnA5P/cHkraP9Vhh7xjy/gmxM5+uglwY0kSI85Qqh44zGCSzCdBVxOgLJYtav5ey8CljCfC2XAS+ZrgUxo/dcDD3JSKnXSqABbzw4WRqD9Rr9i90kS2JrFfT0UB5qul+QLDCJsbai2v6Sbt0uuiPC0ekqQtkmhbCLmSNmJcaRtsbZW5FEXRasme85ySE83ZzbhR9suCKOZmazEJcf3UMPRH7IchWe1vtgyMdYZp09m0N5u23L7krHzs9lvVi6juWr/54E64l/TitfPXVD5GTN5gOvuMZHec+E71deLXcJt4UG7yZrP/3nEaZP+ekfCLx+DdNhjL7y98ZtpMgu40FJ5s4R+vi/Ro5J80blTsrwnVWufWq0nU3PxK1aCE7uBINcLWAfelAkt3nID4grVafHrE47hblPJqSgfoza4N25pTNgGb3UOkr9LAUHgZQUzWo63IDcNgw+RFk
+ ljJLx8hq
+ UoD5pEZ0T+WhmOKbIrrlkuzwrKPx/wkosffNyDGvZNS9TZ/P9k1YRIUJQQsOxoQ7777Bz48jl0F7HR8q6e+1NkBQuTDB1wzw5k7ZDEMsvkSAHJ3k+fwBC7Vm/VkCV0L2sL+S7whW5Qy4g/LaspoQmvmOy57WnCP5TTQvTVaCiL2AckgXNOvxTy/B811XoVYN6tsNgDF+rsRs6rtgfehpkpSTN6deJJPoOG5wysLx5J6WYHjJaL/Fl7uw2uHOWChpve8akIF4/ZDwNafBKqTmxuuCxDZoEm8UzEf3EMC2CYUB+Yg/ZNFdqNROJIE8HFRUhfQLpobDcLtTFBoGcyRefq0p+oexFuY0rTgwpQQeG7UGWDkgY3n0knA7C+A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,298 +90,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hui Zhu <zhuhui@kylinos.cn>
 
-The legacy path throttles direct reclaim via too_many_isolated() when
-isolated folios pile up, but MGLRU's evict_folios() isolates folios
-without this check, which can lead to unnecessary swapping, thrashing
-and OOM.
 
-Add lru_gen_too_many_isolated() and throttle_evictable_types(), called
-from evict_folios() before the lruvec lock is taken since throttling
-sleeps.
+On 9/2/26 11:28 AM, Qinyun Tan wrote:
+> __list_lru_init() only collapses a memcg-aware list_lru into plain
+> per-node lists when kmem accounting is disabled
+> (cgroup.memory=nokmem).  When the memory controller is disabled
+> entirely (cgroup_disable=memory), mem_cgroup_kmem_disabled() is
+> false, so the lru stays memcg aware even though no object will ever
+> be charged to a memcg.
+> 
+> This is more than a semantic inconsistency.
+> folio_memcg_list_lru_alloc() trusts list_lru_memcg_aware() and
+> dereferences the folio's memcg, which is always NULL with the
+> controller disabled.  The only mainline caller,
+> folio_memcg_alloc_deferred(), papers over this with an explicit
+> mem_cgroup_disabled() check.  The shmem unused-huge shrinker
+> conversion ("mm: shmem: make unused huge shrinker memcg aware") adds
+> a second caller without such a guard, so booting with
+> cgroup_disable=memory and writing to a huge=always tmpfs oopses:
+> 
+>    BUG: unable to handle page fault for address: 0000000000000488
+>    RIP: 0010:folio_memcg_list_lru_alloc+0x41/0xf0
+>    Call Trace:
+>     <TASK>
+>     shmem_get_folio_gfp+0x1cd/0x7c0
+>     shmem_write_begin+0x5d/0x100
+>     generic_perform_write+0x89/0x2a0
+>     shmem_file_write_iter+0x82/0x90
+>     vfs_write+0x256/0x410
+>     ksys_write+0x61/0xe0
+>     do_syscall_64+0x8d/0x460
+>     entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> 
+> The faulting address is the offset of mem_cgroup->kmemcg_id,
+> dereferenced on a NULL memcg in memcg_list_lru_allocated():
+> 
+>    folio_memcg_list_lru_alloc()
+>      list_lru_memcg_aware()               <- true, only nokmem checked
+>      memcg = folio_memcg(folio)           <- NULL
+>      memcg_list_lru_allocated(memcg, lru)
+>        memcg->kmemcg_id                   <- NULL pointer dereference
+> 
+> Check mem_cgroup_disabled() in __list_lru_init() so that all
+> list_lrus fall back to plain per-node lists when the controller is
+> disabled, matching what the shrinker side already does
+> (shrinker_memcg_alloc() bails out on mem_cgroup_disabled()).  This
+> makes the mem_cgroup_disabled() check in callers unnecessary rather
+> than mandatory.
+> 
+> Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
+> ---
+> Applies on top of mm-new.  No Fixes: tag since the commit that makes
+> the crash reachable ("mm: shmem: make unused huge shrinker memcg
+> aware") is only in mm-new; no stable backport is needed either.
+> 
+> Reproducer, on mm-new booted with cgroup_disable=memory
+> (CONFIG_MEMCG=y, CONFIG_TRANSPARENT_HUGEPAGE=y):
+> 
+>    # mount -t tmpfs -o huge=always tmpfs /mnt
+>    # echo x > /mnt/f
+> 
+> Without this patch the write oopses immediately as shown above: the
+> freshly allocated huge folio extends beyond i_size, so
+> shmem_get_folio_gfp() queues the inode via shmem_unused_huge_add()
+> -> folio_memcg_list_lru_alloc(), which dereferences the NULL
+> folio_memcg().
+> 
+> With this patch the same steps run cleanly: the lru falls back to
+> plain per-node lists and folio_memcg_list_lru_alloc() returns early.
+>  From code inspection the rest of the shmem path handles the NULL
+> objcg fine (obj_cgroup_memcg() and obj_cgroup_put() are NULL-safe,
+> and list_lru_add() with a NULL memcg lands on the per-node list),
+> but I have not exercised the shrinker reclaim itself under
+> cgroup_disable=memory.
+> 
+> Discussion: https://lore.kernel.org/linux-mm/20260901115104.2944996-1-qinyuntan@linux.alibaba.com/
+> 
+>   mm/list_lru.c | 7 ++++++-
+>   1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/list_lru.c b/mm/list_lru.c
+> index 36662d02ff963..f8be119351cca 100644
+> --- a/mm/list_lru.c
+> +++ b/mm/list_lru.c
+> @@ -671,7 +671,12 @@ int __list_lru_init(struct list_lru *lru, bool memcg_aware, struct shrinker *shr
+>   	else
+>   		lru->shrinker_id = -1;
+>   
+> -	if (mem_cgroup_kmem_disabled())
+> +	/*
+> +	 * With the memory controller disabled entirely, no object is ever
+> +	 * charged to a memcg, so collapse to plain per-node lists just
+> +	 * like under nokmem.
+> +	 */
 
-The check is per lruvec rather than node-wide: reclaimers contend per
-lruvec, and a node-wide check would let isolation in one memcg throttle
-reclaim in another. The threshold is the evictable size of the type
-divided by MIN_NR_GENS, approximating one generation.
+These comments seem useless, as the code already explains itself.
 
-Since isolate_folios() picks the type from refault feedback and may fall
-back to the other one, throttle_evictable_types() collects the types
-that are not over-isolated and have evictable folios, and sleeps only
-when all of them are over-isolated. The mask is passed to
-isolate_folios() to restrict its choice and fallback, so an
-over-isolated type never blocks the other, and isolation never lands on
-a throttled or empty type.
+> +	if (mem_cgroup_disabled() || mem_cgroup_kmem_disabled())
+>   		memcg_aware = false;
+>   #endif
+>   
 
-Like the legacy path, kswapd and !writeback_throttling_sane() reclaim
-are exempt, the threshold is raised for GFP_NOIO/GFP_NOFS callers, and
-a dying task fakes progress to exit reclaim quickly.
+Since __list_lru_init() is also exported, I think this looks reasonable 
+to me. With comments removed,
 
-Tested with threads write-touching a 48MB anonymous working set in a
-16MB memcg backed by swap delayed 50ms via dm-delay. With 192 threads
-the task is OOM-killed without this patch and survives with it. With
-64 threads both kernels survive the 60s run, and the patched kernel
-completes ~22% more touches (301B vs 246B).
-
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
----
- include/linux/mmzone.h |   2 +
- mm/vmscan.c            | 170 +++++++++++++++++++++++++++++++++++++----
- 2 files changed, 158 insertions(+), 14 deletions(-)
-
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 94f9c3ff5416..819b6c059116 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -580,6 +580,8 @@ struct lru_gen_folio {
- 	/* can be modified without holding the LRU lock */
- 	atomic_long_t evicted[NR_HIST_GENS][ANON_AND_FILE][MAX_NR_TIERS];
- 	atomic_long_t refaulted[NR_HIST_GENS][ANON_AND_FILE][MAX_NR_TIERS];
-+	/* the number of folios isolated from this lruvec and being reclaimed */
-+	atomic_long_t nr_isolated[ANON_AND_FILE];
- 	/* whether the multi-gen LRU is enabled */
- 	bool enabled;
- 	/* the memcg generation this lru_gen_folio belongs to */
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 3936c553c63b..211839d10909 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4151,25 +4151,34 @@ static void set_initial_priority(struct pglist_data *pgdat, struct scan_control
- 	sc->priority = clamp(priority, DEF_PRIORITY / 2, DEF_PRIORITY);
- }
- 
--static unsigned long lruvec_evictable_size(struct lruvec *lruvec, int swappiness)
-+static unsigned long lruvec_type_evictable_size(struct lruvec *lruvec, int type)
- {
--	int gen, type, zone;
-+	int gen, zone;
- 	unsigned long seq, total = 0;
- 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
- 	DEFINE_MAX_SEQ(lruvec);
- 	DEFINE_MIN_SEQ(lruvec);
- 
--	for_each_evictable_type(type, swappiness) {
--		for (seq = min_seq[type]; seq <= max_seq; seq++) {
--			gen = lru_gen_from_seq(seq);
--			for (zone = 0; zone < MAX_NR_ZONES; zone++)
--				total += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
--		}
-+	for (seq = min_seq[type]; seq <= max_seq; seq++) {
-+		gen = lru_gen_from_seq(seq);
-+		for (zone = 0; zone < MAX_NR_ZONES; zone++)
-+			total += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
- 	}
- 
- 	return total;
- }
- 
-+static unsigned long lruvec_evictable_size(struct lruvec *lruvec, int swappiness)
-+{
-+	unsigned long total = 0;
-+	int type;
-+
-+	for_each_evictable_type(type, swappiness)
-+		total += lruvec_type_evictable_size(lruvec, type);
-+
-+	return total;
-+}
-+
- static bool lruvec_is_sizable(struct lruvec *lruvec, struct scan_control *sc)
- {
- 	unsigned long total;
-@@ -4838,15 +4847,128 @@ static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
- 	return positive_ctrl_err(&sp, &pv);
- }
- 
-+/*
-+ * The MGLRU counterpart to too_many_isolated().
-+ *
-+ * too_many_isolated() compares node-wide isolated counts against
-+ * node-wide inactive sizes. It predates per-memcg LRU lists, which
-+ * moved isolation to per-lruvec granularity. MGLRU reclaimers contend
-+ * per lruvec, so this check is per lruvec as well, and isolation in
-+ * one memcg does not throttle reclaim in another.
-+ *
-+ * The legacy threshold, the size of the inactive list, is not usable
-+ * here either: in MGLRU the inactive counters are only a compatibility
-+ * shim - they jump around when swap runs out or a memcg hits its swap
-+ * limit, and proactive aging can inflate them. Compare against the
-+ * total number of evictable pages of the type divided by MIN_NR_GENS,
-+ * approximating the size of one generation - the same unit the
-+ * original MGLRU aging heuristics used.
-+ */
-+static bool lru_gen_too_many_isolated(struct lruvec *lruvec, int type,
-+				      struct scan_control *sc)
-+{
-+	unsigned long isolated, evictable;
-+
-+	if (current_is_kswapd())
-+		return false;
-+
-+	if (!writeback_throttling_sane(sc))
-+		return false;
-+
-+	isolated = atomic_long_read(&lruvec->lrugen.nr_isolated[type]);
-+	evictable = lruvec_type_evictable_size(lruvec, type);
-+
-+	/*
-+	 * GFP_NOIO/GFP_NOFS callers are allowed to isolate more pages, so
-+	 * they won't be blocked by normal direct-reclaimers, forming a
-+	 * circular deadlock.
-+	 */
-+	if (gfp_has_io_fs(sc->gfp_mask))
-+		evictable >>= 3;
-+
-+	return isolated > evictable / MIN_NR_GENS;
-+}
-+
-+/*
-+ * Unlike the legacy path, where the LRU list to isolate from is known
-+ * before isolation, isolate_folios() picks the type from the refault
-+ * feedback and may fall back to the other one. Therefore, instead of
-+ * throttling on a single type, collect the evictable types that do not
-+ * have too many isolated folios, and only sleep when all of them do.
-+ *
-+ * Returns the mask of the types isolate_folios() may isolate from, or
-+ * 0 if reclaim should stop. Also sets @fatal to tell the caller that
-+ * the task received a fatal signal while waiting.
-+ */
-+static unsigned int throttle_evictable_types(struct lruvec *lruvec,
-+					     int swappiness,
-+					     struct scan_control *sc,
-+					     bool *fatal)
-+{
-+	unsigned int allowed;
-+	bool stalled = false;
-+	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-+	int i;
-+
-+	*fatal = false;
-+
-+	for (;;) {
-+		allowed = 0;
-+		for_each_evictable_type(i, swappiness) {
-+			/*
-+			 * A type with no evictable folios has nothing to
-+			 * isolate. Don't allow it, otherwise reclaim can be
-+			 * redirected to it and spin making no progress, e.g.
-+			 * when the only type with folios is over-isolated.
-+			 */
-+			if (!lruvec_type_evictable_size(lruvec, i))
-+				continue;
-+
-+			if (!lru_gen_too_many_isolated(lruvec, i, sc))
-+				allowed |= BIT(i);
-+		}
-+
-+		if (allowed) {
-+			/* Wake up reclaimers waiting on the isolation to go down. */
-+			wake_throttle_isolated(pgdat);
-+			return allowed;
-+		}
-+
-+		/*
-+		 * All evictable types are over-isolated. Like the legacy
-+		 * path, wait once for concurrent reclaimers to put their
-+		 * isolated folios back; give up if that makes no progress.
-+		 */
-+		if (stalled)
-+			return 0;
-+
-+		stalled = true;
-+		reclaim_throttle(pgdat, VMSCAN_THROTTLE_ISOLATED);
-+
-+		/* We are about to die and free our memory. Return now. */
-+		if (fatal_signal_pending(current)) {
-+			*fatal = true;
-+			return 0;
-+		}
-+	}
-+}
-+
- static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 			  struct scan_control *sc, int swappiness,
--			  struct list_head *list, int *isolated,
--			  int *isolate_type, int *isolate_scanned)
-+			  unsigned int allowed, struct list_head *list,
-+			  int *isolated, int *isolate_type, int *isolate_scanned)
- {
- 	int i;
- 	int total_scanned = 0;
- 	int type = get_type_to_scan(lruvec, swappiness);
- 
-+	/*
-+	 * The preferred type may have been excluded by
-+	 * throttle_evictable_types(); start from the other one.
-+	 */
-+	if (!(allowed & BIT(type)))
-+		type = !type;
-+
- 	for_each_evictable_type(i, swappiness) {
- 		int scanned;
- 		int tier = get_tier_idx(lruvec, type);
-@@ -4863,9 +4985,10 @@ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 		/*
- 		 * If scanned > 0 and isolated == 0, avoid falling back to the
- 		 * other type, as this type remains sufficient. Falling back
--		 * too readily can disrupt the positive_ctrl_err() bias.
-+		 * too readily can disrupt the positive_ctrl_err() bias. Only
-+		 * fall back to a type that is not throttled.
- 		 */
--		if (!scanned)
-+		if (!scanned && (allowed & BIT(!type)))
- 			type = !type;
- 	}
- 
-@@ -4888,18 +5011,36 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 	bool skip_retry = false;
- 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
- 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-+	unsigned int allowed;
-+	bool fatal;
-+
-+	allowed = throttle_evictable_types(lruvec, swappiness, sc, &fatal);
-+	if (!allowed) {
-+		/*
-+		 * We are about to die and free our memory. Like the legacy
-+		 * path, pretend some pages were reclaimed so reclaim
-+		 * unwinds quickly instead of looping back into the
-+		 * throttle.
-+		 */
-+		if (fatal)
-+			sc->nr_reclaimed += SWAP_CLUSTER_MAX;
-+
-+		return 0;
-+	}
- 
- 	lruvec_lock_irq(lruvec);
- 
- 	/* In case folio deletion left empty old gens, flush them */
- 	try_to_inc_min_seq(lruvec, swappiness);
- 
--	scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness,
-+	scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness, allowed,
- 				 &list, &isolated, &type, &type_scanned);
- 	nr_isolated = isolated;
--	if (nr_isolated)
-+	if (nr_isolated) {
- 		__mod_node_page_state(pgdat, NR_ISOLATED_ANON + type,
- 				      nr_isolated);
-+		atomic_long_add(nr_isolated, &lruvec->lrugen.nr_isolated[type]);
-+	}
- 
- 	/* Scanning may have emptied the oldest gen, flush it */
- 	if (scanned)
-@@ -4962,6 +5103,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 		goto retry;
- 	}
- 
-+	atomic_long_sub(nr_isolated, &lruvec->lrugen.nr_isolated[type]);
- 	mod_node_page_state(pgdat, NR_ISOLATED_ANON + type, -nr_isolated);
- 
- 	if (nr_isolated > total_reclaimed)
--- 
-2.53.0
-
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
