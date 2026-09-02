@@ -4,90 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81F55C624D4
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 17:13:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF8D9C624D3
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 17:17:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A75BB6B00EF; Wed,  2 Sep 2026 13:13:48 -0400 (EDT)
+	id E25866B00EC; Wed,  2 Sep 2026 13:17:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A26396B00F1; Wed,  2 Sep 2026 13:13:48 -0400 (EDT)
+	id DFD2F6B00EE; Wed,  2 Sep 2026 13:17:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 963286B00F2; Wed,  2 Sep 2026 13:13:48 -0400 (EDT)
+	id D13F06B00F3; Wed,  2 Sep 2026 13:17:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 73DD76B00EF
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:13:48 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0B6E7A41E5
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:13:48 +0000 (UTC)
-X-FDA: 85169469336.13.EA39992
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 361CD20008
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:13:45 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=PsRDGgd7;
-	spf=pass (imf31.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A1FD86B00EC
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:17:33 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2A7FF1602AA
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:17:33 +0000 (UTC)
+X-FDA: 85169478786.15.6D1FB1E
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 23E8D40009
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:17:31 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=KfZvlqkq;
+	spf=pass (imf07.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788369225;
+	s=arc-20220608; t=1788369451;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tPYPDYewNeawBi07p/nAs1ibrnpGT5ATVl7N1IHg4KQ=;
-	b=ZVTpIxssaQOl7k9EoQyjFUs7wyucfF7sxKBc38iakslw1+mo9TDor6bRG02cDKJHklJ3i/
-	iMTi0LEP927atbWS8kaN5/50JYnHBwV4fmVoD4S6EtK6Y06M/cT5/lqdDVqc1Eyy0Thj6u
-	sgjPq/ghRIkEgLrEUjcc+NcloOA/v84=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788369225;
-	b=eEsi5hq/Ph0ljL/1FVAqgKYSIGnsKX5+BXFG28WcPPzsEVaBnU4pkghKBdxST0PuPytakb
-	0sJ53KHO7xJZ5sK+OqgWT9rawVF02w31yLDEGUP7qLPa7jNpBB+zvR6pcDWMJx39AWGsrQ
-	JEcmbcsqYRfo/jRLHOBp3wcw39K0In4=
+	bh=L+uQOUfDo+TK+k3hTP6A5HxoVxFH7C/0s0ldwdZGHuc=;
+	b=eH85LD6IfjsjojeF2HhMrd+iRK8+U+Li1tKL8LHkv0NtEtMXSNJk98XHu6XAt+nR3pIOGe
+	XFGhwoFBDmGsJoAujQ4lSxXju9cIyzg1ZlCn0BKYkAcQa7u9NcHlEcgv37oYWt/y83Yoww
+	/B2JTnZZNBT+P8h/RdQ4uV6fXV2pTww=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=PsRDGgd7;
-	spf=pass (imf31.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=tPYPDYewNeawBi07p/nAs1ibrnpGT5ATVl7N1IHg4KQ=; b=PsRDGgd7vGLOAFVuJrqFJWrV98
-	0tjx9MzA56CZk0CQ9Iduswwhk73iSP37LRiKXrX7S4hmKECQ97qJLr9B7AKNwiXyOzirfkVc4dNLh
-	Oqeb84I4URhLK3vKCocw86Ht1T+OAs+oIurk+ssjJZGWhVpYXfjoxxo+XHlxZmdxO6k+DgdtaRZ5r
-	CtYnuS8AUH/AMwYUZ8g1ddjYJUxRTs1jsyG6mJFLmLc7LkuWViqqBzYS5/L+ZSKWD6Y5yjkZ+jM40
-	iBrirKdew1l0TKEW2nf+ihFWZEXpwoPsxxax3wXKMReQFztuoEeQkpdeong/65tdMapiZWIN81Mie
-	qOv61AKQ==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x1oWr-0000000FPZl-3jei;
-	Wed, 02 Sep 2026 17:13:41 +0000
-Message-ID: <e0c0ab31-8f19-437b-b8c0-3ed6963e9064@infradead.org>
-Date: Wed, 2 Sep 2026 10:13:41 -0700
+	imf07.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=KfZvlqkq;
+	spf=pass (imf07.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788369451;
+	b=7ycU6nOBo9NS/b7JIswrBpn83KbnThARNHBgYxWuS55pbCNDr/eCkad6pBK33ivFpitNa3
+	HKfaYMgaXAav7yJ6g9ObtMRqe4PVP865kPLIdJMfTD8TJolTUoVKVvz26Drtq8PXYoQtgh
+	QG058V5l3zWs+ZaE8sbDyCNEZgbBStg=
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-485538d3499so927704f8f.0
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 10:17:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1788369450; x=1788974250; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=L+uQOUfDo+TK+k3hTP6A5HxoVxFH7C/0s0ldwdZGHuc=;
+        b=KfZvlqkqPMmyuS9rXNRlTNoymPsT/RmHs+Q90cgzKWxdaU1y8i/bGyfGoXbFMWvLvh
+         5owmqZis5G/F0lmGpZ6MM1rXOamloOpQITxufOJm+wHX/bgDZIEe8woPOmUwfQiUeaqA
+         yxpvYOt42ERL7wy82cy4cdF9nwA3jbQ3AzXRUOosPgneafWHX6PG8ElUB3azN4/4Llw4
+         uup0oD2+PorRE4R1PyCXUjYzcGSl8sKbDmN8l0c5DdIsGyUtrSeJv7LUPQxyS9Rmf9gd
+         g+na2Tm671RTWaTA6+fqwAg988BLiF1griCqpuEq6NesqRucfiV4eMW0MSlAhTmJliRf
+         8dYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788369450; x=1788974250;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=L+uQOUfDo+TK+k3hTP6A5HxoVxFH7C/0s0ldwdZGHuc=;
+        b=lTqHU18rShyizdymTqMKTql+SZ+y87g5rvGUPY26RupUr1c91ZtKCWlARfw1iITbLl
+         fVxAbz/ENKzxERqR33kROXj5ypDyPIh2GZ4jE2CVd514Is5dk+wK6kP98c/LJ+dO1uh2
+         PjCMnBvzgCjLEumt/LiaYVjvAVR0Zp3aERxvkjmdlT9NJqirpj78v7pfk7rONY9sTf7w
+         wL4XH6bAzgZcpWzJpTxa5uHUEjRk6qcxs2+pJowKtUPROqbWLOJGEZfI3alsc8F44uK2
+         12LZkVF8iLd8B+ZfzMKOMCxFwSqQJ0MLPAuD3LaykivhZ6xTlwjG2oIFscEYMaOGr8Rc
+         jKBQ==
+X-Forwarded-Encrypted: i=1; AKwUvBywLf+EVr9mbpGfF1tpMY8uc40qtlaD6TVi4s8O+S0OH39AVxyE+BVrAwtJn03NgJI3wjy8P3UExg==@kvack.org
+X-Gm-Message-State: AFuF++kpRIMT2V6aHky0NVpM5+XaTgUmyewG60nWqHIBciIAaz4aFyjD
+	vQhUMJizXWADB48ar7RuzwCGWGMI56vb12OGrSpIz/AmHcQLaYgcPEQoA7c8LR+G1FY=
+X-Gm-Gg: AYBFou2+WgzaHUyFC66tNWRr3dozxRgRzvnKSztbVAyaDLCI8mdX+Fl/dWDqT14AXEy
+	OhJi5j3MbvkIP8UjNcjOW3tS+X/PG6P4Dp1qs+tLVUfAnDlYtZjcQ9+YLOgALNPYT5FxEtPVc/a
+	HKSXhy9LrTxzgG1BdDB+NlXdagAx7IMSDV9lvjJTR0eZR7r7AdGfdiLef6SfQZV94Yli6GQtMe9
+	rVhnbsbEZvL+r+2YncA4mHnX/+Q8xv8i7LxXpQOwqaVdUyH0rPFn/WTQjcTTOx/ASAVxiDD0vT+
+	PBHbgKrcdd/npKDt9r39EZelhryToce0mV1jDsMnZU34LJTaK6iczAKyIdDxrZIzUmDTiERR+7I
+	Ua5mbjJrSd1UD941t56j//WE71RDydzmgN0zAqOcnalcpZ1PAJbY+DiLW8R7efVJpCKGhv6IIK7
+	nzV3tJEkyL5oxTYcv9uuq1PMslVU1gA90mL8DzkSIH4KNg7vWj7teHqoKS4ENfGMQ=
+X-Received: by 2002:a05:6000:208a:b0:484:3310:f394 with SMTP id ffacd0b85a97d-48488f20c54mr10977496f8f.23.1788369449677;
+        Wed, 02 Sep 2026 10:17:29 -0700 (PDT)
+Received: from localhost.localdomain ([2001:af0:8000:1409:193:86:92:181])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48448eea5b4sm7848460f8f.27.2026.09.02.10.17.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 10:17:29 -0700 (PDT)
+Date: Wed, 2 Sep 2026 19:17:27 +0200
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Qinyun Tan <qinyuntan@linux.alibaba.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Lance Yang <lance.yang@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Dave Chinner <david@fromorbit.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	David Hildenbrand <david@kernel.org>, Xunlei Pang <xlpang@linux.alibaba.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/list_lru: don't copy stale shrinker id from
+ non-memcg-aware shrinkers
+Message-ID: <aphXPCn8isUVV87k@localhost.localdomain>
+References: <20260901115104.2944996-1-qinyuntan@linux.alibaba.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs: locking: Fix bracket
-To: Jan Kara <jack@suse.cz>, Manuel Ebner <manuelebnerli@mailbox.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260902143936.703665-4-manuelebnerli@mailbox.org>
- <ffoup27vuua4yo5weeyhgdjevtb4c2nkoz45lkk5kzipnnhzsn@wckefd3i2vv4>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <ffoup27vuua4yo5weeyhgdjevtb4c2nkoz45lkk5kzipnnhzsn@wckefd3i2vv4>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: oru4di9x47hnruucysxcttczhbfkuhtz
-X-Rspamd-Queue-Id: 361CD20008
-X-Rspamd-Server: rspam02
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="dutiu445lzpgkhp4"
+Content-Disposition: inline
+In-Reply-To: <20260901115104.2944996-1-qinyuntan@linux.alibaba.com>
+X-Stat-Signature: mmzr49mox6fw14g4g9gxsrrd1au13mrn
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 23E8D40009
 X-Rspam-User: 
-X-HE-Tag: 1788369225-932639
-X-HE-Meta: U2FsdGVkX19HHCqtYXmzTki2mCGekzbYc4LzkTIcde0rkyZwucZp2bcsrl1v6a5oGXemKRYeefwzE9NJmiGIsQqk/TMDXr+jQCITfW8AbB5lUxD93D3PUbfsr9lEbiaHIWMSduyt04jRx7Woz3tjOE7wIB2fPTyOlJlsFmZ/NO8qUS12OL8SejIf9RlFmanZZc5v6jNpnHImTVPRb6HUKVpwe616Ayeg86r70Gmp7WrDhf2q9Egv6Clk1fwYHIpwIfO56sl1CSYJaSJQBVdPjG/1R+1kLkG6bJOsxWytkRnVcL9UhUeYsDipSdtODmz6fLR7AGEiJtFaTKInEq8vVf0oAtas7ora0+IMK7A3TEJos0D9t0wule9W9CE/R6dzuMhYs/5CQ93o5J4GS67CJcc9qJZ/rg09w5L6BruPSTMtwveEV7Fc9kCSEMMrNIyNE9/vWE4xM98ovgQNU3+4twHGvnyfmXwIAfMvauYeTbFKVAfZ2mcLMsshr2tnOQ2ySCAl85IX2R6/H53uslbqDGxxSknhn2I7OliuocegTSOIN+jN1hXHOy/skNblxLbZ0ZySv8N+hDEiAMPlGlhXl2zebjLfui4G5ZSWC4Yr3XMo6/zoMyRrSflxyW76lmERJGHeoY46Y/Ejm+x4Db0aLlG8eXk34VtDPLwa89w4DE0xBUQht0lvyfMJs0sMjj/N9/Gj6aFzn+UCL/DM1LVy9qd8SNr3chicDx3SeIU1NkXb9AYbxYVye5sFAJmnn4RG72iEWHMWGzOg0I5WyYCBKJHcUKCtYZdoBe4fudIolIcB4kIuCN/lWnJnRbsAv4ZCit2HLfjHCIRnZ4jWWeCPn1YWSaQ6u9YMLEV2WBYHUojrQL1VkNT+xv5HwwJp9DtbOFFu9xM2Azr+Gas/eNvXseUTbVjQjNDOqK87EcbvEFHq92rarmLEhZwNOusM9UksrkOfG9q44OAQX9bpnkr
- Vo6lYZQ+
- Dmggv1OVtllq4wXS4bs0tJ1lphAhnbrXW7fC/nJ71EKEK48JW34w5x1H58k++dwy9kHfsPHxoRBKsP8yM7SQiPoMAHAbV5c+KamcZn8ALReRsbA4nK46nLRQ2FyStrEEgxfn9HgYvHOw+H4SAXlT2qcXjmsIAMAZ3qgPREUtD0dCsd+mMxWh7aLPMCOwh0QQ3XYLvHbnTQcXuUYQCCzBg1P+vDfYMWlNXhFleavr1O5AxitHbB5y+cANV8t2ow6Cb1eXqerLF3tdCYgvBmCd5yzuFQ0691ED5p07ZPyzL8uLdcQF+E5MRYq+r0GmyEOp+SpYe7pQx0GaG8IrI+5yoZhfGJIVMpJrDn6QlWh/j3KFuY5hgfkhOc0E09OznJ2d3/BYifHGokR89NSVMESei5BRHWw==
+X-HE-Tag: 1788369451-975102
+X-HE-Meta: U2FsdGVkX18pVREDjKWBcEDbNWFBXtqvZOVF8VX+BN88DWosm7UXg3DYGf5Ll9AxTVHemc8UDvkfT/jcfbFdckUb1UBErMzOK7M5pXC/WNu0SobwOg6dCbH16PaNrs9cJuXVEi3qfQ2l/uB4Ol0eXt7psuUOPpRJqI2ei137ZOVG3demDsxwne9BhxLlzSc/SCBjQ8hIcefyPh+xKupmio4cIt+sgN55VmOAymDJgHPjM2TUbicJzx+HLvyLX/+JGFw97IyyZNFGmaHl0SnpzGe9TPOZoJk1oV6d8LR/SFbh5OK64NdOkFcuh4lHMMrQoWtcXAwwEldQ72OlrKJocE4MHZBSwXmxoeTSBOP5pGg+YlhDC61ex1gT5YCTVVm44A0Q3Ybp7mbexpS4150lzL2ZjcmsFr7zyI6HwySsk2moZAm20M9UiLYvrTuhTGpoHXXnVhXnU6qLyTprWcCsdw0VyA+aNwtd5+pvHxpSn5blKoIfznv3KY/LrwsvjVryUtdp4nPd3w+czrPsZFc/F1jhWd16t7TXqDIdssYwpkn8gJV6diuU7MZ+Xlhf668sIKvTEutJi6X7K/vHosBXfK4dFNNbDWpd+7w5hrzAkpfo14jeHVcJLaFRkFjnoNd5GgAgohMlOzAF1tmVADt2gG7k2ta1Bw4BfxFcaINi82PBgbgDrV/cUo/IKmzo0x0zFdGf3YpuVJ7cGp6gB1cEd2WgrW87GEjNuyCQAINULuKUU7OG6kFtV53n/MzXZoyvWTgfjda5A0wt3qMfhfttLIATZNzyKl/pXSoDE8j10oZKn+ddvnG3F5Xg/e79VT/g2w/4s7RLZO1E+T0yAgO7VZee3h8TuyNgV1DXxdeFYBVqPjeOTXwEGCHOKmE/ulytqHYPpY66Vdh0FNLpNApT7jEHYjLMUpMUC7WxPV7acu9w4RSEulLTMSUIjwiwMiiqCsG/eB1PO6/EuwdxJKQ
+ 9CgevY0w
+ omfwEM0cUAPW1lUFDzP6y4EX9ejZR2g2PuEU8UEpzn/DaaXOmyo9gjDbivmLVUUO+riGMuo3V/Iy5RHguN3pcg6mGHjx0XIVAOxVUUzK188g7UFC3sZdcow8Oq5Cs7m9qKNgNhhtJKyz0VjsNeA4vhfcg5ARYTb6I+4JYHgT7FbZDBTv1k2klabyXf/H8VrWtUJUsFa629WsOimVtm6eRw4vPvQkStDKysvbZqLtkucNKqow3xXgGcYaVFGsuVRLFRIMraDGNSjoaK0ZimCacYWVt7GVyK0U4Ah/ykG5fHLsJKIaM8W1dh6iNQ8VZvrxu/Snwb6eRpdCyMHACjpcEPlM4Nf7e9lpdt1AEbZmHseKrjz4X583EwJA/fgO0PhfzEjwq/mkexlfgA9RiZv7YC9iO466719aUybUxTRLPILXFa03ciJmrT/RwG8SqXxIR+0pY/2TLgio9aIR8IBrlQaQynaAUYtVnc2DQoMbgDfnE1A4N7+DON6XH6/9yMu1OCaZF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,52 +126,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
+--dutiu445lzpgkhp4
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] mm/list_lru: don't copy stale shrinker id from
+ non-memcg-aware shrinkers
+MIME-Version: 1.0
 
-On 9/2/26 7:58 AM, Jan Kara wrote:
-> On Wed 02-09-26 16:39:38, Manuel Ebner wrote:
->> Remove needless '(' from code block.
->>
->> Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
-> 
-> Looks good. Feel free to add:
-> 
-> Reviewed-by: Jan Kara <jack@suse.cz>
+Hello Qinyun.
 
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+On Tue, Sep 01, 2026 at 07:51:04PM +0800, Qinyun Tan <qinyuntan@linux.aliba=
+ba.com> wrote:
+> With cgroup.memory=3Dnokmem, shrinker_memcg_alloc() fails with -ENOSYS
+> for shrinkers without SHRINKER_NONSLAB, and shrinker_alloc() falls
+> back to a non-memcg-aware shrinker.  On this fallback path,
+> shrinker->id is never assigned and keeps 0 from kzalloc(), which is a
+> valid id belonging to whichever memcg-aware shrinker registers first.
+>=20
+> __list_lru_init() copies shrinker->id unconditionally, so every
+> list_lru backed by such a fallback shrinker (thp-deferred_split,
+> zswap-shrinker, workingset shadow nodes, superblock lrus, ...) ends
+> up with lru->shrinker_id =3D=3D 0 instead of -1.
 
-> 
->> ---
->> Should I also replace ')(' with ') (' as it is in the second code block?
->> It would improve readability in my opinion.
-> 
-> Dunno, at least I'm used to the way which is written here :)
+<del>thp-deferred_split shrinek has SHRINKER_NONSLAB so, the id should be
+assigned (at least I see it in thp_shrinker_init()).</del> I was looking
+at 6.12 kernel.
 
-I agree - this looks typical to me.
+> Under nokmem the list_lru collapses to the shared per-node lists, but
+> __list_lru_add() still calls set_shrinker_bit() against the memcg of
+> the added object.  Most list_lru users are unaffected because their
+> objects resolve to a NULL memcg without kmem accounting, but the THP
+> deferred split queue holds user folios, which are charged regardless
+> of nokmem.  Since no memcg-aware shrinker can register under nokmem,
 
-> 
-> 								Honza
-> 
->> ---
->>  Documentation/filesystems/locking.rst | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/Documentation/filesystems/locking.rst b/Documentation/filesystems/locking.rst
->> index 844d65eb4..1598cf555 100644
->> --- a/Documentation/filesystems/locking.rst
->> +++ b/Documentation/filesystems/locking.rst
->> @@ -27,7 +27,7 @@ prototypes::
->>  	int (*d_init)(struct dentry *);
->>  	void (*d_release)(struct dentry *);
->>  	void (*d_iput)(struct dentry *, struct inode *);
->> -	char *(*d_dname)((struct dentry *dentry, char *buffer, int buflen);
->> +	char *(*d_dname)(struct dentry *dentry, char *buffer, int buflen);
->>  	struct vfsmount *(*d_automount)(struct path *path);
->>  	int (*d_manage)(const struct path *, bool);
->>  	struct dentry *(*d_real)(struct dentry *, enum d_real_type type);
->> -- 
->> 2.54.0
->>
+Not sure I understand here, the SHRINKER_NONSLAB are excluded and should
+still register for per-memcg info.
 
--- 
-~Randy
+> shrinker_nr_max stays 0 and every memcg's shrinker_info has
+> map_nr_max =3D=3D 0, so the first folio added by khugepaged triggers on
+> every boot:
+>=20
+>   WARNING: mm/shrinker.c:212 at set_shrinker_bit+0x99/0xa0
+>=20
+> On systems where a SHRINKER_NONSLAB shrinker (btrfs, xfs) did register
+> and expand the maps, there is no warning; instead bit 0 is set
+> spuriously for an unrelated shrinker.
+
+Could it be that you see this issue because of a shrinker which isn't
+marked as SHRINKER_NONSLAB?
+
+I'd even go as far as pointing at
+fafaeceb89a5e ("mm: switch deferred split shrinker to list_lru")
+which removed the flag from the the thp-deferred_split shrinker.
+
+IOW, the proper fix should be addition of SHRINKER_NONSLAB so that
+per-memcg maps are properly allocated.
+
+Thanks,
+Michal
+
+--dutiu445lzpgkhp4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaphaIhsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+AjwxQD/f1S0abo/AyOAeW4+/VMQ
+3+TWP2Ib8ZUBGnI7zXfsbJUA/jJ726jOpW+PD/iuyLKMLOLJKQniOor6aBrBChcp
+74cL
+=fIDH
+-----END PGP SIGNATURE-----
+
+--dutiu445lzpgkhp4--
 
