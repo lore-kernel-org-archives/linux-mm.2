@@ -4,117 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A85CEC624D3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 15:32:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 740E4C624D3
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 15:33:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF2756B0088; Wed,  2 Sep 2026 11:32:28 -0400 (EDT)
+	id 91EBE6B009B; Wed,  2 Sep 2026 11:33:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA28D6B0096; Wed,  2 Sep 2026 11:32:28 -0400 (EDT)
+	id 8F64C6B009D; Wed,  2 Sep 2026 11:33:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 992D06B0099; Wed,  2 Sep 2026 11:32:28 -0400 (EDT)
+	id 80CA96B009E; Wed,  2 Sep 2026 11:33:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 72C6C6B0088
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:32:28 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 008C6140284
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:32:27 +0000 (UTC)
-X-FDA: 85169213934.30.D9C63D1
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 28AEF1C0013
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:32:26 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=avZUDY+K;
-	spf=pass (imf21.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 62F406B009B
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:33:12 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id ECD1916025C
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:33:11 +0000 (UTC)
+X-FDA: 85169215782.13.4682E7F
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2398040011
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:33:09 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=WS8Athyv;
+	spf=pass (imf11.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788363146;
-	b=rHp4fkSCojDxI1CAup62/LDq6WZZPMDGEI53hXsh89htwnQvAQn/pvnJmqISFVv97oH46u
-	XXmA7VPdQkt7lJDaeRdFl/pxojAILtfrPJG6D7jnhwwyG/PadCCtNo55rSAurcgBq/BvVp
-	Li3jJ7kRscqZbgI1jgLBeoKtIjpqqyk=
+	t=1788363190;
+	b=UlsRM1el2y9hQRqufnpYhuE6f0Cdtxw7TOCMkY648BZWXTKSkcjhFYqrn+jDzbTGlkQiab
+	0dmThKjG1Io8jzPvyMC5c5OwNY5ldujXJvRNw2dyrlL9Rdd7kIf9BKjUVPhhLkHFarXjxd
+	lD3uBtnXzGRVi1jURAXrnpgncLJ3uGI=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=avZUDY+K;
-	spf=pass (imf21.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=WS8Athyv;
+	spf=pass (imf11.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788363146;
+	s=arc-20220608; t=1788363190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J6CFSQBR//cpcDAomOpl3DbC5UldpOdeC10IA56wysg=;
-	b=7fab3PZaZGjaFgicVWTiatpZPz0E38wDztluq6QWR7GOVF8+ztkLmm6TMWXeec4KAsNZLi
-	ec5NV2J1O6NGqCzEna6fFydStsdD//dxdv1hCTLXvxMsgA9knhVs+Cpwwr1LmIq6jBTMdA
-	kvfi1IU5WFIumJ743cFUGNyI3xQi7ig=
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ce98cb8165so14263155ad.1
-        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 08:32:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788363145; x=1788967945; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=J6CFSQBR//cpcDAomOpl3DbC5UldpOdeC10IA56wysg=;
-        b=avZUDY+K2T9GLfgsMiH2jDZE38CIm8sFBt8Lqn0oaVparezKIKvT/Wdcl5kgcOmYop
-         1hmgSFEG4+iMYX/Bgv3Fs5pE5eUboXYyJ4JFS9zeunWRNQNLw7tVbO3azYowdfM1OK5k
-         LPnszi5FZXOKTmsvrnjbKljYMNwut9Ri4S3VL5+odzMVc7ThSPiqpRDbomcGxekUJGVk
-         LF/QsSJHDbLQ91RzP3qeS3Zb6+Gdvwmak23x0iQBggPEdo+Q88tzndYCn4BDYyevaKmg
-         crHNOFWJvehzTI48tgryby2VyWueBrU+MX2cpD7bm+U9CDqIJTxuGHnZ4IJNQjBIOkMw
-         OOkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788363145; x=1788967945;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=J6CFSQBR//cpcDAomOpl3DbC5UldpOdeC10IA56wysg=;
-        b=ga6semK9jXC1DPAblV+UI7TllKMGh3D6yquilwpBIRAzZ2jcngb7WgJV0TxJ6LfTHQ
-         sMCI6fF6u5P+E8/uCHcex+YUpeIqAUwCsfccx+l7K5ZIxj1lVcT/2YS1CLT+ZjdbJqFJ
-         50X+nYUBW9IVFWVMPpImve+UflqLDxJqEPOmAQ1v/Rs7jjtUVaB9cday9CxIF+N2MwOH
-         rIKNdA5Rk7hL3pLZrar3h3enggsaAKmNg/T86+CZ9xBH0S04iQNFEzbO1knCP04OWLhM
-         Pvvn/itPNuXtkGhZYT8J0GA5OR8GlhRPKeHyioMAusqX3AL9GqXJ8GOtMF+J5+Xr1Y/m
-         L/og==
-X-Forwarded-Encrypted: i=1; AKwUvBxrgDFPFn5dQ5dpb1GycDrWkMBkORzZyylI8kETzlq1f0kjV0YtpEpYEGulcLD0o32BpVwJh50LnA==@kvack.org
-X-Gm-Message-State: AFuF++mlNCoXHRI+dmA+GTPVV5euAcyIJCjxOcsdCzE21u9T2vdbbYwB
-	frZCoqqUvGwHcX1C6y0Q/XSCTf4jvuZDHIi6TnlfqYVUb0DAQ6V+5jyc
-X-Gm-Gg: AYBFou0HAYQpFvSoayx842Mv5i8OaTcNT7j6x+Z24iPIq/e58ZFFVGExlux70RZ9WOS
-	m8TEfjY+5KaLyj1sPyYEs7zBGkjCwxssqTynQN4X8o/MVyXjzhADOHMnAcogs69Au32U79SMPsV
-	ph5CG+C8UekJ19gA6GBUNyi6GlpElqUUcCGPdN+nFfjOR2bgS9phIXfb3SYrHFhNTZmtcZq3a88
-	QJf+b3kGQETKF8A7BlRFRb9SfBLN5yUy4yBq9SRIrB/FL7zXSGWkBhudLATuTGVE6XWabRKQk5P
-	XkWfmHyQdib6Y5GCDunXlZJXKgb/XvAsQ60LoNqiVmiv51oA2QoIigjbjPEuhZNcp/TB4PfCc8D
-	dgxgJfQwHM9961AdGxZhIY22xZzjnH23kaHwol4k+M/zzpyaI7o4VgkBQEujtEQAUO+8H1emYFL
-	8UwYtRxBKKIpWHBxNgD05djW6fb7XYz3snGON19EXU0yRFKVBuNrWFhGrm7E0=
-X-Received: by 2002:a17:903:1245:b0:2d7:1cbd:9ceb with SMTP id d9443c01a7336-2daf1342881mr28557975ad.12.1788363144243;
-        Wed, 02 Sep 2026 08:32:24 -0700 (PDT)
-Received: from gmail.com ([185.220.238.35])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2daf43d41e2sm6944815ad.60.2026.09.02.08.32.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 08:32:23 -0700 (PDT)
-From: Kunwu Chan <kunwu.chan@gmail.com>
-X-Google-Original-From: Kunwu Chan <kunwu.chan@linux.dev>
-To: SJ Park <sj@kernel.org>
-Cc: Kunwu Chan <kunwu.chan@linux.dev>,
+	bh=Cj/GWL2SVH2OtmO93RaBliPKQJL7NAhn9AT6xWT6GH4=;
+	b=naIJ/W0liz1t+yJDP3/rl6qrj6GLsgsOiPXdr5XI2kKd0dFvkqNuNJgG5Vxwd14UvK2x7O
+	IGumA91jQUEaX6gpMGlMFjtX2sQWi6DvKi5QE0VdyQPZn7pbpnvGmZqWWDlwyzRJtKFEYj
+	up6T0BHxVC2GHkjbuLmKYYfTzNIf7BE=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 54457165C;
+	Wed,  2 Sep 2026 08:33:05 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 617873F673;
+	Wed,  2 Sep 2026 08:33:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788363189; bh=q6zM+dYnk3uLre3h3ADt28YxAVcvVSD58NOOSL5QC9c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WS8AthyvSC51Gh9K86037JTsHB1psTeejY/5kultKBFvtj7oe0q+D7TIKNenFT8nc
+	 eoFvY/dbmoQu0N0cwiE4XiGbyOAkj/cxXEpIKIIqfUbk4nke4IwKXcWG980TMbr2YN
+	 wQ45cdapU18X9zzjx5MKX1qsQ4eFw1qfjjmpCBQI=
+Date: Wed, 2 Sep 2026 16:33:04 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Kunwu Chan <kunwu.chan@gmail.com>
-Subject: Re: [PATCH 04/12] mm/damon/core: validate number of probes in valid_probe_params()
-Date: Wed,  2 Sep 2026 23:32:15 +0800
-Message-ID: <20260902153216.4034305-1-kunwu.chan@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260902054747.99370-5-sj@kernel.org>
-References: 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+	Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/3] kselftest: mm: prevent random failure of huge
+ page split for khugepaged
+Message-ID: <aphBsGKJkpSphK8h@e129823.arm.com>
+References: <20260902-fix_split-v4-0-85f03905f7b1@arm.com>
+ <20260902-fix_split-v4-1-85f03905f7b1@arm.com>
+ <apg7FNLtFO3Ea5qC@gremlin>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 28AEF1C0013
-X-Stat-Signature: wiapae6ji9smwma9kxz85nngcw4643dr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <apg7FNLtFO3Ea5qC@gremlin>
 X-Rspam-User: 
-X-HE-Tag: 1788363146-193948
-X-HE-Meta: U2FsdGVkX19ojK4fo2InjTVBp+ZpHzfJpS16vs7lvRb8/uzmz9UzNMfriu/zQ9z6GTSmgfdDYVWpsiskUH2z3Ge/mX25AWXnyJ1koF0q3TGkUMoFbLb7f8UYTgCTI7BhCBPMVRJs79gJcR1e2duYaU1jE7iKwoqbwClUkrIjaeVydRjmrlxsQs4Kye930Vf689J3+NCZ0YEuGCgs8l+97j9Ns9A9FEUCPOauZz09n6jDDlJ1GA+6+WeanXUK77KhV4rPvwqUfk8zc1vuvtTL7tfqLwk5nwTF0W1HXChsRGunssoAWP1HcteSiZPYR5TayAMriLYpFJK1nK40PXNowwPxW4sTL//U0sgqoZkCJAaBNdLuTSsBzyBC7LqdK10jHAWxImnE4CcUt0fqZ6hwvV4q8i5QPXSBPVNWEMNUdsEWk5CEJjSgCPrJ7lQ7VJWatItAS9DtkPsnP3BVohUt9xR4jMRtq/A9DsmO1k0R+/f7qjhjyS7t5KyAfrj4OJJrch+xmfGUB7YeFBt2tDhrYEAjIFi+wRpCphJRHRMTDzUr4fklra7OavHdOivF+zzztpAcj9qtt2CZOtTuc38M8RY97ddqqaODPHLhVeXmHwr/GkCtgjLVhyAUF9rI5Z64behjbFdnERkeXzTYPIYwD/ITKpux841nFVZ7VJ7mxjumix8/ZnEEXeh1yHU63HEztk/UrjwNiCZAokS19Z1P/3xFop4hqE8unSCIZN5mk09iuYFy8dk7DRfKuHGDGMLJxAZDH1J/AoQ7rE8gk9/kdoUsGUIouuFIChsQPih+05Wc3CxxmL5/Yat5+qnwiBoul/6FBa/k44pAnY8epy5GQZ9QUvfpvsc5wqFkjINNwr02od6r38Bg95PJYERbGPVscuqgER/n8/kru9utmWNIROf9+9PsBHWWut0W+LWhHLxrj12YWKmetuoHpgyWdNCaeED2v5+XE/8yvKHjK7n
- SSoL8xkI
- QIy7JZdMbiUiTkcUN+IZe9ZkDUCBNdWJyDHGikKL0gtyraOQBxtXfRmf2naJJ5PxJpdWZEX5POUe7JYUH64AEWkTZkJY6CvdFXEuKaniw1kvrrjSxqlLxQXmBZgqEkJuKI992RPWDvc1hmM7MmNX/dGKDcQ9ZujED18DEBxfKxLYekqbGtMqeUiTDEctXMzP59r3k3S8E8pVqT3w+oXivfumeRVYjYfOb1SSPN+pUh3Ok7trszhMUM/8nVWAJIfgkWuc3sW1ZHp8bA7GwQxEZS2+kyCdItCBi28TIq0UUOk9kuCV9z59fqGZQyiBNFpoqJENiEs35/FrvgR3adWCPwlxa4MU4XmU4NeindCGmC3as1mB/XrepQqoL64CcC844iVZS5XqSFXJFa2adEMeMLGbxj/O+eJAal+lHQVsv7Q2SepzI5HpOq4H02LYxKexFcROtIkLrjP24Cb2mnK1Ph1R4NhwTecgOHXmdHGLw+el7HMeZKFlTiJ9lPA==
+X-Stat-Signature: pkphzwpbn15k4o3m3a8r5ii31trg17g3
+X-Rspamd-Queue-Id: 2398040011
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788363189-577494
+X-HE-Meta: U2FsdGVkX19G708NKPtSLzGp7wc8iIB8S1mfEoTwmaYKHSCKIfG3v/sBY67aTB+aFXXiizFPOBwMDn7CsG3qNpbFrsJyFJ+YLwgU6iC7DEkoOYjjsFu54a4VDEgDaikQ6tBknwuVBOMW1w2DDNi9NcCw4SUdwUjUUvnYuD/gw4pvmwN7mmUo5Wn31HbgKCF/5jMjEHMOorsrG45Y7xbRHHZOJDsw9tHtHwkBqFeHUqnZktUHyzDArFmF3+IQ7qD9nAD/MJnvrHa/A9bKkvOHGD/NORhgad10w5y9HqxqstIJrmM+Dv34ITOAlg3d0hEK+E0XHKiC3haWw+tmDmNx8WmEfOc9/UbFpu8AbQELyVq5TaAt5Sq7RPKWTN87APfFnpi88vMDSTicqFLePBkjtwHC39egEw7MZeIAEGFqQQszl+CxkKOXRdaQ1RdVbVmFgDLhdszRyx98CWsJZWWuVg/+iHK9hDp7rwxNNOKNCevCf65i6ec7ZX5bxs/f98beCkWAqvAnV8njh4AjeTyGmlfIFXzY6/14PAT7D6HW8dcvBnXizDS0Lyv+EQWgE1griLIiCN1ciMgdY1OZXgsIpFzFtTtoBr+HhQGRFFbdTeNA6MCmsDdawpqbUDBX1NG4e0FjNYYtiyEP659xiY7lxJI1H+cQehPmyVcnvwl/mf0YUEff2UKYA0QrbeWhM0is3qOGJhkV0c2HZxFKQXM+B6IfQnZIhmElKHS/6wEP500IAhi1wrTJFKvhnGOw9qgg5LIzdghJBEfAr1BqfbGQ9ITZzZD4XaV39fMNjSg7biIzO3oN1e+M2Y/FwS3znFVkG4OE1lhhTeAMX0gpm1dFOj/1StoZ7dxfl6lL0/EWNPzHC6xUOjiveZbSkok+w0uxW9/MODlOK315J5VQd4Xwzq+2zlEBgD+RTtqShLTPUXe20bXEfzJ8ftpqJcF6itvGD7nInvaFAaQdcUXW9vx
+ JnAQhFg4
+ pc+1bsxymZgq6WPnGWr7LPl9+qNrU8q4xyxEwRg/c9RZUvetRFpzeluVUxcoZpMdSKPKB5QNdsSphiGf7F0708In2QmrCJJ6lz95hrs+ssrtD1sUq+hG3niXv+4xuWMyQx1nOSvfxu3vfunfDAxEgDjQ04+DwIzD2C+uonqn1zHVFvdnCAHcaamrFlS2KU4lmzr6fI/XWsSQs2HXr1HRJcRXqumohscYMynasj/ozVK7nnwNU9m666VxGhktEowdMiumwS6p791aUf7X0b5FWIdcj+anJGS8ByEolh5M7qvc63o33pFbZsb0FgCbi350j3SDq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,53 +103,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  1 Sep 2026 22:47:37 -0700 SJ Park <sj@kernel.org> wrote:
-
-> Each DAMON context is allowed to have only up to DAMON_MAX_PROBES
-> probes.  The central place for validating DAMON probe parameters,
-> damon_valid_probe_params(), is not validating the upper limit, though.
-> Do the validation.
+On Wed, Sep 02, 2026 at 04:15:17PM +0100, Lorenzo Stoakes (ARM) wrote:
+> On Wed, Sep 02, 2026 at 01:09:35PM +0100, Yeoreum Yun wrote:
+> > There're some random failure for split_huge_page_test when khugepaged
+> > collapses pages into pmd again which had split by the test.
+> >
+> > Prevent the khugepaged's collapses for split page by setting the
+> > mapped pmd-huge-page with MADV_NOHUGEPAGE before split.
 > 
-> Signed-off-by: SJ Park <sj@kernel.org>
-> ---
->  mm/damon/core.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+> Maybe worth saying that MADV_NOHUGEPAGE doesn't immediately split anything, just
+> prevents future khugepaged collapses?
 > 
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index 4d28eb033fc4a..c010f686d033e 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -1420,6 +1420,13 @@ static bool damon_valid_probe_params(struct damon_ctx *ctx)
->  	unsigned char max_probe_hits;
->  	struct damon_probe *probe;
->  	unsigned int wsum, wsum_to_add;
-> +	int nr_probes;
-> +
-> +	nr_probes = 0;
-> +	damon_for_each_probe(probe, ctx)
-> +		nr_probes++;
-> +	if (nr_probes > DAMON_MAX_PROBES)
-> +		return false;
-
-Hi SJ,
-
-Thanks for the explanation.
-
-I agree that `DAMON_MAX_PROBES` is better enforced in the core layer,
-so that all callers share the same validation path without duplicating
-the limit in the sysfs layer.
-
-Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
-
-Thanks,
-Kunwu
-
->  
->  	if (!damon_has_probe_weights(ctx))
->  		return true;
-> -- 
-> 2.47.3
+> >
+> > Suggested-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> > Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 > 
+> LGTM, thanks, with a few nits above/below (sorry! :P)
+> 
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> 
+> > ---
+> >  tools/testing/selftests/mm/split_huge_page_test.c | 19 +++++++++++++++++++
+> >  1 file changed, 19 insertions(+)
+> >
+> > diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+> > index 86a603692826..4bbad892bc57 100644
+> > --- a/tools/testing/selftests/mm/split_huge_page_test.c
+> > +++ b/tools/testing/selftests/mm/split_huge_page_test.c
+> > @@ -168,6 +168,14 @@ static char *allocate_zero_filled_hugepage(size_t len)
+> >  	return result;
+> >  }
+> >
+> > +static void madv_nohuge(void *addr, size_t len)
+> 
+> Maybe call it disable_khugepaged() to make it explicit that's what this is doing
+> rather than eliminating any THP pages in the range?
+> 
+> > +{
+> 
+> Maybe a comment here like:
+> 
+> 	/*
+> 	 * Disables khugepaged from collapsing THPs in range, existing THP
+> 	 * pages remain.
+> 	 */
 
-Sent using hkml (https://github.com/sjp38/hackermail)
+Okay :) I'll modify in the next-round. Thanks!
+
+[...]
+
+-- 
+Sincerely,
+Yeoreum Yun
 
