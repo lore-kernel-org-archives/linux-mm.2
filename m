@@ -4,131 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81E5FC61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 11:42:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B530CC624D0
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 11:44:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C27A6B009D; Wed,  2 Sep 2026 07:42:00 -0400 (EDT)
+	id CA91D6B00EF; Wed,  2 Sep 2026 07:44:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 799A56B00CC; Wed,  2 Sep 2026 07:42:00 -0400 (EDT)
+	id C80936B00F0; Wed,  2 Sep 2026 07:44:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 688E86B00D0; Wed,  2 Sep 2026 07:42:00 -0400 (EDT)
+	id BBD1D6B00F1; Wed,  2 Sep 2026 07:44:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 41B526B009D
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 07:42:00 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B95431201B5
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:41:59 +0000 (UTC)
-X-FDA: 85168633158.27.FB1CBBE
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf29.hostedemail.com (Postfix) with ESMTP id D176712000C
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:41:57 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=h9RmcuGX;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of eli.billauer@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=eli.billauer@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C8AC6B00EF
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 07:44:39 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 33B55C01BC
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:44:39 +0000 (UTC)
+X-FDA: 85168639878.07.976EE6F
+Received: from mta0.migadu.com (out-250.mta0.migadu.com [91.218.175.250])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 0A42920009
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:44:36 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IULNUPg0;
+	spf=pass (imf03.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.250 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788349317;
+	s=arc-20220608; t=1788349477;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z8Dfh++0Ud+IxXdfXwfXS9P60ggh+Cfx9Hb6zf15cRc=;
-	b=AJHg9gASbxX+bvOGWQcubHDEFfrgoKyS9INMA4raoOkffnQ4vWA338capDNpPdMB3WN15V
-	aLOvcOe323016wyxlvkc1G1jhoeMGMl04X3RspjoruORHx0ScpUrA6uKhhfXDPXL4YGHfF
-	TYKQxYs3vGnx9RV/1RgH0FBf1QQh71Q=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788349317;
-	b=MCynr5Nav5KM7MHg+fTeR2bB8U8nkNUzb3iBqa/XnR6VVZJSynuNd3bFRsSht9FeGyOVjD
-	13vfZkuxiw9UFnjYuPDcQLmD6vyiz9b3ufvGj3iA8ZuBUHBnd5i3Op/IvAfCPU6eVFchQQ
-	GFNeGvHIdysQhdjyrGisFGyu70IypxU=
+	bh=4iunfluJkJk5C2LpFg5DYMpHqCk2d7lhZCAuOzFN74s=;
+	b=wE5pkErsRLB2I7is990V9u86yt9Ua1pTFDQAm3clXZoIng5rNcJ/dqoVCHiVQycwRaKXlb
+	RUcQLdLQ1291T+Z+sI/fLDxYKAHIBAdB+dlarJy+xFVY293M04b597UcVRlGpSMkHcZuig
+	F8/UpvPA5iWOqmyqGcxjHtAapsOmPrg=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=h9RmcuGX;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of eli.billauer@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=eli.billauer@gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6a65e66555cso1297673a12.2
-        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 04:41:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788349316; x=1788954116; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:subject:from:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Z8Dfh++0Ud+IxXdfXwfXS9P60ggh+Cfx9Hb6zf15cRc=;
-        b=h9RmcuGXh7fuiZjGm2iSiepXG8HfgBcCqMrCbhCJuLCQ56/DAPD+InwHy45X/ZtBxC
-         o7OOS3djV7tXRcVBldTeKDfnn7YLfD905cI1lJyo6+pjZenAKddqQ0L4Cjq/PSIe1WFH
-         cn+0Kodclurh50HlNomGz/sjwe+Krg8g2BhN+gPqXomaUThNnwRVCfqS2brWakXjch7S
-         qyvSNuY9z+puwK3nEwJNCSxIX7bDid2XhMxTpUxkLmLzAsEtaKwrEG0lhEl7PZAL0qbk
-         qWYbZxIMnx98F/8iab30tiv+bxWEbWSu+hIyRUVEF7Y+Pf5kd1Cf3B11fdoQs/BzhrVz
-         iweA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788349316; x=1788954116;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:subject:from:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Z8Dfh++0Ud+IxXdfXwfXS9P60ggh+Cfx9Hb6zf15cRc=;
-        b=BdDYdYSJU/9SIr+hLgAdSHewL8RBMfjild+9Wi2FKbC1xItmTqgnMZtzZ0SBrmJM3W
-         RrT6tbUoABtDhW8iaUlIE2mVQTLz3+KavyO/P3h6iYJ/L3kiMsTCfpz25WNN9TuUiiYb
-         td/997WUMPTDr7lwJGhR/WgGqr9R+8UQJQTAhnzFAbcr/uwBRBOCzhukldsBvN2vcKuG
-         SrXK8DvSWbvXW5CDJFVih7oWgR+rf1HHcECcB6WMYAsBEvQZPN+1sHdy5WGM84QFCvkH
-         diN0RnFA3oZlSDffVzqKd2fATma6Diz7t7sMtMZ7uIWrRahMzzgrGQNEMH4EyqvgVEq6
-         oZnQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxutBeftcwtZtqAMTGcnTCeO72s8KRV7wL2hqboOv9Q1dLkC5rexsQQ34rm2Dg2AQ++gfjOfn8Btw==@kvack.org
-X-Gm-Message-State: AFuF++kgQkESX3VOyyrejIDgQFNJ9DrnvyfcUKAxec0o+9ETSkGyzw7u
-	04+rWzsA7YR+JEg5dTF/X2k3GCjsZlaL+VWCOBSWKYU/f5x3vOOXsN3Q
-X-Gm-Gg: AYBFou1if7QbL6CpIo+ws08N5ndXWpEQbvXZvfBSCxf7NoKDVh2bmW+ow25+RX+ioS6
-	+i0ojdeRgq61P2wfQJhkeloGGHpjzOgNeX4BQmVfHnUZjxYQifohchB6dVBLk20qWOYGoA9Q/xK
-	j0b7lQs0GGHbX4u9Zhf3POcgg5ItW+aygOuQlun899If+iN3BlaCInHJuamGklBnXcJrgnf4Y/X
-	IiaNqhKikcIsHEx6PpqedpGA3Pxab2sS3tl4Ew/2zzAvDeWqHk6mYTOG+mH/DTjBxa64KmULQ+3
-	57z5yc6ZQe7nmSH6s3bgIE6yE+RGmAbDBZdZ2xh2oJ3ZbSgfMbHtgpHpcDodR5uoKpoo/GZjH97
-	RstDl+mQSmyGVaL7o828WHc+O4dSCVcdvqOUekhw4MVeBAjKab2u9IxHNp3gOpzadgt5LrAgdNP
-	vL+tBTPAsdDjVKrWj0xNXtzU/HYNknZWCKQNJCcfUijIjR8o7Lo7UdTvJyXJpbxvUNA9Cx+MVbu
-	+QNYpr0FHF+ctNC2OxfcEg=
-X-Received: by 2002:a05:6402:3608:b0:6a6:32f5:556f with SMTP id 4fb4d7f45d1cf-6a682ac0a4amr2806106a12.17.1788349316334;
-        Wed, 02 Sep 2026 04:41:56 -0700 (PDT)
-Received: from [192.168.1.89] (c-85-228-45-68.bbcust.telenor.se. [85.228.45.68])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c25d044d776sm117567566b.62.2026.09.02.04.41.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Sep 2026 04:41:55 -0700 (PDT)
-Message-ID: <9a3d6a08-339c-3315-cc81-46907d0836ad@outbound.gmail.com>
-Date: Wed, 2 Sep 2026 13:41:54 +0200
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IULNUPg0;
+	spf=pass (imf03.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.250 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788349477;
+	b=l6hq4Lg6CI23jLWV1pcs6PsawVTVTuYF7KHQzlsQ7+UU++yyjFRUsTeK3ekGkODBV6JcR/
+	rMJ4b1HoBuITA1j+ldrSsdeSAgqB4oBthmMR48MkwvnA8iZcCtMoyYofTNKzjbJU9Ua74u
+	Ii0IKDwzO76cXUMbDJOHBDA/y7Il6gw=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=FQ3fwj4HF3bn+KhRvieo4GqR7LJ+Nrb7IZb14BFcNNo=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788349475; v=1; x=1788954275;
+ b=IULNUPg0nHXswditelk/BOCU+pa3bBLxp5InD7yhF3hLPkFdYMUF89ZLtaeOa4AQ1ITHmLRI
+ 2+Ly92fai4lHHg84v1RdKrxXiGxVUtCuY3toqYfXa/rjScbnzE5/34Lj0sQFEJwH83P57+v1IqO
+ qNR21SzIiED2K3s+MwztcUS4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 7b46bf04467625a6;
+	Wed, 02 Sep 2026 11:44:35 +0000
+X-Mizu-Trace-ID: 7b46bf04467625a6
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <2def1a1a-cb47-4435-bc8a-e787672022ae@linux.dev>
+Date: Wed, 2 Sep 2026 19:44:23 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-From: Eli Billauer <eli.billauer@gmail.com>
-Subject: Re: [PATCH 2/4] char: xillybus: replace __get_free_pages() with
- kmalloc()
-To: Mike Rapoport <rppt@kernel.org>
-Cc: David Laight <david.laight.linux@gmail.com>, Arnd Bergmann
- <arnd@arndb.de>, Brad Warrum <bwarrum@linux.ibm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Michal Simek <michal.simek@amd.com>, Ritu Agarwal <rituagar@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org
-References: <20260830-char-misc-v1-0-05e2ce44f291@kernel.org>
- <20260830-char-misc-v1-2-05e2ce44f291@kernel.org>
- <f6001085-9234-4025-ff34-6cc4a66c293a@outbound.gmail.com>
- <20260831123937.32255a49@pumpkin> <apaF1HUtJnstuUN4@kernel.org>
- <1729fb06-6beb-f8ef-3e71-47fc3f00345d@outbound.gmail.com>
- <apcPg_y-HsMki7we@kernel.org>
-Content-Language: en-US
-In-Reply-To: <apcPg_y-HsMki7we@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/shrinker: fix bogus set_shrinker_bit() with
+ cgroup.memory=nokmem
+To: Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kairui Song <kasong@tencent.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ linux-kernel@vger.kernel.org
+References: <20260902073800.305481-1-jiayuan.chen@linux.dev>
+ <5753d853-df04-4918-9852-c23842c66428@linux.dev>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <5753d853-df04-4918-9852-c23842c66428@linux.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D176712000C
-X-Stat-Signature: 3uacedyuetinstf86bmskyk6pryqqa1m
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: mepyzjpb57ika7pqdns8xoc18bq9aidc
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0A42920009
 X-Rspam-User: 
-X-HE-Tag: 1788349317-741389
-X-HE-Meta: U2FsdGVkX1/yO9VBUgT2AIun7+4zV6PPsUeSKHZbaiuzcmunjBEW6715bg0Wiz8KHwst+2opkm4ysuO5nAx447RJ2O99OOW074Q5+b4mG+Guek/+0lFHEFy0jiqw/kH4LnEkfGnZO4x7XnuqWixGs8yYjokAiD89TNXIphXugWwIfa+RPHNgK/pzg5mXeraH1PTr5Fr/BiuVNbeQwYGr+01NGVcBHk8SIbVTl10VdztccjTKUORBxBY5zi1oTF6Yvxn6OuWVf570WiRiG5E85kBalfvzbId5EpznWUH6rJVq5S30lPyD8DClk8dHAjynU55yexECrYMdHHLCayHt8cV7+a5A5xyYUZbPmiuFUeqQeviJoYySG50n5O+xe2pmYO4NUWei342eAETlvH9L2G7xNW8SWE8wMbXy4v0pTzygKuPsqCeYUY9zBrIXk2/M8xWCDQfgo3J4AQrN4QLH5Ez2/jxowYWNvKu9A9NX+A8wRlKz05z3ySstqHoAEl994Fulq8IEPJk+hI4AJzgnDTCCE5uX2SRMPVWaWDLxP2slt8yaKoNJ1lnmEhkG5icYo2qUl/fsxYfLYjrlEW+5mZh/S+Svj6O/5vsufIJhn+SI91SPKUX7uTmUPGLnBkTBD9c3ke8eOvML7P9QcOBx3/lgEIR7NvEgZyn3M0narKZRlwvHUST1LMUAMsiZwSx6aLQ+eXnxd8njzedxQ+8x9DwcirdS25ikYjt/07TETC0fSNf13qj6/C3d09OCRbjlM0klCmY5kTgOrnSsBD5/FhsfRZBguHQGOVDlMKW4W2ASELZHqEIF3QbSZZArNDqnexX7FRsU6FXyN2C8QfMASS4eZLWwqHVw3YWNyhkx/HeHGYdPfgskzOC+kNZ07hnyaARzgQ+eM11BahCaLzo3+bpZ1xOuMsBExLgIOntAKBDJ/mZkfgn2KJvpPcTIA7tgI9QcJakstI+/A9blxTf
- Xo5M2y7d
- Cs1QUZBXQ/CVHStHNIlkpXTLR8BZJKgDvTpXNZTlDDyWn82n3xlEqo+pigoKDQEM4X4uexT6YA1u6zT+obGoHOObrfZI/BaXveORtxca8zeZUGTKGvzpSNamUWb3caD73Ew1NS7l3xO8lKV2CKaP0GfLFgikZICGqB53G+UkPfVI3xnArEE6ceQ+JRBt9iXES7J8O/yxoAwPeOD6gTRiBhbEXs+rrh5mHAtulc13LiWynrusZcwmOnvIxlMauT8fZTvC3LHO7qWZbbaUViw0BLyBC6mL3xAPArLv7dVXm9LjqjSL0gUJNKx7KW3rHP5N/mSZ94dtH0dI3CBFkCtKIjtdp6rPxuvQBKAzRUPRh57q2JPV8unBkdeY4BsyliuTH1JNKDP0NXEWEYNuLvRlNfI9VmgXCLGEEo7RiF/8Nt0w2V8F2kgVZapAR0+MYBbmJhJmHjM2/0NK2iIKuzATzeCUJUXWaMFKuuEhc3OSlv4FJy97pWm9CVk3A+bybieqVz1mQIZEH8r8aO27Kc3FA8UZ+SQ==
+X-HE-Tag: 1788349476-243773
+X-HE-Meta: U2FsdGVkX19WLUhSa/zGFhWSdPb0cmWNJ7HZAsY/itDiLH5mlrYB7DmKGERNtnBibt7K0lKY89k1cOOMQR5SxfKRpFt9kRcUYO6/jwRc9pL6sN4qV/MrvDjvWnj1u3atAaImZQERhX8JBSCYF5Gw6ZAmRdFbfJnTRoQ5NvGSnuOb6imf/Lyn/vLt6JJfXrPai6d0rcji5kLhbm8OqswKeYA+0S/c4CxbqfBbSUVdZdUqFNKSt+LnxRGJvHeUnwHQKO5dB5heWd52klTQxxIBt/5wMa5tjjC/xO06x+42B9Vgwi8acinlHerbQepjewLEymP/8Mk7s7Xaqt5yPM3manmdVFurk59hrB1TASo4f4VjmkWqE3lU+/RiKcmm6JCjxpgJYn1xmRBWW01PT46NmdmjiepjOIrfTWy8j3r42/7K4I0ZkjJsG1MtyrwtdHhEyuVSd+sINw2JS34jdEOhPFFrUkpzjRfWvQuYTf4WrFaY7ytzYUuC5VHl6zdgntOB76e2WhN92AZbxJm/lB23HOoTKCox5TQzLMiD/N6XpFLDyYNXFZV6b5tGcYXdgfOjC1gubymIJWMqmgYn+9o5kM0ZKkiETBpBzies3zloVa6t1BtSiqXCg4JYM1BxWUCNlDrLVgrBiHMSLLQkI5Pqu3a2dVRuKtOeflTykfy0x9x/y5QTI1hBikoCk4Q5+EOyRtAvmiRwqh+TXCmb7pHJlSIa2Ql/4WDXhPvy7ds35I43RIlNU90L+SCf5Kpr9pEzx5e3aj9iTQWrrHjKkTkrWjNC/Ahf63xw+uxICbIVnSWARt8o/pZwP9G8Dc4zBAl08r+DtpVUrvULzPIcQgKRAU75OS9vihAM8GFdEril9NM/WQZKbDeBkYaAGO+msqkF8RJUMXLHI3X1WQaQanbUm8Z9V6mM81x5KMj+PHgf0yM++Oy/k3gaoLfx+JjV34OqyP6/JMqsjCtt5VtBwfS
+ J2Gf8JPV
+ 1vHlezA5ap2YVt/HhvBVuQzYQ8b8Sa0neDwnkqRBV11FmVPU4ZJNyAta0lGpq86xN8xwMt855TG5tEWYtLTWgP/+YcR6WDtdyQWankoHTf+GHs8LmMqDLZ9gpyUrz1XGnh2YzeJ7vs6xDpSo1WT67umIoFQBKAij1hEqLrYYu26i7U5M+II9MehiLwcR52wfclQ2+55L6JqeBrfDiwnpAwWPhSVLgfTBw8IzpBHElWKgf9/IT031W5XXJEzhsCK6kGBgILkCU2mYTkubn+PnvaDHJle5XqO24nWIh5pkFo9UMCt6c9OwLzcMpnw0o1U3ZbHi9G71PYpI9CWpOJu6IJTVKZN0Jz7vtgwnd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,28 +96,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 01/09/2026 19:46, Mike Rapoport wrote:
->> * Does vmalloc() guarantee that non-pageable physical RAM is allocated when
->> it returns?
-> It's not pageable in the sense of demand paging. Some architectures lazily
-> synchronize vmalloc page tables and this can cause page faults that will
-> take care of the page table synchronization.
-> 
 
-Thanks for this clarification.
+on 9/2/26 7:34 PM, Usama Arif wrote:
+>
+> On 02/09/2026 08:37, Jiayuan Chen wrote:
+>> With cgroup.memory=nokmem, shrinker_memcg_alloc() bails out early and
+>> never allocates an id, so shrinker->id keeps the 0 it got from the
+>> kzalloc() in shrinker_alloc(). __list_lru_init() then copies that 0
+>> into lru->shrinker_id, where it looks like a valid bit index.
+>>
+>> Nothing calls expand_shrinker_info() on nokmem either, so
+>> shrinker_nr_max stays 0 and every memcg ends up with an empty map
+>> (map_nr_max == 0).
+>>
+>> deferred_split_folio() hands a real memcg to __list_lru_add()
+>> regardless of whether the lru is memcg aware, so the first THP queued
+>> in a cgroup does set_shrinker_bit(memcg, nid, 0) and trips the bounds
+>> check:
+>>
+>> WARNING: mm/shrinker.c:212 at set_shrinker_bit+0x7d/0x90, CPU#126
+>> Call Trace:
+>>   <TASK>
+>>   deferred_split_folio+0x18c/0x220
+>>   map_anon_folio_pmd_nopf+0xdd/0x130
+>>   map_anon_folio_pmd_pf+0x14/0xb0
+>>   do_huge_pmd_anonymous_page+0x1a1/0x620
+>>   __handle_mm_fault+0xea9/0x10d0
+>>   handle_mm_fault+0xe5/0x320
+>>   do_user_addr_fault+0x1cc/0x870
+>>   exc_page_fault+0x81/0x1b0
+>>   asm_exc_page_fault+0x27/0x30
+>>   </TASK>
+>>
+>> Harmless, the WARN_ON_ONCE() is what keeps the out of bounds unit[]
+>> read from happening, but the id should not look valid in the first
+>> place. Clear it before returning.
+>>
+>> Two other spots could paper over this: drop the id in
+>> __list_lru_init() when nokmem turns memcg_aware off, or make
+>> deferred_split_folio() pass NULL like list_lru_add_obj() does. Both
+>> leave shrinker->id lying around for the next caller, so fix it where
+>> the id is handed out.
+>>
+>> Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
+>> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+>> ---
+>>   mm/shrinker.c | 2 ++
+>>   1 file changed, 2 insertions(+)
+>>
+>> diff --git a/mm/shrinker.c b/mm/shrinker.c
+>> index a70aab124a0e..7ec2a9704f6f 100644
+>> --- a/mm/shrinker.c
+>> +++ b/mm/shrinker.c
+>> @@ -227,6 +227,8 @@ static int shrinker_memcg_alloc(struct shrinker *shrinker)
+>>   {
+>>   	int id;
+>>   
+>> +	shrinker->id = -1;
+>> +
+>>   	if (mem_cgroup_disabled())
+>>   		return -ENOSYS;
+>>   	if (mem_cgroup_kmem_disabled() && !(shrinker->flags & SHRINKER_NONSLAB))
+>
+> Thanks for the fix!
+>
+> I think the initialization would look better in shrinker_alloc()?
 
-This sounds like a showstopper to me. Immediately after the allocation 
-of these buffers, data from the USB device can arrive at 400 MB/s. If 
-the data flow is throttled as a result of handling page faults while 
-trying to write the data to these buffers, this could lead to an 
-overflow in the USB device's own RAM buffers. This is because the USB 
-device is an FPGA, where RAM is an expensive resource.
 
-So using vmalloc() may result in a malfunction in the data transport 
-where the __get_free_pages() would have been successful. This outweighs 
-the benefit of a somewhat higher probability of success in allocating 
-very large buffers, and surely the improved aesthetics of the kernel code.
+Well, we have to add macro if we move it to shrinker_alloc()
 
-Regards,
-    Eli
+
+     shrinker->flags = flags | SHRINKER_ALLOCATED;
+     shrinker->seeks = DEFAULT_SEEKS;
+
++#ifdef CONFIG_MEMCG
++        shrinker->id = -1;
++#endif
+
+
+No strong preference for me :)
+
 
