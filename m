@@ -4,92 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 380A3C624DC
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 16:42:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B40FC61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 16:45:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C12D6B00D4; Wed,  2 Sep 2026 12:42:10 -0400 (EDT)
+	id 8E29A6B0088; Wed,  2 Sep 2026 12:45:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 299446B00D5; Wed,  2 Sep 2026 12:42:10 -0400 (EDT)
+	id 8BA376B00A1; Wed,  2 Sep 2026 12:45:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1AF276B00D6; Wed,  2 Sep 2026 12:42:10 -0400 (EDT)
+	id 7F7EF6B00A3; Wed,  2 Sep 2026 12:45:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D8C0E6B00D4
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 12:42:09 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 663F11C1903
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:42:09 +0000 (UTC)
-X-FDA: 85169389578.28.715F4BB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 89F554000E
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:42:07 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ng3r09yI;
-	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CC1B6B0088
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 12:45:54 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E079CC028D
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:45:53 +0000 (UTC)
+X-FDA: 85169398986.17.187C37F
+Received: from mta1.migadu.com (out-19.mta1.migadu.com [95.215.58.19])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 394A6160006
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:45:49 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EzK0NrID;
+	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.19 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788367327;
+	s=arc-20220608; t=1788367552;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=zSCE6tfU3OOKoy1uKyUKYorlWK8V4jpcRy6mW/6lq08=;
-	b=NqZTQaQ4MUekVvRrCj7cudldKHsoztY8NUoM2NHMq6HzFrc6zkvuleCuDjvqIBMWkSYXH1
-	pBqOpEy+5YuKsUBPG1J/WQ4+Yzfa7UjTfJ3kzZEQeFcIXcpYYcKrFKfT1wBXrxzaGULEXX
-	nqNhRjj6BVfppOv3unA3VG1U2lqUg8o=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=I5BIySFcfVau43GZvdffl6exV+9pdr5CG3WM35GfPus=;
+	b=q7ioW/juXzXSxJTcWBO5FYItPQQ8gKstefC3S5bj5iwLDihlvl2ZNTC4mXPPOyQsUGiNPh
+	fKHYvxA+UZnlOI/K6JH2YXeBays+oMWBa/1S37U+IiKULGcc3oYWPd3WXkrpDES1ASTIP5
+	f3t9Bdcpa5czc9oxcm/KKo3FaWckU/w=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788367327;
-	b=4zaiWrMz0ytQcW5NryBazQbQgSdTZY/6F9G4qJKHC1bP4UnhWR1x03J5vUpdKHYSlMUPSj
-	sX/bcRFGetjvHY6B3EOzszeFLFwhRHF2LS5AjHvyG/OALuH0nFyECThoa7T9UKwJIktIEv
-	J6dQ//QxcUdmB4ESeKp6hZ8Ao2bOYIY=
+	t=1788367552;
+	b=twOG1d+qvqkMf99IMQvCnrVt9dZPbAFyDjuV6z+sdmIkTDZJMImAgvOBiUU0PjQatg6OM/
+	62wOUnr8gE9+sNNcsgwrzuhl14KWOp4UFuFV9e6v6n788s+AmD8mu02rap+Dno6vhDMZTe
+	OM25k94sTpJjPerjHA6L6Mh2n6I5gjE=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ng3r09yI;
-	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A854E42A79;
-	Wed,  2 Sep 2026 16:42:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D29581F000E9;
-	Wed,  2 Sep 2026 16:42:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788367326;
-	bh=zSCE6tfU3OOKoy1uKyUKYorlWK8V4jpcRy6mW/6lq08=;
-	h=From:Date:Subject:To:Cc;
-	b=Ng3r09yIN/Rg69sbbU68f2e0J4GvQ1H08DpuJmxeKXzHbL+jSRAM2+y1l0iv9NZZS
-	 BLTnCyef/QPKJyaX8urjMUB3ZQJ7Ett0/vZ3CI4w2Px+SebIB5AAJOmsL9G8+3Bc7g
-	 ObKFIVdoK6bWucxeLONqgE1gPYtG3AeZ1LXP9Eh5ZPofdWyjC+YCgJR3O+gJOZfZzh
-	 0jL/RsNMOX3GVfYqq4vn8hApYwJEt5V9aqSW2qmYYBbgEbhsPz5BNCn4jEz9xQSWns
-	 9Mzc4xD8T/6nD+xl2hufNb6VcCoBIZ10kL4RMkmQPLYcTPj1MuwJ/U0mTKo25p41Wn
-	 JRCwfO2UKMIPg==
-From: "Harry Yoo (Meta)" <harry@kernel.org>
-Date: Wed, 02 Sep 2026 17:41:54 +0100
-Subject: [PATCH v2] mm/slab: take n->list_lock in
- __slab_try_return_freelist() to avoid race
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EzK0NrID;
+	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.19 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=eBbY4iMBTmEAonlduKED6Icf9+LbGVlV12xAIrCk42s=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788367548; v=1; x=1788972348;
+ b=EzK0NrIDej/JH7z8uxUn4qy2Z9j2Ozo5h3VjpfOv0oek/exCtwG55atrJvO9DYZzl5iaLYZW
+ QzY6hZGmQfNavtJh5Qh9HjU8piCnG3OeRdAs6XwmiIE0WGW6CmPHCpebabDMO+q+pFY8CkGXOdF
+ dM4PbO4TLeW522m5zDDvu/RI=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 7a7ca504685ebf88;
+	Wed, 02 Sep 2026 16:45:48 +0000
+X-Mizu-Trace-ID: 7a7ca504685ebf88
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 2 Sep 2026 09:45:43 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Hugh Dickins <hughd@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Matthew Wilcox <willy@infradead.org>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/mlock: use the IRQ-safe accessor for NR_MLOCK in
+ __munlock_folio()
+Message-ID: <aphSajBg4a-e-Iyv@linux.dev>
+References: <20260901180109.3797944-1-shakeel.butt@linux.dev>
+ <1ddfa7dc-2dd8-406d-8454-59a349972106@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260902-slab-fix-aba-v2-1-d1ece15a8417@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MMQvCMBBG/0q52YMYpRAnF3Hp4C4dLsnFHpS2J
- CVYSv67seP7Pt7bIXEUTnBrdoicJck8VdCnBtxA04dRfGXQSrfKKI1pJItBvkiW0LcqXExwxjN
- DVZbI9Tpy777yIGmd43bU8/m/Ai0vQvfs3LYaNeLjnq+WR+hLKT+ug6bejQAAAA==
-X-Change-ID: 20260902-slab-fix-aba-d60f39fc9dee
-To: Vlastimil Babka <vbabka@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Hyunwoo Kim <imv4bel@gmail.com>, "Harry Yoo (Meta)" <harry@kernel.org>
-X-Mailer: b4 0.14.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1ddfa7dc-2dd8-406d-8454-59a349972106@google.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 89F554000E
-X-Stat-Signature: oncn4pebd5xo7u9iha7zww4azekrczg3
-X-HE-Tag: 1788367327-696507
-X-HE-Meta: U2FsdGVkX1+S8kY3YR+AC17UfMU1TquMqQhdGkuAnEgbTH/qbEpNwN258SczuvBoeY8bjBob2JOC0RFvR8MUvRk4mE1QBBgEhyxTeHg+1wkdHO9x3+5bU+6kDqWf/mmqGCW68VV2jIpcoPENN0ECJW+6SLjFjXQK6aEoZtjWo3p7gO1RiTzU0qVKYvL+lcEHo5XGWAT45WhLtE5RED6ge4ADEhdcncsYsjIY2+vsESb8VOONaOphAo5opt1QS/lhHEgNqyfM/XsrB2CqLpgqC5Xh5U5zSxbQYM20KnGRMqaV+ZwV1OvxhAISN0yxo3RmQ2+GmDFa7gr3jMR0zPZJEoqF//mO9kD87x2K6kJCpRqRHTSamGE8RkPswroZPusplxiBpuztyqNxKyKzXZmSIJK1gsmstqQLW4+ri5hKjdnnPj0iKEX6hT8HeamQmss5e+IPZDX90Z50gTQVh9gtOdRQOF/s1CV1Rpuee0NB9qKjqwUiDEtQ442XIgWdu9IhGv7GZ9XFSrEPhtZGxUxJft6COMDe2NNzCpwzISdl4XvhzSUkNfEiS1KiqGEfiSOBd35vaBMTG6kIFMEaVnFwRBlhWoKxbaV5wd36V2z5afPzRj7xBpnvqdRlZm/+8R+55tb5b/CI2iEbd4/s9GW9kthmF1pcaTpzpN3jHg+an1DrohI0aGlBstkMQNBJyDXRy2uAsavkVMbZJsbBUiDJvHdU5q29IO8rErm/h30jaybi8WL7IA02vdE6MgYL9jA+92+ZSdfaCkZyqWuI2xBiuNBNpX91UCSr0S82Ga5epW5zXDazNrUVDjAUtFxYVJP5aHgICfq+bm9qm8nlLEd9A7lg/xAyRuQyVmLlqZ4EWG2iFNsQkXGdhIiw0rAR54az+MRHSSIZUj/gQt2hpSoPnMrmwF0HrRBlm869sKV1lGcKtRzOIRcIkNn9M15zsQfdN+4fFHTHyoThJ9D9u/e
- JLLtocoh
- 3Sew/SLs4lhQ408T4KIWbmcm+JQgrT8BPBTDW3ebLnmDeT8ePRQNXqzbOh+KUN3AnLDEkqI/WnWknNcS58JCsfXhp8kA9M5nZZ7HPlohBGHm0ML6osyV5yDFiUvfzA1O69sjdEcBCAZh9ZTHPBzY0gSr5sI1EqyBLnRAq+j+eoRFTOavYQM9jwGP5Di19CD6/HjrjXYHkTjRNAlBMpQK02OQYWqFr2FQI6r1C8bhvhB1cWeUhrl0h3d9CSX44mW0DaKrPCw415yV04izozc6u0LOZJKhHEw+ShBbQs3LR0q/cT2ylyOYXVNvuYMSf8LAFvgNP
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 394A6160006
+X-Stat-Signature: 8knf4bxgtg6p31upw4g36ggrfa9ioki7
+X-HE-Tag: 1788367549-440705
+X-HE-Meta: U2FsdGVkX18FR5PFCwKQc0BT/zDjlt7KVQqZRHPx7OPTpuEnOxBE6L+uWk6dl/Xd+bugkLL4k9opUW76KxX6EbYJyw6uNrSobaxRNQxY4USJb8f8Opbach+VD8JoYCFlIUUHVKskVmPcuEQAO67lassWd6SO1tgBoJomOoWhXSSezc7GLgczGDj99kVpBfcPT83VfH/7iyrIWAoqpAT1D6hrqupCMOK0zOy0Kv82adPpVH4qOQ5MF2BXHSPxY1dl44CkQbFI5Lq+VCblNKWqyhokQI7bF2kr1eC0StFOszRebqpa+dpWYXQ1wpUXacnlkqfpzY4VFjvbWltjRNLoROsz8EAses/KvBiXoGthWnMbKklxorB0izDCYmRzoYjHv/KX97LYFSKEDl9GM4TF85QoQtVJDdF8WG7F8GrxIBJ22RykzAtgC6TMpOYIvxniC4gw4h1T78itFHdNIg1LQsKILwJMM98g5S0qQGeN3xUxeHeJfSlkSlV70P+TvNgVzmJVB0Jf2wtOgqz+kN9zs0W7arLV1om/RIntx4220WUFEDY+znhBbsTi3yTGOrtWfuC4GBS12B4K88HbExt57k34yJJVJcunkeS9ZELjNrvYADelBWfmaPz0jFnxiFAVZ+vtTQc3G7Id9yTpcOuewYuYW7eW1Pwo58aY0soIstX0XTkckw+7OSiFFlBR+a+1TyzZgeL5B7uHZSqDhU5mP9G8eJTDHYeS0V1UjmXTCWbsIVwxtyhpQTvmRY38EAtnEyLdZPvrLnW13otxNAiwed60pQveJTGMQv9027t2R2HyTSrJKsPoaNrBZp7qx+bG60O4T8HTreAn1PY1xdjnkYr7dHjq5D1hRTk2l30zkeaGPW6j/nEaHjS1rqu1r88oWfXy+qk5JrZi+uVN7i4yRVd3MCibzutvI5BFFMbnEWj2lBBIYPsh5kDSblnAllca6LELTnjM7G/RXn2m4PS
+ xkCTSk9Q
+ KG2lYoCj/hLB2rEpDqI7377+zOdhIcN44lcdi9C4P+wQOeDCtGa1rCoVA0H9Itr1aVBafFDB+7mBst7CeeRE0gqMIJYRjaTQjmC0WiGomGg4Dvf0/oYXFv0PBtMPbBb80LPHV3rl0R4mLhs387N+Rbh9e3SLE4Bl7rNorw7JhPSUwH8WZzzs82z/tor3vXUcjBokDdzG6d/NvUy82Rw8xOVGEYJTl01g7MLkrYPEJvIqShtylhqshH73DXMIg3OrpbfPlN9r0/x6YOUZM5ag9d/BsCbaVmw674FQ1FriqiFmn9Z1YrQCocLzByJZsSoZucH6R06HVPy7cvOijHtangJO7BYhmpaK0mnOp55Qs2jQbBaDl+3Er89nV4LCtvnAQkAdoCbw5RyKQA6cOq8MgN49CaPTHyWHy1sF2p+TL688RUtI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,133 +93,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit ba7425312607 ("mm, slab: add an optimistic
-__slab_try_return_freelist()") incorrectly assumed that nobody has freed
-an object to the slab as long as slab->freelist is NULL and cmpxchg
-succeeds.
+On Tue, Sep 01, 2026 at 06:27:06PM -0700, Hugh Dickins wrote:
+> On Tue, 1 Sep 2026, Shakeel Butt wrote:
+> 
+> > NR_MLOCK is updated from interrupt context.  __free_pages_prepare() clears
+> > a stray PG_mlocked and adjusts NR_MLOCK, and a folio can reach it with the
+> > flag still set from a bio completion handler:
+> > 
+> >   __free_pages_ok+0x6af/0x7a0
+> >   <IRQ>
+> >   __bio_release_pages+0xde/0x260
+> >   __iomap_dio_bio_end_io+0x16e/0x1a0
+> >   blk_update_request+0x14b/0x3d0
+> >   blk_mq_end_request+0x18/0x30
+> >   blk_done_softirq+0x49/0x60
+> > 
+> > The folio gets there like this.  A MAP_SHARED file mapping is mlocked, so
+> > its page cache folios carry PG_mlocked, and an O_DIRECT write sourced from
+> > that mapping GUP-pins those same folios.  munlock() then runs
+> > mlock_vma_pages_range(), which clears VM_LOCKED before walking the page
+> > tables to munlock each folio.  A concurrent hole punch reaches the folio
+> > through the rmap (i_mmap_rwsem, not mmap_lock) and can land inside that
+> > window: __folio_remove_rmap() -> munlock_vma_folio() sees VM_LOCKED
+> > already clear, so it neither queues the folio on the mlock batch nor takes
+> > a reference, and the pte it clears makes the pending mlock_pte_range()
+> > walk skip the folio at its !pte_present() check.  filemap_remove_folio()
+> > then drops the page cache reference, leaving the bio's pin as the last
+> > one, released from the completion handler above.
+> 
+> I'm hardly ashamed to admit that I've not tried to digest
+> that paragraph. You're writing about the rare fallback cases when
+> PG_mlocked is cleared late, and unevictable_pgs_cleared incremented to
+> notify us of that defect: yes, I accept that might happen at interrupt
+> time, and so we ought not to take the __shortcut in __munlock_folio()
+> which you fix  below.
+> 
+> > 
+> > So __zone_stat_mod_folio() here needs interrupts disabled, not merely
+> > preemption, and __munlock_folio() has a path where they are not: when the
+> > folio has already been taken off the LRU by somebody else the function
+> > jumps straight to the counter update without taking the lruvec lock.  The
+> > read-modify-write of the per-CPU NR_MLOCK diff can then be interrupted by
+> > the softirq above, and one of the two decrements is lost, leaving Mlocked
+> > in /proc/meminfo permanently overstated.
+> > 
+> > Use zone_stat_mod_folio().  mod_zone_state()'s this_cpu_try_cmpxchg() is
+> > atomic against a same-CPU interrupt and retries, and on the path where the
+> > lruvec lock is held its cost is negligible next to the lock itself.
+> > 
+> > The UNEVICTABLE_PG* events are deliberately left on the __ accessors:
+> > they occupy different vm_event_states slots from the UNEVICTABLE_PGCLEARED
+> > that __free_pages_prepare() bumps, and nothing updates those two from
+> > interrupt context.
+> > 
+> > Fixes: 2fbb0c10d1e8 ("mm/munlock: mlock_page() munlock_page() batch by pagevec")
+> > Cc: <stable@vger.kernel.org>
+> 
+> Okay: just a wrong stat, but it ought to go back to 0, so Cc stable yes.
+> 
+> > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> 
+> Acked-by: Hugh Dickins <hughd@google.com>
+> 
+> But I do think you (or Andrew :-) should include
+> 
+> Reported-by: syzbot+cd2073ee6d958a8d0fcd@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/linux-mm/6a931c5a.08e933ee.dbf97.0093.GAE@google.com/
+> 
+> That was indeed reporting a different way to get a WARNING from this,
+> when offlining a CPU: but it should be acknowledged for bringing you
+> here, and we should tell syzbot it's fixed by this.
+> 
+> I've been trying to work out whether you're going to come back in a
+> day or two, changing the __count_vm_events() too: and had raised in
+> that thread the question of why lru_add_drain()'s __count_vm_events
+> were not also reported by syzbot; but now I can see
+>  * vm counters are allowed to be racy. Use raw_cpu_ops to avoid the
+>  * local_irq_disable overhead.
+> and realize that they're not a problem; so this looks complete, we
+> shouldn't need local_lock()ing in mlock_drain_remote() after all.
+> 
 
-However, as reported by Hyunwoo Kim [1], other CPUs might have freed
-an object to the slab, insert the slab to the partial list, then
-allocated an object from the slab, and be in the middle of removing
-the slab from the list under n->list_lock.
-
-Since __refill_objects_node() puts the slab back on pc.slabs
-outside n->list_lock, it might insert the slab into that list while
-the slab is concurrently being removed from n->partial.
-This led to a list corruption, as reported by Hyunwoo Kim [1]:
-
-  list_add corruption. next->prev should be prev
-  (ffff888100000248), but was dead000000000122.
-  (next=ffffea000416e410).
-  kernel BUG at lib/list_debug.c:29!
-  Oops: invalid opcode: 0000 [#1] SMP NOPTI
-  CPU: 1 UID: 65534 PID: 144 Comm: poc Not tainted
-  7.2.0-16172-gcf72cbb39da8-dirty #1 PREEMPT(lazy)
-  RIP: 0010:__list_add_valid_or_report+0x80/0xd0
-  ...
-  Call Trace:
-   alloc_from_new_slab+0x183/0x300
-   ___slab_alloc+0x31c/0x890
-   __kmalloc_noprof+0x3d4/0x800
-   lsm_blob_alloc+0x2d/0x50
-   security_msg_msg_alloc+0x26/0x90
-   load_msg+0x1aa/0x210
-   do_msgsnd+0x91/0x800
-   do_syscall_64+0x109/0x5d0
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  ...
-  Kernel panic - not syncing: Fatal exception
-
-This is a classic ABA problem where cmpxchg succeeds but the state has
-changed since __refill_objects_node() took the freelist from the slab.
-
-As Vlastimil Babka mentioned [2], it should be rare to return more than
-one slab (due to the racy read of slab->counters in
-get_partial_node_bulk()). Therefore, instead of introducing additional
-complexity, acquire and release n->list_lock twice in the worst case.
-
-Return the slab directly to the partial list and hold n->list_lock
-across the cmpxchg and add_partial(). This is similar to the initial
-version of commit ba7425312607 [3]. This is enough to avoid the race as
-the list manipulation is serialized by n->list_lock. While at it,
-bring back unlikely() hint now that the condition is unlikely.
-
-Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-Closes: https://lore.kernel.org/linux-mm/apPa-cGLcyt90l-E@v4bel [1]
-Link: https://lore.kernel.org/linux-mm/ae25c193-b95f-40c1-83b6-1c2546467e41@kernel.org [2]
-Link: https://lore.kernel.org/all/20260421-b4-refill-optimistic-return-v1-1-24f0bfc1acff@kernel.org [3]
-Fixes: ba7425312607 ("mm, slab: add an optimistic __slab_try_return_freelist()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
----
-Changes in v2:
-- EDITME: describe what is new in this series revision.
-- EDITME: use bulletpoints and terse descriptions.
-- Link to v1: https://lore.kernel.org/r/apPa-cGLcyt90l-E@v4bel
----
- mm/slub.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index f9b56cb439e7..5cbbacb8ee32 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -5684,6 +5684,8 @@ static bool __slab_try_return_freelist(struct kmem_cache *s, struct slab *slab,
- 				       void *head, int cnt)
- {
- 	struct freelist_counters old, new;
-+	struct kmem_cache_node *n;
-+	unsigned long flags;
- 
- 	old.freelist = slab->freelist;
- 	old.counters = slab->counters;
-@@ -5695,9 +5697,16 @@ static bool __slab_try_return_freelist(struct kmem_cache *s, struct slab *slab,
- 	new.counters = old.counters;
- 	new.inuse -= cnt;
- 
--	if (!slab_update_freelist(s, slab, &old, &new, "__slab_try_return_freelist"))
-+	n = get_node(s, slab_nid(slab));
-+	spin_lock_irqsave(&n->list_lock, flags);
-+
-+	if (!slab_update_freelist(s, slab, &old, &new, "__slab_try_return_freelist")) {
-+		spin_unlock_irqrestore(&n->list_lock, flags);
- 		return false;
-+	}
- 
-+	add_partial(n, slab, ADD_TO_TAIL);
-+	spin_unlock_irqrestore(&n->list_lock, flags);
- 	return true;
- }
- 
-@@ -7296,10 +7305,8 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
- 			void *head = object;
- 			void *tail;
- 
--			if (__slab_try_return_freelist(s, slab, head, count)) {
--				list_add(&slab->slab_list, &pc.slabs);
-+			if (__slab_try_return_freelist(s, slab, head, count))
- 				break;
--			}
- 
- 			do {
- 				tail = object;
-@@ -7312,7 +7319,7 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
- 			break;
- 	}
- 
--	if (!list_empty(&pc.slabs)) {
-+	if (unlikely(!list_empty(&pc.slabs))) {
- 		spin_lock_irqsave(&n->list_lock, flags);
- 
- 		list_for_each_entry(slab, &pc.slabs, slab_list)
-
----
-base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
-change-id: 20260902-slab-fix-aba-d60f39fc9dee
-
-Best regards,
--- 
-Cheers,
-Harry / Hyeonggon
+Thanks a lot Hugh for taking a look and Andrew has already added the syzbot
+tags.
 
 
