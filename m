@@ -4,109 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E58B0C61DFD
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 05:08:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A232C61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 05:12:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEBB86B0096; Wed,  2 Sep 2026 01:08:49 -0400 (EDT)
+	id 507D66B0098; Wed,  2 Sep 2026 01:12:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9DA16B0098; Wed,  2 Sep 2026 01:08:49 -0400 (EDT)
+	id 491216B0099; Wed,  2 Sep 2026 01:12:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8C456B0099; Wed,  2 Sep 2026 01:08:49 -0400 (EDT)
+	id 359336B009B; Wed,  2 Sep 2026 01:12:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id ABBF96B0096
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 01:08:49 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2EEA2C0717
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 05:08:49 +0000 (UTC)
-X-FDA: 85167642378.24.3DA1F72
-Received: from mailgw1.hygon.cn (unknown [101.204.27.37])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D8527180002
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 05:08:45 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 05E6D6B0098
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 01:12:32 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 95D891A0748
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 05:12:32 +0000 (UTC)
+X-FDA: 85167651744.28.65F7023
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	by imf16.hostedemail.com (Postfix) with ESMTP id ADD66180007
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 05:12:30 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf16.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=muKKXgK4;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788325727;
+	s=arc-20220608; t=1788325950;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dKbO5DzKUhouBCeGyArdgjiKn2YtRV2K8pRxip3VtJs=;
-	b=R8Q8CXZXshKvis1Qi67gO2pxhPTeUusRLuLKWvl+jdm85deERstnHi8JBgjBq0Yj07l5wp
-	D8UKo5m3RGNsPi7m55fB0CvzqtNVdgPBAOp0d/7UIJSKolGMAeTc7zuKdjQmZrxpyiXSCC
-	txCrPV0ZWs3AG6GZ9XD3sziDJLX4KqE=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cKIm7/Vo/3kBu5uxI8QEzbmCtRRNycmtWWof5ToxHwo=;
+	b=obOsWH48Ag857r8FApbJU5FFaKl/k4VqOn7GqQELjxek6CsVKoi/qi2H4Bf5NGpA5ytDuK
+	M4V39pZFUb6a5e9YX20BObq9mE+T0oZxCOAQzNQp4QsBQDqlypJpJJig8nAoy6SHSt3rew
+	9hdLM90J9xM2Lia8IpjjET/xuVz3+l4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788325950;
+	b=eVTGdBW2fX2zVd97pFLVZZ78tk8hHbd9ZBm640DpOGrm+v9FVy0CrGTkDepjBeGZkx+RSr
+	6MlZlx91ktFnRnQgrU4D+iBZZcDIHvjmXJmyfv37LcG9jMC6ELhQS7YYxf5rY7+QH4rflY
+	zh8FffrARBjv3NWpcI+mW+mXmEMf6mY=
 ARC-Authentication-Results: i=1;
 	imf16.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf16.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788325727;
-	b=j91qq8XPYzg4GbRWo3t7ewxPXW0I73NoncLWPP4J3rBDghRwUFMd/JlQY3tXD+UN9Zb9Lg
-	aOJRJdAPP+YBXXim9kCCZ2FvVtsDO/ksi5PU58mmnYB3PMRmFtXOYvfApSWQ+B8DCcIBQd
-	dgDcQc65WVH7n6VqAtrENzO5+ZBRwqA=
-Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hZW3F1MxSz9Qqm1;
-	Wed,  2 Sep 2026 13:08:41 +0800 (CST)
-Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hZW3D5W52z9Qqm1;
-	Wed,  2 Sep 2026 13:08:40 +0800 (CST)
-Received: from cncheex05.Hygon.cn (unknown [172.23.18.115])
-	by maildlp1.hygon.cn (Postfix) with ESMTPS id 3FFCD4B5D;
-	Wed,  2 Sep 2026 13:08:34 +0800 (CST)
-Received: from cncheex04.Hygon.cn (172.23.18.114) by cncheex05.Hygon.cn
- (172.23.18.115) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Wed, 2 Sep
- 2026 13:08:40 +0800
-Received: from cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d]) by
- cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d%10]) with mapi id
- 15.02.1544.036; Wed, 2 Sep 2026 13:08:40 +0800
-From: Jianyong Wu <wujianyong@hygon.cn>
-To: Peter Zijlstra <peterz@infradead.org>
-CC: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>, Chen Yu <yu.c.chen@intel.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>, Dietmar Eggemann
-	<dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, Ben Segall
-	<bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin Schneider
-	<vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, "Shrikanth
- Hegde" <sshegde@linux.ibm.com>, Phil Auld <pauld@redhat.com>, Andrew Morton
-	<akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "jianyong.wu@outlook.com"
-	<jianyong.wu@outlook.com>, Yuan Zhong <zhongyuan@hygon.cn>, Huangsj
-	<huangsj@hygon.cn>, Fengyu Wang <wangfengyu@hygon.cn>, Zhiwei Ying
-	<yingzhiwei@hygon.cn>, "justin.he@arm.com" <justin.he@arm.com>
-Subject: RE: [RFC PATCH v2 11/23] sched/cache: Introduce helpers for task
- migration decisions
-Thread-Topic: [RFC PATCH v2 11/23] sched/cache: Introduce helpers for task
- migration decisions
-Thread-Index: AQHdNiBFF6wQCkMonke4aXPvTe8F7La48JyAgAGW6TA=
-Date: Wed, 2 Sep 2026 05:08:40 +0000
-Message-ID: <226d79fa93a84193aa2507113747d348@hygon.cn>
-References: <20260827122816.756234-1-wujianyong@hygon.cn>
- <20260827122816.756234-12-wujianyong@hygon.cn>
- <20260901090843.GQ4120091@noisy.programming.kicks-ass.net>
-In-Reply-To: <20260901090843.GQ4120091@noisy.programming.kicks-ass.net>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [172.19.20.45]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-Rspamd-Server: rspam11
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=muKKXgK4;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cc1cc1b42b5so711630a12.2
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 22:12:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788325949; x=1788930749; darn=kvack.org;
+        h=references:to:cc:in-reply-to:date:subject:mime-version:content-type
+         :message-id:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cKIm7/Vo/3kBu5uxI8QEzbmCtRRNycmtWWof5ToxHwo=;
+        b=muKKXgK4/+7a7zX1pjUw1k5Zgz/I9HJqECKGh6QM9BQo3mgWZKfebVurXRcX+hZrCF
+         ySq/7sljgm0PodRH6VTO4JsKOL8kh83L41OptW0RbrJtVflRQWTQHFiNaOzsgqOPRzdL
+         qBZk0ui3HHCc5H2gtMmvPKgo03hj1mymV7P8rMWRV20rhbJTajvF993Re8X8NRy0vlcQ
+         mkzrA8oiWFpUpIsgJBbaRmxQvCTMHeECcsTuwnVv6VfEwfOYDA76pXanB//MfMv3V7fz
+         Lfewtbn8TXSe4lRcE/cezZyqf5k1AkFIvweslr/wHdAostnBon7Xx6jUqHnPqqwHtCZa
+         EBTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788325949; x=1788930749;
+        h=references:to:cc:in-reply-to:date:subject:mime-version:content-type
+         :message-id:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cKIm7/Vo/3kBu5uxI8QEzbmCtRRNycmtWWof5ToxHwo=;
+        b=agk4cjzgtuFFgXCIHCDbUg+DgBgCivCQPNFD6+3paUqcx88ktHQhqHcNP/di+AP2/R
+         aWV6B/lTIjTCFRdAkoMlh0Rnvs+KHH5ruBgLqUfK/39XefLOCJtHJR3S8O8h+Q++y+O6
+         dOWWjd9tIqoumJuEi7XSi86InTOqGlVjupBF1ES+QySeNsFnRGr0JehWruRdt5Uqobz+
+         bv4YbnJuExqKMA+Ae2MVQSNJn3zE8bMvwwDcoAxR4c1t0Fg/tA+Rack8X6a1YiL8norW
+         zqQgx9ict7hPmleiyg1TnVlDYzYtyVNpzJsxLqfxn2Ekl4lwmypcArPHsqguesukMs5p
+         xAkA==
+X-Forwarded-Encrypted: i=1; AKwUvBxEbh0kXGeFqKpJy9qojbrK6sFC8/3u9yFpVoQoPaGePtxm5RTbwlfO35N9lo1poqtkWTH3sNSe1g==@kvack.org
+X-Gm-Message-State: AFuF++mjo4zsw8kHr3g4M2YYmlRUOCIg+4xVXiY0Q8v6EiTek91FbOBT
+	/o6MYgCzRybkZr4gGV3/W2hTDCX9byMR27EU16oI00D+QDnEWj73R6xS
+X-Gm-Gg: AYBFou3xi/WlQidvU4x9VASe2uxunVAmDMzfpWgMKbPVx22vp8H11e5/saV7othqsu7
+	KCaQutHqsu9v515vWAv4Xffhz+3vja7+WJUlAWxuHitR/bYvTaO/XuRSm26djzr11I5Ngzx2vnp
+	2hZgwIALjSEa8J9u59hqobFOgWCIezcCHCjoqMvl1phAnltQQeHPvmzpqp/T6/XfvFiWU7qQM3K
+	7VDjKMyRUoRDNHApZjeQpHNuIiDzQtPsKgQWdcx/HjqQXlFqs/l6T3wNb6zRCd3QhbOHYhcPBRr
+	hXg+gDmHekZjeVAYx9s3RUdExNmbITaap7y4Yh9381ywNPiMTyxVR9etgZqgMk4TdHrdpS9Jibj
+	Zq8QNucLiNoFKndUs4gTpjR46m473ntoOBCozG+OWPAJK0sU7emvtcVYbWYt29+cyEa9KpAf7xC
+	2kpNDRJUjX4A8dyXqOiIUOHjDIivZH2P8HHyif4RHixMw6Oup2iwxuI5I+6SYVVDdBXcw3kaEG+
+	7ORhnYdODFKmajXNAVdkw==
+X-Received: by 2002:a17:90b:3d81:b0:398:c150:e7b3 with SMTP id 98e67ed59e1d1-39aedf5d923mr3494095a91.4.1788325949194;
+        Tue, 01 Sep 2026 22:12:29 -0700 (PDT)
+Received: from smtpclient.apple (vmi2317720.contaboserver.net. [84.247.152.65])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39ae380d0bdsm3070979a91.11.2026.09.01.22.12.24
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 01 Sep 2026 22:12:27 -0700 (PDT)
+From: wang lian <lianux.mm@gmail.com>
+Message-Id: <806D90E7-E65E-4DD5-B104-D684900CF265@gmail.com>
+Content-Type: multipart/alternative;
+	boundary="Apple-Mail=_A66AA493-B1D3-419F-BCAD-FF98B71764EA"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
+Subject: Re: [PATCH v4 1/3] mm/damon: Introduce DAMOS_QUOTA_HUGEPAGE auto
+ tuning
+Date: Wed, 2 Sep 2026 13:12:12 +0800
+In-Reply-To: <20260902042344.83913-1-sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Asier Gutierrez <gutierrez.asier@huawei-partners.com>,
+ damon@lists.linux.dev,
+ linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+To: SJ Park <sj@kernel.org>
+References: <20260902042344.83913-1-sj@kernel.org>
+X-Mailer: Apple Mail (2.3864.700.51.1.1)
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: ADD66180007
+X-Stat-Signature: 71zpgbgmfemizyz4cacss7wteqfmrmtg
 X-Rspam-User: 
-X-Stat-Signature: 9uedinbqbfe9i5q8egwpun96g4hwrqpx
-X-Rspamd-Queue-Id: D8527180002
-X-HE-Tag: 1788325725-690989
-X-HE-Meta: U2FsdGVkX18strQ978e2+mUP5+T6FdCVorzx/nFCT8/NrjTDf1S+1v66MdmBZLT4TLq9/nVUl3oVVa45g2eq3DIUAExNiHOu3j8O/rZrfUKz6CXgzRxgBuBmme1H87Kjs9Qbzh4rhvDyGUKXtXiSX4RKyZPM1V6aEk2kA8SbMvhQH/7nSrYLXJrA8i1FWyDP4qP3qjXL+6GaoGVf5feqlW78acsA8iUaXXD5o1nL468LUsl0zLD4WrnhS08SLqBxryDUP3xZlFZo6Fmp7g/ywQnKg8hNp6Q+oEFhnBGYc/9sX/RTo99UUkHsUOOhoYYZ+Kd4mhsKTJ0yJP5rJlxqFJmiXaCulNAVxXJzlFfgCpABZlpAULnFMQKticLWSzg4GHHlVnpKlMOXQRK45FKwJmrZBqa2i2jUU8RsjM1eWE8+lw90DCybrfb4eJuRGYv3dYW8Sa1BCuqU17fBod/D14w7sKNtONeHnyiZEJ9JIloiY7cbLtJEa7nlknCbq0LFtCfUttlzSBmqm85bcE45nhCbrsBa78ahdpJNbZnstcZ+53Y4wJb7399y8+qBy2FcY7tNUCPAk893l8fXwaa+lEVwgNGUyaVGfA+50uAIlfFr6D7pocaPsvDC1vnWcoVfacFL1GkCr4hxJgUqBgEZY9v/j2WLytCcBexJMmco4SQpqR5K5WZAgV8s6/PE/dQBeL15CmGZPhjjMz8kNxDCHUxmx9MneUGqPQQqAbzbYxuJzmF0+Whqo1udtLanUpn4q89uiowjhivCmh9ZN+4dFVScvSdrXiM6QYozkHAlpWHXELNn7it0YPx32uo5Tr3XbpkEED9YBDJJOF3O+B6C9rVn5EHJ1N6WCdXJe4DXMEI1hrTDpRU77iasxw4tuFNdU9xBp/2sfqd37EsBsS0YVRVJ1rztG5WSuQHkyeC+mmhPwITVllPNMHAn0jfe/M7mQxYlV7UZ6mSVAxSS6mH
- +DilojVD
- q0qovY/YZ2w1HYDtQSTs6ndWorRJdGkGRZb0ICmGqrUYnzA9GGK5xFL+3BEhgRI0tab+CU9Lgq4/q0AbTZMbVYr7JXsUJ6Xk/SSeWL0ofBD7APoGE56VesW5olJ5cQ3Td1WUOaz3sM3YwrtGizvgkoOcIdoMPh6vnE/PExFyweBgHEqhjeFfyuUe8Veh0p4udpKzFlTABqIlDbPivqdxmH2XHi36IN9FH+MaQvNR91cHb5LUiB2zBxhrSyiV98sXcjHXvHPcKcbPfsrIPE3J43DltCSbLcqyVsCfsWszaHVLpPVqJJhXFK88OZuQhSCl6Znh4a4iXJMsP9XG7c4Vn5fgRvXnZj1XoueI/VAeGR6qY6X4GKuM+xchoQs7E6aYVRYOEZrWK/CZqyqRYhtJi6V+Fgp1v7Tcyhwzx1jaMuGHeEqE8fUuHd/ADhNnUvK0yAzDWMJhRLmdQI1tH+no0bTyk31a2V7C6j+cr4/zl/p+wxgdpMWRcIlbo3+NRUjZ94gmmkP6Dv2FYTH/Cc/n+qUBYzmmQtSeMy4MKDK0DsJWTE+c+4aZVC4u7/ErhKv22FT+wwCMAnb6ggpbzIt8YLihK34cDiq9eoitVPiIA+kTLuV+n7Pgb4Y77LtOy6L1XrD8XNI95hNspLGYg0JkOwkOTrXCD9R62eYz8GK+pZU0Hp8ADmYSNSfn+M2dUQ1UiX73SUhZOIanTtRh4rg/J1mspLEzKr8eRSN1FAbGZ+S9rwnLoHp6wKBE5GKQSpHaDVRLq0QXfIOYdTpuE4Et+FePmTECM7vA1SCX+DvU3tzWI8w6dzix/nUZdzrbD9t88b1BT/drEuEgzgwH5N9mZxEHPcw==
+X-HE-Tag: 1788325950-467141
+X-HE-Meta: U2FsdGVkX18h8Nr+pDaIP9bPkkKK6SGmkd+IUimI8YNlUdDoxDseYMzz9n+Ape3IdomjJ+t/xjgEsnpqdJwLZjptUSOPL4pCCDBmUfUVVq5R85qFTNj7pf5A+DTJKRkM4UPJvSueuRhaf5kb8ltbo3qODWy5ybbhM6qIV9mlKbarN9iBo+1o2V8W61ORokRgasmfjvA0RTkphvUYZovkvC6KREL0h9V+Ru/8QvQViUELxSElng9U8oBHeu28NO+JN2VfCOMKndxwLYiW4VFB9cCAvTWX060/c6BY5FvTlAOt8x+gTbnOqnvf+hdBqkqa9llmMvTTRMcpvxxvCSfzamXS1o8hAj3bw6DDxN7tN1GtoLOd/nbMYh0I+I2+DFFoNFXU0nv/916MgHFfiV7f7Tt6+AlNBnikRSNr+/67TqHbdazl8tecdPiNUW9J+UsG7qBELcwDLIcoVQ/pyJ+iBlwIW9hUUxw6N3ZT/K0huXSLGnFmnptMATwKX/x7H+f0686t1vngkwqQYTHIE2lrwBYjoKlm5IQrEJom7lCxi7M4h8wqFw+27XV/aK3Ggeuc4I1xnxqoR8sxolgos3i17vRpIxnfD5cBuEaSgXs3JbK66DUNGu/PD3oX48865qCRiFAo8JRgnRZxAex7fxK0vU+Xf6VlKEvnnRXwosqecY6Zpq4Sdh1S+z2F2XgRi6PKVtQqsCG4WK0ZUtu03aIgwYVnjic0hwFdHTyMTse1lgf6wyNMWIad7rA0evCz5YvrNdLMTKhMTClnkN74OvIGB3fkzsgDokdbQOrmJtZ0isg0sshOFRORTg1aJMWViS1DZ5XO08JpHNwW9Yys8y79k81S9nZ4aDowJuMebUHi6f2kUwZ+Jxs/B9wOnpn5C0Ay/4yRJnNmCCv0rh1S90Z+TdgPxgspdKHYQ4D0zZy32D+6v/Ihg8ioSo2HTgZxBz0/E9kyjWKysNBNDoF5ArU
+ ymFf/9GP
+ R7RO+1ntTbm1rFmERggpGtp40IeEE+VR3YcE8R/TZmuHLRJl3v6ZHe6lC5O63NESCvLRxrJLYaxYmhhkK6VSfDY4vnLN7grqjntitAE3GqwD0i1pBYV1+mti4V3H5s2PiAwwCZofXW4XPEZOV/r48ZsP/izAFxO7atmXNooSmPgcortyPFbfoTRAMfe4JsPNbYDxU0RwRhsZPBbHRQKg6k9RcXCBlxYqe9oh9Qiazo/8pTnYfHVzkC8oqEf79yfEKNlOxqakEsOdx23K+DdZrYAdKEV/PxNU/HeyJAEIeWDjTD71I23RbU8gBKjZwiq4gr8OLGvC6PZibPAZHkNg5it14gyr8iz36HbYXJnHAdCLDYiM1OfS8kr4syYj0bT0sKz0NigaUFuM0PYzuKWHQWIi7c42IpZpkCnky5nHsMrcNThqGvg6a5ytVMF5cK75W5znShMAnyZ7XeiPa2bvTcYMLyz228IrfH84LqcjBLkZR++e+kE9/XNy51IwYWDrEqtbQgrBIVh6bneWDxo9x+iSc6CIZIKOlcZ4P+wzUWbMPRMnnjIeWFOt6rkt+8JolWbtW/zRfHMS3nGW9Rx8yf31Wv7/5Kk335VpR6WGIE4OL16wc/MfbTtDAb8y2IrUzNJjaJYremSNxTx7dTwC4gL2PMc1+FBZaWnsFWWyQVMmZUnohoLtGPd04lJGaKZWCJrmzmqTKt6l19Ryt1wM8iTSyHD0Rw9o/mVI2UP2cYPJty/O/DDhH2rfUbdkF3QKlI+cTlZsQMiRbU3s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,303 +123,567 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Peter,
 
-> -----Original Message-----
-> From: Peter Zijlstra <peterz@infradead.org>
-> Sent: Tuesday, September 1, 2026 5:09 PM
-> To: Jianyong Wu <wujianyong@hygon.cn>
-> Cc: Ingo Molnar <mingo@redhat.com>; Juri Lelli <juri.lelli@redhat.com>;
-> Vincent Guittot <vincent.guittot@linaro.org>; Chen Yu
-> <yu.c.chen@intel.com>; Tim Chen <tim.c.chen@linux.intel.com>; Dietmar
-> Eggemann <dietmar.eggemann@arm.com>; Steven Rostedt
-> <rostedt@goodmis.org>; Ben Segall <bsegall@google.com>; Mel Gorman
-> <mgorman@suse.de>; Valentin Schneider <vschneid@redhat.com>; K
-> Prateek Nayak <kprateek.nayak@amd.com>; Shrikanth Hegde
-> <sshegde@linux.ibm.com>; Phil Auld <pauld@redhat.com>; Andrew
-> Morton <akpm@linux-foundation.org>; David Hildenbrand
-> <david@kernel.org>; linux-kernel@vger.kernel.org; linux-mm@kvack.org;
-> jianyong.wu@outlook.com; Yuan Zhong <zhongyuan@hygon.cn>; Huangsj
-> <huangsj@hygon.cn>; Fengyu Wang <wangfengyu@hygon.cn>; Zhiwei Ying
-> <yingzhiwei@hygon.cn>; justin.he@arm.com
-> Subject: Re: [RFC PATCH v2 11/23] sched/cache: Introduce helpers for task
-> migration decisions
->=20
-> On Thu, Aug 27, 2026 at 08:28:04PM +0800, Jianyong Wu wrote:
->=20
-> > +/*
-> > + * Decide if migration should happen on a specific node.
-> > + * The node here is an LLC or a NUMA.
-> > + */
-> > +static enum llc_mig __maybe_unused can_migrate_node(int src_cpu, int
-> dst_cpu,
-> > +			struct task_struct *p, bool to_pref)
-> > +{
-> > +	const struct cpumask *span;
-> > +	struct mm_struct *mm;
-> > +	unsigned long dst_util, dst_cap, tsk_util =3D 0;
-> > +	unsigned long src_util =3D 0, src_cap =3D 0;
-> > +	unsigned long acc_util =3D 0, acc_cap =3D 0;
-> > +	int node, target_cpu =3D src_cpu;
-> > +	int get_src =3D 0;
-> > +
-> > +	if (!get_llc_stats(dst_cpu, &dst_util, &dst_cap))
-> > +		return mig_unrestricted;
-> > +
-> > +	if (!get_llc_stats(src_cpu, &src_util, &src_cap))
-> > +		src_cap =3D 0;
->=20
-> Comparing against can_migrate_llc(), that bails with mig_unrestricted
-> when !get_llc_stats(src_cpu).
->=20
-Agreed.
-
-> > +
-> > +	if (p) {
-> > +		mm =3D p->mm;
-> > +		if (mm) {
-> > +			if (mm->sc_stat.cpu >=3D 0)
-> > +				target_cpu =3D mm->sc_stat.cpu;
-> > +		}
-> > +		tsk_util =3D task_util(p);
-> > +	}
->=20
-> It isn't clear when !p would be valid. migration is always about a task,
-> no?
->
-This helper is also called by llc_balance which will pass NULL task. So, !p
-is valid here, same as can_migrate_llc(). In that case tsk_util is 0 and th=
-e
-decision is made via the to_pref path.
-=20
-> > +
-> > +	dst_util =3D dst_util + tsk_util;
->=20
-> can_migrate_llc() also adjusts src_util by subtracting tsk_util (and
-> flooring at 0).
-
-Both the pre- and post-migration utilization are needed here. The current i=
-mbalance
-check uses the utilization before the move, while the capacity and anti-bou=
-nce checks
-need the utilization after the move.
-
-I'll introduce explicit src_pre/src_post and dst_pre/dst_post values with t=
-he source
-subtraction floored to zero.
-
->=20
-> > +	if (to_pref) {
-> > +		unsigned long dst_pre =3D dst_util - tsk_util;
-> > +
-> > +		if (fits_llc_capacity(dst_util, dst_cap))
-> > +			return mig_llc;
-> > +
-> > +		/*
-> > +		 * The destination is over the margin. That is a reason to
-> > +		 * refuse a task while the margin can still be met, but not
-> > +		 * while every LLC of the node is over it: no placement
-> > +		 * satisfies the margin then, and refusing every migration
-> > +		 * leaves the imbalance in place.
-> > +		 *
-> > +		 * Let the task through when the move still lowers the peak,
-> > +		 * that is when the source is noticeably heavier than the
-> > +		 * destination and carries at least two more tasks worth of
-> > +		 * utilization. The second condition keeps the destination
-> > +		 * from becoming the heavier side, which would bounce the
-> > +		 * task straight back.
-> > +		 */
-> > +		if (src_cap && util_greater(src_util, dst_pre) &&
-> > +		    src_util >=3D dst_pre + 2 * tsk_util)
-> > +			return mig_llc;
-> > +
-> > +		return mig_forbid;
-> > +	}
-> > +
-> > +	for_each_sched_node(target_cpu, node) {
->=20
-> So this iterates the nodes in the order specific to the node that
-> contains target_cpu.
-
-Yes, the node including target_cpu decides the affinity node sequence.
-
->=20
-> > +		unsigned long u =3D 0, c =3D 0, nu, nc;
-> > +
-> > +		/*
-> > +		 * The walk starts at the anchor, so the nodes it crosses before
-> > +		 * reaching the source say nothing about this migration: the task
-> > +		 * does not live there and is not going there. Judging them only
-> > +		 * lets an unrelated node with room refuse the move. Start at
-> the
-> > +		 * node the task actually sits on.
-> > +		 */
-> > +		if (!get_src) {
-> > +			if (!cpumask_test_cpu(src_cpu, cpumask_of_node(node)))
-> > +				continue;
-> > +			else
->=20
-> Strictly speaking this else is superfluous.
->
-Yeah, will remove it.
-=20
-> > +				get_src =3D 1;
-> > +		}
->=20
-> And then you skip the nodes between target and src, which are the nodes
-> with best locality, confusing, but lets read on..
->=20
-> (sometimes target =3D=3D src, and you thus don't skip anything, but other
-> times this is the preferred cpu)
->
-
-As this is the "!to-prefer" path, dest cpu is not in the sub-sequence from =
-the target_llc to src_llc in the affinity node sequence. That's why we skip=
- them here.=20
-=20
-> > +		if (cpumask_test_cpu(dst_cpu, cpumask_of_node(node))) {
->=20
-> For the node that contains dst_cpu..
->=20
-> > +			nu =3D 0;
-> > +			nc =3D 0;
-> > +			for_each_llc_node_span(node, span) {
->=20
-> Iterate the LLCs in this node..
->=20
-> > +				get_span_stats(span, &u, &c);
->=20
-> Now I'm confused again, @span is the span of the llc, but
-> get_span_stats() is a wrapper around get_llc_stats(), and since span is
-> just a single llc, why use this rather than get_llc_stats() directly?
->
-Oh, it's simpler to use get_llc_stats here. Will change it.
-=20
-> > +				nu +=3D u;
-> > +				nc +=3D c;
-> > +				if (cpumask_test_cpu(dst_cpu, span)) {
->=20
-> If llc includes dst_cpu
->=20
-> (indent is getting a little out of hand here)
->
-OK, the nesting got too deep here. I'll refactor these code.
-
-> > +					if (fits_llc_capacity(u + tsk_util, c))
-> > +						return mig_llc;
-> > +
-> > +					/*
-> > +					 * The destination is over the margin,
-> > +					 * but so may be the source. Refusing
-> > +					 * then leaves the peak where it is:
-> > +					 * a LLC at seven tasks stays at seven
-> > +					 * while a neighbour in the same node
-> > +					 * sits at four, because taking one
-> > +					 * more would put that neighbour over
-> > +					 * the margin as well.
-> > +					 *
-> > +					 * Let the task through when the move
-> > +					 * still lowers the peak, guarded the
-> > +					 * same way as the aggregation path:
-> > +					 * the source must be noticeably
-> > +					 * heavier and carry at least two more
-> > +					 * tasks worth of utilization, so the
-> > +					 * destination cannot end up the
-> > +					 * heavier side and bounce it back.
-> > +					 */
-> > +					if (src_cap &&
-> > +					    util_greater(src_util, u + tsk_util) &&
-> > +					    src_util >=3D u + 2 * tsk_util)
-> > +						return mig_llc;
-> > +
-> > +					return mig_forbid;
->=20
-> This is an unconditional return..
-
-This unconditional return is intentional. Once the walk reaches the dst llc=
-,
-we have enough information to make the final decision about whether to
-migrate or not. LLCs after the destination llc don't affect this decision.
->=20
-> > +				/*
-> > +				 * A nearer LLC only justifies vetoing this
-> > +				 * migration if the task would actually fit
->=20
-> But you just skipped the nodes between target and src, those are nearer,
-> no?
-
-Yes, they are nearer. But they don't contain the destination LLC, so they a=
-re
-irrelevant to this migration.
-
->=20
-> > +				 * there, so account for its utilization the
-> > +				 * same way the destination branch above does.
-> > +				 * Without it a LLC already holding one task
-> > +				 * per core still reads as having room and
-> > +				 * vetoes every migration towards a farther,
-> > +				 * genuinely idle LLC.
-> > +				 */
-> > +				} else if (fits_llc_capacity(acc_util + nu + tsk_util,
->=20
-> .. which renders this else superfluous, but that won't help with the
-> indent because you still have the chained if :-(
-
-Right, this else is unnecessary. It needs some refactoring here to make it =
-readable.
-
->=20
-> > +						acc_cap + nc)
-> > +						&& fits_llc_capacity(u + tsk_util, c)
-> > +						&& !util_greater(u, dst_pre))
->=20
-> (logical operators go at the end of the previous line, your patch is
-> inconsistent on this point, since that is what you do elsewhere)
-
-OK, I will move the logical operators to the ends of the preceding line.
-
->=20
-> > +					return mig_forbid;
-> > +			}
-> > +		}
-> > +
-> > +		/* Don't migrate if this is a good place to live. */
-> > +		for_each_llc_node_span(node, span) {
-> > +			get_span_stats(span, &u, &c);
->=20
-> This is shared with the above loop, meaning you're now duplicating this
-> work in case you fell through.
-
-The destination node walk is intended to be terminal: it should find the ll=
-c
-containing dst_cpu and return a decision.
-
-I will make that explicit by returning mig_unrestricted if the destination =
-llc is
-unexpectedly not found, so that the generic llc walk is only used for
-non-destination nodes. Thus, duplicate scan is avoided.
-=20
->=20
-> > +			if (cpumask_test_cpu(src_cpu, span)) {
-> > +				if (fits_llc_capacity(u, c))
-> > +					return mig_forbid;
-> > +			} else {
-> > +				if (fits_llc_capacity(u + tsk_util, c))
-> > +					return mig_forbid;
-> > +			}
-> > +		}
-> > +	}
-> > +
-> > +	return mig_unrestricted;
-> > +}
-> > +
-> >  /*
-> >   * Check if task p can migrate from source LLC to
-> >   * destination LLC in terms of cache aware load balance.
-> > --
-> > 2.34.1
-> >
-> >
+--Apple-Mail=_A66AA493-B1D3-419F-BCAD-FF98B71764EA
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=us-ascii
 
 
+
+> On Sep 2, 2026, at 12:23, SJ Park <sj@kernel.org> wrote:
+>=20
+> On Wed,  2 Sep 2026 09:56:01 +0800 Lian Wang <lianux.mm@gmail.com =
+<mailto:lianux.mm@gmail.com>> wrote:
+>=20
+>> Hi SJ,
+>>=20
+>>> Seems using MTHP_STAT_NR_ANON that is exposed as 'nr_anon' can be =
+used?
+>>=20
+>> Thank you for the suggestion.  I will study MTHP_STAT_NR_ANON and =
+nr_anon
+>> further, and document what I find.  We can continue discussing it by =
+email,
+>> and I will be happy to review any follow-up or updated patches.
+>>=20
+>>> I'm curious if you and general reviewers need or prefer to directly =
+be Cc-ed.
+>>> I was naively thinking people can search and review DAMON patches by
+>>> subscribing to the mailing list or using the archives via =
+lore.kernel.org like
+>>> tools.
+>>=20
+>> I subscribe to many mailing lists, including linux-mm and DAMON, and =
+I also
+>> follow patches through lore.  Direct Cc is not required, but I =
+appreciate it
+>> for DAMON-related patches.  Because I care deeply about DAMON, =
+directly Cc-ed
+>> messages are filtered into my important mailbox, so I can archive and =
+review
+>> them quickly.
+>=20
+> Thank you so much for your interest in DAMON, Lian.  But, the problem =
+is that
+> my memory is so bad. :'(
+>=20
+> I am maintaing mm patches review status dashboard for people who want =
+to find
+> patches that waiting for their review.  It also provides the review =
+status for
+> each sub-mm components [2] including DAMON [3].  Maybe finding patches =
+that
+> waiting for your review from the dashboard is also a way for you?
+>=20
+> If having the mail directly in your important mailbox is what you =
+need, I
+> believe adding mails filtering rule for DAMON patches wouldn't be that
+> difficult.  If you use hkml, it could also help you monitoring [4] =
+those.
+>=20
+> Yet another systematic and long term solution that I could suggest is =
+keep
+> reviewing and posting DAMON patches one by one, build more tracked =
+records and
+> trusts, eventually adding your name as DAMON reviewer or maintainer on =
+the
+> MAINTAINERS file.  All patches sent with get_maintainers.pl will =
+automatically
+> Cc you.  It would take time and require patience, though, of course.
+Thank you for your detailed feedback.
+>=20
+>>=20
+>> I am very happy to contribute to DAMON, and I look forward to =
+continuing our
+>> discussions and reviews by email.
+>=20
+> I really appreciate your interest and contributions to DAMON.  I hope =
+it to be
+> continued long term!
+>=20
+> [1] https://github.com/sjp38/mm_git_dashboard
+> [2] =
+https://github.com/sjp38/mm_git_dashboard/tree/master/summary/subsystem
+> [3] =
+https://github.com/sjp38/mm_git_dashboard/tree/master/summary/subsystem/DA=
+MON
+> [4] =
+https://github.com/sjp38/hackermail/blob/master/USAGE.md#monitoring-mails
+>=20
+Okay, I will. I will contribute to the community, continuously learn and =
+provide feedback to=20
+ultimately make Damon better.
+>=20
+>=20
+> Thanks,
+> SJ
+>=20
+Thanks
+Lian
+> [...]
+
+
+--Apple-Mail=_A66AA493-B1D3-419F-BCAD-FF98B71764EA
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=us-ascii
+
+<html aria-label=3D"message body"><head><meta http-equiv=3D"content-type" =
+content=3D"text/html; charset=3Dus-ascii"></head><body =
+style=3D"overflow-wrap: break-word; -webkit-nbsp-mode: space; =
+line-break: after-white-space;"><br =
+id=3D"lineBreakAtBeginningOfMessage"><div><br><blockquote =
+type=3D"cite"><div>On Sep 2, 2026, at 12:23, SJ Park =
+&lt;sj@kernel.org&gt; wrote:</div><br =
+class=3D"Apple-interchange-newline"><div><meta charset=3D"UTF-8"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">On Wed, &nbsp;2 Sep 2026 09:56:01 +0800 =
+Lian Wang &lt;</span><a href=3D"mailto:lianux.mm@gmail.com" =
+style=3D"font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px;">lianux.mm@gmail.com</a><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">&gt; wrote:</span><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
+normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
+none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: =
+solid;"><blockquote type=3D"cite" style=3D"font-family: Helvetica; =
+font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; widows: 2; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-line: =
+none; text-decoration-thickness: auto; text-decoration-style: solid;">Hi =
+SJ,<br><br><blockquote type=3D"cite">Seems using MTHP_STAT_NR_ANON that =
+is exposed as 'nr_anon' can be used?<br></blockquote><br>Thank you for =
+the suggestion. &nbsp;I will study MTHP_STAT_NR_ANON and =
+nr_anon<br>further, and document what I find. &nbsp;We can continue =
+discussing it by email,<br>and I will be happy to review any follow-up =
+or updated patches.<br><br><blockquote type=3D"cite">I'm curious if you =
+and general reviewers need or prefer to directly be Cc-ed.<br>I was =
+naively thinking people can search and review DAMON patches =
+by<br>subscribing to the mailing list or using the archives via =
+lore.kernel.org like<br>tools.<br></blockquote><br>I subscribe to many =
+mailing lists, including linux-mm and DAMON, and I also<br>follow =
+patches through lore. &nbsp;Direct Cc is not required, but I appreciate =
+it<br>for DAMON-related patches. &nbsp;Because I care deeply about =
+DAMON, directly Cc-ed<br>messages are filtered into my important =
+mailbox, so I can archive and review<br>them =
+quickly.<br></blockquote><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">Thank you so much for your interest in =
+DAMON, Lian. &nbsp;But, the problem is that</span><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">my memory is so bad. :'(</span><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">I am maintaing mm patches review status =
+dashboard for people who want to find</span><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
+normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
+none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">patches that waiting for their review. =
+&nbsp;It also provides the review status for</span><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">each sub-mm components [2] including DAMON =
+[3]. &nbsp;Maybe finding patches that</span><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
+normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
+none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">waiting for your review from the dashboard =
+is also a way for you?</span><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">If having the mail directly in your =
+important mailbox is what you need, I</span><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
+normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
+none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">believe adding mails filtering rule for =
+DAMON patches wouldn't be that</span><br style=3D"caret-color: rgb(0, 0, =
+0); font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">difficult. &nbsp;If you use hkml, it could =
+also help you monitoring [4] those.</span><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
+normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
+none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">Yet another systematic and long term =
+solution that I could suggest is keep</span><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
+normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
+none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">reviewing and posting DAMON patches one by =
+one, build more tracked records and</span><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
+normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
+none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">trusts, eventually adding your name as =
+DAMON reviewer or maintainer on the</span><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
+normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
+none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">MAINTAINERS file. &nbsp;All patches sent =
+with get_maintainers.pl will automatically</span><br style=3D"caret-color:=
+ rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
+normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
+none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">Cc you. &nbsp;It would take time and =
+require patience, though, of course.</span><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
+normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
+none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: =
+solid;"></div></blockquote>Thank you for your detailed =
+feedback.<br><blockquote type=3D"cite"><div><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
+normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
+none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: =
+solid;"><blockquote type=3D"cite" style=3D"font-family: Helvetica; =
+font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; widows: 2; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-line: =
+none; text-decoration-thickness: auto; text-decoration-style: =
+solid;"><br>I am very happy to contribute to DAMON, and I look forward =
+to continuing our<br>discussions and reviews by =
+email.<br></blockquote><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">I really appreciate your interest and =
+contributions to DAMON. &nbsp;I hope it to be</span><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">continued long term!</span><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">[1]<span =
+class=3D"Apple-converted-space">&nbsp;</span></span><a =
+href=3D"https://github.com/sjp38/mm_git_dashboard" style=3D"font-family: =
+Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
+normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: =
+0px;">https://github.com/sjp38/mm_git_dashboard</a><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">[2]<span =
+class=3D"Apple-converted-space">&nbsp;</span></span><a =
+href=3D"https://github.com/sjp38/mm_git_dashboard/tree/master/summary/subs=
+ystem" style=3D"font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
+normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
+none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: =
+0px;">https://github.com/sjp38/mm_git_dashboard/tree/master/summary/subsys=
+tem</a><br style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; =
+font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; widows: 2; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-line: =
+none; text-decoration-thickness: auto; text-decoration-style: =
+solid;"><span style=3D"caret-color: rgb(0, 0, 0); font-family: =
+Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
+normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none; float: none; display: inline =
+!important;">[3]<span =
+class=3D"Apple-converted-space">&nbsp;</span></span><a =
+href=3D"https://github.com/sjp38/mm_git_dashboard/tree/master/summary/subs=
+ystem/DAMON" style=3D"font-family: Helvetica; font-size: 12px; =
+font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: =
+0px;">https://github.com/sjp38/mm_git_dashboard/tree/master/summary/subsys=
+tem/DAMON</a><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
+Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
+normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration-line: none; text-decoration-thickness: auto; =
+text-decoration-style: solid;"><span style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">[4]<span =
+class=3D"Apple-converted-space">&nbsp;</span></span><a =
+href=3D"https://github.com/sjp38/hackermail/blob/master/USAGE.md#monitorin=
+g-mails" style=3D"font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
+normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
+none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: =
+0px;">https://github.com/sjp38/hackermail/blob/master/USAGE.md#monitoring-=
+mails</a><br style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; =
+font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; widows: 2; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-line: =
+none; text-decoration-thickness: auto; text-decoration-style: =
+solid;"><br style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; =
+font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; widows: 2; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-line: =
+none; text-decoration-thickness: auto; text-decoration-style: =
+solid;"></div></blockquote>Okay, I will. I will contribute to the =
+community, continuously learn and provide feedback =
+to&nbsp;</div><div>ultimately make Damon better.<blockquote =
+type=3D"cite"><div><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
+Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
+normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration-line: none; text-decoration-thickness: auto; =
+text-decoration-style: solid;"><span style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">Thanks,</span><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
+normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
+none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">SJ</span><br style=3D"caret-color: rgb(0, =
+0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: solid;"><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration-line: none; =
+text-decoration-thickness: auto; text-decoration-style: =
+solid;"></div></blockquote>Thanks</div><div>Lian<br><blockquote =
+type=3D"cite"><div><span style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline =
+!important;">[...]</span></div></blockquote></div><br></body></html>=
+
+--Apple-Mail=_A66AA493-B1D3-419F-BCAD-FF98B71764EA--
 
