@@ -4,89 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EB93C624D3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 14:04:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC986C624D6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 14:05:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 039BF6B00B6; Wed,  2 Sep 2026 10:03:44 -0400 (EDT)
+	id EBA0E6B00A1; Wed,  2 Sep 2026 10:05:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0105B6B00B7; Wed,  2 Sep 2026 10:03:43 -0400 (EDT)
+	id E91796B00B9; Wed,  2 Sep 2026 10:05:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8F006B00B8; Wed,  2 Sep 2026 10:03:43 -0400 (EDT)
+	id DA86D6B00BC; Wed,  2 Sep 2026 10:05:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C02A36B00B6
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:03:43 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C09EC80200
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:03:41 +0000 (UTC)
-X-FDA: 85168990242.16.9EE66C2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1DD6720005
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:03:39 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ep7T5umy;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788357820;
-	b=b0oW3bxIj6UxO2KdST55MdRLe02He/L8ZZuICAzz3/V8T/HDxcgG4lkx3PfzWQ312eUZjy
-	5/WXO3T2ikUx74ZCqvDAbRSyw54FRXrzu0fbV3sKeeqslQKaFocjp7T5HSn1c+zbrBjATS
-	WWBimnrdieMajYqqcgsqxX/NxteeiHU=
+	by kanga.kvack.org (Postfix) with ESMTP id B94586B00A1
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:05:02 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5D77A80217
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:05:02 +0000 (UTC)
+X-FDA: 85168993644.03.FB7D659
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 8866520006
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:05:00 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=EAsNlzLt;
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.41 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788357820;
+	s=arc-20220608; t=1788357900;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MtDpGEkDh7eFQBN1dloGGbcdOXn6qckrmCm8+BjUBow=;
-	b=M2R73fAQd2ftEDTmpjs5lMD2PB32BllWfPnpv9m/ySQuNk4q+x3BbJnh0qvFIhX3WpCkDn
-	4WjYuZzFDcGCRXYEOFYWU+/CeGeYNEuAzkj5eh/AG5nfBHYhJucuMQSkaikJf1Nf45arx0
-	CvNwUN11m3z2qlbPdmYgLRFndIkeSZU=
+	bh=Why+id/p3RNpzcV3QpTHawTDpT4ABQ4KUVboBTGGWGA=;
+	b=iI2O2csq+Zc5abtS58rqSp+kjpXago+m1JtCUivYdVLMJFaOWLm12bH1GJJYn92+RLl13k
+	annRD0JB1InhQhxKtw3KD5EIS6nmNP4WPUi/s9f8Wsi0hYUC1sv8+XJuyMRwdq4IUXGfP/
+	421YTpzqKmd7hP37R84xUgi/w/GYm9Y=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788357900;
+	b=uGZ9FEQWv3y0WDesqS1ESOQbefGCAR9kV0eJU0K2Vzzuz1LyuPSlY7fT+aOkDTsseCV+W1
+	TqDr8MwNBqeonHG3qx4C1Zttz0kQoX/vBUmFv8gvbVnDJO+eiSShLJtsFmdzQFSGcv4f3E
+	4Tpl/dtnXsGUlrroA1R2czEHAF7CF9E=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ep7T5umy;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AE14C602A8;
-	Wed,  2 Sep 2026 14:03:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D26E1F00AC4;
-	Wed,  2 Sep 2026 14:03:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788357819;
-	bh=MtDpGEkDh7eFQBN1dloGGbcdOXn6qckrmCm8+BjUBow=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ep7T5umyQPsaQIuxBEjumOhQlbQ6KcBV9dQNiJD3+3dTJb2dztfr3aHL5vmczrWjA
-	 cXBm21+OWPnSjsnD8FIij3l8BzZ2UKed60ObsRunCyGG5YXeP6Q5L28a1PMsvqKGSu
-	 P0zGLpDTUXqFttIyEsqNQYcPr/ObNSLd8gOd3SFBTuqsl+24UxLiEnu066WYvWhDPS
-	 EYitdTC6bVj7x6LwAGAFVbiP5EVx9bSFL/wR4vMRJr6oRq1DWuDQkjxaqqc8QH7y1L
-	 d1z1XZ0AsRckAlxG0qoGawcypHeIaCh8jJ4RYxA5eCpij96/ZDZeTnyKMvN2k2cUhG
-	 juLQnHGGMFIZQ==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 4/6] selftests/damon/drgn_dump_damon_status: dump probes
-Date: Wed,  2 Sep 2026 07:03:10 -0700
-Message-ID: <20260902140313.85983-5-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260902140313.85983-1-sj@kernel.org>
-References: <20260902140313.85983-1-sj@kernel.org>
+	imf31.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=EAsNlzLt;
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.41 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-90e95a18c92so16371596d6.2
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 07:05:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1788357899; x=1788962699; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Why+id/p3RNpzcV3QpTHawTDpT4ABQ4KUVboBTGGWGA=;
+        b=EAsNlzLtqXLF/Zyw5zyjr0J2ElQDMAdiII5ejzwu5mOOdXsw2E/2bPmpWtvgZzayfy
+         I0NIqGILf5pRE4xsiVSkJg2Qh2ZmYXxnFDRSYVeM/0Hve0Bvp7MLgJ+ttly7tE2A/Wic
+         QqU8fUmMrUFiFlLLzUuuMsNgzL1ga2VRiHQpIVPP4tNGhwVVw8TAZ9WdkiRl4zBuRvzF
+         B0iMFE/6A2XoQPbh989NdPyWipXhd6zrVS/6FnU6sNhPrupfv7L4GkIMY5GOyaqjhVMx
+         MidNXHt9reAY9qwzOogdEZZHZA2GIx0He9AJe50zFxeRCrYH2XoHeD5Hkn1vXpCHUVrB
+         jEwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788357899; x=1788962699;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Why+id/p3RNpzcV3QpTHawTDpT4ABQ4KUVboBTGGWGA=;
+        b=cpZce3LYtAED5GeXSZBtQpUQs7IGis9M4tyCeCKB9RmPoIr3sa4WCvDwubo+RqLetG
+         QOXfJrDmfRuURYwtCQdve7oh+EiCaTq96uHj3D9fms94LkeVxOpfkFW7QAoHEBooQsUI
+         J+aW8lb+9JtmBkHYAPzOmepCW+JIZ9xE49LWRvHRKkwMuSdoxV6s/5XAudukmh+2Xulq
+         hQ/NRgW9UX41ttyUMttbUfaQU6pYaCzIkP2HV3z/zvQ9UubMJT9aSIRxe6Yrruh1GwEQ
+         F2JRVcr0B8GzCcNmLArGQTD5xH8yuTJ6Zd/SqSpeWU11Zft//I4zwX6LyvkJU4AiP5U0
+         2Ekw==
+X-Forwarded-Encrypted: i=1; AKwUvBxC2o1Yr0bMEMrLd9e/jYA1MthwbHysgRrXjDs0YBTZpXGimJS/7YFG3y1ZBW1xbbb5DXVZZIIFuQ==@kvack.org
+X-Gm-Message-State: AFuF++njAH6jQHTAA7lcMV9sWp7cNdVfAFwbmjfxDoKb1uQov8ODAEfn
+	6LtRmY2sytT9h/J6u4I88WiF3vlccHO4B2cT5JBtyjFgW8Rs9RFYFtGHay5+120u1Q0=
+X-Gm-Gg: AYBFou0/iolmtl8aNaU79zRn3I4PZQas8YUPkqJ1BMtPMkxe/HpI3zEcC+J0KXhEOnf
+	jYSL0WThDTJfKgI/beTcc1gmDKcseaDRK8pqomzkisL2tjSy9ga0eqwhCubWufF7y9adQufVB/S
+	gK9gpBesWwsIMClpou2SaWKXLxL5XTQA0ryZ5oj2Rj56NBU5TbT4s7LvCaonuF0cuP4e526dcyJ
+	bL5tNpFpBTthfqqmWlnGI+2SuuwDZj3Nu8k+exd3TCgEHyvEd9c6qwI1fII1Z5VUETwY8SYTIWX
+	WJqIDV88AR+PVf6w/Dg+xLnQ6+L1JVI4nVfE/n69J4OHaYlPOgupZD639/hDah2Jv6nz0E04Rok
+	Yc/ooDxk0iokIdzof9XZdjyGpXGxgSlMoT/eInqQn4EGdk/nHoA0ZQEBTyYswI+dGK71tEBTuqU
+	acEbqxhZS68cq9SDOo5EoYgCF/23uLpv4dO8XDqpGh7ujp6g8mBqZRH089jya/J1a46sp6Cy0Va
+	t5vtaxzY43zCAnnwE2McB7tqBS7hPX6MAf7r2bxz8nl
+X-Received: by 2002:a05:6214:b6a:b0:907:bfc0:781e with SMTP id 6a1803df08f44-90eca3d4856mr65248836d6.30.1788357899289;
+        Wed, 02 Sep 2026 07:04:59 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90e9eec7ffdsm18809156d6.25.2026.09.02.07.04.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 07:04:58 -0700 (PDT)
+Date: Wed, 2 Sep 2026 10:04:57 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Liu Jing <liujing@cmss.chinamobile.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, 
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mempolicy: fix div-by-zero in alloc_pages_bulk_interleave
+Message-ID: <apgrrQM5cFWRA4HR@gourry-fedora-PF4VCD3F>
+References: <20260902090245.16411-1-liujing@cmss.chinamobile.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260902090245.16411-1-liujing@cmss.chinamobile.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8866520006
+X-Stat-Signature: xwb7bd8ptra9g4e3bbdkqqsw8cagsmtp
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1DD6720005
-X-Stat-Signature: zkry4fqkshsza3c3ycgruy6kzjisqkye
-X-HE-Tag: 1788357819-121716
-X-HE-Meta: U2FsdGVkX1/soxPLR6Fjw1P8pyAQI8LMqSX2wcRamprs4M7kv7/mO/zY91jq0QrWU6BXX4phlA9RGBremsPChbMnSEgZUnXkuOMTW+CA/Z6rcBoWQZsf4BtJxn9x395X88mxOTNdcG1QgVPgfHOJHWjv2hpvoicZV8P6bnj1qqC533+SKt4V09q+lzjkq324O1E0jG/j8oUWHeV/ox+KTS9cVNPMM46cROcxW6Rw30knxPFhlkAyidZvMXDpZb6IO4wrbDLkBjUuq4bzVUtE7WHnA/TAt7+zhcVzWXdFoX5YsiEDhLA3WJ8PQ4Wqx0as6bpY+qDbnIBQXJmZSlrCgkCJaZKODdHmhivBgOfDhcR1nYR7q9f7FrwnsgZjhUu5ilIG+DgQKaCeBsR22JOEs3VtjpGcXmrd48/TphrYG8f3eo1179ULJoDVolNGZ2cBo+7Ww6zvFGQyb8xgDN4rXCevKppyxZbbzqkOVhCaSkc9GqVq0U6i+196RGnYtWlp/b9B/AmTyvoUCI7BZVMqHeuzQL73OcuxsHOyiObqPaCBC5/CXAG90108niv3sxA2XCjmLSMon9FHj0JcwSD1wOYHJw82f+x2rPe3QcMVT1gbkMeXxkzYuj9dXe4kN8MlVlhR/cwgkkuIR2NoRI4akqh8tjQUCAM9Sq19xAbbRq6R20r+yXABFrc+TTiG9lv/E674exYiT5VEwGMmHuvJ2PAXLfoK0I37Il/z0MfPHBxW+0/QtZH3+OrWVmgKf/IJeVscNqkXnabsD959yOF5Tw1GnkueeJJIpG4h0vV5TUx6fGthyg0JwBNUAnkssXHdsWeG7GEiVRcI69nTWQ4Md+b76PfPjX65GuryjZhwp4PJyODSQZQqmObJdrdFbCOh49ppQkHOPfD7w5NiZMpTwUsKvA4FHPvyMbmjoh29CU3ybCyEyOoHAta8a/SKcI9DZDgdUx5v7jF7GDDa0JW
- D0/FVUTv
- B6oTXiyD5Dab1A3zyaKwEX4ujUNJWT/BOizs64strJku4FYQy8CjXOD+tnHjDCG+w1uu9rWv/Ss2eQbXOLtHwvQ+e5b+0zsiRknApnAHUyLhuliu2KwwDJFUOKC6lVoqM/deWPW0NlWQ+QyYWQGBJ7975A4TW/6HGubGd9LQE0AT7hC0wUE2nm/VydSJwSmF7ZZKGiu1EqwsQFCkCw43cyKN319RLvyb4a2AgjjQHu+t8+W55AP4lHXejy+/ufBjKg1DcEVDLPKOmBaZojS/TpxXFvA==
+X-HE-Tag: 1788357900-679157
+X-HE-Meta: U2FsdGVkX18usQRaLrpKe/wRhlE6/GAXiaYLmZ/KpNZq9cyhPTwOtp9nlTxia7g9OH2qLyBAbDmYhGpDE6uIrMhgLLhz11DXqcN5YMBQozSbr49mSJX6CRyH3hMT8uzE8aoqiL5OKXOZ+EBd9Bcy2JTUyeKE/YBIUJvdj+MmntEfjy/tRtQ1o2XdjHNO1X6mge29V8cHOWo3U3Bydkg2mn5k45rf/y5ThK5vlFx2/WRCzpUgMipMJGozEZS50o7ojD1wX+6Qyzsbq9FbWaW8lSXT9YFsRNJ7bkvKJm9cE/1Wg1EzWaVyiHBpXP/qfRgPlaRGiy9Ox97EiWvwdep6JnxynUwIOFAklrFNqaalNH3dDj+TvmWABRgRoSUNbAMF7nHCSdTFAldikCHEn80nzWXgI0QXrWcCJsZmEJ0KGJ8xAELIXcUtXLjZamBAh/wBVjcRQxJmBy7oF8sm2CnCortIrI1vhBYjd6QIR5XHweOKc5NVNaLCH4kjSRVaMY7crxtHjfHwsZbkEd9U2lg5BjyaTRe5o4NdRT54fBq4H+DTxsYhQwSQ+9/0LJNMhaAFEOwFb0ziITy7aNCGVjFKgJX4S8K6NE6o2SOeV0a/3426ajwC8npxvf0QlfXkZ2am1GQOfYUx2eum04YtvYLZgQ1tmE+LeHIRywbBuzT2xX4KrhgG5l35vuiA82X0p1LWxXHdvAwf2CNOpuQ8UrWm9yblqzKcEEi7EXdeAicuj0bc5l+uxnVY4Lm23e9dqtu/6daswAKThfyETRrc9iTGxW2CV4SZuv53R6JEJrVmqSKgtP/qXGGnIU7TLzgtFApjYKJhonslKxR4mg/C4JTGHXNWFQtt6fR+27hIlRLFKrWX/M005iK5fn+DZV5JRQOhQwSP5fd6Nmo7tqxeKRVNZi+jBftIqaYoh8Ni+BnGS9i3NkjmKNPQG+QM2PmpmbrtP4dtvd9VMloUSOlAjeJ
+ YPrV1qbF
+ Hm2hcHAk1Snwm7N/QfEjog7CNhRD5DkAHVWP57ZtSfMHtRzNkY0g+4ch5WkXFpeyumu4qjuOZ042tO8WSQmN5DRGjiN3lFJ9md2hARBOT/DMpIvmRg35Aqb/8N5TM4t25deozjBedhEDKiCMLbAamkBXR2GzSANFKFkQClA/jyWcAJNPf5E2SqFW/AaXE0xAkd/hcU8z62VzSPwvXZMZG5d38v5Iey6YA4zxv3L/0nzOn0ZApnXq9TUf1KJxX04MX3AsE13KNY+N0vKtKwmWjQ/QuU+xeE9ePdxSK/KWzxzoouYOleB/dV9eb7Eall+gcQSBmNx8RMSvVYUzulRaOTCyjASfeFYvIwfdiC/3sghsvmvnwj4wMVrBUalVUQ2CAcwdupukJFVPoz3MV5P9FfzNKFSAlhe1VU/rXqN5pfK+xytY53J3NZmEuSlqMeDblKqOATbmCEhhLCZUbD9xpL4VxLyHtrsLMgGO2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,65 +121,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend drgn_dump_damon_status.py to dump damon_ctx->probes.  It will be
-used to see if in-kernel DAMON status are changed as the user sets the
-probes via sysfs.
+On Wed, Sep 02, 2026 at 05:02:45PM +0800, Liu Jing wrote:
+> In alloc_pages_bulk_interleave(), nodes_weight(pol->nodes) may return
+> 0 if all nodes in the policy mask have been offlined at runtime. The
+> subsequent division "nr_pages / nodes" triggers a divide-by-zero
+> panic.
+> 
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- .../selftests/damon/drgn_dump_damon_status.py | 32 +++++++++++++++++++
- 1 file changed, 32 insertions(+)
+now i'm positive this is LLM produced without understanding the
+component.
 
-diff --git a/tools/testing/selftests/damon/drgn_dump_damon_status.py b/tools/testing/selftests/damon/drgn_dump_damon_status.py
-index 09552e91bc782..4622046fd0118 100755
---- a/tools/testing/selftests/damon/drgn_dump_damon_status.py
-+++ b/tools/testing/selftests/damon/drgn_dump_damon_status.py
-@@ -48,6 +48,37 @@ def attrs_to_dict(attrs):
-         ['max_nr_regions', int],
-         ])
- 
-+def filter_to_dict(damon_filter):
-+    filter_type_keyword = {
-+            0: 'anon',
-+            1: 'memcg',
-+            }
-+    dict_ = {
-+            'type': filter_type_keyword[int(damon_filter.type)],
-+            'matching': bool(damon_filter.matching),
-+            'allow': bool(damon_filter.allow),
-+            }
-+    type_ = dict_['type']
-+    if type_ == 'memcg':
-+        dict_['memcg_id'] = int(damon_filter.memcg_id)
-+    return dict_
-+
-+def filters_to_list(filters):
-+    return [filter_to_dict(f)
-+            for f in list_for_each_entry(
-+                'struct damon_filter', filters.address_of_(), 'list')]
-+
-+def probe_to_dict(probe):
-+    return to_dict(probe, [
-+        ['weight', int],
-+        ['filters', filters_to_list],
-+        ])
-+
-+def probes_to_list(probes):
-+    return [probe_to_dict(p)
-+            for p in list_for_each_entry(
-+                'struct damon_probe', probes.address_of_(), 'list')]
-+
- def addr_range_to_dict(addr_range):
-     return to_dict(addr_range, [
-         ['start', int],
-@@ -199,6 +230,7 @@ def damon_ctx_to_dict(ctx):
-     return to_dict(ctx, [
-         ['ops', ops_to_dict],
-         ['attrs', attrs_to_dict],
-+        ['probes', probes_to_list],
-         ['adaptive_targets', targets_to_list],
-         ['schemes', schemes_to_list],
-         ['pause', bool],
--- 
-2.47.3
+A policy cannot have an empty nodemask, it can either
+1) have no nodemask (default policy), or
+2) be perceived as empty during a torn-read during a policy remap event
+
+If you are running LLMs to search for surface level bugs and try to
+hot-fix them without taking time to understand the underlying component,
+please at least:
+
+1) tell us that
+2) generate reproducers
+
+these "quick fixes" based on surface level observations are going to hide
+real bugs and just degrade the overall state of the system.
+
+> Add a zero check returning 0 (no pages allocated) when the nodemask
+> is empty, consistent with the guard in
+> alloc_pages_bulk_weighted_interleave().
+> 
+> Signed-off-by: Liu Jing <liujing@cmss.chinamobile.com>
+> ---
+>  mm/mempolicy.c | 3 +++
+>  1 file changed, 3 insertion(+), 0 deletion(-)
+> 
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -2600,6 +2600,9 @@
+>  	unsigned long total_allocated = 0;
+>  
+>  	nodes = nodes_weight(pol->nodes);
+> +	if (!nodes)
+> +		return 0;
+> +
+>  	nr_pages_per_node = nr_pages / nodes;
+>  	delta = nr_pages - nodes * nr_pages_per_node;
+>  
+> 
+> --
+> 2.43.0
+> 
+> 
 
