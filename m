@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5143CC624D6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 17:44:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 886D7C624D3
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 17:44:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 705B16B00AF; Wed,  2 Sep 2026 13:43:40 -0400 (EDT)
+	id 7EE556B00B0; Wed,  2 Sep 2026 13:43:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DBFA6B00B0; Wed,  2 Sep 2026 13:43:40 -0400 (EDT)
+	id 7C56C6B00B3; Wed,  2 Sep 2026 13:43:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6197C6B00B2; Wed,  2 Sep 2026 13:43:40 -0400 (EDT)
+	id 650B96B00B0; Wed,  2 Sep 2026 13:43:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 32C026B00AF
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:43:40 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8ECCE80299
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:43:39 +0000 (UTC)
-X-FDA: 85169544558.28.67359D6
-Received: from mta1.migadu.com (out-29.mta1.migadu.com [95.215.58.29])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 95848100003
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:43:37 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="UN6z/n1c";
-	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.29 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 35CC76B00B0
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:43:44 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C073C1602E2
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:43:43 +0000 (UTC)
+X-FDA: 85169544726.17.3CDC7FC
+Received: from mta0.migadu.com (out-111.mta0.migadu.com [91.218.175.111])
+	by imf31.hostedemail.com (Postfix) with ESMTP id D909D2000B
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:43:41 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lrvJDXC0;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.111 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788371017;
+	s=arc-20220608; t=1788371022;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X5yd/d/ED+bXHvYjaqPRmnzOaJ0+lLur0uDPz8mTtDg=;
-	b=kPXV36KlzQlh2Ta75n+JL1Z/Y07Id5Jny6UB01xB/ITTCDn1mKdfLZ16uRUddXpVQcQNAR
-	TdZSMN5c9iZbFv9eji23vqkqR2K6qo0phbslM5gnFU9/6QMbPIIT/BvInY+fuAOwCrjIhN
-	UJX13xp2HECCk7PO6iCfojWxILk3WFU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788371017;
-	b=pbeBWpr7iPaTqpihRi3ymEL8jyYgj/KKxuXx+lEWq7Atkcj1Vuxjh5Cd7e08okDdKZ5KwG
-	YHfqcCcGTmSRtePKFQBA1KQvyqtiMTqmoutnAeuh0+Po6t/dSKFyA5iLAX+AEEuX5DtaCH
-	STS9WkRnqfL2VhZZsCUqeuN5UuWoksE=
+	bh=VZeEHCXKwcQMg96HmEQ82WZyZcBTCBFp6hiZsga03Kc=;
+	b=lqXiqGyzWzKHOKAApDCWtPlcHfnF9Be0fjxl6Bve2muxOvKaj45G7PnFW6HHZWX3NinOvT
+	xhEs+O+4bwEtvPhppvtkua3cd0s/s0RyCjAgA4UAju6iYOpRLgKImjbPiKvQq1DSSqFCXA
+	aLaafV09wwgZ78ABJIGLDMQmBHKJzII=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="UN6z/n1c";
-	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.29 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lrvJDXC0;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.111 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788371022;
+	b=UPTStuTHWJ1EB1AzDFFE46ktLdShv09FTzCH6j4Yus8dn4e7MzKkjUW6qFrHC8Y5ZG2n6D
+	wIdYPnPSHugrMzEaTK3yuDpKT6BM3CR/QJHbg1Bl9EP6JfR46ut/8YAclrsVLeZDmNDihN
+	bduTLFB5EJx88Uq2AGHmcvaEDpeMhdE=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=4dRS80kpsGVD4l2ygd1KyYake2c32jhgx7HQ68nHlXg=;
+DKIM-Signature: a=rsa-sha256; bh=lrjCYHOcwMy32zOEwRExw4Ntk5Rn48/VDKas/aRCiDk=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788371016; v=1; x=1788975816;
- b=UN6z/n1cHLAg5WD6cn13vdsgGfCAFlp51wmF5wGTPtc2h4fSOQouzU3xsZzUh80+Wh5YzKez
- WrUvYCHCz/aNBPZAQozQyk3k29v+OOdcnwrv31LNdjHPs5QmUS4Kjpb8ojDolKZp38PBJNa5xFm
- /kaj7sQg4DOINw0JE7s/1QoI=
+ t=1788371020; v=1; x=1788975820;
+ b=lrvJDXC0nJs+aCSd7NRfT7aybqATfJqcfbjFjtRVnBCiTk9x9tKcMEDhxQlPq+FWuSBudbPy
+ mNq1HX9+LHsqUGKGT3M1H/MxyendhoaPECHd4tTfAFYmrMdfyjummbGEGAK83XJGhoHvtEL/dOU
+ umj0yL1zwEFDBpTa1L/UwFsg=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 6cb6e875af4750b6;
-	Wed, 02 Sep 2026 17:43:36 +0000
-X-Mizu-Trace-ID: 6cb6e875af4750b6
+Received: by smtp.migadu.com with ESMTPS id 9d2b252c45d99bda;
+	Wed, 02 Sep 2026 17:43:40 +0000
+X-Mizu-Trace-ID: 9d2b252c45d99bda
 X-Migadu-Flow: FLOW_OUT
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>
@@ -78,22 +78,22 @@ Cc: Michal Hocko <mhocko@suse.com>,
 	linux-mm@kvack.org,
 	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 7/8] memcg: remove mem_cgroup->soft_limit
-Date: Wed,  2 Sep 2026 10:43:10 -0700
-Message-ID: <20260902174311.1772372-8-shakeel.butt@linux.dev>
+Subject: [PATCH v2 8/8] memcg: simplify v1 event ratelimiting
+Date: Wed,  2 Sep 2026 10:43:11 -0700
+Message-ID: <20260902174311.1772372-9-shakeel.butt@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260902174311.1772372-1-shakeel.butt@linux.dev>
 References: <20260902174311.1772372-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D909D2000B
+X-Stat-Signature: ihuzuna4q76z469i41he4wordw6ehzou
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 95848100003
-X-Stat-Signature: rfhi8xs34ph7m5xzty4yr6x4szogcrou
-X-HE-Tag: 1788371017-838553
-X-HE-Meta: U2FsdGVkX18dvwPs9a4WqQ+kGZi1HB1vJfpWChIu8Yu9Wtar61ceHXA7gxUW1rj3iEPLikaZDDA2hkyEroOJwkBplfx/uUTQLj6REnEchjr4JnvYXY4uBgRp+NPTSkYlJvOJECIw6m04/XyyLOiA60h6HtokvuuKTQm6Cz0gYCixhX/D1UPH2ikf2l7EOeVOWVdA8UT01F3Q0cC0jfwQm9rf/OWCXXL6VCsddbfi4ytUifU4EjAbOzPe90rpbUuNuJSAPhzd8xZ67SHbPNxTmDxgMO2n3Y67b+99QHaYtTA6N9/5ytLpyUy1oFQ+4Olf5Hb9c6HMdBdyxEuN4uv122HwJfHZzkOQ5nEmNK+aleLzMGZlMd0BY4xF6TNoljlGTGUbX4X+T05MGGFtGb9Oek83h6+Te4FEdVB7kEH3lNy3NuyVnJBq5HI4JOUje236d8s9sxjDiui+d7qL0gIpAfAZmDjFsvccGWWYFDvRoOHkqm9xwrey9ezn+IxKR0uyaT/b7a+nYbjeuEdeHlKhA0lyX6byqkK+Mo+VvaNGOf9o/5GjyeG/28T5sZPo9k54fsmbcK7UHY3segQBcRIarTKNDr6FWWZ8bF3x3UcLlBRjsqDdY4gB842SlfAJqyUIivNEO3Bnx19Ujajzya2hyLuplt4tsAyXTNJKvID2dCWH8NQhp5kYirOE/I8Q6CnMxQHPSiKcWZUoH+3M35+ZHVfYSlfrbd5NzaFYMuEARMW1yPDNefIZZbE4tR7hH/XVSmJfNXMlBNUDXkTP3rn5aV2skUFMzARwkaEJpjcr7/s1K/wcif+6TJof86s4M0QmDUSv+YhlUSy46ioDoW+4vkSOrsnAiAu3CKzp7plWxIp7Zc1kF59UVvUfwd9vR8iBmhzY382RcDEDQmjw60fY+aQMHyI6Qx1r0OWNW/TmsZ3ibCDYjuJaGSzZoMROQxvRGlmuG7M8yIbbbjmDypU
- 0nK0+4eP
- K1aDb/ihoPLzH0Osv5q9J3rvnoGa7UAYOIDUfGslw+Pkz87kLOxmfa5voKRv2bMihDS3vQ64dyVUVUtD6oO8pz+yDFsBAjvEPtojRpmU9oxDu18JMBUAxXl8rWDymOvOkqHJmTNUV3JHGUjWueND6kcVHwEORktUCrRkXBHuIRNFWm48Q5w9AV2VrjkcbOCN/mEl97zdRWdW6y1wiwzHCFVPow9EytJeajS6ZlCU8M+36LobGMQCsXVyTaSFGJmzH4lMxwwx2JdtgidsZODFHOtPCNtH0NjM4XH0sMFe/d92ZKlS9S4u/lDbrpxg9knb+3nU5rLzht3YNDuuRRUdOnTPxuHU/I6d8wog6TjbDKxRiDaE=
+X-HE-Tag: 1788371021-986756
+X-HE-Meta: U2FsdGVkX19W9iJylhhq44O3ac96EzneS6V3+4ObJlHSh/EJBmImyjcNq/RbkkVGfRlOdRKqwacpa4sa9KTzILIUimY4Zw85HUWOLwdZiDAFqPLpe9LsVeNuDrT2ieZ98ZxZWOFsaRFy/Og+/gtfJ29PlqI2et53xAp64g2cuNTuIhz52kFGm8JTX7DjJ7RgCIQ24sChZhqkPW7NBc+F3eEinVDey8R7U+9aGeZd2zZGxzxwaeE4AlHHhANRGLJQcozYZNkJhA254wER1o2TbiLAhSkOqFSD9w3al3fMYtHnll6mgfA7YUdYcUQgyvxhWuhSk/kx8AruoTBLwe+ezXCXmTYgadIvGFFE2Aokp1HKYKhdiDbtQ0PYOZljqyCC8AxuGvAiupSRxS/vlKwZw/negtTX7oaE5Mh3l3b5yHljNlh7hXCWSP+EdxsRD3iTq+VTyAvwpIVounlWV76TKjnUS+52J12xTbFuyXJEvKt5BdM7cRo4kqloVzyX1Hs7dol/17p59UWg19glCVTMkffaviNukFZtUVHGb4Q/VwVTE/VJd2aZgpkHv+PcC5kw8ltcwBzcWfuE2Kfi8M2pABSbVqB8k/Yh5Dr0NX+y15f8eL8J9l03L3pkXh9CqgNPbgvpUuhivGfPmAro0K9pfVfBNi28F57VhdX/6B9v0eSyfqZDzw+cDaONXoZ9DqoldPq9mV2q+Q3dkcd1kiiZpvxJWki0aY3YN8ecUBNqJyedPUD01X1uTUyk0u4fKwT4CbYpVNLnRiG1/HlhX7wz/e+saXaquZuhPY+EQCxKiBbVbOXIYPwh95TUfOluoAXT5FThtFpXmYMeGz+gXk56DhcbxiftaLu/HzOpxnfH1ooMO0+RkpO33ylRWgZg8h/5l92nTe/9BjtqvMefKOebPmgEkzsNa50BWoXTUlD3sNGVHe844f/ul9ClYCUdtkOiiq6dcA51I2qDL3v4jOz
+ WQiBMQpk
+ vqSNfFbidw7UaPUSC6wlA8EdXIhDFgSlQRvCoqowH9P7sN7XWTqiTiy1otlvPwmTG4+ol89BCBBmgGyi87WVBmS1nIxmT48YXKatlfAmWZtmruKadkvonJJzMRAjrwQ927yU2vM1ELk5cs5DEIbE0wF/zjt/DcTvJI3v75hux7+z6hdiSjSDXcNO/nJZ9OGtg1xysF1Nt8xrWrOnDwr7pUWmRpqQP3w7J/7I1Nzcmr7VOWqFqv4SzU22y5Q5bYaOVlsw4CKeXgNwnP92cpV1He7F8S4iGUW6ijLy40ijP3MZkt04VxfuNVAb/Zg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,75 +101,180 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Nothing reads it anymore, so the field and the helper that reset it on
-css alloc and css reset can go.
+Thresholds are the only periodic v1 event left, so the target enum, the
+per-cpu target array and the switch in memcg1_event_ratelimit() all
+collapse to a single counter.
+
+memcg1_check_events() no longer needs a node id either, which lets
+memcg1_uncharge_batch() drop its nid argument and struct
+uncharge_gather drop the field feeding it.
 
 Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 Acked-by: Michal Hocko <mhocko@suse.com>
 Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- include/linux/memcontrol.h | 2 --
- mm/memcontrol-v1.h         | 6 ------
- mm/memcontrol.c            | 2 --
- 3 files changed, 10 deletions(-)
+ mm/memcontrol-v1.c | 43 +++++++++++--------------------------------
+ mm/memcontrol-v1.h |  4 ++--
+ mm/memcontrol.c    |  4 +---
+ 3 files changed, 14 insertions(+), 37 deletions(-)
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 1eababed16f5..c79992643556 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -280,8 +280,6 @@ struct mem_cgroup {
- 
- 	struct memcg1_events_percpu __percpu *events_percpu;
- 
--	unsigned long soft_limit;
+diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+index 475f998b7643..bf2c7d53b01b 100644
+--- a/mm/memcontrol-v1.c
++++ b/mm/memcontrol-v1.c
+@@ -200,15 +200,9 @@ static void mem_cgroup_threshold(struct mem_cgroup *memcg)
+  * to trigger some periodic events. This is straightforward and better
+  * than using jiffies etc. to handle periodic memcg event.
+  */
+-enum mem_cgroup_events_target {
+-	MEM_CGROUP_TARGET_THRESH,
+-	MEM_CGROUP_TARGET_SOFTLIMIT,
+-	MEM_CGROUP_NTARGETS,
+-};
 -
- 	/* protected by memcg_oom_lock */
- 	bool oom_lock;
- 	int under_oom;
+ struct memcg1_events_percpu {
+ 	unsigned long nr_page_events;
+-	unsigned long targets[MEM_CGROUP_NTARGETS];
++	unsigned long threshold_target;
+ };
+ 
+ static void memcg1_charge_statistics(struct mem_cgroup *memcg, int nr_pages)
+@@ -225,43 +219,28 @@ static void memcg1_charge_statistics(struct mem_cgroup *memcg, int nr_pages)
+ }
+ 
+ #define THRESHOLDS_EVENTS_TARGET 128
+-#define SOFTLIMIT_EVENTS_TARGET 1024
+ 
+-static bool memcg1_event_ratelimit(struct mem_cgroup *memcg,
+-				enum mem_cgroup_events_target target)
++static bool memcg1_event_ratelimit(struct mem_cgroup *memcg)
+ {
+ 	unsigned long val, next;
+ 
+ 	val = __this_cpu_read(memcg->events_percpu->nr_page_events);
+-	next = __this_cpu_read(memcg->events_percpu->targets[target]);
++	next = __this_cpu_read(memcg->events_percpu->threshold_target);
+ 	/* from time_after() in jiffies.h */
+ 	if ((long)(next - val) < 0) {
+-		switch (target) {
+-		case MEM_CGROUP_TARGET_THRESH:
+-			next = val + THRESHOLDS_EVENTS_TARGET;
+-			break;
+-		case MEM_CGROUP_TARGET_SOFTLIMIT:
+-			next = val + SOFTLIMIT_EVENTS_TARGET;
+-			break;
+-		default:
+-			break;
+-		}
+-		__this_cpu_write(memcg->events_percpu->targets[target], next);
++		__this_cpu_write(memcg->events_percpu->threshold_target,
++				 val + THRESHOLDS_EVENTS_TARGET);
+ 		return true;
+ 	}
+ 	return false;
+ }
+ 
+-/*
+- * Check events in order.
+- *
+- */
+-static void memcg1_check_events(struct mem_cgroup *memcg, int nid)
++static void memcg1_check_events(struct mem_cgroup *memcg)
+ {
+ 	if (IS_ENABLED(CONFIG_PREEMPT_RT))
+ 		return;
+ 
+-	if (unlikely(memcg1_event_ratelimit(memcg, MEM_CGROUP_TARGET_THRESH)))
++	if (unlikely(memcg1_event_ratelimit(memcg)))
+ 		mem_cgroup_threshold(memcg);
+ }
+ 
+@@ -271,7 +250,7 @@ void memcg1_commit_charge(struct folio *folio, struct mem_cgroup *memcg)
+ 
+ 	local_irq_save(flags);
+ 	memcg1_charge_statistics(memcg, folio_nr_pages(folio));
+-	memcg1_check_events(memcg, folio_nid(folio));
++	memcg1_check_events(memcg);
+ 	local_irq_restore(flags);
+ }
+ 
+@@ -344,7 +323,7 @@ void __memcg1_swapout(struct folio *folio, struct swap_cluster_info *ci)
+ 	VM_WARN_ON_IRQS_ENABLED();
+ 	memcg1_charge_statistics(memcg, -folio_nr_pages(folio));
+ 	preempt_enable_nested();
+-	memcg1_check_events(memcg, folio_nid(folio));
++	memcg1_check_events(memcg);
+ 
+ 	rcu_read_unlock();
+ 	obj_cgroup_put(objcg);
+@@ -398,14 +377,14 @@ void memcg1_swapin(struct folio *folio)
+ #endif
+ 
+ void memcg1_uncharge_batch(struct mem_cgroup *memcg, unsigned long pgpgout,
+-			   unsigned long nr_memory, int nid)
++			   unsigned long nr_memory)
+ {
+ 	unsigned long flags;
+ 
+ 	local_irq_save(flags);
+ 	count_memcg_events(memcg, PGPGOUT, pgpgout);
+ 	__this_cpu_add(memcg->events_percpu->nr_page_events, nr_memory);
+-	memcg1_check_events(memcg, nid);
++	memcg1_check_events(memcg);
+ 	local_irq_restore(flags);
+ }
+ 
 diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
-index fd611e66859a..f48d0e22e615 100644
+index f48d0e22e615..b9a21f0fd2c3 100644
 --- a/mm/memcontrol-v1.h
 +++ b/mm/memcontrol-v1.h
-@@ -42,11 +42,6 @@ void memcg1_free_events(struct mem_cgroup *memcg);
+@@ -59,7 +59,7 @@ void memcg1_oom_recover(struct mem_cgroup *memcg);
  
- void memcg1_memcg_init(struct mem_cgroup *memcg);
+ void memcg1_commit_charge(struct folio *folio, struct mem_cgroup *memcg);
+ void memcg1_uncharge_batch(struct mem_cgroup *memcg, unsigned long pgpgout,
+-			   unsigned long nr_memory, int nid);
++			   unsigned long nr_memory);
  
--static inline void memcg1_soft_limit_reset(struct mem_cgroup *memcg)
--{
--	WRITE_ONCE(memcg->soft_limit, PAGE_COUNTER_MAX);
--}
--
- struct cgroup_taskset;
- void memcg1_css_offline(struct mem_cgroup *memcg);
+ void memcg1_stat_format(struct mem_cgroup *memcg, struct seq_buf *s);
+ void reparent_memcg1_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent);
+@@ -107,7 +107,7 @@ static inline void memcg1_commit_charge(struct folio *folio,
  
-@@ -97,7 +92,6 @@ static inline bool memcg1_alloc_events(struct mem_cgroup *memcg) { return true;
- static inline void memcg1_free_events(struct mem_cgroup *memcg) {}
+ static inline void memcg1_uncharge_batch(struct mem_cgroup *memcg,
+ 					 unsigned long pgpgout,
+-					 unsigned long nr_memory, int nid) {}
++					 unsigned long nr_memory) {}
  
- static inline void memcg1_memcg_init(struct mem_cgroup *memcg) {}
--static inline void memcg1_soft_limit_reset(struct mem_cgroup *memcg) {}
- static inline void memcg1_css_offline(struct mem_cgroup *memcg) {}
+ static inline void memcg1_stat_format(struct mem_cgroup *memcg, struct seq_buf *s) {}
  
- static inline bool memcg1_oom_prepare(struct mem_cgroup *memcg, bool *locked)
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 29def0376819..bce3962dba57 100644
+index bce3962dba57..30636b9d9673 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -4257,7 +4257,6 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
- 		return ERR_CAST(memcg);
+@@ -5328,7 +5328,6 @@ struct uncharge_gather {
+ 	unsigned long nr_memory;
+ 	unsigned long pgpgout;
+ 	unsigned long nr_kmem;
+-	int nid;
+ };
  
- 	page_counter_set_high(&memcg->memory, PAGE_COUNTER_MAX);
--	memcg1_soft_limit_reset(memcg);
- #ifdef CONFIG_ZSWAP
- 	memcg->zswap_max = PAGE_COUNTER_MAX;
- 	WRITE_ONCE(memcg->zswap_writeback, true);
-@@ -4464,7 +4463,6 @@ static void mem_cgroup_css_reset(struct cgroup_subsys_state *css)
- 	page_counter_set_min(&memcg->memory, 0);
- 	page_counter_set_low(&memcg->memory, 0);
- 	page_counter_set_high(&memcg->memory, PAGE_COUNTER_MAX);
--	memcg1_soft_limit_reset(memcg);
- 	page_counter_set_high(&memcg->swap, PAGE_COUNTER_MAX);
- 	memcg_wb_domain_size_changed(memcg);
- }
+ static inline void uncharge_gather_clear(struct uncharge_gather *ug)
+@@ -5351,7 +5350,7 @@ static void uncharge_batch(const struct uncharge_gather *ug)
+ 		memcg1_oom_recover(memcg);
+ 	}
+ 
+-	memcg1_uncharge_batch(memcg, ug->pgpgout, ug->nr_memory, ug->nid);
++	memcg1_uncharge_batch(memcg, ug->pgpgout, ug->nr_memory);
+ 	rcu_read_unlock();
+ 
+ 	/* drop reference from uncharge_folio */
+@@ -5380,7 +5379,6 @@ static void uncharge_folio(struct folio *folio, struct uncharge_gather *ug)
+ 			uncharge_gather_clear(ug);
+ 		}
+ 		ug->objcg = objcg;
+-		ug->nid = folio_nid(folio);
+ 
+ 		/* pairs with obj_cgroup_put in uncharge_batch */
+ 		obj_cgroup_get(objcg);
 -- 
 2.53.0-Meta
 
