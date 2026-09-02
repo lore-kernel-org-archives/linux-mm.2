@@ -4,99 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FD14C61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 21:29:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8640C61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 21:35:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A1A66B0092; Wed,  2 Sep 2026 17:29:30 -0400 (EDT)
+	id 9035E6B00B8; Wed,  2 Sep 2026 17:35:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3526A6B0095; Wed,  2 Sep 2026 17:29:30 -0400 (EDT)
+	id 8B7436B00B9; Wed,  2 Sep 2026 17:35:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 241E06B009B; Wed,  2 Sep 2026 17:29:30 -0400 (EDT)
+	id 7CA836B00BC; Wed,  2 Sep 2026 17:35:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E98616B0092
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:29:29 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 65AB8C027A
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 21:29:29 +0000 (UTC)
-X-FDA: 85170113658.12.6A4D6B3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8083F100005
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 21:29:27 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hqkZ7iNf;
-	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788384567;
-	b=Nq0gTnURRf56TB4WlRw6WNLvZnonDKnLNOsxcad/uOfStkzgIgcJX7jmcmXhHIPNOMlvKk
-	I//pCKho4ONhHJSdZzoVoLHiO259vbNGXJHuqJAtfD4RexP0H4UBG8gSTeouZUfnyvUc/7
-	0bGYJAhErU8ZmqE6rFzwZnqUSWI3EGQ=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 480F36B00B8
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:35:41 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D70ACA3E52
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 21:35:40 +0000 (UTC)
+X-FDA: 85170129240.19.C5DF467
+Received: from mail-oa2-f10.google.com (mail-oa2-f10.google.com [74.125.231.74])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 3A782A0004
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 21:35:39 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf25.hostedemail.com: domain of 3qpaYagkbAJUHNO9zAA3GzEE72.5DD5A3JH3G1DCI3CI.1DB@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 74.125.231.74 as permitted sender) smtp.mailfrom=3qpaYagkbAJUHNO9zAA3GzEE72.5DD5A3JH3G1DCI3CI.1DB@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788384567;
+	s=arc-20220608; t=1788384939;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lOFFuLPw3HeacpN5FBG2k3Uyd7RtjFEI844Ov3f+DbU=;
-	b=h8x3CPdBB+/TYCYSCO90aHA8Pmo0yfADd4Ex8DaolfAjKd6+r/xDV7HINL5rDN+bdZCTjA
-	VU6tEwVQTC93MTqEgOnBMapmZR/XUWufeGeoaDmH31iKMVlXRJktsOMckhfU/6IIAzypNJ
-	E7mnPDU5Lq7McCyemWnbP5Pc7t61ais=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=Z/JGNWxV8bK25k1HiaGt3SwTKzs4RSXT7cEloNky6KY=;
+	b=1G0xtC9PGyNnyPxEd2s+YJqtCCd+HTUZVrerP3aL9LdNVY3fOduE9v2ynK2zcQyiP2RKw1
+	6eUzMUseS8uj/V0tc/DNlKpxoLCWGaewSZ2da7855cJ3KpFdraNJgziFZjklf/UuaM2ljq
+	LSaW8bl5pQUCe5P8kSuRUQ4seBxrscY=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hqkZ7iNf;
-	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 12A696025A
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 21:29:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEADF1F00A3A
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 21:29:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788384566;
-	bh=lOFFuLPw3HeacpN5FBG2k3Uyd7RtjFEI844Ov3f+DbU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=hqkZ7iNfqvprmKbYG32MTYOoeUESENp1IRZj7TkRgavZh+8Cm5PqHVlKtfpt0krkH
-	 BY6iPAzstLXeUbya/r9y0/o8LifIVfISwbzpa006ebqdXW0WkIAlJpcwIw25xJ/goY
-	 YDI+WGGw0s1dtrC2vQIwWCATWM0wmG8YmIgFnjzS16mkgPJxh0PW9G7pNLKKv65GuE
-	 S0f/D3knnDjOxpKpQHNuzXZGoTGJWKs9XnKTZ4OmPo/89Gkr/Ub9JDPumtXyHbved0
-	 e8pUt6MFBMua/rHpczETuLkJP4M8M1NNdfjGX3c9Ak75edasarB9itVtLaF15RC3m8
-	 xTccToANStutA==
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c255acff671so232588766b.0
-        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 14:29:26 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxdFq0w4ifIUUhvcrujxFOcRWFKgvRSkqyD4cIgja3zr8n2bmmEoRxu1df67eM+52NhU9KH3c5img==@kvack.org
-X-Gm-Message-State: AFuF++muja77eujserxZpkJOcFtmE6fFbDduA0cENKrpVh9Tb9LaUnjy
-	GBnmMri452T9S1oYejTqfJd6gueeul0ZH654KGCZJ4ROipq5bWETkNraNYF7Uw+TkKwWyMppFfD
-	5VYHBM7S+X1lGUhT/5SM3go5J93oTsqM=
-X-Received: by 2002:a17:907:1c94:b0:c16:4df6:176b with SMTP id
- a640c23a62f3a-c25d5509d5amr471936766b.20.1788384565448; Wed, 02 Sep 2026
- 14:29:25 -0700 (PDT)
+	imf25.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf25.hostedemail.com: domain of 3qpaYagkbAJUHNO9zAA3GzEE72.5DD5A3JH3G1DCI3CI.1DB@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 74.125.231.74 as permitted sender) smtp.mailfrom=3qpaYagkbAJUHNO9zAA3GzEE72.5DD5A3JH3G1DCI3CI.1DB@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788384939;
+	b=PTDTTQMqSa/tUIGe/ThFgEuFvHd7vc0R0Nsp/uGRYkHhHDPQJRwIEyGWkJ+DGvLgve7Lty
+	w5VzZcEetTes9vRXGwnqFdeRvrb42ZusmYtznrwfKc888IUpzI8KgG54cD3bd8A9E1NylL
+	6FMcZkkwqPLmHGcBmUk+WdkMl6hyL/I=
+Received: by mail-oa2-f10.google.com with SMTP id 586e51a60fabf-46abf222dc3so197918fac.0
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 14:35:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788384938; x=1788989738;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Z/JGNWxV8bK25k1HiaGt3SwTKzs4RSXT7cEloNky6KY=;
+        b=b8x7l6M/PNVrwRi0vCOMNJkmMWjPywVEelzsSkAt+cXV7lPSJba1+UcKrcFyYu2mKv
+         iK3+J/vQdXUUDQnhwGtcC65mNmec0GXE8KNxubV91R9Tjqtl8SXSGt1X16JDZDB7m3Bc
+         KHn3F86h2jCT9Mq/Mv8YZgg0+qTEV05+LrMLDl8ZRaD0AQGK/PZxC7MddWPDiMmFkjHg
+         okXBLiwMd3dlSxUqg9CvpKYlgEIRr2codk5ojfbALsDdDv1RUMdDZ5Ocf/r4Byc5nSRm
+         QyBejkkcadJXP0a4tgSo9B31cS5IOJ6s7HUaOYPibBhi0UG8G8VTGkHIjZ/TaOW8An2m
+         X0vQ==
+X-Forwarded-Encrypted: i=1; AHgh+RosyJ21sQ4j+Ms4Rt8sMeFh57qO8repdVRB4wh036qe7A2615aXkcegg7VZzY/V5k3vuLKgjG/leg==@kvack.org
+X-Gm-Message-State: AFuF++lH8pUqMbWeU07tD+4P8PPaIjpdS8Zo0VWhRUAGbyQU/+GQJq8E
+	uObl7VPz+LTtrkB/EsTyDuHfqKQI3D5QvZYiyZ6VU8P0jmose/lcq6PsAcenNdMZ7B+se1kwSWF
+	3eOOR/nS/C9+jBVGMG/6cVTGcN1avaEoh+jU55KU/6KCKoLYouYtQUufYt58=
 MIME-Version: 1.0
-References: <20260902205406.624782-1-joannelkoong@gmail.com>
-In-Reply-To: <20260902205406.624782-1-joannelkoong@gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 2 Sep 2026 14:29:12 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zPqXkWBPbObB1ngCjUWjXJJ8sD4a7ZtfGOLQe+-NfD=zw@mail.gmail.com>
-X-Gm-Features: AcwNN1W0PvOInumEIH4KfMlRHsyF0_QiPyqsuyTviCrdmyZbZoy7z9M-CghGPg8
-Message-ID: <CAO9r8zPqXkWBPbObB1ngCjUWjXJJ8sD4a7ZtfGOLQe+-NfD=zw@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/memcontrol: skip non-hierarchical memcg-wide stats
- on the default hierarchy
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, 
-	linux-mm@kvack.org, cgroups@vger.kernel.org
+X-Received: by 2002:a05:6820:81ce:b0:6b3:60cc:6add with SMTP id
+ 006d021491bc7-6b47dabc8f0mr6234814eaf.13.1788384938263; Wed, 02 Sep 2026
+ 14:35:38 -0700 (PDT)
+Date: Wed, 02 Sep 2026 14:35:38 -0700
+In-Reply-To: <6a87853b.ae6ddae5.3da009.0023.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a9896aa.e163c37b.143a1.000d.GAE@google.com>
+Subject: Re: [syzbot] [mm?] WARNING in vma_set_pgoff
+From: syzbot <syzbot+f12658786a4153df5113@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, jannh@google.com, kunwu.chan@gmail.com, 
+	kunwu.chan@linux.dev, liam@infradead.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, lixinhai.lxh@gmail.com, ljs@kernel.org, pfalcato@suse.de, 
+	stable@vger.kernel.org, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 7stwjz68orhzpzge4oyprgffkkm471p8
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3A782A0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8083F100005
-X-Stat-Signature: yzza8drie8x4843n5wp746gwrqb9ced3
-X-HE-Tag: 1788384567-697877
-X-HE-Meta: U2FsdGVkX1+pa+acSNIaY8ahbrKOAcb3lqEWYxEkbpd/nGZ0NGkI6qP4ERGR9/My9455UQkqhmurGV3vJxsgUUt+ueEwELR9rGaa+moxSwGfnWhSNMWKnJpggb2VraA3nEOvJQuSjs4iX/LHXcJu3RYLzIOwXibsvDcxQtnd3SCXJVMPrHCF/ScTcqvjZ+mtfMmQa8FeidICKnYr2AHm9Vodr9J7lUGaqtZ1gokrNqtl04vsMB451f2DDNJu8ENBhQeK+7HNUYKHil7A5hYzvDwLJChm3E4i+rNi1JtLD2KEHQbEl+UtypvA8HmKHU3UBzmquJ57TDwn1LEV0v4Xa1FYSi5372W6GmwyY3EaDS3om1/sG+DS1hRHYotuTiNiyrmAA4csRaPZ0FGjmdlx/GciISt2ag0rHYs4YLf9tUEXa2OFyvXuzlbJU7TWAkVKjvufdBmNQRqKPFauN+HFJrmXSt6wNu1PdHvKsG6ENXOfWUu5VWA5FtokCCfLOmr4e6rzlc0pIhNAZcP1sHuX2ybYb64hCQwJ11T5AmBoptcOcS1h3PuCrZcteNgwf2BIiqo8h+siEuwKGjnfsU5Rq4eU9P3eoWxsU2n4Fg7p+PgQYD5/tHtbYgeU4WiKBzTDABMYEzJKPMLIqvjqWcZNqrE+uoEatYIHRO85DhKgIKNGW1JACsgSDtELNWubYqbZSqAyNN61+hghd40ac1th1mFEzmpc7KIG9iJgENbgY0d9wJixJBzuP4AfHkitLg6m8uw3YGN9r3AuT1Q0BBDGjiA6HVRqFKntMk7tVl1Gk4Q7D51ISmAcv1iUYe2x8TTxXB2704gCzLMOOi3pixCXTb4XF133HnEwsb9egokiZkIQJYeadNY6KFqo5gy1+YqKlX+g6yj3D52Z/4TXC+qlp45W7UHoV7ANm3Pz6ALxze7jGWQ9MO3mrlcNORZ1T0AuejMdHpcTW0QDY5C3Ke9
- PWKz3fo4
- ZNyO3nOUqb5c8En8CCTB1lL/SKH/njfU+xW6WdjUaHyguP9XafC5e+riPnswkd2qoIiGYda+tqt7yoro4lg8w7Cu+IfLdliJ3wXWACMLiKjqqQfBOvsgb00ERGuPUmvk1CMWNW7pa4u0E9WerqbDdqU6TiWnAOXl27BCgySjs3g7kH7bb++kgi35ZH1JgiRKBHZH6ZSJmAU/dKh9GASiqXH7pENDeDF8NSVjKUd53idxaUIf2wY+l2AfCAnyWVXMa0v1gs9D0pJubB9Yk80d+8fBY1UqTDbxj1LXkEfM4nVzrRKbSg9sERSMyZROtyoaRXvSGvR5fp9TfWP4=
+X-HE-Tag: 1788384939-497106
+X-HE-Meta: U2FsdGVkX1+bEUc2NfnVsS2ylEsSpNWe/v+EwlZ/XrJ4hduUfLd4yzk29XPCXnEzWKIYL0oetoCS+wEHpbEs5ZscMcvqpqcvB3M13X3woDaP3GMGLaSLVo2e7zFPc1Rw8BYmir/aR4sD6qPYVlVAjtm9cUwHrXFyB15DCUbzN3A/dzJkOz9LlKeBWXrsgg2YM5KsfJphxHxNm3Cid9hFsQKDnvKEKh4wxexT62NDLv9yHgX7v71dvEsDxGgut+4LHhrDW6clFDdzH7ASm8rQ1wL/B6Bo8ktXZCj7BsClcq8yqPpJjmoM/g+29G4OuRKmRTRKGJ9JfZKLgNQAM8HnyxjOnghzw2SLWB+A+ip/5BtlRUBeELrxaa8Vi4aT2cr2CJNlwF+Yy05Cknu+rskIki+KDFAWIIajzTG0kQNuD0J2lfiRvIbslXmWGXjqcp+f8y8iMf2toqpKm1KEqoPYJuAjKSIvE7sKoeWBcTu1xcW2gJIHBMmr/ggRydnyDW2pml+d63/fF2oKehtfG2IoLmeQIXeYKYB5SzJ6x2JKEjfq2Emp46RLlCzFh4DsB9aIAl2Uzx6tW0jIvk7dzc+5fKEHuKvLYwSBeIXzRqR1EAw8fQCvTCquKoOziypMHfa3wxl5PtVhyEZTs8bUxDnQIWTKlj5Cc+GsIV+Zbg5hTrdGfx/EHW23LksAe3C101JAFYMDOGpygveIu09S7tzwE30kznZ1/n1O6U56/SMxdqczkzjdfbGfA7RPhUP5+NJ7Q9YXNLk5uOaJqtQvILExkKTyAqGRl6Zv9I3k7U/u5Qbn6VrX4m0g0wABktaYPCeCzoFiA9EW6eOTU/GMbRfkRGo9LMlb0u8Lag8GDO+kDpSRSbXuWIdYcnUec6wIprV0x8UsbwFclR2IbDXcR26joc2XCQBQ7Jg2Dy8pB1G8nrAR4HtZgmpfd2aZZ5ef6Max3fGmI7ADy9rroJkyQiD
+ X7+ZrKc2
+ K/RHeE19pzU1b3NdDcozdoZYH1Z4ohPv/pxTcBRRyQuMsILnhg5gkl56wd/jfrBnqWd/u7RVlBRNDfxlyomlr2O6GAmKNBVSrBckPmrabVi1f/Tx9ECZJA3d9Df8nmXlLkwaqv6AN/kOCLm8y9VAHqxltykvszwtBLSWXHdMnB+SD5uW4vkHyFVPi6UIrihuA3eZx1AbxYFvJ+ALqeQX0TvuNRpQ78icRtdDCls2kqnCIMiaJQtrpsRaUU8QiSWhaCRud6dqq7uRMyAYIYjDoz/gRsmzmSN9+1hfhauRVnyp8XJ0GTOQCzqioVMg3BVFK6Z97WJsqvGpq4FfJwVRDISp64Po91szhonrNcZt86a5ers6Jz8uj8mGb9AkEbf4T9TXACuMOdv1sDyOC6TvcKZGfVsJFkPWttgqWAUjiPugp/FdOQ7h68aI1/dqB4mg18O3aLBy8yjHRvRfk7nnm5embyqyfNG99jJy0GcFyz0DFhgMKvKpqYIJWsd38/RwhsUhRvPzWSApgpALZJ0R3DILiEekdgOFXBDaWJLJXXTd0KBviusRlOXklK/xcTzgnVkmT6+mZ1r2U+C8NfUyDiq75sRh3JWWBo2J8IAtrzuz0FfxvXG7C6CWY2HYznWO2j4tY6EIhESVhpCVEaKufTQogJSpxc7ECDzTK1/KtJC03s6mtdV+gTZKFSt24n/u4Plt9c3XfhGrbfg5HbLSENeqXGQxqXOb981SSE9bYVsvu8GA0EIGlBE9aCnZq+EPzsJxBWNJxGtr1THi4j2Tkcm22EGI2MWuwZYlq77qoKFT9p3yUH2pxJWFAIMmzz55+9Ozr1RT89qNoh8Q4Pedmf0o2AQq0JXPo+oGxvQLWkpoKT04EUnOBVjoHQ3tm1bsP7+qj/iRwHNTGoz+3wc3xMTicDSBph99gX7w6jd5R+rD4n4HhQ7qgyvyqM23BPx8fGFpzI8DZ/GNLCmdzZbVt0LGtmVwh
+ ucyBEDTu
+ WPagmWlyuhHFITpCOaovXj5ZwqRKHFtG6KVedO/EGrkP+L2SrLvTCvvtYViCiWGpcegotM1fNVVjawcOELFkfHO3pw/DiksVmkYq/CD5eNcWvnB4ph3pvY12gvVLaUkOhDwzYB0SSmxj4AR3VGHKxQRekOcQscYRyXd7jawJi2RV/SF7PWveUBMWSIrEIN9oYZXPko5zCTqUaVJYz28GJ2TsclsEv3KdE+HNPJgWpzj1SHdlMH6DPW6PycyokJxo20N8dBuw8bYhvHHWjVsNFrXNxyrBE5A6tRG62tLxfAZzAAKjLNql+kmuZGzZZzHZSTLspUMS0rg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,280 +99,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 2, 2026 at 1:56=E2=80=AFPM Joanne Koong <joannelkoong@gmail.com=
-> wrote:
->
-> memcg_vmstats keeps a non-hierarchical copy of every memcg-wide stat item
-> and event alongside the hierarchical one. The only readers however are
-> the legacy memory.stat and memory.numa_stat, and reparenting on offline,
-> which are only used when on the legacy v1 hierarchy.
->
-> On the default hierarchy, memcg_vmstats's non-hierarchical arrays are
-> written to on every rstat flush, despite their values never being read /
-> accessed.
->
-> Instead, skip non-hierarchical memcg-wide stats on the default hierarchy.
-> This makes flushes cheaper. mem_cgroup_stat_aggregate() can now skip the
-> read-modify-write of ac->local[i]. When on the default hierarchy,
-> nothing else accesses state_local or events_local, so those cachelines
-> were getting pulled in solely for the writes, and they are separate from
-> the ones the loop is already walking / accessing.
->
-> There is the unlikely case where a controller can be moved from the
-> default hierarchy to the legacy v1 hierarchy at runtime, which means the
-> non-hierarchical memcg-wide arrays will need to be populated with the
-> correct values. This can be handled through the bind callback, which
-> gets called by rebind_subsystems(). We can copy over the counters from
-> the hierarchical arrays since rebinding is only allowed when the root is
-> the only memcg, so the hierarchical arrays and the non-hierarchical
-> arrays values should be the same.
->
-> On an 80-cpu x86_64 machine with 500 cgroups each running a workload that
-> dirties anon, file, dirty/writeback, slab, kmem, mlock, and reclaim
-> counters, timing mem_cgroup_css_rstat_flush() in-kernel in TSC ticks per
-> flush showed roughly
->
->                          before   after    delta
-> memcg-wide aggregation   1231     1180     -4.1%
-> overall flush function   2452     2397     -2.2%
->
-> These numbers are from taking the median of 70 samples, one per 20s
-> window on each kernel. The 95% intervals observed on the two deltas are
-> [-5.41%, -1.76%] and [-4.53%, -0.14%]. The values above include the
-> timing overhead itself, so only the delta is meaningful here.
->
-> Counting the items that actually changed, a median of 1.5 of the 77
-> memcg-wide items (57 state + 20 events) had a non-zero per-cpu delta at
-> each flush, which means the benchmarks above are with one or two fewer
-> cachelines pulled in per flush. The count is low because the benchmark
-> reads memory.stat in a loop to keep the flush rate up. For cases where
-> flushes are triggered only by the 2s periodic worker, more changes will
-> have accumulated between flushes, so more cachelines are skipped and the
-> per-flush saving should be larger.
->
-> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> ---
-> v1: https://lore.kernel.org/linux-mm/20260901232834.22221-1-joannelkoong@=
-gmail.com/
-> Changes since v1:
->   * Change from gating on builds w/out CONFIG_MEMCG_V1 to gating on the
->     default hierarchy so CONFIG_MEMCG_V1=3Dy kernels that do not use v1 b=
-enefit
->     too (Yosry)
->
->  mm/memcontrol.c | 89 +++++++++++++++++++++++++++++++++++++++++++++----
->  1 file changed, 82 insertions(+), 7 deletions(-)
->
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 7ce50bccf126..196e1791c10d 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -687,6 +687,29 @@ struct memcg_vmstats {
->         atomic_long_t           stats_updates;
->  };
->
-> +/*
-> + * The non-hierarchical memcg-wide counters are read back only by the le=
-gacy
-> + * memory.stat and by reparenting on offline, both of which are v1-only.
-> + * They are skipped if the controller sits on the default hierarchy
-> + * (mem_cgroup_bind() populates them if it is later moved onto the legac=
-y
-> + * hierarchy).
-> + */
-> +static long *memcg_state_local_array(struct mem_cgroup *memcg)
-> +{
-> +       if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
-> +               return NULL;
-> +
-> +       return memcg->vmstats->state_local;
-> +}
-> +
-> +static unsigned long *memcg_events_local_array(struct mem_cgroup *memcg)
-> +{
-> +       if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
-> +               return NULL;
-> +
-> +       return memcg->vmstats->events_local;
-> +}
-> +
->  /*
->   * memcg and lruvec stats flushing
->   *
-> @@ -4468,7 +4491,10 @@ static void mem_cgroup_css_reset(struct cgroup_sub=
-sys_state *css)
->  struct aggregate_control {
->         /* pointer to the aggregated (CPU and subtree aggregated) counter=
-s */
->         long *aggregate;
-> -       /* pointer to the non-hierarchichal (CPU aggregated) counters */
-> +       /*
-> +        * pointer to the non-hierarchical (CPU aggregated) counters or N=
-ULL to
-> +        * skip updating them (see memcg_state_local_array())
-> +        */
->         long *local;
->         /* pointer to the pending child counters during tree propagation =
-*/
->         long *pending;
-> @@ -4507,7 +4533,7 @@ static void mem_cgroup_stat_aggregate(struct aggreg=
-ate_control *ac)
->                 }
->
->                 /* Aggregate counts on this level and propagate upwards *=
-/
-> -               if (delta_cpu)
-> +               if (delta_cpu && ac->local)
->                         ac->local[i] +=3D delta_cpu;
->
->                 if (delta) {
-> @@ -4521,6 +4547,7 @@ static void mem_cgroup_stat_aggregate(struct aggreg=
-ate_control *ac)
->  #ifdef CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC
->  static void flush_nmi_stats(struct mem_cgroup *memcg, struct mem_cgroup =
-*parent)
->  {
-> +       long *state_local =3D memcg_state_local_array(memcg);
->         int nid;
->
->         if (atomic_read(&memcg->kmem_stat)) {
-> @@ -4528,7 +4555,8 @@ static void flush_nmi_stats(struct mem_cgroup *memc=
-g, struct mem_cgroup *parent)
->                 int index =3D memcg_stats_index(MEMCG_KMEM);
->
->                 memcg->vmstats->state[index] +=3D kmem;
-> -               memcg->vmstats->state_local[index] +=3D kmem;
-> +               if (state_local)
-> +                       state_local[index] +=3D kmem;
->                 if (parent)
->                         parent->vmstats->state_pending[index] +=3D kmem;
->         }
-> @@ -4550,7 +4578,8 @@ static void flush_nmi_stats(struct mem_cgroup *memc=
-g, struct mem_cgroup *parent)
->                         if (plstats)
->                                 plstats->state_pending[index] +=3D slab;
->                         memcg->vmstats->state[index] +=3D slab;
-> -                       memcg->vmstats->state_local[index] +=3D slab;
-> +                       if (state_local)
-> +                               state_local[index] +=3D slab;
->                         if (parent)
->                                 parent->vmstats->state_pending[index] +=
-=3D slab;
->                 }
-> @@ -4563,7 +4592,8 @@ static void flush_nmi_stats(struct mem_cgroup *memc=
-g, struct mem_cgroup *parent)
->                         if (plstats)
->                                 plstats->state_pending[index] +=3D slab;
->                         memcg->vmstats->state[index] +=3D slab;
-> -                       memcg->vmstats->state_local[index] +=3D slab;
-> +                       if (state_local)
-> +                               state_local[index] +=3D slab;
->                         if (parent)
->                                 parent->vmstats->state_pending[index] +=
-=3D slab;
->                 }
-> @@ -4588,7 +4618,7 @@ static void mem_cgroup_css_rstat_flush(struct cgrou=
-p_subsys_state *css, int cpu)
->
->         ac =3D (struct aggregate_control) {
->                 .aggregate =3D memcg->vmstats->state,
-> -               .local =3D memcg->vmstats->state_local,
-> +               .local =3D memcg_state_local_array(memcg),
->                 .pending =3D memcg->vmstats->state_pending,
->                 .ppending =3D parent ? parent->vmstats->state_pending : N=
-ULL,
->                 .cstat =3D statc->state,
-> @@ -4599,7 +4629,7 @@ static void mem_cgroup_css_rstat_flush(struct cgrou=
-p_subsys_state *css, int cpu)
->
->         ac =3D (struct aggregate_control) {
->                 .aggregate =3D memcg->vmstats->events,
-> -               .local =3D memcg->vmstats->events_local,
-> +               .local =3D memcg_events_local_array(memcg),
->                 .pending =3D memcg->vmstats->events_pending,
->                 .ppending =3D parent ? parent->vmstats->events_pending : =
-NULL,
->                 .cstat =3D statc->events,
-> @@ -5183,6 +5213,50 @@ static struct cftype memory_files[] =3D {
->         { }     /* terminate */
->  };
->
-> +#ifdef CONFIG_MEMCG_V1
-> +/*
-> + * Called after the controller has moved between hierarchies, with the o=
-n_dfl
-> + * key already in its new state.
-> + *
-> + * If the controller is moving from the default hierarchy to the legacy
-> + * hierarchy, vmstats's state_local and events_local arrays need to be p=
-opulated
-> + * since they get read by the legacy hierarchy. Those values can just be=
- taken
-> + * from the vmstats's state and events arrays since rebind_subsystems() =
-only
-> + * allows the move when the root is the only memcg.
-> + */
-> +static void mem_cgroup_bind(struct cgroup_subsys_state *root_css)
-> +{
-> +       struct mem_cgroup *memcg =3D mem_cgroup_from_css(root_css);
-> +       int i;
-> +
-> +       if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
-> +               return;
-> +
-> +       /*
-> +        * The flush is necessary because there might be descendants that=
- got
-> +        * destroyed right before the rebind that may have left counts in=
- the
-> +        * pending arrays that haven't yet been folded into the state and=
- events
-> +        * arrays
-> +        */
-> +       __mem_cgroup_flush_stats(memcg, true);
-> +
-> +       /*
-> +        * Not serialized against a concurrent flush. The periodic flushe=
-r runs
-> +        * on root_mem_cgroup without cgroup_mutex and a flush increments=
- state
-> +        * and state_local together. If the flush happens in between when=
- we
-> +        * read state and write to state_local, its state_local increment=
- is
-> +        * overwritten and the counter stays short, but the difference wo=
-uld be
-> +        * a single CPU's accumulated charges since the last flush and th=
-e
-> +        * counters are approximate values.
-> +        */
-> +       for (i =3D 0; i < MEMCG_VMSTAT_SIZE; i++)
-> +               memcg->vmstats->state_local[i] =3D memcg->vmstats->state[=
-i];
-> +
-> +       for (i =3D 0; i < NR_MEMCG_EVENTS; i++)
-> +               memcg->vmstats->events_local[i] =3D memcg->vmstats->event=
-s[i];
-> +}
+syzbot has found a reproducer for the following issue on:
 
-I wonder if the complexity is warranted for this optimization to work
-when switching from v2 -> v1, or if we should just query the boot
-parameter.
+HEAD commit:    89a312991dc6 Merge tag 'cifs-fixes-7.3-rc2' of https://git..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=101ab0f9580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=5e4e3a0e188a497e
+dashboard link: https://syzkaller.appspot.com/bug?extid=f12658786a4153df5113
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+userspace arch: i386
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=151ec39e580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1761ef79580000
 
-> +#endif /* CONFIG_MEMCG_V1 */
-> +
->  struct cgroup_subsys memory_cgrp_subsys =3D {
->         .css_alloc =3D mem_cgroup_css_alloc,
->         .css_online =3D mem_cgroup_css_online,
-> @@ -5196,6 +5270,7 @@ struct cgroup_subsys memory_cgrp_subsys =3D {
->         .exit =3D mem_cgroup_exit,
->         .dfl_cftypes =3D memory_files,
->  #ifdef CONFIG_MEMCG_V1
-> +       .bind =3D mem_cgroup_bind,
->         .legacy_cftypes =3D mem_cgroup_legacy_files,
->  #endif
->         .early_init =3D 0,
-> --
-> 2.52.0
->
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/9e57f69218a4/disk-89a31299.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/c6ae7c71d018/vmlinux-89a31299.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/82fb8eee8abf/bzImage-89a31299.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+f12658786a4153df5113@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+pgoff != vma->vm_start >> 12
+WARNING: mm/vma.h:277 at assert_sane_pgoff mm/vma.h:277 [inline], CPU#1: syz.0.17/5876
+WARNING: mm/vma.h:277 at vma_set_pgoff+0x246/0x2d0 mm/vma.h:283, CPU#1: syz.0.17/5876
+Modules linked in:
+CPU: 1 UID: 0 PID: 5876 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
+RIP: 0010:assert_sane_pgoff mm/vma.h:277 [inline]
+RIP: 0010:vma_set_pgoff+0x246/0x2d0 mm/vma.h:283
+Code: 0b 90 e9 d5 fe ff ff e8 d8 99 9f ff 4c 89 f7 e8 30 09 00 ff c6 05 5d 78 3b 0e 01 90 0f 0b 90 e9 fe fe ff ff e8 bb 99 9f ff 90 <0f> 0b 90 eb 9d 44 89 f9 80 e1 07 80 c1 03 38 c1 0f 8c eb fd ff ff
+RSP: 0018:ffffc900032af448 EFLAGS: 00010293
+RAX: ffffffff82282165 RBX: 0000000000080004 RCX: ffff8880124c8000
+RDX: 0000000000000000 RSI: 0000000000080ffe RDI: 0000000000080004
+RBP: 0000000000000007 R08: ffff8880734021c3 R09: 1ffff1100e680438
+R10: dffffc0000000000 R11: ffffed100e680439 R12: 0000000000000001
+R13: dffffc0000000000 R14: ffff888073402140 R15: 0000000000080ffe
+FS:  0000000000000000(0000) GS:ffff888124dda000(0063) knlGS:00000000576bb480
+CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
+CR2: 00000000f7203200 CR3: 0000000079238000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ vma_add_pgoff+0x1a8/0x570 mm/vma.h:314
+ __split_vma+0x89e/0xa60 mm/vma.c:607
+ vms_gather_munmap_vmas+0x322/0x1370 mm/vma.c:1507
+ do_vmi_align_munmap+0x2b4/0x4b0 mm/vma.c:1675
+ do_vmi_munmap+0x252/0x2d0 mm/vma.c:1732
+ shrink_vma mm/mremap.c:1421 [inline]
+ mremap_at+0x233/0xba0 mm/mremap.c:1652
+ do_mremap mm/mremap.c:2008 [inline]
+ __do_sys_mremap mm/mremap.c:2064 [inline]
+ __se_sys_mremap+0xf9f/0x12d0 mm/mremap.c:2032
+ do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:79 [inline]
+ __do_fast_syscall_32+0x27a/0x6a0 arch/x86/entry/syscall_32.c:291
+ do_fast_syscall_32+0x33/0x70 arch/x86/entry/syscall_32.c:316
+ entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+RIP: 0023:0xf7ff70ec
+Code: 90 85 d2 74 0a 89 ce 81 e6 ff 0f 00 00 89 32 85 c0 74 05 c1 e9 0c 89 08 31 c0 5e 5d c3 90 0f 1f 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 58 b8
+RSP: 002b:00000000ff97fafc EFLAGS: 00000206 ORIG_RAX: 00000000000000a3
+RAX: ffffffffffffffda RBX: 0000000080ffd000 RCX: 0000000000002000
+RDX: 0000000000001000 RSI: 0000000000000000 RDI: 0000000080ffe000
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000206 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	90                   	nop
+   1:	85 d2                	test   %edx,%edx
+   3:	74 0a                	je     0xf
+   5:	89 ce                	mov    %ecx,%esi
+   7:	81 e6 ff 0f 00 00    	and    $0xfff,%esi
+   d:	89 32                	mov    %esi,(%rdx)
+   f:	85 c0                	test   %eax,%eax
+  11:	74 05                	je     0x18
+  13:	c1 e9 0c             	shr    $0xc,%ecx
+  16:	89 08                	mov    %ecx,(%rax)
+  18:	31 c0                	xor    %eax,%eax
+  1a:	5e                   	pop    %rsi
+  1b:	5d                   	pop    %rbp
+  1c:	c3                   	ret
+  1d:	90                   	nop
+  1e:	0f 1f 00             	nopl   (%rax)
+  21:	51                   	push   %rcx
+  22:	52                   	push   %rdx
+  23:	55                   	push   %rbp
+  24:	89 e5                	mov    %esp,%ebp
+  26:	0f 34                	sysenter
+  28:	cd 80                	int    $0x80
+* 2a:	5d                   	pop    %rbp <-- trapping instruction
+  2b:	5a                   	pop    %rdx
+  2c:	59                   	pop    %rcx
+  2d:	c3                   	ret
+  2e:	90                   	nop
+  2f:	90                   	nop
+  30:	90                   	nop
+  31:	90                   	nop
+  32:	90                   	nop
+  33:	90                   	nop
+  34:	90                   	nop
+  35:	90                   	nop
+  36:	90                   	nop
+  37:	90                   	nop
+  38:	90                   	nop
+  39:	90                   	nop
+  3a:	90                   	nop
+  3b:	90                   	nop
+  3c:	90                   	nop
+  3d:	90                   	nop
+  3e:	58                   	pop    %rax
+  3f:	b8                   	.byte 0xb8
+
+
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
