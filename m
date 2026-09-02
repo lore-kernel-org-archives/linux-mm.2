@@ -4,89 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 849A2C624D3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 14:37:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2A7FC61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 14:41:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 952416B00DA; Wed,  2 Sep 2026 10:37:16 -0400 (EDT)
+	id CB67F6B0096; Wed,  2 Sep 2026 10:41:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 929A36B00DB; Wed,  2 Sep 2026 10:37:16 -0400 (EDT)
+	id C3F496B00A9; Wed,  2 Sep 2026 10:41:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83FA46B00DC; Wed,  2 Sep 2026 10:37:16 -0400 (EDT)
+	id B06E96B00C4; Wed,  2 Sep 2026 10:41:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B3906B00DA
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:37:16 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 086051C0752
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:37:16 +0000 (UTC)
-X-FDA: 85169074872.10.A791B99
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5F87A18000E
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:37:14 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8AFFF6B0096
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:41:24 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0E162C022E
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:41:24 +0000 (UTC)
+X-FDA: 85169085288.14.A67055A
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 31AB718000E
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:41:22 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gcX7IbD1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=Fqw8hv2A;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=iovGKDVk;
+	spf=pass (imf06.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.171 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
+	dmarc=pass (policy=reject) header.from=mailbox.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788359834;
+	s=arc-20220608; t=1788360082;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uJ8oZbnT/S4xxSU2BGbADIIkq11+Ga6+O5vtB95nhK0=;
-	b=jkOY17a2Ove5QBihVJ2+xcM3IF3910kr94mS8YTfDv7VflfhJMZh1lsTB0FXtscc+h2TUR
-	qSU2nyI3h1Gnp5Zq1ChQqkeputTeZZM8Idt+D/PBHSfGKEVRfrPYXZgvPMG/L1qNJuTMTU
-	mnJFzGVkvN6pckNh76Gg6JQMa7Rc228=
+	 in-reply-to:references:dkim-signature;
+	bh=4enQh/HRN5i8ej4OSTmzFcG+vE6phZ74enUPad5j238=;
+	b=KidNMOjB0iGPQ1nBE9sQCMrjRVlyhcvG9ocpjGS5V7vaG0FBU2+bjyGR5OX0uCYExAPfpe
+	IUskpCgLQ+gyvs97tLJ/DRl6ZU53m6aHassoBAkI7hqIR6cjOvBXFo89RrFcb29iUZzT6m
+	lEth0+xsZZbA7IcA3qpLbG4C0Lmj+N0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788359834;
-	b=nDdkn+Gsgu1SLpq4LKNNJHQ/zS0HfxE4V3QnCDHliThvzx3bNSJUtPaNIhfpbTxrZAVKG/
-	Tq8u/TMMueSJay4CLbf8AbPxkOAdSlEaiKJpMt7efEoU6bpYPCqSlNDCSNtkPpaaHOR8E9
-	r/qiM2u3eXqnIAU7ffmUxMNkLBImI0M=
+	t=1788360082;
+	b=AHnPcmDy9FkBWtuwxspVbBgoIcBPIs0vuF5ACPbfjtKbBRHQwiqUYAokWHe2HC6VMtqK8J
+	pDak0P5F/zGOz3bcfCDjZlaPuLAOWE6T/0Sz3koXgrBx4yHs6dJ891ocuX+20bvnHgE2ff
+	/Iinbt9FRPF7zLRl0Uqlzx3BZLLI39g=
 ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gcX7IbD1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BF700600C8;
-	Wed,  2 Sep 2026 14:37:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40DC21F000E9;
-	Wed,  2 Sep 2026 14:37:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788359833;
-	bh=uJ8oZbnT/S4xxSU2BGbADIIkq11+Ga6+O5vtB95nhK0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gcX7IbD1yaF6KhJx1sjAKj+kDIfGPBq8StoP/xFceP1LI0AXebsGAYHR3rS8EMCQl
-	 O7H9AQUHoilFNp6tkm2Vj0qTcvjTQcqiRZ9QnEU4+OvqSbShgm8fzZypPCg0EbhOB0
-	 a/W9WbU1Vaf8Qx+Kon+bROdWBDiNZwX5q4FbwG4JEFFW0mCgsZrvle/x87XLIgdMen
-	 Qo0G1Ns1TNxrnKw33LpbJLHD6C1zjHLB6JTEbr8IfWuQtuLImT/y/8QIjwc7eTfaDS
-	 l5OU8ziIk2jRyz9DZgoge4GL7gSbofQG7yVFBQOa/lnZENIfJr399XgAp+TDk8kY86
-	 hG3DBfzCYle1g==
-From: SJ Park <sj@kernel.org>
-To: Kunwu Chan <kunwu.chan@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Kunwu Chan <kunwu.chan@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 05/12] mm/damon/sysfs: remove probes number validation
-Date: Wed,  2 Sep 2026 07:37:06 -0700
-Message-ID: <20260902143706.88115-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260902140714.4023700-1-kunwu.chan@linux.dev>
-References: 
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=Fqw8hv2A;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=iovGKDVk;
+	spf=pass (imf06.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.171 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
+	dmarc=pass (policy=reject) header.from=mailbox.org
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4hZlm05y6hzMlBB;
+	Wed, 02 Sep 2026 16:41:20 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1788360080;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=4enQh/HRN5i8ej4OSTmzFcG+vE6phZ74enUPad5j238=;
+	b=Fqw8hv2Ao0Y5A+xcInh0xP5xiVRqCrlgE/F8FI0utG8+7BPjpp2VpqdmWKv/h/7w2GpzaX
+	xa322Kxw0E7mpc/B1pGSCpkQtEmdZmpixLtydqKz7FhNFONzE6rCpwhY9RnojvQH3DrB4z
+	HZatkzU6NqeoHB1XhH12YbSi6iXkP/FXCqhekKbJAyRHh/ykbmtwVHxhkmWDO8jUK/mm1C
+	AYT4L4YgUFsx0Zq3OQxBlaxcWGYibSuY9klwxREPni7ply1FaZNRB9spuhOpoNnCgllnw8
+	aqzebRFlIemfcJXMRiqe4EosGoTCw+Cz/pdU1ZkZtgq3y8aNrPrz/8XPqIVwSQ==
+From: Manuel Ebner <manuelebnerli@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1788360079;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=4enQh/HRN5i8ej4OSTmzFcG+vE6phZ74enUPad5j238=;
+	b=iovGKDVki+JnqDpcKXRTDvggE1fGau7uLL2Viz4jKRlXhqYb1aCOw+hTxJQYiUf0WNTvkp
+	BjQjNbCD31VFqYmJrsY2JpIoLbsggO+e2+ZaYuAqbHJGP5bVnkj0OCtp2/OmfKrbDR8sEj
+	MidFLJpXanL+MfaTcfZ3xyKibPeGC4gwiGYmayjIheBjUWl2+gsOQsp35FwC6w5Iuj0ltJ
+	8SFPX5a3gjEJviXRinZKX+MXPuw4bSmh6hAOKdCIxi60X/FPMEwsi/VIx7RXz0tvmzkdT2
+	fhjcvKZzI0tJdoBKPWyamUkdhzxEYhXBX7JN7yBH1kRZQqU6MgoIDQSRKgSM1w==
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Cc: Manuel Ebner <manuelebnerli@mailbox.org>,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] docs: locking: Fix bracket
+Date: Wed,  2 Sep 2026 16:39:38 +0200
+Message-ID: <20260902143936.703665-4-manuelebnerli@mailbox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5F87A18000E
-X-Stat-Signature: xypabznjmep58mkegxqxyith5nybxuxq
+X-MBO-RS-ID: 50c532a2ac21d6ca7ec
+X-MBO-RS-META: k6xm1ysjhyaxg4ron4ywibt1c4uihwua
 X-Rspam-User: 
-X-HE-Tag: 1788359834-580794
-X-HE-Meta: U2FsdGVkX1+ZWbwCOpwNXMQ5wd07p3hZvYmYCdFLEGTS7E7stfEukciC7NkiAisUbVHUiiflmFoBMtqtu0VRQfSaopQJDAAM6bnvL9lqQaNVliD1+8O3BBsgFBEQNGfxUsxi8mfSnoqEs/UuVW1yZkA80MpO/Bqwami0WPBOZgOGPFW2w6YNo1iMwq2U6dbK6Wtv/UE5mK/xfOUK+PWkdR5yP+NaiVs7MH/ZFKAyyl/xH+jfwxDjfPNrK0UP0kzUdVCqvu9fThTvshs0lw+1WUN/BFTPLkbSmyOGaisB/9vmodbDmaHol0VqYiJs1Ipf6cjzk+o4VpvDDwNsm6HFw3ybOJRKawdluVLUVcR56dOta+m2GQFN6e23Crvv+gdrhP6q8wWHD7CfmHbjU662ff7kJBUqzA4CDOtfU/g6fLhHhLGI+RGrNnPd65fGCJa/K26hWmK9u6CUjHqkIw3U/c1uhCDsBNL5uhqPd6tJJ88PDc9ZmCTPZ+bBqjrTCvXva0R7qhlf8zbU+ujF/pzqqiuaa3oGcYV0TD0vCGZef+3iqRQ4WutJKtffQYwhO8VqcgI+HfTMG6tzHQZavIY+y/gGm5NOko7IHRjOPqhos5JNB2h1ptJtz9YgjsDLZJNP3Qehq1pvBeJZCukzLta5BC9qWPui8taGQJ8AN9sa1aVSaSoO0XerW7cqqwqLbx/ekZ7IWbqE6+5TtLDB2v/C4iXeSlfSv8SpRLIdAXIS/IJoHSToIGWHNcHX66kdZfGLKxg02+tev9tIZ2b8bl0A5IjiqQ9mSZ1FyXwB5D8JNt/Chr2EQmImJYZjuPt9VcSuRWxyeES7auVFQ/bww1UFMgCzwc9e/NSdQuIE9si5FS+jFrua/ethyT8mq4Mh70/zTqCkqTHHwiw0LGJrybHVFfpPU0YlCcYO7pIT3Q+/yzl8iNhC28+1XKo9tVSc3WlZlDrsKL7oisAsoEDim8a
- KAFHppRZ
- I0GHHsBb3yvIN2aXKRyw5rvaPFfELSrKF2vl0YObeaZp41zRi+6Y8m5KBNQY+bUy/trt+HKSwr9P4CoCXiBigtuCZAsnmo/h8bjmoj6yDms0kQIVleN+EBGGApieXNBuetyvgnefy42VmW0sbDnc2zxNyTxd8fFyn5kpHgXeSNP4qCpZHLLXF8ot4ta2oNH7R087TdSkKpp9iPVR2YtHKPo20YQw5LyyyPNyaEa8Kf39bAQNkIGXZ8QKPn4nLBhAHw4DPrej5b7gkByq3X5VZL+ek3B6xesfljg/xn1A2uLLkYi6NUAvPx5OvSjHD4QodjOgVFM9L7UXZTfI=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 31AB718000E
+X-Stat-Signature: 7wrb7w8k1i3k95d86fcrf6x8fpcbgut7
+X-HE-Tag: 1788360082-362391
+X-HE-Meta: U2FsdGVkX1+4qFs+R3lDUXC38nnRYXio9g6KUnDUljZiysSyynR6srxLOSrs+Io3erkvxzV4GE7HCuguYxqlqPquix2/Ubxs0Koa9u7P5EOdBKLBBZB9SWbZ1LQKQl48fPAGIgdGEETt6jopqzcUbi9v5XHG3p5y9qYCuQyqhjqjBCB+3zJs9UnhBG5nDaXIk/93pLXpBPMol6XGC97cIo7XoBRMA6u7x71cwoERHHotAteCruAqCPtrP8Vxsjc2Q5zMKGo2W8Xw5b+JtWf2MrM5BZv8UCyaKyb+d0XJtS1Yna2RWQNwGpz8BknjemkevUGV1Oy+rzxEoykD8Pq000dWM5yIz1M+eTuIt89LzNfuvF/iioc3bvnU3mTTyd3Y8dcmWJSmFJFo3Scn2Y33SHuHq6hg/N9hK7SheTyCjCwnyi4W8R+HfCg6PdeYL+zAaS3PCmyBN6POR7HlT9jpfCX7EeDzpuDvxWpzP1/jZybTuS3257fsFDX4QDWat0jqM/4rPtXv/8etJAkyI1qPpPR4olO59Ki4+PRbTAlSnXZfZFc1psrRGnLIVibhqO8b4Ut41JuKCDulQekMBRVOg9z7rfZSk//iy+33sqefn1cZJmnPYtIF0eK8GAXs4Zelu9Gp/r3R26CqjkcLlDyyPYwY3mdPwIP6QHpk77qYWBioJlha6pt93mlk4QSmUKnFkw9JZ7KVVwtoLCQx8QiJr9vubNU5gm+XUOyJr22HhsrWg+Dww7UdqAg2hmAzWfuR2nA4zUBm0cFmVdqWlaBpn/vZfkzY3/Ljd75zF9KNH4q8lp+wU7zSE1GCltN+3YuNgzlh0FdRN/2bHcnp5d0QFFLlFW0Dx33yHxXJIIP3Mpi9CzgAmhu9UgbvopoHHsckwFqNmUuM5WjwoE0d8orJcRYMM08uKDLkmIZJIkPqqtAM7Xy/qnZyC3kNtewBaI6v4EjSA5SmbZZpnimHwi2
+ CQI1GVjj
+ oTY9L0jKbnhKaohIVPXW8Mc9umttja8+lNWhufOCtqfGdYFNEmj3fl6U4GGdhnCORe9S5j4gc/xnenQxSvt4b94T2ghmP/bT7o0e28v2N+LCf8WLBS+FbH1Fsor5TinOUjDkJ+Ic77Ujq/EES6Kp4XJau8KlMgLh6qg1IqD1ixzC4UWBRxaMDIaSh+1A+ILADKG/wvU7ePvP15Qyy1Uch2dYIgcQkFcyKk/SGzrdbvGuuTMUYwJ0meUB8La17pv9Z1md4Q87/q72VgGVHtbeEaG2Em9xGzOZKR8uuxSyMVbffCgOwh7AKssI8FOkdxRGbJUe2dGUf296UXaE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,40 +110,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  2 Sep 2026 22:07:13 +0800 Kunwu Chan <kunwu.chan@gmail.com> wrote:
+Remove needless '(' from code block.
 
-> On Tue,  1 Sep 2026 22:47:38 -0700 SJ Park <sj@kernel.org> wrote:
-[...]
-> I was wondering whether DAMON_MAX_PROBES is purely a core invariant
-> or also an interface constraint.
+Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
+---
+Should I also replace ')(' with ') (' as it is in the second code block?
+It would improve readability in my opinion.
+---
+ Documentation/filesystems/locking.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thank you for reviewing my patch and raising this question!
+diff --git a/Documentation/filesystems/locking.rst b/Documentation/filesystems/locking.rst
+index 844d65eb4..1598cf555 100644
+--- a/Documentation/filesystems/locking.rst
++++ b/Documentation/filesystems/locking.rst
+@@ -27,7 +27,7 @@ prototypes::
+ 	int (*d_init)(struct dentry *);
+ 	void (*d_release)(struct dentry *);
+ 	void (*d_iput)(struct dentry *, struct inode *);
+-	char *(*d_dname)((struct dentry *dentry, char *buffer, int buflen);
++	char *(*d_dname)(struct dentry *dentry, char *buffer, int buflen);
+ 	struct vfsmount *(*d_automount)(struct path *path);
+ 	int (*d_manage)(const struct path *, bool);
+ 	struct dentry *(*d_real)(struct dentry *, enum d_real_type type);
+-- 
+2.54.0
 
-> 
-> With this change, sysfs allows nr_probes larger than
-> DAMON_MAX_PROBES and damon_sysfs_probes_add_dirs() will start creating
-> probe objects before the configuration is later rejected by
-> damon_valid_probe_params().
-> 
-> Since nr_probes directly controls the number of sysfs objects created,
-> do we still want to keep an early check here?
-> 
-> I agree that the core validation is required for non-sysfs callers,
-> but I am not sure whether this particular limit should be duplicated
-> at the sysfs layer.
-
-I agree the user experience may be not that good.
-
-In my humble opinion, however, keeping code simplicity is more important than
-the user experience here.  After all, DAMON_SYSFS is recommended to be used by
-another high level tools like DAMON user-space tool (damo) rather than human
-fingers.  The user-space tools like damo can do the early check.
-
-Please feel free to let me know if you have any other opinions or questions.
-
-
-Thanks,
-SJ
-
-[...]
 
