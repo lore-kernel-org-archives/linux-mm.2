@@ -4,99 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F515C61DFD
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 06:57:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79760C61DFD
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 07:12:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9D706B0092; Wed,  2 Sep 2026 02:57:53 -0400 (EDT)
+	id 3C8636B0088; Wed,  2 Sep 2026 03:11:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4D7F6B0095; Wed,  2 Sep 2026 02:57:53 -0400 (EDT)
+	id 379F46B008A; Wed,  2 Sep 2026 03:11:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3C996B0096; Wed,  2 Sep 2026 02:57:53 -0400 (EDT)
+	id 2911C6B008C; Wed,  2 Sep 2026 03:11:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A6756B0092
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 02:57:53 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0D7994074C
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:57:53 +0000 (UTC)
-X-FDA: 85167917226.29.D0BBDFA
-Received: from mta1.migadu.com (out-110.mta1.migadu.com [95.215.58.110])
-	by imf18.hostedemail.com (Postfix) with ESMTP id BA76D1C0002
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:57:50 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=D0wlcP9p;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.110 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EBCF06B0088
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:11:58 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 60752120756
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 07:11:58 +0000 (UTC)
+X-FDA: 85167952716.11.AC85289
+Received: from mailgw1.hygon.cn (unknown [101.204.27.37])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5445F40002
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 07:11:54 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=hygon.cn;
+	spf=pass (imf27.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788333116;
+	b=FLHGfg8yS5Zk2frcn/2cW92sjQdjQ4wmNdtun/XRWIavgmNVkUSrneaT8nB/N+QaqnZkPp
+	ru/tY9d+r16nBHcU77fVKHDID/3BfbT2UBcW/6jSt6moyjKW/bPzNtVsrKZocB+jqq00zO
+	yaSeHOODTz2uqCsyIbM5vqOUp8JIxWQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788332271;
+	s=arc-20220608; t=1788333116;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dXZSsj1h/BySZVviXGKCL9ci08G0rsvYfAminc8wBk4=;
-	b=FYsQ5TLQvuJ1PJpl6Ix9nActW3mU0Zi6OLRyh2Udj6kI7g27QIk2Xtqw/xS8iNVo/UDh8G
-	qHntvfu8I77MiiajmqniTwr65UIdkSDnMYXEIkSKcnSTMS8wev+77+tWnGr5tbuwjxfy0P
-	d7VQXhXEeec7dFYJdlcPZ/E/mXsJC0s=
+	 in-reply-to:in-reply-to:references:references;
+	bh=9yoRaE6nVraYAxXPdqQmVPBanWhtTUVBc6uj3ATGtsQ=;
+	b=3JMuHBA/w6Blb/3vLMOoNXvV3oUGOFYVF3CtvBlbl/9kBF4JGrBGPRJAPz+7BoPh6fzq+L
+	cJltL59p+mO5tQIKZEoa9xrHT6tqEvg01Sn9d0fgFLHwFjtof6CUyyMO6CZ0N79QDZdpFc
+	HZfXtE0biOzG/JgoaXsDusUmzmcAvo8=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=D0wlcP9p;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.110 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788332271;
-	b=VY7m6XBSG9o9GovrAuIb2tblJ4X+Y0ZDbLnhVvhsO7mYvSTlIDKXjQ+f94qVrFay2UZ6s0
-	BrXAzje8bJMGJedpe+wwApiGdrHfzcVFb6lvYPUjvFJgpxVlVRWNvS0jvM1wEPqzvFYIHL
-	tnGS47xmJcDsTzbN/u1KsN9lK3p/N+E=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=dYnmVRgv/hTqXQbdZ6YIg65oaInMmkvygceKouO7NOk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788332269; v=1; x=1788937069;
- b=D0wlcP9ph+/u4QBChid0aJR9pjdX6OyQzuCC1kQjP66yKOJLEVwdAkq3ftwm3vIPvpWgOqhU
- cYxlFSKOuPeI/JJDiWwWqSShAlD2euWWEJepdgeq/unE06ojaJiGrjl/eu/1pK1SW9VIEo8jWeY
- dFhdZis6fbV2PDqBaszRPEjo=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 15f431fa020b49d7;
-	Wed, 02 Sep 2026 06:57:48 +0000
-X-Mizu-Trace-ID: 15f431fa020b49d7
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <9ff42a33-8ad2-40cd-a980-9fa87474e527@linux.dev>
-Date: Wed, 2 Sep 2026 14:57:43 +0800
-MIME-Version: 1.0
-User-Agent: Betterbird (macOS/Intel)
-Subject: Re: [PATCH bpf-next v6 1/2] mm/bpf: Add bpf_proactive_reclaim kfunc
-To: JP Kobryn <jp.kobryn@linux.dev>, Roman Gushchin
- <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
- Ihor Solodrai <ihor.solodrai@linux.dev>, Alexei Starovoitov
- <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Emil Tsalapatis <emil@etsalapatis.com>, Shuah Khan <shuah@kernel.org>,
- Barry Song <baohua@kernel.org>, Geliang Tang <geliang@kernel.org>,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-References: <cover.1788228773.git.zhuhui@kylinos.cn>
- <24726feaf836608d78986e2c565461cf809d8326.1788228773.git.zhuhui@kylinos.cn>
- <f9e77f14-a6a9-4cd3-a217-43abe4747275@linux.dev>
+	imf27.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=hygon.cn;
+	spf=pass (imf27.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
+Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hZYnK5qycz3tlrP;
+	Wed,  2 Sep 2026 15:11:49 +0800 (CST)
+Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hZYnK0Ln2z3tlrP;
+	Wed,  2 Sep 2026 15:11:49 +0800 (CST)
+Received: from cncheex06.Hygon.cn (unknown [172.23.18.116])
+	by maildlp1.hygon.cn (Postfix) with ESMTPS id 6BFA91547;
+	Wed,  2 Sep 2026 15:11:43 +0800 (CST)
+Received: from cncheex04.Hygon.cn (172.23.18.114) by cncheex06.Hygon.cn
+ (172.23.18.116) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Wed, 2 Sep
+ 2026 15:11:49 +0800
+Received: from cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d]) by
+ cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d%10]) with mapi id
+ 15.02.1544.036; Wed, 2 Sep 2026 15:11:49 +0800
+From: Jianyong Wu <wujianyong@hygon.cn>
+To: Peter Zijlstra <peterz@infradead.org>
+CC: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>, Chen Yu <yu.c.chen@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>, Dietmar Eggemann
+	<dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, Ben Segall
+	<bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin Schneider
+	<vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, "Shrikanth
+ Hegde" <sshegde@linux.ibm.com>, Phil Auld <pauld@redhat.com>, Andrew Morton
+	<akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "jianyong.wu@outlook.com"
+	<jianyong.wu@outlook.com>, Yuan Zhong <zhongyuan@hygon.cn>, Huangsj
+	<huangsj@hygon.cn>, Fengyu Wang <wangfengyu@hygon.cn>, Zhiwei Ying
+	<yingzhiwei@hygon.cn>, "justin.he@arm.com" <justin.he@arm.com>
+Subject: RE: [RFC PATCH v2 02/23] sched/topology: Introduce a NUMA distance
+ matrix with unique distance values
+Thread-Topic: [RFC PATCH v2 02/23] sched/topology: Introduce a NUMA distance
+ matrix with unique distance values
+Thread-Index: AQHdNiA3jheQVPdvikWpN4gB9aTKG7a46tIAgAH5vHA=
+Date: Wed, 2 Sep 2026 07:11:49 +0000
+Message-ID: <eb0d68d8cd744eb9a364606065b3e6ee@hygon.cn>
+References: <20260827122816.756234-1-wujianyong@hygon.cn>
+ <20260827122816.756234-3-wujianyong@hygon.cn>
+ <20260901084800.GI4121339@noisy.programming.kicks-ass.net>
+In-Reply-To: <20260901084800.GI4121339@noisy.programming.kicks-ass.net>
+Accept-Language: zh-CN, en-US
 Content-Language: en-US
-From: Hui Zhu <hui.zhu@linux.dev>
-In-Reply-To: <f9e77f14-a6a9-4cd3-a217-43abe4747275@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: xwta8658qmb7yrgjm4wjbupiesyjaxyc
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BA76D1C0002
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [172.19.20.45]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 X-Rspam-User: 
-X-HE-Tag: 1788332270-768773
-X-HE-Meta: U2FsdGVkX1/7vSh1USK3FDbQBcrp6D+HOGqZiXCNZZVYVctfb2ZCfuiNjpdweNRey5QZCpAV9O7OJDAX5hTiVj/gHDfHXXvWw11YIk00dxt8xhSb8Vq8BWtpKLaC7FA/SXPiBKjj9nSzeIObYyhMPmcwzLvU+e8ieFTvcgHmrsIc1AykxJVJqxEGttq+E4Y4STOy9XApthzQZ4+1RyAmHt2rft9HpvPu7xFZlLqHpXLcaF73MQ4NYCULkf4ExOZOkbBchguBlvzsW1/9aJpmGBtVGaNZPnSmaUTsUJ2eEEn4ZmWSM/YjyatQxBoMRHNEp/A5qopd52MC1+FLKlZWluC7uxXsBsUohW4bmP31T4NkciVzksOsHP/60Yzj8yUtyboVY4ENjd6xVWXkgia+JpW8ltN7TlijISV+QCgtxe5OK168Cra81mBTNQOKHkeDWnAQBA4q4cd7bd13l6K0Pa8kG7gVl92XDL2LrzqcyCifcJZxECjc+5RfktjdM3QI2xXu9RJ4SQpGEgCLQj6DOpFMUfbMYg1xCZiFjUmnpfq5WPyizfClTidrOk5qP17pHocyTH6Kdvw89CYJwkRItkANTHRHxzq4QSIaf1R/ukYJr2GHyC7A6KKeDyQTwpKwhd58WvWUFRiE3IoylclrCG+RnMJRTKAhu4VctCef8QRbjXlHqiTgAyR1oWdHNbQAmb1aEG1F8BCiNYyd/dmpfFXDdjVGxRXgLvaBNaB98MqPmFW1Wk9ryDTCypCuHsMT+AdYeDPUrN1/7V7MNw9DnoEHWHLDgcdteAc0JIQrxbj3Zv0mkKyuq7xs1KdYfonbr4M+QYARVUVkUQnl2/UN9pyVpSvYt+yRAjrf4QuBL/yQwP8cNwmC1UuBU6KV2bMbxK6/R2of/cruO9QDbsBiVl0540l3zVE/gdd4Jc2A/FW66B8+I4bwZjQHOhfdaN59yEffWPZL/VDD6tHYKwu
- XU6r6PLt
- vlc54/hH/hDqQOCa1fpmT6KDdiyp9zgcf9QAnYIA43L7JfuC2uDcJ7WTcgXOYgj//1KIlgo1a6ij8wQbE6Crm3Pq0QL4kup8TTJEribu/AVgi2wxl1QF0FEha5Zj2x8v8D8nBqNvuWZKdmEXlyRSxHwpVJ5a/xgbVR1TwaMYvifD3ysoQDRrVHyvXXHhR5ObKlmL97CTDxrv6cbMsJ8jcef33pP0Cfjz8Zm5obCeMfWK5sLVUylp7qo/ZYLovfiJTY3A/p1NniJCjTgpdrkvXIPsPzDYcUBLOwexvyFHOIldd9V4OTbh+r+va6pyfxOQmPHTm876oIAr7G1HRIQL6PcW/cZ120MA+itOT
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5445F40002
+X-Stat-Signature: tymxs6op4j9nz5wmn3rhzwfttym586cz
+X-HE-Tag: 1788333114-125748
+X-HE-Meta: U2FsdGVkX1+Hhe6OrS7QJzsj6WSqFsLKvFacPdbT5TMHOC+nhq3uumbDVlwnKspra20tRVQ+5PIOfkQ5d/IXdrNcXMDQFXR4LnATVs2wUUoCzHHKlECGQPtw4zu6SEdWPMJIlcsfpOj5aFMVrGAwDCPB025+NpVmWR6yub96kfr97YQZMyvrTGtjArmgSY5I/fcB1FrFcVa2U9uq75v573kmfwlOa3M2E9+CkX1tU328S9iQjewKqng9KLPkCrbvmEmohAXf9CvwYj6n7WqAnH7dm4EN9sE53VBYQvKkljtXXm/FMO/a8D2odjMuMTW0B1cm4VX2U/JhquWpOBCFtcXTu5lU/5Hto0ZT4fATckUtTMUGIvoUYcZJMNO82lkNLgogN163jJzphzSAuHiB2merVVKR+hgqXZmp9wmtrAmgIeAlsCdRWUGKJMe5MinJR5W513cGCBwR3BSDtRbipzK40+RizZmnutxmsLcsZev9vuvn5aVsxA8/mTC6qCn87yc7a1yWrOL5iD4B+G03CH6PmOVJFE50ldd8K6p/ED6eIC6kGxlA/KYPwCmVTbH1C/OaArS64dKC65nqsb0m1T9cfMRvi7DvSxRtbFnPDmPGzXI+pQxTzBTuksZAhZnr4+hCjApAW8vZ2VudjjjW8wsyUV7pKYI+gcqb91yqIsArSR59eJKJd/DqWD1BmrbBzuHJmA61SUSW/8PC6X4T3/r11XJ/RYsfC0l4Evd6eQfpF7O4FWuUzP9ENZEMBAyg3nWy4ilyWbnaVaEI/uglOx6GyNQ4vBQuioAy2yJxiaGfIg3ZPLTCwun6mzP13uAkeXygQZ440x/frDVoFx//zsJ1FuCXSJ/w8TkCEZPXTbdvQS4cBUZ4NOc/r4igJn5hZbp/Uh5ejLPovOBfTs78MDN/g559JKrO58yFLz/4z1OLXbl/WIIdIgn8qzpdsJ82o8Ft5yBrzs3XOJbVzmg
+ QUP5JUYq
+ Smpe+K3oXQWc5ac/8b/MvqfwblM6XoAg+DFT8XnWcrpFo0mr64+wbdQ1joR+wGzn8OAWkZpi69TYJ66AG6MEWJA8HYn9lja6PpODj6E3Ri9SD4JTb74o/PrbRJ72t6VtNbGx4dhK1piEU0yJtTfshqncqPF2fV7MkfFABn+sE0Nknr3gSVrsy3n/PjymHGjMPPXCcLFhMEn1RYdhFc16K/iNvW/Ee0tfOwAC47/hOKXDeuVxHnAIdpo7SYnd8dEypr5Pid3TobyPqC4aHfquf/BbDK7Q8g+kCpPecldveWOl/+vVdKSZiMf27Yo2uUp607Sl/d75JZjKMwJU6YJGtPUWxYHgXK505BTI9Gu8K/4iugsKxixnklaEleVOt0JUPkjbVTVn8LVJbkCJ8fXtzo9Q+0Nri+y5uFB22vKJXDzYnUInjvgC0A3b9mraN2LVXTgnr7HG1O15r/hphKL87xlh2CLpuyecm17V5vXcRaaob/6wROe3UjEIF3gy5/B10vgFsyiLus6FJzzNFiAHylNEBLU7TOnAzOcW0Xn+oJOKgurlFrr0R1KV9aBh/l5Fkp91aXFZlEFc3kyc8EhnHn0MTDz0U0+TQ9En+Yd2Ezl4GO+FoVIcP10UZB2IB6VNGBd6sL4iRttC3nw9E1jTC5XIJlKJd3wS5dyW90b2E4rqQb5CDcPU+RX4nJ2tkW75vlMJfXhMbLiJXoDl1R5wKwyjmd9embh99leM4Ygzinan6Xf0MQ2TiDuAeIY6MiH1JY5uOHYDKktgJ/O+ZogQNxFx9Lg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,216 +114,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi JP,
-
-Thanks for the review!
-
-> Hi Hui,
->
-> On 8/31/26 7:21 PM, Hui Zhu wrote:
->> From: Hui Zhu <zhuhui@kylinos.cn>
->>
->> Add bpf_proactive_reclaim(), a sleepable kfunc which performs one
->> proactive reclaim pass on a given memory cgroup, similar to a write
->> to memory.reclaim but without retrying until the target is reached.
->>
->> The kfunc is restricted to BPF_PROG_TYPE_SYSCALL so that reclaim
->> always runs in a clean process context. Generic sleepable programs
->> may execute with filesystem locks held or in NOFS/NOIO contexts,
->> where the reclaim path could deadlock in filesystem shrinkers. A
->> SYSCALL program can still drive reclaim asynchronously through
->> bpf_wq or task_work callbacks, which run in process context and
->> keep the SYSCALL program type, so they can call the kfunc too.
->>
->> The kfunc refuses to reclaim if the calling task is already in a
->> reclaim context, as a nested reclaim would corrupt the outer reclaim
->> state.
->>
->> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
->> ---
->
-> The difflog is missing in these patches.
-Sorry, my mistake. Will add the changelog (changes since v4) in the
-next version.
->
->>   mm/bpf_memcontrol.c | 76 +++++++++++++++++++++++++++++++++++++++++++--
->>   1 file changed, 74 insertions(+), 2 deletions(-)
->>
->> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
->> index 716df49d7647..fd48faa5f8b0 100644
->> --- a/mm/bpf_memcontrol.c
->> +++ b/mm/bpf_memcontrol.c
->> @@ -6,6 +6,7 @@
->>    */
->>     #include <linux/memcontrol.h>
->> +#include <linux/swap.h>
->>   #include <linux/bpf.h>
->>     __bpf_kfunc_start_defs();
->> @@ -159,6 +160,55 @@ __bpf_kfunc void 
->> bpf_mem_cgroup_flush_stats(struct mem_cgroup *memcg)
->>       mem_cgroup_flush_stats(memcg);
->>   }
->>   +/*
->> + * Reclaim must not recurse: try_to_free_mem_cgroup_pages() overwrites
->> + * current->reclaim_state, so a nested call would corrupt the outer
->> + * reclaim state. Reclaim windows are marked with PF_MEMALLOC;
->> + * reclaim_state is also checked because it is installed slightly
->> + * before PF_MEMALLOC.
->> + */
->> +static bool bpf_in_reclaim_context(void)
->> +{
->> +    return (current->flags & PF_MEMALLOC) || current->reclaim_state;
->> +}
->> +
->> +/**
->> + * bpf_proactive_reclaim - proactively reclaim memory from a memory
->> + *                         cgroup
->> + * @memcg: the target memory cgroup to reclaim from
->> + * @size:  the amount of memory to reclaim, in bytes
->> + *
->> + * Trigger one proactive reclaim pass on @memcg, similar to a write to
->> + * memory.reclaim, but without retrying until @size is reached.
->> + *
->> + * This kfunc is restricted to BPF_PROG_TYPE_SYSCALL to ensure it runs
->> + * in a clean process context. The SYSCALL program can schedule the
->> + * actual reclaim work via bpf_wq or timers, which also execute in
->> + * safe process context (workqueue, task_work).
->
-> On the workqueue aspect, I could see potential issues. The target size
-> has no upper bound so the total scan/execution time on the shared
-> wq can easily stall other work. Contention on the lru_lock can make
-> matters worse because interrupts are disabled while holding the lock. So
-> the contention would not only stall other work, but can delay IPI
-> handling leading to CSD lock stalls.
 
 
-Agreed. I previously misread
+> -----Original Message-----
+> From: Peter Zijlstra <peterz@infradead.org>
+> Sent: Tuesday, September 1, 2026 4:48 PM
+> To: Jianyong Wu <wujianyong@hygon.cn>
+> Cc: Ingo Molnar <mingo@redhat.com>; Juri Lelli <juri.lelli@redhat.com>;
+> Vincent Guittot <vincent.guittot@linaro.org>; Chen Yu
+> <yu.c.chen@intel.com>; Tim Chen <tim.c.chen@linux.intel.com>; Dietmar
+> Eggemann <dietmar.eggemann@arm.com>; Steven Rostedt
+> <rostedt@goodmis.org>; Ben Segall <bsegall@google.com>; Mel Gorman
+> <mgorman@suse.de>; Valentin Schneider <vschneid@redhat.com>; K
+> Prateek Nayak <kprateek.nayak@amd.com>; Shrikanth Hegde
+> <sshegde@linux.ibm.com>; Phil Auld <pauld@redhat.com>; Andrew
+> Morton <akpm@linux-foundation.org>; David Hildenbrand
+> <david@kernel.org>; linux-kernel@vger.kernel.org; linux-mm@kvack.org;
+> jianyong.wu@outlook.com; Yuan Zhong <zhongyuan@hygon.cn>; Huangsj
+> <huangsj@hygon.cn>; Fengyu Wang <wangfengyu@hygon.cn>; Zhiwei Ying
+> <yingzhiwei@hygon.cn>; justin.he@arm.com
+> Subject: Re: [RFC PATCH v2 02/23] sched/topology: Introduce a NUMA
+> distance matrix with unique distance values
+>=20
+> On Thu, Aug 27, 2026 at 08:27:55PM +0800, Jianyong Wu wrote:
+> > Builds a refined node distance matrix based on the raw NUMA distance
+> matrix
+> > provided by BIOS. The refined matrix preserves the relative ordering of
+> > NUMA distances, while assigning distinct distance values to node pairs
+> that
+> > originally shared identical distances within each matrix row. This matr=
+ix
+> > is exclusively used for cache-aware scheduling and has no impact on
+> existing
+> > NUMA topology logic such as sched domain construction.
+> >
+> > For example, consider a system with 4 NUMA nodes. The raw
+> BIOS-provided
+> > distance matrix may look like this:
+> >
+> >         NODE0  NODE1  NODE2  NODE3
+> > NODE0   10     20     20     30
+> > NODE1   20     10     20     25
+> > NODE2   20     20     10     20
+> > NODE3   30     25     20     10
+> >
+> > Multiple duplicate distance values exist within each row. After the
+> > deduplication step, the refined distance matrix becomes:
+> >
+> >         NODE0  NODE1  NODE2  NODE3
+> > NODE0   10     15     20     30
+> > NODE1   15     10     12     25
+> > NODE2   20     12     10     15
+> > NODE3   30     25     15     10
+> >
+> > All entries in each row are now unique, while adhering to two core
+> principles:
+> > 1. The relative distance ordering from the original matrix is preserved=
+.
+> >    For instance, original distance(NODE0, NODE1) < distance(NODE0,
+> NODE3),
+> >    and this relative relationship is retained in the refined matrix as
+> well.
+> > 2. The matrix remains symmetric across its main diagonal. Maintaining
+> >    symmetry is critical to guarantee consistent pairwise node distances=
+.
+> >
+> > Each row of this refined NUMA distance matrix is sorted in ascending
+> order to
+> > generate a unique per-node affinity sequence. This sequence will guide
+> > thread migration logic introduced in subsequent patches.
+>=20
+> Hmm, I wonder if __build_all_zonelists() wants to use this, rather than
+> the unmodified distance table. This would ensure the node fallback order
+> is distinct between nodes.
+>=20
 
-     .nr_to_reclaim = max(nr_pages, SWAP_CLUSTER_MAX)
+That is an interesting thought. Before building this node distance matrix, =
+I
+tried to reuse the zonelist fallback node matrix. But I dropped this idea w=
+hen
+I found that that matrix is not symmetric.
 
-in try_to_free_mem_cgroup_pages() as an upper bound on the reclaim
-target; it is actually a lower bound, so nothing inside the reclaim
-path limits how long a single kfunc call can run. The next version
-will cap the per-invocation reclaim target.
+After searching the code, I find that build_all_zonelists is initialized mu=
+ch earlier
+than sched domain. So, it seems it's not easy to let the zonelists use this=
+ refined
+node distance.
 
+Thanks
+Jianyong
 
->
-> It looks like the only existing path that explicitly calls
-> try_to_free_mem_cgroup_pages() from a shared wq is the memory.high
-> fallback used when the limit is exceeded outside of task context. But
-> even in that case, it's more constrained. The reclaim request is bounded
-> at MEMCG_CHARGE_BATCH (in high_work_func()) and is limited to one work
-> item per memcg.
->
-> Would it make sense to follow the existing precedent and use the same
-> bound in your kfunc? You could then batch the wq submissions and you
-> would also be able to stop submitting in between if needed, like in the
-> case of the cgroup dying.
->
-Yes, the next version will cap the reclaim target of a single
-bpf_proactive_reclaim() call at MEMCG_CHARGE_BATCH, following the
-high_work_func() precedent, so each invocation is a bounded unit of
-work on the shared wq.
-
-For the "one work item per memcg" side, I'd like to hear your
-thoughts on the following approach: allow only one in-flight
-bpf_proactive_reclaim() per memcg. The kfunc would take a per-memcg
-flag (atomic cmpxchg) on entry and return 0 if another BPF reclaim
-pass is already running on the same memcg, mirroring the
-one-work-item-per-memcg property of high_work. This would prevent wq
-work items from piling up reclaiming the same memcg.
-
-The reason for doing this with a per-memcg in-flight check rather
-than a fixed per-memcg work item is to keep bpf_proactive_reclaim()
-flexible: it bounds how much reclaim can run against one memcg at any
-moment, while leaving the reclaim policy -- when to reclaim, how many
-passes to batch, and when to stop (e.g. if the target cgroup is
-dying) -- entirely in the BPF program. Do you think this is a
-reasonable way to bound the total reclaim activity per memcg, or
-would you prefer something else?
-
-With the per-invocation cap, each kfunc call becomes a small, bounded
-unit of work, and the BPF program does the batching: it schedules
-successive wq submissions and can stop submitting between passes when
-needed. This keeps the "when and how hard to reclaim" policy in BPF
-while bounding the kernel-side cost of each invocation.
-
-Best,
-Hui
-
-
->> + *
->> + * Must not be called with a filesystem lock held: the reclaim path
->> + * may deadlock on it via filesystem shrinkers.
->> + *
->> + * Return: The amount of memory reclaimed, in bytes, or 0 if @size is
->> + * smaller than a page or the task is already in a reclaim context.
->> + */
->> +__bpf_kfunc unsigned long bpf_proactive_reclaim(struct mem_cgroup 
->> *memcg,
->> +                        unsigned long size)
->> +{
->> +    unsigned long nr_reclaimed;
->> +
->> +    if (size < PAGE_SIZE || unlikely(bpf_in_reclaim_context()))
->> +        return 0;
->> +
->> +    nr_reclaimed = try_to_free_mem_cgroup_pages(memcg, size / 
->> PAGE_SIZE,
->> +                            GFP_KERNEL,
->> +                            MEMCG_RECLAIM_MAY_SWAP |
->> +                            MEMCG_RECLAIM_PROACTIVE,
->> +                            NULL);
->> +
->> +    return nr_reclaimed * PAGE_SIZE;
->> +}
->> +
->>   __bpf_kfunc_end_defs();
->>     BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
->> @@ -171,22 +221,44 @@ BTF_ID_FLAGS(func, bpf_mem_cgroup_memory_events)
->>   BTF_ID_FLAGS(func, bpf_mem_cgroup_usage)
->>   BTF_ID_FLAGS(func, bpf_mem_cgroup_page_state)
->>   BTF_ID_FLAGS(func, bpf_mem_cgroup_flush_stats, KF_SLEEPABLE)
->> -
->>   BTF_KFUNCS_END(bpf_memcontrol_kfuncs)
->>   +/*
->> + * Proactive reclaim needs a clean process context, so it is restricted
->> + * to BPF_PROG_TYPE_SYSCALL. The bpf_wq and task_work callbacks that a
->> + * SYSCALL program schedules run as the same program type, so they can
->> + * still invoke it; generic sleepable programs (e.g. fentry on reclaim
->> + * paths, inode_rmdir) cannot.
->> + */
->> +BTF_KFUNCS_START(bpf_memcontrol_reclaim_kfuncs)
->> +BTF_ID_FLAGS(func, bpf_proactive_reclaim, KF_SLEEPABLE)
->> +BTF_KFUNCS_END(bpf_memcontrol_reclaim_kfuncs)
->> +
->>   static const struct btf_kfunc_id_set bpf_memcontrol_kfunc_set = {
->>       .owner          = THIS_MODULE,
->>       .set            = &bpf_memcontrol_kfuncs,
->>   };
->>   +static const struct btf_kfunc_id_set 
->> bpf_memcontrol_reclaim_kfunc_set = {
->> +    .owner          = THIS_MODULE,
->> +    .set            = &bpf_memcontrol_reclaim_kfuncs,
->> +};
->> +
->>   static int __init bpf_memcontrol_init(void)
->>   {
->>       int err;
->>         err = register_btf_kfunc_id_set(BPF_PROG_TYPE_UNSPEC,
->>                       &bpf_memcontrol_kfunc_set);
->> -    if (err)
->> +    if (err) {
->>           pr_warn("error while registering bpf memcontrol kfuncs: 
->> %d", err);
->> +        return err;
->> +    }
->> +
->> +    err = register_btf_kfunc_id_set(BPF_PROG_TYPE_SYSCALL,
->> +                    &bpf_memcontrol_reclaim_kfunc_set);
->> +    if (err)
->> +        pr_warn("error registering bpf reclaim kfuncs: %d", err);
->>         return err;
->>   }
->
 
