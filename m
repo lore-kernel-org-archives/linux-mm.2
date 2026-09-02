@@ -4,116 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51045C624D4
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 23:13:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AAF9C624D4
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 23:30:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E9C436B00D1; Wed,  2 Sep 2026 19:13:05 -0400 (EDT)
+	id C74376B0088; Wed,  2 Sep 2026 19:30:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4D306B00D3; Wed,  2 Sep 2026 19:13:05 -0400 (EDT)
+	id BDC516B00AB; Wed,  2 Sep 2026 19:30:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3C046B00D4; Wed,  2 Sep 2026 19:13:05 -0400 (EDT)
+	id A9E656B00AD; Wed,  2 Sep 2026 19:30:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9ED346B00D1
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 19:13:05 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 281F08039C
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 23:13:05 +0000 (UTC)
-X-FDA: 85170374730.30.FA55881
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5A0C812000C
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 23:13:03 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=enMkLhYT;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788390783;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oANsTqPYV0zfdfhrNmsez3y2Ei2vdqKIizOLng4NKB4=;
-	b=0+WrkeCNM1hiRz/mJfHnG147bPk/staEzPMsD//C6JOqzmRTJ7eOThmur6AVYEc7Zi0rQN
-	/MJuEWXnXPPux6szCNpJWUUxXoEmBufVupmXEgkuVva1ZIQfZiD7lySYys5tJUCHXLAxkG
-	xis2tbTc8fo07yweD8AhyersDvEVvuk=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=enMkLhYT;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 80A466B0088
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 19:30:55 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0652C403DC
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 23:30:55 +0000 (UTC)
+X-FDA: 85170419670.04.8510EA4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 123E2A0009
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 23:30:52 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ND/DOedc";
+	spf=pass (imf25.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788390783;
-	b=690ExjOJenyuM7NbH5MIRFD0SKEIBc1PSUEZMywJ0GBmOnY1OB12DsRhSPKogqDEglS7o5
-	AnCJ5fmjka08W1LwmmYcLgTAURf3uKCP/7UhvIg/l4mLHThKn9RNqcSJCcchpy+9qqxOK0
-	YjoirMIzj9pCX65BK7fSHfw1ZvBfGng=
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-382ef647e20so2046195a91.1
-        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 16:13:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788390782; x=1788995582; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=oANsTqPYV0zfdfhrNmsez3y2Ei2vdqKIizOLng4NKB4=;
-        b=enMkLhYT6mPeII5yxjafx35FbE1E53E8MajeFW4Bhr1TIcKnbAmKY3BE9sW7Tp2fXG
-         5/TDEE3wCDcIEez7D0iK+3UchMwlzwbme0XbaZ5x4OzIDiWI5yd/AJcM7GoEA4IGN/Iw
-         CRSAwAkeJLPYiNuK8d+2mSmauYhWJizcs+o0FN92uz1eTL9SyjCeb3/vm7GAT7Kz8AaI
-         408CAUhs773aiIN88KidTASdM1rzs3+YhWS6lDRazM2Wvm3PDVWyUnOz4iVqRIHOIkVR
-         ge4mpW4LqeKRH9dX5RSFnF4xa4R7Q06ZK+sZTv7iOrYF45mIEqtJajLuP3/T2lwvVgDV
-         9BYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788390782; x=1788995582;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=oANsTqPYV0zfdfhrNmsez3y2Ei2vdqKIizOLng4NKB4=;
-        b=MmR6CBqi68wOokpc5PJmvObREbRsQsc7Ad9nqYkfbEi+tWYrC2GCyqmsR1+c3aXHa2
-         DJCgWsCewe9E4PD3KeYPZ07aX1BdQ9Sq3we046zmvs8h9xYAsuoRotGmoQ2m2UMB4pKo
-         wMPU/JdbscgcysCwyCDSwSCM3PadrKu0Po1O2d7TrPDmLAuViuZJlI3qr3idTgl4abd5
-         q6tmnTNpQTrT9VufpPwul+b+4gZni3XPR80rPXltkVWZkulRWnowt5CkqKrlCSnZ3wEO
-         5Y6YrhaEkh2b6s8IbjiRGPxcSBb1dcp1y1NX1SZYNB/ksNy8l80oXJ0CNJyCMMAUwNnP
-         pIXQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx5gSnkYhjyDGUJ7+7HyTqSidnRFx3hsAwRgdJrpNLkO1sDEIgc2BRVR9X76d/Y1gld91Quhc31Jw==@kvack.org
-X-Gm-Message-State: AFuF++msPOfBEPJsOlsfkRn3RVPXJY4rZQhdHv/qbCK5wY5lhvjppe5j
-	NICvS/c7ISxUqyLiscxdH+FkCaUAwZPOHcAoBkDcOct0qfB2CQM07Hdk
-X-Gm-Gg: AYBFou0TS0eXNVLmuP5/zKpSzpY2HjQ+8d/LZGEGb77GctGbeoz6kZAbmGA1ef7F2Nn
-	gn6VGQzN8U3oyXyT4D3ILvCZYC7/6OpvBweZvIPprZPQBG7X/aDLG0zubqyqMILKU3oNbOOVTXv
-	R28OtfQuWweA7/OC9TFUDZIqSWK/K/ENfPh4npyBsXoxyoQVGd/H807vBFIjOdXPOpBTfpSfj3Q
-	0tj12w2Pj5k6/N+oNC29++e7sO1ip+jg1Z52CYmLQuxrVRrYeqRmHbXh4k4GRl0+HauXt4frDPQ
-	462biIWANTbxGMdR3PFPZjDZwenEF+3l1VDsg/kSJPAyKL0USOX8LozG9gV7cNIN42mCoEmcmbv
-	kZTvg0DRHS2/DxmN83tzyGWZLnBgNJCc1aU5X7W/ysRmF7Vh+LuArsgi8DXY0Sx+OuQRiHIvQDF
-	aHb4AsjNWssu36Nx8tD8hlwC7SlVmR3c9fyJpQO7YEJXug/e1EAOwnu1/WR8qUsjtj
-X-Received: by 2002:a17:90b:4ac9:b0:398:9bd5:490c with SMTP id 98e67ed59e1d1-39aee0b498dmr10034854a91.19.1788390782043;
-        Wed, 02 Sep 2026 16:13:02 -0700 (PDT)
-Received: from celestia ([2402:1980:9c5:2de5:8b4e:3f3c:b637:4ca5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b083f04d1sm1501603a91.8.2026.09.02.16.12.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 16:13:01 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: sj@kernel.org
-Cc: aethernet65535@gmail.com,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/damon/core: allow esz to be set to zero
-Date: Thu,  3 Sep 2026 07:12:15 +0800
-Message-ID: <20260902231311.17490-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260902150301.88535-1-sj@kernel.org>
-References: <20260902150301.88535-1-sj@kernel.org>
+	t=1788391853;
+	b=crWsvPzfVznKUDh2tvrssREq0JBVQXhJ1c13iTDVkMEOoJ2Ne6dveG/EFX8ZbDdR53DFYE
+	JYmj99vjyKQa+g/c5CDy4CWf913/10TPhe7ejGOfVRNnSmKakesp1Ta9GS6QSRvo5HPi2I
+	HH3dto8bbbojRW4ORHyXxyKsCSqzspE=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ND/DOedc";
+	spf=pass (imf25.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788391853;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NPUl7JTf0o8nYtURyrgGsZ39w3HBI5seh8fqII73WQE=;
+	b=QQfaUu9053aWSQSy9A3N3tQrW7KyabxvXSGBWJUy0Crg7trTJnQOo+BW5EDPikyfHa4eYC
+	4ufOZONd5ao7s+QrrFf40oo75DVLK1c8adSgdFiNlveLJ3SsokkokR2qnJZVKfRxtWQqrF
+	5+WdfXRF9IcIFC6A0zgCUa9CvgcRiJY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2F73D601F0;
+	Wed,  2 Sep 2026 23:30:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C45B4C2BCFC;
+	Wed,  2 Sep 2026 23:30:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1788391851;
+	bh=Ki955AuPcL8ptd7DA7YclqDVfMByL7PliZlA0BuzWms=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=ND/DOedcrMFnCY8DfibfP9hDng7EM/361nNjI71Mf0DliHbjkIPxRVh2AfLVoPMnd
+	 AbmSFB6qHaq7ORwA9Sm46tCoz8VXHzx3r8KqAqbHyR3qi4Hh2gD8kz5zy5d6H474v9
+	 p1gAuoCFI5dA1a8GPx3RsJZ0nR8LbTQ/wpKwOIzZrcg633GODwyQeVmJZFnmnbVQ6P
+	 HXsSLmssiEO7h3X9S2riqCtbIaeBhU2ByB6uhauITdLKWW7kdZ6g+UHPtvNvzLgDrs
+	 UBae/1LJKXGV69tj5EZvQnl/Usor0RN91bJJeTyoVH7iqbfm0IrpO96iOf8bbVmBgS
+	 rpBHM6ja5WI1g==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A8DDAC624DA;
+	Wed,  2 Sep 2026 23:30:51 +0000 (UTC)
+From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+Date: Wed, 02 Sep 2026 16:30:48 -0700
+Subject: [PATCH 2/3] mm: hugetlb: Fix out_put_pages subpool reserve
+ calculation
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260902-hugetlb-subpool-always-track-used-v1-2-de1cd14bd713@google.com>
+References: <20260902-hugetlb-subpool-always-track-used-v1-0-de1cd14bd713@google.com>
+In-Reply-To: <20260902-hugetlb-subpool-always-track-used-v1-0-de1cd14bd713@google.com>
+To: Alex Shi <alexs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Dongliang Mu <dzm91@hust.edu.cn>, 
+ Hongxiang Lou <louhongxiang@huawei.com>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+ Nhat Pham <nphamcs@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
+ Peter Xu <peterx@redhat.com>, Randy Dunlap <rdunlap@infradead.org>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>, 
+ Vlastimil Babka <vbabka@kernel.org>, Wupeng Ma <mawupeng1@huawei.com>, 
+ Yanteng Si <si.yanteng@linux.dev>, fvdl@google.com, jthoughton@google.com, 
+ rientjes@google.com, vannapurve@google.com
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, Ackerley Tng <ackerleytng@google.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788391851; l=5066;
+ i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
+ bh=WAOJFELA74ZYgV3pRllA7LgbuGP3A6AKBVLXZF1SPnM=;
+ b=EvrECO8aOK8i8SdPmLnnbqA1aqPFmPt+mDbbQUb1DM/nBfqdJX4cMT23/J5MKT+VUWwKjNMa6
+ 9CDPBG1/YNxDRRb2PM6VS+pRvMwSrcWckOcrsVb6nsXBqt40xL3f5DV
+X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
+ pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
+X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
+ auth_id=649
+X-Original-From: Ackerley Tng <ackerleytng@google.com>
+Reply-To: ackerleytng@google.com
 X-Rspam-User: 
-X-Stat-Signature: 9uax4rz64zyz8wuyr4zy8mrwxr7kzhei
-X-Rspamd-Queue-Id: 5A0C812000C
-X-HE-Tag: 1788390783-133292
-X-HE-Meta: U2FsdGVkX19go5NnDXCgnxvQiy0tF0W5gTgkW7Afjf1c5dNA3lz/pqphcpWtOgJ1IsproSOXs7Rj017dx4JMbjfMKtJQXzkie3QOAlMDUncSbw6sHnqlTW9q3m5hN2BD2d/HxYJI8+LI2+zxX2MK5A+WtUpsezc0wrXeokpwI0a/lqJVsMoNnWgCGvLB+1lhy7MVyULGCif3VT+bcG8i9G/ymk/6GdgtnAU8o2hO3BA9pG0SUioFWSMQDe6u/kXEwFeAeUi2GkmN69T66DB44YP4ntHbRg2dlorqM5JnCldrdCFcPyHLPUuMNfUqTNH5wPRNlhm6YeQCkpVe7Rb9/VBGFuDZVLKcXrEoNKyQKNmTxTSxiUj7Yf12SN7McF3krAgyh+uVDeuZwCJViW/CD2y6zILaD4OdmtnjEVDXvpL6wJQUvckpxaNF/dAqWakeqQAa6mwi3ivFN84M9uEPCExbTtckjpQ1feLabmhmazi3cXxhHHUNfbFO/kjqT6lYYb/+oorTHkOxFfkkEXopjpJl1V2na9q2xG1Ticnwpd9MZBIulRuuO7fX5Hon1cagBhEDaQxGYHlOK2Fpp59QctNvyr19X6MbA365igLkBXkGbk2EIy1e+I7qYdO5GcoQknJ77OfYHvVQiXmr4g2VBJEw/pferYq15iEbZB6n4NSCgniEmTxGmFAq+Nl/ewjJWMV8Mm0EmvOQxw94kOndB717dulThM7FxNVteceZp00llu1CgvdGrQo4D+wE/dIO2Wsis65rAdAShs/Ocf7ALvpaqbQDhXTlcpo5NTou5snXCbnM35QyUBejeatdQ9UpzIopVkaJ/BCxUDlyDmpYXainNGpWmqa9oWN3GDFgYYNSh9UkZe8myKzG8Lbj3Vo/sINQbv3vlVb/4j6tTa1FcGXHZuWz3F8DTGdrjv48ytAHLNE8DwASRuCs/7M68c5Zbji5IPlQ2dpgnp1mShb
- xNoNXviR
- uwpCtDwW+TEhRR1+K65Yox6Ccmo9WtGDgsrZB00LgxAOiqT9U3p6TnDlp4TRJ9VrkYUO+RF+UgiNQE6Bt5HE7Hzs9NX6hwcYo+ftoF41vB0ul0BXO2fVwZVIwTMfD9hsjmx49HZraL2eN6WVDUVlDrhSDaS+FzzPUQf62ULpojnJPkSmb/pXA6fJktmaGeF1HbHJnY/I/o/hg/q8dyzkhIlfHjtucZJdG9etwNpUyVgVqAk10lEWlhVR2JdzcXibDsNyVdSMTUme7MAXPL1WDQdzZt0XqogCb6XludT+O2NAtUjJ2jFc00StYxQ2gfhXMfeZlhKlWtOLoBCw2/oIpkaOFlWDNYxESQFt3L8Bfe8QjYA3cnCuawJXS7TqNcoooMQUG15lCdhMEnmZxAUyvn6hK9lLeRt5fNr+wW6v+gQ9su56BULv6jQuP+QqonKSC6S8F
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 123E2A0009
+X-Stat-Signature: a14ngr9f3nx5xm6rbrmb759skogppjmb
+X-HE-Tag: 1788391852-417704
+X-HE-Meta: U2FsdGVkX18Arxpe90PZgDplM/mp3HoL7fKidhNW/+Rcf2sI7465dIwtwgmLNqmFKD7Oo0JlgcUUTyIjQlgBNR3USFSpOQy4wxWaukih/APMApPynmeEbp9J9V7hHYA2mB1PjwgKkCVly/qPBnPvTOzW00P0WTK1lzZPW70Z9h+zMTDSRj6LSbnov5/PCRomaTXtZEukd9lqdhjdabQKKzqLv50Dgy95mqHheUoYH75cdzXXxN5KMDDlcazrv2aVkv2hACshWRur3avjN4zY3n9I5LoAR4uC+HOP15h6d5N2IalQew3U37jMeMA2dWgT43CWmqo1mfaiScY69bbNRjWc3Q+pKIfoeTP2Nvii7hzteLCv4ns6DbE8UGTeOZ3o2O6DyNIdPjtkhepbNWcJ8HOArsnpzkQ8bZef5dU5KJ/W9Gz0q8zlzD+97Jq7QtgTmRh7mnSP81HFHrdLGuJLkPtUQT54LLK4qxMjY7gb7psx4dAhOI2UhNaNW34+fpEue13o4rDUWTLtw/as6P++ErEaLBP3ItCnOdrifN2LeYHhqyqIovzOPTy5sRwudK/K7TkfbV1Dp1Hd2M5r4MV4cHQeKFxfs+QfNhnz/sBYqyOlseyF+OTo6E40EwgJ0lYAKVMp+Ufooty/ajfG6y1Getva0O6d2R8f70PCh1k7TcwO4t4JDblEAtc8hOWSYBOCtf6Cz6Pbs/EIlHt3ksm3j93DCtz+jveaaBMabEL/1CePl4vw8/SfM1PTWXR0m9saKXaH4dqu5z1SpXv1RhvEHQGYYxZoar6q9sImt/wjLkQVCUrSNUt+boQhuL8SfRhh5sSPt6FB/HyuQ3DHS0H/Kjdz0NCOOIgnI/AYvWxdZnc9511iJxUOLfhqDA2y0h8T1q/gF05PESdZnKaFJkjpiBwTCEGm1FP7GhxlFDs3WDlDa1qtr0pdVNfZUhJP8orO+QQJc1YQywxxwYd5+YJ
+ FWhtzx/n
+ VyqFttpepSdAAkbFlWjdIrD8zyVDiMRGZ6jk8sMvnZIt1+L01qyvkKGzBo8nr3b9E6ORla6OyHP3DNKLxxVilZ1G/YHTESUU96YQoQLeEJ6bO2Gaf7KoTqL4d94LKhJSCkwzMfrP/6JoWpMHhqbP34H00EqtZ1hTHfmIKo6CpBrQlw3mbPQcRzKNjaXTuye4vPDlJ39rvi7Wo/uzZgL2uuxVU6mfB4q4HYUr/ksoe5yEd+/iGI/cqiBa6n+zCF2/VuzgWEgZHF7NAtMGuvjsG811Bb6bQfvPMT5C7db6Z15DXyI0k74Q+9Au8zxN7UGyIj5HhF+fJkLU1BB9msKhKV44E2CdHQlYQhqQ3D3DwG05QrCb9rnnX32bYcETyVzMvlDJvWmRNLT7h5VQX/dgSNM7JfBw1tKHP8XUZjmr2URErfmuabC1mb0RREFZW4c1JnHWuZUTa3YNmdA3XuiVMohmrqhcRBofQIrVCuNTspAp2ITh7kmi6FryuzAlcwmN4bPa4xrKYSvwtStOPhn4cWPM8AQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,101 +124,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 02 Sep 2026 08:03:00 -0700 SJ Park <sj@kernel.org> wrote:
+From: Ackerley Tng <ackerleytng@google.com>
 
-> On Wed,  2 Sep 2026 22:35:20 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> 
-> > On Wed, 02 Sep 2026 07:13:48 -0700 SJ Park <sj@kernel.org> wrote:
-> > 
-> > > On Wed,  2 Sep 2026 16:20:50 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> > > 
-> > > > When the temporal quota goal tuner determines that the goal has been
-> > > > achieved (score >= 10000), it sets esz_bp to zero so that the effective
-> > > > quota (esz) becomes zero.  However, damos_set_effective_quota() clamps
-> > > > the quota to min_region_sz, preventing the quota from ever reaching
-> > > > zero.
-> > > 
-> > > Where in the code it is clamped to min_region_sz, when?  And what user issue
-> > > this can cause?
-> > 
-> > In damos_set_effective_quota(), when quota->ms is set.
-> 
-> Please clarify this kind of thing (when quota->ms is set) from the next time.
-> 
-> > 
-> > '''
-> > 	if (quota->ms) {
-> > 		if (quota->total_charged_ns)
-> > 			throughput = mult_frac(quota->total_charged_sz,
-> > 					1000000, quota->total_charged_ns);
-> > 		else
-> > 			throughput = PAGE_SIZE * 1024;
-> > 		esz = min(throughput * quota->ms, esz);
-> > 		esz = max(ctx->min_region_sz, esz); /* <- HERE */
-> > 	}
-> > '''
-> > 
-> > This is a minor issue, the main problem is that it doesn't match the
-> > description in the documentation, which states that if the goal has
-> > already been [over-]achieved, the quota will be set to 0.
-> > 
-> > Original documentation:
-> > 
-> >     - ``temporal``: More straightforward algorithm.  Tries to achieve the goal as
-> >     fast as possible, using maximum allowed quota, but only for a temporal short
-> >     time.  When the quota is under-achieved, this algorithm keeps tuning quota to
-> >     a maximum allowed one.  Once the quota is [over]-achieved, this sets the
-> >     quota zero.  Useful for deterministic control required environments.
-> 
-> Thank you for clarifying.  Please clarify what is the problem like this from
-> the next time.  Without it, reviewing spend unnecessary time.
+When reserving pages for a mapping fails during global accounting, the
+error path rolls back the adjustments made to the subpool.
 
-Noted.  I will ensure future commit messages and descriptions clearly
-state the triggering conditions and potential user impact to make the
-review process more efficient.
+Currently, this rollback was performed in two separate steps:
 
-> 
-> I feel like your recent patches tend to lack such clarifications and spend
-> unnecessary time for reviewing.  If you unsure, please ask questions first or
-> use RFC tag at least.
+1. Returning only the portion of reservations originally satisfied from the
+   subpool
+2. Separately adjusting the subpool used pages counter for the portion that
+   was requested from the global pool.
 
-Understood.  I will use the RFC tag or ask questions first when the
-nature of the issue is ambiguous.
+In (1.), because the used pages counter had not yet been decremented for
+the global portion, the subpool observed an inflated used pages count. If
+the mount was configured with both a minimum size and a maximum size, this
+inflated count prevented the subpool from recognizing that usage fell below
+the minimum size guarantee.
 
-> 
-> I agree this behavior is not matching with the documented one.  The point of
-> quota is making DAMOS not unnecessarily aggressive.  Hence it is designed to be
-> set as minimum as possible.  How about below?
-> 
-> '''
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -3485,6 +3485,7 @@ static void damos_set_effective_quota(struct damon_ctx *ctx, struct damos *s)
->         struct damos_quota *quota = &s->quota;
->         unsigned long throughput;
->         unsigned long esz = ULONG_MAX;
-> +       unsigned long esz_time;
-> 
->         if (!quota->ms && list_empty(&quota->goals)) {
->                 quota->esz = quota->sz;
-> @@ -3505,8 +3506,8 @@ static void damos_set_effective_quota(struct damon_ctx *ctx, struct damos *s)
->                                         1000000, quota->total_charged_ns);
->                 else
->                         throughput = PAGE_SIZE * 1024;
-> -               esz = min(throughput * quota->ms, esz);
-> -               esz = max(ctx->min_region_sz, esz);
-> +               esz_time = max(throughput * quota->ms, ctx->min_region_sz);
-> +               esz = min(esz_time, esz);
->         }
-> 
->         if (quota->sz && quota->sz < esz)
-> '''
+As a result, the subpool failed to restore its reserved pages counter and
+instead returned that a global reservation should be dropped. The
+mount-time reservation is permanently destroyed, leaving global reservation
+counts depleted and causing an underflow when the filesystem is eventually
+unmounted.
 
-This solution is much better than my initial approach.
+Additionally, if concurrent threads modified subpool usage during the
+reservation attempt, calculating the rollback amount using stale local
+variables could cause global reservation counts to diverge.
 
-I will incorporate this change into the next version.  Thank you for the
-review and the improved fix!
+Now that used pages are always tracked within the subpool, return the
+entire requested page count to the subpool in a single call. Global
+reservations are then adjusted using the difference between the
+reservations originally requested and those returned, fixing the issues
+described above.
 
-Best regards,
-Rui Yan
+Fixes: 1d3f9bb4c8af ("mm/hugetlb: restore failed global reservations to subpool")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+---
+ mm/hugetlb.c | 49 +++++++++++++++++++++++--------------------------
+ 1 file changed, 23 insertions(+), 26 deletions(-)
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 66b6601abb069..d84ef044d1346 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -6674,12 +6674,14 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 		struct vm_area_struct *vma,
+ 		vma_flags_t vma_flags)
+ {
+-	long chg = -1, add = -1, spool_resv, gbl_resv;
++	long chg = -1, add = -1;
+ 	struct hstate *h = hstate_inode(inode);
+ 	struct hugepage_subpool *spool = subpool_inode(inode);
+ 	struct resv_map *resv_map;
+ 	struct hugetlb_cgroup *h_cg = NULL;
+-	long gbl_reserve, regions_needed = 0;
++	long regions_needed = 0;
++	long gbl_resv_get;
++	long gbl_resv_put;
+ 	int err;
+ 
+ 	/* This should never happen */
+@@ -6754,9 +6756,9 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 	 * the subpool has a minimum size, there may be some global
+ 	 * reservations already in place (gbl_reserve).
+ 	 */
+-	gbl_reserve = hugepage_subpool_get_pages(spool, chg);
+-	if (gbl_reserve < 0) {
+-		err = gbl_reserve;
++	gbl_resv_get = hugepage_subpool_get_pages(spool, chg);
++	if (gbl_resv_get < 0) {
++		err = gbl_resv_get;
+ 		goto out_uncharge_cgroup;
+ 	}
+ 
+@@ -6764,7 +6766,7 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 	 * Check enough hugepages are available for the reservation.
+ 	 * Hand the pages back to the subpool if there are not
+ 	 */
+-	err = hugetlb_acct_memory(h, gbl_reserve);
++	err = hugetlb_acct_memory(h, gbl_resv_get);
+ 	if (err < 0)
+ 		goto out_put_pages;
+ 
+@@ -6783,7 +6785,7 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 		add = region_add(resv_map, from, to, regions_needed, h, h_cg);
+ 
+ 		if (unlikely(add < 0)) {
+-			hugetlb_acct_memory(h, -gbl_reserve);
++			hugetlb_acct_memory(h, -gbl_resv_get);
+ 			err = add;
+ 			goto out_put_pages;
+ 		} else if (unlikely(chg > add)) {
+@@ -6819,26 +6821,21 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 	}
+ 	return chg;
+ 
+-out_put_pages:
+-	spool_resv = chg - gbl_reserve;
+-	if (spool_resv) {
+-		/* put sub pool's reservation back, chg - gbl_reserve */
+-		gbl_resv = hugepage_subpool_put_pages(spool, spool_resv);
+-		/*
+-		 * subpool's reserved pages can not be put back due to race,
+-		 * return to hstate.
+-		 */
+-		hugetlb_acct_memory(h, -gbl_resv);
+-	}
+-	/* Restore used_hpages for pages that failed global reservation */
+-	if (gbl_reserve && spool) {
+-		unsigned long flags;
++ out_put_pages:
++	/*
++	 * Return all that was requested from the subpool, let subpool
++	 * tell us the new number of reservations that need to be
++	 * returned to the global pool.
++	 */
++	gbl_resv_put = hugepage_subpool_put_pages(spool, chg);
++	/*
++	 * There may be a difference between the number of
++	 * reservations to consume and the number to restore now if
++	 * there are multiple threads interacting with the subpool -
++	 * restore the difference.
++	 */
++	hugetlb_acct_memory(h, gbl_resv_get - gbl_resv_put);
+ 
+-		spin_lock_irqsave(&spool->lock, flags);
+-		if (spool->max_hpages != -1)
+-			spool->used_hpages -= gbl_reserve;
+-		unlock_or_release_subpool(spool, flags);
+-	}
+ out_uncharge_cgroup:
+ 	hugetlb_cgroup_uncharge_cgroup_rsvd(hstate_index(h),
+ 					    chg * pages_per_huge_page(h), h_cg);
+
+-- 
+2.55.0.970.g62bdec98f9-goog
+
+
 
