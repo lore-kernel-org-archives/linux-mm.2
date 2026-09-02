@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06F06C624D3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 17:43:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 003C0C61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 17:43:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 863B06B00A9; Wed,  2 Sep 2026 13:43:36 -0400 (EDT)
+	id E7D4F6B00AA; Wed,  2 Sep 2026 13:43:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83AA36B00AA; Wed,  2 Sep 2026 13:43:36 -0400 (EDT)
+	id E55176B00AB; Wed,  2 Sep 2026 13:43:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 777B26B00AB; Wed,  2 Sep 2026 13:43:36 -0400 (EDT)
+	id D6B346B00AD; Wed,  2 Sep 2026 13:43:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 57CCF6B00A9
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AFDDB6B00AA
 	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:43:36 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AA596C0303
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:43:35 +0000 (UTC)
-X-FDA: 85169544390.21.35CE5F7
-Received: from mta0.migadu.com (out-95.mta0.migadu.com [91.218.175.95])
-	by imf25.hostedemail.com (Postfix) with ESMTP id ADB82A0002
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2F99AA374C
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:43:36 +0000 (UTC)
+X-FDA: 85169544432.04.4455E16
+Received: from mta1.migadu.com (out-13.mta1.migadu.com [95.215.58.13])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 38C01C000B
 	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:43:33 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qGWHhZGb;
-	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.95 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=g6JYDRmf;
+	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.13 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1788371014;
-	b=B4nCvUWaN6biPXkMPD1vNICFzv6jXoi4NmawhglXnXqxc9fD07yAf31YC4dHkxqOadZ7vG
-	aqn6Ie7Ptb/0Bvc9C30tEM132Btw3ay8pHzbwJAdTAxbr+zJmWE2Ht8FIiwm9D44zgfp0x
-	oOtDtLsXofB/ovIAbDMTrX829skGcNw=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qGWHhZGb;
-	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.95 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	b=pfmGZpv4EnGIM0siuUAg7S0T90xRbfA9nZeEAXTfLwlN96a5ZYeUSnf7cI92+ywlnQ3Cjk
+	k2ismC4Nx78E/44mNxKSj4Ow4QOCP1+IRpCFJ/NOtDa4FcjEPJaRyfG5XPNOOLAo3Zmo0p
+	+bms0kYgWfQNaLTm23EUqHpne+Lz95A=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1788371014;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=3OxUkfnCHogRQIYKHUah4yIRXqE55F7CgBU/oMOXoxc=;
-	b=JeFEtiS00vkPzso1ap6X48qcC9L3kjDn2wpOv14wStMgMeP5gcndAcHkGZ4DsNQ6Ylk4gj
-	HbBoQvt4gA4XV9YZ0FzI69AxBWgYDODUxBwF6G/qby7ByOSblCXKlgyX/MxMnp/8CHOd0K
-	/Jv2OLEPaKqrJhXKWkaFPNEPTov/DcE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=MhrKvxgt9aiem6UfEmiohKlvwDzg7obDFE+sZGqqoMM=;
+	b=3OfiOFok4By1aLV/sQzrXxhGGqvc5UtolNJAy5aw5t+NkdIDoYZBl3yvgg/bLMOpGE8P1P
+	/LoHuvmXKGwtSor3CTr181HHx4vOjnUPURPJdTRcXWY217xe5atFMpRMB1SLYcwk33Ch7T
+	Bwo+khKYj4cpzFZ2HpQ5ysZHrI63wCE=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=g6JYDRmf;
+	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.13 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=dbMEz1JHYuKrPhG1IXsUKT9HXwJuTLvgviFN/ZwRb6U=;
+DKIM-Signature: a=rsa-sha256; bh=9AizrKxZG1A7ShaemAVD30+q00uib56tFKexFmDnGGk=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788371012; v=1; x=1788975812;
- b=qGWHhZGbo2LzF3DO9kknlbs2X7qXCisREyuW9CQd7bP8d3CaOC4JILczONwcc8cfmEUdOubm
- lU5cKr90f5wQMLnBnpPnFPe8oFECbh1PO0qMWgpIMAmhBC/VwDGXD30J/XGwYaxEwaMlwkABzTN
- sPNY0OCSpEuAXfEMY+LgfGfc=
+ t=1788371013; v=1; x=1788975813;
+ b=g6JYDRmf5diyjSHH+ahaOOJ3ofT/5R6+grTxr2XOt9NtCdNPPKf9t/VIU1L6o3Fqc80fR6QJ
+ HpRu1UhE3Pjwnh1Ztlq1LiIwAusVepuHgnCp9XVGDEU3GAmoewYGqPMxHK9mVDLhRWKzFITwKwX
+ 2RhLEm5tykCZgTCGq9ON25W4=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 65786b149d393ad8;
-	Wed, 02 Sep 2026 17:43:22 +0000
-X-Mizu-Trace-ID: 65786b149d393ad8
+Received: by smtp.migadu.com with ESMTPS id d841d0e1b85067ee;
+	Wed, 02 Sep 2026 17:43:32 +0000
+X-Mizu-Trace-ID: d841d0e1b85067ee
 X-Migadu-Flow: FLOW_OUT
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>
@@ -78,20 +78,22 @@ Cc: Michal Hocko <mhocko@suse.com>,
 	linux-mm@kvack.org,
 	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/8] memcg: remove the v1 soft limit
-Date: Wed,  2 Sep 2026 10:43:03 -0700
-Message-ID: <20260902174311.1772372-1-shakeel.butt@linux.dev>
+Subject: [PATCH v2 5/8] memcg: remove lru_gen_soft_reclaim()
+Date: Wed,  2 Sep 2026 10:43:08 -0700
+Message-ID: <20260902174311.1772372-6-shakeel.butt@linux.dev>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260902174311.1772372-1-shakeel.butt@linux.dev>
+References: <20260902174311.1772372-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: jrejnufgh1f4ght4fdphr83i1iyqshjb
-X-Rspamd-Queue-Id: ADB82A0002
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788371013-444423
-X-HE-Meta: U2FsdGVkX1/cypCQqgzS+HiA/RGhtpRgpJP7JF3yG427hHlSEfSHQglmzrk8qfp+3q+Z4Pf5G3ydC89DY3FyN+1cbv+NWpY+U5yqngm+G3pDoDbgIcmR2Aw97v0UfdZ8RBlyGdoDTCVMxed0/MEEafXrYhM7LgWHP/ejLAfFrtdcu4iyTZ2/ZNXqN7P+L/9rhn18RBCdvIpgQCvIIrtYcZkidTPm/CVtZaCJlKyMHc8WqQz05aN6vlRMPapBcHUsmgDhsLx4Ah4rot9Yqar/1bIAbTk51pTPGLl7TsnUQvewmESvfpwRPOzN6iQNlM6j3tQaodTnnD9Nl0cWdRO/enVz4kmvk84VtkhsG8t3r+h2SFl4NWtatYH4j4XEWD/VSm1Dgp2pZ5WpnWIOKVu7jrLBLUdECs4d8uN4icY6dLOX4NjYQ0lqMVQY9xpB6O1YaGxB9KGZ0Mw6Iz3p10Rw6IcL+2LtCJrWPVpnbkB3JNrjs3xgNHVnQgz5NeRjUg3EPJIqdQSNmKMV9v1L/4BqeW4gUjgUgSFXySCEEGiuInK8p7OeHDlhceCgj6bfqx1/10hb7E8iYM1ae3Sf/2en6pGCr5ZGDneTTgjLmX2QziuVIUkcIBm+wJJQczbV9MqzC9G3QkDZvvXVEv/QGBKVUNnuV8ptz1OurFCbV116FE0Ha5C9QNP9ebfNEhSyKSfyx9oIixW2+4+Bh8c5LBBCdfvTN3gHvzKGbiadw0/EL3nB3nFxvM84Z4L9RXTnteACRNW2fRN0he7h0ij4WISQft/LOQ67Jcm3K8mjhzPs5oPVNKwr78enXtoNWTzrVOH1q9RhWt4hFB9xCSc8paFpY3SxTGG87MdOPjD6Rk3WynKSdC6noQcLBa/izCz42ADOGCYj03JHo4fnZko2obvQhZ28qAPETRi1hsN5VPgc/KIV/fuz/6Lq6GAWmfBf5Vb3l1yMXTUa18k915BcyMs
- w6Oz8vNx
- 8aGKZDSf2t3TEP6fSqyi2Ovy5Dd4ObCKXw24qThFF/aqx9RxvVe6IvCG8iUJZCiBN9l/64wwt5FtMkWbSBUugEkykDAy9C8QedPp0UJFtZTuAdlQ5g6K+ewL6k95vmIFkv7mOA91RwF+icl6snPtfRAR77oerHZ6vxAhwBD17BEs3IU+JiK1gUeYlWyfxp9UwVuCbn4DKfws+uUWeLZAH0kTSx6wBh6BKKtvR8noUNhgVwhyTUuAUWxtWlf+WhxJ0ZzCInjV+eID+CZDRMXOqALiPEqARzMuAQ2z+pHA+uq0ToDc9sHcmB79zHUBsRQA7gZdFkFcOHG57rEFmdEj4RHqdAA==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 38C01C000B
+X-Stat-Signature: mh7hqforexz1ecq84go6a95cy33f9ehi
+X-HE-Tag: 1788371013-678373
+X-HE-Meta: U2FsdGVkX1+d1BHdBL8UoxQgAD3kvkJJnd5KaCS2ZbQG8QJ46wU728zX32FG8YeTbKZhOKRX0hi1ShHLx0bOJNquWEpdUzKhGm1LkGTdBA0aB+v8ON9uu4xv0TH6GJgA/LNAK8V8NEZQeHJ7WEpqlZDT5tVkgcwDYxaknWC/7Dttyy7pRoNaoDyQ0kKuh9DRSAgCDzJrSH4Px9V4EJD6qK1NZZzNnOg1/VeDhmJ/6FmzEJpr16rcuQZj4NX/XzQ06pdcUVcIv8A5prZQYTvwgEyzrGZwQLIsqXhH+632ohSuZpynFRMLJ62JrK/GhBMZEMz9JxImQ6f9BHQsLPqUzcO4i8RHizP+KeBnUcQa7eVd6Q6eT9gCix0/MCLbVjlLz6yW0SdNJdBdzWTBKiaBOpDNXONla+Q0Ke9ui6nZntdAuMuAfiWA55k6718dpTwrkL82LrsjBr3DOlGC2dId7QP06WEMrL7t+FOoHZCqaiJXu5yK7/dV/zEFB+6nFUxuAEyL5Fte6NqguyPAaNvHkiYNhwGU96iWyq/sL3KGP2gy/wfmltAUExh4FnX5nA6AyV0T5CtC5HQq5lBBfyX0A9OMnrE2c/Jhl7emgLyQPvshqcrpLYYQbo5gqICesUR8gmwaTSuogkzDk1blFBA4jUffyIs0E2N/7jWttKPwqfcAGc4z8lS8DDkB84pEeR4tG/ofTEI2Cz2FOkhXgT+Nh1SP+A+oKPCnN3GNhWkm8pxRE7DhuJIQ8BFkBszOD7LV90XREe4oD1nsd8OSZmPNFyG9mIXjpHOQiIzMrHvasS4C0Kj2UAhVnCQvGKg5P6IvQlFrsu0W3XxjRVw4V9nv3Z4/QeDPnuRCqorp0Hmce4iXYyykd2l7ys1LgA2+W21/Ca8mj3b4X6RX4qpgX8ymSk5ou6vSxfsQ4VV5PPxBlHdAEOlPkzAJddrTqdSjkCgafkHdd85ok3NCgwxpFmu
+ VFYTv5DJ
+ 8rFZsnYozvD7gu7QG/V49Z5pT3G7zgkHzMo4uFsOxtloCCcMvGHjD/jAOdwzsH0T7TeOLOCbJ4ZHp60C65zypBk/bwX5x4kuxCvovgo21w7pMDx08jBKa4b0Yiu9PUHbbPp6z6dsnjrLHogMaQucD4aqwCks68jKbHhGASrkYrJw1HeyqBcVX4AtGnSbJgQn39RjTbZ1FGpCS5FubaSiSYwDGq5Ua1rTgFnYK1jeq/i8O2LVWVc0PpbZ5+2cz92T9x7Qa99ruMZHqnu0tuPpzX5Que6lW/X64bPrXW+wT2S0RXyBsi/f6x9TyNf0179Yrha4W
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,57 +101,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The v1 soft limit was deprecated in v6.12 by commit 569c4f62d84a ("memcg:
-initiate deprecation of v1 soft limit") and nobody has reported depending
-on it in the ~21 months since. memory.low and memory.min in v2 have
-covered the same ground for far longer.
+The soft limit rbtree was the only caller. Dropping it leaves
+MEMCG_LRU_HEAD unreachable, since nothing else ever rotates a memcg with
+that op, so remove the op too and update the memcg LRU comment.
 
-The knob has since been made inert by "memcg: make the v1 soft limit knob
-inert", already queued in mm-hotfixes as a backportable fix for a syzbot
-report [1]. Nothing can enter the soft limit rbtree anymore, so this
-series just deletes the machinery that is now dead: the reclaim pass in
-kswapd and direct reclaim, mem_cgroup_shrink_node() and its tracepoints,
-the per-node rbtree, lru_gen_soft_reclaim() and the MEMCG_LRU_HEAD op, the
-per-node tree fields, mem_cgroup->soft_limit, and finally the v1 event
-ratelimiting which is now down to a single target.
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reviewed-by: T.J. Mercier <tjmercier@google.com>
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+ include/linux/mmzone.h | 30 +++++++++++-------------------
+ mm/vmscan.c            | 16 ++--------------
+ 2 files changed, 13 insertions(+), 33 deletions(-)
 
-memory.soft_limit_in_bytes itself is untouched: writes stay ignored and
-reads keep returning the maximum value.
-
-Changes since v1 [2]:
-- Dropped "memcg: make the v1 soft limit knob inert" (1/9 in v1), which is
-  already queued in mm-hotfixes, making this an 8-patch series.
-- Collected the acks and review tags. No code changes.
-
-Sashiko's v1 review [3] asked whether the softlimit tracepoints,
-lru_gen_soft_reclaim(), the per-node tree fields and the
-MEM_CGROUP_TARGET_SOFTLIMIT ratelimiting could go too. They all can and
-they all do, in patches 3/8, 5/8, 6/8 and 8/8 of this same series.
-
-[1] https://lore.kernel.org/all/6a7a6929.b50370da.49fe0.005e.GAE@google.com/
-[2] https://lore.kernel.org/all/20260811203203.3456029-1-shakeel.butt@linux.dev/
-[3] https://sashiko.dev/#/patchset/20260811203203.3456029-1-shakeel.butt@linux.dev
-
-Shakeel Butt (8):
-  memcg: remove v1 soft limit reclaim
-  memcg: remove mem_cgroup_shrink_node()
-  memcg: remove the soft limit reclaim tracepoints
-  memcg: remove the soft limit rbtree
-  memcg: remove lru_gen_soft_reclaim()
-  memcg: remove the per-node soft limit tree fields
-  memcg: remove mem_cgroup->soft_limit
-  memcg: simplify v1 event ratelimiting
-
- include/linux/memcontrol.h    |  27 ---
- include/linux/mmzone.h        |  30 +--
- include/trace/events/vmscan.h |  14 --
- mm/internal.h                 |   4 -
- mm/memcontrol-v1.c            | 392 ++--------------------------------
- mm/memcontrol-v1.h            |  12 +-
- mm/memcontrol.c               |   7 +-
- mm/vmscan.c                   |  96 +--------
- 8 files changed, 34 insertions(+), 548 deletions(-)
-
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 67c84a8a7258..84e237f2c17d 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -638,35 +638,32 @@ struct lru_gen_mm_walk {
+  * For each node, memcgs are divided into two generations: the old and the
+  * young. For each generation, memcgs are randomly sharded into multiple bins
+  * to improve scalability. For each bin, the hlist_nulls is virtually divided
+- * into three segments: the head, the tail and the default.
++ * into two segments: the tail and the default.
+  *
+  * An onlining memcg is added to the tail of a random bin in the old generation.
+  * The eviction starts at the head of a random bin in the old generation. The
+  * per-node memcg generation counter, whose reminder (mod MEMCG_NR_GENS) indexes
+  * the old generation, is incremented when all its bins become empty.
+  *
+- * There are four operations:
+- * 1. MEMCG_LRU_HEAD, which moves a memcg to the head of a random bin in its
+- *    current generation (old or young) and updates its "seg" to "head";
+- * 2. MEMCG_LRU_TAIL, which moves a memcg to the tail of a random bin in its
++ * There are three operations:
++ * 1. MEMCG_LRU_TAIL, which moves a memcg to the tail of a random bin in its
+  *    current generation (old or young) and updates its "seg" to "tail";
+- * 3. MEMCG_LRU_OLD, which moves a memcg to the head of a random bin in the old
++ * 2. MEMCG_LRU_OLD, which moves a memcg to the head of a random bin in the old
+  *    generation, updates its "gen" to "old" and resets its "seg" to "default";
+- * 4. MEMCG_LRU_YOUNG, which moves a memcg to the tail of a random bin in the
++ * 3. MEMCG_LRU_YOUNG, which moves a memcg to the tail of a random bin in the
+  *    young generation, updates its "gen" to "young" and resets its "seg" to
+  *    "default".
+  *
+  * The events that trigger the above operations are:
+- * 1. Exceeding the soft limit, which triggers MEMCG_LRU_HEAD;
+- * 2. The first attempt to reclaim a memcg below low, which triggers
++ * 1. The first attempt to reclaim a memcg below low, which triggers
+  *    MEMCG_LRU_TAIL;
+- * 3. The first attempt to reclaim a memcg offlined or below reclaimable size
++ * 2. The first attempt to reclaim a memcg offlined or below reclaimable size
+  *    threshold, which triggers MEMCG_LRU_TAIL;
+- * 4. The second attempt to reclaim a memcg offlined or below reclaimable size
++ * 3. The second attempt to reclaim a memcg offlined or below reclaimable size
+  *    threshold, which triggers MEMCG_LRU_YOUNG;
+- * 5. Attempting to reclaim a memcg below min, which triggers MEMCG_LRU_YOUNG;
+- * 6. Finishing the aging on the eviction path, which triggers MEMCG_LRU_YOUNG;
+- * 7. Offlining a memcg, which triggers MEMCG_LRU_OLD.
++ * 4. Attempting to reclaim a memcg below min, which triggers MEMCG_LRU_YOUNG;
++ * 5. Finishing the aging on the eviction path, which triggers MEMCG_LRU_YOUNG;
++ * 6. Offlining a memcg, which triggers MEMCG_LRU_OLD.
+  *
+  * Notes:
+  * 1. Memcg LRU only applies to global reclaim, and the round-robin incrementing
+@@ -699,7 +696,6 @@ void lru_gen_exit_memcg(struct mem_cgroup *memcg);
+ void lru_gen_online_memcg(struct mem_cgroup *memcg);
+ void lru_gen_offline_memcg(struct mem_cgroup *memcg);
+ void lru_gen_release_memcg(struct mem_cgroup *memcg);
+-void lru_gen_soft_reclaim(struct mem_cgroup *memcg, int nid);
+ void max_lru_gen_memcg(struct mem_cgroup *memcg, int nid);
+ bool recheck_lru_gen_max_memcg(struct mem_cgroup *memcg, int nid);
+ void lru_gen_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent, int nid);
+@@ -740,10 +736,6 @@ static inline void lru_gen_release_memcg(struct mem_cgroup *memcg)
+ {
+ }
+ 
+-static inline void lru_gen_soft_reclaim(struct mem_cgroup *memcg, int nid)
+-{
+-}
+-
+ static inline void max_lru_gen_memcg(struct mem_cgroup *memcg, int nid)
+ {
+ }
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index d66b5cd167d6..deb087c57007 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4373,7 +4373,6 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
+ /* see the comment on MEMCG_NR_GENS */
+ enum {
+ 	MEMCG_LRU_NOP,
+-	MEMCG_LRU_HEAD,
+ 	MEMCG_LRU_TAIL,
+ 	MEMCG_LRU_OLD,
+ 	MEMCG_LRU_YOUNG,
+@@ -4395,9 +4394,7 @@ static void lru_gen_rotate_memcg(struct lruvec *lruvec, int op)
+ 	new = old = lruvec->lrugen.gen;
+ 
+ 	/* see the comment on MEMCG_NR_GENS */
+-	if (op == MEMCG_LRU_HEAD)
+-		seg = MEMCG_LRU_HEAD;
+-	else if (op == MEMCG_LRU_TAIL)
++	if (op == MEMCG_LRU_TAIL)
+ 		seg = MEMCG_LRU_TAIL;
+ 	else if (op == MEMCG_LRU_OLD)
+ 		new = get_memcg_gen(pgdat->memcg_lru.seq);
+@@ -4411,7 +4408,7 @@ static void lru_gen_rotate_memcg(struct lruvec *lruvec, int op)
+ 
+ 	hlist_nulls_del_rcu(&lruvec->lrugen.list);
+ 
+-	if (op == MEMCG_LRU_HEAD || op == MEMCG_LRU_OLD)
++	if (op == MEMCG_LRU_OLD)
+ 		hlist_nulls_add_head_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[new][bin]);
+ 	else
+ 		hlist_nulls_add_tail_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[new][bin]);
+@@ -4489,15 +4486,6 @@ void lru_gen_release_memcg(struct mem_cgroup *memcg)
+ 	}
+ }
+ 
+-void lru_gen_soft_reclaim(struct mem_cgroup *memcg, int nid)
+-{
+-	struct lruvec *lruvec = get_lruvec(memcg, nid);
+-
+-	/* see the comment on MEMCG_NR_GENS */
+-	if (READ_ONCE(lruvec->lrugen.seg) != MEMCG_LRU_HEAD)
+-		lru_gen_rotate_memcg(lruvec, MEMCG_LRU_HEAD);
+-}
+-
+ bool recheck_lru_gen_max_memcg(struct mem_cgroup *memcg, int nid)
+ {
+ 	struct lruvec *lruvec = get_lruvec(memcg, nid);
 -- 
 2.53.0-Meta
 
