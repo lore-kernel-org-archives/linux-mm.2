@@ -4,117 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 715EAC624D3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 12:58:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89805C61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 13:03:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F64A6B00E3; Wed,  2 Sep 2026 08:58:14 -0400 (EDT)
+	id 4384F6B009B; Wed,  2 Sep 2026 09:03:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 27F396B00E4; Wed,  2 Sep 2026 08:58:14 -0400 (EDT)
+	id 40F136B009F; Wed,  2 Sep 2026 09:03:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 147466B00E5; Wed,  2 Sep 2026 08:58:14 -0400 (EDT)
+	id 34C6A6B00A0; Wed,  2 Sep 2026 09:03:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 92AF76B00E3
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 08:58:13 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0386C1C07A7
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 12:58:12 +0000 (UTC)
-X-FDA: 85168825266.22.355F14C
-Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 02B4F80004
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 12:58:10 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=d48l6CX7;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf30.hostedemail.com: domain of daniel.almeida@collabora.com designates 165.173.182.11 as permitted sender) smtp.mailfrom=daniel.almeida@collabora.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788353891;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 014B46B009B
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:03:09 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 815B7401AF
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:03:09 +0000 (UTC)
+X-FDA: 85168837698.06.244BFCC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D54531C0010
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:03:07 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fhgap0Td;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788354187;
+	b=XfTlKXEMFgh1XcFyl/OgigfjH17QEve9pNih+ho5IVw30iBPOce0eupxuBsRZ1P+H3qYEq
+	nmkuFoaPDwkXXHMufFrDnX1zRa6Dphg/KIV1mXflVr0rbS/EPWT4QUaRLTRnpGxbK+wBFJ
+	n22e9qtAVR0lZB1GkLg+uPtSwal+G+k=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788354187;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yOJpG0Rfo6IlzDSpX446zUyUkwOc+K8U7rIyIPg3QS0=;
-	b=GdzHLwrPkczGWCXloTWqiIE/IZm+iAZq5OpkPGjkik4XQNIdZdt9MJ3BvKsSnfJuFuS/iL
-	Cf16Oc8tHJIKU0K5R6Jpt9yboJh/HvpZrrY8d2OkFXBhZ8GfRnhjqbGTqYtF6snnl11okf
-	IUwysBHscrvM8O/a0ZzwGZH8fNgeCeU=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=d48l6CX7;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf30.hostedemail.com: domain of daniel.almeida@collabora.com designates 165.173.182.11 as permitted sender) smtp.mailfrom=daniel.almeida@collabora.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788353891;
-	b=y3ZG9su2tVhCUpQm+oHTN1J1Iy+jJ6yK2VOCTQVnCiAtVRdpAR4DB3a0IlikTfjdeDjQQC
-	fLHjipDr/Vrd1xGp/4dY+nkR08xwWmF2AJGCHaTStIW4dzNnOgIAcqF7GCri3P989Jt9rj
-	lugi5b0RmBtDswlISfPQaMSR2l3knxE=
-ARC-Seal: i=1; a=rsa-sha256; t=1788353881; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=TNfp49qO7PvOKNrTb6rndr+1NMxKl8IzE8OWTqpiduwHmBiqwHZu77OMJzQLoyz3PJB+m2ETbNBw+pv4/t52VKTZ0vTMn9yCEa1ExY8rnSeNfuSrJ+UNRKZDtkuvLBCBC4VbSeNJz0l4Ae0Oyx9RP5J3KREsjxDm4gMfEQcu7nA=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1788353881; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=yOJpG0Rfo6IlzDSpX446zUyUkwOc+K8U7rIyIPg3QS0=; 
-	b=AV+jSc3gRzrEMCHUncWW7+ysFtx3SZmYHcLgRXlbdQmssLzIGTAM1nOHPONIFrLm2w2AvJCp3E+tyBHllmY2P5jnLyUvPk4mxIUrvrQ3WUjQF7YeBPqG1heA5odwGnaY7ihzN+kjgk78goh4rF+3reBje8BnfbPmwtW11pIhy4k=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1788353881;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
-	bh=yOJpG0Rfo6IlzDSpX446zUyUkwOc+K8U7rIyIPg3QS0=;
-	b=d48l6CX7/B2l24rgs+6vOh9aeKM9cm/DHx9PAp2TYn2ySkldkxFkjjMPlTUfzJEK
-	ru01TAWEMCPhB6NaP9PLQW3uQMimZNTRjiReYBEomoI92TcwQXjvvbAXtfg5wcl7ySz
-	UIAIe2cHFjzuSw79RLntBIQ/S0o4fhYWJI18WYvY=
-Received: by mx.zohomail.com with SMTPS id 1788353879250420.3222580292204;
-	Wed, 2 Sep 2026 05:57:59 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH 1/9] rust: sizes: add SZ_4G constant
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260902-tyr-ioctls-v1-1-e0fdbf8bd108@kylinos.cn>
-Date: Wed, 2 Sep 2026 09:57:40 -0300
-Cc: rust-for-linux@vger.kernel.org,
- Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
- =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>,
- Lyude Paul <lyude@redhat.com>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org,
- dri-devel@lists.freedesktop.org,
- Alvin Sun <alvin.sun@linux.dev>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <39DEB659-59A2-43D6-9B62-805DB3715F49@collabora.com>
-References: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
- <20260902-tyr-ioctls-v1-1-e0fdbf8bd108@kylinos.cn>
-To: sunke@kylinos.cn
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
-X-Stat-Signature: xofqcfhpsdkeao1qu1snysoaps4h5ydi
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 02B4F80004
+	bh=55piGikadtmJH1rIAu+iSuv/SoXijTMBydHFoHOIF78=;
+	b=u2NpPQHKnFfJzVqnvI1AsBzafW1zpsEpI6XgVk3dVviV6I/vaRjujuhj0Qo1wqo8jHhnj7
+	zFN09W7JP2ql1lhdwBgpWnbhG/BfbA+fhnyHCkOO3YCpU+xn5wMbWy92SZWBKb6wi7VCN+
+	OTZ28zXGUN8MH7W48dpk8+wFTC9y92g=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fhgap0Td;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E2B30412D1;
+	Wed,  2 Sep 2026 13:03:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82FAA1F000E9;
+	Wed,  2 Sep 2026 13:03:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788354186;
+	bh=55piGikadtmJH1rIAu+iSuv/SoXijTMBydHFoHOIF78=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Fhgap0Tdy96ASi/jfo0oS4aNZPngYqI6TtOna07FCUaWWn+eE8binwwGqEM+9LyQ6
+	 JXKT0t7wxQ5+kj+hmV2pt06nXrKDXw+HIgy3FTTMeZLXSyiYt09LRXZmw/HM98+mDc
+	 QLTuZdumxNEl5gVqmNMGYuC8ulx41fJ4pqyle3Ajub4W/XZo5uUFv9Z+kHtMRF4E77
+	 TOZn4KHK9Gv9hQ4XrFHTxOQT+Na+lTnC2V3yvjYoZNkqUY5CG+JyAyerrk6LZLp5xN
+	 fNOlbJQkTI7ekBmEYHJGM4Ex1Y389cGI2hthXggIL6Xg+YyFcThLbsojMR2t0EQFBc
+	 wyYAMX1R2oTAQ==
+Date: Wed, 2 Sep 2026 14:02:58 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Nimrod Oren <noren@nvidia.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Hugh Dickins <hughd@google.com>, Nirmoy Das <nirmoyd@nvidia.com>, 
+	Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm: remove min_free_kbytes adjustment for THP
+Message-ID: <apgdNQgHw4BW3bPG@gremlin>
+References: <20260901190123.3511535-1-noren@nvidia.com>
+ <20260901204449.GK3004@cmpxchg.org>
+ <C8541A2F-D6A9-41B0-A3FE-52339A6601F0@nvidia.com>
+ <20260901220917.GM3004@cmpxchg.org>
+ <69C018F5-A1C8-47AD-9567-3497AA6808EC@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <69C018F5-A1C8-47AD-9567-3497AA6808EC@nvidia.com>
 X-Rspam-User: 
-X-HE-Tag: 1788353890-939096
-X-HE-Meta: U2FsdGVkX1+I1OFq7EyjBxlVZmVurTMr3aIpxsPoAh0jyNc/9ob6QZG262PHabiNtJMTvl7d0+cen4pU5jRJY965bmVlJZqLt6QRia/28SNdxqr7YUFJs7Zg/Lp9T7DuTmyza1RBQeYoQfGCialSSSSziT6LQV1qSlAyPde79zEtrvKE1CBmZntlJiqTy4Pc9hKIEY7AUWqoqKlcyfOW4Wf4gl35ujGmTEu+BONOxA8V/sqVJhZrYI/T9hWgnWYp0lOSpUGYjKywIslEEgEmAWO+Gmcn4XjSoxGzjlsVoiqqzhKpJJWoLQ3tH9fxBuGj1b5gMsEVpslD32OBX/guatJvBSLHb1Y2gPlI7hj6JS+cy6/MZwtrnnzV6n+BdDZBF7gu7RpY/an70pS9LJYyexrJRnx8G1eK2KpvanzN5V7lzTTRsKzZUAma1Q+Zog1n1j7WAeOWEtOcWeqy3WpvTk2UwZma0RP61Wz/PiyuAlrLixTtFI2T8n7htLHM1eZcUHAM+2jc1S+FKdOmkAdP+bvD5Hj/nzobTuLoG6ACwwRXShCvGwrDraQ9csgxQTUow8Vy+Ax6o3X5Btp6lwtnL3anCfzD3wqJ1vPpqT758Q9cp8dm32xuK/xQtDGz8PJGnGnX+j6aUZnXYkuDFipFOwv+nZes0A6zbN9XeAlbWG7XcjIamAaeoQpBF/B1XY3GBFEl62pD6iOOOkE/6eDiZw2GpRYBCf8s4hPxM0TwcLdwMVuKAdJxZHy+YE110gi5iZZBiaoeytCnp91iquB6pXUWJFEdFqesaaULyqLb3Htx1ljyTuNxEl/wm+XrUq+WG2GlPKIAaO3LcE6hD4/QfztdcarvQYIJ8ooVte8CVwEHMXSacesC/0635NWYv4J5NYmp0tLpz4QLWVBvKWukm8rQJ5g1FqZe/FCAfCF3BZUG7LWfUbQDTgGrP5AlygRqZxbvuLdUNzC4bvnGph+
- oyiul9dF
- qv7sU7ZuD4fk+Yze4AG7wc8eEqh7d1ER7oDyUhJoYEhUN0yXJ7GMwCAXq1p1Tj6H5OiMG55ti7hITeCmLHhpw8SSvgf+LU7lj3Aznb6GbhtQUS4IBZmwkse/me453HlsEU5lNFdXD3f4laCFPJRYa3Pfl1OAbxrLN7XhQkfKpbqfY8rDB+2osBpnaEyq0npi4RwXX8HgWPc00lfC1YMu/CUBW1CfQ5ZiMQyw9e1Gk998l2crPdOM38SASpTfL4kXMJ/fwyopVRd6Y82xoWIfZq/ilCh1daP1PooGk4SeKfKAlndw05E3/83yA37aaK226cGvisbMNrZekLfW0wYARvkieDy3u+eg4D7CUwuK0TkC8Lq/r+8cFSJgvQLfof02nDXgILsPZJXd7Kbm/7Vh43swGvvrWVUOw3irHfDaBwKyj3ZVdaGKiuZ4BjasS+sBPcIDDtcf3/ttFZdWDQY7RzIPZACdMCLMAJUtA
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D54531C0010
+X-Stat-Signature: 3b66tyzxpimr7mzxu6yoh9shf99gaog4
+X-HE-Tag: 1788354187-479213
+X-HE-Meta: U2FsdGVkX1/g+2K1UmcncRNorFwwnwo8iUeTlGP1bwctNxDDFSieS3868RUZ8LJ26s1MYbW4GJMzfcM7tac0OzVNOBnO/YgwY5UmkR8gGVqh199pbMwZOuq9ItCuvnEYCBPNlJlnFtQybPkmKDXNdZXlAEYnHGbM8aJo6GdzUGtXgD0ypjyJ7o3UzlvnHZMawq5AjRxDfmCMxiK8u6ToMmaTTi1PFfD6XBmXpac/+oi+obPzb8jNb03IZEDgtOnPIuVby8OtSaaQ6hyclybirVAJPpazHZB7Hh+GVK/Echt4XTGw4lRZHq5rfhJChNoH6LVPc/gSNXozl0VJCAZahaoEZfBhc3mFQE7roCzNhtcqi2wCj/Af2el1zbnFUmXXHVStuwKcAaTggN2ctKGCy/dvTtgOS1Jd+V+MQglKQz5xaIWDACHP7G5XFKWpSm77ZeAGFrFwotDS7OYdM8hcgXBlBrWUGolHLVzEzd1G3es3dGLEpe9vNMsosypmkAwRPwJSMlki3mgysAAm9eOCMBkWqCH3neq5sGsjJBRk/ke68imVEs28pyJ96c4R5qv4+nDBA5DSUknYfTGIlZqvtATJsyvQjrEiwySYIdQEFcw+tuW80J/gt4qR/mItA8ZVHgzqHl6sQI7qVQImPRJNn9QYRi7yeyDfp1YTk759L8hjHYcJYdgED6l4N+3f/q4XixCO8XoWvWnXycW9VJZhCXkyF9yCjnEDVd3OehOeDDwh8eqqXpjP4u/VpA6LqHrugsvEDFmx2yIdXR/+g57bpw4nafssaWrr77b7DG+z5Z5E36dMEQ4UCdTDpjoipSOPa5ToxTNao3uJ3bTqnlQ8NZquraTssSKhwBUYQa3X2BW0QKgs0CmZYombWAKZhpRLm4wXN1uL4oXChgXfUhTrIf/0BYt+PugKvucGO9WOkZKI33xubC6XcHl77Q55TTrE84ENldpYLfxymtZFF3C
+ 5cA+7eEG
+ SpMqohbmuW2mPnLpKx9EXFyVi3LoZtLDzR/fwfsBP+KoiYTc90lzkMEaB7NhpkJpUkuyfMjFKaoNzUSNSLrGW9E3ieqSKCl/ACa5d5s3LUnCis9FY+QE59qebrBvhvl7gS0bKQVPDW9/eVZWHb7L36Kjcg64eS1Fk1A98tRo4KVh8p5bNVHksnHzexEv9tEZX+0pVORGX/B6V2Fyx/SJld6ckeDFGPCb6eB1f6U5J31vCcq7M+D1qslugf+zNDHC86mEirgmk9wobPf24vhQ2sRCblNXwnYugKhngfU7p+V9ayec=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,64 +102,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Sep 01, 2026 at 09:49:58PM -0400, Zi Yan wrote:
+> On 1 Sep 2026, at 18:09, Johannes Weiner wrote:
+>
+> > On Tue, Sep 01, 2026 at 05:09:52PM -0400, Zi Yan wrote:
+> >> On 1 Sep 2026, at 16:44, Johannes Weiner wrote:
+> >>
+> >>> On Tue, Sep 01, 2026 at 10:01:23PM +0300, Nimrod Oren wrote:
+> >>>> When THP is enabled, set_recommended_min_free_kbytes() may raise
+> >>>> min_free_kbytes using a heuristic that scales with pageblock_nr_pages.
+> >>>> Commit f000565adb77 ("thp: set recommended min free kbytes") added this
+> >>>> heuristic to help keep pageblocks free and reduce fragmentation for THP
+> >>>> allocations.
+> >>>
+> >>> We've had problems with compaction before when min_free_kbytes was too
+> >>> small on large machines. Competing free space scanners do a lot of
+> >>> work only to fight over a very small set of possible target pages.
+> >>>
+> >>> So I'm a bit uneasy that you didn't include any benchmark numbers with
+> >>> this that prove basic functionality on larger hosts isn't regressed.
+> >>>
+> >>>> The recommendation scales poorly with larger base page sizes. With the
+> >>>> default arm64 pageblock sizes, the contribution per eligible zone
+> >>>> before applying the existing cap of 5% of low memory is:
+> >>>>
+> >>>>   4 KiB pages:   2 MiB pageblock,   22 MiB per zone
+> >>>>  16 KiB pages:  32 MiB pageblock,  352 MiB per zone
+> >>>>  64 KiB pages: 512 MiB pageblock,  5.5 GiB per zone
+> >>>
+> >>> I question whether pageblocks need to be 512M on those machines to
+> >>> begin with. After this patch, you're still asking the page allocator
+> >>> to optimize grouping such that 512M pages can be allocated at
+> >>> runtime. Only now you took away part of the mechanism to do so.
+> >>>
+> >>> If you're using 512M THPs, I would kind of assume it's on machines
+> >>> with a memory size where 5.5G for defrag purposes isn't devastating.
+> >>>
+> >>> And if you're not, it would make more sense to lower the pageblock
+> >>> size to the mTHP size you're actually using. And that would fix the
+> >>> "excessive" min_free_kbytes issue as well.
+> >>
+> >> But lowering pageblock size requires a kernel compilation. That means
+> >> maintaining two sets of kernels for different needs.
+> >
+> > That depends on whether anyone actually wants 512M pageblocks...
+> >
+> >> The ultimate solution is to enable better compaction to generate
+> >> THPs bigger than a pageblock size, like Rik's super-pageblock
+> >> proposal.
+> >
+> > ...or whether we can say, at that point, use gigablocks/cma+hugetlb.
+> >
+> > And then the static pageblock size for the fallback logic etc. can be
+> > a smaller, saner default for everybody.
+> >
+> > Because the point you didn't address: it doesn't make really sense to
+> > have 512M pageblocks on smaller machines, beyond the min_free_kbytes
+> > issue: Fragmentation events will poison half a gig at once,
+> > should_try_claim_block() becomes harder which results in less
+> > conversions and more allocations falling through to stealing, page
+> > isolation is more likely to fail, compaction locks and operates on
+> > oversized chunks which is bad for latency and concurrency...
+>
+> I actually wonder why such a big pageblock would still result in a lot
+> of fallbacks. Basically it indicates at some point kernel allocates a
+> lot of unmovable pages that use many 512MB pageblocks and the life time
+> of these unmovable pages are so diverse, leading to all these pageblocks
+> remain unmovable and free pages spread across all these pageblocks. I
+> thought bigger pageblocks can keep unmovable pages constrained within
+> fewer pageblocks, leaving more contiguous free memory.
+>
+> Do you mind elaborating more on bigger pageblocks cause bigger issues?
+> Maybe it is something more fundamental related to our unmovable page
+> management (which almost does not exit)? It seems to me that the large
+> pageblock amplifies the issues.
+> >
+> > Seems to me the excessive min_free_kbytes is just a symptom of a
+> > deeper problem.
+>
+> Yes, our anti-fragmentation mechanism does not work as we expected,
+> so that we need an excessive min_free_kbytes to get khugepaged working.
+> I wonder why reclaim cannot get the extra free memory instead of
+> reserving it via min_free_kbytes. Maybe we need a watermark boost
+> when some consecutive THP allocations are seen to achieve similar
+> effect of boosting min_free_kbytes?
+>
+>
+> >
+> >> After removing automatic min_free_kbytes boosting, user can still
+> >> increase it via sysctl to restore the old free memory head room.
+> >> It is much easier, right?
+> >>
+> >>>
+> >>>> The automatic min_free_kbytes increase predates proactive compaction
+> >>>> and many subsequent changes to compaction. Given those changes,
+> >>>> increasing min_free_kbytes for THP by default is no longer clearly
+> >>>> justified.
+> >>>
+> >>> That's pretty handwavy. How would these changes specifically eliminate
+> >>> the need for compaction scratch space and allocator fallback options
+> >>> to stave off fragmentation during placement?
+> >>
+> >> Extra free memory is still necessary. min_free_kbytes can be adjusted
+> >> at machine boot time to achieve it, right?
+> >
+> > That argument cuts both ways, no? ;)
+>
+> Yes, but with current khugepaged code, min_free_kbytes is recalculated
+> whenever any of THP, mTHP, and shmem THP enablements is changed. After
+> the change, min_free_kbytes is basically a set and forget thing.
 
+Yeah, overall we have gone back-and-forth on the 512 MiB page block thing,
+different solutions have been proposed (Nimrod included a list of these in his
+initial patches), and each one has not ended up suitable because they all seem
+to hack in things that violate the assumptions built into the pageblock mode.
 
-> On 1 Sep 2026, at 13:09, Ke Sun via B4 Relay =
-<devnull+sunke.kylinos.cn@kernel.org> wrote:
->=20
-> From: Alvin Sun <alvin.sun@linux.dev>
->=20
-> SZ_4G is used by the Tyr driver when splitting the GPU VA range into
-> user and kernel regions.
->=20
-> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
-> ---
-> rust/bindings/bindings_helper.h |  1 +
-> rust/kernel/sizes.rs            | 12 ++++++++++++
-> 2 files changed, 13 insertions(+)
->=20
-> diff --git a/rust/bindings/bindings_helper.h =
-b/rust/bindings/bindings_helper.h
-> index 1124785e210b3..3c37993991b1e 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -110,6 +110,7 @@
-> const size_t RUST_CONST_HELPER_ARCH_SLAB_MINALIGN =3D =
-ARCH_SLAB_MINALIGN;
-> const size_t RUST_CONST_HELPER_ARCH_KMALLOC_MINALIGN =3D =
-ARCH_KMALLOC_MINALIGN;
-> const size_t RUST_CONST_HELPER_PAGE_SIZE =3D PAGE_SIZE;
-> +const unsigned long long RUST_CONST_HELPER_SZ_4G =3D SZ_4G;
-> const gfp_t RUST_CONST_HELPER_GFP_ATOMIC =3D GFP_ATOMIC;
-> const gfp_t RUST_CONST_HELPER_GFP_KERNEL =3D GFP_KERNEL;
-> const gfp_t RUST_CONST_HELPER_GFP_KERNEL_ACCOUNT =3D =
-GFP_KERNEL_ACCOUNT;
-> diff --git a/rust/kernel/sizes.rs b/rust/kernel/sizes.rs
-> index 521b2b38bfe77..b236573f0792e 100644
-> --- a/rust/kernel/sizes.rs
-> +++ b/rust/kernel/sizes.rs
-> @@ -132,3 +132,15 @@ impl SizeConstants for $first {
-> }
->=20
-> define_sizes!(u32, u64, usize);
-> +
-> +/// Large size constants (=E2=89=A5 4 GiB).
-> +///
-> +/// Only implemented for `u64`.
-> +pub trait LargeSizeConstants {
-> +    /// `0x1_0000_0000`.
-> +    const SZ_4G: Self;
-> +}
-> +
-> +impl LargeSizeConstants for u64 {
-> +    const SZ_4G: Self =3D bindings::SZ_4G;
-> +}
->=20
-> --=20
-> 2.43.0
->=20
->=20
+So I see this as a 2-stage thing - firstly eliminate the reservation issue so
+people can practically stop having to deal with problems there. The second -
+look at pageblocks/compaction more carefully.
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+And as Zi says, if you need a bigger min_free_kbytes, set a bigger
+min_free_kbytes :)
 
+My suggestion here was the 'so dumb it kinda makes sense' approach of - hey if
+we want to limit reserve size to X just express it like that, don't play games
+with page blocks.
+
+But I like this solution a lot more - as Michal points out, with proactive
+compaction and changes in how that code works, it doesn't really make sense for
+this 'if THP is enabled set to arbitrary value' stuff.
+
+So I'm absolutely for us just cutting this out now, and that frees people up to
+solve the bigger issue underlying this that in an mTHP and ma-hoo-sive PMD size
+world, pageblocks == PMD size makes absolutely no sense any longer.
+
+I think Kiryl's upcoming work to make THP no longer treat PMD as the unit of
+measure for everything will help, and hopefully if Rik can find a way to put
+forward his GiB superpageblock stuff in a way that can be iteratively taken
+upstream that could be some way forwards on compaction.
+
+>
+>
+> Best Regards,
+> Yan, Zi
+
+--
+Cheers, Lorenzo
 
