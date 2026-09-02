@@ -4,102 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFF7FC61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 16:47:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C28AC61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 16:48:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED8F46B00D8; Wed,  2 Sep 2026 12:47:18 -0400 (EDT)
+	id 4F0846B009B; Wed,  2 Sep 2026 12:48:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E89E26B00D9; Wed,  2 Sep 2026 12:47:18 -0400 (EDT)
+	id 4A1376B00BC; Wed,  2 Sep 2026 12:48:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7A5D6B00DA; Wed,  2 Sep 2026 12:47:18 -0400 (EDT)
+	id 38F6C6B00BD; Wed,  2 Sep 2026 12:48:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EB9B6B00D8
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 12:47:18 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 272EA160270
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:47:18 +0000 (UTC)
-X-FDA: 85169402556.05.6C09076
-Received: from mta0.migadu.com (out-192.mta0.migadu.com [91.218.175.192])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 09E1D40008
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:47:15 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=f0XoB4DU;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.192 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 07DAC6B009B
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 12:48:27 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8DC26C02AC
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:48:27 +0000 (UTC)
+X-FDA: 85169405454.26.5A1AE92
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 8818C2000D
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:48:25 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=GnvXWjox;
+	spf=pass (imf31.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788367706;
+	b=TImVgusDbhUakZvdUXETiPmbxQzxVag9gqCxJiEo89BZXme6T6kgV+DD4mMQvv3Woe1QCn
+	NCOyIqvFdc9cWsoEyFAd20cM3FuLZaK+4Ndt9HqYbVSqX806MEi2+7fhRRaWWkcjTEUF7D
+	hHmjQMwpC4+XFX8dyoxKxcQvAPqsOcA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788367636;
+	s=arc-20220608; t=1788367706;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aiNB/pW9cE5KFwsqGrgP6Ks9w7p+Fnft+mpM/vD5sqA=;
-	b=qWlT5QOgDUMl43u7o3zIc1ibva+RRgVsMaHCnsf011YKiwHS84XIlf5umpsot9kIj0LElO
-	6nnCAcdopnkPzrwo1D8u6MtaBrOcGD/AZBFGUKHW27mw7TYvqii7yvEDt93IahT0I6hQu1
-	8HrCBnnjJC2YfcSGS2UyIjZuyRZkN7w=
+	bh=JXcmFY+9x/wobSwJf8ckcIT6HQmDhm84uQ1TuXRqgjQ=;
+	b=3+7lvlHHzukIet4cQKRsLAj9bQbQatJuD4FqA80nM/W81LaOD+WDZznAPDwVvlUWkOTUsE
+	SgPiuPBQK0j6BI9mMYttoSn87Hd5mbRuXrS/b5sKdgCzPAOXAdBl36xjSSyI7lIgE8MfHK
+	0KCmlpN4241wtrxYri2jrF55C/a7CqI=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=f0XoB4DU;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.192 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788367636;
-	b=MDcChiF0MO/xrP1ANoEen3Fe5qWR8el7bSZ7sE0bJ0A2iAUkbbQoSK/JvUV6mlByonTaem
-	GefCxTaF49oVmBFmpPNVL7JywdMK8m56rfVa3ZC+0/hyd7Wm+0zylRqFn8WRDRLwwYdd3I
-	YO71a1FsDfxRVy6mX8Ok/KM5fZdtD5k=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Y4pHs4Y3EiBbkU7VVftsLC18a5d9QR/DWz6/s/ZFOvw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788367633; v=1; x=1788972433;
- b=f0XoB4DUONwwosIt9VVgUyLKwM8B/LT1Cav6ciQpYXg9QlGL1BAMqNUWPpetB+fJKjkrhUv+
- cdgOaOnYzX9sRFk6V41dMHJEUyBmn5JCQ6wQzS3xPgITKehWiS8PsOVnrigs4YIIx5wVWGoLivo
- 95pMQp6opvv0JKKwzivrf01A=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id b46acf156380a251;
-	Wed, 02 Sep 2026 16:47:12 +0000
-X-Mizu-Trace-ID: b46acf156380a251
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <583c4718-f763-41f0-b757-02b46655c0b5@linux.dev>
-Date: Wed, 2 Sep 2026 17:47:10 +0100
+	imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=GnvXWjox;
+	spf=pass (imf31.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C75B5165C;
+	Wed,  2 Sep 2026 09:48:20 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 07F7F3F882;
+	Wed,  2 Sep 2026 09:48:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788367704; bh=U+OH94B40NoTGV5hu0mRvJHuyvI3dakCwtDknNYstOA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GnvXWjoxcxOtSQbkJLQQ3GnOKnrJ9nFr10cfwUtCgJWT/roaoVtAf1/mEvzgvikQ5
+	 RXVLekBW58kpBfbq00LwbRmlPLU/+FVDFDSMj4JxcQvr3vN8VaI7ommpT64lB9niJ6
+	 AjsG8nFfQXvSizHpPhebOyU19vy801Vi2MdIplc0=
+Date: Wed, 2 Sep 2026 17:48:14 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+	Stafford Horne <shorne@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+	linux-openrisc@vger.kernel.org
+Subject: Re: [PATCH RFC v3 15/21] x86: mm: skip collapse_pud_page() when
+ CONFIG_X86_DIRECT_GBPAGES disabled
+Message-ID: <aphTTqhf3yO74JoO@e129823.arm.com>
+References: <20260902-dummy_ptxp3-v3-0-5d8f5b17c25c@arm.com>
+ <20260902-dummy_ptxp3-v3-15-5d8f5b17c25c@arm.com>
+ <fa4acc56-9742-4a5e-abd4-7491ad426940@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm: remove min_free_kbytes adjustment for THP
-To: Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
-Cc: Nimrod Oren <noren@nvidia.com>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <brendan.jackman@linux.dev>, Hugh Dickins
- <hughd@google.com>, Nirmoy Das <nirmoyd@nvidia.com>,
- Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260901190123.3511535-1-noren@nvidia.com>
- <20260901204449.GK3004@cmpxchg.org>
- <C8541A2F-D6A9-41B0-A3FE-52339A6601F0@nvidia.com>
- <20260901220917.GM3004@cmpxchg.org>
- <69C018F5-A1C8-47AD-9567-3497AA6808EC@nvidia.com>
- <20260902160417.GN3004@cmpxchg.org>
-Content-Language: en-US
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <20260902160417.GN3004@cmpxchg.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fa4acc56-9742-4a5e-abd4-7491ad426940@intel.com>
 X-Rspam-User: 
-X-Stat-Signature: cexrjz65qb4mzsdk6qqg3kws59674tyc
-X-Rspamd-Queue-Id: 09E1D40008
-X-HE-Tag: 1788367635-958487
-X-HE-Meta: U2FsdGVkX1/4ZFa/35TjkvuuobHApRo20+dw0rOX4nCeSfPWLyvS8HOkwRwshfGc1iUEqM4WTOg0M6bHjwPw8Xt3lKKkykl9ozgSlD6mueyV0Z/q0q3GrJrrigosv9XMQrnJ98S/7tbSDTE5PGc/0OzDeqmanJvaC7TjxfZE/TSg85dKBjj20UPgeIvDYfF0ssWCTqqwepAGWdoBW9JtpLMlbW0q4a0bGbbD2qdltS+pGxEHwOix1VzNfxKTDr5+svv2OyRkXLaI2ms1ebO4D3NMcnGByD58WxRw6cCUt7+cCgZI8pqef1g2JZMonvE5SbosmlfICChjek0b2yRIMvdvVBQzQHWYhA888qIlrzBZOLp3Xg64zx3xUPFdfneqv0cPMrNj4Ejr89eBXFp5n/k+NEfK7Vh14ZuGjKKd57wvhoPq5KeEYRrkWwG9rhBy+uyKJxAQ+JZo266/2WFHFuRIUpLf0YrUv0sfBzuPQ/IHVEQhJ4Od+cDc5ZMEVw1+WExqeXI10Aud3fpJY5F0OC5RiFULyn7HDpnojErTfWGANpY88MEWJho6WewLsAeAo5jXoltm7shBw+EIRAY02D4FrGqYu48/VKACfZr08x+jXQk5z/GiB00KiWrzeqaumVAyTTChTuoEsP5f45zYVRviu5lleKbfZyE2Ot3gIoy9Jc1Y5zgIwmmdZATyPykfnmMIB0geNEIQER9ZVMNTLl4dpN2IrjuV3+xC6aiUHbeJ3GH15fv8et2I9mcEklc+/PJ5M+d6xWh8YrUORG79HYnAdI5vt+b0rG9LpF6fFlEG664cZGvIUaaQk/9ZjfYBuoxeK3C1BOJea0egyUM5rb/JPwreSgG7/jz5rv1slRZ+THB8DQPJ5RS+s17Pr16pQWxHOq34e3HkpHfiG3VDjYR7SnGOKLLuRwZn7a16ch7CDf3d88u1NLPOVvHocb2atD++8wCSIXA3+f2dGKS
- K6G4BPYs
- PEGJOWp2VblzmUUE3d/ABeIU834YO3FtxMnBT3UENVY5Ergq0V6hokoiRiPymnN5udcTAf+i/eNreQdwrDZI8hptR2ok/f27bm3jqYXfRhqO9Cofd0hBeGM+BRuW8fufOPPWj4JP4gUX2Q5KTwqWY8dv12G4xAliO5sYxkDiyIDsizd2Cmm0JOpd7C8z8yyXTc7D3E3z2Mn/NSJIbc6lEPEgeV5xDopAhBumdbLOBQSg3RBypUcNOu3S1g5eXExCLHpYlbUXJRfiwpjRhghOis7Lll9kXEn0GS0RNZeAFK/vrcol1VkwWPABoaemWmkU4ZCAvl7PwhweVZwo=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 8818C2000D
+X-Stat-Signature: iits1eitc5g8bh3cbtnsj7tafd1tm1ar
+X-HE-Tag: 1788367705-919964
+X-HE-Meta: U2FsdGVkX1+qZljNWSiEEjN/TS8KK1Bm0h2zfa4Rm3aRvZBN1ZXjqcwa6pAnAAPwt+NtZJseOqq7pfMaO5vJJEvivncPg869Tfx+bs5pHHef2sn/nfFIqbWMGTkeTLZGqZVaPNMQe7/YBxl123wYJW3s94U1vIkjah4WRwIaWBsx0Jk/fyaQntlHRxl0Npvnw7DZcqTMghbmUelFsnT/I7qOqoOkZifeL5mophGkMNhM93WJNTU/RBhhPVFG6RljW6pOFujZ3ZgaXuVrS47T8h8S0Evy8PIuCrwJ2wOPSzdaLpVfXTXh16XD1rjJyF4/2HFS/NvfSZ+I5gKaYWw76t6+EfQnQEIyBa6A5y6YalDl3iygPdQS54IxQoF51Od7RxXUN3gwGd547bVYOPrDUFXcuhWTQz77kCnLt+U3U21vqKMps0r6qPdVExasSwi0N9y1Dt88dlYjHgpyWP9k7/7tm+rJljtfHuPgjn+BkETtgkuQLspaPhUJbGBfLeiT2URD6WnYt3qgEEoHXbCElJ97akHh0/L7N4gpEKAGbfM+HeDjkQdz/9ieN2EJylZqSqADMwG4c5TtYkFi/ZxBu5cd2uMWY3lgJxzx62pQm9SbAMVPnpT7CHlzG6pbFO5xu+tJlUJLYxijO7YWcOSjEF6ZzlM1PGzi2IWOhFV5hb83eKpB3oo9zltkYJmU9ZUqDq48EDiqlak029ENatqp8LNPgxMlO/WBahiOgSxdA/cg6WOAx3/8fRTcXS7yIJTCOAjuqYbZmXD6EsR4pykrEDWBeiXuiKdvtbudJKXqIQCoR1rZ66Bb4QOA2Q1u95h5KhSlDqoZXlhipgBIyA6EiPOl6Wwyd1dfZgahXAtiqSZyuuL3Bb3fSYg9AGlYv0/iEkZNV8qsCxrI2KcNR9DMpUYNuDqG1Wp6SS5bBPyHsVlcssdJk1S0knKM9+/tOgKOKj9th51/uMblP1hp1OJ
+ iFDc5Spr
+ HLNhPdJxhz+9RsQVHa0V+SIeuz8Gykxie5acO2pivJ6tRCr/qbilxsoFdEWdvq1dI3E1fNkn+PW4+CY6e6K06oKtID66OKajtOksXtrjzILpgk73Z39xxZMONOFuUJQCE6RSwp+q8y+bEe51hDhGydf30qru/rHSZM1w0aenJ4muUM2lGVgRiBHlVuQ/FofBqHCglA7JsO0D1bovhPa/gQB3YIRBVwJs2daMImRjO4SO337gFE4oo7Eqy3551uNLUMYnLg41hGZ0agkKH9zZgGPyz7x1jYY0XYErdU7pSLs33Eoh4n24+NlpBXilVpibB8AjOS/HTacztue1gfNLqb84YSQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,160 +126,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Dave,
 
-
-On 02/09/2026 17:04, Johannes Weiner wrote:
-> On Tue, Sep 01, 2026 at 09:49:58PM -0400, Zi Yan wrote:
->> On 1 Sep 2026, at 18:09, Johannes Weiner wrote:
->>
->>> On Tue, Sep 01, 2026 at 05:09:52PM -0400, Zi Yan wrote:
->>>> On 1 Sep 2026, at 16:44, Johannes Weiner wrote:
->>>>
->>>>> On Tue, Sep 01, 2026 at 10:01:23PM +0300, Nimrod Oren wrote:
->>>>>> When THP is enabled, set_recommended_min_free_kbytes() may raise
->>>>>> min_free_kbytes using a heuristic that scales with pageblock_nr_pages.
->>>>>> Commit f000565adb77 ("thp: set recommended min free kbytes") added this
->>>>>> heuristic to help keep pageblocks free and reduce fragmentation for THP
->>>>>> allocations.
->>>>>
->>>>> We've had problems with compaction before when min_free_kbytes was too
->>>>> small on large machines. Competing free space scanners do a lot of
->>>>> work only to fight over a very small set of possible target pages.
->>>>>
->>>>> So I'm a bit uneasy that you didn't include any benchmark numbers with
->>>>> this that prove basic functionality on larger hosts isn't regressed.
->>>>>
->>>>>> The recommendation scales poorly with larger base page sizes. With the
->>>>>> default arm64 pageblock sizes, the contribution per eligible zone
->>>>>> before applying the existing cap of 5% of low memory is:
->>>>>>
->>>>>>   4 KiB pages:   2 MiB pageblock,   22 MiB per zone
->>>>>>  16 KiB pages:  32 MiB pageblock,  352 MiB per zone
->>>>>>  64 KiB pages: 512 MiB pageblock,  5.5 GiB per zone
->>>>>
->>>>> I question whether pageblocks need to be 512M on those machines to
->>>>> begin with. After this patch, you're still asking the page allocator
->>>>> to optimize grouping such that 512M pages can be allocated at
->>>>> runtime. Only now you took away part of the mechanism to do so.
->>>>>
->>>>> If you're using 512M THPs, I would kind of assume it's on machines
->>>>> with a memory size where 5.5G for defrag purposes isn't devastating.
->>>>>
->>>>> And if you're not, it would make more sense to lower the pageblock
->>>>> size to the mTHP size you're actually using. And that would fix the
->>>>> "excessive" min_free_kbytes issue as well.
->>>>
->>>> But lowering pageblock size requires a kernel compilation. That means
->>>> maintaining two sets of kernels for different needs.
->>>
->>> That depends on whether anyone actually wants 512M pageblocks...
->>>
->>>> The ultimate solution is to enable better compaction to generate
->>>> THPs bigger than a pageblock size, like Rik's super-pageblock
->>>> proposal.
->>>
->>> ...or whether we can say, at that point, use gigablocks/cma+hugetlb.
->>>
->>> And then the static pageblock size for the fallback logic etc. can be
->>> a smaller, saner default for everybody.
->>>
->>> Because the point you didn't address: it doesn't make really sense to
->>> have 512M pageblocks on smaller machines, beyond the min_free_kbytes
->>> issue: Fragmentation events will poison half a gig at once,
->>> should_try_claim_block() becomes harder which results in less
->>> conversions and more allocations falling through to stealing, page
->>> isolation is more likely to fail, compaction locks and operates on
->>> oversized chunks which is bad for latency and concurrency...
->>
->> I actually wonder why such a big pageblock would still result in a lot
->> of fallbacks.
+> On 9/2/26 04:56, Yeoreum Yun wrote:
+> > The behaviour of pXd_page() will change with generic compile-time folded
+> > page tables by disallowing its use and triggering a compile-time error
+> > when it's used improperly, ensuring that the actual pXd_page() is used
+> > instead.
+> > 
+> > To prepare fot that, skip collapse_pud_page() when
+> > CONFIG_X86_DIRECT_GBPAGES is disabled.
 > 
-> If you look at try_to_claim_block(), you need half of a block to be
-> free or compatible with the requested migratetype in order to convert
-> it. When memory is full, LRU pages are scattered all over, and
-> compaction is not involved (order-0), this gets more difficult the
-> bigger the block is. You can get into a situation where LRU reclaim
-> will not clear sufficient room for conversion in any given pageblock
-> anymore and you're stuck with the type distribution. A large share of
-> buddy requests then go permanently through the slower fallback path.
+> Nit: this doesn't explain how the change actually fixes anything or what
+> the specific problem being solved is.
 > 
-> Usama knows more about this, but we have seen this on GB300 hosts, and
-> have JUST started to deploy kernels with smaller pageblocks (2M).
+> I think you want to say something along the lines of:
+> 
+> 	collapse_pud_page() uses pud_page() in a way which will soon
+> 	trigger a compile-time error on configs that have a folded pud.
+> 
+> 	The code which will generate that error is actually unreachable
+> 	on those configs because 'direct_gbpages' is always 0 there.
+> 	However, the compiler does not know that because
+> 	'direct_gbpages' is a normal integer from a separate compilation
+> 	unit.
+> 
+> 	Make the compiler aware when most of collapse_pud_page() is
+> 	unreachable by adding a Kconfig check. This ensures it will not
+> 	trip the errors when they are introduced. It probably also trims
+> 	the kernel image down a wee bit too as a side benefit.
 
-Yes, just to confirm above, unfortunately, there were too many problems
-we were seeing in Meta production with 512M pageblock size for arm 64K
-base page size and just had to switch to 2M.
+Yes.. Sorry for my poor commit message.
 
 > 
->> Basically it indicates at some point kernel allocates a lot of
->> unmovable pages that use many 512MB pageblocks and the life time of
->> these unmovable pages are so diverse, leading to all these
->> pageblocks remain unmovable and free pages spread across all these
->> pageblocks. I thought bigger pageblocks can keep unmovable pages
->> constrained within fewer pageblocks, leaving more contiguous free
->> memory.
+> Maybe I should just merge something like the attached patch. I think it
+> would solve your problem and make things generally cleaner too.
 > 
-> The idea is that the pageblock maintains contiguity for the largest
-> size you routinely expect to allocate.
+> There is an existing variable (direct_gbpages) that says whether the
+> kernel can and should use 1G pages in the direct map. It is driven
+> by a bunch of other machinery. At least:
 > 
-> The page allocator is very passive right now, and it doesn't work
-> super reliably. But even in the current regime, smaller blocks have a
-> better chance of containment.
+>  1. Hardware support for 1G pages
+>  2. Kconfig support for 1G direct mappings
+>  3. Kernel command line overrides
 > 
-> For example, when the ever-growing page cache runs out of movable
-> block space, it spills into unmovable free space. When the next
-> unmovable request finds no space, it runs LRU reclaim - which is more
-> likely to free space in one of the many movable blocks. And so the
-> next block is poisoned. Smaller blocks have a better chance of filling
-> up natively, means less pressure to spill into incompatible ones.
+> Most code just checks the 'direct_gbpages' variable itself. But this
+> prevents compiler optimization in cases where 1G mappings are
+> compile-time disabled (via X86_DIRECT_GBPAGES).
 > 
-> And the higher min_free_kbytes, the more likely there are still native
-> options when the zones are down to the watermarks. E.g. better odds
-> there is still unmovable free space, you just need to reclaim some
-> movable/reclaimable space elsewhere to satisfy the watermarks.
+> Add a helper to replace 'direct_gbpages' checks. Check the Kconfig
+> option and base CPU support before looking at the variable.
 > 
-> I've been working on making this more robust with the huge page
-> allocator / defrag_mode stuff: instead of falling back and poisoning a
-> block, invoke reclaim/compaction to produce a neutral block that can
-> be converted entirely.
-> 
-> It's the same idea as the higher min_free_kbytes and watermark
-> boosting, but it is more targeted at the end result: readily available
-> space in compatible or convertible blocks.
-> 
-> But with that active regime, oversized pageblocks are even
-> worse. You'd pay ongoing compaction work to produce a level of
-> contiguity that you don't actually need.
-> 
->>> Seems to me the excessive min_free_kbytes is just a symptom of a
->>> deeper problem.
->>
->> Yes, our anti-fragmentation mechanism does not work as we expected,
->> so that we need an excessive min_free_kbytes to get khugepaged working.
->> I wonder why reclaim cannot get the extra free memory instead of
->> reserving it via min_free_kbytes. Maybe we need a watermark boost
->> when some consecutive THP allocations are seen to achieve similar
->> effect of boosting min_free_kbytes?
-> 
-> I'm just wondering what the easiest way forward is to fix the ARM 64k
-> page problem.
-> 
-> Yes, optimally, reclaim would work to satisfy compaction space by
-> itself. We've seen it fail at that before, though.
-> 
-> How critical set_recommended_min_free_kbytes() is today is a question
-> that neither of us has a clear answer to. It's from 2011 and a lot has
-> changed. However, knowing Andrea, I'm willing to bet he added this
-> based on seeing a need in testing data. And I would actually expect it
-> to work better now with proactive compaction, since that has a better
-> chance of turning low-order chunks of that volume into pageblocks that
-> can be converted instead of needing a poisoning steal.
-> 
-> It's a change of long-standing behavior for everybody. It has a
-> regression risk and requires careful evaluation and testing.
-> 
-> Meanwhile, adjusting the pageblock size on 64k page arm configs has a
-> much smaller blast radius, appears to be the right move ANYWAY given
-> what pageblocks are for, and makes the min_free_kbytes a non-issue.
+> This lets the compiler optimize things better, especially
+> collapse_pud_page() where most of the function can now be optimized
+> away.
 
+Yeap. I've tested with your patch and it works for me!
+Thanks!
+
+Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Tested-by: Yeoreum Yun <yeoreum.yun@arm.com>
+
+> 
+> ---
+> 
+>  b/arch/x86/include/asm/pgtable.h     |   14 ++++++++++++++
+>  b/arch/x86/kernel/cpu/common.c       |    2 +-
+>  b/arch/x86/kernel/machine_kexec_64.c |    2 +-
+>  b/arch/x86/mm/init.c                 |    2 +-
+>  b/arch/x86/mm/pat/set_memory.c       |    4 ++--
+>  5 files changed, 19 insertions(+), 5 deletions(-)
+> 
+> diff -puN arch/x86/include/asm/pgtable.h~direct_gbpages-compiletime arch/x86/include/asm/pgtable.h
+> --- a/arch/x86/include/asm/pgtable.h~direct_gbpages-compiletime	2026-09-02 06:53:57.835733398 -0700
+> +++ b/arch/x86/include/asm/pgtable.h	2026-09-02 08:17:01.434727771 -0700
+> @@ -1163,6 +1163,20 @@ static inline int pgd_none(pgd_t pgd)
+>  #ifndef __ASSEMBLER__
+>  
+>  extern int direct_gbpages;
+> +static inline bool direct_gbpages_enabled(void)
+> +{
+> +	/* Check the direct map config option: */
+> +	if (!IS_ENABLED(CONFIG_X86_DIRECT_GBPAGES))
+> +		return false;
+> +
+> +	/* Check the CPU feature: */
+> +	if (!cpu_feature_enabled(X86_FEATURE_GBPAGES))
+> +		return false;
+> +
+> +	/* Check the command-line and early setup variable: */
+> +	return direct_gbpages;
+> +}
+> +
+>  void init_mem_mapping(void);
+>  void early_alloc_pgt_buf(void);
+>  void __init poking_init(void);
+> diff -puN arch/x86/mm/init.c~direct_gbpages-compiletime arch/x86/mm/init.c
+> --- a/arch/x86/mm/init.c~direct_gbpages-compiletime	2026-09-02 06:55:01.004094924 -0700
+> +++ b/arch/x86/mm/init.c	2026-09-02 08:20:36.759992562 -0700
+> @@ -251,7 +251,7 @@ static void __init probe_page_size_mask(
+>  		__default_kernel_pte_mask &= ~_PAGE_GLOBAL;
+>  
+>  	/* Enable 1 GB linear kernel mappings if available: */
+> -	if (direct_gbpages && boot_cpu_has(X86_FEATURE_GBPAGES)) {
+> +	if (direct_gbpages_enabled()) {
+>  		printk(KERN_INFO "Using GB pages for direct mapping\n");
+>  		page_size_mask |= 1 << PG_LEVEL_1G;
+>  	} else {
+> diff -puN arch/x86/kernel/cpu/common.c~direct_gbpages-compiletime arch/x86/kernel/cpu/common.c
+> --- a/arch/x86/kernel/cpu/common.c~direct_gbpages-compiletime	2026-09-02 06:57:47.935849397 -0700
+> +++ b/arch/x86/kernel/cpu/common.c	2026-09-02 06:57:57.299617535 -0700
+> @@ -2660,7 +2660,7 @@ void __init arch_cpu_finalize_init(void)
+>  		 * Right now we don't do that with gbpages because there seems
+>  		 * very little benefit for that case.
+>  		 */
+> -		if (!direct_gbpages)
+> +		if (!direct_gbpages_enabled())
+>  			set_memory_4k((unsigned long)__va(0), 1);
+>  	} else {
+>  		fpu__init_check_bugs();
+> diff -puN arch/x86/kernel/machine_kexec_64.c~direct_gbpages-compiletime arch/x86/kernel/machine_kexec_64.c
+> --- a/arch/x86/kernel/machine_kexec_64.c~direct_gbpages-compiletime	2026-09-02 06:57:58.462712975 -0700
+> +++ b/arch/x86/kernel/machine_kexec_64.c	2026-09-02 06:58:05.219267514 -0700
+> @@ -257,7 +257,7 @@ static int init_pgtable(struct kimage *i
+>  		info.kernpg_flag |= _PAGE_ENC;
+>  	}
+>  
+> -	if (direct_gbpages)
+> +	if (direct_gbpages_enabled())
+>  		info.direct_gbpages = true;
+>  
+>  	for (i = 0; i < nr_pfn_mapped; i++) {
+> diff -puN arch/x86/mm/pat/set_memory.c~direct_gbpages-compiletime arch/x86/mm/pat/set_memory.c
+> --- a/arch/x86/mm/pat/set_memory.c~direct_gbpages-compiletime	2026-09-02 06:58:43.518414555 -0700
+> +++ b/arch/x86/mm/pat/set_memory.c	2026-09-02 06:59:27.252015369 -0700
+> @@ -130,7 +130,7 @@ void arch_report_meminfo(struct seq_file
+>  	seq_printf(m, "DirectMap4M:    %8lu kB\n",
+>  			direct_pages_count[PG_LEVEL_2M] << 12);
+>  #endif
+> -	if (direct_gbpages)
+> +	if (direct_gbpages_enabled())
+>  		seq_printf(m, "DirectMap1G:    %8lu kB\n",
+>  			direct_pages_count[PG_LEVEL_1G] << 20);
+>  }
+> @@ -1340,7 +1340,7 @@ static int collapse_pud_page(pud_t *pud,
+>  	pmd_t *pmd, first;
+>  	int i;
+>  
+> -	if (!direct_gbpages)
+> +	if (!direct_gbpages_enabled())
+>  		return 0;
+>  
+>  	addr &= PUD_MASK;
+> _
+
+
+-- 
+Sincerely,
+Yeoreum Yun
 
