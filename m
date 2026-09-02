@@ -4,111 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A411C61DFD
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 03:54:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15E59C61DFD
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 03:54:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 477D46B0088; Tue,  1 Sep 2026 23:54:27 -0400 (EDT)
+	id 11E366B008A; Tue,  1 Sep 2026 23:54:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 428A16B008A; Tue,  1 Sep 2026 23:54:27 -0400 (EDT)
+	id 0F5EC6B008C; Tue,  1 Sep 2026 23:54:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 318EA6B008C; Tue,  1 Sep 2026 23:54:27 -0400 (EDT)
+	id F27016B0092; Tue,  1 Sep 2026 23:54:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EC2BB6B0088
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:54:26 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8987EA44CE
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:54:26 +0000 (UTC)
-X-FDA: 85167454932.03.1A02FCF
-Received: from cu-ua11p00im-quki07170902.ua.silu.net (cu-ua11p00im-quki07170902.ua.silu.net [123.126.78.68])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 79419140003
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:54:24 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=sovUyfkV;
-	spf=pass (imf09.hostedemail.com: domain of bfguo@icloud.com designates 123.126.78.68 as permitted sender) smtp.mailfrom=bfguo@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788321264;
-	b=3jxRuYZSpjsk3K8ki1l335Y3D/HL/WMP9NH5VeqTBljfPSBz7RSC1z9QZTZtQq88z8McmO
-	T//KDohceRCbPUAJns7hxG3sOp5lG6NxzZrZtfeLFgfGg0JTO4pcvZvxviUaq7kZ2oj/ta
-	3G7KzGNOkkAOay/ltdLC+XYmuOHF7uA=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D10646B008A
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:54:54 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 428DF1606E6
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:54:54 +0000 (UTC)
+X-FDA: 85167456108.15.B2D53BE
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 7981340005
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:54:52 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="T/i/Mr4C";
+	spf=pass (imf17.hostedemail.com: domain of hughd@google.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788321264;
+	s=arc-20220608; t=1788321292;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gt9G2GKgH5tHFxWKVawtkc5MhF/w6yd2haL+O80x1ZM=;
-	b=y6xPViJE+zPV4fWn1eZU+F6Ajs+12dZPzZRLHcDi5iER6fxYxvLqX+VxiIjpUNqhOkVU5v
-	9ZliMirIa5mbwAxQxHaJ+SYW1kw0wSSNpODWyYISBciJHy5xRyfgXODgb/4CdTiURIXulm
-	eESqv1egXtXZkGw9+K2SdotE+NTwjhQ=
+	bh=y3C3YFkFN20q0dqMhyWIalQhIX+NjYlCT3NZSRQXbv0=;
+	b=ZtrJl/R0yuJadzam5LI3JJHQMcAmUXxrI/fSzreb6POFXPgr+RJ1Zg/+6QB9NVtyLrx2An
+	Ec4gogtPdyuAIRNVK6TKW0uXvwawq9LTb6KyJ1X921SjFZTEk8TRG6Ix/Li5PKxKHbFeug
+	3JNktQoDYhvF3vck07NH4O7eu//P7kQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788321292;
+	b=Ym2cWEVMNsl7JtoExZuavYKPhG26oB02LA1CL7/JMaLj9IIlK2XUwYZbSCmdaDfEDH59n0
+	HRh1BUYHYedpLNUR+ioGr9UDuYfSA6vIykmJbV8MXsId26NHnRq8hvZbw7nlKS5JFxJiET
+	mMzATWA1QG9NZBz25BGi/j8ErZl1sYc=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=sovUyfkV;
-	spf=pass (imf09.hostedemail.com: domain of bfguo@icloud.com designates 123.126.78.68 as permitted sender) smtp.mailfrom=bfguo@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
-Received: from smtpclient.apple (ua11p00im-asmtpcmvip.ua.silu.net [112.19.242.76])
-	by ua11p00im-quki07170902.ua.silu.net (Postfix) with ESMTPSA id 637F7CC00B8;
-	Wed,  2 Sep 2026 03:54:05 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1788321250; x=1790913250; bh=gt9G2GKgH5tHFxWKVawtkc5MhF/w6yd2haL+O80x1ZM=; h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme; b=sovUyfkVQ2D2qdC3E7IiMd3EJNIMXo0mBwjYkwUSxdEv9sNjpHiJHuVNRqlb0HhLHma/S5QnF+I8VH8Hp5d3Q7wWE3tovnxHGb+xRpq1wRScIQU1Ncq65nyr6tdyIZgu16KBEuApINgF+upYvHSEPSYw6hzBvv0FC0YtplEmXCbVjqLi6RBPNAfmScsZKZK5tHrcpmGhUt3QYQYAjPFmU7gkjAe863qDBxevTpwVfAAIbCgX8MMEME7ogGqU3hTm/9xQZjdPbHdpR5J0vU01Upa+iwRViV5W3q38Mqddx+hwpXQbnCfPQI5CDOB9PXPHR8eup9lX33xAuDv5bLavVg==
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
-Subject: Re: [PATCH RFC v2 6/6] mm/memcg: filter out reparented memcgs got
- from memcgid
-From: Bingfang Guo <bfguo@icloud.com>
-In-Reply-To: <20260901-bingfangguo-memcgid-rework-v2-6-8edd7f7a7251@tencent.com>
-Date: Wed, 2 Sep 2026 11:53:53 +0800
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Dave Chinner <david@fromorbit.com>,
- Qi Zheng <qi.zheng@linux.dev>,
- Kairui Song <kasong@tencent.com>,
- Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- cgroups@vger.kernel.org,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <6134564F-5800-4F1C-AB02-3487D3EFA8B3@icloud.com>
-References: <20260901-bingfangguo-memcgid-rework-v2-0-8edd7f7a7251@tencent.com>
- <20260901-bingfangguo-memcgid-rework-v2-6-8edd7f7a7251@tencent.com>
-To: bingfangguo@tencent.com
-X-Mailer: Apple Mail (2.3864.300.41.1.7)
-X-Proofpoint-GUID: R8Jnm2sXbLLOvCYd3F9jlxXiU9mU3hyO
-X-Proofpoint-ORIG-GUID: R8Jnm2sXbLLOvCYd3F9jlxXiU9mU3hyO
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAyMDAyNSBTYWx0ZWRfXzaqJ9OUR5xah
- rgCed482E6xWFm/AiHM8FsTJcElEwQpynwl2NVpHbjWrtvxwdtO/3PVNdSxKL9XLBaCfJRmeU4j
- NtAZoAYNopGU0Mjuo7RyFGmF5tPztsBEcT/OrDhKIH8RkdG2a87fC3MqcK/eEDWAnKwEe+XWtLS
- mrtMfsrQjwvEfr9pY/4gJt7mA1NJ1Zb8bYDOulDnXwmVBOpTsTXxOhcpe0lE27xKDJAdGzYTgDS
- JAUh3uqW4H/+CuCN4q0YpyWiRVMbmM8kdbZKsvzLN1ib2hDYPVIUPFvD3NEUNMQCakBeG0Bpuo3
- fo556HkHtOsf1MHuhuCRSSLSnEd9Y39SdSEMTtAHw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-01_06,2026-09-01_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- mlxscore=0 adultscore=0 bulkscore=0 spamscore=0 suspectscore=0
- lowpriorityscore=0 clxscore=-2147483648 mlxlogscore=999 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2609020025
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="T/i/Mr4C";
+	spf=pass (imf17.hostedemail.com: domain of hughd@google.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-85a50f6a7f7so9292147b3.2
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 20:54:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788321291; x=1788926091; darn=kvack.org;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=y3C3YFkFN20q0dqMhyWIalQhIX+NjYlCT3NZSRQXbv0=;
+        b=T/i/Mr4Cs3PiIRbAazJzxzNY6xSMf8+uvKkmjwbNSZHqgB6CK/ATnlJwlNjaVhc4Fd
+         jJ/jjcgrLSHUx88oneaeSV9yEFA6wOQJMbtcR4U5xOPGDynjnvsRxLX9RlIuIBwvyOCW
+         D2P62E7qiG48CUQbukSu4v67pFEQgHQEYvVTd3Ct8Tt2Rb+cp41x1krSP4RqhU80T1nS
+         UtV6Dm8IVvMzGQ8ocERfDQDLbwQmrGWw9xCH8m/maxM3Ag0LRyPENcVlUmk9kqmgkIlf
+         Nfce/ISOhng52vixkpMG/+gKdVGxiCS84hcT4iy2c+AWh5dq5OL/WANACUl8PoKfT6pS
+         1UuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788321291; x=1788926091;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=y3C3YFkFN20q0dqMhyWIalQhIX+NjYlCT3NZSRQXbv0=;
+        b=PI6n+3QosQVHWkNJiKaCb3KpLp5u46+kXnKl958cMoA5kBE+2n+toqrM2KC8bUayoR
+         6aKdL2JzSqRS7dEKilBumKD/H62SPPAVXRWszP3Twnm89KqqxhCAkPyaz5imaBHkHMvQ
+         WdeJ3SeX8mkP2ig2rs+unFwl05daXu/6Tji6Rehos13FzX4hOmViaoTWUJU5WLWq5bDF
+         7nVzG62RcMUm3Eyoq0jiYenbNc/+UU0W8MFGouZ7NUY01Wju8MUSiUOE2+3mWYhRp3ks
+         am7tDAhpLc8qAqcGKol+St247deItUfnpu1UUEQUUx7c46l75b1I4mTxIAh6U3Sucrhc
+         UNeg==
+X-Forwarded-Encrypted: i=1; AKwUvBzC4x8JxxPQPigojJNSJmREwo7px+1nkyZiKBIQoA1indx068qByLPtZGE3sd5i8ks/gnHuRRwb7Q==@kvack.org
+X-Gm-Message-State: AFuF++kjJtjBfHY97QeE+CQNsRwtalr0T085rkOrqw02DvgM8o9LWEE8
+	fT/OKG/Ec2uPXmPDkimYACxxLmlQhSIlXEwkR2pI9baltyUKxLbB1THZ7zWPkibEtA==
+X-Gm-Gg: AYBFou2gJk5mMb4wp/GPXuY3/o3FuZHtf26X/SXfNMyyi1zBQvJK7HJmGP5neBYqdVJ
+	WhFi+AYYvq8BZb/BI7qEGfkq1kkB8I1ODHlQqRbSu/8kJIc5sWfx4LHQ8QqECrfm+b5RTBMita+
+	IGFOpZwWsIVC8NoN5gArgHqbg9cUgo9ekO34NsfPRHmjPW5xc0eUiK1E/q4ejCg5jqPQqMSJFc5
+	Q1Gs54aemq4KGh6E6Ep/NHIRSFVwY5Un/xyPHOKqiwvKg3DrdVZIIBA4vtECADMoPX6+E7mmTRG
+	22rOUy00rH1+nxKxcRY5gh0npvVF5CMElXhWD8u0cZ8oKR5A37XA5Qm7POV7/V2poUSOekFZU0k
+	CtD0sb02KYqdcC6ZzWOu2YoF4+OO+nREJcR66r99U89D68KL+190bKj9LzujgKbuD8e1PD2zoks
+	wzGhajtEtJa7INa/LL5tZ7LWS3yOOBgjcKyBZyDTE2w2NgF4NWXjNWwLnXi0HjJdg6U2oUJXRR2
+	cg/dQ6CRMljUfewy1910efnYf0lu2IDNmyhIWysJPNiGsdp
+X-Received: by 2002:a05:690e:264e:b0:66f:92a7:1b28 with SMTP id 956f58d0204a3-66f9bfd8205mr445722d50.49.1788321290911;
+        Tue, 01 Sep 2026 20:54:50 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66f985611casm1051256d50.8.2026.09.01.20.54.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 20:54:49 -0700 (PDT)
+Date: Tue, 1 Sep 2026 20:54:33 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+cc: Ackerley Tng <ackerleytng@google.com>, 
+    Alexander Viro <viro@zeniv.linux.org.uk>, 
+    Baolin Wang <baolin.wang@linux.alibaba.com>, 
+    Barry Song <baohua@kernel.org>, Binbin Wu <binbin.wu@linux.intel.com>, 
+    Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>, 
+    Christoph Lameter <cl@gentwo.org>, 
+    Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+    David Hildenbrand <david@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>, 
+    Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>, 
+    Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, 
+    Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+    Leonardo Bras <leobras.c@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+    Marcelo Tosatti <mtosatti@redhat.com>, 
+    Matthew Wilcox <willy@infradead.org>, 
+    Mel Gorman <mgorman@techsingularity.net>, 
+    Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>, 
+    Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+    Oscar Salvador <osalvador@suse.de>, Peter Zijlstra <peterz@infradead.org>, 
+    Qi Zheng <qi.zheng@linux.dev>, Rik van Riel <riel@surriel.com>, 
+    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+    Shakeel Butt <shakeel.butt@linux.dev>, 
+    Suren Baghdasaryan <surenb@google.com>, 
+    Vlastimil Babka <vbabka@kernel.org>, 
+    Yang Shi <yang@os.amperecomputing.com>, Yu Zhao <yuzhao@google.com>, 
+    Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
+    linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: [PATCH 26/25] mm/fbatch: drop reference inside the loop when
+ draining
+In-Reply-To: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com>
+Message-ID: <6d24ca2c-d535-cbdf-dab1-97046a3914ce@google.com>
+References: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: fnr8fdp6zom4pk6imxf78agtxnrjx1r4
+X-Rspamd-Queue-Id: 7981340005
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 79419140003
-X-Stat-Signature: 61po6crr4o93ittnc7man5ntkcb4q4ip
-X-HE-Tag: 1788321264-302660
-X-HE-Meta: U2FsdGVkX18r46nIxSuK9EJLx5/ZoSev3mtmqQ2+ht7S+VMZWTLMwP8dYDuTfQKtk0xfSCpOsheBi80nUfjZh5WeYuor2gprC1slvH+8mwyHufdIZkGTEGs/pWPgiriz2YH580R3Dpqm8fraS4nbk4yEcZDjCowm36lnc3Zt4gElKXJgTCSD6kQGKVDPUVbJenGTXg83W7risyVS2EhYAtLkB4ZMa507IrDDqm5WSyJyIwQal6j+2/CSqbOruy0Wzn0MHV7Ev+y0oWoqZMOGCas49LWNUntlgFmZbGIIaMpIZGyL/aePVQ2TdN085xgeCK9j4aA1HZ+4x1kPObzAzwVjsxov1ixSh6iwXUACqbqO0QYBuhLfznpBaQ44FZHWy5z9WfApPD1GFMDBshhDczjGfkpuJ3AJDX/xwPXsgqbtuFszPfVt2/1TDNnH6UF/Bk1E6RYQ+Fn3dFsUd9++eB9NQ9bZSABaKu3ntmdfAu3PC7W4q4b3pSvmRi763Mgj058XwyfXFq5hAWI+lTXDUbuuKYgnemGhr3DnNu36ZpJsF+rTocimH1SYduLEeM0NDBanI9JBSXG0Jhepmd3s1updQCvhQ6lZe3fQqRS0iROcDC7mc3A3fXVqlSwYxHNUFxhTjhwZdrO7EB226JFrlDIuYXxT5mpL4bIKtKhPgGEC0qBtvbm+/qaMcY+bernUm91qLLllXdj5M694SaEE9qJkEv3cqrHPEAiN4WQuoRH8kkTxs6aE253IN+0KVSjok36GvEBgY0cecN6H+vM6oN9un9nEIevNP5BRCzEhYtM+N1ivzzdj24su6zYWsx/iWW0fgpkYXgDdKRHRJDKEdLnxKB9avEyh04eJfTSz9XdyXWe0dYqYOg5BV1QUJ+0YTgiEwoSYcmzLpoySXGIeVRZsgBLhU3EAuDkDv8jxBZ1Vragthkz82OqpEeZVqTsfszF6WH977LA9powgz+J
- 2ZmCdzBL
- bdelyBMuTni/vBj6w9v/hPIgzJsKfYRS4Y7jcjrA7FaBiirdR7dAQ16QUTnR309Cp3De38u+q9vif9YOwPvBuoQl7GM80enH5Nk2I+PhRT4ODmiMb0AlAiZpWcDusL6XJpe8JC0/EeZlXQxxRyGAJIiAovNq6CT3LmeYqlRcyqCdH6IhLpKxvfHRbj7ruZLJzqkkF
+X-HE-Tag: 1788321292-249003
+X-HE-Meta: U2FsdGVkX1+iZZN61R5vrHRWu4aylWkc2YVwoYunzR9+hhqgGv/oJ/OHJUJJuPiZ2Ws5AoI+JSmP9PmtJee6QApf59hZCCA0vluHXkw3mRKDAJehTm/ayTkJ2wyYWShSIJWVMKGIRTmJPJj5nVW0k3Qdk3MY7F7kq0GaJCVlaRBFdla6mFo4vB2TbzKskDVm4OqAgnb6J8lsqW9fltYmKVymFRz5wPf+UP97lCVUu6uxKjg5HxSOF3/D9afps+fn/gQ3G1qQ0rEvyzjNhpWnCi+XxRhp38SkqE5iB50GAIMtM4CgMXOS/DDwxnLrqaMOjJjUz/7A77mqTrUDFPJ6EyoTIO+eaLnB3/MqR4q9GJ8pX/VqhsjsQcHh2bZdpD4Qk1aGcZ9+5BuVMWxxL1BGUU928ApfuBj9UCNpWSYRUOCEJ5sTx3vzXUCbyQsTM/s2MMBYmuie7KJnzBL+kg2HRoTCluNmZzwjfM3Hax2mH+Uf6auJjqtl2f75hbl60reQVkD+ye8P82q1LZ5mzlqTo929dxVEGNJ4JdQmACuZA2dvkCjiOCr1iLW0o8Q+yGOhXdPG4iVFxTpOU00xsP8xPKQcwdRcfqluXBmAXtUKV1glfhEaAnr9qU99a+Q7WhIPdsQvERPRByz4fGcAheUtmtN65LfLX/uFFgJmcvhnZyCh/6z1BU23H9kA1THlKleOtFlozj+mHnh0gUgMnv3DaOBvDzmNmINyhs3Obm+lIfMlka1lF43moVX2kGLDzpDUXdbWVAS9+hszFQ+g+RaOX8MKBQnVNuzeBFULN5b9BZEOAb/590G+f922zko+SWxApbhWTI61pQQdLUUnsCOVmXOP8D27NGolvLVTlxrxzOwL2piD7lcj/0kwhCU1HEE4dejZdv4bqxp7M8Ruq1e8MIKSgF19fc5ZZyc6BBXp01aVyOEkD5lKCLOa4X8ybgf49FVSHE8R6cglzQszcP/
+ OzdPoHKy
+ /FMLKgCSV5s6eiP7gji6bfZN7KKz+a4Kr6ODmyftwH+fJRCaMP68H3Qt/BfqBKjbU7uNw7lQNJRL2wZjePwqvrqwpV6Y5SLxaOcCcdNJfdA+fFxhGMg7q313SAjNIlkvsC1bBiOfPvHY9DIEHEYm7SmvDcSVuVMjjo7pNPXEvrAefbrlj3W7aI2v9a3kRS3d2I9HI4MPDYdpjGscmr28X70+8Yd38oxz7AWqWhBipQXvOpx5lQMhCupUv7Pyr1IbmhbA4g1Q+CvRgZ4ddCH1R8G8AzRZhnPkyTDdE5k5UgPo9ZS2/RC1iRZu3Io8APIoQiAWeZrVkdGeAr9Ylztch3jKMan3IrecHy7zYpWE2sCuq2Y7k4/gP9HGiHuUrcglx4qPNPpZ2hLkbYaQWfUB1eRX2G5JIugol0l33Mz/JuReTrRemTylyU4jiYqhkYfOTEvlwb74im3QaKkU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,161 +143,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+folio_batch_move_lru() and mlock_folio_batch() used folios_put_refs()
+after their loop: but that's counter-productive, to batch up dropping
+all the references acquired within the loop. Now folio_put_testzero()
+inside the loop, where we also already hold (bar races) the right lock
+to remove the folio from its lruvec.
 
-Forwarding reviews from Sashiko:
->> From: Bingfang Guo <bingfangguo@tencent.com>
->>=20
->> mem_cgroup_from_private_id() looks up the objcg that owns the id and
->> returns the objcg's current memcg.  After reparenting, that memcg can
->> differ from the one the id originally belonged to.
->>=20
->> Callers such as the list lru and workingset refault code expect to =
-get
->> back exactly the memcg referred to by the memcgid, so check that the
->> returned memcg still owns the id and return NULL otherwise. In this
->> case, make list_lru just skip and workingset tests use the root (as =
-the
->> comments said in workingset.c:460).
->>=20
->> Signed-off-by: Bingfang Guo <bingfangguo@tencent.com>
->> ---
->> mm/list_lru.c   | 2 +-
->> mm/memcontrol.c | 9 ++++++++-
->> mm/workingset.c | 2 +-
->> 3 files changed, 10 insertions(+), 3 deletions(-)
->>=20
->> diff --git a/mm/list_lru.c b/mm/list_lru.c
->> index 36662d02ff963..bc956267f6835 100644
->> --- a/mm/list_lru.c
->> +++ b/mm/list_lru.c
->> @@ -428,7 +428,7 @@ unsigned long list_lru_walk_node(struct list_lru =
-*lru, int nid,
->> 		xa_for_each(&lru->xa, index, mlru) {
->> 			rcu_read_lock();
->> 			memcg =3D mem_cgroup_from_private_id(index);
->> -			if (!mem_cgroup_tryget(memcg)) {
->> +			if (!memcg || !mem_cgroup_tryget(memcg)) {
->> 				rcu_read_unlock();
->> 				continue;
->> 			}
->> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->> index 38d2b00657a7a..84dcab3acb8a2 100644
->> --- a/mm/memcontrol.c
->> +++ b/mm/memcontrol.c
->> @@ -4112,17 +4112,24 @@ struct mem_cgroup =
-*mem_cgroup_private_id_get_online(struct mem_cgroup *memcg, un
->>  * @id: the memcg id to look up
->>  *
->>  * Caller must hold rcu_read_lock().
->> + *
->> + * @return: the memcg, or NULL if the memcg is already reparented.
->>  */
->> struct mem_cgroup *mem_cgroup_from_private_id(unsigned short id)
->> {
->> 	struct obj_cgroup *objcg;
->> +	struct mem_cgroup *memcg;
->> 	WARN_ON_ONCE(!rcu_read_lock_held());
->>=20
->> 	objcg =3D xa_load(&mem_cgroup_private_ids, id);
->> 	if (!objcg)
->> 		return NULL;
->>=20
->> -	return obj_cgroup_memcg(objcg);
->> +	memcg =3D obj_cgroup_memcg(objcg);
->> +	if (mem_cgroup_private_id(memcg) !=3D id)
->> +		return NULL;
->> +
->> +	return memcg;
->> }
->=20
-> Does returning NULL here for reparented memcgs break swapin accounting
-> in callers like mem_cgroup_swapin_charge_folio()?
-> If an offlined memcg is reparented, its original ID no longer matches =
-the
-> inheritor's ID. When mem_cgroup_swapin_charge_folio() calls this =
-function:
-> 	memcg =3D mem_cgroup_from_private_id(id);
-> 	if (!memcg || !css_tryget_online(&memcg->css))
-> 		memcg =3D get_mem_cgroup_from_mm(mm);
-> Would receiving NULL force it to wrongfully charge the faulting task =
-instead
-> of the parent memcg that inherited the swap charge, creating a =
-permanent
-> accounting mismatch?
->=20
+This should be much friendlier to compaction, in the common case when
+the folio is still in use, to bring it back to expected refs sooner; but
+I suspect that when the folio is freed, compaction won't accept it until
+it gets to be PageBuddy later on?
 
-The original behavior uses css_tryget_online(), which filters out =
-offlined
-memcgs as well so I suppose no behavioral change here.
+Respect the comment in mm/vmscan.c move_folios_to_lru(): could be done
+differently, but it's not worth optimizing the case when we cleared lru,
+since it also has to handle the case when we failed to clear it.
 
-And swap (or memsw) counter of the memcg from which the page was swapped =
-out
-should be uncharged in __mem_cgroup_uncharge_swap() when the swap entry =
-is
-removed.
+Signed-off-by: Hugh Dickins <hughd@google.com>
+---
+I shall have to rebase the series, but this is an important
+afterthought which is best added into the review now.
 
-I will put this in the commit message to explain it later.
+ mm/folio.c | 23 +++++++++++++++++------
+ mm/mlock.c | 27 +++++++++++++++++++++------
+ 2 files changed, 38 insertions(+), 12 deletions(-)
 
->>=20
->> struct mem_cgroup *mem_cgroup_get_from_id(u64 id)
->> diff --git a/mm/workingset.c b/mm/workingset.c
->> index 7ac2b88c80ae5..4e9b7b163c01e 100644
->> --- a/mm/workingset.c
->> +++ b/mm/workingset.c
->> @@ -470,7 +470,7 @@ bool workingset_test_recent(void *shadow, bool =
-file, bool *workingset,
->> 	 * configurations instead.
->> 	 */
->> 	eviction_memcg =3D mem_cgroup_from_private_id(memcgid);
->> -	if (!mem_cgroup_tryget(eviction_memcg))
->> +	if (eviction_memcg && !mem_cgroup_tryget(eviction_memcg))
->> 		eviction_memcg =3D NULL;
->> 	rcu_read_unlock();
->=20
-> The commit message states that workingset tests use the root (as the
-> comments said in workingset.c:460) when NULL is returned. However, is
-> this what actually happens?
-> Looking immediately below this diff in workingset_test_recent(), it =
-seems
-> receiving NULL triggers an early return:
-> 	if (!mem_cgroup_disabled() && !eviction_memcg)
-> 		return false;
-> Does this abort the refault calculation entirely, treating the =
-reparented
-> shadow entry as cold and causing page cache thrashing?
-
-I didn't make it clear in the commit message here.  For MGLRU the root =
-is used.
-But for classical LRU, it's just skipped because refault reading of =
-other memcgs
-should be meaningless in this case.
-
-I will update the commit message to match the behavior...
-
-> Additionally, can this cause an issue in MGLRU lru_gen_test_recent()?
-> If mem_cgroup_from_private_id() returns NULL there:
-> 	memcg =3D mem_cgroup_from_private_id(memcg_id);
-> 	*lruvec =3D mem_cgroup_lruvec(memcg, pgdat);
-> Would this silently fall back to the root memcg LRU vector instead of =
-the
-> correct parent memcg, incorrectly evaluating the child eviction token
-> against the root completely unrelated max_seq?
->=20
-
-Yes, but the activation is speculative as documented so it should be =
-okay? Are
-there better ways to handle this?
-
-But I do think it may be good to keep the two methods behaves =
-consistently, to
-either skip the check or get a random result for both two cases.
-
->>=20
->>=20
->> --=20
->> 2.43.7
->>=20
->>=20
-
+diff --git a/mm/folio.c b/mm/folio.c
+index 55ca799a9dcd..7c545e4c090d 100644
+--- a/mm/folio.c
++++ b/mm/folio.c
+@@ -128,20 +128,18 @@ static void lru_add(struct lruvec *lruvec, struct folio *folio)
+ 
+ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
+ {
+-	int i;
++	int i, j = 0;
+ 	struct lruvec *lruvec = NULL;
+ 	unsigned long flags = 0;
+ 
+ 	for (i = 0; i < folio_batch_count(fbatch); i++) {
+ 		struct folio *folio = fbatch->folios[i];
+ 
+-		if (!folio_try_get(folio)) {
+-			fbatch->folios[i] = NULL;
++		if (!folio_try_get(folio))
+ 			continue;
+-		}
+ 
+ 		if (!folio_test_clear_lru(folio))
+-			continue;
++			goto restored_lru;
+ 
+ 		/* Do not add to LRU if it has already been added */
+ 		if (move_fn == lru_add && !lru_add_del_folio(folio))
+@@ -155,11 +153,24 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
+ 			lruvec_add_folio(lruvec, folio);
+ restore_lru:
+ 		folio_set_lru(folio);
++		/* See mm/vmscan.c move_folios_to_lru() comment on ordering */
++restored_lru:
++		if (unlikely(folio_put_testzero(folio))) {
++			folio_unqueue_deferred_split(folio);
++			__page_cache_release(folio, &lruvec, &flags);
++			fbatch->folios[j++] = folio;
++		}
+ 	}
+ 
+ 	if (lruvec)
+ 		lruvec_unlock_irqrestore(lruvec, flags);
+-	folios_put_refs(fbatch, NULL);
++	if (unlikely(j)) {
++		fbatch->nr = j;
++		mem_cgroup_uncharge_folios(fbatch);
++		free_unref_folios(fbatch);
++	} else {
++		folio_batch_reinit(fbatch);
++	}
+ }
+ 
+ static void __folio_batch_add_and_move(struct folio_batch __percpu *fbatch,
+diff --git a/mm/mlock.c b/mm/mlock.c
+index a3cfdb274fc7..c528cf7135bf 100644
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -27,6 +27,7 @@
+ #include <linux/secretmem.h>
+ 
+ #include "internal.h"
++#include "page_alloc.h"
+ 
+ struct mlock_fbatch {
+ 	local_lock_t lock;
+@@ -170,28 +171,42 @@ static void mlock_folio_batch(struct folio_batch *fbatch)
+ 	struct lruvec *lruvec = NULL;
+ 	unsigned long mlock;
+ 	struct folio *folio;
+-	int i;
++	int i, j = 0;
+ 
+ 	for (i = 0; i < folio_batch_count(fbatch); i++) {
+ 		folio = fbatch->folios[i];
+ 		mlock = (unsigned long)folio & MLOCK_FLAG;
+ 		folio = (struct folio *)((unsigned long)folio - mlock);
+-		fbatch->folios[i] = folio;
+ 
+-		if (!folio_try_get(folio)) {
+-			fbatch->folios[i] = NULL;
++		if (!folio_try_get(folio))
+ 			continue;
+-		}
+ 
+ 		if (mlock)
+ 			lruvec = __mlock_folio(folio, lruvec);
+ 		else
+ 			lruvec = __munlock_folio(folio, lruvec);
++
++		if (unlikely(folio_put_testzero(folio))) {
++			folio_unqueue_deferred_split(folio);
++			/* __page_cache_release() without irqflags */
++			if (folio_test_lru(folio)) {
++				lruvec = folio_lruvec_relock_irq(folio, lruvec);
++				lruvec_del_folio(lruvec, folio);
++				__folio_clear_lru_flags(folio);
++			}
++			fbatch->folios[j++] = folio;
++		}
+ 	}
+ 
+ 	if (lruvec)
+ 		lruvec_unlock_irq(lruvec);
+-	folios_put_refs(fbatch, NULL);
++	if (unlikely(j)) {
++		fbatch->nr = j;
++		mem_cgroup_uncharge_folios(fbatch);
++		free_unref_folios(fbatch);
++	} else {
++		folio_batch_reinit(fbatch);
++	}
+ }
+ 
+ void mlock_drain_local(void)
+-- 
+2.51.0
 
 
