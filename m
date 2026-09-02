@@ -4,115 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73E5BC624D0
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 03:13:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C97CC624D0
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 03:17:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64C546B008A; Tue,  1 Sep 2026 23:13:33 -0400 (EDT)
+	id C46516B0088; Tue,  1 Sep 2026 23:17:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FCFD6B008C; Tue,  1 Sep 2026 23:13:33 -0400 (EDT)
+	id C1E026B0092; Tue,  1 Sep 2026 23:17:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EE466B0095; Tue,  1 Sep 2026 23:13:33 -0400 (EDT)
+	id B5B446B0095; Tue,  1 Sep 2026 23:17:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2589D6B008A
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:13:33 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A89F21C2553
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:13:32 +0000 (UTC)
-X-FDA: 85167351864.23.398D5B3
-Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6CF6940004
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:13:29 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=eZ7bjfyL;
-	dmarc=pass (policy=none) header.from=uniontech.com;
-	spf=pass (imf11.hostedemail.com: domain of zhaozhengzhuo@uniontech.com designates 52.59.177.22 as permitted sender) smtp.mailfrom=zhaozhengzhuo@uniontech.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 845776B0088
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:17:10 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 733ADA4694
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:17:08 +0000 (UTC)
+X-FDA: 85167360936.01.C192A99
+Received: from pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.155.198.111])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 38EBE1C0003
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:17:06 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=iKUVOCam;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf18.hostedemail.com: domain of "prvs=6980ef5b6=zcgao@amazon.com" designates 35.155.198.111 as permitted sender) smtp.mailfrom="prvs=6980ef5b6=zcgao@amazon.com"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788318810;
+	s=arc-20220608; t=1788319026;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=h6/5EmycLIcO6NT2x9QwzeRmtzgDcLFqGj/52XEIcm4=;
-	b=hHD07sa3EvvUO5+CKFKIKtFfedKvTWove5UpRYxMz5V4mN9W2D/U7xUFEYBoI8L9ZwcfIh
-	cNUqnhuTh6uA79KNNuw+l7kixzB8oFKsm3auEaojt7/G4gp4EowO3JvnLpcCAMEbcqmh+U
-	Oxnvux3LnqcR033PflAeE+hJqnHPORc=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=1nCArtEkFHsetVE9HyV3SWkRXMjEedc6y2E/MROxKuc=;
+	b=Nc2z1l+iE0RgnI/cSH4Q4Ffw9y/iBdzR25B8dwd5zqfLmVqDVns73sExRDSlmbkqXWy/A+
+	5soHCWT+B1JWw+lSIesu23jy/hFYooe2xCCQm1daV8c3sTzTvtr4On1OSTsPdS2gckE9I9
+	HEiLccYCgSAA41qc8fIthPq+uhBKiFQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788318810;
-	b=nbdTcB1aoCFPViCSf4Dz0GPjxf4kuAiqNBpV15NFiIr6c6tV2BBXZLF8SMwNqOx4stU5Xr
-	itx2VmSkMNEi4HG6HM8ZENdoLnn99EVaYdtNVGUUxuEbWudOTgXfOR8rMz5kC0vL/SCHKt
-	BWY44gOdawry8T110vrQphFxkk4xbok=
+	t=1788319026;
+	b=rK6faJ7juuxfBuYMs/UsxF47oFaPVxIFMFkE+vPItWJODH5tgYmYE+d9/FEHjguuxYLdNA
+	f85izrFIS7VdANuy999RieSGHcrhRxsPwcOac7k3BneJAayR0/Gutr26E/9E9/MAi1xUnG
+	KVurGkLTZciats+79ac8/ecE9LXpj9Q=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=eZ7bjfyL;
-	dmarc=pass (policy=none) header.from=uniontech.com;
-	spf=pass (imf11.hostedemail.com: domain of zhaozhengzhuo@uniontech.com designates 52.59.177.22 as permitted sender) smtp.mailfrom=zhaozhengzhuo@uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1788318775;
-	bh=h6/5EmycLIcO6NT2x9QwzeRmtzgDcLFqGj/52XEIcm4=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=eZ7bjfyLli9Gzmr+LAuEG347uwkmGP8vzy/EgzrWPW1Dt64GvqdYsfu2M6tku5y8c
-	 HE0jnBu270Wk9U3wmGV5oeGS4YlXhaQDjTz2MpEH8X8JjYYXO19efuUdtuqwryb+wf
-	 MtXa5ysFevlL0QPuZUKC/3PiXF13elL6kT1HDfLM=
-X-QQ-mid: zesmtpsz8t1788318769t04f7107f
-X-QQ-Originating-IP: Tp3c8ceN3I4tfWZkFDr/C9B0wsT3VLd0pwwTgHq9rYY=
-Received: from zzz-PC ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 02 Sep 2026 11:12:41 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 16383390424684535128
-EX-QQ-RecipientCnt: 13
-From: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org
-Cc: David Hildenbrand <david@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
-Subject: [PATCH v2] mm/migrate_device: fix function name in kernel-doc
-Date: Wed,  2 Sep 2026 11:12:29 +0800
-Message-ID: <13768B0F4A5FC1F5+20260902031229.1821112-1-zhaozhengzhuo@uniontech.com>
+	imf18.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=iKUVOCam;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf18.hostedemail.com: domain of "prvs=6980ef5b6=zcgao@amazon.com" designates 35.155.198.111 as permitted sender) smtp.mailfrom="prvs=6980ef5b6=zcgao@amazon.com"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1788319026; x=1819855026;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=1nCArtEkFHsetVE9HyV3SWkRXMjEedc6y2E/MROxKuc=;
+  b=iKUVOCam4bKQoaCPBOqJTMEAdnEFfxmz5NbCPjjr0l+g6yGHVhtLvosa
+   BteleWBlYjuOlH3JsfkGq9qkvTwNNi9C7LPLYlx5uRHHMULu0V5TCssTV
+   dRdHCzUNf4u39sZQkANcZ8WXwGIhHNpbS/pXEBQvGe3Vhrid/2ZRRWqJR
+   cvkAybu21aGxHBOESibBFPIgAl3vsjK8s8i3OpJmxHGThknmu7OZidFfA
+   lmoGR3PGVOrIUUKg3AHPVjLwZ4yvvxEg7lYT210fN+gYE7nEm/wp3spjf
+   KFKmdoVIFs3u36s3sPqtwk+J7CIDKFYnwxpzgxjlsIlvPygg5zKIdPYc2
+   g==;
+X-CSE-ConnectionGUID: ddspb9w1RqWyZOaLdv6KsQ==
+X-CSE-MsgGUID: K6gsVCLcS5izi2wOuZbiyA==
+X-IronPort-AV: E=Sophos;i="6.25,257,1779148800"; 
+   d="scan'208";a="27466435"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 03:17:03 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:12458]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.48.113:2525] with esmtp (Farcaster)
+ id de3e0a65-3892-4861-a6e8-836a9a4f846d; Wed, 2 Sep 2026 03:17:03 +0000 (UTC)
+X-Farcaster-Flow-ID: de3e0a65-3892-4861-a6e8-836a9a4f846d
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
+ Wed, 2 Sep 2026 03:17:03 +0000
+Received: from 6c7e67c92ceb.amazon.com (10.187.171.39) by
+ EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.46;
+ Wed, 2 Sep 2026 03:17:02 +0000
+From: Nathan Gao <zcgao@amazon.com>
+To: <sj@kernel.org>, <akpm@linux-foundation.org>
+CC: <damon@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <baolin.wang@linux.alibaba.com>,
+	<david@kernel.org>, <ryan.roberts@arm.com>
+Subject: [PATCH v4] mm/damon/ops-common: use a page-aligned address in damon_ptep_mkold()
+Date: Tue, 1 Sep 2026 20:16:55 -0700
+Message-ID: <20260902031655.84721-1-zcgao@amazon.com>
 X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5b-2
-X-QQ-XMAILINFO: N+U/QWJ6RP+kQyUWbS78eT/R6DOMTzegLNBdj9gysPNoyPk3RhJNNjbf
-	mBbiTX34ZJE3YORW/X0Ok2TTpuoANGqKkfD7iKSJpgn3xDo6cFTg/pA8MCkbxArokGgL6dJ
-	s2MhWWXvCGu35Y40PPi/ZzKm2tDMlPj7GWQ341I9KlRyVTYCyx/E+mHhtyKL97qM5C72vuy
-	Xhq1kAov+9x+XbybVmjJBO/aUgflLInw3D1hko6aQSV8khjCd2PBRjzdOoEGEokC6VUWTGE
-	ogq8xtZTq2PosOMay29PNTyfp2xjqPBD+/SuBLdzfU0lXq60AU7l4j6RYH3ophx7WRAqqP9
-	D3xkMEOvDnkCYJPmX9ThPamUBNDVSK6qejdjWPoHn2+MdephkRX8odOitiKwLOqtC57USXc
-	u9JKFNAtFyaqBTwiY2aD7uAhcCKh/t6QTp5D3c4DzUh7x+8I5JUIb4tcOeyDnyH1vK5ckz/
-	bY22uoShrxdbsTc8ZB7+lqcDhNSyfUpCSC03CbfnrJD8ytcNEDCyQU0/EjbH28+LdqBCoyX
-	UejTHTR+8ItYfn0JVG2m5azjjHfwTF725KsqRAatSfV5ehWqnovwpROeQW6A278Rwdzbt/Q
-	9IJQdqMYm8LPSn9Drlj1ZqfDxyZSNTVFJBVFisNSVqHeIKoZvbfUfCrLjq1HYTJqXBltiJ3
-	EZef2sUdZqI/K7drFNRDXCNmuDBy9mswKQiVUXVXZdxIQLA5OYu+kq7umMuemd3xWtvSJUo
-	ZaMVV6jtZ+YkTwYZrV87hAEIAvH6Zgy905K3vZRJnpGq+wSnUyNoa4f6Srs6PFMkRFINOos
-	+gdtAElzapI43/VtNoG3t4zVm3h/Ze1ApfU6taS3MQCZ+dSclWyFlJWvjVOR6UX6FQXz2mO
-	K3JnMxJRCZEiwHKwXhNDC1T2TpLBvb9voIfeEH8sDpt0G62qPyxgOwaxKFhXybgKalHbwW7
-	u9cHNhx+Ylgu3TI0v+dyx500rXkH+doiTPnZc+nmV5Z56XZAUi1aesl/XL5LdNZQNrqoZhO
-	AAYT6qX1JAVrK3hLei1AxPy4JUL9NTdBAqCLiLpccBr7TLfey04sL1YicZ0Zk/MxuUnZpxc
-	cdRQZgEEt/TsnEe6zFjMSVlH1EoA6ei2SsQcKlfTeTkJ7XZH3z20jw=
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain
+X-Originating-IP: [10.187.171.39]
+X-ClientProxiedBy: EX19D039UWB002.ant.amazon.com (10.13.138.79) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6CF6940004
-X-Stat-Signature: 6p89qxjzdjhknxw449gu4ajtuamsoxis
+X-Rspamd-Queue-Id: 38EBE1C0003
+X-Stat-Signature: xhphfsueji1jrxbppyz77wekrat4y85t
 X-Rspam-User: 
-X-HE-Tag: 1788318809-22783
-X-HE-Meta: U2FsdGVkX1+t37vKgCwOPsCq+iA2q2hQ3+3hTHOfPpqndA+Gnd79Yv88IcfIddDk2lYyy50UOj8glETH9edKLR/qoWRl0O6uwiNfc5YqsYD5NUVBcQIJmDxjY5Py9svINNUVMOmEWwcYN7vXXU10QOhH4xEb7d+e1UbkVTHERnVIBk22+vLXwAfybqY1n5f+EfLc2+0HZbHD7AX8tEIFt08AljHLEcYOwIQQUVELuofTNv1OL5Tuo2yuS1AMADmw21/B6FXBrGChDARevz7pRDnO5BAvfWzo4Y470x3AHxXe33Wa15aR6VdKHXjFhR2S+LNppscPkOXhYOPbswUImJQ/o6pnzWm4aWm5UzxsXgyepdX2H5T0wytwIBLGaEs12I3cIDmpVyXJsvaOF2aXL4Iv++xbYfCV0L/gaQXDZ7T6sshrqP+2nzKE/EePW35n2PixJoPvBTN/uAKql1UGFoersvYOez2A02zGtP3XKzkGWpZe4FteCtmqchgIzYF6rDExfJzX5yX4JTTPVn2TbYttp8cTqUWxWSOSYiGZbslzfFXHku1xRFRv8smTTF7RtSBfUsrZ4zipHrFxI3XCgbYpslOd10kTyh1VmP6CHuMxwgOK0/l21XjxN9y2MEPOtV6RvKuqNVCJVJ1pU3V1NfgnbiNW/EJI7mSRBLcNF2v2wrc6ZMXAsyN7T+I/5l/rgK3/njixVS9/XthbWa+SWLnc74n38ocmye6m7Yo0RsufkX82f9D350P5DrUPRPWXoNjq5ohP1kRVJzgMPqLqN+b2USLQtoTVOtakrm72/tMlm8qucUjuuoSpPab4aX3Gh+itrotqZtlFLVZa1ewQTFqzDn3EO9AqBi0G1E/eh3PazVLJoNejMojeOHIFURqSw21kV+cWA1vMIFnPmtXd+NSEsOHn+Cz6MBBvlLlr67zTCeMOcOzRw+/jgy3f+p+R5uMkLR7pPmizE84sQf9
- jtb3iPMP
- CUAMYJP0kW9lShQjpcKaaCtsU8cKxT3g3XcXQx6JE9cCpxysY1QPB4lNwOgTod3pHW800NoDREwl6ZFNvGq7x0RebvCsXu87XR2TpC2p5eiEc2P8u8/esTQtXlHCd9xr/wimLgqnMcgwvVoS2N6BBg1zZY/gfVzn7bZ411GECl+8huGT/et/c2+hGjN5IEVu5z8P14r/QP2GY5J6iPBPFkgZxpy4trKzjvE1kQr7HPuCW0ZGs/OIY9phxWM7bTNA1kygtBsETz1kseDwXzYkGY6M86nyND9ms4uxqfbE4yygb7cNBX2mGBC916p+I47brFJJLoCftD0SQYPNORLlEuSgkNxVBUZUpPh9Y8WTPOxuWrqbDeQFLqIq3czTu0EqND2sKSEtsLtB/TsIitnN3IuH798w4om2hysOfNdX6ahOMDYQhh9lqaM01sGQhqESd7Zo0VvMmZQiyklC2JWkqL1ptkZ5c3xNlw7kRM7OswtIkomalJ7K2TXtcm6r/C9aOyaV9BETQNGpIr9A=
+X-HE-Tag: 1788319026-513385
+X-HE-Meta: U2FsdGVkX18DTsyCOkac09lZSDQX85qSXNkreCFle4iyeQtruUg4nDPH7clbR8Z+ZpgDewGiwwiYTVfI5NI5SUSQQPs4EoePGimGz/57OFnoAxxvwGHElGCSktRa+BsGVfccJMcJRZQQd24PNtQLWFwpfASJ2B7fOhhPfK94huNGmonPTgboE/UWyKGyd4AOGolvjpYFJVZ2KEkr7wrp7qclJSsUFbo62XN0tRvJCNuWyij8qgVGq8P+VFWwQxSjhhTONVgLt+ul41pA0SoWAvHlylNFnaXmfpy8fGY0p6jR+tpQrZobMIUUN8EnIUQuI4OAkI0HtvMIAshjpCn4afjoOSrUnOBDqh9y6WLvUooYRSx6/dCMjg8IKSjYxX4C8rhmkKVQwVr0CnGa2NmFNJAEpVQ72DiAsLBUOlHWhDsOoBYrqUwr+XD2otdj/bERNdG7qgTyEPuF1M0Hs9Cmu6FFV0YK/jnA2eHHIAdZABOT4ER4ednPjxBzf0tbs3LUYPuahS603L9sE+2e0GDMk5B3iUnFbMVozeMbp7NbnyxhnENVz8XNMFOyC9EA5vwyje+sMBp2ufNsdonmGTHIhFc2ghsQtEvkj3EuuRq429f+znmwny0Eot6QnfqV8YJ9mOL+m/mJZIxGDMM/PYe4Sl1WzuE5Bv2GT1ciNsl0PIqNcKJdwOyvKAgvCTkk8WOyBSSdVJZK1VnxPmc2D16tUAaGEIqQ3zlCCNx2/Lfetlmy/HBlO2n9DNN2UIch/vfLKGG7Y/wOz74E4HvA30CslFt0P0dx49fk4qp/YnKI64Md1gcxntGf+XnzDWDrOGAqOqjDLusgRyvSS3LKbdGi6s01DK6YLklUSK39DGQVO/RqCnFIB+jMA8dRy25JA/vms0dY6ujtOer4VpqjxrCWNKeG07sCq4DsdLVzU4L4hcCEacnRpPTUdKddwPGjFtTj2ZAlvTZQgWFeDH5WQCK
+ mjH6T4W+
+ 901v8UJjC31A9/KN+xO6aYdb6slNylocV4Ra/tXzPBYWlYmfFIMbaR9MT+lnPad0Pa4Uxfe81a+OrOQZGC5Hgq6VHJOpDPJMTZzeS+lM1+tqjtPsQ8gAFeVkala9496UIaAYbiyTdZ/fpqieabUxHYIMX3bQLiAc92S/CVOTkFC0jeopx8iruXAbNA80QU4/R73NjQ57RIHm5ryMMjg5uInrY2mgoJSFUF7xi4iNn48RlCskRt05vLEixazf141PGuXhagVG/yZeYvyCQThO7IzKRX+RYQ8aDC0n6N32ImkpQ8ytdbKvF3gEIN1xFOMUJf2ZISf+v27uzDJ+MxyiRI7OWA9E8UwjZ1mxBaOl4dYDyTMpbSqwxfnrHOLYbLWtrtUZlhB+5wNoa+b9zpjeJNL4EC2iLgTo2dAdN/kLZzeWdhoKhlUgY/VpXbxoCqmUpmdLklzpL5wCi2isKqto8Lv1+yzBm81RRCwLk9vRYkXemBKZOIWf8cW/vkF2dkO/8fuhRlbw8o7BB4FHW23dl4+nrjH2RjJaqufliDgNFgJ35mvT7EKoDRJBtUmhInvvH+Z6IIgeEwpNubSHaj9eHfU5woTX4CPaZ74LCk7tEsQTYnYC8Wd76Xs8O2c7Y3zXkC1Rpt7KjxHcMrDhbfC9qcByvoUTAE+0dwk4SSxxl7//opmw5FO4LHzgcDbHs8mDtCne9RAoy/hxnwEI3KMW3rokRlAAxr3odVnp1NzZ7NdkrZhPy9OwVHBqqG/WRrOxmDq/GMVxFMJUEEuZx7O39GsvtXPWEK/1vJjY1KKWsQ9w8d2ROYfsnlWXb9F7W1M0aERlMoY+ZDg5j2DZfKFk5bD+rsK5CYdtcj7B0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,40 +109,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The kernel-doc for migrate_device_range() says that migrate_vma_setup()
-is similar to itself.  Refer to migrate_device_range() as the subject of
-the comparison, making the distinction between virtual-address-based and
-device-PFN-based migration clear.
+__damon_va_prepare_access_check() picks a random byte address within the
+region and stores it in r->sampling_addr. damon_va_mkold() passes it into
+a page table walk, which hands it to damon_ptep_mkold() as the address of
+the page to sample:
 
-Fixes: e778406b40db ("mm/migrate_device.c: add migrate_device_range()")
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Signed-off-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+  damon_va_mkold(mm, r->sampling_addr)
+    damon_va_walk_page_range(mm, addr, addr + 1)
+      damon_mkold_pmd_entry()
+        damon_ptep_mkold(pte, vma, addr)
+          ptep_test_and_clear_young(vma, addr, pte)
+          mmu_notifier_clear_young(mm, addr, addr + PAGE_SIZE)
+
+For arm64, before commit 6f0e1142173a ("arm64: mm: support batch
+clearing of the young flag for large folios"), the contpte helper walked
+exactly CONT_PTES entries from the aligned-down page table pointer and
+used @addr only to pass down to each entry, so an unaligned value was
+harmless:
+
+        ptep = contpte_align_down(ptep);
+        addr = ALIGN_DOWN(addr, CONT_PTE_SIZE);
+        for (i = 0; i < CONT_PTES; i++, ptep++, addr += PAGE_SIZE)
+
+Now the range to walk is derived from @addr instead: end = addr +
+nr * PAGE_SIZE, rounded up to CONT_PTE_SIZE. For a sample in the last
+page of a contpte block, the sub-page offset puts end just past the
+block boundary, so the round-up lands a whole block further and the
+walk clears PTE_AF in CONT_PTES entries beyond the sampled block. For
+the last block in a page table page, those entries are past the end of
+that page, so the walk writes into the page that follows.
+
+Triggered by the full 7.1/7.2 kernel selftest suite on arm64 (EC2
+c/m6g.4xlarge). The kernel sometimes crashes at or shortly after the
+DAMON test.
+
+What the overrun does depends on the page that happens to follow the
+page table, so there is no single signature. If that page is read-only,
+the write faults in the sampling path itself:
+
+  Unable to handle kernel write to read-only memory at virtual address ffff0003c5d2d000
+    FSC = 0x0f: level 3 permission fault
+    CM = 0, WnR = 1, TnD = 0, TagAccess = 0
+  CPU: 10 UID: 0 PID: 3487 Comm: kdamond.2
+  pc : contpte_test_and_clear_young_ptes+0x70/0xc0
+  lr : damon_ptep_mkold+0x1e8/0x1f8
+  Call trace:
+   contpte_test_and_clear_young_ptes+0x70/0xc0 (P)
+   damon_mkold_pmd_entry+0x150/0x170
+   walk_pmd_range+0x110/0x2b0
+   walk_pud_range+0x10c/0x208
+   walk_pgd_range+0x134/0x258
+   __walk_page_range+0x98/0x1b0
+   walk_page_range_vma_unsafe+0x90/0x148
+   walk_page_range_vma+0x28/0x40
+   damon_va_walk_page_range+0x114/0x2b8
+   damon_va_prepare_access_checks+0xec/0x1a8
+   kdamond_fn+0x534/0x770
+   kthread+0x128/0x138
+   ret_from_fork+0x10/0x20
+
+Otherwise the page is writable, the PTE_AF clearing succeeds silently
+and the damage only surfaces later, in whatever happened to own the
+page, so the backtrace is unrelated to DAMON and differs between runs.
+
+Pass a page-aligned address to the ptep_test_and_clear_young() call in
+damon_ptep_mkold(), which is the only place DAMON can reach
+contpte_test_and_clear_young_ptes() from. Nothing else sees the aligned
+address, and r->sampling_addr itself is left as is, so the sampling and
+region bookkeeping semantics are unchanged.
+
+Fixes: 6f0e1142173a ("arm64: mm: support batch clearing of the young flag for large folios")
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Nathan Gao <zcgao@amazon.com>
 ---
-Changes in v2:
-- Drop the redundant second "instead", as suggested by Zi Yan.
+V3 -> V4:
+- Align only the address that is passed to ptep_test_and_clear_young(),
+  rather than @addr for the whole of damon_ptep_mkold(), so the
+  mmu_notifier_clear_young() call keeps seeing the sampled address (SJ)
 
-Link to v1: https://lore.kernel.org/7D206FC95BDCAA0F+20260901065131.1759298-1-zhaozhengzhuo@uniontech.com/
+V2 -> V3:
+- Move the alignment into damon_ptep_mkold(), instead of aligning in
+  damon_va_mkold() and damon_va_young().  The ptep_test_and_clear_young()
+  call in damon_ptep_mkold() is DAMON's only path to
+  contpte_test_and_clear_young_ptes(), so damon_ptep_mkold() is the
+  closest place in DAMON to the function that requires an aligned
+  address (SJ)
 
- mm/migrate_device.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+V1 -> V2:
+- Align inside damon_va_mkold() and damon_va_young() rather than aligning
+  r->sampling_addr itself, so that sub-page sampling addresses remain
+  possible for future non-PTE access check primitives (SJ)
+- Point Fixes: at 6f0e1142173a instead of 3f49584b262c, since the
+  unaligned address was harmless before that commit (SJ)
+- Describe how the issue was noticed and what it does to the kernel (SJ)
 
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index 009bfa8b212d..0c437004329d 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -1398,9 +1398,9 @@ static unsigned long migrate_device_pfn_lock(unsigned long pfn)
-  * @start: starting pfn in the range to migrate.
-  * @npages: number of pages to migrate.
-  *
-- * migrate_vma_setup() is similar in concept to migrate_vma_setup() except that
-- * instead of looking up pages based on virtual address mappings a range of
-- * device pfns that should be migrated to system memory is used instead.
-+ * migrate_device_range() is similar in concept to migrate_vma_setup(), except
-+ * that instead of looking up pages based on virtual address mappings, a range
-+ * of device pfns that should be migrated to system memory is used.
-  *
-  * This is useful when a driver needs to free device memory but doesn't know the
-  * virtual mappings of every page that may be in device memory. For example this
+v3: https://lore.kernel.org/all/20260901201001.33271-1-zcgao@amazon.com/
+v2: https://lore.kernel.org/all/20260831221151.50561-1-zcgao@amazon.com/
+v1: https://lore.kernel.org/all/20260827193821.46115-1-zcgao@amazon.com/
+
+ mm/damon/ops-common.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+index fbda70d8ea4d..8fc61d06d358 100644
+--- a/mm/damon/ops-common.c
++++ b/mm/damon/ops-common.c
+@@ -61,7 +61,12 @@ void damon_ptep_mkold(pte_t *pte, struct vm_area_struct *vma, unsigned long addr
+ 	 * device aspects.
+ 	 */
+ 	if (likely(pte_present(pteval)))
+-		young |= ptep_test_and_clear_young(vma, addr, pte);
++		/*
++		 * Arch implementation of ptep_test_and_clear_young() may
++		 * require aligned @addr
++		 */
++		young |= ptep_test_and_clear_young(vma, PAGE_ALIGN_DOWN(addr),
++				pte);
+ 	young |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + PAGE_SIZE);
+ 	if (young)
+ 		folio_set_young(folio);
 -- 
 2.50.1
+
 
