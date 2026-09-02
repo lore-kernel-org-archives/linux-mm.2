@@ -4,112 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29416C61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 22:31:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E70CC624D7
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 22:32:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8A4E6B008C; Wed,  2 Sep 2026 18:31:35 -0400 (EDT)
+	id 6ACEC6B00CB; Wed,  2 Sep 2026 18:31:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3A5F6B0095; Wed,  2 Sep 2026 18:31:35 -0400 (EDT)
+	id 65E8C6B00CE; Wed,  2 Sep 2026 18:31:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2C776B0096; Wed,  2 Sep 2026 18:31:35 -0400 (EDT)
+	id 54F8E6B00CF; Wed,  2 Sep 2026 18:31:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 903586B008C
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 18:31:35 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2325D140169
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 22:31:35 +0000 (UTC)
-X-FDA: 85170270150.04.8DCF7FC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 5900920002
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 22:31:33 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lzs77CH7;
-	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 2D4B06B00CB
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 18:31:59 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B94871403D4
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 22:31:58 +0000 (UTC)
+X-FDA: 85170271116.11.C895822
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E72D9160006
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 22:31:56 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KI48qx2d;
+	spf=pass (imf08.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788388316;
+	b=dsTz2Yo8YZKT8+wVSmGY/iCG9wTOo6Djm36/fTml8ojunhRVIMs+XQnHh5ArQajqrdxMq1
+	ma+7+zNM4F478KwXq6dtk6iRdhEgUbY/+8RZ+h+lbuwrve7zos/N28K+m2FHqzINUZkQm6
+	XN0yVNsrjwHGH6BYiBwp4hPU2yZ5nik=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KI48qx2d;
+	spf=pass (imf08.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788388293;
+	s=arc-20220608; t=1788388316;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FAiwcVZ9zVI1PdFs8RlzggVmFg2ZlUcGQqtrbjs/05o=;
-	b=jgtnLze+iEuvTK+oOWjZgpOv2W6qqEzaxjgJ8Lfsaa1z7i5mxdoO9JybZKmnc/EruL67R7
-	xSmEyi6qDVbmBK7ABFJqUhRqDMlhPRKDT4e/F6tC9IEMpnj5kzYAqnwfuKoGWxIRb00q2f
-	RN7IfZna3AgBVWPl6j01DQlTzInPjuw=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lzs77CH7;
-	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788388293;
-	b=zRF6KnIU+Y4pvxgNxkOFDwCqN5p8qMBxUh5H6MJnvqn6AWSWSgQWFxhY4z993pJMX/H+TH
-	eQtIM5hVY71Mk08txSfXPECGn2zLTiZEFj19voUqPV+jurfInWzvpl6xytRJUcq223Knvz
-	0L84VgnwBdMALt9yeZDNivvhGh3RyZg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7F7A541A08;
-	Wed,  2 Sep 2026 22:31:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE241F000E9;
-	Wed,  2 Sep 2026 22:31:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788388292;
-	bh=FAiwcVZ9zVI1PdFs8RlzggVmFg2ZlUcGQqtrbjs/05o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Lzs77CH7ybfoy1r3ORmCEgCcsyCXnS16VnexMVhEvMhklsWlYDubT2GpYFU9hC3gu
-	 QVsgVc7hp0WzY23xbRLhZSOtXliv0BG+Ed0SDQzJmmToJxK9xqZXJXIYOFyCOpL+g6
-	 BhyqcnFmBFWDcizzcOvTNwN4FpZTgdmRRAonf49CAG8melrgtm1DfWSqVIeT/CcqDi
-	 spPHOOstpjKoM7gJc1OmSqn4xzxQmOCkOIfxrRcVgVKSQqdNoB2a89nU65qpVo/yqe
-	 4fRMecTAk0BN2NWz6pcWnb1/9PGAi+7MyYNPucmxvSzK6R3JBTr/EZKP9yi3xtnXek
-	 2vet/rPVlu39A==
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-To: akpm@linux-foundation.org
-Cc: axelrasmussen@google.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	baoquan.he@linux.dev,
-	cgroups@vger.kernel.org,
-	chrisl@kernel.org,
-	david@kernel.org,
-	devnull+kasong.tencent.com@kernel.org,
-	hannes@cmpxchg.org,
-	kasong@tencent.com,
-	liam@infradead.org,
-	lianux.mm@gmail.com,
+	bh=Rfj489snHAgcjqYCzxpw7R2gTXTEyikU7ldTqChZJq0=;
+	b=YhmZquNXsiIRJcGJLyc6DjeA6qw8cgelhDDwS+zs96lbbrG+81vxDQqc25t346nIxjeC0T
+	KDy5Bi7CMYmzuJ++BpsIH5jjZ7xQHbMWQjbAQbSjFSRlas+pHjAGfn0COoXJ2ae5kUW09N
+	oEjias6WHZJKR8/XFbuFQpiMjtDD+h4=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2d8fd3b729dso15032095ad.1
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 15:31:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788388316; x=1788993116; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Rfj489snHAgcjqYCzxpw7R2gTXTEyikU7ldTqChZJq0=;
+        b=KI48qx2dQ1PMQ8ZYiIO4vuO48CLc8P2AHBkeed5CXMDjn/07ic9L6cyyJu45hpucEe
+         Nx0cAGWf3EQOJn0RbP8u+2RQNDnt1s1Xs3ADEysEv6mbQiEEgoSKBOGW9gUccsasv7Gr
+         RGg34mIb64NWOoESMurNRwr8m4TegnKxOdlbqzK+6O25uc0FjHyEGr+Bho2TeTbjQiGL
+         nn6EhDjNSzKj/diYM2/F88tjYXa0XBG0S0EKu/j8Fc0WYALVLm2KJNXbq9hBC0j5n38F
+         jCQVBLV8jACDBF4WE4mflnJWzzLCvmnoSoFsY+/68Qk4Tvmta+IMyBv1WFwDzowIVA9p
+         Iddg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788388316; x=1788993116;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Rfj489snHAgcjqYCzxpw7R2gTXTEyikU7ldTqChZJq0=;
+        b=ndrGmKxfv2CzHYu5IYnXZJGV7/ZulRc9ae3wtR3LR/gaOv5AKWYhsHESgl/uznQWZR
+         Iwu+RhUx2/jUQmf8UV4zrrijCDKZFr2UXXR9ck3r1OoAdvNDec4RtGjj0kKiQ5dlpRQ2
+         pdVPiAH3encrKfHQEnaVy9wn74v50m2lZo6T6t/z97//y/MmpNMXpROeYBJqoGIyWUHU
+         oxxkkH6UC3Tcyp/3PYjztIoI6y11XFf+6QQtjL3Qq2MrNFouJJPdrgXVBN95vJ+0WKsT
+         Deon8Cu5j+KCJcSXOWLHV58InUieIUkugjm9kNjB50PkMSVpRsKUwB6MnhSasApm+Ne2
+         ragA==
+X-Forwarded-Encrypted: i=1; AKwUvBwqvQmFKrsoZjmWmqishwqZ24H01R7nHxHBwWGDyBY3A8NQi5W5V2Bu9FrW89peiiD36f7wAZGnvw==@kvack.org
+X-Gm-Message-State: AFuF++lang+Hr5c+lZ9itrCI4dHNhZptWbVrbSGCJvqSG8ZgQmqg6h1M
+	9dsJyOmqkNUiwpno0MAtRw0khWVYHjqRB9Ud9p/B8H75id+SeydmDnVO
+X-Gm-Gg: AYBFou1ULkP+YnZtgSoIROrCuz5JdCcU6YRk6AaJoevzUvg0dcKPsuBwEsFWGYQP7/d
+	ASVL/wkR/67hk4F1vlKzhedcXYkC+kme8OUuCl4OoRgCkXiK1rGWYGSA88DeMSNW6on5TTANoni
+	2W2RCjseLuXX2CAxuYj2FIGCo0FtNGqEOQDDLKrNJXr1nZYnCdn93BbB1E/QQxC1PcYIFKVJZ4T
+	wQXZbu9zapABsPOkscdbjX+nONTn2qyPhGVvlG4+xwC+DGytEZ/IYPhqv6YtiY450PzQh1ZUKXG
+	qlR/Moj+lX9pG5Ww4/A6xm1Jlvq5rC+pfqmgb5TnYI6Bp+8t8iSXwdeVezSZ2pwyOq8sAvEZJCj
+	m0LIiadd23MISy2NaZXJvAYM3kmlzRtsjToE4PTjWbMnkrGMZPqXGIUbTJcJp45ZN7e+x+pzrfK
+	MowtA+6pA0rZzigwsUXDOl4QGRKOu2QJCTdEeW+Jp4wYKnHAQuwBJQeZdy8WcxGcbH
+X-Received: by 2002:a17:903:1a0d:b0:2d8:d4d3:da50 with SMTP id d9443c01a7336-2daec7a70a2mr111190875ad.20.1788388315442;
+        Wed, 02 Sep 2026 15:31:55 -0700 (PDT)
+Received: from celestia ([2402:1980:9c5:2de5:8b4e:3f3c:b637:4ca5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dafe0e24basm1215945ad.2.2026.09.02.15.31.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 15:31:55 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: aethernet65535@gmail.com,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	ljs@kernel.org,
-	mhocko@kernel.org,
-	muchun.song@linux.dev,
-	qi.zheng@linux.dev,
-	ridong.chen@linux.dev,
-	roman.gushchin@linux.dev,
-	ryncsn@gmail.com,
-	shakeel.butt@linux.dev,
-	vbabka@kernel.org,
-	weixugc@google.com,
-	yuanchu@google.com,
-	yuzhao@google.com,
-	ziy@nvidia.com
-Subject: Re: [PATCH v5 0/6] mm/mglru: clean up folio counters and flag usage
-Date: Thu,  3 Sep 2026 06:31:24 +0800
-Message-Id: <20260902223124.48962-1-baohua@kernel.org>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20260902141153.93b932ba572b1d3375216cc4@linux-foundation.org>
-References: <20260902141153.93b932ba572b1d3375216cc4@linux-foundation.org>
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2.1] mm/damon/core: fix false positive in damos_quota_is_full() when esz is zero
+Date: Thu,  3 Sep 2026 06:31:38 +0800
+Message-ID: <20260902223203.14871-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260902144804.88298-1-sj@kernel.org>
+References: <20260902144804.88298-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: oxu11rkhbaanxjfb1ymj9c96pwxnsk46
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5900920002
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E72D9160006
+X-Stat-Signature: 56g584yrnyggtqy7c8ce64yb6rza3nbf
 X-Rspam-User: 
-X-HE-Tag: 1788388293-467552
-X-HE-Meta: U2FsdGVkX1+d11Nm4FuxPzZD+CrCj+OA7Eg6GkP3nLmk85r74poUKf1X/CrxgdeiqsF5EDfC49YiRVa6KckvyISpwd0S5JVKwpTSBMJcwA4NXQZJuewYjc2cTpXFgfpL/YO+G61IqcJhKtivvizl56W6FtqJ7RCx5rtScdS0xUeZsvInbNkE+wKWAeLxCLEesitG+iQm/uD4sor/BLzGUpB11f5IPBuTdVIC+yTDX5Xwo4cht2bUfWs9iGsYSO5BLk9mPFn/N/X3KaG5jDh0LBL5Zwbxs/n2Ih/FbPSQ3dohnXfjclUkjg82mDvrcnTTd/mW3aGbrf50uD+lDu8rcaUjXegCS+LHpQTpVcZUURYYhrKw3bWOCeDAq29MjgPjop9IMM6Ah2AQhazhBy8rulKvS1ove7T95lFZu2dCAsZnMj/RLxZW5d+ug2aLxq4qQ32UytBXRxbTdOleuPaojkYZJ3FQJXrQ69ATKdSRqzjQy4GW75kwCmoESfXd//zJcVDW0Y/TIhKi25WqMCDHlEHTYRvFRYwZk4nJD6ShaDuMGLgIo8zS+Iw4vnG58U9iWml45P0vIcm4fopLsP+VHNqsrJ2hTAG7RCJx/KhY3dFhaw9BWZqz7SgtMGT2RvG09ibAgfESeD+FWrgB5CBY2vqSwASR/8WvMNOqKsnCepGKW3cnnNB+9coZFvHdhnszCRFapan77n5Mi0AUMUnad/xh22bZhCBDhB94V31N6/Ax526zSyn80+Q+PEyPc6yRdp+xu2LBSFH1WXBBdPdF11j/N8E27llVQv7igpMr42qBL6XRbGEz5bgzwyD0mRyiZzdfbDa6WblEU5Hr183Mzmu3/TRdddAyq3vfu9hQo7phMXjCXVwqFvGrxwSfmWnFiPNEinupFpV7IO71nmYqdK4pbPapDCq2DVUT35VGCdZdZFFDIozAWWsY9vVCeHJLmauu1bNf1sjYooLUPt8
- NYUljUry
- siI0724auNoyPyN7rc/2TT3Ez7088P+PqtyOK6R0gT1JsaKwwwXqyxCNPFqbWzVgfOxFF4Z/X45NQvYZ3BT4pe7QuRyafLKaFTKLaShV/z6kE1O4Otp5MhCE2EXtPBZ8Fju0waDjyFyrwKYOUy1aQoW8qAPfB+oSQx6bXqzpI97S3SzvWt5IhltWfBFEGDI8qpLLlfpPE7gFBB4Ules5XDiVLP0S9RCk+txmfF8JDCKkP7qbKXzBqJqSg4wesy3Y3E34QKQ21yKT1+u6a2PuQ6NdLcFsWL4125LRdJn6E5Cv1IHaKA0HvabuwrtQr5XRrj5zMbAaYvJxoMxtWrpd/t843YpfQlt8o3MK9M1yGKq83GKCP4JRHHXWV86fbQ3VRZilsiLNCdiOQYguEj/exB9qZ3bvhakQwE+FubfJDZkhBZLzS9Jqc5DVr/lEfwBbO+J4U3p1FzfHSsTxMLwun4HBxLDxD6Ddz8yk7zsxUlPWmwztK+IcxZN9343xGbZxL8GSzXZ6Ohsg77bXsve85aFTB7Y5/dOroY/MLLpJcQk+uLsA7A62huTRsBg==
+X-HE-Tag: 1788388316-393886
+X-HE-Meta: U2FsdGVkX1/IWpDhi1kj7WUfRzrtE0Jd4KfP1KD45rZgCQPesHAlO4oUgfFnxMsDvUYR9J5y7Kgxuk+AmlmGzMoReYquCX+l8MVJaCpq7VnLzHhHnD8YYs5jGwInrTQR6fD7ilZwZHlMV9/i9R+w4JkK+eaY/yqOu4RTjF8TnuuRp95O3hDTi5M7t47fvV1Hd+qUTHOOhd8bGe2tKHUTvP+FIE4D8lzg5HVPlJN36UwbNZvT6vETt/nREVfF/YC/oUANaFxlCQBJLOtomxLzP7BDTAd1FDiVoDteU1jBtf09vwosOY8zoTd6rl48YTzdqMotL+dF8DqP7xsLGm4vc8P92ghEilc8b5l1EMUqWJJly82H1eWOTIj1X3QScVC+IPpIYNMwWdZqYADR4mVDFWNcfkL7oJjTCPffBNzkmVwqu4BXkqnbXNI0pxvu1g3/C0856vn8XFceXe5ZRIHE0RnvcfeAeGIgV0iF1mZVHDcVBISzktmyvkfGmQHLHlfKFqmw1NfiTfp8DyFBaWltIZsi+UFPi6izT2GcRmkaqOFGnX3HP7dTEqhtEqYrM4wgnN4eCeXmUmkgt6VPd9TuOT+nNhXkS40tLwgCH58+opOH8w41Msx0Js9TrOrt/41eNrhyxNW0YV7yDi9QhCJvOqHR8gft3bCgEDi/Y4fEiVeLkGiNMXA9FDyYDQoLvwBEa52F+OMBjDnhiNQGgMwsFwN/RVjgZMSV9+6+6Mm3SYGfVeGoe7w0nbtEEK9FrFKCr0LcSOfHifiahDceXpuevU3Vey/31FWSdVhOeKUAts9fjT1YZMgnK38jj3Y07WTj5dCPOA4GrkTE3l0nekhIXQQ9V5cFOjjzPujwug3TktXV5WYgFIS/0A5m3cVmMx22DOje35YR/d7uySTV8gvXRAVznCH7aXLfK22HSKqbpXXYIa7TX65BD7v4+yOvPdjTjIS5twtnoTqNMkERtql
+ iyiiv+pM
+ wLin9KqhkplvSTYae6e+f2mTWOXUkmMl8h5gLBcfsE/m08e8k2N1kFAUci4ufUI23GbAyTqbwMA4qzXBSKg8twqKCR4coRQko97+ZSVfTU+7rSOuPUTapt3CJOBpdV7WAPMbiYEVyh2TK3tVvY3BpDBetIEU7TbdOEj/ruZWWJFm8Dv0gt0oSg2HiZl9Q90vnAw+gOFxzXvJ+oR/KEmgQQUC6QbAwhhIUdhGNBlBhDcJGhB8K5A5ST3gQHxUxqtusGixBh+GvpVV/9+w/iyqXbH8xnqh4zHJLwTG73FVXju8PCIGMophCc1SCic++ZGd9+YjXkM9o0fTXr8KiaXiBOqI4n8XyXINDigX3vB06vEipP1MbwcGlo8JNBfLfo8G/XtsDi/6PSFTMCgneueNNV5Yb7eYLCDtDmx0PaZQXwJSS8H6B7OrsD8IUjxlMiwHWlksIB+ehbm6kNLcAabkB8iv1BseO3M6N7WB8oFDQfmb5tJI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,390 +121,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 3, 2026 at 5:11 AM Andrew Morton <akpm@linux-foundation.org> wrote:
->
-> On Wed, 02 Sep 2026 17:50:53 +0800 Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org> wrote:
->
-> > This is a cleanup series separated out from the MGLRU-FG series [1]. As
-> > that series is getting too long in following updates, seperate out the
-> > clean up part for easier review and merge.
-> >
-> > No feature change is intended, except one bugfix. It mostly replaces
-> > the open-coded bit operations scattered throughout the MGLRU code with
-> > new helpers, with proper kdocs, sanity debug checks, and hardens a few
-> > MGLRU functions.
-> >
-> > A subtle generation counter leak is also found during the refactoring
-> > and the fix is included.
-> >
-> > Also collected review feedbacks on the cleanup part from the posted
-> > series.
->
-> Thanks.  I hit a non-trivial reject in [2/6] presumably thanks to
-> mm.git (mm-new) race conditions (appended).
->
-> The patchset comes nicely review by humans, but AI is less happy:
->         https://sashiko.dev/#/patchset/20260902-mglru-flags-cleanup-v5-0-9db761d779ef@tencent.com
->
-> So please take a look at all that and retry in a few days?
+On Wed, 02 Sep 2026 07:48:03 -0700 SJ Park <sj@kernel.org> wrote:
 
-Sorry for the merge conflicts.
+> On Wed,  2 Sep 2026 22:22:31 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> 
+> > On Wed, 02 Sep 2026 07:10:00 -0700 SJ Park <sj@kernel.org> wrote:
+> > 
+> > > On Wed,  2 Sep 2026 16:44:45 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> > > 
+> > > > When setting goal_tuner to 'temporal', if the goal is achieved,
+> > > > quota->esz_bp will be set to zero.  In this case, damos_quota_is_full()
+> > > > will always return true, even if no regions have been tried to apply at
+> > > > all.  This causes qt_exceeds to increase unexpectedly.
+> > > 
+> > > To me, this looks logically correct.  Could this cause any user issue?
+> > 
+> > Yes, I think this might cause unnecessary confusion for users,
+> 
+> If it is _might_ kind thing, please ask questions first, or add RFC tag at
+> least.
+> 
+> > at least
+> > it did for me.
+> 
+> If it confused you, definitely we need to fix it.  But if it is just confusing,
+> let's try to clarify by adding documentation, rather than changing existing
+> behaviors.
 
-I rebased Kairui's series on top of `mm-new`. I guess all we need is to
-make patch 2 look like this:
+I agree that we should avoid unnecessary code changes if the issue is
+merely a matter of confusion.
 
-From 01e2013722443f685d47b42e7d9b11aadef58722 Mon Sep 17 00:00:00 2001
-From: Kairui Song <kasong@tencent.com>
-Date: Wed, 2 Sep 2026 17:50:55 +0800
-Subject: [PATCH 2/6] mm/mglru: introduce helpers for manipulating gen and refs
- flags
+However, I believe a code change is necessary in this specific case,
+rather than just adding documentation, for the following reasons:
 
-Instead of doing bit ops on folio->flags.f, introduce helpers for
-adjusting a folio's refs and generation info, making the code easier
-to debug and understand.
+First, this distorts the semantics of qt_exceeds.  It is a statistic
+meant to track actual quota full/overflows.  Incrementing qt_exceeds
+when the quota is completely unused (because the temporal goal is
+already met) misleads users and could break user-space monitoring tools
+or scripts that rely on this metric's accuracy.
 
-No functional change is intended: some combined atomic operations are
-split into two, which only creates harmless transient states. There is
-no measurable performance impact, and some paths even look slightly
-better in the generated assembly.
+Second, considering its original behavior when it was first introduced,
+the recent changes [2] have inadvertently altered this behavior.
 
-Acked-by: Qi Zheng <qi.zheng@linux.dev>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
----
- include/linux/mm_inline.h | 84 +++++++++++++++++++++++++++++++++++----
- include/linux/mmzone.h    |  1 +
- mm/folio.c                | 19 +++++----
- mm/vmscan.c               | 60 ++++++++++++++++------------
- 4 files changed, 122 insertions(+), 42 deletions(-)
+When qt_exceeds was first introduced [1], the conditional check was:
 
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index 621c8653d8f7..3f4bd5b02b54 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -142,10 +142,66 @@ static inline int lru_tier_from_refs(int refs, bool workingset)
- 	return workingset ? MAX_NR_TIERS - 1 : order_base_2(refs);
- }
- 
--static inline int folio_lru_refs(const struct folio *folio)
-+/**
-+ * lru_set_gen_flags - Set the LRU generation number to specified folio flags.
-+ * @flags: pointer to the folio flags
-+ * @gen: generation number, between 0 and (MAX_NR_GENS - 1), inclusive.
-+ */
-+static inline void lru_set_gen_flags(unsigned long *flags, int gen)
-+{
-+	BUILD_BUG_ON(LRU_GEN_MASK & LRU_REFS_MASK);
-+	VM_WARN_ON_ONCE(gen >= MAX_NR_GENS || gen < 0);
-+	/* Store gen offset by 1, zero means the folio is off-list. */
-+	*flags &= ~LRU_GEN_MASK;
-+	*flags |= (gen + 1UL) << LRU_GEN_PGOFF;
-+}
-+
-+/**
-+ * lru_get_gen_flags - Return the LRU generation number from folio flags.
-+ * @flags: folio flags
-+ *
-+ * Returns: A number between 0 and (MAX_NR_GENS - 1), inclusive. Returns
-+ * -1 if the flags indicate the folio is off the list (e.g., isolated).
-+ */
-+static inline int lru_get_gen_flags(unsigned long flags)
- {
--	unsigned long flags = READ_ONCE(folio->flags.f);
-+	int gen = ((flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
- 
-+	/* Exclude the legal -1 from the unsigned MAX_NR_GENS comparison */
-+	VM_WARN_ON_ONCE(gen != -1 && gen >= MAX_NR_GENS);
-+	return gen;
-+}
-+
-+/**
-+ * lru_set_refs_flags - Set the LRU referenced count to folio flags.
-+ * @flags: pointer to the folio flags
-+ * @refs: referenced / access count number, between 0 and LRU_REFS_MAX, inclusive.
-+ *
-+ * For MGLRU, PG_referenced holds the first ref, and the extra bits hold the
-+ * remaining refs. For classical LRU the extra bits are not used, so it can
-+ * also be seen as the refs count never exceeds 1. In both cases, refs == 1
-+ * means PG_referenced is set and the extra bits are zero, and refs == 0 means
-+ * PG_referenced and the extra bits are all unset.
-+ */
-+static inline void lru_set_refs_flags(unsigned long *flags, unsigned int refs)
-+{
-+	VM_WARN_ON_ONCE(refs > LRU_REFS_MAX);
-+	BUILD_BUG_ON(LRU_REFS_MAX != (LRU_REFS_MASK >> LRU_REFS_PGOFF) + 1);
-+
-+	*flags &= ~LRU_REFS_FLAGS;
-+	if (!refs)
-+		return;
-+	*flags |= (BIT(PG_referenced) | ((refs - 1UL) << LRU_REFS_PGOFF));
-+}
-+
-+/**
-+ * lru_get_refs_flags - Return LRU referenced / access count from folio flags.
-+ * @flags: folio flags
-+ *
-+ * Reads the LRU referenced count set by lru_set_refs_flags().
-+ */
-+static inline int lru_get_refs_flags(unsigned long flags)
-+{
- 	if (!(flags & BIT(PG_referenced)))
- 		return 0;
- 	/*
-@@ -155,11 +211,24 @@ static inline int folio_lru_refs(const struct folio *folio)
- 	return ((flags & LRU_REFS_MASK) >> LRU_REFS_PGOFF) + 1;
- }
- 
--static inline int folio_lru_gen(const struct folio *folio)
-+static inline int folio_lru_refs(const struct folio *folio)
- {
--	unsigned long flags = READ_ONCE(folio->flags.f);
-+	return lru_get_refs_flags(READ_ONCE(*const_folio_flags(folio, 0)));
-+}
-+
-+static inline void folio_set_lru_refs(struct folio *folio, unsigned int refs)
-+{
-+	unsigned long new_flags, old_flags = READ_ONCE(*folio_flags(folio, 0));
-+
-+	do {
-+		new_flags = old_flags;
-+		lru_set_refs_flags(&new_flags, refs);
-+	} while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
-+}
- 
--	return ((flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
-+static inline int folio_lru_gen(const struct folio *folio)
-+{
-+	return lru_get_gen_flags(READ_ONCE(*const_folio_flags(folio, 0)));
- }
- 
- static inline bool lru_gen_is_active(const struct lruvec *lruvec, int gen)
-@@ -270,7 +339,7 @@ static inline bool lru_gen_add_folio(struct lruvec *lruvec, struct folio *folio,
- 	gen = lru_gen_from_seq(seq);
- 	flags = (gen + 1UL) << LRU_GEN_PGOFF;
- 	/* see the comment on MIN_NR_GENS about PG_active */
--	set_mask_bits(&folio->flags.f, LRU_GEN_MASK | BIT(PG_active), flags);
-+	set_mask_bits(folio_flags(folio, 0), LRU_GEN_MASK | BIT(PG_active), flags);
- 
- 	lru_gen_update_size(lruvec, folio, -1, gen);
- 	/* for folio_rotate_reclaimable() */
-@@ -295,7 +364,7 @@ static inline bool lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio,
- 
- 	/* for folio_migrate_flags() */
- 	flags = !reclaiming && lru_gen_is_active(lruvec, gen) ? BIT(PG_active) : 0;
--	flags = set_mask_bits(&folio->flags.f, LRU_GEN_MASK, flags);
-+	flags = set_mask_bits(folio_flags(folio, 0), LRU_GEN_MASK, flags);
- 	gen = ((flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
- 
- 	lru_gen_update_size(lruvec, folio, gen, -1);
-@@ -339,7 +408,6 @@ static inline bool lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio,
- 
- static inline void folio_migrate_refs(struct folio *new, const struct folio *old)
- {
--
- }
- #endif /* CONFIG_LRU_GEN */
- 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 84e237f2c17d..775d6279dfea 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -500,6 +500,7 @@ enum lruvec_flags {
- 
- #define LRU_GEN_MASK		((BIT(LRU_GEN_WIDTH) - 1) << LRU_GEN_PGOFF)
- #define LRU_REFS_MASK		((BIT(LRU_REFS_WIDTH) - 1) << LRU_REFS_PGOFF)
-+#define LRU_REFS_MAX		BIT(LRU_REFS_WIDTH)
- 
- /*
-  * For folios accessed multiple times through file descriptors,
-diff --git a/mm/folio.c b/mm/folio.c
-index c02dcea9c03c..fb874fe492b2 100644
---- a/mm/folio.c
-+++ b/mm/folio.c
-@@ -353,26 +353,28 @@ static void __lru_cache_activate_folio(struct folio *folio)
- 
- static void lru_gen_inc_refs(struct folio *folio)
- {
--	unsigned long new_flags, old_flags = READ_ONCE(folio->flags.f);
-+	unsigned long new_flags, old_flags = READ_ONCE(*folio_flags(folio, 0));
-+	int refs;
- 
- 	if (folio_test_unevictable(folio))
- 		return;
- 
- 	/* see the comment on LRU_REFS_FLAGS */
--	if (!folio_test_referenced(folio)) {
--		set_mask_bits(&folio->flags.f, LRU_REFS_MASK, BIT(PG_referenced));
-+	if (!folio_lru_refs(folio)) {
-+		folio_set_lru_refs(folio, 1);
- 		return;
- 	}
- 
- 	do {
--		if ((old_flags & LRU_REFS_MASK) == LRU_REFS_MASK) {
-+		new_flags = old_flags;
-+		refs = lru_get_refs_flags(old_flags);
-+		if (refs == LRU_REFS_MAX) {
- 			if (!folio_test_workingset(folio))
- 				folio_set_workingset(folio);
- 			return;
- 		}
--
--		new_flags = old_flags + BIT(LRU_REFS_PGOFF);
--	} while (!try_cmpxchg(&folio->flags.f, &old_flags, new_flags));
-+		lru_set_refs_flags(&new_flags, refs + 1);
-+	} while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
- }
- 
- static bool lru_gen_clear_refs(struct folio *folio)
-@@ -384,7 +386,8 @@ static bool lru_gen_clear_refs(struct folio *folio)
- 	if (gen < 0)
- 		return true;
- 
--	set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS | BIT(PG_workingset), 0);
-+	folio_set_lru_refs(folio, 0);
-+	folio_clear_workingset(folio);
- 
- 	rcu_read_lock();
- 	seq = READ_ONCE(folio_lruvec(folio)->lrugen.min_seq[type]);
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index bf2786c7247d..71adf4bf5074 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -863,19 +863,22 @@ static bool lru_gen_set_refs(struct folio *folio, const vma_flags_t *vma_flags)
- 	if (!folio_test_referenced(folio) && !folio_test_workingset(folio)) {
- 		/* Activate file-backed executable folios after first usage. */
- 		if (is_exec_file_folio(folio, vma_flags)) {
--			set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, BIT(PG_workingset));
-+			folio_set_workingset(folio);
-+			folio_set_lru_refs(folio, 0);
- 			return true;
- 		}
- 
--		set_mask_bits(&folio->flags.f, LRU_REFS_MASK, BIT(PG_referenced));
-+		folio_set_lru_refs(folio, 1);
- 		return false;
- 	}
- 
- 	/* Promote on second access */
--	if (folio_lru_refs(folio) > 1)
--		set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, BIT(PG_workingset));
--	else
-+	if (folio_lru_refs(folio) > 1) {
-+		folio_set_workingset(folio);
-+		folio_set_lru_refs(folio, 0);
-+	} else {
- 		folio_mark_accessed(folio);
-+	}
- 	return true;
- }
- #else
-@@ -3291,11 +3294,10 @@ static bool positive_ctrl_err(struct ctrl_pos *sp, struct ctrl_pos *pv)
-  ******************************************************************************/
- 
- /* promote pages accessed through page tables */
--static int folio_update_gen(struct folio *folio, int gen, const vma_flags_t *vma_flags)
-+static int folio_update_gen(struct folio *folio, int new_gen, const vma_flags_t *vma_flags)
- {
--	unsigned long new_flags, old_flags = READ_ONCE(folio->flags.f);
--
--	VM_WARN_ON_ONCE(gen >= MAX_NR_GENS);
-+	unsigned long new_flags, old_flags = READ_ONCE(*folio_flags(folio, 0));
-+	int old_gen;
- 
- 	/*
- 	 * See the comment on LRU_REFS_FLAGS, and activate file-backed
-@@ -3304,31 +3306,34 @@ static int folio_update_gen(struct folio *folio, int gen, const vma_flags_t *vma
- 	 */
- 	if (!folio_test_referenced(folio) && !folio_test_workingset(folio) &&
- 	    !is_exec_file_folio(folio, vma_flags)) {
--		set_mask_bits(&folio->flags.f, LRU_REFS_MASK, BIT(PG_referenced));
-+		folio_set_lru_refs(folio, 1);
- 		return -1;
- 	}
- 
- 	do {
-+		old_gen = lru_get_gen_flags(old_flags);
-+		new_flags = old_flags;
-+
- 		/* lru_gen_del_folio() has isolated this page? */
--		if (!(old_flags & LRU_GEN_MASK))
--			return -1;
-+		if (old_gen < 0)
-+			break;
- 
--		new_flags = old_flags & ~(LRU_GEN_MASK | LRU_REFS_FLAGS);
--		new_flags |= ((gen + 1UL) << LRU_GEN_PGOFF) | BIT(PG_workingset);
--	} while (!try_cmpxchg(&folio->flags.f, &old_flags, new_flags));
-+		lru_set_gen_flags(&new_flags, new_gen);
-+		lru_set_refs_flags(&new_flags, 0);
-+		new_flags |= BIT(PG_workingset);
-+	} while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
- 
--	return ((old_flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
-+	return old_gen;
- }
- 
- static int __folio_inc_gen(struct folio *folio, int old_gen, bool *increased)
- {
--	unsigned long new_flags, old_flags = READ_ONCE(folio->flags.f);
-+	unsigned long new_flags, old_flags = READ_ONCE(*folio_flags(folio, 0));
- 	int new_gen;
- 
--	VM_WARN_ON_ONCE_FOLIO(!(old_flags & LRU_GEN_MASK), folio);
--
- 	do {
--		new_gen = ((old_flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
-+		new_gen = lru_get_gen_flags(old_flags);
-+
- 		/* folio_update_gen() has promoted this page? */
- 		if (new_gen >= 0 && new_gen != old_gen) {
- 			if (increased)
-@@ -3336,11 +3341,12 @@ static int __folio_inc_gen(struct folio *folio, int old_gen, bool *increased)
- 			return new_gen;
- 		}
- 
-+		new_flags = old_flags;
- 		new_gen = (old_gen + 1) % MAX_NR_GENS;
- 
--		new_flags = old_flags & ~(LRU_GEN_MASK | LRU_REFS_FLAGS);
--		new_flags |= (new_gen + 1UL) << LRU_GEN_PGOFF;
--	} while (!try_cmpxchg(&folio->flags.f, &old_flags, new_flags));
-+		lru_set_gen_flags(&new_flags, new_gen);
-+		lru_set_refs_flags(&new_flags, 0);
-+	} while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
- 
- 	if (increased)
- 		*increased = true;
-@@ -4785,7 +4791,7 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
- 
- 	/* see the comment on LRU_REFS_FLAGS */
- 	if (!folio_test_referenced(folio))
--		set_mask_bits(&folio->flags.f, LRU_REFS_MASK, 0);
-+		folio_set_lru_refs(folio, 0);
- 
- 	success = lru_gen_del_folio(lruvec, folio, true);
- 	VM_WARN_ON_ONCE_FOLIO(!success, folio);
-@@ -5017,8 +5023,10 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 		}
- 
- 		/* don't add rejected folios to the oldest generation */
--		if (lru_gen_folio_seq(lruvec, folio, false) == min_seq[type])
--			set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, BIT(PG_active));
-+		if (lru_gen_folio_seq(lruvec, folio, false) == min_seq[type]) {
-+			folio_set_lru_refs(folio, 0);
-+			folio_set_active(folio);
-+		}
- 	}
- 
- 	move_folios_to_lru(&list);
--- 
-2.39.3 (Apple Git-146)
+    if (quota->esz && quota->charged_sz >= quota->esz)
+            s->stat.qt_exceeds++;
 
+Later, to handle cases where 'remaining quota < min_region_sz',
+damos_quota_is_full() was added [2].  When this function was added,
+quota->esz was replaced with !damos_quota_is_set(quota).
 
->
-> Thanks.
+    static bool damos_quota_is_full(struct damos_quota *quota,
+            unsigned long min_region_sz)
+    {
+        if (!damos_quota_is_set(quota))
+            return false;
+        if (quota->charged_sz >= quota->esz)
+            return true;
+        /*
+         * DAMOS action is applied per region, so <min_region_sz remaining
+         * quota means the quota is effectively full.
+         */
+        return quota->esz - quota->charged_sz < min_region_sz;
+    }
 
+With the introduction of DAMOS_QUOTA_GOAL_TUNER_TEMPORAL [3], quota->
+esz == 0 carries two meanings: "unlimited quota" and "should not
+be applied".  This overlap causes the damos_quota_is_full() check to
+return true incorrectly in the temporal goal scenario, leading to the
+false positive in the statistic.
+
+> 
+> I feel like we also found similar case that people send patches to change some
+> behaviors that confusing them, but not really problematic.  That sometimes
+> waste unnecessary time for understanding the intention of the patch.  Please
+> feel free to ask question first, if you found some confusing behaviors and
+> don't know why it behaves in the way or if it is a real problem.
+
+I will ask questions on the first in the future when I encounter
+ambiguous behaviors, to ensure we are aligned on whether it's a real
+problem before drafting a patch.
+
+[1] 6268eac34ca30 ("mm/damon/schemes: account how many times quota limit has exceeded")
+    (Fri Jan 14 14:10:202022 -0800)
+[2] c7ec7d5f6b3d1 ("mm/damon/core: handle <min_region_sz remaining quota as empty")
+    (Mon Apr 27 18:33:50 2026 -0700)
+[3] af738a6a00c1f ("mm/damon/core: introduce DAMOS_QUOTA_GOAL_TUNER_TEMPORAL")
+    (Mon Mar 9 18:05:19 2026 -0700)
+
+Best regards,
+Rui Yan
 
