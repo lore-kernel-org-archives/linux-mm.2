@@ -4,71 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F4C9C624D4
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 16:35:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB009C624D4
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 16:36:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E1F86B0088; Wed,  2 Sep 2026 12:35:58 -0400 (EDT)
+	id C53936B0092; Wed,  2 Sep 2026 12:36:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BA5B6B00AD; Wed,  2 Sep 2026 12:35:58 -0400 (EDT)
+	id C03F76B00AD; Wed,  2 Sep 2026 12:36:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F11A46B00B2; Wed,  2 Sep 2026 12:35:57 -0400 (EDT)
+	id AF30E6B00B2; Wed,  2 Sep 2026 12:36:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C41FE6B0088
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 12:35:57 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 833486B0092
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 12:36:24 -0400 (EDT)
 Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3B5C01A0270
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:35:57 +0000 (UTC)
-X-FDA: 85169373954.22.94CB88F
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 126221C1898
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:36:24 +0000 (UTC)
+X-FDA: 85169375088.22.09B3923
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 6970B40009
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:35:55 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RUx12r4I;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 22871C0007
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:36:21 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Te8Jy+zU;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788366982;
+	b=T11SPEq++vstj/GW82HsuoiE0ucv6AGAnhMgVASk2gNkJLAaQKbKE2ewG6LRghLPJ8iknq
+	NDZhR5mxaE/9K2ysTaaXhaJoMqp9woAXSq32L8ddUXugUgG2fEf2RZ857Xww6EIwIUXRt2
+	wgWB3dSQVhSiJWkXw+RyVzYZbbr1kG4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788366955;
+	s=arc-20220608; t=1788366982;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ac8jsX+DMtEi6vVSz6czKKoo3d1DKY5/tg/cm1MFQFw=;
-	b=RXvdRZ+8cn7Yl49ABOOjX0Yvll/iH/J3GVt0jUpsbXjBd7T3j63bPZ3QT/fDFAZ0wkUw/O
-	EylZcAmcGKBh7brg5phoZ71jczm9XAS2BCSc2M6xgeBt207rp9yErdpjuw+ND4AG67aOyw
-	ZXcv5k99vjix7yn6kRqorxB2C+xoPy0=
+	bh=X9qWhK86vAI0vw7PjTHIwO4q0yPRh2De+EC1ifXqR+I=;
+	b=GF3gTZuFYS8eVs2zCbvAfGuYrdVHWxfe72creBJKJqhZLmzKhIEb/YTwYBKqah+iDr8EdU
+	Jkl2Li/VfImf2uN8gX1JOc1cVjngHxbXSnMDaVuN5MSfNtlmKBQNe1lbCWSAyFHEgXl1K0
+	v5/iGCMY58zcwgQ0Z9zgJYKMvxzOeHM=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RUx12r4I;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Te8Jy+zU;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788366955;
-	b=rNMn9YFTdJmRSZwaIL7yo+GwKghXLbtVbXFIllIpwO9SJMFodnPSdY2WV2k+aHnh50WnZh
-	AIFavedVvtyPR0LN44dWivJAmT8GgrsWoD9KDc2enUyb8me7Fq95n/6tCb44y4k6g+5DJT
-	pO4FKZyu/a8rw8T8uJmApCKuyB4oD/4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C287040514;
-	Wed,  2 Sep 2026 16:35:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8512B1F000E9;
-	Wed,  2 Sep 2026 16:35:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6EA9E41942;
+	Wed,  2 Sep 2026 16:36:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05A3E1F000E9;
+	Wed,  2 Sep 2026 16:36:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788366953;
-	bh=ac8jsX+DMtEi6vVSz6czKKoo3d1DKY5/tg/cm1MFQFw=;
+	s=k20260515; t=1788366981;
+	bh=X9qWhK86vAI0vw7PjTHIwO4q0yPRh2De+EC1ifXqR+I=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=RUx12r4IWkNLDsowdrG0tIOgZVYvTtRlYFpwS7Ps2MMhUDo8igPTsx5tqCIx+dq7Z
-	 P45rLsyOHNZ648U94ptQfeZK2A6TIPNQ1jReHuNNaBFn1FpxVy8yWXLcWIeku6ogf3
-	 phduk3qLzEe+N5cPT55mwg37gegxI/Km0KI7fLBcmLItsmKIyiPbKfe055cCnOgsmT
-	 Hj6e5Xzpy/SOMfU4n1Jfo/4KJG55kbI+nqf+WVv1ur153KlNEiDkd3z+uNSX3O5xxx
-	 wK869ki2JRA8vPt7m9JGtU8shMYnwNuJVRQ2YKntYe6yvK8KFGuG1wfJG6pEikmfAv
-	 4BdET61TLKMcQ==
-Message-ID: <86fc18f6-8c21-4738-9a10-64a2fa48cc1f@kernel.org>
-Date: Wed, 2 Sep 2026 18:35:48 +0200
+	b=Te8Jy+zUvZ0hd3XPvJweck6BpFfsKl4b97KSDSeiEwaoxE8x281Ees0rBoToIajjE
+	 VaBnjFMzSefJGYmXbhUagIcNzPwWXHZIbhu5C1r9Nz6l97tYk8i5D8i30945uNkD+/
+	 N6uO+Jz651ZEyyf9kDC9lkHkuN/W8Dzrvu34NsDPALyCF1jTmSc8IaagV0zXrh8YqM
+	 SG9dUmXPNncJ+LMw6rlHX6DWA5kWD+JN884AXB2TAuJEGk7mQcGfMBBltHfReDw+6L
+	 C5vMZb/dARDxGVaFxBZnGQuxfEXA+uvI04JxDzmZtlLjInnxlOv5Msta+IqaZbOts0
+	 jKL8IRkjqT2rg==
+Message-ID: <a16ecfe1-5e1d-488a-9c63-7ca38f099117@kernel.org>
+Date: Wed, 2 Sep 2026 18:36:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] mm: replace PF_KSWAPD flag with kthread_func() check
+Subject: Re: [PATCH 4/4] mm: replace PF_KCOMPACTD flag with kthread_func()
+ check
+Content-Language: en-US
 To: Kefeng Wang <wangkefeng.wang@huawei.com>, brauner@kernel.org,
  djwong@kernel.org, cem@kernel.org, akpm@linux-foundation.org,
  surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev,
@@ -77,9 +79,8 @@ To: Kefeng Wang <wangkefeng.wang@huawei.com>, brauner@kernel.org,
 Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  linux-mm@kvack.org
 References: <20260902131653.1338227-1-wangkefeng.wang@huawei.com>
- <20260902131653.1338227-4-wangkefeng.wang@huawei.com>
+ <20260902131653.1338227-5-wangkefeng.wang@huawei.com>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
  KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
@@ -119,17 +120,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20260902131653.1338227-4-wangkefeng.wang@huawei.com>
+In-Reply-To: <20260902131653.1338227-5-wangkefeng.wang@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: e83izu9eihp9simfrwjumxzn5ajsgjym
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6970B40009
 X-Rspam-User: 
-X-HE-Tag: 1788366955-61509
-X-HE-Meta: U2FsdGVkX1+q077jxOl/xXjSdRA8wtiUYkaLSt75cgq6IbhHWw6IpawGDVfQxlOBkiFE1PLcdPEW7NZWXENF74qsMmb6EhG3BWVa5esHgSCmbBhHLHwEMAa/SeVJBbd+kiMOWk0l12kKq4C+boQu8PAh8/6FI6WA1xqsDSM4knfcdsFgvF2teBGa6VFNxNZXt0PdRNpLgNudi++z6+EUPO9gg4hB5PMao0kmYg0MLgtgmLIQupOo8eFbTxv5N8KYJbeau9ZDlIvwcv2EnRjieOPzJH6wlD2XJqfp0dZthmBlf14z3N3wlc6dKc3sYhNLhFiMXxr3h6oJOmtWkWKY+oBPh06aXmsR1mWYGNEHCKTa351bMAXCt/RQi1AYgPwxJDbPIYIXIZxCkwSSKwJkCwKyQXqsc+uiy4HNaz+MZg5O6b6kJ/hWSP6e/+nVN+TZxqsS9qP+MYwu8fTQs3PwCc/zEQjJe7OmMw11KO3s3Hl1+XhPzQ72Fw8Ny3hv+MDmKUHVFQmOYPi5PEQWNGKIOPKVm7xrqPsEV7CfSgLP0bIjOw2AoKsGs1M1LUPalVl7UNDVJDX0nqmeQBFgFMQ4m4xgFr4B0NWppH1+RfGuXIP+bZQf8teqK8RObqAG58Kh8F2LmvT9mG4iyrNOkO7uroh3V8Hp+TgrWBus4eDQJhuzzeUbI38e3Pkxw8i8wF8Vvs9wIk6zq7TJCffau/AMm5G4Q5WVGbnMBHDIaNivudzchVKwWypDGdWMVIqGbXxNfrii/jcNrfA0QbgJaWGK+xcSiS1bAFM5ZMppM3lsFhjmzutoFUMr1t7Sbzt7YhYHLFC0beOQP55ijLmqyEWzqnDX77cf7YGlg0j0Eb+aSxdDRUUfv4C5UluY7aV2C4k+C1+5OBOzoaT6vOeqWv8DQJ9z2DsW8JYCnENX+MB6fWtCrzxVHiJS8xMJGTC7KAbg1gj9g7HfmTcbNWYDmns
- ol0LpXKy
- VpyZwzmawE5CntO7Xd8Y/tSe7wqh6g1OplWr7xlcCFvwd5n0VYsDkC4ADY/6u6lm8zW19bpDfo1Wok45n0zhemRxe8Np3Twyhrn0gQy7hElwqyBPARMV9c9lXjldXiiC4J+PWEQ5COfFhufRnZ6NG+egP52FtXOFNNAPrWWDIJ0nk2hw0WkQlp5j1k2cPwjzSGe6azoU26t6DnNHHUz4QQn21KAx7b/8rx5/ky3hsmGW1PQa4Z9tG08FhDBGmT9M1gsEHs/eIHT0srg9rt9OC3+TE958biy7mLjmGR2Do7rQqDbL1Vzrrj1JakvkjJQDNAuQjf/TJBwMIdF+6rsPrXSnQT6sha3NqXfDJ
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 22871C0007
+X-Stat-Signature: bestx1o5a55zk6aau6rrg9cjb5u3zkep
+X-HE-Tag: 1788366981-823043
+X-HE-Meta: U2FsdGVkX18EJn4m+4I9HxsYj/Y7c/TpqtTt6/U1343XbB0vsAZ4eqxa6NVQLu1u5Tl+Hvz8sDFk/PT0CYRGsfOEjXDjjLuAsQZTqxwRLaCS6MC7lq1MdI3k3vGYRYKAei1DKOBTR7DNK6PbiIja0+F5a2SygXEZfh7wjlW/Q+lkIKnZYzFjuzxcqPJaJM94EFQmRy7eHWHNBnFZQFEmzhm8Pk9zRPiZRIJI1CIpG/qUFGju3dOjaduOefIA8Mh7clOn5UoVVk1dUydOrsK/1Cm6BhDbKOFaMTVkk+SPr16DHgUCxmKtHCH80zpJvi2cRySGncGTc037KiPlJjt/6U7rrstH9Gwo/PPWHO6vNm1HKAy3uE4EuJoL74jWGowtMbOCyEryVbmpndqO3YDJPu0SXqA+U7wT3mtdQW/tBZB0cR/88zJMYYIX5CYd1qAfJLj+gZQNnU2CR0fg5sBxFaGs6zflcx2Zpn46sLwsmqdKj3myXW3nBUJmycEnJ/pFuXAbIvZD4KD5s3Dq6k07M+TFKp+j2wyYpTeBSp5P7SYuzU1gQPYIicHqa5YRP1IOmydE5WuHLMoHMC0ncc0SIapdiWPgB4LykkKi/C2Fyl9hmxiB0ehu2ZeVMUn0c3VAaXAWNAM4NupkRnE9c5eekuJiVlwKuTIByl1gfkwFeuQS6Wk+4peeiiRUTsKaoJZXxGtm+l5BTGCgnEGmr2lj8XEUA0RngoYMTYc35HkR36T3vPOsP44/oNHVpauklYAEJqyA/GaWscH1d1ThnpS72ScAR2U1yTNlqhPhSewNZI3SFdwmX4vgc35zA3sdEQ0iPYk/5PjIteVuqynqQ7jiX1pvSLgScSTV6vKUpFtvJAWXyZhkdsfRwB7jIaQYmbRnw5Mwi1oF2qKyZ1Gu8a5Re74cYo2VUrxOK3usYcXLrUDuOWx8fekkblp9mg5XSyhAUvgfQiO2GbIasAARxdn
+ KfsEJJvO
+ DTDstz2KFz78b7fSvLEZ3YBxvFqvbTlL1+hlJMYb4YEalYN5+1a9fAopwgMopVNr90gvhwvGjpwfQC+NADrjnno7UIRXyIQnSdxROKuI7VuuD6t2ZSkHFUlwFDzBvHaBzazU7tIyT2dI0yXQNvnrLoKh1Zf7Z5NqFiH7zz4qqtXEFnoyFRINJO4fn0f9gNcwY6Ag3Pw7ISbI2ONu/rntU4aVy2Uam35zlfunz6B28gTZOH6qxR/v9VKEZIMFpQmc+efBA7gtaQHRYbzomTBbkrGFQHgSoj+ZW1VtPUYJjIZTEcikEtA6tjLSSjPCWyywZhpMnYC/5x6/YHBLwGuhNDZwE4t9FwJ6Vze/E
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,107 +139,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/2/26 15:16, Kefeng Wang wrote:
-> The preceding commits removed the last consumer that propagated
-> PF_KSWAPD beyond kswapd itself (XFS btree split worker inheritance).
-> The only remaining setter of PF_KSWAPD is kswapd(), and every
-> current_is_kswapd() caller only needs to check whether the current
-> task *is* the kswapd thread, not whether it inherited the flag.
+> PF_KCOMPACTD was introduced by commit ce6d9c1c2b5c ("NFS: fix
+> nfs_release_folio() to not deadlock via kcompactd writeback") so
+> nfs_release_folio() could detect kcompactd context and skip
+> writeback.  The flag is only consumed by current_is_kcompactd(),
+> whose sole caller is nfs_release_folio().
 > 
-> Replace the flag-based test with kthread_func(current) == kswapd,
-> freeing the 0x00020000 PF flag bit.
+> Replace the flag-based check with kthread_func(current) == kcompactd,
+> freeing the 0x00010000 PF flag bit.
 > 
 > Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 
 Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
-> ---
->  include/linux/sched.h                    |  2 +-
->  include/linux/swap.h                     |  7 +------
->  mm/vmscan.c                              | 10 ++++++++--
->  tools/sched_ext/include/scx/common.bpf.h |  1 -
->  4 files changed, 10 insertions(+), 10 deletions(-)
-> 
-> diff --git a/include/linux/sched.h b/include/linux/sched.h
-> index 8b3d47a325cc..86394121b6c0 100644
-> --- a/include/linux/sched.h
-> +++ b/include/linux/sched.h
-> @@ -1809,7 +1809,7 @@ extern struct pid *cad_pid;
->  #define PF_USER_WORKER		0x00004000	/* Kernel thread cloned from userspace thread */
->  #define PF_NOFREEZE		0x00008000	/* This thread should not be frozen */
->  #define PF_KCOMPACTD		0x00010000	/* I am kcompactd */
-> -#define PF_KSWAPD		0x00020000	/* I am kswapd */
-> +#define PF__HOLE__00020000	0x00020000
->  #define PF_MEMALLOC_NOFS	0x00040000	/* All allocations inherit GFP_NOFS. See memalloc_nfs_save() */
->  #define PF_MEMALLOC_NOIO	0x00080000	/* All allocations inherit GFP_NOIO. See memalloc_noio_save() */
->  #define PF_LOCAL_THROTTLE	0x00100000	/* Throttle writes only against the bdi I write to,
-> diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index a72ecf12c00d..fc290e29e4a9 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -25,12 +25,6 @@
->  #define SWAP_FLAGS_VALID	(SWAP_FLAG_PRIO_MASK | SWAP_FLAG_PREFER | \
->  				 SWAP_FLAG_DISCARD | SWAP_FLAG_DISCARD_ONCE | \
->  				 SWAP_FLAG_DISCARD_PAGES)
-> -
-> -static inline int current_is_kswapd(void)
-> -{
-> -	return current->flags & PF_KSWAPD;
-> -}
-> -
->  /*
->   * MAX_SWAPFILES defines the maximum number of swaptypes: things which can
->   * be swapped to.  The swap type and the offset into that swap type are
-> @@ -339,6 +333,7 @@ void check_move_unevictable_folios(struct folio_batch *fbatch);
->  
->  extern void __meminit kswapd_run(int nid);
->  extern void __meminit kswapd_stop(int nid);
-> +bool current_is_kswapd(void);
->  
->  #ifdef CONFIG_SWAP
->  int add_swap_extent(struct swap_info_struct *sis, unsigned long start_page,
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 07ba86634b84..775d3f71a9de 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -7468,7 +7468,7 @@ static int kswapd(void *p)
->  	 * us from recursively trying to free more memory as we're
->  	 * trying to free the first piece of memory in the first place).
->  	 */
-> -	tsk->flags |= PF_MEMALLOC | PF_KSWAPD;
-> +	tsk->flags |= PF_MEMALLOC;
->  	set_freezable();
->  
->  	WRITE_ONCE(pgdat->kswapd_order, 0);
-> @@ -7518,11 +7518,17 @@ static int kswapd(void *p)
->  			goto kswapd_try_sleep;
->  	}
->  
-> -	tsk->flags &= ~(PF_MEMALLOC | PF_KSWAPD);
-> +	tsk->flags &= ~PF_MEMALLOC;
->  
->  	return 0;
->  }
->  
-> +bool current_is_kswapd(void)
-> +{
-> +	return kthread_func(current) == kswapd;
-> +}
-> +EXPORT_SYMBOL_GPL(current_is_kswapd);
-> +
->  /*
->   * A zone is low on free memory or too fragmented for high-order memory.  If
->   * kswapd should reclaim (direct reclaim is deferred), wake it up for the zone's
-> diff --git a/tools/sched_ext/include/scx/common.bpf.h b/tools/sched_ext/include/scx/common.bpf.h
-> index 76f5e025e107..3e095343ae84 100644
-> --- a/tools/sched_ext/include/scx/common.bpf.h
-> +++ b/tools/sched_ext/include/scx/common.bpf.h
-> @@ -32,7 +32,6 @@
->  #define PF_IO_WORKER			0x00000010	/* Task is an IO worker */
->  #define PF_WQ_WORKER			0x00000020	/* I'm a workqueue worker */
->  #define PF_KCOMPACTD			0x00010000      /* I am kcompactd */
-> -#define PF_KSWAPD			0x00020000      /* I am kswapd */
->  #define PF_KTHREAD			0x00200000	/* I am a kernel thread */
->  #define PF_EXITING			0x00000004
->  #define CLOCK_MONOTONIC			1
 
 
