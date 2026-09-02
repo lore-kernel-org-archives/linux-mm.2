@@ -4,168 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ED58C61DD3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 01:57:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F9C3C624D0
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 02:07:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40CBE6B008C; Tue,  1 Sep 2026 21:57:33 -0400 (EDT)
+	id 249856B0088; Tue,  1 Sep 2026 22:07:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E3F56B0092; Tue,  1 Sep 2026 21:57:33 -0400 (EDT)
+	id 1FB5E6B008A; Tue,  1 Sep 2026 22:07:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D39F6B0095; Tue,  1 Sep 2026 21:57:33 -0400 (EDT)
+	id 0C5E56B008C; Tue,  1 Sep 2026 22:07:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0410A6B008C
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 21:57:32 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7F04680675
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 01:57:32 +0000 (UTC)
-X-FDA: 85167160344.17.99909F6
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010054.outbound.protection.outlook.com [52.101.193.54])
-	by imf28.hostedemail.com (Postfix) with ESMTP id BC63AC0004
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 01:57:29 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Cbv7rHO7;
-	spf=pass (imf28.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.54 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788314249;
-	b=FfK4DZSvgwJcCTOdOkJ576DAmsc4FYfqo5piSkpI/bvYbnivv2WneUL4jWokYGdEVMJWnx
-	Zx3HTHZPAiQp8B6H685Ys33j86dCgOrg9jEoSM6Qr6irau5aCMbA2vAQfyLD2wepQG0tu6
-	24Rc1INgxpA4i2FXup8tfAqUmesni7s=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Cbv7rHO7;
-	spf=pass (imf28.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.54 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788314249;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C31066B0088
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 22:06:59 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2DA87A0695
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 02:06:59 +0000 (UTC)
+X-FDA: 85167184158.13.DCE6112
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 54A5E20002
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 02:06:57 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c7w+hL4c;
+	spf=pass (imf13.hostedemail.com: domain of devnull+bingfangguo.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+bingfangguo.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788314817;
+	b=Azukux/xoe/VH1nRu/3OVy1oZXYGPWzOxrOtyO+VajGQ/Hok/QpNytGyT0XV7vyTUTuQcW
+	z7rzjRhHxAibd5/rFdLN9JhwBel5gomFEcskNfRaKb3SaSHFSKcBYIMwVusDVBatYWKIDK
+	cRWOYN/C2a1kvdKX9Do5UmGZ/QVgb98=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c7w+hL4c;
+	spf=pass (imf13.hostedemail.com: domain of devnull+bingfangguo.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+bingfangguo.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788314817;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6ti2UZ22foCHCBQz5S6+4lGKIgAZLw7P4tSyC45CFbE=;
-	b=4AAfsx/vLPf1JWJBSS+5LbA+fc3JZK5Go36k5sRpCzh4GqvUvoqW4yl7edom1IIZdhvtXj
-	Babbc3ZSi4Aptisvc/ZAWNLIbeJok6bkffCNmDxvdAOQaslHBuhQ71s/0taud1Er+Emac5
-	TkmVwVmDGNH601uAyqhGAGwleG2ThVM=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=y600fBY6Sg0ve5s+zGHte3H7VwyqNwQR3q4AIr1eBjoNbe9Ju0FLcDh6vnuxWcHhdgMO4NDv8wO7VtzAGCed8oU2ZgHX+8BL9x9nTXLriQUFFtYhiOo/+xNGRT40F0RVEvXSdOTUwpdohKxaC7TdsrosWUN8Ku7VFxrHoWXqQ6R+RWx1Xs9fBvHoD3I5YR839317YkFmgV2rgHIVfmUO1+aAf/2KN6c8F6imJHcQsGyVIudD4CQEjEDyWeVp/2Omt8MOw8Pi3I+sEOh+IkAuDAPwEDCNICibmeNEbzdbO3pojKqVlttj/OE8kCN0CVVWwQM1Wlkte6SKeAHTO4/25A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6ti2UZ22foCHCBQz5S6+4lGKIgAZLw7P4tSyC45CFbE=;
- b=Vn0UiDEkZL8JlTVLMW71Oxpqmvyijp5DxGvDK9JOVFibDLj4peg2FJwTq5lnjKrKvVZuxf4iouRvloU4/Pc1LoIAvxy2yg/KdEaDbGGKduTrkMd7KsVv1ersOWVGzexJB6OOsCP8lotx1KfTeP1z/96+Y6lOp6mIy+ww5jzfWwOt4AOlI2bAt5ytA+3fMhs9IVtWfC3kjRdveL23A0kvXQkkc3g6mTm33vRfkyahKK00k1P55bPfhT5pW4NjDYM8cpTu45Eth5Hl7PfMQYn7maX2zRqzKP0r2d73vpsKza6Yw//rEF0jZfYablS2pozAUuI7R7X8CQwbjXSIa14QPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6ti2UZ22foCHCBQz5S6+4lGKIgAZLw7P4tSyC45CFbE=;
- b=Cbv7rHO7aAHTaD5aDcw+s2cjaUK8O+7NOWfBXSMH+Q1GQiF1dVFhHIb7I8qfJIuS5i0yirg4a8hL7fMVi6QBjX3DRWi35uInwta9IR1YcUz/4UNvWLuQ5Rh/PjE22PipxoVw75JJLOdgDoghf8QzxEx1/V3y1o6CgMoVIpyrrc+HeNyVVsKfq2eRRkCAr1zBG5yZwdC5tF/fdIOnrx87UMO3zuLoHzx+lxpqW2K8k/YigWm6CV418Jla/X/tPhbDgt5t0qtB1KmhQTw1KuU5qLRydf77+U9P/WZcxKZuZPDDiQ/2t+JRk0jI7aQjZl2+k+iNGv2ocpmOfahmTKbeNw==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by SJ2PR12MB8157.namprd12.prod.outlook.com (2603:10b6:a03:4fa::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Wed, 2 Sep
- 2026 01:57:25 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0360.008; Wed, 2 Sep 2026
- 01:57:25 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 01 Sep 2026 21:57:24 -0400
-Message-Id: <DL4GHQ8J08N5.6G85VESOPSTY@nvidia.com>
-Cc: "David Hildenbrand" <david@kernel.org>, "Matthew Brost"
- <matthew.brost@intel.com>, "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Rakie
- Kim" <rakie.kim@sk.com>, "Byungchul Park" <byungchul@sk.com>, "Gregory
- Price" <gourry@gourry.net>, "Ying Huang" <ying.huang@linux.alibaba.com>,
- "Alistair Popple" <apopple@nvidia.com>, <linux-kernel@vger.kernel.org>
-To: "zhaozhengzhuo" <zhaozhengzhuo@uniontech.com>, "Andrew Morton"
- <akpm@linux-foundation.org>, <linux-mm@kvack.org>
-From: "Zi Yan" <ziy@nvidia.com>
-Subject: Re: [PATCH] mm/migrate_device: fix function name in kernel-doc
-X-Mailer: aerc 0.22.0
-References: <7D206FC95BDCAA0F+20260901065131.1759298-1-zhaozhengzhuo@uniontech.com>
-In-Reply-To: <7D206FC95BDCAA0F+20260901065131.1759298-1-zhaozhengzhuo@uniontech.com>
-X-ClientProxiedBy: BLAP220CA0004.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:208:32c::9) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=J1JJ7wmygYc1d3vkS2FdVjeOWkfpe+02p5qo7IACeNU=;
+	b=niG529z7Z90I/nM8qJoNvIDJUkCNqR5mr4kZXtXuicrLOvVyOpWQGUMqjiwHShadEvhf3o
+	50o8x+e8dc5ZJlRA7PcXHsTGjSwmN5/o565XPG4w7jnJGgka6c0i8AxOyJt0KVZcbQiqWJ
+	2IKdgdxxwOB0TUL/7b7+SPI4MOzhruk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 77B7C600D9;
+	Wed,  2 Sep 2026 02:06:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 21A8CC2BCFA;
+	Wed,  2 Sep 2026 02:06:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1788314816;
+	bh=W+UV8TiDB9hxCbUmT2Z+NnTHOSsKdjCuL9atiZ/pwTE=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=c7w+hL4crM7ahLXqISQQNg2oF7dv7MfiH0BjQg4I6dZc4a7X6l3apCW6x2C1srNR0
+	 V96GCPjxMweYug1wmSo6OmqzcJCF5iWguiHSq2AUAptdEWEWYE5VaFCssINoNH8xrC
+	 EE69A5SBp94UDyNCkGvq9WWA67Kr6az7c9MbdU9qcqwnbod5YYi5lzpf3HrZw2VcFn
+	 m7c5eL6DDcGd8UjExzBlPFo+FZKKhONMO3Eqp5zureF5YTyUVGn7dTSy+0yqWYc4Nt
+	 DX0R1TyzmSWG6487Jn1Jn/sKZUYxf8+KP7IumJAPUr+2An3iwnX3lZEflzS42p6sWx
+	 06tLoA+LVEyQw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EF3DEC624D0;
+	Wed,  2 Sep 2026 02:06:55 +0000 (UTC)
+From: Bingfang Guo via B4 Relay <devnull+bingfangguo.tencent.com@kernel.org>
+Date: Wed, 02 Sep 2026 10:06:46 +0800
+Subject: [PATCH v3] mm/memcg: clear folio memcg after changing per memcg
+ stats
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SJ2PR12MB8157:EE_
-X-MS-Office365-Filtering-Correlation-Id: 143a537e-1b29-4809-349d-08df089588d9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|10067099003|18002099003|22082099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	5YkAHF7O4/Xs48WUssEKZuFyt+/LNmqBoZsE9SWwXmlr0QVF9hUNQ1EVra+0LQ9QpW3XKek/b5Zfc9uhz5O6OQdFbeF2L1EFlulupZhKGLr7luUxs2G1QFOmZ9xuRnNbr/nGq22oTOht/cCzwIHcxPc2KM0dgApX1t2M6Z3j46zBKhdcUaOeUyx2fE4edqauIOv7zUBs7KVxuhJu+E4r78yNr/zsp1libbi+dCI5+O2DuEuyqP7OOB4s/x5r9gioUJUSKJPflbh/LGoT3eYVv5Agn6G/8eKb3vXRoeKc93EFDhmXsqsn7Z71vnnIIIRabYOqCU0mx6XnM/UrdwfF3Nk+x6VJiwHl561jQGkjBDcptjzPK7sXNahVebLcquyaSgQgco9mPSuSMasyMPaQiLKJBqI0Z3lmap3S8KWy7Hq/sl68idM8jzeyBnjIQo2H7hRF0yRBXX0pmE3tdE1FQ5Snu57YCTFGChoCI0q4vDcaudK3Kmjv/PUwAzuNoua/3ONZ6rtAJtjPnDVviAxMuacGzDqmLCs+tmNyHp3cLKgA4MictGDJ4HAx/aF8suih46EQqeuhylxVmRILy5AxguQq8aI6dpsHlvoAV8CJW+6q2K2N5/GnHFpV6hh/HPpvt4SbY/UzqZgRX3BI4I8DDj/h/JkpVWD5IFc8uTrxb1M=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(10067099003)(18002099003)(22082099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UEZZbXpPZEY1SThjWm5FS1ZIanNQbU9kMmIxNkF6cXlXYVg4UGdxd3Z6R2Ix?=
- =?utf-8?B?VFYwMGRrLzV0UHIwa05XbHhIZnZNd2xrNktyajczMFh0Y3VqVWRpUGJXSlIy?=
- =?utf-8?B?NHhrdEx1UGF0OUNEeHFoZGhqSzh5VHV5aEo5dWJWQ05EZldKTGFNeEg5K2VY?=
- =?utf-8?B?UnJEVDg0L3Rxb2llR1ZTZ3Qrb1ZqQmQ4WldTTG1mZzhFOFB6OGc2VWhHMGtt?=
- =?utf-8?B?Z1VFajUyZ3lBS2ZGZk12b3JuV0VId2lwWkYvcnRncUVES0puMzNMc293SkxR?=
- =?utf-8?B?alc2Mi9ucnBtcVRrTVlKckxaUE84bXFBdFZQbStMYVR1WlpyMG1WUHcwWmkv?=
- =?utf-8?B?QjA4dGxRVy9KaVJta3Y5NzdTVTVmOXlNam5iUGNBWGhhMTE5NzB6cFJYbWl2?=
- =?utf-8?B?dVZmY2lqbE9Vb2JaY2lmd1AxYnJLZC9HS1p0ekM5dnh3U0ozV0RNNTF5OTVY?=
- =?utf-8?B?OXNjZURjS2xrcXRSMFZ0MFBNK3VmaWpYK2xZd2w1d3RjRUw1ZVQ4MmZ5Y1BF?=
- =?utf-8?B?eHl3NnAyb1pWNHYrWlQxR3lDaFQ2b2d1NjMwam5ybzRQTXZtTi9nSDIyUmpF?=
- =?utf-8?B?TzkyaFZhSW55NkVZeDVXSkg2aGhJYXc4d0w1bTNoYVVKR1plTXNwM1p0OFQ4?=
- =?utf-8?B?aUxEaUc3Z3JEd3VDb0FjcFBsNUx3NmtaaVJPRW1ySGM2RjVrMjM3K1VFMUxw?=
- =?utf-8?B?czR0Rkw4WU42WVorY2RONzRmTWlmbXZWZjFYTnFsUFJFWUQvUXYyQ2RKK0N4?=
- =?utf-8?B?dlRaYVV5NWlMYUR4VzgwZEVvdk5EdUlqSGZ5QUFWQmtvWHdWZmlJZWI1Q1Jz?=
- =?utf-8?B?dHRmbFBadWlUWVpTRTYwRHRUeEVqbkI4Q1RsR0QvZmJKeTcwb0YwcXJDQ3g0?=
- =?utf-8?B?cjBLOFAxNWxjakZIbURlQlMvWU9WYlBMWVQvQkVTK0JURzNLT2t1TmhOQVEr?=
- =?utf-8?B?WlBXMlI0OXNYelNwR3dJMktEKy9pVUNtclFUU282Qk0wNUhpOHh3QVlMSEps?=
- =?utf-8?B?NDVkT2lnMnJUckVuMENSU2ZRSk9QR3FTTkZzbmtVWDJpcG9BU1VHZkQxekJ6?=
- =?utf-8?B?b2QxQlkwM2ZKcTdpNGVraFNBeGZpRDhyUTlQM3h5ditnUFBTNlE3UVV5eTBq?=
- =?utf-8?B?aEJNZ1E5VGROYk93NDNhRjVUOE96OE5US0lyK3lsM3hSVVZzN1orZnNkUnRk?=
- =?utf-8?B?czFXcDdUWWxEc0dIa2U5dUdOUlRBbnIyWXpUVEJselZVNENoSmtTSllkQ1Np?=
- =?utf-8?B?VENBRENVM1lpemNTUUZpQTNkQllpZERxeHI3MWFlWEp1TkRtRnNtcUlBMks4?=
- =?utf-8?B?dkFXdXZSRUhBczJJcERWcUZMS0d2dGVYaHJ4bGwzakZlRHBoUFVrVFVLTy9v?=
- =?utf-8?B?OG9Eb0IvMnhiL2I2eDBwMnRuZVJSSUpzSkZHZHR5UkMySUJzYkhtd01sb3Nm?=
- =?utf-8?B?QjhoWW5ObkRxWThkY3lYVmV6VWphZjRBZTdCNEZaS2h2SGZVVUgrbTN6WE92?=
- =?utf-8?B?MCtYbktPem9NNHNrdE01djFEVVVEM0FqdUJCaHgvL3JNZVpOZXZhWkZXUE0v?=
- =?utf-8?B?VHZGQVlmdUpHem9pdU9ZejU4QUQzNGQ3UzE0M0JRYnRNSUxmdEQ1QUJlWFUw?=
- =?utf-8?B?TFY4enBMSUlLOWtpaG1MbUwrYzZqR0NCOWg5azVnSHVpdk9LQjZSN0k1eVhW?=
- =?utf-8?B?K2JIR2V2QkFWdVFsQm1NMEcrN2lGOTZWVml6UUlyOXdhamp0RnZSOUk3Q081?=
- =?utf-8?B?S1p1MURvRzYzNEEvWWVCOWp2UkhTY0dNNURpR1oxcTJqc3ZJS0J4cGNWUW1B?=
- =?utf-8?B?bXJSSlllakJEZ1lYR2I4SlVxZDJwTUNOK1hsL280WWxkNEF0dnJuUWZUeVRa?=
- =?utf-8?B?MytFbUtDcFVueGx3M1FwT0hOWnQzT3J3NElnYTZ6UGNMTFlKZVVDZEdKWGdy?=
- =?utf-8?B?ZE1ETWJObSs1STEzdzdtZmU2M3prQ0p3TVZjWmdZSERWSjZtSExRa1pGSEYz?=
- =?utf-8?B?clo4b0V5VU1GemtvSXUvQnVXMXY4eE9Rb2xxTzZZYXpMRWVzSTN5YmVLTDZm?=
- =?utf-8?B?QitQaURuMlY4VEtYZTB5eDdQeWFIbGtoTFhtYzBwbDI1dlg4SllIS0FQRGtO?=
- =?utf-8?B?RHRidnI1Q1FvQ0tVekdTOXRyWjhwNUswcmM1cjJsZFhsc0xyaWt6QkZ3U252?=
- =?utf-8?B?UFBGb2o1RjBWcjExYTlVbm1rYW5aOUlFdFFMMVR2dUk4L2NxamJab0Iremha?=
- =?utf-8?B?aU1WT2crZFhtV0h3dUlGTDFicXhWOWJUV2F0OC93RzdDbXJNeUdNOTNiN2ZO?=
- =?utf-8?Q?G/dxQ1x0GkHOusMZCh?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 143a537e-1b29-4809-349d-08df089588d9
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2026 01:57:25.0905
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0tNJegMrFeHyrk/pFwoOpaMJWvF16lpgR1VvQU7hKp5rCCjtg9B7UHvZ0PxRp32/
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8157
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260902-memcg-swapcache-stats-fix-v3-1-795f5d455f7b@tencent.com>
+X-B4-Tracking: v=1; b=H4sIALWEl2oC/33NTQrCMBAF4KtI1kbyoyVx5T3ERTKZtlk0LUmIS
+ undTYsgbsqs3oP3zUwSRo+JXA8ziVh88mOoQR4PBHoTOqTe1UwEEw1TQtEBB+hoepoJDPRIUzY
+ 50da/KLeIrXQgTWtJ3U8Ra73Z90fNvU95jO/tVeFr+1Ul31ELp/WAKa7ROquaW8YAGPIJxoGsb
+ hE/S7NdS1RLgzFOSna+aPtvLcvyARjIpw8QAQAA
+To: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Bingfang Guo <bfguo@icloud.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Bingfang Guo <bingfangguo@tencent.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788314815; l=8591;
+ i=bingfangguo@tencent.com; s=20260812; h=from:subject:message-id;
+ bh=2wL0CIVj+NumZ4jS21cH6aQlJclRk7X+OAm/clFB4c8=;
+ b=fcHvD8Ml1Jpyd2jCE8ru20/mr66E0sgeh97kx0WqWyL3elbRz4LPQfUYPousj2Yc44IpoNrGC
+ PBf/irpcQR3AAqRw4MxgkGay3OVc2OiZIytxK0zwy5z5Arco2INWCYq
+X-Developer-Key: i=bingfangguo@tencent.com; a=ed25519;
+ pk=q7u9S7d5e7VijWrYF9O+vv9/XvqWduVGtwGtuCObAHE=
+X-Endpoint-Received: by B4 Relay for bingfangguo@tencent.com/20260812 with
+ auth_id=942
+X-Original-From: Bingfang Guo <bingfangguo@tencent.com>
+Reply-To: bingfangguo@tencent.com
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BC63AC0004
-X-Stat-Signature: stfirg69z6r7qxiho8tuoqfw4n47otre
-X-HE-Tag: 1788314249-182275
-X-HE-Meta: U2FsdGVkX1/LLz8BmcdiR/k4nyHnLdz23qTtzKtet5e2loT2g0YaocJr6T9zo1C4/wPtnzZWrhVHszQDxV3C1yv6pPvxxNmIBm+s9/Sh5f1qJMp9ASVZmgkb/vXiT4PSxUwMlyCBF9YafREB7hza9DVfA5dfbGP7Bv0Rz+yivjJ5wN2SyiNP+2vAluyGwf5geFXg97ReIXOsYftKAsEPISMOjUYI4Un4Not4l4XQlyZlrIk7mvA4YugGq35VmtbdF8QEFMoDOTrIyF/H2lXNNkCEJVg/54pCeydq0R+hRT7vKodhzDfpj14Qo6njDAXqzSIrEOAxBMLmKCPuWKULdRpbYAib8WvKZVu+RL/VfXuLWg8RgBCl6DhudliCuuonyZSxXyxI4ZNxxtsG0abOuloOuBXy23WB3dWqP7RO+rkItWHq8HJOmwxFijkXpCvh0ipJm8yd+D4T3mDoLpg0/sDbdODGmkNl8Me93fybhHqe+nXU7pSjFfD6VJyKBkePRHQAlcZ98CWR+t9U7Hxy5LY8UN+ISqwgj1DF/M5YShuCu0b39A9lWEPyP8PlDwieft7DVb561vzJkt+oD7pKxWOXQkT/AfyQV0PCAuWSFylzpt3uSGBLD4dBzKGnhTIaoWD4bTETX/knwM82pc5kVa4RYiWaLFN3B9OFfZTs2boUtJnwcbiG7w3CHBtW+33TwUwh0EZAj7bchOF0qh+bUhHz5qEJl55Hjw0vWAoPFpJLASZOe1piYCC9n+jYywH38iCbLepCJwWP1b47Ew7JEvgUOT5Q/rjaJW4pQ8Vh/CxFDl7J2imYbDv0Jv68WaG/ROIHfimmyKroWBe3ZyNiegnQC9m1MNjMUc1u7IkqOS7h851FgqtrIB2p7BKY4H/e6VinVP24RLSmZqr8+QySoPFIof4vn2ZpMRCoKtkoOz1AUdWdWxu1GhWaEuvZ0otSgalohtADJYDDmJobGAL
- 3cXdudE5
- UqsZfaYryT9qsiqnthVgB+Krev55xmcNOkVX2pYX79jfWyMyK5iObnRxsFSlqj0BBsgrdoYKczPI5nXds976ltmnztVevLC39sEW+h6UNUpAM60XyUGfT9b8WwEYMCt1N5Y8Fbz5PDqKviXfIGFAuhTaQsPO5uTpUa4ArNJyRU+914SLhKvjJ9YkJTkrI8QsAY/ENvxJj7AURLZdGeqbKjq3GH2DrLhY8LNdb5t+DIPqPqRq9WReAta2CZM/36uTDWU7uAKwnXnsZo6e8O1W/JT5dt28Y7VO3YaervLeZKheqeScuT02sAyLjVsVYXKHRVG+kfeV4ylMLEFXub1ufpEtV4LjlZbgPnIe7gyL/yQb1IK5oQywqdo3CBw7eETEX0feTHLKi1WmU9VXMrtQBHvTJ3Jfdc96DBJ9zvAUi+5rmIPv1BsHqjXvFtyiLsOSqMY5NqxHaXMp64AmmL2XbXOxJrSEX9ke2Noh31o3i7sWuS3cRItrjd4ynC9oHYQxasylykDdgSjr/0hXK8VJtQD2RbNnIDmlU0PFuuBVZHKPAGy9M1VOf3z273wZvb2h/+y3R0QTnwLke/LA=
+X-Rspamd-Queue-Id: 54A5E20002
+X-Stat-Signature: mpx6j9umz99q5bkib3sktbqc7ybjb4kk
+X-HE-Tag: 1788314817-420695
+X-HE-Meta: U2FsdGVkX1+wWf+IT/ImcDXWyCd4NUKIwcqKo4XbPpuFrOmXRg3A4KiY/dxk8b0nnKhHDAHU+8ufaLkhj5k3UnuAvCK7yF0C/90ETIObYctIoGEiLrpAADFq5JGKVbAKfIzX9qA81umH0Ya3WdrkDeqENSftPDShV/Rs0A3pHonKmaGEu0DoYBGmheW2Pubv+i7Z922yiK32T7l/2hjqpheEMi8LSria2vUOvUD8My5JRArKTsEh9qzby2XIgRw+iKIAYH2z04T/IhgvDi0cuR1QHSMWoQKCGhH0LtgmP/jOLubYpIqOWSI0mCS8gS95ImPheRFsiRbuq5wxCUHG8hvkZIJy2Yg1eZhU6L1S9nxDuFiYJT0DNgi57zUk2Xd8xndqb2exYTcK9AwyjMzCJ9eQ3tYHsTSi3ao2wPpTSLyKev/lodej6cD86gHg18FsqoEqBOmyhf4g8FiEs7l/t0NDkyAHfL43ppi+9BOch1vJTkihy270Dh6GLw3uazCv8cNvfkdPxVrSxOCS+o+8VQvpSg+PL8/N1AP6dTWc5GEeMl4VzqjYw+bgHs1CriDYPTJh7QaxPtFaUqWVCFat0c21lFa83EJr85DsBL+hvcaVkzc6YIzaR4O8zX0kakLzBMOnlXhNLBN6q5Ua/in0JpRtRE8opZNJ2S6IeRLjrWEvzlNhd4oSBl63f+Ewtgo+Rux9ARYwXlYeuauBji6NL5KjC5SE8VXu/xsN1+xbrRqaSU3Slx6iE/BLxZoIOTFZvw0tVyo4aVQjcsPvWopTfE2YzPg7KUUWQ9JS0nVhnPyBbHWQNAbSMJ9yShL0w9503/QZ3mtmV8vnq3EL94mq4TtaZGSCw4ftFOJ8XKKs8XG6DEGkah3+lJI9sbLwYPvUGlfZjAtI8A/2EB2qwFaK1dn8Q8vRvlheFmYl317wE/ih+r14rAOKU8qeaSSXcCdwjCutkM9u4bmBAX1u2LX
+ oU5uA5yv
+ YDHFz0JY5ZnIo+f37sjnyfnu6C26nD90D5q1nLExI8k2rUflDimVGPPoN3XUQ4xWbFAkEGL7X2MJlipOXxppWlVJk/PsscRzT6dHXzhCNgkwDtwtTYR/AXcBcimEJVFkY7WbQrozAelI+SLxHQI6ynDgSuVbJ5+2GfFaAVWpKtkQd2VADQMS1VjeIp4+xkQdX7IrVlU3DmEwckmT1ZFm9lPzkibvjBki3uPqlz06q4rDd/3mo7/cHwxW9Qry/NXhi0gKFoVodJue2kEnE+Y+ANhdsY4TvKIKUcwdRSGKwDSs4s4ABj2JzQ2TXGyzpQolHkg8HkN6rJZfmSsIgNsgN7FbEdR4Rf+KFk+uK5+nYzsH/Do87qU38MJY8SfmJjxVTq16rHkI9mN4KwKoEb9SGriVhJp8NQTOpoRwXtOicQW+KHP2uL1LiiN1XRT7xNNVJBzbD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -173,58 +116,254 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue Sep 1, 2026 at 2:51 AM EDT, zhaozhengzhuo wrote:
-> The kernel-doc for migrate_device_range() says that migrate_vma_setup()
-> is similar to itself.  Refer to migrate_device_range() as the subject of
-> the comparison, making the distinction between virtual-address-based and
-> device-PFN-based migration clear.
->
-> Fixes: e778406b40db ("mm/migrate_device.c: add migrate_device_range()")
-> Signed-off-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
-> ---
->  mm/migrate_device.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index 009bfa8b212d..4a614a3488ed 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -1398,9 +1398,9 @@ static unsigned long migrate_device_pfn_lock(unsign=
-ed long pfn)
->   * @start: starting pfn in the range to migrate.
->   * @npages: number of pages to migrate.
->   *
-> - * migrate_vma_setup() is similar in concept to migrate_vma_setup() exce=
-pt that
-> - * instead of looking up pages based on virtual address mappings a range=
- of
-> - * device pfns that should be migrated to system memory is used instead.
-> + * migrate_device_range() is similar in concept to migrate_vma_setup(), =
-except
-> + * that instead of looking up pages based on virtual address mappings a =
-range
-> + * of device pfns that should be migrated to system memory is used inste=
-ad.
+From: Bingfang Guo <bingfangguo@tencent.com>
 
-While at it, can you also drop the last instead? Since the sentence is
+I notice extremely high swapcached count in the per memcg level
+memory.stat when running tests with cgroupv1 setup by swapping pages in
+and out.  It seems that the counter never gets decreased so the value is
+rather useless and confusing to users reading it. So I think fixing it
+so that the value can reflect the actual swapcache usage correctly could
+be helpful.
 
-... instead of ... instead.
+__memcg1_swapout() transfers the memsw charge of a folio to its swap
+entry and clears folio->memcg_data as part of that.  In the vmscan
+swapout path it runs before __swap_cache_del_folio(), which then
+decrements the swapcache stats through lruvec_stat_mod_folio().  Since
+folio->memcg_data has already been cleared, folio_memcg() returns NULL
+and the NR_SWAPCACHE decrement only updates the node-level counter
+instead of the memcg's lruvec, leaking the per-memcg swapcache count.
 
->   *
->   * This is useful when a driver needs to free device memory but doesn't =
-know the
->   * virtual mappings of every page that may be in device memory. For exam=
-ple this
+Move the __memcg1_swapout() call into __swap_cache_del_folio(), after
+the NR_FILE_PAGES and NR_SWAPCACHE updates but before
+__swap_cache_do_del_folio() removes the folio from the swap cache.  This
+keeps the stats attributed to the folio's memcg while still recording
+the swap cgroup with a valid folio->swap.  Add a swapout parameter so
+the plain swap_cache_del_folio() path is left unchanged.
 
-With that fixed, feel free to add:
+Fixes: b197d41462c20 ("mm/memcg, swap: store cgroup id in cluster table directly")
+Signed-off-by: Bingfang Guo <bingfangguo@tencent.com>
+---
+The problem is reproducible using the following script and program:
 
-Reviewed-by: Zi Yan <ziy@nvidia.com>
+```
+#!/bin/bash
+set -e
 
-Thanks.
+CG=/sys/fs/cgroup/memory/swapcache-leak-test
+SIZE=$((256 * 1024 * 1024))   # 256 MiB of anon memory
 
+[ "$(id -u)" -eq 0 ] || { echo "must run as root"; exit 1; }
+grep -q . /proc/swaps <<<"$(tail -n +2 /proc/swaps)" || { echo "no swap active; run: swapon <dev>"; exit 1; }
 
---=20
-Best Regards,
-Yan, Zi
+cleanup() { rmdir "$CG" 2>/dev/null || true; }
+trap cleanup EXIT
+
+cc -O2 swapout.c -o swapout
+
+mkdir -p "$CG"
+echo "+memory" > /sys/fs/cgroup/cgroup.subtree_control 2>/dev/null || true
+
+echo "== before reclaim =="
+grep -E '^(swapcached|anon) ' "$CG/memory.stat"
+
+# Put ourselves in the cgroup, allocate & touch anon memory, then wait to be reclaimed.
+(
+        echo $BASHPID > "$CG/cgroup.procs"
+        # Allocate and dirty SIZE bytes of anonymous memory.
+        ./swapout
+) &
+WORKER=$!
+sleep 2
+
+echo "== after reclaim (swap cache should drain to ~0) =="
+grep -E '^(swapcached|anon) ' "$CG/memory.stat"
+
+SWAPCACHED=$(awk '/^swapcached /{print $2}' "$CG/memory.stat")
+echo
+if [ "$SWAPCACHED" -gt $((1024 * 1024)) ]; then
+        echo "LEAK DETECTED: swapcached = $SWAPCACHED bytes (expected ~0)  [BUGGY kernel]"
+        RC=1
+else
+        echo "OK: swapcached = $SWAPCACHED bytes  [FIXED kernel]"
+        RC=0
+fi
+
+kill "$WORKER" 2>/dev/null || true
+wait "$WORKER" 2>/dev/null || true
+exit $RC
+```
+
+swapout.c:
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/mman.h>
+
+int main(int argc, char **argv)
+{
+        size_t mib = (argc > 1) ? strtoul(argv[1], NULL, 10) : 256;
+        size_t size = mib * 1024UL * 1024UL;
+        long page = sysconf(_SC_PAGESIZE);
+        char *buf;
+        size_t i;
+
+        buf = mmap(NULL, size, PROT_READ | PROT_WRITE,
+                   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+        if (buf == MAP_FAILED) {
+                perror("mmap");
+                return 1;
+        }
+
+        /* Fault in and dirty every page so it becomes reclaimable anon. */
+        for (i = 0; i < size; i += page)
+                buf[i] = 1;
+
+        printf("allocated and dirtied %zu MiB, paging out...\n", mib);
+
+        /* Force the whole range out to swap. */
+        if (madvise(buf, size, MADV_PAGEOUT)) {
+                perror("madvise(MADV_PAGEOUT)");
+                return 1;
+        }
+
+        /* Give reclaim a moment, then stay alive so the cgroup can be inspected. */
+        printf("paged out; sleeping so memory.stat can be read. pid=%d\n", getpid());
+        sleep(30);
+
+        munmap(buf, size);
+        return 0;
+}
+```
+
+Test result:
+
+before:
+```
+== before reclaim ==
+swapcached 0
+allocated and dirtied 256 MiB, paging out...
+paged out; sleeping so memory.stat can be read. pid=4778
+== after reclaim (swap cache should drain to ~0) ==
+swapcached 268435456
+
+LEAK DETECTED: swapcached = 268435456 bytes (expected ~0)  [BUGGY kernel]
+```
+
+after the patch:
+```
+== before reclaim ==
+swapcached 0
+allocated and dirtied 256 MiB, paging out...
+paged out; sleeping so memory.stat can be read. pid=2601
+== after reclaim (swap cache should drain to ~0) ==
+swapcached 0
+
+OK: swapcached = 0 bytes  [FIXED kernel]
+```
+---
+Changes in v3:
+- Add doc for the new parameter.
+- Link to v2: https://lore.kernel.org/r/20260901-memcg-swapcache-stats-fix-v2-1-9caad330459b@tencent.com
+
+Changes in v2:
+- Update the commit message to describe the problem in the beginnning.
+- Change function declaration for !CONFIG_SWAP as well.
+- Link to v1: https://lore.kernel.org/r/20260831-memcg-swapcache-stats-fix-v1-1-1c0819ebdb86@tencent.com
+---
+ mm/swap.h       |  6 ++++--
+ mm/swap_state.c | 11 ++++++++---
+ mm/vmscan.c     |  3 +--
+ 3 files changed, 13 insertions(+), 7 deletions(-)
+
+diff --git a/mm/swap.h b/mm/swap.h
+index 0b5d507739bcb..b3b54c28929a1 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -319,7 +319,8 @@ struct folio *swap_cache_alloc_folio(swp_entry_t target_entry, gfp_t gfp_mask,
+ void __swap_cache_add_folio(struct swap_cluster_info *ci,
+ 			    struct folio *folio, swp_entry_t entry);
+ void __swap_cache_del_folio(struct swap_cluster_info *ci,
+-			    struct folio *folio, swp_entry_t entry, void *shadow);
++			    struct folio *folio, swp_entry_t entry, void *shadow,
++			    bool swapout);
+ void __swap_cache_replace_folio(struct swap_cluster_info *ci,
+ 				struct folio *old, struct folio *new);
+ 
+@@ -452,7 +453,8 @@ static inline void swap_cache_del_folio(struct folio *folio)
+ }
+ 
+ static inline void __swap_cache_del_folio(struct swap_cluster_info *ci,
+-		struct folio *folio, swp_entry_t entry, void *shadow)
++		struct folio *folio, swp_entry_t entry, void *shadow,
++		bool swapout)
+ {
+ }
+ 
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 305877e1f4d7b..99985208b529b 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -306,6 +306,7 @@ static void __swap_cache_do_del_folio(struct swap_cluster_info *ci,
+  * @folio: The folio.
+  * @entry: The first swap entry that the folio corresponds to.
+  * @shadow: shadow value to be filled in the swap cache.
++ * @swapout: whether this operation swaps out the folio.
+  *
+  * Removes a folio from the swap cache and fills a shadow in place.
+  * This won't put the folio's refcount. The caller has to do that.
+@@ -314,13 +315,17 @@ static void __swap_cache_do_del_folio(struct swap_cluster_info *ci,
+  * using the index of @entry, and lock the cluster that holds the entries.
+  */
+ void __swap_cache_del_folio(struct swap_cluster_info *ci, struct folio *folio,
+-			    swp_entry_t entry, void *shadow)
++			    swp_entry_t entry, void *shadow, bool swapout)
+ {
+ 	unsigned long nr_pages = folio_nr_pages(folio);
+ 
+-	__swap_cache_do_del_folio(ci, folio, entry, shadow);
+ 	node_stat_mod_folio(folio, NR_FILE_PAGES, -nr_pages);
+ 	lruvec_stat_mod_folio(folio, NR_SWAPCACHE, -nr_pages);
++
++	if (swapout)
++		__memcg1_swapout(folio, ci);
++
++	__swap_cache_do_del_folio(ci, folio, entry, shadow);
+ }
+ 
+ /**
+@@ -339,7 +344,7 @@ void swap_cache_del_folio(struct folio *folio)
+ 	swp_entry_t entry = folio->swap;
+ 
+ 	ci = swap_cluster_lock(__swap_entry_to_info(entry), swp_offset(entry));
+-	__swap_cache_del_folio(ci, folio, entry, NULL);
++	__swap_cache_del_folio(ci, folio, entry, NULL, false);
+ 	swap_cluster_unlock(ci);
+ 
+ 	folio_ref_sub(folio, folio_nr_pages(folio));
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index b4c9b8f3dfe99..af7dfa905cb50 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -735,8 +735,7 @@ static int __remove_mapping(struct address_space *mapping, struct folio *folio,
+ 
+ 		if (reclaimed && !mapping_exiting(mapping))
+ 			shadow = workingset_eviction(folio, target_memcg);
+-		__memcg1_swapout(folio, ci);
+-		__swap_cache_del_folio(ci, folio, swap, shadow);
++		__swap_cache_del_folio(ci, folio, swap, shadow, true);
+ 		swap_cluster_unlock_irq(ci);
+ 	} else {
+ 		void (*free_folio)(struct folio *);
+
+---
+base-commit: 88297631d4d42f6004cb39c0ba3da7d2d10a616f
+change-id: 20260828-memcg-swapcache-stats-fix-1beef3dc3afb
+
+Best regards,
+-- 
+Bingfang Guo <bingfangguo@tencent.com>
+
 
 
