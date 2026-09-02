@@ -4,88 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B78B6C61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 19:29:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DA94C61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 19:40:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9ECAB6B00D4; Wed,  2 Sep 2026 15:29:37 -0400 (EDT)
+	id DF6196B00D5; Wed,  2 Sep 2026 15:40:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C4A36B00D5; Wed,  2 Sep 2026 15:29:37 -0400 (EDT)
+	id DA7E76B00D7; Wed,  2 Sep 2026 15:40:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B27E6B00D6; Wed,  2 Sep 2026 15:29:37 -0400 (EDT)
+	id C99786B00D8; Wed,  2 Sep 2026 15:40:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 668136B00D4
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:29:37 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CF89CC0370
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 19:29:36 +0000 (UTC)
-X-FDA: 85169811552.06.19539A7
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F06F6B00D5
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:40:19 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1556C40368
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 19:40:19 +0000 (UTC)
+X-FDA: 85169838558.09.B972D02
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 17B5420004
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 19:29:34 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WxZkI0zR;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 57C2C1C0002
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 19:40:17 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2hmEHzbA;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788377375;
-	b=DSl9ryB3Sq5sCGqq8I1tAYdcmOlgyVsUyKP+MAkZEHXFcfpoSoke9ixikucj/XIbqKzoBk
-	pZ8qgwTdxYs3C1YK2HJcl1ZdBEEdoYCiPHCWhNpdJPk/Xaj94BOQaSEQe4gdml3koN8+os
-	rkbGuTdPsBGSqIrEWzWJN7s0wQN/rG4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788377375;
+	s=arc-20220608; t=1788378017;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hnKjt2Q7cQQXIMvbkPpCr4kNY4+s/kx6ua0E2A+Cb5M=;
-	b=H6R88FNE9rYpqK80OmCCz6Wi9VrcvJeWaEyisWbtudlaD8GYe/xP1Cob1IVtvmNAKrGZPI
-	k6HisQ4LW8fuWzpRbaSA+U4e7k3P7Q/dMzMiP9eDEZzv2DTyNr35bBQYdjYQKgj9lsS8dt
-	pxa4KyLpFd5QuYSL836yuoSEzp/pUnw=
+	bh=LgInFhPoAEPM/8+81aICGdqQBdcuVnYwUlt3bosDlig=;
+	b=y54Xvf++l5asMr1zZoJ/v1KjbpkGzssHtSKuWReg5qRSASTtQz29Opsd7g42foLSzAXg7+
+	/2T4pnvUkpfM65RLTaCDR2yrVQr168v6amWMS6U6OxhTansXqj1DheoQb3S6ZvI6nf5+dv
+	vc3A6b37OgDy+amjUjpmrQk94ovq/d8=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WxZkI0zR;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2hmEHzbA;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788378017;
+	b=KlffARFWkXALFrzFOVmsB1qDabR5KSxUwXnNj3hqXqyNCPqHMrPHXOKDr2lkv0NS/F+wu7
+	9D774HgObYlcUyiVjfqaSkCAwX9KGAxdE9Y8n6VbBYgkfV5u1LCYm+cfrThBDOkwGUhn5J
+	sLhYETNKJNT8C9Pj4K2KBV0qG0K/yGo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 538D0601DB;
-	Wed,  2 Sep 2026 19:29:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7267E1F000E9;
-	Wed,  2 Sep 2026 19:29:32 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D36D26022E;
+	Wed,  2 Sep 2026 19:40:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E9A1F00A3E;
+	Wed,  2 Sep 2026 19:40:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788377373;
-	bh=hnKjt2Q7cQQXIMvbkPpCr4kNY4+s/kx6ua0E2A+Cb5M=;
+	d=linux-foundation.org; s=korg; t=1788378016;
+	bh=LgInFhPoAEPM/8+81aICGdqQBdcuVnYwUlt3bosDlig=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=WxZkI0zRNhLOcHhVhBmHsDoraOl7I2tPiez8q2Cj4cBsg4GmNkMb+csAfULTkqgEz
-	 1uolqi0vN0C7oBz7biWffMcOilzJTq9LbhFx/ujI82iRdq+YFCjAmaiSk/nivxnEeP
-	 vJPnW/A3HIKKsyxH3za7fWoW0edkg/3razfBrGYQ=
-Date: Wed, 2 Sep 2026 12:29:32 -0700
+	b=2hmEHzbAOvrPbWny4gsMa4pFCXw2fu7NnwHYKSeo8vYE1AmVgwZcRVEUdhbnP5woy
+	 V851HqJHR1v6PxgVUXWG2gV44zFL/XJ+yDG2CXOFYsTpvaLemczlnxDYMoMB6ofE5Y
+	 BG89Zuk5GkudzQCP/LHSB/o+qw3tH3IATSXj9knc=
+Date: Wed, 2 Sep 2026 12:40:15 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, david@kernel.org,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, shuah@kernel.org, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, nico.pache@linux.dev, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- usama.arif@linux.dev, kas@kernel.org
-Subject: Re: [PATCH] kselftest: mm: remove HPAGE_SIZE and HPAGE_SHIFT macro
-Message-Id: <20260902122932.7a1b82de7a80dbd5897b65f0@linux-foundation.org>
-In-Reply-To: <20260902175611.1241118-1-yeoreum.yun@arm.com>
-References: <20260902175611.1241118-1-yeoreum.yun@arm.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song
+ <muchun.song@linux.dev>, David Hildenbrand <david@kernel.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, Qi Zheng
+ <qi.zheng@linux.dev>, Barry Song <baohua@kernel.org>, Axel Rasmussen
+ <axelrasmussen@google.com>, tjmercier@google.com, Meta kernel team
+ <kernel-team@meta.com>, linux-mm@kvack.org, cgroups@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/8] memcg: remove the v1 soft limit
+Message-Id: <20260902124015.ec0e73154b93b69b62873e26@linux-foundation.org>
+In-Reply-To: <20260902174311.1772372-1-shakeel.butt@linux.dev>
+References: <20260902174311.1772372-1-shakeel.butt@linux.dev>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: w9jwbktd4g31cxpmw9erbq58qj6on8gk
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 57C2C1C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 17B5420004
-X-Stat-Signature: t5t1j4y7mrsji3cwascdm9rx87r5tote
-X-HE-Tag: 1788377374-539374
-X-HE-Meta: U2FsdGVkX1+rb65YZbIFMp67rtS6BI+pXOHZIQ+JxGV5Sao+mm0oZyCCfJ6iFDlOPQdjQ4VKPSI+bYRhObG5FNOq/8C3VNbhA38ksVudad3P0YHLpANcUYpopp6Vqm+B1JrRyL2Pdns2T6LywGnBA7DoZUT+xbgheC0ckE6JNBbPxnyh5kBX99DadqjbZB0YVdzH36MtehitqvGbCo/LhwL/60ITbflgiTmocYunySTAaCUrkT75rwU/a7xsHzdLx5UaTvacLaTNHF+C8bmoYjCIw3nlV+/YMY012N4WYb5JDjqDq5iqv0wsUrPHu7ECEFlHy6xP64pBtEZX0mjFe3hKOcstOUN0YvsM/uVlWHW1LKZRQ1nLS4l6JwKM9EZhECAqWKCpnmcCVNybUDQu7URfE5id5VCzAByx2rMPDbTbtFA476ep9uDn4tfjzugpLRN8M95NmuBYDe8VPtroUUbJMxSmfYj1LkT2UL11K7nMo8bPs/7H3zi9gN4T5PnAj4fkL7JjNvUXI9oHZfOJ0IxPyHNHF0poAgmon1GW/DExy6JKcO7j/MEQATfb22cX6H3zYvtiaQRJwMIPKxKagZ6cLba/dv4s4JRSxKFAJCs5hfrSNh7QkpwxI5cYjpq8w9PKj3RE3RsB7hJqGM37b+D8BJPAG2tTqGwcFDr0yTA1W42a8g85/ooj4OX0BrDgq7Z6CHRt41pIxqmofJLdxKH6puoAT/S9CPMhJPQM0rZw4+plnmo7bvc8ULY6edX2SYR6X13a6Sd0DE9do3AXrFhT19X3rv9oulFuy1DOuw8bL8YNQ04+0pV7X151GqojgJ5awEhfB17IeLaO3CZra0GIKfYxmGj0G29w6twcUQjtAzfnlWAdQp/wAYpZfvjS1evNk5+wp+N4bwqdFfHBeqvmtw0vC8zoYsyPJB0nWkcWK9qgdD00Xyi1QbFFu/BNgNOa3NitTbmeQS27Mw7
- r9Rg38DJ
- LNdvV+yMv0JSNdteWsNkt1sB9znFkZaLXFnl9ASi4vs1nRXbI/RboovZNjC77lmr1Xpef0qNMKuCgHW+cbSfdJTxNcmHqj/q3tgWZLZH7nXPfhW5MEktTebI7o9+4eDE/Ku/2LMQiTmafdzZwxHvLerKxbrh6IkLedhgLcVeY9Lg+1mfL6jS1iHAkUpaAOchmVyTSAV6K+EcOd165eRvYca+ovcBBXAmM8wgvQzPyDaO6jxdoR8Jlzf3MbsyuSfMKOzdoVQdTGCkqR2ilQmJ9N0YalaFvfIBBApdELu/Ec14QIij3kBMbqdgdJd/qoECZhDJ3yqq10AxXWmtbXH59scnBqeKr5xyZN8BfVC3mrfd2Vky/vtmkPxPg1tO9cv5WvPthDcQ0eQz3KeEFaUSy8UEycgAGostis20i
+X-HE-Tag: 1788378017-397210
+X-HE-Meta: U2FsdGVkX1/G/Apv07weS5tjQFa17dlJvKnbRS2m1jWBVwF1LBgZY/M02yiWRDVqwyNn3e9ud/BeTpLK+UCzIiXjwMsXiypAv7cBA/kpH3GMbJqdaFZeUOuz4jlJIM7mJV03xlrCPF/6vz7HxaKDxa2LKHVtmIvkeW7nIQtk26ii3gjIIJrzbaxnNWMaVyRgKUzkpi4zNJitR5qqTVGDZrbhDsGHF4CqQPQqOsQeIJLH+Q7egQZEQNJbz4FXKciINGca1gZDTEgv2FIYXePGwsNu3kS3TNPUNYYrxEYiRRfqjIXS30LxqPaFJOaxh+HbVdWzkuCg7sqSZUeW4+AtGioB53PRoa4G46v0ten36O8Hk+lndVO6GBm+fpMYzwRLvmA467tAGKR8DyyBkiLU0+qWet9BpdKdmTqnWWcOdnxEX6dg6cTDknhjjiIQxcuMfbVXwOoM6jSK30+WxsJ+xBLG4gm6k6fMZLErAARkvDRDtVUBA9d+aPQ4/mCtXm4vfFFBL3bvDJFFsWyhDTaDbnB7Qw0eW2gC6NlX7/612LLX8WmX6pRsyC2cOQmRYoQsUbAiv1v1u2tgYT9YLlADTfR+4e2ZI2q1ClOAtDxS2LOhJpZIc6zx61zSr9Mg78wfbfGQ7husGTbgtJJH15QRpSExONnlhHM6jSK5qrtCs9/SZ8O5rjrgF6uY8ILtdO8H3Iuk+wd4t3l8rgpYfoReMe9k1pQ9BHjYTJ3aeCOZtHdMSnhA361hrIxcP5QabHUyqbk6HT1vLZOkb66XmPvWA6d11f70VVaakFinlYTPjiVSg/owVL6865qmfIbq3Gghvc7k/lX0ZmeGtBGt0sW5zbfhU3FOrl2L7a36Vvswu0RDn+Qy61aCesb3F5j8hXNuJQzbNn/EViGgNKy+DdNSsBW6oJn3bfQ8L7FVsWUNKadzjfSFIP0sJbNm72nazWu5hrdjOTwZZLcsCslmqU4
+ KOTMU+0k
+ Kt5nL8PRPAhxmuBz0HXM6YFDmTI5FpsEIfUPafRLu8Wt1rpgrS6C0UAAP4sC6VEt8GV3R8vQg03GDdVfJ4mfun+h/NqcmRxUPJ02q5LlYQxJB2UinR5WR+QaNusXtd6bYwZld8jlKV0PL2J3x9AQ2MR8AXyW3QJB5tR4MuFrNXrK1un7IL5xK3wAfw8MGh6eLlJNbnc5g4uldTiqhNMtWl/nrKwdhoAEewX0Xx88btKyLzfh23jKM7THIE8VeTMZmwdWM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,31 +95,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  2 Sep 2026 18:56:11 +0100 Yeoreum Yun <yeoreum.yun@arm.com> wrote:
+On Wed,  2 Sep 2026 10:43:03 -0700 Shakeel Butt <shakeel.butt@linux.dev> wrote:
 
-> HPAGE_SIZE and HPAGE_SHIFT macro is written based on the 4KB PAGE_SIZE.
-> When this macro is used in some test, test result would be strange in
-> the system where PAGE_SIZE is more than 4KB.
+> The v1 soft limit was deprecated in v6.12 by commit 569c4f62d84a ("memcg:
+> initiate deprecation of v1 soft limit") and nobody has reported depending
+> on it in the ~21 months since. memory.low and memory.min in v2 have
+> covered the same ground for far longer.
 > 
-> Here is example with transhuge-stress test with 16KB PAGE_SIZE:
+> The knob has since been made inert by "memcg: make the v1 soft limit knob
+> inert", already queued in mm-hotfixes as a backportable fix for a syzbot
+> report [1]. Nothing can enter the soft limit rbtree anymore, so this
+> series just deletes the machinery that is now dead: the reclaim pass in
+> kswapd and direct reclaim, mem_cgroup_shrink_node() and its tracepoints,
+> the per-node rbtree, lru_gen_soft_reclaim() and the MEMCG_LRU_HEAD op, the
+> per-node tree fields, mem_cgroup->soft_limit, and finally the v1 event
+> ratelimiting which is now down to a single target.
 > 
-> ...
->
->   ok 1 Completed
-> 
-> Remove the HPAGE_SIZE and HPAGE_SHIFT macro. and introduce hpshift()
-> helper to get the HPAGE_SHIFT properly. For HPAGE_SIZE, use pre-exist
-> helper, read_pmd_pagesize().
-> 
-> Also, do KSM_MERGE_TIME_HUGE_PAGES test with size of 512 MiB which
-> is the LCD pmd_size among 4KB, 16KB and 64KB page_size.
-> 
-> After this patch, output of transhuge-stress:
-> 
-> ...
->
->   ok 1 Completed
+> memory.soft_limit_in_bytes itself is untouched: writes stay ignored and
+> reads keep returning the maximum value.
 
-Thanks.  Sashiko made claims.  The first looks legit, although minor:
-	https://sashiko.dev/#/patchset/20260902175611.1241118-1-yeoreum.yun@arm.com
+Thanks, I updated mm-unstable.
+
+> Changes since v1 [2]:
+> - Dropped "memcg: make the v1 soft limit knob inert" (1/9 in v1), which is
+>   already queued in mm-hotfixes, making this an 8-patch series.
+> - Collected the acks and review tags. No code changes.
+
+I've confirmed that v2 made no alterations to mm.git.
 
