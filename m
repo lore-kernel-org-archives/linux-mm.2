@@ -4,82 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08147C624D4
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 16:31:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F4C9C624D4
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 16:35:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 064FA6B00CF; Wed,  2 Sep 2026 12:31:18 -0400 (EDT)
+	id 0E1F86B0088; Wed,  2 Sep 2026 12:35:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03B3B6B00D0; Wed,  2 Sep 2026 12:31:17 -0400 (EDT)
+	id 0BA5B6B00AD; Wed,  2 Sep 2026 12:35:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBB3A6B00D1; Wed,  2 Sep 2026 12:31:17 -0400 (EDT)
+	id F11A46B00B2; Wed,  2 Sep 2026 12:35:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BFC986B00CF
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 12:31:17 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2D019402B2
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:31:17 +0000 (UTC)
-X-FDA: 85169362194.17.C1EC76D
-Received: from smtp4-g21.free.fr (smtp4-g21.free.fr [212.27.42.4])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2567A8000E
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:31:15 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=morinfr.org header.s=20170427 header.b=jCsT4623;
-	spf=pass (imf02.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.4 as permitted sender) smtp.mailfrom=guillaume@morinfr.org;
-	dmarc=pass (policy=quarantine) header.from=morinfr.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788366675;
-	b=03NsxIIWmha2otXOdvtBuVUhBvB1Dm5aOFXip8KLD6tLS+I1P5X6Q0LS/DTJONnR5GZqT3
-	+W8FNC6O+6OBZs9xDDBCAZUgkgNxQ02vpoego0gM3c2wy3n769I79k3SDiKONJDWv4SWf4
-	4+ioV8yV2Phuob7hL8zMlhi4SxjUUFI=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=morinfr.org header.s=20170427 header.b=jCsT4623;
-	spf=pass (imf02.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.4 as permitted sender) smtp.mailfrom=guillaume@morinfr.org;
-	dmarc=pass (policy=quarantine) header.from=morinfr.org
+	by kanga.kvack.org (Postfix) with ESMTP id C41FE6B0088
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 12:35:57 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3B5C01A0270
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:35:57 +0000 (UTC)
+X-FDA: 85169373954.22.94CB88F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6970B40009
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:35:55 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RUx12r4I;
+	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788366675;
+	s=arc-20220608; t=1788366955;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=3Aw2R6r3uNxcbEWNzvudWhz43IRmAz3SmLQH9Xiy/RQ=;
-	b=3Ad97qNOp4eInE6gOYWC+o+8sIoIxp/uYUsrS4p4CN1GRbMLUzHxXDwG1vmdF5vv1eE/1a
-	Xf1gWcToko/aPC0d7H8ESrngLfommCKv+YXAIk8b+cH5L/sk4qJUOuFSVVwxSb2tav1nVM
-	DUhvcTPI9ruH851lhjZa7kbEpTogKsg=
-Received: from bender.morinfr.org (unknown [82.66.66.112])
-	by smtp4-g21.free.fr (Postfix) with ESMTPS id 37ADE19F5AF;
-	Wed,  2 Sep 2026 18:31:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=morinfr.org
-	; s=20170427; h=Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-Transfer-Encoding:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=3Aw2R6r3uNxcbEWNzvudWhz43IRmAz3SmLQH9Xiy/RQ=; b=jCsT4623/4mOs71hkPOn0p+0zS
-	8OZLf0mYytDhuC21k6xrSFcU8dssCWkoeF1+vi3BbLEzMp2LMi8bIpAGObEBFtqwmdyOP4N1S/Mc5
-	hRjwF4U3yp76vlKGHxwMk9OuSkeJe6wWF6Dn4ioUgu7vi4S4pwwyqNTcC+SokKsu6nE0=;
-Received: from guillaum by bender.morinfr.org with local (Exim 4.98.2)
-	(envelope-from <guillaume@morinfr.org>)
-	id 1x1nrg-00000001Rm4-32u2;
-	Wed, 02 Sep 2026 18:31:08 +0200
-Date: Wed, 2 Sep 2026 18:31:08 +0200
-From: Guillaume Morin <guillaume@morinfr.org>
-To: linux-mm@kvack.org
-Cc: leitao@debian.org, guillaume@morinfr.org, rppt@kernel.org
-Subject: [PATCH v3] selftests/mm: hugetlb_madv_vs_map: add underflow test
-Message-ID: <aphPTJ4LK-Ag1C1m@bender.morinfr.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ac8jsX+DMtEi6vVSz6czKKoo3d1DKY5/tg/cm1MFQFw=;
+	b=RXvdRZ+8cn7Yl49ABOOjX0Yvll/iH/J3GVt0jUpsbXjBd7T3j63bPZ3QT/fDFAZ0wkUw/O
+	EylZcAmcGKBh7brg5phoZ71jczm9XAS2BCSc2M6xgeBt207rp9yErdpjuw+ND4AG67aOyw
+	ZXcv5k99vjix7yn6kRqorxB2C+xoPy0=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RUx12r4I;
+	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788366955;
+	b=rNMn9YFTdJmRSZwaIL7yo+GwKghXLbtVbXFIllIpwO9SJMFodnPSdY2WV2k+aHnh50WnZh
+	AIFavedVvtyPR0LN44dWivJAmT8GgrsWoD9KDc2enUyb8me7Fq95n/6tCb44y4k6g+5DJT
+	pO4FKZyu/a8rw8T8uJmApCKuyB4oD/4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C287040514;
+	Wed,  2 Sep 2026 16:35:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8512B1F000E9;
+	Wed,  2 Sep 2026 16:35:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788366953;
+	bh=ac8jsX+DMtEi6vVSz6czKKoo3d1DKY5/tg/cm1MFQFw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=RUx12r4IWkNLDsowdrG0tIOgZVYvTtRlYFpwS7Ps2MMhUDo8igPTsx5tqCIx+dq7Z
+	 P45rLsyOHNZ648U94ptQfeZK2A6TIPNQ1jReHuNNaBFn1FpxVy8yWXLcWIeku6ogf3
+	 phduk3qLzEe+N5cPT55mwg37gegxI/Km0KI7fLBcmLItsmKIyiPbKfe055cCnOgsmT
+	 Hj6e5Xzpy/SOMfU4n1Jfo/4KJG55kbI+nqf+WVv1ur153KlNEiDkd3z+uNSX3O5xxx
+	 wK869ki2JRA8vPt7m9JGtU8shMYnwNuJVRQ2YKntYe6yvK8KFGuG1wfJG6pEikmfAv
+	 4BdET61TLKMcQ==
+Message-ID: <86fc18f6-8c21-4738-9a10-64a2fa48cc1f@kernel.org>
+Date: Wed, 2 Sep 2026 18:35:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] mm: replace PF_KSWAPD flag with kthread_func() check
+To: Kefeng Wang <wangkefeng.wang@huawei.com>, brauner@kernel.org,
+ djwong@kernel.org, cem@kernel.org, akpm@linux-foundation.org,
+ surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev,
+ hannes@cmpxchg.org, ziy@nvidia.com, david@kernel.org, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, ljs@kernel.org
+Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260902131653.1338227-1-wangkefeng.wang@huawei.com>
+ <20260902131653.1338227-4-wangkefeng.wang@huawei.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260902131653.1338227-4-wangkefeng.wang@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: e83izu9eihp9simfrwjumxzn5ajsgjym
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6970B40009
 X-Rspam-User: 
-X-Stat-Signature: wmtf9eeokdnwfk89atpk8mmjwshf1mcw
-X-Rspamd-Queue-Id: 2567A8000E
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788366675-492631
-X-HE-Meta: U2FsdGVkX19+GtdyX3jEmWwzlvNIuNyOS0rYt2yn3hkUNlxsU9tuUd3eOdDMTKdZyvdE9A8pyQUcEEhqUNK3c75repe9TxDOpYEY1BiyNR60gpYy/nUagv4pjLzzz5Oyy7xuTEDxpPkYer6IfM/hvBupYEx8HOAJ3yTJeC5O2bYzi71a0KptxxnqYI+kJmLXWDzrGbsWMhFxLfnrmqi1Qt3J2Ia1tX3wKPYMYOpt1b8FdJBN2miLh9MvwaFgAYXyzkTuy5XbwrqZLF+12yT0zv6HXxQZ+54gvWD8k+wWvfui0AXS9yAyuk6qxiVqtSyUs4++0dtFcN8ok7d/UHpK7e+5Ea/WyWfbZdf2t9coZwPHNK9cFkE0G5Ru18KKBTkEn8qibsreCrqkXEctxmOfv8Fp8B70Gur+2jQdvaHx8ub/cmP/yzFuHkBQnDVljKzzioIP8p8kpCo7b8NGNQubmHjOwLd2cMBg3JXPWDdkZDyrPyCZlD+5CaUkDur+XFqX9OuoJPbUFLvTCWIm6hWdYO4j/SFKkdIzovmolSK3WSMmniI+dJOFc3qkIVTrjKbVwnTPRShSA0k2p4dpIggB8ZXzeKJsckdsGTaES2bpmEi+9f4DtI5soK9xphLfMX8nj796EoGrDi4sZWjW39OU7s46S8qcox9ziavg/QZR1SQqM9Dzc/1YbynCsobUsw/zgpvvus0qvP1U0vBUo/1Qs4jmfpk+TyzD9lFW/Hv0n70G6Eln6KQsKv7ymVu6MeV/TmIkpPs/3c6RzfAtPJB4/iHxG6swLIns/yu7zmEM2BfxlzwfUmBt6kTwSZ97NSpPGNEdkU7j1FuXkxzhB0vu7HQHGc3s7z8PTmOZVC+3NTOHmsQNUDqbpE/Wh3b6UOtYx73xb9Ym0c+ftX3PcQTew21lAbK5qxtGdhCxkVMnzAjym4frRjjNYGZwq8p+v2F1rAWwKYzWltUDdoY4bI2
- XaUZRK1A
- vs1LXMmD1B78BmEvIC3kyW8kPDiidzaJO1F2Ed2tOclpNy8JbGEtXhB89i5bkGuxAwfzqcT7OANI2x+X2Yg11z6OxDeXbdXDgjwsq6aJqDieuks5ap02kRoHe3oFgmlUddoLGsB1rg1NmiKGjrscRmDE2IrDEd5mbDT2iRFUP0598j9RwGYLbsoqS5ZSX0jcsauwIzAS6rGsp+YiefOi5OR/uSSTlPi2pjieFdvWBnILD+ZJpayoYPPfJa3VHhyu4yHaectFQ1UQuuNzborqR9uUkGgRbf6oJ7sem38cj+oCcDDGhbBIjybjndU5nUeMkMyqTOOZUNKN2Jk0zo/E/WrUNSbq5v//M6WUrT5sN0++78cUfkJw7KsqsbSclW0V4InbA26GTZWb+OSRxSfocslwUL4nGWnZpeOUo
+X-HE-Tag: 1788366955-61509
+X-HE-Meta: U2FsdGVkX1+q077jxOl/xXjSdRA8wtiUYkaLSt75cgq6IbhHWw6IpawGDVfQxlOBkiFE1PLcdPEW7NZWXENF74qsMmb6EhG3BWVa5esHgSCmbBhHLHwEMAa/SeVJBbd+kiMOWk0l12kKq4C+boQu8PAh8/6FI6WA1xqsDSM4knfcdsFgvF2teBGa6VFNxNZXt0PdRNpLgNudi++z6+EUPO9gg4hB5PMao0kmYg0MLgtgmLIQupOo8eFbTxv5N8KYJbeau9ZDlIvwcv2EnRjieOPzJH6wlD2XJqfp0dZthmBlf14z3N3wlc6dKc3sYhNLhFiMXxr3h6oJOmtWkWKY+oBPh06aXmsR1mWYGNEHCKTa351bMAXCt/RQi1AYgPwxJDbPIYIXIZxCkwSSKwJkCwKyQXqsc+uiy4HNaz+MZg5O6b6kJ/hWSP6e/+nVN+TZxqsS9qP+MYwu8fTQs3PwCc/zEQjJe7OmMw11KO3s3Hl1+XhPzQ72Fw8Ny3hv+MDmKUHVFQmOYPi5PEQWNGKIOPKVm7xrqPsEV7CfSgLP0bIjOw2AoKsGs1M1LUPalVl7UNDVJDX0nqmeQBFgFMQ4m4xgFr4B0NWppH1+RfGuXIP+bZQf8teqK8RObqAG58Kh8F2LmvT9mG4iyrNOkO7uroh3V8Hp+TgrWBus4eDQJhuzzeUbI38e3Pkxw8i8wF8Vvs9wIk6zq7TJCffau/AMm5G4Q5WVGbnMBHDIaNivudzchVKwWypDGdWMVIqGbXxNfrii/jcNrfA0QbgJaWGK+xcSiS1bAFM5ZMppM3lsFhjmzutoFUMr1t7Sbzt7YhYHLFC0beOQP55ijLmqyEWzqnDX77cf7YGlg0j0Eb+aSxdDRUUfv4C5UluY7aV2C4k+C1+5OBOzoaT6vOeqWv8DQJ9z2DsW8JYCnENX+MB6fWtCrzxVHiJS8xMJGTC7KAbg1gj9g7HfmTcbNWYDmns
+ ol0LpXKy
+ VpyZwzmawE5CntO7Xd8Y/tSe7wqh6g1OplWr7xlcCFvwd5n0VYsDkC4ADY/6u6lm8zW19bpDfo1Wok45n0zhemRxe8Np3Twyhrn0gQy7hElwqyBPARMV9c9lXjldXiiC4J+PWEQ5COfFhufRnZ6NG+egP52FtXOFNNAPrWWDIJ0nk2hw0WkQlp5j1k2cPwjzSGe6azoU26t6DnNHHUz4QQn21KAx7b/8rx5/ky3hsmGW1PQa4Z9tG08FhDBGmT9M1gsEHs/eIHT0srg9rt9OC3+TE958biy7mLjmGR2Do7rQqDbL1Vzrrj1JakvkjJQDNAuQjf/TJBwMIdF+6rsPrXSnQT6sha3NqXfDJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,252 +137,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a test that checks for underflows when a parent unmaps the page
-first. Also check that when the child exits the reserve count is
-correct.
+On 9/2/26 15:16, Kefeng Wang wrote:
+> The preceding commits removed the last consumer that propagated
+> PF_KSWAPD beyond kswapd itself (XFS btree split worker inheritance).
+> The only remaining setter of PF_KSWAPD is kswapd(), and every
+> current_is_kswapd() caller only needs to check whether the current
+> task *is* the kswapd thread, not whether it inherited the flag.
+> 
+> Replace the flag-based test with kthread_func(current) == kswapd,
+> freeing the 0x00020000 PF flag bit.
+> 
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 
-Link: https://lore.kernel.org/all/alEJkwn5VlTTH_ZX@bender.morinfr.org/
-Signed-off-by: Guillaume Morin <guillaume@morinfr.org
-Cc: Breno Leitao <leitao@debian.org>
-Cc: Mike Rapoport <rppt@kernel.org>
----
-v3: address Mike's comments
-v2: refactor tests into 2 functions
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
- .../testing/selftests/mm/hugepage_settings.c  |   9 ++
- .../testing/selftests/mm/hugepage_settings.h  |   1 +
- .../selftests/mm/hugetlb_madv_vs_map.c        | 149 +++++++++++++++---
- 3 files changed, 138 insertions(+), 21 deletions(-)
+> ---
+>  include/linux/sched.h                    |  2 +-
+>  include/linux/swap.h                     |  7 +------
+>  mm/vmscan.c                              | 10 ++++++++--
+>  tools/sched_ext/include/scx/common.bpf.h |  1 -
+>  4 files changed, 10 insertions(+), 10 deletions(-)
+> 
+> diff --git a/include/linux/sched.h b/include/linux/sched.h
+> index 8b3d47a325cc..86394121b6c0 100644
+> --- a/include/linux/sched.h
+> +++ b/include/linux/sched.h
+> @@ -1809,7 +1809,7 @@ extern struct pid *cad_pid;
+>  #define PF_USER_WORKER		0x00004000	/* Kernel thread cloned from userspace thread */
+>  #define PF_NOFREEZE		0x00008000	/* This thread should not be frozen */
+>  #define PF_KCOMPACTD		0x00010000	/* I am kcompactd */
+> -#define PF_KSWAPD		0x00020000	/* I am kswapd */
+> +#define PF__HOLE__00020000	0x00020000
+>  #define PF_MEMALLOC_NOFS	0x00040000	/* All allocations inherit GFP_NOFS. See memalloc_nfs_save() */
+>  #define PF_MEMALLOC_NOIO	0x00080000	/* All allocations inherit GFP_NOIO. See memalloc_noio_save() */
+>  #define PF_LOCAL_THROTTLE	0x00100000	/* Throttle writes only against the bdi I write to,
+> diff --git a/include/linux/swap.h b/include/linux/swap.h
+> index a72ecf12c00d..fc290e29e4a9 100644
+> --- a/include/linux/swap.h
+> +++ b/include/linux/swap.h
+> @@ -25,12 +25,6 @@
+>  #define SWAP_FLAGS_VALID	(SWAP_FLAG_PRIO_MASK | SWAP_FLAG_PREFER | \
+>  				 SWAP_FLAG_DISCARD | SWAP_FLAG_DISCARD_ONCE | \
+>  				 SWAP_FLAG_DISCARD_PAGES)
+> -
+> -static inline int current_is_kswapd(void)
+> -{
+> -	return current->flags & PF_KSWAPD;
+> -}
+> -
+>  /*
+>   * MAX_SWAPFILES defines the maximum number of swaptypes: things which can
+>   * be swapped to.  The swap type and the offset into that swap type are
+> @@ -339,6 +333,7 @@ void check_move_unevictable_folios(struct folio_batch *fbatch);
+>  
+>  extern void __meminit kswapd_run(int nid);
+>  extern void __meminit kswapd_stop(int nid);
+> +bool current_is_kswapd(void);
+>  
+>  #ifdef CONFIG_SWAP
+>  int add_swap_extent(struct swap_info_struct *sis, unsigned long start_page,
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 07ba86634b84..775d3f71a9de 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -7468,7 +7468,7 @@ static int kswapd(void *p)
+>  	 * us from recursively trying to free more memory as we're
+>  	 * trying to free the first piece of memory in the first place).
+>  	 */
+> -	tsk->flags |= PF_MEMALLOC | PF_KSWAPD;
+> +	tsk->flags |= PF_MEMALLOC;
+>  	set_freezable();
+>  
+>  	WRITE_ONCE(pgdat->kswapd_order, 0);
+> @@ -7518,11 +7518,17 @@ static int kswapd(void *p)
+>  			goto kswapd_try_sleep;
+>  	}
+>  
+> -	tsk->flags &= ~(PF_MEMALLOC | PF_KSWAPD);
+> +	tsk->flags &= ~PF_MEMALLOC;
+>  
+>  	return 0;
+>  }
+>  
+> +bool current_is_kswapd(void)
+> +{
+> +	return kthread_func(current) == kswapd;
+> +}
+> +EXPORT_SYMBOL_GPL(current_is_kswapd);
+> +
+>  /*
+>   * A zone is low on free memory or too fragmented for high-order memory.  If
+>   * kswapd should reclaim (direct reclaim is deferred), wake it up for the zone's
+> diff --git a/tools/sched_ext/include/scx/common.bpf.h b/tools/sched_ext/include/scx/common.bpf.h
+> index 76f5e025e107..3e095343ae84 100644
+> --- a/tools/sched_ext/include/scx/common.bpf.h
+> +++ b/tools/sched_ext/include/scx/common.bpf.h
+> @@ -32,7 +32,6 @@
+>  #define PF_IO_WORKER			0x00000010	/* Task is an IO worker */
+>  #define PF_WQ_WORKER			0x00000020	/* I'm a workqueue worker */
+>  #define PF_KCOMPACTD			0x00010000      /* I am kcompactd */
+> -#define PF_KSWAPD			0x00020000      /* I am kswapd */
+>  #define PF_KTHREAD			0x00200000	/* I am a kernel thread */
+>  #define PF_EXITING			0x00000004
+>  #define CLOCK_MONOTONIC			1
 
-diff --git a/tools/testing/selftests/mm/hugepage_settings.c b/tools/testing/selftests/mm/hugepage_settings.c
-index d7917dce3aba..584054736ce9 100644
---- a/tools/testing/selftests/mm/hugepage_settings.c
-+++ b/tools/testing/selftests/mm/hugepage_settings.c
-@@ -449,6 +449,15 @@ unsigned long hugetlb_free_pages(unsigned long size)
- 	return read_num(path);
- }
- 
-+unsigned long hugetlb_nr_resv_pages(unsigned long size)
-+{
-+	char path[PATH_MAX];
-+
-+	hugetlb_sysfs_path(path, sizeof(path), size, "resv_hugepages");
-+
-+	return read_num(path);
-+}
-+
- static bool __hugetlb_setup(unsigned long size, unsigned long nr)
- {
- 	unsigned long free = hugetlb_free_pages(size);
-diff --git a/tools/testing/selftests/mm/hugepage_settings.h b/tools/testing/selftests/mm/hugepage_settings.h
-index 726c73c43c05..548e9d288d1d 100644
---- a/tools/testing/selftests/mm/hugepage_settings.h
-+++ b/tools/testing/selftests/mm/hugepage_settings.h
-@@ -98,6 +98,7 @@ unsigned long default_huge_page_size(void);
- unsigned long hugetlb_nr_pages(unsigned long size);
- void hugetlb_set_nr_pages(unsigned long size, unsigned long nr);
- unsigned long hugetlb_free_pages(unsigned long size);
-+unsigned long hugetlb_nr_resv_pages(unsigned long size);
- 
- static inline void hugetlb_save_settings(void)
- {
-diff --git a/tools/testing/selftests/mm/hugetlb_madv_vs_map.c b/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-index f94549efcc6f..c944d99d5523 100644
---- a/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-+++ b/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-@@ -3,25 +3,16 @@
-  * A test case that must run on a system with one and only one huge page available.
-  *	# echo 1 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
-  *
-- * During setup, the test allocates the only available page, and starts three threads:
-- *  - thread1:
-- *	* madvise(MADV_DONTNEED) on the allocated huge page
-- *  - thread 2:
-- *	* Write to the allocated huge page
-- *  - thread 3:
-- *	* Try to allocated an extra huge page (which must not available)
-- *
-- *  The test fails if thread3 is able to allocate a page.
-- *
-- *  Touching the first page after thread3's allocation will raise a SIGBUS
-- *
-  *  Author: Breno Leitao <leitao@debian.org>
-  */
-+#include <limits.h>
- #include <pthread.h>
-+#include <signal.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <sys/mman.h>
- #include <sys/types.h>
-+#include <sys/wait.h>
- #include <unistd.h>
- 
- #include "vm_util.h"
-@@ -74,7 +65,22 @@ void *map_extra(void *unused)
- 	return NULL;
- }
- 
--int main(void)
-+/* During setup in main, the only available page was allocated. This test then
-+ * starts three threads:
-+ *
-+ * - thread1:
-+ *	* madvise(MADV_DONTNEED) on the allocated huge page
-+ *  - thread 2:
-+ *	* Write to the allocated huge page
-+ *  - thread 3:
-+ *	* Try to allocated an extra huge page (which must not available)
-+ *
-+ *  The test fails if thread3 is able to allocate a page.
-+ *
-+ *  Touching the first page after thread3's allocation will raise a SIGBUS
-+ */
-+
-+void test_madv_vs_map(void)
- {
- 	pthread_t thread1, thread2, thread3;
- 	void *ret;
-@@ -85,13 +91,6 @@ int main(void)
- 	 */
- 	int max = 10;
- 
--	ksft_print_header();
--	ksft_set_plan(1);
--
--	if (!hugetlb_setup_default_exact(1))
--		ksft_exit_skip("This test needs one and only one page to execute. Got %lu\n",
--			       hugetlb_free_default_pages());
--
- 	mmap_size = default_huge_page_size();
- 
- 	while (max--) {
-@@ -100,7 +99,7 @@ int main(void)
- 				-1, 0);
- 
- 		if ((unsigned long)huge_ptr == -1)
--			ksft_exit_fail_msg("Failed to allocate huge page\n");
-+			ksft_exit_fail_perror("Failed to allocate huge page\n");
- 
- 		pthread_create(&thread1, NULL, madv, NULL);
- 		pthread_create(&thread2, NULL, touch, NULL);
-@@ -120,5 +119,113 @@ int main(void)
- 	}
- 
- 	ksft_test_result_pass("No unexpected huge page allocations\n");
-+}
-+
-+/*  We create a child process, then unmap the page in the parent while the child
-+ *  waits and verify that there is no underflow of the reserved count.
-+ */
-+
-+void test_underflow(void)
-+{
-+	pid_t pid;
-+	int pipe_fds[2];
-+	unsigned long nr_reserved = 0;
-+
-+	huge_ptr = mmap(NULL, mmap_size, PROT_READ | PROT_WRITE,
-+			MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
-+
-+	if ((unsigned long)huge_ptr == -1)
-+		ksft_exit_fail_perror("Failed to allocate huge page\n");
-+
-+	nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
-+	if (nr_reserved != 1)
-+		ksft_exit_fail_msg("Unexpected number of reserved pages: %lu, expected 1\n",
-+				   nr_reserved);
-+
-+	/* Force the fault to ensure the reservation is consumed */
-+	*huge_ptr = 0;
-+	nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
-+	if (nr_reserved != 0)
-+		ksft_exit_fail_msg("Unexpected number of reserved pages: %lu, expected 0\n",
-+				   nr_reserved);
-+
-+	if (pipe(pipe_fds) != 0)
-+		ksft_exit_fail_perror("pipe failed");
-+
-+	pid = fork();
-+	if (pid < 0)
-+		ksft_exit_fail_perror("fork failed");
-+
-+	if (pid == 0) {
-+		/* Child: Simply wait for the parent */
-+		char b;
-+
-+		close(pipe_fds[1]);
-+		if (read(pipe_fds[0], &b, 1) < 0)
-+			ksft_perror("child read failed");
-+		/* Let the parent do the cleanup */
-+		_exit(0);
-+	}
-+
-+	/* Parent */
-+	close(pipe_fds[0]);
-+
-+	/* First unmap, this will close the vma */
-+	if (munmap(huge_ptr, mmap_size) != 0) {
-+		ksft_perror("munmap failed");
-+		goto err_cleanup;
-+	}
-+
-+	nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
-+	if (nr_reserved == ULONG_MAX) {
-+		ksft_test_result_fail("After the munmap, HugePages_Rsvd underflowed!\n");
-+		goto err_cleanup;
-+	}
-+	if (nr_reserved == 0) {
-+		ksft_test_result_pass("Underflow not present!\n");
-+	} else {
-+		ksft_test_result_fail("Unexpected HugePages_Rsvd=%ld after munmap, should be 0 or -1.  Repeat the test\n",
-+				      nr_reserved);
-+		goto err_cleanup;
-+	}
-+	/* Make the child exit, this should restore HugePages_Rsvd to 0 */
-+	if (write(pipe_fds[1], &nr_reserved, 1) < 0) {
-+		/* If write failed, the child is likely already gone */
-+		ksft_exit_fail_perror("write failed");
-+	}
-+	close(pipe_fds[1]);
-+	if (waitpid(pid, NULL, 0) <= 0) {
-+		ksft_exit_fail_msg("waitpid failed");
-+	}
-+
-+	nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
-+	if (nr_reserved == 0) {
-+		ksft_test_result_pass("After the child dies, HugePages_Rsvd is properly set to 0\n");
-+	} else {
-+		ksft_exit_fail_msg("Unexpected HugePages_Rsvd=%ld after the child termination munmap, should be 0 or -1.  Repeat the test\n",
-+				   nr_reserved);
-+	}
-+	return;
-+err_cleanup:
-+	if (write(pipe_fds[1], &nr_reserved, 1) < 0) {
-+		ksft_exit_fail_perror("write failed");
-+	}
-+	if (waitpid(pid, NULL, 0) <= 0) {
-+		ksft_exit_fail_perror("waitpid failed");
-+	}
-+}
-+
-+int main(void)
-+{
-+	ksft_print_header();
-+	ksft_set_plan(3);
-+
-+	if (!hugetlb_setup_default_exact(1))
-+		ksft_exit_skip("This test needs one and only one page to execute. Got %lu\n",
-+			       hugetlb_free_default_pages());
-+
-+	test_madv_vs_map();
-+	test_underflow();
-+
- 	ksft_finished();
- }
--- 
-2.39.1
-
--- 
-Guillaume Morin <guillaume@morinfr.org>
 
