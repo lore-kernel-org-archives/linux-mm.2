@@ -4,99 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65DA4C624D3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 14:20:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F567C624D6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 14:22:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38DF66B008C; Wed,  2 Sep 2026 10:20:37 -0400 (EDT)
+	id 31C066B009B; Wed,  2 Sep 2026 10:22:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 317086B00B7; Wed,  2 Sep 2026 10:20:37 -0400 (EDT)
+	id 2A5AD6B009D; Wed,  2 Sep 2026 10:22:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E5FD6B00BC; Wed,  2 Sep 2026 10:20:37 -0400 (EDT)
+	id 1700E6B009E; Wed,  2 Sep 2026 10:22:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E81CC6B008C
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:20:36 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 52AFD1A023D
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:20:36 +0000 (UTC)
-X-FDA: 85169032872.14.9D46F29
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 95F6F100010
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:20:34 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lS56OM1A;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788358834;
-	b=0rgLtZYExzysF0tSQUEAd3uuohMkoDUYC6Y1tgYABDCzUDboWG9L+MiAUJUv7UZZueegJD
-	3G8OCt4+h80Z1QRchiXFFrlfEQyLdzNel/sTMeIPZRY/RzivAFd4BmghfTjinWh7SYJ3r/
-	2iF636cot+ngJAf5a79o77k0zY1302U=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lS56OM1A;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E82986B009B
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:22:51 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 78557A3D32
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:22:51 +0000 (UTC)
+X-FDA: 85169038542.08.BA4378A
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A0330100010
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:22:49 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZdKgSNT0;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788358834;
+	s=arc-20220608; t=1788358969;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G9agrdnFdQejK6PBezRLA9LFhJ3vTbvnbf3qpO1t0YQ=;
-	b=kSm+9ZsrQ2iCXr1GJG3B9NVZGyy2+H9AYbXY54RdMUrhfjdmgU8+lhT4JmafQO2XEy7YvO
-	YS0Sqtb1+aGHRDxSPT7hvh1XdJQdOZ+nkr1LsBw2ApEsH4dDMNsgi0W2M9Scr+WUK8YoPu
-	n0EXgiVxr8AHWi7GgjSCYdzao/g/hK0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C2AD7436E9;
-	Wed,  2 Sep 2026 14:20:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F0C1F000E9;
-	Wed,  2 Sep 2026 14:20:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788358833;
-	bh=G9agrdnFdQejK6PBezRLA9LFhJ3vTbvnbf3qpO1t0YQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lS56OM1ArhNGYcnivIJ8y42C+SAeW77H8php2AuzL42mkwz9TFZniacvAzL758sgx
-	 lDlgchQzzPNr3kkx1QTQ+BCRnRhx23dSzcBvQXGriZiw8npVqxHCZOHCbIJVLWIGW/
-	 QyO+k/IV6rx1dCwvdbtTdoMVOtJbPa7eDMyinxxxkx2QrFeyyG6ROfOoGcJ5Zlw8P+
-	 qumyhIVJ7wM9PZHhx31G3ZlbGXMWAvG0xIsdfMIXzXbzkmuSRFruqYC5ZchHsobk1Q
-	 /YhyP4WDLEQIzcKr8OrQiPHB7QpI4Y4nE3dbQXg+c/Fly0MBzu7casTiEuzSnlW9Jq
-	 NFNuUuWzCgn7w==
-From: SJ Park <sj@kernel.org>
-To: Zenghui Yu <zenghui.yu@linux.dev>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
+	bh=xhg4nFUTwBRfkzvOZ3lYhulq3dN/Jpsw7Gc9lSLlRQY=;
+	b=dUIV4OJrtu58S4L3YzudX1NdQ+e6GiMpPFykXTTprWWvkUjEG4y0e+4xegKxq/KT4hB0Dx
+	dH6gNAtREgp+2/PjSpgJWr7SAtvtbrUbAb/HmWvVeIb8qsLD4oGw0Wsd/I4XKk8eWhVLhd
+	Ol6Vl4Wa2jiqi1o9L3aB4aHKTimcW+Q=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZdKgSNT0;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788358969;
+	b=x73zB7/33kDljvu162big3NwiTQcL4b6a2Skek/noDRC3OqLzo+dxlSdz58+bVG9eWeIpQ
+	CKMzPqCk8ASRbTHYRWe2rbYbmcGpgV3CIkq24TBSDOzRl15r8mXhqyElCArBqujwhrSssF
+	u72E25APfAj9+L4r3Ng9tAP6sZ05KU4=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2cfbbdfa60bso13093325ad.3
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 07:22:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788358968; x=1788963768; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=xhg4nFUTwBRfkzvOZ3lYhulq3dN/Jpsw7Gc9lSLlRQY=;
+        b=ZdKgSNT07wlOLVZ08zSjfdY2lL+zgP32hx0Mhnz8jQAqQhyOTHeySguicDUlWTj5oM
+         YNh1kRUUWg8ATIo6lC54/UKWObRcsN71/VfI2Y7xt8RMrKOFxyKlPKxWqh05ivFcQ5GX
+         kj+ZuUVGjyKKrHpOBZU1Dqc5pvOuw6mkXckGZ9bAnmpDiR/38VpgWS1XqOJXu0+VFS8r
+         eo+mFzJ7sjwX2SJ10aF0a6Qf76WgdHdXS4B/G3EoaDOCBj4cXAi45qblZ8Ae6LZf4KRe
+         rI8XyQpqO5hXSWg7z1JxQpTtIiwydBAMC7Ie9aqNpMJQPgSxzq3uvH80TzhwDmEMlxZA
+         vr2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788358968; x=1788963768;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xhg4nFUTwBRfkzvOZ3lYhulq3dN/Jpsw7Gc9lSLlRQY=;
+        b=eFoG28d5ahg8Xq+qhJeJvLIqC4QNUopgDCvyhxOn6EsPWsgsdOCT7FJWK4p6vukwXi
+         JceQSwPe4X0FZyr7az4f/7PgY/DbU5mp2WTLjWBXgHF3pRo+ULbDxlPQypRPCNxN70g+
+         tJbMq3Fhj0HzQ0WAWc+mVvZsupi/nd4Ut4t1lWkiSq+3sQov3j9Q0UcXyymO1SnaavhF
+         DOTOJw7AfWoYJJW7/RgDh7Vv3YpU/I04cQLxEU2BDwdyMb1LXgVym95mQIC0IMEvuSI+
+         8PWMEtI65CwKAKIGwKR9NPDAVaXaEOLiTGurC7mYIGfSuFKx7lpLYtrjYcdZEKrlQpl6
+         kfXw==
+X-Forwarded-Encrypted: i=1; AKwUvByKjSpSHj/6wrK5w6tmT0bzSm6kGZb5KunxpdyEGEfC6CmjzwFhq0tKWdBeUcEmwAfj5lwE1xVLkQ==@kvack.org
+X-Gm-Message-State: AFuF++lk5f3qGn7+7/U9eTcmR+PsAfllSk4QQnQk/JLumH7njH6SWs8X
+	lR04b4PnXBAfap7eLJQ759jRsP7BiC/CyxSLV0gPmKJiwpp6+wQrYcia
+X-Gm-Gg: AR+sD13+eofJx+4fVIdaVtCpuM7/GF/FLuk6v5BJ0sWBfaNrPEb50jGfZlpKwIHOB8g
+	VQsqUk4cjk5eVGW3o45mX2H6LFZ/9FaN7Li1p0jwqXtxHRXPX0q3OeuaVdE1m1pQyjA4MjIsnGd
+	ZTNqbrW0AroPx9wW+6SFQrp1z+72RGmOccHEOD/iOhkHYR9ICkI9oo9BwG0wYZxsLQqLqTZbnrR
+	RVvRiZpNVDB4Z2rv1z9VxTtG13ffwtW2sy6EFyr6mWuaEfrxYmFZc9NiGhv5xuCXxRnmYuEqjkE
+	P3J48RLbqaGuED3L25h5SnOVPAYvn+0oy3QUIrOHfB5f5KWXugIR9VFDcFgy7uC8LhKgUT32QE/
+	DfEPlBUe12WcIyrtk8O2SReeXnhg2WdiKaCnYpZ9h0/mqO9SUXX0XCVgFF2rctoohJRN1EWNdiA
+	zqtLBaU7DpBfHky8pRm7B7DEWZGvieOPGimZhcfwJkfh5jdVVH/+/ylKrkz8S6823FWigXZcGwA
+	IgvwtEVb2QWcqsL
+X-Received: by 2002:a17:902:d491:b0:2d9:3636:d01a with SMTP id d9443c01a7336-2daec74e5e3mr70183145ad.15.1788358968023;
+        Wed, 02 Sep 2026 07:22:48 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2402:1980:9c5:2de5:8b4e:3f3c:b637:4ca5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dadd383b36sm13853485ad.25.2026.09.02.07.22.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 07:22:47 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: aethernet65535@gmail.com,
 	akpm@linux-foundation.org,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH] Docs/mm/damon/design: fix broken :ref: usage and a typo
-Date: Wed,  2 Sep 2026 07:20:25 -0700
-Message-ID: <20260902142026.87554-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260902124550.31175-1-zenghui.yu@linux.dev>
-References: 
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2.1] mm/damon/core: fix false positive in damos_quota_is_full() when esz is zero
+Date: Wed,  2 Sep 2026 22:22:31 +0800
+Message-ID: <20260902142254.5328-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260902141001.86733-1-sj@kernel.org>
+References: <20260902141001.86733-1-sj@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: 3o73jtyki4uyj5kfzuyraf34ap8osjko
-X-Rspamd-Queue-Id: 95F6F100010
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788358834-847562
-X-HE-Meta: U2FsdGVkX19abzUPcna354/jEjdUv4OGDXalflOL6OHNupN1AQHkhiGakWbPHFk1BH17cIc2bDCC+YF+dJK3C/oEHhYA6CTscnQt0WaB7sqbdQoaiwPh4IksBqedqn9vTlC0lMR+uMmS/tCadQGmzQb2wCcqn4ca0M3MwyApS0FJZfs+6aLR8bjGdrLQjUlGM9g5LpdzOVvAKKv5zr+kVHajXPu0WS6QjmV259VHahbrGXWtPe8kzuvjbvHqhwfnZjbawe6IeI/b1KLaysP17iFtaJlap5e67Z6P2tyONPeGX3dCZNymUlfFkhO4AAUoZ1QOZLAHk7ZOKq43aZEygC/NCwkiGfB3yt7izVvagx6vyealiM49cnH7uL8nbvxmPaddGFqqI5GccpGjNmGfTcm+pwEiHYwUc7N0mIGQ7jrsGztRnzljkX1f1GrDXnNsICxSmDsqyFjJjZt81VidvilCm5f5zwydu0GXc9rdCKMUcsDVJ4zK5oHN+3T279WpJ/SYUyQej4Grdo92YIP6J3Tr3lnjWhGANSZDBNtSSzMKawNdaJgtDD9PN9uiWUW1BkVlNm5cyUj+cQCfpJMvQlPL4d7e+bIITq9FPAtkxyyd++AVieuoLZAF96IV4c/+DRRXQrSH/GuZtcfvVyR7yFPkLwOM28YihlvXMlakk3J/LCntfqYdBQeu/aAWiwGySExgP+GrhwcxSsNUxcZPh30Z13x5ap+7orAiCBhuiJ7BZknG4gIbaUnI+Mf6VWz4H4NDdx+imX2DRggRhrfO7qWyO7oRIrBM6OYV9thKu3K8sDqKHdOjzWeWc7fk3XLVLjVFcVUZFFsWSCeBaN4PsJDGSWfyXbJQRj04fkiwHPT9Egzs4WJpUktzy6cGpmMEx4Raf+RbtgmoKlt37tUB5KeTzSL88PT96Wmwvi/VXo7xDS7eJ36J6ZbOyML3Ih/gdZG8rwaIkbNFM1i/PYW
- CIso7re4
- T+o1GwgIY3j3eKAYJN4pl4QvIfZkTGvIp9KT2iKJ9G3S6ChfUlO3f6tBvxC6uicsY+F0a9DLSij907jJE/BUr0hStlR4IlIqg9QoCz9SdQQ+l9F3s5RwNuJUmwzkFV9smeb7xM3ROrfJbexvG1axJOLD4kF0NHWpXgHuVPiIy2oxZWNLFcF+wNZ0hls6/9YA4WApvsPbY4mAiOUbz0yHTIWM0kEoP2JuV53vBCJs5OXAuV6AcAJDDjKD2IxR9rjYWKTNVig5ywzp0C5g4r6Oo1z4O0p2q+2IK+muYZNiRJJdGrInrcMx30+kJK4Q5/jQ0lie9AnVqSNQtRVf+ZqH8CEDJAdBKJrFEBEh9DCU8psz3gmUhf28AuhJMktMUDjOfpY95E8yp2QTNphlfIxCvC9Tw2YpaPOX5nnSQ0DIwJLOWA+Zc+tqBOW6rCyZhZsmD7rZaoCzMJUTsGUEuwVir5eVV+xcqUYf6rMX4UA/fdrSvQjWvtx2BiyRP+hKq5KyFLLx8PBfIrctyT3s=
+X-Stat-Signature: g6nrm6sjeioo7ygjrn1khbuyy756k7ya
+X-Rspamd-Queue-Id: A0330100010
+X-HE-Tag: 1788358969-649723
+X-HE-Meta: U2FsdGVkX19+8oP1l+7wxdKcyEqN19YFmNJVmvLcwL2OdSxklk660TO/7xVVM6pjj4j10UJPzq6BoDTkxfyCTCZfu+3bWP0o13dCX+qG5OIOUjSB5CoJ1A+BRPsZsyyiVKojyb5+tN0oPBlu3lgdSQysnGEgMYsm98w3KKjb5ivCq43UFcLFvHrbbrv6B5I2s1SJBKxGWEle6KF0eJsMAhPMnFQAdOU/oTvS6BKUgGWqzbciuuUBO2VkZ+HCx4jwqdOlgiblJ+WHwvJsmHZ5Yc/IoIWLJcTX3FCXmI+J3THKj+9w61LUwDjwnRrFy25dgD4/CGUzzqyII1UiwQUk9pDLr4sjehioWQHI7LZI6TtuXyv1yskF7ooo5+NHLpz0OerWOVrPmygWahkxkf8AR0nqbF2wR32Jovs5rYUuH3/mXqb26MPmvxHEcjI/rJKqZxXXlL4mrNeJYaMU/a2hEKuKM/VjStMEbMYelwnTe3RdEzVZ6L0fxrNRbSMN6q7SPfl6DGgWi5TZVRQoN3yL2jvGaT9/6gsC1k/B9TVE0m1TvLCP23SkVlTN7IQNlaGSKLxgVIiBpzOSsgjxW/WaDIGFNw8cZa9rdZt02MtXIZDUW5rEGsKgBd5hMeO2PvUP4R6DD54XCNuxayp96TBRywZQ9s5eiJxLTqB5JiDP1oyh0jMpyGxkHD0Izm2J0m5dOpLUXZKD2DEoV4kWY17ws1sa2WTVpvCSesi58duuEexk9Izgt+/uGVDDYVzpvE8msHNxuehuY6e679AZ1iCvhFJ3GaVzme2TCbp8j28Nypa9ApgkdJS1DllL0lx0CYHtFMGg9GmLIcfEweujR2DQ80Dk7Wsd2AUHxH5Cl64Gyg4O61d8sZ5cMhNC67claYvShDlQEn2tmL2wRjVym2lSfUDqp6d2Gbok6VXKBub/5CWd5gHukSfePIAAv8CzI41+yqzjafSE06f+GkCgz03
+ EYNfKGUM
+ f64/tpkEToWvnKJ6ry6dM3h0AGIm7043RX4+QweIRqESy3J8pzHu+xXhWJkhiEEXE7HAOj7yHW0iJiiTB87cKQ0QSzdmOQerQPM4BVMOe+E9LR2ELKzOO43605W0PxeAK56WTYn6Qq342cLi3HuqYahfRDGpzeaL3oxDC9+dFX7H8r9gMkUo1UQXoaeZs8f1N3YHwfjbtqcIjr2omCrx6Trj5PGN44wo31oywbbnug1hD+g4oe+xu/YSpk/VSJoFEft4Qjump1Bk0VpvxzA7qldMhLLthuX6rIj0p2vvXGXNDUK+VDpid5y6/+gtBNOko2LAgNQYsyObwU7p3UI2xrfDi1mfvcIjaeu3a01RZagljnIneR/l+NpNQHYotZi5gFsfUFhcXZTxDeVqDTlB2693Sl9PF3nuPiObwjaR8YxYWIrbdjCdEwRVI4+UeqPytPMqpKFljBskpXYNWXrT00pKOOMCngA3/M+IDAH4hygjJKah7hjLstMLpsXim84+++aCVz5zMb6PqkPcdSvAl2wAwvg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,55 +125,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-'get_maintainer.pl --nogit --nogit-fallback' suggests adding below recipients.
-I added them.  Please consier using get_maintainer.pl from the next time.
+On Wed, 02 Sep 2026 07:10:00 -0700 SJ Park <sj@kernel.org> wrote:
 
-- David Hildenbrand <david@kernel.org>
-- Lorenzo Stoakes <ljs@kernel.org>
-- "Liam R. Howlett" <liam@infradead.org>
-- Vlastimil Babka <vbabka@kernel.org>
-- Mike Rapoport <rppt@kernel.org>
-- Suren Baghdasaryan <surenb@google.com>
-- Michal Hocko <mhocko@suse.com>
-- Jonathan Corbet <corbet@lwn.net>
-- Shuah Khan <skhan@linuxfoundation.org>
-- Randy Dunlap <rdunlap@infradead.org>
-- linux-doc@vger.kernel.org
-
-
-Hello Zenghui,
-
-On Wed,  2 Sep 2026 20:45:50 +0800 Zenghui Yu <zenghui.yu@linux.dev> wrote:
-
-> From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
+> On Wed,  2 Sep 2026 16:44:45 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 > 
-> The Statistics section refers readers to the DAMON sysfs interface
-> documentation for how to read the statistics, using a ':ref:' role.
-> However, the role name has a superfluous 's' appended (':ref:s' instead of
-> ':ref:').  Moreover, its target label 'sysfs_stats' does not exist; the
-> correct label is 'sysfs_schemes_stats'.  Fix both.
+> > When setting goal_tuner to 'temporal', if the goal is achieved,
+> > quota->esz_bp will be set to zero.  In this case, damos_quota_is_full()
+> > will always return true, even if no regions have been tried to apply at
+> > all.  This causes qt_exceeds to increase unexpectedly.
 > 
-> Also fix a typo, 'frequenceis' -> 'frequencies', in the Adaptive Regions
-> Adjustment section.
+> To me, this looks logically correct.  Could this cause any user issue?
 
-Good eyes, thank you for finding and fixing these!
+Yes, I think this might cause unnecessary confusion for users, at least
+it did for me.
 
-> 
-> Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
+I set quota_ms to 0 and set the target_metric for the quota goal to
+user_input (i.e., MemAvailable).  In my use case, this caused
+esz_bp to be 0 most of the time.  Also, because the quota->ms clamp
+was missing, esz wasn’t set to min_region_sz, it was actually set to
+0.
 
-Reviewed-by: SJ Park <sj@kernel.org>
+As a result, nr_tried is 0 (because damos_quota_is_full() in
+damon_do_apply_scheme() always returns true), but qt_exceeds
+increments once per second (likely because reset_interval_ms defaults
+to 1000ms / 1s).
 
-This patch is applied to damon/next [1] tree.  If this patch is not added to
-mm.git in short term (~1 week?), I will ask mm.git maintainer (Andrew Morton)
-to pick this.  So, no action from your side is needed for now.  If it seems I
-also forgot doing that or you cannot wait for my action, please feel free to
-directly ask that to Andrew.
-
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
-
-
-Thanks,
-SJ
-
-[...]
+Best regards,
+Rui Yan
 
