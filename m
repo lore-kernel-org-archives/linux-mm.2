@@ -4,110 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2415C624D3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 21:11:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 160C7C624D3
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 21:11:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 952246B0088; Wed,  2 Sep 2026 17:11:14 -0400 (EDT)
+	id 1D2FB6B0099; Wed,  2 Sep 2026 17:11:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FC126B0096; Wed,  2 Sep 2026 17:11:14 -0400 (EDT)
+	id 1AA466B009B; Wed,  2 Sep 2026 17:11:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7EA836B0099; Wed,  2 Sep 2026 17:11:14 -0400 (EDT)
+	id 0EB256B009D; Wed,  2 Sep 2026 17:11:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 40EBF6B0088
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:11:14 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BE222A038A
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 21:11:13 +0000 (UTC)
-X-FDA: 85170067626.02.62ACB67
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf19.hostedemail.com (Postfix) with ESMTP id BDF891A000D
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 21:11:10 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HbHM2mwd;
-	spf=pass (imf19.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788383471;
-	b=e5695ECpXsNfsJRfD8Ho4/3qUT1ShGocvZEnm5KhkgjXGPhlGX7j/krv5A5noWiI1qNUP2
-	G3oic8b0sa30WxOqljsw1D8792QmWFsuVBg3JehNc/njwtHgA6b5+MRrr1OgZ2LruadaU7
-	TdIED7PVBzedCixp4jU6fT1YlGjgMQI=
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DA2BB6B0099
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:11:57 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6D47F1203A5
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 21:11:57 +0000 (UTC)
+X-FDA: 85170069474.17.AD74F9A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id AA2D6C000A
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 21:11:55 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OAewaOe6;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788383471;
+	s=arc-20220608; t=1788383515;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ac/C5q5Dg8eTZGgWbI4QZJ+x7d/HhazDf/lNbz6jnjE=;
-	b=3an/zwlYLv4JB+Bc+esTLixfoEc4QC5+AQfXkgJPifqG+aTrFQTQR3ognz0bLDDbRqm0Qt
-	s9co2O+pZ9Tl6bmEJXtT8qFn7MnST1E5kwG8rujenCjAJeJwz4MiU9XNrTWySsZFclN+K/
-	zEySnLDmy51CBcq84jZDZJu/Nz/txm4=
+	bh=R58uimUktAT60F2STGL0CVSJ2s2uXX89Ga88btTYWqM=;
+	b=U9/Y9932z5UBGveKoz+j3H75i5FadvrgNeOeEYDgzzqNcYgJzJ0H3MvHSdedz36yPBHQoG
+	gRa2EMURTtfU40kIc6K+0NFIyl1zc9yBQUmSsF6FXbj43AxdxQ5ZRWVIq+OBk8LBltaNbn
+	rdMPh+bVQr+6g3qKYh6wY5g9HSG758Q=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788383515;
+	b=6xSVX+WFpB+R7sxQmyWfrbudQidaTq/PLrsr/9ig2CEWQ/SLtTzRiEIKvJdqW4LN7Fhj5T
+	LmjHqzCHEl8HvU7Q+jX7bP3n6xcuOswFLltSdhejjPU+W7PaanOT+ANhy/LHlb/UlbZhfW
+	Maj3Dv0EEyjucpBctF1860IGaZFzrnQ=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HbHM2mwd;
-	spf=pass (imf19.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788383470; x=1819919470;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=oNimGPcgo8tQhmVwRRd8dupVi84pfUzthcX62wpCfRU=;
-  b=HbHM2mwdfFwHAr/DG7K4/WC18ViMuDtk9hi3kgvDQzTqbAwj5pQQbmQ2
-   zC7e4nwc0WQidFz9Z2kK5DbjvidVNcSwJvKo5Bg6CCq8G3GTHTJlRnAnm
-   36TKNqKhDD3Qdxhv4D9FQtx+Wj5Z4ge4vb4mi/8gtbX52jSbhjKFm4b7J
-   4PWcxH9rbZTZOq05LkYmJkz4x58ChtR0tAYAAR18P9jos5wguhHnl1xyq
-   ttRn/6qKyFs8URSD41sbY4JhyovCD9bZrBEao8BjUe5JOqwHI9VX06z0t
-   HIo0opoTB/NuegDHWsjji8CiOK+B2NeujojYRaEPEDri/WauPU6ouezZm
-   g==;
-X-CSE-ConnectionGUID: EQlTa90wQbK407KYqwNm5w==
-X-CSE-MsgGUID: 2ACPTfXQR8GycUy3xAHcNg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11894"; a="100208243"
-X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
-   d="scan'208";a="100208243"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 14:11:08 -0700
-X-CSE-ConnectionGUID: XjEVjvTDSOGVUG2TyyoTUw==
-X-CSE-MsgGUID: DKGkOPFCQd6FG1vKBPiwtA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
-   d="scan'208";a="268977250"
-Received: from unknown (HELO [10.241.243.185]) ([10.241.243.185])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 14:11:08 -0700
-Message-ID: <fac52a49e611f7f6a6637f04a2e44e8c23a260c6.camel@linux.intel.com>
-Subject: Re: [RFC PATCH v2 11/23] sched/cache: Introduce helpers for task
- migration decisions
-From: Tim Chen <tim.c.chen@linux.intel.com>
-To: Jianyong Wu <wujianyong@hygon.cn>, Ingo Molnar <mingo@redhat.com>, Peter
- Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot	 <vincent.guittot@linaro.org>, Chen Yu <yu.c.chen@intel.com>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt	
- <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman	
- <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, K Prateek
- Nayak	 <kprateek.nayak@amd.com>, Shrikanth Hegde <sshegde@linux.ibm.com>,
- Phil Auld	 <pauld@redhat.com>, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, jianyong.wu@outlook.com, 	zhongyuan@hygon.cn,
- huangsj@hygon.cn, wangfengyu@hygon.cn, yingzhiwei@hygon.cn, 
-	justin.he@arm.com
-Date: Wed, 02 Sep 2026 14:11:07 -0700
-In-Reply-To: <20260827122816.756234-12-wujianyong@hygon.cn>
-References: <20260827122816.756234-1-wujianyong@hygon.cn>
-	 <20260827122816.756234-12-wujianyong@hygon.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 (3.58.1-1.fc43) 
-MIME-Version: 1.0
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OAewaOe6;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 31677600D1;
+	Wed,  2 Sep 2026 21:11:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ADF91F000E9;
+	Wed,  2 Sep 2026 21:11:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1788383514;
+	bh=R58uimUktAT60F2STGL0CVSJ2s2uXX89Ga88btTYWqM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=OAewaOe6yCKjB7JUZQRUerIw15rxe4H1LtPvtO1QqwsRPSX35jud9zfB+jPjbywpe
+	 3zE40WHpcGOpZWzbxhhpn3G8nPVpUhZD6bEf8gvdJCWZSx0pEI4nZwqbj8y8lZJVSy
+	 2MDQ/Fzay7tHMTX5AyjyI4F9upy4yeICOWkjPNBA=
+Date: Wed, 2 Sep 2026 14:11:53 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: kasong@tencent.com
+Cc: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>,
+ linux-mm@kvack.org, Barry Song <baohua@kernel.org>, Axel Rasmussen
+ <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
+ <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Michal
+ Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>, Baolin
+ Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Ridong Chen <ridong.chen@linux.dev>,
+ Lian Wang <lianux.mm@gmail.com>, Yu Zhao <yuzhao@google.com>, Zi Yan
+ <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Kairui Song <ryncsn@gmail.com>
+Subject: Re: [PATCH v5 0/6] mm/mglru: clean up folio counters and flag usage
+Message-Id: <20260902141153.93b932ba572b1d3375216cc4@linux-foundation.org>
+In-Reply-To: <20260902-mglru-flags-cleanup-v5-0-9db761d779ef@tencent.com>
+References: <20260902-mglru-flags-cleanup-v5-0-9db761d779ef@tencent.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: BDF891A000D
-X-Stat-Signature: c1a4bxbrm5gtzmk1fi16bmz6zumed9ms
-X-HE-Tag: 1788383470-595428
-X-HE-Meta: U2FsdGVkX1/2ofb+2RJ2ZUH3zr77feowFNpgJI5HLVZSbKZTxl4x/CSYiierAfFZ2XXiuAIiD206xNtkjJ8n9DY72oboXq62k+d1Zxh4XxGrWPHJ7OVYxytzSRFHFShaZL/QR72e9mg5SSyJe4V+/2MOA9ZCabnaSxf6pMqzNAhmhicq2FIALwUlZtG58qX3B53ZREKMH1gmsp6LQIJWvN95llvLwl4EgBPOx/iL9ekZZrcEc9zZs55cTtm+3hsoM3n1y9ipHu7cHlFxhxpNNqSwkoEN/nUYkFMxU9Fs2DKojy2vT0Kn4RjLJ0W3OWXFx6rnxfcNB97ZLEpoFZ2TTj6lLsMKMS05zFjpkDwrYKnt37gzNEJEXNBq8RvJr9gyuMQqqpRvd+0oBoBHTeB2OeYJsCIu2NK1j2IjDUFM0P+7q7IwhVYpDrQa5pai0HxCf81F5vmyUO3Y5txj47Fd3RFJe2tnxlGPEaTfT0oA6bW9i/BfEvbsjQvLhLvj6gG/pe8DREZA/6maDbi5uAJrDHprLpN89yfpWVBqZScstEUPlgbn9fMogkY1pz4lnA8Fo/guGLTfcGwxsiZMkmoDlQsAIn2qGoUG7vPzIF6EvDRSUb3vU6BN+vBNmQBT4P8ksUZHfKunW6o9yuXmG5AIlAuozw0eK0RQv8I2bj7CbKp21EGwSaP7v3jARcM012igSLLqmI4lN+t70AjfARtriJWjsgEzOUVUC0nW6O8ZLXT7r1xr/sA5NkulN/L4KA9ieQlfKc0C+B21jptwo4oQ6YqiNgIMea156VKTunImZJFhM35WEtdvC2f+6HmcTMGcLaKUaJM9e51DyeuliIBTPufnYyRlOs4/zucb5h9216KuQdlCAQUcyetJI1Q0DxDOz77uOSfYw4m0yC5otwv/7/B0h9u6nz5nhZa0ZUJpTFkIIlmPeJSy47FzMxwJYVSCkLUIiwP0mr+WRbjhrZe
- BLpFHPXI
- qnnVndieVn66tapWgPpAM5t6oj5+5IhaNVkkBEl3qS5o08gTBmLzIOLiqV6JPTpbL566qiAcvCwwVWfkzXgyYnxkTs4kXiMPBDqNt0uLxsC5bSnm/DpAPc0LgaBT+/XPlW7iCcbzkZ5N0U2Y38zidw0gS37sGw53uk1hzfFlO1aUdDj+5xRwf/eZgIs4z3rd1kmcI4Ov4PpErxqv8Zpu7ToRlYw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: AA2D6C000A
+X-Stat-Signature: dd9fm49czzhwfdtfykt8nskrrb1gpay3
+X-HE-Tag: 1788383515-671636
+X-HE-Meta: U2FsdGVkX18eykJ7VzLeQJbwXrp2XS/JVKEDHafRxmKtyUBeYbDNgTlu16Ov5XZvafPSgBywVL+sgN6qG2B1g93Hhmyw9TUvKNXApBBxbsaaAuR0YvteGfFWCe6k2QLNUZsS4Lkm8qU59YX/cF7Ep4Yu/Uw9DO2thI+EuLeqPDE35l8e3VLL3Rjx34va31OXvOpv0MimBGudM1bPOz3+Ha2gXAa8hfp1H2zdkK0W6pXW4LW+QOeZT96GLmxEKy8nHxAmT3qScSGQUmFYJpyJCztf7DONFZiONa7XODWIl1g+5FWVpLFKI2jz0+7ejmB9AmTzzI5vw1tx7uCGMqX7UXPuYMW/Lm/ocXH9NQ2fRT618s8JZ8pdqDVYaKFGPHUo9FS3CiQbK9HpcVRTQ2Wdo/H6PA7ua6pfoMQ7sNZTgJF03mcAbJ8a/MYk2YX82U2fK8SMdljYptm/ysPgrA2jpqSJnPEv4VLOKDCLGXujzLHVVWQivHnPMcJ44qAZLbOH0su++6/xhWCGJMS8SOiLYe1Mi68SWDfzr5tRjcs3JtvhE2zHIBfzL1xnCEA6ZLrQcJ/zXem1KfiO6tKaVRbsa42ac7YHg/MGcvaGkRsHNe39HdrWG+EQ9YoDpbcSQ7x0wl3HHtaFmHAb28pDcKW0kD5oPGbxDplfqkJu20kfw8LckZ+VxjhiXObuHB/jOr23aAfS+aElrzf8sjPZUvyCk5wvrIXUWe9vIr57j/vpvhva2B0UyG1yrp5de6SnMXx4BCaSOe6RXzQCf8xVBtHLtQD5teDCSjfm9OsA2/qbu+ol3yBlARHjHdpB0XL8FbS90einUxCMt1Y+7xQMF0BrkT3A8dBE/tpruhxrIM4Po7+AykGlMR9wUX1Gd+xM7Zi/+Ol6HjFYjnzw5/SD1RJoOEp455D7pF3DkiRdeUhcftP+URkXjMExD6ixOgE920TlctusNFHQBGCanDmUY5a
+ njU+9voq
+ HfLX/Vv8PhP1pnSJeupob2ydkQ4a65RsNOkq1E6YNWNDyAxE0Xu1Scb0ScBwytDiVpEvRCLScIOo6EyHsXeYgsTMSaWJX6xybaEtcdkYPiefXT/CB8XMNvBUpBvANV5e1tvN0xP8eWnldbhIt9u1llE4BZukRd2qmfMIHkHW47cXkK4h/jGBGul49xj6nCcoWtepVwFJTby1QdeRfl7+Ru/XbnOHB8m/3rK54QJ3V6UIW4PcuNteaDNujIw0s+EVJQzIlEe2Vl+XUZ3c9hySsUrLiU/ywsEgV/2HcK4ekq+6xiqGLh+y69/496DIx8MkPnS64p4S5QPssuaLHVgOqrUEj49LIZhf8D9kj+13qceHqdAJtUje4m+KIOny9o+OS518xCJZSr/V0hu3W5D+dHrqBlYAlJXxNzrnP+p1QlUYcTAOrlGTgBWoAJXk3D4UrGxgevzHlsY/k7/ExMyLYcoFTjlw22tDsQG8Qp1o02ivJj+Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,277 +100,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 2026-08-27 at 20:28 +0800, Jianyong Wu wrote:
-> Cache-aware scheduling makes migration decisions purely based on LLC
-> affinity, allowing moves only toward a task's preferred LLC. This rigid
-> policy cannot handle workloads that do not fit within a single LLC.
-> A better approach is on-demand thread aggregation across LLCs: as the
-> thread count increases, additional LLCs are recruited to host threads,
-> enabling workload scaling at LLC granularity.
->=20
-> To realize this behaviour, we need to pick the next eligible LLC once
-> currently selected LLCs become saturated.
->=20
-> Earlier patches have built node-level and LLC-level distance matrices.
-> From these matrices we obtain a node-affinity sequence, and within each
-> node an intra-node LLC-affinity sequence. These sequences provide the
-> priority order used to pick subsequent LLC candidates.
->=20
-> This patch adds a helper routine to determine whether task migration
-> is permitted. It checks whether the destination CPU resides within the
-> first eligible LLC. Migration is permitted if this condition holds,
-> and vice versa.
->=20
-> The first eligible LLC is resolved via a two-stage policy. The first
-> stage operates at NUMA-node granularity: we iterate over the
-> node-affinity sequence to find the first node that can accommodate
-> the task. Once such a node is found, the second stage selects the
-> first capacity-available LLC within this node by walking the
-> intra-node LLC-affinity sequence.
->=20
-> Signed-off-by: Jianyong Wu <wujianyong@hygon.cn>
-> ---
->  kernel/sched/fair.c | 185 ++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 185 insertions(+)
->=20
-> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> index dc7bbdb1ab98..cfbd596992ab 100644
-> --- a/kernel/sched/fair.c
-> +++ b/kernel/sched/fair.c
-> @@ -10610,6 +10610,191 @@ static enum llc_mig can_migrate_llc(int src_cpu=
-, int dst_cpu,
->  	return mig_llc;
->  }
-> =20
-> +/*
-> + * Like get_llc_stats but for sched domain that above LLC level.
-> + * Based on get_llc_stats, we can accumulate utilization and cap for
-> + * sched domain in the granularity of LLC.
-> + */
-> +static bool get_span_stats(const struct cpumask *span, unsigned long *ut=
-il_out,
-> +					unsigned long *cap_out)
-> +{
-> +	cpumask_var_t mask;
-> +	int cpu;
-> +	unsigned long util_tmp, cap_tmp, util =3D 0, cap =3D 0;
-> +	struct sched_domain *sd_tmp;
-> +
-> +	if (!span || !util_out || !cap_out)
-> +		return false;
-> +
-> +	if (!alloc_cpumask_var(&mask, GFP_ATOMIC))
-> +		return false;
-> +
-> +	cpumask_copy(mask, span);
-> +	for_each_cpu(cpu, mask) {
-> +		if (!get_llc_stats(cpu, &util_tmp, &cap_tmp)) {
-> +			free_cpumask_var(mask);
-> +			return false;
-> +		}
-> +
-> +		sd_tmp =3D rcu_dereference(per_cpu(sd_llc, cpu));
-> +		cpumask_andnot(mask, mask, sched_domain_span(sd_tmp));
-> +		util +=3D util_tmp;
-> +		cap +=3D cap_tmp;
-> +	}
-> +
-> +	*util_out =3D util;
-> +	*cap_out =3D cap;
-> +
-> +	free_cpumask_var(mask);
-> +	return true;
-> +}
-> +
-> +/*
-> + * Decide if migration should happen on a specific node.
-> + * The node here is an LLC or a NUMA.
-> + */
-> +static enum llc_mig __maybe_unused can_migrate_node(int src_cpu, int dst=
-_cpu,
-> +			struct task_struct *p, bool to_pref)
-> +{
-> +	const struct cpumask *span;
-> +	struct mm_struct *mm;
-> +	unsigned long dst_util, dst_cap, tsk_util =3D 0;
-> +	unsigned long src_util =3D 0, src_cap =3D 0;
-> +	unsigned long acc_util =3D 0, acc_cap =3D 0;
-> +	int node, target_cpu =3D src_cpu;
-> +	int get_src =3D 0;
-> +
-> +	if (!get_llc_stats(dst_cpu, &dst_util, &dst_cap))
-> +		return mig_unrestricted;
-> +
-> +	if (!get_llc_stats(src_cpu, &src_util, &src_cap))
-> +		src_cap =3D 0;
-> +
-> +	if (p) {
-> +		mm =3D p->mm;
-> +		if (mm) {
-> +			if (mm->sc_stat.cpu >=3D 0)
-> +				target_cpu =3D mm->sc_stat.cpu;
-> +		}
-> +		tsk_util =3D task_util(p);
-> +	}
-> +
-> +	dst_util =3D dst_util + tsk_util;
-> +
-> +	if (to_pref) {
-> +		unsigned long dst_pre =3D dst_util - tsk_util;
+On Wed, 02 Sep 2026 17:50:53 +0800 Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org> wrote:
 
-dst_pre was limited to this scope but was used later in a different
-scope.  Should move the declaration to parent scope.
+> This is a cleanup series separated out from the MGLRU-FG series [1]. As
+> that series is getting too long in following updates, seperate out the
+> clean up part for easier review and merge.
+> 
+> No feature change is intended, except one bugfix. It mostly replaces
+> the open-coded bit operations scattered throughout the MGLRU code with
+> new helpers, with proper kdocs, sanity debug checks, and hardens a few
+> MGLRU functions.
+> 
+> A subtle generation counter leak is also found during the refactoring
+> and the fix is included.
+> 
+> Also collected review feedbacks on the cleanup part from the posted
+> series.
 
-> +
-> +		if (fits_llc_capacity(dst_util, dst_cap))
-> +			return mig_llc;
-> +
-> +		/*
-> +		 * The destination is over the margin. That is a reason to
-> +		 * refuse a task while the margin can still be met, but not
-> +		 * while every LLC of the node is over it: no placement
-> +		 * satisfies the margin then, and refusing every migration
-> +		 * leaves the imbalance in place.
-> +		 *
-> +		 * Let the task through when the move still lowers the peak,
-> +		 * that is when the source is noticeably heavier than the
-> +		 * destination and carries at least two more tasks worth of
-> +		 * utilization. The second condition keeps the destination
-> +		 * from becoming the heavier side, which would bounce the
-> +		 * task straight back.
-> +		 */
-> +		if (src_cap && util_greater(src_util, dst_pre) &&
-> +		    src_util >=3D dst_pre + 2 * tsk_util)
-> +			return mig_llc;
-> +
-> +		return mig_forbid;
-> +	}
-> +
-> +	for_each_sched_node(target_cpu, node) {
-> +		unsigned long u =3D 0, c =3D 0, nu, nc;
-> +
-> +		/*
-> +		 * The walk starts at the anchor, so the nodes it crosses before
-> +		 * reaching the source say nothing about this migration: the task
-> +		 * does not live there and is not going there. Judging them only
-> +		 * lets an unrelated node with room refuse the move. Start at the
-> +		 * node the task actually sits on.
-> +		 */
-> +		if (!get_src) {
-> +			if (!cpumask_test_cpu(src_cpu, cpumask_of_node(node)))
-> +				continue;
-> +			else
-> +				get_src =3D 1;
-> +		}
-> +
-> +		if (cpumask_test_cpu(dst_cpu, cpumask_of_node(node))) {
-> +			nu =3D 0;
-> +			nc =3D 0;
-> +			for_each_llc_node_span(node, span) {
-> +				get_span_stats(span, &u, &c);
-> +				nu +=3D u;
-> +				nc +=3D c;
-> +				if (cpumask_test_cpu(dst_cpu, span)) {
-> +					if (fits_llc_capacity(u + tsk_util, c))
-> +						return mig_llc;
-> +
-> +					/*
-> +					 * The destination is over the margin,
-> +					 * but so may be the source. Refusing
-> +					 * then leaves the peak where it is:
-> +					 * a LLC at seven tasks stays at seven
-> +					 * while a neighbour in the same node
-> +					 * sits at four, because taking one
-> +					 * more would put that neighbour over
-> +					 * the margin as well.
-> +					 *
-> +					 * Let the task through when the move
-> +					 * still lowers the peak, guarded the
-> +					 * same way as the aggregation path:
-> +					 * the source must be noticeably
-> +					 * heavier and carry at least two more
-> +					 * tasks worth of utilization, so the
-> +					 * destination cannot end up the
-> +					 * heavier side and bounce it back.
-> +					 */
-> +					if (src_cap &&
-> +					    util_greater(src_util, u + tsk_util) &&
-> +					    src_util >=3D u + 2 * tsk_util)
-> +						return mig_llc;
-> +
-> +					return mig_forbid;
-> +				/*
-> +				 * A nearer LLC only justifies vetoing this
-> +				 * migration if the task would actually fit
-> +				 * there, so account for its utilization the
-> +				 * same way the destination branch above does.
-> +				 * Without it a LLC already holding one task
-> +				 * per core still reads as having room and
-> +				 * vetoes every migration towards a farther,
-> +				 * genuinely idle LLC.
-> +				 */
-> +				} else if (fits_llc_capacity(acc_util + nu + tsk_util,
-> +						acc_cap + nc)
-> +						&& fits_llc_capacity(u + tsk_util, c)
-> +						&& !util_greater(u, dst_pre))
+Thanks.  I hit a non-trivial reject in [2/6] presumably thanks to
+mm.git (mm-new) race conditions (appended).
 
-Got a compile error here when I try to build the code.  Seems like dst_pre =
-was declared in previous scope above.
-Likely the posted version is slightly different from the tested version.
+The patchset comes nicely review by humans, but AI is less happy:
+	https://sashiko.dev/#/patchset/20260902-mglru-flags-cleanup-v5-0-9db761d779ef@tencent.com
 
-$ make
-  DESCEND objtool
-  CC      kernel/sched/fair.o
-kernel/sched/fair.c: In function =E2=80=98can_migrate_node=E2=80=99:
-kernel/sched/fair.c:10855:69: error: =E2=80=98dst_pre=E2=80=99 undeclared (=
-first use in this function)
-10855 |                                                 && !util_greater(u,=
- dst_pre))
-      |                                                                    =
- ^~~~~~~
-kernel/sched/fair.c:10618:27: note: in definition of macro =E2=80=98util_gr=
-eater=E2=80=99
-10618 |         ((util1) * 100 > (util2) * (100 + llc_imb_pct))
-      |                           ^~~~~
-kernel/sched/fair.c:10855:69: note: each undeclared identifier is reported =
-only once for each function it appears in
-10855 |                                                 && !util_greater(u,=
- dst_pre))
-      |                                                                    =
- ^~~~~~~
-kernel/sched/fair.c:10618:27: note: in definition of macro =E2=80=98util_gr=
-eater=E2=80=99
-10618 |         ((util1) * 100 > (util2) * (100 + llc_imb_pct))
-      |                           ^~~~~
-make[4]: *** [scripts/Makefile.build:290: kernel/sched/fair.o] Error 1
-make[3]: *** [scripts/Makefile.build:551: kernel/sched] Error 2
-make[2]: *** [scripts/Makefile.build:551: kernel] Error 2
-make[1]: *** [/home/tim/linux/Makefile:2229: .] Error 2
-make: *** [Makefile:248: __sub-make] Error 2
+So please take a look at all that and retry in a few days?
 
-Tim
+Thanks.
 
-> +					return mig_forbid;
-> +			}
-> +		}
-> +
-> +		/* Don't migrate if this is a good place to live. */
-> +		for_each_llc_node_span(node, span) {
-> +			get_span_stats(span, &u, &c);
-> +			if (cpumask_test_cpu(src_cpu, span)) {
-> +				if (fits_llc_capacity(u, c))
-> +					return mig_forbid;
-> +			} else {
-> +				if (fits_llc_capacity(u + tsk_util, c))
-> +					return mig_forbid;
-> +			}
-> +		}
-> +	}
-> +
-> +	return mig_unrestricted;
-> +}
-> +
->  /*
->   * Check if task p can migrate from source LLC to
->   * destination LLC in terms of cache aware load balance.
+--- mm/vmscan.c
++++ mm/vmscan.c
+@@ -3307,21 +3313,20 @@ static int folio_inc_gen(struct lruvec *lruvec, struct folio *folio)
+ 	int type = folio_is_file_lru(folio);
+ 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+ 	int new_gen, old_gen = lru_gen_from_seq(lrugen->min_seq[type]);
+-	unsigned long new_flags, old_flags = READ_ONCE(folio->flags.f);
+-
+-	VM_WARN_ON_ONCE_FOLIO(!(old_flags & LRU_GEN_MASK), folio);
++	unsigned long new_flags, old_flags = READ_ONCE(*folio_flags(folio, 0));
+ 
+ 	do {
+-		new_gen = ((old_flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
++		new_gen = lru_get_gen_flags(old_flags);
++
+ 		/* folio_update_gen() has promoted this page? */
+ 		if (new_gen >= 0 && new_gen != old_gen)
+ 			return new_gen;
+ 
++		new_flags = old_flags;
+ 		new_gen = (old_gen + 1) % MAX_NR_GENS;
+-
+-		new_flags = old_flags & ~(LRU_GEN_MASK | LRU_REFS_FLAGS);
+-		new_flags |= (new_gen + 1UL) << LRU_GEN_PGOFF;
+-	} while (!try_cmpxchg(&folio->flags.f, &old_flags, new_flags));
++		lru_set_gen_flags(&new_flags, new_gen);
++		lru_set_refs_flags(&new_flags, 0);
++	} while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
+ 
+ 	lru_gen_update_size(lruvec, folio, old_gen, new_gen);
+ 
+
 
