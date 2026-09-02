@@ -4,118 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECB6BC61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 01:27:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D735AC61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 01:29:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D22216B0088; Tue,  1 Sep 2026 21:27:27 -0400 (EDT)
+	id D4E0C6B0095; Tue,  1 Sep 2026 21:29:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD31A6B008A; Tue,  1 Sep 2026 21:27:27 -0400 (EDT)
+	id CFE506B0096; Tue,  1 Sep 2026 21:29:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC1BA6B0092; Tue,  1 Sep 2026 21:27:27 -0400 (EDT)
+	id C14276B0098; Tue,  1 Sep 2026 21:29:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D9A06B0088
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 21:27:27 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F271E8062C
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 01:27:26 +0000 (UTC)
-X-FDA: 85167084492.13.2EC7DC7
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 2D0A840004
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 01:27:25 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=MUuGTj8P;
-	spf=pass (imf07.hostedemail.com: domain of hughd@google.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 8E17E6B0095
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 21:29:15 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CE0FBA4532
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 01:29:13 +0000 (UTC)
+X-FDA: 85167088986.22.6E8C560
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 22BA6100003
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 01:29:12 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=asjJlZHU;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788312445;
+	s=arc-20220608; t=1788312552;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zUMTfAI7ONprrYSeDVVm7zPC919OUwaHos5tY6hqkXQ=;
-	b=gTseY1ayQX2w2F63S0sXxZ4tTHtJ0D3kKHA+ffBa2Go1Ky27n7UfybViJ3n+f9XvA5cjLF
-	WouTVaVDmggHeQv1X4v4NTxqxRH+BCyJy3tA2pHBTrgE7pKc+QM9B03/Om9rVP/1UqDLOH
-	y19jv1Tk/n2+D099dTYiozyWnuAapfY=
+	bh=81zL3FtVn4KjY0IqffHkZV0IqVRMntkJGqm5iDMz/Ek=;
+	b=yURr0gWI5rSKyG+OaT+OobtnBzn8WnyZJOQjobAhm9NmS0omhDg40wsv4fFie7CrxcLmB7
+	QFoN7XSjmrm67I/ILNVdISxt772QKKcoIvQAVGpqZcCTKMxGpEngOxh7OK+64Ki/6R9dwD
+	+rUG/vk1575jTn2Ww0VsCIXzhQC5KHU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788312445;
-	b=7vCGFScf8fEH4aYJI35nZ56b9FG11NUgg0H0tBU7G31bx40FZG95FooVIaeAK+5JB4kYY7
-	n7zM+Zy90WD386r4HBcYbJ+O5tK+mWWWH7SzPzvZokUea/UlG2KJHAdwJzR+2S6ku6kzqk
-	Ye2NOHqf5VUQ4+LKojeOmsY8QpZq6YQ=
+	t=1788312552;
+	b=tvPRuoF/7FanaB2viL69aC8l9gdvdRctsvAQMktZapuHYPhKevy6NYY/a6UTjF3LHsWPpB
+	pwSj4Bp/GQ8EUyb8D66vb75p+5D2bKlWCcTBxkf6NA5d8yFA4H5VytUC0dwIJedzv1lrfg
+	9d0k8w7nLJzXeDZU6AqbAgjrbXgqxEQ=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=MUuGTj8P;
-	spf=pass (imf07.hostedemail.com: domain of hughd@google.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-836c8bdac50so7935887b3.0
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 18:27:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788312444; x=1788917244; darn=kvack.org;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zUMTfAI7ONprrYSeDVVm7zPC919OUwaHos5tY6hqkXQ=;
-        b=MUuGTj8P5RwxmZSe08iOw3exBurjWyL7Zfj71IJG/kC7vz0sLPCZdD6Cx+MGzy+s6z
-         QYaOq9QyDKJ1Kxg5F6kZzXP07dFgiOJ5eAE/NFFBGxBgy4mCbVqlCfjNH3gwxFVBgVaO
-         HzmLPd0XQq7EK/eUXoAJXRmS+vb8gwl48UI+ra0LyWjaGh9erEiUyArZp1zUBUV3S7KZ
-         H5Ds3qr+FvpoHvhfobLqBp7B3GrSwYsGEmcuNajl/tfaXieLg+04BEN2VCfuSR2Cv0gm
-         nTgPDThHvqtMfrPO+PI9+m+dMD1XD3+SorsCCCD84GSSk1O/jqI+2M6fsAj6eDoVOg7m
-         elIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788312444; x=1788917244;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zUMTfAI7ONprrYSeDVVm7zPC919OUwaHos5tY6hqkXQ=;
-        b=pn64RfuWQWfjtEgtYkhYvDnnDebPmS5/F+NIou3jTbuKbd+UN5O29gxS6AaiLpLLJu
-         XEpyFam+EAzCLD5ZsEsqEDoA4s6RLOhE1r2D25LWARPCSn9nNzLsupPWjCOz8pNSQ3uL
-         x3I8KAxzJFn1VIe+l+zN5Mgx8aE1WXknFheiqnSTu1ugaq5NrKijYDzgRDBKA0wHuNRo
-         HAJ4SQzvvXQgYzIBvtxNz3qkIrJ+hi9XS1RwZzuE3eJFmIDZ9zg0BOKhS7s//6JwEoXo
-         gQXvChBV2CsaD09YYP4wquojoDOy1FIPf5bCXcjfdtphPZDrlMsOubQVl7mymXiPrnb6
-         ClyA==
-X-Forwarded-Encrypted: i=1; AKwUvBzEZGNknCMEbVxgAThK0MUnXGNpu2Jx1HhmrpbfawdTUcAMlQaCTPC60/QhLi3WD+eGg9cYZYByqw==@kvack.org
-X-Gm-Message-State: AFuF++luX1tf7Z5kqRjK+nSYnewMYgIXWlxqdekPer1IpZtM/3sA5KD2
-	6+a8a3zPWKMj9tIzlOjL/GPB86ANhj+Yguzh7C7wtU8PpAVc83ZwEkQ+rILiuLCZvQ==
-X-Gm-Gg: AYBFou3QgvLy4wfHo40GTkQJ6PxFXgRh/kCQQwWwoYf2Hlqr3fTIaUThMw2cEBTU5ei
-	mOOpdyThgx3Q214KxrsxGPY1j/CxEpJ8RgGFswqoxofECu2371QmBvNDJWq5afTFc8TXFPMvWpa
-	UWh2wO8ha/bO5FwbkcoMazf5pcYuRfqlJC8ERQ7KSKvGs3EBAsV6uQ0W/b7Sf9+5U7b0xEY3TJy
-	9JlJJY/w8hgrF7dHzodcWNYnEbFAT3ItfM2Cc97+Gq9mwnQH5Uc+1nCGBswo9vn9IxT52opYEFe
-	t+UZKf6NzowRgJp5Hj1K7PEFdbGv1jmEUDHOIf3G7FEtDSAOWNkv+xrlGGtdW0lenymV4FDXFqd
-	kaRUXUCoOGdfHI7IAh8DXwFf+lIY2hCBGfj8+c4rp8px1PX7HSaIzpWlmUnXo+F0FaScJYaTt2M
-	hhkq6T3rvyJrZYTOOxqJEvj8zYfNGTWZK4jCRkwzXkIrAqDdU8WtoT+ZhGCu6IIBUG6GP2dwjUU
-	K0agaHZGo51U7FlIoX/LXFr+9jKZSkCbq4wt+mlp8dNJVMp
-X-Received: by 2002:a05:690c:e206:20b0:861:d742:8c1 with SMTP id 00721157ae682-86c4da2b5a1mr5004487b3.2.1788312443615;
-        Tue, 01 Sep 2026 18:27:23 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-86c186d7370sm6729127b3.37.2026.09.01.18.27.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 18:27:23 -0700 (PDT)
-Date: Tue, 1 Sep 2026 18:27:06 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-cc: Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>, 
-    Vlastimil Babka <vbabka@kernel.org>, 
-    "Liam R . Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-    Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-    Matthew Wilcox <willy@infradead.org>, 
-    Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
-    linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/mlock: use the IRQ-safe accessor for NR_MLOCK in
- __munlock_folio()
-In-Reply-To: <20260901180109.3797944-1-shakeel.butt@linux.dev>
-Message-ID: <1ddfa7dc-2dd8-406d-8454-59a349972106@google.com>
-References: <20260901180109.3797944-1-shakeel.butt@linux.dev>
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=asjJlZHU;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8AECB41493;
+	Wed,  2 Sep 2026 01:29:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CFEE1F000E9;
+	Wed,  2 Sep 2026 01:29:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788312550;
+	bh=81zL3FtVn4KjY0IqffHkZV0IqVRMntkJGqm5iDMz/Ek=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=asjJlZHUX9ccv1pGJeMThdQowe7FdXlWqgFsxjO2yXmOeTYhJZUXgYckI1gOxYhLG
+	 dh6Y6eeSL4FFZf0VVnvjQPHIJUQbEbMLxDjd4p9X5ba5CHoUpzlmF9CcSwDEPYP0kp
+	 LqccIyq9c5EbCSHa1llVXnn+ngb7+Pv15yXr0LY7kCFSBa1+ZeXeiW4BRS3Z739KGZ
+	 w9XRdBj2VdtaZ77LalcgQH1PpdWOEMocAlVmqLuxbZbDKhwDLiMgERREs0PGYegeJb
+	 R4JKb/GHyjJTdCDRPn7S84PjdVMNyKqlig0iGtIEC3urBi2IA97eEwha2iU028Z+Ak
+	 1czjZQ7fXLzvA==
+From: SJ Park <sj@kernel.org>
+To: SJ Park <sj@kernel.org>
+Cc: Nathan Gao <zcgao@amazon.com>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	baolin.wang@linux.alibaba.com,
+	david@kernel.org,
+	ryan.roberts@arm.com
+Subject: Re: [PATCH v3] mm/damon/ops-common: use a page-aligned address in damon_ptep_mkold()
+Date: Tue,  1 Sep 2026 18:28:57 -0700
+Message-ID: <20260902012858.110515-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260902001142.107226-1-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: kix4399od3ji9jx8cqycwpokqsjwnapz
-X-Rspamd-Queue-Id: 2D0A840004
-X-Rspamd-Server: rspam02
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1788312445-520410
-X-HE-Meta: U2FsdGVkX1/+c4fUq9FnsBslbaTUwGeIMckKybZHw/7r0FWKV8x4ep+WYZOX8CUOKCGveeIM7L1Fc96T/SX0313okPb8/pNSlgSp+nGiyrkfT8OQJbG6wX6xWdKMWtUxwhnrStcVHt0FOTwz0a5tUhKvZDJCdxlWTW42dmtogiZYwGJJ/kQmr79NDbeld+jUwvWIJA29TnleNTbUFn1vtn5Rux6FlYFZTrfLDF1aWKLvPPGu2WXlgP/Vuu54w2EL6kWM6usAFtle6YRiiZe15B4e8A18Byi51QnFdJdZwh05t/9P+TRwfTol5pKhG+ByfZ7W5GfDfgh903JxaJek+eEjNcKkRTo1CM3giHa/svt3SUfp+P25kCXQJ9Y3LUPGHd1yMFyF+WDLeVH/ahRY23jWDzIAXus6nuTHLwUptVIAan2Hl419O+FcSWNS7mf8z0/WCmeCrBn6cGGXPYNGS5JHh0YWkdUv4q7wA1srKAmFf2k/kLs6e9CkEvnRHr4QHdlIkRmYqicWcKZW6pKYwvr1MBpAO6bja/upc/csxZhZhPDwpPshAl92txId8mTH9blNRwJbOK5FEpPhOxLcP6x13wHa+mvYxruNksW5ylAExNnT7XiHATK//T/5GoqnluHiQFj3L4/kY6jKzKFixc40z4vqw/aCGnx422WECxUqG0pCKIzNFivzpYdmM03b8tw1ooybArxtj74nuk8qnzA4+4fjIc70TaoVN9GDpJCnIrceUtmL8h7/w1El6kpmLwn6vN9JeyynE1AolTmNJF6iLUmjzoaSmINKPGAG4+1W1FaDtrFYcdUjDR6WsWBsq9k2wmEf4xGHIv39qrYvy4MuZefiMfkHSkSqyYgFruHnc6KsT1DisXkX5TQqMcbH4iu+GjjYBq81M6SdQbNxnjZHUN7emVXlYOMUdoDdl13Jd41cFA9KKg9qOiL5p1rcVe6tx7HZEclNZMCLPaY
- LUxNxRob
- 33NcDF9YCpVSc9R5yrAPwLKn+sVOmzl4vHLpDKhjQf+N8Ss8gAFp58CU4+BMVrUfK35a7Fkr9l2Mvjc8UuVOm8festpyq9jfsBIyU2dsfxP8G1e1hqG/KYL8i84b0zd3w1hNv+WsZj9FZhnn9aiyYUQKOBHVdHGQHTEr9JVvMwhQ+tAUAGIRNEk9Xg0UhZPxbKRkABer4G2+i+TncdH6+xCp+vxvhI3GpuKAyXwYVNVOUPu2JFe1a0fRIcUTer9/bnkzxWSp7fYxUjd1/BMkntFLZ6nkKrKB6Mp5ijJgn1rVuRYLNcL1WYB44HSz4XE44jpF/ky7O8MDBknJzDM30EbvL/A3AnQ+lc5eZvmjnXuS1HwDITXJl7PWF0XxB2waigUTWi2Q7GGpt1bBNg+CX7F5WhXdNp0LgdL0m5OPwbLQ9RpqosebVCFyDjlwdeQaMwUrEPlrTkK0UJ4Xfe3yrMn1RwepgC4nMgwbB
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 22BA6100003
+X-Stat-Signature: s8wdeuzd39k1iry9hx8ni8jkbon6ypyr
+X-HE-Tag: 1788312552-906550
+X-HE-Meta: U2FsdGVkX1/VelPgJB487hDngifbfVue9bbDKzdf0+raZyCkflT4bd61p9HFAw+p7hhdp529FuROP+xqz/rTe5ZfrLxZsA+L7dM+QbL7Znu4IvYk+s14gN03v8c/xIo/2qrfP13VAk0/X9tsW3UfPc4wnkL2czt2xieDw+OzfZqrnmgWjuTY4DZ3rak4rD0N9rtw4RcQ7t9M6zruGPWKDln8vb+gTiudT0KdjKZoUO4SK5mIAzan3TUtmCi1QnuPEArtrMwW10bSG9yfxcyMiW1inyr8nlBD3Ggh+0aimvl3xOY0mga5tPqlOjFLc4e5kAJinlOhIkHj9DxDLvENuvezUpRUvqme9pM5yIdnieskMZwnstNG1iQDTHx4+749553sGRg6jTCVAgZd5Uwb/kXLmn8dNKgptd1TqkOBXdhHhU+UA9zvfvmi7AIdVy0KBNkbjeW+5+HU1i9xOZlEDMCFUSaCpyuJrkPAoNZ3c797peItz5m0KAwsCemSNiUljeB/gbkYF4I+qRd8sUZft7r8v2mHykXDdWRnpbAiwv8WXt0WNqruap13CF60p0n0H0X9xJl6rlZlPmYryUVgS5iumFBP6biq+BkFlHiRzcuGI5ZyJv8L5lWmgnKdyjUERs74/ze0I4/nd8kRztjw53b5Br+HFXhz2Neb74UzrOFWcI9ShO+3l41+bFQZgUk/kRXU7IfU5ppp3BWXMqqsU/nkSj/Syf5p2F5tnWbnskWSJa5bPwwZmH9SWDQo0dyabat+61zE0BxK87WLRZzxrGXhiGkvX991+d3nTnFAc5yc9iVMe71h5BkqhbfolBB9gS8HKxlUKAnI8Rl3uj/x8yeP+ROZrApfvCtJ+igoRRZX5UdpKkG+S8TZc6PHv1OWkUciFli9KZniqv5TMTk3W/W70cQNgIhAJwMkePxKnep9LT9RsJ3NwRgUa6E+AzjTkwjPLdvOxVmIyxky6nc
+ IQal6r5E
+ 50OnmG4yORHDyuPgZgfpgFar2HQxPi5ggjVXptfNiHYaG23/mq6v/v/2LgEb9oa1+IIhFpqMeY49MFXQKDZ12GO4RBoreGDpAXopMBSRMv93JobLVgQXkE8GiRb3nvJffQ4sDRIChXyoy/HDyY7zJV51CcVtmI4Ox+hJcKR8WSFfiQLQjBTyp3RYP17P2W3AQWQ7/X1LbhOVs+azXFC0Cj7fsrkGbB0N2lLVc1oUBZoBFBO+weH9ryjvjaPe+AG/2S0HjczDqtCqV7ec+Ae1hp4M6i6RygQ3SKIjnxDwSdq+b/VI+CokdS+dbWSpcT32hjAdx5rndA1glukQCOXDlgtyvhqO754YfEzB7530GejI2o1lRp5+S3p8r1hsrCv2yfwik
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,105 +96,189 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 1 Sep 2026, Shakeel Butt wrote:
+On Tue,  1 Sep 2026 17:11:41 -0700 SJ Park <sj@kernel.org> wrote:
 
-> NR_MLOCK is updated from interrupt context.  __free_pages_prepare() clears
-> a stray PG_mlocked and adjusts NR_MLOCK, and a folio can reach it with the
-> flag still set from a bio completion handler:
+> On Tue, 1 Sep 2026 13:10:01 -0700 Nathan Gao <zcgao@amazon.com> wrote:
 > 
->   __free_pages_ok+0x6af/0x7a0
->   <IRQ>
->   __bio_release_pages+0xde/0x260
->   __iomap_dio_bio_end_io+0x16e/0x1a0
->   blk_update_request+0x14b/0x3d0
->   blk_mq_end_request+0x18/0x30
->   blk_done_softirq+0x49/0x60
+> > __damon_va_prepare_access_check() picks a random byte address within the
+> > region and stores it in r->sampling_addr. damon_va_mkold() passes it into
+> > a page table walk, which hands it to damon_ptep_mkold() as the address of
+> > the page to sample:
+> > 
+> >   damon_va_mkold(mm, r->sampling_addr)
+> >     damon_va_walk_page_range(mm, addr, addr + 1)
+> >       damon_mkold_pmd_entry()
+> >         damon_ptep_mkold(pte, vma, addr)
+> >           ptep_test_and_clear_young(vma, addr, pte)
+> >           mmu_notifier_clear_young(mm, addr, addr + PAGE_SIZE)
+> > 
+> > For arm64, before commit 6f0e1142173a ("arm64: mm: support batch
+> > clearing of the young flag for large folios"), the contpte helper walked
+> > exactly CONT_PTES entries from the aligned-down page table pointer and
+> > used @addr only to pass down to each entry, so an unaligned value was
+> > harmless:
+> > 
+> >         ptep = contpte_align_down(ptep);
+> >         addr = ALIGN_DOWN(addr, CONT_PTE_SIZE);
+> >         for (i = 0; i < CONT_PTES; i++, ptep++, addr += PAGE_SIZE)
+> > 
+> > Now the range to walk is derived from @addr instead: end = addr +
+> > nr * PAGE_SIZE, rounded up to CONT_PTE_SIZE. For a sample in the last
+> > page of a contpte block, the sub-page offset puts end just past the
+> > block boundary, so the round-up lands a whole block further and the
+> > walk clears PTE_AF in CONT_PTES entries beyond the sampled block. For
+> > the last block in a page table page, those entries are past the end of
+> > that page, so the walk writes into the page that follows.
 > 
-> The folio gets there like this.  A MAP_SHARED file mapping is mlocked, so
-> its page cache folios carry PG_mlocked, and an O_DIRECT write sourced from
-> that mapping GUP-pins those same folios.  munlock() then runs
-> mlock_vma_pages_range(), which clears VM_LOCKED before walking the page
-> tables to munlock each folio.  A concurrent hole punch reaches the folio
-> through the rmap (i_mmap_rwsem, not mmap_lock) and can land inside that
-> window: __folio_remove_rmap() -> munlock_vma_folio() sees VM_LOCKED
-> already clear, so it neither queues the folio on the mlock batch nor takes
-> a reference, and the pte it clears makes the pending mlock_pte_range()
-> walk skip the folio at its !pte_present() check.  filemap_remove_folio()
-> then drops the page cache reference, leaving the bio's pin as the last
-> one, released from the completion handler above.
+> I just wanted to call out again that I'm wondering if we could restore the
+> unaligned address support in the helper.  E.g., as a very dirty hack that I can
+> imagine off the top of my head,
+> 
+> '''
+> --- a/arch/arm64/mm/contpte.c
+> +++ b/arch/arm64/mm/contpte.c
+> @@ -30,6 +30,7 @@ static inline pte_t *contpte_align_addr_ptep(unsigned long *start,
+>                                              unsigned long *end, pte_t *ptep,
+>                                              unsigned int nr)
+>  {
+> +       *start = PAGE_ALIGN_DOWN(*start);
+>         /*
+>          * Note: caller must ensure these nr PTEs are consecutive (present)
+>          * PTEs that map consecutive pages of the same large folio within a
+> '''
 
-I'm hardly ashamed to admit that I've not tried to digest
-that paragraph. You're writing about the rare fallback cases when
-PG_mlocked is cleared late, and unevictable_pgs_cleared incremented to
-notify us of that defect: yes, I accept that might happen at interrupt
-time, and so we ought not to take the __shortcut in __munlock_folio()
-which you fix  below.
+Urgh, I mean, '*end = PAGE_ALIGN_DOWN(*end);'
 
 > 
-> So __zone_stat_mod_folio() here needs interrupts disabled, not merely
-> preemption, and __munlock_folio() has a path where they are not: when the
-> folio has already been taken off the LRU by somebody else the function
-> jumps straight to the counter update without taking the lruvec lock.  The
-> read-modify-write of the per-CPU NR_MLOCK diff can then be interrupted by
-> the softirq above, and one of the two decrements is lost, leaving Mlocked
-> in /proc/meminfo permanently overstated.
+> I and Nathan have no strong clue, so we are looking for Baolin and others'
+> opinion.
 > 
-> Use zone_stat_mod_folio().  mod_zone_state()'s this_cpu_try_cmpxchg() is
-> atomic against a same-CPU interrupt and retries, and on the path where the
-> lruvec lock is held its cost is negligible next to the lock itself.
+> While waiting for the opinions, I and Nathan agree we should stop bleeding with
+> a pinpoint hotfix change in DAMON.
 > 
-> The UNEVICTABLE_PG* events are deliberately left on the __ accessors:
-> they occupy different vm_event_states slots from the UNEVICTABLE_PGCLEARED
-> that __free_pages_prepare() bumps, and nothing updates those two from
-> interrupt context.
+> > 
+> > Triggered by the full 7.1/7.2 kernel selftest suite on arm64 (EC2
+> > c/m6g.4xlarge). The kernel sometimes crashes at or shortly after the
+> > DAMON test.
+> > 
+> > What the overrun does depends on the page that happens to follow the
+> > page table, so there is no single signature. If that page is read-only,
+> > the write faults in the sampling path itself:
+> > 
+> >   Unable to handle kernel write to read-only memory at virtual address ffff0003c5d2d000
+> >     FSC = 0x0f: level 3 permission fault
+> >     CM = 0, WnR = 1, TnD = 0, TagAccess = 0
+> >   CPU: 10 UID: 0 PID: 3487 Comm: kdamond.2
+> >   pc : contpte_test_and_clear_young_ptes+0x70/0xc0
+> >   lr : damon_ptep_mkold+0x1e8/0x1f8
+> >   Call trace:
+> >    contpte_test_and_clear_young_ptes+0x70/0xc0 (P)
+> >    damon_mkold_pmd_entry+0x150/0x170
+> >    walk_pmd_range+0x110/0x2b0
+> >    walk_pud_range+0x10c/0x208
+> >    walk_pgd_range+0x134/0x258
+> >    __walk_page_range+0x98/0x1b0
+> >    walk_page_range_vma_unsafe+0x90/0x148
+> >    walk_page_range_vma+0x28/0x40
+> >    damon_va_walk_page_range+0x114/0x2b8
+> >    damon_va_prepare_access_checks+0xec/0x1a8
+> >    kdamond_fn+0x534/0x770
+> >    kthread+0x128/0x138
+> >    ret_from_fork+0x10/0x20
+> > 
+> > Otherwise the page is writable, the PTE_AF clearing succeeds silently
+> > and the damage only surfaces later, in whatever happened to own the
+> > page, so the backtrace is unrelated to DAMON and differs between runs.
+> > 
+> > Align the address down to a page boundary in damon_ptep_mkold(). Its
+> > ptep_test_and_clear_young() call is the only place DAMON can reach
+> > contpte_test_and_clear_young_ptes() from. r->sampling_addr itself is left
+> > as is, so the sampling and region bookkeeping semantics are unchanged.
+> > 
+> > Fixes: 6f0e1142173a ("arm64: mm: support batch clearing of the young flag for large folios")
+> > Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> > Cc: David Hildenbrand (Arm) <david@kernel.org>
+> > Cc: Ryan Roberts <ryan.roberts@arm.com>
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Nathan Gao <zcgao@amazon.com>
+> > ---
+> > V2 -> V3:
+> > - Move the alignment into damon_ptep_mkold(), instead of aligning in
+> >   damon_va_mkold() and damon_va_young().  The ptep_test_and_clear_young()
+> >   call in damon_ptep_mkold() is DAMON's only path to
+> >   contpte_test_and_clear_young_ptes(), so damon_ptep_mkold() is the
+> >   closest place in DAMON to the function that requires an aligned
+> >   address (SJ)
 > 
-> Fixes: 2fbb0c10d1e8 ("mm/munlock: mlock_page() munlock_page() batch by pagevec")
-> Cc: <stable@vger.kernel.org>
+> Thank you for doing this revision for my humble request!
+> 
+> > 
+> > V1 -> V2:
+> > - Align inside damon_va_mkold() and damon_va_young() rather than aligning
+> >   r->sampling_addr itself, so that sub-page sampling addresses remain
+> >   possible for future non-PTE access check primitives (SJ)
+> > - Point Fixes: at 6f0e1142173a instead of 3f49584b262c, since the
+> >   unaligned address was harmless before that commit (SJ)
+> > - Describe how the issue was noticed and what it does to the kernel (SJ)
+> > 
+> > v2: https://lore.kernel.org/all/20260831221151.50561-1-zcgao@amazon.com/
+> > v1: https://lore.kernel.org/all/20260827193821.46115-1-zcgao@amazon.com/
+> > 
+> >  mm/damon/ops-common.c | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> > 
+> > diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+> > index 0bcad6b1e5b9e..cd8aa08233e54 100644
+> > --- a/mm/damon/ops-common.c
+> > +++ b/mm/damon/ops-common.c
+> > @@ -46,6 +46,12 @@ void damon_ptep_mkold(pte_t *pte, struct vm_area_struct *vma, unsigned long addr
+> >  	bool young = false;
+> >  	unsigned long pfn;
+> >  
+> > +	/*
+> > +	 * Arch implementation of ptep_test_and_clear_young() may require
+> > +	 * aligned @addr
+> > +	 */
+> > +	addr = PAGE_ALIGN_DOWN(addr);
+> > +
+> >  	if (likely(pte_present(pteval)))
+> >  		pfn = pte_pfn(pteval);
+> >  	else
+> 
+> I agree this should fix the issue.
+> 
+> Maybe I'm being too picky, but...  'addr' is also being used in later
+> mmu_notifier_clear_young() call.  Could we further scope down to do the
+> alignment only for the function that disallows unaligned address?  For example,
+> 
+> '''
+> --- a/mm/damon/ops-common.c
+> +++ b/mm/damon/ops-common.c
+> @@ -61,7 +61,12 @@ void damon_ptep_mkold(pte_t *pte, struct vm_area_struct *vma, unsigned long addr
+>          * device aspects.
+>          */
+>         if (likely(pte_present(pteval)))
+> -               young |= ptep_test_and_clear_young(vma, addr, pte);
+> +               /*
+> +                * Arch implementation of ptep_test_and_clear_young() may
+> +                * require aligned @addr
+> +                */
+> +               young |= ptep_test_and_clear_young(vma, PAGE_ALIGN_DOWN(addr),
+> +                               pte);
+>         young |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + PAGE_SIZE);
+>         if (young)
+>                 folio_set_young(folio);
+> '''
+> 
+> 
+> > -- 
+> > 2.50.1
+> 
+> 
+> Thanks,
+> SJ
 
-Okay: just a wrong stat, but it ought to go back to 0, so Cc stable yes.
-
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-
-Acked-by: Hugh Dickins <hughd@google.com>
-
-But I do think you (or Andrew :-) should include
-
-Reported-by: syzbot+cd2073ee6d958a8d0fcd@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-mm/6a931c5a.08e933ee.dbf97.0093.GAE@google.com/
-
-That was indeed reporting a different way to get a WARNING from this,
-when offlining a CPU: but it should be acknowledged for bringing you
-here, and we should tell syzbot it's fixed by this.
-
-I've been trying to work out whether you're going to come back in a
-day or two, changing the __count_vm_events() too: and had raised in
-that thread the question of why lru_add_drain()'s __count_vm_events
-were not also reported by syzbot; but now I can see
- * vm counters are allowed to be racy. Use raw_cpu_ops to avoid the
- * local_irq_disable overhead.
-and realize that they're not a problem; so this looks complete, we
-shouldn't need local_lock()ing in mlock_drain_remote() after all.
 
 Thanks,
-Hugh
-
-> ---
->  mm/mlock.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/mlock.c b/mm/mlock.c
-> index efa6716e4dfb..39215a3eab1f 100644
-> --- a/mm/mlock.c
-> +++ b/mm/mlock.c
-> @@ -141,7 +141,7 @@ static struct lruvec *__munlock_folio(struct folio *folio, struct lruvec *lruvec
->  
->  munlock:
->  	if (folio_test_clear_mlocked(folio)) {
-> -		__zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
-> +		zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
->  		if (isolated || !folio_test_unevictable(folio))
->  			__count_vm_events(UNEVICTABLE_PGMUNLOCKED, nr_pages);
->  		else
-> -- 
-> 2.53.0-Meta
+SJ
 
