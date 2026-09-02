@@ -4,121 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5E32C624D3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 13:27:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3269FC624D9
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 13:27:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2ED46B00B9; Wed,  2 Sep 2026 09:27:36 -0400 (EDT)
+	id DB1746B00BD; Wed,  2 Sep 2026 09:27:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A067B6B00BD; Wed,  2 Sep 2026 09:27:36 -0400 (EDT)
+	id D61BB6B00C0; Wed,  2 Sep 2026 09:27:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F5C26B00BE; Wed,  2 Sep 2026 09:27:36 -0400 (EDT)
+	id C2AAD6B00C2; Wed,  2 Sep 2026 09:27:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FB126B00B9
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:27:36 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F1405120205
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CC816B00BD
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:27:37 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0D058A3BF5
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:27:37 +0000 (UTC)
+X-FDA: 85168899354.21.E450F1E
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 2BB7CA0007
 	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:27:35 +0000 (UTC)
-X-FDA: 85168899270.27.F291BC3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0BF588000F
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:27:33 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dGbKuYye;
-	spf=pass (imf30.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=owNwZIVw;
+	spf=pass (imf25.hostedemail.com: domain of vdonnefort@google.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=vdonnefort@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788355654;
-	b=S9HyBkcIyG7iXMxYxK9ngaS/jCt0vlTBNa6ZWI/G9xiYv2YQI/YuT1hPaeho2fEMegxEqb
-	lK0JRmCAOMxO1VKQ0DtWbyvxWRZnuzPSK3HoDeLarWHNMJqJJQcIsGUxCvgOhJq3nWAwgt
-	gjNAAykqwz9mVc2PKuyVqyFNBKIQrFU=
+	t=1788355655;
+	b=hC346duOt3DLGnO6Eq114s+xAGPdE1MwSC91Y5gDFhhO/OobzaF0/PSov4w0IKF6uho4k9
+	wdZLjTyP4TIkyGCHY3E5KcQbZsqDXHuiQG+RZA8eU7tNvpgkOCI+Bg5yNmscSW1rDYCM38
+	TkzRih6x343RZxT67S4PClqFzgP7d1A=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=owNwZIVw;
+	spf=pass (imf25.hostedemail.com: domain of vdonnefort@google.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=vdonnefort@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788355654;
+	s=arc-20220608; t=1788355655;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lA7FWSljb2LQaxATt6lejnbnwqONrNFpZpcIwgRu0wY=;
-	b=ZfG+dKOSG8Xl27FU9eaZ+l+OXI/nZX9rY2b6iRGr6qZmj5zlcdsNA9P2Y0hp4eU4nYXfHP
-	L6fIOzITN0hrM1Qwz6A78OUYnzJExvvyAls/o7dCeW5CD1rel3XGeC/53m7DkLp9FGuPh1
-	AZ1Q82GBqtvsMAgs7v55bWKYtC/1E2g=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dGbKuYye;
-	spf=pass (imf30.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7A63B407DC;
-	Wed,  2 Sep 2026 13:27:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 618841F00A3E;
-	Wed,  2 Sep 2026 13:27:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788355652;
-	bh=lA7FWSljb2LQaxATt6lejnbnwqONrNFpZpcIwgRu0wY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=dGbKuYyeTksF1KkirkhK/VWSN3TLarmu2BveEY9w1msKkaZH5gfoUBQgQ1C1Ms2sJ
-	 G+l+2dSfcgRE1zgpYaLtkXj2zDjEucv0ANfMUL1N453hQhbNVT0hr2wx39o4Atgg0B
-	 fJOdJtDmuat208RIbRwL7XvKnVuOjYXCOoyrMnWuHszrHX2mJSo5fWTSnK46vQBh9d
-	 7CHhZY2DaADC85mE9XjivccZmYLt/s2CKRJwPKeibQ/V9XJhs8EjTj0lbdB3xFMsiZ
-	 0pHnAoPzidSxQ6YpKz4N/yIULerQF+C7/KEGuG3yL7ttFNLvSWxKUpNbXWKVYV+/mM
-	 Sa/YdduBbyPFw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Wed, 02 Sep 2026 15:26:04 +0200
-Subject: [PATCH v5 08/12] rust: mm: add abstractions for allocating from a
- `sheaf`
+	bh=zt5M13bJdXW7K7qyVlwwml2r+oge4XhKrpcO5BXQh9I=;
+	b=sKJb+FJtVgzKu6xJhsMdZRuztXzaKwwS6FGOtK5m24SpmsN1wgtN56V1IuG706gdIzqKBm
+	GDFUCm90owmBjvpo+E8LUfTh6KBteRbkF2dS+Z0gskHwWnUQvk+oE6VFMHxo/33hmXe5t0
+	24uz05vtKkRtJJCNs5IguMz0+yUcoH4=
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c197e7e4e94so152147266b.2
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 06:27:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788355653; x=1788960453; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zt5M13bJdXW7K7qyVlwwml2r+oge4XhKrpcO5BXQh9I=;
+        b=owNwZIVwzH36pyYgTzPknHt3rgexdA1W4bwRPdu9D/YS1uau8IZW+affOO5vvFNWW1
+         Evb+W74hMc3eCPTjethLslPyIbB2cfE6dJ+Juej3PWFxvZ5oRfb8rRjnPxxqZBBINZc/
+         LTn70TFbtkJRvdzyeLE2bPbUMCu9YnKZCG24azcNlvByGTeE5C884yUzoOuAjzhgh+8m
+         RcoBj9tANBSEhhialmEB3OHshVeL/w3tzHokBno/MUBvWBaJKy+h3P4+HgAUNRNwQwNx
+         Yi6NH2lD31x6TKRWXmPWiG1bjQoPT+OLUyLFTnrzeGkTpj7+G1NJC8Oihb8vYKeWPVYd
+         G8/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788355653; x=1788960453;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zt5M13bJdXW7K7qyVlwwml2r+oge4XhKrpcO5BXQh9I=;
+        b=dvjrM+uxu3zIsuVVxGXDKW4ZW66tPUqhsTafOdUZx3KiDqgK3A24MCwDjPedqHtRhM
+         NdgLW5QlIBkDlEsFTMOEPLUbdGXdJG/mVMf3jUmYzo1iGFvI9pWJVczyNWhTaZ8MzKa7
+         f7/6orH5YmZNd3V9T7cWpRsMeG+acInqdsmqwHbxFEWLEDcSLFngUnniLsYkwyav3Woc
+         SRCoNXoj23+PM7QYkKvEDclY1VF6Lf3GoBGOgyR7y7EGN9/zklJxOOe14yQ+I13gRmIL
+         6rZydiSCwcFQhjM868EYuIUwclXsf9xRhG7318ZwrttKwgi1IdGLuNBSYVxrkApnjMa7
+         LSTQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzbFL2wsH6vAJBNDZM57gJbmmOJT+lA17oB+7KEITDC004PBjA8n25/bcdOvvI59Nyg4wTPPJKYVw==@kvack.org
+X-Gm-Message-State: AFuF++l0COZ3sFgZxJxinYj1exk4QJCrCe4hi8HBAQXJ1uidU0reRGKq
+	lXPgUPi5qF6XjkzK4pK4sQtQ8paMUagtlJ9aifhotwsOjk9EeXJAK1laTu33yyJScg==
+X-Gm-Gg: AYBFou1UZPqXBy2Mk6TOfd0lNzsPRpBOi3xo72HXDjHulqQDMnYUFjpkjg6uVCYMlti
+	RrEQ0/P6sGNIjkO4tSj0ahkVbMDp8EWW6VpeH/sajZOdF0BPUc4zrXPHnYjaDeSXGacUIFZFUsG
+	k+CZJH9Quobp3PuK2TNeLI1TmXH3kNEle2nuw5oQvZNpsSWol0MiaWDHdrMucLp6ethzz0JB840
+	6zJG69ZNYxiM9i7TlbyDaSCWLxXYRwhpO6uQm00jewGsSeHGip3zNhmHaaAwQAcCF0dkNSmETK+
+	T84uKaaqskxXRR2N2HtmAtj57L4hWx5ZaRAPSRQGUqIdtq20Vle6X+wdDUo456zZydDIO274cY3
+	lZxEugdLrySnMdtzXE8qW0mhiQYAC98xT1iLi319xdGXkFEiv0Ws3hSDB6Czzs/3HrMBM1JNp3C
+	E2coxQiYjeVxFbtJDG10YPnj/muJxLXZudx8HOc7Yoxf6m9sKC1lx3e+L0+K6tZeirpej7Q16aT
+	RzS0RYcKuH6O930Z4FCBkV8T+BasMZM
+X-Received: by 2002:a17:906:f58e:b0:c25:c954:faf2 with SMTP id a640c23a62f3a-c25d563a41cmr291059666b.21.1788355652676;
+        Wed, 02 Sep 2026 06:27:32 -0700 (PDT)
+Received: from google.com (135.91.155.104.bc.googleusercontent.com. [104.155.91.135])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c25d039d796sm138037066b.40.2026.09.02.06.27.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 06:27:32 -0700 (PDT)
+Date: Wed, 2 Sep 2026 14:27:28 +0100
+From: Vincent Donnefort <vdonnefort@google.com>
+To: catalin.marinas@arm.com, will@kernel.org, rppt@kernel.org,
+	akpm@linux-foundation.org, sudeep.holla@kernel.org,
+	jenswi@kernel.org, robh@kernel.org
+Cc: mark.rutland@arm.com, sumit.garg@kernel.org, ardb@kernel.org,
+	thierry.reding@kernel.org, david@kernel.org, danielmentz@google.com,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	op-tee@lists.trustedfirmware.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v9 00/10] arm64: Unmap FF-A lent memory from direct map
+Message-ID: <apgkQJai-2pjI75-@google.com>
+References: <20260902104712.2399797-1-vdonnefort@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260902-xarray-entry-send-v5-8-d18adae40708@kernel.org>
-References: <20260902-xarray-entry-send-v5-0-d18adae40708@kernel.org>
-In-Reply-To: <20260902-xarray-entry-send-v5-0-d18adae40708@kernel.org>
-To: Tamir Duberstein <tamird@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Matthew Wilcox <willy@infradead.org>, 
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
- Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- Lorenzo Stoakes <ljs@kernel.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=19705;
- i=a.hindborg@kernel.org; h=from:subject:message-id;
- bh=RjS4bVXdE61HMAu4upNw+EYFUe3wUNyGbYdxylQjok8=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqmCQg11lMGYGlRZeIE/G3smnqwEx46oHVePm6J
- HYpVyUg7xWJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCapgkIAAKCRD6UCkIqsW9
- 0IpxEACe00crXipmdKSsy/VkKKKxGhySGh7cNmoCQUxbK3okXnfzOR41t3JdSYQEzS4ZkVAgrNZ
- 0FQSzuJB5y7p0dJqe0Dki2IXge4fcjKYIxnTbHwD5ik8uv/ygiIes07NhGeYP9i2bJtCKFz5rg1
- TcKtiaT71OHHCWIe48/kJrg0s8iv/XNSR6WvpsfdYYMUR7y17unWC28TVP5cXTvPtcHZYRiYos3
- 5d/vVg0VU7UFGedaioSU6xv+xhNgg2zGgG6rR8Z+q2YYDMkr8Ddv/E/2lQ6/xMmSDLpK7fMQMf8
- YHBysrfzQbd9IzQdtoomdJFwRXwtR4EjSVXP+oLf3L+Cekbk+0gsELq8M5EbJCbjxJvgG2SvgHz
- nkSNIYFzkI7y7c6Ct260B0ALSutL6QhNtVQlGhVlw8Ow/Sij7IUhfWUGkLmhELrBEJIWVqEv+zs
- /EgyOsA72GnvM31mnFwk6UbAykdibbvY56tGatYwSUJaXEAO0GZ2nVk1aZChIaAp57VO6mepE5Z
- m1Fo8I854GnNNlgzWO2FZctE0o5Hfn01mWKUrP+qnHifaOEhBgFzE0+IsCU555FalncqHtHBbJe
- q5iV3ZVkapMe8UUVRoXJO+fqIiRkUuYZuB9volWr/AsbF6wrmFyfrLsGAffNmDnEcBYm+t5eoX5
- FLG31NRui7k6EtQ==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260902104712.2399797-1-vdonnefort@google.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0BF588000F
-X-Stat-Signature: mdm4hf7kxm84bf3ms51oieczpz6z1a9s
-X-HE-Tag: 1788355653-482914
-X-HE-Meta: U2FsdGVkX18eAArBGAzBHa1HCk8oBWXhq3ES5m47vnVVSVnviqXtqpDBm1vYnPZukkdM/7snjKdd2vrJxYUKxPvXY4GoIKzJBncZENA518pNgHdjzlkMqwsD82lzJVzL8nfEGkrGZ+h6+JpGyDqPoZbnShKeVX4ONtciIDNkLujfs/G5+7AV8E9TacJHm5/SWd7M2T2tB3qj0Sae6bJWoit16M7QSTnSnbaStI1f00At681tU+OeDp9zaWNe4vFbnoimNg7o7Gbs+dgdIuGbU2hWUPb9e/yD/rO/XsmfN/NrHFpUWlSrMfQdeLsIt3rQWs8r58gS79CzeTB4rLmnmo1fdOzi2m+4a0wP6Q6cah8sKtCy1YL3Rxn5uh27ONU3/VGDQXdZeuKdsm6v/HOLah4I4HMzHddbCJctPecV/C9KsGJwG0o87DwBbPg1FOD8jT/iGcnne0iPuImKlZ8IacfPsJO5EsEltKCZNkYP/EwArhOUF2dKc2psk1i1B1uLpK5zGvRK9tVzaHN+1/bNibBH4DV7tCG420GjokAs2maCxHwnD4hZoUnYGATLN2Krq3tDwSuX+5SF76/9zTodt4C1xiBm81x/qLAGia9BVBVuPJg7U07pOgKmO6qX+KiGoEg6kXzxSoNm/U3Win2NVtQvDg9UYwEGbYxJi4VmOCjP8psOd06mUqliS1rAP0s5TkgnjjPCaBRtFlJa2vUXWEM5Xl6Uq2o3vJMFrb4B05hyn1u+Ewe534ueGJmVZpBUaETFyZ/GtM7xPSSbWMTAZu1x3FplGyBacCmKlf0ckF/LL+uSCB8O9PWyPe4WsgBKD+OwboRls1Ilx6leVZuqAE3788eu+xmyhfd9fmp4N0VyE3UGZWfvoh7BaclZEG5PUms2fEQMkLU1tEKT1x9nDxlcARS6WCZPav8tqFhk7gWj6fzaZVM1pJGs+MOexguZpxicyWA0uMNK2iLzwXj
- 8gFoQ0Hx
- Je0L5Kr7cvzxyZF8VMQygL+p0dMPhdkeUrEFyDoFgUdaIXlt0QRSpU7sdf/EWtSnx7WzDNXakiPVHzpdCfLBD8aK7+OCLwoISXsGd9lRSE9VPxp419xdDScpn3Ufc7NelD7HqVULGoR4E4UAclIsX5qqNG2kN0DmP56It5liD6oBFxGpV7tAk7JRFaY6Dx9nkWEgAnNE1Wh17fqtDDQAbor/jCDIErbeNQGfEpQUL+xYHCKOFd1xshg4dUeGhv+YkNUUpi3mnLUF7LvQDCTmQ1OPFJc03MGH+Dc9JitUQmyrDYZP6Ukkmv6DHc4njldV/CX8dX9I/eOV+Fu+BBILuw7AG0B+yVTlj4bx6dRwm1SzqMdslpsr/gyB3qxdsckGA/Fd2
+X-Stat-Signature: jn465scouwwwbiqdb6zd6ixwcpuj8gsn
+X-Rspamd-Queue-Id: 2BB7CA0007
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788355655-534811
+X-HE-Meta: U2FsdGVkX199s1QdNWfVH9rbSNooDKc2f8CXz0PmzmUtnVZYl663J1SuoIr7M5nBBNCnsrn2ySRT7a9It7w9aad1n+AThdN0q9RG72QGpuVcJUQ218ItpuGZqimG7taNpY6bmYdF7a5PexcZoadc0iB+jqlQbRtfTYuw5BvUwUpEUidBnypl0TDfeRm11tHoo+ENihC2zjuSw0gs7IjN/8GvfhhvCTwCxmvh53GLfKwo+EnDH1kr5uMRTTq6/l9xk0mzr9+/r+wYWID+cWLqIaR9uh2Ofk5Vrge9GUntt5TMvn9smOLIyPHOVuzYNmMyXoarpDdmrSQTwpw9ZAeoML87Q4EDzsKhWmBl/0fA6Bjw5oQB8dvCrZFJ26CbZEOrsOJn2thCjbS9ISwqyIn4GQNkmMztKe+1tYvfvEMGHVuomSJMddq/TYDwB4eianPFYXkyHO7MzvpHcQDypfPkAvcRu7Y80SghvNq2RfurH7q3+OKaGrT8UxZCY/gN5lnvRmDEQPfY4j+R3oqIY6OXJfWZOFdKbBYUbTNC26feM+fpudoF1ZdbqB1XFO6fs2mePURZd15fPLZFytepD87RE+3hfEx8UrJG334PcOdW8raSCP2mXzOvYHvaMQVaEnPxUdukM747hF54oMRCjgSMtrZXCJ4koMq8edQKcKIWHYQ8iLNDIxZrkOgyYCcHYJ2C/5KhDEWXH0AqZoH5LYzMTlojEhOV1YlYMbbtZEHkqxTskBGzzvItiX5tN3CshjE4Ys2haSScj1hgLvXM0MzKCUEA5ikn4l29cAEjLpMI3MbWkyygEVrP0i3lyEJTBpTbClSUBZRL/IeeSUspKjNyoBUX6NCp+gtsaNChHD7ixf3TwSbyV0kVNFRsh3dDp7VswVfqIO5h9is29F/zmwobdpdbaLPBBlEgTZYmZZzE3RDzofh0kww9tPsplJue9YsayvpzIR//EwGGw8OyBpy
+ r+NnICJx
+ DUK7yUENp5h3GaUaLHS73X081fg61xqE7YqFODHWu5YYolok04eFS4tnj+wByM04WqziRfCWYLJMDSQUVllP91+6p5bC3VMxVarxcbRXCTX1BSOE1dCx7IIBfItxEmwY0tqml7zV339Z/vV5ccRIIq+41561z1B1yw8wYvUb8b1gZghIvku8rzKYDdbup827l1XoNaXBrmqIiESqTVnSIJKE+1fccZTvQFnzwq1LThqote3fS0O3oWJ2sGaVMW4PoKgZ+8YeWWdLzP2eIFsOo+Db0jFyvLTB1s5aHl7zrxM2dC/wjo5AB2ICuK92ySQWqAxCaXqc5iuUWDT4/4aXJ4RG840q/11HZ3JPegJU2qHaCJKVC/PMZpnogxxLPrnCnRLppFLb/nyz2L4WXs9H3wqQqsM+VFs3tvFeZwhFKSSKaPEK79fBtqVXxQ7uivTSIEe2XV59UnymA9mvyDvYdJ+CqGOeOpyMeoMhQxhv+z6MzHyEVJjRUnTGHqg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,516 +124,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add Rust APIs for allocating objects from a `sheaf`.
+This is of course v1, not v9...
 
-Introduce a reduced abstraction `KMemCacheInit` for `struct kmem_cache` to
-support management of the `Sheaf`s.
-
-Initialize objects using in-place initialization when objects are allocated
-from a `Sheaf`. This is different from C which tends to do some
-initialization when the cache is filled. This approach is chosen because
-there is no destructor/drop capability in `struct kmem_cache` that can be
-invoked when the cache is dropped.
-
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: linux-mm@kvack.org
-Assisted-by: LLM
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
- rust/kernel/mm.rs       |   1 +
- rust/kernel/mm/sheaf.rs | 466 ++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 467 insertions(+)
-
-diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
-index 4764d7b68f2a7..1aa44424b0d53 100644
---- a/rust/kernel/mm.rs
-+++ b/rust/kernel/mm.rs
-@@ -18,6 +18,7 @@
- };
- use core::{ops::Deref, ptr::NonNull};
- 
-+pub mod sheaf;
- pub mod virt;
- use virt::VmaRef;
- 
-diff --git a/rust/kernel/mm/sheaf.rs b/rust/kernel/mm/sheaf.rs
-new file mode 100644
-index 0000000000000..8f310a06d8404
---- /dev/null
-+++ b/rust/kernel/mm/sheaf.rs
-@@ -0,0 +1,466 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Slub allocator sheaf abstraction.
-+//!
-+//! Sheaves are percpu array-based caching layers for the slub allocator.
-+//! They provide a mechanism for pre-allocating objects that can later
-+//! be retrieved without risking allocation failure, making them useful in
-+//! contexts where memory allocation must be guaranteed to succeed.
-+//!
-+//! The term "sheaf" is the english word for a bundle of straw. In this context
-+//! it means a bundle of pre-allocated objects. A per-NUMA-node cache of sheaves
-+//! is called a "barn". Because you store your sheafs in barns.
-+//!
-+//! # Use cases
-+//!
-+//! Sheaves are particularly useful when:
-+//!
-+//! - Allocations must be guaranteed to succeed in a restricted context (e.g.,
-+//!   while holding locks or in atomic context).
-+//! - Multiple allocations need to be performed as a batch operation.
-+//! - Fast-path allocation performance is critical, as sheaf allocations avoid
-+//!   atomic operations by using local locks with preemption disabled.
-+//!
-+//! # Architecture
-+//!
-+//! The sheaf system consists of three main components:
-+//!
-+//! - [`KMemCache`]: A slab cache configured with sheaf support.
-+//! - [`Sheaf`]: A pre-filled container of objects from a specific cache.
-+//! - [`SBox`]: An owned allocation from a sheaf, similar to a `Box`.
-+//!
-+//! # Example
-+//!
-+//! ```
-+//! use kernel::c_str;
-+//! use kernel::mm::sheaf::{KMemCache, KMemCacheInit, Sheaf, SBox};
-+//! use kernel::prelude::*;
-+//!
-+//! struct MyObject {
-+//!     value: u32,
-+//! }
-+//!
-+//! impl KMemCacheInit<MyObject> for MyObject {
-+//!     fn init() -> impl Init<MyObject> {
-+//!         init!(MyObject { value: 0 })
-+//!     }
-+//! }
-+//!
-+//! // Create a cache with sheaf capacity of 16 objects.
-+//! let cache = KMemCache::<MyObject>::new(c_str!("my_cache"), 16)?;
-+//!
-+//! // Pre-fill a sheaf with 8 objects.
-+//! let mut sheaf = cache.as_arc_borrow().sheaf(8, GFP_KERNEL)?;
-+//!
-+//! // Allocations from the sheaf are guaranteed to succeed until empty.
-+//! let obj = sheaf.alloc().unwrap();
-+//!
-+//! // Return the sheaf when done, attempting to refill it.
-+//! sheaf.return_refill(GFP_KERNEL);
-+//! # Ok::<(), Error>(())
-+//! ```
-+//!
-+//! # Constraints
-+//!
-+//! - Sheaves are slower when `CONFIG_SLUB_TINY` or `CONFIG_SLUB_DEBUG` is
-+//!   enabled due to cpu sheaves being disabled. All prefilled sheaves become
-+//!   "oversize" and go through a slower allocation path.
-+//! - The sheaf capacity is fixed at cache creation time.
-+
-+use core::{
-+    convert::Infallible,
-+    marker::PhantomData,
-+    ops::{Deref, DerefMut},
-+    ptr::NonNull,
-+};
-+
-+use kernel::prelude::*;
-+
-+use crate::sync::{Arc, ArcBorrow};
-+
-+/// A slab cache with sheaf support.
-+///
-+/// This type wraps a kernel `kmem_cache` configured with a sheaf capacity,
-+/// enabling pre-allocation of objects via [`Sheaf`].
-+///
-+/// For now, this type only exists for sheaf management.
-+///
-+/// # Type parameter
-+///
-+/// - `T`: The type of objects managed by this cache. Must implement
-+///   [`KMemCacheInit`] to provide initialization logic for new allocations.
-+///
-+/// # Context
-+///
-+/// Dropping the last reference to a `KMemCache` destroys the cache via
-+/// `kmem_cache_destroy`, which may sleep. [`Sheaf`] and [`SBox`] instances
-+/// created from the cache each hold a reference, so the last reference may
-+/// be dropped when one of those is dropped. The last reference must not be
-+/// dropped from a context where sleeping is not allowed.
-+///
-+/// # Invariants
-+///
-+/// - `cache` is a valid pointer to a `kmem_cache` created with
-+///   `__kmem_cache_create_args`.
-+/// - The cache is valid for the lifetime of this struct.
-+pub struct KMemCache<T: KMemCacheInit<T>> {
-+    cache: NonNull<bindings::kmem_cache>,
-+    _p: PhantomData<T>,
-+}
-+
-+// SAFETY: `KMemCache<T>` owns a `kmem_cache`, which is internally
-+// synchronized and has no thread affinity. The cache may be destroyed from a
-+// thread other than the one that created it.
-+unsafe impl<T: KMemCacheInit<T> + Send> Send for KMemCache<T> {}
-+
-+// SAFETY: All operations available through `&KMemCache<T>` are
-+// internally synchronized by the C side, so the cache may be used from
-+// multiple threads concurrently if the objects it manages can be sent between
-+// threads.
-+unsafe impl<T: KMemCacheInit<T> + Send> Sync for KMemCache<T> {}
-+
-+impl<T: KMemCacheInit<T>> KMemCache<T> {
-+    /// Creates a new slab cache with sheaf support.
-+    ///
-+    /// Creates a kernel slab cache for objects of type `T` with the specified
-+    /// sheaf capacity. The cache uses the provided `name` for identification
-+    /// in `/sys/kernel/slab/` and debugging output.
-+    ///
-+    /// # Arguments
-+    ///
-+    /// - `name`: A string identifying the cache. This name appears in sysfs and
-+    ///   debugging output.
-+    /// - `sheaf_capacity`: The maximum number of objects a sheaf from this
-+    ///   cache can hold. A capacity of zero disables sheaf support.
-+    ///
-+    /// # Errors
-+    ///
-+    /// Returns an error if:
-+    ///
-+    /// - The cache could not be created due to memory pressure.
-+    /// - The size of `T` cannot be represented as a `c_uint`.
-+    pub fn new(name: &CStr, sheaf_capacity: u32) -> Result<Arc<Self>>
-+    where
-+        T: KMemCacheInit<T>,
-+    {
-+        let flags = 0;
-+        let mut args: bindings::kmem_cache_args = pin_init::zeroed();
-+        args.sheaf_capacity = sheaf_capacity;
-+
-+        // With an alignment of zero, the slab allocator only guarantees
-+        // `ARCH_SLAB_MINALIGN`, which may be smaller than the alignment of `T`.
-+        args.align = core::mem::align_of::<T>().try_into()?;
-+
-+        // NOTE: We are not initializing at object allocation time, because
-+        // there is no matching teardown function on the C side machinery.
-+        args.ctor = None;
-+
-+        // SAFETY: `name` is a valid C string, `args` is properly initialized,
-+        // and the size of `T` has been validated to fit in a `c_uint`.
-+        let ptr = unsafe {
-+            bindings::__kmem_cache_create_args(
-+                name.as_char_ptr(),
-+                core::mem::size_of::<T>().try_into()?,
-+                &mut args,
-+                flags,
-+            )
-+        };
-+
-+        // INVARIANT: `ptr` was returned by `__kmem_cache_create_args` and is
-+        // non-null (checked below). The cache is valid until
-+        // `kmem_cache_destroy` is called in `Drop`.
-+        Ok(Arc::new(
-+            Self {
-+                cache: NonNull::new(ptr).ok_or(ENOMEM)?,
-+                _p: PhantomData,
-+            },
-+            GFP_KERNEL,
-+        )?)
-+    }
-+
-+    /// Creates a pre-filled sheaf from this cache.
-+    ///
-+    /// Allocates a sheaf and pre-fills it with `size` objects. Once created,
-+    /// allocations from the sheaf via [`Sheaf::alloc`] are guaranteed to
-+    /// succeed until the sheaf is depleted.
-+    ///
-+    /// # Arguments
-+    ///
-+    /// - `size`: The number of objects to pre-allocate. Must not exceed the
-+    ///   cache's `sheaf_capacity`.
-+    /// - `gfp`: Allocation flags controlling how memory is obtained. Use
-+    ///   [`GFP_KERNEL`] for normal allocations that may sleep, or
-+    ///   [`GFP_NOWAIT`] for non-blocking allocations.
-+    ///
-+    /// # Errors
-+    ///
-+    /// Returns [`ENOMEM`] if the sheaf or its objects could not be allocated.
-+    ///
-+    /// # Warnings
-+    ///
-+    /// The kernel will warn if `size` exceeds `sheaf_capacity`.
-+    pub fn sheaf(
-+        self: ArcBorrow<'_, Self>,
-+        size: usize,
-+        gfp: kernel::alloc::Flags,
-+    ) -> Result<Sheaf<T>> {
-+        // SAFETY: `self.as_raw()` returns a valid cache pointer, and `size`
-+        // has been validated to fit in a `c_uint`.
-+        let ptr = unsafe {
-+            bindings::kmem_cache_prefill_sheaf(self.as_raw(), gfp.as_raw(), size.try_into()?)
-+        };
-+
-+        // INVARIANT: `ptr` was returned by `kmem_cache_prefill_sheaf` and is
-+        // non-null (checked below). `cache` is the cache from which this sheaf
-+        // was created. `dropped` is false since the sheaf has not been returned.
-+        Ok(Sheaf {
-+            sheaf: NonNull::new(ptr).ok_or(ENOMEM)?,
-+            cache: self.into(),
-+            dropped: false,
-+        })
-+    }
-+
-+    #[inline]
-+    fn as_raw(&self) -> *mut bindings::kmem_cache {
-+        self.cache.as_ptr()
-+    }
-+}
-+
-+impl<T: KMemCacheInit<T>> Drop for KMemCache<T> {
-+    fn drop(&mut self) {
-+        // SAFETY: `self.as_raw()` returns a valid cache pointer that was
-+        // created by `__kmem_cache_create_args`. As all objects allocated from
-+        // this hold a reference on `self`, they must have been dropped for this
-+        // `drop` method to execute.
-+        unsafe { bindings::kmem_cache_destroy(self.as_raw()) };
-+    }
-+}
-+
-+/// Trait for types that can be initialized in a slab cache.
-+///
-+/// This trait provides the initialization logic for objects allocated from a
-+/// [`KMemCache`]. When the slab allocator creates new objects, it invokes the
-+/// constructor to ensure objects are in a valid initial state.
-+///
-+/// # Implementation
-+///
-+/// Implementors must provide [`init`](KMemCacheInit::init), which returns
-+/// a in-place initializer for the type.
-+///
-+/// # Example
-+///
-+/// ```
-+/// use kernel::mm::sheaf::KMemCacheInit;
-+/// use kernel::prelude::*;
-+///
-+/// struct MyData {
-+///     counter: u32,
-+///     name: [u8; 16],
-+/// }
-+///
-+/// impl KMemCacheInit<MyData> for MyData {
-+///     fn init() -> impl Init<MyData> {
-+///         init!(MyData {
-+///             counter: 0,
-+///             name: [0; 16],
-+///         })
-+///     }
-+/// }
-+/// ```
-+pub trait KMemCacheInit<T> {
-+    /// Returns an initializer for creating new objects of type `T`.
-+    ///
-+    /// The initializer is applied to newly allocated objects when they are
-+    /// allocated from a sheaf via [`Sheaf::alloc`]. The cache itself has no
-+    /// constructor. The initializer should set all fields to their default or
-+    /// initial values.
-+    fn init() -> impl Init<T, Infallible>;
-+}
-+
-+/// A pre-filled container of slab objects.
-+///
-+/// A sheaf holds a set of pre-allocated objects from a [`KMemCache`].
-+/// Allocations from a sheaf are guaranteed to succeed until the sheaf is
-+/// depleted, making sheaves useful in contexts where allocation failure is
-+/// not acceptable.
-+///
-+/// Sheaves provide faster allocation than direct allocation because they use
-+/// local locks with preemption disabled rather than atomic operations.
-+///
-+/// # Lifecycle
-+///
-+/// Sheaves are created via [`KMemCache::sheaf`] and should be returned to the
-+/// allocator when no longer needed via [`Sheaf::return_refill`]. If a sheaf is
-+/// simply dropped, it is returned with `GFP_NOWAIT` flags, which may result in
-+/// the sheaf being flushed and freed rather than being cached for reuse.
-+///
-+/// A sheaf holds a reference to the [`KMemCache`] it was created from.
-+/// Dropping the sheaf may thus drop the last reference to the cache and
-+/// destroy the cache, which may sleep. See the `# Context` section of
-+/// [`KMemCache`].
-+///
-+/// # Invariants
-+///
-+/// - `sheaf` is a valid pointer to a `slab_sheaf` obtained from
-+///   `kmem_cache_prefill_sheaf`.
-+/// - `cache` is the cache from which this sheaf was created.
-+/// - `dropped` tracks whether the sheaf has been explicitly returned.
-+pub struct Sheaf<T: KMemCacheInit<T>> {
-+    sheaf: NonNull<bindings::slab_sheaf>,
-+    cache: Arc<KMemCache<T>>,
-+    dropped: bool,
-+}
-+
-+// SAFETY: A prefilled sheaf is exclusively owned by the caller and has no
-+// affinity to the CPU or thread that created it: `kmem_cache_alloc_from_sheaf`
-+// does not touch percpu state, and `kmem_cache_return_sheaf` reattaches the
-+// sheaf to the CPU that is current at return time. Thus the sheaf may be sent
-+// to another thread if the objects it manages can.
-+unsafe impl<T: KMemCacheInit<T> + Send> Send for Sheaf<T> {}
-+
-+// NOTE: `Sheaf` is deliberately not `Sync`. The C side mutates sheaf state
-+// without synchronization, relying on the caller's exclusive ownership. The
-+// mutable receivers of the methods on `Sheaf` enforce this exclusivity.
-+
-+impl<T: KMemCacheInit<T>> Sheaf<T> {
-+    #[inline]
-+    fn as_raw(&self) -> *mut bindings::slab_sheaf {
-+        self.sheaf.as_ptr()
-+    }
-+
-+    /// Return the sheaf and try to refill using `flags`.
-+    ///
-+    /// If the sheaf cannot simply become the percpu spare sheaf, but there's
-+    /// space for a full sheaf in the barn, we try to refill the sheaf back to
-+    /// the cache's sheaf_capacity to avoid handling partially full sheaves.
-+    ///
-+    /// If the refill fails because gfp is e.g. GFP_NOWAIT, or the barn is full,
-+    /// the sheaf is instead flushed and freed.
-+    pub fn return_refill(mut self, flags: kernel::alloc::Flags) {
-+        self.dropped = true;
-+        // SAFETY: `self.cache.as_raw()` and `self.as_raw()` return valid
-+        // pointers to the cache and sheaf respectively.
-+        unsafe {
-+            bindings::kmem_cache_return_sheaf(self.cache.as_raw(), flags.as_raw(), self.as_raw())
-+        };
-+        drop(self);
-+    }
-+
-+    /// Allocates an object from the sheaf.
-+    ///
-+    /// Returns a new [`SBox`] containing an initialized object, or [`None`]
-+    /// if the sheaf is depleted. Allocations are guaranteed to succeed as
-+    /// long as the sheaf contains pre-allocated objects.
-+    ///
-+    /// The `gfp` flags passed to `kmem_cache_alloc_from_sheaf` are set to zero,
-+    /// meaning no additional flags like `__GFP_ZERO` or `__GFP_ACCOUNT` are
-+    /// applied.
-+    ///
-+    /// The returned `T` is initialized as part of this function.
-+    pub fn alloc(&mut self) -> Option<SBox<T>> {
-+        // SAFETY: `self.cache.as_raw()` and `self.as_raw()` return valid
-+        // pointers. The function returns NULL when the sheaf is empty.
-+        let ptr = unsafe {
-+            bindings::kmem_cache_alloc_from_sheaf_noprof(self.cache.as_raw(), 0, self.as_raw())
-+        };
-+
-+        let ptr = NonNull::new(ptr.cast::<T>())?;
-+
-+        // SAFETY:
-+        // - `ptr` is a valid, non-null pointer as it was just returned by the
-+        //   cache.
-+        // - The initializer is infallible, so an error is never returned.
-+        unsafe { T::init().__init(ptr.as_ptr()) }.expect("Initializer is infallible");
-+
-+        // INVARIANT: `ptr` was returned by `kmem_cache_alloc_from_sheaf_noprof`
-+        // and initialized above. `cache` is the cache from which this object
-+        // was allocated. The object remains valid until freed in `Drop`.
-+        Some(SBox {
-+            ptr,
-+            cache: self.cache.clone(),
-+        })
-+    }
-+}
-+
-+impl<T: KMemCacheInit<T>> Drop for Sheaf<T> {
-+    fn drop(&mut self) {
-+        if !self.dropped {
-+            // SAFETY: `self.cache.as_raw()` and `self.as_raw()` return valid
-+            // pointers. Using `GFP_NOWAIT` because the drop may occur in a
-+            // context where sleeping is not permitted.
-+            unsafe {
-+                bindings::kmem_cache_return_sheaf(
-+                    self.cache.as_raw(),
-+                    GFP_NOWAIT.as_raw(),
-+                    self.as_raw(),
-+                )
-+            };
-+        }
-+    }
-+}
-+
-+/// An owned allocation from a cache sheaf.
-+///
-+/// `SBox` is similar to `Box` but is backed by a slab cache allocation obtained
-+/// through a [`Sheaf`]. It provides owned access to an initialized object and
-+/// ensures the object is properly freed back to the cache when dropped.
-+///
-+/// The contained `T` is initialized when the `SBox` is returned from alloc and
-+/// dropped when the `SBox` is dropped.
-+///
-+/// An `SBox` holds a reference to the [`KMemCache`] it was allocated from.
-+/// Dropping the `SBox` may thus drop the last reference to the cache and
-+/// destroy the cache, which may sleep. See the `# Context` section of
-+/// [`KMemCache`].
-+///
-+/// # Invariants
-+///
-+/// - `ptr` points to a valid, initialized object of type `T`.
-+/// - `cache` is the cache from which this object was allocated.
-+/// - The object remains valid for the lifetime of the `SBox`.
-+pub struct SBox<T: KMemCacheInit<T>> {
-+    ptr: NonNull<T>,
-+    cache: Arc<KMemCache<T>>,
-+}
-+
-+// SAFETY: `SBox<T>` owns a `T`. Sheaf allocated objects are ordinary slab
-+// objects that may be freed from any thread, so an `SBox<T>` may be sent to
-+// another thread if `T` can.
-+unsafe impl<T: KMemCacheInit<T> + Send> Send for SBox<T> {}
-+
-+// SAFETY: `SBox<T>` has no interior mutability, so sharing `&SBox<T>` between
-+// threads only shares `&T`.
-+unsafe impl<T: KMemCacheInit<T> + Sync> Sync for SBox<T> {}
-+
-+impl<T: KMemCacheInit<T>> Deref for SBox<T> {
-+    type Target = T;
-+
-+    #[inline]
-+    fn deref(&self) -> &Self::Target {
-+        // SAFETY: `ptr` is valid and properly aligned per the type invariants.
-+        unsafe { self.ptr.as_ref() }
-+    }
-+}
-+
-+impl<T: KMemCacheInit<T>> DerefMut for SBox<T> {
-+    #[inline]
-+    fn deref_mut(&mut self) -> &mut Self::Target {
-+        // SAFETY: `ptr` is valid and properly aligned per the type invariants,
-+        // and we have exclusive access via `&mut self`.
-+        unsafe { self.ptr.as_mut() }
-+    }
-+}
-+
-+impl<T: KMemCacheInit<T>> Drop for SBox<T> {
-+    fn drop(&mut self) {
-+        // SAFETY: By type invariant, `ptr` points to a valid and initialized
-+        // object. We do not touch `ptr` after returning it to the cache.
-+        unsafe { core::ptr::drop_in_place(self.ptr.as_ptr()) };
-+
-+        // SAFETY: `self.ptr` was allocated from `self.cache` via
-+        // `kmem_cache_alloc_from_sheaf_noprof` and is valid.
-+        unsafe {
-+            bindings::kmem_cache_free(self.cache.as_raw(), self.ptr.as_ptr().cast());
-+        }
-+    }
-+}
+On Wed, Sep 02, 2026 at 11:47:02AM +0100, Vincent Donnefort wrote:
+> This series is a follow-up to the discussion that has started here [1].
+> While standalone, it also provides primitives reusable for the VPR DMA
+> heap.
+> 
+> When memory is lent to the Secure world via FF-A, CPU speculative
+> accesses from NS to the lent pages can still occur as long as it retains
+> a cacheable mapping to it.
+> 
+> Ideally, lent memory would be "no-map" but that would mean giving up
+> MiBs of useful memory, so let's try to do better with the help of a CMA
+> pool.
+> 
+> On arm64, modifying the direct map at runtime is generally restricted
+> because the linear map defaults to block mapping and splitting blocks at
+> runtime may trigger fatal page fault, unless the CPU implements BBML3
+> or the entire direct map was mapped at page granularity from boot.
+> Forcing last-level mappings system-wide incurs a severe penalty we want
+> to avoid. Instead, this series introduces targeted last-level mappings
+> for designated memory regions, along with the "arm,ffa-lend-pool" CMA
+> driver to manage unmapping and remapping on lend/reclaim transitions:
+> 
+> 1. memblock & OF reserved memory ("ll-map"):
+>    - Introduce MEMBLOCK_LLMAP and the DT "ll-map" property for reserved-memory
+>      nodes to force last-level (PTE) mappings only for a specific region.
+> 
+> 2. set_memory infrastructure:
+>    - Introduce can_set_direct_map_range() to check if a specific address
+>      range is mapped with last-level entries and can be modified safely.
+>    - Introduce __set_direct_map_*() variants that bypass redundant checks
+>      when the caller has already validated the range.
+> 
+> 3. "arm,ffa-lend-pool" driver
+>    - Introduce the "arm,ffa-lend-pool" CMA reserved-memory driver, which
+>      unmaps pages prior to lending (ffa_prepare_lend()) and restores them
+>      when reclaimed (ffa_lend_reclaimed()).
+> 
+> 4. Optee support
+>    - Hook OP-TEE dynamic protected memory pools to "arm,ffa-lend-pool" for
+>      both SMC (via DT memory-region phandle) and FF-A (via
+>      ffa_lend_pool_attach()) transports.
+> 
+> Testing:
+> ========
+> 
+> Tested with QEMU v8 using OP-TEE OS (built with CFG_CORE_DYN_PROTMEM=y)
+> under both SMC and FF-A transports [2]
+> 
+> static void dump_direct_map(const char *label)
+> {
+> 	printf("\n=== %s ===\n", label);
+> 	fflush(stdout);
+> 	system("sed -n '/Linear Mapping start/,/Linear Mapping end/p' /sys/kernel/debug/kernel_page_tables");
+> 	fflush(stdout);
+> }
+> 
+> int main(int argc, char *argv[])
+> {
+> 	int heap_fd;
+> 	int dmabuf_fd;
+> 	struct dma_heap_allocation_data data = { 0 };
+> 	size_t size = 1024 * 1024; /* 1MB */
+> 
+> 	if (argc > 1)
+> 		size = strtoul(argv[1], NULL, 0);
+> 
+> 	dump_direct_map("BEFORE ALLOCATION");
+> 
+> 	heap_fd = open("/dev/dma_heap/protected,secure-video", O_RDWR);
+> 	if (heap_fd < 0) {
+> 		perror("open /dev/dma_heap/protected,secure-video");
+> 		return 1;
+> 	}
+> 
+> 	printf("\nOpened /dev/dma_heap/protected,secure-video\n");
+> 	printf("Allocating %zu bytes of protected memory via DMA heap...\n", size);
+> 
+> 	data.len = size;
+> 	data.fd_flags = O_RDWR | O_CLOEXEC;
+> 	if (ioctl(heap_fd, DMA_HEAP_IOCTL_ALLOC, &data) < 0) {
+> 		perror("ioctl DMA_HEAP_IOCTL_ALLOC");
+> 		close(heap_fd);
+> 		return 1;
+> 	}
+> 
+> 	dmabuf_fd = data.fd;
+> 	printf("Successfully allocated %zu bytes! dmabuf_fd = %d\n", size, dmabuf_fd);
+> 
+> 	dump_direct_map("DURING LEND (EXPECT HOLE IN DIRECT MAP)");
+> 
+> 	printf("\nReleasing dmabuf_fd...\n");
+> 	close(dmabuf_fd);
+> 	close(heap_fd);
+> 
+> 	dump_direct_map("AFTER RECLAIM (RESTORED DIRECT MAP)");
+> 
+> 	return 0;
+> }
+> 
+> [1] https://lore.kernel.org/all/20260807-tegra-vpr-v4-7-5510d16af89e@nvidia.com/
+> [2] https://optee.readthedocs.io/en/latest/building/gits/build.html#qemu-v8
+> 
+> Vincent Donnefort (10):
+>   memblock: Introduce MEMBLOCK_LLMAP
+>   of: reserved_mem: Introduce "ll-map" property
+>   set_memory.h: Introduce can_set_direct_map_range()
+>   set_memory.h: Introduce __set_direct_map*()
+>   arm64: can_set_direct_map() if BBML3
+>   arm64: Implement can_set_direct_map_range()
+>   arm64: Implement __set_direct_map*()
+>   arm64: Add support for MEMBLOCK_LLMAP
+>   firmware: arm_ffa: Introduce ffa-lend-pool
+>   optee: Add support for arm,ffa-lend-pool
+> 
+>  arch/arm64/include/asm/set_memory.h  |   7 +
+>  arch/arm64/mm/mmu.c                  |  23 ++-
+>  arch/arm64/mm/pageattr.c             |  67 +++++++-
+>  drivers/firmware/arm_ffa/Kconfig     |   5 +
+>  drivers/firmware/arm_ffa/Makefile    |   1 +
+>  drivers/firmware/arm_ffa/lend_pool.c | 223 +++++++++++++++++++++++++++
+>  drivers/of/of_reserved_mem.c         | 104 ++++++++++---
+>  drivers/tee/optee/ffa_abi.c          |  13 +-
+>  drivers/tee/optee/protmem.c          |   8 -
+>  drivers/tee/optee/smc_abi.c          |  17 +-
+>  drivers/tee/tee_shm.c                |  11 +-
+>  include/linux/arm_ffa.h              |  21 +++
+>  include/linux/memblock.h             |   9 ++
+>  include/linux/set_memory.h           |  39 +++++
+>  mm/memblock.c                        |  50 ++++++
+>  15 files changed, 545 insertions(+), 53 deletions(-)
+>  create mode 100644 drivers/firmware/arm_ffa/lend_pool.c
+> 
+> 
+> base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+> -- 
+> 2.55.0.970.g62bdec98f9-goog
+> 
 
 -- 
-2.51.2
-
-
+Vincent
 
