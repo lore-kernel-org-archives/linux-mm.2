@@ -4,145 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5922C624D3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 13:44:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C17A4C624D3
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 13:46:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B12066B00E7; Wed,  2 Sep 2026 09:44:50 -0400 (EDT)
+	id D125F6B00E9; Wed,  2 Sep 2026 09:46:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE9756B00E8; Wed,  2 Sep 2026 09:44:50 -0400 (EDT)
+	id CE9826B00EA; Wed,  2 Sep 2026 09:46:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A010C6B00E9; Wed,  2 Sep 2026 09:44:50 -0400 (EDT)
+	id BD8936B00EB; Wed,  2 Sep 2026 09:46:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F2516B00E7
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:44:50 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 17DA11A020B
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:44:50 +0000 (UTC)
-X-FDA: 85168942740.27.507903F
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2DB3240003
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:44:48 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kevjb1d3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf17.hostedemail.com: domain of idryomov@gmail.com designates 209.85.217.47 as permitted sender) smtp.mailfrom=idryomov@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788356688;
+	by kanga.kvack.org (Postfix) with ESMTP id 98DBD6B00E9
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:46:54 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 301A61A021E
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:46:54 +0000 (UTC)
+X-FDA: 85168947948.17.494CEBD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 9710820005
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:46:52 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=okFse3wJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788356812;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6dSC4i56GDCKpLLN6Iph6zr29jWx7mFCg/VcjlijsBo=;
-	b=xOTo5EjNxfFNyA5M6e8IazC+BmmN5KtwF5/85E2SXN6+ofPo6ynAOL+3mafzzSotGmmQ+L
-	xxomkXCkhusXnGmKkrccnTug/cxbnxnMMihhZgDNsaxjmJ3BJPUFnNXOer8l6dFD01/OP2
-	2AzN5yqPOVwOeAbq6AVx0v05lr4g7Rs=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kevjb1d3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf17.hostedemail.com: domain of idryomov@gmail.com designates 209.85.217.47 as permitted sender) smtp.mailfrom=idryomov@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788356688;
-	b=HrZDZMk1YetsR56i7Ei6dHVrGUQ5KEFGrXUArRhUUe7ABhcV3AUoJKrHedLJhF8bQmaoZK
-	IWKEpRzyT1lh2GoQL7HcK0334YYfwaCT8ZefBpbUMj+P8sz3IbnWgeNQ/hMxGa8a1TsgGT
-	6nulvodAeW9o9B2zaXaXYOq15dBun+4=
-Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-7564b7a9490so1805351137.1
-        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 06:44:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788356687; cv=none;
-        d=google.com; s=arc-20260327;
-        b=m40pRWVVs9F6eQyZp+xYbwZFvPkv2PF3nvtyGEBg/EYlQ+GcMoFRe4rEROlpo4ig9c
-         bLWITPgg8RrUE/qYjZfeLdvqlFMmcd7bi9jU8hLrsbY3mnJhzQOnuh3qflMDLdSE95Gm
-         U1qzGmRGG55aoZtZQfGCDurmiU4V81kC4sNjudYA6qg/3kRjsojYvRlp/UH4xagjqtIg
-         Ypu5oQ02jAn9Ez6Vl/CKKXIJGvvdKF8zv6tQnYG7kwOLU6nk9ZSzI1PN+tIwiGDPazy0
-         bhTaexrPEXwfY4BJuuA7u6WLUMJIgs3m8vO6G6IUswyLJyCcGY1cn+9YMvRMddP1Z0jf
-         tHhQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=6dSC4i56GDCKpLLN6Iph6zr29jWx7mFCg/VcjlijsBo=;
-        fh=k7oYAasDFyigT2NMudFSLY7l+FMddWcI87PEIj+J6no=;
-        b=olncajRM2NIDR4Q+8C5XAA/nO7SCjFhyqpRy/GTQcbRFP1Xt5Je1U6T0amc/jGonnG
-         WWUcieyvlbyqKDOsxpAWro+OuzXn9IpiqHY+9A352o0A41Gtg7ORgXwZje22OwxMaf2d
-         3ajNkhmSOQUrfKbe1eENRekPwcytHyy9CgcL6AfFqAao+nP3gVaIvFTLzofwWLbcimX1
-         KEZbz4aeecnhXWgHqgcc+dItHjSGkTnCg8mjwMluBt5Zp00r7SKHvi/fSBrq8IGCh2v2
-         aXIhbW+Zl5Kri3HbZkphlhWk36e4IbwciqWwo+bKjJttCCDYL8IOn+JHudcXiOCsUIXa
-         r35Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788356687; x=1788961487; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=6dSC4i56GDCKpLLN6Iph6zr29jWx7mFCg/VcjlijsBo=;
-        b=kevjb1d3HQuWFJ/Hy6tX/AATwSOniS8/CgX06vupWNW6u0gFY4mbPhety89bPXjkpy
-         0z6WXdiqFqngZrzNgzrKDUBMJ3uq7f3qQUqL4VhFYIpaJxmPh96c+MzuMVmy3FguvZdz
-         tSbvslJxU5sjEKPbh7CEpA/FDyiB8SrOulnZY+39kzFrRkYGjtoGCAHMuC2EQvw56T9D
-         daeja3rcKz2Ntv0wHe2p8238GrbRY9iReuaShFjDtLSYrk1KC/eQB6gtflgmc3LzHDMY
-         Up7MN7muMKPubHQzJBf07xRvohrqeF4IF/xsbir3czB54euOgFjkAsbW52LgE9Y7bEoL
-         FTJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788356687; x=1788961487;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6dSC4i56GDCKpLLN6Iph6zr29jWx7mFCg/VcjlijsBo=;
-        b=ESiQQ71fwt61dyqt5feS5cHTI8hlvmRMCuWd3BaWWnlovhDahbmOnvB4PnlHFHvsU1
-         1kCHuMJKArqbT58ufWDpVYoi+TuZCR8NxthgUewVS1ll5a+qBhlaqP8mwaocqB+p1Pzq
-         mypUM/TttuTviqdpNPGcPmYi2n7OxVszPkfLeiGEkXq3y1rs2lmicM5ajPDSHZK7terp
-         +4AjuON6NX4tHe7cIVuQc0UiEFqgjn+gu6xJTAchVUbA+58PJnhwKRuhnjFyYjscdDS1
-         pPqIVweP99rDCsZ/e34Jwrbs0VNc0URnzl7BSShC8cgZ49Euf02r48cJwcRgBJKYt3fC
-         Nntg==
-X-Forwarded-Encrypted: i=1; AKwUvBxL77MWaAV08MlD0vzHpgfIZACnGTkiq3XB9aBIm6dxPpgVU65oeB3AhdnT/wTeOuPM+N0Uy+ALTA==@kvack.org
-X-Gm-Message-State: AFuF++nLIUawVfHijJ8dzg4NQa0c482cAc1FKO6jbp3uzTB1Qakx7wir
-	8kTdrLtogXArmYosGAZbVcbZtQMno2fhB/oIzNSncGvkKZewhRLnOmiofWhHqdy2GfBczMYjGY3
-	5OhAkXi4dm/dI0kv/d3NiR3hY/kleuMM=
-X-Gm-Gg: AYBFou13sGAaozMqWrczS5g1UjrzelEeU9JwKQ58fLgMp91CsqxPMmxCkz3quWfEjsW
-	hJwPZlS1rMTpxaFimB963kKWPPEUct9+UANsH1JbCqIWWRrAnQPHKRofrcimPLoCM5wLoLj39OO
-	V1xKjE2pSLHpa3hg5aWFDN4qoTaqACp5FiXKLYS7cFM2eBZsmz6aMeHRdQWllHhe+SLGZu6lK4H
-	ubZH0iPDEUPnHIc9Gmi1MjuRGzLKim+hKRK6A+WCDHarb0xch6j4TbLyPSdqVs9fSl5TT4/z/wT
-	rqAFJdILTpKMYu67iFrxmr3VqGPeGlqPY4pz9mh5g08/fjyOCEgli0+wh+ClIzKZewSOj/Q63kT
-	Okkpm
-X-Received: by 2002:a05:6102:41a6:b0:779:328:8a2e with SMTP id
- ada2fe7eead31-78a1f725fc6mr950132137.5.1788356687181; Wed, 02 Sep 2026
- 06:44:47 -0700 (PDT)
+	bh=HVEd5d75YE+aQSNOfHhVC5lBHOsLLZJMAtGt1Mo7YBc=;
+	b=NtV3owkYrwCi2biVE1LdLn32x120ZLdU1PdSbbhN/V1LWbMkPIvBKOp65nxRd+p2SZ7+Jo
+	DFrQpn5ASyTH6iWFa86aTqX6pWIiQMa9sXdSaFRURHREAi1nnt1d0f76ZiXFCwO24DyOWD
+	T3Hvj4LahdirHQ6hWJeBB7sKPzUDd9U=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=okFse3wJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788356812;
+	b=1LM+ddy9riXK3oxUzex9vLEvwfXAGQ8z+ATJJyBtDxz30E48tjewx07vN17Sz9bX7Upo/1
+	pz9dC1EUCsjDswbvUs8sRBslEf4LuzOC9h6rh9Ppz/KiHNN6pdxox3YmrzcuzGOrM6kVZQ
+	inqNr21JAgfDKYhrkXp5jmIS0oeoRrg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2209B600D9;
+	Wed,  2 Sep 2026 13:46:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA6C1F000E9;
+	Wed,  2 Sep 2026 13:46:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788356811;
+	bh=HVEd5d75YE+aQSNOfHhVC5lBHOsLLZJMAtGt1Mo7YBc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=okFse3wJj7j5Uestva/C4RLOVrEldgdwnHZGOXkKvr8LVAC3AYsxrUXyggOpgTSoB
+	 GdU3t/78ANZmrsaGnd6q5veUw1sLmN3e+VZQ3F9a7svyDNinINmNooSPyN5qLdke9o
+	 oFWlzZQq2hxpPuSBrmno+zAcS8KwnDHId5quPeNofsWNPGGPAqwkmOGcFEIJ0yiEmX
+	 GPDPzLsoQNg/Bi+DaYoQ06fizxY+hIJ2HAV1Y0T8ZvFUN2i6eLMHgA8yNm2GnGzJ+E
+	 Sq7CqKKHf+4Wyj5uGQbK+ozwrPRl+wT5ckcZJCSdXUSerBsUSUlP7QHp9UGkhV7juW
+	 duzz6536CVDiw==
+Date: Wed, 2 Sep 2026 14:46:44 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Nimrod Oren <noren@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Hugh Dickins <hughd@google.com>, Nirmoy Das <nirmoyd@nvidia.com>, 
+	Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm: remove min_free_kbytes adjustment for THP
+Message-ID: <apgh-aJ7TsdixrGc@gremlin>
+References: <20260901190123.3511535-1-noren@nvidia.com>
 MIME-Version: 1.0
-References: <20260817-remove-wait-on-page-writeback-v4-0-0e5e53d47eb0@columbia.edu>
- <20260817-remove-wait-on-page-writeback-v4-1-0e5e53d47eb0@columbia.edu>
-In-Reply-To: <20260817-remove-wait-on-page-writeback-v4-1-0e5e53d47eb0@columbia.edu>
-From: Ilya Dryomov <idryomov@gmail.com>
-Date: Wed, 2 Sep 2026 15:44:33 +0200
-X-Gm-Features: AcwNN1Vvf7FpyU1HrqjBI0mng4bI8rN-Wlo5S9DqsAbNDuh3hnayuNaPhBcoE8o
-Message-ID: <CAOi1vP8SCZaFTodwm3_c9cFfc4UB5X8J8vF-sxh+4TuhCS8iog@mail.gmail.com>
-Subject: Re: [PATCH v4 01/10] ceph: fix error handling when the OSD client is
- stopping in ceph_submit_write()
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: Alex Markuze <amarkuze@redhat.com>, Viacheslav Dubeyko <slava@dubeyko.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Zi Yan <ziy@nvidia.com>, Christian Brauner <brauner@kernel.org>, David Howells <dhowells@redhat.com>, 
-	Jeff Layton <jlayton@kernel.org>, ceph-devel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>, 
-	Sashiko <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 8sxe1qr9oyd3g3j96b6fsjepsxdcnyuq
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2DB3240003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260901190123.3511535-1-noren@nvidia.com>
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788356688-605712
-X-HE-Meta: U2FsdGVkX18C9ugChEHcbh/8L0RT2VoH6QtQHxfftOdD7y6sgmu15oIas21/Omvb/xMc/E8ALOlW0jBRpvLlXCf3Rdzm8ZYedYTCt6nF01zDxuliI3I9Wtb55rL64+Nuq7L3VBnZi4XUm6mRt5WNjHWf/LQSfRoVPi/9joV++U1T1SmMrOi/+3I+eqRIBmw9uFHvW/cR7Lma2RF3w9AUlcRiH2qsUSNmsG8pV5Y6SJ5PnKoy09SaUgkuSCAnTzmL65gaRcgyWaGb8XG3OdLiIHqrMXeXY4u2rE5R0I3DMZeRR8OtRBCIWNK4aHlzEUfwsS5bXd8SreFp6/lfGGZaDMBQkLcvJ2Q1zkYY3R0swuRK+ap5FtW8ROVHS0fR3uV/sxynzqWS1ctPR4Gfi5ESSm+D7EAvllEABblq4IEE0Sx7uSWXKZrEsRrsLUk1ACxp+2j+YNQlVYrXluqBBMsEkl9Oxubz9wTN9EUQj9QwEQ/vplgKn8cuCV4iVyRk508wqBM8EEgq26ZaVnefb/7KyRUqeS/MQJDmmFdVBzsnf7Ma8IP33Ef8S6aUOPACfklyyIo8qHhI8RFjrVKNWJngEUBFlI6eirRGNDORVQe/xDanauLRCt5byOGRVnTJJ/mAPSOvID6akoGQw3+yzLWp+iroOhlMUK7U58wYvJzIbDA8t5KtrIrc7M4GZ8b8KRv2DFxui4AKw6fKnoFdCxvsQgjebfyTD/dmxzki2tk8Zadry5SVqV/KrI9hieWerbfelFVu4H7vS2Uc3qYxApGt1sXfg9v/RE+4djlVIqXxf4tcRNmGwvPSmGmbqSp3GhSdWw3G4IivMAQiBs/PCoj5rT6C8gUCxL/60ttuWPHPez94kbBxHG+U1a/s+bGB9Bs/mpEYpWoYqgCs6WL3XQA3YaNX0OFicnAzH4UDyk2+zPPZxU6Lhkuh4IjWDJZFv2WfACCXigIdD6c+HejDIfA
- bk1dDnGy
- pxhxA3FJLe8v/t1NBQNDyXgvsv7/s7nY2x6DglyiCIdYCMppk2t5cqJbhWwyC1Ft94CDjZFuoCr+tNHyU3U4asbdDm/OVlZuiynEQ77UkdeJxT++VJnZsiUUI0JP7niUppsIDmeIg70pUW4Q0QgrNWvpa5Ut+XlcHEBUb16oSq2FXnzB7FhpNH3xCaf+/Zs/CcssbfWvwksb82RtjGtXksDceTFSiOP45VT0lAyzXGGzCHR76OivRM15S2MNii2HmCnS9NFltdCaMHqjnk9W1O4kAfZbY0GOruuPakjDd6nquuQ1z8vjBuSBn6vfVbTTOhop7vUi500434iQM/wj0QOzGfNvHXOstrS1HB9sUIV29Is7KmYRhR8kk/mmegxfYZcvoQIYKs26diZLgKyuICYJwsDMyyldFTHI2iMRH19taEYxQ2lEoYFd8z4zZJEhw2QFvRRU2gGhUuAjEAB3J5q2XlyuftxZsCmvaikn73dZWSgDzORtK26+Q1RCOODVxKCASIcYMKoDpHsNBhAlA5LJdNl6Jr6NGV6TANyvSELF8xC57vvKtH4RstV/o1vC4bhouetVUJuwroWgJ7KeZqzuUnentB/6SDWb6
+X-Stat-Signature: xjbc3xt1xagqbhdwjatarzi53cpiak97
+X-Rspamd-Queue-Id: 9710820005
+X-HE-Tag: 1788356812-900109
+X-HE-Meta: U2FsdGVkX19qB0pMEEWzTfKUQnx2w0o940C3uuieHO8wVSqbs5en2fTD1SvxaADFZTjQAKTsYJUKbvLnCOj4TWBRBeK8+uTmrqraTJUjfQ1vujxTQ26nq+M9yP5EUUZrCGr2Eoqr6F6lx2iysTi6XI/cBaPSxnxu7x9mhV2bpFsG/652QRM3bzkYSppuF2Oc88+vsewcv1ifR4gKubamP6hp45Hp6G8XRZQBEAz52Prtrv9uCBRut67I9KtFPOXRT5WNVyYnJ7peUcmAXBvzVsH6f1V1hrzqleK82x3hGFcyIKX0UIgBdhDSF5CYrUHxbwNIAC/6PH7fGjCzYxaICDtJdJyPLhjXCcmRCGaCt6vOIx6NbxhQtI59JiJURoohjUa1kz8VF5BURb3Ff6R9a9GDEBMIPk4aQrriLlCe9fA0nsKdYsS94lpUrm9MjrQkmfTXC9s45wHwegHFpB5ORx271smlxMhH04CfvImJo2FWq5+umhv+IMyxj0NGMixYhZPw5gRsKaU+cZhollfugUwBVEv5NuvBcRU2iTTfWOJC/bGl+YVKZ7KJf6x4tcEe3IwX+g5AeM4VlCYyCbgX9fcGU/C+Zyu7jIyFMkUpfSp6Y5UV/ktdk2wijksoJIXAHkfZnV+N7UctLchKGWWOWCcVTh3Q/ExqnHH1F9nRB5adN9oj0iRsneDnVuQHfC4cqpc8TmSI6qteMBGKFUlhNUHnUynzl3mySz5PF+o9+T+WDN5erk35JyKeWu1sesb0rzdFO4JYzmnRRDppVSbAjyOMyffwNpJPgurRGhYXv+8LSVFdibrs2WhzCjQqTcveUMwitks2JEfnJrVkqsLYnWOVbfjwxO2Yu2bTm5v7j7OEvFUMip3Xd/yGEQgSUksbOdlBRZf7NxI5VOcdH96Er+/ggrC5itY0hr5bOdEDtWwexLpvDrVSaYelh0P08M+k7CYoSaBtQNR5Fv+6Lhw
+ XAwrKi9u
+ HZYHHYTqGgJRRN6n/U4TbNLEQcFB0wh+EDabDUjwcBizDERK45Mp9g7yyBEYf6VeJBa0iM8bNOT3ginkj6SwSvFiGqx8/UV27NeP3ZM+bIKbLc5nlwM+bqZfIwA3yvqi9lqT1q/lTRu5kgrA/1QzmcaTF+AVTgIEJMPL8I3iQZzNY7dEUKhnl2ihN3diUO6nIWzD0nGNhkqaKk6e5VKoIByc5tm3WdJW+rHzUWwIGFnInjAPhyJ7hjlPToQ/RVCAgbjUbOmsBDfDCMY8I/ShluhXcwLNys7RUXK2ZNpFv0JPj8HPlaQGtrNBk5LB4Xv9nYT3rQ44MB868mXxoKn9yiWfd+5xicfiDVaxAioQqCOXML4Qc1GZQmbmQjSE8BreahGZT3hKKQ9fARApKC0bXEgDWvQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,79 +99,358 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 17, 2026 at 9:15=E2=80=AFPM Tal Zussman <tz2294@columbia.edu> w=
-rote:
+On Tue, Sep 01, 2026 at 10:01:23PM +0300, Nimrod Oren wrote:
+> When THP is enabled, set_recommended_min_free_kbytes() may raise
+> min_free_kbytes using a heuristic that scales with pageblock_nr_pages.
+> Commit f000565adb77 ("thp: set recommended min free kbytes") added this
+> heuristic to help keep pageblocks free and reduce fragmentation for THP
+> allocations.
 >
-> When ceph_inc_osd_stopping_blocker() fails, ceph_submit_write()
-> redirties and unlocks the folios remaining in ceph_wbc->fbatch.
-> However, none of those folios are locked at this point: locked folios
-> were moved to ceph_wbc->pages[] and removed from the fbatch by
-> ceph_process_folio_batch(). Unlocking them triggers
-> VM_BUG_ON_FOLIO(!folio_test_locked(folio)) in folio_unlock(), or
-> unlocks a folio locked by another task.
+> The recommendation scales poorly with larger base page sizes. With the
+> default arm64 pageblock sizes, the contribution per eligible zone
+> before applying the existing cap of 5% of low memory is:
 >
-> This error path also returns -EIO without fully cleaning up the folios in
-> ceph_wbc->pages[]: their references are never dropped, fscrypt bounce
-> pages are never freed, the writeback congestion count is never
-> decremented, and the pages array is leaked. ceph_wbc->locked_pages is
-> also left non-zero, so ceph_writepages_start() loops back around and
-> hits BUG_ON(ceph_wbc.locked_pages).
+>   4 KiB pages:   2 MiB pageblock,   22 MiB per zone
+>  16 KiB pages:  32 MiB pageblock,  352 MiB per zone
+>  64 KiB pages: 512 MiB pageblock,  5.5 GiB per zone
 >
-> Leave the fbatch folios alone, as ceph_writepages_start() drops their
-> references when releasing the batch, and unwind ceph_wbc->pages[] the
-> same way writepages_finish() would have. Abort writeback in
-> ceph_writepages_start() instead of continuing, matching the handling
-> of ceph_inc_osd_stopping_blocker() failure on entry, as the OSD
-> client is being torn down and further writeback cannot make progress.
+> Even with that cap, min_free_kbytes can reach excessive levels.
 >
-> An LLM was used to verify that the cleanup was comprehensive, and
-> suggested aborting the writeback instead of continuing.
+> The automatic min_free_kbytes increase predates proactive compaction
+> and many subsequent changes to compaction. Given those changes,
+> increasing min_free_kbytes for THP by default is no longer clearly
+> justified.
 >
-> Fixes: 1551ec61dc55 ("ceph: introduce ceph_submit_write() method")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Link: https://sashiko.dev/#/patchset/20260804-remove-wait-on-page-writeba=
-ck-v2-0-81f0ab065284%40columbia.edu?part=3D5
-> Assisted-by: Claude:fable-5
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+> Remove set_recommended_min_free_kbytes() and all associated
+> recalculation paths. With this policy gone, min_free_kbytes is
+> controlled only by the page allocator's default calculation and the
+> vm.min_free_kbytes sysctl. Users who want additional headroom may set a
+> higher value via that sysctl.
+>
+> Link: https://lore.kernel.org/r/20260831075635.2244437-1-noren@nvidia.com/
+> Suggested-by: Michal Hocko <mhocko@suse.com>
+> Signed-off-by: Nimrod Oren <noren@nvidia.com>
+
+Code all looks good, ran locally and with 16 KiB page size arm64 + THP
+enabled (tried with defrag -> madvise):
+
+Before:
+
+	$ cat /proc/sys/vm/min_free_kbytes
+	360448
+
+After:
+
+	$ cat /proc/sys/vm/min_free_kbytes
+	11472
+
+And no delta on THP selftests.
+
+$ cat /sys/kernel/mm/transparent_hugepage/khugepaged/pages_collapsed
+936
+$ cat /sys/kernel/mm/transparent_hugepage/khugepaged/full_scans
+2002
+
+So (32 MiB) THPs are coming no problem with low memory pressure and without
+needing egregious defrag options, i.e. proactive compaction is doing its
+job fine.
+
+See https://lore.kernel.org/linux-mm/apgdNQgHw4BW3bPG@gremlin/ for my
+thoughts on this approach in general but TL;DR am in favour :)
+
+So LGTM and:
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Tested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 > ---
->  fs/ceph/addr.c | 36 ++++++++++++++++++++----------------
->  1 file changed, 20 insertions(+), 16 deletions(-)
+> v3:
+> * Replace the 1 GiB cap with removal of the THP-driven min_free_kbytes
+>   increase as suggested by Michal.
+> * Remove all associated recalculation paths.
+> * Make min_free_kbytes, user_min_free_kbytes,
+>   calculate_min_free_kbytes(), and setup_per_zone_wmarks() static.
+> * Drop the now-unused declarations and khugepaged's page_alloc.h include.
+> * Drop the obsolete v2 documentation addition.
 >
-> diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-> index 1f77aec8e960..d5a349daf4d0 100644
-> --- a/fs/ceph/addr.c
-> +++ b/fs/ceph/addr.c
-> @@ -1482,27 +1482,28 @@ int ceph_submit_write(struct address_space *mappi=
-ng,
->         BUG_ON(len < ceph_fscrypt_page_offset(page) + thp_size(page) - of=
-fset);
+> v2:
+> * Use a named constant for the cap.
+> * Drop explicit linux/sizes.h include.
+> * Update min_free_kbytes documentation.
+> https://lore.kernel.org/r/20260831075635.2244437-1-noren@nvidia.com/
 >
->         if (!ceph_inc_osd_stopping_blocker(fsc->mdsc)) {
-> -               for (i =3D 0; i < folio_batch_count(&ceph_wbc->fbatch); i=
-++) {
-> -                       struct folio *folio =3D ceph_wbc->fbatch.folios[i=
-];
+> v1:
+> * Cap the final recommendation at 1 GiB as suggested by Lorenzo.
+> https://lore.kernel.org/r/20260728202014.2517142-1-noren@nvidia.com/
+>
+> RFC v1:
+> https://lore.kernel.org/r/20260716173504.760369-1-noren@nvidia.com/
+> ---
+>  include/linux/khugepaged.h |  5 ----
+>  mm/huge_memory.c           | 14 ---------
+>  mm/internal.h              |  8 -----
+>  mm/khugepaged.c            | 60 --------------------------------------
+>  mm/page_alloc.c            | 11 +++----
+>  mm/page_alloc.h            |  2 --
+>  mm/shmem.c                 |  7 -----
+>  7 files changed, 4 insertions(+), 103 deletions(-)
+>
+> diff --git a/include/linux/khugepaged.h b/include/linux/khugepaged.h
+> index d7a9053ff4fe..e2a2ccb6cd05 100644
+> --- a/include/linux/khugepaged.h
+> +++ b/include/linux/khugepaged.h
+> @@ -15,7 +15,6 @@ extern void __khugepaged_enter(struct mm_struct *mm);
+>  extern void __khugepaged_exit(struct mm_struct *mm);
+>  extern void khugepaged_enter_vma(struct vm_area_struct *vma,
+>  				 vm_flags_t vm_flags);
+> -extern void khugepaged_min_free_kbytes_update(void);
+>  extern bool current_is_khugepaged(void);
+>  void collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
+>  		bool install_pmd);
+> @@ -47,10 +46,6 @@ static inline void collapse_pte_mapped_thp(struct mm_struct *mm,
+>  {
+>  }
+>
+> -static inline void khugepaged_min_free_kbytes_update(void)
+> -{
+> -}
 > -
-> -                       if (!folio)
-> -                               continue;
+>  static inline bool current_is_khugepaged(void)
+>  {
+>  	return false;
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index c5d11147b69a..b1f87e005e03 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -499,13 +499,6 @@ static ssize_t enabled_store(struct kobject *kobj,
+>
+>  		if (err)
+>  			return err;
+> -	} else {
+> -		/*
+> -		 * Recalculate watermarks even when the mode didn't
+> -		 * change, as the previous code always called
+> -		 * start_stop_khugepaged() which does this internally.
+> -		 */
+> -		set_recommended_min_free_kbytes();
+>  	}
+>  	return count;
+>  }
+> @@ -735,13 +728,6 @@ static ssize_t anon_enabled_store(struct kobject *kobj,
+>
+>  		if (err)
+>  			return err;
+> -	} else {
+> -		/*
+> -		 * Recalculate watermarks even when the mode didn't
+> -		 * change, as the previous code always called
+> -		 * start_stop_khugepaged() which does this internally.
+> -		 */
+> -		set_recommended_min_free_kbytes();
+>  	}
+>
+>  	return count;
+> diff --git a/mm/internal.h b/mm/internal.h
+> index e16f1250b25c..6890d7836c68 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -689,11 +689,6 @@ int user_proactive_reclaim(char *buf,
+>   */
+>  pmd_t *mm_find_pmd(struct mm_struct *mm, unsigned long address);
+>
+> -/*
+> - * in mm/khugepaged.c
+> - */
+> -void set_recommended_min_free_kbytes(void);
 > -
-> -                       page =3D &folio->page;
-> -                       redirty_page_for_writepage(wbc, page);
-> -                       unlock_page(page);
-> -               }
+>  /*
+>   * in mm/page_alloc.c
+>   */
+> @@ -701,11 +696,8 @@ void set_recommended_min_free_kbytes(void);
+>
+>  extern char * const zone_names[MAX_NR_ZONES];
+>
+> -extern int min_free_kbytes;
+>  extern int defrag_mode;
+>
+> -void setup_per_zone_wmarks(void);
+> -void calculate_min_free_kbytes(void);
+>  int __meminit init_per_zone_wmark_min(void);
+>
+>  extern int __isolate_free_page(struct page *page, unsigned int order);
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index f49a6710933b..c36b7d0b91d7 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -27,7 +27,6 @@
+>
+>  #include <asm/tlb.h>
+>  #include "internal.h"
+> -#include "page_alloc.h"
+>  #include "mm_slot.h"
+>
+>  enum scan_result {
+> @@ -3086,57 +3085,6 @@ static int khugepaged(void *none)
+>  	return 0;
+>  }
+>
+> -void set_recommended_min_free_kbytes(void)
+> -{
+> -	struct zone *zone;
+> -	int nr_zones = 0;
+> -	unsigned long recommended_min;
 > -
->                 for (i =3D 0; i < ceph_wbc->locked_pages; i++) {
-> -                       page =3D ceph_fscrypt_pagecache_page(ceph_wbc->pa=
-ges[i]);
-> +                       fscrypt_finalize_bounce_page(&ceph_wbc->pages[i])=
-;
+> -	if (!hugepage_enabled()) {
+> -		calculate_min_free_kbytes();
+> -		goto update_wmarks;
+> -	}
+> -
+> -	for_each_populated_zone(zone) {
+> -		/*
+> -		 * We don't need to worry about fragmentation of
+> -		 * ZONE_MOVABLE since it only has movable pages.
+> -		 */
+> -		if (zone_idx(zone) > gfp_zone(GFP_USER))
+> -			continue;
+> -
+> -		nr_zones++;
+> -	}
+> -
+> -	/* Ensure 2 pageblocks are free to assist fragmentation avoidance */
+> -	recommended_min = pageblock_nr_pages * nr_zones * 2;
+> -
+> -	/*
+> -	 * Make sure that on average at least two pageblocks are almost free
+> -	 * of another type, one for a migratetype to fall back to and a
+> -	 * second to avoid subsequent fallbacks of other types There are 3
+> -	 * MIGRATE_TYPES we care about.
+> -	 */
+> -	recommended_min += pageblock_nr_pages * nr_zones *
+> -			   MIGRATE_PCPTYPES * MIGRATE_PCPTYPES;
+> -
+> -	/* don't ever allow to reserve more than 5% of the lowmem */
+> -	recommended_min = min(recommended_min,
+> -			      (unsigned long) nr_free_buffer_pages() / 20);
+> -	recommended_min <<= (PAGE_SHIFT-10);
+> -
+> -	if (recommended_min > min_free_kbytes) {
+> -		if (user_min_free_kbytes >= 0)
+> -			pr_info_ratelimited("raising min_free_kbytes from %d to %lu to help transparent hugepage allocations\n",
+> -					    min_free_kbytes, recommended_min);
+> -
+> -		min_free_kbytes = recommended_min;
+> -	}
+> -
+> -update_wmarks:
+> -	setup_per_zone_wmarks();
+> -}
+> -
+>  int start_stop_khugepaged(void)
+>  {
+>  	guard(mutex)(&khugepaged_mutex);
+> @@ -3160,17 +3108,9 @@ int start_stop_khugepaged(void)
+>  		kthread_stop(khugepaged_thread);
+>  		khugepaged_thread = NULL;
+>  	}
+> -	set_recommended_min_free_kbytes();
+>  	return 0;
+>  }
+>
+> -void khugepaged_min_free_kbytes_update(void)
+> -{
+> -	guard(mutex)(&khugepaged_mutex);
+> -	if (hugepage_enabled() && khugepaged_thread)
+> -		set_recommended_min_free_kbytes();
+> -}
+> -
+>  bool current_is_khugepaged(void)
+>  {
+>  	return kthread_func(current) == khugepaged;
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index c4dc61ec663e..5280784c91a8 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -50,7 +50,6 @@
+>  #include <linux/ftrace.h>
+>  #include <linux/lockdep.h>
+>  #include <linux/psi.h>
+> -#include <linux/khugepaged.h>
+>  #include <linux/delayacct.h>
+>  #include <linux/cacheinfo.h>
+>  #include <linux/pgalloc_tag.h>
+> @@ -272,8 +271,8 @@ const char * const migratetype_names[MIGRATE_TYPES] = {
+>  #endif
+>  };
+>
+> -int min_free_kbytes = 1024;
+> -int user_min_free_kbytes = -1;
+> +static int min_free_kbytes = 1024;
+> +static int user_min_free_kbytes = -1;
+>  static int watermark_boost_factor __read_mostly = 15000;
+>  static int watermark_scale_factor = 10;
+>  int defrag_mode;
+> @@ -6663,7 +6662,7 @@ static void __setup_per_zone_wmarks(void)
+>   * Ensures that the watermark[min,low,high] values for each zone are set
+>   * correctly with respect to min_free_kbytes.
+>   */
+> -void setup_per_zone_wmarks(void)
+> +static void setup_per_zone_wmarks(void)
+>  {
+>  	struct zone *zone;
+>  	static DEFINE_SPINLOCK(lock);
+> @@ -6704,7 +6703,7 @@ void setup_per_zone_wmarks(void)
+>   * 8192MB:	11584k
+>   * 16384MB:	16384k
+>   */
+> -void calculate_min_free_kbytes(void)
+> +static void calculate_min_free_kbytes(void)
+>  {
+>  	unsigned long lowmem_kbytes;
+>  	int new_min_free_kbytes;
+> @@ -6732,8 +6731,6 @@ int __meminit init_per_zone_wmark_min(void)
+>  	setup_min_slab_ratio();
+>  #endif
+>
+> -	khugepaged_min_free_kbytes_update();
+> -
+>  	return 0;
+>  }
+>  postcore_initcall(init_per_zone_wmark_min)
+> diff --git a/mm/page_alloc.h b/mm/page_alloc.h
+> index b9259deddb59..86162e6cfa8c 100644
+> --- a/mm/page_alloc.h
+> +++ b/mm/page_alloc.h
+> @@ -227,8 +227,6 @@ void post_alloc_hook(struct page *page, unsigned int order, gfp_t gfp_flags,
+>  		     unsigned int alloc_flags);
+>  extern bool free_pages_prepare(struct page *page, unsigned int order);
+>
+> -extern int user_min_free_kbytes;
+> -
+>  struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order, int nid,
+>  		nodemask_t *nodemask, unsigned int alloc_flags);
+>  #define __alloc_frozen_pages(...) \
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 255d69ebceba..92dc770b10e6 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -5782,13 +5782,6 @@ static ssize_t thpsize_shmem_enabled_store(struct kobject *kobj,
+>  		int err = start_stop_khugepaged();
+>  		if (err)
+>  			return err;
+> -	} else {
+> -		/*
+> -		 * Recalculate watermarks even when the mode hasn't changed
+> -		 * to preserve the legacy behavior, as this is always called
+> -		 * inside start_stop_khugepaged().
+> -		 */
+> -		set_recommended_min_free_kbytes();
+>  	}
+>
+>  	return count;
+> --
+> 2.45.0
+>
 
-Hi Tal,
-
-fscrypt_finalize_bounce_page() was removed in 7.3-rc1, so this one and
-patch 8 need to be reworked now.
-
-Thanks,
-
-                Ilya
+--
+Cheers, Lorenzo
 
