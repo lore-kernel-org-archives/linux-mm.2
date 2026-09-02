@@ -4,89 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CAF8C61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 15:03:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C4D6C61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 15:03:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B2E26B00CE; Wed,  2 Sep 2026 11:03:11 -0400 (EDT)
+	id 58BF36B00F0; Wed,  2 Sep 2026 11:03:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 562ED6B00F0; Wed,  2 Sep 2026 11:03:11 -0400 (EDT)
+	id 53CAF6B00F2; Wed,  2 Sep 2026 11:03:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 452256B00F1; Wed,  2 Sep 2026 11:03:11 -0400 (EDT)
+	id 4050B6B00F3; Wed,  2 Sep 2026 11:03:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 23EF66B00CE
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:03:11 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B32D8120253
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:03:10 +0000 (UTC)
-X-FDA: 85169140140.04.12C4F4E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 1348A140017
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:03:08 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hB/7Tayw";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 12D1B6B00F0
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:03:53 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 290681A025C
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:03:51 +0000 (UTC)
+X-FDA: 85169141862.13.E710335
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf01.hostedemail.com (Postfix) with ESMTP id CBEFE4000D
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:03:47 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=huawei-partners.com header.s=dkim header.b=JjR28d8t;
+	spf=pass (imf01.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788361389;
+	s=arc-20220608; t=1788361429;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gMDoHVoHQODfGlDRyrZ38N3/qQqV14jIqO44yngpLFc=;
-	b=bpgeqzyC8VV+ivuGeFzCjIHSCKsQcQ4Ib9YkgWa8oQ3o+MT1XgpVTwIt4p7RSxupzt8T8F
-	hlR58yjy5FdJDV5viWNW4DCLRFX+5vSX1X3s1qvbq6LkMlElsqNW3b9Cpzsr7MlBcs3tkX
-	BXND9dOLu9MYSeM59G1tdjZcmZPS9Ho=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hB/7Tayw";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	bh=4M78E0ObIENsRiRRK+u7y9UbS3R6BJ4hM9bzTVDKV7o=;
+	b=HaRd2Yv9+TU5wFNRiHAgr6vLHNFwWQL6TtxnHbc2fexsiRR17rIL54Wp0nklf273JbOSfX
+	4Xloza0F6KNwknPx6QcpIvhNolgtgxHFGFf4eRePwLytF8GT/fPmFkAoRCK+ZYAW7exQmV
+	otTeqme42K7HBhSqSFaFZsPgoVlpAJ4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788361389;
-	b=HMwVScDdu02zbc9nbrc82530pw2QE/XomjakrTiRcFdx2uJ09zQWSQTmwIeC4hGarFgmRA
-	xSP29Iw8DXaquvpFM50Y4NyHpPw6ifvxkfqbt86z09UqayZufg3OJ9wgvPr9ZIfDBF7iBH
-	zFp0nt+/E6Dbx2nd66MCHmeCASK1VGc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 70656600C8;
-	Wed,  2 Sep 2026 15:03:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E301F000E9;
-	Wed,  2 Sep 2026 15:03:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788361388;
-	bh=gMDoHVoHQODfGlDRyrZ38N3/qQqV14jIqO44yngpLFc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hB/7TaywyBLNvyyfXZpLnv2VPC+1OBREDQbQzJFMNZIWJLrhHcUVAIs+Br1Y9xBRW
-	 ayvecCVhX6ljF2/m6xEdRJFROMVd91LMdocz6umvDzN4CYyIUzQM7VrEvT4qKAPPKO
-	 rqcTxRvSa9tuH5VtzsqvqAXCzOywljr+GRaJwnobjhwBEJS4qzhtHlMJfr5/xgpTja
-	 I8k7jpkumLZPtm0O9hWJJe+mW6nIivu4dFlLf/0Oyb+ZiZnXKTOfSKu8vnmwQ0vdAJ
-	 csm616junuXT/URSmjNg7w3Nv6uJitkeQrPJlheK3zbF2IUU9AqF24dA7L3db+Pgqq
-	 vAvXpoKY0q39w==
-From: SJ Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/damon/core: allow esz to be set to zero
-Date: Wed,  2 Sep 2026 08:03:00 -0700
-Message-ID: <20260902150301.88535-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260902143605.6785-1-aethernet65535@gmail.com>
-References: 
+	t=1788361429;
+	b=tLA6U5Umq1V9Cttk+j3c+BU8iCn0alpXIK3hR/Rb6bldCkm2twedRIuMblyxjiAO5N2ePy
+	Ul14BxMVVOUllkdiwXUR7t9mlPwTJK2wFmLaU1WSPr5qR82Fw7mPiaGJd8KetoUc0444QS
+	gaG4g20/oJ8n4IvlgORs8tBoQuTIPhI=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=huawei-partners.com header.s=dkim header.b=JjR28d8t;
+	spf=pass (imf01.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=4M78E0ObIENsRiRRK+u7y9UbS3R6BJ4hM9bzTVDKV7o=;
+	b=JjR28d8tmO/cLBZzM28RFnyU2knLbRFYR2FV3FdhZxKQvodPP9FwXxFlgM5Nga5o56RYcTtSl
+	+SXgpKW4RWSvwDgFcjgLOvZbttMeR80lVBOD5kRCJe2Z7U5Eb8Thv07bV288/Oxa6HWq3yDnegO
+	/EzpcIZ0a2YUXxpnir7u2cc=
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4hZmF93FJxzJ46Dn;
+	Wed,  2 Sep 2026 23:03:09 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id D5D4740571;
+	Wed,  2 Sep 2026 23:03:40 +0800 (CST)
+Received: from [10.123.123.154] (10.123.123.154) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Wed, 2 Sep 2026 18:03:40 +0300
+Message-ID: <9ac2a10f-1551-410e-a9c0-173a1daeb1ab@huawei-partners.com>
+Date: Wed, 2 Sep 2026 18:03:39 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ucipz9mmmt8rzkk1uzqy3uwcxrykw8k9
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1348A140017
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/3] mm/damon: Introduce DAMOS_QUOTA_HUGEPAGE auto
+ tuning
+To: SJ Park <sj@kernel.org>, Lian Wang <lianux.mm@gmail.com>
+CC: Andrew Morton <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
+References: <20260901142307.100701-1-sj@kernel.org>
+Content-Language: en-US
+From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+In-Reply-To: <20260901142307.100701-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.123.123.154]
+X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
+X-Stat-Signature: 94dheuc9m1c1ou5cywj5w4awj5pud1wr
+X-Rspamd-Queue-Id: CBEFE4000D
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788361388-587463
-X-HE-Meta: U2FsdGVkX1+c2COqKqu+eDKXnDvpUsZdwAVTdjLAMQBI7VKhTAblXFlJnwG466YXLAFrb2E+8J6/ImcEPmgnsIQ56pn//mrrmpeTbeXqxT5FU6LtfGcbsYsfVx5rh09RaA/QeeJUsXbI2if2qQIv+WlbnSQruPbeQfRmnD1Fz4lyNP+L40KBcsqXbW2Ur7bL0mjOPn4Tvc2MPDxpf9j+Y1/1OXgUtJMyQx7scN1A+OsEZMHSDHVou30qaiGtXY5uH2HSl/0BlZOMOk7WqM3yElFvICkvAXdaqVbTdTTk5h3tMf0vUIZGHNO/uCvhb6Ksqd8jJMwD45Iho2NM+lOrDFoFU5mr9j/+WH0kyQTO6bBKRhWF2GwMHI2ATNL8s/pn4j6MLIeovUH+MLixPSF2JsWtRLtFW/3+PXFYxoYez0/nZzWE61hMCYN0JCaYzi2uWuF+yXHeCd5LtEzG9djcMW++SxZMAer7beVlJ2SaoIt/4iBiKvFWNaocJ1QOEndUnFnYdU/gyndShuqtsUMHNi+dKikOoRBYcyDUPBtn+xFXjqx0leIW1HLHFpqNG51fPqMGM36D2uwG0tRUC14wyxJFcI6O4LMddAlALW0VIhQGstI30g5/womF40Goj0P6tHPLbproaxrukKYNGr6Fy5OL+Z5gqh8bzcW4IB8+KFkirq24tv8Q3snJTiwGPu2KtOi/OsjmybsxeqRvGKn4mFbvz15SVCLiTcV03kZNIxV15zXddtMIt40bqHHvYs+1hW7XKAfVm/JLw47msU5v+x7iCHZxER6vLpQQiCwOdNXkRGKib9R1Tx7hkUsDuSKtRfwF8UUdsqdkhaFFpRb5PnpOX4eEMQfFDbSx0IEumk/n+VrwOT2ki/F6eQMmXBdDrljgCK3eBtJEHuHeSo9GlxC88fA+CbBzab9xURH79Fmud5e8c3QGgiGkVOdKe/6zX2TgA5DxQ3ANiWKX6dA
- x5JCokQz
- iulyJ22do2+qJoUVOsi3MQYeNd4WlOxR0ypgi8mlZD2Un3+WrN6YnbYk2RSuuE6XPSPbEjikxHBFSuDSVju8KTYhFUGT3G1iUYW2Mb+94LzSdjRPbM4WM+4u8wCDRvY6NGgW2IbbHASPG4t+aIYn5sH1VUOiG2fFVg6h+gh2e1Eenit14IBBn8cRYQI/klXgTZiB+lErBW/MltW/VagB+NtvvNtT7OPloOKRuY0Ubp3EsQeAdKKx4KMHi41GuZ2wztdeJ
+X-HE-Tag: 1788361427-194571
+X-HE-Meta: U2FsdGVkX18sQzLUTN0I5UVJA36W63tajE9hJBa+oOjxozPT+rFS71kXPB177SqqiBdFlLgLHLbNYGc3hp8ndtXhlS7xq82fdDnJuyOf2XIuELIXJID1sIkX/dlzuewZUW7VSVUa6fChlsjNrpLqd330tM/2Nse0A5/RA1AcFR60LJokLvi0WiPJOXhzR7t5TVA7iHZi/nMg0qr9hpQ55Qykpc/5QVbLARoYHNoPPOAvkKcDKL0ErDzys4rwAk2Pku9C3ZT9p5sQadU0D+O4rcuJvxZIJmc7aSM9hrW71tUQJYkXVmFsIkHQvFqS4ypVLRUU+UOafplnW9MBr2eYt/cxy8jR+dTn4Pvz/b5jEq0do0pZqVhHCXfpRczpaWwrFF9OR0QdPYhh8cXJaRxs43eUgBIGrzgoOGHuDusHlmvOWuDZKrh8/qd5f4CBa7bwkB/Shn9TWDPTi9jAEfGJhX7c7s0sGlSG1Xa+lF/ETcWU3Bbaidd+LhOvxK9m/u+RKPmQQFra2zDI3jAis+Jx0tzvIm1EYDkn+T52j9OZlcLrKdJQpNa3EADCkMabSGZXC8AiYU1/YRh3oFucND2DyN5kFGLcowM9MyUIgc48PWqsD7gzcmS5Qi+BP+GeS3mtTWsq9WIzqvkvz8ME25DFvGMT0Rzqph7rEGLOUozVFXxOePSRG3+SGB5Kdn8MR+N4gfjOPZOCyA814093zngJSabrw+aoSuEGzUZRUbZTjyBpRIcR0Wonh87AOWLa5tkEWx/CbX7sAWouRCtbTGo71lXxKHuU67e0dgHRisOTXqHdEHXokKbr8QoVmsAVJLwZLGEfUH//Ee65TfzCDXT39hX2D60PjZzqW9UXnND99mKvt7x96xoKWVwN2gnCbWOyTxheDK9nj1m9INsOiPzJmBTZK+jBd+pXrmG9MB8F5zLq+CfQMMdKh8i1F72qeKB6Gwk9dVbn4SoIKGN7AQ4
+ LPv+yljO
+ VQ9XaR7kK7WTKrv2u3Vui6IYZeNmXE8N0Ch8SBP8cIqr0YJndwDiwondbpySICiojztxuquTr1+LS6228O5sEjSiHyYs6JvbdKrwwuzvuymSNKrWMTLViuZzjx6s/vPlAWLNKvRmFSTh+kU6BD5uwyxagcjl3Y5OqnuX2u5Iuu6VOcWw9HDynbORv3oEWAvHBh9Ca8BO7o2kH/ix+buaPnaSgML/+8KJq8Fk4VVBJEWmzXIPm7L4qQ85GKNJ/ZbT3aRVoCcklUvaUzaKL6xf9Rey2dYJkTndFZzlbX6TZO3acYnIJUkBeyqrpv9Va+zvhXU8ua33yKU0QlA0sCklgbIpTiE505WAj0nB+o6p3UeWWiBws51e2cBcWRm2jNwguwg47ZSJmVSpWXZcDnl2JWBKMzuW/EkLLgbZVdo9hco4I/DOJu9/mTOf+LQDkTtQbkurTxicS+1MTrtCRVpFniTo/fMRtqf+9LaEouMXeEEuP40r+tTg/W9PftqhQ0epYkhXRDGmE3x9nuok=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,88 +99,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  2 Sep 2026 22:35:20 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+Hi SJ and Lian,
 
-> On Wed, 02 Sep 2026 07:13:48 -0700 SJ Park <sj@kernel.org> wrote:
+On 9/1/2026 5:23 PM, SJ Park wrote:
+> Hi Lian,
 > 
-> > On Wed,  2 Sep 2026 16:20:50 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> > 
-> > > When the temporal quota goal tuner determines that the goal has been
-> > > achieved (score >= 10000), it sets esz_bp to zero so that the effective
-> > > quota (esz) becomes zero.  However, damos_set_effective_quota() clamps
-> > > the quota to min_region_sz, preventing the quota from ever reaching
-> > > zero.
-> > 
-> > Where in the code it is clamped to min_region_sz, when?  And what user issue
-> > this can cause?
+> On Tue,  1 Sep 2026 14:58:35 +0800 Lian Wang <lianux.mm@gmail.com> wrote:
 > 
-> In damos_set_effective_quota(), when quota->ms is set.
-
-Please clarify this kind of thing (when quota->ms is set) from the next time.
-
+>> Hi SJ and Asier,
+>>
+>> Thanks for working on this and for providing the server results.  I have two
+>> questions about what hugepage_mem_bp is intended to represent.
+>>
+>>> Introduce DAMOS_QUOTA_HUGEPAGE_MEM_BP auto tuning. Add a new DAMOS quota
+>>> goal metric to measure the amount of huge page consumption to total
+>>> memory consumption ratio.
+>>
+>> First, NR_ANON_THPS tracks anonymous PMD mappings, while NR_SHMEM_THPS and
+>> NR_FILE_THPS track PMD-mappable page-cache folios.  Therefore, splitting only
+>> an anonymous PMD mapping can change hugepage_mem_bp without physically
+>> splitting the folio.  Is the intended metric PMD-mapped memory or physical
+>> large-folio memory?  Clarifying this and adding a mapping-only test may help.
 > 
-> '''
-> 	if (quota->ms) {
-> 		if (quota->total_charged_ns)
-> 			throughput = mult_frac(quota->total_charged_sz,
-> 					1000000, quota->total_charged_ns);
-> 		else
-> 			throughput = PAGE_SIZE * 1024;
-> 		esz = min(throughput * quota->ms, esz);
-> 		esz = max(ctx->min_region_sz, esz); /* <- HERE */
-> 	}
-> '''
+> Good point.  I was just missing this.  So, hugepage_mem_bp is not accounting
+> anon mTHPs, right?  Since hugepage_mem_bp is for general hugepages, I think
+> this is better to be improved.  Seems using MTHP_STAT_NR_ANON that is exposed
+> as 'nr_anon' can be used?  Because this is an improvement rather than a fix of
+> a bug, I think doing this as either a followup or new version of this series
+> are ok.  Asier, what do you think?
+Agree, I will submit a new patch to fix this behaviour and account for mTHP.
+
+Lian, thanks a lot for the review and pointing this issue.>>
+>> Second, the metric is global while a DAMOS scheme can target one process.
 > 
-> This is a minor issue, the main problem is that it doesn't match the
-> description in the documentation, which states that if the goal has
-> already been [over-]achieved, the quota will be set to 0.
+> Actually it can target multiple processes if those are in single DAMON context.
 > 
-> Original documentation:
+>> THPs from other processes or NUMA nodes can satisfy the target or dilute the
+>> monitored process's changes.  Is this intentional?
 > 
->     - ``temporal``: More straightforward algorithm.  Tries to achieve the goal as
->     fast as possible, using maximum allowed quota, but only for a temporal short
->     time.  When the quota is under-achieved, this algorithm keeps tuning quota to
->     a maximum allowed one.  Once the quota is [over]-achieved, this sets the
->     quota zero.  Useful for deterministic control required environments.
+> I think it is intentional.  The user should have the control on collapsing
+> hugepages, or believe the uncontrolled collapse mechanisms.
+> 
+>> If so, documenting the
+>> scope and testing a background THP workload may be useful.
+> 
+> More documentation and testing are always welcome :)
+> 
+>>
+>> The temporal results approach the 10% and 25% targets, while the consistent
+>> results overshoot the 10% target to about 20% and 45%.  I would describe this
+>> as control-response data.  TPS, latency, TLB, fragmentation and collapse CPU
+>> data could further show the workload benefit and cost.
+> 
+> Yes, those would be helpful.  That's not mandatory for this simple change in my
+> opinion, though.  I would let Asier decide whether and when to make and share
+> such data.
+The idea of this patch was to introduce auto tuning. I think I submitted thebenchmark results when I sent the DAMOS_COLLAPSE feature.
 
-Thank you for clarifying.  Please clarify what is the problem like this from
-the next time.  Without it, reviewing spend unnecessary time.
+Anyway, it shouldn't take long for me to get more data. I think it may be useful
+for people to know the actual results in real application.
 
-I feel like your recent patches tend to lack such clarifications and spend
-unnecessary time for reviewing.  If you unsure, please ask questions first or
-use RFC tag at least.
+SJ, what's the best place to publish all those data? I believe you have more
+experience sharing this data and which platform is the most useful one.>>
+>> If I have misunderstood any of this, please feel free to ignore these
+>> comments and correct me.
+> 
+> Your comments are very helpful, thank you for your review and comments, Lian.
+> 
+>>
+>> The enum, quota-goal wiring and sysfs exposure otherwise look consistent with
+>> the existing DAMOS autotuning framework.  I consider the points above
+>> follow-up questions about semantics and evaluation, rather than blockers for
+>> this series.
+> 
+> I agree.
+> 
+>>
+>> For the series:
+>>
+>> Reviewed-by: Lian Wang <lianux.mm@gmail.com>
+> 
+> Thank you!
+> 
+>>
+>> Please feel free to Cc me on related follow-up patches.  I am happy to help
+>> review the code.  Besides my own DAMON work, I have recently been reviewing
+>> and learning from other DAMON and MM work, and I would be glad to continue.
+> 
+> I'm curious if you and general reviewers need or prefer to directly be Cc-ed.
+> I was naively thinking people can search and review DAMON patches by
+> subscribing to the mailing list or using the archives via lore.kernel.org like
+> tools.
+> 
+> 
+> Thanks,
+> SJ
+> 
+> [...]
 
-I agree this behavior is not matching with the documented one.  The point of
-quota is making DAMOS not unnecessarily aggressive.  Hence it is designed to be
-set as minimum as possible.  How about below?
+-- 
+Asier Gutierrez
+Huawei
 
-'''
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3485,6 +3485,7 @@ static void damos_set_effective_quota(struct damon_ctx *ctx, struct damos *s)
-        struct damos_quota *quota = &s->quota;
-        unsigned long throughput;
-        unsigned long esz = ULONG_MAX;
-+       unsigned long esz_time;
-
-        if (!quota->ms && list_empty(&quota->goals)) {
-                quota->esz = quota->sz;
-@@ -3505,8 +3506,8 @@ static void damos_set_effective_quota(struct damon_ctx *ctx, struct damos *s)
-                                        1000000, quota->total_charged_ns);
-                else
-                        throughput = PAGE_SIZE * 1024;
--               esz = min(throughput * quota->ms, esz);
--               esz = max(ctx->min_region_sz, esz);
-+               esz_time = max(throughput * quota->ms, ctx->min_region_sz);
-+               esz = min(esz_time, esz);
-        }
-
-        if (quota->sz && quota->sz < esz)
-'''
-
-
-Thanks,
-SJ
-
-[...]
 
