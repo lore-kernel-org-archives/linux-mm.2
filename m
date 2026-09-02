@@ -4,149 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1B5CC624D0
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 11:06:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4C3AC624D0
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 11:10:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC46E6B00C3; Wed,  2 Sep 2026 07:06:25 -0400 (EDT)
+	id DA1466B00D8; Wed,  2 Sep 2026 07:10:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9C186B00C8; Wed,  2 Sep 2026 07:06:25 -0400 (EDT)
+	id D2BE66B00DA; Wed,  2 Sep 2026 07:10:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB1F76B00C9; Wed,  2 Sep 2026 07:06:25 -0400 (EDT)
+	id BA4526B00DB; Wed,  2 Sep 2026 07:10:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B3C66B00C3
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 07:06:25 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0249480181
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:06:24 +0000 (UTC)
-X-FDA: 85168543530.07.759C71D
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 9DAE51C0009
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:06:22 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="VR//f6O1";
-	spf=pass (imf21.hostedemail.com: domain of imbrenda@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=imbrenda@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 84FC26B00D7
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 07:10:45 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 235121A019E
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:10:45 +0000 (UTC)
+X-FDA: 85168554450.16.979AE0E
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 1E6EA12000C;
+	Wed,  2 Sep 2026 11:10:41 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=w+CDrQ4p;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ga/i8Zvc";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=g+I5jb3a;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="5f+kPJ/G";
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788347182;
+	s=arc-20220608; t=1788347442;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SP487l8p0RNVYWf0E+aX17SPWgYCAsQ4ykW+uXS9y+o=;
-	b=RIaoFRGVsDL068fPUvlWMtvejdejU3TXrO5GHEghF4W3U/uKpiDImj9zEYEh2lUfw2yTAX
-	i1AGM3zUhmLZbwEs4gYHEZB67PX+fEzH4f7x4UjoSjv2CzSQq8QncjpA895XcK1DhuPyZQ
-	0MWmILHVHOsQcixCNoemE0Pc5qsb91k=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788347182;
-	b=2AHDAZKIuEJ6oAiJ6Zi0JfshF0jTaSNcwQGm/byzMHVkMQESip1Qi8FRJsbaY7p52p8qxw
-	BHk1kbdxJ59sC9kePQE5ri77XRjqoOWFQNG1WrolXPnlKWs1iBYJ5TZXY8UZgaLlxvyHu3
-	l9gicWiSmfMmPir7F5/i3XltUxPS118=
+	bh=BITWzZNmeMDjm8k0eeXsWYV9IVxG5MPwzg3kkMKHdxQ=;
+	b=uWvlKij2OlzLGuLTqguUFaaa0jHp8QQqV5Q3GZqtXRucaYruA+Sfl/YFVGb52Wxbv1vIsF
+	yHKbVOQGoy6YSG+0Z5NOB0UdDu1m0jVouPaAzVwHSrXpH8W7beceQ4PGK40bU67sl4Ddbq
+	+jrf/vRYyhEmxRwAy42GWNLhiyxWEis=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="VR//f6O1";
-	spf=pass (imf21.hostedemail.com: domain of imbrenda@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=imbrenda@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6829VcK83863341;
-	Wed, 2 Sep 2026 11:06:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=SP487l
-	8p0RNVYWf0E+aX17SPWgYCAsQ4ykW+uXS9y+o=; b=VR//f6O1e/GVmuQIBNXl3E
-	c++N03JIkbhuVWH9qKQSMQi/bEKotomrTUy5VyMzBfMl30yyN6S+K5/yM7QlwTrM
-	Cx5k4ybKH+HVFewBamikpBURMJEEeSioOWmJVX6iaHAR6NcLelh4H46SPDVQH6sg
-	Ogi36I7978tQGik4HbnZkfFKodEv+lokNWpF+S3iH/jsNQt9JlIEeidmB/pgvPDA
-	wt+/ZfssHkoP2aVhZDOiE6+tEwChUO801kvOqAUVBvZ7JWrbP9kj13JG0oIO9kfQ
-	gqC3Z/0xXriiug/yu9Ym6TCgKmnqpcnOgtmmglQGuINj6f7Qoch8c2FIEvU4SyzQ
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbq2tdgge-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 02 Sep 2026 11:06:19 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 682AuHba004640;
-	Wed, 2 Sep 2026 11:06:18 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gc9rqhec2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 02 Sep 2026 11:06:18 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 682B6F1Q49938900
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 2 Sep 2026 11:06:15 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 23FA620043;
-	Wed,  2 Sep 2026 11:06:15 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DD84B20040;
-	Wed,  2 Sep 2026 11:06:14 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.224.75.30])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Wed,  2 Sep 2026 11:06:14 +0000 (GMT)
-Date: Wed, 2 Sep 2026 13:06:12 +0200
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank
- <frankja@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        David
- Hildenbrand <david@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Sven
- Schnelle <svens@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, Vlastimil Babka <vbabka@kernel.org>,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-s390@vger.kernel.org
-Subject: Re: [PATCH 0/4] KVM: s390: replace page allocator calls with
- kzalloc()
-Message-ID: <20260902130612.41500808@p-imbrenda>
-In-Reply-To: <20260902-s390-kvm-v1-0-3bc0986550b1@kernel.org>
-References: <20260902-s390-kvm-v1-0-3bc0986550b1@kernel.org>
-Organization: IBM
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=w+CDrQ4p;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ga/i8Zvc";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=g+I5jb3a;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="5f+kPJ/G";
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788347442;
+	b=uq0X9V/Gg17JmzkIn3espHGjImnZzPEGmfRwKU8/i3lhtcJkymsB3osOxCB4+PjHEVdYGu
+	TS5E0Egsfq50J2Ca6ItakCOHVWvydEwmCdmqWdXDmRLGEd+UltMxxOA3VMiY7y5n9bXqSG
+	dVSsiLBJ6r9ZGik+LWp9u4DQ+3dMNAI=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 7CD8A1F452;
+	Wed,  2 Sep 2026 11:10:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1788347436; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BITWzZNmeMDjm8k0eeXsWYV9IVxG5MPwzg3kkMKHdxQ=;
+	b=w+CDrQ4pdGMhd2AHky8cgyZzBltYmO4kplX+c6a7malt8KmRT6/YP0kasOibxlnhfcztK7
+	aRI6FKG9Q9oWn8AVmFFnC8QeuNWAan2b+LfHSFdQJCm0qxYwc3vV3gRls2ewH/0pYqQgIM
+	2RedV9DT5bycPibBFyR/3hLol6FeUD4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1788347436;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BITWzZNmeMDjm8k0eeXsWYV9IVxG5MPwzg3kkMKHdxQ=;
+	b=ga/i8ZvclURFifX0oKV04mm+7uW5Uh+jPau7s7BAeSf8j+LRljWElnghBt24li0e7tBr/0
+	wujto1ue5F+C7uCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1788347432; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BITWzZNmeMDjm8k0eeXsWYV9IVxG5MPwzg3kkMKHdxQ=;
+	b=g+I5jb3asJP+DKcimiRb8lMZ++xAI7e2WzajCxek4Z+naQuPfb2i9zf4BHDq3y15JYnD1f
+	XaKdLVhStJe1q+eQ5OeU0m5V/KeBEMECj268oDP1ucvfy+ou4G0z+JfdR4fS9q0MvrVTq/
+	Z56Zzzej/Q7g2n0BWYU2WJuvjrN0YiM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1788347432;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BITWzZNmeMDjm8k0eeXsWYV9IVxG5MPwzg3kkMKHdxQ=;
+	b=5f+kPJ/GQDsaj2GCpHy4ZaJNjwGFHwHsHw1le0uJQISQShyVz6yOKrkx6j+Ws1glwGHb48
+	g53IwnZ75eVvcNBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 55C4D13736;
+	Wed,  2 Sep 2026 11:10:32 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id aTPoFCgEmGqGSQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 02 Sep 2026 11:10:32 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id E0738A13B5; Wed, 02 Sep 2026 13:10:27 +0200 (CEST)
+Date: Wed, 2 Sep 2026 13:10:27 +0200
+From: Jan Kara <jack@suse.cz>
+To: Shivank Garg <shivankg@amd.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, SJ Park <sj@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+	Oscar Salvador <osalvador@suse.de>, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Benjamin LaHaise <bcrl@kvack.org>, Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, 
+	Muchun Song <muchun.song@linux.dev>, Dave Kleikamp <shaggy@kernel.org>, 
+	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Bharata B Rao <bharata@amd.com>, 
+	David Rientjes <rientjes@google.com>, Yiannis Nikolakopoulos <yiannis@zptcorp.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, damon@lists.linux.dev, linux-cxl@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org, linux-aio@kvack.org, 
+	linux-btrfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net, linux-nfs@vger.kernel.org, 
+	kvm@vger.kernel.org
+Subject: Re: [PATCH RFC 11/11] mm/migrate: pass migrate_control to
+ migrate_folio()
+Message-ID: <gz3vibrercrujs6oykvlsyrgwaslpzjgmegnouthmkjaswznzg@haaqpwmacdwc>
+References: <20260902-migrate-refactor-shivank-v1-0-9dcca87669c4@amd.com>
+ <20260902-migrate-refactor-shivank-v1-11-9dcca87669c4@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=bc1bluPB c=1 sm=1 tr=0 ts=6a98032b cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=pGLkceISAAAA:8 a=6CR_TtZz_3G4KGvfp1IA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAyMDA5NyBTYWx0ZWRfX3JIQGWZ+BiTx
- PI7QVwG3MiyvlF/riHFgvOTTyZodVpD7CnnmNw56QgtU9MpTJuqOoztfRFbpZs4KB0vsNBrXQBF
- sDO8oJpqu2kZbLXtL8VpCkNzMv87i5Y=
-X-Proofpoint-ORIG-GUID: G1lOcnlkib5IgZAxH6VWkuIS-r2eEiR3
-X-Proofpoint-GUID: G1lOcnlkib5IgZAxH6VWkuIS-r2eEiR3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAyMDA5NyBTYWx0ZWRfXx/iGQocqTOd5
- KWek+xEBzOZtqzqIy5xMwg+dK7FAXl9LR3Z43Z2ccrUKyPK2iMGjre9VaaRgMiIrInmjM1l+yra
- bgymo5gk8MzjUMw5aoAYKS65x5rNt99R16yNDcRQaze757SAGm3yCc1BH1/mRwc0CdAOHj3wIpm
- A1O2tXsaS5GadU+Qvr8/tMwkF+IHYEHIw6yXUpX4Hz+GMmJ9gR7TvjnraJAiiK+T8H15gxsw6Yi
- fflIlMHe8Ge4hWEkxbMvNPhJdYk0iUyZIzhvCM/ifOir0bP2l/vtBB7QqqNtZV3/673SkjmISVh
- /BwKDG1Ez0XIQh79eVSGlIwzQIOrDfCmklUme445pHqPqQpurJ4Sra3vNFKD7a7AFfW6sTfPw/B
- JvDLUxWboqHIvjAt7cUV/QkRsQZC74KRKT1seh11R3kdTPEbIOcOpRTHB9xRj4W1VGKSqbD+oAY
- 8C9ICWO+4hsPotafAwQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-02_02,2026-09-01_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 suspectscore=0 adultscore=0 malwarescore=0 spamscore=0
- lowpriorityscore=0 phishscore=0 clxscore=1015 priorityscore=1501
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2609020097
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260902-migrate-refactor-shivank-v1-11-9dcca87669c4@amd.com>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9DAE51C0009
-X-Stat-Signature: 7eruqjkmqppu76tf7ji9aq5mkm3xhqxm
-X-HE-Tag: 1788347182-875584
-X-HE-Meta: U2FsdGVkX1/xx1uRK6gcpjiNA1CzP+cliahNRMInh0ZAwvEPfW7N5KVjEfnyzyQOYx9sF6aJy4JsXMjVpcc+fOT8Olyq/4DuikV5DIO17e+ePnrvtstT9TOI68ODufSG7lth/WEtV16+j9uf+bd8HuSVDPTeCynGnxesA2vb1qpIPib56tgH3hdh2iDNHHTbOqUejK8S1FVJ4vPa4xqcwkn9jl36/ApocaVmxEa/sHdwC+qRuZ0m4GMPLBS1gFHfDiN/ev9pOcA6s4PVljCJujcngbwEBiB8CpvxGIq44nxW/7EkLqS/ZnQG6f2NkbY2Doq/q/mPq4JDaLWvSwjbCKyfF3TTLjsCUp1UfTxALWjHI326MJOOiHe6+bnGAkFfJH9D46EpUTWT2RWRlqu1zvX/GgISaGDiG8qm3j8gMULd5m6j+NnHRzHfjSiXVzNxcHKa9SnL/WxJxfH125PDNW2KtcsSaKB5N7VFiurzMu1Fl4Q5BG/+2cIqGzdclg3HcOpDAzwwEoY1lU2e0TOj8POzb0uaCLOym5JHDckj/NWCpRwLqlJcdsgNyXc1TVUsBL3VA/NNut8pw4+RqFTb81M+fuShLqIqTgwFbZJlsnQkk2GbdlR7gucwQsMnX01W42SlVe2eMZiw/jgcXJmPMXjr7EjwOpNfWhtB0ku6Lv09xR4GqS3u4ulxohRJzKH/gbvDX1iuzM5wFabvrPGvvP7ZZlO8jxwOhevACfAsAPRpMN2jpBBfVAMlnGRqMpuhNt6iSWH9uulohTOYf+IASNQy2dSKHOYy37KuU4VICXeknYjwXhnlKhqjYbQ5VK2jVs4WOUC4x2XVdRhC2ksgRWJZFPZZ0/xsxwf/G/fF/HPhRkvW/T19Q/08HvAvQxSW4bSW+TXBIwWezMdI61aaYXeyqXeXtQgsyZ8/k3bTZujy0AUrSYnWf/rfQXpA8rQDq/YQtZ/5w1vLKsq4GNJ
- rkMbgSsI
- oEUcQyW3IT7PU6J81hHY0yguDyeeivK27znyraOxXU6Gy//fgM7aGDiNiJmR65WfEsF37A4udnGhoLcnVQ4zywMXRDL1bnicLMjxld1i24P7t+PTTUG+dNNiMEtuf8xeauALQm2LZVdorvSrA6UrrKc9UnelNprIAf0oMtE61qPWNbANWXB6vgGKls4nlcxCeaMvJratifErLe98AvsPZaEyzHFLdvI/4M5SschII36lHK5qnf0E0S2Fvh+iBXtbEEZCHkS4f3d8EAIpI+dOmeTN1iUkKRiduIYWQuxW6x1qeb21+a0nqXZ1WvUyRNyGGMyofg14iZ5hJ95TMIizeulAmJXi+OMcBd6FgO8TgI0juTV0=
+X-Stat-Signature: onccmm4hyz9b9c4xcga8ij656w9ntoc8
+X-Rspamd-Queue-Id: 1E6EA12000C
+X-HE-Tag: 1788347441-262379
+X-HE-Meta: U2FsdGVkX1+CPfFpCXqzccjNsKvtS/ml/23N+Qho7HQS3EOZTX8/LaShY0UKSajVea72YxIv5A/3NmP/CniLS1UQdu0x42/Go5WbSvGka92kRdnjd/U3rjwN/2D+tDqy+P8Wkz2fbeq6caze+lI2tEQqTW+XKKxKnUYKI1/whwg0aDvHLG3T8ewFu0qbg0l51DiAobXvAqk1WLz5V/AzAJZDnk3VvLbBKAQiBSUUl6qspEkVBZbZPAjsV3EHYHU8TyEMre3vwi6pteytxWe9mJVFFE7E/hQST5Sn9IyFnhO2b41rEUvL1As/Wua0YSmMQsSU7PYUpBK8ta5Zg0tudQGWADsh+dcwmtn+MTgHmZqu7lg9v06J3+jNPkYvkjmlHnsr+R3TiUj0bC+q+v4BN8aeOivi3Nf2W8WG8436EnzExMYYxLdhZ5TgNbR9F4yYwdoyp2sB8lHV5RQCV+YmTwDxmJIwpHxswsgqjuLcFUcuyiBcw4HEJ2GHaNQJAclT/etvPA7F2I4f5DxBVzsPeOg0sg1EknyeRS17ExerSLti2YWioe+mV8axzbslUr5zFer1vIN0cVwvMoKbhhPgc1VYMAI2qgqxsmBzbCqtxQz2OFcrTPHot2Lfm+hAKhG05EZt+wVpSffXiOiR0qEHgRFwzDCyehW88HDbdd5VKIA7Laibz+cRNo6OdwLVSHM3nRf+mpHb5HUjdq5u9mvwsvdhW6vt/hLaOXnCTHu4IFrLc6QTlPio3mPgTntKWRCV3anFl3DVnfG6Bbl5TE9bUXM1WPLtm1RqEy3EQ2NCsrjiL7/gkIS8gr1Yt+xawp+VdYaB8mfqz+CzE+RvqJ4wHkY6f33cmIv0aKSgj9YSSswBc9BRSZ1wGmssglnT40FJD+ollYap4me7iN52s7hgN2vgD75aZNGywKSJlgs1JqAw17Rdm8Lwqec+tN2PjOrycYsMJizKwpGSfW1B1EO
+ 5gudpLeO
+ A9tb8vr19SSekrb70z5w0E1aKQXCFLdu4g6jDCq9/dfD9DMn5h18z4nAgIjcdvEdhLYiVk9L+fNmr4RvXkUkMCV1sNFRIT5YN9Kp/aaei/snUYNUV7N/bMVLsHuodzCbMw3IJ+KryHapVv25ttjk5zVtwhlzQwR4NJ9mTPJwMWpjPedCjlPoyduedTWUli1Xr3qesMoOOldqGlKAfo8H717nvdGYGwUjdjEuCowFbyFS6gZHPCGkBmc7pQI/DfH0oLh8Bx0Dcsv4hNcAhJzWmd4ls06i99Ubd3DQpMihMYQtTHizdybJo8Zbn+H3NWZNwUblQ0SY0sPhaEeIeTQambyOsTZxoitOWWFWcKIP9tT+OaAqCVGzJ90JYCV5dO5aPM+XsPy+VRgFBX0i+MvURJlAG1psp3Ukw/dbHEO6nCT7vfdYe5qB9Jhgnf8ytWzuH91j3ohiaDVOjOcOLHhvya8RDe//0yxIQZAI0wsw5BOKLM8Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,72 +158,529 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 02 Sep 2026 09:15:12 +0300
-"Mike Rapoport (Microsoft)" <rppt@kernel.org> wrote:
+On Wed 02-09-26 10:52:25, Shivank Garg wrote:
+> The migration core now carries policy in struct migrate_control, but
+> migrate_folio() and the address_space migrate_folio callback still receive
+> only the migration mode. This prevents additional policy, such as
+> copy-cache hints, from reaching folio-specific migration code.
+> 
+> Pass the control as const through migrate_folio(), the common migration
+> helpers, and the address_space callback. Update all implementations and
+> documentation accordingly. Existing callbacks continue to make their
+> decisions from ctl->mode only, none changes behavior yet.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
 
-> This is a (small) part of larger work of replacing page allocator calls
-> with kmalloc.
-> 
-> My initial intention a few month ago was to remove ugly casts [1], but then
-> willy pointed out that Linus objected to something like this [2] and it
-> looks like more than a decade old technical debt.
-> 
-> Largely, anything that doesn't need struct page (or a memdesc in the
-> future) should just use kmalloc() or kvmalloc() to allocate memory.
-> kmalloc() guarantees alignment, physical contiguity and working
-> virt_to_phys() and beside nicer API that returns void * on alloc and
-> doesn't require to know the allocation size on free, kmalloc() provides
-> better debugging capabilities than page allocator.
-> 
-> Another thing is that touching these allocation sites gives the reviewers
-> opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
-> another size is appropriate.
-> 
-> For larger allocations that don't need physically contiguous memory
-> kvmalloc() can be a better option that __get_free_pages() because under
-> memory pressure it's is easier to allocate several order-0 pages than a
-> physically contiguous chunk with the same number of pages.
-> 
-> And last, but not least, removing needless calls to page allocator should
-> help with memdesc (aka project folio) conversion. There will be way less
-> places to audit to see if the user was actually using struct page.
+The changes to FS interface look good to me. Feel free to add:
 
-I have some objections to this series, but not because of what you are
-trying to do (which is actually nice).
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-I understand that you probably wanted to touch as little code as
-possible, but now since you're rewriting the allocations to use
-kmalloc.... I'd like them to be converted to use the __free(kvmalloc)
-system. It will make the code smaller, easier to read and understand,
-less prone to future errors, etc.
+								Honza
 
-In some places the whole code flow can be simplified a lot.
- 
-> Also in git:
-> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/s390-kvm
-> 
-> [1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
-> [2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/
-> 
 > ---
-> Mike Rapoport (Microsoft) (4):
->       KVM: s390: Replace get_zeroed_page() with kzalloc() for the STHYI buffer
->       KVM: s390: Replace get_zeroed_page() with kzalloc() for the STSI buffer
->       KVM: s390: Replace get_zeroed_page() with kzalloc() for the GIB
->       KVM: s390: Replace get_zeroed_page() with kzalloc() for sie_page2 and CMMA
+>  Documentation/filesystems/locking.rst |  2 +-
+>  Documentation/filesystems/vfs.rst     |  7 +++--
+>  fs/aio.c                              |  2 +-
+>  fs/btrfs/disk-io.c                    |  5 ++--
+>  fs/btrfs/inode.c                      |  6 ++---
+>  fs/hugetlbfs/inode.c                  |  4 +--
+>  fs/jfs/jfs_metapage.c                 | 14 +++++-----
+>  fs/nfs/internal.h                     |  2 +-
+>  fs/nfs/write.c                        |  8 +++---
+>  include/linux/buffer_head.h           |  6 +++--
+>  include/linux/fs.h                    |  6 ++---
+>  include/linux/migrate.h               |  2 +-
+>  include/linux/pagemap.h               |  2 +-
+>  mm/migrate.c                          | 50 +++++++++++++++++++----------------
+>  mm/secretmem.c                        |  3 ++-
+>  virt/kvm/guest_memfd.c                |  2 +-
+>  16 files changed, 66 insertions(+), 55 deletions(-)
 > 
->  arch/s390/kvm/s390/intercept.c |  9 +++++----
->  arch/s390/kvm/s390/interrupt.c |  8 ++++----
->  arch/s390/kvm/s390/priv.c      | 19 ++++++++++---------
->  arch/s390/kvm/s390/s390.c      | 12 ++++++------
->  4 files changed, 25 insertions(+), 23 deletions(-)
-> ---
-> base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
-> change-id: 20260828-s390-kvm-2015b0d777dc
+> diff --git a/Documentation/filesystems/locking.rst b/Documentation/filesystems/locking.rst
+> index 844d65eb47a5..b406df403b4a 100644
+> --- a/Documentation/filesystems/locking.rst
+> +++ b/Documentation/filesystems/locking.rst
+> @@ -260,7 +260,7 @@ prototypes::
+>  	void (*free_folio)(struct folio *);
+>  	int (*direct_IO)(struct kiocb *, struct iov_iter *iter);
+>  	int (*migrate_folio)(struct address_space *, struct folio *dst,
+> -			struct folio *src, enum migrate_mode);
+> +			struct folio *src, const struct migrate_control *ctl);
+>  	int (*launder_folio)(struct folio *);
+>  	bool (*is_partially_uptodate)(struct folio *, size_t from, size_t count);
+>  	int (*error_remove_folio)(struct address_space *, struct folio *);
+> diff --git a/Documentation/filesystems/vfs.rst b/Documentation/filesystems/vfs.rst
+> index d3a93eec3945..8e1404723db1 100644
+> --- a/Documentation/filesystems/vfs.rst
+> +++ b/Documentation/filesystems/vfs.rst
+> @@ -767,7 +767,8 @@ cache in your filesystem.  The following members are defined:
+>  		void (*free_folio)(struct folio *);
+>  		ssize_t (*direct_IO)(struct kiocb *, struct iov_iter *iter);
+>  		int (*migrate_folio)(struct mapping *, struct folio *dst,
+> -				struct folio *src, enum migrate_mode);
+> +				struct folio *src,
+> +				const struct migrate_control *ctl);
+>  		int (*launder_folio) (struct folio *);
+>  
+>  		bool (*is_partially_uptodate) (struct folio *, size_t from,
+> @@ -939,7 +940,9 @@ cache in your filesystem.  The following members are defined:
+>  	wants to relocate a folio (maybe from a memory device that is
+>  	signalling imminent failure) it will pass a new folio and an old
+>  	folio to this function.  migrate_folio should transfer any private
+> -	data across and update any references that it has to the folio.
+> +	data across and update any references that it has to the folio.  The
+> +	control describes the blocking mode and the reason for migration.  If
+> +	the mode is ``MIGRATE_ASYNC``, the callback must not block.
+>  
+>  ``launder_folio``
+>  	Called before freeing a folio - it writes back the dirty folio.
+> diff --git a/fs/aio.c b/fs/aio.c
+> index d78acc69f487..58ee9d0845dd 100644
+> --- a/fs/aio.c
+> +++ b/fs/aio.c
+> @@ -458,7 +458,7 @@ static const struct file_operations aio_ring_fops = {
+>  
+>  #if IS_ENABLED(CONFIG_MIGRATION)
+>  static int aio_migrate_folio(struct address_space *mapping, struct folio *dst,
+> -			struct folio *src, enum migrate_mode mode)
+> +			     struct folio *src, const struct migrate_control *ctl)
+>  {
+>  	struct kioctx *ctx;
+>  	struct aio_inode_info *ai = AIO_I(mapping->host);
+> diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+> index 819727460bcf..509651577a1c 100644
+> --- a/fs/btrfs/disk-io.c
+> +++ b/fs/btrfs/disk-io.c
+> @@ -460,7 +460,8 @@ int btrfs_validate_extent_buffer(struct extent_buffer *eb,
+>  
+>  #ifdef CONFIG_MIGRATION
+>  static int btree_migrate_folio(struct address_space *mapping,
+> -		struct folio *dst, struct folio *src, enum migrate_mode mode)
+> +		struct folio *dst, struct folio *src,
+> +		const struct migrate_control *ctl)
+>  {
+>  	/*
+>  	 * we can't safely write a btree page from here,
+> @@ -475,7 +476,7 @@ static int btree_migrate_folio(struct address_space *mapping,
+>  	if (folio_get_private(src) &&
+>  	    !filemap_release_folio(src, GFP_KERNEL))
+>  		return -EAGAIN;
+> -	return migrate_folio(mapping, dst, src, mode);
+> +	return migrate_folio(mapping, dst, src, ctl);
+>  }
+>  #else
+>  #define btree_migrate_folio NULL
+> diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+> index 3c10a0ef0002..9f1e567fa5ed 100644
+> --- a/fs/btrfs/inode.c
+> +++ b/fs/btrfs/inode.c
+> @@ -7653,10 +7653,10 @@ static bool btrfs_release_folio(struct folio *folio, gfp_t gfp_flags)
+>  
+>  #ifdef CONFIG_MIGRATION
+>  static int btrfs_migrate_folio(struct address_space *mapping,
+> -			     struct folio *dst, struct folio *src,
+> -			     enum migrate_mode mode)
+> +			       struct folio *dst, struct folio *src,
+> +			       const struct migrate_control *ctl)
+>  {
+> -	int ret = filemap_migrate_folio(mapping, dst, src, mode);
+> +	int ret = filemap_migrate_folio(mapping, dst, src, ctl);
+>  
+>  	if (ret)
+>  		return ret;
+> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+> index 7611a8470ea2..367148251689 100644
+> --- a/fs/hugetlbfs/inode.c
+> +++ b/fs/hugetlbfs/inode.c
+> @@ -1022,8 +1022,8 @@ static int hugetlbfs_symlink(struct mnt_idmap *idmap,
+>  
+>  #ifdef CONFIG_MIGRATION
+>  static int hugetlbfs_migrate_folio(struct address_space *mapping,
+> -				struct folio *dst, struct folio *src,
+> -				enum migrate_mode mode)
+> +				   struct folio *dst, struct folio *src,
+> +				   const struct migrate_control *ctl)
+>  {
+>  	int rc;
+>  
+> diff --git a/fs/jfs/jfs_metapage.c b/fs/jfs/jfs_metapage.c
+> index 41fe12e641ce..7958edacb497 100644
+> --- a/fs/jfs/jfs_metapage.c
+> +++ b/fs/jfs/jfs_metapage.c
+> @@ -155,7 +155,7 @@ static inline void dec_io(struct folio *folio, blk_status_t status,
+>  #ifdef CONFIG_MIGRATION
+>  static int __metapage_migrate_folio(struct address_space *mapping,
+>  				    struct folio *dst, struct folio *src,
+> -				    enum migrate_mode mode)
+> +				    const struct migrate_control *ctl)
+>  {
+>  	struct meta_anchor *src_anchor = src->private;
+>  	struct metapage *mps[MPS_PER_PAGE] = {0};
+> @@ -168,7 +168,7 @@ static int __metapage_migrate_folio(struct address_space *mapping,
+>  			return -EAGAIN;
+>  	}
+>  
+> -	rc = filemap_migrate_folio(mapping, dst, src, mode);
+> +	rc = filemap_migrate_folio(mapping, dst, src, ctl);
+>  	if (rc)
+>  		return rc;
+>  
+> @@ -231,7 +231,7 @@ static inline void remove_metapage(struct folio *folio, struct metapage *mp)
+>  #ifdef CONFIG_MIGRATION
+>  static int __metapage_migrate_folio(struct address_space *mapping,
+>  				    struct folio *dst, struct folio *src,
+> -				    enum migrate_mode mode)
+> +				    const struct migrate_control *ctl)
+>  {
+>  	struct metapage *mp;
+>  	int page_offset;
+> @@ -241,7 +241,7 @@ static int __metapage_migrate_folio(struct address_space *mapping,
+>  	if (metapage_locked(mp))
+>  		return -EAGAIN;
+>  
+> -	rc = filemap_migrate_folio(mapping, dst, src, mode);
+> +	rc = filemap_migrate_folio(mapping, dst, src, ctl);
+>  	if (rc)
+>  		return rc;
+>  
+> @@ -645,18 +645,18 @@ static bool metapage_release_folio(struct folio *folio, gfp_t gfp_mask)
+>   */
+>  static int metapage_migrate_folio(struct address_space *mapping,
+>  				  struct folio *dst, struct folio *src,
+> -				  enum migrate_mode mode)
+> +				  const struct migrate_control *ctl)
+>  {
+>  	int expected_count;
+>  
+>  	if (!src->private)
+> -		return filemap_migrate_folio(mapping, dst, src, mode);
+> +		return filemap_migrate_folio(mapping, dst, src, ctl);
+>  
+>  	/* Check whether page does not have extra refs before we do more work */
+>  	expected_count = folio_expected_ref_count(src) + 1;
+>  	if (folio_ref_count(src) != expected_count)
+>  		return -EAGAIN;
+> -	return __metapage_migrate_folio(mapping, dst, src, mode);
+> +	return __metapage_migrate_folio(mapping, dst, src, ctl);
+>  }
+>  #else
+>  #define metapage_migrate_folio NULL
+> diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
+> index abc81f5ae578..e1f366cff2c0 100644
+> --- a/fs/nfs/internal.h
+> +++ b/fs/nfs/internal.h
+> @@ -673,7 +673,7 @@ void nfs_clear_pnfs_ds_commit_verifiers(struct pnfs_ds_commit_info *cinfo)
+>  
+>  #ifdef CONFIG_MIGRATION
+>  int nfs_migrate_folio(struct address_space *, struct folio *dst,
+> -		struct folio *src, enum migrate_mode);
+> +		struct folio *src, const struct migrate_control *);
+>  #else
+>  #define nfs_migrate_folio NULL
+>  #endif
+> diff --git a/fs/nfs/write.c b/fs/nfs/write.c
+> index 623e7ef1f73d..159135900399 100644
+> --- a/fs/nfs/write.c
+> +++ b/fs/nfs/write.c
+> @@ -2112,7 +2112,7 @@ int nfs_wb_folio(struct inode *inode, struct folio *folio)
+>  
+>  #ifdef CONFIG_MIGRATION
+>  int nfs_migrate_folio(struct address_space *mapping, struct folio *dst,
+> -		struct folio *src, enum migrate_mode mode)
+> +		struct folio *src, const struct migrate_control *ctl)
+>  {
+>  	/*
+>  	 * If the private flag is set, the folio is currently associated with
+> @@ -2123,19 +2123,19 @@ int nfs_migrate_folio(struct address_space *mapping, struct folio *dst,
+>  	 *        the folio lock.
+>  	 */
+>  	if (folio_test_private(src)) {
+> -		if (mode == MIGRATE_SYNC)
+> +		if (ctl->mode == MIGRATE_SYNC)
+>  			nfs_wb_folio(src->mapping->host, src);
+>  		if (folio_test_private(src))
+>  			return -EBUSY;
+>  	}
+>  
+>  	if (folio_test_private_2(src)) { /* [DEPRECATED] */
+> -		if (mode == MIGRATE_ASYNC)
+> +		if (ctl->mode == MIGRATE_ASYNC)
+>  			return -EBUSY;
+>  		folio_wait_private_2(src);
+>  	}
+>  
+> -	return migrate_folio(mapping, dst, src, mode);
+> +	return migrate_folio(mapping, dst, src, ctl);
+>  }
+>  #endif
+>  
+> diff --git a/include/linux/buffer_head.h b/include/linux/buffer_head.h
+> index fd2c7115c054..e4476596c9b6 100644
+> --- a/include/linux/buffer_head.h
+> +++ b/include/linux/buffer_head.h
+> @@ -277,9 +277,11 @@ int block_truncate_page(struct address_space *, loff_t, get_block_t *);
+>  
+>  #ifdef CONFIG_MIGRATION
+>  extern int buffer_migrate_folio(struct address_space *,
+> -		struct folio *dst, struct folio *src, enum migrate_mode);
+> +		struct folio *dst, struct folio *src,
+> +		const struct migrate_control *);
+>  extern int buffer_migrate_folio_norefs(struct address_space *,
+> -		struct folio *dst, struct folio *src, enum migrate_mode);
+> +		struct folio *dst, struct folio *src,
+> +		const struct migrate_control *);
+>  #else
+>  #define buffer_migrate_folio NULL
+>  #define buffer_migrate_folio_norefs NULL
+> diff --git a/include/linux/fs.h b/include/linux/fs.h
+> index f9d1e05e8ae6..93ba6054c478 100644
+> --- a/include/linux/fs.h
+> +++ b/include/linux/fs.h
+> @@ -423,11 +423,11 @@ struct address_space_operations {
+>  	void (*free_folio)(struct folio *folio);
+>  	ssize_t (*direct_IO)(struct kiocb *, struct iov_iter *iter);
+>  	/*
+> -	 * migrate the contents of a folio to the specified target. If
+> -	 * migrate_mode is MIGRATE_ASYNC, it must not block.
+> +	 * Migrate the contents of a folio to the specified target.  The
+> +	 * callback must not block when ctl->mode is MIGRATE_ASYNC.
+>  	 */
+>  	int (*migrate_folio)(struct address_space *, struct folio *dst,
+> -			struct folio *src, enum migrate_mode);
+> +			struct folio *src, const struct migrate_control *ctl);
+>  	int (*launder_folio)(struct folio *);
+>  	bool (*is_partially_uptodate) (struct folio *, size_t from,
+>  			size_t count);
+> diff --git a/include/linux/migrate.h b/include/linux/migrate.h
+> index cec5713944e3..123111e7abd3 100644
+> --- a/include/linux/migrate.h
+> +++ b/include/linux/migrate.h
+> @@ -55,7 +55,7 @@ extern const char *migrate_reason_names[MR_TYPES];
+>  
+>  void putback_movable_pages(struct list_head *l);
+>  int migrate_folio(struct address_space *mapping, struct folio *dst,
+> -		struct folio *src, enum migrate_mode mode);
+> +		struct folio *src, const struct migrate_control *ctl);
+>  int migrate_pages(struct list_head *l, new_folio_t new, free_folio_t free,
+>  		unsigned long private, const struct migrate_control *ctl,
+>  		unsigned int *ret_succeeded);
+> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+> index 0adfa6605653..455d57307f88 100644
+> --- a/include/linux/pagemap.h
+> +++ b/include/linux/pagemap.h
+> @@ -1327,7 +1327,7 @@ bool noop_dirty_folio(struct address_space *mapping, struct folio *folio);
+>  
+>  #ifdef CONFIG_MIGRATION
+>  int filemap_migrate_folio(struct address_space *mapping, struct folio *dst,
+> -		struct folio *src, enum migrate_mode mode);
+> +		struct folio *src, const struct migrate_control *ctl);
+>  #else
+>  #define filemap_migrate_folio NULL
+>  #endif
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index 549f8b57092c..731836664a86 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -869,7 +869,7 @@ EXPORT_SYMBOL(folio_migrate_flags);
+>  
+>  static int __migrate_folio(struct address_space *mapping, struct folio *dst,
+>  			   struct folio *src, void *src_private,
+> -			   enum migrate_mode mode)
+> +			   const struct migrate_control *ctl)
+>  {
+>  	int rc, expected_count = folio_expected_ref_count(src) + 1;
+>  
+> @@ -897,7 +897,7 @@ static int __migrate_folio(struct address_space *mapping, struct folio *dst,
+>   * @mapping: The address_space containing the folio.
+>   * @dst: The folio to migrate the data to.
+>   * @src: The folio containing the current data.
+> - * @mode: How to migrate the folio.
+> + * @ctl: Migration policy for this folio.
+>   *
+>   * Common logic to directly migrate a single LRU folio suitable for
+>   * folios that do not have private data.
+> @@ -905,10 +905,10 @@ static int __migrate_folio(struct address_space *mapping, struct folio *dst,
+>   * Folios are locked upon entry and exit.
+>   */
+>  int migrate_folio(struct address_space *mapping, struct folio *dst,
+> -		  struct folio *src, enum migrate_mode mode)
+> +		  struct folio *src, const struct migrate_control *ctl)
+>  {
+>  	BUG_ON(folio_test_writeback(src));	/* Writeback must be complete */
+> -	return __migrate_folio(mapping, dst, src, NULL, mode);
+> +	return __migrate_folio(mapping, dst, src, NULL, ctl);
+>  }
+>  EXPORT_SYMBOL(migrate_folio);
+>  
+> @@ -947,8 +947,8 @@ static bool buffer_migrate_lock_buffers(struct buffer_head *head,
+>  }
+>  
+>  static int __buffer_migrate_folio(struct address_space *mapping,
+> -		struct folio *dst, struct folio *src, enum migrate_mode mode,
+> -		bool check_refs)
+> +		struct folio *dst, struct folio *src,
+> +		const struct migrate_control *ctl, bool check_refs)
+>  {
+>  	struct buffer_head *bh, *head;
+>  	int rc;
+> @@ -956,14 +956,14 @@ static int __buffer_migrate_folio(struct address_space *mapping,
+>  
+>  	head = folio_buffers(src);
+>  	if (!head)
+> -		return migrate_folio(mapping, dst, src, mode);
+> +		return migrate_folio(mapping, dst, src, ctl);
+>  
+>  	/* Check whether page does not have extra refs before we do more work */
+>  	expected_count = folio_expected_ref_count(src) + 1;
+>  	if (folio_ref_count(src) != expected_count)
+>  		return -EAGAIN;
+>  
+> -	if (!buffer_migrate_lock_buffers(head, mode))
+> +	if (!buffer_migrate_lock_buffers(head, ctl->mode))
+>  		return -EAGAIN;
+>  
+>  	if (check_refs) {
+> @@ -995,7 +995,7 @@ static int __buffer_migrate_folio(struct address_space *mapping,
+>  		}
+>  	}
+>  
+> -	rc = filemap_migrate_folio(mapping, dst, src, mode);
+> +	rc = filemap_migrate_folio(mapping, dst, src, ctl);
+>  	if (rc)
+>  		goto unlock_buffers;
+>  
+> @@ -1022,7 +1022,7 @@ static int __buffer_migrate_folio(struct address_space *mapping,
+>   * @mapping: The address space containing @src.
+>   * @dst: The folio to migrate to.
+>   * @src: The folio to migrate from.
+> - * @mode: How to migrate the folio.
+> + * @ctl: Migration policy for this folio.
+>   *
+>   * This function can only be used if the underlying filesystem guarantees
+>   * that no other references to @src exist. For example attached buffer
+> @@ -1033,9 +1033,10 @@ static int __buffer_migrate_folio(struct address_space *mapping,
+>   * Return: 0 on success or a negative errno on failure.
+>   */
+>  int buffer_migrate_folio(struct address_space *mapping,
+> -		struct folio *dst, struct folio *src, enum migrate_mode mode)
+> +		struct folio *dst, struct folio *src,
+> +		const struct migrate_control *ctl)
+>  {
+> -	return __buffer_migrate_folio(mapping, dst, src, mode, false);
+> +	return __buffer_migrate_folio(mapping, dst, src, ctl, false);
+>  }
+>  EXPORT_SYMBOL(buffer_migrate_folio);
+>  
+> @@ -1044,7 +1045,7 @@ EXPORT_SYMBOL(buffer_migrate_folio);
+>   * @mapping: The address space containing @src.
+>   * @dst: The folio to migrate to.
+>   * @src: The folio to migrate from.
+> - * @mode: How to migrate the folio.
+> + * @ctl: Migration policy for this folio.
+>   *
+>   * Like buffer_migrate_folio() except that this variant is more careful
+>   * and checks that there are also no buffer head references. This function
+> @@ -1054,17 +1055,19 @@ EXPORT_SYMBOL(buffer_migrate_folio);
+>   * Return: 0 on success or a negative errno on failure.
+>   */
+>  int buffer_migrate_folio_norefs(struct address_space *mapping,
+> -		struct folio *dst, struct folio *src, enum migrate_mode mode)
+> +		struct folio *dst, struct folio *src,
+> +		const struct migrate_control *ctl)
+>  {
+> -	return __buffer_migrate_folio(mapping, dst, src, mode, true);
+> +	return __buffer_migrate_folio(mapping, dst, src, ctl, true);
+>  }
+>  EXPORT_SYMBOL_GPL(buffer_migrate_folio_norefs);
+>  #endif /* CONFIG_BUFFER_HEAD */
+>  
+>  int filemap_migrate_folio(struct address_space *mapping,
+> -		struct folio *dst, struct folio *src, enum migrate_mode mode)
+> +		struct folio *dst, struct folio *src,
+> +		const struct migrate_control *ctl)
+>  {
+> -	return __migrate_folio(mapping, dst, src, folio_get_private(src), mode);
+> +	return __migrate_folio(mapping, dst, src, folio_get_private(src), ctl);
+>  }
+>  EXPORT_SYMBOL_GPL(filemap_migrate_folio);
+>  
+> @@ -1072,7 +1075,8 @@ EXPORT_SYMBOL_GPL(filemap_migrate_folio);
+>   * Default handling if a filesystem does not provide a migration function.
+>   */
+>  static int fallback_migrate_folio(struct address_space *mapping,
+> -		struct folio *dst, struct folio *src, enum migrate_mode mode)
+> +		struct folio *dst, struct folio *src,
+> +		const struct migrate_control *ctl)
+>  {
+>  	WARN_ONCE(mapping->a_ops->writepages,
+>  			"%ps does not implement migrate_folio\n",
+> @@ -1085,9 +1089,9 @@ static int fallback_migrate_folio(struct address_space *mapping,
+>  	 * can't migrate automatically.
+>  	 */
+>  	if (!filemap_release_folio(src, GFP_KERNEL))
+> -		return mode == MIGRATE_SYNC ? -EAGAIN : -EBUSY;
+> +		return ctl->mode == MIGRATE_SYNC ? -EAGAIN : -EBUSY;
+>  
+> -	return migrate_folio(mapping, dst, src, mode);
+> +	return migrate_folio(mapping, dst, src, ctl);
+>  }
+>  
+>  /*
+> @@ -1112,7 +1116,7 @@ static int move_to_new_folio(struct folio *dst, struct folio *src,
+>  	VM_BUG_ON_FOLIO(!folio_test_locked(dst), dst);
+>  
+>  	if (!mapping)
+> -		rc = migrate_folio(mapping, dst, src, ctl->mode);
+> +		rc = migrate_folio(mapping, dst, src, ctl);
+>  	else if (mapping_inaccessible(mapping))
+>  		rc = -EOPNOTSUPP;
+>  	else if (mapping->a_ops->migrate_folio)
+> @@ -1123,9 +1127,9 @@ static int move_to_new_folio(struct folio *dst, struct folio *src,
+>  		 * migrate_folio callback. This is the most common path
+>  		 * for page migration.
+>  		 */
+> -		rc = mapping->a_ops->migrate_folio(mapping, dst, src, ctl->mode);
+> +		rc = mapping->a_ops->migrate_folio(mapping, dst, src, ctl);
+>  	else
+> -		rc = fallback_migrate_folio(mapping, dst, src, ctl->mode);
+> +		rc = fallback_migrate_folio(mapping, dst, src, ctl);
+>  
+>  	if (!rc) {
+>  		/*
+> diff --git a/mm/secretmem.c b/mm/secretmem.c
+> index d29865075b6e..5c81833981d2 100644
+> --- a/mm/secretmem.c
+> +++ b/mm/secretmem.c
+> @@ -144,7 +144,8 @@ static const struct file_operations secretmem_fops = {
+>  };
+>  
+>  static int secretmem_migrate_folio(struct address_space *mapping,
+> -		struct folio *dst, struct folio *src, enum migrate_mode mode)
+> +		struct folio *dst, struct folio *src,
+> +		const struct migrate_control *ctl)
+>  {
+>  	return -EBUSY;
+>  }
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 625e62e1a031..0a9af8c4768d 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -457,7 +457,7 @@ static struct file_operations kvm_gmem_fops = {
+>  
+>  static int kvm_gmem_migrate_folio(struct address_space *mapping,
+>  				  struct folio *dst, struct folio *src,
+> -				  enum migrate_mode mode)
+> +				  const struct migrate_control *ctl)
+>  {
+>  	WARN_ON_ONCE(1);
+>  	return -EINVAL;
 > 
-> --
-> Sincerely yours,
-> Mike.
+> -- 
+> 2.43.0
 > 
-
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
