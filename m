@@ -4,116 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B863C61DFD
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 08:23:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EED78C624D0
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 08:44:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 627946B00BB; Wed,  2 Sep 2026 04:23:04 -0400 (EDT)
+	id AB80E6B0096; Wed,  2 Sep 2026 04:44:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D24D6B00BD; Wed,  2 Sep 2026 04:23:04 -0400 (EDT)
+	id A43ED6B00C1; Wed,  2 Sep 2026 04:44:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44D236B00C0; Wed,  2 Sep 2026 04:23:04 -0400 (EDT)
+	id 90BCB6B00C2; Wed,  2 Sep 2026 04:44:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BCE26B00BB
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 04:23:04 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 97C861A011C
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 08:23:03 +0000 (UTC)
-X-FDA: 85168131846.18.83B0B09
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9CCF620004
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 08:23:01 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aqyQJ0C1;
-	spf=pass (imf13.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6398F6B0096
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 04:44:50 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B9B3416010C
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 08:44:49 +0000 (UTC)
+X-FDA: 85168186698.02.C937C68
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0D5CF1A0008
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 08:44:47 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jHWxHYJY;
+	spf=pass (imf19.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788337381;
-	b=GJVARFzgVwvJMbVriylsK9DRxhmIpvPRp1DbZQ55zo4yQjgDkfr7hn9LVdIPzrZ2sZmQTN
-	Smf58q3R4M1Hf6jtwRGf87ZXYXpnfL3lPTlOpLLesvM7UuRaAQH+XzkqgjF8rnruC/UnJS
-	vGjQqXB8BwKfJspB7cKa3sJsG/wkznA=
+	t=1788338688;
+	b=w6yN7OiGJwjrRygxrM+t1WgSz19eiOZrSknaIif4Znr0OLVutDxSHeifYT1+T2WOAdk6jd
+	p6QH6o4tFCwzP1jxowbnW3ApcpH32a2TXQ9MBHrO2r7cyV5fGck6LAA7DKnkwwnLbhh101
+	3iD8g3JjYphS5+Lv2Mrj4jy5RWo5e84=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aqyQJ0C1;
-	spf=pass (imf13.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jHWxHYJY;
+	spf=pass (imf19.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788337381;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1788338688;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z+peb9dpzKQQ3Z3IUN9jt4EDtAYfNapVJJOlr6ZayL8=;
-	b=JtVN+0czFzJHUGHVaDibMHwwtYMTcD/qHeGGRl7oHSb2tyTe2B3DP0q73TxZVm14iSjjSE
-	C9OI/pI5cBc/KP6CnpSlmntLMO9195ttg4LGkt6FLiDoE+4lNBPN6P0iXShe89GDty3id3
-	D3MG24cg0kxQnJFZZ6gYhnLxuzZPshY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AC6CF43F2B;
-	Wed,  2 Sep 2026 08:23:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 79DC7C2BCF7;
-	Wed,  2 Sep 2026 08:23:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1788337380;
-	bh=pvVk4daAHR7Yy5UIGnTf8/tE6JkSvAWJQ6/StZs6/IA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=aqyQJ0C1tP4t8Z+EYuN8h7oJ57FyX10cf6mxo4BTZOtFiFk9SJA9kYKvzbryAgGQP
-	 SEwpoa6f9Dyup2Rg3qyuPkQL8zBPRWA467KEI+USe8mF5hLXsbuG4tBGlw/yew+39N
-	 xVsCTM6kqE8kkRWWqJaVQzgjP6IIE1V5xkxP9VBTYtWMqbQPIUKj5r7HhJl6/Aiv2g
-	 XoNxGnTmSWn5ivHCifQta3hWKokmwk0fUnbFPw4wa9jDhr/A4SBzYKczPrWdQLWxUY
-	 Rwj7anhaAhTak844iM44kDZcMhx5QR0PtE5Us9/aPEzrRvl+qkdzwapPlNOULlG8jW
-	 DgK4CjByuwRKg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C449C624D4;
-	Wed,  2 Sep 2026 08:23:00 +0000 (UTC)
-From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Wed, 02 Sep 2026 01:22:57 -0700
-Subject: [PATCH 2/2] mm: hugetlb: Drop refcount before freeing on memcg
- charge failure
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Uexc1NDi5NdMn1KWK0fKne2QitDNcH/zJBrubqnXvz0=;
+	b=G7dTKit+FKTX8jSua5F801hb+qPceKU5gqwwK+5cSiWtb5i3by2Owx3i9b5yppTwvFUA3r
+	KQNb8ImkbyNZPxIu3f/G0d3Gx0dpuVpl/fZo4iAGQPdbgKDeD4dKATRDhWZDqy+FQVDkvr
+	EWHBRigN5US35nRc63EwwGeWikbt5MY=
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-84e04df8c46so1147412b3a.2
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 01:44:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788338687; x=1788943487; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Uexc1NDi5NdMn1KWK0fKne2QitDNcH/zJBrubqnXvz0=;
+        b=jHWxHYJYSGgvykfQCtHgwqvzpeWe5XS+G0CKu7JMNH1Zr8f5okBBhp68Ts/wC2iwzI
+         Q879BLpz4rPMHxHnqSSbQh602Oqw4dV+PIJW1leqJlfNHiRWTAhwuNwP8gLcR76Py5ZO
+         NcXE7LcR7wmNZvB35GazjM/ojZK3cJWjecWziG1N1e4gM1jAaB2L63jGg8+/CNhylzeN
+         aOzqgScLj5l3l8Opub6B9y1yJzhZI8KWDf2nQPeN0ILBd9l3G+YHoiEL6eSxoE+MFdnM
+         emdSQBvLS4+7fFup4Lqr5qEUqBBnH05SEpPk04kBXPhRet8LBCLgEL1iB6eBW67vQEOM
+         s61Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788338687; x=1788943487;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Uexc1NDi5NdMn1KWK0fKne2QitDNcH/zJBrubqnXvz0=;
+        b=UG+f7/+4DUuq08VraOvxyGRLEQ0Un/jhIB+ue22Uewu7eo/zyN6S87t6f36qMJ9qIA
+         wI9oab5o4wXA94DpeIoYDG19SGUdn7XqBBOFcJ5xgd9SaTIbpohqXa3+ld4qtYTEoIef
+         ih2I0w7jwWB39ffr5vqUjcisyLnQZ92LitmIjDJeCtAHp9QIWQu+HVJdJvFLjtlfvrys
+         zI8jTT8f7tOoAWZLFZ2nM+3qiHPFvU8rynTnI7o+e5e9DulCY6/BtFKffSNLR4CbNcrp
+         Bz9cCETgCEfadwHN9XuwhHgmUL07kalF7F5+zWHRcf9z+9LOIorsP3enzQw473cDHhMq
+         Gx3A==
+X-Forwarded-Encrypted: i=1; AKwUvBzcLXqy5g/fdQBnoB7u2yWzuAs0RWljfWeJpWvDWvdCxQJVVQ7qasHta7oOOVTt6yTft1JCZnuv0Q==@kvack.org
+X-Gm-Message-State: AFuF++mvg3gReuZRocvJ4vSlaPGgsO+pi2YxyLWUUgt7vgQXiu5FjT1E
+	s40EmZrhTq9jVXEUJfRBw1mcpPAr5fTC6PyDeInScBr9F26hpSc5ZzAh
+X-Gm-Gg: AYBFou3NtLOj6U8Lbe27FG23dRucOP1XvyRzfzjeDr5Ds7ElV8bTLrtZraNcKUvPm/4
+	WGDqfyy36zIpNwYMAbLPktpSNP4OkeRKoiV1u9EW9+BHxjy1J2PueaeW8xMc4njCGZfV4UQALjp
+	zuuxGuxH9RyPfr95iuuUJ5+gI08OEG6MQavTbnOtmFLhASz2sQ1tq4qUfDAWeqrQDkbut2Hs4je
+	Mkbkc29JK5Mpcp6vE4RB9uxN4mEe6fwjUKP/+Ik/COKx3x5TjFFbdJKP9oIQ5mG4SbkUMAiGZ9D
+	MsNh7wmRDX2ZX5gSofrYGPECwbrzJfnROya+RXqiYt+6Td5wHq2E5kdJuPtHEOUzs+8FHV+Nm3S
+	etrKO4j8LoHDKfARJE9ngGglGexB0eDOZVTBMAXOZdt1JFFzLiF+EpxQXFiGyn+Ba74cbUTJGgJ
+	1PMcjklf+55TZ7YgLPcbR7HyQ/cIUIyglsF2AYmJlnUXouoAsrqCA8Eywhbu8F6h0G+A3T0L0Y1
+	QU3YxGnc1omVZXs
+X-Received: by 2002:a05:6a00:124b:b0:857:726d:2709 with SMTP id d2e1a72fcca58-85ed3f6e6e8mr5014011b3a.21.1788338686927;
+        Wed, 02 Sep 2026 01:44:46 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2402:1980:9c5:2de5:8b4e:3f3c:b637:4ca5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85db29deb9fsm1047430b3a.16.2026.09.02.01.44.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 01:44:46 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Liew Rui Yan <aethernet65535@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2.1] mm/damon/core: fix false positive in damos_quota_is_full() when esz is zero
+Date: Wed,  2 Sep 2026 16:44:45 +0800
+Message-ID: <20260902084445.27170-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260902-hugetlb-alloc-folio-memcg-charge-error-handling-v1-2-e3e8942c141b@google.com>
-References: <20260902-hugetlb-alloc-folio-memcg-charge-error-handling-v1-0-e3e8942c141b@google.com>
-In-Reply-To: <20260902-hugetlb-alloc-folio-memcg-charge-error-handling-v1-0-e3e8942c141b@google.com>
-To: Alex Shi <alexs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Dongliang Mu <dzm91@hust.edu.cn>, 
- Hongxiang Lou <louhongxiang@huawei.com>, 
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
- Nhat Pham <nphamcs@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
- Peter Xu <peterx@redhat.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, 
- Shuah Khan <skhan@linuxfoundation.org>, jthoughton@google.com, 
- fvdl@google.com, rientjes@google.com, vannapurve@google.com, 
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
- Wupeng Ma <mawupeng1@huawei.com>, Yanteng Si <si.yanteng@linux.dev>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- Ackerley Tng <ackerleytng@google.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788337379; l=1301;
- i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=OnyqM/8Pr6ZsV+BsOfwDFJ0IbKPvQMMic3OIlvC9rcI=;
- b=B27Ds3U4PhbNKkOtqFYJY/xvCHiXLY5gLSpcHZYLqE1ILOZivlwW3tTQwCnRXp1T4sN1CklBi
- SqpDi7PBF7pBrwlr6s/WJ3+2NQ7j5mO3CbRN6vN8WwFFvpx6oChTAC9
-X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
- pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
- auth_id=649
-X-Original-From: Ackerley Tng <ackerleytng@google.com>
-Reply-To: ackerleytng@google.com
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 0D5CF1A0008
+X-Stat-Signature: kpxu69c1ycqtz3nxctyzcqgiwdcyg8kb
 X-Rspam-User: 
-X-Stat-Signature: dtf75tkz16k8zcah3jx9jn6a6hskmkt4
-X-Rspamd-Queue-Id: 9CCF620004
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788337381-195582
-X-HE-Meta: U2FsdGVkX1/SnYAkSC2X0V+bvjnTSXok3tUdKdUivvDrZ2mp3T6bKJOzbVCcQPUlhvBgRwK7KB9SBUsDfSVYuaa25/Gwo1omxQnfyyIZMlXGMbca1GfaGjpuC6T4h/hu9Qfa7skNDz/YstTESCqBVGdSE+FxO705zFr+hks+8Wttkph23+97xjvU2uTqgmeAFQmRniCvZ8NiFsok3hDvEQlMwbi75XeLvywsgcakhd6QR8E40HSuzB4SL5Xl5P3fY8AIKCshkHprWMOVTCggmtAqfAMPLbOoCF1VzUK+a6PE+iDPvEb1mpQn1JApaMwt6NY5153bUvzr5zlJyVTywZCzznRtyUXkEjKB1z1cwMD+4mGlMJICKKcbh762jHUEknsRmv2KFHW1igzCXFdjAn/3nTjugPL0k1zNmThg2J7/Aln69sC493DrXfXs+wHgXTQorg0F6QSAbKEMrdTm+NuufYvjtYg99/10sXbuzx+wjrT/KdvqbWPOK76k0ya4BKGfYGjsJtxcAHetaqI30JDFxQyoyuAQH4as2n0vJHCxS0G3DuvGTLyIqPZAHoZOOoz5+Fv7GBiC331dobgBINNsF+nHYaE4idYhdzYcAxPSkzgzsl/xj1asqAepx0e1HrPdztYfdldBpbxe+FywO9IRDxdukqO+E3OyR3rhOStgHGPeMOK7ycyx3QyzqVbZxdILcfBgM/NOyAAETQB5QbgoH8RQDdecTCMRZCLuasOuh7yC9to8akxN76Jyz2XfW05KWUOJGMvewQsdrih6JaXGZ0IkgpbLwREeHMoS2EmVbbT5e1CtZFIrdIJgSDuG0fRA7g6+VdldYEGQjSiSQjkLkYHFP8v4nSidaHvV3YRrhEsbOLJjZ3R/UJUGD1Y7paMs73RIrFix14okC6IyyU4chGcViQaSR8/SUhRpu13oakVDclp/9xgTsXfR08S4c3vAT5stnI4xfIfsbRC
- c3CpuXo4
- ytWsmkLvoYd/CZkcLaPN9Nin3J0gxQPdYVqIlRrKvWQiSLtxveDixf3SWGdppxryXbqqKWKAH4C6qTmM+nrl99jPXytIkFXupT8rLpQh+qZeVvOSwQiuAZIEz4ZkLjo/7AOCY5YujItX05Jf05ERAYjgnHeCjSgNs8nkPit0vRcCotWgHSciQL9HrQjXOXkWKYqK82fx7AvWnla+ZX57TsogP2bcVzyYW68yLc08GZ6VPcYDAlQ5GNuEGgDdhpkcMveCjTqXQlZGtALsxy9wQbZSQnNeFoK3uqd/u3nL1bNuhOcGVfLyvSJ/Vlbs0JkhGPB1DcPjWZY4Qa90/zUrfCCja3lvXvV90a5G15Ab9nCOTUx5xVTh7MOapW3G08Ag97J/qvXXSjIJdl3vni2TRKPD//lB/7RC7K1feCXjuWZM3seopB1caI+on2ufvUCSbOUGm+OZ6N4DTCXdhaTtdBI3ILvI++QPaus45
+X-HE-Tag: 1788338687-373562
+X-HE-Meta: U2FsdGVkX1/jpgoc/sLMTPGxc0R9lgwuvAkyYZgfr1kZ1XGVoWpRo9Y04aEwshya/uiJMo9Qs0d1prSv+bl8icKpGdh8n5ty66krhHFjKv4c025ToynJslVXXAEkEYOwonbBqA08utW+d6RkKiGp1RfxjO/m74BHZ33FWPXZqoBEGXDz8jXN3YJ7z6QhrhgzaQl3SjgEgzyTBHN5dJ+lHCS3D3TM68XAKPhZu08J05iJKQy6N1CimsvJG1xznf2/X2M8uroqzPx+gLbmx6WBrEt35jH+Y5OfGh8Qt+b1sT5w8yBlFldfSu+52qW6MLr2omPer1Mc0SBi14C9ePNwiTHqibrfPZP8ugSOUapc+azRuKp9E8Db65g7JOhEhOtrohXCQIQaVx1geUTYBsgSDlxxV0BJ8OpuSIyxtmxDNLbLH2o/UGfWX/ouldpyq6phO/XZwEoCbxS5WIIcbRssSyjZ2mGYpKpTW10lXH/noxG6u54AaaTQjoSsMA4GTnkNqfxJJHwUP2ZB/V4PiXIqJd/BgKe5isDndXRtKvl1lSKv8Bzz+b6AD5oHrIrjcW3/9Cd7QAmEpXxlAx3eLhmpKmTgvKNzrZlQ0nslQBrmUUlbtAG9PmJfQVZ9zIAqTtB0uIP9lcjTXKWn+kkfhtNLIwM8mPTMUy9KbGBq2DgSAZCx+6dJvWW3V3JHjtQ3KlK0bTFhjnthHE9YDOe+tLsm0FBy6sQVhgQgs8QjPykBXn8IxSzWbpZOrdFAoPytRNxK1HjzmUQ25qNu4eq5F8yMVABwjMoQbTGCZcAFkN/7QgkMLrj3uMw+6owuAmvbO/hhyQHZUQoXZFEUPq4CiCt0S3uoAUU9XvTlLv5X9VueAK6BL0954FuiZYALdsk9j+K6dBzbtiPkIlkS6+QtcmD3hwsFeemrwSoyqAITBIeGxPGUARIKV/ffqX4ZCi8prPYJEq0qLAV3ao+3H9InfpG
+ O6MhwgJa
+ ufoaQPvkFaoSaeYDGTWQUQDSYfZuHPOsKY1LpsPUT/CB4q1ZSCMqDZr9HWfkHVtGXKc1HmxncV3AA5OmopG/1xCI6LzgV9/lS9LQboQc21kPZgt3IdbTHVar/+Z5eKMlOGVQojUx+QbKnVFsaVkOD3LrfxnXR+hG16gQWwOUoGlCGSR7YFkCJ93qHPkX8v6ggSUIvPG8oPya8MvM/uyufw/lXJ1mDTpy9ZVbmG+K2wMMPlRmOoc/Lpw3Gk2WzBPNcKR3qudTNzpSciXiMruBFrP1Bi4ZAQ4/9srIIuNeYR8Z15xnmB1iJR+vaihW03UaTP3mClrlFczFwkstxpUvEtX3xnbuoYSucofYH+Pt6OYr8wHyuHcZhnXIOBcUuWK4a7/AaC82yOJWULDr0UwPMZXhuohyup2sux7ek+ZR2fjan8gfTHTIK3bS0pJOO0nH/3uAUevTvT7YkeTg7+zL1goRBsmD6ET5snt0pSYfip88WZHA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,45 +119,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ackerley Tng <ackerleytng@google.com>
+When setting goal_tuner to 'temporal', if the goal is achieved,
+quota->esz_bp will be set to zero.  In this case, damos_quota_is_full()
+will always return true, even if no regions have been tried to apply at
+all.  This causes qt_exceeds to increase unexpectedly.
 
-When mem_cgroup_charge_hugetlb(folio, gfp) returns -ENOMEM, the folio has
-its refcount set to 1 via folio_ref_unfreeze(folio, 1).
+Fix it by:
 
-The error path calls free_huge_folio(folio) directly, which expects a
-refcount of 0. Hence, VM_BUG_ON_FOLIO(folio_ref_count(folio), folio) is
-triggered.
+- Returning false in damos_quota_is_full() when quota->charged_sz is
+  zero.
+- Adding an early exit in damon_do_apply_schemes() for schemes with zero
+  esz.
 
-Even with CONFIG_DEBUG_VM disabled, returning a folio with refcount 1 to
-the freelist can corrupt allocator state later.
-
-Use folio_put(folio) instead of free_huge_folio(folio) to properly drop the
-reference before freeing it.
-
-Fixes: 991135774c0e0 ("memcg/hugetlb: introduce mem_cgroup_charge_hugetlb")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Fixes: c7ec7d5f6b3d ("mm/damon/core: handle <min_region_sz remaining quota as empty")
+Cc: <stable@vger.kernel.org> # v7.2.x
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
 ---
- mm/hugetlb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 01b57f6d3b804..97c06f227ef8a 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -2889,7 +2889,7 @@ struct folio *hugetlb_alloc_folio(struct hstate *h,
- 	lruvec_stat_mod_folio(folio, NR_HUGETLB, nr_pages);
+Changes from v2:
+- v2: https://lore.kernel.org/damon/20260902081825.18931-1-aethernet65535@gmail.com
+- Changed patch title, v2 title is truncated.
+
+Changes from v1:
+- v1: https://lore.kernel.org/damon/20260901105925.106186-1-aethernet65535@gmail.com
+- Changed the check in damos_quota_is_full() from '!quota->esz' to
+  '!quota->charged_sz', because the former is an upper bound, while the
+  latter represents the actual quota usage.
+- Added an early exit in damon_do_apply_schemes() to prevent a scheme
+  with zero esz from being evaluated by damos_quota_is_full().
+- Changed patch title, original title: always return false when esz is
+  zero
+
+---
+ mm/damon/core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 8e3ded1a2cf6..de78ad56c8b3 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2560,6 +2560,8 @@ static bool damos_quota_is_full(struct damos_quota *quota,
+ {
+ 	if (!damos_quota_is_set(quota))
+ 		return false;
++	if (!quota->charged_sz)
++		return false;
+ 	if (quota->charged_sz >= quota->esz)
+ 		return true;
+ 	/*
+@@ -2666,6 +2668,9 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
+ 		if (!s->wmarks.activated)
+ 			continue;
  
- 	if (ret == -ENOMEM) {
--		free_huge_folio(folio);
-+		folio_put(folio);
- 		/*
- 		 * Skip uncharging hugetlb_cgroup since the charges
- 		 * were committed to the folio and freeing the folio
-
++		if (!quota->esz)
++			continue;
++
+ 		/* Check the quota */
+ 		if (damos_quota_is_full(quota, c->min_region_sz))
+ 			continue;
 -- 
-2.55.0.970.g62bdec98f9-goog
-
+2.55.0
 
 
