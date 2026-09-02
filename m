@@ -4,121 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B46CC61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 17:34:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A33B3C624D3
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 17:38:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7420A6B0092; Wed,  2 Sep 2026 13:34:44 -0400 (EDT)
+	id 944F96B00A4; Wed,  2 Sep 2026 13:38:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 719526B00A4; Wed,  2 Sep 2026 13:34:44 -0400 (EDT)
+	id 91C326B00A5; Wed,  2 Sep 2026 13:38:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62F826B00A5; Wed,  2 Sep 2026 13:34:44 -0400 (EDT)
+	id 8593A6B00A6; Wed,  2 Sep 2026 13:38:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F3C46B0092
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:34:44 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C71E8120280
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:34:43 +0000 (UTC)
-X-FDA: 85169522046.08.BD28D5F
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B100340004
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:34:41 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GDooSxlH;
-	spf=pass (imf11.hostedemail.com: domain of dhowells@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5953B6B00A4
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:38:31 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DAD0D1201D6
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:38:30 +0000 (UTC)
+X-FDA: 85169531580.11.8D60E41
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 429FC80002
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:38:29 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T6Uzr4pq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of robh@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=robh@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788370481;
+	s=arc-20220608; t=1788370709;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RnfEm+OhRi/45mFVUOgbuCPGW3hJeL3DRZRk8bidxUc=;
-	b=BGD/ak6/I3J7/UYo18mtRC5xWTsEmvwcmmzoW7kTVp6aM/7gL8FrOBq1c8bjf6T9KQQVcr
-	9qzx/YMzjHt6aC913wXjda/5BEPdbib7p2+vGJbGmgvNnixFvUJLpewI0MViru3Mq4qDyT
-	BnDJRYqqo6lRLk4frROFLjoVcZ/sUHI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788370481;
-	b=wQ36+Ki4fBFWjs6iUxByyVmh8Tf+fViXdAlVah2nAifzD/HxvgJYSD+cbtRVULMtEYVwSA
-	gskg6muwBhag58yMg6OCktajmN9TRr0X4Cm3bSeDY9XxcqEw+b7Sd1lHJwJPU9MdTGQ74Q
-	lyoOj+Hj+ic4VUauWdk/s5jB9fw7V9A=
+	bh=fsI+nhzULsUUSIbVGLobSbdGnJMPqPjlO3ivoC99fNk=;
+	b=44TT3VXWrmu4YtWwfJESRe43XvA4O3bOYx9GhFLP+UfpFwdk8hrp5c3pQBRxVJpvazLiHS
+	24wVHvcKvx1o4Q3M9PemzXoXIMEibOYuAGOOFyAw2/hZ0LGHxHb+U7uGstGL7NJdJYHdiH
+	xA6JmvQNMpFG3ZKp/LJ6TeQjEIZ0oZg=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GDooSxlH;
-	spf=pass (imf11.hostedemail.com: domain of dhowells@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788370481;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RnfEm+OhRi/45mFVUOgbuCPGW3hJeL3DRZRk8bidxUc=;
-	b=GDooSxlHuSzQyosw46KsiDKZheDfIVpul6FcnaoI/YRsDU3NOQH8QtQWvdNkK1WJlEhryg
-	6GlXVIMMBfcIOrNCB63JVRLjEvku3MfghbSymvZRTzFlW70No5VSAwlntpgAp4CC6YaRe4
-	1Y35UVqWNoAiLqrp7zafVrU3jMA41ng=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-133-ErtfLEkNMF-ON6266K0J_A-1; Wed,
- 02 Sep 2026 13:34:35 -0400
-X-MC-Unique: ErtfLEkNMF-ON6266K0J_A-1
-X-Mimecast-MFC-AGG-ID: ErtfLEkNMF-ON6266K0J_A_1788370472
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A272A195C241;
-	Wed,  2 Sep 2026 17:34:31 +0000 (UTC)
-Received: from warthog.com (unknown [10.44.32.158])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7AE1718005BA;
-	Wed,  2 Sep 2026 17:34:24 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Paulo Alcantara <pc@manguebit.org>
-Cc: David Howells <dhowells@redhat.com>,
-	Christian Brauner <christian@brauner.io>,
-	Matthew Wilcox <willy@infradead.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Leon Romanovsky <leon@kernel.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	ChenXiaoSong <chenxiaosong@chenxiaosong.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Stefan Metzmacher <metze@samba.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-erofs@lists.ozlabs.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v11 03/36] mm: Add a bulk end-writeback tool
-Date: Wed,  2 Sep 2026 18:33:15 +0100
-Message-ID: <20260902173350.3468672-4-dhowells@redhat.com>
-In-Reply-To: <20260902173350.3468672-1-dhowells@redhat.com>
-References: <20260902173350.3468672-1-dhowells@redhat.com>
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T6Uzr4pq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of robh@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=robh@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788370709;
+	b=eefEcg8rDACjy9vns4LrY8Qu0b5O7TntnMYz5JCUqLr0rzJVQlMnNL3A8tc68gQRH26o5J
+	7QHWbFFOKO7syfz8aqvOS+vYvvQtX1M8noc4gA5hyVTzoxCHc9dCV7Yu0aoxzfINP1MJ+4
+	6KQWeYQQU4yQvCtTDeqjaHp0jV2SniI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9D79040268;
+	Wed,  2 Sep 2026 17:38:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629A91F000E9;
+	Wed,  2 Sep 2026 17:38:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788370707;
+	bh=fsI+nhzULsUUSIbVGLobSbdGnJMPqPjlO3ivoC99fNk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=T6Uzr4pq+Kb+UO4HsQ0X42ZQMwEqrNkLYI01z+d2YhKthM8zctAHyrriDmaHx4SzQ
+	 aOqXsOPVcxNp5lj/SPnwfFKiaT7ZtsWIe1KheN4h+Ml8Al4W4oHiTCGKrfaq1Bw+aG
+	 /vOTnHhel0XgusHtqAAQ15PacrnKnFeT6PElkPfnrsoAI71YQMp6glvP0d2VtCRYJP
+	 Ikv6Em1jxZ8eUs/xdMnZmToKnAemXxHkr13Nwl/ucjDhwipTmwTr0OSYTe8se5zH/i
+	 8vow2FHxR4TAQTO0V3RML/oWzxwCcFFeozjODhkhkYxpAXcQ1Ze8iSkxqp49wtEN+c
+	 iRzeRHCPdTozg==
+Date: Wed, 2 Sep 2026 12:38:26 -0500
+From: Rob Herring <robh@kernel.org>
+To: Vincent Donnefort <vdonnefort@google.com>
+Cc: catalin.marinas@arm.com, will@kernel.org, rppt@kernel.org,
+	akpm@linux-foundation.org, sudeep.holla@kernel.org,
+	jenswi@kernel.org, mark.rutland@arm.com, sumit.garg@kernel.org,
+	ardb@kernel.org, thierry.reding@kernel.org, david@kernel.org,
+	danielmentz@google.com, linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org, op-tee@lists.trustedfirmware.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v9 09/10] firmware: arm_ffa: Introduce ffa-lend-pool
+Message-ID: <20260902173826.GC1440252-robh@kernel.org>
+References: <20260902104712.2399797-1-vdonnefort@google.com>
+ <20260902104712.2399797-10-vdonnefort@google.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: gmpJq1Ga5rdrK4JDsQW_3L-Z-KU8sZPTluvOvrp1E7E_1788370472
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260902104712.2399797-10-vdonnefort@google.com>
+X-Stat-Signature: fpaxambpmz9iiy6t9pstwiqywcgomdbz
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 429FC80002
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B100340004
-X-Stat-Signature: 87bkhq8ymp9asdioi845hui9ztnjd83t
-X-HE-Tag: 1788370481-775009
-X-HE-Meta: U2FsdGVkX1++R0PLbQCutssyVb9uJJPzoRJzu3k8T0CBxUQ8ntjNEzD0rDcVr+GryRWUsxocFeAh0w6xoAEFO1iwOITpm4LLPTT78PNhNe5tC5yJMquabRN9O3BxLTT2ftb07K0KtU7eehf4jZqMe7Jcl3pU+NKZNXyOCgt9ZtBVeADSRJ+37niuHMn42BrNiqwO+8ToGsaRvvQaItW6NIU+STWT4k0NiCvNhHqN66kd7Y1mRKg0lPLYiWC5TQsWAti1Z/COPdKhUfKYPy58FLfjWQ/fN2KWG22giL0VrQ8TqLwPzmp6ivmMqMtItPVdel3VndGKgegZXsKPaxZcPCQAaDVZHTwpQJiWJ00xP/omc84ndNym75eiZq4uXM56uIxZ7Zv0Mf7o4LNzQaS3eU95+1VEsTRexdVI3DpHcMHBuFe4HO1kN6AXN3OqWjN3lRPu6Q29V9knj8Xr9eq4P6rzjXG922/InW4OHzXciEDuLRda/WD68fmhAeVFYretixXUNpX7w6wmdaA0TckjRmJIWWY9cZm1o9jdp3qR6OeTIxT3tu+hbgrc/ocOTntWh+zESj47oUu49uqfC9KsxM+999eoskEAA/4Xh35BSQYVHPE8Q695IsbkMUmvUQxyANxHoDXjbJJSBloKWBr7u5kM/rBLPDjWRw8WdGJoV5IXecvwlNU6sjOF2KiT4NRJnx/PxYKF4+ONxbYnLjsbBvSaBRaoucPBt0uOv0HCilYqU6DVXKiI3JhFT0jKlXiluD6xoJSZDQmiAQYiMSwDVcFptceYqRvNHA5HEO/b4YHp6S8Ff9q/yowZ4baRWS9WSWevxas18vtj2efYn2Q8z/ma4+XrU9xZacZ9jqxTAMqOQlQF93o0iy8TDDIZ2fTGpl6Bc6C/In0aM3Z03GtXQlIJTynul3dQtTB7b7ZC7l2UFTi2U/tgI7+EsPZj0duSxPzyCWgdTKJDa2nS4p7
- Kt6gdZlX
- CNLdUSKUYrg5Lazv0BjN3h8xL6maV/YZYFXoXj0wZ64r9Nrh0DwQ0P6atgCs+Er5u6XgG1lskg9s66DIvIdrYZ09UfWElC2IEFnpRB98TPSRQ1MSe/l7jRD6eQHqBI0OvLzpl/zQ1qBPgrZXwyNiI3AgKOYCyRvvxZ+UjNxvuaKaEqAa5Ao1+mwAvfARFK7misjYqOsVkF+sI1X/X3M2fNeYBfkNR2FTaye7uYMoedF+IpCp4VaIVWU5kV4awc9YLTAHIGMy8XavQZLzKrQYsdNkrjQzgwXSkgiRPjtoXxKMSTrNxCpNVhN4K6nny0yMly7+4OPn1mSucMuplW3kLSoMTVpjIl8VLvWXj1U54HrWrTHHB2u2QepLdZvF3oYNgAuc5VO5wonoS5QpxtlyWHgInU3UMvAq1DBn4q55Cq0rdbfdikslo1KOwgoD4qDUbkLi0ctMwasbURiH75tuFGUTIAD9miAEXxOqENr+6xAlfFAnLFDuVgruNm2GhNsOqavissvoGKtLPKdnkRJ9thdsJuhKGeLfy/ssh
+X-HE-Tag: 1788370709-112087
+X-HE-Meta: U2FsdGVkX1/MoJOJfitHaejDlWVc7MKkI65tnzJbR28+wHhAijVtXarF+wBAUo7ItXzoXPkugQqO7Oq6hg/a3i6ZsoCoXOEDGINYCfhpaEsotuhZBTd0BpIrB7SRzws/1QJ410qY44HKwew+8tsAq+0XXuPsVQNRlkIkrSoNLm+TT5vtKCD5K8him71fE3knSfQP+emVfb6QDJA+Av/CgVOh/8KzGeCv9q30eB0sBU0mNzqIzCruOtxlZPJ+YFxiuq7dSG5M35+hSnxgAZ/kTLIdo4VIADQlcvhNgUdRhuMJKDTXHa3/+oPs7ay+4gE0eipjZTOvVlQW3BSaVLk168nx3Tr7ZyG9ujIJHJCM1d9F70ddp/sJqyLxDQmmGRiS9/51fczye+gu8uLsVrqXZRGY86VI7V4HVJOaNoYeMgzxHU5KHO/L1faJiZfB/R7otGQO+JWsVeXI1pbbJgr8vrZfigBqF1DMc9VxhbzS+0JIb2hLf3hkf3LBqYcI8OwOKkEIAaI4CE0cEFodfKSEiENqt52F8PhyDJ4EZOzvYCQJqMuPr3mpfW314Umg9KqLW3fLhTupQvVvGmeeRud9iU6zwM2qYTMxn7mtAdbbuqf4N3+rwIluE2WIVdk02WY0ZLI/Kd7Glv50ifaioci+atDfffIakh56mzepey12Szi54RTSvJcK1Mm/mVTDfFMcW7ngeX/JrWRPJQZ1bX2e9NflhvjXjXKo/BBneVLGmkEMRdzvsKd7CDbXUKnfYBiRftgan06ULi/hUYurrmph39wBINFFQIMMjNtkAMrM7suv8vKD+h6OSxO23DtOuwLYZE7dmBlYIFpDkaOBI23/hdiY1CM9UczsxhOim+tayEvBKYgOjQ6v2oSgWybaBkXpoWXGAZPRvpW4AISLvbOH4ItPwaysCfwvrvGJHEAhFFkL/ZHBCP7TQPJfQ3GDCvIH4INDzOyX6dWDSrVDuoO
+ LSba0gLY
+ nWAfbSa/qXYQjtbOLPat+87lypJhHOBbgmkAH+RRPraZyZJ1GyorAsoxfNKAu1HIs8DdVUzqSWe8W+Nwo/G8C/Nj68hqXGI/0YkNEIJVJzbikDrqGVDQkEgPWtTGPEnSJPJcNfiFoFtU5Ng8OYJQeotD5NgWrFFmyaZMjPC1Ui0z0ruisrZ5y9GTlYlP9JO4Jav4QMBEX6JwbAc8/aB16jGhRmtgUmK0XoqqezPc320Yfh5xHGb/dIK8r6BjMWqQJmoEeYaXorH9/tUENpsY+L9WQwvEPRZm4IlvhPFhF9m3Aou9ZVWSi3gm/0qxUo8lYufr6bTnyjsmy1s8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,169 +96,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a tool to perform bulk folio_end_writeback() across a series of
-contiguous folios.  The function takes a beginning and an end file position
-and ends any folio that lies wholly in the range, leaving the end position
-of the last folio it considered in the iterator state for the filesystem to
-use as a hint for when to call again.
+On Wed, Sep 02, 2026 at 11:47:11AM +0100, Vincent Donnefort wrote:
+> When memory is lent to the Secure world via FF-A, fatal CPU speculative
+> reads from Non-Secure can still occur as long as it retains a cacheable
+> mapping to that memory. Introduce the "arm,ffa-lend-pool"
+> reserved-memory CMA driver to unmap pages before lending
+> (ffa_prepare_lend()) and restore them upon reclaim
+> (ffa_lend_reclaimed()). Devices bind to the pool via the "memory-region"
+> DT property or via ffa_lend_pool_attach().
+> 
+>   reserved-memory {
+>       #address-cells = <0x2>;
+>       #size-cells = <0x2>;
+>       ranges;
+> 
+>       ffa_lend: ffa-lend-pool {
+>           compatible = "arm,ffa-lend-pool";
 
-As folio_end_writeback() has to access the xarray to clear the marks set on
-the entries for the folios involved, this tool provides the opportunity to
-merge the two xarray accesses (the iteration and the unmarking) and also do
-statistics update in bulk.
+Needs a binding schema...
 
-Suggested-by: Matthew Wilcox <willy@infradead.org>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Christoph Hellwig <hch@infradead.org>
-cc: netfs@lists.linux.dev
-cc: linux-mm@kvack.org
-cc: linux-fsdevel@vger.kernel.org
----
- fs/netfs/write_collect.c  | 51 +++++++++++++++++++++++++++++++++++++++
- include/linux/writeback.h | 10 ++++++++
- mm/page-writeback.c       | 45 ++++++++++++++++++++++++++++++++++
- 3 files changed, 106 insertions(+)
+>           reusable;
+>           ll-map;
+>           size = <0x0 0x4000000>;
+>       };
+>   };
+> 
+> Signed-off-by: Vincent Donnefort <vdonnefort@google.com>
 
-diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
-index 210eb8f3958d..c5b07b3201d7 100644
---- a/fs/netfs/write_collect.c
-+++ b/fs/netfs/write_collect.c
-@@ -21,6 +21,57 @@
- #define NEED_RETRY		0x10	/* A front op requests retrying */
- #define SAW_FAILURE		0x20	/* One stream or hit a permanent failure */
- 
-+struct end_writeback_ctrl {
-+	struct xa_state xas;
-+	uoff_t fend;
-+};
-+
-+/**
-+ * end_writeback_iter - End writeback for the folios within the range
-+ * @mapping: The pagecache to modify
-+ * @from: Pointer to the starting position
-+ * @to: The end position (exclusive)
-+ * @ctrl: Iterator state
-+ * @folio: The last return from this function or NULL if first call
-+ *
-+ * Remove the writeback mark on folios that are entirely within in the given
-+ * range, where @from is included in the range, but @to is excluded from the
-+ * range.
-+ *
-+ * Return: The folio to end writeback upon or NULL if the next folio isn't
-+ * wholly within the range.  Note that this does not necessarily imply that the
-+ * ending is complete.  @ctrl->fend is updated to point directly beyond the
-+ * folio that was considered and may be negative if cast to loff_t.
-+ */
-+static
-+struct folio *end_writeback_iter(struct address_space *mapping,
-+				 uoff_t from, uoff_t to,
-+				 struct end_writeback_ctrl *ctrl,
-+				 struct folio *folio)
-+{
-+	if (!folio) {
-+		lockdep_assert_in_rcu_read_lock();
-+		ctrl->xas = (struct xa_state)
-+			__XA_STATE(&mapping->i_pages, from / PAGE_SIZE, 0, 0);
-+		folio = xas_find(&ctrl->xas, (to - 1) / PAGE_SIZE);
-+	} else {
-+		folio_end_writeback(folio);
-+	retry:
-+		folio = xas_next_entry(&ctrl->xas, (to - 1) / PAGE_SIZE);
-+	}
-+
-+	if (xas_retry(&ctrl->xas, folio))
-+		goto retry;
-+
-+	if (!folio)
-+		return NULL;
-+
-+	ctrl->fend = folio_next_pos(folio);
-+	if (ctrl->fend > to)
-+		folio = NULL;
-+	return folio;
-+}
-+
- static void netfs_dump_request(const struct netfs_io_request *rreq)
- {
- 	pr_err("Request R=%08x r=%d fl=%lx or=%x e=%ld\n",
-diff --git a/include/linux/writeback.h b/include/linux/writeback.h
-index b749a9a5a5ee..4f34cbc964f6 100644
---- a/include/linux/writeback.h
-+++ b/include/linux/writeback.h
-@@ -358,6 +358,16 @@ bool wb_over_bg_thresh(struct bdi_writeback *wb);
- struct folio *writeback_iter(struct address_space *mapping,
- 		struct writeback_control *wbc, struct folio *folio, int *error);
- 
-+/* end_writeback_iter() state. */
-+struct end_writeback_ctrl {
-+	struct xa_state	xas;	/* The xarray walker */
-+	uoff_t		fend;	/* The next file pos after the folio last considered. */
-+};
-+
-+struct folio *end_writeback_iter(struct address_space *mapping,
-+				 struct end_writeback_ctrl *ctrl,
-+				 uoff_t from, uoff_t to, struct folio *folio);
-+
- int do_writepages(struct address_space *mapping, struct writeback_control *wbc);
- void writeback_set_ratelimit(void);
- void tag_pages_for_writeback(struct address_space *mapping,
-diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-index 6c9c7ba89b8a..632b0616eceb 100644
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -2546,6 +2546,51 @@ struct folio *writeback_iter(struct address_space *mapping,
- }
- EXPORT_SYMBOL_GPL(writeback_iter);
- 
-+/**
-+ * end_writeback_iter - End writeback for the folios within the range
-+ * @mapping: The pagecache to modify
-+ * @ctrl: Iterator state
-+ * @from: Pointer to the starting position
-+ * @to: The end position (exclusive)
-+ * @folio: The last return from this function or NULL if first call
-+ *
-+ * Remove the writeback mark on folios that are entirely within in the given
-+ * range, where @from is included in the range, but @to is excluded from the
-+ * range.
-+ *
-+ * Return: The folio to end writeback upon or NULL if the next folio isn't
-+ * wholly within the range.  Note that this does not necessarily imply that the
-+ * ending is complete.  @ctrl->fend is updated to point directly beyond the
-+ * folio that was considered and may be negative if cast to loff_t.
-+ */
-+struct folio *end_writeback_iter(struct address_space *mapping,
-+				 struct end_writeback_ctrl *ctrl,
-+				 uoff_t from, uoff_t to, struct folio *folio)
-+{
-+	if (!folio) {
-+		lockdep_assert_in_rcu_read_lock();
-+		ctrl->xas = (struct xa_state)
-+			__XA_STATE(&mapping->i_pages, from / PAGE_SIZE, 0, 0);
-+		folio = xas_find(&ctrl->xas, (to - 1) / PAGE_SIZE);
-+	} else {
-+		folio_end_writeback(folio);
-+	retry:
-+		folio = xas_next_entry(&ctrl->xas, (to - 1) / PAGE_SIZE);
-+	}
-+
-+	if (xas_retry(&ctrl->xas, folio))
-+		goto retry;
-+
-+	if (!folio)
-+		return NULL;
-+
-+	ctrl->fend = folio_next_pos(folio);
-+	if (ctrl->fend > to)
-+		folio = NULL;
-+	return folio;
-+}
-+EXPORT_SYMBOL_GPL(end_writeback_iter);
-+
- int do_writepages(struct address_space *mapping, struct writeback_control *wbc)
- {
- 	int ret;
+[...]
 
+> +static int __init ffa_lend_pool_setup(unsigned long node, struct reserved_mem *rmem)
+> +{
+> +	struct cma *cma;
+> +	int ret;
+> +
+> +	if (!of_get_flat_dt_prop(node, "reusable", NULL) ||
+> +	    of_get_flat_dt_prop(node, "no-map", NULL)) {
+> +		pr_err("FF-A lend pool: node must be 'reusable' and not 'no-map'\n");
+> +		return -EINVAL;
+
+Your schema should enforce/check this.
+
+[...]
+
+> +static const struct reserved_mem_ops ffa_lend_pool_ops = {
+> +	.node_init	= ffa_lend_pool_setup,
+> +	.device_init	= ffa_lend_pool_device_init,
+> +	.device_release = ffa_lend_pool_device_release,
+> +};
+> +RESERVEDMEM_OF_DECLARE(ffa_lend_pool, "arm,ffa-lend-pool", &ffa_lend_pool_ops);
+
+Do you need this early? If not, you can create a platform driver for 
+"arm,ffa-lend-pool". ramoops is implemented that way for example.
+
+Rob
 
