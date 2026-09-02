@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 962A0C624D0
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 04:06:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0494C624D0
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 04:16:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B1EC76B0092; Wed,  2 Sep 2026 00:06:54 -0400 (EDT)
+	id C1C136B008A; Wed,  2 Sep 2026 00:16:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF77F6B0095; Wed,  2 Sep 2026 00:06:54 -0400 (EDT)
+	id BF2626B008C; Wed,  2 Sep 2026 00:16:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 998F26B0096; Wed,  2 Sep 2026 00:06:54 -0400 (EDT)
+	id B2FE66B0095; Wed,  2 Sep 2026 00:16:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CD106B0092
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 00:06:54 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E7FD2A074C
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 04:06:53 +0000 (UTC)
-X-FDA: 85167486306.29.5223638
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 876616B008A
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 00:16:24 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1868B80642
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 04:16:24 +0000 (UTC)
+X-FDA: 85167510288.04.26E0045
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5457480007
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 04:06:52 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WZ1AADmm;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 7C20BC000B
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 04:16:22 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZUs5V50K;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788322012;
+	s=arc-20220608; t=1788322582;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rCDBGWhjOow6BVaXEWKL/bvhPOmCcwouuBw7qgvnDDI=;
-	b=WkFQ7tIRJevVu330QTLMW5tAYJrbVTuaOoYBYmKRUh2JxY2nXh7PwYq14rtw6BAhRX3vCg
-	HKR815v6C5UaLZHUuhLMzu1+EVjhZi6WhAO2AQoacFgKLFFAoaf4AbKfmpUk7WOdSqLs7z
-	JfLmKt9iB4mlGh8PRG0ww7VRFdIyHMY=
+	bh=BZLplcC78nW04+rNik0Rv2RsIFoVAuiKuAJHw6vULLA=;
+	b=37VMKGP+4n201FjZWgDeJ1x5BeUdkOvy/8BvFTVReXk6zwSOuYHI/DcesbwMZpS76D0ZCo
+	GO8+TA77daHvhuAtfvOkV0oirxb6hnBg6Q47zGggkULR9CDUxUGtc0YzkMODvnRmm/7F8x
+	l5+lige97Gp2hO9auUP8kU5YDn3p4Ts=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WZ1AADmm;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZUs5V50K;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788322012;
-	b=L6z7UiTh8gDKOODIo+FFHIEQHDXH8m+8rQ2GDL1ku9wfMd263lwNncoXNh6gGXYJE4A1xY
-	ZfVCW1DbtDzZRQtrNiXBFCO2X8zyH180S/nGevqo6ibE3WHy1FoZlKv192JjYTgDkp3vQx
-	TTlHGGW5B+ltfJBn+KTvZT6HfsmJWhc=
+	t=1788322582;
+	b=YgLxl+A+dl/KB5nebTfp+tPK6drjmT7ngvM4GY9B0VX7+TNvcR9XHyU9/4n+p+1nXgVs7f
+	F6EKPdwd7/R+jN1H2K4zEaLn5/VEebpMBKeCJGXm+cP5AQ/SAqWvFnSAsnEyK/NDUppFnu
+	Fy+EqfkcgqPWXcCrOlX2Dc5lixwMYBY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3E3BD600C8;
-	Wed,  2 Sep 2026 04:06:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A27D81F000E9;
-	Wed,  2 Sep 2026 04:06:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1194E600C8;
+	Wed,  2 Sep 2026 04:16:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE5DF1F000E9;
+	Wed,  2 Sep 2026 04:16:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788322011;
-	bh=rCDBGWhjOow6BVaXEWKL/bvhPOmCcwouuBw7qgvnDDI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WZ1AADmmQSSKkceQoWmcRuNr2I+ritEKK0lzbaH2WL8WAtsQRXEA/HP/1V8mTLmA4
-	 wY9glCWTT9p+9d5dc10HVqE3WbWRdPCriT4WIU46oMIVfv/hsHYGOuvvWH2Ehbzv2c
-	 T4zotcImWkaRHriM4rztuOff+Szmh1twI+Xs3XaM4NC1Ja+1sU4PUEK3jPAdsMIU6+
-	 vqlM/Sd/wF7jDMqQrJEDfPoVKoEB1IaamSynXftgSEe1Ax8mgFUblaS1Jckrt3Bvgw
-	 KVq0umxJ5deFr4I8vpZCO83MgKUIYiqS7iVOqcvdZlC1UJag7Bb8sVJ2wUQISczts4
-	 YnhepOW6Ry6yg==
-From: SJ Park <sj@kernel.org>
-To: Nathan Gao <zcgao@amazon.com>
-Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	baolin.wang@linux.alibaba.com,
-	david@kernel.org,
-	ryan.roberts@arm.com
-Subject: Re: [PATCH v4] mm/damon/ops-common: use a page-aligned address in damon_ptep_mkold()
-Date: Tue,  1 Sep 2026 21:06:42 -0700
-Message-ID: <20260902040643.83720-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260902031655.84721-1-zcgao@amazon.com>
-References: 
+	s=k20260515; t=1788322581;
+	bh=BZLplcC78nW04+rNik0Rv2RsIFoVAuiKuAJHw6vULLA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZUs5V50KLwRoGyMtkB1q+P4WuOZQdIgVCfbYV1lxIu+szOOxUYKyLxRa5oFZwj6Xn
+	 MOFB+A3ho/QCG+1FNcOrk109aBfOPaUKGVFA4Y/udCbbfyS5hp1JBDcQn9Yioo8896
+	 4gGmxHNyvahFFCMylZtWPPNXF9fXaJGyajMIGT0cRUKpe4Zc4QwmDEqvB0vj2/u8iF
+	 9rqtus/lJejBJJnC8xR80EzOn2H0lkIGHH6zMPuUYv7WvO93WwnbuukJmcTAcSVxbI
+	 j5uU2jayAE1ZLy9EzqJS/nZzUItVmAYk0xfBp0SYGdf+1iw64eby9gr9cW84kiUOOA
+	 eVa67NbVMnDHg==
+Date: Wed, 2 Sep 2026 07:16:12 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Li Zhe <lizhe.67@bytedance.com>
+Cc: akpm@linux-foundation.org, apopple@nvidia.com, arnd@arndb.de,
+	balbirs@nvidia.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	david@kernel.org, kees@kernel.org, mingo@redhat.com,
+	muchun.song@linux.dev, tglx@kernel.org, linux-arch@vger.kernel.org,
+	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, x86@kernel.org
+Subject: Re: [PATCH v11 3/7] mm: add a template-based fast path for
+ zone-device page init
+Message-ID: <apejDEdW95T-tekb@kernel.org>
+References: <20260831111638.76012-1-lizhe.67@bytedance.com>
+ <20260831111638.76012-4-lizhe.67@bytedance.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260831111638.76012-4-lizhe.67@bytedance.com>
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5457480007
-X-Stat-Signature: 61og8jczqu8adqqhtp539qn9tjo9dgp4
+X-Rspamd-Queue-Id: 7C20BC000B
+X-Stat-Signature: x7e8wdxq5wztnjq1m7rxi3bf5se1kgnq
 X-Rspam-User: 
-X-HE-Tag: 1788322012-536759
-X-HE-Meta: U2FsdGVkX19mZG/6ki5NLW0VHgETgSftgOKqpq53cLwtgf4SWDWTBeSl0PQ1Lu0wHin41xXe8G5H/Amze1ETWEYxvPXHluh9MFQ664SdFqVILdEBx1Gou6IFh1DqY72PDHtmpDhL1lxM/0I8AV6LPplsNp4ltXiLyOLCbZj3tGX1NEQqabMQozE/y5jhBJlfpghnVBoYjLtyOeVIbYb2MRrZQlFvZ+mFw+HNOgMaU7eSI2q84dBm4K6n4EMeSXHiqb2Ipe6sb8E8GhOJ6Mp3A0gsbbInHJheiNYiJiq+rXUOubQU8/66pzpcXu6k0vlWE2WX4AqZob+love5kP07g0XSbXpkA9nPHIcVimls6QUt/2s4eoM+I0uTo7Ev9GR5uXgZuiaoWhAwcdb+apwI1jwy0NDuQpTY3hkVlJGI2o+3e5Gm63DrPXeEnnoJz1vetVup0yaPjPEos4jBI5YawjBcVvdPRlODOLFGcxeWf2gNv45dxFqwhmlCJ1s8r2Z8LX8JTGxtiW4YCTM/NXTN7w9+fcW6wxLzRm/Ge9pzGFgnRM/P+1rjw17nqDrUMt9dtwjyfVYHg6vWy19jFdoAkTPahEVbwSU75iO4PRKcuPkyH5zMdnQcg+6BORwGHr9AkjF4b/6WdZIzEpV1SUScP7vEWshaUGalz4jyou5EoOjMJ9iknNd0AEFPaKUEG9hEHITJgmZsmkL9EPRJr9uAXLgnYY6StlRzPCTHFGKLm/x52xtOcV0+F4ml0stks/9JEDSVqVpu3xbvTqQi7F8dRxO1K0BclK7bNiaSgXuCLn88XJ3KxGVakMro4K+axr5LdC887ryY5V4amuUq85/3Wf/OLDKMPXKyBLqKRIFBlL/oAKQP+7uv7oPpMt/+Nx5ohW5zLpkL3/rNPKrq6Uis6zgnl4oU2pitsP9Ch1huAuLSKpHmbPfPvmEAo6gQ4WBPYXMkMPAwe01ZH02fSs6
- qarrtTdB
- eKqKuo22ZsRsJ1B1npBVqRFK5YWyq14qcUFyUmt1p8XF51P3IYDudUjmvb0z+E5PpMRv/hE+wc9YEN0XUqsxx8kFJHR1Ulmj7+K16QPYpVLRB3xwl0amPcyyMR9MfcUk+J+nddZm/DBsNHmLfuTD/GWlWBamefBWm2rrH176iMzSxWDkaN86JVtJRbBTfhkLiJ1Ku5Llec9mPX1dZw9Deq6m0bpM82x6i95Z59nOJrevOl+0t96Pw8e0pb3FyFcJSodv9Ds5SHg3XGHOhS8/oI1B8C/VEMqG+m1WKuzNyMuUmDGfp7Dx2gBvaSOU0seSJMGJ3tF+OszuphELB71sGn1fQTjJrLH8gn7Kf0UskYxMD4xsH2sQIEf2WBpzFGhopsP9+ZlpeFubuB94DfEh0hO3/MS075LVr1Ycb
+X-HE-Tag: 1788322582-618921
+X-HE-Meta: U2FsdGVkX18bfUqwIaA4z9B2h+0UMgNimN6CcxcoZM4G/2MAXIVH91JYrbly+V/EBcWFLLpuflp1Ow+pWmwgDVzfn314JkdG3P0+Dlmz46aQr3dT3rbl3EDh05nWFyqpzwA8p3XeyTrd9OwEpJFArGhx5uKs4mbKpLw7rHkIqTH+utke3I9IwiTgilmBCbtkk+c0NC9FnZvilau2xAse5RKto+zSIFg9xxYyMqlTHUgypeeCb4aLnI5CGnY6cjU7bGtSgKVS09QlwiZOLeGjFSFEFICsg9ZC8icdD2VzKMO3NUFL+ef2mnXUGBvpCohxsWMCFe6Nj8d8U6GFb1vrWfbukFx/FaACaAQ6yZwbctItgwOjPsyj4Orwvees7muUBXYFb+eB6IUgpBVMMq8SGr8GOpk+4tVxlBNGqFlOSFmj3En8eTihxRXp/eCEIhO6gqgv9jl2mVDcUvrPJUJfNoKw7+OuZGUUwWB9SR0JhCr6bp7Qmrhw3xQcXYGm1jq0Odg5orFr8WNY9LDuhC7gL557U8tEvbj5oFKzBygWtT3IoZaFXovqnk5t0gl55D51SDER7VFGOr+lkw7Uo5WhWsoOA8o9Ffh71UD7aDWaTpOPcZ6plByyy6ZjNnlH+xd9UzIkRSxUKDiYNW/4Hw7/1sMoVGZhPemAbzh8U8oG8XsAOPEzeh+O1e7NJrbJ7tIMoS8+eNYX4sHAnC5PJHuyrh9pXpv76GePTcgsf633+V8fipDBPx5cX0lqyfoadszEbSGW684f2iDYITxqVgqsd/rJNrfrwuLjTjFs6EBFjCct/A6hZJxKXBBBKrw1OS5i4PnHfFR9oJrAmCEbBf8r4TWmgxDrEEf4wjdIYMjqiXQYQqplDNow9hogXrTN778Pxiri1U890NJIBNZxdPJbDOMweB1z/6UtsqMSfUP/V4L5p1HWSL1rr6ASu6l5XPs2AsqoIOHh8jzYA6ZqftJ
+ 0RZ46qLr
+ M2ZOa+fH1dYQSgguoEBQSufG5Pzncsif5yE7Wvnyx/CTJhJbRkiNGCw/dMuSFXiuL13yliCHk67ASJJSpeCObiDt5b9awdojiMptmZYLMFm/YjY+PXRk+aeRCn+LA2H7qLEvLqsTVmGZ+ueVrq0/KqmAFZariYRuEgdEzjnSWEn/yB3G+KevFwGXZGMM6h7OnLvNluOde16qd3x5UE0RcbgL7+1uauomTg/Uf+/BQsHVcxruJXTJOD/wzCAjtinwxjS56OqrI5xqvBpQwPqbOTIRpnM58yHWMw4Im/F6bJCMxmfA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,110 +96,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 1 Sep 2026 20:16:55 -0700 Nathan Gao <zcgao@amazon.com> wrote:
+On Mon, Aug 31, 2026 at 07:16:34PM +0800, Li Zhe wrote:
+> memmap_init_zone_device() repeats nearly identical head-page
+> initialization for each PFN. Initialize the first real ZONE_DEVICE head
+> page through the existing path, copy that final state into a reusable
+> template, refresh the PFN-dependent fields in that template before each
+> copy, and copy it into the remaining destination pages.
+> 
+> Use the template path unconditionally. The page_ref_set tracepoint is
+> primarily a debugging aid, while this code is still initializing struct
+> pages before they are handed out. From the perspective of users of those
+> pages, the initialization-time refcount transitions are not part of the
+> observable page lifetime.
+> 
+> This means page_ref_set will no longer observe every initialization-time
+> refcount assignment for copied ZONE_DEVICE head pages. The impact is
+> controlled because the final initialized struct page state is unchanged,
+> and keeping a separate non-template path only for this local tracepoint
+> observability would add complexity to the common path.
+> 
+> This patch accelerates head-page initialization. The pfns_per_compound
+> == 1 case gets the full benefit here, compound tails are handled in the
+> next patch.
+> 
+> Tested in a VM with a 100 GB fsdax namespace device configured with
+> map=dev on Intel Ice Lake server. This test exercises the nd_pmem rebind
+> path (pfns_per_compound == 1).
+> 
+> Test procedure:
+> Rebind the nd_pmem driver 30 times and collect the memmap initialization
+> time from the pr_debug() output of memmap_init_zone_device().
+> 
+> Base(v7.3-rc1):
+>   Average of rebinds for nd_pmem driver: 221.07 ms
+> 
+> With this patch and its prerequisites applied:
+>   Average of rebinds for nd_pmem driver: 155.00 ms
+> 
+> This reduces the average memmap initialization time measured during
+> rebind from 221.07 ms to 155.00 ms, or about 29.9%.
+> 
+> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
 
-[...]
-> Triggered by the full 7.1/7.2 kernel selftest suite on arm64 (EC2
-> c/m6g.4xlarge). The kernel sometimes crashes at or shortly after the
-> DAMON test.
-> 
-> What the overrun does depends on the page that happens to follow the
-> page table, so there is no single signature. If that page is read-only,
-> the write faults in the sampling path itself:
-> 
->   Unable to handle kernel write to read-only memory at virtual address ffff0003c5d2d000
->     FSC = 0x0f: level 3 permission fault
->     CM = 0, WnR = 1, TnD = 0, TagAccess = 0
->   CPU: 10 UID: 0 PID: 3487 Comm: kdamond.2
->   pc : contpte_test_and_clear_young_ptes+0x70/0xc0
->   lr : damon_ptep_mkold+0x1e8/0x1f8
->   Call trace:
->    contpte_test_and_clear_young_ptes+0x70/0xc0 (P)
->    damon_mkold_pmd_entry+0x150/0x170
->    walk_pmd_range+0x110/0x2b0
->    walk_pud_range+0x10c/0x208
->    walk_pgd_range+0x134/0x258
->    __walk_page_range+0x98/0x1b0
->    walk_page_range_vma_unsafe+0x90/0x148
->    walk_page_range_vma+0x28/0x40
->    damon_va_walk_page_range+0x114/0x2b8
->    damon_va_prepare_access_checks+0xec/0x1a8
->    kdamond_fn+0x534/0x770
->    kthread+0x128/0x138
->    ret_from_fork+0x10/0x20
-> 
-> Otherwise the page is writable, the PTE_AF clearing succeeds silently
-> and the damage only surfaces later, in whatever happened to own the
-> page, so the backtrace is unrelated to DAMON and differs between runs.
-> 
-> Pass a page-aligned address to the ptep_test_and_clear_young() call in
-> damon_ptep_mkold(), which is the only place DAMON can reach
-> contpte_test_and_clear_young_ptes() from. Nothing else sees the aligned
-> address, and r->sampling_addr itself is left as is, so the sampling and
-> region bookkeeping semantics are unchanged.
+With one nit below
 
-Thank you for finding this nasty bug and sharing this great fix, Nathan.  Also
-appreicate again for your revisioning efforts that accepted my humble and picky
-revisioning requests.
-
-> 
-> Fixes: 6f0e1142173a ("arm64: mm: support batch clearing of the young flag for large folios")
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: David Hildenbrand (Arm) <david@kernel.org>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Nathan Gao <zcgao@amazon.com>
-
-Reviewed-by: SJ Park <sj@kernel.org>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 > ---
-> V3 -> V4:
-> - Align only the address that is passed to ptep_test_and_clear_young(),
->   rather than @addr for the whole of damon_ptep_mkold(), so the
->   mmu_notifier_clear_young() call keeps seeing the sampled address (SJ)
+>  mm/mm_init.c | 38 +++++++++++++++++++++++++++++++++++---
+>  1 file changed, 35 insertions(+), 3 deletions(-)
 > 
-> V2 -> V3:
-> - Move the alignment into damon_ptep_mkold(), instead of aligning in
->   damon_va_mkold() and damon_va_young().  The ptep_test_and_clear_young()
->   call in damon_ptep_mkold() is DAMON's only path to
->   contpte_test_and_clear_young_ptes(), so damon_ptep_mkold() is the
->   closest place in DAMON to the function that requires an aligned
->   address (SJ)
-> 
-> V1 -> V2:
-> - Align inside damon_va_mkold() and damon_va_young() rather than aligning
->   r->sampling_addr itself, so that sub-page sampling addresses remain
->   possible for future non-PTE access check primitives (SJ)
-> - Point Fixes: at 6f0e1142173a instead of 3f49584b262c, since the
->   unaligned address was harmless before that commit (SJ)
-> - Describe how the issue was noticed and what it does to the kernel (SJ)
-> 
-> v3: https://lore.kernel.org/all/20260901201001.33271-1-zcgao@amazon.com/
-> v2: https://lore.kernel.org/all/20260831221151.50561-1-zcgao@amazon.com/
-> v1: https://lore.kernel.org/all/20260827193821.46115-1-zcgao@amazon.com/
+> @@ -1093,10 +1106,29 @@ void __ref memmap_init_zone_device(struct zone *zone,
+>  		nr_pages = end_pfn - start_pfn;
+>  	}
+>  
+> -	for (pfn = start_pfn; pfn < end_pfn; pfn += pfns_per_compound) {
+> -		struct page *page = pfn_to_page(pfn);
+> +	if (!nr_pages)
+> +		return;
+>  
+> -		__init_zone_device_page(page, pfn, zone_idx, nid, pgmap);
+> +	/*
+> +	 * Seed the reusable head-page template from the first real struct
+> +	 * page. The normal page-init and refcount helpers must operate on
+> +	 * a real memmap entry rather than a stack object.
+> +	 */
+> +	pfn = start_pfn;
+> +	page = pfn_to_page(pfn);
+> +	__init_zone_device_page(page, pfn, zone_idx, nid, pgmap);
+> +	memcpy(&template, page, sizeof(*page));
+> +	if (pfns_per_compound != 1)
+> +		memmap_init_compound(page, pfn, zone_idx, nid, pgmap,
+> +				     compound_nr_pages(pfn, altmap, pgmap));
+> +	pfn += pfns_per_compound;
+> +
+> +	/* Initialize the remaining head pages from template. */
+> +	for (; pfn < end_pfn; pfn += pfns_per_compound) {
+> +		page = pfn_to_page(pfn);
+> +
+> +		zone_device_page_init_from_template(page, pfn,
+> +						    &template);
 
-FWIW, I insisted on this version to make clear the intention of this pin point
-important fix.  I still believe this minimum and clear change is better as the
-hotfix.
+Nit: this seems to fit into 80-chars line without wrapping.
 
-Meanwhile, to v3, Baolin mentioned it would be prefered to keep page alignment
-from callers.  As I replied to the comment, that makes sense to me.  And it
-seems some DAMON code has unnecessary unaligned address usages that could be
-problem in future.  I will try to revisit such DAMON code and fix/improve as a
-followup.  As a result, the resulting code might more look like v3 or v2.  If
-you are interested, please feel free to send patches, too.
+>  
+>  		if (IS_ALIGNED(pfn, PAGES_PER_SECTION))
+>  			cond_resched();
+> -- 
+> 2.20.1
 
-This patch is applied to damon/next [1] tree.  If this patch is not added to
-mm.git in short term (~2 days?), I will ask mm.git maintainer (Andrew Morton)
-to pick this.  So, no action from your side is needed for now.  If it seems I
-also forgot doing that or you cannot wait for my action, please feel free to
-directly ask that to Andrew.
-
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
-
-
-Thanks,
-SJ
-
-[...]
+-- 
+Sincerely yours,
+Mike.
 
