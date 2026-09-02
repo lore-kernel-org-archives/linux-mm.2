@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF701C61DD3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 00:27:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63494C61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 00:27:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FFAA6B0088; Tue,  1 Sep 2026 20:27:36 -0400 (EDT)
+	id 732D96B008C; Tue,  1 Sep 2026 20:27:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DD576B0095; Tue,  1 Sep 2026 20:27:36 -0400 (EDT)
+	id 70A176B008A; Tue,  1 Sep 2026 20:27:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29EB66B008C; Tue,  1 Sep 2026 20:27:36 -0400 (EDT)
+	id 5845D6B0095; Tue,  1 Sep 2026 20:27:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 084F06B0088
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 38B946B0092
 	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 20:27:36 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1BC381A0595
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9A69BA4405
 	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 00:27:35 +0000 (UTC)
-X-FDA: 85166933670.10.0F239BF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 9FB4A20002
+X-FDA: 85166933670.02.9E09A20
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0A0D8180007
 	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 00:27:33 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RQUO+4NY;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="EBp/q+jh";
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788308853;
-	b=2eyJiU6I/od5SCZxpaCkXy/cVFFXIxmOVfDltWhxC9xeFb+K+ROsegKp4ScvqrhiZJeiOE
-	Z9ifQwNg95+U0UzP59+JRPJQqFSsU/CM4WwI6+C3JVGRotwKbXiLlavTFjOQKfhuPJP9bp
-	G46BAoH1XIYVeNmAqDLN3894+IeXi8c=
+	t=1788308854;
+	b=QcDLMbUwWnSJQigQ8EM5zi3P/Y185dlwURZZetpECEQuhBWAtCyYRqn7hML1diWOglomWP
+	b02L1CwK4+/QZvkVEqGtAS0FNJsfDS3JQ5d9dPm5RZ+aHwltqnOnkv6JwIJ+EG7BGiFsP7
+	258EMQ1DhkrUTg6tVRKcqlgp+RjED6k=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="EBp/q+jh";
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788308853;
+	s=arc-20220608; t=1788308854;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=mbv8WxNYdZDCGISix1qH3K9oOQ8RMlyWgnMJQvHMmG0=;
-	b=aQI0klBF7cyaRbi2gMm6IqOcPRQu8vMLeXnN1dbxh0E1Wfe2vFCMhexrak6QWU4dB1pzx1
-	gceE/fZw8QKeGSbF1XbXr4Oe3yXub1Q0iTHBo4zq0Ia7Hpxa8ajirysNlkYBMLSRYrnlb9
-	/YNF5CeetXi9FatVon5AzMZw5cFe5tE=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RQUO+4NY;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4Aq7mCS1n7SM9+gwhZmdlAUpokje7QH5p7CwEaALh/c=;
+	b=IfTm1cxqfd+gbae08gvE0sB+CLbH1HT5CRhjfZ1QubMgbPON6W9eN3B1nBYwCqkmL9shvt
+	FTAqwiblpMzXWw/MqFGAQRf16L/U7AdeYMf6b/JhLIQwSmIUTlVmwMiXgr8GA1DE6QnJao
+	TrC/wMVOVLcnXtwP1gUV51ObsyAwFIE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DEEA1600C8;
-	Wed,  2 Sep 2026 00:27:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38EA51F000E9;
+	by sea.source.kernel.org (Postfix) with ESMTP id 2F14E4060F;
+	Wed,  2 Sep 2026 00:27:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBDDD1F00A3D;
 	Wed,  2 Sep 2026 00:27:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788308852;
-	bh=mbv8WxNYdZDCGISix1qH3K9oOQ8RMlyWgnMJQvHMmG0=;
-	h=From:To:Cc:Subject:Date;
-	b=RQUO+4NY2VU3f7MNQJs8O/9NYJxF9+lIgXvdVprklDTns8sq8MmOsoSniUPJJztqq
-	 4X1/Vc1U9JgKmYoaVlRiTv+PmW3UbUPwwFR14cDhoqecuF4tC6GnL+MSJby5amyds3
-	 Ro82wNH3VUssbS6IUR4QLeFk+xBekhw+ggsZbACziDlfrmMGWgd/tHH0SbacZYkMVT
-	 MAMYjgj2elCLpXQZDsvpnZArX+8c0FYZrBrJwfpLvLZrahdx+Det0POhB5WtmEQC/I
-	 GjC5jVmpWcCO25rvpfs0az9XePaeeMYhcI06XaTkNAa1XkuK/Wtkotj6MMXwZU1Nk4
-	 bVuobnP1ICHng==
+	s=k20260515; t=1788308853;
+	bh=4Aq7mCS1n7SM9+gwhZmdlAUpokje7QH5p7CwEaALh/c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=EBp/q+jhGmoX23PF/KR8yCsXY3rmPIUMsqyxq4V7hhR2ZmeEMYnHNawW7n+XfpQig
+	 B1G9yahk9AAoxz0k8lFwwlUpi380TZXoouESL8l8Il9BLlUTCRTtJf2W/jn5dVUywp
+	 9eroAfIphosA0O9NWWvBEzwx++PuM+POU6kUJqq8pFOT191rb2OXS7JgYdnz6VWmwn
+	 Vyt2pKdhGytPl+2a/LsRz8Ch+GAtbWwtHxrCTo3xzwdwYa8PkzBcpoY7ZtlUko1wSc
+	 52cWJM4A6MwNm+AYEKRCq2QYH2Ld46OUbmBLFGBcAh4i0SU6D8CwzCGHyC4+CdSwNY
+	 RLaCZ0mXnFshg==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
 	stable@vger.kernel.org,
 	Brendan Higgins <brendan.higgins@linux.dev>,
 	David Gow <davidgow@davidgow.net>,
-	Quanmin Yan <yanquanmin1@huawei.com>,
-	Ravi Jonnalagadda <ravis.opensrc@gmail.com>,
 	damon@lists.linux.dev,
 	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 0/4] mm/damon: fix misc bugs in kunit, quota goals and sysfs refresh_ms
-Date: Tue,  1 Sep 2026 17:27:19 -0700
-Message-ID: <20260902002725.108635-1-sj@kernel.org>
+Subject: [PATCH 1/4] mm/damon/tests/core-kunit: test committing psi goal to psi goal
+Date: Tue,  1 Sep 2026 17:27:20 -0700
+Message-ID: <20260902002725.108635-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260902002725.108635-1-sj@kernel.org>
+References: <20260902002725.108635-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9FB4A20002
-X-Stat-Signature: oc5z4oppegppa35ozogbqxuj4d1qscyt
-X-HE-Tag: 1788308853-794388
-X-HE-Meta: U2FsdGVkX1/VPMQZUj6M9SY8MatrSSTtfsqIctq+XfsueBcow2BIkmtn8cZDTWva9PVeKV7sj/IZ5pOwJlessNiV+xbJDVy6pBtxIWgX39oGSmo7PXldN+MSEzutzCGGLPWvUHy/evFX/eqXLblu6dy40tE/+D1fexz5AmHuhoOfz2Ok/pCr8kkrLD24oAUMQ/7Cc6wrx+dympQkJqsWwZWwunsuQbMIy/8CZfhYyR4lIjjfw/2YAseFWiUe+ZWG+r2qgA/9S5LojDzY7RBA8xMgTIbvo7Q74+EvWCbtEpNgIG6Gcn2Q07rAdZyvxOhCzEqAsqrelqzKCMTPMnUAjVItCpXPTfc6nop3/Kfv6d7ZDAMnGl0kDfDFlMpfwN/dCQQPztkKR+RF4RwtdDiQiYxQj8PIEh+q11umBACWMTZoyCOu0B6rr+Zw91JiNzJ3CA8dcqM3R1ssmYO+EQ69INsbrFR76ayMupaZd4hlgIH4zIBkhv+nFHYu1zGPudLGzZxFrWUG/pH4jb7ECAg6S3PiHcIvNF00ZLH5WBP+SPV/KDliJmnUDXNqHKt+Xd3P+8j6UC9k0U054YHLvQoh+LWZ+co/Q4JS2HhwlJtpAd9+tFAysuPiF93IyhPCXuFQi5FHNq/tdP61pr3KxuFrrzIrGKIEmDYPOYX5QdsQeS0T7EPH5hR9mXo/qQE0CXSy3/Hl+N/hGi1ufDix07g7FdxKrshz67fPrPoXj1YRCs1OQ2yp4w0eZrPH6ogmACwb39aw8Pv5RX5VT0/pPklg2SaE2Rm/wIznjORI0XmOfiqFLdAkiVHevvPqNdgLurVNmkkLdBiGsbmeZJVySOs8fbJgBFViFhd76irjIn5VflCHbsF9lMqpgFbMm3/nYciCIfNtTdxi37nSGohzKbwsmf+gXMXJ09UttNA1zOUPBSN+vp+qUT6SxsnGKCAs7GnJ8Y29QAzIoAJjXOYPsbI
- hjkfIZaU
- VPIvXdT5IDjoW7HvfKvZFLbBTY+0QAXVgfyGc7gJVZNqTWP56dYB+un3cKRsllvuxpm+0q1L52WzRZiSRWUs/mIVLValjgEpM0f3+W5yKwJGUKDVWoHlXA5J0q0qGXNDz/ADePSsxApLEs92hCIhjVz3SHg2WzVvEFiLegfppeNAoXg79Ikd5UiW9GEfXuB+UqXOqQtX9tMQsJzmjhFpXaXricYhyADNhiXEbUnvNHml02eVekiZV1NHwudUqRooucRjtHFFaSQa2QixFhN8Slker9fYy7X30kt+ZmhXsYz2oc1E8R+aGzEQ/XXzKHtJmdW6B3B8d39EFy3pjvN3P4EnPzEtlMOog76bqoB/rCXSWU5E=
+X-Stat-Signature: ifpx18ct36o3rguik1twhf5uqgfo3ocb
+X-Rspamd-Queue-Id: 0A0D8180007
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788308853-553568
+X-HE-Meta: U2FsdGVkX18IxVjNXF6y+Zf/qy6ZeGWdnI2d4M32VQ8CMS1++v8i2W52Ave/x4rSY/wAl6mIGR1uQdXK8LTCK543EtZ/E117GIyZL26WQQYwGNOScPKMzJx+Rm/o+t6cB5TzteqeSWOSOyTUBklYKE5R1rI81xzWj1MF2lQ97eD2lJJy6danxQszbBrVlRAfosMdsS4u0OhhYBOjDrGSYW6nDluVw3hFRouEAtOHCM+3vjpQqIu/dGVO6X6KM8jc8ULmZetHEL112XVhV1Qml2wQ5tCAm8Eh8l713Bc2R4GqSm072iz36YxMoFopcRaS2vvlfbqfIrwBkeyEjONASz2BfEY+x6iCDnQpct352vHf6DNxcmYmoYzjscgS2MaEVK/6daMz1o+xhqS7BXbUVsSslbuIYLykACDUQF5k2Zs8U6XC1Oib/4isw4E0KiZKPTpyPg3gweZBTd8IFI0ThOYQj+6QvlOpoYM6Bvchqd9yjJjB/DRUzHzoxz8GZxFeZOF8nfAiAeE4mRU+Y+0rU7dDenLGt+iJHD/YevT6REvCsUI1M+1XWSPd6KBlButJ5SO2S1zJX9D1YffJgpsAHg2Fvrixt/hDoUrLIww516cuT2iWLuZHu9tzAy0W3UmOWxaNS3bRwdweJzSo31EjJsh7dGfhKyxAoUJG1dTKQYLPiBohMLj3gVbNqDjDPTVE1HpwjvV+c98kLJibZkSN+sjZQDsE1z1vPHHLDh/mERFKr4xlRgWsx6CbBLYUDva4zGlgBlQ61fjr9Uiz+tfB1vXgCW1KocduHsgveEtwXuKn5p5fRheDpjxm0vLabbxlE6WfftYgsceZT6mFMYmyZ4midqBo5XJUN4Fd+8T2FFq4YnirpA55fJHhrwkViVcKRaJYJOjxWh8lNCUd5rJTOr0P6DOpeki52sDRgKJ4XilXVof+RtT96/785j8rr6rCziUJUxc3eF1/il7oYGo
+ jnWhtmN+
+ KDmQZEMcuWyU2aMTaPWP7HAySlPe7kt5/5ONuUPPj7+4vJriKxKuophVXLALNVverLQB1JdR9WTNF/QVRXgDhSFy90RhCWLGSRFqX7G+hLiFgH5i8KwyBS6kvMY2XZ+ju5R6amD8fWABFpVZIoVQelqz0KIkvGb2SXx7I6fMNpm3yb7ftkQwkbw5Gm4LfaGnkuwsnPjNOGyKiC6f1KltNrbqTO/Fv+4nqZv4xz8gyprG5eEc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,47 +97,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMOS quota goals commit unit test is mistakenly not testing a test case
-that was designed to test.  DAMOS quota goals and DAMON sysfs refresh_ms
-file have bugs that can produce non critical but still unexpected
-behaviors.  Fix the bugs.
+damon_test_commit_quota_goal_for() is set to test committing a new psi
+goal on an existing psi goal.  However, damon_test_commit_quota_goal()
+is mistakenly not covering the test case.  Add the test case.
 
-Patch 1 fixes the DAMOS quota goals commit unit test to cover a
-mistakenly uncovered case.  Patches 2 and 3 fix the bugs in DAMOS PSI
-goal initialization and eligible_mem_bp online commit, respectively.
-Patch 4 fixes the bug in DAMON sysfs refresh_ms file handling.
+Fixes: 99f89debafc5 ("mm/damon/tests/core-kunit: add damos_commit_quota_goal() test")
+Cc: <stable@vger.kernel.org> # 6.19.x
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ mm/damon/tests/core-kunit.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Changes from RFC v1.3
-- RFC v1.3: https://lore.kernel.org/20260828183649.71192-1-sj@kernel.org
-- Drop RFC tag.
-- Rebase to latest mm-new.
-Changes from RFC v1.2
-- RFC v1.2: https://lore.kernel.org/20260828014659.121058-1-sj@kernel.org
-- Fix last_psi_total underflow.
-Changes from RFC v1.1
-- RFC v1.1: https://lore.kernel.org/20260827134429.123023-1-sj@kernel.org
-- Fix quota goals commit unit test that was mistakenly missing a test case.
-- Initialize last_psi_total as uninitialized at the beginning.
-- Correct kunit test for changed last_psi_total initialization behavior.
-Changes from RFC
-- RFC: https://lore.kernel.org/20260827042920.93580-1-sj@kernel.org
-  (Mistakenly missed RFC tag)
-- Fix build error.
-- Add eligible_mem_bp nid commit fix.
-
-SJ Park (4):
-  mm/damon/tests/core-kunit: test committing psi goal to psi goal
-  mm/damon/core: handle uninitialized damos_quota_goal->last_psi_total
-  mm/damon/core: copy nid for eligible_mem_bp damos quota goal commit
-  mm/damon/sysfs: set next refresh jiffies per sysfs context
-
- mm/damon/core.c             | 16 ++++++++++++++--
- mm/damon/sysfs.c            | 11 +++++------
- mm/damon/tests/core-kunit.h | 16 ++++++++++------
- 3 files changed, 29 insertions(+), 14 deletions(-)
-
-
-base-commit: ee125db0b1f24a2f6b04e3143ffe1a14324176fe
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index 7071ec277b007..f1e11548c771b 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -793,6 +793,13 @@ static void damos_test_commit_quota_goal(struct kunit *test)
+ 		.last_psi_total = 456,
+ 	};
+ 
++	damos_test_commit_quota_goal_for(test, &dst,
++			&(struct damos_quota_goal) {
++			.metric = DAMOS_QUOTA_SOME_MEM_PSI_US,
++			.target_value = 234,
++			.current_value = 345,
++			.last_psi_total = 567,
++			});
+ 	damos_test_commit_quota_goal_for(test, &dst,
+ 			&(struct damos_quota_goal){
+ 			.metric = DAMOS_QUOTA_USER_INPUT,
 -- 
 2.47.3
 
