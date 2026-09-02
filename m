@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74660C61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 17:43:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14F78C624D6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 17:43:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 619096B0095; Wed,  2 Sep 2026 13:43:30 -0400 (EDT)
+	id CD08B6B009B; Wed,  2 Sep 2026 13:43:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CA2C6B009B; Wed,  2 Sep 2026 13:43:30 -0400 (EDT)
+	id CA8166B009E; Wed,  2 Sep 2026 13:43:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DFF86B009E; Wed,  2 Sep 2026 13:43:30 -0400 (EDT)
+	id BE4056B00A1; Wed,  2 Sep 2026 13:43:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DC136B0095
+	by kanga.kvack.org (Postfix) with ESMTP id 928056B009B
 	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:43:30 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9BE834026F
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:43:29 +0000 (UTC)
-X-FDA: 85169544138.07.0AF51E1
-Received: from mta0.migadu.com (out-76.mta0.migadu.com [91.218.175.76])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 736F5C000B
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 243F41A027E
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:43:30 +0000 (UTC)
+X-FDA: 85169544180.11.51A17BB
+Received: from mta1.migadu.com (out-241.mta1.migadu.com [95.215.58.241])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 327A9A0007
 	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:43:27 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WULaBfaB;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.76 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pFUEPGIs;
+	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.241 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788371008;
+	b=ZOx+hVsR3FGuXPunDufWPQ+IrTC/idkOSs7y/8bU+Pu+tg0WjUl1QFJ/4MAhIAJUrEd6Sn
+	Vx46EKjoPwD7+0u1PaiEbHsh5fF0Di6V6y4bVlP9NNgsp60/DX3N8A74HRA6zAGL9KxUeT
+	yQGXdrXwOpMhzYKz0XI4DUFvOYQt8fE=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pFUEPGIs;
+	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.241 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788371007;
+	s=arc-20220608; t=1788371008;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9cK6rgdjGTJU0QUmEqRwXAZvNm5TgcXyOYbinwaS4fk=;
-	b=6LWdYBK9vYioVIz4sDEwN0aOxGh1NktPAMmomxwTeUdx2/RCdLPWT1Bf9OgWQrjAzxDr8L
-	SQO2pzcf5YdEkj7OsTBqNokRBO1y/bCeKwRqncG2U2bHm1YCcIzrVSn4N10dsPJb/4WBHD
-	UG9YbbeWqHADquNvI0yCLIMM9VKC9U8=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WULaBfaB;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.76 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788371007;
-	b=K9yCWHKQ7f03WA4jNWGhUo7hcXMmpXZxKP2jxaIFwmjYtfu+cQxUB5R0ouRRNFblurKsxv
-	pLb6svt8OgDKgJu0tqME90QuTZsO5ArYhQ2597ryqb1fHviYiKL1ZCmQI4joOdF8p1PxNJ
-	9ccyFeNpdkPBmVlXFVegSbLcnlGWSC0=
+	bh=BbBsKZi8rbtnosHZ3ahxPe1RD9zRkDW3KNxV4ZPxMnY=;
+	b=itfrwdILdfIUOxubzTRHkxDM+fwhQXm8usVjkl8Cahk+gLxOAG8tH4qgfwyjWUlfOHvp/P
+	WuENVS+Zs5AH8nH7a6brqK9lSFgOyv+8WX0kebrRBymk1wKCXmWjSOjwXyDvLazmNNNJyJ
+	XLRkf5DI57SvraSFmV2d1KWgvTfP37Q=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=loghd6j+nCeF3xm8tMD6bmZm3wHgeUImKiF7irSIGq0=;
+DKIM-Signature: a=rsa-sha256; bh=rWzSf4/q6Aumm/yTV0thYJVvKmJBRESHWPrugyCcmzc=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788371005; v=1; x=1788975805;
- b=WULaBfaBRpC/Q9OWFciuO2ivdzYd9SS7epDxphCXgFt5WF0zY/iFqyLgS4OAwIhUWhMizPaC
- x8kZxJNagAemyS6lsfUk9NFHk2jMI0mWdnvcXXst3KB7XcnYH87HtjsnKq3Tt07xSjDUV0i+o9o
- 1vPB/d9Spt0+ittxlAWCzX6c=
+ t=1788371006; v=1; x=1788975806;
+ b=pFUEPGIsiZejmhTQGZnE+C0AEtFNoI+nr0XIs3/XcfpamtMkU+UUTJB+BcAXfr8jF5NyYkM8
+ owcUPeq/fp4He+LnI9EtFXtOBSgZ6vajNrgCsOu2MkqVEKBS7LLzmORfzN6YCHCsgLw6P+Pfzde
+ nYkzkQbE2Xw+Q8wem5RhTj5U=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 5861c8020117319e;
-	Wed, 02 Sep 2026 17:43:25 +0000
-X-Mizu-Trace-ID: 5861c8020117319e
+Received: by smtp.migadu.com with ESMTPS id af3d6bcebe1df564;
+	Wed, 02 Sep 2026 17:43:26 +0000
+X-Mizu-Trace-ID: af3d6bcebe1df564
 X-Migadu-Flow: FLOW_OUT
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>
@@ -78,22 +78,22 @@ Cc: Michal Hocko <mhocko@suse.com>,
 	linux-mm@kvack.org,
 	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/8] memcg: remove v1 soft limit reclaim
-Date: Wed,  2 Sep 2026 10:43:04 -0700
-Message-ID: <20260902174311.1772372-2-shakeel.butt@linux.dev>
+Subject: [PATCH v2 2/8] memcg: remove mem_cgroup_shrink_node()
+Date: Wed,  2 Sep 2026 10:43:05 -0700
+Message-ID: <20260902174311.1772372-3-shakeel.butt@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260902174311.1772372-1-shakeel.butt@linux.dev>
 References: <20260902174311.1772372-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: imxkskihacr1ox56ijfz4pms6p41iffn
-X-Rspamd-Queue-Id: 736F5C000B
-X-HE-Tag: 1788371007-579899
-X-HE-Meta: U2FsdGVkX1+eVMNl4ylxQmlcB/TQPlen84zgfmISd5biZndJooPPSvqcXdQGPEAA5lgYlDxImqkrj0+USKlRhbGIYdc1FTc5+usgJ3/1KXuxFdH6PQMHiQR+I4KqypXAY/w0YRJDceBh7Fsm7wezxFVp4t5/K2nCIqW79Fx1Sam+qL/0BjTt+bjumSoyPSfaDPlO5FsXc9D//gJEghgqP5jMCJeiZ1b5aXFbl6ioOH4pOAyJTpq6+IKRqd5B84EQ6t9aOuUf4Nl+iugH68PB8krE5vVtGNM7jlKkXanfz5tY5wpH7n6amoFXNTulvr6DKXyHoI8DgML/hKndtTD69hWgPm6IhY+NoUYIK2pVl/LAJCxYUf4wfKyL/Yj+8kZgdQ/GpxQdL5ImsBlZiyJN5d13SViCatGGtAhAP1uWq93iANJ3Tb34OfN+BJ1p0TcEHdNxsWd4NwtLNXgTwdPcpkTD+GB40sAzLRYUfTsesQBcUoJJT+l6t0uQLphZQAZcRlYYNnnG1ovDarv+V0x/DF4bRDBIYTZMRaBbpQFhGS7OJHtvq13fxgNGUxQrnBA1NjMWRsjT1nmfsLOIUgEQoWtqEQMOI8e9PviNNmfEnORnQ7Lw2x/qmVLYN/8Krzc2p3uYd5WSxApmWMogjsEfL8idR13JaUmXOR7bRyfk/7QVmY2QzaIg5XvMS2y3+aw1rDG+FtiXd44vmLbX+pM9AlI4pxiE5c90rhZkwt/MjG1UJ1meYVmNHqHcRbygo3CXZUtALm4vh/lFiWqMU516tk37t51AAaWnura65guKeKmgVpeETGKebzxJVq/to1gJEJVrDAYWX+gjIKATqk9Fd9FiRJc1Kun3my1dmYhg228gyzCjgHmXLzn8JrNinTwmjg4y1yUcDypsgJqvagseZ0TAmou82OjGzToCYJ9U0Swszzl2ZZeOiT3CsGj+3STrDn0izOFQcZBDOUwIJIV
- G+ED1rH4
- 1OctkdA7/lnu4yz5q2MSWHC1Br2Xs8Pj1Q9/gFpfoQUrmG606VLyoXKowPjtB4m46x4FQ7kkwPEbiLWA6chfOkRq8Kj/QozZVtnuvdSuJs09lAJp6ezmA3q09jZWrDepHcY2qR1h7BJI43VRyJx9mC9OP/QR+75PkDUHxABEmh7WMVepbwi2i4pJDYJam+bBxYSLuoJhGXmAAQ3UVK3P7eJUlAQUWjJgBuSsZ7yxFcBiJLN1KRl7kNtliN5NahJ9j/sVElrcaz/p9g2yWZ3Wk2upx0Gu+VmaSMKKZRnjBOP5j6PVTNEnyVRFWsw==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 327A9A0007
+X-Stat-Signature: e47x75q695zhhzkja9aouu933aurzjzs
+X-HE-Tag: 1788371007-592480
+X-HE-Meta: U2FsdGVkX1/LOMOqpt3WmFWfKoNREbWsI2XrnJ3k3XlP3va4cBT4eMBF+gOUAiMW052VLt25BV5JMe2JjQ5rOMSGa3gQhMFjwtoakiWGBeCOqz8qSGhW5V1iabXdjEViWHgKzG9InY3ME6nR1//nVktyJzpprwxodoOwynrAYHbmdhD4CVoObraPy0qzSKBn18j+m5YWbvju2jB6t7MtIMNc/eojyVU9tKpUlU3wbKY41e62pjyHTLAEfHyrLxUX37GZcXH9S58g0XR3TZdv+IlVJopos4/lwg5hflhoH0ZRLPoeXiX2lAchIsrlH1LLOa59s55rvefpRHzOQ/cuwgQPb6fuYXHRY6Inz8eKtFuTKY8p/km/zOM4IrDesBVMa2sk71kbhvx096HkPDs4nTFipWFN4sKwNqyUCxG1YD7iWMazco0q2I7DHHzyZcLc40bqAd9eB6RCR1HBDflJB9puA4YqNj8l2hez+mG4WWyS3vXnij8Nu6Xuw5VjdeToBGGFVhXT6jWq9/7/ffXJZQcAoVzZZbu1Zw+MnuPSuylaYfsK1IUTZJZCtouCjyuMdYqOnVI3ze+fNWCjvgnBYiCy/hg8b63NrUD8qtXsIOi3fptnKx/372HQYlLNLHiocCEbeNaBVrk75q6KWQ+IxU+1jliUpQ/9o10XaPTiDYrlAtqOcWdcbMDkgXdIo3Ls053iabZpjawIh31RZHDcDNk9Ub7VVBvifRmcuIHEdtYRDXuNGQzpoiFpBOxjiN9PmO+Nd1h3b3nboCqFgGOyDobgE+kfH1D51X3gjBlwNvaxVVEmNCTAQBMEoJ+m+cuDyFJIE+6wKFhN/t1QXPor2viVCj2U3pMu8MqETDyRy7/pFTNJX+rIXCrWX6fVxS/fD3NZ0F3xDlOoENqNMi8pYZ6Z0ATUjNoxMyV9Bnxod44ROso8dnZDjMG3GyqddI+YeCv7fAYHpk3dGB+Xnzb
+ RV/Ugzy/
+ zQ5UZIOo/yn6io/bQkXOvM50hkqDpGrWXheGTHJuiHFvmQ3GFBM5M63WyC9CtsitFSJu3LcEdPXuyfJ5ND6oLA0A/qQ443mEJ/6SPnjikhYcyEHZHP2U8Lg3dOHM0JsbykgaBeqbXI02HmqfoJ1PrRY0iKHljJn2qH8QlmC2oxCvEtKWjzVNpyfJhQ8oADZhgH4jlgRHpiqL9lGkD3+Wfm1BVXuCUKDf3z8QTiOQ2FsqO5KMvgCgQh/xLrQy3p5gVH+jN6bhxBsOhnTzwfeuXbeTWteV/9s0BeQUYgadkvrGfBi0j4tx6tBtOze6j4+kb3LiQ2QoqVmIN3l60Qu51c81hEbAj6FJ+XZzYFgvB1c+WNKg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,327 +101,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Nothing can put a cgroup on the soft limit rbtree anymore, so the tree
-is always empty and both callers of memcg1_soft_limit_reclaim() are
-guaranteed no-ops. Remove the reclaim pass from direct reclaim and from
-kswapd, along with its implementation.
-
-In shrink_zones() this leaves the global reclaim branch with a
-last_pgdat check that is now redundant with the identical check right
-below it, so drop it and move the explaining comment down to the check
-that remains. That check could only ever fire once last_pgdat was set,
-which implies first_pgdat had already been assigned, so skipping it does
-not change which node consider_reclaim_throttle() gets.
+Its only caller was soft limit reclaim, which is gone.
 
 Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 Acked-by: Michal Hocko <mhocko@suse.com>
 Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- include/linux/memcontrol.h |  12 ---
- mm/memcontrol-v1.c         | 175 -------------------------------------
- mm/vmscan.c                |  39 ++-------
- 3 files changed, 6 insertions(+), 220 deletions(-)
+ mm/internal.h |  4 ----
+ mm/vmscan.c   | 41 -----------------------------------------
+ 2 files changed, 45 deletions(-)
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index da625d2edb3b..11c1fa88d6fd 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -1924,10 +1924,6 @@ static inline bool mem_cgroup_zswap_writeback_enabled(struct mem_cgroup *memcg)
- /* Cgroup v1-related declarations */
+diff --git a/mm/internal.h b/mm/internal.h
+index 5cc220db9076..e16f1250b25c 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -78,10 +78,6 @@ unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
+ 					   gfp_t gfp_mask,
+ 					   unsigned int reclaim_options,
+ 					   int *swappiness);
+-unsigned long mem_cgroup_shrink_node(struct mem_cgroup *memcg,
+-				     gfp_t gfp_mask, bool noswap,
+-				     pg_data_t *pgdat,
+-				     unsigned long *nr_scanned);
  
- #ifdef CONFIG_MEMCG_V1
--unsigned long memcg1_soft_limit_reclaim(pg_data_t *pgdat, int order,
--					gfp_t gfp_mask,
--					unsigned long *total_scanned);
--
- bool mem_cgroup_oom_synchronize(bool wait);
- 
- static inline bool task_in_memcg_oom(struct task_struct *p)
-@@ -1948,14 +1944,6 @@ static inline void mem_cgroup_exit_user_fault(void)
- }
- 
- #else /* CONFIG_MEMCG_V1 */
--static inline
--unsigned long memcg1_soft_limit_reclaim(pg_data_t *pgdat, int order,
--					gfp_t gfp_mask,
--					unsigned long *total_scanned)
--{
--	return 0;
--}
--
- static inline bool task_in_memcg_oom(struct task_struct *p)
- {
- 	return false;
-diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-index 05ef55cae4dc..b38b8d0f7f51 100644
---- a/mm/memcontrol-v1.c
-+++ b/mm/memcontrol-v1.c
-@@ -34,13 +34,6 @@ struct mem_cgroup_tree {
- 
- static struct mem_cgroup_tree soft_limit_tree __read_mostly;
- 
--/*
-- * Maximum loops in mem_cgroup_soft_reclaim(), used for soft
-- * limit reclaim to prevent infinite loops, if they ever occur.
-- */
--#define	MEM_CGROUP_MAX_RECLAIM_LOOPS		100
--#define	MEM_CGROUP_MAX_SOFT_LIMIT_RECLAIM_LOOPS	2
--
- /* for OOM */
- struct mem_cgroup_eventfd_list {
- 	struct list_head list;
-@@ -233,174 +226,6 @@ void memcg1_remove_from_trees(struct mem_cgroup *memcg)
- 	}
- }
- 
--static struct mem_cgroup_per_node *
--__mem_cgroup_largest_soft_limit_node(struct mem_cgroup_tree_per_node *mctz)
--{
--	struct mem_cgroup_per_node *mz;
--
--retry:
--	mz = NULL;
--	if (!mctz->rb_rightmost)
--		goto done;		/* Nothing to reclaim from */
--
--	mz = rb_entry(mctz->rb_rightmost,
--		      struct mem_cgroup_per_node, tree_node);
--	/*
--	 * Remove the node now but someone else can add it back,
--	 * we will to add it back at the end of reclaim to its correct
--	 * position in the tree.
--	 */
--	__mem_cgroup_remove_exceeded(mz, mctz);
--	if (!soft_limit_excess(mz->memcg) ||
--	    !css_tryget(&mz->memcg->css))
--		goto retry;
--done:
--	return mz;
--}
--
--static struct mem_cgroup_per_node *
--mem_cgroup_largest_soft_limit_node(struct mem_cgroup_tree_per_node *mctz)
--{
--	struct mem_cgroup_per_node *mz;
--
--	spin_lock_irq(&mctz->lock);
--	mz = __mem_cgroup_largest_soft_limit_node(mctz);
--	spin_unlock_irq(&mctz->lock);
--	return mz;
--}
--
--static int mem_cgroup_soft_reclaim(struct mem_cgroup *root_memcg,
--				   pg_data_t *pgdat,
--				   gfp_t gfp_mask,
--				   unsigned long *total_scanned)
--{
--	struct mem_cgroup *victim = NULL;
--	int total = 0;
--	int loop = 0;
--	unsigned long excess;
--	unsigned long nr_scanned;
--	struct mem_cgroup_reclaim_cookie reclaim = {
--		.pgdat = pgdat,
--	};
--
--	excess = soft_limit_excess(root_memcg);
--
--	while (1) {
--		victim = mem_cgroup_iter(root_memcg, victim, &reclaim);
--		if (!victim) {
--			loop++;
--			if (loop >= 2) {
--				/*
--				 * If we have not been able to reclaim
--				 * anything, it might because there are
--				 * no reclaimable pages under this hierarchy
--				 */
--				if (!total)
--					break;
--				/*
--				 * We want to do more targeted reclaim.
--				 * excess >> 2 is not to excessive so as to
--				 * reclaim too much, nor too less that we keep
--				 * coming back to reclaim from this cgroup
--				 */
--				if (total >= (excess >> 2) ||
--					(loop > MEM_CGROUP_MAX_RECLAIM_LOOPS))
--					break;
--			}
--			continue;
--		}
--		total += mem_cgroup_shrink_node(victim, gfp_mask, false,
--					pgdat, &nr_scanned);
--		*total_scanned += nr_scanned;
--		if (!soft_limit_excess(root_memcg))
--			break;
--	}
--	mem_cgroup_iter_break(root_memcg, victim);
--	return total;
--}
--
--unsigned long memcg1_soft_limit_reclaim(pg_data_t *pgdat, int order,
--					    gfp_t gfp_mask,
--					    unsigned long *total_scanned)
--{
--	unsigned long nr_reclaimed = 0;
--	struct mem_cgroup_per_node *mz, *next_mz = NULL;
--	unsigned long reclaimed;
--	int loop = 0;
--	struct mem_cgroup_tree_per_node *mctz;
--	unsigned long excess;
--
--	if (lru_gen_enabled())
--		return 0;
--
--	if (order > 0)
--		return 0;
--
--	mctz = soft_limit_tree.rb_tree_per_node[pgdat->node_id];
--
--	/*
--	 * Do not even bother to check the largest node if the root
--	 * is empty. Do it lockless to prevent lock bouncing. Races
--	 * are acceptable as soft limit is best effort anyway.
--	 */
--	if (!mctz || RB_EMPTY_ROOT(&mctz->rb_root))
--		return 0;
--
--	/*
--	 * This loop can run a while, specially if mem_cgroup's continuously
--	 * keep exceeding their soft limit and putting the system under
--	 * pressure
--	 */
--	do {
--		if (next_mz)
--			mz = next_mz;
--		else
--			mz = mem_cgroup_largest_soft_limit_node(mctz);
--		if (!mz)
--			break;
--
--		reclaimed = mem_cgroup_soft_reclaim(mz->memcg, pgdat,
--						    gfp_mask, total_scanned);
--		nr_reclaimed += reclaimed;
--		spin_lock_irq(&mctz->lock);
--
--		/*
--		 * If we failed to reclaim anything from this memory cgroup
--		 * it is time to move on to the next cgroup
--		 */
--		next_mz = NULL;
--		if (!reclaimed)
--			next_mz = __mem_cgroup_largest_soft_limit_node(mctz);
--
--		excess = soft_limit_excess(mz->memcg);
--		/*
--		 * One school of thought says that we should not add
--		 * back the node to the tree if reclaim returns 0.
--		 * But our reclaim could return 0, simply because due
--		 * to priority we are exposing a smaller subset of
--		 * memory to reclaim from. Consider this as a longer
--		 * term TODO.
--		 */
--		/* If excess == 0, no tree ops */
--		__mem_cgroup_insert_exceeded(mz, mctz, excess);
--		spin_unlock_irq(&mctz->lock);
--		css_put(&mz->memcg->css);
--		loop++;
--		/*
--		 * Could not reclaim anything and there are no more
--		 * mem cgroups to try or we seem to be looping without
--		 * reclaiming anything.
--		 */
--		if (!nr_reclaimed &&
--			(next_mz == NULL ||
--			loop > MEM_CGROUP_MAX_SOFT_LIMIT_RECLAIM_LOOPS))
--			break;
--	} while (!nr_reclaimed);
--	if (next_mz)
--		css_put(&next_mz->memcg->css);
--	return nr_reclaimed;
--}
--
- static u64 mem_cgroup_move_charge_read(struct cgroup_subsys_state *css,
- 				struct cftype *cft)
- {
+ #ifdef CONFIG_NUMA
+ extern int sysctl_min_unmapped_ratio;
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index fdd13299a04a..0e04eaf64af3 100644
+index 0e04eaf64af3..d66b5cd167d6 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -6439,8 +6439,6 @@ static void shrink_zones(struct zonelist *zonelist, struct scan_control *sc)
- {
- 	struct zoneref *z;
- 	struct zone *zone;
--	unsigned long nr_soft_reclaimed;
--	unsigned long nr_soft_scanned;
- 	gfp_t orig_mask;
- 	pg_data_t *last_pgdat = NULL;
- 	pg_data_t *first_pgdat = NULL;
-@@ -6482,35 +6480,17 @@ static void shrink_zones(struct zonelist *zonelist, struct scan_control *sc)
- 				sc->compaction_ready = true;
- 				continue;
- 			}
+@@ -6805,47 +6805,6 @@ unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
+ 
+ #ifdef CONFIG_MEMCG
+ 
+-/* Only used by soft limit reclaim. Do not reuse for anything else. */
+-unsigned long mem_cgroup_shrink_node(struct mem_cgroup *memcg,
+-						gfp_t gfp_mask, bool noswap,
+-						pg_data_t *pgdat,
+-						unsigned long *nr_scanned)
+-{
+-	struct lruvec *lruvec = mem_cgroup_lruvec(memcg, pgdat);
+-	struct scan_control sc = {
+-		.nr_to_reclaim = SWAP_CLUSTER_MAX,
+-		.target_mem_cgroup = memcg,
+-		.may_writepage = 1,
+-		.may_unmap = 1,
+-		.reclaim_idx = MAX_NR_ZONES - 1,
+-		.may_swap = !noswap,
+-	};
 -
--			/*
--			 * Shrink each node in the zonelist once. If the
--			 * zonelist is ordered by zone (not the default) then a
--			 * node may be shrunk multiple times but in that case
--			 * the user prefers lower zones being preserved.
--			 */
--			if (zone->zone_pgdat == last_pgdat)
--				continue;
+-	WARN_ON_ONCE(!current->reclaim_state);
 -
--			/*
--			 * This steals pages from memory cgroups over softlimit
--			 * and returns the number of reclaimed pages and
--			 * scanned pages. This works for global memory pressure
--			 * and balancing, not for a memcg's limit.
--			 */
--			nr_soft_scanned = 0;
--			nr_soft_reclaimed = memcg1_soft_limit_reclaim(zone->zone_pgdat,
--								      sc->order, sc->gfp_mask,
--								      &nr_soft_scanned);
--			sc->nr_reclaimed += nr_soft_reclaimed;
--			sc->nr_scanned += nr_soft_scanned;
--			/* need some check for avoid more shrink_zone() */
- 		}
- 
- 		if (!first_pgdat)
- 			first_pgdat = zone->zone_pgdat;
- 
--		/* See comment about same check for global reclaim above */
-+		/*
-+		 * Shrink each node in the zonelist once. If the zonelist is
-+		 * ordered by zone (not the default) then a node may be shrunk
-+		 * multiple times but in that case the user prefers lower zones
-+		 * being preserved.
-+		 */
- 		if (zone->zone_pgdat == last_pgdat)
- 			continue;
- 		last_pgdat = zone->zone_pgdat;
-@@ -7171,8 +7151,6 @@ clear_reclaim_active(pg_data_t *pgdat, int highest_zoneidx)
- static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
- {
- 	int i;
--	unsigned long nr_soft_reclaimed;
--	unsigned long nr_soft_scanned;
- 	unsigned long pflags;
- 	unsigned long nr_boost_reclaim;
- 	unsigned long zone_boosts[MAX_NR_ZONES] = { 0, };
-@@ -7278,12 +7256,7 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
- 		 */
- 		kswapd_age_node(pgdat, &sc);
- 
--		/* Call soft limit reclaim before calling shrink_node. */
- 		sc.nr_scanned = 0;
--		nr_soft_scanned = 0;
--		nr_soft_reclaimed = memcg1_soft_limit_reclaim(pgdat, sc.order,
--							      sc.gfp_mask, &nr_soft_scanned);
--		sc.nr_reclaimed += nr_soft_reclaimed;
- 
- 		/*
- 		 * There should be no need to raise the scanning priority if
+-	sc.gfp_mask = (gfp_mask & GFP_RECLAIM_MASK) |
+-			(GFP_HIGHUSER_MOVABLE & ~GFP_RECLAIM_MASK);
+-
+-	trace_mm_vmscan_memcg_softlimit_reclaim_begin(sc.gfp_mask,
+-						      sc.order,
+-						      memcg);
+-
+-	/*
+-	 * NOTE: Although we can get the priority field, using it
+-	 * here is not a good idea, since it limits the pages we can scan.
+-	 * if we don't reclaim here, the shrink_node from balance_pgdat
+-	 * will pick up pages from other mem cgroup's as well. We hack
+-	 * the priority and make it zero.
+-	 */
+-	shrink_lruvec(lruvec, &sc);
+-
+-	trace_mm_vmscan_memcg_softlimit_reclaim_end(sc.nr_reclaimed, memcg);
+-
+-	*nr_scanned = sc.nr_scanned;
+-
+-	return sc.nr_reclaimed;
+-}
+-
+ unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
+ 					   unsigned long nr_pages,
+ 					   gfp_t gfp_mask,
 -- 
 2.53.0-Meta
 
