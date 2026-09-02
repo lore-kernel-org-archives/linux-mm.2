@@ -4,88 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B40FC61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 16:45:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFF7FC61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 16:47:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E29A6B0088; Wed,  2 Sep 2026 12:45:54 -0400 (EDT)
+	id ED8F46B00D8; Wed,  2 Sep 2026 12:47:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BA376B00A1; Wed,  2 Sep 2026 12:45:54 -0400 (EDT)
+	id E89E26B00D9; Wed,  2 Sep 2026 12:47:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F7EF6B00A3; Wed,  2 Sep 2026 12:45:54 -0400 (EDT)
+	id D7A5D6B00DA; Wed,  2 Sep 2026 12:47:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CC1B6B0088
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 12:45:54 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E079CC028D
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:45:53 +0000 (UTC)
-X-FDA: 85169398986.17.187C37F
-Received: from mta1.migadu.com (out-19.mta1.migadu.com [95.215.58.19])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 394A6160006
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:45:49 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EzK0NrID;
-	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.19 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EB9B6B00D8
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 12:47:18 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 272EA160270
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:47:18 +0000 (UTC)
+X-FDA: 85169402556.05.6C09076
+Received: from mta0.migadu.com (out-192.mta0.migadu.com [91.218.175.192])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 09E1D40008
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:47:15 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=f0XoB4DU;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.192 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788367552;
+	s=arc-20220608; t=1788367636;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I5BIySFcfVau43GZvdffl6exV+9pdr5CG3WM35GfPus=;
-	b=q7ioW/juXzXSxJTcWBO5FYItPQQ8gKstefC3S5bj5iwLDihlvl2ZNTC4mXPPOyQsUGiNPh
-	fKHYvxA+UZnlOI/K6JH2YXeBays+oMWBa/1S37U+IiKULGcc3oYWPd3WXkrpDES1ASTIP5
-	f3t9Bdcpa5czc9oxcm/KKo3FaWckU/w=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788367552;
-	b=twOG1d+qvqkMf99IMQvCnrVt9dZPbAFyDjuV6z+sdmIkTDZJMImAgvOBiUU0PjQatg6OM/
-	62wOUnr8gE9+sNNcsgwrzuhl14KWOp4UFuFV9e6v6n788s+AmD8mu02rap+Dno6vhDMZTe
-	OM25k94sTpJjPerjHA6L6Mh2n6I5gjE=
+	bh=aiNB/pW9cE5KFwsqGrgP6Ks9w7p+Fnft+mpM/vD5sqA=;
+	b=qWlT5QOgDUMl43u7o3zIc1ibva+RRgVsMaHCnsf011YKiwHS84XIlf5umpsot9kIj0LElO
+	6nnCAcdopnkPzrwo1D8u6MtaBrOcGD/AZBFGUKHW27mw7TYvqii7yvEDt93IahT0I6hQu1
+	8HrCBnnjJC2YfcSGS2UyIjZuyRZkN7w=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EzK0NrID;
-	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.19 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=f0XoB4DU;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.192 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788367636;
+	b=MDcChiF0MO/xrP1ANoEen3Fe5qWR8el7bSZ7sE0bJ0A2iAUkbbQoSK/JvUV6mlByonTaem
+	GefCxTaF49oVmBFmpPNVL7JywdMK8m56rfVa3ZC+0/hyd7Wm+0zylRqFn8WRDRLwwYdd3I
+	YO71a1FsDfxRVy6mX8Ok/KM5fZdtD5k=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=eBbY4iMBTmEAonlduKED6Icf9+LbGVlV12xAIrCk42s=;
+DKIM-Signature: a=rsa-sha256; bh=Y4pHs4Y3EiBbkU7VVftsLC18a5d9QR/DWz6/s/ZFOvw=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788367548; v=1; x=1788972348;
- b=EzK0NrIDej/JH7z8uxUn4qy2Z9j2Ozo5h3VjpfOv0oek/exCtwG55atrJvO9DYZzl5iaLYZW
- QzY6hZGmQfNavtJh5Qh9HjU8piCnG3OeRdAs6XwmiIE0WGW6CmPHCpebabDMO+q+pFY8CkGXOdF
- dM4PbO4TLeW522m5zDDvu/RI=
+ t=1788367633; v=1; x=1788972433;
+ b=f0XoB4DUONwwosIt9VVgUyLKwM8B/LT1Cav6ciQpYXg9QlGL1BAMqNUWPpetB+fJKjkrhUv+
+ cdgOaOnYzX9sRFk6V41dMHJEUyBmn5JCQ6wQzS3xPgITKehWiS8PsOVnrigs4YIIx5wVWGoLivo
+ 95pMQp6opvv0JKKwzivrf01A=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 7a7ca504685ebf88;
-	Wed, 02 Sep 2026 16:45:48 +0000
-X-Mizu-Trace-ID: 7a7ca504685ebf88
+Received: by smtp.migadu.com with ESMTPS id b46acf156380a251;
+	Wed, 02 Sep 2026 16:47:12 +0000
+X-Mizu-Trace-ID: b46acf156380a251
 X-Migadu-Flow: FLOW_OUT
-Date: Wed, 2 Sep 2026 09:45:43 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Hugh Dickins <hughd@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Matthew Wilcox <willy@infradead.org>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/mlock: use the IRQ-safe accessor for NR_MLOCK in
- __munlock_folio()
-Message-ID: <aphSajBg4a-e-Iyv@linux.dev>
-References: <20260901180109.3797944-1-shakeel.butt@linux.dev>
- <1ddfa7dc-2dd8-406d-8454-59a349972106@google.com>
+Message-ID: <583c4718-f763-41f0-b757-02b46655c0b5@linux.dev>
+Date: Wed, 2 Sep 2026 17:47:10 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1ddfa7dc-2dd8-406d-8454-59a349972106@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm: remove min_free_kbytes adjustment for THP
+To: Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
+Cc: Nimrod Oren <noren@nvidia.com>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <brendan.jackman@linux.dev>, Hugh Dickins
+ <hughd@google.com>, Nirmoy Das <nirmoyd@nvidia.com>,
+ Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260901190123.3511535-1-noren@nvidia.com>
+ <20260901204449.GK3004@cmpxchg.org>
+ <C8541A2F-D6A9-41B0-A3FE-52339A6601F0@nvidia.com>
+ <20260901220917.GM3004@cmpxchg.org>
+ <69C018F5-A1C8-47AD-9567-3497AA6808EC@nvidia.com>
+ <20260902160417.GN3004@cmpxchg.org>
+Content-Language: en-US
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <20260902160417.GN3004@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 394A6160006
-X-Stat-Signature: 8knf4bxgtg6p31upw4g36ggrfa9ioki7
-X-HE-Tag: 1788367549-440705
-X-HE-Meta: U2FsdGVkX18FR5PFCwKQc0BT/zDjlt7KVQqZRHPx7OPTpuEnOxBE6L+uWk6dl/Xd+bugkLL4k9opUW76KxX6EbYJyw6uNrSobaxRNQxY4USJb8f8Opbach+VD8JoYCFlIUUHVKskVmPcuEQAO67lassWd6SO1tgBoJomOoWhXSSezc7GLgczGDj99kVpBfcPT83VfH/7iyrIWAoqpAT1D6hrqupCMOK0zOy0Kv82adPpVH4qOQ5MF2BXHSPxY1dl44CkQbFI5Lq+VCblNKWqyhokQI7bF2kr1eC0StFOszRebqpa+dpWYXQ1wpUXacnlkqfpzY4VFjvbWltjRNLoROsz8EAses/KvBiXoGthWnMbKklxorB0izDCYmRzoYjHv/KX97LYFSKEDl9GM4TF85QoQtVJDdF8WG7F8GrxIBJ22RykzAtgC6TMpOYIvxniC4gw4h1T78itFHdNIg1LQsKILwJMM98g5S0qQGeN3xUxeHeJfSlkSlV70P+TvNgVzmJVB0Jf2wtOgqz+kN9zs0W7arLV1om/RIntx4220WUFEDY+znhBbsTi3yTGOrtWfuC4GBS12B4K88HbExt57k34yJJVJcunkeS9ZELjNrvYADelBWfmaPz0jFnxiFAVZ+vtTQc3G7Id9yTpcOuewYuYW7eW1Pwo58aY0soIstX0XTkckw+7OSiFFlBR+a+1TyzZgeL5B7uHZSqDhU5mP9G8eJTDHYeS0V1UjmXTCWbsIVwxtyhpQTvmRY38EAtnEyLdZPvrLnW13otxNAiwed60pQveJTGMQv9027t2R2HyTSrJKsPoaNrBZp7qx+bG60O4T8HTreAn1PY1xdjnkYr7dHjq5D1hRTk2l30zkeaGPW6j/nEaHjS1rqu1r88oWfXy+qk5JrZi+uVN7i4yRVd3MCibzutvI5BFFMbnEWj2lBBIYPsh5kDSblnAllca6LELTnjM7G/RXn2m4PS
- xkCTSk9Q
- KG2lYoCj/hLB2rEpDqI7377+zOdhIcN44lcdi9C4P+wQOeDCtGa1rCoVA0H9Itr1aVBafFDB+7mBst7CeeRE0gqMIJYRjaTQjmC0WiGomGg4Dvf0/oYXFv0PBtMPbBb80LPHV3rl0R4mLhs387N+Rbh9e3SLE4Bl7rNorw7JhPSUwH8WZzzs82z/tor3vXUcjBokDdzG6d/NvUy82Rw8xOVGEYJTl01g7MLkrYPEJvIqShtylhqshH73DXMIg3OrpbfPlN9r0/x6YOUZM5ag9d/BsCbaVmw674FQ1FriqiFmn9Z1YrQCocLzByJZsSoZucH6R06HVPy7cvOijHtangJO7BYhmpaK0mnOp55Qs2jQbBaDl+3Er89nV4LCtvnAQkAdoCbw5RyKQA6cOq8MgN49CaPTHyWHy1sF2p+TL688RUtI=
+X-Stat-Signature: cexrjz65qb4mzsdk6qqg3kws59674tyc
+X-Rspamd-Queue-Id: 09E1D40008
+X-HE-Tag: 1788367635-958487
+X-HE-Meta: U2FsdGVkX1/4ZFa/35TjkvuuobHApRo20+dw0rOX4nCeSfPWLyvS8HOkwRwshfGc1iUEqM4WTOg0M6bHjwPw8Xt3lKKkykl9ozgSlD6mueyV0Z/q0q3GrJrrigosv9XMQrnJ98S/7tbSDTE5PGc/0OzDeqmanJvaC7TjxfZE/TSg85dKBjj20UPgeIvDYfF0ssWCTqqwepAGWdoBW9JtpLMlbW0q4a0bGbbD2qdltS+pGxEHwOix1VzNfxKTDr5+svv2OyRkXLaI2ms1ebO4D3NMcnGByD58WxRw6cCUt7+cCgZI8pqef1g2JZMonvE5SbosmlfICChjek0b2yRIMvdvVBQzQHWYhA888qIlrzBZOLp3Xg64zx3xUPFdfneqv0cPMrNj4Ejr89eBXFp5n/k+NEfK7Vh14ZuGjKKd57wvhoPq5KeEYRrkWwG9rhBy+uyKJxAQ+JZo266/2WFHFuRIUpLf0YrUv0sfBzuPQ/IHVEQhJ4Od+cDc5ZMEVw1+WExqeXI10Aud3fpJY5F0OC5RiFULyn7HDpnojErTfWGANpY88MEWJho6WewLsAeAo5jXoltm7shBw+EIRAY02D4FrGqYu48/VKACfZr08x+jXQk5z/GiB00KiWrzeqaumVAyTTChTuoEsP5f45zYVRviu5lleKbfZyE2Ot3gIoy9Jc1Y5zgIwmmdZATyPykfnmMIB0geNEIQER9ZVMNTLl4dpN2IrjuV3+xC6aiUHbeJ3GH15fv8et2I9mcEklc+/PJ5M+d6xWh8YrUORG79HYnAdI5vt+b0rG9LpF6fFlEG664cZGvIUaaQk/9ZjfYBuoxeK3C1BOJea0egyUM5rb/JPwreSgG7/jz5rv1slRZ+THB8DQPJ5RS+s17Pr16pQWxHOq34e3HkpHfiG3VDjYR7SnGOKLLuRwZn7a16ch7CDf3d88u1NLPOVvHocb2atD++8wCSIXA3+f2dGKS
+ K6G4BPYs
+ PEGJOWp2VblzmUUE3d/ABeIU834YO3FtxMnBT3UENVY5Ergq0V6hokoiRiPymnN5udcTAf+i/eNreQdwrDZI8hptR2ok/f27bm3jqYXfRhqO9Cofd0hBeGM+BRuW8fufOPPWj4JP4gUX2Q5KTwqWY8dv12G4xAliO5sYxkDiyIDsizd2Cmm0JOpd7C8z8yyXTc7D3E3z2Mn/NSJIbc6lEPEgeV5xDopAhBumdbLOBQSg3RBypUcNOu3S1g5eXExCLHpYlbUXJRfiwpjRhghOis7Lll9kXEn0GS0RNZeAFK/vrcol1VkwWPABoaemWmkU4ZCAvl7PwhweVZwo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,88 +107,160 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 01, 2026 at 06:27:06PM -0700, Hugh Dickins wrote:
-> On Tue, 1 Sep 2026, Shakeel Butt wrote:
-> 
-> > NR_MLOCK is updated from interrupt context.  __free_pages_prepare() clears
-> > a stray PG_mlocked and adjusts NR_MLOCK, and a folio can reach it with the
-> > flag still set from a bio completion handler:
-> > 
-> >   __free_pages_ok+0x6af/0x7a0
-> >   <IRQ>
-> >   __bio_release_pages+0xde/0x260
-> >   __iomap_dio_bio_end_io+0x16e/0x1a0
-> >   blk_update_request+0x14b/0x3d0
-> >   blk_mq_end_request+0x18/0x30
-> >   blk_done_softirq+0x49/0x60
-> > 
-> > The folio gets there like this.  A MAP_SHARED file mapping is mlocked, so
-> > its page cache folios carry PG_mlocked, and an O_DIRECT write sourced from
-> > that mapping GUP-pins those same folios.  munlock() then runs
-> > mlock_vma_pages_range(), which clears VM_LOCKED before walking the page
-> > tables to munlock each folio.  A concurrent hole punch reaches the folio
-> > through the rmap (i_mmap_rwsem, not mmap_lock) and can land inside that
-> > window: __folio_remove_rmap() -> munlock_vma_folio() sees VM_LOCKED
-> > already clear, so it neither queues the folio on the mlock batch nor takes
-> > a reference, and the pte it clears makes the pending mlock_pte_range()
-> > walk skip the folio at its !pte_present() check.  filemap_remove_folio()
-> > then drops the page cache reference, leaving the bio's pin as the last
-> > one, released from the completion handler above.
-> 
-> I'm hardly ashamed to admit that I've not tried to digest
-> that paragraph. You're writing about the rare fallback cases when
-> PG_mlocked is cleared late, and unevictable_pgs_cleared incremented to
-> notify us of that defect: yes, I accept that might happen at interrupt
-> time, and so we ought not to take the __shortcut in __munlock_folio()
-> which you fix  below.
-> 
-> > 
-> > So __zone_stat_mod_folio() here needs interrupts disabled, not merely
-> > preemption, and __munlock_folio() has a path where they are not: when the
-> > folio has already been taken off the LRU by somebody else the function
-> > jumps straight to the counter update without taking the lruvec lock.  The
-> > read-modify-write of the per-CPU NR_MLOCK diff can then be interrupted by
-> > the softirq above, and one of the two decrements is lost, leaving Mlocked
-> > in /proc/meminfo permanently overstated.
-> > 
-> > Use zone_stat_mod_folio().  mod_zone_state()'s this_cpu_try_cmpxchg() is
-> > atomic against a same-CPU interrupt and retries, and on the path where the
-> > lruvec lock is held its cost is negligible next to the lock itself.
-> > 
-> > The UNEVICTABLE_PG* events are deliberately left on the __ accessors:
-> > they occupy different vm_event_states slots from the UNEVICTABLE_PGCLEARED
-> > that __free_pages_prepare() bumps, and nothing updates those two from
-> > interrupt context.
-> > 
-> > Fixes: 2fbb0c10d1e8 ("mm/munlock: mlock_page() munlock_page() batch by pagevec")
-> > Cc: <stable@vger.kernel.org>
-> 
-> Okay: just a wrong stat, but it ought to go back to 0, so Cc stable yes.
-> 
-> > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> 
-> Acked-by: Hugh Dickins <hughd@google.com>
-> 
-> But I do think you (or Andrew :-) should include
-> 
-> Reported-by: syzbot+cd2073ee6d958a8d0fcd@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/linux-mm/6a931c5a.08e933ee.dbf97.0093.GAE@google.com/
-> 
-> That was indeed reporting a different way to get a WARNING from this,
-> when offlining a CPU: but it should be acknowledged for bringing you
-> here, and we should tell syzbot it's fixed by this.
-> 
-> I've been trying to work out whether you're going to come back in a
-> day or two, changing the __count_vm_events() too: and had raised in
-> that thread the question of why lru_add_drain()'s __count_vm_events
-> were not also reported by syzbot; but now I can see
->  * vm counters are allowed to be racy. Use raw_cpu_ops to avoid the
->  * local_irq_disable overhead.
-> and realize that they're not a problem; so this looks complete, we
-> shouldn't need local_lock()ing in mlock_drain_remote() after all.
-> 
 
-Thanks a lot Hugh for taking a look and Andrew has already added the syzbot
-tags.
+
+On 02/09/2026 17:04, Johannes Weiner wrote:
+> On Tue, Sep 01, 2026 at 09:49:58PM -0400, Zi Yan wrote:
+>> On 1 Sep 2026, at 18:09, Johannes Weiner wrote:
+>>
+>>> On Tue, Sep 01, 2026 at 05:09:52PM -0400, Zi Yan wrote:
+>>>> On 1 Sep 2026, at 16:44, Johannes Weiner wrote:
+>>>>
+>>>>> On Tue, Sep 01, 2026 at 10:01:23PM +0300, Nimrod Oren wrote:
+>>>>>> When THP is enabled, set_recommended_min_free_kbytes() may raise
+>>>>>> min_free_kbytes using a heuristic that scales with pageblock_nr_pages.
+>>>>>> Commit f000565adb77 ("thp: set recommended min free kbytes") added this
+>>>>>> heuristic to help keep pageblocks free and reduce fragmentation for THP
+>>>>>> allocations.
+>>>>>
+>>>>> We've had problems with compaction before when min_free_kbytes was too
+>>>>> small on large machines. Competing free space scanners do a lot of
+>>>>> work only to fight over a very small set of possible target pages.
+>>>>>
+>>>>> So I'm a bit uneasy that you didn't include any benchmark numbers with
+>>>>> this that prove basic functionality on larger hosts isn't regressed.
+>>>>>
+>>>>>> The recommendation scales poorly with larger base page sizes. With the
+>>>>>> default arm64 pageblock sizes, the contribution per eligible zone
+>>>>>> before applying the existing cap of 5% of low memory is:
+>>>>>>
+>>>>>>   4 KiB pages:   2 MiB pageblock,   22 MiB per zone
+>>>>>>  16 KiB pages:  32 MiB pageblock,  352 MiB per zone
+>>>>>>  64 KiB pages: 512 MiB pageblock,  5.5 GiB per zone
+>>>>>
+>>>>> I question whether pageblocks need to be 512M on those machines to
+>>>>> begin with. After this patch, you're still asking the page allocator
+>>>>> to optimize grouping such that 512M pages can be allocated at
+>>>>> runtime. Only now you took away part of the mechanism to do so.
+>>>>>
+>>>>> If you're using 512M THPs, I would kind of assume it's on machines
+>>>>> with a memory size where 5.5G for defrag purposes isn't devastating.
+>>>>>
+>>>>> And if you're not, it would make more sense to lower the pageblock
+>>>>> size to the mTHP size you're actually using. And that would fix the
+>>>>> "excessive" min_free_kbytes issue as well.
+>>>>
+>>>> But lowering pageblock size requires a kernel compilation. That means
+>>>> maintaining two sets of kernels for different needs.
+>>>
+>>> That depends on whether anyone actually wants 512M pageblocks...
+>>>
+>>>> The ultimate solution is to enable better compaction to generate
+>>>> THPs bigger than a pageblock size, like Rik's super-pageblock
+>>>> proposal.
+>>>
+>>> ...or whether we can say, at that point, use gigablocks/cma+hugetlb.
+>>>
+>>> And then the static pageblock size for the fallback logic etc. can be
+>>> a smaller, saner default for everybody.
+>>>
+>>> Because the point you didn't address: it doesn't make really sense to
+>>> have 512M pageblocks on smaller machines, beyond the min_free_kbytes
+>>> issue: Fragmentation events will poison half a gig at once,
+>>> should_try_claim_block() becomes harder which results in less
+>>> conversions and more allocations falling through to stealing, page
+>>> isolation is more likely to fail, compaction locks and operates on
+>>> oversized chunks which is bad for latency and concurrency...
+>>
+>> I actually wonder why such a big pageblock would still result in a lot
+>> of fallbacks.
+> 
+> If you look at try_to_claim_block(), you need half of a block to be
+> free or compatible with the requested migratetype in order to convert
+> it. When memory is full, LRU pages are scattered all over, and
+> compaction is not involved (order-0), this gets more difficult the
+> bigger the block is. You can get into a situation where LRU reclaim
+> will not clear sufficient room for conversion in any given pageblock
+> anymore and you're stuck with the type distribution. A large share of
+> buddy requests then go permanently through the slower fallback path.
+> 
+> Usama knows more about this, but we have seen this on GB300 hosts, and
+> have JUST started to deploy kernels with smaller pageblocks (2M).
+
+Yes, just to confirm above, unfortunately, there were too many problems
+we were seeing in Meta production with 512M pageblock size for arm 64K
+base page size and just had to switch to 2M.
+
+> 
+>> Basically it indicates at some point kernel allocates a lot of
+>> unmovable pages that use many 512MB pageblocks and the life time of
+>> these unmovable pages are so diverse, leading to all these
+>> pageblocks remain unmovable and free pages spread across all these
+>> pageblocks. I thought bigger pageblocks can keep unmovable pages
+>> constrained within fewer pageblocks, leaving more contiguous free
+>> memory.
+> 
+> The idea is that the pageblock maintains contiguity for the largest
+> size you routinely expect to allocate.
+> 
+> The page allocator is very passive right now, and it doesn't work
+> super reliably. But even in the current regime, smaller blocks have a
+> better chance of containment.
+> 
+> For example, when the ever-growing page cache runs out of movable
+> block space, it spills into unmovable free space. When the next
+> unmovable request finds no space, it runs LRU reclaim - which is more
+> likely to free space in one of the many movable blocks. And so the
+> next block is poisoned. Smaller blocks have a better chance of filling
+> up natively, means less pressure to spill into incompatible ones.
+> 
+> And the higher min_free_kbytes, the more likely there are still native
+> options when the zones are down to the watermarks. E.g. better odds
+> there is still unmovable free space, you just need to reclaim some
+> movable/reclaimable space elsewhere to satisfy the watermarks.
+> 
+> I've been working on making this more robust with the huge page
+> allocator / defrag_mode stuff: instead of falling back and poisoning a
+> block, invoke reclaim/compaction to produce a neutral block that can
+> be converted entirely.
+> 
+> It's the same idea as the higher min_free_kbytes and watermark
+> boosting, but it is more targeted at the end result: readily available
+> space in compatible or convertible blocks.
+> 
+> But with that active regime, oversized pageblocks are even
+> worse. You'd pay ongoing compaction work to produce a level of
+> contiguity that you don't actually need.
+> 
+>>> Seems to me the excessive min_free_kbytes is just a symptom of a
+>>> deeper problem.
+>>
+>> Yes, our anti-fragmentation mechanism does not work as we expected,
+>> so that we need an excessive min_free_kbytes to get khugepaged working.
+>> I wonder why reclaim cannot get the extra free memory instead of
+>> reserving it via min_free_kbytes. Maybe we need a watermark boost
+>> when some consecutive THP allocations are seen to achieve similar
+>> effect of boosting min_free_kbytes?
+> 
+> I'm just wondering what the easiest way forward is to fix the ARM 64k
+> page problem.
+> 
+> Yes, optimally, reclaim would work to satisfy compaction space by
+> itself. We've seen it fail at that before, though.
+> 
+> How critical set_recommended_min_free_kbytes() is today is a question
+> that neither of us has a clear answer to. It's from 2011 and a lot has
+> changed. However, knowing Andrea, I'm willing to bet he added this
+> based on seeing a need in testing data. And I would actually expect it
+> to work better now with proactive compaction, since that has a better
+> chance of turning low-order chunks of that volume into pageblocks that
+> can be converted instead of needing a poisoning steal.
+> 
+> It's a change of long-standing behavior for everybody. It has a
+> regression risk and requires careful evaluation and testing.
+> 
+> Meanwhile, adjusting the pageblock size on 64k page arm configs has a
+> much smaller blast radius, appears to be the right move ANYWAY given
+> what pageblocks are for, and makes the min_free_kbytes a non-issue.
 
 
