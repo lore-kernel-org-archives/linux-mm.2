@@ -4,124 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00556C61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 22:32:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E13E0C61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 22:42:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC3CC6B00CE; Wed,  2 Sep 2026 18:32:06 -0400 (EDT)
+	id 932866B00D0; Wed,  2 Sep 2026 18:42:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9B8C6B00D0; Wed,  2 Sep 2026 18:32:06 -0400 (EDT)
+	id 8BBED6B00D3; Wed,  2 Sep 2026 18:42:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB1546B00D1; Wed,  2 Sep 2026 18:32:06 -0400 (EDT)
+	id 7D0D56B00D4; Wed,  2 Sep 2026 18:42:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B13DE6B00CE
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 18:32:06 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5CDBB1C1EE9
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 22:32:06 +0000 (UTC)
-X-FDA: 85170271452.03.06312C1
-Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 97E5340002
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 22:32:04 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dLSeTILm;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of orsonpeters@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=orsonpeters@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788388324;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4797C6B00D0
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 18:42:40 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id ABCAB140169
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 22:42:39 +0000 (UTC)
+X-FDA: 85170298038.26.199F396
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id EC06E2000A
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 22:42:37 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=prHzxbiE;
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788388958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=+AGt0gHLT0g+cl7JRWIp/qBg8bwWi3hEDvesCPNnUHA=;
-	b=WGYI5LdaGSEJ9h0VzNx8eJWAPtoTRLuKVGk0DMMqnUTeoF11l8TLu2riyrZenJTC2aczSs
-	zKVT2kyOt7ZME0/KAL+c6uA+0ido7OcpZOQrWWnTo8dCHWnpEdxaBVJduw5z0dGJ5FmF7W
-	DT3tJpVABlvk86pXXeXbp5b5s8QbqcI=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dLSeTILm;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of orsonpeters@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=orsonpeters@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788388324;
-	b=NKcljS8uEQdjLdJp8JGiOhttWDBVK6iT5fdxPQo2QJ12Y+bscv0SYmz7TMLfDT8vemrASm
-	HQA+owfSSyfqbmTuESOv/s1T8IJkjyElKRAt2qveeVmQusnIngM0DdlqUN545Qdx7aiUr3
-	/NRaBqy5/ye2T4ZPf/6qoiKbGga7DQQ=
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-66825847b2cso1458585d50.3
-        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 15:32:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788388324; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Dwb8JxzWVauBvbnyZjfJs4R33dgktxVVYU9GSNldQWPANOT3WilgUqjYv/2PMs2vBX
-         zHz+7LPrVDI/+zYARzQhTZtaXePm3aQNeLJaaAUeJh0oz9atdNC8ExttNA6ZGSUibhXr
-         WpfoxXpluwZ1j6oV/Szp9v7k116n+7rvpwSjs37dyhHwWSPGDaNwhUJP2MEPAtQahWTX
-         VNOcnzsv7H5cDO2fxdQE56mj9OKOyF7HNust9a/ra4JzXgX+cUE3rEvgCrs42W5HuhR/
-         PQ6sbvzo7YgMxJc0t6MkoOpuAjr055X1aVz5JDtlJLA9jWtPBqxL3wVaBx4NcnFbATS6
-         Qq4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=+AGt0gHLT0g+cl7JRWIp/qBg8bwWi3hEDvesCPNnUHA=;
-        fh=YxaQX7GTjfBsN7A2Jl+A9yP6mmGOQanoqU6QROKhVaA=;
-        b=aWMDaoQNgyOeepV7xzsJHoYlZ8qDZ8bFizjuKTzSdwO4pYkXMqcK5gzO8Vxg4WiPtU
-         wngz0fBtBS3pXkZSFk6kb6YFrtJ66XN6JY+ssN0usa2E6uM85QyInMHXAH3SJjB5fYG+
-         aNL7dcvo6la10AmRVfrXPYuuGwdcYwcwbh6Mo2xDN8OL5bQXeYtwa7TW66LgBp5kQcWs
-         l8wTzmjlSf2D7oJ8HhjS4yvyaIFT0Gztr8zy6fbXomwR06daxz8OLkvA4xWdUx4ot0a+
-         X4lQAFVUN3L+7hIyKFXh20sowhkA9kL9e9o2RoZaV37gOzjF1ldP4I44I2JT9HzWwz2v
-         tpQw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pqO5LZhvHBtRdvbWaz/wBxjW/GfD1kqiQ2C9og7aMqo=;
+	b=4M6uOGJeYVZOciUuuuCjC/1wrzU/kKayatbHgsXGVz6SxNQYk4afhO+DY/uESLG9+cKu1q
+	t/+S5S6GRtJL7vpJzJkLzh1ewuCeNTRAyVSlKNhrt/Oh7WHwo+IE5fdJ8eS6fdiM0I9joF
+	+AxCTpmqfUdnN2Ojw3GVkbb4TnKXrZs=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788388958;
+	b=40WeM/fUUwonX3Jv9RRdDeJa84K/8H5xO/NmK0SFylMjeFpQ3ae1+EeqEvoFNdxLkAwDx0
+	LHFGBbof+mwr/arRLP8Pvz3wILS54UzX9Nr6XD4TPcOtfMcqUogwzK87CZX6QCNUtaDs2o
+	0CmUSXa+zsHtUc0mruYzUBvrzyNmBzc=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=prHzxbiE;
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6B3DC601EF;
+	Wed,  2 Sep 2026 22:42:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C62C1F000E9;
+	Wed,  2 Sep 2026 22:42:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788388324; x=1788993124; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+AGt0gHLT0g+cl7JRWIp/qBg8bwWi3hEDvesCPNnUHA=;
-        b=dLSeTILmfwKIN/fvPh2LirH7SL5eM5x95+sMDo2Qv+LTSmuIM1KquTv0FXqzXWdMMb
-         qafccMB53fWJTJauyBdJ9FSO/cQp2oMzn8qlOQ91M1aW9T2p5y6MLQoDloZSA4pqPn/G
-         L/Y1mXFh2o0QS2QhntOabDyrvopMqKh8g4PJSYvf1RWaVCnWHVf2wdQToe0wjkBITbvC
-         vX3BL1brMwQM4OYIN98qL4HXAnmNv37+GltWXjyNf5qmgn5eHJIouXv2TP262g1rbW3w
-         SmGTIyVnGmaBe2DpkROW6dXOo/SiYVKQwGfGaHtKUdgWGoRGoMbBokj0+3YQ1wRARjD+
-         BBzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788388324; x=1788993124;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=+AGt0gHLT0g+cl7JRWIp/qBg8bwWi3hEDvesCPNnUHA=;
-        b=ezQitQFaF0veVdRRneiYL1+kmUCnQhHWDlZRNm6W0E1n5HfStMauOZzSLYCyZh6leP
-         wRcJsvMMf//Kyc3RaEsIHNNw4U2JyHBWblxkGdmPNuFASWbrHov+NdNh7nIFALV67jKa
-         mAEVpeAOKmlQslOA39CyURFpOzv2h7MRPA0rBnu51T+GgAEI1551hltAtYI9D9YMYNGV
-         C5ptTaNS0iaPH7murcyCUkxk+tLZa1mU+dNQw3/iNf64Z5S//3mx71PBWAOPbu/Xmmq5
-         MCCTNWX4FVNWqAsMhKIJq7/zSDeg5YJ7hD0ZOJtjGyK5Sf/YJy3ZvXxY3p2iuvEF5C0V
-         H81A==
-X-Gm-Message-State: AFuF++mhTTdkF72jf4eQhXthVqP5NNqNWepRo+nOwDdc+IcQoK4gn3/k
-	YYgCZIzhT0q17JId+vPN3X2qPCnJAXlVXc7p2D6nKvOqVXmW37Ud0HS7Wu8YcLrKMkCtTO3RfUB
-	HEJ7PxHjgeMzD1WXbKtxYYSqddGOLwWI=
-X-Gm-Gg: AYBFou2YsdFMOunTAiaU2Sts8ShJsB3PygV/SQTmjPocaK26WwdZWFuuek/k95C07mB
-	KZP2S1hH4at5kK36TActhvomIfRc8BQrGmJlbtmQCjQxWDgb2mDc6fsEgdYv+nJMeQElQmtEt7v
-	snCZhT141v/EA2hZu41cpquO0umHdomBairuj18BqbBl/1buxFDS2kHiFniMYE7SvP8eRUqb6A/
-	5EmDgX5wCpyaOZelKj0SKQxdBBibAVmVEwrAvd3uY1EtLfT1X9JA+0oG18rAj6ehhM1WyDdt0Zn
-	DEwxozFyzT4BM7XyImUA8gdy6YGO/eVQj9OcoE4U9AwZinfT89iN3Ld3flxWHbhVk86LRjo=
-X-Received: by 2002:a05:690e:12c4:b0:66d:1913:d40 with SMTP id
- 956f58d0204a3-66f9bb5e1afmr2528594d50.19.1788388323569; Wed, 02 Sep 2026
- 15:32:03 -0700 (PDT)
-MIME-Version: 1.0
-From: Orson Peters <orsonpeters@gmail.com>
-Date: Thu, 3 Sep 2026 00:31:51 +0200
-X-Gm-Features: AcwNN1V60FGAsFXTdLKDMw3TertitPAE8Ih8JeKNL1i5S9CD6ZtphO7QhQuic6g
-Message-ID: <CAJxLxMUGu1-L+O_nAONOwOXnS=cNbNApCWqdthRjd76LThtSPg@mail.gmail.com>
-Subject: [BUG] mm: writes after MADV_FREE get lost in THP pages under cgroup limits
-To: akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
+	d=linux-foundation.org; s=korg; t=1788388957;
+	bh=pqO5LZhvHBtRdvbWaz/wBxjW/GfD1kqiQ2C9og7aMqo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=prHzxbiED94HyIQ7ik1B7ECmS7zcOCMeXkIHkC818VXVBLbk/R/jMpD/lxm7iERyM
+	 uoGFJiqDb8MLxSYNs7OcvlydDZAkz2sGR1uqYT6kYhsuDJciw9PQ3XGs22Z8U+dk6k
+	 K/AjesgeV+b5K/D0P3ZrrQXATJNrGeukzLcE1iAs=
+Date: Wed, 2 Sep 2026 15:42:36 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: SJ Park <sj@kernel.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>, Brendan Higgins
+ <brendan.higgins@linux.dev>, David Gow <davidgow@davidgow.net>, David
+ Hildenbrand <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Lorenzo
+ Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, Mike Rapoport
+ <rppt@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, Shuah Khan
+ <shuah@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, Suren
+ Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ damon@lists.linux.dev, kunit-dev@googlegroups.com,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 00/12] mm/damon: cleanup code, add test cases, and
+ update guidances in docs
+Message-Id: <20260902154236.3f59f36fb51f3345a0f21906@linux-foundation.org>
+In-Reply-To: <20260902054747.99370-1-sj@kernel.org>
+References: <20260902054747.99370-1-sj@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: EC06E2000A
+X-Stat-Signature: tfea7a7fodri8ib8u4m3sa6pdp1o6o3e
 X-Rspam-User: 
-X-Stat-Signature: xre63prpdg7taf4pjkohwxdy8z4fij8m
-X-Rspamd-Queue-Id: 97E5340002
-X-HE-Tag: 1788388324-315031
-X-HE-Meta: U2FsdGVkX18S4IEJWH+RjpIEvv3sTC5zamKkTAxFI2a8NVwLAjvq8DUQRtuRqcne12Va/3+LYi7sXuZW9M/BpZ4s//JEbQw2hdYeUAUr9OdeBzhqdXwbQNL4mCauWRFYY16CX4HaQ6WS0YigokfwsuU0MZuSSPuF7VF7w+Sg9AaKI+g9VPpcBfFt4zeQsgegX5HrOh5xQrB4MYatUdaiU2zBnFLEQ/7nmO6jSHerDhKjfSXpMkEQSkz8YgNt2jeSVgfUfOgxhdzGK0l87i8dhecVQ9mBekUXxR3WQif9wFBdkVAX7miyDgxc0k9oiCZxyZr0Vsa4oQiU40k0s/u0A5cyWRX6EYemo39Bykkaxm54oVsp3kYSbJ1JJcRpRAtTJyrjn+lyHoV6rA8CrLz8BbX61Dbd4Oqn5uyJ1L3M1uzeDVjHoYyEBwoN+q70rjrBiOCx32ynn+21jzylv72b85YVNpMm6mYcejAyyf2jQeNVKYE5i9VNTZapY+eQj3Qtz9Hww+iiHOiJdK7HOSjXhBI/d6BkTjWBJZLwgBoVCIQD3WAGKQu7JHsTtxD57fzufIWigNCSwgMe55g8cAKV9jC82f0MXtnv9kM3UlG9NV6MdkmKCnr7xxHPB58t6VmAHlM5KMtH9JbQqaNyouGMKKzvSr1Q2LEVFlptw4IfBaKKMgJQbr6n+bpiVAEQOORr21RPTuCCGWaywZyOiw0X3qkFpEDjyVMwSylcOD3jaHrhCuB3MW1vGpetNgGG7WK4s1e6Tof6iN2We+9KKAbP3vLfJJUE3JWIOCn8Yr0CWq1kGPVlB/EYNwV4w/oz0DTl41wPNE2AV37qgTezsl5KT4GHtBBZN93Hk+eaJS//0ZaFLEiz5VIx9ONQb1lsvygouQ4EPXIbNP1iD4s9GpyvACrAe6Q7IPxU2/VJC7sGqDztas15zBcmNi0TGYSJRkMh1ErnTmN0c0JzSI+Dk1f
- 2SeLPKeY
- Z3Mp/XLSvqfXR4HZtPPUb3zGbQbl+iNt8PSIzdX2hdi9HtK46ICTWCJKcQLFZzsYxjeVOsZQIY6ki2ewdW64eQ6mRRSaqac1fTiuKmHvHZIn2QOXof5WklZV2xvZrmHlq1OqrHl0nWUdhLxGBGPJplhYSzLyf4I3YRxfoKqUiIgA6FYLGwbKixoQqVP6fWDD1N7hQ006OoTvda90Gz5x63e0jt595HsyZUKWJ+7yVY5B5sV6hR5pyYokJ0c5nb1HhZpIvd5C4uxqvLkpHCtooDqCXxINlHvbOkUBgxjYYf7BaJtSTSulgEWGVIpwsDqVIxObJet5UZofpDGoj6zpplqfxX82L2Q41z1PGSjTuMxljy5Ip/LnJHrHwCy713YJouXkB72EbFZrGUa35DuVOdIvxxJ7HzghM8eIwFyuwP8AY9oJCNAigrYJASwAq4kryvBDd
+X-HE-Tag: 1788388957-367615
+X-HE-Meta: U2FsdGVkX1+DdIE57t2qPTpnem7lmAaoPJJRiYNoCUEWr4Jg6FOdaZ3gNIcR0M56+SWcsKhWODeMo8jMH2LyG4Us4WlXKZyB7fY5QXYUIZg3D9F4dHXLHixvi15Lo9aZPVFcS2UMOsLqb8lfY77c+mMfLO+xvHygp4S0gElAV/NuF1x8aYmQJ80JbopOnKOS8/mQ6zbaN9FeZ0efubxfrP9CywV3qNgczcMNc1Hr+YrP8xVUVMYYQ9jBpVf/4daxX/8jx0k/aDICt/n+wcpZLvyAJXLevlI7iaa4AvlSFU2N8pnMjlfMbEkePZ8lgm0qSCYbSc6JEmq9UWjSPC6CU8F7OtrxW0wSua/kK0+EWGPmDRSnSS7f6SsjH3FXTvfBoanlmtirPJ7yJU262325kXvgrxNtD7Opeojln84UjPD96dLbM6yidqtfc3gXaJEd2V2JFT0rxXxgvLhIro0CZwYDivfBpuswe0nnd9sHJV7bgCFBV8VAnVxgRmPYdz7+e+/tNb+OFhs+7d0RBGcNTp392XcD5+rnzV062zxSWd1aISnTwK3mYnFQW98cMl8Dvpc+ANStAMUUuC6juYmdSqTQQfzHR/wKlXKLfdM4CMc9OS/O03yLw+XD/twUy7arDK36s9KxUyWerA59r9w8Rt9A0zxGWKPtnVaJhpIrZCTapEe3Ce+qXmEGubS2LKSAA2yOrcUUmRmdK4+G7m2t/qYx1QiHVh74NH3NFHhhWMVA0gE7UU6DcjegEgngDpzMcn0AKDV7uDv3GmhFm4OmLU9W8wZNyzlET5M3MtHsGqsIfkXD3L6T1VCpRd1NOC6KNGwfbFwS++erZIF1RQq7h9ZXydbhLbC36D/CQcnHEA6puiWHiUlV4OtXmtauBfTLma10SW7hzeiN4CJRdcl409O+AWkTwCAPfBVY5blqicoAfp/fIn0KcSAYoB9lWQn1zu2HtM0UmSDLEkA4Opa
+ nMMyODxY
+ sbqe1PrdIgyp+9Yo5pbZp/MgXSd7lc75vMkVNa2FO7PPNgEyoJrjcMDle4yhpsKz89ymNTaU5v18Z6J2+eeff6t+8riEHCTpXi4GzsbGANcfbum8WlaBhFIbY2Z8n8oIb5GvFqJllbhamALgpd2MXztllxTvyy/8g2BjVb6+1wOarmJ3S4CTy/QXid37WdqqcCmX5GwIAPqIY5UbBighSWmwQ6QZj+4pJT1mPqKpFH9pqw1YrzJj2kQAndFX4/zr4kwP9ozAQKLBTni5eXyXNdURqnQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,104 +98,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Dear reader(s),
+On Tue,  1 Sep 2026 22:47:33 -0700 SJ Park <sj@kernel.org> wrote:
 
-Below is a small user-space C reproducer that, when run with
-transparent huge pages and under cgroup limits, causes writes after
-MADV_FREE to be completely lost. I have reproduced this on
-7.3.0-070300rc1-generic on an AWS c7a.8xlarge machine.
+> Misc cleanup, improvements and updates of code, test, and documents.
+> 
+> Patches 1-5 cleanup DAMON code.  Patches 6-10 adds kunit and selftest
+> test cases for recently fixed bugs and a new feature.  Patches 11 and 12
+> update guidelines for AI review and what document to read, on DAMON
+> documents.
 
-
-Best,
-
-Orson Peters
-
-
-
-// Reproducer showing writes to madvise(MADV_FREE) pages getting lost. Requires
-// THP to be on and cgroup limits.
-//
-//   $ cat /sys/kernel/mm/transparent_hugepage/enabled
-//   always [madvise] never
-//   $ gcc -O2 -o madv_free_repro madv_free_repro.c
-//   $ systemd-run --user --scope -p MemoryMax=2G -p MemorySwapMax=0
--p OOMPolicy=continue -- ./madv_free_repro
-
-#define _GNU_SOURCE
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/mman.h>
-#include <sys/wait.h>
-
-#define SIZE     (768UL << 20)
-#define PRESSURE (1536UL << 20)
-#define PAGE     4096UL
-
-// Touch PRESSURE bytes in a child so the cgroup has to reclaim the
-parent's buffer.
-// The child volunteers as the OOM victim, so it dies instead of us.
-static void squeeze(void) {
-    pid_t pid = fork();
-    if (pid == 0) {
-        int fd = open("/proc/self/oom_score_adj", O_WRONLY);
-        if (fd >= 0 && write(fd, "1000", 4)) close(fd);
-        for (size_t done = 0; done < PRESSURE; done += 64UL << 20) {
-            void *p = mmap(NULL, 64UL << 20, PROT_READ | PROT_WRITE,
-MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-            if (p == MAP_FAILED) _exit(1);
-            memset(p, 1, 64UL << 20);
-        }
-        _exit(0);
-    }
-    waitpid(pid, NULL, 0);
-    sleep(1);
-}
-
-int main(void) {
-    int bad_rounds = 0;
-
-    for (int round = 0; round < 10; round++) {
-        char *buf = mmap(NULL, SIZE, PROT_READ | PROT_WRITE,
-MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-        if (buf == MAP_FAILED) return perror("mmap"), 1;
-        madvise(buf, SIZE, MADV_HUGEPAGE);
-
-        // Set buffer to 0x5a, again after hinting MADV_FREE.
-        memset(buf, 0x5A, SIZE);
-        madvise(buf, SIZE, MADV_FREE);
-        memset(buf, 0x5A, SIZE);
-
-        // Trigger the bug - on a multi-NUMA region machine simply
-reading the buffer in a hot loop
-        // for 2 seconds also worked, likely due to migration.
-        mprotect(buf, SIZE, PROT_READ);
-        mprotect(buf, SIZE, PROT_READ | PROT_WRITE);
-
-        // Trigger cgroup oom killer.
-        squeeze();
-
-        size_t lost = 0;
-        long first = -1;
-        for (size_t off = 0; off < SIZE; off += PAGE)
-            if (buf[off] != 0x5A) {
-                if (first < 0) first = off / PAGE;
-                lost++;
-            }
-
-        printf("round %d: %6zu of %zu pages are no longer 0x5A",
-round, lost, SIZE / PAGE);
-        if (lost) printf("  (from page %ld, they read 0x%02x)", first,
-buf[first * PAGE]);
-        printf("\n");
-        fflush(stdout);
-
-        bad_rounds += lost > 0;
-        munmap(buf, SIZE);
-    }
-
-    printf("\n%d of 10 rounds lost data that had been written\n", bad_rounds);
-    return bad_rounds != 0;
-}
+Thanks, I added all this.  Along with the fixup for [02/12].
 
