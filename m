@@ -4,94 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA10EC61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 01:16:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CE78C61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 01:19:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB58D6B0088; Tue,  1 Sep 2026 21:16:36 -0400 (EDT)
+	id CED596B008C; Tue,  1 Sep 2026 21:19:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B86AA6B008A; Tue,  1 Sep 2026 21:16:36 -0400 (EDT)
+	id C76DC6B0096; Tue,  1 Sep 2026 21:19:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9D3F6B008C; Tue,  1 Sep 2026 21:16:36 -0400 (EDT)
+	id B3EFA6B0098; Tue,  1 Sep 2026 21:19:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 84D236B0088
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 21:16:36 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0B786A05E4
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 01:16:36 +0000 (UTC)
-X-FDA: 85167057192.09.106DFD1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 7B592A0002
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 01:16:34 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B6VTk05m;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 83DD76B008C
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 21:19:40 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 031741605C9
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 01:19:39 +0000 (UTC)
+X-FDA: 85167064920.18.4E260DD
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+	by imf13.hostedemail.com (Postfix) with ESMTP id EBA3420003
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 01:19:35 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="JSc/QrUE";
+	spf=pass (imf13.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788311794;
+	s=arc-20220608; t=1788311978;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3Mhxtqabf4BN/IkLfs+zcaKuZOjTdW8c4GvQzPk50rE=;
-	b=cR0NBlTKNhjidrg91Q/xU5+sbP6+B4ofMlY8gwrjymFh1Hg+125oiV+XoiXw7ah9SOe44t
-	nKXg/QPHmuU1u5YRCRtjmFvhIJ3EXfXl6z33ZT9A+YNSCIKw7Jk1cejcg77NQjQKo9/l3g
-	AqeBVRlZp0TPPh4DSaQkqUE0mgaUC+k=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788311794;
-	b=g6l7vagvBhyM90wNA1zS4D5hijxJqUjF7fTyHs8AagVqzqf8z7534RA6HmmTDbNDu/x/I0
-	+vLdcKE9lDQmEOWCJ5tSltSdDRGQtbDvm1AKQEEl3UNF01MVIumfbFc30DEv4vKL0aK877
-	zFDMLq2A/2AUpmCKMZWhkPuYjhtlkX8=
+	bh=t9UK13JKhSsPM/Vc9steoJSl+OnutIzRnlZukeamK+o=;
+	b=aKUX+CJFNLtsbayF8UZ4dOriOHzDFvCWM6oubs/C4MNZ5BU6WTltyKNHA+xwR1JlcJM00c
+	ChKTCjKYokFYmTkNXTg03uUo506CDM2lncBDPuhiB8EpJFXLBP1sFWZZ9e75kNm5kkDF52
+	S/scxUI1M9a+PyN/6hGtvQSWAxTQmXs=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B6VTk05m;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 09B8C600C8;
-	Wed,  2 Sep 2026 01:16:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5557E1F000E9;
-	Wed,  2 Sep 2026 01:16:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788311793;
-	bh=3Mhxtqabf4BN/IkLfs+zcaKuZOjTdW8c4GvQzPk50rE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=B6VTk05mMB7XY9sH06GdL+3cstKc01C0XAWUzwKsOI+viYpXBgIWqv19h0pNBfyDS
-	 yu6N3zjMGoyd8lCGBVKIACZ1ROaQQoIpSchThLqu5MBwsUhh5JBbro3HJvsyCBrQZ4
-	 49AZtXRdQaAsaW0CF5AJz0LosDT+vqiJkrUiald9DrrXtJhTUcHej3czB3ApX9Uq22
-	 Zg0jVQw/Nd+GKBFA8QcOFQUPwfRoxqWN92IeSculnOX7/OoNLIH6eojeFEFXoJPmPY
-	 2QacL5mWp2xK3657euV5Upzqqs1Dhqy/u/4GMiVppTN0XKlSMFOP84qfpkLd1ePSW2
-	 Fw02JSydlcPTg==
-From: SJ Park <sj@kernel.org>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	stable@vger.kernel.org,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
-	Quanmin Yan <yanquanmin1@huawei.com>,
-	Ravi Jonnalagadda <ravis.opensrc@gmail.com>,
-	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 0/4] mm/damon: fix misc bugs in kunit, quota goals and sysfs refresh_ms
-Date: Tue,  1 Sep 2026 18:16:20 -0700
-Message-ID: <20260902011620.110326-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260902002725.108635-1-sj@kernel.org>
-References: 
+	imf13.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="JSc/QrUE";
+	spf=pass (imf13.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788311978;
+	b=75CoqYOOCvBsmgv9rePe/Djdy29lOwAS1AvFqnGjAIRHL/8dIvlpEwijySwamOexxaq1X5
+	bexEcmAMH0e1P8ck9Q561pRZx4oyyITMwyUuGigAgApofPgSU/uBP3Uf18Yh8+LfHl+3d8
+	Mc78cL8gpR3/Zn5LDl/6yBgDwTfT+F8=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=t9UK13JKhSsPM/Vc9steoJSl+OnutIzRnlZukeamK+o=;
+	b=JSc/QrUEAnbPE7s6EK6aHXX4FMrI/ak+7N46GxWAYjo+hv4+e8IRFqw3R57vf10ZXvwgmTnw1
+	5LsKKvi+A3v/zJR4bWOVaYI3bbjz5k4AHVvkI67n+bm/COW12+QwJBDOanQFb2mbBv/tq3BctvX
+	qaDBA0HnMSM+ut7AmVDhzas=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hZPjt2PDTznTVd;
+	Wed,  2 Sep 2026 09:08:18 +0800 (CST)
+Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
+	by mail.maildlp.com (Postfix) with ESMTPS id B4C9C40565;
+	Wed,  2 Sep 2026 09:19:31 +0800 (CST)
+Received: from [10.67.109.254] (10.67.109.254) by
+ dggpemf500011.china.huawei.com (7.185.36.131) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 2 Sep 2026 09:19:29 +0800
+Message-ID: <96ba8924-b857-4dbc-9161-4c464901f974@huawei.com>
+Date: Wed, 2 Sep 2026 09:19:28 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 15/17] crash: Simplify CRASH_MAX_MEMORY_RANGES handling
+To: Mike Rapoport <rppt@kernel.org>
+CC: <catalin.marinas@arm.com>, <will@kernel.org>, <mark.rutland@arm.com>,
+	<chenhuacai@kernel.org>, <kernel@xen0n.name>, <maddy@linux.ibm.com>,
+	<mpe@ellerman.id.au>, <npiggin@gmail.com>, <chleroy@kernel.org>,
+	<tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <hpa@zytor.com>, <akpm@linux-foundation.org>,
+	<baoquan.he@linux.dev>, <pasha.tatashin@soleen.com>, <pratyush@kernel.org>,
+	<ruirui.yang@linux.dev>, <kees@kernel.org>, <thuth@redhat.com>,
+	<gshan@redhat.com>, <jic23@kernel.org>, <james.morse@arm.com>,
+	<ardb@kernel.org>, <leitao@debian.org>, <yeoreum.yun@arm.com>,
+	<sourabhjain@linux.ibm.com>, <coxu@redhat.com>, <tangyouling@kylinos.cn>,
+	<hbathini@linux.ibm.com>, <adityag@linux.ibm.com>,
+	<ionut.nechita@windriver.com>, <liaoyuanhong@vivo.com>, <seanjc@google.com>,
+	<fuqiang.wang@easystack.cn>, <makb@juniper.net>, <piliu@redhat.com>,
+	<ebiggers@kernel.org>, <jbouron@amazon.com>, <mclapinski@google.com>,
+	<me@linux.beauty>, <graf@amazon.com>, <bgwin@google.com>, <robh@kernel.org>,
+	<takahiro.akashi@linaro.org>, <palmer@rivosinc.com>, <x86@kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<loongarch@lists.linux.dev>, <linuxppc-dev@lists.ozlabs.org>,
+	<kexec@lists.infradead.org>, <linux-fsdevel@vger.kernel.org>,
+	<linux-mm@kvack.org>
+References: <20260826092541.3905933-1-ruanjinjie@huawei.com>
+ <20260826092541.3905933-16-ruanjinjie@huawei.com>
+ <178829364021.3691424.12328056849597833403.b4-review@b4>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+In-Reply-To: <178829364021.3691424.12328056849597833403.b4-review@b4>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.109.254]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ dggpemf500011.china.huawei.com (7.185.36.131)
+X-Stat-Signature: ga4978it647dgp1o8dr9y6jcyi9mdpds
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: EBA3420003
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 7B592A0002
-X-Stat-Signature: 3jqdc4tk3f4b1esqwbhzj18ncz8ucfc4
-X-HE-Tag: 1788311794-861599
-X-HE-Meta: U2FsdGVkX1/N2u7Ltydh2hf6Q9vJeuBtsy1c2iz4Y8ArPnOMME/2Q46PCoVyvEmJrYvPOOlMHM/21uNigTAUBvuBedrPuI5IIvASZ3dx1svj43CJMICiYm11opVW/a6dBeh3EVO3qEDmP+zCDGsi8qjXlvGfqVpBncy/jNKGx2QGwHh1J0ylcUcLiC9MFYNNgYAuxu+39aHcmq52twRvjKihsAILOHCLKk/MI5RcTf29pswJDpCh/Bou7VXbPVRwRYgoMgcxaOIdKCKKJ+MRUpYvqzzhipK0Oo0h80LfjrOSCgQT/S/lDidxZZrKiruPz9F5FBmAAGUtD9jr6dHeX+J3u8RX+D8W1g/5G+nPUGA4WyEH8ALxjQMMMouXEcgTVASHIqIOwxnfRoN8EE2gce5WK4YLENllexTN3/zUwSwuzO9jYU30XbnCEuxsJhA6mzCLYiY0DQjOxbrO2vBstQ3lL7DfODjg0+4Mq5BflE4Q/4CRCxYJVD98WXNivXq9HJh0R6/8JabkjJHQEgPnAQrhH4Rud9ciiHUrMleexYGd8LSSwyyrHB1n4XJOq75sxC8xyjMneniP4SEytr0QoAFtUI/YgnVk6V79+m9bUWJB64X79zodkTe/8dW6f10Hp2mnJl4KnRheGNudnSasOE5OnWb6BMlnUVpZvYsCf5anK1Teokxx0uzqtKE4v+Vv0bzP2T6iTprA/FS0otYJ+aDErxrqV+zdu1+p4Zv7za3nZi6yz8K8Afeedz3GZS1VgSim85NtPaCkkWhCsWOcCv6rfzCD/RE5qe/X9msgLwuHtKsqgWbIwCwX83QLYq4EiyQP5JAEwgiD23sWo9BaYg8vde7c8xDS6CggiQ8d79pV3a5Vz65pKaeW8D60CB5m2cRYBRRdDHbQBlGnjcoo9btVySZdnZpJif8BLrXMJK+NRKt/E3/LJQ+bMyqHB0V1Jv+ReRtq4kELDb6S0sr
- C420rwVm
- i2wAbyMdCHBtyrT7v0UNJb8lGMRNAVehae5uKXdHRVK2mcT1L+efuceXvW/nF73yvrzdvDKBGFh4/8rmfkKMiQQhzydPcO21QAp1u4UDFOneZ9WheCQh6b7aV4/HeUSQ99516hTpzcpayIQg4vkrqgAqDiKVD2vBBMVcHINZBPMs1BLKLUFO4x2y64gH6B0TxSRTlW34vH12dganQz71B8simjnJTRxMndEBpw/G0uYkxADhipuxQZK1tjVEMetHDIoyivrkioIE+vtuE+rrrK/x1kbcbnnaRnzu2A9l+WX1HW7UFOiL7PeAv92lZ4lt3L+fQOI1WKaj33mNLQOUVQCtjUrYDyeMZtYGp
+X-HE-Tag: 1788311975-385102
+X-HE-Meta: U2FsdGVkX18q1OPu2x8vL7JhnHk0gOruLdrgw1DOd0gKKeUitbKgyyJED+3CTauO+zB+gEtClcsfXtEG71Pbv/uo3kxucRkXxugxr4cznhQy+dK364vcAnzoJNiqCv81gpIgjrHXGxRrzlvIsBTqT09pxvLmPhwiM0ruXYonWJaY8H5m7SHUkZTofzVr1YVt36rfaQWKvxiClKpnJ/2A2FTkBIpsyVcLLoOQsqWrPp7UOtXLGNUecFkjaupi6eCkc2T7rsZgKbDMHex3Tt+0QZWw/KMLXp2WaP+Ne+EF9F5qqOZPZ+RlaWCVFOdLAWBFZY1pK8JUG4eahQt67xg5HGRCo3TJcIMKyT9TzBhyqbcgAvU5K9gKq3Ew7nmG1ail2zn51yK8e9DWSe7ycdk/LOFJtDBdAKEAyldQfTmHdCgbywrXRQU9VHp4diVtYFNVTiOCV2G+XQWmtyGYbmgVsoxl3pUudIEZlWM+iI4sbPT/xQmJLfn8whSyEb8na5RWc9VKhRQvmmhnb6J/6gT83vjgqReYyqfiz+86ONUdv/COpdXuSRBxYek+ZPqzGijRAUPuQWbkCg5l9Anlr4NzlRzdUiGCvli3Ox5PTsYU8od40g9KnLWLQ5L5/gOLSuDcEZhWvgV/piY6GvLLiBKVQGs9Pcm2Is4rPffJ+eclaHejTJW0uXo5XShfhbEca4Js+vSvmbdluhsTg/4f6EzulSvlhKbGHhlCZ7sekySYxGZek9lKBAeqLHc0lAeirkXsSmxLDmsDdeY5dW1C4f+gBnD3BYTXenJLnC+krScESQ18eO3d6DBnCYVT3/GtLEKOSD2gHpNMDp53rtdDOEjBDKmzV+1IUb08xHYDP/YWrE/BVf9g4NcxqmB5yAlhJ/82iJ8J5E7xPWTKpcB7OBhC8lG3DJb4gbxgdxio4CbgOZ9WwTJs9hZqlKPC8AGb2jKCJSymzbi2UmXlWL4C/pa
+ 2nlgwH+X
+ 5KKBYaHiaOHBnsPZGlg1yp+BgG/pofhHJ4lT4GuntwKT1NrPcprb32sQ6UlopGWfYxHoK4Vp4MB7CjjJGxN/K7W4Q26fwrMqRGJfYCU8TIXhh/qbkvYf5TR/5N9RhYaxyEgD7rSW1ATd6QWBRkZ6FwhnrHLm12fxd6Nj27oXS6MPrsoVfaEnFa537ij1haSmv/tNLttvDQQjbcKXzOj23vNM/nCz5QU8iOvn4Ed4IKypB6r+9mFWaWpthmfu9OMr3epjt83L1QzOVt+HliBhAiVRnbF1hI9I2CVvwdj5FhImvcz3hBbuSTJkdKztacK5ZkfRFwPJKdUsjyGHi0e6j/jklSMUi1qDIDX60z24W1t6Fl4cIWONrxbAJL5lBcdVZev2B993nBoSu13wU6FhSBfZgGGg/8Hpumfa8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,23 +117,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  1 Sep 2026 17:27:19 -0700 SJ Park <sj@kernel.org> wrote:
-
-> DAMOS quota goals commit unit test is mistakenly not testing a test case
-> that was designed to test.  DAMOS quota goals and DAMON sysfs refresh_ms
-> file have bugs that can produce non critical but still unexpected
-> behaviors.  Fix the bugs.
-
-Sashiko found no blocker for this series.  Sashiko sent findings to damon@
-mailing list [1], and I replied to all the comments.  Please read those for
-details.
-
-Sashiko found a typo in the commit message of patch 3, though.  It should
-'s/QUITA/QUOTA/'.  I asked Andrew if he could fix it from his side.
-
-[1] https://lore.kernel.org/damon/
 
 
-Thanks,
-SJ
+在 2026/9/2 4:14, Mike Rapoport 写道:
+> Hi,
+> 
+>> Set CRASH_MAX_MEMORY_RANGES to 0 when MEMORY_HOTPLUG is disabled, then
+>> remove the now unnecessary IS_ENABLED(CONFIG_MEMORY_HOTPLUG) checks in
+>> powerpc and x86 arch_crash_get_elfcorehdr_size().
+>>
+>> No functional change intended.
+>>
+>> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+>>
+>> diff --git a/arch/powerpc/kexec/crash.c b/arch/powerpc/kexec/crash.c
+>> index fc0105c7af4c3..c47e3f867ea1f 100644
+>> --- a/arch/powerpc/kexec/crash.c
+>> +++ b/arch/powerpc/kexec/crash.c
+>> @@ -474,9 +474,7 @@ unsigned int arch_crash_get_elfcorehdr_size(void)
+>>  	unsigned long phdr_cnt;
+>>  
+>>  	/* A program header for possible CPUs + vmcoreinfo */
+>> -	phdr_cnt = num_possible_cpus() + 1;
+>> -	if (IS_ENABLED(CONFIG_MEMORY_HOTPLUG))
+>> -		phdr_cnt += CONFIG_CRASH_MAX_MEMORY_RANGES;
+>> +	phdr_cnt = num_possible_cpus() + 1 + CONFIG_CRASH_MAX_MEMORY_RANGES;
+>>  
+>>  	return elf64_phdr_size(phdr_cnt);
+>>  }
+>> diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
+>> index 99eb8583d9321..116410ac90fb4 100644
+>> --- a/arch/x86/kernel/crash.c
+>> +++ b/arch/x86/kernel/crash.c
+>> @@ -407,9 +407,7 @@ unsigned int arch_crash_get_elfcorehdr_size(void)
+>>  	unsigned int sz;
+>>  
+>>  	/* kernel_map, VMCOREINFO and maximum CPUs */
+>> -	sz = 2 + num_possible_cpus();
+>> -	if (IS_ENABLED(CONFIG_MEMORY_HOTPLUG))
+>> -		sz += CONFIG_CRASH_MAX_MEMORY_RANGES;
+>> +	sz = 2 + num_possible_cpus() + CONFIG_CRASH_MAX_MEMORY_RANGES;
+>>  	sz *= sizeof(Elf64_Phdr);
+>>  	return sz;
+>>  }
+>> diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
+>> index a97ed9605602f..e6251dfe451a8 100644
+>> --- a/kernel/Kconfig.kexec
+>> +++ b/kernel/Kconfig.kexec
+>> @@ -160,7 +160,8 @@ config CRASH_HOTPLUG
+>>  
+>>  config CRASH_MAX_MEMORY_RANGES
+>>  	int "Specify the maximum number of memory regions for the elfcorehdr"
+>> -	default 8192
+>> +	default 8192 if MEMORY_HOTPLUG
+>> +	default 0 if !MEMORY_HOTPLUG
+> 
+> This only sets the default, but a user can change the value explicitly.
+
+You're right. Let me drop this patch for now. Thanks for the review!
+
+> 
+
 
