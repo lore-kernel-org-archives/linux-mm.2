@@ -4,114 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 029F4C61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 19:55:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 389FEC624D4
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 20:00:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00A356B00E6; Wed,  2 Sep 2026 15:55:21 -0400 (EDT)
+	id F2CF06B00C3; Wed,  2 Sep 2026 16:00:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F25A66B00E8; Wed,  2 Sep 2026 15:55:20 -0400 (EDT)
+	id EDD766B00C4; Wed,  2 Sep 2026 16:00:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E15426B00E9; Wed,  2 Sep 2026 15:55:20 -0400 (EDT)
+	id DCD156B00C7; Wed,  2 Sep 2026 16:00:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C619B6B00E6
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:55:20 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5DA53A4291
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 19:55:20 +0000 (UTC)
-X-FDA: 85169876400.03.F27CE01
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B3E4040003
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 19:55:18 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=SO3BxjBD;
-	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id AC2A06B00C3
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:00:23 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 263D114038E
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 20:00:23 +0000 (UTC)
+X-FDA: 85169889126.04.38D773F
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 3FE40180006
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 20:00:21 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TK5oyqmD;
+	spf=pass (imf24.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.173 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788378918;
-	b=pNSbpj9sMzaMw1hgQLA6eDKxIqq3BRJiBeC07FTuEIYM/4K0NQQHcm9OGPVPNM0GaKg8yq
-	yDAYs9sZ0DwrUoZw1btYCML4YmKmVSwZJcy6hMMQDk3NLkovUNDMustt+9KsZDejIXcxzt
-	fuIhPp8slpsV37HlRYY6TfhYX7QocFU=
+	t=1788379221;
+	b=JR4Ht+1ACro1zie9G79+oC2ENwuy4p3M5Z7i51fYSQWW5tA9M389COHaksblsTszMpgTnb
+	MegQQxYFyifvXiMcOBugzKwuSkjGLqmYI6HuEPW/IszSRXznROOI5AaEfjohlBcxBTdDn5
+	HN0VQ6V9efS2yjeRlC+huFK4N2cU4wU=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=SO3BxjBD;
-	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TK5oyqmD;
+	spf=pass (imf24.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.173 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788378918;
+	s=arc-20220608; t=1788379221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=I1NZ9ZHcDjrngsqR4bYoxHCsiDBrtNaJ+UNE7jVFBRE=;
-	b=STr+UQiZzP97a7rsAlDmdiW/zNy1zaINn1z39WeWJBEtsznrNQIwPo2YaqNYw5WId3D4gy
-	fJX0WcU/MP4/9J6+eNBGoNArbJ8rSsUKYfQsRvEVCayX4N8kNMBKM5gitI+q/0LFT1IBd4
-	VVJwBHdD4gbQeTqTelf3H73r0LsqVAU=
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-936c02e58dfso143610385a.3
-        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 12:55:18 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=InDs+YF8Rr2GVIXpPTwQq2qlM5wTAldEfN0J2IQdGYA=;
+	b=xnnSrnmjPib+qMM0WveoZD+03F7oWV5aGDVXkstmb4J5i5WOTD4fuHM3YxKy2q99ybrVHt
+	xVetGKdYg8KmNK6sIYf+R0HK+ZkUtkG2QwjmIqVa2WaYCf+YlYpxneXaNANoO/khTSXPG/
+	Va0rM+vjSbxkblawtHw614CPLlplx3E=
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-4a45b3f0becso1068432b6e.1
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 13:00:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1788378918; x=1788983718; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=I1NZ9ZHcDjrngsqR4bYoxHCsiDBrtNaJ+UNE7jVFBRE=;
-        b=SO3BxjBDYgYt8HhzTBwtzdacMUAdampGXhymd7iMnN4WKKYzpRfkdaTqtojbQfvMy2
-         HOFzFyaT6iqPZApG/GkY7Eb0gjid72f/JRMTIHrc+9ixsn1PA2wYn2XmIn0fHVa7L6lp
-         2DYIKp6Eaf4LmCcSXORVsOf4IqBGI9XbamWdO4UyjmoOWpbzU7iX1Dfm11rXuH+A+mSW
-         HrTr/gFO8JkmtiVNK+LY4I5wCiodmEbN+H6HviWSITu3Z8eJ8YM71S17sHmxEfGOq04t
-         9ODCyf/1uK781fXNfLXk4ePPi6JgjEYAdH7+eXvl2Bg+tUbbZEAu0YoGxM/BbfsmrUfS
-         xXKQ==
+        d=gmail.com; s=20251104; t=1788379220; x=1788984020; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=InDs+YF8Rr2GVIXpPTwQq2qlM5wTAldEfN0J2IQdGYA=;
+        b=TK5oyqmDq/J+sW1gOiSKtIw3QI3r4i2dub9zANpfXg8uL6TQKOggAUHkYsKEN0pq5h
+         Lx7SPaq5UxNziWQbprj5j2Nrmz/lwsGnY6CP9+kBwyxEOygzArSbekoCvrG189MGDjtK
+         qZQn1G/8B7l4KX31T6CpCmy+gHObOY2gGMi7XWIN2p7OT7Im8t0Zw/IiKuH2gkRhBaBv
+         qtP5HCVUcs862ilVF6HClaoo/ZaLXQgfXvn4WMSQdWCxjFtrt8ZD3XxM5PyrUUh4iAk+
+         lptfLDc4qgHzv1BVbRiDL7oehqyOn3VlShYyg43UiLqdDjRkaNcV2MKjTiS99h8hoDj+
+         wGoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788378918; x=1788983718;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=I1NZ9ZHcDjrngsqR4bYoxHCsiDBrtNaJ+UNE7jVFBRE=;
-        b=UrwFO6QgH+lhi8rzB2h9sbG5gSfmpiXy2iWyR3w8xC+fwROa1ormQmaP7TO0rUkZaT
-         F+newDqHd3PHBSu7kVzJxhXeT4DyAugJcjqS7yDIYN+Gidi+5zlQeI/3tM8ACgbABPdl
-         thkd08hTcqn6+ToWlrjWB/KINEzhX7bOtR0Y4l6Xxh0Jpv3iV6zTRR218csLCxm86XH6
-         d/GZzxoPAuFeXg6qncAC4GM17gnJRrr7b97dIaRo6EAJnIsO9cUfhayKBur684dXQVsx
-         ip3+6ThGpo44mg+oMP9TaB6nhIk59BO/8Gz4gTGQy63Ma7sTPIFPB9DLahJnzh3BiQ7i
-         fEgQ==
-X-Gm-Message-State: AFuF++lGSYmmOO+1kURZPuBHEWBtRgLQRRIKCTWi4KAtXXDVfEEUFB07
-	lsC93z0fi3+9KldoQwnKiDcp3XMJT2GlR2/v8M2px5hRX58jm95CNWy8U8Zf7D+bk/1WPL3yNix
-	6Hw3UtUY=
-X-Gm-Gg: AYBFou2+yVsjptfmXLhUjVYIaczAuwV0EMxFqXrEftxpGSfWD2EpygLL7cE6exb0qMo
-	w46+tPNn5IGw+7uyyda/30e8Pw2QcmXoc/9DOmveSPc6dnXzk8H7LIdEJg3/6jMpPbN24Abt2Ix
-	c3KEdcUNtaJjkiBOchXFXe7qki5SITI+O6qdH3km98eGbiTrPNEWDB+nDikZcUpSSWo4XvpquBt
-	0mTBiDLAN2tuEzcwZMMwdyLa8I8Ms2M6wX+LR1Bt6XKLua6Dw2vQJE+Q8Wb5ESy70x669XEfeZ1
-	mWW/NtSCk+gg4mE+JIlRx8f3qwpuL/CpoZsEURGVp61yfOHFX/VOKEldc2WEkFscDGX1Gu1Zc+a
-	xasu1xBYVH6dWTi3nv08VqVdbgYlAGfQ/CHruWapSDPLP05/yIUby7VpWsbFmIHN/S+0p8SdOID
-	MRZjkMzwcEb5ILuxgP6vUfa68+mieYIrUsWKgGnO2QvEyxScPgMF/5kibm3uTvS3huWkyN6VGOI
-	kUdLaAtYxJkEmuuM8xloHLkp7+SAQP8rZFIfr3TJeA98b7yFOZJT46J5Lzn
-X-Received: by 2002:a05:620a:148b:b0:939:6de8:43e2 with SMTP id af79cd13be357-9396de845d1mr170355585a.47.1788378917712;
-        Wed, 02 Sep 2026 12:55:17 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9395f187083sm295334485a.15.2026.09.02.12.55.17
+        d=1e100.net; s=20251104; t=1788379220; x=1788984020;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=InDs+YF8Rr2GVIXpPTwQq2qlM5wTAldEfN0J2IQdGYA=;
+        b=EFsp5AOxubVh+ksTVkwZYa4bLC8K4XEUDPE9vgcemgLfM3HINBIvZ5l6NUuzZCrEKD
+         Uqb319qtLG6/I9SSQzUhW3+Z7UM30IIAnTxo0/gmA+Sf2sDXZ1Pq+v78jiA6ZH/yuTCi
+         Akq+6aCw1d+xAv8DyI9l/AsWIllAgSGYRdxAH32uxAxdD7EW34YBbvs/CDNsnmYHHmiy
+         VSCPjjj8S5YnfqRsu7TrN4/5LvPdfeCUf2fdv5g61kyAo87KMm81JO4E4imc1Z6mdMsz
+         S8mQMhudXbAMRrjyiEB7yq5GrMKGDb9AKtzEpzlpPSVrBkZ+I9uAqB/jxiit7AUWVOiU
+         EA7Q==
+X-Forwarded-Encrypted: i=1; AHgh+RqUbRvvAWX3wT8Wm8ZlLzaRCxv64oCa/voZnrfFi3RlGjCBKEzqDDW+euzX2qAiwP9yBivrHOW5Gw==@kvack.org
+X-Gm-Message-State: AFuF++murdB4DTZF5bMTNuxrsiBblQr5ckFtOs+eJMq2N81hfQ1l+y57
+	Uk493a76ct+AMtOYfmfg5fmbbo/w5xPwR8HiehA104RtsOg+jqkGKNEK
+X-Gm-Gg: AR+sD11XV3TXe5To95Y4DmfANzkuKHqMFT8/FDXq1dXizVpsqZ4tSemcRm0WwbEgedY
+	6juICZYrwTZ95WxphOzShX+wKnwQeLpfWN9yTwGRIuYBDWy/mM7xpOCmSGsA0Y5KrivWGUTHz8y
+	++yYIO/2yFfF854TB9Q86AOMmjXEYkL4ZhgOfBJLI9p34JbjGFJIUtua3dOCPgr2fDC2fGUKAC8
+	zjHVeCmRBlTzv34Z/FtOeqHCKDe9BBR3jEVp5+v8gWCyOeK7RBAfFBLHBdZCfRKEc1n1wYlS73E
+	gYNNGAo0nXgnvV2/Wg/nn48klq4dKL2tDzRt2iSN+o8ze+ls4m1vgJfu6BpP6c/GbMWZ5eLNv9k
+	qVv6mmbxt4VqhvTGFCfsG0mudFNFA8UOVJD4HGZPjqLxxunGkWqTadUnEJrhjT6+jSSeIKG79Ft
+	UlFmfv1O8MX8Ih+t7RUx9zUeyXH9tdDucHNYaUcROOLIX5hAqpIBo4h0jNU7KCQKKmEemSt5YTi
+	V+2Q/Fx3B6QNA13oQ==
+X-Received: by 2002:a05:6808:1512:b0:4b3:79ae:1495 with SMTP id 5614622812f47-4b6bc65c863mr6085404b6e.5.1788379220030;
+        Wed, 02 Sep 2026 13:00:20 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:f::])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4b69b214817sm2976454b6e.12.2026.09.02.13.00.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 12:55:17 -0700 (PDT)
-From: Gregory Price <gourry@gourry.net>
-To: linux-mm@kvack.org
-Cc: linux-cxl@vger.kernel.org,
+        Wed, 02 Sep 2026 13:00:19 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Tejun Heo <tj@kernel.org>,
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-mm@kvack.org,
+	cgroup@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	david@kernel.org,
-	osalvador@suse.de,
-	akpm@linux-foundation.org
-Subject: [PATCH] mm/memory_hotplug: factor out node_is_memoryless()
-Date: Wed,  2 Sep 2026 15:55:07 -0400
-Message-ID: <20260902195507.88655-1-gourry@gourry.net>
-X-Mailer: git-send-email 2.55.0
+	kernel-team@meta.com
+Subject: Re: [PATCH] selftests/cgroup: Skip test_no_invasive_cgroup_shrink if zswap shrinker is enabled
+Date: Wed,  2 Sep 2026 13:00:15 -0700
+Message-ID: <20260902200017.3847858-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <CAKEwX=MD_EcAaLzMGnMytVJ_KTGmv=hpR2h-DD+w0oJRjzkg6Q@mail.gmail.com>
+References: 
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B3E4040003
-X-Stat-Signature: 3618p5jux9ucjq1nooumk6iiy3hw7qdr
 X-Rspam-User: 
-X-HE-Tag: 1788378918-100898
-X-HE-Meta: U2FsdGVkX1/5NkfYESPfEZW4gM6/vdDvRa2KuvesgE0lEyyAuHOzdCwn9H2p1Nwx3I3KOzYuOKvsq6TB10bScDlOoTlElin4KXj6RPzOL+m2zIg6gGqHZkQWnD1jvTHnHadaasqaX8bUWtWE5/4lt5h+bUL4wzPyn8rQ3C95eTQj2Fhm/r/xCMk3aMAfUmI2bp7ZoxJCfar03U0CEF16Nxz3ePC1H6WbW0cKCzCKM6oh0KkhyFkGaBfbmDbU1blIZZ8b+uTrMSkyKL6qAe+KYWVeJCjz9PU3hkdwoC9wqDwKQZZshVC7fWhBbLQbfv7Ar4PUgHWHFgpEDiXr8H3Og11AWW6EIZggXpHJGU9yJNdSwD3sPgutQl83wdELaOAKR4wmYZcpMjvvXBNIdZlwF//qy0vD3lc42/5UdI++ovrbDNwR4rmu2u6tZefCL1RMQcdVrq6HT71Hc+H4exg52Ix2c7dJ/CRd9AwiIxw4tt279vXiX9ywPJepcn+yFyEmewSjLXF/XV1we+jWbMjBQPl7piXjAfWlScJzezTyJGV24eClNz6ty1s0cAXDwKe4pivi1m5yr19Lpffd7GoIKrbJBbzKzBio4GVBTC4yBLniK6jUuqSTmDu+hWMQHZwtivq4uL+XFX75wCp/DCQEi61fz2klK+pn4SfChQSfT0neLed8MTM4bEykYB+UB1VHO2w6Bo3FxCQ2yDyVzh/nSBrNlwf1FUQvD48cHIf728txnWjcra+cMSXjboez0Y2E+IgNEbHU7EKC2/aAhVQvjScge9nWx/VEeN66KDs+u0kYJrJPSl/q2gIT4E6ywSN820LwXhuJ83BUOFqsoJmH4LcQBZvQapHEeNCHxgIYol1G2R0mL1H9Dw85HxiAo13OD9TMw54H9MzFUQuT9rXLrZSflql362Ku03OpL20SRTbKiAlkTf0uptjt5MKVF0yCeHgF2VhbldsrgFfl3Pi
- aOAVE2iw
- 0VqF0pBkZysefPUs2rwSUWdLogHxEzlgaV8PNX38hHqrcVJkGpeEYVxyZlkeuA+nJILkK2uYUMSYl+4T3aawCAUyi3g5eNdbOf9/bkTxmxFVZTnuoRhql/ccGJQaIgVkiI8UiLHlvOLubOJPvhI4vkIeJ5yRU/q6ZC3djZQusfKM/9pAyQI/gU/TCKm/9VEMql0Y3o8tHXiq1ocuoJjdfYOKk2eJIS9HDY6kif39QQIk0pJpIR6cpO54IsQ+udPAr/RNeWLGtERFWq6GtbVabhAs63UzEU94pErF4aYq9LHJrGY5KPjpQNKV6UY+c9oapPRJj4XIdY0YSJYvJzyDB2mUkvMnIpo2cVlZ/
+X-Stat-Signature: s7qmbniir6pf8qi9cb4hzqkpafm3dgym
+X-Rspamd-Queue-Id: 3FE40180006
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788379221-151994
+X-HE-Meta: U2FsdGVkX1+1FJn1BZiSpdZaSPj8+EXnGCLC3yW6kA0YaAYjc2By3xeS5h5iFS9ANpwE4EXu6eQElY8NqO63r1jHF7ciLeAt58hsPkLzZUxdasZf7oGqFbUQah45eY5JGeaSzU/W5gdkQ3MBbIUUMPveZog1mtTYRK2tmaMFjZEu65qXjKBGTFGo9lufU8v+Yj88y5pELWjfb+TD+1CqGs8vxpTJ+gqxFdAHdI4+0zTCJuXoUUyjvChFImmAKvq1qPWhxaYA/4ODsB1xL4oVqiBMbTp94ARwXdOv00PBkBwXU0ACly1lxIBmIWW2bvD9QE1fo/RlJpfePUwUI/vgJSX1r02o7Rb/ntfby4uHvdNEPVpfUwfRbzM3pB92zkyqXhAtjhrxTSAI+oucmuQPVRUXPuJ7Jyly4ePQ+UoXCK6qvLcmU+EJwpOX3Co4cNVejcXPd7lRiWrss2QyW8MX0VELKXFaBGnnhjKfptWGUTgGYHA6LPDZ5Ugc7G8WcKI4iPoAuUc6Yse6FjTJEi0Kyk5P8S9be9M6apTFWM0gx0PaSfE+0PGFu9ZRRG11m0sy4c1B2FGA682KQryWPMhbgDLi14ycbMvjYXDYe3keiHY4jzFWWJ7HguGxdyT1gLi80VbQtCWR1C4bKlbKKpkD3wYYqNG/JsA+KduHLcgdkTBI32AaFIbceBCEDw8ZBesz7E+ckWv/k3iCeNI2S5Rgs5zi7juTlxFIXwgyxJafpmuN/pzKoI+tScE2hq95b31jS7NwXvBtdb1yvpgO3LJR52riDVPLUdFPklB/5Wf9eP7m6ZsgSiTaAhebk/5ttMm3bWuHYqizef5RqQA6EPYilHOXOuASkG4sZG2jDtIZRBBlPjNdVvxayJewy8QXKRmE1sEW2VT+f5zhwaJAX4GMihdpIujMuvpUsLCVCJJ4wx1euvjhf4k8H43l1KEgjH/lupiKI08ZpLAO5kb66El
+ aV5aU6gU
+ U1uubKnuJvufBOYbNVNtna0XK+4FJtPNfamX605F4rdhnjovxtOJMWPTaEDefrVc5g3vN7y1U+Ll27H2R2WZXSk7XzJD7j0/WJooeXxRdJGcAJ2eUy2YHznL65GwpNaJ8oJyAnu6YG6Vz9ZkT2OZ64UHZZRtvxHasFNMvEmGsgxBfeokaVc9DbInOkmX7M+Akj10t7A6sEQesAQi1mp6OM5DA6f/iP9YggDgXdwAxKv6Ibw4+7JCIuHtX+niHFKQsnG0CvK4oAj+vKEBM/qCovjF1LhaJ/NeZTuetJtl+0zTo5xP2ISsOgDuC612tcIw4ux5KI19RFsHAsWXlDx4Qp256pk9PITyK2UlUcvwKh1PETLX0SlLDJGv5Q63ilkikgSkHeaCtAe8PUOMIvq9H1MFXcU5QDVVxRekRynZvkGkDzzmcUi4J5ji9GN7UMMWHB1+SMDFeB6S3DEelXHpsqJnvNiC0LgO1CasYIWNpvaKjRPUsJTuQTgrMb2TJnp5KyInqT1AWB4D2vaRDL7nhFV40ZHq4vxJ1nvdlrYaH3WrOO3XJc3oKLoR77GaozTCIUlxv3mlkbbT03W0jaYX7ESMR+iGHhz+s927mJi8/5OHAlko=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,108 +130,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A memoryless node neither spans present pages (populated or ZONE_DEVICE)
-nor has an offline-but-added memory block still linked to it in sysfs.
+On Tue, 1 Sep 2026 14:04:22 -0400 Nhat Pham <nphamcs@gmail.com> wrote:
 
-try_offline_node() presently open-codes this memoryless check.
+> On Tue, Sep 1, 2026 at 12:13 PM Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+> >
+> > The test_no_invasive_cgroup_shrink selftest checks that when a cgroup
+> > has zswapped out more pages than memory.zswap.max, that it does not
+> > trigger writeback for other cgroups. To do this, it compares the
+> > writeback count in a control cgroup and makes sure that it is 0,
+> > and compares it to the writeback count in a aggressor cgroup who
+> > does expect to see writeback.
+> >
+> > When the zswap shrinker is enabled however, there is an additional path
+> > to zswap writeback, which can happen independently of reaching the
+> > memory.zswap.max limit.
+> >
+> > The writeback counter cannot distinguish between invasive noisy-neighbor
+> > driven writeback and the zswap shrinker work, so the test becomes
+> > invalid.
 
-Pull that into a node_is_memoryless() helper and pull the existing
-check_no_memblock_for_node_cb() helper ahead of the add/online path
-so it's clearer what is happening here.
+Hi Nhat!
 
-No functional change.
+Thanks for the quick review on this.
 
-Signed-off-by: Gregory Price <gourry@gourry.net>
----
- mm/memory_hotplug.c | 60 +++++++++++++++++++++++----------------------
- 1 file changed, 31 insertions(+), 29 deletions(-)
+> I think writeback in the control group (zw_group) happens right during
+> the first round of memory allocation, but there shouldn't be any on
+> the second round (as the second round involves writing to wb_group
+> only). So if we read zswap writeback counter of that cgroup (zw_group)
+> right after that first allocation round, and make sure delta = 0 after
+> the second round, then that should work for both shrinker_enabled = Y
+> v.s N.
 
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 226ab9cb078ad..d0e94057682af 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1491,6 +1491,36 @@ static int create_altmaps_and_memory_blocks(int nid, struct memory_group *group,
- 	return ret;
- }
- 
-+static int check_no_memblock_for_node_cb(struct memory_block *mem, void *arg)
-+{
-+	int nid = *(int *)arg;
-+
-+	/*
-+	 * If a memory block belongs to multiple nodes, the stored nid is not
-+	 * reliable. However, such blocks are always online (e.g., cannot get
-+	 * offlined) and, therefore, are still spanned by the node.
-+	 */
-+	return mem->nid == nid ? -EEXIST : 0;
-+}
-+
-+/* Caller must hold the memory hotplug lock for this check. */
-+static bool node_is_memoryless(int nid)
-+{
-+	/*
-+	 * A node still spanning pages (especially ZONE_DEVICE) is not
-+	 * memoryless.  A node spans memory after move_pfn_range_to_zone(),
-+	 * e.g. once a memory block has been onlined.
-+	 */
-+	if (node_spanned_pages(nid))
-+		return false;
-+	/*
-+	 * Offline memory blocks may not be spanned by the node yet, but they
-+	 * link to it in sysfs and can be onlined later, so the node is not
-+	 * memoryless while any remain.
-+	 */
-+	return !for_each_memory_block(&nid, check_no_memblock_for_node_cb);
-+}
-+
- /*
-  * NOTE: The caller must call lock_device_hotplug() to serialize hotplug
-  * and online/offline operations (triggered e.g. by sysfs).
-@@ -2214,18 +2244,6 @@ static int check_cpu_on_node(int nid)
- 	return 0;
- }
- 
--static int check_no_memblock_for_node_cb(struct memory_block *mem, void *arg)
--{
--	int nid = *(int *)arg;
--
--	/*
--	 * If a memory block belongs to multiple nodes, the stored nid is not
--	 * reliable. However, such blocks are always online (e.g., cannot get
--	 * offlined) and, therefore, are still spanned by the node.
--	 */
--	return mem->nid == nid ? -EEXIST : 0;
--}
--
- /**
-  * try_offline_node
-  * @nid: the node ID
-@@ -2237,23 +2255,7 @@ static int check_no_memblock_for_node_cb(struct memory_block *mem, void *arg)
-  */
- void try_offline_node(int nid)
- {
--	int rc;
--
--	/*
--	 * If the node still spans pages (especially ZONE_DEVICE), don't
--	 * offline it. A node spans memory after move_pfn_range_to_zone(),
--	 * e.g., after the memory block was onlined.
--	 */
--	if (node_spanned_pages(nid))
--		return;
--
--	/*
--	 * Especially offline memory blocks might not be spanned by the
--	 * node. They will get spanned by the node once they get onlined.
--	 * However, they link to the node in sysfs and can get onlined later.
--	 */
--	rc = for_each_memory_block(&nid, check_no_memblock_for_node_cb);
--	if (rc)
-+	if (!node_is_memoryless(nid))
- 		return;
- 
- 	if (check_cpu_on_node(nid))
--- 
-2.53.0-Meta
+That is very smart and much better than just skipping the test, I'll
+take your approach. I've sent a v2 in [1].
 
+Have a great day Nhat! Thank you again!
+Joshua
+
+[1] https://lore.kernel.org/all/20260902194521.3652178-1-joshua.hahnjy@gmail.com/
 
