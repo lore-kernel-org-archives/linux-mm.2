@@ -4,121 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C28AC61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 16:48:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 666A8C624D4
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 16:49:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F0846B009B; Wed,  2 Sep 2026 12:48:28 -0400 (EDT)
+	id 6C6226B00A1; Wed,  2 Sep 2026 12:49:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A1376B00BC; Wed,  2 Sep 2026 12:48:28 -0400 (EDT)
+	id 650476B00A4; Wed,  2 Sep 2026 12:49:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38F6C6B00BD; Wed,  2 Sep 2026 12:48:28 -0400 (EDT)
+	id 542AD6B00A5; Wed,  2 Sep 2026 12:49:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 07DAC6B009B
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 12:48:27 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A3E66B00A1
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 12:49:53 -0400 (EDT)
 Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8DC26C02AC
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:48:27 +0000 (UTC)
-X-FDA: 85169405454.26.5A1AE92
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 8818C2000D
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:48:25 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=GnvXWjox;
-	spf=pass (imf31.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 996AA1601EB
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:49:52 +0000 (UTC)
+X-FDA: 85169409024.26.F1D5CA3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E349F160014
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 16:49:50 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cGw/2Eja";
+	spf=pass (imf08.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788367706;
-	b=TImVgusDbhUakZvdUXETiPmbxQzxVag9gqCxJiEo89BZXme6T6kgV+DD4mMQvv3Woe1QCn
-	NCOyIqvFdc9cWsoEyFAd20cM3FuLZaK+4Ndt9HqYbVSqX806MEi2+7fhRRaWWkcjTEUF7D
-	hHmjQMwpC4+XFX8dyoxKxcQvAPqsOcA=
+	t=1788367791;
+	b=mY0zQn0s0bdN7nf0xCXpSnkpHh+CDmThE/nlU+Tgojbowa8Qs274VrOqsBpCRopsh3QCV+
+	wMUcbhrkkOttl3t9NNZ6lPwxJ23RAJyoF/hXhZW5ZB0ZUJtt+AA1WsCgcCbGFTfXP+TelT
+	dWm+ceVeaTZmT5JWZCIJbk/+cVj4FkI=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cGw/2Eja";
+	spf=pass (imf08.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788367706;
+	s=arc-20220608; t=1788367791;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JXcmFY+9x/wobSwJf8ckcIT6HQmDhm84uQ1TuXRqgjQ=;
-	b=3+7lvlHHzukIet4cQKRsLAj9bQbQatJuD4FqA80nM/W81LaOD+WDZznAPDwVvlUWkOTUsE
-	SgPiuPBQK0j6BI9mMYttoSn87Hd5mbRuXrS/b5sKdgCzPAOXAdBl36xjSSyI7lIgE8MfHK
-	0KCmlpN4241wtrxYri2jrF55C/a7CqI=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=GnvXWjox;
-	spf=pass (imf31.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C75B5165C;
-	Wed,  2 Sep 2026 09:48:20 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 07F7F3F882;
-	Wed,  2 Sep 2026 09:48:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788367704; bh=U+OH94B40NoTGV5hu0mRvJHuyvI3dakCwtDknNYstOA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GnvXWjoxcxOtSQbkJLQQ3GnOKnrJ9nFr10cfwUtCgJWT/roaoVtAf1/mEvzgvikQ5
-	 RXVLekBW58kpBfbq00LwbRmlPLU/+FVDFDSMj4JxcQvr3vN8VaI7ommpT64lB9niJ6
-	 AjsG8nFfQXvSizHpPhebOyU19vy801Vi2MdIplc0=
-Date: Wed, 2 Sep 2026 17:48:14 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-	linux-openrisc@vger.kernel.org
-Subject: Re: [PATCH RFC v3 15/21] x86: mm: skip collapse_pud_page() when
- CONFIG_X86_DIRECT_GBPAGES disabled
-Message-ID: <aphTTqhf3yO74JoO@e129823.arm.com>
-References: <20260902-dummy_ptxp3-v3-0-5d8f5b17c25c@arm.com>
- <20260902-dummy_ptxp3-v3-15-5d8f5b17c25c@arm.com>
- <fa4acc56-9742-4a5e-abd4-7491ad426940@intel.com>
+	bh=8dn0iOvv1GVRWETQs2SDcxWNO+0sddiy1Vm8m6bHlbc=;
+	b=lBiYfaH3TAn1jJ/bKZD4ZKIWkiBDtZzPkr+SKt8CWdisNFPkcn4PMIyq65gxlCCo1OCR4k
+	8CjMyVa73+PDsu8aS1UIs67GpuJ83s67YE1zy8FhimUFaYMgm+KbmrY0/Rtbv0xOKcDJwW
+	4QlHuEUsbIaECkE4BOLfRVpNkq/7hZo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 046CB42E17;
+	Wed,  2 Sep 2026 16:49:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA241F000E9;
+	Wed,  2 Sep 2026 16:49:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788367789;
+	bh=8dn0iOvv1GVRWETQs2SDcxWNO+0sddiy1Vm8m6bHlbc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=cGw/2Eja2ZXVKjPcg3P+V6xH2JPYwXkfhwNVQCowY7r3PY8C1yjuggvjE0EZY3RMB
+	 ByIHlI4AiLVUoc2AWMOxd7zbfjhNMBJD0auPk2Qal4dcDC9t8l8AQupaOyIo8LogOF
+	 C8WlorVwY5bD9H7SvW6vMk5DwFTJOk2Dhx9zcBvSIrN3K3PdYqcISmdxdnakOkLVDn
+	 C4N6cKaPjoHOljzl8DOTpItlzu0SJOnu4d8SbSILrPUtDSyPMo5K6TFkSEYMpHvQrJ
+	 u/zo7rE2z7lfskjO4kDH+/4wkZhXr1J30e7DyqZ6uLaPNfVPYTNXDWIrqhuIYEVV9P
+	 JQzuw8EGDvyQQ==
+Date: Wed, 2 Sep 2026 16:49:48 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Charan Teja Kalla <quic_charante@quicinc.com>, 
+	Michal Hocko <mhocko@suse.com>
+Cc: akpm@linux-foundation.org, mgorman@techsingularity.net, 
+	david@redhat.com, vbabka@suse.cz, hannes@cmpxchg.org, quic_pkondeti@quicinc.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V3 3/3] mm: page_alloc: drain pcp lists before oom kill
+Message-ID: <aphSYFTd12oia8K2@google.com>
+References: <cover.1699104759.git.quic_charante@quicinc.com>
+ <a8e16f7eb295e1843f8edaa1ae1c68325c54c896.1699104759.git.quic_charante@quicinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fa4acc56-9742-4a5e-abd4-7491ad426940@intel.com>
+In-Reply-To: <a8e16f7eb295e1843f8edaa1ae1c68325c54c896.1699104759.git.quic_charante@quicinc.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8818C2000D
-X-Stat-Signature: iits1eitc5g8bh3cbtnsj7tafd1tm1ar
-X-HE-Tag: 1788367705-919964
-X-HE-Meta: U2FsdGVkX1+qZljNWSiEEjN/TS8KK1Bm0h2zfa4Rm3aRvZBN1ZXjqcwa6pAnAAPwt+NtZJseOqq7pfMaO5vJJEvivncPg869Tfx+bs5pHHef2sn/nfFIqbWMGTkeTLZGqZVaPNMQe7/YBxl123wYJW3s94U1vIkjah4WRwIaWBsx0Jk/fyaQntlHRxl0Npvnw7DZcqTMghbmUelFsnT/I7qOqoOkZifeL5mophGkMNhM93WJNTU/RBhhPVFG6RljW6pOFujZ3ZgaXuVrS47T8h8S0Evy8PIuCrwJ2wOPSzdaLpVfXTXh16XD1rjJyF4/2HFS/NvfSZ+I5gKaYWw76t6+EfQnQEIyBa6A5y6YalDl3iygPdQS54IxQoF51Od7RxXUN3gwGd547bVYOPrDUFXcuhWTQz77kCnLt+U3U21vqKMps0r6qPdVExasSwi0N9y1Dt88dlYjHgpyWP9k7/7tm+rJljtfHuPgjn+BkETtgkuQLspaPhUJbGBfLeiT2URD6WnYt3qgEEoHXbCElJ97akHh0/L7N4gpEKAGbfM+HeDjkQdz/9ieN2EJylZqSqADMwG4c5TtYkFi/ZxBu5cd2uMWY3lgJxzx62pQm9SbAMVPnpT7CHlzG6pbFO5xu+tJlUJLYxijO7YWcOSjEF6ZzlM1PGzi2IWOhFV5hb83eKpB3oo9zltkYJmU9ZUqDq48EDiqlak029ENatqp8LNPgxMlO/WBahiOgSxdA/cg6WOAx3/8fRTcXS7yIJTCOAjuqYbZmXD6EsR4pykrEDWBeiXuiKdvtbudJKXqIQCoR1rZ66Bb4QOA2Q1u95h5KhSlDqoZXlhipgBIyA6EiPOl6Wwyd1dfZgahXAtiqSZyuuL3Bb3fSYg9AGlYv0/iEkZNV8qsCxrI2KcNR9DMpUYNuDqG1Wp6SS5bBPyHsVlcssdJk1S0knKM9+/tOgKOKj9th51/uMblP1hp1OJ
- iFDc5Spr
- HLNhPdJxhz+9RsQVHa0V+SIeuz8Gykxie5acO2pivJ6tRCr/qbilxsoFdEWdvq1dI3E1fNkn+PW4+CY6e6K06oKtID66OKajtOksXtrjzILpgk73Z39xxZMONOFuUJQCE6RSwp+q8y+bEe51hDhGydf30qru/rHSZM1w0aenJ4muUM2lGVgRiBHlVuQ/FofBqHCglA7JsO0D1bovhPa/gQB3YIRBVwJs2daMImRjO4SO337gFE4oo7Eqy3551uNLUMYnLg41hGZ0agkKH9zZgGPyz7x1jYY0XYErdU7pSLs33Eoh4n24+NlpBXilVpibB8AjOS/HTacztue1gfNLqb84YSQ==
+X-Stat-Signature: mbcmwocx638zjmf3qwitor8jexio59je
+X-Rspamd-Queue-Id: E349F160014
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788367790-188397
+X-HE-Meta: U2FsdGVkX1+mm9rGO02fvP1m0yxshoED4peMmg32/mUaXp5REykHlgRgj0VHDF+vPQCjeibdkbracKDi2ONodrW6Cvx06XIK3eAQdMDhZvR9D59GlvwslOJ3d0IP4uldrerRrtjeQGVCEjQGBjmfDwzrZyNHEAZC/jOXlPDMmK/RcQn4I61T6x6MVYccx+lZcGj5akgk/Mn8gs0x+N66en8fV7nvzRy5W85fBRe+NSSYFoWiEUIJrhPE+LVCX4P0J0RDVbaxE3LVg1NLQXcsR+i+PewPJYdFRXJPeYBWN2wXA602do+0lAUw+ZHevZ7fMvxGMZlfuG5SZ4olZxK3BHhiV3/Y9P+7STEGI5sFIOamezuI5h2b8NDCYu1qxbZfPMTh+/XcOJsKYz+GFikaL4vdSekadIgBSVoe7Xa0dGqtdcdUZhnaXPnT7H1w1RSvzso5nm2S/uaS9OmmPHXGSuo0q88Ier1ohgi/xdKSx0IF8ogtZBCgK9cgnUsViSQEO/aC0NpVlrSWe2WwIn6+rOczLZyW46zd+T/lbfVQ5bqEzklRuZi4ptgPPQWVP/oCE2U/3MZGEbmyew+PQNY6Xu4+L/74KITSGT5kS7D3St3IH/YP0FkksixdaUKsnclciw32msXQPrxD5pqvJqNZL6tWgUJtMlRLlWTL+KyoShgk20Pn4VN/jnXo9eO8+78fW2XKvp8CpO98Erz7SWQzTxRssnOJHRxU90Z4gikLZ1VRE3NfEMgpTEAc8Cokz+d5PoVUrLPr8nAWsCZCnS7aYvFCc8pBuNwAS3STVMuKuqIXLGz7IL9e7YjKaY+Mhuv8Sqe2ZIzNNqN5rZqgQlm+DWxHGWuipggkwLKcNJjU6uuYb4jLckMsUJEOQDyjUvbLAWerWOaheEplNOuKEAscfgzej6urMuNuDituufLi6zQRsfbS5z0NcjpzTrHY7QcKIKB6lbfuF0amUH+jt7w
+ LU3gGBru
+ 2oMZBpJemTkQqQ3Qoim+0xDeIjYvqagEMYw/000gLGI1vmf4/XHiLE1f4V0V0DeuXRVdUK4kOqV4c9p2vhL07//EXcNAJQWJZavB4PR6AgU3J34JXuunAKweSq5erpvsDG/BlUiLWLRW0H5AP1rgu1hTNqlOGW0rl9KV+gKReY3MnwjFRufIEZk95249Goi59/QztXnvlRCf1XqvtYrHZM+eRRyBfh93NU/TExXFrXJuZvZbQy+JonLhK4cGeUJEjZ+absNPxoJAyDNJVUiTs2SETdYTBLDacxogYmZIli0RVaQmEw3pQjkTPwRNkY6+2nCL9UHOsb93AuvoMxD6EDs9d6N+bXGrRnPC1ewgw0sMqARBGoUY4+4pl250fXsM2BE1VW+EDqJiiL0c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,162 +93,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Dave,
+On Sun, Nov 05, 2023 at 06:20:50PM +0530, Charan Teja Kalla wrote:
+> pcp lists are drained from __alloc_pages_direct_reclaim(), only if some
+> progress is made in the attempt.
+> 
+> struct page *__alloc_pages_direct_reclaim() {
+>     .....
+>    *did_some_progress = __perform_reclaim(gfp_mask, order, ac);
+>    if (unlikely(!(*did_some_progress)))
+>       goto out;
+> retry:
+>     page = get_page_from_freelist();
+>     if (!page && !drained) {
+>         drain_all_pages(NULL);
+>         drained = true;
+>         goto retry;
+>     }
+> out:
+> }
+> 
+> After the above, allocation attempt can fallback to
+> should_reclaim_retry() to decide reclaim retries. If it too return
+> false, allocation request will simply fallback to oom kill path without
+> even attempting the draining of the pcp pages that might help the
+> allocation attempt to succeed.
+> 
+> VM system running with ~50MB of memory shown the below stats during OOM
+> kill:
+> Normal free:760kB boost:0kB min:768kB low:960kB high:1152kB
+> reserved_highatomic:0KB managed:49152kB free_pcp:460kB
+> 
+> Though in such system state OOM kill is imminent, but the current kill
+> could have been delayed if the pcp is drained as pcp + free is even
+> above the high watermark.
+> 
+> Fix this missing drain of pcp list in should_reclaim_retry() along with
+> unreserving the high atomic page blocks, like it is done in
+> __alloc_pages_direct_reclaim().
+> 
+> Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
 
-> On 9/2/26 04:56, Yeoreum Yun wrote:
-> > The behaviour of pXd_page() will change with generic compile-time folded
-> > page tables by disallowing its use and triggering a compile-time error
-> > when it's used improperly, ensuring that the actual pXd_page() is used
-> > instead.
-> > 
-> > To prepare fot that, skip collapse_pud_page() when
-> > CONFIG_X86_DIRECT_GBPAGES is disabled.
-> 
-> Nit: this doesn't explain how the change actually fixes anything or what
-> the specific problem being solved is.
-> 
-> I think you want to say something along the lines of:
-> 
-> 	collapse_pud_page() uses pud_page() in a way which will soon
-> 	trigger a compile-time error on configs that have a folded pud.
-> 
-> 	The code which will generate that error is actually unreachable
-> 	on those configs because 'direct_gbpages' is always 0 there.
-> 	However, the compiler does not know that because
-> 	'direct_gbpages' is a normal integer from a separate compilation
-> 	unit.
-> 
-> 	Make the compiler aware when most of collapse_pud_page() is
-> 	unreachable by adding a Kconfig check. This ensures it will not
-> 	trip the errors when they are introduced. It probably also trims
-> 	the kernel image down a wee bit too as a side benefit.
+[Sorry for thread necromancy]
 
-Yes.. Sorry for my poor commit message.
+Hi Charan,
 
-> 
-> Maybe I should just merge something like the attached patch. I think it
-> would solve your problem and make things generally cleaner too.
-> 
-> There is an existing variable (direct_gbpages) that says whether the
-> kernel can and should use 1G pages in the direct map. It is driven
-> by a bunch of other machinery. At least:
-> 
->  1. Hardware support for 1G pages
->  2. Kconfig support for 1G direct mappings
->  3. Kernel command line overrides
-> 
-> Most code just checks the 'direct_gbpages' variable itself. But this
-> prevents compiler optimization in cases where 1G mappings are
-> compile-time disabled (via X86_DIRECT_GBPAGES).
-> 
-> Add a helper to replace 'direct_gbpages' checks. Check the Kconfig
-> option and base CPU support before looking at the variable.
-> 
-> This lets the compiler optimize things better, especially
-> collapse_pud_page() where most of the function can now be optimized
-> away.
+Are you planning to respin this patch?
 
-Yeap. I've tested with your patch and it works for me!
-Thanks!
+I know that Michal was questioning the need for it. While doing some
+stress testing I came across a couple of OOM kills that had significant
+amount of memory in pcplists. Something that would have been prevented
+by this patch.
 
-Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Tested-by: Yeoreum Yun <yeoreum.yun@arm.com>
+It's not something I can reproduce reliably and it is an artificial
+workload, so not very concerning, but the patch seems like generally a
+good idea and hopefully pretty harmless. It's also consistent with the
+code in __alloc_pages_direct_reclaim().
 
-> 
+For the record, we have been carrying it internally for a while and
+there haven't been any issues AFAICT.
+
+Michal, WDYT?
+
 > ---
+>  mm/page_alloc.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 > 
->  b/arch/x86/include/asm/pgtable.h     |   14 ++++++++++++++
->  b/arch/x86/kernel/cpu/common.c       |    2 +-
->  b/arch/x86/kernel/machine_kexec_64.c |    2 +-
->  b/arch/x86/mm/init.c                 |    2 +-
->  b/arch/x86/mm/pat/set_memory.c       |    4 ++--
->  5 files changed, 19 insertions(+), 5 deletions(-)
-> 
-> diff -puN arch/x86/include/asm/pgtable.h~direct_gbpages-compiletime arch/x86/include/asm/pgtable.h
-> --- a/arch/x86/include/asm/pgtable.h~direct_gbpages-compiletime	2026-09-02 06:53:57.835733398 -0700
-> +++ b/arch/x86/include/asm/pgtable.h	2026-09-02 08:17:01.434727771 -0700
-> @@ -1163,6 +1163,20 @@ static inline int pgd_none(pgd_t pgd)
->  #ifndef __ASSEMBLER__
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index b91c99e..8eee292 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -3857,8 +3857,10 @@ should_reclaim_retry(gfp_t gfp_mask, unsigned order,
+>  		cond_resched();
+>  out:
+>  	/* Before OOM, exhaust highatomic_reserve */
+> -	if (!ret)
+> -		return unreserve_highatomic_pageblock(ac, true);
+> +	if (!ret) {
+> +		ret =  unreserve_highatomic_pageblock(ac, true);
+> +		drain_all_pages(NULL);
+> +	}
 >  
->  extern int direct_gbpages;
-> +static inline bool direct_gbpages_enabled(void)
-> +{
-> +	/* Check the direct map config option: */
-> +	if (!IS_ENABLED(CONFIG_X86_DIRECT_GBPAGES))
-> +		return false;
-> +
-> +	/* Check the CPU feature: */
-> +	if (!cpu_feature_enabled(X86_FEATURE_GBPAGES))
-> +		return false;
-> +
-> +	/* Check the command-line and early setup variable: */
-> +	return direct_gbpages;
-> +}
-> +
->  void init_mem_mapping(void);
->  void early_alloc_pgt_buf(void);
->  void __init poking_init(void);
-> diff -puN arch/x86/mm/init.c~direct_gbpages-compiletime arch/x86/mm/init.c
-> --- a/arch/x86/mm/init.c~direct_gbpages-compiletime	2026-09-02 06:55:01.004094924 -0700
-> +++ b/arch/x86/mm/init.c	2026-09-02 08:20:36.759992562 -0700
-> @@ -251,7 +251,7 @@ static void __init probe_page_size_mask(
->  		__default_kernel_pte_mask &= ~_PAGE_GLOBAL;
->  
->  	/* Enable 1 GB linear kernel mappings if available: */
-> -	if (direct_gbpages && boot_cpu_has(X86_FEATURE_GBPAGES)) {
-> +	if (direct_gbpages_enabled()) {
->  		printk(KERN_INFO "Using GB pages for direct mapping\n");
->  		page_size_mask |= 1 << PG_LEVEL_1G;
->  	} else {
-> diff -puN arch/x86/kernel/cpu/common.c~direct_gbpages-compiletime arch/x86/kernel/cpu/common.c
-> --- a/arch/x86/kernel/cpu/common.c~direct_gbpages-compiletime	2026-09-02 06:57:47.935849397 -0700
-> +++ b/arch/x86/kernel/cpu/common.c	2026-09-02 06:57:57.299617535 -0700
-> @@ -2660,7 +2660,7 @@ void __init arch_cpu_finalize_init(void)
->  		 * Right now we don't do that with gbpages because there seems
->  		 * very little benefit for that case.
->  		 */
-> -		if (!direct_gbpages)
-> +		if (!direct_gbpages_enabled())
->  			set_memory_4k((unsigned long)__va(0), 1);
->  	} else {
->  		fpu__init_check_bugs();
-> diff -puN arch/x86/kernel/machine_kexec_64.c~direct_gbpages-compiletime arch/x86/kernel/machine_kexec_64.c
-> --- a/arch/x86/kernel/machine_kexec_64.c~direct_gbpages-compiletime	2026-09-02 06:57:58.462712975 -0700
-> +++ b/arch/x86/kernel/machine_kexec_64.c	2026-09-02 06:58:05.219267514 -0700
-> @@ -257,7 +257,7 @@ static int init_pgtable(struct kimage *i
->  		info.kernpg_flag |= _PAGE_ENC;
->  	}
->  
-> -	if (direct_gbpages)
-> +	if (direct_gbpages_enabled())
->  		info.direct_gbpages = true;
->  
->  	for (i = 0; i < nr_pfn_mapped; i++) {
-> diff -puN arch/x86/mm/pat/set_memory.c~direct_gbpages-compiletime arch/x86/mm/pat/set_memory.c
-> --- a/arch/x86/mm/pat/set_memory.c~direct_gbpages-compiletime	2026-09-02 06:58:43.518414555 -0700
-> +++ b/arch/x86/mm/pat/set_memory.c	2026-09-02 06:59:27.252015369 -0700
-> @@ -130,7 +130,7 @@ void arch_report_meminfo(struct seq_file
->  	seq_printf(m, "DirectMap4M:    %8lu kB\n",
->  			direct_pages_count[PG_LEVEL_2M] << 12);
->  #endif
-> -	if (direct_gbpages)
-> +	if (direct_gbpages_enabled())
->  		seq_printf(m, "DirectMap1G:    %8lu kB\n",
->  			direct_pages_count[PG_LEVEL_1G] << 20);
+>  	return ret;
 >  }
-> @@ -1340,7 +1340,7 @@ static int collapse_pud_page(pud_t *pud,
->  	pmd_t *pmd, first;
->  	int i;
->  
-> -	if (!direct_gbpages)
-> +	if (!direct_gbpages_enabled())
->  		return 0;
->  
->  	addr &= PUD_MASK;
-> _
-
-
--- 
-Sincerely,
-Yeoreum Yun
+> -- 
+> 2.7.4
+> 
+> 
 
