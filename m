@@ -4,100 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9702EC624D5
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 18:14:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 514D5C624D4
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 18:38:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9FC296B00F7; Wed,  2 Sep 2026 14:14:44 -0400 (EDT)
+	id C700E6B008A; Wed,  2 Sep 2026 14:38:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 986D46B00F8; Wed,  2 Sep 2026 14:14:44 -0400 (EDT)
+	id C212E6B008C; Wed,  2 Sep 2026 14:38:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84D096B00F9; Wed,  2 Sep 2026 14:14:44 -0400 (EDT)
+	id B0F9F6B0092; Wed,  2 Sep 2026 14:38:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E8C76B00F7
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:14:44 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C8477160337
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 18:14:43 +0000 (UTC)
-X-FDA: 85169622846.02.A3C0CD0
-Received: from mta0.migadu.com (out-194.mta0.migadu.com [91.218.175.194])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 77EB440003
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 18:14:41 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="cGVJ/emS";
-	spf=pass (imf01.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.194 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788372881;
-	b=e3rHJHgwgzdSOvsEjtb9ft9/xFoqPV9IsfOQvX1Zoh34bd2qFs1CpHjI3MPhbbpIKz5TgG
-	g9aYGlEhs61j+XsjAjjX2+zD4/Qft+TOZAEZD1gQvRPUNnYhFdgUM2d8mjdzhTU9i2LTtP
-	LMRm5qgi1hwQM5FgPy4aK9sGuIBfsOo=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C3B16B008A
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:38:01 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 02605A034C
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 18:38:00 +0000 (UTC)
+X-FDA: 85169681562.11.6A6EEE3
+Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
+	by imf17.hostedemail.com (Postfix) with ESMTP id DCCFB40003
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 18:37:58 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=q8xKpcHC;
+	spf=pass (imf17.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.48 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788372881;
+	s=arc-20220608; t=1788374279;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zKXJHj6v8tdI2Cf9Gn/I7ION7E36cl+qYwoBjKcIzEM=;
-	b=MS32qs4iacfVVs9bQLiyuS6fXNXBslLKOtOdhh4ADa9HEaAj0/YVvIhSvu6J8gNHQUNrt+
-	gK4oORqE0Xd8edDgvvxuQRGdWlfYU5NQ08Y07ErzWBsOOMweD33wMy84oUtohnsn/SjD6f
-	nH0AuFjCtHzCsaU7WChwC1vPUsIQnyQ=
+	bh=GVn0LX9ImSUgjtR/GVkbTBYzReYbgIL/PfeqeDfhMoE=;
+	b=Mx+onxzESsZauFgMHzwikP7xbote8Z5EOOrT2GB8rbUiWCOzkUUpJmhZUFfVXV/DuIViDj
+	lQayiDz4AzhpiIy5k7WgRIbbG1JCCvRNpw7PPtlYgTAFo9W6v4N5TDDRLa3cQnjplFWG+u
+	fIVzo1AIcfBXiMGcZCadcdjYO7Ex7t0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788374279;
+	b=n4DEpW3AdXYzjbAbKHHtgMJJswMUdfgVBO7qZMS0L24H9qxoO+wCAmCLR14EvMdG8lqGO3
+	GDR31dFJtx2wgSkUooqIAUIVI6wj3spFwS3drI+nVlAioxorz2jMnmz1xVaFo1Zv6OZyN5
+	j/8+2vXT9DhWSNgLBeriSiCzeielDYw=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="cGVJ/emS";
-	spf=pass (imf01.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.194 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=nWX6IV7rvjDZC3OxCVmBkgxl+C30+nJvbQf0lpMwKFY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788372880; v=1; x=1788977680;
- b=cGVJ/emSENpPRCgpl5IX5G76SQ9eV0zUuqrhDtsh6+A8dZvBgPG+sIWStAvqrU/v6R0YYfhY
- db8/flnIlpBmJ2dM+IojHZZR8lwGfWIfBmmCftYiBickp2crZsbGbSdWSALOj0hqxp33tjDjETN
- tZQt3/nMIjRfgA9QvjsqeIac=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 9c513c2073537b38;
-	Wed, 02 Sep 2026 18:14:39 +0000
-X-Mizu-Trace-ID: 9c513c2073537b38
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <89f88778-2347-4f78-9c27-b2aaec56681a@linux.dev>
-Date: Wed, 2 Sep 2026 11:14:32 -0700
+	imf17.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=q8xKpcHC;
+	spf=pass (imf17.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.48 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-66f78cba2e1so1634624d50.3
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 11:37:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1788374278; x=1788979078; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=GVn0LX9ImSUgjtR/GVkbTBYzReYbgIL/PfeqeDfhMoE=;
+        b=q8xKpcHCrSdPd2OPLq+WIExo6v8VwJc9QHOGPMIrqSC6HQSxGs8XEOW8edQ0b2oHqR
+         jKXdJuK+f6YBMcORwiOM7FLXLEFJNuZItyZ36XsUd/AAA9Ia5KBhdObSvTaS/Hd53+gQ
+         q/lJW4F6HxnC77UmXSYvbMEYH9FaM4geXWpINCv3RKM870dKwwmJgJ4qR9jnZZ33uRSI
+         HEhK9J8m63BcQnQ2iR+VkLEksRTvfKCjM/TbLDm6oIBsjnSzKHXzLNOO/JL6drVhdBzx
+         7AKgNB4Usk4weYkhGCgtqhdr0p4L2jIykY4qK9ppG8tUEKOwLv6Osb+OoGyxLHNPTNQT
+         b32A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788374278; x=1788979078;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GVn0LX9ImSUgjtR/GVkbTBYzReYbgIL/PfeqeDfhMoE=;
+        b=D3rvw4uoo5MKKrc1n8g+Dp+OFdt3apeLASHUaIOrJRmoy5P62AdTkHkl8KYJoRFwVo
+         VZeT9402qUZnHPi8fxpWuBTAtv5MFUBTecjdj2yTnpewhZ11zAC97JLT3TinNv0sZJbP
+         OkmZTOrfy6fC+KLz7xqxFMrRwp/SQxNb2KnWEF9S9N7XWTLCBdYBDpYq77uvvvftuzyR
+         89pn0NjDOX6B72CKS3jBbv0xX5+V8ETF5IfdkNTxDKvBSOg3BeOWe0EjCbS4oTZ4goYH
+         nhhhrBh7sNBQgTLPSteduoXCvWMdLI49UkWway867Gmvp2dZyRrHpQF2fYbkhy68DKzA
+         xrvw==
+X-Forwarded-Encrypted: i=1; AKwUvBwUoztLikR+jW4UY51LU0V63YBQGAfX+ihdGKgSpORWOC5nNW0/HiC6yLEcshJcvQLwxqrejt9Ang==@kvack.org
+X-Gm-Message-State: AFuF++k7+4H9RWY0v6ZKxboWhBwqjO3ypMV6P4EMBtboyaY+sPQcc0Uu
+	Fi9cBvzPb8/ZdocqglS/ujrWCnbxWI6Zw4/6B9TGuOD1frzFMYoG6DRM63+oiyUvP9w=
+X-Gm-Gg: AYBFou0qa4erN39KeiHktj1aDcbC3QpXZsxMi6duf/9i3beioIK17XOnDOrOaDuC7LT
+	laSSZJgLRGzoWKNV/ARqHGZHqluFcMr1yqxxHp2GudYsAFEdPNDPI1tz5GKG5GfjTzMVM31PeLg
+	DECDZf9AF87m04byWnDfQlpjoWlgIc4JTfibSCm/bU+AGGXhWsYn/fScJT0jKWBDphV8K625Izp
+	A1v7v3AwZNO3AA5sioTZ6W8ee1fL31rzJ+08YnhJ+3RHMBivb0Fq25oRGQsrurKONw+CQhHV7QS
+	MKeeH8yZhzJQUEYPWLAyXUyc1dm/tu7qf4cORaABKUrX0zZnuoUR31Q4S71y4QdREmaxlEv6KQb
+	XIn8imX4EId5IV5DvBtPE0aKVydx4MdwWDzlKRxCNCqoM7G7VLvXgixV/2z+WM6Ld528viws2vO
+	+rB4XV3YPLGW91KzX6JBQCnB2bo9eniau9kI096AYraOccsyvwia7gLrgdFhYG
+X-Received: by 2002:a05:690e:4388:b0:66c:effb:3706 with SMTP id 956f58d0204a3-66fa14e8167mr1271604d50.38.1788374277367;
+        Wed, 02 Sep 2026 11:37:57 -0700 (PDT)
+Received: from localhost ([2605:8600:200:1a83:fe59:7385:2855:8588])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-86c10c94648sm24094157b3.10.2026.09.02.11.37.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 11:37:56 -0700 (PDT)
+Date: Wed, 2 Sep 2026 14:37:52 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Nimrod Oren <noren@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Hugh Dickins <hughd@google.com>, Nirmoy Das <nirmoyd@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm: remove min_free_kbytes adjustment for THP
+Message-ID: <20260902183752.GP3004@cmpxchg.org>
+References: <20260901190123.3511535-1-noren@nvidia.com>
+ <20260902162323.GO3004@cmpxchg.org>
+ <aphS2TancJAZLND7@gremlin>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf-next v6 1/2] mm/bpf: Add bpf_proactive_reclaim kfunc
-To: Hui Zhu <hui.zhu@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
- Ihor Solodrai <ihor.solodrai@linux.dev>, Alexei Starovoitov
- <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Emil Tsalapatis <emil@etsalapatis.com>, Shuah Khan <shuah@kernel.org>,
- Barry Song <baohua@kernel.org>, Geliang Tang <geliang@kernel.org>,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-References: <cover.1788228773.git.zhuhui@kylinos.cn>
- <24726feaf836608d78986e2c565461cf809d8326.1788228773.git.zhuhui@kylinos.cn>
- <f9e77f14-a6a9-4cd3-a217-43abe4747275@linux.dev>
- <9ff42a33-8ad2-40cd-a980-9fa87474e527@linux.dev>
-Content-Language: en-US
-From: JP Kobryn <jp.kobryn@linux.dev>
-In-Reply-To: <9ff42a33-8ad2-40cd-a980-9fa87474e527@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aphS2TancJAZLND7@gremlin>
+X-Stat-Signature: 84pyu6azhosezy7izhbh6eg8w58yay1q
+X-Rspamd-Queue-Id: DCCFB40003
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 77EB440003
-X-Stat-Signature: n6dqyy45cmig4cwz7x17b1wbxdk7ty7x
-X-HE-Tag: 1788372881-248891
-X-HE-Meta: U2FsdGVkX18TAzaRliG6kVohkgLD4dONZMpjtPaFzrxvQ1u4Zr4rFDk/5YnToje5hpk9wiID2GG9tN5E7uPWPCW3j/+KLf1EVNLkuBy6hsUTb+akOOrr3qo6fjvPTJ9KHta9IfF0vz04+x1VoSw5aWY9aoNlYtzjRUk9LnE2h0TqhGloLre0eBSg7TtSl0Yau5haJjpqYoWHSg1dFnxTW9ZDI9mlPqLg9zTNynEIgrUa30NkNhgoKOuv08vzn0GqREM/SYkFSb2tERbFVDHufLrUgMJ2PwIeXJ+nejig+WcvwHiLZqjoShhWg9TYgIuMsSjXmDt6nGeknGNRS2MS4OYVakK6NDisByVamDjjc3/rUef88+v+YO3bt0eSVFAP9LK7EZ4JaCH4kwW9shqjiakkdBcROL7wWHp2zdPL1qfD+LPvLDRcbp3f2HEYYHZHIJapEnRppcD1q1oyPjuH4iTABZTfzLIN0G4MWkxMJb8D97iURLCZ4PTYLuK7QzyYB+QnVWTsjvEcyPEdNowz9tVtJa3F8ROFJVuXZaRgnZUpoz3rpEr6rHi4lCvkvqKiqFbNex5xhSpQJkuGY0raOEC8hcBYCBm4q7M+9M0lrDtdovSxNFmwet4BgD8hoaThDpxQfLI/6qCWOA1WHRmk56xX7R6M1EOZ0cZANYuCJY9Z/MQm5rW1DwHCMoMsZ+Ex6kTuFxp5zoegj68jP902vUxzBXQfCzrp6fsX1K4EafIbYFH5m9J/8h/j6+fLa+2AHjuDLRbVIKeVq2tqxXl1Q/kZg6LL6w0ac2JLFCtAu0zka1QTVfnKrKCRXq6lqTsnHsHNzlSHwyGzoXN+g1KqDsWBhaZEug/mpgk8dV39mhTie4YMrQ6CoQAoDkLaZvGYyQJ2086+npQW232Xbi0W8+dCtd8mhyYUDdQwSLoVFM0pT4/w6+O4gR+oJPhkSuPoI1JiFlb42ErfKIXITct
- R+x9Uznt
- 8WTkTnSghJRCKiAD0ax7maC0r5z00LuJ/jCxpAGxhJgnLLCwwIjrYyC0oTsAVrzk6c3A7zuxjaVnnUOtL8XvYoAo2yNU8vY7aWDwXqLswrzI+eokjJtp8vlqg8Rkf15CryJxzwawVUrBIDMMwpC5gWFKw7ycpvS3xZ+WcQz0OKbQ930oo1/uMFf/yaeVn1a655HbGPYmRiCaDN2NG42Zf5fLA5q+NY1le6ZVnlD/dixyP5sY5dlnRd7RNLq9q58r/pHMzQZFVLe/2bZVPROWgTpB623+4XW9ebmXqT/dXl7HwoCenZzSpBXcHSEQ1FDsyqCnkeEwOMAqI/cfCQ1Zw83Vhw8YnsuEvP9UK
+X-HE-Tag: 1788374278-161048
+X-HE-Meta: U2FsdGVkX1/tZEg1SVEmj7HbNotNQYI9NW6m/9gaiDFDv7MZK5gNbFjbQPidndNLB/f2S4ao1VTzCKECPETRoPgGsZAFJcayBsYrRrqpFzAm+a7bSG0yEHa5iAGeLLsCnrHbIv7aPr9EZ9dIOfh9Nd7AZ+p+9A9zMHx55EBVh5YztxZdbTGXNZamMT+7OGZYVUVIfZFMLfTlb+dMUftCZY/saNOtvcRDdu+E8M9m0atiEJFfPTlmFUa9BxdGNpT/iGV1qpvo1ABKcg943xjtLTW+5yvAgN8PDbmyxKSU+yLy8Na3kQ9QX+GuZDrJTdMFK9ptNXfOcsQDvesRsmNIekj4Fp16VhlathHrbgp6e5J9HFiFX4eTXDaLf0Pggg2YjiPC9j0a6Pz9jlSguNOhDOV6bX631mA41hF3KQCIITt61gRcYUfL8iul6B6diydzJ6tdftkglWkWjoZ3kVcBmoqCrgqSdEUUTWIoEjaHmtFOHlNsgsf2C2hM5ma+tPwUbuhchUtAXis6L3pz3D6463744X16USXAkhqUKSIrmMrLnMSURL0lq/6Gj6Bg56OQomhnN/weaX9N/ZnRn1Fgr3xwhf6pmDZDOafU6lCdBhRWy7+K56QBXI5KSdqi4LBND5nIsdC220Y7u0Kxow5k0tWisgoY/Z6XBmAHo9BRjgHWIKwD6YyxiflA83Wn0emTle3rv1w8NdVrEpBB6Bl1kI4MNlTofRY6z+C1Y4NBKDEXlFTUIAPZ4xyr8pAIz0fQFTT24rzyi4zrRhfvSWU912jy5L3uRofuH0PKwaUcrFB+fbJ6v2qfqdS0uGH+m2BDQZhWCMZNGRGsMNaurjCR5H1cupcztGCO9S+zRM7BhZN6Xpd9PkxQzTPZs0iBsdJG1pQjEEPKMcfuP0Kk9xXowlZ4h9qeFJZNtyBFgRYJagGmPgNW+78DsXiZmuGIcwRdnARo479f/lBtXl37wOY
+ G8DM5t+4
+ vqCkRnS/qpYdLrxWEdaDFJ4ldtp3FjWlG2sUSBI1znPWH9MsYtg5b/FMGWG7QFB6M6XLnbimW+f+wcOanJA7oY6r1Ud8b32g9HVY9Fw8RLsme7icwb7HNiZWyuVU+eMUNhuBDUpry5IRH2kR5HjHhwDZr32ybgKPEk/7+xpasyLaN5FywXeeIsJ6Jd1AHIfBY9bBshoMifyJ4+8puPk42jPI/JrMkoksiXOaoB7yVlrbPpihzSaPLqVyvVQTH9/pcVu1dkCJwr+fM4WRfStyKXnHIkX8FwmePfc0MF7NYIcoQCfFDpwEtN/BEsPqPj2YO61oPmh7i3J+GcvuoPWQmAdTj/W+CAQh1STZd2qBZdyAhPA+d48+WYZPPm7LXr0JIABPzMFdJhqCV2SQ4dNo5CZPffc8ufXvEVXKTYoHwy/sUkEwt9wJUhsH/eJFpfazVoOpE99C5MBEwQAOB/GgMuWXIDGm9kiUYVVDh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,230 +135,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/1/26 11:57 PM, Hui Zhu wrote:
-> Hi JP,
+On Wed, Sep 02, 2026 at 06:00:55PM +0100, Lorenzo Stoakes (ARM) wrote:
+> On Wed, Sep 02, 2026 at 12:23:23PM -0400, Johannes Weiner wrote:
+> > Just to summarize my take from the subthread with Zi: the premise of
+> > this patch is to roll the regression dice on every THP setup out there
+> > because certain ARM configurations result in a questionable pageblock size.
+> >
+> > I'm not against carefully evaluating and testing out today's need for
+> > set_recommended_min_free_kbytes() in real world examples. But this is
+> > not that.
+> >
+> > Nacked-by: Johannes Weiner <hannes@cmpxchg.org>
 > 
-> Thanks for the review!
-> 
->> Hi Hui,
->>
->> On 8/31/26 7:21 PM, Hui Zhu wrote:
->>> From: Hui Zhu <zhuhui@kylinos.cn>
->>>
->>> Add bpf_proactive_reclaim(), a sleepable kfunc which performs one
->>> proactive reclaim pass on a given memory cgroup, similar to a write
->>> to memory.reclaim but without retrying until the target is reached.
->>>
->>> The kfunc is restricted to BPF_PROG_TYPE_SYSCALL so that reclaim
->>> always runs in a clean process context. Generic sleepable programs
->>> may execute with filesystem locks held or in NOFS/NOIO contexts,
->>> where the reclaim path could deadlock in filesystem shrinkers. A
->>> SYSCALL program can still drive reclaim asynchronously through
->>> bpf_wq or task_work callbacks, which run in process context and
->>> keep the SYSCALL program type, so they can call the kfunc too.
->>>
->>> The kfunc refuses to reclaim if the calling task is already in a
->>> reclaim context, as a nested reclaim would corrupt the outer reclaim
->>> state.
->>>
->>> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
->>> ---
->>
->> The difflog is missing in these patches.
-> Sorry, my mistake. Will add the changelog (changes since v4) in the
-> next version.
->>
->>>   mm/bpf_memcontrol.c | 76 +++++++++++++++++++++++++++++++++++++++++++--
->>>   1 file changed, 74 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
->>> index 716df49d7647..fd48faa5f8b0 100644
->>> --- a/mm/bpf_memcontrol.c
->>> +++ b/mm/bpf_memcontrol.c
->>> @@ -6,6 +6,7 @@
->>>    */
->>>     #include <linux/memcontrol.h>
->>> +#include <linux/swap.h>
->>>   #include <linux/bpf.h>
->>>     __bpf_kfunc_start_defs();
->>> @@ -159,6 +160,55 @@ __bpf_kfunc void 
->>> bpf_mem_cgroup_flush_stats(struct mem_cgroup *memcg)
->>>       mem_cgroup_flush_stats(memcg);
->>>   }
->>>   +/*
->>> + * Reclaim must not recurse: try_to_free_mem_cgroup_pages() overwrites
->>> + * current->reclaim_state, so a nested call would corrupt the outer
->>> + * reclaim state. Reclaim windows are marked with PF_MEMALLOC;
->>> + * reclaim_state is also checked because it is installed slightly
->>> + * before PF_MEMALLOC.
->>> + */
->>> +static bool bpf_in_reclaim_context(void)
->>> +{
->>> +    return (current->flags & PF_MEMALLOC) || current->reclaim_state;
->>> +}
->>> +
->>> +/**
->>> + * bpf_proactive_reclaim - proactively reclaim memory from a memory
->>> + *                         cgroup
->>> + * @memcg: the target memory cgroup to reclaim from
->>> + * @size:  the amount of memory to reclaim, in bytes
->>> + *
->>> + * Trigger one proactive reclaim pass on @memcg, similar to a write to
->>> + * memory.reclaim, but without retrying until @size is reached.
->>> + *
->>> + * This kfunc is restricted to BPF_PROG_TYPE_SYSCALL to ensure it runs
->>> + * in a clean process context. The SYSCALL program can schedule the
->>> + * actual reclaim work via bpf_wq or timers, which also execute in
->>> + * safe process context (workqueue, task_work).
->>
->> On the workqueue aspect, I could see potential issues. The target size
->> has no upper bound so the total scan/execution time on the shared
->> wq can easily stall other work. Contention on the lru_lock can make
->> matters worse because interrupts are disabled while holding the lock. So
->> the contention would not only stall other work, but can delay IPI
->> handling leading to CSD lock stalls.
-> 
-> 
-> Agreed. I previously misread
-> 
->      .nr_to_reclaim = max(nr_pages, SWAP_CLUSTER_MAX)
-> 
-> in try_to_free_mem_cgroup_pages() as an upper bound on the reclaim
-> target; it is actually a lower bound, so nothing inside the reclaim
-> path limits how long a single kfunc call can run. The next version
-> will cap the per-invocation reclaim target.
-> 
-> 
->>
->> It looks like the only existing path that explicitly calls
->> try_to_free_mem_cgroup_pages() from a shared wq is the memory.high
->> fallback used when the limit is exceeded outside of task context. But
->> even in that case, it's more constrained. The reclaim request is bounded
->> at MEMCG_CHARGE_BATCH (in high_work_func()) and is limited to one work
->> item per memcg.
->>
->> Would it make sense to follow the existing precedent and use the same
->> bound in your kfunc? You could then batch the wq submissions and you
->> would also be able to stop submitting in between if needed, like in the
->> case of the cgroup dying.
->>
-> Yes, the next version will cap the reclaim target of a single
-> bpf_proactive_reclaim() call at MEMCG_CHARGE_BATCH, following the
-> high_work_func() precedent, so each invocation is a bounded unit of
-> work on the shared wq.
-> 
-> For the "one work item per memcg" side, I'd like to hear your
-> thoughts on the following approach: allow only one in-flight
-> bpf_proactive_reclaim() per memcg. The kfunc would take a per-memcg
-> flag (atomic cmpxchg) on entry and return 0 if another BPF reclaim
-> pass is already running on the same memcg, mirroring the
-> one-work-item-per-memcg property of high_work. This would prevent wq
-> work items from piling up reclaiming the same memcg.
-> 
-> The reason for doing this with a per-memcg in-flight check rather
-> than a fixed per-memcg work item is to keep bpf_proactive_reclaim()
-> flexible: it bounds how much reclaim can run against one memcg at any
-> moment, while leaving the reclaim policy -- when to reclaim, how many
-> passes to batch, and when to stop (e.g. if the target cgroup is
-> dying) -- entirely in the BPF program. Do you think this is a
-> reasonable way to bound the total reclaim activity per memcg, or
-> would you prefer something else?
+> Well you don't have to listen to me any more as ex-THP M ;) but my 2
+> pence...
 
-Let's not add state to the memcg to emulate high_work in bpf. I think
-you should document and implement this on the bpf side. Change the
-selftest example so that bpf_proactive_reclaim() is invoked only once
-per callback (instead of a in a loop) and requeue the same work if
-another reclaim batch is needed. You could also check if the cgroup is
-dying and discontinue the work.
+I'll always listen to you, Lorenzo. <3
 
-I would also document that each memcg should use its own bpf_wq item.
-Correct me if I'm wrong, but it looks like that is your intention in the
-selftest wq_map.
+> Isn't every possible change to address this kind of issue subject to
+> exactly the same kind of constraint?
+> 
+> I'd like to know what not rolling that dice looks like :) or what
+> constitutes 'careful evaluation'.
 
-> 
-> With the per-invocation cap, each kfunc call becomes a small, bounded
-> unit of work, and the BPF program does the batching: it schedules
-> successive wq submissions and can stop submitting between passes when
-> needed. This keeps the "when and how hard to reclaim" policy in BPF
-> while bounding the kernel-side cost of each invocation.
-> 
-> Best,
-> Hui
-> 
-> 
->>> + *
->>> + * Must not be called with a filesystem lock held: the reclaim path
->>> + * may deadlock on it via filesystem shrinkers.
->>> + *
->>> + * Return: The amount of memory reclaimed, in bytes, or 0 if @size is
->>> + * smaller than a page or the task is already in a reclaim context.
->>> + */
->>> +__bpf_kfunc unsigned long bpf_proactive_reclaim(struct mem_cgroup 
->>> *memcg,
->>> +                        unsigned long size)
->>> +{
->>> +    unsigned long nr_reclaimed;
->>> +
->>> +    if (size < PAGE_SIZE || unlikely(bpf_in_reclaim_context()))
->>> +        return 0;
->>> +
->>> +    nr_reclaimed = try_to_free_mem_cgroup_pages(memcg, size / 
->>> PAGE_SIZE,
->>> +                            GFP_KERNEL,
->>> +                            MEMCG_RECLAIM_MAY_SWAP |
->>> +                            MEMCG_RECLAIM_PROACTIVE,
->>> +                            NULL);
->>> +
->>> +    return nr_reclaimed * PAGE_SIZE;
->>> +}
->>> +
->>>   __bpf_kfunc_end_defs();
->>>     BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
->>> @@ -171,22 +221,44 @@ BTF_ID_FLAGS(func, bpf_mem_cgroup_memory_events)
->>>   BTF_ID_FLAGS(func, bpf_mem_cgroup_usage)
->>>   BTF_ID_FLAGS(func, bpf_mem_cgroup_page_state)
->>>   BTF_ID_FLAGS(func, bpf_mem_cgroup_flush_stats, KF_SLEEPABLE)
->>> -
->>>   BTF_KFUNCS_END(bpf_memcontrol_kfuncs)
->>>   +/*
->>> + * Proactive reclaim needs a clean process context, so it is restricted
->>> + * to BPF_PROG_TYPE_SYSCALL. The bpf_wq and task_work callbacks that a
->>> + * SYSCALL program schedules run as the same program type, so they can
->>> + * still invoke it; generic sleepable programs (e.g. fentry on reclaim
->>> + * paths, inode_rmdir) cannot.
->>> + */
->>> +BTF_KFUNCS_START(bpf_memcontrol_reclaim_kfuncs)
->>> +BTF_ID_FLAGS(func, bpf_proactive_reclaim, KF_SLEEPABLE)
->>> +BTF_KFUNCS_END(bpf_memcontrol_reclaim_kfuncs)
->>> +
->>>   static const struct btf_kfunc_id_set bpf_memcontrol_kfunc_set = {
->>>       .owner          = THIS_MODULE,
->>>       .set            = &bpf_memcontrol_kfuncs,
->>>   };
->>>   +static const struct btf_kfunc_id_set 
->>> bpf_memcontrol_reclaim_kfunc_set = {
->>> +    .owner          = THIS_MODULE,
->>> +    .set            = &bpf_memcontrol_reclaim_kfuncs,
->>> +};
->>> +
->>>   static int __init bpf_memcontrol_init(void)
->>>   {
->>>       int err;
->>>         err = register_btf_kfunc_id_set(BPF_PROG_TYPE_UNSPEC,
->>>                       &bpf_memcontrol_kfunc_set);
->>> -    if (err)
->>> +    if (err) {
->>>           pr_warn("error while registering bpf memcontrol kfuncs: 
->>> %d", err);
->>> +        return err;
->>> +    }
->>> +
->>> +    err = register_btf_kfunc_id_set(BPF_PROG_TYPE_SYSCALL,
->>> +                    &bpf_memcontrol_reclaim_kfunc_set);
->>> +    if (err)
->>> +        pr_warn("error registering bpf reclaim kfuncs: %d", err);
->>>         return err;
->>>   }
->>
+Usama gave some great examples in his other email. I'm not really
+arguing to keep things out of tradition. But I think it's fair to say
+let's at least test the common 4k/2M THP setups under memory pressure
+before and after the change. Or be more specific about which changes
+obviated the additional pageblock reserves, and how.
 
+> It feels like in certain areas we paint ourselves into a corner where
+> everybody's too scared to change anything until we're sure nobody in the
+> world is broken*.
+
+I'm fine with calculated risks, actually. A bit more surprised that
+Michal was so readily on board with this :)
+
+> And so we continue to ride the merry-go-round of proposals/rejections
+> indefinitely.
+> 
+> All the while regressions in tip kernel are a regular occurrence (yes we
+> don't want that, but they happen), and they are resolved as they arise.
+> 
+> I wonder if we aren't limiting ourselves by thinking this way.
+> 
+> Michal's proposal was that the original code was written _long_ before
+> improvements in the compaction algorithm and fails to account for those.
+> 
+> It seems odd to retain the same constraints given the rest of the kernel
+> has changed.
+
+That's a great motivation to take a closer look at whether we still
+need it. I'm not attached to anything that's plausibly shown to be
+unnecessary.
+
+But I think there are levels of argument quality:
+
+1. This code is old as in time
+2. This code is old as in the surroundings have changed
+3. This code is not needed due to sha1, sha2, sha3 supplanting it thusly: ...
+4. This code is not making a difference in represenative tests
+
+The patch is at 2 and I would really prefer we get to 3 or 4. That's
+not the same as saying we should stop making changes.
+
+And honestly, while we tend to claim we want 4 for everything, we're
+happy many times to roll the dice at 3 - iff the story is specific and
+plausible. And I believe that touches on your footnote ;)
+
+But let's talk about plausible. Because I'm reading what
+set_recommended_min_free_kbytes() does, along with its comments, and
+can't help but think that this still applies in the current world.
+
+The compaction aid is/was always incidental. Yeah it would suck if
+that is/was (still) an implicit dependency, but ridding us of that
+could be a more deeper-reaching change than you would want to make to
+fix that pressing reserves issue with 64k pages.
+
+The fallback avoidance reasoning OTOH still seems cogent to me. The
+mechanism it references is about passive fragmentation avoidance by
+giving the allocator placement options, before compaction gets
+involved. That makes sense in how I understand page_alloc.c today.
+
+> Perhaps a compromise would be to put the ability to disable this behind a
+> config option or maybe a kernel arg? Of course that becomes something of a
+> uAPI... but at least it gives the option to constrian this for those who
+> want it.
+
+I can't force you to engage with the idea of capping the pageblock
+instead. But I'm still kind of dying to know what the reluctance is ;)
+And I apologize if I missed any prior arguments on this specifically.
 
