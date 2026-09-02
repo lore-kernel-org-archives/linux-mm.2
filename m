@@ -4,81 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FC66C61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 09:51:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 681DAC624D0
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 09:51:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D319C6B0088; Wed,  2 Sep 2026 05:51:03 -0400 (EDT)
+	id 0ADA56B0092; Wed,  2 Sep 2026 05:51:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE1D36B0095; Wed,  2 Sep 2026 05:51:03 -0400 (EDT)
+	id 05FC86B009B; Wed,  2 Sep 2026 05:51:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF7796B0096; Wed,  2 Sep 2026 05:51:03 -0400 (EDT)
+	id DF2566B0099; Wed,  2 Sep 2026 05:51:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D8A46B0088
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A5E0E6B008A
 	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 05:51:03 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 05BBCC013E
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 30BA614014C
 	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:51:03 +0000 (UTC)
-X-FDA: 85168353606.29.BECC8B9
+X-FDA: 85168353606.05.DAEA14E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 070BB160002
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:51:00 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="DXd/CcMz";
-	spf=pass (imf08.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788342661;
-	b=TzRDAhLf5uAwa2PF0AJfusiUaMN3JJ+v79JEyyQIIhKVwu0pOv6082gssmK24rVae1Pq0l
-	UfyegPvhDiKGtgCztUqo0XW2KpSeUgBIzu17Kj+x8RvREGvov2zm7Uqmumok44sDIQQx8B
-	jpZvCjT+mTK+Y0YYs85j91oYmGZTX94=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="DXd/CcMz";
-	spf=pass (imf08.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2F67740003
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:51:01 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BBCLszTC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1788342661;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=uvE4J+Eyn115iGbPgwHnn1UchyrJDzc/387TROOfgoI=;
-	b=ro7Al1r6QSHPg1ZzF5ZSAfna3ECQeLgmnKZNzZwnYds2SdqSL4TEJs8BKKojyv1HAn+wfg
-	AJq+hacE/Pr+kNEPpvkLRlZVNgpSdOyffRZvZCdIkoUQ+5GIzZ6oR9SLzLaAWIxUDpTnMd
-	IeMyP2U38v9vqXODPoczn5HvQcEIjVU=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=H2dQXb1lz4llCnXkv0VrZk8Ylh5V6MRgLDxHaAuTA6A=;
+	b=otTuMz5f4NuHBcJbfyMj9shVRwg/VeTVwNX+1Pmdi4TK8d9J1ED8475otJrVCzqCZwrKBz
+	drh2uMTh7ZcbcDVHReOumkYbkn+aQDPcodG4U9FNF9xt2QZqBP+4IPePTXawLvZ9c6Mz00
+	VAXzNU2zFlmVDeMdQrDEo/JUjHLkjlo=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BBCLszTC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788342661;
+	b=fteoI0nMC/hZ5RjVi0Qa9QYEwi9YtWhY5i0SI7rJ/raITiM05a28zw5IWeldgmrvKeyjUw
+	6IQmpv99k68bhhxxb6EVVqjPX4C29VTnP4YgM1ajZ+LzH1BsNQaCdeMU/M4hYYKsTVg/bl
+	zzvE8iMdin78v0CqoonPVokN7mMRsds=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DEB5643428;
-	Wed,  2 Sep 2026 09:50:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B5900C2BCC7;
-	Wed,  2 Sep 2026 09:50:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4F36B41B58;
+	Wed,  2 Sep 2026 09:51:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 12D3EC2BCFD;
+	Wed,  2 Sep 2026 09:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1788342659;
-	bh=Og93/Iy3MDmWRZktAaxvbO0Wk7cI2PaKifHhoHZu0iw=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=DXd/CcMzhhpON1qvPbFKCgzs2wHdJC+87rkD1Qvy8UsxEasYI7DRtz9vLZCCaybBL
-	 32zmGKieKXtZ6OBKZwvS08Ld+uZQGgPd4TUiS3ZEJENu5InE9eB+j+Uvf8qAujfqhD
-	 1DKiaeyoau/xxMBO0okJzEg4cqmayo2txj495KSHKiIT1Z8UJ0Bsu6tYOQ9R/dfWPc
-	 iE9iRktJwt6A4mYDSB4HMVjUkbaWuzb05wWw5kBt5jQWIRGCwNOhYnIZMFde0OoGdI
-	 yYBJQ6+NGo7ETErxiib0KLcvSTMwtf0XGqP4WAkL4SUrHKNG40ttO5s3xDS6SNj9mU
-	 Ya3pN7Mw82tHg==
+	s=k20201202; t=1788342660;
+	bh=ZExROXpyOer/1fjEOvr29buFXezjDIdWZE9Wtr6aFBc=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=BBCLszTCCb4aBxUWh0XikYYuXsfONFOW35ddWeGLMCsnqyTT+bqF6dpU4ywybiZKI
+	 817oNndFREKS6RjS1azEkxO5b4Ci/k5d1j8qwIzXecsp6OBdTGJInWTufn4NtelLDg
+	 l5E7h0gmAJEXrLBJ9O6iKaVj19g6jC19ET+d9NfQGehU1NE+5LnnyPp+H+nbc/rdfD
+	 k6XsKXU7LAMs8CBHxaCoR2+HrLbyfgPczAN+w730FIEIGZCTGyVE1IS8z4PUbtSo0I
+	 RzTyJjHdQYKXOK9y8PnejBkV3QaZbqU3H2d2cLTBMATQqObWcvH5dLxLxQBAuavsbb
+	 8mq5nHsRDiYZg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A0D96C61DD6;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F05DEC624D0;
 	Wed,  2 Sep 2026 09:50:59 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Subject: [PATCH v5 0/6] mm/mglru: clean up folio counters and flag usage
-Date: Wed, 02 Sep 2026 17:50:53 +0800
-Message-Id: <20260902-mglru-flags-cleanup-v5-0-9db761d779ef@tencent.com>
+Date: Wed, 02 Sep 2026 17:50:57 +0800
+Subject: [PATCH v5 4/6] mm/mglru: move max_seq read into walk_update_folio
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33PwW6DMAwG4Fepcl6mOCSU9rT3mHYItkMz0VAlg
- DZVvPtCd0Er2vGX7O+37yJzCpzF+XAXieeQwxBLsC8HgRcXO5aBShZa6Vo10Mhr16dJ+t51WWL
- PLk43iWhO6B3V1nhRNm+Jffh6qO8fvzlP7SfjuFLrxCXkcUjfj9oZ1rn/G2aQSjbUtuRQkW7wb
- eSIHMdXHK5i7Zj1RtFmX9FFUaAMVBrAOH5Wqq1S7ytVUejkAY/WlsebZ8VslAr2FVMUTWCJWNG
- R/9yyLMsPyrGtapwBAAA=
-X-Change-ID: 20260818-mglru-flags-cleanup-cc49cfad654f
+Message-Id: <20260902-mglru-flags-cleanup-v5-4-9db761d779ef@tencent.com>
+References: <20260902-mglru-flags-cleanup-v5-0-9db761d779ef@tencent.com>
+In-Reply-To: <20260902-mglru-flags-cleanup-v5-0-9db761d779ef@tencent.com>
 To: linux-mm@kvack.org
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
  Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
@@ -96,25 +93,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  linux-kernel@vger.kernel.org, Kairui Song <ryncsn@gmail.com>, 
  Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788342657; l=3388;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788342657; l=5248;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=Og93/Iy3MDmWRZktAaxvbO0Wk7cI2PaKifHhoHZu0iw=;
- b=9Ic0Xmc+ROewYfhXwzx380eiPLauaLVXfEAvcMEqhvcWjsHkHCJ6mulshuiQBnxWEwrfXhX8J
- TSoiwsaFUrXDxWkdFCM8O8NhzIW0JmIAqJGWqAfjACWz+qHjE5dblyw
+ bh=7TChCfTyyaJ0Q3bIhLSmtfbdyXgREQ74noYCwDfeHq0=;
+ b=jV8xURSe/w44tQhocpoNNDiokQnNheOfpgai7WIEzKSb+pCCY7rv38ODeBRFIPti58LC4eKoX
+ kOO35SR86TCB95HpmWSlqs7HriHb7Tk++yQeqwE7ASe5wFBSJMEDvp8
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
+X-Stat-Signature: hubrjoxkdc1t3xsgoq1arsrhmpoznmar
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 2F67740003
 X-Rspam-User: 
-X-Stat-Signature: r5aqfwubhd49m64xak5b346qji7m9zbi
-X-Rspamd-Queue-Id: 070BB160002
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788342660-446826
-X-HE-Meta: U2FsdGVkX1/G9RzMpxoYHhI02sMz5uoFD7mundYEfSCJ90L8W/83L1ux3EEwihuJcIBr0+3CPqsuEaGSm2pORvp3iZ7rmlximrk2xQ2EhykMwhx88v5gKjeJcT7oQpesSfJ/vqQzwSY0GLRi0AZ0dzreNT/DLoHQjKElubw3fx+GQWVrWXF2VT3DRISlWqAvv/WGvTKUu7qq6PgqLwWS56HXlxRTVUB7gsZC14nwu4EygZ2qaXazLIKjvfhLmT6w9itM3JIwDy6FEiUfCAuxIW5nIJirDYhxjOvbH4o5FM9E5wSZuPl64IYuk+lIHWDaSK6oFvP3ARBzt+sQYnjxTaxlK9r8NrVXSV3DMi4rKD3YVbTIo0zGfEwOlsbM49AcMbMWyw4jJZAslHGLlIqKwW9P3ZT/INqizCCm1meuESIUMo9cgl9VZysOnUjiL32Z/0eNqYKailvJwjZPA43cpygEZ7mcJYr95UadxPiiuA7407sU5NmwuaRc7mNaPv62OOhwUm+qd6WYRz6dl012jQSn/thx192fe6w3y72fJokO1TaPuz9buocAyTSyXQ2WJS0YvzGhgWf6EOXASA+QrXpHl5NAxlWfLCoR59xk7lG2kZVN/qp/+CKNmVA8LvnTLW5vHPK/04tgcD85UF5wgcRmvjveVoMJhqaJdRv89gNGKu2fmpx29gKZmXMHb2ErEHoYEpvq8nVn4kKToFyvgnUPalbldJVwOiLHaTH2IC8OD2XrEifvFiAz2wmTAzAlYifjL6VPASlvVh2S4xDPylI/xQz18yzoE2uS7R0AYhyF4oy31mP5MfZTF42AgOXqGVy1Iq74j5xs7fTYFjfQ8oHXao6uIIVfsKs1OEeqdPGKTP6jH2+6q6JprM/B9zPFRLVH4l271acGAhgLzEMIu0t0tkVEwMRl29heOGVXZX2+DPm1t6M4t13ACrxMJNspIJEbq2R+F+ieNcHZpxn
- 2x4KP/T/
- D6ciGCSMsKvsxum/nJ3MPJPzJ4CkYXU4pG53NICM4vaf3jXYpasBUabmFPpjkUOSL/e94qsrsGwhgd0tnJXUyPAGw+LspxW/S2O255c/bA9lmwiUEjbKBnKN05+1oR2jUTeJisK2yKdDYSQET10TSCRjSTwClBFgIm4EzcQbONz0NMtgGXoGy/ZEmPidge8axIgT/cxLs6BQtMnLjlo4rbaD9f2eyxLIjVmSe93cBgLEHxtIp4NB/JXTR8hr1W5lIl+9BbXOjKYSik1woTX2zrpMLo0VZOQRidqgBDx5xTjH755AQrWh1OfqTrDTs+KnfmTr86a7GTsVQWbYv1/Oih1bPQD1j1BWpz2QH0JxPJW60tlQ0Kio/CuDyQJq9+hiGnRGyvoGTTSIaZhVCT23lcUVXDgQZAftQRrysZ+lIdj4dgpW4qwDMnH/rfUrqju/07oloo0miZndclcc0JU3ZApjf84oDG01U8B9uCpgAh1IyhHSfGD7dWGnEBdveg+6VdZBDiGpuITEWRuL9PcJHjy1fcEpNQystEaT14knrkI58NHM=
+X-HE-Tag: 1788342661-655740
+X-HE-Meta: U2FsdGVkX19sRewbGWHcbQKtWtr6dSJBRcLIduaJ7g+I9vWyKQQCcwcrOF0YcW0xfDXkA+hvB+7Cw0bYr01vozvzRexr8Nmima42LddgBSYk27ZmcWxBmBPO2J2PLEI/gNbuO9KTEAV1c8+i3l6Pks8hc7ZhJGulOOU7djdqUPn0f8F/wcfhFyxjEdBJ1dyYPoI+3J2obJC/JQPKJUQm78D+m03Dle5kYV6E0KucwbTFI17tN+EckVABXDvikknzRD8Xno/SnBiwAb7JpCkC+lVl8In5l8gGt7PPvPHtyctqGpk4180m/PT2TrX0MZoANrvkWH9t9VWA+zEo5PQ2oiNpOAYTvFKYkg4+LkakA3Fb0a2QkMEk8ENAtab0QX3G3NjBXKMa5OeRFM8zkqXrc5nRlPZDnIZebL4wIVYrfwYkiSqtlPCEp5HiXHWabYHGD1OpHCNnFtZWiOlkHQXXUPT9jYtZ0d6CwyVnLHNkOS/Yw5fZFVl9xg+CQA0HgaDdEgYuax3A47xy1RmckrotYAFhnCMip22zA3xEUKnhCJeLOPoDshL/nF1XubHwCAdmTu/ztc4dD9pb0jVVbtC8q+ysu0tFdZdFO/Gkl+koHlyjuV+Z2c1PWUu0JSdDrvlRtjICnFk91+LI8pajOlaexfuRPNnv4f3RvyEOtzRkxuJEBOMnsd2/U7OvQDKvEa8mvK5i3wr4oGAysnngPqE6R5ErSHfZzKrGJNwzvyok6KvaNtfAdENVFCcLhFY9GjaAm0AyvR5sddFeyrT4Jw48oA5OHZ+iKKz3cutJmcXTxskVUqL0HLSn5Cnt+2waYnDWyFF/xn1ktXykxFdIxagkRfbOZHBS3Rr/BY50FZ/gz4Gzsben2wffQjuiQKoT72o1A3QJ0fqRKm0CcH6YjSRVFQOdcilkWghgQZL2yGKCPiBnYcjQUbi2lo6JeJTPSfCedWw2IVQ6SF1iRDTJNvJ
+ MDCanMfb
+ qQR5DI7A2YCT7zlQaysliU67VALzdDeKWW3d/L5alQKj3iC5yfg1i04ZfaXdU3s6oY+FCwXpDTsGAn7piaeYFZKtvdUrdr5XJywJxMJik/05/914sNybuYRNYA46xC/ZWhcTKsGSUPOQ9/2v1HsgmjhbTYLVbGJpj+d09AngESXGnmJE5rFIuChrP4VVOlbRaobJwxlXSl78himL82lqusVMc3ZTSCjW7ZMpI0KjjV+RXtwoevDlN7Q5E3u9DnMhzedH6MmruPJ0xuz8bqF3sRv4SenZdGlwgacF1qiXDrGO2hOv/XhK5THglcjH2ToN/hC2CM/DJ9rRhjADJGlwqbNd6MBvTcWj6SBFoMqqhHop2wp+n/JSyQwyvQ4OUaQaSRDxdWi8hxJO6EBW81LcAKOdMWIOc6AmMsE3n3svs1KvfdI9k2kHnU1GvnOHdN/BgA3B0/eH+m74kQVingF/jZ4ckuYq30NtK7Gf9r2/UtVVZDIqvM58y+YU0OHARJE62/RluT4Rz9+xeffntb6AxuY/jB4seJ2rZt6rlNjgBeSDKLQ0RwSmVJ95DeA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,82 +119,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a cleanup series separated out from the MGLRU-FG series [1]. As
-that series is getting too long in following updates, seperate out the
-clean up part for easier review and merge.
+From: Kairui Song <kasong@tencent.com>
 
-No feature change is intended, except one bugfix. It mostly replaces
-the open-coded bit operations scattered throughout the MGLRU code with
-new helpers, with proper kdocs, sanity debug checks, and hardens a few
-MGLRU functions.
+walk_pte_range(), walk_pmd_range_locked(), and lru_gen_look_around()
+each read lrugen->max_seq to compute the target generation used by
+walk_update_folio(), then pass it as a parameter. Move the read into
+walk_update_folio() itself so the callers no longer need to compute
+or pass the value.
 
-A subtle generation counter leak is also found during the refactoring
-and the fix is included.
+The max_seq read now happens once per folio update rather than once
+per walk range, so folios always get promoted to the current youngest
+generation.
 
-Also collected review feedbacks on the cleanup part from the posted
-series.
-
-Link: https://lore.kernel.org/linux-mm/20260804-mglru-fg-v1-0-4d8dad39dad6@tencent.com/ [1]
+Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Ridong Chen <ridong.chen@linux.dev>
+Reviewed-by: Lian Wang <lianux.mm@gmail.com>
+Reviewed-by: Barry Song <baohua@kernel.org>
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
-Changes in v5:
-- Change atomic long to plain long in patch 1, and adjust commit message.
-- Rename is_file to type, and avoid touching folio_is_file_lru in patch 7/7.
-- Link to v4: https://patch.msgid.link/20260831-mglru-flags-cleanup-v4-0-2d15dde0d7ee@tencent.com
+ mm/vmscan.c | 29 ++++++++++++-----------------
+ 1 file changed, 12 insertions(+), 17 deletions(-)
 
-Changes in v4:
-- Rename lru_gen_set_flags/lru_gen_from_flags to
-  lru_set_gen_flags/lru_get_gen_flags, similiar with lru refs helpers,
-  as suggested by [ Barry Song ].
-- Added some comments to cover concerned raised by [ Barry Song ] and [
-  Baolin Wang ].
-- A little code shuffling and better sanity check for concerns raised by 
-  [ Ridong Chen ].
-- Collect tags.
-- Link to v3: https://patch.msgid.link/20260826-mglru-flags-cleanup-v3-0-d9f1c75549c8@tencent.com
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 24d09711e820..96fdfc14f615 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -3517,13 +3517,15 @@ static bool suitable_to_scan(int total, int young)
+ }
+ 
+ static void walk_update_folio(struct lru_gen_mm_walk *walk, struct vm_area_struct *vma,
+-		struct folio *folio, int new_gen, bool dirty)
++		struct lruvec *lruvec, struct folio *folio, bool dirty)
+ {
+-	int old_gen;
++	int new_gen, old_gen;
+ 
+ 	if (!folio)
+ 		return;
+ 
++	new_gen = lru_gen_from_seq(READ_ONCE(lruvec->lrugen.max_seq));
++
+ 	if (dirty && !folio_test_dirty(folio) &&
+ 	    !(folio_test_anon(folio) && folio_test_swapbacked(folio) &&
+ 	      !folio_test_swapcache(folio)))
+@@ -3554,8 +3556,6 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
+ 	struct lru_gen_mm_walk *walk = args->private;
+ 	struct mem_cgroup *memcg = lruvec_memcg(walk->lruvec);
+ 	struct pglist_data *pgdat = lruvec_pgdat(walk->lruvec);
+-	DEFINE_MAX_SEQ(walk->lruvec);
+-	int gen = lru_gen_from_seq(max_seq);
+ 	unsigned int nr;
+ 	pmd_t pmdval;
+ 
+@@ -3606,7 +3606,7 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
+ 			continue;
+ 
+ 		if (last != folio) {
+-			walk_update_folio(walk, args->vma, last, gen, dirty);
++			walk_update_folio(walk, args->vma, walk->lruvec, last, dirty);
+ 
+ 			last = folio;
+ 			dirty = false;
+@@ -3619,7 +3619,7 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
+ 		walk->mm_stats[MM_LEAF_YOUNG] += nr;
+ 	}
+ 
+-	walk_update_folio(walk, args->vma, last, gen, dirty);
++	walk_update_folio(walk, args->vma, walk->lruvec, last, dirty);
+ 	last = NULL;
+ 
+ 	if (i < PTRS_PER_PTE && get_next_vma(PMD_MASK, PAGE_SIZE, args, &start, &end))
+@@ -3642,8 +3642,6 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
+ 	struct lru_gen_mm_walk *walk = args->private;
+ 	struct mem_cgroup *memcg = lruvec_memcg(walk->lruvec);
+ 	struct pglist_data *pgdat = lruvec_pgdat(walk->lruvec);
+-	DEFINE_MAX_SEQ(walk->lruvec);
+-	int gen = lru_gen_from_seq(max_seq);
+ 
+ 	VM_WARN_ON_ONCE(pud_leaf(*pud));
+ 
+@@ -3697,7 +3695,7 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
+ 			goto next;
+ 
+ 		if (last != folio) {
+-			walk_update_folio(walk, vma, last, gen, dirty);
++			walk_update_folio(walk, vma, walk->lruvec, last, dirty);
+ 
+ 			last = folio;
+ 			dirty = false;
+@@ -3711,7 +3709,7 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
+ 		i = i > MIN_LRU_BATCH ? 0 : find_next_bit(bitmap, MIN_LRU_BATCH, i) + 1;
+ 	} while (i <= MIN_LRU_BATCH);
+ 
+-	walk_update_folio(walk, vma, last, gen, dirty);
++	walk_update_folio(walk, vma, walk->lruvec, last, dirty);
+ 
+ 	lazy_mmu_mode_disable();
+ 	spin_unlock(ptl);
+@@ -4275,8 +4273,6 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
+ 	struct pglist_data *pgdat = folio_pgdat(folio);
+ 	struct lruvec *lruvec;
+ 	struct lru_gen_mm_state *mm_state;
+-	unsigned long max_seq;
+-	int gen;
+ 
+ 	lockdep_assert_held(pvmw->ptl);
+ 	VM_WARN_ON_ONCE_FOLIO(folio_test_lru(folio), folio);
+@@ -4313,8 +4309,6 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
+ 
+ 	memcg = get_mem_cgroup_from_folio(folio);
+ 	lruvec = mem_cgroup_lruvec(memcg, pgdat);
+-	max_seq = READ_ONCE((lruvec)->lrugen.max_seq);
+-	gen = lru_gen_from_seq(max_seq);
+ 	mm_state = get_mm_state(lruvec);
+ 
+ 	lazy_mmu_mode_enable();
+@@ -4346,7 +4340,7 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
+ 			continue;
+ 
+ 		if (last != folio) {
+-			walk_update_folio(walk, vma, last, gen, dirty);
++			walk_update_folio(walk, vma, lruvec, last, dirty);
+ 
+ 			last = folio;
+ 			dirty = false;
+@@ -4358,13 +4352,14 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
+ 		young += nr;
+ 	}
+ 
+-	walk_update_folio(walk, vma, last, gen, dirty);
++	walk_update_folio(walk, vma, lruvec, last, dirty);
+ 
+ 	lazy_mmu_mode_disable();
+ 
+ 	/* feedback from rmap walkers to page table walkers */
+ 	if (mm_state && suitable_to_scan(i, young))
+-		update_bloom_filter(mm_state, max_seq, pvmw->pmd);
++		update_bloom_filter(mm_state, READ_ONCE(lruvec->lrugen.max_seq),
++				    pvmw->pmd);
+ 
+ 	mem_cgroup_put(memcg);
+ 
 
-Changes in v3:
-- Set PG_workingset before setting LRU refs bit to avoid any potential
-  under report of folio tier.
-- Migrate folio's referenced status before PG_update so lockless readers
-  won't set stale referenced status.
-- Link to v2: https://patch.msgid.link/20260824-mglru-flags-cleanup-v2-0-0104132114ae@tencent.com
-
-Changes in v2:
-- Dropped the redundant LRU_GEN_MAX macro.
-- Renamed folio_migrate_refs() to folio_migrate_lru_refs() and reworded
-  its commit message to describe the referenced state being transferred.
-- Rewrote patch 6's commit message with a detailed analysis of the
-  anon/file accounting race.
-- Dropped patch 7, it doesn't really fix anything, and might be in
-  conflict with other updating series.
-- Collected Reviewed-by tags.
-- Link to v1: https://patch.msgid.link/20260818-mglru-flags-cleanup-v1-0-8dbbdac0d28c@tencent.com
-
----
-Kairui Song (6):
-      mm/memcontrol: move the lru_zone_size sanity check to the reader side
-      mm/mglru: introduce helpers for manipulating gen and refs flags
-      mm/migrate: copy all referenced state via folio_migrate_lru_refs
-      mm/mglru: move max_seq read into walk_update_folio
-      mm/mglru: use explicit tier range in read_ctrl_pos()
-      mm/mglru: fix potential generation folio number leak
-
- include/linux/memcontrol.h |   9 +++-
- include/linux/mm_inline.h  | 115 +++++++++++++++++++++++++++++++++++++++-----
- include/linux/mmzone.h     |   3 ++
- mm/folio.c                 |  19 ++++----
- mm/memcontrol.c            |  18 +------
- mm/migrate.c               |   6 +--
- mm/vmscan.c                | 117 +++++++++++++++++++++++----------------------
- 7 files changed, 188 insertions(+), 99 deletions(-)
----
-base-commit: 893f78beb0477671991ccaae87df75acc484162f
-change-id: 20260818-mglru-flags-cleanup-cc49cfad654f
-
-Best regards,
---  
-Kairui Song <kasong@tencent.com>
+-- 
+2.55.0
 
 
 
