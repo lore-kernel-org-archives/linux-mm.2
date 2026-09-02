@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F4073C624D4
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 19:47:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24F2BC624D4
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 19:47:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10B816B00E0; Wed,  2 Sep 2026 15:47:09 -0400 (EDT)
+	id 1A6B16B00E2; Wed,  2 Sep 2026 15:47:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E2B16B00E2; Wed,  2 Sep 2026 15:47:09 -0400 (EDT)
+	id 15E636B00E4; Wed,  2 Sep 2026 15:47:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F14246B00E3; Wed,  2 Sep 2026 15:47:08 -0400 (EDT)
+	id 047256B00E5; Wed,  2 Sep 2026 15:47:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 72ECC6B00E0
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:47:08 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D530580350
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 19:47:07 +0000 (UTC)
-X-FDA: 85169855694.12.70A9ED0
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 2264D1A000C
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 19:47:05 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=WVVTil9g;
-	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BDE6F6B00E2
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:47:11 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 387781A0378
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 19:47:11 +0000 (UTC)
+X-FDA: 85169855862.23.73498F8
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 7A489A0006
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 19:47:09 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="T/06PPcE";
+	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788378426;
+	s=arc-20220608; t=1788378429;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CBcqkxQZqwfVczJ4Zyf97FMnYegDKAQ3ju3Ot5Bn64M=;
-	b=iJ59g4VM5z57jQxiSRG7epeTpkNMGXGjwVQfRGWoUKU2r06N1uWTgGgblbK38/CDvTyxzZ
-	l5cngbLZM6MYZTOucxmlV1TdCrkUrlAxJ4nGE40sUsm0QQEAcl0moIzuEXOMGRijZ0XblE
-	3UxM9woPEqUVrbShAmUwlQ8j7BosLns=
+	bh=Z0iWDp9wFRQQy4gDc5F5inYbcQx9NkSfWa5yO100B34=;
+	b=Z16d7nucS5ibOnPYMPuf4Ttf5QZy3YECVI2r1WKB0d3/XU13iqu6IUBiDEMcFmUbtuRq5f
+	04o2SejaQFfihqDPD4ZIeWrylIUnLUOCgwlPjchFr8LXdwUFzLI4rYmbLAYFoUYcE+O2qO
+	M1snhaIb5fNrkYuN+KagJ3XcDjBifGU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788378426;
-	b=p2AdQOrraE5qSAsYT8Ar9sZ6teU+HGpgKauf76+2nxfHvgxxDVISjKxSFqPf7n0dmuazYI
-	MNUzKJpn3wo83pShvo11M1tgNcuoxbyY+/CzKV3pIjUcbMD8z93dLzS0sEVsNM4yDcUJER
-	vfHlfzg0n7JOTTApVOxgDtGADoxyZR0=
+	t=1788378429;
+	b=QNZCYqXBCblXaB0hUPo/ZEkggw0+DTM54UUR7nKH4ORtn4v+zN6cYtd6IVhynY0kAMVobe
+	3ZodI65Eq5v6T1HePXloldBl5IhGGGJV39EpmJziGHk/1unWeyy51j2uhpxgkwKHslmE0v
+	uABGpyFXDtZBB/MBuBQLQJH6l63lAMw=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=WVVTil9g;
-	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="T/06PPcE";
+	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-939094306b0so135038585a.3
-        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 12:47:05 -0700 (PDT)
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-9087fb771d3so13119976d6.0
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 12:47:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1788378425; x=1788983225; darn=kvack.org;
+        d=gourry.net; s=google; t=1788378429; x=1788983229; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=CBcqkxQZqwfVczJ4Zyf97FMnYegDKAQ3ju3Ot5Bn64M=;
-        b=WVVTil9gL6p3cV5Uhhdi2EkfxBHcP0rxepNmP5ycZm8icgHDmttRzCDtEqypww8M1U
-         IZO4udNYdfydSM+Urj5d5E/XpkFOpLhThJvikW5Dk6zCh+boEOMURfSb566YILcaRmwe
-         iAyS9RGUei/0HKG8N7NMv3xDz8++vpwxt9pwUrr1Aa0o2UV5kDSP8BV3R0B/P381X48u
-         GDwcgnCo31mBDbQPAq4LYNoC+ovlrtqgisaZ805iADxJi7wA4dekciJYUkwc95lmA9ff
-         CP2mNVGsjmLe51pPeKIMX+3VTGV4kNI/GK9eBbB/5lKofddv2SfMSRoJFFiRm6bnksKX
-         YDcA==
+        bh=Z0iWDp9wFRQQy4gDc5F5inYbcQx9NkSfWa5yO100B34=;
+        b=T/06PPcEgU+vMqnpxRDnDDeRQkc+jPpAAQZ9M2TkXCtuwNlCX8cjHQHriYAUPHPps5
+         81hu2aX8Cj4xiygczrKV6K90oJjmHzMfBnv/f8Xxi46FJpEx36QSgO8VufOwKtaXFJZl
+         SA+z/wSs8/F87vA2SNpRJSVQVGwMTE6ecONaRdlj0PeyDvx8Br+ToyTXxok6p1fpnH4f
+         Fs4pauYXSZNh7BIJ++I8q8b0VPS0KaeXwMiuXPba6O6WjI9hGhjrbnszQ7cKew7hHUff
+         J+9oHXEs880EEIFCOMeqrJkHhIu9IXxPsDmx6IdRSzGRroMBEvei4new314TOyfpcRx2
+         5/LQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788378425; x=1788983225;
+        d=1e100.net; s=20251104; t=1788378429; x=1788983229;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CBcqkxQZqwfVczJ4Zyf97FMnYegDKAQ3ju3Ot5Bn64M=;
-        b=I5qM+y9+S5BPkLDfXCIcUqM0gRORmhdY31v0t1GWgNJa4JUErtIhbMI4rOmvAJf++9
-         RDzvCFxHxJKzSuBLEHh7zuBpn6eo98/GxwkJGZj58FPBoIeLkCmLPfH/IG70jVITpwDv
-         ooUexioEZEWmcDY6GrXVldmWEKTRzzKkdAmhL3ksnYU2lMpKHKK4SgOqW/zx/8FmM8ta
-         4ZSdD2xh8U++BtIolssUq+kjxn38x+qROoq0Z6UG+RVUWvxYqOgm4IVFBv0jyKXXbdl3
-         obMGNJ51++dW6e9MPDitsd1YbBO+Qza9CQN5TmjITMPo/Mph5pw392BdDB9dbCBO3vS7
-         0yBA==
-X-Gm-Message-State: AFuF++lRkQZNu+dL+P2OaZmRx3FxREkT7V5iAisod2J2IC5s+yBNyfAr
-	5REj3rzUHZQ9NKtPazcnQaN50IjUVcLKKmR/2iUNSFpQLrVuISmZ2t0KClTVqA7q+OTxWR7JHp6
-	xPpXMnAc=
-X-Gm-Gg: AYBFou0N2YEu+8KPpYVwDWaqEsRcuLLGMORzNXVQRp4mfNGlpuwoHlEfr7/Y+g9kmX5
-	JS0OL8IQTbvqCdudqybuiw5ndrhgHD4jChmOzJiq0tdPoMnsAGPn9aVuqCdIX9fcwxlteiRz9hw
-	yK97NtCKprBe2oOF6I/hBvtGbJz8UKES3EVCSegQBslCfZKMc6b+qnbSmE1Z3LamwiNksLo+wDh
-	76FjL4SSccU5kfpdUQlfY/mmNCzMTAU170zV9++CWloRLwAbbzfNxyt06XTfcWEV4N3mt8EVRd8
-	6RxefDHX6p3GuWh+PCOb2dRcPJHjzptae7J5RZZSlKBeqEM1zjjVrKBIvq6C15XoQESC4ZyodM5
-	iY9pf2CV5de1GVq4UX6tFeJpmpeaH3h8sy9k2UtaWM9n5qXaSr+f/2ccD4h/I/xZYKo2wypu2rJ
-	M+ogExBtj/10xEoMXEUit2/7xSa9FoxWY9NZT21yRX/Cdyr1TtoC3gS893TuTH6TbEttB3GDpaJ
-	AXxJ1N13a9xFn+p7uZrdMjUXYYRGcgMrhUEHC2wiwC3mV+JdHrWKw7szAhN
-X-Received: by 2002:a05:620a:bd4:b0:939:3a8c:28f4 with SMTP id af79cd13be357-93960de25e9mr874489085a.10.1788378425144;
-        Wed, 02 Sep 2026 12:47:05 -0700 (PDT)
+        bh=Z0iWDp9wFRQQy4gDc5F5inYbcQx9NkSfWa5yO100B34=;
+        b=XjxuLY4ZQXh91B8d/tRmJWPC6zh7ulmwEUcF+VG68g180ftmI+9XQsDL87ORhFvpgp
+         3C+JrPma/4OfZwBrCeSrN7LYk6QkN14WpCESIJ6Lax/czlTC2WXs8zG3OvNpt7cVIIaL
+         A6F54WdE50gPSEhw9XoNHqE3AWfeVriLYfBdmxaY4w7BtDP7hSaBY8nw4RJx8yvuKMT4
+         ThkAcc1tiQPsXVJUbFcrJE98BkO720msmku/9XyoUZRAREYegA95T5tTmzA0psHBozpp
+         yNz+Gz3BtrevnKY4qrdqeJh84Gh/uR0W3kVO2Y28jA5TvkNKFEwXhJNkP9SqmXNy82/y
+         Sp6g==
+X-Gm-Message-State: AFuF++m/QMCc577Y085me5kdgp44CNhKOnNQBxIJTrv/YqloC9AX5ynn
+	OlhB9YeGPXxXVLhia+xaJ1Xw0RQNFGNWb7SexIFcqZjefBycz7pIc1KjsbeCLlsXRKT/wwDOb4n
+	Z/iL1czw=
+X-Gm-Gg: AYBFou0Rl2L93dlKfonEEYfVNAyUPSZ8iCD9l9Dpf9YAevrkltIuAjeGeoFLVzjdLo1
+	8fypa4FGrS3GeJ9kffI88pOOZZhTmMzuU4oTMAOXbcyA1BToGInfFxzOzpaHgzKC33ZlSYGlwGM
+	TOBacP3sfQtYDVgVVB83536QLPafM2XD7YMwqyUiQI0kWQF3XOcbW+rMk+YSAqf+f6f48gLJSlX
+	y//a/czkdc8tnk0vaIm9SWMMGLeLSVBv6YwCol+l1HTt83tIBgtHz2oPQIyVpiOwEnKmQmXlWMZ
+	a5aw4RYjWM6ou1CdmqK2urjGAxtkxQi3gfTS40fzV7GFMaQYY4un5CNsrAIICg5WzRGvBIMaUOS
+	QQNQPXMEsHyJAJ2ZeIOmO03byJzSzHbIoTYoLFPYxZboSOaiocKzAWpr6xGhrFDpnuVyKawZ8a2
+	vrSXlSrD6WrfJvOlrsSIxleH1nBCKy2hCS0cA03cI1/+nx5XwXrObWtYn8iX/YFBkPaYGYmoZQr
+	Xn29Q3YSLynD5+zEwjCRcPifkJmFJ+03qPh2tc35xJ9XrWUrg==
+X-Received: by 2002:a05:620a:7002:b0:933:aa0:bb83 with SMTP id af79cd13be357-93960f69d21mr852874685a.34.1788378428558;
+        Wed, 02 Sep 2026 12:47:08 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9395f18801asm299300585a.16.2026.09.02.12.47.04
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9395f18801asm299300585a.16.2026.09.02.12.47.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 12:47:04 -0700 (PDT)
+        Wed, 02 Sep 2026 12:47:07 -0700 (PDT)
 From: Gregory Price <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: kvm@vger.kernel.org,
@@ -109,24 +109,23 @@ Cc: kvm@vger.kernel.org,
 	gourry@gourry.net,
 	ying.huang@linux.alibaba.com,
 	apopple@nvidia.com,
-	shuah@kernel.org,
-	Dave Jiang <dave.jiang@intel.com>
-Subject: [PATCH 3/5] KVM: guest_memfd: bind backing memory to a NUMA node at creation
-Date: Wed,  2 Sep 2026 15:46:55 -0400
-Message-ID: <20260902194657.79075-4-gourry@gourry.net>
+	shuah@kernel.org
+Subject: [PATCH 5/5] selftests: KVM: guest_memfd: test GUEST_MEMFD_FLAG_BIND_NODE
+Date: Wed,  2 Sep 2026 15:46:57 -0400
+Message-ID: <20260902194657.79075-6-gourry@gourry.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260902194657.79075-1-gourry@gourry.net>
 References: <20260902194657.79075-1-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: k3zfmdxqpqiewrmd914ucptapyrr4jqz
-X-Rspamd-Queue-Id: 2264D1A000C
+X-Stat-Signature: z7hbpfgw48ziqjwqgn5muy15pjfr5rzf
+X-Rspamd-Queue-Id: 7A489A0006
 X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788378425-914731
-X-HE-Meta: U2FsdGVkX18Zc2vSgPuUQo6E9FBMW1H4C0Uo3KNxpNN3YLJxXTOsJVx6Rh6tEVwS3oNWquVCQynsOytxxJtxeWG3HYHgBwjVwV973DRTSDRbKvmxZ4gFqgC3PpQhAUw4t3wt/+0SyER2n6X/f7IgLnJ98mJ2ru3kFcj+umPQsPWb6gBYj4m79lwftd6mAACI2QVVYb2sR09da20MZja7bRN1OaBRXbTw1/0svL62a2IfW4nolPIeH6tZmlRJB6ZunvkMEb5ktA9GKpgfxveAddVQHn/dU2QtpNb+0Z9EBnnLUNykCQdpczqQupy4lyqCYDld15eOvkTM4O/7gVMrEAnn6OvP0DsGB67wR7v86u1Q4/XVYJimySnHyw06gaUKSQHGSSKkD+Iil3jHaSvVvf24mVByLM7J6NvV58qkWufVvKszK6XLcwEvfm+yB/cGe5BJBDcWaTFMR4+uroqAq3Q5kDraxqDUuqGDIcG3/YSc9NheZYu9MhaDx5nslk2rYdzFRjLwiVrqnT74DiCG4Ik7ZRSgtOWKoKIU5NW935QeVM80QIMd0pUtc84i7nTh9pmMgrc1sh5ZHC+tkNHCfsc+VzHtLckk6bR5kkvSyxb3MtNif6BcRm3rid+BhWuGZF1ioLyrEb+Twsd8KIMfI0BT9MEdpA5zXHCDoFH5VHYL2cASYSv89Y3skJbPXzk8wVJzuNJ+mn1Y8MKVSsXp8R1yhWfZT+hgsL1Xf/6XOhBKBgxrTTgI08Fc9MZagu64r7MGNWhxp2oeM/QJ7Dhm5IwnY+QQXzEelkwtcnr6d1Anxx4cjvjsm2vzBcjn3Ip7a/AWkWcG7ekg40kzg/snEJu0eNEKgcBX6Qta15/WbimbAmZp7FAU0PzYJUWIlJ4FVScTyYQHlj21O4o/WNpFshNdXAOvu1B+oxGUjB8oTSX6FLZ/pFcLqW7LDqVN9XmpIwhN5DmhAW5bA0ZrM7x
- cXmJ/rlJ
- N4Ky4Bwpocs5fh+lSenRq8h7V3QwSD7sYi+v5v/+A0wJ+CzN1wHDYSuSTizv7Y5qMTXATuBGJjlCQu2N8kAW+gC6KbEfeqmleGilycFMUDxx1GRgYW36PTfZoAi24g6DaSI1a5hbmKIXoSwAuMYGnONa+7L0ddToxpQxjae8fi2WgdQlzcZmcU3vyD/WN+XWRQ1aO9GTYab58D5CUhrnZXAeU2B92hxqna7JcB1ZOcCWHpUlB0Jqgh4YKKsPxG2Wr2gDw2Yv+WUNq18U3knGB2AgV2tp255rCS1qcr/uCKOacqtFxKcXzD0kpiDpj4+R4/L5391c+e0rWuYxTHmvPqww7mSB/7w0gWBNYch6wR9BDB5EO9LU99Wp5jgfZR6RwIuHhU/HFacH7dhGq5OC22YNPmFr1YITB450E+7aulFTBPbjZBktqH9ekRjxQiGBKr4za
+X-HE-Tag: 1788378429-835737
+X-HE-Meta: U2FsdGVkX1+R2ZSdeMVxmKO1zp0HgzboSAf0QBZQGicwb/LrodLyXNhotwZDUT2IFhInZfdQNGNnvc6SxAqG+kGYQMar6/Rlsa5usTeE7J4OkVsHmm1A8NSduRgzXJgNDGnAj0+C8e6aRVdPZ+H/0qYETuRiAll1WcCmWk4/0sgWnZWOdCm8DOGy/65Tjsfat6ijsn0pS+uwyCTBHgXdXL+zIOD+9sHvJXayk+j4p8hio4NupQoOlar6aezi8izTB+E9hEQAnN2e5MrGHGbdHrUJigREjW+GeKG03n4wv5VutKoFQf1+5hTD5vHtMYip6/2jRyHkj+Ve/sXMsTqXh/OIAu5gnrEYa1SB8eu9dNaQy7IOU3vJQRmMk0Kqvd8gymdZcYPGGODXMEpen+N58TJOSUTJvH8ggL2xEfkELOt3wDhLiVSmkbxwYZBuGTVpi37at8exyX5TQoSfiLcbK8M6vIhYFuiHnoswkRY+KGoEY+nbZ62OBj7kR2OOQyRBpSFq21ANWTr6A/UvrdR0SiJeHslny8XOOo1cjMhahTyvf7pPz2kgHxZSip8ZTyYQ89oNx7iKnX4/zQiDpEap9DJsYy/FTdYByZtwj0oq9mXf/PEBrjMwTkHuIUOaPC7teZIUAM3mKspYoat2TyxhJvvD5gle9d4TFPXbYVvj2js8HQ07NG6n18QzBRAMYA7LQk7l0UvjzVsRbDOv7AM02KNDpTR+PfkWCSy7pT2rRwrmlO4/mDIQ+lmQamsZZ2Y1Sg2zHPEF3xmwKWRGe/fNVsucCzWccLPCP5KcBn0xmhrJ4ttOTA9v2RlqTMWtKBWVNR47kPfxbjIhxW/WPlwckN2GKkaSiRQNGafdHGwrvgP2DofA+IMsHnzMr+3ztorEXkxtvqMh0Ds/2wUyr7aNWEz9MzBg6VIQRhAGxt4ciRxEy+WJHtPtEXH6tc7iahW2+2/waIBpvmX6qkurDwi
+ Lsf4OJNP
+ lQ9hKsokCuToPBqJm0cbK0dH2Srtw8lfMThRCAEVqRwm5d9p9it/3o7ckvSU2tGoKrgJVDsDn5ya8kxSVepJYevxxwa2n0vdaj+oG9VrjXbmtiAVa0NjFPw3TgoAyVQi3uRlh9X1iN0vNtS14wZAvJsJ1Bh0mG+lI6nSIvNE7niFHjJxC92eCiQMyBwVdjOpvKPb3C6RerlRdFNDPDZZ2/Z1VNkzW7N5Vs5T8/vvdAWez0+ky7WL2kL+8UXB5Ig/lUzPS+LFIdj/Tvm3syd3mJETTX/JLNUZ9KvDIfr767XbZBrfVYLBgG3N6hvNE8nZFnSloA2xFRbOKFt9jwkGYwhv+v1ZdZwAmV9nhCEuZdctwaxGjvZ0N7F3XblApfrZ4ZbK/Ec/UR4evm8NlbPVYd0AYJS3btcoCgMaZAAYYp/ohFKc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,175 +133,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-guest_memfd presently allocates its page-cache folios through a
-per-inode shared mempolicy (kvm_gmem_get_folio()).
+Add tests for an umapped guest_memfd mempolicy configured at
+creation via GUEST_MEMFD_FLAG_BIND_NODE.
 
-Today that policy can only be set after the fact, via mbind() on
-a host mmap of the fd. This requires the fd to be mmap-able and
-cannot reach folios that are only ever guest-faulted (no host VMA).
+Handles:
+  - !CONFIG_NUMA (skips)
+  - single node system
+  - multi-node system (faults onto remote node)
+  - invalid arguments (non-zero pad, bad node, node w/o flag).
 
-Neither holds for a non-mappable (confidential) guest_memfd.
+BIND_NODE is skipped in test_guest_memfd_flags() and testing later
+because that loop asserts every advertised flag succeeds on its own,
+but BIND_NODE is the only flag that depends on a second field.
 
-Add GUEST_MEMFD_FLAG_BIND_NODE.
-
-When set, KVM builds an MPOL_BIND policy for the requested node and
-installs it over the whole inode's shared policy, so every folio
-is allocated on the requested node with no userspace mbind().
-
-The flag is advertised through KVM_CAP_GUEST_MEMFD_FLAGS only when
-CONFIG_NUMA is enabled.
-
-Two user-visible behaviors worth noting:
-
-- mempolicy_create() constrains the request against the calling task's
-  cpuset. Requesting a node outside the cpuset mems_allowed results
-  in the ioctl failing with -EINVAL. Binding is essentially subject
-  to the same cpuset constraint as mbind().
-
-  This behavior is correct - a task cannot grant a guest_memfd access
-  to a node it cannot access itself.
-
-- The policy hangs off the inode, and nothing rebinds an inode's
-  shared policy on a later cpuset change.
-
-    mpol_rebind_task() walks tsk->mempolicy
-    mpol_rebind_mm() walks vma->vm_policy
-
-  Neither walker reaches a struct shared_policy.
-
-  The binding is therefore fixed for the life of the fd. That matches
-  shmem, whose inode policy behaves the same way, and is the intent
-  here: the node is a property of the guest's backing memory, not of
-  whoever happens to hold the fd.
-
-Suggested-by: Dave Jiang <dave.jiang@intel.com>
-Co-developed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Gregory Price <gourry@gourry.net>
-Assisted-by: Claude:claude-opus-4-8
+Assisted-by: Claude:claude-opus-5
 ---
- include/linux/kvm_host.h |  3 +++
- include/uapi/linux/kvm.h |  5 ++++-
- virt/kvm/guest_memfd.c   | 44 ++++++++++++++++++++++++++++++++++++++--
- 3 files changed, 49 insertions(+), 3 deletions(-)
+ .../testing/selftests/kvm/guest_memfd_test.c  | 84 +++++++++++++++++++
+ 1 file changed, 84 insertions(+)
 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 03bfc92864b6e..738e276633c1e 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -739,6 +739,9 @@ static inline u64 kvm_gmem_get_supported_flags(struct kvm *kvm)
- 	if (!kvm || kvm_arch_supports_gmem_init_shared(kvm))
- 		flags |= GUEST_MEMFD_FLAG_INIT_SHARED;
- 
-+	if (IS_ENABLED(CONFIG_NUMA))
-+		flags |= GUEST_MEMFD_FLAG_BIND_NODE;
-+
- 	return flags;
+diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
+index 1818e0fea5690..b333cb42fab29 100644
+--- a/tools/testing/selftests/kvm/guest_memfd_test.c
++++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+@@ -196,6 +196,83 @@ static void test_numa_allocation(int fd, size_t total_size)
+ 	kvm_munmap(mem, total_size);
  }
- #endif
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index ac2d77d149635..8d3ae7e2ead8e 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -1658,11 +1658,14 @@ struct kvm_memory_attributes {
- #define KVM_CREATE_GUEST_MEMFD	_IOWR(KVMIO,  0xd4, struct kvm_create_guest_memfd)
- #define GUEST_MEMFD_FLAG_MMAP		(1ULL << 0)
- #define GUEST_MEMFD_FLAG_INIT_SHARED	(1ULL << 1)
-+#define GUEST_MEMFD_FLAG_BIND_NODE	(1ULL << 2)
  
- struct kvm_create_guest_memfd {
- 	__u64 size;
- 	__u64 flags;
--	__u64 reserved[6];
-+	__u32 node;
-+	__u32 pad;
-+	__u64 reserved[5];
- };
- 
- #define KVM_PRE_FAULT_MEMORY	_IOWR(KVMIO, 0xd5, struct kvm_pre_fault_memory)
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 625e62e1a0318..dc9f071dd969b 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -423,6 +423,31 @@ static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
- 	 */
- 	return mpol_shared_policy_lookup(&GMEM_I(inode)->policy, pgoff);
- }
-+
-+static int kvm_gmem_bind_node(struct inode *inode, int node)
++static bool has_bind_node(struct kvm_vm *vm)
 +{
-+	struct mempolicy *pol;
-+	nodemask_t nodes;
-+	int err;
-+
-+	if ((unsigned int)node >= MAX_NUMNODES)
-+		return -EINVAL;
-+
-+	init_nodemask_of_node(&nodes, node);
-+	pol = mempolicy_create(MPOL_BIND, 0, &nodes);
-+	if (IS_ERR(pol))
-+		return PTR_ERR(pol);
-+
-+	err = mpol_set_shared_policy_range(&GMEM_I(inode)->policy, 0,
-+					  MAX_LFS_FILESIZE >> PAGE_SHIFT, pol);
-+	mpol_put(pol);
-+	return err;
++	return vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS) &
++	       GUEST_MEMFD_FLAG_BIND_NODE;
 +}
-+#else
-+static int kvm_gmem_bind_node(struct inode *inode, int node)
++
++static void test_bind_node_invalid(struct kvm_vm *vm, u64 flags)
 +{
-+	return -EINVAL;
++	int fd;
++
++	if (!has_bind_node(vm))
++		return;
++
++	fd = __create_guest_memfd_node(vm, page_size,
++				       flags | GUEST_MEMFD_FLAG_BIND_NODE, 0, 1);
++	TEST_ASSERT(fd < 0 && errno == EINVAL,
++		    "guest_memfd() with non-zero pad should fail with EINVAL");
++
++	fd = __create_guest_memfd_node(vm, page_size,
++				       flags | GUEST_MEMFD_FLAG_BIND_NODE,
++				       1 << 20, 0);
++	TEST_ASSERT(fd < 0 && errno == EINVAL,
++		    "guest_memfd() with out-of-range node should fail with EINVAL");
++
++	fd = __create_guest_memfd_node(vm, page_size, flags, 1, 0);
++	TEST_ASSERT(fd < 0 && errno == EINVAL,
++		    "guest_memfd() with a node but no BIND_NODE flag should fail with EINVAL");
 +}
- #endif /* CONFIG_NUMA */
- 
- static const struct vm_operations_struct kvm_gmem_vm_ops = {
-@@ -520,7 +545,7 @@ bool __weak kvm_arch_supports_gmem_init_shared(struct kvm *kvm)
- 	return true;
- }
- 
--static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
-+static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags, int node)
- {
- 	static const char *name = "[kvm-gmem]";
- 	struct gmem_file *f;
-@@ -561,6 +586,12 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
- 
- 	GMEM_I(inode)->flags = flags;
- 
-+	if (flags & GUEST_MEMFD_FLAG_BIND_NODE) {
-+		err = kvm_gmem_bind_node(inode, node);
-+		if (err)
-+			goto err_inode;
-+	}
 +
- 	file = alloc_file_pseudo(inode, kvm_gmem_mnt, name, O_RDWR, &kvm_gmem_fops);
- 	if (IS_ERR(file)) {
- 		err = PTR_ERR(file);
-@@ -593,6 +624,7 @@ int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args)
- {
- 	loff_t size = args->size;
- 	u64 flags = args->flags;
-+	int node = NUMA_NO_NODE;
- 
- 	if (flags & ~kvm_gmem_get_supported_flags(kvm))
- 		return -EINVAL;
-@@ -600,7 +632,15 @@ int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args)
- 	if (size <= 0 || !PAGE_ALIGNED(size))
- 		return -EINVAL;
- 
--	return __kvm_gmem_create(kvm, size, flags);
-+	if (flags & GUEST_MEMFD_FLAG_BIND_NODE) {
-+		if (args->pad || args->node >= MAX_NUMNODES)
-+			return -EINVAL;
-+		node = args->node;
-+	} else if (args->node || args->pad) {
-+		return -EINVAL;
-+	}
++static void test_bind_node(int fd, size_t total_size, int node)
++{
++	const unsigned long other_mask = 1UL << (node ? 0 : 1);
++	const unsigned long maxnode = BITS_PER_TYPE(other_mask);
++	bool steer_away = is_multi_numa_node_system();
++	void *pages[4];
++	int status[4];
++	char *mem;
++	int i;
 +
-+	return __kvm_gmem_create(kvm, size, flags, node);
- }
++	mem = kvm_mmap(total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd);
++	for (i = 0; i < 4; i++)
++		pages[i] = mem + page_size * i;
++
++	/*
++	 * Bind on a different node if possible order to check whether faulting
++	 * happens as desired. Without a second node use the local node and
++	 * just get coverage of create/mmap/fault paths.
++	 */
++	if (steer_away)
++		kvm_set_mempolicy(MPOL_BIND, &other_mask, maxnode);
++
++	/* Deliberately no mbind() on this mapping. */
++	memset(mem, 0xaa, total_size);
++
++	kvm_move_pages(0, 4, pages, NULL, status, 0);
++	for (i = 0; i < 4; i++)
++		TEST_ASSERT(status[i] == node,
++			    "Expected page %d on node %d, got it on node %d",
++			    i, node, status[i]);
++
++	/* Dropped memory should fault back onto the same node */
++	kvm_fallocate(fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE, 0,
++		      total_size);
++	memset(mem, 0xaa, total_size);
++
++	kvm_move_pages(0, 4, pages, NULL, status, 0);
++	for (i = 0; i < 4; i++)
++		TEST_ASSERT(status[i] == node,
++			    "Expected page %d back on node %d, got it on node %d",
++			    i, node, status[i]);
++
++	if (steer_away)
++		kvm_set_mempolicy(MPOL_DEFAULT, NULL, 0);
++
++	kvm_munmap(mem, total_size);
++}
++
+ static void test_collapse(int fd, u64 flags)
+ {
+ 	const size_t pmd_size = get_trans_hugepagesz();
+@@ -429,6 +506,10 @@ static void test_guest_memfd_flags(struct kvm_vm *vm)
+ 	int fd;
  
- int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 	for (flag = BIT(0); flag; flag <<= 1) {
++		/* BIND_NODE depends on a valid node field, test separately */
++		if (flag == GUEST_MEMFD_FLAG_BIND_NODE)
++			continue;
++
+ 		fd = __vm_create_guest_memfd(vm, page_size, flag);
+ 		if (flag & valid_flags) {
+ 			TEST_ASSERT(fd >= 0,
+@@ -476,6 +557,7 @@ static void __test_guest_memfd(struct kvm_vm *vm, u64 flags)
+ {
+ 	test_create_guest_memfd_multiple(vm);
+ 	test_create_guest_memfd_invalid_sizes(vm, flags);
++	test_bind_node_invalid(vm, flags);
+ 
+ 	gmem_test(file_read_write, vm, flags);
+ 
+@@ -486,6 +568,8 @@ static void __test_guest_memfd(struct kvm_vm *vm, u64 flags)
+ 			gmem_test(mmap_supported, vm, flags);
+ 			gmem_test(fault_overflow, vm, flags);
+ 			gmem_test(numa_allocation, vm, flags);
++			if (has_bind_node(vm))
++				gmem_test_node(bind_node, vm, flags, 0);
+ 			__gmem_test(collapse, vm, flags, pmd_size);
+ 		} else {
+ 			gmem_test(fault_private, vm, flags);
 -- 
 2.53.0-Meta
 
