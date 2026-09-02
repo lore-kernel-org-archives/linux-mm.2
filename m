@@ -4,91 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B47B5C624D0
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 04:19:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB864C61DFD
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 04:20:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5914E6B0088; Wed,  2 Sep 2026 00:19:08 -0400 (EDT)
+	id D0BF46B0095; Wed,  2 Sep 2026 00:20:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 569136B0092; Wed,  2 Sep 2026 00:19:08 -0400 (EDT)
+	id CE5686B0096; Wed,  2 Sep 2026 00:20:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 47F196B0095; Wed,  2 Sep 2026 00:19:08 -0400 (EDT)
+	id BFBC26B0098; Wed,  2 Sep 2026 00:20:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FF6A6B0088
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 00:19:08 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8628F120728
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 04:19:07 +0000 (UTC)
-X-FDA: 85167517134.17.2AFF864
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 03F9340006
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 04:19:05 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zzzt1f9D;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8EBA66B0095
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 00:20:16 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1EFC61C25B3
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 04:20:16 +0000 (UTC)
+X-FDA: 85167520032.20.B35CA19
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf15.hostedemail.com (Postfix) with ESMTP id AEBEBA0005
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 04:20:13 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=BzywlILm;
+	spf=pass (imf15.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788322814;
+	b=WPkceSpcXefHnYD7Wtl/NpR8F639br3ZOytiudaD7lf47tFdeWNJaXWazV9FSUMsOQMHHG
+	f3anlWdA/TiEPn3M8zDjVspDIAnRkon+Tii0OwuRt4TLW41GH0Zsa0Www1rbgUStrJMb7g
+	TIvgaW76YA5HB+AAW/k5aOVKuUFqQGU=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=BzywlILm;
+	spf=pass (imf15.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788322746;
+	s=arc-20220608; t=1788322814;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=43iYBd+5tkBDbCmBuYzijZla7qQPqLGtI/WeTFqT7iY=;
-	b=xZBqwr1SggexYLp4WbLu7RCe87ri+jJojXu0uG25JGtZ/Z3jvAHZtBDvhb9AqXWy84nVqL
-	Ho1e8MBmoptmdO9LJkjnsPzCAtwptfzH44ADOqzmYMpym/npzZMGpa/NwGilZE76ceNdP1
-	6XAY8OKpfCT/nqFcJ/j5pdbVHkMwvQU=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zzzt1f9D;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788322746;
-	b=hQRwMkAstBve3txby1ACr/7hoDeWhLbwvccE4SEDI6ThoP59fmuwpBFo1B79sJymQq/iQi
-	GKHGv3dIphc3blcv86Vo902Noxa+HrIkz9jhq9U0NTgt8CpeIYs1TGRPdnKMfz++H5V59T
-	66ronT904cxy5jagB71gVclJySk48eg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 75DF7600C8;
-	Wed,  2 Sep 2026 04:19:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B1A1F000E9;
-	Wed,  2 Sep 2026 04:18:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788322745;
-	bh=43iYBd+5tkBDbCmBuYzijZla7qQPqLGtI/WeTFqT7iY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Zzzt1f9DAyv6cX+5revKYxP0iKU1GMsyF+WqyOiJJfw4HO63HHnyvop1Xi473zRNH
-	 5IH3H3WUyW8fUUc6Xhpo2bYOb041oJWG/v/zxO8firAifnSAjZfp8Rc50rUSHD2lCc
-	 kLtvGfDK4vCxfomPFpezg1oF+GEb8cbxsjwL9rfXArJJT91CCusvHnXsKxaEzoUIlA
-	 q1uGfV4StuTb5t1Uj0485XpcoYiNpIY9nZmxFHJ4trxhtxKk5R7xzr8s3ZeSqOuAlB
-	 Hp4WyaJDa796rHz+KEQ3KZ7sfH9pQvziy6ylWwHLy0qOQsyIBYiBeIb4gvE8YaLIak
-	 mNxrBkjeiLX8g==
-Date: Wed, 2 Sep 2026 07:18:56 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Li Zhe <lizhe.67@bytedance.com>
-Cc: akpm@linux-foundation.org, apopple@nvidia.com, arnd@arndb.de,
-	balbirs@nvidia.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	david@kernel.org, kees@kernel.org, mingo@redhat.com,
-	muchun.song@linux.dev, tglx@kernel.org, linux-arch@vger.kernel.org,
-	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, x86@kernel.org
-Subject: Re: [PATCH v11 4/7] mm: extend the template fast path to zone-device
- compound tails
-Message-ID: <apejsLXJGvV9sxOt@kernel.org>
-References: <20260831111638.76012-1-lizhe.67@bytedance.com>
- <20260831111638.76012-5-lizhe.67@bytedance.com>
+	bh=7Vt2Ic8657HcteJslXznvT5iwAK2HkL400J7GxOIdrs=;
+	b=D/m9YLhG9iIcZM6X3UYczPk/p5d047pQR3rfhG7qU3tAfZI84aiac7+Pq1JQlPTcWHiJVJ
+	EbbtVyaN4bpHlsglgm3kS6ainwYpNH3oLbobfBJrXMm928t/pP5ZzvFlrJgAIUIYGjcq30
+	Dw7x8HqpQTzaZy1QQAUjVJP7qHMV9DI=
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2d715f4a587so8739345ad.2
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 21:20:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1788322812; x=1788927612; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=7Vt2Ic8657HcteJslXznvT5iwAK2HkL400J7GxOIdrs=;
+        b=BzywlILmYtXuDUt9loAvhTzk3TQcFst1IS7IjgZzEACUcHiaDkjyybVb3Ozxuzj75y
+         21yIfZ6wJ1HI0U0/IIBEbGYqueZdsbBmPAqL13YYakOQrvLJ297fYFJC5fEHj3gKrm2Z
+         DP7iU0IoKeSGWKMAKDjDZSMlQ/r/9ToNLzuLSfxJvPiVjON0gV5So/QFgVDDs2aa9JZt
+         6NLiytPdlbqQfJCG21Ky/EALHhYPQxHQzijE1dCejnzck3pxn34U3JLYjjZat3hKeYo+
+         paky+4JNc06CQDOXHEauFhabzRp456i/vgQ0A0ieWGtto0CZI3DYROKN4ly/6eMC+h3X
+         kuKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788322812; x=1788927612;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7Vt2Ic8657HcteJslXznvT5iwAK2HkL400J7GxOIdrs=;
+        b=Ld7v/FfjtTG6vqt56SYaBcV7kH8NocO11OxnSXwVIofXurIilcW4hQ2URpjqukqjtp
+         ziVkqCVIr3jGrL1nrBg+ef+GKZRkAESjw2BSbY4eohhXbgS2tJgTVUF3u/02VzvwsWAO
+         Dl7cfYtxwF/upFZHr40CyHkFYgPqX6CC7MMdRbqc2iYnVobq+iW6wT/hOM5reuH9vJd1
+         mlgA4EumYQD19NfWqi9Wjwf00FPfQnZz172yyPtu5wRd/tAsJWacki9Vhu/lpsjA7J0L
+         Fq2GoJyWO986bLFyb607OCtTy9DoxMiIyB76LzDeTpEG4eI+boVPWUht11Qvann+VMgu
+         9d4w==
+X-Gm-Message-State: AFuF++l/JD5/jVrcdYExsja+rxoWVtt7Yk6oAd4X2bSU0BERTq5CIixj
+	BRWm7o5zVkulsC0Z1eUUB3wGGvSIEFc8Ft0khPYGYw9TPibMtqm+LbIqoYAS1sEiGW4=
+X-Gm-Gg: AYBFou2Bzrm2yg7ai7VIlYrprsk4JfRPlpvkTjWEGIsK48cQOMRMszcuPCuSEaM4MeX
+	2wQNn9lKlfToJD+fEaZSYHfkK+khw4Zs7Qv5Cieq1YbyvMQwLfyvovCIOuxnAwi0pZR01wKZ33S
+	3dqGWyl7j3Mv/krVOau4/RUTBDwfLD/bVHc4S6KiNougG9fJ3hhfe30DZN8XO7d9caRI1TFw7gT
+	p5yv82d5TasXJR0QMmHScx2WorSTDs94nZVz3sCR2iLd5u9OsTk0mKTVD1xZ0qYlxkIeeGcnIJj
+	yJYJah+E6UznDeR2IHP4vlnP5murNQIiYUBySz0TlcGuzLNXsp8IG2dsqUKauS8Ij60JcRhR4+m
+	fm+In6jS8/cXsJeiDFld+5Sx15wvY8tDwudNAUBx463D/sOpShY72/lBUjH7T4YfFtN6XogcVSv
+	O+rvf5XJIQvr2F0wJIB+ohy1WotQGXBqSdTIWabTeG1FudZ7Z13Wygxlk2wREYwS5bvJmy6vsWF
+	OBiiCdl+0CzsyigptDCSpTNeOdHMyN8qw==
+X-Received: by 2002:a17:90b:4fc5:b0:38e:49c0:75a7 with SMTP id 98e67ed59e1d1-39aedfe18c0mr3175817a91.8.1788322812091;
+        Tue, 01 Sep 2026 21:20:12 -0700 (PDT)
+Received: from [100.81.12.150] ([61.213.176.56])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3990d76463csm9067914a91.9.2026.09.01.21.20.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Sep 2026 21:20:11 -0700 (PDT)
+Message-ID: <0103ea4f-914c-476b-82e8-c670701a5578@bytedance.com>
+Date: Wed, 2 Sep 2026 12:20:07 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260831111638.76012-5-lizhe.67@bytedance.com>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 03F9340006
-X-Stat-Signature: noqdf55mhjzy5a9m48pmy4wy8dbm6bdw
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] writeback, memcg: skip foreign dirty tracking for bdev
+ inodes
+To: Jan Kara <jack@suse.cz>
+Cc: linux-mm@kvack.org, cgroups@vger.kernel.org, hannes@cmpxchg.org,
+ mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+ muchun.song@linux.dev, akpm@linux-foundation.org, axboe@kernel.dk,
+ tj@kernel.org
+References: <20260901131028.1120284-1-sunjunchao@bytedance.com>
+ <b4yiuuthnjfgoc2djz5cju3jahstzwizqyaqxo5dd3qijmsww7@66sink2shhwu>
+From: Julian Sun <sunjunchao@bytedance.com>
+In-Reply-To: <b4yiuuthnjfgoc2djz5cju3jahstzwizqyaqxo5dd3qijmsww7@66sink2shhwu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1788322745-891165
-X-HE-Meta: U2FsdGVkX19I7S++lQIIwId1M3O5zwxno/kiWrUzrC2QRj+5TaUThWWiS7sBsZEqvXtcl0WH4yTIiY1Ejv/pAGVqOvPdz0FMoByuB8xjfQGb2vGxmXkLmx/fPftK3jmoOdkkuLwCiHLcCZFNtfzrzurq9xZl2m1/pxevAGLgDFWLVcNq+B/V2gJnc80iHPyDldZAYypIU8xzd4QoJ5Oochv5l6538Y1XpikG1XlfdzuEMpxnB8tGZe5eRAwJk8gFZRK8D/51mx0WgDsVRQp0fZ4dN88yILULqDZcljCOgcMA03K1/EHln9qafKmsPS4tHmh/43sSK7h1fR9JhC1jDOMOWUbECaM/UELoWlMg3MhFcEHMqineRnZbw2g6NUqiplXHgz0Png6a1ssXZtwbp+a4iyCKCKCnCPKL+PgVUKZIngJcx8yi3FICgp65+AgyMMC6TQSWtOmM+uMddQon/EebcGQaJQhBJc+QmJGYpnvxpGvWZJ+KEmeIP+c4BdTlB/jNhIt3ML9wq8TPmL6VzonAqgVD7JydrXsXJRU9AD+qh37FyjomP6m2utN+Rvjfa4Zbt3bWjnLVM/dgST7MyrsXtddKBEiL1N43uxEgBaPSK3aF+RW49U59MMrhHPwlwV4o+FvWuZ3Iy9YFsE11UC7vXzuwf+kmP9hkgKhA2yRMg2pRw+sXWEosQ0lubW3xJOteEW3qc4VBusZOIYzUd06vTMsqHfcx+qrc1fxuO+sUOo3uACLafYfnFUDjPLv05S62o+ArWthmsIVYGTpqmfOBselHMm95NVhGCz1VNuCWKLTLkPu9AfgwqY4MtPf1zt3uK4dHxHAVMGWVFCAyQ84mDoT0Hxe7c/PVESbmy7s4xM3lCQ2rUiqzaAU6hkCPojw8KoL2V7kyN3ZJj7kpWW3JFv/uei98t1fdq5lKT11p8wnS9yiHzDGZbvQGN7BBMScT4qbvpDpbutA5jG7
- gSLnmLEx
- oGffYr0XgnEjouUcc6jCeB/UPGdfd3OdHUw9gbG/EMO1uLJQtkG6YgnkzUVEfQ3Z1PGbyMufAo7JFPircN+H+AFSAxQMXUVeQ+j7t3JAeUEzdq2du9b8WDbQSSlLh2iMbcw1tf5bx+9/K7Q2mayYrpZNPhcp1LsVJTqV2UvwlBxLz5i2K4MKiIb2agal9sSCPU8aviXaSZBdkpSY1RV3RbrRAToq9fX2c9FljL1Q4mlNqvHxOALtNYvnNSQW3rtsP2qDb7h2HsPLgQ/W0/WVegSyaPwHwnMEG9mhJ5DdCT3iAfa8=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: AEBEBA0005
+X-Stat-Signature: tcwq6uwozmni8heqyizj16deucib9ij3
+X-HE-Tag: 1788322813-695406
+X-HE-Meta: U2FsdGVkX18ibtfRQZz8X2yLNGvICrZJlPBlsj+KHiMzJDgbqD5YLNDVe6U7vmnEytelRZbOef5zbQMSSkNBuJCv42b50Vm51RVoNbCnEhnXxgCkCqGPttIOSzxgVDLtBq3vHOdmT0HmErqK2e5iOP9uO3qMbl4ORB/0zbh0PzkFfXqUeBoxT0AKRyD3qRn7ocdDcrDjFxmihXpOUyZ/USsCvwd9m+WuEeqGtXBA+f06p7NzJY/Vw5uCm1eWqBgXM5qpjMw2pLaixCalVSPff+KiMLHSphxugBhXNSIqvisH+uvOBuLN+sgZ9KWOn8t3LDrpH4SbfomEtox+x3SswVak5bRmlPzzrNLLlJWpzwLHyWOqfqVTC0bXML12ovHfy/j12SkVHkDjp/X/4WANx5JMRXxZKkO7SKmEburrrKKFA8cHvFhTjKvzAF7+tsOcLryoop3a2u6/CmDXQ8Fn7qiPN0nIrsxqqzFkj57/UDlJ8BnKkwEnHvoDmYshfNKdHVpd9K5kGvqPKDBPn6ZauV8GTZu60ZRZkuIas3Wp6l8kiaf3NecGE0NL13qqH5vrTLxWvWkRoZwKp9VBDnqM1iQgE29nYv9PejhFdZT1VPAai34NHgBbVXDO5fSr+Rt8b2Uo6sAczOwoNJ4DRLrSfpOXFXXItdKk3jWvxGtH3RKmzRIiSvA3ZoiDm91fHD8XL+cmecTOLSRW+qPsSCwIw83yR/W6pd68bgZoYKZRSEMMzyiLbxflA/DIb1IHfhwoRoTBquEejS3OIxVzsIB9mohlpJB4KD5xSvi0w3KxkISYUuYpJNeafQ7ow3/3pZu1bqheR8TnTliymJ/hGulizcHvqWyJU5PkURABJC/SD28PH6E0rVAT1nSH0zmCfzgZMLpQqyZSfao4g61xDz/hnPlLdaJtqYxT50oxfFagpVvq6bzdCW9CG7+y6Cl+tuOBZTTXFUPQwCIkjVqqj3a
+ /xWJD4xj
+ Boz4Jn0Ad6eUuLTagmMIymHNPxZPQkIO8aEqRuN/3jFCPEI2ZzGix1FBdpTbBN4N9olvM+FGp4SOTWkLdNnmR7z+H9U11U7RWjimYUxvww05UoZqUsBbE8VL3kM336Cd1+r2ZkZuHdGXUz4U6ADV5/K8mCs186+/nW05+b6mSc7oid4gXCzEdnEmU8BUGSmpvC9pQd+qDk86CzF7+43uM/u3MFrMDuDvaMxsOa+l+ejAv0okbXGfbnhgOk60QdBJyQkGc5XKqJb+IyL50vgMVEJkNnUu5u0KK513+JvsdNP7ab5e1B+8m5KQ5iIvdXDfi/zr7oXZ6a0DwAk11Os9ElehgxagbBeetVXYMDuLs5BnC5QE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,58 +124,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 31, 2026 at 07:16:35PM +0800, Li Zhe wrote:
-> The template fast path from the previous patch only accelerates head
-> pages. Compound tails in memmap_init_compound() still go through the
-> normal initialization path one by one.
-> 
-> Build separate head and tail templates and reuse one prepared tail
-> template across the tail pages in a compound range. Head pages preserve
-> the existing refcount policy, while compound tails always start with a
-> refcount of 0 after prep_compound_tail().
-> 
-> This extends the template-copy fast path to pfns_per_compound > 1.
-> Tail-page PFN-dependent fields are refreshed in the reusable tail
-> template before each copy.
-> 
-> Do not keep a separate non-template fallback for compound tails either.
-> These pages are still under memmap initialization, and the
-> initialization-time refcount updates are not part of the observable
-> lifetime of pages handed out later.
-> 
-> The impact is controlled for the same reason as for head pages. The
-> first tail page still seeds the reusable tail template through the
-> normal tail initialization sequence, and the copied tail pages have the
-> same final initialized state except for the PFN-dependent fields
-> refreshed before each copy.
-> 
-> Tested in a VM with a 100 GB devdax namespace (align=2097152) on Intel
-> Ice Lake server. This test exercises the dax_pmem rebind path and
-> measures memmap initialization latency.
-> 
-> Test procedure:
-> Unbind and rebind the dax_pmem driver 30 times, collect memmap
-> initialization time from the pr_debug() output of
-> memmap_init_zone_device().
-> 
-> Base(v7.3-rc1):
->   Average of rebinds for dax_pmem driver: 191.20 ms
-> 
-> With this patch and its prerequisites applied:
->   Average of rebinds for dax_pmem driver: 176.87 ms
-> 
-> This reduces the average memmap initialization time measured during
-> rebind from 191.20 ms to 176.87 ms, or about 7.5%.
-> 
-> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+On 9/1/26 10:44 PM, Jan Kara wrote:
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Hi Jan,
 
-> ---
->  mm/mm_init.c | 24 ++++++++++++++++++------
->  1 file changed, 18 insertions(+), 6 deletions(-)
+Thanks for the review.
+> On Tue 01-09-26 21:10:28, Julian Sun wrote:
+>> Foreign dirty flushing handles cases where a dirtied folio's memcg and
+>> the memcg owning its inode wb differ.
+>>
+>> wbc_detach_inode() notes that "concurrent write sharing of an inode is
+>> expected to be very rare". This expectation does not hold for bdev inodes.
+>> A bdev inode and mapping are shared by buffered users of the block device,
+>> while the inode has a single wb owner. On ext4, buffer-cache folios used
+>> by metadata and journal I/O can therefore be charged to different memcgs
+>> while sharing the same mapping. Normal bdev activity can thus produce
+>> frequent folio/wb ownership mismatches.
+>>
+>> This was reproduced on cgroup v2 with the memory and I/O controllers
+>> enabled, using ext4 on a loop device. jbd2 repeatedly generated
+>> track_foreign_dirty events for bdev folios charged to unrelated memcgs.
+>> When one of those memcgs entered dirty throttling, the resulting record led
+>> to a flush_foreign event and queued writeback with reason=foreign_flush for
+>> the bdev inode's root wb.
+>>
+>> Skip foreign dirty tracking when the folio mapping's host inode is on the
+>> blockdev pseudo superblock. This prevents bdev-originated records from
+>> triggering later foreign flushes.
+> 
+> I suppose the real downside of foreign flushes is ultimately reduced
+> performance?
 
+Yes, reduced writeback performance is the downside we are concerned 
+about. We suspect that foreign flushes contribute to the writeback 
+hungtasks observed in production, but cannot establish causality yet.
+
+We have two production cohorts using cgroup v2, based on 5.4 and 5.15. 
+Foreign-flush and writeback stalls occur much more frequently with 5.15, 
+even though the core foreign-flush mechanism appears unchanged.
+
+Our production observations show 102 queued foreign-flush works, 101 
+targeting the same wb, while the owner wb has a continuously replenished 
+dirty backlog. These flushes can therefore consume writeback bandwidth 
+and delay other writeback work. Regardless of whether they are a cause 
+or a consequence of the stalls, a bdev inode generating this many 
+foreign flushes is unexpected.
+
+> 
+>> The tradeoff is that dirty throttling in the folio's memcg no longer uses
+>> bdev dirtiness to queue writeback on the bdev inode's owner wb. Those
+>> folios remain subject to normal writeback. This is preferable because a
+>> single bdev wb owner does not identify which cgroup is responsible for a
+>> mapping shared by buffered bdev users. Flushing it can write back data
+>> unrelated to the throttled memcg. Dirty accounting, normal writeback, and
+>> foreign dirty tracking for non-bdev inodes remain unchanged.
+>>
+>> Fixes: 97b27821b485 ("writeback, memcg: Implement foreign dirty flushing")
+>> Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
+> 
+> To me this looks as a sensible workaround but I'd be a bit worried whether
+> a memcg that dirties a significant amount of bdev folios (compared to its
+> dirty limit) cannot be blocked in dirty throttling due to this - as the
+> comment above mem_cgroup_track_foreign_dirty_slowpath() describes. I'd
+> defer to Tejun to judge if can be severe enough. But I think if we go this
+> path, the added condition should have at least a short comment like:
+> 
+> 	/*
+> 	 * Bdev inodes are usually shared by many memcgs so foreign
+> 	 * tracking leads to frequent flushes which is counterproductive.
+> 	 */
+> 
+> because otherwise this condition really makes you wonder what is going on.
+>
+
+I will add the suggested comment and send patch v2.
+
+> 								Honza
+>> ---
+>>   mm/memcontrol.c | 5 +++++
+>>   1 file changed, 5 insertions(+)
+>>
+>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+>> index 1271d390b617..5d7320f76c06 100644
+>> --- a/mm/memcontrol.c
+>> +++ b/mm/memcontrol.c
+>> @@ -3898,6 +3898,11 @@ void mem_cgroup_track_foreign_dirty_slowpath(struct folio *folio,
+>>   	u64 oldest_at = now;
+>>   	int oldest = -1;
+>>   	int i;
+>> +	struct address_space *mapping = folio_mapping(folio);
+>> +	struct inode *bdev_inode = mapping ? mapping->host : NULL;
+>> +
+>> +	if (bdev_inode && sb_is_blkdev_sb(bdev_inode->i_sb))
+>> +		return;
+>>   
+>>   	trace_track_foreign_dirty(folio, wb);
+>>   
+>> -- 
+>> 2.39.5
+>>
+
+Thanks,
 -- 
-Sincerely yours,
-Mike.
+Julian Sun <sunjunchao@bytedance.com>
 
