@@ -4,115 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAADCC624D0
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 08:52:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31153C624D4
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 08:53:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C9B646B009B; Wed,  2 Sep 2026 04:52:48 -0400 (EDT)
+	id 0420D6B009F; Wed,  2 Sep 2026 04:53:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4BDD6B009F; Wed,  2 Sep 2026 04:52:48 -0400 (EDT)
+	id 019506B00A0; Wed,  2 Sep 2026 04:53:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B14356B00A3; Wed,  2 Sep 2026 04:52:48 -0400 (EDT)
+	id E986B6B00A3; Wed,  2 Sep 2026 04:53:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C7456B009B
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 04:52:48 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E1F02C0115
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 08:52:47 +0000 (UTC)
-X-FDA: 85168206774.13.EE1D3E6
-Received: from mta0.migadu.com (out-195.mta0.migadu.com [91.218.175.195])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5315E40006
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 08:52:44 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=C8erkTWr;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B164C6B009F
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 04:53:48 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1089212012A
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 08:53:48 +0000 (UTC)
+X-FDA: 85168209336.27.54E6A1A
+Received: from mta0.migadu.com (out-227.mta0.migadu.com [91.218.175.227])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1141F140008
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 08:53:45 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jkGgGwDF;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.195 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	spf=pass (imf09.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.227 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788339166;
+	s=arc-20220608; t=1788339226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xDVzMeg650MunH9/kpFZMjCl6QAJ9c1jDh4WC3/q5t8=;
-	b=x6M2/z0QLXCIn6m9lr9L7gez1HfCwXTK8pfT9mH5H/CE+wWzgvGt4WyD1A+dpuFPb3ECBg
-	7nubxTTteCgPVh5l0v9K3nsFd4j3a88HRGMeVfPhVo6yV2mhsng/3iOdTv4YtQT4fnhO6g
-	GtvL64VelLJ++Wc7KokUcImoiiti51M=
+	bh=No/gj0mTlHy4OPEirMqFngNNcLyxd3oSOl4Nf/LqO2Q=;
+	b=PSQq/xM29+ehfxalI4HPFBvRT9x8jesAHrVh/+SZosLxH2FGQpwFg9zxTRgk1nyBvO/gNj
+	/QVQBQ2fpiG/hlzd+Rh3NknoSXgrpBLNxBQwzepG0IWlz2LMmu0fRu34xpFJh9AiLDlYG1
+	o2L7+oXglj1cu5MPbCCKt2ajEFyBPA8=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=C8erkTWr;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jkGgGwDF;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.195 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	spf=pass (imf09.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.227 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788339166;
-	b=MND7Hdyye9Z/fwX/XZCoUM+qFMaxoRFZSEAYBZt9Q5RNOoOI2utyI1HT7ForJqQuEnSbsD
-	CpCY734dscDPJgbGRaj2zvMZZbPtLFuIqWP3tRz87ZFtoyCcCOrBxlwbQenTBlbasz+W6Q
-	Ye8fZ0Y5OvP0HoHCF8+CHqJ1yZOfAhY=
+	t=1788339226;
+	b=5cWTFpEppz8Z0qFe0gGtRdTK7Bq6Y+ng6VuYiz+FP7/RuOgLwkvjbEKZkSbeNtBCZgerDZ
+	BQbzOiFcEzL+c7LBOc7n9WIUAl+SGc7M+zCxhUeAxxjVUAwN82zEfCIG7ZKDfCsXGODf/S
+	Ef3nKUg8s/Ndho2XWC5Bj66JLD8m8G4=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=xDVzMeg650MunH9/kpFZMjCl6QAJ9c1jDh4WC3/q5t8=;
+DKIM-Signature: a=rsa-sha256; bh=9DBxz8SjbKas7ulbguz4S6hfquD61Gb0V+1JSuE4lts=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788339161; v=1; x=1788943961;
- b=C8erkTWrVaAmiyQ5xUjlXdZ+1BgyEimKZ4jqeLEuc5iK/hPhO07eF8+kmp2JuwY/VFTeO5KH
- 9KXWg4cSXp4ko5fbbtdHAu5PIdSbn46ZrgJuYHeM60DjLP96bTJ4uXEO9wRywTs7wLrsU0O6+8W
- va5KTqtV9YdHg2SaucB7/6Ko=
+ t=1788339224; v=1; x=1788944024;
+ b=jkGgGwDFcsh5IgUuq9lO8368ZNk39TwWdOwICFfJLX+pp1HT+OCk5/n3sQgcn+M6Fhty7N8/
+ qWtNEQOBiMF7Sg4928eIFy+WvmfZhTozlFP+VNJCA+UMWx367MsxNW7vFedIBd0CaKQ5c15WD1/
+ k6SgTZe4tqOQ2oLUmh3P0Kw8=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 8c8624c68a37385f;
-	Wed, 02 Sep 2026 08:52:40 +0000
-X-Mizu-Trace-ID: 8c8624c68a37385f
+Received: by mta11.migadu.com with ESMTPS id 67a4514beb846ad3;
+	Wed, 02 Sep 2026 08:53:44 +0000
+X-Mizu-Trace-ID: 67a4514beb846ad3
 X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
-Subject: Re: [PATCH 1/2] mm: hugetlb: Return -ENOSPC on memcg charge failure
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260902-hugetlb-alloc-folio-memcg-charge-error-handling-v1-1-e3e8942c141b@google.com>
-Date: Wed, 2 Sep 2026 16:52:20 +0800
-Cc: Alex Shi <alexs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Dongliang Mu <dzm91@hust.edu.cn>,
- Hongxiang Lou <louhongxiang@huawei.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Jonathan Corbet <corbet@lwn.net>,
- Joshua Hahn <joshua.hahnjy@gmail.com>,
- "Liam R. Howlett" <liam@infradead.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- Miaohe Lin <linmiaohe@huawei.com>,
- Michal Hocko <mhocko@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Nhat Pham <nphamcs@gmail.com>,
- Oscar Salvador <osalvador@suse.de>,
- Peter Xu <peterx@redhat.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Shuah Khan <skhan@linuxfoundation.org>,
- jthoughton@google.com,
- fvdl@google.com,
- rientjes@google.com,
- vannapurve@google.com,
- Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@kernel.org>,
- Wupeng Ma <mawupeng1@huawei.com>,
- Yanteng Si <si.yanteng@linux.dev>,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <8C2135DF-25DF-4D88-B2A5-B5F7440E84E4@linux.dev>
-References: <20260902-hugetlb-alloc-folio-memcg-charge-error-handling-v1-0-e3e8942c141b@google.com>
- <20260902-hugetlb-alloc-folio-memcg-charge-error-handling-v1-1-e3e8942c141b@google.com>
-To: ackerleytng@google.com
-X-Mailer: Apple Mail (2.3864.700.51.1.1)
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5315E40006
-X-Stat-Signature: oet134tdugdcbfpgzidq8zbk1ww4511w
+Date: Wed, 2 Sep 2026 16:53:34 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Wandun Chen <chenwandun1@gmail.com>
+Cc: catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org,
+	pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu,
+	tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, x86@kernel.org, robh@kernel.org,
+	saravanak@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
+	pasha.tatashin@soleen.com, pratyush@kernel.org,
+	m.szyprowski@samsung.com, mark.rutland@arm.com, kernel@xen0n.name,
+	alex@ghiti.fr, hpa@zytor.com, ruirui.yang@linux.dev,
+	robin.murphy@arm.com, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
+	kexec@lists.infradead.org, linux-mm@kvack.org,
+	iommu@lists.linux.dev
+Subject: Re: [PATCH v6 00/10] kdump: reduce vmcore size and capture time
+Message-ID: <apfkDlcMYrgiuGYA@fedora>
+References: <20260902073116.802752-1-chenwandun1@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260902073116.802752-1-chenwandun1@gmail.com>
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788339164-680820
-X-HE-Meta: U2FsdGVkX1/Q+2Vvbb9MI8arsWPsQuF4JfbwhQTWHemMAQq9FkTvMk9g0IgrkTYwVMQEYZOcKJpr6mAbVQtSI/zDlAzUy69TNSZeqhGrN2WFkctWtTp2zdqzyLLQ+62zrtjEKLctXT24AdTPpdbIZIvBk+dDnSpGg0zl9Gi9n3oeql8q6CBffiPMPleTNsZ4up3RSKmppZtkMvSME/x4/+ubc9+R3wCkVZPNo0dqaIDcONyAKugl9VcxiieVIxTmJt1O62r39avoXRcThQp3lvgTnlIB4NlsQBE+tMikI7w82UnDnztKaWHMxrUQ4y/fL3XKm1UKdbOrmrWvgzSkxtBXMkNPvi9l8NjT0Xw7BgxeGXB/yCTLvJBEOyE9Oi3S12eXDZd21CH2wx3of31rcXkEPSCqq108vRq3XRYy5bWusiSVdvDfRllT88iuzkpTcT29bZPh96Y3LHNjhYvgYvJeTfEz3Q+GxUhY64wLLuz6ntPQMVVvjgcs8ICA53Wlf+x2NkWwssVgn8p+n1ZyVLxycvKhLzJ53KvGI0F2Z73+jeTf8hyuYdaQ5R97KVUkdhB6hVEkeFNZCO9CdXoTymBhwhcNu1qEt433KDGXoAkF3VHgQL22Nt4AhuXjQ0VoYSeBNm4g4fd+VU3PDBRI+jwe1vyIikrMtUCaq3iJxu3hkO/rIXweyjWK0MuSAjdZs2aJuZ9KEzdsjqZjniJ8ZHC6AZZ3udzYgmhtEOukECa4V/yV+mKdvrlnw486thOeJwmS2N6t6qrr2QwKGfQiT8L1/dcZ9zIT1FCEGLue70iIR7vBWy2+DlOd9w4jliOj1PjJi5Hxq8BRJG5eM2dMYoOMn2OVo4IbBxCPbX5ALraiYIAVGHW9mH+HGHXer4EReO11I1jU3Gwk1h9ozD81bDeOaqVn0P9gk6jPmUDrL9DPksbu/M+Ycx3sZVkjQ/HoST3QxP1Yn2cVEdJxJXf
- kuLL+kNm
- r0xbUDh2P2Dov4spe3vLQzm6Zg+9gDnxNBwTgnPyoh1GTaFJtchi/C7zu/WNFTjixLu4VtIHTZR23qR6dh0m7+JkmYTiCp5krp4wap6duOVja9N8V9PjlyNOIERF34Pu9fhnBHZrIgjVZXLY+PWnQrWMsEbFxUW1rAgWLVwz7TLFLlc4nV7AcDsksSPn5KLWmvES0mdq4xdgHFadXgYy+820thNLFA8RJXFMKFJhiMSzPOL/R8R6Bb+VrNYrE9rsnpCPWLLcIdlsNiXEa9exA7xnOy4xYuvsTlTuTyH2i9OtNsBXw14YL8S3v2YuuW1836v1oV1qMVTM2RhUQtKDCDixuy91X3/iqnQfocnvL8A4iZuYyOZKTbIZBGqoOe79rsGvCi/8nyAelGqI=
+X-Stat-Signature: 5c9wi934kr19hed4us75snyy53a3mfc1
+X-Rspamd-Queue-Id: 1141F140008
+X-HE-Tag: 1788339225-698985
+X-HE-Meta: U2FsdGVkX187inwajVJy8JfvROFmxexQ1T0neIM7FA/WtZtJqzQ5TWnvPOCGfUvCR1rSdfpsJfZJt8k+WaGpxodAiNFwkQpvdufBb/JuVmUY80rx8geXwI3Ul+J2fKMzvdYcAkD+yGtq4zMmEynTtDtoKMQE8uIWSlQNkgcORiEkPa4wEuGIeB09loy0cK59hoOLAwQz7NBvuYo1bhsEWYOl0eiPoX4SNKXRW7TNO96HqOqLzLs+9PkD/diH3oi4Drj5yM97LMSAjRNk0Q9ItmD1NIVQpWTtkqMjhxMhj4HC1HzruDgsZAcUBIhT+Oh0aItFAZR6Pz9vR1lTwsONgqg+Y3x1/w3VjpGA6Z9Az8nPU+yLalAvHINxdq9PdoDYjIepENX0zveJTGIy8CvhqrV73KzFkNY5u35inBnbzt6y2RAtV5eeO97HMGFFpqX192pd77np7lzS1dz5l5mb7q91KxQpV3ZPrpb5T9dDUUWLmbsu+6qm6KskkLxZRBOhr2aVNGa1A8ZupWNFRCwU++t81e3YyfQkVYbUCOyIg6ySciPIAyfc+VGTplmQBVn9NAIW/mVzt2yFhetqnBx2qR3O5Un58KD2TckqFEE/Zg35p2FEe51RHg871Ma+0VjTgm6TG29AL0JFU9enEmrMACVIXs5/Lz4MXkgPSPGrjSyoNLhN7WA31gN0i1/D/4vj6yqsHMnIA7SdGo4B0gEYCQ6CtR8mLHx6ds615nb3x9/JZdLRHCpaGGgx7R6vJi9TtuRQoKFAVnLf+ONaKx/t4C386QJpKhFPVntj46OoUnX/2wgTT0dk4czrUo2C27IvW7e3Xe9pPW4/3NibYwbWQBBoIjmaRRumgowe7Kp7aDUBsNVqHK4qVcOgpSNUFoRA+J/mr2k8rpKCgqJ/WJa6BpEE4tED5VsnOEaY4YCrE9oWLzRnRpBj/9olUywaAAbGfLUTL14EWEVz6UOfi8H
+ zij82EVm
+ 35mu4I8BuOm7KrkvIfD2EQ/yfXqe9yEf1jBMqdHEeqmUaspZshpxyRPt5w4UXS2UIeQiq+SS/lMLwj27JkiPgwJOAOIETucnoynTRsI1yumuHAbgLyoBoKw+xl3De+1oxhHgANqbOs+plPqXM7c8ZXMT2fUKF1FSUYK/VtmAeyXKvlEPvoBANqRPft/YmFQrvrvL13IRe4bGoNhZiJ1TOWQLUiGOlRvtawg51D1R7k8WtF6YkMrqHyK0PU4LT3oO0mZ10j/Bb+567dL0Dr5IlTsIK+VacLuV45JjRzCYjZHyYQEeG8sziIeKNlIuVeyR6XQUhFIQtXi009jE6B15FtH62doWril7b1RGoNg6GS8ajT1HrGBRjbL+T5A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,48 +99,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Wandun,
 
+On 09/02/26 at 03:31pm, Wandun Chen wrote:
+> From: Wandun Chen <chenwandun@lixiang.com>
+> 
+> On SoCs that carve out large firmware-owned reserved memory (GPU,
+> camera ISP, ...), kdump currently dumps those carveouts as part of
+> system RAM even though their contents are firmware state that is not
+> useful for kernel crash analysis.
+> 
+> This series introduces a MEMBLOCK_NODUMP flag in memblock to filter
+> reserved memory on DT-based architectures (arm64, riscv, loongarch).
+> Reserved regions default are marked MEMBLOCK_NODUMP so kdump omits them;
+> reusable CMA regions are different because their pages are handed back
+> to the buddy allocator and may carry crash-relevant data.
+> 
+> ACPI systems already filter reserved memory out of the vmcore through
+> their existing path; only DT-based systems currently fail to filter these
+> regions, which is what this series addresses. The flag lives in memblock
+> itself rather than in a DT-only structure, so the mechanism is generic and
+> both ACPI and DT systems can benefit from it (suggested by Rob, thanks) [1].
 
-> On Sep 2, 2026, at 16:22, Ackerley Tng via B4 Relay =
-<devnull+ackerleytng.google.com@kernel.org> wrote:
->=20
-> From: Ackerley Tng <ackerleytng@google.com>
->=20
-> When mem_cgroup_charge_hugetlb() fails with -ENOMEM, =
-alloc_hugetlb_folio()
-> currently propagates this error. This results in the page fault =
-handler
-> returning VM_FAULT_OOM.
->=20
-> Because HugeTLB allocations are high-order and use =
-__GFP_RETRY_MAYFAIL,
-> they bypass the OOM killer. Returning VM_FAULT_OOM to the #PF handler
-> without triggering the OOM killer (or having it make progress) leads =
-to
-> an infinite loop of retrying the fault.
->=20
-> Avoid this loop by returning -ENOSPC when charging fails, which maps =
-to
-> VM_FAULT_SIGBUS, terminating the process cleanly.
->=20
-> Make mem_cgroup_charge_hugetlb() fault handling use a common error =
-handling
-> path, the same handling used for =
-hugetlb_cgroup_uncharge_cgroup{,_rsvd}(),
-> which also don't trigger the OOM killer and hence opt to terminate the
-> process with a SIGBUS.
->=20
-> Fixes: 991135774c0e0 ("memcg/hugetlb: introduce =
-mem_cgroup_charge_hugetlb")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Thanks for the effort. I am not against this patchset, and I haven't
+went through it carefully. Just from the cover letter, you mentioned
+generic, I am wondering if this can be generic for excluding other
+memory regions. Asking this because I try to find a way to exclude
+unwanted memory regions too, please check below link where there's
+the relevant discussion. We definitely don't like inventing wheels
+time after time. Do you think this memblock region excluding can
+be used in other places of kernel?
 
-It looks like someone fixed a similar issue before, but I don't remember =
-the
-details. Anyway:
+https://lore.kernel.org/all/aoLFai0gzzH2bGgy@MiWiFi-R3L-srv/T/#u
 
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-
-Thanks.
-
+> 
+> Since the reserved memory regions are filtered out, the vmcore is
+> smaller in size and faster to produce. 
+> 
+> The series is based on linux-next and is organized as follows:
+> 
+> Patches 1-4: Preparation and bugfixes: fix the missing HugeTLB
+>              flagname, switch riscv crash_mem to memblock, fold the
+>              duplicated per-arch memblock walks into the weak
+>              defaults, and serialize crash header preparation against
+>              memory hotplug.
+> Patches 5-9: NODUMP infrastructure: switch crash_core to
+>              for_each_mem_region(), introduce the MEMBLOCK_NODUMP
+>              flag, add a dumpable flag to struct reserved_mem, and
+>              mark /reserved-memory and /memreserve/ entries with
+> 	     MEMBLOCK_NODUMP flag.
+> Patch 10:    Exclude MEMBLOCK_NODUMP regions from the vmcore ELF
+>              header.
+> 
+> In v5, Sashiko found some pre-existing issues related to reserved-memory,
+> and has no dependency on this series, so these issues have been addressed
+> in a separate series [2].
+> 
+> v5 --> v6:
+> 1. Serialize crash header preparation against memory hotplug to avoid
+>    out-of-bounds or use-after-free issues.
+> 
+> 2. MEMBLOCK_NODUMP marking is now done after memblock allows resizing,
+>    avoiding a panic from too few regions before resize is permitted.
+> 
+> 3. Reordered the patches, put pre-existing bugfixes earlier in the series.
+> 
+> 
+> v4 --> v5:
+> 1. Rework the mechanism around a memblock-level MEMBLOCK_NODUMP flag
+>    (suggested by Rob) instead of the v4 opt-in 'dumpable' flag on
+>    DT-only struct reserved_mem.
+> 2. Switch the riscv vmcore elf header preparation to use memblock
+>    instead of the resource tree, aligning it with arm64 and loongarch,
+>    so riscv also can exclude reserved memory from vmcore.
+> 3. Deduplicate the vmcore elf header preparation: arm64, riscv and
+>    loongarch open-coded the same logic, so fold it into shared
+>     __weak defaults in crash_core.
+> 4.  Drop the v4 patch that saved /memreserve/ entries into the
+>     reserved_mem array; /memreserve/ is now marked MEMBLOCK_NODUMP
+>     directly.
+> 
+> v3 --> v4:
+> 1. Rebase this series on v7.2-rc1.
+> 2. Add two cleanup patches (patch 02/03).
+> 3. Simplify patch 03 to avoid checking whether initial_boot_params is
+>    NULL multiple times, suggested by Rob.
+> 
+> v2 --> v3:
+> 1. Fix out-of-bounds issue if device tree lacks /reserved-memory node.
+> 2. Fix UAF issue when alloc_reserved_mem_array() fails.
+> 3. Add some prepare patches.
+> 
+> v1 --> v2:
+> 1. v1 added an opt-out DT property ('linux,no-dump'). Per Rob's
+>    feedback [3], v2 drop that property and exclude reserve memory
+>    by default.
+> 2. Split some prepared patches from the original patches.
+> 3. Address coding-style comments on patch 5 from Rob.
+> 
+> [1] https://lore.kernel.org/lkml/20260723234126.GA3253409-robh@kernel.org/
+> [2] https://lore.kernel.org/lkml/20260818092420.2859026-1-chenwandun1@gmail.com/
+> [3] https://lore.kernel.org/lkml/20260506144542.GA2072596-robh@kernel.org/
+> 
+> Meijing Zhao (1):
+>   mm: memblock: add missing HugeTLB flag name
+> 
+> Wandun Chen (9):
+>   riscv: build crash_mem ranges from memblock instead of resource tree
+>   crash_core: fold duplicated memblock arch hooks into the weak default
+>   crash_core: serialize crash header preparation against hotplug
+>   crash_core: replace for_each_mem_range() with for_each_mem_region()
+>   memblock: introduce MEMBLOCK_NODUMP flag
+>   of: reserved_mem: add dumpable flag to opt-in vmcore
+>   of: reserved_mem: mark /reserved-memory entries with MEMBLOCK_NODUMP
+>   of: reserved_mem: mark /memreserve/ entries as MEMBLOCK_NODUMP
+>   crash_core: skip MEMBLOCK_NODUMP regions when building vmcore ELF
+>     header
+> 
+>  arch/arm64/kernel/machine_kexec_file.c     | 29 ------------
+>  arch/loongarch/kernel/machine_kexec_file.c | 27 ------------
+>  arch/riscv/Kconfig                         |  2 +-
+>  arch/riscv/kernel/machine_kexec_file.c     | 33 --------------
+>  arch/x86/kernel/crash.c                    |  2 +-
+>  drivers/of/fdt.c                           |  2 +
+>  drivers/of/of_private.h                    |  2 +
+>  drivers/of/of_reserved_mem.c               | 48 ++++++++++++++++++++
+>  include/linux/crash_core.h                 |  2 +
+>  include/linux/memblock.h                   |  9 ++++
+>  include/linux/of_reserved_mem.h            |  1 +
+>  kernel/crash_core.c                        | 51 ++++++++++++++++++++--
+>  kernel/dma/contiguous.c                    |  1 +
+>  mm/memblock.c                              | 17 ++++++++
+>  14 files changed, 131 insertions(+), 95 deletions(-)
+> 
+> -- 
+> 2.43.0
+> 
 
