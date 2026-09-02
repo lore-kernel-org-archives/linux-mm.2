@@ -4,137 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D45E0C624D3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 15:13:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DDCBC624D3
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 15:15:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDF076B00F4; Wed,  2 Sep 2026 11:12:59 -0400 (EDT)
+	id A83AF6B00A1; Wed,  2 Sep 2026 11:15:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB5F66B00F6; Wed,  2 Sep 2026 11:12:59 -0400 (EDT)
+	id A5B716B00A2; Wed,  2 Sep 2026 11:15:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA6D56B00F7; Wed,  2 Sep 2026 11:12:59 -0400 (EDT)
+	id 971DB6B00A4; Wed,  2 Sep 2026 11:15:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8AFEF6B00F4
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:12:59 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1D6C0C0241
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:12:59 +0000 (UTC)
-X-FDA: 85169164878.13.63CF915
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 9E79C1C000C
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:12:56 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MJSrUhKe;
-	spf=pass (imf21.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F8486B00A1
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:15:27 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0804F1A0257
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:15:27 +0000 (UTC)
+X-FDA: 85169171094.08.7E20D22
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6E2E720008
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:15:25 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jA50Z6Fg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788361976;
+	s=arc-20220608; t=1788362125;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hW0UXPiaj5HBVsIwr+z0dRI3kHamagF/s5VaYIAmBvo=;
-	b=C9LsYrv5TM2YwXUMxOPNsqX4UIdylnNf5OI1VkMKP/GClgKmuViyHrp6xi6Qsx+/ScdV7Y
-	unW1+5NibU7T91Vd/gJKppM+oPLWWrMmT95cWjtZuO6rvqFaMBIcbe9jC0PkXRENpF6GrV
-	q2KqhIEvAhPZcuLAkgTLw8N4B8V50Aw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788361976;
-	b=FYkUfGQv7jKnoYlqav5j81r84VbbetC8paVWu9NaE6/w2Os10Awa9iqBB6ZkA2b4OzQFMY
-	01xy93N5xh+nshFB+CH+fvQilTB1EgbeazVie5lejKGDPbYvBEApN/91kR+H5eGfQW3+sO
-	dCLuB+9ZbZtFFLKJMPVl1439b2pnozw=
+	bh=geLLc9OYOHH6RJHOH7p2OvUwcIlLmy1uLQiXbiK2XfE=;
+	b=qmdO+UJM0HKvSEdx4VCNUYlweIi4jMy/4LdoNsGYoKVeJp2PDz5BvAO7l0cFLOMA5Qc/B6
+	Tk0fFsuDVodfrPfZV+Td0Z58fqNAVcaRMd6O0bFSJzg8UVpwdFvXyKih4rKwcazZul8EUc
+	dyMb5RKXtjwJ9n4N1CaO4qTuf+JxEJ8=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MJSrUhKe;
-	spf=pass (imf21.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788361976;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hW0UXPiaj5HBVsIwr+z0dRI3kHamagF/s5VaYIAmBvo=;
-	b=MJSrUhKe1fRjBqZf8HwgFpTEkd65rJtWykMehEKigQY/sIsKbw86am31a0xv88rJO9XDOs
-	cCBX4/HJODPP66InN4sHCuhKHwIpQSUpLvjsI+vKlUYdimusoDGVElCTdCd6G3xJRGPtag
-	hQvMxEWCVAHTZ+uUxTmxWZFrmmKbjKM=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-458-b8trlLoPOWu2iQA-oMiA5A-1; Wed, 02 Sep 2026 11:12:55 -0400
-X-MC-Unique: b8trlLoPOWu2iQA-oMiA5A-1
-X-Mimecast-MFC-AGG-ID: b8trlLoPOWu2iQA-oMiA5A_1788361974
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-90f8b463ea3so2744136d6.2
-        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 08:12:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788361974; x=1788966774;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hW0UXPiaj5HBVsIwr+z0dRI3kHamagF/s5VaYIAmBvo=;
-        b=HJv3Zbgswlu6z4Y+xWZ6Sx+xshKWy2EWzjBqxMeiYeUqI4D2PEzj3pesGiEUCs8WBr
-         Cx2Cp2h+UknOytdsGORX+NizCulpEqECkkJyCn4l4tIGpjMUO0gMc4P0sw+TYY3FOVTP
-         qZNbivwy5xDv54p8fNsUi/ZPr6hepa7WoDHihfQyfv4ZDpC4NOfURS0J7jXnpQ7IMMYK
-         ip937yCuz5Ze3l78c/085TEEwCF5C+wg/pYquTOuibKevHAAgbnenxL+lugl2IQdKDVE
-         DXyw7QI/vPCwf8z41gP14DaJgIhyUvkw8TL3LCCFteV4w1k0GkBpdmHS1J1yXbNuPRJg
-         qXig==
-X-Forwarded-Encrypted: i=1; AKwUvBw1rdz5MgDCwOaaX2ZhX09Gce2fa8fIqhazeyHFINV/qch4CmMs7Gn9Ma9/5VxOnFIZp203LMfXYg==@kvack.org
-X-Gm-Message-State: AFuF++mZdJYVpws35sgtR2z+ISbNtgVh7tYX7WbebFbCUGB8nlYQxgxu
-	TjGHPHY7FjWZJMrOSYnyHNiAPvFQ1yXA7r+4hOPIm9qg3awx7s9wDnK9LqgMHT7HG/gquNccyZD
-	OyoLQvMIb6B+126EC3ovldK5LxOmB8SPs8sQBuddJ44+EUlu4Wb81
-X-Gm-Gg: AYBFou2wCEmB7Mi1TqSjIVvVGOiIvIeeKqOZmg1qtaBw4PLpq5glDgarnDTyRYpyKi0
-	HPRDzZZ+gcW/gSt5xsAQfif8tFU/fvVBfwAfPb2S/zvNaMwcZHZl62VFoX3erjToJN2gWTYok5r
-	/YCy0OiLwH0tx9F3a2ComnL+cIqRCKf+RTC6Qsl34JttEK9Pk12VXIw+fnIs+XNu2Gan1zzFLZK
-	Vt2B+pqIcKejvbt2pA/k1xrpN3xzBbdnx2EJ8vzVkemXvQzmfvqeKGb3s79aGc1Y1SG7MXn6Dul
-	vbGC39FCxYo25WqBABdJWJSutuBCtMUFfEGjKo/TNYiNbaaBJ2Z8qbZGsLFx4EzKngpDa4ChmnX
-	TpA==
-X-Received: by 2002:a05:6214:434a:b0:8cc:d29:9f73 with SMTP id 6a1803df08f44-90ebab8fb94mr89149216d6.21.1788361973782;
-        Wed, 02 Sep 2026 08:12:53 -0700 (PDT)
-X-Received: by 2002:a05:6214:434a:b0:8cc:d29:9f73 with SMTP id 6a1803df08f44-90ebab8fb94mr89146766d6.21.1788361973014;
-        Wed, 02 Sep 2026 08:12:53 -0700 (PDT)
-Received: from [192.168.2.110] ([76.65.104.212])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90e9eef4f2fsm19747746d6.40.2026.09.02.08.12.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Sep 2026 08:12:52 -0700 (PDT)
-Message-ID: <2802ba90-fee8-455b-9858-a6bcd0212c46@redhat.com>
-Date: Wed, 2 Sep 2026 11:12:40 -0400
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jA50Z6Fg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788362125;
+	b=Lg03JSkZAM/AY9FInUAvKqn9AEyYaX0TUS952h6w+J4j23xMXzcpLNgdn588LJ6Dd8dAhB
+	LW8jZqofmVoJfElZYPuNZ8YAPq+PdXMW+UpFb0YzQKu2b7HpC7p6RsgTiBadosMrQ+hYRa
+	hsIY+ZsrqaSFV8ckxSLl7jELeW0qY+M=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E71B7600C8;
+	Wed,  2 Sep 2026 15:15:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00DDD1F000E9;
+	Wed,  2 Sep 2026 15:15:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788362124;
+	bh=geLLc9OYOHH6RJHOH7p2OvUwcIlLmy1uLQiXbiK2XfE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jA50Z6FgFOKtz4B3l8//fub6qKXdyUdDE5W7bOPXPB7K0hAdVjfJB9790JMkQ9tS0
+	 FDb6SW92xBK/9UzaF6r3H4sJuvwp9xV0MD2h+NTDnYxfa7Hdpbabz+EVeWqOlGmd/I
+	 jFRgtyJRex0uZ1/JRBfaPwFMHjhjrGOWdqfcAKDr7wicaGosAExmxJT6oiFzMq6Cx6
+	 3dzI6+V8Mavdpm7AMMKbVvTAHZZ11ZDao34wA/BNAYROpvuhRvQ8rcxHVM4aJ5BhzL
+	 MHjwtCXqXTccM8A+7FPNSejUlzocVjb9VS1FPSP77GrAIMZud9fCDgB+rhEznmQ6D2
+	 jWr6+PZrV5toQ==
+Date: Wed, 2 Sep 2026 16:15:17 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/3] kselftest: mm: prevent random failure of huge
+ page split for khugepaged
+Message-ID: <apg7FNLtFO3Ea5qC@gremlin>
+References: <20260902-fix_split-v4-0-85f03905f7b1@arm.com>
+ <20260902-fix_split-v4-1-85f03905f7b1@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 10/14] mips: move has_transparent_hugepage() out of THP
- guard
-To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: Lance Yang <lance.yang@linux.dev>, corbet@lwn.net, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
- agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com, david@kernel.org,
- hca@linux.ibm.com, gor@linux.ibm.com, x86@kernel.org, tglx@kernel.org,
- mingo@redhat.com, bp@alien8.de, hughd@google.com,
- linux-kernel@vger.kernel.org, dave.hansen@linux.intel.com, djbw@kernel.org,
- vishal.l.verma@intel.com, dave.jiang@intel.com, akpm@linux-foundation.org,
- yintirui@huawei.com, dev.jain@arm.com, usama.arif@linux.dev,
- linux-mm@kvack.org
-References: <cover.1788232334.git.luizcap@redhat.com>
- <371e2d3a7bcac265ac748ad3c67b74abfa238422.1788232334.git.luizcap@redhat.com>
- <f4c568ad-a17a-4982-b8d2-d5852a789a4d@linux.dev>
- <00eb76eb-c330-4662-9ca9-1e89fbc1e4ce@redhat.com>
- <apdQ2FJrLhkdjh_n@alpha.franken.de>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <apdQ2FJrLhkdjh_n@alpha.franken.de>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 8cbFSsqu_RurWOVycpTr38VGYPXOdiIBBBDAi5M2MIY_1788361974
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, en-CA
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: udjxw357i1dwtneyba4cs4hhpmhxuj6t
-X-Rspamd-Queue-Id: 9E79C1C000C
-X-Rspamd-Server: rspam02
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260902-fix_split-v4-1-85f03905f7b1@arm.com>
+X-Stat-Signature: ikeaysi94tkb7q8dazxf4kosn31r6xyg
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6E2E720008
 X-Rspam-User: 
-X-HE-Tag: 1788361976-8026
-X-HE-Meta: U2FsdGVkX19058BejbYjeJWUTpIORgs/qyDFc+mh6/6E+lBf+jQ2Sud4mGnN282pPtoHd0H/2zbSbFJxDpPZNFbVb2XUMO8L6ecDEvEo6GQDro6ybI1yUTjQWUK42RP6MPfvFnlrjL88zfZRvfbqZY05e+VoRO3IXoI6UWL/bWAdlIsVvNVxV29NfRt4PptowHFb/uobTWKT99wTlSU2P7QDSVlRlwzL5FPWBeLBxmbjbdq42ojSMi7ICuBxkJKk+ZPu0E8qkrveNoACGp4gUBdWO7hFGStipU9L33hP8f/KC9rsWze9LqdbSltN8kJ0mki8eek2D3K63mRFascmGnQQIAVXAHmLQNLbkOcATgyMhhhcMawesrDFob5WKD/FpQmZFwY3zRbDGR92rME6XeOm0F3flOBGHR87tec65rwIp5ydCmudht2EcXlG282IdWTwT5G/9+5gTtr4eGSKrRrbSPx/MVvaIoLq3lPYfordJMWtJwS9irJrviFMWvie6mccXCRU9YtBT7VWZXnMdtdR5ICJx3Kfy16ln0osbWFeQ9rglcipa8G4GFrlEyPblG/4M+MlKad9gcOODXPmHWcu97UuuQkPidAm7bc9oZ2RI+nLjA55nZZYad/bn0aMWlU8KzfR2RTa2UZpWE3Lax4cByyBU635HqkF+W4m71dsdRyCwwOk83ScYRxX3XYcgkrecbEwaR74pycEr5yfr9rfj4Rnq39Q84w8PnDefJr77J4Js/FEe0qDJOWaGzd750zSNfLQybkq4SLpxMkbpKLGQUomOdmF3hRpFFn/RsBgJOaV9+DMctJOCtfe3FGdMAf/yz6ja6N+zFF58+38n48MfBxcsKwkpI8J9Z4GsiKLwIMFTj/rURtaKDQb3p/eEIp2jZkQrcAgTugajnGlyIJOX3oOA8OOrItKnXy9KJpPdeimO6IN9TQfyjqjA77F9FuhEXfAP2bBRLO0yzb
- gytRsjOi
- dCxlim+PTJDTUQ+n5rCu0fqXpyAgpz4Y+dwdDzzovssOL8Ls7Ur+nYOyUvyX6PORzzkSvRQpZxTtL6H9O+zcjj7AzmYfbARHjbQfbsRX7Ycx9GBE0TNfBS0+HSFR9RpDUJHxZOHFYJuMhWrvmlWMQc0GdOp7E4Fayfmz7jK9sRnxeiCMG7sjEmtTm3kIjSYGBB4zMcAa45z217FsQrhugoxtx/rF0CO0qcn5oM3ZvXFkQtWBFx9i/z8bjMqJYBURVlAihcbfBTwEIQRL1Jmp53XFxq1ZMXkGycqnOhI3kH1YK5oqhwYsVHCRtJTWIGNKxn0erRyhqyfje2mnd6sncSmscslcn+bnI8fp55fcYTu+b8lKoaLE23FMax+1TlWnAN7kcPFkAW86cg0v7pPGN4iKI9NPGyzHyE/Hb
+X-HE-Tag: 1788362125-94840
+X-HE-Meta: U2FsdGVkX1/d+ALqT9BjPUm2DK5HtjJ7OI+Dr10s+omPPaNi8HdTNxZQUHO7k+wkG06GHoTu5DNuK5dxiJYAL7rMS0qLk/1p26Qk+AVRqcV8IWyxScT1jKJvAax0wkQxW1CxI0wiJbONSGA/CAhjtrssxzSy6g4NBFgFcmplffVMHG5E3aJGE2Qw0eIcX9QNR0C+gSuQyEXcdm8e7liGNKC0ZC9bpDd0oDXPT5qOczUJqOY3lRMw7EyW4LnKx9W0qOtCYHAmSLp68JKntaPYrqtgnZLNJGbtK00mrZyeDXWph6dWzAVT9DjHSAWC+kG6AVN8xAgYPS4J3aKqRfyUphQnFWmUnnVy/wjimMCxsvA6CYCPzkPoMEIi0k6PSe8IAiGyqtw5f74IxgVZ6SWyG/ZOE3hIVt51ZEOh8WbAPGoBbqBDA3w2OCwaHCt9zp5dHqcM13wQu8DbgnePO8cuoF3RUaJqA8LVcrq2adpfWkKoOOjHCMXEclMxuyxcTzdEfrvbDaJES2z94kzbf2BDR3s1xBAQIGx3ILdn0M8KPd1gVJzbiGE/e+Z8Vgb3GWWzbQn6RiNA1pwV9+fE5QzU7hQpbmKfdAKuQwiD8UnXqoR8f0pPX1VwO/DKy+9NpNfi+ECvPSsfET4gvP2254FzJW/GJ/Ye+j54wMag/wZpCInn2BM3RYCsJyv1vxQFlEL/CGtZFGSdRhrhe42FX7D0RpXNhuPCkX7wXCZko4iFEsxQVP+5gBqA/diUNdVzCGWoCTkLDtjT1yuGtnihebfsgVqwBlGivQTg1OGu42CQ2x417pq7g5aHluzXg/j/HPMrPLVSl1nRWG0tIODj/AzfZYsq41B9Lkp3SAs4Sx0CzsHehnCWCjvGlYK6jRcX9sWiuiCf58S2ryqh5nlE6L7YS/eN3NMKDUA3hBr5EzZbe10SlnJsZoozY3+nuzFdJXBLOH4ddZdJHlxzk+mUpiT
+ exOLi388
+ EdBEcRpbqigXbUp1QKVQiL9cpnqTak5oekAq12wWRlZw+OqZSi+Kz9VpSxPEVeo9lQO/g/9VpBC0LRzBRQui1wlJVra3b0MAmEvshgyE70DwTJWsC4QjrLsVhWoUbJymbjvn4AKrNCzKarSuTB26RDS9Y5yhexmKhtj2TGWnQw+N6wic7M7tzRbRsmx98W14ycgxzk/K1C//wpeSu5LpylseJ9b5A5lcfEoxW8VKJF5WIiDvCIy1vIMZgxIyX7ihTBMCeWWmFjJXkvHNjbu/owy1Heg/d+QUbDCOW1gRBSjy2i7f62KGuvNpq//CVyBRVefinn+GiZf/xWv8Ct/UKXk3eMQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,192 +100,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-09-01 18:25, Thomas Bogendoerfer wrote:
-> On Tue, Sep 01, 2026 at 03:53:18PM -0400, Luiz Capitulino wrote:
->> On 2026-09-01 07:42, Lance Yang wrote:
->>>
->>>
->>> On 2026/9/1 11:12, Luiz Capitulino wrote:
->>>> A future commit will introduce a kernel API to allow for checking if the
->>>> CPU supports PMD-sized pages. This API will be based on the
->>>> has_transparent_hugepage() implementation but will be orthogonal to THP
->>>> and therefore must work when CONFIG_TRANSPARENT_HUGEPAGE=n.
->>>>
->>>> Move its definition out of the THP guard.
->>>>
->>>> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
->>>> ---
->>>>    arch/mips/include/asm/pgtable.h | 6 +++---
->>>>    arch/mips/mm/tlb-r4k.c          | 4 ----
->>>>    2 files changed, 3 insertions(+), 7 deletions(-)
->>>>
->>>> diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
->>>> index fa7b935f947c..b038da872ec6 100644
->>>> --- a/arch/mips/include/asm/pgtable.h
->>>> +++ b/arch/mips/include/asm/pgtable.h
->>>> @@ -615,9 +615,6 @@ unsigned long io_remap_pfn_range_pfn(unsigned long pfn, unsigned long size);
->>>>    /* We don't have hardware dirty/accessed bits, generic_pmdp_establish is fine.*/
->>>>    #define pmdp_establish generic_pmdp_establish
->>>> -#define has_transparent_hugepage has_transparent_hugepage
->>>> -extern int has_transparent_hugepage(void);
->>>
->>> Assume a decstation_defconfig build. CPU_R3000 selects CPU_R3K_TLB, so the
->>> Makefile builds tlb-r3k.o but not tlb-r4k.o IIUC ...
->>>
->>> The only MIPS definition is in tlb-r4k.c, so R3000 would fail to link with
->>> an undefined reference ... no?
->>
->> Yes, you're right. I can reproduce this. Would the solution below be
->> acceptable?
->>
->> diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
->> index fa7b935f947c..b038da872ec6 100644
->> --- a/arch/mips/include/asm/pgtable.h
->> +++ b/arch/mips/include/asm/pgtable.h
->> @@ -615,9 +615,6 @@ unsigned long io_remap_pfn_range_pfn(unsigned long pfn, unsigned long size);
->>   /* We don't have hardware dirty/accessed bits, generic_pmdp_establish is fine.*/
->>   #define pmdp_establish generic_pmdp_establish
->> -#define has_transparent_hugepage has_transparent_hugepage
->> -extern int has_transparent_hugepage(void);
->> -
->>   static inline int pmd_trans_huge(pmd_t pmd)
->>   {
->>   	return !!(pmd_val(pmd) & _PAGE_HUGE);
->> @@ -743,6 +740,9 @@ static inline pmd_t pmdp_huge_get_and_clear(struct mm_struct *mm,
->>   #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
->> +#define has_transparent_hugepage has_transparent_hugepage
->> +extern int has_transparent_hugepage(void);
->> +
->>   #ifdef _PAGE_HUGE
->>   #define pmd_leaf(pmd)	((pmd_val(pmd) & _PAGE_HUGE) != 0)
->>   #define pud_leaf(pud)	((pud_val(pud) & _PAGE_HUGE) != 0)
->> diff --git a/arch/mips/mm/pgtable.c b/arch/mips/mm/pgtable.c
->> index 10835414819f..3a5b411493d9 100644
->> --- a/arch/mips/mm/pgtable.c
->> +++ b/arch/mips/mm/pgtable.c
->> @@ -23,3 +23,30 @@ pgd_t *pgd_alloc(struct mm_struct *mm)
->>   	return ret;
->>   }
->>   EXPORT_SYMBOL_GPL(pgd_alloc);
->> +
->> +#if defined(CONFIG_CPU_R4K_CACHE_TLB) || \
->> +    defined(CONFIG_CPU_SB1) || \
->> +    defined(CONFIG_CPU_CAVIUM_OCTEON)
-> 
-> I guess using CONFIG_CPU_SUPPORTS_HUGEPAGES is a better approach
+On Wed, Sep 02, 2026 at 01:09:35PM +0100, Yeoreum Yun wrote:
+> There're some random failure for split_huge_page_test when khugepaged
+> collapses pages into pmd again which had split by the test.
+>
+> Prevent the khugepaged's collapses for split page by setting the
+> mapped pmd-huge-page with MADV_NOHUGEPAGE before split.
 
-Makes sense. Updated patch below.
+Maybe worth saying that MADV_NOHUGEPAGE doesn't immediately split anything, just
+prevents future khugepaged collapses?
 
-Subject: [PATCH 10/14] mips: move has_transparent_hugepage() out of THP guard
+>
+> Suggested-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 
-A future commit will introduce a kernel API to allow for checking if the
-CPU supports PMD-sized pages. This API will be based on the
-has_transparent_hugepage() implementation but will be orthogonal to THP
-and therefore must work when CONFIG_TRANSPARENT_HUGEPAGE=n.
+LGTM, thanks, with a few nits above/below (sorry! :P)
 
-This commit moves has_transparent_hugepage() definition to
-arch/mips/mm/pgtable.c under CONFIG_CPU_SUPPORTS_HUGEPAGES guard in
-order to ensure that it's only used in CPUs that support the register
-operations performed.
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
----
-  arch/mips/include/asm/pgtable.h |  6 +++---
-  arch/mips/mm/pgtable.c          | 25 +++++++++++++++++++++++++
-  arch/mips/mm/tlb-r4k.c          | 22 ----------------------
-  3 files changed, 28 insertions(+), 25 deletions(-)
+> ---
+>  tools/testing/selftests/mm/split_huge_page_test.c | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
+>
+> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+> index 86a603692826..4bbad892bc57 100644
+> --- a/tools/testing/selftests/mm/split_huge_page_test.c
+> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
+> @@ -168,6 +168,14 @@ static char *allocate_zero_filled_hugepage(size_t len)
+>  	return result;
+>  }
+>
+> +static void madv_nohuge(void *addr, size_t len)
 
-diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
-index fa7b935f947c..b038da872ec6 100644
---- a/arch/mips/include/asm/pgtable.h
-+++ b/arch/mips/include/asm/pgtable.h
-@@ -615,9 +615,6 @@ unsigned long io_remap_pfn_range_pfn(unsigned long pfn, unsigned long size);
-  /* We don't have hardware dirty/accessed bits, generic_pmdp_establish is fine.*/
-  #define pmdp_establish generic_pmdp_establish
-  
--#define has_transparent_hugepage has_transparent_hugepage
--extern int has_transparent_hugepage(void);
--
-  static inline int pmd_trans_huge(pmd_t pmd)
-  {
-  	return !!(pmd_val(pmd) & _PAGE_HUGE);
-@@ -743,6 +740,9 @@ static inline pmd_t pmdp_huge_get_and_clear(struct mm_struct *mm,
-  
-  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
-  
-+#define has_transparent_hugepage has_transparent_hugepage
-+extern int has_transparent_hugepage(void);
-+
-  #ifdef _PAGE_HUGE
-  #define pmd_leaf(pmd)	((pmd_val(pmd) & _PAGE_HUGE) != 0)
-  #define pud_leaf(pud)	((pud_val(pud) & _PAGE_HUGE) != 0)
-diff --git a/arch/mips/mm/pgtable.c b/arch/mips/mm/pgtable.c
-index 10835414819f..4515fa42f0b3 100644
---- a/arch/mips/mm/pgtable.c
-+++ b/arch/mips/mm/pgtable.c
-@@ -23,3 +23,28 @@ pgd_t *pgd_alloc(struct mm_struct *mm)
-  	return ret;
-  }
-  EXPORT_SYMBOL_GPL(pgd_alloc);
-+
-+#ifdef CONFIG_CPU_SUPPORTS_HUGEPAGES
-+int has_transparent_hugepage(void)
-+{
-+	static unsigned int mask = -1;
-+
-+	if (mask == -1) {	/* first call comes during __init */
-+		unsigned long flags;
-+
-+		local_irq_save(flags);
-+		write_c0_pagemask(PM_HUGE_MASK);
-+		back_to_back_c0_hazard();
-+		mask = read_c0_pagemask();
-+		write_c0_pagemask(PM_DEFAULT_MASK);
-+		local_irq_restore(flags);
-+	}
-+	return mask == PM_HUGE_MASK;
-+}
-+#else
-+int has_transparent_hugepage(void)
-+{
-+	return 0;
-+}
-+#endif
-+EXPORT_SYMBOL(has_transparent_hugepage);
-diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index 24fe85fa169d..625f1c0dd71e 100644
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -432,28 +432,6 @@ void add_wired_entry(unsigned long entrylo0, unsigned long entrylo1,
-  #endif
-  }
-  
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
--
--int has_transparent_hugepage(void)
--{
--	static unsigned int mask = -1;
--
--	if (mask == -1) {	/* first call comes during __init */
--		unsigned long flags;
--
--		local_irq_save(flags);
--		write_c0_pagemask(PM_HUGE_MASK);
--		back_to_back_c0_hazard();
--		mask = read_c0_pagemask();
--		write_c0_pagemask(PM_DEFAULT_MASK);
--		local_irq_restore(flags);
--	}
--	return mask == PM_HUGE_MASK;
--}
--EXPORT_SYMBOL(has_transparent_hugepage);
--
--#endif /* CONFIG_TRANSPARENT_HUGEPAGE  */
--
-  /*
-   * Used for loading TLB entries before trap_init() has started, when we
-   * don't actually want to add a wired entry which remains throughout the
--- 
-2.55.0
+Maybe call it disable_khugepaged() to make it explicit that's what this is doing
+rather than eliminating any THP pages in the range?
 
+> +{
+
+Maybe a comment here like:
+
+	/*
+	 * Disables khugepaged from collapsing THPs in range, existing THP
+	 * pages remain.
+	 */
+
+> +	if (!madvise(addr, len, MADV_NOHUGEPAGE))
+> +		return;
+> +
+> +	ksft_exit_fail_msg("MADV_NOHUGEPAGE failed, err=%d\n", errno);
+> +}
+> +
+>  static void verify_rss_anon_split_huge_page_all_zeroes(char *one_page, int nr_hpages, size_t len)
+>  {
+>  	unsigned long rss_anon_before, rss_anon_after;
+> @@ -180,6 +188,9 @@ static void verify_rss_anon_split_huge_page_all_zeroes(char *one_page, int nr_hp
+>  	if (!rss_anon_before)
+>  		ksft_exit_fail_msg("No RssAnon is allocated before split\n");
+>
+> +	/* Prevent khugepaged from collapsing the pages. */
+> +	madv_nohuge(one_page, len);
+> +
+>  	/* split all THPs */
+>  	write_debugfs(PID_FMT, getpid(), (uint64_t)one_page,
+>  		      (uint64_t)one_page + len, 0);
+> @@ -227,6 +238,9 @@ static void split_pmd_thp_to_order(int order)
+>  	if (!check_huge_anon(one_page, 4 * pmd_pagesize, 4, pmd_pagesize))
+>  		ksft_exit_fail_msg("No THP is allocated\n");
+>
+> +	/* Prevent khugepaged from collapsing the pages. */
+> +	madv_nohuge(one_page, len);
+> +
+>  	/* split all THPs */
+>  	write_debugfs(PID_FMT, getpid(), (uint64_t)one_page,
+>  		(uint64_t)one_page + len, order);
+> @@ -275,6 +289,9 @@ static void split_pte_mapped_thp(void)
+>  		goto out;
+>  	}
+>
+> +	/* Prevent khugepaged from collapsing the pages. */
+> +	madv_nohuge(thp_area, thp_area_size);
+> +
+>  	/*
+>  	 * To challenge spitting code, we will mremap a single page of each
+>  	 * THP (page[i] of thp[i]) in the thp_area into page_area. This will
+> @@ -542,6 +559,8 @@ static int create_pagecache_thp_and_fd(const char *testfile, size_t fd_size,
+>  		ksft_test_result_skip("Pagecache folio split skipped\n");
+>  		return -2;
+>  	}
+> +	/* Prevent khugepaged from collapsing the pages. */
+> +	madv_nohuge(*addr, fd_size);
+>  	return 0;
+>  err_out_close:
+>  	close(*fd);
+>
+> --
+> 2.43.0
+>
+
+--
+Cheers, Lorenzo
 
