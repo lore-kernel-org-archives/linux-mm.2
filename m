@@ -4,93 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76B9FC624D3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 15:20:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38A4BC624D3
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 15:24:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8695F6B00EA; Wed,  2 Sep 2026 11:20:05 -0400 (EDT)
+	id E3E696B00EB; Wed,  2 Sep 2026 11:24:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81AC36B00EB; Wed,  2 Sep 2026 11:20:05 -0400 (EDT)
+	id DEEF26B00ED; Wed,  2 Sep 2026 11:24:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7312D6B00EC; Wed,  2 Sep 2026 11:20:05 -0400 (EDT)
+	id CB8CB6B00EE; Wed,  2 Sep 2026 11:24:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 52A9C6B00EA
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:20:05 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D9E65140268
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:20:04 +0000 (UTC)
-X-FDA: 85169182728.18.4CECECC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 48AB040004
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:20:03 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LCjsPGcI;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EAFF6B00EB
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:24:23 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2662C120265
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:24:23 +0000 (UTC)
+X-FDA: 85169193606.28.759CD2B
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 34E441C0007
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:24:21 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=P+pU8I64;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=Z6ATPzeP;
+	spf=pass (imf20.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.161 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
+	dmarc=pass (policy=reject) header.from=mailbox.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788362661;
+	b=Fo6PNj+1UJI1PgbrQxLi/MNzB1S801csBmgOQUfqjkWxk0135SX7nMo6i04wod7f6vSnX7
+	TrGAljo/vXag2P3CnP9d04NvdveVj8Wqg5v5FXOYFY9lnGTBXGno9muqLZRppbdF+3GhH9
+	NC1SY5QVjdNBUPvTnwpwoHEE3c8x110=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788362403;
+	s=arc-20220608; t=1788362661;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EmdLDOUaG296P9CvbM12jSxYGxNeVIbHfGvENxwCkbw=;
-	b=Tj6zjnTVOmk+OQi2AoQVxdSqIhzKywaVuSKyJbi4f1t21Ba/JeObhQLvL2pPfWbM2W0FWd
-	9EaKWuWZssIc6vVCJvN3BV1LgaSBIcJvlxIqLWo2C6MPGibzV/kiiit6L//mS/TxizW29r
-	Amz9/Ia1uGMEiYO9dZv6eM2rn1bJJTw=
+	 in-reply-to:references:dkim-signature;
+	bh=wjBje/KFV1Sml0wtdUTK7NRrAEQ7HaA06Bpw7iU4znA=;
+	b=mfMF7DANNFhsQdVllFbr8idcBgn5RR2FKAI/HzioIs7ZGhFAmncNCb51l3JajRm7X0QbzL
+	mGNn3oEh8Hg6X+0hO401Bwhu2IBs8XhbYY7i0BsdiC0L9hGIuAKUCCKSqe2QbyOblKNMXg
+	ybUmCcf3V2hMaSDD/bS35NIylegeHMc=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LCjsPGcI;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788362403;
-	b=txBTyn9MNMwG25LdQ+bxIGxR7BoeQQekVod/PUmNKxqFGc6dOl8ewqG55W3bOyZXUu7v4A
-	OOEMNoXEeT1RU/4RMX/NbuTEUZ3DOEVlzLIpSYaTxCinfNOetEZS3LrJvSJggUVgbyYA33
-	1LGPwPkRw48eSu1EwujWHky0JDL6BwQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6E08140404;
-	Wed,  2 Sep 2026 15:20:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F08BA1F00A3A;
-	Wed,  2 Sep 2026 15:20:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788362402;
-	bh=EmdLDOUaG296P9CvbM12jSxYGxNeVIbHfGvENxwCkbw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LCjsPGcIlubZv/I7kxnTj2vuAMW6xD6HCrWwLZXW54VpxsS9HmVQYzAWbRqwbRM7R
-	 CrpUvX94Ul+n7/HGsKNLoQhlYASfOBEU2ugN6FckjCXhPzFEo1/5jW+cw901xqEDJS
-	 VewGQoJQls9BbW7hfWc8pU/7YmP1txFV8PEhBuXiEgrghJI9s5V5j5LjaMQE4RMdPx
-	 Fn1HdwMSsxyZ8fK7vCtiDCdXDtc5wt9GUHGfFs0FyOgsJYxP8ar1qJjIUh/n+hBmce
-	 H2vMq1krBKRNqmKrybjJuHkCNZeajfyNjh24aBDEpCNJC+BD/MMyb5eYaO50iG5/5T
-	 ZgWvEhZMnuaew==
-From: SJ Park <sj@kernel.org>
-To: Kunwu Chan <kunwu.chan@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Kunwu Chan <kunwu.chan@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
-	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 09/12] mm/damon/tests/core-kunit: test damon_nr_samples_per_aggr()
-Date: Wed,  2 Sep 2026 08:19:54 -0700
-Message-ID: <20260902151955.88892-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260902150842.4033320-1-kunwu.chan@linux.dev>
-References: 
+	imf20.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=P+pU8I64;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=Z6ATPzeP;
+	spf=pass (imf20.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.161 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
+	dmarc=pass (policy=reject) header.from=mailbox.org
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4hZmjb38GpzKmTr;
+	Wed, 02 Sep 2026 17:24:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1788362659;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=wjBje/KFV1Sml0wtdUTK7NRrAEQ7HaA06Bpw7iU4znA=;
+	b=P+pU8I64/YzT1ptN5r0xo3zWPioDdM92Hy2Ancv10qrrgrj9N5/DYeueNUiDhZIlOPQXVT
+	z+dIxVKPNuTjBjjMQ7JRntMlFw2a7QdpkdtgeTiTRwASjoRzrdwwiVbLuRPBjph2nM62dU
+	hAxZohGwGI5nxDOPpLjg6DaMefYrHtr2MJs02fY7DIfIdhr9r7z6Sa0pxj7w0b1Sn6JVZb
+	AK+w0C47zgI3jvupm3HS72h5XBgUeFd2txVWMix9NCtt/vUyy23h0soaYpDj/jBgysVZZQ
+	Wce0be1bxHOb/eRsGw1cbEi6d9MuLCnrKIXzWTv5ik7mJsTKOQBgr2v9+uBCRw==
+From: Manuel Ebner <manuelebnerli@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1788362658;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=wjBje/KFV1Sml0wtdUTK7NRrAEQ7HaA06Bpw7iU4znA=;
+	b=Z6ATPzePoFX6gva05LDtPw+F3y+fx7FW/OBldTkyofW+vCwA/Y94xh9x9mVITqgjtzn3t5
+	GsVj+kOkqJU5H82NX9X3GyqMysi86iRLJBc1VvsewAAXKH4HUAPPg8UbWtaTLzgX4KKbH9
+	PHKG4VQ8+uYQMCp5TbkivsASK8b2eEAzU2jd9hfI9q4fYWlVqsRwhXmXsQ/cpVHTBX/LHp
+	1iIgiuaRe/mafl9LD6Mg/dG9i7kqDBIFxbEp88g83DiSruRJIJh5aqeLDT82XyVGuZkV1m
+	fhtDkaUrXbSLQoVxd8gw/hF1/3LKbokxW/tnDrrRWMmn98ZSv4TJNr8HrMPQcg==
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Cc: Manuel Ebner <manuelebnerli@mailbox.org>,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] Documentation: admin-guide: Fix bracket
+Date: Wed,  2 Sep 2026 17:23:47 +0200
+Message-ID: <20260902152347.708070-2-manuelebnerli@mailbox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: y8nbn953ai98q3oqq68t8xymrofn8654
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 48AB040004
+X-MBO-RS-META: 5b8ti7wdu137crny6pbb88wff1qcbep7
+X-MBO-RS-ID: 2e771efcf8e80c989d1
 X-Rspam-User: 
-X-HE-Tag: 1788362403-47636
-X-HE-Meta: U2FsdGVkX184ZRYT1rTKKd8xZd2M+nhsTi3HJeETukLvjBRMVQGyX9RCZaU5OxjTh1+6cHubrctQN1w6QmiNexwDTngK1dpZazY+J8F40B/5S8RB1ZLf/gb3cf1fbHI3tPlCWSRb+iIbHBoai2FOL3iS9FLJi2vQQFSIiLAkrXLxkwpW8ddUPpi2KsuGfLvdRePM/E3i5oI/VG+dYwYxhzdxeUZCT61iWNtR6dD04m7jEbP2/uUn3IK9hI/yrH66smbj/nh+SKJKiWzO1nLzOfOSWfascOezJLwyU04L8NYX2wlruW1hnRPiOu3FUQq5966cPUTHO/Winev0DWDtTY/QUh3Hg1Ter2GQ1pvqroHc9UhcpwXOYXDgF2Fa7PzkqjS/3IXkMoReR69cxRCXKyRMcZwSESxy01V3ARSt8xTEoqBwvanOl46Kv89ZiWYV46FImLRd6W0L17rwsJKRuuN6pWObNaQQ80pHsIQUvBPwpDBcOX4os7Crz6GyT/BIrggm1G2hSoRgJiHa2AMI5lx6x604Q7xEw83pGuFoQ2jDpERIkpfzN3fuMBbmwgicVzWZXmz89Ri/YfxyqO2R3eZsBfXw1fJgYtR1VYV8Xk3avrbIafnyWEfQ0mtkPRz54z7GWyki3jKpAT/qu7yrby4k37WVwTLpb0/UbhloJ2J8XmxG4VDXEAAJEz/daJzMB/Spbh2gxutE3hsGmufCYmDV2NUg9ZDudB6AB15cau0J/9tOuUwM1J/FH7PETsnajpAy5hx3sTawtWYAsycRWP1F4nMTkYmMweh7dkbwpWZaKBqc6kG5JI4THRHWH2smuiNNkv/Yn4oTogbKWeeUZOsD4QCUpF8lJOZLgMKvX5N+09q8kwO+xLv1vd3zTgzMj4qc2FxBdSJM2iG7etLlhUjphRFk3rhkPqSa9M1cZRfIPhKUstVIGPr9Ax2G6x1NuYt05H3ryrRbgHWBITp
- iLrGlbLW
- xYcG8xxc4XiaZ8R+GWA3fSCzqJWdW4a1X9IQ02XgK4sQ8Nyd+Vd7U7ZN0Qd5LvZoVUUZ90KaG3YhVH7aJK7+MwVfKwrpYxbskZnz/v1jCP3RltLk4WgEnz9ichfzlxLIVmDUr6bx24bPZ6fPfSWXSMtKv8LEkw4F+UEiXOtSUVDHZUMWecNL3ep/rKVj2N9XSab/eVD0GpAEaxw/9oWDZdRrzqxSd/jzQDziNvCfkmuNsdUh7jBmNQvMlw5YKkDmTiOpRSkoQCToK5ec+eOqv66M7z2UmS3llalIlICw2sBUl69HIeyrESoQMzye/HzYdKjDwVymsZQp8YltED9tGORkses54RdLbOnz75D5SykT55qdDNQSscugkm9wDeUwaqm6e
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 34E441C0007
+X-Stat-Signature: yuz4oz18ku5nzky635f6s385xke36aku
+X-HE-Tag: 1788362661-973573
+X-HE-Meta: U2FsdGVkX1+wzcV6ik1Bepqhv+zCRyUL9+amaAR9KI1zHWKK1QrDGPfMKs2PwMMS+ZDj61o4/JQn/iS2jJhSjYKuy/JlwnQh6E1xeySSfSLTA3oYKYryVmPODwToarRczZhf137yqhIe3VsJ1AtOoHORiLP13Fr5adhgk9OCUlRsd4QwpoaDuYUo5OZMaahu4pESEG0aGaoRNAYc0OSHEZaHMPFmLvM5CV8JXTdrnIIHOrLskIkxWbMBhOqalwHI+pLy0aIOw/o1TMgoefWlE5X8v1fx1aetqvM3zAXUFSb+35AlgWPzQFtD7TbD0yiIqkrm5j3XFl5Vm3k2hET3f+Wwy6Ns3sTKdh39rYfWzs8/YUAE6eU3w8VLPoLW48XcToD9TmheYLlpOJCAeRuhtVunvfo9WYVyjB3/zdH76X0fMmVeFGvMMqTUCGZNh/umUQdt54fEe7zTiI2y0K+xBWirsD+8gzfyI9gBabyRZN/7CXwTrNjZ++QlmBhHporMHY2HeEk+AmE822CUR2K3/aJs6zJJ6Kdyjf0ISLOiEG58T4PD7JL2hjMsEt/3H+0etxvl4QLS5cCR5rzkVcrlv3UtgoOihxOsB2+jtTB4pOh14BFZXKlqHDxEJoQdZRzIVMz40+OXw9CH6ba3waFdgzklytmWU1heD76wteXWdfvFCwd/5VE8V81EQEC6pG5mV3H/M/Z1DAWoKWF7cN7MfTnmN0mnjrBtDyZUJTsDPrXfM/whYpYIClFGAYH3y3K9esIkpqqEfdODV7InQAMjihYoxM/3xN0SQswqxG5CZV2czPhMZV/jWBurWmJpAmzTd+X2yBMhuxPTWVwKW1GOSKaK764y5llkZoyoZsIf2dKJCm19QTlEYE34//d1SabZvVvx4uGoAMegA1ElzHt45LmZCkL/6rBZ0ispVzdqk3QOkZcvt3jjHS86YZ5rzEFWkOCKzS8Ul3HHtKGqz1O
+ i2F8TEPT
+ XzRT9P38klbYECZTeARKbIDYlq81L4H13dwzTC6d3smtfXNbW6g2J7QIP7CDvysls3U+fDj4/+CW0uChc1Dz+g96Hyf2Gi306Xvq0GJWpTwN1OH0okMdAAbTh4Upu77QElF9hvbLkn6vX6X0Per2UQWluOrqwefc1Hj3hl49h2xI5Oq2VWcL2fT3K9izvsNUumXzsaJemYPOxvc1dmHXNLuArfKFSSchGQs2xjHT9a9g0d9HolstqC0JBJ7okdzWTDStLp8nbaXgAD5nqEwaqCiIUDCuD9xyd1tqzsws8yZMKTsxxlYU/98swOQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,28 +115,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  2 Sep 2026 23:08:41 +0800 Kunwu Chan <kunwu.chan@gmail.com> wrote:
+Add missing ')'.
 
-> On Tue,  1 Sep 2026 22:47:42 -0700 SJ Park <sj@kernel.org> wrote:
-[...]
-> Both `sample_interval` and `aggr_interval` are zero here.  Since
-> `sample_interval` is the denominator in `damon_nr_samples_per_aggr()`,
-> would it be better to keep `aggr_interval` non-zero when testing the
-> zero `sample_interval` case?
-> 
-> This would make the test explicitly cover the divide-by-zero protection.
-> If the `aggr_interval == 0` behavior is also worth covering, perhaps it
-> could be tested separately.
+Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
+---
+ Documentation/admin-guide/sysctl/vm.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thank you for your review and question, Kunwu!
+diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
+index 5b318d17a..ebc281e6d 100644
+--- a/Documentation/admin-guide/sysctl/vm.rst
++++ b/Documentation/admin-guide/sysctl/vm.rst
+@@ -438,7 +438,7 @@ zone[i]'s protection[j] is calculated by following expression::
+     = (total sums of managed_pages from zone[i+1] to zone[j] on the node)
+       / lowmem_reserve_ratio[i];
+   (i = j):
+-     (should not be protected. = 0;
++     (should not be protected. = 0;)
+   (i > j):
+      (not necessary, but looks 0)
+ 
+-- 
+2.54.0
 
-Yes, that kind of additional test case would be nice.  Please feel free to post
-a patch if you'd like to! :)  And no pressure, no rush.  I will also consider
-doing it myself if it seems you are not interested.
-
-
-Thanks,
-SJ
-
-[...]
 
