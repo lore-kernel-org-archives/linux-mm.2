@@ -4,117 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05612C61DFD
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 09:02:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DFF9C624D0
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 09:02:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F1D5C6B00C0; Wed,  2 Sep 2026 05:02:12 -0400 (EDT)
+	id 1B2BE6B00C3; Wed,  2 Sep 2026 05:02:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECDCE6B00C2; Wed,  2 Sep 2026 05:02:12 -0400 (EDT)
+	id 1622A6B00C4; Wed,  2 Sep 2026 05:02:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBDB96B00C3; Wed,  2 Sep 2026 05:02:12 -0400 (EDT)
+	id 078D06B00C5; Wed,  2 Sep 2026 05:02:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B281C6B00C0
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 05:02:12 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3688E4011E
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:02:12 +0000 (UTC)
-X-FDA: 85168230504.04.95A327B
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4CFB0A0002
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:02:10 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="jqE8aP7/";
-	spf=pass (imf25.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788339730;
-	b=5h7jX3bhb4fHKY6nKqgy+wFtKyE0qVeEXwG5+ygcKGK6hWNfKXgPo1HKAaQ+XVxg5ikFpo
-	dZZzFr/c/F0VgAWyiJo0JuOLnFdknCABKCHYmI/R6L6mz28FFNAd5HEWxkMDBcXKO4ctUx
-	6tYmApew/eunmv77xohXHZ+p5/uV1KY=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="jqE8aP7/";
-	spf=pass (imf25.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D252D6B00C3
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 05:02:56 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 55856A10B4
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:02:56 +0000 (UTC)
+X-FDA: 85168232352.23.91F4A49
+Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
+	by imf17.hostedemail.com (Postfix) with ESMTP id BEC824000B
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:02:51 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=cmss.chinamobile.com header.s=default header.b=d0XcqTIp;
+	spf=pass (imf17.hostedemail.com: domain of liujing@cmss.chinamobile.com designates 111.22.67.137 as permitted sender) smtp.mailfrom=liujing@cmss.chinamobile.com;
+	dmarc=pass (policy=none) header.from=cmss.chinamobile.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788339730;
+	s=arc-20220608; t=1788339774;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fy8D77TbbTZZuJ5DhR2JoC+KqjSKdSPnzBcIAoctkic=;
-	b=Um+W6/h+pAlggcqlAeJJ9RzDDX4wjuPTI0kCjZ9ux1IEmv43gGQxf9tOHBnTLEIIMgw827
-	pcCp27BEirQdJnFk0cgBAOMkv+LpV8Arc2CPOJjEgXOtuw23fvLWbghmVJNqtLkCBmLE+B
-	VWPIKpR0PcqZ7A8jwUJJMXqZLe68Gys=
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-84e84a6c4bfso838310b3a.1
-        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 02:02:10 -0700 (PDT)
+	 in-reply-to:references:dkim-signature;
+	bh=ApIbz5x8f2pYSzlpS8pwscgpAezamK+Zg/a44uxxyps=;
+	b=r32aw5CNaoAGmTkYeSO/NGUbKoLPorGeQ4p6NbxdqXe87GF74vm3q9McvEDDFqZXsLbpJF
+	Va5/YuHbi8fmH7bd3VymKrzT0kIAzUwwl7EvdVEJfdxipw+E1Bsu9fF+c3fgQw22NMdsrp
+	vmdjaNGXYPwP1izB/DLoefpgMdAJ9Bg=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=cmss.chinamobile.com header.s=default header.b=d0XcqTIp;
+	spf=pass (imf17.hostedemail.com: domain of liujing@cmss.chinamobile.com designates 111.22.67.137 as permitted sender) smtp.mailfrom=liujing@cmss.chinamobile.com;
+	dmarc=pass (policy=none) header.from=cmss.chinamobile.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788339774;
+	b=YNZfdy8+e807L4hsu2T4L10GlYjQ0fu9P242Fu9ntoeh0qZWYVXXqRH67xKCw7k6/y7NaM
+	SiVZBYPCVYCYXHdmaF8GNg0FuRDSm4mW6iWT8B9tPOb0MIDDNcxsZq7juTaBZ0V/im3gqy
+	d6BdOH+AnB7we28deMfXvUiMjJ4qtAs=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788339729; x=1788944529; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fy8D77TbbTZZuJ5DhR2JoC+KqjSKdSPnzBcIAoctkic=;
-        b=jqE8aP7/res677A4OpemYeKSA4r0fdes3dkqy0rexIEk7U9XOCYbUXpn21TM/mNzR3
-         CQh4AWCfOgDCWA8ad9Sl5XsPU83HG93G1Y6IebZNYkYM57do7U5dnXZQU8ClU43rLt8j
-         L2vYM6tSc2ITtlaCSOqoPkKbUCmS6dBmOCkxFYEhe89Rahv7/lrOk4DJqo/RxTRqf/0I
-         51NzHNAXEBwZj6vOqJkGokfCNAfAhQmvpvDXTeSA+7+4nNBu3lqA8zsAV2HHXPUBcliW
-         wnJTCtd/atpE7x6F0brSFNbJevmSgMxGNCC0aTiuQVoLow+xPGaK6EPhjp4FL1VvqWi5
-         K3gA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788339729; x=1788944529;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fy8D77TbbTZZuJ5DhR2JoC+KqjSKdSPnzBcIAoctkic=;
-        b=f3repvI0rVV2GDFqpNxUlwN/aWENsAwabh2aiy/MqJXH3d7+keDimnd79wqfRSwpa7
-         SR8gdZ3IzQKTf7+38fXGpUnTDKQxRD6XaMBqq4nll8ruDGaAHv9eP+hHotMAeplWQ1op
-         wfg+R0NJOLQGYIIJPgdo47yefIzrkeEelXr17g+wjZc3quFcEQfdAjQ8YR51GIH7stH7
-         IDQL1EI7JdjpD4HuPlTXSW2WTupISMwfw0KE1U2mLKszqC6oSkYzA6WCTUcvXL5spn2a
-         PHR5ACV6tmy02HK75iyZW7enHiIqlgvcLPDOcvZ9HpvMZlrFpxc1aoEjsGfa24ObKuw4
-         +X2g==
-X-Forwarded-Encrypted: i=1; AKwUvBzUqD3Q+FVVdzVCbwsrKMmgrZ+qUp1IET+mAQj/hvNm550gXYVTcQQvYUY74hfTHFz87FEjLdsZrw==@kvack.org
-X-Gm-Message-State: AFuF++k/w625j91WPYyflq6uWLYEAjaWpNlUoD+zV68sGwkHhAbpaphH
-	JRXLsAt5Ve9VTtTC3fGVRX6aNVoIqEx9x7O5fkGJBm29VbOLShyFArdF
-X-Gm-Gg: AYBFou301xEpSNDGSuznSpuV2vQOZmVka9MalUg+tg+4FsPXzpfhuzbnUj478l+ngLh
-	uuDMtZiLJ7T6beAtVId3WNZwRIfBhuf5dAFuMBc35E393C3uckl1JWE8MHWy14dOUBclPRA1GDB
-	B99pZMcDdDBlebs/5g9W7ueVNsDQaH+5yAcPPK3Rh6qEcFeMcus78Fs7AWumYUMg9BIRojg0F3c
-	65IEY19YjkGo2DbAnVDq8tWz3+CI16vzPLQfB3FlTu6hR/W0gGIAx7Mdo0kgcQ3fxj08EKjaoGi
-	4zIfBep8pwG9uBATA4cA/7NsLESN8/vRw8LlJaqkH2ohfqAzm64II4wWnkC+RnbLDq9L7mw2ggx
-	GDz2e3/gVZ1U4L7T7oHzxCSXybOtpI+Co3/TnyKn2XtMn8RZgACHRnrfU81p1hwHqmmN1p5VYeB
-	PaWiv1F9KTJC3azzdHxOfrZRudmpNfVKH7KpBBlJDItSLDiz0RSvH4kmtmp4YtciIrCn9UUY3ds
-	+biIRvtf+Jo1hjTaA==
-X-Received: by 2002:a05:6a00:7099:b0:848:48d0:934 with SMTP id d2e1a72fcca58-85f448cdd36mr1124512b3a.18.1788339728703;
-        Wed, 02 Sep 2026 02:02:08 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:9c5:2de5:8b4e:3f3c:b637:4ca5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85db23f7b8bsm1038728b3a.2.2026.09.02.02.02.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 02:02:08 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: aethernet65535@gmail.com
-Cc: akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=d0XcqTIp+Lio6XNTvjGEJI9ZRA8Md9BeH5IjRgMahXvmLfqVmoU+CCjVGMXJ9VWdQ7HyCnNR/bDf7
+	 9MRe+RO+nWknzQfkR2orhYCGasUtjZMBU6j/rBboaKeTnd73yUrRI8/YaNdXiVyjD+DDA/EVTkiBpZ
+	 AdzmQvGq/IxyVSDo=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app08-12008 (RichMail) with SMTP id 2ee86a97e636db6-40e02;
+	Wed, 02 Sep 2026 17:02:48 +0800 (CST)
+X-RM-TRANSID:2ee86a97e636db6-40e02
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.localdomain (unknown[223.108.79.98])
+	by rmsmtp-syy-appsvr03-12003 (RichMail) with SMTP id 2ee36a97e636eb9-f1f6f;
+	Wed, 02 Sep 2026 17:02:47 +0800 (CST)
+X-RM-TRANSID:2ee36a97e636eb9-f1f6f
+From: Liu Jing <liujing@cmss.chinamobile.com>
+To: akpm@linux-foundation.org
+Cc: david@kernel.org,
+	ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
 	linux-mm@kvack.org,
-	sj@kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mm/damon/core: fix false positive in
-Date: Wed,  2 Sep 2026 17:02:17 +0800
-Message-ID: <20260902090217.29968-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260902081825.18931-1-aethernet65535@gmail.com>
-References: <20260902081825.18931-1-aethernet65535@gmail.com>
+	linux-kernel@vger.kernel.org,
+	Liu Jing <liujing@cmss.chinamobile.com>
+Subject: [PATCH] mempolicy: fix div-by-zero in alloc_pages_bulk_interleave
+Date: Wed,  2 Sep 2026 17:02:45 +0800
+Message-ID: <20260902090245.16411-1-liujing@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ipjbp5twhd4n1ty1bq4xp9ici86uopqr
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: BEC824000B
 X-Rspam-User: 
-X-Stat-Signature: u61ru8aui7zp4obt569e9634zrq6trow
-X-Rspamd-Queue-Id: 4CFB0A0002
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788339730-383531
-X-HE-Meta: U2FsdGVkX1/EPw7i6GCvpuAfGSuSVWqPJXkH8hVE2O69rPQz+bGaPxjS/zryCY2347Eu48JR3SHsvQUwcEu3me5XSiDP/zF4hIEvXesJID3s5sK4u05aufjowHONQT8IGlx8YYsb0hfVwqBAEQEnGyaBZWhd3lCG56+E4zB7wZky+7cHCOMP1z8CzsXy9i43I0Cw/7pmovVdeHjt+ZwJInAcieteGuQcqLlXxUfBItShvxJlv/pZ2EThk88mwFu4yOfc0Zd/sOPZo1VMPltsOJgkvZG16l2HFflSYdwcRCfCUNwwCnYfqkr8h9xROSnj37tc3Vc9EzUtbGkt0eW9qOcYb+6VoM1lftFxaBDOsuLqLTEiSlXh3OTe6ca6jgITKR8j06aiT1iF0aR+vRqVoKQzvngVoYDxOPWvXwVF3XqRaubKHQHB0O2S1UnVhUw+LoG2YGJuCrpkXj15QWt59EZJisPgXJumEAs2LvcZa/u55kTfAutjO2OIOBKuRZueFJUxiEjmYRGq5B6fiuP2F4a+/Pbum1iX25CSVz3xkC94T7V+OcYTS2/8c65AHs0FPl0aLbeuxqYKEzqQPyyY8bd3HPSLN/vHT+6luGynXAXSSfyrxyhZW097cB2UrV6fhKFv8YjEoZJAR22v1W6eQ0RYCandXzsPG0hYgRgghHencCiOQgUsqHlC5npDgCOUcjpKcuJ9zOcKl9EhLudWSzPj++jvwfKQZoQU5QDnCMBOhWOPqvFLnymiCsa+60etiaF564pKNGbwjFdk84jhUterilJI8yVvHR9aMJo4DuZeHP1+SFolii07Rtqj9f8V2zIH/FQweM/OhzUtwfJXk4ywd00pdx/WzTPfkj3Oy6f/3e4bkmhRgeCnYI2e5e2IUBV+9DzJqk4TXrtZ5yxgqrvlN9qhSrrE2zMuQ9l9Kz7qkWntxbGjmtkZiO7fZtYKxOicfSQDbjm/HMKPIei
- BaPuQYi2
- HcOiB/OB6L5v3LjAlJnMzKHX7qYgJYcRwbGlElvUXOR3nXy2IK6qYqa3QLnlTy8INlrzSIF1yYFJQCmAOXPrXP5dIe/0YcArkWxI/rrMoh8xs9EBVVd19TnPhhhISZQTeHqMHHSgEtqvmc6k0dgrajyswAf2pQv5KTtD/yd2wXqA9ytk42sUvBPTBgK4HN6zHaUXGLjbFX6zJuJQbKpVy93LegH0vq9NiKVQAC/Xd8euM1FQiQQRTziuUVE46fcUlTOvBB3MNXiDwy/1hpSVgU3Zd/rPQM3m0gTMU9Z1gYF9BWXWZlkf6MRceXfKxcl3TCQjasmEbA07IEA3+Wp8+0bMtWlq8s4C153TRF+2J4U+eK7YhoJ4lFBMRdSEaopVfgXhjmlYCEldM8ZGhpfWE7+vTS7yqPJP54KtEOP0oLu1nRIj+Kt8HrfQCzPygjB3rUuKk
+X-HE-Tag: 1788339771-734507
+X-HE-Meta: U2FsdGVkX19UbfUHntSbGadNFN43SZPPSaoHaplrIlDyYVsvzoJD+fHuGkqkDMKe4t3TVo3psYZlSZTKufc+P7zxlSMzH/mqLW6Mo2RiGDBgrcLX2UcSfnx88Fjg8CcPNGSP97guEJmgX3Q/5nFpSgCfe3pWsOJDVThLUHQoxyUCaXp8WxfJBqfKiPQm+TCl27Cg+BflHeWz6CwhrbcJPcpsQmfIm7IxCtpou++CLvbFP0LE+ln0APDOdvTH2fzyLrradRKgHz0gu/sHrE+B3VtISyV6mjFNYrd+JCywqice0CS2O2UyuiS5NgK1B+PaO4jszfr9Qn+9QSdPr2BGMZ3hstTMbpK7+8G0LBiw2p6GGwAwhbt8x4W3h+BMms9EOpad7hXvGcADFOQozPHTA1kFJbZJ8V7MFyp4p6OvKys7fjhKU66MSw50On/+vXFYjQLy3MocUVfIRQ5hiYIb02ld7u7q7VLxWTn3HkZv7NHfdO/zdi+rou0fw23rwsgfMug0RGwmtIZDlN8jMZJXz1bXewbh+d04J0vM0vmTRQtRiqrr5Ez44AIuqmVhhBeiOrnVA6X/Oyfg6bo5kS4jzBTIBJIBOY2jsYTWjAMv9YaZbA2oS0M2Gw+fr5NAUggMDAAepFvqjxLsHkunE0gQJdOlPyNbFWgCwwbNPhBiN2D87bbx9XGjuN2+Ri60F9KaGszp5mdE4LeA0V6Vrf1OgPHVY22zZYqBHjeTZD1XnUPLCuPKuLOeEM5IS/r1ItfHSK/LEfhrIAw6m0J2+Z14dIA+uZ68KJVZ97RQwx3n6vkjO/Z1qKMcBHzCAxjcl8bXkfz6O2nr8NXFS+wBbT1bWjalkI+a7sshZuDyiinTfIa12qLRDBPH4rSPuYVgprueY7dmF4N+fg2jCfsry5O46Mq/u1EiUeyQzwPYdtf83Ke9cYXp9CfawR915BNbctj1RKDKuj2timDxOZqPHGa
+ ZrogWqbS
+ r1n9pv9ueO1mSBXtMMFuGYB+UKR0pFKintv0ckan7oQoxlIVqOxJPq/nibJs/RFzhoBDjZ4EFNI96YqbCWGY3tpwP4oNPsFEDV3TYID61su1gC6gjphokTXa/DA5gVb2xptpwZ4j2e1IQZydoUNl+WThGeCRmSaZwA19/63esYsOXZ4nCI5Ldcv5g1rANG3pePG2nr5rUhnziue7+Qz1hmsz1npvuplqwLKotnkQRpDRjSCYhfLx46IbdmkJakEdC+YiSy9+LXkhqqheUciu19lLbazByKqtwJJPUWEeJA5sBbEuOVFSD2vCyOeUi29lEIeMYGyNfC8UCMjXhOi+dSIgR2Ul5Imz6S/qyxSJDOk0+Kyn5Vb2K3d2WllJLwd4r8IcM/fnXgOrdNffFTrRUfbbzHSBnV7gT/uOwpgxabtMihG191TpciCQYWpFljxpcwu/c07CqC48gqwG4tj1vaoVLh9n0bM4pXKdcslgkUF1QYbht5m5oIEfIsQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,71 +102,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 02 Sep 2026 16:18:25 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+In alloc_pages_bulk_interleave(), nodes_weight(pol->nodes) may return
+0 if all nodes in the policy mask have been offlined at runtime. The
+subsequent division "nr_pages / nodes" triggers a divide-by-zero
+panic.
 
-> When setting goal_tuner to 'temporal', if the goal is achieved,
-> quota->esz_bp will be set to zero.  In this case, damos_quota_is_full()
-> will always return true, even if no regions have been tried to apply at
-> all.  This causes qt_exceeds to increase unexpectedly.
-> 
-> Fix it by:
-> 
-> - Returning false in damos_quota_is_full() when quota->charged_sz is
->   zero.
-> - Adding an early exit in damon_do_apply_schemes() for schemes with zero
->   esz.
-> 
-> Fixes: c7ec7d5f6b3d ("mm/damon/core: handle <min_region_sz remaining quota as empty")
-> Cc: <stable@vger.kernel.org> # v7.2.x
-> Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
-> ---
-> 
-> Changes from v1:
-> - v1: https://lore.kernel.org/damon/20260901105925.106186-1-aethernet65535@gmail.com
-> - Changed the check in damos_quota_is_full() from '!quota->esz' to
->   '!quota->charged_sz', because the former is an upper bound, while the
->   latter represents the actual quota usage.
-> - Added an early exit in damon_do_apply_schemes() to prevent a scheme
->   with zero esz from being evaluated by damos_quota_is_full().
-> - Changed patch title, original title: always return false when esz is
->   zero
-> 
-> ---
->  mm/damon/core.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index 8e3ded1a2cf6..de78ad56c8b3 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -2560,6 +2560,8 @@ static bool damos_quota_is_full(struct damos_quota *quota,
->  {
->  	if (!damos_quota_is_set(quota))
->  		return false;
-> +	if (!quota->charged_sz)
-> +		return false;
->  	if (quota->charged_sz >= quota->esz)
->  		return true;
->  	/*
-> @@ -2666,6 +2668,9 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
->  		if (!s->wmarks.activated)
->  			continue;
->  
-> +		if (!quota->esz)
-> +			continue;
-> +
->  		/* Check the quota */
->  		if (damos_quota_is_full(quota, c->min_region_sz))
->  			continue;
-> -- 
-> 2.55.0
-> 
-> 
+Add a zero check returning 0 (no pages allocated) when the nodemask
+is empty, consistent with the guard in
+alloc_pages_bulk_weighted_interleave().
 
-Please ignore this patch.  The title was truncated, so I've reposted it.
-If Sashiko provides a report in this thread that differs from the
-reposted version, I'll forward it as well.
+Signed-off-by: Liu Jing <liujing@cmss.chinamobile.com>
+---
+ mm/mempolicy.c | 3 +++
+ 1 file changed, 3 insertion(+), 0 deletion(-)
 
-Best regards,
-Rui Yan
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -2600,6 +2600,9 @@
+ 	unsigned long total_allocated = 0;
+ 
+ 	nodes = nodes_weight(pol->nodes);
++	if (!nodes)
++		return 0;
++
+ 	nr_pages_per_node = nr_pages / nodes;
+ 	delta = nr_pages - nodes * nr_pages_per_node;
+ 
+
+--
+2.43.0
+
+
 
