@@ -4,104 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26C7CC61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 06:29:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAA86C61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 06:43:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F37B56B008A; Wed,  2 Sep 2026 02:29:52 -0400 (EDT)
+	id 8C1C06B0088; Wed,  2 Sep 2026 02:43:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F10436B008C; Wed,  2 Sep 2026 02:29:52 -0400 (EDT)
+	id 872F76B008A; Wed,  2 Sep 2026 02:43:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4EC06B0092; Wed,  2 Sep 2026 02:29:52 -0400 (EDT)
+	id 760C86B008C; Wed,  2 Sep 2026 02:43:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C43176B008A
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 02:29:52 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 57A471A075B
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:29:52 +0000 (UTC)
-X-FDA: 85167846624.16.5B2865D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 78EE7140006
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:29:50 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dhwMWXav;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C8FF6B0088
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 02:43:25 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DE397A077B
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:43:24 +0000 (UTC)
+X-FDA: 85167880728.20.E34569B
+Received: from mailgw1.hygon.cn (unknown [101.204.27.37])
+	by imf27.hostedemail.com (Postfix) with ESMTP id C65854000D
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:43:20 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=hygon.cn;
+	spf=pass (imf27.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788330590;
+	s=arc-20220608; t=1788331402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bRAw/kC0iwtoV3FdnJXkic4hdm4mGBrURlUSImGfXWQ=;
-	b=IKemm21xazt1oT+4tBdkrLgjRzenIZNH42ub9GGOW6k3rGEa82u4/H3SqWBmRrFeGQiYLu
-	P0si1vemTVftc8S78aTz9nd7UPAT35sxll8du0ka5RcrhUvN1frAHDxBTSbQgjk572+O+t
-	yHhkN6q6vwYxx/DQhEIwuRC0Oa+Tzpc=
+	 in-reply-to:in-reply-to:references:references;
+	bh=r9iRZSOl8Tt/Kh07e/86WqYizMIyCf13BvOcPpY5xIU=;
+	b=dzOCWqWHyt4eccaKPBtl66hjTnXwnHCfxW8tTsm4p2PsP6rvqssWQx8tz+pkYeqlvfZpGb
+	zE95PHm2Ze8zVmseqaItvhSj78wFCwY2fzYm1PfnEzq8GLFmAsLq5EgMuQoObtMacfW3DI
+	Khf7QFjHp681tI0/rR/PNgsHFQLoTEE=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dhwMWXav;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	imf27.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=hygon.cn;
+	spf=pass (imf27.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788330590;
-	b=yI6hO3FFUIz7SoVgRmD+KFoPRx5K1DiGVuE/TzfaE+e0fp/Fr2o3ii2ZsnYvVLj20H3epp
-	ZLnO9vYtVWKk/H1Oco0BnQq28pd6dN2NPN6DC1O/qgRXPMCBS561b3gy53moGSgHXUV6Fu
-	LLmoSzpPA5BlqPFqUv4qNvvoa9IFUl0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 92A34444F9
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:29:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A6B81F000E9
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:29:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788330589;
-	bh=bRAw/kC0iwtoV3FdnJXkic4hdm4mGBrURlUSImGfXWQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=dhwMWXavq4ih0BcJvdepVPQYJSPg8sheLLU5hnHC2t6E0iGD08jnwQRUo4WYJ2AGt
-	 c9qpeKjUA15MIXSKSrjOC7/wAR8POb1k2jGW0h0tGI0ZjmFqUignDoFEUBt+orrY6A
-	 iTgF++Oy/DKOGWCT6UuOF/Lfo/f0cz+xS/N1YohFwR7/zZ4XbpH6IheBBbDcWEWPUL
-	 aI9iyfLq8N4tGW6DnQdsxejUQvCiJblirRVKmPgtW3LXGkY+NByvqc5aQ6WCtbpiXf
-	 QAKqkZfxkLm7VacIvWUl2UOd25gY/TPH4264gd+kWQtqgWouYZ42nDBYCP6gW+rdKw
-	 xGzs3Aall9LKw==
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-9390f8a1c9eso65913385a.3
-        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 23:29:49 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqEVC5kl33xUSF16NyLwpjsN9hANm3ZabpK5aXTe4flgbrICzgLFVKjAfcNi3oLjuHKqynZT1L8KQ==@kvack.org
-X-Gm-Message-State: AFuF++m6KwylqxvRkKUXzC5M+it3kkYBWLYZOWuywlN4EY+MzZLraiDI
-	7r9BGvs+D4cITIoh9aidTg1TFYHvd/56eWds49DW0cpoz4oNsTt/fhAReTvYBaIBjKl3x+YjUsu
-	/oscRliDRAs4w7/J3oBlCk2UMdrr3vpw=
-X-Received: by 2002:a05:620a:a0cd:20b0:934:aa56:45df with SMTP id
- af79cd13be357-93960df450fmr271672085a.11.1788330588481; Tue, 01 Sep 2026
- 23:29:48 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260901054358.4049095-1-dev.jain@arm.com> <20260901054358.4049095-4-dev.jain@arm.com>
- <CAGsJ_4yGFBRv-C3UV-G1tB0HUmhVvJL6ac5x_Dtu9NSGk9BGzw@mail.gmail.com> <55e7bc2a-dfdd-4cbb-9bf6-ea3bf4b03cce@arm.com>
-In-Reply-To: <55e7bc2a-dfdd-4cbb-9bf6-ea3bf4b03cce@arm.com>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 2 Sep 2026 14:29:37 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zi=1hq_v3J2+eoGGnv=3VzsJbTejX1HbDDSAmF2Pamdw@mail.gmail.com>
-X-Gm-Features: AcwNN1Xu0lESa3FupCaqM-ki0KipDurhFoLH087Q1dWylSkqMuwZBSC7YkpVUj8
-Message-ID: <CAGsJ_4zi=1hq_v3J2+eoGGnv=3VzsJbTejX1HbDDSAmF2Pamdw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/8] mm: move anon-exclusive batch helper to mm.h
-To: Dev Jain <dev.jain@arm.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	hughd@google.com, chrisl@kernel.org, kasong@tencent.com, riel@surriel.com, 
-	liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com, 
-	lance.yang@linux.dev, baolin.wang@linux.alibaba.com, 
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev, 
-	youngjun.park@lge.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, pfalcato@suse.de, 
-	ryan.roberts@arm.com, anshuman.khandual@arm.com
-Content-Type: text/plain; charset="UTF-8"
+	t=1788331402;
+	b=B6j85cV+I8Wo09hx0vfaM3I9/CWelFFyLlgwB0w3BSxiQthHgOUzAJ8/2oKsYi9mXLItuB
+	0JLh0p/VogBkUs1zlEdF5fweL8wI5EcJBM2aXD0DYbkrlTKGkxvAe5FEs2YBk6mLLzOlIq
+	2jYNQFCmQKPMbj3qNhkvVFs1D8AsVgQ=
+Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hZY8K4nwCz3kRHS;
+	Wed,  2 Sep 2026 14:43:13 +0800 (CST)
+Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hZY8J0t11zB2MsD;
+	Wed,  2 Sep 2026 14:43:12 +0800 (CST)
+Received: from cncheex05.Hygon.cn (unknown [172.23.18.115])
+	by maildlp2.hygon.cn (Postfix) with ESMTPS id 9BC1936F1F84;
+	Wed,  2 Sep 2026 14:39:19 +0800 (CST)
+Received: from cncheex04.Hygon.cn (172.23.18.114) by cncheex05.Hygon.cn
+ (172.23.18.115) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Wed, 2 Sep
+ 2026 14:43:12 +0800
+Received: from cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d]) by
+ cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d%10]) with mapi id
+ 15.02.1544.036; Wed, 2 Sep 2026 14:43:12 +0800
+From: Jianyong Wu <wujianyong@hygon.cn>
+To: Peter Zijlstra <peterz@infradead.org>
+CC: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>, Chen Yu <yu.c.chen@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>, Dietmar Eggemann
+	<dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, Ben Segall
+	<bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin Schneider
+	<vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, "Shrikanth
+ Hegde" <sshegde@linux.ibm.com>, Phil Auld <pauld@redhat.com>, Andrew Morton
+	<akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "jianyong.wu@outlook.com"
+	<jianyong.wu@outlook.com>, Yuan Zhong <zhongyuan@hygon.cn>, Huangsj
+	<huangsj@hygon.cn>, Fengyu Wang <wangfengyu@hygon.cn>, Zhiwei Ying
+	<yingzhiwei@hygon.cn>, "justin.he@arm.com" <justin.he@arm.com>
+Subject: RE: [RFC PATCH v2 17/23] sched/fair: Fine-granularity NUMA balancing
+Thread-Topic: [RFC PATCH v2 17/23] sched/fair: Fine-granularity NUMA balancing
+Thread-Index: AQHdNpKMDbSLcq9Yek+pOPkvBmkkCba5LN8AgAGoa8A=
+Date: Wed, 2 Sep 2026 06:43:12 +0000
+Message-ID: <cad0ece3700c4ff894c1d6d26fa24a77@hygon.cn>
+References: <20260827122816.756234-1-wujianyong@hygon.cn>
+ <20260828020731.785556-1-wujianyong@hygon.cn>
+ <20260901124736.GI776954@noisy.programming.kicks-ass.net>
+In-Reply-To: <20260901124736.GI776954@noisy.programming.kicks-ass.net>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [172.19.20.45]
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
+MIME-Version: 1.0
+X-Stat-Signature: j7j8qftx77zufjk59p1ymaqgieutfgo5
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C65854000D
 X-Rspam-User: 
-X-Stat-Signature: 8djwuk6cer7p4wc6p96ntqg6jzn5a6qy
-X-Rspamd-Queue-Id: 78EE7140006
-X-HE-Tag: 1788330590-320032
-X-HE-Meta: U2FsdGVkX19FxCBUsiPDqm6LoqKY4oJo9stlGGP4lTjD+1FEgXTGchZzAKIGWisg1JpEMR09lqfH9e44cqWWXvN8Bv+i405vJd1iCOZh8dB4mu5L8WPc78qZJ0y10mmM0vok88VXGOQmtD40y9QraynB//ByMEn2rsUID4Iaym5goThazFqCGgXf6HsW64xko7YaM2QkEIe4vLEDkIys9mKev6rBU3ziFBS2tIo8I+hEItUD9/P39l6Kn9kCXRGAoDd5SiFkLSeTIH296m6vQbO1fBWrOqiBvRAG/f1S4EQRZ/O0mNYEAVOFWvro4gtwT49NhQ2tOjypoJTCT1dtljrUfYrvKfynW/Gw0K+GrUZPSVq8VE7E9hqMvzXzP1fEL6kqlFR/gDCrtPRr9HoKNsEmdrgbzmfXnnxJOv7k35wKVf0/4MZlbqFP85FSe+AqU0xb2BDANul83i8TmcaWfL6AW71uC+fnS7myxP1B0PTMkFjNkrDmkEub2b/NF50m1tdxT9uRP3koZABXI5ySsxsoxh5WMYC+/1od2WUYhxD/msgj586WFKR2+Vc/AqGGuYBoLkhOFpPdGOZEsP6l3bGINl+FV9S+GlEZnJK7rdtb2Y3eyeaE+s9dKAzgSaCUSn78qRsDs7P19bzUDTkA0lJy5brh4jo9QTbCfyl8B+m31Tb81kCDx5H9yZ0RqC9I1am9dgVY3c/xe8R0i9scko5+XJ88bX9zqSn/puXZ4Io6gD3pUzsd3WfKV5KkdsVRvIMa/5Ocg0E7y61L4p5kE9uVKMt9SBiDOQPG36SZ9B+fp8wcrxIYKFp/TrkDocrNftcS9vJhDqo/po7rpUKPjA28W4LuxcDcUdU/bdvwtCagnxiKMOpyKPyP/iBCiwNsaOQrb/oquJc8ae6W7XIqU/632iJ30MX/MQa+gZuIC2sstEX49Z6FIrVeLDYskhUUtMq689Pm5nkmcMSZw1x
- DvfrJ4rw
- clocdNmJjSLej2a+sz4+6uzs+42gB6y1+3ttE6k7usDKC4nsLT7t7yOhMf53Nl0gnWleW0UpKNvkn76dnMgPXE4Nz7bCgR0szGnsXq2luZoUvrrSaLrcYvhZvVeKiKcKEYt+ibn3RUQEd6VpSDbIfBTITCd321vtVDmLCeEkQ9V3jDD0WNULfeqtkqhC1GgmMo73Ut5StMhSuNlDitaiWhtdENNLb0LywEKjniO0mQX3SD7bNYMG8jODEO9YZkuLr658H7oxiqi8ojxct0gA2ybRpApBTVbc4QXs0idi+tCSt0yQK/ScfCnjpPlkr2uC4jgbbcJ090LSH/SsFfa4v3SnS9A==
+X-HE-Tag: 1788331400-36242
+X-HE-Meta: U2FsdGVkX1+USAWE9RJA+w0kG7FnnSiImgIneG/BUVd1VNAYV7c+yQEcT2Xy1I/4cI7o1uAbBBAWtLVLMak1PNYCe84RclRoyZsJmfpo9imO3K7ms+76yhW9yUKti5ED0/Wf0ME1cou00KrmTV5uGJlX4LyXVQgkQJyfshR55D2dqWySsRHT+O7bv/Lul+aoxa/MEypyZk2aQ08HUFr0FPtSZFvHesbviRepDQar/qCztQYWW9YW3gPm3OJsSt68d3NrRvcC/5Gan0aJ9wgU/pm7xzrY+LSGTdumr52aGOucyn5/XxOKVtS2Y+vWct/lrYD7uJGUQTM3gL4aFJY47hi7PSxe01Efm4MH5fmJIdnYJWmTpZ0vHEiTiR1L7KxTa/U3ZjII2cnhIHfVcW+R9mSbqGQlI1jX411FcRqTT6BfvmkiN4S/iTBgZPSPE26DNG2G19+5xgUU4WGHi92qZCpIbF/yBC3to/uujF9Ii0bnHWkszwfg2Lf6OmMQWRoZo4/Fx8Djgyhbv0wN5WO8UplBPRGW1C/U9wzNism+vTef3Fh7O0qujp8pBnPWPggHfLJdwyBZj0emxy3UXlIXdyTuQEV/mUmrtgXsMhv8FqJ8vdlmqvPdd/CodJ0tLOKGoDhUK0iSxLhaKvWGl1N0iRZOcJOecRXp/XqLWVqjH8ya22IukgabekD01KRjkAxb8pgvrgOmoDhxDoFEok/kjSnJaUTFr5awj2LwCLEIdkbU69un37eyDZ9i5RDyzCXNFgfyImNYKdqkjsFB+f/4wAzrzrxlG/tFlqu1r/56ricT+lVnZhpf+m8uihXIs4oHk6JEteBwxQErGA+7x4j2ukjrni7u3v0QnxjnEJmMTYqwwhgNVtkWRlfBjLbrhyEmdYABsV/qh3ibf4RHFL2AFmNMrAkjOf7mPyqqByHZGdFGLLmiF4VFgD1Jqc/Hb+u47zNIAQGgfEm8E+lShpl
+ TPB++WOP
+ jPoirlQPWB9dKfvJPVbTRsAmtYzoQHTInWf8O81Ry+yHA5A+SoynvBnMW7GDK+aWB9Vk5eSNO4XcDkIhMgk0eFgx/0pQ+9gt8v5hw6Y6acjz4f7x9LHWP0WCBy5caFxYfzn3dAQoG1m4SlKcYNrctw6/pkfYzhI/ucFwlKUKqqZbzADDQwga87uERw6mhMnc7+gnVDfLSAkU6894xctYAAsYfDU8VpBdmz8ThBk89012jY0h1pNCsJ4O/lPNXD91a32IdHuM+c5PvW9ztOOoNtCtgSZb+sUcik1QSJharJ64BbJs8Ha3Z2tyZC+CrYqh8XjojcG80JELVVD135sttH7SnKF/LVTycHFrw/TOaXzpGobT+/kvQ7HLA7CIbHUXIQcphiWoN8Yper1SNKatKstWn6+/iPVMg6+FRneCGP6vqJt3iSFco8GeihFO1+4YgpcFpXz4jrNQVeelc4oYI9Hk7/9iH7ddQlkjZUX0h+jIES69l/SLtHRl4Tq/G6lCH9fJ/iTOtxffZBYWeWj6vuOoOBkDDXS8+OevrpiVC10QZ4BGI3r/yViYdh9jx9MdPz5UwdQbmY4FbDN6pkyMaE9TPACMRDYDCjYYOvXhQ1tgcOJY6iMh1PahIuTOZFXxoaI5mMee56hFJhVotYrLgOkaCOwDnTAGK3ydjvJiNAKBnvefBOqKnfgwxGuuGo8x9fuxPqRrztf0dS/KA6ghbP1Xo0qU6OSBjETiE/1R3TJwHehwyQzMz/25noBuoj/oHAGKiMzwUFRlDIdZudnMfZ6i68chXDEx19aHg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,27 +112,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 1, 2026 at 2:24=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
-[...]
 
+Hi Peter,
+
+> -----Original Message-----
+> From: Peter Zijlstra <peterz@infradead.org>
+> Sent: Tuesday, September 1, 2026 8:48 PM
+> To: Jianyong Wu <wujianyong@hygon.cn>
+> Cc: Ingo Molnar <mingo@redhat.com>; Juri Lelli <juri.lelli@redhat.com>;
+> Vincent Guittot <vincent.guittot@linaro.org>; Chen Yu
+> <yu.c.chen@intel.com>; Tim Chen <tim.c.chen@linux.intel.com>; Dietmar
+> Eggemann <dietmar.eggemann@arm.com>; Steven Rostedt
+> <rostedt@goodmis.org>; Ben Segall <bsegall@google.com>; Mel Gorman
+> <mgorman@suse.de>; Valentin Schneider <vschneid@redhat.com>; K
+> Prateek Nayak <kprateek.nayak@amd.com>; Shrikanth Hegde
+> <sshegde@linux.ibm.com>; Phil Auld <pauld@redhat.com>; Andrew
+> Morton <akpm@linux-foundation.org>; David Hildenbrand
+> <david@kernel.org>; linux-kernel@vger.kernel.org; linux-mm@kvack.org;
+> jianyong.wu@outlook.com; Yuan Zhong <zhongyuan@hygon.cn>; Huangsj
+> <huangsj@hygon.cn>; Fengyu Wang <wangfengyu@hygon.cn>; Zhiwei Ying
+> <yingzhiwei@hygon.cn>; justin.he@arm.com
+> Subject: Re: [RFC PATCH v2 17/23] sched/fair: Fine-granularity NUMA
+> balancing
+>=20
+> On Fri, Aug 28, 2026 at 10:07:31AM +0800, Jianyong Wu wrote:
+> > NUMA balancing currently consists of two coupled components:
+> > task migration and page migration. These two mechanisms work in
+> tandem.
+> > However, task migration may conflict with other subsystems such as CAS,
+> > which aggregates tasks solely via task migration. Conflicts arise when
+> > both CAS and NUMA balancing are enabled simultaneously.
 > >
-> > Hi Dev,
-> >
-> > I really don't want everything to become a top-level header
-> > file. If these are only mm-internal things, could we move them
-> > to mm/internal.h or another more appropriate header?
+> > This patch addresses the problem by introducing a fine-grained NUMA
+> > balancing mechanism, allowing task migration and page migration to
+> > be enabled or disabled independently.
+>=20
+> Sorry, but this doesn't make sense.
+>=20
+> At every point NUMA migration should take precedence over LLC. The
+> remote node penalty is much greater than the 'other' llc penalty.
+>=20
+> It is always beneficial to get tasks placed near the memory, and if
+> tasks cannot be so moved, to move memory near to where the tasks are.
+>=20
+> As a secondary concern, it is beneficial to keep tasks constrained to a
+> minimal set of LLCs inside this node.
+>=20
+> Disabling page-migration or numa task-migration separately completely
+> wrecks things and you might as well just disable NUMA balancing.
 >
-> What do you suggest? I had it in mm/internal.h initially, but
-> because I had to use the helper this time in patch 4, I couldn't
-> do that. The helper will now be used by mprotect.c, rmap.c and
-> rmap.h.
->
-> I can keep it in rmap.h and make mprotect.c include rmap.h too.
 
-I=E2=80=99d vote for this approach until we find a better one :-)
+Understood. My intention was to avoid conflicting task-migration decisions
+between NUMA balancing and cache-aware scheduling. I agree that separating
+NUMA task migration from page migration breaks the coordination between
+task and memory placement. I will drop this patch.
 
-`include/linux/mm.h` is already way, way too long.
+I think patch 18, which folds the preferred nodes of all tasks in the
+thread group into the scan range, may help mitigate the conflict between
+CAS and NUMA balancing.
 
-Best Regards
-Barry
+> Now, if the process spans multiple nodes we should go do the same again
+> as this patch set does for llc, spread/interleave over the minimal set
+> of nodes that do fit.
+
+I think this patch set has the ability to spread threads into the minimal s=
+et of LLCs
+even when the tasks span multiple nodes. This is the main aim of this patch=
+ set.
+
+Thanks
+Jianyong
+
 
