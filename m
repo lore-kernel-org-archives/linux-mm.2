@@ -4,113 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 373C4C61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 10:01:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEF8EC61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 10:05:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C0E86B00A5; Wed,  2 Sep 2026 06:01:29 -0400 (EDT)
+	id A65AC6B00AB; Wed,  2 Sep 2026 06:05:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0720A6B00A6; Wed,  2 Sep 2026 06:01:29 -0400 (EDT)
+	id A16996B00AC; Wed,  2 Sep 2026 06:05:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECA206B00A7; Wed,  2 Sep 2026 06:01:28 -0400 (EDT)
+	id 9533C6B00AD; Wed,  2 Sep 2026 06:05:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C98546B00A5
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:01:28 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 73023A139E
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:01:28 +0000 (UTC)
-X-FDA: 85168379856.26.D44052A
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A5B73180016
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:01:24 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=1OKXC1Wl;
-	spf=pass (imf24.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 76A8E6B00AB
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:05:24 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 00F5840159
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:05:23 +0000 (UTC)
+X-FDA: 85168389768.10.AC03748
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 73B6D4000E
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:05:22 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XuUW4AFU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788343286;
+	s=arc-20220608; t=1788343522;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5muCGImxQEXCs9mgbU84wjK603R7oDB3KGXYhDYZoIc=;
-	b=a89IbkwUlSrU+eeTCGfCyIX4+e/FWABa2L4mmGAx/bdNjLxV+ILuCkcD6xznjR3i9dKh3I
-	JIR+5FecKB0tp1WKlm1RUzVfMljwwtNMiJ+DTFvEfTF27TyN7XHZOay3bA87RcL4936LEH
-	LQFGTlTIqlgYtxjo66e7Uq9kge6AY7Y=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788343286;
-	b=tqT6lVbg3edqu1rMKEKQ9hEqZbk57+tyPkHvBPV0AZshuH6+RCarPsLny3QRf0XegdKCfS
-	5mNDKKv0VG/RSzCRB8fwZe6uEw+Ct4nozO52FQfb/vSbYKDJsdO3WSYjLoyv8o2XvRnOLc
-	UElEf/VVU9rzPetwMrbBpqnr+y5qftE=
+	bh=8vWQxrJHayrwwhMkde5WNO4SONhqD9HgJXyCKA+9EN4=;
+	b=E2IK9M1v0fzZTcppVB3KFSYDVNYBhCVrTTvVbEqyEs48YI20b9EylsIOOlgPrgjP9Kqt9P
+	3DSahF27IFBzJUXagPQEj2dHhncCsBeFYCUxDvSWZAGx4acpzvHXQBWL6LqQGus8spIB2A
+	0D0rB9aVJJ6Hwgr9lam7BFAy8K89t/4=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=1OKXC1Wl;
-	spf=pass (imf24.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=5muCGImxQEXCs9mgbU84wjK603R7oDB3KGXYhDYZoIc=;
-	b=1OKXC1WlAcuXvATuYy9843J+ts23aqDRPtEBmymokcm2wcDFN7n+VLXs5YlFtuuOI17YRGOle
-	AE1kaDyBL8Psb6qsvqP6GD+2KaR9IZFlJSaA9VKKZKh4vJ8pLjxN4lSw5BvQVM6ddEVaTK1WC49
-	5AuTsqZ1V1GNz92YBNN1IQA=
-Received: from mail.maildlp.com (unknown [172.19.163.163])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hZdHw4T64znTwN;
-	Wed,  2 Sep 2026 17:50:04 +0800 (CST)
-Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
-	by mail.maildlp.com (Postfix) with ESMTPS id C74E54057A;
-	Wed,  2 Sep 2026 18:01:17 +0800 (CST)
-Received: from [10.67.109.254] (10.67.109.254) by
- dggpemf500011.china.huawei.com (7.185.36.131) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 2 Sep 2026 18:01:15 +0800
-Message-ID: <d12302b0-f0b3-4df6-963c-bf25b6e720c7@huawei.com>
-Date: Wed, 2 Sep 2026 18:01:14 +0800
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XuUW4AFU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788343522;
+	b=bWBkztGJ0BBP/aA86om/WCJwecG9KRHY1n7/h+b7ZUdlkr8DjT9BjEAITubplWki5b2+sv
+	q85RTuTNcEbe4j3MPYBD0dMggfa12EhbYxKAU2mRnNEG5vAfyM9OHvmRL0wRAbq+aI5QmK
+	WUGHxyK5SV5nLvlmUuWjEBgaYPac2X0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 99757602A8;
+	Wed,  2 Sep 2026 10:05:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14B21F000E9;
+	Wed,  2 Sep 2026 10:05:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788343521;
+	bh=8vWQxrJHayrwwhMkde5WNO4SONhqD9HgJXyCKA+9EN4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=XuUW4AFUy2dwHWVZf12krJbN9Ni/p6KdoXKlSOpUg42W5KpGAQwTxfimPF3TPllJ0
+	 6uQbZkh5TYAx0j228akBJyGcEcPjzkmp2GTnDZHYNqte5BnL/vW/TMKAlYjGHiWbEp
+	 WhDPsiiQ5uSkyp4oHeUlhrwstVsEpTthDvbp0zO8pH78F88UsyGBxMtb+W2PUD2+0V
+	 9A65BzsNs8wr7gvoFG/bUken5QZPbXpZtnQSwSokJZ1IEHFG4E4IvIkCIJa6FyV8LL
+	 tAvxNarFvgv6cuOrMyxT8vzFGOmEegIyQCAA3s1DR5VmOrZqwYu4GFmf9KOIemEDsV
+	 y9R2aBMcHi6BA==
+Date: Wed, 2 Sep 2026 11:05:18 +0100
+From: Harry Yoo <harry@kernel.org>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: ThangNN99 <ngocthang2710.1999@gmail.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, Hao Li <hao.li@linux.dev>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev, syzbot+acf142088e0182172e58@syzkaller.appspotmail.com, 
+	ast@kernel.org, puranjay@kernel.org
+Subject: Re: [PATCH v3] mm/slab: don't use kfree_rcu sheaves on PREEMPT_RT in
+ kvfree_call_rcu()
+Message-ID: <apfyeYF8IE03aazT@nixos>
+References: <20260831130057.HLukQ-zm@linutronix.de>
+ <20260831133222.8637-1-ngocthang2710.1999@gmail.com>
+ <20260831143500.x-saxdAs@linutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 12/17] x86/crash: Use num_possible_cpus() for
- elfcorehdr size
-To: Sourabh Jain <sourabhjain@linux.ibm.com>, <catalin.marinas@arm.com>,
-	<will@kernel.org>, <mark.rutland@arm.com>, <chenhuacai@kernel.org>,
-	<kernel@xen0n.name>, <maddy@linux.ibm.com>, <mpe@ellerman.id.au>,
-	<npiggin@gmail.com>, <chleroy@kernel.org>, <tglx@kernel.org>,
-	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<hpa@zytor.com>, <akpm@linux-foundation.org>, <baoquan.he@linux.dev>,
-	<rppt@kernel.org>, <pasha.tatashin@soleen.com>, <pratyush@kernel.org>,
-	<ruirui.yang@linux.dev>, <kees@kernel.org>, <thuth@redhat.com>,
-	<gshan@redhat.com>, <jic23@kernel.org>, <james.morse@arm.com>,
-	<ardb@kernel.org>, <leitao@debian.org>, <yeoreum.yun@arm.com>,
-	<coxu@redhat.com>, <tangyouling@kylinos.cn>, <hbathini@linux.ibm.com>,
-	<adityag@linux.ibm.com>, <ionut.nechita@windriver.com>,
-	<liaoyuanhong@vivo.com>, <seanjc@google.com>, <fuqiang.wang@easystack.cn>,
-	<makb@juniper.net>, <piliu@redhat.com>, <ebiggers@kernel.org>,
-	<jbouron@amazon.com>, <mclapinski@google.com>, <me@linux.beauty>,
-	<graf@amazon.com>, <bgwin@google.com>, <robh@kernel.org>,
-	<takahiro.akashi@linaro.org>, <palmer@rivosinc.com>, <x86@kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<loongarch@lists.linux.dev>, <linuxppc-dev@lists.ozlabs.org>,
-	<kexec@lists.infradead.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-mm@kvack.org>
-References: <20260826092541.3905933-1-ruanjinjie@huawei.com>
- <20260826092541.3905933-13-ruanjinjie@huawei.com>
- <99b1121d-4277-4764-8c3a-b3f6d9a47ab0@linux.ibm.com>
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-In-Reply-To: <99b1121d-4277-4764-8c3a-b3f6d9a47ab0@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.109.254]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- dggpemf500011.china.huawei.com (7.185.36.131)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260831143500.x-saxdAs@linutronix.de>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 73B6D4000E
+X-Stat-Signature: 87eiohhe1cwx1h9jje7roz5ncq7w4t98
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A5B73180016
-X-Stat-Signature: wikorj5dpegxoci4c7fepq7qoy4kbod4
-X-HE-Tag: 1788343284-252691
-X-HE-Meta: U2FsdGVkX18BRQZVIz3AkKYaAJ6HsmM6OUPWpxjX2ZvFSEFLNWbiIyGkY8sqGhLfau/XE9Pn8L4JQXlUV4U7BsreoubYQmXlECaGaJfoiPukC4WWFn2EprRXuyN8KGvO8DtxzDlrq+hvlLla3LLK0q9XuyMvy8USlepu7EXgfBD7oXj04l/R3PTmzK/79ef/j5r0WIX+VwPYj/Ctvm4SaR8QnWHZ6dMiIllreIG70dXhlFN1gkVZoH3SzJ/uBf/sYJ+kQ2Zf/kBhhiJwCghjAC5hgeNsJ4uk/5LJtv7UXCZ9ieBbJ2hiNyRWAafdK+yUjrCRO2pNVeAZ0IDpvObOSUFmn+uxi+Dzv5uL/OGuaC7DvytGx8qTrsL5d2A/UGkWOjbgbgssS8n+d3VVBPMtXG4+DwMyZB5hY+DVX22ZzPh7EEmnrEcOYakQKlAqBc+6ftG25sLBW8MpSUbfx6hB4SVIC961Ov/fNl+unYmbRrWGN2nX4Eil6qmKI5sl+QX967HAHlD+R4C41O2HMo6Th4bR+PXZD0LSurfcoKzPgg9HKYSlEt6TCcWZ9qmLxa4jskVesZ4b/QKE0AF7akAFqIpt3k9oeCq7SCHa5Wu5myhYadjolMLUE3Ml0OC+Ao2QV2IrQPIDO4hGAQFaGYEiNNzeh2JnCEX9Aakc+mhwzwoRQLlXI6Ez0Rk6Dv61Q12ZIxvUPeJfoDF4fu9E0pFpioC5H1YrD2HsbvoWHzxLi2cNGpqqBJ66lc0alfgxcYlJO/CibiGfMsNtnis5vp7tSkxyq21uWGmstkIgwy0yVtVSkEs/ZN27mMg/7e1IrHTePhPibvLL6RGo1H/Koev64ehx01FfM2jQUcyTfYqsM0Zwr+yRMKnfJCvUlVFbR3eQRki2JN0YxbItLmAkGUoxuOtsgMBA5tBA3lepzeUbxjRhy6LgfFYAdszEKbk71od58iG55Orma0WvE+OCbAk
- 3VUU3mCC
- Sx1Qk2fZ3lgL3Cd87BiiNV9t9i2fCyCJW3ACbEdFonQGRShfGqElaCJVAcrDeXDWXNMsG7G2xlDH38enTzjf3Zr9GfRdVIu7z9aiEDQ/1dQiAxb5thjKXBHP172rY9AoxuAhJIIo65qWf0QSDxibXHdHxk0VkzsUXIdaiib6R8iTl7OalxhOudbjqlrbbKFxHi2zRjS5PbJ67JAcYlmAe+jSUDOZh2K2KdH4A6tjGlKZdtFO84qjMvQwRJmIgO0epubDeOD5SwNN/Q2h3NIe2RTH4D6lm1eskOEHRzBeF0JVoXKqZGZ1M663w1NT3m0FOhtIPtyGsJ4llQrFAPlXc6Yck2IDaUR83WUTcHefz3X0omxYO0uAHaTgBcfsLMRsErFJCSPHzzusRRqPMIdxr7gdPPREW3ycontPKic+Nx8+GvzblVf3iU+3nA1pW/IYSz8ujWOYsEovsaU2omeNU0+GXlxO+Unb8OCXrTZHLvZVCrEw=
+X-HE-Tag: 1788343522-43663
+X-HE-Meta: U2FsdGVkX1+EfKzLxiEW70eRbDWQVL2nTtGylXNrPDHp7k/ecHnIH870O0CvGqAWEn7gqqCRByDePbkwNk/SZxGyrWFFi0wPw9YXojl9rWb0BKSBLs9z8oqvKCQnyknQ5eKrYy7dxiSh1kBfSe5bSZ7PoIqH+wMEkFt76HOleqVPAMuwEbZOR0G7ug7PqNgpyJJb57aGBheuYMdFERuE1Zfpn1uv4CrmREx6Fgg6xYBfUwH57GI85Z1iR8TAunvgKSEdf5JAsXSiESL0cC7X1O7/nmOgFxc8OPZHhyHZGsJR/IC0+n6k7BHgziI00T+VzUdKFOOUHUijXBICj8IvwC9yAACJmNQ8hs4pb7iX8u6gfe+cBSuD/UegKt3VHRIHbrBD9/HTAoIYeoc2ODl8ag3Vha5sRM54Gac6LG4BIHOPBZpQzwnmYuYGFkaAxiA2mHfvNmI/ZBuIlhmY/e0YXnBy2Jz4Y9Bp2kmg3xo4p3Aroe2T80C4tUBCK7/ODZE2psty8oheFpGIh4u3OYZd04EsKWquQHrsAZQuQKEUZ42QdbpY5l7T1MlgAzy7d7LBVsUDjl7uSuS8cF3k0miVTeoxl7o0IKWNmJXozykueIK7MFiXutaH5hi65fLzseTpNi7uDuQu2MxJjNtwhhtbvEMmiQDihEZN/RvngRX3c+e7ELOdVPMFU/y46SDn1FpsJi9fn1k+DyOdBQnK5B5I/KvU/jCfG8IgYqPZy1tRO5JpCFXvLAbc9N5WdamEheHfTPj+Ox6Aca07qeWWi8EOYsCZzAKeWbIf5r7s4DJ5PeYBdGS6LiQBfxmMJ1xQahI0PWXyV2tmcU9QtM7PNeWSJQsbT2JYwK1J9Hvh+/clQrB0WtJh+2oMeiKIQxNtBsoj7+pIgcu/MgJ5Uk6iFS7A/r6N/BfV4hqp6uBqVIvLuNzNlm3tTyGZ4eUQ+hsk5GpLsRgyrtcwrkxmthpNvxA
+ /ru6/t2C
+ 1Nr/CEU8DBfUVPqKTfDgHBUw+DAue2BpNPW4BYWtMSa0Mz2TxTbJTcdePh2AokGA5XqvuKe1U9SDJe7J/grM8fSoIzYWtMfKl583qvypHmhzj/RSNgeQCaPvudHRJSTDaByaeySecI8WUtwp22uglzrvRX8ov2sQh2PGPg4IGaW9nXI3VSl+ipQbY0kjqLtmmRjfieS1IUktViNQN7DhkV44dvo6B02F34yMpBHscNmN6Ko+veNZOrR8J8pWR17ak5viI3Gg9haJRMVxl1lW7KYcFnqQvgEI8wWAMWllxChPT8eMH7wiJcVeRnuDxr85db2DUxdTYHDiRdTR2rZQiLXdbt+OlPn3py//k7qPe4R+U3vzEzQ1jzhXLm61mmi5CuM861pluhjvQZ30mwrnNQCyIHVYu9zfoyWin1C349BtAYjhSCm5GbPSlPw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,63 +98,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-在 2026/9/2 14:14, Sourabh Jain 写道:
-> Hello Jinjie,
+On Mon, Aug 31, 2026 at 04:35:00PM +0200, Sebastian Andrzej Siewior wrote:
+> On 2026-08-31 20:32:22 [+0700], ThangNN99 wrote:
+> > --- a/mm/slab_common.c
+> > +++ b/mm/slab_common.c
+> > @@ -2034,7 +2027,14 @@ void kvfree_call_rcu(struct kvfree_rcu_head *head, void *ptr)
+> >  	if (!head)
+> >  		might_sleep();
+> >  
+> > -	if (kfree_rcu_sheaf(ptr))
+> > +	/*
+> > +	 * Callers may hold a raw_spinlock_t here on PREEMPT_RT (e.g.
+> > +	 * set_cpus_allowed_force(), whose callers all hold
+> > +	 * task_struct::pi_lock), and the sheaf/barn locks are also taken
+> > +	 * as blocking locks elsewhere, so trying them here creates a
+> > +	 * lockdep-visible ordering conflict. Skip sheaves on PREEMPT_RT.
+> > +	 */
 > 
-> This patch makes the below patch redundant..
-> https://lore.kernel.org/all/20260826073527.21487-2-
-> ionut.nechita@windriver.com/
-> 
-> I suggest dropping the first patch from the above series and including
-> the second patch from that series in this patch series with the updated
-> comment.
+> You mix up things. A raw_spinlock_t should work in general and should
+> not cause a problem. The task_struct::pi_lock is special: It used during
+> wakes and the inner waitlock of the rtmutex acquires it even during a
+> trylock. For PREEMPT_RT we don't want to acquire any locks while the
+> pi_lock is held.
 
-Agreed. This approach makes sense to me.
+So... even can_spin_trylock() is not enough handle the pi_lock's
+special case.
 
-I will update it in v4.
+Probably we should make can_spin_trylock() check if current tasks's
+pi_lock is acquired, to determine if it's safe to call _trylock()?
 
-> 
-> - Sourabh Jain
-> 
-> 
-> On 26/08/26 14:55, Jinjie Ruan wrote:
->> Use num_possible_cpus() instead of CONFIG_NR_CPUS to calculate the
->> elfcorehdr buffer size, matching what crash_prepare_elf64_headers()
->> already uses for the actual header content.
->>
->> This avoids over-allocation when the system has fewer possible CPUs
->> than the compile-time limit, and aligns x86 with PowerPC.
->>
->> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
->> ---
->>   arch/x86/kernel/crash.c | 6 +++---
->>   1 file changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
->> index a3bf786286d4..afe2aea19f47 100644
->> --- a/arch/x86/kernel/crash.c
->> +++ b/arch/x86/kernel/crash.c
->> @@ -369,9 +369,9 @@ int crash_load_segments(struct kimage *image)
->>        * maximum CPUs and maximum memory ranges.
->>        */
->>       if (IS_ENABLED(CONFIG_MEMORY_HOTPLUG))
->> -        pnum = 2 + CONFIG_NR_CPUS + CONFIG_CRASH_MAX_MEMORY_RANGES;
->> +        pnum = 2 + num_possible_cpus() + CONFIG_CRASH_MAX_MEMORY_RANGES;
->>       else
->> -        pnum += 2 + CONFIG_NR_CPUS;
->> +        pnum += 2 + num_possible_cpus();
->>         if (pnum < (unsigned long)PN_XNUM) {
->>           kbuf.memsz = elf64_phdr_size(pnum);
->> @@ -429,7 +429,7 @@ unsigned int arch_crash_get_elfcorehdr_size(void)
->>       unsigned int sz;
->>         /* kernel_map, VMCOREINFO and maximum CPUs */
->> -    sz = 2 + CONFIG_NR_CPUS;
->> +    sz = 2 + num_possible_cpus();
->>       if (IS_ENABLED(CONFIG_MEMORY_HOTPLUG))
->>           sz += CONFIG_CRASH_MAX_MEMORY_RANGES;
->>       sz *= sizeof(Elf64_Phdr);
-> 
+> What about
+>   
+>     kvfree_rcu() is called by set_cpus_allowed_force() with
+>     task_struct::pi_lock acquired. On PREEMPT_RT the local_trylock()
+>     usage below will acquire the waitlock which must be avoided.
+>     Therefore avoid it on PREEMPT_RT.
 
+-- 
+Cheers,
+Harry / Hyeonggon
 
