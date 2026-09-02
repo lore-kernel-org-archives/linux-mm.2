@@ -4,106 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6086EC624D0
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 10:41:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88CAEC624D0
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 10:47:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46C936B009F; Wed,  2 Sep 2026 06:41:54 -0400 (EDT)
+	id 86D266B00B4; Wed,  2 Sep 2026 06:47:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41A9E6B00B5; Wed,  2 Sep 2026 06:41:54 -0400 (EDT)
+	id 845106B00B5; Wed,  2 Sep 2026 06:47:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3314D6B00B6; Wed,  2 Sep 2026 06:41:54 -0400 (EDT)
+	id 75C8C6B00B6; Wed,  2 Sep 2026 06:47:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F59F6B009F
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:41:54 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 85644C016C
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:41:53 +0000 (UTC)
-X-FDA: 85168481706.28.8E429F5
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf05.hostedemail.com (Postfix) with ESMTP id CD184100005
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:41:51 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b="3aLE5/+J";
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=o0FH9ot0;
-	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf05.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 53D446B00B4
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:47:39 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E3FC31A0195
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:47:38 +0000 (UTC)
+X-FDA: 85168496196.18.4538F17
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 1F8FA180002
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:47:35 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ECMn3hjr;
+	spf=none (imf06.hostedemail.com: domain of BATV+92e025b455efe38d25f3+8410+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+92e025b455efe38d25f3+8410+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788346057;
+	b=bbcHi1I4Q5ZhQwURyKQK95fr3+ej/F2XwhtrDbP1qYgJWgy4+34IaQVrkexGLyPErFG7VY
+	Z+CXW6CsGZGBxqO8+K/pmZ7X4uUdyX/QwLyO0E3o0mKK0sMJhNynz+jonHvqaEsYXkD1s5
+	e2kUzQa3QIxZyMbqtQg0B1Nl1jA1Oh4=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ECMn3hjr;
+	spf=none (imf06.hostedemail.com: domain of BATV+92e025b455efe38d25f3+8410+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+92e025b455efe38d25f3+8410+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788345712;
+	s=arc-20220608; t=1788346057;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gE3q2mnuqp4VNjrudaIOU10zmf2ptLy8FzzNkjTFj80=;
-	b=qlUGzugxIP25zQ2gKJiCC6bP0MSRNx4cYspDKkB0FjgBSDSTWPhRxyFupCoQ4MqJqqfjXP
-	xbvJv4wrC89Mv0uTz1WL0+L37mjPW4lO7Rct5mgnlHUFS3oQwydD0IRu8sYjYXLQgqj82q
-	B7VGmHJ9AXkVTzrv6d6fhckQf0bEjK0=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b="3aLE5/+J";
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=o0FH9ot0;
-	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf05.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788345712;
-	b=Xfqob6pya1y6DKdnP0pjA9jKMCczzgjmj+Mlxu7XETieEEeEvk1612k/KkZ+VkOa9pmc1Q
-	Aq0GlTVVJ7yJqlGU+la28M3vJf4lLa94sRhfldCsn1YtlROvPxMOks+0emuY+w5jGKRpLg
-	gzx4mk35jRw8AsbSNKQveUXmJ0asgR8=
-Date: Wed, 2 Sep 2026 12:41:43 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1788345705;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gE3q2mnuqp4VNjrudaIOU10zmf2ptLy8FzzNkjTFj80=;
-	b=3aLE5/+Jn9kHSSfphKTcjdpJgFAAB6ldENs61d6YnWSU8O51QNwxrMJa5Ci6jfH13Y07DW
-	o2uKkK9kGBynnpJyOAT1VjJpQ0v776RTbgOPYLzB72bhe+86ECX5LQnrxT3mTDflE9meAI
-	UiaztD/cdw472KOdFUhLLWjFGjLzlu4Y/3Dc02wMttwM38daq0htwYk05M5t1185Ys9ui7
-	LbAHj++23iL41iFHD2FLXgeQUQyrc2SDaBzKG/w2344Zz4ezWKt4sJokS4QtWunqJf9Hvd
-	Tuj9a/lmZiujhoXkNsufwdBzuE7+IaAmNTCiGC4QmxuaIsUK9s13sZUzs8IZ9w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1788345705;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gE3q2mnuqp4VNjrudaIOU10zmf2ptLy8FzzNkjTFj80=;
-	b=o0FH9ot0MYitBBSOsIppqZaOeaITX1sSjB7A4OqOE6H7yx2LjGC2RoL6OZjnJeFkz527zD
-	6+Ku5WZ/S/jm1WBw==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>, Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>, Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	syzbot+acf142088e0182172e58@syzkaller.appspotmail.com,
-	ThangNN99 <ngocthang2710.1999@gmail.com>
-Subject: Re: [PATCH] mm/slab: disallow kfree_rcu_sheaf() on PREEMPT_RT again
-Message-ID: <20260902104143.j8BXrjKq@linutronix.de>
-References: <20260831-b4-kfree_rcu_hotfix-v1-1-4f0fb882638b@kernel.org>
- <20260901073339.uyKHXWCX@linutronix.de>
- <47aa459f-27d5-4b2f-9eb9-36ebca63d890@kernel.org>
+	bh=Qt/W3DSxMQKIwG+yUDdW7Q2R2X7cicnF1/L0NrB0XIs=;
+	b=4H1akX2BuUcisdaaUSIrOJtH6LJbcd8IuwRzUUSFPi9D4Eab9hG4zFvHZ8r3Ppjw1nmnFy
+	e3xAIRzjP8wMURc4Q+stub959yt96lIfxZnKZZqoqKWCKmUuKiVRiqvFgZ+7HjiG/OCXUD
+	Yq9Rk99PzS6FJKp6kjuWTPpz0HMItjM=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Qt/W3DSxMQKIwG+yUDdW7Q2R2X7cicnF1/L0NrB0XIs=; b=ECMn3hjrfpjO+4jRc0BJUqRldG
+	C8pEzEh7EAe2mFlZ6f4a2lleEZ7PEM+QsgJr346Sy8Fy/yhlby7UPNX3JhH1RG+Y5AglE0pJP1FQy
+	wEj9lzPR40rM2WqAV0+LcLKb0PSBk/tMtNVuqB72N0v3kDMjMuem2dvLAxeuBxP+RsmhRb2ArqGUw
+	5UgHEtIj9vrq/1vzPHMU3avyhWXV/1RKw9VnXlqJPiLcjnE2RnjlGo/miLnynKIaZ8l8J0zIKOg7r
+	BY0TlTJCCVDapg6RVFC8yj5UgAK9J4pV2nD4kZYPaoKZv5FgVy8YG3V9NISPx/tukGxMyTiUVd8AV
+	zHiq5Pow==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x1iV8-0000000EOUL-1SWG;
+	Wed, 02 Sep 2026 10:47:30 +0000
+Date: Wed, 2 Sep 2026 03:47:30 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Salvatore Dipietro <dipiets@amazon.it>
+Cc: vbabka@kernel.org, hannes@cmpxchg.org, willy@infradead.org,
+	abuehaze@amazon.com, akpm@linux-foundation.org, alisaidi@amazon.com,
+	blakgeof@amazon.com, rvvandan@amazon.com, brauner@kernel.org,
+	dgc@kernel.org, dipietro.salvatore@gmail.com, djwong@kernel.org,
+	hch@infradead.org, jackmanb@google.com,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-xfs@vger.kernel.org, mhocko@suse.com,
+	ritesh.list@gmail.com, stable@vger.kernel.org, surenb@google.com,
+	ziy@nvidia.com
+Subject: Re: [PATCH v3] mm/page_alloc: avoid direct compaction for costly
+ __GFP_NORETRY allocations
+Message-ID: <apf-wsCj_5QvAPcV@infradead.org>
+References: <7ddb704c-76a9-4071-8969-06fa1403eb07@kernel.org>
+ <20260827092100.3988386-1-dipiets@amazon.it>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <47aa459f-27d5-4b2f-9eb9-36ebca63d890@kernel.org>
-X-Stat-Signature: 755ohk8cjy9gjnctg9pg84mmgxpxuztr
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CD184100005
+In-Reply-To: <20260827092100.3988386-1-dipiets@amazon.it>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1F8FA180002
+X-Stat-Signature: ugguijbjndzt63megk8synfig77q5iqm
 X-Rspam-User: 
-X-HE-Tag: 1788345711-627939
-X-HE-Meta: U2FsdGVkX19u1ZsuRRRhYnpiZznLRXbOIjTbMdUZX2ENWxrw3sgNymkmQqcAGw/KGvzpBv672tnknaof+1ZxhaSiUdRKpQaT+vSnrowTQ1YGvZA2mNy0c53v6zo1dfOtXahwTzvoJRztxqHBfFodbeuQUqj7EMe9IuG/rrtdeuGJTR/jREWINg6EJJihigyybFMeUUw4o+TfverzDoyo7E9oxEr0IGyAZobnDbXY1FfXun5OgzIE2b9SI9SLmBTwMYn2KF7YZ07I6aIpQ0phgPZBtcY9NCguXg2sCZcbySVkeHM4DLxa8StYw2zcHB96esZXYtHqi1oWXTrUMOvCGe6U6NsqhDDAXF0IAPbGX8TVYZLq7DWzIJMXoQ9fHRPb7uO53m7AqPsn9aqbWUVXHIAetYCrFRmzy6hv6nTLpCAoVjU6vI81c/1VJRjWUQC5+SvhKSA3F4WfdP2rmfpvLD2hfiUmO8YsNdlJ22pIFGKh7n6jQmmjwGTJ/p9FsdUKoF5dtfsd3ZPUUT3czBXW0G6gZw8Ztf6g6iTK98l0Asu7d3iPn1jOlL0yj5BC57yno5NnfS8yw/xyjjzJ3jqWasgnwDDItWLOOmySwxp+e8qBJvIbRa5UVrkPv21tdULYalLX4N0oLQi0r0Ot8egW2Z80xhFwJqhe3oAjnRHzN6tqQSF+eTajUF+dxBVRjjePGb/yI+ykC7LfHHp8aadzFva5Lp7jLQRqk26H7XVx56HMSCrRjscNlzzi4h9h7Ns2NjEp+OHaltR7reEEEJ/u421mCxZYpIJI91gwnCO+sNz+IXcm0p55cL00b0R1Yh3BlGSVmXYxKQAD4l/XSZz7Gmkt+s2/eb/hCjRFDB95rhBqa/LEqh/bGwq8PLXCW6eV4AiIr3Tp3BwZVyJwRVibdkdkZ2UA37qJp+CesF9XjyCxv9c/R1ssD4aGXQPPjYbY4e/ecDPu5OlSE5PUF86
- EtYLnLfO
- cpQa5jE9TeWsizTYk8jteYyTUfeeUjbF2zOTclSRdAFzuNGXFOhOMbZ4zjrx9iIlLafMP8Wy38HguOgwDLM4Tlp/6cmM4DJW7PVfZQOMSjGuWFxrlcFpqtCpg7qZJpv+lu3M3g3T20pocyin+JiJZIBRzqSIU+vImNPgyFCtDOIBmxishv0j0qpCOz3pyZlj/RypJFse8tUtEF/8inktaQA7hJ81BmxTG/zjiIOYPstltk93DvzcqLWzDXhC0IkXYYN4FRmlLxSjDi9GePEP38JngP8t1KK17Qrv1nJ0DiEhAby2aPnvLMDfiOx2UZ+6MyPIOgeuMn3LTRIJerrij2gWszZioxqZS+b+sjrwD6olx2SE1fqam3Gpp1qK+6eWlwzrILc7S5ZQKt2U=
+X-HE-Tag: 1788346055-207890
+X-HE-Meta: U2FsdGVkX18G2cZak7UNPzbDdvLy7lN2XB4pNoZIy0pV2MB5bwJOpazRgx8hPH+p/LhVGsuf2vpQZDEV1+NbLSLdurN+vG7Vzyf2DLAtmGReS/9c3Owz2fNEeW3Zl8lbDpXZ8dQFnNA8IV/oOvEMW6JwQFq5a+5tSHLpR3pQkoeAc6wujpSK3TGPu2V1XWr0eA5ky7UKj/qEr612u5AmMOKUYQi+93qfQziwCcCfGsgwRXSz6clFu4myVo1Ka3CucxIfpY8OvRh6LZpJgf+2KbSSbgX6sAjYVzvSVrIpL9TaDAs+Tf2FYP5nADfvLld8Y83zXt/aW6oifnV4DhawRyPewrm6l85JHZCT91bwm8nJ2LO5BY6CINVQfDpwyLpi4XySEUKt7dxQl2O7b3qYviFwNGDfm6KJ8pbpt/OldyhoGBp/GDBtsNIAQRz2wEmh67nKyXhmpMT4PURE/2zK0nR8kgwHpAvTaUgyKMc2IjJrkQtkLwxEmBVPcRHZbxYXlwpnwHEFTLz3I8bb8Gk6JH/v62VEnyqWf86O9S4Il4rLl1VcXwvv/eNd6moL/qwZWA4LNY0+4H9jsGmnpQB2M2JzDAtZpfKXsn/O06p/9uhq6U/rs37C8uxdCKFyNh4LtypsFZ9nsIVu1C2SGELtL8hc1CpZyQsx7V2ub6po1fk1L6oW8Tg3fOHs29zQonPNtKOTFMcxJAjithIj0ooS+cVktPyoiGs+jjj2IUeILLyG13v8FPqYUkO8QWMIZl0r5ihzepA03zteugiUqJx4YvH7V+lHpFNMv2e7s/jdf5jhWt+nB04DgdtlGywQQOnR7QH/XoVFgW5faAAdupH/mQhr6Ea7y3o+k0Pf4elfgJyE9yz82bz7suHykEzZzWxZoGgvfPg8MXk4o/vep8fLwdfbiMRlmC3dXE3AFfb6+CEQx3Z8VbmUAbxmn91sTksin1DXM833QyXmy1/la9p
+ F4BFuiZr
+ +2Z0wq+KVMmWLXt7utRZb62ck8UJS5g4ShGyPL0MGVm3cWjGnjU6W2zCC0Tp1cB2Z2BBCr8bNWEnNFMDeWXGPo+oJiwad1yUfIxRCvfNMIqM7OBUPEfb1Og1JkNcV4kTCzY3Mel2z3ZrVrkarTAD9KHQCGuBOJAEgcoSPzraxDHhoYRe5u1BNqSdS3YJnspSNyC48d+cwPzeRz5W9PID3OaCR+pVphND0GA2sBoIil8JD3Hm4qV4bDOug9VV9sxqcpMhNek2vO5VBgHe6raoj9GwzC3/ASpXE7d5+9U/AOtL+mz9v5vlaTAQg+wk0yaUa8tRFS13BoMu7x8/IqJq/whHRztyBIzDGunxf6SYXUPW5jopDkA7+jQy0QqTg7GtUAdvDfe1fJJGQmRx790IfYlYBIs759RghO2MUw2AOfpd97eQhhHAne/zp0kYoBB7E/233GIR30I9QL2mgAITs1QV5D4MTb/P49J0gXgUIQaObXWN57p+8oVkAbpD3/lCZdd0ahQWbZoUxjhpMj8Hzn/5lR5qvqW2sjSX5g/0B1J2x2/TdTnBeXfpHtDJwr7H0zRfOMatmNjfPbZBUL50nr2/HLDP3VYUrqxX96dnOuxQMvCzhx7sUDr1BBA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,45 +98,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-09-01 15:59:09 [+0200], Vlastimil Babka (SUSE) wrote:
-> On 9/1/26 09:33, Sebastian Andrzej Siewior wrote:
-> > On 2026-08-31 18:02:38 [+0200], Vlastimil Babka (SUSE) wrote:
-> >> This partially reverts commit 2a8bb29ec9b2 ("mm/slab: allow
-> >> kfree_rcu_sheaf() on PREEMPT_RT"). It was based on an assumption that
-> >> local_trylock() is safe on PREEMPT_RT from any context.
-> > =E2=80=A6
-> >> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> > Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> >=20
-> >> ---
-> >> Incidentally I have posted a RFC [1] that leads to replacing that
-> >> kfree_rcu() from set_cpus_allowed_force() but now after back from
-> >> vacation I need to check the feedback and based on this bug report I c=
-an
-> >> already see it makes the same bad assumption that trylock is fine.
-> >=20
-> > free_to_pcs() has still this trylock.
-> >=20
-> > What I am not so sure how good is that kfree_rcu_nolock() may allocate
-> > memory for the sheaf if there is none around.
->=20
-> Per sashiko review it's actually bad too under the pi_lock, because
-> GFP_NOWAIT means __GFP_KSWAPD_RECLAIM which can mean wakeup_kswapd() and
-> thus also need scheduler locks. And it's not a PREEMPT_RT-only issue...
+On Thu, Aug 27, 2026 at 09:21:00AM +0000, Salvatore Dipietro wrote:
+> 
+> On Wed, Jul 22, 2026 at 02:35:00PM +0200, Vlastimil Babka (SUSE) wrote:
+> > AFAICS both your v3 and the implemented Johannes' suggestion effectively
+> > make all the compact_first logic dead code - at least for the intended THP
+> > use case based on costly_order. It will only continue to do something for
+> > the non-movable order>0  case. So that's a significant change which will not
+> > show up in your results, but might affect other workloads (I'd expect mainly
+> > by having fewer THPs).
+> 
+> Right - the change above modifies THP allocation requests as well. So instead
+> of applying it to every costly __GFP_NORETRY allocation, I restrict it to
+> callers that do not ask for __GFP_THISNODE. That leaves the local-node THP
+> attempt untouched: the same bit pair is already tested further down the function 
+> to bail out of the compact_first block (page_alloc.c:4899), and alloc_pages_mpol()
+> sets both flags on the local-node-first attempt (mempolicy.c:2476-2478).
+> 
+> I tested this with my PostgreSQL workload on kernel v7.2-rc7 and results look good:
+> 
+> Baseline:       70,735 tps
+> This version:  144,670 tps  (145,280 / 144,037 / 144,694)  +104.5%
 
-\o/
+This looks really nice.  Can you turn this into a formal patch?
 
-> > It could have a pool of X
-> > and if it runs out, it runs out and waits until the clean up process
-> > feeds the used sheafs back. There is fallback and the run out is not the
-> > usual case.
->=20
-> I'd rather not invent new pools, since there's fallback and the sheaf+barn
-> is already a pool. Could be enough to make sure the allocation attempt is
-> safe, i.e. use only __GFP_NOWARN.
-
-So we avoid the allocation and just add it to the sheaf+barn and this is
-it?
-=20
-Sebastian
 
