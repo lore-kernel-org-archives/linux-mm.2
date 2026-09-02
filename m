@@ -4,88 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B696C61DFD
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 05:17:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47A54C61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 05:27:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B6886B0088; Wed,  2 Sep 2026 01:17:45 -0400 (EDT)
+	id D13B96B0088; Wed,  2 Sep 2026 01:27:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1682E6B008A; Wed,  2 Sep 2026 01:17:45 -0400 (EDT)
+	id CC4266B008A; Wed,  2 Sep 2026 01:27:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 07FE76B008C; Wed,  2 Sep 2026 01:17:44 -0400 (EDT)
+	id BDA4A6B008C; Wed,  2 Sep 2026 01:27:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CB9E86B0088
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 01:17:44 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5E03DA076B
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 05:17:44 +0000 (UTC)
-X-FDA: 85167664848.24.D3D7536
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id AC2EAC000B
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 05:17:42 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MUysMIxO;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788326262;
-	b=mevkiihXAzpIh2HqaZWSBA7Kc5SMHklGH9ExgHflxjelxTuUyVgHxXyR3CUN4sA8ew7SJM
-	asfm/4JaOoH2WgXCae/gFF6X0QKk/3ucqHdzr4CU43+ljrLrrEqMFFttZ+z5IrB9Wm4QMq
-	SLPFRJxviLys8ESRg/y+u2i2bXZwlsc=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MUysMIxO;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id A4F016B0088
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 01:27:37 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 410E0A0773
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 05:27:37 +0000 (UTC)
+X-FDA: 85167689754.28.9A5D15C
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 1CD6B40005
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 05:27:33 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KByHsLpT;
+	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788326262;
+	s=arc-20220608; t=1788326855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+TLw6zL3vSpm7FMUBCdrBPYkyQicKr+Z+UYAKZ2UXqY=;
-	b=kPdpArESDY264dLBGTs8XqOO6Nosvu9iMsM5XzaVF6n98TITOthfrFDdOFKZbATs2FGhMa
-	ksfqxp3Jfx+dyqUBhzxsP1VarWqzMygMPsAS8gEDJ3fFUzK74iOSEWN/WdtuPkJDcHQU4x
-	auRqovdEXiOQ6sp1LIroWFnaApqJXbw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 07F7042DA0;
-	Wed,  2 Sep 2026 05:17:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E971F000E9;
-	Wed,  2 Sep 2026 05:17:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788326260;
-	bh=+TLw6zL3vSpm7FMUBCdrBPYkyQicKr+Z+UYAKZ2UXqY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MUysMIxOFdJR6EZRow/6+Cl39Xl2LEN0yNLkWLnRXkEOOdLa2//96Sg6VXGgF1YPp
-	 owk4idofXqDJZcwdAc0kqziDnsJUsS23WOX4iHSsVfiIALkxEUVMABYRhBgoFx9Tb6
-	 vqmnONDU2FzllyP2lUrB0iONj8NUTqZgyevsfDjEopSEIp8ZpqbqaEY6L2fXEihRS2
-	 BBd17IgyN3XVCpIdll4JgF+22S9ZHjwlEvXNjpB4NHy97HnSZDRr0fFhz1IvvGsr1i
-	 TIiQzce8/+uWjGS8hmRez0SgyiJSBZyQTY5rZYQCnTDux8RzgL2fvwGKRIFzuLPTcK
-	 eRwwQYrLHJ/PA==
-From: SJ Park <sj@kernel.org>
-To: Krishna Iyer <kiyer@crusoe.ai>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] mm/damon/paddr: support hugetlb folios in access monitoring
-Date: Tue,  1 Sep 2026 22:17:32 -0700
-Message-ID: <20260902051732.90094-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260902025700.17975-4-kiyer@crusoe.ai>
-References: 
+	bh=qwdv+UbQCGldirDEB3P2J/UCKAxWJ9JAmpEwFtpt4cI=;
+	b=kg2aQ92terFeAUJ6tP3rkp/FYq70BOiELAABiFo7sBLQ2TSZd3cVnqfuCuU2KqFvWwq1UU
+	LUkI3lFhyUI0zSBg/c8aSu6rVjJFTAJc8dwp3/NtlwaWzOwFITrHJS/vohh+ljRRCaOZVW
+	JrEeyCMfEf7FuwGRdWc0Z/Z4/p5kSNM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788326855;
+	b=7Jy/rM20ODH9lWWYaqe1N/V5LL2BL37k5PCffoTAU1rn21jB94GgRUjrleGNwg+7dhMXYS
+	eYQEjtPQK3X4D+8yEo9SU5oodb5wNh+BN4a5qLHMAfb6gtsFQHLLpnDxm0u5VyYiPt1YEz
+	wAngVDBliTF5y2nC4qIdtnFbUHbwJWY=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KByHsLpT;
+	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1788326850; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=qwdv+UbQCGldirDEB3P2J/UCKAxWJ9JAmpEwFtpt4cI=;
+	b=KByHsLpThHRaX4nYpHXA7a/eTJDA1x5k6u0D8azwrIUYWiRgpoDYgI5su/9y8ynM3UPZDjwhAQVwSsedkxrzecTsiaYiV8Xnmy/2omWsbKlq24Rtfy4TkPf21LtluyYL6ub5+hFjccWC8Jny9mYoRyCSDtCuI7N0EaipnHmdFhI=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0XABT1vy_1788326848;
+Received: from 30.74.144.115(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XABT1vy_1788326848 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 02 Sep 2026 13:27:29 +0800
+Message-ID: <34fda62f-a2d0-4db8-9590-c8dc834674b8@linux.alibaba.com>
+Date: Wed, 2 Sep 2026 13:27:27 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] mm/damon/ops-common: use a page-aligned address in
+ damon_ptep_mkold()
+To: Nathan Gao <zcgao@amazon.com>, sj@kernel.org, akpm@linux-foundation.org
+Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ david@kernel.org, ryan.roberts@arm.com
+References: <20260902031655.84721-1-zcgao@amazon.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260902031655.84721-1-zcgao@amazon.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: m18ehtbwt48sfj3xm5xy8dyw4fnnh68f
-X-Rspamd-Queue-Id: AC2EAC000B
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788326262-834102
-X-HE-Meta: U2FsdGVkX196SpLu0HKf+0zs6LsAy/ERvhPWEqNvu1b8hJbkJz8zlxWrsdmnozO6oMUtC4kMabqqBHP7cUuvZdvODnUQwAyqfUKQu7yNT0CvviXKSJV/SKqyDCSDjua8Qwt+kTai/wS543LA4LwYiixGDBIsbHGLdm03JBPOhqghw2YT49vhXey0S5QfeQt3xEloJQhdEph0FfOP+ATDUmSO+XFe6LWEAqbl1WWXIibJhqqa2KKYiKYX2gW/WuOO8q98YA5UEkQNhyit3bVAI+VEz3uKzqlldHl6dKtPY+qyB9iA1gf5T5HeekB/+MHHzgs40rpCe8fy3OzOlZx+QKd1uFTgjuigUMt6hZxR2QPalQLaHAIsh14hWtWIuPQB98RqycgeigI2Q8F2qvwlHXljiG9zmgWf3iDF8ercHuSiozlEcAR9eWjV43QPRjsMB4VcPUgiPXk86P+BYeqNZ5qv/sv9+MkpwUUeiYlI7/NQiutaIQYaAzphl1M54jgRKZmr7nKN3WEV2Nzx4FT36aS8weBdwx+j4Pemg4+roVhsFNhRusC6YuThJEAwuzgNPD4rZX9yAOK6jc+3V+jHXuj37INKL6LMwhQBp1n+cfZXe5S22t9b9+cOPwnTclcHlOI75I20wq9z+uUiOwy+QIe36LvcJcHLJRa8xY1OeKct+qdBAdW1PA6FBzbY3bjYzWnoWv5O7sWMnlAfhROXglYiNsMoylDOGUEOHcGb67XF+VoMqQtMJkk/ZQo7QWsR8EjLaMkfZhSv719eK6fLprYTxIDGc8EWvqa+yisBPNlFwdNZ9sZLZyVWsqt1YIhXwxtkh3o3VTRCHwIazgReb1zVwJbrC3yzs4hWe2Q+z96Y94BcqOUGfF6qmg+4LCdERFUJYZ49HkFJOuojHsBbWd93IPYnM99VBCqNK0zkX8NYZp+eU2RqtecXwxkfcQJrpfhfWfEhavjpuozjbT0
- QHsvzOtI
- 9v5jbTuh5Bon1iEOu2qF0SOM7TgNxWqTu4kaZwQ+CpNcCfXqH5s2/ukLCOnITQe1ele5Ekrpbs5Bbmpc23ga8jyJGcRPAergrKl7zsvrSFUguKC++ErWiMsoZlV8cK7KqJuXwqYpxD8SFwlsd0bwcEkQ5yygzkE/JW7A0R+Kg/+hNNOmNdQy8a6Vocz+rDmdUC3dUN7zRh/4MMbseHPD+x08HzhEkNbt2RDAkX1ZDzaxTcgs=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1CD6B40005
+X-Stat-Signature: f6nzqnnuz6rpmse4ujdj9wrguxfa79uf
+X-HE-Tag: 1788326853-314759
+X-HE-Meta: U2FsdGVkX1+jevUr5jhT6f6ZHujlM/JKURmQFuOkrc9DeYT9ZVW/ceOgJuHRmu5JMONtPIR1IVpFZDkgCQudQAt8tEYgO7vDb7DCgPIgbNC1MukSm83Igoh6txs5MHtinddrUc1FmXY7OFpWkgx1frhS68vggVsOYNLcrfXPjaVHwcET3oavianGvAb5pMaOvPgr3I3tRXXtgBJK3oxQePPblHP6ibBA2p6hVX0lHW4OC3TDoVd7mL9tDa97xy/XJB9hawZRbhIKJsZeGNoTdXBSRk7Py/HPmeFvy9lDD0weNs7zd9dDgOSzbGytQa95gjBKFtNuRvbx2T1nRAP+7ZUToERIqqnutD25LltQL5RpYnOUYBUd/+ZpPaUxhQLzhKFCHOo2DFAB1CW9igI7ymQysmsVbi2c8oKUghq7xuyE5EpEGFWi/YowbmUP79r03+izFWCgfYe6qgGw/JlqwpOwbye/qJZl0MvF/nQ6OfmPRYjmr57gKfXmaTzuQ4+HFdUyEjelKc0dHz+cSb0B6SOPwInR/SsGvU5Ym5k6OAwjGMS+TsulA/M9ZeK9GNBQ2stH41Ly53bxLqSEwrqzrgXvhTm/x8sRL4jymfJbnD5cffowuJi7FPNmsluzMxdv+sMCgkEQ0xwxfQnYFtV7PRyNQ7Xr+j1VOAtpud9Oc51r/JFSSaaIpWAZCBXCNW4ZOMq+PrZaJzEUJICPalYmSmZDqq0lgwwRDTlLTvw5Al0fOU5RgaKIRZ00TBQiCTGKQqRMjkDMF3VGSvaZ9cqfxBfMmubOg0ipdHUq+M2q9ZW21YQEZ2l6B7R+fMogmCaxAkZHZ8Sru2gAqJiecAW/69Z7A/B1c/j+pEbzCxkQ/THB03Y/o771f15RCne/BTOfr/CG+7iQmDdxl0Etu0LxPCQ2t8VBrs4ScMpfL3yzNFGXLJH7M8w48kOw0Aj5eLIXYQSzgSlRDsJT71suVaq
+ pIgoVPJG
+ r3FLi0yXiIK5EII4dZ0N7natB/68zjH4yP59Dsi2gbQOzw8/kNDg4kK6A/ThHRdze7wB9Zvjuc0Gq1iLu0woeg8Z7S+5EuC8aBfmoGvG3lcfWu7vvo0VNWUDwCQyvspD5876YG2FGgJxRR8ZI8aEbPBGJoIG2Q9UERTWUH+gJbDvcMsIxmUw0t2re76pJ17l85THfyrcTf0NKjuynHrtDVtJElJIkDrwJnoum4HOAATfxd5D8oSurYxbeVSQaLnHawYYHebXpc2+T2M7w2R5dqReovuRGIExiXWRLw/r/RGXEQg7mumDmp/BW94Ltz85k2zVIiLFQR43DbsQ98a4i1tY9WN1gIvLqsLtNixkfUFM+E2dA7PX6Tgmbm9rKBXgJOnFfItP5kT9injvVMb7uAch0T3prdzOu2Eaqnxc3VqHpE+w/NXoZ23DFHFYJEQtxKpz/stnRDEgd+4Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,165 +87,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  1 Sep 2026 19:57:00 -0700 Krishna Iyer <kiyer@crusoe.ai> wrote:
 
-> DAMON's physical address space monitoring is blind to hugetlb-backed
-> memory.  Every access check starts at damon_get_folio(), which rejects
-> folios that are not on the LRU lists.  Hugetlb folios are managed
-> outside of the LRU by design, so every sampling attempt on
-> hugetlb-backed memory silently fails and the pages are reported as
-> never accessed.
-> 
-> This is a significant blind spot on virtualization hosts.  Cloud
-> hypervisor hosts commonly back guest memory with 1 GiB hugetlbfs pages,
-> covering the vast majority of the machine's memory.  On such hosts,
-> modules like DAMON_STAT observe only the host-side remainder (page
-> cache, daemons) and report all guest working sets as permanently
-> idle, defeating the purpose of host-level access monitoring.  In
-> testing on a 1 TiB host, an hour of 4-thread random access over 842 GiB
-> inside a guest was statistically indistinguishable from an idle host,
-> while a 40x smaller host-side workload produced a quantitatively
-> correct response.
-> 
-> Add damon_get_monitor_folio(), which additionally accepts hugetlb
-> folios, and use it in the two paddr access monitoring primitives,
-> damon_pa_mkold() and damon_pa_young().  With the previous commit
-> teaching the folio-granular rmap walkers to age huge PTEs and to call
-> the mmu notifiers spanning the whole huge page, this makes guest
-> accesses visible through secondary MMU (e.g. KVM/EPT) young bits.
-> 
-> Free hugetlb pool folios have a zero refcount, so folio_try_get()
-> naturally keeps rejecting them.
-> 
-> The DAMOS action appliers (damon_pa_pageout(),
-> damon_pa_mark_accessed_or_deactivate(), damon_pa_migrate(),
-> damon_pa_stat()) keep using damon_get_folio(): reclaim, LRU
-> manipulation and migration cannot act on hugetlb folios, so their
-> behavior is unchanged.
-> 
-> Note that the access check granularity for hugetlb-backed memory is the
-> huge page size: one touched byte reports the whole (up to 1 GiB) page
-> as accessed.  Also, DAMON now consumes secondary MMU young bits that
-> KVM's own aging uses; at DAMON's sampling rate (one page per region per
-> sampling interval) the interference is negligible.
-> 
-> Assisted-by: Claude:claude-fable-5
-> Signed-off-by: Krishna Iyer <kiyer@crusoe.ai>
 
-Assuming you agree to below suggestion,
-
-Reviewed-by: SJ Park <sj@kernel.org>
-
+On 9/2/26 11:16 AM, Nathan Gao wrote:
+> __damon_va_prepare_access_check() picks a random byte address within the
+> region and stores it in r->sampling_addr. damon_va_mkold() passes it into
+> a page table walk, which hands it to damon_ptep_mkold() as the address of
+> the page to sample:
+> 
+>    damon_va_mkold(mm, r->sampling_addr)
+>      damon_va_walk_page_range(mm, addr, addr + 1)
+>        damon_mkold_pmd_entry()
+>          damon_ptep_mkold(pte, vma, addr)
+>            ptep_test_and_clear_young(vma, addr, pte)
+>            mmu_notifier_clear_young(mm, addr, addr + PAGE_SIZE)
+> 
+> For arm64, before commit 6f0e1142173a ("arm64: mm: support batch
+> clearing of the young flag for large folios"), the contpte helper walked
+> exactly CONT_PTES entries from the aligned-down page table pointer and
+> used @addr only to pass down to each entry, so an unaligned value was
+> harmless:
+> 
+>          ptep = contpte_align_down(ptep);
+>          addr = ALIGN_DOWN(addr, CONT_PTE_SIZE);
+>          for (i = 0; i < CONT_PTES; i++, ptep++, addr += PAGE_SIZE)
+> 
+> Now the range to walk is derived from @addr instead: end = addr +
+> nr * PAGE_SIZE, rounded up to CONT_PTE_SIZE. For a sample in the last
+> page of a contpte block, the sub-page offset puts end just past the
+> block boundary, so the round-up lands a whole block further and the
+> walk clears PTE_AF in CONT_PTES entries beyond the sampled block. For
+> the last block in a page table page, those entries are past the end of
+> that page, so the walk writes into the page that follows.
+> 
+> Triggered by the full 7.1/7.2 kernel selftest suite on arm64 (EC2
+> c/m6g.4xlarge). The kernel sometimes crashes at or shortly after the
+> DAMON test.
+> 
+> What the overrun does depends on the page that happens to follow the
+> page table, so there is no single signature. If that page is read-only,
+> the write faults in the sampling path itself:
+> 
+>    Unable to handle kernel write to read-only memory at virtual address ffff0003c5d2d000
+>      FSC = 0x0f: level 3 permission fault
+>      CM = 0, WnR = 1, TnD = 0, TagAccess = 0
+>    CPU: 10 UID: 0 PID: 3487 Comm: kdamond.2
+>    pc : contpte_test_and_clear_young_ptes+0x70/0xc0
+>    lr : damon_ptep_mkold+0x1e8/0x1f8
+>    Call trace:
+>     contpte_test_and_clear_young_ptes+0x70/0xc0 (P)
+>     damon_mkold_pmd_entry+0x150/0x170
+>     walk_pmd_range+0x110/0x2b0
+>     walk_pud_range+0x10c/0x208
+>     walk_pgd_range+0x134/0x258
+>     __walk_page_range+0x98/0x1b0
+>     walk_page_range_vma_unsafe+0x90/0x148
+>     walk_page_range_vma+0x28/0x40
+>     damon_va_walk_page_range+0x114/0x2b8
+>     damon_va_prepare_access_checks+0xec/0x1a8
+>     kdamond_fn+0x534/0x770
+>     kthread+0x128/0x138
+>     ret_from_fork+0x10/0x20
+> 
+> Otherwise the page is writable, the PTE_AF clearing succeeds silently
+> and the damage only surfaces later, in whatever happened to own the
+> page, so the backtrace is unrelated to DAMON and differs between runs.
+> 
+> Pass a page-aligned address to the ptep_test_and_clear_young() call in
+> damon_ptep_mkold(), which is the only place DAMON can reach
+> contpte_test_and_clear_young_ptes() from. Nothing else sees the aligned
+> address, and r->sampling_addr itself is left as is, so the sampling and
+> region bookkeeping semantics are unchanged.
+> 
+> Fixes: 6f0e1142173a ("arm64: mm: support batch clearing of the young flag for large folios")
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: David Hildenbrand (Arm) <david@kernel.org>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Nathan Gao <zcgao@amazon.com>
 > ---
->  mm/damon/ops-common.c | 31 +++++++++++++++++++++++++++----
->  mm/damon/ops-common.h |  1 +
->  mm/damon/paddr.c      |  4 ++--
->  3 files changed, 30 insertions(+), 6 deletions(-)
-> 
-> diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
-> index 373b25db5950..80207b56c6fd 100644
-> --- a/mm/damon/ops-common.c
-> +++ b/mm/damon/ops-common.c
-> @@ -15,14 +15,20 @@
->  #include "../internal.h"
->  #include "ops-common.h"
->  
-> +static bool damon_folio_acceptable(struct folio *folio, bool monitor)
-> +{
-> +	return folio_test_lru(folio) ||
-> +		(monitor && folio_test_hugetlb(folio));
-> +}
-> +
->  /*
-> - * Get an online page for a pfn if it's in the LRU list.  Otherwise, returns
-> - * NULL.
-> + * Get an online page for a pfn if it's in the LRU list, or a hugetlb folio if
-> + * @monitor is set.  Otherwise, returns NULL.
->   *
->   * The body of this function is stolen from the 'page_idle_get_folio()'.  We
->   * steal rather than reuse it because the code is quite simple.
->   */
-> -struct folio *damon_get_folio(unsigned long pfn)
-> +static struct folio *__damon_get_folio(unsigned long pfn, bool monitor)
->  {
->  	struct page *page = pfn_to_online_page(pfn);
->  	struct folio *folio;
-> @@ -33,13 +39,30 @@ struct folio *damon_get_folio(unsigned long pfn)
->  	folio = page_folio(page);
->  	if (!folio_try_get(folio))
->  		return NULL;
-> -	if (unlikely(page_folio(page) != folio) || !folio_test_lru(folio)) {
-> +	if (unlikely(page_folio(page) != folio) ||
-> +			!damon_folio_acceptable(folio, monitor)) {
->  		folio_put(folio);
->  		folio = NULL;
->  	}
->  	return folio;
->  }
->  
-> +struct folio *damon_get_folio(unsigned long pfn)
-> +{
-> +	return __damon_get_folio(pfn, false);
-> +}
-> +
-> +/*
-> + * Same to damon_get_folio(), but also accepts hugetlb folios, which are
-> + * managed outside of the LRU lists.  Aimed to be used by access monitoring
-> + * primitives.  DAMOS actions that assume LRU-managed folios should keep using
-> + * damon_get_folio().
-> + */
-> +struct folio *damon_get_monitor_folio(unsigned long pfn)
-> +{
-> +	return __damon_get_folio(pfn, true);
-> +}
 
-The comment looks bit verbose and feel more like commit message to me.  I'd
-suggest to drop the comment for now.  Because it is a very trivial change, I
-will do so when I pick this into my tree, and later repost with the change for
-mm.git merge.  Please let me know if it doesn't work for you.
-
-> +
->  void damon_ptep_mkold(pte_t *pte, struct vm_area_struct *vma, unsigned long addr)
->  {
->  	pte_t pteval = ptep_get(pte);
-> diff --git a/mm/damon/ops-common.h b/mm/damon/ops-common.h
-> index f7811c9c7a02..172f0f17c4a8 100644
-> --- a/mm/damon/ops-common.h
-> +++ b/mm/damon/ops-common.h
-> @@ -6,6 +6,7 @@
->  #include <linux/damon.h>
->  
->  struct folio *damon_get_folio(unsigned long pfn);
-> +struct folio *damon_get_monitor_folio(unsigned long pfn);
->  
->  void damon_ptep_mkold(pte_t *pte, struct vm_area_struct *vma, unsigned long addr);
->  void damon_pmdp_mkold(pmd_t *pmd, struct vm_area_struct *vma, unsigned long addr);
-> diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-> index 5c6c3a597fd0..ed7b7f31291a 100644
-> --- a/mm/damon/paddr.c
-> +++ b/mm/damon/paddr.c
-> @@ -37,7 +37,7 @@ static unsigned long damon_pa_core_addr(
->  
->  static void damon_pa_mkold(phys_addr_t paddr)
->  {
-> -	struct folio *folio = damon_get_folio(PHYS_PFN(paddr));
-> +	struct folio *folio = damon_get_monitor_folio(PHYS_PFN(paddr));
->  
->  	if (!folio)
->  		return;
-> @@ -67,7 +67,7 @@ static void damon_pa_prepare_access_checks(struct damon_ctx *ctx)
->  
->  static bool damon_pa_young(phys_addr_t paddr)
->  {
-> -	struct folio *folio = damon_get_folio(PHYS_PFN(paddr));
-> +	struct folio *folio = damon_get_monitor_folio(PHYS_PFN(paddr));
->  	bool accessed;
->  
->  	if (!folio)
-> -- 
-> 2.54.0
-
-
-Thanks,
-SJ
+LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
