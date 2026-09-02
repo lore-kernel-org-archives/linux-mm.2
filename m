@@ -4,115 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A21DC624D0
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 09:51:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 373C4C61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 10:01:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DDE06B0099; Wed,  2 Sep 2026 05:51:11 -0400 (EDT)
+	id 0C0E86B00A5; Wed,  2 Sep 2026 06:01:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58E296B009B; Wed,  2 Sep 2026 05:51:11 -0400 (EDT)
+	id 0720A6B00A6; Wed,  2 Sep 2026 06:01:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 47D476B009F; Wed,  2 Sep 2026 05:51:11 -0400 (EDT)
+	id ECA206B00A7; Wed,  2 Sep 2026 06:01:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 072636B0099
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 05:51:11 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8C7F7120151
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:51:05 +0000 (UTC)
-X-FDA: 85168353690.14.1EF60F4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8DAD61C0003
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:51:03 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ODwY/Ye6";
-	spf=pass (imf20.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788342663;
-	b=xnv9w8ay5dsqWgNCYRSYHomq2jXrS5uBTOAEL1k1h+VUn2TC1TGqeYq2Mo7+xVaqf1Dqhh
-	7CCzZQTskgTmJjh34FzBXeG4Gbe9boylAq5MODSeVtTGzc6hjoCh06Ttm47v+rx5oEawZI
-	bQ1yNOLQD3nqooUj6KmjABpG8/vNO+4=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ODwY/Ye6";
-	spf=pass (imf20.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C98546B00A5
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:01:28 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 73023A139E
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:01:28 +0000 (UTC)
+X-FDA: 85168379856.26.D44052A
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A5B73180016
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:01:24 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=1OKXC1Wl;
+	spf=pass (imf24.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788342663;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	s=arc-20220608; t=1788343286;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lVVrNHkl5HQ1wA54iiruOVX8OD14foi6k8zb/9rdRyU=;
-	b=6gA8+jvxHfTWUuc5mvZwJPcshTEVucTy39B2DqwRAPlWD0E39a9c/jzrbnwuuar0nZrmMW
-	X+q0qKOu5Lu7F7RiiwsTZtBo27HXbewfiZ6TCC9fAqtaFyvOJbqxWCn8RrmuimVDCX8kpN
-	B/HkjN1eMfItZCs5F9tg18af9k2gLJQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 53476447C9;
-	Wed,  2 Sep 2026 09:51:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id F0954C2BCFA;
-	Wed,  2 Sep 2026 09:50:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1788342660;
-	bh=ZFETDp6p9x9uvwIEd+HcIi3/dkthWZDx6+TpdJIY9to=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=ODwY/Ye631Rwhf/3uAzAk/Q5xTBhXfzqlhdZP675Mo8LmaAoMUt01xRD265D0dYau
-	 5gMaJdSNbFmdYbWRn3I0OiknCFUs7Wv4w0jadRepdCkClmNVWj2MP6OoqbEcbewu4h
-	 yKzozgREq4rkHWsf4WQMc/NdoLJ7kTbJrInFe4aSTiokhWvNkr/szwJYrPGH83g2wM
-	 45YVqD5+87AbGav0rkRlf+kUsWsm0cQhDHL1RNVfleoRc5BHK6Gzt7AoHCRJRR20AL
-	 M7iBBGyxhoQ3+8FFNUFjnTnxE7rFya1V7xhkWtJVfm+W/5NYb4chZ6p6wg2hcXl+CV
-	 hzWhBMuugj/BQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DDF60C624D7;
-	Wed,  2 Sep 2026 09:50:59 +0000 (UTC)
-From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Wed, 02 Sep 2026 17:50:56 +0800
-Subject: [PATCH v5 3/6] mm/migrate: copy all referenced state via
- folio_migrate_lru_refs
+	bh=5muCGImxQEXCs9mgbU84wjK603R7oDB3KGXYhDYZoIc=;
+	b=a89IbkwUlSrU+eeTCGfCyIX4+e/FWABa2L4mmGAx/bdNjLxV+ILuCkcD6xznjR3i9dKh3I
+	JIR+5FecKB0tp1WKlm1RUzVfMljwwtNMiJ+DTFvEfTF27TyN7XHZOay3bA87RcL4936LEH
+	LQFGTlTIqlgYtxjo66e7Uq9kge6AY7Y=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788343286;
+	b=tqT6lVbg3edqu1rMKEKQ9hEqZbk57+tyPkHvBPV0AZshuH6+RCarPsLny3QRf0XegdKCfS
+	5mNDKKv0VG/RSzCRB8fwZe6uEw+Ct4nozO52FQfb/vSbYKDJsdO3WSYjLoyv8o2XvRnOLc
+	UElEf/VVU9rzPetwMrbBpqnr+y5qftE=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=1OKXC1Wl;
+	spf=pass (imf24.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=5muCGImxQEXCs9mgbU84wjK603R7oDB3KGXYhDYZoIc=;
+	b=1OKXC1WlAcuXvATuYy9843J+ts23aqDRPtEBmymokcm2wcDFN7n+VLXs5YlFtuuOI17YRGOle
+	AE1kaDyBL8Psb6qsvqP6GD+2KaR9IZFlJSaA9VKKZKh4vJ8pLjxN4lSw5BvQVM6ddEVaTK1WC49
+	5AuTsqZ1V1GNz92YBNN1IQA=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hZdHw4T64znTwN;
+	Wed,  2 Sep 2026 17:50:04 +0800 (CST)
+Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
+	by mail.maildlp.com (Postfix) with ESMTPS id C74E54057A;
+	Wed,  2 Sep 2026 18:01:17 +0800 (CST)
+Received: from [10.67.109.254] (10.67.109.254) by
+ dggpemf500011.china.huawei.com (7.185.36.131) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 2 Sep 2026 18:01:15 +0800
+Message-ID: <d12302b0-f0b3-4df6-963c-bf25b6e720c7@huawei.com>
+Date: Wed, 2 Sep 2026 18:01:14 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260902-mglru-flags-cleanup-v5-3-9db761d779ef@tencent.com>
-References: <20260902-mglru-flags-cleanup-v5-0-9db761d779ef@tencent.com>
-In-Reply-To: <20260902-mglru-flags-cleanup-v5-0-9db761d779ef@tencent.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
- Baoquan He <baoquan.he@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Ridong Chen <ridong.chen@linux.dev>, Lian Wang <lianux.mm@gmail.com>, 
- Yu Zhao <yuzhao@google.com>, Zi Yan <ziy@nvidia.com>, 
- Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Kairui Song <ryncsn@gmail.com>, 
- Kairui Song <kasong@tencent.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788342657; l=3683;
- i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=Ox6zaP/QbfpF5dExxI36sjV5rWUkpJpYAOEG95FC1rw=;
- b=FEnfQvBL3/fmg1asiheJX1Ar9Ld/4KCcGnDdckAqj+CLkjyccsIX7u5VcGKPNX6YhMjrv98vM
- Hkt6CXlJifbB7kso51KMQSSbOdxbtfGM4GOe5GnDa2NksnCGAoAPNpT
-X-Developer-Key: i=kasong@tencent.com; a=ed25519;
- pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
-X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
- with auth_id=562
-X-Original-From: Kairui Song <kasong@tencent.com>
-Reply-To: kasong@tencent.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 12/17] x86/crash: Use num_possible_cpus() for
+ elfcorehdr size
+To: Sourabh Jain <sourabhjain@linux.ibm.com>, <catalin.marinas@arm.com>,
+	<will@kernel.org>, <mark.rutland@arm.com>, <chenhuacai@kernel.org>,
+	<kernel@xen0n.name>, <maddy@linux.ibm.com>, <mpe@ellerman.id.au>,
+	<npiggin@gmail.com>, <chleroy@kernel.org>, <tglx@kernel.org>,
+	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
+	<hpa@zytor.com>, <akpm@linux-foundation.org>, <baoquan.he@linux.dev>,
+	<rppt@kernel.org>, <pasha.tatashin@soleen.com>, <pratyush@kernel.org>,
+	<ruirui.yang@linux.dev>, <kees@kernel.org>, <thuth@redhat.com>,
+	<gshan@redhat.com>, <jic23@kernel.org>, <james.morse@arm.com>,
+	<ardb@kernel.org>, <leitao@debian.org>, <yeoreum.yun@arm.com>,
+	<coxu@redhat.com>, <tangyouling@kylinos.cn>, <hbathini@linux.ibm.com>,
+	<adityag@linux.ibm.com>, <ionut.nechita@windriver.com>,
+	<liaoyuanhong@vivo.com>, <seanjc@google.com>, <fuqiang.wang@easystack.cn>,
+	<makb@juniper.net>, <piliu@redhat.com>, <ebiggers@kernel.org>,
+	<jbouron@amazon.com>, <mclapinski@google.com>, <me@linux.beauty>,
+	<graf@amazon.com>, <bgwin@google.com>, <robh@kernel.org>,
+	<takahiro.akashi@linaro.org>, <palmer@rivosinc.com>, <x86@kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<loongarch@lists.linux.dev>, <linuxppc-dev@lists.ozlabs.org>,
+	<kexec@lists.infradead.org>, <linux-fsdevel@vger.kernel.org>,
+	<linux-mm@kvack.org>
+References: <20260826092541.3905933-1-ruanjinjie@huawei.com>
+ <20260826092541.3905933-13-ruanjinjie@huawei.com>
+ <99b1121d-4277-4764-8c3a-b3f6d9a47ab0@linux.ibm.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+In-Reply-To: <99b1121d-4277-4764-8c3a-b3f6d9a47ab0@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.109.254]
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ dggpemf500011.china.huawei.com (7.185.36.131)
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8DAD61C0003
-X-Stat-Signature: cz4ggnr4iak9nkpsez65qycgoeu84gb8
-X-HE-Tag: 1788342663-151406
-X-HE-Meta: U2FsdGVkX1+0tRwJBJaMD4KHAomj94VuuOxf3HfSHtbKHv0X5BzWQOdMLriz45R7TyeTESr3q06xSsFqL2w+boEYMkm0DGh8wUi6AIVdUP5/01qEX20DyzCXXcqN5LhQb8arxNlT8yr9Q62LpGtrM8nudRNhmZBKbWVW4lnhdLxdNB2q+CTK4/Nm6p0UlNePGiVBzNr6y3hHEhrV2RzyfSqaeYzr/WSG2nqxxxqsglWyZxX1FmV1daNRkh2N6ICQYLcYBDvRTrqsZQOzQuws0E4ud/+/Z+Xl5nQLhgSMxqtcv4/fph7AcCq/fpCuKH5XJsxKCpw8SyXQs2If+QeXvmkYo/bGuN0/vMq6OapQh/cB0t9HhJuV2U/r40QwMurFnxJ8hXfzi0yw2XeAe/olfWJdi58cXuw+08EGg/qzWrJ0B/2do0ULD49qowQuiRj/ZkOA6RzFOYNKvmiCNzxHqsHW7f5jSMPIRh1kaBlvL0FttHxY/eniEbwAY5RoBruhUYX2t9+Lg2Ztk9jVjYyi+AjpipGxbVmcFmQYqtoSJThShFsCuH7qhyXrlNyKyZP7vinTdmRoNhamQLxX+U0aS/mvI40Y54FW/yan0j3FWs9fqmUxqpsXCk1MwAxNHaApNQemg/D46m67X7uxmo7LH5yhMPW2bMSLyG2fuuJilu8G+cvJ/gfqRb1UtOo/VB7fUn2s6sVYUH8KeE7MuiKoA6ZWnwUEF5hlt9gnhV5T6KJtLBIgj8St6zehdZwWMAFlXD+gM5gPHqg7xqEoz1tqcKFKBcuNWCI2pbGL85OuYHDrt90+SXVErlPjMqXiM/J1Zlqxl9+WvDXSXN9IKCIopG+DwBgKDaObDHZBy08qz5pyBiYmxYfUAQMb9o/Ha4qbImKFP+PIl6/hxM/ZjhRVp5l9zEum/N1oPAuX7faIRRtdLFaqvaJUseqPlOYgITsem5U4j/uJs41b+1mso0U
- xKQmWnBu
- cO7boQFDmy0w/wzl7TFKsKhB+eSY7NE3VA8l6bOxR/LHIgWDoNNw9C7RoUOk7gJ9afzBqa30pl1W6pKDrkGj+5H8yTHCZuU0MihAN+YI3uHh4Xgw5pfOxh7makoZaBy2Vj6CsCSI0eWniHkBD42CoeqG+ErCHtpu05qg5w0tq74zowX0mqUgo24Tlq8Kbgf7QKQLtx9KxhJJVE4Cs4pIAceA5QqfJ/sfYWzegMG93JhTcJ1MKH3cXVntZF3QBvHpuaHmUNRU0KWke3gSJ+0jDQR34k1CZRWZw0523dUS1fep5jePdVKD9NAw7IYIYkcEkvezmVgi/aWM/4m/GWhgbjgRRo662wWQQoRHlYhTbNl8o5Y0GixbzHW0wmyZddPKsHaA6Gm7wL2s8iDmfW7up2E94PExGbsNL7QTyMImKI4rICCoAKh2SYTXKdgYLxYuyGCUuOsmMbgWKK9uL68IYCp/D0RyJOZNH1TME7Qbf1MyQhwtz5Ji9vAFzFWmry2ZguiXPjNt4T/RZw1VbMTiLhSBQrTyvupzW4Cy1bQn8nAHe4zqEZOwa1dQYMw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A5B73180016
+X-Stat-Signature: wikorj5dpegxoci4c7fepq7qoy4kbod4
+X-HE-Tag: 1788343284-252691
+X-HE-Meta: U2FsdGVkX18BRQZVIz3AkKYaAJ6HsmM6OUPWpxjX2ZvFSEFLNWbiIyGkY8sqGhLfau/XE9Pn8L4JQXlUV4U7BsreoubYQmXlECaGaJfoiPukC4WWFn2EprRXuyN8KGvO8DtxzDlrq+hvlLla3LLK0q9XuyMvy8USlepu7EXgfBD7oXj04l/R3PTmzK/79ef/j5r0WIX+VwPYj/Ctvm4SaR8QnWHZ6dMiIllreIG70dXhlFN1gkVZoH3SzJ/uBf/sYJ+kQ2Zf/kBhhiJwCghjAC5hgeNsJ4uk/5LJtv7UXCZ9ieBbJ2hiNyRWAafdK+yUjrCRO2pNVeAZ0IDpvObOSUFmn+uxi+Dzv5uL/OGuaC7DvytGx8qTrsL5d2A/UGkWOjbgbgssS8n+d3VVBPMtXG4+DwMyZB5hY+DVX22ZzPh7EEmnrEcOYakQKlAqBc+6ftG25sLBW8MpSUbfx6hB4SVIC961Ov/fNl+unYmbRrWGN2nX4Eil6qmKI5sl+QX967HAHlD+R4C41O2HMo6Th4bR+PXZD0LSurfcoKzPgg9HKYSlEt6TCcWZ9qmLxa4jskVesZ4b/QKE0AF7akAFqIpt3k9oeCq7SCHa5Wu5myhYadjolMLUE3Ml0OC+Ao2QV2IrQPIDO4hGAQFaGYEiNNzeh2JnCEX9Aakc+mhwzwoRQLlXI6Ez0Rk6Dv61Q12ZIxvUPeJfoDF4fu9E0pFpioC5H1YrD2HsbvoWHzxLi2cNGpqqBJ66lc0alfgxcYlJO/CibiGfMsNtnis5vp7tSkxyq21uWGmstkIgwy0yVtVSkEs/ZN27mMg/7e1IrHTePhPibvLL6RGo1H/Koev64ehx01FfM2jQUcyTfYqsM0Zwr+yRMKnfJCvUlVFbR3eQRki2JN0YxbItLmAkGUoxuOtsgMBA5tBA3lepzeUbxjRhy6LgfFYAdszEKbk71od58iG55Orma0WvE+OCbAk
+ 3VUU3mCC
+ Sx1Qk2fZ3lgL3Cd87BiiNV9t9i2fCyCJW3ACbEdFonQGRShfGqElaCJVAcrDeXDWXNMsG7G2xlDH38enTzjf3Zr9GfRdVIu7z9aiEDQ/1dQiAxb5thjKXBHP172rY9AoxuAhJIIo65qWf0QSDxibXHdHxk0VkzsUXIdaiib6R8iTl7OalxhOudbjqlrbbKFxHi2zRjS5PbJ67JAcYlmAe+jSUDOZh2K2KdH4A6tjGlKZdtFO84qjMvQwRJmIgO0epubDeOD5SwNN/Q2h3NIe2RTH4D6lm1eskOEHRzBeF0JVoXKqZGZ1M663w1NT3m0FOhtIPtyGsJ4llQrFAPlXc6Yck2IDaUR83WUTcHefz3X0omxYO0uAHaTgBcfsLMRsErFJCSPHzzusRRqPMIdxr7gdPPREW3ycontPKic+Nx8+GvzblVf3iU+3nA1pW/IYSz8ujWOYsEovsaU2omeNU0+GXlxO+Unb8OCXrTZHLvZVCrEw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,104 +118,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kairui Song <kasong@tencent.com>
 
-folio_migrate_flags() copies PG_referenced separately from the MGLRU
-refs counter, which folio_migrate_refs() transfers. Yet under MGLRU,
-PG_referenced and the refs counter bits together describe the
-referenced status of a folio.
 
-Consolidate the two: rename folio_migrate_refs() to
-folio_migrate_lru_refs() and let it copy the complete referenced
-status, i.e., the MGLRU refs count including PG_referenced, or just
-PG_referenced for the active/inactive LRU. Drop the open-coded
-PG_referenced copy so the referenced status is transferred in one
-place. No behavior change is intended: under the active/inactive LRU
-the extra bits are unused, so operating on them is a noop.
+在 2026/9/2 14:14, Sourabh Jain 写道:
+> Hello Jinjie,
+> 
+> This patch makes the below patch redundant..
+> https://lore.kernel.org/all/20260826073527.21487-2-
+> ionut.nechita@windriver.com/
+> 
+> I suggest dropping the first patch from the above series and including
+> the second patch from that series in this patch series with the updated
+> comment.
 
-Transfer the reference state first, before the destination folio is
-marked uptodate, so a concurrent lockless reader cannot have its
-reference update overwritten by the copy.
+Agreed. This approach makes sense to me.
 
-Reviewed-by: Baoquan He <baoquan.he@linux.dev>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Lian Wang <lianux.mm@gmail.com>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Reviewed-by: Ridong Chen <ridong.chen@linux.dev>
-Signed-off-by: Kairui Song <kasong@tencent.com>
----
- include/linux/mm_inline.h | 20 +++++++++++++++-----
- mm/migrate.c              |  6 +++---
- 2 files changed, 18 insertions(+), 8 deletions(-)
+I will update it in v4.
 
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index 3f4bd5b02b54..047295ae6e8a 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -373,11 +373,19 @@ static inline bool lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio,
- 	return true;
- }
- 
--static inline void folio_migrate_refs(struct folio *new, const struct folio *old)
-+/**
-+ * folio_migrate_lru_refs - copy the reference state to a new folio
-+ * @new: the destination folio
-+ * @old: the source folio
-+ *
-+ * Transfer the reference state to @new during migration: the MGLRU
-+ * refs count, including PG_referenced, or just PG_referenced for the
-+ * active/inactive LRU.
-+ */
-+static inline void folio_migrate_lru_refs(struct folio *new, const struct folio *old)
- {
--	unsigned long refs = READ_ONCE(old->flags.f) & LRU_REFS_MASK;
--
--	set_mask_bits(&new->flags.f, LRU_REFS_MASK, refs);
-+	BUILD_BUG_ON(LRU_REFS_MASK & BIT(PG_referenced));
-+	folio_set_lru_refs(new, folio_lru_refs(old));
- }
- #else /* !CONFIG_LRU_GEN */
- 
-@@ -406,8 +414,10 @@ static inline bool lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio,
- 	return false;
- }
- 
--static inline void folio_migrate_refs(struct folio *new, const struct folio *old)
-+static inline void folio_migrate_lru_refs(struct folio *new, const struct folio *old)
- {
-+	if (folio_test_referenced(old))
-+		folio_set_referenced(new);
- }
- #endif /* CONFIG_LRU_GEN */
- 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 15b45832bcfa..a369d0c95c38 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -776,8 +776,9 @@ void folio_migrate_flags(struct folio *newfolio, struct folio *folio)
- {
- 	int cpupid;
- 
--	if (folio_test_referenced(folio))
--		folio_set_referenced(newfolio);
-+	/* Copy the reference state, including PG_referenced */
-+	folio_migrate_lru_refs(newfolio, folio);
-+
- 	if (folio_test_uptodate(folio))
- 		folio_mark_uptodate(newfolio);
- 	if (folio_test_clear_active(folio)) {
-@@ -807,7 +808,6 @@ void folio_migrate_flags(struct folio *newfolio, struct folio *folio)
- 	if (folio_test_idle(folio))
- 		folio_set_idle(newfolio);
- 
--	folio_migrate_refs(newfolio, folio);
- 	/*
- 	 * Copy NUMA information to the new page, to prevent over-eager
- 	 * future migrations of this same page.
-
--- 
-2.55.0
-
+> 
+> - Sourabh Jain
+> 
+> 
+> On 26/08/26 14:55, Jinjie Ruan wrote:
+>> Use num_possible_cpus() instead of CONFIG_NR_CPUS to calculate the
+>> elfcorehdr buffer size, matching what crash_prepare_elf64_headers()
+>> already uses for the actual header content.
+>>
+>> This avoids over-allocation when the system has fewer possible CPUs
+>> than the compile-time limit, and aligns x86 with PowerPC.
+>>
+>> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+>> ---
+>>   arch/x86/kernel/crash.c | 6 +++---
+>>   1 file changed, 3 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
+>> index a3bf786286d4..afe2aea19f47 100644
+>> --- a/arch/x86/kernel/crash.c
+>> +++ b/arch/x86/kernel/crash.c
+>> @@ -369,9 +369,9 @@ int crash_load_segments(struct kimage *image)
+>>        * maximum CPUs and maximum memory ranges.
+>>        */
+>>       if (IS_ENABLED(CONFIG_MEMORY_HOTPLUG))
+>> -        pnum = 2 + CONFIG_NR_CPUS + CONFIG_CRASH_MAX_MEMORY_RANGES;
+>> +        pnum = 2 + num_possible_cpus() + CONFIG_CRASH_MAX_MEMORY_RANGES;
+>>       else
+>> -        pnum += 2 + CONFIG_NR_CPUS;
+>> +        pnum += 2 + num_possible_cpus();
+>>         if (pnum < (unsigned long)PN_XNUM) {
+>>           kbuf.memsz = elf64_phdr_size(pnum);
+>> @@ -429,7 +429,7 @@ unsigned int arch_crash_get_elfcorehdr_size(void)
+>>       unsigned int sz;
+>>         /* kernel_map, VMCOREINFO and maximum CPUs */
+>> -    sz = 2 + CONFIG_NR_CPUS;
+>> +    sz = 2 + num_possible_cpus();
+>>       if (IS_ENABLED(CONFIG_MEMORY_HOTPLUG))
+>>           sz += CONFIG_CRASH_MAX_MEMORY_RANGES;
+>>       sz *= sizeof(Elf64_Phdr);
+> 
 
 
