@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82506C61DFD
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 05:48:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 423C7C61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 05:48:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 701466B008A; Wed,  2 Sep 2026 01:47:58 -0400 (EDT)
+	id CC5516B0096; Wed,  2 Sep 2026 01:47:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CFB16B0098; Wed,  2 Sep 2026 01:47:58 -0400 (EDT)
+	id C75E66B0098; Wed,  2 Sep 2026 01:47:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 549396B009B; Wed,  2 Sep 2026 01:47:58 -0400 (EDT)
+	id AF6886B0099; Wed,  2 Sep 2026 01:47:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 319D86B0096
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 88B606B0096
 	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 01:47:58 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B874B4074C
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 05:47:57 +0000 (UTC)
-X-FDA: 85167740994.17.BAD53A7
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 09767120741
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 05:47:58 +0000 (UTC)
+X-FDA: 85167741036.27.9C994A3
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 33EDB40006
+	by imf23.hostedemail.com (Postfix) with ESMTP id 7DB3D14000B
 	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 05:47:56 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kUoiPmmq;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788328076;
-	b=FaekwxlGK/2cl25uLEXX3pQCDyAzvGhxUfoa3WatS8adNQYDgjLlad9bZd7aIKeQT9Qu+2
-	SZucu9LZs+YVPAZLo2GT1n8A6K0Z/NleeXMqxm+04h5A+BNbmZyBLk3JAatdY/e2iG1Ex1
-	p2vnPdO2lqY09B33Sf83ymoqv4AIu8w=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kUoiPmmq;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OaOrtRB3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1788328076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/2GY869qZ/WdOTeEodZMAmxRd6cUaT9eWkbGwKB6Io0=;
-	b=5pqbmFTEtTzt+u4upmrkaJmaMLzCiBaym1xbyGoAp8N22GTFQ4xUC/8QvoNABbaAAkcBFW
-	OClqz4tn2Kpchs1xnoNHfwAygep673kqBsKE5cG0XlDhHpsZ2lJJsfo5j+IFRJlLNw/gKc
-	XH0kLQ+vMmVCLcHfysrnNWSUD+mp6s4=
+	bh=KapXeO7OndJodgXvsAPTUdwLTA5ybEOS8WtNM8GGre0=;
+	b=fc0oAVL5fn5ST3zXPB6th9mxXfUTz1l/ui52tL+8Cv2pRYZWnmW5mydGM+qPB/32wtPVsT
+	0ClZzGe0c3JGpfB+FZB57aT0MAbrQ9guaBdvKQl2qykEhJ7i1VVvO9yyrTnjkQnDjCR3xL
+	QYwdrUR6hVGNFdSCcIHD70UeGxvSrG4=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OaOrtRB3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788328076;
+	b=vQf5i2jpAUd5+OCwYj2zVWGDB5r63uxhYtetDPJvVWOH95PWfdCk8D4aRmHNmKXgG45EP9
+	SYa/JmqgyUhZeicrFr57FJjxK7gdV0Clr/9RnfuLVE+Wy+7gmD5zQW9CpdDjlxNW6AaQyE
+	YpqXtd/U3w+7VVpmeoK9ybk9IJ9d5kc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C5ADF6022D;
-	Wed,  2 Sep 2026 05:47:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54FD91F00A3F;
+	by tor.source.kernel.org (Postfix) with ESMTP id 22E9060233;
+	Wed,  2 Sep 2026 05:47:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A29401F00A3E;
 	Wed,  2 Sep 2026 05:47:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1788328075;
-	bh=/2GY869qZ/WdOTeEodZMAmxRd6cUaT9eWkbGwKB6Io0=;
+	bh=KapXeO7OndJodgXvsAPTUdwLTA5ybEOS8WtNM8GGre0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kUoiPmmq03z/pb7EKGpCiPYdf45lsEaJSgpcEVNGLP7V9FyprLGvAUBD7xhy1y4Sw
-	 qoXrgWdYnlre3eDn2J4hryFgCgMUZczJj+sVEQB5XhAWABL0/gtqMKZ26RhAAOX+E8
-	 5mZK6VGdSDUd5B3nrxq6+7YS74Kia36vMOGaAjY7UNGqVB3abzr28N9Hx0b1pYiH59
-	 94pce2AY6l87qeXrKloejLqv8ilvg1jwU1HqXpmHLadZAVyxti8oC7nQ/Bdj38Oas9
-	 LdStC6DskZNiKJsZhvkJJDxDAhZiVFEOhEYRbGRvlWariFc75TAlJxXpoaEgySQZ8M
-	 Ezrm9zfSFQKUQ==
+	b=OaOrtRB31+vdvxxaQTsVcdtksSf8AUVnGY2FQ1ubJilAVPbuppVruEKp/YmmPB1Lw
+	 +oEr8eQ/dJtc7TCCvA3rXvhnc/cWsS8UEsPNwFlQ6l/qoCIWnZQ3ZmJl0gG3dMglqN
+	 BfocpI59IRFjL4DyCB4CrWqtrDWYNWhDqQgGwXorFOKLIUHgvyj9Kv60UHD9emSOzE
+	 4gjQkBncrHHdsT/V1ImAcw2RlxWVCP4SOLfiJOgFqDxkHnmKpGK3N8a3eyrGvgg4DR
+	 ZvuTyHdMvOblzcqAKbIn5wH9bZT/B9T2Q8LHB4YVnhtuyzv0iZPlE9YYIt/ezsFVSh
+	 pDf2isDehJetw==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 03/12] mm/damon/vaddr: remove a debug message
-Date: Tue,  1 Sep 2026 22:47:36 -0700
-Message-ID: <20260902054747.99370-4-sj@kernel.org>
+Subject: [PATCH 04/12] mm/damon/core: validate number of probes in valid_probe_params()
+Date: Tue,  1 Sep 2026 22:47:37 -0700
+Message-ID: <20260902054747.99370-5-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260902054747.99370-1-sj@kernel.org>
 References: <20260902054747.99370-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: fzqn7zmy7ge45gsdaep5maaxut1n95k5
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7DB3D14000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 33EDB40006
-X-Stat-Signature: kyhz47uzfbmd6opdzn8amny4yoinemjz
-X-HE-Tag: 1788328076-582023
-X-HE-Meta: U2FsdGVkX1/jPjCc2dLcKZcORmca4kOL140T7mTLpeMTI5tSoA/On1vs13dWQxyW+W1SkDF4+fqsLnxT45wNCYIWF0zN3kgBT88WkZn5gW2etaFGxWNjJUSrvwzyZLJOZ+CCFhP0Txp8tC9pcMhBRLzJoLId8t67qpeagZfkE+vZ1CCkuYX9SsU4+/HRcmWfgIbYfdpQFVT6KqmVLNawUt1mewJod/OIkXfQqFnpCk9nWkdmQ4NjIsHkZS/DuCUo4gguwUmmpuAVZ6RF4iyCygNwn2N6IfwDATMQtPRw1hArVS+HZWvJi/Zz9mVGQPFsJK11X82JkwQBhWsUSqvOf6XeqlX53Mxyao960NFXM8qCe1G1Qs+GN8FIzbOrtysrHUZYsdDqddcoioXfYwuwc/udm4aMGZswDZ+pCmsjknDmW5x1D3aP/PRWh55p3TjqTVOSqRKDqN+o0icVQdZu+08ul6ojNZTtMrK6YtFZQOlKWlQama5VnI5WbaU5nMHFfnU/tky8004HH5NBVt3p04WxZFKVJ3P+eqFXn6Sk46XVZowEB37LTSoZTlP+FLmOY4fzwTuXT6CQU9035vZErFSGcshJIERziJu2EkWy9X5hAr+Tw9ZzpIV5KjKILxETMqPnr2qbyQMBRLTPJE1voSeYUPAMYB7MgK/1ilqZQiTq4zx5WCdw25TFp0qM7hLb7+9SJybOZ61i0Ky5Cz9apzp4qgafTMfCfPmIWLmhPQ3OtrPZxfr6aHcOsFKwTYEwz8r7gLtSiHsKq2OF18lMzjakseeqwy3Llu+OuHsU7NKWFe7EDCIGxkXjs0rMx4UJhmessuN/oyb+cO+60nBGcmtel0Lk5GXdCE8QYr5MWXYxf53iKn90Q9xpgaIxLoavKrmmtPeJQ9QcRommVhjy2Avc+66jFC4Xx8/LCDBVcYrVNVHscxnHf7XOFWEfMyv8T5YqdROhE+Kdu6sr6Pj
- oJo3f+l9
- ptJ3wqzMcpB1Ar2cYH9koO8vWFuqeC7J+JV8lONB8K2DHX4/LeWN/tQNH6W8xP205fBqHkGv0/kjjmWTdpLrVrKIETSVCOHvt+8Fo8fka8KXd+6u2VkZf+GV5BW6n0YXwb0+AUFWYHKTY1hlfudryX6XbImIeg1MiTAUEQPFpLagsZJvdQ2uXgjXtQDgCAV2oFQSVL8zyaj9uxTRifpd90Kw89cyOV2rydWPUVWsCKuyDDOw=
+X-HE-Tag: 1788328076-424353
+X-HE-Meta: U2FsdGVkX18317trwlflh018QMj0InLsKr2oGZI4GGfv8Po6y0HTmT0yBsChEL+MzS0dZ9ABh+AL6FSKDwxO2HiyHkCIEAx/pYZg2DTPFZiWwd/mWiUfZfDYus12qgS01Qp7+C/n0N8hkOyNrbvUlVPW9+X13S/7iQ9FsOJKiaSzCuKFgjc/tYoBLeeCZYEiOjkJ5Mg5GanktSTxHkj3mcdRYcOD/kymHkhCn4X1+3PlWcgf6G9yuzshafmuYYJBY+P/YSnxH2awSLxJmWWiEjQurmsLCVoumHTl+egSl3yFBMBIHcxo2Zd2WBT8xiA1YPLYd4citnyufVaiIrRE1H519IghKbyE3ULh6WGqM94qIkUkmbmymZcrg/mixzwJR7g/nZhukR/rTD/7i+27lwHC8fnubCepOieAKi5tkY9W8pEu9VEVNSYsQ9i45eZkXi8R5ClaJEdT5JUzmZ1OmWSI1yjdgofyFldP8vwk2wXq7KpIKi36EXMXZkyFlDjBGPquHum4Ba+2CCTmHx2n3R+Cl/6LIkoQsmG7hLQtl46Z7wBhKT6+11XrvJBTA6UuHmHsL2P5dPpN73d3UGItq5M8BAHAC94w2EsLZIlW5kRimntudATJk3Tta+KJgO3KM636lT9l4VtJhxajm+GWBxWH6MiVNqhueEI97GYqNtAmIheOiQDPIhAPhGzrfI1KV3wr3voT5u0bdwVTXZEso42bAVKfib9xfQ628XIeZqrbW8FWhqdGItPP0NNg6pya9Ks6d7zwunaDtu05KYoCp3IQvnRjqBnq/bmEioyn+2w6/lVunaBnRRLKOj4olHNBOYOcm44wlP1/TohQpA+o7aizAAFMQmxUE40gqJCv20W2I8f5eyfamS6dlU0BiknP7u08xn8kLu8noLepmkysUUmyvuaJqnluyORKNooTOLgy0Ys1/AYsiZbvDPAkdtJ0WFPHjcT2EP+CzwygOzY
+ yc38bSgb
+ wltLs4Wn1Ej0K/uJLNiZeaTayCUVkAHmwyDxcbB7p4f6XsolyblDz73nwZf2cV2muyig0n7Dfuy+1+T4IQpBfEA7yllvetoSZk9MyJbomqWVXSZlRqM7kpINIiLyfN5rrrwitU4oTfRrRmZbWw7g+1uy1fBeRhJaKHM/WZ/9K/qZlVTGbG/75lfjjJWfVqZswpp6amZVx8+1WGzNclt6XXhCxco4lJd1YPMD8dxJuNzMLsEFVGMt53ezRLvCmHpikoKjCbSfmmSqsRafUNnjEqmhj3g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,53 +92,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There is a debug message in the DAMON virtual address space operation
-set.  It has not really been used in a meaningful way for the last few
-years, though.  Remove it.
+Each DAMON context is allowed to have only up to DAMON_MAX_PROBES
+probes.  The central place for validating DAMON probe parameters,
+damon_valid_probe_params(), is not validating the upper limit, though.
+Do the validation.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/vaddr.c | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+ mm/damon/core.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index c8c32b2ae0402..f884d3f78f30a 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -189,22 +189,12 @@ static int damon_va_three_regions(struct damon_target *t,
-  *   <BIG UNMAPPED REGION 2>
-  *   <stack>
-  */
--static void __damon_va_init_regions(struct damon_ctx *ctx,
--				     struct damon_target *t)
-+static void __damon_va_init_regions(struct damon_target *t)
- {
--	struct damon_target *ti;
- 	struct damon_addr_range regions[3];
--	int tidx = 0;
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 4d28eb033fc4a..c010f686d033e 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1420,6 +1420,13 @@ static bool damon_valid_probe_params(struct damon_ctx *ctx)
+ 	unsigned char max_probe_hits;
+ 	struct damon_probe *probe;
+ 	unsigned int wsum, wsum_to_add;
++	int nr_probes;
++
++	nr_probes = 0;
++	damon_for_each_probe(probe, ctx)
++		nr_probes++;
++	if (nr_probes > DAMON_MAX_PROBES)
++		return false;
  
--	if (damon_va_three_regions(t, regions)) {
--		damon_for_each_target(ti, ctx) {
--			if (ti == t)
--				break;
--			tidx++;
--		}
--		pr_debug("Failed to get three regions of %dth target\n", tidx);
-+	if (damon_va_three_regions(t, regions))
- 		return;
--	}
- 
- 	damon_set_regions(t, regions, 3, DAMON_MIN_REGION_SZ);
- }
-@@ -217,7 +207,7 @@ static void damon_va_init(struct damon_ctx *ctx)
- 	damon_for_each_target(t, ctx) {
- 		/* the user may set the target regions as they want */
- 		if (!damon_nr_regions(t))
--			__damon_va_init_regions(ctx, t);
-+			__damon_va_init_regions(t);
- 	}
- }
- 
+ 	if (!damon_has_probe_weights(ctx))
+ 		return true;
 -- 
 2.47.3
 
