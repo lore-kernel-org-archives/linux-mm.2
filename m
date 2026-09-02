@@ -4,88 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79D36C61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 00:37:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DB63C61DD3
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 00:50:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34E296B0088; Tue,  1 Sep 2026 20:37:53 -0400 (EDT)
+	id 562416B0088; Tue,  1 Sep 2026 20:50:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D82F6B008C; Tue,  1 Sep 2026 20:37:53 -0400 (EDT)
+	id 5133F6B008A; Tue,  1 Sep 2026 20:50:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A0E66B0092; Tue,  1 Sep 2026 20:37:53 -0400 (EDT)
+	id 401DB6B008C; Tue,  1 Sep 2026 20:50:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DDF566B0088
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 20:37:52 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 166A26B0088
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 20:50:47 -0400 (EDT)
 Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 52FD9C05D8
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 00:37:52 +0000 (UTC)
-X-FDA: 85166959584.15.ED8EA0D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 7820F140008
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 00:37:50 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=D18Ag4xO;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788309470;
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AB884805AC
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 00:50:46 +0000 (UTC)
+X-FDA: 85166992092.15.CAAA65D
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	by imf18.hostedemail.com (Postfix) with ESMTP id B1BF81C0002
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 00:50:44 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=J+Bzeac+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788310244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0OjQTWFjr3g8QuMQZtzxOAtJbr0dNvjLCHbenCSbYbk=;
-	b=KCZgknYamPhiGWH9Kd0RPS1FPppYI35xVFJUtAdWZ2u4d+syZ27/89ZgzlwuqfWDV46Y75
-	CgXsAYgn87Sfu4sSxiPGkABbAUOLUpK0mMgtfVomfPH2gqYSvzvyV0QdtbcCD03GA88NQ8
-	ksCaDJZNf20KCD8InrNa2Uv/6TtzUkU=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=D18Ag4xO;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788309470;
-	b=FSQA5asmxApwsKk7YsMtOOXMD3xT1LcpMpjobmM+Ju+zP4MVDkYR8NHbg0S4eSWqepgdJI
-	Gk1aif7gK22pvagdM5u9TI45BKBb/D/t5DfSL+NRpxq++3Cqgv7VgeSOaRH3llq4FeniC7
-	HwwGdzvSWJIU4mhFgsEVgJgSUhKBho8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 86EA64363C;
-	Wed,  2 Sep 2026 00:37:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E71E21F000E9;
-	Wed,  2 Sep 2026 00:37:48 +0000 (UTC)
+	bh=hqPY/O+R8Ye4De8eSkETHoBdfpmFjPEzhn9lUdJii2w=;
+	b=Hw0XMT/QuzgMqjWZml/L0i/x3xdTZ1Te22jWp3b/P9x+tnHe8cnTZnS695Z0S0Bf5rQpaL
+	ZWDJheyyE5IuqbZp+ZAbBDSuI6q9ATvBZ27jXSeAvPX4rlVfjK87FaxPb2r1Tm8tW+NQPT
+	pKwcavfXgs7J77QpjGjlrdf3Bok9/TE=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=J+Bzeac+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788310244;
+	b=V9SWc6nQ6xzl3x3kY4WtmYGRqQ0oGDIumvQy4ZmzSFRwGCxDAKoxGGUOMlivDsQgwbj9pv
+	dtE2eF7gM3/Tel2uVtGNbPkwF3B/ElrlZSJVAcMp2oQY4UmwwQmz6x+8aUexVAh6ysYjeR
+	dfrXvAQEqZ9uJMzFpDK/3o8iKa6NsYc=
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5b6036e9c70so369610e87.1
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 17:50:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788310243; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PBAPyQC40zpCbVIhqJnbl1WD0WYG2v/mhen/+tUs7Zf7AQ1MQ4vDMLpjofqsVmGFW9
+         xkhfQ70IROYLvaNDFtJHfSU7Yi7XwG4wjDBTJHr/u99GfcWoB+O/iN9p4Bi8NwQekvaH
+         5gKbU3OQYbYkAtOlGB+2dVnwSWDvYBfGHUnKUdv8r0TXYAriqw8AWDOI/eTyM91/1h75
+         qvCuuqdo+pPNae47SF8QiX9SLRZYR1PLiH57TaeGjSSvhnGIfJFEfYNkpK6pVi2G2C1K
+         bC4KqppkRor1SWxzGonNVMQiHTT99BViGo9u5kUoiG498SrpawmcqJ/hfdzILxO1U0UK
+         iyyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=hqPY/O+R8Ye4De8eSkETHoBdfpmFjPEzhn9lUdJii2w=;
+        fh=BO6xAcxE2qk53PrE6ZmTFpsT4WYp6vlA7mn6tjGZTDU=;
+        b=GURqz1+PSdcWMiPQWZ9T04xJHdT+kt9794ECkep64m486WLka96PedQSI5mfOLw73X
+         L4vI581TixSCS593e01qL9D2XBN9Nyt6wvh8Wl+sgmWLPH2l5qZ90S9jYvtV8+ITKkGl
+         5c5jZBnLjLdLi5tJHEjhBYZM5AkgxG/Yi3UWTaET20V5zOSDjlDVBwHgqCstwDZe5Mmc
+         WbRurgVYChjlBKDOSLjaiYlgnSuW9wUhqupvb410JX45lA2S8NDtHlimuQw/53ZW/5s+
+         EhBr+8ZjD7tdFgv7tzLXHO6tvWMX0vHXuo3TMJWmtm7t0uhysWQVgkiVRtNDx1hRjhP8
+         QEBg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788309469;
-	bh=0OjQTWFjr3g8QuMQZtzxOAtJbr0dNvjLCHbenCSbYbk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=D18Ag4xO/VPxhMwPPvaK5e//nY7ZnAzaHe2I3hrFc9rIGQdajCtf6uRxkUe0XPIvx
-	 UpqTskh2B8T5+rHVvLvdUqMGAT/xmmDg2JyCLr+aGr9m6e2IDRZkZF5/+HbU7PHq7j
-	 hcf6v9JEbt6hj4bEDH/OpGoB81Bq4NRJWwLYiO4E=
-Date: Tue, 1 Sep 2026 17:37:48 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Song Hu <husong@kylinos.cn>
-Cc: linux-mm@kvack.org, muchun.song@linux.dev, osalvador@suse.de,
- david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, shuah@kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, Mina Almasry
- <almasrymina@google.com>
-Subject: Re: [PATCH 2/2] selftests/mm: restore hidden hugetlb reservation
- scenarios
-Message-Id: <20260901173748.fb7a442941102894a0c42baa@linux-foundation.org>
-In-Reply-To: <20260714021630.1063823-1-husong@kylinos.cn>
-References: <20260714021630.1063823-1-husong@kylinos.cn>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 4ss175joai98fnthani94fg95srsw1iw
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7820F140008
+        d=gmail.com; s=20251104; t=1788310243; x=1788915043; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hqPY/O+R8Ye4De8eSkETHoBdfpmFjPEzhn9lUdJii2w=;
+        b=J+Bzeac+Mp6UGcujOO+WJw847Ax34z2DhuKOwno4bYN0BEsE2UXZh7eT83oFYJyu1F
+         tc/yHiKTn4hpVupDxVgAAiVBxcKfXvfG3CHxk5WALHWmMlyEQaCjQEODYshTLckgGaqM
+         DMpwkI8l3tjvRvwILgjOrofpfXrrUK0Z9OO93ddEpyJONlnXcgk8rHh2E5DKv7zT/zmw
+         nuD+AQvHZAIlESBYB+cVZHwuBhri0Yi9zuq+gbvcswQC7+CyqDJ6XzChvG+d4dVaw4up
+         h7I+dsdNuqWsQA6WRT1L/sv2CFhs53oJv+A8biYgvkQEFlUvaem2d4T7c1lPUVXVHUul
+         GYfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788310243; x=1788915043;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hqPY/O+R8Ye4De8eSkETHoBdfpmFjPEzhn9lUdJii2w=;
+        b=UhGknXjBfcHPhP8UIdrvK2Rle5UfanlrVO6xe49RaDabRtXCXRCgAmrrCZ0zZ6RXq3
+         ylfofijVcBq6MB5ZaIoTMW2qHwmdMcJLRvQIMLEjUmiPpOT4jqSOTPSNchOwzYUTzSRq
+         /IrlNllY5ahVNFTSa7iF7zAlEu7mybTCg+Hmzto512syqugTTL2rKMvajcV9zxLK6bH5
+         WO+sKYssCUJzchgSRBAaEEhNvGOVRoZ5OSTYtUK2bHBGvpvHVp8X9tY0EOQVN3IvjzuE
+         VLjb/BYpwsblgxiKVaFqB/R2V3RFeyP9vAwB9mphObWheo5sDnT4I9bYXZfDI4DflyG6
+         Jobw==
+X-Forwarded-Encrypted: i=1; AKwUvBw15Ah/VSDrLvvu4WxUluZNccrLts54UaCLP7qii+z1dNo3WY4KZ2Q5D+zQGiIF4O1YW593stLtbA==@kvack.org
+X-Gm-Message-State: AFuF++lvjZI5rcRreh9YSYBj53CS20iqmxaY5XzxjtMosRnDwmF45wdb
+	AtBn7mGyja4ovCqDTROr8m6phNnXbShkf0Vi6bLc/awFL0hUE6R4VzSLOcqzYtFVttGY92BfKvq
+	LTffi7yXh/gI158sUt2dJNHxLVrC7f/o=
+X-Gm-Gg: AYBFou04AkFtqeHMIN1pfYYMqSt3gtrV5gUw+9ktpGAB0xvKAeKQ+U9mMBOQxqqc49f
+	eWnRy1uEoPrycLJ9zsJdJY+3eCECeMZMrWEEoJD8IN+Pye7lkMvzSS9F4SgtCI7fhMh2gys9vA3
+	lBBj7qiTdUXncoB+oxighxxZ6UNVvzht2d2j2EFiAcyXrd0G7I0h/VTpv0lxAf1MJ4TXrPZX1D9
+	OqN5Ay1lGa4mVNt5lN/3pGzCf0tPjkKGsd0oOfzAC5TTddqpuer1ESjLTBz4BTdpwTIzNH4jKkS
+	f3YtHdrLNuiN28W8Sf77JDSMz6c7z/CGBQ+RkdQIF0uJyA0A1+D/2NwUh7STKPZCn4kJuon0yg=
+	=
+X-Received: by 2002:a05:6512:15a9:b0:5b6:4ae:5b7f with SMTP id
+ 2adb3069b0e04-5b6087d6133mr353785e87.29.1788310242499; Tue, 01 Sep 2026
+ 17:50:42 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260830114731.8322-1-wujianyue000@gmail.com> <20260830114731.8322-3-wujianyue000@gmail.com>
+ <20260901161329.GI3004@cmpxchg.org>
+In-Reply-To: <20260901161329.GI3004@cmpxchg.org>
+From: Jianyue Wu <wujianyue000@gmail.com>
+Date: Wed, 2 Sep 2026 08:50:30 +0800
+X-Gm-Features: AcwNN1VZP9I5AiwbB0AJlzk0UO5pYmHN9ADWJl1TgGW01163D6x1NbqVrjb50eI
+Message-ID: <CAJxJ_jhkM4HHgCi-OsQcoDeDC5_fsejf+u+b5E1n3gNUd=EJmQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v4 2/3] mm/zswap: replace the zswap_pools list with a
+ fixed pools array
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788309470-781269
-X-HE-Meta: U2FsdGVkX1+NDQFmYCD0ufpJEKY+ehhe+ljuK0JNTJpPF/suz2i9OwmBi/mOTFBMRZoLFaumI1373qU5VhpCMDcqHzJaGOiIQU0VhbYZ77fOZ6eTs7cX1xavr6k9gQ/l/g9wCRCR5UfcAfBkXQmRpoWC6nPdxOmjNpj618OudTaiCBvYk7B/zbmEZkR0eDCkoxFAC36G+fCiwc4b/o7lIBzPqIpEGD8WKwwmTSD8aamV58DEzr/SKi2Ust5gajqI3m0qOtQvrlOsWNf5aQb56JpXXuWjxjliq3AqTUlXqr9kowv3OHTpyDkUzI/n/48m4coM+vDhBlv+Gz1z4K1XgwMH2wzwskzI8SKqydEcNjzDD31Lay8sYiVH0il2FtHL2TS+HhHdSwtFe/qQ1fw8vO/YRzoj1lE84n/V0eMey0c/8atyXoyhUJSfwQ9hUe3JtjylyLh07fgU4chrucl+ua3NOhGeR13QYWTqKISIZ8EtZNL+tyP20Dtu0Ny0JN11w6BzxEqbpkC9NjtbLzHiqXazu3319THaN/O+J20/+StjDJSIuYR6yGixsJKRlBpPj/QCUTPZ+toxZphaj86l8myi7+PNtmN4shRMySrB0tlLt9FQ2qsOe5foPJHvWkcSzzNsDSyGOchLo2kEtsYfbtiGaqV/t9y2L0W76d6C35+PIULineYV7nzGoJw2jU2dqtOMLQxfmAmIpEEjPsOThPS++B9y8GwWdUdsTO5ttQXDbg/SCGCmS+US/UinRC38uHVMXvoh44qfTQvXqknw8emlcCWKgqIj1sK2JH4v3BIk+8Sc5rPDrEb0qbb9W2r4DJeX9/gM22e8qVNuTYN46qtwlygTXZjf6K5/AOLSilT+8TvddEv7NgOYaXaxnMpHHDY2EL5JkTppPTL4LHxHSJJAb1rq6566qtYpXlXk+d2NnXN9q9WQRPy1ykRLSUKZg2tpVHPso0A5wE5dcTy
- bw5j605/
- 1j1Md4l8kvexcjjm3H5Fo8HCTAPJiwMOE2HvNCIoSeCoiAwniCPCjc9IUmrUaNfnNEKbelTJtsY4+kXBgPpcTnEcdOKwt5PslFkv5B++vArt5yjdotonmbd0XDyv5UI2+uGhdtH6r8AHoDzySGtUlgfjLPPEhFhMieKo4AQJF+9H5N+caTXRs9fOo5r14AlGyBPjUpAOgSpG9WmHd5wCj11JfU59Hvyz/LIVnMR2DNdBVPkOm96A3V1en/CTMYoffR1qM8LbSEmBE4IdT9VhkrgyGa+H3eHsS62U5NF6zy2Lz0BT13EMCGAgGyZMw3UBad4rPe4eR1ohvBmGPTIqLIp66DzUG4Wn0FSayBnnV+CIOGTGROB+J5NeXQdsJl1abnNnM3bhFmaAP48jBjH+m1lG+gSnpm4xOj/jGY8Xbo/xIOgJFrcGwqWJyhlvacDiEBevShIbxPtaIb6Sh5b20K6s0Hz0XhVRWQlIt
+X-Stat-Signature: 1gcnf85z9n479zqf9z8opzrbj6rz5tn7
+X-Rspamd-Queue-Id: B1BF81C0002
+X-HE-Tag: 1788310244-531954
+X-HE-Meta: U2FsdGVkX18vEbRuaUQfagCfK4zdQNPhM7x91luY0dKJIVL42T+M6PipFBXfXxin+473Q1QVswjDo7ScemIlTwAgmmc71xMDG4xoTbnzQyXZmrs4zNtsDu8mgaIKKsMKbI8+XSkbrzOB8k+A/XgupuQByzFBJ8vWt/+/210RhTsS8oUMCehr6y68iUBstXadV9WF99W5LcmA9NUARLFlPmsLnZBV3vLbSQ9bUmgIZXIQ50DaKNdGgLG9gI9W710vqT7D+ifPsnLgjzHOGO2/xUHx7B4tCzBtjE7y056pKu7AmjJGaUVe8ROqwgDIHSYKTvx7OWIxSfEim0F20VrfnZKmv1JLkRr+utHGreH5fP+KBrpMFQc8YSLxwqkk7RbFOZaA+u9H1onIBOYv+mcAiEtlP4CYlGUPhKWmNNMeQf4VN1ky168tiBgqn3o8kD/z/+fTV4j45LI0yN8j5sxx42yRr7XZ40jc1HkwcOgJP3tZU8Zzab2+HvTclFbulRqPKpMkOTVQCuwglVHqQXqBdZBZXrNHM1rmxsEhISSXdo+3xINdZbZEDzTwQBOFVGpoT1zZInskAtSJHVGZ7AP6Zu00ZRwJUZ3YZkiShm+oDc1k4LLdzMixq9s3wlW20WTXyYyhvWMQ1/nVdFFzO0B0o5jHid43wDREFvIksA8BPoVjGJU/T95QARd45MfUB5bMsxeAyAXZT6G+RoOTGgFUbTDaMPNRxaoWy2I40+oJbFk1ZIAUlOQidt6dYPJHVOR1N1f8jzNBiUyYcds48VRdOdtvdH+FEHVzIDBjAaOkQcV4h8RJSphRMdZyqGYdXbwZP3P/BuD0lylpFvJ8o0DY0SlnafuCBKpclvVObo5tU2SY+AvuW6iLTi3epumfN8OAa0SF3PIhUUxXDSPhtwwhpIXqTuIOuqw62StsBp6HDzbwTnOiSO3CVfuKQr6RBBGBXmN0pdzdroHkmy57/DM
+ srmmR0yV
+ OmmDDmXLrWhtpWHL7nkeaxfF7mvrTkCllShLht7dS+Grw0tFMXHryI2KoDP4K7gMwJCHZhlEuVUmv8w6EgpGMe3VUumlGxhYS8KfH4SRu4UDDqbBaDiPCcc67GA33Rf7J71ZgeZ/eRd95Ncc6eBBBo0/XIQPekCTAY421Tr9owQI42w4L9CLOoV8mSUAN7dqUbb6A7I7E5x1YueMB6K7wmWA9ta6FYnwwBwVW8Lw+Y+9a7csU6kt1OUFn3La3ZoCtafjXE/rGLQX0oOjwGWg+KvpzozvBBIffjf1gOUXQXIWmfsGI0bARKEhKS0SV/yJZiITgi+7D98JtxddWvjQdHnHAcZrXcKi/MDKTrSseBgRJ9vmgHjb6J3jwXe+3unCsT0ZBxFdI7UNo/mKTaaa6RcUC40A97Y33RFiH9qEMHBwt7iKAdkANu00sQ2wMKyRBWSMuQh4niY1bHALoS8iRHf+uAhinID6uA3KWzrODse/W3mQ7afB9uPkNfTd7+2KXUGRT9CLby8gg87zIADGGWUx0fdwaq/G1ZyZXJC+toE/DNVooag2ejpWnC+1As5vJKJ0h
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,109 +143,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 14 Jul 2026 10:16:30 +0800 Song Hu <husong@kylinos.cn> wrote:
+On Wed, Sep 2, 2026 at 12:13=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.org=
+> wrote:
+>
+> On Sun, Aug 30, 2026 at 07:47:30PM +0800, Jianyue Wu wrote:
+> > Originally zswap holds its pools on an RCU list whose head also serves
+> > as the "current pool". Only a handful of pools are ever live at once,
+> > since a new pool is only created when the compressor is (re)set and
+> > pools are reused across compressor switches.
+> >
+> > Hold the pools in a fixed ZSWAP_MAX_POOLS-element array so each pool
+> > has a stable slot number, and track the current pool with a separate
+> > rcu-protected pointer.
+> >
+> > Slot 0 is intentionally left unused (always NULL): a zeroed or
+> > incorrectly initialized pool index then resolves to NULL and trips a
+> > WARN rather than silently aliasing a live pool in another slot.
+> >
+> > The array keeps the same RCU publish/retire discipline the list had,
+> > so lookup and teardown stay equivalent. A fully-constructed pool is
+> > stored into its slot as the last step of zswap_pool_create(), so array
+> > walkers only ever observe a NULL slot or a ready pool. Pool creation
+> > is serialized by the module-wide kernel param mutex (all built-in
+> > params share one lock) and otherwise only happens during
+> > single-threaded init, so no two creators race for a slot.
+> > zswap_pools_lock still serializes the store against a retiring pool
+> > clearing its slot in __zswap_pool_empty().
+> >
+> > Behavior change: the fixed array bounds the number of simultaneously
+> > live pools at ZSWAP_MAX_POOLS - 1 (15, since slot 0 is reserved),
+> > whereas the old list was unbounded. A pool is only live while it is
+> > the current pool or still has stored pages referencing it, and pools
+> > are reused across compressor switches, so 15 is far more than any real
+> > configuration needs. Once all slots are occupied, creating a pool for
+> > a 16th distinct compressor fails: zswap_pool_create() errors and
+> > returns NULL, and the compressor switch is rejected with -EINVAL
+> > rather than silently succeeding. The cap can be raised by increasing
+> > ZSWAP_MAX_POOLS (bounded by the u8 slot index, so up to 256).
+> >
+> > Suggested-by: Nhat Pham <nphamcs@gmail.com>
+> > Suggested-by: Yosry Ahmed <yosry@kernel.org>
+> > Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
+> > ---
+> >  mm/zswap.c | 97 ++++++++++++++++++++++++++++++++++++++++--------------
+> >  1 file changed, 72 insertions(+), 25 deletions(-)
+> >
+> > diff --git a/mm/zswap.c b/mm/zswap.c
+> > index 0bb30e58950a..b3b5e2887c00 100644
+> > --- a/mm/zswap.c
+> > +++ b/mm/zswap.c
+> > @@ -13,6 +13,7 @@
+> >
+> >  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+> >
+> > +#include <linux/cleanup.h>
+> >  #include <linux/module.h>
+> >  #include <linux/cpu.h>
+> >  #include <linux/highmem.h>
+> > @@ -154,12 +155,27 @@ struct zswap_pool {
+> >       struct zs_pool *zs_pool;
+> >       struct crypto_acomp_ctx __percpu *acomp_ctx;
+> >       struct percpu_ref ref;
+> > -     struct list_head list;
+> >       struct rcu_work release_work;
+> >       struct hlist_node node;
+> > +     u8 idx;
+> >       char tfm_name[CRYPTO_MAX_ALG_NAME];
+> >  };
+> >
+> > +#define ZSWAP_MAX_POOLS 16
+>
+> It's unlikely to happen, but this is a super annoying failure
+> mode. User would have to kill something, delete shmem/tmpfs, or
+> swapoff. And it's not obvious which entries are in which pool.
+>
+> Wouldn't an idr make more sense?
+>
+> > @@ -270,6 +283,31 @@ static void acomp_ctx_free(struct crypto_acomp_ctx=
+ *acomp_ctx)
+> >       acomp_ctx->buffer =3D NULL;
+> >  }
+> >
+> > +/*
+> > + * Publish a fully-constructed pool into a free array slot.  Pool crea=
+tion is
+> > + * serialized by the module-wide kernel param mutex (all built-in para=
+ms share
+> > + * one lock) and only otherwise happens during single-threaded init, s=
+o no two
+> > + * creators race for a slot.  The pool is complete before it is stored=
+, and
+> > + * zswap_pools_lock still serializes this store against a concurrent r=
+etiring
+> > + * pool clearing its slot in __zswap_pool_empty(), so array walkers on=
+ly ever
+> > + * observe a NULL slot or a ready pool.
+> > + */
+> > +static int zswap_pool_assign_slot(struct zswap_pool *pool)
+> > +{
+> > +     int i;
+> > +
+> > +     guard(spinlock_bh)(&zswap_pools_lock);
+> > +     for (i =3D ZSWAP_FIRST_POOL_SLOT; i < ZSWAP_MAX_POOLS; i++) {
+> > +             if (!rcu_access_pointer(zswap_pools[i])) {
+> > +                     pool->idx =3D i;
+> > +                     rcu_assign_pointer(zswap_pools[i], pool);
+> > +                     return i;
+> > +             }
+> > +     }
+> > +
+> > +     return -ENOSPC;
+> > +}
+>
+> It was kind of overdue, but with this now requiring a pool walk as
+> well, it would be better to factor out a find_or_create function?
+>
+> Something like:
+>
+> static struct zswap_pool *zswap_pool_find_or_create(char *compressor)
+> {
+>         struct zswap_pool *pool, *new_pool =3D NULL;
+>         u8 id, new_id =3D 0;
+>
+> insert_new:
+>         spin_lock_bh(&zswap_pools_lock);
+>         idr_for_each_entry(&zswap_pools, pool, id) {
+>                 if (pool && !strcmp(pool->tfm_name, compressor) && zswap_=
+pool_tryget(pool)) {
+>                         if (new_pool) {
+>                                 pool_put(new_pool);
+>                                 idr_free(&zswap_pools, new_id);
+>                         }
+>                         spin_unlock_bh(&zswap_pools_lock);
+>                         return pool;
+>                 }
+>         }
+>         if (new_pool) {
+>                 idr_replace(&zswap_pools, new_pool, new_id);
+>                 spin_unlock_bh(&zswap_pools_lock);
+>                 return new_pool;
+>         }
+>         spin_unlock_bh(&zswap_pools_lock);
+>
+>         new_pool =3D pool_alloc();
+>         if (!new_pool)
+>                 ...
+>         new_id =3D idr_alloc(&zswap_pools, NULL, 1, 256, GFP_KERNEL);
+>         if (new_id < 0)
+>                 ...
+>         goto insert_new;
+> }
+Agreed. Hitting the 15-pool cap would be an annoying failure mode, even
+if it should be rare.
+I will switch this to an IDR with IDs in the 1..255 range, keeping 0 as
+the invalid entry value, and factor the lookup/allocation path into a
+zswap_pool_find_or_create() helper.
 
-> A stray 'continue' in the main loop of charge_reserved_hugetlb.sh made
-> the "more than reservation", "more than cgroup limit", and "multiple
-> cgroups" scenarios unreachable, so they never ran.
-> 
-> Remove it so the first two run again.
-
-OK.
-
-> The third,
-> run_multiple_cgroup_test(), is separately broken -- a backslash
-> line-continuation breaks its local declarations and its hugetlb
-> reservation accounting does not charge as expected -- and has never run
-> in CI; skip it explicitly with a comment until fixed.
-
-That's reasonable.  This code was added by Mina six years ago.  But
-he's still around so let's bug him with a cc ;)
-
-> Also correct two
-> `[[ "$method" == 2"" ]]` typos (harmless empty-string concatenation)
-> to plain `2`.
-
-OK.
-
-
-
-From: Song Hu <husong@kylinos.cn>
-Subject: selftests/mm: restore hidden hugetlb reservation scenarios
-Date: Tue, 14 Jul 2026 10:16:30 +0800
-
-A stray 'continue' in the main loop of charge_reserved_hugetlb.sh made the
-"more than reservation", "more than cgroup limit", and "multiple cgroups"
-scenarios unreachable, so they never ran.
-
-Remove it so the first two run again.  The third,
-run_multiple_cgroup_test(), is separately broken -- a backslash
-line-continuation breaks its local declarations and its hugetlb
-reservation accounting does not charge as expected -- and has never run in
-CI; skip it explicitly with a comment until fixed.  Also correct two `[[
-"$method" == 2"" ]]` typos (harmless empty-string concatenation) to plain
-`2`.
-
-Link: https://lore.kernel.org/20260714021630.1063823-1-husong@kylinos.cn
-Signed-off-by: Song Hu <husong@kylinos.cn>
-Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Mina Almasry <almasrymina@google.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- tools/testing/selftests/mm/charge_reserved_hugetlb.sh |   14 +++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
-
---- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh~selftests-mm-restore-hidden-hugetlb-reservation-scenarios
-+++ a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-@@ -439,11 +439,11 @@ for populate in "" "-o"; do
-         fi
- 
-         # Skip populated shmem tests. Doesn't seem to be supported.
--        if [[ "$method" == 2"" ]] && [[ "$populate" == "-o" ]]; then
-+        if [[ "$method" == 2 ]] && [[ "$populate" == "-o" ]]; then
-           continue
-         fi
- 
--        if [[ "$method" == 2"" ]] && [[ "$reserve" == "-n" ]]; then
-+        if [[ "$method" == 2 ]] && [[ "$reserve" == "-n" ]]; then
-           continue
-         fi
- 
-@@ -496,7 +496,6 @@ for populate in "" "-o"; do
-         echo 'PASS'
- 
-         cleanup
--        continue
-         echo
-         echo
-         echo
-@@ -530,6 +529,15 @@ for populate in "" "-o"; do
- 
-         cleanup
- 
-+        # The "multiple cgroups" scenario (run_multiple_cgroup_test) is
-+        # multiply broken and has never run in CI: a backslash
-+        # line-continuation breaks its local declarations, it passes
-+        # reservation sizes in bytes rather than pages (unlike
-+        # run_test), and its assertions compare page counts to byte
-+        # values. Skip it until properly rewritten; the two scenarios
-+        # above are restored by this change.
-+        continue
-+
-         echo
-         echo
-         echo
-_
-
+Best regards,
+Jianyue
 
