@@ -4,77 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75001C624D0
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 10:54:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAA1BC61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 10:54:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DD846B00BE; Wed,  2 Sep 2026 06:54:11 -0400 (EDT)
+	id AEB506B00C0; Wed,  2 Sep 2026 06:54:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78E116B00BF; Wed,  2 Sep 2026 06:54:11 -0400 (EDT)
+	id AC2EE6B00C3; Wed,  2 Sep 2026 06:54:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 655EF6B00C1; Wed,  2 Sep 2026 06:54:11 -0400 (EDT)
+	id 962AF6B00C0; Wed,  2 Sep 2026 06:54:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 389FB6B00BF
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:54:11 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C9065C0193
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:54:10 +0000 (UTC)
-X-FDA: 85168512660.20.BAD92C8
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012024.outbound.protection.outlook.com [52.101.43.24])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 133DF100007;
-	Wed,  2 Sep 2026 10:54:06 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=KJVsKZmq;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 591C16B00C1
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:54:19 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E3B3BA01A6
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:54:18 +0000 (UTC)
+X-FDA: 85168512996.21.8EBADE9
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010063.outbound.protection.outlook.com [52.101.46.63])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2416440005;
+	Wed,  2 Sep 2026 10:54:15 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=XkSr4OIV;
+	spf=pass (imf17.hostedemail.com: domain of shivankg@amd.com designates 52.101.46.63 as permitted sender) smtp.mailfrom=shivankg@amd.com;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf14.hostedemail.com: domain of shivankg@amd.com designates 52.101.43.24 as permitted sender) smtp.mailfrom=shivankg@amd.com
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788346447;
+	s=arc-20220608; t=1788346455;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UvMQi60+FK1dsYsCkrpCg0bZwxaBYKJwFTlW/+3nxs0=;
-	b=RUpfAdEDSKfDYjQwZ8Ws1WWjbZ6gktQ+2b7dMqdN5YFdBO16VjTPN2kTkPFtux6iuZTVcD
-	pGeBUcxCFc20fGw1N03oZn25YWWgL1NOIlYFIav9QjegE2aC5E7H/jz6q+3uTCUP+z1de8
-	5bbuYJqd3tu+nCpYC+ZjWdUDqrj4z3k=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=KJVsKZmq;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf14.hostedemail.com: domain of shivankg@amd.com designates 52.101.43.24 as permitted sender) smtp.mailfrom=shivankg@amd.com
+	bh=EUHxLZc87SIo516dLR77xd1rSetSYWKvVm1R29rwnEo=;
+	b=6Pp5N5PU5hCzwLa4hl3bICJ4boMBJGxbVWNrGCeTnI2VOrrL3GfxMAuo4FDbx3BZwdaEh4
+	BdGrZiARwqw7hZurUnHtMn3P7BZFdNpO+2ArDhhyAiSa6iy1iyu+jHD4mb8ElxtsUx3QHm
+	+oNQqVX5gnqlMm2iWoawflD9t4x4lxc=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788346447;
-	b=GQ8BLRgikdQlephDSnUCYMIylAE0VKKZKD6naxoeMX33cX2tfseyTQrBgfsX+lcgTPazUv
-	+2pJLUAi7rEMn1y3yhgIAdgRo1LGSqAR/qiiQN6oghcMWLy6xF8uUtE1BepPlnVPeHuPTw
-	ZmKJT578gF6J40xiosHVB8TBWBAxKpU=
+	t=1788346455;
+	b=KKJjnBAXW4hOIxwH7IIkFL3OrOL4gHoJbo2Ph+LLtTi5/smroXJEZlYRV0vC8r6611tp0q
+	jWtXwkSGLfSgB0c1VN0QnF6OosB1it8sh/d+cgl+sE4xD66wmtz9/kRgjeCWN3+SA0eOB6
+	ASG2R1aISGgtDRCT7avGMNQA25aJ7nE=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=XkSr4OIV;
+	spf=pass (imf17.hostedemail.com: domain of shivankg@amd.com designates 52.101.46.63 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Kd4rbzA4h2ohuWRDSW2ETZ1bg3pTm2JvmOEkAG9pABPCERKQ0My2sxtnurkYOKUMC/V58tEleKU6JdjzDi7Lqja5JrlZe2ISdqI4rJC5Jp8yUU9+Ucq0+KmyXU0GId5XWEhcnJxISPvh6pkUXT6QF9ql+E6FBIYFZlqY0wy2EiTDGFfrCHE0eDBLgSE9gSqfAz2RoVjM9yYLUzoiG+zqwydQ152XcYNBohSAmnvOcJKA+IX13TBy11HH2RnyJTMcSJthy/bpCJOu5gapOu2W/RdnfpqZrCgBzwz2O6TWxtLa2AbAnscuGhfB1WK9tPFXkU/t2haaeN06Eus4Viw4vQ==
+ b=iIaoH0+VMqzW4UnCD/UPupJ3APS7/eh14+pokliPzOyQoNk68yQNASNKuzwAFyKDRzBJRA9WRDtfAqXHvvDJRH68DR+7wZCSs+8NlFr/2hapwcD7y7WiedacDyt3DZf6Unj/aatADOHIoCVs75eXGVHvendXS58XnrhFghQVmOSO3pmEI9cf9ipk5HWvWPJsX8yg7nlLoDXoc9gBDwxOZoglIvOuznCW1kOcMDFfU7eYbzvz881rt0f1GCMrkscf7b3acKLoBSHKIbetu4P4lnR1pP31i4doqLGlEx4DH1dsm1Ur9MM0W+uzuZ6phpT49wJ0Len86uzGVrXBFWf/XA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UvMQi60+FK1dsYsCkrpCg0bZwxaBYKJwFTlW/+3nxs0=;
- b=hGcURAFlDFaN67O54aplpIIF2V8bOYNbkUN2dHEIedJYXrERwedeH+k5JyHQhzPLZJswVw53+KX0eIwaGMsMuntWX7lF6qlIqQZgYX6+KvTNNZmF2ZWZH6YPxDDDJw7H5D7EQ9gUOXlt6GBMMCFelVjoMqUzU57lsMbE7q26FtMbSGTv9dix5bou2Vxq2GZU8JDrYh2UWL/XTMxBvpfAnF4A9J6HLHgFTMsrZx7CkF8F13URoRgaGGsCRh9vlvBad6uxT0/fVmMKqwD3h0Ed4/bnALf0GONlVddH/Y5KTcjeYBhI5HP8AYpQeqdgxWSfYC3/Ix/zIUOfNZw5gfbXzQ==
+ bh=EUHxLZc87SIo516dLR77xd1rSetSYWKvVm1R29rwnEo=;
+ b=DaM5DE60asU/X4fCw0hPREJNYlnf7Yzekpw1pBVAWcAhUwbroSjnETeEf/VMKOBIpqu4EOuOdj1vIlzs2q/o84bGxj0gjShiS5TtWtHcchdVhw0Zo1cs6Lxss6Y0gqYkwNTK9eykZ2WBvjSTxT/+CLDGgtjPMsns1Cn/5xPLcVNAAWFj/MwSB/ByCfNbmUb/+6w5+r4IcluChYYGmXdiup+EnOuGS0mVgq7uXjzIo5nTcjunn37vPkMEDbOYjcLncqP/yW47WbTNJMkR+PymwUN3oxsgO4YBlpFEHOguIKTCxIKGXzWSOw0E/xAeVOWwQx/qxMo72iviGfpmAFxRgw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=sk.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UvMQi60+FK1dsYsCkrpCg0bZwxaBYKJwFTlW/+3nxs0=;
- b=KJVsKZmqWyvBnly57LP8j92xJ1D5zHt4BKzxOwl9fOlqSmy1hNJYzVvgLp2+Ruupr8purDFcBNFDMaR1Wgg4nJiUP/NbsG8yvknF63XyksfPSojvLNwdwP1YDzZpVRS4puPpsMncFHeeM8gm7NopXPjrMUGb7DYcV4/oZ4xwRN0=
-Received: from BN9P222CA0028.NAMP222.PROD.OUTLOOK.COM (2603:10b6:408:10c::33)
- by DM4PR12MB6206.namprd12.prod.outlook.com (2603:10b6:8:a7::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.360.8; Wed, 2 Sep 2026 10:53:53 +0000
-Received: from BN5PEPF00046988.namprd02.prod.outlook.com
- (2603:10b6:408:10c:cafe::24) by BN9P222CA0028.outlook.office365.com
- (2603:10b6:408:10c::33) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.11 via Frontend Transport; Wed, 2
- Sep 2026 10:53:53 +0000
+ bh=EUHxLZc87SIo516dLR77xd1rSetSYWKvVm1R29rwnEo=;
+ b=XkSr4OIVNDkzw4Fd4JubaEBjjaNHFc6KjZoEKeDbEFwTO7+X1RJ1v1dV9PFStwADGlz4J49KS+Cue7/JaLMu3iN7V7uPDAWU8BkG2Th6TkFBVOAlnoehF2BAJMVb7I7ngit0Bhw88FHKWISWpgeN+PeubhoPeuULK0R91JjOPZI=
+Received: from BN0PR08CA0022.namprd08.prod.outlook.com (2603:10b6:408:142::7)
+ by PH7PR12MB5805.namprd12.prod.outlook.com (2603:10b6:510:1d1::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Wed, 2 Sep
+ 2026 10:54:08 +0000
+Received: from BN5PEPF00046987.namprd02.prod.outlook.com
+ (2603:10b6:408:142:cafe::78) by BN0PR08CA0022.outlook.office365.com
+ (2603:10b6:408:142::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.10 via Frontend Transport; Wed, 2
+ Sep 2026 10:54:07 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -82,21 +83,21 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BN5PEPF00046988.mail.protection.outlook.com (10.167.245.37) with Microsoft
+ BN5PEPF00046987.mail.protection.outlook.com (10.167.245.36) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.382.8 via Frontend Transport; Wed, 2 Sep 2026 10:53:52 +0000
+ 15.21.382.8 via Frontend Transport; Wed, 2 Sep 2026 10:54:06 +0000
 Received: from [127.0.1.1] (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Wed, 2 Sep
- 2026 05:53:38 -0500
+ 2026 05:53:52 -0500
 From: Shivank Garg <shivankg@amd.com>
-Date: Wed, 2 Sep 2026 10:52:19 +0000
-Subject: [PATCH RFC 05/11] mm/migrate: add a dedicated movable_ops
- migration pass
+Date: Wed, 2 Sep 2026 10:52:20 +0000
+Subject: [PATCH RFC 06/11] mm/migrate: rename migrate_pages_batch() to
+ migrate_folios_batch()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20260902-migrate-refactor-shivank-v1-5-9dcca87669c4@amd.com>
+Message-ID: <20260902-migrate-refactor-shivank-v1-6-9dcca87669c4@amd.com>
 References: <20260902-migrate-refactor-shivank-v1-0-9dcca87669c4@amd.com>
 In-Reply-To: <20260902-migrate-refactor-shivank-v1-0-9dcca87669c4@amd.com>
 To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
@@ -132,11 +133,11 @@ CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
 	<jfs-discussion@lists.sourceforge.net>, <linux-nfs@vger.kernel.org>,
 	<kvm@vger.kernel.org>, Shivank Garg <shivankg@amd.com>
 X-Mailer: b4 0.15-dev-47d62
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788346348; l=7549;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788346348; l=4160;
  i=shivankg@amd.com; s=20260518; h=from:subject:message-id;
- bh=RI02LIU5Xi5+P6WIx4/tIFhoYu3m0iIqrPm3yd4Pync=;
- b=RgY8vSnVIPQsmK943ISVn6MTBagX09K5oB348FwCOtuM9MSJH0KouONPqM5xSgCuB6HKJbT1g
- GGA6rUEJZdGC5n7GadcCcNT3I8f8fzzWx31E3cImzeyhxTKOIRGl7om
+ bh=Fqi07cuj0t9DVgFdFNJBSPyRAcnfPff5xqiyG0YOAAw=;
+ b=VHLvgbIhFwCVKeh3oI8OLZ9ydq0iu/G94dLsgBxliBbC+D46x3iUwPS7POszEmY//eC7P6oMg
+ gV+QETr+4YXAqnn+IE+sRMapWHGUQIqQCmMzyFGF194eBrHcUM44WS9
 X-Developer-Key: i=shivankg@amd.com; a=ed25519;
  pk=2l2QGTeXuGkZTtfmx0nPQU8iFZfjYmX/ymMojitevx4=
 X-Originating-IP: [10.180.168.240]
@@ -144,38 +145,38 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN5PEPF00046988:EE_|DM4PR12MB6206:EE_
-X-MS-Office365-Filtering-Correlation-Id: f937f727-3c07-4d69-c0d4-08df08e07a6c
+X-MS-TrafficTypeDiagnostic: BN5PEPF00046987:EE_|PH7PR12MB5805:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1e69fecc-25f3-4590-34a3-08df08e08298
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|23010399003|36860700016|1800799024|7416014|376014|921020|11063799006|10067099003|56012099006|18002099003|22082099003;
+	BCL:0;ARA:13230040|82310400026|23010399003|36860700016|1800799024|7416014|376014|921020|11063799006|56012099006|10067099003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	JLmKwFcWA2ODtF1rJV7WikYZo/kj67e0p+yiPjpjzLaJapqNvdztWQ+yzjtrw/gfORv4JynGHzkHF5ZwYc5Vqqkb5b6ndJkCfo36mJGRhhfWbzWH/dsSTeaY0vFKCoVX5xSNJ6ABR44zmYxVOB7AX5kVvZwtrloZ5p3we3ibf/yqC1fNr/NQtcCAMsezzQu2PYif0hORmbiheiZgbXEx15TI9rFm4z+yXnpQse5ol0C2wmiObA/Ufl3aeow6ZjYK13PAfcEr7Mm+fpGONYnjYujB9hh2IRjNQzFYjrkpP50iEeX7Uo5gliok01KnsyIQ5oQGIS3ZLFYkw/mJEIfzdl4Qm0f11XB02I2BCz2baJ5FFSwM+C5bB0OjAqrMfMOKdD26k2FdiOCEs3G/b26hXnE68yjOneWHuoPpaboYvmHrfkzGkH+xgjGYXED81/TRcCfvnYJ6ZwRHNlOteZ0YwigC7yVWxnZK8ecN/1Rxk25tn7e9nX1ioW+EBbtvBLnr2aX1HX4O4mNAEvHV9nvkgyBKkREQqAwBiLxXb9BBzpAgMvQOFHTAW/Yxcs82Nq47TlMN2Jh0mwloAhcHpnxTVysP5fcdJNh6JT3epZC40rDhWgDNQlyZQzZD8/x8cOrLmTbc3cYPpbE4by6USDAqgC/b20FVVN8OK1aClYaoLbNeQnC9BbHFjTBVXHIxZayc9gymAj6RQ/fgEC0U5W9JipimTxTQLUODlDLe/VKikgJdlBaVZuuGxypYiQztQCZz
+	wCiWB8umVAN6134xVLMiVPh1HwKUaAPCTI8G4upmfK1rHsH3dPW+47NrjMXaBHkbxJP0py2uYnXLmWTub5t3bIPD5GQn5PswYtQKA007xX6m3iIdRh+PvedmBXNkFfWw3uk1Zs1n892OyOQCMUyErlgHqzXEHxSv7WQEUUth9G78c2UY171U8hhNaRAuEmXXHmkaNAr6kCQttBt05WD5NbxwWr02nSEC5hyZBDh6UZcC6U34cyg4nHhZZ/NefebEZrbyC56nKd1ikttLU4k7PxZPLxPqZ9L/bGc4MzOqeSumrL5Pf6kOeABSNFg5p26wfM6+fhZBoJeY7CyTyH8ytNkM2tlyZ2sEWuT1z92MBM0a5O8BBT1QcwdxYc6cvcUlOX2A9GwBZajnWuYfH10S1xV1HWTEr2/22JGNPQ5bX7RGWKEYm5Bbmc5kn6eK8SuYWLCqEAlBf8q0rlxoaITygu9B8fgzJJgSk3K76CsmPI4P1zDNaXg/FA6vQqQf3IlvH4i5dkQUkDu9St1Dtq16LSuMVAUbQL8LLdM+xNkdDhY7tGL4yl+ayev7tV2cY019zCRv0sFGy1yjkYHeQmzSSVm8u/VxIJHWG1p6Bei1spQFwfhrpDDFvHx6iLPYFUcs55QC+wYEmzom0x6REQZByfUIAJ3KrJtHFft3qM1hQBBaGxB38HLrutWSYIXyLAkDRcpptrV122T+tAOTCdhLeKVwL8BLrejgSyLKANPrUrfZsN/S0rWMabr84xd+3xAn
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(23010399003)(36860700016)(1800799024)(7416014)(376014)(921020)(11063799006)(10067099003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(23010399003)(36860700016)(1800799024)(7416014)(376014)(921020)(11063799006)(56012099006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	Rzl/PSo5863amWDCOMMJnDej+UR52MhjzYogGUotGK0/LH2WoUNcTUs+7bUhxxz1nBBoaT+gdjjDRKf5OuC0aZBOfxuDslKHZeq5wQnh8vRAqKIDHqH4zJSAqKnaB9XlSMtPEZNP+V41oRil74Kili9bCKXcL5I0LnRSDNMfNAJlSIOwNuikrRA66dGjOTshGSoe6IaDNvpuNAzgaMfD+vMzvXFK9dd9Q1vzWLGl3/mOvjmHGESREMtmMRWxChRaRddEglpb7sQ03/I1P41ShT8ZgGxtqr2+zvg610mU4mz31f3y/Kck06a1uJyjXcA7JhUnuqQURaZz9Vi402uVPDwaPRjdc4PVWyzw9xzZhnUmnKBOGYgwhAHN7K5OGakuOU6gml6EMMv8vsPt7ccoeYfGhiJ7uopCHaPXLkDEuHeO+7OnJsCr1jnvU98luc1T
+	Vcf/vHEnOgh/JYtjSJnVGWMwa4G08e5YASq1Da20l61TbFQrUh0TfM/Ey4IZLrnoEOh85gSJoY7XmnsLH6NBvpQGpmKulUgKmI3Cey5TUpjZU0eFCPlikBZ7+oqj8PW4EuGHkYMBLZIiineTHxGRDJTOLwkrnHtKHQIWie+PNrhK3xcv9gLtKOvWf/hbK+uWaAHTsaKNszgZkpLbnbQbX2XNrzPDtEJRDWzwn68YTRheZ0vPJg1EEtAVDQjFkBC2zV43XitVIQoh8AyvQ2Qk5L3LW7VozovrkM3uTu9n+aG+EFiuKVQ/ocAW2vFytHVL8nMWZX9jLvXnjCvoNgUCUmWUC8pNmGc8diOSsK52WyxWEGnOy0LuFMCGM76zyY/Z20ehf1BrE5NEIgLv0UlkQOXkmZjQsMIyggkWD7dC9JFsALXTshnFjcHfhLHK3i6q
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2026 10:53:52.9141
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2026 10:54:06.6144
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f937f727-3c07-4d69-c0d4-08df08e07a6c
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e69fecc-25f3-4590-34a3-08df08e08298
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN5PEPF00046988.namprd02.prod.outlook.com
+	BN5PEPF00046987.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6206
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 133DF100007
-X-Stat-Signature: 7m15pagqzdzdajgk9bfthxhthrmn3ef5
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5805
+X-Stat-Signature: 5qp7shobro6duoh6y4kubpa443f5snns
+X-Rspamd-Queue-Id: 2416440005
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788346446-287091
-X-HE-Meta: U2FsdGVkX18Yd2TWuTHrvpsHAsVPb5CB2zoYjVTu9V+ll9Ln6wO7SYsJXsmEJtevFBRI8uXU9iYyJh0YYOMlAsD7An4waa51SpreDB+MgAWSkPPtdJCDhQtGdmSIqVqJj2LjyrF9rUWi6Cv85cCfFFzV8hwyE/si+kfB6pt1aRya83HHNE3EkKBdyzgGW/6Wp/enJVxfuXtrAqSBEwklyw4m4a78F2JctYOFHiLz3IjdnPNKtUORjWcV1fJqIUSmC9v/9SxmlhaE26TvZrWCMqFsv70kgHFPfuaPcn68Oqqvziv5qpc2df0FxOL3eI1cuw3ibRn4kxXuFg+mqAeK4z66Sbo6uWfIolwUx1IrmODR5Xxkrcqluy9jhEYbRXij7KAsW0+WcgU0ubY1z3hdA9yzhhwaSH77qyq6LtDQBsBfa/t5qT7c/YJdpuCjm3K/mr4eVxDXDu8qKrLrefzp5SOXi0IxvUaAvxgGZ773GtpdMxjpyh06VaQHbGdR6bTHrOVRdlAedG7xmXTzZathWamyCYHfT7ixfbtO60Zo9Ps+ArvULYOqcgBsBI3+EGq3jAwqOO8DI4kzecMZ+reA8aKdtmDvPOZDqH1ZPYbotKr0PTvPzdflyd1GmsqiTq7SXulkrLnDNA1DNJoqes490qqQ1daww8SkqT71ajarcVpMIWMgF5BNKv6LeYRY8tPagH3CcsTqcAQ5xOn2JtwdKodnWNifL6P7BiIsdV+ah2B52AFqJYMN03p3MVcAGfYH4f/XdTtI1WElAOdBymVwotZkHEvKQ2LCJlFpk+tU9ZByqew8h+MCbzBGXpVoR3G+01XesBD9tiw5Ptq0jJkLds9ECeLtW94tWZFwcX+93UthpD9yxht0uA5xMarM5NCCVsLao9AfssyVcYb1BiUky7b+d4yl7keDH2y+pWP2bQ9GcNMMMTdB13qO/fhuahCXiAklJQoZuhnS6YLflIi
- hFOPvvba
- BZ3IjOL8IL/ABMVtor8k4oGVF/zRLyod+P/6h8qj6VUpMyaQcN/ue5iStvrc83oiVAxrWAwK8tLG300giukuJqE765bOktvXRLOBLpyvvn5SEi37+VogclwtmgEMq44t8yLkqC+w6Ooqu/+ha+7UMEBJapRviKmFRrXTnL852XbnR+X9lkaUDp/mYkBl3F824WpRxZNhfCkHi+fETWCUiBX59XGYs7PP0K0LcBJj7KKvjpYIJNMA3ond/+8Q23/wVxVBxkAeHlSSwZBb0y586icoTNlWPPB+3XecThXqTGjvXvcm4TKANboT+sHB3IcinRui8rmPO7S/+zDNd2EEC+xEc6K7IXh4OoNNYNNa2oU2gew1hqO+4w2+iiQUXxzQ56Gxxf8PXuN9BmL2LcLEsOzW1CkAAnAWyaZ+Fqp62I7HEEa4R+pWsL0wUlipbClYBYf2bVdRR2whI3asDWOACoFIbXzk7L/BdkoZ0pWtiRRlMlMDsFJMGP/ZLzL8r0+FG2Uq6Z6ks+smxk8y2fcwAcsrBaJB/MKxyueCBd8Uoa2uY9Gv62827FlXZooLpXgcFYEaMH6v6YSpkiFMsQv7kljnd3Ny7EH/fswEWM8TjOwtwy4w=
+X-HE-Tag: 1788346455-590766
+X-HE-Meta: U2FsdGVkX186DTy9YIw8TH9ui4KPJmtjt8NgYtUUBtBEOU1aT7vL1AhwKI+s+l8DdVq3FChRKDOiVwD40efM74ebRonSheQzFX/lHBbb1mEZoIrwSoAB5QqCIvj0Q7NICDcoGT4vfqWdEAn2YrJZN9CdXijsE5zdum/VXJ9yiPCbpJFxA25HhIZ5foMEUyFn55tDJ2HHHf7XgFKzOV5X6iHguRjHUOeBp4I5Fzcb4kcU8xdSIQjv2o18g1x3h0ec4QH0gKiFZwErfeS2wsf/U5Tc6kFAgjcpLJyMAxqOQJZ7ndB8ggjdgUYjrMj3dL7d5sb5QkNni3jFepLp21GdaC+Qwk+76dsTRyT46g8AWLWZjwwbO3HsKrwh0KnP4ugmrDXMux6efcMeRWjv14yneNOdb34ghCbZ9d5PSt0wqX/QMdM/bIvREdjOMz4Z51YKfSyP3mjcCSuJiNNEha5QCHmhwZ8F3kgt7BKzQ8labag6Dy+wgsirwwD9pFCa8HrHo2vLV3pN5yR53vtFjKFA1ZEmRj+A2oEh00EoLTbNNB/LUSc/ZPsQDsa8Fkt3IgXISYpb77uYyGyOdQdHa3d3UIbISq4Ky0ChkT3hELJ7RcCQly+5v3X/x+BroGIoJz0c5rHM4EzKePi9dj65izFZBWZMZezPGbh3k1XV7Xdirfy2WCDTPqks2row7TeEQVBmleO97KHEAhNi/Tk3ob53JkjUO/dhAPjP4z4ms0jk4JYUhpZUnlIS8PXztXrv+ulzTBfxJccFVU6fNrG28elJUSrFQkGWUqaG8SwCobYEjq0VJlJQ45jHwCCbAvkXvHYrBlyMUlL4HqFrGsgdYyuvwnyE0DkegOKT5ackARvZJiC4Os5ivp2fC8MmPDvkc/vOalGyCAkcpn1jrVU3fAX59aJNut1r43SgdcW/agXlal2Qq8QtizzsUcJRHogPDzdwBIaod2fSo9uWUgwh3XG
+ Cuw1QkOt
+ EysZys4EEwo7mM50wHSXUiVsDLC87zGYPFL68OMpy5qnAjbtecDzXj7Oks5gPiPUaL6c6heLQ1DXlJJ5aJuu+eUP2S60EiUaKctOdM0OoinXJUvTmEFSuUC4mAnEGNMClrz97xNZ1TnEewzdkdrm/B96XOovZdCyB3RHBZ+w0HIHdne96drb9eQOKHKbMEILWN8vstfUqyaFEIpCGZ08Z73H/pml//ni71dQdWDlBgBaGO23/KZX+AeRY7QDKWvs44hiM15fXtOr5eIA7wAMtSCd3NONCNE1os1NZXZTlwiKiL1L7PkuwWpvjBXqE8UDIDgtg6DZ9ISt5X7RkQwvfAnXRpZB7DIlWimb9pdFFThsvu/M58D/SkeQi5nqakUIxPLfawQE671A1+r6dMvbVdN92x52NaBlpS9vtFoVKtRacJM/Nhayg9zJv86/+ZzKvh2cxEQuhOwrgrNsXgcdbfKCgsL+0ybhYN4W+qb0e26LIzPnIyZECiEFpMfeuKCqJeDpIa/ZQ3VZUt+Xxtsu+PjWFaCSSx9Rt7LAFkSuHPYHw/IifBHSu2uhvLYKLTPxvw5Kcbr0Vqw66rn8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -183,242 +184,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Pages with movable_ops transfer ownership through a driver callback and do
-not need the unmap, TLB flush, copy, or LRU handling used for LRU folios.
-These pages are expected to stop being represented as folios. Separating
-their migration from the LRU folio path prepares for that conversion.
+migrate_pages_batch() operates on folios and calls the folio-based unmap,
+move and undo helpers. Now that movable_ops-based page migration has been
+separated out, rename it to migrate_folios_batch().
 
-Add migrate_movable_ops_pages() before LRU folio migration to handle
-allocation, locking, retries, and cleanup on a separate list. Return
-remaining pages through @ret_folios and remove the now-unreachable
-movable_ops branches from the LRU path.
-
-This changes three details of movable_ops migration:
- - Pages are processed before LRU folios rather than in source-list order.
- - Synchronous callers use the requested mode from the first attempt
-   instead of the LRU asynchronous pre-pass.
- - A callback returning -EAGAIN ends the current attempt, so a later
-   retry allocates a fresh destination.
- - MIGRATE_SYNC_LIGHT waits for the page lock instead of giving up,
-   because !uptodate check is not applicable for movable_ops
-   pages.
+No functional changes intended.
 
 Suggested-by: Zi Yan <ziy@nvidia.com>
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Shivank Garg <shivankg@amd.com>
 ---
- mm/migrate.c | 156 +++++++++++++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 140 insertions(+), 16 deletions(-)
+ mm/migrate.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/mm/migrate.c b/mm/migrate.c
-index 7a136cec275f..55f352efdf2b 100644
+index 55f352efdf2b..163f13344fd2 100644
 --- a/mm/migrate.c
 +++ b/mm/migrate.c
-@@ -1200,7 +1200,7 @@ static void migrate_folio_undo_dst(struct folio *dst, bool locked,
- static void migrate_folio_done(struct folio *src,
- 			       enum migrate_reason reason)
- {
--	if (likely(!page_has_movable_ops(&src->page)) && reason != MR_DEMOTION)
-+	if (reason != MR_DEMOTION)
- 		mod_node_page_state(folio_pgdat(src), NR_ISOLATED_ANON +
- 				    folio_is_file_lru(src), -folio_nr_pages(src));
- 
-@@ -1309,11 +1309,6 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
- 		goto out;
- 	dst_locked = true;
- 
--	if (unlikely(page_has_movable_ops(&src->page))) {
--		__migrate_folio_record(dst, old_folio_state, anon_vma);
--		return 0;
--	}
--
- 	/*
- 	 * Corner case handling:
- 	 * 1. When a new swap-cache page is read into, it is added to the LRU
-@@ -1376,13 +1371,6 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
- 	prev = dst->lru.prev;
- 	list_del(&dst->lru);
- 
--	if (unlikely(page_has_movable_ops(&src->page))) {
--		rc = migrate_movable_ops_page(&dst->page, &src->page, mode);
--		if (rc)
--			goto out;
--		goto out_unlock_both;
--	}
--
- 	if (folio_order(src) > 1 &&
- 	    !data_race(list_empty(&src->_deferred_list))) {
- 		src_deferred_split = true;
-@@ -1418,7 +1406,6 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
- 	if (old_folio_state & FOLIO_WAS_MAPPED)
- 		remove_migration_ptes(src, dst, 0);
- 
--out_unlock_both:
- 	folio_unlock(dst);
- 	folio_set_owner_migrate_reason(dst, reason);
- 	/*
-@@ -1816,6 +1803,135 @@ static void migrate_folios_undo(struct list_head *src_folios,
- 	}
+@@ -2003,7 +2003,7 @@ static int migrate_folios_unmap(struct list_head *from,
+ 			 * always reports success when its fromlist is empty.
+ 			 * stats->nr_thp_failed should be increased too,
+ 			 * otherwise stats inconsistency will happen when
+-			 * migrate_pages_batch is called via migrate_pages()
++			 * migrate_folios_batch is called via migrate_pages()
+ 			 * with MIGRATE_SYNC and MIGRATE_ASYNC.
+ 			 *
+ 			 * Only check it without removing it from the list.
+@@ -2135,7 +2135,7 @@ static int migrate_folios_unmap(struct list_head *from,
  }
  
-+/*
-+ * Migrate one isolated movable_ops page. Keep @src on its list for retry and
-+ * move it to @ret_folios on permanent failure.
-+ *
-+ * Return 0 on success or a negative error.
-+ */
-+static int move_movable_ops_page(struct folio *src,
-+		new_folio_t get_new_folio, free_folio_t put_new_folio,
-+		unsigned long private, enum migrate_mode mode,
-+		enum migrate_reason reason, struct list_head *ret_folios)
-+{
-+	struct folio *dst;
-+	int rc = -EAGAIN;
-+
-+	dst = get_new_folio(src, private);
-+	if (!dst)
-+		return -ENOMEM;
-+
-+	if (!folio_trylock(src)) {
-+		if (mode == MIGRATE_ASYNC)
-+			goto out_put_dst;
-+		if (current->flags & PF_MEMALLOC)
-+			goto out_put_dst;
-+		folio_lock(src);
-+	}
-+
-+	if (unlikely(!folio_trylock(dst)))
-+		goto out_unlock_src;
-+
-+	rc = migrate_movable_ops_page(&dst->page, &src->page, mode);
-+	folio_unlock(dst);
-+	if (rc)
-+		goto out_unlock_src;
-+
-+	folio_set_owner_migrate_reason(dst, reason);
-+	/* Drop migration's reference after transferring ownership to dst. */
-+	folio_put(dst);
-+
-+	list_del(&src->lru);
-+	folio_unlock(src);
-+
-+	if (reason != MR_MEMORY_FAILURE)
-+		folio_put(src);
-+
-+	return 0;
-+
-+out_unlock_src:
-+	folio_unlock(src);
-+out_put_dst:
-+	if (put_new_folio)
-+		put_new_folio(dst, private);
-+	else
-+		folio_put(dst);
-+
-+	if (rc != -EAGAIN)
-+		list_move_tail(&src->lru, ret_folios);
-+
-+	return rc;
-+}
-+
-+/*
-+ * Move movable_ops pages from @from to a local list and try to migrate each
-+ * page up to NR_MAX_MIGRATE_PAGES_RETRY times. Any remaining pages are moved
-+ * to @ret_folios.
-+ *
-+ * Return the number of failed pages, or a negative error.
-+ */
-+static int migrate_movable_ops_pages(struct list_head *from,
-+		new_folio_t get_new_folio, free_folio_t put_new_folio,
-+		unsigned long private, enum migrate_mode mode,
-+		enum migrate_reason reason, struct migrate_pages_stats *stats,
-+		struct list_head *ret_folios)
-+{
-+	int retry = 1;
-+	int nr_failed = 0;
-+	int pass;
-+	struct folio *folio, *folio2;
-+	int rc, ret;
-+	LIST_HEAD(movable_ops_pages);
-+
-+	list_for_each_entry_safe(folio, folio2, from, lru)
-+		if (page_has_movable_ops(&folio->page))
-+			list_move_tail(&folio->lru, &movable_ops_pages);
-+
-+	for (pass = 0; pass < NR_MAX_MIGRATE_PAGES_RETRY && retry; pass++) {
-+		retry = 0;
-+
-+		list_for_each_entry_safe(folio, folio2, &movable_ops_pages, lru) {
-+			cond_resched();
-+
-+			rc = move_movable_ops_page(folio, get_new_folio,
-+						   put_new_folio, private,
-+						   mode, reason, ret_folios);
-+			switch (rc) {
-+			case -ENOMEM:
-+				/* Count this page and those awaiting retry. */
-+				nr_failed += 1 + retry;
-+				ret = -ENOMEM;
-+				goto out;
-+			case -EAGAIN:
-+				retry++;
-+				break;
-+			case 0:
-+				stats->nr_succeeded++;
-+				break;
-+			default:
-+				nr_failed++;
-+				break;
-+			}
-+		}
-+	}
-+	/* Count pages that exhausted the retry limit. */
-+	nr_failed += retry;
-+	ret = nr_failed;
-+out:
-+	/* movable_ops pages are order-0, so one failed page each. */
-+	stats->nr_failed_pages += nr_failed;
-+	list_splice_tail(&movable_ops_pages, ret_folios);
-+
-+	return ret;
-+}
-+
-+/*
-+ * Split a large folio after destination allocation fails and queue the resulting
-+ * folios on @split_folios.
-+ *
-+ * Return: 0 on success, -EAGAIN to retry splitting later, or -ENOMEM to stop the
-+ * unmap phase.
-+ */
- static int migrate_folio_split_on_alloc_fail(struct folio *folio,
- 		struct list_head *split_folios, enum migrate_mode mode,
- 		enum migrate_reason reason, struct migrate_pages_stats *stats)
-@@ -1940,8 +2056,7 @@ static int migrate_folios_unmap(struct list_head *from,
- 			 * If we are holding the last folio reference, the folio
- 			 * was freed from under us, so just drop our reference.
- 			 */
--			if (likely(!page_has_movable_ops(&folio->page)) &&
--			    folio_ref_count(folio) == 1) {
-+			if (folio_ref_count(folio) == 1) {
- 				folio_clear_active(folio);
- 				folio_clear_unevictable(folio);
- 				list_del(&folio->lru);
-@@ -2165,6 +2280,15 @@ int migrate_pages(struct list_head *from, new_folio_t get_new_folio,
- 	if (rc_gather < 0)
- 		goto out;
+ /*
+- * migrate_pages_batch() first unmaps as many folios in the source list as
++ * migrate_folios_batch() first unmaps as many folios in the source list as
+  * possible, flushes the TLBs, then moves the unmapped folios.
+  *
+  * Only MIGRATE_ASYNC may batch multiple folios.  Waiting for a lock or bit
+@@ -2143,7 +2143,7 @@ static int migrate_folios_unmap(struct list_head *from,
+  * Therefore, if mode != MIGRATE_ASYNC, the source list must contain at most
+  * one folio.
+  */
+-static int migrate_pages_batch(struct list_head *from,
++static int migrate_folios_batch(struct list_head *from,
+ 		new_folio_t get_new_folio, free_folio_t put_new_folio,
+ 		unsigned long private, enum migrate_mode mode, enum migrate_reason reason,
+ 		struct list_head *ret_folios, struct list_head *split_folios,
+@@ -2194,9 +2194,9 @@ static int migrate_pages_sync(struct list_head *from, new_folio_t get_new_folio,
  
-+	rc = migrate_movable_ops_pages(from, get_new_folio, put_new_folio,
-+				       private, mode, reason, &stats,
-+				       &ret_folios);
-+	if (rc < 0) {
-+		rc_gather = rc;
-+		goto out;
-+	}
-+	rc_gather += rc;
-+
- again:
- 	nr_pages = 0;
- 	list_for_each_entry_safe(folio, folio2, from, lru) {
+ 	memset(&astats, 0, sizeof(astats));
+ 	/* Try to migrate in batch with MIGRATE_ASYNC mode firstly */
+-	rc = migrate_pages_batch(from, get_new_folio, put_new_folio, private, MIGRATE_ASYNC,
+-				 reason, &folios, split_folios, &astats,
+-				 NR_MAX_MIGRATE_ASYNC_RETRY);
++	rc = migrate_folios_batch(from, get_new_folio, put_new_folio, private,
++			MIGRATE_ASYNC, reason, &folios, split_folios, &astats,
++			NR_MAX_MIGRATE_ASYNC_RETRY);
+ 	stats->nr_succeeded += astats.nr_succeeded;
+ 	stats->nr_thp_succeeded += astats.nr_thp_succeeded;
+ 	stats->nr_thp_split += astats.nr_thp_split;
+@@ -2221,9 +2221,9 @@ static int migrate_pages_sync(struct list_head *from, new_folio_t get_new_folio,
+ 	list_splice_tail_init(&folios, from);
+ 	while (!list_empty(from)) {
+ 		list_move(from->next, &folios);
+-		rc = migrate_pages_batch(&folios, get_new_folio, put_new_folio,
+-					 private, mode, reason, ret_folios,
+-					 split_folios, stats, NR_MAX_MIGRATE_SYNC_RETRY);
++		rc = migrate_folios_batch(&folios, get_new_folio, put_new_folio,
++				private, mode, reason, ret_folios, split_folios,
++				stats, NR_MAX_MIGRATE_SYNC_RETRY);
+ 		list_splice_tail_init(&folios, ret_folios);
+ 		if (rc < 0)
+ 			return rc;
+@@ -2301,7 +2301,7 @@ int migrate_pages(struct list_head *from, new_folio_t get_new_folio,
+ 	else
+ 		list_splice_init(from, &folios);
+ 	if (mode == MIGRATE_ASYNC)
+-		rc = migrate_pages_batch(&folios, get_new_folio, put_new_folio,
++		rc = migrate_folios_batch(&folios, get_new_folio, put_new_folio,
+ 				private, mode, reason, &ret_folios,
+ 				&split_folios, &stats,
+ 				NR_MAX_MIGRATE_PAGES_RETRY);
+@@ -2321,7 +2321,7 @@ int migrate_pages(struct list_head *from, new_folio_t get_new_folio,
+ 		 * is counted as 1 failure already.  And, we only try to migrate
+ 		 * with minimal effort, force MIGRATE_ASYNC mode and retry once.
+ 		 */
+-		migrate_pages_batch(&split_folios, get_new_folio,
++		migrate_folios_batch(&split_folios, get_new_folio,
+ 				put_new_folio, private, MIGRATE_ASYNC, reason,
+ 				&ret_folios, NULL, &stats, 1);
+ 		list_splice_tail_init(&split_folios, &ret_folios);
 
 -- 
 2.43.0
