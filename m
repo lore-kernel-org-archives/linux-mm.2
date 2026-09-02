@@ -4,87 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD765C624D4
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 15:40:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F046DC61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 15:42:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E35066B008A; Wed,  2 Sep 2026 11:40:17 -0400 (EDT)
+	id 0084D6B00AD; Wed,  2 Sep 2026 11:42:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE5726B0092; Wed,  2 Sep 2026 11:40:17 -0400 (EDT)
+	id F22136B00AF; Wed,  2 Sep 2026 11:42:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFC586B0099; Wed,  2 Sep 2026 11:40:17 -0400 (EDT)
+	id E5ECC6B00B0; Wed,  2 Sep 2026 11:42:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B195C6B008A
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:40:17 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 43213120275
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:40:17 +0000 (UTC)
-X-FDA: 85169233674.27.9EA6490
-Received: from mta0.migadu.com (out-167.mta0.migadu.com [91.218.175.167])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 2299B20007
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:40:14 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QbF+57ia;
-	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.167 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CAE7A6B00AD
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 11:42:14 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5893714028A
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:42:14 +0000 (UTC)
+X-FDA: 85169238588.03.B3DF645
+Received: from mta0.migadu.com (out-199.mta0.migadu.com [91.218.175.199])
+	by imf22.hostedemail.com (Postfix) with ESMTP id AE81FC0008
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 15:42:10 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SlqLN419;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.199 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788363615;
+	s=arc-20220608; t=1788363732;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SK9vxnWpHC64/KXq2W93aMYtQH0bzeUnVk04EBGc5uI=;
-	b=HAxbGj68kST4oDLGOvp4pLrghqJr4ynwIs5skDTOBJBh5GM5V1DDXyNYuEZ+mo5ki9cfs/
-	7lJ7ZazBQpk2Yhv788vRCGrt01XB4NHsBd9r1PgTJtJaszMML2ZveXNmIIOg+FUlrp8fwD
-	qnCKoq97PtuNbhx66Obe02bwl+zaxFM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788363615;
-	b=0Jd/9w7mX/OnyuXjVM8YznRdNq1OMDDW3EW0u6OhHO0M4tZoVgoAu+mIKL3hCGcb46Dasv
-	IDqYB3S6l4+j/Jw58IZ3YuLRZkbZP6N9dHg4ER8hajF01InKEGmHDqAlIo9ztU+y1FOJuQ
-	QYZIKKASp9yWy6nXGOvwJZVv0hEX3tI=
+	bh=ymb3X9991WuCnhvzTfNSuyLn/F8xlBWh2xI22inucpI=;
+	b=d98GVgSf1qAEWZ0SBQcFGazRngyxC+Z+cojNrmD2cdNVHbtsXF6TJgSUEcQ4aQPOqbpZtW
+	4NJBbErcted0HMRklYtRJuxb0x3GAEhU7hmNKpsGreUntHik12/pRKCjNbXT809mo8K1ce
+	8+gEUjiogvLrbQvHdEVHyaUVg8HWaZE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QbF+57ia;
-	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.167 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SlqLN419;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.199 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788363732;
+	b=BLSOUf2Kl2DgKTRPKonYSG0IELIZ8Yqmz6gJhCAkeV7U0qNPm93+EEUeoUDfkTWBBOHMZR
+	0LGtr6+QvQcH8V4fA7xn9mEHUiOIMqeUfMgs2MrAe/hegEHacY6pePh5U7Lm2JPE7MYiud
+	7fId0PbCPoYZxZKOWntcsoLibIyltB0=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=XgAxi/AozePVAAsGuyYaplqRMqNIRGre5HL93/nj7/E=;
+DKIM-Signature: a=rsa-sha256; bh=oQAtHMDdxLMd+IseQsUdtJ1A0k1c1Qwn3qdXWbS3Pqk=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788363613; v=1; x=1788968413;
- b=QbF+57iaD79gvn7EK/B7z/gopq8GRR6y5Heai5CRsGqbqdrdwkEmPr0m4bjALgJgauVUPl6l
- YaDfRFev1om365xVxLQiPRAQwv9u12FnCP8TzDQmyIUbdQDJ5IciUmx5HR5r6eVyR0Zh2xLgATg
- UEM4UBdp9j8qokVhK0m+3K4s=
+ t=1788363729; v=1; x=1788968529;
+ b=SlqLN419V7SAOO7h/q10ToEfqiyIKMDWnOdnKgt3nykFlWoPEYGDqVyh4B7NVSjDZhVuzjxu
+ GGZfg8V5A83a+Q9rMQOsxZ0bDoWFk9AsIM53ZWjLZb0z8k04ReVb0nMTHbJQ8ewdSbSv0dVI4bA
+ r+5lGc0xunNsHGxrMj6Tf6o8=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id f8325dd3e3de5b6b;
-	Wed, 02 Sep 2026 15:40:12 +0000
-X-Mizu-Trace-ID: f8325dd3e3de5b6b
+Received: by smtp.migadu.com with ESMTPS id 6b5cc0fcc14a6291;
+	Wed, 02 Sep 2026 15:42:09 +0000
+X-Mizu-Trace-ID: 6b5cc0fcc14a6291
 X-Migadu-Flow: FLOW_OUT
-Date: Wed, 2 Sep 2026 08:40:10 -0700
+Date: Wed, 2 Sep 2026 08:42:07 -0700
 From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: kasong@tencent.com
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
 	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Kairui Song <kasong@tencent.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Usama Arif <usama.arif@linux.dev>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/shrinker: fix bogus set_shrinker_bit() with
- cgroup.memory=nokmem
-Message-ID: <aphDRUyFXJjEEhJN@linux.dev>
-References: <20260902073800.305481-1-jiayuan.chen@linux.dev>
+	Chris Li <chrisl@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Ridong Chen <ridong.chen@linux.dev>, Lian Wang <lianux.mm@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Kairui Song <ryncsn@gmail.com>
+Subject: Re: [PATCH v5 1/6] mm/memcontrol: move the lru_zone_size sanity
+ check to the reader side
+Message-ID: <aphDtvu4xDCW3cOK@linux.dev>
+References: <20260902-mglru-flags-cleanup-v5-0-9db761d779ef@tencent.com>
+ <20260902-mglru-flags-cleanup-v5-1-9db761d779ef@tencent.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260902073800.305481-1-jiayuan.chen@linux.dev>
-X-Stat-Signature: er3566p4ahwnyygswyymhk3q44nsii85
-X-Rspamd-Queue-Id: 2299B20007
-X-Rspamd-Server: rspam02
+In-Reply-To: <20260902-mglru-flags-cleanup-v5-1-9db761d779ef@tencent.com>
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788363614-382668
-X-HE-Meta: U2FsdGVkX1+ovUG77E/7txNkLEazZ1TQvzOmK9rvcbiyacD0L2fLXEBJHexglK+WjlIKtAtEs0rSASfEdBy0fYXPdQyYnc7Rn4353RkdJWSL4Y7+4s6ZpFh8fSv40qjyTRg6Ebfznu7Hz0wo311YtrTu1B5ZDpt/9S9hjvasErs89ro3AdWyHPmRq3JY5boIhaAD55u2IwGkRDlQmGV8w+Bkv2x2FbBrvpZIH8CVMroRlT9Zz4lzvCtKFFEtxIIXBtdiDHXbN768rnrtEBPqUeVdGpA0iafhp7DqkSj7gBR9JqMVl7eFosR9JiwfBk7kqUSOl0zs4urQGLidPaWnwsT5+7mCaorqO+rJimClK0Ty9v5wkQs6mf5FJiaIqg0dqs0/w5gyVP6/YWuBOoehjq6OzUQbObqcVvXJOVxDSun6xAUSa2XhA2wX4w+XNlfydbub7YE7psMbu1/8h193W/homx/UB6lE2eo7FYD9EEVlCRTPW1GHMBaC4Kn8pCI0NxR7Nx9Q+q2yt2xkHuuQsL4DmF9GiplxTClopYPeI0BGiYnq8MNwC8ED6QLAcsjgt9utShMfhCjId7nz1kqG0H6GWfnXuBJDYljO4d7Ysw7yUb45LGhNsBVzApKwy92iBjfVj9+s5xCZFTlgD8bFQicgbS6HMxZyU9D1FSYcXCKC+EmVurQPpzSwD2Gx88MjjGkXfBJCpZetq/4VSWfRxP+yMlvquEFja9IYoZONXxrgwFGsyWsZJfrpZ4x7kJ5N775OhlCIawe+vJlntbfJtbh5BAccrwo1eOyZSowVwaaOYstSf9do0uE4glT9qfy+XuBQsurSPt344eApmTPOnyBuguqz8qwf2VjTLIH6XIjQg/Mn9WNTtWUzYf+B55AFSpja0JY4FPElC3+lsNohmHP/fZ4uEht5++jGPo5NMXGkUi3HX0+s+ulXMp/embkPAIUWxClhGwkCkqRT5JT
- E28QiEoY
- BVtCjwmMhTtwACcn91dAJi6jXK9/q3KA/8Gcf20devHC3TFfjvfaBGppEndOYRy2WbCI4JFTwNb7jQCK8AoAeAkTQGb4cjLNBKkjakyleuHjNEX57HkDPNKFu8q85Uy24Dtcf+BuBcpYYX8wkIdkQtU9ZtN77EC9/Kc2+cZ2iseY13scZz8MXijxKFvYXjE1eG4Qw+4tmJo1QkZBaJSYdXJoJhAiQaxKILEFpS8F8fWCrAqWzMCj1lduIVCZtIA7yh/wpwxLl2PEx5CYIX1uTr7gOGnKJx7lVyQWFDELRdFLSi0PsLPMaUDrNXwOPJcrDhNeQ
+X-Stat-Signature: pqiey9hnownomsa17yf3bn6893zigp3k
+X-Rspamd-Queue-Id: AE81FC0008
+X-HE-Tag: 1788363730-80410
+X-HE-Meta: U2FsdGVkX1/yCH0olH6sRb9JRreUCsHEP//Xp1O6/wX2TWwQGkJeuGXpWm25gEIp5zdIB+W0JcSrTEpOa1y83xiVFJKO9gBSQVI5AY9PvJlHRr/6D7pUGA7p44r1f2xgeDToaLVBXASaarpxbo0LqsSculC9GKbvt6Tw3jZDhBUxOt/GYvfj2qD7O9ab6AlTaqPzwlMxOBrV2ZZ0yDLqSKvHLa9h5D2d102+nd82hlUeErts0oQWF/7Zufcqnirq3TUue7vts+qhUptyKxMCUEjIL9y1/h4NNsbPFeZJCXxiic0zSxiy4nigkVqU7aqCZnPvbLGdEa0hLOR5t6UgNzEqP0Ib/1hHNWorN3HLDLTE47o5RBez9ABSLpXjP6Nvj1/MbsCTS3w26YoAxcj19RbyuoufL0hc8CbwBJBWDbuIuJ3FhSXcH9BgyvW0JT4FUYpHIw2Z4WVhzI/rNwgVmyfjnm7JCv3NjeZGx2kvjntt8QA7ZfOF4JWgIcOZ7UpusBiGQBWSWDA/46JLJ03Cn60XT7MnqXAvcONxsz0gVG7Rgn9Sq4Ew8/knGB64HSomZwUVCq/I8wRiCSu+puWVeuEU9nl7j5h8AlnN5CDfiVyBAGelAqvvy19XvbMIpYhQCTHjiHtJuDVzniELA5zRoeaESazcgS/udFFIV6xZJaWKu5c7xeBBLatbxaB7JZPWGdjs15TVBmlZ2B2GGDn1MModxqJnCqGo15N0vIcKqLzw/LtMI90ShLskFQ6AefcZQlbBEzRVwxtWcn6FNa+oookXA0YMb9DKcLdMZVvqmGT2oXk7tjLbkEriP/gK8f4sceXfPiZUl4b+p2ZeRwYDJXI+LegzVF0eOZa1K8u5DPgNDGEkNBaKB+wh2MSxun1dDFuo0jmgWEjWUa4BYNOfaRnlpxvIFtqWdQR3rUO9wwkBfMr8B1tXbqmjRmgSNWEbyKUsSsJ1t3wneBVc5C2
+ Bzt8r7NH
+ B31+z5usVKUtbODuMWamdZFKlLLz9UuB6RnwpNkTLP4Itnq9o5YU8jVHwX05FbWXDzdanOXMQ7m9heiceM08BbpD6RZI6ixG8Jagv2Ci0lsyzmvy06QKYppZ56LeR6VlxTB4ZSglWk0rIoF1CPq+/IYhIco0ncNbZP3muWwRL4+RlsxcR84E75pFIn5tyo2zMhNUTZK6VG2cF+N4gugMucp0i5W4RgdloSe8a9mFaevMR6YPXZfdQl/HG/dFw8O8m/kdxTBw4V04Smw/U70Jh9xdbNvO9a0IeWwGHV6otF/RC2ZukN2l7j/hswSVFnpf2vglQ5zVsuIWIBCqGvYEPNTMZaGrlVYUb8BJgaHMDijgXOFA9NGxJtoZj7DlxagBB2iHvBIZ5FpI2jf78AHeHHYGQMRRDknUGNe/wrGzDzrrCqYMArL2HJ5fcw0LkMMG49j6M
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,47 +99,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 02, 2026 at 03:37:59PM +0800, Jiayuan Chen wrote:
-> With cgroup.memory=nokmem, shrinker_memcg_alloc() bails out early and
-> never allocates an id, so shrinker->id keeps the 0 it got from the
-> kzalloc() in shrinker_alloc(). __list_lru_init() then copies that 0
-> into lru->shrinker_id, where it looks like a valid bit index.
+On Wed, Sep 02, 2026 at 05:50:54PM +0800, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
 > 
-> Nothing calls expand_shrinker_info() on nokmem either, so
-> shrinker_nr_max stays 0 and every memcg ends up with an empty map
-> (map_nr_max == 0).
+> Instead of using an unsigned long and checking the counter value at
+> the updater side, turn the counter into a signed long and check at the
+> reader side. This reduces overhead and simplifies the code.
 > 
-> deferred_split_folio() hands a real memcg to __list_lru_add()
-> regardless of whether the lru is memcg aware, so the first THP queued
-> in a cgroup does set_shrinker_bit(memcg, nid, 0) and trips the bounds
-> check:
+> commit ca707239e8a7 ("mm: update_lru_size warn and reset bad lru_size")
+> added a sanity check for memcg counter underflow: lru_zone_size is
+> unsigned, so an underflow wraps it around and returns an enormously
+> large number, then the memcg shrinker loops almost forever as the
+> calculated number of folios to shrink is huge. It also checked if a
+> zero value matches the empty LRU list, so the positive and negative
+> deltas had to be handled separately. However that emptiness check was
+> already removed by commit b4536f0c829c ("mm, memcg: fix the active list
+> aging for lowmem requests when memcg is enabled"), so handling the
+> deltas separately is no longer needed.
 > 
-> WARNING: mm/shrinker.c:212 at set_shrinker_bit+0x7d/0x90, CPU#126
-> Call Trace:
->  <TASK>
->  deferred_split_folio+0x18c/0x220
->  map_anon_folio_pmd_nopf+0xdd/0x130
->  map_anon_folio_pmd_pf+0x14/0xb0
->  do_huge_pmd_anonymous_page+0x1a1/0x620
->  __handle_mm_fault+0xea9/0x10d0
->  handle_mm_fault+0xe5/0x320
->  do_user_addr_fault+0x1cc/0x870
->  exc_page_fault+0x81/0x1b0
->  asm_exc_page_fault+0x27/0x30
->  </TASK>
+> The remaining update-side check is costly and cannot really catch the
+> leak it is after anyway. It runs on every LRU folio, and if a folio was
+> removed without updating the counter while other folios remain on the
+> LRU, the WARN only triggers much later, from a likely innocent
+> callsite. While readers are much rarer than writers, only the reclaim
+> and reparenting paths read it, once per batch.
 > 
-> Harmless, the WARN_ON_ONCE() is what keeps the out of bounds unit[]
-> read from happening, but the id should not look valid in the first
-> place. Clear it before returning.
+> Checking at the reader side instead leaves the update path a plain
+> addition, and puts the warning where the value is actually consumed.
 > 
-> Two other spots could paper over this: drop the id in
-> __list_lru_init() when nokmem turns memcg_aware off, or make
-> deferred_split_folio() pass NULL like list_lru_add_obj() does. Both
-> leave shrinker->id lying around for the next caller, so fix it where
-> the id is handed out.
+> Note this changes the behavior on underflow: the correction is removed
+> and a negative value is kept. A massive leak of the LRU size counter
+> would indicate that something else has gone very wrong, and one should
+> fix that leaking site instead. Besides, the original behavior might
+> cause false positives, or make things worse if the accounting happens
+> after the actual insertion: the value is not leaked, just delayed, so
+> force-fixing it would cause a bigger problem. The warning now only kicks
+> in when a consumer actually uses it, in which case the reader gets zero.
 > 
-> Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
-> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> Reviewed-by: Ridong Chen <ridong.chen@linux.dev>
+> Reviewed-by: Barry Song <baohua@kernel.org>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
 
 Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
