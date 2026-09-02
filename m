@@ -4,93 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1887C624D3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 17:26:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A65D2C624D3
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 17:34:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BED686B00A2; Wed,  2 Sep 2026 13:26:43 -0400 (EDT)
+	id 806796B008A; Wed,  2 Sep 2026 13:34:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC75C6B00A4; Wed,  2 Sep 2026 13:26:43 -0400 (EDT)
+	id 7DC886B0092; Wed,  2 Sep 2026 13:34:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B02256B00A5; Wed,  2 Sep 2026 13:26:43 -0400 (EDT)
+	id 6F3446B00A4; Wed,  2 Sep 2026 13:34:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FB476B00A2
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:26:43 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2C727120155
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:26:43 +0000 (UTC)
-X-FDA: 85169501886.17.115B07C
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8C130100007
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:26:40 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=cDJ5DEt6;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf14.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4506F6B008A
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:34:38 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CD13D1402A5
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:34:37 +0000 (UTC)
+X-FDA: 85169521794.21.05E9E46
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9FF1E40003
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:34:35 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=X1ZTUAcv;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf04.hostedemail.com: domain of dhowells@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788370001;
+	s=arc-20220608; t=1788370475;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4ErMCT6oLuGCxeOK6BXBf1qfbH9FJh8mGL3DSmIsfQA=;
-	b=4UcMSw/C/1HnLS9oq7Ix+W4eZpZqPPrKqpD54efyIHmITC5eFGLCIYtbeyd8TBPZHWOwHM
-	AtHcxInpu79v3rJlqPei3BClXGZB344ee4P0ouj1syz4/08stmRIju3ksw0VjpITmyNX04
-	SQ0syKAEe4qIX5Ei3MNZ/mXMzuIQKOo=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=cDJ5DEt6;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf14.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
+	bh=WUUmmVwcFAp6YFhg7FH/R65tRXOdVOTCH2JYs+qmY04=;
+	b=bdcd2r5mybLh2Vikg49/8XJ6Np49Z74sYIq1oHam/YLECgLzJafbHFh8r8YUIUf9TuBOeT
+	0LSh0QFtFczLovf7ko6lF59vHC1OB0Qxp6IDd19+cV6VSjoHKeHSBrerhBuEyumKH27h5w
+	PY1mDLvwBaqBMCRkbcdVn0dxCWtNOyo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788370001;
-	b=GY8Qmfn4kzZ3uBDUfVBqJZQ9WQl/IPDUtwsarrWNnRLSACgk+bzxpLAqDuauKZEq4DjXDP
-	JZzSHF+QSllxy2QfJkoSb8qi7QoC+hVPCwlqskoCoRproP6tmB66cg7eWBTIt9Qg/KVzjo
-	JNLVpo6p6ZFidBs80HzNUXH4z8GU78A=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=4ErMCT6oLuGCxeOK6BXBf1qfbH9FJh8mGL3DSmIsfQA=; b=cDJ5DEt6arbQfiU3k7+VkDRfdb
-	pCnVqS+LXZC/rJF1CzCqMCfOXI973ZMfqPRCLCwVtcPfbUz89j1TCm+HB3gUBt9QZOiQNITVkm/s7
-	iir9RlrY7YttvwqqvPPC5+2yKwDujckXIMtlNKhL12wVqk2Yz1pIMAM+pPE40mvHbqaZWTxImfzoV
-	rWknhTh7FTatH/HOWcQXj6lXrYeMn8vWuSl23VewuCORMHIWD0HtRpYwCPNiw/kkcHAwBRhImEblx
-	YUlZfcuM4vcmxYLLSZ056LVFGMaVlnzujOdn5Xck1mhdJ//QZBBn90oE54dkXecxtR1e/aNsGK0o/
-	EsM+BRFg==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x1ojO-0000000FQxA-0p4s;
-	Wed, 02 Sep 2026 17:26:38 +0000
-Message-ID: <2e2333a9-dc4b-49e5-a09a-47fa502e0e22@infradead.org>
-Date: Wed, 2 Sep 2026 10:26:37 -0700
+	t=1788370475;
+	b=OUj1EVL/6+0ymMXyR52/+vhnT2rnDlRVx2Bt6I19cgvt51pwtKw4VGEGO+15B0yEOO0sbA
+	vtX4x77jSCfLVo5mt+OM5wW/kxeb5G3oHHjHCHQcmUyP1hv/8cy8JK66wwtRhT/hAoYWsR
+	uQTTBPQCNhkvAWPLrwiTfXB0X6ECRWg=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=X1ZTUAcv;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf04.hostedemail.com: domain of dhowells@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788370475;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WUUmmVwcFAp6YFhg7FH/R65tRXOdVOTCH2JYs+qmY04=;
+	b=X1ZTUAcvRIcapE6VsS8ME7KPgjzXcsvHbTcmdns7j76XlmS9fV3uTO5PQbDOhXLKCtLfoZ
+	7IxT+YXGmNrL55K+frsEsURCZqUNLLrWe30WQ61GSl6YDXA1S9unxnfTYSUTFgGAFEaRAO
+	oCWLI07flnPzWA+JB9nQTmDdeA4CFO4=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-483-4CaoPTtrOdCq_XtPRdZ90w-1; Wed,
+ 02 Sep 2026 13:34:27 -0400
+X-MC-Unique: 4CaoPTtrOdCq_XtPRdZ90w-1
+X-Mimecast-MFC-AGG-ID: 4CaoPTtrOdCq_XtPRdZ90w_1788370464
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AAC9D1933F8D;
+	Wed,  2 Sep 2026 17:34:22 +0000 (UTC)
+Received: from warthog.com (unknown [10.44.32.158])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 70C9126C;
+	Wed,  2 Sep 2026 17:34:15 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Paulo Alcantara <pc@manguebit.org>
+Cc: David Howells <dhowells@redhat.com>,
+	Christian Brauner <christian@brauner.io>,
+	Matthew Wilcox <willy@infradead.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Leon Romanovsky <leon@kernel.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	ChenXiaoSong <chenxiaosong@chenxiaosong.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Stefan Metzmacher <metze@samba.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v11 02/36] mm: Make readahead store folio count in readahead_control
+Date: Wed,  2 Sep 2026 18:33:14 +0100
+Message-ID: <20260902173350.3468672-3-dhowells@redhat.com>
+In-Reply-To: <20260902173350.3468672-1-dhowells@redhat.com>
+References: <20260902173350.3468672-1-dhowells@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Documentation: admin-guide: Fix bracket
-To: Manuel Ebner <manuelebnerli@mailbox.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>
-Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260902152347.708070-2-manuelebnerli@mailbox.org>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20260902152347.708070-2-manuelebnerli@mailbox.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ox74xobqn5qkrmx7357zmmrjcxxx81pm
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8C130100007
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+X-Mimecast-MFC-PROC-ID: rQhrJyF2Wq60nRGvfud5ZtThVS9Uqb2bNhQ3atoNDMo_1788370464
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9FF1E40003
+X-Stat-Signature: wgtt6kyhk3w3fhmdhy1c58ougnohjkzt
 X-Rspam-User: 
-X-HE-Tag: 1788370000-387188
-X-HE-Meta: U2FsdGVkX1/DXP3qLiGA5cR2NunpPJ49Im/oFd9hl18vuOKGpdQVfEOoO3s7woSUYYco/5MSEnJTYoY9sFjuhNte/KR6kY8jTG/CaLfhfCPMOxTwp6VdKqO2+e041EdnssGDf6t9nBfKVSk6bE5j/BPWipg6liTpIXDa9Exyn4H3BJSHno30od1bCjtps+2e9QVlvekimLUj5dxrBh9eQBj7tlWQCjX+39zingABQiL1CGoqg17f3gZ3TNzcLb5JH9JjLAhnb6bwgXAHO1f/PEnVGzAHMKYvny7ruUiaWFPjLabXR0LQ8X1geIjGFHRUxOXCK3d+Wc5v15HRiPFoi5eXrn+z1bTGuJ/nrHXrfImeQzjuR3MyRS9OCF8GSpKNCzql2VtLxns/m9LIB724eAvdSbQgJl3An7ZsrXQOvDCBMjP06DWHJ6wR39uuiqqg+341d32lMeQ3QHTaXkSv0c5T8OjZeegv+PdXUmSq2rbcZIkzZ3nLDUWZw4PYBczuufBDxVabrJ9xerymihHMA0LQ/03s4Szk0/69nXMCpz/+b7vJg/rkAdwYqGoeuJBKOcg+5R3pDzNVuhJ+h9vzRuv4ZXW5toNYVru2zJJYLtYLdXBTecyrtYsMZV63z6Do4dxUwewG9mevbE/btT8FBF5IOzi1sF6ICbhRodMiTk+2q6Yns2otJ5fpkPOOUaHcs/p3UEgkgeQD1mG2sidKZVucAdoyTgZjZaLn/TNn0nkbR931qly8TYLo5KnqE8oYhqOPDbcStc2q94GNORNG+glJa/PX/ZwuAuox48OLNT8RHTFG4SiWPvbko84bmypQe+9yOi8CDypMh+THFAiPaM5QkdmgPp0YifsGPbmhQKVH3P8JRXmk3OZMe5zDs46r52lVRCHfcQ4LhGCNXAMbuf30jSyl3gLci27iFqUHfneta4k6DZ+KWB4bxnMpJ3zpwITXoTOuCYxnR498H8G
- PTsJa/M0
- 32GJMCF8BLrmQ79HAd0UYRotwLDFkgEqP8M4nbGpCNzidL8wCpOZ78fqH/B2feyYKajqSXqLSsEAxX3zYGJAUsOsjGTZopostlsUOk2zYug7+0/42YALQf6oEIKXVgMqaISjaeJqWM+vDttgdpZ+UnwbUle4TZOnbWK3bvcC82EJwdj3zAgDnVv9D292X5ohX4EkCzhr/eU4W3k/vZ95tsxC5nbJIsjXnSRTnTjZn600/9gCVeUmdY89OSTC0LLPKVmOrzzTrjwVOq+3/KVbHTVF4+yLfNj+x1mFPToaI8ZiUyaszu4XfosGqZHB2Vh8yrKdPq72Z9cifhsGghQ8m4aRTxQa1NiSJyuHOhXMqiKGczXcEx/s+4IJNWMKNKPjq8oqlp303aJgrWVfstUx1AjGcPQ==
+X-HE-Tag: 1788370475-800215
+X-HE-Meta: U2FsdGVkX18MkvR9Rq6RCNXtPdRW21o7829xQPDW5qTND76hv3BIVbop0yTllO6dYlN3fyQqdmwd1vBBxTRJGVFJ34cRb29qMq2ADOir520qX6JlkFRChisV/sUYzfh/YBo92xKk/NsBIX2z4gQnD40SJpdJuP0wvQzeqzMdosgVmtkrPoinBfQKhlHfP8d29vGBFVa1Ps+2YVhJ/HsoIaGafmigXIla7+RdE4jz9V5x9DCrgODb+RX4B30FYRVuVCRn86a+PEBIGrj0W8qORwW9HXpJ2/v/2fwOBizBOycaMHYb6v0Y9Me74hQPTwGxlerzTTcP2PdJOnZAch8NidJ32i9Jpd1m58hvkTEjFHnmsYNenvhDhV6f/RVwS3mmadTVup4oyktmLoDaB89U6zrUpHH6N8PRBHc/c1EG7fZ8hpSRajL++fkB9G6V9MNmJQt21Ft2tolqe4p5f2tqLesNx1pTrrBYD8mH4L0YSPi/DtQunPPrvVhgA0omiU2IR8ULau+t8zfgwBDkHiQ++NVsWyiVaj3UwXREMEEsjLLjSRyxnGNitk7i03ReAlsnyPEIGuyaTqbknsCSkaymp9C9Gk8HZTazPfRx32IRzcDvvRjEx2JkK25xRRi52aIU7lblEWONC+dti5ZGf97b22fIzseaGF+1DHKp1F3v5phh9CtYX+0k6cWY8iN73NLT7WwaBxo65nnsbPprCxUkizsVm4oqP9VmW9FvpZ4rxEdMmKtumZA6bH/pOgLjLO3+qtWs8RKA2KmD5DflCL10zTGp0NhCH/EZHaEeamAUwLUZhVgxzLiV8tdqnAjPb64NoC3O6+H7MXqS0GBNIOR/U641KRe355aj7AC30qcW/OJt9td0SXyGwsWStNX2mjBmFRerC5ChWEIt2tDv4OHlsO4SqaVx8zaBwX4ykvYOUSCedcpfccOcKj5AG3cUJbzKmwloti+02UA/a4pA9eE
+ li3+9mbQ
+ cyYhjF+JLfQx27oq6yDFuq3BkCcI3C/f7ixf3iYLyg8JtYXYUugvj2iKBWgziL0gkrpzCQeafl+pYt+hJ6/ult6DP9pa3uTAbg/q+OwEwUVBJkp/vY6OlRescLD2Oim5z2n6C4AnBZ02eLN+kUkbWkftfrLpmBilU4FZ9/JSdSkI9fIaLTyc3JApWIDbxvloCa7gATXMSSGIzG+uCbSgryqgp9CFBBuhdqCXhpsaJy4n9Q9BNEpNpccfxpZ72G8yW9Hf2LMCz2R1MX6KC/T3CsLsO8jp6MN41Y72219WhGcwXjJ7FZedu0b6M21NsaSAFXrYdIYwaXQcOHCQ+pCapJxm/xfErWbwc7v+0BxThuyhRmIDKbWvoXfmS5W1cwae/om79cRMLYstqtJRlUO1hoP3tCkdFZi7yHluOd70+nxyzzXdZKPCzfAVBao3TSiGLsMh25PQcU4wH/gyKInFcy2R2QXZ2syPMdx+kntRDSrCd6VoSroY55LLJuGWGXkPZLuNoIuM53L8Dm+Axpn6ow0xsVEkulUEDAcW6Fd5obJ5GdiHdBD3slrNbSycqUKyaSWod3dotmrr8NBN40XXNOeE3qg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,37 +126,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Make readahead store folio count in readahead_control so that the
+filesystem can know in advance how many folios it needs to keep track of.
 
+This is cleared by read_pages() in case it is called from a loop.
 
-On 9/2/26 8:23 AM, Manuel Ebner wrote:
-> Add missing ')'.
-> 
-> Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
-> ---
->  Documentation/admin-guide/sysctl/vm.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
-> index 5b318d17a..ebc281e6d 100644
-> --- a/Documentation/admin-guide/sysctl/vm.rst
-> +++ b/Documentation/admin-guide/sysctl/vm.rst
-> @@ -438,7 +438,7 @@ zone[i]'s protection[j] is calculated by following expression::
->      = (total sums of managed_pages from zone[i+1] to zone[j] on the node)
->        / lowmem_reserve_ratio[i];
->    (i = j):
-> -     (should not be protected. = 0;
-> +     (should not be protected. = 0;)
+The count is accessed by the filesystem with readahead_folio_count().
 
-I would probably drop the ';' character but don't bother with
-a v2 just to do that.
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: netfs@lists.linux.dev
+cc: linux-mm@kvack.org
+cc: linux-fsdevel@vger.kernel.org
+---
+ include/linux/pagemap.h | 10 ++++++++++
+ mm/readahead.c          |  5 +++++
+ 2 files changed, 15 insertions(+)
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Thanks.
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index c6fc783aaee5..e2161bce13dd 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -1377,6 +1377,7 @@ struct readahead_control {
+ 	struct file_ra_state *ra;
+ /* private: use the readahead_* accessors instead */
+ 	pgoff_t _index;
++	unsigned int _nr_folios;
+ 	unsigned int _nr_pages;
+ 	unsigned int _batch_count;
+ 	bool dropbehind;
+@@ -1556,6 +1557,15 @@ static inline size_t readahead_batch_length(const struct readahead_control *rac)
+ 	return rac->_batch_count * PAGE_SIZE;
+ }
+ 
++/**
++ * readahead_folio_count - Get the number of folios in this readahead request.
++ * @rac: The readahead request.
++ */
++static inline unsigned int readahead_folio_count(const struct readahead_control *rac)
++{
++	return rac->_nr_folios;
++}
++
+ static inline unsigned long dir_pages(const struct inode *inode)
+ {
+ 	return (unsigned long)(inode->i_size + PAGE_SIZE - 1) >>
+diff --git a/mm/readahead.c b/mm/readahead.c
+index 6e5563290287..196542fb1c93 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -188,6 +188,7 @@ static void read_pages(struct readahead_control *rac)
+ 	if (unlikely(rac->_workingset))
+ 		psi_memstall_leave(&rac->_pflags);
+ 	rac->_workingset = false;
++	rac->_nr_folios = 0;
+ 
+ 	BUG_ON(readahead_count(rac));
+ }
+@@ -303,6 +304,7 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
+ 		if (i == mark)
+ 			folio_set_readahead(folio);
+ 		ractl->_workingset |= folio_test_workingset(folio);
++		ractl->_nr_folios++;
+ 		ractl->_nr_pages += min_nrpages;
+ 		i += min_nrpages;
+ 	}
+@@ -473,6 +475,7 @@ static inline int ra_alloc_folio(struct readahead_control *ractl, pgoff_t index,
+ 		return err;
+ 	}
+ 
++	ractl->_nr_folios++;
+ 	ractl->_nr_pages += 1UL << order;
+ 	ractl->_workingset |= folio_test_workingset(folio);
+ 	return 0;
+@@ -822,6 +825,7 @@ void readahead_expand(struct readahead_control *ractl,
+ 			ractl->_workingset = true;
+ 			psi_memstall_enter(&ractl->_pflags);
+ 		}
++		ractl->_nr_folios++;
+ 		ractl->_nr_pages += min_nrpages;
+ 		ractl->_index = folio->index;
+ 	}
+@@ -851,6 +855,7 @@ void readahead_expand(struct readahead_control *ractl,
+ 			ractl->_workingset = true;
+ 			psi_memstall_enter(&ractl->_pflags);
+ 		}
++		ractl->_nr_folios++;
+ 		ractl->_nr_pages += min_nrpages;
+ 		if (ra) {
+ 			ra->size += min_nrpages;
 
->    (i > j):
->       (not necessary, but looks 0)
->  
-
--- 
-~Randy
 
