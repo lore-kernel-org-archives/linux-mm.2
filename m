@@ -4,87 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56CB3C61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 06:14:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E36C7C61DD6
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 06:15:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 474496B0088; Wed,  2 Sep 2026 02:14:12 -0400 (EDT)
+	id C367E6B008A; Wed,  2 Sep 2026 02:15:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CE526B008A; Wed,  2 Sep 2026 02:14:12 -0400 (EDT)
+	id BE72F6B008C; Wed,  2 Sep 2026 02:15:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 296FD6B008C; Wed,  2 Sep 2026 02:14:12 -0400 (EDT)
+	id A62E86B0092; Wed,  2 Sep 2026 02:15:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ED4B66B0088
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 02:14:11 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8015F8072F
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:14:11 +0000 (UTC)
-X-FDA: 85167807102.15.73840C8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id BE48320005
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:14:09 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J0HEzdLc;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788329649;
-	b=DLe1ExQa4gC/vm7uHFUZi1EWbV5uog1Om3cKtXlxAq8oZs0fDT3aXYnesTVynLoRckTePi
-	lKYAipRqF7c3v2iLOM/cY5EzycUaSitxWNA+ZcePHmRBrKxLKVZlwZR+8S9cR9SeGxvYUo
-	89+V33KSAkhZ2VtrylpOE0YCHKB1BN4=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J0HEzdLc;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 69B0E6B008A
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 02:15:18 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CDEB516068E
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:15:17 +0000 (UTC)
+X-FDA: 85167809874.24.A2CA91D
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 604BE80002
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:15:15 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Mkz0Ej3I;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf30.hostedemail.com: domain of sourabhjain@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sourabhjain@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788329649;
+	s=arc-20220608; t=1788329715;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K5x2CbYRmNV3MA8rM8UuqBOVvPVm0QxSLiJJvUd4pl4=;
-	b=UmzyX13JQmC/Uo9aLsThrxQ2kRiIVTXzI30ZfVDb8iwkou3MZiropKpiq6prr3AIsg4M1n
-	NJ9k6v2GSxTJx1rH/X+dE8PdsCW7zoa/qq18ZHA1ZSys8Ol2HxGrgweWQkcRa57b3lZ38T
-	O2KlQFGNqEyv0QuIUMRuSNtjV2+krV8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AB58940A8C;
-	Wed,  2 Sep 2026 06:14:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 672511F000E9;
-	Wed,  2 Sep 2026 06:14:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788329648;
-	bh=K5x2CbYRmNV3MA8rM8UuqBOVvPVm0QxSLiJJvUd4pl4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=J0HEzdLcQyh+gjzjo4CoIOYJFrANeLY4gXMg1LyNcjFr6rWcrj0m/Hafy9aqPlCSF
-	 ALFYGKLVhJmI+q6ot5Cvvenug3O+vhPsA5Dig7YijlgHp48jO1apupvCWM5RxwsPR0
-	 ZSmAYVD1chgBRb3d4X+RsEKZqmhvo0CQ5h1gNXbLTMHitAkbG19K+nc/GFekZmLVww
-	 CZRdawX6Kt4Qdf4noDfuKuFk0CoGYSs4ghtC2riWMDu603LGfoKn6YxOve03JgNrgD
-	 Zwttkptd+C2o5Nk2KWES1+sZ78juWyiHPYDlVnZHYopac3ztyAQhZKdwJrgKdp7thx
-	 xte1xVh8i/GBQ==
-From: SJ Park <sj@kernel.org>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 02/12] mm/damon/core: remove debug messages
-Date: Tue,  1 Sep 2026 23:14:00 -0700
-Message-ID: <20260902061401.104419-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260902054747.99370-3-sj@kernel.org>
-References: 
+	bh=Wy2nNrPGbWGo3ADF6c0g7M/9wKsqbVRXkL3EdgLoY5E=;
+	b=x1W1z0zEqymsMT4aa/zB4XiOt24o1t1oYll26W2m5mOx39mvuErSQTEIbMIWC8/Rcb5qOn
+	qB7d00xddDvOJ0ECx8Dp1BHa39Gto/MUFTK1HJ3K5n+0lj0g7jUgYx8zRGkDNong54PbkV
+	f7cFqUQ7mLnviHvEYpxJiDRkuzXnDCE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788329715;
+	b=09ED0JRnrU+9JX/2UDqBt5+h9Wmet7Rg61F1dLU5uAndijH+ZfqC3J/wc0+lMtt2pUN2x1
+	UM+mk1s68r8XZiNS7yGRt2+cW/iUXkh/LTCwCVDfAvKontG8vrxjVGQfgbn8j2pttbG3zU
+	NKOvMrVllMfM/P9iNu2MpoT8CRPfF+E=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Mkz0Ej3I;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf30.hostedemail.com: domain of sourabhjain@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sourabhjain@linux.ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 681KWTNe2236382;
+	Wed, 2 Sep 2026 06:14:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Wy2nNr
+	PGbWGo3ADF6c0g7M/9wKsqbVRXkL3EdgLoY5E=; b=Mkz0Ej3IL42re55o5clvci
+	m5sLW34Bmyn8MkOM17lS4YlZZzN8N/55iwE64ZL3IOux92zveotmnDaQxRO6+0DY
+	ijfFYgKh8rMe5VTIAvWXEv6BYMr/SN6COHTtzk+MTy4phtui3rgzEQsFCrwUq4/F
+	4azaFeJFlgep6K/v37YIq/WK6XxbbzXXoBDW3CqdjOuRxkZdHjHKB3v7lYTHS37+
+	82VGEIGnwcACNBVxhVgj2o0XDRjF20WY7DxwlIHO1HKtBzfpf+y1zF776niZ7vKk
+	m8fNO6vjjOVR2u08YCnGV/nQMJ60FjplzTJThUv2JtflTDwVl7qFuhERwjLhov5Q
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbpx5mp0x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 02 Sep 2026 06:14:47 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6826BQ5b003789;
+	Wed, 2 Sep 2026 06:14:46 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gc9rqg949-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 02 Sep 2026 06:14:46 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6826Egd451315162
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 2 Sep 2026 06:14:42 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 805CD2004E;
+	Wed,  2 Sep 2026 06:14:42 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8A4662004B;
+	Wed,  2 Sep 2026 06:14:31 +0000 (GMT)
+Received: from [9.123.14.142] (unknown [9.123.14.142])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  2 Sep 2026 06:14:31 +0000 (GMT)
+Message-ID: <99b1121d-4277-4764-8c3a-b3f6d9a47ab0@linux.ibm.com>
+Date: Wed, 2 Sep 2026 11:44:30 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BE48320005
-X-Stat-Signature: eyrt7cyhmar64hmncycfaiei5t1szqmm
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 12/17] x86/crash: Use num_possible_cpus() for
+ elfcorehdr size
+To: Jinjie Ruan <ruanjinjie@huawei.com>, catalin.marinas@arm.com,
+        will@kernel.org, mark.rutland@arm.com, chenhuacai@kernel.org,
+        kernel@xen0n.name, maddy@linux.ibm.com, mpe@ellerman.id.au,
+        npiggin@gmail.com, chleroy@kernel.org, tglx@kernel.org,
+        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+        hpa@zytor.com, akpm@linux-foundation.org, baoquan.he@linux.dev,
+        rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org,
+        ruirui.yang@linux.dev, kees@kernel.org, thuth@redhat.com,
+        gshan@redhat.com, jic23@kernel.org, james.morse@arm.com,
+        ardb@kernel.org, leitao@debian.org, yeoreum.yun@arm.com,
+        coxu@redhat.com, tangyouling@kylinos.cn, hbathini@linux.ibm.com,
+        adityag@linux.ibm.com, ionut.nechita@windriver.com,
+        liaoyuanhong@vivo.com, seanjc@google.com, fuqiang.wang@easystack.cn,
+        makb@juniper.net, piliu@redhat.com, ebiggers@kernel.org,
+        jbouron@amazon.com, mclapinski@google.com, me@linux.beauty,
+        graf@amazon.com, bgwin@google.com, robh@kernel.org,
+        takahiro.akashi@linaro.org, palmer@rivosinc.com, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+        kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+        linux-mm@kvack.org, ionut.nechita@windriver.com,
+        ionut.nechita@windriver.com
+References: <20260826092541.3905933-1-ruanjinjie@huawei.com>
+ <20260826092541.3905933-13-ruanjinjie@huawei.com>
+Content-Language: en-US
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <20260826092541.3905933-13-ruanjinjie@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=PPc/P/qC c=1 sm=1 tr=0 ts=6a97bed8 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
+ a=t7CeM3EgAAAA:8 a=i0EeH86SAAAA:8 a=GuF16Tie-v_x1sUWD14A:9 a=QEXdDO2ut3YA:10
+ a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-GUID: -IqDSf4F0FmOcL5Q3XCke1kr2YbwNiU1
+X-Proofpoint-ORIG-GUID: KEmbHgCI7d9accZnEU6C4HI8egT2297V
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAyMDA1MiBTYWx0ZWRfXz2AuISrj25WT
+ 313Gdb0AKNnpWXJG+VJ95H+6kugoqcFZFisjytZwvIlWZ4y/Fd0LECR39q8SwiorgwEdibQqAYI
+ wha1fu/nY7Cg/2E+X5ZeponvB/5ACF0=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAyMDA1MiBTYWx0ZWRfXywQtEgYZYNk7
+ cAqCvDEwmxa2P2+rYvcX2LG0pVzZzBJixP7ujsGQlTI5b56QNy0fPGFIXZMj+cVXzQG7Txxj1tf
+ JPp8WOZ9w+FSiQrwdM7zf1VfRstGyWgKWYR2YfDKwM/n6HHjI8mlm47PH8DAH3oBtlnst4y4EgI
+ O2iserNtjKc0LQsu1b+WMjHcVjhP8zbdaOLjWjXP1WEClXE3IiAwoHGMsbCInx3NnX0P4B4fUVo
+ Wp/rseWaWYYL+GNuKgYWDo8mENynCYHP2WrKTu0jPKTzj8UWdhrBRrhv7J5H4lBnON9qmao1sD4
+ A9USHe9k2hKpbjFcfVBv39HELqFwUfZZCoI0tb/+RLn8KRh9ZcxWC7wNKAkmeDd5w2s50jq6y2k
+ bHRHLckUiG6jolF3WbzbH9sgRTtOC+kxTtJnqKEc8VkHs7KeRTij3Mfz+X9Os4dMFuci7HUb9A6
+ QIIMpPWSJS9r0ZIR48g==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-01_06,2026-09-01_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 phishscore=0 adultscore=0 suspectscore=0 bulkscore=0
+ spamscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2609020052
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 604BE80002
+X-Stat-Signature: poppk73oz1a64tbxa7ba475rab6s8bjm
 X-Rspam-User: 
-X-HE-Tag: 1788329649-493691
-X-HE-Meta: U2FsdGVkX1+bG0iQiTx71g8nubHJTSLODHGo+J8wSEACXJrxcpzYeCOdLhRj0qw1hUfbt3fseTCi1IAJpiocu11/Z94K61MFfJ82UNFYSLVcry5ebSws0UxXh4VBGqRq7wW8Ejo6GL4WFOG7vGpi9CYCKcildQVAnOBuN0eKW50DKgcm9eukKxjqk5TvFdY/mkAgJNaEBtvBB9yNFTp93K3AIe+H/qYieppeI6xNOAIsV6ki2dk+q0KQOY/tAc1z24Q6T4LpD1A7aoCXiW0BuwyFRpBwkxI7YRpMXZdqdY1nmxTPUrUkROPAimtyMYxzWwiu6mLreax04PXN1HwUPSxqfSKWr+Ca7g2JlaFEMRH5Ni4/v4vxw1myGThJnW9ajdcEITcKTKVLPhX1TvF6TRzcTFy7F7Azwsgrer7IsbQn5jX4fxlLKsr3ITG3XhehM7Uvp/x7B2pBEWzSLsARRGE4mdiDIaClY0XBxNapmp8i9f6EvA/LE0dUuFgsTZjyO1qisamk6ZkjJAErXs13aWzqNgbZYWN2ZrXgdusS4aiB6idmEZrWVbHBOzdiG5G00iSMrwvT1brod0XS2OJ3djo1xtQpF2yKXCyyziWftCc28QqfyJVFMflWFQn1fRFrnW8Wy2h8xIsTTO/OfoZZYureGZf4WM1uSY+2wiIDxXb3IL2xeNuYdfMJmHlutW9V1RAp8vlJkRe7C2SkaeLoQyMGbhkryPRGoHudH32C3PEylcOGOjPP8cPuj2Tr3XjE3FPng75udElPbttg1rRtX9TpVslZ5LJWN0ctOke9+WHZVRU1x9h4XVUe4hM5Z3MseW68LurpjVsayDneDwCofga9dXW7Vaq7mpYbTv2sssFSB2hyKmdsSlHYJcWwhguUJE0BD6Iu1AvYdv020LSKuNFfw3B2K5RFC+A22tqpLinbcCmi0XDu3OgnGFVQsd4pYGOYsv01gBdmtu3fdt1
- RXbIm3is
- Oue6hW2P3TQiImFcX0eds0LQIEFj5o8no3c+Yal0q5iFttu0/+F9/uvpuWXCD5HemvJcmUxoMU/LHEADosCQQYS2TLA532OZjF3J5miiJk6WpzYJqcew7YK9Kml7qxLafiGR5jZxLMV7K8HRrzXOD7vZz4jrzT2ReliserZTQ2tevfI2qp6ybd3LUgc1og/mxsSH8xJEgmTol3wrBlp4lZHLvm5gjcYZmgvg5CyjDYmTVuppTG/kSjj3cU8Wsn1omH5+qynX0YP3VhPg=
+X-HE-Tag: 1788329715-56230
+X-HE-Meta: U2FsdGVkX1+GR8S69jWV8QheazNm8NlBRkxZrtVnjz5rwRRxY3A4V9268bYj2/aR4zyyc4wCJ7LR/TDRs/p5LQRPFxKpeHNUKNCf+ZPMzxHuB4gn/rqArqWYu74hvyf8lZ6SACS0Z3s1H0owWI/v2IlYkib3hDFNLtQPu5WzYD7IcwP1qqvvYRMyLoyg3XCp+xTbCerc0sW9qQyVIp7Pc9ooq27Zlr0LWVfqOVq/dwERDUBMtHFWwA8i+CFM88stIDSN75vszMf9Jv2F5+EaQE7k15ageQ8UfXPw4KpP4hkaa7cuAGkY0eg0FhNS0lRPvvloMoIehcSHGxLXV0mHLCn7qxEzwHMB/nTolyYWoPpPm2gryI8gnScTnKiqxukuXcQ64S+ufjBiu73/fEyvEDv4m9sVBJM+waCQIkQ3woSbgFUU5weN6AFJEX9g9WS5jQIztW9tXYbZL230HxKooIBEbO7/TruRo50bCfeDLZQ6O5TdL1ozycDRaWlPJWbBq3viWYjva5Kn0oGxJ8I1DcAcqSow+HuB5mPiOi6b31Z/48eknm7umYXHYf10WG56AO3K4JZDuCLqc0rDEXmSeFPWUHSPvPpZG74PqcvwmGtXKw3ZcI7pyZLGDyvKWuOHSpdAZQQNV7b0Iqc3HQvl/w7Z15uBTfuHPQsILxF9Guj4Uh1b9hxHiFln0MKL3D/mHMyfRbvpTLK6SbaMysPfYpcsXWBgMka/UM4WoHGfrpzn3x4zD+acqY+dixm8vXf3/qlnMWOwTQyVX/Rww2Gf/qpvy3Qj9su3TPfhGCzS351L3bx0LKDPGC7q+h7UkAry3lfLDwHNtuF4pDTk1+TeLfcXxZNa+cGYXLnVtR0efEXZN7txkEknUc/3wxRAjkzphsAwPxu5vM6u9cQ3IUt+iuEBbVx197GKS7/NL4w2pRzVgWVQl2e7JpshVAp8FLrDI2jRhh3m/nFW3GRfMDw
+ 0FENgZVf
+ LXgNIkRU+Rh0jKWMvzFKC3OZ4yH8hnIHDdLA7B1DkV2WxKhGR/kTmmbhodks31MWWAfNh4pDZLvVyrbV3VsRVY8Mk7i8K0WmdxWC1hJQyBwWHyGexqjAsiPZ7f8+23LDuhM6iGOfZdQHws34yn6mzz9TPHfa9PLQKfJehE2V8yPhj7UJkhxUOp/d6Gn7g3B8j61Ajs9aGxBnrMgKYDyFTO6tjR2oJjqH1/ZBT9c9uXrAO2WpgR0+LCmZ1BB36+atjvajjchCOBgXHlAeqKQcEosQkp5e/cDglPApYhZuXw6qFNUf5XNM9PcQH5J12z0zEjOkdszpdO0dyjI/VxGJXgleiZuUq1gOC4J9wUIkFYnV8t9u0Sa1hvffw5/vz0x1ixyraaj8F9NH6l9C1EplOkdECF0fHGGl+L3mdFAmYhtq7kc1+CI4B+zmbuurVjs+CRKZOAod+abK+mIQF4v25ADy5wrxl77UNrxRPsRoGaKxxQRR0ulR/egWmJCh05Rx1IHeW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,50 +166,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  1 Sep 2026 22:47:35 -0700 SJ Park <sj@kernel.org> wrote:
+Hello Jinjie,
 
-> There are a few debug messages in DAMON core.  Those have not really
-> been used in a meaningful way for the last few years, though.  Remove
-> those.
+This patch makes the below patch redundant..
+https://lore.kernel.org/all/20260826073527.21487-2-ionut.nechita@windriver.com/
 
-Hi Andrew,
+I suggest dropping the first patch from the above series and including
+the second patch from that series in this patch series with the updated
+comment.
 
-
-Sashiko found with this patch, string_choices.h can also be excluded.  It is
-the only finding.  I guess reposting entire series for the small change is too
-much?  Could you please add below attaching fixup patch when you pick this?
-Let me know if you prefer reposting.
+- Sourabh Jain
 
 
-Thanks,
-SJ
-
-=== >8 ===
-From b9c86e50efd30bab8c5cb99b3063bd823184b033 Mon Sep 17 00:00:00 2001
-From: SJ Park <sj@kernel.org>
-Date: Tue, 1 Sep 2026 23:08:16 -0700
-Subject: [PATCH] mm/damon/core: remove string_choices.h include
-
-It is no more being used.
-
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/core.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index a7ed7724c85af..84f6bc634f377 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -15,7 +15,6 @@
- #include <linux/sched.h>
- #include <linux/slab.h>
- #include <linux/string.h>
--#include <linux/string_choices.h>
-
- /* for damon_get_folio() used by node eligible memory metrics */
- #include "ops-common.h"
---
-2.47.3
+On 26/08/26 14:55, Jinjie Ruan wrote:
+> Use num_possible_cpus() instead of CONFIG_NR_CPUS to calculate the
+> elfcorehdr buffer size, matching what crash_prepare_elf64_headers()
+> already uses for the actual header content.
+>
+> This avoids over-allocation when the system has fewer possible CPUs
+> than the compile-time limit, and aligns x86 with PowerPC.
+>
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+> ---
+>   arch/x86/kernel/crash.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
+> index a3bf786286d4..afe2aea19f47 100644
+> --- a/arch/x86/kernel/crash.c
+> +++ b/arch/x86/kernel/crash.c
+> @@ -369,9 +369,9 @@ int crash_load_segments(struct kimage *image)
+>   	 * maximum CPUs and maximum memory ranges.
+>   	 */
+>   	if (IS_ENABLED(CONFIG_MEMORY_HOTPLUG))
+> -		pnum = 2 + CONFIG_NR_CPUS + CONFIG_CRASH_MAX_MEMORY_RANGES;
+> +		pnum = 2 + num_possible_cpus() + CONFIG_CRASH_MAX_MEMORY_RANGES;
+>   	else
+> -		pnum += 2 + CONFIG_NR_CPUS;
+> +		pnum += 2 + num_possible_cpus();
+>   
+>   	if (pnum < (unsigned long)PN_XNUM) {
+>   		kbuf.memsz = elf64_phdr_size(pnum);
+> @@ -429,7 +429,7 @@ unsigned int arch_crash_get_elfcorehdr_size(void)
+>   	unsigned int sz;
+>   
+>   	/* kernel_map, VMCOREINFO and maximum CPUs */
+> -	sz = 2 + CONFIG_NR_CPUS;
+> +	sz = 2 + num_possible_cpus();
+>   	if (IS_ENABLED(CONFIG_MEMORY_HOTPLUG))
+>   		sz += CONFIG_CRASH_MAX_MEMORY_RANGES;
+>   	sz *= sizeof(Elf64_Phdr);
 
 
