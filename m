@@ -4,69 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8491C61DFD
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 09:03:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EB81C61DFD
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 09:04:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 81C6F6B00A3; Wed,  2 Sep 2026 05:03:55 -0400 (EDT)
+	id 3893F6B00C9; Wed,  2 Sep 2026 05:04:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A5746B00A5; Wed,  2 Sep 2026 05:03:55 -0400 (EDT)
+	id 3126A6B00CA; Wed,  2 Sep 2026 05:04:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 695706B00A6; Wed,  2 Sep 2026 05:03:55 -0400 (EDT)
+	id 200BF6B00CB; Wed,  2 Sep 2026 05:04:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BF7C6B00A3
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 05:03:55 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A1EAE1C00A9
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:03:54 +0000 (UTC)
-X-FDA: 85168234788.26.20FFF2A
-Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 521B140006
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:03:50 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=cmss.chinamobile.com header.s=default header.b=WhPOLhK5;
-	spf=pass (imf04.hostedemail.com: domain of liujing@cmss.chinamobile.com designates 111.22.67.137 as permitted sender) smtp.mailfrom=liujing@cmss.chinamobile.com;
-	dmarc=pass (policy=none) header.from=cmss.chinamobile.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788339832;
-	b=3W0mjVBRRMW9BYp9MzdceUqTNswNvgibzjfOCYAXAU9SpA7uts+IvFUGypUK8K5eZAoZ7L
-	zmVIZgab7GSK4AzExxMzNj6+FPqXDplWRKysAMkR2ol9bQkXYiENCpVmB+da6eBebvaacY
-	IaYLBKjSiaY1JhsUigxSPOyaB+hYq40=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=cmss.chinamobile.com header.s=default header.b=WhPOLhK5;
-	spf=pass (imf04.hostedemail.com: domain of liujing@cmss.chinamobile.com designates 111.22.67.137 as permitted sender) smtp.mailfrom=liujing@cmss.chinamobile.com;
-	dmarc=pass (policy=none) header.from=cmss.chinamobile.com
+	by kanga.kvack.org (Postfix) with ESMTP id F299B6B00C9
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 05:04:21 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 706451C0089
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:04:21 +0000 (UTC)
+X-FDA: 85168235922.08.B34F0E4
+Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A0EB2100008
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 09:04:18 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=cmss.chinamobile.com header.s=default header.b="g2SNlN/J";
+	dmarc=pass (policy=none) header.from=cmss.chinamobile.com;
+	spf=pass (imf14.hostedemail.com: domain of liujing@cmss.chinamobile.com designates 111.22.67.151 as permitted sender) smtp.mailfrom=liujing@cmss.chinamobile.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788339832;
+	s=arc-20220608; t=1788339859;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=fplNEK7bAafNUzDWqtSyFlH4rCzQGDWMHxl3XEdOrPQ=;
-	b=ql6x0tV0CPOYJZ2QL9CAfGflOM00cwocnm+Jj84LzWvk49ui+Pez6LaKLEbRF578AvNu2w
-	FR9sFrlaFiVGzpUuGOFtyX4w/q02HtLcru7VaVg58FtYp3CYHpAzch9bfCuaWexmwapbNm
-	qqZ1BJPVCC0UjX8j1CfJ8thu8hZAVxY=
+	bh=tKsVwZ3mfvo6a6i11lVYbo8ab8Agwpqf/25cAKwEuZ4=;
+	b=dfJszMb8U84ClkgitdZB7cOKeTsHuzw6FBKuR4KCdNxWCn/KGhYLhlpsowOUoVENyb670h
+	iwWg21Ch8WfrqwtvV1OAVQBGciS1Ol2v/JyMp0mwnNNhkh/WH06uqCU4yV2uKEbsg1R78w
+	MlSr5TJKB4+IrZ0Fr6PQVILdaG4Mcnk=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=cmss.chinamobile.com header.s=default header.b="g2SNlN/J";
+	dmarc=pass (policy=none) header.from=cmss.chinamobile.com;
+	spf=pass (imf14.hostedemail.com: domain of liujing@cmss.chinamobile.com designates 111.22.67.151 as permitted sender) smtp.mailfrom=liujing@cmss.chinamobile.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788339859;
+	b=XTA6wHEuocg/FJAhgE2YY36rkcR3DbD452AurL2IoIU+4l+8fgXWTdNnuAcvsEu4KcTkqR
+	Xsz8SttZNKIxBPXmrqoB2mAIGDEaMBoRldEFjfMp6kP64d2DO7t291VGfMlU3FJKtSwDWg
+	9/B1jGJQBSLzMcQLOPCLB+Kwm1d8l2Y=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=cmss.chinamobile.com; s=default; l=0;
 	h=from:subject:message-id:to:cc:mime-version;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=WhPOLhK5DAQNmqO9nekRIADjVRCHupfLTZxbBItPEVHNCGnyVb4amAad0gmWxcqBe3VDt45QsoBtv
-	 FdN+nEwqGQYwAM452jqpM3iF54tfn3fdMtS6KMUSXcQArLkg1bJq/Qt6vRiNaicOz7k17SmbZFftbM
-	 Mx2r/pq1LGUUbhl4=
+	b=g2SNlN/JczMkJs7a7TXc4W0QX7yYSpNlnPrZuE7kaFJmbzQMgOoLrW1s2M41CddLw+3z+NRPogH0W
+	 4XglbrZawWjkSUgRiHSVydSuoKJSCmyOYSfybPyHbH2qYWGlKN3KDT9md/VWFREdzMc+TXOD0C+X57
+	 kOMxPL1yu6kLig58=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
 Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app08-12008 (RichMail) with SMTP id 2ee86a97e674e13-40e5f;
-	Wed, 02 Sep 2026 17:03:49 +0800 (CST)
-X-RM-TRANSID:2ee86a97e674e13-40e5f
+	by rmmx-syy-dmz-app06-12006 (RichMail) with SMTP id 2ee66a97e68dce5-6e884;
+	Wed, 02 Sep 2026 17:04:14 +0800 (CST)
+X-RM-TRANSID:2ee66a97e68dce5-6e884
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
 Received:from localhost.localdomain (unknown[223.108.79.98])
-	by rmsmtp-syy-appsvr05-12005 (RichMail) with SMTP id 2ee56a97e674d14-f3f41;
-	Wed, 02 Sep 2026 17:03:48 +0800 (CST)
-X-RM-TRANSID:2ee56a97e674d14-f3f41
+	by rmsmtp-syy-appsvr03-12003 (RichMail) with SMTP id 2ee36a97e68d044-f20fa;
+	Wed, 02 Sep 2026 17:04:14 +0800 (CST)
+X-RM-TRANSID:2ee36a97e68d044-f20fa
 From: Liu Jing <liujing@cmss.chinamobile.com>
 To: akpm@linux-foundation.org
 Cc: david@kernel.org,
@@ -81,20 +81,20 @@ Cc: david@kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Liu Jing <liujing@cmss.chinamobile.com>
-Subject: [PATCH] mempolicy: fix mod-by-zero in weighted_interleave_nid
-Date: Wed,  2 Sep 2026 17:03:46 +0800
-Message-ID: <20260902090346.16429-1-liujing@cmss.chinamobile.com>
+Subject: [PATCH] mempolicy: fix div-by-zero in alloc_pages_bulk_weighted_interleave
+Date: Wed,  2 Sep 2026 17:04:12 +0800
+Message-ID: <20260902090412.16445-1-liujing@cmss.chinamobile.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A0EB2100008
+X-Stat-Signature: czg37bijdhkix7j46i6jg6m5tf45xwsh
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 521B140006
-X-Stat-Signature: 1b7g4xbqbd31971ooh8q7oroqgxhp7mb
-X-HE-Tag: 1788339830-4019
-X-HE-Meta: U2FsdGVkX19+WbHl0WFHAXWq5q+9gCbwygnEDY9Gm/c2Zo76z8W7wI8TOuWggYIESBL9y6jspV7oDteGeweTAnOXa8f3VTpOXmW9LBkC6usUJXUl1ynpmmtNRn7XWRJ3lg1hrkR2N9Wc8sNmzN5acRWC6D9bATphEu2VmymvULpZHoFo2vaNQ8JvBcpWT2277cHTFPG2mBAHkBfRUeXpsNCmePBTH77TGTmoxNY5qzbC6i1XIQCCwgXz06tpl47NHUKdooNKh1fkONlGsZdMz8+lF0M96sLsN0K6woxI34C2sC7Vf2hjh4COQRinJ4MZ2MgZlmli/rRb+UEgH1MlGhre/CgKR54NHpycGi48vnQi1C77wbBsEabN0IW0DscejvjkAytimczVKHvxM6i0ZrJW4GIi6RXk1b5FggAKaNw4ST1ZGNuVgdyM/SXYkAvoKGZxy/5DYo8QWZucvqsCVjASx4Blx0aFGNPG2i4dFo+tEOqhzyXNKj0qdEgqsZqXAM61bf4BgPp4gmc6zoSGQQIv5lvufJkBsKMhARkAPh4+AEOY9/y7IqGqCWJJfKdj8Kn2Eh9gF1o2fGuFwKD+LbLyl0SPiRy6hy6RYBOU/OY2SGB9vhYBhg/SrxgVpTePV3iF4/EImyzPqyVSwaSglwBg+FxYRLzoIVELn4a2d5sRCYtTgF7DV52dIexXAb0XALUp2lugiwrlOP0lXBM/YgzYLZfPCr7hNDrgr3RJVaROJpoWx3EgQQe/WIZQBWNbx2VQX4FQxp+iOvm5zT8aDu2vPfw9yVBrjax8OEjEvsnS1bQJVDsHsbfaWgFYJ61GqPIfmy6Qayu7bBLb/94PQuLlqVLHnNNp1qWoc6fcolHLxseSQV521SiP5jCz/TJKZbXC2vNpix4BJb8QAd2CZillrK/XAY9BGCMNqsrKMAjHoMPIVJsK8W8GbpW8NwQ/ST+jFnadISgdYsiW2Zu
- hoAJJiV5
- A4OxnMTD7jOcB7GKcAXMRtuqxH3G9PydBEJHU/0yVxV1XU7rnvi6Qqyxk1s88/amZUPOW5zDQstfyry/yC3PsFc8YW2auwtlodIX77nNwZenUeQZ+3GIidfmhMfYLNs6tRr7mAGu5Ss7Q/8foCRq5aWnSS94EAzc4s8u51LnA0cySYbW5tGaFHcYWmQKt8PkA3fwfj1Nifc1tWkRUsSmTylHztghnfMJABnkCwZ6l9Cedt+Bo4BQVcELxSsMkwu17U87CuFfL6TLGvw3YxHrfCUan70Nv9q/B21753J+Icc/dl+S9BJgVXO2rvFzRNtIrXPqZL3j+WlafP06rY5SIFwt2AJSf4WZu+MvdC2T/OeD70Eu8SFgxgVt4N6RXdPWPFBBmTtaviFcSlj028TRMfUUeIXxfF8dnzWFpcn6dtLzJeG2Q9Q64mOBa7YXuwGAm98DFPqcJC8nJuX4Uss2FW6teKKJd3/y4iagkjYbNiof1ADgRSP2YGlP5LQ==
+X-HE-Tag: 1788339858-28549
+X-HE-Meta: U2FsdGVkX18FaYW5LYrdpKhKaHcphDFwyT1Nfh1WlD2z3lbSN01UvQoLHNSgPXNy6aCB5L2NmApAFXoGVRGxX/5bD4WjG/lGfzMb2lxDKl0V3oEatXZl20DNOYUrLeMd3mH9SiNbkslIg5ljOE6p3C0Sv0dM5wvUeZ1r6gdqonEX6Mt0THAAg1wsnI5ZabBYiE30fYoL7t6tm3tUXRXR8KM61FV6HtNFUFaeLMwDftU32g42rEOej3vH0mIeA54HUd0enpwsKSYWsoDgne1N+d3RDamUUMDPntMqxYFOtKqRfzm+NFr4Zczina7QNr/YZhXvdhSV6trYUXzuhZn3Wb1pkQ9yloU/CW1Ato5FU/MgS4wmrUXEqIhh4TXZ2UtXF37qASMFCUhEatju5WAl52PK49ZrGFF30PyxVrPErZWcmQOr3qCmb4Q56ZkAIL/Mx2hILRdGrkbToNvYS14g7psHA2cy1Ntg3+clVWO4CPa2OYVdY6wYq8nWCLWfb80G4eq2EsVdTQmqkBo2f0pgGzIAON+R4e40ZOSYpUMNtxX9VQpN858TnG3bnIY0dsGVLj6disqZYbGMWkb+s/pZZLhT3aLeWoxzMmXAi17CIjWaOz0oTDvpJObXJEfiW8onVdPlLrxxO5AzmsL6hnLD0yW6e5IoCvzgyhBHE7+P/2OR0pKWgGf+WDWNyqGPK61GZuUA9Lp5ebJgBFVbRTuX0e5wDE82VZyW2YngJUR6aDY74FPvDoc6Qfn1QsShDudIcywClVQJM9AZkATIX2nuu9Bd7eYnTbLwaEHQ52TA2uQckpt6xHoqcTNw5qw2blq/1jolAuLKOMqr6+zNIMfAXgmuxJwQ8CYM9JMcpVRjSsjPuDppK3umczWj74Nqvm0+M+3KMcQEh289AO2QeU6MBR1dZDfGp3u6T/VUslGqu4q7u81cSdvMXgLhxujJpGvt/YjJ2VU5vSo0nh8Iu7P
+ TiDQo9In
+ hVlus6ab3eo5rIDnK3SFDH069bVv3ExhESIT6+C6LSP3b6werg8s6M0kN8sOApjPRqiG6LURk5wf1rWm4KcmcucMOL4/541OUNXKfHlUGYOqqXbi4QIjDxCn5vWpXegEPsmQQHjCW4A5w3X9Xr0H0MBfIZJ7rBFKEESHRS9e4nBBY2ubFPi18OEgxdGODUh+BvjBAuJm36MCXwR8hAOlGcZsIw/3NJThnHTTnejIUBUMVTxt+Sqk7En9JHaFpwAIHhqw23VfHhopx1t4kZgYfmIAuFmPvfZYQ18caiSKBuurTh/fCSUlQJ7tk5XkpAlfQZEYmSnol7XD91A/GEC5nK8wa29eKnAC4FPePvW0YYsgxeKumceo7hI2uvMgeCDZQzPlOHgn/HV2ZWLvwk05/jGa8Bg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,32 +102,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In weighted_interleave_nid(), if the iw_table contains all-zero
-weights for every node in the policy nodemask, weight_total sums to
-zero. The subsequent "ilx % weight_total" triggers a divide-by-zero
-panic.
+In alloc_pages_bulk_weighted_interleave(), if the iw_table contains
+all-zero weights for every node in the policy nodemask, weight_total
+sums to zero. The subsequent "rem_pages / weight_total" and
+"rem_pages % weight_total" trigger a divide-by-zero panic.
 
-Add a zero check returning the current NUMA node id when the total
-weight is zero, consistent with the existing !nr_nodes guard.
+The function already guards against !nnodes but not against a zero
+weight_total. Add the missing check, freeing the locally allocated
+weights buffer before returning.
 
 Signed-off-by: Liu Jing <liujing@cmss.chinamobile.com>
 ---
- mm/mempolicy.c | 4 ++++
- 1 file changed, 4 insertion(+), 0 deletion(-)
+ mm/mempolicy.c | 5 +++++
+ 1 file changed, 5 insertion(+), 0 deletion(-)
 
 --- a/mm/mempolicy.c
 +++ b/mm/mempolicy.c
-@@ -2218,6 +2218,10 @@
- 	/* calculate the total weight */
- 	for_each_node_mask(nid, nodemask)
- 		weight_total += table ? table[nid] : 1;
+@@ -2697,6 +2697,11 @@
+ 	/* calculate total, detect system default usage */
+ 	for_each_node_mask(node, nodes)
+ 		weight_total += weights[node];
 +
-+
-+	if (!weight_total)
-+		return numa_node_id();
++	if (!weight_total) {
++		kfree(weights);
++		return total_allocated;
++	}
  
- 	/* Calculate the node offset based on totals */
- 	target = ilx % weight_total;
+ 	/*
+ 	 * Calculate rounds/partial rounds to minimize __alloc_pages_bulk calls.
 
 --
 2.43.0
