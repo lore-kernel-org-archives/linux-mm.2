@@ -4,94 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE376C61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 06:15:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68723C61DFD
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 06:16:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF5956B0099; Wed,  2 Sep 2026 02:15:47 -0400 (EDT)
+	id 497EF6B009E; Wed,  2 Sep 2026 02:16:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E80736B009B; Wed,  2 Sep 2026 02:15:47 -0400 (EDT)
+	id 421826B009F; Wed,  2 Sep 2026 02:16:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1FE46B009D; Wed,  2 Sep 2026 02:15:47 -0400 (EDT)
+	id 3107B6B00A0; Wed,  2 Sep 2026 02:16:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A7B766B0099
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 02:15:47 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 41BAF40710
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:15:47 +0000 (UTC)
-X-FDA: 85167811134.18.72D829F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 81089180008
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:15:45 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LB8X6Imi;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 05B1F6B009E
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 02:16:37 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 821601402F3
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:16:37 +0000 (UTC)
+X-FDA: 85167813234.13.C199554
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E5F5E80006
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 06:16:35 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q1e89WsA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788329745;
+	s=arc-20220608; t=1788329795;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C0109/Wqd8Wh+hWY6seDc3gIIuk1v7uuHz7s+qR/LBc=;
-	b=NHMjm06VVanwgQ/oOFy/Ht2X3t1FKfEmYGzDNdQMZSRYh+5QQm1hTixeAILupoUw25Ljk3
-	Wg3loy21wtNZbs7MDFNxzbJMyXdXjVxz77RX6WtcbGmLEACk3cs+AocWGBpwqSKuwr4k/V
-	2DHZMYqOOMKqv//QbyObOBWUg2emtfA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788329745;
-	b=ij3jHmnqR/AdrO39YcpIPQqxA1dA/HxXX1BfzpKl2hQxYB75OmNhtzb5PbJ4ch/OJqts7h
-	gdLPYJwiAZvqmBBTce6OJd/H1dR9I+EYqxAf+LKvwqGpwOSQXwmnK3ZB2Xx4FW98CvQEfB
-	PgWTjl40QQMM7BYu4FWcOrtIFgdxEbo=
+	bh=BjODJWm4HQ0zWK/uBNhYkH4uHbacHZCWiA6PuoaG+UM=;
+	b=UuFkK2HMekCKpL8v9ci/NG4/6HyCCNQ2T170ybhNFAG3AGwjLwfAetcLCQx2HcNjpQijOw
+	nEqFomAqLW72OJPx92IKK9yA3LlpEynUd+Ih/R/rSitF4dzePlA1tOiYI950uqaQqEODe+
+	YK608RzYzypHWpKpCOG7WNQ86CL1SM8=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LB8X6Imi;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q1e89WsA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788329795;
+	b=XRQEnQ+KQxWPrw4aenWTmAk71VOsUo81gyoWrMV7QMuNysCX35JH9orcZ8ca6AbbmfsJIi
+	Dhha8s2ftx/oQs2xrdVKgha6M2vc1V2fRWs7JtJRHyzgS1gUMyLBoooK8S8y4JGF9TcUTW
+	dDWAkc7VX1jZJJGoROFWDCjxhZfDa+M=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D073743B54;
-	Wed,  2 Sep 2026 06:15:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 986D31F00A3F;
-	Wed,  2 Sep 2026 06:15:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 65EA560229;
+	Wed,  2 Sep 2026 06:16:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 618FA1F000E9;
+	Wed,  2 Sep 2026 06:16:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788329744;
-	bh=C0109/Wqd8Wh+hWY6seDc3gIIuk1v7uuHz7s+qR/LBc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=LB8X6ImiwS+pRQhGYycXxWsTA/zbb8cKaDcKn7YY1YKr2eugSoSh8+GdnbU8Hm97m
-	 FiQzurLzDonqCYHy6zm2G6/LjiwrvFvk7hfm5tTxrdrmbmYGOGDTSdgoNb0r8l8ycw
-	 7ULkXAgHk0+8nXyq2/BFo5fzyfI9gyQgfcBNj88H8uPF4CCODMBCEzlyvKyPE/mmKj
-	 oo8CZGVdYQMpVr1NgWCBveFt9ua7AkWHky6f0DmhzE8vepYpQl4m151HINIhTHBris
-	 SXMfxdDFveWSrSeRL/G+vWD2zz1/0Is5/lWKXpqNmO2r7UQBhyfpaO2tDPrxpwe7F/
-	 xTZgbOC/BjT4Q==
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Wed, 02 Sep 2026 09:15:16 +0300
-Subject: [PATCH 4/4] KVM: s390: Replace get_zeroed_page() with kzalloc()
- for sie_page2 and CMMA
+	s=k20260515; t=1788329795;
+	bh=BjODJWm4HQ0zWK/uBNhYkH4uHbacHZCWiA6PuoaG+UM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Q1e89WsAYo18WECLuDiEp5fWTcq0n+WFFOj1SD4qSWJT//FyO73JSKFuM+tyXMV85
+	 muzG6bod7qNplXg8aCpt/J5CztbBQe5DT9Ax1eDA58i2Q20sP5XqeAXpZnapWzSdSa
+	 6gBR4bomJzq7h9XE8Vx/E+szEW+iKc3UGlTGsGJcCu7CT6nwfXJj1PxgsPpXqKbtS2
+	 +3c2hlxMIUKKHn4hYVmtLFubOD+Nqb1xBxuy823jcUR1AlN5mKZK69NyQtlgPdf0vy
+	 NSGiHOcstE2jXkL0sEIoqiwTI+7vrJEDWccdu6OOjfTEeXKiYuWE7kWzZoPCqHQdga
+	 9LgVPRptuCVhA==
+From: SJ Park <sj@kernel.org>
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 00/12] mm/damon: cleanup code, add test cases, and update guidances in docs
+Date: Tue,  1 Sep 2026 23:16:26 -0700
+Message-ID: <20260902061627.104566-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260902054747.99370-1-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260902-s390-kvm-v1-4-3bc0986550b1@kernel.org>
-References: <20260902-s390-kvm-v1-0-3bc0986550b1@kernel.org>
-In-Reply-To: <20260902-s390-kvm-v1-0-3bc0986550b1@kernel.org>
-To: Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Claudio Imbrenda <imbrenda@linux.ibm.com>, 
- Janosch Frank <frankja@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>, 
- David Hildenbrand <david@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, 
- Mike Rapoport <rppt@kernel.org>, Sven Schnelle <svens@linux.ibm.com>, 
- Vasily Gorbik <gor@linux.ibm.com>, Vlastimil Babka <vbabka@kernel.org>, 
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- linux-s390@vger.kernel.org
-X-Mailer: b4 0.17-dev
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 81089180008
-X-Stat-Signature: t1saer9io6mpz5dprmmytr4b4aebtyni
-X-HE-Tag: 1788329745-708923
-X-HE-Meta: U2FsdGVkX18LzcFYOm+xAFfL+BByTcpaFG3kQqC/b21OczqDySLBJ1tmb7gNgny9o/aHyCFD0sCJQvnoqJbT8kKB2s+m/lXvYuZX9izcs5911y0q0JGsbZtECZK2LLfArhdF9d/UHPGNKCmF8tRgDQjAzkHWQk5PPNFNx8DLJ5d9fGtn4f+UPemUXnj2yO6/sIsbifVpkOIQfED+/flmnerjuIt4ivlcjC09d+143g4vVFNr/w85hqbRGaMtW4bVMO2bZS8LOTSmxIPZmdZX9bvvheWhI79BSmX47+TupQ5KmgbuykySuV0CBsdOE6JAZ5DGDBeM+OOfZ6J03sOZt/FKqyB/uBDsT5IXyUKuB8gaxaaMdawUdLJ5nDdnVnxopWMwLSfvCRRI7v4thWeF1y0bKcsYKHT967POabvuxXZ4nOGwO5tg9Uv0lj4GhTPhYfY0fnR9GmSI4IcqBe3p04ScHIC+qCs2mDKTmYfwoYm1kWuwv53Id4ojRPaltX9QSv2H/wARE1XpEpuJEvmiSKge9dPEW+T4a4Vg5hD1gdCAmm29DTa6402sJkHB4wpGfaOw2CvBoudFIrhrpG9RohAGFCgXfoE7BFYzAnHwD549Y/9SdSHDdxg/QRf5S2ek3eglnQnaZdblODqu2v4STAEtgGjwByLzpVE3jiOwfQpTIzis3B4S8J8lF5Mx4KxlLn8rQUslj3lhOQ3bkCgElIcgz6HV7iGpGMrxjKmqYcQE1A9WkLhg6vOClA+FInbwI2OUf3/jmYlotoP6z3b7xIvN4y/wPYDjhLdjLGipfp1531yEzV+NfyZF1dgWiUIKCf+ijMEX2xvjQvzGhktcISNNFqygCtMj0LmkJL3FLo1Ora7gnzJdXI3C2/5VHZylHuwITH2gUY8iltTpYCwLR4TAFAPhIszDXUDolUQb1B7A/OUCa6T7Q/8tcfGaoN+iMN49x2F32Jb41XPeUxM
- b02GWwty
- 1DJ5AzmKGXDMC+lTI0ki4KaOzRBXijwt1yysTeEw+CLVvodz/JKM1Xfy5iM/MRWARc9g9HGNYOoIK1Y5MYRCug7gtN5Oy8zb7GHGpo9CYY/q05C0E5CUXQHWh2PLEY+boSKHqslKinP3Y6GLXwHRHkVDJeJ874GGtXzyrDDkV55pl/6w2zWGvX41lnGLA5fmOgMxSa5CaE8vKTG25uvrU0xV2XX2lEtAebAgxyIsh9lJmFHWgHPV+RKB7//xb01vfGya667wDM4AYbZWAb6kdkxJkbOjvk0lXVSJMrHB6Zh0hFRdpTYFk/09AcXvKEyfDc5Bn
+X-Stat-Signature: nanda6saqpw84egpmnjtho36bofmbzwb
+X-Rspamd-Queue-Id: E5F5E80006
+X-HE-Tag: 1788329795-461427
+X-HE-Meta: U2FsdGVkX1+oC46dDocEp+RU8OjL/4t8iYElE3djX/tStKVHqQfAGKT3E7PM9WMBHvDkliI/2J3cJZAma6K2Kv3P8pNrpxGw+OaumTydP9VHwU8N0Drqpwi7EWpjr9Sd/xLDXyYn+Px/A4jwKHVksQHH0xmaX4QZD6X2uKro1/NzXv27baCctIDPbAbgDCV0DMGKHiMHeMh/Mb+4hWDvRyD7bU0IRcs2018m777cp7jalk81YcycNCAZCinOB4w0r4AYk7RgxgiuK5904aPGYZcns+BH+HQ/643MCFETO90Bij9rnJ+oXp3slImk6d3pzMEdWsFiHSo4t5uhR+CGrNGGpG9JzngLRbtvKV6RAKgF/szbaBpsevkaWbKTlOFEfwRLhlFFqKZc900u0y5AL0i3mGwKUuE4Ebob94NxGNKprw9Sd1IwinJYv4hmj13jQ9kQlfpyuRKPTn6Nsmiik8nY6QE15e2v6xcoBxIu6YamK126Ac2kLZ8PwpNnUgDBRLVG5hpi6DCUfwzNqaDa966lXnnsD31vx+A25qnvegULF1O8YaHWj04ua5iSaVSPfJKyasGJvOb5yPBlbBfJLXsH5scAyojHsq/Bo9OcT3jWVMLEwcJ0WTBPlfej7ShpF9aaeKROscORkE/HVmXmedHMnlAGk4ygYBNCNbHeDfwsIhw8gisf9eohuMatG2jth+D3Pv1TNtLdCaQemJEApnzmwlTlWG9G2/XuPi1eKySL2RRFa7fHvYnKZgri1phrOuq79agU2FrCdVnbEHuo8qioU243o+8mqOuRiQWD3aMNEqpefyHyJegyXVp1mEERFbpMMXEx7z0HNBa8DFzTrqV9VxMP5vwBuWNi4gjXEZmf3bKqGym2p45WDfUGOWmgCNQvF40wqypdJatqqeh8TBjQCz/0kRoeZesRmaTJF2VysKUXo2jYWTBzhvBLLLEDHJsb88TJh0gZXQFRiqU
+ lNWl/Hmi
+ Xx93l5QrfKRSAh6Z9maJvXU0kJSXBx7yDUqmTy6LQaD+kdHfHV7PJ1J4JUkLTq5Rzc4KenwdEG6WygoHkGvca0SpSigUtC2Pa752RhpwJ5Bys40ayUq3eRTaORhDElf2+LO95zZSQGye+2oThotUAScI+zQtKEBIz4X3NAUSmyNZqF66Dx6p7bYEsOTfJs2V9vHKkK9Hg6Qrp8lGGuRihGfEIFpKH12Km+QkARL67ohfZNt4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,93 +108,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kvm_arch_init_vm() allocates struct sie_page2 that holds the facility
-list and the crypto control block of a VM and kvm_s390_vcpu_setup_cmma()
-allocates the CMMA collaborative memory management block referenced by
-the SIE control block. Both are passed to the hardware as physical
-addresses and must be page aligned.
+On Tue,  1 Sep 2026 22:47:33 -0700 SJ Park <sj@kernel.org> wrote:
 
-kmalloc() guarantees that a power of two sized allocation is aligned to
-its size, so a PAGE_SIZE allocation is page aligned as well.
+> Misc cleanup, improvements and updates of code, test, and documents.
 
-These buffers can be allocated with kmalloc() as there's nothing special
-about them to go directly to the page allocator.
+Sashiko found one better-to-do change for patch 2.  Since it is quite trivial
+in my opinion, I asked Andrew to pick a fixup patch as a reply to the patch 2.
+Andrew, please feel free to let me know if you prefer reposting.
 
-kmalloc() provides a better API that does not require ugly casts and
-kfree() does not need to know the size of the freed object.
+Sashiko sent findings to damon@ mailing list [1], and I replied to all the
+comments having some findings.  Please read those for details.
 
-Performance difference between kmalloc() and __get_free_pages() is not
-measurable as both allocators take an object/page from a per-CPU list for
-fast path allocations.
+[1] https://lore.kernel.org/damon/
 
-For the slow path the performance is anyway determined by the amount of
-reclaim involved rather than by what allocator is used.
 
-The sie_page allocated in kvm_arch_vcpu_create() is left alone because it
-is mapped to userspace with virt_to_page() in kvm_arch_vcpu_fault() and
-therefore really needs a struct page.
+Thanks,
+SJ
 
-Replace use of get_zeroed_page() with kzalloc() and free_page() with
-kfree().
-
-Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-Assisted-by: copilot:claude-opus
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- arch/s390/kvm/s390/s390.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/arch/s390/kvm/s390/s390.c b/arch/s390/kvm/s390/s390.c
-index b0839e887221e..8ec505060f8c0 100644
---- a/arch/s390/kvm/s390/s390.c
-+++ b/arch/s390/kvm/s390/s390.c
-@@ -3273,8 +3273,8 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
- 		goto out_err;
- 
- 	BUILD_BUG_ON(sizeof(struct sie_page2) != 4096);
--	kvm->arch.sie_page2 =
--	     (struct sie_page2 *) get_zeroed_page(GFP_KERNEL_ACCOUNT | GFP_DMA);
-+	kvm->arch.sie_page2 = kzalloc_obj(*kvm->arch.sie_page2,
-+					  GFP_KERNEL_ACCOUNT | GFP_DMA);
- 	if (!kvm->arch.sie_page2)
- 		goto out_err;
- 
-@@ -3369,7 +3369,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
- 
- 	return 0;
- out_err:
--	free_page((unsigned long)kvm->arch.sie_page2);
-+	kfree(kvm->arch.sie_page2);
- 	debug_unregister(kvm->arch.dbf);
- 	sca_dispose(kvm);
- 	KVM_EVENT(3, "creation of vm failed: %d", rc);
-@@ -3427,7 +3427,7 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
- 		mmu_notifier_unregister(&kvm->arch.pv.mmu_notifier, kvm->mm);
- 
- 	debug_unregister(kvm->arch.dbf);
--	free_page((unsigned long)kvm->arch.sie_page2);
-+	kfree(kvm->arch.sie_page2);
- 	kvm_s390_destroy_adapters(kvm);
- 	kvm_s390_clear_float_irqs(kvm);
- 	kvm_s390_vsie_destroy(kvm);
-@@ -3657,13 +3657,13 @@ static void kvm_s390_vcpu_crypto_setup(struct kvm_vcpu *vcpu)
- void kvm_s390_vcpu_unsetup_cmma(struct kvm_vcpu *vcpu)
- {
- 	if (vcpu->arch.sie_block->cbrlo)
--		free_page((unsigned long)phys_to_virt(vcpu->arch.sie_block->cbrlo));
-+		kfree(phys_to_virt(vcpu->arch.sie_block->cbrlo));
- 	vcpu->arch.sie_block->cbrlo = 0;
- }
- 
- int kvm_s390_vcpu_setup_cmma(struct kvm_vcpu *vcpu)
- {
--	void *cbrlo_page = (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
-+	void *cbrlo_page = kzalloc(PAGE_SIZE, GFP_KERNEL_ACCOUNT);
- 
- 	if (!cbrlo_page)
- 		return -ENOMEM;
-
--- 
-2.53.0
-
+[...]
 
