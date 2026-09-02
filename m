@@ -4,84 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6712C624D0
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 03:28:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C1E1C624D0
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 03:39:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D9C626B0098; Tue,  1 Sep 2026 23:28:50 -0400 (EDT)
+	id B37A16B0088; Tue,  1 Sep 2026 23:39:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D45C46B0099; Tue,  1 Sep 2026 23:28:50 -0400 (EDT)
+	id AE9126B008A; Tue,  1 Sep 2026 23:39:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5E246B009B; Tue,  1 Sep 2026 23:28:50 -0400 (EDT)
+	id 9D7206B008C; Tue,  1 Sep 2026 23:39:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A30606B0098
-	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:28:50 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 33DCB1C2513
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:28:50 +0000 (UTC)
-X-FDA: 85167390420.01.5C3D336
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A55A01A0003
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:28:46 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=jciDB06X;
-	spf=pass (imf19.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id 7504E6B0088
+	for <linux-mm@kvack.org>; Tue,  1 Sep 2026 23:39:01 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EAB551C2582
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:39:00 +0000 (UTC)
+X-FDA: 85167416040.12.5EEAFA0
+Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 4C823A0003
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:38:59 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=tdrqJs2L;
+	spf=pass (imf15.hostedemail.com: domain of hughd@google.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788319727;
+	s=arc-20220608; t=1788320339;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=pMvIKLAGFtBlf8v0ZL0jUkwTBxIKdH+TsX1qwT3x62w=;
-	b=7Ta8s8I2zYxJB/TRO4NdiFu6KpORxdVBG/uXfr5SHz3zZ/m+NGCpThsZHmCXyDD/NpxtDe
-	p+9Hf4crjNYeoXAKxo1am2/CoXnpD9XvhMDopMQ0mNIzxHRu7+xRCVbIjIzcbaCKvE6JsN
-	dnrb7TMun/Aftp6dYs2889vAgO80784=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788319727;
-	b=dUXOzPk7+CVCq7uq7u3wnlCYCpdBD2d+GX0Se0oyq6PW2dSzycNLNXu4FRf5JY1hTTS+Dn
-	1qBqNbGG4dql7JvSMG1M2q4SdR3Kv7WuEZwibbNBbfARb96u0kOgLW2+JAzXVtgM1GRn8M
-	0GZG7HA0UVmdb5uUTr/aeJFkLOQhJN4=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=V8fojBHcWDAxPoaYVGsHqqGZ8A1ENNs4lsc009HVd5s=;
+	b=b0+XtEKKE2lrI3uKawQ3Q9i8oMm6y+++KCZ8gUFhHEbzvlgaHpYM7k0+ws240AfqOHwRWD
+	tiohMSgT1KWWAEkS12xXtiiOmAeuZByBg3IyXni9KHlUOmfexnOEh4ytjoNlLi8uPPDWyN
+	vahUQ9uxYOQgWljRh7Y0ziNzCezOOA0=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=jciDB06X;
-	spf=pass (imf19.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1788319723; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=pMvIKLAGFtBlf8v0ZL0jUkwTBxIKdH+TsX1qwT3x62w=;
-	b=jciDB06XBViAdt9cHnHT1o69SfhYujgcGby7qdl/8JlTaVvEuuk1YhQf35ZjyTlMqZojz1evNCc/XnW55yjhHL79pL7lWw4qyCTna4mAihKxtDFW6c5oKtgzfKN3DL4v/Wmgf2JDy+ytzwyK01irsBQtTab0LpYdpCP7ZliaWY4=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0XAB4RlG_1788319721;
-Received: from banye.tbsite.net(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XAB4RlG_1788319721 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 02 Sep 2026 11:28:42 +0800
-From: Qinyun Tan <qinyuntan@linux.alibaba.com>
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=tdrqJs2L;
+	spf=pass (imf15.hostedemail.com: domain of hughd@google.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788320339;
+	b=aPECr78JIftmQghNsFgKU5dH6/FAExgzKC1lLGv4VvkZbimpG85C7jD/y+LUAdPqtaufkZ
+	X0+bR1VILKZCJJowQajF1JukqRSA7pJzc7UlVbiug8dLVNYMJCL5quMYtHnJQgbNGhaqGO
+	Jpy8RyXF8C99fjYFKG6AOp2Y556qghs=
+Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-66e64e6e3fbso646005d50.2
+        for <linux-mm@kvack.org>; Tue, 01 Sep 2026 20:38:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788320338; x=1788925138; darn=kvack.org;
+        h=content-type:mime-version:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=V8fojBHcWDAxPoaYVGsHqqGZ8A1ENNs4lsc009HVd5s=;
+        b=tdrqJs2L25dKj0/RjOiFWiHb5T8hdjJKEVaiKGCGBMZzrif61g06t7GgAWDIH0NmVH
+         ubF3L6cc/HV0P55lPjQejfY2vNvaE8QflvJ9Xxvd4a2mkiKi51sVPiCecBFNPqwLCt9O
+         zE03TXKtSgJXoFkVUmNE4d52Njj4l6x2kH3v1K5EdpV9nO3qL5MoVecHp2P1FjkFwxA/
+         zISHcwh9+1YMcl5QS+TNmuKcEc/ar6Imd+r4fKFS459K69Botat7WubqfQCs16LMJWiT
+         8E9yiJBhqgmF/bWRYLNfe9cb1+p35k7nTmF/16tsoYV0xd+CsL4rqISY1rIWpCwu2aQp
+         kiBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788320338; x=1788925138;
+        h=content-type:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=V8fojBHcWDAxPoaYVGsHqqGZ8A1ENNs4lsc009HVd5s=;
+        b=Yw/A8lhOeXtuAzNTbaXC30kw+lKGoZzzAOdi97GjihI4mxVFzAZ8+ix00y2uK062og
+         UdDdetZglIp+F2PLsuJonSWL2ABb8nJl5HNg/9Nos7TCjqiUO4A6RfGds0glwth6O1bZ
+         HxBRAGE6QnAY/+kz1BTCCWgXpcQPxSeZ+7qtnDMgVhmPQUMDpPV8DbnoLVemB3mJ5fES
+         EgfgHMVGfRaX/pQHuwRozIcUz1OC4FWv8MOxBJjOWQyKwtlWLitB7g5/AvP2ub+8Lfow
+         AL2G+ZuYRbxLPQRsqAGzGqZQzAqKwVI9oGXVpYKjdBF2U2o0agEBaqgHd1qRaU5N1POy
+         /Luw==
+X-Forwarded-Encrypted: i=1; AKwUvByTPeVFtDahmO+uUTbFJhLHzoisHS3TVmodlgnz/HQQB10RZGhc8tYbM+gmDKQlrI3wZ/m38TgCtQ==@kvack.org
+X-Gm-Message-State: AFuF++mhWbT4s+WVEgYLGQe6+zgxHO7P9cPaQWaIs1j9NPvG0Jn4niNR
+	FUITY1IcVP4p6nsvUPfXuWC458Zhgb2n4HGZ+/AryjUHJc3KbdFWx88dO63+t5S5Ag==
+X-Gm-Gg: AYBFou3E5W/Eu6s5Eb33xofz1jJkzjOEjMWMpjPMoWbayAkrWF/CQjOF8MFTgZfrIGq
+	E9Nm4Tydb884M59R76hDm/vaBzmUEPD0kkGnXfrFnR5zh84KBCvof0kdMMvUVXzMrwUNk+AtO+u
+	A0LYPppEpxpbpq3W1+pK3iB0YuZNpLlXiO1OGlHsygPuBPPaQjBaVeQ/ZQiKXsLzEHqmePsJRp5
+	KGdMt8Il+nByKMOutv2VL7YilgKgabvKM9UVSP1wNH5AUyOEv+Ly3TjizPsjLvnMpoaN45EhT6h
+	KjZ2KjFqp39lLxhb4fYtgUvHoBXIqLjawGlvvGA62it1ZWRJhfg9CAKZuT2chCWsknFxMKui2zm
+	Zo+klCaaaot4+0y1qRjS9tWw4IJfsRiqv/puQuOOU5AO/VpMvjal59ajeD26K0Ea6zsv723JXHu
+	bjNvZp1kct6u9tUpVBpKNbcJ+NofMsQHGD+bsscOUxAlbGWscszg5FBsJLXMfestpW989f3cKUf
+	P2OXnzMaw/F71wl0OrDrszRBTA55OG8Pocj+7o0Efbb1gED
+X-Received: by 2002:a53:d017:0:b0:66c:4163:c4e6 with SMTP id 956f58d0204a3-66f9bd4a3e5mr528831d50.26.1788320337604;
+        Tue, 01 Sep 2026 20:38:57 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66f9850c9f9sm1031960d50.4.2026.09.01.20.38.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 20:38:57 -0700 (PDT)
+Date: Tue, 1 Sep 2026 20:38:40 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Dave Chinner <david@fromorbit.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Xunlei Pang <xlpang@linux.alibaba.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Qinyun Tan <qinyuntan@linux.alibaba.com>
-Subject: [PATCH] mm/list_lru: disable memcg awareness under cgroup_disable=memory
-Date: Wed,  2 Sep 2026 11:28:40 +0800
-Message-ID: <20260902032840.30250-1-qinyuntan@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
+cc: Ackerley Tng <ackerleytng@google.com>, 
+    Binbin Wu <binbin.wu@linux.intel.com>, 
+    David Hildenbrand <david@kernel.org>, Fuad Tabba <fuad.tabba@linux.dev>, 
+    Matthew Wilcox <willy@infradead.org>, 
+    Sean Christopherson <seanjc@google.com>, 
+    Vlastimil Babka <vbabka@kernel.org>, Hugh Dickins <hughd@google.com>, 
+    kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: [PATCH] mm/folio: EXPORT_SYMBOL_FOR_KVM(lru_cache_drain_for_folio)
+Message-ID: <02876cea-5727-2ca4-bead-73659ea6fec4@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: z686g3pn4ee48p6zhr5hmxybjcugwczg
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4C823A0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A55A01A0003
-X-Stat-Signature: m4pwqmbqmj1ysx14cxw9kw7y5t4xxunx
-X-HE-Tag: 1788319726-586888
-X-HE-Meta: U2FsdGVkX1+5cxtWQjSeMkHsztI4a7kV4F4p96xmgigsPG5dN66MgU+R/ll2lMfY2RF+w0GHPjXUz+quYnKsmDCwZwOLe7XcRYeGznU7v/Q6WTnr6AknV7xFoQlsw5JokxDVLanNIhvZHYeLoQY4jF6W98QRp228V3mPD/QtIWeAb/g36sRfGeCIFYK6dhxFygyE/irtZafS+sUZ6FMG4W1CthXd3mwtdoSE0ue/8jmplWZ3nus/UmjsXhf6L3+03OlFp2ldjZX/ee5P80XJ/mGgIz4gCmIhKTM9c7cmfo8KXlOLzHtPsdy56PedJJk/LLnq2iSD6UEmsBLBUtw0UIe61WfW3VxJ6Ts682i0WArE792WkAUzFbnQU8+3ZUkxuoJEmKc/0jsySAOCYvedOol42qfgXXj3tiMrlOf/7wb7gDaVe/xHSnX7tBDMAPX/pNNLJbrGb9yJGW2PCYqFZn0t9jhRVNygAnDRwItv0fqE/gJHsCiiJ4UwNwtpASe7iNJ5YdjYtzPEvef0ZxKC+S11AESGQfFcez828HQjk/vlgWxWubU1Vno6LwSyV0Qj1kezZgPtdoZSdVaW8/WGhUKg2EGRMOTxChJLfE4QCBP1uMsXZ+bvJD/hghSkopoEuddD7w80v31//CV3kOO/kYbYciLGUgBLQ89TXt0VKCSTfB236wt0HAWos4xaG8M8kR8tGIJa4dGZIArsUWZ2LKTV7ibNu/59V38tXkCxUf5Eeo7tgp9fCV6251yf8myS2vqEl7EnkH67qNihpo+TgBgytDJDwLhqOTzz9fOEAcPphPYvRJI3em1aa/qc7YRvAfEuk0/FG7ERGsIwVS8cm1QSP2T6zgWp3ou9A7Y/6LtkcG94dgR2Sl8owv34eQTNGX9MS0YjsxfNElibES4alLR8uBC3tKz8k6o79yNRKSXiUVgu95OM97r0ilAFaoKuQMKCbbpbBRUAgLjaZ3u
- n9UkAFv/
- YN4KZHBCpXewb3zUmjBJvAFm2VgDptzeQ0Fv09Y9KnrcHtCQuxBnvBgH7qIDXaZk2+5+RMblNgS1uXI9fl6ET1q/7YrDrEl300g35cB0MpTxykJ4Xww+SrngUvI+0TW8im9pZAPPPyTQVux7OYn4XiTt1PsrkPIuWMAIptYvX35x6l9U46cFVEsr8AO3FV/APs09PO6ijgu9kDhctRhzP8bpozWpGUx+Rd5iqVg//MCk04nOrUPj7w+9erWsNB0ea9FfcuxSs83PF2BpeHCapM/E6M6e5kWRGF8v2Q9r9D87C9hFsBdhKWD65z8OkI5prEwx5
+X-HE-Tag: 1788320339-76614
+X-HE-Meta: U2FsdGVkX1/HFcPlufPIgkREogqFDsF67fKMILDar5keyBcxGIx7s9QS4WWcPQ7oRTvGKAonTDNiSgdMduFp/dbqwWa9rr0wTBOiklfDMM3v2JYTQ1aNM2yUbjHS+o9anEPMFcuuFtBLZ/ZdrvFFfF7b/l9ErhZtICfU7DtG9Ww85F7f8PEVVXyoVlXOLgGdu3/N+PHDdMga7OWInaqjO/0Z3LnnvI63x25pGQrTBc0u6mUeudsm48+f3amIhynAJDnC4FtDsqxfHdGi8SNSjHyjV/eRgJQMIJVhTRt0qRAZmdofO/0i6m7nmoqoqFq5AuL/DUbDEQX0U3b0T3sVfd+24q8cQQ8+itsAyUcrIGjh77crp4EdjfLmcI2kX7wLerZaeRtWAKsZDRLJubv9oDRcZFhnyJBcvkMbz/sUj3Wel4naX5ItkFRd168MLWAd9rBUZPBK1UJ2Yli2bOR4co2IpR7AZLQRerMqf/SIohyWKgbm/atIy8U4ptz5EJqoXwqpQ77CvEeLhnkJo300UoCC/nNW7IrN87v+2WOc5Z2Ns8WKPqhnqskMhw3WjNvNkdrrvTCER89p7TNF8FVvBvhKi3fKvYZv779u9zHd1IzUbBAjNxvqHOo1pTrZnykfSP4O3PP1VMbt2MfBNoFXJAmbYm42cHVwOeiU0RyCAbiG86a6dWnPA+ou7pBwAPGi4CcFLUfPZOyhQmPRuElxpUdDUTg8PWwbNr8MowowNYDyXZc/Ih96NZKPIJigm40Kqtf5lL4jRnYoVCegYgiF+XHaMo8r68Z7GT8Zujdfd541/Hq5NjeNCb9RTOqLEeY3In42kHSlGzikvRn/6xgmoz9OfQyRIIZA1fkl+Z5LKWBUfRA7bvahYrAIaenUUspGL1vvL3TwyRMm5Ej+Msfp/HImD/6fqLu5I7BegXJkap+zH3LZe64CxUuSalmDhq+VQ+iXzVcHZgfFpxHuLrQ
+ JIN2omcg
+ TmNh+i6rlfIRDFoeQyvCSYEo/ntCmcC6fF44L8kkxNldvCFmqqlmItToZPlQ7vBcblibv9tIrQPWN0EvrwrRHtG35C1tomNVIyUGXwFa5xVE/C6qT9xRDyoISwVlH7xLkU2Z5KXqGPQlVdwFvut/1l7ILuifX7dJUdzaD2ViO8dnpKWEPDhdOJIQaWptyzcS+saaK32T/crj9fXunw6VrQsl/OmOF2HQMJ7HiWofUM+3Qb5H8dTRboHyG9Ts1E+mUKpeZT4SLlAY+HFm4hIwveAvHLMWV+Nc8QQezG63Zb0JwQvaxW1C1jeSsAST/2YG+yg9NPAXKlStCkRCP2g69mmOjPU+L9jYJsUmk3so1iAQCXPKl0S7B/FfwsDZ+Tzsqi0nZufr3gY1wif694Tfsah0ZHZf334iaZHgzoA1MNgSefKBn1PbRfNz6tEhlQSDazbuw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,102 +118,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__list_lru_init() only collapses a memcg-aware list_lru into plain
-per-node lists when kmem accounting is disabled
-(cgroup.memory=nokmem).  When the memory controller is disabled
-entirely (cgroup_disable=memory), mem_cgroup_kmem_disabled() is
-false, so the lru stays memcg aware even though no object will ever
-be charged to a memcg.
+From: Ackerley Tng <ackerleytng@google.com>
 
-This is more than a semantic inconsistency.
-folio_memcg_list_lru_alloc() trusts list_lru_memcg_aware() and
-dereferences the folio's memcg, which is always NULL with the
-controller disabled.  The only mainline caller,
-folio_memcg_alloc_deferred(), papers over this with an explicit
-mem_cgroup_disabled() check.  The shmem unused-huge shrinker
-conversion ("mm: shmem: make unused huge shrinker memcg aware") adds
-a second caller without such a guard, so booting with
-cgroup_disable=memory and writing to a huge=always tmpfs oopses:
+To simplify independent development in the KVM and MM subsystems, now
+export to KVM the lru_cache_drain_for_folio() which MM added in 7.3-rc1.
 
-  BUG: unable to handle page fault for address: 0000000000000488
-  RIP: 0010:folio_memcg_list_lru_alloc+0x41/0xf0
-  Call Trace:
-   <TASK>
-   shmem_get_folio_gfp+0x1cd/0x7c0
-   shmem_write_begin+0x5d/0x100
-   generic_perform_write+0x89/0x2a0
-   shmem_file_write_iter+0x82/0x90
-   vfs_write+0x256/0x410
-   ksys_write+0x61/0xe0
-   do_syscall_64+0x8d/0x460
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-The faulting address is the offset of mem_cgroup->kmemcg_id,
-dereferenced on a NULL memcg in memcg_list_lru_allocated():
-
-  folio_memcg_list_lru_alloc()
-    list_lru_memcg_aware()               <- true, only nokmem checked
-    memcg = folio_memcg(folio)           <- NULL
-    memcg_list_lru_allocated(memcg, lru)
-      memcg->kmemcg_id                   <- NULL pointer dereference
-
-Check mem_cgroup_disabled() in __list_lru_init() so that all
-list_lrus fall back to plain per-node lists when the controller is
-disabled, matching what the shrinker side already does
-(shrinker_memcg_alloc() bails out on mem_cgroup_disabled()).  This
-makes the mem_cgroup_disabled() check in callers unnecessary rather
-than mandatory.
-
-Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
+Link: https://lore.kernel.org/lkml/bd6c9c74-e374-a9d3-ba1f-8b6f430894fc@google.com/T/#u
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Suggested-by: David Hildenbrand <david@kernel.org>
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Signed-off-by: Hugh Dickins <hughd@google.com>
 ---
-Applies on top of mm-new.  No Fixes: tag since the commit that makes
-the crash reachable ("mm: shmem: make unused huge shrinker memcg
-aware") is only in mm-new; no stable backport is needed either.
+Hoping for 7.3-rc2, which would make my life easier: thanks!
 
-Reproducer, on mm-new booted with cgroup_disable=memory
-(CONFIG_MEMCG=y, CONFIG_TRANSPARENT_HUGEPAGE=y):
+ mm/folio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-  # mount -t tmpfs -o huge=always tmpfs /mnt
-  # echo x > /mnt/f
-
-Without this patch the write oopses immediately as shown above: the
-freshly allocated huge folio extends beyond i_size, so
-shmem_get_folio_gfp() queues the inode via shmem_unused_huge_add()
--> folio_memcg_list_lru_alloc(), which dereferences the NULL
-folio_memcg().
-
-With this patch the same steps run cleanly: the lru falls back to
-plain per-node lists and folio_memcg_list_lru_alloc() returns early.
-From code inspection the rest of the shmem path handles the NULL
-objcg fine (obj_cgroup_memcg() and obj_cgroup_put() are NULL-safe,
-and list_lru_add() with a NULL memcg lands on the per-node list),
-but I have not exercised the shrinker reclaim itself under
-cgroup_disable=memory.
-
-Discussion: https://lore.kernel.org/linux-mm/20260901115104.2944996-1-qinyuntan@linux.alibaba.com/
-
- mm/list_lru.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/mm/list_lru.c b/mm/list_lru.c
-index 36662d02ff963..f8be119351cca 100644
---- a/mm/list_lru.c
-+++ b/mm/list_lru.c
-@@ -671,7 +671,12 @@ int __list_lru_init(struct list_lru *lru, bool memcg_aware, struct shrinker *shr
- 	else
- 		lru->shrinker_id = -1;
+diff --git a/mm/folio.c b/mm/folio.c
+index c02dcea9c03c..50a6dbe55998 100644
+--- a/mm/folio.c
++++ b/mm/folio.c
+@@ -33,6 +33,7 @@
+ #include <linux/page_idle.h>
+ #include <linux/local_lock.h>
+ #include <linux/buffer_head.h>
++#include <linux/kvm_types.h>
  
--	if (mem_cgroup_kmem_disabled())
-+	/*
-+	 * With the memory controller disabled entirely, no object is ever
-+	 * charged to a memcg, so collapse to plain per-node lists just
-+	 * like under nokmem.
-+	 */
-+	if (mem_cgroup_disabled() || mem_cgroup_kmem_disabled())
- 		memcg_aware = false;
- #endif
+ #include "internal.h"
+ #include "page_alloc.h"
+@@ -926,6 +927,7 @@ void lru_cache_drain_for_folio(const struct folio *folio,
+ 			*drained = LRU_CACHE_DRAINED_ALL;
+ 	}
+ }
++EXPORT_SYMBOL_FOR_KVM(lru_cache_drain_for_folio);
+ 
+ atomic_t lru_disable_count = ATOMIC_INIT(0);
  
 -- 
-2.43.7
-
+base-commiti: cee9395acd8043be0644b25c34bfa86623f2b935
 
