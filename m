@@ -4,92 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1A70C624D3
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 14:25:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27219C624D3
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 14:32:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F2FEF6B009E; Wed,  2 Sep 2026 10:25:20 -0400 (EDT)
+	id 3F1C36B00CC; Wed,  2 Sep 2026 10:32:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F06676B00A3; Wed,  2 Sep 2026 10:25:20 -0400 (EDT)
+	id 3A2B16B00CE; Wed,  2 Sep 2026 10:32:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E46D56B00A4; Wed,  2 Sep 2026 10:25:20 -0400 (EDT)
+	id 2DF566B00CF; Wed,  2 Sep 2026 10:32:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C623D6B009E
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:25:20 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5C0D51A022D
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:25:20 +0000 (UTC)
-X-FDA: 85169044800.14.AAD9E17
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id AF6011C000C
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:25:18 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dd3okxwv;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E5066B00CC
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 10:32:29 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8DFBDC023D
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:32:28 +0000 (UTC)
+X-FDA: 85169062776.03.D1396B5
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 18E541A0012
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 14:32:25 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=x94EtOSW;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf19.hostedemail.com: domain of BATV+92e025b455efe38d25f3+8410+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+92e025b455efe38d25f3+8410+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788359118;
+	s=arc-20220608; t=1788359546;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dwH6CzjmhB+SmHrUUzJ8KL/hFq+AZimRbmxhGf36Cd4=;
-	b=1moyJex78WSHBMQPav6/lkKfVWavj0RA/Ma7NwDSWR+RtXRz6yorJ3HxIJ1mPxxVFf3vBZ
-	lU4/bnOiAV6dk0G1CnGFy1b0f+tOBVOMlVc9dLXZ9nRgFjpMPV1wSIslRAPjROAMBWyCdj
-	SRNOSN6bytg1nl44BpR8ip4fd8kksGU=
+	bh=EJThRJxcb5ZyZDKnZjsJGD0FqhAXwnBk13tyzhihRaI=;
+	b=Rnh7bJiTLrqynb4nWO92CUVbEHuDJFn/UXReQUa1EvrGElI5a357Vn5xA72YgD2DObNEiG
+	Qcp2+hfxRiXbR5soDTHe8D6STkjs/IGi4r+FvEoBdW+NbkV5L6nOemAePxXjUZ4TAoXLKa
+	SeplUN0sPGQXtR/3RTK7tgGLlwtVFd8=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dd3okxwv;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=x94EtOSW;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf19.hostedemail.com: domain of BATV+92e025b455efe38d25f3+8410+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+92e025b455efe38d25f3+8410+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788359118;
-	b=LAAGKftBKsnqT8S8rXwC2l3kADQK+OVBGsGQzBdlfl3GehOxfCLhcHVboXAPfGgaEglV13
-	B3BbVizKNB+80oG6wvlWC9tgzWThDbi7NVJ5FSWHhDkwKLWwG5GZqz2ndndt7uAcSr6KLm
-	XhT4/k5DTalQ73pnWodmRErDcfoGpD0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 925C641969;
-	Wed,  2 Sep 2026 14:25:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A0131F00A3E;
-	Wed,  2 Sep 2026 14:25:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788359117;
-	bh=dwH6CzjmhB+SmHrUUzJ8KL/hFq+AZimRbmxhGf36Cd4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dd3okxwvRWja7d9dxhaloYRzmW51U2RWUrlPNhitArb9FLFn/8CiJO80qz3SrZfac
-	 2130tW2M+GIuNq8HyjRRg5idQqW9AwBD5cA4SXWyuvu8t4ZvuAi54oQ0wwYCZv1vYx
-	 Qoio+2r/j41c6HH/CsD7IkCm2D2Y9BWUev3KpjwBlj74Io1nMsFLbBlQci5h5fOKyP
-	 rBjGVMu4Y9VfTAC+Pi30uYrdX5zx79HHCokbzSeV0/cH/iqEO+Gl1y/6CzlIjZ2iUy
-	 jWcIbB23ujFq6l0VbD8oqAv5S//E/oQxktCfQcCSLcxQQRGJKmMZ8c2D4eXimQida1
-	 EbLsFTgaqo2lA==
-From: SJ Park <sj@kernel.org>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
-	Shuah Khan <shuah@kernel.org>,
-	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 0/6] mm/damon: add kunit and selftests for probes and probe weights
-Date: Wed,  2 Sep 2026 07:25:09 -0700
-Message-ID: <20260902142510.87878-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260902140313.85983-1-sj@kernel.org>
-References: 
+	t=1788359546;
+	b=TAOjvKmp9wq2glMfhryQOBTI1tpORbR0avxVxs08NLwFzqhmp0RPXqD3lozrg7e6qYDzaW
+	7cz6hfgi0GXvi0EtlmaV1lcck8JQ7oQSUJuy7Go6A4xZERc0ajprjUJzFVNUErO25TDnX8
+	22gIq1PRQwtvk8jymt5mEOEqZk1Ntz0=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=EJThRJxcb5ZyZDKnZjsJGD0FqhAXwnBk13tyzhihRaI=; b=x94EtOSWAUSX3HLBg0leRaCPlV
+	GdYrOK9kldOMx2U6iAsjteD+CbZaKRJp5J38nHE5xU0/SqKFUSsFYLDFQOlP7I0A0chlc9KuqPS5c
+	jjN4mw05LVyc/LlTQiQC5tG1k3jencqnNrEpbeTwa/xa9pb/YlqkX82VbiN4MjUodzkgBRoVVxmru
+	ik7g4VQncUo038xq54h/Q/Qvz3dBxcmauqJNZ7Mrw1egTjB7CvK0WX7JWhtoTyMmt4Q+pC14wNH5c
+	3XJPuldMR+kc7yQgXSgzHemS2PpNr5Ao+S6wUGd4PbSvUYZVw6q/qKt0vQesbYfS6EnKkcA9Sydns
+	Dgpvhcpw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x1m0i-0000000ExMs-2Re1;
+	Wed, 02 Sep 2026 14:32:20 +0000
+Date: Wed, 2 Sep 2026 07:32:20 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: brauner@kernel.org, djwong@kernel.org, cem@kernel.org,
+	akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com,
+	mhocko@suse.com, brendan.jackman@linux.dev, hannes@cmpxchg.org,
+	ziy@nvidia.com, david@kernel.org, qi.zheng@linux.dev,
+	shakeel.butt@linux.dev, ljs@kernel.org, linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 1/4] xfs: remove dead kswapd flag inheritance from btree
+ split worker
+Message-ID: <apgzdKWBDn4rpIO5@infradead.org>
+References: <20260902131653.1338227-1-wangkefeng.wang@huawei.com>
+ <20260902131653.1338227-2-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: kkcy7fd76yxyo3mmi3ayy86xgbxzngw4
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: AF6011C000C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260902131653.1338227-2-wangkefeng.wang@huawei.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 18E541A0012
+X-Stat-Signature: 3yxkxf7kaejqyhrr51r54yqukupupux4
 X-Rspam-User: 
-X-HE-Tag: 1788359118-890147
-X-HE-Meta: U2FsdGVkX18dBb5u1SBb9b98YzX0ki+8MqgbaKoTyQb+gqzHrzoxEKpEjC2PE7xClhtxCY6GrdUT6r/tFvcTwd9BMs3CnRQzH/I5xbNhidSVUaRNK58MwBmrmAvT7PA9v6EEx9URkPWmPkILbCJlpjA0RDFUymEj9N+tMc7MK3WRxuVwu9EWzwn++PxyOjp3rN06gnnukL0toMDAM2HvtCQx0200k9xLYN7bJ83giRx6yvIq8vDvdtQzYd6xpkt0dwbBQzCO6OfVacWWzdNNQNq/yz0yXACyeuhh5XTH36HBe0kGJ/Wn0/gyzHE5VDTMOwEheCgl6zM2tuWxEHGdAkfKs8E7WchE0RPwSlx1+FKBA9R5BGsy88kObkrqH/umPVwxNS4pRbacSo+bRFo+EbHHgYRPvdvERqnzJUQdVz3fItdPHlRcBWEJkBhvTNNCQsJGiZZ/hy3EObWkUINh/0f1Q+zMgHwz26DaOh8HrATaexi7ovSY050D/V0ryo6hkPPDlWZrxyKeeq7PybQ/YXKgafTmwgTy2uUVVkKPC2O7wlcBg7NvIfP1KCrm2EGDkW2O7n/5CgsSz9oNATRH5QQrojHqfbF+4mSDCn3twCcf6O22Fohu8iYyVTlB//lq93ltcBsXI51H/Y7zMAmnkPrbgjvG0nwpra34a8/3Bc4yL9v6C6qljmIoqD2soGELUNsY7dNVzuf5sAj9SwAXp9jSjRKZcO9pcUhdGafGYRhHZvXuhZxpuqRvgL8CLsULsWOw8IDTTg3mMts8c36s+2Bv2lLsPd2kUQWhCSsOr1rwWBJNMFzTE/j1YAGQftNVjems1z3H0UjltIqS1Qv1sifKEtiz6cJasntEODiQEwJjxWAB1JdlsgyzYc0JUKpTGNNgT3h1U+3ySCMIsyT0bPjAwG4emmztHyvhs10Gz25p2E1V6vgHEVyZ9AnmEqcUaPTO3/a3NI5p0VPgYOv
- WEG4UCBI
- jN/2MpT5evjppRV5PNkuVCQG+rXWHVwALKJA3aGvcNcCua48Ydg7n89CHMWK5WkvdhgqReFkDoHSeNifPHKb2hlp/G7ugvNPDJxAmjSUPnW1u/D+mZ9W6ok0rlIOzI0phCTk4Ev3jIkH8Eu21BydOpDYtk6wMlxyGbGSxbojHiTDjmSolcRfntb1YP10h31xkUZTGsNn/zq/zpZyWGTB3gd9sNkUEXfl+q1tG3WQjnsnKPKE=
+X-HE-Tag: 1788359545-437145
+X-HE-Meta: U2FsdGVkX1/azOAa8r1gC0ItA10/Beisb6QlwvdPDJW3QbOsmYrZT5gIqwShTs7jR4W/rdDB26Tr5q21HpnjXb8EFO+mwWfqeDHS9hiDtd7VCG1GTuz3dl6+GwXXMMuNXaRr2owZ/BEBImv34ScDx/1VC2AVhack2kuXnqOIf85+uFruT0ZmnhWn5WIPDJNh4eYdS/VoE682oY2aox76qY3ZmCKDEHIYHzDC6XizMQkjnHLtAOutZnUyy2AN+lN1dhr6WqaVx/pC+9UWjH5+pgijxyX25NI8/7Oj3reGY9O8DsunG1aMMRh7RRAL14UxcgtxNdlqe97eQVFDO0CMxszsisSEiYRE4hQaXDDHzr67deYJpVFgMP8d+kun5lw5FNryNfNb0MIA43lq7RNsaT0db/apFgeJKstI9ammJzdQ0YfZiYLSY5+9zQW401hxqjoLAlxbyDeeAk6LdbAga2Qy7mIwSHssEVvvQMy7CuLwZkEMGyHwwdO1HbbAzupjnongbdaVhMW3PikkHv3zWKMb3VmVUL+geS+on3U9tQ0DgtOhMAc+va0gffHcnHnfqMTshfsxSHwI+2rmRA0q06dJSUpg1nimdJ4qr1UU4Z7kkGbkCGt3+d2ee2OPhAST/iJ9mV+9ocsn4gwl7fCbL7ixSymLWzbngsUmHPNBThSSh0Fj/R2n+IoOzQNPKAQwXhFvtbIXuVyC7vWtwBwXDPAwEPzvIs7xfZvsYR8Hku419gz/29qZBRx9HmhZzHdKnJozEYnoOKmD3czR0CZ/ZmPFaofCm6pkLZV04tklH4nFF5ejXFPgo3qCSGuZ/qpxTq7dRjLcstN858unDAJIhRxMdk0nJmgwygA1xVjCbdVqC9OajZj5YkJKXc9lYvY9rRI6WvoPZnSDJyoUY+CKKbT3uz5KPCkFraIg3msOC0U46g2YU/jmtY9NNr55WNC993ygU+dWGPYvvPuT/Cb
+ nBCz3u5J
+ I63RGlSngk4mVaLVxA5jKttV4KO8+EAqqpExWHQ25J3s0g+BfiwLHCrvIr3fiid7jUPgcnHbQXUaTdrkKqOjhFVxr/g6hWnuvQJSS8KT73O4P/U9Q3kCQ5ot6jwPoJM2AeWZf8VriAntgZqibbuzhLQio9eexfKmXxhipsdj1XZIQ3w/dxcV0uIJmi+nv8e0FZeM02MkamyZv5KxWBF+nnt95CDhXBsrObytwBFG9fjhv3ykGirzxDzpWh0/0vkcrKnFAgVP5QtuIeCzxQZ2PlHUec6/lS1Ouwk+OsaecmDEttU0HwPzLd4Jlg3sVhNe26X41YRAPMofJrMElaMbzWF1HMy5/adfVn43q7YCmRcOO9XOc6gyRgAkyL1paADoZV69k8lOprA511Qp6EplagyqKl8YnCp41vmHalB9ggf4TAkmP7UHwwpIlGxycpF+wkX5qbNJbaNDMjqS4O13kHgbul6NtOji4d4jB0pLI60KLRIBRrxlCDv9rWmzSOnBUeL6AmxRnmaWziW1hr6VAymw1C4aND5ZEtWTl7fNmWMonjAacYh3Ywyg2cg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,21 +95,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  2 Sep 2026 07:03:06 -0700 SJ Park <sj@kernel.org> wrote:
+On Wed, Sep 02, 2026 at 09:16:50PM +0800, Kefeng Wang wrote:
+> Commit 1f6d64829db7 ("xfs: block allocation work needs to be kswapd
+> aware") added PF_MEMALLOC | PF_KSWAPD inheritance to
+> xfs_btree_split_worker() so that block allocation offloaded from
+> kswapd to a workqueue thread could access emergency memory reserves
+> and avoid reclaim throttling.
+> 
+> pageout() no longer calls ->writepage() for filesystem folios -- it
+> returns PAGE_ACTIVATE for non-shmem, non-anon pages.  kswapd therefore
+> never enters XFS writeback and cannot reach btree split.  The only
+> path that offloads btree splits is unwritten extent conversion at IO
+> completion (xfs_end_io -> xfs_iomap_write_unwritten), which runs in
+> a workqueue context where current_is_kswapd() is always false.
+> 
+> Let's remove the dead kswapd flag and related codes.
 
-> DAMON recently introduced probes and probe weights.  Add kunit and
-> selftests for ensuring the parameters for features can be set using the
-> core API and the sysfs ABI, respectively.
+Nice!
 
-Sashiko found no blocker for this series.  Sashiko sent findings to damon@
-mailing list [1], and I replied to all the comments that have any potential
-issue finding.  Please read those for details.
-
-[1] https://lore.kernel.org/damon/
-
-
-Thanks,
-SJ
-
-[...]
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 
