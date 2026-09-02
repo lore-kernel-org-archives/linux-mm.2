@@ -4,93 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AD2AC61DD6
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 07:33:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDA7FC61DFD
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 07:33:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 578F86B00A0; Wed,  2 Sep 2026 03:33:20 -0400 (EDT)
+	id DDC926B00A2; Wed,  2 Sep 2026 03:33:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 550926B00A1; Wed,  2 Sep 2026 03:33:20 -0400 (EDT)
+	id D8E3D6B00A3; Wed,  2 Sep 2026 03:33:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43F476B00A2; Wed,  2 Sep 2026 03:33:20 -0400 (EDT)
+	id CA5F26B00A4; Wed,  2 Sep 2026 03:33:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1556E6B00A0
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:33:20 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9232840746
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 07:33:19 +0000 (UTC)
-X-FDA: 85168006518.01.AC6A8A7
-Received: from mail-pz2-f7.google.com (mail-pz2-f7.google.com [74.125.228.7])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C8AA6C0006
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 07:33:17 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=IOx28oqa;
-	spf=pass (imf28.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.7 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A27276B00A2
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 03:33:33 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2C9C11C25BD
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 07:33:33 +0000 (UTC)
+X-FDA: 85168007106.27.FB8113C
+Received: from mail-pz2-f11.google.com (mail-pz2-f11.google.com [74.125.228.11])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 6C3E580009
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 07:33:31 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ECmanRXc;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.11 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788334397;
+	s=arc-20220608; t=1788334411;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fTBZpbSvsidLVDHHiShy9f+wnGid6sRS2qRO19KqwKw=;
-	b=Ro1kBlYMebobXA+wNaoaEMSuhdVnQ5Ky7uYEMXdOSYdeLqHIzjCyNZrE4tdfk+BWo1uH71
-	QNAdMUDtrP+rPiOm2hKFeo4/Wgm0rml9fEGnM2ts7+tAU8sVCSXPhhitPcobX4un/zqAfX
-	zvtfgPSs4oL10eyAse51g4rHOZxT9tw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788334397;
-	b=NvgRiexcP0GVWqwG9Bz/9bFnOyofpHKaamQ5ps4X2mBs2Zdomn6umpzmyzLbOX1sZFGnKB
-	YOlo6o38yVmnDVbTglcKyNJ6S+Y9WELl5edpZmUBipVVAh3JhwQSkWDhnjhBreR464CBve
-	yhs2jR1XSOm+BzsJDjBdKQS9oaMAQnk=
+	bh=IlegJqwkFPej4fFKCV2MAr7wlJV+QNtxUfZHapDGJcw=;
+	b=OSsj76Zj+fyKgXSfYHiqkP3K56lu0dhGQEeA9end4c6121zvHoRAMx65paLLYWA9tQvLPo
+	4bWmhRbtT7JLEeQYzWPP8F2e/wPPgwjMDaLLIQexgHQG5XhACK8szKM/PYCAR9v1560S3L
+	PnWv50GUUC3tccOOoGs49MlQs9jeaZI=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=IOx28oqa;
-	spf=pass (imf28.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.7 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pz2-f7.google.com with SMTP id 41be03b00d2f7-cc1ddb3ba3eso440132a12.1
-        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 00:33:17 -0700 (PDT)
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ECmanRXc;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.11 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788334411;
+	b=QhS7O5eqIlksUlt6FQq2TENk7oTVW9qOnOKtPhIo9TaGz9GFi7D1aPa4SPkqhcyeQcysFS
+	nsmDzOVn//e9G4N3cVG3zTCjFERzoQ78fturgRYuUI7xMLfaFT+EJw+hpXYQR8lpg6EKf8
+	5pmm10ecfHDpg+IykkZivCdYVVmrX5I=
+Received: by mail-pz2-f11.google.com with SMTP id 41be03b00d2f7-cc1c2963c92so225109a12.0
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 00:33:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788334397; x=1788939197; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1788334410; x=1788939210; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=fTBZpbSvsidLVDHHiShy9f+wnGid6sRS2qRO19KqwKw=;
-        b=IOx28oqaatCcEJ5TyARiWfpvkqH30ZY06a4NHuH1teH72/ZL8Q7EiGQJZO+dtr6mvb
-         6fFV8O9bdzTPsLdXsQNDWwiWc/os2uPtFXL48z7RzAc+mR1D6ZMizyjIhyaUm5bGOeof
-         H+ftmDqw4Fu88xg8c/qeo0JO8dJCP8bfIssutEowMvZG8Y4QJTPCMuXdKEIE3PF161SQ
-         zHok6jG2fO8jLAlEClnEY6npEP+W0awLYlunbVsbRbmEpiC07KNuYwHfA/AfeXjCqzff
-         9FwOv3H+iLtIohD8cMJmIG+mOp/6p85Qf7w6L9Pv9PyRQuPGajE3L1HAn8C2aiPxsRr5
-         A7YQ==
+        bh=IlegJqwkFPej4fFKCV2MAr7wlJV+QNtxUfZHapDGJcw=;
+        b=ECmanRXc4sWaXy4/Fhl7qXMtp/4N1Rb+4NQTkw5e4y/uOXck/31KrIO11EVbrF3JRs
+         +41G1CyDWdyz3r17IgZpGIJsFZ/xpDCKrr9KLf5s77HVc3Tr4DkeIwbNHVnt1HQR/kr4
+         pNONLvXCSyB5SXh0f1Y6ir042PkyUGcKhxMAllsVEpCtbPtCs/JS8ijBMDB1vX8YoNI6
+         8y/K1Z/8HYkHvObUKyGZq0EyXavTByPA1N14qFai2VluDEiSx7a/165hw5WE/VEorBHs
+         9wxExH2T/q9UaFU+H7nuy5LvAJmlCFYxA+avNCXznbsQmjLJ7mWprfOOIdpuvC62UhGy
+         2d7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788334397; x=1788939197;
+        d=1e100.net; s=20251104; t=1788334410; x=1788939210;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fTBZpbSvsidLVDHHiShy9f+wnGid6sRS2qRO19KqwKw=;
-        b=TdOht1Ax9+ADneHKqnlfioSCZFkzhypzwzOh6+OSftdKD+YtRFXl3urnNKk2hLhniu
-         1D2/lg9GVserejyCC7uocX0b4pLTwsqpT9WC8ipT6Tn3MzkqK46xTlNdYkGp5HOOJpfL
-         UgaurFRJ51lAVqMooSWb+SrMuWkoMs7zWtsE8tXDK3PZhYU1O8byFuiwU7ureujAQ+DG
-         Bf5RYubjFrxajwd4CECouc5/DeRHpOrqc349MjXK6O0nCf+TzaNrxgLXXbMLDpye9ySl
-         b/Kk8wrXUecM1F/h80vQZS6aMOKWaKhdOwJZc7L61P71RKGsIcdFLPxpfC5ZzROFqika
-         flTQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzFe04BavXR+LEpKsDzijHMMRDj3wMDwxUe0ivufXHGiBHXju583Q4f9UfiPN1yi4MBJAGmBXjfNA==@kvack.org
-X-Gm-Message-State: AFuF++kseLq6uVJ0ZxrG0qUi6o3LDaiDBgG4DazjlP9qEDMlG2TQJ4Br
-	MTUCUi4gs9Vjh2UNTPm7h1qMkFDqRLLJI59rJMtXnyrWkzvHRdsHzMKh
-X-Gm-Gg: AYBFou3nq2HETVeOL+vppmRSqPHJOUjv6nipXyOA61tynehdhbBeh2Ad5VcyEkIznPr
-	03xi2cN0AuPCl4L4z0RCW8/Jz4vIRg/77IZby2X0GcDLSHS15GM5svzVaa2zvg0MAAsi+6lmqc9
-	SepRF2iiUbYz7dpAClmj/YqRBRhXdzskQ5DZNzO0pKfxNApNC2HagSgbN2kg6FHa7iINARsmQNa
-	R0frn8rcYB42/0Eo/0QPrcqRY/xkP3hanwMc/ob1Rw1jqfwosuW2mQHduLwvAIaIn8PpXfREXPY
-	Byb0wHtrHZ4FRLfpVOKEbvEL1xZ3dzNv8H/9PBh+Yj6AagkiAR+wuugP9Xmsa852LJaG0q+6vhO
-	h4ZxmjntVfrWZDZOwikcVJcO2GNp4U9sFHiXI28dso77ycmkRO/eIZh83SfB989lWgWm4hgT7br
-	znExKrb6a6jKPTnCVkxi7KB9n3hgQ3I6lFSEFY+XrhhktyU2SIQEzNhDjGa9T2xtolxfO8p/3pS
-	DVGcqj36FY=
-X-Received: by 2002:a05:6a00:4f83:b0:857:72f8:dc99 with SMTP id d2e1a72fcca58-85ed8fd714cmr4354975b3a.26.1788334396619;
-        Wed, 02 Sep 2026 00:33:16 -0700 (PDT)
+        bh=IlegJqwkFPej4fFKCV2MAr7wlJV+QNtxUfZHapDGJcw=;
+        b=RwOXkHEZLdLud1fxMMumEVmQXxCC3K3HEYuxXVaBJHTj8hFXsOtxKwncZhTYa+q9h2
+         2sV5SGam1qjLNtTtjMS/VQi665iw6OGFqNMdlCArbtCrut0oFXudjGP5JAPUnexwHnRH
+         PiPuxfV1Kio8HeATg+noIVU7PtrQJ3OQVXvD7Z36yUA8kUODIlb4TmOzgoIdDhkznO62
+         S/DY0wNIHCW0Ujw/H8dEaZ+1TGuL3pV6S0p/8aoVPMH0FeUgU66Lg1YuNYx+At1iFVZu
+         h772JOPpOUkCAXNhG0QP42k5LNiptAzFaoTzw/4S6Ca1WQgTtNEOx8gZNEch3hIpPQcQ
+         KdJw==
+X-Forwarded-Encrypted: i=1; AKwUvBwu6fJFTid4HULAoWe4R8VQnDc1itdo53/k6J1lYgFdswCDvjk++0fBc5dNbvT5AIkUGD7+biAzSA==@kvack.org
+X-Gm-Message-State: AFuF++kBUTSrkExsQAuB9nBg2Z4Y1V67APVvZeDG0lkWUFFTlKj4c5Bf
+	I8ly2Srz63t4J+MHObMb4M+4sMWnNrntDJ510rE9JVqBXKO4wFSthXlu
+X-Gm-Gg: AYBFou3H2hHZCG9Jobx4SnN9bFv4vs6rKiXHpxtO4G0M82DxpxjZkDcGccvEVILsTHF
+	Pkh2rCdlHZ6cMKmNAzuMNqxg/dpp429rSylTeigz93t14TNbggQexJSNxmf9613YXgHZnLnqbGX
+	xBcEF3PN525lz7Kvp9BaHvJmoUi5DnbzUmWMAxACS3PcLI4egEOdfmaVn2mxRQdEhf8b0jx+byU
+	myNNWCawbewecEyZHiw3prXett4UFBltOZ5xqJvaAUthkcOZ685wdXejV2zsZ3g1gMu9yvnBLnQ
+	gn38eLkxUKdiMzwWg6/LIMSAEEfpK0MuC4Hx2Ntoeoji2uh1IQnGYw+6+O41YGBkRZjHxbQbZF8
+	0wA9Uzndb9J1+DEhvTIeeyupS2KqUS8HM6WYVpVNuz2ve4PNDfujWnwI22TQmGTDEOZOzGINY+b
+	asJVzNg5LPKrYF7mYI40he/Rza515T6EXLFX6Iw6f4GKVCK6nGTEkFoy1OcUkKQA4dMEfFMVuD
+X-Received: by 2002:a05:6a00:4408:b0:857:4dea:e2fe with SMTP id d2e1a72fcca58-85ed8ed8414mr5132871b3a.13.1788334410213;
+        Wed, 02 Sep 2026 00:33:30 -0700 (PDT)
 Received: from intel.company.local ([122.11.210.25])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85db2adcbedsm926914b3a.20.2026.09.02.00.33.03
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85db2adcbedsm926914b3a.20.2026.09.02.00.33.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 00:33:14 -0700 (PDT)
+        Wed, 02 Sep 2026 00:33:28 -0700 (PDT)
 From: Wandun Chen <chenwandun1@gmail.com>
 To: catalin.marinas@arm.com,
 	will@kernel.org,
@@ -125,22 +124,22 @@ Cc: mark.rutland@arm.com,
 	kexec@lists.infradead.org,
 	linux-mm@kvack.org,
 	iommu@lists.linux.dev
-Subject: [PATCH v6 08/10] of: reserved_mem: mark /reserved-memory entries with MEMBLOCK_NODUMP
-Date: Wed,  2 Sep 2026 15:31:14 +0800
-Message-ID: <20260902073116.802752-9-chenwandun1@gmail.com>
+Subject: [PATCH v6 09/10] of: reserved_mem: mark /memreserve/ entries as MEMBLOCK_NODUMP
+Date: Wed,  2 Sep 2026 15:31:15 +0800
+Message-ID: <20260902073116.802752-10-chenwandun1@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260902073116.802752-1-chenwandun1@gmail.com>
 References: <20260902073116.802752-1-chenwandun1@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: nifkwwpahgyqnkhhn8qifogp7qfprmj9
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6C3E580009
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C8AA6C0006
-X-Stat-Signature: nybgurq9yit5g46tbfsai9degk99whge
-X-HE-Tag: 1788334397-824153
-X-HE-Meta: U2FsdGVkX1+LXX/6L8UFe1Hr80u6Kvp4poqPrYsMvKehEwcYIQQMMNeCrONkKr+wbT9X1NSmUN8tPR2G4AVuXZNJvTt/CzNlz+SEuSQ7vygjQgp6zU0AybD1sf5YCgDXPHVpf5yKNsalAeqQsa+QsFslBQuNWND2Pr2SH5XQBDWDvDvmy8orW937ZPVqrse1JHRxbccLBPFxyZ+McRMF08sZF825UgawLkob/XOqBObcOaXQjzT8PyoE7sqYJLAkfsZg+Qq2R7vt+QvfVzUJrv2Lr41xMMbgPzBGHOVfnqI+OjVIxsNbW/xqO/G5fb3iUAreyYPxRdyRtMl/u4ZIvqi57JFLRk9GfYG3Ej1Nj+tOvc3HMtYSAQXHvtSJKJqpxHJexa1Uajjsj7uy88xSnCNbTFNLlpa9X3wObcXcqhMcQlIrGhfCBIBuTJkWhYSx+tIsqVKFPNeJZPGCEbzsVZQ7vfwVcArl0VxM2f6Gdh/cGpxpHEL/LUXgGtGm8RjZmRtkCsHZFQf/kJWywROs9sduxcfya6RW6JdzJS+MjH0+K2hJhq92/tQGlLnSW6ytXlSapdFPFReO2mMzKtJdXa/fj+e/chnUWfwgKR+OWMndZAYNdMqE9kMVeOXoEx9CZcCNhQqStZweppn/u4wS7nrvA6cyvbzKov+bCvnNFqA+wKJ22KDlU4REW/aa9dXkMT9EyEr4GGo8H8g1vRHZJfFpwoEpkiHLvKC+2X043hMqefs7Al0g2NMCmdKprIcQOyUHKhwBTxBHGKYkWCID349TqEUkbDa/Nabp3uRXf7pasFXdqPG3+P+OdHWzY9dIf+KW3wY0l+08ebDAl2qORHwFCRhCxyflC/7xVV3C8LHfb0G/HrrJIw+92GKvFgNONahYNKJGUGneYeKo5d4R0Gq94H44ZlOUtZPBb+a7AeM6ZkOIeEk0wmuzIojEmQyLrIy4ThOHAseFQt76xWd
- R6mVt+rQ
- qIrZ8b+cISLyIgWm83uWHoYBTjut6YJX1Ie4P6gSl5noipDwfatK8D2ehCF2m7R32duaK9BMfgmp7lXXDkOrBzCUiOOYFiHdKjiK1CymO7NM4n0Ok6nywrLoGA7zxeVx3eP+c0z9XfUjQ0jGo9oVa7Xeewn7lh8jXgrCE7H8znbohoSTVm9OfNTKWTq+4Tlt0RoEVmPBXs0fMr+DN3GpAQJY0vx+xqpUzdaMBinUutX9eibSCwZa9yJcsaVOrj/AnQ86a1uANyDswrL2ssJzPN2HOEROO/PsE7BvyqqJWY3mDjz9vloYaNmtcb3BjwBg2WIoIC4WQVEfIlWyHi9TCgpbTFSMM8aa4DStBQ3+bQJOlJ0zZR8vU/jD7jfq255RxiLyvvF9KhtLixOO3z5GaKnckM72wxBFKla0YPyGyGA9iithF3w98yRxFuIwiV5YYFhXLEcAfKQK3x1bwPLMeLhLDzAFI2mkBgOd+8OnyxMA+z766HfbTjylkygwy5/UDwV5YmxuwynuQS0R7kVmrz1xU9w==
+X-HE-Tag: 1788334411-829075
+X-HE-Meta: U2FsdGVkX181XSZ+P4s7BjYUH6ekXnPRjB0/edRDOJ0GxpjAzYig3pHbA3zXklhDsF0Rb7Ap4kARUnBysZwqdqfZp9D8x2xnmfnY45cpd2LZLx9NdPlOWLiy2WYEIIlSQMSuC5sqiuec8oPuY9XnEApAd9iA7TlAcU6ZQSDFfGpXFMXgxuffa/rud2dt+xuZmkyJd+bSAq6krvNm/gdi5gzaOQ4X9ec1rmIWmvvJMyT2f49cMxsMbRVv1jZBQHaqkTg/Rtw/5b0pztVxJJ1aYPT70+Bt+dau9jLGzS57GOrzyXy7ExJWeT48UKB0LjL1u1ZJX1OrZmfcip5xfveKDRAVHHjL10MJed29+Ub432/0gfBXHC586IB5LkEsXNpCTTgJRQGglgkzFnI9F2sXeulsySV62AJo5P1DoxcvQYdaZUfda7bKtAE2WcAdht7B1onZXqfW9JmxfYqJcI5iyY/9U3P3u+QRsKIGipiwIXWQUUT4/ZgqJs5/C5qMvWeua2jiuPmqnYm5J9IivpiDrWgAXTPRZ2Jd5lfyVRYjtNkT8De3Vv2S+rUyT7YLVymFz2xOKOo+2smQ3M1lUoZaV2FruMrGIWWpd2lV7+U0h1HDkeWUXckM0DxR7gRO8laL47GHVEe4DxDCCAyj1bQKuDrCymHyW6/6qLL5Bz+LsdxKmbDYO38UIcaNSBLrm0JWBC1fP75jvzaMv9LcO7LejLDPygYnyUrqMTG0o/Oige8eC//ofcR2Gc5Y3hh80+FtMK/gTi9rp1QGOaaj2rmXTqwcNDTgMa1aJrWigM+RCijnEApLFfr2AATY5v/Q3Pt8Fafm59KO4YL88cHRKUlSRgmvJjZ4oJaef8TCn/ozHWUuPOEKzU6YOeejSLRUtHtJgGsrR1vmnzvcWXf629PPQsQXoBWifPTwLnRxNdzFyQUWCXzwMR6rl6WJ3j8sUwHfK98GU2jhm1qefEYyksl
+ Diz1EhqO
+ lo4ytVQzwXDF+HU+AbWHcW8pOsSn/ZTel4aViRUwQlMBTol1reeBFCA1sTCsodOdtewjZWs+uKzTwwFDMAPIdKPEtM2gBjZvxWdAm8pzM4bQZ67JJ07xYoU8wsSfw9xBJSCslmR1jS7YGIq16DJqN50EPutJLADiEjqDGPRpsbAPaN6THcZRYEDmzEGaM31Bdq8YocFfZKG10GIn0KU54iVFqD0WqOKJUj7lUnAgJdP4vbJ7kX2PCQruhtoiPny84c0tok+zE7VDVDX51KJ826kS7iykIAHp5IxoNui9gIWraOVB+LT9j5Mfdjf1UBfFdHJd14Z6R8eBQm214IsiHFJxZSs4bLZMzT3vmyWwoyuGQkdRwC8SuUsTpqq7usZyV2t4T4tdE/V+UqpRXsQs+7jqA5LDLt9uDj3KDBbXQJYv0KRSBKauvPLCu6iWRbnrzPDrdjTG14tWjzju5HfWsFjf8fvJ5zulTMFZQUK1xFACaSekh4sDVPeMe5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,70 +149,89 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Wandun Chen <chenwandun@lixiang.com>
 
-Mark non-dumpable reserved-memory regions with MEMBLOCK_NODUMP so
-kdump can omit them from the vmcore.
+The /memreserve/ entries are memory reservations made by the bootloader
+or firmware, their contents are not needed for kernel crash analysis,
+so mark them MEMBLOCK_NODUMP to have kdump omit them from the vmcore.
 
-The marking is guarded by CONFIG_CRASH_DUMP so non-kdump kernels do not
-pay the cost of splitting memblock.memory entries at NODUMP boundaries.
+Entries that overlap a dumpable region (such as CMA) are left unmarked,
+because the pages of a dumpable region may carry crash-relevant data.
 
 Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
 Tested-by: Meijing Zhao <zhaomeijing@lixiang.com>
 ---
  drivers/of/fdt.c             |  1 +
  drivers/of/of_private.h      |  1 +
- drivers/of/of_reserved_mem.c | 15 +++++++++++++++
- 3 files changed, 17 insertions(+)
+ drivers/of/of_reserved_mem.c | 33 +++++++++++++++++++++++++++++++++
+ 3 files changed, 35 insertions(+)
 
 diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index a64afc3ded3d..286fd4db6312 100644
+index 286fd4db6312..9a727941b5af 100644
 --- a/drivers/of/fdt.c
 +++ b/drivers/of/fdt.c
-@@ -1285,6 +1285,7 @@ void __init unflatten_device_tree(void)
- 
+@@ -1286,6 +1286,7 @@ void __init unflatten_device_tree(void)
  	/* Save the statically-placed regions in the reserved_mem array */
  	fdt_scan_reserved_mem_late();
-+	fdt_mark_reserve_mem_nodump();
+ 	fdt_mark_reserve_mem_nodump();
++	fdt_mark_memreserve_nodump();
  
  	/* Populate an empty root node when bootloader doesn't provide one */
  	if (!fdt) {
 diff --git a/drivers/of/of_private.h b/drivers/of/of_private.h
-index 0ae16da066e2..505735732c13 100644
+index 505735732c13..6497404ec751 100644
 --- a/drivers/of/of_private.h
 +++ b/drivers/of/of_private.h
-@@ -187,6 +187,7 @@ static inline struct device_node *__of_get_dma_parent(const struct device_node *
- 
+@@ -188,6 +188,7 @@ static inline struct device_node *__of_get_dma_parent(const struct device_node *
  int fdt_scan_reserved_mem(void);
  void __init fdt_scan_reserved_mem_late(void);
-+void __init fdt_mark_reserve_mem_nodump(void);
+ void __init fdt_mark_reserve_mem_nodump(void);
++void __init fdt_mark_memreserve_nodump(void);
  
  bool of_fdt_device_is_available(const void *blob, unsigned long node);
  
 diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
-index 8c9d6395d6a3..f29a07e8fb23 100644
+index f29a07e8fb23..a42cf6eac55b 100644
 --- a/drivers/of/of_reserved_mem.c
 +++ b/drivers/of/of_reserved_mem.c
-@@ -677,6 +677,21 @@ static void __init fdt_init_reserved_mem_node(unsigned long node, const char *un
- 	reserved_mem_count++;
+@@ -251,6 +251,39 @@ static void __init __rmem_check_for_overlap(void)
+ 	}
  }
  
-+void __init fdt_mark_reserve_mem_nodump(void)
++void __init fdt_mark_memreserve_nodump(void)
 +{
-+	struct reserved_mem *rmem;
-+	int i;
++	u64 base, size;
++	int n;
++	const void *fdt = initial_boot_params;
 +
 +	if (!IS_ENABLED(CONFIG_CRASH_DUMP))
 +		return;
 +
-+	for (i = 0; i < reserved_mem_count; i++) {
-+		rmem = &reserved_mem[i];
-+		if (rmem->size && !rmem->dumpable)
-+			memblock_mark_nodump(rmem->base, rmem->size);
++	if (!fdt)
++		return;
++
++	for (n = 0; ; n++) {
++		int i;
++
++		if (fdt_get_mem_rsv(fdt, n, &base, &size))
++			break;
++		if (!size)
++			break;
++
++		for (i = 0; i < reserved_mem_count; i++) {
++			struct reserved_mem *rmem = &reserved_mem[i];
++
++			if (rmem->dumpable &&
++			    base < (u64)rmem->base + (u64)rmem->size &&
++			    (u64)rmem->base < base + size)
++				break;
++		}
++		if (i == reserved_mem_count)
++			memblock_mark_nodump(base, size);
 +	}
 +}
 +
- struct rmem_assigned_device {
- 	struct device *dev;
- 	struct reserved_mem *rmem;
+ /**
+  * fdt_scan_reserved_mem_late() - Scan FDT and initialize remaining reserved
+  * memory regions.
 -- 
 2.43.0
 
