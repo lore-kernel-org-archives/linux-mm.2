@@ -4,84 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30C3BC624D4
-	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 17:03:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E812C624D4
+	for <linux-mm@archiver.kernel.org>; Wed,  2 Sep 2026 17:08:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 115786B00E9; Wed,  2 Sep 2026 13:03:50 -0400 (EDT)
+	id 081236B00EC; Wed,  2 Sep 2026 13:08:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C5826B00EA; Wed,  2 Sep 2026 13:03:50 -0400 (EDT)
+	id 00ADB6B00ED; Wed,  2 Sep 2026 13:08:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1E2D6B00EB; Wed,  2 Sep 2026 13:03:49 -0400 (EDT)
+	id E3BAA6B00EE; Wed,  2 Sep 2026 13:08:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C0CB56B00E9
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:03:49 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 51EFAA0299
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:03:49 +0000 (UTC)
-X-FDA: 85169444178.22.EE24EB1
-Received: from a3-9.smtp-out.eu-west-1.amazonses.com (a3-9.smtp-out.eu-west-1.amazonses.com [54.240.3.9])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 566D24000F
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:03:47 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=cialisstrong.com header.s=resend header.b=jPc+zajt;
-	dkim=pass header.d=amazonses.com header.s=shh3fegwg5fppqsuzphvschd53n6ihuv header.b=j5gQ97Li;
-	spf=pass (imf07.hostedemail.com: domain of 010201a063139f54-743f0a17-94d3-427d-80bc-4e17d283c3e6-000000@send.cialisstrong.com designates 54.240.3.9 as permitted sender) smtp.mailfrom=010201a063139f54-743f0a17-94d3-427d-80bc-4e17d283c3e6-000000@send.cialisstrong.com;
-	dmarc=pass (policy=none) header.from=cialisstrong.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B21F96B00EC
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 13:08:57 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 57899160300
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:08:57 +0000 (UTC)
+X-FDA: 85169457114.10.7E82703
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 83FB1A0006
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 17:08:55 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lgESi8sS;
+	spf=pass (imf25.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788368627;
+	s=arc-20220608; t=1788368935;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=y7Phgl2NhsL9YlYJBnM1h/jjGe1CkOPsbb0L4FGILjQ=;
-	b=uLbyew/ImKktEjAptxtfWkI/KSphV8WstGyOHLQXzose+4OttNqCS5fEhYstWP9fuDE7F6
-	ptrN6RuaADn0hbTpzBw/z3SblkdVZQB9T1HCoK7JjOASDmyWNM91Kq0RQRhLU0mURncyg7
-	uew/j5Eile4Bz0y2cjzdnxa84ZWw614=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PQTVimqqf+p1p2NtJSlLzOSP0qFj/dJU9F0ai9FYCBY=;
+	b=zcHtux0jtGpJLtztuIl7SsYBJ47t7y+laIYMP92UdLXS1y9ZGMjZce1eqVOjcHR+1f3Y9j
+	FGugYoJh6kb6c3sd3ZdfBJu6WYieWJSuGx7/4RkgE4qH8o0MWz6yWEe4X/FVb5j8XzxA6D
+	tWZGU2W5RnK9InU1/MrioQibR5xA5eU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788368627;
-	b=nbFyT0VR/G7ivQZ+RZS0ome0x4QUDRaPDdAKxHLExTtDPNSJWSFXFKmdYOW3JIGKRvbZcw
-	wIXN9K7ZG71OshcFEaIAXHnYoctlVrx5xKYEWd/yaIBKQymJZXmU5t1EpNYbVmVzI2sA58
-	NXpue1TiWhho3nRIBFMTmGr29EBIN1g=
+	t=1788368935;
+	b=bZBD+wYjp7XoYhyPS65t0vINHya52ujPZ8M5NjC1DBlXY9XYGFAheQtozG8nb1wKzv5Ai4
+	y0soIvnjRRmPTJIEWpP52xxSbvIlKrgj152eXxf1oOcGzhdHdb2POs0kJWJZebUEn7EDuP
+	0is+75mfEVjXqPr8D7Sj99xNAVMYKhE=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=cialisstrong.com header.s=resend header.b=jPc+zajt;
-	dkim=pass header.d=amazonses.com header.s=shh3fegwg5fppqsuzphvschd53n6ihuv header.b=j5gQ97Li;
-	spf=pass (imf07.hostedemail.com: domain of 010201a063139f54-743f0a17-94d3-427d-80bc-4e17d283c3e6-000000@send.cialisstrong.com designates 54.240.3.9 as permitted sender) smtp.mailfrom=010201a063139f54-743f0a17-94d3-427d-80bc-4e17d283c3e6-000000@send.cialisstrong.com;
-	dmarc=pass (policy=none) header.from=cialisstrong.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple; s=resend;
-	d=cialisstrong.com; t=1788368625;
-	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type;
-	bh=e+KiasmNlHofxEBovxI6lQamIRMiwJGaPM43pdAIO28=;
-	b=jPc+zajtz9QfMthMJ/paPx30zpX43VdWCmsV0yorbAPmeoPwh/LB+bksGYlDL8mp
-	/JejbCpvttnDmJTNE1QIOcK6Bzs/2yTHpdH8n6Ukz36WdhY3lG9JWCJCCzybd8kiQL+
-	wniEhRyrz0QBmA8eXUXltD/nB5QQvxv4gQO4UMYA=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=shh3fegwg5fppqsuzphvschd53n6ihuv; d=amazonses.com; t=1788368625;
-	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type:Feedback-ID;
-	bh=e+KiasmNlHofxEBovxI6lQamIRMiwJGaPM43pdAIO28=;
-	b=j5gQ97Lij7lYOYvgegmh5EoBmhTvLB0qwE4PzYImMkYDAvbWzhN42U40RnZI/d87
-	iggDxW9dy78xObwmGtWan7ik5mOr/zBWPe9DGCBiCAfQPjYwOr4fK8JEfMBAxJZTQyp
-	9/f7P0LrXc6fTtjxSqidx/Yi4txShJkapqVKXjBk=
-From: Stephanie Mallet <contact@cialisstrong.com>
-To: linux-mm@kvack.org
-Subject: =?UTF-8?Q?J=27ai_essay=C3=A9=2C_vous_n=27=C3=A9tie?=
- =?UTF-8?Q?z_pas_disponible?=
-Message-ID: <010201a063139f54-743f0a17-94d3-427d-80bc-4e17d283c3e6-000000@eu-west-1.amazonses.com>
-Date: Wed, 2 Sep 2026 17:03:45 +0000
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lgESi8sS;
+	spf=pass (imf25.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-47fe89fb333so879149f8f.3
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 10:08:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788368934; x=1788973734; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=PQTVimqqf+p1p2NtJSlLzOSP0qFj/dJU9F0ai9FYCBY=;
+        b=lgESi8sSE9JJ37wkXjlYPLn7U1NYFG5nybf94PquwwAI0DLf3+l6rCX2IgFOe9N7zE
+         EKeVEXY/jAVbQnCYQwBo6J6yZALecaH45qt+osCk88ig/oyJkaJh1Gehn94eNRr4FSHu
+         6Tygcar0xv1EmcTOokAdCEPPzaWHvcGdDfWie/EuRu7btF5dub3tirZqFqneeiO7YdnN
+         FVvj/oNvgUiR7vkLPTTYvslBm0cwxyHKSN8vwqr7Rp+BcePUX5d4DuiKP+6JY/RkG1Hs
+         ppDVcKUqsbEdI8IRBlnS3gEGt+Fpkr1cO+ua+nYOe7HTbuith6nu+ekTKxlrcnSit1DI
+         SKyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788368934; x=1788973734;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PQTVimqqf+p1p2NtJSlLzOSP0qFj/dJU9F0ai9FYCBY=;
+        b=mZ6PYOxxumw1Tu0Zqoo3835nO0QqEgztj2dRHZzCv5dbOAYI6nk1aDvZrX322a8RlG
+         FdtNVTcr1OpYOC4q6l8K43agjp50hDMUFiZfrzV9/LMWsW7weOCfp7cKjE5PhThrr1Yb
+         Ooe7YFdXrVrgZzkRQinTO/FtVXu2IkC9hcIV/UVuoW/Hx8RnfLqKzdK8ozT7T3MeNxyk
+         2b/6tNsrSsoEpZoETPcH1ZOPjBR0P1PeyhPOj5ayMvu4US7iJVyv+2bB4eWUqwcUXU+h
+         540ftLLR37WKB3y+lPRcErcJ/O2XbF/0BySMx6hrmq2q0153XspIL85shV5yqcz5wae/
+         A2CQ==
+X-Forwarded-Encrypted: i=1; AKwUvBycvk4Iw+jTn3FWECPy11RDqGBU7SnENYNBpASeCea4mCin27Z9Yz923OpAlR5cT3CmVrv7nviPFw==@kvack.org
+X-Gm-Message-State: AFuF++l3QFFMYBp7v82ramp83LdNG7Yew4xq47D2L0ofjcPFtBrqFAH0
+	hRzKHBaxlRr+MEWyNsm9/HupMa+z7KPgTvRxBrJR6nfDOOS0yaK5f8jU
+X-Gm-Gg: AYBFou0smQIPgYcFYRgMjSw73yJNlWoSGYI+Bb9sUQ5R6U6U05w/27inKMFRm3tcmID
+	5Nx8i6Y/pb1f9kAU4v0oag4+1aFIFB5xuj5raD9spt7+TG11JZVduWsEAvUBGib7nWndi1ZnPEf
+	tzC8l7J6M+gkZl0b+vlMqvR+hPssg4ozziRBWHDBcnZ7H4t7hCJbXEtB+ZyITYR9VjTcjTAqW1B
+	kMgXooRPMM8cfWpDHxMXf0AYmndRBN+5Q1xGloI6jJC8cMb8t5rls+F365vRstr3gflO3gTpwg/
+	+bLDdInw6Qq/1OXhSEXLcp7ZYRH/hmjij2Jaukbkm2/8dphhx/0PIcLmIR/Y+GbGwNnEMhhw9Q3
+	n0ftfKttPYnyHu59wAiJGNAXOfW6OJIsDUmOO4JiQQJ8+WIUsvCxfwD5xILaebv1NM0uCRN5QFK
+	GMXzEwWb6rB98eFbN5i6lulkRdaLBNwAHQPhUMAwd5Dn2K+zDuXm8YQhUHhLJsw/UgEW6omk4bx
+	KbQeAkHoceRe2pZILUuMBeP0Jef5fm9I7hxGUcudW97/AQKN8QhrnhoBOfz23pwcOSZGYZXeuZS
+	WPrmeCDrIvKpXCjdIzCt2ENUF8KsHvuxbsg=
+X-Received: by 2002:a05:6000:460f:b0:482:fd9c:5d25 with SMTP id ffacd0b85a97d-484913ba763mr13387018f8f.16.1788368933900;
+        Wed, 02 Sep 2026 10:08:53 -0700 (PDT)
+Received: from MacBook-Pro-von-Karl.localdomain (dynamic-077-007-017-232.77.7.pool.telefonica.de. [77.7.17.232])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-484492cf550sm7547096f8f.37.2026.09.02.10.08.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 10:08:53 -0700 (PDT)
+Date: Wed, 2 Sep 2026 19:06:56 +0200
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Dev Jain <dev.jain@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org, 
+	Anshuman Khandual <anshuman.khandual@arm.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Mark Rutland <mark.rutland@arm.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arm64: hugetlb: fix BBM for mprotect() on contiguous PTEs
+Message-ID: <aphV0wtGqn_EJHjB@gmail.com>
+References: <20260901131823.15799-1-kmehltretter@gmail.com>
+ <551663b9-d031-4755-af7f-dc6c22524b35@arm.com>
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
- boundary="--_NmP-7ad48d71d565a39e-Part_1"
-Feedback-ID: :1.eu-west-1.638JQIdppbkAwyKfDJ8V2FQ/qIypFlvLHAOwJ3tDuCXGfD9rE6q5vo8AzNzAIa/6k9C5LJhXPIO+BMx08ZjtwuYnyh57LJj5Cp7ObeIuDt3CP6cv6S9G4KkBALd2yUFJ5noBsUhiWeRRHHd/ESKeOn8a7Bko/iWeh1iZBO2XKDs=:1.eu-west-1.KEYBhYy5skZtLAf2ooWkoQwfhj0g1VAvm2T4fzvEpSk=:AmazonSES
-X-SES-Outgoing: 2026.09.02-54.240.3.9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <551663b9-d031-4755-af7f-dc6c22524b35@arm.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 566D24000F
-X-Stat-Signature: wpyz5j4ddh9pkowy1inndwui3r4p433q
-X-HE-Tag: 1788368627-833308
-X-HE-Meta: U2FsdGVkX1/jJW9RCNN0ryBO80OWu5g3hKMzlNOjcSPivUDt1eGOxHfU91KusVQ03/bqxjh01ra3K6CmptsbLn8ndn41G4W9zkQ0Z0apdEG+wEeHBk1o0xHnu6GD9o0aqllaMNBU7Rj4v29rOb4vI2NB8BJANB4x+6oFaR6eeszBHxy9lmq1Tw/1sJzzye7xgm8vSDTEikfh5590AhsgBPVwyJ2vTLAAKNQTaudid7KVuPu7M5tHVL/TX+rSLCjw5qz1hBaRi9FYHgI/SBS6lihyrLKHGmPME+r5peSJw1hW7XbR/M49SXXtaQsI7UBMm0tHvCG+CKJc4CTrr2J0qh0R/xDKFP1THQoWUqfI/ZjVaTZgO1xkJBzh2STOHQxe2jeTmDTFJi6jo18ML+Ba/eM08OD40X1Ideso7nzyGsyTqdbfyy8Z8e1Y3sMhL+sbeJkg9Zdo60PHcKlYxVyAJ52RzT4DJR6VLzJxn/5nHxrqTPEe4biIlaKqKm2/xD10knEzxDh/4moWroimL5hi3y/LTvw8x/C087WeO2ZdITerXr15ujJg1vlUYqaJ14m1TVPwiaVYjdbMSfDodw1mRR27XX+oP7OrbJxxJMt8A5Z8kL2s8crC0eTKYlb8cdqF7IG1hWNYIy9A0g2WUKd9AWkr/mYIeVdp3CpHJ6lpe79YRWeXJqwGPh/e5hiDSpp3F3/fbmg7s2WiZ3VnvJscDIkKg3JTzYDGz81r+ycycbwMYgeCQdOd50R4rrNceg1t1OpFkTkP4EIRlPoTB3WFYcsmH0nJlKtguAWLJI/FMHjACce7k4zZLpJWoC0CCp00erR3GbxNHFIGSuOatdZk0y4h8bfiNKVO/D+KVleawJFFEnrYmAd3/O7v35jZUOjADbksyK7+9FpO5hnBuuYCb6TqwOKPQkNgRlPbiYNDPvPcH0TqO3Xx2ykGU+hiH7M2cid0jDi4sRatcYGB3AY
- f0du2Yz3
- fDWip1Gg3X3F2T+W1SEVO9E8XHvkUqpIZVhWmYF4p0ARE4JMidg9qQt+1SSyu8r0Mu/JEPcmy/iOQKQIVN8cAlMhZq5MMvNAgMrSZ/85MIu1OwcClmKm4Wi9apAunZ43b+8BIG3ZNjrbMym4arUbOTy4kqP6MOxF8ebP6nfZUuHq+SF3wtMNoQFX8xAJjlOJHKXZ/WKVy63PJBSagM9zzd+414Rx2MxIYlHXf8NE8wAirX7/jtH/u7msm45xetplWdYWksE1kd26mt20QprZl8rsY9I9chFYNsHDhhWCsF5T9vOj5n/7NF3WyO9NPNt6OOOzn3BOgHEvQTkN9830yg2E7uLD61eMKLxpEugLDF+dQVfEFZlIvbPAmliZvrXdI1Sy/fe/a7+Po0VgvTUj3qS7HIuc6qGq0GpWv36W50+1MTb//3L4i/Mvzi5iTuqH8R3EjP6lAo7yjN7e2cXocZpRDCazHEi46gJ5MmwKUAdbuLVNVtG50B1BO6nv6+28hhVgBDx1kl1g4twBqtwZPGGZT4ot0YFAE+lJgQeM+itMVeRCkxosoIstcv7AaR5PRxqiovl33u2ygzyS1lJbr9U+cTFnDgLKwcotUjtbKyT83XdUqdSjMSeLYQ1G49buwct5BGAsa69SKY7SzMxFYPR9gVWgHkFMzEbKkWS0SiXDjxpAPMumyhU4e5zh14E4ktC/LMRNnkiixPb/UJ2LuU2A7e1tv3TaFX+vf1pq8n7WbO/hJD0gF6LamzYInr8zQIMgwEd9cQGoiBFXRra7Sj4c/S5okr4JieTItuNASTG+wq07GBdR1tPCmTRyH3ncKiLUAn898L8lRDbwjVyqGNWm9z9jck6iQRXugZC4Tj548J6UXYMcqMzjhqAQMtQ586q0i
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 83FB1A0006
+X-Stat-Signature: tckra4sunr3nmgdjs1q86b7thmsu1fx6
+X-HE-Tag: 1788368935-210673
+X-HE-Meta: U2FsdGVkX1/cUCFcLHxeNNwSU6mLrxfXVPs6hFST9w8+ZRCcCDd46g87+uVknVu0YtsHJY8fMAVLykM7eZ/dZt3yMM6+t1eCmdqIlARlTQwUdZzvdYcpqX/4gQhXFFx/IAUUaK8f1KmVAh2PfQhpRFZvvxHb6DhBmEjlDQEwBEsZknaiquIfeecf4Ccxmgcf3vh/tw7agKIlwpT3T7t4u9S1YywpO3Lf0H6X2Jdf8BK3HVFpoXqpWeS4vqgYi56SB/3dfL1/v6r1aBkMGsfCoqI7v07Y4Z0DZkZeK24OOnzq6kF+4j53Hulbazrq4rRyRpqYXMjL+e4044uO9FCRINCmNQ0RqrtLHYaGkksOCXKpv2bWkY7guXE4Afdzi6MqWHvVD3CMbb54CNzx9sNGBBs16zAO0tMy4z+2Be77mvXJqv49xCtoy7e8vsl4b4cmQZI6pt7xd6PTJcmaq7UzA7rPjJMTxMUHFoRrIJP0U/O7UeEHGFM7Bb5WsX2VIsINEPlf7i9ouIFIAXSov4ulw/9mHCHcJ0iL2i7pLwxXWxCZR2GjmXnQTJiK91ACgVxZru1CLGPFJnHZUj2PAemPyXmKYPz8NFdFPpomFxAQct69oUshlxcpCONkCmvusHFNUSjmJuyScodYZwQ3VFQykO81B9OSIvqFG53YPda8hlBOCuQbe2JAlQYSXELXeyoFgDTQwjCJrAgmXGqkIYWO05qO9nbP2lhpZm84Zq+dXBHf+xuuQMupaYTLU/SDO7QGT4L2iJR2ykcJLb+NAGkIH2KPHBMacSfwED1U4jwMnNQmuPrprnLSqHhZgAm38XGYhKRc7Z0l0bR43zAtDHp8G4bk/ydT4PvhtO5fdxkV8bL0JEK6SB8XLVHcjQE1QygwaOhJgsSF/2j+J2IgDkN3bOKn5oPfn2HE0EPFPYSIfx+MzF5aoZVGu1OUNSO4jBJfvnyW7PdARm78E5bGU2i
+ iPb4g1y6
+ KF2cDisQVNeSld0JFg7/vbEa4nsREqJZQEqeAppvA1f/P4cVbCCVyW4dBzBepZvgsj+y/IQU8VHMBb8817s4WdHpmtNG1MWU51W8iqV9rsNk9ditDAk+YI7Zw3y8fUist9KxwkfQwNA8/cB11Szz1pD89BnFd99jJCt54sPqwr+yZJiAe7Q0Z9lZ1hGQ4B4mQsNnp4GH3x6AGw9c4/xD2/8i8Qu5/MOrxZDGgO7yJTF9ethSDZNoj5JKrVRV1pK3aXWAdwcgD9KgfPs4PmLpryUhG7CzXP40NK25NnM4pcpSLRTO3TrZcRvvF0izIb8wB3RTRl5i6mhzkvEzd4lZcWo9Y64E3bebRlxs3HmFw98hc6OM8FUyLzgFlvubxmhdpN6dPvtR2quJd6iE46nmgHBoT6xi7+RUkK7Ltbdv0shhntqL4A3AP3Q2mRw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,115 +125,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-----_NmP-7ad48d71d565a39e-Part_1
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+On Wed, Sep 02, 2026 at 08:16:36PM +0100, Dev Jain wrote:
+> Upon discussing with Ryan I got to know, he was implementing the
+> contpte stuff for non-hugetlb user mappings and that basically
+> drove a clarification on the semantics of contiguous bit and
+> this rule was added.
+> 
+> If you see currently for non-hugetlb mprotect() we do not flush
+> during contpte teardown.
+> 
+> So if the above reasoning makes sense, I can infact audit and
+> remove the flushes in the hugetlb helpers.
+> 
 
-Bonjour,
+Well, that's quite a turn of events! I wasn't aware of R_JQQTC or the
+architectural clarification behind contpte_wrprotect_ptes(). 
 
-J=E2=80=99ai tent=C3=A9 de vous joindre par t=C3=A9l=C3=A9phone =
-r=C3=A9cemment, en vain.
+My QEMU checker was based on the older assumption in commit
+410982303772 and the existing hugetlb comments, so it treated a
+clear and remake without an intermediate TLBI as a violation. 
 
-Je me permets de revenir vers vous afin de vous =
-faire =C3=A9couter la secr=C3=A9taire IA t=C3=A9l=C3=A9phonique =
-cr=C3=A9=C3=A9e pour votre entreprise.
+So... Please consider this patch withdrawn.
 
-Elle r=C3=A9pond =C3=A0 100 % des =
-appels, m=C3=AAme en dehors des horaires, et g=C3=A8re :
-=E2=80=93 l=E2=80=99accueil t=C3=A9l=C3=A9phonique des clients
-=E2=80=93 les messages clients
-=E2=80=93 la programmation des rendez-vous
+It's good that this may have uncovered an opportunity to remove
+the flushes in the hugetlb helpers.
 
-Le plus simple est de l=E2=80=99=C3=A9couter vous-m=C3=AAme.
-
-Essayez-la maintenant (2 minutes) =E2=86=92 https://acrylicoat.=
-com/stephanie-ia-4-v4-light.php?telephone=3D03%2029%2008%2040%2030&nom=3DRO=
-LLIN%20JEAN%20PIERRE&adresse=3D180%20RUE%20VALLEROY&cp=3D88800&ville=3DHARE=
-VILLE&dirigeant=3DROLLIN%20JEAN-PIERRE&email=3Dlinux-mm%40kvack.=
-org&r=3D4ro5pe
-
-N=E2=80=99h=C3=A9sitez pas =C3=A0 me transmettre vos =
-impressions.
-
-Stephanie Mallet
-Secr=C3=A9taire virtuelle IA de votre =
-entreprise
-
----
-Pour ne plus recevoir nos communications par email, : =
-https://acrylicoat.com/desinscription.php?email=3Dlinux-mm@kvack.org
-Pour nous signaler un incident : https://acrylicoat.com/abuse.php?=
-email=3Dlinux-mm@kvack.org
-Ce mail a =C3=A9t=C3=A9 envoy=C3=A9 =C3=A0 : =
-linux-mm@kvack.org. Conform=C3=A9ment au RGPD, l=E2=80=99acc=C3=A8s =C3=A0 =
-vos droits est garanti sur demande.
-----_NmP-7ad48d71d565a39e-Part_1
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE html>
-<html lang=3D"fr">
-<head>
-  <meta name=3D"viewport" =
-content=3D"width=3Ddevice-width, initial-scale=3D1.0"/>
-  <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8">
-  <title>J'ai essay=C3=A9, vous n'=C3=A9tiez pas disponible</title>
-  <body>
-    <div>
-    Bonjour,<br><br>
-
-   J=E2=80=99ai tent=C3=A9 de vous=
- joindre par t=C3=A9l=C3=A9phone r=C3=A9cemment, en vain.<br><br>
-
-    Je me permets de revenir vers vous afin de vous faire =C3=A9couter la =
-<strong>secr=C3=A9taire IA t=C3=A9l=C3=A9phonique</strong> cr=C3=A9=C3=A9e =
-pour votre entreprise.<br><br>
-
-    Elle r=C3=A9pond =C3=A0 <strong>100 % =
-des appels</strong>, m=C3=AAme en dehors des horaires, et g=C3=A8re :=20
-    <br>=E2=80=93 l=E2=80=99accueil t=C3=A9l=C3=A9phonique des clients =20
-    <br>=E2=80=93 les messages clients
-    <br>=E2=80=93 la programmation =
-des rendez-vous
-    <br><br>
-
-    Le plus simple est de =
-l=E2=80=99=C3=A9couter vous-m=C3=AAme.<br><br>
-
-    <a =
-href=3D"https://acrylicoat.com/stephanie-ia-4-v4-light.php?=
-telephone=3D03%2029%2008%2040%2030&nom=3DROLLIN%20JEAN%20PIERRE&adresse=3D1=
-80%20RUE%20VALLEROY&cp=3D88800&ville=3DHAREVILLE&dirigeant=3DROLLIN%20JEAN-=
-PIERRE&email=3Dlinux-mm%40kvack.org&r=3D4ro5pe"
-       =
-style=3D"color:#f97316; font-weight:bold; text-decoration:none;"
-       target=3D"_blank">Essayez-la maintenant (2 minutes)</a><br><br>
-
-    N=E2=80=99h=C3=A9sitez pas =C3=A0 me transmettre vos impressions.=
-<br><br>
-
-    Stephanie Mallet<br>
-    <strong>Secr=C3=A9taire virtuelle IA=
- de votre entreprise</strong><br><br>
-
-
-        <footer>
-        <p style=3D"font-size:13px; color:#888; text-align:left;">
-          Pour ne plus recevoir nos communications par email, <a =
-href=3D"https://acrylicoat.com/desinscription.php?email=3Dlinux-mm@kvack.=
-org" style=3D"color:#e67e22;">cliquez ici</a>.<br>
-          Pour nous =
-signaler un incident : <a href=3D"https://acrylicoat.com/abuse.php?=
-email=3Dlinux-mm@kvack.org">cliquez ici</a>
-        </p>
-        <span style=3D"font-size:12px;">
-          Ce mail a =C3=A9t=C3=A9 =
-envoy=C3=A9 =C3=A0 : linux-mm@kvack.org. Conform=C3=A9ment au RGPD, =
-l=E2=80=99acc=C3=A8s =C3=A0 vos droits est garanti sur demande.
-        </span>
-      </footer>
-    </div>
-  </body>
-</html>
-----_NmP-7ad48d71d565a39e-Part_1--
+Thanks,
+Karl
 
