@@ -4,95 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E74B8C624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 13:51:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72040C61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 13:52:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E02236B00B6; Thu,  3 Sep 2026 09:51:35 -0400 (EDT)
+	id 440BE6B00B9; Thu,  3 Sep 2026 09:52:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB2736B00B8; Thu,  3 Sep 2026 09:51:35 -0400 (EDT)
+	id 3A1E56B00BA; Thu,  3 Sep 2026 09:52:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD1D66B00B9; Thu,  3 Sep 2026 09:51:35 -0400 (EDT)
+	id 2B8AC6B00BC; Thu,  3 Sep 2026 09:52:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AA58D6B00B6
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:51:35 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3F43AC038F
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:51:35 +0000 (UTC)
-X-FDA: 85172588550.06.4181D95
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 8738714000E
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:51:33 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VI4ZfLtx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id ED6996B00B9
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:52:20 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7C320A0592
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:52:20 +0000 (UTC)
+X-FDA: 85172590440.25.ED66284
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 532F2100005
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:52:18 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OWEIGGmQ;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf05.hostedemail.com: domain of bfoster@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788443493;
+	s=arc-20220608; t=1788443538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wwn+e7XYFkZ2YAWRETWCdW/iWdxBQOPcNHMzT3rsYDo=;
-	b=1urK9OJm+We+9aRiZsrI2HSYum7SVagTs3V9SnSm0cJbzgYDblwqrLSXFxkBSIHBvVDVxU
-	6DOIEH5+BDLq32xDuEw5qZheew3V52ZgUnLu5fvq9Ea5drmEGk1uzhDv0d8reS2TJ30xpR
-	/WGh1BgHMZOakaHqrTxbJ2kYTb9Fazw=
+	bh=RYValkT1RfLf8KNyXAg43KyIUolG/6q8D740NY7N3y0=;
+	b=TZIjobuMEmXlDX05kQw6dA4SGkiH31LOCsoIJLAiccs9BuPw9fth8OaZU/DkiJCRHdfBnN
+	8dEn12ccgMfB7YuTq9HkaOTUoUgndciwGVgqLlQzw/drp0woX6vu2V2HNoi3O2Yda+E5TG
+	bGU5VXLC+itjeEDiL22wcqUtiDUzFG8=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VI4ZfLtx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OWEIGGmQ;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf05.hostedemail.com: domain of bfoster@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788443493;
-	b=uAYrGUNAepSf/LzzzkPofluDV0uhf2eEc319fYRkUnA5wgnnAf3ZWvkEugnVVg+aVyMtwF
-	NQvOeJbA1kRkBzUOP4+MtSTkHY9bEv0SQSFJZ//+bxcQawNCl3F3XjHuE7C+M1ijJTpIvh
-	E3hAt0ilU5ywLMhNpS1+xreO4k4eFdI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 905BE415AD;
-	Thu,  3 Sep 2026 13:51:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F8481F00AC4;
-	Thu,  3 Sep 2026 13:51:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788443492;
-	bh=wwn+e7XYFkZ2YAWRETWCdW/iWdxBQOPcNHMzT3rsYDo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VI4ZfLtxMcJNWHtm0wcwWDXgJgZzfNxCwxI9IO9vDJNLh0Twh0damukA1JtIipw6E
-	 ZKOIFVAisNr1e3MRfEXV1OfrbaecwgayHobdHwSl8FYxKX1Cz1nMWmUIOyTgevolZr
-	 89+CshcRRQl1Ncp4IeqHF6iRBXBqYJAlCz5QNCO98saaPMNwDBgIwwEHKK2skaFih9
-	 POnfEHQ09qtF1fLeiIbWiKHpQ2+7xNpf1d2r1BWgp+yoDkIKPFNblENtQ8Gvr1O72E
-	 CywAHgqdv67tS9MPgQQYYfFAPQP26nu+rNUpepwrx3RU3RbN60xFwM/L4i4Xj2lrIn
-	 /85OQHGPBfEag==
-From: SJ Park <sj@kernel.org>
-To: Lian Wang <lianux.mm@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	stable@vger.kernel.org,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
-	Quanmin Yan <yanquanmin1@huawei.com>,
-	Ravi Jonnalagadda <ravis.opensrc@gmail.com>,
-	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 0/4] mm/damon: fix misc bugs in kunit, quota goals and sysfs refresh_ms
-Date: Thu,  3 Sep 2026 06:51:19 -0700
-Message-ID: <20260903135120.98408-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260903031345.82679-1-lianux.mm@gmail.com>
-References: 
+	t=1788443538;
+	b=E5ePXzaR0VJFm0/K49A8kXeP0wG5eVYhPDC4xDakl134iLepBq/I0leg6n/N+ygy917kfz
+	XrtE+S0yRrLutrbD6Z724tjdNGzqixvIcL5oxj55hBqVe0l4Whsg/VUT4RwxzhNfO3EVa5
+	cgn/glEpeXl33a7BtaijZVgHbsIxIU8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788443537;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RYValkT1RfLf8KNyXAg43KyIUolG/6q8D740NY7N3y0=;
+	b=OWEIGGmQKYVHSOLO41Jor1RzhFe2pcLYt2cihwxGesQQNMJXIQitgf97DjxWtIeHfeA1TX
+	Opls2oJwpbTdBfhyN2uwEThkCDpyOynTIeQ/lDZU6PYdTES+Q7FMZdpVAc1kjpWoI+cEmO
+	H7oay6tt+WB+aOphPMSRHhLZACo/Wig=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-27--MjhSEGMNGGbQ1VSHW1TjA-1; Thu,
+ 03 Sep 2026 09:52:14 -0400
+X-MC-Unique: -MjhSEGMNGGbQ1VSHW1TjA-1
+X-Mimecast-MFC-AGG-ID: -MjhSEGMNGGbQ1VSHW1TjA_1788443530
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E1174190FF8E;
+	Thu,  3 Sep 2026 13:52:09 +0000 (UTC)
+Received: from bfoster (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 830C73000239;
+	Thu,  3 Sep 2026 13:52:06 +0000 (UTC)
+Date: Thu, 3 Sep 2026 09:52:04 -0400
+From: Brian Foster <bfoster@redhat.com>
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: brauner@kernel.org, djwong@kernel.org, cem@kernel.org,
+	akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com,
+	mhocko@suse.com, brendan.jackman@linux.dev, hannes@cmpxchg.org,
+	ziy@nvidia.com, david@kernel.org, qi.zheng@linux.dev,
+	shakeel.butt@linux.dev, ljs@kernel.org, linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] xfs: fix NOFS state corruption in btree split worker
+Message-ID: <apl7hNnt0lR5HFXA@bfoster>
+References: <20260902134417.c44503a1d65533f81fb1c391@linux-foundation.org>
+ <20260903133756.2006032-1-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260903133756.2006032-1-wangkefeng.wang@huawei.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: iFkVR1UNJWRCfr7phBQIlEEFR_LImCxkHjqIJvgcwtc_1788443530
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8738714000E
-X-Stat-Signature: c5rz7x4a8izthket8x33nf3y8yy8cu3o
+X-Rspamd-Queue-Id: 532F2100005
+X-Stat-Signature: jermwud6mbzu4nij1mzab3qt84wocnh6
 X-Rspam-User: 
-X-HE-Tag: 1788443493-20307
-X-HE-Meta: U2FsdGVkX1/eA0XGLfNLc67tk+ZiXogNV6rpNZSpWikGSi7L48lt9FySA8M+LNxFvHECXz+2sfNYZBIt2kEPu+nT4+EJPQIuI+5Z5YDBwN58UsB60UQzv6g0nDQGYrzBs9i0Pu1juZlUJerVzYYZ7L8xrWqF+szHoXd9F2vtP7AjFZJNdzykYAqZrJNFeId+dEE9CUxDOFxO4qqpboTv1euWPw3oU5ShM22mD2oYsWrjFp6ey3FoncWmPW6v8fr+TlxqFLVbeTggAclsXnL2Z3TWgaPTJlV2CLYW4xXTQAqaSP4RGZfXuT4HyIRbG2UnS+YCkXtZdeZxvOMuiXhDKlZM0dLtBtbChiWRrTuzDiaU2bK3UhasnQDgoVlKaI9hiWli9FxrC8fGmaJ3vfBCBT0+r95N2LnHkEG33qOQdu7HHi6cpzCmX8PtPvZLYkn+cQBcYR0soW14R2JDuGQMnJGSU/Z90k69p/Qz62Yy/uPN22rDoX1Wjw3/H7O6vxCyPlMGV2xNSitOKjVI0wUju7NecQf5Wu5IPhMubV/VBS86c4BuOm5VKxGpIv5926h8glu7ZUUsSjnB+UAhIXaLX9dS9WTnhtIZhlhk6aYX6IObKJhJVodB8QTYFKGHaubButhELR+O2AB4sC+QrJJrGdghShWBw9vDVrX7j5YwPFSRrPJdhfESR0MJjp+AXdur12PSYzH5Ba+YvK5pD232G3N3NEcV+CU3quuYULOlD0+yZ0CgdaazMd6Q4ui2PR75swimFVrL9W6g80rXQb5RhviUS6kh2a6z8werz+OHfQXvaZ9MDTj+gZG+p2sFUh7fA1wFrrY11XF/xnvzvrqGxpuZRVKF8blpFJ9c4oxR1S2s82T0sryBhCA2ongt3sAptR2oPju0m6YH1eTQ36IGuMmg8xKPqv2iJfHTcyXzUv1tsCNJntvU/qyZsuh1ltYVxXJwHOtl0Tkcz9/3eJW
- E9pC92Cw
- XIbV84U5vUABde3R7qMeWU60qFqyTLgODVn+Ddl9Z3CPN0HPpTpWmorv1lrxbqaz+Vn1wi7V2MQlYZ4PnrfwBLdft4bXWkjkQ2GOfCXk03GCadWlbzBMrAhls1HUXlqdMKt/fx2RKyewS8cHDHY4akQuJIYlydk3HPYz/SCIZL0QMlutjAdVsTpE1WkYUDeVl5q1C4l3jdrSUQx62NIq+wbA3wTtKcQTlCMWqpD4sPhh25DnJEiXMdbSX2MCK54D54D0ZR/6HJETMPz3Ivm8wyMjNn1TTTkKHRKqhFTVSkas9BLQ5ZdABDSNrYrG7oMPr/onPkb8yZOtNe7XKgoYHmHl1kYkgT8+v8j7ImU/LwVrjIko=
+X-HE-Tag: 1788443538-699466
+X-HE-Meta: U2FsdGVkX1/o3xLHrqYa6kPaJeWPifI8LA6jS70GQMQyD58Ev1sos+WWmigUDkIzsUx87ajjhR5XEBU+LIFeOKd9R/tbgjaJasC6KLoCyBj3tznqCXJQKtK5B3utbqLuM3D/Z8gcv55hPdDD82wpcrcefNeWjRR3QnRT9kED7/GxlSGlFPwVfQUBDebkNGyboHC9dgyl5UH1OCO7yNBNkXUNNBmMGj6vvcR7r9iEx6wd1U2i/vecb+uWHBuj1kmUK3gC04wsPhzRFUT2vhdc76caPknBrwAJujTFC+OKoLe2sZmGgN3HKk1Xf3+Ch48N+GI+2I9AMuBUUWg25T0QrJtzX8xUptfN/brOX2dxH8MhVc572v3ova9eVTvxdde4/jAQ6kW9rGqgMli+toL+7DXIMjLcsyxHLbn51Dby6b2s5i5sQcPd28i50U5wkR2oEMQPJX0bAirzMSiJoXUEmtzbT9dI6RkZ3WUvkAgh4wnCHphOB+Cow8rnwlvs5ba6yjUQKQ4u04AVmXwrWBHiZaVHPyeur2BrpD6F7GpnEwSDTMGTM0YEFkSDaKguLMkO2LOVxPfJmmO5hv+9oS8q8B/upysMkYjElBw2iN5L9196lydlxCQlf2bpuUHilElmjDVsXiqP41/WUmve34lzctw5HtWjh/o0NyWAMmaRJV9Sx3UDUF3JnOeDnW37S/wNNgZjnmSGnV3/cjcyV6jbTaB7B0lEc/ZX1pg+xD87VwFR8YwpPW+v3h+6CwtQPdiE0tUbaw1yQwppEkOK3ekhXej87R3CEVRrtnrP4F3avGkWfVAprPPUz65wA+rbZZAO+NbIHsazd/By+OjSi4rzRGnE6tNe/8HQxmg6RlSbQeUoxTKP1LGxnMydYFpJB1DI50ZJWQhVykuyD+qGG5sdx9+j7yddIb1BKgRo/1LI+ewh7k5BctKmSTFU/8+ncaVbSVDhNrZJhO75LWW2vHa
+ W85mFVNx
+ SEVndrZFRTfXt2KiIxfgmf9tHK3G96h71xTpEiCZ+wO0XvbTYR1ifHW/zPk+X+TLfy1Fh+rA7VT/eEBadylhL21/2sCEoBTc5gMV+WCNXOLCToGd3BJL/5TxcO+G709wyz2JjE3VNePqolx3sd8i6kFu1FSSfIzmtAQ4snXU3QZIGXfctIyWOOpyuTIihd2cEhvLgEn5JcRTmXp5lFXVOHX2E5oV9P8UsZxKkoF+M8/SC/rrN808ejGKDjex4gyrSBcPOcEjUADyVJ2kyxAGbhUJ3/C48hJueCp9yHOOFrtc28KwonE88SCUp/ReO8Dir/KLrgHjQCho/CBYcW1GxGrx3o0EhfRRwghqMNd9mGrVwvqNc8sOpnw3Rs+nrWvnujQTKvwpBYlL64cDDu/0jTUjP8gLRSKZMLt1NNpSeEAn3edg+0jyD2/D3ZV8yYrXhSosM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,37 +108,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  3 Sep 2026 11:13:28 +0800 Lian Wang <lianux.mm@gmail.com> wrote:
+On Thu, Sep 03, 2026 at 09:37:56PM +0800, Kefeng Wang wrote:
+> xfs_btree_split_worker() calls xfs_trans_set_context() and
+> xfs_trans_clear_context() on the caller's transaction, overwriting
+> tp->t_pflags with the worker's NOFS state. When the caller already has
+> PF_MEMALLOC_NOFS set (e.g. xfs_end_ioend_write, xfs_dio_write_end_io),
+> the corrupted tp->t_pflags causes xfs_trans_free() to erroneously clear
+> the caller's NOFS protection.
+> 
+> Use memalloc_nofs_save/restore with a local variable instead so
+> tp->t_pflags is never touched.
+> 
+> Closes: https://sashiko.dev/#/patchset/20260902131653.1338227-1-wangkefeng.wang@huawei.com
+> Fixes: 756b1c343333 ("xfs: use current->journal_info for detecting transaction recursion")
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> ---
 
-> Hi SJ,
-> 
-> > Patch 1 fixes the DAMOS quota goals commit unit test to cover a
-> > mistakenly uncovered case.  Patches 2 and 3 fix the bugs in DAMOS PSI
-> > goal initialization and eligible_mem_bp online commit, respectively.
-> > Patch 4 fixes the bug in DAMON sysfs refresh_ms file handling.
-> 
-> I reviewed and tested the integrated four-patch series in mm-new:
-> 
->   a20e38846efb..72dc8fdaae62
-> 
-> The integrated commits had stable patch-ids matching the posted patches.
-> DAMON KUnit passed 42/42 tests.  I also ran test-only eligible_mem_bp nid and
-> two-kdamond refresh-isolation regression cases; they passed 42/42 and 43/43
-> tests, respectively.  Both test-only changes were then removed and the
-> worktree returned clean at the unchanged series tip.
-> 
-> These were functional UML KUnit tests.  The fixes look good to me.
-> 
-> For the series:
-> 
-> Reviewed-by: Lian Wang <lianux.mm@gmail.com>
-> Tested-by: Lian Wang <lianux.mm@gmail.com>
+I agree that the Sashiko analysis looks correct. The only thing I wonder
+is whether it might be a bit cleaner to have the set_context() helper
+return the context instead of hardcode the assignment to ->t_pflags so
+it can be used in both places. The reasoning is just that the current
+arrangement kind of makes it easy to repeat this mistake in the future.
 
-Thank you for your review and test, Lian!
+Then again, it's a single line helper so maybe another option could be
+to just remove and open code it. I suppose the pro of keeping the helper
+is that it's a decent spot to document the concern and why it returns a
+value, etc. *shrug* Thoughts?
 
+(Please don't change this patch just on my comments alone. Let's see if
+others have input first..).
 
-Thanks,
-SJ
+Brian
 
-[...]
+>  fs/xfs/libxfs/xfs_btree.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/fs/xfs/libxfs/xfs_btree.c b/fs/xfs/libxfs/xfs_btree.c
+> index 6738d9d1511b..8ae4b94e6995 100644
+> --- a/fs/xfs/libxfs/xfs_btree.c
+> +++ b/fs/xfs/libxfs/xfs_btree.c
+> @@ -3007,12 +3007,18 @@ xfs_btree_split_worker(
+>  {
+>  	struct xfs_btree_split_args	*args = container_of(work,
+>  						struct xfs_btree_split_args, work);
+> -	xfs_trans_set_context(args->cur->bc_tp);
+> +	unsigned int			nofs_flags;
+> +
+> +	/*
+> +	 * Don't use xfs_trans_set_context() here: it would overwrite the
+> +	 * caller's saved NOFS state in tp->t_pflags.  Use a local scope.
+> +	 */
+> +	nofs_flags = memalloc_nofs_save();
+>  
+>  	args->result = __xfs_btree_split(args->cur, args->level, args->ptrp,
+>  					 args->key, args->curp, args->stat);
+>  
+> -	xfs_trans_clear_context(args->cur->bc_tp);
+> +	memalloc_nofs_restore(nofs_flags);
+>  
+>  	/*
+>  	 * Do not access args after complete() has run here. We don't own args
+> -- 
+> 2.55.0
+> 
+> 
+
 
