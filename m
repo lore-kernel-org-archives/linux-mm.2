@@ -4,88 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90FA7C61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 16:17:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E00FC624A4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 16:45:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6683C6B0088; Thu,  3 Sep 2026 12:17:44 -0400 (EDT)
+	id EDB896B0088; Thu,  3 Sep 2026 12:45:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 618F66B008A; Thu,  3 Sep 2026 12:17:44 -0400 (EDT)
+	id E64BA6B008A; Thu,  3 Sep 2026 12:45:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 556096B008C; Thu,  3 Sep 2026 12:17:44 -0400 (EDT)
+	id D06856B008C; Thu,  3 Sep 2026 12:45:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 29C6C6B0088
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:17:44 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A81B716057D
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:17:43 +0000 (UTC)
-X-FDA: 85172956806.03.46B6D55
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A94036B0088
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:45:49 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 36C99A0615
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:45:49 +0000 (UTC)
+X-FDA: 85173027618.11.835B2B0
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 91962180003
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:17:41 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=WQPzl4p+;
-	spf=pass (imf16.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 62E4880003
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:45:47 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=SR7TXHUz;
+	spf=pass (imf30.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788452262;
-	b=LBM4MR/+Zj9hVp91acR+hXjhnKcYR9Dr2R8Rm1tHA5eFp1wfh6LFzdOaWwyhgWWHyp8Nic
-	BFGfAHG9qN435t16GYNPgq2W7IIQJ3xxWNTTWGbnUweNNIuPS3l4cCKuNg+PsYoQFXhpsZ
-	opna9OauRtdfzxAyWWXnSl2UihKPJZ4=
+	t=1788453947;
+	b=a9gHRRPhVBfUi4i5X/I4zEIeR7YEILxq6kO8p+vcY2/6XSviIW+rp47xDhov6ErKOMq3b6
+	cFzoRcB9p8gsgJgfOBpvTIfcPEKRjY9ZtAaTqJOxxuDR3Jih0VOauYGSxL3tvvxIxOj0xx
+	Nbsqj+AmsPU1h+6IXCGnNjWzDedUBRM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788452262;
+	s=arc-20220608; t=1788453947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cfLON0vOIMCx4YMExE8wsRsSHfIcGi/GWtHqeu9S6sQ=;
-	b=o1K7mWU7rRMKKHcCgWdhyCcYjmdb45qhHWKa1/HJF7ycMBXrf/gIdqEL3O0wLvQsmemYpa
-	mJ411kUNe2SekE9+r2TnOCDxg4ds/6fNAuIWTAf9R6kqiVMBHfbRMm8EbtGrL8NS3BNyLk
-	VAxTZekhKY86WcVLHTXgN43empK/vEE=
+	bh=XrUmjCwjo5DIxJ+vg0Sk0kvs/Wk7ygJAVHNpsizTEFY=;
+	b=pVHzSqxdz1P3e19H3xA/TP4aLIFdlV6YWsAw+77xEux7A4g6L2H7jCKgxpHUH/u39mnCZY
+	ouWLOU4D9e/+asbeKaguk/8PKet0pcUOtCJiN/55SDys2Btg4JSIrYycOXWBhCU6sXrjsi
+	MSs+o7tGPvNLme23q1X2HJr8FsSkxC8=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=WQPzl4p+;
-	spf=pass (imf16.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=SR7TXHUz;
+	spf=pass (imf30.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BCDBD1596;
-	Thu,  3 Sep 2026 09:17:36 -0700 (PDT)
-Received: from [10.163.139.221] (unknown [10.163.139.221])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BE5C93F673;
-	Thu,  3 Sep 2026 09:17:37 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B9D931596;
+	Thu,  3 Sep 2026 09:45:42 -0700 (PDT)
+Received: from [10.57.6.2] (unknown [10.57.6.2])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7FBA83F673;
+	Thu,  3 Sep 2026 09:45:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788452260; bh=IGCjKrKbxdeYpXYZSvcnw7WtqBMc/XxE/M/sNq1isXU=;
+	t=1788453946; bh=/CRbtrA+vjZ5tpi+PPVd9H6w5y8wPTba5LjyadUSSnA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WQPzl4p+HAJJT3jsTl/2zRjvDVPFttOla1UX2/d2fnrmHSi/X9XHK6EUHX86G52sl
-	 aFC0pXXEixydbGJmrY7+FmHm2AJEi6SywD11/HP5SrdlLNCzmEuNeuiY+f242VepQL
-	 LXKrXyZOLn3ldtBr3xwOJPf52LEwEBXJ/ZMDjR0s=
-Message-ID: <925c45d9-91dc-406a-9ff5-8c16f3ee0d9f@arm.com>
-Date: Thu, 3 Sep 2026 21:47:34 +0530
+	b=SR7TXHUzQxDvckWQXIc+kCOdTYGWt1Gaj//NszCiurRY4Z6SAdqDJlunSvSprXTnD
+	 G+ho6hqXrCwCQrp/yne6kVlqaExRdp+vclcF/zIL/zaHD1NzPhiw1MEKzTFaOYDgfu
+	 46QXLVXyg1Xi5s2nfL5Qn/gtPRKd+Mye1S/UAGRw=
+Message-ID: <139b273a-d868-4d82-92b6-cccfb0048c44@arm.com>
+Date: Thu, 3 Sep 2026 18:45:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] memblock: use binary search to locate candidate regions
-To: Tarun Sahu <tarunsahu@google.com>, dmatlack@google.com,
- Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Pratyush Yadav <pratyush@kernel.org>
-Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
- linux-mm@kvack.org
-References: <20260903155907.1065681-1-tarunsahu@google.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260903155907.1065681-1-tarunsahu@google.com>
+Subject: Re: [PATCH RFC v9 08/25] arm64: Initialize POR_EL1 register on
+ cpu_resume()
+To: Linu Cherian <linu.cherian@arm.com>
+Cc: linux-hardening@vger.kernel.org, Andrew Morton
+ <akpm@linux-foundation.org>, Andy Lutomirski <luto@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "David Hildenbrand (Arm)" <david@kernel.org>, Jann Horn <jannh@google.com>,
+ Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>,
+ Kees Cook <kees@kernel.org>, Linus Walleij <linusw@kernel.org>,
+ Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, Maxwell Bland <mbland@motorola.com>,
+ "Mike Rapoport (IBM)" <rppt@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Pierre Langlois <pierre.langlois@arm.com>,
+ =?UTF-8?Q?Pierre-Cl=C3=A9ment_Tosi?= <ptosi@google.com>,
+ Quentin Perret <qperret@google.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Will Deacon <will@kernel.org>, Yang Shi <yang@os.amperecomputing.com>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org, x86@kernel.org, Ira Weiny <iweiny@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
+References: <20260818-kpkeys-v9-0-743ad31b2c8f@arm.com>
+ <20260818-kpkeys-v9-8-743ad31b2c8f@arm.com>
+ <apkMDaRKqX3TTINV@a079125.arm.com>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <apkMDaRKqX3TTINV@a079125.arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 91962180003
-X-Stat-Signature: fwntinbyap8w1ax6apko3bw8x3toi8hf
-X-HE-Tag: 1788452261-253115
-X-HE-Meta: U2FsdGVkX1++VLMPXOf38w2csj9HCYeX/7/muYClQ0iIWFwzx27g5zyrO8OmT3noRr0s+Y7lwQZOwQx1g+2v0rke6NUyK5ufqLKLWWPpOtd1ZhfykqwkJf7dVkHwg/of2/iOMR+ozSznBzw1r6HSgVo7eVnFSvI3+K9Xt8I+cE38bGwarMh0dEZrwYiDPv3KB1Rkx57UMULbsCIaRJM1RCgJ/vlwSjBZxBLYXZn21NEdEvGxPBajUt1u/B3KdNsgLxJeReclyYHddTHs7F8cqmD6jRBCSXb9qcsu0saPkQahUxOD0Kxt7phA9VXPoqPslSS1vXNELP3xDRIfiyKNDQJeP90pu5yRTK9EFr96XWQnuovAgQPPfsZAhnmAd+Rz0zW04JLU0tba+WZfi2q7OQu/K8Vzm81SLqgGgJ7XAnTwQSEaPH3ongFykzgVtvfOgsNK1y0aRqoEpMUV4F5KOWaHQMm2k2u9MxkAYBLDnw9+x9NXhnBZjRpncea1Lj0MQeWWJkEGziW53OhLOeeErBiwVcJaYcM3suTlW6voJSYNLBx8xOhZmLM4BO78YidBtjrbU8cgtW2bbR1IWQOwFwXmRq2FPwAJUREdwtyncho8ER2gLl8n+/iPReHcQnsa7iPfYKrhuMTmV/blSAc+9KT/AcVJo7TxXWudYjriUIt0Bwj+dVIVRdvteuBbdgbm85gSBZGuyFhFCcO0JaOhx8VXV3VmpDWb0zLMD4s/0hE8DmLrGZ73uj2mUzTHleBQjm0aXgKtocuxkZwE2+Jhhn+vrNbCQeSzYaoOEQGADoMSfNJ68tEPa3cz06w6mvOWVM4lzrCZpC/mwnL3Yybpa5Ahpt+QpLxHSFcxOplLyKvZDWqKSCH9l3tRFygu54O8UuiVVKrGOHegwxIdMH2nR5zyKXeRMY0xV7/IFReVMuc8mpLJMBiFY+zQFVUH3Uj2vh8MOYKC2zZizcTPauJ
- +MjND4r3
- Lg2LqT4NouR2GJZV/LSaokymjlFOJT9IBsXr5kZTkzKR6lkxNZLOwInBH6eHa9UWzyUuNF/4PRTAryheEexocBpbQNF0T+nmNHIBDSwS7B5CvlwReMgREOKUgaVrVJF7QyHXjaiq5dYyRbaP5Az+Zmc+D4awiAkPGGxzF/YTirOrTdrYbgIWQSIAF0CZbObwysEClQuE0y+FVFHZh59j/bf4MxN/Yj4iqk0YFbi2O7e/wHaw0YyN7GuRAs/TLhK1K1hwp
+X-Rspamd-Queue-Id: 62E4880003
+X-Stat-Signature: gqn8cmimuaa3xq7964d7rr7wm9xpkd99
+X-HE-Tag: 1788453947-397721
+X-HE-Meta: U2FsdGVkX19THjbbpL5lUdw9rZ4FseUJKldY9b/AaDNo5hyY14+gkACl1b+Tm4nHUYPYjSRBlqceTf+lA/1HJbaCThlbP6JBV5mSRTByGC2A040WGzDLzttRVwL8T7FMP5hRpXkEaFBnBIn7juEiXP+wvN61p0ipklub5L9hIhpvuJeNJGJARme1sC8SmAQ1HvM8qRFNVOTNQZZld7cySCROrKyJ6RfihfQzIkHQS6qcbNcj0FIGOQwY1sLVPgYHKLDdXW96QEuId3i1GW0pMEZ4NI9c6vrw4As+psndW25f1vNOpPdDyZvIHlfGSXWPRo8KRt1Zr4vPg+FdQjhZwmKyFGmMyxbxn8Y0N2e3PkxuCXbe8VtdZOlzI3td7L/+cCAXPTiAtKMgXN9a8Dw81lznoFqfl3p2POsioKzc9zY3RCiLTq8eMtHFsP4a1AAsfWZDU5NiFkKWg+mHGkxp4wDmiLQ9fJ1lp56dooek/TSVUlN+NRjgq2ZjpYjT7dEL9pqDxzUlzycMU3xlMGHunVQNbLfAGwd5zPgT+L2zA0Gi2X4xidygqwZu/Abyi7uP8d3PlNK2S6SIcE9SGl0OTvVt74owQ2Vzyf2Z2jtux452NtWDJme/CzDzCH9SQF3TY106mr62YzQTv5VxTD6koAJ9QDaH5fhe3CQOFN/hFwVQk+i/GWFtDk+h/LA1odwheKp315eMzwjtSfkOjX7amb72aTRUK8ZiPJFEnVdkoHSzE+D2cPo7h2XfAiEl01p9IwcYrZejPRmZQg0KYg7KUnVn36kFZ3ADdIjJMihA888QHJbyJFzQYIBL34DJdOtLz6XG8O5wj8obQQrLrPQQ7P1hgEXQPg9Jl3mBctK2rNm1hmAiVTOe49d0j2qn6p5S7RtIsHcJxQIoES3/lO4QgKFSk70LSjsBqApdISr6bivJLZhQw4vvGZMDHVUjZ5hHjBa1EIlET6snrqwsecO
+ ZeHeIKTJ
+ UXKoKr3hkkajGWLF2u4NG8g/fkCp+hSpzoP8vhYe8/PvxfnrFgYecrraBrwzblUFpzarhrqTHjiqbPNfqHC98a/yLQBCgpi2a4zWX5aJczoooGUH62VQzcoCxWsj+ejk5+kmnOq6+Kzs0BGnVMsQ/vHjYza51jE1pWSH9+JJYINCneKKYr6egQD/NX9Jn43jNavnMisFzd+RWEPkCqcFlLUJh+xug9UVuO2vcew/V2qMz7+jJc53zkFXaJZ1UD6gpakzUNzfD6715afFnPdFE/i2k5bsAoHKLiazNLQo4YqHJwfEnNy2vCquP5W1bl0mi2s1YLrWh9kQV8pRhSdaZDevbX425yTArlx/vgWusFIJLrhO45E50Rtimpb51AiUyDPJd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,110 +111,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 03/09/2026 07:56, Linu Cherian wrote:
+> Kevin,
+>
+> On Tue, Aug 18, 2026 at 03:08:50PM +0100, Kevin Brodsky wrote:
+>> From: Yeoreum Yun <yeoreum.yun@arm.com>
+>>
+>> The POR_EL1 register is reset to an unknown value after cpu_suspend().
+>> Since POR_EL1 always holds POR_EL1_INIT when entering cpu_suspend(),
+>> initialize POR_EL1 with POR_EL1_INIT before cpu_do_resume().
+>>
+>> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+>> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+>> ---
+>>  arch/arm64/kernel/sleep.S | 12 ++++++++++++
+>>  1 file changed, 12 insertions(+)
+>>
+>> diff --git a/arch/arm64/kernel/sleep.S b/arch/arm64/kernel/sleep.S
+>> index f093cdf71be1..e0a6ad85cd24 100644
+>> --- a/arch/arm64/kernel/sleep.S
+>> +++ b/arch/arm64/kernel/sleep.S
+>> @@ -3,6 +3,7 @@
+>>  #include <linux/linkage.h>
+>>  #include <asm/asm-offsets.h>
+>>  #include <asm/assembler.h>
+>> +#include <asm/kpkeys.h>
+>>  #include <asm/smp.h>
+>>  
+>>  	.text
+>> @@ -134,6 +135,17 @@ SYM_FUNC_START(_cpu_resume)
+>>  	/* load sp from context */
+>>  	ldr	x2, [x0, #CPU_CTX_SP]
+>>  	mov	sp, x2
+>> +
+>> +#ifdef CONFIG_ARM64_POE
+>> +alternative_if_not ARM64_HAS_S1POE
+>> +	b	.Lskip_por_set
+>> +alternative_else_nop_endif
+>> +	mov_q	x2, POR_EL1_INIT
+>> +	msr_s	SYS_POR_EL1, x2
+>> +	/* isb can be skipped since cpu_do_resume() will do it. */
+>> +.Lskip_por_set:
+>> +#endif /* CONFIG_ARM64_POE */
+> Would it be better to move this under__cpu_setup ?
 
+I didn't think about that, that's quite neat as it avoids having to take
+care of the resume path separately. It also feels fairly logical as
+POR_EL1 should be configured very early (since it impacts all accesses
+once enabled). Will do in the next version, thanks!
 
-On 03/09/26 9:29 pm, Tarun Sahu wrote:
-> Use binary search (memblock_bsearch_start) in memblock_add_range() and
-> memblock_isolate_range() to locate candidate regions instead of linearly
-> scanning from index 0.
-> 
-> Under heavy memory fragmentation (such as KHO page preservation registering
-> hundreds of thousands of disjoint folios), scanning from index 0 on every
-> insertion and isolation results in O(N^2) complexity, causing boot-time
-> memory retrieval to take several minutes (~268s for 393k pages).
-> 
-> Using binary search reduces the worst-case complexity to O(N log N)
-> (and O(N) for sequential appends), cutting KHO memory retrieval time
-> from ~268s to ~50ms.
-> 
-> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
-> ---
+I was concerned about accesses to POR_EL1 being trapped, but in fact
+there is no EL1 control to trap it so no concern there. I realised I
+forgot to set HFGRT{R,W}_EL2.nPOR_EL1 though... I'll fix that up in the
+next version. (This has no effect when running at EL2 with VHE so I
+didn't notice that beforehand.)
 
-I recall noticing this 2 years ago : ) but then abandoned because
-I couldn't think of a usecase.
-
-I have forgotten memblock and no idea on KHO, but are you sure
-this patch won't have negative consequence for the usual cases?
-In other words is this something KHO specific, and in the usual
-cases a linear search is more cache/CPU friendly?
-
-Also below I see you have implemented a custom binary search helper.
-I recall a generic one is there in some .h file somewhere in the
-codebase, perhaps that may be useful, just FYI, ignore if already
-tried that.
-
->  mm/memblock.c | 38 ++++++++++++++++++++++++++++++++++++--
->  1 file changed, 36 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index 9ce86349a29f..88940474b020 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -160,6 +160,11 @@ static __refdata struct memblock_type *memblock_memory = &memblock.memory;
->  	     i < memblock_type->cnt;					\
->  	     i++, rgn = &memblock_type->regions[i])
->  
-> +#define for_each_memblock_type_from(i, memblock_type, rgn, start)	\
-> +	for (i = (start), rgn = &memblock_type->regions[i];		\
-> +	     i < memblock_type->cnt;					\
-> +	     i++, rgn = &memblock_type->regions[i])
-> +
->  #define memblock_dbg(fmt, ...)						\
->  	do {								\
->  		if (memblock_debug)					\
-> @@ -591,6 +596,33 @@ static void __init_memblock memblock_insert_region(struct memblock_type *type,
->  	type->total_size += size;
->  }
->  
-> +/**
-> + * memblock_bsearch_start - Find the first region index where rend > base
-> + * @type: memblock type to search
-> + * @base: base physical address of the candidate range
-> + *
-> + * Returns the first region index that could potentially overlap @base.
-> + */
-> +static int __init_memblock memblock_bsearch_start(struct memblock_type *type,
-> +						  phys_addr_t base)
-> +{
-> +	int mid, low = 0;
-> +	int high = type->cnt;
-> +
-> +	if (type->cnt && base >= type->regions[type->cnt - 1].base +
-> +				 type->regions[type->cnt - 1].size)
-> +		return type->cnt;
-> +
-> +	while (low < high) {
-> +		mid = (low + high) / 2;
-> +		if (type->regions[mid].base + type->regions[mid].size <= base)
-> +			low = mid + 1;
-> +		else
-> +			high = mid;
-> +	}
-> +	return low;
-> +}
-> +
->  /**
->   * memblock_add_range - add new memblock region
->   * @type: memblock type to add new region into
-> @@ -651,7 +683,8 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
->  	base = obase;
->  	nr_new = 0;
->  
-> -	for_each_memblock_type(idx, type, rgn) {
-> +	for_each_memblock_type_from(idx, type, rgn,
-> +				    memblock_bsearch_start(type, base)) {
->  		phys_addr_t rbase = rgn->base;
->  		phys_addr_t rend = rbase + rgn->size;
->  
-> @@ -827,7 +860,8 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
->  		if (memblock_double_array(type, base, size) < 0)
->  			return -ENOMEM;
->  
-> -	for_each_memblock_type(idx, type, rgn) {
-> +	for_each_memblock_type_from(idx, type, rgn,
-> +				    memblock_bsearch_start(type, base)) {
->  		phys_addr_t rbase = rgn->base;
->  		phys_addr_t rend = rbase + rgn->size;
->  
-
+- Kevin
 
