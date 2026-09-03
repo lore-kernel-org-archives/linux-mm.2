@@ -4,115 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B36EFC624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 11:57:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75290C61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 12:00:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 989386B0099; Thu,  3 Sep 2026 07:57:40 -0400 (EDT)
+	id 0B43D6B00C6; Thu,  3 Sep 2026 08:00:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9602A6B009B; Thu,  3 Sep 2026 07:57:40 -0400 (EDT)
+	id 064FE6B00C7; Thu,  3 Sep 2026 08:00:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84FA66B009D; Thu,  3 Sep 2026 07:57:40 -0400 (EDT)
+	id E95756B00CA; Thu,  3 Sep 2026 08:00:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CB7D6B0099
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 07:57:40 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E76C3404FB
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 11:57:39 +0000 (UTC)
-X-FDA: 85172301438.02.12FA121
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf01.hostedemail.com (Postfix) with ESMTP id AB92F40008
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 11:57:36 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	spf=pass (imf01.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788436658;
-	b=QyoFJwWBAp2UwzQ34JavL4DCsOVyAZS70yVHwukmN+Fie4BT2MRRqjmnNdmCxmxHnf3Dtd
-	psLRHsLlonPKOUOC/Z/8unF2vOekIOtmpZED85Ci4qXRZEjnp1NLSUa//ZJt0QLit3O5I3
-	aZtxory+USCAYX2+QJOH0GzMXm5cfQ4=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BB31A6B00C6
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 08:00:16 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DD581120526
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:00:11 +0000 (UTC)
+X-FDA: 85172307822.08.60A33C3
+Received: from mail-m825.xmail.ntesmail.com (mail-m825.xmail.ntesmail.com [156.224.82.5])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D145F1C000E
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:00:08 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
 	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com;
-	dmarc=none
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf20.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.5 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788436658;
+	s=arc-20220608; t=1788436810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=5iGyAPtZkwaOTqjymjdJOPaOtljej4BaXokPf2H8YNg=;
-	b=kRbgJ3w3mqhpXrEHmfHkNjwt/BbQZbkghT5bncmZRyo2TBet7EzuViZfgD3j7S44QDR/F6
-	gGKrDWcvlTiMxfejQ/HNJTy0o3WMnUXZE1E3GDV19CLfwHngVhz7on2am6Pbt9b7TOwMmO
-	Vh9wQ5Vh40zh5iIwkwCEiE90DNjNCps=
-Received: from mail.maildlp.com (unknown [172.19.163.198])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4hbJ3f3SzVzYQttW
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 19:56:46 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id 4DAF84081E
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 19:57:29 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.50.85.155])
-	by APP1 (Coremail) with UTF8SMTPSA id cCh0CgAnDgmeYJlqCapnAg--.29796S4;
-	Thu, 03 Sep 2026 19:57:29 +0800 (CST)
-From: Zhang Yi <yi.zhang@huaweicloud.com>
-To: linux-mm@kvack.org
-Cc: linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-ext4@vger.kernel.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	hughd@google.com,
-	baolin.wang@linux.alibaba.com,
-	willy@infradead.org,
-	jack@suse.cz,
-	ziy@nvidia.com,
-	bfoster@redhat.com,
-	djwong@kernel.org,
-	yi.zhang@huawei.com,
-	yi.zhang@huaweicloud.com,
-	yizhang089@gmail.com,
-	yangerkun@huawei.com,
-	chengzhihao1@huawei.com,
-	wangkefeng.wang@huawei.com,
-	yukuai@fnnas.com
-Subject: [RFC PATCH] mm/truncate: fix data loss when splitting fails in truncate_inode_partial_folio()
-Date: Thu,  3 Sep 2026 19:50:18 +0800
-Message-ID: <20260903115018.2034541-1-yi.zhang@huaweicloud.com>
-X-Mailer: git-send-email 2.52.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=exe9gH8ZCgXsjgub53/pgdClh+0J3naTnNaDlq3M7PA=;
+	b=wKCKAid//qzfTb/ymo507o7ml0f7d9Zlys3PgsMwG6f+i8p71mIGCDcqnuAc4qcLA7sD8O
+	TCZbpQ+j0NBYGW8U2zrQ+2sz0hoxvDr9pkrcKE6aK6Fx5Pp6mN3zSoY93U3RgwVYAiqFuR
+	DyLFvXSMUmPBXFhNhQx3V/2+eFVe+pk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788436810;
+	b=AVWRt2q16sWRoCRrLFFTHFPujkWzlIfEmT6pOKIxuuJX4UXUZoii18ITXOdYQEYaPuhg8S
+	B4rEhGCyTDGG9l9XZQcvYRXfFs3gXCucAMgnfbIPCIWC1qhNPb4eMlvOm6tPxgtieEuSSN
+	1JXYqIzP5Tmt0RNvhwkX+XDV13aTM2M=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf20.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.5 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+Received: from [192.168.0.59] (unknown [218.94.118.90])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 1ea93ff09;
+	Thu, 3 Sep 2026 20:00:02 +0800 (GMT+08:00)
+Message-ID: <1fa33d97-2e53-4ad1-9e15-8b4aa4e09875@easystack.cn>
+Date: Thu, 3 Sep 2026 20:00:01 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/8] mm/page_owner: Add PID/TGID/COMM and cgroup
+ filtering
+To: Andrew Morton <akpm@linux-foundation.org>
+References: <20260903041819.1776630-1-zhen.ni@easystack.cn>
+ <20260902221225.228fb4b18e115ba55b29fe29@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Zhen Ni <zhen.ni@easystack.cn>
+From: "zhen.ni" <zhen.ni@easystack.cn>
+In-Reply-To: <20260902221225.228fb4b18e115ba55b29fe29@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cCh0CgAnDgmeYJlqCapnAg--.29796S4
-X-Coremail-Antispam: 1UD129KBjvJXoW3ur45XFWxWFWrAr15ZF1kZrb_yoWDCry5pa
-	yUK3sxJrZ5Ww4jkr17uF4UXw4Yyas3XFWUAFyxGwnxCFn0qw17KF1Ut3W8KFW3Jr97Za4F
-	qF1jyFW7W3WUJFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9014x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
-	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
-	67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
-	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
-	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
-	VFxhVjvjDU0xZFpf9x0JUUl1kUUUUU=
-X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
+X-HM-Tid: 0aa06723eac10229kunm4cefcc8e55b31
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCS0xPVkIfTExMSUIZGEJIQ1YVFA
+	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
+	hKSkJMVUpLS1VKQktLWQY+
 X-Rspam-User: 
-X-Stat-Signature: nb7msh58uitcn1jgzbnw9nr4khi3w4yf
-X-Rspamd-Queue-Id: AB92F40008
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788436656-259293
-X-HE-Meta: U2FsdGVkX1/KCT7NEsBhLnTS51ArjW+Aj5IX3aCFf+K6R11hjxbozLrSwCTwbjOC31pkz8joGIUXZYI8LXzBlt+BKvHBkXQaOQrz2vnrtLJH1+3OZh1R+3HOAcsj9wg1mCbbRkh4tan6DZZDOgR0NFnRzqmXjl+4UbIDcjnrWLAluH2nnIUGCu4+8yymnSjaZd5DA9O2V0GU95BYXfFcxaXE1V6GlN1H0+cH3th2CMWNdiENPI2wvJpde25cNQSxFUWjzSnbddg2tUCoh4nuI5NES/qA5x2m+ktOwSkMpCAe+AWrJ9GnCDLwCs2hlnWnBsqFa9kQUH+mLNm/KJPnxztGBH17EyqVK/sXTLyztWdaZbyjra6WuuE4CPLjZD+HTJJ40ZEdVPAueAg2nZPoX8TR9UniYJLH8S9qa89kcU7Yww/yufjVWrCGPGQiXkkAw2lq70GL8I5liIpNmAjx61fWBfb6Uvm0Av7bLQeoEibrb84W8TimkBv9e6Z8sYYX50OtM1QAoGuj6SUQCZtdVGEY5amzwMFa+cde1wPWnTmnOlB59X1nvWeSrb7w5dC9ufa2QbPJ6jPS876thBrcq71I6Yg0mUV+/MrSD82ssHZrXnrrHPQOoQxHv7+BvDV7qBflvMepR+hI+edecw28VZ7nT6HsTXq7oC541TWqI/ML6l8zAjcx+gssTHmNsrhTaPIaj3jSuGoX4xyFe5+Kp42YqDYDqhWaRyRuQ/dMJfPeLnKmmo1zLU2xFaQ8J9MVEdwu7TlQvwZPhWKLy61TDGSvM+VeaWloLy3PDXUW+iw7aXPAUJOXCD5O7b83lwPmMwJJfjgdMiJ/7f0NmF/lohF9c6H9ss7qjmtsBDCXn831N3LpAGd8MCLGm3FX71AnsuZRrwBvVqDxg9WbgjJUbNbLhCg1kD2GBLJU9PCjvxiryMpGOkGC+pOdRhVI8maPAbCXrQVhCCbAZx66Atn
- riO7gREb
- 4zMUTgONaX12KXj4tUmCi9KQi8RK5qqEkJU+lmA7OXCDACh4TxqNfCA0cgTJCoZSMI9jkCO1WejTiFDi0y6+rkr3WboBKtZJCquELZGiraSbXz8jLl3mwgAlT0z0bv4AtMrywuAt/tFpsGcRwb74aNlew5EK3ud0M31uiYfyy2PHeIK2aYOcYF4UwaArUyxUoWSLF
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D145F1C000E
+X-Stat-Signature: o9m83jrbfmfptuymd3tj6w6qkk56b6e4
+X-HE-Tag: 1788436808-605414
+X-HE-Meta: U2FsdGVkX1/AWUX6vjosUx+LAYJDhejKx6gNEG7q+aqKVXTgsRuCiVTvpwaI7XShCDVSBC9IaIhrcHLjDgaMS2n9t3IeG0Zh0VDEOee6VX7Lgj6C0ec3JgmkY01Bj9CSRjxHM4Qk3M2cq7Q+aGg0h8sMrt4Uk53CEiWLOERWZ/ZzaqO5ROBhzOTqlUxK23hbZqmd2jQM554yqHSqOroSgonZwsdMmdpwfKEjkzEPgoI1Ph9RO//i5QY0O2Age1NsbgYIJ7pleW63DeT2AnzsCYjqTfmiRR4//6nTfmqGffEr5/4/vgz4ZcCG4EfDUfoecmnVlyD1cb7H0vDfKlTFzJo6I1V6qLzuG5WB/iZ0QjEEDmu9sdyE29LOESOFF4YkvnZNbKf/0K9T4hFRxCdA4hy7fH4vhX6i+xFkNRqraB77l9MMfpEGM46A+7Wiof3Rg+drhOJPYymfW1/IsK81jNlu6EmC7e+k+vL3ZAJrxKlcYfvpFj3EUHZ8aVIxZd1cEktEyY3yv/ApKSB05hSABgX1J56NC5+9IfB5vw5UbXghsE2tSbzU/ObiZbq74rdvSGKKHeLdGMnPIXOxzA0rg61zPd0eiIyz1YbdB/3b30huk+r0EHKTutf9FSboeKJ2kxXOlDm5SjkjewxWAsBMZ9wcLdEnUf8JIuxuSvBu+CNIUis7nxwBX+uJvc2sPaY56EpLNFmt8bWFE7tJ+03Ii4YadiFFE8wJSVTAw1m5j0TnU2HE34NvPefzgSDTX5F4okDNTjrgMlcG2LWaSc0UWH7QcqpeYrORyV1aWk7J7z9HLK0PMxx1tnd2NMTPoqnkpL+7rF2HfL5dgKK6Gd5pslgdK/F8++TqBeEB5KA1XowTgUysLOn82eEekfGz7kUNHNXGS3jTTNS8+jZSpoovQcBjR5yEQn3w+0F5wqKyM26aMIYCZ0Mz+acTvoh63bxW2RXok5ZLNwPUGPceBGv
+ u3dRxDDE
+ 0waxNNYqQqPKXPlD1YL5wH1LJi2THB8TKpPqpIFRD6NILmPo/fKJRAU970xiF1Imx8hg7nbVtUrFuDnvvCplxuZKyRzw+hWlswouRGBgU0fcbimIqvpoLeo3ta0h7ADqSS31Ex2XWJ5IjC5UQmrdnjiei5mfBjfAkXDOuJKMsmDkb5gKI8QiEzSf1h3QuQmXs9Isv/zmrk+FEdFZYSim84oq3/vwloNj1rPaEfiQ8wmt7IaHW+yoP3Yq34pO82XyhAvdZgKojAWGQQB7HgGK1R4ML3cl45b8wQ2pR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,269 +96,321 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Zhang Yi <yi.zhang@huawei.com>
 
-truncate_inode_partial_folio() splits a large folio so that the caller's
-truncate loop can drop the in-range sub-folios while keeping the
-out-of-range tail. The first split at the punch start edge is
-non-uniform, which leaves the sub-folio at the truncation end edge as
-large as possible, this means it may still straddle the range, holding
-both zeroed in-range and valid out-of-range data. The function then
-attempts a second split at offset + length to isolate that tail.
 
-If the second split fails the straddling sub-folio stays merged. The
-function returned true unconditionally on all exit paths of the success
-block, telling the caller it was fully handled. The caller kept its
-default end and the truncate loop truncated every sub-folio below it,
-including the merged straddler, discarding the valid out-of-range tail.
+在 2026/9/3 13:12, Andrew Morton 写道:
+> On Thu,  3 Sep 2026 12:18:11 +0800 Zhen Ni <zhen.ni@easystack.cn> wrote:
+> 
+>> This patch series adds process and memory cgroup filtering support to
+>> page_owner.
+> 
+> Cool.  Is any of this useful?
+> 	https://sashiko.dev/#/patchset/20260903041819.1776630-1-zhen.ni@easystack.cn
+> 
+> 
 
-For example, a 4-page order-2 folio punched from offset 0 to the middle
-of the last page:
+Hi Andrew,
 
-  truncate_inode_pages_range()
-    truncate_inode_partial_folio()      # same_folio == true
-      1st split at page0 -> [p0, p1, p2-3]   # non-uniform, success
-      folio2 = p2-3 # straddles: p2 zeroed, p3 tail valid
-      2nd split of folio2 fails / cannot lock
-      return true                       # BUG: caller keeps default end
-    end = 3
-    loop truncates p0, p1, p2-3        # p3's valid tail is lost
+All findings that v2 fixed are confirmed gone. Replies to the new
+findings below, quoted verbatim, in report order.
 
-This became reachable after commit 7460b470a131 ("mm/truncate: use
-folio_split() in truncate operation") replaced the atomic split_folio()
-with folio_split(), whose non-uniform split can partially split a folio
-and leave the end edge merged.
+ > Will this comparison safely handle concurrent updates to the PID?
+ >
+ > Since cmp_int() is a macro that evaluates the arguments twice:
+ > ((a) > (b)) - ((a) < (b))
+ >
+ > And bsearch() below receives a pointer to page_owner->pid which can 
+be updated
+ > concurrently without locks, could the dereferenced pointer change 
+between the
+ > two evaluations?
+ >
+ > If the value changes from being less than the target to greater than the
+ > target, both comparisons evaluate to false. This would cause cmp_int() to
+ > incorrectly return 0 and falsely match unrelated processes.
 
-It has gone unnoticed because a dirty large folio normally carries the
-filesystem's private data, for example buffer_head, so
-filemap_release_folio() -> iomap_release_folio() returns false on a
-dirty folio and folio_split() aborts with -EBUSY before any split,
-leaving the straddler safely unsplit. The bug is only reachable on paths
-that produce dirty large folios without filesystem private data, and it
-was caught on the upcoming ext4 iomap buffered I/O path when no ifs is
-attached.
+[Shared-fd concurrency] Will not fix.
+Reproducing it needs a concurrent writer updating page records while the
+same fd is being read, which is outside the designed configure-then-read
+usage. Whether to add spinlock protection for shared-fd read/write on a
+non-production-grade debugging interface was already discussed at
+length in the earlier series "mm/page_owner: add per-fd filter
+infrastructure for print_mode and NUMA filtering"; the conclusion there
+was that the locking cost does not match the benefit, shared-fd
+read/write is not a recommended usage, and the recommendation is to
+simply use the tool.
 
-Rework the contract so the caller is told where to stop instead of
-silently truncating the straddler:
+ > Does this array need to be zero-initialized?
 
-  - Return true only when a split occurred, false otherwise. This
-    clarifies the existing confusing return value semantics.
+Will not fix.
+Nothing reads past the NUL terminator or beyond the valid entries.
 
-  - Add an optional out-parameter pgoff_t *end, set to the index of the
-    folio that contains @lend and must be kept by the caller's loop. It
-    is only written when the folio actually straddles @lend. On the
-    success path it defaults to the page index of the end edge and is
-    refined to folio2->index when the second split fails to isolate the
-    tail.
+ > Is new_proc_filter_enabled ever read after being initialized here?
+ >
+ > It seems this unused variable masks a logic bug below where 
+state->pid_count
+ > fails to clear when the filter is disabled.
 
-  - Rename the byte-range parameters start/end to lstart/lend to avoid
-    clashing with the new @end output and to separate byte offsets from
-    folio indices.
+The variable itself is indeed unused - the commit path recomputes the
+flag from new_pid_count/new_tgid_count/new_comm_count directly, so the
+staging copy can be dropped. Will remove it in v3.
 
-Callers in truncate_inode_pages_range() and shmem_undo_range() pass &end
-only when the folio straddles lend. After all, no caller discards a
-straddling folio anymore, the in-range cleanly-split sub-folios below it
-are still dropped.
+[No clear-filter operation] But it masks no logic bug. There is no
+clear operation by design. To start over, close the fd and open a
+fresh one; the page_owner_filter tool already works this way. This
+also matches the semantics of the original filter introduction (mode
+and nid have always worked this way). A clear operation would be
+over-design: the recommended page_owner_filter tool never needs it.
+If one run does not produce the wanted result, the simplest fix is to
+adjust the arguments and run it again, not to fight the already-set
+filters on an open fd.
 
-Suggested-by: Brian Foster <bfoster@redhat.com>
-Link: https://lore.kernel.org/linux-fsdevel/anH-WKA1coW6wtfG@bfoster/
-Fixes: 7460b470a131 ("mm/truncate: use folio_split() in truncate operation")
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
----
- mm/internal.h |  4 ++--
- mm/shmem.c    | 12 +++++------
- mm/truncate.c | 57 ++++++++++++++++++++++++++++++---------------------
- 3 files changed, 41 insertions(+), 32 deletions(-)
+ > When a user writes a filter with fewer than MAX_FILTER_PIDS, does this
+ > unconditional copy of sizeof(state->pid_list) capture uninitialized 
+kernel
+ > stack memory from new_pid_list into the heap-allocated state object?
 
-diff --git a/mm/internal.h b/mm/internal.h
-index 68db5abd0a4c..db7d9d9fb5c9 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -627,8 +627,8 @@ unsigned find_lock_entries(struct address_space *mapping, pgoff_t *start,
- unsigned find_get_entries(struct address_space *mapping, pgoff_t *start,
- 		pgoff_t end, struct folio_batch *fbatch, pgoff_t *indices);
- int truncate_inode_folio(struct address_space *mapping, struct folio *folio);
--bool truncate_inode_partial_folio(struct folio *folio, loff_t start,
--		loff_t end);
-+bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
-+		loff_t lend, pgoff_t *end);
- long mapping_evict_folio(struct address_space *mapping, struct folio *folio);
- unsigned long mapping_try_invalidate(struct address_space *mapping,
- 		pgoff_t start, pgoff_t end, unsigned long *nr_failed);
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 89a1495e55f7..cc1548ff509a 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1175,11 +1175,9 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
- 	if (folio) {
- 		same_folio = lend < folio_next_pos(folio);
- 		folio_mark_dirty(folio);
--		if (!truncate_inode_partial_folio(folio, lstart, lend)) {
-+		if (!truncate_inode_partial_folio(folio, lstart, lend,
-+						  same_folio ? &end : NULL))
- 			start = folio_next_index(folio);
--			if (same_folio)
--				end = folio->index;
--		}
- 		folio_unlock(folio);
- 		folio_put(folio);
- 		folio = NULL;
-@@ -1189,8 +1187,7 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
- 		folio = shmem_get_partial_folio(inode, lend >> PAGE_SHIFT);
- 	if (folio) {
- 		folio_mark_dirty(folio);
--		if (!truncate_inode_partial_folio(folio, lstart, lend))
--			end = folio->index;
-+		truncate_inode_partial_folio(folio, lstart, lend, &end);
- 		folio_unlock(folio);
- 		folio_put(folio);
- 	}
-@@ -1258,7 +1255,8 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
- 
- 				if (!folio_test_large(folio)) {
- 					truncate_inode_folio(mapping, folio);
--				} else if (truncate_inode_partial_folio(folio, lstart, lend)) {
-+				} else if (truncate_inode_partial_folio(folio,
-+							lstart, lend, NULL)) {
- 					/*
- 					 * If we split a page, reset the loop so
- 					 * that we pick up the new sub pages.
-diff --git a/mm/truncate.c b/mm/truncate.c
-index b58ba940be47..2ebb00f6c379 100644
---- a/mm/truncate.c
-+++ b/mm/truncate.c
-@@ -206,15 +206,18 @@ static int folio_split_or_unmap(struct folio *folio, struct page *split_at,
- /*
-  * Handle partial folios.  The folio may be entirely within the
-  * range if a split has raced with us.  If not, we zero the part of the
-- * folio that's within the [start, end] range, and then split the folio if
-+ * folio that's within the [lstart, lend] range, and then split the folio if
-  * it's large.  split_page_range() will discard pages which now lie beyond
-  * i_size, and we rely on the caller to discard pages which lie within a
-  * newly created hole.
-  *
-- * Returns false if splitting failed so the caller can avoid
-- * discarding the entire folio which is stubbornly unsplit.
-+ * When @end non-NULL, set to the index of the folio that contains @lend
-+ * and must be kept by the caller's truncate loop.  Return %true if the
-+ * folio was split, %false otherwise, in which case the folio is dropped or
-+ * may still straddle the range, so the caller must not discard it.
-  */
--bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
-+bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
-+				  loff_t lend, pgoff_t *end)
- {
- 	loff_t pos = folio_pos(folio);
- 	size_t size = folio_size(folio);
-@@ -222,19 +225,22 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
- 	struct page *split_at, *split_at2;
- 	unsigned int min_order;
- 
--	if (pos < start)
--		offset = start - pos;
-+	if (end && pos + size > (u64)lend)
-+		*end = folio->index;
-+
-+	if (pos < lstart)
-+		offset = lstart - pos;
- 	else
- 		offset = 0;
--	if (pos + size <= (u64)end)
-+	if (pos + size <= (u64)lend)
- 		length = size - offset;
- 	else
--		length = end + 1 - pos - offset;
-+		length = lend + 1 - pos - offset;
- 
- 	folio_wait_writeback(folio);
- 	if (length == size) {
- 		truncate_inode_folio(folio->mapping, folio);
--		return true;
-+		return false;
- 	}
- 
- 	/*
-@@ -248,7 +254,7 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
- 	if (folio_needs_release(folio))
- 		folio_invalidate(folio, offset, length);
- 	if (!folio_test_large(folio))
--		return true;
-+		return false;
- 
- 	min_order = mapping_min_folio_order(folio->mapping);
- 	split_at = folio_page(folio, PAGE_ALIGN_DOWN(offset) / PAGE_SIZE);
-@@ -259,6 +265,10 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
- 		 * for shmem truncate
- 		 */
- 		struct folio *folio2;
-+		bool tail_isolated = true;
-+
-+		if (end)
-+			*end = (pos + offset + length) >> PAGE_SHIFT;
- 
- 		if (offset + length == size)
- 			goto no_split;
-@@ -273,24 +283,28 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
- 		if (!folio_test_large(folio2))
- 			goto out;
- 
--		if (!folio_trylock(folio2))
-+		if (!folio_trylock(folio2)) {
-+			tail_isolated = false;
- 			goto out;
-+		}
- 
- 		/* make sure folio2 is large and does not change its mapping */
- 		if (folio_test_large(folio2) &&
--		    folio2->mapping == folio->mapping)
--			folio_split_or_unmap(folio2, split_at2, min_order);
-+		    folio2->mapping == folio->mapping &&
-+		    folio_split_or_unmap(folio2, split_at2, min_order))
-+			tail_isolated = false;
- 
- 		folio_unlock(folio2);
- out:
-+		if (!tail_isolated && end)
-+			*end = folio2->index;
- 		folio_put(folio2);
- no_split:
- 		return true;
- 	}
--	if (folio_test_dirty(folio))
--		return false;
--	truncate_inode_folio(folio->mapping, folio);
--	return true;
-+	if (!folio_test_dirty(folio))
-+		truncate_inode_folio(folio->mapping, folio);
-+	return false;
- }
- 
- /*
-@@ -413,11 +427,9 @@ void truncate_inode_pages_range(struct address_space *mapping,
- 	folio = __filemap_get_folio(mapping, lstart >> PAGE_SHIFT, FGP_LOCK, 0);
- 	if (!IS_ERR(folio)) {
- 		same_folio = lend < folio_next_pos(folio);
--		if (!truncate_inode_partial_folio(folio, lstart, lend)) {
-+		if (!truncate_inode_partial_folio(folio, lstart, lend,
-+						  same_folio ? &end : NULL))
- 			start = folio_next_index(folio);
--			if (same_folio)
--				end = folio->index;
--		}
- 		folio_unlock(folio);
- 		folio_put(folio);
- 		folio = NULL;
-@@ -427,8 +439,7 @@ void truncate_inode_pages_range(struct address_space *mapping,
- 		folio = __filemap_get_folio(mapping, lend >> PAGE_SHIFT,
- 						FGP_LOCK, 0);
- 		if (!IS_ERR(folio)) {
--			if (!truncate_inode_partial_folio(folio, lstart, lend))
--				end = folio->index;
-+			truncate_inode_partial_folio(folio, lstart, lend, &end);
- 			folio_unlock(folio);
- 			folio_put(folio);
- 		}
--- 
-2.52.0
+Will not fix. The uninitialized tail is never read: bsearch is bounded
+by state->pid_count.
+
+ > If the filter is explicitly disabled (new_pid_count == 0), this block is
+ > skipped and state->pid_count is not reset to 0.
+ >
+ > Will this cause the filter to be unintentionally re-enabled if a user
+ > subsequently writes a different configuration like "mode=stack"?
+ >
+ > The old state->pid_count would be copied to new_pid_count during
+ > initialization, causing state->proc_filter_enabled to be incorrectly set
+ > back to true.
+
+[No clear-filter operation] (see above).
+
+ > Will this allocate the new_tgid_list array on the stack without
+ > initialization?
+
+Will not fix. bsearch on the tgid list is bounded by
+state->tgid_count, so the uninitialized tail is never consumed.
+
+ > If a user tries to clear a PID filter by writing "pid=" while a TGID
+ > filter is still active, new_pid_count will be 0 but
+ > state->proc_filter_enabled remains true.
+ >
+ > Will state->pid_count fail to update to 0 since the update block requires
+ > new_pid_count > 0, resulting in the page_owner output continuing to 
+filter
+ > on stale criteria?
+
+[No clear-filter operation] (see above).
+
+ > When the filter is initially empty (state->tgid_count == 0),
+ > new_tgid_list remains mostly uninitialized if only one element is set
+ > (for example, writing "tgid=123").
+ >
+ > Does this unconditional copy of sizeof(state->tgid_list) copy 
+uninitialized
+ > stack memory into the heap-allocated state, potentially triggering a 
+KMSAN
+ > uninit-value warning?
+
+Will not fix. Same as the pid list.
+
+ > Similar to the PID filter above, if a user attempts to clear an active
+ > TGID filter while a PID filter is active, does this new_tgid_count > 0
+ > check prevent state->tgid_count from being zeroed and retain the stale
+ > data?
+
+[No clear-filter operation] (see above).
+
+ > Can this lockless read of state->comm_list observe unterminated strings?
+ > Without guaranteed NUL padding, this could cause an out-of-bounds 
+access in
+ > glob_match() if data races occur.
+
+[Shared-fd concurrency] Will not fix.
+
+ > Does this leave the trailing padding of the 16-byte slot uninitialized?
+ > Since only up to the string length is initialized, the remainder of the
+ > buffer may contain garbage.
+
+Will not fix. glob_match() stops at the NUL written by strscpy(), so
+the padding past it is never read.
+
+ > Does returning -EINVAL for an empty list prevent users from clearing the
+ > filter? If a user writes comm= to the /sys/kernel/debug/page_owner file,
+ > the parser aborts. Other filters allow clearing their state by 
+providing an
+ > empty list.
+
+[No clear-filter operation] (see above).
+
+ > Does allocating this array without zero-initialization leave trailing 
+bytes
+ > as uninitialized memory? Replacing kmalloc_array() with kcalloc() (or 
+using
+ > kzalloc()) would prevent uninitialized heap memory from being used.
+
+Will not fix. No consumer of the list reads past strscpy()'s NUL
+terminator, so uninitialized bytes are unreachable.
+
+ > Can this lockless update copy uninitialized heap memory into the shared
+ > state structure? This can trigger KMSAN use-of-uninitialized-memory 
+warnings.
+
+Will not fix. Same reasoning as above; the relocated bytes are never
+read.
+
+ > Even if parse_comm_list() were modified to successfully return with
+ > new_comm_count == 0, would skipping the update here permanently leave 
+the old
+ > filter active? state->comm_count is never reset to 0 in this function,
+ > which breaks filter management on an open file descriptor.
+
+[No clear-filter operation] (see above).
+
+ > Can this lead to a NULL pointer dereference in strcmp() on weakly-ordered
+ > architectures?
+ >
+ > A thread calling pwrite() on the page_owner file could be updating 
+the filter
+ > state while another thread concurrently calls pread(). Since 
+page_owner_write()
+ > updates the state without memory barriers:
+ >
+ > page_owner_write():
+ >     strscpy(state->memcg_path, new_memcg_path, PATH_MAX);
+ >     state->memcg_filter_enabled = true;
+ >
+ > Could the CPU commit the true flag to memory before the state->memcg_path
+ > pointer is allocated or written? If the reader observes
+ > state->memcg_filter_enabled == true but state->memcg_path is still NULL,
+ > strcmp() will crash.
+
+[Shared-fd concurrency], but with a distinction: a torn read that
+mis-filters one or two pages is acceptable, a crash is not - so this
+one is worth fixing without any locking. The fix is to snapshot the
+pointer once:
+
+	char *filter_path = READ_ONCE(state->memcg_path);
+
+
+	if (!memcg_info.path || !filter_path ||
+	    strcmp(memcg_info.path, filter_path) != 0)
+		goto ext_put_continue;
+
+Will include this in v3.
+
+ > Is there a risk of a memory leak here if two threads write to the 
+page_owner
+ > file concurrently?
+ >
+ > VFS pwrite() does not hold f_pos_lock, so multiple threads could observe
+ > !state->memcg_path simultaneously, perform the kzalloc(), and 
+sequentially
+ > overwrite the state->memcg_path pointer. Would this irrevocably lose the
+ > first allocation?
+
+[Shared-fd concurrency] (see above).
+
+ > Since this filter accepts wildcard patterns like -c "[a-zA-Z]*worker*",
+ > should the length check allow for patterns that exceed TASK_COMM_LEN?
+ >
+ > A valid glob pattern string can easily exceed the 15-character limit of
+ > a process name because character classes and wildcards take up more 
+space
+ > than the literal characters they match.
+ >
+ > By applying TASK_COMM_LEN to the pattern string here, does this prevent
+ > the use of complex but valid glob patterns?
+
+Will not fix. The kernel itself truncates comm to TASK_COMM_LEN at
+source - complex over-long wildcards are a corner case.
+"[a-zA-Z]*worker*" works as "[a-z]*worker*" or simply "*worker*".
+
+ > Similarly, does applying the TASK_COMM_LEN limit here incorrectly reject
+ > valid wildcard strings for the last entry in the list?
+
+Will not fix, same as above.
+
+ > Does this limit prevent the use of maximum-length cgroup paths?
+ >
+ > Kernel path limits are typically 4096 bytes. Since the command buffer 
+here is
+ > limited to 2048 bytes, deeply nested but valid cgroup paths may fail to
+ > process.
+
+[Tool buffer sizes]
+Will not fix. The kernel limit is indeed PATH_MAX (4096), but that is
+an edge case - realistic cgroup paths are around 100 bytes, and the
+buffer is already a 512-byte allowance, 5x the common case. The
+MAX_CMD_LEN 2048 is likewise an estimate, not a design limit: a
+precise worst-case sum of every parameter's maximum size would not be
+worth the complexity, and the generous budget is more than enough in
+practice.
+
+ > Could this 512-byte array silently truncate long but valid cgroup paths?
+ >
+ > When snprintf is used later in this function, paths longer than this 
+buffer
+ > will be truncated. This will cause the access check to operate on an
+ > incomplete path, failing validation and presenting a confusing error 
+to the
+ > user instead of correctly validating the path.
+
+[Tool buffer sizes] (see above).
+
+ > Is this heuristic reliable for detecting cgroup v2?
+ >
+ > On a cgroup v2 system, "memory" is a completely valid name for a 
+cgroup. If
+ > an administrator or runtime creates a cgroup named "memory" at the 
+root, this
+ > directory will exist.
+ >
+ > The tool would then incorrectly assume cgroup v1 semantics, which 
+would cause
+ > valid v2 paths to be falsely rejected during validation.
+
+"/sys/fs/cgroup/memory" is indeed potentially not robust enough, but 
+here our purpose is not to determine whether the cgroup is v1 or 
+v2—rather, it is to check whether the memory controller itself is v1 or 
+v2. Other mixed v1/v2 scenarios are not our concern, so we can directly 
+check, similar to the code below.
+
+	snprintf(cgroup_path, sizeof(cgroup_path),
+		"/sys/fs/cgroup/%s/memory.stat", input_path);
+	if (access(cgroup_path, F_OK) == 0)
+		return 0;
+
+	snprintf(cgroup_path, sizeof(cgroup_path),
+		"/sys/fs/cgroup/memory/%s/memory.stat", input_path);
+	if (access(cgroup_path, F_OK) == 0)
+		return 0;
+
+	fprintf(stderr, "Error: Cgroup path '%s': "
+		"not found or no memory controller\n", path);
+	return -1;
+
+ > Will this fail to validate the root cgroup on v2 systems?
+ >
+ > If a user tries to filter by the root cgroup by passing "-g /", 
+input_path
+ > becomes an empty string. This snprintf call will then construct
+ > "/sys/fs/cgroup//memory.stat".
+ >
+ > Since cgroup v2 does not expose memory.stat at the root hierarchy 
+level, the
+ > access check will fail, incorrectly rejecting the valid root filter and
+ > preventing analysis of root-level allocations.
+
+Not a bug, and the probe above covers it: for "-g /" the v2 candidate
+is "/sys/fs/cgroup//memory.stat", path resolution collapses the double
+slash, access() succeeds, and "-g /" passes on both cgroup v1 and v2
+(cover letter, section 2.4).
+
+If the above solution is acceptable, I will send the corresponding v3 
+version.
+
+Thanks,
+Zhen Ni
 
 
