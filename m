@@ -4,129 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A256C61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 14:09:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D41FFC61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 14:10:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 263716B00A1; Thu,  3 Sep 2026 10:09:45 -0400 (EDT)
+	id E25FE6B0088; Thu,  3 Sep 2026 10:10:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23BF26B00A2; Thu,  3 Sep 2026 10:09:45 -0400 (EDT)
+	id DFC366B009B; Thu,  3 Sep 2026 10:10:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 152206B00A3; Thu,  3 Sep 2026 10:09:45 -0400 (EDT)
+	id D3A3D6B009D; Thu,  3 Sep 2026 10:10:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DF2116B00A1
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:09:44 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2B0A4A059E
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:09:44 +0000 (UTC)
-X-FDA: 85172634288.01.82FD339
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 08205140003
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:09:41 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=euRyGtBu;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf09.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.181 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B399E6B0088
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:10:48 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 539A61604DC
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:10:48 +0000 (UTC)
+X-FDA: 85172636976.20.4E12DA6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 9FEF6C0010
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:10:46 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jygmUT9I;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788444582;
+	s=arc-20220608; t=1788444646;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MdYFxMzLhAsz9CXEVO1o2mt6I0dz9BL/Meo6d0Bb364=;
-	b=mof7650v/UxCtP47J3+AA0rtfDiwlgmbe2ID8PIsOmztVg5nxLhxEOdAk4uYEt+pIJoiIV
-	f+CC8LITlAdMeDZ208j0T2jDSmlzZBFNudWNN2RoQRubsLpTE9ndDWQxLpzdGwIEDCSoNm
-	zKYOBM1bmPZRevJVHryWv9ckawRYZME=
+	bh=3JZzmgG9bG+UNAMwOnm5lvihONair7Pb+TlG3wgKfYE=;
+	b=xFMVUyihCnd4vGymaMYjH50TLsXQs4if19LBmeWSd4ztt+3joIDyiBkEDfl61kwLzqMRc4
+	8qv+T3EwjHEurdsIO7bieMQS9K3SBCAEk2RlFzrUw/AqeLouCntSjpn6a2ws6rNnjYRNlF
+	lLis0NMJejR6xrOwMILc0Abdo/idjKc=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=euRyGtBu;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf09.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.181 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jygmUT9I;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788444582;
-	b=Xt0fjxIjTrHE0T3HiXOy9jU3c1hXNaCtviuK4ZTChq8A5ubv/WfgS6ha43XI139h7hTCWX
-	xIMZFywSrnWuPUVLVxVOmNtYJP72SUxyupggqqPTGFnWJmUAJsK+wfnchilfQ7stgUeVDe
-	m/1rQXTG4d15VDm2JD8kZZYcKydzBCc=
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-836ce6cbe1eso24741627b3.1
-        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 07:09:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1788444581; x=1789049381; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=MdYFxMzLhAsz9CXEVO1o2mt6I0dz9BL/Meo6d0Bb364=;
-        b=euRyGtBuBA6+iYGbyuB8SPwEa6oEVtK2+Iy55k0QC/Lv3pfAI4MGT7FiDCNRxhUcUD
-         /quFxBkGB1w4RVr07YuyWrXxzBH+qiuJu9h+2Jt5wXsSn4bpUqP4U7aRbiWXSP8y7AO0
-         NyYZfy/chm3SCitAREuoSmGLBL0Sg/a7sul5umSmKaipqfyQKaQcuUWzk7ZYvAv19Pg6
-         /xNpwbMBd2EQgAsv62pnbG6B5O9c2m11O4bP7ZPQGKHOIkMuXoLfrvhbtfxsr+I4UlI6
-         X+n9Y2yzmvnJi3ruYo+zaNgTzB+uHlpj9xvTgPObXG8TjPbupEUVW0/zw2nA+TXzht1W
-         kpoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788444581; x=1789049381;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MdYFxMzLhAsz9CXEVO1o2mt6I0dz9BL/Meo6d0Bb364=;
-        b=TvihEmLXlaaiZ5hsTX2XMe8aLiVRjXn2WRsNAT6xc5kLBAP5e6SUwyp6UGL2SulgM0
-         Pe5QNDUk8xj+dAV901E0Ik0CF3DMVHuqE/gzNVImxYnxIG2B1hNhfqoakqGsScMEc//x
-         aFzOEj49Dj9S4lLehRoPqYH72lenfkhMKjeRJ/wlAPDysqJmmhdGvZu7gSXJjArL17Ds
-         hOFLRpWdijoxgyl4hFKBdMaCGjWR8GyWRPGyCqMQDKB6bvJhbCxWEM0j0AxGkYTLfTkX
-         V6Up3XD+RbDNU+B/4hmGI3Ais0IaZ+TBP1I7Il6ASFc0H6OQZdK3/yFE6yJAvWhA43Z/
-         6SHQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwZ7q2kYAWyHh83eGgWYP3f+KtteJUWRf+R8mWiyRHPGvfayJ33C0vd53Lh0SwSY3BPheYMkT9mvQ==@kvack.org
-X-Gm-Message-State: AFuF++kobQXM7P+NQFe3zqD1SQKof9jyu1zKj2AsPZM8NM6cCSh8w78f
-	v8wvztsbkqx2FFcX8pfKl0mds9fACJ+VYE8DdCiuwAupbxhJEuqJXMslrq8H/ZvEN1s=
-X-Gm-Gg: AYBFou2b265GjD/QVwZnx59vICvjVaWxjiDwBirxm6sAe1gnvQy7yyTj0QDEWwHYhEB
-	oIoDO7JYshvUpw+mEXRfdxnU2/0xhQ+S6X0M0aoUvmmxG+Vk4Fps5Bvo4oybZDW9MBImdnqfaF0
-	AySrPEhEGELZtpde48hN1EteDHO7NMxrS+oDyt7yM581Brjqx+N+rhgONIEHyvlqZAoEDPnmwXU
-	O9+8uOa+HN7mXOGvxPI3kTmV5RA7bfnhdOQf9ueUwfympc4DUSEcjyLCsNSMbZ8IwhTu0B6Z30S
-	RqW2ZNovQCm0UefS3YeP4aQSo5HStRDl7BCUUGmm4jkdLQyBsclIohRKPor23mJd4I3PwN95od9
-	MxBpC/arFCdVTmYEOd0vouHPErJxmFBjLZeAACAXFDzRIZar9GIVV6kHBeB7+rXtYkwAauyqgXs
-	8waF7co0xiWzRHg2GDNhwI7aJl6B3Oajt6YMfyr/D+a0zW4bTsdyB+PvlQNpP7
-X-Received: by 2002:a05:690c:c512:b0:81f:2403:9e70 with SMTP id 00721157ae682-86c51d40664mr58591657b3.19.1788444580869;
-        Thu, 03 Sep 2026 07:09:40 -0700 (PDT)
-Received: from localhost ([2605:8600:200:1a83:fe59:7385:2855:8588])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-86c178435b5sm40369647b3.29.2026.09.03.07.09.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 07:09:39 -0700 (PDT)
-Date: Thu, 3 Sep 2026 10:09:38 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Chris Down <chris@chrisdown.name>,
-	Tejun Heo <tj@kernel.org>, Yu Zhao <yuzhao@google.com>,
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>,
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <linux-mm@kvack.org>,
-	linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] mm/mglru: fix ineffective memory protection for
- non-kswapd reclaim
-Message-ID: <20260903140938.GS3004@cmpxchg.org>
-References: <20260903031952.1120321-1-ridong.chen@linux.dev>
- <20260903031952.1120321-3-ridong.chen@linux.dev>
+	t=1788444646;
+	b=5hzk8eD+jhL56LH0C5p6S44yU4j3wMqKTz9rH+1n28JG83CZv1jJaeUwJ5Q3bXrGhEe+6v
+	dzDxniH44H0d2mqcZvD9IofmLhDO9tS7YhgUaqQUBVkK1sbrx5h+jeMn0mE9VVA+dWjSms
+	Ol9bqNTXRKUWJSxExFY27kPIom4QOl0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BCFC040F8D;
+	Thu,  3 Sep 2026 14:10:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04B131F000E9;
+	Thu,  3 Sep 2026 14:10:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788444645;
+	bh=3JZzmgG9bG+UNAMwOnm5lvihONair7Pb+TlG3wgKfYE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jygmUT9I2xlA9gFXYgsMjQnieC9T4700PPohryUEchjY9qdyFurXttHb/9ScGKasp
+	 p/6yyvXWyKak+rj+jCkxoAKJSG2mYUuM3ZfRJT0u0LPIzdpjHRfDUxArBrhmtTLMkP
+	 OuzjGv3w8HqZAY9nskFe1nP6D+3HSC5IZl4AeyXMPenTlWaC+n2qzuDxpC5way5ZCf
+	 kGE+P/qYXmD0QnB1+vuyXte9h5HZ2orivrgTMbbLj8pBFnhlVbi0X3hkLahkoJL+u9
+	 iBP8TxMau6ClWm9iHmKoRz0aYWFHSewpMoeDVtJzpmvJNoj0Gtiqlu/GBow7WEsoS/
+	 USHFM1ZcYVHyw==
+Date: Thu, 3 Sep 2026 15:10:39 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Christos Skarlos <christosskarlos.kernel@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/huge_memory: fix various coding style warnings
+Message-ID: <apl_vDvfWZldRknr@gremlin>
+References: <20260903092200.88910-1-christosskarlos.kernel@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260903031952.1120321-3-ridong.chen@linux.dev>
+In-Reply-To: <20260903092200.88910-1-christosskarlos.kernel@gmail.com>
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 08205140003
-X-Stat-Signature: k83u3zxaeceycak8awgn5mspfqqooepm
+X-Rspamd-Queue-Id: 9FEF6C0010
+X-Stat-Signature: 8syfetmk1dt7mngne17qen1ugnyyyoyz
 X-Rspam-User: 
-X-HE-Tag: 1788444581-837164
-X-HE-Meta: U2FsdGVkX19u1B5KVfWT/wjvNIZlkeGv7KccwPCy1xnBKba9tqmtneYxJYzNVoDH4Fo2bxeKJZ/t3WGFrcNQsDPyto2BtXbjz13YzznYkSAQsU5wRf2xDNgKnfE6yrfzR3U6RV+1FbfT4YulNupNHMTUkVf2IpFM+LoCLiR94TehHHwhwFtGxXEr644NfNayz//TeNyHzw8wjTYTMMOIdyI3PUslKU1zxuoD0kJovpczVp3l7Ma/wtbYoYA/jDbJJ7k3hcirmNaV/p4Lwt/yLv69Mti9MsinFoSGD9Xo6DaS31F6waO3A8JJBKe9yHPKjyM/Pu8I/SIK8HxjYy/Dq43kgIbpTe8ymage9XvcsjCfqTZpfhnhGOxfxeiIBQUGgWMQBQ9WOoj6OVRKd8s5U7moF0OD+/lq+yzQsghp1C/M2S7wzIt9+mO6Ci7Qth3mfuUy0czBT9dsb/6xvM/Sd1WUUdGNqO3NMNixV4yfRCZQ0qMe1pgStH6A5YBlbMowfAJW+hVD/3Mrm4FukhXb9lT+wRJgcrim/ZeKq1kVREPvx0L8niyiDOUwJytpx48x5oid/Ld7FobAzwoUHVi1wj00dW+OEmWx26HNrAnk4RKH9nwd83Wdn/RV6Dve3ewZSBlt/c9D+AYMiiwIaFLcPqIcGBI1/ZgbcWfs75XLQTil6wsI6pEENqah3lB6zJQzrWoquWRSHOE43rTp+shhSrote/BYt3hCmZkIRM1Nme0i+RAVPpWs6qyenKd2Uru6fmrvYf5Nupvq6jWGNrukO9zfIZRchShIweq0zucaaKFQCXZ89ke9JJCaq+f1aj06sFuwx43VGYHeFBBLeNcznS+3US2maU5fy+XVajYeH42BLPkv5FV16mpwRmbGH4UsTQBCsKRdY05+wsNOlqZxYDzV3IUvvXGH1UDP0XayZK7xfRiCa3+h22MHQDJ1JxfrPkQJLIhGHp3DSJbsQZJ
- bodu0gCe
- fGB15dhAwogc/CWTeP9veN1PXpzglZnpdhz9QjliB5frTYWpVYrK6ZZtBSY8JQljrHlH5NWDjXedCXKXHAqGZ3zOWBKYu8YbDXOvamA18j4Wq68pk2Q6NdSTzQsfGFFzaisyqVMJP/XL/gK2u4LDnaKQviBaWbk+5lUIvStFDonxnrWyJd2MyCwpSVL+nzaW93yKRM7r1zUJweuvqAm1HmsHYOKMo+12U7Mpxe5Fyq7Ge7Yt+yxShO+d6/jj5FSDVa1F97aF/MK5sy/GrAh9khwutphs683frGZzcYm5oU5ZXmIreVcJOm6n23JCrmPvX/7uetX29UDrwXP4BU5mt/NncBIe5CBP5zY7Kk+nFOVGGz2BlF64YinLUYwg+eZ1e8dOQEDSgkgS5rJqAvnMQddDSrFwKubRLsfGqb9wwSTK6xvzwJlSVeqF1G8d8G4RqW0YyCh/8+kSDRzuBbv8ONXis5+l8OjcTSQ8t
+X-HE-Tag: 1788444646-151675
+X-HE-Meta: U2FsdGVkX1+XlLFFNDkQFCl5qreyp2wZnVjn41Uxufah2KT5Kx2VfRyCF8or3sZa1VF7TpMCbMdwTRTrzKBN2Hd7lJ1O8KWvasKY85+mEkpaD0DB8zdMK/BY1jY97DDXFOBU4sGpjkQOa+2fvlJ+koz+aILp/LhB/VsE6OMwUu7upKiY5JDHoEg4lPX9FPDa77bSn0A80LAYXuRNhcHdno9YZQ5tlwkw3/7IvVMTxmzdtXgvQMDi9m5hT9FDSivJRui4E7WGeS3WQOnnEbTi/rhkcsDTtlIsEPwxHnzkXwP+lmZdd/eA6xh1ccKpuS9MKP5hUONVb9DPCiY13oTGM7YGlckLTw/LEZqpcmHUQnxpDFmR6JJ6nMfOr9DDindF5bQr5XusUMMTRzdB7Uq0HTwJ/d4o2C4Un2+I48j3MrIG9C86ZBA3DLX9hyKHrPmbvQLpwxTa4J0G+LqF9YRrbSncc7Cda/eZqtJKPLLuwB5RSIzgOuQrPKs4vBe6q0ti/OEoiswg9LGRE3zG7KUw2EI12YguDMWiBlIkEMZiVt2qqRJ6lhQDSOGk+9ChF1dgXSjTPiX1QzOZh9I8EkLgOdVH/GwgZr+s1bje927nA1khM3jHMKiQBIcCs43XYOXYSCUjlyEymSMZGhqtQAX/O52b7ggiGo7EB6O7oeSl76/tay9bxNav8s/LFSQHWS4Yul9iwctNG6LBWLmbGAvIQs8Dg+zkwztiqpyBJsVf9l+oc3SYMACN/jjZnDdzNVcLWIBqdTTfww0LW+ylJDVpBDZ4K+ucWM83lvyU0fFP6FfwmujC6CLAnqvX+Jge4yHQQ2DSUXBXVz450eoJF1floNoUNznD53FewCWOYYKUrn/JEQeGV73dMJAisRrau5HiqU6EoEz9knhQOBB11hAaZQWIN+ZzNscbiyfuWPtd3VICv+9dcLW985AS2/VzMQYd/xJtR8Up91524ED5V68
+ RzZkRJiY
+ bUepI1Fh15R28sUKpxTx/tRmvNOLB9hyPegBz/TnVrnd1e3Q+d2t2ot6G6KZlj9jNL17smTcL2c1q5ZquX/yjItQ8waF75B+XYiVriKhQzYoEynLNDRi9JATt0mXf/5kst9o1Ofec6LZHYhuO3xh7gGyEjrG4o8phcphZ06zFNX/V8RMpcBpIkdbo7KqsPhNk85IRuRl6usu5q5FYBYegQZJH2nrK+uW3wE9qFjo34V47LcP3foJJhJ+VjyW/XM9z4U55dkwN7oJAH6HVc9h1E7Z1wfcGLHNTSc6uE0WSlhIpaLSwp4TUFeZTtHudTe6yRpZ6IY8nGF8eTYPl0I9dPqworEGomhFq9aT9AposTWd30E8BtOp6F2BfDUk/ZYzRoPDjGtwWiJW+pEUcQ4+dHklalf59C2gsZ1nN3Si7IpBPSCc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,60 +92,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 03, 2026 at 11:19:52AM +0800, Ridong Chen wrote:
-> From: Ridong Chen <chenridong@xiaomi.com>
-> 
-> For MGLRU, memory.min/low is not honored during global proactive reclaim
-> (writing to the root memory.reclaim) and global direct reclaim, because
-> these paths shrink memcgs using stale or effective protection (emin/elow).
-> It can be reproduced as follows:
-> 
->   # echo 7 > /sys/kernel/mm/lru_gen/enabled
->   # cd /sys/fs/cgroup
->   # mkdir -p a/b
->   # echo 100M > a/memory.min
->   # echo +memory > a/cgroup.subtree_control
->   # echo 100M > a/b/memory.min
->   # echo $$ > a/b/cgroup.procs
->   # dd if=/dev/zero of=/tmp/testfile bs=1M count=200
->   # cat a/b/memory.current
->   222650368
->   # echo 500M > memory.reclaim
->   -bash: echo: write error: Resource temporarily unavailable
->   # cat a/b/memory.current
->   6070272
-> 
-> memory.min is 100M, yet reclaim drops a/b down to 6M, breaking the
-> protection. The traditional LRU path is not affected because
-> shrink_node() calls mem_cgroup_calculate_protection() for each memcg it
-> visits during a top-down tree walk.
-> 
-> Commit 30d77b7eef01 ("mm/mglru: fix ineffective protection calculation")
-> moved the protection computation into lru_gen_age_node(), which only
-> runs for kswapd. Non-kswapd global reclaim reaches shrink_one() through
-> lru_gen_shrink_node() -> shrink_many() without any protection
-> computation, so emin/elow are whatever a previous kswapd run left behind
-> - or zero if kswapd never ran on this node. Relying on a prior kswapd
-> pass is not correct either: a memcg's emin/elow are derived from its
-> ancestors' memory.min/low settings and from children_min_usage, both of
-> which change over time, so emin/elow go stale even after kswapd has run
-> and must be recomputed at the point of reclaim.
-> 
-> Introduce mem_cgroup_calculate_protection_path() which computes emin/elow
-> along the root-to-target path only, by iterating through the cgroup
-> ancestors array top-down. This avoids the full tree traversal that would
-> be needed with mem_cgroup_calculate_protection(), limiting the cost to
-> O(depth) per memcg - typically 3-5 levels.
-> 
-> Call it from shrink_one() for the non-kswapd path so that each memcg
-> about to be shrunk has correct protection values.
-> 
-> Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+On Thu, Sep 03, 2026 at 12:22:00PM +0300, Christos Skarlos wrote:
+> Resolve coding style issues flagged by checkpatch.pl Specifically:
+> - Add missing blank lines after variable declarations.
+> - Remove unnecessary braces {} for a single statement block.
+>
+> No functional changes are introduced.
+>
+> Signed-off-by: Christos Skarlos <christosskarlos.kernel@gmail.com>
 
-With Barry's two points of feedback (changelog and comment),
+LGTM so:
 
-Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+> ---
+>  mm/huge_memory.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index ced400f72d43..371ee8d38c45 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -1104,6 +1104,7 @@ subsys_initcall(hugepage_init);
+>  static int __init setup_transparent_hugepage(char *str)
+>  {
+>  	int ret = 0;
+> +
+>  	if (!str)
+>  		goto out;
+>  	if (!strcmp(str, "always")) {
+> @@ -1510,6 +1511,7 @@ static void set_huge_zero_folio(pgtable_t pgtable, struct mm_struct *mm,
+>  		struct folio *zero_folio)
+>  {
+>  	pmd_t entry;
+> +
+>  	entry = folio_mk_pmd(zero_folio, vma->vm_page_prot);
+>  	entry = pmd_mkspecial(entry);
+>  	pgtable_trans_huge_deposit(mm, pmd, pgtable);
+> @@ -2613,6 +2615,7 @@ bool move_huge_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+>
+>  		if (pmd_move_must_withdraw(new_ptl, old_ptl, vma)) {
+>  			pgtable_t pgtable;
+> +
+>  			pgtable = pgtable_trans_huge_withdraw(mm, old_pmd);
+>  			pgtable_trans_huge_deposit(mm, new_pmd, pgtable);
+>  		}
+> @@ -3901,9 +3904,8 @@ int folio_check_splittable(struct folio *folio, unsigned int new_order,
+>  	 * swapcache folio split. Only uniform split to order-0 can be used
+>  	 * here.
+>  	 */
+> -	if ((split_type == SPLIT_TYPE_NON_UNIFORM || new_order) && folio_test_swapcache(folio)) {
+> +	if ((split_type == SPLIT_TYPE_NON_UNIFORM || new_order) && folio_test_swapcache(folio))
+>  		return -EINVAL;
+> -	}
+>
+>  	if (is_huge_zero_folio(folio))
+>  		return -EINVAL;
+> --
+> 2.55.0
+>
+
+--
+Cheers, Lorenzo
 
