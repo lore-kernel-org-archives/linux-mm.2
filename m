@@ -4,69 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDF32C624D4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 16:49:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1A1BC61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 16:52:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9BF66B0099; Thu,  3 Sep 2026 12:49:32 -0400 (EDT)
+	id 460FF6B0088; Thu,  3 Sep 2026 12:52:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4CAB6B009B; Thu,  3 Sep 2026 12:49:32 -0400 (EDT)
+	id 411FD6B008A; Thu,  3 Sep 2026 12:52:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82A956B009D; Thu,  3 Sep 2026 12:49:32 -0400 (EDT)
+	id 327CB6B009E; Thu,  3 Sep 2026 12:52:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5ACEE6B0099
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:49:32 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 61FD31405C8
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:42:10 +0000 (UTC)
-X-FDA: 85173018420.16.5882F30
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 106296B0088
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:52:47 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 622FE1C22A5
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:44:01 +0000 (UTC)
+X-FDA: 85173023082.22.2E882FD
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 59BDD80009
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:42:08 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="jS2Asm/U";
-	spf=pass (imf02.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	by imf16.hostedemail.com (Postfix) with ESMTP id B151E180009
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:43:59 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=tENFd08k;
+	spf=pass (imf16.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788453728;
+	s=arc-20220608; t=1788453839;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f8pQRfh31VGnGXGPzZ2t/4UaiVIHP0r6rObZCl6Q+iY=;
-	b=nxDgSTUobVpnL2kvdJ+NTcYG1iwkxk6Y5Jvo4/2/Mq5JQPqXWtdkTa4US/T6u3Q0p4UaL6
-	WTFhGP0MTv7/Jqj7/WX71mbPPcpRJUwzA0m9498alcS6pArtQgobhqKeQdGmRCnZ4gfgMG
-	AXbRZgVHbXQLn0iRhhUAclq0ON4dhN0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788453728;
-	b=RLDwwnHM+zP89r1jkiE+YYG16YAiJGkYQofc1sf3MJmLVPHWjMKuMEQf5xCSKJ5BBUab4p
-	+OrQpm8eHFPmkC2lhSJLO1EPqv4comIcbc3swu724p89RtEdDklBlbbRjgvgsUIWY57hBx
-	LEbI+hFLzzcEH8g2+SYNVOUolEfdwPk=
+	bh=dnn/AYoSHbugk8b1Q7qn2t6H4dacOevAoUcpq3TWVlU=;
+	b=Ufo7kXKARx64w++gOW9m659ew7BMW5hhAq1QuSK3Zm7BvsWneVvpVPMUKPePpUIi+226p+
+	nFKsAiH3STJsZQb1WtSg8xa/YUF1/BqGS/Numu6COzN469CITB2FoIADkMGfyeU871VkoD
+	cNTKGPz1CGKZ9HWfRlvP2ieOni46Glk=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="jS2Asm/U";
-	spf=pass (imf02.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=tENFd08k;
+	spf=pass (imf16.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788453839;
+	b=8PPl9M8tjewvLttYGTKZwwvitHYN+y7TCy5nGci3GG6HNQVCoJT4GtCK7ajHdQVxiKsISB
+	JX90v9d7Zicczx6H3AEpljEiZzwBzJIA0z+Lk3Rwim03+BESNSvtEl5dm8aC5Cyw0lOttU
+	3lH1agwkNGIudqd01zXK4nc5Gt6UoJE=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AEC7E1596;
-	Thu,  3 Sep 2026 09:42:03 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1DF901596;
+	Thu,  3 Sep 2026 09:43:54 -0700 (PDT)
 Received: from [10.57.6.2] (unknown [10.57.6.2])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F24943F673;
-	Thu,  3 Sep 2026 09:42:00 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7D35D3F673;
+	Thu,  3 Sep 2026 09:43:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788453727; bh=hpWgr2ZJY3qJKLttzHDS9l/xybICdRKBZ0Vb9KipRwA=;
+	t=1788453837; bh=vWWRzkp0+9oMKve+SrPMb4YS1xG2sCsAn/SyP8y3BvA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jS2Asm/UwfhzBaNFvf9emw9gKWsaUHT9+Ly9ueyblpJtMszHw0BiQrvZPl/Bzqq5c
-	 ROwk1AuUKsBRjDM/KXiD2FJZeqlNkN/NkAdAbAKu5SuquX6KDjPQzQ8pgcjEcU7WYq
-	 AOJfjrL3ylui6l8L/lkx7tW8ReJG/FtIsmjp6kbU=
-Message-ID: <91154245-af39-4e93-bf2f-dd878f86c9a0@arm.com>
-Date: Thu, 3 Sep 2026 18:41:57 +0200
+	b=tENFd08kZU5BI9AevP2DP6ylP6FwwMDs48XD+uMO7L0Bhz+L9BtkDN4I/SheeQ1Zu
+	 vh3KCgFk+KLoT4gq3yBTLs7TWPaLUAlYsO6mFXeDPTzA2CxeRUO++TSblimvJgqJm4
+	 jYV5T0gUjWBtFbQkkOYjGhGmPiH+d6vIqx+nfiEE=
+Message-ID: <c234ed1b-b8ba-4a90-bb16-96d34878b893@arm.com>
+Date: Thu, 3 Sep 2026 18:43:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v9 03/25] arm64: mm: Enable overlays for all EL1
- indirect permissions
+Subject: Re: [PATCH RFC v9 04/25] arm64: Introduce por_elx_set_pkey_perms()
+ helper
 To: Linu Cherian <linu.cherian@arm.com>
 Cc: linux-hardening@vger.kernel.org, Andrew Morton
  <akpm@linux-foundation.org>, Andy Lutomirski <luto@kernel.org>,
@@ -89,21 +89,21 @@ Cc: linux-hardening@vger.kernel.org, Andrew Morton
  linux-mm@kvack.org, x86@kernel.org, Ira Weiny <iweiny@kernel.org>,
  Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
 References: <20260818-kpkeys-v9-0-743ad31b2c8f@arm.com>
- <20260818-kpkeys-v9-3-743ad31b2c8f@arm.com>
- <apbjpkTgtdXZQ9Sm@a079125.arm.com>
+ <20260818-kpkeys-v9-4-743ad31b2c8f@arm.com>
+ <apbkbH6Q4p5KYmpE@a079125.arm.com>
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 Content-Language: en-GB
-In-Reply-To: <apbjpkTgtdXZQ9Sm@a079125.arm.com>
+In-Reply-To: <apbkbH6Q4p5KYmpE@a079125.arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: noah3ymz9se8djwcwd9w4ukafhhrk5ta
-X-Rspamd-Queue-Id: 59BDD80009
-X-Rspamd-Server: rspam02
+X-Stat-Signature: 3zf63i4gqqmft9cc5nexbpeof854faqz
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B151E180009
 X-Rspam-User: 
-X-HE-Tag: 1788453728-545722
-X-HE-Meta: U2FsdGVkX1+K95IIyg66voxbJQYsTDvcX5Z0NNpppUsZNOhB/GkPbPZu5ooEqTNgtJbtrr5FxX3y68CTbjFRvAfdjlqC3cPR4H87XA97GN6TWBWfzKrH/hlel6sz58OyMvDvXm+5cJ4u62o5Kaj8VvcTUNuo9NCQBsTo4mzNoQOiUeMZVqNlmK9xEltwpfGv80pv42ve4eHO82Ub7y8+JmZ4ocIgEpGVlirrnBbLK/W818BlPGTWPeFP0xXKKSfKuq9AT5JImlgsuvWkKkDubS4m5oD6PLcE3sYodukCTvuTaQuVW9glbAGjPdsWmwgW2c4VrkvcTaP4H7h8ZBborQ1nPwJOimAPxV7GfbGae6sgLjtFDoTRvHehlnWfuoutHy1GLBOi8wTa6BhvTU6VdZUEmt1uBNZp1bym5RYP0aQluydOs70i0N7spBbwNO5mCb8P5UEnZ3ToNV8cstGLb1yaM0kUawycw+5ZmMQuHSVfE4/mQsEABjjHwvCwr96WZCQTCDsvYRMe58Ffj5CMZgUbi6mB2eipCZdiJL233DXM/bxyrTbK2lvvncDzSAiyZzZMH4om2sb8RTcD++dG6MS462NoZKkhGq7/xao9NijnbW/bdM8N87BRKgZFlZOotkjd9TmlUagq9EeC+/BEXzZ/Tc8jcbgbt0aRh4bBzHgRgN78r/CQXvLpV8dDB9BVLJTrkkr8HfJ6/gwbR8eHN5IiTiZPW1Dn1K/q5TsRuP6A/OiV4i0nXkRf+GV+0RrVGa1julZgAiNFMM3F9A9HacXFhiS74XlZO+KpdvxglhjqC9SK5rVanJvLIglqaNewSJnpvA9h8Fj5uDwLq4Tsm4c79QoYY3gB0d2G/lAsxA0ck/V5x8/6vEq8Tr5bxUj0XmdpIxMKnVEeMf4hc9CcPzAdR9bQtv0FWxXXwb9+RTrCfxfzUdduYxwYOzxuocsXoKLwwd+UD4hdqUkf7TF
- FY7/dUmG
- 86JZVAaEGAFfwIUwu1H/oz5tsNzC5/PQuMrBP79XjJCAexxb49z28gxEVsQR6npSDXLMHsmqDtRGF/T6VISFiYu2aRFHt76g+mcXVhzy1HEcVoYsxloepe2xsCMW31fyWEeNMJJ3EWYiU3AslebchjXKWCh/DafrrBf+LoSEP9RdOKYjbavRKDWzrJaXH2IU5L8uZqiaWgbZkE/rSRObNw2c3uXXYTzwxkwVVbOIh7Y6ArJMoTbPPkxR65pDLBK+zR5H4Ilm3y6z3uMffsqkN4RsZrdVc01jLG1p9pammZfBBP94vId1F+fn+nTxvIl/3LVSL
+X-HE-Tag: 1788453839-648761
+X-HE-Meta: U2FsdGVkX18TBDiL04whutBqbh8yOR/NN7HNHRp0VD0Dj9Y/MwBTDGcPk7NaZOZL7c3lotdafOdncPbKyRbSXrvJlA/SCBkhNc3q9GNiJ+IHDY7OnyEBs7RW89Bj6Cg2cF7QhHcYQSZDt75VbI5jcE1W7qvjHMgAIVkk3ouL3LXmvOcu0IW6y4H1eCwDItRRSQDnyS1Pz9Cyvu4N7T6CWdb3/S00xlM/9zAV7fK+2U0d9EqEa6tPjtcajbbyIFafa1YumwLe5fJfb4Cqsr48rx1PU2+671+hPKdYy1jOLYxFpG0mIRdMcL0u6lp5E+h4xGVA2jC5OiucRNrbg5Nxa/vKKDRC15kWU9c572Hsrj+qeCCmVSDTLAQXJ4qXKc8G3uLfI+RFMz++HsXvIPMB5eVwKgcYEM3eGo3N5h0GGhKYu3SZ/MdcWUfkAjPgremp2+XrgTwF/svy0txmgUag14c/bqMvRJ8WluxiQU0X/KIrNPxkaH1iQ8+jZTHeWzdsFvNOKKXLZjURVHTK6FDGdAZAL60WetVc/rP43PaZbojqYQSF5JHL7LEN4ZpEGtJhsSb9Qu0EGIz726teWv2cd5xGLp48MMoJ9UykaFYuB7fEa3a/Prvyp0xtYR1mSM+qCD9fQ3MmuFdTRYAnaaynQeXzIYq+NdNALAzgasmAdEdahGAKqmQzb+vq6NA3CVD/O2L+SKJSk7he0fuA6kJnqKwS3ql22rlDBYR4Ap3dzhlujhOxbOgr5aGntgfFQmm9qZnqAIiEvU2k6Qg+OP3PQxQ9SCPC1l1LTxLCutk48BGAIR/V7XYIxUhSsR70195KLhWlBC7tG7nQ9EJWJaAJVHk42Xfp1HuQf/yJXLWRlOliUUVAoQFznHFcSFOtmTL6D7VtJmifwwoAS9eZFsIca/M0QGymyiRNU+boZKJisHC1ypvHYCZt7olRPNfKsrYt0zsDT4NACxEnSpLKJnC
+ 1gB0jPhc
+ nO3DgQGSQwfMqw9Oh4g7KMV/TzbwVlHDudHH9mZSBh8vftkgpNCr8E78IPB9mpEel+GzMjD+KGcoyN3X0scL1Oa0GBceGFwze434tslgA6vMN4GGC5cnQjO/hjXaaPCjdzAfs37GI7cT0BQ0svujlAF1Xn6oAdn7ESPb4o/tui7kgWzM57KMV7u7uZIT5T+376E3D/lpm97zElMbCD2Pb/GJ9m/ASwV+BvH+m/dajZ9rQprWCR8OAlBlrCG1UAoKerMCKcBdYYFUhWX/cfUaZdzLSl1qFETI+OGDlVbrpsJqa4GnO1YFCI7Top30mtI43w6ix+Vi/7XifQAp4DZ8hMEXj/IYhvzy4tgkX3LbuQEGsseuklZBGZ/UxGkf3Penem8LOyonVg9gXb8Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,50 +111,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 01/09/2026 16:39, Linu Cherian wrote:
+On 01/09/2026 16:42, Linu Cherian wrote:
 > Kevin,
 >
-> On Tue, Aug 18, 2026 at 03:08:45PM +0100, Kevin Brodsky wrote:
->> In preparation of using POE inside the kernel, enable "Overlay
->> applied" for kernel memory types in PIR_EL1. This ensures that the
->> permissions set in POR_EL1 affect all kernel mappings.
+> On Tue, Aug 18, 2026 at 03:08:46PM +0100, Kevin Brodsky wrote:
+>> Introduce a helper that sets the permissions of a given pkey
+>> (POIndex) in the POR_ELx format, and make use of it in
+>> arch_set_user_pkey_access().
 >>
->> User memory types must be left untouched (overlays not applied)
->> because any privileged access to user memory (e.g. futex atomic
->> without FEAT_LSUI) would then be mistakenly checked against POR_EL1.
+>> new_por now represents the permissions of a single pkey, so rename
+>> it to new_perms and change its type accordingly.
 >>
 >> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 >> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 >> ---
->>  arch/arm64/include/asm/pgtable-prot.h | 8 ++++----
->>  1 file changed, 4 insertions(+), 4 deletions(-)
+>>  arch/arm64/include/asm/por.h |  7 +++++++
+>>  arch/arm64/mm/mmu.c          | 26 ++++++++++----------------
+>>  2 files changed, 17 insertions(+), 16 deletions(-)
 >>
->> diff --git a/arch/arm64/include/asm/pgtable-prot.h b/arch/arm64/include/asm/pgtable-prot.h
->> index 212ce1b02e15..d4d45ab86a5a 100644
->> --- a/arch/arm64/include/asm/pgtable-prot.h
->> +++ b/arch/arm64/include/asm/pgtable-prot.h
->> @@ -183,9 +183,9 @@ static inline bool __pure lpa2_is_enabled(void)
->>  	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_SHARED_EXEC),   PIE_RW)     | \
->>  	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_READONLY),      PIE_R)      | \
->>  	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_SHARED),        PIE_RW)     | \
->> -	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_KERNEL_ROX),    PIE_RX)     | \
->> -	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_KERNEL_EXEC),   PIE_RWX)    | \
->> -	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_KERNEL_RO),     PIE_R)      | \
->> -	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_KERNEL),        PIE_RW))
->> +	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_KERNEL_ROX),    PIE_RX_O)   | \
->> +	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_KERNEL_EXEC),   PIE_RWX_O)  | \
->> +	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_KERNEL_RO),     PIE_R_O)    | \
->> +	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_KERNEL),        PIE_RW_O))
+>> diff --git a/arch/arm64/include/asm/por.h b/arch/arm64/include/asm/por.h
+>> index d913d5b529e4..19b3dd1d43a0 100644
+>> --- a/arch/arm64/include/asm/por.h
+>> +++ b/arch/arm64/include/asm/por.h
+>> @@ -31,4 +31,11 @@ static inline bool por_elx_allows_exec(u64 por, u8 pkey)
+>>  	return perm & POE_X;
+>>  }
 >>  
->>  #endif /* __ASM_PGTABLE_PROT_H */
-> IMHO its better to have this patch just before, "arm64: Enable kpkeys" for
-> easier review. Otherwise,
+>> +static inline u64 por_elx_set_pkey_perms(u64 por, u8 pkey, u8 perms)
+>> +{
+>> +	u64 shift = POR_ELx_PERM_SHIFT(pkey);
+>> +
+>> +	return (por & ~(POE_MASK << shift)) | ((u64)perms << shift);
+> We could use standard bit field access macros here ?
 
-Sure, I'll move it.
-
-> Reviewed-by: Linu Cherian <linu.cherian@arm.com>
-
-Thanks!
+Good idea, will do.
 
 - Kevin
 
