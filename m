@@ -4,129 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6326C61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 14:00:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E4A5C624A4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 14:03:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C8C866B009F; Thu,  3 Sep 2026 10:00:13 -0400 (EDT)
+	id 73B606B008A; Thu,  3 Sep 2026 10:03:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C63416B00AF; Thu,  3 Sep 2026 10:00:13 -0400 (EDT)
+	id 713496B008C; Thu,  3 Sep 2026 10:03:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B532D6B00C0; Thu,  3 Sep 2026 10:00:13 -0400 (EDT)
+	id 628FB6B0092; Thu,  3 Sep 2026 10:03:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 926296B009F
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:00:13 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 31B1940548
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:00:13 +0000 (UTC)
-X-FDA: 85172610306.25.46692AF
-Received: from mail-yw1-f194.google.com (mail-yw1-f194.google.com [209.85.128.194])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 165621A001E
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:00:10 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="gjzZC/MD";
-	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.194 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788444011;
-	b=3A08xk5aVZBKfA5uGzXsU8K4yqRJFBP6r41aNGLWvfPAkM+0DhfPCvTQL7IJwkCH//okq/
-	CBqvj5XBdUGoYFMvjhSXdj7wYq6FyZXs/3Ltb/VlvHoLxifdk/h3xNvXwespyIl1hFMeBe
-	Bn+f/P8cpDUy5sscFRP9FKfz9lifaMM=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 15B2C6B008A
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:03:50 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4894DA46CC
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:03:49 +0000 (UTC)
+X-FDA: 85172619378.22.22847BC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 622EB10000B
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:03:47 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MKcvgfMp;
+	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788444011;
+	s=arc-20220608; t=1788444227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q6ffg0EsM9Oq53XXehfd0nBgBXlCf1MLMwzSPDpkFdE=;
-	b=SJEdU6G9ocP8XjAERhYikoG4D+MwQiIunfSp64z/l750GdQA0nC0broCTL4iahJS7C8O+I
-	Zd85tmyW5Tl29H3n2KdQiPTYc5+Res+zviYjZIrljLer5ouIQuPkchAP42CAW1XtwMhtWA
-	lDl+oFXNqFttnXbLCWMS1s/glk3S0hI=
+	bh=SIkCVMXueZug7Awhe2bDRHsi+uaKaNMKk8EAPzdMILM=;
+	b=r1ztqNXLonCYqoe+FFUxUpnCSFcVtG8v/YVuA1ucEGPd9t0DKuNxpdJPnH/QZV9igb63yw
+	0znB3u8XfRov2hsFd832jbQW0qmMCAVX6n2qTHDyL/9pGqi7mDkIyJDPgcNogSFbSJ/G1A
+	B8FXrHq9h+8+LRot+bWQdnUlcIqybK0=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="gjzZC/MD";
-	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.194 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-yw1-f194.google.com with SMTP id 00721157ae682-86162c086f8so15444997b3.1
-        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 07:00:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1788444010; x=1789048810; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Q6ffg0EsM9Oq53XXehfd0nBgBXlCf1MLMwzSPDpkFdE=;
-        b=gjzZC/MD0cMVHvhwkvfyWedTEvqc8mpwQ8CovdCm2PEXx2y4acnvsvDeDW0M28L0VV
-         G72J7iL8yM4C4vdlANhXIa43aHf2xb4VF+86yBAAP/lH7fYBG4PrF0F9p7frxfLV9cdo
-         RRQysCWa1CAZ8olvt/xC97uroWnFgestH7LmQZh399nWV4jW9xuiHmSrlZ15DazLxdcg
-         WRS1XN6WDm7f6q3PxSwCrGX4VswdXjyLf+Jj9n+EJdU8Sz8X1czJBLCIOLZQ+ZvZTcNg
-         fK04KcjEBBVgIu11eaoF0VsyofLCVZY0A8TGj2g7Jpnt6Fgtn87k8wDR+sAKz4ZBcf+J
-         AdXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788444010; x=1789048810;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Q6ffg0EsM9Oq53XXehfd0nBgBXlCf1MLMwzSPDpkFdE=;
-        b=pZLsVdJKxx8mqCHnPbLyhw+Gl0DNN08jbINtAnIPTSN+0NeLd8bkzuOteW14iZwwof
-         Q3GD+qtUVsphzQykCMMTAJeT7pd8hJK9eKRiqaANnEgE1UNAo5XEUKoKbsjKPfS57aRc
-         2AT+lnSnUVi5doodQXUkoMNf0FT+jg31/+vp3gRv9RPTGMJojuyu4Pyw7Z0mA7MaVF+z
-         IhFFOr+BQkNOSb/f5ty9px2DYRdl28zBa8Xt9ZsYslGGomgGbUckdOL8rECIrsXVVN9F
-         mbbbnDqGNu/CkWb7+HwrsaK899tq+UkLUUYhI8+QlCX4QhlqXxEuIdwb0iVhjpfDMmXK
-         eE8g==
-X-Forwarded-Encrypted: i=1; AKwUvBwVovg+Xr9PxO3YBpUv7+qLgGTTRrfqq94xke2Ysav2NesJsXWAys57YqqHw3/BPqNrXPMTEuPE2w==@kvack.org
-X-Gm-Message-State: AFuF++m/MPKKSJh2IL2kpiXk1NWDSBKNyb1AYgPIU32FOWmWVs5gomnl
-	4B/cWOhs8CRhoeMfh79jKSOh4Q7l+y7gnvr4r91zNH6J8G3UbtwD+P/HY2xV0AjHrNs=
-X-Gm-Gg: AYBFou05WnD5wbocK2B+dbAkEjprtokdpIyI90LmcvyfMWXmlOWtzBzijvF/6FvciQg
-	8Qj7QuIBTycDvd3TWccFYokT9jP0/GX6qrLnILeX7qRleFidQOckJ5oHVVvopUT4pmiUpex+CjE
-	diRceRhlT+ALuWB+IXokfEfdTxsQm/rOuMr9PQpQi25KBytuO1GIboWCabALI6Eg69xoBMt3lWP
-	6LeFlPZWZLa8ckHz6iPIUdMW/pWzAAXVylrCAPh5l5jLAit0mNkwuLLRHsJOBDVzrQER2LMMdwA
-	O+LBkVvdXLIFqu6mkpMo3GN6z2NKOr5DYfEysfEYs5n6YHPyOY4kzKtnWJXhPNHMdahGLzSJAWe
-	l7RllLqCjZ3pohgdiVwZK/ZmHmbdx0KzVcg3Dxp+qvcnJBxcxmYOVVrwVCKGmju5yDxEeyq8F/x
-	hG+0HwGbcVmj0iBNEpzVcm141aVY9u8dD2GKpM5pLVf8pwBK4e2/T/LDPKZxYf
-X-Received: by 2002:a05:690c:a84:b0:7f0:38f7:6ca6 with SMTP id 00721157ae682-86e6d7905ccmr34387887b3.5.1788444009533;
-        Thu, 03 Sep 2026 07:00:09 -0700 (PDT)
-Received: from localhost ([2605:8600:200:1a83:fe59:7385:2855:8588])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-86c12d92d9esm40198227b3.22.2026.09.03.07.00.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 07:00:08 -0700 (PDT)
-Date: Thu, 3 Sep 2026 10:00:03 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Chris Down <chris@chrisdown.name>,
-	Tejun Heo <tj@kernel.org>, Yu Zhao <yuzhao@google.com>,
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>,
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <linux-mm@kvack.org>,
-	linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] mm/page_counter: avoid integer overflow in
- effective_protection()
-Message-ID: <20260903140003.GR3004@cmpxchg.org>
-References: <20260903031952.1120321-1-ridong.chen@linux.dev>
- <20260903031952.1120321-2-ridong.chen@linux.dev>
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MKcvgfMp;
+	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788444227;
+	b=2yaCiHE12FXRiVrRdhpYw9MiXH3RlSGtkkZ9JHrJjSaPHRF0BbrcAs2UtOHnhZvJxJUo+Z
+	AmYRzGh9tdQDZmNTpmQrCbSg8DMab37PxFJXjc4cAnr4W0ovJsZaS7AI/1oUjkMp8OHaYc
+	UQ6HgnJUoYhR7cTIaSF6T6FDJjqIvo0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D30B060A52
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:03:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 894471F00A3F
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:03:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788444226;
+	bh=SIkCVMXueZug7Awhe2bDRHsi+uaKaNMKk8EAPzdMILM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=MKcvgfMpi72qQpfUBJdR6W1lHzc/2rNRHq0b0XCtBRAHeStSFPGp9K4F6s6o711he
+	 Hl29qtTtA6faFKUb4JZtyrBdX8Ht1RrFF3+j8O8Dd8zRycPEb3pgPCumQ0HQwaiUGm
+	 2nuz3JfDsa9vbXSb0BRKfeov+LvsmIlmRsMiKejnjW5C3nlICchVu9SZ+XGb+8SJZh
+	 KEU/Y+JQX9DKwpiVZm0b8VdU8BJ567YPPauQzwUiA06AKyPQqIcldyKKHzfFCbSy6j
+	 1l1gIG70zoXuS0jtcNW//96UEnEcFVe7mfHa03SwITbF+EJbu1DJfeg+2eI+lFbNnc
+	 meHyLfNnc2SZw==
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c20ce3c118aso225128766b.0
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 07:03:46 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByImpB7DMKzYRXmGPFiIdnuhvUv5pOJ/qrEVOECWZgnCuVSttLmMUSgsxSYC49JTIwHgtxbNAlpnQ==@kvack.org
+X-Gm-Message-State: AFuF++lTyoZ6E6by7KDs70eyKJ2KEy3vSUN3pWnTst/L9WgdVgcqz8SQ
+	5lm33pYX76uAb/VOWWa1euAgMRKTdH/NlJC/k79Djj9bmcmUvzBFWEoxHLxpOrnf/fu9lzys3Zy
+	LyHoGeMgeUzMMKvOSgjVM3/SwyU9/vrE=
+X-Received: by 2002:a17:907:8323:b0:c25:f7dc:2e0 with SMTP id
+ a640c23a62f3a-c25f7dc0985mr100970266b.33.1788444225414; Thu, 03 Sep 2026
+ 07:03:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260903031952.1120321-2-ridong.chen@linux.dev>
+References: <cover.1699104759.git.quic_charante@quicinc.com>
+ <a8e16f7eb295e1843f8edaa1ae1c68325c54c896.1699104759.git.quic_charante@quicinc.com>
+ <aphSYFTd12oia8K2@google.com> <apkhSHr3by5Bf8jW@tiehlicka>
+In-Reply-To: <apkhSHr3by5Bf8jW@tiehlicka>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 3 Sep 2026 07:03:33 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPCYNmJbkQEA62z75AB=ziWqGb38_E-ee_6o40Sz=zHXA@mail.gmail.com>
+X-Gm-Features: AcwNN1Vh9NEyJMK2-RqtsSvN7Ew3MbvuJfwRRlZGGsd6gh2ct7StqfMzBcy6rzk
+Message-ID: <CAO9r8zPCYNmJbkQEA62z75AB=ziWqGb38_E-ee_6o40Sz=zHXA@mail.gmail.com>
+Subject: Re: [PATCH V3 3/3] mm: page_alloc: drain pcp lists before oom kill
+To: Michal Hocko <mhocko@suse.com>
+Cc: Charan Teja Kalla <quic_charante@quicinc.com>, akpm@linux-foundation.org, 
+	mgorman@techsingularity.net, david@redhat.com, vbabka@suse.cz, 
+	hannes@cmpxchg.org, quic_pkondeti@quicinc.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: sb9k7tx5wzrhnuxqjgsufu31yfiea5g1
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 622EB10000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 165621A001E
-X-Stat-Signature: gjj1yzrbe1139ygqou6jeu6wyn9ums6n
-X-HE-Tag: 1788444010-915771
-X-HE-Meta: U2FsdGVkX1/6Qvfl0EXbtf5TM3VdZ2vJ4rr7J6z0MYKQR9qkJ9rQDY+NwEcEF3XCYm1XehEGTXCshCa52KuOE7BTizlBA1UvBFAMdZn+gw4lcMPdjJbCyxiAttfZSypLWdq02Rqelo++1U1hDLzQR1rzznLQI/lh7JcgsyVDHNuTr2WIFUZM2Ize1KjdN0mU4OmEzwEL13cL/7Ebdx7cbVJPpwIjhxuxvVUpSSKVSlV4aDGAU5tZoNM60s+1ZUyNE7MYHTDL46ZJR0ENJfgbAV1YaSXeD2nOnlw92jZHRz/HneFY4orb3XUJ22MGrSMtkJzpMc6Ms2h4M6wKcUxFdrdCJEXfZBL4C0vtWRgjmKA7MatQXbCLo/65SEmJT7y448kiLsVqxiQg1hDkuwsUB2Zse1dTSiseEJpACfJ8rTx0+EQgvj+ysRPh/hWX2oL9pVe8eLJrbOc0qujXBCxriUWSILJKBi6gtQxzmCn0JetTSd93deBXpssdeWr07K/KX639ao6GFuFveduyKMXrc4taCaMK37GiA7in4eS8Hi866rY+LsWebu6p5lEv8v6xeHcZn5z3J/BdNLfOjp5xKzu9s2Z/4+nquI3W6GudTC8aXQ2fAo/LjEhIucEtZnMyZq7KcEyM9Bql+WV3iOdfZVog4mVAcosEIer1fMmoHhz8CltwlIG45uHMIEikZnN10jv8z/RTn6OpIR6d3bkI55iJ/uZLD1kNtE4q9p2AssKMeLcdihM0PIyjVPujlmxFok3eMWNn9wJCeKJwcuPHhW6kcW2hXc0RkuT0e3/1e6ajje4l+9Srj5TI6SJFwrKIVsTWqgkgB/r6VEwrNpgtkO1WRqAIoR0nFgdCVP5Ri6uOEMHzt3h9nNEFNesk91nJulRQJgrMZ2RvYaRvTzsJHMd1fQ8N2IkOr2knB0MR8OodAYx25A5/nUTeKve2bDzrxBjd6Vok0nsY28xoXjj
- 4frUk5Ld
- dqMXVzeLvi9CeZsz3Mqz9BNZjFt7Le5SYO+fvuDdStSNgL9o8+MdrsiaBok921uXtA9cvM2O4AycGhApIse6Me42WvepYb5/GZAFuLBX91GjmVNaSqehq+6Zr3L0S2Qb8QmgKHMwhFZvl8jg8IwvFcf6l6YKJiitieEvuYy9H+wnhstBg1gp6uXMJ95SDkn2asvCQB0UrHkQvisuQyqaRGaOvQkQbrO0z4gAVor6o1EYsJmns8pGLoZJf/t3QuAsI7JKWxOxLdMY0t7ov99WvrYyKWYiRT83JWqfsl+6QwTXVIFzTal0p01hdbpDcOkdUuYURgI6RmeZggMAlv0LPfuvN1C5d/wEwjPz57QNXS4hHdTEygTMgSYfz9hhmBS6Ma60QZEw/PYLuzo47gcdbydYsN1kbZF4vmk8L9QZm0O6VrXvv7b8zT/zG3iFhcHeMDZkKYNw8m1iR9x4wZuEVGByRMl0wjzGndMnj1RluMu8NAUQJV62/OOmt/4MTKZTrKkq4++psP1cV9V1zp6EgySft9hDqYX/d0cLACyaoEJYoLAsf7WsZFR29vvbW5dTwP3h/1DmB9IT19Pw=
+X-HE-Tag: 1788444227-437591
+X-HE-Meta: U2FsdGVkX18aZ3myC6Wy5Kj4skhJcUo2xSMlxNt5B5gCWCaN2V/9ifkQGf/NDMr1OVX4joiO6eUZBaz9g3k7mHbVQqZkyX1cdgVMI/y61VDogE+Q2RQRm7wxsNTVGuwOvPGEFs/JUxVX0gWn+evuS8a99NmPSI0QkP8v4LDcBuRR0paVGa/X47rfy7VdTAl7n+qDACb9g581cO6zTTapH5NlgYFZ/7E93y40gxHoimxjmv5S407Am7YPiCIg10YhMn0j0zDqakTcB0Bbm2uMVRyJJllm28drZ3VT9H+L2M0aoAzMzV7U0mXNQC7ntcqh1CtkMrkXheUKMyngsaMm26LqL+rVuUnDGqlJwyCothUuEwU2SOn1jp+MiNeRQOlezHhJg7etPV2ex7mF1JeI8ISLO/sVNFXtiO9K5ulGcimCTvcvHyaNWGn9IPOIbbbhqMSgVlL0bxMDdm0kJiVUBnlFxO0c6y1SMRE0SHQ7Ucp6unbseryKHAz0nlnH+2RO6jjCL453mOImhFOuCQ7XOXW5LGO8QmEvmANAKghidVvmVbDGYUdDKJ2vQ4/ao4nPgLhUpYPbHOT7ldXyhN5Hcf9sKmXCm6yfAkfKUmou+4sH309cjlV7A4L7JethjFtkIC6kqN+LgUCzdnPaAZMQNXW+mcEs2c3vH7y2W45Xc+0Zvq5PhM1tu51PtrL6b/i1aqOe0jmxb4uOeIQgh2p6tm3jUc+UXggghciF5xyzEFfGep9JJwtPNdRyiA5PeQ3S8dSxl5YOR9oWUa2nCnCXidfilVbzwaGleyFdHRaLI+JUmpiiTbOHcs+Rlvg4Gs3Y1AM70ex02d2ZOxkL4Hnlnd3lEqxTWKF16Gr8FVe9hccoKfUFI8rxtp5m/0v/Qy3yLhWI0LwthWx2SDD5STSlU2ybkhP1acD/dafRykboJ9hD1dj7CZx2TBybO2YOY1CYtHdCrZGQpO1Vwsue4IN
+ x+LCwjFZ
+ CZwS32V4DmoXvyVvIWSCaaGUTzmPdkxKO3o0TrXsvgGdMcuIDPa8GaA1OEAd/8lSVaikKFWYUEPXdo9w9u5xXeXa6X2b8PKddUEhL+6RAwFINNngfb+xLA2ME9XVGq6+VPA1X/DtnHLirySz6jOtJkCKykX8GrXW2PsJh6u4wcxxAPu/WbS8Fgs+zQ4+fbBjnq8TYPAe6mGvsbuT6DoFj615eqGcyYoARjbU1N70ncg64S0Z2/ztlC/yUCegan+JeZnDrkzzVZ3TyZk2DPDUFvqrebr36Pk3tf5gKflVIqUlTegsJP5R0TP0fd8Mz2ccDMOrnmqTn0unj/Hq9VneNhnHq4WuMya4W6bWMd3O9dz3b2Pml+N2DGo8OAGM9Ph5sUeieC8L96e1ClWGrkukclKf1ZdDdkYEPsuLE9kR/YJ5iEFYlYYSPhmHds82T2NVig0rb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,102 +106,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 03, 2026 at 11:19:51AM +0800, Ridong Chen wrote:
-> From: Ridong Chen <chenridong@xiaomi.com>
-> 
-> effective_protection() scales a parent's protection by a ratio of page
-> counts, e.g. for recursive protection:
-> 
-> 	(parent_effective - siblings_protected) * (usage - protected)
-> 		/ (parent_usage - siblings_protected)
-> 
-> The multiply is done at unsigned long width before dividing. On systems
-> with >= 16TB RAM the product can exceed 2^64 and wrap, giving a bogus
-> protection value and silently breaking memory.min/low enforcement.
-> 
-> Use mul_u64_u64_div_u64() to multiply in a 128-bit intermediate. Because
-> usage and parent_usage are not read atomically (a child is charged
-> before its parent), usage - protected can briefly exceed the divisor,
-> making the quotient overflow 64 bits and trap (#DE on x86). Cap it so
-> the ratio stays <= 1.
-> 
-> Reported by the sashiko review tool [1].
-> 
-> [1] https://sashiko.dev/#/patchset/20260826133054.88529-1-ridong.chen@linux.dev?part=1
-> 
-> Fixes: bc50bcc6e00b ("mm: memcontrol: clean up and document effective low/min calculations")
-> Fixes: 8a931f801340 ("mm: memcontrol: recursive memory.low protection")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-4-8
-> Reviewed-by: Barry Song <baohua@kernel.org>
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
-> ---
->  mm/page_counter.c | 19 +++++++++++++------
->  1 file changed, 13 insertions(+), 6 deletions(-)
-> 
-> diff --git a/mm/page_counter.c b/mm/page_counter.c
-> index 661e0f2a5127..e8bd512069c5 100644
-> --- a/mm/page_counter.c
-> +++ b/mm/page_counter.c
-> @@ -8,6 +8,7 @@
->  #include <linux/page_counter.h>
->  #include <linux/atomic.h>
->  #include <linux/kernel.h>
-> +#include <linux/math64.h>
->  #include <linux/string.h>
->  #include <linux/sched.h>
->  #include <linux/bug.h>
-> @@ -356,7 +357,8 @@ static unsigned long effective_protection(unsigned long usage,
->  	 * otherwise get a smaller chunk than what they claimed.
->  	 */
->  	if (siblings_protected > parent_effective)
-> -		return protected * parent_effective / siblings_protected;
-> +		return mul_u64_u64_div_u64(protected, parent_effective,
-> +					   siblings_protected);
->  
->  	/*
->  	 * Ok, utilized protection of all children is within what the
-> @@ -397,13 +399,18 @@ static unsigned long effective_protection(unsigned long usage,
->  	if (parent_effective > siblings_protected &&
->  	    parent_usage > siblings_protected &&
->  	    usage > protected) {
-> -		unsigned long unclaimed;
-> +		unsigned long unclaimed = parent_effective - siblings_protected;
-> +		unsigned long unprotected = usage - protected;
-> +		unsigned long parent_unprotected = parent_usage - siblings_protected;
->  
-> -		unclaimed = parent_effective - siblings_protected;
-> -		unclaimed *= usage - protected;
-> -		unclaimed /= parent_usage - siblings_protected;
-> +		/*
-> +		 * The usages aren't read atomically, so a child can transiently
-> +		 * appear to use more than its parent, making the ratio exceed 1
-> +		 * and the quotient overflow 64 bits (#DE on x86).  Cap it.
-> +		 */
-> +		unprotected = min(unprotected, parent_unprotected);
+On Thu, Sep 3, 2026 at 12:27=E2=80=AFAM Michal Hocko <mhocko@suse.com> wrot=
+e:
+>
+> On Wed 02-09-26 16:49:48, Yosry Ahmed wrote:
+> > On Sun, Nov 05, 2023 at 06:20:50PM +0530, Charan Teja Kalla wrote:
+> > > pcp lists are drained from __alloc_pages_direct_reclaim(), only if so=
+me
+> > > progress is made in the attempt.
+> > >
+> > > struct page *__alloc_pages_direct_reclaim() {
+> > >     .....
+> > >    *did_some_progress =3D __perform_reclaim(gfp_mask, order, ac);
+> > >    if (unlikely(!(*did_some_progress)))
+> > >       goto out;
+> > > retry:
+> > >     page =3D get_page_from_freelist();
+> > >     if (!page && !drained) {
+> > >         drain_all_pages(NULL);
+> > >         drained =3D true;
+> > >         goto retry;
+> > >     }
+> > > out:
+> > > }
+> > >
+> > > After the above, allocation attempt can fallback to
+> > > should_reclaim_retry() to decide reclaim retries. If it too return
+> > > false, allocation request will simply fallback to oom kill path witho=
+ut
+> > > even attempting the draining of the pcp pages that might help the
+> > > allocation attempt to succeed.
+> > >
+> > > VM system running with ~50MB of memory shown the below stats during O=
+OM
+> > > kill:
+> > > Normal free:760kB boost:0kB min:768kB low:960kB high:1152kB
+> > > reserved_highatomic:0KB managed:49152kB free_pcp:460kB
+> > >
+> > > Though in such system state OOM kill is imminent, but the current kil=
+l
+> > > could have been delayed if the pcp is drained as pcp + free is even
+> > > above the high watermark.
+> > >
+> > > Fix this missing drain of pcp list in should_reclaim_retry() along wi=
+th
+> > > unreserving the high atomic page blocks, like it is done in
+> > > __alloc_pages_direct_reclaim().
+> > >
+> > > Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
+> >
+> > [Sorry for thread necromancy]
+> >
+> > Hi Charan,
+> >
+> > Are you planning to respin this patch?
+> >
+> > I know that Michal was questioning the need for it. While doing some
+> > stress testing I came across a couple of OOM kills that had significant
+> > amount of memory in pcplists. Something that would have been prevented
+> > by this patch.
+>
+> Could you share some numbers to see the scale of the problem?
 
-Looks correct to me. But a few nits on readability, since this code
-already is quite painfully complicated.
+Sure, here's a sample from an OOM log (ignore mapped/free_mapped, it's
+from the ALLOC_UNMAPPED series):
 
-Please don't do math in the declaration block.
+[   40.336188] Mem-Info:
+[   40.336195] active_anon:96 inactive_anon:1540181 isolated_anon:0
+                active_file:51 inactive_file:0 isolated_file:0
+                unevictable:382720 dirty:43 writeback:0
+                slab_reclaimable:20339 slab_unreclaimable:26597
+                mapped:382858 shmem:153 pagetables:8291
+                sec_pagetables:0 bounce:0
+                kernel_misc_reclaimable:0
+                free:17264 free_pcp:16890 free_cma:0
+[   40.336199] Node 0 active_anon:384kB inactive_anon:6160724kB
+active_file:204kB inactive_file:0kB unevictable:1530880kB
+isolated(anon):0kB isolated(file):0kB mapped:1531432kB dirty:172kB
+writeback:0kB shmem:612kB shmem_thp:0kB shmem_pmdmapped:0kB
+anon_thp:10240kB kernel_stack:2576kB pagetables:33164kB
+sec_pagetables:0kB all_unreclaimable? yes Balloon:0kB gpu_active:0kB
+gpu_reclaim:0kB
+[   40.336202] DMA32 free:34808kB boost:0kB min:11028kB low:13784kB
+high:16540kB reserved_highatomic:0KB free_highatomic:0KB
+free_mapped:11032KB active_anon:0kB inactive_anon:1487720kB
+active_file:52kB inactive_file:20kB unevictable:393252kB
+writepending:4kB zspages:0kB present:2096760kB managed:1991156kB
+mlocked:393252kB bounce:0kB free_pcp:42404kB local_pcp:2460kB
+free_cma:0kB
+[   40.336205] lowmem_reserve[]: 0 5976 5976
+[   40.336210] Normal free:34248kB boost:0kB min:34024kB low:42528kB
+high:51032kB reserved_highatomic:0KB free_highatomic:0KB
+free_mapped:34028KB active_anon:384kB inactive_anon:4672764kB
+active_file:180kB inactive_file:0kB unevictable:1137628kB
+writepending:168kB zspages:0kB present:6291456kB managed:6120144kB
+mlocked:1137628kB bounce:0kB free_pcp:25156kB local_pcp:764kB
+free_cma:0kB
+[   40.336213] lowmem_reserve[]: 0 0 0
 
-`unclaimed` made a bit more sense when it held *this group's* final
-share of the unclaimed protection. As an intermediate, it's *the
-parent's* unclaimed protection.
-
-Put together, it should look something like this:
-
-		unsigned long parent_unclaimed, parent_unprotected, unprotected;
-
-		parent_unclaimed = parent_effective - siblings_protected;
-		parent_unprotected = parent_usage - siblings_protected;
-		unprotected = usage - protected;
-
-		/* overflow comment */
-		unprotected = min(usage - protected, parent_unprotected);
-		ep += mul_u64_u64_div_u64(parent_unclaimed, unprotected, parent_unprotected);
-
-With that,
-
-Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
+As far as I can tell there's about ~65M of free memory stranded on
+pcplists (in an 8G VM), which would have kept the amount of free
+memory above the watermarks and prevented that specific OOM kill.
+Although, as I mentioned before, this is a synthetic stress test.
+Perhaps in practice it doesn't matter all that much in practice, but
+it seems like the logical thing to do.
 
