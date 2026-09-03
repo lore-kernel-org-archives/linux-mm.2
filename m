@@ -4,75 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B07DC624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 11:18:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96EF7C624A4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 11:18:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12D206B008A; Thu,  3 Sep 2026 07:18:48 -0400 (EDT)
+	id AF1826B00A1; Thu,  3 Sep 2026 07:18:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DD916B00A1; Thu,  3 Sep 2026 07:18:48 -0400 (EDT)
+	id AC9276B00A2; Thu,  3 Sep 2026 07:18:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F36566B00A2; Thu,  3 Sep 2026 07:18:47 -0400 (EDT)
+	id A06016B00A3; Thu,  3 Sep 2026 07:18:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D25556B008A
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 07:18:47 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5D82FC04DF
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 11:18:47 +0000 (UTC)
-X-FDA: 85172203494.01.F1F267C
-Received: from mta1.migadu.com (out-57.mta1.migadu.com [95.215.58.57])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2449B180004
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 11:18:44 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	spf=pass (imf06.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.57 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788434325;
-	b=s405/NtwJuzmNNpijQOE0glr4INaWEzQxXpwyL040EDckxT94kmo/Xlggc4jzoTnwHrtWa
-	DKW3tY2Et9NRvaFDUyahE4vHRom4meKBcQWZcnDfIOwUEJbGyrApA9YhPn8UB1609fAohP
-	J64fONHE0JdeoB1SOxIv6frDEBsCIyE=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.57 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 859DE6B00A1
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 07:18:52 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EACDE1A04C2
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 11:18:51 +0000 (UTC)
+X-FDA: 85172203662.04.F821FB3
+Received: from mta0.migadu.com (out-45.mta0.migadu.com [91.218.175.45])
+	by imf31.hostedemail.com (Postfix) with ESMTP id BF3EB20002
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 11:18:49 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.45 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788434325;
+	s=arc-20220608; t=1788434330;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=xCghnVPoFxx89RZNNA5adprtEWnTIFn/XBN17qrOXTM=;
-	b=Zh8Bbsghf78xgGeH6Tn0uM1leoAlHZEK4WqUDWdY4BWqJz9UHE7ugSAiWhfo7C30AUGo+R
-	RPFPTR4TDwVu8LfoMC0GhiGhobXCHS+OnKGIGrbapJmbhx0xgKkeJapTxn5OyLgnWE9JB0
-	FbPzxmUTgt8GhmEzzuCC+qrjlaTmZgM=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FB9/wxZZ6153YhY9J3E50YOpN9xHZBigpN2+WBJqJrM=;
+	b=OfeRoHh5JRgY2q19MwdyRgDFVFFvXxu2ZZy8W+9Rw+hRm767X0YbFpKNKXvMQNR8ppt1mM
+	eZH7BNTHNZ7b/5W26ulrq2x8hIf59tGEZZ7KEhUfvDO2iHrtZNJOMgpThjgVK5ydol3rge
+	MWMo4pPqqei7FmSokguY00YHqufCBRw=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.45 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788434330;
+	b=DeSL0N694VPGlCCUk3FRA8SU9lAfnDcLsEYduAQDGHUxsVUFq1vHiruWV/axpgkbWHSIUh
+	LQDQqf0Fh9en76C8gnUNftkzKeF0ZH6Qfv1oMK9OdYrEO5olGTi4mCjoUSSgmCj/UKoC0s
+	JPJSd9xt8Ef7Cz5JhNfR8dFz99pITic=
 X-Envelope-To: linux-mm@kvack.org
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 2e531fa6291cf84b;
-	Thu, 03 Sep 2026 11:18:43 +0000
-X-Mizu-Trace-ID: 2e531fa6291cf84b
+Received: by mta12.migadu.com with ESMTPS id db39fdad40467b0f;
+	Thu, 03 Sep 2026 11:18:48 +0000
+X-Mizu-Trace-ID: db39fdad40467b0f
 X-Migadu-Flow: FLOW_OUT
 From: Baoquan He <hebaoquan@kylinos.cn>
 To: linux-mm@kvack.org
 Cc: akpm@linux-foundation.org,
 	hch@lst.de,
 	harry@kernel.org,
-	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH 00/13] Don't use GFP_DMA when calling dma_alloc_coherent
-Date: Thu,  3 Sep 2026 19:18:23 +0800
-Message-ID: <20260903111836.1777265-1-hebaoquan@kylinos.cn>
+	Baoquan He <hebaoquan@kylinos.cn>,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH 01/13] gpu: ipu-v3: Don't use GFP_DMA when calling dma_alloc_coherent()
+Date: Thu,  3 Sep 2026 19:18:24 +0800
+Message-ID: <20260903111836.1777265-2-hebaoquan@kylinos.cn>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260903111836.1777265-1-hebaoquan@kylinos.cn>
+References: <20260903111836.1777265-1-hebaoquan@kylinos.cn>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 2449B180004
-X-Stat-Signature: zswxo4cybcyciz9nfyjucwk1joz74cuq
+X-Stat-Signature: 4graaikb89tbnysf4f1xckwyughdbcey
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: BF3EB20002
 X-Rspam-User: 
-X-HE-Tag: 1788434324-133649
-X-HE-Meta: U2FsdGVkX18zuwThKc91st3kYO5TO4UdGtq0UZw9Pf4YzUwoeZnmdBADIw/tjbOzR+E8l50rbnWEoVMRH4Kj98MahonqinOS2ka4BCBVifdzPwDm2Ehi/0AtpRs1g1dVXVIDhEZFVFYKroZRYRrzv8nBLKM4zpca2q/d0J+XR9umlaeugnCuOmd1C0+rkW6tbtpcbeB9+ZIitCJ+QmxAiyGctM5ZXYn5GUPoL2GjfzoCxI3aUNEAooK9Wje3/6STvpZcxf/dCLBxCwFnKa+Xng6ffYL6gdKWdLBqclHdx+LHXftJ/Ty51hP+Q7vzKC2jBlcJ92xbz05zXPz48fOJGpmN1DDXcEWHv6EaOO34cIbg9YLYkv8y0OSOqwK6chNefXNMZAAPTIQ5RT8wSNlTfqeHLcrloRdWkfs8xrii0bJ1+56iXFqYNI36TYcmYCuGg0LdylVQNYoJ9Tw+nw8oApKyUqJ9fFjuczXqQMmK2xmGtnAYXFiQy46K5D8ubEwGR4AQdSrj4updbGN5M9obWZmeDrroFWbVF4756HHLJeUina0A4A6/auyJEFMvR/vbU76LpcbEU16AN85oLMueCmvRrv/89iyrXvaAgmp+OCSYBenXMxJxy1oAyOVejmDI5es4kSIaGzX2+LrztmUKxbPhzwHiYpTLipd3D0l8ehdubrGJFmmZ43tI6KwD7MqLnbkmkvwnQbVHckaDIzSeuoAfpuxZL/Mi+tDznBAP401fMrRJcVlLb6jWQFrbYmiHQieaQBGrdLRm/kHnNsIFe3ZuYuaiMsutXev0rl5f2YnXyDx3QhG4Eb34sZQpeM2Dnfw6S9hkdGMc6JrctUzw45mFY9MfGJ6EIlnU/+X7Yq0Wsk0NvbV+pojMbpnkoPMJNQjVv8ciEFtnJ4exTeRW7yJrTwRVR+6xYoo1e3wLSJdCGD8ce4t3eUNntFMOjvNTIyBJRl0CIdHWQ5+ElLE
- rbJ/ZAW4
- JuviY7sFswuEYHJtuzB4FpJggOvQXM4pTophYZ+vV6K5GuKBQqZLhGF2xB6gW01upYbO+n6uqs6pxMTxFyGKQxTFIYKZfiI6bO5//gdqLzSvRWyv9NIlCa3mio7anoZIRE9Z2kIAvueJvT+hqHBmbi2iIe1FxXyLa9pu5zkghEpJfX6m28jVUhTi2Tha695SpWd3DF3St4AyqE42rcAwtbGhcfZqZtCSqUrNFcL530VSjrsauWhqv2sqfONw2ocVxDy9W0lxRT1wXpDK7D5rYGx8UOqjK4uWNC/ePyPQ8w9v9NBgNf52MA+93wg==
+X-HE-Tag: 1788434329-702417
+X-HE-Meta: U2FsdGVkX18g6+ErOmxbd6Fd6Ft4vwczzs6j7NlW0QIksXS0LjpDfb4yFvpATG6o0+mWkApxVTTCGNXif4dgRvLpp9gh1wKSltE8BRUOfy+iM0J79SNZpcMtD9N4E0pLUwhSv7rc3KMvTBRdSYcgFGHtQgNcXOVLnn4X8P+s+LyWzql4I3TYhZAO8VXVd4AF1BsUaK+4dZK6w5lpBeW4J1X2KUke/zp4evzvA7BFtT97rEldbfPY1DNwe334WQS7Gn/BCqMznnhgAYFM21ol4pPcQXLAE+9gipRS3XQvJzoxR7XGgu/KfPX0Xs6nqjl3keCSYHWYFAjc+YxdApQEbwKNge+LqWB9Bg2dOqvWKl1RNoUucOwxH7Tqp7TJOO7wFv77sZGj9rW+IGMjb/jqW7a3BP3E/KgMcJMAgbPgcx0hIkiDvM6OWuqIw3tZKDDH+Dx6bsgS2Aba8JK4M8Ur0Y5jpG4R/TqnoPlYGHIfMR1rMSVLU6VOpYbqDEheMSUaOBInJZUdlxpo/9CtP4pbVFhq/JZe/QIGfr2QHCEJbgumC3nKq5+eKWb2yN02BfMBL7pN551Me88pTJh1HTm2ijyqXlzGZmA9Xku0rMVRnr6hYEYf8j7sJaS7cdAWpO8wYXXzv+ObcvJAEx59TTYe6xM8SPIbATXySUgJQICtbKg5IdZkymA2HIRVRzKCljOyfXqHDTaAbDR4dlk5Sge0DYy8mCFyJMnQK276VAsclflV77E6AkwsEaD0VHHjYPfHDxFtL7kk2LYlJA7NtGYbVACQ4efHKZ2btYIcARXXp/oIDkh2T1QF2LSuS1kd+7Enfoo0IMv4y6p+cQ+n2ju6eqeZIecN8pCKUSUI9sB1HW0jwp5/5R5G1giSCvsmscA/348afFSGWGAMbmBVPj2K8osW9hObV3wc+sgIIZxHWChBFJxR3Qjn+JTVMtZTcaMhl5rc+xNkvWkESYgBg9A
+ JKMma8pT
+ H8aLiMPvsJ22aaztK80Ajb5JXuYDy81qL7uOXoJdpZOunYjgR+7dMV+SAWt543FnSZ1YmUOT/ylpga/RbdRM2iq59pFUy1U/vjkh5QPC5fbnloFpenf3D6hsCCear/gdIdNbv+qujQEuwQyh8jB9cR24OTUlwVm7ej2OUdMjDxOic8sMBw8aoy+IaWtYgmGrrwkaIBksxSqXuLoSRsxS7IebxxjFMLCZOHOg3lHoEL7usfZbTQqd6fBI4MDTCbnuiPvTDy3T5giwUXdQxkYCRhkpk8Udh6vol40Fv1ZPxhYhrFoqnuu1iXbrZgcW8pjSeEN1tW+S+GZm5ydo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -80,62 +84,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series picks up the first part of an earlier cleanup series [1] that
-was prepared back in the year of 2022, but for various reasons never made
-it merged and has been sitting in a local tree since then. This subset
-only touches the call sites where GFP_DMA is passed to dma_alloc_coherent()
-(and its dma_alloc_wc()/dmam_alloc_coherent() variants), which is the most
-self-contained and least risky slice of that work.
+dma_alloc_coherent() allocates the DMA buffer with the device's
+addressing limitation in mind; the DMA core picks the zone from the
+device's coherent DMA mask and ignores GFP_DMA passed by the caller.
+Remove the redundant GFP_DMA flag.
 
-That GFP_DMA is simply redundant here: the DMA API derives the allocation
-zone from the device's coherent_dma_mask (together with bus_dma_limit) and
-ignores the GFP_DMA flag passed by the caller. 
+Cc: dri-devel@lists.freedesktop.org
+Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
+---
+ drivers/gpu/ipu-v3/ipu-image-convert.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Removing the redundant GFP_DMA won't harm anything, while keeps it from
-being blindly copied into new code.
-
-[1]
-[PATCH 00/22] Don't use kmalloc() with GFP_DMA
-https://lore.kernel.org/all/20220219005221.634-1-bhe@redhat.com/T/#u
-
-
-Baoquan He (13):
-  gpu: ipu-v3: Don't use GFP_DMA when calling dma_alloc_coherent()
-  drm/sti: Don't use GFP_DMA when calling dma_alloc_wc()
-  ALSA: n64: Don't use GFP_DMA when calling dma_alloc_coherent()
-  spi: spi-ti-qspi: Don't use GFP_DMA when calling dma_alloc_coherent()
-  fbdev: fsl-diu-fb: Don't use GFP_DMA when calling
-    dmam_alloc_coherent()
-  usb: gadget: lpc32xx_udc: Don't use GFP_DMA when calling
-    dma_alloc_coherent()
-  usb: cdns3: Don't use GFP_DMA when calling dma_alloc_coherent()
-  media: staging: imx: Don't use GFP_DMA when calling
-    dma_alloc_coherent()
-  spi: atmel: Don't use GFP_DMA when calling dma_alloc_coherent()
-  media: imx7-media-csi: Don't use GFP_DMA when calling
-    dma_alloc_coherent()
-  media: nxp: imx8-isi: Don't use GFP_DMA when calling
-    dma_alloc_coherent()
-  mtd: rawnand: gpmi: Don't use GFP_DMA when calling
-    dma_alloc_coherent()
-  usb: cdns2: Don't use GFP_DMA when calling dma_alloc_coherent()
-
- drivers/gpu/drm/sti/sti_cursor.c                     | 4 ++--
- drivers/gpu/drm/sti/sti_hqvdp.c                      | 2 +-
- drivers/gpu/ipu-v3/ipu-image-convert.c               | 2 +-
- drivers/media/platform/nxp/imx7-media-csi.c          | 2 +-
- drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c | 2 +-
- drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c           | 2 +-
- drivers/spi/spi-atmel.c                              | 4 ++--
- drivers/spi/spi-ti-qspi.c                            | 2 +-
- drivers/staging/media/imx/imx-media-utils.c          | 2 +-
- drivers/usb/cdns3/cdns3-gadget.c                     | 2 +-
- drivers/usb/gadget/udc/cdns2/cdns2-gadget.c          | 2 +-
- drivers/usb/gadget/udc/lpc32xx_udc.c                 | 2 +-
- drivers/video/fbdev/fsl-diu-fb.c                     | 2 +-
- sound/mips/snd-n64.c                                 | 2 +-
- 14 files changed, 16 insertions(+), 16 deletions(-)
-
+diff --git a/drivers/gpu/ipu-v3/ipu-image-convert.c b/drivers/gpu/ipu-v3/ipu-image-convert.c
+index 29b6d36c9bb6..493be4d4b091 100644
+--- a/drivers/gpu/ipu-v3/ipu-image-convert.c
++++ b/drivers/gpu/ipu-v3/ipu-image-convert.c
+@@ -371,7 +371,7 @@ static int alloc_dma_buf(struct ipu_image_convert_priv *priv,
+ {
+ 	buf->len = PAGE_ALIGN(size);
+ 	buf->virt = dma_alloc_coherent(priv->ipu->dev, buf->len, &buf->phys,
+-				       GFP_DMA | GFP_KERNEL);
++				       GFP_KERNEL);
+ 	if (!buf->virt) {
+ 		dev_err(priv->ipu->dev, "failed to alloc dma buffer\n");
+ 		return -ENOMEM;
 -- 
 2.54.0
 
