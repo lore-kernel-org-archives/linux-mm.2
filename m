@@ -4,142 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 661F7C61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 14:28:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6579CC624A4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 14:29:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CC596B0095; Thu,  3 Sep 2026 10:28:56 -0400 (EDT)
+	id 7910C6B0098; Thu,  3 Sep 2026 10:29:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67D106B0096; Thu,  3 Sep 2026 10:28:56 -0400 (EDT)
+	id 768AE6B0099; Thu,  3 Sep 2026 10:29:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56DBC6B0098; Thu,  3 Sep 2026 10:28:56 -0400 (EDT)
+	id 67F926B009B; Thu,  3 Sep 2026 10:29:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 230FA6B0095
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:28:56 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B50E5A4715
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:28:55 +0000 (UTC)
-X-FDA: 85172682630.30.C34E3B7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D04CC18000B
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:28:53 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OE5hfAL3;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788445734;
-	b=pdbfdEjWvVWZ/9yZUdci+9gL3aYEMCr6lpWn4+ucBipGQsrA8V/VKcwPEx7FrTlHRl5CDi
-	NVtHm7hId0a1GDDNqgtE4Mat/PKXGgdldiptFtFlwC7tTKFo4pBCIW2BNqXDB0wfUCtcCl
-	jFSH652rZv427oQOZLZ1C+4SgS+BNiI=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OE5hfAL3;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EE506B0098
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:29:43 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DE09E160501
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:29:42 +0000 (UTC)
+X-FDA: 85172684604.06.A88356C
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 1034A14000E
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:29:40 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AelKzxvN;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788445734;
+	s=arc-20220608; t=1788445781;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TE2Me2Qaapw28vfR1oCk/7uMMKpbgxiAwR/j5we1CsM=;
-	b=Gcb76A+RFD/2WzsLCzq+0r9+dMv1ISPNZ++239QVTrymGry9CAZhC5LMHsNKGU2jMRZbL9
-	2PpBpePHypfJR/6YrHdJfR2p2pBazBWkmM3vsshS2N9qQWGENH10D8tEse4lRqaxGT5jBe
-	RRUmuyNLbxFyEt53gBOSPh4WuTccwd0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F219F4026E;
-	Thu,  3 Sep 2026 14:28:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C921F00ACA;
-	Thu,  3 Sep 2026 14:28:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788445732;
-	bh=TE2Me2Qaapw28vfR1oCk/7uMMKpbgxiAwR/j5we1CsM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=OE5hfAL3bZQXVLclfyoI0zNWbNdoHhR0Y9tgkTkLT4dgLH1aK20LS1exAyJ7QW8TX
-	 zBYnmWVvbiVhEqGa+2UFTGrp+zYQ6x6WXAKG+heYjTEmhaywSP+24/clriu4Vg0lWB
-	 loFTOURzIqqlCw4bdaKpTPRA9eMqFBX9uLomnhQtGsVZFde9XO15oo49ZveZ6PiQwf
-	 qws563/lr7XaqPc++y9Qrg12M2EhRE/9E2U/EpiErsgFI1i+x03OucFkoU+cmoO2On
-	 1EG5AGpXI0EMAh+RIKyLEW2ZBvVJ8LzcN0d9zvL6uIEm/3/YRvEU0soOPJN76a3PnT
-	 flM3BixQBpQrA==
-Message-ID: <3c19c24f-5036-4bbe-b3af-e5eae102f34a@kernel.org>
-Date: Thu, 3 Sep 2026 16:28:48 +0200
+	bh=8uRn6skkiCRR+c6DEQIznpHWiM4x0rvv7bYO7f0wU9A=;
+	b=3n6o15aP9JFsWiV1RkZZ0vWRJizORxOTsfFlBUw6lxoTd523C+CtJH4FzHgH9mye4xo4Qj
+	mNiUF5ayeQnEAid6sPvmf4suBKycDkSxxGKU1ytGWuV4PTxm7FMBFpXpH2HPLMD7igFPuA
+	BujtM/yJ+Ak4ieJsxgfB0SteCJrUEY0=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AelKzxvN;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788445781;
+	b=OycGuEKrjF3laAOOkMECqnsYMoi96hOS6xksALnSMR+4uUsnJDpjFKnj/s9OojsvxAGLEz
+	8JjXe2kWQ6YQOdov5kH1i33ISaObyi1zqcir2uNrb3nnQI4h2LCEFhajtdPSGvvYOtIomu
+	l8p3WxgIgz3M1XMQPlLMzvGcJDQgsAo=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2d9b60c652aso24492155ad.1
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 07:29:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788445780; x=1789050580; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8uRn6skkiCRR+c6DEQIznpHWiM4x0rvv7bYO7f0wU9A=;
+        b=AelKzxvNXwnyzhxoUQDf22e1c/9PIRv1sB1zFuElPTlPFpmU+FDsuw/lW8YNUGwjxW
+         r6t1Obyhq8XGGNbsfzl/rFpLOMq326MN4tn+4/rO9d8LpXh1P42r4LrRg9KIi2Zjfdzb
+         C7PgevKAFH98Ui90k/8lnPmjgDdoaDHVRD9YHgOgLnRyGUG8k2sRAatv0taVfeHNu85A
+         3Ow93eKYMUY3RzKwFn9maNGW4hPmOrpsUhh+m7zFVyXhNzf6AxtTAI+uJ1zVFwJIOUtg
+         yNVZALEjN37+Ud1lK6o1OpbWQRWs3z60VGTNRp+6GEaKQnedYGMup65gGZ1PUvsxYOAd
+         p/FQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788445780; x=1789050580;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8uRn6skkiCRR+c6DEQIznpHWiM4x0rvv7bYO7f0wU9A=;
+        b=oiy9+HYMs82wPIlq6K4htkVVWIueN3M7ZMnzNonqotRGJnhCqdNkv5ow8RSz2xM/vX
+         sDoievQruwFqGaMbMWQdKTydr0ptEYGM3ev6aevrbq/15v7ug4ijTjC6U7ZvaoRDpd3i
+         0NCdhQXIQgLJuuSuifevtj5uYQfyD3tzX9f1G2vftzVdLEkM6dsHIYS8mxkHrNrglA7D
+         Yx8HIF2e/qM/NXu039oPUwJlwIXNrLEmSM0bRODALQCFooV7a5zhR+8Rjy5lavjJS2ha
+         wPmINPRow5894bGrsarh8WFyLcqXez02rPwjDBgqx5c8FNbQYyvfVXa3dUTWe+FR0Kyr
+         bmPQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzl4XcLis1myG01kvh2MmPwlZwYcse8HGmg+DZw0lFgu2YNpeIw4hMU7u6Kub/YbBCTrSqKd/JgUA==@kvack.org
+X-Gm-Message-State: AFuF++mpiu5J3LmBsZTkWma6wTjJ1w7o7cwtnGRDdcW8iydVKGPBZp6v
+	qU0YKpfa6kWo2K//Gueyj3ssUh78or2qUAnyH3gNJK+C775nnODMp/FV
+X-Gm-Gg: AYBFou1qq7HaI9d2CSCFbPCUwsi6GXTOJj9nu3CoJP9Px/xIxSMy4GIsq3Z4HQ7bTbw
+	RC7R5jI9kcg3QeTZ6iBfKVrsSCqB+cYqQ95+xGz+JTv9hxEiG2NbESmVbPxPHpPWiDF5MsxtKqe
+	hlD2Q3WuKb8j2rjwrqAwLueUnjnl5FRkAmg1u22w9frunEMPr2sRtxltjbaHzWTR1AgNOBgap20
+	xP6BWO0SN2ucaV0jsWEhKxHR9ri3q0JniVyhvRHYebTf7Q57t8XLwXQEqmVf1SE73UCZgSXxDDG
+	tbCJJnd4wU5AFOoL1I92/tj0rVbsL1YNQETpnNpQ4l8EobIc2Bkav0bdJE+HovDHtUR344QNe06
+	JpiDoe5flIcv5qUPRBcjReymyBJVeeFgti7YmxmCrnyOQvLtZm8t6M6aOVlFRkfsZ2s47unfgtQ
+	aZdoxBMgxehy+xSE5ZZzb7BoDermxmUoNuUcsHJTfVVlM0i0XZbkWGRQUuZfkQ8U6evkopn6e8a
+	22DbkqOYFs3m6DU
+X-Received: by 2002:a17:902:e545:b0:2d9:6db:9fc2 with SMTP id d9443c01a7336-2daec6240c7mr160309525ad.9.1788445779634;
+        Thu, 03 Sep 2026 07:29:39 -0700 (PDT)
+Received: from zhangbo56-PC.mioffice.cn ([43.224.245.235])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dafe927928sm11174225ad.33.2026.09.03.07.29.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Sep 2026 07:29:39 -0700 (PDT)
+From: Bo Zhang <zhangbo0325@gmail.com>
+X-Google-Original-From: Bo Zhang <zhangbo56@xiaomi.com>
+To: akpm@linux-foundation.org,
+	vbabka@kernel.org,
+	david@kernel.org
+Cc: surenb@google.com,
+	mhocko@suse.com,
+	brendan.jackman@linux.dev,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	ljs@kernel.org,
+	liam@infradead.org,
+	rppt@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	zhaonanzhe@xiaomi.com,
+	lipengfei28@xiaomi.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 2/4] mm: compaction: skip isolating large folios that satisfy the mTHP order
+Date: Thu,  3 Sep 2026 22:29:23 +0800
+Message-Id: <20260903142923.4108729-1-zhangbo56@xiaomi.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260825043833.2659350-3-zhangbo56@xiaomi.com>
+References: <20260825043833.2659350-3-zhangbo56@xiaomi.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] char: xillybus: replace __get_free_pages() with
- kmalloc()
-Content-Language: en-US
-To: Eli Billauer <eli.billauer@gmail.com>, Mike Rapoport <rppt@kernel.org>
-Cc: David Laight <david.laight.linux@gmail.com>, Arnd Bergmann
- <arnd@arndb.de>, Brad Warrum <bwarrum@linux.ibm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Michal Simek <michal.simek@amd.com>, Ritu Agarwal <rituagar@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org
-References: <20260830-char-misc-v1-0-05e2ce44f291@kernel.org>
- <20260830-char-misc-v1-2-05e2ce44f291@kernel.org>
- <f6001085-9234-4025-ff34-6cc4a66c293a@outbound.gmail.com>
- <20260831123937.32255a49@pumpkin> <apaF1HUtJnstuUN4@kernel.org>
- <1729fb06-6beb-f8ef-3e71-47fc3f00345d@outbound.gmail.com>
- <apcPg_y-HsMki7we@kernel.org>
- <9a3d6a08-339c-3315-cc81-46907d0836ad@outbound.gmail.com>
- <apgSCyj-h2xVc2ss@kernel.org>
- <1d7f8806-f4a0-fda0-a361-a011460ef308@outbound.gmail.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <1d7f8806-f4a0-fda0-a361-a011460ef308@outbound.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1034A14000E
+X-Stat-Signature: hjt53g3b1wo11tsuceyj8ofaa1qfxfpd
 X-Rspam-User: 
-X-Stat-Signature: xudehu4hi96hgtko6dks7q5wusrjc87p
-X-Rspamd-Queue-Id: D04CC18000B
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788445733-913910
-X-HE-Meta: U2FsdGVkX1/bcq+6kjcbXve+RXAzW6MBCoFiW6ozOv4HrD8KELXr9OEeOF/6MLrdT1ykjiwxI5eEQQYA3BbLW1R0TqSQwMvvoBd7nqauzid98A8ACoGVhBxdP++IEfd72m1qcYT5z6X+CylG0s+yww/c+1Gh9976goHZv098H+P7WyA/Nzu0T/33hVo6ErTqUIaVm01tDD7sw6pt64A6j2RRM5GbwQttgsB+CClE8g4oj7STFacgHsIMTnyyabH3jqmk0qzRgy8aXfR8I17D31mbPNcLjddTX0C9H6BKYXMm4fsd0XpAR23mLJ19qGEmKTs1z0kdnw+Rd65eZJSH+7TVikyFyuh/lf86FcOqsb4Jo8e+xtm3Bjo/Fj6qxLuA8rnZjTWVP9DLmnXtLXEp0pyE4Jkee/5cV8Po0FzQHYo5I4X2NZUtoQzlSit2g+N6FGtfcIIXZnP1FyaU9Kotb0JnBaGJCwZgPavPM6ybqW3KrtibqwZ7tgGno8keqPtVkaX98xyPuGV1sjCKT1rRTlqQdG6OPOnQXCxVms4evhS1eG8YtASWQt0cU6z4mb/SWoFeJOpOrvyYS+o5C8zlov8jOrpZWe4ZFRPcGHEOO89oT2GwH3nj+uTJKPGbMeSvzIk9IO+qbgUk09GEp4qohCyg2Nd4MqjreXD6d+OFEZ8s6XPa2EZ4Tq8cQMMV4Vn91X+LE+QP2C48Nn5bLffCRxCy5TiKAZu4A7C/Nj3umv7j76SiUcL/QPm827A4AGyBtMf+I977zVd+lIT1uQ4JwmKZKzMa+a320mLx+S5C9nJY/AmP/F0xBStZJpRw2JZOP6ujgCmJYwdxMtThkfPXoiKHvGJDbqV23EojzCqO0dUuLe42D3TwFopvYhLE+s2DDO89pdonZg6ECYi0PYI61OMhRUWl00Ni2+YJMbc+lpNMiM6ahDOhTR9EpY4e2U+qyVLhIWE5cDBgY6Yrzd2
- Cun84FaA
- 0JRx4QhuXqS11mcAm+hrQUoqy4zURloStZQkZtHQ4/t/QssK9ZG+gHQRU6kNlTttVeRd5bJDWTXSYNzumYTyLdQTYNHsm7BUfB4b92uGWHFXqI2wkW6KmUy9YP0Lic77Kb06zo/T/lTzuWHMP0d7wzW6v9y00D3OOpvUXsxqlx7cCNLSlGCuSjKdibGkVRywZVVrk3h36i57Vf3590AWDEnF8ZLpe8cG+bCSJMJhZ8AHPT+ro0xAhkKO0r6U3mUN3HjFN0ZiKx6P7zDNdFRSOj1UIGGpItaDPf4f5lxSpBYGXaaZhXZ0oms2MYYkcoZefErNTOI9C+Cbz/TNJ6Ihm1dtTHUWD39Sj67ryBax5rjewXtRfWiEcIR8dkVQ7roZPPAcV
+X-HE-Tag: 1788445780-37587
+X-HE-Meta: U2FsdGVkX19hyMDIQuNI96vOjHWuxoxTBnD0Gu5g1zNWLpDM/oL0Fe7xIHic+Jm8i/f/n19qJD+0elWtZvkXsUsyDqqHZKv5HV22gxqVyfYmjXjKsQY7MarhFNGyKzfIiZNyIEKldTvsuxZWadjn9bjE5q6QXAGGaDe6/oMQhaHfqsnsDWbWz0cb4804JerQsCt5FcnxhT8j+HNANHb1LTUYrSgf2fU7jKaLaQEyeTPwin4hPrkbUdq64OydRp4KNgDpEl120G+kw8jma+9AmwO2jfdMfr1706iSqiAb3nPa5XC4NXpp/yVb3AOLPF4sE8TsWh72hklaOZpsjgqYVuR3qavpDKaS5kV05rWkJj+otenqSDivkxci0njpe53CFLdXkYqGfDYSLgwjRyauzjApmYqq448nsRJHGSNSlPdFjG+ToDDPEjc+61462gLTPe64GDiMhUIYJOfj7h95ZQ9pxgix7IgSzfobBpyK67m9wO6iHMDNl8li5DYK75r7JH+xMaTQgzg1wtWrru17sXWd2h1HWFQN0WzTQrI7KAvp1jeBBlQTUMlLrxJGcIOotLcsw+BQ5Khr4hstpRl6M4pgv4+luA4csWd87sOcAuL3ILoRHwvUwgZ6sazPqvfB91Da79+EqJgeCRPBzIenIUi1rBzSyTL/VMXs2UNBLFAoh9UeNFV23u08Qrc1v9l8GmCcgA6TVKe1v+/uNbJDtuzl9cO7n7mo1hNThSkXTK9i4PYhRmrRArC/st4Z2Kdoo72qN/7/Ey5ZmqWUu7fyamRUOx/ZmYmZDn3yZXLQY0qcvxZ6ejoSrYi8E2nW9ve/vOj3neowkfAzw9pMdZOMaamrim6Cso3HQNF8vBT2Yw5Ch8VeKHAk/nTukepLYklvccvlsf7MnKB8P3VdKOAlOExAQqkP3S2NkFl6RRB6QOjwXdAt85xGGpYsDaLCe6iNN9njSogaXxt1mOcqIao
+ fheaybYP
+ xqcjNnn5K2O6fSDC16tTSeVfQjnsFbB1ptgam33uAdy3zV3WngwK1eiyZYlGskDs+ODM9OP5amyXqPtEKw1kgbBzMwg1FdeqkkuEjmXTisn9bHezjK2dQ3GMNAcIPVr7c6sKxvYVPOj/x0jr+b1YrDCcZT6W/vrZJGn64vPu3/qYHsSx+9Q3Iz0yNj1cuwt5UwaIjpM4Y0Qkb0jvDRISRy+iVD7KC+VV6wLRWfAmLto4QHdCoZ7s/pNM7beMUmv3J/hW553MSU0pyln3Gy4YcEV5oxg4x1sAuBXueKV0RWNgsIYfsBLU6ZuKZFV8HUYAxnNRQrgPTQ7yPSwpEBFd2yrSUim1G9dC176t6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,68 +138,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/3/26 14:30, Eli Billauer wrote:
-> On 02/09/2026 14:09, Mike Rapoport wrote:
->>> So using vmalloc() may result in a malfunction in the data transport where
->>> the __get_free_pages() would have been successful. This outweighs the
->>> benefit of a somewhat higher probability of success in allocating very large
->>> buffers, and surely the improved aesthetics of the kernel code.
->> kmalloc() still works, just like __get_free_pages()
->>   
-> 
-> After these few days of discussion, this is what I make of this topic.
-> 
-> The memory allocation in fifo_init() is somewhat ugly, but this driver 
-> has been out there for five years, and no complaints from users.
-> 
-> The vmalloc() option may be successful sometimes where the current 
-> allocation will not. On the other hand, there is a possibility that it 
-> will cause real trouble with page faults. Plus, a large allocation with 
-> vmalloc() may be a weak spot on a platform to which the kernel is 
-> partially or poorly ported.
+Thanks for the review. Replying to the two points below.
 
-vmalloc() has its limitations, yes...
+1) Build breakage when CONFIG_TRANSPARENT_HUGEPAGE is disabled
 
-> With __get_free_pages(), there is no doubt that usable memory is 
-> allocated right away, and that it will work that way on every single 
-> esoteric platform. vmalloc() leaves us with "we're pretty sure there is 
-> probably no problem".
-> 
-> So I vote against vmalloc().
-> 
-> As for replacing __get_free_pages() with kmalloc(), it's a matter of 
-> taste. I think that if you're after a buffer that has a power-of-two 
-> number of pages, __get_free_pages() is the natural choice, and using it 
-> makes it easier for the reader to understand what you're doing. 
+Sashiko says
 
-If you are only after a buffer (that's physically contiguous and aligned)
-and don't need the struct page itself, then kmalloc() is the natural choice.
-This is where we are heading with the upcoming memdesc conversions etc.
+"huge_anon_orders_always is only declared in include/linux/huge_mm.h under
+CONFIG_TRANSPARENT_HUGEPAGE. Without an #else fallback stub, any kernel
+build configured with CONFIG_COMPACTION=y and CONFIG_TRANSPARENT_HUGEPAGE=n
+might fail with an undeclared identifier error."
 
-> Replacing it with a kmalloc() is confusing in my opinion, and requires 
-> that the reader is aware that kmalloc() falls back to __get_free_pages() 
+Correct. In v2 the huge_anon_orders_always access is confined to
+compact_hpage_order() and guarded by #ifdef CONFIG_TRANSPARENT_HUGEPAGE,
+so this call site no longer references it directly.
 
-Why? The reader has only to know that kmalloc() will provide such a buffer
-(up to sizes that the page allocator would) and whether it falls back to the
-page allocator or not is an implementation detail.
-BTW, it's only at >2*PAGE_SIZE where it falls back. Which could change at
-any point and nobody should care.
+2) Skipping isolation harms manual compaction and HugeTLB pool resizing
 
-> in this case. So we actually want __get_free_pages(), but call kmalloc() 
-> instead and let it fall back to __get_free_pages() so we don't have a 
-> cast and don't need to save the order, and assume that everyone knows 
-> that this is equivalent.
+Sashiko says
 
-Oh right with __get_free_pages() you need to pass the order for freeing.
-That's a real practical argument for kmalloc(). So I don't see why you'd
-hold it against kmalloc().
+"If smaller mTHPs (like order-2) are enabled, compact_hpage_order() will
+return 2. This logic will then unconditionally return true for any folio of
+order 2 or higher, skipping its isolation. Could this cause administrative
+commands or automated HugeTLB pool resizing scripts to inexplicably fail to
+allocate large contiguous memory blocks ...?"
 
-> So I vote against the kmalloc() thing as well.
-> 
-> If this patch is part of a larger kernel cleanup, I suppose my votes 
-> don't count for much. But for the record, this is my opinion.
-> 
-> Thanks and regards,
->     Eli
+To clarify the intent first: when mTHP is enabled the proactive compaction
+target is compact_hpage_order() (e.g. order-2), so folios already at or
+above that order need not be isolated - migrating smaller fragments is
+enough to assemble the target block, and isolating larger folios is just
+wasted work.
 
+That said, the problem you describe is real: compact_hpage_order() is
+derived from huge_anon_orders_always, so it also affects manual
+`echo 1 > compact_memory` and HugeTLB pool resizing, which legitimately
+want to form order-9/order-11 blocks.
+
+This comes back to a question I raised in the cover letter: what is the
+right way to determine the compaction target order? Deriving it from
+huge_anon_orders_always is convenient but conflates mTHP proactive
+compaction with these other callers. An alternative would be a dedicated
+knob (e.g. a sysctl compaction target order). I haven't settled on the
+right approach and would welcome opinions.
+
+Bo
 
