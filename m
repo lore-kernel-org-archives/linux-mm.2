@@ -4,102 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E6E6C624D4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 15:59:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3C0EC61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 16:02:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AB6D6B0088; Thu,  3 Sep 2026 11:59:13 -0400 (EDT)
+	id EADEF6B0095; Thu,  3 Sep 2026 12:02:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30E416B008A; Thu,  3 Sep 2026 11:59:13 -0400 (EDT)
+	id E5E876B0096; Thu,  3 Sep 2026 12:02:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D6336B008C; Thu,  3 Sep 2026 11:59:13 -0400 (EDT)
+	id D4E546B0098; Thu,  3 Sep 2026 12:02:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D56746B0088
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 11:59:12 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5438C14058A
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 15:59:12 +0000 (UTC)
-X-FDA: 85172910144.16.FDA2553
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 973C2100004
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 15:59:10 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Lb8hpbMq;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf14.hostedemail.com: domain of 3TJmZagkKCEEwduxqvdkxjrrjoh.frpolqx0-ppnydfn.ruj@flex--tarunsahu.bounces.google.com designates 209.85.218.69 as permitted sender) smtp.mailfrom=3TJmZagkKCEEwduxqvdkxjrrjoh.frpolqx0-ppnydfn.ruj@flex--tarunsahu.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B53B26B0095
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:02:22 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4946E160597
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:02:22 +0000 (UTC)
+X-FDA: 85172918124.28.67982D7
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6CA1920007
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:02:20 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="adp1/wPm";
+	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.52 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788451340;
+	b=VhSC3gA3NVKUgmwTwXBJ/cDAfKYqMCw1fJ2xqSm8v57xNGr6ZOHuU3VYad20uV/p+zPFEk
+	pGKA9trS1EDnogei8FyQTgsGSFQIyjKASjah5qVkf0Qo4/yQyQhgjCw5+E8F9AccNDSh4s
+	A+a43f7ybi3ge2UeqvvW7uHadVTvQKE=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="adp1/wPm";
+	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.52 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788451150;
+	s=arc-20220608; t=1788451340;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=fqrjp7diFK7hTPI/YVRHNUU83H0HuCgE52mHERNgxw0=;
-	b=1lbXCYwWpbyNHNmWMu3tKcmO3BwcJz85UWlm+GAXpda3Wi4/l05cz/pzTV5tVAnE/c4rn6
-	Sw5txGK4CPCpzQGvDDhoFN1G71OqhQrK1+m+zoDYUJUlmVQ9Vsm+f0OV1pEIY9XrvcZ/J9
-	4H+rxlAM2o57NHAT/KW75SIgTAEXVYw=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Lb8hpbMq;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf14.hostedemail.com: domain of 3TJmZagkKCEEwduxqvdkxjrrjoh.frpolqx0-ppnydfn.ruj@flex--tarunsahu.bounces.google.com designates 209.85.218.69 as permitted sender) smtp.mailfrom=3TJmZagkKCEEwduxqvdkxjrrjoh.frpolqx0-ppnydfn.ruj@flex--tarunsahu.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788451150;
-	b=Rb341b84v1CdBrGIEku8ftJ/ua7l5bQeNUuv+/zLByBXkGegZoI5TeF/iqZ1NVNyWK0tTT
-	B2UkQ0zSJdQSZE20RcK/i0iz5Hvw3wf9okOy81YjAH2s7GGjVUHKcgfnLyJC9OwN0Xtmbi
-	nDN+mWHSxhF42jpINTfLJ+hJx1geVHs=
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c252c2ffeb8so290860666b.2
-        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 08:59:10 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IeBLEUe4Txls7CrzDF2+rKGQwzvkjoK2NOOxJbGtILE=;
+	b=M3sNfmSaDP97MguAl5sFNZDDIu9VNCusIgMnv911HekBK2mtrF5PcqVk6ZvhF1zJWLszVa
+	dN4nz76Etr7+sMhmbEZK6R94i4TPvdTXpyLRTluUBfuad3OSrsgevZUoHU2HWOgpymeaD9
+	Z42mR4VnHbc1W8cxT2DJ80tHnGubR+Q=
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-90cc372d6b2so287076d6.3
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 09:02:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788451149; x=1789055949; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fqrjp7diFK7hTPI/YVRHNUU83H0HuCgE52mHERNgxw0=;
-        b=Lb8hpbMqiMdMVJlx6wC3fqGZ7rggFOc2VstdKoZor3NFQFdorLJEqRXf6huKYyCgFU
-         amg4QHYqjdJptOkkVLbudJjtnqZ7MhOnYhP2X8RwnkZgGWkqYrrsrS8PGXs+FTNmrn5w
-         miw36ZVhMvZtHO5Ay81GU9A6adA4p/YbZmOhHiwxPICYIPs+RD98reR/1BjCzicjP9MF
-         F8tiPHXQFohmy3Utz9HKTeuPCE4YU5xrWw/kaPPlSP21yQcUZx/7XU31fMSV105Fd1wo
-         BDLDNZIwr2zhrQQf6BTS2eJRnKbQwYT1swd3ISWHb8KgWUpa0idy0nm7Wk3QAW+3praS
-         j4Pw==
+        d=gourry.net; s=google; t=1788451339; x=1789056139; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=IeBLEUe4Txls7CrzDF2+rKGQwzvkjoK2NOOxJbGtILE=;
+        b=adp1/wPmxgCHO0arkzCjkvGYZFrjyrd4O5dmAA3L7n30CFdwRIz4+tOoxon2O3MoeL
+         cGJ60gsKHxXRFBRPIiViwpIYsAzOFZ6g2pgXSqdW/Z8KEGopUaL9WK98C7wsUc5rOewb
+         iau0ICNDiNZsNXPfxPL8zOSWHBSbUBDUDYnDbZrgNJKZPyH+dVux/m7ZR4v/SZ0zKY9G
+         TKpDa8XHZELxE75n6EwZXZlxnJBu69bBdEZKJsieo+qk3AiDEpfgAObwS5gi3tchUaW1
+         6L+fREeJ2bGrhz/63RU+u4OZtg2LT4piJtH9ys3NVy4pkciMX94En665y1FlgnlNaG43
+         Kklw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788451149; x=1789055949;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
+        d=1e100.net; s=20251104; t=1788451339; x=1789056139;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=fqrjp7diFK7hTPI/YVRHNUU83H0HuCgE52mHERNgxw0=;
-        b=ihH/yCd66b1K5A098wpQr8axGBMYj6dNy7p8xSQW2lMZygv0sVYfhrD9Vt95vvpaoq
-         wsuj1P6pYG9tv8lgejeLJd7p0COXPXb/FQmUklVGhuIeyshjJArQuQra/HY7TrckRJIt
-         KmluKBKbhiOfY91NcVFLZHuIfxcc5PYNl2QlelbB8SSBR8H1kv+QqO4f/VArbkKVv7Ek
-         rmyfutYZ1sl0lra55QMNv3e0cAy/iELQM/oOS+Mm2fJqJzIl6tqfPdafr46CuctVUEYQ
-         9zWrAEGrGtOLn9JG10HoYE8WqS6IlSL/gvQuv/aHFOjTtLDYy9DMb3gqgGXbha72LJsj
-         HB4A==
-X-Forwarded-Encrypted: i=1; AKwUvBz6T8Kn8kNajQvtC8imUYvDjVmNKtcKKqSlFqHaJCmQvtmR+Cu57szCzijvrAGNpI1RoVoAhXcm7A==@kvack.org
-X-Gm-Message-State: AFuF++lTddAzItPMxEntHt0/fy0bHQo/Qj3v0/iebHGUqbqKMF3FaBs+
-	9r+7uUzJEeQY3KqiGUyZTlYYb+GIh0UmlPB1K6s18hDu+tlUDJCRyUtTH6pILO73XPs8I3UQg9o
-	HKMBFBv7sodH93SkH5Q==
-X-Received: from edev1-n2.prod.google.com ([2002:a05:6402:a2c1:20b0:6a6:92c9:46e5])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:24cf:b0:6a6:32fa:54f5 with SMTP id 4fb4d7f45d1cf-6a6832f4708mr8089142a12.20.1788451148809;
- Thu, 03 Sep 2026 08:59:08 -0700 (PDT)
-Date: Thu,  3 Sep 2026 15:59:06 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.970.g62bdec98f9-goog
-Message-ID: <20260903155907.1065681-1-tarunsahu@google.com>
-Subject: [PATCH] memblock: use binary search to locate candidate regions
-From: Tarun Sahu <tarunsahu@google.com>
-To: dmatlack@google.com, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Pratyush Yadav <pratyush@kernel.org>
-Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
-	linux-mm@kvack.org, Tarun Sahu <tarunsahu@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
+        bh=IeBLEUe4Txls7CrzDF2+rKGQwzvkjoK2NOOxJbGtILE=;
+        b=ZFlaAwTvjwWpbFqjd4dWwRcbtbIscQYFR1I/QwvwBnhpkLyvW6Jti/4gL6pdFXimKY
+         AFplQM/fTXVHEI/Mu7et7QaeZcHYZklt6TmceIEaonJLz/2MSTPn4BhDRH1Yoqkt4/KL
+         lS9GePS23CV00/SHl5mU0B5McDkKQEWZljfy/tS7fnBs2lH728CpnR99Xh4LU7EmZsqZ
+         cythbny/vu3f9RZ8fBRb7v1cB/biYqUQwd1rjHpnCvoqWmW7Wo7zpwwDgGYZF6vuQnlp
+         DgJcm38gUQl2pGw7gFwTzPiRGI1IaXNPKjFbk5XjkV9vIdDCc3y6ACea8pToO1m2ov0I
+         h8sw==
+X-Gm-Message-State: AFuF++nYQRu0SbzkvQpgiBAxN0OkAMCm765NpZ0w9sw8XGdjV/Q6QaoU
+	PIkzs3eUYLHHDa4JAu/6Dyb1T+zTt1HnfUrx/h9Jq2FxTj/aO4R8EZ+BwetP6wLqBuY=
+X-Gm-Gg: AYBFou0/924qEKo73LD+B452hKyBS58KzwwXPeM4XHBTv3R5nzATXrx79AdZPu2Zg8y
+	XvJFU/IDBJANdXaQAThnzyzeeUo3OCns1aoHDRpBDyJ9ao6s5TBh+YS/dvxd2WwW/iXMs/kOe6U
+	Ys5J+SqPvGFoBF/zUXj5po1o94iTa58CZqth+Js7jpfXOZ0ovlPEZj2Jlfq5BFCnK+ln/BGDGin
+	ynY9h7diB2kcYTT0yUmUeYHoKHHL9oDIbhz/eSAo2kPsuqrTpewJmKfpr0/My+mMaxy0whuogD9
+	WSpTkrZEaf4/QYrlTprOE6498p5HVrOeOox/T89tyW52wSqlkfQDiqRQ1lk5F3ehNzQ1dDO49uh
+	X2DYT5mvZcs+SFstxCgh/yci4fQGJCampsN0sb6wN2d7LrmrmYb7sf/VwTN3xf+unT3PxFZ3Aju
+	DzP6xnk53s6l7lAKdD10nXB0F39LoppcWK5fE4EAdzZf14feKXcCrQq2Y0ONcNCQ2G4HW9FsXKP
+	u4C6rqsXULdS5lXicDbyKVZvJTTYPpWkEGtCLuKNS/y3X00Zvqqzwo=
+X-Received: by 2002:a05:620a:2893:b0:939:13bf:e861 with SMTP id af79cd13be357-93960fdf704mr1567190185a.40.1788451337838;
+        Thu, 03 Sep 2026 09:02:17 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90e9ee06c72sm47345616d6.3.2026.09.03.09.02.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Sep 2026 09:02:17 -0700 (PDT)
+Date: Thu, 3 Sep 2026 12:02:14 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev, 
+	hannes@cmpxchg.org, ziy@nvidia.com
+Subject: Re: [PATCH 2/2] mm/page_alloc: refactor build_node_zonelist() out of
+ build_zonelists()
+Message-ID: <apmYmJSrOX7JyUVY@gourry-fedora-PF4VCD3F>
+References: <20260902215853.156267-1-gourry@gourry.net>
+ <20260902215853.156267-3-gourry@gourry.net>
+ <9f67cacc-b063-48b7-81af-09858aa5dcdb@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9f67cacc-b063-48b7-81af-09858aa5dcdb@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: j4ftd7nnorah8kyojoaqu1zxi48d41qg
-X-Rspamd-Queue-Id: 973C2100004
-X-HE-Tag: 1788451150-611358
-X-HE-Meta: U2FsdGVkX19LGreXyw+YNFZLv2EdvQ3pNBprPiovyUkvEW2v1uhyhWWlevGt0yY2MBrl7nZ+ef5+mOdFpUwN4c3OcPUickdj2l74qcP61m0incGFKgyC5I2ITbX4UHAmGyxMwB3q58Zts9N8lQwF0xvtPTROcCP8R/t1V3Guiqi8zmPDYqvazTxgLtX7UL9eNs+s4ryo+5NB0TTiPY8PSiDQWZHKTO2hVCgwlzQjG4TJ+ieTsDv2Nobdg+8CCjVQ6BcjeuZPXwML3jV8gtfmHBqvkqcmWkNp+IdJQWU+rQ45QIVQ4D28pa+2gSKNAXYcvDdVpCxf21bn98lzsBLm3mTE2ZyJwlRDwl4fUrwIEGpO6DC04pOOt6EvrfS7iZLHI3vnXhp1baqiV8JsUSxgzLYwTmZL0wF+GnaRVjxrTp7v14MvXJkh+WjAf26se/7+e4cjmqrDoh2OJqNtCvAZV2/cuGyTf6P2EP9/JMtz0+XOVVCfQnsaDpJPZgweaHupY1E+qfoCfEPftw3Z8x0ftsJRjN/36Kt/HJWpv+bYaGKaXnCJsg8liMgQR06XFb5VzZryE57psSvkZ5J6yGCEm59CbeY1YQcBoiUL6bzRoczprkr1UBY1gLscJE4i0YOuvHf1nOtKgpKpEMzw5UuYAJIcIsuOWis4pp7+oJ56hYJkIbz3qsD1Aq1tdAeEiiuOTyZoK6IqOh7zu367VxoPM0mb6X0oGZitMZIVjyauNZ2YzrO4ZQe4D85H6ejziBf306uDrD1v0S5Y2xx6tPbtA5WG9JKakCOrpFGqX27lj5Qe+8nj73j2DnHqFTMRNvX/jVBSHduMmLnQNgRSstuEks5eh/s+3neOP/uScb1XC7dRtA6x9qh8YvCw34n4QF4V2YS7hASQNWJHCc4zDE32g9KpfrHvn7Iyrea+pNysKu8SriyZ7CZZEb1Tq0XpfHyQMfx21HQG5bBq3MvTypC
- +pp2H341
- FmPmZoi9hR8YF43LTHEKhlPWKgR+eEJePc8Hcc/oOhjPevY1BdaKDLmOfLGUiBz6ea9xwGeHyb0J/+AKiCqPSGKhF3YscHLUmrs+an7of8Oxdz5uJMW5zCzJwdz1Yv5nTN0QmZi2YdTxLvGeXCnMcBKFBQKtCJ9qaPLzEGqXHo61JiJ8d+Ap0POQ5PPDcpLV71ezGPeyrsU2RsFKvnt+nNx40KJIB/sz8SBbRgeTZphwcIgq94oHkaD1E73zdKD7K9mfBiFu7aFeUz3yt5nKQs+eRSdXQgKpLDMhf+o0vfzsRTWh7FE6L+8pwa8Y1T4M3hnlm6BfoMVhRQ8wuQCaYFadJIFhATnHbuw+UCjIEiUTJrkC6xF3B9HNxp/SeJcXiQo1dnJLxX0/YZzMBKCGyi4BRGqW4OrpIOBrJxGfG4Tj4CrjHCFZNokJNx+EM4IdlWqLFcmjrBS/0+tQlUKX8DgN6MYh5UBKgJOKWsYy7A8uhiztY7n/8n9CscD3m3u1mKdopEUnihgU8jHFtIpcE5UzQWkZpd9N0pX5gVlVLSEMUcPfDEajoBHwIqPGGrAUMsiFMBhSiVZRWhZzbr2FEJfJYKeBEiVqh5JkD
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6CA1920007
+X-Stat-Signature: t5a9gttitrfon3ebusk4hjbzmzfxq11e
+X-HE-Tag: 1788451340-984214
+X-HE-Meta: U2FsdGVkX1+itBxFwDV+O/DcvWJIVl5tIQ9qUAGzct6QhnuWr/IGrTu/PSebM5J/OrxXiv/2d0nkNiD7iQKe/LqBBZ2fnQ9QW3a/K5Df2NWQEkKRhHxKqTpkkwfSn4A54JMV5NuWvoCbDdjWcKLFPXVXvYH19DcVsaKOmCF6LTd1WTMTqidafSHE/3e1YxiCWwhd4PqjqhYBo5FdLIpprnNK+c6SI4JN7jBiI1DiU3kLeBQGMdMHnS3gKw3KUBtbtSCzRGSYh60erkMscMtGlOyMCkd7bQioLkqBkLRmKUwzxZ0DEYcHIXrSksa75NWcSQ2L1OHgg7chSWM4lrX0vDiaQ84MZwd57kMzCxIH4mw0VfiCyVhiiEHN/lyPhv1sAmYFDnZaXiX8lY2uf0eKc180tuqTo5L8GIVBGxgbdJBwnjFodngYYny1Y2CAH+cdFRu2UNTuAYb/PK/vzPCl39T09L9hGCwO4j9XvOKxGu8xVTfbMg7PFzyEaWRYcAfgKLRdhMhSiaCjoF2PizfUC6z+RgA/Kbw9IwKRYQN6r+K4JEDexzE7s2TdXkxjzH8goO9F7klODzHGGlgRSr9dT0so0voszXmOihcRHmX1wBeP/dHIpf80H+TfVB6NR47iAXQ8wEMnqboTtaeXkBiazmK7zKSbtqTw8UQkQq4c+KO0UY3nHGr/LJP0XAAuWChn1KN3nWWDj1a2Gvwd806LdNr2imb4Q6pg0+TjR657cAQ/IRFl+S7dL0FEJgn/rHK/f04zrOjVv4Vapno6hX83RmeqjIKl542bFfovnYz11B1QBh03aYZYKRVQ0C2I6gEIyeKdIClm24K07CgMIyWsvKRV+5UkC/1Gl+3vrw5HNMutZMJcbZq4gTNzXi0lxwP/z1QUf70GLTKfz/jIcjfOfd/Pk2hOqaEMjidHgogYx7PogBv1C75rxLIymrxN5rk/kJxytG4KOkxjzq8PQ2y
+ /fjsm8nd
+ G4b6ESKWd9CQNTGIa5zHfVKz8TTAIJhpdtmPvxtgXfMfSvsJc91IV9h22n+GutL+zwMg2wzRcT4qV+WFV1TeXFReUwILgFaw2fbhWM6A0Ux8c1TY1U1qpMmEk644zXJGxf+M5PdMJnKKgTD07bdOwvMEJeIyhmm9K/58XkoUMAO0SORSvd1ST7jWUKECuzQfWX+JN5uyKpAqvbibURQsgsZvEkeo64p8TiRw2NH//paSR56UPLYuTqqlHORR0EbVnuqI+wypbD+BqG/v5AndkWQVm5WfwGpflNZcHqi4d9/LsUgBAqLB6M3fFnF4mShOP/UHFZfdDwAb/5Ztaj7E73exocP5D+vEVxwifC6w5dbvQGD0enRIAYI2qClr/H9W+TzsX0+Ks7lpDkeZh3a3mVNWpEAMMLEVnAR9lqQK/jx2eJ2mcYuDermhgnQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,95 +123,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use binary search (memblock_bsearch_start) in memblock_add_range() and
-memblock_isolate_range() to locate candidate regions instead of linearly
-scanning from index 0.
+On Thu, Sep 03, 2026 at 05:33:42PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 9/2/26 23:58, Gregory Price wrote:
+> > Extract per-node fallback-list construction into build_node_zonelist().
+> > 
+> > This lets us build new zonelists from candidate nodemasks instead of
+> > just the default N_MEMORY node state list.
+> > 
+> > No functional change: build_zonelists() builds the same FALLBACK list over
+> > N_MEMORY with node_load updates as before.
+> > 
+> > Signed-off-by: Gregory Price <gourry@gourry.net>
+> 
+> LGTM, but, while we're at it, could we just do the pr_cont() printing in
+> build_node_zonelist() itself (maybe behind a flag if you don't want to print
+> from future new caller) so it doesn't need to pass nr_nodes back to
+> build_zonelists(). Then also the node_order array could live in
+> build_node_zonelist() itself?
+>
 
-Under heavy memory fragmentation (such as KHO page preservation registering
-hundreds of thousands of disjoint folios), scanning from index 0 on every
-insertion and isolation results in O(N^2) complexity, causing boot-time
-memory retrieval to take several minutes (~268s for 393k pages).
+Seems trivial enough, will let this sit for a minute and spin a v2.
 
-Using binary search reduces the worst-case complexity to O(N log N)
-(and O(N) for sequential appends), cutting KHO memory retrieval time
-from ~268s to ~50ms.
+> Actually I wonder if we could get ride of the node_order array completely.
+> It would mean the loop processing in build_zonelists_in_node_order() would
+> have to be done piece-meal in build_node_zonelist() itself. But seems
+> feasible? Depends on how you intend to reuse/extend the new functions later,
+> I guess...
+> 
 
-Signed-off-by: Tarun Sahu <tarunsahu@google.com>
----
- mm/memblock.c | 38 ++++++++++++++++++++++++++++++++++++--
- 1 file changed, 36 insertions(+), 2 deletions(-)
+I can take a look.  We've been testing a couple different things, will
+see how well things generalize (private node fallback lists, inverted
+fallback lists for proactive reclaim node ordering, some other stuff).
 
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 9ce86349a29f..88940474b020 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -160,6 +160,11 @@ static __refdata struct memblock_type *memblock_memory = &memblock.memory;
- 	     i < memblock_type->cnt;					\
- 	     i++, rgn = &memblock_type->regions[i])
- 
-+#define for_each_memblock_type_from(i, memblock_type, rgn, start)	\
-+	for (i = (start), rgn = &memblock_type->regions[i];		\
-+	     i < memblock_type->cnt;					\
-+	     i++, rgn = &memblock_type->regions[i])
-+
- #define memblock_dbg(fmt, ...)						\
- 	do {								\
- 		if (memblock_debug)					\
-@@ -591,6 +596,33 @@ static void __init_memblock memblock_insert_region(struct memblock_type *type,
- 	type->total_size += size;
- }
- 
-+/**
-+ * memblock_bsearch_start - Find the first region index where rend > base
-+ * @type: memblock type to search
-+ * @base: base physical address of the candidate range
-+ *
-+ * Returns the first region index that could potentially overlap @base.
-+ */
-+static int __init_memblock memblock_bsearch_start(struct memblock_type *type,
-+						  phys_addr_t base)
-+{
-+	int mid, low = 0;
-+	int high = type->cnt;
-+
-+	if (type->cnt && base >= type->regions[type->cnt - 1].base +
-+				 type->regions[type->cnt - 1].size)
-+		return type->cnt;
-+
-+	while (low < high) {
-+		mid = (low + high) / 2;
-+		if (type->regions[mid].base + type->regions[mid].size <= base)
-+			low = mid + 1;
-+		else
-+			high = mid;
-+	}
-+	return low;
-+}
-+
- /**
-  * memblock_add_range - add new memblock region
-  * @type: memblock type to add new region into
-@@ -651,7 +683,8 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
- 	base = obase;
- 	nr_new = 0;
- 
--	for_each_memblock_type(idx, type, rgn) {
-+	for_each_memblock_type_from(idx, type, rgn,
-+				    memblock_bsearch_start(type, base)) {
- 		phys_addr_t rbase = rgn->base;
- 		phys_addr_t rend = rbase + rgn->size;
- 
-@@ -827,7 +860,8 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
- 		if (memblock_double_array(type, base, size) < 0)
- 			return -ENOMEM;
- 
--	for_each_memblock_type(idx, type, rgn) {
-+	for_each_memblock_type_from(idx, type, rgn,
-+				    memblock_bsearch_start(type, base)) {
- 		phys_addr_t rbase = rgn->base;
- 		phys_addr_t rend = rbase + rgn->size;
- 
--- 
-2.55.0.970.g62bdec98f9-goog
-
+~Gregory
 
