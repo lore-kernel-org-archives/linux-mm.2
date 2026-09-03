@@ -4,136 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF2C1C624DB
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 20:37:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3BCEC624DB
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 20:48:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 146AF6B009B; Thu,  3 Sep 2026 16:37:40 -0400 (EDT)
+	id D69BA6B008A; Thu,  3 Sep 2026 16:48:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11EAE6B009D; Thu,  3 Sep 2026 16:37:40 -0400 (EDT)
+	id D410E6B0092; Thu,  3 Sep 2026 16:48:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F01036B009E; Thu,  3 Sep 2026 16:37:39 -0400 (EDT)
+	id C57456B0095; Thu,  3 Sep 2026 16:48:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B0BEC6B009B
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:37:39 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DCC76120616
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 20:37:38 +0000 (UTC)
-X-FDA: 85173611796.01.7A60833
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 279F640008
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 20:37:36 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PYMOxd0s;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id A43166B008A
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:48:49 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 21F061205EC
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 20:48:49 +0000 (UTC)
+X-FDA: 85173639978.16.3904907
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A8C8718000D
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 20:48:46 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Rj71mU+H;
+	spf=pass (imf24.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788467857;
+	s=arc-20220608; t=1788468527;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JG5wHGxobGMru3PHPCCaPFK+av72ZMxaO+XhGsfKu1Y=;
-	b=ilyqVg511GHFPpmn44zp2I+kBpxIlQVYCT6nEeuA1lBJAi32o8lDtNaO56d0shGCDrI20o
-	IupDEeEHAbffzEeU2o5n1Oj13mvHD9AAVU/4kzM1vCmNDgf5l9NqzciL7uBvLgXTIYR4br
-	LpVvDK4BIPKdPoC7yaz16BzYJs+DrUg=
+	bh=Du1gRA36J1zj7kF4LQrKEJ5dJV/B/IFUJjgHMfdrnXY=;
+	b=1wt1+P0q4GkSJKlMK+NzuIvfycD/kwKM7pVeVA8zNigpw03WwY1O7shIbglnuZj1jL9j6j
+	IpauBelZ+u2S/oDGnxNteL7XtU0OJ191PrHvNucydn1QBWdA5FyoMe1GmQylMeuH6ntDYi
+	WHc3SnWDyLNhd6Yfxq8FT7tYTVL22Mo=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PYMOxd0s;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Rj71mU+H;
+	spf=pass (imf24.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788467857;
-	b=6WLAD8SkMo/XmI5RBEFZmBTKfQosVQw0S6eL4yTqwAfWIdqAbU2Tg3ia19oifkX+x00fot
-	BY3IT36d/rmA63TdUcHiOw9m5GZP2zUsOkuPyWeTL3smIyHdSKKvKPLJKuDEmSg1ZZUqPb
-	WzCSCnRr3GkJIqDmEjdQk5vK8GT5YcI=
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-47fe89fb333so216521f8f.3
-        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 13:37:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788467856; x=1789072656; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JG5wHGxobGMru3PHPCCaPFK+av72ZMxaO+XhGsfKu1Y=;
-        b=PYMOxd0s3KWz1VWpUSTx/hvOMmZA/JqhGmM5n52lqr/ij8gt91aQL/ATitY0W4Hwhb
-         wdCUcE9bYubnufPBKTeNq4GnOAVNe+HMJkLkCEzNfDWqaVfxmJEPxICg0b+1M1EGQ0jR
-         qYcvK3wMJ54hkPBcXobGIZHJykXTQc4YjprTuisY2DLnDiOUgNIBkZOVRvEf4hobqpfR
-         2UZa0nSpcayFDIGxJEMtcm0nmcO1dC2PfDYAVJFPrtUwYihcfPR8TiZ+3bGDGB/j//s+
-         ax09Kb82xdvK/JA/HPlTvuy7zqHHoj10P9rXqdl623X84vcgHCxhvFiUUFgy1kLxKXyD
-         e4Eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788467856; x=1789072656;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JG5wHGxobGMru3PHPCCaPFK+av72ZMxaO+XhGsfKu1Y=;
-        b=I22pqWliE7O9+EXmErc7k6QyXW0BA43hy+foYDPcWIEoOsKwuwllOer02qD16PvUMn
-         HDzCWOKimko05gB7IMob3OPQ4Q6tYMok757M+5pxpleD58gckWUpf42idydYjLFNfhwz
-         kR5IKLAjOQ4Cq4KGRGqGY5QasXG1C4J7JlXKJ4JJ50ZwrvOxWhPe1oi9b0lUJJJNjiWN
-         6wjy/mw5Lfl5DxQUEyiESJJ4A4fn2PYSPHJZ+nuXlwaBhWMfqkzLYpWmqFmv97uylAAy
-         ykTJcdd9cSUU/yUJxgp6SJnMJR+gkSWgYKPF2UeWhbG/CG/l2eL8OZ/bqHZmUcjSgm+o
-         G5kg==
-X-Forwarded-Encrypted: i=1; AKwUvBzSGKeDB0+ZWHe+FCNUUNt87VhQVH/4hO62YHeJGhOVsYFkaxV9DYX1vDL4mfgrM0FgcAwFpmDEtQ==@kvack.org
-X-Gm-Message-State: AFuF++lhvi08wkYVfK2BaRsidOCsgrpKwslWojvlNDzAq64Gupqdr4MO
-	TrFaoZBO50HIbM5NiCkr8mRFDSElLkBwjJm7KraD5gMjUjKsfgXK9Okr
-X-Gm-Gg: AYBFou1u5w1blbfqMV9ruMQVo6LAKSGs+9EIau3PLSSqGWx1BLPHqJnylpwIkCrXVWW
-	/h2Ny0K5cBq2fnbQa21+tpScEBDnwnqXHFHgKREpf3lB9H17KJbaxHvHPJSFMnCrz/iiYIdJMMi
-	QTRIKU0Myl45Z7ODfJODchExyAks/IrmWB82bJ6ldxVMeskiwJKfCm93z7VqHnbdVcBtfh2dgWA
-	PjdJMOJD/FqiHHV1+5+Gvcef6xiMwCOBgn02CxMF4XEceEhvKEorTYfvHBOBMVg6k0hi1T9DUYw
-	DZyqqK23584t9OuB32xQwsmjXhS5tFHEANkvmjWgG7hISDNKGXaQcijf5QcP2MDkULerzOS9XwQ
-	mxPVrSCLpBSXs02Bq/JFYlaWxmHXRl5H550BWzOPy1zoP6NTv96FTO8FP/uSBiF72XIjrAlwrH3
-	pAlfBniKpJo/eqw/Y/9hVm+pUo4Ym/ciPJdkFrbnVG/ti0ZFuDWc5kfc8RRjxCWal0BAEcjxIHO
-	J2CP4rXlO6dB5sX6yO6RfQcZ2UNd9V+K66ZLFARvrdcMrQpjpI6awSnkxWvIjJ2IqSemiWqsWUL
-	erIaeEVxSIhQ6r8PWDUKPM7fGOJ+AE/FwE1x3dhohtocoie91lninWAJ5nDi0hKmRg1iTQxsZJi
-	SZAxD
-X-Received: by 2002:a05:6000:4b0f:b0:484:3647:d977 with SMTP id ffacd0b85a97d-485872df445mr2610818f8f.27.1788467855677;
-        Thu, 03 Sep 2026 13:37:35 -0700 (PDT)
-Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-a979-9501-3df6-d7fa-8a5a-06c5.310.pool.telefonica.de. [2a02:3100:a979:9501:3df6:d7fa:8a5a:6c5])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48588394fa1sm1005070f8f.8.2026.09.03.13.37.34
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 03 Sep 2026 13:37:35 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	linux-hardening@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH v3 5/5] slab: test ERR_PTR handling in kfree and hardened usercopy
-Date: Thu,  3 Sep 2026 22:37:20 +0200
-Message-Id: <20260903203720.63689-6-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20260903203720.63689-1-kmehltretter@gmail.com>
-References: <20260903203720.63689-1-kmehltretter@gmail.com>
+	t=1788468527;
+	b=gqhS2fldlaEWgG8dZrNILOqGKEtzn+mUYkl9tOW06TcodHRRHapQriX9E8OWQBfQCxG0J5
+	9sLFcq2XUBtg66xtduyQewjYeuMdVAwTgJ/VVsYgws+PLIcuf/MispbEviDDXZ5u9w+BxU
+	AxqrVzFERpwA6/lKJxbanxPyCv2LvC4=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Du1gRA36J1zj7kF4LQrKEJ5dJV/B/IFUJjgHMfdrnXY=; b=Rj71mU+HtoUJyHUY+FEf++U/6Q
+	rYCK02wjC/WDCmMc9VfVB9QzKni2praHxmrf21jn82TgYUELJSsod8L1Jc3B29b+XHPcYlH3ZXwpV
+	Yf77Co01UtaFMBAkhwEPUwWcWka6mGSjAWBkEJ5/Hi+S5pHlKE0bol12QXwM5lNjqKPwvTkLSQo69
+	/7TjdM9l4Y3ghRpjEqJOUMKpBZfDZm4LbkpBpWauMEylXGfgqLfZ0QHT8NXssWHt7JnIqgT0OxOy8
+	1PWg15tzA8DAP9kWAn9KJj89dqIfQKsP6im59fKpRxeJCiCod27hGXtbn+jVawxxVGkuJJXzwEcG3
+	oq68VlLg==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x2EMR-00000000aD8-0e8i;
+	Thu, 03 Sep 2026 20:48:39 +0000
+Date: Thu, 3 Sep 2026 16:48:31 -0400
+From: "Liam R. Howlett" <liam@infradead.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Suren Baghdasaryan <surenb@google.com>, dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, 
+	ljs@kernel.org, david@redhat.com, willy@infradead.org, shakeel.butt@linux.dev, 
+	vbabka@kernel.org, jannh@google.com, arve@android.com, cmllamas@google.com, 
+	christian@brauner.io, tkjos@android.com, dsahern@kernel.org, davem@davemloft.net, 
+	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v6 0/5] mm: Unconditional per-VMA locks and cleanups
+Message-ID: <aalhqe37szvcitr46c4fk6xcjtjjzm4zfm7ltrno2spipvq2q5@7svyjfbegb3s>
+References: <20260813193433.3318288-1-surenb@google.com>
+ <20260829185625.f5ee1b2931818843a78af88d@linux-foundation.org>
+ <apVhzM2501wSiGGg@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <apVhzM2501wSiGGg@google.com>
+X-Stat-Signature: e7jtepwshegpfncu6d4zsp3y19cgwnrr
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A8C8718000D
 X-Rspam-User: 
-X-Stat-Signature: 316omkozbacchaimrrx6ubsy7zet1jar
-X-Rspamd-Queue-Id: 279F640008
-X-HE-Tag: 1788467856-724610
-X-HE-Meta: U2FsdGVkX1/qHICHjMEfef17BQ/+vfsa9rhWgTIrfA0woSnnFFjktgLu3dFYHZ2332zsGZaTmUlD7Ey+cQxZM5JASJhE+oKbcSqoVg/1UIjZ0f+eWm4MZhxxfW7DVHJ3Tk/erYVed05Vx51MYBbOY5NOCGmjyBsTGsRd035kAh+wajnn6b4zXuULUr/rz2aRhOvsKdLiGfSlrNfs6eYPSaoV+An2xVN1HQQ7oqi4os9zCk21OtSq4LJtirsu6IKNxGRCVtuSKg9PwWea5k2SftvS467layTGqdsmovSkpvos5EpJ4qWs+VYXb0/wHBvol1z/mxM1nGYFFEcBWXd0QTaqdnkVOiS1NV8npfieIN0kyUeUTprv2OnrwCJIb1eTnYE9dvIkXiv5jZbFo5i1annhzLsR4xhgpE2ap+YHiCrxiexR6sE+7xz/eehpQUxOQLS6W1lRmuuHTJcJma3T/7xJCcuBIyL2qJgj3P2uFIbfyPdAESk2tfwplqYTnO0vFeVEVSXkpw/16iZyc3tGA/JnAgE+5A7GNifGdfhuYAUqFgsH7KdOvBeuYAU8Co/fWdAmKh7WC4Kf8DPWUWil1S+sT+xHt6PvMHm5spA0FECdKQ8GVlUXQNR99hQ90Z0M5/oJz0qwtozKqFJtRrVU8DXQDqogoFNUuy4ta9FiWrIPlBs0y26i7T5IrADRnHyCjl84mOFvs0g+3z375tInGt+h4dvFw1uBiFC7fTGP9y0XR1u7ZiRcwe8InsG2imEK2gtUo+gTJUlHgNdjId9ztU2ifDSlFsqwZovVJkdodDKwlLOtu3cFt3w/I1/royHtOHmXFZ+oCE0jT/6kbhdmF5sH/vW141IzQl6iwUfBE31GLXBihXmblcNjkId4FxCH+2WXmiUgaxdlYWp+bwbA2AkRc+h/4l9saeXobdeN/oVm+AKBZCUJfbntBiqkNJ3MqwmrspGPzVZ13FaeNSP
- RAR+0Uo2
- gviFGkfjlvL5R5RgcFN2PFRSnCdQQIWRVBYds9XTaAwRRN6fyjX1qFQ3ZiG9eUA38xUW5u6BPhRNxZD1H5WEpkJMxGWBcwQEDDW/VaGRfUK3KpzMiEuCmdyiQLoTP39K31kEwb4729U8Jxd/vb1w9cIivshsRowO//3+2u9ijhAhClsIpPgkHFPMLNXPlxm6qFNXJ3+p+70lXcgTrhg2ZXgxgRAXxUC+SxLncG77Lqp8TSB30igOCBsxf6V95vBVIL29qkmPZGZPuyjodlQstTVxdf/xCnQ6VhWLgUNEYtwT4oKV1QWsjUsHxr9zEUb1jEaV0AQ7Xpo4W9N2qCL0r9S4ijyfvikz/ODmNSSJXd5MFy80Mler4Fti7lijHoma+DS8SHTwbjcZpH8BldaKSgnYXTNr1UVtkD9yFj3maPmT5pkLVl9v1ngmJ7noH66yUNJaz9FGyx4jnpEAz9roeiLuJKSBCbLbrhFwMGcMOygv7oxsfksOW7VYCEEW8GbrnWMyZ
+X-HE-Tag: 1788468526-361467
+X-HE-Meta: U2FsdGVkX19X66PSFY/oNowfq4y3Lyj4VO2IqRb+Hj26JgjfKj1wLbz63WOLxixJycRWpYA82aXYMCKyG6b6SQ7OQBCmnIA3YwTbW/oP4zUa3z2+o3AdLzZE66aTGdXqGXS0Pe/nEB7rXbsXm5XLZ68kh7tfnX7iOBmWew3kydXUC+OA7UAP6OZGyoOqyU97maktEWIZQFnKGxCWmorJz5GJLn9MDYbPGi5QlyksM33Wm2dtUWa61n7cb8piUw9seHpiY6BxMcRfgh3aMfqsF6CaR3UgV8Lhj80V0txtTVTn7sr3XjqJ2/gxpnEkhyJgw6bhcil0+LRC3hQTKlYlAERCjYVDCWRJayCXUY7KEDp1YKVMJv35N/zjEFdAwMIJ5wkV5rzpj2oZLffLA4dMNmz8bwZtOiGSMGdM67rr/CxRQqx7Wy0/vzVgdxVGPafUgr306Rl3UAmos+SfVAbFdsAZrpc5lMS56VNgHa1Vl7/6CSYRR4c1niCO3jHdVztR0Svl8HGaBvIftzRWCz6izT9NJ+WXU5F2pAfWQeimopywwjQpc8F3XXoxErB1tcdAGl5vJYXqR3ZOi3zvquoAlywWPiOY7h5QuVxkU1Fl5Cs9JPGu6fopJAcda5+pM3rEj6h4rf1XDk78bDllmr45J82IW1TVYvTgjm3nH/EiCcc1an8aue1JVrE30LJmV7c4MHovEflJdaIJvBc6fcw455opgSKeF0XuvOrSTtgowovkhZ/wbGSmFRNs51D2BZD+rE/TshwYjmPIiXRS4OD8XEA2bvuY1ccJE7fmTn48Vxk0Nw3ub3Yd7hn2TbyOAlvO6VO+UtoK4xZbln4rOvKL1JmeijpaLxjh7BcU7tW0qT2Jd+9vLhsqJqfPu8dyvNbfXbGtR5pHBKmLaEDOVnDc04Lv6iEqsbetAC5q3ELMlXgeRer4kJ/3pdJLpIQc/plp378wLGYDkbteEWu9axP
+ /FOHbLSV
+ 5Ow1WHKiyXN/7gNjVYJj2TQTTrGBz/r8L5Oi1YtfxM/S99JTGilRkiouEKCOg01HaQQFfMd/Toe4RU70mNWnteHZgQXVudjDYIgvJWsT58CAu+j9Rapz8F/Lp9dKiZz53/1IODZVtLjsxeHgzG/hN8G3KSzv9DyLg1hC0IiPJ8AsK2LI46Nddo9AhuHVUynniGTGDTqfo2wd+6AB2hdE0b+ofVae40ptqJDZu06bAB19k96ieMY5BiOW4Tp4AjvkXwgPnoYAKq4ocb8gQT0lWicFzr7k83ad777mBXlKeUlEcxoA2yjyYzJvw8WWihqdfUjjU1XxqK6DoX3FTl9GvFom4x98RzbJFL/RfbZKZYpxl1U9GGgYpQEklKCey0hJY8MHgr2xp3He9Vod6MYKlenJwcFLwDFzjS5U40p6I6m+MKyxgJFX7Gf2EZQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,121 +96,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add KUnit coverage that kfree() warns and returns for ERR_PTR values
-while remaining silent for NULL and ZERO_SIZE_PTR.
+On 26/08/31 11:13AM, Alice Ryhl wrote:
+> On Sat, Aug 29, 2026 at 06:56:25PM -0700, Andrew Morton wrote:
+> > On Thu, 13 Aug 2026 12:34:28 -0700 Suren Baghdasaryan <surenb@google.com> wrote:
+> > 
+> > > v2 version of this patchset [1] was written by Dave Hansen and per his
+> > > request, I'm taking over this series.
+> > > 
+> > > tl;dr: Make per-VMA locks available in all configs. Simplify some
+> > > of the per-VMA lock users now that they can rely on them being
+> > > always available.
+> > 
+> > It's been 2+ weeks so perhaps a refresh-and-remind would be helpful.
+> > 
+> > But it applies well enough and is adequately reviewed so I put it in
+> > there for testing, thanks.
+> > 
+> > AI review might have found a couple of pre-existing binder bugs:
+> > 
+> > 	https://sashiko.dev/#/patchset/20260813193433.3318288-1-surenb@google.com
+> > 
+> > and a small rusty thing which you might wish to attend to.
+> 
+> The binder bug is not actually a bug. When using VM_MIXEDMAP and
+> vm_insert_page(), the vma takes a refcount on the page, so there is no
+> use-after-free even if free_page() is invoked without removing it from
+> the vma.
+> 
+> Adding an INVARIANT: comment to the Rust code SGTM.
+> 
 
-Add an LKDTM test that verifies hardened usercopy rejects an ERR_PTR
-before attempting the copy.
+I think you are correct about no UAF here, but the page isn't exactly
+pinned to the vma - which is what I thought you were saying when I first
+read your reply.  It's sort of misplaced in another vma by an mremap().
 
-Assisted-by: LLM
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
----
- drivers/misc/lkdtm/usercopy.c           | 27 +++++++++++++++++++++++++
- lib/tests/slub_kunit.c                  | 18 +++++++++++++++++
- tools/testing/selftests/lkdtm/tests.txt |  1 +
- 3 files changed, 46 insertions(+)
+vm_insert_page() will increment the ref count, but if the vma is
+mremap()'ed with the same size vma (ie, not expanding), then move_vma()
+will relocate the pte and the old vma will be closed and set the
+binder's mapped = false without a change to alloc->vm_start.
 
-diff --git a/drivers/misc/lkdtm/usercopy.c b/drivers/misc/lkdtm/usercopy.c
-index 67db57249a34..10751e48211f 100644
---- a/drivers/misc/lkdtm/usercopy.c
-+++ b/drivers/misc/lkdtm/usercopy.c
-@@ -4,6 +4,7 @@
-  * hardening.
-  */
- #include "lkdtm.h"
-+#include <linux/err.h>
- #include <linux/slab.h>
- #include <linux/highmem.h>
- #include <linux/vmalloc.h>
-@@ -273,6 +274,31 @@ static void do_usercopy_slab_whitelist(bool to_user)
- }
- 
- /* Callable tests. */
-+static void lkdtm_USERCOPY_ERR_PTR(void)
-+{
-+	unsigned long user_addr;
-+	size_t size = unconst + 1;
-+
-+	user_addr = vm_mmap(NULL, 0, PAGE_SIZE,
-+			    PROT_READ | PROT_WRITE,
-+			    MAP_ANONYMOUS | MAP_PRIVATE, 0);
-+	if (user_addr >= TASK_SIZE) {
-+		pr_warn("Failed to allocate user memory\n");
-+		return;
-+	}
-+
-+	pr_info("attempting bad one-byte copy_to_user() from ERR_PTR\n");
-+	if (copy_to_user((void __user *)user_addr, ERR_PTR(-EINVAL), size)) {
-+		pr_warn("copy_to_user failed, but lacked Oops\n");
-+		goto free_user;
-+	}
-+	pr_err("FAIL: ERR_PTR usercopy not detected!\n");
-+	pr_expected_config_param(CONFIG_HARDENED_USERCOPY, "hardened_usercopy");
-+
-+free_user:
-+	vm_munmap(user_addr, PAGE_SIZE);
-+}
-+
- static void lkdtm_USERCOPY_SLAB_SIZE_TO(void)
- {
- 	do_usercopy_slab_size(true);
-@@ -439,6 +465,7 @@ void __exit lkdtm_usercopy_exit(void)
- }
- 
- static struct crashtype crashtypes[] = {
-+	CRASHTYPE(USERCOPY_ERR_PTR),
- 	CRASHTYPE(USERCOPY_SLAB_SIZE_TO),
- 	CRASHTYPE(USERCOPY_SLAB_SIZE_FROM),
- 	CRASHTYPE(USERCOPY_SLAB_WHITELIST_TO),
-diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
-index 923d8646bca1..079563387007 100644
---- a/lib/tests/slub_kunit.c
-+++ b/lib/tests/slub_kunit.c
-@@ -507,6 +507,23 @@ static void test_zero_size_alloc(struct kunit *test)
- 	kvfree(ZERO_SIZE_PTR);
- }
- 
-+static void test_kfree_err_ptr(struct kunit *test)
-+{
-+	if (!IS_ENABLED(CONFIG_BUG))
-+		kunit_skip(test, "requires CONFIG_BUG");
-+
-+	kunit_warning_suppress(test) {
-+		kfree(NULL);
-+		KUNIT_EXPECT_SUPPRESSED_WARNING_COUNT(test, 0);
-+
-+		kfree(ZERO_SIZE_PTR);
-+		KUNIT_EXPECT_SUPPRESSED_WARNING_COUNT(test, 0);
-+
-+		kfree(ERR_PTR(-EINVAL));
-+		KUNIT_EXPECT_SUPPRESSED_WARNING_COUNT(test, 1);
-+	}
-+}
-+
- static int test_init(struct kunit *test)
- {
- 	slab_errors = 0;
-@@ -532,6 +549,7 @@ static struct kunit_case test_cases[] = {
- 	KUNIT_CASE(test_leak_destroy),
- 	KUNIT_CASE(test_krealloc_redzone_zeroing),
- 	KUNIT_CASE(test_zero_size_alloc),
-+	KUNIT_CASE(test_kfree_err_ptr),
- #ifdef CONFIG_PERF_EVENTS
- 	KUNIT_CASE_SLOW(test_kmalloc_nolock_and_friends_perf),
- #endif
-diff --git a/tools/testing/selftests/lkdtm/tests.txt b/tools/testing/selftests/lkdtm/tests.txt
-index bec57a02913a..d3e38c1c75cd 100644
---- a/tools/testing/selftests/lkdtm/tests.txt
-+++ b/tools/testing/selftests/lkdtm/tests.txt
-@@ -70,6 +70,7 @@ REFCOUNT_DEC_AND_TEST_SATURATED Saturation detected: still saturated
- REFCOUNT_SUB_AND_TEST_SATURATED Saturation detected: still saturated
- #REFCOUNT_TIMING timing only
- #ATOMIC_TIMING timing only
-+USERCOPY_ERR_PTR Kernel memory exposure attempt detected from ERR_PTR
- USERCOPY_SLAB_SIZE_TO
- USERCOPY_SLAB_SIZE_FROM
- USERCOPY_SLAB_WHITELIST_TO
--- 
-2.53.0
+Binder now thinks there is no mapping but the mapping has an address so
+it can't map anything new.  You could get around it by replacing the
+vma, but I don't think that leads to anything interesting.
 
+So we still have a ref count that's okay, but now binder has an
+alloc->vm_start that's stale and a mapped = false which leaves binder in
+a bad state (one might say a bind).
+
+Thanks,
+Liam
 
