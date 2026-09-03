@@ -4,117 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D172C61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 15:23:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 191C5C61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 15:33:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A7586B008A; Thu,  3 Sep 2026 11:23:06 -0400 (EDT)
+	id E78066B0088; Thu,  3 Sep 2026 11:33:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97EDB6B008C; Thu,  3 Sep 2026 11:23:06 -0400 (EDT)
+	id E27F76B008A; Thu,  3 Sep 2026 11:33:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 895F96B0092; Thu,  3 Sep 2026 11:23:06 -0400 (EDT)
+	id D16586B008C; Thu,  3 Sep 2026 11:33:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 570976B008A
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 11:23:05 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C64FCA4743
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 15:23:04 +0000 (UTC)
-X-FDA: 85172819088.23.492A951
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1467740004
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 15:23:02 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=tNiHO54A;
-	spf=pass (imf04.hostedemail.com: domain of 31ZCZagkKCLgrYpslqYfsemmejc.amkjglsv-kkitYai.mpe@flex--tarunsahu.bounces.google.com designates 209.85.218.70 as permitted sender) smtp.mailfrom=31ZCZagkKCLgrYpslqYfsemmejc.amkjglsv-kkitYai.mpe@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788448983;
-	b=HTegv+nRBUHf41RJ2wW5MHMCuwKooQMKeHTXaEzaU0orXSccuVq9JfpeHtNZSXiACPkIPd
-	2tcep53JwOIDcmqiupUCvGnHTugwuEvGBqEDauDrdUjnOElPJNyNcml4I3liavZP5v3+PM
-	XZKWKzj6p17tNLVQf0tw+2AXTzP+EI0=
+	by kanga.kvack.org (Postfix) with ESMTP id 965846B0088
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 11:33:49 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1DF22A46AD
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 15:33:49 +0000 (UTC)
+X-FDA: 85172846178.20.30FABE0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 574AD2000A
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 15:33:47 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I3SeDa5y;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788448983;
+	s=arc-20220608; t=1788449627;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GmFek9macUO7lb98mH13+DwSxNV0cpAjOXbf35SyPVg=;
-	b=2XB28JAlbWueZWh1JUpl8L/L+ePLCKsXuDuR8lhjjtXlBUqYeedJr8Uhz1PMRx7hfrEOev
-	3jhOCNDHQuVDa2IxXDp1/fgb365/VktynQT+omluqmwMMHoTTL/xh9rYc6CYWkQ69qhkui
-	zIkxT0GV3bBkEtDVpG6hrf82wVSCkJ4=
+	bh=mA0IOh1RfpCCNooZGYoPdmrZBmJxGvAB5bfCvVRddbs=;
+	b=rmWbzCe9k6Krxibt6diovUk6538Rv+izfPKIThoA9YT9W2rzNrysLK1vbDvIYoGwWUj2uV
+	eVZL01GPExVyi9MRBYSVPgW+FZyPWl6ykQi27yqSL540lxiFF38IcxX1ohpkkd5EuBk0qp
+	WSr2qiPjPVWZZy4tkO17ijos2wL4aHo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788449627;
+	b=wr9kIBYLvD/C17zNsIT/YDt1sz7YbvDF7cFqJf0Y1TnMkR3NxB7kXwkI9DYBNl6HnoL22j
+	Llo8wgSsHK9SexbSTv8zEeFbURf/SirJgudgwgtz2Kk4Kqz1dETtZzE5lG9mCnfVR1ITQI
+	c/wgCuIxzB5eMicOiMhyDM9dND7pwzw=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=tNiHO54A;
-	spf=pass (imf04.hostedemail.com: domain of 31ZCZagkKCLgrYpslqYfsemmejc.amkjglsv-kkitYai.mpe@flex--tarunsahu.bounces.google.com designates 209.85.218.70 as permitted sender) smtp.mailfrom=31ZCZagkKCLgrYpslqYfsemmejc.amkjglsv-kkitYai.mpe@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c1f3117bc6bso190778166b.0
-        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 08:23:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788448981; x=1789053781; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GmFek9macUO7lb98mH13+DwSxNV0cpAjOXbf35SyPVg=;
-        b=tNiHO54AlFDA6VaevMvH5UaoD0Fl2Cq6myKexIfbnJxQiZ2hEeC17X17RcvD/7dQ6n
-         aLzbCePFjtJTYJfiJklKZSNL4Zgd3psnHtJTQooP8ozS/ZUU6JtPKOM64pStnGKQuCep
-         dUtCe+8OzTVZiRmugn0+Lyq4YHdfsGlAmkzG12/fJ0Bbcr8cchXMzn5wyXd7lY7h7mTH
-         XB4sE9KxbZ/W+oLnYpLL+QSAZoDBO1BizBEU+nkCXmDVin5/js1ZQFUKmqtXm274mrYJ
-         9lWH1mgFz3lY+dBWI2076luqGwPKA2Ekh+O6UK5Gkpc0OycUAhYuKcnRxy7WGJvEKbPB
-         /jaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788448981; x=1789053781;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=GmFek9macUO7lb98mH13+DwSxNV0cpAjOXbf35SyPVg=;
-        b=J++7t7zn6Jbkb9FpWiMlDB640/audLE7IqUdbXz4YZ59F4psv4iz9P1r98GojfpKcr
-         NxQyyY464KI44wb/cNcu+6esYEqvg5eFUt5ZSzZ8uNB67MQePTWEpG5azPVCk3f6Y2Oe
-         /p+z1zBeHfavApqwa+xwUrfO9JqCv5FqyB4MgX4xWYcsJseio0jhu4fBUGAycgU8dYDd
-         KzvYQqZ/lmZ8B0/9FI98BeUtNXvJwLZjiltVINdreTyCA6cYwgw4jyV5sLyzn4AuRdYL
-         iJper/LDh440qOtonecBxPah4IprXRHlU65lHVZoeBsbwzzcHGcCo9VIQbTLzPtBu/8C
-         4RZQ==
-X-Forwarded-Encrypted: i=1; AKwUvByuFe5fYe/jWYE6JApFrR6M55XEoXcoG5CH71O53uu/yzBnCMovWGbDLCFSTVCGxMwvCb+aZfU8aA==@kvack.org
-X-Gm-Message-State: AFuF++kjAgJlEpTGF00p7Vyth39b0/VLynRmOrb9HXY9fxR4On+O8JcX
-	OkxENeW0Yuz1tqj26q5FGW6T32doAtxbCoXvK2kSf2pUuvSrBhnw6KJaIjjq5YixnWoDDoVi3Ud
-	vtEEbzVzSNZgdp7jY1w==
-X-Received: from ejctj4.prod.google.com ([2002:a17:907:c244:b0:c25:127e:8e75])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:d508:b0:c16:13e7:fd63 with SMTP id a640c23a62f3a-c260436b4e0mr108793366b.0.1788448981126;
- Thu, 03 Sep 2026 08:23:01 -0700 (PDT)
-Date: Thu, 03 Sep 2026 15:23:00 +0000
-In-Reply-To: <aohwGv6TRqPg9Dwx@google.com>
-Mime-Version: 1.0
-References: <anphyjFv3FhF61iB@google.com> <2vxzpkzo51wg.fsf@kernel.org>
- <anssOQFNZ2LfihbU@google.com> <2vxzik5f311e.fsf@kernel.org>
- <anyObKiZIhfok5mk@google.com> <2vxzqzjz1x5f.fsf@kernel.org>
- <aoMcqp0gr06YXAPU@google.com> <2vxzy0e3zgqz.fsf@kernel.org>
- <aoSCCTTBn9D5hqzk@google.com> <2vxzy0dzy4gn.fsf@kernel.org> <aohwGv6TRqPg9Dwx@google.com>
-Message-ID: <9huzv78m2wbv.fsf@tarunix.c.googlers.com>
-Subject: Re: [PATCH v4 05/11] KVM: LUO: Support VM preservation across live updates
-From: tarunsahu@google.com
-To: Sean Christopherson <seanjc@google.com>, Pratyush Yadav <pratyush@kernel.org>
-Cc: ackerleytng@google.com, fuad.tabba@linux.dev, 
-	Andrew Morton <akpm@linux-foundation.org>, dmatlack@google.com, 
-	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, sagis@google.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	linux-kselftest@vger.kernel.org, andre.przywara@arm.com, michael.roth@amd.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org, 
-	vannapurve@google.com, maz@kernel.org, fvdl@google.com, kvm@vger.kernel.org, 
-	oliver.upton@linux.dev, kvmarm@lists.linux.dev, alexandru.elisei@arm.com, 
-	skhawaja@google.com, aneesh.kumar@kernel.org, linux-doc@vger.kernel.org, 
-	David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, kexec@lists.infradead.org, 
-	suzuki.poulose@arm.com
-Content-Type: text/plain; charset="UTF-8"
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I3SeDa5y;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E1FFD601EF;
+	Thu,  3 Sep 2026 15:33:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4ED41F000E9;
+	Thu,  3 Sep 2026 15:33:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788449626;
+	bh=mA0IOh1RfpCCNooZGYoPdmrZBmJxGvAB5bfCvVRddbs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=I3SeDa5y8FjLpHVH3jLFvHwdKcD3Y8ondN5UxOmGWi9uVCNqL/eELQoSgA+VxYHvp
+	 wegZn2RAKvkr3iTkwjPZzAWvUMZgXWSUIsyfl66fOw7SmB8BeeNgxOzJIVrlhr6UCK
+	 Ke7x76llpRjY3DSgmwY8jSynKJ+YqiummrJmjHyk3vSY0aTRGrCdvHszKU3bk+e/T2
+	 oldt6cKBjO4Y0ZLcW9G5g2go+1nuBJEWN78bHPsDPWk75edEbdLR4vMZsnFPlttmEL
+	 3LvStkS7YILFS90rKMwwQw3JLQMaMeBtQn9iin1gQ+a+z2lV+xNbTuSQtizadK/bbp
+	 MY9oFNPNu1Wgw==
+Message-ID: <9f67cacc-b063-48b7-81af-09858aa5dcdb@kernel.org>
+Date: Thu, 3 Sep 2026 17:33:42 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] mm/page_alloc: refactor build_node_zonelist() out of
+ build_zonelists()
+Content-Language: en-US
+To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com
+References: <20260902215853.156267-1-gourry@gourry.net>
+ <20260902215853.156267-3-gourry@gourry.net>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260902215853.156267-3-gourry@gourry.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1467740004
-X-Stat-Signature: o6ftsdqkszfjbo48eytyiposu3scjypi
-X-HE-Tag: 1788448982-482517
-X-HE-Meta: U2FsdGVkX1/5juT/VVR+4lcbZF5GYc/jeoRspCUu0sEyZtiNJDeoBET1DrXsIz0iMdlI9RA2geAe5R4TvgJnhyqTh4AWud6ZzLIYBO+XuegZTjPfoJiUwpy9FyfX4nmNJeZQIh/f488qR6OHAgiHZJzeIUia1Zrb1K34NJA24rrAYggmDPHFC1I9LRjZ/kMNmv3z2jTTvQHncQ7PglswesiQ2BwaNpbyqIroCK5aRH3h5n/uUD3/Z8LJVaz5PDlIaGvDzjrbG/H7srLKY3OaRX/210C9/XJTJCw1uCpGwEle54cseVaHk/XW/bQiM5Qg2TmCys94o1OuO9LdWZxCMQFugp9X1RvD1YzWEB6Gq09KqKM3/pEXbn/9DcSSHMdr7j7RoAeQiqsAAVn/iscuaU7LRI5zS69/1Nzld959Ys7gqVur1gm4MUTKqaP/ATv1hGEEmOeRSDpFpPyRt0AiySozX0P1xSs9LQx1YHMpfmneWHGMXAWiHm4udV9+G+zi1liw7t1cjnbTuWl390aXk3Cnpm5fHGS0YesBe3svG0G9uqA+ZtPkvltlaE9957hxq4MpPlTw50it6uLXcNYmfw2gauhAf+QfaqTNUk4g9dhnHtYS9M+8Ym8+6Su61TQleWrpt7wbGI4HWdD65S7bCWICR8mrqgeAa1+NpBSOkFaJ8w5Rf5J3iDx4FpALipzgImUcFteFDce2MtpQJ+mKamwG1WZti3/b5sdybetswMmSHfFduleT4VSQ/zS0gq0lMF8oiL5cnXb7qQORF92fZxIaqBKIdfcnk8EnP1E6kX1+/Cj1yod8HJSuo/l7plpid8GxGZqtHt+aashnmtBt6/CO9pZblnpCfWAghIrxdl9L3K80/bckkkNBo5JVPVF+c+wMMd9HC+D84mfSndj0vfzK+yMHXWdAd6YOZCDXvKpJo7FP+tSUUqmkEdOb2+HNSjm9WDE3PMYYWZpjc8J
- qHyBT5mo
- AbTwFBuyfpJhTUld/EjsEPG/A4RriwNFZKwXO9UVaZA5hO6KeGCKqD7c5+y88znIWq1ttmD9TYZhHoB050I6D3mLh8STflv/gHQ3XeDfujeRnTFWcV5TjP59XGZA6AUdDcXG9g2tTPkHYCWtuVlxsLwmj+yY9Ao5uWaWFQnSu+FRiPhHqTkAjFc/KrCN/leqUp6FICf3Z0EAKbDL2m6llyXRysk9FQ6dAQteQYUL5EdmN6x+CbOaR6eAwA5wwRWGC/V0ALYnjYoi2i8e/vJsuxg5OI/vQgYyyGTyuryUSouHhZ0PTb82oFANvDG9F+911cDhHSZp/SbASi5CaNLeltVcGmURY+a6paZqGfdw1rCs07DGX3WkRsXTwhfkfeXQx0/bc7vpf+AA3f237wHNYnjyTTvVmscs5UHAyYIa9/rYGpXrDqWZZUkEDP4KGOq6EmZ6F9sH4gJs6ziOHbXgcCkypkLLbMo3GFHe5G0rvUPuk9R67sGos7f9c6TijgNAiufSgmZbXht8ioqC4Xdz+xlGMPTqRSbDr86Z7WNz/71pBkbMj5CGN+UwSrBHxEO5Vw7Xh/3fSEREZknky5CCoEwHcEk8cJPZSTKU1GDYnjLk+buk=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 574AD2000A
+X-Stat-Signature: 1k1dprds4nwseqfgmjicuyz64b89biaa
+X-HE-Tag: 1788449627-326579
+X-HE-Meta: U2FsdGVkX18t0IpZ4Q6hLMUSEfKeGV7JE1mQOx9PwodJnJE8tUYr1dLA66rRZm3y3//ReNon/nruxm1f2qTglGifb9X63vIMEi1GF/3soX0ZjOKTY5Asmrwx/4w+koqQ5oHFK7g3i00wUUGxaRvrf/ACCOZ5lC0UYeqt36pe7SO378m0sZWUaWW1PT5AA/7mDnILU+nZ/KKt6SJIPqwxuXY4OJvQezrfO4jrt1RXZj9XnZGjJCofc8JZq0TeDmKgWAbsFXZMSIJWzHHEhb6SZqfgEDi5uRxL8Nbnkdt8ox1tQcAIKozgzr5EYq2WQmK25LUQ/S92NB271fYCp0/4fUlHeg/9CZ0IWdOACccG34ah3NAoal2V+DAaP0u+L6ayImiAh1AtvyxeulHH5GvbmQLY0kSKRadu9uoSJcWAA252qdK3YPhnBQiW3l+wB2fG2YzrV4/HYLCJkFb+4UNF8AU13RLaoCJGp1zHdmn2afazibkq4k40hnvQSSltclflidJbLXL4p2baDTFlUPhStMlskC/sQfVNcL81GlvSJUEXK4x/pBNpNnvW60ldoJjFpRb8FAH1+RZSgarXrqMBBzLBEbOXsobNaLv1d40OVI27aEiALRDSIh+j60TNbnEBBfxHno7iU0r6IgoC8LtvtNOyrEHvyyLqvehc7kxDjqzne4PT+Tl4/dlXwPeVDDl2peIifvBh0Pcda7ovdLzbpQQzvH5aJcTllzzMmRo0w+rtUVdLC+WSavRTVoI8wHRbvVY+jVo7D4f/pGKxD2X02X2RP8lCKcG826+63MZacW8RiVTU4OwUXw0wKnGmDf4qG03KrHbiuwqQS2CoMQqn8Igpq3iYYGSPRBKl9hXEChtA8oRn2Q9bPTMO/ZYBES95In4xzYbTlUurA6e1a+9kbGwq8AHCoquDexd9GReLvyngGNhIPak2Yumnh8Oxgct/o+hpICYWMVc4BckWMCj
+ QQlhCrY6
+ 6L1KVreqlLkmeE3H3OtUl4TM70W2APgOtSDiF27aWYeoSunXfHhcURejVEeYZwVGC/cjhkEKgdRk8CpBYyhT4+jUIzWq6U2LW7kd57rQjGBqkoQ9ZdEyperJaK70oaxKHJj5Gz+w7aCW/+MD0/gXglc0RBnnkr+pBjqDWPcKWAKgF5tcKgrKU/yPtxe1/Oqo/x5dFwhtt+vHmtOxN8EblfSqWSipIWH4+jwaaC1mDfb6iVFiPp3X5YxNFnM4E8U7W6M4zRfogREZYL3aM/2q9tladCykJcVoQEI18lYm36/i+YK16Va8W+qX6/g5SCDKc4QQ+BoTApNmn4eUGNw1MVZ9Ib3bR4+4F5/KPX5oRhLQje4E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,209 +136,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sean Christopherson <seanjc@google.com> writes:
+On 9/2/26 23:58, Gregory Price wrote:
+> Extract per-node fallback-list construction into build_node_zonelist().
+> 
+> This lets us build new zonelists from candidate nodemasks instead of
+> just the default N_MEMORY node state list.
+> 
+> No functional change: build_zonelists() builds the same FALLBACK list over
+> N_MEMORY with node_load updates as before.
+> 
+> Signed-off-by: Gregory Price <gourry@gourry.net>
 
-> On Fri, Aug 21, 2026, Pratyush Yadav wrote:
->> Hi Sean,
->> 
->> On Tue, Aug 18 2026, Sean Christopherson wrote:
->> >> Does this idea of "backwards compatibility" sound acceptable to you, at
->> >> least at a high level?
->> >
->> > No.
->> >
->> > It's probably fine for Google and other large companies that tightly control their
->> > kernels and use cases, and have the resources to juggle the resulting complexity,
->> > e.g. have kernel engineers on staff to track feature and dependencies, coordinate
->> > and plan kernel upgrades, etc.
->> >
->> > It's not acceptable for upstream, where downstream consumers often run a distro
->> > kernel, have much more varied use cases, and don't always have a horde of kernel
->> > engineers on staff to help them thread the needle you describe above.  And if
->> > supporting live update as a general feature for all users of the kernel isn't
->> > being factored into design considerations, then that needs to change, otherwise
->> > this is all dead in the water.
->> >
->> > I also don't see the point.  Maintaining a rigid save/restore ABI is annoying,
->> > but it's not _hard_ (or at least, not _that_ hard), especially if there's a set
->> > of well-documented best known practices that subsystems can follow, e.g. so that
->> > individual subsystems don't need to learn painful lessons first-hand.  I genuinely
->> > believe that maintaining the version hell you describe above would be more costly
->> > in the long run than simply committing to full backwards compatibility within a
->> > given subsystem.  I can imagine that enumerating what subsystems' information is
->> > in the payload will require a different scheme, but for a given subsystem, I don't
->> > see any reason to aim for anything less than full backwards compatibility.
->> 
->> Let's say for argument's sake that we commit for a fully stable
->> backwards compatible ABI. Even then, you have to deal with multiple ABI
->> versions.
->> 
->> Live update's ABI is more complex compared to KVM's save/restore ABI.
->> For the KVM save/restore uAPI, you are largely describing architectural
->> state like CPU registers, etc. These things don't evolve as fast and
->> more or less stay the same.
->
-> Right, because nothing meaningful has changed in any architecture in the 20+
-> years since KVM has provided save/restore support, whereas guest_memfd looks
-> nothing like it did when it was introduced three years ago.
->
->> Live update needs to describe the state of kernel objects. These are
->> more complex
->
-> LOL, you might be the first to claim x86 virtualization isn't all that complex.
->
->> and evolve faster.
->
-> The speed at which things change doesn't automatically mean we shouldn't strive
-> for backwards compatibility.  Yes, providing backwards compatibility requires
-> additional care and planning, and over time *might* lead to an ABI that is
-> difficult to maintain.  But IMO, that just makes it all the more important to
-> get the design right the first time, not that we shouldn't even try because it's
-> hard.
->
->> For example, say you merge guest_memfd preservation today. Some time
->> later, someone comes up with a more efficient data structure to track
->> the folios in the file. You _have_ to make a backwards-incompatible ABI
->> change to use this data structure.
->
-> Only if those details bleed into the ABI/contract.  I actually have a concrete
-> KVM (well, virtualization) example for this.
->
-> Intel's VMX architecture disallows direct memory accesses to the VMCS, and instead
-> requires software to access the VMCS via dedicated ISA, using architectural encoding
-> numbers to reference VMCS fields.  I.e. VMX decouples how data is stored in memory
-> (the data structures) from the ABI/contract with software (VMCS field encodings).
->
-> This allows Intel to optimize the data structures to be more efficient and performant
-> for each microarchitecture based on the features and properties of each uarch, all
-> without breaking backwards/forwards compatibility with software.
->
-> My favorite esoteric example is AR_BYTES packing.  For Haswell, Intel added an
-> optimization in ucode to allow saving/loading segment register state in a single
-> uop (IIRC).  The optimization was especially valuable for virtualization as it
-> shaved cycles off the VM-Enter/VM-Exit hot paths.  A key piece of the optimization
-> was it required the AR_BYTES metadata to be stored in 16 bits, but existing CPUs
-> stored AR_BYTES using 32 bits in an "unpacked" format.
->
-> Fortunately, because the in-memory representation was decoupled from the contract
-> with software, Intel could pack AR_BYTES into 16 bits for Haswell+ and pack/unpack
-> the data on VMWRITE/VMREAD, so that the format presented to software remained
-> unchanged.
->
-> Does VMX's decoupling of the in-memory represntation of a VMCS have downsides?
-> Absolutely.  Most notably, it incurs extra complexity (in software and hardware)
-> to achieve comparable performance to directly accessible data structures (AMD's
-> VMCB and Hyper-V's eVMCS) for nested virtualization.  And I'm sure it has placed
-> contraints on Intel's designs, and obviously introduces complexity into the
-> overall system by adding a layer of indirection.  But IMO the VMX architecture
-> has been a huge win overall for Intel.
->
->> Or say you add a new memory backend (like the HugeTLB patches in
->> flight). That likely will need a different ABI to describe the state of
->> the guest_memfd.
->> 
->> So you will end up with multiple ABI versions that aren't always
->> backwards compatible.
->
-> No, you end up with *features* that aren't backwards compatible.  I can't imagine
-> anyone will argue that we should never add new features because then we can't
-> rollback to an older kernel.
->
-> But adding a new feature shouldn't break the existing ABI.  E.g. adding support
-> for HugeTLB in guest_memfd shouldn't prevent rolling back to an older kernel when
-> the HugeTLB functionality isn't being used.
->
-> Using AMD's VMCB and Intel's VMCS as examples, literally every major new AMD/Intel
-> uarch extends the VMC{B,S} in some way, but without fail it's always done in a way
-> that is backwards compatible with existing software.  I.e. AMD and Intel ship new
-> features, but existing software continues to work, and VMs continue to be migratable
-> across CPU generations[*], with the obvious restriction that migrating a VM using
-> a feature introduced on generation N to a generation N-1 CPU isn't a smart idea.
->
-> [*] There are exceptions.  E.g. Intel removed MPX, and so VMs with MPX can't be
->     migrated to newer CPUs.  Migrating between CPUs with different MAXPHYADDR is
->     sketchy (and simply not done by some CSPs) because neither AMD nor Intel
->     virtualizes MAXPHYADDR.  But those exceptions are absolutely Big Deals that
->     undergo significant scrutiny, from all parties involved.
->
->> If you refuse that idea too, then KVM live update will be dead in the
->> water for a different reason. It will be damn near useless because it
->> can't keep up with an evolving subsystem.
->> 
->> Now once you get multiple ABI versions and you can seamlessly go from
->> old to new one, say you have a version that was superseded 5 years ago.
->> It would be completely reasonable to say that this version is old enough
->> and no one should be going from a 5 year old kernel to a modern one.
->
-> LOL, Google literally does this.  Granted, the extreme cases only happen for
-> stragglers, and I think we do force VMs to bounce through a "middle" kernel in
-> those cases, but I doubt Google is the only company that runs frankenkernels
-> for an absurd number of years for a variety of reasons.  E.g. 4.4 LTS was officially
-> supported for 6 years, and I'll bet dollars to donuts people ran it for much longer
-> than that.
->
->> So you deprecate this ABI. Deprecating old unused uAPIs is not unprecedented.
->
-> When there are provably no users, or we can convince existing userspace to migrate
-> to an alternative.
->
->> I think we are better off formalizing this deprecation period from the
->> get go.
->
-> Why?  What does it buy us?  Because all I see is potential abuse and an excuse
-> for not spending time getting the designs right.
->
->> A somewhat tangential example is BPF kfuncs. My BPF program that works
->> in kernel X might not work in kernel Y because the kfunc has changed or
->> been removed.
->> 
->> The argument they make in kfuncs.rst is that kfuncs "provide a kernel
->> <-> kernel API, and thus are not bound by any of the strict stability
->> restrictions associated with kernel <-> user UAPIs".
->
-> BPF's documentation isn't arguing anything, it's merely reiterating Linux's
-> long-standing policy that there is no such thing as a stable kernel ABI (in upstream).
->
->> For LUO as well, this is a kernel -> kernel API.
->
-> Stating the obvious, I disagree with this.  As I said before, if this is the
-> stance LUO wants to take, then so be it, but my NAK stands.
->
->> Users can also still do a regular kexec or reboot. They just won't get the
->> performance optimization of LUO.
->
-> The amount of time, energy, and money poured into minimizing VM downtime on live
-> migration suggests the overwhelming majority of LUO's targeted users aren't going
-> to take kindly to this stance.
->
->> Regardless of if you agree with the last bit about deprecating old
->> versions, ABIs evolving with the subsystem is a ground reality of live
->> update and it would be foolish to think we can do with only
->> backwards-compatible ABI changes forever.
->
-> I never said the ABI is immutable, I said it needs to be backwards/forwards
-> compatible.
+LGTM, but, while we're at it, could we just do the pr_cont() printing in
+build_node_zonelist() itself (maybe behind a flag if you don't want to print
+from future new caller) so it doesn't need to pass nr_nodes back to
+build_zonelists(). Then also the node_order array could live in
+build_node_zonelist() itself?
 
+Actually I wonder if we could get ride of the node_order array completely.
+It would mean the loop processing in build_zonelists_in_node_order() would
+have to be done piece-meal in build_node_zonelist() itself. But seems
+feasible? Depends on how you intend to reuse/extend the new functions later,
+I guess...
 
-Thanks Sean, Pratyush. @loganodell has recently sent the RFC[1] on
-backward compatibility for liveupdate. This discussion is important
-so I propose to move the backward compatibility discussion on [1].
-
-For guest_memfd preservation, I will sent v5 soon with the following
-changes:
-1. Suggestions from across the patches
-2. tentative Plan for future Guest_memfd preservation
-3. tentative Plan for VM preservation.
-4. Backward compatibility built on top of RFC [1]
-
-What do you think?
-
-[1]: https://lore.kernel.org/all/20260903023452.721732-1-loganodell@google.com/
-
-
-
-
-
-
+> ---
+>  mm/page_alloc.c | 44 ++++++++++++++++++++++++++++++--------------
+>  1 file changed, 30 insertions(+), 14 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 4dde1cbe2fd43..e1d7c8b221d0d 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -5849,12 +5849,12 @@ int find_next_best_node_in(int node, nodemask_t *used_node_mask,
+>   * DMA zone, if any--but risks exhausting DMA zone.
+>   */
+>  static void build_zonelists_in_node_order(pg_data_t *pgdat, int *node_order,
+> -		unsigned nr_nodes)
+> +		unsigned int nr_nodes, int zlidx)
+>  {
+>  	struct zoneref *zonerefs;
+>  	int i;
+>  
+> -	zonerefs = pgdat->node_zonelists[ZONELIST_FALLBACK]._zonerefs;
+> +	zonerefs = pgdat->node_zonelists[zlidx]._zonerefs;
+>  
+>  	for (i = 0; i < nr_nodes; i++) {
+>  		int nr_zones;
+> @@ -5883,26 +5883,28 @@ static void build_thisnode_zonelists(pg_data_t *pgdat)
+>  	zonerefs->zone_idx = 0;
+>  }
+>  
+> -static void build_zonelists(pg_data_t *pgdat)
+> +/*
+> + * Build one node-ordered fallback list from a candidate nodemask.
+> + * update_load round-robins node_load across equidistant nodes.
+> + */
+> +static void build_node_zonelist(pg_data_t *pgdat, const nodemask_t *candidates,
+> +				int zlidx, bool update_load,
+> +				int *node_order, int *nr)
+>  {
+> -	static int node_order[MAX_NUMNODES];
+> -	int node, nr_nodes = 0;
+>  	nodemask_t used_mask = NODE_MASK_NONE;
+> -	int local_node, prev_node;
+> -
+> -	/* NUMA-aware ordering of nodes */
+> -	local_node = pgdat->node_id;
+> -	prev_node = local_node;
+> +	int local_node = pgdat->node_id;
+> +	int prev_node = local_node;
+> +	int node, nr_nodes = 0;
+>  
+> -	memset(node_order, 0, sizeof(node_order));
+>  	while ((node = find_next_best_node_in(local_node, &used_mask,
+> -					      &node_states[N_MEMORY])) >= 0) {
+> +					      candidates)) >= 0) {
+>  		/*
+>  		 * We don't want to pressure a particular node.
+>  		 * So adding penalty to the first node in same
+>  		 * distance group to make it round-robin.
+>  		 */
+> -		if (node_distance(local_node, node) !=
+> +		if (update_load &&
+> +		    node_distance(local_node, node) !=
+>  		    node_distance(local_node, prev_node))
+>  			node_load[node] += 1;
+>  
+> @@ -5910,8 +5912,22 @@ static void build_zonelists(pg_data_t *pgdat)
+>  		prev_node = node;
+>  	}
+>  
+> -	build_zonelists_in_node_order(pgdat, node_order, nr_nodes);
+> +	build_zonelists_in_node_order(pgdat, node_order, nr_nodes, zlidx);
+> +	*nr = nr_nodes;
+> +}
+> +
+> +static void build_zonelists(pg_data_t *pgdat)
+> +{
+> +	static int node_order[MAX_NUMNODES];
+> +	int local_node = pgdat->node_id;
+> +	int node, nr_nodes = 0;
+> +
+> +	memset(node_order, 0, sizeof(node_order));
+> +
+> +	build_node_zonelist(pgdat, &node_states[N_MEMORY], ZONELIST_FALLBACK,
+> +			    true, node_order, &nr_nodes);
+>  	build_thisnode_zonelists(pgdat);
+> +
+>  	pr_info("Fallback order for Node %d: ", local_node);
+>  	for (node = 0; node < nr_nodes; node++)
+>  		pr_cont("%d ", node_order[node]);
 
 
