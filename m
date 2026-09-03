@@ -4,106 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E00FC624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 16:45:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE309C61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 16:46:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EDB896B0088; Thu,  3 Sep 2026 12:45:49 -0400 (EDT)
+	id D55896B008A; Thu,  3 Sep 2026 12:46:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E64BA6B008A; Thu,  3 Sep 2026 12:45:49 -0400 (EDT)
+	id D06906B008C; Thu,  3 Sep 2026 12:46:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D06856B008C; Thu,  3 Sep 2026 12:45:49 -0400 (EDT)
+	id BCDCF6B0092; Thu,  3 Sep 2026 12:46:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A94036B0088
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:45:49 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 36C99A0615
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:45:49 +0000 (UTC)
-X-FDA: 85173027618.11.835B2B0
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 62E4880003
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:45:47 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=SR7TXHUz;
-	spf=pass (imf30.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788453947;
-	b=a9gHRRPhVBfUi4i5X/I4zEIeR7YEILxq6kO8p+vcY2/6XSviIW+rp47xDhov6ErKOMq3b6
-	cFzoRcB9p8gsgJgfOBpvTIfcPEKRjY9ZtAaTqJOxxuDR3Jih0VOauYGSxL3tvvxIxOj0xx
-	Nbsqj+AmsPU1h+6IXCGnNjWzDedUBRM=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FE066B008A
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:46:23 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 23B12160574
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:46:23 +0000 (UTC)
+X-FDA: 85173029046.14.94A68D2
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 5C82B20008
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:46:21 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=TTAgliud;
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.172 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788453947;
+	s=arc-20220608; t=1788453981;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XrUmjCwjo5DIxJ+vg0Sk0kvs/Wk7ygJAVHNpsizTEFY=;
-	b=pVHzSqxdz1P3e19H3xA/TP4aLIFdlV6YWsAw+77xEux7A4g6L2H7jCKgxpHUH/u39mnCZY
-	ouWLOU4D9e/+asbeKaguk/8PKet0pcUOtCJiN/55SDys2Btg4JSIrYycOXWBhCU6sXrjsi
-	MSs+o7tGPvNLme23q1X2HJr8FsSkxC8=
+	bh=DdNX6dTeBhf9TPydQSxz1SFFzrTi4xL3L0CTsNHdKsU=;
+	b=NDN+FOVAc4knrf2WrEplLJpvct2cc3ue/4/bhTssQVBKxCpDbK/oIRoLQrMqQijWBhb5w9
+	XW49z6ji/okThwqj6V/e+7StNGe9USTlX6biiEnuOjvFtaowR1YxBtwIqvDKksc4Xqi9/I
+	ek+AAYVyTCcZTxLaSO1GvJoPppNtPxA=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=SR7TXHUz;
-	spf=pass (imf30.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B9D931596;
-	Thu,  3 Sep 2026 09:45:42 -0700 (PDT)
-Received: from [10.57.6.2] (unknown [10.57.6.2])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7FBA83F673;
-	Thu,  3 Sep 2026 09:45:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788453946; bh=/CRbtrA+vjZ5tpi+PPVd9H6w5y8wPTba5LjyadUSSnA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SR7TXHUzQxDvckWQXIc+kCOdTYGWt1Gaj//NszCiurRY4Z6SAdqDJlunSvSprXTnD
-	 G+ho6hqXrCwCQrp/yne6kVlqaExRdp+vclcF/zIL/zaHD1NzPhiw1MEKzTFaOYDgfu
-	 46QXLVXyg1Xi5s2nfL5Qn/gtPRKd+Mye1S/UAGRw=
-Message-ID: <139b273a-d868-4d82-92b6-cccfb0048c44@arm.com>
-Date: Thu, 3 Sep 2026 18:45:36 +0200
+	imf31.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=TTAgliud;
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.172 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788453981;
+	b=MP3y0K/7mKWnQAXbhXDYkjFSKOjxMwPbjAYWt4gCvcEfwgx6sv0X//SEG5IwWM/tO2KqB5
+	5NZ47L21ab2RylvhREpyAU7syrkxCAKT5ywU+ZSclo0fmlpX6fRXF/UCGrDkM7Mfte7imY
+	kFL83qvBtu4vJwpK60/FeZ++L9Cz9xw=
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-51bfad59921so1636261cf.0
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 09:46:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1788453980; x=1789058780; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DdNX6dTeBhf9TPydQSxz1SFFzrTi4xL3L0CTsNHdKsU=;
+        b=TTAgliudRSM2aBf0ysDaUfIMNT0BkhzQHK49KpmuZiZ2He2awVswIzSS+OMmV+yH6P
+         FDbFwbxxKUgBddN9J/hVTxhxK95rZVHEno8LOGFvf4h+ako7wq0ddRhGveRwRVXYklgl
+         waqVwAf2O58qk3Lyu5tFvmQTGHeEufy1qFgc/rbc5+Pc0r/JzY3QL5n+KcU4zoCnFWhK
+         hPizAAlNHC0Tf57ouEcSTgzsQxeFBLwB8skXZjCeOKjRpuB0NG4p59tIUwgWbpSybHde
+         Varojfcdi9oMrrV9/UUEa3+MPP1dJXNUAeRD2kAueSbG85pW8tiopddJSfw/r5e8y5I3
+         7+RA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788453980; x=1789058780;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DdNX6dTeBhf9TPydQSxz1SFFzrTi4xL3L0CTsNHdKsU=;
+        b=NLHND7+0i+vmjVE+210emsZnodAwCOC8tcowlx8UyLfmPySrCgfP0y8zQ8xUQmGGsx
+         o4Ms8Ad/9YELn9dPo9xdMobptjR2gAiSQ1mAcODsD7mTT7osP1xCXaDrexKt/Nq3yEpV
+         EVDRoKf/1yxYMe371pgHgmX09sVEIU5doA2ubGWXomjo74EeUfa+isxlMKgkU9QjqvQJ
+         01YBv4Hho96v0hCnMH2ODUMZuOwSFk3bF2a9yjv+nVYhOy0IKi/kI+qglJwfZeZVc9NU
+         /r04/tuS7AHdEodyGjqG1tUtZUf9D7GKHfRC3JjB1osWTlHgtBK9sSkdrvRH+IuoVTyc
+         1uSQ==
+X-Gm-Message-State: AFuF++lIBeYlMOBiqjyW088UFGqJ8ySbkPQr5wwPLxb4rExj7x1HWKcO
+	C+cDJ5Zd9pCD9hLdsPvXDHVaj9dPK3eUHVHgozQBcBWhzFCSnsJvzIqK5G8VrfCDG1w=
+X-Gm-Gg: AYBFou0A+HMiYzcrme5r5sMhM2sD7IywrsK+uh4gWa//o5/qU8o9kOfI/VUyW6UYob4
+	plKyzlJOJYwqlVjLcBI3pBGam3laySB9CGm9wVaIUp/YDX34lxQKfXmVh9tbgy6cmDvot8qKBEp
+	OdEBkMerpSTh/v/mUYO8Yat4zelQOmi3uXnViLsAReP4i+qGmQ4m1N3qpaR+k63AkSc0zj5YtTz
+	nvPqZtzKIMxs40cxVGOLaAifK9fSlJ0ns3wQDRyymdT535mclsGwp9olSRHXACFphZZkeaCyFcF
+	w4ZqbrBQdHAqM+y43H1Liz5sHlyd9UwU5DjEjmZ8OpiPhZ3FC0n7vOWXl7a4wlzWYr41q18MQBm
+	hLuyrprlG27/E1JfKyZkqq+Fn0c/inPPpcHCFhfMM7JBZksWDJ0A4MV6WWu3xrFGEahfiBRHmcH
+	1Gr/ks34bTOY3Ql9egDqK8xQ7XpEL+wBhLEJ1RO1xVHvXpby+nwCf3c8V6BV17xquboI2mEDOb2
+	s2uRGjuCRZFakKHOWFqCBSkvJBcWKDAk892QMvX5aEU
+X-Received: by 2002:ac8:7dc2:0:b0:530:4310:5397 with SMTP id d75a77b69052e-53043105654mr92555931cf.47.1788453979979;
+        Thu, 03 Sep 2026 09:46:19 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5305402a8fcsm1072171cf.1.2026.09.03.09.46.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Sep 2026 09:46:19 -0700 (PDT)
+Date: Thu, 3 Sep 2026 12:46:17 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev, 
+	hannes@cmpxchg.org, ziy@nvidia.com
+Subject: Re: [PATCH 1/2] mm: refactor find_next_best_node to
+ find_next_best_node_in
+Message-ID: <apmkUWQqKHAZHMaE@gourry-fedora-PF4VCD3F>
+References: <20260902215853.156267-1-gourry@gourry.net>
+ <20260902215853.156267-2-gourry@gourry.net>
+ <906bae9d-dcf0-463b-ac9d-81ef8cc2cc2f@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v9 08/25] arm64: Initialize POR_EL1 register on
- cpu_resume()
-To: Linu Cherian <linu.cherian@arm.com>
-Cc: linux-hardening@vger.kernel.org, Andrew Morton
- <akpm@linux-foundation.org>, Andy Lutomirski <luto@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David Hildenbrand (Arm)" <david@kernel.org>, Jann Horn <jannh@google.com>,
- Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>,
- Kees Cook <kees@kernel.org>, Linus Walleij <linusw@kernel.org>,
- Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Maxwell Bland <mbland@motorola.com>,
- "Mike Rapoport (IBM)" <rppt@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Pierre Langlois <pierre.langlois@arm.com>,
- =?UTF-8?Q?Pierre-Cl=C3=A9ment_Tosi?= <ptosi@google.com>,
- Quentin Perret <qperret@google.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Vlastimil Babka <vbabka@kernel.org>,
- Will Deacon <will@kernel.org>, Yang Shi <yang@os.amperecomputing.com>,
- Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org, x86@kernel.org, Ira Weiny <iweiny@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
-References: <20260818-kpkeys-v9-0-743ad31b2c8f@arm.com>
- <20260818-kpkeys-v9-8-743ad31b2c8f@arm.com>
- <apkMDaRKqX3TTINV@a079125.arm.com>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <apkMDaRKqX3TTINV@a079125.arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <906bae9d-dcf0-463b-ac9d-81ef8cc2cc2f@kernel.org>
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 62E4880003
-X-Stat-Signature: gqn8cmimuaa3xq7964d7rr7wm9xpkd99
-X-HE-Tag: 1788453947-397721
-X-HE-Meta: U2FsdGVkX19THjbbpL5lUdw9rZ4FseUJKldY9b/AaDNo5hyY14+gkACl1b+Tm4nHUYPYjSRBlqceTf+lA/1HJbaCThlbP6JBV5mSRTByGC2A040WGzDLzttRVwL8T7FMP5hRpXkEaFBnBIn7juEiXP+wvN61p0ipklub5L9hIhpvuJeNJGJARme1sC8SmAQ1HvM8qRFNVOTNQZZld7cySCROrKyJ6RfihfQzIkHQS6qcbNcj0FIGOQwY1sLVPgYHKLDdXW96QEuId3i1GW0pMEZ4NI9c6vrw4As+psndW25f1vNOpPdDyZvIHlfGSXWPRo8KRt1Zr4vPg+FdQjhZwmKyFGmMyxbxn8Y0N2e3PkxuCXbe8VtdZOlzI3td7L/+cCAXPTiAtKMgXN9a8Dw81lznoFqfl3p2POsioKzc9zY3RCiLTq8eMtHFsP4a1AAsfWZDU5NiFkKWg+mHGkxp4wDmiLQ9fJ1lp56dooek/TSVUlN+NRjgq2ZjpYjT7dEL9pqDxzUlzycMU3xlMGHunVQNbLfAGwd5zPgT+L2zA0Gi2X4xidygqwZu/Abyi7uP8d3PlNK2S6SIcE9SGl0OTvVt74owQ2Vzyf2Z2jtux452NtWDJme/CzDzCH9SQF3TY106mr62YzQTv5VxTD6koAJ9QDaH5fhe3CQOFN/hFwVQk+i/GWFtDk+h/LA1odwheKp315eMzwjtSfkOjX7amb72aTRUK8ZiPJFEnVdkoHSzE+D2cPo7h2XfAiEl01p9IwcYrZejPRmZQg0KYg7KUnVn36kFZ3ADdIjJMihA888QHJbyJFzQYIBL34DJdOtLz6XG8O5wj8obQQrLrPQQ7P1hgEXQPg9Jl3mBctK2rNm1hmAiVTOe49d0j2qn6p5S7RtIsHcJxQIoES3/lO4QgKFSk70LSjsBqApdISr6bivJLZhQw4vvGZMDHVUjZ5hHjBa1EIlET6snrqwsecO
- ZeHeIKTJ
- UXKoKr3hkkajGWLF2u4NG8g/fkCp+hSpzoP8vhYe8/PvxfnrFgYecrraBrwzblUFpzarhrqTHjiqbPNfqHC98a/yLQBCgpi2a4zWX5aJczoooGUH62VQzcoCxWsj+ejk5+kmnOq6+Kzs0BGnVMsQ/vHjYza51jE1pWSH9+JJYINCneKKYr6egQD/NX9Jn43jNavnMisFzd+RWEPkCqcFlLUJh+xug9UVuO2vcew/V2qMz7+jJc53zkFXaJZ1UD6gpakzUNzfD6715afFnPdFE/i2k5bsAoHKLiazNLQo4YqHJwfEnNy2vCquP5W1bl0mi2s1YLrWh9kQV8pRhSdaZDevbX425yTArlx/vgWusFIJLrhO45E50Rtimpb51AiUyDPJd
+X-Stat-Signature: jzccbcquasza8bydcurgh8d8fpxmr7in
+X-Rspamd-Queue-Id: 5C82B20008
+X-HE-Tag: 1788453981-700285
+X-HE-Meta: U2FsdGVkX18BKP26ar18I7Kk4a6QTGddnFbwzFu8SaDI57BB+0DKbMQvXOKNEodyNRBOINnwYaF96W1Q2Y7hBYmBG3QDna6IEoaPKa244MEpJ9ka4HAFD+5x/Mi1Robhq8t1Wd9GF39lx74M4lcMYckJ+9j2P5HRKAFKlYcyI/2FUzZG8RxeFXtYfYC5R7BdJlspOQ95TTfcSioKJlRsxUdvR7iqG/lcEtwPJ2N2edvmH0cvelLGANDhM/GfBgWaOW7YHsmfEina/KEPc0YJBjOtNDvwhYgdFarity2hsnJFaBK9LjPWsNDoeN04jgCtSA8kKIA0Q2ajYWF9QNGoquvPFhNMMThuKI5L2ZWKmLqmpzYoG0avX8DbDAVyzGWBQHKjYFWrc/9fmTo7tX9HGcVCw1N2bvdevimzWKjUaaDvkFAaKi2RZEnldllzk8gc67t8kPLnyUzhHOK1db7GClEY4dQiLbD1Yf+jhQtntd7UB7di/r5JWCqe/VsJ/sgMiKY4dMGKtiW5tOTi937jkeRtiW78O8fzXW7olaKY/SejIuPuFOeeIdvolCyGVgCUjil0mtyoT+r2g4lPAMpSwsu/W5MyT9bkTef+zv526W8LbQ2BgAGrdJXn8LpKPQQiRcREwl2ObdQUDB5QZ/BAIJNUYFLEHZqKrsTLMyyPg4I4MqizP3Jpij/v3Z9SP6nHGTy/p6oUZoR13xZDv8dQD1ErsdymE4MeRtX+UZGZzFOeYesYOkfJawN+5SJwFKW2X4+UsN4Ivhhc35Qy5wkH4DFTQ9eM/uG/XtJO/d3sOkCb+QHEjd14u7pL5GIbMgmC75S+TK+ucjXxFpp/bFHKhokntu5aJ+sMiXaeYvYDox1/VXT9HxKpDTxl9ZHFyw4CmCjtJrXMdp9iT/Brb6UQUOVD54X4nVWZ5LCRhtvHxikzPyR/a52Zfg+E5QW0YVwSKKP5VTQY/UiX5nfUC72
+ qyxXyhoQ
+ Y3w328T0/7OpL77OJ3V8DW73y25ONTVRkaq7ReL6avlij5Vl4f51S6ZUcCxq2Kx4rT8fegJx7J7IMLyttlnOHR+2pr5I6Kqpf7u/wRc4AGoKLa4WxDdY7vgXvk0z3t96HxILhVO7rDZ6O2NVGgqR7W2nsabvOvu+3+Q4q3ZanpGEnMzuqMhCaQK3BNsCOp6A9qhJmdz/85/gbVKu7YXFBp+RENcfdshUItXN4L75v1ymzYHSbyAoagw/V40yKqUvQYqGZrg50/r92kfYl28ebgtM9lXvDNNfFZwaa/hlTuYjrLbT0fJHQq+yPvsb6O+emlr4mzIgrAD8sPEoOdZPf4U7LVqZ1J8HFk4ymBS8svwm5G9MV8JQEgBWrE7VCLKDwTCISLZat2DaQXfgxLgfY/m7sy/cfEHSCILLWCVSqwmFMuZahh1hu9IPs5ZGAVMeDO8YCN4FRgcmlYSM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,60 +123,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 03/09/2026 07:56, Linu Cherian wrote:
-> Kevin,
->
-> On Tue, Aug 18, 2026 at 03:08:50PM +0100, Kevin Brodsky wrote:
->> From: Yeoreum Yun <yeoreum.yun@arm.com>
->>
->> The POR_EL1 register is reset to an unknown value after cpu_suspend().
->> Since POR_EL1 always holds POR_EL1_INIT when entering cpu_suspend(),
->> initialize POR_EL1 with POR_EL1_INIT before cpu_do_resume().
->>
->> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
->> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
->> ---
->>  arch/arm64/kernel/sleep.S | 12 ++++++++++++
->>  1 file changed, 12 insertions(+)
->>
->> diff --git a/arch/arm64/kernel/sleep.S b/arch/arm64/kernel/sleep.S
->> index f093cdf71be1..e0a6ad85cd24 100644
->> --- a/arch/arm64/kernel/sleep.S
->> +++ b/arch/arm64/kernel/sleep.S
->> @@ -3,6 +3,7 @@
->>  #include <linux/linkage.h>
->>  #include <asm/asm-offsets.h>
->>  #include <asm/assembler.h>
->> +#include <asm/kpkeys.h>
->>  #include <asm/smp.h>
->>  
->>  	.text
->> @@ -134,6 +135,17 @@ SYM_FUNC_START(_cpu_resume)
->>  	/* load sp from context */
->>  	ldr	x2, [x0, #CPU_CTX_SP]
->>  	mov	sp, x2
->> +
->> +#ifdef CONFIG_ARM64_POE
->> +alternative_if_not ARM64_HAS_S1POE
->> +	b	.Lskip_por_set
->> +alternative_else_nop_endif
->> +	mov_q	x2, POR_EL1_INIT
->> +	msr_s	SYS_POR_EL1, x2
->> +	/* isb can be skipped since cpu_do_resume() will do it. */
->> +.Lskip_por_set:
->> +#endif /* CONFIG_ARM64_POE */
-> Would it be better to move this under__cpu_setup ?
+On Thu, Sep 03, 2026 at 05:15:23PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 9/2/26 23:58, Gregory Price wrote:
+> > find_next_best_node() picks the next-closest node for a fallback list
+> > from the full N_MEMORY set. Refactor it into find_next_best_node_in(),
+> > which takes an explicit candidates nodemask.
+> > 
+> > This enables building fallback lists with non-N_MEMORY candidates.
+> > 
+> > No functional change: every caller still selects from N_MEMORY.
+> > 
+> > Signed-off-by: Gregory Price <gourry@gourry.net>
+> 
+> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> 
+> Nit:
+> 
+> > ---
+> >  mm/internal.h     |  6 ++++--
+> >  mm/memory-tiers.c |  7 ++++---
+> >  mm/page_alloc.c   | 13 ++++++++-----
+> >  3 files changed, 16 insertions(+), 10 deletions(-)
+> > 
+> > diff --git a/mm/internal.h b/mm/internal.h
+> > index e16f1250b25c8..18d041ff5c52c 100644
+> > --- a/mm/internal.h
+> > +++ b/mm/internal.h
+> > @@ -1130,7 +1130,8 @@ extern int node_reclaim_mode;
+> >  
+> >  extern unsigned long node_reclaim(struct pglist_data *pgdat,
+> >  				  gfp_t gfp_mask, unsigned int order);
+> > -extern int find_next_best_node(int node, nodemask_t *used_node_mask);
+> > +extern int find_next_best_node_in(int node, nodemask_t *used_node_mask,
+> > +				  const nodemask_t *candidates);
+> 
+> Drop the extern while touching a line.
+> 
 
-I didn't think about that, that's quite neat as it avoids having to take
-care of the resume path separately. It also feels fairly logical as
-POR_EL1 should be configured very early (since it impacts all accesses
-once enabled). Will do in the next version, thanks!
-
-I was concerned about accesses to POR_EL1 being trapped, but in fact
-there is no EL1 control to trap it so no concern there. I realised I
-forgot to set HFGRT{R,W}_EL2.nPOR_EL1 though... I'll fix that up in the
-next version. (This has no effect when running at EL2 with VHE so I
-didn't notice that beforehand.)
-
-- Kevin
+ack.
 
