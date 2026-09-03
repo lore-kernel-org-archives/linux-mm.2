@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91EC9C624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 04:19:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDC18C624A4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 04:19:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 65D496B00AC; Thu,  3 Sep 2026 00:18:47 -0400 (EDT)
+	id 0B8136B00AE; Thu,  3 Sep 2026 00:18:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 634F36B00AE; Thu,  3 Sep 2026 00:18:47 -0400 (EDT)
+	id 01A166B00B0; Thu,  3 Sep 2026 00:18:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54BD26B00AF; Thu,  3 Sep 2026 00:18:47 -0400 (EDT)
+	id E729D6B00B2; Thu,  3 Sep 2026 00:18:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CE406B00AC
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 00:18:47 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AF0FD1A0413
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 04:18:46 +0000 (UTC)
-X-FDA: 85171145052.25.B42B8F4
-Received: from mail-m93247.xmail.ntesmail.com (mail-m93247.xmail.ntesmail.com [103.126.93.247])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 76F2B40007
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 04:18:44 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C7EF96B00AE
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 00:18:48 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5F34C1C20C6
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 04:18:48 +0000 (UTC)
+X-FDA: 85171145136.16.0E370D8
+Received: from mail-m825.xmail.ntesmail.com (mail-m825.xmail.ntesmail.com [156.224.82.5])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0D75C40008
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 04:18:45 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
 	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of zhen.ni@easystack.cn designates 103.126.93.247 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
-	dmarc=pass (policy=none) header.from=easystack.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788409125;
-	b=214MRMBwrQ2QKlzNC2eDDDhd2JDCeJHdXXn2LaNlzkCSlJfK9yY4ITxzoWkKAk5QFAtr0j
-	qII4glFB7OQ+2Co3xIJwZOlFqZ6aFpBDvwsBkPfucMBEomlo/xOVtCYVmBzg6mS+4aAR0L
-	4oVem9q0jmTeID938fiXTZxyET4CsOE=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of zhen.ni@easystack.cn designates 103.126.93.247 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
-	dmarc=pass (policy=none) header.from=easystack.cn
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf01.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.5 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788409125;
+	s=arc-20220608; t=1788409126;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uW3zo/mel7Dm2VE/NVpG3qxnMQydkqs0oFK+GxUx8oQ=;
-	b=Js7FA/oh0C/CaPwhnASV2xOcQn3V/Dqxh15gbirQH4k2a4cZUcEZdotn3Z2vONgXVhSbOg
-	8jJOk3sPo2FBFAtsPOuqPn+MGzJ1sAlY3APeqWGOFKDlvYNo8ordCHXu2RS52Kbo0M+EmO
-	1KlSv4pI6WoghKTNUzMEede9YlqL44k=
+	bh=hcVnk4l5Xr/fF7T11rzi5fdcoD2NdB9YJrmlW077gQw=;
+	b=kjzOFWTdfP13Qzrv7Ic7RiJp1Al5Tuu7A9JubOmdGudPCVVSe+QujONUc0qHoy72HvCMMM
+	l4zcEhWIRE3aXM2wlIZDE0kxFOZgBl7XTcwTdv5ymTqYIewBNxjFxBoCJZwkPgSmPpp2MI
+	kJZvmVjgihOuoLHrleEcf4gE98Ezu0w=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf01.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.5 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788409126;
+	b=PQgV7F+ZddlcEgBbPZ0+V9vgtRBDMTuIDRLJM77RrLnZuokwveg4bJfMibRXPKUpgduQfP
+	XZVr87bWzMAUv2QjuZvgZlauhjBHEPXu1qh/UKJZtjjm1DhWjQFhXiN/QcmjFGlMQTHKOL
+	wc45c9MtUQQuXEofWvp+NKZAha/kFzg=
 Received: from localhost.localdomain (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 1ea3ea3ba;
-	Thu, 3 Sep 2026 12:18:40 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 1ea3ea3bc;
+	Thu, 3 Sep 2026 12:18:41 +0800 (GMT+08:00)
 From: Zhen Ni <zhen.ni@easystack.cn>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -70,28 +70,28 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Zhen Ni <zhen.ni@easystack.cn>
-Subject: [PATCH v2 7/8] tools/mm: Add memory cgroup filtering support to page_owner_filter
-Date: Thu,  3 Sep 2026 12:18:18 +0800
-Message-Id: <20260903041819.1776630-8-zhen.ni@easystack.cn>
+Subject: [PATCH v2 8/8] Documentation: page_owner: Document PID/TGID/COMM and cgroup filters
+Date: Thu,  3 Sep 2026 12:18:19 +0800
+Message-Id: <20260903041819.1776630-9-zhen.ni@easystack.cn>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20260903041819.1776630-1-zhen.ni@easystack.cn>
 References: <20260903041819.1776630-1-zhen.ni@easystack.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0aa0657d85300229kunm7336907a330c7
+X-HM-Tid: 0aa0657d8ab40229kunm7336907a330cc
 X-HM-MType: 1
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDH0tIVkNNHh0YHR8eTU1MTlYVFA
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCTkpPVkwaGE9NSx8dTUpISVYVFA
 	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
 	lPT09IVUpLS1VKQktLWQY+
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 76F2B40007
-X-Stat-Signature: frtoh7c3qx3cmfp3cwppk7ftywkehi3q
+X-Stat-Signature: rbycwhbg9weyoccoar95kdkwmku6xyji
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0D75C40008
 X-Rspam-User: 
-X-HE-Tag: 1788409124-458103
-X-HE-Meta: U2FsdGVkX19IHZVL2dOvkF9NRcL07KB8h0cFnM8ilcRqJg7J/pFE4XM0gZOeGA28zAIL6xFP730Xb7wnqBJsktFHBwml/2nL5Rn5trR1Dqy2b2SZiIc6AuPQrFqZao0858vg0L2l+CcoT1B3tlnrrlje9UvvLUHdpPPEabIsCnkNJAcUH27B+mOCTEjLkLLrmywjRS0hoYj7ufpxdRmsVB7JwgKlbUFMpn0ZfNAurS3j7Z/GyeyiX5k63BZ+cxB+gjUsjLOQPgJ8KDQpNlxWJWTyOMQkYHGASKgqBFzsOdh0+aL8OPMYhhKkKuTKWCJZM1jHbiquFoQnHJ8OfI5vKqZZLbZxwav4TXm5RBu6dYZNLniNUKs/ZluE3axk01f7PyOwHWo1L/+2Fc0Gna1+GLZnlkajlkiL+Q4J/C72c+1fy/MqqsxNwezqZ/yy3FcLaQs+xtcleBOn4PeRo8Exu3Hx02wmM5HI70Kp+vIP6sRWTaABkfZfAOHfo2Y+Ca32gK6E7zi8QDoCEggM8LhSMi8KzfUSCxnzMIL3qisBcS8V7EIkwVPJ4FvnyoD+zgfpLoVHEjoaAEV4sSSQ3Br4UO6ur/lUhZ3NfRBE870O9+Mv+0oUctA39iwm8VgN7S0uXpYlqb+Dt5zh1XxvIfuUPY0EqeFY4J+L5ySpJxxMKqM30qZt3HtGpcnV7pT+BJFGRgz2ISeuOeEACOteS2jwO2H+YzaWItz81MZXMEJE177j3A0ule1TNHTsMxQ09NGhWdKw43Oi8GQaf90i4/BtndiPxTVbxD1Y1AA3OavwB0ZUsCMIyf+1W0LNbse5aR6mXwhlEMeJ2gG+2Ulc+o46kN8ic26jJJF23SIUlmZ66KK2FC5XCAv1t81jJ3e/1Zv6OlihatdRAEqGF90xORgvtAidXerpGpNw3r7nnVLHV7DuJZ98Ad0YG8vhNioZ0Lvt+sOM8488W7pbVtd973/
- ZdGplXts
- OxAJR/rLhw78/WXw3uQaUFzpzO+emiKyWQDZAzjsIyoS5NMC5misFzFjeOyoKUZ29zEoZhjcuMZSfbWObDv9oO6fe3JcOlEPj7PoEhiIk+BjBiIJNYQQxYIiqnXMD7WGBUm4Ei+vG0iCMucNFTBQaWaMIXquNVXFOLGdj8h4AwN5FHh84swuOZLwfzbXgyKXUwhGRGTUihZZ16QDz7K8XEfV64XO2/sBSdUIJT2MS1rSmorn6DocaaHpmVIMGcebLN16C8R3fxNBmeHLUTY1QBCN7sBpxVdh8YBQ9OaBsozaTE+A=
+X-HE-Tag: 1788409125-694024
+X-HE-Meta: U2FsdGVkX1/4OElOnQNGn9xzgLDA9oE1binWqg3SEz6u3zG9ROaVuYTslqkpuPo+QdVacFwKjZTIjtuAApe/1rZhYsUuec8KwuQaxAEGcgmGVjoD+xQaj4jiw8M7bvBaRyZA+Ly7JgNRw2HI4Wd92YFRq2UUJ7jmmw0O9NWWqGS1+yTCUCDgPai80lhh3dCEK3lhjsV9KNWcHJC5C6gPC1Hdu7SZ+Qys5y5G9RFkumCY+1wnE4uTcfygWI0dd/nJkAa2oKkwmjNo+N4HrCwrpN7nUe8qAzp3ZouFJVVWdmieJUioJ3DuTaTpeYe2M62/jfjv/c6jmIACSV3d4qhDpEpXTBZFs42K27QvrlyI7QSwsXUIRAy/9JE8UFWqq2DbLma0+h0nwOVaVdHy18+j2pLK+jy25sevIV2QCYw8/pU1US0yhrhr6hQwVd1mGNwFSqvMzzEVVpxh5z2QVXZwEYS2AHctgyh6Rc7mPdN/6KeVuLaCBm6bP8x5atm93OGMwr9wgrb7vmEGUtVts+Pzlcn8wrfIcYfUtn0m06xGjnY5eYjSrFhIgQokEwXqCOEmpRoq6eB/5HZExTve39pwVe6MDPjagIcKnH5TZ+X/Mk3WPwLzdyul3tg5gOzBils0MCqfqiG8hhNWdD5xd9442ewNNLU99sxEa8Qy/8Mf2iIlsx6LiXAChdKqmTWcTzAc3weykfP5wTQOgg3qPehBKsPyiGotM+bh/ZcXscpGbENRu+f/xFKTwjbwh3VK+AST+NEayvtoxqGd81x1snC6SROm4s7F2gzJ1y77pYs3r44q7E/op5IP44rZGn8H8Wi8IwBO83aJjqoIs9Frwtxdh5+I/ilvUfsGnPBBP0Kxs4id211kweGDCFfJnxb4IuPLgsPRGYni+CboXIY0c1BB6B50YzfN+Hb7rPPLoa8R+Lh8nnl/yNH+Z2F04IensI2CTVwra/DkNNNMzH2exwe
+ jQaDrk2Z
+ SCEQuBoKksFKwHLnXMsWqc/p6GNRUs+ykD8KV7EqzPlDcuoTG7zw6G4Zj5WwMRNgFpCDqC4N89qkjfVxXlWjAvNo+DvFBgEc5dAtvW4nd4yuDRwt0q2p5YQ11LgzD+MLGZbZZN1Jt2U1K1VLbl5Pj1GzKtcPnmPl5pvCy6uwD3LQqvqc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,133 +99,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add filtering capability for page_owner to allow filtering by
-memory cgroup path.
-
-Filter page_owner output by cgroup path:
-./page_owner_filter -g /
-./page_owner_filter -g /user.slice
-./page_owner_filter -g /user.slice -c systemd
+Update page_owner.rst to document process and cgroup filtering
+support in page_owner_filter tool. Add usage examples for PID, TGID,
+COMM (with wildcard support), and cgroup filters along with their
+respective limits.
 
 Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
 ---
 Changes in v2:
-- Print an error message for an empty -g argument.
+- Quote the wildcard pattern in the -c example.
 
-v1: https://lore.kernel.org/linux-mm/20260828031339.1270699-8-zhen.ni@easystack.cn/
+v1: https://lore.kernel.org/linux-mm/20260828031339.1270699-9-zhen.ni@easystack.cn/
 ---
- tools/mm/page_owner_filter.c | 58 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 55 insertions(+), 3 deletions(-)
+ Documentation/mm/page_owner.rst | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/tools/mm/page_owner_filter.c b/tools/mm/page_owner_filter.c
-index 516c2d109a6a..8aea7df23eef 100644
---- a/tools/mm/page_owner_filter.c
-+++ b/tools/mm/page_owner_filter.c
-@@ -20,7 +20,7 @@
- #include <getopt.h>
- #include <signal.h>
+diff --git a/Documentation/mm/page_owner.rst b/Documentation/mm/page_owner.rst
+index a6bd3fe6423a..493f38db0677 100644
+--- a/Documentation/mm/page_owner.rst
++++ b/Documentation/mm/page_owner.rst
+@@ -283,7 +283,7 @@ page_owner supports filtering output at the kernel level before reading,
+ which reduces the amount of data that needs to be processed in userspace.
  
--#define MAX_CMD_LEN	512
-+#define MAX_CMD_LEN	2048
- #define TASK_COMM_LEN	16
+ The page_owner_filter tool provides a convenient interface for this filtering
+-capability. It supports two types of filters:
++capability. It supports the following types of filters:
  
- static void usage(const char *prog)
-@@ -33,12 +33,13 @@ static void usage(const char *prog)
- 	fprintf(stderr, "  -t, --tgid TGID_LIST  : Thread Group IDs (comma-separated, max 16)\n");
- 	fprintf(stderr, "  -c, --comm COMM_LIST  : Process names (comma-separated, max 8)\n");
- 	fprintf(stderr, "                          Supports wildcards: * ? [a-z]\n");
-+	fprintf(stderr, "  -g, --cgroup PATH     : Memory cgroup path\n");
- 	fprintf(stderr, "  -o, --output FILE     : output file (default: stdout)\n");
- 	fprintf(stderr, "  -h, --help            : show this help message\n");
- 	fprintf(stderr, "\nExamples:\n");
- 	fprintf(stderr, "  %s -m handle -o output.txt\n", prog);
- 	fprintf(stderr, "  %s -n 0,1 -c bash\n", prog);
--	fprintf(stderr, "  %s -c \"python*\" -t 1\n", prog);
-+	fprintf(stderr, "  %s -c \"python*\" -g user.slice\n", prog);
- }
+ 1. **print_mode filter**: Control what information is printed for each page
+ 	- ``stack``: Print full stack traces (default, compatible with existing usage)
+@@ -300,6 +300,16 @@ capability. It supports two types of filters:
+ 	- Ranges: ``-n 0-3``
+ 	- Mixed format: ``-n 0,2-3,5``
  
- static int validate_mode(const char *mode)
-@@ -225,6 +226,40 @@ static int validate_comm_list(const char *comm_list)
- 	return 0;
- }
++3. **Process filters**: Filter pages by process identifiers
++	- Filter by process ID: ``-p PID_LIST`` (comma-separated, max 16)
++	- Filter by thread group ID: ``-t TGID_LIST`` (comma-separated, max 16)
++	- Filter by task command name: ``-c COMM_LIST`` (comma-separated, max 8)
++	- Name matching supports wildcards: ``*``, ``?``, ``[a-z]``
++
++4. **Cgroup (memcg) filter**: Filter pages by memory cgroup
++	- Filter by cgroup path: ``-g CGROUP``
++	- Useful for containerized environments and multi-tenant systems
++
+ Usage examples::
  
-+static int validate_cgroup_path(const char *path)
-+{
-+	char cgroup_path[512];
-+	const char *input_path = path;
-+	int is_cgroup_v2 = 0;
-+
-+	if (!path || strlen(path) == 0) {
-+		fprintf(stderr, "Error: Empty cgroup path\n");
-+		return -1;
-+	}
-+
-+	if (path[0] == '/')
-+		input_path++;
-+
-+	/* Check if v1 memory controller exists */
-+	if (access("/sys/fs/cgroup/memory", F_OK) != 0)
-+		is_cgroup_v2 = 1;
-+
-+	if (is_cgroup_v2)
-+		snprintf(cgroup_path, sizeof(cgroup_path),
-+			"/sys/fs/cgroup/%s/memory.stat", input_path);
-+	else
-+		snprintf(cgroup_path, sizeof(cgroup_path),
-+			"/sys/fs/cgroup/memory/%s/memory.stat", input_path);
-+
-+	if (access(cgroup_path, F_OK) != 0) {
-+		fprintf(stderr, "Error: Cgroup path '%s': not found or no memory controller\n",
-+			path);
-+		return -1;
-+	}
-+
-+	return 0;
-+}
-+
- int main(int argc, char *argv[])
- {
- 	const char *output_file = NULL;
-@@ -244,6 +279,7 @@ int main(int argc, char *argv[])
- 		{"pid",		required_argument, 0, 'p'},
- 		{"tgid",	required_argument, 0, 't'},
- 		{"comm",	required_argument, 0, 'c'},
-+		{"cgroup",	required_argument, 0, 'g'},
- 		{"output",	required_argument, 0, 'o'},
- 		{"help",	no_argument,	   0, 'h'},
- 		{0, 0, 0, 0}
-@@ -270,7 +306,7 @@ int main(int argc, char *argv[])
- 		return 1;
- 	}
+ 	# Filter by print mode
+@@ -310,9 +320,19 @@ Usage examples::
+ 	./page_owner_filter -n 0
+ 	./page_owner_filter -n 0-3
  
--	while ((opt = getopt_long(argc, argv, "m:n:p:t:c:o:h", long_options, NULL)) != -1) {
-+	while ((opt = getopt_long(argc, argv, "m:n:p:t:c:g:o:h", long_options, NULL)) != -1) {
- 		int len;
++	# Filter by process
++	./page_owner_filter -p 1234
++	./page_owner_filter -t 1,2,3
++	./page_owner_filter -c 'python*'
++
++	# Filter by cgroup
++	./page_owner_filter -g system.slice
++	./page_owner_filter -g kubepods/besteffort/pod123
++
+ 	# Combined filters
+ 	./page_owner_filter -m stack -n 0,1,2
+ 	./page_owner_filter -m handle -n 0,2-3
++	./page_owner_filter -g user.slice -c bash -n 0
  
- 		switch (opt) {
-@@ -344,6 +380,22 @@ int main(int argc, char *argv[])
- 			cmd_len += len;
- 			break;
- 		}
-+		case 'g': {
-+			const char *cgroup_path = optarg;
-+
-+			if (validate_cgroup_path(cgroup_path) < 0)
-+				return 1;
-+			const char *path = (cgroup_path[0] == '/') ? cgroup_path + 1 : cgroup_path;
-+
-+			len = snprintf(filter_cmd + cmd_len, MAX_CMD_LEN - cmd_len,
-+				       "%smemcg=/%s", cmd_len > 0 ? " " : "", path);
-+			if (len < 0 || cmd_len + len >= MAX_CMD_LEN) {
-+				fprintf(stderr, "Error: Command too long\n");
-+				return 1;
-+			}
-+			cmd_len += len;
-+			break;
-+		}
- 		case 'o':
- 			output_file = optarg;
- 			break;
+ 	# Save to file
+ 	./page_owner_filter -m handle -o filtered_output.txt
+@@ -323,6 +343,9 @@ reduce output size by ~66% (84MB vs 244MB) and improve read performance by ~4.4x
+ compared to full stack output.
+ 
+ The NUMA node filter is useful for NUMA-aware memory allocation analysis and debugging.
++Process filters help isolate memory allocations for specific processes or tasks.
++The cgroup filter is essential for containerized environments where you need to
++analyze memory usage per container or service.
+ 
+ Behind the scenes, page_owner_filter opens /sys/kernel/debug/page_owner and
+ writes filter commands before reading the filtered output. The filtering uses
 -- 
 2.20.1
 
