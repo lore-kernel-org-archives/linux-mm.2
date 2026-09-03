@@ -4,119 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48A67C61DD6
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 03:06:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1471C61DD6
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 03:09:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3651C6B009E; Wed,  2 Sep 2026 23:06:52 -0400 (EDT)
+	id C920A6B0109; Wed,  2 Sep 2026 23:09:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33D716B00A3; Wed,  2 Sep 2026 23:06:52 -0400 (EDT)
+	id C69DD6B010A; Wed,  2 Sep 2026 23:09:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 255956B00A4; Wed,  2 Sep 2026 23:06:52 -0400 (EDT)
+	id B5ADA6B010B; Wed,  2 Sep 2026 23:09:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 00C116B009E
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 23:06:51 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8540A40410
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:06:51 +0000 (UTC)
-X-FDA: 85170963822.24.1EE74F9
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf13.hostedemail.com (Postfix) with ESMTP id AB33920006
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:06:49 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=J4Ns+DvD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A19D6B0109
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 23:09:51 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 14B65140408
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:09:51 +0000 (UTC)
+X-FDA: 85170971382.09.19B54E2
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 443511C0006
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:09:49 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EEnQ4d33;
+	spf=pass (imf20.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788404809;
+	s=arc-20220608; t=1788404989;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nA6TfANf9Ze+7t1hoZyjavPl8IZuFIwVPXJVLouCJ0o=;
-	b=WZnSpp1G4O5dtHNjS0okkANdvoNHXUEueC8ezRGoq8nqplphqHDpYs3sA1GWL+qqDVjKjA
-	55A0rinq7ikFdhhEUrrK7nmUoTTJjfKNoCrEno3CbqHWPRpOH3uO8IOFVrEsaFLmZLi9CI
-	K99snaCnBKn1/MdHcpSjYFJxs/bDTvw=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=J4Ns+DvD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
+	bh=8tVEuaDvVYMx3YWb3gYXxXJkBsoqezd6deCcOB4T/m8=;
+	b=wu8Sek21lxqxb1amKrMnAX5Mi47Ji6e5EZWohMhRE44bKm0E94+lacypVqXy4+ZAOt7l6r
+	fFREATnoTnLbUk47IBcnnZHcwSO4h/veFRUYW7EyCqJlMkOWU/THFqeHUeh46hdTppENcq
+	uURYBe6TVikiM/zM7eSe7BPogOP/t3I=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788404809;
-	b=cOX0pgitivG0kXc0fscGBYVGktnungSWQpMjYLS0zFPEE+6Op18TA+6PQMgWvlRW8WBod8
-	SPjst4SKb9gzM+5uA8k5uBpZakx5OTNFJlwrVCN7uF/ARjiU52FYHqvj7QdZzrjV9Go9cV
-	gzAqUonKFlFDMCNfnmL50nJnw7ads1k=
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2d5cad1a6baso17358855ad.3
-        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 20:06:49 -0700 (PDT)
+	t=1788404989;
+	b=GVX2qIqj/DC4IBSEeMI1bjGSbiCQyLUb/HSdKh0mnH/KDoiCR0ogLZNiopMnEmBex4X5om
+	TuJeUHM2+yHs7tFiNs5CL7xO/bxK6uR17pw07xUOlGamUBcN2Ojq5Ir67qU6rdXA9U4Kfn
+	l0xfhMLieD3ystMrKweAq2yajF2kMrk=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EEnQ4d33;
+	spf=pass (imf20.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2d715f4a587so28332145ad.2
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 20:09:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788404808; x=1789009608; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1788404988; x=1789009788; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=nA6TfANf9Ze+7t1hoZyjavPl8IZuFIwVPXJVLouCJ0o=;
-        b=J4Ns+DvDaFTn9gG0tcC0RSnkIFHQX7gpr5MIZ+cqzvEHQOaarzPVPZxPExpPel6dco
-         ZypNmoGz+y3s4fcb4qnFfewAlOWecMG2HfQ6oCYFi9HymYgj4cyghGql/oxQzNlKkoOk
-         q++dQHO6A/i+HKIkb9GYQlfl04Mzy06KP9CqQCyD3G/RDOMrFQ17/3WPbKgcYq1M/bz5
-         eGq2g+PlKjU8esxeafXQXc4KV/5MklTSeCW6hthV+/AsJMM/LQsD3BxR69RNpiVzzz4B
-         YF4mCeKSsyYRewzugyxj+2/AmPsq0JV/w/cVqgZ83ZNTmavLRpWR5Obc0gkmTKuQDi/8
-         dLoA==
+        bh=8tVEuaDvVYMx3YWb3gYXxXJkBsoqezd6deCcOB4T/m8=;
+        b=EEnQ4d33ce1owDcFf7mlgt33gNg5IBUtmvu1/hjfZM+SKeISNYOwjS5rsup8LDJjTF
+         0c76oiyZCVFgt7SzEn+C32G+UsU4KV/OYx56ChlYuO1ok4BdG4eWbVBY4EOPvKb3mu58
+         Sh0+tsPjeH43XFc3fP9fh9V4ZS+kD+5bqXI8ygoYotnNhL3kHwVUGkYBAGko/0hQ8G6g
+         pIN+isl+4jcmzbCFYC3Q+f1+S3+j0AlfH2Nw5u7M0mtkY+bDxIgYRXxcp0zxGJJQVzlA
+         xUfpFYUG5J34dkjoNcIiA0iXO7KqQV4HMUCe9u5baeiseI9vCWRlMwXcAvtZTHd33OT4
+         Ii3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788404808; x=1789009608;
+        d=1e100.net; s=20251104; t=1788404988; x=1789009788;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nA6TfANf9Ze+7t1hoZyjavPl8IZuFIwVPXJVLouCJ0o=;
-        b=iOGPNy8Dfdlktv2ZtQy/uhhV9tudnkO28WO3MzIM1/ObJTKAp68GR0rd8MuojR4jSE
-         uBWGAG/ZpU+ZNDVyFsW7hmn+ZuSu2ocuChfA071ivqXnA245Yu0dldpYyooFbSXNqL7Y
-         pTUt8pzWy2NmmA4+quHRcscxCXRI+jfKM9Vz1EVdrdOW2xA0p6rd9GuPQhmZYyz1E/oL
-         bDlCn64Xn5Zv02G+5LGuqjv3OVIdumKsSEZ+uRYYNiVhpGQyxXNckxL6xEPJp27UsJ1M
-         U4HIky14uYoL4hAzfe5KefpUGx6n6YyshiYHRj/m4AA3wvoy1xryhKEPAft1aEKFH5Zc
-         DSZw==
-X-Forwarded-Encrypted: i=1; AKwUvBwO8zsJWQk6VCu8KrIs38EStG+N5lcXnssyFwZcDYTzTEhgepnu5EHtd9ot74rKgd5TwHoE6qpSaQ==@kvack.org
-X-Gm-Message-State: AFuF++nrFaaojMQKheHGJoyaLtnRwbElcDOQLyJDR8jl4lDPAJWKs/u3
-	RzWhannB78kcf+Q4aW67CY06QEl6Sp42uQY0VAiG6UBaZ2W52+fW7XhN
-X-Gm-Gg: AYBFou2WltkLkDqS2UhjWcMEfLiDh6dcgqP3F3E6x1soCVRf8wst5FNCp3/aBRDHxy7
-	Bl1eeyc+0eNfCnHHhyx4U/uXBSidtn6a/rY2EWnEt24qdnF7n6wHwEzmIOjahCILR5CEaub1Ku6
-	h7T2+mflgHskSJUfzPXTBI0DqPtMnPmPZBZrvMnMcfoGEDqw42/GLVYax6AqNXvoPoo/aPjWwWZ
-	8ExANMc+Bi3H8mgulfaQZFZSGZkdC1EjuolK1/Ckm5wwvvy1IGNWjQJK4t/sB/H4JTKxRHmw6y4
-	G4b3vOl1xpXw8GiVi0dFJqmHRT5fjE31abyi1/wbxQxA4VBNy6hQklA2fc6K0JV4MoS4vPOCwnZ
-	rC288Ihq509akGUGMzCzAYT+Ty7qvAfKQ5QLlcgYbXRtdY9o20NEHUAtp6DXKz9sDAXhb7TZLsu
-	yNzxuMrcSBqUTgufHiS08fvVcC4MDTwqZ1FTk9EqIqndgrRDBUGxWDVKnrCDM=
-X-Received: by 2002:a17:902:d547:b0:2da:e68f:45b4 with SMTP id d9443c01a7336-2daec641a74mr132974085ad.8.1788404807892;
-        Wed, 02 Sep 2026 20:06:47 -0700 (PDT)
+        bh=8tVEuaDvVYMx3YWb3gYXxXJkBsoqezd6deCcOB4T/m8=;
+        b=M/zgPo8aHCrE/FIjBw97OxnJx7r5EFt73rMZtz705xZVOrmRm2vrcxBH7wwQXahxw0
+         TcGW+GimiKhgBZfdC/e6FkXdXZEbYn5Kmo72lcYiNJIyr37B50hFTZ+kbdm6QqEu/te8
+         rCCX48eg8ev2zioPhYd0hGVEv9tPQPLU9IU7svqJUNrjzsuOnR6LMuUwFAkVktsy78iQ
+         y6rk0RDEpyfZOGs1N/Bz3I0/xBTT54sni4Jha0xpSX2FoaGpo5LTek1ZUtxgWxah5bDI
+         zo9Q77Jz+dRFCXRUpVFrZX2zyQtYhZpY+ERDT0AQ0WQFZb7JdlKTtYcb+t72t3gPyJHJ
+         gN4w==
+X-Forwarded-Encrypted: i=1; AKwUvBzm448OQ5D8ACdpbtGZJQpz6uHieJSGU1x4puqSKo0m19VvZKI1Kxi+pasrHQkr3RNGcZ/WPYm25g==@kvack.org
+X-Gm-Message-State: AFuF++lPwZA/Xs4Y49RjL+0MDqupAjowz3Rym4ObfW4j2/udDs2wdtfj
+	A3GQdDBzw4LCb/t6pnMteHURINqR2rb3EuAWORS9I6hJ+jkgGh3N6LWj
+X-Gm-Gg: AYBFou2EHV/iCZnmHKeLfFO0M6kBwUSNlWtl2EEDk8+o4J5jVA6Dpk3y9CBQqxFMQl1
+	Whfd9M6TT+l5GGhd6pQXHMtwK1tAzgwIspgTeC5z0hZQTr5jtjFc39aJHdespcn2FmzD09nNVY9
+	4xqrToW3GnA0vUA05yuh9M4uogD/WRVhYhW38yFWNN+BeXUR8XKt/DmLc4SsPg22FR4C9wf9Rke
+	UPIKIdFWX2GtnZs9YxQRJ+nwDFjt8jc0GGTTyczARN/+6PZLVBhOsX1BxsEqPUuBO6QYMloDX14
+	LI2aFX0FLLquM2/3Ypifu3kQFizoK58twl7YqpHJTO9rW6pmiQKldS+EAumB70OePGEec+GiF6N
+	OSySM7iRT+W+QLcm9JA3qNOlmMNUMpNNpmSdOj4zHi4E0QJXJmrFZRir/SFPfp4jbCpz1pp49Uu
+	PrwgV4SDOceXqynx0WZwMRP2qFu+wy6+SndZyV0c9Uwc6sgZGZ0D5rF7sscfM=
+X-Received: by 2002:a17:90b:2cc8:b0:396:6344:3b63 with SMTP id 98e67ed59e1d1-39aedf8b4f9mr15154792a91.2.1788404988029;
+        Wed, 02 Sep 2026 20:09:48 -0700 (PDT)
 Received: from gmail.com ([185.220.238.35])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dafe0cf327sm2889785ad.11.2026.09.02.20.06.44
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08bcd243sm2266519a91.5.2026.09.02.20.09.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 20:06:47 -0700 (PDT)
+        Wed, 02 Sep 2026 20:09:47 -0700 (PDT)
 From: Kunwu Chan <kunwu.chan@gmail.com>
 X-Google-Original-From: Kunwu Chan <kunwu.chan@linux.dev>
 To: SJ Park <sj@kernel.org>
 Cc: Kunwu Chan <kunwu.chan@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Shuah Khan <shuah@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org,
 	Kunwu Chan <kunwu.chan@gmail.com>
-Subject: Re: [PATCH 10/12] selftests/damon/sysfs.sh: test hugepage_mem_bp quota goal
-Date: Thu,  3 Sep 2026 11:06:38 +0800
-Message-ID: <20260903030639.321705-1-kunwu.chan@linux.dev>
+Subject: Re: [PATCH 12/12] Docs/ABI/damon: recommend subsystem doc instead of admin-guide
+Date: Thu,  3 Sep 2026 11:09:34 +0800
+Message-ID: <20260903030939.336002-1-kunwu.chan@linux.dev>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260902054747.99370-11-sj@kernel.org>
+In-Reply-To: <20260902054747.99370-13-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: fzsof39ay95tt5qfhr3odj5cz4oshd9k
-X-Rspamd-Queue-Id: AB33920006
-X-HE-Tag: 1788404809-908124
-X-HE-Meta: U2FsdGVkX19JWgJfMPeckpNPlqvFoL5j7gziqxyeA+wD1TavPCx4xaHUAK8L2IiltAZvBHXQ6eJwrYaZHhD+kIGJpOuhc45v0dmizc5dzJCmmzmUsRYP71e+LYq2yeNuH4BbvEnfSRn2VijqNtylz4T6VXrztbe4nIIpG2nE0hT8mMC3VKCvi11b9v4s3QPEH6RELGeptG4ebyNEE8nllq4LhYMCalFIw0lXf1NbqBy3kqjGO56iJWgzbONdPb0KSnE++kaPgyf9cWM+32VDl+KaIhiyT8hHTwf9OXIucKw7XyCOb3j48qRBGkbHFXx/0G6LjOPmdcBpBRM/0h3wp0xPxTS4B4DS1+MXrJbqlEpA6Dl7wMvYA+mFaQydy2Bitv6Vxj77Lws1zY6gYul5Z5DiSgxxC1yOfmxfgB1qyhAltKohn4Y5+tRjcyIYiniWVUCkJJBIjBZrn8UTmkDw6Fyoo3Ji1ezvDxyxvv1nnTgNjZ+1emuMG3zmryt5K826yoiacwZRIG2c5GjyAZm+gqjNqAvuwF9L1FUsVLMTtDtIv6J30M/280to1mQ6AowwsWCsN065DoCJiuZtbdY9Qf82NlHDPXp0LeqYLCFM4AXUmC8oDbwSB6kVfbHWOQAUwFLN2IhHYSidUukNi+AVt0TPiFUCBSQSBum8Mcc/MQrD2VOgTIkPYnZ4NaHITDzD0tPy7gYgrVgnWAqzJr1mqn6zDIft97+EV7OpPuk7hzGk7YMKseFU/1pMHwMDHI7bGwMw7qemRJwFZI+7HenkFF5bkynLkdNAQ4dG2s4NNwP418kwg/MtTNVEScNqlhrEviN+z9k1zr3J8bdv1cE+t3xfH0XJeVh4r5fD7ub0UD+mPTBB3/6v0LM/+wAtp/PSVKfXcp4LuJglJyBKfeYYVezHXn3iAO2uSIKs2HHfo/d0Tbm2coa1VJnGoQZsuDRDllN2iIKab9dqSrhpWAN
- A9Xk2481
- w8AaC+zK9lVSF1whyjtijuw7qxV2HImxB42o6oT89FBFJyX/SOBPNqDMld5FfB1FUG2DEI5sT5m5M88D/cVSCTR3nZxs+i5UVkkpk2wdnJVQVnp2ZGwyM536+BtSXp90RGxeK9N5xPoKci/kDeTiSufw2VUyU7j64hLny9BFPPRaQOoD+NGtJvlrPywWcPiGJBP23YATTW5LvfCOEA1xzc7XsUnWUlEI5SDL1G0+Pd6zCX+s7/Z9b222kYtZXpPMY3Pxs9IO69yQFZNOgtG9Lx1pNM09ieUnIjk2SVf6uCf763Vqd9LJ06KezCBoHn26bpFkqlYFlUG9i64Ffnb/r7m8ozOoR3rksUQQF87aScuof3q324QR467Zor7vivnT6bry8ByIg9UArraTobBJ8n72RqOe4yODiKnJvFA8xymRnGVKTm53L0Td2PlohEd+m/RRY+6vHTEluIiOq75Sb3AQ1LtR8gz3J10DSPS+MbYXZbwSJmTXVB/aErA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 443511C0006
+X-Stat-Signature: 5ttyhz9wagbubsrfgfhfsnpbkxexo7xp
+X-HE-Tag: 1788404989-794391
+X-HE-Meta: U2FsdGVkX19O1uq6mLXLw4dRXda73TO0cS2yjvTXu8x09Uh5qOOV/CuhqTX+RjA45Pr66ANwNVoIFWurAneQz+Ko52qWCNLxE/2+4XWIB/DoNgsT5OYaV+fMW42Bh2DqgPH+/y6bbvQEFneht56QC7KNrqWne+C5xhRPgPKFMbSYcZFFu6c6nKBrmDF/SSpAIjFWKQ4LC1n4dufNokEDvlSYZrAOfRCHJHESUIQqc/O9GI92j/CjwuccFTUpUcHEbG0aMqF6KhTUYxoy7uQuMp1KpI8EMwxQGs/vNYqbVzBbnjFmMMPkuj0FN745YxRo7/D2h4CqgwL6y2hxms3PVnUlSDRqkhrGImI3hRn6ofQlwlTvC0E0sywPMrX0Ddin/1fZOMhrn3XbNyWPusz1qOSnckou3o/lygJxB7E/Ln5gW/PML5FmgHvOi/LkX+s8107rVcTXC2sF7T0l7LL5JC4gpyd3DceMsoFmYNGCqFkv2qCoQJTCjUsnm9Bwvh8F2lfSwOHhEvd0NMERPhxdElLTVaNlv8UtJFnnZndmi3va3IVBzRIKfHl5/zWNB4MdzIChKp2przXuIslYbCKkIxUnYD0VTzCJK54e7h+sWvwYrT90jDFanFPgaaezaD1SuGqEcdAi3cXIlC7rg/csv1DlAER7pYHYiZTef1fABunVbp7ajwC6iywhl76PrK6KjmyEdnCy+LKnKEoVwncIiigfgJTt/hyyHOfx9ArnBKZrNwKHYpR41IPLBbU4/N1Acy+ehqeKlbcH7zpO2nuEtT9UN000r7jLSK6iMeEzaRYvxpdC8zqIjxWoIgdLTBf15x4pdPIJoCZ5peji+2PYrcqbZ+8ui45/VStqxsWFmyE2e4FKZbC82d3F9Jlf5bftzxb6FAAakOhJyZsnE486j4gSlyuosD4tmUKpUj6Vx2Ql9JlTtsvgQhlI3bsGV+wwihSNBS5rRAvtNPmpgdP
+ hwlKBlvQ
+ YFryu+p086CLVtiA6l0193h+JOV0pOsGuqpdCvskIc9GHoJG/QSwiL9ZNpFYQJn7dUWqM08jPnKOF7qbfi2SZ13VUCNrkYyTQmeXEaxnWRrNhjLYn9+0DDk86QZ31ka9stm2iN5Xe6GEHNjWifx/JcpeCq6rTvKJYWMIpHLEGAMJ80ZGnXDKChabUc0TDSrTZenHC58MvK9EUZ/qqlYUGeKn+ZyzvuaJ4F0iM3siz/PiijkMaMLgFktQ1H11sR6/DCIHExHZE6Y7GDjGlaEu3GJ/pkr5Z0GlR9CqKYyRS/f/0riK+MzJcVlIYQdt14eQ+i6uBd/BnWm2CCHT/cDTR324dIOK2eJY6x2sII7bJPJN4d7iFdrjI4CJVDtDifBQqGkwnVDFF4qCe8aN3PijHmynhYSnBnOiiXwEmR2WiGXH1ul9Q20hp+o6suFzbR3izvRBt3VVNXRhAwKU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,35 +129,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  1 Sep 2026 22:47:43 -0700 SJ Park <sj@kernel.org> wrote:
+On Tue,  1 Sep 2026 22:47:45 -0700 SJ Park <sj@kernel.org> wrote:
 
-> DAMON sysfs quota goal target_metric file now accepts 'hugepage_mem_bp'
-> input.  Test it is accepted in fundamental DAMON sysfs file operation
-> selftest.
+> DAMON ABI doc is recommending DAMON admin-guide for people who are
+> willing to know further about DAMON.  Nowadays the subsystem doc
+> (Documentation/mm/damon) is a more recommended place for even beginners.
+> Recommend the subsystem doc over admin-guide.
 > 
 > Signed-off-by: SJ Park <sj@kernel.org>
 > ---
->  tools/testing/selftests/damon/sysfs.sh | 1 +
->  1 file changed, 1 insertion(+)
+>  Documentation/ABI/testing/sysfs-kernel-mm-damon | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/tools/testing/selftests/damon/sysfs.sh b/tools/testing/selftests/damon/sysfs.sh
-> index ddebde6edabe4..b66593c9ac471 100755
-> --- a/tools/testing/selftests/damon/sysfs.sh
-> +++ b/tools/testing/selftests/damon/sysfs.sh
-> @@ -210,6 +210,7 @@ test_goal()
->  	ensure_write_succ "$fpath" "active_mem_bp" "valid input"
->  	ensure_write_succ "$fpath" "inactive_mem_bp" "valid input"
->  	ensure_write_succ "$fpath" "node_eligible_mem_bp" "valid input"
-> +	ensure_write_succ "$fpath" "hugepage_mem_bp" "valid input"
->  	ensure_write_fail "$fpath" "foo" "invalid input"
->  	ensure_file "$goal_dir/nid" "exist" "600"
->  	ensure_file "$goal_dir/path" "exist" "600"
+> diff --git a/Documentation/ABI/testing/sysfs-kernel-mm-damon b/Documentation/ABI/testing/sysfs-kernel-mm-damon
+> index f8d2601e82904..ad21f58f3c912 100644
+> --- a/Documentation/ABI/testing/sysfs-kernel-mm-damon
+> +++ b/Documentation/ABI/testing/sysfs-kernel-mm-damon
+> @@ -3,7 +3,7 @@ Date:		Mar 2022
+>  Contact:	SJ Park <sj@kernel.org>
+>  Description:	Interface for Data Access MONitoring (DAMON).  Contains files
+>  		for controlling DAMON.  For more details on DAMON itself,
+> -		please refer to Documentation/admin-guide/mm/damon/index.rst.
+> +		please refer to Documentation/mm/damon/index.rst.
+>  
+>  What:		/sys/kernel/mm/damon/admin/
+>  Date:		Mar 2022
 > -- 
 > 2.47.3
 > 
-
-The added test correctly covers the
-hugepage_mem_bp quota goal.
 
 Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
 
