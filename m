@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0CA1C61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 16:49:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDF32C624D4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 16:49:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFBB16B0098; Thu,  3 Sep 2026 12:49:31 -0400 (EDT)
+	id A9BF66B0099; Thu,  3 Sep 2026 12:49:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BACE46B0099; Thu,  3 Sep 2026 12:49:31 -0400 (EDT)
+	id A4CAB6B009B; Thu,  3 Sep 2026 12:49:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9ED66B009B; Thu,  3 Sep 2026 12:49:31 -0400 (EDT)
+	id 82A956B009D; Thu,  3 Sep 2026 12:49:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8AE5F6B0098
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:49:31 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B005A1405C6
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:43:44 +0000 (UTC)
-X-FDA: 85173022368.08.ADB6B9A
+	by kanga.kvack.org (Postfix) with ESMTP id 5ACEE6B0099
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:49:32 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 61FD31405C8
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:42:10 +0000 (UTC)
+X-FDA: 85173018420.16.5882F30
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A7197C0003
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:43:42 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="usg/2W97";
-	spf=pass (imf10.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 59BDD80009
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:42:08 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="jS2Asm/U";
+	spf=pass (imf02.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788453823;
+	s=arc-20220608; t=1788453728;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5Ede0e387x+HQCpBdPP2HNIRIIInugEd1SB3bO3qFo4=;
-	b=aYuxlel11F3emUfLI48+bNAffqwvj1I5NmJlrzDJmnyfWKf1g6mqX10io5dczMWjcEnM3n
-	p6f3MDQD0xa+nRXlmAdvjSlujYB7hsmoz6otJVYGhBQ5z38EQC7H5Org0nvyG4kn8RDW1r
-	DVPXRWLJ9hyixXg/tHsRV0jSaQr4RUY=
+	bh=f8pQRfh31VGnGXGPzZ2t/4UaiVIHP0r6rObZCl6Q+iY=;
+	b=nxDgSTUobVpnL2kvdJ+NTcYG1iwkxk6Y5Jvo4/2/Mq5JQPqXWtdkTa4US/T6u3Q0p4UaL6
+	WTFhGP0MTv7/Jqj7/WX71mbPPcpRJUwzA0m9498alcS6pArtQgobhqKeQdGmRCnZ4gfgMG
+	AXbRZgVHbXQLn0iRhhUAclq0ON4dhN0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788453823;
-	b=ib9JXn/xKZly/VjtD31oG2rJKhS3qTAQ3X5h90qId1vv//xyTxM4YPe884oVpZDvCsotuN
-	XGMMPcwG2VgLw9RVxoH8CT5c5zQCd1ZYTQp/V+JCA8lC0WpgNC3sT1MHyVsIh/coIPd14V
-	5gF+sU0hGTKWGFpp9cnOwxtVIMA4f4U=
+	t=1788453728;
+	b=RLDwwnHM+zP89r1jkiE+YYG16YAiJGkYQofc1sf3MJmLVPHWjMKuMEQf5xCSKJ5BBUab4p
+	+OrQpm8eHFPmkC2lhSJLO1EPqv4comIcbc3swu724p89RtEdDklBlbbRjgvgsUIWY57hBx
+	LEbI+hFLzzcEH8g2+SYNVOUolEfdwPk=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="usg/2W97";
-	spf=pass (imf10.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="jS2Asm/U";
+	spf=pass (imf02.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2372F1596;
-	Thu,  3 Sep 2026 09:43:38 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AEC7E1596;
+	Thu,  3 Sep 2026 09:42:03 -0700 (PDT)
 Received: from [10.57.6.2] (unknown [10.57.6.2])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9C5783F673;
-	Thu,  3 Sep 2026 09:43:35 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F24943F673;
+	Thu,  3 Sep 2026 09:42:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788453821; bh=LGH60093kePcPptb+SpjSkJD67LELfnSlCC5XNQthoY=;
+	t=1788453727; bh=hpWgr2ZJY3qJKLttzHDS9l/xybICdRKBZ0Vb9KipRwA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=usg/2W97KxtpPb0rbSiin0EMXPV4w0HH0wivxuLqD9D8WF9a/IxWQbf33irU5NcIs
-	 t+AESg1jykQrwQQ+OpEffiAiB7bjQR5A+ro4tLgjh6rSfVCZ3Z4i+icA8eK/ambLRv
-	 H3Q/wAzcDeqxVLbywNWPKevYysTO3L1fWzG7g0Xc=
-Message-ID: <5fa69046-e29b-43c2-ba8a-97532251e7d4@arm.com>
-Date: Thu, 3 Sep 2026 18:43:32 +0200
+	b=jS2Asm/UwfhzBaNFvf9emw9gKWsaUHT9+Ly9ueyblpJtMszHw0BiQrvZPl/Bzqq5c
+	 ROwk1AuUKsBRjDM/KXiD2FJZeqlNkN/NkAdAbAKu5SuquX6KDjPQzQ8pgcjEcU7WYq
+	 AOJfjrL3ylui6l8L/lkx7tW8ReJG/FtIsmjp6kbU=
+Message-ID: <91154245-af39-4e93-bf2f-dd878f86c9a0@arm.com>
+Date: Thu, 3 Sep 2026 18:41:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH RFC v9 03/25] arm64: mm: Enable overlays for all EL1
@@ -90,20 +90,20 @@ Cc: linux-hardening@vger.kernel.org, Andrew Morton
  Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
 References: <20260818-kpkeys-v9-0-743ad31b2c8f@arm.com>
  <20260818-kpkeys-v9-3-743ad31b2c8f@arm.com>
- <apbkLbO40urPNmEH@a079125.arm.com>
+ <apbjpkTgtdXZQ9Sm@a079125.arm.com>
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 Content-Language: en-GB
-In-Reply-To: <apbkLbO40urPNmEH@a079125.arm.com>
+In-Reply-To: <apbjpkTgtdXZQ9Sm@a079125.arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: noah3ymz9se8djwcwd9w4ukafhhrk5ta
+X-Rspamd-Queue-Id: 59BDD80009
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A7197C0003
-X-Stat-Signature: 5g93w7km6fsfinii5fm1t3qy89w84pws
-X-HE-Tag: 1788453822-164296
-X-HE-Meta: U2FsdGVkX19SiC1tzL8jPhF6D1lLdg1DYaH0ZHvSVGVwJyA6LfAbYaKkGHxnbQdS8c++VYL607CCoVm3ZELq1TWbjtC/i+vFVBQZuVCDr07iVfTFXev7I45Fhy9SqTwaSz+b8Y1ZTga0/NkkeIktSKHaOBVRqseEm+ClB87XstqQb+tnbqY/kkxIH8AVFu4oSIfQewXIjKOsnGbiqrXniJTOxJ/EgomXmIDpTLB7VwjO1t4GtgY+bNtF/2iHAJ8+qUsLkvvLiEtw6PoJ0IcwF2YxYUK5+bmA3VBRTOJZDdONWG+YxMQJmtQZvCWWTH3LIL87KEO5ojZVAbkY4OGlc4YPGxKyFIeatNQRNUu/s9Hm4coH4By5E82sRtUwd+fqXb4KNcPhoaSePTBB1aUEyvTWQjsWYDAz//W0FwfzlKHyfzZ+y+ygeQfcCEEsuwcErFlseFR22Lc4G1tT0mOzpJBCK0jY8WNZ564V2S1taZ8AMqlb8RzF5tpFCvsZoIkK0XEwf/zqd7BjUxMwx7wAdpkZCuowPpjjaGcxsaprK56KLY4C/ZfNtZCJ1HllUSnA63ORgDgClgcFcIo8/0KEc/xWxuwK4zeM/YRTdooSv+GecvWMVITnK2OVa7Gu0D+728GJ0K7XmgdUqFwdFuqmVfhBmZb7itK/Ud1QUFlEHi8wasffYAbTLc9Y6flXf1KPO0yFfWLcIJ4ufpsli3BMamf7LnRFosgEwBF6kcl6xLiA+ZR8Fnu7ekYV/+Qbrh4s2L3NyE83gAb/sE28y1oyfWkv4pQOyEeK1pE/4tKRX4e6IMotxPSJ7izPR0DKLk0pZeFdwsxJft/2oFGCS3NczUaIYPBh/ndzqZEDj5bjcmsySxVMZAmaFosr+bj1i8x5pMDID9ux1niCDoUv5ycU+TMST+cwduG/TUocLltygCHn46Jl1mf7snUnCOSsgkfi1rmtedK3Y17CdrTz3p9
- 0ICB8BDv
- xLs39MtfuoHo9lJmAiDOZnvU9NjuSeKUgMZLgEhpeL1Enh3+sRelG9/oINBRhng7AsV1ryKqz9xBysJTWzQFSMZM2pZ+RYKryJH2y/PAUcnRcfmFl5htHJKNCLB3blY087CcgiybbZ8ThV4+bnx5VMarKF0KUHgUwo6cynbz/U+lXaRKRBPyZlX1jAV+AwJKVjzcfTspt3cX51FK2iFuCF0vDpVISxo7YfnewjGE6rlA3mnZmQgjGtLNZkol5JLWzzEVnSXuKqaqfm9v4lrujiqOLjsWBA8fI4BsreVMB5rDSCW+zGc5J8z81lOOXXFL2sVYG
+X-HE-Tag: 1788453728-545722
+X-HE-Meta: U2FsdGVkX1+K95IIyg66voxbJQYsTDvcX5Z0NNpppUsZNOhB/GkPbPZu5ooEqTNgtJbtrr5FxX3y68CTbjFRvAfdjlqC3cPR4H87XA97GN6TWBWfzKrH/hlel6sz58OyMvDvXm+5cJ4u62o5Kaj8VvcTUNuo9NCQBsTo4mzNoQOiUeMZVqNlmK9xEltwpfGv80pv42ve4eHO82Ub7y8+JmZ4ocIgEpGVlirrnBbLK/W818BlPGTWPeFP0xXKKSfKuq9AT5JImlgsuvWkKkDubS4m5oD6PLcE3sYodukCTvuTaQuVW9glbAGjPdsWmwgW2c4VrkvcTaP4H7h8ZBborQ1nPwJOimAPxV7GfbGae6sgLjtFDoTRvHehlnWfuoutHy1GLBOi8wTa6BhvTU6VdZUEmt1uBNZp1bym5RYP0aQluydOs70i0N7spBbwNO5mCb8P5UEnZ3ToNV8cstGLb1yaM0kUawycw+5ZmMQuHSVfE4/mQsEABjjHwvCwr96WZCQTCDsvYRMe58Ffj5CMZgUbi6mB2eipCZdiJL233DXM/bxyrTbK2lvvncDzSAiyZzZMH4om2sb8RTcD++dG6MS462NoZKkhGq7/xao9NijnbW/bdM8N87BRKgZFlZOotkjd9TmlUagq9EeC+/BEXzZ/Tc8jcbgbt0aRh4bBzHgRgN78r/CQXvLpV8dDB9BVLJTrkkr8HfJ6/gwbR8eHN5IiTiZPW1Dn1K/q5TsRuP6A/OiV4i0nXkRf+GV+0RrVGa1julZgAiNFMM3F9A9HacXFhiS74XlZO+KpdvxglhjqC9SK5rVanJvLIglqaNewSJnpvA9h8Fj5uDwLq4Tsm4c79QoYY3gB0d2G/lAsxA0ck/V5x8/6vEq8Tr5bxUj0XmdpIxMKnVEeMf4hc9CcPzAdR9bQtv0FWxXXwb9+RTrCfxfzUdduYxwYOzxuocsXoKLwwd+UD4hdqUkf7TF
+ FY7/dUmG
+ 86JZVAaEGAFfwIUwu1H/oz5tsNzC5/PQuMrBP79XjJCAexxb49z28gxEVsQR6npSDXLMHsmqDtRGF/T6VISFiYu2aRFHt76g+mcXVhzy1HEcVoYsxloepe2xsCMW31fyWEeNMJJ3EWYiU3AslebchjXKWCh/DafrrBf+LoSEP9RdOKYjbavRKDWzrJaXH2IU5L8uZqiaWgbZkE/rSRObNw2c3uXXYTzwxkwVVbOIh7Y6ArJMoTbPPkxR65pDLBK+zR5H4Ilm3y6z3uMffsqkN4RsZrdVc01jLG1p9pammZfBBP94vId1F+fn+nTxvIl/3LVSL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,7 +111,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 01/09/2026 16:41, Linu Cherian wrote:
+On 01/09/2026 16:39, Linu Cherian wrote:
 > Kevin,
 >
 > On Tue, Aug 18, 2026 at 03:08:45PM +0100, Kevin Brodsky wrote:
@@ -143,13 +143,18 @@ On 01/09/2026 16:41, Linu Cherian wrote:
 >> -	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_KERNEL),        PIE_RW))
 >> +	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_KERNEL_ROX),    PIE_RX_O)   | \
 >> +	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_KERNEL_EXEC),   PIE_RWX_O)  | \
-> As part of hardening, should we really add more constraints to the
-> KERNEL_EXEC by making it PIE_X_O.
+>> +	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_KERNEL_RO),     PIE_R_O)    | \
+>> +	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_KERNEL),        PIE_RW_O))
+>>  
+>>  #endif /* __ASM_PGTABLE_PROT_H */
+> IMHO its better to have this patch just before, "arm64: Enable kpkeys" for
+> easier review. Otherwise,
 
-The name PAGE_KERNEL_EXEC seems to be a legacy from the times before
-STRICT_KERNEL_RWX, where X implied RW - nowadays it should really be
-PAGE_KERNEL_RWX. It should rarely be used with rodata=on (the default),
-see for instance kernel_exec_prot() in arch/arm64/mm/mmu.c.
+Sure, I'll move it.
+
+> Reviewed-by: Linu Cherian <linu.cherian@arm.com>
+
+Thanks!
 
 - Kevin
 
