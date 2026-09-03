@@ -4,97 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6646FC61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 17:18:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 982C3C624A4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 17:21:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 295F26B0088; Thu,  3 Sep 2026 13:18:40 -0400 (EDT)
+	id 9C71C6B008A; Thu,  3 Sep 2026 13:21:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 246EA6B008A; Thu,  3 Sep 2026 13:18:40 -0400 (EDT)
+	id 977926B008C; Thu,  3 Sep 2026 13:21:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15D566B008C; Thu,  3 Sep 2026 13:18:40 -0400 (EDT)
+	id 88D9C6B0092; Thu,  3 Sep 2026 13:21:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E42726B0088
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:18:39 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 64C5A40594
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 17:18:39 +0000 (UTC)
-X-FDA: 85173110358.12.425CCFD
-Received: from mta1.migadu.com (out-230.mta1.migadu.com [95.215.58.230])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 305F418000F
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 17:18:36 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CCU547CJ;
-	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.230 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788455917;
-	b=RpZgTMP0gcVeXQw+J9N/QvYuf0DootDfOT3EYU22cWZ2Aw0rfD+rONts/xZy1iJsHVOGR8
-	WuXkzeN7c9BwDDCjIEtV0rMjY/puJ0AjuAXzpmLrpvwCXEaHTFljVrkwdyFwC2Ye6LGT3h
-	oskTDazf7UV7W0wI7WQyJZ58IPm6bps=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CCU547CJ;
-	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.230 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 694C86B008A
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:21:35 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F3CCC405DE
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 17:21:34 +0000 (UTC)
+X-FDA: 85173117708.28.8D63A6E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4BFA52000B
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 17:21:33 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MIp12bdW;
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788455917;
+	s=arc-20220608; t=1788456093;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LFAU6t7YY54E0iGryUd0dR0coUqlIQpw7kZy3NmLPgk=;
-	b=G0a+AwEabQel0iGVe5SZr0a7SB/N368tgAEEMcHpK63Cs4ewo4njdoaynX2EKYKWZ7TZjH
-	/yZqx8jZ+zCy6KSMT7yWX6dzksHpEI+ulKq6Rur+PWG2Q18h7ylG3lXGt2MVyjtpb6hCON
-	4wmd6fHWLqnqB5JYTWKjSpsOlLezX98=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=48a3toOvR18Ra0dPY+h4+qV+F4oz76ihqdhRFA6Wyq8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788455915; v=1; x=1789060715;
- b=CCU547CJrpZEqm1O4Biy2wZ/MFRaL7s0q+gFZHL6/8CBE37QCU9mfwHKQvL1GE4N/E1H/CKx
- BOirddSxoKTTNZYvgDD//KycXBKpATv5MyMLYGGmVJXUAmjs8YV5Wm5Jp0elAKn+d4I+HpV7KZQ
- b7skKfPFxo8NLeqVEoBUog1w=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id fd62f8eb6babc664;
-	Thu, 03 Sep 2026 17:18:24 +0000
-X-Mizu-Trace-ID: fd62f8eb6babc664
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 3 Sep 2026 10:18:23 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	linux-kernel@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
-	Martin Liu <liumartin@google.com>, David Rientjes <rientjes@google.com>, christian.koenig@amd.com, 
-	SeongJae Park <sj@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Sweet Tea Dorminy <sweettea-kernel@dorminy.me>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Christian Brauner <brauner@kernel.org>, 
-	Wei Yang <richard.weiyang@gmail.com>, David Hildenbrand <david@kernel.org>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Al Viro <viro@zeniv.linux.org.uk>, Yu Zhao <yuzhao@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Mateusz Guzik <mjguzik@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Aboorva Devarajan <aboorvad@linux.ibm.com>, David Carlier <devnexen@gmail.com>, 
-	Josh Law <objecting@objecting.org>, linux-mm@kvack.org
-Subject: Re: [PATCH v21 0/6] Hierarchical Percpu Counters for RSS
-Message-ID: <apmrfy5zsjmWMNj4@linux.dev>
-References: <20260901182857.26690-1-mathieu.desnoyers@efficios.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260901182857.26690-1-mathieu.desnoyers@efficios.com>
+	bh=uofprPFCPxfEf69MnbeHxACRkACv1OeYBLcQOB9jELU=;
+	b=W0OPY8zH667Iv50r7xF86l5/+Z66FOPg4d2RmVCzYhKP87JS2a1vUoxnkbG8vZ1I2PlbOV
+	4G0LvK81ROWqS7WeVqV474WepNOMKGcJ40D//S5u0jTR3Ij3W6vl3SWynjMfKLDUtXYJHp
+	Wmhv0ZhIfoyDp+1UBlNYICvF9GqrRiY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788456093;
+	b=BagXvLit4b/2n93bQC9B6GUisWjV4Ksof38lbSByDziDkFGCTJTm2UqHO3KH28Pc5PBCu7
+	JLNiM6OjmpKmjgEMshN5nQ0slJ/uSuTzaHoqfd/7ZU0nKADOZZ52m/KvB1IGV4SSRLSJzR
+	5Jv5b0Ph2xo2hAcWwAtW+aZ2JPD09T8=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MIp12bdW;
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5C0A560219;
+	Thu,  3 Sep 2026 17:21:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7007C1F00A3D;
+	Thu,  3 Sep 2026 17:21:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1788456092;
+	bh=uofprPFCPxfEf69MnbeHxACRkACv1OeYBLcQOB9jELU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=MIp12bdWHSMU1GrCwa+hfnX1qpV2W3u66ysoCVszd5rb+R79OlF5hj7b+DQN2bazx
+	 eh1MiE9BwStxsnUVkLn6Qwj+C+HT9h+oDHRs+YbMfBdIH7L9CU8kBn95iYGllk36Ac
+	 cfEtMHoLdsrMHgqb734Gi8d2inYB+SVJC68ZZm1A=
+Date: Thu, 3 Sep 2026 10:21:30 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>, Vernon Yang <vernon2gm@gmail.com>,
+ rick.p.edgecombe@intel.com, tglx@kernel.org, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, david@kernel.org, hpa@zytor.com,
+ rmclure@linux.ibm.com, andrew+kernel@donnellan.id.au,
+ pasha.tatashin@soleen.com, tj@kernel.org, rppt@kernel.org,
+ yu-cheng.yu@intel.com, orsonpeters@gmail.com, linux-kernel@vger.kernel.org,
+ x86@kernel.org, linux-mm@kvack.org, Vernon Yang <yanglincheng@kylinos.cn>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] x86/mm: Fix pmd_modify() dropping the dirty bit
+Message-Id: <20260903102130.b5cda1b08f3efd4ab66226e9@linux-foundation.org>
+In-Reply-To: <314f11c1-ce5e-4b36-b296-0ab742550851@intel.com>
+References: <20260903031608.1194238-1-vernon2gm@gmail.com>
+	<aplfcTfjeQUgnrvH@thinkstation>
+	<314f11c1-ce5e-4b36-b296-0ab742550851@intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: tmaj19e9xjwfisi9wiccb7phzbkf4prj
+X-Rspamd-Queue-Id: 4BFA52000B
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Stat-Signature: tu6a6b6kethnym5wdnmfij313r1b474n
-X-Rspamd-Queue-Id: 305F418000F
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788455916-545812
-X-HE-Meta: U2FsdGVkX18N34bimGk6RVJG7woqvYhh1aT8JMs42XPVb5N0GPDqFbjNMJIHes5UyNsLMjuXrpy5HqOunrTbCJEtAESzv1mHzB7qeU9liy/AXDOP5Uq0Vs327yRARGzeKpIxExw6Qkgc9tNjoypulx2VkTxQSTDMdGceCwNQwki1fzpL+BbgdNGoyi5KrWJJhOQvLdMS9gt7oG9nMKzhT+X/sPm3TGvWQcYTefMV6A8Aw/gUAL4tDaqcNHgPXtPuhj5fsufygPlvUH1aFM9LMvfrCxuzfa2Usk50Ff2DkyEh6XJmubdmqjy7ZDA3e5nOk58Daj6l5eZgTo882EWh7wCcDeaClcDMBMrkQPEbBklFB5RE4VVZ++yMicPDE6V14gkXZUn3f2yScKk+vXLL5kUH9AU4PWqGoWpG3M/Ezc1LzqEnelGHOu9QZFnwXtb9gfTrBGciX0OhyjbN4Q1aNLZ+7b8GxQhA6QpYWlMh0d3ffOXlh8W8eMO9w89yJFjU4ygA8XMB2RbOQ2ZK5UcgCuGabtrlncQYTfypMpE6PtFIrqRC9hCbMmzf9g9HEGxAnKiUntU1g57HEpNCpWTlpNgFgUeC9Wc/+D7CTYlbjOFSR30xrg22M+OxV7zOdXTRceOhTAzc0fSp0rzaQEYKYUaB8znCnqfCMyy2nnOIg4c/boIEBaWJXWF+tcjt6zalTejmWz2itKISqpczkP3ogJwvc+igFqCp9ZU7Z7rZ+AwRvhvGlDHjfggeUahfcl92GWs4feA9xk2V+bdyrXJPh1TMtd5TzcLlhzFaKttZu9p+j08JhL3aaQq7wlEBSX6FyHYbSRKVAlW2jpcLkSCRjGmaiQdX9kN3k4uUiKGvFDd9G6UExLOlXaot5sQn/QMJu3eEVLhjuGvtyhJHcDpKgy1/UohvRpehmP/d1kl5kD89IaZp369fMKnnPpwPmEfuRmXzlV4fzkpnuiWyMQr
- eRgmkc1f
- 6zfnhTT3YFzqSdTJrsqEVDX3+nlCaGktnxpRdHjbxLQSBI6dafkLqhgTgFzWfws0qtU8eErFgb7lCbFs33Fno56a3SMbU6jVOwdOtQ/Bi2A9sw5dxkUlxzj3DTjKoAEZsS/d8wp55nWDrc28P5pgdFC23JuhuVqU7o8rrkyfVzQdbgtz/KJjHSJOOouo3Fa9t1J/IhktVDz6KnyOGUHS7YhKeVf5K2W+qB6bmycactkFRR+VILRGD978AbMCzFbzm65HTtK8aSkFOV/xewrOO8CTp/1NQVT91JhGRqGHqb9dw94o/CXN80unpLr5CgPf3FiG08rq9VCy+YTZ1l8SvONk7v1qIJ1QPUPXU1jstIWZjpjcjJNLdfa5o6xfN10faFdxTJW+WQ7HicM8vCWtUnNjaLC5JJnudlb2Vxbqax+jcA7oDJllAYls5NLGEXqmuQPP3HQcEHGI6w1t6CI5780P/4Q==
+X-HE-Tag: 1788456093-179905
+X-HE-Meta: U2FsdGVkX19FcofCcfYZ22eQtab1ogsjLrRY96fVNcR8fXoqzRwz0i7jkW35OcyPLVG2CioEaHNb9UpyeaMXyP2BGKyCDkRxW7WMFjD+dmoUev0oxXzK4gvWLwaTtkE12SEg7ipIA4RA88PDWqUzm8piXpS3v78fQT2bZdOIpPloEu1xrtPUqW5Uo67QBuxxrqNZWKNemQgNfO81R9Hlf9AgWDBWKOlEUv8ecVIjJJ4aBoI+iJKzl7DMJ6GFnal5CBQs6I1y84KFJWdOljhsISEomO3qXQP8Rwg7Wwo+0r2su+A0vvNESMRvK7K9deKla127l9WX1mMlPTTbBB6+AFQ/lPef6fRALvFTRPXjTTKhwrvCqNY/TAQYmWWJtupe1xG+M+qy3FJ1dCeMYPQpWuh1pVsBanL7gTlIQq+OL+J9nYS4BKfyElO126tmgkKAqE+SJoC7Xq7fOQRaW+sD8hNS1EXVMujxKgovW3ZZMHSwi/rAvH9u8BD+6JhjCNqdqHZJygjdrcVVO/Ueyiv6xzHKUm+Hvdi3Z9gnhj2ykr9tcE6kFm/kzh2JCeECEbrW0Yx/myNIcVFWHUzblNOsaJNDP0JR+0YGYTULN2kzs4YtagZttRGOevyDJ8PWyq5SIkSv+h9rIN1SYuqlo0Y+8GBxL4IBJqHwKH+Vi8TZOEDMMsvOajtTY2ZGrkvzKM0GF2mWPIfMX7giK6PFID8NHTpsB35XS84bmpMiTsARNNfa2hS2UXlpciQCsz3uEmfIHbvoX19XzHdiMbjtJgzdEjTrVaSLT/YQWk32JIbbYPgo4RSrA11rRsAToGM6+BOvF3m9U0xIOEySs68mzFX/PG1jXTVAsFweEZmcPeqqIcG+jPO2MHoUgO3d0WaQq6jViqBegQHcc6sn8Ok+VPwkZIcz/bJkyyg4DE1OjOmhpvDNwqbwlnrNjCbK+av6ZZqNnpghcqw/yD/brv+tA06
+ RrFFku1l
+ E9dmdVytdrWrNvAdKkIJPj7h8QKfeDtjsycs9YYQriuHTpfNF1YFdLtASkJEc8axl0mwq3LqvtrUem8JpwfXRWvGz65O1OUm5m1/vJg3nb5idLNJwD58LGslbGgwGqiUAykuGNjKiaEtutIn307jF+HyyJAfmVwgPlnfI/iT6hKE0U0hkFC1bNNwvfnPmuTETznlA1siNHJPTSRw3fVYWBkm8G+mpPBtBP/D1OG0vQcbUOwei7MRdRB+vLsMTxyGoOtdwxhTXXTPs19xv+NPXp1Tc0kLXVyV4GWdIix7iTohSaz4xxVqcpQJqPnVBfoXSfU3YpvMVsqv0s2Ay0LpONuAjeQjROSjHeciFHdCgTGPmHGBt3dqg5QO+B7lUPvK44dQo4GZcM6+G/Z1GB60+bwX0PXdi6tzu218Cz1e/C5ufQNq8H/GK4dt1BIW1Kp6lu6LYPoGu8s2OoXc6bPxXaZhr2wYdb6Xb3fhLZzYHqId/MZs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,29 +97,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 01, 2026 at 02:28:45PM -0400, Mathieu Desnoyers wrote:
-> Hi Andrew,
+On Thu, 3 Sep 2026 07:18:54 -0700 Dave Hansen <dave.hansen@intel.com> wrote:
+
+> On 9/3/26 04:54, Kiryl Shutsemau wrote:
+> >> Closes: https://lore.kernel.org/r/CAJxLxMUGu1-L+O_nAONOwOXnS=cNbNApCWqdthRjd76LThtSPg@mail.gmail.com/
+> >> Fixes: bb3aadf7d446 ("x86/mm: Start actually marking _PAGE_SAVED_DIRTY")
+> > Hm. I don't understand why would this commit explicitly exclude
+> > _PAGE_DIRTY from the mask:
+> > 
+> > -       val &= _HPAGE_CHG_MASK;
+> > +       val &= (_HPAGE_CHG_MASK & ~_PAGE_DIRTY);
+> > 
+> > Rick, could you comment? It doesn't look like a typo.
 > 
-> Here is the hierarchical percpu counters for RSS accounting series
-> rebased on top of v7.3-rc1. It includes small bootup fixes which were
-> needed to fix bootup sequence on specific architectures, and a rename of
-> the test config option to include "KUNIT_".
+> My guess is that it's some remnant from an earlier version of the patch.
+> The asymmetry with pte_modify() vs. pmd_modify() just can't be explained
+> any other way. It _might_ have been some attempt to say, "Hey
+> _PAGE_DIRTY is now a part of the pgprot_t since it's part of the
+> 'permissions' of a shadow stack PTE" that got abandoned.
 > 
-> This aims at replacing the prior version of the series you had
-> in mm.
+> But I don't see anything wrong with the fix at all.
 > 
-> As a reminder, the goal here is to provide more precise RSS counters
-> through /proc. A future step would be to also use these counters to
-> speed up the OOM killer task selection when OOM is triggered by
-> memcg. In whole-machine OOM situations, latency introduced by the
-> OOM killer task selection may not be too much of an issue, but for
-> memcg, where cgroups may routinely depend on the OOM killer, the
-> acceptable latency tradeoff is quite different.
+> It does give me pause that this has been losing user data for so long,
+> but it must just be a weird combination of features that few folks use
+> together (huge pages + MADV_FREE).
 > 
 
-Hi Mathieu, can you please comment on the Sashiko's findings [1]?
-Worth addressing or not?
-
-[1] https://sashiko.dev/#/patchset/20260901182857.26690-1-mathieu.desnoyers%40efficios.com
-
+And with heavy reclaim pressure.
 
