@@ -4,85 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6D89C61DD6
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 01:37:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DF58C624DA
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 01:54:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9723C6B00DD; Wed,  2 Sep 2026 21:37:02 -0400 (EDT)
+	id 304716B0095; Wed,  2 Sep 2026 21:54:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 922656B00DF; Wed,  2 Sep 2026 21:37:02 -0400 (EDT)
+	id 266BE6B0099; Wed,  2 Sep 2026 21:54:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 810A56B00E0; Wed,  2 Sep 2026 21:37:02 -0400 (EDT)
+	id 12F0E6B009B; Wed,  2 Sep 2026 21:54:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C1836B00DD
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 21:37:02 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 240BEA042D
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 01:37:00 +0000 (UTC)
-X-FDA: 85170737400.25.42D473E
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 1267614000A
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 01:36:56 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Xi+G5uut;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf26.hostedemail.com: domain of joseph.qi@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=joseph.qi@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D385C6B0095
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 21:54:55 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 63F3816038A
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 01:54:55 +0000 (UTC)
+X-FDA: 85170782550.22.A4D6AF3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 8B1C2160006
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 01:54:53 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yeawN7Gy;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788399418;
+	s=arc-20220608; t=1788400493;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e541pMb9oMqhXLTyZBftOnSifT1JVi2i2ff57bVED4c=;
-	b=7cx3i3B/Qw2jRQcV3zK/t4re1/s8kZ1UIsA7bqgSOujFu6DcDrn66LQpkpSiY0IkEBtteV
-	ZZjVXGULggA11mQ8R+JjYOJV5Vkyna/E99pXat0uRYFYCH/0oRUBPMHe3gOOrTZ8uLj+zZ
-	0PVxBwyP+4UYp8lNWSkoleU8/MoVzc8=
+	bh=gHmtDEPfgNa8T8L87oSiVhjCoLBlb5om5vFe4YPpkQE=;
+	b=OXK9zEJupLif5mq0+aajgD1syPTV31+riwguXyE0KbrYmoxmR3qZxwN5Wz/fc3qVW1RJJR
+	YqpQJWtQ0QxOrJ6YAOl0nHjHmLRK58b2Bpro5tbsbUFvf1Tivf0YGetlN7loDhpYVTpvMl
+	zy+mWCvUYJ72mKf2n8j+Ccz2tzd3Tdg=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Xi+G5uut;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf26.hostedemail.com: domain of joseph.qi@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=joseph.qi@linux.alibaba.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yeawN7Gy;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788399418;
-	b=kGbSY/pyxdLv7p1VMSwkrEWY0+iNGHypuNx6gGfiwirNLHH9q/XY2xgC8YzQQXGB8XPjOo
-	Z7wBVtDfaSD8oImwv3kE5jq0A1neB/tsR2M3OQxLTnhLNnp45OPIV7k/tPbSLDlyZPUVza
-	TzWxPQUB6FoDl7eWwJQySaZX5V6Zel4=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1788399413; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=e541pMb9oMqhXLTyZBftOnSifT1JVi2i2ff57bVED4c=;
-	b=Xi+G5uut+AJDQNkvLZyBkcSMfM28p9ORQ3yaTodx/LvGGOk89zMyBsyAYdVRLhqp/9KdQJxhQ6XQ9Ncv9afZDLXoLnYwbyD94Mu0kDffOZcXwL2JyICaQMeNcFLOLaHCFFslIEvw5uS9iFmoxckZMi9bvwyuV1viv7+FDbX2gw8=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=joseph.qi@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0XAEOibv_1788399411;
-Received: from 30.221.131.71(mailfrom:joseph.qi@linux.alibaba.com fp:SMTPD_---0XAEOibv_1788399411 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 03 Sep 2026 09:36:52 +0800
-Message-ID: <8d78e72c-a7f5-4b08-a249-34e924bda588@linux.alibaba.com>
-Date: Thu, 3 Sep 2026 09:36:51 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] ocfs2: Refuse to enable ocfs2 format for another
- filesystem
-To: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org
-Cc: linux-mm@kvack.org, ocfs2-devel@lists.linux.dev,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Farhad Alemi <farhad.alemi@berkeley.edu>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <20260902132458.23590-1-jack@suse.cz>
- <20260902133702.1313635-3-jack@suse.cz>
-From: Joseph Qi <joseph.qi@linux.alibaba.com>
-In-Reply-To: <20260902133702.1313635-3-jack@suse.cz>
-Content-Type: text/plain; charset=UTF-8
+	t=1788400493;
+	b=a2hvn0qfE3nh0q1bgUnINPDbgGkcxLVc4QadQHERv4x/VOl37ztfJdnvFlk5qho1NVotC8
+	k1Pf3gF9OMLNsMsPRKvlATZMHG1dHJg6F5QMjseWC30H6K3CkLO4T97vwp7vKAJCmgABPJ
+	4Ioc1HnfNgeYGS9WVYZzgLqipYSWkHk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 73551406BF;
+	Thu,  3 Sep 2026 01:54:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F02EF1F000E9;
+	Thu,  3 Sep 2026 01:54:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1788400492;
+	bh=gHmtDEPfgNa8T8L87oSiVhjCoLBlb5om5vFe4YPpkQE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=yeawN7GyCWIsCaemmopXXvBAdCqRnHWmFWKvAp5QnCCQl6S6aD4DGWTYn2s0jrkl/
+	 ZCt/+Et3K2+sLkhjDH2EOIVDnvL/ITKYlNtpy/RhUPPtcdv/2I7iHcxADslp9KZbSn
+	 +ZRykQwCtAxPRZAwGvwwo7P8CEv3g83mPlN2SDoA=
+Date: Wed, 2 Sep 2026 18:54:51 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: syzbot <syzbot+f12658786a4153df5113@syzkaller.appspotmail.com>
+Cc: jannh@google.com, kunwu.chan@gmail.com, kunwu.chan@linux.dev,
+ liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lixinhai.lxh@gmail.com, ljs@kernel.org, pfalcato@suse.de,
+ stable@vger.kernel.org, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
+Subject: Re: [syzbot] [mm?] WARNING in vma_set_pgoff
+Message-Id: <20260902185451.5ba1a829a15bb2799d121bd1@linux-foundation.org>
+In-Reply-To: <6a9896aa.e163c37b.143a1.000d.GAE@google.com>
+References: <6a87853b.ae6ddae5.3da009.0023.GAE@google.com>
+	<6a9896aa.e163c37b.143a1.000d.GAE@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
+X-Stat-Signature: ro7xe7j1kgju1iu7od1r57kst15pwmgr
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 8B1C2160006
 X-Rspam-User: 
-X-Stat-Signature: ebb1x14exg5jup4naywiwttxuins9oia
-X-Rspamd-Queue-Id: 1267614000A
-X-HE-Tag: 1788399416-319705
-X-HE-Meta: U2FsdGVkX18teVEeWI3j/cngKgDqSL+12SsP6I0cTqG9oEYPZCBUZqQ8bgTnMIQ9NVrY8JAa3lixg01YVJo0U299/RH8YvooomqRq3Zv1NTLxDnhplWiPmh3ZR7eqtfP7jGbc8l4wZtwHv2VtezcdAeK6knPnb1xYuR7ce9pDYT2PoqT9pndTrtjPJrP5T7HHSU+D7lkg6R9tAG8YsuwW/xwbq54Kl8LTve0rX+zdSssElBHduxyiyureD2Fp5huPEetW8E/r5brfacOnIUAZ96nMxJNivVEyK76Uqzp3FatWJlAY0l5ZjOHyqI2hd8reMEKFkYv4Tx14aO3p8uc38XRpsWOASijGiLitGfvjLkbSoBv4VJJKEt+XM4Ko/aErf/EdLVGufcBJiPycYS3lnq4dICw+oPheuhzm0m/P4g5n97Yg7Jo7F7N9kyNcKANOR6ONB5Yv4Y93oRrDBOKms1Y+ZoE72jdHEwL/vh7ICrnt2k2qt5WSoE0zeSLuTPvjgHQ1vqpqXzJdyzRKGDWTZ5ZxNln1VRi9isYCCf+zDrscP7KL7jaVdDGFo66Iz07GUsYgbpvNDkaGBA/l/q+efV3qbOlntQgS58ntLH4+cvgLyXaRKGhSwvvQQQi3tkwk3Xcx9Yvx/b5M/dtO/wiKL2W1/W3zsqMHFZXBheUTXtwPZarQCdhS3IowzxJV3tV8mXPbu+030WD0qd//GjNJ+wp/YI0uxv9hFmh8dax5YFeY6oET3ucV5bWUlL7pcPhuEf5lnfJ43xk2ZaurpqIjUe0MWeJDGVzGGr3PPcQnA9crp5PzltapfEjZpOsa1AHVFbxX4wPckeGibfUPhRuaJeGUBNNUoNzI31wWRM2Npyd10Y6aCq5/SVWWuGFcMO79dDkt9c30w2psmmJgsBk8UoW0cH73EUfNNPNlaeG4nITkNdIw9iAGsB79As5lnw/AMWAEimfpWkcZZVWe2b
- pR6Jo5c5
- gNz0+3xeKQH7bzcb0Usf5ADJFwyl+27lD5MGhkA83BK2DEV9StMMcoeEgZq3Lv5quIoxQo8ojiCPmooMm5RDfUIVdppHx5pK+Kkip/KlyqSgXV6sUsUXq3JhFVyUqlpB+R1Z11xTP5nIBt0sebxGcAj2CBlOcZOFF+qTb4Ws0PV8jUIDwj0L3mq370HF4N7LUJR79k+EXlreIkeDC+BNLxaXOupFwT+WhJ4ApyMjkyQv8Wt42LSBz7GNvmT+ewD6Da+zEFEQmw6l3Qf3SpdyAkzDCDuQz53ScPZ2KfZIGGM4DHOM=
+X-HE-Tag: 1788400493-378252
+X-HE-Meta: U2FsdGVkX1/N6mQMtvjmpTzFr72EmrRtoG8qoOawkyv3/PU/nxOprgPf+LqQnz59tSa2loyCTSGG0FdZGIlx1zSm/MElMkImMNww/ioROFCs8LveedwGSUqBFAL6b7t5sjjhfuPSaA9yUtroVG13ohF9AgaaRfAE6Ing9UcDa0NQ/SQVhVw58InMbnmvcSjv/meBxrcH8uD08fjhNov+adZkSLPsZ8j3YuiDUKiBAAe3rz7ZVNQC1E3t91u5uPW74PJZwwmwDJohc+t89/hYQnH4EFOV6NbOzkeOR7KjxaEJg2WGEyUrTSFQvhVQKpN/aO7s/9HXYCMtP/uZKGSfdtVYYMTya0ojwJDIFRqCfrByDSlde4aXotS+WtO+JpEOkSkC+aIRAkKLhE4n69e3AnCYMdYc81AgspXDtRFefkCi3p8BxG1qP6JBssxWkBau3rA2nUH7tha3kTTunOPLXUBKEYXE9858+TyYoWQDWSvvZffZPOkmei0LAot3G3ZtvGJPWMW9Rkzxw9VUxNgKM5NTZ4PUBtffWY+TqBpfvtMOpBQLfZE5z9Xwt5I6hNQquIqImapa3g7SgiTFY4ejfsyO5SL9/WZl2crZ2I02v0hGaJb3AbPqifJOs2ZOADZIuUpJ/tQa9ZFNs8xRGSPPQB4qRThBh+XX93KSzmeLTqIPG42O+cDOPqFsRyaAahTpiE3BWq8USzfAXATUW0UjUOqfs1eXezd6GYWFBJp+IjYSUTXCSTtT4h0ZG0KmMHEH3mVVuiWXn4lMQxqHqzPxi3uIYKW5SzV0dFyGAwSlknIVKsyIRnrOT/ROEafd1sERBN3S94T9CT4D+h6kpYA1JMwXU+FLGbAv8CT+RRUKlTok63qq1jUdvkTGOVY8rUybsvlEM2l9B/MGFTIQsJwt/YzogfenuaBap5DfZ2e2gmN+ngyHvZ+aTRspsRM2A3NkDLLxoq0pkLpxzXqYStD
+ RTyxtszw
+ YlqcadRS1fwaHHQV0vrJaKPh/OIA0rhxFAgaMrobhVqcYGjTKIRtkwR+d9HQNnWjQp8PDIm7g9bcJ/uQP9RFQ4oisI9O+kVugvslNbjNbIUldkogB13Epu1nISW98GVMn5F4Twi26ErxWhayHmelALvfdhFVpxWGftbe36ZiVAFCkMSgrqHCvaagP6DGTBFTUQd+rJOapH8b4oAJILYWuMxxUmKgZqPq8mLDRU4gycR8ddemflCy1wnPwdBZVwa4HRW+bQ0fhrCeguzpgx8wXEIQTOR0Ua6CHABM8JVx4ySWTfaAx8VEQImfM1n1ifhXow25Ilsp9za47PbwJ+LC1SPmc+haW1GTkwNYkStFSlPYzNVbrZ5SeVoeLly6pSIEspLKwv8Q6DX+l4GwZhR7M1JnJFza7mxjWcKEljmuEeYKMUupCOkL/TU9apv7fGzYy2onXfutkipriTklmCB6K3aaghtDnpUmoDYzdTxzdo2cLrL2KaNOIa+m77ohhhJ/m3D69mtgXeMtT0ravwasbJoOgEjUyz0eAJHG9YGIn0xSuNGEOTTjthj38JnvVi2K23PZkgRcLz2vlJ+FWt5YOGcTo5jXFrhgePr7Aj62yqmvxBAZwBVXiAllAiYIIrWIh+7KYYCewsNjhnAPHzHYWK4H+YCFs3CN4dTkEnqaTt+NwPL3Fi8y4kHDVLhAVXL5om1RwnTV6zMQU/TrSE+CBMzc2HOohSMMpIDrXFShwUwldkJKSmr+r5NtEH+wp7568PCx5YiH4omWos6g8SyoeftU61ZPFcR2heEDfyRGKEcrfd443szeAV76xM6495AHzxflCNkGGre6SjLmPXKpUVUCzwl5e0ZMb//+LOC5frZlUjte277CvXgUYAJl8dC3lSzHqvT2utBmQZX+C/vezZuomSVUCg3sDqxnGAan1KTbARJtbjSXg9JAQiBe+HD039qNVbJYoNNZp63/C7c2JMB77XZIn
+ 3XgFgtPM
+ krtdmImPBTLlqGtyWgTPad7iQ1fG+FjBtpvyZDlmZlDpYhBQD1a+BqFKeAVrGmpQ5UgYyTS6attq5YynO2RRLdseqAl0IBUdYhEnDfVAww1kGKcN6gf1ko7k4xXm0EwqitfhOfPPjfNYntNppBKSjceEWYOa6wGNWr/75jfbcHxxZT5ZOIEP2vvNEAa0rGc7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,38 +94,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, 02 Sep 2026 14:35:38 -0700 syzbot <syzbot+f12658786a4153df5113@syzkaller.appspotmail.com> wrote:
 
-
-On 9/2/26 9:36 PM, Jan Kara wrote:
-> It is possible to issue Q_QUOTAON quotactl(2) e.g. for ext4 filesystem
-> requesting to enable quota using ocfs2 quota format. With suitable
-> passed arguments this can get upto ocfs2_local_check_quota_file() where
-> the passed superblock is from the ext4 filesystem and that can cause all
-> sorts of interesting things, most likely crashes. As ocfs2 quotas are
-> specific to ocfs2 filesystem, verify we are indeed enabling quotas
-> there.
+> syzbot has found a reproducer for the following issue on:
 > 
-> Signed-off-by: Jan Kara <jack@suse.cz>
-
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-> ---
->  fs/ocfs2/quota_local.c | 4 ++++
->  1 file changed, 4 insertions(+)
+> HEAD commit:    89a312991dc6 Merge tag 'cifs-fixes-7.3-rc2' of https://git..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=101ab0f9580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=5e4e3a0e188a497e
+> dashboard link: https://syzkaller.appspot.com/bug?extid=f12658786a4153df5113
+> compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+> userspace arch: i386
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=151ec39e580000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1761ef79580000
 > 
-> diff --git a/fs/ocfs2/quota_local.c b/fs/ocfs2/quota_local.c
-> index f55810c59b1b..97dee8ee6096 100644
-> --- a/fs/ocfs2/quota_local.c
-> +++ b/fs/ocfs2/quota_local.c
-> @@ -171,6 +171,10 @@ static int ocfs2_local_check_quota_file(struct super_block *sb, int type)
->  	struct ocfs2_disk_dqheader *dqhead;
->  	int status, ret = 0;
->  
-> +	/* OCFS2 quota format is supported only for OCFS2 filesystems */
-> +	if (strcmp(sb->s_type->name, "ocfs2"))
-> +		goto out_err;
-> +
->  	/* First check whether we understand local quota file */
->  	status = ocfs2_read_quota_block(linode, 0, &bh);
->  	if (status) {
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/9e57f69218a4/disk-89a31299.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/c6ae7c71d018/vmlinux-89a31299.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/82fb8eee8abf/bzImage-89a31299.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+f12658786a4153df5113@syzkaller.appspotmail.com
+
+Thanks.
+
+> ------------[ cut here ]------------
+> pgoff != vma->vm_start >> 12
+> WARNING: mm/vma.h:277 at assert_sane_pgoff mm/vma.h:277 [inline], CPU#1: syz.0.17/5876
+> WARNING: mm/vma.h:277 at vma_set_pgoff+0x246/0x2d0 mm/vma.h:283, CPU#1: syz.0.17/5876
+
+AI tells me Lorenzo already fixed this with "mm/mremap: reset unfaulted
+VMA page offset for MREMAP_DONTUNMAP".  This is presently in
+mm-hotfixes-unstable so I'll send it in to Linus next week.
+
+Err, make that this week.
+
+
+#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Subject: mm/mremap: reset unfaulted VMA page offset for MREMAP_DONTUNMAP
+Date: Tue, 25 Aug 2026 08:55:26 +0100
+
+Uniquely an mremap() invocation using the MREMAP_DONTUNMAP flag can reset
+a faulted VMA into an unfaulted one.
+
+It does so after the page tables have been moved to the copied VMA with
+MREMAP_DONTUNMAP leaving the old VMA in place which is naturally unfaulted
+as the page tables it had are no longer present.
+
+However, in doing so, it violates the invariant that the anonymous page
+offset of an unfaulted VMA is vma->vm_start >> PAGE_SHIFT.
+
+This is because a VMA may have been faulted in, mremap()'d (causing a
+delta between its page offset and vma->vm_start >> PAGE_SHIFT), and then
+mremap()'d again with MREMAP_DONTUNMAP resulting in the unfaulting.
+
+This condition is a violation of a fundamental assumption in mm, but now
+also triggers an assert in assert_sane_pgoff() which explicitly checks for
+this condition.
+
+Correct it by resetting the VMA's page offset at the point of completing
+the MREMAP_DONTUNMAP operation.
+
+Link: https://lore.kernel.org/20260825-fix-mremap-dontunmap-pgoff-v1-1-39a40b2c98b3@kernel.org
+Fixes: 1583aa278f5f ("mm: mremap: unlink anon_vmas when mremap with MREMAP_DONTUNMAP success")
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Reported-by: syzbot+f12658786a4153df5113@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6a87853b.ae6ddae5.3da009.0023.GAE@google.com/
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Li Xinhai <lixinhai.lxh@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/mremap.c |   22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
+
+--- a/mm/mremap.c~mm-mremap-reset-unfaulted-vma-page-offset-for-mremap_dontunmap
++++ a/mm/mremap.c
+@@ -1331,18 +1331,30 @@ static void dontunmap_complete(struct vm
+ {
+ 	unsigned long start = vrm->addr;
+ 	unsigned long end = vrm->addr + vrm->old_len;
+-	unsigned long old_start = vrm->vma->vm_start;
+-	unsigned long old_end = vrm->vma->vm_end;
++	struct vm_area_struct *vma = vrm->vma;
++	unsigned long old_start = vma->vm_start;
++	unsigned long old_end = vma->vm_end;
+ 
+ 	/* We always clear VMA_LOCKED[ONFAULT]_BIT on the old VMA. */
+-	vma_clear_flags_mask(vrm->vma, VMA_LOCKED_MASK);
++	vma_clear_flags_mask(vma, VMA_LOCKED_MASK);
+ 
+ 	/*
+ 	 * anon_vma links of the old vma is no longer needed after its page
+ 	 * table has been moved.
+ 	 */
+-	if (new_vma != vrm->vma && start == old_start && end == old_end)
+-		unlink_anon_vmas(vrm->vma);
++	if (new_vma != vma && start == old_start && end == old_end) {
++		const pgoff_t pgoff_unfaulted = vma->vm_start >> PAGE_SHIFT;
++
++		unlink_anon_vmas(vma);
++		/*
++		 * The VMA is now unfaulted and it is an invariant that
++		 * unfaulted anonymous VMAs have page offset equal to
++		 * vma->vm_start >> PAGE_SHIFT.
++		 */
++		vma_set_anon_pgoff(vma, pgoff_unfaulted);
++		if (vma_is_anonymous(vma) && !vma->vm_file)
++			vma_set_pgoff(vma, pgoff_unfaulted);
++	}
+ 
+ 	/* Because we won't unmap we don't need to touch locked_vm. */
+ }
+_
 
 
