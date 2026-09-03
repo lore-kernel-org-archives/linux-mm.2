@@ -4,100 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65661C61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 09:15:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82AB3C61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 09:17:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D2926B0096; Thu,  3 Sep 2026 05:15:57 -0400 (EDT)
+	id 9E1636B00B5; Thu,  3 Sep 2026 05:17:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A9AA6B009B; Thu,  3 Sep 2026 05:15:57 -0400 (EDT)
+	id 9B92C6B00B6; Thu,  3 Sep 2026 05:17:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E6E96B009D; Thu,  3 Sep 2026 05:15:57 -0400 (EDT)
+	id 8D09E6B00B7; Thu,  3 Sep 2026 05:17:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DC056B0096
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 05:15:57 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 98B301A0175
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:15:56 +0000 (UTC)
-X-FDA: 85171893912.08.FFCD528
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 05C6F20006
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:15:54 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E0zsCHKQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 6830F6B00B5
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 05:17:16 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0E0A71A0445
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:17:16 +0000 (UTC)
+X-FDA: 85171897272.01.2667DAB
+Received: from mta1.migadu.com (out-103.mta1.migadu.com [95.215.58.103])
+	by imf08.hostedemail.com (Postfix) with ESMTP id D7EF2160003
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:17:13 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=F5LwbcdB;
+	spf=pass (imf08.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.103 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788427034;
+	b=B/cRU66DdtI/3IB9WxOrNMujMaaKnwW3d0BD1V8f0w12tkoli9bVj574JRJEUcOIbNHYSm
+	cOFiLRygpy5lCmP5BdOnQ2TlMLmEoKznQzViggIURDJ3p7x+quRfhDo1VRSJ2GP8XCtkOU
+	JXhqyTbEwMIR3B+g5XIg4nSfAUY6dUY=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=F5LwbcdB;
+	spf=pass (imf08.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.103 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788426955;
+	s=arc-20220608; t=1788427034;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2a8yIQ3NE86fziYRRmM1NyoVwXAqG0dHOhexSSfbtW0=;
-	b=h0Q/M6KyVcOPWGJFRrbM7jQLDSl3/aMbJpbC8Wm4fz2ohHH40I1AIFpXNKDq/Q9KW7oLml
-	CnhubFDT5Ufqx9dJyIKkrrATgnDTG6a/zexicgQP9zto9k5IQwZLPkEfp6VNerRIEJFeRK
-	4HMfP9IIw1pOIE/rW+93CfW+QvCTED4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788426955;
-	b=hfgZK//+l6u0FaiTzW+uCBBaE12Xjpm/sVY42GNr9nnhVYlwi9FWCAmZZuP23MHjNkszXi
-	wOkZuPC6RZu+2O4F+Vu1HuW9ViQ8hqKkQ8jMRvco1dkyDoxae53wnS2jgeHtCpgCYhnxPR
-	2d6/zoSdymNGabq7M7X8BqCUPDjzEjQ=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E0zsCHKQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C994D404DB;
-	Thu,  3 Sep 2026 09:15:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBCB61F000E9;
-	Thu,  3 Sep 2026 09:15:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788426953;
-	bh=2a8yIQ3NE86fziYRRmM1NyoVwXAqG0dHOhexSSfbtW0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=E0zsCHKQLk4p8gAn3X8j4oy3KYslGMK/guDz3UOJRR2N9We0sVvbpFK/tqFZEs6hS
-	 QGZTNx4CYKtVtsv0C4c6LK+370dmf6vuYWyChytDHcZjngcrLBJRbI1EPFabmoqMSA
-	 qZY2m0BNqpRVODEnXYlMUDe3XKdhPYn1UADPoG0K7Kp5YbWUwTwJMx998EnYZp5x+E
-	 7GFc412nEoX9MMCL8ZxJywrQM0nTSpoDEGJ7jQOSeDwqfeL2JHMR5tpX8WtDYELqbb
-	 7IrVKjbr8LEORFSJMs8oYP5mXCSNx/j4l/PbFzx/kbmKrHsqq6Xbb9o6tQoUAyn5GT
-	 6o2UQOGFJA4eA==
-Date: Thu, 3 Sep 2026 12:15:46 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Eli Billauer <eli.billauer@gmail.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, Brad Warrum <bwarrum@linux.ibm.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Michal Simek <michal.simek@amd.com>,
-	Ritu Agarwal <rituagar@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 2/4] char: xillybus: replace __get_free_pages() with
- kmalloc()
-Message-ID: <apk6wr2S1IOQp_Kf@kernel.org>
-References: <20260830-char-misc-v1-0-05e2ce44f291@kernel.org>
- <20260830-char-misc-v1-2-05e2ce44f291@kernel.org>
- <f6001085-9234-4025-ff34-6cc4a66c293a@outbound.gmail.com>
- <apVmYXlqsVr_p4Oc@kernel.org>
- <7adfefaa-91c5-4bf4-ff98-5dfbba0eac96@outbound.gmail.com>
- <apcKQBRCFeF-usK7@kernel.org>
- <2d7b127d-6079-40c0-2020-dc7767b2396b@outbound.gmail.com>
+	bh=1cbsZLCQRZEI+70S4EUo6CbbgzHeFHucS3IcC97mP4o=;
+	b=cmkOAMhYpSCVNokgW4mzMuvcEVdQngM4ELwIwr3jHR3709czK38lsxxey6pt97W+tAAKNA
+	Zf1n3TyA8VMWpsWmMSJinDJvSMpDDWrfZroG/SXisUbFGN7SIDIHwcQ1yX0g1Zw8IS1Zi3
+	HUd5l4svqCpnqnHHqmx51JlTkPy3h98=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=gZ6TEKe+uz2mOa4JtXWVQU/xuG2dYvVMCUpJ1gBLUnY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788427032; v=1; x=1789031832;
+ b=F5LwbcdBRBmgoZD6y2ZmY0NxZrvr6tm8II9tejWY7TRqpneH7a3NFB4+2hLlfs/gIq75DlHC
+ KO1F6l6dhwjw6mZ9Jq2VRAhx9JJmIyKQOZt5EgxZk3jNq+1dOphpy97/2FjyARvW72wFSNE+tnM
+ yDCwfnJ7f1szxUew32+ce45U=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 2edda1273ec6a1c8;
+	Thu, 03 Sep 2026 09:17:12 +0000
+X-Mizu-Trace-ID: 2edda1273ec6a1c8
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 3 Sep 2026 17:17:00 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org,
+	akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
+	baohua@kernel.org, youngjun.park@lge.com, hannes@cmpxchg.org,
+	yosry@kernel.org, shikemeng@huaweicloud.com,
+	chengming.zhou@linux.dev, david@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 13/16] mm, swap: defer xswap shrink to workqueue to avoid
+ lock recursion
+Message-ID: <apk7DG-QRHMCwRDL@fedora>
+References: <20260827094509.1016740-1-hebaoquan@kylinos.cn>
+ <20260827094509.1016740-14-hebaoquan@kylinos.cn>
+ <CAKEwX=Ovm9DTLE_8E-dQ_47SVrOQBY0hLbF7vS9MpDy2bUThCA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <2d7b127d-6079-40c0-2020-dc7767b2396b@outbound.gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 05C6F20006
-X-Stat-Signature: 76dxs4trzr48umi1jbrdjiupcprnt6yr
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKEwX=Ovm9DTLE_8E-dQ_47SVrOQBY0hLbF7vS9MpDy2bUThCA@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1788426954-617777
-X-HE-Meta: U2FsdGVkX1/Lho0yELDdvRTCfcXAd6HdqxO8Uc0fMZZ5yCQb2eUBkWxZIDAhe9Y34lrCBRn19WezICVKRF3zR1KFAWDIDEzani+akl/8FoxiOWJnMXtO0PIo99UVV4Xhr5M3quTAnsWUU4DPm3u5J5riNrfO4abrpZYzthjoJVbve+7DeU74buC+Uvzi8pxfsGM2SmA0n2YklukJlnYya1Ep/AyIvD8rxsaNZEebxJRSN1mmGfz8uGd5lYbOeCSviwCDhEaQSfds6DzaEHGOcLE8Ye0b3TPAMqPzmOtdr95RBWsqwU3N1BrvHq5Yz6ufAQkKlSU+QD7fNskhnc0aa+dN0f9IA1rt87tJX2JOa2lKaPWgPqrd8YVWENtUSfRDMvjeiQb4fvVauDGqfWwqy0jOhZ0RdthKztTjK7UpCewANurrSU79FB4MvCj04WIU3tTPFyqEEOwitO+7dMN9IXhSLb/GO64o74KePyZpnyRKpDRnKY85u1wwtpFcTm+OyQaMioIubMGSACM6uAvDj/L9eDOK67+7SMCAfqWhJP1eI55v68q8Wb86pQtrX/0nMhdroR3fwBDoVqSUvFhQ72AQtffcffrdtekz8p1lzmaDSGpEExfaZjFLCWLq6phDZS2vdqVn99S6Se0yzBBdHf9bSapUDzg4uJ2CbhLUM4lRVWtUX2k2yoF6rIyrhwoodIPRnFbDgtH7Mtn8tCviwoKqJm9JzWNyH2xF0NgUQ64QEgNUI7btNLAVSZts9vAzQqAS3GCuMBf5l9pZ53PFnCTImYafyVIizfazJF4b8s0cVgSSbuQwFXAmd9uvjYo1ya6G64j2DdivdXWaAfep1WhN+crtlGX+yOAXseCYeVuf0CH4mWVypPRSjauNo09BrNyArCiRJCKSylg9mKyEGjzMjniNzsep74ZTxfJQOsQjJ92dfKPvPSWbWOH94DTRs67a8XgBu5XV01GBPzl
- TzkskCs4
- K9oq6ysQ0TisRrzBrznHJCbd4c/o0tXR/Dcjg+jbA0ZDDKU95F+UMCKYkjX+NjmhMexCse/ucXu5sdV/PrOwvo/bGMElWUhZT1yjnYDGfvRIkaHi94rAEhN/hkc9o+Jlw749y4kqXOWJ8GNmtc5oNLVqkHZ/pCL49+Bmlykji8NCx/9ITbY9r0ugPrWNl7x/F8/Gdo94DUhONHyPtD+J2BT+oqVNzRXoQ+tAVXPf65fDem48S4bzG2cuJ9MPtifXdz75d7FOwFxCtdvdY64OR19lyN7rptr1XWNUiUzcnPZlQCknolM77VT9LiuAZrtczT5jWApfIMdDCnviT+RFvHo+PIDMv/jo+d7BQfL9Vjr2FB63e6Xj7aInK3b+b7xxonkxe
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D7EF2160003
+X-Stat-Signature: zkn8k4dwnt6zcz5e9bb68ag5mpcjr8u8
+X-HE-Tag: 1788427033-886647
+X-HE-Meta: U2FsdGVkX1//iUHdX0W0ybFybZKqALVwkefpmKjePcVJIHIJpNj/CZyjFzKheAz5vtgsUjC7dnrRK4UBBiZ1dfvC55qJmU2bX5UMfp2ngEQFWCaaPSeBUqeU7BvHc1VbY5p/ns/12zET4K7VHFGHRxMDt/FdRiIlTglZwCgBLOJwQVbxiP9CS0RKCHyONLKiMTYz96P8RJnUxH7k5Q1/gjs8DIShgevNmMWvJ3ApOiC0L2VvsB+od9ownRnGwcT3bvgJ4jp2c4ZOEhrg1OEqvJWJqPaOQeSppRJUiX+n1j42hPiqIpyWR6t0IkkkUK0oLM9qqhk7cLIFfGk5lvPMv7+kArmEPf82CBHT5GMQgSjtVcMLrZGnI0L2iqVvfcmvhBBnUUWUMCynoNbTJbGKSejBVkDsHMcWIIj7zPAwE99TAFLSUJ6RUgd4vVfW+TkU0MExfonI2ka7wDWKMK+ZneLpfPR0VRUX5bVKPxmxpgFI7VN27IGyPIZ25sym8IGFspE+ZZgGe4na47pvc3HLCTuVw2ntcS0uGKhAsfcJLz4erEFaU7VuhfUBlE4sTA/i5CgD4GdnV03kJZI9j8p2c0XtFXZc9B3IVuSHLc+BxNCGtG/eKpMMIn83nvds5sYV4RYlaWSYI3nndhFDD16GR6aiLV4o4ZTOLoQ1WlrTV8Ylgg3ZbbvnJqw6wfJj5rR9KnNCqOQvPnhEbQFPjXcFiIcTdZp3DTEvPGS/b921gAqoGwKmOrB+YGw3U+DnW2Z0/iYItKKchUvpT52q8pWsCPDCNVtnvtbwhfnkdpjGF0nlmICW+lvoS0yxL8JBjI5JtC2fNlHXBaCu2y+Y+YvApbSaIYNMOXclvKyUUnGQAKiDg5BLoTc8rUMXNhnwWU4fPfNcWLcnt32qiSoq/3fvd5ww9NkZVvMiHDMWFUZUeqCSJUj/X6wTwaWRprpG9LMFxiki6GC6Apr6cnU2a0z
+ e5mEKiIR
+ 9iuul4T/sGIK6MbZucH6Fd7kZhfBQyll7JyjZuUvQEvnf921cyHUp+w4BWeUVC3kgKOS3rwIkMAGsO3Nze79zicUZ1Bbku9FPW39STFHa3c0UIYG+qDtU1a/OCoh6Q4oHiNbb984B3W3YpiNb+tfeSIkzmWEs9qGsGKzpAB/TvmLzad17WpWo+vJMg1UDSnMQkhyWE89mLAsy5ePeD9Q0WCgwHe/LH9v2Bp339L/jmHYAT10XgO2F6xwtCqvWO/purKFHXOwMosekSX95DfIl6bJL9gOSIiJLQUDcuOUO3YsLHNg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,35 +97,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 02, 2026 at 01:40:21PM +0200, Eli Billauer wrote:
-> On 01/09/2026 19:24, Mike Rapoport wrote:
-> > On Tue, Sep 01, 2026 at 10:42:47AM +0200, Eli Billauer wrote:
-> > > On 31/08/2026 13:32, Mike Rapoport wrote:
-> > > > For large sizes kmalloc falls back to page allocator anyway.
-> > > > 
-> > > > And the doc is out of date unfortunately.
-> > > I think it would be a good idea to update the doc first, and by doing so
-> > > officially change the API. After getting this change approved, it's indeed
-> > > safe to rely on kmalloc() even for larger memory allocations.
-> > The documentation always lags behind the code and "official" API is what
-> > include/linux/slab.h says :)
+On 09/02/26 at 10:50am, Nhat Pham wrote:
+> On Thu, Aug 27, 2026 at 5:57 AM Baoquan He <hebaoquan@kylinos.cn> wrote:
+> >
+> > xswap_try_shrink() was called directly from __free_cluster() while
+> > holding ci->lock.  The shrink path calls xswap_unmap_clusters()
+> > which unmaps vmalloc pages backing cluster_info, and on return
+> > swap_cache_del_folio() tries swap_cluster_unlock(ci) on the now-
+> > unmapped address - crashing on a not-present page.
 > 
-> This is what I found in slab.h:
-> 
->  *
->  * kmalloc is the normal method of allocating memory
->  * for objects smaller than page size in the kernel.
->  *
+> This reads like a bug. It would be a bisectability problem to not
+> squash this to an earlier patch, no?
 
-Citing vbabka:
+I intentionally keep it as an independent patch. This is a new feature,
+we don't need to worry about bisectability problem. Mainly I want to
+the code change explained clearer, any people can get it from the git log.
+If I squash all them into one commit, it's very hard to let people know
+which paragraph describes what change, esp the commit is big.
 
-that sentence doesn't exclude >PAGE_SIZE allocations :)
- 
-> Regards,
->    Eli
-> 
+If it's a logic unit with a reason, I would separate it out as an
+independent patch. People review it and ack if no objection, then go to
+the next one. It's better than a big patch with which we reviewed one
+round, this place is changed, next round, the other place is changed. 
+Then next round, a new place mixed the 1st place is changed. We sometime
+even don't know what is settled, what is not.
 
--- 
-Sincerely yours,
-Mike.
 
