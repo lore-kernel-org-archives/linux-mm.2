@@ -4,89 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBA93C624D6
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 03:01:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAF31C624D6
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 03:02:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57EDF6B00FE; Wed,  2 Sep 2026 23:01:52 -0400 (EDT)
+	id CF9FD6B009D; Wed,  2 Sep 2026 23:02:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 52F2D6B0101; Wed,  2 Sep 2026 23:01:52 -0400 (EDT)
+	id CB1546B009E; Wed,  2 Sep 2026 23:02:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41E936B0102; Wed,  2 Sep 2026 23:01:52 -0400 (EDT)
+	id B9A2F6B009F; Wed,  2 Sep 2026 23:02:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 10E5D6B00FE
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 23:01:52 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 79C534041A
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:01:51 +0000 (UTC)
-X-FDA: 85170951222.23.54A6A28
-Received: from mta1.migadu.com (out-209.mta1.migadu.com [95.215.58.209])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7A2EE18000A
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:01:49 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Khe4o3CY;
-	spf=pass (imf06.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.209 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D4DD6B009D
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 23:02:25 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1E209A0439
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:02:25 +0000 (UTC)
+X-FDA: 85170952650.21.8DEDC65
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 5D58140003
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:02:23 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=t3iiBiFf;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788404509;
+	s=arc-20220608; t=1788404543;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=7OfMYwhlPvZ9/mL/fjbOia+cU/EmcuQqcxXre8Z40Lw=;
-	b=w8yyfhNhCCidCzb24glnv6nUN3EEpZx5w2hwBLFJcRoUQf9YgTyZpO5fX6ID27ZufN74pm
-	fEJFXZYXvE35u8we9yLLHvw3OYXnb0XrIDZmUIs+u/YD297+7fBvkKFxyQET8iKUvwP5iE
-	i4M39AQu/eH+Ive+1fj4tZpR5YgDc38=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=E6fpnYgQzDhI+g8OqpnRixNH2BQW4d1tJxRUcM7JXB8=;
+	b=fU6c9h7vXv+ULlz9YM+e2PRifCFmcVTCmqfy+ZY5I4KEGQjkwyEtSQcsKohHPzmTMpuvvp
+	/9Gq1fhT70hjJf55csf4PYNZvdDjpjB1LuGxL9iFMJXIg3jTMQo1z6dMzvqbggKPmPSd0F
+	06saew5pYx4n6wlzA2FaOhPlVA1MS8M=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788404509;
-	b=pKJC8kO1R4uUYer4n2RF89bhinAY2WiE33cexKh9Q0byij7QxHS5/yTyo9O8hQZ7Du12Oq
-	FeQ6nOtHsIKBHoPR9oU6DVk0ssx4dG9PKa1uLqHZP9WkKA20RxVDeqjXlgJsbC5utY3UCT
-	2rGHVD/Hfbl8iiOOWv9T3V+sVORK+Bg=
+	t=1788404543;
+	b=hQvgHIfYqyB9sWZ0OOz8MDgrq16M27YuF9yU/JTeCQVTXmOzCzdIGnvkam3UpK+oAz67/G
+	La+HDFoPo8AbkKR8Qa/YwtgMVbdLBTZOPlJR06+fKpNU3B3X9SBYKRe9A7UhnjspGCcMBA
+	1vjESJ3aykSaSgbNgRxUG9ztizl9te4=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Khe4o3CY;
-	spf=pass (imf06.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.209 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=TkSdh57Swo1DoNq0az2nIVsOJeaHu9kVpMvm44mAYIs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788404507; v=1; x=1789009307;
- b=Khe4o3CYUb90K0OfbXxFn/vQFlOszibWcruJX46pjYUGfWKSSr1K5UwSJTVrvoGt7i5KRsfQ
- cvS59/nXV+bZQKFXM7i3lJWYgrkF93DKHzE3+1r12ccLpMwZh6LuMVGRpmMrp7DqpKfeo2SfHaF
- dXpHH/UVIi9xuHNE1QOe56U8=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 9f817857e9b42d3f;
-	Thu, 03 Sep 2026 03:01:47 +0000
-X-Mizu-Trace-ID: 9f817857e9b42d3f
-X-Migadu-Flow: FLOW_OUT
-From: Hongfu Li <hongfu.li@linux.dev>
-To: hughd@google.com,
-	baolin.wang@linux.alibaba.com,
-	akpm@linux-foundation.org,
-	vivek.kasireddy@intel.com
-Cc: muchun.song@linux.dev,
-	osalvador@suse.de,
-	david@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	hongfu.li@linux.dev,
-	Hongfu Li <lihongfu@kylinos.cn>
-Subject: [PATCH v2] mm/memfd: fix hugetlb reservation accounting in error paths
-Date: Thu,  3 Sep 2026 11:01:34 +0800
-Message-ID: <20260903030134.7407-1-hongfu.li@linux.dev>
-X-Mailer: git-send-email 2.54.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=t3iiBiFf;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 114EC600C8;
+	Thu,  3 Sep 2026 03:02:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487FF1F000E9;
+	Thu,  3 Sep 2026 03:02:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1788404541;
+	bh=E6fpnYgQzDhI+g8OqpnRixNH2BQW4d1tJxRUcM7JXB8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=t3iiBiFfRRLEbBH6VG0Yzu05L5kwyfurUSxpLlfb2DiO5C+lNRJXCo0xT/W9NQH+y
+	 QyKASfWpjDvvvMzQzM5Ji1ORGcIqNRBgLxqEgzCHT47Id1NnnQJ1g7YBfaWfTamDIq
+	 47vKTtt86AodzSavp4ePH9BN463gU6ZN6n3amXCI=
+Date: Wed, 2 Sep 2026 20:02:20 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: david@kernel.org, ljs@kernel.org, riel@surriel.com, liam@infradead.org,
+ vbabka@kernel.org, harry@kernel.org, jannh@google.com, willy@infradead.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, lance.yang@linux.dev,
+ Kiryl Shutsemau <kas@kernel.org>, Hugh Dickins <hughd@google.com>
+Subject: Re: [PATCH] mm/page_vma_mapped: guard check_pmd() with
+ CONFIG_TRANSPARENT_HUGEPAGE
+Message-Id: <20260902200220.408ae7e8a28d3af4e82fd060@linux-foundation.org>
+In-Reply-To: <20260624082359.2869-1-richard.weiyang@gmail.com>
+References: <20260624082359.2869-1-richard.weiyang@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7A2EE18000A
-X-Stat-Signature: z8ziyq6fmibwhumx6e771iychahztaxy
-X-HE-Tag: 1788404509-410052
-X-HE-Meta: U2FsdGVkX19htj7z3jMhGjcbAXfRTqT4RejqP75WygY9mfEFKRsWuRkUI33IQojB6xdIMpRX8rvpn2faQe3fhcZh60PDZ4kAfEC7+ddnRKKHbkmU3aJxuEFbVUsTXEjt2nYr2IR2DwQB88kpoaAxMzo+aRWjvt4fMC9ZE93gtIGU67EMahh2vj/NUlb7fnf9HJ0ZrnTjM1q2xEIWXdRTbe51nHcTZ4ZiWBcvnszAnfUlo8NAhY4u5As2wqhLKJsVNbAXPYsqslv3dGu78f8EYbwZ1dxp7pgYAP4JraCrLURiysmrVviySV9whbGtuEO0VrYhLcHeXckXg68qJTggfXHDoRaFmRCPUDVLGe6lEus7tzJkdXuf7xgjVSnQgDDP6U5ZGV8Qg/nbNqs5gU0l/MpF4frzC1+MYCMQ122qp/7uF6VimEfQr4lkQiQTwV+f7equ9rmoBB2+9jXyFeosxEpPXmE80Fysm1a5WjIEnZJt9IqXNXuR5xWEaBuhHngI0kyYmQl6WHJ7tVmV4YjfRTgbRmz+HEJENOQIuzJukPXEIroocKCIbRwNm6/81hGzHKdSpqcew9XZgQzN72mqCLy7cYixZIUDdaI/Kieo+uCZ3Nro5qC6i9uH7ZYLzP/yONncuJMHhscqtM2vuM307L6y3jKha1nh0NLbJzjBZOLRjFWE/GBRsLspCvapm9OHbgchrJM+xnWSzWhFnFdhuefKQG7L0vW9gFubLQwB+jbIOAy5whD3lrzJwOKINHQoo+AgS33kx4z20nv195ql+fCnMj8jGYlV10uudkqItBfRjXAVWDP3vmNzxkh4n9ZzS8h2lLY5KHCg11322wUvGuo4SaF2rJMMJ2iOpsV7EMZd3sCeIZIweYO4g2OzjlYhWL1o0bqWGusf28b04pVTAjBfNuJquZ4IkVcJtvFEudWSQvXsPUgMc9kBvb7mHNjUlFmyKdoXXzPq4ujoJrl
- RVEMNKmF
- TRpbOJy1MXERV8zV7Rbh2NvjzuHgCBOOhZvMunIFkner3U3nVIZi2RdytdSNwxlCDNWHcVXW4WkmctWGR2+AAMBjq2o01s1PTZbeM6MF55vzP9NiFqMHHKvusVYxZoP60irr3FqQViHzvLJzvErikewMJOSaS1JdCbxI7l6Jq5pyT81E0Nrwqoek0v68jDIlH1blc8lqO8Pnx2pLxsdf7Z9mz27lh2e4v6riTKwGiIshSRfQcTUhPmg5L3A==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5D58140003
+X-Stat-Signature: hnemwhe9bys66qzcoqnheem9wjpt3erc
+X-HE-Tag: 1788404543-436169
+X-HE-Meta: U2FsdGVkX19obv8Zwe1NJxCt7ZKCqLXeY+YT4Vr+bkbWOVjh+1Zbm3djgHnxkOAzKMtn0gU5znTLTcRx5YaFBKWy5TpxO1n6KfrNtwtKKcMVF5MpF14Wlk3eaACvFl2n8QSGV9YNxGooS8mBoAAwgsfdI2zzo+lSC2mxrBd27Xl1KVXfI+/KXkPEuqn3JhiEWSJudFIVMJFERazKf2+X3NlWSB8u0xoDz1rOoab9kXSTwcNQ8AmCis5V4gT+Kbg9U5UkRD7CGH6IU9xmicbw7lmaW6hQxevVAE3Ni9zhO8luJeQrQyyFaW54n1XC2ZwEohz/lBWRu8jWm7htb2R3MrtjE2yxGeTdhBJsC4IindnkdrmshQGlpigh0r0/0LHpSmKZKnXbv+ogZwdBa1ev5mQpNlfn/HawKj2nExkxZ4TQnXh3T0oIdjsm7XWmUnJ6aI1jqE3x/qxt4+os6oHL/eQYu/00b2kVAvjCq9ASZBx/9r9SbWyqLBrA6siXV/0pFv4igUVOT0gQhEwBUJ2GjStDrRrKtE9UHSHZ0aPqVVD+Ro8PcaF6X/PpW9tfx5pB2y14ZUNr2jXc45BanRmzIZGrPWftFaLC0870hVF3+7ZlnC85nv0bRdV1kUIjUopULgYiM9XNPB0GXg+O/wd4/1SfGQjjeM/sr2e3lzYiNxhoNfqYjpRXZTLRPJhZPA8FuxvG6YaC1lfsHDT3x4xB5XXLdMOi3v4/ta8Cy8GMuN3uROGiBW0vA8s08GdpXUVU4OYO7S/21NlIVCSW7w4SkHOHEJnsMMa6PvqaVnlFHkbQBrBKA8odCTRb6rDDzQ4uUJDM46hgwn7vwD75qzEiyD+RYssqfbn5bx5CCCB7rhCc1K8XbNl08rotQprErqtxdPd1+6N0+4p14hGY9R7GiKWPvZ6hdu6NUPiRsFBLo8oewqMPUmqqNFKxEPP6fmmai0bCB5K4QhO9HXRTpR3
+ nbITrS5F
+ eodA+WHcduJ3X7V7ZSMzB0kZYKNlo6dKCrmtbi9q0zpfyfF8rNCV3EQnp30wXjY0jCoV5YLybW9ZAxxTCMInz5ZcZ9guAfL5NxTNrj0vJzQIblSoE/mqhqZtfg0lq3cYO36reTQX5xtRxspuZA7e/mmgUHphydetp8v3gJQGOj0oqOuKowVBUdT7e+CrMVkovk3M7shZ9sg4ZkgLnzTr10FrU274R6zGDAtOrpAcw7U+yD4MzzO/MbkATgaW5PdZB5Gbj3zS7ZpRB6W2uL0g5bvbZrW6BQS5x4nO85txkK0na4yq0jhu5osBHKFYTfvzewryOwCrCS5YOxbWIMZmPjdEK0YB54AHs5DOXO/fZauhGUioo3PM9Vy9CvybAKMZgmKjFPcjzNZimZYLlBypt2MixLJKJ3Rht01zmXCTRiLZRZRZ0PeZ8anMQh/SOHJ809YfnOT4IsIGM/lMd0tYO8A4/QgOft8aZHwmtOX8Xhvv78KqUJFhedin5dWX73AlWBNKXuKQ1jJjKsXKPFC8jjMfmNr6N+/RuFik/rzHu9ZbIKq9gI+H1EIk2uQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,114 +92,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hongfu Li <lihongfu@kylinos.cn>
+On Wed, 24 Jun 2026 08:23:59 +0000 Wei Yang <richard.weiyang@gmail.com> wrote:
 
-If hugetlb_add_to_page_cache() in memfd_alloc_folio() fails with
--EEXIST, a concurrent fault has already instantiated the folio in the
-page cache, and the reservation now belongs to that folio. Calling
-hugetlb_unreserve_pages() in that case incorrectly removes the region
-backing the cached folio. A later truncate or inode eviction then passes
-a negative (chg - freed) into hugepage_subpool_put_pages(), corrupting
-subpool and resv_huge_pages accounting.
+> The kernel test robot reported a build failure on the parisc architecture
+> when expanding HPAGE_PMD_NR in check_pmd().
+> 
+>    mm/page_vma_mapped.c:142:13: note: in expansion of macro 'HPAGE_PMD_NR'
+>      if ((pfn + HPAGE_PMD_NR - 1) < pvmw->pfn)
+>                 ^~~~~~~~~~~~
+> 
+> The config [1] in report link shows neither TRANSPARENT_HUGEPAGE nor
+> HUGETLB_PAGE is defined. Then trigger the BUILD_BUG.
+> 
+> Fix it by define check_pmd() under CONFIG_TRANSPARENT_HUGEPAGE.
+> 
+> [1]: https://download.01.org/0day-ci/archive/20260624/202606240042.ffPsEXVc-lkp@intel.com/config
+> 
+> Fixes: 2aff7a4755be ("mm: Convert page_vma_mapped_walk to work on PFNs")
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202606240042.ffPsEXVc-lkp@intel.com/
+>
+> ...
+>
+> --- a/mm/page_vma_mapped.c
+> +++ b/mm/page_vma_mapped.c
+> @@ -136,6 +136,7 @@ static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
+>  	return true;
+>  }
+>  
+> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>  /* Returns true if the two ranges overlap.  Careful to not overflow. */
+>  static bool check_pmd(unsigned long pfn, struct page_vma_mapped_walk *pvmw)
+>  {
+> @@ -145,6 +146,12 @@ static bool check_pmd(unsigned long pfn, struct page_vma_mapped_walk *pvmw)
+>  		return false;
+>  	return true;
+>  }
+> +#else
+> +static bool check_pmd(unsigned long pfn, struct page_vma_mapped_walk *pvmw)
+> +{
+> +	return false;
+> +}
+> +#endif
+>  
+>  static void step_forward(struct page_vma_mapped_walk *pvmw, unsigned long size)
+>  {
 
-Hold the hugetlb fault mutex from hugetlb_reserve_pages() until the
-error-path unreserve completes to make the reserve, allocate and
-instantiate steps atomic against concurrent faults.  With the mutex held
-from the start, a concurrent fault can no longer consume the reservation
-between reserve and allocate/instantiate. If a fault completed before the
-mutex was taken, it has already added the region for that index, so
-hugetlb_reserve_pages() returns 0 and the error path leaves the region
-in place.
+lgtm, thanks.
 
-Fixes: 717cf9357325 ("mm/memfd: reserve hugetlb folios before allocation")
-Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
----
-v2:
-- Take the hugetlb fault mutex before hugetlb_reserve_pages() and hold
-  it until the error-path unreserve completes.
-- Update commit message
-- Link to v1: https://lore.kernel.org/all/20260831090631.29227-1-hongfu.li@linux.dev/ 
----
- mm/memfd.c | 31 ++++++++++++++++---------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+You provoked Sashiko into talking about memory corruption and kernel
+panics in page_vma_mapped.c.  Usual stuff.
 
-diff --git a/mm/memfd.c b/mm/memfd.c
-index c708d92533f4..0f6fff004f5e 100644
---- a/mm/memfd.c
-+++ b/mm/memfd.c
-@@ -82,22 +82,31 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
- 		struct hstate *h = hstate_file(memfd);
- 		int err = -ENOMEM;
- 		long nr_resv;
-+		u32 hash;
- 
- 		gfp_mask = htlb_alloc_mask(h);
- 		gfp_mask &= ~(__GFP_HIGHMEM | __GFP_MOVABLE);
- 		idx >>= huge_page_order(h);
- 
-+		/*
-+		 * Serialize hugepage allocation and instantiation to prevent
-+		 * races with concurrent allocations, as required by all other
-+		 * callers of hugetlb_add_to_page_cache().
-+		 */
-+		hash = hugetlb_fault_mutex_hash(memfd->f_mapping, idx);
-+		mutex_lock(&hugetlb_fault_mutex_table[hash]);
-+
- 		nr_resv = hugetlb_reserve_pages(inode, idx, idx + 1, NULL, EMPTY_VMA_FLAGS);
--		if (nr_resv < 0)
--			return ERR_PTR(nr_resv);
-+		if (nr_resv < 0) {
-+			err = nr_resv;
-+			goto out_unlock;
-+		}
- 
- 		folio = alloc_hugetlb_folio_reserve(h,
- 						    numa_node_id(),
- 						    NULL,
- 						    gfp_mask);
- 		if (folio) {
--			u32 hash;
--
- 			/*
- 			 * Zero the folio to prevent information leaks to userspace.
- 			 * Use folio_zero_user() which is optimized for huge/gigantic
-@@ -112,20 +121,9 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
- 			 */
- 			__folio_mark_uptodate(folio);
- 
--			/*
--			 * Serialize hugepage allocation and instantiation to prevent
--			 * races with concurrent allocations, as required by all other
--			 * callers of hugetlb_add_to_page_cache().
--			 */
--			hash = hugetlb_fault_mutex_hash(memfd->f_mapping, idx);
--			mutex_lock(&hugetlb_fault_mutex_table[hash]);
--
- 			err = hugetlb_add_to_page_cache(folio,
- 							memfd->f_mapping,
- 							idx);
--
--			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
--
- 			if (err) {
- 				folio_put(folio);
- 				goto err_unresv;
-@@ -133,11 +131,14 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
- 
- 			hugetlb_set_folio_subpool(folio, subpool_inode(inode));
- 			folio_unlock(folio);
-+			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
- 			return folio;
- 		}
- err_unresv:
- 		if (nr_resv > 0)
- 			hugetlb_unreserve_pages(inode, idx, idx + 1, 0);
-+out_unlock:
-+		mutex_unlock(&hugetlb_fault_mutex_table[hash]);
- 		return ERR_PTR(err);
- 	}
- #endif
--- 
-2.54.0
+	https://sashiko.dev/#/patchset/20260624082359.2869-1-richard.weiyang@gmail.com
+
+I'll cc likely suspects but boy do we need a way of being more
+organized about this.
 
 
