@@ -4,89 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADC6FC61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 10:14:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32DACC624D7
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 10:15:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F1006B00A1; Thu,  3 Sep 2026 06:14:50 -0400 (EDT)
+	id 326246B00B4; Thu,  3 Sep 2026 06:15:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C99B6B00A6; Thu,  3 Sep 2026 06:14:50 -0400 (EDT)
+	id 2D66C6B00B5; Thu,  3 Sep 2026 06:15:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 808666B00AB; Thu,  3 Sep 2026 06:14:50 -0400 (EDT)
+	id 2147D6B00B6; Thu,  3 Sep 2026 06:15:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C48A6B00A1
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:14:50 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D9412404AA
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:14:49 +0000 (UTC)
-X-FDA: 85172042298.10.62789CB
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 18D6C1A0007
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:14:46 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=rJRoVl6v;
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 06D896B00B4
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:15:46 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 906FC8047E
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:15:45 +0000 (UTC)
+X-FDA: 85172044650.15.E262FB9
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A223A180002
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:15:42 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=sPJYGYnG;
+	spf=pass (imf16.hostedemail.com: domain of joseph.qi@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=joseph.qi@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788430488;
-	b=Y0+AeVBaa7dVuaqt4Rv1MGGtuWqypbee1bCyuMktd1nIogoKwTaz3T+IqhD9Bx99VRr26c
-	oTlLtaNMRxiJzadMeO2u+AxbGMiIG4XiKhULyj1h/m1WGlGSiiKFvyBk5JCb46E2G/UKEe
-	fIWFaxbQNMDa3a1DffGodEyhOVajACU=
+	t=1788430544;
+	b=VDxN+yZB+LXaZCN7octXjBvnFZHSpsFZHWk16PZ8AHr1YOnvM/MV+hzBNDzXtFEjNZW/ln
+	/LeFOzpqgYleSL32nu+c8q8tcvde0hONv0a6SoCMWZollHE7z3ZPlA1J3QgzPHx2GF2159
+	Hmiuqm3a/si0hRYjeW/31PdykPThnSc=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=rJRoVl6v;
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=sPJYGYnG;
+	spf=pass (imf16.hostedemail.com: domain of joseph.qi@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=joseph.qi@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788430488;
+	s=arc-20220608; t=1788430544;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x3owqBbLN7wIxWV8uRXxeYJQqapN2luye/1oTJ5GGsA=;
-	b=6u91rnTIkENAQZ7xS9Kkp5ahRbZ8e9ljpcMeOZZffynaTISYairX2F7EeWFXUtUyDUZb7F
-	GVhufncep86HRKRsodyvcsCMWup1Xirn41jPVa3OSoAyLy88nP78SyFb7MzzPzSemPcPZ2
-	Rpw666oFGVEEthx4NDM1xK4b/1t0msI=
+	bh=OyJ6y9tOxjQFUNrQBycZ3KwqBU7c38czB5+Luukp45Q=;
+	b=patwjyqiJSipoLcsH2//BHRfzZ1bi52aEbR+sC+bK2fdTEtC2tO3EWhpJhlHWH3LMH8K3u
+	e7yqwkh04JMGUBJsJore80BQQYJ0hX2z/YJi3dGehpWSW0wDm++iFOhJDBQ0SZzinEU7aN
+	HOCFAHCtOby12Ce6EEhdCdVn+qlaiK8=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1788430484; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=x3owqBbLN7wIxWV8uRXxeYJQqapN2luye/1oTJ5GGsA=;
-	b=rJRoVl6vDQlQ9nS1Y7+pMkJs/p3e0lLpXmk4uNWDuWr6rKtxntcdFRWE4pG23uMEKnM+mcLLxfhlCCWeCattsS+FIgJ9JWQVoCFV+jm/XZh1udlEONczbOkyAs5oTWijgc5o2sxRx5BqM1AARAD0/VjqmZBibglAfueQmEbIpKs=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R211e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0XAFoMgi_1788430482;
-Received: from 30.74.144.116(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAFoMgi_1788430482 cluster:ay36)
+	t=1788430540; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=OyJ6y9tOxjQFUNrQBycZ3KwqBU7c38czB5+Luukp45Q=;
+	b=sPJYGYnG2txk19WRr+QhFf9NRCGG1p1D3k/+nnBE6DnVZmhe2bT3CSBy1My8mA992KkTpxpMeQlY75oxB4i1L7c16mxirzxZFqnKkrI/cz2IM2eZA7BScMc88TsFSALewyxEgTxLsoA8r5krN2gCyMgBU/h1uNMzq47NFEjeWQs=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=joseph.qi@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0XAFjWt3_1788430538;
+Received: from 30.134.112.244(mailfrom:joseph.qi@linux.alibaba.com fp:SMTPD_---0XAFjWt3_1788430538 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Thu, 03 Sep 2026 18:14:43 +0800
-Message-ID: <818ebe42-c53e-490c-a18e-955cc85a0597@linux.alibaba.com>
-Date: Thu, 3 Sep 2026 18:14:39 +0800
+          Thu, 03 Sep 2026 18:15:39 +0800
+Message-ID: <0dfb2aff-47a7-42bc-8698-da7d9f89663c@linux.alibaba.com>
+Date: Thu, 3 Sep 2026 18:15:38 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/7] mm/mglru: make LRU folio prefetch helper an inline
- function
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
- linux-mm@kvack.org
-Cc: axelrasmussen@google.com, baoquan.he@linux.dev, chenridong@xiaomi.com,
- david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com,
- lianux.mm@gmail.com, linux-kernel@vger.kernel.org, ljs@kernel.org,
- lyugaofei@xiaomi.com, mhocko@kernel.org, qi.zheng@linux.dev,
- shakeel.butt@linux.dev, stevensd@chromium.org, wangzicheng@honor.com,
- weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com,
- Xueyuan Chen <xueyuan.chen21@gmail.com>
-References: <20260901232421.40157-1-baohua@kernel.org>
- <20260901232421.40157-6-baohua@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260901232421.40157-6-baohua@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v2 1/2] ocfs2: Refuse to enable ocfs2 format for another
+ filesystem
+To: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org
+Cc: linux-mm@kvack.org, ocfs2-devel@lists.linux.dev,
+ Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Farhad Alemi <farhad.alemi@berkeley.edu>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <20260903090053.13120-1-jack@suse.cz>
+ <20260903090508.1360863-3-jack@suse.cz>
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
+In-Reply-To: <20260903090508.1360863-3-jack@suse.cz>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 18D6C1A0007
-X-Stat-Signature: k5x3qszf7yq3eprx85hsu7bm197r3gn1
-X-HE-Tag: 1788430486-308080
-X-HE-Meta: U2FsdGVkX19TlKshQocBgA5d5Od9b+QTQdPeMVCXjCc7HcdTCiJKCbGlk8l1O0/b97+1FUAUNb0N8zp7O2zJQedKCx0xMl0UiijfrkpMIRNxZh8yQ3BKgWtOE/keu4xw+BLPmATY6hgTffzy204oX+WcjLMR3K+iERZTeTmCGbjSmGA2XsX2BIV2WZWUMTcE2yKaOOfG0NUXDfdiBn49z0H23dCL/hbLY4SytHM78GxXiqck1zBgTtPm+5ElbUlaoUS6ACCJDeTlLcllAgBt625HrjD6cny/hkxkjORbbAIAoBbHTb9oiUTh1m72WogPvxRqJeke4yv2HMe7b8UIBQ6+qD2NiG/TUNvrhG6Yxjp+eD8BbdMsAbD3Z52R/KSpTJnLAOQjZwMuutM7p/PBJM9IWIDz4EwK2uh2IJUDqMknpRriCZ2NzXR4eEO1pT4zfLcFxbiC+DxFTtK6Z6eRNa0UxUB+/uUzm1GNxoAsbChQnh5v+ztwWekOfiwTCh2EsmN2EYM/9vR2qD7I4XXRztrgXzdh0goABwIiTIn8AFwkpmqSyaH0zI77gDrxsvZfyESbEt6nh3tAdCSq4bx/LJCQ0aUIN/WTukRBSDiDSkE6vCYahtjEJ8TSIeSoj7eMZToL/yJRxQCvNPphqWegQBKkoWIyjBgv7qN+vf1J7JYuyCrVDScSjPvt5BgLdDvRK2JFgUr3u5ctiOP15oQ5shymKNJArQ/C7sj4KWc7W5Oko/LU6K771aUFNlSg55qF+4XpctSjYpQZ/xUFao/D9Ax5Jk7GILT3i5qOdzrDLaf/6vf3wOCDHQC/6PylgypRG77uk7rh2Ig/iyEq7wJxyXQkaVPfOFcn5gS69HvxqqXHlmk1pWEjNYuk9gD50o7Q7Q9GGsqDg2AX11Mk4OGuowYZkC/FDv6YQxIY6xaXJzC9P6b5LglK5TxL+sxSqkfhyIlMuAZUMf8MX7Frw5x
- EQr0cw6e
- gqW522vVeHOnZye7Csdl3Ndsob8J29lwyh52xnh6MBHRziIAh8OziXZ6VDm/HH/Zf6YrGn5xQF764qslMn7gD8PIEWgE5o2ZJEeGXgYmzh9j/DdSHduAlm0xd1p5L51jMSBKaLbQUrYTgZAtiI9/xK8ld2w5gmjni46y/N/67s+gnJOLkyvXKaCqD6sfPhJQFF/DEgX3UqtQQ3x4iOfuvyDjwJtpylcKQz3HFxnhmlRXQzk5uCmEIO+V5GD7MnzXAC15x6LDAGBYPtZAaVt1KTRXz3qJ9UrgXLqAtpaQEf3qSZDJTGWtYseQF9bBg0nAJ2ovrEB+JsXhENXqrfnhuoiKR5h4vjPOxhiUKx21vUkMaIB/fKVnLkCIL1OgjicJVXzpP+AAMhZoRGN7icgokYvyLrP3GLpnt1Bc79hxTqoxDp7c=
+X-Rspamd-Queue-Id: A223A180002
+X-Stat-Signature: 1j8neacxstbruenyfywrsyxshmkbdpru
+X-HE-Tag: 1788430542-215342
+X-HE-Meta: U2FsdGVkX19rcZUkX5nhJ6nsSC+2Lh4Ipi2E+ZvVP62OWpscRkUXbKtnlTOEsUNLo0SBH+QglzzY2/5OXmrqYdRbZ3KHQp9txmpZm4lNc+ryBQFaoy5mh+C2yaONF2nhQF8SiLDGbkoKlQgouN5y/CONvkL54LIo1C5pc9qrGwqmPDwBxv273/6Tb0jM3WSLoy6afZozuHh6YOtCGn3dJNW5zc0uOMhZuMn8Eec3hT6up8GJxYRPzmsBwFgP+mIibYnon4g2BznJwP810v8s0M8AJMO8ofquzglk2a3EdGv8AZ8wEBasYq1GV//IoTZD7GDjTl07XODV439qfXR4Qg9EUDH49a9qbscEYogCxqM24md55gHnuL7zzb8cP8Y9mGNmzEX6w/7s6uOvDHkU4jVHS/vQWTji6eGX/Dpnk1ab4uJHqSpdxeY8I6XJqDwZ8GvxqPsxxN3xNQrM3a1vpn53fPhGFdejO8BHA7Uy5X6FjLDk9iDegUBJ0R3OnRLcuKx+jgwB/i4Y0xHE9lH7OwjHH9oy/KP1ivtKzpAqFRv3d8qoVtiuIjdGA6KtjUhCuSS+zj20xYYD/x3aFG/Fad32Hi8qns/Glm9ZPmEMpKz7p71yLtLl87SJUivwJncWsDiWePzY2uhX8i7uq/7WTzwMehNqVyrOODh4wp2GDwLnFZ4NuBXuOMAzMhOONxCHLQI42y54ErtTYrtjaDpZ2njyhfjqbGsJA6g2PSZxWrHZ5uAm5Vv0zF9H8fdo61Ua3U9pm+5jqYzIH4Tg739VC8YZoWVA8/a0jufTca5ZmvaL+2CUzDD1G5X5EEd0zonnf6CkFoDCFN1lIztDMIRqDJ2mokRYbsBQOHvvKtOFOEfBQ7SQxiQYU/N9Gufd6YQLs55263ia5TM7XRhDIvb53kyUBvAoGG3pNOZ0l7biqtKsn2jyWUdKsz3EN03YGFCqaqzD7XNfFaWC7dZKFec
+ hrm0whbF
+ R+K1qv4dD63AS4uwpAcOjdLxU0liGfB+nAxvv5RYdx1r1xe8F0Lf+foJzZRV+2SL5qukzREJ96sURv8i1X4h/IRrLL855FGXd1NfIRueq9wZcCBR2+4gXYIES8EBVUYLIBMHuXZYzaw8DdhTZIaH3w6InPeWbgE6Z19NWkZcT/1suLz9E7r3r5WyzOkmAe6dt2QOqmxys8rc2dc5KnRUFxkdzWrdkhn+jd5N9/1uecU+4odC8iNonxdMYOT7sCD9eSZgn1qTfZL6dAtBbGxw/eHwp8mPU5QHosmY73I3us4TDUEM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,20 +92,36 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 9/2/26 7:24 AM, Barry Song (Xiaomi) wrote:
-> `prefetchw_prev_lru_folio()` is currently implemented as a macro with a
-> potentially unused argument. This makes the helper harder to read and can
-> also trigger checkpatch warnings about unused macro arguments.
+On 9/3/26 5:05 PM, Jan Kara wrote:
+> It is possible to issue Q_QUOTAON quotactl(2) e.g. for ext4 filesystem
+> requesting to enable quota using ocfs2 quota format. With suitable
+> passed arguments this can get upto ocfs2_local_check_quota_file() where
+> the passed superblock is from the ext4 filesystem and that can cause all
+> sorts of interesting things, most likely crashes. As ocfs2 quotas are
+> specific to ocfs2 filesystem, verify we are indeed enabling quotas
+> there.
 > 
-> Make it a `static inline` function and remove the unnecessary `_field`
-> argument. The helper always prefetches the previous folio's `flags`, so
-> there is no need to make the field configurable.
-> 
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> Reviewed-by: Lian Wang <lianux.mm@gmail.com>
-> ---
+> Signed-off-by: Jan Kara <jack@suse.cz>
 
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+> ---
+>  fs/ocfs2/quota_local.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/fs/ocfs2/quota_local.c b/fs/ocfs2/quota_local.c
+> index f55810c59b1b..a2b276bcd0a8 100644
+> --- a/fs/ocfs2/quota_local.c
+> +++ b/fs/ocfs2/quota_local.c
+> @@ -171,6 +171,10 @@ static int ocfs2_local_check_quota_file(struct super_block *sb, int type)
+>  	struct ocfs2_disk_dqheader *dqhead;
+>  	int status, ret = 0;
+>  
+> +	/* OCFS2 quota format is supported only for OCFS2 filesystems */
+> +	if (sb->s_magic != OCFS2_SUPER_MAGIC)
+> +		goto out_err;
+> +
+>  	/* First check whether we understand local quota file */
+>  	status = ocfs2_read_quota_block(linode, 0, &bh);
+>  	if (status) {
+
 
