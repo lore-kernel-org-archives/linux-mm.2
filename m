@@ -4,122 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE235C61DD6
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 03:14:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1037BC61DD6
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 03:17:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82DFF6B008A; Wed,  2 Sep 2026 23:14:08 -0400 (EDT)
+	id 240216B0088; Wed,  2 Sep 2026 23:17:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E0BF6B008C; Wed,  2 Sep 2026 23:14:08 -0400 (EDT)
+	id 1F0A36B0096; Wed,  2 Sep 2026 23:17:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F4CF6B0092; Wed,  2 Sep 2026 23:14:08 -0400 (EDT)
+	id 107866B0099; Wed,  2 Sep 2026 23:17:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 44CAF6B008A
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 23:14:08 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A993AC0410
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:14:07 +0000 (UTC)
-X-FDA: 85170982134.22.93923CA
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E156D6B0088
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 23:17:08 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7DB2240420
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:17:08 +0000 (UTC)
+X-FDA: 85170989736.20.6F95670
 Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D6D7B20007
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:14:05 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=IhfVl18F;
-	spf=pass (imf03.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788405245;
-	b=g8sXW8MiieUi6Bd78Nk7NKVG+gcd/EcHZsM2hkgq3wqmlLi6P5quBhOrHW/nBTDhqpCboS
-	zp2zk9dBhZ2t+8MEikdUC/iG6dXjOd/ViCsR7C/gHzBQYlsS1ifYCM4HWJGOv7sUevl0C0
-	2uzO9A1gMMiyRHQPR2/n0MCcCNwTxBc=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=IhfVl18F;
-	spf=pass (imf03.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by imf16.hostedemail.com (Postfix) with ESMTP id CD33B180005
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:17:06 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ER3Tiw5I;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788405245;
+	s=arc-20220608; t=1788405426;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vESU/1COBgvnCI0rsLCZoKytSIIaf3V11jedMnJg7JU=;
-	b=hU1lBBLhzdvZq3G4tIgTZ5A0RFTZpU1TuGXHEskg3gIIFSHkq4tf7mUg6rBLtLmgCJ9Ydz
-	5SKHP4yH0bJCQriha9e9YPHAsUZFs5wXsf4tzvj0HDbdbqTLRX6gtCZY6qlT3jaFRPyi+M
-	6REg5astaC+IAFOpmBhtdWJfUFYDjV8=
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2d53197d8b5so16997355ad.3
-        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 20:14:05 -0700 (PDT)
+	 in-reply-to:references:dkim-signature;
+	bh=6Ry9aZAR4rOnvuBv9WAZuiM8CW7iBdIw7/zNBIgTZE4=;
+	b=4I/zaI0CRZB4Ay9URlzbaI8RvBhXMqFYfZQ/9F3jK1LfyKOo8KbYrjLvvUUt6VZfB7niua
+	6HhkJcY1MgK7W6PIpiNBPOWJ90BR7XcgaJJnqjm0KdNfmePQCKIF5y+9K+zxJmi0EQvJMW
+	Us2nTGR/wroStJc6v/tfVVi0vhS+768=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ER3Tiw5I;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788405426;
+	b=HIzXYyMb42/9XYpNbV+TCLjuXoFFUq/bjyFWtQd0Z10Uw8KxW6kqrG8QPuMz5zguqz7c7z
+	Wz8k9NqjxfkdSTx6iNQFMJB0KlasAbyMZRMJMVhFfy6Embi7bG1YU06DRQ1JjfzMDFp9Rw
+	UP7eNUrG6jWLZEKW56riimTnwmxoF2g=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2d71a50caa9so25068835ad.0
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 20:17:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788405245; x=1789010045; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vESU/1COBgvnCI0rsLCZoKytSIIaf3V11jedMnJg7JU=;
-        b=IhfVl18Fmem9oxPI6gJlagJPsG1e1dr0D8tfGZCWt5fJ5yxpuYwk9DcV9nhs8kmaKy
-         iWTkAWEIaa2wrnhJBtmFw9XiPFLP0kr0QqaF28qIvAJGK8D8QSilhh95tHc2ra6HbyR1
-         NjwM//5YR6O3fvdDCLZCH0ufxyn4IsrjEQYpZmhdu8wpA3eXNngRpaE8Ry39aCWfVYZL
-         OsF49ISG4CPKAGsd49yw1EJEKBu/REPT8tjZgdaJMYsgy7hb11Kw2c2bX9gGJkwxgaJ9
-         bLG48YB7pPrXWlHUNmxy30K5pvUh+PaZ0f+/aTtUvg5bOL/fL46GWXm8KbDdDtHG0n0O
-         sXhg==
+        d=gmail.com; s=20251104; t=1788405426; x=1789010226; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=6Ry9aZAR4rOnvuBv9WAZuiM8CW7iBdIw7/zNBIgTZE4=;
+        b=ER3Tiw5IIAdf/+xk8uaKMP70VXB/SHG0pQNz1nsfvj7B0dkbEtQ9wjCpcAcAf1PQhT
+         WDpO2E9yGleLeqtThbwJbyTAMWHGF+EVvKBnntytz2kRkxgk/bgNVmBXkR7hH4VSoWty
+         wi3HDldy/iFoHrwTWuZ5EaydL9NLf2x5neQtfl3RESnTPmpDn2ZDiDZ1A/k/RpfwxZ4G
+         wDUR9yAOIuGjEhPuoj9A83x85RDB5GSGoBS2YJCTl2Wg8ABAm/rBBQ9yAx5rfmoxRTkn
+         49Q7Du+yoA9qbycgs+8XNop325yHBuvl1pJ5UFRhlfb5N6+59JJat8aunhxQorfWB7w0
+         gy5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788405245; x=1789010045;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vESU/1COBgvnCI0rsLCZoKytSIIaf3V11jedMnJg7JU=;
-        b=AAFYH98CuktumUMWcqK8WgouLjt1Ddr5sjV4WolvnO3OTgDCOBLl4G6blYvsGTb6gN
-         SVCkWLnA4dQGUEz1Ri9fbpwQfJfInQqctu8T+242Bf0Hj6qRMJbqeKV1ScANtIwB7RDZ
-         WSpjS5cjzeGSOCBx1ceJ3dWZTpm2K+nr3qJrRy54KA74XwZMYIoGpgTyb4RydUbElLFp
-         2hVFt7gO0olyRqv2bXe4Dnx5mR66eW8kGGlBLbccq09CLnEWA2ePTnaXGomjzIRrsojQ
-         HtSmczQ2HHEFyyShwYgNMfwVEYMVwsyhoWyKk4p/bcFgeI7vF6Qs8Xj+lnAMBCCDAzFp
-         /Smw==
-X-Forwarded-Encrypted: i=1; AKwUvBygwOwhcWgJQkrk2dHF7Nfd9jLGw7TAZXd67P6K0H0m07y+33PpSWnllyk7L/gQ5Ch3p3F90JXUBg==@kvack.org
-X-Gm-Message-State: AFuF++l8c9Aa9RMWBhUtXMFSgEku3NIcKIh+R0t6gp1tdqaPbHxVKCTy
-	KK9JsMNiJlcS1YTtG4ArAVAZqFzb0YYsph1bETSOT7AxrwX5QaywpylG
-X-Gm-Gg: AYBFou3iqRMKLphJbCuXKD+jNzwOdFUdorhgGFk+rl5eQLPai23w87yEvEOjjN8soDJ
-	AcA22hTZA+eluSsT4fbyNETn4gs0qTrOT1fCRiivBlZudi5IlY+gHJvGbjAoE/m/XcFdm6Owhhu
-	3PgsY2Bf7WgUlENwIcJustMoTC0J+rhewklRigjCNGH0f2LLcG6glKSWCnluB1r/N0nBDuUhYJX
-	fVe/DDCNQ/cNW/3bnzqBf//N5wEW2fOpQhMsXfYkXK+qntHCE3r2K8dLsTmFRoLX6RNFm1v3ZKS
-	ouJfNG5Y1ULLlbM+docDJJoTddKY4XoSPkh56vfyPVAQmF2u4JoyK6e4V89agWiSnBhvApAlIxI
-	Fxty6Z4XCc8hksfwesAhBUDFibkzyZO+NHdESvdI8x1ciiLB2IVASOub+AjXqq51bHUvbpyZKP/
-	a84mo4cTUNYMZmWUictnQ/cyBy3l5V7e+WvGl1czo8ufJy+7NcIkKDIutLXKbRALeR6V/v4KEY9
-	ii4HbtjhA3juBKkt+ETTl+e+m8j
-X-Received: by 2002:a17:903:1aab:b0:2da:f1b1:56c4 with SMTP id d9443c01a7336-2daf1b16445mr104380145ad.3.1788405244535;
-        Wed, 02 Sep 2026 20:14:04 -0700 (PDT)
-Received: from localhost.localdomain (vmi2317720.contaboserver.net. [84.247.152.65])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dafe0e0d5bsm2824825ad.12.2026.09.02.20.13.59
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 02 Sep 2026 20:14:04 -0700 (PDT)
-From: Lian Wang <lianux.mm@gmail.com>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	stable@vger.kernel.org,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
-	Quanmin Yan <yanquanmin1@huawei.com>,
-	Ravi Jonnalagadda <ravis.opensrc@gmail.com>,
-	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
+        d=1e100.net; s=20251104; t=1788405426; x=1789010226;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6Ry9aZAR4rOnvuBv9WAZuiM8CW7iBdIw7/zNBIgTZE4=;
+        b=LlN8iPrgSe1RgSwpdMx43wC4O1qKxoVlbFoQAzcDVslkqc+KNzWODqcxO2DmDeNG4i
+         xwqbqawbEYHS+6IoMYadVd63KAwYkAT8AhZQPRFAaB3ynMN7jFD+cqDoKHuxg40aH3Gi
+         wfeqGAosNoSWQxvKyF0bY/BZN7jNrB4dwPGDCUtVcaxJHUy/GV5OMSDH3i9IfXNYj6mO
+         d7iWEbKbF51eTR+zHXGAbAaQkryiBJdmYf9hjj5Kl0e0Zos/yQon/8+pF70FKxHSjXVh
+         GGPotT+hoZgB4bKOO5F2ECUBnV2WIZDs/iqltD0GjjXsaxwxMQfXb9YdIKnnArIGd76B
+         K/Hg==
+X-Forwarded-Encrypted: i=1; AKwUvBwFK5GBvFZQI9sHMFwGpcFOqDjRaSPL6JsA5yv0Spw8K/SEnby3qJU5iGsC24rXNNr2ZiQxbZbdUg==@kvack.org
+X-Gm-Message-State: AFuF++nH8tXEVPd5Gm3HQj/TxekIBI71GURF/yBv5o14qsp98sNGb0jK
+	cEN8ZITxpuGmdYgYr7iaFgVHarJZWIgg8q0C2ia8hTbYmAJQolTngEWj
+X-Gm-Gg: AYBFou2po6cOxzdKT9EvHAempEKxnHKnT9JeepY2wUpu37eTKQOyWzmozc1V4FdCRQB
+	IfNQQH0pW5smXx/OaYWWLvrB9JkPC54t2io/fbjKG8Q5XSeUS/Yp5tX1MBuYQ9zKe8U1Qc87Lf3
+	zgXEV+gRZlDj+Kt7z9nlqdh1GlOZ11zuvrIS3te+VPbIfoaekd7AKAP2sKv1cnZq1LsL2EILueu
+	NOmJMhgy7ZdwoA58jEUDXMOZ9GVDaJHiZPS/qCO7EgCaMO+JOY6hLB4nGckuYJFQNJh+f7VAPPE
+	uwT8Bklmt4K8M473Bd2Rms7+1A1qJsvsKNSH5f/rPK8g+m2bxNdo4pslbqjwqSVxXCPGvWP5AML
+	8/VVkPSlsFKy1811cNTstGksso7hrS6YOTfQayjYYgv9AFauZBrQVfCMvJcCDXfMVrrEtyviStH
+	/DnBtyp7OhvHwNZU7wgp+Rg5m7bU16UuE1cY9hj4NqigQvyT45DZ+jy1oQ6fiBMbsIIJfKty+dT
+	9g=
+X-Received: by 2002:a17:903:2290:b0:2d6:ffa1:429b with SMTP id d9443c01a7336-2daec62c280mr119641375ad.7.1788405425604;
+        Wed, 02 Sep 2026 20:17:05 -0700 (PDT)
+Received: from localhost.localdomain ([240e:b8f:1df9:a600:c693:b19f:ada0:748])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dafe62d1d1sm2831855ad.24.2026.09.02.20.17.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 20:17:04 -0700 (PDT)
+From: Vernon Yang <vernon2gm@gmail.com>
+To: tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	akpm@linux-foundation.org,
+	david@kernel.org
+Cc: hpa@zytor.com,
+	rmclure@linux.ibm.com,
+	andrew+kernel@donnellan.id.au,
+	pasha.tatashin@soleen.com,
+	kas@kernel.org,
+	tj@kernel.org,
+	rppt@kernel.org,
+	rick.p.edgecombe@intel.com,
+	yu-cheng.yu@intel.com,
+	orsonpeters@gmail.com,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 0/4] mm/damon: fix misc bugs in kunit, quota goals and sysfs refresh_ms
-Date: Thu,  3 Sep 2026 11:13:28 +0800
-Message-ID: <20260903031345.82679-1-lianux.mm@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260902002725.108635-1-sj@kernel.org>
-References: <20260902002725.108635-1-sj@kernel.org>
+	x86@kernel.org,
+	linux-mm@kvack.org,
+	Vernon Yang <yanglincheng@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] x86/mm: Fix pmd_modify() dropping the dirty bit
+Date: Thu,  3 Sep 2026 11:16:08 +0800
+Message-ID: <20260903031608.1194238-1-vernon2gm@gmail.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D6D7B20007
-X-Stat-Signature: rym4mm93gnompkia9wah9mkpojoymmq5
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788405245-936736
-X-HE-Meta: U2FsdGVkX1/udJmOdMiX2q+0uIL5+F8zk6so8cyrldyecUs5sBPfzfJoqqNvr7sZv5Pje1NxVlDj2CtcDgPP0gHgqjq32H+XL5O0sUsQi0tONFurnroDJLehm6HAHphMqIwkD0w1aftzSmJG4wEsTmGrcjY9aEeahFYFgGN163xpc9/HfVepzUhYvBALzGz8zldYev4LndvR47vLi39aLXk33i72S9P7MLxj8CrSKrJ1hrfSfJaF+9x4AeX1cLpKWvQaWzlpGN+ePjiR+QADeOM0h5BekDM/S8idtYaP1z30qI/OMpZ6D3wHSyM8j+B9dDWrMFov1fjxMvvHJfC1/CLoVDdYYPFQTVEIdy8SOhLIMoSbu6tRKMdenPqG12iosu6d/Ah/9m0ty10h9zz9V07i78oFVC3r459Sw8v8DYaHNoDUqc9rMBFQiXkpDi3+JV4UF4qXJpxPqff+/V4BWVAhVoLU5IE6CW+rXzmFoUqVtoR+X+ldNbjEq1G1qfgm4FHjJXgyUTO1qdjXdEFUsJTjbX/K73XX7glr51LfLqPmw+fWNh0X555hodJdjBvsjcO8K2WZJdnUjroeR/Ug6bvoxbTOH+HbtE0gGyXE/qAy3Jv506FYbZwbZcavPfUkeEY/0N8/Snc4wWLEu3eSFl4qWr0b++jHoOtpD9Y3nH7QgSDlrG3SupLHLqP7jsdQTy++AGxpfLqhtGjLu94fTYWMN2aEtLjF0J7XvdX+nd6o4Lhm/ZgZOar88nk2vGZNSHTZMbGXXyCGjYtOq9zMal2o+SDSS+iZWIQmPrEoVL5ABQQv45Eswtmxk1Wj05hTgtmSR7pqS7mGrtprw6nklnEM1fmAlRFMbVzIx7qMfjvXp8H/R13aYmiM/dyd9mVqT0W6IwWTyoUW6SfwvamfJUurkZnL3TGeCK3EtGqXF5aJn2G+VyFKIuTVaOtF91JXPdTFohlLNu9in+XQMjA
- XfTUItDR
- S7EYjq5Faz3IQJ3e5dSjtS+w18n+VzI3A2uF+6nEkqPfE7t5nihS1ZZJKs6UMSxzDw5UuDpvzChr6a5tPYWthn0FjsI229/pDj+PYYsVjPgpy0mVqYX7of4b7ptdx+4bPq+mU2DEGOnQkwQTOc+pFoFDzJm2FTvTLD54rwETZwvslHuQxDedG1XX4205zUAOINOiLkbZqeJFttCdF52ToIDSpAK1XUQhdXeXLvaY6smpyVsX2eVGZAg3eOXBPuAtPsU+GyBwPIvbt7bd1tglYxuEi52NhxAyDXDBq63nLFaH0OhdZ+ANUlDW3e3uzBKP1EVQm7kO/MiLzHJKPIRrc4JH9jmoNjoq9P2eQK6WgKV2rVMjxqgdS7eDsQYRwwWyeGzODUwXMb4cVKFlBXjig43DCA6iQCHrTS44slH4ythUvSV7uxGuP4bb5ynSAW0mQN3N5UVvu/rAqAMbwB/sRsG0ErdTjI3d9L1T0+t6/xjxrtxp0LJ62c5lFWSWwAK25xEI7QIMZTYhDqx1SFSzyDd/G4w==
+X-Stat-Signature: ujeryhuj19gisa9dhfx88zfodzus558x
+X-Rspamd-Queue-Id: CD33B180005
+X-HE-Tag: 1788405426-702331
+X-HE-Meta: U2FsdGVkX18whVAif9Hza+3NrM491jqmvgU3X1aR7RcY5LHtIA9a8NVEGDtpPBmoM65fGw0qpPP8renJQ+OsyZVUAm18bJ2tLHx2p5KkpAqZj5j/8ZTOIsbVvFZp1n5BQPTjUmZDiorjKNtqBKQP7elzX/4Nt571VwBD/i1IvR39wi7lHLTZmPbNOAZ0h2daH+8OhjEjIaBXTGmXuNkHGKJTGPY9vbqJ0qF3Z1lqLPYIgAVe6OEA/HnFBa4YYv7qfqJrO30RKJt2UA4bWi9W2K0fz5QmL/9kPXAVuahpcnuIUGIG8w/DKCrbLRHcASpL4OC7x1M9ylxrZeVwCaeCKrlGFnJOPE2pj7hSvczO2FwRstrp+kef95eiBP6KSNQUcXCBDzU2x1uwiA5VHYi9hOICihakQThejLtS2ZxCVa9i+wDKBE6iWQiYX5lgVlfAGaSotuy1uUgk3OSoiUE1ZqvadFeb9OVVAqUzityhlsgi6r5mkrZQyUMN1NGkGw9zxW6KlmqGBYjjKVT+1wwdM5PBIkfCC1nYaoDnkKWJe51TCUfpjgbUPrqPmCasCiyvZhFfj9V/yB3gX+NSbmFpa+ecubasGOATHUXehcGzXQQr5+PIRQtuLCbdOLlvwg9eEPzbBxb5Dr80MSBkKy2kNCXHx5NUjlfjrLtmkwZ4lzih2LHey8deNUkSziQZdMMQGnsuYn0ObDzH8niyc/KuPGBkqufVP0PbHKCYjr1caJAqhuYvLexrvbpcp3FomibfoU2Aw6VY1V48sgNYI7K0amXgVawxeFiT7vNvIcQwtGrMYej044pOpmPIQLO/FOm4gVDujhE6l9CdLMqkH5pvq34Tl2UiBNiddlIbNewYtqt3Egx/oKigYNP6i9rLwhn4kLX3bR+1mU+noZ6VueB774xRA1DwXhrLI+SHAYW9fUV60M/iaUcldBq/2Bt9S6SOwRfElTv/dCC4veDeKQu
+ eb7w/8jI
+ bnBRMcKPKOj/TSKvarkl7VLGG5SCQQJxMmCfWMcAHWxwOMuTqq6on6UsColyENkQupTEjoHmTYmqrJhiwrIb/UvOe7h8LCRxx2+pCFjLgaCQip7Rl6chFhVDDGgU/H2YhxfY4OVQa/KOcP8WDZnT5pi4jz4A+iXpf3YMMVlZ7tZSMroY5Ipm/44btBTDF03cpDaUKPG7sWZmOKngyN5FVNa1ho+5k00nYezUVnndISfDKFODIrteoeN8VfyB481jpXSPctEYbsM8ZcJu2sIs9CLMpRbceW88q7BP/dbGKsKAlGEaUoxtyXtlHYeTRP++B4LRxB5Ho8fDvoXB5kQ3tPP+zeCqJvPTcO6pCBviY0EZ7nMFi1lQftxvtOrhhpycU//yhSEZwLA+ht7kCjftFksgICqBj36rrnFUo4rmjGGCYAQ9S5dumQmtlfQNb/sl0c6ym/xYgi4jzLCD4oAiE2+EID2zJ9yZu+TxmvlV4n8jJUQFLZK6RnamwTLBZrzDZKoQLIJMQ3RrLKGiMy3GMHoFMIhtkwhFdZskBvW7z5plVMt1mZ3u1tAoOUm2rZkFNm6LGo3GZ5wIigCTNiJjjdQyy7vPCblGmzANT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,30 +133,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ,
+From: Vernon Yang <yanglincheng@kylinos.cn>
 
-> Patch 1 fixes the DAMOS quota goals commit unit test to cover a
-> mistakenly uncovered case.  Patches 2 and 3 fix the bugs in DAMOS PSI
-> goal initialization and eligible_mem_bp online commit, respectively.
-> Patch 4 fixes the bug in DAMON sysfs refresh_ms file handling.
+pmd_modify() masks the old value with (_HPAGE_CHG_MASK & ~_PAGE_DIRTY),
+silently discarding the hardware dirty bit.  The subsequent
+pmd_mksaveddirty() call is supposed to transfer _PAGE_DIRTY into
+_PAGE_SAVED_DIRTY when write-protecting, but the dirty bit was already
+stripped from the value, so there is nothing left to transfer.
 
-I reviewed and tested the integrated four-patch series in mm-new:
+Contrast with pte_modify(), which keeps _PAGE_DIRTY_BITS in its mask,
+and pud_modify(), which keeps _HPAGE_CHG_MASK untouched: pmd_modify()
+is the odd one out.  Any pmd_modify() on a writable, dirty PMD loses
+the dirty state.
 
-  a20e38846efb..72dc8fdaae62
+One visible consequence is data loss with MADV_FREE on PMD-mapped THP:
 
-The integrated commits had stable patch-ids matching the posted patches.
-DAMON KUnit passed 42/42 tests.  I also ran test-only eligible_mem_bp nid and
-two-kdamond refresh-isolation regression cases; they passed 42/42 and 43/43
-tests, respectively.  Both test-only changes were then removed and the
-worktree returned clean at the unchanged series tip.
+    memset(buf, 0x5A, size);          // PMD-mapped THP, PMD dirty
+    madvise(buf, size, MADV_FREE);    // PMD cleaned but left writable,
+                                      // folio marked lazyfree
+    memset(buf, 0x5A, size);          // hardware sets _PAGE_DIRTY again
+    mprotect(buf, size, PROT_READ);   // pmd_modify() drops the dirty bit
+    mprotect(buf, size, PROT_READ|PROT_WRITE);
+    // ... memory pressure ...
 
-These were functional UML KUnit tests.  The fixes look good to me.
+Reclaim (e.g. under memcg pressure) then finds the lazyfree folio with
+no dirty bit set anywhere and frees it in
+__discard_anon_folio_pmd_locked(), even though the data was rewritten
+after MADV_FREE; subsequent reads fault in fresh zero pages.  NUMA
+hinting alone can trigger the same loss, as do_huge_pmd_numa_page()
+restores the PMD through pmd_modify() as well.
 
-For the series:
+PMD-mapped file THPs are affected too: mprotect()/NUMA hinting dropping
+the dirty bit means rewritten data is never written back.
 
-Reviewed-by: Lian Wang <lianux.mm@gmail.com>
-Tested-by: Lian Wang <lianux.mm@gmail.com>
+Fix it by keeping _PAGE_DIRTY in the preserved mask, exactly like
+pte_modify() and pud_modify() do.  The existing
+pmd_mksaveddirty()/pmd_clear_saveddirty() pair then performs the
+hardware-dirty <-> saved-dirty transition based on the write bit,
+preserving the shadow-stack encoding rules.
 
-Thanks,
-Lian
+Closes: https://lore.kernel.org/r/CAJxLxMUGu1-L+O_nAONOwOXnS=cNbNApCWqdthRjd76LThtSPg@mail.gmail.com/
+Fixes: bb3aadf7d446 ("x86/mm: Start actually marking _PAGE_SAVED_DIRTY")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+---
+ arch/x86/include/asm/pgtable.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+index d5f4917c1edc..d551120a7c88 100644
+--- a/arch/x86/include/asm/pgtable.h
++++ b/arch/x86/include/asm/pgtable.h
+@@ -806,7 +806,7 @@ static inline pmd_t pmd_modify(pmd_t pmd, pgprot_t newprot)
+ 	pmdval_t val = pmd_val(pmd), oldval = val;
+ 	pmd_t pmd_result;
+ 
+-	val &= (_HPAGE_CHG_MASK & ~_PAGE_DIRTY);
++	val &= _HPAGE_CHG_MASK;
+ 	val |= check_pgprot(newprot) & ~_HPAGE_CHG_MASK;
+ 	val = flip_protnone_guard(oldval, val, PHYSICAL_PMD_PAGE_MASK);
+ 
+-- 
+2.53.0
+
 
