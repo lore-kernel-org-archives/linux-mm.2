@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC414C624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 15:50:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52EBFC61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 15:50:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45C416B0092; Thu,  3 Sep 2026 11:50:18 -0400 (EDT)
+	id B12BA6B0095; Thu,  3 Sep 2026 11:50:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 434686B0095; Thu,  3 Sep 2026 11:50:18 -0400 (EDT)
+	id AC3D16B0096; Thu,  3 Sep 2026 11:50:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2872C6B0096; Thu,  3 Sep 2026 11:50:18 -0400 (EDT)
+	id A00F16B0098; Thu,  3 Sep 2026 11:50:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E2BB46B0092
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 11:50:17 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 45F19A46C5
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 15:50:17 +0000 (UTC)
-X-FDA: 85172887674.30.345BA37
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 726906B0095
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 11:50:20 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DD59EC05D7
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 15:50:19 +0000 (UTC)
+X-FDA: 85172887758.05.D87043C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8C6BF40012
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 15:50:15 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HyoLOKJl;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788450615;
-	b=7MPB+NZ/8H6H+fsn1Rm9zdrskNl4R6PkWlRHPx676WakI9TjPePyBOHUJLTJvZ4ilRhD7B
-	weiHdDJvhu8uvDdoEMF/woKtY1a2oV++Sq7Kr/CPWmV/8WoIoV+yDLjjWciMyelBCzvMus
-	zfNxnzYdVs39EfdgPdR7PLaEcsbthbU=
+	by imf15.hostedemail.com (Postfix) with ESMTP id 174E7A0009
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 15:50:17 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OYJ+Zl3t;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788450615;
+	s=arc-20220608; t=1788450618;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xpQ+G6UtTo2w3vyGJPJeznHQWpBOtRAhjixM5nGiCoI=;
-	b=RXbk//Nsw7c05r6y/tKUvxnB4zXj+g3QCPZ5JekYdBLHwS8j7cccZhGQXWhTJRMCB5sice
-	tFi/1ve2vU0EaqSTfi7kHFuoOs5V+fo8I3Viat9OjZYHQw05uO+PP7mGRclUdd9tqFILYI
-	XtrXNQQCwlUlI8fY/yX6gvVwGr5uvns=
+	bh=Z0X9ZLAQ4mUEchhwpqleI41xzP5aRuvK6f6Sh6Yxzi4=;
+	b=44vj6HmHqxtRtttVM66c9qGhhOTEsFx34aOFY0BBBZOuBZoxrE1FHU4e85gBIJf5dsWSUt
+	OxlD5sP/K86XRqB4mqoEFuaoMLKiFtMXj8wi+Fac+skPSQcgXVL/lz2BRcPQCAoWhOtn1c
+	+os8Rkb3YYhWsLA2yr39TyI+5isCsA0=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HyoLOKJl;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OYJ+Zl3t;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788450618;
+	b=SKyME/2ZkkkCJC/1QrR+U7Ui5n0kd+Ghx526ZXS4rfRSo0qOMZXiiAhzkm0/gBizHaXosL
+	X5SEmxrAhAH6rqqPLbPNQyHdpDQJgQp2csQUkshfVPB/wHd94V73vV/uHq7/DRvI8PxyWN
+	KJz+pF+JS4n3kQac1amBdGHmm3ZCdB0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D4FE9404D1;
-	Thu,  3 Sep 2026 15:50:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD8AB1F00A3D;
-	Thu,  3 Sep 2026 15:50:12 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 69A0C43C54;
+	Thu,  3 Sep 2026 15:50:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4180E1F00A3F;
+	Thu,  3 Sep 2026 15:50:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788450614;
-	bh=xpQ+G6UtTo2w3vyGJPJeznHQWpBOtRAhjixM5nGiCoI=;
+	s=k20260515; t=1788450617;
+	bh=Z0X9ZLAQ4mUEchhwpqleI41xzP5aRuvK6f6Sh6Yxzi4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=HyoLOKJlU9flwF2tT95Ezp08U5AhXSIDW6og1SM/XSDUw+ZQVccfNY8oQaha0E0Kv
-	 /rU0Pr4QbVxBgR8Xy+3VEwTVZhF36XqveFhT3x79iLceMUMQg1hb2ZY4ZyMYy/qz03
-	 62r8CxxYR9CU1ryqkbjIG4TFhmGcFIWz5fcP/Nhd7i2GGIVre1vHE4RFycDA3QxQwG
-	 kvywX37z7XHhtxCdfK6XJD7DslU/in2CwWvyvs5Mxmq9EjR79fNlCfHnEfTAhPXd3K
-	 9Ntn063U9QxDcrODPy77wGWla25VW1v9uZsR2acs2+VMWoO5qb7GoGxjhFFzouPdn4
-	 E1HS8YABSiUXA==
+	b=OYJ+Zl3tMLn1MD1z6fiXKp4+i9tHpSYBMlJNN0tpYuVSfwQKTR5zVkw45bX7Q4PTw
+	 o6NmhmyOQC1T8A7OxYMHgBjsFPek/w5rxSk5f3hxPJ7wUkgyINX5RUuG5hZErfLTDK
+	 d8FnpW/qGCiLySjLSSd7a5lqoeN4/j150u5+rP8OLeGhNApjIC16fJT869KuufeTIf
+	 Xz+fwfT6vjd7WFXrTSmMhfp1+3YJtwirO/TcznnlXg4cFTacvgDB1ywtBQ022spaHK
+	 A5TX3vACapU+ds4GgORfT0T1iv6dfsmsWcn7E41bTU0lD7+wbcf2SY42YlJ4vMlOeH
+	 geH2yghWdDQmg==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Thu, 03 Sep 2026 18:49:59 +0300
-Subject: [PATCH 2/5] mm/execmem: handle potential allocation errors in the
- maple tree
+Date: Thu, 03 Sep 2026 18:50:00 +0300
+Subject: [PATCH 3/5] mm/execmem: make sure ROX cache always contains
+ multiples of PMD_SIZE
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260903-execmem-rox-cache-pmd-v1-v1-2-11beb2a3d249@kernel.org>
+Message-Id: <20260903-execmem-rox-cache-pmd-v1-v1-3-11beb2a3d249@kernel.org>
 References: <20260903-execmem-rox-cache-pmd-v1-v1-0-11beb2a3d249@kernel.org>
 In-Reply-To: <20260903-execmem-rox-cache-pmd-v1-v1-0-11beb2a3d249@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -81,14 +81,14 @@ Cc: Luis Chamberlain <mcgrof@kernel.org>, Mike Rapoport <rppt@kernel.org>,
  linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-mm@kvack.org
 X-Mailer: b4 0.17-dev
+X-Stat-Signature: 51qfosg9657emwiaotpbmwrthadhidip
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 174E7A0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8C6BF40012
-X-Stat-Signature: s6i6t4dkejjnictrarhb8hf5heeo4cyr
-X-HE-Tag: 1788450615-515409
-X-HE-Meta: U2FsdGVkX1/6lTZGA/yqx7vi1ja5RcsbKxk3TY9VZRD+1dPxxYe9V1yKVxBcaZykokd9+lYMFnxBRp3UXByMhzcUcqdzWsa6+qVaAVTP4gUGBOhl6j1dzTmi/nyIIuqkBpp3DiFTTtYbcf+5FQTSZO0OQfpDEBNK74vgJncRxyFPS6Jv+ibq4zYD4q10r23+CWdOXZnq3nx09ZSUT28NusDTSgeRtzBwIEbwy+6BKILXEn1Ne3cfaLLPT47Qva4IGvNdl/KumUwtVYPgI6tPwG3BJrYB0pIVn9jr8kEVD80LfZXzQzZEeWVrNxNDMpIxgQqT4gMWJ/U22hRykVKAl6lGb97fFA2oTf3Tavrktg00wZQB76xnnR9iAhChblbxOxBjA/u32RNAHyQW8xJc1NuCDt791QAWX44WBHizs/FLhm1sIwbIr+xzhFNuzNUZIgHtaV/kN3cbNwvMFKQxgNXzK/a7VCrAKKjuM3oRIMn7PX4LP4h5nrcwepXq8uQah/oyadwC7sX/XwiNltgskAVo46vA3A7hBdC8NH8v2OkQbXO/zI1zEKhPXL40fHAakWMAKOeSrQ5j+qMtsEwQ2KLwfgH+qzncWAphcm83GoGiQx/CrEZ9ijGWR93DTzkLRvWTCaUOoOl9q0RObfpDJkw/L7rbpIOnS8XsQveARfbBdtfgz9yPpXfVhiqAkp9i3gRngu6Fsf7JBndhQyq2E2bivSLYNlmV0rDZnC2zOu7oedf/LamVwfx6TGg933+XP9avkbUObl/2QX5RULkf91EZGmocCyIoWqJP+sFOMP3cvCnQ9xakZTMbe+Cz574YKVCL2FhDeiIXTQD39uNvoz7HOoYASCK3yGSyXPRERulVINTLgAiMlPfLERuDFeoMPXL7O0qJolLeKW0zdqYH8VKrj1Hmb+22TsDHyD63HEGeuaPXf2fbTMHSiMzEKd2DJKBlVdLYIgAqazTZ1CK
- uK6Ay2AQ
- L/5RDYprC7FLOkCunA4qeOTrK9jFREwIZgQXzD0XQXDhMFRVOKSGavhNwh2tAkva46V5YRcV8A//NqCyYQsfvWdpMzHfKMlZWBsaP7wWiO5oRt6aM9Kvrp28VDBv9HidQtiNPAZKW2yAvYMi5u8XEx2vhqGu2oGKmk8xFhwMMedXpsoEpzPz0GKfWvxKk31jFI/WK1/NO+Zu9FepV/xEdqkOyLEyyO3hZhs2CefojXnHpfJSvSiKNTMLEcA==
+X-HE-Tag: 1788450617-997198
+X-HE-Meta: U2FsdGVkX18N03crMXhL5Fg2EXjUisneufH5Jougle37E8HeNmU59yT5obT8XqalIu1J4ut2NIWhcL0AovaqCeZbUTM0dCM++N6RDYZvMSSd6xzkPZZkPscrfowxXO+3c1b4PeBs0bvWbql9qxgqtzvTEfjpcMJ6CRLN+8yHlHubkPJNTuXwc0dz52UUGfcHNwRNnaykF9N0gSDBrGc/EaFnNKj7aTGxejbG0OO2HIEdZc4ik+b3MwgVPTMjbs4xZT1lJIlPwtHi6ElqMLm2MKrMJmB0GVUJ9ydBaD+r9rkDhudBKcurlG6d2gnJ2HS2X3BZdn793HbRj3+6uEPO7l8zrZSAmMmmjlU6KfAtsUtHxMniWKQ3LouOI3dEDjf2imLNaWpUFcT7FS7TvgUfFa0uzjc11PVBA5JAMD0+nlkA8YcK0P4F4hFgfLLx52G+CYW9OAkzTdibpBYp/eXT2lfh8ZGZO0efi8KbxuBfGczpd0SmhDfJW2dWYhGmtEq17Unf7K1B0Z+FevY4is53Udl5LonyabY0QSO2j0+bDosDSkfY+8bAVKsK5Q6O8HiIs6Vn+msKRBh3W4QIrw+nCkq8FccCWBuRhtz3m463drOex1uw63t1fXodpDa1/0shm1FhHQ3bd9gaxZxXHYF5PCZhT32pOR6CcSyXOgblGa6u22T1h6qVpgWf4E2qF9shwbdodPSCKh/rwXJ6ijpQ3Db+jZAmzAapOMyZksPxx17P1vgvzBBpYRlicWW/wNORx2ftTWmWv88ikxqEPRDiC3Y+DedwzSEvwOhRjEGsTzS8B0upxmofnWCe8pjf0W38+Gb9RFtP9lPQnAGHe8NVFR9KF+cHEwPsJaRkfCJZktR8UwNRb/encvKlrni61aNGrJggy4P3Kq3Jtv0est0uzlbtI0F6/kZ4ykMBNwWj+vbIdHhratVt3nDXOnvdAKvDyvY9C7E4Ib73Jzw7UNp
+ TCGCHjv0
+ zXWu9ZL8MSgpoahHXFtR/Pa2CgFrvZxn5vhGhPxwfAxJg/rE06Uhag7XuLp2o8zIKRMTN67tyR+FwFw5QyoPR9i/FYUTrfudWtEsCBMLODtSke/wQ/udPkoLzxDdyQcxihaH/MyHNWRoDgtGszAUJpbojLav0MvnIwt/+lLb++VZMHbjxxgDBTYgukxhFtDcNxHRFCf7cSYIjovKti38cUQByeicOiy2+GWBtOUb1b1sNc7b+Xqsyzak0KzXg7kyiMlxwrtc8XdB/tk1gzgqdnTmSiRP1yCyrCR7U
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,87 +96,258 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-execmem_cache_clean() and execmem_cache_alloc_locked() ignore potential
-allocation failures in mas_store_gfp().
+The ROX cache relies on its chunks being PMD mapped. For a PMD mapped
+chunk, set_memory_rox() updates the direct map alias one PMD at a time
+and the large mappings there survive.
 
-While in practice they are unlikely to happen, it's better to handle
-those errors and ensure the integrity of the ROX cache.
+When execmem refills the cache, it rounds up the requested allocation size
+to PMD_SIZE and tries to allocate that with vmalloc(VM_ALLOW_HUGE_VMAP). If
+that allocation fails, execmem falls back to vmalloc() of the original
+size.
 
-Preallocate the maple tree nodes for the stores that must not fail and
-order the maple tree updates so that there won't be any failures once a
-tree has been modified.
+There are two issues with this approach:
+* If huge pages are not available, __vmalloc_node_range() silently falls
+  back to base pages. The area execmem gets is virtually contiguous, but it
+  is backed by 512 scattered base pages.
+
+  Permission updates on such areas split large mappings in the direct map
+  that contain those base pages, up to 512 PMD splits in the worst case.
+
+* execmem's own fallback adds a small base page mapped area to the cache.
+  This adds the overhead of cache management to these allocations with no
+  benefit of reducing fragmentation either in the vmalloc/modules address
+  space or in the direct map.
+
+  Worse, these areas are never freed from the cache, because
+  execmem_cache_clean() releases only chunks that are a multiple of
+  PMD_SIZE and aligned to PMD_SIZE, exactly to minimize the number of base
+  page mappings.
+
+Add VM_REQUIRE_HUGE_VMAP option to vmalloc that fails if the allocation
+of huge pages fails or if such an allocation is not possible because huge
+page allocations in vmalloc were disabled or the architecture does not
+support them.
+
+Use this option when populating the ROX cache. If
+vmalloc(VM_REQUIRE_HUGE_VMAP) fails or vmalloc of huge pages is
+unavailable, handle the memory allocation outside the ROX cache with plain
+vmalloc().
+
+Since the fallback allocation has to return ROX memory, add an
+execmem_alloc_rox() helper and use it for both populating the ROX cache and
+dealing with a fallback allocation in a ROX execmem_range.
+
+With that, the cache only ever contains PMD aligned chunks sized as a
+multiple of PMD_SIZE, and the PMD checks in execmem_cache_clean() become a
+VM_WARN_ON_ONCE() to ensure that the PMD mapping invariant does not change.
 
 Assisted-by: copilot:claude-opus-5
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- mm/execmem.c | 32 ++++++++++++++++++++++----------
- 1 file changed, 22 insertions(+), 10 deletions(-)
+ include/linux/vmalloc.h |  1 +
+ mm/execmem.c            | 76 ++++++++++++++++++++++++++++++-------------------
+ mm/vmalloc.c            | 15 +++++++++-
+ 3 files changed, 62 insertions(+), 30 deletions(-)
 
+diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+index aed121d729b01..6e555e31e6225 100644
+--- a/include/linux/vmalloc.h
++++ b/include/linux/vmalloc.h
+@@ -38,6 +38,7 @@ struct iov_iter;		/* in uio.h */
+ #define VM_DEFER_KMEMLEAK	0
+ #endif
+ #define VM_SPARSE		0x00001000	/* sparse vm_area. not all pages are present. */
++#define VM_REQUIRE_HUGE_VMAP	0x00002000	/* huge page mapping or nothing */
+ 
+ /* bits [20..32] reserved for arch specific ioremap internals */
+ 
 diff --git a/mm/execmem.c b/mm/execmem.c
-index ba277790e3132..00dd6324cae01 100644
+index 00dd6324cae01..77653b7f163dc 100644
 --- a/mm/execmem.c
 +++ b/mm/execmem.c
-@@ -149,7 +149,15 @@ static void execmem_cache_clean(struct work_struct *work)
- 		if (vm && get_vm_area_size(vm) == size &&
- 		    IS_ALIGNED(size, PMD_SIZE) &&
- 		    IS_ALIGNED(mas.index, PMD_SIZE)) {
--			mas_store_gfp(&mas, NULL, GFP_KERNEL);
-+			/*
-+			 * Preallocate to ensure mas_store does not fail
-+			 * If there is no memory for the tree update, bail out,
-+			 * next execmem_free() might be more lucky
-+			 */
-+			if (mas_preallocate(&mas, NULL, GFP_KERNEL))
-+				break;
-+
-+			mas_store_prealloc(&mas, NULL);
- 			vfree(area);
- 		}
+@@ -51,7 +51,8 @@ static void *execmem_vmalloc(struct execmem_range *range, size_t size,
  	}
-@@ -219,30 +227,34 @@ static void *execmem_cache_alloc_locked(struct execmem_range *range, size_t size
- 	addr = mas_free.index;
- 	last = mas_free.last;
  
-+	mas_set_range(&mas_free, addr, addr + size - 1);
-+	if (mas_preallocate(&mas_free, NULL, GFP_KERNEL))
-+		return NULL;
-+
- 	/* insert allocated size to busy_areas at range [addr, addr + size) */
- 	mas_set_range(&mas_busy, addr, addr + size - 1);
- 	err = mas_store_gfp(&mas_busy, (void *)addr, GFP_KERNEL);
- 	if (err)
--		return NULL;
-+		goto err_destroy_mas_free;
- 
--	mas_store_gfp(&mas_free, NULL, GFP_KERNEL);
-+	mas_store_prealloc(&mas_free, NULL);
- 	if (area_size > size) {
--		void *ptr = (void *)(addr + size);
--
- 		/*
- 		 * re-insert remaining free size to free_areas at range
- 		 * [addr + size, last]
-+		 * the range matches an existing entry, so this cannot allocate
- 		 */
-+		ptr = (void *)(addr + size);
- 		mas_set_range(&mas_free, addr + size, last);
--		err = mas_store_gfp(&mas_free, ptr, GFP_KERNEL);
--		if (err) {
--			mas_store_gfp(&mas_busy, NULL, GFP_KERNEL);
--			return NULL;
--		}
-+		mas_store_gfp(&mas_free, ptr, GFP_KERNEL);
+ 	if (!p) {
+-		pr_warn_ratelimited("unable to allocate memory\n");
++		if (!(vm_flags & VM_REQUIRE_HUGE_VMAP))
++			pr_warn_ratelimited("unable to allocate memory\n");
+ 		return NULL;
  	}
- 	ptr = (void *)addr;
  
- 	return ptr;
+@@ -146,9 +147,10 @@ static void execmem_cache_clean(struct work_struct *work)
+ 		struct vm_struct *vm = find_vm_area(area);
+ 		size_t size = mas_range_len(&mas);
+ 
+-		if (vm && get_vm_area_size(vm) == size &&
+-		    IS_ALIGNED(size, PMD_SIZE) &&
+-		    IS_ALIGNED(mas.index, PMD_SIZE)) {
++		if (vm && get_vm_area_size(vm) == size) {
++			VM_WARN_ON_ONCE(!IS_ALIGNED(mas.index, PMD_SIZE) ||
++					!IS_ALIGNED(size, PMD_SIZE));
 +
-+err_destroy_mas_free:
-+	mas_destroy(&mas_free);
-+	return NULL;
+ 			/*
+ 			 * Preallocate to ensure mas_store does not fail
+ 			 * If there is no memory for the tree update, bail out,
+@@ -264,38 +266,41 @@ static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
+ 	return execmem_cache_alloc_locked(range, size);
  }
  
- static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
+-static void *execmem_cache_populate_alloc(struct execmem_range *range, size_t size)
++static void *execmem_vmalloc_rox(struct execmem_range *range, size_t size,
++				 unsigned long vm_flags)
+ {
+-	unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
+-	struct mutex *mutex = &execmem_cache.mutex;
+-	struct vm_struct *vm;
+-	size_t alloc_size;
+-	int err = -ENOMEM;
+-	void *p;
+-
+-	alloc_size = round_up(size, PMD_SIZE);
+-	p = execmem_vmalloc(range, alloc_size, PAGE_KERNEL, vm_flags);
+-	if (!p) {
+-		alloc_size = size;
+-		p = execmem_vmalloc(range, alloc_size, PAGE_KERNEL, vm_flags);
+-	}
++	void *p = execmem_vmalloc(range, size, PAGE_KERNEL, vm_flags);
++	int err;
+ 
+ 	if (!p)
+ 		return NULL;
+ 
+-	vm = find_vm_area(p);
+-	if (!vm)
+-		goto err_free_mem;
+-
+ 	/* fill memory with instructions that will trap */
+-	execmem_fill_trapping_insns(p, alloc_size);
+-
++	execmem_fill_trapping_insns(p, size);
+ 	set_vm_flush_reset_perms(p);
+-
+-	err = set_memory_rox((unsigned long)p, vm->nr_pages);
++	err = set_memory_rox((unsigned long)p, size >> PAGE_SHIFT);
+ 	if (err)
+ 		goto err_free_mem;
+ 
++	return p;
++
++err_free_mem:
++	vfree(p);
++	return NULL;
++}
++
++static void *execmem_cache_populate_alloc(struct execmem_range *range, size_t size)
++{
++	unsigned long vm_flags = VM_REQUIRE_HUGE_VMAP;
++	size_t alloc_size = round_up(size, PMD_SIZE);
++	struct mutex *mutex = &execmem_cache.mutex;
++	int err;
++	void *p;
++
++	p = execmem_vmalloc_rox(range, alloc_size, vm_flags);
++	if (!p)
++		return NULL;
++
+ 	/*
+ 	 * New memory blocks must be allocated and added to the cache
+ 	 * as an atomic operation, otherwise they may be consumed
+@@ -317,6 +322,11 @@ static void *execmem_cache_populate_alloc(struct execmem_range *range, size_t si
+ 	return NULL;
+ }
+ 
++static void *execmem_alloc_rox(struct execmem_range *range, size_t size)
++{
++	return execmem_vmalloc_rox(range, size, 0);
++}
++
+ static void *execmem_cache_alloc(struct execmem_range *range, size_t size)
+ {
+ 	void *p;
+@@ -444,6 +454,11 @@ static void *execmem_cache_alloc(struct execmem_range *range, size_t size)
+ 	return NULL;
+ }
+ 
++static void *execmem_alloc_rox(struct execmem_range *range, size_t size)
++{
++	return NULL;
++}
++
+ static bool execmem_cache_free(void *ptr)
+ {
+ 	return false;
+@@ -453,17 +468,20 @@ static bool execmem_cache_free(void *ptr)
+ void *execmem_alloc(enum execmem_type type, size_t size)
+ {
+ 	struct execmem_range *range = &execmem_info->ranges[type];
+-	bool use_cache = range->flags & EXECMEM_ROX_CACHE;
++	bool use_rox_cache = range->flags & EXECMEM_ROX_CACHE;
+ 	unsigned long vm_flags = VM_FLUSH_RESET_PERMS;
+ 	pgprot_t pgprot = range->pgprot;
+ 	void *p = NULL;
+ 
+ 	size = PAGE_ALIGN(size);
+ 
+-	if (use_cache)
++	if (use_rox_cache) {
+ 		p = execmem_cache_alloc(range, size);
+-	else
++		if (!p)
++			p = execmem_alloc_rox(range, size);
++	} else {
+ 		p = execmem_vmalloc(range, size, pgprot, vm_flags);
++	}
+ 
+ 	return kasan_reset_tag(p);
+ }
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 6ed6c160abed7..4df5c25786c6d 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -4027,6 +4027,12 @@ static gfp_t vmalloc_fix_flags(gfp_t flags)
+  * %__GFP_SKIP_KASAN can be used to skip unpoisoning of mapped pages
+  * (when prot=%PAGE_KERNEL).
+  *
++ * %VM_ALLOW_HUGE_VMAP allocates huge pages when possible and falls back to
++ * base pages if huge page allocation fails.
++ *
++ * %VM_REQUIRE_HUGE_VMAP implies %VM_ALLOW_HUGE_VMAP and fails instead of
++ * silently falling back to base pages.
++ *
+  * Can not be called from interrupt nor NMI contexts.
+  * Return: the address of the area or %NULL on failure
+  */
+@@ -4052,6 +4058,10 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
+ 		return NULL;
+ 	}
+ 
++	/* VM_REQUIRE_HUGE_VMAP implies VM_ALLOW_HUGE_VMAP */
++	if (vm_flags & VM_REQUIRE_HUGE_VMAP)
++		vm_flags |= VM_ALLOW_HUGE_VMAP;
++
+ 	if (vmap_allow_huge && (vm_flags & VM_ALLOW_HUGE_VMAP)) {
+ 		/*
+ 		 * Try huge pages. Only try for PAGE_KERNEL allocations,
+@@ -4068,6 +4078,9 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
+ 		align = max(original_align, 1UL << shift);
+ 	}
+ 
++	if ((vm_flags & VM_REQUIRE_HUGE_VMAP) && shift == PAGE_SHIFT)
++		return NULL;
++
+ again:
+ 	area = __get_vm_area_node(size, align, shift, VM_ALLOC |
+ 				  VM_UNINITIALIZED | vm_flags, start, end, node,
+@@ -4142,7 +4155,7 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
+ 	return area->addr;
+ 
+ fail:
+-	if (shift > PAGE_SHIFT) {
++	if (shift > PAGE_SHIFT && !(vm_flags & VM_REQUIRE_HUGE_VMAP)) {
+ 		shift = PAGE_SHIFT;
+ 		align = original_align;
+ 		goto again;
 
 -- 
 2.53.0
