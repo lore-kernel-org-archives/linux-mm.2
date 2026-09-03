@@ -4,102 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D04EC61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 09:05:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B7CAC624A4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 09:05:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7E326B0092; Thu,  3 Sep 2026 05:05:27 -0400 (EDT)
+	id 319636B00A5; Thu,  3 Sep 2026 05:05:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B55D06B00A5; Thu,  3 Sep 2026 05:05:27 -0400 (EDT)
+	id 2F0386B00A6; Thu,  3 Sep 2026 05:05:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6B486B00A6; Thu,  3 Sep 2026 05:05:27 -0400 (EDT)
+	id 1DFB16B00A7; Thu,  3 Sep 2026 05:05:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 825EB6B0092
+	by kanga.kvack.org (Postfix) with ESMTP id 0192B6B00A5
 	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 05:05:27 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 003A9A44B0
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:05:26 +0000 (UTC)
-X-FDA: 85171867452.03.B23CD39
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf22.hostedemail.com (Postfix) with ESMTP id CB89EC000F
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:05:24 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pOImHT7t;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fhO1Au+O;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MVHN7d5d;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fsExBAMe;
-	spf=pass (imf22.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 89DCA140476
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:05:27 +0000 (UTC)
+X-FDA: 85171867494.13.E2892C4
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 4E6C3160006
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:05:25 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="z2O8/tIf";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/73vGtRQ";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=x163C71M;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=bZzzsLE+;
+	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1788426325;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=6Lq1QyCS2pwB45xAjaigLwdvoXYKOAHiBjoA3F+oARo=;
-	b=fvRB81njh5xOOqKlo0lq8B3dcKggk5qsca06cNf2kcQyzJd2DaVAlYwsl0G4h3pd7yBR9Z
-	BkDyxHSnh/l9qm1YMhHWZ4zXrdS3SfjcU7wB902dp+v4GMndXV0o+jn0C1Pc5leVtxkd3G
-	cypEoPHVCTQlP1U2JsdOaKSY/2muT14=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BQFXVOwmsBFKM/Rr5PbcSzr2KcD/BrLeJ3eCzmRkoXI=;
+	b=IHGroa7iYzSz7YAYbcbc7fKRiQioRUEwU/LchTqKutzxTa+M2TzLbv4BZ5fxOjZzofuUqR
+	wcqWVePaJuwX1l2+ulufEsskcIaycRSb8xl7qeGyqNPmFlVxzjXqHnxceBVzGSUHJP8r3X
+	LJZDGmCxTMlRudOe/fUatWW2+RTGeW4=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pOImHT7t;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fhO1Au+O;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MVHN7d5d;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fsExBAMe;
-	spf=pass (imf22.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="z2O8/tIf";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/73vGtRQ";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=x163C71M;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=bZzzsLE+;
+	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1788426325;
-	b=61wNjJDmqC6QVLeVD0ET0pkzeC+AbNmOL0pDOy8YM/uXdGvLOW/vLx9SCzVhcqsh1H1gje
-	EM7oF1V8KPdxWfNlAlBgX1BhPmg5oTbVcWNpbxA0ZAJC7UfkK00Lj2lpiwXCYEkrHH1I/D
-	TnLiu6gbf7ZvYn/RmUcCsMJP4jb8IYE=
+	b=NdNUeqNssG0JQNI+6XVdJu1yGvVM9wdK+6N1+dGZygcLQzBUwl6cLDF2JOamMBsh9Guzx5
+	VRWTBTZde0SxYKgTNbZ4C1K9pwaEGaPVAlSt05/vkcVvYB9k+uWTNiYjc8ISvI+DrGSCMC
+	69Sbyh1+SbY936E425/dtksvjyKsrss=
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 72B1121AB9;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A86F31FDFD;
 	Thu,  3 Sep 2026 09:05:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1788426319; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=6Lq1QyCS2pwB45xAjaigLwdvoXYKOAHiBjoA3F+oARo=;
-	b=pOImHT7t1wS9lsRDZaMkOAa4TWFaw6XhATPeICdDNcLAnIcU3epzvjm3wTjaieaBfacTjF
-	b60TvVfoZjV37gv+1lx2swLC7JWzy09HE6xUEhPfUb+36GKqqQvK9n8EuD8dRDd6CApb44
-	c9fLSKozwriUJYHdLOH9imWMCokXDGk=
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BQFXVOwmsBFKM/Rr5PbcSzr2KcD/BrLeJ3eCzmRkoXI=;
+	b=z2O8/tIf4Pw87wVdS2YoZzNs4EQfI2MSF/cfZBVztrLBjsVUAZ4eqN/3yVBK4CdaiaMYUV
+	lrIViQ9WfjhPk6QGEi5TVSdJCgozuJmGoO3e578nKef4Kh6jKzsPHTGLM7Lk6g4FwpWEB6
+	fLLXoMQti70DSamDuCTxajAKy+GMvR4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1788426319;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=6Lq1QyCS2pwB45xAjaigLwdvoXYKOAHiBjoA3F+oARo=;
-	b=fhO1Au+OpJl58qPnVCD25j2GKOZ/gOTS5DTpXoDGOBukD7r7w61Ta/AyUGeWmzmTSrdelr
-	P4LorXuBfFAJyQBw==
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BQFXVOwmsBFKM/Rr5PbcSzr2KcD/BrLeJ3eCzmRkoXI=;
+	b=/73vGtRQdesM12rwOuaXY0hu89xLN3d8Mq9aXV4aCI3fGuG0OoVyQDN3T5hH4aJ6Ig9nVk
+	gwXj0Np9FwVYaXAQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1788426315; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=6Lq1QyCS2pwB45xAjaigLwdvoXYKOAHiBjoA3F+oARo=;
-	b=MVHN7d5dUCz77742lskdzC1eJ7yRHNvczWdzgd/eDjMCT9f1m0DNgj+/Dw1OwCsHeTfk+U
-	Bt6V96HiYZJOc5ijCk2ufi6sZK3wxT8YHKsvxRODghdGY/lRSGli80y4P7McH/0Mkbrl81
-	Nd44EGrfLY3DU5Mqrx8uyZ+6oUhv4ow=
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BQFXVOwmsBFKM/Rr5PbcSzr2KcD/BrLeJ3eCzmRkoXI=;
+	b=x163C71Mz5Y0EE6PbP2EtVJVNaUqy4bQHmH7OmrdtIsnTYwCf1T290C+TMWWEMFjsI3yCr
+	kVLWyieEC6TPHR5fAVP7D+1kg9BLio4p43MbtgjYUqHchFnf41cY1vqEY9TKEY+Vaf/Nuy
+	r1vsIYXqSvdwEoLVSvnfd8j3fi1YjV0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1788426315;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=6Lq1QyCS2pwB45xAjaigLwdvoXYKOAHiBjoA3F+oARo=;
-	b=fsExBAMe+agrEi70YIpparLvjnfy/d996k2Jlbldl++V3bm0fb+xQnjuRCyq5xTnhzbCRC
-	Z/uRiWgFaHssDoAg==
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BQFXVOwmsBFKM/Rr5PbcSzr2KcD/BrLeJ3eCzmRkoXI=;
+	b=bZzzsLE+EH/ySEZcEvCyx29JDrIeG5HDZ8BDtqV39pyqVB59okaQuJHpVbSGbVEP91iCx8
+	xzKGrTVFiNt3C4Cw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4D48C136E6;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8523C13738;
 	Thu,  3 Sep 2026 09:05:15 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id yaPaEks4mWq/TAAAD6G6ig
+	id 5TGBIEs4mWrETAAAD6G6ig
 	(envelope-from <jack@suse.cz>); Thu, 03 Sep 2026 09:05:15 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id DB83AA0867; Thu, 03 Sep 2026 11:05:14 +0200 (CEST)
+	id E4D5DA13B8; Thu, 03 Sep 2026 11:05:14 +0200 (CEST)
 From: Jan Kara <jack@suse.cz>
 To: <linux-fsdevel@vger.kernel.org>
 Cc: <linux-mm@kvack.org>,
@@ -109,22 +117,24 @@ Cc: <linux-mm@kvack.org>,
 	Baolin Wang <baolin.wang@linux.alibaba.com>,
 	Farhad Alemi <farhad.alemi@berkeley.edu>,
 	Jan Kara <jack@suse.cz>
-Subject: [PATCH v2 0/2] quota: Verify special quota formats match sb type
-Date: Thu,  3 Sep 2026 11:05:03 +0200
-Message-ID: <20260903090053.13120-1-jack@suse.cz>
+Subject: [PATCH v2 2/2] shmem: Refuse to enable tmpfs format for another filesystem
+Date: Thu,  3 Sep 2026 11:05:05 +0200
+Message-ID: <20260903090508.1360863-4-jack@suse.cz>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260903090053.13120-1-jack@suse.cz>
+References: <20260903090053.13120-1-jack@suse.cz>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=950; i=jack@suse.cz; h=from:subject:message-id; bh=nmbFlumIvFt8cCksagegtdhPcrgXqvGgK6oycSl8LHk=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBqmTg+QxytiwmIb8NKJnEByIzbyS55nQjAfkavF dzNt9qHp5eJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCapk4PgAKCRCcnaoHP2RA 2XoXB/9eZkpdjWsEivOpKLA29bTh2ynB34PS/VrbR6ZUPdLhPzxT+c8ozFt3w7m32M712EJV3l7 Pu6opTUeTkSgAPowQhYCPjW/JRA0z++LWjzLEbuS3y1bW5kZEx8McjUVfAQvZapLpUV7lpLxMpO 8BxmA2EBvO43neqvjLxD+5L/7w55QDy+bysJJizB6HCnHn8iFGdIVdPB0kzaD5QAwuRJJsVWGra A27lNVyr1R6ATfUr2ZiQVZlcIyXRcFb7QBViOPiL8QWffRgNQfWTmmedR3knJyrrWxphgE+H1Fb qbfore8scvpfKxB8tdKIVqDKNKDsaAbMki0yrq6UMUt3qV84
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1198; i=jack@suse.cz; h=from:subject; bh=yq74qpUyYYBh+XhkRlhY9CvlmFz4Sh7DR+W9lw8EnSI=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBqmThF+qG3OMEVoRa35nSomc6gj9S+ECwWWTQAa k90LvBdJ7uJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCapk4RQAKCRCcnaoHP2RA 2VpeB/4vkbXQpBb/RjAWZhBXKbXv3XQRAoEPXAPWZqqvLhMt7xkVwHOvZuZsdTppQm9rx8L7vab Ad+hJE3rXaEpkBdpMG7YUQrrLx+VjprBWZm4dqdGq7HdJ4dm110v8maXi8iGBigbz1ti6RPYE2R Pk/xuUc/cbF1pDB3R5XCBUfmiMrGEFlkzlr3lTCc/S9HA5x47jOylU40JZUxn0XYmK1QA6vZ52T htCSdHJE02646W6HkTA2lch/RtdcMB7nuA6/fKGdjcH+4lpBJVHqYSgPQcEhNJlzHXAFs74XanF MzyxpPVmDeRLE2Ex70OkIc/6C7KsS7apKCAivcOQFEmyuCsD
 X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: mamgwiax9g6rpu45jcfdo9t6jacj4py7
+X-Stat-Signature: 9ytiogb6hziu5d47nyh1weigmn7kfitf
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: CB89EC000F
+X-Rspamd-Queue-Id: 4E6C3160006
 X-Rspam-User: 
-X-HE-Tag: 1788426324-889263
-X-HE-Meta: U2FsdGVkX19fxSuYIyOkUPIrC5seF3J3EeXTjVdIvbotZOWy/uwOkpD6pRee1RlfD43rIFQOZXwRq+1Viyg4+fms5xxEm9XI0pKNHXVfvYckOWiREOR3bCuFA77cq2ujHd/c9APTD1N1pl927kJHWm+ena/BRFCGZkRnLzpcunXaBr/vA+DOaUeY0hSwKwu5zzCLcT+zwHJMuDQKie/0S14EfKMS9lxZr0YLhsHwQS3QLht4VTl2QX+yUU+k0DSyNz187hvcTDPxX0CKQOFx8QULZUxd2LKn7p1DkG3XFRBRO4fpigiKXy3wghtrESsT9cnRaXwji8ZyQXl35EAgWi4m0hiSww2Kdc8RSDqfl+e2GHfx3P0Nl2AZsl6WAuKBn8LhQOjsfNEQzllMvGg+ZopBFqLiwRHKHfS0ZNU0qps5Y/dH7mdVawv73zJDFQ4mIhFDK7FYRfGlRyU8I3mOHNiTS1OhGdICTOXVkf/8cssZZORiEAevzclNjMkT9x/BcmGSZcdkBfEnUXzMQBAjxqtCxYM9Z3C7ULlNZ4bGMRn3Eu5D7RVs1hcvRf8US+a5ANdtmsIDgbaPy3tMW9Noo3yUVl1Asby+UNdUWX1d6mETbthwRRd3mQi6eB7WI+wjNL6ZDSBCKn6RoNumMiNTB5Af0qCR4Nfp+vlw9hKzWNwJ57xyoPPMNxeY7hF1oz/Y4pPlUFwJ0JzgZ0lPizw/e3qf3KuYqmLM1lpDWwMsmTgj7Yvc7ZUDfkBLAA7+/geBOH2cJ1H5C+ri3ONaW1J1ALYcaZ1zI5JR+d4e/8/0fVQSrFZTEg8iPAGqCKyJ8kQ04cwbr+nBa3vow+7PgGc8DSjCjb+cyfP58AgNonmqTQdpfmFmxa6yV6q2RrCqeBaXz3gmYhewIj99tJ132i+m02x3UaOb/P+YqxkrSIGGUow+2/mOBsVYsy0e+VPBnujEfli80gaweqVA4gj76SI
- gcWfTRhn
- VVeqm8dkpHY6MsK8A6yPIlAX2+VrgaQvpkH9Ftz1WeCVXEIqs5M7ykvVyEMqk4a4NpdhNoSu0kG0SZTRjr+RXtI2pDFG8HFvrGkq41bsWO3Sep2aBmSGBMsNJNIFHFnriZOwFbCIInoZsJggE+57HF+tNEWMsMc9oDMAOluIaFzT1esivMZw65EIKIKfCRN+C0mnSUDs7uC0gyUlzU4PakRdJwGRwSSM6xj5vpgiBx7/UO4lmNiWDjobwLcmncEuX53wg/ZED0FIH+nDi84hoCaKgtcIJ0AieDyho
+X-HE-Tag: 1788426325-343471
+X-HE-Meta: U2FsdGVkX185hzXLpwqlEo76ID2xKQMLhTEwzkI/7ajv5GfdGf3R1fsmZvv9cve07j0udCr6Dxzk0GtQvumO8J1Dp2+8k4T/JNb1nPjpJ9OKZmpRKFGYF+NXpcuvleQiTqC+zxZs8FCLWcGwEW81Si1lzak0KGgr7Zb5ERxvU69s9AaNdzl/t8G8hsntLIkFnff934orHMXz7zwSKcm2j0gZk1FhmKBR3NdawnnI1ny8gEIYB+HTxZew4vH+UCBDTOwUYinFMnJ1nCkN+5FdFGtJr4L2AbulHurLdD2CGNRCf25GrRVsSokp4hRslD78WebjK4oPNKGLL7u0fpE8kK5V7LR4JSdQ7M/Cz6LDvZEDij8AKQGD/29PX9663ieNPcG+Hzjxis+zGbawO+xFmdvDRnVMDx4zgCSnE+vpwJrO2uhWhWYbHDfqjvNI19CvB1rvw/ZaBZ78PSTdE2Iyn+VFfFwTkTzjU/+b5bFZRLX8WQgEpcYPX1NGUEq7ZpGhPlk951oEwQ1IDECFIwYLFwTDYDOw6QI2K+1f72axLLpAQhVsF0AlmyYcs037Hq6DXUPP8FoieGqFxty2/hyOy7UOIgHjrcHwJNT+G+h3AhMI+e5YERnbmda4Bfyy5LFkPioupGyXinRF/FjYMQZ/QRPb6GjWeASzn8o4AQOuHnkiqMNyXEQl/VsUAL2DHTl79kvnNILSHV2+yWSUFylvLgwh8eVGh1orILDEt88zZ4TEDg57V+GyOLRHS7hykhRrTPpxx1g4pxJONQns3CZQ1lUHyyEMV1ikopD3T2AE2ysIeJmXknY2j0bMcfEAD5J7Vx4cuWlEbX+aBgKmYVyiGYi3rcs7lNC9pGQUPTsfBdDu1B3qsihxdgowsHsIHMAueQV5GyAy5trfEykFMFQLPVE5H9hXFvyfOujwk1EK76/4Lqq6OXs8vaIIpKmcBXV0IvC3C89Zl3KcAfw3uDg
+ g23t70JX
+ tlz81cPRjP2ozZ0q7Tc1NghLHlYYvJF2LCM6te5PfSg8iNYVVh2KGAhhoNYOPxNS4JvthldGUkIwgIt0fD4AlGhIjCL17I7FyqyrN4SZYejBZDLWW7Cxr5SNfr8TCx/XJYO4Jq4u5DyGVqYp0M4HdhOw9JMQKVDEeQ4zULRWDtFYqLueoES0Ns5K50bAuBHgUcXaYuQMb38TPMYga7pBUUgEFom5EbtPAWmpdUEZz1IsQGOI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,29 +142,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+It is possible to issue Q_QUOTAON quotactl(2) e.g. for ext4 filesystem
+requesting to enable quota using tmpfs quota format. With suitable
+passed arguments this can actually succeed in enabling tmpfs quota
+format on top of ext4 filesystem which leads to crashes later in
+dquot_acquire().  As tmpfs quota format is intended for tmpfs
+filesystems only, verify we are indeed enabling quotas there.
 
-here is v2 of the patches for fix quota crashes when quota format doesn't match
-filesystem type. I'm now using s_magic instead of s_type for superblock type
-checking as Hugh pointed out (thus I also didn't pick up OCFS2 guys' R-b tags
-because the patch is different now). Once reviewed, I can merge these patches
-through my tree as they are only quota related and very unlikely to clash with
-anything.
+Reported-by: Farhad Alemi <farhad.alemi@berkeley.edu>
+Signed-off-by: Jan Kara <jack@suse.cz>
+---
+ mm/shmem_quota.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Changes since v1:
-* Use s_magic instead of s_type for superblock type checking
+diff --git a/mm/shmem_quota.c b/mm/shmem_quota.c
+index d0b92d6da50f..a3fa4bd93e75 100644
+--- a/mm/shmem_quota.c
++++ b/mm/shmem_quota.c
+@@ -30,6 +30,7 @@
+ #include <linux/slab.h>
+ #include <linux/rbtree.h>
+ #include <linux/shmem_fs.h>
++#include <linux/magic.h>
+ 
+ #include <linux/quotaops.h>
+ #include <linux/quota.h>
+@@ -54,6 +55,10 @@ struct quota_id {
+ 
+ static int shmem_check_quota_file(struct super_block *sb, int type)
+ {
++	/* Verify enabling happens on tmpfs superblock */
++	if (sb->s_magic != TMPFS_MAGIC)
++		return 0;
++
+ 	/* There is no real quota file, nothing to do */
+ 	return 1;
+ }
+-- 
+2.51.0
 
-Original cover letter:
-
-There are certain quota formats that are created only for particular
-filesystems - ocfs2 and tmpfs quota formats in particular. Make sure these
-formats are indeed being enabled only for filesystem of appropriate type.
-Otherwise quota format operations can easily crash as was spotted by fuzz
-testing. 
-
-
-								Honza
-
-Previous versions:
-Link: http://lore.kernel.org/r/20260902132458.23590-1-jack@suse.cz # v1
 
