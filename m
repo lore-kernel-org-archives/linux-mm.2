@@ -4,92 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 337B4C624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 08:24:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FDF0C61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 08:33:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F6DF6B0088; Thu,  3 Sep 2026 04:24:15 -0400 (EDT)
+	id 1F58A6B008A; Thu,  3 Sep 2026 04:33:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A7966B00D2; Thu,  3 Sep 2026 04:24:15 -0400 (EDT)
+	id 1A6F66B0092; Thu,  3 Sep 2026 04:33:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BD5C6B00D3; Thu,  3 Sep 2026 04:24:15 -0400 (EDT)
+	id 0BCCA6B0095; Thu,  3 Sep 2026 04:33:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EF3D46B0088
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 04:24:14 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 80A1A120474
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 08:24:14 +0000 (UTC)
-X-FDA: 85171763628.21.762FD99
-Received: from mta0.migadu.com (out-16.mta0.migadu.com [91.218.175.16])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E6280A0007
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 08:24:10 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=wfVZLCR3;
-	spf=pass (imf25.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.16 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DD2986B008A
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 04:33:06 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6AA3F1A047C
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 08:33:06 +0000 (UTC)
+X-FDA: 85171785972.22.BE2E94D
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C4239C0002
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 08:33:04 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=vUa9quOt;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=pDYT7mMj;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf10.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788423852;
+	s=arc-20220608; t=1788424384;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xa/t3XNOlXe74ZMdB0kX8AqrXDDbQW6k323PomJFr1o=;
-	b=wdwfx9CNMazxW9Bb0LZOnfkIP1JtJp/822I7lOhwtOb+YHhOcLnjLo8TyqzjUD8UhF+XNV
-	iKvddBxa7aVGZIivYstodqElAIFqQbgFaZGddm+IRyVAJZlrnAESfA6otljOP+LiZgbQWB
-	jylkV7Y4jJGaAtDQQqJ01KVrHSXqH1c=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788423852;
-	b=LVanNpi+3e278xhOZQC01zQC4nKmUsL/v6hpe9+PnX0Q2o7o6pSAMaUhFaZs6EeYjtNqu2
-	xvAi3S6T6mRniYirHmnN/krADaZCBKpKSQL0wFI6rDGVRF+7MoD8wEFYREcUYWTwarkU9G
-	F4683xyySO9GHkcd3psQMLAa+Bipwa4=
+	bh=C1+RlBHvN9fvzT0b4kNv62X9v1GMI5wMZBpkbnRiPgg=;
+	b=fbGPMBdlJllno2TQoaI1eJ5/DwrVpGmat3hRFT6JumSp6vO9ibQ1ad670MOV4qs34j0n5b
+	w6/mUGHRNfOCqE37Ft906JUPgbKhLvoN3uRIksAxMjn3/xwtE/uq+UJDABDeOsyXQw1KAY
+	nroS50M6sFeb8tERZ4aKscm8EDTPcho=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=wfVZLCR3;
-	spf=pass (imf25.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.16 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=bz3SZL//Djx5lNW9Q5WO67qm9+hz2GY8LyxsWp6/XM0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788423849; v=1; x=1789028649;
- b=wfVZLCR3/QJY1z9mFnlgnq88hp9T7LvYFUSK2mWHk4R4tntmZWG4HZGH16gewlkiYIK+CpE2
- BfVEMQv9KuRbZOvkQ2Jt48M7E4mc6dC+5U1LUkRwXscSDSlgLCZnYpDMboXWd3hYw6wDUtpum9c
- zW4B5EXbJKB4yKepjUeDARHw=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 94f1fcd18dd1bd3b;
-	Thu, 03 Sep 2026 08:24:09 +0000
-X-Mizu-Trace-ID: 94f1fcd18dd1bd3b
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 3 Sep 2026 16:24:06 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org,
-	akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
-	baohua@kernel.org, youngjun.park@lge.com, hannes@cmpxchg.org,
-	yosry@kernel.org, shikemeng@huaweicloud.com,
-	chengming.zhou@linux.dev, david@kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 07/16] mm, swap: add xswap grow trigger on cluster
- allocation
-Message-ID: <apkupjBofpvnxyOG@fedora>
-References: <20260827094509.1016740-1-hebaoquan@kylinos.cn>
- <20260827094509.1016740-8-hebaoquan@kylinos.cn>
- <CAKEwX=P53GAmyPeBQ29XaHnGw5qpKkiKiBEwuhdRKdkMPT0GSg@mail.gmail.com>
+	imf10.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=vUa9quOt;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=pDYT7mMj;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf10.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788424384;
+	b=HS/6+xiKnX8WqTB9Z1TFdL+XpxQP6mJivHE5U+36C8yj1VWM3SObXw7iTbSNwwg38L+md9
+	RzYXbBtew4mBQ4aWI8FZXRJJr7VQnLPhDV6hcZ3gbO2+vDZIdCTphHZhkKMc0VOF/HMbtw
+	22j3fGW9k8a1D3CC9OQsr5HirTXBJCA=
+Date: Thu, 3 Sep 2026 10:33:01 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1788424383;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C1+RlBHvN9fvzT0b4kNv62X9v1GMI5wMZBpkbnRiPgg=;
+	b=vUa9quOtdWvGrJdQKg9qmPHqIX0hijGLSqebL5wOszU/E+xMyu9t3mO/BgVc22rrwQBzE0
+	2gtj5wZCMj1nMiiKxwnK5qMXwGmtBB2YBp7gL+0Slq4S9V2QyhqRYHlTGjQlxltu3KZqx3
+	KWDuI+MafYFwR5xQdVu7oZRZsTWLfG38XWs0zJGjWOC+GIkSqJQad4NseEvESz1mv+X2MN
+	GVTzjrJbGtMcpNgD27buFrkZeV5sb6a4iPf1BLPXRpwjdXW5AqYHzNJkTi/P6H4isoqjp2
+	iTfDkeW0OaKj2C4QvA5Y4ExsyO7duoV0B58XB0UpvaKT6VQEafBV+DqNzM1wJw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1788424383;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C1+RlBHvN9fvzT0b4kNv62X9v1GMI5wMZBpkbnRiPgg=;
+	b=pDYT7mMjHy+UmJD526epCpQMfULaZm9VG/JxzkXoQyK86LxfyaVsdICQtOpNwZDkryABsO
+	kEso24WTDRccffBg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexei Starovoitov <ast@kernel.org>, Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	syzbot+acf142088e0182172e58@syzkaller.appspotmail.com,
+	ThangNN99 <ngocthang2710.1999@gmail.com>
+Subject: Re: [PATCH] mm/slab: disallow kfree_rcu_sheaf() on PREEMPT_RT again
+Message-ID: <20260903083301.2aPFamvg@linutronix.de>
+References: <20260831-b4-kfree_rcu_hotfix-v1-1-4f0fb882638b@kernel.org>
+ <20260901073339.uyKHXWCX@linutronix.de>
+ <47aa459f-27d5-4b2f-9eb9-36ebca63d890@kernel.org>
+ <20260902104143.j8BXrjKq@linutronix.de>
+ <1846af86-cf55-456d-9eca-975a88777a40@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKEwX=P53GAmyPeBQ29XaHnGw5qpKkiKiBEwuhdRKdkMPT0GSg@mail.gmail.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <1846af86-cf55-456d-9eca-975a88777a40@kernel.org>
+X-Stat-Signature: 9dhh9ui1mnx4c7kkpu33174octg9bzix
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C4239C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E6280A0007
-X-Stat-Signature: fqrhtg3gyh497xiyzxwmms3fgggehhsj
-X-HE-Tag: 1788423850-690526
-X-HE-Meta: U2FsdGVkX18j9xtv3Ds5wO0Vz37gfsQz5VJTiLLqFLBOiURgakd+UG4Ps1R9QSL/kETh+61DDtfqqPZAaQIYHpt6olV1TWotfa7ZIeETH9uKFjaxok8+sMiDIuFTVoGunwWzUv3V3RnGwqsk0cndnFv1kuBU3usEMw+yt1NFtqO+tHb86cFwYY9SNUeI8c0ScBvAVMk73yKeKj9ufKJvdXSfpdLLB84DHdDuETrIcJptXaFScE3kf3/6Ei3o7KzsABSGH6EEekp60A0wwdoxsHXBSvpsveMnCP1VmNNqc+JWVVSd69+yNarDSXYd1DPLZ0KTM9lU3uFFgA1O38lBFEW4fkNc3ffjysU9b8Ywtg6MpDQ0qQLRPXrzHhwYg8iX07exzg5ltj30izQd9E7YobWnnvxfuWfQB/ZMnai3WHBhgNzaUf4UjmBeDv/RnNiXX3Vqlg2kYpOnYqc4fnq3R+ycyfpmw2LltogJNbW/CkAN3of+0DdeRbeZbiTHuXr1s0VWCJWN3qhRHBuO7dPOKISyHZ3J+1OakeDnn/iz6bpT4WFZxrC1BgdVEx1pKto8NF1wzkdw9fCN+DokPIucX3VlwotKsm782t4yER2PqSr+eXsAI9M+5eNU32zs7RRW92NDSYEiPOXiAPMN/06j0REAUwcJj/wNsl4qKeC5bmb8z9bgO3NH4Vk8AbCEUWWJJyAIFoZGP9xVPTLCZI8huEdvykKIyW/Z1qgcqSX/1juw0epDuZuhJpqGSXsX3q7TcTOR3OitCc9WI+Er0rGiRLwYb/gLXFyGob7rn90gA1V12EBwkezvC6g+dtigemJcZXUjL0gVOVRbsoC/ERRsaIHvjW6ALMbULLlXX4YNxPrm/4S8XLxSohU7wGsxx2TWR278PGjQ6DmDttdx5KEmuZ68r4qUcHzYSbi9+p/jnAjslChrClETQ1w0hWL6Fr+pCI9Mi+mvA9sTJdIwk5o
- 8BOfarJp
- DT2gX+ZHpu1ZXIVFoRONhlGScf5gM2Ci+VzkYaeEf4yhBHstobpQ9VUqmdm4dxvj6syGbfnS9H/VuYyvLa5/2RYcmabeD/EmVyrkp+Au2LE/2f2MxGW+KfDsqlBbUcu2e61fhcIDzzNELVzjt6jlleq/4AYKve+Snp4Fz+RFsD3katsDleNsjvW0sPFV2I4u5u8SKXj6vCjGcToS/mcuh5gO4jKtHKehInPA4+cULZKbK12eD2YDfUT3glI7IvIu+KRyLAeYNo1/HoeBiY8LHsHeyKEwFp+Ly4TUDyo6u9vGtxrg=
+X-HE-Tag: 1788424384-602414
+X-HE-Meta: U2FsdGVkX1/lS8+63VS8K2Jyld8AIX3kzR8+2JNIWmLckIKIc8SwxtynqJRqsU+ogAPi0fUnP7keaZhe3wVu+750d650rU4WYFQbcHcD2Ku8laKw0Hckw12eP8I8d3fN0fVPm+hmGeOnez5BNACkZq24o6je2viz0N6Wt45nXjf2lctC4mhI+Y2DJ+o5FxPVgJ1PVodu1Dds2I95xnmR5HqJn78GsRXZb8E8vZbiObbPTOqtIYFqdlEfu0pk2on10Ibb6MeSKQDC+btes1Kkbk4mZP9NLpYzWX/KvIJW3Q0Yydeok35KIdDwY7dPtChZp4d+j0GUbUvAdFHP/p2kUqHH4ALW5dEjx455v9ktl5nt7mM4plw/2mZ3HoxUGPGNnNpTCuBclW7q9eGXwCgkZwknrq60E3jDDeX2zN1RXWwrAxCgE4XfmkLyuNTRbl5jOYLToD5fnGpewYS7odlD7IWInNzNfISnM50FbiaemanbrPXDTOAumsaD/vujq5K0BZ78Gch5OgZeHEeeTwiB76FCAXwoqGgnUPnpDtUYahWupBbwN+UuUh0jN8+dxfM3UU7a4ius3v1jh/kC1F+PqJP97aMZzNk0zg7GR4JhhT8I1Q4OKkFJKjqimxvOm5CWE/Pvd93ti0gv9uW8wrzkJtusC+J3j2XTeK9Z8a3dNTu8CVBx/Fn9wfZgpT8gPnsBMO8xccXWHCetFPbDoLgSXWfGRRbNBpki4lTsAa1nA8JM/hpbrnFc8zlpI7Auf75xK9WNJvDdk6pKhK9Ytj/YgiS29YCUapquu0TstV4gm2MRlksYfIDLnH6RnSC2x9u6kCR8y0HnUG5MSN/gFaPVRvqb9NoVAMu+le/GG8pNiDIn07j92LDwSNzkGcuu31squTqN+Ohb/7N8wzJyPn7TAWDIGoObG52fx3QDs9LHROTrC7ripmXYHBoCYgO7swBn71uJw+0NaWbMCCCYrQc
+ zb4n8UVI
+ dtRuEVfwWs7rSzrOh1NFE7CUD8XgPL/u2EUYZKHsV6s5YENan/yGTI5Enj4otS+7fhUDRlIs8UfkCZ8j4BVVReNqNzvnolCsEKF/Gi6onTYzJ9+7P6mWCjZvoJ1jgb8BkqgDvGBmBvkY++sMiyJQ1tya9EFLN0iBOPL/Ycb96VndPghSnZ1juNnca0XiGHcfPR5ZFUvzSsPcZD3mbYC46fc6SzErRNAiRLASKoXNnllJp6eYLqZS8oax4BUtCf+IHWCxZOF2UCkU+9CvzvI+CpPb4fh6YnUDATKsxZp3aUgOo6+O/boAv9ZwvLNPLDOQj45lDSAq70HcPCwrM6NaWIRf02O/I76yyHMeuDMqh9IBvyOzUYDEzcz5DIQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,23 +113,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/02/26 at 10:15am, Nhat Pham wrote:
-> On Thu, Aug 27, 2026 at 5:45 AM Baoquan He <hebaoquan@kylinos.cn> wrote:
-> >
-> > When cluster_alloc_swap_entry() fails to find a free cluster and
-> > the xswap device still has room to grow, expand the mapped range
-> > by XSWAP_GROW_CLUSTERS clusters.
-> >
-> > Since xswap is always SWP_SOLIDSTATE, no locks need to be dropped
-> > before calling xswap_map_clusters(), global_cluster_lock is never
-> > held on this path.
-> 
-> What about local_lock()? I believe we're still holding
-> percpu_swap_cluster's local lock as we invoke xswap_map_clusters()?
-> Would this lead to issues :/
+On 2026-09-02 16:13:30 [+0200], Vlastimil Babka (SUSE) wrote:
+> >> Per sashiko review it's actually bad too under the pi_lock, because
+> >> GFP_NOWAIT means __GFP_KSWAPD_RECLAIM which can mean wakeup_kswapd() a=
+nd
+> >> thus also need scheduler locks. And it's not a PREEMPT_RT-only issue...
+> >=20
+> > \o/
+>=20
+> More like /o\
 
-Good question. Kashiko also reported this , have fixed it by moving
-swap_alloc_slow()() out of the lock scope as swap_alloc_slow() does not
-touch the per-cpu swap cluster cache.
+Yes, true. But it is not longer an RT-only issue.
 
+> >> > It could have a pool of X
+> >> > and if it runs out, it runs out and waits until the clean up process
+> >> > feeds the used sheafs back. There is fallback and the run out is not=
+ the
+> >> > usual case.
+> >>=20
+> >> I'd rather not invent new pools, since there's fallback and the sheaf+=
+barn
+> >> is already a pool. Could be enough to make sure the allocation attempt=
+ is
+> >> safe, i.e. use only __GFP_NOWARN.
+> >=20
+> > So we avoid the allocation and just add it to the sheaf+barn and this is
+> > it?
+>=20
+> We don't need to avoid the allocation attempt if it's done in a safe way?
+
+If it safe and does not not increase the free-latency too much then it
+is fine.
+Now that I look at the kvfree_call_rcu(), there a timer, hrtimer,
+workqueue=E2=80=A6 Oh. And a __get_free_page().
+
+> Note the new sheaf can be also served from its kmalloc slab almost
+> immediately, going all the way to page allocator should be very rare.
+> But if we stopped doing that sheaf allocation attemps completely, we could
+> easily end up having long bursts of all kfree_rcu() being deferred.
+
+Sure. If you have memory around then there is nothing wrong with using
+it. In my naive thinking I assumed it should be enough to fill the
+buffers and in times of bursts having plenty of RCU callbacks which are
+throttled.
+
+Sebastian
 
