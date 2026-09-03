@@ -4,90 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13CC6C61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 06:29:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72C89C624D4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 06:30:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD2736B00BE; Thu,  3 Sep 2026 02:29:37 -0400 (EDT)
+	id 841606B00BF; Thu,  3 Sep 2026 02:30:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5C0F6B00BF; Thu,  3 Sep 2026 02:29:37 -0400 (EDT)
+	id 7C9596B00C2; Thu,  3 Sep 2026 02:30:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B23E06B00C0; Thu,  3 Sep 2026 02:29:37 -0400 (EDT)
+	id 6B80B6B00C3; Thu,  3 Sep 2026 02:30:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9515F6B00BE
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 02:29:37 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4611C6B00BF
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 02:30:27 -0400 (EDT)
 Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 24ADF12029B
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:29:37 +0000 (UTC)
-X-FDA: 85171474794.30.AC19E04
-Received: from mta0.migadu.com (out-10.mta0.migadu.com [91.218.175.10])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 167911C0003
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:29:34 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tK8UWHJ7;
-	spf=pass (imf18.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.10 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CC0B2140439
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:30:26 +0000 (UTC)
+X-FDA: 85171476852.30.E625C31
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id CF7E5180002
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:30:24 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NQEgvfbF;
+	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788416975;
-	b=Ch56MzYIDnJ3ZtuvhWZJF0yHU2VO2V4Cg96eF6L8dqcJkUFKeHCh/Rf/ypT5n8Q41Ps6Ap
-	kNJd76yX2OQG7RulZL74e6GOoRD66t2OIyxtc3xwVieMIzPJNGYnzinNhgMUvYUfyD+aEK
-	Og6gxI/1+TF8nLp+tWcheSram+9brzQ=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tK8UWHJ7;
-	spf=pass (imf18.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.10 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	t=1788417024;
+	b=feJMFWitQRHbqlFK6uMMEN2PRlwKPjJLajYB/eYd2RqSQeL5EZprwuTOIFTBOuGeZW4sQ0
+	QVD0URf6sXlIG7sxRyHFhPLGzBDXCVE27li/v4xeFp4gBN3qMCg/pPf0TqBgWYi+/uITSF
+	sA3y4dPDcRPIKMqbC2goW1a10fi3BWI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788416975;
+	s=arc-20220608; t=1788417024;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SG85zpAlWWWxNO0nM/VcfjPJXblZwQfOMQLUui6AIa0=;
-	b=juSjmcWd3VR7z+x2rjsFB7jSVapV+jTRV7W6pXLE156hPQX+AwonLtLz8npc77wicfg9uo
-	VXj0bEeDB5y3fweGR5jVNWbhiqBp6eG2v0VazwxsXp5vVM4vhzIMWG82qtwpoh+2bb/j1E
-	e8izyUVgeFGCCSm4hwkDH+W0l5Fy+LU=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=w8ONuXQbe+L8t9TFC6e++AV1NKpgPqVNbxHf6dsgfC4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788416967; v=1; x=1789021767;
- b=tK8UWHJ7Iy4ieHvUcQVd3TPPmhTbyDfWQMFoyzC0eoTzdPGXp+csW9SnqOFY9xujORDI6Fyb
- JVwhAG1+gLKYk+SpAZjXG1HWcXSRVkqqjugKiGNKU4+CyYb6r74bCGIocEHbKvzAA2Wf3Fpd31I
- JgIPastXj5Nbn6xLuKebxFpg=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 1d69a6012f25cc1f;
-	Thu, 03 Sep 2026 06:29:17 +0000
-X-Mizu-Trace-ID: 1d69a6012f25cc1f
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <336b56b2-6a00-4153-8c0f-19272bcea383@linux.dev>
-Date: Thu, 3 Sep 2026 14:30:07 +0800
+	bh=z36InkbgZ5czLNoME51lvPgrfTTVurywTjIuByWup8c=;
+	b=K7auvcXrH+HBxkDNMNZaBR1Sxa/d7vB0lSkoC7J0xYi9HqOyBixOu62WiuKnwgvMP1gcKg
+	qWFuj7Jq26lL3uRes5fkDsuOWvDWF58fJ5z77NBmwC9GzBBW9WW9h5Z9S+o+suezhffZxF
+	/D7J9M7CkTfX3Pqx8EHyHrI3Vpcia7Y=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NQEgvfbF;
+	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A860243EB2
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:30:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F86B1F00ACA
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:30:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788417023;
+	bh=z36InkbgZ5czLNoME51lvPgrfTTVurywTjIuByWup8c=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=NQEgvfbFEiEVrwFSBb/9E5aGP1yluPqmMKNMROwPv43STzTUF6Nd7VzSo4LqIes+B
+	 vS33elFpG3DqJVJp7oXlNn0Qz4hD8DvzMCc6Ht0jI36l0/gOETnGOukv7PX5NkJ1md
+	 99z/lxcYVTCKfNPOOqTFJJMa/ChgMj9aL1If6GAvBJdjVlrHD6VnkGGwjX0v0EsM99
+	 oQBnuE9Fzx82MuO4xrlTW0e+PZqHg2hT5cxPU4Ecc714jXMIednN6MjlIjyGDgf8o/
+	 a0M1NZ9tBvErUImCCyjYSMPOu9PV2DglTKjiGBUaGwzaxISTriJLtM8lTnRyiCGWIW
+	 dpnbekKaUUqFg==
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-9390a2c8909so165566785a.0
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 23:30:23 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwjDrdU47+tiEwhqCwE15oNDf7Z/UjK0PkSZyI72AtLlmqBqcvtIDJPPOyXrjb31xZk2lHVrt6s1g==@kvack.org
+X-Gm-Message-State: AFuF++lqFLk0z6BcYAz/BuGrs0bgjlQfRJKbSMhIx+O9KrLhWSLh/+AM
+	R4LYXkC15CzaIqFn+1VE3WwjFbebez10MbPqbomF8LB1ZL+ZB+4/PH33RbA/0Cz2nvLeD8BU0V9
+	XgKAmAfzOhkS8V+3jgC/Q8mSYP8OPzRc=
+X-Received: by 2002:a05:620a:f13:b0:937:2ac8:bbda with SMTP id
+ af79cd13be357-93960f52da3mr1075847085a.35.1788417022888; Wed, 02 Sep 2026
+ 23:30:22 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/4] alloc_tag and module codetag section fixes
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- Aaron Tomlin <atomlin@atomlin.com>, Suren Baghdasaryan <surenb@google.com>,
- linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260902081802.146145-1-hao.ge@linux.dev>
- <20260902150501.d589742ba33d0beeb0cdb21f@linux-foundation.org>
-Content-Language: en-US
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <20260902150501.d589742ba33d0beeb0cdb21f@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260903031952.1120321-1-ridong.chen@linux.dev> <20260903031952.1120321-3-ridong.chen@linux.dev>
+In-Reply-To: <20260903031952.1120321-3-ridong.chen@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 3 Sep 2026 14:30:11 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wKaboESQfUJPi8y4BNJuxpEWG2Prjb44NvFKDV_aeVhw@mail.gmail.com>
+X-Gm-Features: AcwNN1Xa9LjF9LvOPJz6jmGmZsvCdU3Ed2O2AMgXfYG7RHIlGiW-5e7M8Zr3wao
+Message-ID: <CAGsJ_4wKaboESQfUJPi8y4BNJuxpEWG2Prjb44NvFKDV_aeVhw@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] mm/mglru: fix ineffective memory protection for
+ non-kswapd reclaim
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Muchun Song <muchun.song@linux.dev>, 
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Chris Down <chris@chrisdown.name>, Tejun Heo <tj@kernel.org>, Yu Zhao <yuzhao@google.com>, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <linux-mm@kvack.org>, linux-kernel@vger.kernel.org, 
+	Ridong Chen <chenridong@xiaomi.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: ek4xwqt8869ujnsor5iii5gmpd6qef93
-X-Rspamd-Queue-Id: 167911C0003
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788416974-164342
-X-HE-Meta: U2FsdGVkX1/d2my6n1P0cHwp3Z+qrorcJTwxRisHs0N4R69jWRl+kCf6QzLMfGZM/N+ylEl0MIz/GK58+9e1IZcXuKeSLPMjmqKqDj1lDWNayJ2ydeHVowXQUIrcUBzlgck5ioHbOSRw1GmGliYBH8fu/yRhOuqU/UDuOH0gk+ys6bQDRJ8EKI87ZdRW52PsrlhbuiHK7lewx50fc4gHO9idUvK6v09IJpiBfZPDKzCFSO3O7L2WfE3nO8KdfY3EMH38Bg2UcaniAngu515/nqBX6Q/9maXawasvJkh0k9x9aoNaC8A6g++BHVHPpQciz+t+5vW9QRDsjgNnwssHWgK8wcrwtvxdzSEUGwM52OzuKXGTjkabhqmVlfrZdTsFXhrMqhyB0OWRXS5x/EU/N/UGVQSKMPUx+lQihniSzRzc31wxlKxmITvFcGaQ/YsGgYXoO/r6N+YxqKNeo5OYeoXJCt1/8msOuBO6XqsSj+2JTes9SB+Xn+IHbRtBIL3GO3Cjt6qLSR0L0Gh/qDWjrYRrkaW9am3jfUV32mWeaTwMcx7N9ayMCtvc/kTK3iTDMNBWyAriYdDNX3vnyO0oQ+8zroGaa6AhcrSd0vhe4ZB2FkI777nsxBuJAZXDdBhHPyrE+gKJEtyCzodyg9EHjpkDIwzrLNg32nGrjXwWkuxbBU/VbG+ypBkYQ4fVXqa/yThtdPjgCQgOD3XrnMfTKUAGZi8/PuOgdP4Zd1ci8Cxmwr0O6l4taTT6f78v3zvOa9oTbJ6A7f5Nn/Y7a2EMcoThVIPXkoOB5rc7Q/vtNpToW2n1bcdySdEbJN6huWzsmrRtpBCrFq7u8MtiITwxLAceTeGvt3aRDoKZsiEFgiVNwUcrzcOp7MppVouh597v5YbqmKdXijMPfXf9Hwhbal5mbcJttLGSfQ+8QXN5h6TdKN++L75cfYnX1NBagKTNDtMHL1bGWLMbYztlcCk
- XTZH2V/8
- 5/7SNmERFImATlIVnjwiTDgtYrL6akgT37Y0MjVF1m5eZgg5r8juDYsWIXJpprsEXjCnDt7HHUe3iaXZD3dR5mqgXuW0jRIcjbWu8NPbJB+pC4fyQzwIGuZvRNsoMKzSqE2ritfYnNHcA+6+zKlVrbSF+p9Y23OMHTvcRAa+xxuuUf/+lNM2OnW4JHw50jntKk5t+5+xhe0FgFH8CXHFZqDGqqxaMxng0ZskGxjAKQCTGLWsdIKGZ/DF939xXuAlHcKf7/WGSPL5EpD3nfgDY4l+e57eObxzrJTkW4dFv2GBXPBTT6FouR8Aoh6aob51IP3K8q+Ujn0kIMODuDnR6FElC11xoVm1Jf22DFWfuCdezonFME71fS8VB44aYB8TK4LtWt982wrBWIA4nMDMye3CANg==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: CF7E5180002
+X-Stat-Signature: nfpiippggtnkg7mbz4azdwazq15cpsi7
+X-HE-Tag: 1788417024-282264
+X-HE-Meta: U2FsdGVkX18b1OwdnmN6qPU/IQMrqOUlbWaumBREwp6ybyKhFDpXdDXb1Ps9jirH/sBnYNIBQvokdmKtlAnsQJLx2YDzhgPz8dWCg/QjON0SdyXjwM+68gaHqXezCdUURt6YhrCR9oyvIokgXhphJY6pB5GKB0rJnOdgsiyVN40N0oCrTfopyKJlrsuz48bYL7ZeKJ/UI9frRatNe++4Bzjunqp1SISSUXzTrtryS1MoKzBquigOb/dOA8pB0n+8FMQRUjk3U2MUqaId8evdSJ0ZLDL0A8T4GK22TsfecMUy3bGW23dHlOkspXjruXEYarjvZMIP4p4aUgNZ9S/SbNn34zQ6Y78NTtzBQcivWvcPIZP550QOtqo5NIs04R4ScJuDydfgJBqZWv9LvdEQZVWqNA9im0I/v7egNWa8YeWJP1rpf+3B1FEvdmEizqqKmZr0tfA8H/EOoLzENO/w294x2dEbUFHC/Z77PxEhfMB2wg3smteY0lyL8QHPvyz2vizJZiIUvJdv6xN7zt0jdcAGhCox6Vowx37Fr4i+3byvicHKv5eUObeQioxtD3Y4jV2qFIZkTthMFxvxjZwiRQt6oMu0j14dvAss6tsVJd21y4QZ+/WV5fKPHCrJ9Qz2mpP8LxDNWuC3hyhVZnCjMIHIxaDWo+lsZ8uup//PSKCjXadnnNMHwLbUSAmQSgM6uUjXk6vy4qgA7n+tuRD3pRLsxn7NxA7+lIdm7O2Rol1XraW3fRCUUS4HQ8De6BzfcKGsVlwZX6+nn4s47/hnbs7rz+7luaEr7Hpu4JBoJNz7OUiB/e0LJuYqrOKSzFvA8Rp4aT30FnLjt1AIj4L954ALmB3WOTX1SI7iCqOcxnmIEgu8i658uifjXNEsLpvc8quUpGWxIF66KeQ7BuF8X/YV7B/996e1pk7E8DG1+LzVk9JHgkamUnirPAKHG4EnuIcD16eZZawMR6mjTi9
+ p11qld3f
+ jE+Uc9nO8Kq+xmGN3axptLReplUJOL3/sutwTMT5HjqLXaueCdT84xP9De56MjA2gCP/ysK4ZqCIP/YuiyciA4coeH+3WMlgjx/qy7ACOHTBrbj/mNUEchZDnthVaHfrP5Bt/bqK66wYyIfCeJBwjAtsLYQ60x741AH9ALHlN8y82sxPgTeP+lFM48eL+7DLjtK784V9Zx665W3ZBS6Zg9gEEqwb1i5cCbvBTY7R8qw3OyvX8FzpF9+LCR7qNjkd/eXtmNV0SnDq23en9M/Eb+AT2LuHd/pD57hbvzmqH/WQLT0NM0TOZ/YsIEGq23PhD2iYz/F4UYUW/pSI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,51 +111,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew
+On Thu, Sep 3, 2026 at 11:20=E2=80=AFAM Ridong Chen <ridong.chen@linux.dev>=
+ wrote:
+>
+> From: Ridong Chen <chenridong@xiaomi.com>
+>
+> For MGLRU, memory.min/low is not honored during global proactive reclaim
+> (writing to the root memory.reclaim) and global direct reclaim, because
+> these paths shrink memcgs using stale or effective protection (emin/elow)=
+.
 
+Are you sure it should be =E2=80=9Cstale or effective=E2=80=9D?
+My gut feeling is that we don't need the =E2=80=9Cor=E2=80=9D here.
 
-On 2026/9/3 06:05, Andrew Morton wrote:
-> On Wed,  2 Sep 2026 16:17:58 +0800 Hao Ge <hao.ge@linux.dev> wrote:
-> 
->> I ran into an overflow problem in the module tag area. With profiling
->> toggled off, the overflow check in reserve_module_tags() did not
->> run, a module could load with more tags than the page flags can
->> address, and re-enabling profiling then silently corrupted
->> /proc/allocinfo. On overflow the fix shuts profiling down, releases
->> the reservation and returns -EAGAIN, and the codetag section lands
->> as regular module data in the same load, so the module loads without
->> profiling.
->>
->> Review of the earlier series by Sashiko turned up two more problems.
-> 
-> Thanks.  Sashiko had a lot more to say, as I assume you've seen:
-> 	https://sashiko.dev/#/patchset/20260902081802.146145-1-hao.ge@linux.dev
-> 
+[...]
+>
+> Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Claude:claude-opus-4-8
+> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+> ---
 
-Thanks.
+With a few nits:
 
-Initially I was confused why Sashiko didn't review this patch on top of mm‑new.
-Some of the issues Sashiko reported have already been fixed in mm‑new.
-I checked my old reviews and saw other mm‑module patches were using mm‑new.
-That makes me wonder if cross‑module changes follow a different baseline.
+Reviewed-by: Barry Song <baohua@kernel.org>
 
-No big deal, Sashiko did find two valid problems.
+[...]
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index b4c9b8f3dfe9..500cc2051d13 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -5111,7 +5111,13 @@ static int shrink_one(struct lruvec *lruvec, struc=
+t scan_control *sc)
+>         struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
+>         struct pglist_data *pgdat =3D lruvec_pgdat(lruvec);
+>
+> -       /* lru_gen_age_node() called mem_cgroup_calculate_protection() */
+> +       /*
+> +        * For kswapd, lru_gen_age_node() has already called
+> +        * mem_cgroup_calculate_protection()
+> +        */
 
-> Also, "Based-on-a-patch-by:" isn't a recognized thing, although it's
-> been used ~30 times in the past.
-> 
-> I'm ambivalent about ad-hoc invention of new tags, although it happens
-> a lot.  Perhaps it would be better to do
-> 
-> 
-> 	Based on a patch by Petr Pavlu [1].
-> 	...
-> 	Link: ... [1]
-> 
-> ?
-OK, will do for the next version.
+Could be clearer:
 
-Thanks
+/*
+ * For kswapd, mem_cgroup_calculate_protection() has already
+ * been called during the top-down cgroup traversal.
+ */
+
+> +       if (!current_is_kswapd())
+> +               mem_cgroup_calculate_protection_path(NULL, memcg);
+
 Best Regards
-Hao
+Barry
 
