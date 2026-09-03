@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43271C61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 17:55:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB354C624A4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 17:56:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C4576B0099; Thu,  3 Sep 2026 13:55:40 -0400 (EDT)
+	id EE97E6B009D; Thu,  3 Sep 2026 13:56:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39C146B009B; Thu,  3 Sep 2026 13:55:40 -0400 (EDT)
+	id EC0DA6B009E; Thu,  3 Sep 2026 13:56:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D9016B009D; Thu,  3 Sep 2026 13:55:40 -0400 (EDT)
+	id DD7FA6B009F; Thu,  3 Sep 2026 13:56:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BEE16B0099
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:55:40 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 87C301205B5
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 17:55:39 +0000 (UTC)
-X-FDA: 85173203598.11.BAB14E6
-Received: from mta1.migadu.com (out-204.mta1.migadu.com [95.215.58.204])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9BE1320003
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 17:55:37 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BBlpvUw2;
-	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.204 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BED8B6B009D
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:56:27 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5091F1604B7
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 17:56:27 +0000 (UTC)
+X-FDA: 85173205614.22.D7D2158
+Received: from mta1.migadu.com (out-227.mta1.migadu.com [95.215.58.227])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 630E1120009
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 17:56:25 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="GkqDu/f/";
+	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.227 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788458137;
+	s=arc-20220608; t=1788458185;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QkNzWEo56VBHDStwWahj9S/A8ClJcWL595xG7UbC43I=;
-	b=18XoV++HsjoWT9mYVOr8XJsM509dAg+t0pP7miHv7sDucyPamyNT6lp9yOAwZvMaTVFrDx
-	5DFaKCC51+X+QCUKljvLg7MnL7cuyUGpLwY8EfOHxmilKz6CHOCyIl6SSfETYCY8V10Wi+
-	cUntmhkMJtRLZ6ZvPu5Yt4B655InLaY=
+	bh=bAnaMADIqI3vW5lOzOVsgzb76ar6D/YslIV4RMXRYBg=;
+	b=RTtpxjesEJlqGaeJIxdn9HnPoS/Ts0/BOG1JU4OU7d3VG6r+Z5xro3uWwKKjKTqI6GGBjv
+	RB3M/y7Sn69F4tqK+5K5nW8mZK34DNFjHFgIASe3K3vt0jgrt3N5ZjgS+KEYj2zEYsQ/Eh
+	/xZEPjnTb0RRawUpmpB47rUUWHDLq8Y=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788458137;
-	b=vZQS6hULH/0hXMyFCRDox4onmyxG3lEu0IbIfkpzQ1wMRmwRiHSvnWuP+PU6HuYOKcYIpJ
-	RK/3duQg0XCe3VR9V1czJMVIqH4JZI5jgV6cGjd+zqBWiW+EtOPrWKNvuKAYH+k6A+bq3s
-	AVtnSo9ObmjJ+Ij+ek+h72TkJevsvGE=
+	t=1788458185;
+	b=F2lXXfN3UNZy5VPpwwdd5tcJFt43FyOP4WJghbPhTqDNBj1No4VxsjSvZ0tUTHGQioulis
+	tOG9sQtDvJludD9u0h0Q4dfrVYUfpa4ALK61KE/Tw5e9R1yEXyMurwoyi18GmTGoSIzWbu
+	TfqA1W8W+KPkZ4d65Gvl+laN39y6BqU=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BBlpvUw2;
-	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.204 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="GkqDu/f/";
+	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.227 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=3cWqPp22IraIGu0JvB3xQlMqoKb4a/YFuTmuVC27eeM=;
+DKIM-Signature: a=rsa-sha256; bh=L3+7YRmfESLibVZakMPl0uWAeXL3XzaW/tLxNhJw+VI=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788458136; v=1; x=1789062936;
- b=BBlpvUw2RgIZusVVoCMvSFjY8j+K2JhYbj2ZiLegxvSijKM+7Yrxs7T65SJop68DOXNd7sF1
- xabXaJ/UkbONF6THFkJXWzm1d8OlTVBXTVaaksqChOvPoPU0CEifrGd/U/8/Landsnq+1p9Lb70
- 3rfXu1uEvFld/ci6ifFeHRns=
+ t=1788458183; v=1; x=1789062983;
+ b=GkqDu/f/acM8xjZ2oIqmjySdRKIgfYfzIbyQbI1tITB467RZ9GR9SDBOkcOjuTsW2gHWGL7t
+ oAMyv/EPMr6u+9upWNjo6UdE3cX/M7xkOjAQ0kUCdEIeTGEPNfkfi6TacgOPlOfmM/5DFUs1Zid
+ 4JLRgvZceBtK9ZzHFZR2Etag=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 82f448d9f30fec5e;
-	Thu, 03 Sep 2026 17:55:33 +0000
-X-Mizu-Trace-ID: 82f448d9f30fec5e
+Received: by smtp.migadu.com with ESMTPS id a4bed8d3f0db8ac7;
+	Thu, 03 Sep 2026 17:56:23 +0000
+X-Mizu-Trace-ID: a4bed8d3f0db8ac7
 X-Migadu-Flow: FLOW_OUT
-Date: Thu, 3 Sep 2026 10:55:31 -0700
+Date: Thu, 3 Sep 2026 10:56:22 -0700
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Hui Zhu <hui.zhu@linux.dev>
 Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
@@ -71,24 +71,24 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
 	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
 	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
 	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Hui Zhu <zhuhui@kylinos.cn>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] mm: workingset: use lruvec_page_state_local() to
- count lru pages
-Message-ID: <apm0b7mioZwXWE1Z@linux.dev>
+	Hui Zhu <zhuhui@kylinos.cn>
+Subject: Re: [PATCH v2 2/3] mm: memcg: redirect stats updates of dying memcgs
+ for all hierarchies
+Message-ID: <apm0nHGog6c0o3iO@linux.dev>
 References: <cover.1788169145.git.zhuhui@kylinos.cn>
- <e16dc5e411c1c5d95c4c4db6ffc789756362b867.1788169145.git.zhuhui@kylinos.cn>
+ <0214c0228695db474b86d3b4778b681a6c47a6e2.1788169145.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e16dc5e411c1c5d95c4c4db6ffc789756362b867.1788169145.git.zhuhui@kylinos.cn>
+In-Reply-To: <0214c0228695db474b86d3b4778b681a6c47a6e2.1788169145.git.zhuhui@kylinos.cn>
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9BE1320003
-X-Stat-Signature: qni7nd35ro6z4h11jw9894omrx84ch7z
-X-HE-Tag: 1788458137-614724
-X-HE-Meta: U2FsdGVkX18Q02+3MqDcD8byohy609iC/Qv/avH6masFzn7tVUclPBZdYAqClpAbjktyAbRUJRThHz4HQoUkrR5uRbh5OUwgVplKi29dWG0t0IrF/vpN/BqMqHZKlh6NGdM62c0xlV79/JvjOvdECpxq7Mt72vThk9nugUclasgYoyBoI9I4nKv67qLGNJpOcMFRzNT0vmiLwin/KgJZaKZE/9LFKV6JI4tFV/Omde6m9iCx3Iz1Hs6X+lqL88i3+fztiIqX67pZBPabgnid6p/cUitisePGA2mq4WijKFq2E0DCVwXAPjtyTzMzV86wIvWABW5dxoTauEJ83npvmbMZGZl7jatykgLTk7iib0XWvaO+q2Se5Nh+JUwgz9yYkk5b1s+YvHzGMEDGTk3XJ0KZfOm98N1xFdudMJcWYXipEkY3IIRAzblWj/LS7GL+qt3uDs1tX8NxuRC2ZOfFlnL5hYHknOznPWkg9v/Jp7XTRRUeLNp7FMyfEHqjsan7s+gKVXzWPgA6zogweGnOoHqHoV/rK/Wj60wq+ZPZq741WJHY5qmrbw/VTug2YFCdfFu3gQwVucMjdf7WJzvg3/Mxz59OJZQG39LdivSgVziQwKAumOb/TO0s65+nF6dM4uEsSxK2AUO5xOn958u9pty+kv6tzNLK32DqNGWlg/noc/ggaOZGq+UteErTexheLiKsY2HLKl/RdNRgoYBrOQ0U9TowcxZl+zEE4CwC4Jha/SDRIGMYs8MdkZu40cwoNN26xI9U7MQWjSjfwCHTiFrwRc2lcTj/gLu/CWdRsZBKJhS05CYodnhfdKrvjxL7CD8IFKcykJnLXouFdXtsh+KXrOqeVone4jl4BRxQtw+A4MTAwsLy30KRjha/qZcYv8XMgq+OuxT6H7qOdET3zzUS7nVjJagjQQnJ3wQQN0WybNXZ8vcKgGL/pSDU+2fCzO00c51OkNKe1NNYM8Q
- 5b48PYq4
- TEKmN5NazqJiv7MntJCQJGmQ8ACXqtbY3oUjtjFaEHyVfOQa3AZY7CG/IdLwETLGpqUssTpVlAx5pnCGUuyJWeQuruhKg7FjDSt105KZm973O0g6dDt0ug7VIVN251tgrqwKFKIpIp0HGcKddT2t4Gsw7JwnetFuMxIQUmH8j6W+Z0dqnTqj+1w7rtpAmtMxewBx+Yx9YecElGnC+bCckaak35UPNnCpVo6Ed+9ggiUXuNmfkcVQbJXlIUGvLzvNxhtUyQpAraG2c1Hzsfg4rtYteKP+xzNR6/sSf1atgO3+Glh5kCyTvRPyE/rqn0/4IsDncL8LiTRE9r1Gyn1hj58yTaA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 630E1120009
+X-Stat-Signature: ja9jrt9np7pf4i6c9hqmoj8ohwm7m4rq
+X-HE-Tag: 1788458185-981314
+X-HE-Meta: U2FsdGVkX1/X9Yr7EdihgEUDaAD+DGz2ZkEmW/sJx1axYn2a85Oq2W0792ufMV0Dj2ACYigSwSMmJmezEHQfxLF8/LA1nq35OsA2Mt0uqYsqRCYMud2F62jGJ90MBHuQN94k8eUrb+9cr2SyRtfwooHA/QAzptPff2s6CgVZoaZxO2i/V/RTyzCfXtvPrNZq83bugu7m2JrH7i3ctG+tWTkJN760a14H8MfS9/8grz1cFNUIuEQ8UQTSznukm6iq2RTpWE9O0sg+PM901wSiJpuDwCXigt8lW5yat4X4STDhM8CcTRdUDYyRt6Qygb2w1XD9OtEZHO72G0Kxe8Epo+KQC0eD2zq1f3yNskW1j/7nsTOfDS1/Fpy9os7T38YG6e17hYswvnxUAKfZooiXWRASkezodfuuJboW9rnVKBAv8ySLp7OMWPFW+pwPr9nzInVv6XyAg1b5jD32wJ7l6+qmtg6WUjDZHFMjudXcer8iFYt+Rir9Einra2Kx9OYYsU/W9oBUpYTwYT3UO+8wwkGu/RGp9AW1ejiJQMT09YOoqxhE54JjIrKVMWZnmj9XT34cYPKAMWljrpQ0Gs//q5Jxox2qfcgku67+nQRi5nRj5KLK3ap1ruz8OuRSfXe5xMrnc/wa377cgC92eiyZSvoktr66UpkUjGZT1zjGavodiAJ5hzMidN3ZDvITiZIF/yXMp+wqKTAQqdegYKJDJjcKrNQdllFEz3hR1yzme8KqLuEerCIqJCljj9La0NLbprV8+i36XkwnTMQuSZSDBL37sGog+dN0BZ6ZR6SmaQjkYTOaG5n2BFplQWRiRcoOM4ZizYpEKpJ9Lgzv6XZVsv+6Od++d4UOTiPkCTC2qOKgxIEOz+JWcHEORJJLXryG7H6vNVUIqfd/9AdQ9FlTRTaEmKG89D6MkLU+L+4f2wi9cpOWuC+D4ydyLvYbYLQ8u5UFD8BZqDIBCDq0mZU
+ nU2o2BZl
+ 0qET9bXII3cSuJGCNbUHdxu4NwtfsdNsKiZlpM8h/xxTyUQ2RPS9bk/j9gaM0ows856PKoaOFuUJ/aj0oskxFBQyhMrYMfE82htDlqXSVG7bqb2DnWf4fcAnQb5K3mIco7tLc+tuAurhgBRWxje6RpE9eCK5FM6NOEOyamtsEvUhan1c10dha7OKGTksxaYmFgBLOTahxxVBIiMukKllsIUKcdchCTpI1Js6fLsgL09ulCm3E0KjLxoOf8+oi5yhx9fxI6PGUymbAXLc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,29 +96,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 31, 2026 at 05:46:09PM +0800, Hui Zhu wrote:
+On Mon, Aug 31, 2026 at 05:46:10PM +0800, Hui Zhu wrote:
 > From: Hui Zhu <zhuhui@kylinos.cn>
 > 
-> Commit 7404bd37cfbe ("mm: workingset: use lruvec_lru_size() to get the
-> number of lru pages") switched count_shadow_nodes() to lruvec_lru_size().
-> With CONFIG_MEMCG enabled, lruvec_lru_size() reads mz->lru_zone_size,
-> which only the classic LRU paths maintain.  MGLRU accounts its pages
-> through __update_lru_size(), which skips that array, so with MGLRU on the
-> four evictable LRU lists are always seen as empty.  The shadow node budget
-> (pages >> 3) then collapses to slab plus unevictable pages, and the
-> workingset shadow shrinker reclaims eviction tokens almost as fast as they
-> are created, losing thrashing protection.
+> get_non_dying_memcg_start() redirects the stat updates of a dying memcg to
+> its closest non-dying ancestor, but only on cgroup v1; on cgroup v2 the
+> stats keep being accounted to the dying memcg itself.
 > 
-> lruvec_page_state_local() reads lruvec_stats->state_local instead, which
-> both classic LRU and MGLRU maintain.  Switch back to it.  The reparenting
-> race this re-exposes on cgroup v2 is closed by the follow-up patch that
-> redirects dying-memcg stat updates for all hierarchies.
+> The previous patch restored lruvec_page_state_local() in
+> count_shadow_nodes(), which reads those state_locals on cgroup v2 too, so
+> apply the redirection to all hierarchies.  Offlining is rare, so the added
+> cost on the stat update fast path is limited to an rcu_read_lock() and a
+> css_is_dying() check; the upward walk happens only while a memcg is dying.
 > 
-> Fixes: 7404bd37cfbe ("mm: workingset: use lruvec_lru_size() to get the number of lru pages")
-> Cc: stable@vger.kernel.org
 > Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
 
-Reorder this after 2nd and with that
+Please CC to stable and add a sentence on user visible impact of the bug in the
+commit message. With that:
 
 Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
