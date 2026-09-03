@@ -4,94 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC07EC624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 14:32:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A2DFC624D6
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 14:32:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C789A6B0099; Thu,  3 Sep 2026 10:32:44 -0400 (EDT)
+	id 155E56B009B; Thu,  3 Sep 2026 10:32:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C299A6B009B; Thu,  3 Sep 2026 10:32:44 -0400 (EDT)
+	id 12D806B009D; Thu,  3 Sep 2026 10:32:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3FB46B009D; Thu,  3 Sep 2026 10:32:44 -0400 (EDT)
+	id EE9786B009E; Thu,  3 Sep 2026 10:32:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D44B6B0099
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:32:44 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2196F1A057B
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:32:44 +0000 (UTC)
-X-FDA: 85172692248.25.245F7B8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 77DD61A0008
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:32:42 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aGIIX70d;
-	spf=pass (imf19.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D02D36B009B
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:32:47 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5293880478
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:32:47 +0000 (UTC)
+X-FDA: 85172692374.05.43BBDF7
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 4D1C640015
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:32:45 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VlMNp9si;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788445962;
+	s=arc-20220608; t=1788445965;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=PdgEsXurPZK89WvQIyjXxZ95EwgJUTCrcbPCaco3wJ4=;
-	b=Jfm1aaDCH5Tu3I7DA/TU1ngQLddzaSv3vfC9uv4ohahkG/JaaLPsvG34Uub9HmRen39UB0
-	RfdkxJKDFnNEimdIE7kNzdD0NWpxvqCfsU0QrXZa290pRQpyxOYyVi59zB4Dm0jwta7DFn
-	kiTB86N4z0OqXS22tG6BhZxA3qusos0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788445962;
-	b=7IbRs4DKS0CJQfhrB0eex9W0MDUkb8M+8II1JhDpDlbPXltn4JbfPGmh/Blf/9fJUuVLTn
-	N+eHEvnayOtTgVXL7V7+Fgf3Uim+tSdvfipOL2U0yKdTVj1PQHFH7zgsVcN+EeVi1tShUS
-	OoBbVA+w5Jki1mVs6OnelkRGxYTghpE=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IacDR4V7VVo1kImUhwmBbgo6FNMbqfDdRV7nbWQPWqI=;
+	b=C/zRqqPceurJMs1ZqSbk60w1go3W64l9qTHML+nZy2041pLAKlEeglPK3puYejJ+ZrNvTE
+	yA/VH/aBcMdQIz7xP4q2AYcvFtwfnQ6Inu97fPPWgSGOipno1u65M/ER3qSWSeRNmkbQRY
+	nDkOXljpSwpAJmXS7h6l69WOx445e5s=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aGIIX70d;
-	spf=pass (imf19.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A5D576053C;
-	Thu,  3 Sep 2026 14:32:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53AC81F00A3A;
-	Thu,  3 Sep 2026 14:32:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788445961;
-	bh=PdgEsXurPZK89WvQIyjXxZ95EwgJUTCrcbPCaco3wJ4=;
-	h=From:Date:Subject:To:Cc;
-	b=aGIIX70dSJhwGxEftvQp860ilXanbZ9XdDadPziZloXejX7omdRF+k1bi9BUvtbWq
-	 0c02KJrV96Z087pnPJ3D7CLQP8fUuLdYR4hNZ3RqooHYLOTNo2KJjjpm0PlXD1akUv
-	 f1MAn6PUGMi20CM5/q2kVA6lDBpzcM3ewJ4WmQzgUf4k1cNBc1FJTaD9SOfhf4AEKh
-	 lW8AYWpEq3YU7ZiN2/fCyKWCHk1FZ98huuPHIbibAtFQkoQquExvZ/U0G+JMwL4ilv
-	 aDISIKT9PeJF9LdDuhJFg3sXYqz2K+3ybdpOY6cKSK6g4t3Cn8wLJ3Fq6EOAfs2K5n
-	 cjUjng5HPMB5Q==
-From: "Harry Yoo (Meta)" <harry@kernel.org>
-Date: Thu, 03 Sep 2026 15:32:26 +0100
-Subject: [PATCH v3] mm/slab: take n->list_lock in
- __slab_try_return_freelist() to avoid race
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VlMNp9si;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788445965;
+	b=CAEF7nIDpDYawq052bF3XoV+gmnZU+fB8zZuKPLhgp9t32Qq/S9jMcqw0B30BT8LchS8VQ
+	mYpcrwtGAkCRnwpGME/7W3Obg28ByHTOEOMpRJInEhlbHzerdjW8Xh58+dKies1ftgDACG
+	s3Xb14hcBeXsXUjRw6RpCGv7CEpoTuo=
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8557c3f270eso1502790b3a.3
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 07:32:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788445964; x=1789050764; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=IacDR4V7VVo1kImUhwmBbgo6FNMbqfDdRV7nbWQPWqI=;
+        b=VlMNp9si6qq3C4eZJwTsbYsCO+ZTlcq9JC6Xo0EL/VPGSrul6hRRPllz0Z3l5pMgwS
+         nbzZOA8b42tny/lbF+prZYeBCOW9K/hwrGBzF+CRcYs+dOBVKNh9sX2qsFoMdzCvL0kb
+         rVAQl6IHEs4cn8lhMmth26/7wUnE51JAQ+yPbObVebtHbK+DePlpCP8b025U3ayGh/qi
+         +r+FhOONgsxsZsfo7aUwNccybX60NviNRjrys1NC8znN1oJrzlu8z9i09QTwBtvQSrf0
+         S2LJ/xSdqYz1XQW7HQXGPjRscOh4VQTGRRPQNF7CXFa2CRPxzMl7t7bhOcusQHoOk9zf
+         4y2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788445964; x=1789050764;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=IacDR4V7VVo1kImUhwmBbgo6FNMbqfDdRV7nbWQPWqI=;
+        b=obzM5XR1L7o7j1QYGnh3DSyTK7Yc88lZ/CtoAIXJw5yxbNsbgbCbmU+dzRSXnGJwM+
+         XqdGnom8sxKeYB1FGpXqMJWh9jfimIS/Qd9CSXmlsGmmPBWxVpKawsuK/tzCZiR7VFLc
+         rAflJcVSZsE2MtxORhokD09bBB8gWhUpMwpdjjlilbGPyIjl766PRUZxYBz1btjWmv88
+         Uxn0nkA1zIPbbD2wowHK/PjIlpk+A6p7e2B/30IuxAcdRkhqz3KzWLWttCbAos68Gs8A
+         SRgtWA3DgaMxcayJc5hUFKqk8KMLf6kbjvTzndzq68BPoxJ0buZiak8Il0KYTZp0kaeU
+         5u8A==
+X-Forwarded-Encrypted: i=1; AKwUvBxp7a+8bYahp/X+awSEulQrVFiXFshkIhQbRk6VW+vo7Dj5K033anTh6tnyHPc2Xouw4sMAtmGjWg==@kvack.org
+X-Gm-Message-State: AFuF++lCObMtirJYEHRiT4DXJ0vu8COxCDqjNXIfjT+7p0v/qtP5aBMB
+	L0/mOuXIXRYtEmrMne+xFQgOyEz3H0BBYIXBOoH4+OdBlnwbD9Cx39G8
+X-Gm-Gg: AYBFou3oPCEFaSXXQwLDVEcfjI9alMtMVwBQctFrCOLi9cGjUWA3Y3BJfgYgArir7EH
+	NGYLJBZqutioQzYF37CA27ad2xaOkYBblrktJ0fhJD3fnfs2tfYhBKg2RowRMk8EFuizC1avNXb
+	6ztj27Z8RV/ENF6evWGSkU3HpImdiRdudiK+JqROXy6UsE2ePoph2x5huHXPfh//yJyyJwifG0J
+	jg2HmFlMhVo83XjeJFWZv53lbBaC/U4/1X+HPZzhwlrH3SZ5lfc8dyZfr74FcdDXuIkUEeNLOIZ
+	9p/hFB+x+r/ZlqnelpUBxGG3tPgfHJGL3cOzhO3o0RD7ky5nXQSbMP0/pAUBi8/ky1tjmk8gkur
+	XSdp4YhjqZxZDVJuGcBsAgcU7BY2Z4cz0TqZazEuacd3JSmONdnm9J5YUSzUOSYVkzH58U0O8sC
+	ViCtRBJ1vzYSVT0a3SHFcKjyLkXF97uQThWy6vOwZJVVuQh9BPQxTjbCjJvglbdXqHW4pXqNaLp
+	ZxFBw==
+X-Received: by 2002:a05:6a00:4408:b0:857:4dea:e2fe with SMTP id d2e1a72fcca58-85ed8ed8414mr20058383b3a.13.1788445962694;
+        Thu, 03 Sep 2026 07:32:42 -0700 (PDT)
+Received: from zhangbo56-PC.mioffice.cn ([43.224.245.235])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85dc11f80bbsm2941802b3a.57.2026.09.03.07.32.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Sep 2026 07:32:41 -0700 (PDT)
+From: Bo Zhang <zhangbo0325@gmail.com>
+X-Google-Original-From: Bo Zhang <zhangbo56@xiaomi.com>
+To: akpm@linux-foundation.org,
+	vbabka@kernel.org,
+	david@kernel.org
+Cc: surenb@google.com,
+	mhocko@suse.com,
+	brendan.jackman@linux.dev,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	ljs@kernel.org,
+	liam@infradead.org,
+	rppt@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	zhaonanzhe@xiaomi.com,
+	lipengfei28@xiaomi.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 3/4] mm: compaction: don't skip proactive compaction for non-costly mTHP
+Date: Thu,  3 Sep 2026 22:32:21 +0800
+Message-Id: <20260903143221.4108871-1-zhangbo56@xiaomi.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260825043833.2659350-4-zhangbo56@xiaomi.com>
+References: <20260825043833.2659350-4-zhangbo56@xiaomi.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260903-slab-fix-aba-v3-1-b44cb6badd54@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAPmEmWoC/22Nuw6CMBSGX8Wc2WPagmidWIyLg7thKO0BGhsgL
- WkkhHe3MDt+/3WBQN5SgNthAU/RBjv0CbLjAXSn+pbQmsQgmCiYZAKDUzU29ouqVmgK1mSy0dI
- QQaqMnpK1z72rxJ0N0+DnfT3yTQU1vhTqx1PPk2QO72XMa3KwpaPYE/+vokCOhpMmflbXnF/KD
- /me3GnwLVTruv4AEPjmJ8sAAAA=
-X-Change-ID: 20260902-slab-fix-aba-d60f39fc9dee
-To: Vlastimil Babka <vbabka@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Hyunwoo Kim <imv4bel@gmail.com>, stable@vger.kernel.org, 
- "Harry Yoo (Meta)" <harry@kernel.org>
-X-Mailer: b4 0.15.2
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 77DD61A0008
-X-Stat-Signature: zw38z3u7yhgcshntxwx6upwqkrmoq9j5
-X-HE-Tag: 1788445962-774524
-X-HE-Meta: U2FsdGVkX1/kBt/NFxGGPC1vRWXdfiaE2CSFwBrNrmMMKm5nghEnCA64vP0IsKyHxUoA7biPBhIwlbSVPBjyk2+3qZ6pMF/vlnOiciPj52TN9T29+lDG69Jm/Ybm7h8s8vMHOgXeAr4iKxoKJpEIOEnYdECu9On9NMgqHvECA4QmCD2XvlH6fW4P0nL4zmlaT7T45ZEPMWKxE4qmiH0U2RJPCgvyN/J7crkj9huZ0xOW0s4Mh76LQ4195ATnICwt2IAbFjq4AldUIO51TPivOlVPoif8lNxxwFGALXiJPLwQsr160E/B15mmIxnyyRIv6b7Ww2nbpQMPJIBk6xEQy9+Hk7ssKOTP5mb5FyzAvvssSEkZjZulvGUnvGrpP5xb4orvZ+ngIhCnvJ3mHKM5eP2l7z6ZeBr1COJeKzIsnznuaGZYKR3fKrqy+5IDBuIyua+Rdo8bhOJI50c/4nnBzZPfqWBkalzxukaTaF7cDx3dY8RgbySnbvUWTFLqoevUA5+9+NycESa6N8InqCylparJlhGfoxV4eAO8wqWEKcUtuY4PnLhtNpt1U05KQbLphzso+zfmexgQAPGMMScN1n/zOK1adImazxAmvoEw6rFxFrMsp71R4wEpwSrZ3tUTOEJwXbOIR/HwYlwXvI1a8Pep71B1siNQ12AH3ISC0tnosXswb0ByVQCUEwLSZyjJzDxP7HnlyyhuqkqjbKMpi88NOIrI58MX5dpGplmGmcjiBpsELMcDTk+pTjhP1giBJXu33VPnZ40J57y9Y+ULB1fFzV15tuRVW5p9mfjS8yk1DgxJ+Ju8JgXsuSnYkf62pyDEUUs1ZEw+zmowr54/qD4ZevpFtx3Q0/AmS1YxZlv858zMWtjOfIUVIibg6wWJe5OvUfraT9ebM1bhbzQRRovjoxZhoWhx7Nw9Uzl76VVkun+FfL+llv2fW7evGccw2BmosF8dTCA1a4bZQwn
- wA0dg+sy
- n0aQ6WI7ocRpWMzzg+m7nbXjif7NqPXy9bfyImNrlPvm6aqpV+X9bt/hbCJL3hCetIHf7In/i9Hbhm+p+wv0loeBGDHADHJWmscCAIDkwGtxZCEe8deV9j0GTdwqucBiWsEf0ZlaOdVaQhjE+9xAALhAGne+SLlcHRRro+rISfncK/EcC9//Z4FP4eCDWzolar9eo+yViJzJkDEOZhYkzaGi3Eg3NWYAeNDIukWcv9gXjMR/4vUx049BF+E+T09yymBUxkZiaW+zzc65hzBVLoGT75zlexXYq1ggB9iAGZcdDBHd6XCwHT0G6Bg==
+X-Stat-Signature: 17uq918pb3gobtmu9ri9e4w3qg8sbtc4
+X-Rspamd-Queue-Id: 4D1C640015
+X-HE-Tag: 1788445965-700258
+X-HE-Meta: U2FsdGVkX1+jkLskMOJSARv24Vq3FyaJjnZzO+XED1JDD4hq2e/YA0L89ORgO1KDWdmtjupNVZtssD4vxzqL05CLCUetdt/B8lAi7jQCEwjW3kUki0dpbhHTN4VTO+ThfrbqrdhCqqaMOGe6sKHP3ZKh5PzuOykJXpbeNx2IlctvNpYtmGE9TOyMwgO2n9bDyGjuAUSCwBTHJHDd/fqYJM6Ce95onOh/9G6MSOMHdz5i1qvTP4ZsJvwRXk6uC0/il7F/t2eyWZ+k549I1y4mF0tBmPlymbpvk8svIJpW8mLsT8XdxWU7nxctH3jhk5ntqRfN01o9rwooY2A29rc8bWtGSi8MXE/oeaZfaOkoSBy6tndxTAiF3Zs7WwVnLpwiBguDIBSNhSLFoK0NJbJ+2+Julah9DX5m9qXXB624hakIRqsWSCcSqjuQdSlY1RPNAhHDlZsktiVeSsVMCCHTvbEvIes6gThqSUKDy9G4fXEQbHhS23cFoH9R644L8gxkB/4we1JejH8cCj8xvFrf3uqTk0/XIu6AlzIAXjg2+EBvbV+qMBe6zAzeUPo4eVGGl9yCTVrw2yU90XhCU2BZsIgc4ydWF/MaVH6XaoaZM4aUq+/qTU/dd5QsZYgsaAWO9kBsim2ci5AASLCdclpmBn75aQUHD8TdJlM8b65UBnkq9QXq98WES3RSnBHJlZMMU6sWuhxi064BOQRdaAsqWh1x9ybMNbdkRNIwN6j5DmwZpSKF3aysRGANcGttKsTJIpk2yu0PzC0WnSu3JGX+OghgEb47m6cNbF6AYknGLWM3cND6A5KQHrJnrXjVkTprLsqAIeRs8TOqukDHb8ApBo1Uvke+ZBheKLWi/weBM4FJ6rSTXaTHz4TMCIf1OUBX64V+eJqY+ThKdSH2OuQDbW7G2BOYUgzmBFdo1Z9ffh08+1uTigQqKu9etC9vFEaGic37FYmdjbqLFM0a6Qy
+ F5xY6Jeo
+ yosUs4aITErVo+qCxt7IdxYLslIzqsgrBcdac1nckDDKH7S7Z4LIF3WWtUoaI9EWG5eX1b6JGApZY1lBr3FG8UW7i3sSIr9gbli6a7pL+6adjO+Z6sS+hycK3qfyjT1tAJCqKE6P1WExTToV7UJ21pBKont+DGKyaXsBELdw/2AsAVeWDgOu+W3owWajM3V37eLvfXU8oL3UxEnFmxUCWQO4v2V58rS4QvKkzFNK1OjKkK3Bqph54H4eVYG7tGcGtVDUyA82STVZ34AqIcLxp/FkQVNYDRb/8xU/ORQnAmRiboYMVdfKFCyvTGMh1g/re6TcEq9kcn17P5mQ0iB0pcxKHY1nnaPzxgKZ0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,143 +138,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit ba7425312607 ("mm, slab: add an optimistic
-__slab_try_return_freelist()") incorrectly assumed that nobody has freed
-an object to the slab as long as slab->freelist is NULL and cmpxchg
-succeeds.
+Thanks for the review.
 
-However, as reported by Hyunwoo Kim [1], other CPUs might have freed
-an object to the slab, insert the slab to the partial list, then
-allocated an object from the slab, and be in the middle of removing
-the slab from the list under n->list_lock.
+Sashiko says
 
-Since __refill_objects_node() puts the slab back on pc.slabs
-outside n->list_lock, it might insert the slab into that list while
-the slab is concurrently being removed from n->partial.
-This led to a list corruption [1]:
+"Does this change miss an entry condition check in
+should_proactive_compact_node() in the same file? If kswapd is already
+active when kcompactd evaluates whether to start,
+should_proactive_compact_node() still unconditionally aborts ... Could this
+prevent proactive compaction from even starting for non-costly orders,
+defeating the updated mid-flight check entirely?"
 
-  list_add corruption. next->prev should be prev
-  (ffff888100000248), but was dead000000000122.
-  (next=ffffea000416e410).
-  kernel BUG at lib/list_debug.c:29!
-  Oops: invalid opcode: 0000 [#1] SMP NOPTI
-  CPU: 1 UID: 65534 PID: 144 Comm: poc Not tainted
-  7.2.0-16172-gcf72cbb39da8-dirty #1 PREEMPT(lazy)
-  RIP: 0010:__list_add_valid_or_report+0x80/0xd0
-  ...
-  Call Trace:
-   alloc_from_new_slab+0x183/0x300
-   ___slab_alloc+0x31c/0x890
-   __kmalloc_noprof+0x3d4/0x800
-   lsm_blob_alloc+0x2d/0x50
-   security_msg_msg_alloc+0x26/0x90
-   load_msg+0x1aa/0x210
-   do_msgsnd+0x91/0x800
-   do_syscall_64+0x109/0x5d0
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  ...
-  Kernel panic - not syncing: Fatal exception
+You're right. I only relaxed the mid-flight check in __compact_finished(),
+but should_proactive_compact_node() still bails out unconditionally when
+kswapd is running, so for non-costly mTHP orders proactive compaction never
+even starts and my change has no effect in the common case (kswapd running
+under memory pressure).
 
-This is a classic ABA problem where cmpxchg succeeds but the state has
-changed since __refill_objects_node() took the freelist from the slab.
+In v2 I'll apply the same non-costly condition at the entry check:
 
-As Vlastimil Babka mentioned [2], it should be rare to return more than
-one slab (due to the racy read of slab->counters in
-get_partial_node_bulk()). Therefore, instead of introducing additional
-complexity, acquire and release n->list_lock twice in the worst case.
+	if (!sysctl_compaction_proactiveness)
+		return false;
+	if (costly && kswapd_is_running(pgdat))
+		return false;
 
-Return the slab directly to the partial list and hold n->list_lock
-across the cmpxchg and add_partial(). This is similar to the initial
-version of commit ba7425312607 [3]. This is enough to avoid the race as
-the list manipulation is serialized by n->list_lock. While at it,
-bring back unlikely() hint now that the condition is unlikely.
+so the entry and mid-flight checks stay consistent.
 
-Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-Closes: https://lore.kernel.org/linux-mm/apPa-cGLcyt90l-E@v4bel [1]
-Link: https://lore.kernel.org/linux-mm/ae25c193-b95f-40c1-83b6-1c2546467e41@kernel.org [2]
-Link: https://lore.kernel.org/all/20260421-b4-refill-optimistic-return-v1-1-24f0bfc1acff@kernel.org [3]
-Fixes: ba7425312607 ("mm, slab: add an optimistic __slab_try_return_freelist()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
----
-Changes in v3:
-- Don't repeat "As reported by Hyunwoo Kim" in changelog (Vlastimil)
-- Pass kmem_cache_node pointer directly to __slab_try_return_freelist() (Vlastimil)
-- Link to v2: https://lore.kernel.org/r/20260902-slab-fix-aba-v2-1-d1ece15a8417@kernel.org
-
-Changes in v2:
-- Simplify the code to hold n->list_lock across cmpxchg + add_partial()
-  and acquire the lock twice in the rare worst case.
-- Link to v1: https://lore.kernel.org/r/apPa-cGLcyt90l-E@v4bel
----
- mm/slub.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index f9b56cb439e7..eac95b8f94c3 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -5680,10 +5680,12 @@ static noinline void free_to_partial_list(
-  *
-  * Fail if the slab isn't full anymore due to a concurrent free.
-  */
--static bool __slab_try_return_freelist(struct kmem_cache *s, struct slab *slab,
--				       void *head, int cnt)
-+static bool __slab_try_return_freelist(struct kmem_cache *s,
-+				       struct kmem_cache_node *n,
-+				       struct slab *slab, void *head, int cnt)
- {
- 	struct freelist_counters old, new;
-+	unsigned long flags;
- 
- 	old.freelist = slab->freelist;
- 	old.counters = slab->counters;
-@@ -5695,9 +5697,15 @@ static bool __slab_try_return_freelist(struct kmem_cache *s, struct slab *slab,
- 	new.counters = old.counters;
- 	new.inuse -= cnt;
- 
--	if (!slab_update_freelist(s, slab, &old, &new, "__slab_try_return_freelist"))
-+	spin_lock_irqsave(&n->list_lock, flags);
-+
-+	if (!slab_update_freelist(s, slab, &old, &new, "__slab_try_return_freelist")) {
-+		spin_unlock_irqrestore(&n->list_lock, flags);
- 		return false;
-+	}
- 
-+	add_partial(n, slab, ADD_TO_TAIL);
-+	spin_unlock_irqrestore(&n->list_lock, flags);
- 	return true;
- }
- 
-@@ -7296,10 +7304,8 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
- 			void *head = object;
- 			void *tail;
- 
--			if (__slab_try_return_freelist(s, slab, head, count)) {
--				list_add(&slab->slab_list, &pc.slabs);
-+			if (__slab_try_return_freelist(s, n, slab, head, count))
- 				break;
--			}
- 
- 			do {
- 				tail = object;
-@@ -7312,7 +7318,7 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
- 			break;
- 	}
- 
--	if (!list_empty(&pc.slabs)) {
-+	if (unlikely(!list_empty(&pc.slabs))) {
- 		spin_lock_irqsave(&n->list_lock, flags);
- 
- 		list_for_each_entry(slab, &pc.slabs, slab_list)
-
----
-base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
-change-id: 20260902-slab-fix-aba-d60f39fc9dee
-
-Best regards,
---  
-Cheers,
-Harry / Hyeonggon
-
+Bo
 
