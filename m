@@ -4,111 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3182C624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 07:07:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 357FEC624D4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 07:25:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 552196B00D5; Thu,  3 Sep 2026 03:07:21 -0400 (EDT)
+	id 178FB6B00D8; Thu,  3 Sep 2026 03:25:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 529216B00D6; Thu,  3 Sep 2026 03:07:21 -0400 (EDT)
+	id 12A6D6B00D9; Thu,  3 Sep 2026 03:25:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 467296B00D8; Thu,  3 Sep 2026 03:07:21 -0400 (EDT)
+	id 040066B00DA; Thu,  3 Sep 2026 03:25:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 25D216B00D5
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:07:21 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8151B1C217A
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 07:07:20 +0000 (UTC)
-X-FDA: 85171569840.13.F320E74
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9EF764000A
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 07:07:16 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=i93Q2PRU;
-	dmarc=pass (policy=none) header.from=uniontech.com;
-	spf=pass (imf12.hostedemail.com: domain of zhaozhengzhuo@uniontech.com designates 54.206.16.166 as permitted sender) smtp.mailfrom=zhaozhengzhuo@uniontech.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D6DE86B00D8
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:25:08 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 70F3C403B4
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 07:25:08 +0000 (UTC)
+X-FDA: 85171614696.26.889F848
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id B779FC0005
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 07:25:06 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YPeyMhQm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788419238;
+	s=arc-20220608; t=1788420306;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5X/G8cC7xn3LThCq50XdcwHXgoSMXjJw2BNtxxdYJK8=;
-	b=BKN5tLi/D+EWS5Nldg9V6ODXWbrKXc0oOiLrc8+CMtX2Vah9u05EBLxD1aY6vcSylzzl60
-	tiyw0UaysUQci64gEXx1ZFYdds2ISO097w52QFGIimcswKp+MB7ZwZzJa6WAI8QApbZ4hP
-	wPTGgIXTN+7eKVWo75VbY4PBCPD3NoE=
+	bh=wPucY5EIsuH+AW/lLxBJfKPFJjpHUnizOauIgQ1zZxg=;
+	b=NtfHQzajBWN62oP1Q3NFkBIUB8UpkLitByJLYhmx8avxuHyCGyBVLf9wRs0rU7BQU0z4l6
+	6sNDzuc/43OJx5b0qwOv1WvipY9HfERVMKSC3ECbjK8KXMBv4jgG00WnGU0rCwZXQtReV+
+	egnMnnOGSXGP3shN8UlPYhl7/8A3zpk=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=i93Q2PRU;
-	dmarc=pass (policy=none) header.from=uniontech.com;
-	spf=pass (imf12.hostedemail.com: domain of zhaozhengzhuo@uniontech.com designates 54.206.16.166 as permitted sender) smtp.mailfrom=zhaozhengzhuo@uniontech.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YPeyMhQm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788419238;
-	b=QdKpvtcdsQmD5GH7H8IdFWf7qys6q/VfveFsHj1LlgWTch48qgzOBAk2o1ZWTk44NnDE38
-	oUMyZ5zwWAXcO07LnwaEHDjpui8rb0K5v2z0rUUfoIxh6fiScmx6FCq6XAy6iC33hy/QJB
-	n11IZ+FE48r44gAPpSxHv7pE2Bv2B98=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1788419178;
-	bh=5X/G8cC7xn3LThCq50XdcwHXgoSMXjJw2BNtxxdYJK8=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=i93Q2PRUr2OXOIMxuJkZYPrpuePLpwsNc1lVsi57uR6OREPQraMWQvPjGnaZWQAnj
-	 F0Wa6Q6gdscii2Ngwnag5ULVnTVJu46c0Oo9HJ3CzIVM2T9CkRybjW+R3Zk+uTrdfb
-	 q8B1a1B2tnZiDe/rjAwgDsuCCbige5HF4DCPDeaw=
-X-QQ-mid: esmtpsz11t1788419175t66410874
-X-QQ-Originating-IP: fK1jJDR2jE6E2FlSQAB+yzADaIPHcWLn0p/+0K49yB0=
-Received: from zzz-PC ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 03 Sep 2026 15:06:06 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 3964727102774129270
-From: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
-To: Mike Kaplinskiy <mike@recall.ai>
-Cc: linux-mm@kvack.org,
+	t=1788420306;
+	b=jT29V4W0Maec7GmC94h6GcuKVnhY6GCe29KhEb8efmt/0bPTxcn3ej8U8ifT6uj6/7qZLg
+	iqxMKLqN+PPHzLbeO9VopHoWy/SPn5FcieYiEYJ6nZCi4c7za08lX2Hl3rkDDlDNkUvqbU
+	DnY2H/7VzO8KZrcpogIEtcBj/MiXmDo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 30DDC600C8;
+	Thu,  3 Sep 2026 07:25:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C0171F000E9;
+	Thu,  3 Sep 2026 07:25:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788420305;
+	bh=wPucY5EIsuH+AW/lLxBJfKPFJjpHUnizOauIgQ1zZxg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=YPeyMhQmuRqh1o2rpfydGq3APDtDy/93AvzUfWZQw/xAxJ3dgRQmyEfFHSvCg23ye
+	 R97gIZnFomeTd4TekNQU+GJxsVr5AVFJddPE0ETN8VBw7eKgeOjgpEEEu1cOAZh6Ie
+	 ktMNmSYDyATrXdZhSF/VC3LHqEiqWDkyjopi+xeJNTaTcBqW5O0Fw5aHTqMSVfGdcm
+	 Uk5ZyqeM6IpTg3qU1LYyhDhvyQB3MYYiEaBt6HMZQrUB4A5JfRg9qzUKcmw+H9PoqN
+	 go8AqgjDqkbK1rBOEYtqAZugW+hBr5qZHgqJ79quiWF3kA5CQNgoI65c3RS4pEE2ar
+	 3MoaDG+zq2MAg==
+From: Christian Brauner <brauner@kernel.org>
+To: Sun Jian <sun.jian.kdev@gmail.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	jack@suse.cz,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Jann Horn <jannh@google.com>
-Subject: Re: [BUG/RFC] mm/madvise: MADV_WILLNEED skips swapped file-backed COW pages
-Date: Thu,  3 Sep 2026 15:05:22 +0800
-Message-ID: <55D30905BB95B9F8+20260903070523.2032364-1-zhaozhengzhuo@uniontech.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <CABeknB_S2XJSHFgnHdgnN0rjzHhH4oQJs_APq9fvxHztQ_pgiA@mail.gmail.com>
-References: <CABeknB_S2XJSHFgnHdgnN0rjzHhH4oQJs_APq9fvxHztQ_pgiA@mail.gmail.com>
+	bpf@vger.kernel.org,
+	tasos.papagiannnis@gmail.com,
+	kees@kernel.org,
+	viro@zeniv.linux.org.uk
+Subject: Re: [PATCH bpf-next] exec: Drop bprm loader before closing bprm->file
+Date: Thu,  3 Sep 2026 09:24:53 +0200
+Message-ID: <20260903-normung-opfer-matten-d29bbd55cf46@brauner>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260901114011.112375-1-sun.jian.kdev@gmail.com>
+References: <20260901114011.112375-1-sun.jian.kdev@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1344; i=brauner@kernel.org; h=from:subject:message-id; bh=JJSUo2r2r3NvI07vkjwgk4phkhRYmLbnSW2ji/Irias=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTNVDiT4h7JtqGdtbju2HO/U2cXH1dSbtg81Wh7eYnFD Ju011xCHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABMpPczI8KZr853KpVN4dCPt fnkbu/GsaLWr9Q9TMJRkfad3J2RxIMM/u6oNDZU9tx6u+R65I2H24XPWq/nlToY/6ZstfyJqSXc 2HwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5b-2
-X-QQ-XMAILINFO: Ns4o82esMDegoCihx5CVKsK8TgcpNv5HGt6nZ8j4Nc1rhjcUn1fqodTp
-	K/I2ivI3g7fxGKOC5NRrKMcBI1FMp2VrIMSOzJ2AO/hzRGP7V5fDYH6J5kAaGwBNvAHe7Bg
-	D6mtXMyesAdF/9YQHVIuA0CfEkPpi4TS5/lqMCoTRUCEOritJTdsiK0pI+Q9pHNvHsd+2dB
-	1QFcavf6wIbpx9bww/NJr1ldMAoNYoVgJx+ywvBEXLilZ46Za72/IWZPTrD9bj9D7mX+Hs9
-	OAB42TObef0HEOQYmMQ4cywIjKpx6MtL7g0skMAToLnmcWpL9Xg0sytOkwyocru7AkBJxwh
-	7n/U9ryTNdES3ZIo4tTCk44WHrzIh8eCn03YDkEiZWg6E3R5mhFUoA+IZ7sV77S8PuqrlOF
-	30nII/P5tabjORMifm1ZxXQ/dzKYmwvOIHCK5GnGBkkDAvpOS6BUzu7r4up51Tvji8bes77
-	0xkJ4xcGiTmJihUVQxIzSMoOWw1cOBxxtYQ5Gin3cJnSl4ErFf6iZUngPWloSOJZnnTTYvA
-	Ii2H43/jwhC8xOYxOuQ+YIHEKDbUKVQPKs1WFcPvt70Lm73KOGveAh1J5aRTjH5sV97B3Ww
-	qcWkBq+nAcQPMhUEbiak4uRPGQsUS1a8PlpvvOBmiXS7/qowF8wmrl6e67dzKkRr+pzxci8
-	1xSAWeLFRkWdRhY3uM4lXshv6355EL1BslbtlOwdgZAlrsq9z4QISa+o2E8vCD2138t28Sl
-	JJ8eRGODhd/E6Kuy4Nxbn/RgkQEzDy3L5ODfW/LZ4iidDBPMXwcjQxF6U0h/dVEsKhipzEh
-	BnmYUWBWVDhN4FDzURc2uKAbwx9ntD2CWm+RXX1+aZHDD+ukkjX6z7ZePhdKIyfljq+H5iL
-	mLCYtolFc1hVU98+l+2CZO5roqjPRta+H/VoEoz0DLCGOm9PTv8AoLQXLBqnXacSuCLoBi2
-	tmFA3Do8Ee7FccWwAyuC9fx7sdHEKCoL6dQoaLXLGKC6TBofQaAYpnJn5K1J4MF3vJqRG96
-	F+A+SH28X9oIQg7JGPqW8eNSRRNPWkxNfQAvhxjg==
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
-X-QQ-RECHKSPAM: 0
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9EF764000A
-X-Stat-Signature: 564ro8deq33aokeaeg7s11roeuppyfor
+X-Stat-Signature: o4tiwt5rk39qymr4grphw6gxguf56yar
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B779FC0005
 X-Rspam-User: 
-X-HE-Tag: 1788419236-913067
-X-HE-Meta: U2FsdGVkX18t+vvuopVqfxfi6aWUUKdVKSaWApGdelhnd1NQRptZxTz0U60AEt9RbmQEv5+BzpNHkDno+FxJe8X/KtyOX7JC0Ef9ImEIHxhn3RfNusYF9mr5FM35WmAZKNT9oJKER5TWPcdYwUGgBYxRMPVT6yJSlMP7GM2XkClFeiT770M0ePqOWupj8ON1XYt9rVoNxZG8wBbzgDKMk4GGVs6XuOJ62hQRQGLitgeZQF9j3Pp2lOMEANwar/anFSAzJ+tQQI4PYpq8qEujE0peOVf64E5I8MXyMHrwfKeWX6RxVqvDBraAs1vIepfJsDQfsFbf572M1q4AJAbCFfm8UX/DaM92By3B5747PzNNDt16lUUpWdrmQlb6aO5C6IZ9s1rHlZ3FFpkZ3LAbTWmh3fQXiHoohvqDSYN/UeYVekOjXuFj3Mn0CatY+MQ+H1+piE52J+SeA42QEhD3JtzKTYmgeZIvZRk7V6PHsSKBXIq6qJLKk3CiMIB9FNSSR6yxQeHrXsdqYCiGu3rwzPoGALiEKaN1N5WpaRKRINgfbuK5BJ1MiBUce7wdPVuW705ZdRIYdC+y5ihts0er411+cV9UpPuZ5sSVC97YmuL2tKt+MSSExsHYhOvSs11oUXA8dnuLg+blvYQEUbmJRkkMqeEWmyTX87NQym3AWz6PZDOH5Inpjqz/cEKDvcsGElQQ4ZO7eAPtxqCT8hd9gUBXb556KRsrG5KLU86TEzcWg0wEVf+u4MLfEQ0ycmmMJYtcOUnE0cTkjysrDmrEKVLRlR32zUmyWucjexg3V96Woij8SmesMosDfgF36jZRails3tLwKaCaJuA+uaXaVA6vLkEJ9RlGZgpQ8gfE69pvYBgzivk3pMsVfRNT2yrENHE70vWQYnj0hmfmJy1lXvaBw49TpQ410OlZtTNmStJ8NxBjQhcuUK9JBBxKTAo7L45+PhxiRXAK3LjMIsF
- 7PrCFnR8
- be5M3+yTT3lQfjO9KbWHVpt7ZuzQDebIQFpmE94YRxlzDuwhd1h3ou0cMPZAAKnEu8NGZpEllIjwlqFERlFIT2766mVIIwfHHs5swKu8UN5qAk2Kuz+nLfj1OhbrVXNSDOTrN2r6vFJhsNx8LoITZnjvTS8xpVOIpbSw2yw2w5uGLVWeO8R27yp1tnjNfhPGSKTIHFJOZsoPVSt5itxmuFQ7W+tbv9jI1mnHsTHGMG47uGFJuSbtcxws9yHMp6c0s2PxGgba3FnazuMqOWsCQEr/RlBPST5gtMtX0Dphquk/XO9SJLNtxkvthheVXenRusuqmmfDrMfpZIO4=
+X-HE-Tag: 1788420306-350347
+X-HE-Meta: U2FsdGVkX1/PVt0T9LZLDbzElh+BAxAp6s3dCz85KseKSdT4LTE9iEDoeLoCB7SSvjsXF7QxFTT+ctmaOLUoXvex3SUZs8mVZoFOoDJThQjDmZdXtk3rxlQiVupqTMTzO9keUtD2td068z9U0xv+qguWZn4w2jWsWUuyL8p6tCVa0XBjAe2ZwUPZ0PmnIXcMW8ahNhpvrmOQawb7qwiLFI1XXZC0ssPt5qmAZZHyw6KOFf4b/xWCkqFfNaL+s+CYWyQmjBHU2QWCBnEqytZlN6ljGfT4OAi33ffmevumySN+LQT/OUBK7j5ZCQWVeVqzVOgQUuYX8dYESEElVhLVjzAtOjE11FJIEG7/JcdquDF8o8UltWZJbV3TPK7QeCWDjCtWGNMFgbopbfET6wwdOrq1N+w6oq/xMq3rqbEqxhZACl/ZWGIhNkO+MXpuShNVWXQRqvWvW+pwnIOmKt/scLGPFSlQaxQHGLuZMxnqrntKc2gAqCkaQFoGAggNFKPzaranS4jV5mFZiCkJCoAwhB4MiErrJ7844kQ96Tq+u9so4bLljQvsHs06pi0OQNHciyGkZa77zuATfFuZZOfK9pr1BED5JGswHrK4gbRr+WysYlFyYxw6WhVFKQ+YGDQ448RjPLqDBjzCHU2t/AEBaa3dQeDNOl1cK62ea1Z9fEmkZXDwtpJuw+gLzMffEaVQlQKBKOds8oVHtJi0AfN4Ruhay6+P2mD9eqMf9zcA7USJ1/xIo1VbUB1Wy0eeOMqVeXfBx0ZEqqQpgEM6hRvKvZ5YUhkb8clEQ9UfvmEA982Gibmpc0hq74NYeuokVvtqSJKv+o/BuvGZpdPWOQqm8RA9O4RNTryAT4IWCGSdx+w1Aj+nAPOKInW2mga784+J2KbAdsvsRlyEMoSfF/OhCpZtf84foJfhBDqlwEYzi+n4gZswOu5Puau4zM1Fy6JKZ9oaxVPeFEdbX/AgRQA
+ HrMgMBNa
+ GF9Pxw4zWPG60AhZGzACYnsFx8v7Um8soVtXs0NiEUmAqc2vJShEdiHyu26VLjJIY8mKPt5n9VOBN6A5a6InLvP//5BJIIH21NJIPq+T7NeArK1HJCIMyXARKQAjrmtP8wAxecNnm9+Xd3B0lm6dVbM3mXpOSlaGJ1JG+NS4cTp7QuNjzuU2DkMLBubXYIDSU6jZg9U6GsVKwC0Tg2T1dk+MGJTgGsqLG+QpqlKfcWK2KB2kJKQMNPqStOknPLMzya3bMTOt8v3m37g3aOCpYDJu/gpOsN9A8ScKthhMczQ3ns2E7Tt79ZYgZOt6J8ffqvDYO2zyxLH+PndKKt/nUJ9UGdOhQN+zqc630eFH70/UyygM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,37 +101,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mike,
+On Tue, 01 Sep 2026 04:40:11 -0700, Sun Jian wrote:
+> free_bprm() currently drops what may be the final reference to
+> bprm->file before calling bprm_drop_loader(). Since
+> bprm_drop_loader() is attachable via BPF fentry and bprm->file is
+> exposed as a BTF_TYPE_SAFE_TRUSTED pointer, the file can be observed
+> after its reference has been released.
+> 
+> Move bprm_drop_loader() before do_close_execat(bprm->file), keeping
+> the file reference held while the hook runs. This preserves the
+> existing trusted BTF contract without changing verifier behavior.
+> 
+> [...]
 
-Thanks for the report. I reproduced this on x86-64 with the current
-mm-unstable tree at:
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-  e3b5239afe1b ("mm: gup: cleanup the gup_fast_*() call chain")
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-The test used a 64 MiB ordinary file-backed MAP_PRIVATE mapping and
-disk-backed swap. Since the test machine has 128 GiB of RAM, the pages
-initially remained in swap cache after MADV_PAGEOUT. I therefore added
-controlled memory pressure between MADV_PAGEOUT and MADV_WILLNEED so
-that the swap-cache folios were actually reclaimed.
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-Across three runs, the pswpin deltas (in 4 KiB pages) were:
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-                        run 1     run 2     run 3
-  after MADV_WILLNEED       2         0         0
-  during subsequent touch 16327     15811     15676
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
 
-The mapping still reported about 64 MiB in Swap after MADV_WILLNEED,
-and almost all swap reads occurred only when the pages were touched.
-
-This appears to confirm that madvise_willneed() skips the private swap
-entries because the VMA still has vm_file and therefore takes the file
-readahead path. vfs_fadvise(POSIX_FADV_WILLNEED) can prefetch the
-underlying file contents, but not the modified private contents stored
-in swap.
-
-Are you already working on a fix? If testing or other help would be
-useful, I would be happy to help.
-
-Thanks,
-zhaozhengzhuo
+[1/1] exec: Drop bprm loader before closing bprm->file
+      https://git.kernel.org/vfs/vfs/c/115bf3e51538
 
