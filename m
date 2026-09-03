@@ -4,106 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1403C624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 09:14:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65661C61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 09:15:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E706D6B00A7; Thu,  3 Sep 2026 05:14:07 -0400 (EDT)
+	id 6D2926B0096; Thu,  3 Sep 2026 05:15:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E483F6B00A9; Thu,  3 Sep 2026 05:14:07 -0400 (EDT)
+	id 6A9AA6B009B; Thu,  3 Sep 2026 05:15:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D850B6B00AA; Thu,  3 Sep 2026 05:14:07 -0400 (EDT)
+	id 5E6E96B009D; Thu,  3 Sep 2026 05:15:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BC87A6B00A7
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 05:14:07 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2FCE4C0241
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:14:07 +0000 (UTC)
-X-FDA: 85171889334.27.9DA4138
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 569C2C0006
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:14:05 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=pWr0i6pJ;
-	spf=pass (imf28.hostedemail.com: domain of linu.cherian@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=linu.cherian@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DC056B0096
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 05:15:57 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 98B301A0175
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:15:56 +0000 (UTC)
+X-FDA: 85171893912.08.FFCD528
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 05C6F20006
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:15:54 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E0zsCHKQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788426845;
+	s=arc-20220608; t=1788426955;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c9DsEkBgu2jnZnRY8QQEWHZs0nZcCr7feDWc1ShWrQM=;
-	b=klw9pWT+76RwA5qW46s+9w+FdrfjmCYkooeRARFERwl3yE+DnQN/yiDqtE1vymKaoYTLTu
-	cxzbEgduo74MnhZHgz3zU8XwxbRYI1TkSAalKcU6ymeDKRqUT/gRdyFyR3+iUjWplOE06Q
-	6E2db5BUzvsIC4aZvyA42gBnIXsFfxg=
+	bh=2a8yIQ3NE86fziYRRmM1NyoVwXAqG0dHOhexSSfbtW0=;
+	b=h0Q/M6KyVcOPWGJFRrbM7jQLDSl3/aMbJpbC8Wm4fz2ohHH40I1AIFpXNKDq/Q9KW7oLml
+	CnhubFDT5Ufqx9dJyIKkrrATgnDTG6a/zexicgQP9zto9k5IQwZLPkEfp6VNerRIEJFeRK
+	4HMfP9IIw1pOIE/rW+93CfW+QvCTED4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788426845;
-	b=nQIpES3LN60p1UcpmQXoyLsmIqKH8vMyEWIVdWGDebeoN5LvmCYshSCRUAi9d5roktAYG7
-	544WqQdQxCbQ7FVdzWk+ukRArCw2SlOP/XYwgXrjVB6eOO3AfrDHSoT/Ph4FSQ78rv3Rp/
-	tR9g2WTCXh42vydIot977Gc2sdIbwvo=
+	t=1788426955;
+	b=hfgZK//+l6u0FaiTzW+uCBBaE12Xjpm/sVY42GNr9nnhVYlwi9FWCAmZZuP23MHjNkszXi
+	wOkZuPC6RZu+2O4F+Vu1HuW9ViQ8hqKkQ8jMRvco1dkyDoxae53wnS2jgeHtCpgCYhnxPR
+	2d6/zoSdymNGabq7M7X8BqCUPDjzEjQ=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=pWr0i6pJ;
-	spf=pass (imf28.hostedemail.com: domain of linu.cherian@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=linu.cherian@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B52E51596;
-	Thu,  3 Sep 2026 02:14:00 -0700 (PDT)
-Received: from localhost (a079125.arm.com [10.164.21.43])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BDF103FA32;
-	Thu,  3 Sep 2026 02:14:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788426844; bh=6jwLKj7jhYtsSX186PaK9yCDtesokapjON4y/Vc8cE0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pWr0i6pJSQywxTkp4y67uTu1Uz+4OfYZRorRJvi0pLgHJR8J81nwbJUoeDUDJ01lN
-	 gs+poUT8IJdSKiSw4my0FdJrFI4SIer8s1wLwlKM/GNiLPLLlPwuL4naZC7BLSWzF/
-	 6XZSpSTvGCygqlsuwPJ7YWAPSD/ktcswEvNtsNaE=
-Date: Thu, 3 Sep 2026 14:44:01 +0530
-From: Linu Cherian <linu.cherian@arm.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: linux-hardening@vger.kernel.org,
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E0zsCHKQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C994D404DB;
+	Thu,  3 Sep 2026 09:15:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBCB61F000E9;
+	Thu,  3 Sep 2026 09:15:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788426953;
+	bh=2a8yIQ3NE86fziYRRmM1NyoVwXAqG0dHOhexSSfbtW0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=E0zsCHKQLk4p8gAn3X8j4oy3KYslGMK/guDz3UOJRR2N9We0sVvbpFK/tqFZEs6hS
+	 QGZTNx4CYKtVtsv0C4c6LK+370dmf6vuYWyChytDHcZjngcrLBJRbI1EPFabmoqMSA
+	 qZY2m0BNqpRVODEnXYlMUDe3XKdhPYn1UADPoG0K7Kp5YbWUwTwJMx998EnYZp5x+E
+	 7GFc412nEoX9MMCL8ZxJywrQM0nTSpoDEGJ7jQOSeDwqfeL2JHMR5tpX8WtDYELqbb
+	 7IrVKjbr8LEORFSJMs8oYP5mXCSNx/j4l/PbFzx/kbmKrHsqq6Xbb9o6tQoUAyn5GT
+	 6o2UQOGFJA4eA==
+Date: Thu, 3 Sep 2026 12:15:46 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Eli Billauer <eli.billauer@gmail.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, Brad Warrum <bwarrum@linux.ibm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Michal Simek <michal.simek@amd.com>,
+	Ritu Agarwal <rituagar@linux.ibm.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>,
-	Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>,
-	Linus Walleij <linusw@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
 	Matthew Wilcox <willy@infradead.org>,
-	Maxwell Bland <mbland@motorola.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Pierre Langlois <pierre.langlois@arm.com>,
-	=?iso-8859-1?Q?Pierre-Cl=E9ment?= Tosi <ptosi@google.com>,
-	Quentin Perret <qperret@google.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	x86@kernel.org, Ira Weiny <iweiny@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
-Subject: Re: [PATCH RFC v9 09/25] arm64: Enable kpkeys
-Message-ID: <apk6WcSQyvPK_E6L@a079125.arm.com>
-References: <20260818-kpkeys-v9-0-743ad31b2c8f@arm.com>
- <20260818-kpkeys-v9-9-743ad31b2c8f@arm.com>
+	Vlastimil Babka <vbabka@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 2/4] char: xillybus: replace __get_free_pages() with
+ kmalloc()
+Message-ID: <apk6wr2S1IOQp_Kf@kernel.org>
+References: <20260830-char-misc-v1-0-05e2ce44f291@kernel.org>
+ <20260830-char-misc-v1-2-05e2ce44f291@kernel.org>
+ <f6001085-9234-4025-ff34-6cc4a66c293a@outbound.gmail.com>
+ <apVmYXlqsVr_p4Oc@kernel.org>
+ <7adfefaa-91c5-4bf4-ff98-5dfbba0eac96@outbound.gmail.com>
+ <apcKQBRCFeF-usK7@kernel.org>
+ <2d7b127d-6079-40c0-2020-dc7767b2396b@outbound.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260818-kpkeys-v9-9-743ad31b2c8f@arm.com>
+In-Reply-To: <2d7b127d-6079-40c0-2020-dc7767b2396b@outbound.gmail.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 05C6F20006
+X-Stat-Signature: 76dxs4trzr48umi1jbrdjiupcprnt6yr
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 569C2C0006
-X-Stat-Signature: am9jrg9bj6sx8nphpug5t5c4r8on3ja5
-X-HE-Tag: 1788426845-509596
-X-HE-Meta: U2FsdGVkX1+zN6V1lDobHG3eRNrsBAKqwIKuLdW0zXtZ0sQd3w0KWDcVQOVdmYAT38aA/TBzaYhrGZuWCRnzcZB8qM9xNXElWvjYGN9Oyb0q/qYl5DclLQdmF5O32CjVqGMNpTU8Hv0tWN6Cmuk+sdILzGswrlw+L1SnZ9HDiqTuECdB0Pwmrfr/gSn6yeO9EL5Uxx+Ut6k7KXIQrVeRA14OSJuXOXKIjl+CHLDmNJzhE4n0C//Q5oWlWLUXbJE/W2kDq1vEjS7Od5lt2WczvXnKfPby7ZKXWWaLi/s9i+qaXi5B2V9sLVKYcftAyMYIyaSxJVAF08FY3TqpWlzRBrIf8qV77wLBrPftwlsa7mgCQvM+FOY88wxY+i1T9agRpv8COGarEJljFhA1lcMipDwYC3mWRxrZv0NdsnDFveqNkbh9/OG+jS2WZA+mLNaaqHNjo6VXaKx9sKNrcZN7XFL49NoXIf+tqKSGOxq0RHrKSAXzSMbI5BNlJddWyg4OQFbBgoqWEAfxJyC4REQR1TiU+U6Yk+52YKerjxHkV0QrPh2sae4ukFMFyEQTEXfMNhYgWrauMBqbVtSmZQE5exQ/iqPvNShIPhaxDpjj0Of1wDehjRx5PLg40BNz04pLoVNK10Vn5sCBb+oKUYxG0M6SvlALbAayf98VoYSlHxEsGIQnzmjwxaoVAJUbLqPF7Iu0lwx/NBoGcrBvR8FUEc07XA0zVmbQBke3Le1q4IcR4X7m3WnP7eFk9d8u/ghRWuyQDHDjD/c9ZZ404ro3tmKjqRb9OusDBAZowGbRVt0PlWHluDt2hI55Xeb8q61OksT0uspwRhR5wDuGKyWjcncIcz2ng2KKCwNFDKk9ZKTf1+tStltoo8KRRMNmngratsMSWpKFtU3TtD9XqCjDRtorXItHnQ00dqCJPagKHm/ZRKROW66DuttgLp81fA21wdctaJsKHDBTiuPugbE
- 0jgXGdQx
- /wb6clC+dhjE1vnmfWl1vMK+CXP4NBbRB4qCLeD//iAIKpXJqEb5KHnyLWWYpq3cPdwtrcEUAIKwphmwcjPcmYGWnE4uVxpsAFbiGKRC67TtjKT89mqQa1qGSYifqjwd1LiuIxGZIxWXB4gF812vbXv3J+wdnLrJHpMrqNCyLLz9KSLu/pZr8yY7wEafTxYZBwvXUsigU9CDmIhOMEP1in5ggZlIVy/ntfkoSesNuzrX86vpT4tTlQhEcmMnWYcYq7/rgmPXS9nUABl+F4KJNbY1FqcAqVukGVIPY4bwKhA4k+cepuFeiwlXsowLQaONq76SxTQoJw+YUAfr9NQSjcv/apuzM3bN9FDePy8MsT5M9XgA0uf1bT8N7CzFeiTr3Od/C
+X-HE-Tag: 1788426954-617777
+X-HE-Meta: U2FsdGVkX1/Lho0yELDdvRTCfcXAd6HdqxO8Uc0fMZZ5yCQb2eUBkWxZIDAhe9Y34lrCBRn19WezICVKRF3zR1KFAWDIDEzani+akl/8FoxiOWJnMXtO0PIo99UVV4Xhr5M3quTAnsWUU4DPm3u5J5riNrfO4abrpZYzthjoJVbve+7DeU74buC+Uvzi8pxfsGM2SmA0n2YklukJlnYya1Ep/AyIvD8rxsaNZEebxJRSN1mmGfz8uGd5lYbOeCSviwCDhEaQSfds6DzaEHGOcLE8Ye0b3TPAMqPzmOtdr95RBWsqwU3N1BrvHq5Yz6ufAQkKlSU+QD7fNskhnc0aa+dN0f9IA1rt87tJX2JOa2lKaPWgPqrd8YVWENtUSfRDMvjeiQb4fvVauDGqfWwqy0jOhZ0RdthKztTjK7UpCewANurrSU79FB4MvCj04WIU3tTPFyqEEOwitO+7dMN9IXhSLb/GO64o74KePyZpnyRKpDRnKY85u1wwtpFcTm+OyQaMioIubMGSACM6uAvDj/L9eDOK67+7SMCAfqWhJP1eI55v68q8Wb86pQtrX/0nMhdroR3fwBDoVqSUvFhQ72AQtffcffrdtekz8p1lzmaDSGpEExfaZjFLCWLq6phDZS2vdqVn99S6Se0yzBBdHf9bSapUDzg4uJ2CbhLUM4lRVWtUX2k2yoF6rIyrhwoodIPRnFbDgtH7Mtn8tCviwoKqJm9JzWNyH2xF0NgUQ64QEgNUI7btNLAVSZts9vAzQqAS3GCuMBf5l9pZ53PFnCTImYafyVIizfazJF4b8s0cVgSSbuQwFXAmd9uvjYo1ya6G64j2DdivdXWaAfep1WhN+crtlGX+yOAXseCYeVuf0CH4mWVypPRSjauNo09BrNyArCiRJCKSylg9mKyEGjzMjniNzsep74ZTxfJQOsQjJ92dfKPvPSWbWOH94DTRs67a8XgBu5XV01GBPzl
+ TzkskCs4
+ K9oq6ysQ0TisRrzBrznHJCbd4c/o0tXR/Dcjg+jbA0ZDDKU95F+UMCKYkjX+NjmhMexCse/ucXu5sdV/PrOwvo/bGMElWUhZT1yjnYDGfvRIkaHi94rAEhN/hkc9o+Jlw749y4kqXOWJ8GNmtc5oNLVqkHZ/pCL49+Bmlykji8NCx/9ITbY9r0ugPrWNl7x/F8/Gdo94DUhONHyPtD+J2BT+oqVNzRXoQ+tAVXPf65fDem48S4bzG2cuJ9MPtifXdz75d7FOwFxCtdvdY64OR19lyN7rptr1XWNUiUzcnPZlQCknolM77VT9LiuAZrtczT5jWApfIMdDCnviT+RFvHo+PIDMv/jo+d7BQfL9Vjr2FB63e6Xj7aInK3b+b7xxonkxe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,56 +105,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Kevin,
-
-On Tue, Aug 18, 2026 at 03:08:51PM +0100, Kevin Brodsky wrote:
-> This is the final step to enable kpkeys on arm64. We enable
-> POE at EL1 by setting TCR2_EL1.POE, and initialise POR_EL1 to the
-> default value, enabling access to the default pkey/POIndex (0).
-> An ISB is added so that POE restrictions are enforced immediately.
+On Wed, Sep 02, 2026 at 01:40:21PM +0200, Eli Billauer wrote:
+> On 01/09/2026 19:24, Mike Rapoport wrote:
+> > On Tue, Sep 01, 2026 at 10:42:47AM +0200, Eli Billauer wrote:
+> > > On 31/08/2026 13:32, Mike Rapoport wrote:
+> > > > For large sizes kmalloc falls back to page allocator anyway.
+> > > > 
+> > > > And the doc is out of date unfortunately.
+> > > I think it would be a good idea to update the doc first, and by doing so
+> > > officially change the API. After getting this change approved, it's indeed
+> > > safe to rely on kmalloc() even for larger memory allocations.
+> > The documentation always lags behind the code and "official" API is what
+> > include/linux/slab.h says :)
 > 
-> Having done this, we can now select ARCH_HAS_KPKEYS if ARM64_POE is
-> enabled.
+> This is what I found in slab.h:
 > 
-> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> ---
->  arch/arm64/Kconfig             | 1 +
->  arch/arm64/kernel/cpufeature.c | 5 ++++-
->  2 files changed, 5 insertions(+), 1 deletion(-)
+>  *
+>  * kmalloc is the normal method of allocating memory
+>  * for objects smaller than page size in the kernel.
+>  *
+
+Citing vbabka:
+
+that sentence doesn't exclude >PAGE_SIZE allocations :)
+ 
+> Regards,
+>    Eli
 > 
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index b3afe0688919..0afa085c66be 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -2202,6 +2202,7 @@ config ARM64_POE
->  	def_bool y
->  	select ARCH_USES_HIGH_VMA_FLAGS
->  	select ARCH_HAS_PKEYS
-> +	select ARCH_HAS_KPKEYS
->  	help
->  	  The Permission Overlay Extension is used to implement Memory
->  	  Protection Keys. Memory Protection Keys provides a mechanism for
-> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-> index 9a22df0c5120..4f2f54007ed6 100644
-> --- a/arch/arm64/kernel/cpufeature.c
-> +++ b/arch/arm64/kernel/cpufeature.c
-> @@ -76,6 +76,7 @@
->  #include <linux/kasan.h>
->  #include <linux/percpu.h>
->  #include <linux/sched/isolation.h>
-> +#include <linux/kpkeys.h>
->  
->  #include <asm/arm_pmuv3.h>
->  #include <asm/cpu.h>
-> @@ -2463,8 +2464,10 @@ static void cpu_enable_mops(const struct arm64_cpu_capabilities *__unused)
->  #ifdef CONFIG_ARM64_POE
->  static void cpu_enable_poe(const struct arm64_cpu_capabilities *__unused)
->  {
-> -	sysreg_clear_set(REG_TCR2_EL1, 0, TCR2_EL1_E0POE);
-> +	write_sysreg_s(POR_EL1_INIT, SYS_POR_EL1);
 
-May be we could move this to __cpu_setup. Please see comments on Patch 8.
-
---
-Linu Cherian
+-- 
+Sincerely yours,
+Mike.
 
