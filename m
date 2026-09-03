@@ -4,88 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5AB7C61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 13:36:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B01EC624A4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 13:38:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EED86B00A9; Thu,  3 Sep 2026 09:36:53 -0400 (EDT)
+	id 2ECD06B00AA; Thu,  3 Sep 2026 09:38:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99F916B00AA; Thu,  3 Sep 2026 09:36:53 -0400 (EDT)
+	id 29EB96B00AC; Thu,  3 Sep 2026 09:38:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B6506B00AB; Thu,  3 Sep 2026 09:36:53 -0400 (EDT)
+	id 1B7B36B00AD; Thu,  3 Sep 2026 09:38:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 68FDA6B00A9
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:36:53 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 055961C2185
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:36:53 +0000 (UTC)
-X-FDA: 85172551506.28.FA8E6AC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 5C8641C000B
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:36:51 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q2dXhmu3;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E04976B00AA
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:38:19 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EA1B81A0533
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:38:17 +0000 (UTC)
+X-FDA: 85172555034.08.221EB0E
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A67D6A0002
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:38:14 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=l3w4IgOW;
+	spf=pass (imf25.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788442611;
+	s=arc-20220608; t=1788442696;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tAGhxl8EbQxM1Ac+USBKoQykwVMmqUI0h7OiFM/Tf5E=;
-	b=Si7N/PhvFxE8Kaw2QIEoNjeyebnRgvWmpu7HFf4UJEg0Mfed4XweVNomrVIw625M/m9owz
-	ZoFp8zFTdbuULMaHI4662+R8S6c3vTYZfiZ9PlYgV+eKACG7jtQ8Qk3GzhXTpNTxKhNmC6
-	kJlxD27DMwpD18/VOttm8J6juuRRPn8=
+	bh=fiWQq5+ihJfXwau/fHxalzj9WsMWUJ0C6TkAvMp/42s=;
+	b=Q9gDkGX/+iROwZEBs+JPX/B46Xnj1sZMXCTgF7lftnNxwn5Cv9KKa7EosG3vc+OIGSqXjq
+	3KD7kFyHGXmvIB5nTMifIcQZYMR5slusKSPuh+KJd5CSAgNceYnA1ZAwqmI50xCVUNCrPL
+	KrADgPhGHeKXwFaQEN/1/aOK06bi1Fc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788442611;
-	b=vjibgthqAXGD0M0KuHjbqyCeXVp2DFk9jwmPiqQOF1QWOocpsCJdtyIJd60jSiKEFG12Iu
-	T+ps/l1icJk9hmLZzr31dSQKz9AnLKRxAGniu5by/cu6vdGIhD1UCyqkVmTEHm8yyd8Cxf
-	9Qu0SatiZps86Zz0MxXd8AOvAFtq0AE=
+	t=1788442696;
+	b=667hf6/DgApxeuE5qbRNrTwcTFHJ3feoFjvKMpFFZ1ndXli6Om8RbQ/n7yhzDGzzAC3cum
+	xowkQNOBWypzXehifsnSrwt4Dngk5rrtPjYfhuIz3nZ9e76vr8k+pDM8NklKe32aJCVuT5
+	rkNVL05Z8y5QqIvS35WpmAI4+FOezVs=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q2dXhmu3;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7ED8040F8B;
-	Thu,  3 Sep 2026 13:36:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF8F1F00A3A;
-	Thu,  3 Sep 2026 13:36:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788442610;
-	bh=tAGhxl8EbQxM1Ac+USBKoQykwVMmqUI0h7OiFM/Tf5E=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=Q2dXhmu3w2oLEKxpW+JcEtPwvZ+KUq3hJVKdfddjyndz8sk2Snpi0NzGdegKVGss7
-	 rWD/SvinZQthCyfqKCM5nddpOiwHVwwMulEAjVZdxau317S8dEUAZKfLk93/bG9+Lb
-	 Vh1afM+CNolwuYa2RJGg91AykTMWYr1jIKO1i6eoB2se9lPSDCyarHkpU3pOlm++N4
-	 xa+w7U262gz4cVZfaBnrqGK5i5FZy75YeylAkMDN3P08EyBzIPMl5myBW8CqXdTs8J
-	 klxWoZsIdGWBt5BwtDRVv0EJSSC1WSwGPqTzx1jUKNCtVOzD2+nx/Mm31s4tmqbpy8
-	 VaFIh0OoiGcCQ==
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Meijing Zhao <zhaomeijing100@gmail.com>
-Cc: Meijing Zhao <zhaomeijing@lixiang.com>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, Wandun Chen <chenwandun@lixiang.com>
-In-Reply-To: <20260902075944.3742866-1-zhaomeijing100@gmail.com>
-References: <20260902075944.3742866-1-zhaomeijing100@gmail.com>
-Subject: Re: [PATCH v3] mm: memblock: show all region flags in debugfs
-Message-Id: <178844260467.3691663.6752975072255908040.b4-ty@b4>
-Date: Thu, 03 Sep 2026 16:36:44 +0300
+	imf25.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=l3w4IgOW;
+	spf=pass (imf25.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=fiWQq5+ihJfXwau/fHxalzj9WsMWUJ0C6TkAvMp/42s=;
+	b=l3w4IgOWPc8+ahx7EWh/E+tBVIL4lmWJdsQM+unCvia5mFwFmSn8FQmNfnyqzo6pthuO4fQL3
+	Bmj8t/QIqO2pEVpQ5D39fStsRY1nmHyKog/ZrmUamS+2/OSzUTewwdLWGzylB/9a3ExM7VTCpMC
+	dcAv2B8OawtchPBPvMUiYJE=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4hbL403QLXz1prLc;
+	Thu,  3 Sep 2026 21:27:12 +0800 (CST)
+Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
+	by mail.maildlp.com (Postfix) with ESMTPS id E01AD40561;
+	Thu,  3 Sep 2026 21:38:04 +0800 (CST)
+Received: from ubuntu (10.50.87.83) by kwepemk300003.china.huawei.com
+ (7.202.195.93) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 3 Sep
+ 2026 21:38:04 +0800
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+To: <brauner@kernel.org>, <djwong@kernel.org>, <cem@kernel.org>,
+	<akpm@linux-foundation.org>, <vbabka@kernel.org>, <surenb@google.com>,
+	<mhocko@suse.com>, <brendan.jackman@linux.dev>, <hannes@cmpxchg.org>,
+	<ziy@nvidia.com>, <david@kernel.org>, <qi.zheng@linux.dev>,
+	<shakeel.butt@linux.dev>, <ljs@kernel.org>
+CC: <linux-xfs@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+	<linux-mm@kvack.org>, Kefeng Wang <wangkefeng.wang@huawei.com>
+Subject: [PATCH] xfs: fix NOFS state corruption in btree split worker
+Date: Thu, 3 Sep 2026 21:37:56 +0800
+Message-ID: <20260903133756.2006032-1-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260902134417.c44503a1d65533f81fb1c391@linux-foundation.org>
+References: <20260902134417.c44503a1d65533f81fb1c391@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.87.83]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemk300003.china.huawei.com (7.202.195.93)
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5C8641C000B
-X-Stat-Signature: mw4ewkqdxdzomnfqaygm56yp48eas1wp
-X-HE-Tag: 1788442611-651768
-X-HE-Meta: U2FsdGVkX1+jflT3HX83ABwKFRDkr0nD8OdxPi9mBu+gzvpzXO5fpxejYD0YZXuEZPJd4/GK7U7fU8MoKqGMJaq2erwnJ+4kwiRp3ox4L4OoobSRV4k6MOtAHG2B+WYwChLeox/NVQeUL8nGZ1G0ezDdzs0JMjSRZ9E+xcct4oMPa3z5tuLMkHbnQQLuUZKmfkdsI5912uOkjass23DnTkVXVmI6rD5ATJgMWSIp0z6qUdzvAxv+S7yLwBEaLhVVTXo3f2b/kF2rxc7HJBKkAPyfhHqwGsIwpEzGaPL9I/SRb7GgdEknMJcn0fcBlR1etAsvCcxbtFaM2b5beRxG6n2D9FeK2NSFMbtXhAfyqSzzCMafdgBGz4O9etKauLgMA7/KG7NdReEA5K9EEIyWX8aTFDeqoAL+3uh2PoHosCWFx8MZEyT7Y+IOD5l8QhxRE4sZew367RP4Ysb5h1npOrWa6J5hDmqpwc4SMWvk4EBP5X7DMnM1SY32wNq3cybXsiqPT16rVrN4ZoeBcmZYCo7ThPCp1FC3ysvJwQbyW1ehzZJgeq7s21aqoVUHPBVHAtaw4hx7Hx0fGro77V5NH8cPzoOAO6siAje10R2nDblL/Lx/wjsy5VJDQ9ONlj+vBxrWbWroHItcRQCxy4+4hE/sfggio+//lc8zIv7qa3mJX4+TJmSbGPwdujTh1UU/UYcCL3DKh6sICf2E67QtVmm05WKicylkPZN2DhlGh0uhMu8r+2MRiImjivoET8QK1ha2OcTgd7k3GHn1wouTEP2lavaiu7MVyN8z+76tRtFT0vE9bxjhTiFx71z86UzHfsnuQTCKD7DWTmrcYooKPFwzr5XEzVOxEcbBwB6+iP5owByrGSsHA4tOUU8UcXlCGUTAuY4go5TcYFde/jlZ7Sc0TT20KVVsl4TkAywbqTFds2tCTBwfnmCxawOCtivCAsyh7+KD5FqYhsk2Cl/
- P/PXqkhD
- BvTkHN32B1zYBd9ePJNAeTGm1ernp5VYSGK4d2FCKjPy3PMi6/h4EQVJgbxdc6e62E1tJiePAQhu9psZJh4CZLPAuo5mMObICw3VKegjxFX8BwbfWPc41FOpo91bkz2xCWta4T2gu7GLjM9Tx03c6MNxdEmnMbdHAs/jqYQ4Y5wFjN96ivWF5xIHPbHqwX5en2EFZVCTtNCWgQhHnFZIvu0yimfjTvquBL9ObBF5szSMLBxc=
+X-Rspamd-Queue-Id: A67D6A0002
+X-Stat-Signature: etzrm8nu4di6dtqrizm4yaysmo34oc8s
+X-HE-Tag: 1788442694-220617
+X-HE-Meta: U2FsdGVkX18F46cmt4aCjbclSVZ5gR0eofbzWYbHOTREbnfQRVhKqmFTbGRdsvIx7i6XDKV0HuO24jf1otmMXMWeCcihH4S/NLY19LMcUSrUuu3S7PsweaO5/zznbZKKuHZYZy5F6LzkBfWG2DwRxq3R12s8CubHsnA0J72jTisdQ5hdAi6NDBsu97daMjBsZ2lcIsvwSGZXU1mn78wEtHGr1ucQ5NVeEFIBWyg4ghev524byH7s6DzmOy60YDB/rzMZZ30PkxEAiv3JugARDTSRUqVlgadGuuR7XcBNP9xBmfjrztji5Z2IBzde9HsJmWPvzH0ayyMHE+7ih8L9X1a8JwGxxMQbOuCNQqngqIbir+lGo2HReKvQ4fsmsEdzG9wnyh73ZZ78re3lI9JWSyZcPwVxhqwm0iQHC2ofH0H/wsmK4hX8+th0Sh/j0ghkC7FZ4gZ0U9f364ySmIWUnfu6ywGwvAADecycYiutqsl7wTraA/c8qS+YcgpR0ifMeQsWvyhueVDjV3b2v/oWT/I0o0Arx2uAXWkoUWoD1oXhxv9BvukNQddDlmHAIb2CDPY6ZLvliN+4e0XrMylJY1ycMKdOoGsxwlm3P+bP32sqp7HlD3GgGfR4aJnetRnBJ4T+947tGxFwTedQwaEBJwpGcAQabwrMQz6AVraS5UQ1rF77lVhKXIGXDFvypUYpa8jhG+mZrLxq8qA2hohvjeT8i46pV/zOZcXqUqrN3v319NmLjP8HEZivqkl0zuq/QgErerJAE/hlNj6nBRrJ81nF8xgZs2Mw9z3QlkgOu+JORt2xCi1aLWYmiATzcC54VT9nlBO2EPNRpB7ZTNj1eLPGMpmVEXMJcY/DSWhT62ojs8d7mLsmKkmwdsA7359l5Iy593va8FEn1J4gj7JjAj6bUhDlWeCXH9B4BqdMY24Gd2XwlEufGvjFDkyj6dR8S62cYyeZSzBjZ/8DRfd
+ 94HCVp7h
+ Gzx8CGCp3rczrCIIilvkQOIf5cRj4ic8b6jgpiP62lWJk8izbtp28XqgaAuOZL/lqm+XBa7u96F912SWuLtQBBgyl7dFCmPWlN5f+gVVlCKH/C4rJtMPi4gM80eU5Y3HrLnaYVTWZ/3CTqc3sYybV63B+bXKg+aAi+Pk4oIcIMSUToeGtlPQUvM6jnnTx0OhirD1HOh6SLW5wofU55woIAIdIl3QheIj6Z+uCGasaVdhMYXD4FzEpKFBJK6DE6XwcniMvljS+SED31RqkzbzhCiZHKyXEP0tDN+Vv54tWwa3fVGjXZnEbycojnU+AK4yd/bTlc1Rp30FF94sh1vDFGBx/va04OQXrcYHC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,20 +101,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 02 Sep 2026 15:59:44 +0800, Meijing Zhao wrote:
-> mm: memblock: show all region flags in debugfs
+xfs_btree_split_worker() calls xfs_trans_set_context() and
+xfs_trans_clear_context() on the caller's transaction, overwriting
+tp->t_pflags with the worker's NOFS state. When the caller already has
+PF_MEMALLOC_NOFS set (e.g. xfs_end_ioend_write, xfs_dio_write_end_io),
+the corrupted tp->t_pflags causes xfs_trans_free() to erroneously clear
+the caller's NOFS protection.
 
-Applied to fixes branch of memblock.git tree, thanks!
+Use memalloc_nofs_save/restore with a local variable instead so
+tp->t_pflags is never touched.
 
-[1/1] mm: memblock: show all region flags in debugfs
-      commit: 6178b127603540da56cc7c339994d2ad7c68ab2f
+Closes: https://sashiko.dev/#/patchset/20260902131653.1338227-1-wangkefeng.wang@huawei.com
+Fixes: 756b1c343333 ("xfs: use current->journal_info for detecting transaction recursion")
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+---
+ fs/xfs/libxfs/xfs_btree.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-tree: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock
-branch: fixes
-
---
-Sincerely yours,
-Mike.
-
+diff --git a/fs/xfs/libxfs/xfs_btree.c b/fs/xfs/libxfs/xfs_btree.c
+index 6738d9d1511b..8ae4b94e6995 100644
+--- a/fs/xfs/libxfs/xfs_btree.c
++++ b/fs/xfs/libxfs/xfs_btree.c
+@@ -3007,12 +3007,18 @@ xfs_btree_split_worker(
+ {
+ 	struct xfs_btree_split_args	*args = container_of(work,
+ 						struct xfs_btree_split_args, work);
+-	xfs_trans_set_context(args->cur->bc_tp);
++	unsigned int			nofs_flags;
++
++	/*
++	 * Don't use xfs_trans_set_context() here: it would overwrite the
++	 * caller's saved NOFS state in tp->t_pflags.  Use a local scope.
++	 */
++	nofs_flags = memalloc_nofs_save();
+ 
+ 	args->result = __xfs_btree_split(args->cur, args->level, args->ptrp,
+ 					 args->key, args->curp, args->stat);
+ 
+-	xfs_trans_clear_context(args->cur->bc_tp);
++	memalloc_nofs_restore(nofs_flags);
+ 
+ 	/*
+ 	 * Do not access args after complete() has run here. We don't own args
+-- 
+2.55.0
 
 
