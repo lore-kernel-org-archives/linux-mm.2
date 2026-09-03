@@ -4,94 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DC46C61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 06:36:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FFFDC624D4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 06:42:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7F516B008A; Thu,  3 Sep 2026 02:36:20 -0400 (EDT)
+	id 858AA6B00C9; Thu,  3 Sep 2026 02:42:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B2F9C6B0092; Thu,  3 Sep 2026 02:36:20 -0400 (EDT)
+	id 82F306B00CA; Thu,  3 Sep 2026 02:42:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6ECE6B008C; Thu,  3 Sep 2026 02:36:20 -0400 (EDT)
+	id 76C206B00CB; Thu,  3 Sep 2026 02:42:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 85C496B00C2
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 02:36:20 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1B091A4390
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:36:20 +0000 (UTC)
-X-FDA: 85171491720.07.831EAE0
-Received: from mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 7190AC0003
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:36:16 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BDPYwWUG;
-	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 51A756B00C9
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 02:42:33 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4EF38C0198
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:42:31 +0000 (UTC)
+X-FDA: 85171507302.21.93B89C6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 87BB4100009
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:42:29 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NhbKpu4e;
+	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788417749;
+	b=7oUE/2G7AonJR5SCsEvS4OefUoIzwSuB2htxwfo8yQ4LYNv97LyRydlARDN8wVo50pKomI
+	qYma4ye4PANIZgCJojUKRWywJzUJKh/42rKQ3MeLiGmiIbDHiy/obrT2d0d1hMGhIG/Rxe
+	EWKfncDtyj1leeTG9qk6ta3wFsbvI/c=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NhbKpu4e;
+	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788417378;
+	s=arc-20220608; t=1788417749;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/AOQl8uMLb7yaSSuMA/y+PSrYIOL2fdOT9lQ+lxwGTs=;
-	b=axInRGGtoFcO45+xgRMh4ByWOFReVBPLvW2jpsInQKzmRkZcDI6b3WBtNU13GJDW3z2p95
-	kdzJgBb6+R4T5UGWopQsnhc9IJxQdkFH0MkvJ2Ppo5WWwo5apGmN0hVwZOjx+0vLjNRkbh
-	6eVzjUsnGMeeGzTmsbNDQ78uDY8uDrs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788417378;
-	b=uQpOwio2mdBjAxnSm4+uRGh2+1poxPek2i1FNtGCcFoTLklun9+1pifnSpoinvr4Vzpr5d
-	/D0sPOvRpB8bNYbSZLL7K2ISOXzKOoAKYuuRb5qYAN14mfkVJ8fT7QDDZC9KgjbqAPHCFf
-	r0Bwb08EoTDaYxlDgtl1BZK6KE9Y+tI=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BDPYwWUG;
-	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=/7zVF87+vSIaxGdnTGi6zl+USr7Ew+xcjHfJdu2PHXQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788417371; v=1; x=1789022171;
- b=BDPYwWUG2Z6bRep3T0VLBuuKDahOxIhearwYCB9Uw1og7GYuVlylNKYFuk9DYYcpN79wzQxv
- Jzj5HFC8/TpHPwL4N387Usg237Go+wsjMcy9922gksnD2685r3sFTvRolNcm0p8lyA42w1yhfCR
- 2I4StrsLfzGRP/Q1GsSuYBDA=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 8473698cd31aeb55;
-	Thu, 03 Sep 2026 06:36:11 +0000
-X-Mizu-Trace-ID: 8473698cd31aeb55
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <3775da0f-4068-4fc4-97a7-135eb975ec65@linux.dev>
-Date: Thu, 3 Sep 2026 14:36:01 +0800
+	bh=NoreS1c67SI6AUlE45CnZ5o1zP8316Y/FnI+L8qchEI=;
+	b=DHYzJ2c0xrkiCoSy0/Jp8+NnWXCr0y55HwyRf02oMvgff8ayB4hRe4DFvTL2uvuMfIyKmP
+	/Ys0e68i2HiG2TCpjO7XVk5KK1w6ce/5ixiITofbGXHmrGWFAjkt8puSEuBtjBGWkhhXOP
+	IRhJuo5eoMkEMGKKtVeaGazQ/cLRgo4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 21B5E60218
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:42:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC3E21F00A3A
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:42:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788417748;
+	bh=NoreS1c67SI6AUlE45CnZ5o1zP8316Y/FnI+L8qchEI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=NhbKpu4euU3J54kuBewdoHitvzC4s0XKkJbtFRar7UcMxbaZ7Gv7lBMvrP9w36xSw
+	 2+8iojnoVDwxMeAUCOee93Mp8p1ONeExTpgtO8oFLQd96LjWAWbZ9lpmZqHzaT0Upd
+	 ct1nRoEbswWioW6g6JRN2Pvs/vnUvVWAFi9Dt6l/QpSwO9TUMwrXv72SZwdCPvY2Oo
+	 yfFYdVNNR4rvKO0cTOvavhsjC8NOIA8wNKksOuQdp8/6GrYxzo/NBnpk8wJVf6ewmA
+	 mImhjfdQ1Lh9psq3Yphl5NJsOdXPzLPM9QVumnmXilSJ/vtpspNlPJe8LjfFACA91O
+	 t69ZgAaWQXTOQ==
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-92edb12cdf2so171773185a.3
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 23:42:28 -0700 (PDT)
+X-Gm-Message-State: AFuF++mxPpDnEzUQG5iZD5twFC1sxS/9EnPsjHGZqdK8fDI9gJoH01v0
+	x30fBGTIvnCVXIovjMNkFIXiNnUvDa7ecMG7vt98elNyt+UV1l5Dx2Q6rA72tcYi47KXIe/4dIr
+	0oZSr/sYLwFfheRF5/GeePvB70QMcUVA=
+X-Received: by 2002:a05:620a:a20e:b0:939:3b56:c416 with SMTP id
+ af79cd13be357-93960ca35cfmr1181035685a.8.1788417748183; Wed, 02 Sep 2026
+ 23:42:28 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/11] mm/sparse-vmemmap: prepare DAX vmemmap population
- for section orders
-To: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Jonathan Corbet <corbet@lwn.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-doc@vger.kernel.org,
- Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>, Randy Dunlap <rdunlap@infradead.org>
-References: <20260831075342.57563-1-songmuchun@bytedance.com>
- <20260831075342.57563-5-songmuchun@bytedance.com>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20260831075342.57563-5-songmuchun@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: szyf44kwpxrticiq481a434eq5qpjdzd
-X-Rspamd-Queue-Id: 7190AC0003
-X-Rspamd-Server: rspam02
+References: <20260902-mglru-flags-cleanup-v5-0-9db761d779ef@tencent.com> <20260902-mglru-flags-cleanup-v5-6-9db761d779ef@tencent.com>
+In-Reply-To: <20260902-mglru-flags-cleanup-v5-6-9db761d779ef@tencent.com>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 3 Sep 2026 14:42:14 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yqwfMJCaonibg4Bc9AosthroQBwM272eg+Qx3oa89PMA@mail.gmail.com>
+X-Gm-Features: AcwNN1VD2akl2VUX8YhUPLeb6jEb8u2mnb-VNQovUDSfTJ95mvMn_WCutxEh8is
+Message-ID: <CAGsJ_4yqwfMJCaonibg4Bc9AosthroQBwM272eg+Qx3oa89PMA@mail.gmail.com>
+Subject: Re: [PATCH v5 6/6] mm/mglru: fix potential generation folio number leak
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Ridong Chen <ridong.chen@linux.dev>, Lian Wang <lianux.mm@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Kairui Song <ryncsn@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 87BB4100009
+X-Stat-Signature: whr43dbgnru5xmzs1bp1pg6dnds19x8b
 X-Rspam-User: 
-X-HE-Tag: 1788417376-662519
-X-HE-Meta: U2FsdGVkX184fRWEC5/QFNms9n2TIKFDWBJlykXrMKeS2nJqEOeMwTFLDud2EI8R+ipdcfX9G5mzpg+w3hSP2Wd4st7cG/nqt4t6DXiWKqREPfaO5NZyqEavIIKmLEkjbBaxZVw5Hcjh7swNlb1Sz5awM4FsJkueIgnkK24wjTp3QaOWAGfGJX/8iA9KhNBsh1LuZFRi7Yysfp1snl1xdemYUctZzhlDKy1ijm5ww6uEV0SJbmoMSMigK1Y0P29DHHcP5HTokJ220NiK82WoT21hHYb4Zne33+6ppZ7I5r535yZX9qF22M9O2DuhLrbRkUmUiwqKqji/OdmSQ9VCq/ENVeS07Shx2IBTvdh3Npee+EKAWu+Gl4JNKIA/T64Uw5byzXvumuNlvrNefPgynlWaT0txYwTGFbTz61FxibhymjtVpBCT+nPuLxLI6geiPjtGdCwDdPLDC3Z8C/Ly19E9+b3cEcCFieZOMj2LFR1cyKoPdzBKxlNOKCbEPOVRetxqLQ9OIWTXtnw3avpadelqZfbwPstVJszupT/t+g/u6OA9J5/q0y/aRtsMM/mhEvVjFrgxSvCFZtP8s9VvY90/Un2PH7L2ODsn+a7fVNEXLzecGHzBkgn7Q6xbhIkAdgq+x3VTTkgvvR9R3w0ofj+fd51iwl6pTwMcaLOTDCD2B7Tea3ieV/oWmLSMNx6sjnnCiyYaTGvaTeFIWNZjGOclDvKCxLsHufNeWtCp0g7RrzqlcMmWrIe77sghAo/7bwgK3LAkfLOow33fkfyW4xaDHR55q5E39swnOjBTVdJI+y1obR4h1wy+YHlGM0l07zGb/d6x8bRqGRXLCyocDd8wHH4K7MviLwt7AZsZC6M5dDVi8kxkLdenLuZnpUluB4sFSnukLoNlpjajsEjqKOqNF1Ur8GviucSVcW2qD0ogIW5zE2HZ5Go9hJ62//tE9N/Sb3Leki7KB1FA0bS
- SORL14Iq
- MSXTrl9lnUo+7nbVUACHTsvkDoSFwctPqwn46dLGx6r4gAu8OunURvneAtUoM/wij5StIZYL00CqLUSESQFEkzbJror0jv2ePJ7eMNB+gKGJQ4TcjDf5xYl/bStH2UrvNdnaxkGJylx4qUoRfEmrieYe9GvzRTWGe1v40Y85LASq1fGnCiJX0Wy/jc4EOITIqvV6IQTa+KJpuJQC2k14qchTVnOvYyL0PuL8ZoHv/RsMgnhHvNmAah55Hd36VW2DO38EuM4F6fxH/F1GMYIY4zW0Sh27eZ5cGODDqiMqZG9gvYsA=
+X-HE-Tag: 1788417749-702144
+X-HE-Meta: U2FsdGVkX19EtsV5XgNPs5y0dSvgVTHR73zMyD6RcTMJ6JQCaFwYdO86eEeXv+B1OfHCc6sbujRYzgeLcbJTS9MdxAxZTkroyAHHfXKqxpdGtM3uP/nywZB9m1/b2o5rwlQcY2772mmM6vqR1VzMmZZmAQdQwFH7gKFLLTuKbw/xa1ygdmrPvfr4SS0kn/AQL/qZFZl7iT/hWU3kBAtEmmDGyMuXgLfzvbzAhNilWeTHmHHC5Lm40ODtRG0nk/gx3TGMQWnQ+qTmHmkcfnXI1UwqY0nb//XFwLJUm19v+2qimYFC+WiqyiVQXRCSH0ADyjq0WpFELirBiEZbvoUkCXt+UjTbQ8eKvPQb6wapQ+7WwOOXXL0T8rtvM1CGNcGJEuswcPcWd0YrtzVQ5R0nRoViwWaBlSvBKGzN1Vngmo4tW0ecB54lsHZyDJ/3+zjTO6wJfTA+OqAM+TRTB8HqnIgfkw2MtxOaXiR3e5MI4KJdeWPk+5dddxMy9mt3q1p/dVkWV2eaG++mlXTG8EAmvFViZtKCgba6Sa/gSpK/AXo3Eef9c+l/Cy41ku+1RdBHRAhXLjuorCUO7HUqU6teY4C5/dFB+LWdcc7ubD807IRN/5iz+qnOKf0aS1RcU3Md+CfnzYiecgX+uc15/uDOQxwSBax0ZnXip5tTfo9cJm+xH5bqbJDVCBMzHTQjRkJrTckQndYTunhlXcBaObE3NeyXbmPMx0bfo6gy0qbRnrFJTYCfErjRxrglTJDaxLFdjYjlxsY1yAYHfYcy9YVYWaL53j6YQTLv7lxduAr7D/PoAWJFK3VoUL9ZD1S3Xw9Hg0G4uyjYCT2fKhzhObVhawrUww6bEmCLpyrTNGgLESuMMupQBBHLkTGOchV49OVDy0+pCHXtZnUqHmm6nX7dhmbC/gsTcIk3eYA2fZG0Cl+Pbt7jd8XNjBir8j7U5FWaSC1IX5scbY5cMY4jNr7
+ BhcdXC5a
+ fThS2FnkCB+EQ6VDUmeq6UUign3/FgACSEmFMf4pvfWwXGNfLEj7KUa1TkFBRWQxXKDVKhgiiZX4rRO/coOhnINHyjKpQQCTngcIrXk5xkzgcdWOSAJtOqabco7e8/cdUPFRbqEtkVCRhowWqYqH3bKA+UYWex1gQ6Bg8Cs1d/B/rkN+v7FRfDUut7Bu2Fe/HDspCZof02b9WXGHWnn6tNZY5ecDgtqKeOy0Yc/oNdf7zABzaN5mTybTDsvM6krs9c2bnukjdciCdeKr/oqNZJov8K1PoZ4uxVRQI4ELCrPB575snkMAtuHUPwioEWoFBV3VHK0Vzbij05Bv9lR+AHf5rmOUkpfaopxvcNa0ZnkyhLk6Znat+yiLDBwXN9dLFEkc/nEeaqEV600x9q/6fmWxHig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,33 +110,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 8/31/26 3:53 PM, Muchun Song wrote:
-> Device DAX still uses vmemmap_populate_compound_pages() to populate its
-> compound-page vmemmap mappings. That helper allocates the head and first
-> tail vmemmap pages explicitly, then reuses the first tail page for the
-> remaining tail page mappings.
-> 
-> Device DAX is being moved to the section-based vmemmap optimization
-> infrastructure, but it cannot switch to the generic section-based
-> population path yet. Once a later patch records the DAX compound-page
-> geometry in the section order, DAX head and first-tail PFNs can look
-> optimizable to the generic helpers as well.
-> 
-> Add a DAX-specific population flag for this transition. It keeps DAX
-> head/first-tail allocations on the normal vmemmap allocation path, while
-> preserving the existing page reference for reused DAX tail mappings.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+On Wed, Sep 2, 2026 at 5:51=E2=80=AFPM Kairui Song via B4 Relay
+<devnull+kasong.tencent.com@kernel.org> wrote:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> Each generation of MGLRU accounts anon and file folio numbers
+> separately, and the page table walker updates each generation's
+> counters in batch once the walk is done. The walker promotes a
+> folio's generation with a cmpxchg on folio->flags, and
+> update_batch_size() then reads the live flags again to pick the
+> anon/file column to charge. The walk holds neither the lruvec lock nor
+> the folio lock, so the type can flip between the cmpxchg and that
+> read: the lazyfree path clears PG_swapbacked, and reclaim sets it back
+> on a dirty lazyfree folio. The batched delta pair is then recorded in
+> the wrong type column. Nothing reconciles it afterwards, permanently
+> skewing lrugen->nr_pages and the reclaim budgets derived from it.
+>
+> Fix it by capturing the type from the flags snapshot the cmpxchg
+> linearized against: folio_update_gen() returns the type of the state
+> it transitioned from, and update_batch_size() accounts with that.
+>
+> A folio's type only changes while it is off the LRU list, inside a
+> del/add pair under the lruvec lock, with the gen bits cleared in
+> between. The generation and PG_swapbacked sit in the same
+> folio->flags word, so the cmpxchg snapshot captures them together.
+> Let G be the generation that snapshot captured (old_gen) and G' the
+> one it wrote (new_gen); the CAS can land in only three places:
+>
+>   - before the del: the folio is anon at G; the batch records anon
+>     G -> G', and the del later removes the folio from the anon
+>     counters;
+>   - between del and add: gen =3D=3D -1, so folio_update_gen() returns -1
+>     without touching the flags and no batch is recorded; the del/add
+>     pair accounts for the move alone;
+>   - after the add: the folio is file at the fresh generation the add
+>     charged; the batch records file, that gen -> G', matching that
+>     charge.
+>
+> Unlike the drift of lazy promotions, which sort_folio() repairs under
+> the lruvec lock, the phantom deltas from before this fix land in a
+> column the folio never occupies again, so nothing ever repairs them.
+>
+> Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
+> Signed-off-by: Kairui Song <kasong@tencent.com>
 > ---
->   mm/sparse-vmemmap.c | 27 +++++++++++++++------------
->   1 file changed, 15 insertions(+), 12 deletions(-)
-> 
 
-Acked-by: Qi Zheng <qi.zheng@linux.dev>
+Reviewed-by: Barry Song <baohua@kernel.org>
 
-Thanks,
-Qi
+[...]
 
+>  /* promote pages accessed through page tables */
+> -static int folio_update_gen(struct folio *folio, int new_gen, const vma_=
+flags_t *vma_flags)
+> +static int folio_update_gen(struct folio *folio, int new_gen, int *type,
+> +                           const vma_flags_t *vma_flags)
+>  {
+>         unsigned long new_flags, old_flags =3D READ_ONCE(*folio_flags(fol=
+io, 0));
+>         int old_gen;
+> @@ -3298,6 +3299,7 @@ static int folio_update_gen(struct folio *folio, in=
+t new_gen, const vma_flags_t
+>                 new_flags |=3D BIT(PG_workingset);
+>         } while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flag=
+s));
+>
+> +       *type =3D folio_flags_is_file_lru(&old_flags);
+
+Though it is a bit ugly that an `is_file` value can be assigned to
+a `type`, it is not your fault. We've been doing this throughout
+MGLRU. Technically, it should be:
+
+if (folio_flags_is_file_lru(&old_flags))
+   *type =3D LRU_GEN_FILE;
+else
+  *type =3D LRU_GEN_ANON;
+
+But that would be too long, so I'm fine with the current code :-)
+
+Best Regards
+Barry
 
