@@ -4,86 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B887BC61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 18:22:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C31BC61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 18:29:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C35836B0088; Thu,  3 Sep 2026 14:22:55 -0400 (EDT)
+	id 7384F6B008C; Thu,  3 Sep 2026 14:29:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE6E76B008A; Thu,  3 Sep 2026 14:22:55 -0400 (EDT)
+	id 6E93A6B0092; Thu,  3 Sep 2026 14:29:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFB1A6B008C; Thu,  3 Sep 2026 14:22:55 -0400 (EDT)
+	id 5D88B6B0095; Thu,  3 Sep 2026 14:29:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 942A86B0088
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:22:55 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1E6DEC05DE
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 18:22:55 +0000 (UTC)
-X-FDA: 85173272310.03.8DFE1D3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 51A7FC0003
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 18:22:53 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wPq43bzI;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F8A66B008C
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:29:53 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BC0A1A481C
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 18:29:52 +0000 (UTC)
+X-FDA: 85173289824.11.BC26159
+Received: from flow-a3-smtp.messagingengine.com (flow-a3-smtp.messagingengine.com [103.168.172.138])
+	by imf12.hostedemail.com (Postfix) with ESMTP id C89B440006
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 18:29:50 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b=CxPtMTTH;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=OhhE1bUo;
+	spf=pass (imf12.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788459773;
+	s=arc-20220608; t=1788460191;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BH9198rK799MJYuMQnII0Ud2Ndbo/vSNpauNbEwkaPY=;
-	b=kHyV7kbZ+xldzOnswRSD6svuFQFf1NW90yQG9CU7dn2VoS/+nDaVShzCcwHLOyYiGz4w7a
-	rc0uVBonOmDKP/Hf3vkk1NCvZMSRAnF/RultQrelx0Lm9j7WrfBMzDS53lxL4/B4iAbyDM
-	O3OkRAIwO74aPBA9zEQx7n5V0RkHPFg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788459773;
-	b=GBo2rZxiXYaf0XBt0XZAkMGvzCQY0n5k5o9bicVVQHyu5PYQvldfQmLWOuP/SaEJmdgQXP
-	d0Go9LphHMRM0wcBXZuQsT9hRxkQYeeaJwiw6TqBSWPcNHozIP3SAMmwueq9pP8K0cVhAL
-	5JtADpS3U89HuNkuByFK7pnNp8OaB24=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=/fSatvsWZM4B4zf1fK77XqXosYANLT56ve8NWTcWTZ8=;
+	b=Nq/ey+EyoR0WKBdglIARU7xrw8OrkYGqP+Ns4U2NnvrHy7YBsJiwMoz6XVqxm4ITEBF2Nt
+	MnD/kEcN9X7Jt8dMYOz7jbVasS5Z1OVSYdjU5Ja6x/Okto83xTqHaChg9GbRoC5mh+0H4m
+	qMu/Kyju7HHk81+c+cQI9V2+CJSoUNM=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wPq43bzI;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b=CxPtMTTH;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=OhhE1bUo;
+	spf=pass (imf12.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 30F0640A39;
-	Thu,  3 Sep 2026 18:22:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A1A1F000E9;
-	Thu,  3 Sep 2026 18:22:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788459772;
-	bh=BH9198rK799MJYuMQnII0Ud2Ndbo/vSNpauNbEwkaPY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=wPq43bzInk5PeSp03yEN+aaBk6/3zIf+7JLmixWEffRb5kBY3W1GcGa93mnUjUzXg
-	 Hz16ZsLD6o3bVbGZX4OZUfNz4QCUyhqGdY1anzkvlaOC2h+ggDk3KjZZ3hnvkpn+5y
-	 lrk+hARIF5FuzcZ1IukI/fdIPXcztqFvwINX0ybI=
-Date: Thu, 3 Sep 2026 11:22:51 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "syzbot" <syzbot@kernel.org>
-Cc: syzkaller-bugs@googlegroups.com, Krystian Kaniewski
- <krystianmkaniewski@gmail.com>, <linux-fsdevel@vger.kernel.org>,
- <linux-mm@kvack.org>, "Matthew Wilcox" <willy@infradead.org>,
- linux-kernel@vger.kernel.org, syzbot@lists.linux.dev
-Subject: Re: [PATCH] xarray: fix index jumping backwards in xas_find()
-Message-Id: <20260903112251.6114f91af953412d2355e5b3@linux-foundation.org>
-In-Reply-To: <2992424b-2120-489e-9010-f45f46ed52c8@mail.kernel.org>
-References: <2992424b-2120-489e-9010-f45f46ed52c8@mail.kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: qquf6o4p5oxfgrfzo64f5ur4bk1rdybb
-X-Rspamd-Queue-Id: 51A7FC0003
-X-Rspamd-Server: rspam02
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788460191;
+	b=LzXMs3cgeLhu/uZXF7azQKt63fhIszVYi7W7jmQ7BIS4tFFbNxYWSY2jCdOaUyVlqH09B6
+	OpIp1Zy5Kaa+uUOlhZEg9ZLzpA+QKtybX8E3pWs0ExeUXaOcu1rvjzPJhkNJLXP/KcbBwY
+	OX+Q2rq3tbIKoodU46d7u268m+p4wB4=
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailflow.phl.internal (Postfix) with ESMTP id 15D9E1380124;
+	Thu,  3 Sep 2026 14:29:50 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-09.internal (MEProxy); Thu, 03 Sep 2026 14:29:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
+	:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to; s=fm2; t=1788460190; x=1788467390; bh=/fSatvsWZM
+	4B4zf1fK77XqXosYANLT56ve8NWTcWTZ8=; b=CxPtMTTH9TkAa4aDnaEhmQJnIK
+	efRiwvfMnObkLuGH7iQqwfG1yb9qqYqizLmy0KgQo0q1KhW0t7or1QIOAK7oSMXZ
+	JWKzUokFOVxClmmOKUZEi8hMmZPTmif8ArOkwEko2ICIxusw6F9h2JrFdxkxDDLZ
+	0/2dZejfo4kuFRzQonWU2C5xdZjEb4EPkr+TQZDb1rAZHnr+ZO9whXAN2XmTSn2R
+	PVqDRIggND452Jr4ju6hXShQAR2+rNTPIVMSMOsKEYzliniHgN79qYq2tR2j+ksS
+	CXb61vPkO9gq1KNJWXlGRaFC+1RbwcwW2sskmmqxXxNn+kBrrlUjhGJKLNCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1788460190; x=1788467390; bh=/fSatvsWZM4B4zf1fK77XqXosYANLT56ve8
+	NWTcWTZ8=; b=OhhE1bUoRtN1xxHczEJYxz8pVDzzd2dfvyqTeKV4iRF8ifBvC3M
+	8wEVHHHKhN/QNBMwXLMPL1od+mwkljYIbiPX9CW3Il/eMqLqKmUg48x7b++2nLDp
+	b91FRn8vFFgHJ7LxfOd8rKTIliSSYTMOL7cvV4OXU64y+iJLLZTF4QWf3neIIRZr
+	aCcz5ATg1CTKxgScWSN0Qf/ECLF4lnGNQfvkqLeaGcuKL5sTRiXRWsgI5kXvbHF/
+	E6NuAJHTgkfhTF8kPWt84/41TateQXMqT4X2+pHqvm0Ph7IbOE28ygTYLuaLF8gm
+	LyGdd/SwXoLiVOAHV1E/Ij6reIB8Oi63J0w==
+X-ME-Sender: <xms:nbyZapCYC7gXPp0GMMkMgtXsWAWvZd-zVwEHqMcLjCxAOex-B6GIQA>
+    <xme:nbyZaokMcjRmjIg-G1qDOo8hJmQwuI1o3wyYT7qAM_NJj-9PpzeTnx4UvaHY2B3gH
+    H53MBDdcKBs-1qYY8g3mtdBTps97sag9vlkOu2RUF4zIhelN2dZBgg>
+X-ME-Received: <xmr:nbyZanhBpl7Pg_hBzPBTwGHlagURlR6uWONjTBft8212oj3QYkZuY0D_82M>
+X-ME-Proxy-Cause: dmFkZTGzhS0EF+xT7L4APxnR4/6WqwEo/DPnzsf1SrAf29Hq8MqzP2TtfK1qR/Svqk+STv
+    H4nyfck5vC3zIkbYydfT1Ttl2XZBvWEsTV9U7KUCJvpYiKzH3LLS1TpMk1G8Q3iTlEeqt6
+    uCqSQ5F3FzkpEfnpwRBCLOGhNeU0tP6d3OQbhYO3M7PmyvCrhn3qG+OlNDPJKGyZgSthfF
+    vI3CoYKv29fWoxbxnpYFUa5xdbF0HB1C9u4CCfeYbHoB3NBJzU8b73sgbQ99wHxzD/oqD9
+    nmFhnPrAi7wEECNbyJ9wz2vD++cZExRKpHmU0uZ7vFfONmUZQ/wkCcSDV+9t34/IO9YOpX
+    pt+pno6vg2zNg0rB6w6K2L0RQq3qbN6xHrl+RlvfD0EmGDW67TeFKmpYKwvv1xlSl5Kkm0
+    SE4iL2xcx9DW6rY5bgR+REp8zE5GL9YG+8NUiCkwx05ewzr6QX8VfNRh6KzIcE5GJ5XTsB
+    ZYoViLRJvipGySeYV7w0MxnMC6kyzC2lVOdcVwljW7AhR06y5j6vujQrPsj8SrNAN5eaUm
+    77U79F2B3v+mIDhCNPw5iZZgNk5WfrNqorNrSF3AVWPeFfUhlwhd9VKZyAXG2cOtjgfoMo
+    d44VAQf4TsN8v+Ebzh3NAJC3CE5akd2vrGCbHdw0KuQ0kRfP1NWLkvVEbD9A
+X-ME-Proxy: <xmx:nbyZahf2FWn5k8aa0ijhYFfvDJYQmyhZg7BxSakhXkalyeEk4pH-bw>
+    <xmx:nbyZanAt92YMvc_4qWmEMegxLEaqerfxji1JD_BriReXo8ModkjJPw>
+    <xmx:nbyZal6RlVehtUw9FikKgP0RrqyDufUaoaVaK5J6tssv14zcvv3K-w>
+    <xmx:nbyZakyxtVw9rNEDX2187f1xaiu6W_iG3mnZWnSq_1qMt2o_2pPM_g>
+    <xmx:nryZalVKCWmbfmDcii_JrBWGoRPFo6iHGYKV16G-Hpo7yN4I-dl1qQdz>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 3 Sep 2026 14:29:48 -0400 (EDT)
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: akpm@linux-foundation.org,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jan Kara <jack@suse.cz>,
+	Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Jann Horn <jannh@google.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	Usama Arif <usama.arif@linux.dev>,
+	Pedro Falcato <pfalcato@suse.de>,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-xfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Subject: [RFC PATCH 0/5] mm: sub-folio dirty tracking for PTE-mapped mmap writes
+Date: Thu,  3 Sep 2026 19:29:38 +0100
+Message-ID: <20260903182943.662461-1-kirill@shutemov.name>
+X-Mailer: git-send-email 2.55.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: mwk14nz4b8s6rd847uiprz1ipbcbfugw
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C89B440006
 X-Rspam-User: 
-X-HE-Tag: 1788459773-271804
-X-HE-Meta: U2FsdGVkX18DQgmt7x2xCQVn/O2c2av+hcYWQ1f26dGB8pg1eUo3vdMzmYnV1vLNYK3RY58TwyeU/1XxlKIPwpZdC3Smy36REFd5hTZBD6ZoNto5LfNn+8a7lPyOdema/LSg1y0xx8sEdIwmqgzvL98Ez27PB/yuariFt1s2XNhC2n2bD+/ypPRmarwM8Kkz/EgBItlJNJPGYJJFk9e/hkQTrzRaF+GKGIKfcR8s9qLq4hQb3AcKPCRcXt/FTsVUuTi0nk1N9ZpJYK0AucTk6pXQjaVz3ri5ifuu8EfrHYAN4DIvV7smoyVCckpVzJNx8EHOJ7usQ/LSucolW/gt2jmy+IBfgA+dok+yN9wAxvqEoXr+Cy1J5F41LiM/QxSqzXbMUpcR5coZ8qE9NxVmoRe2GY5QHjDlFn6eKQTSt/fAGo6GLNlId5GEzWvcbcNzqlKpkty8xfguGU20KwqHyuJYIfd2lmdQyBjqzd1bWRBI3W/iu59uOdY3zdq0g3vyLB8RpeJskXpgoFWuG5NZR23w0E0q9I2GDPPgDk2zZrt6EDjMCqFudkX4thcbt1UJZeqQ3YBVZ/PeOjYFNS5PWQhh2T4/HtWMm2KQR3ksWhIn2c4VMPQJS0SaPKT4wbdAZEBPK1zzcZLNiD5my/WQZblxjdpD7A2b/8JkW3wBjlEGHVcqjnkkEBBxuVFdiDrAQJdphNpuivW9H1GPdUlp9Ex7lvryrWiHJEjJ6BF3JO1Y6H30Z8ZZK8JF+yE3vgf80LEvLX2okIO4lj+N/fwfWBqYfei6XVQ58OM6nPwpnh8nthp5aLdYdOdNIRntiK1ZvSlP55JvbZPXWERQjVlabgEkT1QuCzzG/HYkCVBeh87ii0RF+wZ9GtE5XgxLdG+52ixsLoe1wA9B9wQvnAT20b0FYIIXXbcwgnYE3EOhmBHhDNwlVaWofOabmwKiTag730aGngUv+V/JAVyW02z
- Hd1yyH1f
- uMlpiBGgWIqxKw+voA3LemaJLbAXtq8uYK/g4E/CCB2pZjYkoqRKdRSPDw6VF+36Yz8sP6PuQOFrDevhcXBVnApB7uDfT5AdH0lotKSJM6Dwez/iesvK7iqFvXBQwO+dOhLsSlMLSO4ZIa+DIZV7Eu3VTPFfAsfDJnueF/jplaiZGMT/mD/J2kcEdLO3xfyMRSitBN21hl34FDLGEeYftrdFr5/bDt6INzZzsRKyP3t0GHLBHHn7kGWHBMjMQMCIJ4I0AdXKgy5Px+RdtHyLioVn3ErFEtkaANNNcKlWwHAaZSOPyTD6Tc4JjYEjLSFfZyDCvdG6VqxfDxyGhkPkY/1RA0XpIyoToe5B/z7O211yVgQQ7gdMlaSRupRdEhYV3xSmFEQaWUpNXm0po/NG1ctflvBzzpvj1m12/YCdJdkmsWEn9c0aeHBBegB2Db2r1dHVPA4ol2BzguQ8=
+X-HE-Tag: 1788460190-70160
+X-HE-Meta: U2FsdGVkX189Ov0jgPzawTNedNmXG/4muZYQB2SgqXAdnFbvWT3346BvyjBpaYjlN92DUIMc9HFG3o1iZrjrUVHMx2ZWr+O/NZRFvCz1bqjlMbFnBKdy4bjFsYnWZUeG0lMRuO7VXSY16vXff8FaWJOmjBwRTDmYFpX8GD21Pp44pu7kbWRPNGaVIi2DHCC/6p1P9OC/rWD1XRhIVAhWsHFS9NOcGdsmwnYnWLzbT+MwFjwWnA4nrGeyarK7yRA3G2wudEWr8ZbJeZ8qLCzAjzjRXd7Z544HVnIduFRFS+vfrEKTzep3Yt9TWLVZmqor0NdQLorIEFDAMNuPqCnwVZQkhPXEZyvqEsVqYqfzRfVKEmzDUPHMN7Js3eDsmMf9CbUQxqUQfKSLnuZqKV6KBISoPiYUZ5vQ90hMpQITbxbd+bHIgKJFuSD4SQFjDwFLf6wfuWTcQi0IgubWQVxflgHIYEXyvZkGNAtDXFVyswZkpp8dCtDgFxxuxX1jtir9CX7fq+qFkVVrEDYy4Ly1ps1NRW2UNAeCx93/qaFHyXaZtimExHccC1QVW7RwBAt8+x39Bd+Ar1NtvjikzjBLi7pZq4z+GsUvR7Dqz3TDSRW2w2UHlN9Ev+BE9/majXrDUpAaUqTmE185rOpoS33SOZUibQvV4noXB+VmcGOwhnF8aCHkhagoL3iEHjZ7qouJhpdY05BvWifn5PNR2IicAoFxOqyRUgMdicNQ0s4OGeH8pCKE0+U6JphN+i9LdTxQDJGNODvVneFHmwtC9oyY6S7nBXNjQ+OBAlhoS2+FT6ZHyrdRoJzVFu01aGPQcId20WTM1xvA7RrUmoOjTHsWi+CCV2XM4ChvxjQjmSa2ozx1N5wiNAngBNGUcIcPkzGaHD3dc+ilYIH5QlDEy6eKRyoGKI/90q6eygVg9/lJ+LguC8iobobxhT8mbs/tX2eYp9PrbkeIvDoISEEQ5b3
+ NgLv9oJP
+ eYmhPCVXXHnbRmgdvD1yJpL9Lb44xEdzo75dB3XIfMejRDl8/b2Ye57jPzlir2PUZ5uMrAYMmaDgC6leGcs0QPwrMaQ7WmLHdm34kC/bgOhiOsjo26dwvaTolzQEs7AU9woQcRqrJfBj2A+q/U3h0EREFMs3IIuWDW1qKaE6fNbng9nKiOM3V8QLzKcxLVow/E4RKrZFoKGm0I/fDFXqwqZtxP/shQWnA69E3lxlvGh8Krm4B0MMGLzINe8hOQmoxCRvdKSzWotlTw/0KUjgML6OtuMvJsuibFlXlny6gZSy8zHsNxvkHGJmZZxJRpDtI67jKyIqAeIwLv/E3SasfV/anH6bJSOnJnIo3X7qkBk5sjHavPS0jjM4tCbgRtbDoceMZO/jhGYIGfOElRuRi5jM0XhGtH+D3Z1Xn16l2I6QhXUWkQKPkqwJMXS4sJI3qe/Nftc9M0T3keWk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,50 +147,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  3 Sep 2026 13:48:55 +0000 (UTC) "syzbot" <syzbot@kernel.org> wrote:
+From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-> From: Krystian Kaniewski <krystianmkaniewski@gmail.com>
-> 
-> A bug in the XArray iterator xas_find() causes the iterator's index
-> (xas->xa_index) to jump backwards when iterating over a multi-index entry
-> (like a THP) that resides in a non-leaf node and is concurrently split.
-> 
-> When iterating over a multi-index entry in a non-leaf node, xas_load() sets
-> xas->xa_offset to the base offset of the entry, but leaves xas->xa_index at
-> the requested index. When the caller subsequently wants to advance to the
-> next entry, xas_find() is called. xas_find() attempts to synchronize
-> xas->xa_offset with xas->xa_index before advancing. However, the fixup
-> logic was incorrectly restricted to leaf nodes (!xas->xa_node->shift).
-> Because the THP resides in a non-leaf node, the fixup is skipped.
-> 
-> As a result, xas_find() simply increments xas->xa_offset and recalculates
-> xas->xa_index based on this new offset. This causes xas->xa_index to jump
-> backwards. If the THP was concurrently split, the entry at the new offset
-> is a node pointer, so xas_find() descends into it and returns the folio at
-> the backwards index. The caller (filemap_map_pages()) then calculates the
-> PTE pointer based on this backwards index, resulting in an invalid memory
-> access such as an out-of-bounds read or use-after-free on a page-table page
-> freed via tlb_remove_table_rcu().
-> 
-> To fix this, check if xas->xa_offset matches get_offset(xas->xa_index,
-> xas->xa_node). If it does not and the node is a non-leaf node, set
-> xas->xa_offset to get_offset(xas->xa_index, xas->xa_node) before advancing.
-> Also add test cases in test_xarray to verify xas_find() behavior when
-> iterating over and splitting multi-index entries.
+A store through a shared file mapping dirties the whole folio. With large
+page cache folios that turns a 4K store into 2M of writeback: one dirty
+bit per folio, and writeback has no way to know which part changed.
 
-Thanks.  But the changelog omits vital information: a description of
-the userspace-visible runtime effects of the bug.
+XFS already knows better. iomap tracks dirty state per block and
+iomap_writeback_folio() submits only the dirty ranges, and the buffered
+write path sets just the range it copied. Only the mmap path throws that
+away, because iomap_dirty_folio() covers the whole folio.
 
-> Fixes: b803b42823d0 ("xarray: Add XArray iterators")
-> Assisted-by: Gemini:gemini-3.7-flash syzbot
-> Reported-by: syzbot+b72767277f29b6407083@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=b72767277f29b6407083
+Narrowing the dirtying at page_mkwrite() time does not work on its own:
+set_pte_range() batch-maps a whole folio writable on the first shared
+write fault, so the stores that follow never fault and never reach the
+filesystem.
 
-I see from there that it was a use-after-free, detected by KASAN.  I'll
-update the changelog and I'll add cc:stable.
+So harvest the hardware instead. folio_clear_dirty_for_io() already calls
+folio_mkclean(), whose rmap walk reads pte_dirty() for every entry of the
+folio and throws it away. Those bits are the only record of which parts
+of a large folio were written through a mapping. Collect them there and
+hand the filesystem the runs that were dirty, through a new
+a_ops->dirty_folio_range().
 
-I'll queue the patch for testing while awaiting review input.
+All of this is about PTE-mapped folios. A PMD-mapped folio has a single
+dirty bit for the 2M it maps, so there is nothing finer to harvest, and
+it keeps writing back whole. Keeping shared write faults off PMDs is a
+separate patch and not part of this posting.
 
-> Link: https://syzkaller.appspot.com/ai_job?id=a01c56bd-74d0-411c-afb4-ee6f0cb6cb61
+On a 512M file in 2M folios on XFS, storing one byte per folio and
+calling msync() wrote 512M before and writes 1M after, with identical
+minor fault counts.
+
+Not addressed here:
+
+ - Dirty accounting stays folio-granular. A 4K store still counts as 2M
+   against dirty_ratio and balance_dirty_pages().
+ - iomap_page_mkwrite() still allocates blocks for the whole folio.
+ - Filesystems without per-block dirty state see no change.
+
+Kiryl Shutsemau (Meta) (5):
+  mm: let folio_mkclean() report which pages had dirty PTEs
+  mm: add a_ops->dirty_folio_range() and use the mkclean dirty harvest
+  mm: keep the mmap dirty range down to the faulting page
+  iomap: narrow page_mkwrite() dirtying to the faulting page
+  xfs: track mmap dirty state per block
+
+ fs/iomap/buffered-io.c | 37 +++++++++++++-----
+ fs/xfs/xfs_aops.c      |  2 +-
+ include/linux/fs.h     |  3 ++
+ include/linux/iomap.h  |  2 +
+ include/linux/mm.h     |  1 +
+ include/linux/rmap.h   |  7 ++++
+ mm/memory.c            | 58 ++++++++++++++++++++++++++--
+ mm/page-writeback.c    | 87 +++++++++++++++++++++++++++++++++++++++---
+ mm/rmap.c              | 56 +++++++++++++++++++++------
+ 9 files changed, 222 insertions(+), 31 deletions(-)
+
+
+base-commit: 0a0d1d55dad570724bf8c7ea83409639cfb4be9b
+-- 
+2.54.0
 
 
