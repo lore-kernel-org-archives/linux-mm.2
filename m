@@ -4,117 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6DBBC624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 12:44:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 956C3C624DB
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 12:49:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CBF56B00A5; Thu,  3 Sep 2026 08:44:18 -0400 (EDT)
+	id 553126B00AE; Thu,  3 Sep 2026 08:49:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 87D2D6B00A7; Thu,  3 Sep 2026 08:44:18 -0400 (EDT)
+	id 5041C6B00AF; Thu,  3 Sep 2026 08:49:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7937E6B00A9; Thu,  3 Sep 2026 08:44:18 -0400 (EDT)
+	id 3A5D66B00B0; Thu,  3 Sep 2026 08:49:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BBA06B00A5
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 08:44:18 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B9D1B14051B
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:44:17 +0000 (UTC)
-X-FDA: 85172418954.14.1E50F8B
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D633840008
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:44:15 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YfVkxm7z;
-	spf=pass (imf17.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788439455;
-	b=2tZ9RGxap5OpowgATB0lofWbuhkQjSaZfT+0DCYKsr61KteZVW9dmr79SqJFyaBv5MlYqg
-	pyKH/7kgM7npt8nCf4VzXN7hPAiIz99H7S1ERFWvIABlfL6OP/yX+6XxhtUVLxzkUF0YHx
-	w+DNS1KjEXE4IO757xQbFg54sEZFBnc=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C63D6B00AE
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 08:49:32 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8E15C1604B1
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:49:31 +0000 (UTC)
+X-FDA: 85172432142.29.9046FFB
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B0B90120006
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:49:29 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JrsTYyh3;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788439455;
+	s=arc-20220608; t=1788439769;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v1JpLmeHcDYci9TjzZaOlT2Qs79rEF11KvKmH8LlIEc=;
-	b=ptisIiSJIj91BMuGlrMiXJq111RusxGTHY/blesrNgRktmZEfLfPCsrvD8+OHXPzkaN6a2
-	5smQtn0UmV9gs21pe3W8gN1QpP8knaorYg0+tYBlmGANO7DAWgYCy2EwSlxLXhumNPvMAr
-	sfE3jArVU3QIDPBchWR0e5I7QFXiXII=
+	bh=UXj/TYVdXwaN/k93Aa7dPL0IcomTyKCbxd6CDyPSqJs=;
+	b=SmDZaxUPqlL9WjQCkn9tUR4IgQ9QNKR32HGK0kJdfbDlwldDyifiMZdI+7gOh8FptavSi8
+	oBpI5iUQkdR7SWKtiMmw3+Ih2XlACHn9TfEawoiZZX/MFvuvq43spsukH8sZfQAJzZsWFP
+	GKpLc7X9UQN01nt5OA5opF3O0Z8rqAU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YfVkxm7z;
-	spf=pass (imf17.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-39266382df6so2100025a91.3
-        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 05:44:15 -0700 (PDT)
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JrsTYyh3;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788439769;
+	b=Z1MgdybpjtO116iDm6aGpSxDe3l0GwkM+PHS7vqaWZsvAOlIZFX+SVfthcKlRC4fYimqz3
+	jzAY7CZKR9OP/7Yyv93focTuC6am3GdymWxwhu/Tpav6Fgd54L4MbEUhPZ2iHL8nJWez4D
+	bzeBsNUEJARrA3LAfmKb6FRAMXm7c/A=
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-cc439aa0078so1132931a12.0
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 05:49:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788439454; x=1789044254; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1788439768; x=1789044568; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=v1JpLmeHcDYci9TjzZaOlT2Qs79rEF11KvKmH8LlIEc=;
-        b=YfVkxm7zWL4DRFWO20cbdn3n6gUjpoAbQdS/d5IxkI9h+5YDjXgNue/75BibixCDzo
-         jbcnyUgnKjl/SnzYlaQhp7qVhDzjgXjCeNk7JGCwpYOtjFzwS3boAgjEsWxoNhocMzpS
-         +YGR63vXRTbhWldzutKyz1FV8EsOjdHjBfyt2LdYo4k0UOqpWhVIOVDfzAMorAEQzEr3
-         13aJULIokDezLANC9Rn4s02U57LTPyn6563kNDWl48UOUx0/NHJJQL4UMzXPTxzkxWiX
-         2N+WDfrfcbHm3Urd1RM6uBFkXrV/DCf0NcJLkXbI1Yx8I50hX+SjaAGAo6AtVWfXI/bc
-         w9CA==
+        bh=UXj/TYVdXwaN/k93Aa7dPL0IcomTyKCbxd6CDyPSqJs=;
+        b=JrsTYyh3chR9fDP4l+oAQU4gs0VAQhgYxx4mmPO3RKJA52tYCy2yFQFJ1QVKSVSuQJ
+         Mt7qjVRFpNrs9E8WHon/pJOCpGGTwryfrMpu7XlfTpaJTiv+KU/knpL5nKQ5mF0EWjDQ
+         HbVoCI8q0Wct4ytGPv7fBcOovFDgG4fNADspD5ffXPGUhIfG24m1pBVkB/BoODRPor8v
+         z1ZVqucNqG06iYB5r9YEgo9qa5pqGOdBkBu/Pk2phtDThoWRPIx7+uJKJA02gCiTpK8n
+         tosP4BiCCj3/ZtRH8yY1MVnxSaGUh87wXPgBvWCTuTZxt9ZBLSL7lkxAAX9ZXjQ5CdyL
+         UrBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788439454; x=1789044254;
+        d=1e100.net; s=20251104; t=1788439768; x=1789044568;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=v1JpLmeHcDYci9TjzZaOlT2Qs79rEF11KvKmH8LlIEc=;
-        b=eNITRZ3jrjdnZWRLo4IV7lbbDGuAZpXB0jVgh9/ldP7hoXSqUL76itM7/2Q5xhPSio
-         OCYadCkwmNTdmRBM8clGLmueuPtIxAkVR7mAQcT8WFZNpVGoXLsIjMgxTkVRa3QJd0lt
-         G/P3rfXY/2ZkjI9n6vbMs7Rb0G58ltQX/L32Yxeh1nlvkdW1gC5ghdqZFEogkoF8WQsc
-         BALHga9GGItf24hzWg86a/0wkVaJDZSWy6CZC/5V3NbvyBo3M51lA7tT9aIlqb6KpCTn
-         pzUQXNndfU+eKtl9i43rC4vmaKD+x1CpU47Fgunxo2frySFMybf7SH2IDB4tu5eNrkMr
-         E2Xg==
-X-Forwarded-Encrypted: i=1; AKwUvBycF1WpQTS4w5eAddaDdyrxp62ei+Lr18JgsQKnHJGKjdnKEOSTmNU2JAhaXaY8peOU1v+uBDgL4A==@kvack.org
-X-Gm-Message-State: AFuF++lmqNdWGErP3TUguPFxqG5YZ/D0J/O/ozd8lhT77GnUqM0+Ap1H
-	v/moKznV4Z3yyAqyA60QRHu5az1ttqEnAOFFMdHQur51l1BFq7qnRhtGi+yEDg==
-X-Gm-Gg: AYBFou0PJS9MjxRyuL6wWFH6xKV9b/ao3BxCOJ/SPaBDWbl0Qv0rctJ8J8hf0PhLir8
-	mOpr+EsgO/uY0LB+4rjZ4r/p+gxswLpXkupU1xH4B/Uf1eblL/ZVsR+ioppfScF9TDSTGZI347E
-	ZbSghqw73dk1rbuUEq6keSW8NNVTcs7KQ2uJDKVnWbCbynOKHtULpHbXDxd0QkYGr6Bx61H5xaH
-	yRa1T+l30Cz8QrotmmYyuwP5COLeUc+HP50hsjFUSMls2BlzD8hZdn/BmAAe/DytDbC523ZgBXn
-	fOYR6B+zSrWRSF1Di0FU9lGDpFKGlvFcibQQD4HmWyVO8NjQUoLOS/bAq5jBvNx0n7m8aLUzak/
-	MsbKEHgy8Idye3qExSBbtxOoXnmpRM0PA5Yc2ZJXTPh373gy1JQ7Hx+GIuKu4RUx+vsj41LTIZ3
-	sEV3Uk6UkHekHRZVPJ3+MOuJuKt6zgI6U3dut0fvFm2R8BrrauHzV9LTqQ7tnRwTG11xXEn3daO
-	N119/oj6WAxzlrn
-X-Received: by 2002:a17:90b:264e:b0:398:dcf6:d40e with SMTP id 98e67ed59e1d1-39aee0c16cdmr19784168a91.17.1788439454461;
-        Thu, 03 Sep 2026 05:44:14 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:9c5:2de5:8b4e:3f3c:b637:4ca5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08bcc060sm6268339a91.3.2026.09.03.05.44.11
+        bh=UXj/TYVdXwaN/k93Aa7dPL0IcomTyKCbxd6CDyPSqJs=;
+        b=G9LUFN2dNOAH12w/FuwwJnRSYr0uLeOT7nvE7/+JyH5M/qvJRhGagkgotbWJzD+tS1
+         02SCw/nYZOxrQPraMy9eprm7hcqg57nWag9w7YqypaNhHtJVQE6DFsFoJ+nYZ5QdnL3o
+         5G8SCva17mJIHJ+inrrxcW1DuM+6LZLEvW2rFN1nLuYG/RHbdBFWgI2cSTwDGCWi+kbV
+         FZ64mqWN7c5yBVZoCUXfBKU2Er3klzRRMsVkOwCT1WmGZ/eJomjxZrVLsu6fHfYgltWe
+         ipNy6Eb3otWCcMujjshT5rM0QY1M7re6cRfrXXyTnbxt5jlHB13H6IOnTts7hMhT/tte
+         jVTg==
+X-Forwarded-Encrypted: i=1; AKwUvBwkOR+/YuM1jYWMgkYLqd24iWeEfMed+4fADPuoyATBBLOQ1rM4w422jqZslhkypI2DoK9HjPR0ig==@kvack.org
+X-Gm-Message-State: AFuF++laIXCJH1jbLe+hRzMcVe9u+cj/Jf6/J6tPjz1ZHTiabgebcK8l
+	eVP9wKN7rxGsyHFQJ4Y8sqdaJQK9pZnk8ktWNUOB+V87lHp8kUxm1dG+
+X-Gm-Gg: AYBFou1YlvVTUlLDLxR45JGz3lgPKM3wKUppphopGShf7LbohJyzturCwEt9CDXNf2o
+	Jn88t0JCNWMzh3uPgbjwSdtVa5XglT/oS1dBvl4OYuxk+VMAcpmLLa7oCSsnUCxAz0TY9T+0PWh
+	x3fISjlQb4zbDrGZVXVMY+/Ht5J85+YPhfObeGpWAAkkC5OxoJGniQ4nDWGFbrZEO5HA5BGZMwn
+	INPBgS8Atfsqeh6eEe7kTKcLR56VKcKl2H5cdL+dzkgXBqVcnm/DFLq5wKpH5B26Aqvzj1QqPLe
+	wqeA18+av36UvQbLLcCYy64Eb6sdaToezU0ryrkKePVM4PPWOB/HL1QIWqHaMShdGAskwtJcTTj
+	bnUsJyeuuoNJ2c9HeBcKb2ViF+DnwtjHwQ+Fn28TZaAxXVMUIRd4XJuffL6OZwewscVDgVifywq
+	fisYFAsaLe1IYa2mwqgKWG38wts2lSzfhwjLGrvdAqAJb0DkE8Rt/uB/AFmvk8t05wiE8p9lMTh
+	9KdfQ==
+X-Received: by 2002:a17:90b:4b89:b0:398:c3ca:1ebc with SMTP id 98e67ed59e1d1-39aee105a46mr17130138a91.18.1788439768292;
+        Thu, 03 Sep 2026 05:49:28 -0700 (PDT)
+Received: from zhangbo56-PC.mioffice.cn ([43.224.245.235])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08bcd243sm5431599a91.5.2026.09.03.05.49.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 05:44:14 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: sj@kernel.org
-Cc: aethernet65535@gmail.com,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
+        Thu, 03 Sep 2026 05:49:27 -0700 (PDT)
+From: Bo Zhang <zhangbo0325@gmail.com>
+X-Google-Original-From: Bo Zhang <zhangbo56@xiaomi.com>
+To: baohua@kernel.org
+Cc: akpm@linux-foundation.org,
+	hannes@cmpxchg.org,
+	kasong@tencent.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	david@kernel.org,
+	mhocko@kernel.org,
+	ljs@kernel.org,
 	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2.1] mm/damon/core: fix false positive in damos_quota_is_full() when esz is zero
-Date: Thu,  3 Sep 2026 20:41:48 +0800
-Message-ID: <20260903124422.5340-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260903003351.91088-1-sj@kernel.org>
-References: <20260903003351.91088-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH] mm: vmscan: avoid anon scanning for GFP_NOIO with low swapcache
+Date: Thu,  3 Sep 2026 20:49:15 +0800
+Message-Id: <20260903124915.4099765-1-zhangbo56@xiaomi.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CAGsJ_4z+SgetmjVD8bcOFisKNd9CFqe6kNcYcFtVd-PijYJ04Q@mail.gmail.com>
+References: <CAGsJ_4z+SgetmjVD8bcOFisKNd9CFqe6kNcYcFtVd-PijYJ04Q@mail.gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D633840008
-X-Stat-Signature: gh65f9zk6aer7zpaprk9otxxkd357dx5
-X-HE-Tag: 1788439455-245748
-X-HE-Meta: U2FsdGVkX19l0MHBMDDRyT81PN6qdzmNCJ/jfOPoxh3oVokWpSGFVD203V7xN4nGW5EkHqr5Rex2tZLh06JDN0lcWTjhL9O9wVOAQ+OV/NtzhOGvmWBdyi0fmWkg6jRQK2gcjxhua5X8rbGP7WSJ+WqBmtMhCS1zUtmnvqvVMmBZqA3qRmHOUyZ3gu7evpluJaOIr3KurCa+XGCdpYjYQq11e5SxZ1f2oCmJsEav9fWFrF0v2BYLqTb/50xhaxjPsKVtasBysXzzlT9G5HMPwZzfvOGx4e/JprByuo0c3YVFOeeIvIJKLD6Mue1QfpQWwZwXR7f8pwaHAvAxETNW9iBNQV66R81V3Yx4CM2MitUARZy5LCOwZLRHNHw6fkgECzJ9qYIU8pbMdoPSYHL3LgevGWHN3mybFzvyg/HcX3ifF/90PlNGgLR35uBGLob7YsXuQpe08/3eIdGKEDWX4/0hgoodByEkFuOfSunv2o7UjHe3DFbVYVOV60AV9hsfPMyiIn0PbJHraTLqvvKgxA6zQLuiGHvj8vE5WYtyCanobbGg9PrCiFYOPtRbGeq5zIBmbZ2Wj4c5h+koV46HSrw3woqVdGq6794vA1Ir2Xma1Nxlsd47GOCOVLiMsz5XdfYBz8NAR/aG65vkxbwgBPgXIo9DGuxhgSvcVMC/qmaoqn8PlxwOVBB/E5MBQ4gYAPSOZH+bnPOrLv6oEBBuFQ4oBR/+fxnzgYsuV6JR1HWkfKptcV7EDJJNRloWBVi1ncJPLkXsJoV4uTvm7LBWdG6lSYx5WI+sY0mPquwQXsUA1QFXyPnx5R6ZQZOnnJ/r6j47Q+ZoiEjPNtfargpcwL77YQLuPoeDc8JD7Tc5g/2OqlU3jz1suM7YhOy+M9n45NKfd8Ngnlmc3HppfeX1svFGCzJhTvERybh2bBinof5LdJQOecPY58vi1KlfGDX7aBRHQOQSxbO9JMvgwFq
- 7uXf5Zu3
- 2FAWoqqOxuCBdsZ0Tc8Jt4Gzseuy8l4TTbtsKBqOx7GXubEWlP0g8S4XxMFekZscUP16M5MHSyqOFsv4J+REh+p0ZpEaCZx+y/OzO1ep/AN6kVC14zLJ2Tkq7td0BZI/JuyZqkdFMJjooTdwYKe/WtAysBLZNj4nfePyeiCsrOt2eyrka356GIkXK953l4/MSY5aCvQreXk4wGCFu3/PbBEH/JCQQocDvjt/giNNopVd9y6GRAZNS9ySlJXPtR+3/pdAvetSn9JQsjJMx0W20aX+RKJBcwCaZtx72ceYoETLaw/izKpNU7Q/o3j6lRhdhDzVOHJi2wyWB+aFSuV8OGTtte5+rsDCsybxVMq5QAF7dIgJ6CV1a3fvtCJE6WRbhbzStpNCDU23dpaOHMYyIANcSL56bAf0LcS322hOPhlWm9ZtHrKmXcxU66YFVEzYhDVLDycU0tZtDP0cj9mqAjDwH4WutLnC1t+Y17Ca6F42RYOY=
+X-Stat-Signature: krfkd1ctcycebmbrjscsf7pqamas4qhr
+X-Rspamd-Queue-Id: B0B90120006
+X-HE-Tag: 1788439769-276305
+X-HE-Meta: U2FsdGVkX19+5aKP188iKM1McUEoHEKyxS5hic+8Nqu33fUOjj+L7Zlr/wpRkcobmPmDfwd/fzheXevLXwm01s5uUYKZsHbKwa5CITrKqf2McuMV6/7x9s/ZFm8rpkQ5JLuwY47OqCJMa6NWB2CzCKsvi+sN7wa5rw24GvrYAw/kz7kwD9wqChzQBlrVhyesm7mj2EX0zxOuaSXX34N1nwSznmI17bZc2FsjZEucCzZBEq9IKy+1tQP/Azl5ldw0r7+YE8D7JH5Rtr4dQ6CQoWu7aEh/d3qwm8aVLZ+dwAZcCM9Bj4unG8SlRf1AMq59eoeNOoAB2Ogj2sqPKqPwsu41bCxBavpA0BZf1wtHveN2BDEtUBdLohYoNiXuv+VpkznPKEhyr4gZhZiIDtS5kN68XvhbJLYFDEFL/RvXXRQffhZ/GZTRTvZ8qWjMNOYknHQltXpxOoQcMt4zgU/bylsb6advthZiswqLf5XJFD8rvLISZFfFmBymiy3NXGpvlnqg+Jfp4m1H14QNjHon+EGQgsxxooxFLgFe/h2OF2l/f8P0+BF9CQHPtRF6CdiKgLQkC4iElbamrnPJlP/pqwLJpNR1ALJCLmecjj1kxVemxmVF5QzjnhLp5kvutTVpZqbXIv3a8K69ml3pHiQaVvD0Au19Q+nVlIClScPLX/sLkAiccyBPVZF/FI0JTuQvWxn3iz7IBh1Nv21MTLoDSQjWuLpmrHKMklXnpIcNuyfhDhBUwmtsKuJqHCoQhio85KFRMjK/9H0EBYs7aLOkgPvxQkaYX6sp3jSDkhKiyG5kzOe5Rg601fUPxLayOGZvXmrdfUtuPjm6GIabouvAOvYFPtBx6+qOSx+QghuP693uYTmE8r1AxEsc9VUCGIIlZ37FH0VIMT6Limidea37Q7jhTjjcxE/QYmO2g2oQws2VheXxOccRbbXWHduPD1GAe1Oj07JOPEedQBJoR7M
+ QXHHy9G4
+ imX8191nzknFp9ooxkB8CIrSLcnfeIpJTo+Xsry9RikNNycmh4CCeJ94TI6AeamgnLggv2caGin7LC4aEK3o/Sh8M6z8C9VONwngFmYMZQa3QWHfCncsuDlE1plEBqITf60QrBxJwX8C/exTL+Vs/cmZFmPKfDgr/WXXUt2XBQIFrIp6MrZJmLySHcQh/DTLbLSFpznvvihOTAARuJYGBzhGT4n43n+ogjOn1K+9oxSqO7paeOhKbt2whd6v4VTMErcnSk9EJ6IKJ4mpFMWa2GARODv0oxDbXeTUBoqowH3pkZB/OupgiiEao4xxsiTcCV0Qg4CZsdQnyCxLqOqxtcH6gqjKtm1V3lmOsHeFSgg9gU7834FL1PzmcWJmUZ13mOPf0obKM10WD3VsknbeJ2vEXxZZA6DAOJQO0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,144 +127,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 02 Sep 2026 17:33:50 -0700 SJ Park <sj@kernel.org> wrote:
+On Thu, Sep 3, 2026 at 6:35 PM Barry Song <baohua@kernel.org> wrote:
+>
+> Yes. The coexistence of `GFP_NOIO` and anon rmap scanning seems
+> nasty. We might also want to do something like the following, but
+> the side effect is that it might keep a folio while preserving its
+> PTE young state, indirectly making the folio semantically hotter.
+> So this may not be a good option. Skipping anon scanning in the first
+> place seems more sensible.
+>
+> +               /*
+> +                * Don't waste time doing rmap and scanning PTE access for
+> +                * non-reclaimable folios.
+> +                */
+> +               if (!do_demote_pass && folio_test_anon(folio) &&
+> +                   folio_test_swapbacked(folio) &&
+> +                   !folio_test_swapcache(folio)) {
+> +                       if (!(sc->gfp_mask & __GFP_IO))
+> +                               goto keep_locked;
+> +                       if (folio_maybe_dma_pinned(folio))
+> +                               goto keep_locked;
+> +               }
 
-> On Thu,  3 Sep 2026 06:31:38 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> 
-> > On Wed, 02 Sep 2026 07:48:03 -0700 SJ Park <sj@kernel.org> wrote:
-> > 
-> > > On Wed,  2 Sep 2026 22:22:31 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> > > 
-> > > > On Wed, 02 Sep 2026 07:10:00 -0700 SJ Park <sj@kernel.org> wrote:
-> > > > 
-> > > > > On Wed,  2 Sep 2026 16:44:45 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> > > > > 
-> > > > > > When setting goal_tuner to 'temporal', if the goal is achieved,
-> > > > > > quota->esz_bp will be set to zero.  In this case, damos_quota_is_full()
-> > > > > > will always return true, even if no regions have been tried to apply at
-> > > > > > all.  This causes qt_exceeds to increase unexpectedly.
-> > > > > 
-> > > > > To me, this looks logically correct.  Could this cause any user issue?
-> > > > 
-> > > > Yes, I think this might cause unnecessary confusion for users,
-> > > 
-> > > If it is _might_ kind thing, please ask questions first, or add RFC tag at
-> > > least.
-> > > 
-> > > > at least
-> > > > it did for me.
-> > > 
-> > > If it confused you, definitely we need to fix it.  But if it is just confusing,
-> > > let's try to clarify by adding documentation, rather than changing existing
-> > > behaviors.
-> > 
-> > I agree that we should avoid unnecessary code changes if the issue is
-> > merely a matter of confusion.
-> > 
-> > However, I believe a code change is necessary in this specific case,
-> > rather than just adding documentation, for the following reasons:
-> > 
-> > First, this distorts the semantics of qt_exceeds.  It is a statistic
-> > meant to track actual quota full/overflows.  Incrementing qt_exceeds
-> > when the quota is completely unused (because the temporal goal is
-> > already met) misleads users and could break user-space monitoring tools
-> > or scripts that rely on this metric's accuracy.
-> 
-> As I mentioned in the previous comment, this doesn't look wrong to me.  I
-> understand some people could think differently.  That's why I think this is a
-> matter of clarification, not a bug to fix.
-> 
-> > 
-> > Second, considering its original behavior when it was first introduced,
-> > the recent changes [2] have inadvertently altered this behavior.
-> > 
-> > When qt_exceeds was first introduced [1], the conditional check was:
-> > 
-> >     if (quota->esz && quota->charged_sz >= quota->esz)
-> >             s->stat.qt_exceeds++;
-> > 
-> > Later, to handle cases where 'remaining quota < min_region_sz',
-> > damos_quota_is_full() was added [2].  When this function was added,
-> > quota->esz was replaced with !damos_quota_is_set(quota).
-> 
-> I don't find what's wrong with this.
-> 
-> > 
-> >     static bool damos_quota_is_full(struct damos_quota *quota,
-> >             unsigned long min_region_sz)
-> >     {
-> >         if (!damos_quota_is_set(quota))
-> >             return false;
-> >         if (quota->charged_sz >= quota->esz)
-> >             return true;
-> >         /*
-> >          * DAMOS action is applied per region, so <min_region_sz remaining
-> >          * quota means the quota is effectively full.
-> >          */
-> >         return quota->esz - quota->charged_sz < min_region_sz;
-> >     }
-> > 
-> > With the introduction of DAMOS_QUOTA_GOAL_TUNER_TEMPORAL [3], quota->
-> > esz == 0 carries two meanings: "unlimited quota" and "should not
-> > be applied".
-> 
-> I don't find how you think this way.
-> 
-> > This overlap causes the damos_quota_is_full() check to
-> > return true incorrectly in the temporal goal scenario, leading to the
-> > false positive in the statistic.
-> 
-> That still sounds like just a matter of different interpretations.  Let me know
-> if I'm missing something.
+Agreed. That matches my thinking: doing the rmap/PTE walk first and
+then keeping the folio would leave its young state set and make it look
+hotter, so skipping anon selection up front avoids that side effect.
+I'll keep the check in can_reclaim_anon_pages().
 
-Thank you for keeping this discussion going!
+> it seems we could just use mem_cgroup_lruvec() instead:
+>
+> -       struct lruvec *lruvec = get_lruvec(memcg, nid);
+> +       struct lruvec *lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
+>
+> I applied your patch on my PC with the above change. I didn't see any
+> panic or run into any problems.
 
-First, I would like to clarify my intention to avoid any
-misunderstanding.  My actual goal is to fix the semantic of the
-qt_exceeds statistic, rather than necessarily changing the underlying
-logic of damos_quota_is_full().
+Thanks, and thanks to the sashiko bot for catching this. I've switched
+to mem_cgroup_lruvec() in v2, which also lets me drop the get_lruvec()
+move entirely. Thanks for testing it on your side.
 
-Currently, there is an issue with how qt_exceeds is incremented.  When
-the quota is set very small, qt_exceeds increases frequently.  This
-produces a statistical trend that looks almost identical to the
-continuous increments caused by the Temporal Goal being achieved.
+I'll send v2 shortly.
 
-The original intent of introducing qt_exceeds is to let users easily
-notice if the quota is too small.
-
-Commit Messages [1]:
-
-    mm/damon/schemes: account how many times quota limit has exceeded
-
-    If the time/space quotas of a given DAMON-based operation scheme is too
-    small, the scheme could show unexpectedly slow progress.  However, there
-    is no good way to notice the case in runtime.  This commit extends the
-    DAMOS stat to provide how many times the quota limits exceeded so that
-    the users can easily notice the case and tune the scheme.
-
-However, under the current behavior, users are forced to manually ignore
-or filter out the qt_exceeds increments that occur after the Temporal
-Goal is achieved.  This adds an unnecessary burden to the users and
-contradicts the core goal of making it "easy" for them to tune the
-scheme.
-
-If we agree that this adds unnecessary burden, perhaps we could explore
-a minimal fix at the point where qt_exceeds is incremented, to skip the
-count when the Temporal Goal is already achieved, without touching
-damos_quota_is_full().
-
-Please let me know if I'm misunderstanding anything or missing some
-context!
-
-[...]
-
-> > [1] 6268eac34ca30 ("mm/damon/schemes: account how many times quota limit has exceeded")
-> >     (Fri Jan 14 14:10:202022 -0800)
-> > [2] c7ec7d5f6b3d1 ("mm/damon/core: handle <min_region_sz remaining quota as empty")
-> >     (Mon Apr 27 18:33:50 2026 -0700)
-> > [3] af738a6a00c1f ("mm/damon/core: introduce DAMOS_QUOTA_GOAL_TUNER_TEMPORAL")
-> >     (Mon Mar 9 18:05:19 2026 -0700)
-
-Best regards,
-Rui Yan
+Thanks,
+Bo
 
