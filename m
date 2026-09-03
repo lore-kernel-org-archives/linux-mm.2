@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F35A5C624D6
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 01:03:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C20ABC624D6
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 01:03:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C198F6B00C7; Wed,  2 Sep 2026 21:03:45 -0400 (EDT)
+	id E3C5F6B00CB; Wed,  2 Sep 2026 21:03:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7BB16B00CF; Wed,  2 Sep 2026 21:03:45 -0400 (EDT)
+	id E146E6B00CC; Wed,  2 Sep 2026 21:03:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A76A6B00C7; Wed,  2 Sep 2026 21:03:45 -0400 (EDT)
+	id D28D66B00D0; Wed,  2 Sep 2026 21:03:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 755A06B00C8
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AA4F16B00CB
 	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 21:03:45 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F0A22403DF
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 01:03:44 +0000 (UTC)
-X-FDA: 85170653568.22.7137DB0
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 30452160108
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 01:03:45 +0000 (UTC)
+X-FDA: 85170653610.24.0CA9F86
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 58A8914000B
+	by imf08.hostedemail.com (Postfix) with ESMTP id 95F6116000E
 	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 01:03:43 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JxkebG5+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nn7Rv6iv;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1788397423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IGhJqVBSrLsY1DzUKQNwEOVO0mpPemu5G2qZNzm4L3A=;
-	b=KtAe7Fwdk2+QkJiMpN40eK0Mg+qGGoIzIvd3Ys6TTNn+EMi70wsVdSeKzltPnjIqeSqhMv
-	NbtCnLn4z1zWLQGz91KXoQgrQ3p7asjBPQQDcSgvcYA4FpINuNPFhY9a6abcX08+qFdagC
-	nZdU/CUL8q/vjowq2v3cejnVRAC3KOU=
+	bh=HJD5ZHvDFQYZJci1lPr3K8KnFdwPjoFcLlwtAdnyK30=;
+	b=mFFNaX9Jt4xLisAzpi/5DAYEWs7V5ioVs06vykVjOcGgQpleXHJsOLcDKFKJ5usxkku2uo
+	eBioZsp3S6CBuvphUWvGsfw53lURhb9b67rfUnWrcLHs8kN5NGLGiCvqmoVwd2Owo9BFkk
+	5am1vVyT9sA7M13V8qrYapyHb9g8m/8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1788397423;
-	b=uRpxeLTWZAQYxzpX583uWZrXYa2zQkoSgc6Riov/wzMCaa1IXnKsgfX8C+jnl8LQJYgpx6
-	5eiVveNvbTXBWTn8bJ2Dns4hkKdi1Awuv8NQZ3L2+wcqvg+yyvvgJc4hRiBqgrClfjZu9T
-	I5mSgYD2FJny+4o7+JzbON5Vc53/rD8=
+	b=ZG+EPZ7HgdUrnbEuBMnY1Bv+QB7PU0VuYpE9lYKr4TKhJqq14hMxBLb6ozEt+c4YW3OJ6A
+	uTrDPCElo5SpYs47BqrfpWrI2qisUquERYReObWr8xL8H8RDretfrfwCXUw/GhhVihG87+
+	FqYiDu84mwFrctobUcPJkuGtsJGZGpQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JxkebG5+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nn7Rv6iv;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DED2C600D4;
-	Thu,  3 Sep 2026 01:03:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EB0C1F00A3E;
+	by tor.source.kernel.org (Postfix) with ESMTP id 3A6E3600C8;
+	Thu,  3 Sep 2026 01:03:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA3B1F00A3D;
 	Thu,  3 Sep 2026 01:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1788397422;
-	bh=IGhJqVBSrLsY1DzUKQNwEOVO0mpPemu5G2qZNzm4L3A=;
+	bh=HJD5ZHvDFQYZJci1lPr3K8KnFdwPjoFcLlwtAdnyK30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JxkebG5+E8aGwnRfz/OniYrZag3n4/XPkJqX5Tm87e4rNVmo6wdRr90sWwcjiQVBN
-	 9Zq4LsUbD6kBbBE0PPZbanuKErFKPRY7yaqR8fwJkwlmqcLccHiPSpvtphAAjFpHn6
-	 h0RJYVerE0G4KsesZiqoRlgb+QTaoU2r8xHAoE/NPmKpBrkz2BVx8wzcWz1mU55FUV
-	 5VTEewVF9LnBXMXV6cV19OI/+B3qPjyCGD3syTkbYprtTZQLOptL4ULZVFIJVG7vql
-	 lUlllxycWVippoZ+v0yTHSX689mOWA1MSTm/hT0u8RUFTFWbUNE1agPI5DQTAK9djK
-	 KJVd6fB6wp9tw==
+	b=nn7Rv6ivC7Qq3N9Q2O4N+b11S4V40oQFQ1DMEUSOc/E3rrnbSK2u4VNh6NhBmDPbJ
+	 10Ukb3Lr8fBfgKaWUKILYwqQM2xEtwj+SXDP67kxC8hzc3zbqD3/4VSn81ZZjJRLrZ
+	 Cg8UWDcIFvnQvHzeDr3NRAxkhCur9GAkwDSf+jvuKvuI23a0nQ6M+4PCJDags8pRss
+	 G2bG6mEdeZboujbyG+BAjbPvX/AlPm3V6ATtCQ0zhBLQ5lE/BJ6dT+D575csVvzD1w
+	 JL2pDlVCrXMyWoHhdoCJCvucgWP4w0Q6jIhN/vArJy/0JN4Qult420Z7OgKRbdNpk8
+	 jUH2cCJd61QaA==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 1/4] mm/damon/core: handle NULL ctx parameter in damon_call()
-Date: Wed,  2 Sep 2026 18:03:30 -0700
-Message-ID: <20260903010334.93622-2-sj@kernel.org>
+Subject: [PATCH 2/4] mm/damon/core: set ctx->call_controls_obsolete in damon_new_ctx()
+Date: Wed,  2 Sep 2026 18:03:31 -0700
+Message-ID: <20260903010334.93622-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260903010334.93622-1-sj@kernel.org>
 References: <20260903010334.93622-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 58A8914000B
-X-Stat-Signature: jycnwg5r1huixogma3fr9p61idqqo4zw
 X-Rspam-User: 
-X-HE-Tag: 1788397423-460190
-X-HE-Meta: U2FsdGVkX18Gle/1OzNtCzXdy/INjW95ToqWzet/Ghr8HbhJBhyLJte93vuiKVsyEt9m6WcL5f5EH4dzc1PhKBwfp6mElTZs33xYmtIeF7N8Ur8jjQ49NLHr4ML2Y9SWEqhFTPykLoi9rdmx+MdfA1EYh4O6plP92qvzY9NCjrFQvG2YQ3gxmIsc40/EOyMz3yYNf75B8ciNbcNJ2sMgIfFZxnrtYUP10B50rIlNS6NzzDRlHMDM8rKBmxoAYaxwDm2exceogyOmSQYzUmkp4usM0yJWPeXHiyJplH/FBBTk/Q3OKbTGO44TSwKbZ0osyRxBztJrhrNT3RgA3ry3g2wk3xnaRk+8yPOSFe7HEdNCQSb88WtDXXb+MwoXweS3youz/4czPqpa3n0BGUYeJnz73R7Kiikt5TLOSYiaWhDZdq9krTDFlt6LlmP7q8zIgjad6iLLRaM0ITd0e/aRgYRrvAh4utkYR9w8GS+4BE36tEwMsGCsPIdFE5xQVLCzruR+y9gYsuVdDQpfs0D1RRpAG83XafHTuU/d0Zs5DzTvHRFBFxKQwLmMNbxK5vsQrPOHY82f01stL/O5XGQXjXIBpONZVeUvgE+qIkGJl5BAcauhfY0hDhL0LGr51/7PXIG590WLy/Z3gcOpURC4HIdIAh353dx4vzW9RrRHWHrNHPC/rHHxQgg3sd8NlnsJgLrAlc00uNtVOOljsHd+QudU2rNlzcLaLbAt1z2XzEk1AoGC4A9UrsHmWZYN2XFFbPbJM7qxwGPghXG5dZrV/1N6l/ip/ZnS1uSsRbgplOHA7Koze2Hk/jCrvrzuN1bvT0Bx3VE3yyyPHrmo9NeJA53OFZ3TysPwjvu6Cy8265HbIWPFNeJs9PK0+OWDyKwqp/d+2bZCe4UACQVre6leRbfQayEuPo+NiQ/NDQpkcccxghCbQwJKVoQsZ4trA0In3uSKHKRsO0ICZM1s9Jl
- 4G0BtdNP
- 57qSy6L+4Gjg/DsS3yhfA9H4sNzEQ5waqDuU7V90dM1H6Wnijfy4gWwYAR0huXLoduZaA2wfoKMaQVmk7chU9FF7YYmp2UEvRcYArN3UMtwFGJ+YDCnUutfan6m+8CM+QvyO9sChl+lkIkiLzs+YZaSxuIlVFel4+DY2DxFu3LF4kdKP/mZL6LRZQkqlwVfQKPpyp2+HgzMeiucCkIGzJEmET96A+G9CKVZmnlrChESk4sGrL1Mv3TQScaJxAOWRLEZ5rmZn73t9VyO+HvQ2MH/uyPpa5dDi+trEPIWvn148/YGs=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 95F6116000E
+X-Stat-Signature: 5zur689cnfrcuxwze3msc7jten5snn9n
+X-HE-Tag: 1788397423-579260
+X-HE-Meta: U2FsdGVkX18VC8eMpWwULFPZdZjoB9uIsbKBxG9DRC1eok9Jdyj+10G419rKSOmORb/N+iE3pym6IZDrAF57tEqyWNS16Xxt739UTu32QhANtpKSdv0TOf6RgrGuMmtr5S9RtsKxSKWznh2LNhPIaife6VnXEH4ABpDCUdjq8sbaOYBlavlBROBV6lAlLIXTbN47QOoDqSZSsYkwXPE5HzAZfPvRlPZDuJnwVzSuB/MHw5bs1Qm2yn2smlmNr9PKHipMgtE47p8JgEJRaceqkZ3cUxfllrVQgQEj6EdiwluD1L1vPUkUFKHZaDvluIiLql3J4BRXfqRIRgmWbbBAwdluJJSVLCKSpnStn41sMIvuH1qg1qFigUdBkKmX1+V9XGzc6QBZx9eswFdhr/35RIXxeVEaIFdHzdUZjEgpzqnLRTMhDIWtUuDegegYaLlwOL6FaumEojdIyO2hU5DUYJIWsFQvZhUXikDs/pWhATtf1fHGkMgBFQYelwrxiNknT9Kj/B2HJDUCDMXANQPtOEjhB1HMGI6k5zCiW9xB/ONuPQ9ClkzYwzCqHLmxC2/vzKoxjnpA5DhcN9JfjbYhUQ5vJCTxPy9xsH5y76Sa+PqkJ/kEBIv96CQT+r/VsogFFC3RlUdxSGSE54PKW9V9Rh71NUK5R5PUUCg0PWLs5dLcXpNOg7NVpbFUdruzxhUf4rxuVNN40XCM///kyA4ZhhHDuOdPBSy/wPpLIDVEAW27SZlbj413I02SToo3QiZgDjfCMyrHRdW46/HUkIlKOXxvDLMWjSx7WEO78ZispNeAvv1rxfOMwYglpQygxJD75gt7gehdXlFJ1akzPxON8i+KSVEX+RcTVbiMidf98Tl4j0WZ1XDFx0fXAMxo+BPrbs6d51QJ1UM9scS/nN9pPUZBrPXV9kDnoY+FpytOes6mmAyABGC1U/tW/JwYu6+l0benUtJzifQ8LT5NOdX
+ bBSmRk61
+ L5U25vsbeUmwFCjROpBSPvEQIzg62Yd8S6WDQ8d4Qmpakf7v/faHauKbPB/0X8YQ/FjAZSozYTvjGlEhMXGardZ/zfPhTZ5dL4oeAZh9zICFQ1O6QTZwUNvk/QHtOqM1mN+w10luyMK5ycBdYC/PPKM+yirNsyHzxt0oLF0ZWOCs+Kx8Cgh3G96EAo8p7DJVjMmdpvyU4CyM8TMJhtQxyaKhlI5bHffbROlcHEQvbDplxhdypjtrhzDineanucLhEdLyVAZEwHijpfFu9iMWlNk7R/Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,31 +92,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When NULL damon_ctx pointer parameter is passed, damon_call() could do
-NULL dereference.  The caller is responsible to avoid that.  It is easy
-to forget, and there are many damon_call() callers.  Meanwhile,
-damon_call() is never meant to be performance critical.  It uses mutex
-and completion.  Add the NULL pointer check inside damon_call() so that
-callers can pass the parameter without NULL checks.
+damon_ctx->call_controls_obsolete is used to disallow damon_call()
+requests when the request cannot be served.  The field is unset and set
+when the context execution is started and terminated, respectively.  The
+intention is to allow damon_call() requests only while the context is
+actively being executed.
+
+damon_ctx constructor, damon_new_ctx() unsets the field, though.  As a
+result, passing the damon_ctx parameter that never successfully
+damon_start()-ed to damon_call() can indefinitely hang.  The callers
+should ensure to avoid the case.  Such parameter validation is not
+always simple.  Actually such bugs in DAMON_RECLAIM and DAMON_LRU_SORT
+have been found and fixed [1].
+
+Set the field in damon_new_ctx(), so that DAMON API callers can pass the
+context parameter to damon_call() without the additional check.
+
+[1] https://lore.kernel.org/20260803134646.16640-1-sj@kernel.org
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/damon/core.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 85d29c76c00cf..03407cf7f9646 100644
+index 03407cf7f9646..56ec6f616fa9a 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -2206,6 +2206,8 @@ int damon_kdamond_pid(struct damon_ctx *ctx)
-  */
- int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
- {
-+	if (!ctx)
-+		return -EINVAL;
- 	if (!control->repeat)
- 		init_completion(&control->completion);
- 	control->canceled = false;
+@@ -933,6 +933,7 @@ struct damon_ctx *damon_new_ctx(void)
+ 	INIT_LIST_HEAD(&ctx->adaptive_targets);
+ 	INIT_LIST_HEAD(&ctx->schemes);
+ 
++	ctx->call_controls_obsolete = true;
+ 	prandom_seed_state(&ctx->rnd_state, get_random_u64());
+ 
+ 	return ctx;
+@@ -2196,10 +2197,6 @@ int damon_kdamond_pid(struct damon_ctx *ctx)
+  * synchronization.  The return value of the function will be saved in
+  * &damon_call_control->return_code.
+  *
+- * Note that this function should be called only after damon_start() with the
+- * @ctx has succeeded.  Otherwise, this function could fall into an indefinite
+- * wait.
+- *
+  * When this function is failed, the @ctx is guaranteed to be stopped.
+  *
+  * Return: 0 on success, negative error code otherwise.
 -- 
 2.47.3
 
