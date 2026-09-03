@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 152F6C624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 04:18:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B14C5C624A4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 04:18:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C0896B0099; Thu,  3 Sep 2026 00:18:42 -0400 (EDT)
+	id 6F9166B009D; Thu,  3 Sep 2026 00:18:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 598626B009D; Thu,  3 Sep 2026 00:18:42 -0400 (EDT)
+	id 6AAF06B009F; Thu,  3 Sep 2026 00:18:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AF086B009E; Thu,  3 Sep 2026 00:18:42 -0400 (EDT)
+	id 5E68B6B00A1; Thu,  3 Sep 2026 00:18:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2132F6B0099
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 00:18:42 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6E12B803FA
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 04:18:41 +0000 (UTC)
-X-FDA: 85171144842.04.E951B33
-Received: from mail-m826.xmail.ntesmail.com (mail-m826.xmail.ntesmail.com [156.224.82.6])
-	by imf31.hostedemail.com (Postfix) with ESMTP id EF0DE20003
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 04:18:38 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 36BB46B009D
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 00:18:43 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C17F7A044B
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 04:18:42 +0000 (UTC)
+X-FDA: 85171144884.17.40B2364
+Received: from mail-m82108.xmail.ntesmail.com (mail-m82108.xmail.ntesmail.com [156.224.82.108])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 4271440002
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 04:18:39 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
 	dkim=none;
-	spf=pass (imf31.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.6 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
-	dmarc=pass (policy=none) header.from=easystack.cn
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf12.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.108 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788409119;
-	b=N1FBwy/nfKAJFbguz1uhsVyaqDBDjz24xyI8ZLnPV+r9u+IbRDNgF8Vjk8PvgRWUGrrXox
-	KZ2/u4V09S61J2uksx1gcv7glx3h5jsGci2zV5peCYODXtbjzYwRYrGleJ87//K3LfSc2N
-	O/53qyHaWxNy4bD+/bhIxVbzBfpoiiU=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=none;
-	spf=pass (imf31.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.6 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
-	dmarc=pass (policy=none) header.from=easystack.cn
+	t=1788409121;
+	b=OhLP1ALavybNxutek6jA3hQag4EFhbj7sOPz2U1ePDXPX15zJtu1SGAf/VAVsSB+raMsVL
+	KJ1TNz3V/JXx8PYx+//OvBIe9rycjQ9Nxdh1zrQt/1XHA75I7aQSPASnjcnBylyKHk8/GW
+	kC2MnpadpqvYyjBMCCVsRgkgMs9o7xE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788409119;
+	s=arc-20220608; t=1788409121;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PVBcpYYDA25Hox89XHEadxCEMgHpLC0GesAA20379c8=;
-	b=WKlgRlzHK0hwwoxl8qXqB+pYzuH5Ot4ynAZSI9i+7gNxC5EdMznKE3VX1AOFDkJpZGH43v
-	jf/+IkZOI0igvx3G6QBi4TdTER1rVIj1ZbDqO890OihfWzZ31Od3KteIqRJPa08U+uSC1X
-	X/Zx8tR86AMD3XOXzuDHulK5SrF9PFA=
+	bh=oGy4jY0VSQjL8REJCi18xh/SwSpxVAxLtWa7paHqoVo=;
+	b=WHlSd7kqUrRzx0LqjWsdAYcbJtADkTxriIdp1qgOz4CAo2Ej+YIQlPp/4WxJON9WmbF2Q4
+	MXV4RlEMHA44B0TmMERKlAzLh7dfmqQ+sd+igyje50w6DMdIsk8CjagrukJFvzqWemtIOb
+	VCmMI8rCJvWfNd52WrBp1tU3Llm0Pzk=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf12.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.108 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 Received: from localhost.localdomain (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 1ea3ea3b0;
-	Thu, 3 Sep 2026 12:18:34 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 1ea3ea3b4;
+	Thu, 3 Sep 2026 12:18:35 +0800 (GMT+08:00)
 From: Zhen Ni <zhen.ni@easystack.cn>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -70,28 +70,28 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Zhen Ni <zhen.ni@easystack.cn>
-Subject: [PATCH v2 3/8] mm/page_owner: Add COMM filtering with wildcard support
-Date: Thu,  3 Sep 2026 12:18:14 +0800
-Message-Id: <20260903041819.1776630-4-zhen.ni@easystack.cn>
+Subject: [PATCH v2 4/8] mm/page_owner: Refactor memcg handling for cgroup filter support
+Date: Thu,  3 Sep 2026 12:18:15 +0800
+Message-Id: <20260903041819.1776630-5-zhen.ni@easystack.cn>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20260903041819.1776630-1-zhen.ni@easystack.cn>
 References: <20260903041819.1776630-1-zhen.ni@easystack.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0aa0657d6ef30229kunm7336907a330ab
+X-HM-Tid: 0aa0657d74aa0229kunm7336907a330b5
 X-HM-MType: 1
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDTExDVk5NH08YSkoYTE9DGFYVFA
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDTENKVkpCQ0JIQk9DGkwYGVYVFA
 	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
 	lPT09IVUpLS1VKQktLWQY+
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: EF0DE20003
-X-Stat-Signature: ebis69674s6zdwtto4i47btgtc85pqfm
-X-HE-Tag: 1788409118-557393
-X-HE-Meta: U2FsdGVkX18UtmWVCLyZQtMscNZYumr9rmwxaGYDxUJAaIDMKtL35q06Y6tC23tb0d1/Oto36jwnIYz6uD+OlnGErtISUamn5y222U8ivpH9Cuv1daYap3rEUFJcX+UDGhLSVofWi/E0edUkN7bkp/s7RcBDAzaNWI+tQls83AQUy0/mv1Q0rmL9u3SQqeYhkWrdUXd0PLBK8Z9ovB3n1fB7rpLg5oRjMPv+T7y874MARIPHzeQt+fOSTaCSOdGAe86Qk1ZV1H3yV45HAqEfcVIpNrBg5kPs6DWNOBdIVUPnTpMup8D9WN37wb2HOa32jQNtbjIf6PFpbRfN+7Oy//M1Wta0dMy2td28un2HimBn04XnNmGnhInCAyMwvTPQcJ4//k8xTu1Gxa6XJvG6sJ8CX0tqAGS4uXlkV/6GrTtMnHwif60W4CSL9zdZUQuKp34jdK48owLxtUuBWpt6U4Z5NTZeF+kyjzCYQGbhJvn5GNyN6+bSXmL2Bes/BN/mWejPwt2eBevcuAX9KGRaMZm0xv+ELujAPXUfCEs2zX4n3b7baHZrCZ0P4oLiy2jGGeOxuMiGsAiatM6k5noLg4+IrHIKhkjPh9hRi1w9NV5E80OQa/uFcfalkyV0fXAt9imlTuNMNnqn2dvvwPBM+cVmbc0bsMYg7dl+qWRVEQPtd1KmXxOrvf5KPaH33UoHdl/EQOROkIeXNVjjwkFD9Rgziso4+2MxsVO6MBDeE0JJGFzgcujfo6iHrYGnrUJU/QpzJWA6D6ix3ZleOOZLFbhtJKAPV9kCY3qxyu5lUmR5jzmDoJAKtCCR5vpBMzg2HKtYzq2bNAs617ZCYc5UC06VgnH+HfsX6QEnmR8xXp/GFNJRU5vmE8h9/qVVxBuDCuoUjUGMPyCqmqUGtmEtktln9JlJWOGfuH8shQVFkw8sSqYrIstFfLIxpcH4UMI3qkkMSMkdz2TGz2wIai0
- 4CIsU7+k
- jwroFuuOV+wSvGkpFbr5O+iTcw7plwEfEazobSD5W1lAVClAl66FGcJzLKl5KUbpspuhSDRc0jUJ+R+Y8CyyZc88vUGenJ2xDcleOjUEn455fneisEtpxl0bmwd8M2Bn3e5BLbTzuyXRYZxn38a1LEFf+WKhRfiI0hcxIm2Bfll6r65k=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 4271440002
+X-Stat-Signature: 33eo5idqhe33fg5h8ok6g1e9dcdcnysa
+X-HE-Tag: 1788409119-344817
+X-HE-Meta: U2FsdGVkX18WSFN/e+AmppAmnNxzQ8zSvZapzaZPMSpREKtZgTj1P87mHp5nFR9+aV+sI6mOwvHSgo1XSlBZCFlX0sDeRDkHI4qzFwAAwWbMbeJXFnjD9hRs8Nn7rytrVhW7pshLbmKDHonoYJLw/AghGMk4G4qB3GcJE3PWBTl7tHf68Bly5loWPxfi6afwe7nLwZPoFoc6x+VCTLNS+OgoQSNXamhsUn72pWly7DmH9H5cfZR4QSzsqgtAZpmSinPXhwKRp/N3+Noe1Ce5YRLuIdxFHp+OX3AUsEw77SONb9RbEgpDSQyWOmpAYcWZe0ic44rK7g55Fd20WhNYMHgKHEQgjl3IQbjteOtAQ7lQl6DbTZjKaS55gijPhonXhvFM7wIE9ppLe5yhcXEPa1PmKP8dNGiK9Pgv+GXciOGzjf7F5s9g0NEbFDhm+vXHA+L/0+riWh30CPhy4EsHg/sucoIrwgJZPpNLvAeeDz0QARRwZ1IzgRoarYrzXk/W2D5r5T7sGCiViIwMnJ4eDiWVoW03FDXEa0UHil/1H9+EIugQyEJ1FEg6jHH5Bckxt7WwNdNDibYmOJWz6wtqYfccNKQpifrRMXY0CxxuUi0MrGC6xvKdPm++ZAspou58yTD8p+ZS0rj8pwMZkcSYLNJn5dSCOKCtNdVHZsaha1/M6Si6dSIBrdB8LCVRVbebgxq6wM3Fkn4GedxykyectsEY4CRA3YNSGM9c6MR2CQqu54KbJ+DuNIwI6J/rH7Y/cwfzCkXNIw5U0/p3Q77DLGTeYsNxVs+rV/w1+pfZRV/WeyY+fA12yRi3cLCGS/OW7ro12VJtXHhslI45IKjYX/lugJoJv4mvJEnkjahKRankC/VUZkK6eVaOH8eI6DEaG36j3Nnt1htQaXOwVhTy6+KL66NdxtDceLXgMCgp/h8knbX3R9rOK/vvav7Qr3lY0bQVzqHyO9keMa38WSC
+ rC72OnC3
+ BATEFuitT4npDeeCQ7prSwZf5qyJHsrHRJYH1NDShT7uRl7WObaGsupnXt7mXQNHCb3xLt1LsyPusFQygs/WYzDPiaU+51rHoKRxGhYosTnETDOUxF96sXhQ0XvY568cMjmZ+RlkoRnnq7XWyrTRKqFRyWwVQLkUxyUS4NL9xN2XcjEA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,216 +99,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add process name (COMM) filtering to page_owner with glob-style wildcard
-pattern matching support. Users can now filter page_owner output by
-process names using flexible patterns.
+Extract memcg information retrieval from printing logic to prepare for
+cgroup filtering support. Introduce struct memcg_info to hold cgroup
+data that can be reused for both display output and filtering
+decisions.
 
-Supported wildcards:
-  *    : matches any sequence of characters
-  ?    : matches any single character
-  [abc]: matches any character in the set
-  [a-z]: matches any character in the range
-
-Examples:
-  comm="python*"  : matches python, python3, python3.9, etc.
-  comm="*sh"      : matches bash, zsh, dash, etc.
-
-Also select GLOB from PAGE_OWNER. glob_match() is provided by
-lib/glob.c, which is only built when CONFIG_GLOB is set, and
-CONFIG_GLOB is a hidden option without a prompt. A config that enables
-PAGE_OWNER but has no other GLOB selector would fail to link with an
-undefined reference to glob_match().
+No functional change - output behavior unchanged.
 
 Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
 ---
 Changes in v2:
-- Select GLOB from PAGE_OWNER so that glob_match() is always linked in
-  when the feature is enabled.
-- Drop the kstrdup() copy in parse_comm_list(); parse the token in
-  place, matching patch 1.
+- No change.
 
-v1: https://lore.kernel.org/linux-mm/20260828031339.1270699-4-zhen.ni@easystack.cn/
+v1: https://lore.kernel.org/linux-mm/20260828031339.1270699-5-zhen.ni@easystack.cn/
 ---
- mm/Kconfig.debug |  1 +
- mm/page_owner.c  | 71 ++++++++++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 69 insertions(+), 3 deletions(-)
+ mm/page_owner.c | 62 +++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 44 insertions(+), 18 deletions(-)
 
-diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
-index 5737a504efbb..c94c30a60cd5 100644
---- a/mm/Kconfig.debug
-+++ b/mm/Kconfig.debug
-@@ -106,6 +106,7 @@ config PAGE_OWNER
- 	bool "Track page owner"
- 	depends on DEBUG_KERNEL && STACKTRACE_SUPPORT
- 	select DEBUG_FS
-+	select GLOB
- 	select STACKTRACE
- 	select STACKDEPOT
- 	select PAGE_EXTENSION
 diff --git a/mm/page_owner.c b/mm/page_owner.c
-index e046e61eb98a..b8319bc3a368 100644
+index b8319bc3a368..ca9dd8ed9f77 100644
 --- a/mm/page_owner.c
 +++ b/mm/page_owner.c
-@@ -14,6 +14,7 @@
- #include <linux/sched/clock.h>
- #include <linux/bsearch.h>
- #include <linux/sort.h>
-+#include <linux/glob.h>
- 
- #include "page_alloc.h"
- 
-@@ -72,6 +73,7 @@ static const char * const page_owner_print_mode_strings[] = {
- #define PID_MAX_DIGITS  	7
- #define MAX_FILTER_PIDS 	16
- #define MAX_FILTER_TGIDS	16
-+#define MAX_FILTER_COMMS	8
- 
- struct page_owner_filter_state {
- 	enum page_owner_print_mode print_mode;
-@@ -80,8 +82,10 @@ struct page_owner_filter_state {
- 	nodemask_t nid_filter;
- 	int pid_count;
- 	int tgid_count;
-+	int comm_count;
- 	pid_t pid_list[MAX_FILTER_PIDS];
- 	pid_t tgid_list[MAX_FILTER_TGIDS];
-+	char comm_list[MAX_FILTER_COMMS][TASK_COMM_LEN];
+@@ -69,6 +69,13 @@ static const char * const page_owner_print_mode_strings[] = {
+ 	[PAGE_OWNER_PRINT_STACK_HANDLE]	= "stack_handle",
  };
  
- static int cmp_pid_t(const void *a, const void *b)
-@@ -854,6 +858,20 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
- 						    sizeof(pid_t),
- 						    cmp_pid_t) != NULL;
++struct memcg_info {
++	char name[80];
++	bool is_slab;
++	bool is_objcg;
++	bool is_online;
++};
++
+ /* PID_MAX_LIMIT = 4,194,304 (7 decimal digits) */
+ #define PID_MAX_DIGITS  	7
+ #define MAX_FILTER_PIDS 	16
+@@ -573,16 +580,13 @@ void pagetypeinfo_showmixedcount_print(struct seq_file *m,
  
-+			if (!proc_match && state->comm_count > 0) {
-+				bool comm_match = false;
-+				int i;
-+
-+				for (i = 0; i < state->comm_count; i++) {
-+					if (glob_match(state->comm_list[i],
-+						       page_owner->comm)) {
-+						comm_match = true;
-+						break;
-+					}
-+				}
-+				proc_match = comm_match;
-+			}
-+
- 			if (!proc_match)
- 				goto ext_put_continue;
- 		}
-@@ -997,6 +1015,27 @@ static int parse_pid_t_list(char *str, pid_t *list, int *count)
- 	return 0;
- }
+ #ifdef CONFIG_MEMCG
+ /*
+- * Looking for memcg information and print it out
++ * Get memcg information from page
+  */
+-static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
+-					 struct page *page)
++static void get_page_memcg_info(struct page *page, struct memcg_info *info)
+ {
+ 	unsigned long memcg_data;
+ 	struct obj_cgroup *objcg;
+ 	struct mem_cgroup *memcg;
+-	bool online;
+-	char name[80];
  
-+static int parse_comm_list(char *str, char (*list)[TASK_COMM_LEN], int *count)
-+{
-+	char *token;
-+	int i = 0;
-+
-+	while ((token = strsep(&str, ",")) != NULL) {
-+		token = strstrip(token);
-+		if (*token == '\0')
-+			continue;
-+		if (i >= MAX_FILTER_COMMS)
-+			return -E2BIG;
-+		strscpy(list[i++], token, TASK_COMM_LEN);
-+	}
-+
-+	if (i == 0)
-+		return -EINVAL;
-+
-+	*count = i;
-+	return 0;
+ 	rcu_read_lock();
+ 	memcg_data = READ_ONCE(page->memcg_data);
+@@ -590,8 +594,7 @@ static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
+ 		goto out_unlock;
+ 
+ 	if (memcg_data & MEMCG_DATA_OBJEXTS) {
+-		ret += scnprintf(kbuf + ret, count - ret,
+-				"Slab cache page\n");
++		info->is_slab = true;
+ 		goto out_unlock;
+ 	}
+ 
+@@ -600,21 +603,38 @@ static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
+ 	if (!memcg)
+ 		goto out_unlock;
+ 
+-	online = css_is_online(&memcg->css);
+-	cgroup_name(memcg->css.cgroup, name, sizeof(name));
+-	ret += scnprintf(kbuf + ret, count - ret,
+-			"Charged %sto %smemcg %s\n",
+-			(memcg_data & MEMCG_DATA_KMEM) ? "(via objcg) " : "",
+-			online ? "" : "offline ",
+-			name);
++	info->is_objcg = (memcg_data & MEMCG_DATA_KMEM) != 0;
++	info->is_online = css_is_online(&memcg->css);
++	cgroup_name(memcg->css.cgroup, info->name, sizeof(info->name));
+ out_unlock:
+ 	rcu_read_unlock();
 +}
 +
- static ssize_t page_owner_write(struct file *file,
- 				 const char __user *buf,
- 				 size_t count, loff_t *ppos)
-@@ -1012,8 +1051,10 @@ static ssize_t page_owner_write(struct file *file,
- 	bool new_proc_filter_enabled;
- 	pid_t new_pid_list[MAX_FILTER_PIDS];
- 	pid_t new_tgid_list[MAX_FILTER_TGIDS];
-+	char (*new_comm_list)[TASK_COMM_LEN] = NULL;
- 	int new_pid_count = 0;
- 	int new_tgid_count = 0;
-+	int new_comm_count = 0;
- 
- 	/*
- 	 * Maximum input length for filter commands:
-@@ -1025,12 +1066,19 @@ static ssize_t page_owner_write(struct file *file,
- 	 */
- 	if (count > 32 + 6 * MAX_NUMNODES +
- 			(PID_MAX_DIGITS + 1) * MAX_FILTER_PIDS + 4 +
--			(PID_MAX_DIGITS + 1) * MAX_FILTER_TGIDS + 5)
-+			(PID_MAX_DIGITS + 1) * MAX_FILTER_TGIDS + 5 +
-+			TASK_COMM_LEN * MAX_FILTER_COMMS + 5)
- 		return -EINVAL;
- 
-+	new_comm_list = kmalloc_array(MAX_FILTER_COMMS, TASK_COMM_LEN, GFP_KERNEL);
-+	if (!new_comm_list)
-+		return -ENOMEM;
++/*
++ * Print memcg information from memcg_info
++ */
++static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
++					 const struct memcg_info *info)
++{
++	if (!info)
++		return ret;
 +
- 	kbuf = memdup_user_nul(buf, count);
--	if (IS_ERR(kbuf))
-+	if (IS_ERR(kbuf)) {
-+		kfree(new_comm_list);
- 		return PTR_ERR(kbuf);
-+	}
++	if (info->is_slab)
++		ret += scnprintf(kbuf + ret, count - ret,
++				"Slab cache page\n");
++
++	if (info->name[0])
++		ret += scnprintf(kbuf + ret, count - ret,
++				"Charged %sto %smemcg %s\n",
++				info->is_objcg ? "(via objcg) " : "",
++				info->is_online ? "" : "offline ",
++				info->name);
  
- 	orig = kbuf;
- 
-@@ -1046,6 +1094,11 @@ static ssize_t page_owner_write(struct file *file,
- 		memcpy(new_tgid_list, state->tgid_list, sizeof(state->tgid_list));
- 		new_tgid_count = state->tgid_count;
- 	}
-+	if (state->comm_count > 0) {
-+		memcpy(new_comm_list, state->comm_list,
-+				state->comm_count * TASK_COMM_LEN);
-+		new_comm_count = state->comm_count;
-+	}
- 
- 	while ((token = strsep(&kbuf, " \t\n")) != NULL) {
- 		if (*token == '\0')
-@@ -1085,6 +1138,10 @@ static ssize_t page_owner_write(struct file *file,
- 			ret = parse_pid_t_list(token + 5, new_tgid_list, &new_tgid_count);
- 			if (ret < 0)
- 				goto out_free;
-+		} else if (!strncmp(token, "comm=", 5)) {
-+			ret = parse_comm_list(token + 5, new_comm_list, &new_comm_count);
-+			if (ret < 0)
-+				goto out_free;
- 		} else {
- 			ret = -EINVAL;
- 			goto out_free;
-@@ -1095,7 +1152,9 @@ static ssize_t page_owner_write(struct file *file,
- 	state->print_mode = new_print_mode;
- 	state->nid_filter = new_nid_filter;
- 	state->nid_filter_enabled = new_nid_filter_enabled;
--	state->proc_filter_enabled = new_pid_count > 0 || new_tgid_count > 0;
-+	state->proc_filter_enabled = new_pid_count > 0 ||
-+				     new_tgid_count > 0 ||
-+				     new_comm_count > 0;
- 	if (new_pid_count > 0) {
- 		memcpy(state->pid_list, new_pid_list, sizeof(state->pid_list));
- 		state->pid_count = new_pid_count;
-@@ -1110,10 +1169,16 @@ static ssize_t page_owner_write(struct file *file,
- 	if (state->tgid_count > 1)
- 		sort(state->tgid_list, state->tgid_count, sizeof(pid_t),
- 		     cmp_pid_t, NULL);
-+	if (new_comm_count > 0) {
-+		memcpy(state->comm_list, new_comm_list,
-+				new_comm_count * TASK_COMM_LEN);
-+		state->comm_count = new_comm_count;
-+	}
- 
- 	ret = count;
- 
- out_free:
-+	kfree(new_comm_list);
- 	kfree(orig);
  	return ret;
  }
+ #else
+ static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
+-					 struct page *page)
++					 const struct memcg_info *info)
+ {
+ 	return ret;
+ }
+@@ -624,7 +644,8 @@ static ssize_t
+ print_page_owner(char __user *buf, size_t count, unsigned long pfn,
+ 		struct page *page, struct page_owner *page_owner,
+ 		depot_stack_handle_t handle,
+-		struct page_owner_filter_state *state)
++		struct page_owner_filter_state *state,
++		const struct memcg_info *memcg_info)
+ {
+ 	int ret, pageblock_mt, page_mt;
+ 	char *kbuf;
+@@ -674,7 +695,7 @@ print_page_owner(char __user *buf, size_t count, unsigned long pfn,
+ 			migrate_reason_names[page_owner->last_migrate_reason]);
+ 	}
+ 
+-	ret = print_page_owner_memcg(kbuf, count, ret, page);
++	ret = print_page_owner_memcg(kbuf, count, ret, memcg_info);
+ 
+ 	ret += snprintf(kbuf + ret, count - ret, "\n");
+ 	if (ret >= count)
+@@ -777,6 +798,7 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
+ 		 * user through copy_to_user() or GFP_KERNEL allocations.
+ 		 */
+ 		struct page_owner page_owner_tmp;
++		struct memcg_info memcg_info = {};
+ 
+ 		/*
+ 		 * If the new page is in a new MAX_ORDER_NR_PAGES area,
+@@ -876,13 +898,17 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
+ 				goto ext_put_continue;
+ 		}
+ 
++#ifdef CONFIG_MEMCG
++		get_page_memcg_info(page, &memcg_info);
++#endif
++
+ 		/* Record the next PFN to read in the file offset */
+ 		*ppos = pfn + 1;
+ 
+ 		page_owner_tmp = *page_owner;
+ 		page_ext_put(page_ext);
+ 		return print_page_owner(buf, count, pfn, page,
+-				&page_owner_tmp, handle, state);
++				&page_owner_tmp, handle, state, &memcg_info);
+ ext_put_continue:
+ 		page_ext_put(page_ext);
+ 		cond_resched();
 -- 
 2.20.1
 
