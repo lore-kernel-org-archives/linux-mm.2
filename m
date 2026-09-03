@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 854B1C624D7
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 20:37:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCA13C624D7
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 20:37:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C0746B0098; Thu,  3 Sep 2026 16:37:37 -0400 (EDT)
+	id B31296B0099; Thu,  3 Sep 2026 16:37:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84A3C6B0099; Thu,  3 Sep 2026 16:37:37 -0400 (EDT)
+	id AE1BC6B009B; Thu,  3 Sep 2026 16:37:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 738616B009B; Thu,  3 Sep 2026 16:37:37 -0400 (EDT)
+	id 9826C6B009D; Thu,  3 Sep 2026 16:37:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 22B746B0098
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:37:37 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4716A1C24F9
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 20:37:36 +0000 (UTC)
-X-FDA: 85173611712.07.31B1E28
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 74EA2100005
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 20:37:34 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Qep6i0fo;
-	spf=pass (imf14.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 366486B0099
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:37:38 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 831DCA068B
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 20:37:37 +0000 (UTC)
+X-FDA: 85173611754.22.C89C1A4
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B6AE5120006
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 20:37:35 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=othomu3H;
+	spf=pass (imf29.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788467854;
+	s=arc-20220608; t=1788467855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rgIj/N8oul9ZLAizfJH63NRBCwMtcxycrJMIa0TwyZo=;
-	b=6zJCfMRXJQXn/iPIL/4N/NHRxKv/DQpsY8j1iqwcQca4Wcb5nU5eK8NM9FbIRxaUsiqv9r
-	Uiw1suHcuJCVoHIUhiVQ5NoX4NlTNql4kl6Q7HUjb/iT+ajdqQmgFJ6pRkMMWQWDGWTl3v
-	vaLdCU9VJilsXRUUDWZmGaUsBlMAZac=
+	bh=akOv2wAC7HX7aMxE6Q3m1WKBtSvSbn9vu4HmmhmzJNE=;
+	b=Q8u2LLwRMHbXxcS4QKcD6WWw8WAc42H5ujYqANFnp/idqT/DXwlzlqI11vUBax4jy2gK3p
+	WVytIwdUb6hTqMdrsVUq+O2BEQB54hIApam8kU1TKLs+IkdoV+E5wP5zsBnBLjw8j6/daH
+	kqDOxJq/40pEGpo+Ulqj+hcNG5EuO4A=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788467854;
-	b=mAEnlp9tHkacXQ2cjY7OvHFasLDJj8EWhdBlid/EmKea3nd3r4pJWVz/zlorW4yV7JU9rJ
-	dChpOLL/Y8EK2QbbxZ2S4TvpTZVcE0282F8yXlqJ9w5J1snyeu5Q9O7mSdun9LtydMTw+Q
-	qNQf/EfoV92hzGK/ghiNPBGsrAZ8kyg=
+	t=1788467855;
+	b=a4N4gDGOawWrzsa/9heV9ZkWpzlZA7VsYiDJGKWU/UH/e7hBM5Bh0xPz6e7ZnRhSf+bL7c
+	aR0ayGOQmpzjPvzjS36dX7ApgHCYN0Iz1PqHD+qBObwswaV+YfaAiMGMg6XJNjHMI9ctqg
+	89CK/8GyUe0z7fV4U9fCU6yeKzT7pEE=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Qep6i0fo;
-	spf=pass (imf14.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=othomu3H;
+	spf=pass (imf29.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-49cf4f81d86so2265295e9.2
-        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 13:37:34 -0700 (PDT)
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-48441fa5c37so187319f8f.3
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 13:37:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788467853; x=1789072653; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1788467854; x=1789072654; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=rgIj/N8oul9ZLAizfJH63NRBCwMtcxycrJMIa0TwyZo=;
-        b=Qep6i0foH6Y7+gsZj93X6VGQld/KdT4bBwu9iofsbI2DGl6rymLtasI6d6bBnxL0tK
-         MQW/c0Cv2dBCznV4DecE69ja2WBRvUSr/aQe5SNKrPzW7ZcVg0ZcyzzTxmWGHm6xpVnP
-         UnRlzxng4ZpowHbQLWt+na9xKU7kxM/lPjpVBRyTTqxtB0Sr+Jz8cZuC52Aa52UxRd/8
-         VZRFJ3tedhMK7N27SI0pj0rTqBGgRyluWu4m5GCOXxgAgaBqXqHPMpoK/wHgSwBY+xjs
-         lwg/G86n5zjb39ACXXfvbPyK/WlzsRhc0wukO/kJrl1EsLhmYVm00ztlLN5VqADDsVDw
-         HxPA==
+        bh=akOv2wAC7HX7aMxE6Q3m1WKBtSvSbn9vu4HmmhmzJNE=;
+        b=othomu3HNniWlum4T9c8l+hpnluGClPp2VSLhKLg/V4kyDLmULctiHltCjI7IsXfuP
+         +z2lhU/BA7CDctYPkLxI9WJOWgfd5Id8zBXFrVxAdkEwQIwdbrKyu6cFSaq2lGtNAa49
+         JA1a+ZYmaU/ZbxceydY+sE9+b0AiL4+EQunvZIErdNUUMq8PAs3jFyy+5CrIPkJRppHE
+         DnYfICrYKgw4brWLpM7CB8Eu5JACJr0kKjU4wTMyhXSqAu6rUNZo7aNVSCnOzr3hGJS3
+         M3rZVqytJjDsFoFH7L48cKK7qmRHXwc+l/1SAyqfOY5Oeea+wp89NXxRuR/ngJfEYZgg
+         nwxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788467853; x=1789072653;
+        d=1e100.net; s=20251104; t=1788467854; x=1789072654;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rgIj/N8oul9ZLAizfJH63NRBCwMtcxycrJMIa0TwyZo=;
-        b=GLPrHG1GfCuQ6KB1v04kOxXmIDNHb5i2I3BqO/KjF9ktPw9wepq8SAIKGtGHpd+TKq
-         lRD/FD98kwlcg5t8NQFi4K7x8LPAr9CpMfDpVHIA9LwlIlVZiIPzS7t/hMNEe1Wadeum
-         Zsaq3vq+7h5Be2vj6IWkpLY97ILx55OWWLIiDjMEp9Uy1g9xdt0OCg4Wx1+HTRxC7H/z
-         w62V4mKWVSQIgnZtSS3dsU31q5B9fkKG385ZUNjQ9kxZxMp+HWL9LD+IamOJQlb9Lqu0
-         xPDVz01VZGkAr6VFRIZqxPRLEcnLZw34nQeQtF8ekYVuLkoEVWnLUPNQRgDGfk80uDwv
-         QFtA==
-X-Forwarded-Encrypted: i=1; AKwUvBxeVrSaDLsIMLwwwHuxr511cpHENDTBychcH3MVuhuiFQLxIypecSNPizmyEiuoZBQ48ieK/bx4zw==@kvack.org
-X-Gm-Message-State: AFuF++kfRZ4FFkNveegxqlbJPE9oHjdUTa/AID1xcZrsWTid9Yw/bypy
-	cnQ7aW0Tso3r/lM3S2Yes/3TOtAk9MNJQTDjkABh05rXGSNGWVueR9+5
-X-Gm-Gg: AYBFou1FP8JEepNSuwwJ1mn2ptg9Yyyey1uf/Px3zK8ZrxX+roGZTvGELqWJrwdytwg
-	kAfEC9nE/fnO9i1NGMW/dn1xNwGw5Q5dBu/S6H47a2NxYWOHp6uY5cuZSdfBeCZ1fWxBzDaSw88
-	o/Wft/YT8EnBgEwoqg4NhZAljF9ii8Xj+pXWc9azsjwQKBAEE8wXQQSu/nNQY/av4jL8su0HE5q
-	16RkXP4L0oJkua+uU42FcGcACL1z4vLpB81NtoK3MbamQqlvdO8OqLPKcfmHX1oikkNz2PbJGRD
-	Q5cDz8Qv9ASFcmRTEsovw23Ag79/wxkmHLOy+odMOn3KeNQMuBjTPbcLRpEm62Zfbi6Iw8nq9oh
-	KEnwmNBUKqEideIEvLaCt/B50HvFyIRPwS1Bnv+NAQ9QpgQkql1u63EU0QRKPAbHWd1E+xR9PoK
-	R8XR5VUVeEStJhl19t7SrsZ3e1GHZp/kLg7hKPEUpzI7z8E3K5ZhfR2NA7FKUcXciIp6LyW99+p
-	4WgfCukd1J6V/CTV0Nd/OxnUWHK0OrKSFpdPmLlUMMgC3TxMmB+89ZB0Zgd7B3y2Ehco8XEKN2z
-	46S+TGW2hAcOYfkro6xim1DqcwsC+lpk9QPCNPE4cs+xRJnunUPMGCCafIbza7LNMq4+bDYwOtM
-	rYkl9b9eTY4tsWvin
-X-Received: by 2002:a05:600c:1c23:b0:49c:eb16:9fd with SMTP id 5b1f17b1804b1-49cf820a8e3mr8535635e9.3.1788467852848;
-        Thu, 03 Sep 2026 13:37:32 -0700 (PDT)
+        bh=akOv2wAC7HX7aMxE6Q3m1WKBtSvSbn9vu4HmmhmzJNE=;
+        b=i1VId4U+QNTu1Nr/vJWawzyqBfSIrbgx43lsSA/aQoJfJ8cLsT3/LVDEL6HeFZu5FZ
+         jmXV8OaY88jZk9Lu5AqVm4MA3REl6Yu5+21mtQjkv3xNGxJd4vNUSa0bsQ2ohEdlWJmq
+         NIu7avucuB8W+IIJqxlMoKAOIVcC0b2B0EM+d8CmBqXQvgrq67etAiBh7kyTN9kRlJtP
+         uICAYiZyvhk9+C6gYNkOCGOdbzGbjTjhDyM7LkahzTrW9JsBZFiKjLaLL5gogwh9ja/G
+         SxnA4CnMQrBlJWLDz0oU0Z0qx220NCVmILlcQV9cW2bS9GIlQcJq6ta0A9lRvuj7B5Pk
+         G0ig==
+X-Forwarded-Encrypted: i=1; AKwUvByKQd34w0aBaLdeWMiVauyBq0XuEroMqtkyep/l8EH1lY+2l0Aapz0X7b9To3PHE+/VcAjRpic00w==@kvack.org
+X-Gm-Message-State: AFuF++mO4566AZ50DyG7vIaGi7kgBQaWeS8Rt2cxI4xoknF5rDlGYFDo
+	zc1K8aUm0xTsUcWGrBeaHc0zvNzMRG1LwfZ8QlpQ9TdBgYR9xrCnFw4v
+X-Gm-Gg: AYBFou0iTxUV+NFTRIQwtKVK6RiCoQ0ycGR8zk8kCzyRQS/6p0u3wxQz3EE8YqtxcYm
+	YIJoaOXZDmYMDcm1MJ8kR0Ha8/RIuf7U2nwNDM+4O+pVhWknUa3mGVXtS2N7kLDQUv16qk0IJgk
+	S4UEJXAvd/uVvN+SuakKyDMfgSTUNaVmPFgWx4u8k9Vw4tDMsdR7QyHRK+b4uWFICjahJ+VbFxa
+	n2/sbMsTpNLzaqN1qKT2V3+mCEobwFvkBFLWuhT6nrDM9EkuSDzZv00WC/kkxE6pZxPwh517+6d
+	xkwF2R7FPFrFQcqYhST7uuIUyTDQRYV9eJTpWVElPSgxKJAkMZR5ekcwEzHnqoJXBqslv6av+O7
+	8XDzNdHwuuE5yxbZoBq9LzyYN9ucgtWSJWL7/tgzNnV18JVUHp0EFQJssQjFYpPPqhehvHDGWln
+	f0gQekjDiH+YzPf/UzILtiw0+xfITjYS0FuGXbaAvGj/pu3808yjEDFXiOo7JywLYeEFPb+9ma4
+	3UAaBqEG9uRGwQS/7d4z00M23l+JBxQFsttt1idzQYgHCiP+fpbTW1IkC5Ot/N4PDHoiArCkMkX
+	OGtFUbgZENdJqmmADnRS82QeQK4A4sEoWU/ZjY+5R63cbouHYXwgH+9HAUJvAFCifHpbIakVwrX
+	vNSTa
+X-Received: by 2002:a05:6000:220a:b0:485:81a8:6f09 with SMTP id ffacd0b85a97d-485870982a4mr3472028f8f.9.1788467854295;
+        Thu, 03 Sep 2026 13:37:34 -0700 (PDT)
 Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-a979-9501-3df6-d7fa-8a5a-06c5.310.pool.telefonica.de. [2a02:3100:a979:9501:3df6:d7fa:8a5a:6c5])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48588394fa1sm1005070f8f.8.2026.09.03.13.37.31
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48588394fa1sm1005070f8f.8.2026.09.03.13.37.33
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 03 Sep 2026 13:37:32 -0700 (PDT)
+        Thu, 03 Sep 2026 13:37:33 -0700 (PDT)
 From: Karl Mehltretter <kmehltretter@gmail.com>
 To: Vlastimil Babka <vbabka@kernel.org>,
 	Harry Yoo <harry@kernel.org>,
@@ -118,22 +118,22 @@ Cc: Karl Mehltretter <kmehltretter@gmail.com>,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	llvm@lists.linux.dev
-Subject: [PATCH v3 3/5] slab: handle ERR_PTR values in kfree and hardened usercopy
-Date: Thu,  3 Sep 2026 22:37:18 +0200
-Message-Id: <20260903203720.63689-4-kmehltretter@gmail.com>
+Subject: [PATCH v3 4/5] slab: test zero-size allocations in slub_kunit
+Date: Thu,  3 Sep 2026 22:37:19 +0200
+Message-Id: <20260903203720.63689-5-kmehltretter@gmail.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20260903203720.63689-1-kmehltretter@gmail.com>
 References: <20260903203720.63689-1-kmehltretter@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 67bb5u5zaxpwpzu51m5t7sfyznfp1jcg
+X-Rspamd-Queue-Id: B6AE5120006
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 74EA2100005
-X-Stat-Signature: fdgrzhcd5a1ui8dyqoo7kijqzdff8r6a
-X-HE-Tag: 1788467854-552786
-X-HE-Meta: U2FsdGVkX1+JlLSxZQMfPfpNfJRTS/SHKf40mTK+MOHWJkChlXGcw1NAR2BpcRWHTsFVGvy4DdC8jYgTAXux1IUBqoRXFyFBz2Stw3xUUQ49IXtvpEky5Ne2YRJjTajtUeNKe1l/712AMFXxjBrGgZUF7Cj2MfD2xlJhVsCblf9LBZHTM2h+c1Tvt2ISgBGXsmH770XzTwCWoOBnHNaTcj+dH0za8zin6vL6ImbNQ0U3K7wO21pMoJ3/SfUDJjPdiyuvoSmYH/kxvmIMyNy5Vgz7XYfdJAJRYdw8QYcXgTVfGrpbsMwRoaG2vWGJ1LIntkAgsi59a8VebJnmM+exKLjOkwTcfXCq7gKi7jD5rdW94jIUiK5QtCj9AEXTQ+iLCgnjvzhAK4Fi1+CQhO1WHE2rxRZG2o++J7/vyTrNCM/A9gToxNZOhVHvJ1OMMB7XfrU+b7eynDJ+9IJgAQMZ9GOFpBKLnK6qctYTWLMh/LtH8jKgA8FfGbLxGZSiXeqy1/CLVT57t/aqtwhMsi7jS6IT2oI/Te086A5ViFQRs2UdZQc5EkvNXszDa2OHg3siTpt+/hGyShDxtE02EM5ndXDko9xQMSz1A89Etlmal86ktRbVLPRAA35oL/Y+TxTNGN9eia9ONPiwFDPq5wALWCHsXi2Hd6SeMDyQnHVABqvxjRAMLGtSgWscRHgIxuYmTsaYVmBZyk+RqdJ9/DklZEI6YRMeiRs+d/j63/dpc4YeeYvqUwbQW/JSCsniHH2t/fA72F5HERIK81klfsQMd+kGWdNlkud9j3vp0tBSoqNcZkZ9orzQ551hZRvNA6GsgZDKJ20/Vve/fo4BlNLzLaqfJCIXtYrppbcrhhN0nkCh7vkdTeV+NYFLD1LVvUaAwnnQSoM+a4XMRz5ElzBTQxUb/m3JHlIZiIKU3ZUoVMJc4e879eJA0acUmaUpVo/rD9RcFrowDxzkYuG94aD
- RakKmsUu
- WfbvHnZ3PUe6GWPI7+1Js3PO+fvEH0yeFIIudy219syyjErI74J/hKFrnLJGL5yTEOwwuDSkEev4DRCG2ShskDNur3LIy3r4Oa9chvoe82JzQxexz4Tmsmkov6cwZP2h9wojox/mroGxeqggY3rhvmMujA7Mg9wu37MiFgPBFxZB62gT+i+wvemdslSfj+/C6AiMOrswjq3y23Vg66yRLqhSDGNACMQ8T9Kp3UWbtpfCYZSNKXH9XYR5qUJL5/FHRk6YE4pLIu+fSIx+sJJ93FlKJNhVpYd7YTFQMN/px992wVVWuxoNZntNhlHnkn8mPGXLZGaja8Vm6RynbyC9UxIHPFO8tcJETp8X4DquMYKTpEp7gyGZWiYSvJ1Ju+ZkuO2FaPDIdnJWPv5F1bHE/1cSDCxw6/jsVN8d2Ayh1RKQbOvQLJQEzJ4uRlBakOheZ4538K6CPlCJXattZQsQQ9SYQdlL+ELKy2eGO
+X-HE-Tag: 1788467855-618152
+X-HE-Meta: U2FsdGVkX1/kvvsfVI7Zs9CCL7hk4+C3Hz/dVnDo4hDZAHiQmtpcM3WIkX99gKLONSin5gpCbemkBOYEgQkXrjKKDAyTvu/9cGVMTBnaf5PwYxrb7hdE5Q2MCdBXgKakHbXktlex9ODgeQdwFMZjwsWQJ2mbSyMa909i2G+6NZjwyrixGgb1221o01Ql+MFK6dYKEqopZsG0xXfnIzy4caggF8sHH5k6UJ9G+jTLKq3B6N8+LW3G89MbWPEbznWMXXQRF8ohCe8ys9gUvNlfUnrMz3yjmsfQFlztSI8AdR2njlt4PsAaORhJQBU3MQ6vSYfujbe4UpctV4NYja1Y9FYWYgQ1pMbStsOG94jWW+EnAgjZMqkweiSZFn/PFCEqlY9ePjo98wWPbVIu6ieY98CrWraIShL1slM+Ch458qRLmOzmSdn1R1vr2Sc3sXgl6X9m3swhHkMTlrK/CtVMGGdV3ZN22FfmHW0UlOzhLsJKbW9fXZ1jMxIdwQ6SIKAdy40J6UHkEdlHFhp1YL8HNXEapwgrXBDth0Y1BPTUsywa9M4XGfAO85y6aADLDsxrBuxYTEjjiNZnNtC2N6KeoVNL6h0GBT2XOAzoggHTsQ3+0q+Poh/o/C1Isxnt2oeW4ulHvPica8v9PsqF/Wi9kGlBLzs0sOE1mtGqLpzfyWwKZOIsexNLzSELizmha4r3XGqNNh3v/Eg8375E0yf4OtUw+wGTi0V8Iyk3nhftzKqoMlqAPAQkLse25Z7o/civonQwgqk50CeC+UcVAyGeQ1Q5TEEPEpupfqTj9kBq8GkpRshICQvCyQQBRVRxz5iuZ0NBTkxOeUIjhK+Q/K6IOnV3H5E1CqHgwMw6SalzbdPFjl9BdxjHtrCOo4kkSiFx53lpEwgasqsc2fq9zkME5OCFeTYaZ7SeAofQcEYBUns6l8ntVLG6kqbrPZza34hrHhL59o5PGesnYs+pT+9
+ PDgqFMSk
+ RnGlv3PKK4vw5e0NMal9ETNeV9bE31y6RI1fVgMw1Rmg6kmezrcJZqIlZWFy0ZfTgVUeKlezQVDFdjmcLsQ0QnpsTVVyKukPHKBBAdPu3rxoRqeUK6nqXAOapHm20sbGJ8l12G0cAi0AhRjOmMgxdyp0+7J9uPfkKswtIqevJ7arXqcxv2ZTzHmIf4cGeWXePt0B54caPMgnqCy17YRHmz5pE5dM+icJMLQY8qHF5G1Ac9RgUtKEENRzboZ+lxbrVy3p4VawerejkAyQfrA0PLdBnygil0B+gGZFHC4kmIP4UX4QyE7jsLqK1ZXJWmwmV9bshrNMwCAZCJpun2ZA1XiBUMIv116/hiMPiDSXt2G3AGt7CtI+jPru8a0T/WBYkUVsNQ+aeV/Kls99Du1gYeP/amPspzMak0oJ81cgThIhJhVnSUNrwXhOZN5tJmLr2sQahcXClhjZWkU9+xXomOz7HPg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,52 +141,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Passing an ERR_PTR to kfree() currently reaches virt_to_page() and may
-fault. Warn and return instead, leaving the bad caller visible without
-using the pointer as allocator metadata.
+Add KUnit coverage for the zero-size allocation contract, including
+ZERO_SIZE_PTR alignment and exact ZERO_OR_NULL_PTR() matching.
 
-Also reject ERR_PTR values in hardened usercopy. Keep both checks
-separate from ZERO_OR_NULL_PTR(), whose exact matching is required by
-krealloc().
-
-Link: https://lore.kernel.org/r/CAG48ez05QVn6_gQ2TBrRa1a_DWQoaSSYubUsu5YMWxx-gqMijQ@mail.gmail.com
-Link: https://lore.kernel.org/r/202608111716.0FA9DB17@keescook
-Link: https://github.com/KSPP/linux/issues/93
 Assisted-by: LLM
 Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
 ---
- mm/slub.c     | 3 +++
- mm/usercopy.c | 3 +++
- 2 files changed, 6 insertions(+)
+ lib/tests/slub_kunit.c | 43 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
-diff --git a/mm/slub.c b/mm/slub.c
-index f9b56cb439e7..027b44dd7f07 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -6780,6 +6780,9 @@ void kfree(const void *object)
- 	if (unlikely(ZERO_OR_NULL_PTR(object)))
- 		return;
- 
-+	if (WARN_ON(IS_ERR(object)))
-+		return;
-+
- 	page = virt_to_page(object);
- 	slab = page_slab(page);
- 	if (!slab) {
-diff --git a/mm/usercopy.c b/mm/usercopy.c
-index 5de7a518b1b1..c8d8703544c6 100644
---- a/mm/usercopy.c
-+++ b/mm/usercopy.c
-@@ -157,6 +157,9 @@ static inline void check_bogus_address(const unsigned long ptr, unsigned long n,
- 	/* Reject if NULL or ZERO-allocation. */
- 	if (ZERO_OR_NULL_PTR(ptr))
- 		usercopy_abort("null address", NULL, to_user, ptr, n);
-+
-+	if (IS_ERR_VALUE(ptr))
-+		usercopy_abort("ERR_PTR", NULL, to_user, ptr, n);
+diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
+index e3b63f0338d5..923d8646bca1 100644
+--- a/lib/tests/slub_kunit.c
++++ b/lib/tests/slub_kunit.c
+@@ -465,6 +465,48 @@ static void test_kmalloc_nolock_and_friends_kprobe(struct kunit *test)
  }
+ #endif
  
- static inline void check_heap_object(const void *ptr, unsigned long n,
++static void test_zero_size_alloc(struct kunit *test)
++{
++	unsigned long zsp = (unsigned long)ZERO_SIZE_PTR;
++	void *p, *r;
++
++	KUNIT_EXPECT_EQ(test, zsp % ARCH_KMALLOC_MINALIGN, 0UL);
++
++	p = kmalloc(0, GFP_KERNEL);
++	KUNIT_EXPECT_PTR_EQ(test, p, ZERO_SIZE_PTR);
++	KUNIT_EXPECT_EQ(test, ksize(p), 0);
++	kfree(p);
++
++	KUNIT_EXPECT_PTR_EQ(test, kzalloc(0, GFP_KERNEL), ZERO_SIZE_PTR);
++	KUNIT_EXPECT_PTR_EQ(test, kmalloc_array(0, 8, GFP_KERNEL), ZERO_SIZE_PTR);
++	KUNIT_EXPECT_PTR_EQ(test, kcalloc(4, 0, GFP_KERNEL), ZERO_SIZE_PTR);
++
++	p = kvmalloc(0, GFP_KERNEL);
++	KUNIT_EXPECT_PTR_EQ(test, p, ZERO_SIZE_PTR);
++	kvfree(p);
++
++	p = krealloc(NULL, 0, GFP_KERNEL);
++	KUNIT_EXPECT_PTR_EQ(test, p, ZERO_SIZE_PTR);
++	r = krealloc(p, 64, GFP_KERNEL);
++	KUNIT_EXPECT_FALSE(test, ZERO_OR_NULL_PTR(r));
++	p = krealloc(r, 0, GFP_KERNEL);
++	KUNIT_EXPECT_PTR_EQ(test, p, ZERO_SIZE_PTR);
++	kfree(p);
++
++	/* Only NULL and the zero-size sentinel match. */
++	KUNIT_EXPECT_TRUE(test, ZERO_OR_NULL_PTR(NULL));
++	KUNIT_EXPECT_TRUE(test, ZERO_OR_NULL_PTR(ZERO_SIZE_PTR));
++	KUNIT_EXPECT_FALSE(test, ZERO_OR_NULL_PTR((void *)1));
++	KUNIT_EXPECT_FALSE(test, ZERO_OR_NULL_PTR((void *)(zsp - 1)));
++	KUNIT_EXPECT_FALSE(test, ZERO_OR_NULL_PTR((void *)(zsp + 1)));
++	KUNIT_EXPECT_FALSE(test, ZERO_OR_NULL_PTR((void *)(zsp * 2)));
++
++	/* freeing the sentinel must stay a no-op */
++	kfree(ZERO_SIZE_PTR);
++	kfree_sensitive(ZERO_SIZE_PTR);
++	kvfree(ZERO_SIZE_PTR);
++}
++
+ static int test_init(struct kunit *test)
+ {
+ 	slab_errors = 0;
+@@ -489,6 +531,7 @@ static struct kunit_case test_cases[] = {
+ 	KUNIT_CASE(test_kfree_rcu_wq_destroy),
+ 	KUNIT_CASE(test_leak_destroy),
+ 	KUNIT_CASE(test_krealloc_redzone_zeroing),
++	KUNIT_CASE(test_zero_size_alloc),
+ #ifdef CONFIG_PERF_EVENTS
+ 	KUNIT_CASE_SLOW(test_kmalloc_nolock_and_friends_perf),
+ #endif
 -- 
 2.53.0
 
