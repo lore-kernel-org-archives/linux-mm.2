@@ -4,114 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 795AAC624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 12:39:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6DBBC624A4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 12:44:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 320656B00A2; Thu,  3 Sep 2026 08:39:32 -0400 (EDT)
+	id 8CBF56B00A5; Thu,  3 Sep 2026 08:44:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D18C6B00A3; Thu,  3 Sep 2026 08:39:32 -0400 (EDT)
+	id 87D2D6B00A7; Thu,  3 Sep 2026 08:44:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E6F86B00A4; Thu,  3 Sep 2026 08:39:32 -0400 (EDT)
+	id 7937E6B00A9; Thu,  3 Sep 2026 08:44:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E7C696B00A2
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 08:39:31 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 80D7F1604D0
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:39:31 +0000 (UTC)
-X-FDA: 85172406942.30.1473219
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 7F20C20008
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:39:29 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Inoo8fUP;
-	spf=pass (imf03.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BBA06B00A5
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 08:44:18 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B9D1B14051B
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:44:17 +0000 (UTC)
+X-FDA: 85172418954.14.1E50F8B
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D633840008
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:44:15 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YfVkxm7z;
+	spf=pass (imf17.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788439455;
+	b=2tZ9RGxap5OpowgATB0lofWbuhkQjSaZfT+0DCYKsr61KteZVW9dmr79SqJFyaBv5MlYqg
+	pyKH/7kgM7npt8nCf4VzXN7hPAiIz99H7S1ERFWvIABlfL6OP/yX+6XxhtUVLxzkUF0YHx
+	w+DNS1KjEXE4IO757xQbFg54sEZFBnc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788439169;
+	s=arc-20220608; t=1788439455;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9ryI59nFheCyodltaNYiaFw2/xCwHS5lRcpCtYO6UO8=;
-	b=5detIrUUHFEB6+Qj7yUu1ueQAZzLf5ED8lsQoQ0efkyJAUVDy4uXQ+WpNWaHsu7TDjJyLE
-	gZAMqoeeYqfppSN1ENM7e9qpMLgK+WifVv8z6maQf3kCgd9AWfxeIpV9E2mnEOP5CD6b0V
-	W3emOolQWmiF5VrMPNrQU5xvR4JVOUw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788439169;
-	b=M7C9cwJAaPLDLzacxoju8xoOhdbocvcS1tLZNgQ5OVuygtlr2cJz9pooyUtZUf3LIOQ8Rm
-	CBlH45SuEWEZ7uRyQisr4ItHxQ5+RfVBMMqIAVH+PPknX90cBXDPabYCTQU/oicrQ0p3Ng
-	AGZ320lvlpVBkFQi4fZWgIHAmvjBidw=
+	bh=v1JpLmeHcDYci9TjzZaOlT2Qs79rEF11KvKmH8LlIEc=;
+	b=ptisIiSJIj91BMuGlrMiXJq111RusxGTHY/blesrNgRktmZEfLfPCsrvD8+OHXPzkaN6a2
+	5smQtn0UmV9gs21pe3W8gN1QpP8knaorYg0+tYBlmGANO7DAWgYCy2EwSlxLXhumNPvMAr
+	sfE3jArVU3QIDPBchWR0e5I7QFXiXII=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Inoo8fUP;
-	spf=pass (imf03.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A5D8D410A3;
-	Thu,  3 Sep 2026 12:39:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05C51F00A3A;
-	Thu,  3 Sep 2026 12:39:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788439168;
-	bh=9ryI59nFheCyodltaNYiaFw2/xCwHS5lRcpCtYO6UO8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Inoo8fUPGSNJErxjcu2YCMxci49DLzOd5zaOA4Vbj0yx43UjFdql/ieUY8GuVL5VR
-	 UYBNyKpbpS+1IQjpAPSKab2ElCpMF+xXLZuvq1USTjFRLmfzYn9dVFTMmKOicqCmvv
-	 wLofrQxS3HJh27LqOGEqJCd3TqPGazfJfh/6xsTy1xzUw3VM8wGxjhp1y8hEsNicTk
-	 7uZCZa0CnfhWVb+Q/a9v1X21NoaQjTBEGCg5yOFr3ddY2AK5OUHc0ypyt6rvPDouao
-	 scyo46aH+/bgUPEqhMj1m9k7vlezKCy1TO+isK9/RFIn8qrVgxkmFX3J040v8mkxDX
-	 8J53zeGgvxvkg==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 8B196198003A;
-	Thu,  3 Sep 2026 08:39:24 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Thu, 03 Sep 2026 08:39:26 -0400
-X-ME-Sender: <xms:fGqZauPqkognvLO22ue7MYKMtaaL06W0DJXtdhbCF1OGIlfm9ocDxg>
-    <xme:fGqZakjEa9-8LgEmHQN0uURotx45Ldev0j-KRJ4fOWn9ZABkC6P9qNlMYvuTgnYhy
-    Y6ZrbycAL7K8359QtaemOuZu-Mh3FSX8y2Vgm8FAR9HTBoY4NHLnh0o>
-X-ME-Received: <xmr:fGqZak5NRnAjj-ZvDc06pxtf0rfSJb_xQO1UPA5thiNXRRe-n99fIP67zZY>
-X-ME-Proxy-Cause: dmFkZTF3zqPAAnIhb1YeMy24bRFWG3v32j09ZcqUOBuX3KYWzX7uJHPyWLP1Hj9+S4IwNa
-    PEy+WtiDNm+MM9ovDxTHTFHgV04t/PKrt0NTN2ImGOgKC4nHBzHRP+V+NxyT+08Bw87TIP
-    xDC4nnEMRVpoPDvzrvVp9/5IZQW8mgfOG0RwDIlK2TCv0z/bMQfFNMgnsMbeO0IPRHxTqE
-    iW97TQlsSv9lKHgjhUMt4Sbntwm6GwEkMRqP0CPAl7hHyI006Lnh3QbvG4Wjp+y1LpKi8x
-    rTWSl+P8HlEZ3jJJh9dvoiRgnQ3kpBf8Z3mAxfDoB8l/wr5EUjDhaN7di1qQ8wqK5RwRcg
-    Tq1uklzx6pXzETlUF0tyDjbgcjmvjl7QmUvkQjOMPzvrColSeg5ZmXqq510TJyG/7ZyPyh
-    RJCoz2aQNYCKgDtjTYbz3puc4VdUHq2W4TZ2YC+GaDCN6d0b07AwRoj0Ue/2fHA8M4hSP4
-    8KqmvyJ2odJp7N61NrgMzMvbPE76WPVOGQLYG8ARqhApN6595Owmkzn7hEhaVQct5WLi7c
-    Db27T3XWTxzdKzVCOI8Ay045x4cc2Nkri+oSRFoRA++Onlp0P7ayTUlt0ga6SCgFWxxQP8
-    6e94A5yG7KJDM3FibVG+VZjuBXbOL/O3Kx9KU+PuL/NNWqDLGGyO2vkG+OVg
-X-ME-Proxy: <xmx:fGqZardd_pIo-mypn-5cHUYN5lCsKTQy5MDZCbcxrXqDiG3q9LzCvQ>
-    <xmx:fGqZatDYhUl6DJFgIzmturDS6uUSJbhUSSP2ywuuSxMkYiNO3pMyQg>
-    <xmx:fGqZaqBuDq6kROnAhM9fG3_dWo6DCopeBGn-5mo2ukRZWLKVNu8NuA>
-    <xmx:fGqZavb1BEVb8GbuaBEXLt1WMLttuqklOmmIo-Hq3n4oDlLXCCEehQ>
-    <xmx:fGqZanwJRry7LHd7EMAiJvVYi6vDq9ESarqQgB8I0vLYmqNXbkZFQB8b>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 3 Sep 2026 08:39:23 -0400 (EDT)
-Date: Thu, 3 Sep 2026 13:39:22 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Sarthak Sharma <sarthak.sharma@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] mm/gup_test: safely calculate GUP batch size
-Message-ID: <aplp-uM2oQtjuWnZ@thinkstation>
-References: <20260903115033.162218-1-sarthak.sharma@arm.com>
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YfVkxm7z;
+	spf=pass (imf17.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-39266382df6so2100025a91.3
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 05:44:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788439454; x=1789044254; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=v1JpLmeHcDYci9TjzZaOlT2Qs79rEF11KvKmH8LlIEc=;
+        b=YfVkxm7zWL4DRFWO20cbdn3n6gUjpoAbQdS/d5IxkI9h+5YDjXgNue/75BibixCDzo
+         jbcnyUgnKjl/SnzYlaQhp7qVhDzjgXjCeNk7JGCwpYOtjFzwS3boAgjEsWxoNhocMzpS
+         +YGR63vXRTbhWldzutKyz1FV8EsOjdHjBfyt2LdYo4k0UOqpWhVIOVDfzAMorAEQzEr3
+         13aJULIokDezLANC9Rn4s02U57LTPyn6563kNDWl48UOUx0/NHJJQL4UMzXPTxzkxWiX
+         2N+WDfrfcbHm3Urd1RM6uBFkXrV/DCf0NcJLkXbI1Yx8I50hX+SjaAGAo6AtVWfXI/bc
+         w9CA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788439454; x=1789044254;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=v1JpLmeHcDYci9TjzZaOlT2Qs79rEF11KvKmH8LlIEc=;
+        b=eNITRZ3jrjdnZWRLo4IV7lbbDGuAZpXB0jVgh9/ldP7hoXSqUL76itM7/2Q5xhPSio
+         OCYadCkwmNTdmRBM8clGLmueuPtIxAkVR7mAQcT8WFZNpVGoXLsIjMgxTkVRa3QJd0lt
+         G/P3rfXY/2ZkjI9n6vbMs7Rb0G58ltQX/L32Yxeh1nlvkdW1gC5ghdqZFEogkoF8WQsc
+         BALHga9GGItf24hzWg86a/0wkVaJDZSWy6CZC/5V3NbvyBo3M51lA7tT9aIlqb6KpCTn
+         pzUQXNndfU+eKtl9i43rC4vmaKD+x1CpU47Fgunxo2frySFMybf7SH2IDB4tu5eNrkMr
+         E2Xg==
+X-Forwarded-Encrypted: i=1; AKwUvBycF1WpQTS4w5eAddaDdyrxp62ei+Lr18JgsQKnHJGKjdnKEOSTmNU2JAhaXaY8peOU1v+uBDgL4A==@kvack.org
+X-Gm-Message-State: AFuF++lmqNdWGErP3TUguPFxqG5YZ/D0J/O/ozd8lhT77GnUqM0+Ap1H
+	v/moKznV4Z3yyAqyA60QRHu5az1ttqEnAOFFMdHQur51l1BFq7qnRhtGi+yEDg==
+X-Gm-Gg: AYBFou0PJS9MjxRyuL6wWFH6xKV9b/ao3BxCOJ/SPaBDWbl0Qv0rctJ8J8hf0PhLir8
+	mOpr+EsgO/uY0LB+4rjZ4r/p+gxswLpXkupU1xH4B/Uf1eblL/ZVsR+ioppfScF9TDSTGZI347E
+	ZbSghqw73dk1rbuUEq6keSW8NNVTcs7KQ2uJDKVnWbCbynOKHtULpHbXDxd0QkYGr6Bx61H5xaH
+	yRa1T+l30Cz8QrotmmYyuwP5COLeUc+HP50hsjFUSMls2BlzD8hZdn/BmAAe/DytDbC523ZgBXn
+	fOYR6B+zSrWRSF1Di0FU9lGDpFKGlvFcibQQD4HmWyVO8NjQUoLOS/bAq5jBvNx0n7m8aLUzak/
+	MsbKEHgy8Idye3qExSBbtxOoXnmpRM0PA5Yc2ZJXTPh373gy1JQ7Hx+GIuKu4RUx+vsj41LTIZ3
+	sEV3Uk6UkHekHRZVPJ3+MOuJuKt6zgI6U3dut0fvFm2R8BrrauHzV9LTqQ7tnRwTG11xXEn3daO
+	N119/oj6WAxzlrn
+X-Received: by 2002:a17:90b:264e:b0:398:dcf6:d40e with SMTP id 98e67ed59e1d1-39aee0c16cdmr19784168a91.17.1788439454461;
+        Thu, 03 Sep 2026 05:44:14 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2402:1980:9c5:2de5:8b4e:3f3c:b637:4ca5])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08bcc060sm6268339a91.3.2026.09.03.05.44.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Sep 2026 05:44:14 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: aethernet65535@gmail.com,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2.1] mm/damon/core: fix false positive in damos_quota_is_full() when esz is zero
+Date: Thu,  3 Sep 2026 20:41:48 +0800
+Message-ID: <20260903124422.5340-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260903003351.91088-1-sj@kernel.org>
+References: <20260903003351.91088-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260903115033.162218-1-sarthak.sharma@arm.com>
-X-Stat-Signature: egoti8mbtker3ie9nqqxpxgowt97habx
-X-Rspamd-Queue-Id: 7F20C20008
-X-Rspamd-Server: rspam02
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1788439169-318656
-X-HE-Meta: U2FsdGVkX1+spiyQ88mjuWbpD5B2IP5UPMn2QxWat8zVy43JEpPqteK10Qk7k7rB1dug3WAaiikDEkqgNPd4cgs0OxzewugEaIm7oTgapJJuwhrCT0gwLlz2Jk/UGsZuiuvjDTJJYHa3ngv2oQu47yqBAlUvy/HW9iOIezzQeMFzEHxTLGrHprVzpTJSBdJ3y8dUTEpDzWWdxjjD7RRbGLub20/YA9LUhczh7sQWQ+CmkFOfOfwQmlhFrZzg6O49t1w3HkKt73EJfZc1EnjsK14L7S+MweKThPpR05L+sr2nrJG2rhSf8JzhvMGAmGJDmm4r7t8DT51tDuQBvEmcqDuI9YiJ+KYuEVwBWHF6474tCqOSYAykqT+AQJfvFndhilvolTIRUTDqXqOzJQNpGJuem9/CJjAJ/jw9xSP6sACSqYbFJ6l3Q9veGZkd9eJNdqVLJjRPqd0iJUdRoJlWUl9Ith6NR1ZwSERrYaapNkh1TtrT2em86ZT4VBStCdvtC2eGL7RBt2sl8KOFOPx6VeLpJpOWUpb6dBI5q6qIaigMLE9UnhxBshTcpJoH59HiaKS4opmw8ysHZiKfhUjRZAArexCaWB/gzpE2rAHG1+IapACjKdHZrHG6L5tcVGA/rFGigkspYDeo27tiLKKlC438fnULbKqiwu433YcLUd4cXBl058Nh65vG6PXWJlAjlCOwCC5uIMRzuQB6pyvL/INhEs2mmh0eLMlB6Vndi+bLtYSWgqXSS78ag4t023hzaCfZC8nu0ys9uUxZcmCnjzh32yGPEg6r+D2aXiaNmg/uTjhanjx7k/oE6q+1ixFKbirq7gD3FWuvGwYG8VicM74abXm81KZbFGMg98owFHnE9ZWO5CMhL+QYED7sx2w3m+YlvVmdDzsIyRuEsG4e0Cp67bCVDBjgqcvLnvvTKX1mEm+DfTgQTjy8Ds8w01SgaoTgiupFTArBIkCiiqV
- RLMBKyvs
- AgRNVScZ54sl7lCFOK9T2lAr486kCFokjx9R34IeNKTGHV8qvfy8mOYXmVN/37GuMlT/DMQexNRBwnHMBWGb/wScKKDkc+5fjkhIT+hRraXYIiwXEauTTLT6zlb0U9apB4drNQGDARlteiVw6NMvM8VFOk5CrTM4GaIehVLN0Rzm0U0STRZp6GOMEARLnn4XLNqSGz2waCNWc0cJml3QuXnLROEQVMh0/LnVZUIlNcVqDKBqC2WqRA3Q7kzMWQz6gVlfuGgDHPoVXLrqPzIcnM+o1aPHbd+6V3oyQBeN5D4j5IK6waxIHGkc7nagavTfqJfvaL6QXvf6pIAVmzK1bQ/ugaopWt/A/R0IEPwZuW7vN1ENzOlKZAXVNv2dl2X58ojUZajmEiJNtwC1Iwy06BvesBw==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D633840008
+X-Stat-Signature: gh65f9zk6aer7zpaprk9otxxkd357dx5
+X-HE-Tag: 1788439455-245748
+X-HE-Meta: U2FsdGVkX19l0MHBMDDRyT81PN6qdzmNCJ/jfOPoxh3oVokWpSGFVD203V7xN4nGW5EkHqr5Rex2tZLh06JDN0lcWTjhL9O9wVOAQ+OV/NtzhOGvmWBdyi0fmWkg6jRQK2gcjxhua5X8rbGP7WSJ+WqBmtMhCS1zUtmnvqvVMmBZqA3qRmHOUyZ3gu7evpluJaOIr3KurCa+XGCdpYjYQq11e5SxZ1f2oCmJsEav9fWFrF0v2BYLqTb/50xhaxjPsKVtasBysXzzlT9G5HMPwZzfvOGx4e/JprByuo0c3YVFOeeIvIJKLD6Mue1QfpQWwZwXR7f8pwaHAvAxETNW9iBNQV66R81V3Yx4CM2MitUARZy5LCOwZLRHNHw6fkgECzJ9qYIU8pbMdoPSYHL3LgevGWHN3mybFzvyg/HcX3ifF/90PlNGgLR35uBGLob7YsXuQpe08/3eIdGKEDWX4/0hgoodByEkFuOfSunv2o7UjHe3DFbVYVOV60AV9hsfPMyiIn0PbJHraTLqvvKgxA6zQLuiGHvj8vE5WYtyCanobbGg9PrCiFYOPtRbGeq5zIBmbZ2Wj4c5h+koV46HSrw3woqVdGq6794vA1Ir2Xma1Nxlsd47GOCOVLiMsz5XdfYBz8NAR/aG65vkxbwgBPgXIo9DGuxhgSvcVMC/qmaoqn8PlxwOVBB/E5MBQ4gYAPSOZH+bnPOrLv6oEBBuFQ4oBR/+fxnzgYsuV6JR1HWkfKptcV7EDJJNRloWBVi1ncJPLkXsJoV4uTvm7LBWdG6lSYx5WI+sY0mPquwQXsUA1QFXyPnx5R6ZQZOnnJ/r6j47Q+ZoiEjPNtfargpcwL77YQLuPoeDc8JD7Tc5g/2OqlU3jz1suM7YhOy+M9n45NKfd8Ngnlmc3HppfeX1svFGCzJhTvERybh2bBinof5LdJQOecPY58vi1KlfGDX7aBRHQOQSxbO9JMvgwFq
+ 7uXf5Zu3
+ 2FAWoqqOxuCBdsZ0Tc8Jt4Gzseuy8l4TTbtsKBqOx7GXubEWlP0g8S4XxMFekZscUP16M5MHSyqOFsv4J+REh+p0ZpEaCZx+y/OzO1ep/AN6kVC14zLJ2Tkq7td0BZI/JuyZqkdFMJjooTdwYKe/WtAysBLZNj4nfePyeiCsrOt2eyrka356GIkXK953l4/MSY5aCvQreXk4wGCFu3/PbBEH/JCQQocDvjt/giNNopVd9y6GRAZNS9ySlJXPtR+3/pdAvetSn9JQsjJMx0W20aX+RKJBcwCaZtx72ceYoETLaw/izKpNU7Q/o3j6lRhdhDzVOHJi2wyWB+aFSuV8OGTtte5+rsDCsybxVMq5QAF7dIgJ6CV1a3fvtCJE6WRbhbzStpNCDU23dpaOHMYyIANcSL56bAf0LcS322hOPhlWm9ZtHrKmXcxU66YFVEzYhDVLDycU0tZtDP0cj9mqAjDwH4WutLnC1t+Y17Ca6F42RYOY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,85 +122,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 03, 2026 at 05:20:33PM +0530, Sarthak Sharma wrote:
-> __gup_test_ioctl() calculates the end of a GUP batch using:
-> 
-> next = addr + nr * PAGE_SIZE;
-> 
-> If nr is too large, it can cause next to overflow and wrap around.
-> If it wraps, the next > end check is bypassed and a large value
-> of nr is passed to the GUP call, even though the pages array was
-> allocated according to gup->size. This can lead to out of bounds writes.
-> 
-> Also, when fewer than PAGE_SIZE bytes remain, the calculated batch
-> contains zero pages. The code still calls GUP functions with pages + i,
-> which can point past the allocated array.
-> 
-> Calculate nr by taking the minimum of the number of pages per call and
-> the pages remaining in the address range. Stop processing when no
-> pages remain and calculate the end of the batch using this bounded
-> value of nr.
-> 
-> Fixes: 64c349f4ae78 ("mm: add infrastructure for get_user_pages_fast() benchmarking")
-> Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
+On Wed, 02 Sep 2026 17:33:50 -0700 SJ Park <sj@kernel.org> wrote:
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-
-On nit below.
-
-> ---
-> Sashiko reported the issue fixed by this patch while reviewing the patch
-> "mm/gup_test: report actual pinned bytes". That patch has been applied to
-> mm-new. Since the two fixes are independent, this revision contains
-> only the GUP batch size fix.
+> On Thu,  3 Sep 2026 06:31:38 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 > 
-> Changes in v4:
-> - Simplify batch clamping logic as suggested by Kiryl
-> - Don't call GUP functions for an empty batch
-> - Drop the pinned byte reporting patch since it has been applied to mm-new
+> > On Wed, 02 Sep 2026 07:48:03 -0700 SJ Park <sj@kernel.org> wrote:
+> > 
+> > > On Wed,  2 Sep 2026 22:22:31 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> > > 
+> > > > On Wed, 02 Sep 2026 07:10:00 -0700 SJ Park <sj@kernel.org> wrote:
+> > > > 
+> > > > > On Wed,  2 Sep 2026 16:44:45 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> > > > > 
+> > > > > > When setting goal_tuner to 'temporal', if the goal is achieved,
+> > > > > > quota->esz_bp will be set to zero.  In this case, damos_quota_is_full()
+> > > > > > will always return true, even if no regions have been tried to apply at
+> > > > > > all.  This causes qt_exceeds to increase unexpectedly.
+> > > > > 
+> > > > > To me, this looks logically correct.  Could this cause any user issue?
+> > > > 
+> > > > Yes, I think this might cause unnecessary confusion for users,
+> > > 
+> > > If it is _might_ kind thing, please ask questions first, or add RFC tag at
+> > > least.
+> > > 
+> > > > at least
+> > > > it did for me.
+> > > 
+> > > If it confused you, definitely we need to fix it.  But if it is just confusing,
+> > > let's try to clarify by adding documentation, rather than changing existing
+> > > behaviors.
+> > 
+> > I agree that we should avoid unnecessary code changes if the issue is
+> > merely a matter of confusion.
+> > 
+> > However, I believe a code change is necessary in this specific case,
+> > rather than just adding documentation, for the following reasons:
+> > 
+> > First, this distorts the semantics of qt_exceeds.  It is a statistic
+> > meant to track actual quota full/overflows.  Incrementing qt_exceeds
+> > when the quota is completely unused (because the temporal goal is
+> > already met) misleads users and could break user-space monitoring tools
+> > or scripts that rely on this metric's accuracy.
 > 
-> v3: https://lore.kernel.org/all/20260901083452.115365-1-sarthak.sharma@arm.com/
+> As I mentioned in the previous comment, this doesn't look wrong to me.  I
+> understand some people could think differently.  That's why I think this is a
+> matter of clarification, not a bug to fix.
 > 
->  mm/gup_test.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
+> > 
+> > Second, considering its original behavior when it was first introduced,
+> > the recent changes [2] have inadvertently altered this behavior.
+> > 
+> > When qt_exceeds was first introduced [1], the conditional check was:
+> > 
+> >     if (quota->esz && quota->charged_sz >= quota->esz)
+> >             s->stat.qt_exceeds++;
+> > 
+> > Later, to handle cases where 'remaining quota < min_region_sz',
+> > damos_quota_is_full() was added [2].  When this function was added,
+> > quota->esz was replaced with !damos_quota_is_set(quota).
 > 
-> diff --git a/mm/gup_test.c b/mm/gup_test.c
-> index 185ba3bb8ed1..1b64e932c4c5 100644
-> --- a/mm/gup_test.c
-> +++ b/mm/gup_test.c
-> @@ -139,11 +139,12 @@ static int __gup_test_ioctl(unsigned int cmd,
->  		if (nr != gup->nr_pages_per_call)
->  			break;
->  
-> +		nr = min_t(unsigned long, gup->nr_pages_per_call,
-> +			   (end - addr) / PAGE_SIZE);
-
-I personally would rather have it in two statements, as I suggested
-initially:
-
-		nr = gup->nr_pages_per_call;
-		nr = min_t(unsigned long, nr, (end - addr) / PAGE_SIZE);
-
-It seems to be more readable to me.
-
-
-> +		if (!nr)
-> +			break;
-> +
->  		next = addr + nr * PAGE_SIZE;
-> -		if (next > end) {
-> -			next = end;
-> -			nr = (next - addr) / PAGE_SIZE;
-> -		}
->  
->  		switch (cmd) {
->  		case GUP_FAST_BENCHMARK:
+> I don't find what's wrong with this.
 > 
-> base-commit: 178b3d97bf1f15f598ea7cc615a40c115e528e1c
-> -- 
-> 2.53.0
+> > 
+> >     static bool damos_quota_is_full(struct damos_quota *quota,
+> >             unsigned long min_region_sz)
+> >     {
+> >         if (!damos_quota_is_set(quota))
+> >             return false;
+> >         if (quota->charged_sz >= quota->esz)
+> >             return true;
+> >         /*
+> >          * DAMOS action is applied per region, so <min_region_sz remaining
+> >          * quota means the quota is effectively full.
+> >          */
+> >         return quota->esz - quota->charged_sz < min_region_sz;
+> >     }
+> > 
+> > With the introduction of DAMOS_QUOTA_GOAL_TUNER_TEMPORAL [3], quota->
+> > esz == 0 carries two meanings: "unlimited quota" and "should not
+> > be applied".
 > 
+> I don't find how you think this way.
+> 
+> > This overlap causes the damos_quota_is_full() check to
+> > return true incorrectly in the temporal goal scenario, leading to the
+> > false positive in the statistic.
+> 
+> That still sounds like just a matter of different interpretations.  Let me know
+> if I'm missing something.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Thank you for keeping this discussion going!
+
+First, I would like to clarify my intention to avoid any
+misunderstanding.  My actual goal is to fix the semantic of the
+qt_exceeds statistic, rather than necessarily changing the underlying
+logic of damos_quota_is_full().
+
+Currently, there is an issue with how qt_exceeds is incremented.  When
+the quota is set very small, qt_exceeds increases frequently.  This
+produces a statistical trend that looks almost identical to the
+continuous increments caused by the Temporal Goal being achieved.
+
+The original intent of introducing qt_exceeds is to let users easily
+notice if the quota is too small.
+
+Commit Messages [1]:
+
+    mm/damon/schemes: account how many times quota limit has exceeded
+
+    If the time/space quotas of a given DAMON-based operation scheme is too
+    small, the scheme could show unexpectedly slow progress.  However, there
+    is no good way to notice the case in runtime.  This commit extends the
+    DAMOS stat to provide how many times the quota limits exceeded so that
+    the users can easily notice the case and tune the scheme.
+
+However, under the current behavior, users are forced to manually ignore
+or filter out the qt_exceeds increments that occur after the Temporal
+Goal is achieved.  This adds an unnecessary burden to the users and
+contradicts the core goal of making it "easy" for them to tune the
+scheme.
+
+If we agree that this adds unnecessary burden, perhaps we could explore
+a minimal fix at the point where qt_exceeds is incremented, to skip the
+count when the Temporal Goal is already achieved, without touching
+damos_quota_is_full().
+
+Please let me know if I'm misunderstanding anything or missing some
+context!
+
+[...]
+
+> > [1] 6268eac34ca30 ("mm/damon/schemes: account how many times quota limit has exceeded")
+> >     (Fri Jan 14 14:10:202022 -0800)
+> > [2] c7ec7d5f6b3d1 ("mm/damon/core: handle <min_region_sz remaining quota as empty")
+> >     (Mon Apr 27 18:33:50 2026 -0700)
+> > [3] af738a6a00c1f ("mm/damon/core: introduce DAMOS_QUOTA_GOAL_TUNER_TEMPORAL")
+> >     (Mon Mar 9 18:05:19 2026 -0700)
+
+Best regards,
+Rui Yan
 
