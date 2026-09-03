@@ -4,89 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA241C624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 10:06:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 837B2C624D7
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 10:09:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC1636B00A2; Thu,  3 Sep 2026 06:06:27 -0400 (EDT)
+	id A1DD76B00A9; Thu,  3 Sep 2026 06:09:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D71A26B00A3; Thu,  3 Sep 2026 06:06:27 -0400 (EDT)
+	id 9CEA06B00AA; Thu,  3 Sep 2026 06:09:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CAF2D6B00A6; Thu,  3 Sep 2026 06:06:27 -0400 (EDT)
+	id 8BDB46B00AB; Thu,  3 Sep 2026 06:09:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A85E46B00A2
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:06:27 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 43DF5404AF
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:06:27 +0000 (UTC)
-X-FDA: 85172021214.01.563A184
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 49C8318000A
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:06:23 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="qWIYn/nS";
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 65C486B00A9
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:09:28 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6809AC04A6
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:09:26 +0000 (UTC)
+X-FDA: 85172028732.05.2A2F84A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A351D14000E
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:09:24 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LWQUiP1o;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788430164;
+	b=a/TgfYSpgmWfODTA70GK2H+D3QPctXFt7d2Dbsk9MPDv/t/cfpkzG34AUy0rXS1uhRGuJ+
+	4mLAYNN4lU5db7+9aSpk54PtoHPgkt04AGcJuKpNuHjyGJ4ue9XNfY38t4M7wYG1oXFbLq
+	WjrljKWtBFZHsST7LYIbjkbo95hzI1c=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788429985;
+	s=arc-20220608; t=1788430164;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fpdjgc9+sv9jCsQkNtcRXnZevnJDV+QJt0b62KNfz6w=;
-	b=QRhLlkPs+ycjiTePpTiGVjwVBer0bppGv/68cjaWQGV78cSRqtG0cR45yUT01TfGZbPSPV
-	ImEjnr78ez/Me0dB+bKyl+o1s6LOcC60tNxa4p8acCNGZdHRo/yfa/+dNLA6uGsmlluTH4
-	dlUZnypdtw3ZapeLaPB6sizYvJvGm78=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788429985;
-	b=ZbrUn/eNMVNkRRiDl+fZiBa5Cc3912KJ0wUDL+l9DYky7QqfEoUfWljqi251/q3NTdcec/
-	wmEIKgl14unQ3RNW7qVMQ+my02k/RIkN1Lu5smR1lXoBhM4Gk6ALIB5uEW+Biuy+Vb5GkH
-	Jrb7/qE4eutNfagqnmbUUSYMOvWeyuM=
+	bh=5kdCJbwtYjwdwpiipUS39ooVAOG5yIhe/eZjFNLrhWw=;
+	b=R5Z02tbjgxha1Lqs72o/S/H+p6RcJt6YKI/cw3HJJvF+giAxVeHZTCnKSRiQjZ95CyYNsV
+	Q0w3uWRrUTz/ndnQql2qBOF60VHDg+AQyUp1h1t83/ufmWY5KN6jiEpHdTPRlzXfWjhU9K
+	MNwmFcV3DbNiObHlFjFXdrGUAK/HKkA=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="qWIYn/nS";
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1788429981; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Fpdjgc9+sv9jCsQkNtcRXnZevnJDV+QJt0b62KNfz6w=;
-	b=qWIYn/nSw24ADrsALaLu1xdMefXQXbtLaTqnMldJ8cWzz3xMYJw5Np8ForgqKp4xsXspue+VXnSnO6hkD05VbRvA5ll/UPrURShyWO2LABuufCUQjHevPVzPxhIwz5WLHmrm0papWkx211BLlv1tRQKTHaO2T9QySUeeM3MYMuk=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=23;SR=0;TI=SMTPD_---0XAFjTM5_1788429979;
-Received: from 30.74.144.116(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAFjTM5_1788429979 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 03 Sep 2026 18:06:19 +0800
-Message-ID: <ac1f4e9a-d45a-433c-b26a-23fd0d955243@linux.alibaba.com>
-Date: Thu, 3 Sep 2026 18:06:16 +0800
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LWQUiP1o;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A89A360210;
+	Thu,  3 Sep 2026 10:09:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FF11F000E9;
+	Thu,  3 Sep 2026 10:09:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788430163;
+	bh=5kdCJbwtYjwdwpiipUS39ooVAOG5yIhe/eZjFNLrhWw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=LWQUiP1oDc+eiSZLGgpmxHE3o0lgmGDPD6pRBrIEybso4LD+iiD7oVPSZybfQqn+N
+	 e+pXcMxx5xEbYpf67YbwHxpTwZAiunjHBdLE6XwEDjOu21gwI13462hMLlD7KpoXu1
+	 QWRUYN/6v0rGEnohmMPUkmr9WhTTqDF+ssDO4uo78F0xcMUWhcZ5IjBqTTc5Smn84h
+	 5hQn78UWMGO49s2DR4NTu5g+yo/jFVcpmyGWE4hu9r4k6lFYGrMnuaqUWqKUOaBYkQ
+	 Cgee9cf8BCGHqX8IbGo7fq9ainGRzpHhoJY1L2lMe1bbHsOVxqdbsIBTY29RrS0iEq
+	 Ozc+uYBVvmEZg==
+Message-ID: <8a73da1c-0167-4aa5-a62c-4190327685cd@kernel.org>
+Date: Thu, 3 Sep 2026 12:09:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/7] mm/mglru: batch update lrugen->nr_pages in
- inc_min_seq()
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
- linux-mm@kvack.org
-Cc: axelrasmussen@google.com, baoquan.he@linux.dev, chenridong@xiaomi.com,
- david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com,
- lianux.mm@gmail.com, linux-kernel@vger.kernel.org, ljs@kernel.org,
- lyugaofei@xiaomi.com, mhocko@kernel.org, qi.zheng@linux.dev,
- shakeel.butt@linux.dev, stevensd@chromium.org, wangzicheng@honor.com,
- weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com,
- Xueyuan Chen <xueyuan.chen21@gmail.com>, Kunwu Chan <kunwu.chan@gmail.com>
-References: <20260901232421.40157-1-baohua@kernel.org>
- <20260901232421.40157-3-baohua@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260901232421.40157-3-baohua@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v5 08/12] rust: mm: add abstractions for allocating from a
+ `sheaf`
+Content-Language: en-US
+To: Andreas Hindborg <a.hindborg@kernel.org>,
+ Tamir Duberstein <tamird@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, Matthew Wilcox <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Harry Yoo <harry@kernel.org>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+References: <20260902-xarray-entry-send-v5-0-d18adae40708@kernel.org>
+ <20260902-xarray-entry-send-v5-8-d18adae40708@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260902-xarray-entry-send-v5-8-d18adae40708@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 49C8318000A
-X-Stat-Signature: 866d9uh9ufz9nytybgdsmdh61i19ib1g
 X-Rspam-User: 
-X-HE-Tag: 1788429983-567857
-X-HE-Meta: U2FsdGVkX1/n/7dYp1EnaRaMQkb7qN2eJencLgZwiF0zvWaDoPMeZpnquokVzqhXvz270SM6RYw8YGM8Gpl/DHq8uTT94V/8Ul/FDgWDyXEculRnfSIeGj/zqxgukITerbMayCqESCTQHMltr0hYSqw0+hecQigwRYhrcDJsd9AecHiN33TF7FTlOrNVmhW8o2ah5YmbHot0MxTEUaXNvlWzEGq7qS1HHbKT4KI5o00aEKzHsqi9iV+/7F3b9tazqlpbW005on6BgcWrwvKmkclbcJUvIbiOLLaTUVtmbllutO3G2om/Ep2xtTdUXNPkZVGhjGBQNTdukvTkwHFaqTq1Sylqs3H30Haor9jp+Z8XI4oGdhDCLvvaVZBndlIdUYWE1XcYG+N/cLyCNT7izo6p3sRLgl2e0oQnPCJeYdDGCSslTqKEnvzdq3awdgwnIyY6yDvSSW8Q3UGU6R9YmVith1mkVYM2A/fuA4OYNhpm0BfsM5V45SJHRP7+34uji1MVJ4jTyQbSx9sbK+IqYmzVR0FuYs1Hpeaw/BaTWAgRDVUDlcRZw6iyhTQSlzxg27AJclI0yT+Vuq8nr9T+jsM+At5Mn3q7f4+YzCgqxTMdn4HXnkIYL/A9SCA5MsGB+cgeIH68TbaTrxDIpiEq1u/A0oR1BqTstZP/n+UdlPk4wcOv2y+E3AoyHbsotpj+aXTFizkNOF5smwoO/U1Y7YET+cZbU3eh3c6jZkVpsRBiV0rjG2x/8dsxIRrBu/18UadMbnXyohXbzuFI9h51js0Wj4xfTRrItlscpoxCqNfa5pdcRWg6JE1I5UJImfSMl/xVh+uq/JSvrdj4gPRx7h2WDUMbww1UyherRWruNgDJ4JJT429NVnzabNdy7IU8M9srkFgEFLrVNas/DAT0AE56194lu7X6zwcTKA+Mj9phXEiSHEBB/Ub0Ax5W6mm4tBLcm71CP7yXATGUcOY
- StRWCOzd
- 2rHWEG1CJuEapy4Hxrm8YIXpwX5IR3WiWI+B5ORYESTSBgVk763w4qc3ct1TOOYn7qeu73gVMg8dBlIDXMPH6YIqgJavpO6a4Fl+m40V2t9uQVVJy73rJoMI1jsr/MGjCjnVHsJLRgmrJW+1ccn+ScYuAp1qP0qXtuZ9b7yvsfetZ9T+bWm9340x1HFSFuHFh0ZqBiBwhg5/auDc7BzP7kEX4HTyDta2+HFUO7YQGZ8bmpF0kmERQV0t1DAgI7ARn7x1oh8ghtV/GOED4RASrK5xqNwNpyB1lD/F9R/na3+idCSiz7K8tt7rXzpgVH+i+cH1QvHImMGY/FSpxyUQ5eBQuIgK2mF0i0WF16Gi7lE+xTR5dfELmkS47hR8g9uSh3trSftIexJeIKZxQhAZkIBIZ/rjhYS5DBbMb0ykGR1dy8fDA/mvswNRobbX8z/E+DCMlns4D6OKmb7p79VDMhOm6KA==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: A351D14000E
+X-Stat-Signature: r87dxfc4jpyirttwaexagamu9qj5kxi8
+X-HE-Tag: 1788430164-854741
+X-HE-Meta: U2FsdGVkX1+r6GHwI/7JH84pXbTXrXLLpkReYHN6ifgjJUDxC5AElLiIR30mu0VeN+A8OueoR1k3mitc/ub/UIWRomwJyxWfm94DBZOGZKK8hvy2iUT8UdWCVD8zqn2T6KvmXtzPRfbbVCGizEj4LpkN2WwrhY01ruDmQ+xFErD94swdxcjQL0zF3jk5E9kvXYT8oal31oxKJTldDshRIB/IJdxOgbUUeQJKkmbUhD72KgReJwqgraVDQ4qmwZKJDpIlZXQk9/SA2uiKOoHbixZwNdWi8v+o6/0Qi5ZAFMW4+czP5Hqo+Z3EjyXH9JsVi6S7VGM0fyWPLDc2DH8KjbfLJu4PS9wQ9BO/m0rai173ifEgBAXSv1REg0iV9Sg6KlLe0AZD5W4yz1ArUULnV2l57xgx4VlUJU2JeUMPLqUlk39lA7bXKD/F0JNxTBOGYPnYs4OsOEf9C9E5dZ/x1YpTuzkUYv8wn1Tqgk3Ff5PpOFttJqK3S0Yx5+a0yHZP660oFiuzJ+A0v9nU9KBkrKkQ28jWYDpTYEaiEZpBO/HicRfg3ISGW2nuZNv8EaO3IVuSvhtI6K1cUcZHgUdepyupj0A5b3G3FTBvB9WtkR76HOVKg2im1VX5SDm6GN7JrcDTVuRmnmyKs/VPGlC8fEI3jAkKJo4D9MREWW4syYefr1rzbxDxu7lNOW7AJYq+bhd4X2jyM1XaYLcqs8yGBQIf9LmZZX5MShbgPQf4P4WWY48pGOWYc+MvKIokTCUu+VLOpuEaarYi8dlMJv9TgBOOb/kYwdUXzntnya/5Z/XjDt4r+YM6QgYOw8+LBZNE1zr2mPhCkPSkQSa6TziHgBt0iMmq5VU4QKHMDZCjTXsL+uvEGMFkNmYKOweKJ+gzfi6hHcSXABYnlwW19XgMwev0VGlJ92zvjOYvZXUFfzR8AZLvQgA1q7VBAG4WUeXNnZmDoLG1q5wrRhkSjof
+ lmpJtPcT
+ saEV4oo0Pwl+gv/+WljNf3lD38IGK9u3w5V1YAbVTxotwxkz2xX1sDZEUJVuq6KMxVW/Z82GAra3V8Rzze5cUBBlmmRrGvv0s7g7usDCamZq3HutNO4buA2un1yRykGCZlbT7kY0gCadCq9xv51iRqHQ8qgA57uLes8/uC89w6/8nI34yjkPYsDu7VN0Cz9EDdc0r/kc69wVOdUTiM60PDx40XtJRfIefCnprnRFeTJGG2d2+6vLx55Qr7CqnkIQvUKgtzTfEPTUNuyP5x7vneEjzYrMNdMfglT31jFqG7bDfGHxG38W5Pd6bN9m+Pjsq4E5UqLz50I+eY/5n9VeXBmOYHi70etrB8u6XZUzKybqmQriGBj34N+j5uZN2nFS2UTmveEDMJkHE6RC/XB47Hkq0PmVvKuOyQ/SAEx9Oy7k7KyE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,74 +147,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 9/2/26 7:24 AM, Barry Song (Xiaomi) wrote:
-> Currently, folio_inc_gen() updates lrugen->nr_pages for every folio
-> as it advances generations. Instead, accumulate the size changes
-> and update lrugen->nr_pages in a batch after scanning the entire
-> oldest generation, or when the scan stops because remaining reaches
-> zero.
+On 9/2/26 15:26, Andreas Hindborg wrote:
+> Add Rust APIs for allocating objects from a `sheaf`.
 > 
-> Since we only move folios from the oldest generation to the second
-> oldest generation, the active/inactive state cannot change. We can
-> therefore skip __lru_update_size().
-
-Make sense to me.
-
+> Introduce a reduced abstraction `KMemCacheInit` for `struct kmem_cache` to
+> support management of the `Sheaf`s.
 > 
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> Reviewed-by: Lian Wang <lianux.mm@gmail.com>
-> Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
-> ---
-
-LGTM. One nit follows.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-
->   mm/vmscan.c | 23 ++++++++++++++++++-----
->   1 file changed, 18 insertions(+), 5 deletions(-)
+> Initialize objects using in-place initialization when objects are allocated
+> from a `Sheaf`. This is different from C which tends to do some
+> initialization when the cache is filled. This approach is chosen because
+> there is no destructor/drop capability in `struct kmem_cache` that can be
+> invoked when the cache is dropped.
 > 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 54bce2f608ef..27494505cecc 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -3918,6 +3918,7 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
->   	struct lru_gen_folio *lrugen = &lruvec->lrugen;
->   	int hist = lru_hist_from_seq(lrugen->min_seq[type]);
->   	int new_gen, old_gen = lru_gen_from_seq(lrugen->min_seq[type]);
-> +	int target_gen = (old_gen + 1) % MAX_NR_GENS;
->   
->   	/* For file type, skip the check if swappiness is anon only */
->   	if (type && (swappiness == SWAPPINESS_ANON_ONLY))
-> @@ -3927,35 +3928,47 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
->   	if (!type && !swappiness)
->   		goto done;
->   
-> +	VM_WARN_ON_ONCE(get_nr_gens(lruvec, type) != MAX_NR_GENS);
-> +	VM_WARN_ON_ONCE(lru_gen_is_active(lruvec, old_gen) !=
-> +			lru_gen_is_active(lruvec, target_gen));
->   	/* prevent cold/hot inversion if the type is evictable */
->   	for (zone = 0; zone < MAX_NR_ZONES; zone++) {
->   		struct list_head *head = &lrugen->folios[old_gen][type][zone];
-> +		long delta = 0;
->   
->   		while (!list_empty(head)) {
->   			struct folio *folio = lru_to_folio(head);
-> +			long nr_pages = folio_nr_pages(folio);
->   			int refs = folio_lru_refs(folio);
->   			bool workingset = folio_test_workingset(folio);
-> +			bool gen_increased;
->   
->   			VM_WARN_ON_ONCE_FOLIO(folio_test_unevictable(folio), folio);
->   			VM_WARN_ON_ONCE_FOLIO(folio_test_active(folio), folio);
->   			VM_WARN_ON_ONCE_FOLIO(folio_is_file_lru(folio) != type, folio);
->   			VM_WARN_ON_ONCE_FOLIO(folio_zonenum(folio) != zone, folio);
->   
-> -			new_gen = folio_inc_gen(lruvec, folio);
-> +			new_gen = __folio_inc_gen(folio, old_gen, &gen_increased);
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: linux-mm@kvack.org
+> Assisted-by: LLM
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-IMO, it's better to add some comments to describe why we don't need to 
-call __lru_update_size(), in case someone thinks this needs to be fixed 
-in the future. :)
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
+Note that currently all caches have sheaves (except CONFIG_SLUB_TINY or
+slab_debug enabled), and sheaf_capacity on creation is treated as a minimum,
+which the automated sizing calculation can make larger - in case you want to
+reflect this detail in some of the description comments.
+
 
