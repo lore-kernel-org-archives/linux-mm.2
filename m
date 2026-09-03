@@ -4,176 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33ACDC61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 22:36:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7C2DC624D6
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 23:20:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FF306B0088; Thu,  3 Sep 2026 18:36:30 -0400 (EDT)
+	id AD9546B0088; Thu,  3 Sep 2026 19:20:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1AFF06B008A; Thu,  3 Sep 2026 18:36:30 -0400 (EDT)
+	id A89FC6B008A; Thu,  3 Sep 2026 19:20:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09FBB6B008C; Thu,  3 Sep 2026 18:36:30 -0400 (EDT)
+	id 9A0076B008C; Thu,  3 Sep 2026 19:20:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D6F286B0088
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 18:36:29 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7050BA06FB
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 22:36:29 +0000 (UTC)
-X-FDA: 85173911298.04.1B8DC3A
-Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D45091C0004
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 22:36:26 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=gmI4LzXl;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b="KBhUSk1/";
-	spf=pass (imf18.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788474987;
-	b=sQ7EwUwQHkzxGKtlTH2CcAXRpfHbTQ1IzQPIk84Q6YxtcYPUt/mKndhme/O6Av0GnKmP0K
-	6UrTFY3SPOEzLud5E4nzV1C448uJgnB5WpDQeSN5gVOPKms7sxsVDjLbTFZhzUPOvm3hBh
-	8+YOkUWQARg7FZdSqxjvAz6Iv0Fovaw=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=gmI4LzXl;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b="KBhUSk1/";
-	spf=pass (imf18.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DABA6B0088
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 19:20:06 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 30D7E80667
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 23:20:04 +0000 (UTC)
+X-FDA: 85174021128.21.13A18F9
+Received: from mta0.migadu.com (out-40.mta0.migadu.com [91.218.175.40])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 25753180002
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 23:19:59 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vAVXZ1FH;
+	spf=pass (imf06.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.40 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788474987;
+	s=arc-20220608; t=1788477602;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iieITx8FG+BUBDRFx+zChg7QgLhyCTCz+Chx0VCTWeI=;
-	b=67dJzoNsOAIrjuR2Z0pjtcxD9itlQV88Bv4e+qVRU8DyQQKLm5vlFPNuzrTg3lBHRZvAN3
-	3xvPcE23qV9HPK2s2MSmd9WiU0RPW6qGU3BMBVS8cSl9SbCvDtMnnmUHsQvLUG+7hPqwC4
-	ev8qC1qR0K/1wUfbCER0rvsJZp4n9+w=
-Received: from pps.filterd (m0499198.ppops.net [127.0.0.1])
-	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 683MaPHt760708
-	for <linux-mm@kvack.org>; Thu, 3 Sep 2026 18:36:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=iieI
-	Tx8FG+BUBDRFx+zChg7QgLhyCTCz+Chx0VCTWeI=; b=gmI4LzXlug0M+JiQLPMj
-	jZ2aYW3ufTCPlNIRBKV80vnH/QUypiaeAkEVqTtzgfVbTGNWgpn4aW1aF27N6AkH
-	mgGKulG/o9lYpoTX3M6BGL5hTaQmKFAYkQpkK5GTw/2aWxFdDFrc/yDsIWB2K1Xt
-	LqMFplevHWLvDsH8YrbR6/7+SFw+U5s+TNmnTL8WkNanwb8rziHteyxgXwjsWjWw
-	BgDzG9/YbqhCAmga3tezaMxVJGEAJThfZAeaCem4HpcvhP28k3dAJzvs1hFrOaY0
-	MmGsLOGpirYgQ0dKbO1kQ8lAgb3ZwVM9YW9pRakZWrYTkrlNeXaccWLwC3CjxgHq
-	Sw==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4gfhgug3sa-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Thu, 03 Sep 2026 18:36:24 -0400 (EDT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-939694871aaso62333485a.2
-        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 15:36:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=columbia.edu; s=lionmail; t=1788474983; x=1789079783; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=iieITx8FG+BUBDRFx+zChg7QgLhyCTCz+Chx0VCTWeI=;
-        b=KBhUSk1/dygsuMJqzc8qPvpK8BMJ/CZONGUZZuVGUx6p4Frktoq8AeCOAnG8E2V3uu
-         Cix+Fj4F/tN/3UvCtCXVEyWSLdbrnTyVwj1be8G9dbv6SzYDpIGEbi7CtFFllsuiPIUM
-         eTCZ/33D/feN3sYtyhqiEer0GB8AWUYpLBlbbpx/CRqAjRrzWSnosPjEqTg6EmDvZR/q
-         0TwPqjrH+B3qL9Cvz8qIb3NDyJbu7ESdkNpNC+o2QyzlD0PcDRY81M5iR7zEasIcHyKw
-         8vsxsZtDNLy9jjotRq5meMNdOHgZSiE3AyteETKtkbiLWPkxQzYIKNraJ4Ved+Z4Gr25
-         VMBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788474983; x=1789079783;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=iieITx8FG+BUBDRFx+zChg7QgLhyCTCz+Chx0VCTWeI=;
-        b=B5bXFzPf9sAjVOik8LiKOiY8U8zytAPzADyU1FmZYY9biUZzNea8QBDYsJQZSEXvfk
-         DT/b46BpAbp1Xg6vBwsnWlApd/F9Dbi4HaANN3TVTSUMxOS4+JyiiAxXg1raeuF63lh6
-         cR3oOTg007VthmpwPQWWt0mHy/f3aM4fTYDK1yDkWR5MxxnUg770izBHObGJOrxF6FiT
-         ArL6WzpFnDBzLTIC6JtQTlXRwteKVip6+cKirskQjFWxkuI4U9kr+qY+8+ZZVgHZijE3
-         8QikoF2u7LSvFvdAG51/GzWKlJ7kZioyTX9+8R1zm/WDgf9QZqcP3t0bxZJKNIcrWVIu
-         M0Zw==
-X-Forwarded-Encrypted: i=1; AKwUvBx1y0bvA7DH+F05WvYku+rS9D+SmdljuQpQ/nrrQO5zU+ijyD2mJxljB6uRMEt7eeQBlE8apc74jw==@kvack.org
-X-Gm-Message-State: AFuF++kn9/fyVgxjNHycaZij6W1ysiqnUJ8DR81A3LDOW7J2XDnB38rP
-	4r3uEn+YmOIxRR5pnK7H0Z6/QJx+J3z14b4eWZnNRC9wDE27AjuiCnfsl9rv2e0MQqjdCoemN3+
-	WVIOQGUyQeaR7UCxLsTshatvCfOBreTIrvbWUpmI/5FRgkzLt
-X-Gm-Gg: AYBFou1RpmQm1Oir/mcR1xXILvSNznYCZQJdn800MSxr/vr6qyypdWxyeo09YsfC67Z
-	X7fk9sr2ZFSoZSwg8MglgoLv6z/psZsEmWd7A8MKOL4hiu/01ij0yqtCmvBWibOSt0KfSXVAIUl
-	JuH9lphxPxKalqL3OOIFbGh3ETIZLbxwqmw4DTZlWHjg8puTHnzSNkyASE8pcp0xfCp2NG95vcm
-	O6U0a+aD97UI0QYzi5bmIHkuUg1PYCcDQiabjTc+wE4z4g8wfmujdVmye4EnOH0pSA4d3xUv57g
-	yV/1pCbp/CfA574VyJn2FQhG7cvuEDP06O6ACD3Ii33LPOfvX73zDtEXlTi4mIqa6I4LqenloId
-	JsazryIXDj1pjXbKPavK02fapj6JObm1qIJ5M37S4mqIGJOjL8g==
-X-Received: by 2002:a05:620a:8016:b0:930:a635:a782 with SMTP id af79cd13be357-939802f7476mr224865785a.11.1788474982813;
-        Thu, 03 Sep 2026 15:36:22 -0700 (PDT)
-X-Received: by 2002:a05:620a:8016:b0:930:a635:a782 with SMTP id af79cd13be357-939802f7476mr224859485a.11.1788474982194;
-        Thu, 03 Sep 2026 15:36:22 -0700 (PDT)
-Received: from [192.168.1.62] (dyn-160-39-33-242.dyn.columbia.edu. [160.39.33.242])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9397fb90d6csm71746785a.33.2026.09.03.15.36.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Sep 2026 15:36:21 -0700 (PDT)
-Message-ID: <1e5118a5-6b61-49d0-85e1-825e22059241@columbia.edu>
-Date: Thu, 3 Sep 2026 18:36:20 -0400
+	bh=etVLyZHGiczvYHr4q7gdL3rgYyghtZViKm/Y9dp20WY=;
+	b=1XOrTcZsfPZlHXUnGGW08FjBdykjdUlSBr6y/NRpk5Ed0mAYZxSYb8C0Yes3pWCmPAzNeK
+	vdtqG+hYMmfTUHglHMi0GH0snbl42TvpTxnF6l7cHtzOt4/ny1ujM1GraLo1K5F8+K+en6
+	NUQrpMxMdfXHF+AwZABxXecX40E9Ng8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788477602;
+	b=Fqnv7OWE9jNwYE2/SHlYFgjCYPe/dEXM5aguVy2DmO7UE07jatUFuOwhKF0DPF8osb3k3z
+	NIiEt78/C+cKPmY7rVOYlnjVpXX1Kin5oG8QhfqjKIMjmLnx/dOmLyk0TpuGShzhk+aKL4
+	fGNHrreaFpYMEmuRuyGMGt64XMh5NWo=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vAVXZ1FH;
+	spf=pass (imf06.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.40 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=122pexZufQYfTsSGUStzGsOrhTfJYDQADD35SE5TtB8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788477596; v=1; x=1789082396;
+ b=vAVXZ1FH8i9vyLbkLrPwT1oXJT3sx7kmXZjcwfoXbz/nvV+5NvwKWbLekjzDWvPXnQzoaPlD
+ +0iIX6OmeNN85hSLP89UksruwXBInYFvwm0mrPW+w3nA6pNLF02UrKMkmxR1nUD88NgAj+EBwAf
+ ntiFi9bzYY394gDK2L6nDzUE=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 876ef0493799c3d9;
+	Thu, 03 Sep 2026 23:19:46 +0000
+X-Mizu-Trace-ID: 876ef0493799c3d9
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <b29fbb51-5d0f-4f82-a06f-55ea080b5629@linux.dev>
+Date: Thu, 3 Sep 2026 16:19:39 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm: filemap: retain mapped dropbehind folios
-To: Barry Song <baohua@kernel.org>
-Cc: Wenjie Qi <qwjhust@gmail.com>, willy@infradead.org, jack@suse.cz,
-        akpm@linux-foundation.org, linux-fsdevel@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, axboe@kernel.dk,
-        trond.myklebust@hammerspace.com, jaegeuk@kernel.org, chao@kernel.org,
-        qiwenjie@xiaomi.com
-References: <20260820142956.1414337-1-qiwenjie@xiaomi.com>
- <3fa43eaca792bc0bbde4b82a6c1fcdd3f528b398.1787999152.git.qiwenjie@xiaomi.com>
- <4aba05e1a2c3b61cb337d373eb9b7a8db4ddd822.1788024049.git.qiwenjie@xiaomi.com>
- <20260829111621.41ed2bc9a0e99e3367eb96c3@linux-foundation.org>
- <ef160933595c365f2c47597b260bc7ecd98ed7ce.1788029516.git.qiwenjie@xiaomi.com>
- <076bb01b-6fcf-4691-be8c-0e8507c9fe64@columbia.edu>
- <CAGsJ_4xMK=rPXCH5OiCOYHKRQp-w+xDJQusJ_ykbuAuLZr+8bA@mail.gmail.com>
-Content-Language: en-US
-From: Tal Zussman <tz2294@columbia.edu>
-In-Reply-To: <CAGsJ_4xMK=rPXCH5OiCOYHKRQp-w+xDJQusJ_ykbuAuLZr+8bA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v1 1/2] eventfd: luo: luo support for preserving eventfd
+To: Chenghao Duan <duanchenghao@kylinos.cn>, viro@zeniv.linux.org.uk,
+ brauner@kernel.org, jack@suse.cz, linux-fsdevel@vger.kernel.org,
+ pasha.tatashin@soleen.com, linux-kernel@vger.kernel.org, rppt@kernel.org,
+ pratyush@kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org
+Cc: jianghaoran@kylinos.cn
+References: <20260625054946.73445-1-duanchenghao@kylinos.cn>
+ <20260625054946.73445-2-duanchenghao@kylinos.cn>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
+In-Reply-To: <20260625054946.73445-2-duanchenghao@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: seNEEFyb5kGUqZ0_XmrIbNAOG2YLgXsi
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAzMDE5OCBTYWx0ZWRfX+fSQyi0ecUao
- RcKvj7xfV/7rhWCnEOAEULsgTFzuOgwIThFqeToOfzBqx1KgZk5/sC9+w65X8nx0lpoL3F/mDWF
- 5yyGfQib4wY9dwTTOKGoOgnvyzyfPXSZ1VMooEdLwKaFiKAlE9rw+QBsE5aH01x3N2REyi6OlRK
- R+GqxZQRLdCETWs6s1MxRhsUzmMD4nzDgdo3NjTyC1ts0RldZsReUT1eCTtVzoEhiyelcVmCcKb
- lXrG3EipXb3hyTpGfvR+nftkgnuYmq1Jai3C2R/uxSRebNKDOah1DqmB4J2rIDAv2COpqyTQi4F
- q+Ix2ADa2aOxuCEGVYRmdgxEZ2LJo0b8VmhNURaTzHkrYBaj9YQHNOA5vPMOm6tJp3Wxxe5NkQa
- o/TjzyTLdSvwXlVgzC5pINBfrCj56WCzhXhMP/E0CtZbUk9R2DCfSNXwiK27NGa0CntwFlIk3TU
- b/r95IBRp70UBDGHMkw==
-X-Authority-Analysis: v=2.4 cv=Up1T8ewB c=1 sm=1 tr=0 ts=6a99f669 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=GaPK54s0Se3oFqK5NkZy0g==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=BpGzv1V74M3SfeTrGa8v:22
- a=IeNN-m2dAAAA:8 a=VwQbUJbxAAAA:8 a=JfrnYn6hAAAA:8 a=kgJaSMB93tmHpg8ys4gA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=bTQJ7kPSJx9SKPbeHEYW:22
- a=1CNFftbPRP8L7MoqJWF3:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAzMDE5OCBTYWx0ZWRfX4/00DiCi1NMM
- UeaIefWl9u6f8vEY/5hXC6QoMXeE6eUXc+mzenMIM9qjxKB18API1UcnpD+qO8anOK2E0cxngd6
- WoErsRWBvL4aoTiSPtzTIQBCTl2GahXOuW7l4qFVThCKxWdtcbbw
-X-Proofpoint-GUID: seNEEFyb5kGUqZ0_XmrIbNAOG2YLgXsi
-X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11895
- signatures=596817
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=10 spamscore=0 malwarescore=0 adultscore=0 phishscore=0
- lowpriorityscore=10 clxscore=1015 priorityscore=1501 suspectscore=0
- bulkscore=10 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2609030198
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D45091C0004
-X-Stat-Signature: wxj9xudqy6eud6zayufyex8oqki7jmim
-X-HE-Tag: 1788474986-231149
-X-HE-Meta: U2FsdGVkX1+Qo6JCE9nvUSXBR474HlMomoxMKwdU24MmQ5dmoh+wpHoUAwjmfakANpmW9MRNWdZWER12q8WccblYzh0wf5LDX82ch6gWAHeRTjSWDbQNeVut8aTbIpQRhgYIsQVKtOAhoDh86UCixNwRt8OVBKb8Y3JIi27VWwudNqU3qicdi5Efb0pmx0yAZGQSyzazrXhVjXoXAow0yBgL+iYy8e3fbvzvPK4dKa7B54k/zV5kGVLgzLd+P93x/0rGqCyNamk3earCNLpsUlAZQxkHP/zeH73S6OPS9tciVQJZvyvVEfJ6LmI/B6exwlnlruaBUNDjcgCpOsCBZixXVPJ9d6xnjrbWrLtQPIF9JPkzIzeOI+wa+hmvRc0TIn5TjZPMh0uEz8fpKcMJcnUJqkNd732HkKGaEyVQxIdqjjX1ycz4F8Fod3NlRAk+za3iy1CAVqKwniCGLwWMeCj1sbYDctZQrhwnrRehnHjhFU09v/2hx3hcyw2y99enHes8FZJFoaINjxV+scnMUK3+hrVvuiUWuZN8TCl+wSj1uV3wEcrTHdw3ucGOSx9BIx/ATOL+DG9FINEYowQwZ/bJuzl/i2eZkfh8q1ZraQLyJtmUp/x1u2fm0bWPTvlnjn01U7nSG7Zy5wlqMuuJi034DHJlUeJ0y7xwN5efqdgXQFgWsHXpeRlmI/g3iuGnyeZ3VOQeSix+6g+NsRbgi5gMj91nPqUnuI8gIowjAMrAaW044MDfvc3oVOVuT1RqoZ2cmtxWz3aos9zZ3hg35BXnVNzPiv8JJ/i7jHXWJdDDDkFh/+VEO9fbNxbMWU7mgW8JTHKhTymrtU3iURdDEDNPcUnj0FR1lAh7WYTIAsNEyHuNVBIK8MNxgTyxu1O3EI3zAnL545gv1Q7ARxao75Hd5EyXVpiOQxm5ydM8DR055hk02/KP6FQ7JUqOwcORm46HeitbXMYQIyXt4lK
- ediVes7v
- JAnG6dLHqK1O8ugfc3wP3ZuxPpKesijmEgo218UdbZgl7mZqfs0c04eadqypxlDvGJbwgFsc+FQDaSpvdIzY56aInILRaomM7kg+szusDZN52v4/29dRetvsfoFt0sRkAjPnRVpsqCHVSP1ho2AfeY3boifShdvJburLyYXJwLIH9+Nh3b3wQmkabUQfnvKPgN4FdgLzJsCChg82uqDtCu1GB351XyedF2KkL8STdanjOnORTmqPZwzCdr2wSQG8lbuwATxLErh3+Nkf91qS2TUkbPii8QfbaQ6OexvnvuLeXcTxCoSDGf9BJgZMEWtBAdxVH6bpobTiLgi695xqf0QLsJ2FPIcy7Ucid3rGvjbdaPvDGLcIMxTX7OzwX5n/KOGvw5ZPscWXXTn5NYY0CsagiBND+jnEEOVME8zhjumpEIB+kudTAMq8p7MzBkZk7ccAPi2MjiKTmQraw3aFPiePc4WCKPFR/mv9Kflcl9a54SdYVE+w0c7dzdyjRc5xJLN5dOZHasfvexIe0Ql+173F0eBBb8eNj/Cqdd5ldSyRsovk=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 25753180002
+X-Stat-Signature: oy98epx6ynm4atx6xgkr95scrktn3coo
+X-HE-Tag: 1788477599-150208
+X-HE-Meta: U2FsdGVkX1+px9AlqEheJomqX7WcMsPFvF/wWoWLD3oCdqK08zetQBcP9+9gqaYSevmb1zpQdaZoXClZwHgkDinODjcqLVZmDn5/XMcmLH/3hOS9vshjIP5j4YD4kbbDNLejmWbPSMlOwaqIIq4RlOSWMNSjYNMClydXrxk8eym21SF6yTpwOCyk4ps+XzvKbg/xl8XDSV3RRvTtNNDX2+1A/ZRUXxlV/WQ54BJdEr4xIPe1u/HP41cdr+j1KwwrZs5JJWTk7NlnjAGtquOE8vuZGTJwKWmMnbb2jW7+c8aVxZG3BJPVxJZnbM4dNmkUH0UDkTd9aAwV67wLDH1HnrATG0XzarmRTmuffHbe+HBmTGjTYO8GkUXIj3jMmI/8gLBb60caVjvkxfD63uv8T1Nu+sltamZxtR+6dPDqaRIUMV0K1JtEJjUxtGIpeifcFnPHh2Hy1d0jVhzxg5szq3ZcKVvoIzCmdfr4OUC/enctY/KZ5BO8GOdzqvF4Yng+E4IxstUE8BkNv4ySk33qtvrJBAHghYbVqzcRcUzO9hRK3+BtIRREIsmSIPfnFnnBnXcOMpEBchB3ZJ7dRyv8yIJeGkC0d3HGqjvP+rF408Y+DzkzCmZtJqQ1qgHWkDabuTDXXjisN4yc6s2X2vVqTPBDOGubb5F7vNn0vZVe4tgYBhIfnNZebRjsXXiJR0RxuoSY6JU34WHY0UesrviXufdM4fzwEsfJO+My5NHKPvpXkHCW+MnyrPqkxSo2aO3/NZn95z6kJJn5Gwo/lmF57Z4pUHNs+1ipC3dRAthXvv+hVuh6xGRCreyeWoVzRB08RRlKJgvd0/y/OYiyinXIUKoWVVD6wQ0V/vf86Tw6PaZWUhIUmZuWNJ2NAu3HkU++8DCunaUdeW143k8sLn6BF8aOnN5cJyHsp0ifvIJ3o7u4+5gsi24a1eirXpJJVno+T9WyIFWiyQXhYyAH42E
+ rH9le3vn
+ 2LzRsvBCFIWZflYwXZFmKF0ZheTTG6S0tVs3oWQP3NJzV3xHo2cI9+kqvAO+Ifhg3yQmmpDeYoIyoyy7CWVdGpGyUPSTa7hbsbAxIuxhWAzBrbFOd/Nun721x/CmHfXRA2I/3xjA2QoMrOKVv6K2wpfdrDu85t7I6oGK2q09xERPFOQTcI6JZmtgF4vczxndZA5li/XWON81QrT26gxTQKk2h6he2yWAk3exPXhbtjTHMGiPGnr7tmbobu/Z0yiRrf8XUMmU/F+IY+8tAEZoc9ETY6qjpw9ihhXvduc3RC4YTA+3XIRhrhU+L1A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -181,65 +93,461 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/4/26 12:28 AM, Barry Song wrote:
-> On Sun, Aug 30, 2026 at 7:59 PM Tal Zussman <tz2294@columbia.edu> wrote:
->>
->> On 8/30/26 6:25 AM, Wenjie Qi wrote:
->> > From: Wenjie Qi <qiwenjie@xiaomi.com>
->> >
->> > Fault-around can map ready dropbehind folios without going through the
->> > normal page-cache lookup that clears dropbehind. A mapping represents a
->> > competing cached user, but writeback completion can currently unmap that
->> > folio. A later mmap access must then fault it back in.
->> >
->> > Retain mapped folios instead. For a mapped folio,
->> > folio_unmap_invalidate() can call unmap_mapping_folio(), which takes
->> > i_mmap_rwsem and may sleep. Retaining the folio also avoids this path when
->> > folio_end_dropbehind() runs in non-preemptible task context.
->> >
->> > Unmapped dropbehind folios continue through the existing invalidation path.
->> >
->> > Fixes: fb7d3bc41493 ("mm/filemap: drop streaming/uncached pages when writeback completes")
->> > Cc: stable@vger.kernel.org
->> > Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
->> > Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
->> > Reviewed-by: Tal Zussman <tz2294@columbia.edu>
->> > ---
->> > The mapped-plus-dropbehind state was reproduced in QEMU. The patched
->> > kernel retained the mapped folio and continued to evict the unmapped
->> > dontcache folio. I did not reproduce the sleeping-in-atomic warning and
->> > am not aware of an existing report.
->> >
->>
->> I was able to trigger the sleeping-while-atomic BUG on current mainline with
->> some help from Claude. The reproducer itself is straightforward enough, but the
->> configuration was a little finicky. The atomic context comes from using
->> threadirqs so that virtblk_done() completes requests from the irq thread under
->> local_bh_disable() and the vq spinlock with irqs off, so in_task() is true but
->> the i_mmap_rwsem down_read() sleeps. It also needed 1 vCPU (so completion stays
->> in the irq thread rather than softirq) and ext4 -o dioread_lock (so end_io runs
->> inline instead of on a workqueue). With v4 applied the bug is gone, so:
->>
+在 2026/6/24 22:49, Chenghao Duan 写道:
+> This patch adds support for preserving eventfd file descriptors across
+> kexec live updates using the Live Update Orchestrator (LUO) framework.
+> Userspace applications using eventfd for event notification can now
+> maintain their state across kernel updates.
 > 
-> Thanks, Tal. Then I'm getting quite confused. Since with Wenjie's
-> patch, we are no longer going to sleep for dropbehind in `filemap.c`,
-> do we still need all the complex logic in the block device and file
-> system layers to move dropbehind to a workqueue task context?
+> Preserved State:
+> The following properties of the eventfd are preserved across kexec:
+> - Counter Value: The current 64-bit counter value, including any pending
+>    events that have been signaled but not yet consumed by readers.
+> - File Flags: The creation flags (EFD_SEMAPHORE, EFD_CLOEXEC, EFD_NONBLOCK)
+>    are preserved.
 > 
+> Non-Preserved State:
+> - File Descriptor Number: The eventfd will be assigned a new fd number
+>    in the target process after restore.
+> - Wait Queue State: Any processes blocked on read() operations will be
+>    woken up and need to re-establish their blocking state.
+> - All other internal state is reset to default.
+> 
+> Changes:
+> - fs/eventfd.c: Add eventfd_luo_get_state() to safely read eventfd state
+>    (count and flags), and eventfd_create() helper function.
+> - fs/eventfd_luo.c: New file implementing LUO file operations:
+>    preserve, freeze, unpreserve, retrieve, and finish callbacks.
+> - include/linux/eventfd.h: Export new functions.
+> - include/linux/kho/abi/eventfd.h: Define the ABI contract with
+>    eventfd_luo_ser structure for serialization.
+> 
+> Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
+> ---
+>   fs/Makefile                     |   1 +
+>   fs/eventfd.c                    |  40 +++++
+>   fs/eventfd_luo.c                | 250 ++++++++++++++++++++++++++++++++
+>   include/linux/eventfd.h         |   2 +
+>   include/linux/kho/abi/eventfd.h |  39 +++++
+>   kernel/liveupdate/Kconfig       |  16 ++
+>   6 files changed, 348 insertions(+)
+>   create mode 100644 fs/eventfd_luo.c
+>   create mode 100644 include/linux/kho/abi/eventfd.h
+> 
+> diff --git a/fs/Makefile b/fs/Makefile
+> index 89a8a9d207d1..36d568e6cfc7 100644
+> --- a/fs/Makefile
+> +++ b/fs/Makefile
+> @@ -27,6 +27,7 @@ obj-y				+= anon_inodes.o
+>   obj-$(CONFIG_SIGNALFD)		+= signalfd.o
+>   obj-$(CONFIG_TIMERFD)		+= timerfd.o
+>   obj-$(CONFIG_EVENTFD)		+= eventfd.o
+> +obj-$(CONFIG_LIVEUPDATE_EVENTFD)+= eventfd_luo.o
+>   obj-$(CONFIG_AIO)               += aio.o
+>   obj-$(CONFIG_FS_DAX)		+= dax.o
+>   obj-$(CONFIG_FS_ENCRYPTION)	+= crypto/
+> diff --git a/fs/eventfd.c b/fs/eventfd.c
+> index 9d33a02757d5..9b76cf06135a 100644
+> --- a/fs/eventfd.c
+> +++ b/fs/eventfd.c
+> @@ -376,6 +376,40 @@ struct eventfd_ctx *eventfd_ctx_fileget(struct file *file)
+>   }
+>   EXPORT_SYMBOL_GPL(eventfd_ctx_fileget);
+>   
+> +/**
+> + * eventfd_luo_get_state - Get eventfd state (count and flags) for LUO
+> + * @file: Eventfd file
+> + * @count: Output parameter for count value
+> + * @flags: Output parameter for flags value
+> + *
+> + * This function is exported for use by LUO to safely read eventfd state.
+> + * Since struct eventfd_ctx is defined in this file, we can access its
+> + * members directly here. The function uses the wait queue lock to ensure
+> + * atomic access to count.
+> + *
+> + * Returns 0 on success, negative error code on failure.
+> + */
+> +int eventfd_luo_get_state(struct file *file, __u64 *count, unsigned int *flags)
+> +{
+> +	struct eventfd_ctx *ctx;
+> +	unsigned long irq_flags;
+> +
+> +	ctx = eventfd_ctx_fileget(file);
+> +	if (IS_ERR(ctx))
+> +		return PTR_ERR(ctx);
+> +
+> +	/* Read count with lock (flags don't need lock) */
+> +	spin_lock_irqsave(&ctx->wqh.lock, irq_flags);
+> +	*count = ctx->count;
+> +	spin_unlock_irqrestore(&ctx->wqh.lock, irq_flags);
+> +
+> +	*flags = ctx->flags;
+> +
+> +	eventfd_ctx_put(ctx);
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(eventfd_luo_get_state);
+> +
+>   static int do_eventfd(unsigned int count, int flags)
+>   {
+>   	struct eventfd_ctx *ctx __free(kfree) = NULL;
+> @@ -411,6 +445,12 @@ static int do_eventfd(unsigned int count, int flags)
+>   	return fd_publish(fdf);
+>   }
+>   
+> +int eventfd_create(__u64 count, unsigned int flags)
+> +{
+> +	return do_eventfd(count, flags);
+> +}
+> +EXPORT_SYMBOL_GPL(eventfd_create);
+> +
+>   SYSCALL_DEFINE2(eventfd2, unsigned int, count, int, flags)
+>   {
+>   	return do_eventfd(count, flags);
+> diff --git a/fs/eventfd_luo.c b/fs/eventfd_luo.c
+> new file mode 100644
+> index 000000000000..781d90635c52
+> --- /dev/null
+> +++ b/fs/eventfd_luo.c
+> @@ -0,0 +1,250 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2026 KylinSoft Corporation.
+> + * Author: Chenghao Duan <duanchenghao@kylinos.cn>
+> + */
+> +
+> +/**
+> + * DOC: Eventfd Preservation via LUO
+> + *
+> + * Overview
+> + * ========
+> + *
+> + * Event file descriptors (eventfd) can be preserved over a kexec using the Live
+> + * Update Orchestrator (LUO) file preservation. This allows userspace applications
+> + * that use eventfd for event notification to maintain their state across kernel
+> + * updates.
+> + *
+> + * Eventfd is a simple notification mechanism that uses a 64-bit counter for
+> + * signaling events between userspace processes or between userspace and kernel.
+> + * The preservation ensures that pending events and configuration are not lost
+> + * during kexec.
+> + *
+> + * The preservation is not intended to be transparent. Only select properties of
+> + * the eventfd are preserved. All others are reset to default. The preserved
+> + * properties are described below.
+> + *
+> + * Preserved Properties
+> + * ====================
+> + *
+> + * The following properties of the eventfd are preserved across kexec:
+> + *
+> + * Counter Value
+> + *   The current 64-bit counter value is preserved. This includes any pending
+> + *   events that have been signaled but not yet consumed by readers.
+> + *
+> + * File Flags
+> + *   The creation flags (EFD_SEMAPHORE, EFD_CLOEXEC, EFD_NONBLOCK) are preserved.
+> + *   These control the behavior of read/write operations and file descriptor
+> + *   inheritance.
+> + *
+> + * Non-Preserved Properties
+> + * ========================
+> + *
+> + * All properties which are not preserved must be assumed to be reset to
+> + * default. This section describes some of those properties which may be more of
+> + * note.
+> + *
+> + * File Descriptor Number
+> + *   The file descriptor number itself is not preserved. After restore, the
+> + *   eventfd will be assigned a new file descriptor number in the target process.
+> + *
+> + * Wait Queue State
+> + *   Any processes currently blocked on read() operations will be woken up and
+> + *   need to re-establish their blocking state if desired.
+> + *
+> + * File Position
+> + *   Eventfd files don't have a traditional file position, but any internal
+> + *   state related to the file descriptor is reset.
+> + */
+> +
+> +#include <linux/err.h>
+> +#include <linux/file.h>
+> +#include <linux/io.h>
+> +#include <linux/kexec_handover.h>
+> +#include <linux/kho/abi/eventfd.h>
+> +#include <linux/liveupdate.h>
+> +#include <linux/module.h>
+> +#include <linux/eventfd.h>
+> +#include <linux/anon_inodes.h>
+> +#include <linux/idr.h>
+> +#include <linux/slab.h>
+> +#include <linux/wait.h>
+> +#include <linux/kref.h>
+> +#include <linux/fdtable.h>
+> +
+> +static int eventfd_luo_preserve(struct liveupdate_file_op_args *args)
+> +{
+> +	struct eventfd_luo_ser *ser;
+> +	u64 count;
+> +	unsigned int flags;
+> +	int err = 0;
+> +
+> +	/* Get eventfd state safely */
+> +	err = eventfd_luo_get_state(args->file, &count, &flags);
+> +	if (err) {
+> +		pr_err("Failed to get eventfd state: %d\n", err);
+> +		return err;
+> +	}
+> +
+> +	ser = kho_alloc_preserve(sizeof(*ser));
+> +	if (IS_ERR(ser)) {
+> +		err = PTR_ERR(ser);
+> +		pr_err("Failed to allocate preserve memory: %d\n", err);
+> +		return err;
+> +	}
+> +
+> +	/* Save eventfd state */
+> +	ser->count = count;
+> +	ser->flags = flags;
+> +
+> +	pr_debug("Preserved eventfd: count=%llu, flags=0x%x\n",
+> +		ser->count, ser->flags);
+> +
+> +	/* Return physical address of serialization structure */
+> +	args->serialized_data = virt_to_phys(ser);
+> +
+> +	return 0;
+> +}
+> +
+> +static int eventfd_luo_freeze(struct liveupdate_file_op_args *args)
+> +{
+> +	struct eventfd_luo_ser *ser;
+> +	u64 count;
+> +	unsigned int flags;
+> +	int err;
+> +
+> +	if (WARN_ON_ONCE(!args->serialized_data))
+> +		return -EINVAL;
+> +
+> +	ser = phys_to_virt(args->serialized_data);
+> +
+> +	/* Get current state and update if changed */
+> +	err = eventfd_luo_get_state(args->file, &count, &flags);
+> +	if (err)
+> +		return err;
+> +
+> +	if (ser->count != count) {
+> +		pr_debug("WARNING: Count changed during preserve->freeze! old=%llu, new=%llu\n",
+> +			 ser->count, count);
+> +	}
+> +
+> +	ser->count = count;
+> +
+> +	return 0;
+> +}
+> +
+> +static void eventfd_luo_unpreserve(struct liveupdate_file_op_args *args)
+> +{
+> +	struct eventfd_luo_ser *ser;
+> +
+> +	if (WARN_ON_ONCE(!args->serialized_data))
+> +		return;
+> +
+> +	ser = phys_to_virt(args->serialized_data);
+> +	kho_unpreserve_free(ser);
+> +}
+> +
+> +static int eventfd_luo_retrieve(struct liveupdate_file_op_args *args)
+> +{
+> +	struct eventfd_luo_ser *ser;
+> +	struct eventfd_ctx *ctx;
+> +	struct file *file = NULL;
+> +	int eventfd;
+> +
+> +	ser = phys_to_virt(args->serialized_data);
+> +	if (!ser)
+> +		return -EINVAL;
+> +
+> +	/* Create a new eventfd with the preserved count and flags */
+> +	eventfd = eventfd_create(ser->count, ser->flags);
+> +	if (eventfd < 0) {
+> +		pr_err("Failed to create eventfd: %d\n", eventfd);
+> +		return eventfd;
+> +	}
+> +
+> +	file = fget(eventfd);
+> +	if (!file) {
+> +		pr_err("Failed to get file from fd\n");
+> +		close_fd(eventfd);
+> +		return -EBADF;
+> +	}
+> +
+> +	close_fd(eventfd);
+> +
+> +	/* Verify the created file has correct internal state */
+> +	ctx = eventfd_ctx_fileget(file);
+> +	if (IS_ERR(ctx)) {
+> +		pr_err("Failed to get context from file\n");
+> +		fput(file);
+> +		return PTR_ERR(ctx);
+> +	}
+> +
+> +	eventfd_ctx_put(ctx);
+> +
+> +	args->file = file;
+> +	return 0;
+> +}
+> +
+> +static void eventfd_luo_finish(struct liveupdate_file_op_args *args)
+> +{
+> +	struct eventfd_luo_ser *ser;
+> +
+> +	if (args->retrieve_status)
+> +		return;
+> +
+> +	if (!args->serialized_data)
+> +		return;
+> +
+> +	ser = phys_to_virt(args->serialized_data);
+> +	if (!ser)
+> +		return;
+> +
+> +	kho_restore_free(ser);
+> +}
+> +
+> +static bool eventfd_luo_can_preserve(struct liveupdate_file_handler *handler,
+> +				     struct file *file)
+> +{
+> +	struct eventfd_ctx *ctx;
+> +
+> +	if (!file->f_op)
+> +		return false;
+> +
+> +	/* Try to get eventfd context - this will fail if not an eventfd */
+> +	ctx = eventfd_ctx_fileget(file);
+> +	if (IS_ERR(ctx))
+> +		return false;
+> +
+> +	eventfd_ctx_put(ctx);
+> +	return true;
+> +}
+> +
+> +static const struct liveupdate_file_ops eventfd_luo_file_ops = {
+> +	.preserve = eventfd_luo_preserve,
+> +	.unpreserve = eventfd_luo_unpreserve,
+> +	.freeze = eventfd_luo_freeze,
+> +	.retrieve = eventfd_luo_retrieve,
+> +	.finish = eventfd_luo_finish,
+> +	.can_preserve = eventfd_luo_can_preserve,
+> +	.owner = THIS_MODULE,
+> +};
+> +
+> +static struct liveupdate_file_handler eventfd_luo_handler = {
+> +	.ops = &eventfd_luo_file_ops,
+> +	.compatible = EVENTFD_LUO_FH_COMPATIBLE,
+> +};
+> +
+> +static int __init eventfd_luo_init(void)
+> +{
+> +	int err = liveupdate_register_file_handler(&eventfd_luo_handler);
 
-Hi Barry,
+The function liveupdate_unregister_file_handler should also be invoked 
+to unregister luo handler.
 
-Let me clarify. Wenjie's patch prevents sleeping in a very specific case.
-The existing in_task() check covered most other cases, in that it just
-doesn't do dropbehind invalidation if we're not executing in task context
-(for example, block device writeback completing in interrupt context).
+Zhu Yanjun
 
-However, dropping the invalidation defeats the point of dropbehind, as it
-leaves the pages in the page cache. If we get rid of the task-context
-deferral mechanism, we wouldn't sleep, but we also wouldn't invalidate.
-Wenjie's change is largely unrelated to this.
-
-Thanks,
-Tal
+> +
+> +	if (err && err != -EOPNOTSUPP) {
+> +		pr_err("Could not register eventfd LUO handler: %pe\n",
+> +		       ERR_PTR(err));
+> +		return err;
+> +	}
+> +
+> +	return 0;
+> +}
+> +late_initcall(eventfd_luo_init);
+> diff --git a/include/linux/eventfd.h b/include/linux/eventfd.h
+> index e32bee4345fb..703e1a126c4d 100644
+> --- a/include/linux/eventfd.h
+> +++ b/include/linux/eventfd.h
+> @@ -35,6 +35,8 @@ void eventfd_ctx_put(struct eventfd_ctx *ctx);
+>   struct file *eventfd_fget(int fd);
+>   struct eventfd_ctx *eventfd_ctx_fdget(int fd);
+>   struct eventfd_ctx *eventfd_ctx_fileget(struct file *file);
+> +int eventfd_luo_get_state(struct file *file, __u64 *count, unsigned int *flags);
+> +int eventfd_create(__u64 count, unsigned int flags);
+>   void eventfd_signal_mask(struct eventfd_ctx *ctx, __poll_t mask);
+>   int eventfd_ctx_remove_wait_queue(struct eventfd_ctx *ctx, wait_queue_entry_t *wait,
+>   				  __u64 *cnt);
+> diff --git a/include/linux/kho/abi/eventfd.h b/include/linux/kho/abi/eventfd.h
+> new file mode 100644
+> index 000000000000..148beac6bcc7
+> --- /dev/null
+> +++ b/include/linux/kho/abi/eventfd.h
+> @@ -0,0 +1,39 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * Copyright (C) 2026 KylinSoft Corporation.
+> + * Author: Chenghao Duan <duanchenghao@kylinos.cn>
+> + */
+> +
+> +#ifndef _LINUX_KHO_ABI_EVENTFD_H
+> +#define _LINUX_KHO_ABI_EVENTFD_H
+> +
+> +#include <linux/types.h>
+> +
+> +/*
+> + * Eventfd Live Update ABI
+> + *
+> + * This header defines the ABI for preserving eventfd state across kexec.
+> + *
+> + * The state is serialized into a packed structure `struct eventfd_luo_ser`
+> + * which is handed over to the next kernel via the KHO mechanism.
+> + *
+> + */
+> +
+> +/**
+> + * struct eventfd_luo_ser - Serialized state of an eventfd
+> + * @count: The current counter value
+> + * @flags: File flags (EFD_SEMAPHORE, EFD_CLOEXEC, EFD_NONBLOCK)
+> + *
+> + * This structure contains the minimal state needed to restore an eventfd
+> + * after kexec. The count represents the current value of the event counter,
+> + * and flags represent the file creation flags.
+> + */
+> +struct eventfd_luo_ser {
+> +	__u64 count;
+> +	unsigned int  flags;
+> +} __packed;
+> +
+> +/* The compatibility string for eventfd file handler */
+> +#define EVENTFD_LUO_FH_COMPATIBLE	"eventfd-v1"
+> +
+> +#endif /* _LINUX_KHO_ABI_EVENTFD_H */
+> diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
+> index c13af38ba23a..1361b5733f41 100644
+> --- a/kernel/liveupdate/Kconfig
+> +++ b/kernel/liveupdate/Kconfig
+> @@ -86,4 +86,20 @@ config LIVEUPDATE_MEMFD
+>   
+>   	  If unsure, say N.
+>   
+> +config LIVEUPDATE_EVENTFD
+> +	bool "Eventfd Live Update Orchestrator support"
+> +	depends on EVENTFD
+> +	depends on LIVEUPDATE
+> +	help
+> +	  Enable Live Update Orchestrator support for eventfd file descriptors.
+> +	  This allows eventfd files to be preserved and restored across kexec
+> +	  operations, maintaining their counter values and flags.
+> +
+> +	  Eventfd files are commonly used for event notification between
+> +	  userspace processes or between userspace and kernel. With this
+> +	  option enabled, eventfd state can be handed over to a new kernel
+> +	  during live update operations.
+> +
+> +	  If unsure, say N.
+> +
+>   endmenu
 
 
