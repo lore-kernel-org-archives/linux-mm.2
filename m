@@ -4,129 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C831BC61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 07:44:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96A1EC61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 07:51:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5BA96B00C7; Thu,  3 Sep 2026 03:44:15 -0400 (EDT)
+	id 997536B008C; Thu,  3 Sep 2026 03:51:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D331E6B00C8; Thu,  3 Sep 2026 03:44:15 -0400 (EDT)
+	id 948306B0092; Thu,  3 Sep 2026 03:51:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C49D06B00C9; Thu,  3 Sep 2026 03:44:15 -0400 (EDT)
+	id 85E936B0095; Thu,  3 Sep 2026 03:51:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A73206B00C7
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:44:15 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 327241A042E
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 07:44:15 +0000 (UTC)
-X-FDA: 85171662870.28.E6B53FC
-Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 3E34020005
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 07:44:13 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="O/Vo39Fv";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B8B86B008C
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:51:15 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DA591160423
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 07:51:14 +0000 (UTC)
+X-FDA: 85171680468.05.E5A19AF
+Received: from mail-pj2-f7.google.com (mail-pj2-f7.google.com [74.125.227.135])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 20ADF14000B
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 07:51:12 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eKgZSF5x;
+	spf=pass (imf23.hostedemail.com: domain of jinmengzhou22@gmail.com designates 74.125.227.135 as permitted sender) smtp.mailfrom=jinmengzhou22@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788421873;
+	b=41aQ4/HWfJ5ZU8ufPHgilQSv9hbexlZpHbbGhDwKCt3dPzX4ruQ2JeYZgEdUdJLD+jMd68
+	wDReGW48KtBFW4AiYRzVYCz2zhOAUMRGHRQSHxq4uyinjYYtPYwdG8KwkFECUSjo1ceCGM
+	Mpo5C2SyD/tlQOtLAH4R9Xae/zndTAE=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eKgZSF5x;
+	spf=pass (imf23.hostedemail.com: domain of jinmengzhou22@gmail.com designates 74.125.227.135 as permitted sender) smtp.mailfrom=jinmengzhou22@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788421453;
+	s=arc-20220608; t=1788421873;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oUbrqLv47LI31OwZX/zERcJxLxOgrZ94RwwzK9bj0r8=;
-	b=RGJ702ZF1kbvd+qkPxHPMvAKlORlGBeoq0ajGxq3XjaYFMPPE0L1FsUjBRdz800icBW54K
-	tBh31X+X9E9eaXnZS6MjXa6NQ1c9iyuWPUGl7D3j9P6qphQQM/EYVX9Xw+gyxRaPBIqTWd
-	exTPERd7HLS3LZZdGLQe2Ap53TLPQoc=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="O/Vo39Fv";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788421453;
-	b=Ykhbu1SF1VfbnzqkuZqQERy49KfON/3hQArLbLQCiTqYy0QKhz/UDsnog9n01O9EWA7KeM
-	4X1Qk5xds1kVdEF2u4c976C3mfms88XoYx903GXu0wqjBYwqN/xdGgxnqp4EFHnWmzSonS
-	IjuC7NiXYUeMRmfx7A19/ugsd5+aGnY=
-Received: by mail-pj2-f11.google.com with SMTP id d9443c01a7336-2ceb5a39c48so5438025ad.1
-        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 00:44:13 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ICN4jGrb/nR91jjnghtKbxqLBDgDgvVDNKC+0blsog0=;
+	b=lAf0Ze/mdKJMJVpvALEWmVZeYruGlePlN2cDH88e6CQ4QEPrAEQgqCFdXXRmgC0lFKTrWi
+	yZML5uy6dBkqhpNAmcj4VJpUdoqoh2XLe5mQnceZEyscma67gKKPBChTuqEVHWWa+ja59l
+	UjlwtYEbq1Ww1Aw+C8XOt4TTSy3SxhA=
+Received: by mail-pj2-f7.google.com with SMTP id 98e67ed59e1d1-398e03cc38aso892980a91.0
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 00:51:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788421452; x=1789026252; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oUbrqLv47LI31OwZX/zERcJxLxOgrZ94RwwzK9bj0r8=;
-        b=O/Vo39FvRXkuaf3e19929BV88qjQAmwiajd5N6+0k3VDE9/N+2tAvgkZ05jDdL38p5
-         0yxAsEv0nXpgTg9bwwSxa/4hwxhwTlqkmKAy3eEMAxOghzadjIF5o+s+Hr0tzrsEysMv
-         dXRMbSrAnM3DXaK7ao2+AeKnnoUSLsWxD8aF4gjyV1gJ20aQ56vaAWk/3mmgIcG/fSp/
-         GzOi+GbL2yZaQ9U/POOfZYeOGP+NVJ4ABG3LKqLDfOchcjY1h9bpICA0ysAD0wXJt6ha
-         ZwQH/MWh3hmgbmpB/9rMiRhEW8gjyJVO49uOOetsgffFaYt0nC+1Sx+SslNhJ+WS7GMw
-         E6Jg==
+        d=gmail.com; s=20251104; t=1788421872; x=1789026672; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ICN4jGrb/nR91jjnghtKbxqLBDgDgvVDNKC+0blsog0=;
+        b=eKgZSF5xtk2rm4xq5pasT4eXg2fCkB2iKdrv+iFRQkm5indoWqtH4wHTi6Wgld0/8X
+         ENlW/HuwkPW+gNRPHvbtC8dd1KXaxU0ZzdSF/kXCChMLsN5+SdXHXJ82uxg4CkweKAVy
+         i62tvo1NPF5ItNr+Ds+nRvZnBdz8E8CjkUqWLPh/OF/xQMPZ2ZhsPeVxA8TX/V0cAaia
+         1FlZAv5G7pfu+Ml38vZNIAFSwwvmxxZiNAFaGlIjLlqp4bVzB8IRIijYzJsUHXntHmK8
+         yv5M6PU8n8LNBwWov3dDIarFy2wWfGZzONrApI7EO+kkkDE1fENagFqJPoL9Wf2jcmJ3
+         hgfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788421452; x=1789026252;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1788421872; x=1789026672;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=oUbrqLv47LI31OwZX/zERcJxLxOgrZ94RwwzK9bj0r8=;
-        b=AxoFVWC39Ui+M1KMhhwlPY/f1Tc3wLiUHe2OTuMi43Tfj/ckhgUGZCDNjVbbsZwHJb
-         D+j3HuRuP1kWwT8cMqYbx3bu3BUrEAPSmxtB3P6+Bn2EVoMR1MkMYIfqxm2jrLzFDR6V
-         5t8s2nQZPf0+jK7vSvQT6VJqy2dX69jDZ1tPcSUJu6bE0XFRD5Omk7PQY1t5F61Ep361
-         /MmgsOkNt1Rj8VKMGDl/N5lGIhAOfvEmhrv9rzicrxxYQDf7PWC3pyQAJ0o854zTuLuq
-         c03WW5fV4RUgQcxeVcjSDW/M7sa1w38jxOqvpQE/qaow6gGqjt3f9kHXLVCKiQvPxk6O
-         JQfw==
-X-Forwarded-Encrypted: i=1; AKwUvBwjLXzEYtJ1TQdxIo0RfHbQmtwBkhg6zMotB+/M3jmcLUxTfmmRSn4XGTGluwiYUv9rFtJSVUC6uQ==@kvack.org
-X-Gm-Message-State: AFuF++n14Si24nxEYTB+u7zXirxFnRj+FjfJaQA44TbnmW6mZLm81wmF
-	Q0w0qdR0k7qwC7wcfctIgjB5sPTGDJhXXWus48EUT9Y/s7pz006MYV0f
-X-Gm-Gg: AYBFou3A3YRQXv3Qlj1fY5xOYHXoJ3MpA6dy/NPpzq5WvhZW3ddT9EI8UtoTklYcubr
-	fKyV3wc20FV9B7YV4sKg9kVeSfCkIegOihNQEw4VHPctoKgrVz93/qWpjTDnYusl6CNEt1C0PCm
-	Lgl7MyIyEN0n3VfOMfgmdFhsowSchCXsKW+BmKZatlS/qG6qBzVorLAfH5eIFBmQCkbOc/hXQjr
-	NNFqasFurwIRGwhaUt7+tvTtzhARgwSiosgnIolPJYG34GHH/2wfpXI5IBjrc2GWBCstw9VxY/G
-	+VktOomKDcNBb1xznZwx+HrFfqPOXb27Vu+u+8hJDrumW70EJwLL0Vy5G/nes0YN6mkWi5+z1+o
-	2818PU0VEYuY/YmJbk6paPKgHcnweK91QBhrSuPJvBX5PQo4O80jAAtQKgD5vHN+BPA0rcdfE1n
-	cr2P4iIknzbwS+ZpJpaGtj5wUAAxuWylYZYO4S0IcJ6XIH2dW387UsmvYiORDaFc20p7lwv3NPG
-	RkEsL4=
-X-Received: by 2002:a17:902:e809:b0:2d7:4b42:9352 with SMTP id d9443c01a7336-2daec60af43mr131715375ad.3.1788421451864;
-        Thu, 03 Sep 2026 00:44:11 -0700 (PDT)
-Received: from [10.125.112.20] ([122.11.210.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dafe62d7c2sm5931425ad.29.2026.09.03.00.44.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Sep 2026 00:44:11 -0700 (PDT)
-Message-ID: <edd83cd6-663f-43f5-8058-99e59d941d5b@gmail.com>
-Date: Thu, 3 Sep 2026 15:43:58 +0800
+        bh=ICN4jGrb/nR91jjnghtKbxqLBDgDgvVDNKC+0blsog0=;
+        b=FdHDc94/y0jaJADRRd575eea38g63+CNCBeEixJ8yMj0gkNLt3F2w5donPZTTkbFuL
+         4idtViOvnf9lH5cnh8zPaSsW52fCrKHcKZbM9PKx/b0g7ly2thR80Ho2WTmk4z9dToWs
+         EoXrsRBzp67tvjtQf17ZhPcY8D5q/bKlw1FSOQqLQyUPswBmqyMJw/IZStG0x738zstd
+         eOP0JOvRpnzuFGGW40WJe9texVAO0MEdcmRWTaGKeHj6xibgnFXMvqQ+4zjaTuwqOcJE
+         Gb7bnfitccbEPXEfAtGO2c5PTNfesp49OER+KCTB3fXv48RhhCvPk7deKTkqFUqUqZWu
+         zpxw==
+X-Gm-Message-State: AFuF++m447U08Uq7+03UGFCHWyjDl+GN/ZkRmaSxyN5PFBMnvD8ni7hp
+	9zlytXWzw2cf6wS0MDGbPy6elO+WSeBByUmRwgYbHLMCyrphdHlg5/Cf
+X-Gm-Gg: AYBFou0J8NxuAZ6CM9XewisA2WQhEAMEAcR7xCBbbjiINZ6mNvkJpyCGm+6PlZTdSmz
+	gRBc7A0cWxWUyVm6cP1GwhGf3VfsrSZ/nAlnHT0jN9vzlP6Zgj6zMd79DUh4Axvx+zdKi7WEBja
+	R6Z/vwmiydroCmmtPLGBbrZWVh3awn1ed/Jc8eGJ6QXWvou9PymmQIQ2dMPd7ixaR5sfcN8HKZK
+	8HC++3zttL5TqRBmtidbuvM4WCQEWY+heYo9CwUSPi6cxzmH/oMl4ExOmN0Q2JMJ7s64NYPrgUb
+	43Zu0IVss5VNVKR4XtuWdl0oEBuRPlcK5YJe72el5n+aX12Q+lVnKMX91piXagGM9/1qiyR55Av
+	uRwVhg9fdbIm07vlMogM6vDZ+4GhIv3v25gHj320vs8MezXCwnKS2btejWaSOp75ky6j/KHNo6F
+	OPwZuv8ldgpmeHzrodiRiIeHX8wc7F4n7K7bBXYxFjtWek90IRcpoZL2Y2v3xqRa4u7acs3ah/P
+	2gRcVZaDAPoHIy8t5uaTxw=
+X-Received: by 2002:a17:90b:280a:b0:38e:250b:122f with SMTP id 98e67ed59e1d1-39aee085053mr15681059a91.16.1788421871755;
+        Thu, 03 Sep 2026 00:51:11 -0700 (PDT)
+Received: from HXDQXTDYHN.bytedance.net ([63.216.146.178])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b083e6e3asm4021341a91.2.2026.09.03.00.51.05
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 03 Sep 2026 00:51:10 -0700 (PDT)
+From: Jinmeng Zhou <jinmengzhou22@gmail.com>
+X-Google-Original-From: Jinmeng Zhou <zhoujinmeng@bytedance.com>
+To: Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Nhat Pham <nphamcs@gmail.com>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	Jinmeng Zhou <zhoujinmeng@bytedance.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] mm/hugetlb: charge folios to the target mm's memcg
+Date: Thu,  3 Sep 2026 15:50:48 +0800
+Message-Id: <20260903075048.3316-1-zhoujinmeng@bytedance.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 00/10] kdump: reduce vmcore size and capture time
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org,
- pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, tglx@kernel.org,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
- robh@kernel.org, saravanak@kernel.org, akpm@linux-foundation.org,
- rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org,
- m.szyprowski@samsung.com, mark.rutland@arm.com, kernel@xen0n.name,
- alex@ghiti.fr, hpa@zytor.com, ruirui.yang@linux.dev, robin.murphy@arm.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
- devicetree@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org,
- iommu@lists.linux.dev
-References: <20260902073116.802752-1-chenwandun1@gmail.com>
- <apfkDlcMYrgiuGYA@fedora> <6aef2f48-1cc5-408d-a5a2-2b4b4d45ad7b@gmail.com>
- <apkiW8gn9Z5XaVQh@fedora>
-Content-Language: en-US
-From: Wandun <chenwandun1@gmail.com>
-In-Reply-To: <apkiW8gn9Z5XaVQh@fedora>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: jzm9up95ukm6uwo4fu8m43bnwxkrkxi8
-X-Rspamd-Queue-Id: 3E34020005
-X-HE-Tag: 1788421453-69182
-X-HE-Meta: U2FsdGVkX1/5TVGADtsshoCRysJgIMoIqTNXkQa+mNvlYKTV07RLCnDWO0FbuUhhlmkt33rur1hfrLioXuhuH67l6COd/t98tQtZ8r4CEdkZCWSyhfW6CQp2jx0PvYKPiydm+265x+0/UDwHaQnoEeBrY7Y+HAGVyUHHPFMoxSLXMy1nnwwI5x4bZLhP3iT1Ccd/AINVmrsd4SvVg+snCiBrqqy+777lMi+oAFnpmjtdFAmsP1uiLhxcDtfeDF55M5stiFECmZ7/yTnLE3VO6Byui3+WOiL+8bIPwC+52tdIFUgTwgBTV2C1n+/6jyZORJU7iuK3EPUGVNJ1XK+s5X0aJ5pjsniGh9twn7ztB2YN22fGiST4OZxb966OpjtU65ZUNH/d0c5lq/GnNBMAOVpzXU7tsdc6riX7YQJtPOo/dvkkF3P00mwab4pdxo2FmPUtwDFkm+dT2uv1u0A9fQC0S5MJNTut/sr8Gopc2BQ0JzMYY0TVLWdtddH4OtB/252KSrH+evgqscRE0Cr6ndu24RElB0pKybxcF9Gwd0NmNxCy6SnV4PMy0gvgmrSgbXdEY+SH1eKOPaH5aBUaHYhNPii3V6OpS+uIf6WXz8XG65AMa1ZWr4eIo21KnHHaZhFjlRlWMX5g/5dCNOoHprtCTiEyHm6g6nai1pvFK3LLd+pr7GXmqN6t9KFrtYK9PlKv6KrKy30bdpJVdSYFbb+HrjFmZtMUfxvOIt2x4WVt1J5rLFFcmOGDGSse+3oH/X6HLnNA/1NKw0uehCG/gS3mcfjoJu7t6cJFksASbF5yF1EGcEvI80el7EQTVR+sv+kHUCDTkwZgFubD9k7F5n7KgvLmQRIcd2ip9oA7h3DtTBJZnnUfhQvngNBrQfmJno1fPjg+9GzX49Pg+IGDJ4P+RdLx/7gOXJBh9s8UvC+ux/wC7aU90f6HXUQB2Q3AYeeeCz3yWKV89YMhZ6h
- UMpwNPce
- 4NhhMW+C7evhtVA86IkJS+VAX3ESZM8lvckDrUX44rVVCNZCBrvGVFHxP+SRVwgdd/KGG0MwL+a2O3ujSPAIbRbRANtK5Yq/IqPdYdv+1OvaTyoqx+3cmL2LUB9dvPVGAu8cyM7p5nm5ZV13399+cuag8cKuHlIudfOj14aX8Mmrh6fci0wzeX/T+x3/AucP9lhZvd+TePrSCxKkciqeJxLbGsTsCc9LR02o/DGEFXZr4UcM588VbUQACbhbY8rmJ2oZx3SJ1PHA/G/Tt6tKJ3gWe2Z6kIUA1tuAdF0GYR03kCodqwvr9MHBjVdKLFoVO/u3hSiQ4w/bkI3tNODnJp2dz9JE+V+3ruEt8my3FoRJJm5aE46NHFOYsyUTV8BTmzU7zLrLSmPAqF3CVxqEEIHy2mqWiDzNf2NSNXGPRyFBdbZvtVhGi7dK6xi31COCh8ilk5CfDB1jL99cDxSv+6EMhNW6f59chz6eEXSNKFSC9x7YaJ4EmX3qq4Eq06Be29zWZ
+X-Stat-Signature: yy3rypcx4ye7e7beyxz1ook4r49zcmsj
+X-Rspamd-Queue-Id: 20ADF14000B
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788421872-950796
+X-HE-Meta: U2FsdGVkX18dxHnrsZjUqCtfkH0sAvstuG2RiYef14gjSBxXbH21cU/RWq4DX0d2XeGqcngjzGoP31UZ/jhdCEqC8/YHIwJWBMpgydoOy7Kw8psqlhaOT0M2mAcsiq6UzbWS8LJWURAigaktGdDvpGxSeh6/2zwZHLz3oea2S/3efQ4gxmFHoUi4U2POV88Wl08nFe9AONYgjx+xi7mO+Zk04EZV2750ohjp36wqLGNQpKh3G9QB01YChCYhUS+ZkB8pupdR5qRnuA3oenaHxH9OQhk7wkIT06vieq7K60Sw4RIONrnywPoUrFHMUb+9mg6tDIdufvzLG0GrPmhL9kiO2R6Pez1hqQjx96cDzpdD1rOiJVRz9lNZlO1/QnmB4OBjQt1D6YM6SmLDW/mqDjixA1MvQDkK9/g1KNPyBV+1fn6lc2prQyjIkqGbLuSgQC0Uft1Ij4hNt6dKGILi4SRzY7irWxChVnufO2v9ULPhJ+k2gVDgmOky9Vc7b4C+20fBFhpMphY/bFA4PcuLZ9J5GPPNxiH/Owmn2VUKM+q4YDofuw7HF6kond3IvUvoKbA9ao0eB899eZfhTmmYqRvVKMRRxSxRASBTN70nTkYEa/kTAyUDQuCAJalgz2mD0TNz6C2ZPAVreXIXE9Uz6PCya0wkSw/L3jjMiWTDkkQrzTLS3BKY2/1nq+8KjKNConfsYfnMd+S7P+iy3WJHvLjnRRJVvKP+nvbU0W6YfLAuI9BDzgPdIcbIF36T8COhtfPUYqpl2Z8WuJV1c/XmXbmR3Vw5l2bdiKEv8bcsZHIhGrm2v4lfOm4VKYtjuaWhTd97wr3KqW0bApDdIqumduitCAXAGe2MbWCFrGHGkr7l/29Moqc2pmEdLslC6VILOIt+wAmeBw8Ovsr8kYQv/NCs8G8AXuEgNlU4fH7JjLII1QLPzScXtit8yf8c7/M7JYuD/ytR+k152ewByVe
+ aG8vuZX6
+ AuA1SSwfsISHd0cAq0zYQUWbC4gf/kL2FTb6FM40ZGUJFLx3qtjHQzj3LLfQrhp15nsbRQiasF9G7aAE4c5PQczGQrq6QhSXUbSvG+yJVCMjFWWzlfp9YU9H9qsbnlW3b4+y593N4n+CMOggHdE5UxrbjXmYWVb/CwQeqgZxlYvTrGKu9cuyAplK19IL94oG5i0JpShHWGYAWKTk1z10oBom3hnwGYTj4m/e/6qB5CxK9rV/H8Wt522Z80WQw8yZV5QITV6zacYJpaKBaow3LuB+eCII9ifKKx842X6JZ/sxaBA+TnmVbprtSdjkI02CMG7tt/bM4Yo1lYqsSf6F52PDym5v4A8D10eYTPjYViKEdG4EwEUnz691jMTzLwMmPJyFi+Fs/ir981qx3gCaX5GI9Lw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,177 +126,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+HugeTLB folios are currently charged to the memcg of the allocating
+task.  This gives the wrong result when a userfaultfd handler populates a
+HugeTLB VMA that belongs to another process.  The UFFDIO_COPY ioctl
+operates on the userfaultfd context's mm, but get_mem_cgroup_from_current()
+charges the folio to the handler's memcg instead.
 
+This can be reproduced by placing the faulting process and its userfaultfd
+handler in different memory cgroups.  Have the target process register a
+HugeTLB mapping with userfaultfd, trigger a missing fault, and let the
+handler resolve it with UFFDIO_COPY.  The hugepage usage is then reported
+in the handler's memory.current instead of the target's.
 
-On 9/3/26 15:31, Baoquan He wrote:
-> On 09/03/26 at 03:05pm, Wandun wrote:
->>
->>
->> On 9/2/26 16:53, Baoquan He wrote:
->>> Hi Wandun,
->>>
->>> On 09/02/26 at 03:31pm, Wandun Chen wrote:
->>>> From: Wandun Chen <chenwandun@lixiang.com>
->>>>
->>>> On SoCs that carve out large firmware-owned reserved memory (GPU,
->>>> camera ISP, ...), kdump currently dumps those carveouts as part of
->>>> system RAM even though their contents are firmware state that is not
->>>> useful for kernel crash analysis.
->>>>
->>>> This series introduces a MEMBLOCK_NODUMP flag in memblock to filter
->>>> reserved memory on DT-based architectures (arm64, riscv, loongarch).
->>>> Reserved regions default are marked MEMBLOCK_NODUMP so kdump omits them;
->>>> reusable CMA regions are different because their pages are handed back
->>>> to the buddy allocator and may carry crash-relevant data.
->>>>
->>>> ACPI systems already filter reserved memory out of the vmcore through
->>>> their existing path; only DT-based systems currently fail to filter these
->>>> regions, which is what this series addresses. The flag lives in memblock
->>>> itself rather than in a DT-only structure, so the mechanism is generic and
->>>> both ACPI and DT systems can benefit from it (suggested by Rob, thanks) [1].
->>>
->>> Thanks for the effort. I am not against this patchset, and I haven't
->>> went through it carefully. Just from the cover letter, you mentioned
->>> generic, I am wondering if this can be generic for excluding other
->>> memory regions. Asking this because I try to find a way to exclude
->>> unwanted memory regions too, please check below link where there's
->>> the relevant discussion. We definitely don't like inventing wheels
->>> time after time. Do you think this memblock region excluding can
->>> be used in other places of kernel?
->>>
->>> https://lore.kernel.org/all/aoLFai0gzzH2bGgy@MiWiFi-R3L-srv/T/#u
->>
->>
->> Thanks for taking a look, and for the pointer to the crash-wipe thread.
->>
->> To answer your question directly: the exclusion mechanism in this series
->> is already generic, memblock_mark_nodump() is the entry point. Any code
->> that wants a region out of the vmcore just marks it MEMBLOCK_NODUMP, when
->> preparing vmcore elf header by walking memblock, these regionss are skipped;
->> This series is simply one caller, marking the DTS /reserved-memory and
->> /memreserve/ regions with MEMBLOCK_NODUMP.
-> 
-> Thanks, for memory not allocated from memblock, e.g buddy, is it still
-> good?
+The generic userfaultfd population path avoids this problem by charging
+folios to dst_vma->vm_mm.
 
-Yes, still good, only need to pass the physical range to memblock_mark_nodump().
+Pass the target mm through hugetlb_alloc_folio() and charge the folio by
+using get_mem_cgroup_from_mm().  This preserves the existing charge timing
+and error handling while making HugeTLB userfaultfd population consistent
+with the generic path.
 
-> 
->>
->> x86 currently builds the vmcore elf header from iomem_resource, not
->> memblock; it could be switched to memblock, but that would bring no
->> benefit for the problem this series solves, so this series makes no
->> x86 change. I'd personally be in favor of switching to memblock for
->> a unified implementation across architectures.
->>
->> Best regards
->> Wandun
->>
->>
->>>
->>>>
->>>> Since the reserved memory regions are filtered out, the vmcore is
->>>> smaller in size and faster to produce. 
->>>>
->>>> The series is based on linux-next and is organized as follows:
->>>>
->>>> Patches 1-4: Preparation and bugfixes: fix the missing HugeTLB
->>>>              flagname, switch riscv crash_mem to memblock, fold the
->>>>              duplicated per-arch memblock walks into the weak
->>>>              defaults, and serialize crash header preparation against
->>>>              memory hotplug.
->>>> Patches 5-9: NODUMP infrastructure: switch crash_core to
->>>>              for_each_mem_region(), introduce the MEMBLOCK_NODUMP
->>>>              flag, add a dumpable flag to struct reserved_mem, and
->>>>              mark /reserved-memory and /memreserve/ entries with
->>>> 	     MEMBLOCK_NODUMP flag.
->>>> Patch 10:    Exclude MEMBLOCK_NODUMP regions from the vmcore ELF
->>>>              header.
->>>>
->>>> In v5, Sashiko found some pre-existing issues related to reserved-memory,
->>>> and has no dependency on this series, so these issues have been addressed
->>>> in a separate series [2].
->>>>
->>>> v5 --> v6:
->>>> 1. Serialize crash header preparation against memory hotplug to avoid
->>>>    out-of-bounds or use-after-free issues.
->>>>
->>>> 2. MEMBLOCK_NODUMP marking is now done after memblock allows resizing,
->>>>    avoiding a panic from too few regions before resize is permitted.
->>>>
->>>> 3. Reordered the patches, put pre-existing bugfixes earlier in the series.
->>>>
->>>>
->>>> v4 --> v5:
->>>> 1. Rework the mechanism around a memblock-level MEMBLOCK_NODUMP flag
->>>>    (suggested by Rob) instead of the v4 opt-in 'dumpable' flag on
->>>>    DT-only struct reserved_mem.
->>>> 2. Switch the riscv vmcore elf header preparation to use memblock
->>>>    instead of the resource tree, aligning it with arm64 and loongarch,
->>>>    so riscv also can exclude reserved memory from vmcore.
->>>> 3. Deduplicate the vmcore elf header preparation: arm64, riscv and
->>>>    loongarch open-coded the same logic, so fold it into shared
->>>>     __weak defaults in crash_core.
->>>> 4.  Drop the v4 patch that saved /memreserve/ entries into the
->>>>     reserved_mem array; /memreserve/ is now marked MEMBLOCK_NODUMP
->>>>     directly.
->>>>
->>>> v3 --> v4:
->>>> 1. Rebase this series on v7.2-rc1.
->>>> 2. Add two cleanup patches (patch 02/03).
->>>> 3. Simplify patch 03 to avoid checking whether initial_boot_params is
->>>>    NULL multiple times, suggested by Rob.
->>>>
->>>> v2 --> v3:
->>>> 1. Fix out-of-bounds issue if device tree lacks /reserved-memory node.
->>>> 2. Fix UAF issue when alloc_reserved_mem_array() fails.
->>>> 3. Add some prepare patches.
->>>>
->>>> v1 --> v2:
->>>> 1. v1 added an opt-out DT property ('linux,no-dump'). Per Rob's
->>>>    feedback [3], v2 drop that property and exclude reserve memory
->>>>    by default.
->>>> 2. Split some prepared patches from the original patches.
->>>> 3. Address coding-style comments on patch 5 from Rob.
->>>>
->>>> [1] https://lore.kernel.org/lkml/20260723234126.GA3253409-robh@kernel.org/
->>>> [2] https://lore.kernel.org/lkml/20260818092420.2859026-1-chenwandun1@gmail.com/
->>>> [3] https://lore.kernel.org/lkml/20260506144542.GA2072596-robh@kernel.org/
->>>>
->>>> Meijing Zhao (1):
->>>>   mm: memblock: add missing HugeTLB flag name
->>>>
->>>> Wandun Chen (9):
->>>>   riscv: build crash_mem ranges from memblock instead of resource tree
->>>>   crash_core: fold duplicated memblock arch hooks into the weak default
->>>>   crash_core: serialize crash header preparation against hotplug
->>>>   crash_core: replace for_each_mem_range() with for_each_mem_region()
->>>>   memblock: introduce MEMBLOCK_NODUMP flag
->>>>   of: reserved_mem: add dumpable flag to opt-in vmcore
->>>>   of: reserved_mem: mark /reserved-memory entries with MEMBLOCK_NODUMP
->>>>   of: reserved_mem: mark /memreserve/ entries as MEMBLOCK_NODUMP
->>>>   crash_core: skip MEMBLOCK_NODUMP regions when building vmcore ELF
->>>>     header
->>>>
->>>>  arch/arm64/kernel/machine_kexec_file.c     | 29 ------------
->>>>  arch/loongarch/kernel/machine_kexec_file.c | 27 ------------
->>>>  arch/riscv/Kconfig                         |  2 +-
->>>>  arch/riscv/kernel/machine_kexec_file.c     | 33 --------------
->>>>  arch/x86/kernel/crash.c                    |  2 +-
->>>>  drivers/of/fdt.c                           |  2 +
->>>>  drivers/of/of_private.h                    |  2 +
->>>>  drivers/of/of_reserved_mem.c               | 48 ++++++++++++++++++++
->>>>  include/linux/crash_core.h                 |  2 +
->>>>  include/linux/memblock.h                   |  9 ++++
->>>>  include/linux/of_reserved_mem.h            |  1 +
->>>>  kernel/crash_core.c                        | 51 ++++++++++++++++++++--
->>>>  kernel/dma/contiguous.c                    |  1 +
->>>>  mm/memblock.c                              | 17 ++++++++
->>>>  14 files changed, 131 insertions(+), 95 deletions(-)
->>>>
->>>> -- 
->>>> 2.43.0
->>>>
->>
+Fixes: 8cba9576df60 ("hugetlb: memcg: account hugetlb-backed memory in memory controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jinmeng Zhou <zhoujinmeng@bytedance.com>
+---
+ include/linux/hugetlb.h    | 3 ++-
+ include/linux/memcontrol.h | 8 +++++---
+ mm/hugetlb.c               | 9 ++++++---
+ mm/memcontrol.c            | 6 ++++--
+ 4 files changed, 17 insertions(+), 9 deletions(-)
+
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 16c4c4caa126..45ada75dc04e 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -699,7 +699,8 @@ enum hugetlb_alloc_flag {
+ #define HUGETLB_ALLOC_USE_GLOBAL_RESERVATIONS BIT(HUGETLB_ALLOC_USE_GLOBAL_RESERVATIONS_BIT)
+ 
+ struct folio *hugetlb_alloc_folio(struct hstate *h,
+-		struct mempolicy_interpreted *mpoli, u8 alloc_flags);
++		struct mempolicy_interpreted *mpoli, struct mm_struct *mm,
++		u8 alloc_flags);
+ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 				unsigned long addr, bool cow_from_owner);
+ struct folio *alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 7d1c0ce189a8..362af58e50a4 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -662,7 +662,8 @@ static inline int mem_cgroup_charge(struct folio *folio, struct mm_struct *mm,
+ 	return __mem_cgroup_charge(folio, mm, gfp);
+ }
+ 
+-int mem_cgroup_charge_hugetlb(struct folio* folio, gfp_t gfp);
++int mem_cgroup_charge_hugetlb(struct folio *folio, struct mm_struct *mm,
++			      gfp_t gfp);
+ 
+ int mem_cgroup_swapin_charge_folio(struct folio *folio, unsigned short id,
+ 				   struct mm_struct *mm, gfp_t gfp);
+@@ -1156,9 +1157,10 @@ static inline int mem_cgroup_charge(struct folio *folio,
+ 	return 0;
+ }
+ 
+-static inline int mem_cgroup_charge_hugetlb(struct folio* folio, gfp_t gfp)
++static inline int mem_cgroup_charge_hugetlb(struct folio *folio,
++					    struct mm_struct *mm, gfp_t gfp)
+ {
+-        return 0;
++	return 0;
+ }
+ 
+ static inline int mem_cgroup_swapin_charge_folio(struct folio *folio,
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 785772845795..5ab5a5141574 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -2816,6 +2816,7 @@ void wait_for_freed_hugetlb_folios(void)
+  * hugetlb_alloc_folio - Allocate a hugetlb folio.
+  * @h: Hugetlb state control block.
+  * @mpoli: Interpreted memory policy to use for allocation.
++ * @mm: Memory descriptor of the allocation target.
+  * @alloc_flags: Flags controlling the allocation behavior.
+  *
+  * Allocates a hugetlb folio and handles cgroup charging and global hstate
+@@ -2826,7 +2827,8 @@ void wait_for_freed_hugetlb_folios(void)
+  *         -ENOMEM if mem cgroup charging fails.
+  */
+ struct folio *hugetlb_alloc_folio(struct hstate *h,
+-		struct mempolicy_interpreted *mpoli, u8 alloc_flags)
++		struct mempolicy_interpreted *mpoli, struct mm_struct *mm,
++		u8 alloc_flags)
+ {
+ 	bool charge_hugetlb_cgroup_rsvd = alloc_flags &
+ 					  HUGETLB_ALLOC_CHARG_CGROUP_RSVD;
+@@ -2881,7 +2883,8 @@ struct folio *hugetlb_alloc_folio(struct hstate *h,
+ 
+ 	spin_unlock_irq(&hugetlb_lock);
+ 
+-	ret = mem_cgroup_charge_hugetlb(folio, gfp | __GFP_RETRY_MAYFAIL);
++	ret = mem_cgroup_charge_hugetlb(folio, mm,
++					gfp | __GFP_RETRY_MAYFAIL);
+ 	/*
+ 	 * Unconditionally increment NR_HUGETLB here because if
+ 	 * mem_cgroup_charge_hugetlb failed, freeing the page will
+@@ -3020,7 +3023,7 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 		.nodemask = nodemask,
+ 	};
+ 
+-	folio = hugetlb_alloc_folio(h, &mpoli, alloc_flags);
++	folio = hugetlb_alloc_folio(h, &mpoli, vma->vm_mm, alloc_flags);
+ 
+ 	mpol_cond_put(mpol);
+ 
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 1271d390b617..0b795bf1e6cf 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -5233,6 +5233,7 @@ int __mem_cgroup_charge(struct folio *folio, struct mm_struct *mm, gfp_t gfp)
+ /**
+  * mem_cgroup_charge_hugetlb - charge the memcg for a hugetlb folio
+  * @folio: folio being charged
++ * @mm: mm context of the allocation target
+  * @gfp: reclaim mode
+  *
+  * This function is called when allocating a huge page folio, after the page has
+@@ -5242,9 +5243,10 @@ int __mem_cgroup_charge(struct folio *folio, struct mm_struct *mm, gfp_t gfp)
+  * Returns ENOMEM if the memcg is already full.
+  * Returns 0 if either the charge was successful, or if we skip the charging.
+  */
+-int mem_cgroup_charge_hugetlb(struct folio *folio, gfp_t gfp)
++int mem_cgroup_charge_hugetlb(struct folio *folio, struct mm_struct *mm,
++			      gfp_t gfp)
+ {
+-	struct mem_cgroup *memcg = get_mem_cgroup_from_current();
++	struct mem_cgroup *memcg = get_mem_cgroup_from_mm(mm);
+ 	int ret = 0;
+ 
+ 	/*
+-- 
+2.39.5
 
 
