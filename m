@@ -4,90 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B399C624D6
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 01:04:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64F1EC61DD6
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 01:07:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C40E76B00A2; Wed,  2 Sep 2026 21:04:12 -0400 (EDT)
+	id 67B4C6B00A9; Wed,  2 Sep 2026 21:07:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C19206B00A3; Wed,  2 Sep 2026 21:04:12 -0400 (EDT)
+	id 653A56B00AA; Wed,  2 Sep 2026 21:07:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B56016B00A4; Wed,  2 Sep 2026 21:04:12 -0400 (EDT)
+	id 56E036B00B2; Wed,  2 Sep 2026 21:07:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 97C456B00A2
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 21:04:12 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2F9E6803C4
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 01:04:12 +0000 (UTC)
-X-FDA: 85170654744.08.D826243
+	by kanga.kvack.org (Postfix) with ESMTP id 2FC376B00A9
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 21:07:32 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C197EA42D2
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 01:07:31 +0000 (UTC)
+X-FDA: 85170663102.17.744664E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 776A98000A
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 01:04:10 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Lv6frWmI;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf03.hostedemail.com (Postfix) with ESMTP id 3D0EF20008
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 01:07:30 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=huWcm2b3;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788397450;
-	b=g5KtS+urTFpoj7o9qrybtnlc74Ti9cyIyyYWxtaMPpuRpSKewIwvzpfVwYZi7fGIe/6J9H
-	joxOR0j4fk5wQPuYHlKMyxBcmGeajguaEIUTKXU9O0lG81HzHg6g/rN/kTmVHr/VSfOyGv
-	/EHt1/c7tIYyIwXyWKRMYPSqpzczLgs=
+	t=1788397650;
+	b=jKRPw/wA8PWQH3e0dx+1MhwcW6w9QHWl0P/WiSbp//8Gg3qYDBXFq0fwEyJgZpKEc/4EYl
+	jXJPzPKAkdcmjTWtV+MqdWih4Y1sYUlUd60KhHOse+EJYaJWDn5DOZOiDle03GisH2oswW
+	IGsg1vhoBP7wXoOIlOjKszYlFbpJpRI=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Lv6frWmI;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=huWcm2b3;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788397450;
+	s=arc-20220608; t=1788397650;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kNT7Z2FMxt/nfOQZlUflR3zMw2XOgkeNZiCD6ouunac=;
-	b=NT4BEcPHGkgPb4wLI+mwkkeDvEJYXj5WBwVnQRyPmDyxb8MvmqG1MjBpUJk1VhOdG+18oK
-	+6lTqkLaObhDtJ4+h33Eerr8fsCt/jbUnMGIw2Y2xOj1k04smVC3LsNP6MPmDt41BAQLiT
-	T/ccrQ/I4sJYz5PQGKwSYn+BhV50aF8=
+	bh=a9IM/Ej4irsu0tekSCIZa7xad+wT2QHGn683VTr7Q88=;
+	b=IOt32ktBXMenQ7FZKXpEAS4nv8Ay14oX2LjrWh6r0zdz8ZotHzWvKXGVPl9e2unBFCAHLC
+	Ne5+dPQl9eq7l7r4wXkYuokNYKEhE+I4E5qk2cMykfmWs/CRg4USJ82YRGCvH83PSQLCt7
+	3eYNZVU2s49+2uqNGySO6LdcVsK80bU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 15FDD600C8;
-	Thu,  3 Sep 2026 01:04:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D661F000E9;
-	Thu,  3 Sep 2026 01:04:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788397449;
-	bh=kNT7Z2FMxt/nfOQZlUflR3zMw2XOgkeNZiCD6ouunac=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Lv6frWmIMBhsZT2PbPJmz9srQDtxWdSn9v59muHBsrLCyGSrOM4BF+Dwp/XHqJ9Hr
-	 ZIhqg1lFK5NXXOOVJHWCGB3GvpzX42wDAjbROLuEi8b3RvB1druPR2CWA+ZgLTPwzl
-	 XHf38yM4beeoq2eVsBsaiwhmWV0YcnfpmxdTt6Q4=
-Date: Wed, 2 Sep 2026 18:04:08 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Yosry Ahmed <yosry@kernel.org>, Krush Chavan <krushchavan@outlook.com>,
- "Chengming Zhou" <chengming.zhou@linux.dev>, "Tejun Heo" <tj@kernel.org>,
- Michal =?ISO-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>, "Shuah Khan"
- <shuah@kernel.org>, linux-mm@kvack.org, cgroups@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel-team@meta.com
-Subject: Re: [PATCH v2] selftests/cgroup: account for zswap shrinker
- writeback
-Message-Id: <20260902180408.05b925ce05359cd4d7f96894@linux-foundation.org>
-In-Reply-To: <20260902194521.3652178-1-joshua.hahnjy@gmail.com>
-References: <20260902194521.3652178-1-joshua.hahnjy@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by tor.source.kernel.org (Postfix) with ESMTP id D44D9600D1;
+	Thu,  3 Sep 2026 01:07:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64AEF1F00A3A;
+	Thu,  3 Sep 2026 01:07:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788397649;
+	bh=a9IM/Ej4irsu0tekSCIZa7xad+wT2QHGn683VTr7Q88=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=huWcm2b3wYceGKjjjwjPQBzLv+hRL5m1+3L96P+Dy7mb8+EOVh0ZG7ka055pt4CQ4
+	 O/yPRyz4jI002lrsN1mNDvJJirJXLV8WEwBh08RFyqVJsYYnyvJw5v1HEt/FDS1fIz
+	 wjex7RFagx+jP6A4+tQrp2zPlXnczIk2g3zd7bLlgSGjBqYt28/7NCEIJiyRn9zuUZ
+	 tPQxJvCPWAP8d2ZQld1rkG6FABZbFKrUp908uIUDKnioz7ozLp91G5QAwX1V3K3b76
+	 kSWO/++MpfPUfEtHnDPJC1zA7KY/v7TqP3LOnZNX6FbcROeznspzN4wOoIGpnVsl/K
+	 HpKzS1nupRz2w==
+From: SJ Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SJ Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 1/3] mm/damon/core: error damos_commit_quota_goal() for zero target_value
+Date: Wed,  2 Sep 2026 18:07:19 -0700
+Message-ID: <20260903010722.94244-2-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260903010722.94244-1-sj@kernel.org>
+References: <20260903010722.94244-1-sj@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 776A98000A
-X-Stat-Signature: dii3q8874bdpsnrcng4gkg8h7m1hu6ts
+X-Rspamd-Queue-Id: 3D0EF20008
+X-Stat-Signature: j351p3nb55gfqmnjn9rn41kd7arf118j
 X-Rspam-User: 
-X-HE-Tag: 1788397450-460503
-X-HE-Meta: U2FsdGVkX1/twh5HHwpqG9ekw0afYsPrYbZAF2uTAkKa3WR5QCna6KFfAGX41vP1jJ+MSX8+jCYWjzy1bZs/CXfEhEMc4o9xdlQ5+Kc8rTHV7Ee4J2ACWv1YA7ZIP2oV2jjW6vbwGLV3lUbfj8FdxwL7IjucjmjQv7XK6ihRUATQ6FQnetouQ2oKXL+ftg20xJnRstjOU9e2egNfae++zA8eslcs1q26XjWbh4DoC53U67/hBrTTmQDuzJqNlzAKlTd4tnbZIpv+g+U68KDj2MiOn+nV/a+ZV1RynZ+RIgfrEdPrWgcJu5nTW4Gszgs5vLiRl1hnRvQxTF1rfPdYaiHZOFXvWtFOevsTxhTnRVpzr2TZywyHnrw7LGM9a8WOyFQ8RSLsEMEFcfJOzxqad3306TU36QHYAfeiCpvvHg/2WXlhYnjHPdLMf6meTtJx9WLl7TM8CbKQkgqCDmar7YLcEIl3uclQwutTfKVMDtOpFXEBIBGYARoppaKhuHxFkdYM4PjpDvDjuUecb0YvMqQZhGd9PaERsIPC9z5TIF285pL9MnyyKPlTf5c0Rr0OF2c84YcVOaWyUkyXdZsdhBBeOf/w8FruyJvVO4xIgSxeSH83tY6Ii5rPOhhzdlBf7FESh8lGwm9C2ibx9t0lyqx9vxembc92y7NctkxwwRB1xMU9Gf6U6yTvGpn5Skx1tluWza24sSpN3l76fRVh7YwSWiEzsPoGiN9KweAbi8AHd6XTKzoZRsQ7lXpzPVoQMiBrIZuthtNFZ+gZORoiat2JzrOIIRXJwbDwRRj7YakpHYDTyW4uTsv60qFTU52mosApP43uYHc7cIU9i9GBqeaHonXvaatlsAhdWlkvh9bt8Rw3Wezac750HwqmP6vJdYp9mBDEThJnlOozv0HGP3PPmYfdQigmxrSAwZjgB/0IyIqcXxaIdhO6pFiBrGifPKADPUrqmGcKB3xUHbk
- xlGKsSZT
- PDJRjSnrqd/36Xu2FWQausxQ1Lyn8qY+FiHu4gMACXDFFHNZ4hWlgoj9gyd/fp4RUjD9+3btLISVuKzT/dMxM+gNvzMNJaFRAE9hBd9qhD7i8oOKDCg09TgVWZYd6kDCE6OF3I6Ccclj9QjQcUt00DAuXUHwvIkqSpOmpmBGiFCiuYFt3BTvGYbzm9GiUNLaDuyYAjsyB7Y/t5MIN9XdSrUH2cTy0wx+J/MjehsflsdYdV4kp8X2cMZusqTMjwhzF3y3Pwg6XxoRD9CjNZ6q46QHUoxKi84lHEbVID60EWmCuXSqWWUk1g7V6sI7KuPVvoZWoBXHZ3m+96wk3+JZQigtPx7ZcrEXW6rz57w0CqADMwyUo0/3tz0O2Ng==
+X-HE-Tag: 1788397650-429538
+X-HE-Meta: U2FsdGVkX1/P6no7ElG1hYiqJ3KmXxiyu1kKV20yRnx/E+mPpw6bz1PUJuF40fOFBrpA1OlzL9ei+SH/Kd71QhqyAB1djI3PsSaoMDnwM+WC+B1aXsJ0+04b9pBb4tmwn9a/1lwVK9l19sE8evfcPQU1nQnjQLmpb6os4IVELQjU+tv4QOSKLa5k/NKt2gVlSky7RVSGmWw80FyziNBw952LRI0wJ8agczgFtlA37AM9gh064ilVlL1Sa4ZYVbVBm022X0SFX0iTSGv9aq4HSnvzgtQ+UbMzLX3ajAxDZMtwfoldnA6NlNTRix6nqTx7jtq69hyVUN+Hwh2adL2WteHP3N8x4JX/NUxMHLYtuuxE+z6vE2THWRLsRVKeoWUT0fblAMYe6Nl6Twb7/DTHAzka4Sd4CEeF3vhl5TFTwPt2Sdq+v+y8Cob9BSJW+JhM76qL/zW8gGSrXnec9dRdgV5sVuuXVu3oiYXlJOTJKsVf6f0IWLNccO6N9mGPOdSIume/cBJfJFssAAzkuxNJI5V/ocgJ8W8C59qs/8E334MaW/cbPGshMNjlm1gk+nOu8XaOtT76VwYkvgbHHu5wNrXeK6gxE5SE04ZuJM5K8Ec5oiXOP/u5+feivq+mQeaBGXYdqeVr8qtFeMeaxJlU5BTdrID6ViCTN8DOVr//UUUCnSA415Q1e6LkXVYJ2uUpMkULK9nKZNz3e1hJJa6oA+Oi5CGW+zffUA+HZ62WPVUAOeXMVuJ1X19uur1fps7H0BXtRpHPZBrXLgvMt/cBd+SBOuySTKuYebwNoqjenyDlXfuN3NVRnSzX18zzoOjW2u87eIJbnSld6EqFQSrmGPjamO7VPjX6fdFRZjCmVOyBsBDGh9s0cAzNJFsqUQRGs/qPdpSqlZgxNBITsO1csHDBrEGPq0Yhk1qKIPs0WcXBPzkdNp4lCN2k8EYGMo6wYbGG1lNK8nrW6oMOb0y
+ J1HLYZ95
+ 2o1SJhnFX9fd+3rhyT+b20cGNvN0rpq81PzdEMc23pQVETqMEnUYpwdmHZ7G0uaveukxDxJ30nEFDK5hxVzzltsCmLmuc+bOVm4aTI2mYHbOd5L5cG7bAjvzSGbITr6LrkNsi241ZAxs1Sc7lPj7t43xoG9JyAPSynFFvgXh3QZa1U6k2bycCh0rJCaN3CnC2eHRjzg2nPEFem0/Tp1NkclwKYawWSh9M3KFwes/iwOSD+F4bRUGLuZsU/XEwMPJ0udy/RYXBeuAlX4zF3rm/xKEKHzVSezFGAlyVi2qB+alPgaEck51o1T0YJw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,39 +92,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  2 Sep 2026 12:45:20 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+If a DAMOS scheme has a damos_quota_goal of zero target_value,
+damos_quota_goal() could trigger division-by-zero error.  Hence each
+DAMON API callers should do the zero target_value validation.  It is
+easy to make mistakes.  Actually such bugs in DAMON_LRU_SORT and
+DAMON_SAMPLE_MTIER were found and fixed [1].
 
-> The test_no_invasive_cgroup_shrink selftest checks that when a cgroup
-> has zswapped out more memory than memory.zswap.max, it does not
-> trigger writeback for other cgroups. To do this, it compares the
-> writeback count in a control cgroup and makes sure that it is 0,
-> and then checks the writeback count in an aggressor cgroup who does
-> expect to see writeback.
-> 
-> However, when the zswap shrinker is enabled, the victim cgroup can see
-> legitimate writebacks not triggered by the aggressor. In some Meta CI
-> tests, we have seen this failure mode happen.
-> 
-> Instead of checking that the victim cgroup has 0 writeback, compare the
-> writeback values before and after the aggressor runs and check that
-> the victim cgroup did not perform any additional writeback. Note that
-> this can still lead to probabilistic failures if writebacks take longer
-> than 5 seconds, but this should fix the systematic failure case.
-> 
-> Fixes: b5ba474f3f51 ("zswap: shrink zswap pool based on memory pressure")
+It is better to handle the corner case only once in the core layer,
+instead of multiple places in all DAMON API callers.  One
+straightforward option is using an alternative denominator for the
+corner case in the damos_quota_goal().  However, the zero target_value
+is meaningless.  In this case, the quota goal is always evaluated as
+achieved or over-achieved.  The quota will only keep being reduced.
 
-Thanks.
+Simply avoid using zero target_value by adding a check in the core layer
+DAMOS quota goal parameters validation/commit path,
+damos_commit_quota_goal().  Update it to return an error in the case.
+Also update its caller to propagate the error.
 
-I do support backporting selftests fixes.  We want selftests to work
-well in the kernel with which they are shipped.  But, as ever, we
-should include a clear explanation of the userspace-visible runtime
-effects of the bug.
+[1] https://lore.kernel.org/20260803134034.15217-1-sj@kernel.org
 
-Seems the short answer is "false-positive test failures" but we can
-perhaps do a little better than that.  Quoting the failure messages
-would be a good way - very recognizable.
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ mm/damon/core.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-> Reported-by: Krush Chavan <krushchavan@outlook.com>
-
-Relatedly, is there a Link:/Closes:?
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 56ec6f616fa9a..89d1c77417450 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1212,14 +1212,17 @@ static void damos_commit_quota_goal_union(
+ 	}
+ }
+ 
+-static void damos_commit_quota_goal(
++static int damos_commit_quota_goal(
+ 		struct damos_quota_goal *dst, struct damos_quota_goal *src)
+ {
++	if (!src->target_value)
++		return  -EINVAL;
+ 	dst->metric = src->metric;
+ 	dst->target_value = src->target_value;
+ 	if (dst->metric == DAMOS_QUOTA_USER_INPUT)
+ 		dst->current_value = src->current_value;
+ 	damos_commit_quota_goal_union(dst, src);
++	return 0;
+ }
+ 
+ /**
+@@ -1237,14 +1240,17 @@ static void damos_commit_quota_goal(
+ int damos_commit_quota_goals(struct damos_quota *dst, struct damos_quota *src)
+ {
+ 	struct damos_quota_goal *dst_goal, *next, *src_goal, *new_goal;
+-	int i = 0, j = 0;
++	int i = 0, j = 0, err;
+ 
+ 	damos_for_each_quota_goal_safe(dst_goal, next, dst) {
+ 		src_goal = damos_nth_quota_goal(i++, src);
+-		if (src_goal)
+-			damos_commit_quota_goal(dst_goal, src_goal);
+-		else
++		if (src_goal) {
++			err = damos_commit_quota_goal(dst_goal, src_goal);
++			if (err)
++				return err;
++		} else {
+ 			damos_destroy_quota_goal(dst_goal);
++		}
+ 	}
+ 	damos_for_each_quota_goal_safe(src_goal, next, src) {
+ 		if (j++ < i)
+@@ -1253,7 +1259,11 @@ int damos_commit_quota_goals(struct damos_quota *dst, struct damos_quota *src)
+ 				src_goal->metric, src_goal->target_value);
+ 		if (!new_goal)
+ 			return -ENOMEM;
+-		damos_commit_quota_goal(new_goal, src_goal);
++		err = damos_commit_quota_goal(new_goal, src_goal);
++		if (err) {
++			damos_free_quota_goal(new_goal);
++			return err;
++		}
+ 		damos_add_quota_goal(dst, new_goal);
+ 	}
+ 	return 0;
+-- 
+2.47.3
 
