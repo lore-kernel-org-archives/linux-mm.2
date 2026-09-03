@@ -4,131 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93901C61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 12:22:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2DBDC61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 12:30:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82F246B009F; Thu,  3 Sep 2026 08:22:07 -0400 (EDT)
+	id C38D36B009D; Thu,  3 Sep 2026 08:30:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8069C6B00A1; Thu,  3 Sep 2026 08:22:07 -0400 (EDT)
+	id BE65B6B00A5; Thu,  3 Sep 2026 08:30:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CEE86B00A2; Thu,  3 Sep 2026 08:22:07 -0400 (EDT)
+	id AD4D96B00A6; Thu,  3 Sep 2026 08:30:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DD2F6B009F
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 08:22:07 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C87B840521
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:22:06 +0000 (UTC)
-X-FDA: 85172363052.07.4BF2AEA
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 00D4240002
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:22:04 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Sg9zhbjE;
-	spf=pass (imf27.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788438125;
-	b=w3/fZ3hho8I5kXcj7yOyFbb0XNMFim/oq1pL3lvx08otJdKimjWLF2pukgt+y5VJPLDTIP
-	4sMJM8xjODQNF+osRmKsirZ7eZH9/UjgfBt4hh3vf5CtH2u3RheGVZBWT6FylpdEDgchDo
-	5WYyqcPhsKSaM+cZkCEkcgVEKWkgumA=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Sg9zhbjE;
-	spf=pass (imf27.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 885436B009D
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 08:30:54 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2679D1604E5
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:30:54 +0000 (UTC)
+X-FDA: 85172385228.21.9D039EB
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 2419880015
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:30:51 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QLcyF62P;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of eli.billauer@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=eli.billauer@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788438125;
+	s=arc-20220608; t=1788438652;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M9z1xem6qEcuUVJMDQZaw5sCruZ2xCngKTtcTUgfBOA=;
-	b=OvteWXCBYOFJqy/OLBmJwkEqWVeGQNfb2fguOWlttpvyxfPm4XD4FjGV1C7oF1qYAU7Bvr
-	sut5PnRWqHo1RRc4e/IDiDzyig1D/2Ai9mhWVHVpQAfytN28oyvNn3QwQ/d2tH8V/341nf
-	DrOzlRuZ0uBcDTBuYMqCKerM8b719Nw=
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-853c947bfefso869289b3a.0
-        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 05:22:04 -0700 (PDT)
+	bh=444nNZztaKWrtZLx1q7kQKh1w+9LbHm/QlTHTnrzmNI=;
+	b=P1Vqyriv4dmQonh2UwUUe4GclTr/5YUhgrLx+pUHz0mxX3tewklA8ZO/k02mZPM0EVy0rR
+	QihD2b8M2XY/v0JxTJCyiMeSZhr7qMiGqhcnX0ZlJ2mCeflTkIEyGFlPw0Qc40GiwhzGw2
+	bAO5ThhJm1TmmmRgDptjrsP9i24aaBM=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QLcyF62P;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of eli.billauer@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=eli.billauer@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788438652;
+	b=KijQnWGHm6WcH6wNsVgwZN/bEuN2StnxRlT/rEUqEWWX88Cb/vCJgffHXjvvC9HQdzrpJN
+	wyWUWHwda6Rf+jaLu4u0EdNSQ/G7agCaGsTC4tOIN0Gji/VAVVFN4aJDNRq2sl3oLswihT
+	Ce385j3mS86VFPUS5HpAZgkEnCaU7cY=
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c20ce3c118aso204181266b.0
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 05:30:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1788438123; x=1789042923; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=M9z1xem6qEcuUVJMDQZaw5sCruZ2xCngKTtcTUgfBOA=;
-        b=Sg9zhbjEYzrQAmSdr0OJAz/k/ktF9eG8JQrQutg+NPvVmCy8MaWOy6VwKyWuX7qdC5
-         4VSoK9UdyGpScQjjMy6RpoS1Fu+t8WJygvCCm6FfOOiNPdnZcYeLks989tAeIWytKYMx
-         NC4KO13Kfim5CkUeGVeA+eNelWiL1I1T4XoiTP5194ZakkupoWflcK4fd27zz7qnrvPc
-         LA2ChDFcmU8f+sSqHJRfd1T8cOCWK6MSF33gEK15dZDFMkXAEMZiyVN9dOjCqXJRYgvS
-         GS0Eiyetfqm9JKtxyr0fOmOMF6xAnbmtX+1RUM/5fXc+Tahk3J/0zYgKhYrD/VuQd2Uh
-         P3dg==
+        d=gmail.com; s=20251104; t=1788438650; x=1789043450; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=444nNZztaKWrtZLx1q7kQKh1w+9LbHm/QlTHTnrzmNI=;
+        b=QLcyF62Pv5OTm8WkKErnnqQt84vu7nL42EggLcgjUdRklGeZc7kZZZkTWInQ5rR/Kf
+         8cyu2ovBf8/qU/cQR3Q91UCpZzoRucPN+ndSxe99BZTtbL384tmK8/v3ReNaooXUh0zG
+         BnkWSRfBjs0SFukl12G+ZgW+BuLU3cBx4emjqsT2gVqTibVG2d+vv0L8p1JXwGa/a6BA
+         2LjLeHopyfS9BMrZOeF4ebAqHTF8IxJafnGhwVMy1b9gPup7bNPLjafQYzQILwa3cZ5q
+         ss0sPnjbbcnZ+yv1ZVEKnXVgBbxVNS+j7ej3dq28MZNRW5dkPeCpduTccS799qHyRkVm
+         8EWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788438123; x=1789042923;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=M9z1xem6qEcuUVJMDQZaw5sCruZ2xCngKTtcTUgfBOA=;
-        b=AztCH8auiTS+42g5jWxvi7ruskI6vmFYuEtb31tLn3W8CoFKBxmYnApDINet9b4WAN
-         jpAxVLVoy4cmTxzO1u4Oqkw7n/ka4i903CYHsD4KCM8GOYTu1YVq7AvynGRiOTAB6z6k
-         S9ToNEl/zlWmdk0+V2a5XgQcKrZwGTMf+ajfsZodEdi/FF0XaspLZgkWv30MipQcF1IV
-         8qiJMkt0Lbc53LngUoG3x6b86J0ZjCt9q2DcmnCntdoI1sUCg3dRBS/gEymSAXLEaEHI
-         Rz3BujfHcx+i2j/A4DFEdCNIw4qqr/VqnKiylsfWUiIcKFw/h0tdTgKfMXhDy8L/p+DL
-         vX4w==
-X-Gm-Message-State: AFuF++n/iD+W9YSc52LLy35V3EdPH30ru5AbRUbGMglqJExtNcxmlyGn
-	FrtIzY6otEMCeWVAhvrB6mgeY0rwLZJ71Nan6eunWpzgXoohnIQAgcUykrJ7cc1ITCQ=
-X-Gm-Gg: AYBFou2KDwMcupkAeGac6aAqIAMGKkBca7XmIxLZsOYl7RKWuwe4ThBh1gYp2KU5Jms
-	o4tL9Sh0UE0/Ub+xlxgh8HaHUvGhEdm/IbPeHpRH3358xbloZJPRsy6/RXpayL8I2TnE4Y9weYq
-	JTCIiqXJvrVDrtWxJnBNkdjAgmc7yo1uWSveq4Qe0WrsrYrqkk09zKHVppWzgmsRXxA5h3r5kQh
-	TMIuR14uSbs6f7IBybE6SdnSdSJ8iioNjXA6X3RTaIlOjWXfDFiEOWP6CnJn0u2mm1urMmp2ngu
-	QcV/pWjSin5u+oDKQem6vnkhtZxFK4ZWsasPJOb8v54MI4DrOHdroEys5jA+sP2JI0lJF9Huven
-	TfMJbmijhzDOym6tPVYPASQn9fbKU7+Qt7LwJWnMdgY67XvMnb5B13J62Q5iZyb4xsnkgXBHtrT
-	LuFECrPQqMP+/shS0krRVUf7uJSCMwlhxCB1TOcqdVH8wM5U4h2rZN5nlCZYkpPf/cEbKGrj2LU
-	yLnSNv/U18AtS6N8hD7SRpajg==
-X-Received: by 2002:a05:6a00:17aa:b0:84e:c851:a058 with SMTP id d2e1a72fcca58-85ffcb616aamr4808528b3a.10.1788438123307;
-        Thu, 03 Sep 2026 05:22:03 -0700 (PDT)
-Received: from G6L4RL2QG9.bytedance.net ([61.213.176.13])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85db24f2076sm2868126b3a.4.2026.09.03.05.21.58
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 03 Sep 2026 05:22:02 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Dan Williams <djbw@kernel.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: linux-mm@kvack.org,
-	nvdimm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Ira Weiny <iweiny@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Matthew Wilcox <willy@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Muchun Song <songmuchun@bytedance.com>,
-	muchun.song@linux.dev
-Subject: [PATCH 4/4] fsdax: materialize pmem vmemmap metadata on faults
-Date: Thu,  3 Sep 2026 20:21:27 +0800
-Message-ID: <20260903122128.12264-5-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260903122128.12264-1-songmuchun@bytedance.com>
-References: <20260903122128.12264-1-songmuchun@bytedance.com>
+        d=1e100.net; s=20251104; t=1788438650; x=1789043450;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=444nNZztaKWrtZLx1q7kQKh1w+9LbHm/QlTHTnrzmNI=;
+        b=HfZxeMFbwEy/QH/53zc+9bN+9PkkfrMyfUovkYbCdUv78YflIBCxUotzPHNf8vGuG5
+         Wvt9uhRvBL8Y4+klcNKORymtOq/shyMrrBt9wPZHUYiv/DVdw+lKzLjHG1RQ8u+ZPIeR
+         k7k+g8oMuTipYaTdFxvqjxuL4xaFr1TOQ33r5AytQBfBUYbQe8SFPaKWRRoVS2Lxpfbl
+         DuEF9BNst9CWVSoTh0Nqg52U0+36Z+RBVtgIJKKRXwsX3DmvmFic8iU5+6pLPA+B9rua
+         z1ZVx1IURmL1vOEaS0PCXPnylu5+nTNQHVn52Dhi6AcotbaeK/JfQ0J0P1vSf9/08d4Q
+         jivQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx/K3BCiYUXcXfhEXMdi2saUvi0t/e4r4uM1esaThB2QBVVJkA6FgNf0RSoQ4LppDN1TMEheO0FwQ==@kvack.org
+X-Gm-Message-State: AFuF++kp4/gYyzOiuI3Y3T/4JILPZa55dLxG0DYNf/K6gIBOUNgldgm/
+	xC7bSESEt+1y6lBNPo44sXBte1pjP/HD6QgdQDykcGGNT+vUotJU7kdx
+X-Gm-Gg: AYBFou33uhUbdgt9VcmIBuQDtqlmjPjzIjFcgy9bllFPzmSk6gA2lt5C40mdu3/XFtu
+	7HN5eEG6ZFi7P4cIZUBM1D5gBvL9M/pm60wvaCNYOz1425zqCYTIOYdnLpPYZoV2a08XYL27ZFr
+	g3xVtJibEIlTlHSICxd93ekjgkeI8CgdnShpxi6db+y8TKamkfv1ADet90OUt127rZmnojSdKoI
+	jAbqmw2n5muSegnVkT0g27IFADyuScR4lb+Kb7fW+ORBlVIsxLKZoM9zS3l6/0JWEv9gyY+d4W+
+	TMYJe/9eKWI+p5xAmXDuakEGVmfI4vaQLXpILGCrnpSz34XmIejWTNRY4k0SuEemahcna1S4tme
+	2WSO/qN+4T6yPP5nQwSsOQvKeZ8lTEkCuOMFsBMrZgvQnRHtzI6A3HPPI8+ZwfO8Qwv89hcRwBj
+	9f9AeRzZ66wtCSUPgyZpRgFUvtVX7RZJdba55G005gcfZ0dqX9zRX0lsk9HXomuB5ccOtLQWnMl
+	UsploYPygyMwqZvTQao1I0=
+X-Received: by 2002:a17:907:8323:b0:c25:f7dc:2e0 with SMTP id a640c23a62f3a-c25f7dc0985mr85901366b.33.1788438650154;
+        Thu, 03 Sep 2026 05:30:50 -0700 (PDT)
+Received: from [192.168.1.89] (c-85-228-45-68.bbcust.telenor.se. [85.228.45.68])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a67f895d68sm2265294a12.4.2026.09.03.05.30.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Sep 2026 05:30:49 -0700 (PDT)
+Message-ID: <1d7f8806-f4a0-fda0-a361-a011460ef308@outbound.gmail.com>
+Date: Thu, 3 Sep 2026 14:30:46 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 00D4240002
-X-Stat-Signature: 6ottfnqw5jt95mn3yx3acpc7koq6ja58
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+From: Eli Billauer <eli.billauer@gmail.com>
+Subject: Re: [PATCH 2/4] char: xillybus: replace __get_free_pages() with
+ kmalloc()
+To: Mike Rapoport <rppt@kernel.org>
+Cc: David Laight <david.laight.linux@gmail.com>, Arnd Bergmann
+ <arnd@arndb.de>, Brad Warrum <bwarrum@linux.ibm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Michal Simek <michal.simek@amd.com>, Ritu Agarwal <rituagar@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org
+References: <20260830-char-misc-v1-0-05e2ce44f291@kernel.org>
+ <20260830-char-misc-v1-2-05e2ce44f291@kernel.org>
+ <f6001085-9234-4025-ff34-6cc4a66c293a@outbound.gmail.com>
+ <20260831123937.32255a49@pumpkin> <apaF1HUtJnstuUN4@kernel.org>
+ <1729fb06-6beb-f8ef-3e71-47fc3f00345d@outbound.gmail.com>
+ <apcPg_y-HsMki7we@kernel.org>
+ <9a3d6a08-339c-3315-cc81-46907d0836ad@outbound.gmail.com>
+ <apgSCyj-h2xVc2ss@kernel.org>
+Content-Language: en-US
+In-Reply-To: <apgSCyj-h2xVc2ss@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2419880015
+X-Stat-Signature: tes77anq6jj467c57ngu8y1e4j8zsxnj
 X-Rspam-User: 
-X-HE-Tag: 1788438124-456847
-X-HE-Meta: U2FsdGVkX1+UySWJa8q0nnikDTEDm5ze+z9duyX6q2wNDBCZv7CqwYxWyyAqXqEd3p4XIBDx+bcT7BD0OVXHhHnRdkV5Ctw1l7vbT5VJSDGKtqwMGg9Ft0r0atuP3SDX/ZHF9ptyTKW+wSuYgJJEqBCTntobqW8xzIF0OfM7QuOUv8an9ENKsx4WxUCqOSFEXtVWecqahngE3QhEyEUVo9lN4HW+TepVqGMYv5xKA0RzTIiULc1L1SFW8X3INGRKM/mALLP/1LvLUbYDQFx9QM0YfLzRIDy/xG5grgDf0F/a3rLblSaUX6j5KwEKYUCI+aQ+1oI2ZA4lEwhD/C1HAcQjb36w5oDCY1QUrC510SrBkDa+s1ZqYOgnI1wYW1f2Ak/acLd37y2YC6HQ2pM+uzPC0FWT47P2sUURjWxw2SBwj8MKKXYr8zlA8vyJSgTg+cUf1tmxs3QpeBXCDHEk4ULV/oFqEB+kTtWkCQXt0UEOgm5ZqpRzVrcDrLAMOBKLiXpmGVsnpuymmudyL0lXjP7ZuDBApfgstbAsKszjCedOiw8OkRxHagLadH0ipvXVGhODVDEjNsQr1GQYTtfbdzbQV2Zy+BLHQnAdlJJuK1C4Q1/K5Lr4GEXhXoqc1VgHOJHZJ9Lg2v9oB/pVj7dPrEIezlLgFBQVWHTRdkNavZ0qPlPuciwIpm/1NIthx6V58mAldpF0rh5ErwgPp+PQ/O8vex/PRfT+W+jW2jDPVWojfto6q2RdCXWvRH9R+fDaxVbdrlaHfEj+E5SPPBO/rHRU1yZfBgCL4377wFIjy7CxXToKZy6RVAGMu4ZBLBU19ajMndiTXk4R/1YThuRKjHC9x+k4WFfkAdzuqXvrO2kdHSnTyqHfiKwjrMotfFwFVDVREnqudiypJ176baBLC/bRX/5zI/FZGf3Hg+dBvxZMSb2DfbEuBFjWw/Lvzte8twK/0hqtYE5F/nR/McZ
- 575x4jTM
- OXsx9HUsG2pezTfCWgpINYV+U1LgVzF2HWmJ4I24n9vh2n4P2lbk7/VcNip0lCFzbplOKobLGx+UocCrcDCcbgx5LC3SmsiJWwrGGRu7H3evdZQh/oX1na5BjOHrSmBb3Nsra4gZZVYI8CR85g9S7M3+tkpK0ArasSrZ0RkUY8BMwvciJKVlTIRaxxjXbGNuhDld/mApoiCqiQQvNCihqO9KBVEfHqeKp0DaCYkdy/VVpY9VZCsirGjSV6clbSNqYSE0TP7nnuY6g7gOYOXNJcR+BXU89viTT7PetbYUr67i+0oQQJsIsEai2ueEssieaTlYWkOljxp22sr5zwy56o0NR6zCBvI4Z3/EQ
+X-HE-Tag: 1788438651-134678
+X-HE-Meta: U2FsdGVkX1+Q8dqKpSCbB5aDz45rUbYGBXk+IKawfbpBaH/K17k1a0vTGOd+nc9SOvgtrRj6t4fxOY95xvEP7MtoicFz+pJnTJKEgOFA1kZUGoj8UXrPc0SGWRT/GFG9eGfnU8Fgz8EXUJ/uHWk18liDkkXE+5S2X4qfeakfWEXsVz9EUg8Ewd4Gd8fsgFFdIYP8THz/65n4Xev3OByEAursKFkTdH/E6111tts6laAmK3emnsZ+KGj33jMCaTQusLiQG2QXpdmfyYXsjtzZe2H99cS/1p2EG29XQ3RdnC1s62WNgDe2EQMEPYqro4i3UVxswzpaIBqZt+eW5C3pOav7Oe+Bjh7O3ZTkSWafGgVdv9IxuP1CVH5b6TzFQ2aAwztfcRhmpUHB1hbYgAld2ydA6mmDCkUPWGT/NT1MJkLPMIc51OBGp8M18Y95Q0N1inArpY5eJHkWIIwPEDCTDcQVIZwpzNrd/qAlVVzynUXWixKcuLpCgeV4bdUC39u5mMbANVXePdLuggt8l8Vj/4+Y8Zxp1gVN7h5CIVhNpP1P6miLxA0Cicq9PgOFFeNZaLVEG9BDRKk83IG/s/OJ/+2tj831gh4gVsQPNAXRU7Q5rvi3txHZVEvJv6vO9oYiIW5oFJ9DgO78m6uH0kPEf4IbDF82Xi5V4BxUq1+wMZnH9UvC5e5hMpxRGh4IqeYlJL+ZfzrPuRego9RhVLekzthvly95YmwqUoI6vnM8lnpwl+ZKP3XLVsgzMVsPM0IPta19hqPByzjaLnzMFrbTdBpLgsmJ5YyQuJHztGTQQwRYwjyluRPw1AFu8fnwTU/bY3SS+OiHA7X5YbZCCP0EMKsehiK3yRvNAtuIr2tk3kpl06ACEMSb+/6qbK6lT6y8NAiSMzZHcsKi6psmDN1ZTDZsTeDi6Bc2h6N5l24l2jv/NMwxxTiZ0xRzVth1N7eC/4kQJKltZ/z4v3iMeoz
+ WVXoBWD0
+ MBgo7s+bmT35rNlVj27WDnq4QynElLoiHl3yhIJ92bmhvMYIe7Eceij+dVF0ng7KMwkuJGlfZfQqT+vXGl/1cICEbCkIv1ImFsb/UbmZtaSd91YU3+ZI7dApahOkaQa6DK8K2s06AR+x32cba0Yk47cSbP8ONojdvm77FpJQqktwvQUiy93U02abc20QO7P5NT6jNl6AhnpeWJa72nfRUyWe2SqyoJ49YsAo4LiRvEkZTw4anbE42AY9490EEKN6G9H+QZBgQIpt4fnNg0miV2P+68AeNlrNeWlXrKKY2e7ABY3H4pbiPIIUMyCwGpvPJqOrItJtB1g/29eot3pv7bMD7XqDenXwG4xm8AprJNuW3EJgAw5Q2fh3Lp7kLxX9AlipxyUW94Cc4TN+tVHnCcZ4nmUwgfJVksTOS9trHpLnAPWmmCeCMfe8iI3TeUN6BsqDFmOgj7TWlfhpLbpVnnUxIFQ8nZVsBxD6s2j5aqm1L4PRwwHS0QPl+SFflw1MhgdId41LiY7g7e/fHKfMijjmCVw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,64 +138,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Pmem FS-DAX registers the device range as ZONE_DEVICE memory, and the
-kernel normally allocates and initializes vmemmap storage for every
-advertised PFN up front. Sparse backing storage and workloads that only use
-the DAX direct-access path may never need writable per-PFN state for most
-of that range, but still pay the memory and initialization cost.
+On 02/09/2026 14:09, Mike Rapoport wrote:
+>> So using vmalloc() may result in a malfunction in the data transport where
+>> the __get_free_pages() would have been successful. This outweighs the
+>> benefit of a somewhat higher probability of success in allocating very large
+>> buffers, and surely the improved aesthetics of the kernel code.
+> kmalloc() still works, just like __get_free_pages()
+>   
 
-Opt pmem FS-DAX into the shared read-only vmemmap mode and materialize
-private metadata before inserting a PFN into a userspace mapping. PMD
-faults materialize the whole PMD-sized metadata range. PFNs that are never
-faulted continue to use the shared metadata.
+After these few days of discussion, this is what I make of this topic.
 
-This shifts private vmemmap allocation from device registration to the
-first DAX fault for each metadata page, so the struct page overhead tracks
-the faulted DAX working set instead of the full advertised pmem device
-size.
+The memory allocation in fifo_init() is somewhat ugly, but this driver 
+has been out there for five years, and no complaints from users.
 
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
----
- drivers/nvdimm/pmem.c | 1 +
- fs/dax.c              | 5 +++++
- 2 files changed, 6 insertions(+)
+The vmalloc() option may be successful sometimes where the current 
+allocation will not. On the other hand, there is a possibility that it 
+will cause real trouble with page faults. Plus, a large allocation with 
+vmalloc() may be a weak spot on a platform to which the kernel is 
+partially or poorly ported.
 
-diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
-index b14f75daeda7..5530b32163d3 100644
---- a/drivers/nvdimm/pmem.c
-+++ b/drivers/nvdimm/pmem.c
-@@ -543,6 +543,7 @@ static int pmem_attach_disk(struct device *dev,
- 		pmem->pgmap.nr_range = 1;
- 		pmem->pgmap.type = MEMORY_DEVICE_FS_DAX;
- 		pmem->pgmap.ops = &fsdax_pagemap_ops;
-+		pmem->pgmap.flags |= PGMAP_VMEMMAP_OPTIMIZATION;
- 		addr = devm_memremap_pages(dev, &pmem->pgmap);
- 		bb_range = pmem->pgmap.range;
- 	} else {
-diff --git a/fs/dax.c b/fs/dax.c
-index 1fbba0d21c13..89377301d51b 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -13,6 +13,7 @@
- #include <linux/fs.h>
- #include <linux/highmem.h>
- #include <linux/memcontrol.h>
-+#include <linux/memremap.h>
- #include <linux/mm.h>
- #include <linux/mutex.h>
- #include <linux/sched.h>
-@@ -1877,6 +1878,10 @@ static vm_fault_t dax_fault_iter(struct vm_fault *vmf,
- 	if (err)
- 		return pmd ? VM_FAULT_FALLBACK : dax_fault_return(err);
- 
-+	err = vmemmap_materialize_page(pfn_to_page(pfn), pmd ? PMD_ORDER : 0);
-+	if (err)
-+		return dax_fault_return(err);
-+
- 	*entry = dax_insert_entry(xas, vmf, iter, *entry, pfn, entry_flags);
- 
- 	if (write && iomap->flags & IOMAP_F_SHARED) {
--- 
-2.54.0
+With __get_free_pages(), there is no doubt that usable memory is 
+allocated right away, and that it will work that way on every single 
+esoteric platform. vmalloc() leaves us with "we're pretty sure there is 
+probably no problem".
 
+So I vote against vmalloc().
+
+As for replacing __get_free_pages() with kmalloc(), it's a matter of 
+taste. I think that if you're after a buffer that has a power-of-two 
+number of pages, __get_free_pages() is the natural choice, and using it 
+makes it easier for the reader to understand what you're doing. 
+Replacing it with a kmalloc() is confusing in my opinion, and requires 
+that the reader is aware that kmalloc() falls back to __get_free_pages() 
+in this case. So we actually want __get_free_pages(), but call kmalloc() 
+instead and let it fall back to __get_free_pages() so we don't have a 
+cast and don't need to save the order, and assume that everyone knows 
+that this is equivalent.
+
+So I vote against the kmalloc() thing as well.
+
+If this patch is part of a larger kernel cleanup, I suppose my votes 
+don't count for much. But for the record, this is my opinion.
+
+Thanks and regards,
+    Eli
 
