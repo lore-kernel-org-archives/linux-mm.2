@@ -4,115 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5BD4C624D4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 06:34:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DC46C61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 06:36:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB0F86B00A6; Thu,  3 Sep 2026 02:34:48 -0400 (EDT)
+	id B7F516B008A; Thu,  3 Sep 2026 02:36:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E889D6B00A7; Thu,  3 Sep 2026 02:34:48 -0400 (EDT)
+	id B2F9C6B0092; Thu,  3 Sep 2026 02:36:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9F486B00A9; Thu,  3 Sep 2026 02:34:48 -0400 (EDT)
+	id A6ECE6B008C; Thu,  3 Sep 2026 02:36:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B77AE6B00A6
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 02:34:48 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4DF53140428
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:34:48 +0000 (UTC)
-X-FDA: 85171487856.11.6D463FD
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 5BE841C0005
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:34:46 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=Ak5OpSKK;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=jOt4ICMi;
-	dmarc=pass (policy=reject) header.from=mailbox.org;
-	spf=pass (imf18.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.172 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org
+	by kanga.kvack.org (Postfix) with ESMTP id 85C496B00C2
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 02:36:20 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1B091A4390
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:36:20 +0000 (UTC)
+X-FDA: 85171491720.07.831EAE0
+Received: from mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 7190AC0003
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:36:16 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BDPYwWUG;
+	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788417286;
+	s=arc-20220608; t=1788417378;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9lOsGkjx8FvghBalpLXZpmIViiZLM5WeBkF7MIb6oEc=;
-	b=IFLdE19IQR2OCygXIlPsxlVJW8pChCwiYzMxy2i2UyYN5V5nuUckIoeCbtfZTQ9Mx3rNCm
-	7hR2m8FLg1VsuTt/oqtnvpjh9mlN9rWRlQ/EOq87rDYdou806k1FmC+ix5kCL6P2DM189x
-	0JSt92XHplUpuAwJ/qBNq6qJ4SsuVE4=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=Ak5OpSKK;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=jOt4ICMi;
-	dmarc=pass (policy=reject) header.from=mailbox.org;
-	spf=pass (imf18.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.172 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org
+	bh=/AOQl8uMLb7yaSSuMA/y+PSrYIOL2fdOT9lQ+lxwGTs=;
+	b=axInRGGtoFcO45+xgRMh4ByWOFReVBPLvW2jpsInQKzmRkZcDI6b3WBtNU13GJDW3z2p95
+	kdzJgBb6+R4T5UGWopQsnhc9IJxQdkFH0MkvJ2Ppo5WWwo5apGmN0hVwZOjx+0vLjNRkbh
+	6eVzjUsnGMeeGzTmsbNDQ78uDY8uDrs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788417286;
-	b=1b4QaE+9hVgkyyugumfEIqoOZ9jpk8kci553b/hmuiraf/RM5JhCmZcyO44FiacvD6+ZA0
-	yDJHQGxzfTOyhfTKY8oxBPhSow9eOp24L2haZvUDnixn4guB0Ypg+vGQ7Bn1LI5+aCh8nv
-	SKiZyld4x9yNmToQGEHdgovh5lyIGHc=
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4hb8w44WmqzMlFs;
-	Thu, 03 Sep 2026 08:34:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1788417284;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9lOsGkjx8FvghBalpLXZpmIViiZLM5WeBkF7MIb6oEc=;
-	b=Ak5OpSKK5k4V1tz/HiFQOESNJgKKNRs1RV3HbkrzegXSxfWzf9nI+kXAxpD06yhuDOPp+c
-	KgpJx1leZiokokw33U2+3DJ314vD+casvlLn7MCBgDM0F09f2NviLRhzQwOXaECWbZyv5X
-	i4eW7fD+LBHoXqNlm/+YZbp60ZwVw9o01yKyB7CowR6UNOMztnKAKLl1PC9yuJCPV4o4oy
-	Iy2/OJ7z17ZF5fB7HrTrqC3NOqdXCA+ePeteUQlZtdkwp25P3DTqVEbzn80V02gmWioe/+
-	6glw+VK5jicbBHz1yS6bmw9QBGfAYUMkLfrsTR+8A3+3WCA5TQxyouhG8+mLxQ==
-From: Manuel Ebner <manuelebnerli@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1788417282;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9lOsGkjx8FvghBalpLXZpmIViiZLM5WeBkF7MIb6oEc=;
-	b=jOt4ICMirwM/HK6EfjtqHzS5IPGeFOgVxnGSKH/rx3Lcn2JmeLCwMwEDFGxenHGKbqMI2m
-	xy6Zd23CvZ5wGv/CjiCLPlIwfyHdT7P0YGXlvT1fL9s260gkKDaP9b40OUixTZUBT/td4o
-	SH41vlwElopM0yIqB4KZz0uCHs5Z/i81pagzGHZCxwDiZmaz/W+1yuyUtI3Hf8TikhO1u+
-	Kl4RPFGaYiSnv3F2UUDx6ZQEt2dlx9mewGlCDpOw5Ai7c0dz2iFomeNMLfnSxXvqXVvXe1
-	qVw/olbqN/PXqrjie3dak7dyXYGlvCuooiyRTX3mhvnWLG4cDbzvLaNgdzGUVg==
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Cc: Manuel Ebner <manuelebnerli@mailbox.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] Documentation: admin-guide: Fix bracket
-Date: Thu,  3 Sep 2026 08:32:56 +0200
-Message-ID: <20260903063257.711435-2-manuelebnerli@mailbox.org>
-In-Reply-To: <2e2333a9-dc4b-49e5-a09a-47fa502e0e22@infradead.org>
-References: <2e2333a9-dc4b-49e5-a09a-47fa502e0e22@infradead.org>
+	t=1788417378;
+	b=uQpOwio2mdBjAxnSm4+uRGh2+1poxPek2i1FNtGCcFoTLklun9+1pifnSpoinvr4Vzpr5d
+	/D0sPOvRpB8bNYbSZLL7K2ISOXzKOoAKYuuRb5qYAN14mfkVJ8fT7QDDZC9KgjbqAPHCFf
+	r0Bwb08EoTDaYxlDgtl1BZK6KE9Y+tI=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BDPYwWUG;
+	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=/7zVF87+vSIaxGdnTGi6zl+USr7Ew+xcjHfJdu2PHXQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788417371; v=1; x=1789022171;
+ b=BDPYwWUG2Z6bRep3T0VLBuuKDahOxIhearwYCB9Uw1og7GYuVlylNKYFuk9DYYcpN79wzQxv
+ Jzj5HFC8/TpHPwL4N387Usg237Go+wsjMcy9922gksnD2685r3sFTvRolNcm0p8lyA42w1yhfCR
+ 2I4StrsLfzGRP/Q1GsSuYBDA=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 8473698cd31aeb55;
+	Thu, 03 Sep 2026 06:36:11 +0000
+X-Mizu-Trace-ID: 8473698cd31aeb55
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <3775da0f-4068-4fc4-97a7-135eb975ec65@linux.dev>
+Date: Thu, 3 Sep 2026 14:36:01 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: psbz6ihqd7dinhaz4m4x9gy5s6f1pb5q
-X-MBO-RS-ID: 9171e99d099856e7f34
-X-Stat-Signature: b9g4m71wnm1wmr9smhcx9yezgnfq9x1k
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5BE841C0005
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 04/11] mm/sparse-vmemmap: prepare DAX vmemmap population
+ for section orders
+To: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Jonathan Corbet <corbet@lwn.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-doc@vger.kernel.org,
+ Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>, Randy Dunlap <rdunlap@infradead.org>
+References: <20260831075342.57563-1-songmuchun@bytedance.com>
+ <20260831075342.57563-5-songmuchun@bytedance.com>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20260831075342.57563-5-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: szyf44kwpxrticiq481a434eq5qpjdzd
+X-Rspamd-Queue-Id: 7190AC0003
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788417286-797558
-X-HE-Meta: U2FsdGVkX1+zQDA9HciUTFArNy+TD9fRzFk2blm95RIhcgyiNCfesqSsyEw3+szEZZ52FaPP29JcWu0jkzw04lvl296kfGZ7E3dMVrO4hi1vVsf1mmPpMWYaVTsEMEe2nbx4cHnTdAWPV5LrR12FZlV5G5VC5vMYcHA8puDAtjogZxkMj7cw4ocp3cF19b9R88QqTnnukauwIYTw2Hg1Bl8mm50oqQx8qRwK68dkjYJPFpk2tkExczu7AYAIElaSM0L+zTcCGcYhI1/BXddFyvfxwI3KIcwPdqPVztfNjDa8ezW3EHTdQ1YsIQjeecnzivBxBziM9ItA/k4IPIkLrvsveeJSMHCYhwSPxoYfV//soc1oqwbxdVfU7MyvoTRJk8k5Q+latY5EwIN08sN95uSuxu+SIw6nU1HJU7ZkiovJB4I0bYbuNWURWd7/h+gOBhEYbBhiQipoZpPDkRL7urtNzPsPh2uIwbFZMLQ3L/sCDtrhKbvkMxKTxJ2yc8vuYzuWgowCgJuIuW1c2Rqdnaxf2T8yLTJ+uOUtAEjJz73Ev1dgR9mktiGVbDmfTDsnYnEnLY4q5dCkit6if01xRcfZiTDnwyXRzD0uGWfqVXXw4BYsMbrFX7+dYZjhVyy8iNKMMZ/CnU1OrvjljFhRD3bXKX/v4gwQvCHEK7Zc7BBNrWld2tQ6vovBAV+awfbon9F4fc5HpA074Y8Ybo37hVixjvZ47wj737QX1NMS9H1VSTIdgC/mgMNo3yuTgoDyiThHUIP6fFlTSXFLgqus8C8am6RlZJhcRz6E9zXOOTQNNMzcz3OiUjZG6U2Cb9EgoXH1FFKGZ3DVLt+Eok+yI92JnyCc3yGweaVtruhZrkXrdG7sy7ScBDm7wUez4SHXWZ6YfnOXtzAeMP0En/K3OI0/cbPhIGX653oPNAbNHnBcvvvx2zPPq2Qkin5HEtRuMrK5B8WBfYx7r6ivSqj
- O/k3CiLi
- AI8/hoL4w+gEsI8/5Q6Xl4yQXvBQAP6Dt61ovDMWGIB40vrNdr03TcR7bbdBhzjdrTBqpIe6EgKJhOsU710XcXjnVmBGK9/YzQa4NzT9MgZkk5wJE8BC+PFSQ0c/DKhQhUwvp+yRB5ftbQeUr2yIaL+EpWSrElwlMwcLRpQipTUwdNUvTBLGZK98VQiirkwunaBCNpK+SFzP3dXhAPJSZ1xoXYpPTe09iHIJIiwh3e39Oe6G6F2StPjdjAYeMXcBt1ajw6Kr1oDvg0eK+hZWG72cXPU6YC7CRHmvldrx64JkQahVxUND0PFIcbMrXTfrNpdGqPqWcr3oYPJPcc2WgESK2kQYukIbH7focNEP8LPEVDZA=
+X-HE-Tag: 1788417376-662519
+X-HE-Meta: U2FsdGVkX184fRWEC5/QFNms9n2TIKFDWBJlykXrMKeS2nJqEOeMwTFLDud2EI8R+ipdcfX9G5mzpg+w3hSP2Wd4st7cG/nqt4t6DXiWKqREPfaO5NZyqEavIIKmLEkjbBaxZVw5Hcjh7swNlb1Sz5awM4FsJkueIgnkK24wjTp3QaOWAGfGJX/8iA9KhNBsh1LuZFRi7Yysfp1snl1xdemYUctZzhlDKy1ijm5ww6uEV0SJbmoMSMigK1Y0P29DHHcP5HTokJ220NiK82WoT21hHYb4Zne33+6ppZ7I5r535yZX9qF22M9O2DuhLrbRkUmUiwqKqji/OdmSQ9VCq/ENVeS07Shx2IBTvdh3Npee+EKAWu+Gl4JNKIA/T64Uw5byzXvumuNlvrNefPgynlWaT0txYwTGFbTz61FxibhymjtVpBCT+nPuLxLI6geiPjtGdCwDdPLDC3Z8C/Ly19E9+b3cEcCFieZOMj2LFR1cyKoPdzBKxlNOKCbEPOVRetxqLQ9OIWTXtnw3avpadelqZfbwPstVJszupT/t+g/u6OA9J5/q0y/aRtsMM/mhEvVjFrgxSvCFZtP8s9VvY90/Un2PH7L2ODsn+a7fVNEXLzecGHzBkgn7Q6xbhIkAdgq+x3VTTkgvvR9R3w0ofj+fd51iwl6pTwMcaLOTDCD2B7Tea3ieV/oWmLSMNx6sjnnCiyYaTGvaTeFIWNZjGOclDvKCxLsHufNeWtCp0g7RrzqlcMmWrIe77sghAo/7bwgK3LAkfLOow33fkfyW4xaDHR55q5E39swnOjBTVdJI+y1obR4h1wy+YHlGM0l07zGb/d6x8bRqGRXLCyocDd8wHH4K7MviLwt7AZsZC6M5dDVi8kxkLdenLuZnpUluB4sFSnukLoNlpjajsEjqKOqNF1Ur8GviucSVcW2qD0ogIW5zE2HZ5Go9hJ62//tE9N/Sb3Leki7KB1FA0bS
+ SORL14Iq
+ MSXTrl9lnUo+7nbVUACHTsvkDoSFwctPqwn46dLGx6r4gAu8OunURvneAtUoM/wij5StIZYL00CqLUSESQFEkzbJror0jv2ePJ7eMNB+gKGJQ4TcjDf5xYl/bStH2UrvNdnaxkGJylx4qUoRfEmrieYe9GvzRTWGe1v40Y85LASq1fGnCiJX0Wy/jc4EOITIqvV6IQTa+KJpuJQC2k14qchTVnOvYyL0PuL8ZoHv/RsMgnhHvNmAah55Hd36VW2DO38EuM4F6fxH/F1GMYIY4zW0Sh27eZ5cGODDqiMqZG9gvYsA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,28 +99,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add missing ')' and remove ';'.
 
-Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
----
- Documentation/admin-guide/sysctl/vm.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
-index 5b318d17a..5f4a056e4 100644
---- a/Documentation/admin-guide/sysctl/vm.rst
-+++ b/Documentation/admin-guide/sysctl/vm.rst
-@@ -438,7 +438,7 @@ zone[i]'s protection[j] is calculated by following expression::
-     = (total sums of managed_pages from zone[i+1] to zone[j] on the node)
-       / lowmem_reserve_ratio[i];
-   (i = j):
--     (should not be protected. = 0;
-+     (should not be protected. = 0)
-   (i > j):
-      (not necessary, but looks 0)
- 
--- 
-2.54.0
+On 8/31/26 3:53 PM, Muchun Song wrote:
+> Device DAX still uses vmemmap_populate_compound_pages() to populate its
+> compound-page vmemmap mappings. That helper allocates the head and first
+> tail vmemmap pages explicitly, then reuses the first tail page for the
+> remaining tail page mappings.
+> 
+> Device DAX is being moved to the section-based vmemmap optimization
+> infrastructure, but it cannot switch to the generic section-based
+> population path yet. Once a later patch records the DAX compound-page
+> geometry in the section order, DAX head and first-tail PFNs can look
+> optimizable to the generic helpers as well.
+> 
+> Add a DAX-specific population flag for this transition. It keeps DAX
+> head/first-tail allocations on the normal vmemmap allocation path, while
+> preserving the existing page reference for reused DAX tail mappings.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> ---
+>   mm/sparse-vmemmap.c | 27 +++++++++++++++------------
+>   1 file changed, 15 insertions(+), 12 deletions(-)
+> 
+
+Acked-by: Qi Zheng <qi.zheng@linux.dev>
+
+Thanks,
+Qi
 
 
