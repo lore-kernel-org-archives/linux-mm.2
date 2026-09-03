@@ -4,180 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4034C624DA
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 18:59:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43ACDC61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 19:01:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6AC846B0095; Thu,  3 Sep 2026 14:59:07 -0400 (EDT)
+	id 1CE5F6B0088; Thu,  3 Sep 2026 15:01:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 684116B0096; Thu,  3 Sep 2026 14:59:07 -0400 (EDT)
+	id 17FF86B008C; Thu,  3 Sep 2026 15:01:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 575F16B0098; Thu,  3 Sep 2026 14:59:07 -0400 (EDT)
+	id 06EAD6B0096; Thu,  3 Sep 2026 15:01:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F3B6D6B0095
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:59:06 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 511BA16045F
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 18:59:06 +0000 (UTC)
-X-FDA: 85173363492.27.82F76A4
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013031.outbound.protection.outlook.com [40.93.196.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6E93E40005
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 18:59:03 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GWBTIasa;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.31 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788461943;
-	b=MtkaxjB58Qx2y7g51U9Nl1nGTCRwHvweDPvNYY/DVxHVrMIT3V4Wf318DgsvNbKpMOg7rd
-	0vCg50gR/rONEEYXej3+7C4gKgoAZraTUfr/sKVOTupYGcTCpQuGV+UnKPSvbcGRSRW54b
-	crlZ4J+SmYhY896XqGpf2caHXZ0dXGM=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GWBTIasa;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.31 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D97616B0088
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 15:01:38 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7BAA6A4834
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 19:01:38 +0000 (UTC)
+X-FDA: 85173369876.07.059B783
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 837F14000E
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 19:01:36 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=f8FcuwgL;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf27.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788461943;
+	s=arc-20220608; t=1788462096;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OwB+StsVA56q/xQXaukefH5Wkuw2Uoey+rPxBPRlRnM=;
-	b=iIqinlOlJi//EXjH72wEilW9RR5GRx2gIkZMBZyZgdLOGkEkPoGpWPA5Itg4ltgRZF5cLV
-	IJBSfLdl2do2qrS2doB+a8pgRzmAuCwUIshGZ2m0U+wAku3JTTQwrhYmASLWPCUc3+Clxf
-	pyq5/8+Yb/quVmzEV18Mr2jM3YoBtns=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=h5jUselzdvl1xU0xArW567ByCLjErTo3cu7CH/2kD6dgjKfQhAnyXD1vOo2tYryB4wTz7L38kFqiXcpPqI6Ja+AoZCW0rs6uRSTTVd+KvwxxJxomAnQjRagp2gCze4JKcL10RSBPR3BbuY1X3fuZ5xQxllIN2jVIwlkpMUaoZTObav0PYRMZXdlJ/FIeWtD6XSoS9H1qIpmNpQBnOeA9Ryfnq/O0rzeorbH7Fqk44MDCni1fqQmskkxvp9TH5iQNaoI8gEqq9AuZx/mVUobTP1rrKbAGYHhuKToQL7DttA+NcJjcBDWKRXYNzIGV5FMwAI4XyR4E1+QxVILH1ZCQuA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OwB+StsVA56q/xQXaukefH5Wkuw2Uoey+rPxBPRlRnM=;
- b=ZzU4dSID4Kvj3rk2sp/J7d9kg9nW9qgjPzuPwodPsvNYHfNjZ9NUNOAqbsZnNg1K1UK8myDYE/AwpiSQYWCdJHZ/6hXa18A+CSxV+akPP0D44+1zmQAuaBdA6R+xVEOOSaUiWgoQnHnov8blG6/dsyBU6PRlKuUMjNhYkKrN0zfgYueGhKEqvUH5qQutvPXxev6az3Z6TQmUb4/GsXN4mnLkQW5MbSvsZpbuqaVG+eFvE4V+KBpae+atQlpWqSNbvwQtNT4JYJh8gP/ji9ziwCvHSlUe3bQ3WXbQOlqBcHjcXAhlgWG6w5Szf9jNj242FsFoBSM4dCilFXaI7ogH3w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OwB+StsVA56q/xQXaukefH5Wkuw2Uoey+rPxBPRlRnM=;
- b=GWBTIasakYl5WxmTIn1OSUxJIZzkutkW0nSgbf+2KzMZXUh0INPE7fdVXdoIwMtnW0qUQGgtqx0dCclhSvKpsMHP/niqz8bslK0sreBeIw23fX4B8f1UlfRrKqXCJqLF4tcdpZd5wfQXGt3Ak69/+uqx87mVjJ4bwzTOeg43r8yxTbRX6CNb5+x9v72pIL1xgcjrlsGE82n3+0nQdfXBHSQzwMtvKXTsJy5fBsj9mPC3I0XZ+6lfIrnr4pv4JTDxpk+6KnbwzPUdQxUcipMbWC/kWqyclXf1NsL51xjGXAcEvmCZsxZxkdaNqJrVUaj1ku4bRFvJd1bbleNuk/bwPg==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by DS2PR12MB9590.namprd12.prod.outlook.com (2603:10b6:8:279::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Thu, 3 Sep
- 2026 18:58:57 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0360.008; Thu, 3 Sep 2026
- 18:58:57 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 03 Sep 2026 14:58:54 -0400
-Message-Id: <DL5WUE8JD6MH.3W984LEQQMFV@nvidia.com>
-Cc: "Nimrod Oren" <noren@nvidia.com>, "Andrew Morton"
- <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>,
- "Lorenzo Stoakes" <ljs@kernel.org>, "Baolin Wang"
- <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>,
- "Nico Pache" <nico.pache@linux.dev>, "Ryan Roberts" <ryan.roberts@arm.com>,
- "Dev Jain" <dev.jain@arm.com>, "Barry Song" <baohua@kernel.org>, "Lance
- Yang" <lance.yang@linux.dev>, "Usama Arif" <usama.arif@linux.dev>, "Kiryl
- Shutsemau" <kas@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
- Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
- "Michal Hocko" <mhocko@suse.com>, "Brendan Jackman"
- <brendan.jackman@linux.dev>, "Hugh Dickins" <hughd@google.com>, "Nirmoy
- Das" <nirmoyd@nvidia.com>, "Dragos Tatulea" <dtatulea@nvidia.com>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-To: "Johannes Weiner" <hannes@cmpxchg.org>
-From: "Zi Yan" <ziy@nvidia.com>
-Subject: Re: [PATCH v3] mm: remove min_free_kbytes adjustment for THP
-X-Mailer: aerc 0.22.0
-References: <20260901190123.3511535-1-noren@nvidia.com>
- <20260901204449.GK3004@cmpxchg.org>
- <C8541A2F-D6A9-41B0-A3FE-52339A6601F0@nvidia.com>
- <20260901220917.GM3004@cmpxchg.org>
- <69C018F5-A1C8-47AD-9567-3497AA6808EC@nvidia.com>
- <20260902160417.GN3004@cmpxchg.org>
-In-Reply-To: <20260902160417.GN3004@cmpxchg.org>
-X-ClientProxiedBy: YQBPR0101CA0168.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:f::11) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=4k6051qYGqcOE0IbvTlu78LucmjSeHvrRypj52NEgg0=;
+	b=SrpTxdUmU1DxMP2QCkP7rwPAGs5OgeJED8g/h/gHebfOpS5IcFkGw+wMi4kV77wxXBRSve
+	pSjbx9SJy4/5DnXUehk/vSh4MIL1psgBQXG825LYdcBvUuhAnJiI3MiDf90gF+LZ6Bk7iJ
+	2CblTHnNbPDbR9Um2SBu52EU3t7ahLM=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=f8FcuwgL;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf27.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788462096;
+	b=MgraqLiAKy2zR2aoE9A3AN7+9UmKWOBZ71rTbn4Wn0zivXcvOV8BoPa48N5z+c3tvmEpOV
+	0DNuhOeNXTSl7W4Z4A183c+MXQRMp2rc6cgkGmuRFgqRQsfyV+yv4wMzTC7wHBRcHu56BH
+	eKKGxRH0oCCCBjq7REMEsCJ4o/6blKc=
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4843e397f74so232433f8f.1
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 12:01:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788462095; cv=none;
+        d=google.com; s=arc-20260327;
+        b=L+lopPyybojMQUxlVYGoKE7V/gwpFgHUMR130nSMLouvF7OPkhz4qhtbETWLQXooqc
+         VamzeA0OcUYB0dib+Ho8B7CuwOe28G9d+cb3ydK4A/NWav4O79FBDNpfmpcFueuIPbnC
+         CvF1y76Xz35escWUq36Xlb6GRaFiTnXXeyYlL/OICR98GEXZzXqJpRLBf9AHYphGuVhr
+         lKtUBDGg1eTEXSmyuIh1n6Ibtlo+nZnTwkGLWnhXiiUuUfadChQgpmmcXYi6/XnvwOUI
+         3neceofN3zdM395nOWNTFxy6IkB+RCjY9XEtBZ4OWCfqPfUp+k9xmWAJHT+7QI1fN4L1
+         Sdow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4k6051qYGqcOE0IbvTlu78LucmjSeHvrRypj52NEgg0=;
+        fh=ADQYGoFp7OVoUemyxaMhUTdLFFV8+JAYf7HQVZkXFDQ=;
+        b=Xx4fgywfibbtHfds/Tj0t9eqEP/tOL1gGvjuB7LZzLYAIcQfVt7wmfvn3N60usE8i3
+         7jyuqYcuQoPlxcHy0Q2cYWW+v92hH10xgW8q4E1H/KrSTkR+1jpvkYvQm5xnkGqih3vs
+         au63slKy3NJEhoju5NiSvNo1cAafVy6QFmXhYhrjQGOMFfdw+Jx7E/yJoY5sr+rGbSnx
+         Z6NHfLQRJf0A5ios4lmzkk0UUWY/BwKSJjdnXJQcQgmi5tQdesvkswXnxmL/D5x8rewo
+         +8oGA7jJrYc6HfLfjGFLNXZdG60yNyRFcr1Kt8T/kqX/jy+ijSoRC9hU5dfF0y5qhGCh
+         6UeA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788462095; x=1789066895; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=4k6051qYGqcOE0IbvTlu78LucmjSeHvrRypj52NEgg0=;
+        b=f8FcuwgLlBba9Ww9Uec3oHOLN9CVg2a1VfYFaDZ3CvLHlgSIoM7RB/vLNOuzcLsDuv
+         Ya/REWr+v0gN0On4kG9jCedlly3cc6rfJPWC+Gs3CrWNsKmPPzoxVula7Ow/dosAxvD5
+         hGo4bYP+42SdO5QxWa1ljp2nFMrh0fzLpTONsfsN6K9QuQ3FRE/OOpWoN0v79581Xerp
+         fzIHnyQqSqGdBnQYT/5f9bBkoYCluJZ96Wl+UwsnUfZfG9qVSveYSn5ZGIM0hojrQeCh
+         ITtQyx6o4zPLhdzBRu/GhVPhV1/HK+hSSTkppnQJR79k2AmhNocsmqj89GlIqSkZnPNs
+         48HA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788462095; x=1789066895;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4k6051qYGqcOE0IbvTlu78LucmjSeHvrRypj52NEgg0=;
+        b=tKYITK9ls5dNM0GrOtenM6fiz2aE0zgzRVfTRNuNqxC5I2egYjwe3QTNqehdr4lkkf
+         fpzRM3ft2Va+6/L88hgBR2E+OblTbxe8SAQWcVXAa2BQQezCe+yosaFRpYjsojloKDY/
+         04NnTDChaIyezFyCIraCHfF0L3FokzDqzGbb3eosClaVEvWB2tHVSxUECJgStZ4zufGo
+         sJiAecf5FTFn3AT4CPKiYEs1Aw338mLpl1SYSQkHqNFirEd2k1sW5bOzIXdGzunQ180u
+         P/jajYavReRBV0zpi6Cg2K0DGGIUQ6MgKw5WHnWnwAEq2GV6DS4g3Wo52Ne/ME3033hE
+         1Z2w==
+X-Gm-Message-State: AFuF++lkwwu2UXFiilLe4KtxDjI8JHmEn8t6gi9nhthCQl9UlseT+Tg3
+	bIGacuH32kO8guDFKOKYuBDf8x1F0KA7R0m/Gx+kpm+6NeL7SsdE5tDJp6LgRVDTAA7zGMPUy8l
+	t0vJ3nNLTPp1nFDalQhitPyaL48qw5tk=
+X-Gm-Gg: AYBFou1mWxaSOrQXXD1+lBEG/JpBLBAbEo96KicaWNYfJ3X2xBD27I3bZWYjrEdzkR/
+	CCjaCLKpvyuiKokANcI9ATPfYuE4gqOf4dSN4p8NXEGehbn1BCqNYplllovEzL/b1BGQAivlLk9
+	GFC8jXXy3SxNVVAwbh8lO277iHCfu8XGyIjz4xd++p90MmWKfRRfUQ2vtC2imFIuM+MYzLExIcK
+	XrS81n5vCkxHxFQvdN1g1TcaTZI2KesvnNbnv3TfqWVSl9Gy4ZXfu9XmSMIBA0QDWsmnwbG+Z39
+	zcq+nKsGHGGFeT/kIh11TFlcJ24U1BRawtbcln+QanaSGQ/Ztm8idK34DwjfuwFdzXhCaegINp0
+	ZYADb5a5rDiI/NUon/WsYx6Q/P9I=
+X-Received: by 2002:a5d:64c4:0:b0:485:7d6d:e0e0 with SMTP id
+ ffacd0b85a97d-48582315f07mr6561895f8f.3.1788462094628; Thu, 03 Sep 2026
+ 12:01:34 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DS2PR12MB9590:EE_
-X-MS-Office365-Filtering-Correlation-Id: ee89eb72-6b81-4af0-8a5b-08df09ed67c4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|366016|3023799007|10067099003|11063799006|5023799004|56012099006|6133799003|4143699003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	E8sjyZIX7glDi3zHBkqWLi1tynsppwXYBUROuaTl+s7hLSKh1vUj7ZDiXhOfcTe9g2uPAKcOqFWTsUWl8Fly/xRANI4ZD3gZx2dDoH4lyUUccdJdaDgakav2DTp0KBING43GrD6gtv/fP8K5GqRtvIoPJYHPfYoM1lyi/NwPiFbQdPYjpUDtV1bt/oV3aUIv2uXYdCBd27o5uykli5eEZ5pJm31Ga9JaAVSMKAaPV27018xdUPOPpHAF2gqBVnuCt2rbysOyTNJV6DTKCaJxQZ3BxaY8TPVEq5a16S9Q02fm1aykpUJSuJqjJ2uZMuIUDfNZSrPLtUMlED1DLbcETa+tsodExP1BV9Ap2zqoi/ulRH4gR2icXsW2KVmre6+22Tge9EqiQ1JjUrX1OCWW+UcdplmXDgWNKytTBXsSt+2fOAY48ci80p3ooBvU7uujxrZJSEBYS1b8aAGD5Uo5T9guXE6W3FjEK9Bn62/tFAXrUlFXNsixYFUhHo1ssPTi/iWhpY9qHzYajDl06SiX0EbML9eCStNP91JBL/r6oOyxcXLiISpW22z/PCN5kRfdaHXWv5RrMvhAcO86TwPUnNfC72FAnUTuvtSFNqeY3aNHHoq3xSV2Ryhg79WMf5YTLb+MatFquZnR4pjj6kQnljmFAuUhNVybcw4zrxjnpAM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(366016)(3023799007)(10067099003)(11063799006)(5023799004)(56012099006)(6133799003)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MXA2ckNkSVlMRkhabGdiRGNqa0RrSkQxd0xHQlNZYmRaL2tEQ0pmd3YvL1Bh?=
- =?utf-8?B?bEw0OWxBNUwxcGFKd3I5Tk5uVzJqQVROWFBJOUFPY081eDkxUjA4N3pFeUN1?=
- =?utf-8?B?dEZzaFo2WGxzbG1CUXJPNG9ON0UwMGZZQkVYcExwTVpZZTVuQnFxSGdVTVpW?=
- =?utf-8?B?enZES1IzaUFRN2o1bVZuNUR2SHI5WDdUZGwvSGhJck1OUGJZNEZMS2ZtV0Jk?=
- =?utf-8?B?MjQrRmpoUVQvNWU4S2s0b0tSSjFNM3NDaUhWenl6RUVxK01Hd3RjTGVWNk1a?=
- =?utf-8?B?cngvbitMbnd5NnV0WFBydSt3dWhaLzJjVGpxdTJ5T0V2RGFXSFpYb0lTMHZ4?=
- =?utf-8?B?QVdYdUtCTlFxT1NYdmZ3cm5OZVNrSEYxM2xGVUgzeTg5UzVWZXVhZnMrWkNB?=
- =?utf-8?B?U00wemNZeVhqNEpGQnlEQU1Ra3JrQ3JxMDVYaUNMVkE0dWpMaml5SCtoVjFv?=
- =?utf-8?B?bk1paUNyWDZ0Nm9TUXRtYVlTaXZzUGNBalhKak5ieW1iZGpFL1gwSUlYbGN5?=
- =?utf-8?B?Sm1yRm1XNHhqeGtlUTF3YlN1QWpqa1NCczhrRDk5M0lYU1dhQlEzMzIxbDVj?=
- =?utf-8?B?TzFna1g5N3pnMkZPb1RHSnBHVXg4czFDUG1zclBZVm5lZHowSk9QUmo0Q3o5?=
- =?utf-8?B?MWIyVlAzWWN5K2dVdFJwdXNCQ0c2anVkNHdVMytGQ285ZzdzZVpjL2xEeitk?=
- =?utf-8?B?eDlOWVVLeTRGU21Wd2UyNnVETUkyUjljOGV5NmU5VGhUZDZndFo2Z0w2RXov?=
- =?utf-8?B?RHUxT05Yd0h3QjJLUDZlalVqWWwzTFg2MXVscUxRU2hBYkFVYjcydFVlekVR?=
- =?utf-8?B?Y21jd25QVHp4bGczekxqRTQxZURzMElFSFVPcjV3SWMzTUV0cUY3YUYxM1pC?=
- =?utf-8?B?bUdFaXNKa2VJcEpham0vc2YwZmc0TUhmQUthRy9VR3lEUUNDSXNwM1JNK3l2?=
- =?utf-8?B?QS9kbW9DYndQRWZRZ3RvRUlLSzlSQnlkRlNWSFNJdWFoemRlUXFPMGl4VmM0?=
- =?utf-8?B?dC9vZks1QVRvQTlxZjB1NnZjdEE5NFpWeUZMMW5qTmxtTVdWdGN3QVMyZmNN?=
- =?utf-8?B?L1ZGd3FyU3N2NG1jN0cvY040dkkxL1hNcTlsa2RVWk1YSjJFNWliaTdOdFd1?=
- =?utf-8?B?RXNoM0gwbUZIWHNSd3ZCZ2hrWkdhbElXWmZtTHUzem1ZOTBJZDljY2gveXVN?=
- =?utf-8?B?WFl6MkRib1k5bWhLYUVRaWZtbzV5T0pFaDh5RHVmSXpuRG5qWWFaSUJCQXlr?=
- =?utf-8?B?T1gvRkFMOVphbERMNEZORkRXV0cremEvTTJTSnNxWVIwOTB1b0JZK3dUdGMz?=
- =?utf-8?B?UE5yWW5IMUJFZGFPMHU2K0crTTdZV0ZiT3hYd2o5em5Ud3RFWUErM0VUWURH?=
- =?utf-8?B?N2E3MHF6czJvUVNRMUpWMy94cC9LNDByTk50RlhHRlVLNU1pRnJmRjZSdmZJ?=
- =?utf-8?B?cm5JbG9tNGd1Sk4veXZSQlFSc0N3OUx5SCtheUZ4bkNuSE91RlpoaUNDM0kx?=
- =?utf-8?B?SEJVVVV2UDNDd0hLbG9wNnp0RWs2QXA3Yzl6SkM2bHRSb1NOeFRYTitEb25u?=
- =?utf-8?B?YTgzRHhFQjVBZVdZaGFFNVFEOWtCZDJkclp5dTd5T3A4MmJ6Sll4WE9xUUxt?=
- =?utf-8?B?ZEdTMEJUWGVTdzRBK2N0eStHRjlWUjhqUEJPVjJSejE4L05qeDhyZlU4SUFI?=
- =?utf-8?B?cnFaQnhocnJQVlV2SnNlRDdaNkw2UFJ5QXJ6YlYxMlhGWTA5SVF6clBqTXFu?=
- =?utf-8?B?cVYrTWVZaktqR0FtMFg1NGdxMmpTMFdNek9ZVWxEMFBwZjI1c3cwZ3ZVQjhq?=
- =?utf-8?B?OERSUkQ5dmFhdUcwYU1SZEp2ejhzRU9aSmppQjhtWlRMcEpFeFVSSWNtTXJW?=
- =?utf-8?B?OWxUbUV2aFViV2dsTXNEZ1h0OU9UK3ZzWVhBR2FNWjQ5QjlOdk95aTNzejRY?=
- =?utf-8?B?blZtR1B5STVzNEVHQ3ZlUDV3THBwMDIyb2dneXpmWGtMM2ZKSy9nVXVqVzFT?=
- =?utf-8?B?WGdRNkZ0MXVjTlp3Tm5SUmYrbjE2Q21KSmlEQVg3ZURhSW5Gc0s5UndVY3Zj?=
- =?utf-8?B?OVRrd2dWMi9wU2M2SWlSRnBVR3dtRnhyMFBLYmJ5L2czRStkbldlWXFkN3Yr?=
- =?utf-8?B?RWtJSGJvZzV4YmFaTG82OVZacElEcllxUDVMTFdpbWpVcEdYQ05NMGpvcFJa?=
- =?utf-8?B?KzJYZnVueGpMdjRXZmlnQjFwTW5wYllaWDhXSDRDT1ZXODlDOUJlYTRjckUy?=
- =?utf-8?B?VkpETzBnSmJ3c2lxeW9uUWxCNG1JanYrUUxORnpYQTFVWlFWMGZ0TFJscUxO?=
- =?utf-8?Q?Rmy/97Xafkm9LRnwG7?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ee89eb72-6b81-4af0-8a5b-08df09ed67c4
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2026 18:58:56.4579
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KiM8qCxQvnyBILzws7vaZ8yFYw+gG3zSKaciQZp0Ytlfe+KyBS9SlJlSn41C/NkK
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9590
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6E93E40005
-X-Stat-Signature: 7wi81d9a8hy3q5jw97zruxepw5w4cdeu
+References: <20260903115018.2034541-1-yi.zhang@huaweicloud.com>
+In-Reply-To: <20260903115018.2034541-1-yi.zhang@huaweicloud.com>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Thu, 3 Sep 2026 12:01:22 -0700
+X-Gm-Features: AcwNN1Xq1z0FxsQ9zPWn4QO4ZTMRixlUUwLEJLuKQWt5XQuIf6s3hWHxYB2ovjw
+Message-ID: <CAJnrk1ZLzNQxrSLQx7TsLK89QC_=9cDfoDcyKNBNde0CiDGoNg@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm/truncate: fix data loss when splitting fails in truncate_inode_partial_folio()
+To: Zhang Yi <yi.zhang@huaweicloud.com>
+Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, hughd@google.com, baolin.wang@linux.alibaba.com, 
+	willy@infradead.org, jack@suse.cz, ziy@nvidia.com, bfoster@redhat.com, 
+	djwong@kernel.org, yi.zhang@huawei.com, yizhang089@gmail.com, 
+	yangerkun@huawei.com, chengzhihao1@huawei.com, wangkefeng.wang@huawei.com, 
+	yukuai@fnnas.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: fszd5e51pjkytj3s3pr8cfy9ddsrbfx5
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 837F14000E
 X-Rspam-User: 
-X-HE-Tag: 1788461943-805320
-X-HE-Meta: U2FsdGVkX18rj8M1sGjcTjpGXDykZFJCEBXcLKkOlePf4jZEu54+vjtaiM1tJdTLw5Ne7eFqaA3keTxhG1ZsgAqJXRIb2HnSAzZDtJlo4b70H2S2fVqFmKnoLqn/0o0fkj0uzjrMKjf+Z/o61uPB7Mr+WPLCWe7kpgDKKe5L63Jpyll0KfFOvrYFk3luGCCRkQXC6QFjZpibbumFNJrEc2yjLikc+IDz6txLsLf9LyrOildzH6wcr3a+bmVRu89E4iCsPqPl7TKZVyAjbcJyzUhZtC7G3OgTlG6+lW+W74JCGC9tGVkQ9LDIpKnUgLlyO7jKiUG1QdqnlPSzwHzHys2cYBx/1wz15Iy+uwVVIqjxsbbs35ApvcWW8dRHCrqqWhH2JsWq/vwqqoR0VAuDq/tD91q4UDyTfGf7mBWr/Vo92UHy0A2Q2m1cGjX1EqbsU6E6Fn7kpgqPJst6Gj0Sx1VV97moNWZY07Xs96YHeeuMlyIBMyapIy0Dqpa3Pu6xRXj9BnPlLtsnupFpAsbxhNcRM1WfBLoiafChu9sV/H3hgGeW4sq1Cp8bcU4m3xgHP3pIvj+3Ha3/L2I83d/m86YubgNjUWKrFF2bTVmuiAO1XTCJHe3fAK5rv6/zkD7YhK/l5r3J0e5LxwsA0KkauLWL58ANyXk/QU7DK6zeBAbWSYM6w56gC6aR6qeUWvmLVQKtoz4aWJqiV23shhrSyGgzmfdjUEWo20DgvAuHOIEDka7IPR8bvfT2VaC2Wv+gf9UMjqxBuZmI46+cUx+sLasyRQ2yiB4Nl5AJySGbVRPAHvmgGOB9QAEwY7RdsuzUFcaFuqXNGw7/4RqA1cdBgKNWL4hoJ07HTigLiptJvljkf7CnJUE0vuYO+fiZqX+pPZalERKaHo5AVljdE7y1AmpXpm5lyA+sy+R+AYToqSO8fK1iB7Cd9DTZBrfIHzojAS4CIG7rz8NDT88yC96
- R2Pb5lob
- 54KZ+4eIVE9Njeaxnrzh9iel9fuaFy4QqDdAxn/Qz1nX5FWDrALTcg+7LhcibGk2iDCy+pfdLpuM3YNaNl3vM/2hBeLo9REA4njaB6sM/lhRytZ7cDJ7jxAdC67rSD2kiHpXFUh2tAC3aa8SuGVSbt6C9VmF3BvueRXt6wpBmr68gKFras2kAB0AT1jURmoiVcy3X0zQiuaDtoD5rTfkpqzjjhd6XcifyV2rwLHUVW2yPtNXAe0NfQ2f0TPVqBCRwg4CbYROWpOBl368A2Qzy+fiE4NQ8sXu4Egmk0HWv794lsxdYIrBMDQV1ne3Q3CPLZ7tRMblLyctEMA6Ov6svAYe7CN7k4J4KkMqBaIoLip2FB4qogsX3yRy6KXZ/oSDp4xqdN3yRFVyvHd8Ud2dutnmGbsK7/ug4xvRZHFJnD7PGtNo=
+X-HE-Tag: 1788462096-779050
+X-HE-Meta: U2FsdGVkX18mRxWw5WSHRT10yY1mxJBdsFmQVBPZVKaN1i/eB6O9WPHtfaNJ/+SM/7xO4V3mk6sPAdr8rFoXwYaGmqkCrD4pUk0ZznHwlsUpVRTzr9YTTKqDn6Y6G6h83tV3Bv6YCS6DQLd1/ldW5iAmgCP0MtYMwL2JX/KJu6l9umw3rh3sCOzNUZATf5XydDCNEg8BwXyJ5B7YYrJq/0wp3QzEQO2togslN8A0q9Xgt4jpHsEpb1zIRcorHW0tcKQ9E1luNN8ll7CDbBc2YBecjtrvlZ3y4xL9csKIkGBC0q9MWEOSqSfA2UlP1siEsRl/aiUwDK9qGzIPzyBN/QmftHy9hHLsy9Jifvtdh3OG41FZYBl58GUKEFqrXQSN/ic33VSpBcOi9qLVDPAS8dqJEtBCIWTVq6cmNi4xFjpMW6Tml7ZbjjLeZwAJDo1pFyWXQ0Ta9FgCHO4wu9EBCEfJA4UH54zegNZcFya8W5DOZ5d6py8KH84wf4vE58lxW/plaswgh/ERfp02+T3S+lqZCdvgup3Q1hPvcX+xIZu6VmBSIryDGP4c+rqTxpG76Wqg78XOZWuA4XugrAkuUjWUevCRn59Jb7ePBPjB1GjgzRo1aH5kQ19OgkFKsacxP4OJuOuOsjQRggZffbXFpM+VfJDtMKFFXoho3eKbgxr/LbCkUB+jhK/ukPgYjwNMSIjCo1QymszOJF+NCzvb6jKkfF4bKN/1guihCuH/asRdPgsM+lELKjFB4S5NrutJTEaqofcPvhWhqvZ4EKl871q/prs1Iuz+w1/SDQqfMijrT8rqLlhksVCgEcMaCRhHoDCe1cyqzM5OYBHXd7YsFaHz0PMLWFVfKMn0AYKKEhF9bNwRudpHNmGBT08VBESFjQYgbAss8JEOF+nOpN2Jbc/kyAgDyOaX+EvIu6cN6g3Ll0cTu2x4G1QrTns3ECQknmLNa/ryTl6w4CsMkc+
+ Bw38D6JZ
+ Tq2MrmLUEfXlKpTp1IpNej7LMGU3FHqkNZeDsZ/r3xSTiuWCJ5X1uwxCE9QMa5Es0edabjmDLwp96cE6A+4k/51rPh/WWPpkXTFK47TcpnllzgpdZYyrBvAvmbjm6wk8Cbv4g2x5uPy1jBAQ5h8zJJNn6wbaSrDNi838TP+SLRWb9Wj37uG2tTtJxw0kj7NTiveDyLKEC/eKQS8vNUfWWrO+lTwwYpuXEOKX80uTxrD0zuT5a8fFazP9MBddI4hyZtgJ5+sqAc7sv0zzCGQV2Y3fC01T3oR6umCzE0yrwQq5EzvDKNJsP/k/ZassmXoKzFlPrJluhc7DrjlGB9MPBXbL3N4pAOhRP9AtLEhjHca8+sNWDYpAZiz9ohFcfSblr7wkpeh2wUWbb97xutc9jxzpEx5+GMLM6V8A27RFHRVvkcEdLb1DQTeR0LJyXumPy7XRYLkoEZU6xpU64wkZEk/DhJ2FPvfHIAxDotFdzn6TXrlc+/Te44bL9lV0UEDloDq5tilx+xP1nWZYnbWjdb9h6tlhvrTkvXU4Z
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -185,131 +146,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Sep 3, 2026 at 5:01=E2=80=AFAM Zhang Yi <yi.zhang@huaweicloud.com> =
+wrote:
 >
-> If you look at try_to_claim_block(), you need half of a block to be
-> free or compatible with the requested migratetype in order to convert
-> it. When memory is full, LRU pages are scattered all over, and
-> compaction is not involved (order-0), this gets more difficult the
-> bigger the block is. You can get into a situation where LRU reclaim
-> will not clear sufficient room for conversion in any given pageblock
-> anymore and you're stuck with the type distribution. A large share of
-> buddy requests then go permanently through the slower fallback path.
+> From: Zhang Yi <yi.zhang@huawei.com>
+>
+> truncate_inode_partial_folio() splits a large folio so that the caller's
+> truncate loop can drop the in-range sub-folios while keeping the
+> out-of-range tail. The first split at the punch start edge is
+> non-uniform, which leaves the sub-folio at the truncation end edge as
+> large as possible, this means it may still straddle the range, holding
+> both zeroed in-range and valid out-of-range data. The function then
+> attempts a second split at offset + length to isolate that tail.
+>
+> If the second split fails the straddling sub-folio stays merged. The
+> function returned true unconditionally on all exit paths of the success
+> block, telling the caller it was fully handled. The caller kept its
+> default end and the truncate loop truncated every sub-folio below it,
+> including the merged straddler, discarding the valid out-of-range tail.
+>
+> For example, a 4-page order-2 folio punched from offset 0 to the middle
+> of the last page:
+>
+>   truncate_inode_pages_range()
+>     truncate_inode_partial_folio()      # same_folio =3D=3D true
+>       1st split at page0 -> [p0, p1, p2-3]   # non-uniform, success
+>       folio2 =3D p2-3 # straddles: p2 zeroed, p3 tail valid
+>       2nd split of folio2 fails / cannot lock
+>       return true                       # BUG: caller keeps default end
+>     end =3D 3
+>     loop truncates p0, p1, p2-3        # p3's valid tail is lost
+>
+> This became reachable after commit 7460b470a131 ("mm/truncate: use
+> folio_split() in truncate operation") replaced the atomic split_folio()
+> with folio_split(), whose non-uniform split can partially split a folio
+> and leave the end edge merged.
+>
+> It has gone unnoticed because a dirty large folio normally carries the
+> filesystem's private data, for example buffer_head, so
+> filemap_release_folio() -> iomap_release_folio() returns false on a
+> dirty folio and folio_split() aborts with -EBUSY before any split,
+> leaving the straddler safely unsplit. The bug is only reachable on paths
+> that produce dirty large folios without filesystem private data, and it
+> was caught on the upcoming ext4 iomap buffered I/O path when no ifs is
+> attached.
+>
+> Rework the contract so the caller is told where to stop instead of
+> silently truncating the straddler:
+>
+>   - Return true only when a split occurred, false otherwise. This
+>     clarifies the existing confusing return value semantics.
+>
+>   - Add an optional out-parameter pgoff_t *end, set to the index of the
+>     folio that contains @lend and must be kept by the caller's loop. It
+>     is only written when the folio actually straddles @lend. On the
+>     success path it defaults to the page index of the end edge and is
+>     refined to folio2->index when the second split fails to isolate the
+>     tail.
+>
+>   - Rename the byte-range parameters start/end to lstart/lend to avoid
+>     clashing with the new @end output and to separate byte offsets from
+>     folio indices.
+>
+> Callers in truncate_inode_pages_range() and shmem_undo_range() pass &end
+> only when the folio straddles lend. After all, no caller discards a
+> straddling folio anymore, the in-range cleanly-split sub-folios below it
+> are still dropped.
+>
+> Suggested-by: Brian Foster <bfoster@redhat.com>
+> Link: https://lore.kernel.org/linux-fsdevel/anH-WKA1coW6wtfG@bfoster/
+> Fixes: 7460b470a131 ("mm/truncate: use folio_split() in truncate operatio=
+n")
+> Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+> ---
+>  mm/internal.h |  4 ++--
+>  mm/shmem.c    | 12 +++++------
+>  mm/truncate.c | 57 ++++++++++++++++++++++++++++++---------------------
+>  3 files changed, 41 insertions(+), 32 deletions(-)
+>
+> diff --git a/mm/truncate.c b/mm/truncate.c
+> index b58ba940be47..2ebb00f6c379 100644
+> --- a/mm/truncate.c
+> +++ b/mm/truncate.c
+> @@ -206,15 +206,18 @@ static int folio_split_or_unmap(struct folio *folio=
+, struct page *split_at,
+>  /*
+>   * Handle partial folios.  The folio may be entirely within the
+>   * range if a split has raced with us.  If not, we zero the part of the
+> - * folio that's within the [start, end] range, and then split the folio =
+if
+> + * folio that's within the [lstart, lend] range, and then split the foli=
+o if
+>   * it's large.  split_page_range() will discard pages which now lie beyo=
+nd
+>   * i_size, and we rely on the caller to discard pages which lie within a
+>   * newly created hole.
+>   *
+> - * Returns false if splitting failed so the caller can avoid
+> - * discarding the entire folio which is stubbornly unsplit.
+> + * When @end non-NULL, set to the index of the folio that contains @lend
+> + * and must be kept by the caller's truncate loop.  Return %true if the
+> + * folio was split, %false otherwise, in which case the folio is dropped=
+ or
+> + * may still straddle the range, so the caller must not discard it.
+>   */
+> -bool truncate_inode_partial_folio(struct folio *folio, loff_t start, lof=
+f_t end)
+> +bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
+> +                                 loff_t lend, pgoff_t *end)
+>  {
+>         loff_t pos =3D folio_pos(folio);
+>         size_t size =3D folio_size(folio);
+> @@ -222,19 +225,22 @@ bool truncate_inode_partial_folio(struct folio *fol=
+io, loff_t start, loff_t end)
+>         struct page *split_at, *split_at2;
+>         unsigned int min_order;
+>
+> -       if (pos < start)
+> -               offset =3D start - pos;
+> +       if (end && pos + size > (u64)lend)
+> +               *end =3D folio->index;
+> +
+> +       if (pos < lstart)
+> +               offset =3D lstart - pos;
+>         else
+>                 offset =3D 0;
+> -       if (pos + size <=3D (u64)end)
+> +       if (pos + size <=3D (u64)lend)
+>                 length =3D size - offset;
+>         else
+> -               length =3D end + 1 - pos - offset;
+> +               length =3D lend + 1 - pos - offset;
+>
+>         folio_wait_writeback(folio);
+>         if (length =3D=3D size) {
+>                 truncate_inode_folio(folio->mapping, folio);
+> -               return true;
+> +               return false;
+>         }
+>
+>         /*
+> @@ -248,7 +254,7 @@ bool truncate_inode_partial_folio(struct folio *folio=
+, loff_t start, loff_t end)
+>         if (folio_needs_release(folio))
+>                 folio_invalidate(folio, offset, length);
+>         if (!folio_test_large(folio))
+> -               return true;
+> +               return false;
+>
+>         min_order =3D mapping_min_folio_order(folio->mapping);
+>         split_at =3D folio_page(folio, PAGE_ALIGN_DOWN(offset) / PAGE_SIZ=
+E);
+> @@ -259,6 +265,10 @@ bool truncate_inode_partial_folio(struct folio *foli=
+o, loff_t start, loff_t end)
+>                  * for shmem truncate
+>                  */
+>                 struct folio *folio2;
+> +               bool tail_isolated =3D true;
+> +
+> +               if (end)
+> +                       *end =3D (pos + offset + length) >> PAGE_SHIFT;
 
-I think we are digressing from the min_free_kbytes discussion, but it is
-good to understand the limitations of our compaction and reclaim. Nimrod
-is going to run some workloads to show us how his patch affect 4KB/2MB
-THP systems. Based on the min_free_kbytes calculation, this patch has no
-effect (on 4KB base page system) for a single node system with 272GB memory
-and a two-node system with 484GB memory. So smaller machines would see
-the impact of this patch. For example, a 16GB single node machine will
-have 16MB min_free_kbytes instead of 66MB.
+If I'm understanding it correctly, based on how
+truncate_inode_pages_range() uses the end value (eg the "while (index
+< end)" loop condition and the find_get_entries(..., end - 1, ...)),
+end needs to point to the start of the folio if the tail folio from
+the split is a large folio, in order to exclude that folio from then
+being truncated. But with the (pos + offset + length) >> PAGE_SHIFT
+calculation here, does that result in some cases in it pointing to the
+middle of a large folio? Maybe some logic is needed to make sure that
+it points to the start?
 
->
-> Usama knows more about this, but we have seen this on GB300 hosts, and
-> have JUST started to deploy kernels with smaller pageblocks (2M).
->
->> Basically it indicates at some point kernel allocates a lot of
->> unmovable pages that use many 512MB pageblocks and the life time of
->> these unmovable pages are so diverse, leading to all these
->> pageblocks remain unmovable and free pages spread across all these
->> pageblocks. I thought bigger pageblocks can keep unmovable pages
->> constrained within fewer pageblocks, leaving more contiguous free
->> memory.
->
-> The idea is that the pageblock maintains contiguity for the largest
-> size you routinely expect to allocate.
->
-> The page allocator is very passive right now, and it doesn't work
-> super reliably. But even in the current regime, smaller blocks have a
-> better chance of containment.
->
-> For example, when the ever-growing page cache runs out of movable
-> block space, it spills into unmovable free space. When the next
-> unmovable request finds no space, it runs LRU reclaim - which is more
-> likely to free space in one of the many movable blocks. And so the
-> next block is poisoned. Smaller blocks have a better chance of filling
-> up natively, means less pressure to spill into incompatible ones.
->
-> And the higher min_free_kbytes, the more likely there are still native
-> options when the zones are down to the watermarks. E.g. better odds
-> there is still unmovable free space, you just need to reclaim some
-> movable/reclaimable space elsewhere to satisfy the watermarks.
->
-> I've been working on making this more robust with the huge page
-> allocator / defrag_mode stuff: instead of falling back and poisoning a
-> block, invoke reclaim/compaction to produce a neutral block that can
-> be converted entirely.
->
-> It's the same idea as the higher min_free_kbytes and watermark
-> boosting, but it is more targeted at the end result: readily available
-> space in compatible or convertible blocks.
->
-> But with that active regime, oversized pageblocks are even
-> worse. You'd pay ongoing compaction work to produce a level of
-> contiguity that you don't actually need.
-
-OK, digress to the compaction and reclaim discussion. Isn't this 512MB
-pageblock size issue also telling us 1GB THP allocation will not work at
-all? It is a proxy of 1GB super-pageblock.
-
-I need to spend some time on it to understand all the heuristics and see
-if anything can be improved.
-
-A quick chat with Claude results in some items for me to explore:
-
-1. reduce pageblock conversion threshold from half of the pageblock.
-That can reduce the number of slowpath entries.
-
-2. make reclaim pageblock aware, so when an order-0 unmovable page
-allocation incurs a reclaim, the reclaim will try to get free movable
-pages from an unmovable pageblock first.
-
-3. in addition to produce a neutral block, compaction/reclaim need to
-repair unmovable blocks by getting rid of movable pages. Proactive
-compaction should do that too.
-
->
->> > Seems to me the excessive min_free_kbytes is just a symptom of a
->> > deeper problem.
->>=20
->> Yes, our anti-fragmentation mechanism does not work as we expected,
->> so that we need an excessive min_free_kbytes to get khugepaged working.
->> I wonder why reclaim cannot get the extra free memory instead of
->> reserving it via min_free_kbytes. Maybe we need a watermark boost
->> when some consecutive THP allocations are seen to achieve similar
->> effect of boosting min_free_kbytes?
->
-> I'm just wondering what the easiest way forward is to fix the ARM 64k
-> page problem.
->
-> Yes, optimally, reclaim would work to satisfy compaction space by
-> itself. We've seen it fail at that before, though.
->
-> How critical set_recommended_min_free_kbytes() is today is a question
-> that neither of us has a clear answer to. It's from 2011 and a lot has
-> changed. However, knowing Andrea, I'm willing to bet he added this
-> based on seeing a need in testing data. And I would actually expect it
-> to work better now with proactive compaction, since that has a better
-> chance of turning low-order chunks of that volume into pageblocks that
-> can be converted instead of needing a poisoning steal.
->
-> It's a change of long-standing behavior for everybody. It has a
-> regression risk and requires careful evaluation and testing.
-
-Not for 4KB systems with large memory, since khugepaged's
-min_free_kbytes is capped at 66MB for one-node, 88MB for two-node, and
-44MB + N*22MB for N-node. For a GB300 host you mentioned above, it has
-494GB memory and with pageblock size set to 2MB, it should be a nop,
-right?
-
->
-> Meanwhile, adjusting the pageblock size on 64k page arm configs has a
-> much smaller blast radius, appears to be the right move ANYWAY given
-> what pageblocks are for, and makes the min_free_kbytes a non-issue.
-
-
---=20
-Best Regards,
-Yan, Zi
-
+Thanks,
+Joanne
 
