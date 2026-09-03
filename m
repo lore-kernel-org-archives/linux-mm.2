@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 460BDC61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 05:36:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C11D2C624D4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 05:36:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA7EE6B00C5; Thu,  3 Sep 2026 01:36:06 -0400 (EDT)
+	id DCB326B00C7; Thu,  3 Sep 2026 01:36:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B57EB6B00C7; Thu,  3 Sep 2026 01:36:06 -0400 (EDT)
+	id D7BC36B00C8; Thu,  3 Sep 2026 01:36:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6ECF6B00C8; Thu,  3 Sep 2026 01:36:06 -0400 (EDT)
+	id C91ED6B00C9; Thu,  3 Sep 2026 01:36:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 896156B00C5
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 01:36:06 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 160EFA0474
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 05:36:06 +0000 (UTC)
-X-FDA: 85171339932.22.C1A7918
-Received: from mta1.migadu.com (out-167.mta1.migadu.com [95.215.58.167])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0FE1B40006
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 05:36:03 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="mbe/UGMJ";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of kaitao.cheng@linux.dev designates 95.215.58.167 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A8A5A6B00C7
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 01:36:17 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AFBD7A442E
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 05:36:15 +0000 (UTC)
+X-FDA: 85171340310.19.0961A48
+Received: from mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+	by imf05.hostedemail.com (Postfix) with ESMTP id B2106100005
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 05:36:13 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=I0HKlWnz;
+	spf=pass (imf05.hostedemail.com: domain of kaitao.cheng@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788413774;
+	b=CEPbJm99rGjnlrqGCswYys5asRzZgNfwnZLdBd+tPzIgBfBe4GkDNDDw2KAqFiXedRfMH9
+	gm/mV99hC/YAMIYvZex1zjSLcOLRdxSIWpIe5VItWnw+GL844TOw6T9PDIwzrbIEZqUMdV
+	hUrFtFD9NrBHRZiFYVpiFnE2xKayllw=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=I0HKlWnz;
+	spf=pass (imf05.hostedemail.com: domain of kaitao.cheng@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788413764;
+	s=arc-20220608; t=1788413774;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bcSsjwFC6qZg2aS8oY+lqt9SWth0Py0NkNsT3ZKbGGI=;
-	b=KPdFYnnAnBPvqs6ysoE7LTkJSXgQJRb9CE+/tTKwKYFNBof5vZbYA0hHF6KQRJHycZmtwi
-	MzBxYTkRty7h+ItX3aUT/R190biaNTD1PKQTpbuWLRZhH/oo6IdFYF+hKB9UreYx263DyU
-	MZvkxAybzj/53xYmFUNSZmLGJo0vRPo=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="mbe/UGMJ";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of kaitao.cheng@linux.dev designates 95.215.58.167 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788413764;
-	b=4wwzMhLxMBW+WyC+nXC29uxZtaiaUkBMhJmkwjds3RbxU8Wi+Syj5TVDRNAOfmnADV6jJu
-	7IXNUY2w2Dj1ag/8qM/OORl6EDsSedwC7x3Pwq6hX3/j3edUoEORc8NuL1P+CfC3n7LAVI
-	gsRg8fhNgl4/+kZOnODURBzaHrahbMo=
+	bh=1OnYacUcHDJFiWDX/P58+q4xMKESLOGZmWe6py83leQ=;
+	b=ufmAT9FF9OGm+gB7gv8f1X4J56rXKSzwsbb/jv5O3sFT1hblr9ZI+eygyNgMPYPi4EPSs+
+	GiYBJioAeFHiJdofNwwlWJNytrHRMW/D2YKXvP1gwGE3iH5qKaW21ac4sCh9lN4iGxJf89
+	voUR5BcPl859DKQqc9r9aPDxrTe9Mpk=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=pFx9cx0I838cE2nczWgH9ctLbDnOiEyF5R1ouuYP4NQ=;
+DKIM-Signature: a=rsa-sha256; bh=XsehUQBu1zymeRNt1s6Ov24fTjL0E26lmzfvGaBn2R0=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788413762; v=1; x=1789018562;
- b=mbe/UGMJyH1rOfM5Ld/5vxSk9loP41r8KSqZ9An9nyPJeO8fCLPWYanz+WJxMgt6PvZddoSi
- ku7uZp+Ho69Y4IkrmvIqMCxEV0vmjzhKpyJhCYNX2SnoLhE+7QiihBv9L+ucnepxsAy5VZ8TS62
- uv1V9KQYurYNPg+nKrygATbU=
+ t=1788413770; v=1; x=1789018570;
+ b=I0HKlWnzNX441OhTwD8TwdHY8Hzs5uinU2xuBh2aBiefDqtxQjjTcoixnKyinf4VC6IutfzC
+ Z2g/Id1k7kIz2/jlsGbKn6MjEmOgj0N69U1BcgyCZ01gaqd1iiyJiPpp9TJZmHp0jQKgcRvFumu
+ 0qbZKUcTEYKi8UEU47tZ1oQU=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id cee8c7a11c707db3;
-	Thu, 03 Sep 2026 05:36:02 +0000
-X-Mizu-Trace-ID: cee8c7a11c707db3
+Received: by smtp.migadu.com with ESMTPS id 78007f4d4477b093;
+	Thu, 03 Sep 2026 05:36:10 +0000
+X-Mizu-Trace-ID: 78007f4d4477b093
 X-Migadu-Flow: FLOW_OUT
 From: Kaitao Cheng <kaitao.cheng@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -80,22 +80,22 @@ Cc: Muchun Song <muchun.song@linux.dev>,
 	nvdimm@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	Kaitao Cheng <chengkaitao@kylinos.cn>
-Subject: [PATCH 1/2] mm/page-flags: Define HWPoison test-and-change helpers unconditionally
-Date: Thu,  3 Sep 2026 13:35:34 +0800
-Message-ID: <20260903053535.17611-2-kaitao.cheng@linux.dev>
+Subject: [PATCH 2/2] nvdimm/pmem: Remove test_and_clear_pmem_poison()
+Date: Thu,  3 Sep 2026 13:35:35 +0800
+Message-ID: <20260903053535.17611-3-kaitao.cheng@linux.dev>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260903053535.17611-1-kaitao.cheng@linux.dev>
 References: <20260903053535.17611-1-kaitao.cheng@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: 6rdhxc9wtgwiox4wius9gn8wkxa4g9ec
-X-Rspamd-Queue-Id: 0FE1B40006
-X-HE-Tag: 1788413763-808923
-X-HE-Meta: U2FsdGVkX19litDnjNAm8eli75aX71zSGy81frYbWTPmJxScdqTgti9RzKtEbEFSoaTWpgY6hALjLzNI/TTQU3wcSqjRt++yF7aFLg1V/W9l4ee3oZvc3Zf8EeARFYddmGXOgBEQh7kMs9xPZOM3OoH0mBG8mzPJt914e4myRXQemQx9X2v7KGHeNc/tkMd/drf60nBn9dNdye9ARyo7kfoXhOEDuX2YsIcRiHM+FKmMgiAc8RxmmD4YA8nd9/CCNoxQjO3GcaY+ajprjQ10FTkEDz+m+tW4pczuITpRMzejD5LnZvjbGMabWn+A5cJ2Gk3ahj2y+sFJ+/HVwrXkAZhqRaKOsxvQ/Mizw5p8eZuTvBsZzR4wUjTiEkWPAMApdKGyHFTaOU8PjEgZYwpD6MgNHea0sEPdwaRnqUJ2zoEoYo1C2l/vkWa8OwhwNKOwsOTGQg3BDgTGlYm9f2lOs7zxVwggUrc5bC0w9to564iHHuraqQZ+OfFP6EYfxeqh536+z0JmnDCEWjc9La5WGsJtVIFnnczHJ1h/jY13U/3Pkm3m+eM1rnWqbCUmFkIYJqqUTH9ekW5DbEGn1sw7Xo4rkQ5zmhXVk+hoygRnXPXio14eWOj2h33LL6FSPsDVohBU84cGp1T/F0ZKBbWCehn9jEOgblHpvuKXyVcBz7oexLx+O0XW9vlQnSJUdfnW2fQB2j/9vvbdQkddDR8SfG0GnmjnBFAOtJ8S0IngUL7R2dZx82EJibxWzCSAHSHx33gcX5ojseWGzPtONLfbiTwE2VoOzwuRRmuuwP1wwbw6HHtPmjw8SsihpfHK92juI5TUzntU6JuuW9nMA+YBVXVEGmFsExupbMVo+lQo9Qgx3JQSuaS0oOaZ//KsRycvpYdSN0FFUkctjCSY5xG717Aqej5sxpttv3dGrRH3LRCvhxcUuwWq98gt1HAtWaOUSfOYzqPi4HcNB5Wj/pm
- +MoClP4a
- 9dD+G8hD2lte7lGe+5U4w23K49DvPxR0eA1q8ucBwOoFwzLpFv5OGvzR1HD6dbpelRl+u4khnOg8YJdeezDBs9zddrig0xxKFfAncgwTnQVZm/riB80edcVu9/kOGccB7ZO3XVZ52TLAHWuoElWmAHuqoEXz2fOyBEsoqhkR3WT23d7HRgs9ufuKnkWhoyRZWiAx7gUhYfyMj5ZcYtxz5+mYy6PCLw7WPOT6B
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B2106100005
+X-Stat-Signature: oezfgdpwr8jf9964eogfq7m35yg38dj9
+X-HE-Tag: 1788413773-229125
+X-HE-Meta: U2FsdGVkX1/GhzsjjNHu9c1pwh19cjPNmjTTOsPQO2tg9IjZpRO4ij4dZp/pJliVLOjlvbGSkU2getX68g0IAVkOj0B8p60Dxb2R1RKw2V+itk1dQmPy320IPZxphjytdK7IVtSzR1igU5AG6GZ3N2nIRfGqjW1UL82Xm1axnnDHUDz5h4EKBgLNu36eRnt+qGfqJC4Focr0mQylhgbg6MdRXxPQFIs5FHYr304BPmyTF7nUY3M2eJZ0rD0Z/Cqzc0Cs+CDjuYmVA1jVvYW4eRsSZ73/+shmOzCdcKTWRJj/Li86BmkfhKVE5ScFBLnpaDJJMw/TwpPKR1bszjJXVAD1MzcsUayUrnqJQjfIy0St0CelzEKh3p4vqgRD8PkzXu4wBlh2+KPs+PJpvZmcvWj3BataiebFM5oAaJ61TKV3ORl03guYHPA/CfngZuWz7EXBgSwdjLaNtA+ug/+32nZLqVuG5dy/+m9Qjr35YjmB6OR4iepU+68mlGA67hijenUDXf552aGaYeCfXJxgmMDmGK4e0K+0bIYOQDuh6iE+rh5azaoZk2rNoHpHsv60ks9e5mVrPSrH36q2WdXoBeUcQ3e1FP8E1KtC+RoYyDixB+UuYCw3jrzuQ3yO9pIDCiYFAXesf+dY+94UdJDM2zIH97kg/LHJBoXfnXx2a4Tzi22iFxXJJWqQABe0afYkMZB0rjiK0x8QOJ3WWI/qj5ZTMHCWIcgaoQ9sClDa20le6+Xg8Z5aaOnttJp2TiaXF3wI/cVRnq2lkGx3/A8fe1s4ctDPZByGX8g4+zoV9sB+dfrjfm8POztq9JdAWEzDRdNXkis0h314MjiZSQh4fHzRAxVD6fAXUe7paD3O18Xc9+UGghB/rKYSsDnG/UQ2CZLGIuTlhUQTbOh2uu7ufsxSrXCacJhDQstAATLbPAnCD0ZOD8uUxB40qrT9TDeDUWNWUY8+oCmwqjwnkgg
+ cQ9A/lRZ
+ inKRHZYuE6yZk3bDZHfodqiPxk/fqyMRqbWN4WG6gRN3Dd1vCTIVf9CPw7/Xmiq1kkbZLgc/IuKGOa2I7HUT92hWpdX1yy3CdlGdQ4A8jfabWUBRkzbCpfpwferc6DjKETsOVBAoS+p1Fuwdhfw2sffDSCb9ucJzTiWr1CGkkDlvLWHLrJmtX4vpRvREc/Wn85eWWShV7FFB+u4f1qrv/G/lspSSWcqXSaL3u5yWtrQhfh+5v/lOE9NZMareYbTnr5Z7PnRymljHTpyOiQK+Db0n2SQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,37 +105,65 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kaitao Cheng <chengkaitao@kylinos.cn>
 
-Page flag helpers for configuration-dependent flags provide false or no-op
-variants so that their users can be independent of the configuration.
+TestClearPageHWPoison() is now defined regardless of whether
+CONFIG_MEMORY_FAILURE is enabled, returning false when memory failure
+handling is unavailable.
 
-The HWPoison helpers do not fully follow this pattern. When
-CONFIG_MEMORY_FAILURE is enabled, PAGEFLAG() and TESTSCFLAG() provide the
-regular, test-and-set, and test-and-clear operations. When it is disabled,
-only PAGEFLAG_FALSE() is instantiated, leaving TestSetPageHWPoison() and
-TestClearPageHWPoison() undefined.
+The test_and_clear_pmem_poison() wrapper duplicates this configuration
+handling and has no other pmem-specific behavior.
 
-Use TESTSCFLAG_FALSE() to provide the missing accessors when memory failure
-handling is disabled. Both accessors return false, which is consistent with
-HWPoison state being unavailable, and makes the accessor interface
-consistent across configurations.
+Call TestClearPageHWPoison() directly and remove the redundant wrapper.
+This also removes the need to include page-flags.h from pmem.h.
+
+No functional change is intended.
 
 Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
 ---
- include/linux/page-flags.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/nvdimm/pmem.c |  2 +-
+ drivers/nvdimm/pmem.h | 12 ------------
+ 2 files changed, 1 insertion(+), 13 deletions(-)
 
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 7a863572adce..a2315ab1dd3a 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -656,6 +656,7 @@ TESTSCFLAG(HWPoison, hwpoison, PF_ANY)
- #define __PG_HWPOISON (1UL << PG_hwpoison)
- #else
- PAGEFLAG_FALSE(HWPoison, hwpoison)
-+TESTSCFLAG_FALSE(HWPoison, hwpoison)
- #define __PG_HWPOISON 0
- #endif
+diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
+index 30a51c365ce8..5fb86595e8bd 100644
+--- a/drivers/nvdimm/pmem.c
++++ b/drivers/nvdimm/pmem.c
+@@ -80,7 +80,7 @@ static void pmem_mkpage_present(struct pmem_device *pmem, phys_addr_t offset,
+ 		 * here since we're in the driver I/O path and
+ 		 * outstanding I/O requests pin the dev_pagemap.
+ 		 */
+-		if (test_and_clear_pmem_poison(page))
++		if (TestClearPageHWPoison(page))
+ 			clear_mce_nospec(pfn);
+ 	}
+ }
+diff --git a/drivers/nvdimm/pmem.h b/drivers/nvdimm/pmem.h
+index a48509f90196..76870505dd79 100644
+--- a/drivers/nvdimm/pmem.h
++++ b/drivers/nvdimm/pmem.h
+@@ -1,7 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ #ifndef __NVDIMM_PMEM_H__
+ #define __NVDIMM_PMEM_H__
+-#include <linux/page-flags.h>
+ #include <linux/badblocks.h>
+ #include <linux/memremap.h>
+ #include <linux/types.h>
+@@ -31,15 +30,4 @@ long __pmem_direct_access(struct pmem_device *pmem, pgoff_t pgoff,
+ 		long nr_pages, enum dax_access_mode mode, void **kaddr,
+ 		unsigned long *pfn);
  
+-#ifdef CONFIG_MEMORY_FAILURE
+-static inline bool test_and_clear_pmem_poison(struct page *page)
+-{
+-	return TestClearPageHWPoison(page);
+-}
+-#else
+-static inline bool test_and_clear_pmem_poison(struct page *page)
+-{
+-	return false;
+-}
+-#endif
+ #endif /* __NVDIMM_PMEM_H__ */
 -- 
 2.50.1 (Apple Git-155)
 
