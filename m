@@ -4,118 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67EB5C61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 09:23:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1589C624A4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 09:25:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C97A6B009B; Thu,  3 Sep 2026 05:23:57 -0400 (EDT)
+	id E0F6E6B00C4; Thu,  3 Sep 2026 05:25:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A0EF6B009E; Thu,  3 Sep 2026 05:23:57 -0400 (EDT)
+	id DE5CC6B00C5; Thu,  3 Sep 2026 05:25:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B7266B00A1; Thu,  3 Sep 2026 05:23:57 -0400 (EDT)
+	id CD6716B00C7; Thu,  3 Sep 2026 05:25:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B4A96B009B
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 05:23:57 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AC039160438
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:23:56 +0000 (UTC)
-X-FDA: 85171914072.13.5C9CF22
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	by imf20.hostedemail.com (Postfix) with ESMTP id CD3BB1C0002
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:23:54 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ku5gPzjN;
-	spf=pass (imf20.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id A7CED6B00C4
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 05:25:34 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 220E41601C5
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:25:34 +0000 (UTC)
+X-FDA: 85171918188.07.EB6E449
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 6E205180002
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:25:32 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=h+LISNtM;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of christosskarlos.kernel@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=christosskarlos.kernel@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788427434;
+	s=arc-20220608; t=1788427532;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o7qTGz8yA1h581X4DOr85MyyM+WIOFqQrYJ5cYnccTM=;
-	b=PjR+c1AaI8RM4qr9p+xeJOIgtO6Dd3jtUgqE9zWerV6J38P2oHQiETfx7XwrzacrfFG4b+
-	SiyQSRKp4evybZFy34SYqo5fHeLlLyne9e5NFhguW9YYHV3WNl9GKtuTxfKKkyY4Ox6n8z
-	+wIen8TMgPtRDd+UNxDhZilON2ig1kM=
+	 in-reply-to:references:dkim-signature;
+	bh=XYwBU5ZHVueM1YfQFwjzrz4zbhTksf0+irRokmEvL88=;
+	b=ORjVPIKURSh5gPzDGblMFRPxrzMEDmNSaMtYMm8Xgp0GM+Q9DomeLjAjKYCREwcfE4z1HR
+	qpnZSfct6TuRhTOcDoHA4vBgGKL2UaKJ18EURBzvo733+7TAiPL+uEsCd//tuqHUcVKiBB
+	RuGj5WP4oJH2i9Mi4fr1YHwxFBgFT7k=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ku5gPzjN;
-	spf=pass (imf20.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=h+LISNtM;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of christosskarlos.kernel@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=christosskarlos.kernel@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788427434;
-	b=7fTq8QNKO1rLlscfA9bZbC+uz8zPkVVOm/Pla3ZB/uB1l7tp29yKbc4N7Owugf4yxY3SfM
-	zLz/A7OD+YM+cxlEfIXY0hJZ0mOThSCUmQanAVe8MJCIylg8n5QARgQAW7qR57xmTiw01H
-	WYjMTXRlh3waXkjjSpkXN7KDIacNOBQ=
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-38e041ea211so1972630a91.0
-        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 02:23:54 -0700 (PDT)
+	t=1788427532;
+	b=paWvBvAhLtj53GiNEZTtANx4ozV0CD9nJuVXV15plRdCNGzAbRRxF8nhS96EsLGudAPqv9
+	yjQsC0UZcpSizsM/EIMlMh38SI3wiEsGaAUnlsMBMly1x4bu701zYmYv0fpxMcEuUsVCNP
+	atG0Gt3e1MSuNsElhs1dAqhOzv7QVdo=
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-484374f54d0so1312614f8f.3
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 02:25:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788427433; x=1789032233; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=o7qTGz8yA1h581X4DOr85MyyM+WIOFqQrYJ5cYnccTM=;
-        b=Ku5gPzjN/4K9vvcGjKKQgItQBKtlQWdSvhHAFqcoodysIZd4GPSUQ1dEpM2GSJP9qj
-         ymbwxTyZB2IiYGujPyJvskHUQHXDTk/xomBYx11/ndgIk9svYHAn0ARegvwkIdAeslVw
-         ZojqC82Uph+KtYCDokh1N3vO1rPhLQAsUzJoEj5Y1/uCGnvC7WOfalrcTpJCKZsTbS2v
-         6VkMqoImknjgTV8jkvQxwvlIc4OoKatNgXmHxpS/576EKdWqNHFrnpWAg8I0lXYAol9p
-         CxzW1eZw8lYuVQpy09qlMEixZxRIDUlXSmnT30KRGYtAjn2ubkUvwlV9mfjg1fxKfmdN
-         ZUmQ==
+        d=gmail.com; s=20251104; t=1788427531; x=1789032331; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XYwBU5ZHVueM1YfQFwjzrz4zbhTksf0+irRokmEvL88=;
+        b=h+LISNtMbo8qJgVmzAjpQmo730/l7u+dqKhzNd4Mgo2yQF2T2z2kCRi66eHw+zrbzf
+         vHOFMeX3+l30w45Ot3MmgCqtpoBUR/9loEgK5nII2tN54cMzyLMKKxkAStk4y9U4asHa
+         Gr2UzP5P1sNeUSxzP6AeBT6Po8IKc7v8uUVrW+xGt0hviTIBb7Ia5WEw4HtaSLbcp5tV
+         O+tr/I7jSejNq/g8+vfMRGbAHhlB0zIXp9M6TXA9tsy1UQ9k+o6gmTH57ouAj0a109BP
+         LilqOTm7aPCSwMHoA5Pvc0nvZ9VuX4TGoM7i79Jl0fTQqrsntGG/7QQIhYJ3GiRMDBUi
+         9QtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788427433; x=1789032233;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=o7qTGz8yA1h581X4DOr85MyyM+WIOFqQrYJ5cYnccTM=;
-        b=rmfP2YncHBpA/zdo1l8VSSFudAqqldWvdLNI8g9PK4FhdNfkrqEc65t8U9iHoN+p45
-         aN0quQA3zoQ0tQE3uylZ0EQHBFlw3ncqaLJHegPvV5yenSQvanbBY6ce/ftfa+qcZnj+
-         iKbEfDrQYJi3tR2heIdKewMvIQfsP8F7LXYhMLcIWGIkP3+lt8BxYkwcGQpXtCV49x0u
-         1AXjltvHv5EpZfz1KYkVStdEa4YNYslSyv4szvcjMJCUQ3OT8/1rmDzZOLej63WwSDW2
-         0oC9gzu5bHLPL8LDWcdrPq6mFemPqUi77pH6bo8h/faRediy/VcjqdppntxHHM8Q1f+7
-         c+5Q==
-X-Forwarded-Encrypted: i=1; AKwUvBxTm8GoedJNf258TDfOj0Y4oZViwh49Acjry8B2pE92j/QsW+Y6nKqm5BEWbNiMdC6MwsTRfxclBw==@kvack.org
-X-Gm-Message-State: AFuF++mom8LM6dVEtHMWERrXzWeLyQ4hZp3UMzSL2XMXJDtcB+xpHmSt
-	bF3Xygz7Qm1YIUZQeSe6AAD8ACHPgCCk0UktLMn57y+LQkOyYvS8+BSl
-X-Gm-Gg: AYBFou335WUyLUgjTV3N9rWZ0Eh/TLrxmmAdd+0sRFwX/LiOCvoRwGfJ56un5DOFMuN
-	tN88ZLz6t0jBuTJsNb2byweB3cuVQOv3EQu/lOq5ZIoO8MCy1XeEa/0XsmO6ULLpDcrtsajaMbc
-	NDejNwQ2zgDjPngEKxLGoH1Ti0wv9bsH3Qlr9ifHtFQNdn5uuvU+Zc+41cbji5trswJII8pBfdM
-	oiRmrOVZUw53je46Ey+TH7C2VJWRWZ3ZRPDlwohfCTByYhVlxz/HX0rtQNNTQK+rfiY0JYLcXPJ
-	NvuOEVIK9zivaqtEU4/eAcscZ5n4M5IhQuAv9nLJ/rWd6EYfGHRkBYi9Q5OqYBC/FLO16LCH3CW
-	syqq1VgkxGHkyTt+s+yuKAZA3hrcCcdHmeMj2PW6VeeylyayX5eceuqY8aQ+RWs0wckm10/sTyY
-	6RDVuzn/vndzjFI0t7raeABf+RFRWRd5IzY5fPHO9lYe7CmbV/6z52Ou/Ld2w=
-X-Received: by 2002:a17:90b:2d4d:b0:399:1b64:e0d7 with SMTP id 98e67ed59e1d1-39aee108918mr17835573a91.19.1788427432993;
-        Thu, 03 Sep 2026 02:23:52 -0700 (PDT)
-Received: from gmail.com ([185.220.238.35])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39ae8ccdecdsm2638527a91.2.2026.09.03.02.23.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 02:23:51 -0700 (PDT)
-From: Kunwu Chan <kunwu.chan@gmail.com>
-X-Google-Original-From: Kunwu Chan <kunwu.chan@linux.dev>
-To: SJ Park <sj@kernel.org>
-Cc: Kunwu Chan <kunwu.chan@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	stable@vger.kernel.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
+        d=1e100.net; s=20251104; t=1788427531; x=1789032331;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XYwBU5ZHVueM1YfQFwjzrz4zbhTksf0+irRokmEvL88=;
+        b=oSVtatSZxUdJirw9hLElj3/9JBblFvks0RVZR+4ovqrEDfCd6LwO7GepSU/0nFdSgY
+         DKsLhrdxkMkOIohJaZCdZXTXZwZPmNgs5HFa//laGNNk43Bs+xLZd5RkIf3PFJm/wdgX
+         yDKZb+j1WV4JoB2b+O989Amq1h8NbgDtOyHXb+VQVNRAQWK1T/SfADRsUymwB3p2HK7I
+         dmINODmyG8skT2sOkBLI/I3hx6SoMDzLyy5XK+MJq4tICFWBUIvUfzwhp8QoR/P4EsuR
+         37ADbXfk1+89gM5y0jq2oMQ5RNYA+Lu14HQhoxHVkqMoAEQNjAcjrBBu9tRA6+DCgHZM
+         HmfA==
+X-Forwarded-Encrypted: i=1; AKwUvBzQF/7AwVNan4wbMuHv6BeYHAv6jxmWwKXEd58KmtXNkX5cXHRr1Ev24dHogA+RrMlTakn1LIh69A==@kvack.org
+X-Gm-Message-State: AFuF++koC/EsvzUB+egmJrOaL0yW+HhgDqxW+aEEprwTgNNZJgNEvz3y
+	1YihOUH0iBVU/w4FPyJv+PeUATLPFvSgOhGNG+gWsda13ZCEqS/EuOsp
+X-Gm-Gg: AYBFou3GywQmhVqiCzsSqVbZyGyUZxz4h/kFSxqrMiVmN2qJhdPf7loWXKdbppzdMtr
+	y40KFAzYjZtBIv+meKrm5t6XideguCvVFCssw4fP8F+7470OZXo6ze6kkVFAZWzMHh8f3rB6EX1
+	dSjXQ2/d1gJ4zfpFuxk9KOhyeg5yn/3nI6fbyzqssT44QQcJ80EEvyiT0N0bx6xewPqxsL8oYWC
+	eXxDybO4CCofbwGE86WvoN1lzUVA4Jsd+5VP55jUsRICX6x08fv2CO4S4JsKMoRwx9sM+4pJULI
+	Mjs1yvD+EgjOdPwf6wYCEMQJ2PcquDeSJu6HkxweAlvBgL3Bxsrb0RnHcc+nFBzpZFllFZ2/5MA
+	bDsTd6RI2mw+u8+H8TJnAXNNRbgKSTQ9TELw8yzEUyiQELrOO4Qx7zoiyttNG+/1xJnTjHZiJy8
+	spYRtCAt/9KJwC/Mhma1kmseLHzSy8+sNGwdlEQEawLXfCdwIlWhnb9pDOo+6MAn18BL3OFZGQZ
+	n4Qk5SCmLrsip3LiWHasgIUxDIH+QFPKdwo/Jih
+X-Received: by 2002:a05:6000:25fb:b0:485:8354:d82d with SMTP id ffacd0b85a97d-4858354de3dmr4041188f8f.23.1788427530909;
+        Thu, 03 Sep 2026 02:25:30 -0700 (PDT)
+Received: from outlook.com ([2a02:587:6022:4b00:647f:bebe:643a:40cb])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48448ed37c4sm10748511f8f.21.2026.09.03.02.25.29
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 03 Sep 2026 02:25:30 -0700 (PDT)
+From: Christos Skarlos <christosskarlos.kernel@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org
+Cc: ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
 	linux-mm@kvack.org,
-	Kunwu Chan <kunwu.chan@gmail.com>
-Subject: Re: [PATCH 2/4] mm/damon/core: handle uninitialized damos_quota_goal->last_psi_total
-Date: Thu,  3 Sep 2026 17:23:33 +0800
-Message-ID: <20260903092344.3079122-1-kunwu.chan@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260902002725.108635-3-sj@kernel.org>
-References: 
+	linux-kernel@vger.kernel.org,
+	Christos Skarlos <christosskarlos.kernel@gmail.com>
+Subject: [PATCH] mm/huge_memory: fix various coding style warnings
+Date: Thu,  3 Sep 2026 12:22:00 +0300
+Message-ID: <20260903092200.88910-1-christosskarlos.kernel@gmail.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: zm5jh9krqfxgudob13iscwtz8cf7f3k7
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: CD3BB1C0002
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6E205180002
+X-Stat-Signature: p3pam5fkh9tq5bohd7ucpooyxuy49c5r
 X-Rspam-User: 
-X-HE-Tag: 1788427434-387595
-X-HE-Meta: U2FsdGVkX19hMNLkVQpM4IpfPBbPd/QYj14Vk7JKhmEE4rRqakyA4zCIhgc0eGZhGYe8rrZwGQwMqWamaCZNK6X02PGhg0iiwoRgQYPRrfn9qhfqGV9ceCcOq+rAqyjeyLnJAoRJ5mgmGAU76+QKjD3GlCGuiB+Ws73UMVqHSxvTSnZHL4jtz063Ou609ao4mTZpEvIDDljhuFmZNbz+df8qJ3cNc5v447N9GY2Tlpip7YVWwWnxoATg5QZVZKJe729b3Tr8sQhtUPszPo9T9UKOTx7b1tILzSHNlVv0czLaga4ty9FVGQDJGEepcV1GtMiHhYgTFV4HunBl3IMKbgomTmuON3w6fSkoXf+EWsfo7Op93rXEcSsV/n4H4cV7kRwPp6yOveNq+w4yYnmZvbUqcSe3z3mItK9AYehoWipurk25kHdS7cFN05qAVG2GwxxiWRxBQpzc0b3xqgRRE0GFJ8/v3NGt+e3X1GzUXnbwSBUGXGQJkTkLt8KYT0r6hQ9o2yvVdrGSER+I8Vb4Tt7EIgubZ1cvnDCWRCksjc+uCBHrHzPQJBo7y6HuGZYAT5Jma1WTr4ryqR7lRVm7ypOBs6fy9wh7+1DwSVI5Kx5H5rhKWKSx7/GoAqXet5aA7vGSGAu4Vym98Er0KuWVHu1YVqYDlml7OfoGULF9nPetVBczSTamgErUwfToLu1p0pn4P7RpXPb9D0StsrvgfUj4XE8z1bclyz3vzyhxhEurkn6cBXHz5mxVgMgIor7q0+Z9MA4bKTjZsOwRYw2aC6scj4M8hApzp2CJnDIWzQJoVSRfdiBfavoxkQ2TNY3CfUKDIoEf8erkGSZ8gp+JfRQulnYyilh1Qoq0E0suqpHNlxI+haAjXC/2NMqFZuYMGtLoJWP1k0ByZVVG4rURti6sBbhHoQMmzKnDYyl9Qdt7txky9qkpKUKFxyP1FDVrOTDMEwrUdbShM+cJt3m
- xFLr1wNH
- p7YJbKlwPQH84FuxgiQLKpGrnA6zGGFGKw+py+p7Z5d/hkrYc2bdA+n9XhPzfPWqYMtbxHMfMVCXYKtrNw4SjrqG1ztPdm0oCfzgFUegYm3UdzGc9+o76FHivHqBrSnB86cAclpBiS654bSZEnb8dHIfJTHlvAFNCsCy8e1B/SOTVetYxhcbo3t06iirDSFA/zti+em65KjY7c1++EA/UV+eklaWu+24+uai4jZxaG4Kbgc1wTQLGVbbrTR1oiVPUKRQKK/TPNSI8ABe0fbM30YL7+5wLHkmIzAtaxAU9/S9BNCnrHqqTNFPHVp7UwknDcH8cgttA4GqZRxg8mnmgChdeN90aJ5sE2NVfU11fAcpPlPKPgLKN7EMlk8K57Xy1DgCkKiHZk6ls3QKNdADpa4eTUw0hjBZzMCtF6/1mztj9X5MHjLvj1snxTmy6v6jaYmJt0kWjkUJCO8GopMww0cCROA==
+X-HE-Tag: 1788427532-472527
+X-HE-Meta: U2FsdGVkX1+CL1x1EmdWqGWrQtyEV4BJssE6YmlilWQSCVYbZXoJ+/mAIQCBvwtMDx7rACQPtnFnYlKhimmziQZwWzczaIDwv2gsN+mEEJ2juoFkEjx+J126LgZjME1zdZ7WfTlpCaMkaxiIhL0e0dAv0acqh/5DNB5fmqmyLJc+3+GU/jZnwWdH80+25p9cnN0ym/2lJPRc981kgb5TrqqXljtKAdvPyo2abfAxLMFqAMJk1DwxjNne6y8z8ibfs0Br1ra4DoJW4j5nRt1TGSkAQp7Ul6NOsxhdKZK1xV+urvvyw+e+0FRRLppp0oYx5a4iVxG5WHQNgEVAfdExFFnvBf5XMaeGNxR1fFBvxiuPteKbNjepYBYtHr4IBxHEPQSrQZ9g5xcDFfM9aIgs2FsbMWeArGy/GLK6a1juBg+dhtuBXBJb80/kdRsVAbcxqFegKg53CC+mnOA8pcNXJ/q2vKTAwAphjGTJGVhUd7gbFXcEi03Rv02KdXQ+Fx/Qmd0eCsNfLd+OhWXG+aCMzCPh8kwcT8RMaPL5bTXkJaZJgiObYVeahBzDDKqmO5hoCp5q6FE6vBuyi21QR8iqNILpw+cRq2Bogq+qiKAFOMLdNOotGoo12XTDbms7J4zgR9QFzYAzO134Rf7rNW5Xu9rzgMHE5oA9LXEhlV/d1c0vzSk1bB/UiB5yT3vopfmrfAsI+edO5yIY6mlPd6f+mCB05AFslBQxJjD69au4cdDZirrh5uIJSaanwctz/vV1yXFTMALwf+sFI79xhR96lCE4AA9Lv0g8sMxXdKsB6UE+eQikvzxBUg2KCu68JhNS6pgcVdNtXR8OJosle1uv22PE/ui4ZuDBdaH9Vr429mwwMFzZxlVeCNhVQyg6l68g9LoeCmkCPJm5O3q1R6QXehuxgmXgMaxoVKNUmB3vrlgadSgbDm2ugzN15MSR3f1P+2ceznyqP/ieDeNmLTc
+ NxqoH9wh
+ LA3J0dMeDzblpZIXhiodALJCfeWBbPpWh6vc3eGJBe7rVDz9YJ6Smf3DY8zKlRsHx0YMCN0Uq01r3wH1d39gvFywPy4j7lFscFiAN9TKoMsF3hhFynbsE/Ime9LkFHSeU5J1Yn5T8mdtcGtZt+ZYwGO6rcWuzpctBoLa91TxQ95ZKDFeXcR1avRukV+oIxFxcmL/T0GpwpcrOP4IyDeoTk2so0xdhrcp6sxf7EbjLvIMLp6KUkFNf/jQNlj/HsWjVclbfnAY+Yc2qxFUmK6TloXg1FwUJyjATnf2KCa5Pow2+iMODgINIXTVzcXAT7SFgSEIitSL17lnr+5UYDpv7ag3aPi8Bg47PJZRC1RToe/ZWyKiEiwYQ95C/W7LUjnuoKC3iGVQy7kO1kBkBOLdYMX7Et8+hHyKNBbyCAdjmWw9uP9GL9vMu30HaWYEtqsMpzpc6NBtAOIJ5RrcplRJGMg5YcRhbisyYX9WmW1sd/toNLTs8BMsrvIebozfA7Fb8KIaQSckpUl5PxoJ0bQRMjNRL7lQPVJMEdcnK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,146 +127,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  1 Sep 2026 17:27:21 -0700 SJ Park <sj@kernel.org> wrote:
+Resolve coding style issues flagged by checkpatch.pl Specifically:
+- Add missing blank lines after variable declarations.
+- Remove unnecessary braces {} for a single statement block.
 
-> When DAMOS_QUOTA_SOME_MEM_PSI_US metric damos quota goal is set, the PSI
-> delta for the feedback loop is calculated using
-> damos_quota_goal->last_psi_total.  However, it is initialized only after
-> the first feedback loop.  The first iteration of the loop uses the
-> uninitialized value.  As a result, the feedback loop can change the
-> effective quota in an unexpected way at the first iteration.
-> 
-> The user impact of the issue is not big, because the issue impacts only
-> the first iteration of the feedback loop.  The feedback loop also has an
-> internal cap of the quota adjustment.  The wrong adjustment will soon be
-> corrected over a few iterations.  For this reason, doing no
-> initialization at commit time was intentional.  It is also explicitly
-> commented.  That said, nobody likes behaviors that are unexpected or
-> difficult to be expected.
-> 
-> Check last_psi_total initialization and skip the tuning round when it is
-> not initialized.  For this, initialize last_psi_total with U64_MAX in
-> the goal creation and the goal commit time.  U64_MAX means the field is
-> not initialized.  The tuning round shows the value and adjusts it to
-> guarantee the current quota is maintained for the round, and
-> last_psi_total is correctly initialized on the next round.
-> 
-> Before this change, committing a new PSI goal on an existing PSI goal
-> with goal-only DAMON sysfs command (commit_schemes_quota_goals) just
-> worked.  After this change, the tuning round right after the commit will
-> be unnecessarily skipped, because last_psi_total is unconditionally
-> marked as not initialized in the damos_commit_quota_goal_union().  This
-> is an intended tradeoff for simplicity.  Skipping just one round of
-> tuning is no problem.  Meanwhile it makes both the code and the behavior
-> simple to understand.
-> 
-> Also update the quota goal commit unit test for changed last_psi_total
-> setup behavior.
-> 
-> The issue was discovered [1] by Sashiko.
-> 
-> [1] https://lore.kernel.org/20260718005316.89585-1-sj@kernel.org
-> 
-> Fixes: 2dbb60f789cb ("mm/damon/core: implement PSI metric DAMOS quota goal")
-> Cc: <stable@vger.kernel.org> # 6.9.x
-> Signed-off-by: SJ Park <sj@kernel.org>
-> ---
->  mm/damon/core.c             | 13 +++++++++++--
->  mm/damon/tests/core-kunit.h |  9 +++------
->  2 files changed, 14 insertions(+), 8 deletions(-)
-> 
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index 0df785e72438f..20748b0a71026 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -636,6 +636,8 @@ struct damos_quota_goal *damos_new_quota_goal(
->  		return NULL;
->  	goal->metric = metric;
->  	goal->target_value = target_value;
-> +	if (metric == DAMOS_QUOTA_SOME_MEM_PSI_US)
-> +		goal->last_psi_total = U64_MAX;
->  	INIT_LIST_HEAD(&goal->list);
->  	return goal;
->  }
-> @@ -1129,6 +1131,9 @@ static void damos_commit_quota_goal_union(
->  		struct damos_quota_goal *dst, struct damos_quota_goal *src)
->  {
->  	switch (dst->metric) {
-> +	case DAMOS_QUOTA_SOME_MEM_PSI_US:
-> +		dst->last_psi_total = U64_MAX;
-> +		break;
->  	case DAMOS_QUOTA_NODE_MEM_USED_BP:
->  	case DAMOS_QUOTA_NODE_MEM_FREE_BP:
->  		dst->nid = src->nid;
-> @@ -1150,7 +1155,6 @@ static void damos_commit_quota_goal(
->  	dst->target_value = src->target_value;
->  	if (dst->metric == DAMOS_QUOTA_USER_INPUT)
->  		dst->current_value = src->current_value;
-> -	/* keep last_psi_total as is, since it will be updated in next cycle */
->  	damos_commit_quota_goal_union(dst, src);
->  }
->  
-> @@ -3039,7 +3043,12 @@ static void damos_set_quota_goal_current_value(struct damon_ctx *c,
->  		break;
->  	case DAMOS_QUOTA_SOME_MEM_PSI_US:
->  		now_psi_total = damos_get_some_mem_psi_total();
-> -		goal->current_value = now_psi_total - goal->last_psi_total;
-> +		/* uninitialized last_psi_total; make no effect this round */
-> +		if (goal->last_psi_total == U64_MAX)
-> +			goal->current_value = goal->target_value;
-> +		else
-> +			goal->current_value = now_psi_total -
-> +				goal->last_psi_total;
->  		goal->last_psi_total = now_psi_total;
->  		break;
->  	case DAMOS_QUOTA_NODE_MEM_USED_BP:
-> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-> index f1e11548c771b..af26b3d60957b 100644
-> --- a/mm/damon/tests/core-kunit.h
-> +++ b/mm/damon/tests/core-kunit.h
-> @@ -757,19 +757,16 @@ static void damos_test_commit_quota_goal_for(struct kunit *test,
->  		struct damos_quota_goal *dst,
->  		struct damos_quota_goal *src)
->  {
-> -	u64 dst_last_psi_total = 0;
-> -
-> -	if (dst->metric == DAMOS_QUOTA_SOME_MEM_PSI_US)
-> -		dst_last_psi_total = dst->last_psi_total;
->  	damos_commit_quota_goal(dst, src);
->  
->  	KUNIT_EXPECT_EQ(test, dst->metric, src->metric);
->  	KUNIT_EXPECT_EQ(test, dst->target_value, src->target_value);
->  	if (src->metric == DAMOS_QUOTA_USER_INPUT)
->  		KUNIT_EXPECT_EQ(test, dst->current_value, src->current_value);
-> -	if (dst_last_psi_total && src->metric == DAMOS_QUOTA_SOME_MEM_PSI_US)
-> -		KUNIT_EXPECT_EQ(test, dst->last_psi_total, dst_last_psi_total);
->  	switch (dst->metric) {
-> +	case DAMOS_QUOTA_SOME_MEM_PSI_US:
-> +		KUNIT_EXPECT_EQ(test, dst->last_psi_total, U64_MAX);
-> +		break;
+No functional changes are introduced.
 
-The U64_MAX sentinel approach looks correct to me.
+Signed-off-by: Christos Skarlos <christosskarlos.kernel@gmail.com>
+---
+ mm/huge_memory.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-In the first feedback iteration, setting `current_value` to `target_value`
-gives the PSI goal a score of 10000, so the uninitialized PSI delta does
-not affect the quota score. The current PSI total is then recorded,
-allowing subsequent iterations to calculate the delta normally.
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index ced400f72d43..371ee8d38c45 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1104,6 +1104,7 @@ subsys_initcall(hugepage_init);
+ static int __init setup_transparent_hugepage(char *str)
+ {
+ 	int ret = 0;
++
+ 	if (!str)
+ 		goto out;
+ 	if (!strcmp(str, "always")) {
+@@ -1510,6 +1511,7 @@ static void set_huge_zero_folio(pgtable_t pgtable, struct mm_struct *mm,
+ 		struct folio *zero_folio)
+ {
+ 	pmd_t entry;
++
+ 	entry = folio_mk_pmd(zero_folio, vma->vm_page_prot);
+ 	entry = pmd_mkspecial(entry);
+ 	pgtable_trans_huge_deposit(mm, pmd, pgtable);
+@@ -2613,6 +2615,7 @@ bool move_huge_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+ 
+ 		if (pmd_move_must_withdraw(new_ptl, old_ptl, vma)) {
+ 			pgtable_t pgtable;
++
+ 			pgtable = pgtable_trans_huge_withdraw(mm, old_pmd);
+ 			pgtable_trans_huge_deposit(mm, new_pmd, pgtable);
+ 		}
+@@ -3901,9 +3904,8 @@ int folio_check_splittable(struct folio *folio, unsigned int new_order,
+ 	 * swapcache folio split. Only uniform split to order-0 can be used
+ 	 * here.
+ 	 */
+-	if ((split_type == SPLIT_TYPE_NON_UNIFORM || new_order) && folio_test_swapcache(folio)) {
++	if ((split_type == SPLIT_TYPE_NON_UNIFORM || new_order) && folio_test_swapcache(folio))
+ 		return -EINVAL;
+-	}
+ 
+ 	if (is_huge_zero_folio(folio))
+ 		return -EINVAL;
+-- 
+2.55.0
 
-I also checked the commit path: the PSI goal is reset to U64_MAX when
-committed, which intentionally skips one tuning round when replacing an
-existing PSI goal.
-
-Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
-
-Thanks,
-Kunwu
-
->  	case DAMOS_QUOTA_NODE_MEM_USED_BP:
->  	case DAMOS_QUOTA_NODE_MEM_FREE_BP:
->  		KUNIT_EXPECT_EQ(test, dst->nid, src->nid);
-> -- 
-> 2.47.3
-> 
-
-Sent using hkml (https://github.com/sjp38/hackermail)
 
