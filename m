@@ -4,133 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5972C61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 15:09:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D327C624D6
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 15:15:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E958A6B008C; Thu,  3 Sep 2026 11:09:35 -0400 (EDT)
+	id 440C16B0088; Thu,  3 Sep 2026 11:15:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E46BF6B0092; Thu,  3 Sep 2026 11:09:35 -0400 (EDT)
+	id 3F18F6B008A; Thu,  3 Sep 2026 11:15:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D365C6B0095; Thu,  3 Sep 2026 11:09:35 -0400 (EDT)
+	id 308046B008C; Thu,  3 Sep 2026 11:15:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AFCC96B008C
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 11:09:35 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 49C141C2133
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 15:09:35 +0000 (UTC)
-X-FDA: 85172785110.20.77E51F0
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 6BC5240006
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 15:09:33 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ar4Eb96N;
-	spf=pass (imf27.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EDB6F6B0088
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 11:15:31 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 572D8A0597
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 15:15:31 +0000 (UTC)
+X-FDA: 85172800062.29.9742C08
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 9291720006
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 15:15:29 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=XdYhm8LE;
+	spf=pass (imf13.hostedemail.com: domain of hughd@google.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788448529;
+	b=CzZd9WdrflLu+iAWOpXEWybnoOVI1pacnFly2Gre2i42q1bdiioi8l5u+/SzDiMNq8+lSn
+	37HPibQUTV0JPz2nyH4AH8e4DKozfX6D50/PSNO2v4CZgUhReaBzLTJBq9IRFqotbanr4+
+	YW9TKL23qwnMxK1elEC1hFGLLjOTZbs=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=XdYhm8LE;
+	spf=pass (imf13.hostedemail.com: domain of hughd@google.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788448173;
+	s=arc-20220608; t=1788448529;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WLq5Ho22bmD7v6KZE3c4vo4tWl6YYYaL+ylKWHH1z3U=;
-	b=uUrppoph3Azj+YbOCphm++FwyzeRMACt2cuveET4/pq7p8UbrhozB+2K8/b23VVRj5uh39
-	acwOQxseXrwrMaDvPMd4KgbmmjkajsoUlso82kODLJryRs6OJcjf6x1TajiqQ8QlAnTI1t
-	96TvTqXDXt8ntz/cNWAOCfsQhI64XwE=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ar4Eb96N;
-	spf=pass (imf27.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788448173;
-	b=0lbvQG6NUSCGTp/IMZ4rlG7yoy+6AVVYyWSVxqK2cDiAK8/t3ORtl7dGF6mKIDV0wz8P3W
-	h1iUhunh4cc3MD7rC6ARPrD+S9V4L7injk7rjUwiVLuolZSNWKUa38q7QT9cIg22izpSDB
-	YPWY5mQS7NsgOhDGOsRUUmOqc3Ga+ek=
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-84864086bfeso2409200b3a.1
-        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 08:09:33 -0700 (PDT)
+	bh=Mf2cMzcJB7ZgyTGSGNOkCh7zEnrruRaHuarVNveDD7w=;
+	b=4hsooGjECzkXgJ0Ae3SDkRAHvuT6kRi2tNHF7IvYhXC36n6qRwRBIkLDzcmeOfp8I/Fvd1
+	LEi4UPKWObntxnvPv+2Btlh5A3xZ1lvgCggGs6RWm/tja0UzE+eTMW/MTYqbUVnftaJ0pO
+	3NVSWiRWX4bgoNLO56+xQ/63qblR8es=
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-86cba60d4f2so17355747b3.1
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 08:15:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788448172; x=1789052972; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=WLq5Ho22bmD7v6KZE3c4vo4tWl6YYYaL+ylKWHH1z3U=;
-        b=ar4Eb96N8l9xLDqN2AdFM5Ryv7wWam5kDeDxVa0FNEwclQzlPd+VXM3PWLGGgUfJe6
-         bap4vznp1RvOMoHeDdFsUr5+/fZSLZfL3aBS22MvRBvF8M4rOiW+00Lt7rZ1e5XhcR1G
-         q9qDN3kAUY4D3u0aqfgnWctvzgoTtjU/F/ThzX1N+Upwj9ogYRQDULC6kdDyOgbid5bN
-         BXmhngY1M/xYJ5tUsfiXmc4J5fRa1sXYtEVXklQepQ5A9SApg43GGV8V2h/biD8JAbkL
-         8Q0+wm8AFxS+2/z6waBJEzfwnUdFi3SPVVejhkAtOIRrdTRaByKBmNavuX6oDQeHN/ix
-         tcMQ==
+        d=google.com; s=20251104; t=1788448529; x=1789053329; darn=kvack.org;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Mf2cMzcJB7ZgyTGSGNOkCh7zEnrruRaHuarVNveDD7w=;
+        b=XdYhm8LEy/NfCrAVgYyqIGZ3Oqp/LkIBGZ6GHTdUFXqMV9ScHuGVUmvdmGolrcuSwq
+         aOGQl09tZsBJv/7ITx6apRO5R6dtBHNCEf8YnK2sBJv32I8IUhiQ+tyHVal+E2qx553p
+         I//Jy7yy/YJrsiHAmHQaUIIeB40ip3BoeXdwJ4au6hpaSQMSqWDVEsxkdvMhRPewoz7d
+         NE87NQwrGL5VyNxbKxoo9fWIWV89r0wO8gV+r7HQfLOxvKwmkJSN0te/ApFv43W0Qvf/
+         xSjY0VKTvmjkwmoKuhODp9xOpgo7ed/8Ug2JTOb6PGJAEvzBUkYeEhht9SysU7KuysUq
+         LXPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788448172; x=1789052972;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=WLq5Ho22bmD7v6KZE3c4vo4tWl6YYYaL+ylKWHH1z3U=;
-        b=En94jaf8uZFpuhpL8zHKT9kDgUzuHRZwmJGJloJTa3f6/yNB3rNl47J2EBUuLZAhFM
-         kAR5huxoekHhJ7qUhYMijPoD5vIxxR4DcldVITl1AOQHNTLHUqcVECdriWKpT56f4wZZ
-         rzmIPwGuoUj0zYwv+CfWbB0catq17g0ehflam9gsptj322YOC3ieqwukD5zJbCwRUPTc
-         hSPU8ovdNKvybPGSUrSfowH79rSldVpWb+42I5YHBq9EEwAATFXudsDu7DOFPL0vAB14
-         cAMX651fEnU11SFvoehfs4F/UJELZXUBrZDsVBWBj1EiBlO8Q5Vgd9beEFX45bY9BTwp
-         3Lag==
-X-Forwarded-Encrypted: i=1; AKwUvBzb2CFdNVUU3zLZP0BKX1lLWihgptqUy4OftOi9V6LPXU64xgfF5Fm12RRRWcHbMqKb6/CuhN++Pw==@kvack.org
-X-Gm-Message-State: AFuF++nXg5Hc/OrYmPY6B52BnUJ+syb03d13ijodYiez6erszqWccnJb
-	7UK42Prh0cHO8vuPMr6/KdrEoPQ4FTsCzaY/GIhJfaALcb9oseuRPo0h
-X-Gm-Gg: AYBFou1+kHY2u2/oq7u7gCPO2WzFGCZkQ44xCSDt0f1OeiRRnKCGTtcxlDS97Bbl2Tb
-	4uDIF2jogs4gxisJFM+TPh+S7kl1eg0zuy+8nR3gmE8cWWQ3U+3Acb3p/jgDNh4I4wSRGIg+7rc
-	aR83FWc0RMvN4y3gUb4hVDtKjfFY62Dd+BJYF0/e6UqJ4dHsUssDYi5WQJxdATAV0AyaoI9qLoU
-	CNLEqlC+L2KUCESVWzlV6ZdeI5uzmZ1hyJC3kfqBV9qIJPk95bIQT4e5LRFxJIc4P0CJPgN6ppM
-	9nQwCPOMLdXF0qe7v9DE9n26oQZzKFyjwfkUXYkbM3nxrTsUF72YYEqKkCHHe3ooRnlE/sh0eI/
-	BH5v7ffJCnV5lKQujXP4C4qV+qvVqplw/09R7tzlaCZTAwGBcExjqDm9k8VuICJ3a5qrjJhM+h8
-	YELqqkY9aRTO7iW9Nmgjjc6kwzEmVuIlNvBVrI2wbQ4RPQMdzrZRXldbUsI8oj8NjRnv7Q6gB3U
-	3OQgQ==
-X-Received: by 2002:a05:6a00:301f:b0:852:355b:2430 with SMTP id d2e1a72fcca58-85ed23e043emr19151323b3a.10.1788448171946;
-        Thu, 03 Sep 2026 08:09:31 -0700 (PDT)
-Received: from zhangbo56-PC.mioffice.cn ([43.224.245.235])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8614f871fc6sm70289b3a.7.2026.09.03.08.09.26
+        d=1e100.net; s=20251104; t=1788448529; x=1789053329;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Mf2cMzcJB7ZgyTGSGNOkCh7zEnrruRaHuarVNveDD7w=;
+        b=hgGE96Alegzsb1ef8Ai5FSO3wv8+9W5reQdArGl45ENjJuHnqm6ThcaJX+Hk8JxkUE
+         4tPZOzlJ7jEy+GtdHMZQl8i2yPQ+k3K01DQ5XXahRTQbBE5G1K1KhhkKDv+P9ofTG0dh
+         D6H+mSVdyfApQiYC9lCHxEcLStsfajVXkDF26H/Y6LNKEKiCrijTPHPqaQSsH4DNjOFh
+         wlBm8c4F3eq4m4DG7e7v2DbsR58CSmBmD/vfbJ7WQrHj8VdBbyQSpy8K6TXFLz2kDr/f
+         0Y8CajM/HOZnWJj5i6XIfGPu7J3K9uou2TWWKJ3NGvdmXiULNxxAxLEFeLIvwi2k1VfK
+         IVPw==
+X-Forwarded-Encrypted: i=1; AKwUvBwIDdL4Qu4afOWCqU/Dwk6TvyM7ZBZ/bvufL6jm+pC16QCHajDW5qmPCuKrlbsJ6dOE/9TVe6tdBg==@kvack.org
+X-Gm-Message-State: AFuF++lFzj1WRcDT2+ZhzP7oEGbQF0FU9Jm6clkv4ImQ8v2h9x8MkcBx
+	cUH8kIrjONx7i5sUXRr9TBI4DmtdWB4nz5rYw6jIVUdeb7qDiCNKNmYWT9SMe6p+hFij3X1lNrH
+	xh0hM1e4l
+X-Gm-Gg: AYBFou225y3qiCdRK7xU5tcnvdC0dpFBSojjQ+GwKE+xq1WchgEx1YkUJn94FgH3B7a
+	l80Ek+SyIu+7P57vVntgjLrUdUw4GrbaAnsq1oTF4ReenWVPY9G4O+7RyOBXL6CCnGfJbBZKinu
+	yy63DUULlaMTm0iJjrlNrLRcsL4eTWQUQnx6Ljwnen4FEDgtgyAIxRJWRBrM/9MKf6cMLAWA1GC
+	UvyAsK2dieSpnbnUwzhsiEw6Uov/xB5aDHfaRtkH8ydfNTB8ixtZWp96njS4gH7O7ei/7CooRoy
+	ybUDskQHuIFP+2N5Wp6q4yW5qypkUsdQ65MBnRcDYXbZ1fL8DGxdQDjRDFned51mkmjDtYWThs0
+	ELZSE7OiRTfsE+j7KpdO7ERlFtSZEitqy6sMdtmYhgsAeBU8Q9LDRx7d2PgisD55VQbOX4sey1+
+	Kr/VXOyP3sViOCfFrXiaKMxpXVHiAZ/XcDhdzzVis8kQ4oLeXwDfmbQxQ2gXt8g9SHkxbAaWg2u
+	V/MkuPIUpBBF6y+z6kMbfTpaZJ8HSW1L/mwQulBlbnKH2pE
+X-Received: by 2002:a05:690c:30a:b0:858:def3:3422 with SMTP id 00721157ae682-86c53989a23mr76445507b3.27.1788448527781;
+        Thu, 03 Sep 2026 08:15:27 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-86c10c9461esm43081537b3.7.2026.09.03.08.15.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 08:09:31 -0700 (PDT)
-From: Bo Zhang <zhangbo0325@gmail.com>
-X-Google-Original-From: Bo Zhang <zhangbo56@xiaomi.com>
-To: akpm@linux-foundation.org,
-	vbabka@kernel.org,
-	david@kernel.org
-Cc: surenb@google.com,
-	mhocko@suse.com,
-	brendan.jackman@linux.dev,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	ljs@kernel.org,
-	liam@infradead.org,
-	rppt@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	zhaonanzhe@xiaomi.com,
-	lipengfei28@xiaomi.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 4/4] mm: adjust free_pages to make __zone_watermark_ok() mTHP-aware
-Date: Thu,  3 Sep 2026 23:09:17 +0800
-Message-Id: <20260903150917.4112784-1-zhangbo56@xiaomi.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260825043833.2659350-5-zhangbo56@xiaomi.com>
-References: <20260825043833.2659350-5-zhangbo56@xiaomi.com>
+        Thu, 03 Sep 2026 08:15:27 -0700 (PDT)
+Date: Thu, 3 Sep 2026 08:15:14 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Jan Kara <jack@suse.cz>
+cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+    ocfs2-devel@lists.linux.dev, Joseph Qi <joseph.qi@linux.alibaba.com>, 
+    Hugh Dickins <hughd@google.com>, 
+    Baolin Wang <baolin.wang@linux.alibaba.com>, 
+    Farhad Alemi <farhad.alemi@berkeley.edu>
+Subject: Re: [PATCH v2 2/2] shmem: Refuse to enable tmpfs format for another
+ filesystem
+In-Reply-To: <20260903090508.1360863-4-jack@suse.cz>
+Message-ID: <3b119174-7b10-6eb6-7aff-462949fcb49a@google.com>
+References: <20260903090053.13120-1-jack@suse.cz> <20260903090508.1360863-4-jack@suse.cz>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 5qobqm61aw7ynbytcx3p4b1dhgwgofgc
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6BC5240006
+Content-Type: text/plain; charset=US-ASCII
 X-Rspam-User: 
-X-HE-Tag: 1788448173-269593
-X-HE-Meta: U2FsdGVkX1+xMkfGeQU1WGRuI6LOcq/KOXzeN7YEk6bSS9MFd8JFtuZNlgWUy4YYVPW5qDsBcZubOuhcljyaKOdXk4VdC9CqHKriDEciKL6P48gKw+cSEPPYK43AvGl+/TRsnMlAff97m9sd0yqiCVveuvKsipaGoOA08QFOhxsX9iIBXE31UelI10IdKH+gS3C1ZnL/j43HRkxozyNhKWnjA1ofeF2Aw4FxkhJwuiaS8Y6QHlc2UcG+XM8G2035svL78fNRW2moYH6ZdEIBoecw1EWACndzDWcOjLBQAbBaeAOUH9IkaZf0j54eEGmB5btFxK0vqRY5BzFBQlQgcLwa/Xhc8dVL8pDgOQ0YraQzvJmsHmoJZueTEEd+Yc/k2xHiyqtCSJedJzUEUQzohW2kIeRlt/wdulGmud+xX684qEM0fRUVubw0/cLkYQmW5mSUrTPabpl245unGv5qnqzYQC7+R1NPlO0TcBmGyGbP1mor4GpIDUp8rAuFTQjIyAfDyN4kHbtc2nWeaQ2GAWUdBvn4ivcUtpSIdPhZiI0RVtrCgxi4oeaGS0lohkCYi7JKg09pOIJiuLiQePs1e1eJJ2Ddx6puoU9h6Iy2twrxjbebmcClcH/MCu/HOdjBEOJuDiXikANTOnKpHPxgDBdbo49cV8gRlcbWVyVeubaUxE5LUWcQNQHSAANzTRxpmMIkqV0m3qiQkOKMWieodKGe014qAnH5UFLdt/S3UsNdStr5kttDASMg00m9hRNFb1hr3eIS/AMih0wDY/7qFS9zAn91KQ0rDkNjrY8hopQ1pRt6oxw8RLLkzIgSzj8XhEi9lfBO1Mfr/1Wcqc932dR8vtsmpE6Xxb4SQf+i+Q3CT/vOCj7uP+KZ+98/U21VFnu/khvKIVU8dHAKZ02rlVKJmel4pUK2jRHr63PMXnKvqt/Sy19yhvoXxqBEu+Qb7MnQr6NIsC0CU+eMFWX
- oGTbSkO4
- 9vfQzFbOI+g6HJ1P+FIHIyZuNxmMWcymOgxc8N4XrK+KsU7JhkJNmZxz/NSIIUYln1SDpJxoEA0akCqy4ooY6wEzmZpawfnf6/JTR0KHe8WtwVR5CkypYJUpDZhA9c2Ri3vLgbCDd4DUtNArbb3scCKtuKEKcXEcEW3ow0nzGuFxGc5dqm2q80dOGVy3I+YVt0YlIwaP6Uqzsl9IFMI0fVdWxLyS+BnmjoNs2IaLqnlV364I4K5Egw2RSF+zMsBnczBfwKaaehaNmmd7aDjG2/SV/tw0Q7NyBAwHyYHL8Cr6xONracYsCuQBs1C0tpectEer9YcgL7ZWfE/tCjK5Q6i6LIpipj2RMsOy4a/p4FzdKo2oNLmwthvGdxHXobMqkhNnicNLjxrIPEI0=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9291720006
+X-Stat-Signature: z3pa5e9wfjj9apc9tm9zez8jawzbofq3
+X-HE-Tag: 1788448529-341280
+X-HE-Meta: U2FsdGVkX1/l9TwIIgD2KyEwjkL7r/7SdmLQbg70qLUEJdtcj3YkGUs6OcS73hPiXuGJQLZnyQW1nE5NXVCD7FNigApqGjGwqgDL90iBeXLMsqzKwk148eA8q8w72sJKIWV7BV0pOQYq47bOmW4lzETFsZfoG1T1/S8xt9IxGDAJWDUNBiQjskdXlz+6OzkIJpjHZKcGNxSSt56bX2gJBtcZ9grL9z7Nw/dQVqMCJ+zdTvwV/emvPxpnVrvDI4WYWHLmdiBMfRZXKz5Jrvq9Y1PiXtVVtFOM2zjZ63IpbTfs9ojKKu+rcwfrmub005VrxO3kT7pN860ipeiD3LjnnKiNVhM4frVKcxJvne/PYMDBwlGGoNf0HrDXtrkSLXoLzOuHskwT31kGvRys2MeMHX5FJa44CF5lypwHIzVQJE5nFnZMOQAB2A0FX0XRGaPILSkdvl0zr5vBuRVeoQbo6rNJHOI3qsseA6bPygvSxVgokK7kwJKXAcim3RQYMUUDeStVPJy5tfl2yX3rwGDE4b8H1vjU7GjaGg0mT1gMCUltvke+bVZFDyRJ2kddmT1/0u7y1iY22SV+6IkBVvvBBynFb4Po6xPEQyHigAsaJ7AUBO9Ijl7ci4W17/qTvbstf68ryHwE6dE6ufScW3QbIvSOG8iK24DCg0sZyXescTMHicWD2iQw8nM0nUnQmoFAB0cgzZ3IIm/Kspho3dfAoDE92p7iXZIfYOcZovYnofHnNi6UQaU8HLPciHxIBAZ2Q6BDkGr7MTSQ8vnaym1aFLAcTDqFG+fNwRZ7U9n6WSR7AfR8RyOiHK6aMYHK4x0d8Su5KTvjPo70i9uTBhy09X9+iNokNJ4fS3+L4LYyEXLRYJINt9/S6pYhiDHMMMXQekGOm+GXmnjpwpR8MXICIze5SQAc9OXZfU2TS58Ol3wKh/wsm8mx8/XBqGNd0YjGfGY0h7Jdnv8PF4W3fDP
+ jrNIy3ar
+ XGUoweJv5E+I2NhsHmPea/ThsqD5QGtqSwR0ID+usRmtsRthyRwIAItzNpQ94gqb5JZGISlGTZXLjPP4xFj60KtNQ3DD5PzSJqel64aONjzqYd0cAunB3ZPXh4nxtYsIvOxbbaQQ3S2XNfrI2Nb4LkBG0nv11CX45TGWPHr4LKIXwHPBtftLuqwj4jVfn5LnHs8FbOW1Sd8OmXHol/yiezVtVNHuGXmuOLPHXj+jH80cZmcEaFcOPs0vUXMxwp7OxpybDgVpCl4C6lpIoj0rFu1ox+2Qdn8qt+WJbA9YdO4bwQHhyWkO7uDp98ZGmJZN5pVpYM5H97johTwcfhXwiikO4SmNbo66XTYmFCE6spAqd5C93/ryXjvrL3CaZCGLLDaFY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,57 +122,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks for the review. (The "defrag_mode & order" bitwise bug was already
-covered in the reply to Xueyuan Chen; it will use "&&" in v2.) Replying to
-the other two points below.
+On Thu, 3 Sep 2026, Jan Kara wrote:
 
-1) mTHP count discarded by the percpu_drift_mark fallback
+> It is possible to issue Q_QUOTAON quotactl(2) e.g. for ext4 filesystem
+> requesting to enable quota using tmpfs quota format. With suitable
+> passed arguments this can actually succeed in enabling tmpfs quota
+> format on top of ext4 filesystem which leads to crashes later in
+> dquot_acquire().  As tmpfs quota format is intended for tmpfs
+> filesystems only, verify we are indeed enabling quotas there.
+> 
+> Reported-by: Farhad Alemi <farhad.alemi@berkeley.edu>
+> Signed-off-by: Jan Kara <jack@suse.cz>
 
-Sashiko says
+Acked-by: Hugh Dickins <hughd@google.com>
 
-"The restricted mTHP free_pages count is being compared against
-zone->percpu_drift_mark, which is tuned for the total number of free pages
-... won't this condition almost always evaluate to true under memory
-pressure? If so, it would unconditionally overwrite free_pages with the
-snapshot of NR_FREE_PAGES, bypassing the new mTHP logic entirely."
+Thanks: yes, please do route it through your tree.
 
-Right. percpu_drift_mark is calibrated against total free pages. Under
-fragmentation or memory pressure - exactly when pgdat_balanced() matters -
-the >= mTHP-order free blocks shrink relative to total free pages, so the
-mTHP subset drops below percpu_drift_mark and the snapshot overwrites it,
-bypassing the mTHP value. In any case the drift correction shouldn't apply
-to the mTHP path: it reads free_area directly, which is already exact and
-not subject to per-cpu drift.
-
-2) Restricted subset can go negative in __zone_watermark_ok()
-
-Sashiko says
-
-"Since __zone_watermark_unusable_free() includes all order-0 cma and
-highatomic pages across the entire zone, subtracting the global unusable
-total from the heavily restricted subset can push free_pages negative. This
-fails the watermark check permanently and can cause kswapd to spin
-endlessly."
-
-The operand mismatch is a pre-existing pattern, not something this patch
-introduces: the existing defrag_mode path already feeds a subset
-(NR_FREE_PAGES_BLOCKS, only >= pageblock_order) into __zone_watermark_ok()
-the same way, and my mTHP subset (>= order-2) is actually a superset of
-that, so it's larger and less likely to go negative. Going negative would
-require an extreme case - near-zero free blocks of the target order plus a
-non-trivial amount of free CMA/highatomic. If the existing order-9 subset
-path doesn't need special handling here, the order-2 subset doesn't either,
-so I don't plan to change this behavior in the series.
-
-For point 1, the initial free_pages goes through zone_effective_free_pages()
-(three paths: blocks / mTHP subset / total), but the percpu_drift snapshot
-fallback only has two paths and has no mTHP case, so the mTHP subset falls
-into the NR_FREE_PAGES total path and gets overwritten. In v2 I'll make the
-snapshot fallback symmetric with zone_effective_free_pages() so the mTHP
-path stays consistent (the mTHP count is read directly from free_area and
-isn't subject to per-cpu drift anyway). Point 2 is an existing property of
-the subset-based watermark check rather than something specific to this
-patch. Suggestions welcome if a different overall shape is preferred.
-
-Bo
+> ---
+>  mm/shmem_quota.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/mm/shmem_quota.c b/mm/shmem_quota.c
+> index d0b92d6da50f..a3fa4bd93e75 100644
+> --- a/mm/shmem_quota.c
+> +++ b/mm/shmem_quota.c
+> @@ -30,6 +30,7 @@
+>  #include <linux/slab.h>
+>  #include <linux/rbtree.h>
+>  #include <linux/shmem_fs.h>
+> +#include <linux/magic.h>
+>  
+>  #include <linux/quotaops.h>
+>  #include <linux/quota.h>
+> @@ -54,6 +55,10 @@ struct quota_id {
+>  
+>  static int shmem_check_quota_file(struct super_block *sb, int type)
+>  {
+> +	/* Verify enabling happens on tmpfs superblock */
+> +	if (sb->s_magic != TMPFS_MAGIC)
+> +		return 0;
+> +
+>  	/* There is no real quota file, nothing to do */
+>  	return 1;
+>  }
+> -- 
+> 2.51.0
 
