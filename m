@@ -4,119 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C14AAC624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 07:27:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B366C624D4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 07:31:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEFAE6B0099; Thu,  3 Sep 2026 03:27:32 -0400 (EDT)
+	id 0C1AE6B009B; Thu,  3 Sep 2026 03:31:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC7D76B009B; Thu,  3 Sep 2026 03:27:32 -0400 (EDT)
+	id 099096B009D; Thu,  3 Sep 2026 03:31:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB7576B009D; Thu,  3 Sep 2026 03:27:32 -0400 (EDT)
+	id ECA616B009E; Thu,  3 Sep 2026 03:31:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 98A7E6B0099
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:27:32 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D5034A0474
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 07:27:09 +0000 (UTC)
-X-FDA: 85171619778.09.294E341
-Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 9CEF3180007
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 07:27:07 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=Ig9TJowG;
-	spf=pass (imf06.hostedemail.com: domain of "prvs=6995cc46d=itazur@amazon.co.uk" designates 52.34.181.151 as permitted sender) smtp.mailfrom="prvs=6995cc46d=itazur@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C68446B009B
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:31:47 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4ED30160426
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 07:31:47 +0000 (UTC)
+X-FDA: 85171631454.26.311DFE6
+Received: from mta1.migadu.com (out-54.mta1.migadu.com [95.215.58.54])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 38891100003
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 07:31:44 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LXsH8Q+D;
+	spf=pass (imf14.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.54 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788420705;
+	b=j5asV6eOZik5UtSbbxEx4vuYYVyu8q9aUE8ABy3HgWovulaZwLQfL9tUb3nsoD40ruN1eg
+	I8TwKU0e23MguSl0d6W/nr/7Rie3pVUu6hj1X2UnFW2aUZJUdDgpQycTGTqdqBP7V/vS5e
+	i/TgS2IJSvKMEz/NdBPMMnZoHbYIBZg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788420427;
+	s=arc-20220608; t=1788420705;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XEDL0hSWB2zeGwWJtgzgRDFbNtGe7V0habGCOAlNjWw=;
-	b=BR3YGPSRRx9fW2iZGWn2rWlhYKWcNGkcBPoQK9rolbKkz1UBphQeJ/eLOgvcsm8v8bwOip
-	/ZzDRvoXzgq3Rc1hRo6X5I8dZGRhjYIrdSIrRhZtB+80B5jPgLd+cN/VR0WEmSabbR4J6s
-	Djv1JfDggqlaKBTV4qdUhZFUnza52yA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788420427;
-	b=iWppxUkl8wkfbT2ruRP+84nTEb51PteCgsotezkgnwGEfHdrpb36C/3EQLgwWDUuYIYsLb
-	VLNvawLU9I9M4tAH5lSIf0cI5Mo3B7d1hafjod9hIYCi7jaZYS/EXb7EkrSJhlMYiJZI8K
-	c+N4opmOcviEWlNAJLS0IgdFhByyd1g=
+	bh=LZsPjDcuWHDiqyFJRnZ38FCfKi+o0wZF0/7VYknh1dg=;
+	b=l/y125P7v93O2u9rLoOlaBN4gkzTir0nE2LAKnYZe5nXXcbAlVWC9M/2msXXUc/WJe8qV9
+	h0G/xGuFV29WxNdqNrRxmp+oEDkfie/2H+xK7apoWL8Bh7B46sv9pua7ig2Olhui0ieTKS
+	wcfoMfUcSQBzLGW1/zqXwC/G6ssWuD0=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=Ig9TJowG;
-	spf=pass (imf06.hostedemail.com: domain of "prvs=6995cc46d=itazur@amazon.co.uk" designates 52.34.181.151 as permitted sender) smtp.mailfrom="prvs=6995cc46d=itazur@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1788420427; x=1819956427;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=XEDL0hSWB2zeGwWJtgzgRDFbNtGe7V0habGCOAlNjWw=;
-  b=Ig9TJowGaPaez6ifUs7wBJLewtNCxQGaP88zuIFSQYk3COesikj/Ly8Y
-   Z2Vk3CNIYjfCu1Xw1AzXmzKJjtFNp222lSe43S+W9hBMqqOY8L92uMSFE
-   WzdqpjaIpQ5xHGpzevBM6fSeTYoDuLZAcOVcVV+/JNhvaGv83r0DWEcNb
-   Z9Hul3e8QrUS0Xt0qsgZkfuT4zxhpx4pDKvw1uCHvXQ+saE34O+mYRPDO
-   K/4nwFoKHhgJE2b/4/I4JRXGPq2k/wgPL591yx+Hyja6nl5qFHtYUBHDG
-   iqyI5gOayZ2ajbDzyfv589wF4M2GdUR2ZYUFqSR50IwFsd2XGmbVTCerY
-   w==;
-X-CSE-ConnectionGUID: a9V3tmWSSHWMehpCtylDug==
-X-CSE-MsgGUID: zLigg53MQCWK0KP82k5/Pg==
-X-IronPort-AV: E=Sophos;i="6.25,258,1779148800"; 
-   d="scan'208";a="27681160"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 07:27:04 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.236:14068]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.23.85:2525] with esmtp (Farcaster)
- id 31c43739-7d7e-4b18-a143-798b81c75300; Thu, 3 Sep 2026 07:27:03 +0000 (UTC)
-X-Farcaster-Flow-ID: 31c43739-7d7e-4b18-a143-798b81c75300
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
- Thu, 3 Sep 2026 07:27:03 +0000
-Received: from b0f1d8753182.ant.amazon.com (10.106.83.23) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.46;
- Thu, 3 Sep 2026 07:26:57 +0000
-From: Takahiro Itazuri <itazur@amazon.com>
-To: Yosry Ahmed <yosry@kernel.org>, Sean Christopherson <seanjc@google.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>
-CC: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra
-	<peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, "David
- Hildenbrand" <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, "Mike
- Rapoport" <rppt@kernel.org>, Wei Xu <weixugc@google.com>, Johannes Weiner
-	<hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes
-	<ljs@kernel.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<x86@kernel.org>, Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon
-	<will@kernel.org>, <rientjes@google.com>, Roy Patrick
-	<patrick.roy@linux.dev>, Andy Lutomirski <luto@kernel.org>, David Kaplan
-	<david.kaplan@amd.com>, Thomas Gleixner <tglx@kernel.org>, Patrick Bellasi
-	<derkling@google.com>, Reiji Watanabe <reijiw@google.com>, Nikita Kalyazin
-	<nikita.kalyazin@linux.dev>, Ackerley Tng <ackerleytng@google.com>, "Takahiro
- Itazuri" <zulinx86@gmail.com>, <cc-open-source@amazon.com>
-Subject: Re: [PATCH v3 03/26] mm: introduce AS_NO_DIRECT_MAP
-Date: Thu, 3 Sep 2026 08:26:26 +0100
-Message-ID: <20260903072625.62694-2-itazur@amazon.com>
-X-Mailer: git-send-email 2.43.1
-In-Reply-To: <CAO9r8zNJ3mSRf5YyRQYYW-eM2eiFvQMXW4Rh0cT=31jsKZpuSQ@mail.gmail.com>
-References: <CAO9r8zNJ3mSRf5YyRQYYW-eM2eiFvQMXW4Rh0cT=31jsKZpuSQ@mail.gmail.com>
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LXsH8Q+D;
+	spf=pass (imf14.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.54 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=NC0fL+3z3CsRseYh+wLnv3kKCfUxQED7UU0UKSGeaAM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788420703; v=1; x=1789025503;
+ b=LXsH8Q+D/8BO9v7k3BJJ+jwYjFjDbm7V8y0uYJTM0V60gH2X/r58rvYLdyr2f1Szs87nVh/k
+ vIzrB0wBWiWtBxABGi5LJ9inda+bwS50QsqI0bOa7FSgpGCQsUzkNT4Zgf6dUuzSEmVk0E7yiLy
+ ZMoMeFwqfpHjeHtDNZfD8GZ0=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id 75b7dedc017cd645;
+	Thu, 03 Sep 2026 07:31:43 +0000
+X-Mizu-Trace-ID: 75b7dedc017cd645
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 3 Sep 2026 15:31:39 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Wandun <chenwandun1@gmail.com>
+Cc: catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org,
+	pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu,
+	tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, x86@kernel.org, robh@kernel.org,
+	saravanak@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
+	pasha.tatashin@soleen.com, pratyush@kernel.org,
+	m.szyprowski@samsung.com, mark.rutland@arm.com, kernel@xen0n.name,
+	alex@ghiti.fr, hpa@zytor.com, ruirui.yang@linux.dev,
+	robin.murphy@arm.com, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
+	kexec@lists.infradead.org, linux-mm@kvack.org,
+	iommu@lists.linux.dev
+Subject: Re: [PATCH v6 00/10] kdump: reduce vmcore size and capture time
+Message-ID: <apkiW8gn9Z5XaVQh@fedora>
+References: <20260902073116.802752-1-chenwandun1@gmail.com>
+ <apfkDlcMYrgiuGYA@fedora>
+ <6aef2f48-1cc5-408d-a5a2-2b4b4d45ad7b@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-X-Originating-IP: [10.106.83.23]
-X-ClientProxiedBy: EX19D032UWB004.ant.amazon.com (10.13.139.136) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6aef2f48-1cc5-408d-a5a2-2b4b4d45ad7b@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9CEF3180007
-X-Stat-Signature: nwiad16en7yfjnhgywgr1kw3nqu71axy
-X-HE-Tag: 1788420427-383399
-X-HE-Meta: U2FsdGVkX1/2tlO03/FqGTI1pYC1D1m9mZ6+PjkYRRwilZMf+sROtHHxk1bGR+71PCayKkC7UmbEQkKYTzruQvr0XY76F92I6apW2nrzWC+b5fwT0o2JdXEnekvX98z6cb7qSAaLT4+RSDZt+joMQHVUFhz8Y7ao30bxKHl8X/VCNd9nHojspCPgteo7wFt1atC5OKK987lftah/tLA2X2Dmf/zQyhymRyxfSQQO09nkE6EfHI8Hlj4GtkAdXvMl61MhrcxIg3ItVQakayCG72Vgpxk5pkzr24drE9iZ4Uv3vhObkLMYsmqcBuOrrhnv9MAvQ43oq/OXuV8+2Z0PuTOWOaSQGPAZ8J6G9JdGvNPAW4oSgIU96mE+iZHD/aIu+MBWb0meBQ4fjmU/7XeKlqdLylKJmhG340FywRiSTVuvZsrZxS8OpUTs00WjUOumIPvQn7weYVlWuzGF+EdNctee1f/jEkgf0N2aK3hbeNF0jf1PrnewxYXYI/+d6zT2rpCNlUoyFnF3PlE2sxwWWhoShkIbrRwRo6avb5WywJvpOAL8ps2wfRFQBbbuLc2GKyKW9h94jRR5MEy1JxVNv0q2ZntNbQhSXdrnXDaLPxLkCXKgmP5poGK4YoahfOSua+PNP+1VmVTlw0H00crHQ0h0G7NeGJ0fOoZ1Qwl8Fgal0ti6yViGKAm9UlgNqFci8DTtjmnIU+CcYQ+XM9LvZgFgFya1ZgrfPdTPqlo2bta5u3A1aFBuO5SOADGhYEB6Pr5YZ3phg0Hhg0ei54UgeBez4+9q7ujx/dzFZtY5GAdi6CGmqpD7Dnb0TCFt61r9Neu6bTl8o238kCNWKu8l5s+fxZJOiM5e7opu+8oEYW86IfQrjfeapwHJeZO4fve4EB/frxkZl+eboTomOhsG2hZeXTjQPNSowROLeL4yCipbUMV1rI3cTLqEx9ALKNSuOTUVx92aOCH7zLm+2O2
- whA3l/ER
- xiS8rozThy/BVAfoUN8LyGJZylq6WjOQuA54HjQ9X2D/v6hN8dUEcSQxrX1H7LP2fqybF/Dk38G3iq/a/LTczHk9mRqF5mjXpm7Rv46H800/SHJ2vm+UjtT8FJng4ZcqrfZybrpx/lIYMUabgLMlrDzX0FCo9W2+QGuVD9qHJwJ+8gPIgYEqcaZ/33UG/B94r9yO8jk6P9oaXubGd91LLG4/p3WcDEUnHdwCE99WvkIX/kLW4kZA0qkF7I/dHyUQGnU6TkGrJrp8FWQGOre+duvMg1NlrMde53rywDcCNfxgzzq4tOFQpWUybmyiQ1KlhBxJsCuXQa8ahgEKvx85kPrh76fqN5sxge+ZXSKCoN/x1wE7GGHiAD7eLJuIT0EcmusWrSZbfabbhGdIkSZCEMTr7ZzSj3Gae0MEbC5uk/3ZB6bzlgNXTiTSgAgn3UFLj5wY0ic4Y7IQIz8NqiMNiUQ/yEHALUfR/akDwEs0a5WGUiQIDHN5pqaoStUgw7//1XlEfo4pdOJx92YqOOXIn4RSc7IuB4VmvfWqPlzqdiHs0JeiVH9DOPaAe8W9uJFtRVXE0cay9zN1AzP1XVWY2V0ibJERBvhs3vOyDsgARTbXm63Z/S0BUx39sbgu+Nc4Fp8sTXZrWTyAX1EcywDigwVSftQQ91izgad9RMMtEnOCWPkglbyCXHnK7nQyoenTJdbjshtU9zF7mdswN3+OZlxaThRa5YzmRyxAA
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 38891100003
+X-Stat-Signature: rge3panb3uokioqcb1be8b5wcw8eskbx
+X-HE-Tag: 1788420704-684576
+X-HE-Meta: U2FsdGVkX1+UXXC5JSIPQ1iFuET6dTniHLMo2/djm0/5u8BlMGKbH/NqVBPE0MxmkYlvrkL9ZEC58MNOH88k2TxqeAA3z7mQFAkT6ZKECzk+2bJfiDHw+WHFkgO+xp1+heqYnjgb1IiRlnHiyf8Xs/GD6qMcf2i9OzkErVv7xghSu95sdpJmmyzrZwjieNuyRtYBYJbWFkBI5nnyIn5yMa2iHO6VfFpILP4OvAYzwP/XTQCTU2giyC393oag5DOkyomf1nYUSS1VtgKBGhv/rTcXFu2DYY8nFiWDknG2wNihYblt25BkKwR2ldyX8cE8VTBEiD2EXloBpl1rknd/V1QDlwh6xoo278MfnNQ2aKd8IV71pB3owGSnDrGK8vgc1M9A0B6najpDkaUOp4uEUwDGbHCEonoponBPIEU0enoa069fSSxgicjSmgjeNhwLyj3+xgQKxhBJwDHG3c51WOh0Ahc/3zwm3IOg+TwF/gfLu6QGJUisydDdDYKRXHRKfesgA03fc2EgqsosaA5BIRQ2rfQNDJMy23oxk1A4b/cldFs7MzYXWmxchtvJSpPHFUVICe1HrPKfvaDMPOCE1AmJ+OL1n3YYxo0VWxN1xsocz4W3L5Lz9IqB9dSLc8HLyRucvSFtWW/ATU7zuwi/tpZJp8IgPhdo0APx+WoUHZ7rfWGkaOcSSbZ1BxDvW6ZiYOEpYI3I/+JI3fXUWwfMMfz1jOGyCwglzG/06H7u7OVdLH6KZ44hyrDQZx0fsSHzVCuJXSEHq3/hD7BuPQAIqr7qDgLciqndFRrjNZB2l2DU0cD53f0vDcg8Q+0vPrZuf+5fD8LQK6/64gOmAkwWlL7tsSXux+I2/reeNCA1aRfwaKzEoOEIM/PvfmZQ/dIYFiNIB5llWCPGSYdbhxHsOaK1uGKCpfvbsHpq/PSaQS4XLvlSPZgerzzXz2GLMJx1LTgSvuFLIeWCkybzu9e
+ Lq/rJgvE
+ DgGf4WqfsqIw9bJMVdyaU4JhMNKGhGaeLNmliWjPpu308iFMnTIz1Rfin5ekrXfwm5WlvnopVuHUbXLKf0kh5CpefC8nJjnBB+m+5rv4BOkVUtq4TABGhc1ptVKGTDbEOImYVjqX8qNIeleK5C/yxcxnUNCOxlL7yEN72CsurHbJAuR268nwtYvT74ZXb3Bw/C0EA0zPmQUm7V3ehY16EjpFmrCQUTcp1JKokoXh3Yy6TaK+0g5Z5lapkX4x7fNjLCid2Ltg4Jm6l3ARdFrz0VNJJqlmYb/ad8DnjmmQvBEDhEh+AUe15H3tD06XFO3O5JTxyqiLDsuOYgNIAyd0XIZWVH6B1XZJHcJi/dL5EO+76MKTWpTb0vpIuLQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,62 +101,170 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Some of you on the KVM side already know this, but for those on the MM
-side who may not, I am taking over the guest_memfd direct-map removal
-series.  I have finally caught up with this thread, and I sincerely
-apologize for joining so late; other commitments kept me from catching
-up sooner.
+On 09/03/26 at 03:05pm, Wandun wrote:
+> 
+> 
+> On 9/2/26 16:53, Baoquan He wrote:
+> > Hi Wandun,
+> > 
+> > On 09/02/26 at 03:31pm, Wandun Chen wrote:
+> >> From: Wandun Chen <chenwandun@lixiang.com>
+> >>
+> >> On SoCs that carve out large firmware-owned reserved memory (GPU,
+> >> camera ISP, ...), kdump currently dumps those carveouts as part of
+> >> system RAM even though their contents are firmware state that is not
+> >> useful for kernel crash analysis.
+> >>
+> >> This series introduces a MEMBLOCK_NODUMP flag in memblock to filter
+> >> reserved memory on DT-based architectures (arm64, riscv, loongarch).
+> >> Reserved regions default are marked MEMBLOCK_NODUMP so kdump omits them;
+> >> reusable CMA regions are different because their pages are handed back
+> >> to the buddy allocator and may carry crash-relevant data.
+> >>
+> >> ACPI systems already filter reserved memory out of the vmcore through
+> >> their existing path; only DT-based systems currently fail to filter these
+> >> regions, which is what this series addresses. The flag lives in memblock
+> >> itself rather than in a DT-only structure, so the mechanism is generic and
+> >> both ACPI and DT systems can benefit from it (suggested by Rob, thanks) [1].
+> > 
+> > Thanks for the effort. I am not against this patchset, and I haven't
+> > went through it carefully. Just from the cover letter, you mentioned
+> > generic, I am wondering if this can be generic for excluding other
+> > memory regions. Asking this because I try to find a way to exclude
+> > unwanted memory regions too, please check below link where there's
+> > the relevant discussion. We definitely don't like inventing wheels
+> > time after time. Do you think this memblock region excluding can
+> > be used in other places of kernel?
+> > 
+> > https://lore.kernel.org/all/aoLFai0gzzH2bGgy@MiWiFi-R3L-srv/T/#u
+> 
+> 
+> Thanks for taking a look, and for the pointer to the crash-wipe thread.
+> 
+> To answer your question directly: the exclusion mechanism in this series
+> is already generic, memblock_mark_nodump() is the entry point. Any code
+> that wants a region out of the vmcore just marks it MEMBLOCK_NODUMP, when
+> preparing vmcore elf header by walking memblock, these regionss are skipped;
+> This series is simply one caller, marking the DTS /reserved-memory and
+> /memreserve/ regions with MEMBLOCK_NODUMP.
 
-On Fri, 7 Aug 2026 15:48:24 -0700, Yosry Ahmed <yosry@kernel.org> wrote:
-> > I'm not ok punting on that, i.e. whatever we come up with needs to land=
- alongside
-> > AS_NO_DIRECT_MAP, or at least before guest_memfd tries to use AS_NO_DIR=
-ECT_MAP.
->
-> Yup, I meant the latter.
->
-> > The only way KVM can use AS_NO_DIRECT_MAP without GUP is with a massive=
- list of
-> > caveats and addendums on things the VMM and guest can't do.  I'm not ok=
- merging
-> > guest_memfd support for AS_NO_DIRECT_MAP with such a list.
->
-> This series is not adding the support in guest_memfd, just adding the
-> generic AS_NO_DIRECT_MAP and using it for secretmem. Followup work is
-> needed to plumb it for guest_memfd anyway, and I am proposing that we
-> also punt the GUP story to that (when we have an actual user).
+Thanks, for memory not allocated from memblock, e.g buddy, is it still
+good?
 
-My reading of the discussion is that the generic AS_NO_DIRECT_MAP support
-can land with GUP rejecting such mappings, provided that a generic GUP-like
-access mechanism is in place before guest_memfd starts using
-AS_NO_DIRECT_MAP.
-
-As far as I know, Brendan is no longer at Google.  I do not know whether
-he plans to continue the ALLOC_UNMAPPED / mermap work, or whether someone
-else at Google has taken it over.  If that work is not already underway,
-I would like to respin the AS_NO_DIRECT_MAP introduction and secretmem
-adoption as a standalone MM series, separate from ALLOC_UNMAPPED and
-mermap.  The AS_NO_DIRECT_MAP changes originated in the guest_memfd
-direct-map removal series, and splitting the MM and KVM parts was already
-requested during review.
-
-The proposed MM series would include:
-
-  - the folio direct-map helpers;
-  - the AS_NO_DIRECT_MAP flag and filemap lifecycle;
-  - the current GUP and build-ID rejections, while keeping the mlock
-    check specific to secretmem; and
-  - the secretmem conversion.
-
-I would leave ALLOC_UNMAPPED, freetypes, mermap, the allocator fast path,
-and the KVM / guest_memfd integration out of that series.  This would not
-change the requirement discussed by Sean and Yosry above: the GUP-like
-access problem would still need to be resolved before enabling
-AS_NO_DIRECT_MAP for guest_memfd.
-
-Please let me know if this work is already being continued; if not, does
-the standalone MM series described above sound reasonable?
-
-Thanks,
-Takahiro
+> 
+> x86 currently builds the vmcore elf header from iomem_resource, not
+> memblock; it could be switched to memblock, but that would bring no
+> benefit for the problem this series solves, so this series makes no
+> x86 change. I'd personally be in favor of switching to memblock for
+> a unified implementation across architectures.
+> 
+> Best regards
+> Wandun
+> 
+> 
+> > 
+> >>
+> >> Since the reserved memory regions are filtered out, the vmcore is
+> >> smaller in size and faster to produce. 
+> >>
+> >> The series is based on linux-next and is organized as follows:
+> >>
+> >> Patches 1-4: Preparation and bugfixes: fix the missing HugeTLB
+> >>              flagname, switch riscv crash_mem to memblock, fold the
+> >>              duplicated per-arch memblock walks into the weak
+> >>              defaults, and serialize crash header preparation against
+> >>              memory hotplug.
+> >> Patches 5-9: NODUMP infrastructure: switch crash_core to
+> >>              for_each_mem_region(), introduce the MEMBLOCK_NODUMP
+> >>              flag, add a dumpable flag to struct reserved_mem, and
+> >>              mark /reserved-memory and /memreserve/ entries with
+> >> 	     MEMBLOCK_NODUMP flag.
+> >> Patch 10:    Exclude MEMBLOCK_NODUMP regions from the vmcore ELF
+> >>              header.
+> >>
+> >> In v5, Sashiko found some pre-existing issues related to reserved-memory,
+> >> and has no dependency on this series, so these issues have been addressed
+> >> in a separate series [2].
+> >>
+> >> v5 --> v6:
+> >> 1. Serialize crash header preparation against memory hotplug to avoid
+> >>    out-of-bounds or use-after-free issues.
+> >>
+> >> 2. MEMBLOCK_NODUMP marking is now done after memblock allows resizing,
+> >>    avoiding a panic from too few regions before resize is permitted.
+> >>
+> >> 3. Reordered the patches, put pre-existing bugfixes earlier in the series.
+> >>
+> >>
+> >> v4 --> v5:
+> >> 1. Rework the mechanism around a memblock-level MEMBLOCK_NODUMP flag
+> >>    (suggested by Rob) instead of the v4 opt-in 'dumpable' flag on
+> >>    DT-only struct reserved_mem.
+> >> 2. Switch the riscv vmcore elf header preparation to use memblock
+> >>    instead of the resource tree, aligning it with arm64 and loongarch,
+> >>    so riscv also can exclude reserved memory from vmcore.
+> >> 3. Deduplicate the vmcore elf header preparation: arm64, riscv and
+> >>    loongarch open-coded the same logic, so fold it into shared
+> >>     __weak defaults in crash_core.
+> >> 4.  Drop the v4 patch that saved /memreserve/ entries into the
+> >>     reserved_mem array; /memreserve/ is now marked MEMBLOCK_NODUMP
+> >>     directly.
+> >>
+> >> v3 --> v4:
+> >> 1. Rebase this series on v7.2-rc1.
+> >> 2. Add two cleanup patches (patch 02/03).
+> >> 3. Simplify patch 03 to avoid checking whether initial_boot_params is
+> >>    NULL multiple times, suggested by Rob.
+> >>
+> >> v2 --> v3:
+> >> 1. Fix out-of-bounds issue if device tree lacks /reserved-memory node.
+> >> 2. Fix UAF issue when alloc_reserved_mem_array() fails.
+> >> 3. Add some prepare patches.
+> >>
+> >> v1 --> v2:
+> >> 1. v1 added an opt-out DT property ('linux,no-dump'). Per Rob's
+> >>    feedback [3], v2 drop that property and exclude reserve memory
+> >>    by default.
+> >> 2. Split some prepared patches from the original patches.
+> >> 3. Address coding-style comments on patch 5 from Rob.
+> >>
+> >> [1] https://lore.kernel.org/lkml/20260723234126.GA3253409-robh@kernel.org/
+> >> [2] https://lore.kernel.org/lkml/20260818092420.2859026-1-chenwandun1@gmail.com/
+> >> [3] https://lore.kernel.org/lkml/20260506144542.GA2072596-robh@kernel.org/
+> >>
+> >> Meijing Zhao (1):
+> >>   mm: memblock: add missing HugeTLB flag name
+> >>
+> >> Wandun Chen (9):
+> >>   riscv: build crash_mem ranges from memblock instead of resource tree
+> >>   crash_core: fold duplicated memblock arch hooks into the weak default
+> >>   crash_core: serialize crash header preparation against hotplug
+> >>   crash_core: replace for_each_mem_range() with for_each_mem_region()
+> >>   memblock: introduce MEMBLOCK_NODUMP flag
+> >>   of: reserved_mem: add dumpable flag to opt-in vmcore
+> >>   of: reserved_mem: mark /reserved-memory entries with MEMBLOCK_NODUMP
+> >>   of: reserved_mem: mark /memreserve/ entries as MEMBLOCK_NODUMP
+> >>   crash_core: skip MEMBLOCK_NODUMP regions when building vmcore ELF
+> >>     header
+> >>
+> >>  arch/arm64/kernel/machine_kexec_file.c     | 29 ------------
+> >>  arch/loongarch/kernel/machine_kexec_file.c | 27 ------------
+> >>  arch/riscv/Kconfig                         |  2 +-
+> >>  arch/riscv/kernel/machine_kexec_file.c     | 33 --------------
+> >>  arch/x86/kernel/crash.c                    |  2 +-
+> >>  drivers/of/fdt.c                           |  2 +
+> >>  drivers/of/of_private.h                    |  2 +
+> >>  drivers/of/of_reserved_mem.c               | 48 ++++++++++++++++++++
+> >>  include/linux/crash_core.h                 |  2 +
+> >>  include/linux/memblock.h                   |  9 ++++
+> >>  include/linux/of_reserved_mem.h            |  1 +
+> >>  kernel/crash_core.c                        | 51 ++++++++++++++++++++--
+> >>  kernel/dma/contiguous.c                    |  1 +
+> >>  mm/memblock.c                              | 17 ++++++++
+> >>  14 files changed, 131 insertions(+), 95 deletions(-)
+> >>
+> >> -- 
+> >> 2.43.0
+> >>
+> 
 
