@@ -4,117 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D327C624D6
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 15:15:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F296C624D6
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 15:15:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 440C16B0088; Thu,  3 Sep 2026 11:15:32 -0400 (EDT)
+	id 446706B008A; Thu,  3 Sep 2026 11:15:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F18F6B008A; Thu,  3 Sep 2026 11:15:32 -0400 (EDT)
+	id 3F2316B008C; Thu,  3 Sep 2026 11:15:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 308046B008C; Thu,  3 Sep 2026 11:15:32 -0400 (EDT)
+	id 32F616B0092; Thu,  3 Sep 2026 11:15:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EDB6F6B0088
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 11:15:31 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 572D8A0597
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 15:15:31 +0000 (UTC)
-X-FDA: 85172800062.29.9742C08
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9291720006
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 15:15:29 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=XdYhm8LE;
-	spf=pass (imf13.hostedemail.com: domain of hughd@google.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788448529;
-	b=CzZd9WdrflLu+iAWOpXEWybnoOVI1pacnFly2Gre2i42q1bdiioi8l5u+/SzDiMNq8+lSn
-	37HPibQUTV0JPz2nyH4AH8e4DKozfX6D50/PSNO2v4CZgUhReaBzLTJBq9IRFqotbanr4+
-	YW9TKL23qwnMxK1elEC1hFGLLjOTZbs=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=XdYhm8LE;
-	spf=pass (imf13.hostedemail.com: domain of hughd@google.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EC26C6B008A
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 11:15:32 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B83F116056C
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 15:15:30 +0000 (UTC)
+X-FDA: 85172800020.26.7CA2E0C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D3CEB14000E
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 15:15:28 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ICJz8y+P;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788448529;
+	s=arc-20220608; t=1788448528;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Mf2cMzcJB7ZgyTGSGNOkCh7zEnrruRaHuarVNveDD7w=;
-	b=4hsooGjECzkXgJ0Ae3SDkRAHvuT6kRi2tNHF7IvYhXC36n6qRwRBIkLDzcmeOfp8I/Fvd1
-	LEi4UPKWObntxnvPv+2Btlh5A3xZ1lvgCggGs6RWm/tja0UzE+eTMW/MTYqbUVnftaJ0pO
-	3NVSWiRWX4bgoNLO56+xQ/63qblR8es=
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-86cba60d4f2so17355747b3.1
-        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 08:15:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788448529; x=1789053329; darn=kvack.org;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Mf2cMzcJB7ZgyTGSGNOkCh7zEnrruRaHuarVNveDD7w=;
-        b=XdYhm8LEy/NfCrAVgYyqIGZ3Oqp/LkIBGZ6GHTdUFXqMV9ScHuGVUmvdmGolrcuSwq
-         aOGQl09tZsBJv/7ITx6apRO5R6dtBHNCEf8YnK2sBJv32I8IUhiQ+tyHVal+E2qx553p
-         I//Jy7yy/YJrsiHAmHQaUIIeB40ip3BoeXdwJ4au6hpaSQMSqWDVEsxkdvMhRPewoz7d
-         NE87NQwrGL5VyNxbKxoo9fWIWV89r0wO8gV+r7HQfLOxvKwmkJSN0te/ApFv43W0Qvf/
-         xSjY0VKTvmjkwmoKuhODp9xOpgo7ed/8Ug2JTOb6PGJAEvzBUkYeEhht9SysU7KuysUq
-         LXPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788448529; x=1789053329;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Mf2cMzcJB7ZgyTGSGNOkCh7zEnrruRaHuarVNveDD7w=;
-        b=hgGE96Alegzsb1ef8Ai5FSO3wv8+9W5reQdArGl45ENjJuHnqm6ThcaJX+Hk8JxkUE
-         4tPZOzlJ7jEy+GtdHMZQl8i2yPQ+k3K01DQ5XXahRTQbBE5G1K1KhhkKDv+P9ofTG0dh
-         D6H+mSVdyfApQiYC9lCHxEcLStsfajVXkDF26H/Y6LNKEKiCrijTPHPqaQSsH4DNjOFh
-         wlBm8c4F3eq4m4DG7e7v2DbsR58CSmBmD/vfbJ7WQrHj8VdBbyQSpy8K6TXFLz2kDr/f
-         0Y8CajM/HOZnWJj5i6XIfGPu7J3K9uou2TWWKJ3NGvdmXiULNxxAxLEFeLIvwi2k1VfK
-         IVPw==
-X-Forwarded-Encrypted: i=1; AKwUvBwIDdL4Qu4afOWCqU/Dwk6TvyM7ZBZ/bvufL6jm+pC16QCHajDW5qmPCuKrlbsJ6dOE/9TVe6tdBg==@kvack.org
-X-Gm-Message-State: AFuF++lFzj1WRcDT2+ZhzP7oEGbQF0FU9Jm6clkv4ImQ8v2h9x8MkcBx
-	cUH8kIrjONx7i5sUXRr9TBI4DmtdWB4nz5rYw6jIVUdeb7qDiCNKNmYWT9SMe6p+hFij3X1lNrH
-	xh0hM1e4l
-X-Gm-Gg: AYBFou225y3qiCdRK7xU5tcnvdC0dpFBSojjQ+GwKE+xq1WchgEx1YkUJn94FgH3B7a
-	l80Ek+SyIu+7P57vVntgjLrUdUw4GrbaAnsq1oTF4ReenWVPY9G4O+7RyOBXL6CCnGfJbBZKinu
-	yy63DUULlaMTm0iJjrlNrLRcsL4eTWQUQnx6Ljwnen4FEDgtgyAIxRJWRBrM/9MKf6cMLAWA1GC
-	UvyAsK2dieSpnbnUwzhsiEw6Uov/xB5aDHfaRtkH8ydfNTB8ixtZWp96njS4gH7O7ei/7CooRoy
-	ybUDskQHuIFP+2N5Wp6q4yW5qypkUsdQ65MBnRcDYXbZ1fL8DGxdQDjRDFned51mkmjDtYWThs0
-	ELZSE7OiRTfsE+j7KpdO7ERlFtSZEitqy6sMdtmYhgsAeBU8Q9LDRx7d2PgisD55VQbOX4sey1+
-	Kr/VXOyP3sViOCfFrXiaKMxpXVHiAZ/XcDhdzzVis8kQ4oLeXwDfmbQxQ2gXt8g9SHkxbAaWg2u
-	V/MkuPIUpBBF6y+z6kMbfTpaZJ8HSW1L/mwQulBlbnKH2pE
-X-Received: by 2002:a05:690c:30a:b0:858:def3:3422 with SMTP id 00721157ae682-86c53989a23mr76445507b3.27.1788448527781;
-        Thu, 03 Sep 2026 08:15:27 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-86c10c9461esm43081537b3.7.2026.09.03.08.15.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 08:15:27 -0700 (PDT)
-Date: Thu, 3 Sep 2026 08:15:14 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: Jan Kara <jack@suse.cz>
-cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-    ocfs2-devel@lists.linux.dev, Joseph Qi <joseph.qi@linux.alibaba.com>, 
-    Hugh Dickins <hughd@google.com>, 
-    Baolin Wang <baolin.wang@linux.alibaba.com>, 
-    Farhad Alemi <farhad.alemi@berkeley.edu>
-Subject: Re: [PATCH v2 2/2] shmem: Refuse to enable tmpfs format for another
- filesystem
-In-Reply-To: <20260903090508.1360863-4-jack@suse.cz>
-Message-ID: <3b119174-7b10-6eb6-7aff-462949fcb49a@google.com>
-References: <20260903090053.13120-1-jack@suse.cz> <20260903090508.1360863-4-jack@suse.cz>
+	bh=oMud6dTUHlyEq3A7UoSwnG59ukdVv+lXzg5pPz0Fv+0=;
+	b=tegiCg710G1KH9vvfPNMhRXjdERGv2Z5yLDhYFCtHG0pw36N4/+GPLISZlVuYTf4ZIwR77
+	vjwrliWfCYPXY/i2p63SyKg8XQUqnvlUjU8Re+QXdIn7wzg9BcCByk7mg4aWidDRAlCptd
+	NGkH6vvy6BR/xBTRc2a2WGZecw/aerY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788448528;
+	b=bXNnKXng8CK6pPPbgiaJq/t8Clyvz3+ht/aU6nEc/GcBbJ4KsNDsTQjxvx/SkxLOQGw4kU
+	hntokkfVarnkWz2RzxJhauSc9vI8n+h/RMpDvUhB3ine5o/a100IAYxWMjO/gYyNSIPCz2
+	LlimyBTJXU+6UuRq3O9WRvX43xtp2l4=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ICJz8y+P;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 41935601EF;
+	Thu,  3 Sep 2026 15:15:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52F701F000E9;
+	Thu,  3 Sep 2026 15:15:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788448528;
+	bh=oMud6dTUHlyEq3A7UoSwnG59ukdVv+lXzg5pPz0Fv+0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ICJz8y+PaYc9HWNIiP4kSa067DXNL5pU4EhN5COf3/xrhN9XnHBgW89lgawARDaob
+	 yXGs0djU+69lC0tsa/ziDIEehEqwopoCfSya9L+8gWIoUZH2coPsiYHUkmvcRz5rmI
+	 RA4kdB8RxyGJ27r0+rkQ4CnJRnTaGBRt8Onk4B6FGoof0ZqJCyapAlSOOCcZila6kw
+	 Em83jgfr7+3dMfaw4GvaJE6AuLhs0U5L+moC2S5jRN5JtVsoypi3kful/E3e4VwPL3
+	 SECH8qntp7HgeeQuQls1W/SIrBqrh0yN4ygkjoRHTY4NNdg1l75mhkwwPDkVM9x3t9
+	 UNv7To0JvsLdg==
+Message-ID: <906bae9d-dcf0-463b-ac9d-81ef8cc2cc2f@kernel.org>
+Date: Thu, 3 Sep 2026 17:15:23 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm: refactor find_next_best_node to
+ find_next_best_node_in
+Content-Language: en-US
+To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com
+References: <20260902215853.156267-1-gourry@gourry.net>
+ <20260902215853.156267-2-gourry@gourry.net>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260902215853.156267-2-gourry@gourry.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9291720006
-X-Stat-Signature: z3pa5e9wfjj9apc9tm9zez8jawzbofq3
-X-HE-Tag: 1788448529-341280
-X-HE-Meta: U2FsdGVkX1/l9TwIIgD2KyEwjkL7r/7SdmLQbg70qLUEJdtcj3YkGUs6OcS73hPiXuGJQLZnyQW1nE5NXVCD7FNigApqGjGwqgDL90iBeXLMsqzKwk148eA8q8w72sJKIWV7BV0pOQYq47bOmW4lzETFsZfoG1T1/S8xt9IxGDAJWDUNBiQjskdXlz+6OzkIJpjHZKcGNxSSt56bX2gJBtcZ9grL9z7Nw/dQVqMCJ+zdTvwV/emvPxpnVrvDI4WYWHLmdiBMfRZXKz5Jrvq9Y1PiXtVVtFOM2zjZ63IpbTfs9ojKKu+rcwfrmub005VrxO3kT7pN860ipeiD3LjnnKiNVhM4frVKcxJvne/PYMDBwlGGoNf0HrDXtrkSLXoLzOuHskwT31kGvRys2MeMHX5FJa44CF5lypwHIzVQJE5nFnZMOQAB2A0FX0XRGaPILSkdvl0zr5vBuRVeoQbo6rNJHOI3qsseA6bPygvSxVgokK7kwJKXAcim3RQYMUUDeStVPJy5tfl2yX3rwGDE4b8H1vjU7GjaGg0mT1gMCUltvke+bVZFDyRJ2kddmT1/0u7y1iY22SV+6IkBVvvBBynFb4Po6xPEQyHigAsaJ7AUBO9Ijl7ci4W17/qTvbstf68ryHwE6dE6ufScW3QbIvSOG8iK24DCg0sZyXescTMHicWD2iQw8nM0nUnQmoFAB0cgzZ3IIm/Kspho3dfAoDE92p7iXZIfYOcZovYnofHnNi6UQaU8HLPciHxIBAZ2Q6BDkGr7MTSQ8vnaym1aFLAcTDqFG+fNwRZ7U9n6WSR7AfR8RyOiHK6aMYHK4x0d8Su5KTvjPo70i9uTBhy09X9+iNokNJ4fS3+L4LYyEXLRYJINt9/S6pYhiDHMMMXQekGOm+GXmnjpwpR8MXICIze5SQAc9OXZfU2TS58Ol3wKh/wsm8mx8/XBqGNd0YjGfGY0h7Jdnv8PF4W3fDP
- jrNIy3ar
- XGUoweJv5E+I2NhsHmPea/ThsqD5QGtqSwR0ID+usRmtsRthyRwIAItzNpQ94gqb5JZGISlGTZXLjPP4xFj60KtNQ3DD5PzSJqel64aONjzqYd0cAunB3ZPXh4nxtYsIvOxbbaQQ3S2XNfrI2Nb4LkBG0nv11CX45TGWPHr4LKIXwHPBtftLuqwj4jVfn5LnHs8FbOW1Sd8OmXHol/yiezVtVNHuGXmuOLPHXj+jH80cZmcEaFcOPs0vUXMxwp7OxpybDgVpCl4C6lpIoj0rFu1ox+2Qdn8qt+WJbA9YdO4bwQHhyWkO7uDp98ZGmJZN5pVpYM5H97johTwcfhXwiikO4SmNbo66XTYmFCE6spAqd5C93/ryXjvrL3CaZCGLLDaFY
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D3CEB14000E
+X-Stat-Signature: qxfec4p58m4pw8itj3e1rett7fc9xumj
+X-HE-Tag: 1788448528-406173
+X-HE-Meta: U2FsdGVkX1/NPJQvXAzTuXzPRIdDm7ON+8y4r5oeot/mjUE0sDN74bOEhG/KJ2UxiSqlzPz8OoydxyB0CKDgv3JJrIjkeYlWN301sQ/RP/XM8wPNe59QBrNBoPsGM5bcwJ1tiRukDAb79ZHZEYDlC9TutL1WFO4pqkXWFkW1ZKeAbOHKkFQWTaEkgUIM+/QuauZwXWJjAcc+8deY+FdT9u9X9hLQNcuOdhO+F+oRXehBJbMvPw5AUEsUxKizE46EEXw5+2s0mVJHn6DwcmiFykyHNvZiF3nuKQ+i33nv5pbVLtYXzJn3A3RoFuV1FRHFHa8RNcUnwjCqLIC4kiZzFVxycAIN50GhIIb5PAU+y5YNflb3SwqLSvIQGdIoq1+aCFFQ1BUHrVMS8izpRlj0zDy+SwTxdh2yey4O83wo7ylL9JitPNiVzLdT+4imoT8kJAxFbz2vAJoS/zxYpg49DS8I3hA1GPVXNbJFCzRbU+1MDg0KD6DI/B5/xpKt55yE0kJMZBF282HP1Bz9JDUkb/hkcGdWaiwk7IEhdSmsNZADJ6fhCnIkugkLICm+SJqSkAveKpH0V63/mg0kOsK7lpxsnxpMTs++/8DhH7aYGlHiPdiO9rCvR4g5QGFVV5usUVzeDG9DrXen+1QfzhjM/kZIBQtkUgIZni4Ogprq/HlaGI7yDEsPkaVmYwGdQgELY8vEsjNgMVGhpGmEG3esgd0QfjiY+lnF7M5eXU4K5/YoYqNBJDkewxcQcqC5syWRj7lRzhyJIHO32J4pWPJCZ07s+3YBpdmrpLZD5ii7Pn5U0zaia2v5qtEipDjqyoqgr1STnhGsVhdRatn4XCCU5RhRX0f1Ml2868D5Y+FrY9JciE+elH4v+4d9r3FxlZnECded/qSAYZUsz+FCUYCrxq0ra/agYwrbO78KAmfHEK8nWk+f3g4QEgo8BAb4StocV5m//rO786UC8goBUev
+ PXZ7qVNk
+ e4M/KJrHOlbOkiPdoe0hXbDu/tD9F7RVMFZ0sIJOL8VlowNuRkgKqscMTaCkJC2vTgHjvdzYgWiSYLRwEzGL3cy6kYymE4D59XhhYhrt/cxO3T/EFaM9Fql4LXNqAZWEY+1baeWFyTnhzI0A0AvPHEKkwJtyor9fqw5CPuzWwi132x/Mm7bVF3JZLz75kZB4vceE/W1bARoWsJEAjGnl5vNqaVb5vVCxHctWQG+8ig0Diz82SHwKKkp4FO5iqMukWYoB85euJsPHpgAvCjQU+6U15OEDHABw9JtZevekMT4CcEzeiI9XEWboi7Mza6uEOMdJBn1bvthtrAebCNk9jKjzo9PaUqxUswA1CF7n3OI74kuzuLqE9U76A5rn1STzYl1QOgF4PmXFcM0U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,49 +136,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 3 Sep 2026, Jan Kara wrote:
-
-> It is possible to issue Q_QUOTAON quotactl(2) e.g. for ext4 filesystem
-> requesting to enable quota using tmpfs quota format. With suitable
-> passed arguments this can actually succeed in enabling tmpfs quota
-> format on top of ext4 filesystem which leads to crashes later in
-> dquot_acquire().  As tmpfs quota format is intended for tmpfs
-> filesystems only, verify we are indeed enabling quotas there.
+On 9/2/26 23:58, Gregory Price wrote:
+> find_next_best_node() picks the next-closest node for a fallback list
+> from the full N_MEMORY set. Refactor it into find_next_best_node_in(),
+> which takes an explicit candidates nodemask.
 > 
-> Reported-by: Farhad Alemi <farhad.alemi@berkeley.edu>
-> Signed-off-by: Jan Kara <jack@suse.cz>
+> This enables building fallback lists with non-N_MEMORY candidates.
+> 
+> No functional change: every caller still selects from N_MEMORY.
+> 
+> Signed-off-by: Gregory Price <gourry@gourry.net>
 
-Acked-by: Hugh Dickins <hughd@google.com>
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-Thanks: yes, please do route it through your tree.
+Nit:
 
 > ---
->  mm/shmem_quota.c | 5 +++++
->  1 file changed, 5 insertions(+)
+>  mm/internal.h     |  6 ++++--
+>  mm/memory-tiers.c |  7 ++++---
+>  mm/page_alloc.c   | 13 ++++++++-----
+>  3 files changed, 16 insertions(+), 10 deletions(-)
 > 
-> diff --git a/mm/shmem_quota.c b/mm/shmem_quota.c
-> index d0b92d6da50f..a3fa4bd93e75 100644
-> --- a/mm/shmem_quota.c
-> +++ b/mm/shmem_quota.c
-> @@ -30,6 +30,7 @@
->  #include <linux/slab.h>
->  #include <linux/rbtree.h>
->  #include <linux/shmem_fs.h>
-> +#include <linux/magic.h>
+> diff --git a/mm/internal.h b/mm/internal.h
+> index e16f1250b25c8..18d041ff5c52c 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -1130,7 +1130,8 @@ extern int node_reclaim_mode;
 >  
->  #include <linux/quotaops.h>
->  #include <linux/quota.h>
-> @@ -54,6 +55,10 @@ struct quota_id {
+>  extern unsigned long node_reclaim(struct pglist_data *pgdat,
+>  				  gfp_t gfp_mask, unsigned int order);
+> -extern int find_next_best_node(int node, nodemask_t *used_node_mask);
+> +extern int find_next_best_node_in(int node, nodemask_t *used_node_mask,
+> +				  const nodemask_t *candidates);
+
+Drop the extern while touching a line.
+
+>  #else
+>  #define node_reclaim_mode 0
 >  
->  static int shmem_check_quota_file(struct super_block *sb, int type)
+> @@ -1139,7 +1140,8 @@ static inline unsigned long node_reclaim(struct pglist_data *pgdat,
 >  {
-> +	/* Verify enabling happens on tmpfs superblock */
-> +	if (sb->s_magic != TMPFS_MAGIC)
-> +		return 0;
-> +
->  	/* There is no real quota file, nothing to do */
->  	return 1;
+>  	return 0;
 >  }
-> -- 
-> 2.51.0
+> -static inline int find_next_best_node(int node, nodemask_t *used_node_mask)
+> +static inline int find_next_best_node_in(int node, nodemask_t *used_node_mask,
+> +					 const nodemask_t *candidates)
+>  {
+>  	return NUMA_NO_NODE;
+>  }
+> diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
+> index 54851d8a195b0..25e121851b586 100644
+> --- a/mm/memory-tiers.c
+> +++ b/mm/memory-tiers.c
+> @@ -370,7 +370,7 @@ int next_demotion_node(int node, const nodemask_t *allowed_mask)
+>  	 * closest demotion target.
+>  	 */
+>  	nodes_complement(mask, *allowed_mask);
+> -	return find_next_best_node(node, &mask);
+> +	return find_next_best_node_in(node, &mask, &node_states[N_MEMORY]);
+>  }
+>  
+>  static void disable_all_demotion_targets(void)
+> @@ -450,7 +450,7 @@ static void establish_demotion_targets(void)
+>  		memtier = list_next_entry(memtier, list);
+>  		tier_nodes = get_memtier_nodemask(memtier);
+>  		/*
+> -		 * find_next_best_node, use 'used' nodemask as a skip list.
+> +		 * find_next_best_node_in, use 'used' nodemask as a skip list.
+>  		 * Add all memory nodes except the selected memory tier
+>  		 * nodelist to skip list so that we find the best node from the
+>  		 * memtier nodelist.
+> @@ -463,7 +463,8 @@ static void establish_demotion_targets(void)
+>  		 * in the preferred mask when allocating pages during demotion.
+>  		 */
+>  		do {
+> -			target = find_next_best_node(node, &tier_nodes);
+> +			target = find_next_best_node_in(node, &tier_nodes,
+> +							&node_states[N_MEMORY]);
+>  			if (target == NUMA_NO_NODE)
+>  				break;
+>  
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index c4dc61ec663ee..4dde1cbe2fd43 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -5779,9 +5779,10 @@ static int numa_zonelist_order_handler(const struct ctl_table *table, int write,
+>  static int node_load[MAX_NUMNODES];
+>  
+>  /**
+> - * find_next_best_node - find the next node that should appear in a given node's fallback list
+> + * find_next_best_node_in - find the next node that should appear in a given node's fallback list
+>   * @node: node whose fallback list we're appending
+>   * @used_node_mask: nodemask_t of already used nodes
+> + * @candidates: nodemask_t of nodes eligible for selection
+>   *
+>   * We use a number of factors to determine which is the next node that should
+>   * appear on a given node's fallback list.  The node should not have appeared
+> @@ -5793,7 +5794,8 @@ static int node_load[MAX_NUMNODES];
+>   *
+>   * Return: node id of the found node or %NUMA_NO_NODE if no node is found.
+>   */
+> -int find_next_best_node(int node, nodemask_t *used_node_mask)
+> +int find_next_best_node_in(int node, nodemask_t *used_node_mask,
+> +			   const nodemask_t *candidates)
+>  {
+>  	int n, val;
+>  	int min_val = INT_MAX;
+> @@ -5803,12 +5805,12 @@ int find_next_best_node(int node, nodemask_t *used_node_mask)
+>  	 * Use the local node if we haven't already, but for memoryless local
+>  	 * node, we should skip it and fall back to other nodes.
+>  	 */
+> -	if (!node_isset(node, *used_node_mask) && node_state(node, N_MEMORY)) {
+> +	if (!node_isset(node, *used_node_mask) && node_isset(node, *candidates)) {
+>  		node_set(node, *used_node_mask);
+>  		return node;
+>  	}
+>  
+> -	for_each_node_state(n, N_MEMORY) {
+> +	for_each_node_mask(n, *candidates) {
+>  
+>  		/* Don't want a node to appear more than once */
+>  		if (node_isset(n, *used_node_mask))
+> @@ -5893,7 +5895,8 @@ static void build_zonelists(pg_data_t *pgdat)
+>  	prev_node = local_node;
+>  
+>  	memset(node_order, 0, sizeof(node_order));
+> -	while ((node = find_next_best_node(local_node, &used_mask)) >= 0) {
+> +	while ((node = find_next_best_node_in(local_node, &used_mask,
+> +					      &node_states[N_MEMORY])) >= 0) {
+>  		/*
+>  		 * We don't want to pressure a particular node.
+>  		 * So adding penalty to the first node in same
+
 
