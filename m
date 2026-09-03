@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6926EC61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 13:00:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EFF5C61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 13:00:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6785C6B0095; Thu,  3 Sep 2026 09:00:14 -0400 (EDT)
+	id 121B86B0096; Thu,  3 Sep 2026 09:00:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62C7F6B0096; Thu,  3 Sep 2026 09:00:14 -0400 (EDT)
+	id 0D2C06B0099; Thu,  3 Sep 2026 09:00:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53F7C6B0099; Thu,  3 Sep 2026 09:00:14 -0400 (EDT)
+	id F2B156B009B; Thu,  3 Sep 2026 09:00:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 26CDB6B0095
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:00:14 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 95A211A053F
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:00:13 +0000 (UTC)
-X-FDA: 85172459106.10.853EDA0
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C304C1C0010
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:00:11 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pnE5lbav;
-	spf=pass (imf21.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=qwjhust@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id CCED76B0096
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:00:22 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 566371A053E
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:00:22 +0000 (UTC)
+X-FDA: 85172459484.16.726B3A3
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 75499140021
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:00:20 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=efVjB9sf;
+	spf=pass (imf23.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=qwjhust@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788440411;
+	s=arc-20220608; t=1788440420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aNUKKLqZvrANPeHHYmjPL7ok/64poHS/mGT0EIbK468=;
-	b=peq5Puv6x8de//cKVVEhtFi8hnlnnxtsCfq6H48JD4KHM+Ja/hdbzyhQzFhoDM/UAHxsgm
-	kvbp2wUkVbNFaA2uwJHejFZuprv0p+xM300YJIloyMTpyBA1IMQRV5X35eDOi9aUAv96+Y
-	AcxqwmWLYnqNJUiGTz2ALyCi7715Mwc=
+	bh=A7QKH2r7d66SxSFJm8bjz6ZBcyuRFjzyujOBEDXlc4U=;
+	b=HPNnvN04RNKtyM9C8QG9HqF1vIeo7JFMg5vawx0yOCNDVRE7I/9kqQ1ObBRrY+EQy1ma3f
+	cgTIGap6KjZF+VxUwIQqKQMp5aamZ0dDiZbMJEqo1vsbwwWhHlxtC6leSLVoTPUdhuootl
+	ggCjj6ilrvMEOg4VWReNyi76X/KT+mg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788440411;
-	b=U/ulSPibfAabYEE48AY8RqQDl/JS/GPsuhYqmeZtHqY6rENa4kjHryv2TieP/UNtCnIl03
-	HN53mp6JE6xvhGkGWr9BeuGSRegFEsw+k6U0t5sbKlIT4gAqBwba+YnQaGYzVdZdOTiDEd
-	C7+1iXl9JWBKf3MbemaspUp3UaQV/yk=
+	t=1788440420;
+	b=omw/QlXiYUiV9CoObZpz+U/kaIJ1c6I7tsFsyya4/HmTcggO26IhsuyuktMSZ3AZlfGkzr
+	oOTzD6Uy351oOh3CrGttk7FOOFqxj50ur1FsapGOel1S0yQmsTl08lMyFJguSCKBnMJWyo
+	ei3NkAnxAmV6CYaUsTxoRBr3WP6DzLw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pnE5lbav;
-	spf=pass (imf21.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=qwjhust@gmail.com;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=efVjB9sf;
+	spf=pass (imf23.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=qwjhust@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-84f38f3b36eso1980682b3a.1
-        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 06:00:11 -0700 (PDT)
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-85339ed040aso1924526b3a.1
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 06:00:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788440411; x=1789045211; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1788440419; x=1789045219; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=aNUKKLqZvrANPeHHYmjPL7ok/64poHS/mGT0EIbK468=;
-        b=pnE5lbavEZ7VHJunmDTiysPkbuuLdCgUjEMGdZh8ql1Q7mgphD/TXV5y//AiwrQn8U
-         SoPEB58wqVxU84Plju9nS0HqOWg0UjDeupysKBfPtO/GjXo7NpDxkR4cy/s7qhAU8F0/
-         MPQmJ/r/JDrcY/tyWW7P3z9zRb6aBQd5QI4rr/1Sj4KWu09l28N9xOvyUMuZW0QccfrA
-         GYf30XmE7LSufNAd7Yxw8fks3Zm1ARn/z8h5rmqdTTqJ0AgVlYZCOdyjygGdiwWy98Hs
-         WRiWu6dVbM97ETplhP4PQqTtkaKJmI957LaRrw7nl+7BSDDlraAmlrWdJKlf8L5EuneE
-         nNfQ==
+        bh=A7QKH2r7d66SxSFJm8bjz6ZBcyuRFjzyujOBEDXlc4U=;
+        b=efVjB9sfHpSUxzNIh3cg9HhnioSwkOjPOhzYDBUiZRq1yNrBebm1Wh7O5gdCUgld9z
+         zlEIOh7QZH2BU0wfKOOvBKRwhKBnVU8KC47a603Z2p+HLPXRWKmIILXvcut9z6zX1njx
+         AE1E66w3KWdrUENqR48tCeoY12lp+IbUGIWAo8tqfZO69mcXD4OBqRKfdRQAYqhvm9W7
+         pkVGCyT/UJq6xMAB6SnFJRSa36yFAccobjbVDC4hYkMJRoBLAOMvHiJRREnXlzL2WWhY
+         DCxc7nD26dSLUzx+V4cyJP1Bdnkt+dc1emiktpNBnI0ntCX+imPGTqvOMzaaaZB6dtBX
+         MRqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788440411; x=1789045211;
+        d=1e100.net; s=20251104; t=1788440419; x=1789045219;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aNUKKLqZvrANPeHHYmjPL7ok/64poHS/mGT0EIbK468=;
-        b=r8rqnsyK7ydEb3+4Jhw2gjBZwURgvzY3UDNNUan3ylei5AZGw+rtQIosEyyx4gD+Kd
-         a/XQVbFS9EY7oo5HYH0CHS82zaqSweHMIussv3nbpQps5ktlzfypq6EzMz76KGW8l+LX
-         1PQSFxPEJnUlmEVM5sECfZf7pjJ1SlguVrMJQqsOZqrEFSPeADjvo6TL+xfG6+5BMuvD
-         adzCIKBzW12HcTM2FgxyH3x0avR0TTEaWatgiXoYGSGhH5DIwRBCrE4IIo8Tb6BZrIqp
-         6YACQ5CYAAldr6ASKHLOtCxe+uDvGvKmHmFWqymaOh7R1u0vL+32vRl3LrhiaYkLxlVh
-         jpNA==
-X-Forwarded-Encrypted: i=1; AKwUvBxG3Nm+cHLIJ/XQ6OqaOj03tL5EayHr8JYEVGSrwrZi5yCv7/0sVdU/ofzCc/XpcZllpkg5odrOwA==@kvack.org
-X-Gm-Message-State: AFuF++knHZPc2v6u6XIDK4u+Pza/LLa465Yo5Rm8ZLJqZURv4EUXoOcR
-	fZZPMjcW+07O0km0PNNQ8zn15apdtAp3xBQpbITfa1cZiexFGnysT4zI
-X-Gm-Gg: AYBFou2mr+qMuCtbM5+t0SUNnN1ni4kFCHoZe7zyPHpCC+SQju55r0CyF50EEisinRx
-	dUInnqzVbCsfIjboJhoYc0PS/imlR31fK1QL7aPdcqSmY4W2ODz+ODy7IcAUisUvOJ3VKjQ2R3e
-	2BrcvcADQpKXqJGvPuut+ZKl7izFScjiUkDKDhaJzE1YCGbVwHlzoz8alyt2jrTS4xWYtpA/1Q/
-	Q4q1jMt8tOU78o1CeLqF1SRZdTksrCeKZwCvKeerwKFUXx2pXf+A7Pjyx26w6TMZtpQUG9YTJ/G
-	1SVsa2+wzklnPJF+mLwAYM6DM8n/XX4MA4CGeHGMIdDs+yRpo116sr4odzYmTNyOXeAwzXZjVQQ
-	KUsPlezO4YBbeiU41l+1mrrCPu9ukq1E8YGXAZBSRIBReNFHmeJGEGx06/SocGujMGIhXShjikW
-	2tP8p4xve1JXW92xjdKaFqmmMry9aCXP+wJ1YMNB9XJeWkH8EzT2HPQksjnc9UFTs9sDuqQDCP/
-	8nfz2v5JE5uxPHKsx/C8Jza
-X-Received: by 2002:a05:6a00:1408:b0:852:3726:dfde with SMTP id d2e1a72fcca58-85ed25e2492mr15794500b3a.9.1788440410410;
-        Thu, 03 Sep 2026 06:00:10 -0700 (PDT)
+        bh=A7QKH2r7d66SxSFJm8bjz6ZBcyuRFjzyujOBEDXlc4U=;
+        b=UINXYXSnytp7+hFRQc0/RU4QHT/iMg504jo0NECO9zTjF/igfozWYWXmm4aUdsE2iv
+         aSparnnCpk85gnroU+cLhvUXSL+xceJWuuKC49VWn7KbiRgdKEg8qA/xcLfH8PdRMuK3
+         OnFDN6TfU3as8qNz7nF5/ZoSyfDZiCudMZLBT2VY9YQhOSdt36jIkEz3g9lQACt6aY0b
+         nmSeZt+9X4rmVb6xFvzUUn7sPScn8c7TGf4Sx/n6IPwFzB03laUPZZf2F36YzOc8HVEc
+         M0IOUfQxR3oIZybR2+ws/iJ3YZnKJNKTUDsmYuoXJijAj1ACNU5tj0JXbMo8+k60yiHo
+         XYHg==
+X-Forwarded-Encrypted: i=1; AKwUvBx1+NvfTX3TW0EZl2MNDmX5xiJzFH9iymzA9bDLeC2BDUT94nPu8Z/BOyBG0YIFExEM/1GjGTvbUA==@kvack.org
+X-Gm-Message-State: AFuF++l4yRGKCq6LgVVfPbxJM5qZYZiWgi41xqMkasSr1dMEhwlKUQeU
+	HZll8rIT8+kgNcw+dOzhxGORJLbGjvievJHzUfRQdwwti/IxxvgHVMXI
+X-Gm-Gg: AYBFou2Hfv0YCYvv+/f9XsWk8/UfAhqTJZFsRl8yFh+dwtsy/HzljYfzig5X+wgpV9s
+	pnCLkmfDXYRVF5ObzeHnsHYddSCOqAEYbDD41NbTrHS7beJbP2pgKOcVZhAp5iFIB4WcRnUyXEF
+	96mfAhLkWqmkvDftrX3hPJ8SxeM2Lx9TXQtTLGZ5g7p4elfbLL2rPAwbznfoDnfT6J48VV0Ro89
+	sWGtEj7kgG+LyMduriTBYxMxQZ13R2GU03UUyV4UdMI82LdgSsHQ27IGcB4F8vAeL/RsUGloO8y
+	+aQxPj3wBJd8sKM+m4ib+TdSPmN5ygGFtaUA9ILYcVxd2mioqIsDi2QvjyqiwIe+onZ2lG3pd9K
+	apRov0meEFa6Wqbd1OtZ9iQP2nX4sIcQ8GmeGfENynTjnO6U0AhUVf6/UjMAALzUcnftQYSd1B/
+	i2KW8iAHoIBtIF/bnlo8gj4gXWRZqzaCbhqxFtNpT3rkcV313bvPL+EdoaWmANWS1NtP9EP47cC
+	jQtZrO/VpU3zKBiRxu3UEMa
+X-Received: by 2002:a05:6a00:1a0d:b0:85f:4255:59a8 with SMTP id d2e1a72fcca58-85f42557303mr14081961b3a.10.1788440419002;
+        Thu, 03 Sep 2026 06:00:19 -0700 (PDT)
 Received: from qiwenjie-ThinkCentre-M760t.mioffice.cn ([43.224.245.241])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85db23f7bccsm2980946b3a.10.2026.09.03.06.00.05
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85db23f7bccsm2980946b3a.10.2026.09.03.06.00.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 06:00:09 -0700 (PDT)
+        Thu, 03 Sep 2026 06:00:16 -0700 (PDT)
 From: Wenjie Qi <qwjhust@gmail.com>
 X-Google-Original-From: Wenjie Qi <qiwenjie@xiaomi.com>
 To: jaegeuk@kernel.org,
@@ -107,22 +107,22 @@ Cc: linux-f2fs-devel@lists.sourceforge.net,
 	linux-mm@kvack.org,
 	qiwenjie@xiaomi.com,
 	qwjhust@gmail.com
-Subject: [PATCH v4 1/2] f2fs: complete dropbehind write bios in task context
-Date: Thu,  3 Sep 2026 20:59:52 +0800
-Message-ID: <c4e69fb1ffd6c6fd968683c690ba29f2b98c9fa8.1788438786.git.qiwenjie@xiaomi.com>
+Subject: [PATCH v4 2/2] f2fs: enable buffered RWF_DONTCACHE
+Date: Thu,  3 Sep 2026 20:59:53 +0800
+Message-ID: <cd5bc4fbb9000e5936dfc96e97ed1e8ab94d0a94.1788438786.git.qiwenjie@xiaomi.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1788438786.git.qiwenjie@xiaomi.com>
 References: <cover.1788438786.git.qiwenjie@xiaomi.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: dufzqebbwf6uxfrummzfgf1yor67sd7k
-X-Rspamd-Queue-Id: C304C1C0010
-X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788440411-48686
-X-HE-Meta: U2FsdGVkX1+GOsjXtJrxyoklvsP0H5w++amvrIXJ94p7m2+6zNNab/9vKXyGdeuWrta3idBo9YJBYkCz97ndtkUgnY9nbQlEE4KXahBMeVMzbKDIUQlYQACUmYOjDhBish2cVcolT/u9h7CH39xaXBU5Wj/3xpx5tqHnAH+WKZk7DdeVduHjpImWR0Mjv5WgMoBV4YpzsJ86i3Qetvc34YMvrTUJ0lO6qMj7L3ZSFhzHBrxHHv5CX1IpcDBa/p67wj37jIPpYGDubCbruYwRrCna/IpvEuVjP9V/ijamzxuzZhLe4yhZYy5l+w5NKZZqmtEVliDbuFsOFyMLyiBZAUmgLP2JiDHNQTpkkrCw2u7QJ5Nd+My9XtrD1KsejFpvRyr2IHNDJ8HblProdoYN37qVG9aWgbKpIthZ2P/pEim5xEwEg5ufYQD0YHzCWOohDJkhydTZMa/AjROq4yai042r/GNoEBJKKSMYm1NMdREnMCUCMtEj/CiHtn6B752x6EKrPTtIOypTM37nhrp1sdOIXUorMr7u4CX/0jHLRswvG8yisLfwgrLliqcAMTUnNqn2pOGkRPfZiUuIKacHeHFXyh6wBvMPkI7hpqEznU0JFMYp+rLX+VjyqEOyY+TystCFDJiaWj9kwIyBIy+3FXQrHMbIQGyoyAXajIlvG6LbhUO4ClctbTXW/WzWko6jGO7PoyTnjLxWxToX8g2dzIO57hPMrGO1rr4RTPrh0X/DYH6o6ZQLbXLtgPq5fGsixZ1Dfvi8VWZuqebIyoN3W2S8f/EcV9dNgYJJBOPiRh+HbI71NXidfipBO97/uaFt2iKbsBtI5sOIMsw5/cvPT5nCaucRbMLMnpyoJ01fffPRQRMWILyaNn82FDkweqj1MmigRZS6rXB4Xuc2DVj+oxNMXZHGmkjAiBVsULmGfdyO7NptJlonSbdmNSNt2aup/9YGf4i8bkUf6lcD+E/
- R6Y/NMVT
- 0otEoBhCHQ+YE7H8sk6iLeADoh0pXVrq3ukjZ/dYemuXNRXBuQgp53xWhIhOe5mUVVsBjbGaIsHqOSR9Fb9EIZ7xMS7WXH2CyuW/PBa8GJ9dGv6plKCctPVIJXTfDMz9DxySVI0kjHBbe7d/Cgp9iCvjJJKgTVFKS3kHH60vQZb3jN8D87Fb6MzyEZp2wwBK9tYLUPApOentxbf1KAE4T0AhojyBmH684IeSSWhVmzcoJkOts5wZVj1TUUHUmaCLOl5kmSwTLIRkl8JMfcpLT0vpIjDl373v/7TUQeyz423wncovV2/7cZzD/9cicX3V/kmxmaDRRk1FgX9OIfOFrMO54P2gmlrMqyZyvh3SbDlmvEFOHg48Nlfxodw==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 75499140021
+X-Stat-Signature: wtkqm918z59rr5nd7zwb1ux7wi7dgopc
+X-HE-Tag: 1788440420-722484
+X-HE-Meta: U2FsdGVkX1+PcsM37eBPhudmHWE9OPBgSBXnADz7JSKeBYAyVZZ2n5Yy4lqx2Glflo0BpqArhhZWAl1/+4nlGJoyOXC9fkD7YPDQC+nBRPd6hqB4PeWg7z24Fqo/8btE1Ry/sOOyUy2+1r/cS1y0ejcD+4tnEfATS8tLD3kDjVgO/ORI+msiDGKirrsjOX/I5UGtKr6F3oe/gY/3QBPNyAenFajhAD33wlkdfkfsEYYvxz46fX+jkMgzANpZ7xRIYZr7gH2iDSnR8dS12rMuWjhc0Vqf0haxeWq8/M7cWWLD2RSPyehH6QWGjWuQF01KUMTiG8ftPibahbGc9Z6JMLRBYtBvgYLUJVl532qGlXUs4+mFpT0psCxSW6jdvMEx3wvPrfh38pA1SSDWR20Pgs5hFvPk1HophqLIfgkZwGpabxrHIUvF6JKnFnyjsGa5CZpfXAXBbIDsOwj0suD2VNAfEXsXv5i2bQk9mCW0ZyfBOJVJxlbaxQ1mNxGT5qC+dSm0oNcYw8Flw9AaPp1BsFzgchF55V5OZ/JeB5ln33vAW543LUA2tJ79vnPEbw+mIMVkDkiFmoy7Ap3d0BrKAOGU2Lbb951kgutxHzf805Cb/goafd3Qds+xLoBVxcYtSmQh2pT19tF5RAFYIn/LH3TYc3/rye4v0dGgdK6RMBh0WnOtgYkZXDOicrtSo24GFzSxyLe+NvBvcQTV05HKRgD/IGh5yXrJNigk6eV5NUhHfgfozkRiCuYFH/ZWus3cZcHNaofkLnQLy/ccdTocmj4T5fJTMhZ34GHze2VghTnXgPOuf6GJqeXm5cGzoyLFqT3yxPvK91aGipWMRfUc9Covh1+3+IFNFFr5NjoRp6CARwfV+xJwHN9tK4I6stExWlVOsWx/QS0mlrrzdz3zXW/9vlMBr6c5ThEncF23GrGjqq/XMnO34mj3Qk44gX+d0IMtP46/NS5yDIGminn
+ LG6sQozs
+ t93tvI3IYUlmI70sEMCOXGtzFNDd9CMclcKD8iKqtvpVuH6Utt8QnkbyDy6MfceXZovES0lV+umAzkI5kag/VC9C50+ziBubS9rYBT/4HVZnznHNXx7ZAdbTLjTBQKE2DXElkfyReRaANwRD+5fEvaj2tLFVwRIM1dejSy7MPzRdbv0rT9VLWW4zUG4mgGC5xDZzl900JD/rMKWjLiSQZOuCzCVPaHsj65lJ3sIe9YDpywmuF1ihcTaf7l7JFnzsv5mA2uLgtMR5t734IYQ0tUY1a1M/D0GAHr8igPJE751pTNZdwCNMRd6gFeWm0cLwHcGFDfXv0n5GIKFa09932tTZJfr48Tu2nIwTC2PTLzVmyg/eX2FhAWZNh2apLYn1Ht2VF9ivezp/RbJhLBeGB55uHDeWAdEEAsyg9bS52Ljvhs2Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,71 +130,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Buffered RWF_DONTCACHE writes invalidate dropbehind folios at writeback
-completion. Mark these bios BIO_COMPLETE_IN_TASK so the block layer runs
-F2FS completion in task context when needed.
+Pass FGP_DONTCACHE to f2fs_filemap_get_folio() for IOCB_DONTCACHE writes
+and advertise FOP_DONTCACHE.
 
-Use the same flag to keep normal and dropbehind folios from merging in the
-IPU and OPU paths. Classify the original page-cache folio rather than an
-encrypted or compressed replacement folio.
-
-Keep the existing large-ATC completion path unchanged.
+Keep the F2FS-specific lookup because write_begin_get_folio() adds
+FGP_STABLE, which can deadlock here.
 
 Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
 ---
- fs/f2fs/data.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ fs/f2fs/data.c | 9 ++++++---
+ fs/f2fs/file.c | 2 +-
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index 21f396ebe22..b0fedacfd12 100644
+index b0fedacfd12..6e816c9349a 100644
 --- a/fs/f2fs/data.c
 +++ b/fs/f2fs/data.c
-@@ -503,6 +503,8 @@ static struct bio *__bio_alloc(struct f2fs_io_info *fio, int npages)
- 	bio = bio_alloc_bioset(bdev, npages,
- 				fio->op | fio->op_flags | f2fs_io_flags(fio),
- 				GFP_NOIO, &f2fs_bioset);
-+	if (!is_read_io(fio->op) && folio_test_dropbehind(fio->folio))
-+		bio_set_flag(bio, BIO_COMPLETE_IN_TASK);
- 	bio->bi_iter.bi_sector = sector;
- 	if (is_read_io(fio->op)) {
- 		bio->bi_end_io = f2fs_read_end_io;
-@@ -793,6 +795,13 @@ static bool page_is_mergeable(struct f2fs_sb_info *sbi, struct bio *bio,
- 	return bio->bi_bdev == f2fs_target_device(sbi, cur_blkaddr, NULL);
- }
+@@ -3884,11 +3884,15 @@ static int f2fs_write_begin(const struct kiocb *iocb,
+ 	struct inode *inode = mapping->host;
+ 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+ 	struct folio *folio;
++	fgf_t fgp_flags = FGP_LOCK | FGP_WRITE | FGP_CREAT;
+ 	pgoff_t index = pos >> PAGE_SHIFT;
+ 	bool need_balance = false;
+ 	block_t blkaddr = NULL_ADDR;
+ 	int err = 0;
  
-+static bool f2fs_bio_dropbehind_mergeable(struct bio *bio,
-+					  struct f2fs_io_info *fio)
-+{
-+	return bio_flagged(bio, BIO_COMPLETE_IN_TASK) ==
-+		folio_test_dropbehind(fio->folio);
-+}
++	if (iocb->ki_flags & IOCB_DONTCACHE)
++		fgp_flags |= FGP_DONTCACHE;
 +
- static bool io_type_is_mergeable(struct f2fs_bio_info *io,
- 						struct f2fs_io_info *fio)
- {
-@@ -985,8 +994,10 @@ int f2fs_merge_page_bio(struct f2fs_io_info *fio)
+ 	trace_f2fs_write_begin(inode, pos, len);
  
- 	trace_f2fs_submit_folio_bio(data_folio, fio);
- 
--	if (bio && !page_is_mergeable(fio->sbi, bio, *fio->last_block,
--						fio->new_blkaddr))
-+	if (bio &&
-+	    (!page_is_mergeable(fio->sbi, bio, *fio->last_block,
-+				fio->new_blkaddr) ||
-+	     !f2fs_bio_dropbehind_mergeable(bio, fio)))
- 		f2fs_submit_merged_ipu_write(fio->sbi, &bio, NULL);
- alloc_new:
- 	if (!bio) {
-@@ -1086,7 +1097,8 @@ void f2fs_submit_page_write(struct f2fs_io_info *fio)
- 	    (!io_is_mergeable(sbi, io->bio, io, fio, io->last_block_in_bio,
- 			      fio->new_blkaddr) ||
- 	     !f2fs_crypt_mergeable_bio(io->bio, fio_inode(fio),
--				bio_folio->index, fio)))
-+				bio_folio->index, fio) ||
-+	     !f2fs_bio_dropbehind_mergeable(io->bio, fio)))
- 		__submit_merged_bio(io);
- alloc_new:
- 	if (io->bio == NULL) {
+ 	if (!f2fs_is_checkpoint_ready(sbi)) {
+@@ -3934,9 +3938,8 @@ static int f2fs_write_begin(const struct kiocb *iocb,
+ 	 * Do not use FGP_STABLE to avoid deadlock.
+ 	 * Will wait that below with our IO control.
+ 	 */
+-	folio = f2fs_filemap_get_folio(mapping, index,
+-				FGP_LOCK | FGP_WRITE | FGP_CREAT,
+-				mapping_gfp_mask(mapping));
++	folio = f2fs_filemap_get_folio(mapping, index, fgp_flags,
++				       mapping_gfp_mask(mapping));
+ 	if (IS_ERR(folio)) {
+ 		err = PTR_ERR(folio);
+ 		goto fail;
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index edc352569e8..570244ae4fc 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -5909,6 +5909,6 @@ const struct file_operations f2fs_file_operations = {
+ 	.splice_read	= f2fs_file_splice_read,
+ 	.splice_write	= iter_file_splice_write,
+ 	.fadvise	= f2fs_file_fadvise,
+-	.fop_flags	= FOP_BUFFER_RASYNC,
++	.fop_flags	= FOP_BUFFER_RASYNC | FOP_DONTCACHE,
+ 	.setlease	= generic_setlease,
+ };
 -- 
 2.43.0
 
