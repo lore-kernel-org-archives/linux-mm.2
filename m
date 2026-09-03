@@ -4,96 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66A59C61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 09:21:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B98DAC61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 09:21:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48FDE6B00B8; Thu,  3 Sep 2026 05:21:04 -0400 (EDT)
+	id A36776B00BD; Thu,  3 Sep 2026 05:21:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4405F6B00BC; Thu,  3 Sep 2026 05:21:04 -0400 (EDT)
+	id 9E6AF6B00BE; Thu,  3 Sep 2026 05:21:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 309856B00BD; Thu,  3 Sep 2026 05:21:04 -0400 (EDT)
+	id 923E86B00BF; Thu,  3 Sep 2026 05:21:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F373F6B00B8
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 05:21:03 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4CE0DC0481
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:21:03 +0000 (UTC)
-X-FDA: 85171906806.07.14FB0E2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id AD1D920007
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:21:01 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mT78I1gF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6649C6B00BD
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 05:21:46 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C365A1C21B2
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:21:45 +0000 (UTC)
+X-FDA: 85171908570.12.D6879BB
+Received: from mta0.migadu.com (out-35.mta0.migadu.com [91.218.175.35])
+	by imf23.hostedemail.com (Postfix) with ESMTP id AC85614000E
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:21:43 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xXREQmOh;
+	spf=pass (imf23.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.35 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788427261;
+	s=arc-20220608; t=1788427304;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R58VpJgoXa38uUjUSX0dFmlVfqjdjenKtXhLCcCh34E=;
-	b=pkGeATiuS25fEXWd//sFUzNOpC191Ch6y1CqWmyrjtx6Bxl/QQaWuc16VAU3QVpdJ1Fepf
-	JCoj3lxM9w17arGhGrmHL+N6t6+h3tvfdq1upBQdkG2qdTJYDrwVKKfp0R2Gn62XVerr0/
-	Or365Ofzjji1z1q/IiS87zXNExOhTrw=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=1xcDUaTTj5abc2i73BnSXpGTrXupdBhxRIF/WgrImfs=;
+	b=a4eEhb2SiTGgG77rRvX4J9zb4eeQk4m93Bh4DI/eZ/q1sSLZlaEeASBZGZkOatn6d81q30
+	cMV1GK30dk8luUVNXbHFd0IkSopeH2flPx/vAu5ZXFQwp4ov0J17ePHz0rZbxNkHBOKgym
+	KJca6jzAeEMJusAWJxnvRuRYnlE2mMQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788427261;
-	b=J3ByCcR2kdJyrQMyYZcjEJ3pqc6XMiM83CNHbRlfrC9Squi+X4BgSdVIaTwBx/gWXG+X09
-	2Bf8E840kmL2ZP+0b+NFi06xEaHQTG2MeQLi2bAifUe/548lFtPr4i46nV4+GqSrwFxtp5
-	72DbegTCwqQjG0WQXGf7cMKOa7BzsB8=
+	t=1788427304;
+	b=UDR7VKTBPU9t5ad+dFSuDEVvmivP/bgwHsagYWGLE1rGNEqLEWUUA967X+p/ZGh4879Ot3
+	q3z+JPZoEmKJmGmpfF0x5lzVgofyW8ToIHemvvipfzpAk7dtw5pDqNs8tpsQgwgSZPQLES
+	jFkPxUQHZ8NDNdCjhymk5Xm0Vh2ntag=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mT78I1gF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9D4CE600D4;
-	Thu,  3 Sep 2026 09:21:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F011F00A3A;
-	Thu,  3 Sep 2026 09:20:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788427260;
-	bh=R58VpJgoXa38uUjUSX0dFmlVfqjdjenKtXhLCcCh34E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mT78I1gFIY4l4WwOgJH7IieNz0sn6nIuBxmmWb3IyS/Mic/VyR47jeWT0UemhLBUa
-	 lRbZdGhDE2zSzr7DaWqqQLtoGUQfdKckmB/8wBvY5rWRi4ed0Wn+HCJuTQl3uDx/zm
-	 3a1con5c7Eb8RkywRL2qLIFxohlyLZvZpntWOzWcIqNDf4vHwtOXM3D7rblgOnvvja
-	 sSme+E9Kv/MA4YfeqImXUQpOxNsfMxLKND+i49gTTDw1ieTM2cycEnWKeRlHUIOZfR
-	 IMAH8aGv9LL60jzFAH81CjVa4mrqHve3323I9WwMeV4ItZ/ijS3UyCzDhc2bOIypsF
-	 h2BdPR38VizVg==
-Date: Thu, 3 Sep 2026 12:20:47 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Xueyuan Chen <xueyuan.chen21@gmail.com>, akpm@linux-foundation.org,
-	david@kernel.org, ljs@kernel.org, usama.arif@linux.dev,
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org,
-	nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, lance.yang@linux.dev, kas@kernel.org,
-	catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com,
-	linux-arm-kernel@lists.infradead.org, tglx@kernel.org,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, luto@kernel.org,
-	peterz@infradead.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 1/3] mm: make persistent huge zero folio read-only
-Message-ID: <apk775HfHg_DXpiW@kernel.org>
-References: <20260901151818.3191443-1-xueyuan.chen21@gmail.com>
- <20260901151818.3191443-2-xueyuan.chen21@gmail.com>
- <5026dbec-0b71-4408-a78a-484a4b8e77dd@intel.com>
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xXREQmOh;
+	spf=pass (imf23.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.35 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=NM7IygWzUo8F4bSYp/zmXdPd2UURJlijaDZmCMsb++U=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788427302; v=1; x=1789032102;
+ b=xXREQmOh6gaPzBSOSCCpEAM40Rg/w9cFj4cU+4VAPuUTVLLJ2eX4851NG6Zzh5im/qxP3JOs
+ kPZbNJCOVfH8U+JUADV7WZfgkdv7VnvX07az/CB0RQRieceNwI45bp+sZXdY9UL0olmQ9xgXYhQ
+ bsv8LdKRI1L8wyNEc+RAhJ94=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 997dcd35b942ce68;
+	Thu, 03 Sep 2026 09:21:41 +0000
+X-Mizu-Trace-ID: 997dcd35b942ce68
+X-Migadu-Flow: FLOW_OUT
+From: Hongfu Li <hongfu.li@linux.dev>
+To: akpm@linux-foundation.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	brendan.jackman@linux.dev,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	hongfu.li@linux.dev,
+	Hongfu Li <lihongfu@kylinos.cn>
+Subject: [PATCH] mm/page_owner: preserve original free_pid/free_tgid during folio migration
+Date: Thu,  3 Sep 2026 17:21:26 +0800
+Message-ID: <20260903092126.24685-1-hongfu.li@linux.dev>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5026dbec-0b71-4408-a78a-484a4b8e77dd@intel.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: AD1D920007
-X-Stat-Signature: 4ewomntikidxbytyx3t7otua1zwxosxx
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 89ncbtu7oii5cx6h6ptmmpz5o4cef13n
+X-Rspamd-Queue-Id: AC85614000E
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788427261-518822
-X-HE-Meta: U2FsdGVkX19/7vx0NKjO61pnIqVknu4zXPtO198hETSIercNlLKAWbFJZP3yBfEDDWAhvy0IRBlbNRFpzhUED2rk5LWMzUcwwgvHbWq4HaRsILiqBHXPcF1TpALiH38sF62B2+fFsLDiZAEzJIFBQrxI/bLI59OFEprxIRawA2JkUcj+qd83rE887NaNUDMsEjqxhY8yNhio7spwkAWXP/Su8pOSy9jYX22IrJu6ekvKhIVipHqTZBY8PCY/o3wF6tvMB204MjE97g0IBQUGO194IAGh1e8PAExeYW2u3MHcOA9pEWfY/Wsu7oAFiWs93lF71msRrSXe3A29ixfaQ35MpiFqTwrhVeK/S7hvmvijcSxjZdv/xgxgRLnUByyDNA8TBXvBV0zAWKk21bj5Ug7Ff86jpNv1pPyTl718dMcm8zLN/CSmXIfYZJygvs53+QR76QW4I/Xm7yl1HlPP8nD4Ljma4PwNrgf4DIGcw42c+NJBAaFLJtMZw+zA0eKGpATuP4SidJUJq0fmHaUyaCFnmll6IqwIDda0MFJPr7xm+ndrXGwtBZ4TQ8eCwKLp/zZghgnwd5cMiAClvysBGC1VMnPmh6ESSfCJZ0jHXwZjDH39rPsNvRtTBftkuNfawpL98i3rhuKIXjSDpMEDikheZKYMjiJAjxfyMm+iCrBmcdedTBFRxsvx1wKVrQizJUkjy7t9JA0wLhNIlTTezSabGcMC7ktMIC2TygZEPjuvzIUvZQtLc8AfsHdH7FWMfimOHRyEce+CrQTfbmcVLinL7YWklacsHEeys6oXRdgFQrb9TplPa0xhRdBKfRHcFYGaZ/9He7RQ0+DwkbIg1t2qWEj9p3F3nve2lEyBmiT1Z+xaMdy8FLu0kiC+04gu6j8J+yPU8L9KRJdvjqNbti6+DYXVGTnc52GdbIU9SuKmZAkJX6uAQtUHYfo9r5Cw//a/mJuQlS6znV0rkeM
- Uf96Xrka
- UFZFVetiDpU6HYZTuByo0fbDZ/IAqDZr1qia8D/5kAh9xbslqdwwbk2+qhV0lg2MRB4MEmRXSiXNSqRdiOrRBIFai+FyZ05IfK+0bi5cVS3vLBv3TasJaNJb9F/Fuo5JI+U6owtzoMpuUAJvSa5mqgfs+OQ5/OT0jeioiZWMVJOODQuSBgyzBfCLMQY5RTNQU1ZhBE2WcJ3B7sscFcpadrJ3H1EOE0xd52oakq0CkD03+VRx0OH3JqKR0SF5xnk0u51R/p8s1upHwUfjuLBkI9lzPI7kXZy9tF1R/qYc7LuIgzX113tnAFOjcTRK9vWs3y302y+Of9u9YNz0=
+X-HE-Tag: 1788427303-626539
+X-HE-Meta: U2FsdGVkX19BcGsf3D71k6TDn6IOA7X7qSBWRhtsG5PQ88fypxjFNUePdGOAdX+FzVid369iYM7tpolMuFppx4c6SZMSf2kLgDUb1QcQ6F5E+e1W1Wn+HEkS2kUtjyhOtlqNpXwpgQSA0ZlkMGT2YpoqngftLHLiyggnok5/Qx+QB/Xr6Qhw4cjWzykji4+fGeKimtdv7Z4DV4PKbtMHyiSQH9L2benpQ9+vED9A5PNda3b/O7hPkUZJ9n0fM+C9VDBe5mfsNHfcSmxXTh45TN/SZeVm6MQGth90PbbMMQ3x75QK3wbd4WQQTWiEUrnMwoDEaRTxGDcsJBGDyegPGIPJEhjO5isc/lzsyioBcN6YcJwYcuXuAy6N+EKrYmJZNthMXrjx6kc2yz4g4VbCvIp74JfpKPOfMchyt1y7AzKiiuaqF4JqVSeMbD9H7zC9Yz9MV/Fq3Cbndr8q18LKd0roG0sDphHrGLstI5LCV3SVPQmbiq4WnqmQHW6vLS/ohoSZvCRAOI3RtS55EzuZaY6RJ9GZU54uGuXK6IZK2ylJ7JU2tWKMrxC6fZ9BaRgdNt7gVS8/eA/qcb0kXLGeMmOqujh4Tkos1ppvdwhZjorqR4oX+BEcMaBpYmCkEqDE0asFpZTzcgNYv4mp0ZomJWFlTy0jAE4wOFv6sBW9tlA+rwyBSmUgPNBI3PIfji7RixmhOT4oSUiBVA5NPXMo8imVLSm6/ZnitxPZukWrVKqhfyvCR7xfLPoRAMGHtt2ykzl9gcZZKmnz+i0kqGlHBP/mOynNquYqj2IjwxDtYT9lgFQnat9SkFrQfyfncht0vD0URdv3Y6uwu6ADoTOz47osO8t3C3Nf1Nq+zE30Gmx9Q0/yNF77dpBMqO7N4+Z8j1foc5rSigHnJDuZUTAYttLPme64TgHCHNRX0ZJskzZ/M8RmaE3WCm6SVQjpuJIMKNTJbxiePMI7K3oSPd7
+ NkX1XzQu
+ s3vCMUZvi7mdsny8oSkZmmNeQXpG8ZHwYLlGXh6MNXw4x94XmLSKt1bLRxFgFpR54eJKEgWCrdObkMf1yGwCdHb/qiMYDqof8E1CFt4exWKihbQLnMgUsk8juckz+Pl+GOPbe1WnGcsfHADpczqEGL53WvN3WpTT8Uz0lGRKCt6j+0/fCHvM4yklm013OMnEPoFuAgCBtaLHtcPGo96UOJilo88rNnm8x+5yOJHiPHueCn2eOrz5IttEq9iCXSt9RKv0fadw09EJBr2N3LVUFe9EDxQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,24 +94,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Dave,
+From: Hongfu Li <lihongfu@kylinos.cn>
 
-On Wed, Sep 02, 2026 at 01:59:15PM -0700, Dave Hansen wrote:
-> On 9/1/26 08:18, Xueyuan Chen wrote:
-> > +static inline int set_direct_map_ro(struct page *page, unsigned int nr)
-> > +{
-> > +	return 0;
-> > +}
-> 
-> I still really think the stub here needs to return an error *or* the
-> thing needs to just be void and tell folks that they can't know whether
-> it worked or not.
+__update_page_owner_free_handle() accepts pid and tgid, but ignores
+them, always storing current->pid and current->tgid.
 
-All other stubs return 0 here when an arch does not support set_direct_map.
-I'm for keeping them all consistent and fixing that technical debt as a
-whole rather than creating a one-off here.
+__folio_copy_owner() forwards the original free pid/tgid during folio
+migration, yet these values were overwritten by the migrating task.
 
+Store the passed-in pid/tgid so the migrated folio keeps the original
+free attribution.
+
+Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+---
+ mm/page_owner.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/mm/page_owner.c b/mm/page_owner.c
+index 3fc37d9b908e..cfc31c92d765 100644
+--- a/mm/page_owner.c
++++ b/mm/page_owner.c
+@@ -307,8 +307,8 @@ static inline void __update_page_owner_free_handle(struct page *page,
+ 			page_owner->free_handle = handle;
+ 		}
+ 		page_owner->free_ts_nsec = free_ts_nsec;
+-		page_owner->free_pid = current->pid;
+-		page_owner->free_tgid = current->tgid;
++		page_owner->free_pid = pid;
++		page_owner->free_tgid = tgid;
+ 	}
+ 	rcu_read_unlock();
+ }
 -- 
-Sincerely yours,
-Mike.
+2.54.0
+
 
