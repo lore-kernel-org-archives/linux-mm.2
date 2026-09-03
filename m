@@ -4,87 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAF31C624D6
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 03:02:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6668DC61DD6
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 03:04:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF9FD6B009D; Wed,  2 Sep 2026 23:02:25 -0400 (EDT)
+	id 44B866B0105; Wed,  2 Sep 2026 23:04:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB1546B009E; Wed,  2 Sep 2026 23:02:25 -0400 (EDT)
+	id 422D26B0106; Wed,  2 Sep 2026 23:04:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9A2F6B009F; Wed,  2 Sep 2026 23:02:25 -0400 (EDT)
+	id 33A646B0107; Wed,  2 Sep 2026 23:04:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D4DD6B009D
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 23:02:25 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1E209A0439
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:02:25 +0000 (UTC)
-X-FDA: 85170952650.21.8DEDC65
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5D58140003
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:02:23 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=t3iiBiFf;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 039D36B0105
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 23:04:44 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E7E62140400
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:04:42 +0000 (UTC)
+X-FDA: 85170958404.13.749E9E3
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1E3D21A0003
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:04:40 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=P03P2mbU;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788404543;
+	s=arc-20220608; t=1788404681;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E6fpnYgQzDhI+g8OqpnRixNH2BQW4d1tJxRUcM7JXB8=;
-	b=fU6c9h7vXv+ULlz9YM+e2PRifCFmcVTCmqfy+ZY5I4KEGQjkwyEtSQcsKohHPzmTMpuvvp
-	/9Gq1fhT70hjJf55csf4PYNZvdDjpjB1LuGxL9iFMJXIg3jTMQo1z6dMzvqbggKPmPSd0F
-	06saew5pYx4n6wlzA2FaOhPlVA1MS8M=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788404543;
-	b=hQvgHIfYqyB9sWZ0OOz8MDgrq16M27YuF9yU/JTeCQVTXmOzCzdIGnvkam3UpK+oAz67/G
-	La+HDFoPo8AbkKR8Qa/YwtgMVbdLBTZOPlJR06+fKpNU3B3X9SBYKRe9A7UhnjspGCcMBA
-	1vjESJ3aykSaSgbNgRxUG9ztizl9te4=
+	bh=PZ5VZbOzOAiIg21alHu3P1D5kKDO/4ea9+shULiGmrs=;
+	b=pTJ61hWKZslzBXQ5LSSCps2UWWBgVATrHPVhe0TrF30oLEUZnVG7mkyPaCimrbA5RAzmGj
+	8Aj+lt9LtPkP5Kvpj7vpsQp7vmVYwKkuL8hjPCidvNpqf/yZ1cyHu+v71pHzMQalHRs2rh
+	bziuv8dfLU1pEb8E4o4R/KNAOQNHxD4=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=t3iiBiFf;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 114EC600C8;
-	Thu,  3 Sep 2026 03:02:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487FF1F000E9;
-	Thu,  3 Sep 2026 03:02:21 +0000 (UTC)
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=P03P2mbU;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788404681;
+	b=J9jGwAKRlKtc5iaVAgLThleMzcC4qiU6vt3Nw0SdZtf3u42YGnAwHOPfS38vDlHGLjhtfq
+	QasyPGSemAMsRYnRUTldn99m6Vu+WGIKW17pQjQvlJkc0FAKn0320UlEf/HUDwfiei0oq/
+	guh6JCXM2HoJVecqb4yXhThZ8+hWO0M=
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ce98cb8165so6628335ad.1
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 20:04:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788404541;
-	bh=E6fpnYgQzDhI+g8OqpnRixNH2BQW4d1tJxRUcM7JXB8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=t3iiBiFfRRLEbBH6VG0Yzu05L5kwyfurUSxpLlfb2DiO5C+lNRJXCo0xT/W9NQH+y
-	 QyKASfWpjDvvvMzQzM5Ji1ORGcIqNRBgLxqEgzCHT47Id1NnnQJ1g7YBfaWfTamDIq
-	 47vKTtt86AodzSavp4ePH9BN463gU6ZN6n3amXCI=
-Date: Wed, 2 Sep 2026 20:02:20 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: david@kernel.org, ljs@kernel.org, riel@surriel.com, liam@infradead.org,
- vbabka@kernel.org, harry@kernel.org, jannh@google.com, willy@infradead.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, lance.yang@linux.dev,
- Kiryl Shutsemau <kas@kernel.org>, Hugh Dickins <hughd@google.com>
-Subject: Re: [PATCH] mm/page_vma_mapped: guard check_pmd() with
- CONFIG_TRANSPARENT_HUGEPAGE
-Message-Id: <20260902200220.408ae7e8a28d3af4e82fd060@linux-foundation.org>
-In-Reply-To: <20260624082359.2869-1-richard.weiyang@gmail.com>
-References: <20260624082359.2869-1-richard.weiyang@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        d=gmail.com; s=20251104; t=1788404680; x=1789009480; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=PZ5VZbOzOAiIg21alHu3P1D5kKDO/4ea9+shULiGmrs=;
+        b=P03P2mbUNKXXYI/RJ5xl1kLi75RoC90rLzxdxZFaikypJpuuIXF9SpvJSbft7OVkvH
+         9CVyPQZ+92yxp0142O20NEdjyeQghej9MiF9pTSa/1I7yg29Cd4zUigs6NQP6Dq9468Q
+         9vxWQOQjnqhBiU8VqnadpCbeg6T04Z4jH2gumO+NyjJz1XZfJGQNb/sOvX+PM6vRLE1P
+         HxcjkM8A4GfYg96J0u45Xrj437vGUMIv7HZSPxe5phZSRJb6nU3y1QfiLZokltoShpxq
+         qRb0XlLeeX1CEYRyf9nEnPCxNcjxi9mFxFMfRiGpCpvw2rIemopnKki0mRPnz5od9piu
+         EzvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788404680; x=1789009480;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=PZ5VZbOzOAiIg21alHu3P1D5kKDO/4ea9+shULiGmrs=;
+        b=ACM0V6ZpqzI24yKCnEhGQddiftzI9v6sGcfw0iDROxO6xHjC67JD/REqPNtpft2IQ6
+         m/OsDDEmUnPg59wc2eAkxn7Yfs4ma3trKRFXRRu2UIrRo1n3ZMDfkOWdaQ4Sa5hDg3LK
+         huBL1vmcLGBsfbWRcLCtJxNfU0Sl2N+ZhYmsDSpN6tWekz7oP2/2QXhTBHybLApxAQx+
+         F8wmJ9tIiK9ANqvZbyn7lZPPugwKPCbAZ2lBH1bCDxzPiA9Odc2+1sXS5WPVPYSpju7C
+         xvywVL9aGrG007BKS5hyt7SA+AsTCfSNDOjb6jIp+LCjD5PK4ujCEgcSQfd6taLQ3tzu
+         s7eA==
+X-Forwarded-Encrypted: i=1; AKwUvBwTYb1nEU7zSwceVkm6LEY0O+bVk34goimxuPBs5LYBA46bU7vz0wJBtBmMkjkz0BROLb0sK02/bg==@kvack.org
+X-Gm-Message-State: AFuF++m99HKpxEpWM/bAlxyhSVoyrrKXg3X36nc+XsGsQEu0WygylCkg
+	K9rrCiLTR0zaQ4rWUQUYnDLyhBZDAzq+b2Vg8QU3iFCCIpBYtrujLi1B
+X-Gm-Gg: AYBFou1CVJxiZsnBxA7wTTOgdfVFI9H5CeA29ZHOaZ15FgtDqONP6X+4OCwvbcGu0oB
+	N1rWuSUwkljIQlFt6fb2xcyYfPxFBdnvEqExwjkoLHmURV8k8dsBHnYvXsZ7qJ/2/qaeYI3pDqq
+	OhBZjcy9iQQ57/p+S924qnkErIsUkuJZBgGswwK8lrKS6G7F2OpngrdH+mF57RAiZNDpJX+DVoJ
+	stk8YOOyxfd5KYt5N+puLSdkA354B4BCnlMXhgWvcVBXuiZ+UkPyqrIZRSk7vw7fu/THqMQw5la
+	DABruPZj7XwFb6nIVj1ff//7aJpSeIitGK3lRS0/UTgOjGmvLqTrBoDBqJqbasl+oakKdqzATBB
+	4/JmHWx/gMBezG6s3am6Iw9+0LteUSRxgPnapaGbUa25Xp+rTDWoYDVClt+i46iefUEXXo2aOJN
+	ddAPShNL3S1iT8a2YOlZ0Yu5Zc7wtorCnIzcrRc2KXifarVIWY3FDKYcON67swKD2vORnYQA==
+X-Received: by 2002:a17:902:f545:b0:2d6:dcf3:b754 with SMTP id d9443c01a7336-2db020c9d24mr8716085ad.7.1788404679175;
+        Wed, 02 Sep 2026 20:04:39 -0700 (PDT)
+Received: from gmail.com ([185.220.238.35])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dafec286d7sm2793645ad.51.2026.09.02.20.04.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 20:04:37 -0700 (PDT)
+From: Kunwu Chan <kunwu.chan@gmail.com>
+X-Google-Original-From: Kunwu Chan <kunwu.chan@linux.dev>
+To: SJ Park <sj@kernel.org>
+Cc: Kunwu Chan <kunwu.chan@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	Kunwu Chan <kunwu.chan@gmail.com>
+Subject: Re: [PATCH 08/12] mm/damon/tests/core-kunit: test overlapping ranges for set_regions()
+Date: Thu,  3 Sep 2026 11:04:27 +0800
+Message-ID: <20260903030429.309611-1-kunwu.chan@linux.dev>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260902054747.99370-9-sj@kernel.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1E3D21A0003
+X-Stat-Signature: edgggdk8qopbjgkgfbinjadz1hf484wd
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5D58140003
-X-Stat-Signature: hnemwhe9bys66qzcoqnheem9wjpt3erc
-X-HE-Tag: 1788404543-436169
-X-HE-Meta: U2FsdGVkX19obv8Zwe1NJxCt7ZKCqLXeY+YT4Vr+bkbWOVjh+1Zbm3djgHnxkOAzKMtn0gU5znTLTcRx5YaFBKWy5TpxO1n6KfrNtwtKKcMVF5MpF14Wlk3eaACvFl2n8QSGV9YNxGooS8mBoAAwgsfdI2zzo+lSC2mxrBd27Xl1KVXfI+/KXkPEuqn3JhiEWSJudFIVMJFERazKf2+X3NlWSB8u0xoDz1rOoab9kXSTwcNQ8AmCis5V4gT+Kbg9U5UkRD7CGH6IU9xmicbw7lmaW6hQxevVAE3Ni9zhO8luJeQrQyyFaW54n1XC2ZwEohz/lBWRu8jWm7htb2R3MrtjE2yxGeTdhBJsC4IindnkdrmshQGlpigh0r0/0LHpSmKZKnXbv+ogZwdBa1ev5mQpNlfn/HawKj2nExkxZ4TQnXh3T0oIdjsm7XWmUnJ6aI1jqE3x/qxt4+os6oHL/eQYu/00b2kVAvjCq9ASZBx/9r9SbWyqLBrA6siXV/0pFv4igUVOT0gQhEwBUJ2GjStDrRrKtE9UHSHZ0aPqVVD+Ro8PcaF6X/PpW9tfx5pB2y14ZUNr2jXc45BanRmzIZGrPWftFaLC0870hVF3+7ZlnC85nv0bRdV1kUIjUopULgYiM9XNPB0GXg+O/wd4/1SfGQjjeM/sr2e3lzYiNxhoNfqYjpRXZTLRPJhZPA8FuxvG6YaC1lfsHDT3x4xB5XXLdMOi3v4/ta8Cy8GMuN3uROGiBW0vA8s08GdpXUVU4OYO7S/21NlIVCSW7w4SkHOHEJnsMMa6PvqaVnlFHkbQBrBKA8odCTRb6rDDzQ4uUJDM46hgwn7vwD75qzEiyD+RYssqfbn5bx5CCCB7rhCc1K8XbNl08rotQprErqtxdPd1+6N0+4p14hGY9R7GiKWPvZ6hdu6NUPiRsFBLo8oewqMPUmqqNFKxEPP6fmmai0bCB5K4QhO9HXRTpR3
- nbITrS5F
- eodA+WHcduJ3X7V7ZSMzB0kZYKNlo6dKCrmtbi9q0zpfyfF8rNCV3EQnp30wXjY0jCoV5YLybW9ZAxxTCMInz5ZcZ9guAfL5NxTNrj0vJzQIblSoE/mqhqZtfg0lq3cYO36reTQX5xtRxspuZA7e/mmgUHphydetp8v3gJQGOj0oqOuKowVBUdT7e+CrMVkovk3M7shZ9sg4ZkgLnzTr10FrU274R6zGDAtOrpAcw7U+yD4MzzO/MbkATgaW5PdZB5Gbj3zS7ZpRB6W2uL0g5bvbZrW6BQS5x4nO85txkK0na4yq0jhu5osBHKFYTfvzewryOwCrCS5YOxbWIMZmPjdEK0YB54AHs5DOXO/fZauhGUioo3PM9Vy9CvybAKMZgmKjFPcjzNZimZYLlBypt2MixLJKJ3Rht01zmXCTRiLZRZRZ0PeZ8anMQh/SOHJ809YfnOT4IsIGM/lMd0tYO8A4/QgOft8aZHwmtOX8Xhvv78KqUJFhedin5dWX73AlWBNKXuKQ1jJjKsXKPFC8jjMfmNr6N+/RuFik/rzHu9ZbIKq9gI+H1EIk2uQ==
+X-HE-Tag: 1788404680-366886
+X-HE-Meta: U2FsdGVkX1+PIiEdGR9D3xDOIUbnHhW/nPaaZlWpPcU6kxHTtviZpNZ4YQQpKyaQTkeAu20ifx2h7ssPHKhBLILdYPCTZalCM9OoTNEA5anhwk79WyR3Yc0gso/NvUA2Ui8+9BB+KqwT4VIcv062eXgBcdxhUglQ492JtcC7Vduoo4rDBgH4e4Hl1F6dGPBxi5HMAruMyc+CatKvc/KtKBeYINT1kaeMaETRnfGHV7NXeqXJdZsz8/Ns5I71BKFlcE/PcYYYYPQng5EoF6zB3fCXYGwJ/fc+qVRqDY+txjCWkM/dNGIK0jaKJIAuYUfYoFDQJKUQZUCPIP/9++Ryx0aSqVlwVV0pVh8oQMuW/UEpjGj2dWUrpTrTRry/nGUxVaf3ZTX/wG+/QV9A01AVy8vWpngTfxQV4P8pjgtsNIUU92IcCGD+veDIGclNdXlyOEKITSNzSfz1wgdq2cVAt56So7974F73obitvxpr5fZuPcyN1eetFnj116AkFqDuRK0KdWBiJU/o1yit7TBelm31vi8vJgPHs0+vftu6epSuARf9ixON0Fj25Td3airUNo3p9KnLvdhEd+utc+CHwPS7CGHFgELMa9XTZB30umoSMk2ggLhxLUUSfLuGcB+crzjCZXSwhoV8EM7hTanajt/eLtFkBuNyn/w+uJXamftXnabVzzfxr0hb5vvTtRtXkXDGmxavUuuXCdEg6F6xI5qBPTWiCDd8bw3Qisf7D/08OWqZ0bbUvTGth0h0ZoOTDE3OQ6CgWpHqF6sX0rHame/FFwFX+hLe4bd2xBvLOwzYd+DQj/JuJw0aLGAoi7JwZgYj1mXmNyehqcdSCDm1/Mhxdw711NlK8Y96iOULG+WL0QTXNMj8rJ9wXYpxcxkorGZmB5QH7oDal/6puOp01OU4abz2F2wWlkcD740/beThS3LObaZVLZuspU2LOivMTgZ9fdqcT0neFBbcK2b
+ TkNFCNTr
+ WyAZvpa/cvb7mMpGBp5ADUlogef3YgzlD9FFKjMUkBxFl6Ww/xZApHjotaayeVGBAy+Z3xpmtC45AlooNSGXfehMcJFixySmhirG1sPTWmC2dTDivHQDC2TbmardNKOMbUkh+TxRZBE/zePp35Je86akZFltcxy+6jxs1K4oWwjpL1qtMC9GNMCZVKlFi9mRnnDyAV6DuVBgJ/uaTPkwN6Bg3/Rk7HqCV82RtEeiGiUiQhUjOKnLn1phaIueyoJeslPM090p3nOsM9//gah15bp1hMrOk8xzRbH/g6OJVkexq8hs5P3Ivzs+pctVsCx8e6SGRbf6m51sfidof4HdlzHWnzdNj66S+nq3YewgYHRBvc7fwD4grVPxO3GH18wQCAKKdiT/oa5+JN+pnFRmYGyfmcEAxYolVDXkKFfeIUIdBXaF94cglvHLJoN2CzQb1YoAwQwmgl8VKXt6o+LseM/RownuB+zUhgWmfs2HQN4X0rh59VtZIGef28g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,61 +126,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 24 Jun 2026 08:23:59 +0000 Wei Yang <richard.weiyang@gmail.com> wrote:
+On Tue,  1 Sep 2026 22:47:41 -0700 SJ Park <sj@kernel.org> wrote:
 
-> The kernel test robot reported a build failure on the parisc architecture
-> when expanding HPAGE_PMD_NR in check_pmd().
+> Commit 954157679ec3 ("mm/damon/core: disallow overlapping input ranges
+> for damon_set_regions()") disallowed passing overlapping input ranges to
+> damon_set_regions().  Add a kunit test case for the overlapping input.
 > 
->    mm/page_vma_mapped.c:142:13: note: in expansion of macro 'HPAGE_PMD_NR'
->      if ((pfn + HPAGE_PMD_NR - 1) < pvmw->pfn)
->                 ^~~~~~~~~~~~
+> Signed-off-by: SJ Park <sj@kernel.org>
+> ---
+>  mm/damon/tests/core-kunit.h | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
 > 
-> The config [1] in report link shows neither TRANSPARENT_HUGEPAGE nor
-> HUGETLB_PAGE is defined. Then trigger the BUILD_BUG.
-> 
-> Fix it by define check_pmd() under CONFIG_TRANSPARENT_HUGEPAGE.
-> 
-> [1]: https://download.01.org/0day-ci/archive/20260624/202606240042.ffPsEXVc-lkp@intel.com/config
-> 
-> Fixes: 2aff7a4755be ("mm: Convert page_vma_mapped_walk to work on PFNs")
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202606240042.ffPsEXVc-lkp@intel.com/
->
-> ...
->
-> --- a/mm/page_vma_mapped.c
-> +++ b/mm/page_vma_mapped.c
-> @@ -136,6 +136,7 @@ static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
->  	return true;
+> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+> index 3cbbbcbfbef8f..a4164ac489a61 100644
+> --- a/mm/damon/tests/core-kunit.h
+> +++ b/mm/damon/tests/core-kunit.h
+> @@ -612,6 +612,17 @@ static void damon_test_set_regions(struct kunit *test)
+>  			{.start = 42, .end = 21},
+>  			}, 1, 1,
+>  			(struct damon_addr_range[]){}, 0, -EINVAL);
+> +	/*
+> +	 * Regions resulting in same region after alignment should return
+> +	 * -EINVAL.
+> +	 */
+> +	damon_test_set_regions_for(test,
+> +			(struct damon_addr_range[]){}, 0,
+> +			(struct damon_addr_range[]){
+> +			{.start = 10, .end = 20},
+> +			{.start = 20, .end = 30},
+> +			}, 2, 4096,
+> +			(struct damon_addr_range[]){}, 0, -EINVAL);
 >  }
 >  
-> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
->  /* Returns true if the two ranges overlap.  Careful to not overflow. */
->  static bool check_pmd(unsigned long pfn, struct page_vma_mapped_walk *pvmw)
->  {
-> @@ -145,6 +146,12 @@ static bool check_pmd(unsigned long pfn, struct page_vma_mapped_walk *pvmw)
->  		return false;
->  	return true;
->  }
-> +#else
-> +static bool check_pmd(unsigned long pfn, struct page_vma_mapped_walk *pvmw)
-> +{
-> +	return false;
-> +}
-> +#endif
->  
->  static void step_forward(struct page_vma_mapped_walk *pvmw, unsigned long size)
->  {
+>  static void damon_test_update_monitoring_result(struct kunit *test)
+> -- 
+> 2.47.3
+> 
 
-lgtm, thanks.
+Hi SJ,
 
-You provoked Sashiko into talking about memory corruption and kernel
-panics in page_vma_mapped.c.  Usual stuff.
+I reviewed patches 6-8. The test helper extension and the added
+error cases look correct to me, including the overlap case after
+range alignment.
 
-	https://sashiko.dev/#/patchset/20260624082359.2869-1-richard.weiyang@gmail.com
+Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
 
-I'll cc likely suspects but boy do we need a way of being more
-organized about this.
+Thanks,
+Kunwu
 
+
+Sent using hkml (https://github.com/sjp38/hackermail)
 
