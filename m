@@ -4,131 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB0ACC61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 14:41:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A917C61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 14:45:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A67B86B0088; Thu,  3 Sep 2026 10:41:34 -0400 (EDT)
+	id 6EF616B008C; Thu,  3 Sep 2026 10:45:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3FD36B008A; Thu,  3 Sep 2026 10:41:34 -0400 (EDT)
+	id 6C6D86B0092; Thu,  3 Sep 2026 10:45:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 956686B008C; Thu,  3 Sep 2026 10:41:34 -0400 (EDT)
+	id 603BD6B0095; Thu,  3 Sep 2026 10:45:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D4206B0088
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:41:34 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 042BD1402B1
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:41:33 +0000 (UTC)
-X-FDA: 85172714508.09.FA4BDBB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 39E6940004
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:41:32 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SAVaVQQF;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788446492;
-	b=3gd57D4nJzlux77CU3kNWbFX1F7A43huayeROl5Ge9QID36AEhDFdeUvim51He7FV2DkHg
-	WK6ROOoOwIRHgzgIr+g+7r9XRRgvXnlo02Tx2j2NOphroBH04fF6+bSHvJMeusE6bD1Wlr
-	dXCESNwlYT60hCXq1nFFRY3OcFJRAzQ=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SAVaVQQF;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F60D6B008C
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:45:50 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C2CE3C0590
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:45:49 +0000 (UTC)
+X-FDA: 85172725218.22.C77B3A7
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0338220013
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:45:47 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=mit.edu header.s=outgoing header.b=QJesqE4T;
+	dmarc=pass (policy=none) header.from=mit.edu;
+	spf=pass (imf13.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788446492;
+	s=arc-20220608; t=1788446748;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PzZhIe3Q+No1BnEVYJ2mpKzW0HoiA7Ne257cS+OSDa8=;
-	b=nNaUAmd5rT6hiu6Yh9IomlnwDUaB58SBQcad66C9N9RvXAoYREjALXSiX8dn2fW1OllrNJ
-	+tKGCDhs/csmheuOvHkxaThy4K0bi4mf+A0gVh4dJSluxpPSDphT8K6gMTNItKISi/KO0r
-	fUGYVGpk+g/9/CpFqE0m1lIUk9wVaKs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B77A160546;
-	Thu,  3 Sep 2026 14:41:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 719031F00A3F;
-	Thu,  3 Sep 2026 14:41:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788446491;
-	bh=PzZhIe3Q+No1BnEVYJ2mpKzW0HoiA7Ne257cS+OSDa8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SAVaVQQF/fHOzwY7FRKO1yuARuC1zSlYldW5+IxjWAFwUePBUqcLX/JB5IeQjOI2f
-	 PUM/67YWns4IE6A4DrxElDCRaF4lUN1GKWnv7L1j/gJ7pYhIG4dlpegCtERfVcvmjK
-	 dTeIOvnpKlNSwvXe33JhkGqrtws2WYOppJ4EfRKl8sUCBVn6VkPntgXSxTd3gfcJjR
-	 2dd9AXURFF8zFI077UF6VHOWXgbj5hbxofd/JscHFruDbm8ZAzCksVQXQ37aTMaNXe
-	 TMiEfCu2LsJ0H3X1/YI+f3PoSuRFXRt7ASQys/gAGmjZGQr2HbYsDF2vRqSXnPx2ya
-	 +qsNg7LznMxRg==
-Message-ID: <77453798-713a-4d10-a738-30763e2eb084@kernel.org>
-Date: Thu, 3 Sep 2026 16:41:28 +0200
+	bh=qHs/hYcfdCQ1ysGE+hmGWWr3Mk+We3imbSb6wYOC52U=;
+	b=5Bu/3Xyr6rNKKVUElSYVM0h95nwIGTBckybDFvzwIi0E2/e/EA3trqlF9ioAjmysctJCc4
+	FSo+6CajwWAfgqy8SfKmGcTx6GYQIqMd48VzILYbYHEvAkYbpiXHsb1vZm6loDozEe/iQb
+	W7/K0KyrXe87q+6HFTg4bpEuxdUWEWg=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=mit.edu header.s=outgoing header.b=QJesqE4T;
+	dmarc=pass (policy=none) header.from=mit.edu;
+	spf=pass (imf13.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788446748;
+	b=niN9bZwoBdUVA2gJ35Jsbbm89p0bsO4Zbeb56/PJFiwXIRr9BBCXhj1kmHM7W3R3CCNuE8
+	L4qNSwe7Zg8eaCYlaJFSN8dkEHWWH8azlqBnqcm7qk89kmhwscU5tghizkUE9tpUxE+Iil
+	mRSDRVj7qEIlDb3P8KTEmgDwXhKircc=
+Received: from macsyma.thunk.org (pool-108-26-156-67.bstnma.fios.verizon.net [108.26.156.67])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 683EjLMF011651
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 3 Sep 2026 10:45:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1788446726; bh=qHs/hYcfdCQ1ysGE+hmGWWr3Mk+We3imbSb6wYOC52U=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=QJesqE4TZVDMmqCP0gYnKzQVE38G5Sj1uHY8Px+6ZarWBBRuhH1Fwb1CRJ5tJPRFV
+	 tmOiLD28kscOP8nUwRZQsNO/wuT4KMKK12aCBaWLHnxjUqbgUTwmyQBvTJ2mBkZ+88
+	 /QN2pl7raeA9OfyGDIqrh4LXvngd7aOvgPf+U75IMT4tmP+CjfZpnKL3Ym4RgOG14t
+	 k28ord6f1XO1MU81Az2eIi9VgraAJBU9HpcZgM1M3J0UIfdl859jwgeG0NbUVpFB/V
+	 7p2L8VgjrjdYi/84CLpjr044H60KgLgzIYRVIAI7c/vwX2bDYIxq9mAEVxUhO4HVWN
+	 LYHu+Y27eWAuA==
+Received: by macsyma.thunk.org (Postfix, from userid 15806)
+	id BA709132623E; Thu,  3 Sep 2026 10:44:20 -0400 (EDT)
+Date: Thu, 3 Sep 2026 10:44:20 -0400
+From: "Theodore Tso" <tytso@mit.edu>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Christian Brauner <christian@brauner.io>, Jan Kara <jack@suse.cz>,
+        Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
+        Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
+        Namjae Jeon <linkinjeon@kernel.org>, Hyunchul Lee <hyc.lee@gmail.com>,
+        Phillip Lougher <phillip@squashfs.org.uk>,
+        linux-erofs@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-nfs@vger.kernel.org,
+        ntfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+        linux-mm@kvack.org
+Subject: Re: [PATCH 2/9] ext4: Remove uses of FGP_NOFS
+Message-ID: <apmHuRN-r4gfWnTX@mit.edu>
+References: <20260830041901.2668-1-willy@infradead.org>
+ <20260830041901.2668-3-willy@infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/slab: take n->list_lock in
- __slab_try_return_freelist() to avoid race
-Content-Language: en-US
-To: "Harry Yoo (Meta)" <harry@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Hyunwoo Kim <imv4bel@gmail.com>, stable@vger.kernel.org
-References: <20260903-slab-fix-aba-v3-1-b44cb6badd54@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260903-slab-fix-aba-v3-1-b44cb6badd54@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260830041901.2668-3-willy@infradead.org>
+X-Stat-Signature: usxqi5qcmybjdsso4ono8tdqyhcbxjp4
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0338220013
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 39E6940004
-X-Stat-Signature: s85gqjs5un8ui4ggnhj49xdqbip1do5w
-X-HE-Tag: 1788446492-421026
-X-HE-Meta: U2FsdGVkX1+MVnd2vcfwX6cpqi6xlncepWNIIv3Qp8H0CMGu10N+IdYpLiRAT4Ktyib9uAvVqjLazVgM6BL88yJ76UIfqTP09G7b68tfdmoqk+hw9IKjcj5SUDWBLVL13ay1+IJWM58BegUS0OD4+ElKUOJF1ud4ptbbdIQUg+1BN8NnKIz8l694evG/t/fQlv56Vlk28nJ6M8tgc0LpfVB6c9wViLyBnnHHr6lpgfOGCzuaa+7wDOFosIeOm8rmqqbev53Ujq/VZdEivVP1eyoN+T7kuGMMmKa7EqsKtzcZgVLx03wRTtINyjDHejT8laaxYJKhh1RoI0ChLZLuS1jiUbZ8anQn+rxUkJewSJCVzsXJSMOwEINlPKDgiTfYa4REWVgbqs77IoKLKALG2TylW+4Kn/g3MOjIdxzA5YTFhGw6DquYajKVno9xPfg/CPEr/fSvdGaTl9uvqsn8gLtW1ebPdSnbEyrqT6qK7lfTVtVN5/TDZDCceGILQZ7v2B2bT/Q4uq55fnYJNECWDXr9oCCP6O5x33SyWYnJncNLQsorFqZ0zulRJ7ZasRSovaa0el/Zj6SfAIHbdsmIs5AluRkEInSc5gzz07bBjX+bYSPTvxIMzmPHPRyAXClKLDtah1vLYr0kYR3lStzw329hjawD8hlr64oodFG3PV9c61OgW5+kkVc5GNmuy0HNFEBZ+NTZsHZVqhs1L1NEt1PiM2p5CDZctvZe9h+2HmUt2lDtxkpOjNodr3LbnqiDaBfvoa0Tuvg+XRYzNDuPgVSLlG4pM5zIygvTOsxLF01WeqgA7CMtYpZj3vnByhkmC9Z+0IA2iEJwliUH+x/U8UzVfPVTeSIjLkY+zB00WEriMbapMSPWhhoVTH4gkcQ/GAEbB1w0i82qXZCWTtfTOoYJrTMZp3YaZ9TwOUP0f67th/00c9pbmJSTDSVC1/7vyT2y369RJmngVHkYvjA
- r3cXtSsi
- EMSaqtzKwVDg1LHpY1BPfFpRcPiuXAnULxxA/yCWjA27bxEZHwoQhkMKs1eojX437qUmojN3HwqZLJVU92Dzjx6dZLsenC0508bBI0gWbXKabXFnETA70Ux81I4W3nyTaeQ3z1qdvirtP4qnHe69jGsTk5TY/GR1syTLfjsjrr9QR5S+TqaCggaLXW+j4LcLJ3bwtu8N/yw9oy54qqqtRIukQpNWEHLPOg2xonmOJT2+EexNktGbzmJeGj9jMPEoDTrLSLPFsOaTLTJ/D7QBfE8+RbdDOpJR1+/q2XhwH/H2AcDzQd9Twq2PcJXB5XPrZtmP5LGiztZsraNov7s+PyBo2mdvNHDIRjTDR
+X-HE-Tag: 1788446747-774724
+X-HE-Meta: U2FsdGVkX1+IE4ViJoB1GLCz7iCxRDhBvYaWh02O/LoP4qkxiaJ3FRJ+I1oV27zg9rNG2vrvw1EFRiDXs8ytKzjKL75yek+oBxJu82LGgHZEwJfXZW0HWLTpCnTRCTPCvS9PEVoV6yz1bGbsfE3I+A9zlwcRktfzEGeEnCqL6fyNOVi4b8/2yeA+PrRtTmvI1oYed45kqaJSMZ5kCijfvxXHa/l+n8tri5v9thIQgvK56uHlp0xczBrrCVwgtiC3Cuhi3RazhBcBNvumy5pfKqRS6eHn2kBgKfIAf2ZNdRLOVKFY783f+pN+OagPrfcPAgIVArKEYmY7URByzevtSZbqiFm9CpxTPusCGczdVjmVgQ9ogU9tFAKyBh7mLDENmpYSFEZ8WPUqbjvY+g3Q+uaV42Q4x0jHLLoPG20jUkCovPX9jGwX9Mqv/NbVI4oxrZP40ySObHXBkePd+JunJpbA+5KRmpreKoSz2wSBqhYU5yqXbCua9qKMd1wcYvOj1qOwhU1Aek6pTrgntsIm2nzTohLRzsMWJz0Gm8Au1ETYl+Eitlf1IGVfTCp//htSWtcNYOPnWm8U5gcGbgy8kBXg3Nyg2GkYRcIesnMrFpQzHZKtF8uE4nnJTQGX8gxDqVYIHXgAEaNUYFWh1JPf0fnGveXAy2ZS/sArhJFxHmS1Mgocz1AxiEyRUG1jOY5pZpgclE/1AVwBzkGu+rRpO5HX1zVbb2HpOJVa7o+ZS3tciZ74Fev+roZ92yPs6vPL7pdN/7t6/JHysYONMqsSSVQc+zoJBK9HtLvlbzTWybxkevtwFgOCwmk+sPXb8CTDUMRMu9zdFQyHediQzZrgS5vbwug4mXSktHipG/elnOM/sy+ltjukspxp2+aQXmJQJyqnyPr+w11pSlBRxLe5/O4Uz8Vp+pue65ZgNSqsWpf0DPwNOZG+iwMFMfRRUS/Y/OliV3s/XKtFdBaw24l
+ nx5G+dqa
+ gXuK3cPDan3UtiUrEffJUqZjadBNlX9rr7gBb6wTNj0OF7L95F/+ODUJUdWTB1Fk6NqZ7SICqB8PCYmCTSoIWAbJMigCpdPgf1ABpEpGrOjwnesZhdBnbWXszqcqSJxctUpsNPupHfHITVAjQNS8Lt/UaHoOqVle5CYvZ2eYm9lkDKXEmERLEHP0UZl1QAiYZr23ik6vOtpD8h03JgsdIFUjSJIEcPU5+vGuzqSsYB0nhIXw75NbE+QswQJsz4sY9r/AvMoeRjrPl9ovX4gqbm3Hqd+QCgbyT42rj75Nndvhx3NTm4dvXl+mIgaLn9yBjeFkOBF/Bi2e/zuzXzhAzP2aeH2FXsInCacW3Kmswdr6IwU8hhPm6Ve5aZxWvnspNgNZEhNAO1g2o8fXlA7JSfDKcmpTA3z6urYfRRdRhX50wF9o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,66 +100,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/3/26 16:32, Harry Yoo (Meta) wrote:
-> Commit ba7425312607 ("mm, slab: add an optimistic
-> __slab_try_return_freelist()") incorrectly assumed that nobody has freed
-> an object to the slab as long as slab->freelist is NULL and cmpxchg
-> succeeds.
+On Sun, Aug 30, 2026 at 05:18:49AM -0500, Matthew Wilcox (Oracle) wrote:
+> Both of these locations are called while a transaction is in progress.
+> Starting a transaction uses memalloc_nofs_save(), so we are already
+> prevented from recursing into the filesystem and using GFP_NOFS was
+> unnecessary.
 > 
-> However, as reported by Hyunwoo Kim [1], other CPUs might have freed
-> an object to the slab, insert the slab to the partial list, then
-> allocated an object from the slab, and be in the middle of removing
-> the slab from the list under n->list_lock.
-> 
-> Since __refill_objects_node() puts the slab back on pc.slabs
-> outside n->list_lock, it might insert the slab into that list while
-> the slab is concurrently being removed from n->partial.
-> This led to a list corruption [1]:
-> 
->   list_add corruption. next->prev should be prev
->   (ffff888100000248), but was dead000000000122.
->   (next=ffffea000416e410).
->   kernel BUG at lib/list_debug.c:29!
->   Oops: invalid opcode: 0000 [#1] SMP NOPTI
->   CPU: 1 UID: 65534 PID: 144 Comm: poc Not tainted
->   7.2.0-16172-gcf72cbb39da8-dirty #1 PREEMPT(lazy)
->   RIP: 0010:__list_add_valid_or_report+0x80/0xd0
->   ...
->   Call Trace:
->    alloc_from_new_slab+0x183/0x300
->    ___slab_alloc+0x31c/0x890
->    __kmalloc_noprof+0x3d4/0x800
->    lsm_blob_alloc+0x2d/0x50
->    security_msg_msg_alloc+0x26/0x90
->    load_msg+0x1aa/0x210
->    do_msgsnd+0x91/0x800
->    do_syscall_64+0x109/0x5d0
->    entry_SYSCALL_64_after_hwframe+0x77/0x7f
->   ...
->   Kernel panic - not syncing: Fatal exception
-> 
-> This is a classic ABA problem where cmpxchg succeeds but the state has
-> changed since __refill_objects_node() took the freelist from the slab.
-> 
-> As Vlastimil Babka mentioned [2], it should be rare to return more than
-> one slab (due to the racy read of slab->counters in
-> get_partial_node_bulk()). Therefore, instead of introducing additional
-> complexity, acquire and release n->list_lock twice in the worst case.
-> 
-> Return the slab directly to the partial list and hold n->list_lock
-> across the cmpxchg and add_partial(). This is similar to the initial
-> version of commit ba7425312607 [3]. This is enough to avoid the race as
-> the list manipulation is serialized by n->list_lock. While at it,
-> bring back unlikely() hint now that the condition is unlikely.
-> 
-> Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-> Closes: https://lore.kernel.org/linux-mm/apPa-cGLcyt90l-E@v4bel [1]
-> Link: https://lore.kernel.org/linux-mm/ae25c193-b95f-40c1-83b6-1c2546467e41@kernel.org [2]
-> Link: https://lore.kernel.org/all/20260421-b4-refill-optimistic-return-v1-1-24f0bfc1acff@kernel.org [3]
-> Fixes: ba7425312607 ("mm, slab: add an optimistic __slab_try_return_freelist()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-Added to mm/slab.git slab/for-next-fixes, thanks!
-
+Acked-by: Theodore Ts'o <tytso@mit.edu>
 
