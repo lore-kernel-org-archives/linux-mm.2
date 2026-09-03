@@ -4,127 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 938A2C624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 09:11:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5BA2C61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 09:13:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D7A86B0095; Thu,  3 Sep 2026 05:11:04 -0400 (EDT)
+	id 6A7796B0088; Thu,  3 Sep 2026 05:13:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9891F6B0096; Thu,  3 Sep 2026 05:11:04 -0400 (EDT)
+	id 67FD46B00AE; Thu,  3 Sep 2026 05:13:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 878206B0099; Thu,  3 Sep 2026 05:11:04 -0400 (EDT)
+	id 5BCFD6B00AF; Thu,  3 Sep 2026 05:13:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 62F3D6B0095
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 05:11:04 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AD71BC0179
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:11:03 +0000 (UTC)
-X-FDA: 85171881606.04.84919B8
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	by imf13.hostedemail.com (Postfix) with ESMTP id BB33F20004
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:11:01 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Oqo1MfCM;
-	spf=pass (imf13.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2AF796B0088
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 05:13:46 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 88BFB1C217A
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:13:45 +0000 (UTC)
+X-FDA: 85171888410.30.58A3930
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 8D41040002
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:13:42 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=d1mPkZQO;
+	spf=pass (imf12.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788426661;
+	s=arc-20220608; t=1788426823;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dsu+vk43VpSBv82gBLNeaPR8X7xILN5rCQXYDm2G8Ts=;
-	b=vxfnUDCgmjI/iqY4jAzauRUEq2JY7K0GcqQ/DxjtQ6qzCRteMePK1yNH6a96WTBpm89dRL
-	F5cJszStn0F7HQgLjDDh/CVNxA23i+i+ZXWfVwcdIuISRnsFpYWI3YhlrvbbhLZoEU2DQZ
-	3vuc/3/koP7gdmNnJvNqZh9M4dUf1Xw=
+	bh=6Eb7OOCldREczEc1zP4/rwq++5YqOpKv0/oThiUkNrw=;
+	b=c258AqOdwKoXIx3361H0GkLGBVGFbSYS6whgtPmgdY0KxYScXKOLy3XWypE+y33Mc/zNks
+	d039gZjPx54jDuRU+Ed987j+fekagbx+C+0g0bZRG31o5vpyI0J/eHhe4kWRzbtKWAVUeT
+	Fg1GWH2ImGnODbtZWuqW27CbaP7HM8w=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788426661;
-	b=pLE+/7vct08W0A6K97cwEvNliIWM66eGmYjAaWVZmBV9p+xPDfN1G+jnW73ONCueMcd6xf
-	8x/UPMvtdU/xBp8aJj+BPjctR9evAJBuw7jmJ3iYs8I54k5WeLp5DPWtuElehOUYQfXJv+
-	6DWrUxuKVGSETzUB6xFRBEn/w0GEIlQ=
+	t=1788426823;
+	b=Nwtj9kDMTmAu+U/4qTkJZp5wWnZtXB7NGK8uBDQhKdvo83GRa9HE5aoA7JHllYIlObMAQn
+	HuBaoVK1khLStx1B4YrXqm7KsQGZt0M0fj4GkOaLDD/TB7QaSpRw9E6gSadnb//mw6qysr
+	aXuIh9Xi1hY1xWsxh7pWnLIOMS0oCm0=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Oqo1MfCM;
-	spf=pass (imf13.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c169ae1cb26so141203166b.1
-        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 02:11:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788426660; x=1789031460; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:date
-         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Dsu+vk43VpSBv82gBLNeaPR8X7xILN5rCQXYDm2G8Ts=;
-        b=Oqo1MfCM2kYYQr6jbiLX1Dnq81RBsgSPCyrhJ2aoNRJ9+xAhpUsVb5atVrmHTDd9gU
-         sHnBysijOJDtLhQRuIgbwGNTgsFn2p25hVxtq+LlXdqs1NrjySqc4+n/FWZ1xnFfU3bj
-         fSE9Q8pHEQ+9OMrAOC36ht0AEsfGX1k1E3Mpb3vEzigcYvti8T9C1zb6Q9Kw23PWYGSU
-         2FaLbJRaVuyF2Q6ilsM1tTTfWwbeSt+lDcGqx46C9TOiYexY3RtS9g6y+2KfSss+LHBX
-         rfCSy24WZWQHDlpWPKKlJIL0GLefeDrQnYoqga3D4/uKcPxTR1buabLODosLKri12e+V
-         WxWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788426660; x=1789031460;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:date
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Dsu+vk43VpSBv82gBLNeaPR8X7xILN5rCQXYDm2G8Ts=;
-        b=BULyosVUHlTY80P8t36AhOXPfPRp/N9wRbLA0aszfKZebtrKWWkMy2bdidKMXGprwS
-         fmfBbJGGm7gnOcd40Z5PdtyfrnM/dTmQtMXjKGONLubl9PwnuRPNk4J9+HuDOpi1BR99
-         PUOv340F0LbyIk5Z/Lv9k3Kl0/+xhwpxm4MZ+QwgPCicJt627Z+OUiPxsnK8KixXyG5z
-         IgHIspLiqfA00lOaUK2crXtrEVgpoUul0Vt7zQc+lKoGX0K2Z4nz0gcvZtawP9dOgdbn
-         XSS2SYkHKuu1xFcs7eFSvbQdAWkdV85tVTddKe5n2hThmhDqHGaJmkIAIK1VC+MWm/GW
-         m6Rg==
-X-Forwarded-Encrypted: i=1; AKwUvBwnMNREXvhkXWXLZFP0bHLKfGMWJZRakjXvOQlmuEOAkiXLToVkaw7X9LY/3wjGA80vN3Pzia8wZg==@kvack.org
-X-Gm-Message-State: AFuF++nIpfaInBfGUKFxUZ/DezedUKAMVbIDLutj966OboBsB838yB1g
-	FCBgjfsG8aYL7gJWC5hC7yfGMIHjGZ0kNZyPZ9Skl50w5jzg2SvOvNjh
-X-Gm-Gg: AYBFou3a5rU1YxWIFylBFC0CmadgXv9xJWx1eqTb4v8gnYWjDKIi5P3OdF3dm9iXA8Z
-	IWINpogdmADWPhpjdLHfU85Y0FQDJiAGlaMnwMp/LQoQ4AH/+Zbg57Fah15c2t3ceXUZwFUo3zM
-	ESnKHNSlKomqlQMJn9JouatcnVP2QmwejE72eLEJRqw6GRxWsHah1/433yBZ7qA8AgnSoi9bNKJ
-	TPUDr5oOO27AnWpElfgb4gWsyGi52furNtxBI1BcVkt/G+p7tFTjFjf7tSUGMj+j/IpQJRBRt3C
-	Z894XQ1AEfUk4ilKuoTRWBBO8IiRw2EXZpD0BmNP4ZSNkUWVhIBWzetbTZZYhO8xmuokrW3R8+E
-	NK2gg8b3pzTxQnak7JXkA2Dxcvtjrqnoss95ubHq7VuZEiyCMZLhMKjSvDPwFanX5W93XeMz5lk
-	4GDYi384bk5WDOiT1sTfiewnL1vw==
-X-Received: by 2002:a17:907:944a:b0:c25:f7dc:2d4 with SMTP id a640c23a62f3a-c25f7dc092amr91549966b.21.1788426659790;
-        Thu, 03 Sep 2026 02:10:59 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a67f932bf5sm2116425a12.14.2026.09.03.02.10.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 02:10:59 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Thu, 3 Sep 2026 11:10:57 +0200
-To: Dev Jain <dev.jain@arm.com>
-Cc: Uladzislau Rezki <urezki@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ye Liu <ye.liu@linux.dev>, Ye Liu <liuye@kylinos.cn>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm: vmalloc: fix vmap_purge_lock livelock under
- memory pressure
-Message-ID: <apk5oYoBQ1EDc0u9@milan>
-References: <20260828091753.299295-1-ye.liu@linux.dev>
- <20260828110503.e1eff32a9b7df9a8b2ddd4d6@linux-foundation.org>
- <bec5eaef-d084-467f-9bfd-43f7dedc1aa7@arm.com>
- <apVPTt9Xw8kSgmTU@milan>
- <54bd749f-04f5-4665-bd5f-d485e7197132@arm.com>
- <2e9488bb-feb6-4994-92e3-e5ef0c1ff5ec@linux.dev>
- <apcAvwXe89M20mGs@milan>
- <apcEh4iuYa6_47TJ@milan>
- <c88d035a-cf81-4431-bc28-bb09878e09d7@arm.com>
+	imf12.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=d1mPkZQO;
+	spf=pass (imf12.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=6Eb7OOCldREczEc1zP4/rwq++5YqOpKv0/oThiUkNrw=;
+	b=d1mPkZQOntVWuJ3jJY+aIT4a0yYdMl2bhSahqBGDPdT3cvnlsYz1PeyUmxmEQL
+	TzfaF5/o5YFGlOKwTqW1zgL/NbC522CD3ybxrokwxf284vI9XLNX6Z0g1CG258ij
+	wJ8/mKoLu/wKqkRuqRQXW1CT8XnDEciKfuegBGzJhsaHA=
+Message-ID: <baa22f03-e553-46cc-8c35-436363546605@163.com>
+Date: Thu, 3 Sep 2026 17:13:15 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/slab_common: fix shrink budget underflow in
+ kfree_rcu_shrink_scan
+To: Harry Yoo <harry@kernel.org>
+Cc: vbabka@kernel.org, akpm@linux-foundation.org, hao.li@linux.dev,
+ cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, paulmck@kernel.org,
+ rcu@vger.kernel.org, xialonglong@kylinos.cn
+References: <20260826075653.3304251-1-xialonglong2025@163.com>
+ <apQsbGJDPPyXcn8R@dev>
+From: Longlong Xia <xialonglong2025@163.com>
+In-Reply-To: <apQsbGJDPPyXcn8R@dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <c88d035a-cf81-4431-bc28-bb09878e09d7@arm.com>
-X-Stat-Signature: q8rcsu6sw835dog49ugmj8fxa94x3zsb
-X-Rspamd-Queue-Id: BB33F20004
+X-CM-TRANSID:_____wDnt+wqOplqb5p0AQ--.21702S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJFyrAF4ftF13XFyDGw1UAwb_yoWrZr4rpF
+	W0ka4UKr4kJry8u3srXw4xXryay3yFkFWxGrWDAr43J3sI9F1rtryIyr1qvrWFyrn3Jw4S
+	vr1qgFyDXFyjvFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U5sqAUUUUU=
+X-Originating-IP: [2409:8d1e:e12:253:60d4:70f8:e7c6:dcf9]
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC3A2ak2qZOi2XJAAA3P
+X-Stat-Signature: g5chg97zg1xahwcgw5rps9b7dwdj7q51
+X-Rspamd-Queue-Id: 8D41040002
 X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788426661-932929
-X-HE-Meta: U2FsdGVkX1/sibLKCRoFet47vXzG1QKSCtz9roctXcbOj2KB/+4xrULIalMtmQehvAqlHBwgFI09IXegouWSgjTauFRu3v+ryBgN4TDeDMKQV3x8VtHFsdR623CtIUOwgC+bWBvby7l4aLVJz4qCJHggRxdgEvmiKKD2PAItw42S2yr9TeRt5ZO6X/8l4rIyHVYBl4j/sNVPYsWFApFBymwMnDfwdQePFk5tmCOIcC4Ocz9ekmMxacthipiZ/vYT1Nj4tEdyk21sh+2vmtcI4hkJfhb+lnqOzfzQ1MugZ488pS1us+Os3THUg7yQtcN9+3o8ekLU7+ZjyiYcibPQ/yzfuOgan8hZsGEE35M6Y3bsBtWX4I17Yehh8Rief8E+tVx4bmlFF65o0wGKf+HeRyw2yk2BIWaEO3RUWldfPQSWPZZO8rGEI4AISItfLWz0FnQizfdhli4rAiKAPsKJtujKAjc1BGHhLXfpAszTIF55gEoAjcj543om+e4uDHOSWpu4XAoDAkN0qoIrkrfSDaml2AQHlTYWriBI8/FSvKYcOS5grpxfUWJm6eoXXyCzct5GI8jbDQSMb1DOzHyZ6jqjofDh+ysl2SR1o5yDkoYxi3weOoSXb5DgS7p0TTzcClMu3gYytfGxYqv7JHdCXnuIIIQnC789La7q87pEcL1jUeyI8fdUbkzWnCix/AnLhJMrJxKoeARD2WvGso1s+gn8SGqJi7kzOfhLpJ7YTVvncd1v0InB7AgfrJxmbwlRE3mzdrlSZfd9PxP+OsPhyk42i2v9a8FbpHBW8Xp54gryr3Aux5ewali4w15PWOketKt0C5WfPXrHOWyRcwtGGItG6VZZGHP7RWVB3/Qe6qNZ1patnlrH4gPey//Fsmw0XXsjngy3/MsjkwOKGwtzP7zIr2iuBzT/ZTcI5/ZuDFmKaIwZoiopFDBoJ7LcCbcHm0h585dc+yXjsoBo352
- xVPUA2So
- PP7NeGdeix4OIc3+OGLgAw5vxGzjtmV3u8xvw8jwAFfwssGOL8kCwjSSayMqZdP0HKsSU5QHv22O4rSS5mAf71hZ3QezCSibml0PuK3GhgUM1FBhE7WPsEbDGwOt3sRGRXjulxLNHhE1Ow5Q1rm+ad8hBV1zF3aoKw3MqkqWk6M9MjLg40vcP9HQyKjEunY15H0pbl2WMTVPewBI6WsMG/Pa45LjXjEZCErjbdxELx5Tue23qPbIKLxlmVPqr/R69Dtg7NAQUGbWrfcYrtycgz5C73rbkcGyMYW5l2y+jzm4GEOEy7ilVb/RVzu5THmhI3cBanALUu3Qr9nehoEDgWnGh6WXTUoZVPUxk9VVbGUm3eRn3C5kmVLoliu7XdrO595DtD1YtS0RlI8Y5siyClcIK1dunZ5zcuuSE8hrvapMCaABidygsh9LmBSRRA15Z9r3f48N0qyRf9bKqh18iq+CAB07LGPJX4FeQVTCi1Ygevwb7ZeS13hUPuaXeHbDfIHp9sWDzXEHgwghzU/DiHwQ1F79Ab8qr4G59ra99PY+3ZNwmZIZ/2hZtmkUMfr2bCuQRne1jyJc/b84=
+X-HE-Tag: 1788426822-915055
+X-HE-Meta: U2FsdGVkX1/1y+Da7Fpkzul+H0eVx4C5U4d4hITslB6Qtk2Fnu7xYThuCCTo/xtUrm6GjC+0hxiZ/0Hd0Gq6aZPL3hZYPj1NRKCX+7NNTSsd4icgsCG34S6Cu7Ft3N7h7B54AMKs8llrsdfIQNtGzV2kjZs7bESkh7BEk47JMRm5xtB6eui0ACneikAKfNuUZvA26xJYczaf9tKRLkBdo2CdxOhUvnSpKtAvK/mu+SHhyujZHl3d9zJGF6/3Zp4qaDpFhwEhTqd9n/TBGYfmX9YNTJVMyzwIQ311CtWMQxgTfDUdXMohZ95kDpMk9mC03bpVs25ImY+ztV85bFBQaQXUPIb+TJEZUnuVY8Kd7yStrI8+G09ZwsZfkNQY8MlL5M9KgoiKoYQ0b9H0Zdfh7R4WhEg+MBHC8y7147USR1DlQE5+V5G6Jp8g4X49mkuDMmU5lWjEZsqMQC+d6IScW7Az4ZXz7XZaWLeUKNxHcmq0S54W1x0Xrlasy8cDGGsISkQvEtp73uRJ+C+xkW7xVkFZibro/8Kd4OTGM9gc9twGCKkc4WbuETzOfYhYOnEkQZw080+TQk2Dq5Ci03qM95bUszSSNkJ8vRSlcT/FIgnkG/BgMYFTCvLMYok2hU5bdfvBgNcpDcncJpN4Ibn/cfSYBRN7oyzuX2sw6X27kzycrGJqfAgNtZCsfJWaGZFToNQ4eiXtZQpMMnLgn60a3ObGELeoL6JhHcYM60StTw9Kt/hKVhwjglKJqsAW7yhZ5TVwO8dCyqJgoH0+CxCD4DbPOJ5sGMbuC/iRb1sIoTOgxHAPxi82iRxzlxoaLz+xuqL9dt0cJwll/hjHr08utGerPofCc9oxwzhalCS6mv+WgmmRnY/wkFt7LEmQ3nuPk5+DHdtYXjz3Wnyg7JpRVG4vHgijZnBWKWQD6iR6xEy9qIM2Z95N6XbTDwnGBJrQtvheT/sd8CflN220Joa
+ vHBE5hkx
+ ZDK43H3bFtTdXB/pmOCz/p/uMNiVVju6H5IhWil7ksSMz67LqXIZJFm3DnAg9rtInGYUBSrHHl4KJbFMojeprbNI/PsFdJYEsHmlS0s3JbzxVrYWqDx+gLVDNX7VIH48K410fmaKqBj2skr6PIoSe9cBEu+xMl9htdf36KOAw0kWJcyYz+UejXbaL87UdVoxBP8PoGBWC8V/LHhOcJukq9L9t2VM17Z/rUCp7RpnP9v5N5tMgcnUnaZz7ZXz0X9j67eQQIUxrhRmzr+eKNhEdfrvFOFcDwwO4J5jQKK1fonH5mzzzhsWibEpIMGRAdDxbo15I7MNr6a5R7NzfCUVgHmNNOSw04BY0Elov3TJLaBza7lOibvza8rzs0o0X/6Mt1aJaPtL8CLGscajSOyfkJ8een/j963ea1U4RMP0OWmW1mTY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,228 +94,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 02, 2026 at 10:00:57AM +0530, Dev Jain wrote:
-> 
-> 
-> On 01/09/26 10:29 pm, Uladzislau Rezki wrote:
-> > On Tue, Sep 01, 2026 at 06:43:43PM +0200, Uladzislau Rezki wrote:
-> >> On Tue, Sep 01, 2026 at 05:07:30PM +0800, Ye Liu wrote:
-> >>>
-> >>>
-> >>> 在 2026/9/1 14:22, Dev Jain 写道:
-> >>>>
-> >>>>
-> >>>> On 31/08/26 3:24 pm, Uladzislau Rezki wrote:
-> >>>>> On Mon, Aug 31, 2026 at 11:39:14AM +0530, Dev Jain wrote:
-> >>>>>>
-> >>>>>>
-> >>>>>> On 28/08/26 11:35 pm, Andrew Morton wrote:
-> >>>>>>> On Fri, 28 Aug 2026 17:17:53 +0800 Ye Liu <ye.liu@linux.dev> wrote:
-> >>>>>>>
-> >>>>>>>> From: Ye Liu <liuye@kylinos.cn>
-> >>>>>>>>
-> >>>>>>>> The vmap_purge_lock mutex can be held for an extended period by
-> >>>>>>>> __purge_vmap_area_lazy() which calls flush_work() to wait for
-> >>>>>>>> purge_vmap_node workers while holding the lock.  Under memory
-> >>>>>>>> pressure, those workers may themselves be blocked in direct
-> >>>>>>>> reclaim trying to acquire the same lock via the
-> >>>>>>>> vmap_node_shrink_scan() shrinker callback, creating a circular
-> >>>>>>>> dependency that deadlocks the entire system.
-> >>>>>>>>
-> >>>>>>>> Two places acquire vmap_purge_lock from paths that can be reached
-> >>>>>>>> during direct reclaim:
-> >>>>>>>>
-> >>>>>>>> 1. vmap_node_shrink_scan(): replace blocking guard(mutex) with
-> >>>>>>>>    mutex_trylock().  This is a shrinker that only decays the vmap
-> >>>>>>>>    pool and returns SHRINK_STOP without freeing memory; skipping a
-> >>>>>>>>    decay cycle when the lock is contended is harmless and prevents
-> >>>>>>>>    tasks from piling up on the mutex in the direct reclaim path.
-> >>>>>>>>
-> >>>>>>>> 2. reclaim_and_purge_vmap_areas(): replace mutex_lock() with
-> >>>>>>>>    mutex_trylock().  This is called from the vmalloc allocation
-> >>>>>>>>    overflow path; if trylock fails, another thread is already
-> >>>>>>>>    purging and the allocator's retry will find freed space.  The
-> >>>>>>>>    notifier chain provides a fallback if the retry still fails.
-> >>>>>>>>
-> >>>>>>>> Both trylock failures break the circular dependency: the lock
-> >>>>>>>> holder's flush_work() can complete because workers are no longer
-> >>>>>>>> blocked on vmap_purge_lock in the direct reclaim path.
-> >>>>>>>
-> >>>>>>> Thanks.  AI review expressed a couple of concerns:
-> >>>>>>> 	https://sashiko.dev/#/patchset/20260828091753.299295-1-ye.liu@linux.dev
-> >>>>>>
-> >>>>>>
-> >>>>>> Sounds legit to me. Now there is no guarantee of purge being successful, and we
-> >>>>>> can get a spurious failure.
-> >>>>>>
-> >>>>>> How about using a WQ_RECLAIM workqueue:
-> >>>>>>
-> >>>>>> vmap_purge_wq = alloc_workqueue("vmap_purge",
-> >>>>>> 				WQ_MEM_RECLAIM | WQ_PERCPU, 0);
-> >>>>>>
-> >>>>>> I see the same pattern in __lru_add_drain_all() and kmem_cache_init_late().
-> >>>>>>
-> >>>>> WQ_MEM_RECLAIM makes sense but this is another patch.
-> >>>>>
-> >>>>> I copied here AI comment:
-> >>>>>>
-> >>>>>> Does replacing this blocking lock with a trylock break synchronization for
-> >>>>>> the callers?
-> >>>>>>
-> >>>>> No it does not. If someone is doing reclaim we do not wait and do not try
-> >>>>> to do it again thus fail allocation.
-> >>>>>
-> >>>>>> When vmalloc space is exhausted, alloc_vmap_area() calls
-> >>>>>> reclaim_and_purge_vmap_areas() and relies on its blocking behavior to ensure
-> >>>>>> that free space has actually been reclaimed before looping back to retry:
-> >>>>>> mm/vmalloc.c:alloc_vmap_area() {
-> >>>>>>    ...
-> >>>>>> overflow:
-> >>>>>> 	if (!purged) {
-> >>>>>> 		reclaim_and_purge_vmap_areas();
-> >>>>>> 		purged = 1;
-> >>>>>> 		goto retry;
-> >>>>>> 	}
-> >>>>>>    ...
-> >>>>>> }
-> >>>>>> With this patch, if another thread holds vmap_purge_lock, mutex_trylock()
-> >>>>>> fails and the function returns immediately.
-> >>>>>>
-> >>>>> If reclaim is in progress and trylock fails a caller repeats only one
-> >>>>> time to retry an allocation. There is no any infinite loop.
-> >>>>>
-> >>>>>>
-> >>>>>> The allocator then retries
-> >>>>>> instantly without waiting for the concurrent purge to complete.
-> >>>>>> Because the retry fails and purged is already 1, could this cause the
-> >>>>>> allocation to abort and return a spurious vmalloc allocation failure
-> >>>>>> (-EBUSY or -ENOMEM)?
-> >>>>>>
-> >>>>> vmap space can be fragmented and not avail for 32-bit systems. For
-> >>>>> 64-bit system it is likely impossible.
-> >>>>>
-> >>>>> But, i think we can overt mutex_lock() into mutex_trylock() just only
-> >>>>> in the:
-> >>>>>
-> >>>>> static unsigned long
-> >>>>> vmap_node_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
-> >>>>> {
-> >>>>> 	struct vmap_node *vn;
-> >>>>>
-> >>>>> 	guard(mutex)(&vmap_purge_lock);
-> >>>>> 	for_each_vmap_node(vn)
-> >>>>> 		decay_va_pool_node(vn, true);
-> >>>>>
-> >>>>> 	return SHRINK_STOP;
-> >>>>> }
-> >>>>>
-> >>>>> so the reclaim path is not blocked. It should also address an issue
-> >>>>> reported by the Ye Liu <ye.liu@linux.dev>.
-> >>>>
-> >>>> IIUC you are suggesting mutex_trylock() only in the shrinker path. But
-> >>>> then, the following is possible no: take purge lock, try to get a
-> >>>> worker thread, worker thread is stuck in vmalloc -> alloc_vmap_area
-> >>>> -> reclaim_and_purge_vmap_areas -> take purge lock?
-> >>>>
-> >>>>
-> >>>
-> >>> Personally, I lean toward the WQ_MEM_RECLAIM workqueue solution. 
-> >>> After taking a closer look at the code, I noticed a subtle but 
-> >>> potentially problematic scenario:
-> >>>
-> >>> When drain_vmap_area_work acquires vmap_purge_lock and calls into 
-> >>> __purge_vmap_area_lazy, it may subsequently invoke queue_work/queue_work_on 
-> >>> on the same CPU's system_wq. If the newly queued work ends up waiting 
-> >>> for an available worker on that same CPU, while the current worker is
-> >>> blocked waiting for that very work to complete (via flush_work), 
-> >>> we could end up with a self-deadlock on a single CPU.
-> >>>
-> >>> Theoretically, this seems possible. I suspect the reason we don't 
-> >>> see widespread reports of such deadlocks is that the nr_purge_helpers 
-> >>> logic limits the number of asynchronous workers; when resources are tight, 
-> >>> it falls back to synchronous execution (purge_vmap_node directly), 
-> >>> which avoids queuing additional work. 
-> >>>
-> >>> Using a dedicated workqueue with WQ_MEM_RECLAIM would provide a clean, 
-> >>> explicit isolation—ensuring forward progress under memory pressure and 
-> >>> eliminating the risk of interfering with other subsystems' workqueues. 
-> >>> I believe this approach is more robust in the long run.
-> >>>
-> >>> Perhaps like the code below：
-> >>> the dedicated queue eliminates the self‑deadlock risk, and the trylock 
-> >>> in the shrinker prevents recursive lock attempts from reclaim contexts.
-> >>>
-> >>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> >>> index bea9f76ed7e7..68fc1f5acb2f 100644
-> >>> --- a/mm/vmalloc.c
-> >>> +++ b/mm/vmalloc.c
-> >>> @@ -2218,6 +2218,9 @@ static unsigned long lazy_max_pages(void)
-> >>>   */
-> >>>  static DEFINE_MUTEX(vmap_purge_lock);
-> >>>  
-> >>> +/* Workqueue for lazy vmap purging; WQ_MEM_RECLAIM guarantees progress. */
-> >>> +static struct workqueue_struct *vmap_purge_wq;
-> >>> +
-> >>>  /* for per-CPU blocks */
-> >>>  static void purge_fragmented_blocks_allcpus(void);
-> >>>  
-> >>> @@ -2408,9 +2411,9 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
-> >>>                                 INIT_WORK(&vn->purge_work, purge_vmap_node);
-> >>>  
-> >>>                                 if (cpumask_test_cpu(i, cpu_online_mask))
-> >>> -                                       schedule_work_on(i, &vn->purge_work);
-> >>> +                                       queue_work_on(i, vmap_purge_wq, &vn->purge_work);
-> >>>                                 else
-> >>> -                                       schedule_work(&vn->purge_work);
-> >>> +                                       queue_work(vmap_purge_wq, &vn->purge_work);
-> >>>  
-> >>>                                 nr_purge_helpers--;
-> >>>                         } else {
-> >>> @@ -5519,10 +5522,14 @@ vmap_node_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
-> >>>  {
-> >>>         struct vmap_node *vn;
-> >>>  
-> >>> -       guard(mutex)(&vmap_purge_lock);
-> >>> +       if (!mutex_trylock(&vmap_purge_lock))
-> >>> +               return SHRINK_STOP;
-> >>> +
-> >>>         for_each_vmap_node(vn)
-> >>>                 decay_va_pool_node(vn, true);
-> >>>  
-> >>> +       mutex_unlock(&vmap_purge_lock);
-> >>> +
-> >>>         return SHRINK_STOP;
-> >>>  }
-> >>>  
-> >>> @@ -5575,6 +5582,17 @@ void __init vmalloc_init(void)
-> >>>          * Now we can initialize a free vmap space.
-> >>>          */
-> >>>         vmap_init_free_space();
-> >>> +
-> >>> +       /*
-> >>> +        * A dedicated workqueue for lazy vmap purging.  WQ_MEM_RECLAIM
-> >>> +        * reserves a rescue worker so queued purge work items are executed
-> >>> +        * even under memory pressure, when workers of the system workqueue
-> >>> +        * may be stuck in direct reclaim.
-> >>> +        */
-> >>> +       vmap_purge_wq = alloc_workqueue("vmap_purge",
-> >>> +                                       WQ_MEM_RECLAIM | WQ_PERCPU, 0);
-> >>> +       WARN_ON(!vmap_purge_wq);
-> >>> +
-> >>>         vmap_initialized = true;
-> >>>
-> >> I agree. We should have it and it should be as separate patch, i.e.
-> >> split vmap_node_shrink_scan() and dedicated per-cpu WQs per vmap drain.
-> >>
-> > And i sent out already the WQ_UNBOUND | WQ_MEM_RECLAIM and separate WQ
-> > for vmap drain logic. It looks like Andrew/me forgot about it:
-> > 
-> > https://lore.kernel.org/all/20260331202352.879718-1-urezki@gmail.com/
-> 
-> Great! Perhaps resend it and we can review it?
-> 
-I will and add you to Cc.
+Thanks for the reply.
 
---
-Uladzislau Rezki
+在 2026/8/30 22:22, Harry Yoo 写道:
+> On Wed, Aug 26, 2026 at 03:56:53PM +0800, Longlong Xia wrote:
+>> From: Longlong Xia <xialonglong@kylinos.cn>
+> Hi Longlong, I have a few questions.
+>
+>> The kfree_rcu shrinker decremented sc->nr_to_scan (unsigned long)
+>> and then tested the result with <= 0. When a single CPU's object
+>> count exceeds the remaining budget, the subtraction wraps to a large
+>> positive value and the <= 0 comparison, which is equivalent to == 0
+>> for an unsigned type, never fires again.
+> Since when (which commit) has it been broken?
+> If it has been undiscovered for a very long time, why is that so?
+
+Since the shrinker was first added: 9154244c1ab6 ("rcu/tree: Add a
+shrinker to prevent OOM due to kfree_rcu() batching", v5.8);
+
+>
+> And how did you discover this?
+
+While reviewing the kvfree_rcu() batching paths with the help of AI
+tooling (hence the Assisted-by: tag in the patch), which flagged the
+unsigned subtraction feeding a "<= 0" test.
+
+>> The scan loop then iterates
+>> through every possible CPU instead of honouring the reclaim budget.
+> Did you confirm this actually does happen? If so, how often does the
+> kernel end up iterating through every possible CPUs, very rarely or
+> almost always?
+
+Yes, in two ways.
+
+
+Experiment 1 -- deterministic, instrumented loop.  Per-CPU pr_info()
+plus a test entry invoking kfree_rcu_shrink_scan() with a controlled
+budget; 4-CPU QEMU guest, 400 objects queued on CPU0, budget 50:
+   buggy:   cpu=0 count=400 nr_to_scan_after_sub=18446744073709551266
+                 visits all 4 CPUs
+   patched: cpu=0 count=400 nr_to_scan=50 BREAK
+
+                stops at CPU0
+
+
+Experiment 2 -- natural trigger, no kernel modification at all
+(kprobes only).  Setup: 1 GiB QEMU guest, 4 possible CPUs, no swap.
+
+   1. Observation: three kprobes.  Scan entry/exit record nr_to_scan
+      and the return value; each kfree_rcu_monitor() hit inside a
+      scan is one CPU the loop processed.
+
+   2. Memory pressure: ~650 MiB of anonymous memory.
+
+   3. krc backlog: loaded the in-tree test_vmalloc module ,
+
+      which repeatedly vmalloc()s one page and frees it via kvfree_rcu();
+
+     10 million iterations over ~70s kept the per-CPU queues populated.
+
+
+Result within ~70s: 262 natural invocations, all from kswapd0;
+171 of the 261 scans that found a backlog (66%) overshot the budget
+(nr_to_scan = 128, freed up to 4479) and visited all 4 possible CPUs.
+
+
+>
+> Would this affect the kernel's reclamation behavior in some way?
+
+The break was meant to cap the scan at the reclaim budget; once
+the subtraction wraps, the cap is gone and one scan processes
+every possible CPU, draining the whole backlog instead of a
+budget-sized slice.
+
+
+Thanks,
+
+Longlong
+
+>> Accumulate into freed and stop once freed >= nr_to_scan. The shrinker
+>> core treats nr_to_scan as input-only, so dropping the decrement is
+>> safe; freed becomes unsigned long to match the return type.
+>>
+>> Suggested-by: Hao Li <hao.li@linux.dev>
+>> Assisted-by: Codex:gpt-5.6-sol
+>> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+>> ---
+>> Changes in v2:
+>> - Rework per suggestion from Hao Li: accumulate into freed directly,
+>>    compare freed >= nr_to_scan instead of decrementing nr_to_scan, and
+>>    drop the per-CPU count local; promote freed to unsigned long.
+>>
+>> Link: https://lore.kernel.org/all/20260824091838.1692153-1-xialonglong2025@163.com/
+>> ---
+>>   mm/slab_common.c | 13 +++++--------
+>>   1 file changed, 5 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/mm/slab_common.c b/mm/slab_common.c
+>> index 657fd75776ea..e227c2ef2a4e 100644
+>> --- a/mm/slab_common.c
+>> +++ b/mm/slab_common.c
+>> @@ -2162,20 +2162,17 @@ kfree_rcu_shrink_count(struct shrinker *shrink, struct shrink_control *sc)
+>>   static unsigned long
+>>   kfree_rcu_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
+>>   {
+>> -	int cpu, freed = 0;
+>> +	int cpu;
+>> +	unsigned long freed = 0;
+>>   
+>>   	for_each_possible_cpu(cpu) {
+>> -		int count;
+>>   		struct kfree_rcu_cpu *krcp = per_cpu_ptr(&krc, cpu);
+>>   
+>> -		count = krc_count(krcp);
+>> -		count += drain_page_cache(krcp);
+>> +		freed += krc_count(krcp);
+>> +		freed += drain_page_cache(krcp);
+>>   		kfree_rcu_monitor(&krcp->monitor_work.work);
+>>   
+>> -		sc->nr_to_scan -= count;
+>> -		freed += count;
+>> -
+>> -		if (sc->nr_to_scan <= 0)
+>> +		if (freed >= sc->nr_to_scan)
+>>   			break;
+>>   	}
+>>   
+>> -- 
+>> 2.43.0
+
 
