@@ -4,96 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BDD5C61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 10:54:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55E7FC624DA
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 10:56:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DDCF6B00D7; Thu,  3 Sep 2026 06:54:48 -0400 (EDT)
+	id 410A96B0099; Thu,  3 Sep 2026 06:56:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78EA26B00D9; Thu,  3 Sep 2026 06:54:48 -0400 (EDT)
+	id 3E81F6B009B; Thu,  3 Sep 2026 06:56:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A4C06B00DA; Thu,  3 Sep 2026 06:54:48 -0400 (EDT)
+	id 3286A6B009D; Thu,  3 Sep 2026 06:56:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4ACF86B00D7
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:54:48 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C12A9160477
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:54:47 +0000 (UTC)
-X-FDA: 85172143014.04.033E45E
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0ADB86B0099
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:56:24 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9E809A049D
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:56:23 +0000 (UTC)
+X-FDA: 85172147046.10.DF6DCA1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 16EC516000D
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:54:45 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FEYVSY1A;
+	by imf14.hostedemail.com (Postfix) with ESMTP id DD15F100002
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:56:21 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nE25zrDk;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of johan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=johan@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788432886;
+	s=arc-20220608; t=1788432982;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yte+8LLHHjHRtJk2Wim31OWnwZFXKsPlPjw39cWebrY=;
-	b=Ur79wjCg/kBaQ/K8Wcd1Lm8/yshWx625llbBLEBbKOvB8cIASlJLC12lBh973mZXja7jDU
-	tXS/E+KMzxWZZKS9RcBdtd0mm8miEyl1+V+3f2FvxPUBs8AA7S97wO5X2CDUdOSioZTtWg
-	1Z4FQ2RHqSe5pTRuADZkaqSL+DG+DeQ=
+	bh=JIWveMhOAoHYAD0EUwg0iSZcCXQHKJJVLy7Pa9YbeDo=;
+	b=2YWiAjJeCkYYnkODFvBJxpP+ckQvWq2QUqbqRmV4x9f8snZcPysRuwLuyFyFG6VrqKHeyZ
+	JnY6a0zOY7/9XGWXt3jh3nYAS5VWa3QGu+IYV/cdzc/NvdZLrdTh4cvr9YCOkSVmYPbnTh
+	h0vNTjD/fBxzpuE1UeYwQpUOZbtkpS4=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FEYVSY1A;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nE25zrDk;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of johan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=johan@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788432886;
-	b=8q3q1LXB4JcAEDmxPwFWM/v7JSCY559xQMxvwOnGiqvIDiKtc/8BujVTwYrpUH+PQ21qwp
-	0UfjOCTNSVLqGFYeuwsRuu0tK4umFy4OZPaUeZgQMuKkHaLDvfa299Vf2IO8q0kLYg1TqB
-	jvvsjteZDsHD3y/WMIV960OOhAfNINk=
+	t=1788432982;
+	b=E5xyDiolmGDc6/XlFvppferViQyhky1hV/XgybzxR7kB8p7GEovEz0/SQ4lWLfebqzN7gU
+	W0LKQNswZifKEydh9hGOY9lE+h6GNPiG0lTqTwyx10RshpCRuQ2W23AUv9meLYtFx5OrmN
+	5fiqpz4rLmWs9hSgNCw2i2xsdeqZFzk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E7F1741AB8;
-	Thu,  3 Sep 2026 10:54:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C93931F000E9;
-	Thu,  3 Sep 2026 10:54:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 17762401AC;
+	Thu,  3 Sep 2026 10:56:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AD961F000E9;
+	Thu,  3 Sep 2026 10:56:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788432884;
-	bh=Yte+8LLHHjHRtJk2Wim31OWnwZFXKsPlPjw39cWebrY=;
+	s=k20260515; t=1788432981;
+	bh=JIWveMhOAoHYAD0EUwg0iSZcCXQHKJJVLy7Pa9YbeDo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FEYVSY1A2Xn3I1xKM06H+6iDo+CONHwGUrieaf8YLTIr++gbZ/osX1XJBvIyQfVgS
-	 5pG3pNip6KnKrx99j8e2oaxupXZWjgIqdQ6F3Wz24RDGrXbqC0EdgWiVp3UslPHcrk
-	 uu9VMayxq9lhK6wcGnOxI7udRC1b7SsLnCHs9tz01qbC0lff43D55N2utRlitv5pFc
-	 fZ4bjpQO8DdHg8AG1klb0Ora+nS9wqxH4yKtxoykH65y3LudBJKx/FZnJZQiZsY3Ot
-	 piK0p6QgVo0uSP6e+s9iAajiKhBQcFTul614EjzoP1UVJbVTIHo8DrzxswovFhI09v
-	 TOYQajtG33zew==
-Received: from johan by xi.lan with local (Exim 4.99.4)
-	(envelope-from <johan@kernel.org>)
-	id 1x255e-00000005wji-0O90;
-	Thu, 03 Sep 2026 12:54:42 +0200
-Date: Thu, 3 Sep 2026 12:54:42 +0200
-From: Johan Hovold <johan@kernel.org>
-To: patchwork-bot+netdevbpf@kernel.org, Jakub Kicinski <kuba@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>, 3chas3@gmail.com, duncan.sands@free.fr,
-	gregkh@linuxfoundation.org, akpm@linux-foundation.org,
-	david@kernel.org, willy@infradead.org, vbabka@kernel.org,
-	accessrunner-general@lists.sourceforge.net,
-	linux-atm-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-usb@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 0/4] USB: replace page allocator calls with kmalloc()
-Message-ID: <aplR8tmzndmg4kfq@hovoldconsulting.com>
-References: <20260830-usb-v1-0-aa349c302246@kernel.org>
- <178840081114.3041656.13596134068099743678.git-patchwork-notify@kernel.org>
- <apkRyoCr2dNI0bNS@hovoldconsulting.com>
+	b=nE25zrDkEckyWuT3vwLQsJeReMmcAf/bRxyofcE5mdga5EtNZHwqWEr/AoIIa4Xfy
+	 LB9cJGXOheduuQXaEw1urrWpCwgZpfrHUa0ddVqnae+LblvwVpobWbtmq81NaLg2Q7
+	 pIDUG9Tgz6EYEqZYhXEboP9FaigUBaO1KUIv1ZE8e8Oo99fWytzoCliKnnpCeQN9qs
+	 P8qjqSHGdCGEAo/TS02CDm4Qg/u+tX6R1H4RMzepfNAnSWt9fTU5hldmygkm60xgHf
+	 C2sUBBz7sjUAXtNOePkQO9AuhWwB9uLzPYuc9T6KINyIKLXou5Gekmff1MV2dWpIfA
+	 FkCiLVUhC+qsw==
+Date: Thu, 3 Sep 2026 11:56:18 +0100
+From: Harry Yoo <harry@kernel.org>
+To: Longlong Xia <xialonglong2025@163.com>
+Cc: vbabka@kernel.org, akpm@linux-foundation.org, hao.li@linux.dev, 
+	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, paulmck@kernel.org, 
+	rcu@vger.kernel.org, xialonglong@kylinos.cn
+Subject: Re: [PATCH v2] mm/slab_common: fix shrink budget underflow in
+ kfree_rcu_shrink_scan
+Message-ID: <aplKpZt3r57_7_yX@nixos>
+References: <20260826075653.3304251-1-xialonglong2025@163.com>
+ <apQsbGJDPPyXcn8R@dev>
+ <baa22f03-e553-46cc-8c35-436363546605@163.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <apkRyoCr2dNI0bNS@hovoldconsulting.com>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 16EC516000D
-X-Stat-Signature: 15stqrrqmcrtqzf5dpyyyhtyegwq8n8h
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <baa22f03-e553-46cc-8c35-436363546605@163.com>
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788432885-31444
-X-HE-Meta: U2FsdGVkX1/jwSCR5JeXqTbqDIgC/icrGGTcHMB4uW6Leph+SCg6u9svUIghlfiVapjlAAGYtRglWkJotJtnUTvyN1CWiwQRDKXL/cLdZGxd6HnVAb+yoCeqlVXXU645mp5VgXEOFd+isUw7Jb6x9TamKFVZHirQBj3ewq27XObiFOcyvLeCQWZzxCULb3TXIP8McuDSBI02gpzmDl66LpIa3Lavi+tAwVb/+16gTt0IWrw4ycU2LXUlN9KLV4fdQHG3O5EF2QNLjHCi6fVPaQ95NdmuPTtR8NkLUNcCddbKyK1C2USbk8wfvIjHgkzEtPBQy5H2TeC5wGRRC80ajA26+f49JyEqg9j0ByKqQf3GpLBZz2wDwgWWetGTj6v8kexXO7dpFRbzSwp9qh7FonPMKyTjvA6sBg9M0OPxB75OzM+ummjapd6WyoAPhKb3a2ENfQlch+TMxMbZu6yBOEsQ6ZFgnGLU8fVExi7Hp1Q4jXE11856tAbI8sU2Ok/nrHyEQibH4rPd84XZ7GoaGW3xG+BIyPgq5O2rcVxfbo9iBpwaUB5b7eHuVHQYrIlyJs1xpndv6y0fU+qyfFdKI64ts1WAWyGV0u5/Ajs1ITux12Mj5JVJnAUNugsw9082CJRcz20qvYHidwV0VDkR/rsLsk7CfXle5kvYZrPeVfy5ns1OuTKvjWJGw7l0tcokqBI2EZ8TsIa42s5Hi7ndZN2jMbzAivflSOHa4raEdXsKQzevUTz5bn5brRCBbupsi9gDO5/SHq8UnL6gr0Og4eE8kr5ok9PcMoN1TvlWdN/cnZ3o+KwLfQWGMbKTWNUfsSeWIMRouQTSYqpGiA8Zu0Yt7TzivRy4Qq0Co6WDbNcwhyEufJv+UAdLO7GjGSqw5Pz+PSFWDrIAUBWssVFLtuM+hQXXht/EENOGP8snTO6mAKDdobr2RAGUNgaPsLAnSz3xTxHyUV1emsYk37W
- A6dFmaY2
- NgqNyGU9YuZUnUlYRx5Rvm9VoJZd/9L82nVcblmfufO3ksXsZ8ynkpoQmk79dILlueMjknxMdk8gis0QW8akzJ3wwrL6x8ZScyIMqMHrw4JvA3H/wviwvbkyvI0XMqrcA4z7Q8/5br2/dxzmtfNSLi8jopf/6ACvp1DllxJvHivjz6OmJWtLyqKQ+a5CGEaEzSgE5snUXeqQV4h7HojFbsOQAZN53USK59QqwTGTJQn7BwB5/2mTmg6zoqtk1bgLdpzJJQlGeKD+pYgOcCNvOLXGwoXc8BJFol3BtOsYPzU/lvuzJC2ldPQzuDc8qV7WGT5Xh/028hUNeRnbOl80pYHdYMTlPTKNJwEs7hQp/QJ5TNbI=
+X-Stat-Signature: 9rwgx3qctrkwo1y4m5pwoe3ax18tf7cs
+X-Rspamd-Queue-Id: DD15F100002
+X-HE-Tag: 1788432981-191917
+X-HE-Meta: U2FsdGVkX18+nBM/8Nk5d9+2GiFBop5KbZYNEeGrTn/eWBrjY0uyvKpathoaNWXeAptQRkG7JJC20PyjATwaWLAct0q25pCIeDDbQzRpUYAa0eeKUhjMRXrniZC0/3uRIQ0iGVgY+dwoptc+AzfLHTt/w8Ah5QZW5JTAErpgR1bftijKBq1YCgawk1SLtmp8rp3jjlhJT4MdT9rbP3aHJbAFHChR0eAh/iroV5SO2+3qBs0ZabcmjU5Li/tG1YBrFEzFqRKE/SlEBSTnso0+hnl4V1yspTGdblY0QboTURKKis9x3Ytun8tazQf/mgn2HaPSM8+PEumFbj7PQgAHDbcl5h/nrZtfEH3Gcl5BH/uYHU/d411w0+eRCZleMRrJvPbHz4aKiZgztu+wvFeyu1AicPhEd7nZ5cZ6e1dNA2kA4yPFxPoubqJvngxq+DlbLIZK/CN2Qikr9K+9Sd39tH5xAi3FtEXub6E6WuqI/ax9uvJNbGSYM+fMGL22lsrUy0UTLXNsByVB92lYHvE5dtFMlu1usQdAqORFxwyjeeV82mud9Q60EvcM4bga4ky3fwRTjdB37hLXeiGFGCdwbEWrL07Gzc/s2Rf8ZjyEf6GQiA6UOsCh2bCWdNBPFwcUxA6KY5EDP88TE4GiSmFHDwZcVnWvuXvqi0Ioo6lz2XCWUHCQtqfWLUEqvdeh8qeINGI0rss6OpcXALCxjnnMeQewmw0uFPNBMjIPMUlORb8kpvtAqv04063fxtP0poJUGTWE+DtToIuA5q1oi1oKPjXJNyNa+isr5S3tDXMY5ydsE700UUL/po7rKNBUGetESzjJPjnhYTlMJcqhBHHtGtQ+lyV4e1wHs7C733KQu0NwfZyjFUMguyr/97IFOhDW3URi5rdzyYC3noR770ERY5HX1wP651BXULGSJOxwv8gCtRFkfbTCxLvtQIJ1Y86Q45Y3l5iIECLYmkW6U81
+ TXEAB8+V
+ yRjjxEXeEFDYxTPbgz8mFbzPzWwQ85Xg1fyeyZrvkzGCAQQvVh9ZPqFgydP/l9cImZ+aAl+PghCbEG+pTpMT1nAfxXaMIDox2qin298eE8r+s8N0JCqpeQB7XAr7V5hvU5Vu+G3F8djX1DhUEzibgu6tG9gMzGrI+RB2LlqMCgqJUIAzJGwIjQ54ZO+KiZz6nxOc/vi8Ytisv9uZ+ut7kCfle2XlWBaUEnQQMPCbMrrljiBnwnottM4VWTX5eBuPGLrVGnguVa7WZl3DQYBiv/MY+/NXkQlEp8dyAHk5o9X1Zk4A4T98UCeKMVKEvQPFJrvGpyDLM9DGuPJc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,38 +97,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 03, 2026 at 08:20:58AM +0200, Johan Hovold wrote:
-> On Thu, Sep 03, 2026 at 02:00:11AM +0000, patchwork-bot+netdevbpf@kernel.org wrote:
-> > Hello:
-> > 
-> > This series was applied to netdev/net-next.git (main)
-> > by Jakub Kicinski <kuba@kernel.org>:
-> > 
-> > On Sun, 30 Aug 2026 11:10:36 +0300 you wrote:
-> > > This is a (small) part of larger work of replacing page allocator calls
-> > > with kmalloc.
-> > > 
-> > > My initial intention a few month ago was to remove ugly casts [1], but then
-> > > willy pointed out that Linus objected to something like this [2] and it
-> > > looks like more than a decade old technical debt.
-> > > 
-> > > [...]
-> > 
-> > Here is the summary with links:
-> >   - [1/4] USB: usbfs: replace __get_free_page() with kmalloc()
-> >     (no matching commit)
-> >   - [2/4] USB: cxacru: replace __get_free_page() with kmalloc()
-> >     https://git.kernel.org/netdev/net-next/c/a3b4826138d4
-> >   - [3/4] USB: speedtch: replace __get_free_page() with kmalloc()
-> >     https://git.kernel.org/netdev/net-next/c/534b18813974
-> >   - [4/4] USB: serial: wwan: replace __get_free_page() with kmalloc()
-> >     (no matching commit)
+On Thu, Sep 03, 2026 at 05:13:15PM +0800, Longlong Xia wrote:
+> Thanks for the reply.
 > 
-> Why were these USB patches applies to net-next?
+> 在 2026/8/30 22:22, Harry Yoo 写道:
+> > On Wed, Aug 26, 2026 at 03:56:53PM +0800, Longlong Xia wrote:
+> > > From: Longlong Xia <xialonglong@kylinos.cn>
+> > Hi Longlong, I have a few questions.
+> > 
+> > > The kfree_rcu shrinker decremented sc->nr_to_scan (unsigned long)
+> > > and then tested the result with <= 0. When a single CPU's object
+> > > count exceeds the remaining budget, the subtraction wraps to a large
+> > > positive value and the <= 0 comparison, which is equivalent to == 0
+> > > for an unsigned type, never fires again.
+> > Since when (which commit) has it been broken?
+> > If it has been undiscovered for a very long time, why is that so?
+> 
+> Since the shrinker was first added: 9154244c1ab6 ("rcu/tree: Add a
+> shrinker to prevent OOM due to kfree_rcu() batching", v5.8);
+> 
 
-I see now that it was only the ATM ones.
+I see.
 
-Sorry about the noise.
- 
-Johan
+> > And how did you discover this?
+> 
+> While reviewing the kvfree_rcu() batching paths with the help of AI
+> tooling (hence the Assisted-by: tag in the patch), which flagged the
+> unsigned subtraction feeding a "<= 0" test.
+
+Okay.
+
+> > > The scan loop then iterates
+> > > through every possible CPU instead of honouring the reclaim budget.
+> > Did you confirm this actually does happen? If so, how often does the
+> > kernel end up iterating through every possible CPUs, very rarely or
+> > almost always?
+> 
+> Yes, in two ways.
+> 
+> Experiment 1 -- deterministic, instrumented loop.  Per-CPU pr_info()
+> plus a test entry invoking kfree_rcu_shrink_scan() with a controlled
+> budget; 4-CPU QEMU guest, 400 objects queued on CPU0, budget 50:
+>   buggy:   cpu=0 count=400 nr_to_scan_after_sub=18446744073709551266
+>                 visits all 4 CPUs
+>   patched: cpu=0 count=400 nr_to_scan=50 BREAK
+> 
+>                stops at CPU0
+> 
+> Experiment 2 -- natural trigger, no kernel modification at all
+> (kprobes only).  Setup: 1 GiB QEMU guest, 4 possible CPUs, no swap.
+> 
+>   1. Observation: three kprobes.  Scan entry/exit record nr_to_scan
+>      and the return value; each kfree_rcu_monitor() hit inside a
+>      scan is one CPU the loop processed.
+> 
+>   2. Memory pressure: ~650 MiB of anonymous memory.
+> 
+>   3. krc backlog: loaded the in-tree test_vmalloc module ,
+> 
+>      which repeatedly vmalloc()s one page and frees it via kvfree_rcu();
+> 
+>     10 million iterations over ~70s kept the per-CPU queues populated.
+> 
+> Result within ~70s: 262 natural invocations, all from kswapd0;
+> 171 of the 261 scans that found a backlog (66%) overshot the budget
+> (nr_to_scan = 128, freed up to 4479) and visited all 4 possible CPUs.
+
+Thanks for confirming with the experiment.
+
+> > Would this affect the kernel's reclamation behavior in some way?
+> 
+> The break was meant to cap the scan at the reclaim budget; once
+> the subtraction wraps, the cap is gone and one scan processes
+> every possible CPU, draining the whole backlog instead of a
+> budget-sized slice.
+
+The fix logically makes sense to me. But I'm being cautious to
+introduce a functional change even when it was unintentional and
+'accidentally' worked. Especially when it has been like this from
+the beginning.
+
+IIUC it will almost always end up visiting all CPUs
+unless sum of objects exactly matches nr_to_scan at some point.
+
+In most cases it will visit all CPUs because either 1) the counter
+overflows or 2) the number of objects was smaller than the budget.
+
+While I agree that the code doesn't work as intended, I don't think
+you have enough justification to change the behavior. I'd rather fix
+the code to match the current behavior rather than changing the
+behavior.
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
