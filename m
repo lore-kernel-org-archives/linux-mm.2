@@ -4,117 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 534ACC624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 13:13:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C3E2C624A4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 13:29:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 509206B009E; Thu,  3 Sep 2026 09:13:20 -0400 (EDT)
+	id 3ED026B00A4; Thu,  3 Sep 2026 09:29:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4936B6B009F; Thu,  3 Sep 2026 09:13:20 -0400 (EDT)
+	id 39DA16B00A5; Thu,  3 Sep 2026 09:29:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35B986B00A0; Thu,  3 Sep 2026 09:13:20 -0400 (EDT)
+	id 2663D6B00A6; Thu,  3 Sep 2026 09:29:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 139226B009E
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:13:20 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9E9F21A0531
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:13:19 +0000 (UTC)
-X-FDA: 85172492118.22.3425BB7
-Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
-	by imf23.hostedemail.com (Postfix) with ESMTP id A3FFD140010
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:13:17 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=jWyuip5R;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf23.hostedemail.com: domain of daniel.almeida@collabora.com designates 136.143.188.11 as permitted sender) smtp.mailfrom=daniel.almeida@collabora.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1")
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EF6026B00A4
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:29:01 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 553BD1204DB
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:29:00 +0000 (UTC)
+X-FDA: 85172531640.26.1F00857
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 36B4F100005
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:28:58 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=p66S+3Lo;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788441197;
+	s=arc-20220608; t=1788442138;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uJI6JQLsYv4HW0vAY5ug+uBCPvyVy4swuM+6iRXROac=;
-	b=JZJop0ajpahc3Kbqa3b6Zn4E9emiViFbsFInR3Sq/3XRPcv8ed8YMAnGsAFG+CPrih5JEK
-	8EhEY+I24ubMU+davo0rMQQ9amk1yRW/TUuWUBH8NYL1EKco5neRTtpTfMXrdGZbFGsk9N
-	pzSGWswJRL6bnW3Fn6flGsuZl2ZR/mk=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=jWyuip5R;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf23.hostedemail.com: domain of daniel.almeida@collabora.com designates 136.143.188.11 as permitted sender) smtp.mailfrom=daniel.almeida@collabora.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1")
+	bh=0lzGBDpPSFyRzORpVpv5BVqn0OH17bvA2nEL9BC2eGk=;
+	b=Lraw5LjBAhAntx4F7FRdWpTV3g7Ji8mfV6jYHwYDI/4Zk30Zh2ivg0XB2oGOKQMESn3l5y
+	zwYAwtWuhStM6h5du9AgKGQXO9oP6cH8LPPuuBdPcn8yo83bAApizVaLjzWOjipAROHvbc
+	zqHf57m1ywiEyWCJu9xBYYDtCYYEXcg=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788441197;
-	b=qzEvuslv7EpaPC19LP4qMGs11OhnU4eYBsWDWtlQeznqzMbcBvEaWJNBkF7vuNe0JV5qWo
-	aabePIiy8XOf8m8+Ip1HhchTah2bRPGRb4fFdGBb/YhumDUHQEReHDtiQ54NwpYvr/JWKD
-	97a91ldAkOMo5DacaKcTg760xXzfWT4=
-ARC-Seal: i=1; a=rsa-sha256; t=1788441190; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=k7etm9LDlJZNiWzdK/AdPOIgZ8l9WeQ9tY+28rROGbZ9KIepmYpmVR/plJwsI44rZnKz0T9pXbaBmKYuzSx/RmBa3O05aB0V0CMr9zPz/kozZ+AqTxjxyTA3S1gzVdF3F7fl9DgCfFSKieJTC2kd0U8q29VC00o++CgtzNMZ10Q=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1788441190; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=uJI6JQLsYv4HW0vAY5ug+uBCPvyVy4swuM+6iRXROac=; 
-	b=FYhQvYaQfyJOPBpM3jQVMgEYyck06k5108qpCbpBXIdddmEfUC8feoKoKjQVQl08We+SE5ljVHkVViJe7L4s8JXqAw22el26Kj8oU6DF7seV5mv9GOmrgoKqWOTiraRj9khbHjpnGtIla9eGmJHOikyIST8XVuBFwu4WKq6R+PE=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1788441190;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
-	bh=uJI6JQLsYv4HW0vAY5ug+uBCPvyVy4swuM+6iRXROac=;
-	b=jWyuip5Rj1hTP5EM31wAvwmwxrq+E/qbzPiSS5nDZZLDbQN89z913aeHoOExPMhd
-	A/R3hq042q0lRByXU+EA7uJnAW9xxf8cFZEuVYMX/6gKHO4xSQI/swNxrX1P6z/xWIs
-	21mI+cgG3gAhZwSCkblVIX4aVniKwtTGHVijLwbQ=
-Received: by mx.zohomail.com with SMTPS id 1788441188698154.96329628710419;
-	Thu, 3 Sep 2026 06:13:08 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH 3/9] rust: sync: arc: relax `ForeignOwnable` for `Arc<T>`
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260902-tyr-ioctls-v1-3-e0fdbf8bd108@kylinos.cn>
-Date: Thu, 3 Sep 2026 10:12:49 -0300
-Cc: rust-for-linux@vger.kernel.org,
- Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
- =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>,
- Lyude Paul <lyude@redhat.com>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org,
- dri-devel@lists.freedesktop.org,
- Alvin Sun <alvin.sun@linux.dev>
+	t=1788442138;
+	b=b32oxwpaMx8/riGlOf2u7+YxZbTabcLt9nmrvtlGokBi8a+a9S90vzexfomxITECyGoFru
+	G9rJxgdf368pYBB1Ntc27vDxZ91YiqIbrIg5nSeIkRResN0tYJZV8w0FpLf3KT1c4hsM3Z
+	c10EAHt+ooglIJwj2OtbvuLS95GWtLA=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=p66S+3Lo;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8542712462cso321731b3a.3
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 06:28:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788442137; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ahg9RO/pKTvXe+OMtXOD7vpuWaM3Ao/IImExm7PjOY/iXRvbHePkWNSvvHMmT0HozJ
+         dZGLQt1dON2zxGquH+NWLJeF1N0FrwHDN945LksweuNXfldNnciNVKEGZfqc3D7Kt9Xv
+         6Ilc86axzuPMxX+T+AgnbH8tUe6hhX6A4eH7RcIHHPR0JsVip5IXWR1pqV1PFepMAC9g
+         cgXrBI+poah06a2ZtKpsRXJuUPEjpBS9KTfn7b2+nVa35sBJgzgEn2tno6dk83dJ33m1
+         cnN1JrGt3K4m9uOjPVjzx5MHK1lM8Maxic5IJ1MvhikWQ6IALrX6JnyAM4kvxzJMAFTC
+         n2Bg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0lzGBDpPSFyRzORpVpv5BVqn0OH17bvA2nEL9BC2eGk=;
+        fh=dw/P9kh+p8TjZjScsUiNgSt9uJUuT9TtspCwPiHYhnU=;
+        b=chN/Biq2mqGZTeaK4B/qbL7vv6ncuSn0itqxGnoB4F2VbZbqKwNA53z7Oew0Bk0pSL
+         ekEZ5g+tJqq12SdJV5ys73IOt0MTYo1SLKckzQcr5KvvZSXakILJsu8ZXNaX1fYBWkFy
+         tgJGsKvs7LEIp/RVUaG21btPC6TYyk5WqQJRr7umqa5ASNzHtgAItv5fHrgSORFg5JcY
+         RV0qlFvWApjVEOZWJV4X1yT1geZ9n66p0QiPIoDzTXRQQT+hPZmAnV91ORD28fdh2+oM
+         pm434R5MCnYAkC7I5vDeyO47X34oGLfqlCFfOlicx4YfjyBW26O+8YcJB+U9fAx5+6qy
+         RiaA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788442137; x=1789046937; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0lzGBDpPSFyRzORpVpv5BVqn0OH17bvA2nEL9BC2eGk=;
+        b=p66S+3LoS7yfBc5+J1eumiJpzvNzmZHDcD9WPg6E+SNoDzijAILxxzbfld1e06F4j3
+         lQuSlVraQbynTu8q8rPzemNE3TDxso31BiezdXExE+4OwCCO2tl1lAlcJA/GhlIDorB2
+         6iTn9h6bTZEdIvD2BBstNQTDEPQOZs3S6yBGx3yLhQ8F0tuoVezqe3+8M9INKzvBo83q
+         qj/p5fX3E6hXyyriQiJNfhJfqUBBXodPu2ZyooroCpHcYbZntYyVazLl1yAwXJsHcODT
+         qG0W3H9p8Q6aFhCSuHvSH0WNSvqT3UZXYAz3JxW+6c3pUOzDvIvCOSWgRf1aRw2x2gNM
+         774w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788442137; x=1789046937;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0lzGBDpPSFyRzORpVpv5BVqn0OH17bvA2nEL9BC2eGk=;
+        b=g2rTXigsnAwodP4T5W06OfKZqoIH7fMe+JV425XsxMq/SnJPAowNH8cVWwVuUhvSdS
+         YSwxurSkauoay1DMRIBpmaFbIaSk1yHaVIbT2M63CXkwh0kfrYz/xp8HnjZjKOlhKRa6
+         TB2v3X5VUn/f29IrwK3SDawGS8M1gAnAQurO4QPe8RZngvtCmPg7+fVYsVRCotSk43og
+         hGqY4J24YFJQQWd+0pLxR0xbeeZjllkyko7423HRMU/04yvVBqxllKDAgSSKGLFML0To
+         wM7lQC8zIOKKrVp3nHrvH3uDrUvaORzfFQbnKtKm0cjLYf4mXDbxgHNLSG2+Vb6QzIbm
+         qN+A==
+X-Forwarded-Encrypted: i=1; AKwUvBy9y/fxGu0OCl4cHDlmO/m1fVQN2x9kBVxfzHIbgTHO9C9sK7yZm789DdzWRGcG3fDSShI+eLIyxg==@kvack.org
+X-Gm-Message-State: AFuF++lhKE1pP35Jrw5Si0J3J+lck8U2bwkhq3ngGyr/RKVF39XZALh8
+	HvF1KkE/XS67wkdlUpqxf8AlHo7rvUu4SQu0h+l9iqLuzlkVy1zmGWqGnTN09PbpjtwA9MkvJG3
+	MwGHjULCG1xedz890vuzT3DvD+FydPhk=
+X-Gm-Gg: AYBFou0Fmn9vC+vuzqHkln1oUQVna0G2dwWcCxT4CnxwXRtuXo9JNhq/r5IgNpmJgKq
+	dVHD5MRdSDEbCPnD1tfJv0heG7FAlGLZEgIVAiMcQ7vSW7zWbyfZo8C0HGObRQEOSOtuvbtbXH/
+	6FLVX1+1ak08tIYL/LXgHL0VyXuXHBSDCRNWM+3n8mWeBZqAKn3+NIj7XMu+ozp1axdumOmlBT7
+	LDsJDNvtV7w16N7aUUzSv/g0q01ZvJZ6n/BmV/4koyoM3j22R7qleoxKbymDeFsn65JqcatKLXf
+	3vAeiAIxnXIhDQm778Tl/PfEPRmFIidxJv0wk6u3s/4At1cfUsXqXd05iBZGwyIjm+JOxz5CKzb
+	yWk8qB+EZitnQLOtNYy/cLigIDFcqCAzZAxBzFLleA144Krm+M9NeRPH2fjhU
+X-Received: by 2002:a17:90b:1d0d:b0:38e:c140:2a0b with SMTP id
+ 98e67ed59e1d1-39aee0e6ed8mr12609481a91.3.1788442136905; Thu, 03 Sep 2026
+ 06:28:56 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260824-unique-ref-v20-0-490735672187@kernel.org>
+ <20260824-unique-ref-v20-6-490735672187@kernel.org> <CANiq72mPLrKQMzb37ow2969m5r3Z2Kh_4LHERUun6ALw3ea6tg@mail.gmail.com>
+ <87y0dt1b8b.fsf@t14s.mail-host-address-is-not-set>
+In-Reply-To: <87y0dt1b8b.fsf@t14s.mail-host-address-is-not-set>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 3 Sep 2026 15:28:43 +0200
+X-Gm-Features: AcwNN1XsmuEPyO39jqyvRGfAMw_DGGPMkiDRHtfg1ZEoNlBhpVDCHnmjvBP_pa8
+Message-ID: <CANiq72muo8SotJHJQhEe=2kiprbrQTvrEMqd1Uw_7yNSfA3Gpw@mail.gmail.com>
+Subject: Re: [PATCH v20 6/8] rust: Add missing SAFETY documentation for `ARef` example
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Lyude Paul <lyude@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
+	Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	Igor Korotin <igor.korotin@linux.dev>, Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, Michal Wilczynski <m.wilczynski@samsung.com>, 
+	Ira Weiny <iweiny@kernel.org>, Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, driver-core@lists.linux.dev, 
+	linux-block@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-pwm@vger.kernel.org, linux-usb@vger.kernel.org, 
+	Oliver Mangold <oliver.mangold@pm.me>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <012145F0-65B6-4017-8EE8-0D94E428BBF0@collabora.com>
-References: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
- <20260902-tyr-ioctls-v1-3-e0fdbf8bd108@kylinos.cn>
-To: sunke@kylinos.cn
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 36B4F100005
+X-Stat-Signature: ezcm4e6ou3b5m3egi7oy6irfgk5fzsyb
 X-Rspam-User: 
-X-Stat-Signature: 9p36kqp3n8jazcm96y3mqf76rfdsocbm
-X-Rspamd-Queue-Id: A3FFD140010
-X-HE-Tag: 1788441197-644818
-X-HE-Meta: U2FsdGVkX1/xyKqw+VQp40CXgMX8iGfCa4Prcsoad6DTXUYBm+hU6p8Xgl+rLt0L4jeMYypHg+Md8bH7YeC9QWoJt+Qe+s+mek6lSkHSMPeNN5evCYU8Pb/ua2Ipy14sCq8h909NcIOrDXWsBNpEhhqMTxRgl8bfke/P6V4xUfXsGN7RbZRzG1InDeztThLijBu9ECEL7JEY3f5cp+UINrXCZovYbkWLco7aOmB0TDM5tpLUKa6KdyEFOEoZ72muK5gtbF6GwP7WyzMSGXeJgu0HfZNlCygTxZbp5ymMvnoUXNmX4nXRrC1yA692fJN9RJT0+drfV2In8D9IcSLVY/m8dDqS9FzenXDGcOkAz/3RRgzH887aI5+wBYeTxRLyOeQcAofXGFYJ/muX7APM7FFaI4JmNldC7wmi6c0eOAqhxUthz99xcU+6asDQiLYYSQOCJg823QzmZNwzq5niA8Tj58W8EbAsbWrinowg8HVUzuHrTsD8JvV5iIpSxBJf5R+VGr6Ccug1Vj/PWxdzMmmvIHQW5MiMlNojad+kBmfMYS5T9TjuRKN+msHD9h+mGsTYCoAQN6ESAF852C6Qlj993qK9ELMQXYrXvNVnoJO5cRFkJeeMGHovHey57Butu+oc8jJB43rIHNtVTra7SFvhslvxMsyId9d0clNJmZyLAwFwo2qkinXMs4RWJw2bvySIKHmNg7/w6rZrKdctPx1M6NF5mypq6cwgndRA6CxSR+r+VwxGZ3gRYbUYao3N1P3iZhh3OA203O7DaPWmhD8MjK2ZHGMpZ0VZqdSh3dyqntJ6OHli+ZatxeGWjwK3SHwOFeyoK7ARNQ7ArFgmqfkl2aOvjnfokHCNkvXr2Kf8RBWSYVKdobr9lRIRXapf2RLUrgrFMbUgHeoCFqlUIS7ZIUmkJnxdNfwtQz/NsgM70ZQz0kBjeoIzrPvMMDUkwFx4W/69zqc5aN4O3ky
- DUOw9/Af
- E94jVcXrN0zYknJ09mf5Fs9TVeh+EpISi9ICZjxKuBXC+Uz8nDIiZilKZAzujmFvmtd0Wmzha7V7RLL4M8Z9ntAtOHvaN8dNcZkRS47txFqsR2iy5iUEVu58UMVIHdQiEG4wkN1gAqjv7ABQky6DUCxE1cBdttXA/dREB1UF3LoNxBcizXzuiEgci0rDcEYGGSOH+9rFBTNE6tngR0rU7tlx0rgenMlc6iU30FaGYzwoLFU9aD3PUy6JF5UNBP1ncTx4JzuD0aYvvmQOFwl9UwGHRc76XZYbH6Dm8fWbHG0eONnHhUoyVj8Hn0TTztv0I0ScxDl5E0+tjMew+FNqiXiisRHNAWqBZ56pp8N1dxEV1F/lY5aI3df5bA1uRaoJs0RTqNjq41XrMyUXpjdVnZTydNuV7GVVclE7GimbZU7fMGAo=
+X-HE-Tag: 1788442138-907833
+X-HE-Meta: U2FsdGVkX19N1XqFr3/EJs4KE5w5kWcT7XCGyWxEYAjKA32qkoGS/vyNo6Kjjk3K46d1wV9VPzowtSW3M3qvQhAaWqp0XA/LneUTo5l7Sg1N2+Qany5ZF+6CngKfrVJlH0q1vkacUhUWypq4oL/4TtE9vrDBJuIwaBz3zlRtTNz8qLGBEZYk9hLl6VxSDvW98YdUdkOyz8zZvO0lIT8HSGtbNIbkg26h/6phMiAkN1YfiNbakDCvLP7RT1dwJpsIrCMHKQJdEIkLfBbS+89RU5BOvf6OgdbmCq7zJPnqtjS+XpClS3w1J8/pD7N/E4Mc9H5dPkvhVtC/aL1UGGliNpx47rkd0vMf6WM4v/DQ4FxQ0WUBBGd6x1d+snxaly4dMKJb9h/G1Q91fe31LZkUkgDNLVDqUTpdLsfnqRDxAhda5KsSHm4BpUOHr7cxQZhXzD4+Lp7aT4hxt/ZVEw34wgXACpbKYwZSN2Odg3ilnYTI9Xunc4hDg/C6L7K1yeW6QlK3L3r9gHVR+J01ZUuvLFSmQin9jPW43AUtVVUVi00A98wpLO79nSTEL5Tq90Qe8wKPyXUNg23HkfUAWEw+r+q3POkfucIcsnpt42YHR9kVFSzg7W7oLkZ3fVNpAI6FDBeHMC3fpdCN+Hbrikjbd0Fiz9eLDidvupLlY6+pTaG2t2fyoLj6bpVWiCi9f/pPVDSsGW45SlJz/p8TDQiozbX2OL+z9GV8Tl087PEu+agQuyMooJGIOs1QRfsgGCAJzVVXSgj9/Me3iprsEuNIxTky8yGsRxF1h2uVX9HmBliQ9xutMF3NH9yCHIQxnrKDSV9fm8EU0o5uDy9zVRzJseZ9ky1v3kLCuvGFxwxqOffp7Q+b7/rQJsKQOzSCNzpR2NBBZ/dZ0+VlZsNPKHUOfhn6fZSDZLJskcyGsyEEpbBjczt2dwgFIB/tIlRxfZtwbX74rBRqAs57RFtEE45
+ KqAGcyyP
+ cR6BrmMIye4upnWfIkQbskRLfNRLYspeGiQQQYg8Ypvf7W1rV13gvd6i8mu59Q+ia2FqVtjdVlcL59+5AoZJdG8+6SGLtvAndcpUfWlkmzOzLvhEN+q52Ibn9qn7ZsW/QNT2k8U4lA4DxMisdbQxKoqXWHZ5Jb/7L6AClik+n7Q9YXzpD0rLwBFsk1smQuycPL+kOzcI3Kn6rnQfS/VMOrfQq8bwGLbkU7AYzlyBgzm1ntDX+il3Zj7Wmo5qEsqlBi2fYW8XCJ1CkqjO6fN1GR6e4F68TZLr22tcgbeqfjRaXG6Q/Pc2EoJNqisLqwffnuCVoVNgxpRlWVU2GIyI+A3Hn+oDOpEpi7jfUWzyieBN/8vXjzGFxTSb6+JXoclwFLd6uBxIu2eyFjXUbnzcKmFcyhcmRlUYJ8F+Y8MeQPNo9Z32BO6hwvmobtORHwxA2+HDucNdZvlcvZ1D1lqoxU7zstAcUD/LgoxSAwbcdO4kQ4SZ+vttUlxPwzLr86BaDlmumZbuSxO86uuK47U8orjER1Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,56 +167,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Aug 26, 2026 at 11:29=E2=80=AFAM Andreas Hindborg <a.hindborg@kerne=
+l.org> wrote:
+>
+> Do you want a link to this issue with a regular `Link:` tag?
 
+Yeah, thanks!
 
-> On 1 Sep 2026, at 13:09, Ke Sun via B4 Relay =
-<devnull+sunke.kylinos.cn@kernel.org> wrote:
->=20
-> From: Alvin Sun <alvin.sun@linux.dev>
->=20
-> Drop the `'static` bound so that refcounted values borrowing from a
-> driver registration scope can be foreign-owned by the XArray
-> abstraction.
->=20
-> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
-> ---
-> rust/kernel/sync/arc.rs | 12 +++++++++---
-> 1 file changed, 9 insertions(+), 3 deletions(-)
->=20
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index 5ac4961b7cd20..cd6faba84ffcb 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -363,11 +363,17 @@ pub fn into_unique_or_drop(this: Self) -> =
-Option<Pin<UniqueArc<T>>> {
->=20
-> // SAFETY: The pointer returned by `into_foreign` was originally =
-allocated as an
-> // `KBox<ArcInner<T>>`, so that type is what determines the alignment.
-> -unsafe impl<T: 'static> ForeignOwnable for Arc<T> {
-> +unsafe impl<T> ForeignOwnable for Arc<T> {
->     const FOREIGN_ALIGN: usize =3D <KBox<ArcInner<T>> as =
-ForeignOwnable>::FOREIGN_ALIGN;
->=20
-> -    type Borrowed<'a> =3D ArcBorrow<'a, T>;
-> -    type BorrowedMut<'a> =3D Self::Borrowed<'a>;
-> +    type Borrowed<'a>
-> +        =3D ArcBorrow<'a, T>
-> +    where
-> +        T: 'a;
-> +    type BorrowedMut<'a>
-> +        =3D Self::Borrowed<'a>
-> +    where
-> +        T: 'a;
->=20
->     fn into_foreign(self) -> *mut c_void {
->         ManuallyDrop::new(self).ptr.as_ptr().cast()
->=20
-> --=20
-> 2.43.0
->=20
->=20
-
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-
+Cheers,
+Miguel
 
