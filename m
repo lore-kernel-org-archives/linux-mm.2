@@ -4,228 +4,180 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 018B5C624DB
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 18:57:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4034C624DA
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 18:59:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE6F96B008A; Thu,  3 Sep 2026 14:57:39 -0400 (EDT)
+	id 6AC846B0095; Thu,  3 Sep 2026 14:59:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBEDE6B0092; Thu,  3 Sep 2026 14:57:39 -0400 (EDT)
+	id 684116B0096; Thu,  3 Sep 2026 14:59:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D86376B0095; Thu,  3 Sep 2026 14:57:39 -0400 (EDT)
+	id 575F16B0098; Thu,  3 Sep 2026 14:59:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 557B06B008A
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:57:39 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7B0B6A0662
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 18:57:38 +0000 (UTC)
-X-FDA: 85173359796.04.A0082C6
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8CF7918000E
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 18:57:34 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=CMrkg05o;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=WCUJphIG;
-	spf=pass (imf06.hostedemail.com: domain of dongli.zhang@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=dongli.zhang@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F3B6D6B0095
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:59:06 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 511BA16045F
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 18:59:06 +0000 (UTC)
+X-FDA: 85173363492.27.82F76A4
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013031.outbound.protection.outlook.com [40.93.196.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6E93E40005
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 18:59:03 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GWBTIasa;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.31 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788461854;
-	b=s4j6JWXRxzfxMtU+jgoG0MLctKEB1V3+PBFtHpYCh6mxiUlpURTLBkowSfW8/gl6tq1JdZ
-	nEWj35Lg9iMZekMiFbpoM9H49kqKg/ARm6QEws7LHuEgRFMSTZvsEMOVCOrrP/vblmWfIY
-	cTuVoxhImr68wm6sBoGMo2b0URbEPqE=
+	t=1788461943;
+	b=MtkaxjB58Qx2y7g51U9Nl1nGTCRwHvweDPvNYY/DVxHVrMIT3V4Wf318DgsvNbKpMOg7rd
+	0vCg50gR/rONEEYXej3+7C4gKgoAZraTUfr/sKVOTupYGcTCpQuGV+UnKPSvbcGRSRW54b
+	crlZ4J+SmYhY896XqGpf2caHXZ0dXGM=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GWBTIasa;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.31 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788461854;
+	s=arc-20220608; t=1788461943;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TeFotQIuKmGC0rruOoQwszQWpvFnaPNPdUCGbUdKLlw=;
-	b=ZbcnsPy2TyHCfLnf8P1SQP4O6DliPohgaDenLOWd3Fdx9WM2KjqhP9z99+r28Ulbb+U5KX
-	IFCn84w8fxrk76CTQZPkX50Vm2KWbwdFi8FFrmmvl/0mUCENegoScKPnd0Brvb7dkydP6p
-	ejbt4XteB9i+PFw5p2FmV4GiMyyrlxg=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=CMrkg05o;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=WCUJphIG;
-	spf=pass (imf06.hostedemail.com: domain of dongli.zhang@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=dongli.zhang@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 683DvugW415351;
-	Thu, 3 Sep 2026 18:57:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=TeFotQIuKmGC0rruOoQwszQWpvFnaPNPdUCGbUdKLlw=; b=
-	CMrkg05oxh+eV+b1CDxTKS320GUANTT+YW9KWJBkwWxPEfrCOzk5E/ubpg2BRZCr
-	kLHoBwLS3maAnPEin8212Xb5Y3BbQlGkmnsIVpr84A+wTn3uHJv+BfrbDNHDXvRm
-	14wehWOWMynSuTwzkcnp90ZhnAIaxtXC20QDE29HYpp/383y49hpxgsAyYkfApI7
-	jY7zsRYS+qEKpxFnJfjgpNI76gqaXNlZb3XMsARmkf4EEVMp8EtSnSqAmaRGxIiA
-	ZkqgAyNxKv8sJnjoKv424Dn7FSbKXsXw9FJbeY6/uvO3APN0YsamYO0DHhRkZxM5
-	jc3xoglol99gUyHMl4s4pA==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4gbqys1jtg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 03 Sep 2026 18:57:29 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 683Int7U009026;
-	Thu, 3 Sep 2026 18:57:29 GMT
-Received: from ph7pr06cu001.outbound.protection.outlook.com (mail-westus3azon11010017.outbound.protection.outlook.com [52.101.201.17])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4gbnvh71s3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 03 Sep 2026 18:57:28 +0000 (GMT)
+	bh=OwB+StsVA56q/xQXaukefH5Wkuw2Uoey+rPxBPRlRnM=;
+	b=iIqinlOlJi//EXjH72wEilW9RR5GRx2gIkZMBZyZgdLOGkEkPoGpWPA5Itg4ltgRZF5cLV
+	IJBSfLdl2do2qrS2doB+a8pgRzmAuCwUIshGZ2m0U+wAku3JTTQwrhYmASLWPCUc3+Clxf
+	pyq5/8+Yb/quVmzEV18Mr2jM3YoBtns=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eJTx5qV8e7a3N09JTo1n3rcj98gUTf4440l1LvLVfnCS7MHw4eeEd7lKj62Nbym2FmfcA9D1ato0IvY5XhOceji/q/Hj+E4QzdUO64R1WSZHzBkxfQF5QW5tcGvfC/agzCXmZZyIVjartf1HpFqvgphSSinStxU8P3uWm+OGN+MibV3g3X0CSVtzxDolKY/YLAaPwkpQ4UQ1WVgQ3+GY9xoJMaDboLhdX22XJTnZpZsHShuEEftDA1imyOYn8+7GKDMyUhvZGribjHLgICui6ThXtpAkJ/5FgrQymAx/uCMWnlOjPyaJhn6LHPPFOV0CHXjpJ+ajqvddNP1tWGlzCA==
+ b=h5jUselzdvl1xU0xArW567ByCLjErTo3cu7CH/2kD6dgjKfQhAnyXD1vOo2tYryB4wTz7L38kFqiXcpPqI6Ja+AoZCW0rs6uRSTTVd+KvwxxJxomAnQjRagp2gCze4JKcL10RSBPR3BbuY1X3fuZ5xQxllIN2jVIwlkpMUaoZTObav0PYRMZXdlJ/FIeWtD6XSoS9H1qIpmNpQBnOeA9Ryfnq/O0rzeorbH7Fqk44MDCni1fqQmskkxvp9TH5iQNaoI8gEqq9AuZx/mVUobTP1rrKbAGYHhuKToQL7DttA+NcJjcBDWKRXYNzIGV5FMwAI4XyR4E1+QxVILH1ZCQuA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TeFotQIuKmGC0rruOoQwszQWpvFnaPNPdUCGbUdKLlw=;
- b=qeqkd7l2UH47zxB6knMCs2tScuB1B3GqyuxqHaBJfcCZ1OiaYx3UgxGbupk35d3SAU1JB2634GYZk8ZeX6xVz+W10OO6Yq9SMrAXWskbUJHVEXL3NCv9GuIOsDDNKWn55ZJbcVeJeDlHoF9FDllYZjzXL6N5Yqk8wWJt0XFBYB4oJCnr0s8GFobbo8UTFuxwNsiNrYyrY7pPNUiNxXlwnfe2SpPTif9MXgm5Z70YV+M6CqKIOrtmQLOlcP1lvgAe2xfBbYPaTpDqo6nKVd96LpQyDHWgDDQ0wSU0r0ZfpebMAEGRAUqLHi2vdCPhfZGx82joOUi+d+qN9If/P5r2VA==
+ bh=OwB+StsVA56q/xQXaukefH5Wkuw2Uoey+rPxBPRlRnM=;
+ b=ZzU4dSID4Kvj3rk2sp/J7d9kg9nW9qgjPzuPwodPsvNYHfNjZ9NUNOAqbsZnNg1K1UK8myDYE/AwpiSQYWCdJHZ/6hXa18A+CSxV+akPP0D44+1zmQAuaBdA6R+xVEOOSaUiWgoQnHnov8blG6/dsyBU6PRlKuUMjNhYkKrN0zfgYueGhKEqvUH5qQutvPXxev6az3Z6TQmUb4/GsXN4mnLkQW5MbSvsZpbuqaVG+eFvE4V+KBpae+atQlpWqSNbvwQtNT4JYJh8gP/ji9ziwCvHSlUe3bQ3WXbQOlqBcHjcXAhlgWG6w5Szf9jNj242FsFoBSM4dCilFXaI7ogH3w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TeFotQIuKmGC0rruOoQwszQWpvFnaPNPdUCGbUdKLlw=;
- b=WCUJphIGjpcPH1wBJo3OZ+R8ySDS/R8FihkK/objTrEBtZ8rDhlKD2wi5lc+ITZyg3H2bKjaFpAieHXdUMJg9pRlMerPJJr+UI16WMTEFmxZnyKTHsZJuYKcgy2JCAL5IkzVStLslezjtdMa7X4Gka69SxLkf0GRNpp/A5c0yGI=
-Received: from SA1PR10MB5510.namprd10.prod.outlook.com (2603:10b6:806:1e5::6)
- by SN4PR10MB5591.namprd10.prod.outlook.com (2603:10b6:806:206::18) with
+ bh=OwB+StsVA56q/xQXaukefH5Wkuw2Uoey+rPxBPRlRnM=;
+ b=GWBTIasakYl5WxmTIn1OSUxJIZzkutkW0nSgbf+2KzMZXUh0INPE7fdVXdoIwMtnW0qUQGgtqx0dCclhSvKpsMHP/niqz8bslK0sreBeIw23fX4B8f1UlfRrKqXCJqLF4tcdpZd5wfQXGt3Ak69/+uqx87mVjJ4bwzTOeg43r8yxTbRX6CNb5+x9v72pIL1xgcjrlsGE82n3+0nQdfXBHSQzwMtvKXTsJy5fBsj9mPC3I0XZ+6lfIrnr4pv4JTDxpk+6KnbwzPUdQxUcipMbWC/kWqyclXf1NsL51xjGXAcEvmCZsxZxkdaNqJrVUaj1ku4bRFvJd1bbleNuk/bwPg==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by DS2PR12MB9590.namprd12.prod.outlook.com (2603:10b6:8:279::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.10; Thu, 3 Sep
- 2026 18:57:24 +0000
-Received: from SA1PR10MB5510.namprd10.prod.outlook.com
- ([fe80::a9a8:cb4:1056:5d96]) by SA1PR10MB5510.namprd10.prod.outlook.com
- ([fe80::a9a8:cb4:1056:5d96%6]) with mapi id 15.21.0382.007; Thu, 3 Sep 2026
- 18:57:24 +0000
-Message-ID: <5c223d7d-4f7b-420c-8019-d4f343f0f232@oracle.com>
-Date: Thu, 3 Sep 2026 11:57:22 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] memblock: use binary search to locate candidate regions
-To: Tarun Sahu <tarunsahu@google.com>, dmatlack@google.com,
-        Pasha Tatashin <pasha.tatashin@soleen.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Pratyush Yadav <pratyush@kernel.org>
-Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-        linux-mm@kvack.org
-References: <20260903155907.1065681-1-tarunsahu@google.com>
-Content-Language: en-US
-From: Dongli Zhang <dongli.zhang@oracle.com>
-In-Reply-To: <20260903155907.1065681-1-tarunsahu@google.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Thu, 3 Sep
+ 2026 18:58:57 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0360.008; Thu, 3 Sep 2026
+ 18:58:57 +0000
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR03CA0039.namprd03.prod.outlook.com
- (2603:10b6:a03:33e::14) To SA1PR10MB5510.namprd10.prod.outlook.com
- (2603:10b6:806:1e5::6)
+Date: Thu, 03 Sep 2026 14:58:54 -0400
+Message-Id: <DL5WUE8JD6MH.3W984LEQQMFV@nvidia.com>
+Cc: "Nimrod Oren" <noren@nvidia.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>,
+ "Lorenzo Stoakes" <ljs@kernel.org>, "Baolin Wang"
+ <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>,
+ "Nico Pache" <nico.pache@linux.dev>, "Ryan Roberts" <ryan.roberts@arm.com>,
+ "Dev Jain" <dev.jain@arm.com>, "Barry Song" <baohua@kernel.org>, "Lance
+ Yang" <lance.yang@linux.dev>, "Usama Arif" <usama.arif@linux.dev>, "Kiryl
+ Shutsemau" <kas@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
+ Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
+ "Michal Hocko" <mhocko@suse.com>, "Brendan Jackman"
+ <brendan.jackman@linux.dev>, "Hugh Dickins" <hughd@google.com>, "Nirmoy
+ Das" <nirmoyd@nvidia.com>, "Dragos Tatulea" <dtatulea@nvidia.com>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+To: "Johannes Weiner" <hannes@cmpxchg.org>
+From: "Zi Yan" <ziy@nvidia.com>
+Subject: Re: [PATCH v3] mm: remove min_free_kbytes adjustment for THP
+X-Mailer: aerc 0.22.0
+References: <20260901190123.3511535-1-noren@nvidia.com>
+ <20260901204449.GK3004@cmpxchg.org>
+ <C8541A2F-D6A9-41B0-A3FE-52339A6601F0@nvidia.com>
+ <20260901220917.GM3004@cmpxchg.org>
+ <69C018F5-A1C8-47AD-9567-3497AA6808EC@nvidia.com>
+ <20260902160417.GN3004@cmpxchg.org>
+In-Reply-To: <20260902160417.GN3004@cmpxchg.org>
+X-ClientProxiedBy: YQBPR0101CA0168.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:f::11) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR10MB5510:EE_|SN4PR10MB5591:EE_
-X-MS-Office365-Filtering-Correlation-Id: add30f0b-e1d1-432d-bc37-08df09ed30b2
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DS2PR12MB9590:EE_
+X-MS-Office365-Filtering-Correlation-Id: ee89eb72-6b81-4af0-8a5b-08df09ed67c4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|22082099003|18002099003|10067099003|56012099006;
+	BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|366016|3023799007|10067099003|11063799006|5023799004|56012099006|6133799003|4143699003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	TdAdv/wf7ZZLN2eN5S2kSC7uyGWknJLOwhiTlrDAoH3XnYbd8Q6kNamfcsTgvMmjpZMjrUNEUIa8GflzW9amHHQOMRqiN3k6WMsSOFPZTt2b8W86aeyY6vTwlIEkhdBXipQHMBYOpLy66Q3pZcb+gzFhzBjZvfPizzZ5ShTDZAepeqx9MhJLx8qgm0CU73Szsw72l2CdppigQbSDCDGQGl8O3aFfNqAPqt00LVO8+sbMPhaRdMhDz2Fy+IF3EqIWlYm6KaGSiuF9VC0EolsVPkcJW1AXD8k7txz5r+/6r3b9B23yxkJVYgvvREeOccMA+PKXhFb4U2O5qWHdjP5SYef2mGjsz+kLPEnDngLyfko1coAx5px5UTH+/bGBmcVL5t4CT7ygEr8+86MWhV22/nwkTEgY/1TSwjJOUp7etstuOMmErT7rKeaWAaMGKr85ikymQwScvVTi6pWXvK9dfnSiQZ84WBZOG69y7n+qPl5unSvFn315OEIZFyNm8vpl6I/c8gJzcj2SpSBcEl4SoE8IGgzfN4O2bpx3r5MMyj0WX4w7R0jRhzN5WgGoUrukOLbm/KW6Jq6KOhlpXBhHKGy1HTHkrs2oM7HGBNPOqiSU9PcgG80oEXL7f+ALVReFj0nVXLG2y5CRtmDfVbJJKJwC64fiLPutFtwOh3LcFyU=
+	E8sjyZIX7glDi3zHBkqWLi1tynsppwXYBUROuaTl+s7hLSKh1vUj7ZDiXhOfcTe9g2uPAKcOqFWTsUWl8Fly/xRANI4ZD3gZx2dDoH4lyUUccdJdaDgakav2DTp0KBING43GrD6gtv/fP8K5GqRtvIoPJYHPfYoM1lyi/NwPiFbQdPYjpUDtV1bt/oV3aUIv2uXYdCBd27o5uykli5eEZ5pJm31Ga9JaAVSMKAaPV27018xdUPOPpHAF2gqBVnuCt2rbysOyTNJV6DTKCaJxQZ3BxaY8TPVEq5a16S9Q02fm1aykpUJSuJqjJ2uZMuIUDfNZSrPLtUMlED1DLbcETa+tsodExP1BV9Ap2zqoi/ulRH4gR2icXsW2KVmre6+22Tge9EqiQ1JjUrX1OCWW+UcdplmXDgWNKytTBXsSt+2fOAY48ci80p3ooBvU7uujxrZJSEBYS1b8aAGD5Uo5T9guXE6W3FjEK9Bn62/tFAXrUlFXNsixYFUhHo1ssPTi/iWhpY9qHzYajDl06SiX0EbML9eCStNP91JBL/r6oOyxcXLiISpW22z/PCN5kRfdaHXWv5RrMvhAcO86TwPUnNfC72FAnUTuvtSFNqeY3aNHHoq3xSV2Ryhg79WMf5YTLb+MatFquZnR4pjj6kQnljmFAuUhNVybcw4zrxjnpAM=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR10MB5510.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(22082099003)(18002099003)(10067099003)(56012099006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(366016)(3023799007)(10067099003)(11063799006)(5023799004)(56012099006)(6133799003)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?N21CZUFhVExVZzBBZ0NHTk1zUXcvb3RuUDJNb2xNdUliVnpYTFFmSkxHa3o0?=
- =?utf-8?B?OUNjRUlvL0ZtUDBPQWFqM1cwOWh0SkRqREc3NllQbFBoa0NFVUxyOU82cnRm?=
- =?utf-8?B?YzcvVStNZStRNGpnS0RvU2l4ZjMrNmUvT3ZoUFVoWkt5bis0dVVxM3RxcEZ5?=
- =?utf-8?B?T1ArM2xvVC85VXJ2VTBwMGVxMmlNTThRUERjdnE0ODBQQy9aN0xheUNzQlJq?=
- =?utf-8?B?QjdLbmtxaHNrbkJiOVhoQXRQcDJBN0gzUkd0U3FSTkRNcmhzb2xPZWRCYU9C?=
- =?utf-8?B?bmpVeVlQdjFweWhQUW1HTkI4TmhUa3VLQ1BFTEdDS3V2V0RwcDNYb0RiUWxo?=
- =?utf-8?B?RUxxY2xFT08zY2Vud3dLOHNLZEVoUHJYTmNVcDNRdUw0QU4vYWdzRFlsK3lH?=
- =?utf-8?B?c2VYcHRYVzhma3drRFNWMUZxUmdXUXd0VytKOFNBZ0R1bkxaSUh4OGM3NEpF?=
- =?utf-8?B?NXpodUg2aXd1VUJuSG5rSUFnd3BsMEd4SjRiUmhVQnNrVHI0Y2FXMTI2dkhR?=
- =?utf-8?B?RzFQNStIN0VMUlJ3WTRzVUxxSlIzVEd6eGlBa0JIV1ZybVpXbjM0Y2loU1Fl?=
- =?utf-8?B?UFBDOUdwSFVxWit2M2FkazN6c0lzelhrRjNDYVpBU1NtTzBYbE1LTHRHMmpM?=
- =?utf-8?B?RE5mNXh6N25BcDlVc2lBclhydUJXQW4rZXBHUkpwcVF4c3lvZHphd3FBRW5w?=
- =?utf-8?B?WUNrNmRqN1NCRXpXZnhFbjJyN0YyZ0tVTENCVlptcURmemlpNWZIakRkVitD?=
- =?utf-8?B?bVFNYTlCeFJFdkRVa0NvaXc1Y0xkTWd4M0VPa3dIcDFYK2x5azJGTCtNYlh3?=
- =?utf-8?B?MmpmYXdaYkZBMWh1YkRYaUR3SFN6N1RZdnpqWUVKdDV5dzIyd1d5MWtKSlhP?=
- =?utf-8?B?S3lzdFcwa29OaE5EdXBjUFBKdzlraG1IRXlhcUpzZnBwZ0hram9BeThKYVdI?=
- =?utf-8?B?eS9ZTFBhUmFIdkVXYlFKNFZKTlBEVGdndFJ3SU5lcEdJNUNlNmkyMENKUFRE?=
- =?utf-8?B?bU52M01IMm8yRHBmK2VYc3F5eGFjcE02encxZjdFdGVOQ0hWRytYMVNUWURh?=
- =?utf-8?B?Zjhoa1VLUCtqUU5VcSt4ZitMaSthZkN2WWdGd1RjWUtkREZzcUc2dFYxL1RV?=
- =?utf-8?B?OWxzWXU1MDR6Y2lpUnI5U2xURi9BdjFkU3E2Z1lUbkV0ajVtOE5KaW9xSXpE?=
- =?utf-8?B?VHhVUDJTeFRaTUR2UndJUVNTY01IWCs1aWVNNjFrNkNyUVF5ejhmeWU2T0tE?=
- =?utf-8?B?Z21KZ0x1UWpFMGNvODlCUE5RVDIvM2h1MXRSN3JDYW1JM0M0RzNCTkFZRE04?=
- =?utf-8?B?OTRYc1YxNmJJTmFXb2t0eEtSMThMWEdVdGIxVXc0bUsvZHBJUjEzbWNaRnVV?=
- =?utf-8?B?QWZ3ZUtiNU1YNVRiNVREZlVCTTVnWjg0Y3hMK05jYTJMWmNBcExHTzIxb3da?=
- =?utf-8?B?TFZtdnpEZkxjT3Rjd1FGbEhKNWdKVGF4OWdzZ0NKZ2FDVmd3SUhXa3dLd1li?=
- =?utf-8?B?cVBWbUpNRVhqaS9sSzhBR0hWZkN0MDJMeUFNd2YvUGJRa2w4MjFjV2s1Qzhx?=
- =?utf-8?B?MFpDSmxSNDBYZUtaSEVweTg2Q21VakhNbDQ2TG8rcGlFdS9TMEJ0WUtJMUtT?=
- =?utf-8?B?bkd6aEtHWkJlRWwzQVVnTDMxcWZmNzdKZ0VsVXRRM3FqbzVwMk14RnEwVGlV?=
- =?utf-8?B?enluWUZmb3BrTDRvWUFJaGYzNXo4S0VJc25qUWlpV21wMXdIYko3WHpPTDRH?=
- =?utf-8?B?c0ZTWUxoSzdMSlVSeTNJN0tUVTI1Vzc2dk55dU1XT0UyT0REbWw0NWd3blha?=
- =?utf-8?B?aU9LakZra0kzTVJXYU5SQmkzN1c2TWtmRTFxbnJLSUplM2dWc29WdGdoVXR1?=
- =?utf-8?B?b09EZ1JKSXBNM2hzK2xzWU5vTkdJdHJlLy85bUF3Ukt2NWhYcTFyQUtyWEg2?=
- =?utf-8?B?Y0xMT0FoeHhDTHVKbFRSbVFxRG5QWnhqc3JaanRxKytCdnl1OGdub291bmkz?=
- =?utf-8?B?TjdHWUc0NkNyVkNIVFVMUmhkclhmWnlUWldxWDR6QlErMFFkMTVGREJ6Z2FU?=
- =?utf-8?B?UzFFZWt1d0xOcDc2ekR4cFNhVUhpb1JtQjdXWmlCTlVMMjgzYmZ4bXJpVGlQ?=
- =?utf-8?B?NmFsbmYzcmJGVGpMd1krYkdQdzBnLzlGeXYxeUJJUEtzWU5Hb3UzSFZJczZp?=
- =?utf-8?B?d091c2Z4T2ZBRlRTRVRkWUh4eW1YZEtZaDZsV0w2N3lMejhYTWNQakFGZ2E0?=
- =?utf-8?B?YXNja3VQK1RMWjl4QjhMbmM1ak1EelVKTi81Tnd5V3FROWtNaURoL3gxdHB4?=
- =?utf-8?B?eEZ1cTlXUS9YR2E2dTBDcTFpWmNYTVFKK1lxaDhSTFAwK1p0bEY4cUs4QjBk?=
- =?utf-8?Q?G9UK/JF0xle7pc9g=3D?=
-X-Exchange-RoutingPolicyChecked:
-	LGy07GP8NZf+wApO+RdK7srpTI3+EZJ/EUGxfaf0kkpwvyxoPDoINLhf/Xo6RyAaxpst+Q7wt74gXJK4WLm3qpYPgCpHmKSxihD9whHrlHI/Q3lM3nQGHiieJOglF2Q1EaTfUmcMw6QBmr9tqInf00dWfDCm54MA1upC24pP5FhVYs/r4AIUZkHQls4hoB4L+ae+DuysgIgKDcIY06rg5EOLo1P2Mnd2kGprd+ajCZo8aTwzv+T9MYU09AsRt4yuVvdaRGWSreTxkeq1Y7GYaxsOOiXBsa/2fst4zazugmSgze7xDuqo5SfvwHlSDeUscApJX1ncZuYNOKY4CJVxtw==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	xgf0bi4Etel2aUoh5ZWtEnTI0yCYxi6uQCHwYi+89INIpLruQZHtTy3vzMD6B+YUkIbP72ykqnnQrykIHHGmXblH0GRVhxQAxzsBh/HHQzwu2iuM20repqZA3iG70L1olN0tW0YNA9HYeB/b3AJLhLfaA3cQEsioji8W0+LkmarnxDsQs51hg8m20hb4w1DDGd3Ytie3zMWdDJlyXAFhSOnCkW9/k/TVe6ql1/8TCiWzoamsFnxHeGzIu7vncnoeOUfGDDOYUgcOQxLJ3nDymcoE3ZFb7IPbqSt+QBwAHacShISY5u5cFOL6B8EfHPUsts/t62kkQJpTGtfL6WN8lr3ps7p8tnus/p/HsVFFvnVrhRL8CR/1BufHFT3o64OnBlH3zLqvYxKLVfjcQq9qOAC6pZri6s5jT+VMezpS4kI7ncMG49uyaqkrPymXWi8b4g/PuI5NbCgru+hNfohYNKirHQIDvXJ5NPhOmgBNSQcN7KJDTGZvzGC4gaXJn4qzvm0VyWnNiJzxtrLHO7009j2++xnFKi4taueaMtimM4SWU7A6nL7C7kvV1TxvN0ajxWi3e2eVwFySYTSXWXFjaHcX6vJZTJagaLAowHXMG2w=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: add30f0b-e1d1-432d-bc37-08df09ed30b2
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR10MB5510.namprd10.prod.outlook.com
+	=?utf-8?B?MXA2ckNkSVlMRkhabGdiRGNqa0RrSkQxd0xHQlNZYmRaL2tEQ0pmd3YvL1Bh?=
+ =?utf-8?B?bEw0OWxBNUwxcGFKd3I5Tk5uVzJqQVROWFBJOUFPY081eDkxUjA4N3pFeUN1?=
+ =?utf-8?B?dEZzaFo2WGxzbG1CUXJPNG9ON0UwMGZZQkVYcExwTVpZZTVuQnFxSGdVTVpW?=
+ =?utf-8?B?enZES1IzaUFRN2o1bVZuNUR2SHI5WDdUZGwvSGhJck1OUGJZNEZMS2ZtV0Jk?=
+ =?utf-8?B?MjQrRmpoUVQvNWU4S2s0b0tSSjFNM3NDaUhWenl6RUVxK01Hd3RjTGVWNk1a?=
+ =?utf-8?B?cngvbitMbnd5NnV0WFBydSt3dWhaLzJjVGpxdTJ5T0V2RGFXSFpYb0lTMHZ4?=
+ =?utf-8?B?QVdYdUtCTlFxT1NYdmZ3cm5OZVNrSEYxM2xGVUgzeTg5UzVWZXVhZnMrWkNB?=
+ =?utf-8?B?U00wemNZeVhqNEpGQnlEQU1Ra3JrQ3JxMDVYaUNMVkE0dWpMaml5SCtoVjFv?=
+ =?utf-8?B?bk1paUNyWDZ0Nm9TUXRtYVlTaXZzUGNBalhKak5ieW1iZGpFL1gwSUlYbGN5?=
+ =?utf-8?B?Sm1yRm1XNHhqeGtlUTF3YlN1QWpqa1NCczhrRDk5M0lYU1dhQlEzMzIxbDVj?=
+ =?utf-8?B?TzFna1g5N3pnMkZPb1RHSnBHVXg4czFDUG1zclBZVm5lZHowSk9QUmo0Q3o5?=
+ =?utf-8?B?MWIyVlAzWWN5K2dVdFJwdXNCQ0c2anVkNHdVMytGQ285ZzdzZVpjL2xEeitk?=
+ =?utf-8?B?eDlOWVVLeTRGU21Wd2UyNnVETUkyUjljOGV5NmU5VGhUZDZndFo2Z0w2RXov?=
+ =?utf-8?B?RHUxT05Yd0h3QjJLUDZlalVqWWwzTFg2MXVscUxRU2hBYkFVYjcydFVlekVR?=
+ =?utf-8?B?Y21jd25QVHp4bGczekxqRTQxZURzMElFSFVPcjV3SWMzTUV0cUY3YUYxM1pC?=
+ =?utf-8?B?bUdFaXNKa2VJcEpham0vc2YwZmc0TUhmQUthRy9VR3lEUUNDSXNwM1JNK3l2?=
+ =?utf-8?B?QS9kbW9DYndQRWZRZ3RvRUlLSzlSQnlkRlNWSFNJdWFoemRlUXFPMGl4VmM0?=
+ =?utf-8?B?dC9vZks1QVRvQTlxZjB1NnZjdEE5NFpWeUZMMW5qTmxtTVdWdGN3QVMyZmNN?=
+ =?utf-8?B?L1ZGd3FyU3N2NG1jN0cvY040dkkxL1hNcTlsa2RVWk1YSjJFNWliaTdOdFd1?=
+ =?utf-8?B?RXNoM0gwbUZIWHNSd3ZCZ2hrWkdhbElXWmZtTHUzem1ZOTBJZDljY2gveXVN?=
+ =?utf-8?B?WFl6MkRib1k5bWhLYUVRaWZtbzV5T0pFaDh5RHVmSXpuRG5qWWFaSUJCQXlr?=
+ =?utf-8?B?T1gvRkFMOVphbERMNEZORkRXV0cremEvTTJTSnNxWVIwOTB1b0JZK3dUdGMz?=
+ =?utf-8?B?UE5yWW5IMUJFZGFPMHU2K0crTTdZV0ZiT3hYd2o5em5Ud3RFWUErM0VUWURH?=
+ =?utf-8?B?N2E3MHF6czJvUVNRMUpWMy94cC9LNDByTk50RlhHRlVLNU1pRnJmRjZSdmZJ?=
+ =?utf-8?B?cm5JbG9tNGd1Sk4veXZSQlFSc0N3OUx5SCtheUZ4bkNuSE91RlpoaUNDM0kx?=
+ =?utf-8?B?SEJVVVV2UDNDd0hLbG9wNnp0RWs2QXA3Yzl6SkM2bHRSb1NOeFRYTitEb25u?=
+ =?utf-8?B?YTgzRHhFQjVBZVdZaGFFNVFEOWtCZDJkclp5dTd5T3A4MmJ6Sll4WE9xUUxt?=
+ =?utf-8?B?ZEdTMEJUWGVTdzRBK2N0eStHRjlWUjhqUEJPVjJSejE4L05qeDhyZlU4SUFI?=
+ =?utf-8?B?cnFaQnhocnJQVlV2SnNlRDdaNkw2UFJ5QXJ6YlYxMlhGWTA5SVF6clBqTXFu?=
+ =?utf-8?B?cVYrTWVZaktqR0FtMFg1NGdxMmpTMFdNek9ZVWxEMFBwZjI1c3cwZ3ZVQjhq?=
+ =?utf-8?B?OERSUkQ5dmFhdUcwYU1SZEp2ejhzRU9aSmppQjhtWlRMcEpFeFVSSWNtTXJW?=
+ =?utf-8?B?OWxUbUV2aFViV2dsTXNEZ1h0OU9UK3ZzWVhBR2FNWjQ5QjlOdk95aTNzejRY?=
+ =?utf-8?B?blZtR1B5STVzNEVHQ3ZlUDV3THBwMDIyb2dneXpmWGtMM2ZKSy9nVXVqVzFT?=
+ =?utf-8?B?WGdRNkZ0MXVjTlp3Tm5SUmYrbjE2Q21KSmlEQVg3ZURhSW5Gc0s5UndVY3Zj?=
+ =?utf-8?B?OVRrd2dWMi9wU2M2SWlSRnBVR3dtRnhyMFBLYmJ5L2czRStkbldlWXFkN3Yr?=
+ =?utf-8?B?RWtJSGJvZzV4YmFaTG82OVZacElEcllxUDVMTFdpbWpVcEdYQ05NMGpvcFJa?=
+ =?utf-8?B?KzJYZnVueGpMdjRXZmlnQjFwTW5wYllaWDhXSDRDT1ZXODlDOUJlYTRjckUy?=
+ =?utf-8?B?VkpETzBnSmJ3c2lxeW9uUWxCNG1JanYrUUxORnpYQTFVWlFWMGZ0TFJscUxO?=
+ =?utf-8?Q?Rmy/97Xafkm9LRnwG7?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ee89eb72-6b81-4af0-8a5b-08df09ed67c4
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2026 18:57:23.9865
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2026 18:58:56.4579
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LI8OBum5FnIlYaitoZd8+qnEVd9mnw9Tdkk9KcAx9j5/Iz0JKvtY5QuPQ/KRRXAQ+G5PsfkvP5Y7hr61L/lm1A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN4PR10MB5591
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-03_05,2026-09-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- lowpriorityscore=0 adultscore=0 mlxscore=0 spamscore=0 mlxlogscore=999
- suspectscore=0 phishscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2606160000 definitions=main-2609030165
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAzMDE2NiBTYWx0ZWRfX6c/bs9qW+VG0
- RGsKFBa+5/jfi74dr1WBQr7SdgUrJ1+4YTO6Gk5XH2nvCOMOTqcXXzBrscKqU4oBgFjpyohuUST
- I2UChTqQmxAXSs0VHBt3iS6IRN7ImQ2CMa8jvrPDYEXLUAsca/QocpfZtP9A+WH+UQcHj+O/7UT
- skYfNDV+AALrPd32HxUKnlRSdrpmrhG6ixMvddjTEGPoVPt5DEJgROElHqV1JniGaATQarl3mwp
- ZzoCe1zmUpGer99UCJHbPNNagK1VSBQEyCKWIXtzlBdATksDCcOhmitH4nSk6dkbsv955QEmXAN
- BS1m85iCtJD0ads7XjAnHHM6Qk/L77CIZUm8qkxfqZy6Jun4LkvrovAP3IFkVzDxo/xQKiwdIsR
- muix7bFjMgXm9WD6ZcQ/EEF5gI5e5xvfzJGCKjPl1K7KERDyGJd3wOk5iAKp2wl/IQnMttkwMvQ
- o3rNM19L0+ZELTubiBg==
-X-Proofpoint-ORIG-GUID: gka62W9UiXXhJnXZ_9jqo96amNWiq1wC
-X-Authority-Analysis: v=2.4 cv=fbCdDUQF c=1 sm=1 tr=0 ts=6a99c319 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=VdqzKS8jKosA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=7Gl3-_t3PgB9XO-mQDs3:22 a=1XWaLZrsAAAA:8
- a=EGV9gTcE0ndGCJ_sItsA:9 a=QEXdDO2ut3YA:10 a=WmVTiCyuxqgg3mnwYu6p:22
-X-Proofpoint-GUID: gka62W9UiXXhJnXZ_9jqo96amNWiq1wC
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAzMDE2NiBTYWx0ZWRfXwAehzaEiP9cM
- DsSQqcHxVkt4qleaZRKR/dapdkXjV8Bob+FtVTR/I7oe2jrJVTxCuuUua2ANzMYGbRc8F6Uq6Uc
- ZkPuJjxXm/zsdGrgZGHa6vNUH6qC4Jl6F+HwzSMRU4sWBCVMA/W4
+X-MS-Exchange-CrossTenant-UserPrincipalName: KiM8qCxQvnyBILzws7vaZ8yFYw+gG3zSKaciQZp0Ytlfe+KyBS9SlJlSn41C/NkK
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9590
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6E93E40005
+X-Stat-Signature: 7wi81d9a8hy3q5jw97zruxepw5w4cdeu
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8CF7918000E
-X-Stat-Signature: y73jrn8te7h34iheusabj47sdx81kmp9
-X-HE-Tag: 1788461854-647928
-X-HE-Meta: U2FsdGVkX1+WodTHZU+kOpK1ZPAysilxvm27re5y4x7VFmm00uzs6faWtFUQaz1MbKL4IBCV4hW/qHRR9I1la1Nk+8FVbRMurhHDcLhBpa+xzRDmsrAOCgoyEZ/yK4moFtIDiQKSbB5PIyzwfX4ervuSOSIu/FrfEMhZ76b1Wu11zjiJgAksLqDLSjEe4A3yQiSmkV4YsV8dhYnBHwP+exb2+s692H93C7GMn2Qr7wlmfMFFqnuQEEKp9YHMpjvlMO77YkRcD/i2AAW+K9HogmxHUokqM1PQ/2QgIglc6rd/nDYlzKp4jjlITFgS96OmstIQ+VD1DObUBqplBfOYZPzekOtOtHEnFCx5804AWjMrtNIfNvgerg9pXcFYN+Nh6rDnM4Cr+Y73vfqgsnJvaPCuCoeOrCDqVt5VY0WdHB+sK6SUo9HFKt4/aNL21xNaMG8PrrEInI1kamq4xJIMbug5zbak5VbU9hUu+lJr7R6y4bO5Ag27cDZlgx5Evyi8XNe8yaFLP/H9DXLgIHfTQt+qzukxmKfSoNDpIPpJSssbdeFmYzHBIef7+x7KBmmlrKVyHyytudmw4r/Cw5XHTOxzSKEe3GAUNlS7tZFDivRPjxyIRNpyX5NP1rpsJOhNFlAwD26htAPCYkDmKOUduKu16YI1ay2HyEjjngySk+SLxE7hAJ9OD65QjvRDxIQTFgBX7nUj2Jz27oFz+U4PxrCPbBjCa2CHpX0yjh96mjmfiVsTS3mYSN41eJc4bz8jP+PSM+6JC1vOUOOgCfE63fbJ5oIfPdCke0IRU5b6cOchBwQlkPZRB6aXYqrSynrTlSX+YREADE3/RA2bDuYnDk3DcxMjIE17DRAEwlLKEx3CbmQi9l0kcP4274XiE+Mav4gVSNG6YDHaaPf3Z5vtJnJxyHEUgGWOVHIKVYgQ7MDrgJ4i+p+mSnMQs/4HNxTsoW/h/xQ2eAfiEmm8LZI
- GgrfwZ3U
- YT2h31Ns888h/N2fmj8QRywRXMkXolckRlLxFYp1h8vtLlE57iFV1kY+2HfvD7IJ+1Xm5F9P35Ycvsb3dZellFL36vD378gO9KZ3ulzpRX1jeMnucNE2FbzdLKORw0rux5eLwlwec60GUjLFJ7JmgvuyZ4nu6OOfXo+pAaihy7FoX3Dz1uOjaqR3VTmCz1h9FrnxNU06CUdkXWTFOM8/anrO5xk8kEQQh5j0qRsG7IkXqQSqIy7hmOEVdWFffqZyT9p7r61e9vqP/EpsJKXjiaHrIulGdL3Il2SjCTG/JtYX7iWOOyvTeNODsuCRui6IjVxcua20KKAbsyJK4WUnnYDiquKeLP/JTK05u/QF82cMDle+6wDA0uc2uW1IVjc3ukrJPSRiU6APrkXZMvWAbcHf4zrm8hAXMlMIMdH/1OClL3QYp/m3+CkfayxW8nPYeoBvEenmwXTuOWhehQFzncSu1XX+WTKi6NgTIH2vT0WjMEVZxR1kDJlAh9OdVbEJ3Sjq6sGwFqOtgudW/UprXRmktVzuwgAhhk7KZJdM9ctbIrFS+qJKHjIpuBbaQijcuWCA+etmRzUVc4bEZQd0+RFdNCRbJSnSOAMYiztUJvpq2aOHDtsKkydXvWGKxgJL1oJjdrCPXV6dI1/c6QvhQAh1OBBOt+74JociEtB1ENLrXj9Wf7CSjn3Pu5g==
+X-HE-Tag: 1788461943-805320
+X-HE-Meta: U2FsdGVkX18rj8M1sGjcTjpGXDykZFJCEBXcLKkOlePf4jZEu54+vjtaiM1tJdTLw5Ne7eFqaA3keTxhG1ZsgAqJXRIb2HnSAzZDtJlo4b70H2S2fVqFmKnoLqn/0o0fkj0uzjrMKjf+Z/o61uPB7Mr+WPLCWe7kpgDKKe5L63Jpyll0KfFOvrYFk3luGCCRkQXC6QFjZpibbumFNJrEc2yjLikc+IDz6txLsLf9LyrOildzH6wcr3a+bmVRu89E4iCsPqPl7TKZVyAjbcJyzUhZtC7G3OgTlG6+lW+W74JCGC9tGVkQ9LDIpKnUgLlyO7jKiUG1QdqnlPSzwHzHys2cYBx/1wz15Iy+uwVVIqjxsbbs35ApvcWW8dRHCrqqWhH2JsWq/vwqqoR0VAuDq/tD91q4UDyTfGf7mBWr/Vo92UHy0A2Q2m1cGjX1EqbsU6E6Fn7kpgqPJst6Gj0Sx1VV97moNWZY07Xs96YHeeuMlyIBMyapIy0Dqpa3Pu6xRXj9BnPlLtsnupFpAsbxhNcRM1WfBLoiafChu9sV/H3hgGeW4sq1Cp8bcU4m3xgHP3pIvj+3Ha3/L2I83d/m86YubgNjUWKrFF2bTVmuiAO1XTCJHe3fAK5rv6/zkD7YhK/l5r3J0e5LxwsA0KkauLWL58ANyXk/QU7DK6zeBAbWSYM6w56gC6aR6qeUWvmLVQKtoz4aWJqiV23shhrSyGgzmfdjUEWo20DgvAuHOIEDka7IPR8bvfT2VaC2Wv+gf9UMjqxBuZmI46+cUx+sLasyRQ2yiB4Nl5AJySGbVRPAHvmgGOB9QAEwY7RdsuzUFcaFuqXNGw7/4RqA1cdBgKNWL4hoJ07HTigLiptJvljkf7CnJUE0vuYO+fiZqX+pPZalERKaHo5AVljdE7y1AmpXpm5lyA+sy+R+AYToqSO8fK1iB7Cd9DTZBrfIHzojAS4CIG7rz8NDT88yC96
+ R2Pb5lob
+ 54KZ+4eIVE9Njeaxnrzh9iel9fuaFy4QqDdAxn/Qz1nX5FWDrALTcg+7LhcibGk2iDCy+pfdLpuM3YNaNl3vM/2hBeLo9REA4njaB6sM/lhRytZ7cDJ7jxAdC67rSD2kiHpXFUh2tAC3aa8SuGVSbt6C9VmF3BvueRXt6wpBmr68gKFras2kAB0AT1jURmoiVcy3X0zQiuaDtoD5rTfkpqzjjhd6XcifyV2rwLHUVW2yPtNXAe0NfQ2f0TPVqBCRwg4CbYROWpOBl368A2Qzy+fiE4NQ8sXu4Egmk0HWv794lsxdYIrBMDQV1ne3Q3CPLZ7tRMblLyctEMA6Ov6svAYe7CN7k4J4KkMqBaIoLip2FB4qogsX3yRy6KXZ/oSDp4xqdN3yRFVyvHd8Ud2dutnmGbsK7/ug4xvRZHFJnD7PGtNo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -233,225 +185,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+>
+> If you look at try_to_claim_block(), you need half of a block to be
+> free or compatible with the requested migratetype in order to convert
+> it. When memory is full, LRU pages are scattered all over, and
+> compaction is not involved (order-0), this gets more difficult the
+> bigger the block is. You can get into a situation where LRU reclaim
+> will not clear sufficient room for conversion in any given pageblock
+> anymore and you're stuck with the type distribution. A large share of
+> buddy requests then go permanently through the slower fallback path.
+
+I think we are digressing from the min_free_kbytes discussion, but it is
+good to understand the limitations of our compaction and reclaim. Nimrod
+is going to run some workloads to show us how his patch affect 4KB/2MB
+THP systems. Based on the min_free_kbytes calculation, this patch has no
+effect (on 4KB base page system) for a single node system with 272GB memory
+and a two-node system with 484GB memory. So smaller machines would see
+the impact of this patch. For example, a 16GB single node machine will
+have 16MB min_free_kbytes instead of 66MB.
+
+>
+> Usama knows more about this, but we have seen this on GB300 hosts, and
+> have JUST started to deploy kernels with smaller pageblocks (2M).
+>
+>> Basically it indicates at some point kernel allocates a lot of
+>> unmovable pages that use many 512MB pageblocks and the life time of
+>> these unmovable pages are so diverse, leading to all these
+>> pageblocks remain unmovable and free pages spread across all these
+>> pageblocks. I thought bigger pageblocks can keep unmovable pages
+>> constrained within fewer pageblocks, leaving more contiguous free
+>> memory.
+>
+> The idea is that the pageblock maintains contiguity for the largest
+> size you routinely expect to allocate.
+>
+> The page allocator is very passive right now, and it doesn't work
+> super reliably. But even in the current regime, smaller blocks have a
+> better chance of containment.
+>
+> For example, when the ever-growing page cache runs out of movable
+> block space, it spills into unmovable free space. When the next
+> unmovable request finds no space, it runs LRU reclaim - which is more
+> likely to free space in one of the many movable blocks. And so the
+> next block is poisoned. Smaller blocks have a better chance of filling
+> up natively, means less pressure to spill into incompatible ones.
+>
+> And the higher min_free_kbytes, the more likely there are still native
+> options when the zones are down to the watermarks. E.g. better odds
+> there is still unmovable free space, you just need to reclaim some
+> movable/reclaimable space elsewhere to satisfy the watermarks.
+>
+> I've been working on making this more robust with the huge page
+> allocator / defrag_mode stuff: instead of falling back and poisoning a
+> block, invoke reclaim/compaction to produce a neutral block that can
+> be converted entirely.
+>
+> It's the same idea as the higher min_free_kbytes and watermark
+> boosting, but it is more targeted at the end result: readily available
+> space in compatible or convertible blocks.
+>
+> But with that active regime, oversized pageblocks are even
+> worse. You'd pay ongoing compaction work to produce a level of
+> contiguity that you don't actually need.
+
+OK, digress to the compaction and reclaim discussion. Isn't this 512MB
+pageblock size issue also telling us 1GB THP allocation will not work at
+all? It is a proxy of 1GB super-pageblock.
+
+I need to spend some time on it to understand all the heuristics and see
+if anything can be improved.
+
+A quick chat with Claude results in some items for me to explore:
+
+1. reduce pageblock conversion threshold from half of the pageblock.
+That can reduce the number of slowpath entries.
+
+2. make reclaim pageblock aware, so when an order-0 unmovable page
+allocation incurs a reclaim, the reclaim will try to get free movable
+pages from an unmovable pageblock first.
+
+3. in addition to produce a neutral block, compaction/reclaim need to
+repair unmovable blocks by getting rid of movable pages. Proactive
+compaction should do that too.
+
+>
+>> > Seems to me the excessive min_free_kbytes is just a symptom of a
+>> > deeper problem.
+>>=20
+>> Yes, our anti-fragmentation mechanism does not work as we expected,
+>> so that we need an excessive min_free_kbytes to get khugepaged working.
+>> I wonder why reclaim cannot get the extra free memory instead of
+>> reserving it via min_free_kbytes. Maybe we need a watermark boost
+>> when some consecutive THP allocations are seen to achieve similar
+>> effect of boosting min_free_kbytes?
+>
+> I'm just wondering what the easiest way forward is to fix the ARM 64k
+> page problem.
+>
+> Yes, optimally, reclaim would work to satisfy compaction space by
+> itself. We've seen it fail at that before, though.
+>
+> How critical set_recommended_min_free_kbytes() is today is a question
+> that neither of us has a clear answer to. It's from 2011 and a lot has
+> changed. However, knowing Andrea, I'm willing to bet he added this
+> based on seeing a need in testing data. And I would actually expect it
+> to work better now with proactive compaction, since that has a better
+> chance of turning low-order chunks of that volume into pageblocks that
+> can be converted instead of needing a poisoning steal.
+>
+> It's a change of long-standing behavior for everybody. It has a
+> regression risk and requires careful evaluation and testing.
+
+Not for 4KB systems with large memory, since khugepaged's
+min_free_kbytes is capped at 66MB for one-node, 88MB for two-node, and
+44MB + N*22MB for N-node. For a GB300 host you mentioned above, it has
+494GB memory and with pageblock size set to 2MB, it should be a nop,
+right?
+
+>
+> Meanwhile, adjusting the pageblock size on 64k page arm configs has a
+> much smaller blast radius, appears to be the right move ANYWAY given
+> what pageblocks are for, and makes the min_free_kbytes a non-issue.
 
 
-On Thu, Sep 3, 2026 8:59:06AM -0700, Tarun Sahu wrote:
-> Use binary search (memblock_bsearch_start) in memblock_add_range() and
-> memblock_isolate_range() to locate candidate regions instead of linearly
-> scanning from index 0.
-> 
-> Under heavy memory fragmentation (such as KHO page preservation registering
-> hundreds of thousands of disjoint folios), scanning from index 0 on every
-> insertion and isolation results in O(N^2) complexity, causing boot-time
-> memory retrieval to take several minutes (~268s for 393k pages).
-> 
-> Using binary search reduces the worst-case complexity to O(N log N)
-> (and O(N) for sequential appends), cutting KHO memory retrieval time
-> from ~268s to ~50ms.
-
-I encountered this issue with my workload. Initially, it was because I forgot to
-set THP to "always", As a result, there were many 4K pages even though they were
-contiguous.
-
-Indeed, I noticed some delays or hiccups with my workload even with THP set to
-"always".
-
-In the past month, I used something like what I attached at the end of my reply
-to reduce the number of memblock_reserve() calls. I never realized the poor
-performance was caused by memblock_reserve() itself.
-
-[    0.231623] mem auto-init: stack:all(zero), heap alloc:off, heap free:off
---> delay
-[   38.587378] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=32, Nodes=1
-
-With your patch, I ran several rounds of tests with THP set to "never" (4K
-pages) and no longer noticed any hiccups or delays with my workload.
-
-[    0.247746] mem auto-init: stack:all(zero), heap alloc:off, heap free:off
-[    0.512019] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=32, Nodes=1
-
-
-Thanks to this patch, I no longer have to put up with the delays or hiccups in
-my workload!
-
-Thank you very much!
-
-Dongli Zhang
-
-
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 7c4d86daf86d..03e1f914c800 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -67,6 +67,8 @@ union kho_page_info {
- static_assert(sizeof(union kho_page_info) == sizeof(((struct page *)0)->private));
-
- static bool kho_enable __ro_after_init =
-IS_ENABLED(CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT);
-+static phys_addr_t kho_preserved_batch_start __initdata;
-+static phys_addr_t kho_preserved_batch_end __initdata;
-
- bool kho_is_enabled(void)
- {
-@@ -610,25 +612,58 @@ static struct page *__init
-kho_get_preserved_page(phys_addr_t phys,
- 	return pfn_to_page(pfn);
- }
-
-+static void __init kho_preserved_memory_batch_flush(void)
-+{
-+	phys_addr_t size;
-+
-+	if (kho_preserved_batch_start == kho_preserved_batch_end)
-+		return;
-+
-+	size = kho_preserved_batch_end - kho_preserved_batch_start;
-+	memblock_reserve(kho_preserved_batch_start, size);
-+	memblock_reserved_mark_noinit(kho_preserved_batch_start, size);
-+
-+	kho_preserved_batch_start = 0;
-+	kho_preserved_batch_end = 0;
-+}
-+
-+static void __init kho_preserved_memory_batch_add(phys_addr_t phys,
-+						  unsigned int order)
-+{
-+	phys_addr_t size = 1ULL << (order + PAGE_SHIFT);
-+	phys_addr_t end = phys + size;
-+
-+	if (kho_preserved_batch_start == kho_preserved_batch_end) {
-+		kho_preserved_batch_start = phys;
-+		kho_preserved_batch_end = end;
-+		return;
-+	}
-+
-+	if (phys == kho_preserved_batch_end) {
-+		kho_preserved_batch_end = end;
-+		return;
-+	}
-+
-+	kho_preserved_memory_batch_flush();
-+	kho_preserved_batch_start = phys;
-+	kho_preserved_batch_end = end;
-+}
-+
- static int __init kho_preserved_memory_reserve(unsigned long key, void *data)
- {
- 	union kho_page_info info;
- 	struct page *page;
- 	unsigned int order;
- 	phys_addr_t phys;
--	u64 sz;
-
- 	phys = kho_decode_radix_key(key, &order);
-
--	sz = 1UL << (order + PAGE_SHIFT);
- 	page = kho_get_preserved_page(phys, order);
-
--	/* Reserve the memory preserved in KHO in memblock */
--	memblock_reserve(phys, sz);
--	memblock_reserved_mark_noinit(phys, sz);
- 	info.magic = KHO_PAGE_MAGIC;
- 	info.order = order;
- 	page->private = info.page_private;
-+	kho_preserved_memory_batch_add(phys, order);
-
- 	return 0;
- }
-@@ -1687,8 +1722,13 @@ static void __init kho_mem_retrieve(void)
- 		.leaf = kho_preserved_memory_reserve,
- 	};
-
--	if (kho_radix_walk_tree(&kho_in.radix_tree, &cb, NULL))
-+	kho_preserved_batch_start = 0;
-+	kho_preserved_batch_end = 0;
-+	if (kho_radix_walk_tree(&kho_in.radix_tree, &cb, NULL)) {
-+		kho_preserved_memory_batch_flush();
- 		goto err;
-+	}
-+	kho_preserved_memory_batch_flush();
-
- 	return;
-
-> 
-> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
-> ---
->  mm/memblock.c | 38 ++++++++++++++++++++++++++++++++++++--
->  1 file changed, 36 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index 9ce86349a29f..88940474b020 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -160,6 +160,11 @@ static __refdata struct memblock_type *memblock_memory = &memblock.memory;
->  	     i < memblock_type->cnt;					\
->  	     i++, rgn = &memblock_type->regions[i])
->  
-> +#define for_each_memblock_type_from(i, memblock_type, rgn, start)	\
-> +	for (i = (start), rgn = &memblock_type->regions[i];		\
-> +	     i < memblock_type->cnt;					\
-> +	     i++, rgn = &memblock_type->regions[i])
-> +
->  #define memblock_dbg(fmt, ...)						\
->  	do {								\
->  		if (memblock_debug)					\
-> @@ -591,6 +596,33 @@ static void __init_memblock memblock_insert_region(struct memblock_type *type,
->  	type->total_size += size;
->  }
->  
-> +/**
-> + * memblock_bsearch_start - Find the first region index where rend > base
-> + * @type: memblock type to search
-> + * @base: base physical address of the candidate range
-> + *
-> + * Returns the first region index that could potentially overlap @base.
-> + */
-> +static int __init_memblock memblock_bsearch_start(struct memblock_type *type,
-> +						  phys_addr_t base)
-> +{
-> +	int mid, low = 0;
-> +	int high = type->cnt;
-> +
-> +	if (type->cnt && base >= type->regions[type->cnt - 1].base +
-> +				 type->regions[type->cnt - 1].size)
-> +		return type->cnt;
-> +
-> +	while (low < high) {
-> +		mid = (low + high) / 2;
-> +		if (type->regions[mid].base + type->regions[mid].size <= base)
-> +			low = mid + 1;
-> +		else
-> +			high = mid;
-> +	}
-> +	return low;
-> +}
-> +
->  /**
->   * memblock_add_range - add new memblock region
->   * @type: memblock type to add new region into
-> @@ -651,7 +683,8 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
->  	base = obase;
->  	nr_new = 0;
->  
-> -	for_each_memblock_type(idx, type, rgn) {
-> +	for_each_memblock_type_from(idx, type, rgn,
-> +				    memblock_bsearch_start(type, base)) {
->  		phys_addr_t rbase = rgn->base;
->  		phys_addr_t rend = rbase + rgn->size;
->  
-> @@ -827,7 +860,8 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
->  		if (memblock_double_array(type, base, size) < 0)
->  			return -ENOMEM;
->  
-> -	for_each_memblock_type(idx, type, rgn) {
-> +	for_each_memblock_type_from(idx, type, rgn,
-> +				    memblock_bsearch_start(type, base)) {
->  		phys_addr_t rbase = rgn->base;
->  		phys_addr_t rend = rbase + rgn->size;
->  
-> -- 
-> 2.55.0.970.g62bdec98f9-goog
-> 
-> 
+--=20
+Best Regards,
+Yan, Zi
 
 
