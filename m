@@ -4,103 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD0E2C624D6
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 03:20:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF0CBC61DD6
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 03:23:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C6576B00A3; Wed,  2 Sep 2026 23:20:52 -0400 (EDT)
+	id E0D466B00B6; Wed,  2 Sep 2026 23:23:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74EF96B00A4; Wed,  2 Sep 2026 23:20:52 -0400 (EDT)
+	id DBD146B00B7; Wed,  2 Sep 2026 23:23:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 616386B00A5; Wed,  2 Sep 2026 23:20:52 -0400 (EDT)
+	id CABE46B00B8; Wed,  2 Sep 2026 23:23:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 399F66B00A3
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 23:20:52 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BEC28803E3
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:20:51 +0000 (UTC)
-X-FDA: 85170999102.28.156F547
-Received: from mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A64281A0007
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:20:49 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=j76dF2sJ;
-	spf=pass (imf19.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 9BB7D6B00B6
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 23:23:55 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4028FA4343
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:23:55 +0000 (UTC)
+X-FDA: 85171006830.26.D316AA6
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6D904A0004
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:23:53 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="KdnI2r2/";
+	spf=pass (imf25.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788405650;
-	b=S4tXMiu7hWsMyN0RvBZgiU1wdL8adi1/Q96Tn7ekf0+GZjyrdlJ7vmFGEeZx/qSREX1B1W
-	9zRofV5OMydeXFrqSn0JEzmBGLavJiEeZu1s6bCp3k4DAJqpgDVZ1ppyglck6cmQKEHEH5
-	Wsm4VyIykPwhnJwnQcLdTEsIntrks78=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=j76dF2sJ;
-	spf=pass (imf19.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	t=1788405833;
+	b=X9A/rhiQTgyt8N/mz9ivyKh0L6IlRiFJSbqWCNUEUIu421petDHtbpq/83jLjqaewS7riw
+	ZMzQjLzvJJxcwbUF3xcZsNmyTEe5VNehoixopfwzn6CPEvTBwpWqdWN0ZUU1vR6GL6KSKU
+	vjU1pjtGEqaVgNLqmNyZTpcSnNi+MRo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788405650;
+	s=arc-20220608; t=1788405833;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FEBZVVlgfi7/B5Wa70F9uyqJ9z5paq3EJHsc8E+ImE0=;
-	b=Ug2GdsgaPNRtU6vz+DrdxaIfLJjDlZe6YS38w7g5GE1IEkMOsN87eqcGTy2XtTvIZg0jzC
-	oQNTkG3kOneATDGsE135xvxhW7f7tXSOH6bY8KENiam8i9Y04zpxI7ctw0g6bkFPtUAZOn
-	eO90X5DsdmrZkw4mkFD0fvz+slpXFHw=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=gV2iAlnyroIqHvYCikGMSiDdJzetMM/dbS3MYN3DzYc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788405648; v=1; x=1789010448;
- b=j76dF2sJAXKSqCq3t+oFQZwG7Vrk+zPxk+JPRNrYlblKR2bv4gZ4O223kIWkUAVr+wUNIu+9
- niu7mT+ZCGCAMhN3gtaD682/95Ms7OjFpdTAClFH2TZvz4aR7BQB0uuV9hWXDinGdHEvAiZAg3B
- Vg3aIyEn0a0S8pOBPU8bNRC0=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 0f653951e6c46c55;
-	Thu, 03 Sep 2026 03:20:48 +0000
-X-Mizu-Trace-ID: 0f653951e6c46c55
-X-Migadu-Flow: FLOW_OUT
-From: Ridong Chen <ridong.chen@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Muchun Song <muchun.song@linux.dev>,
-	Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Chris Down <chris@chrisdown.name>,
-	Tejun Heo <tj@kernel.org>,
-	Yu Zhao <yuzhao@google.com>,
-	cgroups@vger.kernel.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
-	linux-mm@kvack.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
-	linux-kernel@vger.kernel.org,
-	Ridong Chen <ridong.chen@linux.dev>,
-	Ridong Chen <chenridong@xiaomi.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 2/2] mm/mglru: fix ineffective memory protection for non-kswapd reclaim
-Date: Thu,  3 Sep 2026 11:19:52 +0800
-Message-Id: <20260903031952.1120321-3-ridong.chen@linux.dev>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260903031952.1120321-1-ridong.chen@linux.dev>
-References: <20260903031952.1120321-1-ridong.chen@linux.dev>
+	bh=Vo0koFGfaxAqi8e6JuPyVAjuicCs8xIC33S4fjg+MZc=;
+	b=EZzhEB2F546mRfnQ2GxqpN65DM1K4OAhzO+1n0+f+wmKvSggfprCWXFA1aX1+OdZB+L7aP
+	pPGjf360px3YPymhVLGvrojHPEgSJ+XNy9OALlKOXGkr9gohOotAy05tnEuUWXGhFMQM9i
+	8cJlEYqVxIIeiZbLOtX5fpXaaTaauOs=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="KdnI2r2/";
+	spf=pass (imf25.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3965d3d9ab8so1660907a91.3
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 20:23:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788405832; x=1789010632; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Vo0koFGfaxAqi8e6JuPyVAjuicCs8xIC33S4fjg+MZc=;
+        b=KdnI2r2/Zmo10rDJy0lR2bD2jjN2oN+spAMBJ/o94ohndEI1bw9zayIrJsbfsJlyDh
+         ODw+0iyHxuapMfVtwgZPzWNebI13A5FJ/hMGt1fJqLILUlGmYJt6JT9q6VL2U/PFwGU2
+         3Jz2yvi7jcLTtUrM/fE1hAwCjEDxup95nY3u2gwGhsilcJbgQpHvEiRwhWKeaSJxlaGA
+         iHCpR4h3j04kJaZN6EJ6QbT23TKMK1SaWnU1EXbBcKnUb1O/pWOURQWBOwS+eGJEgKds
+         jcbSRFS2VoQznrN5x13eeexu8dnoIz8hiddcKu2WbBII+MLC+AHdeKXhsnQobKLkf35O
+         4KFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788405832; x=1789010632;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Vo0koFGfaxAqi8e6JuPyVAjuicCs8xIC33S4fjg+MZc=;
+        b=jEz8sRf2BY69bH6J274C5LjwO3L0+Lyybr+9y3+J7Si9ULJUOUKTQhdphRrER7t1yd
+         1RHl30kVQaLz7/WPP2WwNWzez1ze1WCfXzKZSDfZ7+wpoFoNtT+Lapt3mGQpRSMrhjO9
+         Y7IsdYZKTL5m5mDp9MQyihSe2S18EpxE08mGbZXr+fkEXUqVPzCxjFWqkbRX/lN5o9pg
+         mbQwVIMTdMmVYYQ1fzwSZFupzL3BiOkc48xw7L0puvrJAsZojv4USy8nSKyoZQGPdV+E
+         WrO36aONtXQ5IJ6LMc/dsRjrGtRGmypTWLh7omqGX26ugsjAn1dr/Om3vP/4gMrDZESb
+         np+g==
+X-Forwarded-Encrypted: i=1; AKwUvByX6Jwh4YjIj6PY2/hOuJQf0NI5bd/fgqSwAtvWygx54G2M+T0TbG8f6BrXkh2+rZpcYBHvftZ+bA==@kvack.org
+X-Gm-Message-State: AFuF++k1JTCWABAy8RzkSS0FprTTHyfD92BCyh6TjbBCxX+9gVZzZm95
+	++9Am8EIvMzMakHDjLts7DV6XzlGxht9EJpmmLFz4SaiR7r6S7FrXy4J
+X-Gm-Gg: AYBFou0l+ttmNSE3zZcNln7qc90OQ6VGVY8dVJQgyOdjRYgJ6qHy77q3n7t5TT0jtkK
+	Wc/AseVLG04CAQ2QHyB2OxvinSU8RNVWgdkKRDhdRaGmdQMf145FZueb+Bv4Iuc1vigzKYMeeKe
+	VsSsi6gdm+Hs5dW590PN42NxvekzA2XJ9bfwIWMYSmiSnlILrkqOJ87FY5fPhki7JwWs1tp7dmD
+	5zbpKymqHMKF4qbjZTTC45sbm/sJlC2UJZfrQwQ+U9M8FEniped30Ocdhy69mdSvyUxo3WO857l
+	kmRXUdzn8wwqf0WV6sRXe3I2fdhcFfoSSBZN75Q/3jpoI7DCGmaQTVRJj5FZedahjdBCUwyD8TE
+	yVY1h/n/B8AQts6qpkEchmXnb7jrA3es13bJ2kf6BkVsokt+pmb5JXCfiyeOfBWybS0PlTnDX35
+	0S3zey8cae0szuLOPFF1YNrDxWkFjuTWvqIVwh9dORELhf/DFgK8r3URWdsOByRIxyKzVsqe7b2
+	EY=
+X-Received: by 2002:a17:90b:2687:b0:398:9c0c:7c71 with SMTP id 98e67ed59e1d1-39aee1f9788mr15696992a91.24.1788405831849;
+        Wed, 02 Sep 2026 20:23:51 -0700 (PDT)
+Received: from localhost.localdomain ([240e:b8f:1df9:a600:c693:b19f:ada0:748])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08c3a526sm2300735a91.10.2026.09.02.20.23.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 20:23:51 -0700 (PDT)
+Date: Thu, 3 Sep 2026 11:23:47 +0800
+From: Vernon Yang <vernon2gm@gmail.com>
+To: Orson Peters <orsonpeters@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [BUG] mm: writes after MADV_FREE get lost in THP pages under
+ cgroup limits
+Message-ID: <f896d210-ceb6-4a28-9e57-63862203e3b4@gmail.com>
+References: <CAJxLxMUGu1-L+O_nAONOwOXnS=cNbNApCWqdthRjd76LThtSPg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A64281A0007
-X-Stat-Signature: i14d4g5axuye13hksbxofxuufc64d679
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJxLxMUGu1-L+O_nAONOwOXnS=cNbNApCWqdthRjd76LThtSPg@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1788405649-662062
-X-HE-Meta: U2FsdGVkX1/dNYy5kJDeZK2LhfnQvaH/t8I+ktVyfZKNqMrmbouIIk9tOe/ZZIJJONADoATRRx36A3ipSXabgIhavX56mB127M6m4O8O7Ci1wN1cdYYP4WEnMqoCKqs5su/+K4EUbWre1hyX77m8/dvmla8egwPC4xUx4K9SkxzZenmv4Hqa/puvHOy57EVXXRgycZ5pv7K2qxarDE0+cg8mgcWWxPmWnMVzAxiYl/UzrpyxsSHNhRlVL3OYdTo9XgvQbRL/Zyg3uq1ilzrpSagPtUaZTYqQMzz9yryOaHigwxBXEYg3h/UEMRlHAj4y42O+zFg5KYwAILBG7blPkETjA+sP9mP+wrirl30SVeQ2c5rZBzn+A3ys7Gc0mPCwGj/VQenG3o2cobJ36yKa0kubC8w6vLkQvA5U3alPTmUuFqK47aoeahlS6ee1x8BYnkPUTZpvscdFF5LEBvD7cdOdePkY3sB6b5+Mb3VclOvogD5ktmwt2Hg6k7qIcGybgwiuBbRbipRKBH83GAgy/K5LYakf+65u44AP8di0ZF+EAFWUTVWrmZWHN+/8/WT0Avi2ZbCbMTvd1jQvVtwRwV4ZegerdLQmhCN45uUWrrWVLgdvrXPhHt+/fGdT1Syu5bOHNYGVkXyl7EgnqFsXnJR/ObBkmV45sLa42Yq04Oln/gTnR4gW1R17s0St/wytLvHgbmS961nmsO4GS+0gB+2NHU2G5GdmKPrIB/+zfuVOXtGBjiw9vFFZTC8czQhVrc2LkIw+cIroAOcvqPbLT1CxB6Hrle5fbybRT441QNvQuFs5HYRBVJPXIMblkgKzj+7z+fscE7igVr5eytt/QVXU2nkO2TjxUUSBRMx2prExbDby7hbzG1X/WVVxeagVRdYRt5+2ji1WryXmYc3E0rc0YyUWp0DuL9Mv699tsL+djeOh1uVNK0vlPOSUDoHr74Knn97iVaxP362SFTO
- djjM3DYv
- NIDO/8OMWsc1s1qO0xTOI3CvydSFY5sLeBujU7fNjsvmGBef8LSv5ffBI1oXjNuD3PdBCp1tmbCcl8gzWMDtTSl74u3HuhCgAynKWERjfho7wkKubpGata6PwQkoM66f0IrNNtJJsgQc/XOxvy+6gvz3WwI+sNUtyKezbCb4iBcLG/8wL5x7KK4IcmlEg1wKs3mDwhlYNXmK90qrMj8V8wujFwxX3ihgxHggwVtR3ee/LnS8TALfuuZRk09nQSkyds3+ozmA7Q4OrQAu4OFWO9owVlC1spRB4dObUsoKfNLOANN3vPdpOgaZV6oO+FWMTNZipD0Mr4xC0yBWdiatAj6spiZ8Hug2CZ+D/GIzPcR6mG9QwjVCKoqymINRvUjwvqOKR7GI0pysuPEvMq0rViTtxD3aqswVYTO0Fhp+ke83gCPSbcMa1StU8t52+pgBchxSVSPm9TTTCEl0jeZZB9OYmlK3zYjUak1UgbAvhQRroR60JRgX+V9Heom+h1VayUdneQhuNnTFMnSIdooX/fMmVeSZb1YKqdjfeUF/UIi9TrSv97d6XtIrT9bN5Vfoz+t6rNwdhMiZ4medw9yRMXT93oKr3f1pjmzBAEbYUTBnFiBWTsU+vS0xBQyJIHprOCLopkzU6gH1zyUGXt82lQepXtFmYrY4LyHV3JVbBZw+6XMyiG1jxs7leosv7d6wBgLxjGPa6ZNSQZs/kkfluDOy10UuRRX5HQy//EkQ1/hUg4CVbPCoFgvZ9PLqyqkRItwJeEZthxlpkNGZtBdj8hDqIgY6x3RT7+e/QjTAzYLRLFe8EXbC5tyXBOg==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 6D904A0004
+X-Stat-Signature: 4bogsi5pkuytsqb3pbw5yrxaqn5cck5h
+X-HE-Tag: 1788405833-920622
+X-HE-Meta: U2FsdGVkX1+kuLG3LsB5/Rnpxui2ne9biwqqG0D6fFlnppZZJo91mkB9VEsjfY2gmWDCKzPagOO7B1h7BEWMn9pcobI9uEYTnFx6B8DG5FPXYmLSbopSeXQfKpcONcYE3AGTgdjgai4hQJrFBTKKTRjeoFpCfAwfIkbRrIaMrgngmnOV9ah1L0UWRhKD4M/h7MlKOEwFNpWF0n2djxqE4uHagxhxrhqFgyGdp7J1w4YEuJxQg7w3quWffbg/wk4VlUw6Q+5/LwDGt0yTJEKhIq05OjoJYaNsZZUpSGLR9/mRwbIYzgX2dYLDzfeiQtJ2g0ojTQ1hWZxU8Mi3/zC62o9lvznUbZTIKy9xF29fALP9UX7+847oskm1Fm/DswUO66uausydswCn2qUSabZuSRh/mkBKwyzgkCzWhvnmIKa+43qN5rLE7Hg09GvKTf5OKyVpRPSK23z84CG8aX+DoV+cY935GgoRPRJsOeSO8dSvmOQdyeEjKCPsikdznsd2Mlih9m/n7SQ6YoKP2ZFQtMoMZjammboBd/4qJwTO1EF/2Xr4OaEQdfcS08NaB40IGtLbnHbzYvrHyIHCsWhp/d/qnqwpNN6ONlO2/bTYg7QlhQ1YDoWfaDDV/zMLUXkES2pj+my2Y/5IY5N16YnILyRBK2hqfWxhYyraRiK2Ste+MpeUIZLni1fRhO/6tBWJwSaAG4dyJqBJ0xYu3GJQy4XFhvl1FlDhr9VpZgRNvKTNKwBmJZ6/K93AuWUlB78v+jCRA9m/3401JYXT2TwRN1NMFlwNRxGDNtTwA9T8+epfrFgJVcazetMCgVF+L91amOxNMwgdxAqPgzyRykq+q+TjPkYpIcyxyov30hMXL26e0AsuQT1X7YhXaHI6b3E8wzQnOy9Aim2AUPfj2YFP6t0n9xE5jUmHkMVeQUPXXzG7jL/PaC4MpgV9o5ngbISAvzk7PktngyW0gMrhiee
+ 86HPZdND
+ KRBBK2atlYREdJM18ExEeRukreT1Az1dQNVqGhA/IS1tA1XGCkU9iqyyLHfnkLpwCo83nUyBx282yOT5JvYmO4mwvIpmFr+gvZfzi/9Mpg31yoJMyO5HsLJoEn5cFjB47w5Qas+h9wNHEBAmsGqKV49rtupuhUNvt2/4iis/9f8NwMbyp7e1Oa71L1qpP1GRQm/mDHO8zuWuxrdlOHwqMMlIesGy7s/qBeqAgH4ijTgTyGhE9KMCIbtatcRbEVEfnF5HxoHzVPil/HCwAsO4Pqy4OtQT3w2M/O9JMsVi00LFUltwN+cxNrWIZi8Ccfp8HmD0FCPdDKfxIxmngmbWTAsooMJ7sSi8FUiIl59doiARBt3rhzhyNLcGJYnL3mA+BQ6oodKEMmZ3DuS6LYV9xB9IMK3Np4oR5FMFRRi0ESx2yLsH8z7rwqGYzvXayrd4YfBWzuqTYSVCDX/09f6mSGSBcIWSzzyfGbqjmeJqnfl4hK4sfElOJZdqZxjIX2SCQJvrpmt7vOqXtUVqUAZfhc3S4b88Mrldc7eAb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,160 +120,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ridong Chen <chenridong@xiaomi.com>
+On Thu, Sep 03, 2026 at 12:31:51AM +0200, Orson Peters wrote:
+> Dear reader(s),
+>
+> Below is a small user-space C reproducer that, when run with
+> transparent huge pages and under cgroup limits, causes writes after
+> MADV_FREE to be completely lost. I have reproduced this on
+> 7.3.0-070300rc1-generic on an AWS c7a.8xlarge machine.
+>
+>
+> Best,
+>
+> Orson Peters
+>
+>
+>
+> // Reproducer showing writes to madvise(MADV_FREE) pages getting lost. Requires
+> // THP to be on and cgroup limits.
+> //
+> //   $ cat /sys/kernel/mm/transparent_hugepage/enabled
+> //   always [madvise] never
+> //   $ gcc -O2 -o madv_free_repro madv_free_repro.c
+> //   $ systemd-run --user --scope -p MemoryMax=2G -p MemorySwapMax=0
+> -p OOMPolicy=continue -- ./madv_free_repro
+>
+> #define _GNU_SOURCE
+> #include <stdio.h>
+> #include <string.h>
+> #include <unistd.h>
+> #include <fcntl.h>
+> #include <sys/mman.h>
+> #include <sys/wait.h>
+>
+> #define SIZE     (768UL << 20)
+> #define PRESSURE (1536UL << 20)
+> #define PAGE     4096UL
+>
+> // Touch PRESSURE bytes in a child so the cgroup has to reclaim the
+> parent's buffer.
+> // The child volunteers as the OOM victim, so it dies instead of us.
+> static void squeeze(void) {
+>     pid_t pid = fork();
+>     if (pid == 0) {
+>         int fd = open("/proc/self/oom_score_adj", O_WRONLY);
+>         if (fd >= 0 && write(fd, "1000", 4)) close(fd);
+>         for (size_t done = 0; done < PRESSURE; done += 64UL << 20) {
+>             void *p = mmap(NULL, 64UL << 20, PROT_READ | PROT_WRITE,
+> MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+>             if (p == MAP_FAILED) _exit(1);
+>             memset(p, 1, 64UL << 20);
+>         }
+>         _exit(0);
+>     }
+>     waitpid(pid, NULL, 0);
+>     sleep(1);
+> }
+>
+> int main(void) {
+>     int bad_rounds = 0;
+>
+>     for (int round = 0; round < 10; round++) {
+>         char *buf = mmap(NULL, SIZE, PROT_READ | PROT_WRITE,
+> MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+>         if (buf == MAP_FAILED) return perror("mmap"), 1;
+>         madvise(buf, SIZE, MADV_HUGEPAGE);
+>
+>         // Set buffer to 0x5a, again after hinting MADV_FREE.
+>         memset(buf, 0x5A, SIZE);
+>         madvise(buf, SIZE, MADV_FREE);
+>         memset(buf, 0x5A, SIZE);
+>
+>         // Trigger the bug - on a multi-NUMA region machine simply
+> reading the buffer in a hot loop
+>         // for 2 seconds also worked, likely due to migration.
+>         mprotect(buf, SIZE, PROT_READ);
+>         mprotect(buf, SIZE, PROT_READ | PROT_WRITE);
+>
+>         // Trigger cgroup oom killer.
+>         squeeze();
+>
+>         size_t lost = 0;
+>         long first = -1;
+>         for (size_t off = 0; off < SIZE; off += PAGE)
+>             if (buf[off] != 0x5A) {
+>                 if (first < 0) first = off / PAGE;
+>                 lost++;
+>             }
+>
+>         printf("round %d: %6zu of %zu pages are no longer 0x5A",
+> round, lost, SIZE / PAGE);
+>         if (lost) printf("  (from page %ld, they read 0x%02x)", first,
+> buf[first * PAGE]);
+>         printf("\n");
+>         fflush(stdout);
+>
+>         bad_rounds += lost > 0;
+>         munmap(buf, SIZE);
+>     }
+>
+>     printf("\n%d of 10 rounds lost data that had been written\n", bad_rounds);
+>     return bad_rounds != 0;
+> }
+>
 
-For MGLRU, memory.min/low is not honored during global proactive reclaim
-(writing to the root memory.reclaim) and global direct reclaim, because
-these paths shrink memcgs using stale or effective protection (emin/elow).
-It can be reproduced as follows:
+Hi Orson,
 
-  # echo 7 > /sys/kernel/mm/lru_gen/enabled
-  # cd /sys/fs/cgroup
-  # mkdir -p a/b
-  # echo 100M > a/memory.min
-  # echo +memory > a/cgroup.subtree_control
-  # echo 100M > a/b/memory.min
-  # echo $$ > a/b/cgroup.procs
-  # dd if=/dev/zero of=/tmp/testfile bs=1M count=200
-  # cat a/b/memory.current
-  222650368
-  # echo 500M > memory.reclaim
-  -bash: echo: write error: Resource temporarily unavailable
-  # cat a/b/memory.current
-  6070272
+Thank you for your feedback. I have also reproduced this bug locally. I
+am providing a fix patch [1] that can resolve this bug. Please test again to
+see if it solves the issue on your end, Thanks!
 
-memory.min is 100M, yet reclaim drops a/b down to 6M, breaking the
-protection. The traditional LRU path is not affected because
-shrink_node() calls mem_cgroup_calculate_protection() for each memcg it
-visits during a top-down tree walk.
+[1] https://lore.kernel.org/linux-mm/20260903031608.1194238-1-vernon2gm@gmail.com/
 
-Commit 30d77b7eef01 ("mm/mglru: fix ineffective protection calculation")
-moved the protection computation into lru_gen_age_node(), which only
-runs for kswapd. Non-kswapd global reclaim reaches shrink_one() through
-lru_gen_shrink_node() -> shrink_many() without any protection
-computation, so emin/elow are whatever a previous kswapd run left behind
-- or zero if kswapd never ran on this node. Relying on a prior kswapd
-pass is not correct either: a memcg's emin/elow are derived from its
-ancestors' memory.min/low settings and from children_min_usage, both of
-which change over time, so emin/elow go stale even after kswapd has run
-and must be recomputed at the point of reclaim.
-
-Introduce mem_cgroup_calculate_protection_path() which computes emin/elow
-along the root-to-target path only, by iterating through the cgroup
-ancestors array top-down. This avoids the full tree traversal that would
-be needed with mem_cgroup_calculate_protection(), limiting the cost to
-O(depth) per memcg - typically 3-5 levels.
-
-Call it from shrink_one() for the non-kswapd path so that each memcg
-about to be shrunk has correct protection values.
-
-Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
----
- include/linux/memcontrol.h | 10 +++++++++
- mm/memcontrol.c            | 45 ++++++++++++++++++++++++++++++++++++++
- mm/vmscan.c                |  8 ++++++-
- 3 files changed, 62 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index f227348a3f24..a65a516adc66 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -1885,6 +1885,16 @@ static inline bool memcg_is_dying(struct mem_cgroup *memcg)
- }
- #endif /* CONFIG_MEMCG */
- 
-+#if defined(CONFIG_MEMCG) && defined(CONFIG_LRU_GEN)
-+void mem_cgroup_calculate_protection_path(struct mem_cgroup *root,
-+					  struct mem_cgroup *memcg);
-+#else
-+static inline void mem_cgroup_calculate_protection_path(struct mem_cgroup *root,
-+							struct mem_cgroup *memcg)
-+{
-+}
-+#endif
-+
- #if defined(CONFIG_MEMCG) && defined(CONFIG_ZSWAP)
- bool obj_cgroup_may_zswap(struct obj_cgroup *objcg);
- void obj_cgroup_charge_zswap(struct obj_cgroup *objcg, size_t size);
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 256b68ffca70..ae568fc68813 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -5214,6 +5214,51 @@ void mem_cgroup_calculate_protection(struct mem_cgroup *root,
- 	page_counter_calculate_protection(&root->memory, &memcg->memory, recursive_protection);
- }
- 
-+#ifdef CONFIG_LRU_GEN
-+/**
-+ * mem_cgroup_calculate_protection_path - compute protection along a path
-+ * @root: the top ancestor of the sub-tree being checked (NULL for root_mem_cgroup)
-+ * @memcg: the target memory cgroup
-+ *
-+ * Walk the ancestor path from @root down to @memcg and compute the effective
-+ * protection at each level.  This is safe for isolated queries because it
-+ * ensures parents are computed before children.
-+ */
-+void mem_cgroup_calculate_protection_path(struct mem_cgroup *root,
-+					  struct mem_cgroup *memcg)
-+{
-+	bool recursive_protection =
-+		cgrp_dfl_root.flags & CGRP_ROOT_MEMORY_RECURSIVE_PROT;
-+	struct cgroup *cg;
-+	int root_level, i;
-+
-+	if (mem_cgroup_disabled())
-+		return;
-+
-+	if (!root)
-+		root = root_mem_cgroup;
-+
-+	if (memcg == root)
-+		return;
-+
-+	root_level = root->css.cgroup->level;
-+	cg = memcg->css.cgroup;
-+
-+	rcu_read_lock();
-+	for (i = root_level + 1; i <= cg->level; i++) {
-+		struct mem_cgroup *cur;
-+
-+		cur = mem_cgroup_from_css(cgroup_css(cg->ancestors[i],
-+						     &memory_cgrp_subsys));
-+		if (cur)
-+			page_counter_calculate_protection(&root->memory,
-+							  &cur->memory,
-+							  recursive_protection);
-+	}
-+	rcu_read_unlock();
-+}
-+#endif /* CONFIG_LRU_GEN */
-+
- static int charge_memcg(struct folio *folio, struct mem_cgroup *memcg,
- 			gfp_t gfp)
- {
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index b4c9b8f3dfe9..500cc2051d13 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -5111,7 +5111,13 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
- 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
- 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
- 
--	/* lru_gen_age_node() called mem_cgroup_calculate_protection() */
-+	/*
-+	 * For kswapd, lru_gen_age_node() has already called
-+	 * mem_cgroup_calculate_protection()
-+	 */
-+	if (!current_is_kswapd())
-+		mem_cgroup_calculate_protection_path(NULL, memcg);
-+
- 	if (mem_cgroup_below_min(NULL, memcg))
- 		return MEMCG_LRU_YOUNG;
- 
--- 
-2.34.1
-
+--
+Cheers,
+Vernon
 
