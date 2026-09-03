@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31BCCC61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 13:00:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6926EC61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 13:00:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B9586B008C; Thu,  3 Sep 2026 09:00:07 -0400 (EDT)
+	id 6785C6B0095; Thu,  3 Sep 2026 09:00:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 390186B0092; Thu,  3 Sep 2026 09:00:07 -0400 (EDT)
+	id 62C7F6B0096; Thu,  3 Sep 2026 09:00:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27FD26B0095; Thu,  3 Sep 2026 09:00:07 -0400 (EDT)
+	id 53F7C6B0099; Thu,  3 Sep 2026 09:00:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0224F6B008C
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:00:06 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 68385A055C
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:00:06 +0000 (UTC)
-X-FDA: 85172458812.29.8D93E2D
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A1BAF40003
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:00:04 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="SVUUa0S/";
-	spf=pass (imf01.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=qwjhust@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788440404;
-	b=jabjTYs1zxDMCWCs37xTilIuk15iJP6jotaW02MxbeUL+oNMHVGzV1CyOf1N8Ko4swxPFV
-	n6mjuORzUs6Cpq4XLpIGJku4RBqQoyOgxALK7etq7T6oSlizc8KPpPUBcBp4+Szj2uXBAv
-	7RQeM8HmLa+ZxkOWPiY3YCPcK4RwAwY=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="SVUUa0S/";
-	spf=pass (imf01.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=qwjhust@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 26CDB6B0095
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:00:14 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 95A211A053F
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:00:13 +0000 (UTC)
+X-FDA: 85172459106.10.853EDA0
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C304C1C0010
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:00:11 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pnE5lbav;
+	spf=pass (imf21.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=qwjhust@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788440404;
+	s=arc-20220608; t=1788440411;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ySykvbIWmO4Te6vIVwftEuMOLYpDg3lGaudbSYAL6eg=;
-	b=yfQka4nNjjAKzQcF3rhuYuoYk2bzixTtJcIPk/SQY/SZD0t8/vWwxHjQNFY0F31ycjEOJ7
-	zfDZMOHpjL0eeRq8TruYAcEdPUrz+LVKbAWGYYNHHdCiOk5WkPYY5ToZ05OPbW6EvzimUY
-	pH0wLuVBY6UxCL5oWCNdVf+JBOwEHxk=
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-84e27035206so2102725b3a.3
-        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 06:00:04 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=aNUKKLqZvrANPeHHYmjPL7ok/64poHS/mGT0EIbK468=;
+	b=peq5Puv6x8de//cKVVEhtFi8hnlnnxtsCfq6H48JD4KHM+Ja/hdbzyhQzFhoDM/UAHxsgm
+	kvbp2wUkVbNFaA2uwJHejFZuprv0p+xM300YJIloyMTpyBA1IMQRV5X35eDOi9aUAv96+Y
+	AcxqwmWLYnqNJUiGTz2ALyCi7715Mwc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788440411;
+	b=U/ulSPibfAabYEE48AY8RqQDl/JS/GPsuhYqmeZtHqY6rENa4kjHryv2TieP/UNtCnIl03
+	HN53mp6JE6xvhGkGWr9BeuGSRegFEsw+k6U0t5sbKlIT4gAqBwba+YnQaGYzVdZdOTiDEd
+	C7+1iXl9JWBKf3MbemaspUp3UaQV/yk=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pnE5lbav;
+	spf=pass (imf21.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=qwjhust@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-84f38f3b36eso1980682b3a.1
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 06:00:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788440403; x=1789045203; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ySykvbIWmO4Te6vIVwftEuMOLYpDg3lGaudbSYAL6eg=;
-        b=SVUUa0S/j6t3ZIwVKkhoDrfG1bkzWkE0ia/dYkD+TaMnz54IYZsEmecv8/MP8x3J7l
-         p+KgT52JFYqUwMOhFE+DHtOT3gTuZ7elzjuG77tkDQ+kbvwm1xwZoCrbyARuFTQUl7Jl
-         luZfnvY/fFUZhmVFnGXUT2kqfbn9w7xYu7UPxNl3DhURZzEIPlr581JZ1sSEHK+nqPWB
-         frjT6ItDLVcJUTGCy6Y/rRErLm/Gys6tF+xHiTeQG8yWHH7I7yly299yoAOyp28YmIrB
-         uWTZt9pUC7Yb53v7Q2sBCh05O0xelRBVFSedZUZt2u2lxWXVZgYprNDwB8BbwuMOUcL5
-         qMIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788440403; x=1789045203;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1788440411; x=1789045211; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ySykvbIWmO4Te6vIVwftEuMOLYpDg3lGaudbSYAL6eg=;
-        b=r2E6ITOuZ/j2JQneEfhJ3Q0lWJ4mSh28VI0jdX7h3c/VmRP2pbgxJ770c//NvWtp6L
-         1rA2T+IqcC9yhwo2eYY0ZqMbOw0uDhQVeuO134vYco5LHb8E+WBsQY4lInWIAAWhhfWb
-         y+Jb+Pjw0DfpiJbLOoLplOBQaMaGmfCumK6IhTCP0KcSCh4hVKc4QaZaN8P/ugLs2XO4
-         KbXeLb51CataoQaqI5hn3g2iErcXYHVgot85tlALWU4Nzv2RcjjZ5y9N9GuR71fLVS5B
-         yQX+1a3yvvSTQNJ2xo7Hae1LonKUBM7sz7q5L5bUkZw0/svUsKxsD/ul0kdE5UT6P14i
-         gNUg==
-X-Forwarded-Encrypted: i=1; AKwUvByXRqjSeDBPKkDMGxEkYDqnluU+i1n3AzihPdGQ7R9QW54I25E/5/vBGdm9JjsrGEigrhFjG1Pc4A==@kvack.org
-X-Gm-Message-State: AFuF++lS9qbIFZgdVp/WEDou08rl6X+p8JV1VBqu8g9YB0eHG3dz7aDL
-	H1IZcMCDNetm1eDlB4ZY/lhFWshVigE+DeTr96DxdbB2taW1LxEaYYst
-X-Gm-Gg: AYBFou1wUQJeqq8StmP2KfRTpJ2XukgoGmTnCiXNRlNtY0/Kd2eOdtsNmzKFLMHGdHK
-	MYgvFjYrDgur1fJSZx9nB5gS55WwIYCX4Cb92pdfHu2JJntAmnXmKrG+vZYlvr1E6U/hqQzJyID
-	szWGQj1awULIObQvNmS0ppZcPiIStlBu/aHMIgy2OkgwxQJCxwO4HdWXKMgfEiKoF8tZlJGPRUU
-	vxAA8AgT4bleP83QhCStav3NjXmgMIE8K24Ue51h+2iHmQtOmJnkdAV5UThIvz7k7HNiRBeCDqy
-	0CriAbM6AikLt/dGbODNe41fYr4Sp3G1jzH4Alp/jNzUogMWlqBv+MGr3tTZzi6WqyksSCz09Yj
-	aHla7NzOPJ4UfUSpY2hGihBSR+8FJgGssWKUmVMX3/x3uv1QYkNZvCJTrBKd6xNgbwFSNmZRc9L
-	yqkix8fiCfF6PtsogfOSnjui+yVijRLu77V8kzMJP2ZQyKPyOMYUVQoZY2bsz+gk3QUyAVCQ7WC
-	DfwUvb0b795zzKeJAgGBNy4
-X-Received: by 2002:a05:6a00:189c:b0:848:4754:28e4 with SMTP id d2e1a72fcca58-85ed3895332mr17366905b3a.15.1788440403103;
-        Thu, 03 Sep 2026 06:00:03 -0700 (PDT)
+        bh=aNUKKLqZvrANPeHHYmjPL7ok/64poHS/mGT0EIbK468=;
+        b=pnE5lbavEZ7VHJunmDTiysPkbuuLdCgUjEMGdZh8ql1Q7mgphD/TXV5y//AiwrQn8U
+         SoPEB58wqVxU84Plju9nS0HqOWg0UjDeupysKBfPtO/GjXo7NpDxkR4cy/s7qhAU8F0/
+         MPQmJ/r/JDrcY/tyWW7P3z9zRb6aBQd5QI4rr/1Sj4KWu09l28N9xOvyUMuZW0QccfrA
+         GYf30XmE7LSufNAd7Yxw8fks3Zm1ARn/z8h5rmqdTTqJ0AgVlYZCOdyjygGdiwWy98Hs
+         WRiWu6dVbM97ETplhP4PQqTtkaKJmI957LaRrw7nl+7BSDDlraAmlrWdJKlf8L5EuneE
+         nNfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788440411; x=1789045211;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=aNUKKLqZvrANPeHHYmjPL7ok/64poHS/mGT0EIbK468=;
+        b=r8rqnsyK7ydEb3+4Jhw2gjBZwURgvzY3UDNNUan3ylei5AZGw+rtQIosEyyx4gD+Kd
+         a/XQVbFS9EY7oo5HYH0CHS82zaqSweHMIussv3nbpQps5ktlzfypq6EzMz76KGW8l+LX
+         1PQSFxPEJnUlmEVM5sECfZf7pjJ1SlguVrMJQqsOZqrEFSPeADjvo6TL+xfG6+5BMuvD
+         adzCIKBzW12HcTM2FgxyH3x0avR0TTEaWatgiXoYGSGhH5DIwRBCrE4IIo8Tb6BZrIqp
+         6YACQ5CYAAldr6ASKHLOtCxe+uDvGvKmHmFWqymaOh7R1u0vL+32vRl3LrhiaYkLxlVh
+         jpNA==
+X-Forwarded-Encrypted: i=1; AKwUvBxG3Nm+cHLIJ/XQ6OqaOj03tL5EayHr8JYEVGSrwrZi5yCv7/0sVdU/ofzCc/XpcZllpkg5odrOwA==@kvack.org
+X-Gm-Message-State: AFuF++knHZPc2v6u6XIDK4u+Pza/LLa465Yo5Rm8ZLJqZURv4EUXoOcR
+	fZZPMjcW+07O0km0PNNQ8zn15apdtAp3xBQpbITfa1cZiexFGnysT4zI
+X-Gm-Gg: AYBFou2mr+qMuCtbM5+t0SUNnN1ni4kFCHoZe7zyPHpCC+SQju55r0CyF50EEisinRx
+	dUInnqzVbCsfIjboJhoYc0PS/imlR31fK1QL7aPdcqSmY4W2ODz+ODy7IcAUisUvOJ3VKjQ2R3e
+	2BrcvcADQpKXqJGvPuut+ZKl7izFScjiUkDKDhaJzE1YCGbVwHlzoz8alyt2jrTS4xWYtpA/1Q/
+	Q4q1jMt8tOU78o1CeLqF1SRZdTksrCeKZwCvKeerwKFUXx2pXf+A7Pjyx26w6TMZtpQUG9YTJ/G
+	1SVsa2+wzklnPJF+mLwAYM6DM8n/XX4MA4CGeHGMIdDs+yRpo116sr4odzYmTNyOXeAwzXZjVQQ
+	KUsPlezO4YBbeiU41l+1mrrCPu9ukq1E8YGXAZBSRIBReNFHmeJGEGx06/SocGujMGIhXShjikW
+	2tP8p4xve1JXW92xjdKaFqmmMry9aCXP+wJ1YMNB9XJeWkH8EzT2HPQksjnc9UFTs9sDuqQDCP/
+	8nfz2v5JE5uxPHKsx/C8Jza
+X-Received: by 2002:a05:6a00:1408:b0:852:3726:dfde with SMTP id d2e1a72fcca58-85ed25e2492mr15794500b3a.9.1788440410410;
+        Thu, 03 Sep 2026 06:00:10 -0700 (PDT)
 Received: from qiwenjie-ThinkCentre-M760t.mioffice.cn ([43.224.245.241])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85db23f7bccsm2980946b3a.10.2026.09.03.05.59.57
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85db23f7bccsm2980946b3a.10.2026.09.03.06.00.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 06:00:01 -0700 (PDT)
+        Thu, 03 Sep 2026 06:00:09 -0700 (PDT)
 From: Wenjie Qi <qwjhust@gmail.com>
 X-Google-Original-From: Wenjie Qi <qiwenjie@xiaomi.com>
 To: jaegeuk@kernel.org,
@@ -106,20 +107,22 @@ Cc: linux-f2fs-devel@lists.sourceforge.net,
 	linux-mm@kvack.org,
 	qiwenjie@xiaomi.com,
 	qwjhust@gmail.com
-Subject: [PATCH v4 0/2] f2fs: enable buffered RWF_DONTCACHE
-Date: Thu,  3 Sep 2026 20:59:51 +0800
-Message-ID: <cover.1788438786.git.qiwenjie@xiaomi.com>
+Subject: [PATCH v4 1/2] f2fs: complete dropbehind write bios in task context
+Date: Thu,  3 Sep 2026 20:59:52 +0800
+Message-ID: <c4e69fb1ffd6c6fd968683c690ba29f2b98c9fa8.1788438786.git.qiwenjie@xiaomi.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1788438786.git.qiwenjie@xiaomi.com>
+References: <cover.1788438786.git.qiwenjie@xiaomi.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A1BAF40003
-X-Stat-Signature: fc85putg14yqszeazfuf9txmijak49co
+X-Stat-Signature: dufzqebbwf6uxfrummzfgf1yor67sd7k
+X-Rspamd-Queue-Id: C304C1C0010
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788440404-464132
-X-HE-Meta: U2FsdGVkX1/ukQZtzGRNAXXHBHOp6qyynHrd4L0aN+6qcm7jvBwlCfaxSRmRAJxHEvePl8Yd9QZB2954ctxssNz/Vpankfj8GcO5CuMjcVyn5nGuxVKn9iVefrv0oePvs69RbQziAVKTt2ZFCsOD+Le0lloklIZygethuMvYLv2k/8SfI0lN4W7rXytwDq+jnAHPqfr4rd3U3ElE40zqXtN6eeWAgTGLzzsMPJvqXQ3g2+xUnj/PI86RPgYsj8t9uFTBiuv5MChGWGeqNZ48xa6OR/5kfmQOZr+M9yYK5cogDSY39GkiAhERhl7/S1sZ26ihEdzB+4y7DFvtQ2UFma6LPXOgUUUd/Ccs+bJUWzwXkeDgl2iYGA4KCHFzUCIptvu7C44NhbBtsxn2bPP0jaztH3mU9hs+Rf1y+82HmUkuZ5mstZCnsaCRMYhzKq0AZNdbLGPMWbhKtE9z1SeFhheQAGUreeRn7LNgaoCp5xD6OTr+G66XCwnqB9Qep+BprsfiWRpzypwQdCjyMC4oPA47T2AkrRRvgDcgu5a0tVIlRmX7KFrRagl6POm7syzgY+4yYhBUZNGxVjmzbefo4G6v8By9xPtr6GXqpoao/QXJaO8d0XQ77dl4GTsqrDqfwDBqsaTdgNrHwHTWMJA0SNeCYlt/uxMhJOUJfEospT9DdWVs1PbmYqoGCeYwYES5zGTakrwugwBErL15VHz9A3kH4eSDU6OFynFeGRgL0k7yqlXQYSOJbm00imPKVtAADGMGefjMDBT444CbgfFnYzEeW/l2Y61U25E1AYNTWYI/yKuFN2b7MX30say0YE8r9qnP/8/dksB+wLN9eAt4ud4v3rYS9dCL16h4S2yHkziHcyBuBRM5E1obrLTGf5bTQ6QF4GHCAhcmobc+Sotkz9KzpJxYd9DMN5kXR/v2YfI+Tnxq1u+zfkljapHG6gIfMmUsWlQYKNs0LDonkAz
- 5J53wbld
- i6oL5Wy+LG+5eJKscMzVMgcyQcIl3qRipswLfLgB5OR4bZSUz1BRpjORNCXZ+uddtbntsPgzvXX0H1npSgwirIM/wy6pa7WKEJPtEvqnitqbLwxkOHQvxMNDBIpgJZgP4tcLERZkulXfNxkWS6CYJa/r87BAFLDm3ngvNhFFlb7+ZAH2I0MbR7IENAvh7FtDAJwGgKZqH/v5XrJMQopjMOJTMxjp9ncIHMco5cm6uvTPzZc022q0iw/Z/cAGSAmX7qoHvsQ544D4WO1UCBF01+Je6jsEhu4rwL0dZgaqleke4Icj/75QslqRm6RY4z8MU2l1pVyEGCtBsEeis1ugIgUmxZGhLd+h0Up5xJCf4UHp268x9eueMlBpGTFsmPagdH1N/XNnxMh9K4hVKazwWWKBy8g==
+X-HE-Tag: 1788440411-48686
+X-HE-Meta: U2FsdGVkX1+GOsjXtJrxyoklvsP0H5w++amvrIXJ94p7m2+6zNNab/9vKXyGdeuWrta3idBo9YJBYkCz97ndtkUgnY9nbQlEE4KXahBMeVMzbKDIUQlYQACUmYOjDhBish2cVcolT/u9h7CH39xaXBU5Wj/3xpx5tqHnAH+WKZk7DdeVduHjpImWR0Mjv5WgMoBV4YpzsJ86i3Qetvc34YMvrTUJ0lO6qMj7L3ZSFhzHBrxHHv5CX1IpcDBa/p67wj37jIPpYGDubCbruYwRrCna/IpvEuVjP9V/ijamzxuzZhLe4yhZYy5l+w5NKZZqmtEVliDbuFsOFyMLyiBZAUmgLP2JiDHNQTpkkrCw2u7QJ5Nd+My9XtrD1KsejFpvRyr2IHNDJ8HblProdoYN37qVG9aWgbKpIthZ2P/pEim5xEwEg5ufYQD0YHzCWOohDJkhydTZMa/AjROq4yai042r/GNoEBJKKSMYm1NMdREnMCUCMtEj/CiHtn6B752x6EKrPTtIOypTM37nhrp1sdOIXUorMr7u4CX/0jHLRswvG8yisLfwgrLliqcAMTUnNqn2pOGkRPfZiUuIKacHeHFXyh6wBvMPkI7hpqEznU0JFMYp+rLX+VjyqEOyY+TystCFDJiaWj9kwIyBIy+3FXQrHMbIQGyoyAXajIlvG6LbhUO4ClctbTXW/WzWko6jGO7PoyTnjLxWxToX8g2dzIO57hPMrGO1rr4RTPrh0X/DYH6o6ZQLbXLtgPq5fGsixZ1Dfvi8VWZuqebIyoN3W2S8f/EcV9dNgYJJBOPiRh+HbI71NXidfipBO97/uaFt2iKbsBtI5sOIMsw5/cvPT5nCaucRbMLMnpyoJ01fffPRQRMWILyaNn82FDkweqj1MmigRZS6rXB4Xuc2DVj+oxNMXZHGmkjAiBVsULmGfdyO7NptJlonSbdmNSNt2aup/9YGf4i8bkUf6lcD+E/
+ R6Y/NMVT
+ 0otEoBhCHQ+YE7H8sk6iLeADoh0pXVrq3ukjZ/dYemuXNRXBuQgp53xWhIhOe5mUVVsBjbGaIsHqOSR9Fb9EIZ7xMS7WXH2CyuW/PBa8GJ9dGv6plKCctPVIJXTfDMz9DxySVI0kjHBbe7d/Cgp9iCvjJJKgTVFKS3kHH60vQZb3jN8D87Fb6MzyEZp2wwBK9tYLUPApOentxbf1KAE4T0AhojyBmH684IeSSWhVmzcoJkOts5wZVj1TUUHUmaCLOl5kmSwTLIRkl8JMfcpLT0vpIjDl373v/7TUQeyz423wncovV2/7cZzD/9cicX3V/kmxmaDRRk1FgX9OIfOFrMO54P2gmlrMqyZyvh3SbDlmvEFOHg48Nlfxodw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,128 +130,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series enables buffered RWF_DONTCACHE on F2FS for sustained one-pass
-streaming writes, where retaining the written data can displace more useful
-cache.
+Buffered RWF_DONTCACHE writes invalidate dropbehind folios at writeback
+completion. Mark these bios BIO_COMPLETE_IN_TASK so the block layer runs
+F2FS completion in task context when needed.
 
-Patch 1 marks dropbehind write bios with BIO_COMPLETE_IN_TASK and uses the
-same flag to keep normal and dropbehind folios separate in the IPU and OPU
-paths.  The block layer owns deferral from unsafe completion contexts.
+Use the same flag to keep normal and dropbehind folios from merging in the
+IPU and OPU paths. Classify the original page-cache folio rather than an
+encrypted or compressed replacement folio.
 
-Patch 2 passes FGP_DONTCACHE to the F2FS buffered write folio lookup and
-advertises FOP_DONTCACHE.
+Keep the existing large-ATC completion path unchanged.
 
-Tests were run on a Xiaomi phone with 10.7 GiB of kernel-visible memory,
-running Android 16 and Linux 6.12.69 with 4 KiB pages.  /data used F2FS.
+Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
+---
+ fs/f2fs/data.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-The performance test wrote exactly 64 GiB per run at 4 KiB,
-8 KiB, 16 KiB, 32 KiB, 64 KiB, 128 KiB, 256 KiB, 512 KiB, and 1 MiB.
-Two counterbalanced rounds ran ascending normal-first and descending
-dontcache-first.  Values below are equal-weight means of both runs; N=2.
-The pwritev2() writer models the streaming workload; it does not show that
-an unchanged Android application already issues RWF_DONTCACHE.
-
-Android remained active with displays off.  Each run started after a cache
-reset and at least 120 seconds of cooldown.  Throughput and one-second
-kswapd0/global-memory samples cover the write loop.
-
-Write-loop throughput was:
-
-          normal MiB/s              dontcache MiB/s
- I/O      r1       r2      mean      r1       r2      mean     change
- 4K      946.28   935.74   941.01   291.36   309.31   300.33   -68.08%
- 8K     1077.05  1105.84  1091.45   477.79   479.79   478.79   -56.13%
- 16K    1126.84  1118.49  1122.67   643.40   652.06   647.73   -42.30%
- 32K    1150.62  1036.33  1093.48   762.24   751.45   756.84   -30.79%
- 64K    1144.80  1163.82  1154.31   852.11   851.19   851.65   -26.22%
- 128K   1166.29  1162.84  1164.57   867.47   865.05   866.26   -25.61%
- 256K   1153.61  1172.78  1163.19   895.53   885.33   890.43   -23.45%
- 512K   1173.61  1197.34  1185.48   903.09   903.01   903.05   -23.82%
- 1M     1126.22  1154.59  1140.41   850.74   894.60   872.67   -23.48%
-
-Average kswapd0 CPU and average global Cached were:
-
- I/O      kswapd0 CPU, normal/DC        Cached MiB, normal/DC
- 4K             18.45% / 0%                 4830.15 / 686.56
- 8K             21.60% / 0%                 4862.35 / 591.48
- 16K            22.75% / 0%                 4905.47 / 625.07
- 32K            22.05% / 0%                 4945.82 / 561.59
- 64K            23.46% / 0%                 4920.77 / 639.78
- 128K           23.16% / 0%                 4971.37 / 693.26
- 256K           23.68% / 0%                 4956.93 / 668.60
- 512K           24.25% / 0%                 4972.22 / 663.92
- 1M             22.01% / 0%                 5001.09 / 705.30
-
-Other global memory means were:
-
-          MemAvailable MiB       Dirty MiB          Writeback MiB
- I/O       normal / DC          normal / DC          normal / DC
- 4K      6513.08 / 6382.31     640.48 / 33.93       37.94 / 0.09
- 8K      6560.77 / 6529.33     690.89 / 43.57       40.84 / 0.54
- 16K     6587.46 / 6519.94     789.16 / 62.67       61.58 / 4.64
- 32K     6571.95 / 6566.74     850.48 / 69.14       67.69 / 9.24
- 64K     6600.64 / 6559.89    856.97 / 134.28      59.60 / 16.19
- 128K    6627.03 / 6465.10    873.68 / 137.57      60.57 / 41.50
- 256K    6615.58 / 6541.09    885.98 / 158.15      61.25 / 29.57
- 512K    6625.52 / 6534.41    900.65 / 139.07      63.65 / 30.35
- 1M      6677.09 / 6539.89    909.70 / 187.56      51.58 / 33.46
-
-          Active(file) MiB      Inactive(file) MiB
- I/O       normal / DC             normal / DC
- 4K       279.57 / 264.13         4426.38 / 183.12
- 8K       262.32 / 260.97         4472.62 / 182.19
- 16K      392.09 / 252.95         4392.78 / 195.82
- 32K      254.30 / 248.44         4554.18 / 187.34
- 64K      252.73 / 244.94         4545.40 / 267.28
- 128K     322.02 / 243.95         4530.63 / 298.91
- 256K     245.47 / 240.02         4586.64 / 303.92
- 512K     254.75 / 232.05         4591.17 / 288.27
- 1M       238.88 / 233.64         4638.81 / 341.00
-
-Dontcache left zero target-file pages resident at every size.  Normal
-retained about 1.19--1.24 million pages.  Normal runs incurred roughly
-15.6 million kswapd page scans and steals per run, while dontcache recorded
-zero.  Direct scan and allocation-stall deltas were zero in both modes.
-
-A controlled explicit-dontcache model issued 64 KiB writes for 120 seconds
-at 64, 128, and 256 MiB/s.  Both modes sustained all three rates in both
-rounds with no final schedule overrun.  Between 0.02% and 0.41% of writes
-completed late, with a maximum schedule lag of 3.3--6.0 ms.  Dontcache left
-zero target pages resident.  This was a controlled model, not an unchanged
-Xiaomi application.
-
-Buffered read throughput was:
-
- I/O       normal MiB/s   dontcache MiB/s   change
- 4K          1825.50          1695.10        -7.14%
- 8K          1901.46          1847.96        -2.81%
- 16K         1941.60          1872.55        -3.56%
- 32K         1960.95          1905.92        -2.81%
- 64K         1951.35          1886.54        -3.32%
- 128K        1960.03          1915.82        -2.26%
- 256K        1976.01          1900.41        -3.83%
- 512K        1973.31          1911.24        -3.15%
- 1M          2230.91          2007.82       -10.00%
-
-Dontcache left zero source pages resident in all measured read runs.
-
-The normal-I/O control showed read-throughput differences of +0.67%,
--0.90%, and -2.58%, and write-throughput differences of -1.75%, +0.33%,
-and +2.33%, at 4 KiB, 64 KiB, and 1 MiB respectively.
-
-Changes since v3:
-
-- use the common block task-context completion infrastructure;
-- rebase onto the current F2FS development branch based on v7.3-rc1.
-
-Wenjie Qi (2):
-  f2fs: complete dropbehind write bios in task context
-  f2fs: enable buffered RWF_DONTCACHE
-
- fs/f2fs/data.c | 27 +++++++++++++++++++++------
- fs/f2fs/file.c |  2 +-
- 2 files changed, 22 insertions(+), 7 deletions(-)
-
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index 21f396ebe22..b0fedacfd12 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -503,6 +503,8 @@ static struct bio *__bio_alloc(struct f2fs_io_info *fio, int npages)
+ 	bio = bio_alloc_bioset(bdev, npages,
+ 				fio->op | fio->op_flags | f2fs_io_flags(fio),
+ 				GFP_NOIO, &f2fs_bioset);
++	if (!is_read_io(fio->op) && folio_test_dropbehind(fio->folio))
++		bio_set_flag(bio, BIO_COMPLETE_IN_TASK);
+ 	bio->bi_iter.bi_sector = sector;
+ 	if (is_read_io(fio->op)) {
+ 		bio->bi_end_io = f2fs_read_end_io;
+@@ -793,6 +795,13 @@ static bool page_is_mergeable(struct f2fs_sb_info *sbi, struct bio *bio,
+ 	return bio->bi_bdev == f2fs_target_device(sbi, cur_blkaddr, NULL);
+ }
+ 
++static bool f2fs_bio_dropbehind_mergeable(struct bio *bio,
++					  struct f2fs_io_info *fio)
++{
++	return bio_flagged(bio, BIO_COMPLETE_IN_TASK) ==
++		folio_test_dropbehind(fio->folio);
++}
++
+ static bool io_type_is_mergeable(struct f2fs_bio_info *io,
+ 						struct f2fs_io_info *fio)
+ {
+@@ -985,8 +994,10 @@ int f2fs_merge_page_bio(struct f2fs_io_info *fio)
+ 
+ 	trace_f2fs_submit_folio_bio(data_folio, fio);
+ 
+-	if (bio && !page_is_mergeable(fio->sbi, bio, *fio->last_block,
+-						fio->new_blkaddr))
++	if (bio &&
++	    (!page_is_mergeable(fio->sbi, bio, *fio->last_block,
++				fio->new_blkaddr) ||
++	     !f2fs_bio_dropbehind_mergeable(bio, fio)))
+ 		f2fs_submit_merged_ipu_write(fio->sbi, &bio, NULL);
+ alloc_new:
+ 	if (!bio) {
+@@ -1086,7 +1097,8 @@ void f2fs_submit_page_write(struct f2fs_io_info *fio)
+ 	    (!io_is_mergeable(sbi, io->bio, io, fio, io->last_block_in_bio,
+ 			      fio->new_blkaddr) ||
+ 	     !f2fs_crypt_mergeable_bio(io->bio, fio_inode(fio),
+-				bio_folio->index, fio)))
++				bio_folio->index, fio) ||
++	     !f2fs_bio_dropbehind_mergeable(io->bio, fio)))
+ 		__submit_merged_bio(io);
+ alloc_new:
+ 	if (io->bio == NULL) {
 -- 
 2.43.0
+
 
