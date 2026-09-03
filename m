@@ -4,84 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D37DC624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 09:57:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 488C2C61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 10:01:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC1C16B0088; Thu,  3 Sep 2026 05:57:03 -0400 (EDT)
+	id 15AEE6B009F; Thu,  3 Sep 2026 06:01:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C72566B008A; Thu,  3 Sep 2026 05:57:03 -0400 (EDT)
+	id 10C0A6B00A1; Thu,  3 Sep 2026 06:01:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B88A46B008C; Thu,  3 Sep 2026 05:57:03 -0400 (EDT)
+	id F3D106B00A2; Thu,  3 Sep 2026 06:01:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 855C46B0088
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 05:57:03 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id ED06AA04CB
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:57:02 +0000 (UTC)
-X-FDA: 85171997484.23.77A8207
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 3B6D0C0007
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:57:01 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LeapCbn7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C8CEC6B009F
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:01:55 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 497811A04AB
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:01:55 +0000 (UTC)
+X-FDA: 85172009790.06.BA033CA
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 43DD9140018
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:01:53 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Wd1wqw1U;
+	spf=pass (imf26.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788429421;
+	s=arc-20220608; t=1788429713;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lGOFCuE01N6hrukNH/ycOIy+tfIDW0sJvXY0njN6o/s=;
-	b=NRIK7HFe7CCRxOIIySXNqPzXjVaY5QjJAGOniVovAJ1QpGOfxUaORWCAaxzgQwgeSk1DMd
-	Xq0caAQiukdPtFGs4BKRb9/1noAhcZbsEbPIJcZF5Z54nALdU1DiB7snCADsyBQeb278eT
-	7GtSgirW3gBfaMQpeU+iQJJ8ljVdtJI=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LeapCbn7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	bh=5ce8M/7qhkjbYOloNei8s08cubgJ3TDWZ5Dcu7749Xg=;
+	b=pz9Yy8468lWsuOk390/YKrUtJm9pKnFWNfqZW9BlCOQjswVLM91oXxf1kYCWOXFani0Rzw
+	OeYY46za7TTRJqYci3XuwA25NZZjoBUFtv7YDP/x+httj6bTwZxrb9YHAEiNt+SMArLv/z
+	n0q0bDK9K+rg98Cuzw8gKe4/kjmM650=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788429421;
-	b=OJoY/e3zM7OMa8No3LFxexiHktJpP4KjwEP05PO4yBCO5hQNw8REEpzVlA/oVE7a1nbNAJ
-	E9E7fmXshsPglaHGXIutMV0ktRYHRGYn7oTcxOcO3pDHyHhAKSbWv0suZR+xwBFlZacGsn
-	Ohz3x0ksBE+FvXZgDWoLtqeJ6u01zto=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2CF4B43D19;
-	Thu,  3 Sep 2026 09:57:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5111F000E9;
-	Thu,  3 Sep 2026 09:56:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788429420;
-	bh=lGOFCuE01N6hrukNH/ycOIy+tfIDW0sJvXY0njN6o/s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LeapCbn72GbW7mWZfM+jgoORd8E0ud6TOXyPAh0ycXHhadqFmMRhDO2PbryuTnl2H
-	 S9bGt/NwNVYtUn1ceShRbQ1lUHQjCi2CwSVlwTvWnxKNGMpA1aBIPyf3sIxhPwpM+A
-	 BGMdnDDzMasV3tmBoh7/eBJvhgf5nlszC47oF/E/EcDHZEgM41UftdhAj7N6DmoJaF
-	 9mBq+pgVnSvV1Bby4EkhwZ1Sfh/H9Ek+wHM4DZZU4uPABLqVyWk4cFyaaVah6yZ8ws
-	 NU4u3o+govyKcKLj1Z/wD3t1hRiPxAbD6xeiK+cgH67bI08kskXR8ib0XILyK1Eymd
-	 6jFG5nd6qUktQ==
-Date: Thu, 3 Sep 2026 12:56:54 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Guillaume Morin <guillaume@morinfr.org>
-Cc: linux-mm@kvack.org, leitao@debian.org
-Subject: Re: [PATCH v3] selftests/mm: hugetlb_madv_vs_map: add underflow test
-Message-ID: <aplEZqG7SFqYw22h@kernel.org>
-References: <aphPTJ4LK-Ag1C1m@bender.morinfr.org>
+	t=1788429713;
+	b=qt/VyRfoRv9DLB6KBMJCDgk30nlAxakFZqefg5jLSjmXlbUjwAK74MOPAVSzltESdZ2p50
+	UQUUBmQ6e0OVHNVK2S8NCt4QnL+ovolX0PNHwuBZ93gVbQf4LQ1CuMmG7cetJHDVZBC3Du
+	3mVeH41lNV6ymnADJ2FGvEJjUSk4GTc=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Wd1wqw1U;
+	spf=pass (imf26.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-cc1a4c62804so2116064a12.3
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 03:01:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788429712; x=1789034512; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5ce8M/7qhkjbYOloNei8s08cubgJ3TDWZ5Dcu7749Xg=;
+        b=Wd1wqw1UicMOC/qqLyYx9H74M51G65QLpf8rkRNziaDr/bdryP+c6Q5Hbl2U8aZM6U
+         79TIhvyR/NwtAQGotIadB2gk3NLhEPA9DOvMoJraH6t/zzYIiV4qN5QNlOgYbGwEo4HY
+         CNdTQjiTfVDGA3nSbNlpTPaFNgPMhmN17F9zZXkJ93QHEpk99WFY2b1wmwBx0dr9Ve8S
+         kGJiXrD21HPMfF2f0vefBkM0LidqAuHuaFPh9ONqdb7VnY+c5gb99pSGoFOvGeZbIqMJ
+         6159YHal2NTsDuAMKXNWiLBczlUe8Bg7/YsenoDk2Cr9RcU1pHbDGHHts4xY5Wcceemh
+         boEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788429712; x=1789034512;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5ce8M/7qhkjbYOloNei8s08cubgJ3TDWZ5Dcu7749Xg=;
+        b=icdPur0ImqKQR2H96Az8aemX/I21aUuWNaKAo7li9Rcj5XLC4E4Z9krWbgxv8pLgB0
+         k83acKMAPpKP6cGHR2ZSAx+Q1Ito0g7kL3R77WsHeofD9nX70vjqlIV81SAq9aZgqeWk
+         8uwZuiaTLXqGWOgc2ycHeJDSA84Jmmjn9DFg5eUaNjeCx0Qnu/qu86gTzL1s/mzkhRxP
+         1wBgGTC6TzYf3+ngK6nahf86iF6o7AxTu2WscmheqLXIvOJlqQ2Q3+G7YdqQL3HC0BzZ
+         bSzIFL/c3YQyonKz11WjriZyW7kauYH+Y9SE3G2MrAnFJ1dOelWO4C6Kta/9ei/h3VUm
+         RTBQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxRZaZfkpQUWq+VVHnm70h3AA3K+MFsRFNuRczQjgOqjHeSSAkMADVx0KAgJ/lRCZxUasz6ZTdO6g==@kvack.org
+X-Gm-Message-State: AFuF++kim9f7G7OP5+ykmPkBybjkihcktNE9cJyncB/UhD2YOpSWnddd
+	U+h+ClO8cICgzUsdL3bJ8wyd7SjmFFkJswxMZiUv/C9919IzsOWX+IRJ
+X-Gm-Gg: AYBFou0U2xK/JyHCgQkqSExdfU3rgLp/m7Ta4m3vModZkYIv3rYlZK7O5YQKJnPAsZB
+	O2pEpBOUzPg6VJUxlhbKUWhTqssryBh0SyWpu8gkKczoz/ASDWBK6PGd6huZiVabIceTnNw7oCa
+	9w4O4yHg+9E23JhLNauA+H/u8FHeF8iZwyN7aHO0wyK+OGWytfEUJ6HYfpsAAd8C82cW6n6LAmL
+	5MdZnp4ah8gAolgPW1hIsml8Suyc7NKZQbg1RNFGQwfGF4ryKNw9kQFI7jn9U53urgqOSc6ODzi
+	5ksZU1f2IrjtCTFj+w9QqTvG3LG+4SJFtKZhAivoLFkh+3MnhHheFJx0NRS/xXWi9NGVNT//lnA
+	/+pdos3ZOdfd4WXXnhsojfR3e1mgRGG3/NXF/lwVbpxCypjyGox9IbGMIrtym/IXdwhyNieTXPh
+	aI88WdBjFGCmnjieQROUMAigf5eG8cmDZOVR5DkV2ZK85duvzBNEBOZQAvqUg=
+X-Received: by 2002:a17:90b:4c4c:b0:396:4c63:7193 with SMTP id 98e67ed59e1d1-39aedfc9616mr16315183a91.11.1788429711355;
+        Thu, 03 Sep 2026 03:01:51 -0700 (PDT)
+Received: from gmail.com ([185.220.238.35])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08766a2dsm4456658a91.15.2026.09.03.03.01.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Sep 2026 03:01:50 -0700 (PDT)
+From: Kunwu Chan <kunwu.chan@gmail.com>
+X-Google-Original-From: Kunwu Chan <kunwu.chan@linux.dev>
+To: SJ Park <sj@kernel.org>
+Cc: Kunwu Chan <kunwu.chan@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	stable@vger.kernel.org,
+	Quanmin Yan <yanquanmin1@huawei.com>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Kunwu Chan <kunwu.chan@gmail.com>
+Subject: Re: [PATCH 4/4] mm/damon/sysfs: set next refresh jiffies per sysfs context
+Date: Thu,  3 Sep 2026 18:01:41 +0800
+Message-ID: <20260903100142.106449-1-kunwu.chan@linux.dev>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260902002725.108635-5-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aphPTJ4LK-Ag1C1m@bender.morinfr.org>
-X-Stat-Signature: bmocoobkg7513mayzjud1dtj8kfycaub
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3B6D0C0007
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1788429421-828593
-X-HE-Meta: U2FsdGVkX19Hi/RcymNLJkiFRtx7LFuWhhq2yDbh6EfOC2+hWfiTP6ADMoXpw4l556Jq7xJd8361Q4KZccixQyP5YpkfDcxTpfL9hA6aeg4pikVzSOm/+a4a4Osf3anehBaCkQHxj31rQkNPBB0kdTlBjlzcPbQTpBztaIV0hbGpY6jSV1j5fTOhIMm2grIXe3D/AGFMmvsvE88iJ9sqvkvHGyWlezguOkCQ0kFIzhGWSnCuxRtsjevxhAZi2J/pdMpsPbx1lOPp7kfnscrSlQ5iZp0RHQJIqdX2WjzTGx+TmjcA+rhH6iE3nWK/rQ/Q+DrkJjyxgEd8Eutrno7+HzTF63ctYhZV99QjW3jHlo5hNOEziuQ7ppGC08stKGopFaqZIotMnGqRVRcWT6d6xUlc4rZHL2lEi2YHTZrrV5Hy7f+LIFTaCsJeE1t4Gg5Cl+jUeXz2fM4/am/ijN2pDd3cQIlKQraCUxlT63cpNcoEF0W7/fueLhYPUK+1KGZhDZAUHf8P5awYXTuK1E08wCxuzUxdI/ON9HpuFIK6IFyPpQglbNYdQkUV0UgeveTWQ2cAkplrfr07fQZO7S6zuDWhFW2yizHHBRGCItAusGaFr3teNMPSNXnUajihNPi9OxsBvKoZjUjR8Jut30823I46tsOH6+eyc/rEUqtpBqE0i4asfE7NX00u2Rn/b4XMtFru4pSOMIiteaPqtNmFky5U0dSBU1yhmnYSWKT1YEl5T64e8uZ/Bb3zF3HUFwLOLbH/DWH6G2JgoV+wna3AYK/R35kcKimneuFh3kKXEoC82hmxdRn6pkeSDou+4XhAH4xgX077BvpoOY5evoFmTaViLz7j/sih4s1iQu0/75aoDfF/u+mgfNDHotiPJ+AL0FlZq2X7kECFPscq8N8lA/hwnURS/8wo32XigQm+l2yPkM2OOlispbeEJCYVWZgHXnvHskipVbZP7aBw7A5
- 41dlqATY
- NLHoKwmWiwQu+SkMP3s9326pwkmAP/GLW90htW9APPXrTYGtwfMp1cGAmoat+a/pjEkrEMJoVzd/xh0ps9kgl8G6rFcVBPrH7Vt1V59lwX+xPHtfuqKYeGh1TRkb/Z5zU7VeKuxlmbbHafGHHe4KVR4qYCZCntiAl7EeLxGOCQZluUhAXjYaDEOxoxAqme86qiZQY2XM6MjlCIqnT/YukKi+xtZEjTghTtes6Zq14Yguegl+luls1p6yROEgy0Xr4GYHf+a94T+UrP9lNij2Hc2QwKnRc+DWVngbt5J1keZmq6F2FUzsII0taEy9yhu5WNxufbNe2fMlvr9gaN3TlU8Ubd3wAcnQDvNYeh1i6JiBjlMo18RATRHm9qWKRW3Rl4cl+pQFcUdG4GGygk+1gsk2h0g==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 43DD9140018
+X-Stat-Signature: wea5wc9i3xajfg769s8ggjtwx5u8tej6
+X-HE-Tag: 1788429713-16404
+X-HE-Meta: U2FsdGVkX1/k1kKDotzdxRbJ9u7uaXYliXqXsUZ6aWqEoNASu9ApmUujfq1c1VZ5OmUXsS7ebuFqVgrdH6WDIXdVaT/bNJJehs8faE9dFvUDPZQPXNapt16UONhmom1LMihKqkM1yUO+GPBCnaDgNZ9aVhIvg9eT/XNjz5b+zLMFiOZb990uAKNNgnXV50YR9gHah9flnsce4iP1Qen769qP4O6XWgDxvbgQv1sB7HLV1L7wSP9vldcKhB/XojMEWNXEoU0AS0wTHl7IRcw80s0/1xTc0PTApZNDANxtu6oYAJL3LXGBeTWGlJNKVPrepZIlXy0/arrWFizZdpmc1Ys8aZfPRmNuCOXEvrwpi0I5KEUg9faZ0j2zdozPxl/lOS+NCMMv5sB+13qtR0NmDb5IzKWepZ16UhnAN1O2t7OY32Hwe//XhXE9x7DY/UffKAkxAkVCYZFbBIK3DTin1okrGxLBNxmiWbUNiyMRdUI7Li/Uh1ZjfN57k5qpMy4r0ngJHxgo6RiRuPzn3LO4FySaNqpf5Y4if1a6S4HZs3OjvIihLYwQ6TY0ymHmxV2+W54yJ5FNMwM/NyOxPwzvqS4uGPn271HdosSnGejDHPTfhy/pi9M49i4qsoTqjVpolm6UXKt8/i4GLRjBAbFl92TS/3ix6nf8uEjZeaNHx+5RcOnXSsxVV0Bq6yj21i7kNIpgq1tAoDxLjx4LjJNtOmehxXE0rwSLzhG5Qqdzb/iavlHS3QLPIj3YBC1kGZVqkEcGfeyULOw7hINnHlOiPlXSMR4tXl2UFqIup2Tvb//n4keAGaTCGaDP4CYcYlaV5d8KnD3htayv8Hef5vzm2klMo46ku++jou2BC8gCKSj4Eyosp/eKMrJfKuA9Z6zZxGh2zKD9Pe1riXGwTbjXfPfLHzWIDL5uKS8zstXwsOVm4eXaKXpPMXuKdTuRTbToDQ8K6I+on/FcqhY0iJ5
+ 263F7bxK
+ 4U1IU27/avZdP1CeBx9LxIc6Y+G94vQGzYn8dVq3Bv8TqiduZbLlXWSyHpsWoxqvaEvpkv0SpswJR5hdxIPeFns6q+WG0GK5xuJCHA7cW22+jaZyF1UYiqfWr3XVbuBsdj3e2RkY/YJz9WHi+BqTxpT4c269lI4bq1aV5nEPwAFaAIqVUsZ/fQpU6A4LnunU9aS8YJPVA5aZ0gSCOhbghhX2mRqBaaR8+TdOSA64t8ZKN6YJeQZsvpUoIugQ5/+9q58j4nmTTHvuMoG594RVAb1QdKothJJPPteJ85lJQYpmbO0dB6wALbWJfPFLMYwhFAuxpOSyKYmtq9mQ1+TFT+XtfXNAZg3HSY0MBdPLzuRC2DkBlUvfe0a5YUFnCjjKp3+GFbqqcHznS8vpv0b3lrJf8x7VAZJCbZrSAHbKIOU6km8fd/4P0h4WZc9EJjjpi4NO4RkW/2tG1P90=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,283 +124,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 02, 2026 at 06:31:08PM +0200, Guillaume Morin wrote:
-> Add a test that checks for underflows when a parent unmaps the page
-> first. Also check that when the child exits the reserve count is
-> correct.
+On Tue,  1 Sep 2026 17:27:23 -0700 SJ Park <sj@kernel.org> wrote:
+
+> When 'refresh_ms' is set, DAMON sysfs interface periodically updates
+> auto-tuned parameters and DAMOS stats.  The timestamp for the next
+> refresh is initialized when a DAMON context starts, and updated in its
+> damon_call() callback function.  That is, each DAMON context updates it.
+> However, the timestamp is a global variable that is shared with all the
+> contexts.  When there are multiple DAMON contexts having different
+> refresh_ms, the update frequency will be changed, depending on the order
+> of the contexts.  When there are multiple kdamonds, it will be even more
+> chaotic.  Fix the problem by having the timestamp per each context.
 > 
-> Link: https://lore.kernel.org/all/alEJkwn5VlTTH_ZX@bender.morinfr.org/
-> Signed-off-by: Guillaume Morin <guillaume@morinfr.org
-> Cc: Breno Leitao <leitao@debian.org>
-> Cc: Mike Rapoport <rppt@kernel.org>
+> The user impact is not very critical.  It does not leak, corrupt or
+> crash.  The update will not be faster or slower than the lowest and
+> largest refresh_ms values of the contexts, respectively.  The user can
+> also manually ask the updates on demand using kdamond state commands.
+> That said, clearly this is a bug and can easily be reproduced.
+> 
+> Fixes: 9fd7bb5083d1 ("mm/damon/sysfs: change next_update_jiffies to a global variable")
+> Cc: <stable@vger.kernel.org> # 6.18.x
+> Signed-off-by: SJ Park <sj@kernel.org>
 > ---
-> v3: address Mike's comments
-> v2: refactor tests into 2 functions
+>  mm/damon/sysfs.c | 11 +++++------
+>  1 file changed, 5 insertions(+), 6 deletions(-)
 > 
->  .../testing/selftests/mm/hugepage_settings.c  |   9 ++
->  .../testing/selftests/mm/hugepage_settings.h  |   1 +
->  .../selftests/mm/hugetlb_madv_vs_map.c        | 149 +++++++++++++++---
->  3 files changed, 138 insertions(+), 21 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/hugepage_settings.c b/tools/testing/selftests/mm/hugepage_settings.c
-> index d7917dce3aba..584054736ce9 100644
-> --- a/tools/testing/selftests/mm/hugepage_settings.c
-> +++ b/tools/testing/selftests/mm/hugepage_settings.c
-> @@ -449,6 +449,15 @@ unsigned long hugetlb_free_pages(unsigned long size)
->  	return read_num(path);
+> diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+> index 3c81b4c91ac0d..dcb739ce0a729 100644
+> --- a/mm/damon/sysfs.c
+> +++ b/mm/damon/sysfs.c
+> @@ -1788,6 +1788,7 @@ struct damon_sysfs_kdamond {
+>  	struct damon_sysfs_contexts *contexts;
+>  	struct damon_ctx *damon_ctx;
+>  	unsigned int refresh_ms;
+> +	unsigned long next_refresh_jiffies;
+>  };
+>  
+>  static struct damon_sysfs_kdamond *damon_sysfs_kdamond_alloc(void)
+> @@ -2213,17 +2214,15 @@ static struct damon_ctx *damon_sysfs_build_ctx(
+>  	return ctx;
 >  }
 >  
-> +unsigned long hugetlb_nr_resv_pages(unsigned long size)
-> +{
-> +	char path[PATH_MAX];
-> +
-> +	hugetlb_sysfs_path(path, sizeof(path), size, "resv_hugepages");
-> +
-> +	return read_num(path);
-> +}
-> +
->  static bool __hugetlb_setup(unsigned long size, unsigned long nr)
->  {
->  	unsigned long free = hugetlb_free_pages(size);
-> diff --git a/tools/testing/selftests/mm/hugepage_settings.h b/tools/testing/selftests/mm/hugepage_settings.h
-> index 726c73c43c05..548e9d288d1d 100644
-> --- a/tools/testing/selftests/mm/hugepage_settings.h
-> +++ b/tools/testing/selftests/mm/hugepage_settings.h
-> @@ -98,6 +98,7 @@ unsigned long default_huge_page_size(void);
->  unsigned long hugetlb_nr_pages(unsigned long size);
->  void hugetlb_set_nr_pages(unsigned long size, unsigned long nr);
->  unsigned long hugetlb_free_pages(unsigned long size);
-> +unsigned long hugetlb_nr_resv_pages(unsigned long size);
->  
->  static inline void hugetlb_save_settings(void)
->  {
-> diff --git a/tools/testing/selftests/mm/hugetlb_madv_vs_map.c b/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-> index f94549efcc6f..c944d99d5523 100644
-> --- a/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-> +++ b/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-> @@ -3,25 +3,16 @@
->   * A test case that must run on a system with one and only one huge page available.
->   *	# echo 1 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
->   *
-> - * During setup, the test allocates the only available page, and starts three threads:
-> - *  - thread1:
-> - *	* madvise(MADV_DONTNEED) on the allocated huge page
-> - *  - thread 2:
-> - *	* Write to the allocated huge page
-> - *  - thread 3:
-> - *	* Try to allocated an extra huge page (which must not available)
-> - *
-> - *  The test fails if thread3 is able to allocate a page.
-> - *
-> - *  Touching the first page after thread3's allocation will raise a SIGBUS
-> - *
->   *  Author: Breno Leitao <leitao@debian.org>
->   */
-> +#include <limits.h>
->  #include <pthread.h>
-> +#include <signal.h>
->  #include <stdio.h>
->  #include <stdlib.h>
->  #include <sys/mman.h>
->  #include <sys/types.h>
-> +#include <sys/wait.h>
->  #include <unistd.h>
->  
->  #include "vm_util.h"
-> @@ -74,7 +65,22 @@ void *map_extra(void *unused)
->  	return NULL;
->  }
->  
-> -int main(void)
-> +/* During setup in main, the only available page was allocated. This test then
-> + * starts three threads:
-> + *
-> + * - thread1:
-> + *	* madvise(MADV_DONTNEED) on the allocated huge page
-> + *  - thread 2:
-> + *	* Write to the allocated huge page
-> + *  - thread 3:
-> + *	* Try to allocated an extra huge page (which must not available)
-> + *
-> + *  The test fails if thread3 is able to allocate a page.
-> + *
-> + *  Touching the first page after thread3's allocation will raise a SIGBUS
-> + */
-> +
-
-Nit: no need for an empty line here
-
-> +void test_madv_vs_map(void)
->  {
->  	pthread_t thread1, thread2, thread3;
->  	void *ret;
-> @@ -85,13 +91,6 @@ int main(void)
->  	 */
->  	int max = 10;
->  
-> -	ksft_print_header();
-> -	ksft_set_plan(1);
+> -static unsigned long damon_sysfs_next_update_jiffies;
 > -
-> -	if (!hugetlb_setup_default_exact(1))
-> -		ksft_exit_skip("This test needs one and only one page to execute. Got %lu\n",
-> -			       hugetlb_free_default_pages());
-> -
->  	mmap_size = default_huge_page_size();
+>  static int damon_sysfs_repeat_call_fn(void *data)
+>  {
+>  	struct damon_sysfs_kdamond *sysfs_kdamond = data;
 >  
->  	while (max--) {
-> @@ -100,7 +99,7 @@ int main(void)
->  				-1, 0);
+>  	if (!sysfs_kdamond->refresh_ms)
+>  		return 0;
+> -	if (time_before(jiffies, damon_sysfs_next_update_jiffies))
+> +	if (time_before(jiffies, sysfs_kdamond->next_refresh_jiffies))
+>  		return 0;
+> -	damon_sysfs_next_update_jiffies = jiffies +
+> +	sysfs_kdamond->next_refresh_jiffies = jiffies +
+>  		msecs_to_jiffies(sysfs_kdamond->refresh_ms);
 >  
->  		if ((unsigned long)huge_ptr == -1)
-> -			ksft_exit_fail_msg("Failed to allocate huge page\n");
-> +			ksft_exit_fail_perror("Failed to allocate huge page\n");
->  
->  		pthread_create(&thread1, NULL, madv, NULL);
->  		pthread_create(&thread2, NULL, touch, NULL);
-> @@ -120,5 +119,113 @@ int main(void)
+>  	if (!mutex_trylock(&damon_sysfs_lock))
+> @@ -2271,8 +2270,8 @@ static int damon_sysfs_turn_damon_on(struct damon_sysfs_kdamond *kdamond)
 >  	}
+>  	kdamond->damon_ctx = ctx;
 >  
->  	ksft_test_result_pass("No unexpected huge page allocations\n");
-> +}
-> +
-> +/*  We create a child process, then unmap the page in the parent while the child
-> + *  waits and verify that there is no underflow of the reserved count.
-> + */
-> +
+> -	damon_sysfs_next_update_jiffies =
+> -		jiffies + msecs_to_jiffies(kdamond->refresh_ms);
+> +	kdamond->next_refresh_jiffies = jiffies +
+> +		msecs_to_jiffies(kdamond->refresh_ms);
 
-And here
+The fix looks correct to me.
 
-Please add a sentence about the second test this function implements.
+Moving next_refresh_jiffies into struct damon_sysfs_kdamond gives 
+each kdamond ownership of its refresh schedule, so refresh activity 
+from one kdamond can no longer interfere with another.
 
-> +void test_underflow(void)
-> +{
-> +	pid_t pid;
-> +	int pipe_fds[2];
-> +	unsigned long nr_reserved = 0;
-> +
-> +	huge_ptr = mmap(NULL, mmap_size, PROT_READ | PROT_WRITE,
-> +			MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
-> +
-> +	if ((unsigned long)huge_ptr == -1)
-> +		ksft_exit_fail_perror("Failed to allocate huge page\n");
-> +
-> +	nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
-> +	if (nr_reserved != 1)
-> +		ksft_exit_fail_msg("Unexpected number of reserved pages: %lu, expected 1\n",
-> +				   nr_reserved);
-> +
-> +	/* Force the fault to ensure the reservation is consumed */
-> +	*huge_ptr = 0;
-> +	nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
-> +	if (nr_reserved != 0)
-> +		ksft_exit_fail_msg("Unexpected number of reserved pages: %lu, expected 0\n",
-> +				   nr_reserved);
-> +
-> +	if (pipe(pipe_fds) != 0)
-> +		ksft_exit_fail_perror("pipe failed");
-> +
-> +	pid = fork();
-> +	if (pid < 0)
-> +		ksft_exit_fail_perror("fork failed");
-> +
-> +	if (pid == 0) {
-> +		/* Child: Simply wait for the parent */
-> +		char b;
-> +
-> +		close(pipe_fds[1]);
-> +		if (read(pipe_fds[0], &b, 1) < 0)
-> +			ksft_perror("child read failed");
-> +		/* Let the parent do the cleanup */
-> +		_exit(0);
-> +	}
-> +
-> +	/* Parent */
-> +	close(pipe_fds[0]);
-> +
-> +	/* First unmap, this will close the vma */
-> +	if (munmap(huge_ptr, mmap_size) != 0) {
-> +		ksft_perror("munmap failed");
-> +		goto err_cleanup;
+I also checked the initialization path: the new field is zero-initialized 
+by kzalloc_obj(), and damon_sysfs_turn_damon_on() sets it to 
+jiffies + refresh_ms before registering the callback via damon_call().
 
-This will perror(), return and print that there's a mismatch between the
-plan and the tests.
-Maybe add a ksft_exit_fail() in the end of err_cleanup?
+Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
 
-> +	}
-> +
-> +	nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
-> +	if (nr_reserved == ULONG_MAX) {
-> +		ksft_test_result_fail("After the munmap, HugePages_Rsvd underflowed!\n");
-> +		goto err_cleanup;
-> +	}
-> +	if (nr_reserved == 0) {
-> +		ksft_test_result_pass("Underflow not present!\n");
-> +	} else {
-> +		ksft_test_result_fail("Unexpected HugePages_Rsvd=%ld after munmap, should be 0 or -1.  Repeat the test\n",
-> +				      nr_reserved);
-> +		goto err_cleanup;
-> +	}
-> +	/* Make the child exit, this should restore HugePages_Rsvd to 0 */
-> +	if (write(pipe_fds[1], &nr_reserved, 1) < 0) {
-> +		/* If write failed, the child is likely already gone */
-> +		ksft_exit_fail_perror("write failed");
-> +	}
-> +	close(pipe_fds[1]);
-> +	if (waitpid(pid, NULL, 0) <= 0) {
-> +		ksft_exit_fail_msg("waitpid failed");
+Thanks,
+Kunwu
 
-Unlike _perror(), ksft_exit_fail_msg does not add '\n'. The same for
-occurrences below.
-
-> +	}
-> +
-> +	nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
-> +	if (nr_reserved == 0) {
-> +		ksft_test_result_pass("After the child dies, HugePages_Rsvd is properly set to 0\n");
-> +	} else {
-> +		ksft_exit_fail_msg("Unexpected HugePages_Rsvd=%ld after the child termination munmap, should be 0 or -1.  Repeat the test\n",
-
-Here we expect 0 reserved pages, I think.
-
-Not sure if "repeat the test" adds anything, I'd simply drop it.
-
-> +				   nr_reserved);
-> +	}
-> +	return;
-
-And here I'd put an empty line :)
-
-> +err_cleanup:
-> +	if (write(pipe_fds[1], &nr_reserved, 1) < 0) {
-> +		ksft_exit_fail_perror("write failed");
-> +	}
-> +	if (waitpid(pid, NULL, 0) <= 0) {
-> +		ksft_exit_fail_perror("waitpid failed");
-> +	}
-> +}
-> +
-> +int main(void)
-> +{
-> +	ksft_print_header();
-> +	ksft_set_plan(3);
-> +
-> +	if (!hugetlb_setup_default_exact(1))
-> +		ksft_exit_skip("This test needs one and only one page to execute. Got %lu\n",
-> +			       hugetlb_free_default_pages());
-> +
-> +	test_madv_vs_map();
-> +	test_underflow();
-> +
->  	ksft_finished();
->  }
+>  
+>  	repeat_call_control->fn = damon_sysfs_repeat_call_fn;
+>  	repeat_call_control->data = kdamond;
 > -- 
-> 2.39.1
-> 
-> -- 
-> Guillaume Morin <guillaume@morinfr.org>
+> 2.47.3
 > 
 
--- 
-Sincerely yours,
-Mike.
+Sent using hkml (https://github.com/sjp38/hackermail)
 
