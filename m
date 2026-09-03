@@ -4,88 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 117B9C61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 20:29:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E7FDC624D7
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 20:37:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09C526B0088; Thu,  3 Sep 2026 16:29:26 -0400 (EDT)
+	id CB7E76B008C; Thu,  3 Sep 2026 16:37:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04D9A6B008A; Thu,  3 Sep 2026 16:29:26 -0400 (EDT)
+	id C68F96B0092; Thu,  3 Sep 2026 16:37:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA4F36B008C; Thu,  3 Sep 2026 16:29:25 -0400 (EDT)
+	id B31276B0095; Thu,  3 Sep 2026 16:37:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CC15D6B0088
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:29:25 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 534A3120301
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 20:29:25 +0000 (UTC)
-X-FDA: 85173591090.25.533FDB0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id BC97C80003
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 20:29:23 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=If3TwaPD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 775C26B008C
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:37:32 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DAE6C120636
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 20:37:31 +0000 (UTC)
+X-FDA: 85173611502.16.051EB66
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2E67320009
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 20:37:30 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Qxw/I0t2";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788467363;
+	s=arc-20220608; t=1788467850;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=345y6CZtFGlCHyHHMSkZRxvx0a17X3ZelXVrjUdMfG4=;
-	b=t0oYizrIJzdgQn9xK49rLN9MF9eh/rGnPVkU3M9+nIjZKpRDkuOrml1ni5FZZZhVdWAj+U
-	arSqi0CKjKKrle+b6tIWgm14SQtRMXJ84HbHqTe/zCuYvOWrgyWrCvzJBG8E/2vp6oANTR
-	SsH1496TOyvSy6ZE8h+vTW6PuWBhuTY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788467363;
-	b=3hDOjw5dlGETSTKbyhD0cXa6aACVU1p2MrV4ZkOwDiD7TpRf8yAG5E96ehhECa1IM+BACZ
-	ueRL/ODWiCMjMzSyJ3qftQecO3Evth6P4kCd4zzoCGxZNtDTmBv9YOPjOJqO52Y5DJ90v+
-	Evqf38zmUo0xeCVjRoO3t0yjns4/LJs=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=OvK9knuWq5uxHuXSn84mygHm6H7cFKDZ8xVelzi2Vf8=;
+	b=BOqZgDBEiq9C49WkHsqD16eqF6RR+dyNdcxVw63f07IIxdbaOpU7iv02wZNYeyouvzKWon
+	UYL4hEJkwDFd6Y2uheXTPcZKkEzfimmbEksHwoy84bPh81xTWrPaomspkCO8xOVtLoVeNx
+	Mhk/pp7sF4KIFmMAUA01cvQVD+CGIos=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=If3TwaPD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3D05360219;
-	Thu,  3 Sep 2026 20:29:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF851F000E9;
-	Thu,  3 Sep 2026 20:29:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788467363;
-	bh=345y6CZtFGlCHyHHMSkZRxvx0a17X3ZelXVrjUdMfG4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=If3TwaPD9N+4ZsolxPiDB2fhxUQI6avIDBpLH82GsRUPq/oSiQb3PiZfiDAsu8ROe
-	 xcR/ich1UxcK74iPqSqKppXn4jdQUbkS39GbeGw8wuECH9n1VXBewTmqFYTJWucv9P
-	 zkL1oIND43X8oL3VGYP9duQmWjtYgbPH0IukaamsG7iS3IPpG1rBsiA8Wia9vkrCkL
-	 kDTk07r1fHOI1wxYiUjAENnSMTTmiH+UtkES1gwEm2U2fEtKzpLwJme6N8GwwqXO/r
-	 44Ujc7LKT0wPhr62YaqK4517WmaSogOQHilQjmXMd5wRtyxvYBmxcE4Y6k1VBsOfhy
-	 46CSoLbTG5HmQ==
-Date: Thu, 3 Sep 2026 10:29:22 -1000
-From: Tejun Heo <tj@kernel.org>
-To: Julian Sun <sunjunchao@bytedance.com>
-Cc: linux-mm@kvack.org, cgroups@vger.kernel.org, hannes@cmpxchg.org,
-	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, akpm@linux-foundation.org, axboe@kernel.dk,
-	jack@suse.cz
-Subject: Re: [PATCH v2] writeback, memcg: skip foreign dirty tracking for
- bdev inodes
-Message-ID: <apnYouiUINQR-98e@slm.duckdns.org>
-References: <20260903083303.2769873-1-sunjunchao@bytedance.com>
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Qxw/I0t2";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788467850;
+	b=PZjlu3dC9n5hg19Fo40DPm/JwBgtQPee6kPUHOYESnrMxYsP54ujBSzy/Y9eBLBpy7J+Q5
+	zp8jnlI6/o6/87N9/YJ+siyGhyBmaezVOsVI+kDc1BIAaScuCS9zIUotp7AuKDgqMMdek4
+	ol0rdZ7XOPDWcGeM9KewCjbIBO+JP7Y=
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-4843efcbdb2so213722f8f.2
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 13:37:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788467849; x=1789072649; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OvK9knuWq5uxHuXSn84mygHm6H7cFKDZ8xVelzi2Vf8=;
+        b=Qxw/I0t2cYvsitb+AH1OrmhENhwCtmu6r0Evif3KWU3CcwMDdY5zuwTj3+8cpySwvE
+         pAesEM63dblJTQD+hA2/LNgthkTrRUjvAkBgW38PhlDpxv/tkGA9w4LoHuvbCsK4gi0B
+         lH1ND7x/hVLQvWlTxsN0jMEdsmV+kmO0Y2ZBIqw6OTtChBdZEyesy2yQVPFQpDBQu3Bl
+         U1X2nkVAl2k+pe7G+JGo4oyFQczBx/Hm+grMRC0fws2xsVkUapRULvkKyOBezkpHzmye
+         44JDFIXlXgWx3LIVYnNXQwhtcvrKHv2/q+MgnzB/7gMIMsuN5snmAbo+NdmPdPVA6V9R
+         RBIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788467849; x=1789072649;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=OvK9knuWq5uxHuXSn84mygHm6H7cFKDZ8xVelzi2Vf8=;
+        b=PwR7Ofn4pyZucOvHcSLtJI6Fw/v2PGu8GK/3UpMCXxYufpf38Jja3GNpeFYofhj30P
+         X3kPV+YO2qeRy6UBK7bXCcksbh0g0CA1v4mgcoyXNWy8VEYlzBJfPxEf+MZ0wxvQ9vKF
+         F+he1WL1vm0/8ZOqu4Ccu68BIG8cXmYwBFWe7NYImgpdRApj8mVLjrkVC1OyBtHe62sX
+         iiPsuCyyG0ghcNNePADtXkswxmAzf1Vhbj0Hc/4tKVh5ruiJ9KAvFHQphscEHjiDo/KJ
+         i0el68VIsYDd7dTqmtNlZZrIdn+cqdCpckDyeFPrdIq41Fg9JrT4OEpRL/97TFE4/iZ5
+         hZBA==
+X-Forwarded-Encrypted: i=1; AKwUvBzH0/ltWdTi0CrCZoCXdDzKvewmoGBeHVRhZSXMq2BOZ0MlqZQ3fX4Fu9rDZYN6v9MjTtqN53thYg==@kvack.org
+X-Gm-Message-State: AFuF++kbggdXTFBnLbVsURk3b2EQ1T5fc4KXHiefvgVSyo3E5yhRNUNu
+	2mSf4ckk3o6KvpoM2LpX9fe9NoCzJtATlBtMCp+/FtNRscEbGJkF1i2Z
+X-Gm-Gg: AYBFou1wg9SpeQ41CHoAzK7f/fyUF4BGYN6hqm9SWghO83QYB0y/g4mB80z8BX9OYhW
+	cw/h/aTxPXwYfh9E1PZimhE/Oi0gWpWhVOeCzyy8Q7xDy/iNC4WUineM/YqSl556G4QSqP25N73
+	3CCjsXieDzGzG7yN8VhYBXLJQUZMwQO6r4T5wPkIH3aWZLmgAup3pjMOXXWN5lohb4aZHAJ3aSs
+	TM5lrXZFvetCPTVjSDYdBiTZlNFRzhlbMx0jJa90eW/WHC/APnk1bNtYL06k/twpl4tTyOSOznX
+	Mq8aIVOmrJXy2X7o9rVX6OUHWu1T2uM2Ipryiehv45EyfmzzXy1VDT18Fq3dOVq5Gi6Hvjop+b+
+	/gMKaC/J8qrpY7oDtDS9HnnvZQ+CTRKKpYYpoi5jWRGWXMQOGjsEGwJ6S9Chh9FSYNTSYOJr0FJ
+	SlLhzS/QUpf6Fij74DWYh+4JysbcsrSNLAbZwumDjQfgQIcm/fHTuwkEPz0G/D639WbY3yyy3HO
+	1kiP3bls+HlmGzXt0gjb4IS0+2luI+BX2Y19eWBy6OQ6ZWSSTG527Hqy9sEB1DWx0vW24XitaEb
+	YtzdDd2QqnlAcEzFoD7jQB5QdtZJ+Iuynn+z4TsnPIagcpdLm70bNe+6rKMA/MFL5layfdEogM2
+	gvJtQ
+X-Received: by 2002:a05:6000:26d3:b0:481:5b58:c589 with SMTP id ffacd0b85a97d-485870935eamr2874884f8f.10.1788467848463;
+        Thu, 03 Sep 2026 13:37:28 -0700 (PDT)
+Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-a979-9501-3df6-d7fa-8a5a-06c5.310.pool.telefonica.de. [2a02:3100:a979:9501:3df6:d7fa:8a5a:6c5])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48588394fa1sm1005070f8f.8.2026.09.03.13.37.26
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 03 Sep 2026 13:37:27 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Vlastimil Babka <vbabka@kernel.org>,
+	Harry Yoo <harry@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	linux-hardening@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH v3 0/5] slab: ZERO_SIZE_PTR alignment and ERR_PTR hardening
+Date: Thu,  3 Sep 2026 22:37:15 +0200
+Message-Id: <20260903203720.63689-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260903083303.2769873-1-sunjunchao@bytedance.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BC97C80003
-X-Stat-Signature: ym9yzyghdtwscztqzroi9dw54ytg4dgs
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2E67320009
+X-Stat-Signature: h5ufsqcsnifh9x7j5kkbfcxjcrtkmxx4
 X-Rspam-User: 
-X-HE-Tag: 1788467363-657801
-X-HE-Meta: U2FsdGVkX19Y+4r6R8N+w+aNNCP4L+ckRSs0Jkw8LNOZz3ru2fSowWlUQv2bPPI1Pimo3eftwvaC4naFSrn7+AucpL1GlBYTrmJdRYsQWJDRRUQPaCq15rcSirem0w51NCq9xKGvFp5CNWyd+t+nL+zrNojzkk8XXVSadU9itGNlWRtctdLQCdUDrhmDFB3MTreQ0/oKzVxZl0wsGmBdIZBLWuToTnS3o2bMNU/jfQi+2lv/IlsYgl+GZf7A6Y8YrqB89mfFWDGE2+Jq3pFKeCWcckL0Gxa/dzxodfm2rdYCLheAbzJ7a+n5o/1F8iAzk0+pGABrpjdPlcOq7xwDsMGZ4GB9ajKAikdqquVNPldNsmfuIDGTU6Edj0YsI20FPUVdhyNaP8Ye1GTU7hq1kLgL6O3upvfK/S4pZJcyqVkLMVzIi2q79/1kr2Xy//YezEkzr9WH4zef7/OvRFQVPbGXDO+errspAanaP9WLmatut/MyBjJlruH8CeK59w2ZOYc41tW39QLyCw/qHX+tw6OS0vei/3rwXu/gJ2oQ/9muMk7HKl6/h74aIMLRXuV71BolJp+kE4fSa/4CP3nNR3WTInTxjgD3eZJPxFwE7db4Fqoc3J5Z7wxi2DLESPElO3NcP9U4SWyIssST4e+jjIn/KFrqYiKwxuJxtWFWZg6dVCZNBzGY7IwA2P/SWhn81dJK47pp32eMIU8GQRdLQ+ZxfGAidqwV4amYhp1qrT6VdYr8kIRyLMxeKPihYHA6frefr9ZC/tp70otix6UO/pvC2sVVf1IFJqwAfr0RA2m3reUy3BedkuE+yRcjSupUkZP/tAWyEMeLfiwK04MG0HsHmyr5f2QhhOp4zvEGjE8LsgOzCF7JwHdHEG3PGDvwljPjcvXHU5QpmX4Kj6M6Lt02GrysBSuR2gq8zK5G516/PcM/YNNvjWuEwn38E/UEWFpD+BHm1Psnwutnatd
- ZFo/AkBk
- jNCMxj9U0XgTU7VLOTmctVBrqs9DUkZPfAbA78Dbl45pysIGUv8tAYp16KNB8J96a1fSH0EbkuIraMWFQk0ZUNeDISTBPOPfmFII92KJSvcuw9cSMEE8VuFilM+Qx1EekIclLxUol5Asv95YI4u3aBWz8JnBZ/X7iwlQuxmMG+QHqrlTvLYFHu+15pDRU/B+LrfAhmb55uc8QGTWVaHSISjnUgg==
+X-HE-Tag: 1788467850-128280
+X-HE-Meta: U2FsdGVkX19CpF2KOOTEuKgY5NiGVY5GFZzUOE/SPbUIW/gMuRkDomLkyqw2G5FzsnOXjADwR68XlQ+fivwTBF7deeIp8iX7zdNBd/bl+RlAHVSyen/3ES+QwAMRVcQCJmkcP7YOuiMEqa4eWYW8etEHnXs3UZAJPHvz9vAMZ6N9u1NesenpblN6Dn+CCTmolwZud4HZn1epq/qMhJrSdWFVG1JZdtxJJ86vEFRvGmc2T9Y14AAPBa1+sokZAxff/SsNr5uAqTMgiLO+xz+2T6Kmbod+V7REHC1cyZT+XdFE1/phFaoZpbgpUKNG5UI9rBPiXTsFSif+Z59Anp5JrqcowLHTUedKibVcgbVa7uQuilqdWKa9b+RWqHcpaR9TXcStRv3uOz/Oiu6xpNglGlK3taHlg7dO5RQYKb4ZJVZhQ/FNYWC9oPKIEDteHK4lAch/9NsTTq8Vf1BwniwW04LsyCNMDmwbpKOk42pqWLhCZhJNF7y38H9aXTupTKmNjIrSt07WyVqkM6O93orbtQtJldcTbj3ARVn2uMKO7G03nTzEMSjrkFQ3tJvVs8wK2qCq9kPw7YK40j0os4ikH50efPPB0AIY1hli/aBQZqu1Vt7J4YyndGbmBBb/KO4l+BXhtku+YP8+jF6fQBqjuzIiiAoNKatEgX7xXYy1svSa82Ft7YbB9FxQ3k8pXvsB8JO4eeaqxtlCPBBbqTzvQPey7yx0yNNa/p6CN5U/xr3cGphE4yh25DOwDEoMrvSM6T9sE3ky4q8qxZgcZ6YAYd8bl9ckNSMDmP7AVzUwdjFBW1wVDDpqXgRfNlghTj1Y5YcJn9OZUGBJZf9B2YD01G1PHC5z8FT5gGHxlO+i5CZwY0d8JZgLYuH7+h1cmB611kT7OXUAen2dVEcLc+qi0F8X0z/Wk0VXU627nvUze7Ns5flLpxvS9TWxg8Tclr1MmRmgbGFOndF82gGRT1r
+ SmR7KZIx
+ CUWpfNFjzLTdRMNMYYJwujglTmd5y2gp7U9ck0MI5V4uvYN19Zzx3oIpcUKly42+MLoVce3qOCyz59f9mlT1IdCfD1ejQ6q++fxV6UZ8+Mq1wPlz25m9b8Sm5qqyfItn+ff6+8uQH+e7gIazUNdEhwi+4njMeJBftOghA9K4rmB456k4CsOWw4hUDRO1Ge1S2HBXxdevuZi2OVKIjCCHChTI+5yQfc1YXjUJjJsKllngse8x9AMn+zhFoPS+vjmGFaepBo087btLSIGnf+AejHQ2YhFeDEiAd9+7iBji4hTeOSjKFh1/MXsGDOul+wkfHFrg20uEc3x+RlqEF7oFNNksYxPirGABF/DXNllmwMeCLHgbfoP0O7FjbyEW0OFAanIoIYql1CKlzTXNK7arSbOeIJCrRgrQ07V6ucRe3ZftQr9zPEMhxzPsqXaGKJBjQRwFHGgsRHET57nc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,42 +138,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+The kmalloc entry points promise ARCH_KMALLOC_MINALIGN alignment but
+return (void *)16 for zero-size requests. Patch 1 aligns the sentinel
+to that promise.
 
-On Thu, Sep 03, 2026 at 04:33:03PM +0800, Julian Sun wrote:
-> Foreign dirty flushing handles cases where a dirtied folio's memcg and
-> the memcg owning its inode wb differ.
-> 
-> wbc_detach_inode() notes that "concurrent write sharing of an inode is
-> expected to be very rare". This expectation does not hold for bdev inodes.
-> A bdev inode and mapping are shared by buffered users of the block device,
-> while the inode has a single wb owner. On ext4, buffer-cache folios used
-> by metadata and journal I/O can therefore be charged to different memcgs
-> while sharing the same mapping. Normal bdev activity can thus produce
-> frequent folio/wb ownership mismatches.
-> 
-> This was reproduced on cgroup v2 with the memory and I/O controllers
-> enabled, using ext4 on a loop device. jbd2 repeatedly generated
-> track_foreign_dirty events for bdev folios charged to unrelated memcgs.
-> When one of those memcgs entered dirty throttling, the resulting record led
-> to a flush_foreign event and queued writeback with reason=foreign_flush for
-> the bdev inode's root wb.
+Patch 2 limits ZERO_OR_NULL_PTR() to NULL and ZERO_SIZE_PTR. Patch 3
+handles ERR_PTR explicitly in kfree() and hardened usercopy, without
+giving ERR_PTR special meaning to other users such as krealloc(). The
+old helper did not match ERR_PTR values either; patch 3 addresses the
+adjacent hardening concern raised during review.
 
-Was this reproduced from an actual workload with adverse effects? If so, can
-you please explain the workload and effects with concrete details?
+If backported, patches 1 and 2 should be taken together.
 
-> Skip foreign dirty tracking when the folio mapping's host inode is on the
-> blockdev pseudo superblock. This prevents bdev-originated records from
-> triggering later foreign flushes.
+Patch 4 adds zero-size KUnit coverage; patch 5 adds ERR_PTR KUnit,
+LKDTM, and kselftest coverage, which is why Arnd, Greg, Shuah, and
+linux-kselftest@vger.kernel.org are newly copied on v3.
 
-If you do this, tho, that means now cgroups that accumulated a lot of
-metadata writes on ext4 and crunched for memory don't have a way to relieve
-the pressure outside of periodic or other lucky flushes. ie. I have a hard
-time judging whether this is net plus or not without learning more about how
-this patch came to be.
+Tested on 940de590b839:
 
-Thanks.
+  - GCC 15.2 UML slub_test: 10 passed, 2 skipped, including
+    test_zero_size_alloc and test_kfree_err_ptr; NULL and ZERO_SIZE_PTR
+    produced no warning, and the expected kfree(ERR_PTR) warning was
+    suppressed and counted
+  - GCC 15.2 matched x86_64 builds immediately before and after patch 3:
+    kfree grew by 15 bytes; __check_object_size gained a 13-byte
+    comparison on its normal path and a 23-byte cold abort path
+  - GCC 15.2 x86_64 defconfig with HARDENED_USERCOPY: build and normal
+    QEMU boot passed; the committed LKDTM selftest matched the distinct
+    ERR_PTR diagnostic after reaching usercopy_abort()
+  - Clang 21.1.8 armv5 UBSAN_ALIGNMENT: no alignment-assumption or
+    slab.h report; generated code retains the exact comparison and
+    single evaluation
+  - GCC 15.2 MIPS64 big-endian noncoherent build passed with
+    ARCH_KMALLOC_MINALIGN equal to 128
+  - Microchip SAM9X75 hardware (armv5, ARCH_KMALLOC_MINALIGN=32):
+    ZERO_SIZE_PTR was 0x20; zero-size allocation, ksize(), and free
+    passed with no boot splats
+  - Raspberry Pi 400 hardware (arm64, Cortex-A72,
+    ARCH_KMALLOC_MINALIGN=8): ZERO_SIZE_PTR remained 0x10; the ERR_PTR
+    KUnit and hardened-usercopy rejection paths passed with no boot
+    splats; the revised diagnostic was retested under x86_64 QEMU
 
+---
+v2 -> v3:
+
+  - document why patch 2's sentinel-derived low-address window in hardened
+    usercopy was incidental
+  - add new patch 3 to warn and return when kfree() receives an ERR_PTR
+    and reject ERR_PTR values in hardened usercopy
+  - replace patch 4's pointer-cast static assertion with a run-time KUnit
+    expectation
+  - add new patch 5 with KUnit and LKDTM coverage for patch 3
+
+v2: https://lore.kernel.org/r/20260811141240.62519-1-kmehltretter@gmail.com
+v1: https://lore.kernel.org/r/20260808105622.62026-1-kmehltretter@gmail.com
+RFC: https://lore.kernel.org/r/20260712120728.96628-1-kmehltretter@gmail.com
+
+Karl Mehltretter (5):
+  slab: align ZERO_SIZE_PTR to ARCH_KMALLOC_MINALIGN
+  slab: check for ZERO_SIZE_PTR by exact match
+  slab: handle ERR_PTR values in kfree and hardened usercopy
+  slab: test zero-size allocations in slub_kunit
+  slab: test ERR_PTR handling in kfree and hardened usercopy
+
+ drivers/misc/lkdtm/usercopy.c           | 27 +++++++++++
+ include/linux/slab.h                    | 20 ++++++--
+ lib/tests/slub_kunit.c                  | 61 +++++++++++++++++++++++++
+ mm/slub.c                               |  3 ++
+ mm/usercopy.c                           |  3 ++
+ tools/testing/selftests/lkdtm/tests.txt |  1 +
+ 6 files changed, 112 insertions(+), 3 deletions(-)
+
+
+base-commit: 940de590b839f71d6dc846160534bf202401b8b7
 -- 
-tejun
+2.53.0
 
