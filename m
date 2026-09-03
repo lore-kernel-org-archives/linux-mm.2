@@ -4,105 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC010C61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 16:54:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7FB3C624A4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 17:03:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8FDC6B009E; Thu,  3 Sep 2026 12:54:29 -0400 (EDT)
+	id 6C0346B0088; Thu,  3 Sep 2026 13:03:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B40CA6B009F; Thu,  3 Sep 2026 12:54:29 -0400 (EDT)
+	id 66F7A6B008A; Thu,  3 Sep 2026 13:03:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A581C6B00A0; Thu,  3 Sep 2026 12:54:29 -0400 (EDT)
+	id 538CB6B008C; Thu,  3 Sep 2026 13:03:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D1326B009E
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:54:29 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 91EB21405BF
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:44:55 +0000 (UTC)
-X-FDA: 85173025350.07.661E9B3
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id CBA6D40003
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 16:44:53 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=qIgl9ysH;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf12.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788453893;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 20F776B0088
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:03:21 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id ACEB41C244D
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 17:03:20 +0000 (UTC)
+X-FDA: 85173071760.06.EBE8C9C
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	by imf08.hostedemail.com (Postfix) with ESMTP id B234516000B
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 17:03:18 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=recall.ai header.s=google header.b=C52MpWuN;
+	dmarc=pass (policy=reject) header.from=recall.ai;
+	spf=pass (imf08.hostedemail.com: domain of mike@recall.ai designates 209.85.216.48 as permitted sender) smtp.mailfrom=mike@recall.ai;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788454998;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SURYOZp/VXSv7xhuiebhrfoo5cA2ejsPMI8WkYJjl1Y=;
-	b=BaXidoMGrFlbTlO90JrrKDXOVkN5OOSGOFQ5oqeyRj4HSICBkaIv2IcXrX8nsFgYlYMRfQ
-	4LyJ6jvf3R26Jzjxbtklq//S9h+p7zmNYkkaLDVstQXLpHqsnvA+3IC2o7h7/j1xZAq7sD
-	C8o3umI3q+d813bAIf5wH5vtG3SIi4s=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=qIgl9ysH;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf12.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788453893;
-	b=iC3X0VBqL1yzZ5JUdJ9wqk5Mbd6XnA5+rR5lZV6p6sCKEECgOTDrJ84P2h9Brw3114bngK
-	pRFGqBlzQoogiaujXsRL+xZf/D2sDgPY+vmppbUJ8lwlHdth3V0ScgMs39zSkV2/odECBD
-	Vk4QKLudwrUQS6wvVluFeydcscPleHg=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2C4E21596;
-	Thu,  3 Sep 2026 09:44:48 -0700 (PDT)
-Received: from [10.57.6.2] (unknown [10.57.6.2])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 429933F673;
-	Thu,  3 Sep 2026 09:44:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788453891; bh=qA4rheoJ8iR3/4lpM2DeCPTFOTeS21vpg0tV0VvZcRc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qIgl9ysHs8hvncgspgnHk7Jv77nImxk2SGegbvNrK97CXnpxi9vobsmMSzL/LvImn
-	 K0dm/YLZgvYpz9RvrbRvwnzj4fSHcOcs2jBEr6vGKJwcSylRaMzhQDk1QhduhRmQkA
-	 Nszi3HADTMiq4LAhhn3xgLeLgNQbqjcLeP5t0UTg=
-Message-ID: <1334b43b-249b-4b30-b31e-72a4ac30670e@arm.com>
-Date: Thu, 3 Sep 2026 18:44:41 +0200
+	bh=bg557z9Z5rLGa5JWDNXpniIcVZCak9b6Tl4QhppYszY=;
+	b=hRGEPYNBZLacQwjGnUZ87BNraqLu89QXZ9Ya8JrTqO6MSt9tkrWL8cX+wpj8vpGZjpIzg2
+	OM4qCMH4oPa9hPqLr0bGjOMD5/ks9HIGjSv+HnqprIe8kCiB5bx7Lnt11Zw+z7Ihd3eWXH
+	2wSmQKNZ1vBFX4uUb0OAmHVtjcU2VVk=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=recall.ai header.s=google header.b=C52MpWuN;
+	dmarc=pass (policy=reject) header.from=recall.ai;
+	spf=pass (imf08.hostedemail.com: domain of mike@recall.ai designates 209.85.216.48 as permitted sender) smtp.mailfrom=mike@recall.ai;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788454998;
+	b=C12s1HjZq71m7MNvw+Km+DIDQM+CGx+AFXdQJwnjrpOWTkxnskibVQulpYVS7oSTBTsi2Z
+	QbW6rnMepeh5kYPB4Adc3/GUXEaWTBSgdlUUzoVksEROBC0Wo6kMeTmNM/P/rGQrsfJQ8Y
+	dp0hZAk9ftQkLPd2PK7qXbgTwCyjWUs=
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-38d489b6b71so32635a91.0
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 10:03:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788454997; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ANTAr8pt3y+FRvUAZ/In/qywD1TPVqmRQ3FKmzM3y7xc1roMW1CyzoV/5j632Ti3ea
+         YQ4ZKm5eF8Wmb5wwW89ON3OSONfQRT9Wpm7j5A0YuI3g5fET+n4B2ZgiNlvL0pp7SF44
+         +lQuY8/ctYtAaSmO0mbO+SQJIc48vXa8I+s59oRe9t8XOLc7pCEddXez79IR9hnlHBGw
+         7pnYW0ysFarB/UYI4d7R38bWV2Ayn/KatXgIxz3hU3UyICFdXFmJ86OrRtu9W89VDDOz
+         SczqU+zu4/h8Um7vF/CvZnyGLLH/MCBl6QyYvR88q9AOW4fXm2IKLL1tMs9V0e2dRV5g
+         b24A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=bg557z9Z5rLGa5JWDNXpniIcVZCak9b6Tl4QhppYszY=;
+        fh=uCgZcwz4M07747tgHs9OBoriRrs+vDqT81hwyPAYCNk=;
+        b=aHDj9/QRVypm0DWw7aEi3+LrG2KOykADz1P/hSe5EL86yun+MuFjuhMIFGNiz35jSB
+         09cvFv7GXXvbho7yMsfDypQtVSie5mDJMNP7YKf4IfErOoUnnVoxDYRQXU+tGB2mYQjM
+         3D+l98NzkAIH35N3KGCKV+Cc/z8Au76Eg6MJGI3h8GLYQZpmztTtgES9cvdJlrMzRSrW
+         QWfmJWOUYko1xC+NWe8OfZo0JC710ZVEaydespiuo+n0PhYa0Ql7/W5l+w4MPMSh+pF6
+         7SMRfKUelDTpjaOtBACgWJKxxrgnUwrCGmLQj6gg+CyCmtSMuHmWFoKdPaey+PQXKHCW
+         i9Bg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=recall.ai; s=google; t=1788454997; x=1789059797; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bg557z9Z5rLGa5JWDNXpniIcVZCak9b6Tl4QhppYszY=;
+        b=C52MpWuNlFykf+4wqNVMd51KJ7+fBj1/EJHUU5w9jtk9QL5hjmc5XPdUXupCFexgK1
+         YZ4kqWB5nXWCbGThiN/elYaTseH6TVHPR4Li9DGCJp82wF0k3g80PSUcJSQoMF0iXYk0
+         M0wsvLSspLyf3i1QZORosL5Wy933xxNn2+pjEri0GAIWja/JBUpSl+v7Yv7wJXzTlv2G
+         Y/osYBIuwiFyDI13bZkwQEC8UVYeH8QmR802M4XxS7DZC/VPhcjktpyM4kJKHSEHI6SY
+         lbQ+Lrk4DpIQgEImir7QPPNaSnmzydjN7JTwyKUo/IzNfRHoI5BuNeCWbk49mrN5Sdr8
+         7oRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788454997; x=1789059797;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=bg557z9Z5rLGa5JWDNXpniIcVZCak9b6Tl4QhppYszY=;
+        b=iYLT5wDlLDFIAsMojOsLVQSNQ24NIu8BoUElRYqjGeqorqM8fzTQ2kOM8PwGhhJ3Eu
+         5cqZArlg2oasMUo68YakgOEV2d88a4RPXVio5NGlJM5tWVHXItPMV+XfVuHqlOfsNBnR
+         AzKDDEbWAwBQd5Cnm/UPZSNJdxSbKcQg0LaFMXoF0mSl51AoSLe9LI0wUV/hDHoROpG4
+         AfyDKeXaIpiEFfS2qxVtbESb+bWrF3vHbx9Yxiw/2qCQPovJQvHS+SfG0nX/M4uZSx1d
+         dgMISsicaD8R6gvP2SHEH+kGHziuFBRE3h/Ja1Ws4uw16r4JhckTrVwYSPc7NrjPr60/
+         f0Ew==
+X-Gm-Message-State: AFuF++mJbJLB9trsEwb7aCjXUbDIK8L5preLrwHnmngbRQYluqah9kaK
+	8iBUbYvJeiq6nw5PNh8KjnvajUpPdsa2cGgQmLpPqZUozFDs8C4nARbjbBNrfwr13rsL918TUeo
+	IKuE7XR9QANCa97FJTTvHlyldpXZF6iIi1Z+drxC5RQ==
+X-Gm-Gg: AYBFou1IP9qCuQ19/2wVuSHZnYolgMCVsaRLeoBsIuHtN7NiVaPOnLuQz8UQaWC+dZ7
+	aPs+y73YZBBSK2mbTI/fGtVe5pi4z30TpbKL9iCu572amef+bcFKVamKxIbRu563TKyOLn1YLJL
+	rGlmdGd7fN15Qz77CKtZrNYa+MUIXN8Eqf4j5dTCo5EyMsEYtgCoPPkeNwb9WNTjXwJE31Gq0TL
+	OQNXl/IZQSqLBviFbDDBQadRf4XHkayVEvTU+bq3RmpDnn2WyOxsDARvRBj8fYtydobdWeBHqXu
+	F0cRzZoxzjTWX74qF1ZdEsMvvv0BijqnEzjv3mI8gf2Gp2zHRBitJ77FFR4EB+An/1vo5EvRgb7
+	OxcFSL8sVbHV/
+X-Received: by 2002:a17:90b:2b43:b0:38e:c7b0:84ad with SMTP id
+ 98e67ed59e1d1-39b25ed34f3mr17750a91.0.1788454997150; Thu, 03 Sep 2026
+ 10:03:17 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v9 05/25] arm64: Implement asm/kpkeys.h using POE
-To: Linu Cherian <linu.cherian@arm.com>
-Cc: linux-hardening@vger.kernel.org, Andrew Morton
- <akpm@linux-foundation.org>, Andy Lutomirski <luto@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David Hildenbrand (Arm)" <david@kernel.org>, Jann Horn <jannh@google.com>,
- Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>,
- Kees Cook <kees@kernel.org>, Linus Walleij <linusw@kernel.org>,
- Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Maxwell Bland <mbland@motorola.com>,
- "Mike Rapoport (IBM)" <rppt@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Pierre Langlois <pierre.langlois@arm.com>,
- =?UTF-8?Q?Pierre-Cl=C3=A9ment_Tosi?= <ptosi@google.com>,
- Quentin Perret <qperret@google.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Vlastimil Babka <vbabka@kernel.org>,
- Will Deacon <will@kernel.org>, Yang Shi <yang@os.amperecomputing.com>,
- Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org, x86@kernel.org, Ira Weiny <iweiny@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
-References: <20260818-kpkeys-v9-0-743ad31b2c8f@arm.com>
- <20260818-kpkeys-v9-5-743ad31b2c8f@arm.com>
- <apblxUah9EcQox-Y@a079125.arm.com>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <apblxUah9EcQox-Y@a079125.arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <CABeknB_S2XJSHFgnHdgnN0rjzHhH4oQJs_APq9fvxHztQ_pgiA@mail.gmail.com>
+ <55D30905BB95B9F8+20260903070523.2032364-1-zhaozhengzhuo@uniontech.com>
+In-Reply-To: <55D30905BB95B9F8+20260903070523.2032364-1-zhaozhengzhuo@uniontech.com>
+From: Mike Kaplinskiy <mike@recall.ai>
+Date: Thu, 3 Sep 2026 10:03:05 -0700
+X-Gm-Features: AcwNN1UCge0nmg6QM2bN3A3-asAi6nwZc9Bzjhlxfv03JsH3ayoQNi3a5CgqHWw
+Message-ID: <CABeknB82T0d3VUjz6Xwcdfa8spHvNzO6tZNTMwjJgF00EwrWWA@mail.gmail.com>
+Subject: Re: [BUG/RFC] mm/madvise: MADV_WILLNEED skips swapped file-backed COW pages
+To: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R . Howlett" <liam@infradead.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>
+Content-Type: multipart/alternative; boundary="000000000000cd5ff3065a97208e"
 X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: sgygzz5q5hc8j3mstp5qnbhqig5845dq
-X-Rspamd-Queue-Id: CBA6D40003
-X-HE-Tag: 1788453893-224957
-X-HE-Meta: U2FsdGVkX1/+Yf387tLxBTh9wNgjVQTe2nTswC0G0YKMYXZPz8AO7hdAHPLGCUsSN/zD7OtQpRYv+g+zeEl2ZLK3sizVMbMRkO9J7e+kz4QfTZhxM0gWk0mvq79DDKM+0rXQYh/sCdBY844mUgYW9MlYvfEfvperv8lg7JR7Bkmuoxc4liYJnX8cg6zfl6MERhSAHMD1+AFuqESa4nIOG1OMRigwMETzvnhGE/RgT1f9y+9PTLXcmCBijyud+Gg4a0o81NNYkhEvXCT7xqjdaEMa2Nw/tVBc+gFe3/9TOijdHOkk8EGU0E4zNqIaN5Ke/13U88tcDu+7ePTGUzECDynkBxP4eKKkw5OFyZRNTzbuR5dn0jffIhN133U/KUJ99RWam6TOvI67eDBiie1c33P4jq/aMoOATamWUR9PReXwtUG5JZmL2mPiHu1COhYpWJZ7eEvozY56js5Gs+LT3zP2FpL4hJ0gcXMXJHwEe3w591EPopajtHMe6STAOtnqzZ8bm8EgUJgt3zLvu9ybdfHh4xoT9foDiSS4WIopIJHYVG4rkq4ED6d5MC+1Q9XViwLIwQGszEBmsMk77Xt8S2hir9CyNDp88eDuktmSTt3wvcS3JEp87ttqFJ7F5mAqcwc6Kivj1KXdd+fNoGpRui3PZ6H0NeGG+5+hEZBMOkiOr+JdWl68lPS2o2QxxQAL9n342PcFSyzxdTt69TXEPRnVbP9NZdrXLhfz/PY9hM5tWB8Tuc24qpsPwhHzGMACb9s7QguvtFO+VbsqeMNbLP15q9kaUqFgPO9PY+tlHUm2W1yOgl9JlAh0MSSXs6FgODUCEWdjFk+ACak7gpKxPWPSSAJmP/oQe3IebCmFJaKuBZ6LPee2EGk0erz2jq2SNOiRXHo/7etVsOsZEfQkKM/aRClOfv0Y4fSgAD9Xb11IzeauiQ9KkcQgfJuECiCduQ9iCcb6QvVdlEmmvP5
- pIxrSbXc
- gYCufrud9Sfy9cO0/0vG8fYywI3yBRHZOWuDy9jv0LZUcVPdhzg1PYewTgnCwfI2KMLo315WsHHQwo7FR5bMSPoen1rROwLptRnsOUMuwGUKsJ65x5RezU4AnHRndMIiqrmJRyJKJlqOV+rtz5ALn3aLE1tebTNXdm+FWkK8/GGARN5t8Kes4vdYJzpE+gJMCOBB4nPCSLoT31ult8/sv7tvbbKX/IEyVzTyfsTCYawse0pwsVvuqFdS2YgXFuhUl4bSDdsmyenbDnLr7Tbybs3NcUfi4ixR2zv5thpO8ZG6Tikmj7X0rHfIQD8W4hekUxszEmRW7j9Hp9iI=
+X-Stat-Signature: tm8xn57p1trocdhbranzp3dgut8b1u1y
+X-Rspamd-Queue-Id: B234516000B
+X-HE-Tag: 1788454998-314063
+X-HE-Meta: U2FsdGVkX18/2UfrOiWg640hH4+28e4nG3UR+NQint43BIo47CNYZuPJ8OpOsfFGPXa0hoGULPH3aLFAQrkTWB4EBRg2C5WYuTbrMAIH2nUtg6/ZTB+hSN4bgwaRRdHxU0QIJAVJGW6WIWjK8/HqOwYEVoW5HCNgsFT8F8o2rngkFDx6uudENZVB6NaKRIwgyNnm/GB7mW1fw/uf7/KCiFee3edtXRWl2fGrmiKQITkxe+3jKNKLV09BSyBsyTgF3f0sOVC/t/auqVf5sW5LMjLGojRiPrTKXsPkwkR9jwNUjgqmcmWvUtorpgC8X9+S5sr2VI/sHn4t0lHvlXOLJVSIeSCeDG/zfu9XHjB8YZ8rVOdKYmeUQ6VIpm3eEaLkUH6M8N648GvNJuuGG5bccl3QfwmMIGGDJVDq5c40afqrrHPPVh0G0Hsp/g0xOOgODCHlGFO0lueIfwG4r/B+Gfn1M9O83mduMUEOXmrB1OezNbw7x5Wd3uzvVgilAt79fXcMphvAdASlVrAzjYtjZvGEy7JXwnQkLqQZzcuDsiklPQq6R6oHrJmI/fLdnRQWxEWeNDyPUHHU1Nnb9WcIo9fPEvmPPBWU3xRuR6chZjJXVtUER6VbUe3PYaIU8LncDZ2Fv7ztv7mRRgYDkjXbQcZ67uEZem6vwHk65EBv1lIHout/z5AFs45+GU0J8fj2O4pGa9TOGpZUxBHSApC00UnFGR70Stw8rJ5XeUW9kcAw09CX6O3NGTV3o64YYsFdjUA5fFP6VsvG5fVr6ptFzjDmmdO1T1miG9tvf6VoxlHQJmAeGEO+vEXy8z0VWvyrAcDi1D5fPdF1GdQH1PGehrFplNwm4Zl1iviTd3OWP4m1pMShbcVrDVqwghygGjyB8TwTFa0cP7/yMgXqIjTLJy55/TnG7tM8vl6/7FhuXCxhd1DjBwCQ9p9vg5O3hJvQ7a1Fl6DKFyfPH1ctkwY
+ kcPUZFc4
+ 5RDxNMqWEc064U7IqNCMxt7GYmBzBfv4XxtfgSyfLtUvoKopVo2yvNvAqXAtvtUYoqOeeUI6mPFh8ldvM66NgePGe5II8HW1s6fW222qNizkQ1XQbOrgvldzfVR28hJEEgxYHlS+ikMlBuilXsaNFtFMyI/dQg0dvG7o9RfVSCSr1CneUJWubNxXDT0JpjnCawv1LYwXzD/ykA7Lc5lFAgJ2T1jiLmnjykC1zLg5e+eCXtRuLFO3+LKAIXplKib9Z7N7xH2CJrJYlIYAmW98+pAZJuAMdIYq8xNgXL04ZU/iGPWgA6ZfG3+RF7dntucMOqbyROuiHjgfBe6GAzGHC6zVo6gXK6LRicCzk6J9yI9XVu9duoJ4I1tCobTW9VJI4Hk2VgQEVpanyNgAv5VzvHE38qaZVja7QMTDeaTAXE5j3mvKSELwFHs6TAHOvJ7EmWoHs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,73 +139,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 01/09/2026 16:48, Linu Cherian wrote:
-> Kevin,
+--000000000000cd5ff3065a97208e
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi zhaozhengzhuo,
+
+I am not currently working on a fix, so if you would like to take it on, I
+definitely do not mind! I don't have a kernel development environment set
+up, so it may take me a while to get this done. Let me know if you'd prefer
+I make a patch here!
+
+Mike.
+
+
+On Thu, Sep 3, 2026 at 12:07=E2=80=AFAM zhaozhengzhuo <zhaozhengzhuo@uniont=
+ech.com>
+wrote:
+
+> Hi Mike,
 >
-> On Tue, Aug 18, 2026 at 03:08:47PM +0100, Kevin Brodsky wrote:
->> Implement the kpkeys interface if CONFIG_ARM64_POE is enabled.
->> The permissions for pkey 0 are set to RWX as this pkey is also used
->> for code mappings. POR_EL1 is left untouched if we have already
->> entered the requested context.
->>
->> To allow <asm/kpkeys.h> to be included from assembly, also add
->> appropriate #ifdef's to <asm/por.h>.
->>
->> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
->> ---
->>  arch/arm64/include/asm/kpkeys.h       | 67 +++++++++++++++++++++++++++++++++++
->>  arch/arm64/include/asm/kpkeys_types.h | 15 ++++++++
->>  arch/arm64/include/asm/por.h          |  4 +++
->>  3 files changed, 86 insertions(+)
->>
->> diff --git a/arch/arm64/include/asm/kpkeys.h b/arch/arm64/include/asm/kpkeys.h
->> new file mode 100644
->> index 000000000000..09fd5a849cb0
->> --- /dev/null
->> +++ b/arch/arm64/include/asm/kpkeys.h
->> @@ -0,0 +1,67 @@
->> +/* SPDX-License-Identifier: GPL-2.0-only */
->> +#ifndef __ASM_KPKEYS_H
->> +#define __ASM_KPKEYS_H
->> +
->> +#include <linux/kpkeys_types.h>
->> +
->> +#include <asm/barrier.h>
->> +#include <asm/cpufeature.h>
->> +#include <asm/por.h>
->> +
->> +/*
->> + * Equivalent to por_set_kpkeys_context(0, KPKEYS_CTX_DEFAULT), but can also be
->> + * used in assembly.
->> + */
->> +#define POR_EL1_INIT	POR_ELx_PERM_PREP(0, POE_RWX)
-> IMHO, moving this macro defintion to "arm64: Enable kpkeys" , would be better as
-> this patch is about implementing arch helpers.
+> Thanks for the report. I reproduced this on x86-64 with the current
+> mm-unstable tree at:
+>
+>   e3b5239afe1b ("mm: gup: cleanup the gup_fast_*() call chain")
+>
+> The test used a 64 MiB ordinary file-backed MAP_PRIVATE mapping and
+> disk-backed swap. Since the test machine has 128 GiB of RAM, the pages
+> initially remained in swap cache after MADV_PAGEOUT. I therefore added
+> controlled memory pressure between MADV_PAGEOUT and MADV_WILLNEED so
+> that the swap-cache folios were actually reclaimed.
+>
+> Across three runs, the pswpin deltas (in 4 KiB pages) were:
+>
+>                         run 1     run 2     run 3
+>   after MADV_WILLNEED       2         0         0
+>   during subsequent touch 16327     15811     15676
+>
+> The mapping still reported about 64 MiB in Swap after MADV_WILLNEED,
+> and almost all swap reads occurred only when the pages were touched.
+>
+> This appears to confirm that madvise_willneed() skips the private swap
+> entries because the VMA still has vm_file and therefore takes the file
+> readahead path. vfs_fadvise(POSIX_FADV_WILLNEED) can prefetch the
+> underlying file contents, but not the modified private contents stored
+> in swap.
+>
+> Are you already working on a fix? If testing or other help would be
+> useful, I would be happy to help.
+>
+> Thanks,
+> zhaozhengzhuo
+>
 
-But this macro is used in patch 7, 8, 9 so it should be defined before
-patch 7, right?
->> +
->> +#ifndef __ASSEMBLY__
->> +
->> +static inline bool arch_supports_kpkeys(void)
->> +{
->> +	return system_supports_poe();
->> +}
->> +
->> +#ifdef CONFIG_ARM64_POE
->> +
->> +static inline u64 por_set_kpkeys_context(u64 por, enum kpkeys_ctx ctx)
->> +{
->> +	por = por_elx_set_pkey_perms(por, 0, POE_RWX);
-> Guess, we would want to set the pkey index 0 only when,
-> ctx == KPKEYS_CTX_DEFAULT and it need to be set only once.
-> IIUC, we wouldnt want to deal with that every time we set a new
-> context. ie. update only what is relevant.
+--000000000000cd5ff3065a97208e
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Conceptually a context is a set of permissions for all the pkeys. This
-function must set permissions for all pkeys managed by kpkeys. In this
-series it happens that the two contexts both use RWX for pkey 0, but it
-does not have to be this way in general.
+<div dir=3D"ltr">Hi zhaozhengzhuo,<br><br>I am not currently working on a f=
+ix, so if you would like to take it on, I definitely do not mind! I don&#39=
+;t have a kernel development environment set up, so it may take me a while =
+to get this done. Let me know if you&#39;d prefer I make a patch here!<br><=
+br>Mike.<br><br></div><br><div class=3D"gmail_quote gmail_quote_container">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Thu, Sep 3, 2026 at 12:07=E2=80=AF=
+AM zhaozhengzhuo &lt;<a href=3D"mailto:zhaozhengzhuo@uniontech.com">zhaozhe=
+ngzhuo@uniontech.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quo=
+te" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204=
+);padding-left:1ex">Hi Mike,<br>
+<br>
+Thanks for the report. I reproduced this on x86-64 with the current<br>
+mm-unstable tree at:<br>
+<br>
+=C2=A0 e3b5239afe1b (&quot;mm: gup: cleanup the gup_fast_*() call chain&quo=
+t;)<br>
+<br>
+The test used a 64 MiB ordinary file-backed MAP_PRIVATE mapping and<br>
+disk-backed swap. Since the test machine has 128 GiB of RAM, the pages<br>
+initially remained in swap cache after MADV_PAGEOUT. I therefore added<br>
+controlled memory pressure between MADV_PAGEOUT and MADV_WILLNEED so<br>
+that the swap-cache folios were actually reclaimed.<br>
+<br>
+Across three runs, the pswpin deltas (in 4 KiB pages) were:<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 run 1=C2=A0 =C2=A0 =C2=A0run 2=C2=A0 =C2=A0 =C2=A0run 3<br>
+=C2=A0 after MADV_WILLNEED=C2=A0 =C2=A0 =C2=A0 =C2=A02=C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A00=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A00<br>
+=C2=A0 during subsequent touch 16327=C2=A0 =C2=A0 =C2=A015811=C2=A0 =C2=A0 =
+=C2=A015676<br>
+<br>
+The mapping still reported about 64 MiB in Swap after MADV_WILLNEED,<br>
+and almost all swap reads occurred only when the pages were touched.<br>
+<br>
+This appears to confirm that madvise_willneed() skips the private swap<br>
+entries because the VMA still has vm_file and therefore takes the file<br>
+readahead path. vfs_fadvise(POSIX_FADV_WILLNEED) can prefetch the<br>
+underlying file contents, but not the modified private contents stored<br>
+in swap.<br>
+<br>
+Are you already working on a fix? If testing or other help would be<br>
+useful, I would be happy to help.<br>
+<br>
+Thanks,<br>
+zhaozhengzhuo<br>
+</blockquote></div>
 
-- Kevin
+--000000000000cd5ff3065a97208e--
 
