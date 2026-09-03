@@ -4,142 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 837B2C624D7
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 10:09:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99270C624D7
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 10:10:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1DD76B00A9; Thu,  3 Sep 2026 06:09:28 -0400 (EDT)
+	id 9D3986B00A7; Thu,  3 Sep 2026 06:10:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CEA06B00AA; Thu,  3 Sep 2026 06:09:28 -0400 (EDT)
+	id 983B26B00AB; Thu,  3 Sep 2026 06:10:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8BDB46B00AB; Thu,  3 Sep 2026 06:09:28 -0400 (EDT)
+	id 8723E6B00AC; Thu,  3 Sep 2026 06:10:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 65C486B00A9
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:09:28 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6809AC04A6
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:09:26 +0000 (UTC)
-X-FDA: 85172028732.05.2A2F84A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A351D14000E
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:09:24 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LWQUiP1o;
-	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788430164;
-	b=a/TgfYSpgmWfODTA70GK2H+D3QPctXFt7d2Dbsk9MPDv/t/cfpkzG34AUy0rXS1uhRGuJ+
-	4mLAYNN4lU5db7+9aSpk54PtoHPgkt04AGcJuKpNuHjyGJ4ue9XNfY38t4M7wYG1oXFbLq
-	WjrljKWtBFZHsST7LYIbjkbo95hzI1c=
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 55C9D6B00A7
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:10:45 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C807E120495
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:10:44 +0000 (UTC)
+X-FDA: 85172032008.18.B6A60F8
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 07A9480004
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:10:42 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vTWk+++r;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf30.hostedemail.com: domain of vdonnefort@google.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=vdonnefort@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788430164;
+	s=arc-20220608; t=1788430243;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5kdCJbwtYjwdwpiipUS39ooVAOG5yIhe/eZjFNLrhWw=;
-	b=R5Z02tbjgxha1Lqs72o/S/H+p6RcJt6YKI/cw3HJJvF+giAxVeHZTCnKSRiQjZ95CyYNsV
-	Q0w3uWRrUTz/ndnQql2qBOF60VHDg+AQyUp1h1t83/ufmWY5KN6jiEpHdTPRlzXfWjhU9K
-	MNwmFcV3DbNiObHlFjFXdrGUAK/HKkA=
+	bh=v+pGX1kR1YWXhGrmpKIk1Ega27SLYogpSDSn/oUaopE=;
+	b=CpVkYoPb3uU2CnkJI9NjesUwQ/uSiA9JJVZxrsyfRS5BfvsQq9udlZKKz1QMd0OmvHAFII
+	7Vskrtp8UclghsXGqBOq8YhA8RAZS92EPLF6s+TxXot5HY+TOxHTan0zIoFszTqg+6UwEp
+	PYSllndiHTf3F6cKzi1EHp9CfJtD5/g=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LWQUiP1o;
-	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A89A360210;
-	Thu,  3 Sep 2026 10:09:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FF11F000E9;
-	Thu,  3 Sep 2026 10:09:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788430163;
-	bh=5kdCJbwtYjwdwpiipUS39ooVAOG5yIhe/eZjFNLrhWw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LWQUiP1oDc+eiSZLGgpmxHE3o0lgmGDPD6pRBrIEybso4LD+iiD7oVPSZybfQqn+N
-	 e+pXcMxx5xEbYpf67YbwHxpTwZAiunjHBdLE6XwEDjOu21gwI13462hMLlD7KpoXu1
-	 QWRUYN/6v0rGEnohmMPUkmr9WhTTqDF+ssDO4uo78F0xcMUWhcZ5IjBqTTc5Smn84h
-	 5hQn78UWMGO49s2DR4NTu5g+yo/jFVcpmyGWE4hu9r4k6lFYGrMnuaqUWqKUOaBYkQ
-	 Cgee9cf8BCGHqX8IbGo7fq9ainGRzpHhoJY1L2lMe1bbHsOVxqdbsIBTY29RrS0iEq
-	 Ozc+uYBVvmEZg==
-Message-ID: <8a73da1c-0167-4aa5-a62c-4190327685cd@kernel.org>
-Date: Thu, 3 Sep 2026 12:09:16 +0200
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vTWk+++r;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf30.hostedemail.com: domain of vdonnefort@google.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=vdonnefort@google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788430243;
+	b=ffyLta//RxLA++x9hMuruIQTqwpSNcxwvRGKv+Y9NHMLFUlOjMk5ECr5/MgLlz8UzMDSCy
+	rbiWraZFMujgUOZDlrVcLe2wmpB/fDHyKzVdxirLxOWMaZ7CdZCv0iLlljIv6AdEqSrZ/u
+	pPNRRzvq+heFeyFc/QCLuK9ZQB6eWqs=
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-49ccfae359fso15627905e9.3
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 03:10:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788430241; x=1789035041; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=v+pGX1kR1YWXhGrmpKIk1Ega27SLYogpSDSn/oUaopE=;
+        b=vTWk+++rCdHLbtT2OdDLGygkl5i+bzoqR+voN55AdLsMfhKw0EuCtPU8TwsCRWrx2G
+         fL89zVMWk6rR/wfBhPyxSUkEDEUJqqRXI6TyH0XVYVTtCYD58I5HEGJHXTBTawkiI+Kc
+         o6h8BP9jUQmxSZ2w4JfF1ePCPvcm7vjA0cU3U5nM1tQacqvpyyAA0I4b0NKS+2Nioluv
+         1KGMUhC4KBtLmKMUKX+mVRHlTZUsn1yMbIC4xrnJYO5zmZifxYEQ4LQ0on7oOp5wlnI/
+         RXCOWMZxcVkUIYo+kwFpaB6v17GhpnOTRKyc4NvYfnN/6t0/CG1NyHpBrOMzLaB7sJWB
+         IBRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788430241; x=1789035041;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=v+pGX1kR1YWXhGrmpKIk1Ega27SLYogpSDSn/oUaopE=;
+        b=kzctvU5je/hYo4r/ltRNgeWR6a01aU77CvFk9zQ/R14aH7KcaKEtG1XlxhYAUzLZGZ
+         jXQTKwkNW8aCUJtvLlJM63bIDcSbjTGkqTb3ravsza6rd3Dpxyrups3URwbRLhiLHR9a
+         HxA7pjCbskNy66FaUP2qb0TQgr5NMzuvmcfmLjDvrQDSRU9YnbGJgxw0sXQ8pe3oT9jC
+         CaFr4a6p4/4kT5Y4xRxdErTS04Kl+jWndpQhzY73V4Ycd1A88q2ZL1X8IWX/JgCK60yx
+         v6urPZI0CCyjhqWVHTIY36L2rbC4Pl24+XQKRbcCCQm7InBAeGlTk0Wbuw2epaxk8Z0Z
+         r2KA==
+X-Forwarded-Encrypted: i=1; AKwUvBxZAePaPUSB6ycqZKLenHKgqU0PjPlOD3ET6wQoMJQlWQVUnvUt3lJjqscVDL4X22C51882K8Vvyg==@kvack.org
+X-Gm-Message-State: AFuF++mI5iU22QNOfggIMTx/WBbvz3NCPiKRYn1tjYbvSfa01HdnzGkY
+	99b34+pf0VIE6hv24mL/xx+QUtctGYfmzWwCf6PjhBq0VPWPcdxtKzwANXHZPyAozQ==
+X-Gm-Gg: AYBFou3CdVcLaA1Mo200CxwjJTMUZdp6yQaEIuSy/VL7FuT43fepZwRvaQ2sEOiwjt5
+	hj5IohypqkdFBYRL7DgHXmA4/ip1M/wy6EuOSjMdDrNzND7wv8LkREB+XUHKNHpXO+6lquu96gt
+	xN8z7rtPn/NiMBDAC6V8EE5GMFNE4tOvE+5OOWAJepPi32pNV7MmL1oHuAZhoAJruHzWsOFe4zk
+	JV1ufaI7ISo/BknqjqLFX8lowa49xwjTVEIh6ikh3m1bPe+VTUau1Smb2VnSQjUAn6+xiwsK8cX
+	WNdn1gXUfJ34ZpnefcI7myPgneM71/u/pr6AVn4HsotB2FjCssiqjz1hZ4461WKNE89b8FjISRx
+	R5+4DV5uxvR3pyhVqIAG4oZ3+L9ii4PgSMQh8r2R7D/fik7mZ6SOBO/StQ75H/1W2tTnLqGi5lM
+	EAoW+0vlImRW/LMtaT0Qs7mPQKvZnGKhwpZUHW7KWHjHIxNUjbZWnFYI/Byak05SeY5VRCWNCkS
+	qSqglQv1tm3xQfo/CRp3tepuaR5cDq2XJaUVysi3jFzeg==
+X-Received: by 2002:a05:600c:1906:b0:499:8b13:3a98 with SMTP id 5b1f17b1804b1-49ce57e7a9dmr190171115e9.4.1788430240105;
+        Thu, 03 Sep 2026 03:10:40 -0700 (PDT)
+Received: from google.com (135.91.155.104.bc.googleusercontent.com. [104.155.91.135])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cf2531232sm33980375e9.7.2026.09.03.03.10.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Sep 2026 03:10:39 -0700 (PDT)
+Date: Thu, 3 Sep 2026 11:10:36 +0100
+From: Vincent Donnefort <vdonnefort@google.com>
+To: Rob Herring <robh@kernel.org>
+Cc: catalin.marinas@arm.com, will@kernel.org, rppt@kernel.org,
+	akpm@linux-foundation.org, sudeep.holla@kernel.org,
+	jenswi@kernel.org, mark.rutland@arm.com, sumit.garg@kernel.org,
+	ardb@kernel.org, thierry.reding@kernel.org, david@kernel.org,
+	danielmentz@google.com, linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org, op-tee@lists.trustedfirmware.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v9 09/10] firmware: arm_ffa: Introduce ffa-lend-pool
+Message-ID: <aplHnDS2e-Cd5yPC@google.com>
+References: <20260902104712.2399797-1-vdonnefort@google.com>
+ <20260902104712.2399797-10-vdonnefort@google.com>
+ <20260902173826.GC1440252-robh@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 08/12] rust: mm: add abstractions for allocating from a
- `sheaf`
-Content-Language: en-US
-To: Andreas Hindborg <a.hindborg@kernel.org>,
- Tamir Duberstein <tamird@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, Matthew Wilcox <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Harry Yoo <harry@kernel.org>,
- Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-References: <20260902-xarray-entry-send-v5-0-d18adae40708@kernel.org>
- <20260902-xarray-entry-send-v5-8-d18adae40708@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260902-xarray-entry-send-v5-8-d18adae40708@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260902173826.GC1440252-robh@kernel.org>
+X-Stat-Signature: 889te5k9xk4jyhxtruyssssgmpubc49t
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 07A9480004
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A351D14000E
-X-Stat-Signature: r87dxfc4jpyirttwaexagamu9qj5kxi8
-X-HE-Tag: 1788430164-854741
-X-HE-Meta: U2FsdGVkX1+r6GHwI/7JH84pXbTXrXLLpkReYHN6ifgjJUDxC5AElLiIR30mu0VeN+A8OueoR1k3mitc/ub/UIWRomwJyxWfm94DBZOGZKK8hvy2iUT8UdWCVD8zqn2T6KvmXtzPRfbbVCGizEj4LpkN2WwrhY01ruDmQ+xFErD94swdxcjQL0zF3jk5E9kvXYT8oal31oxKJTldDshRIB/IJdxOgbUUeQJKkmbUhD72KgReJwqgraVDQ4qmwZKJDpIlZXQk9/SA2uiKOoHbixZwNdWi8v+o6/0Qi5ZAFMW4+czP5Hqo+Z3EjyXH9JsVi6S7VGM0fyWPLDc2DH8KjbfLJu4PS9wQ9BO/m0rai173ifEgBAXSv1REg0iV9Sg6KlLe0AZD5W4yz1ArUULnV2l57xgx4VlUJU2JeUMPLqUlk39lA7bXKD/F0JNxTBOGYPnYs4OsOEf9C9E5dZ/x1YpTuzkUYv8wn1Tqgk3Ff5PpOFttJqK3S0Yx5+a0yHZP660oFiuzJ+A0v9nU9KBkrKkQ28jWYDpTYEaiEZpBO/HicRfg3ISGW2nuZNv8EaO3IVuSvhtI6K1cUcZHgUdepyupj0A5b3G3FTBvB9WtkR76HOVKg2im1VX5SDm6GN7JrcDTVuRmnmyKs/VPGlC8fEI3jAkKJo4D9MREWW4syYefr1rzbxDxu7lNOW7AJYq+bhd4X2jyM1XaYLcqs8yGBQIf9LmZZX5MShbgPQf4P4WWY48pGOWYc+MvKIokTCUu+VLOpuEaarYi8dlMJv9TgBOOb/kYwdUXzntnya/5Z/XjDt4r+YM6QgYOw8+LBZNE1zr2mPhCkPSkQSa6TziHgBt0iMmq5VU4QKHMDZCjTXsL+uvEGMFkNmYKOweKJ+gzfi6hHcSXABYnlwW19XgMwev0VGlJ92zvjOYvZXUFfzR8AZLvQgA1q7VBAG4WUeXNnZmDoLG1q5wrRhkSjof
- lmpJtPcT
- saEV4oo0Pwl+gv/+WljNf3lD38IGK9u3w5V1YAbVTxotwxkz2xX1sDZEUJVuq6KMxVW/Z82GAra3V8Rzze5cUBBlmmRrGvv0s7g7usDCamZq3HutNO4buA2un1yRykGCZlbT7kY0gCadCq9xv51iRqHQ8qgA57uLes8/uC89w6/8nI34yjkPYsDu7VN0Cz9EDdc0r/kc69wVOdUTiM60PDx40XtJRfIefCnprnRFeTJGG2d2+6vLx55Qr7CqnkIQvUKgtzTfEPTUNuyP5x7vneEjzYrMNdMfglT31jFqG7bDfGHxG38W5Pd6bN9m+Pjsq4E5UqLz50I+eY/5n9VeXBmOYHi70etrB8u6XZUzKybqmQriGBj34N+j5uZN2nFS2UTmveEDMJkHE6RC/XB47Hkq0PmVvKuOyQ/SAEx9Oy7k7KyE=
+X-HE-Tag: 1788430242-577303
+X-HE-Meta: U2FsdGVkX1+C3ZTJJ7xnenQUcVFARzCB3fVNQwc9Zh6jz1FUEdxHVQQT6AJHnyJkhKCzAni3AjrJ1BVisix8SWqmC7wAhRBQlkQs7BDc5VXnspN8JdLTrGbYYqJGRz75I5A3KF5CfZzpNNvb9XHE00ihQyaB2uWk6wczinj+zwigIovCpsMko36ieFEL3jtFvmi+VvhC7gUZH7q//ek9envshB+7E1k6WUG26+rKTEE1ruekUkG5Midp41XaGeF65Yj9J4P7tJVU5gC1dDir6WmJnjy8XPzQ+QnKJ1IpupUcd1bs5y/Pz4O2Tw8JxATLkdK4k1ME2s75VfbZekkjYnVGk18IDi8uUxQx5oWhjgJCbRXN8s25mo2skNk5SPkn9woAlfkO7uGgZfg7L171QQ7n0UCSoc2KMrawjZq4G3I1IcWP4M1/MiC8Y/biP9CztdPTrPxMwTDWYmBqEMgKDr79d/2njGfJqfCY61/pZrdH2kRXFIaBbKSt8NETMF+b1BV1nA96CHYWdkj36QBr9Mcpu2phhQV8Qzj+jEa06imZhNnKyBBJbY2Qb/r/EbBjg6cp9tAkLWszNzoFpCBiNzAsz9DFtBTUHQ9zQe3CCjSqZ6UA4UKO92EFZjy4oKhJ9mgUPQREG9ayAcwYztOARGZ0pDQFGG7tEWPzNPeXuqqKrxiTBJN7b0ODpBmb2rKy5atqtDQZxbO1x2D6EMpQHdg5owE6RrLEK6INF93/TqzSxtZMPrrslhjRalVZRZG45dQIZmg6mqJesjj2OqGDv+nZRCuM8k3KBpurQx7/LTaRQB0pd/SiDelOR3qE69h2ENSBFa5UUEjpSPHoJDth6zlv4y3nSIh3b7My+4NKBWRo6o1S0zC/boCii8Tn8Vv7bmhMe27G0oGJLEkpdR3pyA1Bz/YmA8m3p1YK4VPrwi4ICq24qw1wOwwZssTj84gQuICHjVD0XI5+47Kuhmg
+ e5/B1bkJ
+ qBp6LJceTidz14eAQUNSrPtL/vTMV60RCXSFYyGdwB0+D9hBjC3Hd5aj53LeAzL9fDzZRCdfHJKxyrxNcrv7vIt+BzHwicIdllwwRgzRIShTRusM0A8CVVqwdmxThqFnWDAn4RNkGvsW7U+T15sAQ5vZCgbJF0NtvgNe8G7BTL/zkDdb5teb/dygpRbOdWfM0+iMykBd56K7ZCuYTM+r2hGGOTZVx689IItqif6LQvS/ZQDeXjNNrVIB4ltdPk2jAbEGH6tOAdv7ab0Qa2Qhf58ZfEh46Soq/FGD+F0iIOeSXUrgFxSMcc85jNPN9iN1oDOXWaxvzQNSRbJqnsj0JmI2/evQNiX9yleGrOBxg+ptSZDu/RtaE7uARRpA1CDqrzxaDWIIjuPyivePIhqNmrGnwdQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,31 +126,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/2/26 15:26, Andreas Hindborg wrote:
-> Add Rust APIs for allocating objects from a `sheaf`.
+On Wed, Sep 02, 2026 at 12:38:26PM -0500, Rob Herring wrote:
+> On Wed, Sep 02, 2026 at 11:47:11AM +0100, Vincent Donnefort wrote:
+> > When memory is lent to the Secure world via FF-A, fatal CPU speculative
+> > reads from Non-Secure can still occur as long as it retains a cacheable
+> > mapping to that memory. Introduce the "arm,ffa-lend-pool"
+> > reserved-memory CMA driver to unmap pages before lending
+> > (ffa_prepare_lend()) and restore them upon reclaim
+> > (ffa_lend_reclaimed()). Devices bind to the pool via the "memory-region"
+> > DT property or via ffa_lend_pool_attach().
+> > 
+> >   reserved-memory {
+> >       #address-cells = <0x2>;
+> >       #size-cells = <0x2>;
+> >       ranges;
+> > 
+> >       ffa_lend: ffa-lend-pool {
+> >           compatible = "arm,ffa-lend-pool";
 > 
-> Introduce a reduced abstraction `KMemCacheInit` for `struct kmem_cache` to
-> support management of the `Sheaf`s.
+> Needs a binding schema...
+
+Ack
+
 > 
-> Initialize objects using in-place initialization when objects are allocated
-> from a `Sheaf`. This is different from C which tends to do some
-> initialization when the cache is filled. This approach is chosen because
-> there is no destructor/drop capability in `struct kmem_cache` that can be
-> invoked when the cache is dropped.
+> >           reusable;
+> >           ll-map;
+> >           size = <0x0 0x4000000>;
+> >       };
+> >   };
+> > 
+> > Signed-off-by: Vincent Donnefort <vdonnefort@google.com>
 > 
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: linux-mm@kvack.org
-> Assisted-by: LLM
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> [...]
+> 
+> > +static int __init ffa_lend_pool_setup(unsigned long node, struct reserved_mem *rmem)
+> > +{
+> > +	struct cma *cma;
+> > +	int ret;
+> > +
+> > +	if (!of_get_flat_dt_prop(node, "reusable", NULL) ||
+> > +	    of_get_flat_dt_prop(node, "no-map", NULL)) {
+> > +		pr_err("FF-A lend pool: node must be 'reusable' and not 'no-map'\n");
+> > +		return -EINVAL;
+> 
+> Your schema should enforce/check this.
+> 
+> [...]
+> 
+> > +static const struct reserved_mem_ops ffa_lend_pool_ops = {
+> > +	.node_init	= ffa_lend_pool_setup,
+> > +	.device_init	= ffa_lend_pool_device_init,
+> > +	.device_release = ffa_lend_pool_device_release,
+> > +};
+> > +RESERVEDMEM_OF_DECLARE(ffa_lend_pool, "arm,ffa-lend-pool", &ffa_lend_pool_ops);
+> 
+> Do you need this early? If not, you can create a platform driver for 
+> "arm,ffa-lend-pool". ramoops is implemented that way for example.
+> 
+> Rob
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Only memblock_mark_llmap() must be called very early.
 
-Note that currently all caches have sheaves (except CONFIG_SLUB_TINY or
-slab_debug enabled), and sheaf_capacity on creation is treated as a minimum,
-which the automated sizing calculation can make larger - in case you want to
-reflect this detail in some of the description comments.
+The rest just need to be in place before the TEE driver probed. So a platform
+driver should work.
 
+Thanks!
+
+-- 
+Vincent
 
