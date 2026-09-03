@@ -4,119 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26E94C624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 08:46:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61D27C624A4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 08:47:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 083376B009F; Thu,  3 Sep 2026 04:46:01 -0400 (EDT)
+	id 6C8DC6B00A3; Thu,  3 Sep 2026 04:47:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 034186B00A1; Thu,  3 Sep 2026 04:46:00 -0400 (EDT)
+	id 6A0FD6B00A4; Thu,  3 Sep 2026 04:47:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E65336B00A2; Thu,  3 Sep 2026 04:46:00 -0400 (EDT)
+	id 5B97E6B00A5; Thu,  3 Sep 2026 04:47:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B723C6B009F
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 04:46:00 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 903A5801B3
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 08:45:58 +0000 (UTC)
-X-FDA: 85171818396.13.EAA23CD
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	by imf29.hostedemail.com (Postfix) with ESMTP id BC732120009
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 08:45:56 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cW0GuWmU;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 351E86B00A3
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 04:47:53 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B31851A0484
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 08:47:52 +0000 (UTC)
+X-FDA: 85171823184.11.B96EF0F
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 509A814000C
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 08:47:50 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=EUz8hBvA;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=O4QrIF0+;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mSgKNGw3;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=DChrvXuK;
+	spf=pass (imf26.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788425156;
+	s=arc-20220608; t=1788425270;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RIa1KcxtKlzePvmdnnhCHyjrKBpT+nlLmPKgX7ZVzsY=;
-	b=a55dPUi9OOeUa1uk3ftjCSG+o6VCFKltVpaV4qd1g3xpjEC6M6A66KjzUUwdjhDDhZfScq
-	+4f+NNSnU5xQCJa8k1lAbqI3P1nGhpc/I6BvZTkowdk6VF4FDxmZOkTdJ2FMurlkMb2DWH
-	7X1X7zduADmpNIfcRW+lwq4rqbhkLUM=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cW0GuWmU;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
+	bh=WRbi2rD+eFTwUJ5ZZTOJbWeHQrzHMzr4OJI3Dgz/GAY=;
+	b=mMw7cAalTJLiaXFX41Z7tZoWLrJJytoufAls3g6xBGQN6RqZgW54qNwLQ8LaCoBEa0GLfq
+	ZlmWEtAE4TAJQ/UCMi1k8kYlMl7nO7NEUXiW6Ny0JkOaSwqX6XZwtTh+jGybmcaO31e++g
+	HYK+8geViJ/tdtT/NPzgOGe+gtCmulg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788425156;
-	b=FmMkU9IzR42oEDezvkWRCNtaRX+Ny9wPPrKJrqI9RuO5OXcVNGyuwCHHkCYj1besPVGpr4
-	bh8Efaq+vzRNisYenCVJkcTtlQ1MS+1TgqU5usSiOkBg3igRcE6qpz1BwlXZATgSRNWT6u
-	E4aPgx4cGD4MQ3Zq9OSknWoajFTx5nw=
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-84830c774a0so2330403b3a.1
-        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 01:45:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788425155; x=1789029955; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=RIa1KcxtKlzePvmdnnhCHyjrKBpT+nlLmPKgX7ZVzsY=;
-        b=cW0GuWmUL+kHtE7Jr6iFX6udzwayY+ah/e8Zt0Ll1lyg6kwzhJDZk7A2M/q79p5TA+
-         FfknWfwzCqCx/kCJ6fuN+vd40FlBcjEw5EBkBO8VQsWN5HBgmlEpH9NppdP7TQAcY7/D
-         xt6uL4qlQSho4EOmIyzzsGWN6ttVPjClgKQbBfWe0ShYKnM5DvVxwDERmschK2MjSkSm
-         eH/gB49QjgYtGEWVQtlVcxNdI0bCOD7+eUwcqzn0OizDce/xXDO5d+ie9sLel2wl8dEV
-         5VIf5pIcNzZRRWk2e6z1Go+B/mqGZ58R+BO1HYVTbCdfCAuv+2Qhyi+bQFQvAjHXNlxL
-         5QKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788425155; x=1789029955;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RIa1KcxtKlzePvmdnnhCHyjrKBpT+nlLmPKgX7ZVzsY=;
-        b=J8SL7Zok7D8EqoZUBm1TaIRSOU9fpTBUjO+x9LcNZD+VVgD9BOpfB72ihZ46pV7DTT
-         hEDT72CjYdwdFLCeeH5XIlNLqp/LrTitiZtgSfeaHoRvsEo8I81jQC/ax7tbnjLpGajG
-         7Ag7QfVLjoM3NOxOs3zpt1bfH0RVD/Z8/Nz31R9olvDg0oQRyBdTV//3XzpIFuDxt17f
-         RyLR6O7cIckBLr99/WwvMmLx6GzMQsvISS9Ps1lkKk1nKsNr7u5dTsAra46F5APLbJ8r
-         O43iV9CjKlVP4TfYd9jgHJoS+S7wz2mPegbK4dTtNo3kNFFbavcAuILbENkGabbdtZt3
-         6LXg==
-X-Forwarded-Encrypted: i=1; AKwUvBzS9uAuBTH8zG4NhDRWVrpVOggEPOQWwKnTT/oiu0GVDi0sstvLzpvpQVs6l3K1BjFnxn8w790b+w==@kvack.org
-X-Gm-Message-State: AFuF++mqB6SbOTYZymGZiy7M3D7M31vdSFz3/0ZoXkQEzGC+W2qeM+ss
-	4emXWx2CP+XuL4XN0LG5Yt8EjtiPAJFci8Hej4q+O1GJZj9y6jKPrcd8
-X-Gm-Gg: AYBFou3SgRsGDmIhRoi5aXdT1oK0H0E+y+uQaiQBUtKS4brUe5SrQL9iDqY3JghjRaT
-	b6LGl6btLnPqLa1nePXtUobKJibzCgPi/F07Ogp7wd3e/6okfvC3NbwYcwypUQxpPaEVAU8bf3b
-	EXnd58KgfmCjhQJu6dfRyaXjEo8/Mh6ZkUc+N7kM91xssF/RWOKyWatV+/5QKc/8+lblQdnZwtv
-	dZAVgqTOtWAzNDxSDSmtGolrop+fz7Ccg/nHNsbP4BbQXeB5uB1wxFK6edn3eiDJt4JVRmf/0Xq
-	GCd4nkV58lQQLkRsO2O05BnyBjQ6pKfscax+J/zwawsSveEhGTYrFeScZyHR8YIutvE+wh1VKwP
-	bEseLctA+LW20HKUnXR1f3gs0fKdVMH6korJJiNZVEErgHNF1nDtRbYNDNcmEg+tgllK6YsSDDK
-	gPchR8maoB1LdcfGSFf2ClmrBVXtQoZ6OHD80LdyNBX/laiEcTLPr7S0cZIqg=
-X-Received: by 2002:a05:6a00:3696:b0:845:e8b5:8c49 with SMTP id d2e1a72fcca58-85ed24e33ebmr16410228b3a.10.1788425154963;
-        Thu, 03 Sep 2026 01:45:54 -0700 (PDT)
-Received: from gmail.com ([185.220.238.35])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85db24f2e82sm2494935b3a.3.2026.09.03.01.45.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 01:45:54 -0700 (PDT)
-From: Kunwu Chan <kunwu.chan@gmail.com>
-X-Google-Original-From: Kunwu Chan <kunwu.chan@linux.dev>
-To: SJ Park <sj@kernel.org>
-Cc: Kunwu Chan <kunwu.chan@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	stable@vger.kernel.org,
-	Ravi Jonnalagadda <ravis.opensrc@gmail.com>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Kunwu Chan <kunwu.chan@gmail.com>
-Subject: Re: [PATCH 3/4] mm/damon/core: copy nid for eligible_mem_bp damos quota goal commit
-Date: Thu,  3 Sep 2026 16:45:45 +0800
-Message-ID: <20260903084547.960584-1-kunwu.chan@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260902002725.108635-4-sj@kernel.org>
-References: 
+	t=1788425270;
+	b=kDiKA+EEQWerwOkrmcOpQy0CnpUSrHuV7h4vGSYU1L2+OQuPuRuEZaN9xNYZgh5AMB3Ck3
+	A9oG9ieQvhNUS9EcZmGf69W9c+0L8mhKZzXpbh03s5SaV56r5LFI0WzLiQoJ5lwCThEqG9
+	TQuaLcQz9Cti2c4tu45cyN9xLpkDiWI=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=EUz8hBvA;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=O4QrIF0+;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mSgKNGw3;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=DChrvXuK;
+	spf=pass (imf26.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 7B6FA1FDF1;
+	Thu,  3 Sep 2026 08:47:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1788425264; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WRbi2rD+eFTwUJ5ZZTOJbWeHQrzHMzr4OJI3Dgz/GAY=;
+	b=EUz8hBvApKxx5IgDTg/FlQC3HwWB9yyCE0LvVwnmP9MBTmBWo36+o29D7kf9SJY1YK05nt
+	YvlW/VQuFWS3nm1Bk+LBi5woS24IU2sF3MLQm621xkRLtMmyGkA11f0wKTuY6EcCH8lRUU
+	DPUbfVdEOfCGRVWQAHkCtc9b+fpShmQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1788425264;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WRbi2rD+eFTwUJ5ZZTOJbWeHQrzHMzr4OJI3Dgz/GAY=;
+	b=O4QrIF0+JZUFM2RfNEyE1/jKUPpJv2uA3CwDtKiJIdthO+4UMdFaHZ97hyHbDdihNyQxHo
+	IFk9EzOD4nwmofDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1788425260; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WRbi2rD+eFTwUJ5ZZTOJbWeHQrzHMzr4OJI3Dgz/GAY=;
+	b=mSgKNGw3hUzw0ZA5DLotGb3bIcu2CXtGPQ6C33+rNEQJAoqm8sQJoQGIxf3Qd22sXdSjIw
+	skfR+8avk9h0dTxwH6JBlFIOSku109Y2syqlHSgreKOZXmfe+Iut/zXSS7bsItI9lNW0Hv
+	CVCLbdmnbRTdhyjnr1RvcqtqBHxppp4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1788425260;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WRbi2rD+eFTwUJ5ZZTOJbWeHQrzHMzr4OJI3Dgz/GAY=;
+	b=DChrvXuKBc/kE9j0IEbTY2enwJCh6DYNkDWWpqr6JfEnSOAy1XPZE/9qmtqvXy8wj+ge52
+	ukX9ce6wXwiHwJAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5DAD5136E6;
+	Thu,  3 Sep 2026 08:47:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id JiTgFiw0mWrgOgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 03 Sep 2026 08:47:40 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id E2081A0867; Thu, 03 Sep 2026 10:47:39 +0200 (CEST)
+Date: Thu, 3 Sep 2026 10:47:39 +0200
+From: Jan Kara <jack@suse.cz>
+To: Hugh Dickins <hughd@google.com>
+Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, ocfs2-devel@lists.linux.dev, 
+	Joseph Qi <joseph.qi@linux.alibaba.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Farhad Alemi <farhad.alemi@berkeley.edu>
+Subject: Re: [PATCH 2/2] shmem: Refuse to enable tmpfs format for another
+ filesystem
+Message-ID: <hqcus3yg5hdnf42f6ccin3lmnzv6xzrbpev7c2qaabo3fh7wiq@jckmpvb36ili>
+References: <20260902132458.23590-1-jack@suse.cz>
+ <20260902133702.1313635-4-jack@suse.cz>
+ <5f7e2e81-6a79-3b5a-1dc2-83ce775017ac@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: mswgkjk65xcrbutukaf5h7eb34j555j1
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BC732120009
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5f7e2e81-6a79-3b5a-1dc2-83ce775017ac@google.com>
+X-Rspamd-Action: no action
+X-Stat-Signature: xyxgo4pzykw7z46c38kt97wdfx9e36aa
+X-Rspamd-Queue-Id: 509A814000C
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788425156-282544
-X-HE-Meta: U2FsdGVkX1/0/+uwdKM475d0U1Dw/GQn0Qjae+YLPODKDa/tUxtQNLu2thEQYWteJx085JYN3GhLGurVnq/UUauELBxQs6/XoRZu3p0+REY4uSDoMYowqccRmubyf+lNQbi0d4FNIfkc4XKiOpSV/Y342c19lDkyg4MqvDVE1vdC7LLAIuc42z1YysCx6tTMHTrFOt8Bb9q//ZiO56yo77t8MC34PJcgF/Q3VUMKvSk3oqML3FHdwLl0SomNmwN/1lZ/AAc4POnTxt61/md0FHfJ5mgogzPXvaLe1eGWO6fEh12NIgaW0oVf/iYoioLeRbxWpuYWMkU4sEP31Rb46B49AFRo2fu2uqYL1zY60CRhC3/HbodhkT7AUGHtxgH+ivL8UmWwJYxWFTV3ncbMnpzFT2L1FBJJLjpxelXmBUwef811KnwnJPwe5pIdMRn0aMyoVS6N6ySx7Q0OyGSlGJNwNmO8KnQN1P9RxRC0I82rhb4oCzkhtp3e3dU2LBH4RGniD9zYvmkX7GFNaNHyvjbUW91g1AixN68rvrcnZpDHjWfPK6ubJKp11q3rTW3zbVQB3EgC2P8+Oi/XD8sUT7iAzAPv5RGJSnkd0NxyAwIX36mkb6IJF/vlD1N0lML5dBz19+hOt+WRjNAFToIabC9BmVHKpdSOyizRbQ0I2DfhO4bZX9EuwkjEG5hdNFEbXGcRV9H0pTH08GVGh9IhQBydRaQyIWLub58SzrWXPL+jDcqiYPc71t6NVxY/r0pGBY7e6UlUL28DySN7v23RrECUBTmtv5KGb7OmQqm5ZsmhTDFAert6i2wszUvZKHA/eiTza9nh+Bfi5QJ8nbO9jTpdJwaU8CfEjwuuWf4wBHkOyAJ4p0gM2v9uCtpTXnf+XOhlZt1gMVA1AZRoaQPgMPG48GvM7wvM1GmMNhdaisC5CrM5bZ0wAeBzkRGA05bvi5ug7J65d3R3sFuEdBB
- 6Fpjs/Mj
- pOtm4uZMLUUP2tN1WX2dL0Gm2l7UZzn3LZ77QEsr/arPWILlhg8Mh43fBeC1NI8nA20upVYdW93jYWicdZAwqRkfBFL6bTo29ww1AWgfdj0VSMYVsG+gwS/3luYH5mxGlEtwP6qa6iHCPQuVUg//Nn9G8ENSdTtpBTnpbl/BBr9x1GivIKvb8L6G8TRlHTHJRODukgcqjBGaPlrjEpz/O4B0c7aF6rdGxQ0PfKF4g4ulax+8s1k8DjJttJlOw/b+WitLLialvEVRp20GPUMpiwKvMgG3UY+ezJIvGqa5aUfcIvNYFR+5HUVCZ3R8/ibpVJoQJ6bUgKudOcCi7aCf0dvHHHvdMTk6/lNO/0Z2lzIXbWRQODVVFVixhozDeZpOUs6I/8mwdQIX15WZjehk3fHmbN6uEMceC1MpHltner646P+xEB5Zjt5Mx7b8eGinXS8NdBNTYQAAm5Pmu3GzlMq5rJKKvlRsQgSawj76B/y8b90+911wKLRZzvFliyyqDNBqEAKUdIv8DTtw=
+X-HE-Tag: 1788425270-416560
+X-HE-Meta: U2FsdGVkX181Joi4HmuKUpnYkptR0qm48d1W1RXsAOJmawtLy3L9tkZi0XT51gQYeMS3Ryjb8qAohmhrVxkRawGKI36MrMqxEbx4t8riYSyUhdRW6hrI+jTxZWjKgw6EjZAXqkpBd9z/3nOoMXU+yCCiwpUzmBOk7OCnJVHdiUgHcoDbk5JWjiN+eeHDNgAXUh9wtAMXWNLS+4EXLNsupW270hIz8YZ33jejstGXtZ4RTwurxv8HcHFhNtX1vt2oYbgSawALbr/Q+iT3WdViuSr2XiZzMYKLiCQw16RXcDTTOBaMZ9VMoibJgH4ibjNw0+EkPp2kMyyqJ6AxG2cboTdNQvkz5RyNnMNkupyCtKyTVmGmaiRzy7hEoCCvYOsS94u0RdYQsAH0nGy+c9r+GDwgoOAMSNCxfZaHG2DnX9by+WxzrnEkkGeDYzjomWJn5z54dvjCkTzUTHNdBCKD1cGGolrmoLlNvmEKJwzI8KG194Lq4IdoayxXwxsL/J87hPuEhUUok1qwozR5eA5N0Pxb/rtET4mHXNTa6DcrDe47LzGR/uoIJg7N+2m4ncQx9ozGdcQNBLk6F1nigy02FoFp+E8Qv8HeAXOH1VnfJELtl7uvAxTOLK3pYEyhJsA1HqB1Ge4YE9Wq0k3yqmS0CwXBMgjuibZkf+xj6lZ0qtVQbrV4BnQZs0IOpJiDwu+8uLknYGVwd//qYKPxomkZDFJteqHlBQq3QmzS8/QM8iUIffFtCi3USbVqHWWVQFUqsXWzzm3hu/wq41gcN2618l30sjkRgUlXqZXopCXgc1v3w6jlnJbIdyeolT8kt9EqgtS7vofCabTQFoetfj8TKjleCdEt+cGUmECjHZF4V+ZVZ3TZ/KtZTMoRwOmknouTTJwDbcL0s13nG2Yid/t1VfoXQBQbstgaKgEZ87XelO5UaGl7kioxTivTxlcVfn26fE53tNHRz/hDYxrIQR8
+ bOmQUZL9
+ L7X1JuMlUmyHqjFD5kySdOnF83J2ZZK/oebSQqGn8Fo8R7dgsZsUetQpGeg+NwPE45w6yOMT7+uvtPzXMP0c5WTWK/UsbVXDaebJbDBTu3WGjIWWR50CbHdSth0JGGXYxOxP0dSQyi13Umq4OZZvn7Su6/mCD/aAsIowSt5yQeDYJO8jLB5vWWGehkg8wnfIWfAjWJG+3frnrxKs51DpR2lHMhRi43+V8LX0D1eXfpyWsY87iwLaN0Nf1ddpziH9ZfFQi4aWrf4EUPFleL59Wm4SBDB/F7g3DW4z5pXWgo/qq3Dg0jeYQKbq4HfXmvDlDpW/wHSbUwodkg//2Fb84+YK8Og==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,62 +137,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  1 Sep 2026 17:27:22 -0700 SJ Park <sj@kernel.org> wrote:
-
-> damos_commit_quota_goal_union() is not updating the ->nid union field
-> when the goal metric is DAMOS_QUITA_NODE_ELIGIBLE_MEM_BP.  Hence, if a
-> DAMOS quota goal of the type is online committed in a way that it will
-> reuse other quota goal's memory space, the new goal will work with a
-> garbage nid value.  As a result, the DAMOS scheme can show unexpected
-> aggressiveness.  Do the update.
+On Wed 02-09-26 19:31:39, Hugh Dickins wrote:
+> On Wed, 2 Sep 2026, Jan Kara wrote:
 > 
-> The user impact is not catastrophic.  No leak or crash happens.  Doing
-> the quota goal online commit that can reproduce the issue is expected to
-> be not common.  This issue was not found by real users but the AI
-> review.  That said, the issue can reliably be reproduced.
+> > It is possible to issue Q_QUOTAON quotactl(2) e.g. for ext4 filesystem
+> > requesting to enable quota using tmpfs quota format. With suitable
+> > passed arguments this can actually succeed in enabling tmpfs quota
+> > format on top of ext4 filesystem which leads to crashes later in
+> > dquot_acquire().  As tmpfs quota format is intended for tmpfs
+> > filesystems only, verify we are indeed enabling quotas there.
+> > 
+> > Reported-by: Farhad Alemi <farhad.alemi@berkeley.edu>
+> > Signed-off-by: Jan Kara <jack@suse.cz>
+> > ---
+> >  mm/shmem_quota.c | 4 ++++
+> >  1 file changed, 4 insertions(+)
+> > 
+> > diff --git a/mm/shmem_quota.c b/mm/shmem_quota.c
+> > index d0b92d6da50f..6e0b43cbded3 100644
+> > --- a/mm/shmem_quota.c
+> > +++ b/mm/shmem_quota.c
+> > @@ -54,6 +54,10 @@ struct quota_id {
+> >  
+> >  static int shmem_check_quota_file(struct super_block *sb, int type)
+> >  {
+> > +	/* Verify enabling happens on tmpfs superblock */
+> > +	if (strcmp(sb->s_type->name, "tmpfs"))
+> > +		return 0;
+> > +
 > 
-> This issue was discovered [1] by Sashiko.
-> 
-> [1] https://lore.kkernel.org/20260827045035.94611-1-sj@kernel.org
+> I don't object to this, but was rather expecting you'd check s_magic
+> for TMPFS_MAGIC: isn't this the kind of hi-tech thing s_magic is for?
 
-Hi SJ,
+Oh, I completely forgot about s_magic. Yes, I guess that will be better
+than looking at sb->s_type. Thanks for the idea.
 
-The fix is consistent with the other node-based quota metrics. I also 
-checked that damos_get_node_eligible_mem_bp() directly uses goal->nid 
-when calculating the current value.
-
-One minor typo: the [1] has an extra k (kkernel should be kernel).
-
-Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
-
-Thanks,
-Kunwu
-
-> 
-> Fixes: 9138e27a3bc3 ("mm/damon: add node_eligible_mem_bp goal metric")
-> Cc: <stable@vger.kernel.org> # 7.2.x
-> Signed-off-by: SJ Park <sj@kernel.org>
-> ---
->  mm/damon/core.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index 20748b0a71026..53c3f97e3f126 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -1143,6 +1143,9 @@ static void damos_commit_quota_goal_union(
->  		dst->nid = src->nid;
->  		dst->memcg_id = src->memcg_id;
->  		break;
-> +	case DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP:
-> +		dst->nid = src->nid;
-> +		break;
->  	default:
->  		break;
->  	}
-> -- 
-> 2.47.3
-> 
-
-Sent using hkml (https://github.com/sjp38/hackermail)
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
