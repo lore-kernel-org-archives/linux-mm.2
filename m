@@ -4,89 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5215AC61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 10:11:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D26FC624D7
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 10:11:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6EE156B00AD; Thu,  3 Sep 2026 06:11:13 -0400 (EDT)
+	id BF8806B00AE; Thu,  3 Sep 2026 06:11:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69E006B00AE; Thu,  3 Sep 2026 06:11:13 -0400 (EDT)
+	id BD0436B00B0; Thu,  3 Sep 2026 06:11:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DB656B00AF; Thu,  3 Sep 2026 06:11:13 -0400 (EDT)
+	id AE7FE6B00B2; Thu,  3 Sep 2026 06:11:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FE746B00AD
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:11:13 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D354DA04C6
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:11:12 +0000 (UTC)
-X-FDA: 85172033184.28.C120C4C
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E387740002
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:11:08 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=cFRFSdob;
-	spf=pass (imf27.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E3A96B00AE
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:11:54 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1A92980473
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:11:54 +0000 (UTC)
+X-FDA: 85172034948.12.A46326E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 4434A80002
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:11:52 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VBTTOy4Z;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788430312;
+	b=6X+fsI93WkrQCPmNMd29bG0yOf48zR8LEUaqbYItl2IcxFl/dp83lsHHnww8zmmgSBfahG
+	tj25KKHsRbtXvXIrP1YPdjr6HohbYcOZCnz06bkC6lOiz99+0OXLumRqeh0beBgoAJ4Z1O
+	3BYC7sIcqWPPdrbxVLyKrqb1FY8P7Pc=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VBTTOy4Z;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788430270;
+	s=arc-20220608; t=1788430312;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XuxH6CgSRG1EdPhP+jIRa4q6speJtBOZLJj1P0OaFuc=;
-	b=A1Qy3QD4tWZKpgDbBQoHL2lwdTMOmFOkJiEnBPJ4d7HZR6VhViUvkdHetlKTRSd+HWJ1+2
-	e08HmoRVlcKvYbAgB2sHWsqurMRTlF8GdwyEx8+pOUuumFapLYq8eozQdHTYBmWq2cKdsV
-	QSJl7OeZn5+kL3x4G9u1JimQt6am3Yo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788430270;
-	b=QwnZZT8cg0S6HpXCgm2MCSkQFVbL8QuJLjVuFP71GoKvyQPeU3dePnm0BaOxJRdMlH5JY/
-	R2dMccUGcWjJFADBc/Lum6NqSGRBmIxprJz0AXfyvSyf63gOgfYdAMrgUInzUEA2U0Tsii
-	u61oKB6SAAJYrgt6MYucHMslvB0DW9o=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=cFRFSdob;
-	spf=pass (imf27.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1788430265; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=XuxH6CgSRG1EdPhP+jIRa4q6speJtBOZLJj1P0OaFuc=;
-	b=cFRFSdobXAtwzuwaGEzqZEu3w1nVN99fisD/yAl1k/wywwlUFDOZW8+LaFAMLkSTT+0sfTQM5/06ycefk7hW9atPV8ghvfy2uln7q9ceZbClRz/P4fzCadJunmYpcAo4TcmyE9jcv60QhZzr5IlgkvGjRc+u6Q4HVi1+kV8i74s=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=23;SR=0;TI=SMTPD_---0XAFfT1p_1788430262;
-Received: from 30.74.144.116(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAFfT1p_1788430262 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 03 Sep 2026 18:11:03 +0800
-Message-ID: <0f2d9837-0198-46f6-8988-8bc089c1234b@linux.alibaba.com>
-Date: Thu, 3 Sep 2026 18:11:00 +0800
+	bh=ATnn0rFlXTYrVtedHEnWgM8vXFFmNhxFeLJmYOeDXBk=;
+	b=MEktXjUzi7iOunA0wiqL4bsNppJzmRMgNKsu8YjcJ6hHQQSHeKAgBqNr9vR0LKXkVWuUjw
+	JdQyhALlVg5P+jNTvaqR73whHS/zVUQUSE6neDblr5NxVzA26SBxEeKQ/DC8ovOY94TYEH
+	XxpamAjVrSrpmoWC8bC4bzpq2D+VKmw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7660241AC1;
+	Thu,  3 Sep 2026 10:11:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93E311F000E9;
+	Thu,  3 Sep 2026 10:11:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788430311;
+	bh=ATnn0rFlXTYrVtedHEnWgM8vXFFmNhxFeLJmYOeDXBk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=VBTTOy4Zghb2X+R2qVo4ULeLYQIJvXRTePh93UEcOu76QCZm+hfproMO+r/Nfbqd5
+	 zWGprDLfpTGL9xeX6uOll5EclMwhO2WTri87vDXyT1TFmz6GNgT6oHXr6vevlAgc1s
+	 W5qfqa6hdHIW8jGHtMGQuKFLPPA1E8kdQT4W5dri3GC3+S032rNC0D/txLxmRaMn17
+	 rUF+tNB1CjWzHug8aRT3aAAxcJxFu5sAcJBTouGc0KX0TBs0OVCLcK3ExZKDlHV68L
+	 LE6Qjyj7iTugogz/OPp7Ik18wpw6GlnnV3jDn93TCs+BrUAxb2bG3miEOpzNqG7hVS
+	 m+kgfsrPHg8gA==
+Message-ID: <0082d06b-381d-4001-9ea6-cd3217e437dd@kernel.org>
+Date: Thu, 3 Sep 2026 12:11:45 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/7] mm/mglru: enhance cold/hot inversion handling in
- inc_min_seq()
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
- linux-mm@kvack.org
-Cc: axelrasmussen@google.com, baoquan.he@linux.dev, chenridong@xiaomi.com,
- david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com,
- lianux.mm@gmail.com, linux-kernel@vger.kernel.org, ljs@kernel.org,
- lyugaofei@xiaomi.com, mhocko@kernel.org, qi.zheng@linux.dev,
- shakeel.butt@linux.dev, stevensd@chromium.org, wangzicheng@honor.com,
- weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com,
- Xueyuan Chen <xueyuan.chen21@gmail.com>, Ridong Chen <ridong.chen@linux.dev>
-References: <20260901232421.40157-1-baohua@kernel.org>
- <20260901232421.40157-4-baohua@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260901232421.40157-4-baohua@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v5 09/12] rust: mm: sheaf: allow use of C initialized
+ static caches
+Content-Language: en-US
+To: Andreas Hindborg <a.hindborg@kernel.org>,
+ Tamir Duberstein <tamird@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, Matthew Wilcox <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Harry Yoo <harry@kernel.org>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+References: <20260902-xarray-entry-send-v5-0-d18adae40708@kernel.org>
+ <20260902-xarray-entry-send-v5-9-d18adae40708@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260902-xarray-entry-send-v5-9-d18adae40708@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E387740002
-X-Stat-Signature: 4ygz5uoiccr1nu1yfku36of571qo3myq
-X-HE-Tag: 1788430268-364406
-X-HE-Meta: U2FsdGVkX19K0lHLp+Q4f4sE7QaOA9XM9g/G3aTfYB/McK+XT6TUQoHUe+Lb8cyjDKEXlcoJFRi//AZs4xsj8Pzgaf9YAthwpzbppjDHkf/nyZrfOnjZRIoGkZdupkMuCBYGgDAJRAZvAXUkEEjyHZCE7LmmcBFv9OwBi1W27x9PfguQuv+fNqfNNQDUsSOf+0EdBuvMVaJDzh7LTV7xv0yhlta0jkaynmJp0ivha7rd2yx9miKOoPXcwOPIdCoDAXX8Q0jvZa1iVvV2paUY6WfCxA2NKB0/k42gxF+UF+fBoiEGwptj7+lL2r5BKLc9IcwE73402nhtVDZ4E6dL+O7NuXXcSBVWE7y+F+roapxJvZZkAaouPnKOEzKpsR7to/MT5atyJHFZp5RpbCvFaQHvgP2y1yMH/8EgfE3kkiAjh3uo2pwjtVzFhgCLrtlLe0B4retS41+t4IgrvI9eU3E0CLrHAow+boC9360FoF0RL5zV2bq9m1nyrMtryZsVnpHTAvDDzmVybI9Ef0LTsLJG4IQS7hSXXkcYtN2EHUXq/Jc694/S90JvvsoJg+dO+1+36vpmdsI1MQLwKqyXIDg6NTMaoORFaLVRehKqA1HWg1qWurQUtg5sUxosaIMZltMg1u7CE3xGcwkM/2US7NVxesYPLBP/7obo6p044qQfbyFtOyZVlsboigPtns/MnfHr3t/xemwWfWHrqeFAG0BzEiO6MsjAIfqrykd3KltR2pAbAulDPyDn8N54MM+Phq86UVE/j++JXI7w3DXsJda8wQ2fmaB6zKouxu0L/zx0i4NcHNVLj01oIAWm8N4trzCp3v4kowv9T/vqgE+49V5ytWZnWMHyuDxiyRwcNBMWRiqlHu7C8tXbG2bqc/aeNjTE7KLS1iHoBgjLmzu/TIiNzDBZXtC1c354ghIyYNw2AF94mz6ZYPpRSuxmgd9TrEGGg2W4VYQiuvaSjcl
- UTTbgvzj
- vNWoLxLtY8+hNdhm73EjmOWzRp3NWQBrtuOxE2yUHwi7wq/I5Oa3JVKrwYjGWJDCm9DMS6OHm7rQAjpgFNVRvXmXO/ZgjqMc8NWhOUMK0Uit90uqABuTshNCukkiaMa4KA5LbLYGrQaMyR2U2ckEacxW7sDZM4UylfznC/9oaQmOFBDnXxabTucmVs37T0DyK4dteTEXboOWUT9Fn/fL6S1X7245HEd5TmjDGR2YJe8N8aYWku7YJ25kzqT53tbrX7dixLZnajFqdWNbFPJQhbdEYx6ZqnwGHm32wBYdWAK75FvmNLpUamIIU3HjKebT9Rg1/A637SFC6+5G3/PT2fRDpfamLiu7O1w6cN1GBqDPGQN66XxyCMVNL5D4rhrFKrSra2FAH+0tVA2RCxHUwV71G+dG5I2qDkhwxXM/m7TMnr1yIPQMDRbs3g8RsFlnHbBkD71+OMx/TlFa5d3g9Q4tesSRBn4aJRwcXIS5xS0czjaCkwjtSiGGr+Q==
+X-Stat-Signature: fmbepys9zsfwudn9e19mjk3k7rwxqp1p
+X-Rspamd-Queue-Id: 4434A80002
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788430312-306888
+X-HE-Meta: U2FsdGVkX189NcGfMkpTmRclSpAzRyBnVZGMHeZK4TvZ0VgGd67goqdzgT8VILk4z9hnoOPexJchdwdEiloYKVCA/5DSdcovfj4DJVvdingkhlUou2ex87MkDjKgee1unV6IJSd47nrSYzODnOO0jHMdBGm3G7quc6lTDAxY9V6MjluvNypUo67gzlC9hj9hqvbegWjuLvXFXChbCxZMG2nEzy7sRSJRNlpA/nDjRJRFhiilwid4okajWvnuuOj9v6sJTCrjXE78SnHlBAPaYDg9ONZDDp+oja61ZLEpzyAkHL3aMq3+xKoMWVxzui16rv1nuu3HxYi3wRa23/nGbJcb+wX3IcKM0xmEUNKvAXhWtiLrK8P96Fx0/J3dK8m6jDWMAH47vqx0iumE+WGf1mpO0BIWM18q4aZSU2N813lQQC86VZVRC37QUafRvVxb5lqumCLK/5WiIi5JRbG4KOlMmCVGn9jmf6NoWMliPEJGLF126YYIPo3wuXMUhWujNFGTE1J9HosnzcME4xtec3YHRhDg6TgBsoN7jUq6Iwth2Uvq+0MnQOg9+m05XE840dlHRRIH9CuBYkPwqj1OVXI+vN3G4SgdvGfXGWrDtrBynxovKyGScyPsoPeSugzeH/qw/pfqxukZMfvtQzweuvfKzIcszHYMPJ7MRY8gRMpUTfSjZHKU6tsn5YqfQqWTwJvlDNWWDBLb1wC4RLSOjkYvZ0pvYaWMHtC0OWrsLooTk2d/9PxCiprbTL94u2sL1QGyXGUzzw3kCgWNkfGPNAq3kHvprYvDBaN8jKTRzbYPzGfUZ86mjr+BnS+VeNFYrIadQm3h4TJ1LUEtR/ZPJtvJbTby8lhb4XgfKmKOGzXmtSq5Covpxgvhn1YYKT84HJDJ1UoIs5NWRqYDF/8sCguHPn78pnFjY2r2/ltjxlJUvVwrOX4ylQpQVG3p0LwwKh9SEJ6TUj5hUBTBRqi
+ KhBac24n
+ uwpwYCa5oYvpNipJTBwYlmLL2zGj5XcpEYXlzRgY91lr/6w1UoI12t+NoSn2KAvFGwY38vqpN18R/F1vfbL6OM+QDJlTP6a7gN4FV753hxYWaYyCgujYxQ2ovGxPamL/RTykRt+TXHff2F0pL9tU6K5IFzBFdEvEh/lUxhmHDFkJM9x+uInS376cvYYRIGiBNcBRHLSGiVgCbzxSMKOA5DSZYJek8VNsqKp6EbeDo9BI3nu8/Yt6korDRNRN0VPEGA9DuzQIWGbkFdIr7L8azKIJUbcQxHYe0NlLhWkGn//CX+KmKZ8qdHESPQT5QLQBcLJanhkZjNT1YlegC0W6hfckKka9+WJ5RPh9pXkzTFUZnl0pAWv6BXOdCycRY8ZKqh73NosH71WdIi3K6WimswQQcM1L7gxwODDrErbnCk6zkpp4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,30 +147,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 9/2/26 15:26, Andreas Hindborg wrote:
+> Extend the sheaf abstraction to support caches initialized by C at kernel
+> boot time, in addition to dynamically created Rust caches.
+
+Nit: in C code caches can be also dynamically created :)
+
+> Introduce `KMemCache<T>` as a transparent wrapper around `kmem_cache` for
+> static caches with `'static` lifetime. Rename the previous `KMemCache<T>`
+> to `KMemCacheHandle<T>` to represent dynamically created, reference-counted
+> caches.
+> 
+> Add `Static` and `Dynamic` marker types along with `StaticSheaf` and
+> `DynamicSheaf` type aliases to distinguish sheaves from each cache type.
+> The `Sheaf` type now carries lifetime and allocation mode type parameters.
+> 
+> Add `SBox::into_ptr()` and `SBox::static_from_ptr()` methods for passing
+> allocations through C code via raw pointers.
+> 
+> Add `KMemCache::from_raw()` for wrapping C-initialized static caches and
+> `Sheaf::refill()` for replenishing a sheaf to a minimum size.
+> 
+> Export `kmem_cache_prefill_sheaf`, `kmem_cache_return_sheaf`,
+> `kmem_cache_refill_sheaf`, and `kmem_cache_alloc_from_sheaf_noprof` to
+> allow Rust module code to use the sheaf API.
+> 
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: linux-mm@kvack.org
+> Assisted-by: LLM
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
 
-On 9/2/26 7:24 AM, Barry Song (Xiaomi) wrote:
-> During aging, a folio's generation may already have been updated by
-> folio_update_gen(), even though it has not yet been moved to the
-> corresponding generation list. Such folios are hotter than those
-> already in that generation.
-> 
-> It makes sense for inc_min_seq() to increment the generation of
-> folios that were never promoted during aging and move them to the
-> tail of the new oldest generation. However, folios that were already
-> promoted should instead be moved to the head of their updated
-> generation, just as sort_folio() does in scan_folios().
-> 
-> Otherwise, promoted folios could end up behind folios that were
-> never promoted, effectively inverting their hot/cold ordering.
-> 
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> Reviewed-by: Kairui Song <kasong@tencent.com>
-> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> Reviewed-by: Ridong Chen <ridong.chen@linux.dev>
-> Reviewed-by: Lian Wang <lianux.mm@gmail.com>
-> ---
-
-Good catch. Make sense to me.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
