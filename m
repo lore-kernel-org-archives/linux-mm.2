@@ -4,116 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5437C61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 11:54:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B36EFC624A4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 11:57:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4A506B00C9; Thu,  3 Sep 2026 07:54:47 -0400 (EDT)
+	id 989386B0099; Thu,  3 Sep 2026 07:57:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF3E46B00CB; Thu,  3 Sep 2026 07:54:47 -0400 (EDT)
+	id 9602A6B009B; Thu,  3 Sep 2026 07:57:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE1FF6B00CC; Thu,  3 Sep 2026 07:54:47 -0400 (EDT)
+	id 84FA66B009D; Thu,  3 Sep 2026 07:57:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 851B36B00C9
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 07:54:47 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0B44212043E
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 11:54:47 +0000 (UTC)
-X-FDA: 85172294214.29.4A9AA08
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 1B1A5C0003
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 11:54:44 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JZwBmM0T;
-	spf=pass (imf10.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CB7D6B0099
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 07:57:40 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E76C3404FB
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 11:57:39 +0000 (UTC)
+X-FDA: 85172301438.02.12FA121
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf01.hostedemail.com (Postfix) with ESMTP id AB92F40008
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 11:57:36 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	spf=pass (imf01.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788436658;
+	b=QyoFJwWBAp2UwzQ34JavL4DCsOVyAZS70yVHwukmN+Fie4BT2MRRqjmnNdmCxmxHnf3Dtd
+	psLRHsLlonPKOUOC/Z/8unF2vOekIOtmpZED85Ci4qXRZEjnp1NLSUa//ZJt0QLit3O5I3
+	aZtxory+USCAYX2+QJOH0GzMXm5cfQ4=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788436485;
+	s=arc-20220608; t=1788436658;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lrsApyRAlrAEXb8oYNM0e4ki57YGn/dS7fq9ucKxGg0=;
-	b=mGfHzkoe0prlnQIE/pqsoM52LuNe7nF4WOC60Gj9evBI9ygV4IOxxfLaRQug6Xad0mo92N
-	Szf3K/zN47Cu1WVul9unwLby0vjq7B2VE8qF2Di+/Tf3oof8phFUvBg1UkYAdcf7caM8BK
-	AAFEHKqVJHI5M5WDoNI7nTB4DWY/wyQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788436485;
-	b=HpcNtsfR5IbHEYLJ2tDlm87pfwi7beT+jk1txS7H9Mblkqc4sPvl0RbRea6hdIbdkX8FOU
-	tGs1cKNGGR5iWf9S+pKu1qrxpXUN1GDeXnNpZCafmtSNC7h7MCXsqnt5vL+i2fa4dKELcC
-	oawOjwBSYoxL+Ct5aOK1LMC6bv7VhY0=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JZwBmM0T;
-	spf=pass (imf10.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BB0CD602CC;
-	Thu,  3 Sep 2026 11:54:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65D121F00A3D;
-	Thu,  3 Sep 2026 11:54:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788436483;
-	bh=lrsApyRAlrAEXb8oYNM0e4ki57YGn/dS7fq9ucKxGg0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JZwBmM0T8rEezI81rzPOtSKsc80CaL0qZizFtL+7BYIla5SMnNJZL1ZxJjRMEwgqb
-	 gR4JmwhGNnvMat1WcDCGZqu7ugwvVJniCdnA6UhbsOMP9uqja/6lqWPA5P0+bTISZ2
-	 iYoC9SwyK9kQeJxNYiAA40wW0wHu2XS+FjcP3KT8B0uJj5nqmZpICVU9QWKONsL/Y3
-	 paVGcie002Aj4ei1NEzGgFXNeJytaSUITaXeUQIHuwISBbexfo5nkDtfxHgItV1Uy1
-	 71giNJZPbXLuwvmZAmOD8nVNFOaOIb2w/nO5gDXg49SeKvBzyniUe7DWM0U9QA6hJ2
-	 aw5YXbYyerxvA==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.ams.internal (Postfix) with ESMTP id C09CB1980050;
-	Thu,  3 Sep 2026 07:54:37 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Thu, 03 Sep 2026 07:54:41 -0400
-X-ME-Sender: <xms:_V-Zaq-oLXG_tbRV5SL17ux8ZZWIWBI5lch0m-ICKJSNYjW1Kqxdcw>
-    <xme:_V-Zam649lsVdZSxRBe8Y4Fkv8iPQl4xoKF8yi7-uhpSI4N_82rXYncBjTcOcrgdl
-    jru2YnK1iltr_y3MKD6_bDjGKrjFVmUrmke9Ez28f6iFIpVUGTzVKo>
-X-ME-Received: <xmr:_V-ZanLB9z9pZZPNfG871FvzpdzBWebIxdafXCmQk9tqTj5p2-gfcwKhRxA>
-X-ME-Proxy-Cause: dmFkZTGRROi4E2jYkPmHGn8HmsKJK+DNhzW0iFBovk5qrcANvc/cyAdiFz8Bf10UjHIIr2
-    OCiNRxEcjH1fCCFWSCLqPb2F/nchosJWO+1x6Hoz+5AHWYM5O+CqFcxplyHcG2m0w7RAOJ
-    RUZ+jd9/a47JGJrOI5YRYubkQnZiRkL/W1JEXFNtY6qVzb0v768ExU2eXwalE45ySiF3R2
-    U4Z7aVpbGLrcxzX2HU/qf4+p9hJ62k5bAdwGbkZvc5vvqB0dtHm9E81ImbEPYAPyYZDO3Z
-    xZhLFBqWVSekOwAehorhA1EfjVwqRxpVeLw0fgGTvb/gfBm6l0b+TMrVkfw0ctulats7oK
-    wGlwKgXrS8Ti3z540MLDbn7ePC2qI/c2MtU5JUF+dLTMXiRyJivzXiYAn/9wsa0PY1oHXu
-    JzW2v+S/SSoVTcbO1JuhD4Nyd0FGNc3o4UObcbk6f1jbDrRJpNJ0EXmUmTp1mwjyGtksB+
-    E2wuRcH8c/rtBeyz+MDkuxCE+hb+/e2KAncEfo3PsPYjNhQU6LKaewoSsGySzAeR3lLM5U
-    GWx4Tu8ac0h3jZKjFsfGmSSulZ+hKt7eqz9x9VzuosBEqTQAVTDsESwXOF2SwVzeHoF5VZ
-    xwz0bboXiq1kvRifcmh7pN2ZbSSOgVvpoezUhaLz0B8RRjYLfKmMTOap1iWA
-X-ME-Proxy: <xmx:_V-ZauAr7fM7WQUuNYCB2wNA2X60UGgz1puUga-gXmYLooLrqGZshg>
-    <xmx:_V-ZagiOWoUgQIkkfpkSxwqFHXG16Z4VbZnV2_hDIOY49EB37rOr7Q>
-    <xmx:_V-ZaiN_RjR92LznnJrMHPgOIsfRfnKwP9OeVFLO-_u5WtWMYA1ElA>
-    <xmx:_V-ZasXGbsML7uAsQ1LEveq9goQh64MBgn9PW56oEWw-3GsSNWHk-w>
-    <xmx:_V-ZanCiw98vjCVwwHH4u5kXCgv2ETVbsI4nOpwXxgN_C3BUMY9LCzWE>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 3 Sep 2026 07:54:36 -0400 (EDT)
-Date: Thu, 3 Sep 2026 12:54:35 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Vernon Yang <vernon2gm@gmail.com>, rick.p.edgecombe@intel.com
-Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, akpm@linux-foundation.org, david@kernel.org, hpa@zytor.com, 
-	rmclure@linux.ibm.com, andrew+kernel@donnellan.id.au, pasha.tatashin@soleen.com, 
-	tj@kernel.org, rppt@kernel.org, yu-cheng.yu@intel.com, orsonpeters@gmail.com, 
-	linux-kernel@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org, 
-	Vernon Yang <yanglincheng@kylinos.cn>, stable@vger.kernel.org
-Subject: Re: [PATCH] x86/mm: Fix pmd_modify() dropping the dirty bit
-Message-ID: <aplfcTfjeQUgnrvH@thinkstation>
-References: <20260903031608.1194238-1-vernon2gm@gmail.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=5iGyAPtZkwaOTqjymjdJOPaOtljej4BaXokPf2H8YNg=;
+	b=kRbgJ3w3mqhpXrEHmfHkNjwt/BbQZbkghT5bncmZRyo2TBet7EzuViZfgD3j7S44QDR/F6
+	gGKrDWcvlTiMxfejQ/HNJTy0o3WMnUXZE1E3GDV19CLfwHngVhz7on2am6Pbt9b7TOwMmO
+	Vh9wQ5Vh40zh5iIwkwCEiE90DNjNCps=
+Received: from mail.maildlp.com (unknown [172.19.163.198])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4hbJ3f3SzVzYQttW
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 19:56:46 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.112])
+	by mail.maildlp.com (Postfix) with ESMTP id 4DAF84081E
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 19:57:29 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.50.85.155])
+	by APP1 (Coremail) with UTF8SMTPSA id cCh0CgAnDgmeYJlqCapnAg--.29796S4;
+	Thu, 03 Sep 2026 19:57:29 +0800 (CST)
+From: Zhang Yi <yi.zhang@huaweicloud.com>
+To: linux-mm@kvack.org
+Cc: linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-ext4@vger.kernel.org,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	hughd@google.com,
+	baolin.wang@linux.alibaba.com,
+	willy@infradead.org,
+	jack@suse.cz,
+	ziy@nvidia.com,
+	bfoster@redhat.com,
+	djwong@kernel.org,
+	yi.zhang@huawei.com,
+	yi.zhang@huaweicloud.com,
+	yizhang089@gmail.com,
+	yangerkun@huawei.com,
+	chengzhihao1@huawei.com,
+	wangkefeng.wang@huawei.com,
+	yukuai@fnnas.com
+Subject: [RFC PATCH] mm/truncate: fix data loss when splitting fails in truncate_inode_partial_folio()
+Date: Thu,  3 Sep 2026 19:50:18 +0800
+Message-ID: <20260903115018.2034541-1-yi.zhang@huaweicloud.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260903031608.1194238-1-vernon2gm@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:cCh0CgAnDgmeYJlqCapnAg--.29796S4
+X-Coremail-Antispam: 1UD129KBjvJXoW3ur45XFWxWFWrAr15ZF1kZrb_yoWDCry5pa
+	yUK3sxJrZ5Ww4jkr17uF4UXw4Yyas3XFWUAFyxGwnxCFn0qw17KF1Ut3W8KFW3Jr97Za4F
+	qF1jyFW7W3WUJFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9014x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
+	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
+	VFxhVjvjDU0xZFpf9x0JUUl1kUUUUU=
+X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1B1A5C0003
-X-Stat-Signature: sztfaeq3yuxyicsgjhpn7y6sx8xeyppn
-X-HE-Tag: 1788436484-37853
-X-HE-Meta: U2FsdGVkX19U/ArnFz1T3y32kxp0gczgyens/3fbzhfV/Zsl94wP7fPAuJDBSkh5j5eUN/q8wWMXbXkzfe7Qc2rPlE4Yx/56JiQhJ9Q5UjlFZAhHNRmiZTU92+SUb4XDBscZwjcFOs+uNjqxQ9gTZDcvwfHtwK/ToVyLtl0DPG3wBtS8J0He0XRF+nKgqSNRMBhL9xy96tLlrSJ38XI5NCVBWaDirKgfgi1NrN4Y+fzoyYQiF2hiXbe9DsSgNS48OHvtnR94k3gcs/k0+wJ8h0gDr6tmc0KXHl0lIOJCPOpCWeiwt1+Rbt9BhzuwLm6PiSHj4MFyb0/R2fwl9eRq/OFa4t/k/vbuLSbAZWCOb3NA2T/maM6/VH9j4yMnFmXoGfcsFXy7YC4nnA9UnRbx81SQ/rgBGKoFqMphoyxdHm7lXE/rnudWbYB3qiEF6HIgBtLrY9YytTQ4ViQ9d6F7/iJ5am/vCXvX+7n2+mLoCQeWHpqYYrt7LqJEQBXR+l66T6UpDcJWYyYIfrcr2JRloPZCT0NWLTkLPUha2gUvckA5MIVL9MrpzIFYAR2rAwcYF6zxeZ7NPIGzBGANxPCXAdCqOuy5eDXQLH8gTmcvs2b4V4e1azW7F5EslM4sB0TDRlOhyB0S5AfICGKYJ+uukmbl64k4JsrjqN+S+1cJcwJGREepQ+i+ZXpJFgtR2vyhNeryKC8XVnxe0HfZn+F+L1IWL3byT1Zv7brGfIj3jaGNq2zNHAknZz82sJRah+Qi8mMJVwoQ07KyLzcWGzvhbVjxfsp6YKhcULxDPWoGTEjNCHbV8lvjG92mXEcMcuw+x+VJS35b1fLdrsYUjhTFx3nFc1JfEtUzVVAne5yNif8imlX87PF0CjRR5ua1WsTgy2qRTORf5do9wQGl9vabQbMbWU8qK4ejrN14xqxCYr4CDtIKmFafM9YAvfzJ8034gCSajqpfLlUFDTIcvQo
- 0eiEOfRu
- tgrmlWWOqWvQE3ePfphP33Sj2wjD5vn5Z6MPsuqEHU4Q2VrZOA2kIuq17ap05vnDVHKeczJM+lAyKHNqEEGYKKfT+dkRu2YZcSjeD2GH8n7vyDNj6WqDygGnW+gv0VU57KcICVg9IMo9XP0JbZDaEWTqJJ8SnaT251UQnvmx1HPDxswn6vbk/kVf1aLH6BM14gPCV+TkUHVJ07f0T/kKi0RqwOVP9n0pokNIQBVojdnd271yGktpN3/0fnHROAGIfvGGOiaUoh4eefW3xoKdu2Z+QIR/ufQMjzTSX3ohLRd4S3zWR8krxG65PADGOpscEpr/nxXBOjX3MbPZr1aWm4kAWlaGPT2gasEZ5fqOMdpQVatTPCbYVvSNjxQ3b/YU8dcMcLWgnnTnJT7qCrGlJUmjI0Y9V4DiivbO+Z7e/OJ4ro5u3bDNIFJCOIrLvT+ntR7UixTYBCnpLXUA6MFuwlIaHhDlbyghgv/MA78JqwXtVkAw=
+X-Stat-Signature: nb7msh58uitcn1jgzbnw9nr4khi3w4yf
+X-Rspamd-Queue-Id: AB92F40008
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788436656-259293
+X-HE-Meta: U2FsdGVkX1/KCT7NEsBhLnTS51ArjW+Aj5IX3aCFf+K6R11hjxbozLrSwCTwbjOC31pkz8joGIUXZYI8LXzBlt+BKvHBkXQaOQrz2vnrtLJH1+3OZh1R+3HOAcsj9wg1mCbbRkh4tan6DZZDOgR0NFnRzqmXjl+4UbIDcjnrWLAluH2nnIUGCu4+8yymnSjaZd5DA9O2V0GU95BYXfFcxaXE1V6GlN1H0+cH3th2CMWNdiENPI2wvJpde25cNQSxFUWjzSnbddg2tUCoh4nuI5NES/qA5x2m+ktOwSkMpCAe+AWrJ9GnCDLwCs2hlnWnBsqFa9kQUH+mLNm/KJPnxztGBH17EyqVK/sXTLyztWdaZbyjra6WuuE4CPLjZD+HTJJ40ZEdVPAueAg2nZPoX8TR9UniYJLH8S9qa89kcU7Yww/yufjVWrCGPGQiXkkAw2lq70GL8I5liIpNmAjx61fWBfb6Uvm0Av7bLQeoEibrb84W8TimkBv9e6Z8sYYX50OtM1QAoGuj6SUQCZtdVGEY5amzwMFa+cde1wPWnTmnOlB59X1nvWeSrb7w5dC9ufa2QbPJ6jPS876thBrcq71I6Yg0mUV+/MrSD82ssHZrXnrrHPQOoQxHv7+BvDV7qBflvMepR+hI+edecw28VZ7nT6HsTXq7oC541TWqI/ML6l8zAjcx+gssTHmNsrhTaPIaj3jSuGoX4xyFe5+Kp42YqDYDqhWaRyRuQ/dMJfPeLnKmmo1zLU2xFaQ8J9MVEdwu7TlQvwZPhWKLy61TDGSvM+VeaWloLy3PDXUW+iw7aXPAUJOXCD5O7b83lwPmMwJJfjgdMiJ/7f0NmF/lohF9c6H9ss7qjmtsBDCXn831N3LpAGd8MCLGm3FX71AnsuZRrwBvVqDxg9WbgjJUbNbLhCg1kD2GBLJU9PCjvxiryMpGOkGC+pOdRhVI8maPAbCXrQVhCCbAZx66Atn
+ riO7gREb
+ 4zMUTgONaX12KXj4tUmCi9KQi8RK5qqEkJU+lmA7OXCDACh4TxqNfCA0cgTJCoZSMI9jkCO1WejTiFDi0y6+rkr3WboBKtZJCquELZGiraSbXz8jLl3mwgAlT0z0bv4AtMrywuAt/tFpsGcRwb74aNlew5EK3ud0M31uiYfyy2PHeIK2aYOcYF4UwaArUyxUoWSLF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,57 +120,269 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 03, 2026 at 11:16:08AM +0800, Vernon Yang wrote:
-> From: Vernon Yang <yanglincheng@kylinos.cn>
-> 
-> pmd_modify() masks the old value with (_HPAGE_CHG_MASK & ~_PAGE_DIRTY),
-> silently discarding the hardware dirty bit.  The subsequent
-> pmd_mksaveddirty() call is supposed to transfer _PAGE_DIRTY into
-> _PAGE_SAVED_DIRTY when write-protecting, but the dirty bit was already
-> stripped from the value, so there is nothing left to transfer.
-> 
-> Contrast with pte_modify(), which keeps _PAGE_DIRTY_BITS in its mask,
-> and pud_modify(), which keeps _HPAGE_CHG_MASK untouched: pmd_modify()
-> is the odd one out.  Any pmd_modify() on a writable, dirty PMD loses
-> the dirty state.
-> 
-> One visible consequence is data loss with MADV_FREE on PMD-mapped THP:
-> 
->     memset(buf, 0x5A, size);          // PMD-mapped THP, PMD dirty
->     madvise(buf, size, MADV_FREE);    // PMD cleaned but left writable,
->                                       // folio marked lazyfree
->     memset(buf, 0x5A, size);          // hardware sets _PAGE_DIRTY again
->     mprotect(buf, size, PROT_READ);   // pmd_modify() drops the dirty bit
->     mprotect(buf, size, PROT_READ|PROT_WRITE);
->     // ... memory pressure ...
-> 
-> Reclaim (e.g. under memcg pressure) then finds the lazyfree folio with
-> no dirty bit set anywhere and frees it in
-> __discard_anon_folio_pmd_locked(), even though the data was rewritten
-> after MADV_FREE; subsequent reads fault in fresh zero pages.  NUMA
-> hinting alone can trigger the same loss, as do_huge_pmd_numa_page()
-> restores the PMD through pmd_modify() as well.
-> 
-> PMD-mapped file THPs are affected too: mprotect()/NUMA hinting dropping
-> the dirty bit means rewritten data is never written back.
-> 
-> Fix it by keeping _PAGE_DIRTY in the preserved mask, exactly like
-> pte_modify() and pud_modify() do.  The existing
-> pmd_mksaveddirty()/pmd_clear_saveddirty() pair then performs the
-> hardware-dirty <-> saved-dirty transition based on the write bit,
-> preserving the shadow-stack encoding rules.
-> 
-> Closes: https://lore.kernel.org/r/CAJxLxMUGu1-L+O_nAONOwOXnS=cNbNApCWqdthRjd76LThtSPg@mail.gmail.com/
-> Fixes: bb3aadf7d446 ("x86/mm: Start actually marking _PAGE_SAVED_DIRTY")
+From: Zhang Yi <yi.zhang@huawei.com>
 
-Hm. I don't understand why would this commit explicitly exclude
-_PAGE_DIRTY from the mask:
+truncate_inode_partial_folio() splits a large folio so that the caller's
+truncate loop can drop the in-range sub-folios while keeping the
+out-of-range tail. The first split at the punch start edge is
+non-uniform, which leaves the sub-folio at the truncation end edge as
+large as possible, this means it may still straddle the range, holding
+both zeroed in-range and valid out-of-range data. The function then
+attempts a second split at offset + length to isolate that tail.
 
--       val &= _HPAGE_CHG_MASK;
-+       val &= (_HPAGE_CHG_MASK & ~_PAGE_DIRTY);
+If the second split fails the straddling sub-folio stays merged. The
+function returned true unconditionally on all exit paths of the success
+block, telling the caller it was fully handled. The caller kept its
+default end and the truncate loop truncated every sub-folio below it,
+including the merged straddler, discarding the valid out-of-range tail.
 
-Rick, could you comment? It doesn't look like a typo.
+For example, a 4-page order-2 folio punched from offset 0 to the middle
+of the last page:
 
+  truncate_inode_pages_range()
+    truncate_inode_partial_folio()      # same_folio == true
+      1st split at page0 -> [p0, p1, p2-3]   # non-uniform, success
+      folio2 = p2-3 # straddles: p2 zeroed, p3 tail valid
+      2nd split of folio2 fails / cannot lock
+      return true                       # BUG: caller keeps default end
+    end = 3
+    loop truncates p0, p1, p2-3        # p3's valid tail is lost
+
+This became reachable after commit 7460b470a131 ("mm/truncate: use
+folio_split() in truncate operation") replaced the atomic split_folio()
+with folio_split(), whose non-uniform split can partially split a folio
+and leave the end edge merged.
+
+It has gone unnoticed because a dirty large folio normally carries the
+filesystem's private data, for example buffer_head, so
+filemap_release_folio() -> iomap_release_folio() returns false on a
+dirty folio and folio_split() aborts with -EBUSY before any split,
+leaving the straddler safely unsplit. The bug is only reachable on paths
+that produce dirty large folios without filesystem private data, and it
+was caught on the upcoming ext4 iomap buffered I/O path when no ifs is
+attached.
+
+Rework the contract so the caller is told where to stop instead of
+silently truncating the straddler:
+
+  - Return true only when a split occurred, false otherwise. This
+    clarifies the existing confusing return value semantics.
+
+  - Add an optional out-parameter pgoff_t *end, set to the index of the
+    folio that contains @lend and must be kept by the caller's loop. It
+    is only written when the folio actually straddles @lend. On the
+    success path it defaults to the page index of the end edge and is
+    refined to folio2->index when the second split fails to isolate the
+    tail.
+
+  - Rename the byte-range parameters start/end to lstart/lend to avoid
+    clashing with the new @end output and to separate byte offsets from
+    folio indices.
+
+Callers in truncate_inode_pages_range() and shmem_undo_range() pass &end
+only when the folio straddles lend. After all, no caller discards a
+straddling folio anymore, the in-range cleanly-split sub-folios below it
+are still dropped.
+
+Suggested-by: Brian Foster <bfoster@redhat.com>
+Link: https://lore.kernel.org/linux-fsdevel/anH-WKA1coW6wtfG@bfoster/
+Fixes: 7460b470a131 ("mm/truncate: use folio_split() in truncate operation")
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+---
+ mm/internal.h |  4 ++--
+ mm/shmem.c    | 12 +++++------
+ mm/truncate.c | 57 ++++++++++++++++++++++++++++++---------------------
+ 3 files changed, 41 insertions(+), 32 deletions(-)
+
+diff --git a/mm/internal.h b/mm/internal.h
+index 68db5abd0a4c..db7d9d9fb5c9 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -627,8 +627,8 @@ unsigned find_lock_entries(struct address_space *mapping, pgoff_t *start,
+ unsigned find_get_entries(struct address_space *mapping, pgoff_t *start,
+ 		pgoff_t end, struct folio_batch *fbatch, pgoff_t *indices);
+ int truncate_inode_folio(struct address_space *mapping, struct folio *folio);
+-bool truncate_inode_partial_folio(struct folio *folio, loff_t start,
+-		loff_t end);
++bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
++		loff_t lend, pgoff_t *end);
+ long mapping_evict_folio(struct address_space *mapping, struct folio *folio);
+ unsigned long mapping_try_invalidate(struct address_space *mapping,
+ 		pgoff_t start, pgoff_t end, unsigned long *nr_failed);
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 89a1495e55f7..cc1548ff509a 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1175,11 +1175,9 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+ 	if (folio) {
+ 		same_folio = lend < folio_next_pos(folio);
+ 		folio_mark_dirty(folio);
+-		if (!truncate_inode_partial_folio(folio, lstart, lend)) {
++		if (!truncate_inode_partial_folio(folio, lstart, lend,
++						  same_folio ? &end : NULL))
+ 			start = folio_next_index(folio);
+-			if (same_folio)
+-				end = folio->index;
+-		}
+ 		folio_unlock(folio);
+ 		folio_put(folio);
+ 		folio = NULL;
+@@ -1189,8 +1187,7 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+ 		folio = shmem_get_partial_folio(inode, lend >> PAGE_SHIFT);
+ 	if (folio) {
+ 		folio_mark_dirty(folio);
+-		if (!truncate_inode_partial_folio(folio, lstart, lend))
+-			end = folio->index;
++		truncate_inode_partial_folio(folio, lstart, lend, &end);
+ 		folio_unlock(folio);
+ 		folio_put(folio);
+ 	}
+@@ -1258,7 +1255,8 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+ 
+ 				if (!folio_test_large(folio)) {
+ 					truncate_inode_folio(mapping, folio);
+-				} else if (truncate_inode_partial_folio(folio, lstart, lend)) {
++				} else if (truncate_inode_partial_folio(folio,
++							lstart, lend, NULL)) {
+ 					/*
+ 					 * If we split a page, reset the loop so
+ 					 * that we pick up the new sub pages.
+diff --git a/mm/truncate.c b/mm/truncate.c
+index b58ba940be47..2ebb00f6c379 100644
+--- a/mm/truncate.c
++++ b/mm/truncate.c
+@@ -206,15 +206,18 @@ static int folio_split_or_unmap(struct folio *folio, struct page *split_at,
+ /*
+  * Handle partial folios.  The folio may be entirely within the
+  * range if a split has raced with us.  If not, we zero the part of the
+- * folio that's within the [start, end] range, and then split the folio if
++ * folio that's within the [lstart, lend] range, and then split the folio if
+  * it's large.  split_page_range() will discard pages which now lie beyond
+  * i_size, and we rely on the caller to discard pages which lie within a
+  * newly created hole.
+  *
+- * Returns false if splitting failed so the caller can avoid
+- * discarding the entire folio which is stubbornly unsplit.
++ * When @end non-NULL, set to the index of the folio that contains @lend
++ * and must be kept by the caller's truncate loop.  Return %true if the
++ * folio was split, %false otherwise, in which case the folio is dropped or
++ * may still straddle the range, so the caller must not discard it.
+  */
+-bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
++bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
++				  loff_t lend, pgoff_t *end)
+ {
+ 	loff_t pos = folio_pos(folio);
+ 	size_t size = folio_size(folio);
+@@ -222,19 +225,22 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+ 	struct page *split_at, *split_at2;
+ 	unsigned int min_order;
+ 
+-	if (pos < start)
+-		offset = start - pos;
++	if (end && pos + size > (u64)lend)
++		*end = folio->index;
++
++	if (pos < lstart)
++		offset = lstart - pos;
+ 	else
+ 		offset = 0;
+-	if (pos + size <= (u64)end)
++	if (pos + size <= (u64)lend)
+ 		length = size - offset;
+ 	else
+-		length = end + 1 - pos - offset;
++		length = lend + 1 - pos - offset;
+ 
+ 	folio_wait_writeback(folio);
+ 	if (length == size) {
+ 		truncate_inode_folio(folio->mapping, folio);
+-		return true;
++		return false;
+ 	}
+ 
+ 	/*
+@@ -248,7 +254,7 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+ 	if (folio_needs_release(folio))
+ 		folio_invalidate(folio, offset, length);
+ 	if (!folio_test_large(folio))
+-		return true;
++		return false;
+ 
+ 	min_order = mapping_min_folio_order(folio->mapping);
+ 	split_at = folio_page(folio, PAGE_ALIGN_DOWN(offset) / PAGE_SIZE);
+@@ -259,6 +265,10 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+ 		 * for shmem truncate
+ 		 */
+ 		struct folio *folio2;
++		bool tail_isolated = true;
++
++		if (end)
++			*end = (pos + offset + length) >> PAGE_SHIFT;
+ 
+ 		if (offset + length == size)
+ 			goto no_split;
+@@ -273,24 +283,28 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+ 		if (!folio_test_large(folio2))
+ 			goto out;
+ 
+-		if (!folio_trylock(folio2))
++		if (!folio_trylock(folio2)) {
++			tail_isolated = false;
+ 			goto out;
++		}
+ 
+ 		/* make sure folio2 is large and does not change its mapping */
+ 		if (folio_test_large(folio2) &&
+-		    folio2->mapping == folio->mapping)
+-			folio_split_or_unmap(folio2, split_at2, min_order);
++		    folio2->mapping == folio->mapping &&
++		    folio_split_or_unmap(folio2, split_at2, min_order))
++			tail_isolated = false;
+ 
+ 		folio_unlock(folio2);
+ out:
++		if (!tail_isolated && end)
++			*end = folio2->index;
+ 		folio_put(folio2);
+ no_split:
+ 		return true;
+ 	}
+-	if (folio_test_dirty(folio))
+-		return false;
+-	truncate_inode_folio(folio->mapping, folio);
+-	return true;
++	if (!folio_test_dirty(folio))
++		truncate_inode_folio(folio->mapping, folio);
++	return false;
+ }
+ 
+ /*
+@@ -413,11 +427,9 @@ void truncate_inode_pages_range(struct address_space *mapping,
+ 	folio = __filemap_get_folio(mapping, lstart >> PAGE_SHIFT, FGP_LOCK, 0);
+ 	if (!IS_ERR(folio)) {
+ 		same_folio = lend < folio_next_pos(folio);
+-		if (!truncate_inode_partial_folio(folio, lstart, lend)) {
++		if (!truncate_inode_partial_folio(folio, lstart, lend,
++						  same_folio ? &end : NULL))
+ 			start = folio_next_index(folio);
+-			if (same_folio)
+-				end = folio->index;
+-		}
+ 		folio_unlock(folio);
+ 		folio_put(folio);
+ 		folio = NULL;
+@@ -427,8 +439,7 @@ void truncate_inode_pages_range(struct address_space *mapping,
+ 		folio = __filemap_get_folio(mapping, lend >> PAGE_SHIFT,
+ 						FGP_LOCK, 0);
+ 		if (!IS_ERR(folio)) {
+-			if (!truncate_inode_partial_folio(folio, lstart, lend))
+-				end = folio->index;
++			truncate_inode_partial_folio(folio, lstart, lend, &end);
+ 			folio_unlock(folio);
+ 			folio_put(folio);
+ 		}
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.52.0
+
 
