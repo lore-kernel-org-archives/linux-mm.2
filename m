@@ -4,89 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74E09C61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 04:07:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1AF2C61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 04:10:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3138C6B00A4; Thu,  3 Sep 2026 00:07:06 -0400 (EDT)
+	id C68BE6B0088; Thu,  3 Sep 2026 00:10:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C4A16B00A5; Thu,  3 Sep 2026 00:07:06 -0400 (EDT)
+	id C41066B008A; Thu,  3 Sep 2026 00:10:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B3E56B00A6; Thu,  3 Sep 2026 00:07:06 -0400 (EDT)
+	id B56BD6B008C; Thu,  3 Sep 2026 00:10:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E26676B00A4
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 00:07:05 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6BC3B1A0410
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 04:07:05 +0000 (UTC)
-X-FDA: 85171115610.20.019A77A
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 326681C0006
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 04:07:01 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ZtwljQv+;
-	spf=pass (imf21.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788408423;
-	b=4zX5ncDTRvsh3RJDeYvkwRLHS0Dyim5qWW2Zc1Nweusbv7BBS3Wo/SWbBJ3b8melcCNUog
-	ufaqCfF//SQF5K7KfyoqnBkU73Uoszb6xgvJWoX5GxcBuaYMleZEWetuZdM994cOj0VBn8
-	k1G8neyfqIaWoRkNBRLoI0rqU/hWofo=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A65A6B0088
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 00:10:24 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2841EA043C
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 04:10:24 +0000 (UTC)
+X-FDA: 85171123968.04.A5D4187
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6130C40002
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 04:10:22 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="oZmxMI/G";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.167.176 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788408423;
+	s=arc-20220608; t=1788408622;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EFwlSXqfNEKM0ur5X+fXDaf9C70UjzJTOT5AZjis8cs=;
-	b=IT7KwywOvL09cjYP/HvGd48T/7+5XuBYgsYyCYeuL4HuA25fKSWdljPnjabxGHkNSLQFy0
-	u6f2QaeAGexRbFENvqY+OpNtEYunTGIXyEWNuLtz5WY0aSXBQfJywNKxzvZWUXgl4EaD8p
-	jO0WsXCaCwqcQIJF8dtXbTHLOuUYViA=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=c2j9BPK7EzJ6AgBVF36vfvt7WxuniwU8KIatWFyFN8M=;
+	b=TMeTujZa/YsWENwfQgg8Vy0GTuriOxHdJOnRxuNj1L63hN2JkOAXEf8DM+khF9GW11NbSO
+	/Q4LrWVBm3XklX1YjMErjuV5cu/YnOKPXZMrLR6Y8GOqtE+vFKpZ1dKhDwBlwsOJYFUXQH
+	CqYXaV8Xds7SYP4KjlUQ4PgC99oV1LA=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ZtwljQv+;
-	spf=pass (imf21.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1788408419; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=EFwlSXqfNEKM0ur5X+fXDaf9C70UjzJTOT5AZjis8cs=;
-	b=ZtwljQv+5sMDovzHR8a+QfaF7M08zoSx+QfWh1H2EPGvaRj4O3g3ltU4PvJHkeiyiw0K1xUBM2zCBfKEevBtKOVjSh2Drkqzz4cb3XwZSvPn+WhcK3OF84eR9WLaPVPMLk0ortS0h2TYF/Hz4il1UK24gUfnNaNEcCrtJTQZCWM=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0XAEokn0_1788408416;
-Received: from 30.178.83.4(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XAEokn0_1788408416 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 03 Sep 2026 12:06:57 +0800
-Message-ID: <0c5aba0f-137a-4aaf-bddc-060118322602@linux.alibaba.com>
-Date: Thu, 3 Sep 2026 12:06:53 +0800
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="oZmxMI/G";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.167.176 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788408622;
+	b=hAX75AKS3/PWJwzlLGgoC6jswvjk/8Hq1omJAgSScgdz8MIyD1a/vrvtsEmTX9NIOr7mvr
+	f279qLPfcHIwR9NkysAJz4/vJA/lRurhEf6StPTVw7SGr/1Wzu3SCQoNWvX5rTNx2q1e7g
+	RmFQnbhVHsMJjOvrkXoOsHrWFWaXaGc=
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-4b381337e1fso1330266b6e.1
+        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 21:10:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788408621; x=1789013421; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=c2j9BPK7EzJ6AgBVF36vfvt7WxuniwU8KIatWFyFN8M=;
+        b=oZmxMI/GyQu012gdGgyfDcFFbeAFQit1hCH0OSzGjgSl48plywi5aur5uNInAzONj3
+         yjsF1ne3Rr/f+RyVyIG8jqn0fXVCK3QfFQLetVKN1iP6r9yFAbolwnVmpnzLuaSVTsk+
+         qdZJ0XH2nCnJHfN1EQxzuGg60UtDEBAIZXfyLaxVIkcb1no/ATew88YoIqhBDF8uYfsh
+         MxB2eZQkElftDE5XTZQqoU0xwKA+QOw5SmEfq43vko3UTLJS2qWCzVNyiBKPC7YZPV3n
+         eLQZq/IjjjRYo+/7/8V2AUvuHynpuj1g1HZj/iS4DaKrCpMWx39SBYC2oA87vqIifll7
+         YFbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788408621; x=1789013421;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=c2j9BPK7EzJ6AgBVF36vfvt7WxuniwU8KIatWFyFN8M=;
+        b=KY1PqHYIsG5EFFYrd8lmy2cqL2MEK3255CkNO3T2VlWR9D/+rmw4w5pwCuICexID5s
+         piQg/4RvS2yCOIzEh5ZO9oWbdm0mtE8DBd1NsRQNJWbr26LAe5ZgwH0NmzQcd+olhtlw
+         b9Yi2vdGp4HzrZEkcDuNvTPUwu3wcaIJ8QI2pFrrH0XN3JEbudoe8sWaEway+4X0HD/+
+         hhMNQ9yK0/RJzF+IiN5eaaVBTCm5BUWoeFmtvtXM1D+dDZwHWsRZ4e+Ko78siGwRHuDH
+         xaVojzQS39SZkXSP7L0HRqhhO7RFcDBL3NYnPrRnN7P3bCDM5DhLdw9zV4s0ZBrINTvw
+         5R5g==
+X-Forwarded-Encrypted: i=1; AKwUvBwSrVHWe1X1KMt6971LjyTBafZOonAop5+wdz7ckBhXS+/GKR1hTul310JiO9h9W1rp/vpeeix+2g==@kvack.org
+X-Gm-Message-State: AFuF++kMeU2BzVW8x2GYqq2SvcJLZcSr4RQ/MUW/h1oHb40sECGJhkQC
+	8djL8YrOmxfrB8Imv+WLriAz6dLkIh3x0pzIRB3wxkrNnN72xDKVw+B4ZfZbpFHR
+X-Gm-Gg: AYBFou2ONBZSHpOBFNB9hJ9KQwAEsu7QwS0vLWvdCQuAGJCpeaJg8aygSGJ/K68HrC6
+	JBO/tiLlwk44otTXre3c/E+bstkR+VlGYP/81KnRGn8Pw7O6cQ7QqphU2Weu3vnCM/OkJ1KQCdU
+	yLAL5WA2kpBQXFEYnNnpbUGdCkOfW9e867XKifobFD3phODRK8B+n3JTxfzLBBw0PtQqIc2otn7
+	RQcO6NSZypK4J9bG5WbvUqDyiGQa3F0ikoBCiqg9pnN3C9dwepWOmMdLfnk1+pVA34gldWMUPBP
+	ygR9wKIi+TXTLqBMnaqIISjbFi2zEBZRnq8Abv4oqShgodehPLmW3gGQCAcOFcrM/ZTp91hlSBz
+	+MJWU4JIHCtOr5VuUpKTbdeuk6svqgU4d8WgTU+Vpc9UHwNDQ0igOuqVx7syJIM+C2MytqK+K9f
+	bS0vXmKVZ78VNplu4beH5ZOxD0NUW+BvJqxbQ15HqnK8uonUJD7ik6P2GkpnQnEwXuG15QJJAnN
+	KJKdQ==
+X-Received: by 2002:a17:903:37c6:b0:2da:f7ad:cfea with SMTP id d9443c01a7336-2daf7add0a9mr82421215ad.8.1788408122363;
+        Wed, 02 Sep 2026 21:02:02 -0700 (PDT)
+Received: from zhangbo56-PC.mioffice.cn ([43.224.245.235])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dafe62d1d1sm3185025ad.24.2026.09.02.21.01.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 21:02:01 -0700 (PDT)
+From: Bo Zhang <zhangbo0325@gmail.com>
+X-Google-Original-From: Bo Zhang <zhangbo56@xiaomi.com>
+To: akpm@linux-foundation.org,
+	hannes@cmpxchg.org
+Cc: kasong@tencent.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	baohua@kernel.org,
+	david@kernel.org,
+	mhocko@kernel.org,
+	ljs@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Bo Zhang <zhangbo56@xiaomi.com>
+Subject: [RFC PATCH] mm: vmscan: avoid anon scanning for GFP_NOIO with low swapcache
+Date: Thu,  3 Sep 2026 12:01:31 +0800
+Message-Id: <20260903040131.4016290-1-zhangbo56@xiaomi.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/list_lru: don't copy stale shrinker id from
- non-memcg-aware shrinkers
-To: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lance Yang <lance.yang@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Dave Chinner <david@fromorbit.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- David Hildenbrand <david@kernel.org>, Xunlei Pang
- <xlpang@linux.alibaba.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260901115104.2944996-1-qinyuntan@linux.alibaba.com>
- <aphXPCn8isUVV87k@localhost.localdomain>
-From: Qinyun Tan <qinyuntan@linux.alibaba.com>
-In-Reply-To: <aphXPCn8isUVV87k@localhost.localdomain>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 326681C0006
-X-Stat-Signature: mm1d5qbk3nc3a5gfz6nxcte4za6z49qi
-X-HE-Tag: 1788408421-864802
-X-HE-Meta: U2FsdGVkX1/2iVmjGum0fgxtOTGclD0j7CEG46Qn59lZonnXzNODxH0aYcLUFw8shlC/gF4hawfs54DnjfhztC4AmJtub3GOPyrPxUD45z1H4UYSoeIv346iRw7vOtI8bO8rUA+q6BzPi9A6I+4Zz9CQ2Xs4PUG1fVKSm6N/9B2SSYdModTIGFuNxtck7lhIW7r80kHllEbvjpLwi/tmW+Jzt5OflPgj4QfB83ijz9Zst9M13ZygnZNVJdAYJqo1zO0Yj9PM7MjglyjnpGKMJxz6l52JM9drIPtd4nM4YCxlS+1310iVNVcFRCmm5I4cSjJj4Ev93pRvL50ypdG81Hf+kMO5AOs8npFQHW+kW74Gt8TPxdR1RbK43QPdEwOgpnbaYpSrVshzqzmr2VEINMJG3SSDAoE5eHyiGY+Mhl0vPAaHRXTdJ+Umfc899/FB4E/P0PDl3Y/n0mJ5IFfuagS/9rjtjArcBnvXM9BqDuM5cP7+lAXicSgqEmQx7c3M07pqiaF5Pjj4sg5Pf+S9BAHh/MoqlnM70k2JqMQOpj2jo3YdUNsGaLA+a5I3wf46dPg39ghSb+xa0tmDGjHOXXPI42XTKyEZt1qlknWjAP1NtlcmJJepQ4JH7kPJpd45UL8voO1Ap3cmx2DICjgat/p6QMIbXctRZfvN15EJ+biSnAVW9Uk0IgKIZ+/jcO8q5F03hxVS+SuBrfWFHwhvEWlEPo2Hrx9HCOGNVw2maZcNgw+INa1p/zIHdJrIiJbezqSGsUz+wAy18cu0Bci43gOM0xiBLeJSaXysPDIQSqQwBjApZ4D839BKaRW8yUtCM52pBhnI+DS/aq9OYfQZIJLMXKCsPggyN3OsoaM+DxrX1s2tW/WV4z7Ofn9Dvi/Zcn25Zua3MHkBFQfvwCW47tqRGd4zZMaR3NXJjiC2HalugI7M9mgZSVq4L+D9lIriayb9BcBZGjrcst0MDdf
- ayaL4MDn
- lFTmwXke19Nta1a0VBwJ06A8gYaxy3dQDPTgziR9V1xBldGiahjSxzivnPHU79zHOyK5aVAqIPCnl33lVYdfxwHg17+nd+2r45zzWxjdDuVASreO0uFU89BzEp0IyiYN9Dj3PhSEXuwDJSauV80OXnEb6hvs2dB9MoHrrJdv9KwnIAvvUk6WMJt+jStpV5+A+ndrz68f6HUfwPtMGWv+A2ZoljMOxzML8J07dPhjzxB81atGrUXPV2pfbscx2SJlvM75aTWmWYVdS1ukUJ13KyQVNhqtRX+hilMR8mF+UwVyLpOSGZMYWUMmcnEDkCFZcgSPq9dTk9WdTRPPDAbhDQnl6JpzXTt7VXSpHzFTj1MOP8AgDtsLYRk2iXw==
+X-Stat-Signature: qhm4ffg9csp98n1zfqe837ng5zfzeeb1
+X-Rspamd-Queue-Id: 6130C40002
+X-HE-Tag: 1788408622-54742
+X-HE-Meta: U2FsdGVkX18eAxKnzmrnvRWGgwEZNpCdCZTLiJ8aBbmH+M+WEVrcx1uP0Q+4gTgksGJ6YjBPFQ5wjNQi1Oja5k+6Sfgw5JHcCBxpTmK2L2lTRqWMAF4SiWopNiL1aKvcumD8ND7v19vE9KD/SXfFgdPJhBfMFEnAhl57AUR4G9HDdHvL7DHhAnMbNB7v/0dyyAxKohWsYYF5jt0hsrGXm6zi6tzboNf9VgePo79KzNkXcK2j5oKNS2w/d/ffs+miFNpUe9/5EhjCpgzILkBeWvlVwZOxSkmAmYi0BVxS/TuJFFO6toOMk6FOYCRC1XLMoW/7NlIMe1hZ/6kIVdSZ6ZQH/ECfErjEDc7ZiU3Qt63+4xcFNA+BCvYT4xkwFH0M5LQrIwPhwXRyHUdslG2n4yEhR2fFP1ZlVRpIR/G8k9hyI5I7WVDEOYzWLHlxTuUaxusJ1tG2GevstSmds22E5gC/Qax+k2galbdeCqsI2ckHzH8zkR9cePLfFHS0Fn2vEIYdWHjo8mFqQflWx+YtdqOCGVY6LbgjOkjSuDXsV4/CYGHcAFKNeLiZ3DDc07f+8ozp1rA4ejC9ZElMUwy3+r81bn1xUCnQdVDzSqzAaXQJCnYxTU7FBb8aZz/rm6sVsYVD0O4LZvRLx55GkvPuSxH25DfBhnDcQUOWAs2r6LEgWMAHWxUsj/fOFJ5ERPjV1eYlENUx6B37YA75h8CSYNEeWZupdVl+XdROIhBQQyyb7mS+wKtBJL65DsQvrijZKvLebE8K9XJqef3fTaFNFjtvmePKeQ84K6feoo+poh31AhK4QD1Z6VlU/V2duUj9m29zHKxDn7rm1OtjwuJ5LptBneY8xow821BIXlWoOpaaaYbrxPVv1DBOw5sdLS/WHdKt5BRusqMgBQZ8FlyO8S0ROsxwamBNldPNnFHEo1MYrGz/U4o/m8LOD4CIIuWsnKc3n6IN9byYJv+qkZX
+ kIaft0Me
+ qeN2C/qFIqtUmlbo5B96AxKSMWdMUhvgslTAjPHbVaWZMsGZUszP5aLoQkfmyvO5mCbp9/yid0pUHr19STmdzOp50p0jbmVE46U/nQToqkKp/4VvBGaCvLD+lHS0p2TZdUbSzfLbymNsZuUpdeEeFWPH+9PF2fozbhBZAe+uCoJp9DegWvXmj1JQi5+0MDTKBmGKbRX9dyXpsxepKSOcW08RW1iVMsYARqzduv7VDgr98ZUt3qGkae2BWR0bYQDngBmB6RltfLwQYUKMJl9CC+UW8UgErnUw+m+iJQXbrLHkjWKzSTG7SDHgZUVNm2ZllYe7LE+yANkiMGb1YIOQXLGD9sbmpjUXoWgL7Z7BrsXVRLxhxrCwT68BG+EmqOeCE3km1M4fPDBhOpbxq+4ENebBfN242cRozEgKvKznBN6xFoj4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,96 +125,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Michal,
+We have observed some cases where memory is allocated with GFP_NOIO, so
+we cannot reclaim any anon folios unless they are in swapcache. We can
+end up spending more than 150 ms looping in `shrink_folio_list()` scanning
+non-swapcache folios without reclaiming a single folio. This is pure
+overhead.
 
-On 9/3/26 1:17 AM, Michal Koutný wrote:
-> Hello Qinyun.
-> 
-> On Tue, Sep 01, 2026 at 07:51:04PM +0800, Qinyun Tan <qinyuntan@linux.alibaba.com> wrote:
->> With cgroup.memory=nokmem, shrinker_memcg_alloc() fails with -ENOSYS
->> for shrinkers without SHRINKER_NONSLAB, and shrinker_alloc() falls
->> back to a non-memcg-aware shrinker.  On this fallback path,
->> shrinker->id is never assigned and keeps 0 from kzalloc(), which is a
->> valid id belonging to whichever memcg-aware shrinker registers first.
->>
->> __list_lru_init() copies shrinker->id unconditionally, so every
->> list_lru backed by such a fallback shrinker (thp-deferred_split,
->> zswap-shrinker, workingset shadow nodes, superblock lrus, ...) ends
->> up with lru->shrinker_id == 0 instead of -1.
-> 
-> <del>thp-deferred_split shrinek has SHRINKER_NONSLAB so, the id should be
-> assigned (at least I see it in thp_shrinker_init()).</del> I was looking
-> at 6.12 kernel.
-> 
->> Under nokmem the list_lru collapses to the shared per-node lists, but
->> __list_lru_add() still calls set_shrinker_bit() against the memcg of
->> the added object.  Most list_lru users are unaffected because their
->> objects resolve to a NULL memcg without kmem accounting, but the THP
->> deferred split queue holds user folios, which are charged regardless
->> of nokmem.  Since no memcg-aware shrinker can register under nokmem,
-> 
-> Not sure I understand here, the SHRINKER_NONSLAB are excluded and should
-> still register for per-memcg info.
->
-You're right, that sentence is imprecise - SHRINKER_NONSLAB shrinkers
-do register per-memcg under nokmem.  What I meant is that on a system
-where no NONSLAB shrinker happens to register, shrinker_nr_max stays 0.
+This is particularly true on systems using zRAM, where swapcache is
+relatively rare. So let's check whether anon reclaim is allowed by
+GFP_IO and whether there is enough swapcache to make it worthwhile. If
+the swapcache is extremely low, we're essentially searching for a
+needle in a haystack, so let's avoid scanning anon in the first place.
 
->> shrinker_nr_max stays 0 and every memcg's shrinker_info has
->> map_nr_max == 0, so the first folio added by khugepaged triggers on
->> every boot:
->>
->>   WARNING: mm/shrinker.c:212 at set_shrinker_bit+0x99/0xa0
->>
->> On systems where a SHRINKER_NONSLAB shrinker (btrfs, xfs) did register
->> and expand the maps, there is no warning; instead bit 0 is set
->> spuriously for an unrelated shrinker.
-> 
-> Could it be that you see this issue because of a shrinker which isn't
-> marked as SHRINKER_NONSLAB?
-> 
-> I'd even go as far as pointing at
-> fafaeceb89a5e ("mm: switch deferred split shrinker to list_lru")
-> which removed the flag from the the thp-deferred_split shrinker.
-> 
-> IOW, the proper fix should be addition of SHRINKER_NONSLAB so that
-> per-memcg maps are properly allocated.
-> 
-> Thanks,
-> Michal
+Signed-off-by: Bo Zhang <zhangbo56@xiaomi.com>
+---
+ mm/vmscan.c | 62 ++++++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 40 insertions(+), 22 deletions(-)
 
-Yes, good catch.  The flag was originally introduced for this very
-shrinker by 0a432dcbeb32 ("mm: shrinker: make shrinker not depend on
-memcg kmem"), and your 03375203e1da8 changelog even cites
-deferred_split_shrinker as the NONSLAB example that still needs
-per-memcg data.  fafaeceb89a5e dropped the flag without mentioning it
-in the changelog, so this looks like an unintended loss.
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 56708d1d2dfd..192bd0980121 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -339,6 +339,42 @@ static bool can_demote(int nid, struct scan_control *sc,
+ 	return !nodes_empty(allowed_mask);
+ }
+ 
++static struct lruvec *get_lruvec(struct mem_cgroup *memcg, int nid)
++{
++	struct pglist_data *pgdat = NODE_DATA(nid);
++
++#ifdef CONFIG_MEMCG
++	if (memcg) {
++		struct lruvec *lruvec = &memcg->nodeinfo[nid]->lruvec;
++
++		/* see the comment in mem_cgroup_lruvec() */
++		if (!lruvec->pgdat)
++			lruvec->pgdat = pgdat;
++
++		return lruvec;
++	}
++#endif
++	VM_WARN_ON_ONCE(!mem_cgroup_disabled());
++
++	return &pgdat->__lruvec;
++}
++
++static inline bool reclaimable_anon_is_low(struct mem_cgroup *memcg,
++		int nid, struct scan_control *sc)
++{
++	struct lruvec *lruvec = get_lruvec(memcg, nid);
++	unsigned long anon_pages, swapcache;
++
++	if (!sc || (sc->gfp_mask & __GFP_IO))
++		return false;
++
++	anon_pages = lruvec_page_state(lruvec, NR_INACTIVE_ANON) +
++		     lruvec_page_state(lruvec, NR_ACTIVE_ANON);
++	swapcache = lruvec_page_state(lruvec, NR_SWAPCACHE);
++
++	return swapcache < min(anon_pages >> 6, SWAP_CLUSTER_MAX);
++}
++
+ static inline bool can_reclaim_anon_pages(struct mem_cgroup *memcg,
+ 					  int nid,
+ 					  struct scan_control *sc)
+@@ -348,11 +384,13 @@ static inline bool can_reclaim_anon_pages(struct mem_cgroup *memcg,
+ 		 * For non-memcg reclaim, is there
+ 		 * space in any swap device?
+ 		 */
+-		if (get_nr_swap_pages() > 0)
++		if (get_nr_swap_pages() > 0 &&
++		    !reclaimable_anon_is_low(memcg, nid, sc))
+ 			return true;
+ 	} else {
+ 		/* Is the memcg below its swap limit? */
+-		if (mem_cgroup_get_nr_swap_pages(memcg) > 0)
++		if (mem_cgroup_get_nr_swap_pages(memcg) > 0 &&
++		    !reclaimable_anon_is_low(memcg, nid, sc))
+ 			return true;
+ 	}
+ 
+@@ -2674,26 +2712,6 @@ static bool should_clear_pmd_young(void)
+ #define get_memcg_gen(seq)	((seq) % MEMCG_NR_GENS)
+ #define get_memcg_bin(bin)	((bin) % MEMCG_NR_BINS)
+ 
+-static struct lruvec *get_lruvec(struct mem_cgroup *memcg, int nid)
+-{
+-	struct pglist_data *pgdat = NODE_DATA(nid);
+-
+-#ifdef CONFIG_MEMCG
+-	if (memcg) {
+-		struct lruvec *lruvec = &memcg->nodeinfo[nid]->lruvec;
+-
+-		/* see the comment in mem_cgroup_lruvec() */
+-		if (!lruvec->pgdat)
+-			lruvec->pgdat = pgdat;
+-
+-		return lruvec;
+-	}
+-#endif
+-	VM_WARN_ON_ONCE(!mem_cgroup_disabled());
+-
+-	return &pgdat->__lruvec;
+-}
+-
+ static int get_swappiness(struct lruvec *lruvec, struct scan_control *sc)
+ {
+ 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+-- 
+2.34.1
 
-That said, I see the flag restoration and this patch as complementary
-rather than either-or: other MEMCG_AWARE-but-not-NONSLAB shrinkers
-(superblock, workingset shadow nodes) still take the fallback path
-under nokmem by design, and __list_lru_init() copying an unassigned
-id there is a landmine independent of the deferred split case.  So I
-think this patch is still wanted as the generic fix, with the flag
-restoration on top for THP.
-
-(zswap might deserve the same NONSLAB treatment as THP, btw - its
-entries resolve the memcg from the folio's objcg, which is available
-regardless of nokmem.)
-
-Would you like me to send a separate patch restoring SHRINKER_NONSLAB
-in thp_shrinker_init() (Fixes: fafaeceb89a5e)?  Happy to do so if
-that works for you.
-
-Andrew, since the patch is already in mm-new, could you please update
-this changelog sentence
-
-	"Since no memcg-aware shrinker can register under nokmem,"
-to
-	"On a system where no SHRINKER_NONSLAB shrinker registers,"
-
-per Michal's comment above?  Or I can send a v2 if you prefer.
-
-Thanks,
-Qinyun Tan
 
