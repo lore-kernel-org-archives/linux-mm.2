@@ -4,138 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFBF3C61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 12:59:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31BCCC61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 13:00:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D7D426B0088; Thu,  3 Sep 2026 08:59:41 -0400 (EDT)
+	id 3B9586B008C; Thu,  3 Sep 2026 09:00:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D55016B008A; Thu,  3 Sep 2026 08:59:41 -0400 (EDT)
+	id 390186B0092; Thu,  3 Sep 2026 09:00:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C43CD6B008C; Thu,  3 Sep 2026 08:59:41 -0400 (EDT)
+	id 27FD26B0095; Thu,  3 Sep 2026 09:00:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C6236B0088
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 08:59:41 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2BC8040525
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:59:41 +0000 (UTC)
-X-FDA: 85172457762.09.6E1F38A
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 3C4062000D
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:59:39 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=KGq7pZyR;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf31.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.44 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788440379;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0224F6B008C
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:00:06 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 68385A055C
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:00:06 +0000 (UTC)
+X-FDA: 85172458812.29.8D93E2D
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	by imf01.hostedemail.com (Postfix) with ESMTP id A1BAF40003
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:00:04 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="SVUUa0S/";
+	spf=pass (imf01.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=qwjhust@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788440404;
+	b=jabjTYs1zxDMCWCs37xTilIuk15iJP6jotaW02MxbeUL+oNMHVGzV1CyOf1N8Ko4swxPFV
+	n6mjuORzUs6Cpq4XLpIGJku4RBqQoyOgxALK7etq7T6oSlizc8KPpPUBcBp4+Szj2uXBAv
+	7RQeM8HmLa+ZxkOWPiY3YCPcK4RwAwY=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="SVUUa0S/";
+	spf=pass (imf01.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=qwjhust@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788440404;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BmAdg8/mefR05LTJz5ypL2PwZdELomAbn6h2iC+gq4s=;
-	b=2gafvyxFOS69CwhtPfmSsCMR1GqE8uOpT95+wtafMXVpL74/ya96f/akWdcEMIM+6sN2Sv
-	SOJg0jD8lp3JVKXa0mGnM8IZQAng4BAZOjrRd97fOHwK78xriN0tpd747Qo44B4uhdoiSX
-	lbmQYOyoOMNXfm1hyDkhacTZZFc0Xmg=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=KGq7pZyR;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf31.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.44 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788440379;
-	b=uFqIKr/KI8uXELi+kN6/ttestjTV3kWMYeSu05SUTXuYX6siefxnm22rru1ShoSkY1V/Jj
-	O27KCx10k5HxwF1yZOucSRF+H2asdBDoYQrTmDDs6qdOwj3tDnpG5rZJWO0W27QKXuvuNG
-	B2ZY+IMmAYbnqehv5jtZHJ0xUP5/T9E=
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5b01910b499so1035093e87.0
-        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 05:59:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788440377; cv=none;
-        d=google.com; s=arc-20260327;
-        b=G9waW1g3rpVcHciEPb73W9BKIaQPGVrCN5Wxd6wIKHui9I/a7+G9jv9q80ONzYXj6W
-         RgDMl+KnHqzvCTd8jpLgKosopH5ZZmdLPWsuOo4qNYRKlqv7gCoNCSkRsPS8WhLFnB57
-         YD9iv/l71dBpD0WdyBsMA8V8HRc0uQK0QpZU6azB6D6AAvb82+JMIhB2dnqGzKR6Dxn/
-         I2PGgMnwNUHJXt1908PtWMfMYi7NwF96HmSD46pG2X9YhP2ti//mw3EXArbrnqVPUzlt
-         FAAa597m+zXV8sGdc0WkPO/n9PQuZhJTKldVX+/Zc7vQgHVAyQ/WVrRqoJXwITaaiMAe
-         at0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=BmAdg8/mefR05LTJz5ypL2PwZdELomAbn6h2iC+gq4s=;
-        fh=LcwF81iihNGTcmnYFhVGV8GRUSn7TXUT3bwOQpdXsfc=;
-        b=CQmB9mO5Ta+1kwDpSax+zPRJqH7ngkzZYhHgm5J0H0LNeYsXlqvchaBRlafHcNj9pq
-         NabOcKtLcz3x7XDpphYxKaGZkgREkSAXnMfeuTHnKxkN7N4j2BZU8UgTb2h3z/B6nNiU
-         3JC0Ok9aLAz7/1tvEwoJ+WcyIP/C0XA62wTNk5YlJIBhkj/K4v6wxdJhXvtby2iIU5eR
-         itxnvlxadvxRxVwePM7VJIinOuqpiDIThcGqV4o4SP6pDTVqtqx8Y/zZL4ctftTFNvqQ
-         wQU3Z3h9vKByk+mVTXGC7kAtW1iMZX1XF0drrLKsCvFtzCkHytkTVqgfmT2fq01LWRhT
-         cvvw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ySykvbIWmO4Te6vIVwftEuMOLYpDg3lGaudbSYAL6eg=;
+	b=yfQka4nNjjAKzQcF3rhuYuoYk2bzixTtJcIPk/SQY/SZD0t8/vWwxHjQNFY0F31ycjEOJ7
+	zfDZMOHpjL0eeRq8TruYAcEdPUrz+LVKbAWGYYNHHdCiOk5WkPYY5ToZ05OPbW6EvzimUY
+	pH0wLuVBY6UxCL5oWCNdVf+JBOwEHxk=
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-84e27035206so2102725b3a.3
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 06:00:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788440377; x=1789045177; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=BmAdg8/mefR05LTJz5ypL2PwZdELomAbn6h2iC+gq4s=;
-        b=KGq7pZyRhvg0iwcQkC+y8SYbuqEpK7Db/gbNdQV9f0E705kzEevLygY1soF7CFAOKh
-         iX00NlWGSVCmeWX/U526g+aXO4xakGzax+Pn+I4Ha7AxtUWeMKEEoJmb8O0PsdTx1RrP
-         LZHk7ysHXKzgj3MIGyPKsLOm9gLt0v9oAqud9UoCg1Bb1RqKERcV5+OXW8monqHH3MdG
-         Y/H9bBfFTGa3wzx3vR+iNxLFRUyvLM8KSEd/OddFgftSv9uppzmHHcXshs/pWVpdPeTI
-         rMu7v9h2eup3vbPU1q2kX0lUUyL0pXTcASCc9MiMZX9ziDebhZYoFe+zndbCj00rRuNN
-         qADg==
+        d=gmail.com; s=20251104; t=1788440403; x=1789045203; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ySykvbIWmO4Te6vIVwftEuMOLYpDg3lGaudbSYAL6eg=;
+        b=SVUUa0S/j6t3ZIwVKkhoDrfG1bkzWkE0ia/dYkD+TaMnz54IYZsEmecv8/MP8x3J7l
+         p+KgT52JFYqUwMOhFE+DHtOT3gTuZ7elzjuG77tkDQ+kbvwm1xwZoCrbyARuFTQUl7Jl
+         luZfnvY/fFUZhmVFnGXUT2kqfbn9w7xYu7UPxNl3DhURZzEIPlr581JZ1sSEHK+nqPWB
+         frjT6ItDLVcJUTGCy6Y/rRErLm/Gys6tF+xHiTeQG8yWHH7I7yly299yoAOyp28YmIrB
+         uWTZt9pUC7Yb53v7Q2sBCh05O0xelRBVFSedZUZt2u2lxWXVZgYprNDwB8BbwuMOUcL5
+         qMIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788440377; x=1789045177;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BmAdg8/mefR05LTJz5ypL2PwZdELomAbn6h2iC+gq4s=;
-        b=SQwQAlLAl0IJU8IibOsqwsP92bN+TPDeH44pCG6JCW0CY+RG77WL2Ic4xVkRlkHToS
-         AKhtMJrzWYGVzQS5thSRynStScvULSp2PLGKtEUUDxjX3LR7KjoKsTrcvRoM1K4Q1Y0m
-         KqgzP/hpIP+EUkOR6sdXj1/SDSJL5vMCIQW73VkxZXK40hs9F5lOLAZ32xoYI83pxaal
-         +BbHqqjAc04+G5cAxdX2W5TZ9FgGhgaFoj2PzVnN8uBYUMwt/IPtugewdXSLksSwUxXC
-         JozvWHpWB/iwjHAT4XMmRzkO5ypDCFXZeormwTKGW3YVyGOj2gXJaHcif5exrO5fLSyQ
-         4PAQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzujIbZXcSJhoVCbVJWK0MwZ3uEnmHvITP+QH1EuBAtdjhJC2GqDHTYl3QbkpAeJh0/Z1JTRdLwKQ==@kvack.org
-X-Gm-Message-State: AFuF++nYJ48TTFM1UjAqwx/qM9I0JDraJA+zd0TMcCfl/KSQgOzg9U+I
-	jqNDQ0PcQtbt3YhUDJPzq8cBCBaECowwoW7VRzUsrbqtmY7KUdA+971yiG6p2AmTEsqK0FdGNDT
-	tf+dllzUT/7iGquNLlvQcZm/y0QiPhqs=
-X-Gm-Gg: AYBFou3A99JSpz3pybQr+m7u9aIdl7xfnEi5DeD0qfIV3Bg/RpACJlMFWSaYH7rOZzm
-	Iw1a2ekzEC59DsZiGkviK1NIqGgBLeu/mknlRz7CeQ5PmB9B6D1k00h+20MLKo/BbFDHBcMWpv6
-	mff5wBKucUsjl9yoZVhUIpYWfptxIL6U6lhmpZ4MBijd/EUxFHILMANTV8ap195Q+gzzUZ805Zy
-	x96SbresWtK0OEDSDaFibqi0jwgn6bsoQYXdNS4JA0zgbD88QNsN2FQ0z661jw8KlcypQxzNd1M
-	PFbVPWu+YEURIUkhweWq5//MVA5PuRaJhD+wxm7aCRGd1FPvUfabvxOEVLNb3kLZ0LSsbBqQhyo
-	=
-X-Received: by 2002:a05:6512:450a:b0:5b6:10bc:dc44 with SMTP id
- 2adb3069b0e04-5b610bcdd1fmr687589e87.27.1788440377072; Thu, 03 Sep 2026
- 05:59:37 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788440403; x=1789045203;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ySykvbIWmO4Te6vIVwftEuMOLYpDg3lGaudbSYAL6eg=;
+        b=r2E6ITOuZ/j2JQneEfhJ3Q0lWJ4mSh28VI0jdX7h3c/VmRP2pbgxJ770c//NvWtp6L
+         1rA2T+IqcC9yhwo2eYY0ZqMbOw0uDhQVeuO134vYco5LHb8E+WBsQY4lInWIAAWhhfWb
+         y+Jb+Pjw0DfpiJbLOoLplOBQaMaGmfCumK6IhTCP0KcSCh4hVKc4QaZaN8P/ugLs2XO4
+         KbXeLb51CataoQaqI5hn3g2iErcXYHVgot85tlALWU4Nzv2RcjjZ5y9N9GuR71fLVS5B
+         yQX+1a3yvvSTQNJ2xo7Hae1LonKUBM7sz7q5L5bUkZw0/svUsKxsD/ul0kdE5UT6P14i
+         gNUg==
+X-Forwarded-Encrypted: i=1; AKwUvByXRqjSeDBPKkDMGxEkYDqnluU+i1n3AzihPdGQ7R9QW54I25E/5/vBGdm9JjsrGEigrhFjG1Pc4A==@kvack.org
+X-Gm-Message-State: AFuF++lS9qbIFZgdVp/WEDou08rl6X+p8JV1VBqu8g9YB0eHG3dz7aDL
+	H1IZcMCDNetm1eDlB4ZY/lhFWshVigE+DeTr96DxdbB2taW1LxEaYYst
+X-Gm-Gg: AYBFou1wUQJeqq8StmP2KfRTpJ2XukgoGmTnCiXNRlNtY0/Kd2eOdtsNmzKFLMHGdHK
+	MYgvFjYrDgur1fJSZx9nB5gS55WwIYCX4Cb92pdfHu2JJntAmnXmKrG+vZYlvr1E6U/hqQzJyID
+	szWGQj1awULIObQvNmS0ppZcPiIStlBu/aHMIgy2OkgwxQJCxwO4HdWXKMgfEiKoF8tZlJGPRUU
+	vxAA8AgT4bleP83QhCStav3NjXmgMIE8K24Ue51h+2iHmQtOmJnkdAV5UThIvz7k7HNiRBeCDqy
+	0CriAbM6AikLt/dGbODNe41fYr4Sp3G1jzH4Alp/jNzUogMWlqBv+MGr3tTZzi6WqyksSCz09Yj
+	aHla7NzOPJ4UfUSpY2hGihBSR+8FJgGssWKUmVMX3/x3uv1QYkNZvCJTrBKd6xNgbwFSNmZRc9L
+	yqkix8fiCfF6PtsogfOSnjui+yVijRLu77V8kzMJP2ZQyKPyOMYUVQoZY2bsz+gk3QUyAVCQ7WC
+	DfwUvb0b795zzKeJAgGBNy4
+X-Received: by 2002:a05:6a00:189c:b0:848:4754:28e4 with SMTP id d2e1a72fcca58-85ed3895332mr17366905b3a.15.1788440403103;
+        Thu, 03 Sep 2026 06:00:03 -0700 (PDT)
+Received: from qiwenjie-ThinkCentre-M760t.mioffice.cn ([43.224.245.241])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85db23f7bccsm2980946b3a.10.2026.09.03.05.59.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Sep 2026 06:00:01 -0700 (PDT)
+From: Wenjie Qi <qwjhust@gmail.com>
+X-Google-Original-From: Wenjie Qi <qiwenjie@xiaomi.com>
+To: jaegeuk@kernel.org,
+	chao@kernel.org
+Cc: linux-f2fs-devel@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	hch@lst.de,
+	jack@suse.cz,
+	axboe@kernel.dk,
+	tz2294@columbia.edu,
+	baohua@kernel.org,
+	linux-block@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	qiwenjie@xiaomi.com,
+	qwjhust@gmail.com
+Subject: [PATCH v4 0/2] f2fs: enable buffered RWF_DONTCACHE
+Date: Thu,  3 Sep 2026 20:59:51 +0800
+Message-ID: <cover.1788438786.git.qiwenjie@xiaomi.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20260830114731.8322-1-wujianyue000@gmail.com> <20260830114731.8322-3-wujianyue000@gmail.com>
- <20260901161329.GI3004@cmpxchg.org> <CAJxJ_jhkM4HHgCi-OsQcoDeDC5_fsejf+u+b5E1n3gNUd=EJmQ@mail.gmail.com>
-In-Reply-To: <CAJxJ_jhkM4HHgCi-OsQcoDeDC5_fsejf+u+b5E1n3gNUd=EJmQ@mail.gmail.com>
-From: Jianyue Wu <wujianyue000@gmail.com>
-Date: Thu, 3 Sep 2026 20:59:23 +0800
-X-Gm-Features: AcwNN1UKIFYH_nhtxWH9JjOWZK6QjiNNdqvySPxc8FL2qtcVQQ5XgTwj5a_O5fo
-Message-ID: <CAJxJ_jgLNTbyXJmerardEfBzbZeR1O0J=5DwDZr1kyp0kN7qHg@mail.gmail.com>
-Subject: Re: [RFC PATCH v4 2/3] mm/zswap: replace the zswap_pools list with a
- fixed pools array
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3C4062000D
-X-Stat-Signature: d8c7ye4i559ykrhy7n4y6ekoxfu65zr4
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A1BAF40003
+X-Stat-Signature: fc85putg14yqszeazfuf9txmijak49co
 X-Rspam-User: 
-X-HE-Tag: 1788440379-531402
-X-HE-Meta: U2FsdGVkX19VL0U3rijjtRW7/MEsQMqMG98SOORVoFlS04yoKRe9jfBp+fMxnxHNjHvyiEHR7ZztfB4N+MoFTUIGdAd1g8gjtPAIkiGVbFjg1zMQvU/qy4IQICR/CRXIZarkCASg3KVYY+rW8umtLW9wUK38uWSVQtnr6k+oSruPoTH7/ZBcENNJOAWes+LpeCDU9spcxyDb5jmyGGDkoVIIXrLPKXBh/QKre28F4G2xns93w9FB9R8ZhV93zOMLECN/UDPY099mV09OvJHJEm/ajfTnLltcCeey30AJoSQpQAjcfEB27E1ArxYSBOqbFR+C9DmI9x73nhw589edVYhwX0WHshstt2jjN2T1Zv4ABWKIRDYP3aCiYkT1WOlaJU9S0cPMN/3GcC5+0JoiWD6q2RSsk3w54Fl3/CddYRck0L5QhWd/gLgq89vLgTRrNGp0DS/Cxs8KcOIPsNwOULe2MiUXfk+pAMIp/7OLbfpy+9qvfpfuut3QV/EgPYh8aE0NYFNKyKeCKCS0ehpB5n6j8V8zeKqr4WmUkgfycxs+3Owq1rMaeKZlWT5qnBUCB7gAnDWxmnW+NOYnjDeON2O4SoIZYlYKufDgbmYouU2zLPU7tP0NOTOnJ6a5Q9Z3fVr36dw8TPj1xVpdnNmb5G6v4ZUOSNYDkDEkyUFRhY9q2DXLDMxtRdl6T2EIwwX01+rUskyF8dLGkbVjcHrfQgStkubEZr1R4abwBjEDJTfUI1700Dx/PdnIFK4M2gqino8rhFo9nghWtEh0DpwhNuF6265l004kqlaV38dHOvRECQelrhqS3a4VrwtEGswpPghFnh5mn5b2XmhSQk0P10DSR/2ddjHfknlpPbFg+5Fl40HqXVsxL8z3kKLa5390vffA+JMAuypk8i2o1O2W+GUDPj4eKE785lK1p2D9b7ZtNSTDv/cECLIcMlG4ZvMw/SOCaX4yTkXfMqzYk2x
- Yg6Gmcn3
- YZo3JMJGaWrymJAOpOoaZe3xqbSbfuZChUZg8A3CxyD1+Q2RNoSRDGyR2yVOgVn4amqJq0BO4lh20gZ9eYksoPzEYg9eIqso3WvZWpmRnuNMp6PoY+5Dxr20TubD4xZSQvxa+PlX01hRBy3kjHWW4Yh47UFqHRp8WAjzyGBEo2O0TqMwMXcUehlLbGnzpWWWRuZha750vncSkj0PVCc9Zofuc5ONaJJuTJ1LD0RjLe1YGQVZe7wlLlb7R2NjMDUiGlJ4jGJpQAxuTTEY9McE6S6+MeNax+e1XAfw96ELY3MqBBNTlI3/HJXR3bpRz9baXExaVYk3QewPp+l/E2mRtIP3W28sbnsD/gWayUNlICYqpsZXrZZWGlGgxPyEwX41+rB7LV8WJBZKnHy2lZXRTsRqknX+adTodGHAUP368fLx0vtMnmuV7LSFTsWktOQKJYtuE2HaHuGRYiXbDg0DUExoWdhJZi6bJfiIYszc1MfRH8cCx40P9w79dtHN2iTzgfBdq8MfD1zNuINQNBNk/cWLRrLsiRhsaWnzrdp+1XsEP4d4eHvQi3HqJKUrzufjasdNY
+X-HE-Tag: 1788440404-464132
+X-HE-Meta: U2FsdGVkX1/ukQZtzGRNAXXHBHOp6qyynHrd4L0aN+6qcm7jvBwlCfaxSRmRAJxHEvePl8Yd9QZB2954ctxssNz/Vpankfj8GcO5CuMjcVyn5nGuxVKn9iVefrv0oePvs69RbQziAVKTt2ZFCsOD+Le0lloklIZygethuMvYLv2k/8SfI0lN4W7rXytwDq+jnAHPqfr4rd3U3ElE40zqXtN6eeWAgTGLzzsMPJvqXQ3g2+xUnj/PI86RPgYsj8t9uFTBiuv5MChGWGeqNZ48xa6OR/5kfmQOZr+M9yYK5cogDSY39GkiAhERhl7/S1sZ26ihEdzB+4y7DFvtQ2UFma6LPXOgUUUd/Ccs+bJUWzwXkeDgl2iYGA4KCHFzUCIptvu7C44NhbBtsxn2bPP0jaztH3mU9hs+Rf1y+82HmUkuZ5mstZCnsaCRMYhzKq0AZNdbLGPMWbhKtE9z1SeFhheQAGUreeRn7LNgaoCp5xD6OTr+G66XCwnqB9Qep+BprsfiWRpzypwQdCjyMC4oPA47T2AkrRRvgDcgu5a0tVIlRmX7KFrRagl6POm7syzgY+4yYhBUZNGxVjmzbefo4G6v8By9xPtr6GXqpoao/QXJaO8d0XQ77dl4GTsqrDqfwDBqsaTdgNrHwHTWMJA0SNeCYlt/uxMhJOUJfEospT9DdWVs1PbmYqoGCeYwYES5zGTakrwugwBErL15VHz9A3kH4eSDU6OFynFeGRgL0k7yqlXQYSOJbm00imPKVtAADGMGefjMDBT444CbgfFnYzEeW/l2Y61U25E1AYNTWYI/yKuFN2b7MX30say0YE8r9qnP/8/dksB+wLN9eAt4ud4v3rYS9dCL16h4S2yHkziHcyBuBRM5E1obrLTGf5bTQ6QF4GHCAhcmobc+Sotkz9KzpJxYd9DMN5kXR/v2YfI+Tnxq1u+zfkljapHG6gIfMmUsWlQYKNs0LDonkAz
+ 5J53wbld
+ i6oL5Wy+LG+5eJKscMzVMgcyQcIl3qRipswLfLgB5OR4bZSUz1BRpjORNCXZ+uddtbntsPgzvXX0H1npSgwirIM/wy6pa7WKEJPtEvqnitqbLwxkOHQvxMNDBIpgJZgP4tcLERZkulXfNxkWS6CYJa/r87BAFLDm3ngvNhFFlb7+ZAH2I0MbR7IENAvh7FtDAJwGgKZqH/v5XrJMQopjMOJTMxjp9ncIHMco5cm6uvTPzZc022q0iw/Z/cAGSAmX7qoHvsQ544D4WO1UCBF01+Je6jsEhu4rwL0dZgaqleke4Icj/75QslqRm6RY4z8MU2l1pVyEGCtBsEeis1ugIgUmxZGhLd+h0Up5xJCf4UHp268x9eueMlBpGTFsmPagdH1N/XNnxMh9K4hVKazwWWKBy8g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,188 +127,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 2, 2026 at 8:50=E2=80=AFAM Jianyue Wu <wujianyue000@gmail.com> =
-wrote:
->
-> On Wed, Sep 2, 2026 at 12:13=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.o=
-rg> wrote:
-> >
-> > On Sun, Aug 30, 2026 at 07:47:30PM +0800, Jianyue Wu wrote:
-> > > Originally zswap holds its pools on an RCU list whose head also serve=
-s
-> > > as the "current pool". Only a handful of pools are ever live at once,
-> > > since a new pool is only created when the compressor is (re)set and
-> > > pools are reused across compressor switches.
-> > >
-> > > Hold the pools in a fixed ZSWAP_MAX_POOLS-element array so each pool
-> > > has a stable slot number, and track the current pool with a separate
-> > > rcu-protected pointer.
-> > >
-> > > Slot 0 is intentionally left unused (always NULL): a zeroed or
-> > > incorrectly initialized pool index then resolves to NULL and trips a
-> > > WARN rather than silently aliasing a live pool in another slot.
-> > >
-> > > The array keeps the same RCU publish/retire discipline the list had,
-> > > so lookup and teardown stay equivalent. A fully-constructed pool is
-> > > stored into its slot as the last step of zswap_pool_create(), so arra=
-y
-> > > walkers only ever observe a NULL slot or a ready pool. Pool creation
-> > > is serialized by the module-wide kernel param mutex (all built-in
-> > > params share one lock) and otherwise only happens during
-> > > single-threaded init, so no two creators race for a slot.
-> > > zswap_pools_lock still serializes the store against a retiring pool
-> > > clearing its slot in __zswap_pool_empty().
-> > >
-> > > Behavior change: the fixed array bounds the number of simultaneously
-> > > live pools at ZSWAP_MAX_POOLS - 1 (15, since slot 0 is reserved),
-> > > whereas the old list was unbounded. A pool is only live while it is
-> > > the current pool or still has stored pages referencing it, and pools
-> > > are reused across compressor switches, so 15 is far more than any rea=
-l
-> > > configuration needs. Once all slots are occupied, creating a pool for
-> > > a 16th distinct compressor fails: zswap_pool_create() errors and
-> > > returns NULL, and the compressor switch is rejected with -EINVAL
-> > > rather than silently succeeding. The cap can be raised by increasing
-> > > ZSWAP_MAX_POOLS (bounded by the u8 slot index, so up to 256).
-> > >
-> > > Suggested-by: Nhat Pham <nphamcs@gmail.com>
-> > > Suggested-by: Yosry Ahmed <yosry@kernel.org>
-> > > Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
-> > > ---
-> > >  mm/zswap.c | 97 ++++++++++++++++++++++++++++++++++++++++------------=
---
-> > >  1 file changed, 72 insertions(+), 25 deletions(-)
-> > >
-> > > diff --git a/mm/zswap.c b/mm/zswap.c
-> > > index 0bb30e58950a..b3b5e2887c00 100644
-> > > --- a/mm/zswap.c
-> > > +++ b/mm/zswap.c
-> > > @@ -13,6 +13,7 @@
-> > >
-> > >  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-> > >
-> > > +#include <linux/cleanup.h>
-> > >  #include <linux/module.h>
-> > >  #include <linux/cpu.h>
-> > >  #include <linux/highmem.h>
-> > > @@ -154,12 +155,27 @@ struct zswap_pool {
-> > >       struct zs_pool *zs_pool;
-> > >       struct crypto_acomp_ctx __percpu *acomp_ctx;
-> > >       struct percpu_ref ref;
-> > > -     struct list_head list;
-> > >       struct rcu_work release_work;
-> > >       struct hlist_node node;
-> > > +     u8 idx;
-> > >       char tfm_name[CRYPTO_MAX_ALG_NAME];
-> > >  };
-> > >
-> > > +#define ZSWAP_MAX_POOLS 16
-> >
-> > It's unlikely to happen, but this is a super annoying failure
-> > mode. User would have to kill something, delete shmem/tmpfs, or
-> > swapoff. And it's not obvious which entries are in which pool.
-> >
-> > Wouldn't an idr make more sense?
-> >
-> > > @@ -270,6 +283,31 @@ static void acomp_ctx_free(struct crypto_acomp_c=
-tx *acomp_ctx)
-> > >       acomp_ctx->buffer =3D NULL;
-> > >  }
-> > >
-> > > +/*
-> > > + * Publish a fully-constructed pool into a free array slot.  Pool cr=
-eation is
-> > > + * serialized by the module-wide kernel param mutex (all built-in pa=
-rams share
-> > > + * one lock) and only otherwise happens during single-threaded init,=
- so no two
-> > > + * creators race for a slot.  The pool is complete before it is stor=
-ed, and
-> > > + * zswap_pools_lock still serializes this store against a concurrent=
- retiring
-> > > + * pool clearing its slot in __zswap_pool_empty(), so array walkers =
-only ever
-> > > + * observe a NULL slot or a ready pool.
-> > > + */
-> > > +static int zswap_pool_assign_slot(struct zswap_pool *pool)
-> > > +{
-> > > +     int i;
-> > > +
-> > > +     guard(spinlock_bh)(&zswap_pools_lock);
-> > > +     for (i =3D ZSWAP_FIRST_POOL_SLOT; i < ZSWAP_MAX_POOLS; i++) {
-> > > +             if (!rcu_access_pointer(zswap_pools[i])) {
-> > > +                     pool->idx =3D i;
-> > > +                     rcu_assign_pointer(zswap_pools[i], pool);
-> > > +                     return i;
-> > > +             }
-> > > +     }
-> > > +
-> > > +     return -ENOSPC;
-> > > +}
-> >
-> > It was kind of overdue, but with this now requiring a pool walk as
-> > well, it would be better to factor out a find_or_create function?
-> >
-> > Something like:
-> >
-> > static struct zswap_pool *zswap_pool_find_or_create(char *compressor)
-> > {
-> >         struct zswap_pool *pool, *new_pool =3D NULL;
-> >         u8 id, new_id =3D 0;
-> >
-> > insert_new:
-> >         spin_lock_bh(&zswap_pools_lock);
-> >         idr_for_each_entry(&zswap_pools, pool, id) {
-> >                 if (pool && !strcmp(pool->tfm_name, compressor) && zswa=
-p_pool_tryget(pool)) {
-> >                         if (new_pool) {
-> >                                 pool_put(new_pool);
-> >                                 idr_free(&zswap_pools, new_id);
-> >                         }
-> >                         spin_unlock_bh(&zswap_pools_lock);
-> >                         return pool;
-> >                 }
-> >         }
-> >         if (new_pool) {
-> >                 idr_replace(&zswap_pools, new_pool, new_id);
-> >                 spin_unlock_bh(&zswap_pools_lock);
-> >                 return new_pool;
-> >         }
-> >         spin_unlock_bh(&zswap_pools_lock);
-> >
-> >         new_pool =3D pool_alloc();
-> >         if (!new_pool)
-> >                 ...
-> >         new_id =3D idr_alloc(&zswap_pools, NULL, 1, 256, GFP_KERNEL);
-> >         if (new_id < 0)
-> >                 ...
-> >         goto insert_new;
-> > }
-> Agreed. Hitting the 15-pool cap would be an annoying failure mode, even
-> if it should be rare.
-> I will switch this to an IDR with IDs in the 1..255 range, keeping 0 as
-> the invalid entry value, and factor the lookup/allocation path into a
-> zswap_pool_find_or_create() helper.
->
-> Best regards,
-> Jianyue
+This series enables buffered RWF_DONTCACHE on F2FS for sustained one-pass
+streaming writes, where retaining the written data can displace more useful
+cache.
 
-Hello Johannes,
+Patch 1 marks dropbehind write bios with BIO_COMPLETE_IN_TASK and uses the
+same flag to keep normal and dropbehind folios separate in the IPU and OPU
+paths.  The block layer owns deferral from unsafe completion contexts.
 
-I have this working locally, but I am still testing and some parts still
-need clarification.
+Patch 2 passes FGP_DONTCACHE to the F2FS buffered write folio lookup and
+advertises FOP_DONTCACHE.
 
-1. Could I use xarray here? Similar to idr, can naturally start from 1,
-and zswap already uses xarray for the entry trees.
-i.e. the pool table is an allocating xarray (XA_FLAGS_ALLOC1, ids
-1..255, 0 reserved).
+Tests were run on a Xiaomi phone with 10.7 GiB of kernel-visible memory,
+running Android 16 and Linux 6.12.69 with 4 KiB pages.  /data used F2FS.
 
-2. Compressor updates are already serialized by the param lock,
-and the only other create path is zswap_setup() during init (or when
-enabling zswap). That does not run alongside another creator, so I
-think we can keep the simpler lookup-then-create flow. It is almost
-the same as the original list code, just using the xarray API.
+The performance test wrote exactly 64 GiB per run at 4 KiB,
+8 KiB, 16 KiB, 32 KiB, 64 KiB, 128 KiB, 256 KiB, 512 KiB, and 1 MiB.
+Two counterbalanced rounds ran ascending normal-first and descending
+dontcache-first.  Values below are equal-weight means of both runs; N=2.
+The pwritev2() writer models the streaming workload; it does not show that
+an unchanged Android application already issues RWF_DONTCACHE.
 
-Best regards,
-Jianyue
+Android remained active with displays off.  Each run started after a cache
+reset and at least 120 seconds of cooldown.  Throughput and one-second
+kswapd0/global-memory samples cover the write loop.
+
+Write-loop throughput was:
+
+          normal MiB/s              dontcache MiB/s
+ I/O      r1       r2      mean      r1       r2      mean     change
+ 4K      946.28   935.74   941.01   291.36   309.31   300.33   -68.08%
+ 8K     1077.05  1105.84  1091.45   477.79   479.79   478.79   -56.13%
+ 16K    1126.84  1118.49  1122.67   643.40   652.06   647.73   -42.30%
+ 32K    1150.62  1036.33  1093.48   762.24   751.45   756.84   -30.79%
+ 64K    1144.80  1163.82  1154.31   852.11   851.19   851.65   -26.22%
+ 128K   1166.29  1162.84  1164.57   867.47   865.05   866.26   -25.61%
+ 256K   1153.61  1172.78  1163.19   895.53   885.33   890.43   -23.45%
+ 512K   1173.61  1197.34  1185.48   903.09   903.01   903.05   -23.82%
+ 1M     1126.22  1154.59  1140.41   850.74   894.60   872.67   -23.48%
+
+Average kswapd0 CPU and average global Cached were:
+
+ I/O      kswapd0 CPU, normal/DC        Cached MiB, normal/DC
+ 4K             18.45% / 0%                 4830.15 / 686.56
+ 8K             21.60% / 0%                 4862.35 / 591.48
+ 16K            22.75% / 0%                 4905.47 / 625.07
+ 32K            22.05% / 0%                 4945.82 / 561.59
+ 64K            23.46% / 0%                 4920.77 / 639.78
+ 128K           23.16% / 0%                 4971.37 / 693.26
+ 256K           23.68% / 0%                 4956.93 / 668.60
+ 512K           24.25% / 0%                 4972.22 / 663.92
+ 1M             22.01% / 0%                 5001.09 / 705.30
+
+Other global memory means were:
+
+          MemAvailable MiB       Dirty MiB          Writeback MiB
+ I/O       normal / DC          normal / DC          normal / DC
+ 4K      6513.08 / 6382.31     640.48 / 33.93       37.94 / 0.09
+ 8K      6560.77 / 6529.33     690.89 / 43.57       40.84 / 0.54
+ 16K     6587.46 / 6519.94     789.16 / 62.67       61.58 / 4.64
+ 32K     6571.95 / 6566.74     850.48 / 69.14       67.69 / 9.24
+ 64K     6600.64 / 6559.89    856.97 / 134.28      59.60 / 16.19
+ 128K    6627.03 / 6465.10    873.68 / 137.57      60.57 / 41.50
+ 256K    6615.58 / 6541.09    885.98 / 158.15      61.25 / 29.57
+ 512K    6625.52 / 6534.41    900.65 / 139.07      63.65 / 30.35
+ 1M      6677.09 / 6539.89    909.70 / 187.56      51.58 / 33.46
+
+          Active(file) MiB      Inactive(file) MiB
+ I/O       normal / DC             normal / DC
+ 4K       279.57 / 264.13         4426.38 / 183.12
+ 8K       262.32 / 260.97         4472.62 / 182.19
+ 16K      392.09 / 252.95         4392.78 / 195.82
+ 32K      254.30 / 248.44         4554.18 / 187.34
+ 64K      252.73 / 244.94         4545.40 / 267.28
+ 128K     322.02 / 243.95         4530.63 / 298.91
+ 256K     245.47 / 240.02         4586.64 / 303.92
+ 512K     254.75 / 232.05         4591.17 / 288.27
+ 1M       238.88 / 233.64         4638.81 / 341.00
+
+Dontcache left zero target-file pages resident at every size.  Normal
+retained about 1.19--1.24 million pages.  Normal runs incurred roughly
+15.6 million kswapd page scans and steals per run, while dontcache recorded
+zero.  Direct scan and allocation-stall deltas were zero in both modes.
+
+A controlled explicit-dontcache model issued 64 KiB writes for 120 seconds
+at 64, 128, and 256 MiB/s.  Both modes sustained all three rates in both
+rounds with no final schedule overrun.  Between 0.02% and 0.41% of writes
+completed late, with a maximum schedule lag of 3.3--6.0 ms.  Dontcache left
+zero target pages resident.  This was a controlled model, not an unchanged
+Xiaomi application.
+
+Buffered read throughput was:
+
+ I/O       normal MiB/s   dontcache MiB/s   change
+ 4K          1825.50          1695.10        -7.14%
+ 8K          1901.46          1847.96        -2.81%
+ 16K         1941.60          1872.55        -3.56%
+ 32K         1960.95          1905.92        -2.81%
+ 64K         1951.35          1886.54        -3.32%
+ 128K        1960.03          1915.82        -2.26%
+ 256K        1976.01          1900.41        -3.83%
+ 512K        1973.31          1911.24        -3.15%
+ 1M          2230.91          2007.82       -10.00%
+
+Dontcache left zero source pages resident in all measured read runs.
+
+The normal-I/O control showed read-throughput differences of +0.67%,
+-0.90%, and -2.58%, and write-throughput differences of -1.75%, +0.33%,
+and +2.33%, at 4 KiB, 64 KiB, and 1 MiB respectively.
+
+Changes since v3:
+
+- use the common block task-context completion infrastructure;
+- rebase onto the current F2FS development branch based on v7.3-rc1.
+
+Wenjie Qi (2):
+  f2fs: complete dropbehind write bios in task context
+  f2fs: enable buffered RWF_DONTCACHE
+
+ fs/f2fs/data.c | 27 +++++++++++++++++++++------
+ fs/f2fs/file.c |  2 +-
+ 2 files changed, 22 insertions(+), 7 deletions(-)
+
+-- 
+2.43.0
 
