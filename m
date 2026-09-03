@@ -4,127 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4427C624D4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 00:05:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BE9FC61DD6
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 00:22:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E8BE6B008A; Wed,  2 Sep 2026 20:05:36 -0400 (EDT)
+	id 53D3C6B008C; Wed,  2 Sep 2026 20:22:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 199776B008C; Wed,  2 Sep 2026 20:05:36 -0400 (EDT)
+	id 4ED806B009B; Wed,  2 Sep 2026 20:22:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08ABF6B0092; Wed,  2 Sep 2026 20:05:36 -0400 (EDT)
+	id 4039B6B009D; Wed,  2 Sep 2026 20:22:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C9D5B6B008A
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 20:05:35 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 20EE96B008C
+	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 20:22:21 -0400 (EDT)
 Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3F4481C1F46
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 00:05:35 +0000 (UTC)
-X-FDA: 85170507030.14.9E4B8E7
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 5419516000B
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 00:05:33 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=OJulDvqv;
-	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.46 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9AB58403DC
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 00:22:20 +0000 (UTC)
+X-FDA: 85170549240.14.8F7E136
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0BBBA180008
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 00:22:18 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gECNSOex;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788393933;
-	b=LBlnepzDFfsiXcCGE4tW9znIh1CHkVeKDqJP8UqD2Ybtg4D/khFsd4Ej5ByKVj0Csw6H09
-	r6G8p2YK+UpZcblVKKgD0lEFkgkWX0YwmJNbZ3fp/9iK0O/t9X7MAFCFCKlmC5tjk0l+EZ
-	Mr7md9QIUwA52FsPP1P6pae5FZve7tA=
+	t=1788394939;
+	b=HSSxXmxDGuX6ibRjTx+dR7MVNU4HQO29tHPl/L9OnTRHpt2DaMaWJbka8HPzamPLTjwdpF
+	cZagK+ehsqTq+UQ1XPWyn1qkeSjqT3qBAGRatMneBEpnynes4z6PTW3G94+ohOFMdRe3Q6
+	EQQl17XM1wGcCCzCXbcPzdCvgStWzCA=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=OJulDvqv;
-	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.46 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gECNSOex;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788393933;
+	s=arc-20220608; t=1788394939;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Oj1j9DR7tvSUa6TkT43vyXg4EoLBwftWK8uVdHa6AYU=;
-	b=T7JFmtUkl05E7bsFyB0IC1KyQVrWrIaEGw7ov4cFyYyRrS2tR1LDWLzsgzROr67JG8Z9UX
-	+bwj6hr7G22jDF6geR7sKf74dJySCp5BpJvDXtn8o9UDjk2jnadK4XKg7K7EtlJ0fioHU2
-	Avah1fqbud9Gr6Otvgv7b3jASrGnheM=
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-90cd4631090so5867946d6.1
-        for <linux-mm@kvack.org>; Wed, 02 Sep 2026 17:05:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1788393932; x=1788998732; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Oj1j9DR7tvSUa6TkT43vyXg4EoLBwftWK8uVdHa6AYU=;
-        b=OJulDvqvcEO8jS4VJgHAWPgZMFteWcybsii7d/vOkRH8bKZoYnosTMJ/rAV0QcbOtP
-         irzL9ZgeUZfApmXPWQQODEpisC+6BeoIEcaypHDs3HXMkFj7QOgSzxjeRFkbA1w8bQWA
-         WRvL0G5uh0/lk+Dz5+aWSdzbYb/D0wmlM6QtMPpzGMss5WNFIKZjQ3KJ5dj/ejeHGkd7
-         i7+RGCBFHxEatBQW8iHwXI9YOAEB+p7+fggtKEO2bX0IW9OX4mRJ4K/IOlwoC8gj58wj
-         VddiHyTi5QqjXuzhgCQZ36evhDJHABL8wl7NLJvD3Pjm4dWgWGIRrzbTNa246mgnjSHF
-         dDrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788393932; x=1788998732;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Oj1j9DR7tvSUa6TkT43vyXg4EoLBwftWK8uVdHa6AYU=;
-        b=JCBEeVgbkvFwxk1GTgCptQyuPsVWl1snWUKCmwetDJnuATIGOOnyIW9pEAHtObsGe/
-         6LQC5eY3BzLx9Hy+DdI3djNOecsVgO7yXZM8Sdkap1mzESYFQ/0pioTdPDhADNb2RTwV
-         AcXXHw+JGwFXnloChgIYdkbO+lZGbV8QnY27GB6iM37KDJuO4IGohewek3hDQUHEL+iE
-         twgYwKl+2gaCFMRRUrlswU5MbYokIaZHaZmaBRLkADnsDgQO6Cqj0i3pKMgqBWYLxJYZ
-         Kub0beQrAmD2mh2x0rgga9EafQVhTMutYLxWHjWCMML2YeDTWgXIa/Cu5bszQz9mfrx6
-         s7lA==
-X-Forwarded-Encrypted: i=1; AKwUvBxki+53nCsH5d+d9CvVqG97e0Gjh/LSvUEROzs9aLta7/5y9w+LSeE+W9ImI2NV8Gm7w742hlyZgQ==@kvack.org
-X-Gm-Message-State: AFuF++ngvMzwxSi7t1LzQrFN+7Mm4Ovvy2IbdwL8h27cJ8TNIUptcKKu
-	8PXAwS5zXd9jPYXvJG1IGwtXlX1yKpGAXp8ky7jymxktwWUEzaZra5p8eY8RcC11Frs=
-X-Gm-Gg: AYBFou12zXfybLg4W+889tlF799MLTXMZRwrWBhr+EKZ7OMrYV0oTTTAqteGZHF4icy
-	usYqJhn1bNQS9Riyx6HvTX1IR0q7yQilHMuOUJDmpeSShTYyQe8i3ySHSrnjI3+YCvzVO7r7WCc
-	lgUyXs9gAt5rAJA44LmRM5jcadZLXi6QuvHyCvis2aIX1aQpJh/mtTmuPc7VyTq2mtzSYdQeOw9
-	k9TX9N+ZDPoD5hFPpAnlSqQ1Y5gl8OOHoz3/hV+Eb0INRROSoXSvnTj0nAQJJTVdx/EUVawpdB3
-	6+ap4OgUosOdVVJTuI4HtY5RQJVkNtr/4FbLOwDJ8uN+nydloYcZf8kTKEPF/oJ1PEEvAycOphe
-	SqXhtgwbmpJgpnATTUdM4oV4T55La9n/vK9S459tghwaNx1D+86dmGbNgdJISSKjBujUfKSie8r
-	6/mouQt+DY3y/UTDVDdCTcuHvo7Ai3W70jAr1gC/7jFkYKb1CedyDZlU6pZvv7veIMnvMPWzZ4F
-	70FyYjJrN+vdzbpLLom/xfGMmgedGQN9rfw8/X0IRIUH81GpOlsqgy94w==
-X-Received: by 2002:a05:6214:3188:b0:910:2f75:2daa with SMTP id 6a1803df08f44-910346ee143mr40566336d6.9.1788393932126;
-        Wed, 02 Sep 2026 17:05:32 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90e9eef37a6sm30220746d6.35.2026.09.02.17.05.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 17:05:31 -0700 (PDT)
-Date: Wed, 2 Sep 2026 20:05:29 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Zi Yan <ziy@nvidia.com>
-Cc: David Hildenbrand <david@kernel.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kairui Song <kasong@tencent.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Oscar Salvador <osalvador@suse.de>
-Subject: Re: [PATCH v2 05/14] mm/hugetlb: use direct assignment instead of
- folio_change_private()
-Message-ID: <api5pece7I6eqdti@gourry-fedora-PF4VCD3F>
-References: <20260831-remove-pg_private-v2-0-3668159cd9e8@nvidia.com>
- <20260831-remove-pg_private-v2-5-3668159cd9e8@nvidia.com>
+	bh=OxWQhFCQXWh0+Se6BwEJfMpRHGQJ8OFKAgPc6CcdDiQ=;
+	b=MaqVGdTBGxSquP/MtkckgV2pyPqoDpCuUZDHAvjdJQL6PgtnDy75vhjovIufBwnOf+H3L5
+	oQvzzsz5DMtWhuA6hgnvuE/tKW7eHQbBLBskMyVCOamriqgygHQlVEgMyRa6KLIBoMOxBc
+	hU+0cDGoPuVkfReHsagxGGSNveHNNkI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 87743600C8;
+	Thu,  3 Sep 2026 00:22:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDFAC1F000E9;
+	Thu,  3 Sep 2026 00:22:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788394938;
+	bh=OxWQhFCQXWh0+Se6BwEJfMpRHGQJ8OFKAgPc6CcdDiQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=gECNSOex0hFA1rBKedGbmsFe8VUlJD1ARTyVupBjBwFJbckercbOnGGwi5aIOKJ6V
+	 Uz8QrhzIvz6xyIDqKBW0v8oQJgzeCpQ5b8/NntQ6Ln6BFoiQXxZVQaY66JdrgmIUgH
+	 r3h4an1LVt0/z1V78SKEumy3h/xubCLXsd41CxsvtR0jZ3fuYrtGhN9fy/GBHXO92o
+	 kurITRekpi0dlFEwjXqOqRccoCz59rhiFMQIbUayizVUdM4fgIWXAP6Gf9cEFH7Ry5
+	 4AvQF3wcI80RgAZSFpAI1HpWTM9Gg/RSeP1BSYXeEZmSgyOe6QSipbi2gS1Gy/90Kd
+	 mB8S0W1I23X5g==
+From: SJ Park <sj@kernel.org>
+To: Kunwu Chan <kunwu.chan@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Kunwu Chan <kunwu.chan@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 09/12] mm/damon/tests/core-kunit: test damon_nr_samples_per_aggr()
+Date: Wed,  2 Sep 2026 17:22:09 -0700
+Message-ID: <20260903002210.46269-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260902154944.4035059-1-kunwu.chan@linux.dev>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260831-remove-pg_private-v2-5-3668159cd9e8@nvidia.com>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 1ji31x5hzwmzde86cgsg7netoo4wwx87
-X-Rspamd-Queue-Id: 5419516000B
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788393933-423508
-X-HE-Meta: U2FsdGVkX18Nl79fqWooqrZ4enWmmDUXBJEfSgxlk314JCCrDufOxaodkfYoTs5V8XYap3KZE/8L05EYDaPG+upgfpQU1J0MlnuSxS1H1vpHPVPwEroqefXYnMwwFUJusT5es84Sj7zZagvTyMR0eGOqUhFvhbzqn9rA39L1Y3DXN/bVwZz0RL2VNV9f0hhCgtmwUKgawSG1oVprs+rNymC8UV04r3mjmDuri+50a5iYeHmIRwbp5ZsZxD2VbdahTfID2HtzxDMQAZtDPEL8BpQsWXTuIXoha1xqBhLVoAPYPPCT56dfMkR28ghaixhatGPchgEO4k8Dd2xKyRGMqGQUkbZyT5uxxu29uIy3P8De+3rF5k1q/AuZVoJsgfcfdOPBvga/X5gaSnnaCOnrWYy40GEh24V1XtjPdD2vCuup9EEz1cvPj7KB64az/nglLe4ZXc8/p8A8cQqEr0+LK9dEUuej/5HsQIkDAzD4FKou9Kgj94ardrsd3DHumrQM7I3pTb4wFz2XZ0PU6mUv6axAh4Nz77bqEcL3Fwp4Me2f0sYj5HywwQ4ipaAJai2F4eD7r762Bfwa3cadfX93FMkIPQFkrjclKjRZmLwg87n1j0q/dFlGq8uS8KTo3vGgc9MRjPQVJNnI/Mvjh9wJ4HLEy5LY2C2P0+I8iOSAoQwnd+iYXZcHuwg+IwfCbmNuFEmUHXHPTYIwMd8PQPhRmyzVNk1qiKA52Nj3sHylKqBHiX6C59hpVBCZxDXA/OF3KFeLPm82S13KbcLjb/JzxTetuSJcTnkfz0ErQ4jUSdkPhDXZ6TkEIoVI8qQUC7ocJQo5K7n543EkZOvKJLb/dC2JHJj5P/0x2Y/lP3SPutwONaWn+b2ompSgwCYz3RqqYJ4s73xpOrL9wnLuRd/f7821G5m3aPLLZE59PlhNKoIefewj+E0Y17fD8BtmCKR+yGmsAX/EHyplAM9kGa0
- LplVJgEe
- XDs2r+JgHBAALwgcZkYtQySeMQ4SU0SDK4VeUEkr6ks8D4fN+N8tklvBjPE7lwatN1TU6Sgfaqa1oYzMxzhm3MKhHGa8xZAd/c8xNoJ7Ct83YsAtYbrXcfzyDIZfccTottu8nxfJcggzmfecXgKtDCeyyMiQHRezMypHcc6y04XiLTxR84DdtU2PgpgOxUpZaZ96k3wdmxfRlcertWgSMcF1sw7wYu/AdOQJQBXFjrhTEftoE3X3RStlLz+PiyavD7Q9ZKafw8+WB1mP3a+vrHFX6Lv8wH6KFDlJkwVTp5tqWcf+2ICW1oe4P3jhA7HObslQGYytF57LKmk2Nkj/pEj8C26Cb0mMPnE8YfV6Xs91xxhXblt07L+YGs84xLusN7MMO5sBdV2HUZapDiSeX6e4cgR6H4KVC6/YqdtKp8EGg772/5UB7BgKUbmgvP8zD9xmI0BtfmBvr+uZs+Lf84BwTn/7Rw5xVY7jBexumhqG0UVtdcv4xTspsgjg37lcee3vM0+iCtHAsdILgHMQXoGPlLpNuLSikxHBqk3jObcdRmcfNuGCq0MQZgXIDG5tHpqoXKkLxTZu2/htc6z1hSA/mYtSfYeO1m2soCc+5oZivIBL3JBKY4gurBA==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0BBBA180008
+X-Stat-Signature: o4z8aabag317g4gk7y6yszpmojcnxyms
+X-HE-Tag: 1788394938-276381
+X-HE-Meta: U2FsdGVkX18z2DJz+IwP8XORuImMRalDpd+mQGNBMY9lPXJbvGRuesyLzMa16O2vf85A4Nnxxp3hwx3VjlDXukJh0kcWSwP0z+TLnekiRuDPO1EtOmyfoNK7EV39+M6O+eY5oHv1hMrQBv8KMEbytXRXRZnnGx7FBrXIYSdKqwJOjbSRId4QMWk630sgWC2YVIZ/CFcxR8zW3fRUCGS32JG9XT64CueGa8pQUZ7qodJaEVaqen2IOYazhTfqJnCk4PL/8fBnManYxsJpTniusHINfJl8hqa2gHtEM9Kfl9zCic04ju00hXbBilc7eFy1UwRlDjBTVQOZ1DwRhSExnyikWL/Y5y+UBwKlIdVeToYl+szslU6AKBMturJ+n8GELHgsawZjIH98lU17Gb/9SMlC06ycF00OsPM3gf50Im0KzB7cpRKRzAUWcPqxDcAD9z/PT4P1XHQqNlY0mtUaMQ8XlhaD07Uk2nAa7iv1QcajxkvzCS7DLY/ubnJ0+Zuq7tYMZNuA9ee671Zwhq61Z/lk9j2K0KtQRCTVda3JAntdiWHUhydHuiQC/+qfL0o7E7jPG6s2rs9JE+qZI6K9OuehtM0EugtdJ7ny2Eyvmpuwo4ENekFdwfMFf68in0X2FyBZdO8oMbPHO54uiink/11Ij4KIg73YhTt6PEOR5LJ0xARY06C8K0ju/g0/R0RHeKusM1TRzGnhRBxTFl+YxtGTkOyP4JAU7gCXy8a7wNo3qkQHGwNbMWvG73ogb+zkNngnyS2BQTnCR5GD+W08lV67lTaZrDh6vEYbxW0N7BUTXLfDUt0B2wP20ZVdndIOHVWdzc3wBoiWLZvQUQqz7RyD3PBYQKUxB63YxsTWzy6lZ046O+DutZMP/5AFGw/Cam0j/CtlMEs+cWTlqIgeT095ejkjMRf5D3TyBysVXQWjBltx0xhUZGmyHD3zU3MWP/X0duwf/k5tRF90hQe
+ lYZdvf+M
+ oOlzSDyHle7gBEff9wdjg3h4cE7GY2hqTCt48XQb9r9vL5UrRBiGM8z46LT5e1lUajjUuumqeMH5jCuljktWqdMgbVCRY7mx4HklA+S0K5p9xtnnCQwsvNLF0hhWO8he7c9glPDPfRMBqrV+lF1d2/CVn71O3YgScuHPVzSADBAk7qsiE6obtrSdCYMKfwwi5745bpwRJ5piC9kp6dBaUk+kMl1Z9RJ6VOv98LdnnHY7+3bhitytn1x7f/pWAoywAe+jeyCk9P/hwDIoL0qXws7hwsnuw8NmqGMGkcJILVgRsbqy3zyAC8uHeicTMM4y4eBQxA9hkvBjfzqglF7sl/HfJmN9lMw3UlAtV7unnGWv+os92Y6MoRdd48w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,28 +98,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 31, 2026 at 03:25:28PM -0400, Zi Yan wrote:
-> folio_change_private() should be used along with folio_attach_private() and
-> folio_detach_private(), where adding and remove ->private content requires
-> folio refcount change. add_hugetlb_folio() simply sets folio->private to
-> NULL without refcount manipulation. Change it to direct assignment to avoid
-> semantic confusion.
-> 
-> It prepares for a future commit that remove PG_private.
-> 
-> No functional change intended.
-> 
-> Assisted-by: Claude:claude-opus-4-8
-> Assisted-by: Codex:gpt-5
-> To: Muchun Song <muchun.song@linux.dev>
-> To: Oscar Salvador <osalvador@suse.de>
-> To: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> Acked-by: Usama Arif <usama.arif@linux.dev>
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
+On Wed,  2 Sep 2026 23:49:42 +0800 Kunwu Chan <kunwu.chan@gmail.com> wrote:
 
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+> On Wed,  2 Sep 2026 08:19:54 -0700 SJ Park <sj@kernel.org> wrote:
+> 
+> > On Wed,  2 Sep 2026 23:08:41 +0800 Kunwu Chan <kunwu.chan@gmail.com> wrote:
+> > 
+> > > On Tue,  1 Sep 2026 22:47:42 -0700 SJ Park <sj@kernel.org> wrote:
+> > [...]
+> > > Both `sample_interval` and `aggr_interval` are zero here.  Since
+> > > `sample_interval` is the denominator in `damon_nr_samples_per_aggr()`,
+> > > would it be better to keep `aggr_interval` non-zero when testing the
+> > > zero `sample_interval` case?
+> > > 
+> > > This would make the test explicitly cover the divide-by-zero protection.
+> > > If the `aggr_interval == 0` behavior is also worth covering, perhaps it
+> > > could be tested separately.
+> > 
+> > Thank you for your review and question, Kunwu!
+> > 
+> > Yes, that kind of additional test case would be nice.  Please feel free to post
+> > a patch if you'd like to! :)  And no pressure, no rush.  I will also consider
+> > doing it myself if it seems you are not interested.
+> 
+> Thanks for the feedback, SJ!
+> 
+> I will prepare a small follow-up patch for this test
+> clarity improvement.
 
+Looking forward to!
+
+> 
+> Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
+
+Thank you!  Also appreciate your R-b: for other patches!
+
+
+Thanks,
+SJ
+
+[...]
 
