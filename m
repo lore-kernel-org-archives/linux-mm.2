@@ -4,99 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21AEFC624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 13:47:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE915C624A4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 13:48:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 213896B00AF; Thu,  3 Sep 2026 09:47:04 -0400 (EDT)
+	id C4F4D6B0099; Thu,  3 Sep 2026 09:48:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1EAEE6B00B0; Thu,  3 Sep 2026 09:47:04 -0400 (EDT)
+	id C00606B009B; Thu,  3 Sep 2026 09:48:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 128B56B00B1; Thu,  3 Sep 2026 09:47:04 -0400 (EDT)
+	id B15536B009D; Thu,  3 Sep 2026 09:48:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E5AE06B00AF
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:47:03 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7072C16050E
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:47:03 +0000 (UTC)
-X-FDA: 85172577126.30.06FD43F
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A3E3140014
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:47:00 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=XRoVqDL7;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf12.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 87F646B0099
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:48:58 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1A3BF120534
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:48:58 +0000 (UTC)
+X-FDA: 85172581956.23.552550B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 81FFB180008
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 13:48:56 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z9MeGmA2;
+	spf=pass (imf06.hostedemail.com: domain of syzbot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=syzbot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788443221;
+	s=arc-20220608; t=1788443336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kuFl+rvMIhi6ut1C9GlGaV8ipseSsDn8WvDAMrSMbkg=;
-	b=bKxXNFjPP1DgM5UYERto7g7k9sMY5IWtxrq9cycY2aD5FLLdK4Rnw1kPF/c3BipRT5k+6Q
-	weF/k6hzbkMoti5IkZHsYvF+YWikF/cOI0p4CuRrtHkRDvIkxRHoxFQbq09GS9g5V2jbBY
-	W/B4mVx42CQ0gML6SEr5f+2/1d+WIzU=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=XRoVqDL7;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf12.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=6To+8fe2xKabaq6LuBCZ/jPSqRixKgPLH1mPUnM4bHo=;
+	b=ywn6xfctBIGz8AOZJgtW1m0du6my1POvgfMyMGwcXzDUDlG/TrguSvrr2HyNtu+OG7i/Q2
+	UM0pYL4d2P6rbQi5kJGGEuJ0gsbIkjNoWeXLcV32wd2plKv0aCv0lmbRw7Bp9No+R4F5qf
+	1+Jc6WrzYncxM+pZ45qbnnQgeFs+wzc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788443221;
-	b=VcePpTb3cFPcXvZd1dlqTSb+I0ypCn+P0qDJxuR1beDIEUL7cSZO2sa3uTkfnCv0X1v0iV
-	jwsGcG4m0p4ivg6fbVE/Ix5OFlYFOrLjrp493ZZK8GU9hGxQv72Ugn5M7BBWst5tQZL104
-	HkJm+VhjpFHE/vv+034tyxEnSVAC1Gc=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=kuFl+rvMIhi6ut1C9GlGaV8ipseSsDn8WvDAMrSMbkg=;
-	b=XRoVqDL7VXST6Vka40uEIvmWLXP9JKZYKKyxRzhUyUgmxjvRlvhtSMS2PYNnDG9Msmb/sb6EN
-	MzONpknM5bEqQJHJX8oti+BTvV0tfKHuCgm5mInE3kdHlMZUSpn4QoCV3GtheUCALmAg8t0gQtu
-	dsNbqUMM7QhZRliFVt2KjYg=
-Received: from mail.maildlp.com (unknown [172.19.163.163])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4hbLGD68TbzmV8f;
-	Thu,  3 Sep 2026 21:36:04 +0800 (CST)
-Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id BCDFE4057A;
-	Thu,  3 Sep 2026 21:46:55 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- kwepemk300003.china.huawei.com (7.202.195.93) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 3 Sep 2026 21:46:54 +0800
-Message-ID: <8b4bfff5-6184-4936-9196-49b34260af66@huawei.com>
-Date: Thu, 3 Sep 2026 21:46:52 +0800
+	t=1788443336;
+	b=z3CUYyLsjVTRRqdAdF+tq0a6Yyuxz8IZaFgmYVOW2Zn5Wm1Mg+QXoRykxNTj8NYCyDTsdg
+	O5VjCsuU9gcQ8PyAzRX9VJajM7AJjev8wBLjXEs7BblbfBF2HZ46MgSS45jgP0xqxhiQx2
+	o3GRufCVk1NToROdB01MC9xNi1cb2nQ=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z9MeGmA2;
+	spf=pass (imf06.hostedemail.com: domain of syzbot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=syzbot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id 9B30341A20;
+	Thu,  3 Sep 2026 13:48:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 26F671F00A3F;
+	Thu,  3 Sep 2026 13:48:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788443335;
+	bh=6To+8fe2xKabaq6LuBCZ/jPSqRixKgPLH1mPUnM4bHo=;
+	h=From:To:Cc:Subject:Date;
+	b=Z9MeGmA21BkOeddjLE5LR+XMcG1y6ECfJya73DU/Sz4bHhlqCXj9ITrKmN35Q9USh
+	 9qcDv7PZgOTejj2ZGZ3GMj7N82R6dxusbEjROgDFwnjcGW7Dsc7h8dK8K8J1RZaQuG
+	 tzLfqGgTZqj1uHoEqyedjDD4zynzhcK8sDLVyERsZQuldPVq1iTS4+ae11s3Uba+QV
+	 wjizbqXtIE0xB4UAr3wRcV2gr/SDYnfcourzrSV2lJyTbclsxpztfBmiuZgU371VeJ
+	 jwiPw1HfSLolZiiF1UgH9xGXB40nQiASCwYCyKhlJMhYwNy7xK+w0FYhXTyA7qZ4ND
+	 nraERTUl1ykyA==
+From: "syzbot" <syzbot@kernel.org>
+To: syzkaller-bugs@googlegroups.com, Krystian Kaniewski <krystianmkaniewski@gmail.com>, "Andrew Morton" <akpm@linux-foundation.org>, <linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>, "Matthew Wilcox" <willy@infradead.org>
+Cc: linux-kernel@vger.kernel.org, syzbot@lists.linux.dev
+Subject: [PATCH] xarray: fix index jumping backwards in xas_find()
+Message-ID: <2992424b-2120-489e-9010-f45f46ed52c8@mail.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] iomap: simplify writepages reclaim guard
-To: Christoph Hellwig <hch@infradead.org>
-CC: <brauner@kernel.org>, <djwong@kernel.org>, <cem@kernel.org>,
-	<akpm@linux-foundation.org>, <vbabka@kernel.org>, <surenb@google.com>,
-	<mhocko@suse.com>, <brendan.jackman@linux.dev>, <hannes@cmpxchg.org>,
-	<ziy@nvidia.com>, <david@kernel.org>, <qi.zheng@linux.dev>,
-	<shakeel.butt@linux.dev>, <ljs@kernel.org>, <linux-xfs@vger.kernel.org>,
-	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>
-References: <20260902131653.1338227-1-wangkefeng.wang@huawei.com>
- <20260902131653.1338227-3-wangkefeng.wang@huawei.com>
- <apgzlDZiLthAD25Q@infradead.org>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <apgzlDZiLthAD25Q@infradead.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemk300003.china.huawei.com (7.202.195.93)
-X-Rspamd-Server: rspam11
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Date: Thu,  3 Sep 2026 13:48:55 +0000 (UTC)
 X-Rspam-User: 
-X-Stat-Signature: y7ey5kusnjzs9sr5j7jaswkyybj4nti7
-X-Rspamd-Queue-Id: A3E3140014
-X-HE-Tag: 1788443220-147391
-X-HE-Meta: U2FsdGVkX19DGA1JCuXQDLjWKLcgSiPjGUGEfa9xtaIJcyRjSv2SknefFGZ4zdfNgkL9ZfMmIC7gzOaoTH7/07ZlQoFAZYxY3lS7islE9Yy7PyhSeVv4/jUvsiaj9ypms9GQ6wJC+KTJBgv3dowRKnD5e1+gYOwiY+cxcdhCWV1n8HKQEfv7oWsT6NqLe08A5ONTS9YZh3xNX+FnUTpcIJ8Lj5fFZzUQjLmUwQUdrokPhq+zt/MmWmzdngOnH/b/KR0EKhFSqygwirokHUU1ikhM/1/8wt+3t06HoaG57jRMWlL+c2ghY39wX3bBWpPSbB9TaMjlNag9N9MLI1jjQhKtZalRxXd9Iu5B5QlLY5QSz21wy2WmhWDDdMyJgsLeucfZNVu/hMtedEKCPQSbBmYTgDaBIgq4hzU59O4L5KFAqRRbwr4KBuKj5avooYm89Y2U8cU6hoGgSD04bUg3GObJo8miMV+ryP7vNaMU4EK35B1xsugVv17vAE8ZCXFSi/tSw4QwyR4SOGESgvrMSTGydToyKBprcyEYEvUx8szz+fLaWRae85wP02vAYMBifjQlyKloqc+bnmM9AAfjUFariCcYqCm6JGlIXiifCGgWfv+NehZV7WJHI5DFZKLzfoS1OvI0HNPM0A+QIEyGTfTZIcqi91n8taXHgVSZZMJOEgzU5jPNIRFRthI9tzOyYfsKZmTdLVqFQuOnv2Tkkbj3SyICgHZn/rvZHaFKeSmpZr07USlaTR1EzXVDNbOQI3lSztATS0ZA6EDn+si4r3GulIbeEe8IKpAqUJ66nJqGXpNnePNGwOkp/kAcQkVCJDNOnU1N6rxDzLHmEzrJ1duwSV/RKUQIiXv7rTyF87ol8vy7h77qTY2cjq1RaBzIwM2JCYRTD15Wmke5/wes3lfyeLJZTLlR50NM2iPad0OHC1T5nSOBbtpjPLPUQmeMpGZylB9RCezLtwC/TG+
- 6DHHOdJm
- ANSltyEo+8reTo0sW60Mw4dDZ/+LeW2gNRmBM6CtrEiZUzlILI+yByj4lsUoCbvoHWBbPlwwekayyyVM9OI2zanStpB6jxlLiNqCBvGRNGm1TMgpPXom/j6vBC/xLSw28GoA89tcR0gpaH5CW8d2Anebl0iEwBo38y+saB2iA9I5YGHuN+OX+sL7usdElldsFAah2/fxAVYLx+v85ue8g3we3yPw6tSpHz1oikcoVhGmroAgJu0yTG0IWQhvXUHsCU7Cq0nyJOeDjwf4zA5f4XyF0MIjaqzagBrw+msraZCQf9EcSjFGWBhtHnrFwCEaoHTxc
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 81FFB180008
+X-Stat-Signature: m1fgc5mabzrnr1sxm5do8swyqet71s66
+X-HE-Tag: 1788443336-767819
+X-HE-Meta: U2FsdGVkX18p3H/GmcSTixfCEallyMrGLF3KFuzlkmQP6nSHN44ZO4vrPbPZ9SOe/F2dZ8OBGwvbo2WpIYTDO/W/s4562ULWtG2Cu1Lbd+AmnjDWhzTOlQVZO5BkD19JfX/MASxw2a/TpmdROfBph7mH77j8cbEaY8V5HVLmMeVN1Vtaps6+sgSkxsOJjTHIq1KAJkIsP3mv0VBVorJAyI4ZIrqpTMJpmT9E1EzNoUsSsSwXfderWwLcEBSeaOXqOUDIlKMpm7JOY/gWezeFwYAT4cfAK61zY46HvI+ncWrG9sadrMgYniK4bgP6IN0ieFz95f8UPHf3STtUHErPHN+MEoAjoWd0QGnGI1AKHlJYm2ORp1QItNp7aY7wl6W9AC3m9yH0flfF9R3lBO6BmfpqE23HGYieFi30I6C5eVJrRIQXv97J1nLvk/MDmVUhboaArEtFu+yiREuFV6fY86e4/MHWnV0Sd1gYKBGFJIj569sjAujEBRnmRgIP4e3hEwyKMKnthhHZBDJrhssvDbaCcwdquGm1yKlJEAbiGeE5SIpzlciRMdbXCK1iIG4nX+9SUgQBZ9dyBQLYezScdf9N3nh/P/Up/JWKimrEwwj2DgHieD64t2FcTxZeKKuHR+c9qaqXdJMfeH4/A39PF2uJZMRIMtvFT7WMs/IEiO8h7wsXIx2qqbL5equfV1F49qeimBedoyyyjA9Fm4VCRJd04bV7HKn67HcvrpDiLGc/Yq1TJvc+e1lELMvXrnq+FrvshH3dVJan7hPzXCnICx38n/5LAenNYbQ4SkNqaTtjvVQp4NeDrRKrQiIIUeZCMsbh9douwTv+0RjcuD6aqE4hX0ViAA4alDIoGEZbg/7Nt9lKWOo5cREQJg8CcqHY21ZQsqUuBJauY3SrCkgukknQjUL9PzzFNxlr+sIE/T9TuazOjkI8+cyAhx2uczcUQqMYvUxKtBE5lhAChfm
+ eCisfphZ
+ JdNX7YQfWIMjDOEkGdU7bT/X2kCCz6B2cAGli0GiYkIFd9s0NIQv7jl8X6fKNOKeQnJJLddyAg6kaiBuYRDValIa3sHGZprCmHdP3kH5piu4dcAWeyUmVxIJJoqeHTO3NvKKZZhMRpVRdSjZS2mY4nvv4PVg83isuBcNkhgHuw2APIUrdxdNiojBXALGkU5+Yo4OUD5u/wEe+fb+n08dV7H1PeOT2zUVM0mhm7JOrDSY626KTeKIcFbE+PMqyeadaLrh/HgVk9nHqHyf6U3VwVaJqaDfc+fb4MUwUH8DVF0FaankODTGlbVSdjG6KO0EJw+Yui0VRIpPlk0qUgdRZovk1fYHmNlRe6GkUimRZKBgFD8jvo7GN1dQPyLgBWFV9w2bg+u95QlZv0V+AR8d4FKZIJ3ZoFdJyE+RktX2F1b5YN48HxYu6X429nNLc+1iIciEekVEaCFytXVS0OMFDolnmHVxFg4VRaqK0w3BzFTGE9JzLL29cm/slLmcgowsLQ7wXX8t5P2nZ6BZWXAyrQ4eqSw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,25 +87,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Krystian Kaniewski <krystianmkaniewski@gmail.com>
+
+A bug in the XArray iterator xas_find() causes the iterator's index
+(xas->xa_index) to jump backwards when iterating over a multi-index entry
+(like a THP) that resides in a non-leaf node and is concurrently split.
+
+When iterating over a multi-index entry in a non-leaf node, xas_load() sets
+xas->xa_offset to the base offset of the entry, but leaves xas->xa_index at
+the requested index. When the caller subsequently wants to advance to the
+next entry, xas_find() is called. xas_find() attempts to synchronize
+xas->xa_offset with xas->xa_index before advancing. However, the fixup
+logic was incorrectly restricted to leaf nodes (!xas->xa_node->shift).
+Because the THP resides in a non-leaf node, the fixup is skipped.
+
+As a result, xas_find() simply increments xas->xa_offset and recalculates
+xas->xa_index based on this new offset. This causes xas->xa_index to jump
+backwards. If the THP was concurrently split, the entry at the new offset
+is a node pointer, so xas_find() descends into it and returns the folio at
+the backwards index. The caller (filemap_map_pages()) then calculates the
+PTE pointer based on this backwards index, resulting in an invalid memory
+access such as an out-of-bounds read or use-after-free on a page-table page
+freed via tlb_remove_table_rcu().
+
+To fix this, check if xas->xa_offset matches get_offset(xas->xa_index,
+xas->xa_node). If it does not and the node is a non-leaf node, set
+xas->xa_offset to get_offset(xas->xa_index, xas->xa_node) before advancing.
+Also add test cases in test_xarray to verify xas_find() behavior when
+iterating over and splitting multi-index entries.
+
+Fixes: b803b42823d0 ("xarray: Add XArray iterators")
+Assisted-by: Gemini:gemini-3.7-flash syzbot
+Reported-by: syzbot+b72767277f29b6407083@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b72767277f29b6407083
+Link: https://syzkaller.appspot.com/ai_job?id=a01c56bd-74d0-411c-afb4-ee6f0cb6cb61
+Signed-off-by: Krystian Kaniewski <krystianmkaniewski@gmail.com>
+
+---
+diff --git a/lib/test_xarray.c b/lib/test_xarray.c
+index 5ca0aefee..cda7245e4 100644
+--- a/lib/test_xarray.c
++++ b/lib/test_xarray.c
+@@ -1247,6 +1247,67 @@ static noinline void check_multi_find_3(struct xarray *xa)
+ 	}
+ }
+ 
++static noinline void check_multi_find_4(struct xarray *xa)
++{
++#ifdef CONFIG_XARRAY_MULTI
++	XA_STATE(xas, xa, 100);
++	XA_STATE_ORDER(split, xa, 0, 0);
++	void *entry;
++	unsigned long i;
++
++	/* (1) Order-7 entry (0-127) with adjacent entry at 128, starting at 100 */
++	xa_store_order(xa, 0, 7, xa_mk_index(0), GFP_KERNEL);
++	XA_BUG_ON(xa, xa_store_index(xa, 128, GFP_KERNEL) != NULL);
++
++	rcu_read_lock();
++	entry = xas_find(&xas, ULONG_MAX);
++	XA_BUG_ON(xa, entry != xa_mk_index(0));
++	XA_BUG_ON(xa, xas.xa_index != 100);
++
++	entry = xas_find(&xas, ULONG_MAX);
++	XA_BUG_ON(xa, entry != xa_mk_index(128));
++	XA_BUG_ON(xa, xas.xa_index != 128);
++
++	entry = xas_find(&xas, ULONG_MAX);
++	XA_BUG_ON(xa, entry != NULL);
++	rcu_read_unlock();
++
++	xa_erase_index(xa, 128);
++	xa_erase_index(xa, 0);
++	XA_BUG_ON(xa, !xa_empty(xa));
++
++	/* (2) Splitting a multi-index entry after a lookup begins inside it */
++	xa_store_order(xa, 0, 7, xa_mk_index(0), GFP_KERNEL);
++	XA_BUG_ON(xa, xa_store_index(xa, 128, GFP_KERNEL) != NULL);
++
++	xas_set(&xas, 100);
++	rcu_read_lock();
++	entry = xas_find(&xas, ULONG_MAX);
++	XA_BUG_ON(xa, entry != xa_mk_index(0));
++	XA_BUG_ON(xa, xas.xa_index != 100);
++	rcu_read_unlock();
++
++	xas_split_alloc(&split, xa_mk_index(0), 7, GFP_KERNEL);
++	xas_lock(&split);
++	xas_split(&split, xa_mk_index(0), 7);
++	for (i = 0; i < 128; i++)
++		__xa_store(xa, i, xa_mk_index(i), 0);
++	xas_unlock(&split);
++
++	rcu_read_lock();
++	entry = xas_find(&xas, ULONG_MAX);
++	XA_BUG_ON(xa, entry != xa_mk_index(128));
++	XA_BUG_ON(xa, xas.xa_index != 128);
++
++	entry = xas_find(&xas, ULONG_MAX);
++	XA_BUG_ON(xa, entry != NULL);
++	rcu_read_unlock();
++
++	xa_destroy(xa);
++	XA_BUG_ON(xa, !xa_empty(xa));
++#endif
++}
++
+ static noinline void check_find_1(struct xarray *xa)
+ {
+ 	unsigned long i, j, k;
+@@ -1370,6 +1431,7 @@ static noinline void check_find(struct xarray *xa)
+ 		check_multi_find_1(xa, i);
+ 	check_multi_find_2(xa);
+ 	check_multi_find_3(xa);
++	check_multi_find_4(xa);
+ }
+ 
+ /* See find_swap_entry() in mm/shmem.c */
+diff --git a/lib/xarray.c b/lib/xarray.c
+index 9a8b49165..980324d68 100644
+--- a/lib/xarray.c
++++ b/lib/xarray.c
+@@ -1406,9 +1406,11 @@ void *xas_find(struct xa_state *xas, unsigned long max)
+ 		entry = xas_load(xas);
+ 		if (entry || xas_not_node(xas->xa_node))
+ 			return entry;
+-	} else if (!xas->xa_node->shift &&
+-		    xas->xa_offset != (xas->xa_index & XA_CHUNK_MASK)) {
+-		xas->xa_offset = ((xas->xa_index - 1) & XA_CHUNK_MASK) + 1;
++	} else if (xas->xa_offset != get_offset(xas->xa_index, xas->xa_node)) {
++		if (!xas->xa_node->shift)
++			xas->xa_offset = ((xas->xa_index - 1) & XA_CHUNK_MASK) + 1;
++		else
++			xas->xa_offset = get_offset(xas->xa_index, xas->xa_node);
+ 	}
+ 
+ 	xas_next_offset(xas);
 
 
-On 9/2/2026 10:32 PM, Christoph Hellwig wrote:
-> On Wed, Sep 02, 2026 at 09:16:51PM +0800, Kefeng Wang wrote:
->> index 0a5ebfda90f1..6306ca747f3b 100644
->> --- a/fs/iomap/buffered-io.c
->> +++ b/fs/iomap/buffered-io.c
->> @@ -2077,8 +2077,7 @@ iomap_writepages(struct iomap_writepage_ctx *wpc)
->>   	 * Writeback from reclaim context should never happen except in the case
->>   	 * of a VM regression so warn about it and refuse to write the data.
->>   	 */
->> -	if (WARN_ON_ONCE((current->flags & (PF_MEMALLOC | PF_KSWAPD)) ==
->> -			PF_MEMALLOC))
->> +	if (WARN_ON_ONCE((current->flags & PF_MEMALLOC)))
-> 
-> You can drop one set of braces here.  Otherwise this looks good.
-> 
-Yes, missing it, thanks for your review.
-
-Hi Andrew, I see that you have merged it into mm-new. Could you help fix
-it, or I will send a fix patch.
+base-commit: 8d3ae59288f1e7d58d76558a6ee96d533bc5019f
+-- 
+See https://goo.gle/syzbot-ai-patches for information about AI-generated patches.
+The person who has signed off on the patch is responsible for
+addressing comments.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
