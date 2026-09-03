@@ -4,96 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51E44C624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 03:59:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74E09C61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 04:07:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F3ACF6B00A2; Wed,  2 Sep 2026 23:59:50 -0400 (EDT)
+	id 3138C6B00A4; Thu,  3 Sep 2026 00:07:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEB436B00A3; Wed,  2 Sep 2026 23:59:50 -0400 (EDT)
+	id 2C4A16B00A5; Thu,  3 Sep 2026 00:07:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E01946B00A4; Wed,  2 Sep 2026 23:59:50 -0400 (EDT)
+	id 1B3E56B00A6; Thu,  3 Sep 2026 00:07:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B80006B00A2
-	for <linux-mm@kvack.org>; Wed,  2 Sep 2026 23:59:50 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 41C5912040B
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:59:50 +0000 (UTC)
-X-FDA: 85171097340.11.14BDBC0
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	by imf16.hostedemail.com (Postfix) with ESMTP id B342B180003
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 03:59:47 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=im6mkrvZ;
-	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788407988;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=eiyiQvqQvEIUuu+QsidZfEw/4iptbvZs0IG1bi3v1tY=;
-	b=4T7p95Y54eV++9OXE0rsoZ07jMQCCdWoT8A1g9i6G5x4QSYpZWvXxbdYRShCnsHK1bGp7K
-	H0dKCB8V1sCHNWI+YvHPSMV2zVW0JImp/HbdySoUs08nSwefLkUEVglHQLGwkwtre1jnEf
-	SOhgQSOH3531sgH4HWr6zZRZvJ/uN/4=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E26676B00A4
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 00:07:05 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6BC3B1A0410
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 04:07:05 +0000 (UTC)
+X-FDA: 85171115610.20.019A77A
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 326681C0006
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 04:07:01 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ZtwljQv+;
+	spf=pass (imf21.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788407988;
-	b=s0U27OpRpfCAtlOD2I7B7OIX+D7bIBHrQj80fLZBrY67c4RTT7i6NhNKFjRi1Ayo+rYH9q
-	3dY+mtwfp+SNYT2KLnv5t9/+5MoNtLhw6ReDVbtrPTGbxIM8ZnyNI4Hggv84upQJXHVUUU
-	a00SBlP3jjaIByfoRy2WXLrdQ9Fs9jU=
+	t=1788408423;
+	b=4zX5ncDTRvsh3RJDeYvkwRLHS0Dyim5qWW2Zc1Nweusbv7BBS3Wo/SWbBJ3b8melcCNUog
+	ufaqCfF//SQF5K7KfyoqnBkU73Uoszb6xgvJWoX5GxcBuaYMleZEWetuZdM994cOj0VBn8
+	k1G8neyfqIaWoRkNBRLoI0rqU/hWofo=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788408423;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EFwlSXqfNEKM0ur5X+fXDaf9C70UjzJTOT5AZjis8cs=;
+	b=IT7KwywOvL09cjYP/HvGd48T/7+5XuBYgsYyCYeuL4HuA25fKSWdljPnjabxGHkNSLQFy0
+	u6f2QaeAGexRbFENvqY+OpNtEYunTGIXyEWNuLtz5WY0aSXBQfJywNKxzvZWUXgl4EaD8p
+	jO0WsXCaCwqcQIJF8dtXbTHLOuUYViA=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=im6mkrvZ;
-	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788407988; x=1819943988;
-  h=date:from:to:cc:subject:message-id;
-  bh=x/miJl0oAYZFvPHk/6OUvVYS8ADJFAo1h6IBOVB3S38=;
-  b=im6mkrvZsa1vYWPJeEgdoaaGFHCGm0/qymnyC2ieINJNDGm7smz36wxe
-   RCN5mWEqUBfRzIY8IUidy/ZYnSkg1VG6Rsu9VE5fMXE9Pe0PZGOSqE/Zg
-   iiSUJlMBWjeBmUeNhuyq4wjprgu4aeARfeQIyTWtcmJMbOnKZPndWFjPU
-   VQYr9cRIeN46iwJQkRyeZM7DAYU14li9wnkSX5AHur/KhLItFt2R67iNV
-   HIX5cfSodXLNt+VgUe2fyRzUWhA8KOltlUuO7TO2gAP6AxqfjWPWJTvED
-   JmyZrZk2iij3rX/56GKJNB1T+grdReVsKQM+G7UDnZULvhL/ArRzgQhwm
-   A==;
-X-CSE-ConnectionGUID: Rp1W702VRGyk+d3jcvcsUw==
-X-CSE-MsgGUID: gzDvOSXRT96TRRUaT4KIHw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11894"; a="88909404"
-X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
-   d="scan'208";a="88909404"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 20:59:46 -0700
-X-CSE-ConnectionGUID: GDvXDzKXQQeqrLAv9XUglg==
-X-CSE-MsgGUID: wNjUY83bQY+9Cxk3ZOqXfQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
-   d="scan'208";a="274888906"
-Received: from lkp-server01.sh.intel.com (HELO bfac249b2189) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 02 Sep 2026 20:59:44 -0700
-Received: from kbuild by bfac249b2189 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1x1yc2-000000003wj-0mb6;
-	Thu, 03 Sep 2026 03:59:42 +0000
-Date: Thu, 03 Sep 2026 11:59:10 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux Memory Management List <linux-mm@kvack.org>,
- Mark Brown <broonie@kernel.org>
-Subject: [linux-next:master] BUILD REGRESSION
- 32b6ef9a5d0eca44f9cd91f52f4faa89f145a0de
-Message-ID: <202609031152.McrmurCM-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ZtwljQv+;
+	spf=pass (imf21.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1788408419; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=EFwlSXqfNEKM0ur5X+fXDaf9C70UjzJTOT5AZjis8cs=;
+	b=ZtwljQv+5sMDovzHR8a+QfaF7M08zoSx+QfWh1H2EPGvaRj4O3g3ltU4PvJHkeiyiw0K1xUBM2zCBfKEevBtKOVjSh2Drkqzz4cb3XwZSvPn+WhcK3OF84eR9WLaPVPMLk0ortS0h2TYF/Hz4il1UK24gUfnNaNEcCrtJTQZCWM=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0XAEokn0_1788408416;
+Received: from 30.178.83.4(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XAEokn0_1788408416 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 03 Sep 2026 12:06:57 +0800
+Message-ID: <0c5aba0f-137a-4aaf-bddc-060118322602@linux.alibaba.com>
+Date: Thu, 3 Sep 2026 12:06:53 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/list_lru: don't copy stale shrinker id from
+ non-memcg-aware shrinkers
+To: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lance Yang <lance.yang@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Dave Chinner <david@fromorbit.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ David Hildenbrand <david@kernel.org>, Xunlei Pang
+ <xlpang@linux.alibaba.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260901115104.2944996-1-qinyuntan@linux.alibaba.com>
+ <aphXPCn8isUVV87k@localhost.localdomain>
+From: Qinyun Tan <qinyuntan@linux.alibaba.com>
+In-Reply-To: <aphXPCn8isUVV87k@localhost.localdomain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B342B180003
-X-Stat-Signature: 6pwbdx1weah435iypheqsgofmabpj5tj
-X-HE-Tag: 1788407987-781641
-X-HE-Meta: U2FsdGVkX1/XT0dGDOIGdSBo2QleljXXhMAdqpdALbAEJJuQcvtJLJ1q4DNldNbtn+THBKVHFkL2ZdHGsMR0e6Vd3qplOx6xwEjTUkvaRkJwacvRPh52hByuv2a7P/bFqPiqAmfdvyyn/tX7OlUGqh60Bw1B+CSP7czWt+ep/uPziTL+rpi1zPlFpdDtcXiyKacHfmKCu+TPkHtaIgRpiCNBNN8r579t03iGiybv2o+aAO+L9mzOmDOX347y2kZmHWhZjbs6K3zQJ8xxwnmCTju0Q9dCOczKxdJ2cRGnRWEIRTv4YvwT15Bkonfb2eznLmsWx0oxhgabdvc+WLOXA31zwgA/iC+Iiln6V8AXBPwNkBTyMvoJqRCaNsSilOAIKRf1zgnXKhfr0fbpiimrFJPxR5MprcYgOGejzCII+dqM8RpKQIs1Zm4B0Eu2bGM+vcUezuyrjcilObPEcN33+eeW50ufpYqJgN70pPH77s7wLZUM3fCXKU7hZYV7jCrFNvEtKGqnFVcogqf+LvKhQUHWrxyLe3ih32m8yxLEciq/9kTj7DecMtqghQMdbmVtvQF3DEagXeBzwJcQoJMO0iUnjBBTZNKKS5PBtXH66tX2xZLtRJ6+4+juBQ5IK+FzAU7BzfygMbGLACQ9eXRYrc41ci4p58H0IZlSPXvnNyUczgvccRiPNvSoLp3K5q8mEd3k0i+dhZOTii2ofNwuxAe7JEvluC6GvjEchO+Ea9sYC6mEmm3hrXUNBf12Q9+71u/ivY0fOTWkuDxOkiZK9QBPPGu0oJ5hZBdneUoESaXmfFt26DpOUVhxQbzb+sjUnWAKKKWPoA0BF5MdxPkXS1eeJcO78HjWjUQqy+o4Dt3qEjoP3JLkpKycZ81AYSruePuZ8lMySMgjmlF9bEqoFYQbWD6bs07S5M7Gc30EgB6U2LsCjQFHzlqEn3TCmv4bIckU4ULyO0xDYlo2DTd
- aTkrCi1y
- MntaoaQ6CgJedyw7FTrYRMst5XwX0FdoIKgg3cmF7KtUJTqXGj9qbon/R3eCQEEi56rD41Bwpz4pCX2VnLORwGVAIFnr9meMjwE7tkYKdeoW0Yq24cu1BNIQe0dFnN84C/PQHPx/0zNgpPLkEhNoPsfqLZMJGXIQ/lz0h/lWw7F0xVfthy8QKVJwitr/h8Ee2/Ew2F1O+gnIqmGSwdAtAR7JL8FNFWK5Q5c++
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 326681C0006
+X-Stat-Signature: mm1d5qbk3nc3a5gfz6nxcte4za6z49qi
+X-HE-Tag: 1788408421-864802
+X-HE-Meta: U2FsdGVkX1/2iVmjGum0fgxtOTGclD0j7CEG46Qn59lZonnXzNODxH0aYcLUFw8shlC/gF4hawfs54DnjfhztC4AmJtub3GOPyrPxUD45z1H4UYSoeIv346iRw7vOtI8bO8rUA+q6BzPi9A6I+4Zz9CQ2Xs4PUG1fVKSm6N/9B2SSYdModTIGFuNxtck7lhIW7r80kHllEbvjpLwi/tmW+Jzt5OflPgj4QfB83ijz9Zst9M13ZygnZNVJdAYJqo1zO0Yj9PM7MjglyjnpGKMJxz6l52JM9drIPtd4nM4YCxlS+1310iVNVcFRCmm5I4cSjJj4Ev93pRvL50ypdG81Hf+kMO5AOs8npFQHW+kW74Gt8TPxdR1RbK43QPdEwOgpnbaYpSrVshzqzmr2VEINMJG3SSDAoE5eHyiGY+Mhl0vPAaHRXTdJ+Umfc899/FB4E/P0PDl3Y/n0mJ5IFfuagS/9rjtjArcBnvXM9BqDuM5cP7+lAXicSgqEmQx7c3M07pqiaF5Pjj4sg5Pf+S9BAHh/MoqlnM70k2JqMQOpj2jo3YdUNsGaLA+a5I3wf46dPg39ghSb+xa0tmDGjHOXXPI42XTKyEZt1qlknWjAP1NtlcmJJepQ4JH7kPJpd45UL8voO1Ap3cmx2DICjgat/p6QMIbXctRZfvN15EJ+biSnAVW9Uk0IgKIZ+/jcO8q5F03hxVS+SuBrfWFHwhvEWlEPo2Hrx9HCOGNVw2maZcNgw+INa1p/zIHdJrIiJbezqSGsUz+wAy18cu0Bci43gOM0xiBLeJSaXysPDIQSqQwBjApZ4D839BKaRW8yUtCM52pBhnI+DS/aq9OYfQZIJLMXKCsPggyN3OsoaM+DxrX1s2tW/WV4z7Ofn9Dvi/Zcn25Zua3MHkBFQfvwCW47tqRGd4zZMaR3NXJjiC2HalugI7M9mgZSVq4L+D9lIriayb9BcBZGjrcst0MDdf
+ ayaL4MDn
+ lFTmwXke19Nta1a0VBwJ06A8gYaxy3dQDPTgziR9V1xBldGiahjSxzivnPHU79zHOyK5aVAqIPCnl33lVYdfxwHg17+nd+2r45zzWxjdDuVASreO0uFU89BzEp0IyiYN9Dj3PhSEXuwDJSauV80OXnEb6hvs2dB9MoHrrJdv9KwnIAvvUk6WMJt+jStpV5+A+ndrz68f6HUfwPtMGWv+A2ZoljMOxzML8J07dPhjzxB81atGrUXPV2pfbscx2SJlvM75aTWmWYVdS1ukUJ13KyQVNhqtRX+hilMR8mF+UwVyLpOSGZMYWUMmcnEDkCFZcgSPq9dTk9WdTRPPDAbhDQnl6JpzXTt7VXSpHzFTj1MOP8AgDtsLYRk2iXw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,105 +94,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 32b6ef9a5d0eca44f9cd91f52f4faa89f145a0de  Add linux-next specific files for 20260902
+Hi Michal,
 
-Error/Warning (recently discovered and may have been fixed):
+On 9/3/26 1:17 AM, Michal Koutný wrote:
+> Hello Qinyun.
+> 
+> On Tue, Sep 01, 2026 at 07:51:04PM +0800, Qinyun Tan <qinyuntan@linux.alibaba.com> wrote:
+>> With cgroup.memory=nokmem, shrinker_memcg_alloc() fails with -ENOSYS
+>> for shrinkers without SHRINKER_NONSLAB, and shrinker_alloc() falls
+>> back to a non-memcg-aware shrinker.  On this fallback path,
+>> shrinker->id is never assigned and keeps 0 from kzalloc(), which is a
+>> valid id belonging to whichever memcg-aware shrinker registers first.
+>>
+>> __list_lru_init() copies shrinker->id unconditionally, so every
+>> list_lru backed by such a fallback shrinker (thp-deferred_split,
+>> zswap-shrinker, workingset shadow nodes, superblock lrus, ...) ends
+>> up with lru->shrinker_id == 0 instead of -1.
+> 
+> <del>thp-deferred_split shrinek has SHRINKER_NONSLAB so, the id should be
+> assigned (at least I see it in thp_shrinker_init()).</del> I was looking
+> at 6.12 kernel.
+> 
+>> Under nokmem the list_lru collapses to the shared per-node lists, but
+>> __list_lru_add() still calls set_shrinker_bit() against the memcg of
+>> the added object.  Most list_lru users are unaffected because their
+>> objects resolve to a NULL memcg without kmem accounting, but the THP
+>> deferred split queue holds user folios, which are charged regardless
+>> of nokmem.  Since no memcg-aware shrinker can register under nokmem,
+> 
+> Not sure I understand here, the SHRINKER_NONSLAB are excluded and should
+> still register for per-memcg info.
+>
+You're right, that sentence is imprecise - SHRINKER_NONSLAB shrinkers
+do register per-memcg under nokmem.  What I meant is that on a system
+where no NONSLAB shrinker happens to register, shrinker_nr_max stays 0.
 
-    https://lore.kernel.org/oe-kbuild-all/202609022215.1SXtHuum-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild-all/202609030309.Brgg9wSf-lkp@intel.com
+>> shrinker_nr_max stays 0 and every memcg's shrinker_info has
+>> map_nr_max == 0, so the first folio added by khugepaged triggers on
+>> every boot:
+>>
+>>   WARNING: mm/shrinker.c:212 at set_shrinker_bit+0x99/0xa0
+>>
+>> On systems where a SHRINKER_NONSLAB shrinker (btrfs, xfs) did register
+>> and expand the maps, there is no warning; instead bit 0 is set
+>> spuriously for an unrelated shrinker.
+> 
+> Could it be that you see this issue because of a shrinker which isn't
+> marked as SHRINKER_NONSLAB?
+> 
+> I'd even go as far as pointing at
+> fafaeceb89a5e ("mm: switch deferred split shrinker to list_lru")
+> which removed the flag from the the thp-deferred_split shrinker.
+> 
+> IOW, the proper fix should be addition of SHRINKER_NONSLAB so that
+> per-memcg maps are properly allocated.
+> 
+> Thanks,
+> Michal
 
-    security/selinux/selinuxfs.c:1577:(.text+0x4e2): undefined reference to `__udivdi3'
-    security/selinux/selinuxfs.c:1587:(.text+0x562): undefined reference to `__umoddi3'
+Yes, good catch.  The flag was originally introduced for this very
+shrinker by 0a432dcbeb32 ("mm: shrinker: make shrinker not depend on
+memcg kmem"), and your 03375203e1da8 changelog even cites
+deferred_split_shrinker as the NONSLAB example that still needs
+per-memcg data.  fafaeceb89a5e dropped the flag without mentioning it
+in the changelog, so this looks like an unintended loss.
 
-Error/Warning ids grouped by kconfigs:
+That said, I see the flag restoration and this patch as complementary
+rather than either-or: other MEMCG_AWARE-but-not-NONSLAB shrinkers
+(superblock, workingset shadow nodes) still take the fallback path
+under nokmem by design, and __list_lru_init() copying an unassigned
+id there is a landmine independent of the deferred split case.  So I
+think this patch is still wanted as the generic fix, with the flag
+restoration on top for THP.
 
-recent_errors
-|-- i386-randconfig-013-20250413
-|   |-- security-selinux-selinuxfs.c:(.text):undefined-reference-to-__udivdi3
-|   `-- security-selinux-selinuxfs.c:(.text):undefined-reference-to-__umoddi3
-`-- um-randconfig-r134-20260902
-    `-- drivers-gpu-drm-amd-amdgpu-vcn_v5_0_2.c:sparse:sparse:invalid-assignment:
+(zswap might deserve the same NONSLAB treatment as THP, btw - its
+entries resolve the memcg from the folio's objcg, which is available
+regardless of nokmem.)
 
-elapsed time: 908m
+Would you like me to send a separate patch restoring SHRINKER_NONSLAB
+in thp_shrinker_init() (Fixes: fafaeceb89a5e)?  Happy to do so if
+that works for you.
 
-configs tested: 71
-configs skipped: 0
+Andrew, since the patch is already in mm-new, could you please update
+this changelog sentence
 
-tested configs:
-alpha         allnoconfig    gcc-16.1.0
-alpha        allyesconfig    gcc-16.1.0
-arc          allmodconfig    gcc-16.1.0
-arc           allnoconfig    gcc-16.1.0
-arc          allyesconfig    clang-24
-arc          allyesconfig    gcc-16.1.0
-arm           allnoconfig    clang-17
-arm           allnoconfig    gcc-16.1.0
-arm          allyesconfig    gcc-16.1.0
-arm64        allmodconfig    clang-24
-arm64         allnoconfig    gcc-16.1.0
-csky         allmodconfig    gcc-16.1.0
-csky          allnoconfig    gcc-16.1.0
-hexagon      allmodconfig    clang-24
-hexagon       allnoconfig    clang-24
-hexagon       allnoconfig    gcc-16.1.0
-i386         allmodconfig    gcc-14
-i386          allnoconfig    gcc-14
-i386          allnoconfig    gcc-16.1.0
-i386         allyesconfig    gcc-14
-loongarch    allmodconfig    clang-19
-loongarch    allmodconfig    clang-24
-loongarch     allnoconfig    clang-20
-loongarch     allnoconfig    gcc-16.1.0
-m68k         allmodconfig    gcc-16.1.0
-m68k          allnoconfig    gcc-16.1.0
-m68k         allyesconfig    gcc-16.1.0
-microblaze    allnoconfig    gcc-16.1.0
-microblaze   allyesconfig    gcc-16.1.0
-mips         allmodconfig    gcc-16.1.0
-mips          allnoconfig    gcc-16.1.0
-mips         allyesconfig    gcc-16.1.0
-nios2        allmodconfig    gcc-11.5.0
-nios2         allnoconfig    clang-24
-nios2         allnoconfig    gcc-11.5.0
-openrisc     allmodconfig    gcc-16.1.0
-openrisc      allnoconfig    clang-24
-openrisc      allnoconfig    gcc-16.1.0
-parisc       allmodconfig    gcc-16.1.0
-parisc        allnoconfig    clang-24
-parisc        allnoconfig    gcc-16.1.0
-parisc       allyesconfig    gcc-16.1.0
-powerpc      allmodconfig    gcc-16.1.0
-powerpc       allnoconfig    clang-24
-powerpc       allnoconfig    gcc-16.1.0
-riscv        allmodconfig    clang-24
-riscv         allnoconfig    clang-24
-riscv         allnoconfig    gcc-16.1.0
-riscv        allyesconfig    clang-24
-s390         allmodconfig    clang-24
-s390          allnoconfig    clang-24
-s390         allyesconfig    gcc-16.1.0
-sh           allmodconfig    gcc-16.1.0
-sh            allnoconfig    clang-24
-sh            allnoconfig    gcc-16.1.0
-sh           allyesconfig    gcc-16.1.0
-sparc         allnoconfig    clang-24
-sparc         allnoconfig    gcc-16.1.0
-sparc64      allmodconfig    clang-20
-um           allmodconfig    clang-17
-um            allnoconfig    clang-17
-um            allnoconfig    clang-24
-um           allyesconfig    gcc-14
-x86_64       allmodconfig    clang-22
-x86_64        allnoconfig    clang-22
-x86_64        allnoconfig    clang-24
-x86_64       allyesconfig    clang-22
-x86_64      rhel-9.4-rust    clang-22
-xtensa        allnoconfig    clang-24
-xtensa        allnoconfig    gcc-16.1.0
-xtensa       allyesconfig    gcc-16.1.0
+	"Since no memcg-aware shrinker can register under nokmem,"
+to
+	"On a system where no SHRINKER_NONSLAB shrinker registers,"
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+per Michal's comment above?  Or I can send a v2 if you prefer.
+
+Thanks,
+Qinyun Tan
 
