@@ -4,82 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 557C2C61DD3
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 06:52:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D372FC61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 06:59:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 648186B00B2; Thu,  3 Sep 2026 02:52:45 -0400 (EDT)
+	id B365E6B00CC; Thu,  3 Sep 2026 02:59:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F8DC6B00B4; Thu,  3 Sep 2026 02:52:45 -0400 (EDT)
+	id B0DE16B00CE; Thu,  3 Sep 2026 02:59:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50ED66B00B6; Thu,  3 Sep 2026 02:52:45 -0400 (EDT)
+	id A4B036B00CF; Thu,  3 Sep 2026 02:59:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C06F6B00B2
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 02:52:45 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AEFAE1A0466
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:52:44 +0000 (UTC)
-X-FDA: 85171533048.03.FE0EC2A
-Received: from lgeamrelo11.lge.com (lgeamrelo11.lge.com [156.147.23.51])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2226340003
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:52:41 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf17.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.51 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 854E26B00CC
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 02:59:02 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8B52716042B
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:59:00 +0000 (UTC)
+X-FDA: 85171548840.10.57028AE
+Received: from mta1.migadu.com (out-227.mta1.migadu.com [95.215.58.227])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 0B103A0003
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:58:56 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OgzCsGXR;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of kaitao.cheng@linux.dev designates 95.215.58.227 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788418363;
+	s=arc-20220608; t=1788418738;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BV9lQvyQ6mc9JuYo7Xg7JhqUHv0ycc10mkukFTBraf4=;
-	b=l2mA0zPT/Ev+Auz01Xbywk8gbbeohtVlyALZXRxNiLVdJz9rt1Ro0Deptspm1yDngwbPlQ
-	f0YGlOQFctjCr7WgbPI0wi2OYfBYZuruSLJ/+fb9pEHsiPBDMqcw+14Arsnzb7/nIjg2gD
-	Ec0CWJBhM59kjCaIFYQrGYEv/hkXmzk=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=f+tXkvRu7NxWljtebBqweTA9isI4T0n/CDcQYB7Jt+I=;
+	b=slpoBV/n0K+Lf2ENJM2ATQB7S0u3xF4YIvBKou4zd1oprXtxZEQ8pYnoVKCisJDiE7QV3p
+	taLtrWJCMUPomUlOaqX76/Ut2JFFadEEGA2qAFwCDV+7l9idHe0PNtIEWQj1ey+Q0PRs+g
+	ficy0nRwFnKwrzBEQAIAIpB1twzGOb4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788418363;
-	b=Jh9/NsTIzQPbhJSBpegFhT2Uoooi4JGj1p94ZCte8HQPr0utd/I8uGZrUb17cqX2L3PJOX
-	1d4+rR2sa/5nZ/M2plPLxEb664Ii6Am14NKdJW75DwCbN6rvs/+0sseUavmT+3Zvtt2m8S
-	3WZXbRlccHwVPuinKUB3sKsdQWbLIlU=
+	t=1788418738;
+	b=fj+GMZAFHv30Opql82g9x6NMFiukuEnF59cMlWkvJbma/gOtV0Tth8TfypZ0BPpV0epCCp
+	cgFg9ocRcHr/TgS8nOb6l69WXoyDWdSfTc4RH+PcxO9klSQ6uZUlsXxXrGzizvGCwlG2p6
+	LnSuQS90EVAgE5S2xLzd6hoEgO4HMBA=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf17.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.51 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-Received: from unknown (HELO lgemrelse6q.lge.com) (156.147.1.121)
-	by 156.147.23.51 with ESMTP; 3 Sep 2026 15:52:37 +0900
-X-Original-SENDERIP: 156.147.1.121
-X-Original-MAILFROM: youngjun.park@lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.1.121 with ESMTP; 3 Sep 2026 15:52:37 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Thu, 3 Sep 2026 15:52:36 +0900
-From: Youngjun Park <youngjun.park@lge.com>
-To: Baoquan He <hebaoquan@kylinos.cn>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
-	kasong@tencent.com, nphamcs@gmail.com, baohua@kernel.org,
-	hannes@cmpxchg.org, yosry@kernel.org, shikemeng@huaweicloud.com,
-	chengming.zhou@linux.dev, baoquan.he@linux.dev, david@kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 15/16] mm, swap: require zswap for xswap devices
-Message-ID: <apkZNEe8/YAwygbA@yjaykim-PowerEdge-T330>
-References: <20260827094509.1016740-1-hebaoquan@kylinos.cn>
- <20260827094509.1016740-16-hebaoquan@kylinos.cn>
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OgzCsGXR;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of kaitao.cheng@linux.dev designates 95.215.58.227 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=o8BUeq3Tc6Gx1WZx0lieJxRX6+dzsYla4Obyg7G5q/g=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788418735; v=1; x=1789023535;
+ b=OgzCsGXRz2zEtCr+NoWbRIhw6dzGOqVKT6bG7QZIcF/+vjxcIsayyLWFMwWTgWSDh7SGK0DA
+ OgNMpmaki0LdnMRTDfSCD7ukum/ZmWASUk+Zkxq2QXLaFd57Rti7udCE3Ug+Lvbpj99B6orNjcn
+ T7ZD1T381nEP+z2uRYJ9YpKM=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id d042a3bd066a7172;
+	Thu, 03 Sep 2026 06:58:55 +0000
+X-Mizu-Trace-ID: d042a3bd066a7172
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <0f9653d1-2467-4e32-ae8c-d5cf7bdf92dd@linux.dev>
+Date: Thu, 3 Sep 2026 14:58:42 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260827094509.1016740-16-hebaoquan@kylinos.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] migrate: Skip hwpoisoned hugetlb folios during migration
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, Mel Gorman <mel@csn.ul.ie>,
+ Andi Kleen <ak@linux.intel.com>, Muchun Song <muchun.song@linux.dev>,
+ Jun'ichi Nomura <j-nomura@ce.jp.nec.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Kaitao Cheng <chengkaitao@kylinos.cn>
+References: <20260701105544.97059-1-kaitao.cheng@linux.dev>
+ <20260902193438.232552868db3af5d54ae3fa1@linux-foundation.org>
+From: Kaitao Cheng <kaitao.cheng@linux.dev>
+In-Reply-To: <20260902193438.232552868db3af5d54ae3fa1@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2226340003
-X-Stat-Signature: nu7fxs8z5btsgne63otm8xnhw4bgrxb9
+X-Rspamd-Queue-Id: 0B103A0003
+X-Stat-Signature: keygwk4y6b1pez3o4ju6r75cn644ryem
 X-Rspam-User: 
-X-HE-Tag: 1788418361-579615
-X-HE-Meta: U2FsdGVkX1+1rOesm+ZmMNESVs3Nwq4qREJ/b6DRAAuyKGzlOlCEHiThYBGfKpGWVnGFeJNdX8AJkWBdhlo2LoOjgPQX/iS2n9tHN/fmN6/yXQI5wbliWPp9nMuoABdaQ1IOLc9SIYKhlnwe52D6NTBYL3TtoyEAavtU9Ml9lFBjhgyJw2GgIAppuN2E6BNFM9UoJtihFaO03VMbfbQkZt+rEVQzHLbREwrx5o/UutTGKVPmmCWws+MnpfESfCZDtAokFw5jojGF5YIHoQrU6xORSf9c7Cmt/SAl6le/M9tU+95hHzOFJVDRRiUA3+Qb7gHU23s/g5mzdB1fssLJimibbFk31POXpWvv+OCl6vzzztkHKvEUl1PLgC7bOFNq96Qivru9Q44a2wwusan63rnCNQ689NYlx2Q8dZNETvuPdIo/pT1Fo8nicFkrvK7So0cAta4O3l/2uJweE8EhjFBMCZjvraNFIioCX7fpKe2l3NqOBvgbAfvg44nqKUD60nqEOGfzyl7OksWsrvvk4P/a+D5WAOOIpWN+0qTg6UHGzBNZKMAcD8aARoj2Ohi4H13hWZ3NMqlKbeubxgWlG9cpGc+7RLTVRpY3L4+xT8aJMbfOzPRn0jmAUevF27q9MZNJkPeyZiZOe70jxDpyZV2UceDcmvr7OK8Kv9Abqn019UqWy0fflOBdgnm4q48Eeg2fy6UZFNrPgQE88LAPYvp06HCYnN6qUonAoZ9G+U4u2mKcjM6sxYm4rFiG2smjETiSMXN1i4tfk7bnemt+yFY/q7EB8uTK+DEoaDkEcK0PMCRygz57yxEQ/740kmFhHYyt6/8/fLy6bcJRPBeenEYx6940vo0PrxniQRR7V15Vnv2Uynh+gHu+rcLYKzNhk8HUujC9V70ApXeWBHnX2HPtlLr/AC1WxkgkUh8vswLoBC2IKSDbhpTvmYuh+PmY62FnGhuIduzHErvZGEn
- qrSyyjGL
- N0BEpZNfzHm7uhjrIxA5/OE923vez59BOTOe3sqMeUmDfB6z3yEUePSig8UxKUCcxVPVD/7jAZsPIpLKKdNrmswXmkQCmEMmpmCN2vtkeY9/7AoGuNCRMHG32yDNfi0Xkhfx8xNMJkkZZPN/aqPC/a03R7sSv+H6gTcd528myvy14E/8yLZawWiFSjw==
+X-HE-Tag: 1788418736-630238
+X-HE-Meta: U2FsdGVkX1+0CzjnrbUqYfG9VF117aWQoEcYaKLWVYBIvCmIinGfovx1LcKSlTvy4QkGIG1d5JHLsvgM+swJSEJlRITBQp1Pme0InjMtUgIbg+KVyoZxqoRsjLXTJiF9hPzAapmRprIdBNyMRt+BfHMzbQyrs9H//wxhgMEi1twC/g9m1oqLMrODn/XiCyId1v1FzUtJMSKywpOP37ryeqlPaCDCSDYHHbml9AOpYgo43pRGLG2MJBrB58YMcqHX0uA5D0mRACUsYXF0+oByeA13NWD0LoGonBEBJiCNVlv9l/h4Ye4sQ2r/obGXWW/tNUJHkUrHVtLiKnJNYGxM0jUnlZH1oAu+UvHoh4yFyzJD9sspEhlxcahjexju6BAEMkCaKE3bL1NMnyQYsJHVtcDgcx4kMXAshQVnYyfK7xJybvoxCedEzh6hWWHpJDzZmPYh7cL18qitLLmDcDmVZY/8vxnubEr+kTUtKem2hB7E+LRldpBkkdjcqxQgCITp+BsKQ8H/qSQd5+ZABrj79ltD1rXBLFM/Xm+z09YJdlmbw+jWmnKH1B+Nq6cf3CipbziojQ6QxewHW0QlYxrKsH39iDdMDBvlMwmYk2SaM5brK2zv26SATKrV2jivqeT6EarH2isvYxAGR/MzYLm3KnMmN8goF/iP7ZizG6yKPTo6qfGWKKAgMQaC/p7WAWhMKE33Ob+x+R04G11aMZr69bsL+/dvn6pyAq++Op3A79ZV+S9cyMt4oT40fPvAddVvQtOOqEGzFt3xYYToiN+7AvgwSxhMSaAuYIw/1mDxhyeBBC2Gqn3JGJkV4nLKXDJKZS0ap1e1I6qcuGT6FrI057P8Ve1CDf84QuapdG/RdVRugxJIm4feuYbuFy+J7Un5PrWtIpXb01GzdMJy6ohKxxA+fm5Cjceb4OENF+/OW0H7kySqkkI1PIvgv+B5Q1NDSa1PT4rEmpuc0mdnKtU
+ AqrJ1ScN
+ oOH4rUr5+ndt4/M6ETKqNYmDrH6ZFRvDGzetTMuyyjqOXb90Wmy1x+Zc5S4tE9xu5e6dUtMA1Sq90QrBKYQatdVm8MNZf5X87lnA6Uf8voSxgSsQlWNR+2W0mGIpahk2eTskZwWQilfr2ixcuYu6qa4I50TG6pBcdsnosTgF9+TeHGS8lMXlSkmX/iZ7wbo7WaGgNIzAblDcGW46ed9ra4p1jQM0FYQJDJ9yT4ZjvP9WasTIY1R/KHP+MH933r59DwJINwsFUz/jI9cfCPs3qPRY+P3LgZkXvmF+p8l3r3XdFRyJsSj52wXq3Rpt7BMDfMX2uOOveyL4r9A8vhP8eTUBnHyf9kbPnc+oYYTUBLAmLJpnpMNDnL51SHDALbdmPp53g8W8zOqrVLcbHyUqYoHr4otvsBzn8xA7ULRe6VMPZgsL0rLWHD0nQAkchefBxF2KmUyAQn5yWdlE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,40 +99,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 27, 2026 at 05:45:05PM +0800, Baoquan He wrote:
-> xswap has no backing storage: swapped-out pages live only in zswap.
-> Without zswap, swapout always bounces back, so the device would
-> consume swap entry space without ever freeing memory.  Refuse to
-> create a device when zswap is unavailable.
+
+
+在 2026/9/3 10:34, Andrew Morton 写道:
+> On Wed,  1 Jul 2026 18:55:44 +0800 Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
 > 
-> Runtime disabling of zswap after creation is safe: existing entries
-> stay loadable (zswap_load() gates on zswap_never_enabled(), not the
-> runtime zswap_enabled flag) and new swapouts merely bounce back to
-> memory without freeing it.
+>> Date: Wed,  1 Jul 2026 18:55:44 +0800
+> 
+> Well.
+> 
+>> Hugetlb migration does not check whether the source folio contains
+>> hwpoisoned memory before trying to move it.  After the folio is unmapped,
+>> the move path can reach hugetlbfs_migrate_folio() and then
+>> migrate_huge_page_move_mapping(), which copies the source folio into the
+>> new folio.
+>>
+>> That copy uses folio_mc_copy(), so architectures with recoverable
+>> machine-check copy support can fail the copy with -EHWPOISON.  However,
+>> there is no reason to attempt the move once the source folio is already
+>> known to contain poisoned memory.  Architectures without such copy_mc
+>> support also fall back to a normal copy, which can consume the poison.
+>>
+>> Check folio_contain_hwpoisoned_page() after locking the source hugetlb
+>> folio and fail the migration with -EHWPOISON before unmapping or copying
+>> it.  This covers both a hwpoisoned hugetlb head folio and large folios
+>> that only have the has_hwpoisoned summary flag set.
+> 
+> As always: please provide a description of the userspace-visible
+> runtime effects of the bug.
+> 
+> Even better if you can present a reproducer.
+> 
+>> Fixes: 290408d4a250 ("hugetlb: hugepage migration core")
+> 
+> Oct, 2010.  So I'm assuming this isn't super-urgent.
+> 
+> otoh, now it's out there and known about, perhaps Bad Guys can find a
+> way of triggering this, so the urgency becomes higher.
 
-Hello Boaquan.
+In the subsequent discussion of the v2 patch, it became clear that the
+current fix can only narrow the race window and cannot fully resolve
+the issue. I do not currently have a complete solution in mind, so this
+issue is blocked for now.
 
-If xswap is used alongside another swap device, wouldn't runtime
-disabling of zswap cause a problem? 
-User assumes other remained swap device used right afte zswap disabled.
+v2: https://lore.kernel.org/all/20260707090136.52904-1-kaitao.cheng@linux.dev/#t
 
-Once a device is allocated as xswap and zswap gets runtime disabled,
-xswap keeps receiving new swap entry allocations, and every swapout
-to it just bounces back without freeing memory . until xswap's
-entries are exhausted. Meanwhile the other swap device sits unused.
+> Anyway, please consider the Sashiko report
+> (https://sashiko.dev/#/patchset/20260701105544.97059-1-kaitao.cheng@linux.dev)
+> then update the changelog with the above info.  Decide whether we
+> should cc:stable (and describe why) then resend?
+> 
+> Thanks.
 
-If my point is right...
-A few ways to handle this come to mind.
+-- 
+Thanks
+Kaitao Cheng
 
-1. Once xswap has started accepting writes, refuse to runtime disable zswap.
-2. If zswap is runtime disabled, stop handing out new entries from
-   xswap (drop it from the available list, or gate on an XSWAP flag).
-   This would also need nr_swap_pages, the visible swap count to be
-   reduced accordingly, and unused cluster memory reclaimed.
-   behave as if xswap had been swapoff'd.
-3. Support falling back to another swap device once zswap becomes
-   unavailable. 
-
-Thanks!
-Youngjun
 
