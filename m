@@ -4,122 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1589C624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 09:25:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5C74C61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 09:28:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0F6E6B00C4; Thu,  3 Sep 2026 05:25:34 -0400 (EDT)
+	id 931826B009E; Thu,  3 Sep 2026 05:28:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE5CC6B00C5; Thu,  3 Sep 2026 05:25:34 -0400 (EDT)
+	id 909256B00A2; Thu,  3 Sep 2026 05:28:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD6716B00C7; Thu,  3 Sep 2026 05:25:34 -0400 (EDT)
+	id 7F8156B00A4; Thu,  3 Sep 2026 05:28:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A7CED6B00C4
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 05:25:34 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 220E41601C5
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:25:34 +0000 (UTC)
-X-FDA: 85171918188.07.EB6E449
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 6E205180002
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:25:32 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=h+LISNtM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of christosskarlos.kernel@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=christosskarlos.kernel@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 541356B009E
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 05:28:43 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AC715140491
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:28:42 +0000 (UTC)
+X-FDA: 85171926084.09.A70953D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1075580002
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:28:40 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RjYdGsba;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788427532;
+	s=arc-20220608; t=1788427721;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=XYwBU5ZHVueM1YfQFwjzrz4zbhTksf0+irRokmEvL88=;
-	b=ORjVPIKURSh5gPzDGblMFRPxrzMEDmNSaMtYMm8Xgp0GM+Q9DomeLjAjKYCREwcfE4z1HR
-	qpnZSfct6TuRhTOcDoHA4vBgGKL2UaKJ18EURBzvo733+7TAiPL+uEsCd//tuqHUcVKiBB
-	RuGj5WP4oJH2i9Mi4fr1YHwxFBgFT7k=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=h+LISNtM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of christosskarlos.kernel@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=christosskarlos.kernel@gmail.com
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ey992VJ59vkyhnjjAc3vc3uxfb9JDJ9GYvnBCB4zM0s=;
+	b=1Ef/TNKHG59GZWb+sObrJwoAl+czBRFQe0KCQ916OuuQUUcrTeWu2P11y8te89+ZCrzwoq
+	beKrQ61h9ApkZVPLKhQUnXGjukqtsKPL+5qoJF3fxz/iM3X2TGgxO1gpS+Rg2H2OATTua2
+	ySzo0C7HVu1GvB8nlLBnMcZxKVNk0U8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788427532;
-	b=paWvBvAhLtj53GiNEZTtANx4ozV0CD9nJuVXV15plRdCNGzAbRRxF8nhS96EsLGudAPqv9
-	yjQsC0UZcpSizsM/EIMlMh38SI3wiEsGaAUnlsMBMly1x4bu701zYmYv0fpxMcEuUsVCNP
-	atG0Gt3e1MSuNsElhs1dAqhOzv7QVdo=
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-484374f54d0so1312614f8f.3
-        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 02:25:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788427531; x=1789032331; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=XYwBU5ZHVueM1YfQFwjzrz4zbhTksf0+irRokmEvL88=;
-        b=h+LISNtMbo8qJgVmzAjpQmo730/l7u+dqKhzNd4Mgo2yQF2T2z2kCRi66eHw+zrbzf
-         vHOFMeX3+l30w45Ot3MmgCqtpoBUR/9loEgK5nII2tN54cMzyLMKKxkAStk4y9U4asHa
-         Gr2UzP5P1sNeUSxzP6AeBT6Po8IKc7v8uUVrW+xGt0hviTIBb7Ia5WEw4HtaSLbcp5tV
-         O+tr/I7jSejNq/g8+vfMRGbAHhlB0zIXp9M6TXA9tsy1UQ9k+o6gmTH57ouAj0a109BP
-         LilqOTm7aPCSwMHoA5Pvc0nvZ9VuX4TGoM7i79Jl0fTQqrsntGG/7QQIhYJ3GiRMDBUi
-         9QtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788427531; x=1789032331;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XYwBU5ZHVueM1YfQFwjzrz4zbhTksf0+irRokmEvL88=;
-        b=oSVtatSZxUdJirw9hLElj3/9JBblFvks0RVZR+4ovqrEDfCd6LwO7GepSU/0nFdSgY
-         DKsLhrdxkMkOIohJaZCdZXTXZwZPmNgs5HFa//laGNNk43Bs+xLZd5RkIf3PFJm/wdgX
-         yDKZb+j1WV4JoB2b+O989Amq1h8NbgDtOyHXb+VQVNRAQWK1T/SfADRsUymwB3p2HK7I
-         dmINODmyG8skT2sOkBLI/I3hx6SoMDzLyy5XK+MJq4tICFWBUIvUfzwhp8QoR/P4EsuR
-         37ADbXfk1+89gM5y0jq2oMQ5RNYA+Lu14HQhoxHVkqMoAEQNjAcjrBBu9tRA6+DCgHZM
-         HmfA==
-X-Forwarded-Encrypted: i=1; AKwUvBzQF/7AwVNan4wbMuHv6BeYHAv6jxmWwKXEd58KmtXNkX5cXHRr1Ev24dHogA+RrMlTakn1LIh69A==@kvack.org
-X-Gm-Message-State: AFuF++koC/EsvzUB+egmJrOaL0yW+HhgDqxW+aEEprwTgNNZJgNEvz3y
-	1YihOUH0iBVU/w4FPyJv+PeUATLPFvSgOhGNG+gWsda13ZCEqS/EuOsp
-X-Gm-Gg: AYBFou3GywQmhVqiCzsSqVbZyGyUZxz4h/kFSxqrMiVmN2qJhdPf7loWXKdbppzdMtr
-	y40KFAzYjZtBIv+meKrm5t6XideguCvVFCssw4fP8F+7470OZXo6ze6kkVFAZWzMHh8f3rB6EX1
-	dSjXQ2/d1gJ4zfpFuxk9KOhyeg5yn/3nI6fbyzqssT44QQcJ80EEvyiT0N0bx6xewPqxsL8oYWC
-	eXxDybO4CCofbwGE86WvoN1lzUVA4Jsd+5VP55jUsRICX6x08fv2CO4S4JsKMoRwx9sM+4pJULI
-	Mjs1yvD+EgjOdPwf6wYCEMQJ2PcquDeSJu6HkxweAlvBgL3Bxsrb0RnHcc+nFBzpZFllFZ2/5MA
-	bDsTd6RI2mw+u8+H8TJnAXNNRbgKSTQ9TELw8yzEUyiQELrOO4Qx7zoiyttNG+/1xJnTjHZiJy8
-	spYRtCAt/9KJwC/Mhma1kmseLHzSy8+sNGwdlEQEawLXfCdwIlWhnb9pDOo+6MAn18BL3OFZGQZ
-	n4Qk5SCmLrsip3LiWHasgIUxDIH+QFPKdwo/Jih
-X-Received: by 2002:a05:6000:25fb:b0:485:8354:d82d with SMTP id ffacd0b85a97d-4858354de3dmr4041188f8f.23.1788427530909;
-        Thu, 03 Sep 2026 02:25:30 -0700 (PDT)
-Received: from outlook.com ([2a02:587:6022:4b00:647f:bebe:643a:40cb])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48448ed37c4sm10748511f8f.21.2026.09.03.02.25.29
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 03 Sep 2026 02:25:30 -0700 (PDT)
-From: Christos Skarlos <christosskarlos.kernel@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org
-Cc: ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	usama.arif@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Christos Skarlos <christosskarlos.kernel@gmail.com>
-Subject: [PATCH] mm/huge_memory: fix various coding style warnings
-Date: Thu,  3 Sep 2026 12:22:00 +0300
-Message-ID: <20260903092200.88910-1-christosskarlos.kernel@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	t=1788427721;
+	b=qZRLPNIn+1fifLCwcPLMUo0t2q7ePxPy4/R7ZKX8uvHYnpqxG7D8ySdhLi+lOx/MX1rwMx
+	42c6hYFFPZPvhFoJsFHrlLLQIILlo8XCTKgFEA0R3eMqOCvyF/SYShOLrV0ffe9L+Qso/7
+	RbeC8OeL4s6YkQ/9WFfHICdE2KxcgRM=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RjYdGsba;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 81DA3600D1;
+	Thu,  3 Sep 2026 09:28:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F7C1F00A3A;
+	Thu,  3 Sep 2026 09:28:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788427720;
+	bh=ey992VJ59vkyhnjjAc3vc3uxfb9JDJ9GYvnBCB4zM0s=;
+	h=From:Subject:Date:To:Cc;
+	b=RjYdGsba5HHZrGO3OCHTmn5IC/N6RTyFrp8Z5Ubj7a/i8bjv42piN/UnRLS/1Bh0f
+	 T6WY+xo9hTACaiHWVLL1I64700TyI6CpONHAAc7NH1wFG8764Rix/yvus0e02RzHwJ
+	 6lVfVHzvDDFZZPilK+iLbOrh5eOBUwY4cU1HWIxlQloKPJ5EF4Fp2HIhI0ZgNnmusl
+	 YeF8CNVhBIJ2OM4LcTF0AHaHbrzgx1W2NTXtc9Jgo1VCc736L9QnA67+/FqNahfDAB
+	 9puZjLKz3xoy7Jn4nRKUELzui6VgXVpeuLgM+vcsR88ND3i+tLMGGRuBI2XxCjpjEV
+	 lNZ7OCD0gXGpw==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Subject: [PATCH v3 0/6] arch, mm/execmem: resolve confusion about
+ set_direct_map_valid_noflush()
+Date: Thu, 03 Sep 2026 12:28:26 +0300
+Message-Id: <20260903-execmem-set-vm-perms-v0-2-v3-0-949b64a9f755@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6E205180002
-X-Stat-Signature: p3pam5fkh9tq5bohd7ucpooyxuy49c5r
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/43OTQ6CMBAF4KuYrh0pbcOPK+9hXLQwQNUCabHBE
+ O4uBRe6MS7f5M2XNxGHVqMjx91ELHrtdNcuge93pGhkWyPocsmEUZbQLE4ARywMGnA4gDfQozU
+ OPAUGSmImUimqRFRk+e8tVnpc7fNly+6hrlgMAQwNJR2CsrItmnB605Hf9JWO1o7nod5oN3T2u
+ W71cWD/meVjoJDTXAjJZSl4dbqhbfF+6GxNwi7PPijGf1FsoRSNueRpmQnFv6h5nl/7jJ1fTwE
+ AAA==
+X-Change-ID: 20260816-execmem-set-vm-perms-v0-2-bae847a4f64f
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: =?utf-8?q?Adrian_Barna=C5=9B?= <abarnas@google.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, Alexandre Ghiti <alex@ghiti.fr>, 
+ Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+ Brendan Jackman <brendan.jackman@linux.dev>, 
+ Catalin Marinas <catalin.marinas@arm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, 
+ David Hildenbrand <david@kernel.org>, 
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+ Heiko Carstens <hca@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, 
+ Ingo Molnar <mingo@redhat.com>, Len Brown <lenb@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Paul Walmsley <pjw@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+ Thomas Gleixner <tglx@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, 
+ Vasily Gorbik <gor@linux.ibm.com>, WANG Xuerui <kernel@xen0n.name>, 
+ Will Deacon <will@kernel.org>, x86@kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-pm@vger.kernel.org, 
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+ loongarch@lists.linux.dev
+X-Mailer: b4 0.17-dev
+X-Stat-Signature: 7qsso718atxag4wpg1ag7tsfhwjbcchn
+X-Rspamd-Queue-Id: 1075580002
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788427532-472527
-X-HE-Meta: U2FsdGVkX1+CL1x1EmdWqGWrQtyEV4BJssE6YmlilWQSCVYbZXoJ+/mAIQCBvwtMDx7rACQPtnFnYlKhimmziQZwWzczaIDwv2gsN+mEEJ2juoFkEjx+J126LgZjME1zdZ7WfTlpCaMkaxiIhL0e0dAv0acqh/5DNB5fmqmyLJc+3+GU/jZnwWdH80+25p9cnN0ym/2lJPRc981kgb5TrqqXljtKAdvPyo2abfAxLMFqAMJk1DwxjNne6y8z8ibfs0Br1ra4DoJW4j5nRt1TGSkAQp7Ul6NOsxhdKZK1xV+urvvyw+e+0FRRLppp0oYx5a4iVxG5WHQNgEVAfdExFFnvBf5XMaeGNxR1fFBvxiuPteKbNjepYBYtHr4IBxHEPQSrQZ9g5xcDFfM9aIgs2FsbMWeArGy/GLK6a1juBg+dhtuBXBJb80/kdRsVAbcxqFegKg53CC+mnOA8pcNXJ/q2vKTAwAphjGTJGVhUd7gbFXcEi03Rv02KdXQ+Fx/Qmd0eCsNfLd+OhWXG+aCMzCPh8kwcT8RMaPL5bTXkJaZJgiObYVeahBzDDKqmO5hoCp5q6FE6vBuyi21QR8iqNILpw+cRq2Bogq+qiKAFOMLdNOotGoo12XTDbms7J4zgR9QFzYAzO134Rf7rNW5Xu9rzgMHE5oA9LXEhlV/d1c0vzSk1bB/UiB5yT3vopfmrfAsI+edO5yIY6mlPd6f+mCB05AFslBQxJjD69au4cdDZirrh5uIJSaanwctz/vV1yXFTMALwf+sFI79xhR96lCE4AA9Lv0g8sMxXdKsB6UE+eQikvzxBUg2KCu68JhNS6pgcVdNtXR8OJosle1uv22PE/ui4ZuDBdaH9Vr429mwwMFzZxlVeCNhVQyg6l68g9LoeCmkCPJm5O3q1R6QXehuxgmXgMaxoVKNUmB3vrlgadSgbDm2ugzN15MSR3f1P+2ceznyqP/ieDeNmLTc
- NxqoH9wh
- LA3J0dMeDzblpZIXhiodALJCfeWBbPpWh6vc3eGJBe7rVDz9YJ6Smf3DY8zKlRsHx0YMCN0Uq01r3wH1d39gvFywPy4j7lFscFiAN9TKoMsF3hhFynbsE/Ime9LkFHSeU5J1Yn5T8mdtcGtZt+ZYwGO6rcWuzpctBoLa91TxQ95ZKDFeXcR1avRukV+oIxFxcmL/T0GpwpcrOP4IyDeoTk2so0xdhrcp6sxf7EbjLvIMLp6KUkFNf/jQNlj/HsWjVclbfnAY+Yc2qxFUmK6TloXg1FwUJyjATnf2KCa5Pow2+iMODgINIXTVzcXAT7SFgSEIitSL17lnr+5UYDpv7ag3aPi8Bg47PJZRC1RToe/ZWyKiEiwYQ95C/W7LUjnuoKC3iGVQy7kO1kBkBOLdYMX7Et8+hHyKNBbyCAdjmWw9uP9GL9vMu30HaWYEtqsMpzpc6NBtAOIJ5RrcplRJGMg5YcRhbisyYX9WmW1sd/toNLTs8BMsrvIebozfA7Fb8KIaQSckpUl5PxoJ0bQRMjNRL7lQPVJMEdcnK
+X-HE-Tag: 1788427720-812797
+X-HE-Meta: U2FsdGVkX19owXEgAuFsjSSYuoXim2V2S81gJaH0yHHE1R8lPXfbMYzQzo1M0ySYIUpcqZSTEiVZy3tQqoxdymnP6VSF4W+CFnYBIuuejKRJnTL8aCRPIHds5EICWSAj6/ZGLFnipHU0atfjnWC1ggVPDH5XCIAIZiz40q4dqjGeN0JKCM4hbMEGF9pUC6tYZ2gdufZxjmeAYPAzklZczh1b1nhuGxl+DH4Tyvx5TGm9Vf59KKf4QSpYAkLrY/mzMImANQu3RaLJ+KqK6cDhSuBSgfovteb+vARPzTfxz/5fFZopwFrqvUlHLltqHjWHlhXpMHTscxz3bRCHAPbjxj/ZQ+Fuuj53RE/cR7Mwlqi4ONxmRhiY7+6COC8bdVAKvLodxnEhy7EpiGQVudx6nX8hl/kPwMIBQhUKdh3GMPTvbPAze+807q/mZh9CDkiqVjjSZz+Y8W62h8HUoVy0HbUj2owJhNv3xZeU3Jw877TeCS2eJY+nJl0ijfnTNlOMrvFGtENobUnMzOA+iTgniqO/r4uIvUdL3Op3E7+EcvVEZjllpmJk3Gwu9U+Ckk3CNGKwBLNjaGowyEWrckFygJwMADiVhs21nzo/XjItR96SN73OJ9GXEmJFsGNiz/JUukzAUZLSgxk59W3bbJHtxoMOrdP8kxyUwVV2vLljuGoceqiJGVRm4iqp7qeXBk+DrPDXlY1RfsKBfDWMlkTC3/lO9cNVp4UIPg2ddG2xS+MTjDV7qyg3WktvF6UOrECHZtxZQJiw0qr/RcrRsasphXOG0ATuLs23rGhHDn9cnOyJ3xWLCUlIwnt9qlKR9Vx6jLxfNvY92OusG8twxLr+CTpg87sJb0XD5GGOQyCt/a3p9POMEcjNuVhhLuPfpsiE1n15CIGdY47JRh4oVMAQOkyJ/4koXmPs+Z4eEos3el/fF+ikgM7sMHRx0xDQfJXCEojPu03mMr4kxuo/9ki
+ v4nJFTRJ
+ RTqHlcPG9v/qB4lnJh2SOV0lnhHJbrQojuIuwjryNLn4hVzOvHQ8tC5xaFTZxqi2l3Fm8Abjy3xD4B/v/oNf2I//ThXYXuZqidz/aYKBkv4LKfcpGKfF+bHzyBBZhPp+OnYP6WR5Duz3WV5Dw4FGw0iOi/X1/MiuMdFC2Y8MVBk+iXPzPekzoDfYs06MIY33VALkgSCQnCN2SmZIrwLJmG+KOXqDwPpjlsnn8i6n/5ulN1dC2k2H0j1XFXPjzjC/4ifQcDu8JUWbBz8laFkEQN48F4OyZf0bbWUhfxZzJhTUffq9NAoQF4RgWaixnOCYGIbeqRVXnqxIP09vVOqoFBpc6k1aLe9DWv9yxWkZVopDV2eRi3pVkG9bswxE2GtJ/P4mRMdtAlJV/1aSXvM2D3QnNDw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,57 +118,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Resolve coding style issues flagged by checkpatch.pl Specifically:
-- Add missing blank lines after variable declarations.
-- Remove unnecessary braces {} for a single statement block.
+Recent discussion about implementation of execmem's ROX caches on arm64
+revealed a confusion about how set_direct_map_valid_noflush()
+implemented on different architectures.
 
-No functional changes are introduced.
+On arm64 it sets or clears the PTE_VALID bit marking a PTE as present or
+not present.
 
-Signed-off-by: Christos Skarlos <christosskarlos.kernel@gmail.com>
+On other architectures it's a range version of
+set_direct_map_invalid_noflush() and set_direct_map_default_noflush()
+
+Unlike arm64::set_direct_map_valid_noflush(),
+set_direct_map_default_noflush() not only marks PTE as present, but also
+sets its default protection mode.
+
+Other than that, initial design of execmem ROX caches didn't rely on
+restoration of large mappings that's now available on x86, but
+completely removed the memory allocated for the ROX cache from the
+direct map to ensure that large mappings are not split. This precluded
+usage of VM_FLUSH_RESET_PERMS for the ROX cache allocations and required
+execmem to implement manipulation of the direct map alias.
+
+Current implementation of ROX caches does not remove the direct map
+alias but simply calls set_memory_rox() that updates the permissions in
+both vmalloc address space and the direct map and relies on
+collapse_large_pages() in x86 CPA to keep large mappings.
+
+This allow using VM_FLUSH_RESET_PERMS for execmem ROX cache allocations
+with small adjustments to set_direct_map APIs and vmalloc::reset_perms()
+behaviour: adding number of pages parameter to set_direct_map APIs and
+making resetting of the direct map permissions in vmalloc VMAP_HUGE
+friendly.
+
+Implement these adjustments, make execmem always use VM_FLUSH_RESET_PERMS
+and revert set_direct_map_valid_noflush() changes.
+
+This applies on the current mm-unstable with v2 reverted, the base-commit
+b4 lists is bogus.
+
+[1] https://lore.kernel.org/all/20260611130144.1385343-4-abarnas@google.com
+
 ---
- mm/huge_memory.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+This version does not address sashiko comments about the preexiting
+issues, it only changes how VM_FLUSH_RESET_PERMS is set for ROX cache
+areas. 
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index ced400f72d43..371ee8d38c45 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1104,6 +1104,7 @@ subsys_initcall(hugepage_init);
- static int __init setup_transparent_hugepage(char *str)
- {
- 	int ret = 0;
-+
- 	if (!str)
- 		goto out;
- 	if (!strcmp(str, "always")) {
-@@ -1510,6 +1511,7 @@ static void set_huge_zero_folio(pgtable_t pgtable, struct mm_struct *mm,
- 		struct folio *zero_folio)
- {
- 	pmd_t entry;
-+
- 	entry = folio_mk_pmd(zero_folio, vma->vm_page_prot);
- 	entry = pmd_mkspecial(entry);
- 	pgtable_trans_huge_deposit(mm, pmd, pgtable);
-@@ -2613,6 +2615,7 @@ bool move_huge_pmd(struct vm_area_struct *vma, unsigned long old_addr,
- 
- 		if (pmd_move_must_withdraw(new_ptl, old_ptl, vma)) {
- 			pgtable_t pgtable;
-+
- 			pgtable = pgtable_trans_huge_withdraw(mm, old_pmd);
- 			pgtable_trans_huge_deposit(mm, new_pmd, pgtable);
- 		}
-@@ -3901,9 +3904,8 @@ int folio_check_splittable(struct folio *folio, unsigned int new_order,
- 	 * swapcache folio split. Only uniform split to order-0 can be used
- 	 * here.
- 	 */
--	if ((split_type == SPLIT_TYPE_NON_UNIFORM || new_order) && folio_test_swapcache(folio)) {
-+	if ((split_type == SPLIT_TYPE_NON_UNIFORM || new_order) && folio_test_swapcache(folio))
- 		return -EINVAL;
--	}
- 
- 	if (is_huge_zero_folio(folio))
- 		return -EINVAL;
--- 
-2.55.0
+The fixes for pre-exising issues sashiko found are coming soon :)
+
+v3 changes:
+* set VM_FLUSH_RESET_PERMS to allocated area just before flipping the
+  permissions rather than at allocation time
+
+v2: https://lore.kernel.org/all/20260823-execmem-set-vm-perms-v0-2-v2-0-b013a37d84b3@kernel.org
+* move setting of VM area order back to __vmalloc_area_node()
+* add tags, thanks!
+
+v1: https://patch.msgid.link/20260816-execmem-set-vm-perms-v0-2-v1-0-90944a3ad43f@kernel.org
+
+---
+Mike Rapoport (Microsoft) (6):
+      set_memory: add number of pages parameter to set_direct_map APIs
+      mm/vmalloc: set area's page_order after allocation succeeds
+      mm/vmalloc: constify vm parameter of get_vm_area_page_order()
+      mm/vmalloc: make set_area_direct_map HUGE_VMAP friendly
+      mm/execmem: use VM_FLUSH_RESET_PERMS for ROX cache allocations
+      Revert "arch: introduce set_direct_map_valid_noflush()"
+
+ arch/arm64/include/asm/set_memory.h     |  5 ++---
+ arch/arm64/mm/pageattr.c                | 24 ++++----------------
+ arch/loongarch/include/asm/set_memory.h |  5 ++---
+ arch/loongarch/mm/pageattr.c            | 27 ++++------------------
+ arch/riscv/include/asm/set_memory.h     |  5 ++---
+ arch/riscv/mm/pageattr.c                | 23 ++++---------------
+ arch/s390/include/asm/set_memory.h      |  5 ++---
+ arch/s390/mm/pageattr.c                 | 20 ++++-------------
+ arch/x86/include/asm/set_memory.h       |  5 ++---
+ arch/x86/mm/pat/set_memory.c            | 16 ++++---------
+ include/linux/set_memory.h              | 12 ++++------
+ kernel/power/snapshot.c                 |  4 ++--
+ mm/execmem.c                            | 40 ++++++---------------------------
+ mm/secretmem.c                          |  6 ++---
+ mm/vmalloc.c                            | 26 +++++++++++----------
+ mm/vmalloc.h                            |  2 +-
+ 16 files changed, 61 insertions(+), 164 deletions(-)
+---
+base-commit: d7bc5ce72091180aef05d001dc05c90f6b14c18d
+change-id: 20260816-execmem-set-vm-perms-v0-2-bae847a4f64f
+
+--
+Sincerely yours,
+Mike.
 
 
