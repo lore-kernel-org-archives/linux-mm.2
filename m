@@ -4,94 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2469CC624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 09:23:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67EB5C61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 09:23:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D0666B00BF; Thu,  3 Sep 2026 05:23:00 -0400 (EDT)
+	id 7C97A6B009B; Thu,  3 Sep 2026 05:23:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3599C6B00C0; Thu,  3 Sep 2026 05:23:00 -0400 (EDT)
+	id 7A0EF6B009E; Thu,  3 Sep 2026 05:23:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24B9C6B00C2; Thu,  3 Sep 2026 05:23:00 -0400 (EDT)
+	id 6B7266B00A1; Thu,  3 Sep 2026 05:23:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E47576B00BF
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 05:22:59 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6B1A7120481
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:22:59 +0000 (UTC)
-X-FDA: 85171911678.16.30D7CA3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id AD6E6180003
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:22:57 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CsLTmwDY;
-	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B4A96B009B
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 05:23:57 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AC039160438
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:23:56 +0000 (UTC)
+X-FDA: 85171914072.13.5C9CF22
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	by imf20.hostedemail.com (Postfix) with ESMTP id CD3BB1C0002
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 09:23:54 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ku5gPzjN;
+	spf=pass (imf20.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788427377;
+	s=arc-20220608; t=1788427434;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CVH46s0TiBnSL1nhlyLYQT7Nebe0o5BJiT5/S7ZnuZY=;
-	b=n88uxU3YoQsv2llVY1/izx9spHIXhcDEbjCjEoetgEPLs32EiVCZObVrMn7D8RbkJc3Yok
-	TfK9/RV5pBUrT9pbCFcSjjop6MET/e3+N4hPiyKmkpW6zfkaNs3WKmEBLjZQyIGSkfTpdm
-	fVHMlInwp87S5gIt1V5sJyZ5bydqlzs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788427377;
-	b=Zsw6a05t0qx9OLhZHolvE4AC5CtxgqIeaiCOXBL9/EvzQX2SLsBFqCwHovdQiefUqChSWI
-	J+MaF2m56EfiIiR0gIpByJsX9H+TyzN86tO4i/jyHFmW4T+GUAH1sjQEbtYmn524DwCqiD
-	3Hz+2Vg0qgUCBWTUQA41ZBA0gtNeAWk=
+	bh=o7qTGz8yA1h581X4DOr85MyyM+WIOFqQrYJ5cYnccTM=;
+	b=PjR+c1AaI8RM4qr9p+xeJOIgtO6Dd3jtUgqE9zWerV6J38P2oHQiETfx7XwrzacrfFG4b+
+	SiyQSRKp4evybZFy34SYqo5fHeLlLyne9e5NFhguW9YYHV3WNl9GKtuTxfKKkyY4Ox6n8z
+	+wIen8TMgPtRDd+UNxDhZilON2ig1kM=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CsLTmwDY;
-	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BE3EB42B20;
-	Thu,  3 Sep 2026 09:22:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969871F000E9;
-	Thu,  3 Sep 2026 09:22:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788427376;
-	bh=CVH46s0TiBnSL1nhlyLYQT7Nebe0o5BJiT5/S7ZnuZY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=CsLTmwDYUQuPdEGJ2URh4YYrVQjku/PYtQd8szB9HFBHKuxNiHG8jlkrL7gi1baJv
-	 baOlP721yc+Gapvn+co/bsCE+vzOe7wj38uGpYqZPkxomRAwIz0bQTUhRLhTAuqqra
-	 dcAYfgKFIupV+om73sgPaweqXIGMwkg5fWtKJMpvY7FG1n04OkQOJYThS8OWkrXRF/
-	 6d+zCI/PEFFnvI3TBktpF/UQ7XAfs6aQrSu5o0XLNpvLlz/KIh0d4q4F8mng6kmC35
-	 gHgYzeK4HV1Zw3Tpumbe8aupeoEBK6jboDtDlQeHq19XetZJxR/N2esfUJW+ShNiZf
-	 qTij8AvQ7COkA==
-Date: Thu, 3 Sep 2026 12:22:45 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Xueyuan Chen <xueyuan.chen21@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
-	usama.arif@linux.dev, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com,
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
-	kas@kernel.org, catalin.marinas@arm.com, will@kernel.org,
-	mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org,
-	tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-	luto@kernel.org, peterz@infradead.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 1/3] mm: make persistent huge zero folio read-only
-Message-ID: <apk8ZRr6do_YAlzf@kernel.org>
-References: <20260901151818.3191443-1-xueyuan.chen21@gmail.com>
- <20260901151818.3191443-2-xueyuan.chen21@gmail.com>
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ku5gPzjN;
+	spf=pass (imf20.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788427434;
+	b=7fTq8QNKO1rLlscfA9bZbC+uz8zPkVVOm/Pla3ZB/uB1l7tp29yKbc4N7Owugf4yxY3SfM
+	zLz/A7OD+YM+cxlEfIXY0hJZ0mOThSCUmQanAVe8MJCIylg8n5QARgQAW7qR57xmTiw01H
+	WYjMTXRlh3waXkjjSpkXN7KDIacNOBQ=
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-38e041ea211so1972630a91.0
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 02:23:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788427433; x=1789032233; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=o7qTGz8yA1h581X4DOr85MyyM+WIOFqQrYJ5cYnccTM=;
+        b=Ku5gPzjN/4K9vvcGjKKQgItQBKtlQWdSvhHAFqcoodysIZd4GPSUQ1dEpM2GSJP9qj
+         ymbwxTyZB2IiYGujPyJvskHUQHXDTk/xomBYx11/ndgIk9svYHAn0ARegvwkIdAeslVw
+         ZojqC82Uph+KtYCDokh1N3vO1rPhLQAsUzJoEj5Y1/uCGnvC7WOfalrcTpJCKZsTbS2v
+         6VkMqoImknjgTV8jkvQxwvlIc4OoKatNgXmHxpS/576EKdWqNHFrnpWAg8I0lXYAol9p
+         CxzW1eZw8lYuVQpy09qlMEixZxRIDUlXSmnT30KRGYtAjn2ubkUvwlV9mfjg1fxKfmdN
+         ZUmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788427433; x=1789032233;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=o7qTGz8yA1h581X4DOr85MyyM+WIOFqQrYJ5cYnccTM=;
+        b=rmfP2YncHBpA/zdo1l8VSSFudAqqldWvdLNI8g9PK4FhdNfkrqEc65t8U9iHoN+p45
+         aN0quQA3zoQ0tQE3uylZ0EQHBFlw3ncqaLJHegPvV5yenSQvanbBY6ce/ftfa+qcZnj+
+         iKbEfDrQYJi3tR2heIdKewMvIQfsP8F7LXYhMLcIWGIkP3+lt8BxYkwcGQpXtCV49x0u
+         1AXjltvHv5EpZfz1KYkVStdEa4YNYslSyv4szvcjMJCUQ3OT8/1rmDzZOLej63WwSDW2
+         0oC9gzu5bHLPL8LDWcdrPq6mFemPqUi77pH6bo8h/faRediy/VcjqdppntxHHM8Q1f+7
+         c+5Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxTm8GoedJNf258TDfOj0Y4oZViwh49Acjry8B2pE92j/QsW+Y6nKqm5BEWbNiMdC6MwsTRfxclBw==@kvack.org
+X-Gm-Message-State: AFuF++mom8LM6dVEtHMWERrXzWeLyQ4hZp3UMzSL2XMXJDtcB+xpHmSt
+	bF3Xygz7Qm1YIUZQeSe6AAD8ACHPgCCk0UktLMn57y+LQkOyYvS8+BSl
+X-Gm-Gg: AYBFou335WUyLUgjTV3N9rWZ0Eh/TLrxmmAdd+0sRFwX/LiOCvoRwGfJ56un5DOFMuN
+	tN88ZLz6t0jBuTJsNb2byweB3cuVQOv3EQu/lOq5ZIoO8MCy1XeEa/0XsmO6ULLpDcrtsajaMbc
+	NDejNwQ2zgDjPngEKxLGoH1Ti0wv9bsH3Qlr9ifHtFQNdn5uuvU+Zc+41cbji5trswJII8pBfdM
+	oiRmrOVZUw53je46Ey+TH7C2VJWRWZ3ZRPDlwohfCTByYhVlxz/HX0rtQNNTQK+rfiY0JYLcXPJ
+	NvuOEVIK9zivaqtEU4/eAcscZ5n4M5IhQuAv9nLJ/rWd6EYfGHRkBYi9Q5OqYBC/FLO16LCH3CW
+	syqq1VgkxGHkyTt+s+yuKAZA3hrcCcdHmeMj2PW6VeeylyayX5eceuqY8aQ+RWs0wckm10/sTyY
+	6RDVuzn/vndzjFI0t7raeABf+RFRWRd5IzY5fPHO9lYe7CmbV/6z52Ou/Ld2w=
+X-Received: by 2002:a17:90b:2d4d:b0:399:1b64:e0d7 with SMTP id 98e67ed59e1d1-39aee108918mr17835573a91.19.1788427432993;
+        Thu, 03 Sep 2026 02:23:52 -0700 (PDT)
+Received: from gmail.com ([185.220.238.35])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39ae8ccdecdsm2638527a91.2.2026.09.03.02.23.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Sep 2026 02:23:51 -0700 (PDT)
+From: Kunwu Chan <kunwu.chan@gmail.com>
+X-Google-Original-From: Kunwu Chan <kunwu.chan@linux.dev>
+To: SJ Park <sj@kernel.org>
+Cc: Kunwu Chan <kunwu.chan@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	stable@vger.kernel.org,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Kunwu Chan <kunwu.chan@gmail.com>
+Subject: Re: [PATCH 2/4] mm/damon/core: handle uninitialized damos_quota_goal->last_psi_total
+Date: Thu,  3 Sep 2026 17:23:33 +0800
+Message-ID: <20260903092344.3079122-1-kunwu.chan@linux.dev>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260902002725.108635-3-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260901151818.3191443-2-xueyuan.chen21@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: zm5jh9krqfxgudob13iscwtz8cf7f3k7
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: CD3BB1C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AD6E6180003
-X-Stat-Signature: ysixot88awssd53rgs4upduiays5qp3j
-X-HE-Tag: 1788427377-511503
-X-HE-Meta: U2FsdGVkX1+Ld+2BD+AOTXfvcg/3QbiQ+jbyw0mazu81CjTg6taygGhEaiDkHoRA+HbuIfrXIRIAivMUGRwFpOdKD1D2YY3dO3trDywYXIC8N06idcsutwjHBlVb5P+BnO5RX1s+TUMc8JtmaxEIwKWIcH+6LAprFkZjLokdpLD2jVHiI8hD6xONuSqRN4TSEe1xnV3MtfRzP9LHWGgN5Hi5cnCtk2vSWYY8/+sQl2oi7Ru5xGT9ZAm0Qo2fcPJ3wsGnp1b+JTz6TtZl7S/7AmXSvgW3wYJ9sOhL1ig41VJTZrkEnlziCvnhUSadokiCSw+KYLsYw/VIig9O91QJUuHaL8a/9TQMXChZFO2k4IFf51+WZS8rhEnEab5Lqz2SkeiY3ecuO/Km3uwuJeLP7LG9JXg8jTiDEuhR3uySEjbc//xghTq1SXkZQ8Ez7CVKiXige4Dg/jIiqwQES31vYoPVX/5f+yzTaGSvvY1Vc5kch0/57BB1HexQ9x4s5NSJAvrXLPuT/YtWO0eH4iXEzz4svwtzOeTsDFXSanoPLErJnu4Pz8WXYRc3CEGb1Ut7D/r0Iake4V7ycvPLmIiFo36n32/FQEg+FJUPRyst3SK6jG5xPo4VCwSkA+oHkb6Z9XNMgnlhh0vUmPvfQSIopepRjZIo1QG88AuhGBjVKx5CrNNp1aBSNPbVASdcc3IqC0TfFOXGciaDzBnesH1CfpK4snhm+Gw3RJ6fCrLvW5RVEGW3P84lvZ0hzleZddjqh3SfGC6A14xnPxJxMzRoXsjZNs2VajWNNW+2LQzwwkIM8TRrIaUZF8pmTRTWm1NKjz8HCjs+a+6e2lwDYNENWncd9NlUPFTA68zQXZpxfJ7+VADNE5/xgIWGCGXA4iZhYajx+LQ3SSr4eq8wyrWjpkNdPlwSaO9pqpAGP682c/XxPUKcwYomDRj9kK6Flkerllr0Vy6tKFSRFDRDpbi
- /WJM43iy
- sayDaqbjewz0X1qXGFwl7c3gMRikUf+a8VyuAbjt1s9ydgxQub6L+9GHBqJDJ9AbKtdo4XWEUoL/Ar4nfMOnPwCr1MVmR4LZDx+LZksv95Dk5N5NpPxMVDjd3/KxKjSuZMOVfdJSbfABW41QtlCMYxH97SdDmFwx68f5zVtShESzkPOQyMT2knEW1l78gaGh2nZIZDE0C8SD6DhaQlrvECsAze9okx9YkgiJeJRioTqtnKhF1TPlQND+0CoIlo3009NsTqF+Ri+K8/e9dJuDpyWkkuxueoLriZrgY1kMMVc3g6jJLjMm+6/tU21HS52Tg09ifJvw5WcYD/OLwZE/wEMhWNONQiNiPpJiHb+Qsxp5rK6kqLVfZazR3UShL3G/DOO36l4xUirP+hD9F8Ez0++I6nA==
+X-HE-Tag: 1788427434-387595
+X-HE-Meta: U2FsdGVkX19hMNLkVQpM4IpfPBbPd/QYj14Vk7JKhmEE4rRqakyA4zCIhgc0eGZhGYe8rrZwGQwMqWamaCZNK6X02PGhg0iiwoRgQYPRrfn9qhfqGV9ceCcOq+rAqyjeyLnJAoRJ5mgmGAU76+QKjD3GlCGuiB+Ws73UMVqHSxvTSnZHL4jtz063Ou609ao4mTZpEvIDDljhuFmZNbz+df8qJ3cNc5v447N9GY2Tlpip7YVWwWnxoATg5QZVZKJe729b3Tr8sQhtUPszPo9T9UKOTx7b1tILzSHNlVv0czLaga4ty9FVGQDJGEepcV1GtMiHhYgTFV4HunBl3IMKbgomTmuON3w6fSkoXf+EWsfo7Op93rXEcSsV/n4H4cV7kRwPp6yOveNq+w4yYnmZvbUqcSe3z3mItK9AYehoWipurk25kHdS7cFN05qAVG2GwxxiWRxBQpzc0b3xqgRRE0GFJ8/v3NGt+e3X1GzUXnbwSBUGXGQJkTkLt8KYT0r6hQ9o2yvVdrGSER+I8Vb4Tt7EIgubZ1cvnDCWRCksjc+uCBHrHzPQJBo7y6HuGZYAT5Jma1WTr4ryqR7lRVm7ypOBs6fy9wh7+1DwSVI5Kx5H5rhKWKSx7/GoAqXet5aA7vGSGAu4Vym98Er0KuWVHu1YVqYDlml7OfoGULF9nPetVBczSTamgErUwfToLu1p0pn4P7RpXPb9D0StsrvgfUj4XE8z1bclyz3vzyhxhEurkn6cBXHz5mxVgMgIor7q0+Z9MA4bKTjZsOwRYw2aC6scj4M8hApzp2CJnDIWzQJoVSRfdiBfavoxkQ2TNY3CfUKDIoEf8erkGSZ8gp+JfRQulnYyilh1Qoq0E0suqpHNlxI+haAjXC/2NMqFZuYMGtLoJWP1k0ByZVVG4rURti6sBbhHoQMmzKnDYyl9Qdt7txky9qkpKUKFxyP1FDVrOTDMEwrUdbShM+cJt3m
+ xFLr1wNH
+ p7YJbKlwPQH84FuxgiQLKpGrnA6zGGFGKw+py+p7Z5d/hkrYc2bdA+n9XhPzfPWqYMtbxHMfMVCXYKtrNw4SjrqG1ztPdm0oCfzgFUegYm3UdzGc9+o76FHivHqBrSnB86cAclpBiS654bSZEnb8dHIfJTHlvAFNCsCy8e1B/SOTVetYxhcbo3t06iirDSFA/zti+em65KjY7c1++EA/UV+eklaWu+24+uai4jZxaG4Kbgc1wTQLGVbbrTR1oiVPUKRQKK/TPNSI8ABe0fbM30YL7+5wLHkmIzAtaxAU9/S9BNCnrHqqTNFPHVp7UwknDcH8cgttA4GqZRxg8mnmgChdeN90aJ5sE2NVfU11fAcpPlPKPgLKN7EMlk8K57Xy1DgCkKiHZk6ls3QKNdADpa4eTUw0hjBZzMCtF6/1mztj9X5MHjLvj1snxTmy6v6jaYmJt0kWjkUJCO8GopMww0cCROA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,106 +123,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 01, 2026 at 11:18:16PM +0800, Xueyuan Chen wrote:
-> The persistent huge zero folio is shared globally and should stay zero
-> after initialization. As Jann Horn pointed out [1], kernel bugs have
-> ended up writing to pages that were meant to be read-only, including in
-> security-sensitive cases. Making the folio read-only in the direct map
-> turns such writes into faults instead of silent zero-page corruption.
+On Tue,  1 Sep 2026 17:27:21 -0700 SJ Park <sj@kernel.org> wrote:
+
+> When DAMOS_QUOTA_SOME_MEM_PSI_US metric damos quota goal is set, the PSI
+> delta for the feedback loop is calculated using
+> damos_quota_goal->last_psi_total.  However, it is initialized only after
+> the first feedback loop.  The first iteration of the loop uses the
+> uninitialized value.  As a result, the feedback loop can change the
+> effective quota in an unexpected way at the first iteration.
 > 
-> Add a page-based helper consistent with the existing direct-map interfaces.
-> Handle TLB invalidation in the architecture implementation; unsupported
-> architectures retain their current behavior.
+> The user impact of the issue is not big, because the issue impacts only
+> the first iteration of the feedback loop.  The feedback loop also has an
+> internal cap of the quota adjustment.  The wrong adjustment will soon be
+> corrected over a few iterations.  For this reason, doing no
+> initialization at commit time was intentional.  It is also explicitly
+> commented.  That said, nobody likes behaviors that are unexpected or
+> difficult to be expected.
 > 
-> Protect the folio after initialization. Skip highmem folios, which have no
-> permanent direct-map mapping.
+> Check last_psi_total initialization and skip the tuning round when it is
+> not initialized.  For this, initialize last_psi_total with U64_MAX in
+> the goal creation and the goal commit time.  U64_MAX means the field is
+> not initialized.  The tuning round shows the value and adjusts it to
+> guarantee the current quota is maintained for the round, and
+> last_psi_total is correctly initialized on the next round.
 > 
-> Inspired by Jann Horn's read-only zero page work [1] and follow-up
-> discussion [3] with Yang Shi.
+> Before this change, committing a new PSI goal on an existing PSI goal
+> with goal-only DAMON sysfs command (commit_schemes_quota_goals) just
+> worked.  After this change, the tuning round right after the commit will
+> be unnecessarily skipped, because last_psi_total is unconditionally
+> marked as not initialized in the damos_commit_quota_goal_union().  This
+> is an intended tradeoff for simplicity.  Skipping just one round of
+> tuning is no problem.  Meanwhile it makes both the code and the behavior
+> simple to understand.
 > 
-> Link: https://lore.kernel.org/r/20260508-ro-zeropage-v1-1-9808abc20b49@google.com [1]
-> Link: https://lore.kernel.org/r/0e5b23a6-4895-454a-9dfa-6dc21adc2991@kernel.org [2]
-> Link: https://lore.kernel.org/r/CAHbLzkrXXe7r3n3jXgDKtwZhRqj=jDx9E6dLOULohnhBguvi9A@mail.gmail.com [3]
+> Also update the quota goal commit unit test for changed last_psi_total
+> setup behavior.
 > 
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Suggested-by: Usama Arif <usama.arif@linux.dev>
-> Co-developed-by: Lance Yang <lance.yang@linux.dev>
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
-> Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> The issue was discovered [1] by Sashiko.
+> 
+> [1] https://lore.kernel.org/20260718005316.89585-1-sj@kernel.org
+> 
+> Fixes: 2dbb60f789cb ("mm/damon/core: implement PSI metric DAMOS quota goal")
+> Cc: <stable@vger.kernel.org> # 6.9.x
+> Signed-off-by: SJ Park <sj@kernel.org>
 > ---
->  include/linux/set_memory.h | 17 +++++++++++++++++
->  mm/huge_memory.c           | 13 ++++++++++---
->  2 files changed, 27 insertions(+), 3 deletions(-)
+>  mm/damon/core.c             | 13 +++++++++++--
+>  mm/damon/tests/core-kunit.h |  9 +++------
+>  2 files changed, 14 insertions(+), 8 deletions(-)
 > 
-> diff --git a/include/linux/set_memory.h b/include/linux/set_memory.h
-> index 3fe293cfed8c..ed9ce04b18a1 100644
-> --- a/include/linux/set_memory.h
-> +++ b/include/linux/set_memory.h
-> @@ -54,6 +54,23 @@ static inline bool can_set_direct_map(void)
->  #endif
->  #endif /* CONFIG_ARCH_HAS_SET_DIRECT_MAP */
->  
-> +#ifndef set_direct_map_ro
-> +/**
-> + * set_direct_map_ro - make a direct-map range read-only
-> + * @page: first page in the direct-map range
-> + * @nr: number of pages in the range
-> + *
-> + * Make the direct-map range starting at @page read-only and invalidate stale
-> + * writable translations before returning.
-> + *
-> + * Return: 0 on success, or a negative error code on failure.
-> + */
-> +static inline int set_direct_map_ro(struct page *page, unsigned int nr)
-> +{
-> +	return 0;
-> +}
-> +#endif
-> +
->  #ifdef CONFIG_X86_64
->  int set_mce_nospec(unsigned long pfn);
->  int clear_mce_nospec(unsigned long pfn);
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 54494c3fa983..742283b36d74 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -42,6 +42,7 @@
->  #include <linux/pgalloc_tag.h>
->  #include <linux/pagewalk.h>
->  #include <linux/cleanup.h>
-> +#include <linux/set_memory.h>
->  
->  #include <asm/tlb.h>
->  #include "internal.h"
-> @@ -291,10 +292,16 @@ static int __init huge_zero_init(void)
->  	huge_zero_folio = alloc_huge_zero_folio();
->  	if (!huge_zero_folio) {
->  		pr_warn("Allocating persistent huge zero folio failed\n");
-> -	} else {
-> -		huge_zero_pfn = folio_pfn(huge_zero_folio);
-> -		count_vm_event(THP_ZERO_PAGE_ALLOC);
-> +		return 0;
->  	}
-> +
-> +	huge_zero_pfn = folio_pfn(huge_zero_folio);
-> +	count_vm_event(THP_ZERO_PAGE_ALLOC);
-> +
-> +	/* Highmem folios have no permanent direct-map mapping to protect. */
-> +	if (!folio_test_highmem(huge_zero_folio))
-> +		set_direct_map_ro(folio_page(huge_zero_folio, 0), HPAGE_PMD_NR);
-
-Sorry, I don't remember if it was discussed previously, but why can't we
-use the existing set_memory_ro() here?
-
-> +
->  	return 0;
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index 0df785e72438f..20748b0a71026 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -636,6 +636,8 @@ struct damos_quota_goal *damos_new_quota_goal(
+>  		return NULL;
+>  	goal->metric = metric;
+>  	goal->target_value = target_value;
+> +	if (metric == DAMOS_QUOTA_SOME_MEM_PSI_US)
+> +		goal->last_psi_total = U64_MAX;
+>  	INIT_LIST_HEAD(&goal->list);
+>  	return goal;
+>  }
+> @@ -1129,6 +1131,9 @@ static void damos_commit_quota_goal_union(
+>  		struct damos_quota_goal *dst, struct damos_quota_goal *src)
+>  {
+>  	switch (dst->metric) {
+> +	case DAMOS_QUOTA_SOME_MEM_PSI_US:
+> +		dst->last_psi_total = U64_MAX;
+> +		break;
+>  	case DAMOS_QUOTA_NODE_MEM_USED_BP:
+>  	case DAMOS_QUOTA_NODE_MEM_FREE_BP:
+>  		dst->nid = src->nid;
+> @@ -1150,7 +1155,6 @@ static void damos_commit_quota_goal(
+>  	dst->target_value = src->target_value;
+>  	if (dst->metric == DAMOS_QUOTA_USER_INPUT)
+>  		dst->current_value = src->current_value;
+> -	/* keep last_psi_total as is, since it will be updated in next cycle */
+>  	damos_commit_quota_goal_union(dst, src);
 >  }
 >  
+> @@ -3039,7 +3043,12 @@ static void damos_set_quota_goal_current_value(struct damon_ctx *c,
+>  		break;
+>  	case DAMOS_QUOTA_SOME_MEM_PSI_US:
+>  		now_psi_total = damos_get_some_mem_psi_total();
+> -		goal->current_value = now_psi_total - goal->last_psi_total;
+> +		/* uninitialized last_psi_total; make no effect this round */
+> +		if (goal->last_psi_total == U64_MAX)
+> +			goal->current_value = goal->target_value;
+> +		else
+> +			goal->current_value = now_psi_total -
+> +				goal->last_psi_total;
+>  		goal->last_psi_total = now_psi_total;
+>  		break;
+>  	case DAMOS_QUOTA_NODE_MEM_USED_BP:
+> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+> index f1e11548c771b..af26b3d60957b 100644
+> --- a/mm/damon/tests/core-kunit.h
+> +++ b/mm/damon/tests/core-kunit.h
+> @@ -757,19 +757,16 @@ static void damos_test_commit_quota_goal_for(struct kunit *test,
+>  		struct damos_quota_goal *dst,
+>  		struct damos_quota_goal *src)
+>  {
+> -	u64 dst_last_psi_total = 0;
+> -
+> -	if (dst->metric == DAMOS_QUOTA_SOME_MEM_PSI_US)
+> -		dst_last_psi_total = dst->last_psi_total;
+>  	damos_commit_quota_goal(dst, src);
+>  
+>  	KUNIT_EXPECT_EQ(test, dst->metric, src->metric);
+>  	KUNIT_EXPECT_EQ(test, dst->target_value, src->target_value);
+>  	if (src->metric == DAMOS_QUOTA_USER_INPUT)
+>  		KUNIT_EXPECT_EQ(test, dst->current_value, src->current_value);
+> -	if (dst_last_psi_total && src->metric == DAMOS_QUOTA_SOME_MEM_PSI_US)
+> -		KUNIT_EXPECT_EQ(test, dst->last_psi_total, dst_last_psi_total);
+>  	switch (dst->metric) {
+> +	case DAMOS_QUOTA_SOME_MEM_PSI_US:
+> +		KUNIT_EXPECT_EQ(test, dst->last_psi_total, U64_MAX);
+> +		break;
+
+The U64_MAX sentinel approach looks correct to me.
+
+In the first feedback iteration, setting `current_value` to `target_value`
+gives the PSI goal a score of 10000, so the uninitialized PSI delta does
+not affect the quota score. The current PSI total is then recorded,
+allowing subsequent iterations to calculate the delta normally.
+
+I also checked the commit path: the PSI goal is reset to U64_MAX when
+committed, which intentionally skips one tuning round when replacing an
+existing PSI goal.
+
+Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
+
+Thanks,
+Kunwu
+
+>  	case DAMOS_QUOTA_NODE_MEM_USED_BP:
+>  	case DAMOS_QUOTA_NODE_MEM_FREE_BP:
+>  		KUNIT_EXPECT_EQ(test, dst->nid, src->nid);
 > -- 
 > 2.47.3
 > 
 
--- 
-Sincerely yours,
-Mike.
+Sent using hkml (https://github.com/sjp38/hackermail)
 
