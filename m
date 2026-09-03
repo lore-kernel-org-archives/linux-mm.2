@@ -4,93 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B131EC624D6
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 23:20:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54D57C61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 23:53:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 953C76B008A; Thu,  3 Sep 2026 19:20:25 -0400 (EDT)
+	id CEE486B0088; Thu,  3 Sep 2026 19:53:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92B666B008C; Thu,  3 Sep 2026 19:20:25 -0400 (EDT)
+	id CA49E6B008A; Thu,  3 Sep 2026 19:53:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8690C6B0092; Thu,  3 Sep 2026 19:20:25 -0400 (EDT)
+	id B8E536B008C; Thu,  3 Sep 2026 19:53:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6882C6B008A
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 19:20:25 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DEF8C160663
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 23:20:24 +0000 (UTC)
-X-FDA: 85174021968.16.015FB1C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4A423180007
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 23:20:23 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CbmS68SM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of kuba@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kuba@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D8CA6B0088
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 19:53:33 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 13AE71A0655
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 23:53:33 +0000 (UTC)
+X-FDA: 85174105506.04.A8461AF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 4D006100009
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 23:53:31 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Uk+m9wlV;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788479611;
+	b=zm4jp3ZPUPfsmRlLu7abglxWBYdDCpe8Jnahbf4E4bZ5wHDISZKljt63GBkAHSV3EZxEsA
+	BFY1mxcBuvK1qD4hqn/uZKBJcW/UHsFQNv7b5CInI/0dqvsBuB1GmnsTR2qGPYEZBk+k6L
+	QckahHhKxA4jMHc88FsJ8Bhl9tIg/cw=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Uk+m9wlV;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788477623;
+	s=arc-20220608; t=1788479611;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jd2d3+3jAhjlIWPxn5NVZwiUzcNZ9cJ6/qoOYbHQKEk=;
-	b=XEN4UMROSGuHfGuEzXg3BUiesOspxo6ra3halOH21un+PAvKoX2uw6cR7NYPOKTtf3MWip
-	TpJB6kFQlDHIIaCHQyZlmrFgDoGW3DsDlAtHVUr9LRXm31+/i/qrgD5D9lonmuC6aQBKB9
-	tVR0AHQKHR5qrfPt/cEcNIg7zqDhN28=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CbmS68SM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of kuba@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kuba@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788477623;
-	b=Er9wtj+3yKGkCmEZmgLm352Tyg0pYipx5mnH2LafmqpmG2KEf8gc9oVSXltv5IxkKX/0Eu
-	TTJWp6N8DVqsj0F7+venNn6U6XcfdbYbAMzwUeQaMPLwNYZmjUKYbsscFJtRaGlc94Kz2S
-	FPfB2YzWuNj+uyHrsGvstQPmg/A6oFo=
+	bh=UF7yqAp8ad+9sMAMDxO8x1qaT7SamIPUcIuJfPgR/wE=;
+	b=r0PWHIvvKBsWUB8Q3vn65/LBAFTbLQeReHtfIR1k8+mkjyCzH/JpXQXdRuYlBTtUMi3qJS
+	j1FSXamsdVAMGfGjKklV0XF994S7bueVKyaRz7Lpj4ehgkeFQa06YIExpQpvWBKBAIvn91
+	Ua6HChHdh4GpkUxBnSHV1G5rJgUr/jc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3B5F24394A;
-	Thu,  3 Sep 2026 23:20:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7A81F000E9;
-	Thu,  3 Sep 2026 23:20:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788477622;
-	bh=Jd2d3+3jAhjlIWPxn5NVZwiUzcNZ9cJ6/qoOYbHQKEk=;
+	by tor.source.kernel.org (Postfix) with ESMTP id E37CB60546;
+	Thu,  3 Sep 2026 23:53:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 770721F000E9;
+	Thu,  3 Sep 2026 23:53:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1788479609;
+	bh=UF7yqAp8ad+9sMAMDxO8x1qaT7SamIPUcIuJfPgR/wE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=CbmS68SMAunuOIZQWmpFtxCQk7utUuViAFHuUe6GjOYQeTjKYbh3yM5O5b9kOTSPQ
-	 ifmG3Nrl9vmCoLVnHdRrQFpgCED41Toeqs5/M0737rmTdoDKiACzGWzRs23ETvTmjD
-	 W8Ydj9CccjusxqmdJaUoQvrawqm1i8R2sHUPbmg0vp9LGdEMZ42r00UjL3b8H5EyBD
-	 wEdMRK7OgDO+NfMseCQCA26acf9n2B/gDTD/VypyqG+PWIGePX8+VJkVPVLH7/DD7x
-	 MseYkufsPHfkSdnaQSKRvNHGn5E2qiNnFyVPpYi0hffmbQ61y7FIiw7idmYd4fQclf
-	 p93cNSDI3k3jA==
-Date: Thu, 3 Sep 2026 16:20:20 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: patchwork-bot+netdevbpf@kernel.org, Mike Rapoport <rppt@kernel.org>,
- 3chas3@gmail.com, duncan.sands@free.fr, gregkh@linuxfoundation.org,
- akpm@linux-foundation.org, david@kernel.org, willy@infradead.org,
- vbabka@kernel.org, accessrunner-general@lists.sourceforge.net,
- linux-atm-general@lists.sourceforge.net, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-usb@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 0/4] USB: replace page allocator calls with kmalloc()
-Message-ID: <20260903162020.323f6cdd@kernel.org>
-In-Reply-To: <aplR8tmzndmg4kfq@hovoldconsulting.com>
-References: <20260830-usb-v1-0-aa349c302246@kernel.org>
-	<178840081114.3041656.13596134068099743678.git-patchwork-notify@kernel.org>
-	<apkRyoCr2dNI0bNS@hovoldconsulting.com>
-	<aplR8tmzndmg4kfq@hovoldconsulting.com>
-MIME-Version: 1.0
+	b=Uk+m9wlVUndtTSDqMjlQ18780tb8+rvugNYeEio+29CXjGT3nCz5uJkUU4dmL/8N2
+	 KLPVjhXRir+7Ku8w5RHFhLFfU308IBkFDEm1noTc2OaDDHiZKDYmuyCmKShEMvUmme
+	 RXswuNalV7Mu1dLlbMS3bVXItpa0zTpfSefpfZqc=
+Date: Thu, 3 Sep 2026 16:53:28 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Adam Harshbarger <handyhandyman.adam@gmail.com>
+Cc: I Hsin Cheng <richard120310@gmail.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, stable@vger.kernel.org
+Subject: Re: [PATCH] lib/plist: fix plist_requeue() corrupting order in the
+ last bucket
+Message-Id: <20260903165328.2e781581d28ce1f4dbbc0da7@linux-foundation.org>
+In-Reply-To: <20260903222456.1881786-1-handyhandyman.adam@gmail.com>
+References: <20260903222456.1881786-1-handyhandyman.adam@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: cdbxypx8cgtdxgwwj4o6hkspum6pfp3z
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4A423180007
 X-Rspam-User: 
-X-HE-Tag: 1788477623-129085
-X-HE-Meta: U2FsdGVkX19gjIJyzMlbwMTkGBMtXLA5De8w+w6qo7g7UOkgK+3zy0i2mEzolUg+CXiVLL7lvBfAy+hL5CUo9PkBq72S4jT4UNDQpbFQQhKVkfGkfWC7LdkF4U8iqC69Cf0ZfCxdsCeKc+6lMOJP+hjqcEywUbf0g2u8LSm9A+bopjQIKdtD3iE2SSLaYVxH2zG1EhIGaals4qDZroPjzNFSnOuAQXHwq6IpM/UzTLIqm+Nw82r1yqLl2jV6g2X9AvbiqzbI9+S8Ez1L+DNyw5EIhHxdECSY897Ep8dhPntODsUb54M+YufxOlHSBGQok1FtlDFolJ/NTnlnyNSB+DGOSJJiMq2lEp2RXNGJ3XDOgiDUQCpg20J0pvF9riYlk+wqZyWjxuxen+hzighczfJ97h/TQsK9S1N3BSmx+t0F1Xj0LhvucXSO0tUhUzed+0ikZV1O4kTxVNvf5F3kTntBG8MmD4lFPGA81HTJFe1qjjXeKodvN1UHUbGpfS/uRQILP7f67QsILQ5eulWQr1zT6w71jkArDKvsVYxSUYzhor+y4chCDq0IDMORfv8XO2V6fa12ZsXecMoRsBFGaXS5EXSbp6/p3H/Ks71LT1DTwnQrQCiTYuUVJkyzS66qHAWcIjxtz7f0w6YQ3CEVyAumXywg2LJ740Ao+dKRYVM6WIcUgozhSNXSxCarR1uzD8xcR3WLbcxri9IzQotXleT4zjhUk1meymwmcj7SH6qJixxVVz81sU3WHWMqLSk2EC2rtCbNJGUddkLgRnGYoj5lMFVozOC7fBTNVPk2pdREZ2woC1IzvRyeB8vdHs+48fWpbs8GQ24zaZ1tDX/v53+LQLFjw1SUOWiaHAosF7lelrgy0DJaPbwcfW8r36szFIA8w+ORniWW45dMmGNbUL6TGwc9jLQQtZ/48QcnenMpP9SBJIkeKtYK/CIwFqN/5hBJoG1x2QwjB4yPPJJ
- vrogxWcv
- 4gS1idlQWmdQKq4/VTgf0G2j47R+oZatYHuKecHcgqo+yPFQ2WVWOy0VTXBqhg/bHfXLPUrtbDAgqWENUdy8rVCNQT3aaUA2Y3p17mWvXBkyjCponeA9ckgTTdMktsn33Di3qnb1xyTEFHaNI+3jaiNERgJs0JukYWvjt2X/Gw6q/LBIqmGKrz/ZDPTr2WB7foQlfcGCRr3DKZtgpgQ91ECvIbbBXC/uNvMbESFFs2x1Z8R7VBQ6eTDbpxuFFmoEMFDpsuvAKm82Ki8M27Q1/ncFVM3EaUw/1hxMY63nSzJEqr29igmgWq53ZGJYkPI+lvIwlv3ZxDgw1K6nLG3fuGrZuDwWKHOmqckzZWFGx4m7iNm4VVdfU7OMAlaAFdLK7/+SPSDHYeFXlKDA=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4D006100009
+X-Stat-Signature: q7jwq4yuegn86agem8rhos39yus4bf9i
+X-HE-Tag: 1788479611-816191
+X-HE-Meta: U2FsdGVkX196i7CXyQN+tGZGHBV/MteZtzdlNjS+SytvQIL71paI4jinuBc7wBt5mon0jTFLM29bFidV/07TOv8fALuaERcjcXdkwlwgeXBKXg+2X6XXOrmR1OAHqLnJ0Yp836kDzSanNBvgkJXqzFQlKs3udEfHDHTdYjtPt0hYG/wf8GBcUzPQIPFbs5NHF68pCrngME1UYeaib8bmfbeksdkyLUMRCBYl380RU1uKPPH9vsMV7PSOuMZAMJ7wSAb/iyb1olwqNlwlNcnWrbx8vPXdB4W9RE/jaAoJlOeMi32dYQJep4jUdHllM3PerKC/kLPMOwq5t75ETlmSk6sk/jliA0XCUXTTB6+dxcSDWvITFzPHpqZuPDVQIkFyDdqHF5YD1lMCD1y0sbNRR6HLKDlyWCL4R28sCpmIkwjf9SYbxk5zXI1aetX5OsLRVeP9EcPENYazv2wc9rIsYZXnxFlTlbdCF3fnxHIbl4OBxEvrY+FwMH+ze9Uc7QSBUrCDftXp2oL8zD7eJlrzFZqelRXKRG1duM+Iz4UkSYeW8AaftzLFe1/yurkmitIMpf+rchW1IEK4okJ4kMgkbDpOubueSM0f7mPYV+1e55ElR0CSGYWODbXv3KSnk525mzHJtdIXsNp3VtKSf/qFKlzysHU8OwZD332u1KftJt1V3Mh+z93j2+/tvG0guXJrYPATVuJa3IKTeHzce3OEfNluIktGfC2V7fpaQP8ekjkfIVnf3yzSXC6/YE9FT8WU0NaibCGwvF4RWtWH6nd+ZR2tPzVbuFf+X3mnoSASt7llrEgZ9AFwKhP1kjUhNFTdoCqbf6pct1Ek/t4DYooK78wocMEhVwyQQexgBcKwXeJ6wk0QVmEPWeh5XbD+1GSXB1yL1LT+veEk5zyaDe6kmxfdtyoUAnok/liWqmIeX5elfbwFDb+O6MJDbvgTVTxqqLdSujgI6AG6R8cHZZh
+ /ZyC5c7W
+ wEGlmuQeNouhrV6ckZMVUsa2ZkIkncCzBz77gxedqKufU0b/rzz5MwwTJvyZeFjiAiaWx+aInnLKCN4oSPEAFRDKyANzBvQsS4M1kZGymgwEtVuKh6ZOfDAs3N2q+FArvGfN/1TVTrTeK8OXenl7ma2gTWC+3h82cQds1JqLbhZTdWJr45x/RPvxdmGdVnLBw7r8UkstrrKFBJYkS4d9PaQ2D3erFI24pd3wej/gvr/4vFq65Cv0BSqIlUIMf9Jqp1xfeM3iNJ5kcYssfwxVEhY2pzca/3C9+pn+mRUF5UMj5eAEiPkMLa2uG18ho91oYjVngKEHfo7jylYOrItRuPHkkRmJQAVN+RtiJwK/1/sYj2BGT1KRwm5zl9A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,23 +90,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 3 Sep 2026 12:54:42 +0200 Johan Hovold wrote:
-> On Thu, Sep 03, 2026 at 08:20:58AM +0200, Johan Hovold wrote:
-> > > Here is the summary with links:
-> > >   - [1/4] USB: usbfs: replace __get_free_page() with kmalloc()
-> > >     (no matching commit)
-> > >   - [2/4] USB: cxacru: replace __get_free_page() with kmalloc()
-> > >     https://git.kernel.org/netdev/net-next/c/a3b4826138d4
-> > >   - [3/4] USB: speedtch: replace __get_free_page() with kmalloc()
-> > >     https://git.kernel.org/netdev/net-next/c/534b18813974
-> > >   - [4/4] USB: serial: wwan: replace __get_free_page() with kmalloc()
-> > >     (no matching commit)  
-> > 
-> > Why were these USB patches applies to net-next?  
-> 
-> I see now that it was only the ATM ones.
-> 
-> Sorry about the noise.
+On Thu,  3 Sep 2026 17:24:56 -0500 Adam Harshbarger <handyhandyman.adam@gmail.com> wrote:
 
-Sorry, should have sent a note.
+> plist_requeue() is meant to move a node to the end of its own priority
+> run.  When the node heads the *last* priority bucket it is instead placed
+> at the head of the whole list, leaving the plist unsorted:
+> 
+> ...
+>
+> Reachable from mm/swapfile.c, which rotates swap_avail_heads[] with
+> plist_requeue().  It takes three or more swap devices: at least two
+> distinct priorities, so that a later bucket exists for the ring to wrap
+> round from, and two or more devices sharing the lowest priority, so that
+> plist_requeue() does not return early.  One device per priority returns
+> early at the node->prio != iter->prio test.  A single priority is also
+> safe, but for a different reason worth stating: with one bucket no node
+> is ever linked onto prio_list at all -- plist_add() skips it for the
+> first node and for every node whose predecessor shares its priority --
+> so list_empty(&iter->prio_list) holds and the shortcut is never entered.
+> 
+> ...
+>
+
+Thanks.
+
+> Fixes: 95d4b3450ebe ("lib/plist.c: add shortcut for plist_requeue()")
+> Cc: stable@vger.kernel.org # v6.15+
+
+Why the cc:stable?  A description of the userspace impact would help
+people understand the need for backporting.  Please always include
+such a description when fixing things.
+
 
