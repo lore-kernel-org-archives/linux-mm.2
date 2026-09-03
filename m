@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 630F1C624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 15:50:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1BF7C61DD3
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 15:50:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 100A76B0096; Thu,  3 Sep 2026 11:50:23 -0400 (EDT)
+	id E21166B0099; Thu,  3 Sep 2026 11:50:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B25C6B0098; Thu,  3 Sep 2026 11:50:23 -0400 (EDT)
+	id DAABE6B009B; Thu,  3 Sep 2026 11:50:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE2AA6B0099; Thu,  3 Sep 2026 11:50:22 -0400 (EDT)
+	id CE6B76B009D; Thu,  3 Sep 2026 11:50:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C65756B0096
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 11:50:22 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 56541120567
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 15:50:22 +0000 (UTC)
-X-FDA: 85172887884.05.C9AD82E
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A24266B0099
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 11:50:25 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2A88BA4672
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 15:50:25 +0000 (UTC)
+X-FDA: 85172888010.11.3AED938
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 9EE621C0007
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 15:50:20 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gKSbt6d9;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 388881C000A
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 15:50:23 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rq53Txo2;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788450623;
+	b=FQJ0TsIIMSxaHeDIBGYlX6TkQzyjztRUid8i8dPVdGs4AC0LcS8ViDrOZ15fKNOAhHfLhy
+	yxULt35mbj4rSrZB48s4ZmkgJ5FDXXluJaKpDMmvuItM3RkOUKR9L1Uv0dWDlzulP3LLwK
+	gtuhMQx0jn/NtrWQMULLF91TH9szPMA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788450620;
+	s=arc-20220608; t=1788450623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7gSlHxYgypuWgcZDQkom/SXcL5+3gzhc1fw1FAM1Py0=;
-	b=CzR3nPqKMB4M/lMArZ+Mm3MzB27H+WtLTAhSSO1Ve88Mimz5/Cwigax0GR1zJQY9AW4B1t
-	h/5Dio+mntZeDFhz8Oz042DhvGsn66gHLPzGTAd0Y0R8bA7OX6Uy5oJMle3PoZh3syABqG
-	RXsx269h1oSEJC5d5OF6sWbG0+g8Uwc=
+	bh=c57DBNEt0+woR56ZuvNbkfIrlDXYh8oKXIQm/KMduWA=;
+	b=EpQFhBHIKAOS7inloyk6FeGyn8ESSpHmmIy6ryXYQTYq0yEw1HSzbNfGs2Ate2QoCXFeBf
+	E49RWPg5w0+/dyvlIehHcWXw4syyE26dS/QPFaXZdlT7KBEbr0o5+oMKqQ67RwxBPf37sr
+	HFetzz6W2FMSBtPzDAv4cPJ/aPKZv3o=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gKSbt6d9;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rq53Txo2;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788450620;
-	b=u1ydqys9aEPEQMmrrbPuGmfU6e+SDugnKqDCxBlKLVkvHSIbSR7I87K02sNBBGptu+HyJ5
-	ZLBKG378I5z0PVs/Nqqcf/9T/70dHRV85MgxbNx1ZR/glxFbi6gPHzCqiVli6vYOWOnvbL
-	upZwoV2hyzyKP0/yrnLW4R4UIpT97/k=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F150943C54;
-	Thu,  3 Sep 2026 15:50:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9EBC1F00A3D;
-	Thu,  3 Sep 2026 15:50:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8594A41208;
+	Thu,  3 Sep 2026 15:50:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA251F000E9;
+	Thu,  3 Sep 2026 15:50:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788450619;
-	bh=7gSlHxYgypuWgcZDQkom/SXcL5+3gzhc1fw1FAM1Py0=;
+	s=k20260515; t=1788450622;
+	bh=c57DBNEt0+woR56ZuvNbkfIrlDXYh8oKXIQm/KMduWA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=gKSbt6d9D0uAdEaOVghOguJ6c5AtIVGFZ05HuItgg8aSgDE7+88HwvowvZDc8M4u4
-	 g5ZZqw3Lc7+MZm/ErnQ6lTH7QY1fKwso02uiRPA4Lqq2HQpjUBxVRHu9XcggliatYB
-	 Ir8GpFHtraTriTsZPrQ7SPsYncQAtbqXCCnIz2jfVM5TtQHgUZLP18dr8d7VBx/0pv
-	 SShtK+ubAdzhIquF0nf2gnu5G64PAJSJz9JbbW0oQBIxX2mhFJ6wgyRuuKgGI68uqF
-	 qdRQd/XHSPvXQhsyPAEyo8sNgKYYrb9VcqX/Ub/P7IMdntF7IP5C2xnlesXk1istpT
-	 LDFrk2HJ8zXHQ==
+	b=Rq53Txo23LaqkMe5fufGOjTXt1HCpC3UBmUOtCC7iNt9tPfm6kTXXnPSDCAk9nxFE
+	 lwemGFrATyN+XAg13ALbLeKBqqCnEFjZCIw3m+OgJcoF6R2o55nl9zlR2nD0eTX5GV
+	 5WP02yiztn4pzZBwyYJctDQamuvIJP/ix0ISO8UHAZl1Jm02IkgCxK2aY27CDvv6Hc
+	 7QDyJftBmqBtwrh6mtysocnwg4FnJVx3Sfz+AXJds6nDGeBfsYx3+pfkjMCTK3jRpK
+	 /JYp0S0gnBA1SSNnCmI0CtvQhXnnUR5Tw1Fd/hwLuWwcoJS3sNrNTSUndJiU/wpXbY
+	 mJG5w/QHSQw6w==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Thu, 03 Sep 2026 18:50:01 +0300
-Subject: [PATCH 4/5] mm/vmalloc: add DEFINE_FREE() for vfree()
+Date: Thu, 03 Sep 2026 18:50:02 +0300
+Subject: [PATCH 5/5] mm/execmem: use cleanup infrastructure in ROX cache
+ functions
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260903-execmem-rox-cache-pmd-v1-v1-4-11beb2a3d249@kernel.org>
+Message-Id: <20260903-execmem-rox-cache-pmd-v1-v1-5-11beb2a3d249@kernel.org>
 References: <20260903-execmem-rox-cache-pmd-v1-v1-0-11beb2a3d249@kernel.org>
 In-Reply-To: <20260903-execmem-rox-cache-pmd-v1-v1-0-11beb2a3d249@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -80,14 +81,14 @@ Cc: Luis Chamberlain <mcgrof@kernel.org>, Mike Rapoport <rppt@kernel.org>,
  linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-mm@kvack.org
 X-Mailer: b4 0.17-dev
-X-Stat-Signature: spwdiakbec7mzu6ikuq5owh5z1xds6cs
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9EE621C0007
 X-Rspam-User: 
-X-HE-Tag: 1788450620-341134
-X-HE-Meta: U2FsdGVkX1+Yb9Gus1y/EF9M3wBbG4OfUmdkVy8qBnqMnITnjmgL5n/xsDp2pzPR2oiFSwhAOvs1kPOHi68/kXJbJbIpYuSOnKuGDXLupnOOZkDe8w4jsFvI/7ddDUg552/gMKF5Iw6nwUEZAiB5j0l9KRtYcb9efZ3dk4YHlpq+W7FwCoO3t5icsxkjB9XKvcIsUk57eoWaj8xZ+Z+wRPJoXlTzwoiQqPlyHgwsEL37a3027ksXLw0+TqrmdOH82xBvLeS1iVSVDJte6HvX4Y2w7arRuE9qovSGB6TxMVbJ2ybOAE06tJJnQc48r6JZR4Z4L/ndlMxTz67f5rMQPgNPYByD40YBIIw6UOrhsN/aGLr1fPf9yzXS2x9NkOFjW7p8NnFEhFf2jDuCYmw9tWnxaYqSK0+nvNZfgwg1N5b/LHNXjtmXcIGoBYdMNYQWjjcSQ8JLBXBQ1UI3WRYHMdUy+hu635hTgiGFmf0XeX2W2ShrReVQVUtfbDcf6wGSIi3fUYzFlFOkIBu2w4iTP0HyKB7XRa2HjTTCYhMo/Kys2g0EBk950TOoRmfqpTXHnBbM7gVscpo6cf+KH1mujH0Uszai+mMtcFHbbF3j2j75GeLq2RR3WtdFxnEH7kUkeo6uSnID0kvAM5QBzoFdqFprRNo+1fKH3nzIM7For8leEPx8nRTayMN8kj4FYuJxDVNicOJMNl3t4DU0oUrRfZ/N5vnSC6w44hbP1PkI++E9z4PoToBtOzqODmtV0xxQSWakjVlsPQvBNFsoLU+cRRJk4XLCK1cFrtMSWqgtiu3uDbhLAKEBNJ70GIjkZ7dDqTXRgoeim5xcEGyIJIwN5BiEFJzEY2AcuO8IAjoNL/xML1yCLi7KmByhBrDYZniIlbWX8UZJymtzkI6I/n46z2rkEzEMwLRaK63vAMhbwcJGwtEyELGhv7lJLmc+Rj3Ts9JJn3pzX1PPPAMcPwJ
- F4L//M+E
- tGx/Y6of4OMhiOJbyNC7HJde7PD1lXQyi0+XSCp8Xp4pNRv7i3jVCbGYX60chvPIGy9L+vJJyCS64L9EQEPbc0Jt2UntFF9NnTmMm0RBbAqtES32Pfhw6E/ym0p42wJAM4Bl4z2hWA/y2iIVkDpFMgSGTZZ3lTE6NfEY0b3K4ieX3vJU/Q0lzj8v8chLCEhcqErieI5LAee6B7ol72+OUs1tlsjeAO7GswCj6jPPMLneDcfG4Hk3AWQDnGor7acajDeTOdLWZpBrTUoJx2cEHu9QeAvZQaqUdALJefBYSDp3zYvkb2XpA2rEibPn/o3p0G+4i
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 388881C000A
+X-Stat-Signature: 7e4dewjm7uh9okuts63o3iutgyb3m61h
+X-HE-Tag: 1788450623-301374
+X-HE-Meta: U2FsdGVkX1/Uw6EjPwI6A/RHlqs3BnG4K15DwGU0hu4z4pP11o6hO7SXzsu9U6QSaqLeESGC4vYV5BUbCWta5WMDHYp3qkDAU0sCD7kL7+54dSqErw4J8MJQcPlFkykvF1F3szS0BjwSUlQUTm4zZhafsRh6JrMkuZFB27YbSqV08Eak+6GwoN6U+y3/s24xrulrBTmt1+0Qj8+So1YiKNv0O3RonVGIThvVIM0Hpsyqivq4RMAIm5kIIyTCrFpqKiaRplfDTembL0YDb1wa+T1t1uuNneIVqVA3lp5kWwv473vCfYGWUL0fTT7pPwJlfT5LEymFBbufT3MKfLTZareVJSysMxA47gSGVHovcOgSgjBdaVRvMoEdcmgU5KLr7BF/nacuMO6sMg3+AHVTAbSwo31QeA/6+6X6wuqQoxh0ufz8RSLbvrtGjMmFgvrNmM9chj+PM7FjcQ7+kkAXHs80U5xJV96no2rJ6bDOI1cBD0uXCM9AJw7lndUAXctcOJKngr8KNu5RuG27Xk5hkUibaajRk9d7JEw0IRuqxnk4BWS/L9w+SX+SbJk3veVbTLn3MkPq8qGc5gRKmFm581FlpLRjyA/N/rQT+Lp6ee2/Bi7GVAS3ecBCqdVJ9Vaqb/0jZTjv/1ukdzdD/u8lPmrEUZMyLf8Kp4TZ9yFXLKvx5WxaFBvhOY8ZcvOco23BqLPGyzbql9SQlV9hFLnngFu+AsvgPfa0bQuhaT7jHWwPTrzgLj1h07RuU/h/YshF0sT5HrvXWOxZ/8M+4REMGsySLD2qZ0hO/RpEr+FZy+dmGpm4Y9Pzn6zQrRFAv/n6Iu8nWqP8UAIiH172zposTApltQKgtFEzn/kUyjmx6gqQxNP4Cd3O8Dj5ZYMka4yRpNlRJcvWjURzdx6oKraYgqVIHelbKiBm25bmZ5Tan9cGmS3/fDWOii0+M1e+koQNdt/REicZatGYtkd5Ahq
+ tpcZ7gGy
+ ilvfEM0HWZ6MEVcP+prbMnyRfl+nleJkY2GZWzzgbUIbsyWLn4Go99g28M8hI9IKn/6eZhQfs4IwjKn+hjOArhJ7YO7fJI90aI53zCgcOszTSdmOz/2nKkx3McuoRSAk1Q0Yarr2LClyb1ae9Og9HV4D5qYv4upVG8HnsdILE3G/7pvuavFACYGarPooDw0jH09E2aOXSbsHM3ymyVT9aUjsqvthRIhgCPpTST63lRhHv2m9uAtsGhSv/vg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,58 +96,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-... and use it in hid-core, the only place with a cleanup for a
-vmalloc() allocation.
+After splitting out execmem_alloc_rox() from
+execmem_cache_populate_alloc(), the error paths of both functions became
+less complex and can be easily switched to use the cleanup infrastructure.
+
+Use __free(vfree) to free allocated memory on the error paths and
+guard(mutex) for synchronization in ROX cache functions.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- drivers/hid/hid-core.c  | 4 ++--
- include/linux/vmalloc.h | 3 +++
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ mm/execmem.c | 32 ++++++++++----------------------
+ 1 file changed, 10 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index a3ff0514f9cdf..ec7c2860c93ef 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -944,7 +944,7 @@ static int hid_scan_report(struct hid_device *hid)
- 		hid_parser_reserved
- 	};
+diff --git a/mm/execmem.c b/mm/execmem.c
+index 77653b7f163dc..349cadd874863 100644
+--- a/mm/execmem.c
++++ b/mm/execmem.c
+@@ -138,11 +138,10 @@ int execmem_restore_rox(void *ptr, size_t size)
+ static void execmem_cache_clean(struct work_struct *work)
+ {
+ 	struct maple_tree *free_areas = &execmem_cache.free_areas;
+-	struct mutex *mutex = &execmem_cache.mutex;
+ 	MA_STATE(mas, free_areas, 0, ULONG_MAX);
+ 	void *area;
  
--	struct hid_parser *parser __free(kvfree) = vzalloc(sizeof(*parser));
-+	struct hid_parser *parser __free(vfree) = vzalloc(sizeof(*parser));
- 	if (!parser)
- 		return -ENOMEM;
+-	mutex_lock(mutex);
++	guard(mutex)(&execmem_cache.mutex);
+ 	mas_for_each(&mas, area, ULONG_MAX) {
+ 		struct vm_struct *vm = find_vm_area(area);
+ 		size_t size = mas_range_len(&mas);
+@@ -163,7 +162,6 @@ static void execmem_cache_clean(struct work_struct *work)
+ 			vfree(area);
+ 		}
+ 	}
+-	mutex_unlock(mutex);
+ }
  
-@@ -1265,7 +1265,7 @@ static int hid_parse_collections(struct hid_device *device)
- 		hid_parser_reserved
- 	};
+ static DECLARE_WORK(execmem_cache_clean_work, execmem_cache_clean);
+@@ -269,7 +267,7 @@ static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
+ static void *execmem_vmalloc_rox(struct execmem_range *range, size_t size,
+ 				 unsigned long vm_flags)
+ {
+-	void *p = execmem_vmalloc(range, size, PAGE_KERNEL, vm_flags);
++	void *p __free(vfree) = execmem_vmalloc(range, size, PAGE_KERNEL, vm_flags);
+ 	int err;
  
--	struct hid_parser *parser __free(kvfree) = vzalloc(sizeof(*parser));
-+	struct hid_parser *parser __free(vfree) = vzalloc(sizeof(*parser));
- 	if (!parser)
- 		return -ENOMEM;
+ 	if (!p)
+@@ -280,22 +278,17 @@ static void *execmem_vmalloc_rox(struct execmem_range *range, size_t size,
+ 	set_vm_flush_reset_perms(p);
+ 	err = set_memory_rox((unsigned long)p, size >> PAGE_SHIFT);
+ 	if (err)
+-		goto err_free_mem;
+-
+-	return p;
++		return NULL;
  
-diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
-index 6e555e31e6225..034a693777ca0 100644
---- a/include/linux/vmalloc.h
-+++ b/include/linux/vmalloc.h
-@@ -3,6 +3,7 @@
- #define _LINUX_VMALLOC_H
+-err_free_mem:
+-	vfree(p);
+-	return NULL;
++	return no_free_ptr(p);
+ }
  
- #include <linux/alloc_tag.h>
-+#include <linux/cleanup.h>
- #include <linux/sched.h>
- #include <linux/spinlock.h>
- #include <linux/init.h>
-@@ -215,6 +216,8 @@ void *__must_check vrealloc_node_align_noprof(const void *p, size_t size,
- extern void vfree(const void *addr);
- extern void vfree_atomic(const void *addr);
+ static void *execmem_cache_populate_alloc(struct execmem_range *range, size_t size)
+ {
+ 	unsigned long vm_flags = VM_REQUIRE_HUGE_VMAP;
+ 	size_t alloc_size = round_up(size, PMD_SIZE);
+-	struct mutex *mutex = &execmem_cache.mutex;
++	void *p __free(vfree) = NULL;
+ 	int err;
+-	void *p;
  
-+DEFINE_FREE(vfree, void *, if (!IS_ERR_OR_NULL(_T)) vfree(_T))
-+
- extern void *vmap(struct page **pages, unsigned int count,
- 			unsigned long flags, pgprot_t prot);
- void *vmap_pfn(unsigned long *pfns, unsigned int count, pgprot_t prot);
+ 	p = execmem_vmalloc_rox(range, alloc_size, vm_flags);
+ 	if (!p)
+@@ -306,20 +299,15 @@ static void *execmem_cache_populate_alloc(struct execmem_range *range, size_t si
+ 	 * as an atomic operation, otherwise they may be consumed
+ 	 * by a parallel call to the execmem_cache_alloc function.
+ 	 */
+-	mutex_lock(mutex);
++	guard(mutex)(&execmem_cache.mutex);
+ 	err = execmem_cache_add_locked(p, alloc_size, GFP_KERNEL);
+-	if (!err)
+-		p = execmem_cache_alloc_locked(range, size);
+-	mutex_unlock(mutex);
+-
+ 	if (err)
+-		goto err_free_mem;
++		return NULL;
+ 
+-	return p;
++	/* the chunk belongs to the cache now */
++	retain_and_null_ptr(p);
+ 
+-err_free_mem:
+-	vfree(p);
+-	return NULL;
++	return execmem_cache_alloc_locked(range, size);
+ }
+ 
+ static void *execmem_alloc_rox(struct execmem_range *range, size_t size)
 
 -- 
 2.53.0
