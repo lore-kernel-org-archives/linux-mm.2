@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3837BC624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 04:19:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91EC9C624A4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 04:19:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4622A6B00A6; Thu,  3 Sep 2026 00:18:46 -0400 (EDT)
+	id 65D496B00AC; Thu,  3 Sep 2026 00:18:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 436696B00AC; Thu,  3 Sep 2026 00:18:46 -0400 (EDT)
+	id 634F36B00AE; Thu,  3 Sep 2026 00:18:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3279C6B00AD; Thu,  3 Sep 2026 00:18:46 -0400 (EDT)
+	id 54BD26B00AF; Thu,  3 Sep 2026 00:18:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EE5216B00A6
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 00:18:45 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6C3EC1A0413
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 04:18:45 +0000 (UTC)
-X-FDA: 85171145010.05.3B27B96
-Received: from mail-m93248.xmail.ntesmail.com (mail-m93248.xmail.ntesmail.com [103.126.93.248])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 160634000C
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 04:18:42 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 2CE406B00AC
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 00:18:47 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AF0FD1A0413
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 04:18:46 +0000 (UTC)
+X-FDA: 85171145052.25.B42B8F4
+Received: from mail-m93247.xmail.ntesmail.com (mail-m93247.xmail.ntesmail.com [103.126.93.247])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 76F2B40007
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 04:18:44 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf01.hostedemail.com: domain of zhen.ni@easystack.cn designates 103.126.93.248 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+	spf=pass (imf17.hostedemail.com: domain of zhen.ni@easystack.cn designates 103.126.93.247 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
+	dmarc=pass (policy=none) header.from=easystack.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788409123;
-	b=qzXUUFuWSH+ivvM+4o6UbFDftc96spQkyC8zQ7X6gbN8GzmORohVLcDJKVR9Fgs6q7Mez8
-	5ooVtlumog3fsftufnk5xlSMn9aI1QmcaAr3RFCgvr7T6j/hQSy53bsx6ILDcujR4SvkhV
-	xxCSLArWUu8pwojTw9+vmZNi9KvUMrE=
+	t=1788409125;
+	b=214MRMBwrQ2QKlzNC2eDDDhd2JDCeJHdXXn2LaNlzkCSlJfK9yY4ITxzoWkKAk5QFAtr0j
+	qII4glFB7OQ+2Co3xIJwZOlFqZ6aFpBDvwsBkPfucMBEomlo/xOVtCYVmBzg6mS+4aAR0L
+	4oVem9q0jmTeID938fiXTZxyET4CsOE=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=none;
+	spf=pass (imf17.hostedemail.com: domain of zhen.ni@easystack.cn designates 103.126.93.247 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
+	dmarc=pass (policy=none) header.from=easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788409123;
+	s=arc-20220608; t=1788409125;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7M9ym2FiWYh5ToBU+uDTghV+oI8XYn8m7cguut78S9k=;
-	b=FFBdMY0piV/bI+5eOBQra/IIz3U5Khlae6eCLrvdZ/mZr6ZHyIKZ9UHRqSSBXBi5/QV22G
-	+kWpvGIe5KR1X+iM4bwX7L35A82VLuBpTC3p1+aVyftf+eYdbEFbW8Zbl+wjy2bczoxEFu
-	X3yF5uHo9pIrJabf2grO8yNeN4Fi/x0=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf01.hostedemail.com: domain of zhen.ni@easystack.cn designates 103.126.93.248 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+	bh=uW3zo/mel7Dm2VE/NVpG3qxnMQydkqs0oFK+GxUx8oQ=;
+	b=Js7FA/oh0C/CaPwhnASV2xOcQn3V/Dqxh15gbirQH4k2a4cZUcEZdotn3Z2vONgXVhSbOg
+	8jJOk3sPo2FBFAtsPOuqPn+MGzJ1sAlY3APeqWGOFKDlvYNo8ordCHXu2RS52Kbo0M+EmO
+	1KlSv4pI6WoghKTNUzMEede9YlqL44k=
 Received: from localhost.localdomain (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 1ea3ea3b7;
-	Thu, 3 Sep 2026 12:18:38 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 1ea3ea3ba;
+	Thu, 3 Sep 2026 12:18:40 +0800 (GMT+08:00)
 From: Zhen Ni <zhen.ni@easystack.cn>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -70,28 +70,28 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Zhen Ni <zhen.ni@easystack.cn>
-Subject: [PATCH v2 6/8] tools/mm: Add PID/TGID/COMM filtering support to page_owner_filter
-Date: Thu,  3 Sep 2026 12:18:17 +0800
-Message-Id: <20260903041819.1776630-7-zhen.ni@easystack.cn>
+Subject: [PATCH v2 7/8] tools/mm: Add memory cgroup filtering support to page_owner_filter
+Date: Thu,  3 Sep 2026 12:18:18 +0800
+Message-Id: <20260903041819.1776630-8-zhen.ni@easystack.cn>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20260903041819.1776630-1-zhen.ni@easystack.cn>
 References: <20260903041819.1776630-1-zhen.ni@easystack.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0aa0657d7fa00229kunm7336907a330c0
+X-HM-Tid: 0aa0657d85300229kunm7336907a330c7
 X-HM-MType: 1
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaQkIdVhhMTBhPGUlLS0pNTVYVFA
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDH0tIVkNNHh0YHR8eTU1MTlYVFA
 	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
 	lPT09IVUpLS1VKQktLWQY+
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 76F2B40007
+X-Stat-Signature: frtoh7c3qx3cmfp3cwppk7ftywkehi3q
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 160634000C
-X-Stat-Signature: ijnht7y74hd3ijpkfwp997fbt8w4igdp
-X-HE-Tag: 1788409122-198355
-X-HE-Meta: U2FsdGVkX19R65nWumpwdpREJg6hpaQcFZvA7Qua077Xvn1oDEE9yiZ6lYhEUuRAWVocKlANzoTuOM3G2N7lhb12pSfuAgrRHmsaJKjtPLl5Q+ktaTH0WPXYYDkEECRps7jzPsPltBP4qFUYDjM35W13STEMU9J59nw7LEDt/T5YB+I1PV/fg8yqEAAS2tR6i3bSYQHejtmAKt5S5W29h+nvR4P1vQw+BXoTXTJ2nD8b3/RDrVippCT6dA8gJr/qsM1Ze/R5BQDd1eLVlWXvUfsvWvEpAatW8DJ1s9l3DmJNUDmtYtcO3VpRJTlXx608FDdeyo3Mn4pGegtT5RQc/6nHvPyfwztzJAxurLAFAx5iXVNC+E3iniW/ztg92ApePlp+nYvMR06YVgefxnO1rizbDvpvfFdmWGZ3qoLSWUIExOg9FUakqt/pstfAyYDguDikgwXidZXgVuCu3ub2CIl19tflWrwkZQP7LpzvByxNt4h8GvQ7uiY4S/eaHhQtIZBRrSXlE3+1oHBnjzXOkKPEUiGV96TgOP5nVRwZeCa05B5H2xibWHyyNc/6+/9GHCWwLcecllpLzl43lTW08ZjMapwAlZuOp11x2dlsQAzO6u/wdMC6TOBKDf1555LhikrLorQqAozNXYQjcLdprcf4szm3HrSOdLZsGVKoELJ9mdzKnqus6ldEYwMpCr0+cxAthQthfAIkbGO4xhdV0+P8Y9V3+KsSNHw1F924oMVO8PL+KiV4Pa1hWiBr498kP9Sf99/rH918lcgm5sLOZLvwHhD+7C2Xo6wXlLUof6/LmOpIzqySc/ntGtpR0noua3qVEezMH16AZ/UE98PfmuFxmX2vUKStnjaY0DX7viKNmQeuXUY2UInzaEpuP/Of7k4XQP7PPoXYjPR1/71zER4FiaXoNoWC3uWMtKYlhZi6ME7FbgpdP8IxRK6Ybmi13z+2KneEm3edNLfvlF5
- WYntWirl
- Y+8C/spaQXFB3ZuyrfNm/cOLn8QD+SHCUBdsyGmLjARqHxNbGkShbnsAIPEu+1QcrRcFmFrB0Ln3UNE9gUpy0z3lOHWj+ybJePaVfsZqEce33nhXveF6TYjkzyq95tup3X61On84vKWA2lWk9Uc5KHC3Dj8lG1nmuA75bvlL+uuatT5hwA2WZ7/KuSYcmeWQLVZxLhgZY3SwgoZz+rAQXgAwhbGNYdLmZQpahU74QverOKX9PGglmTBMK23qMvdve4/5CfePmc6rm08g=
+X-HE-Tag: 1788409124-458103
+X-HE-Meta: U2FsdGVkX19IHZVL2dOvkF9NRcL07KB8h0cFnM8ilcRqJg7J/pFE4XM0gZOeGA28zAIL6xFP730Xb7wnqBJsktFHBwml/2nL5Rn5trR1Dqy2b2SZiIc6AuPQrFqZao0858vg0L2l+CcoT1B3tlnrrlje9UvvLUHdpPPEabIsCnkNJAcUH27B+mOCTEjLkLLrmywjRS0hoYj7ufpxdRmsVB7JwgKlbUFMpn0ZfNAurS3j7Z/GyeyiX5k63BZ+cxB+gjUsjLOQPgJ8KDQpNlxWJWTyOMQkYHGASKgqBFzsOdh0+aL8OPMYhhKkKuTKWCJZM1jHbiquFoQnHJ8OfI5vKqZZLbZxwav4TXm5RBu6dYZNLniNUKs/ZluE3axk01f7PyOwHWo1L/+2Fc0Gna1+GLZnlkajlkiL+Q4J/C72c+1fy/MqqsxNwezqZ/yy3FcLaQs+xtcleBOn4PeRo8Exu3Hx02wmM5HI70Kp+vIP6sRWTaABkfZfAOHfo2Y+Ca32gK6E7zi8QDoCEggM8LhSMi8KzfUSCxnzMIL3qisBcS8V7EIkwVPJ4FvnyoD+zgfpLoVHEjoaAEV4sSSQ3Br4UO6ur/lUhZ3NfRBE870O9+Mv+0oUctA39iwm8VgN7S0uXpYlqb+Dt5zh1XxvIfuUPY0EqeFY4J+L5ySpJxxMKqM30qZt3HtGpcnV7pT+BJFGRgz2ISeuOeEACOteS2jwO2H+YzaWItz81MZXMEJE177j3A0ule1TNHTsMxQ09NGhWdKw43Oi8GQaf90i4/BtndiPxTVbxD1Y1AA3OavwB0ZUsCMIyf+1W0LNbse5aR6mXwhlEMeJ2gG+2Ulc+o46kN8ic26jJJF23SIUlmZ66KK2FC5XCAv1t81jJ3e/1Zv6OlihatdRAEqGF90xORgvtAidXerpGpNw3r7nnVLHV7DuJZ98Ad0YG8vhNioZ0Lvt+sOM8488W7pbVtd973/
+ ZdGplXts
+ OxAJR/rLhw78/WXw3uQaUFzpzO+emiKyWQDZAzjsIyoS5NMC5misFzFjeOyoKUZ29zEoZhjcuMZSfbWObDv9oO6fe3JcOlEPj7PoEhiIk+BjBiIJNYQQxYIiqnXMD7WGBUm4Ei+vG0iCMucNFTBQaWaMIXquNVXFOLGdj8h4AwN5FHh84swuOZLwfzbXgyKXUwhGRGTUihZZ16QDz7K8XEfV64XO2/sBSdUIJT2MS1rSmorn6DocaaHpmVIMGcebLN16C8R3fxNBmeHLUTY1QBCN7sBpxVdh8YBQ9OaBsozaTE+A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,158 +99,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add command-line options for filtering by process ID (PID), thread group
-ID (TGID), and process name (COMM) to the page_owner_filter userspace tool.
+Add filtering capability for page_owner to allow filtering by
+memory cgroup path.
 
-New options:
-  -p, --pid PID_LIST    : Process IDs (comma-separated, max 16)
-  -t, --tgid TGID_LIST  : Thread Group IDs (comma-separated, max 16)
-  -c, --comm COMM_LIST  : Process names (comma-separated, max 8)
-                         Supports wildcards: * ? [a-z]
-
-Usage examples:
-  page_owner_filter -p 1234,5678
-  page_owner_filter -c "python*"
-  page_owner_filter -n 0 -c kworker* -o output.txt
+Filter page_owner output by cgroup path:
+./page_owner_filter -g /
+./page_owner_filter -g /user.slice
+./page_owner_filter -g /user.slice -c systemd
 
 Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
 ---
 Changes in v2:
-- Print error messages for empty -p/-t and -c arguments.
+- Print an error message for an empty -g argument.
 
-v1: https://lore.kernel.org/linux-mm/20260828031339.1270699-7-zhen.ni@easystack.cn/
+v1: https://lore.kernel.org/linux-mm/20260828031339.1270699-8-zhen.ni@easystack.cn/
 ---
- tools/mm/page_owner_filter.c | 172 ++++++++++++++++++++++++++++++-----
- 1 file changed, 151 insertions(+), 21 deletions(-)
+ tools/mm/page_owner_filter.c | 58 ++++++++++++++++++++++++++++++++++--
+ 1 file changed, 55 insertions(+), 3 deletions(-)
 
 diff --git a/tools/mm/page_owner_filter.c b/tools/mm/page_owner_filter.c
-index 1d1f0a38678a..516c2d109a6a 100644
+index 516c2d109a6a..8aea7df23eef 100644
 --- a/tools/mm/page_owner_filter.c
 +++ b/tools/mm/page_owner_filter.c
-@@ -21,22 +21,24 @@
+@@ -20,7 +20,7 @@
+ #include <getopt.h>
  #include <signal.h>
  
- #define MAX_CMD_LEN	512
-+#define TASK_COMM_LEN	16
+-#define MAX_CMD_LEN	512
++#define MAX_CMD_LEN	2048
+ #define TASK_COMM_LEN	16
  
  static void usage(const char *prog)
- {
- 	fprintf(stderr, "Usage: %s [OPTIONS]\n", prog);
- 	fprintf(stderr, "\nOptions:\n");
--	fprintf(stderr, "  -m, --mode MODE      : print_mode (stack, handle, or stack_handle)\n");
--	fprintf(stderr, "  -n, --nid NID_LIST   : NUMA node IDs (comma-separated or ranges)\n");
--	fprintf(stderr, "  -o, --output FILE    : output file (default: stdout)\n");
--	fprintf(stderr, "  -h, --help           : show this help message\n");
-+	fprintf(stderr, "  -m, --mode MODE       : print_mode (stack, handle, stack_handle)\n");
-+	fprintf(stderr, "  -n, --nid NID_LIST    : NUMA nodes (comma-separated or ranges)\n");
-+	fprintf(stderr, "  -p, --pid PID_LIST    : Process IDs (comma-separated, max 16)\n");
-+	fprintf(stderr, "  -t, --tgid TGID_LIST  : Thread Group IDs (comma-separated, max 16)\n");
-+	fprintf(stderr, "  -c, --comm COMM_LIST  : Process names (comma-separated, max 8)\n");
-+	fprintf(stderr, "                          Supports wildcards: * ? [a-z]\n");
-+	fprintf(stderr, "  -o, --output FILE     : output file (default: stdout)\n");
-+	fprintf(stderr, "  -h, --help            : show this help message\n");
+@@ -33,12 +33,13 @@ static void usage(const char *prog)
+ 	fprintf(stderr, "  -t, --tgid TGID_LIST  : Thread Group IDs (comma-separated, max 16)\n");
+ 	fprintf(stderr, "  -c, --comm COMM_LIST  : Process names (comma-separated, max 8)\n");
+ 	fprintf(stderr, "                          Supports wildcards: * ? [a-z]\n");
++	fprintf(stderr, "  -g, --cgroup PATH     : Memory cgroup path\n");
+ 	fprintf(stderr, "  -o, --output FILE     : output file (default: stdout)\n");
+ 	fprintf(stderr, "  -h, --help            : show this help message\n");
  	fprintf(stderr, "\nExamples:\n");
--	fprintf(stderr, "  %s -m stack\n", prog);
--	fprintf(stderr, "  %s -m handle\n", prog);
--	fprintf(stderr, "  %s -m stack_handle\n", prog);
--	fprintf(stderr, "  %s -m stack -o output.txt\n", prog);
--	fprintf(stderr, "  %s -n 0,1,2\n", prog);
--	fprintf(stderr, "  %s -m stack -n 0\n", prog);
-+	fprintf(stderr, "  %s -m handle -o output.txt\n", prog);
-+	fprintf(stderr, "  %s -n 0,1 -c bash\n", prog);
-+	fprintf(stderr, "  %s -c \"python*\" -t 1\n", prog);
+ 	fprintf(stderr, "  %s -m handle -o output.txt\n", prog);
+ 	fprintf(stderr, "  %s -n 0,1 -c bash\n", prog);
+-	fprintf(stderr, "  %s -c \"python*\" -t 1\n", prog);
++	fprintf(stderr, "  %s -c \"python*\" -g user.slice\n", prog);
  }
  
  static int validate_mode(const char *mode)
-@@ -132,6 +134,97 @@ static int validate_nid_list(const char *nid_list)
+@@ -225,6 +226,40 @@ static int validate_comm_list(const char *comm_list)
  	return 0;
  }
  
-+static int validate_pid_list(const char *pid_list)
++static int validate_cgroup_path(const char *path)
 +{
-+	const char *p;
-+	int count = 0;
++	char cgroup_path[512];
++	const char *input_path = path;
++	int is_cgroup_v2 = 0;
 +
-+	if (!pid_list || strlen(pid_list) == 0) {
-+		fprintf(stderr, "Error: Empty pid/tgid list\n");
++	if (!path || strlen(path) == 0) {
++		fprintf(stderr, "Error: Empty cgroup path\n");
 +		return -1;
 +	}
 +
-+	for (p = pid_list; *p; p++) {
-+		if (*p == ',') {
-+			count++;
-+			continue;
-+		}
-+		if (!isdigit((unsigned char)*p)) {
-+			fprintf(stderr,
-+				"Error: Invalid character '%c' in pid_list (only digits allowed)\n",
-+				*p);
-+			return -1;
-+		}
-+	}
++	if (path[0] == '/')
++		input_path++;
 +
-+	if (++count > 16) {
-+		fprintf(stderr, "Error: Too many PIDs (max 16)\n");
-+		return -1;
-+	}
++	/* Check if v1 memory controller exists */
++	if (access("/sys/fs/cgroup/memory", F_OK) != 0)
++		is_cgroup_v2 = 1;
 +
-+	return 0;
-+}
++	if (is_cgroup_v2)
++		snprintf(cgroup_path, sizeof(cgroup_path),
++			"/sys/fs/cgroup/%s/memory.stat", input_path);
++	else
++		snprintf(cgroup_path, sizeof(cgroup_path),
++			"/sys/fs/cgroup/memory/%s/memory.stat", input_path);
 +
-+static int validate_tgid_list(const char *tgid_list)
-+{
-+	return validate_pid_list(tgid_list);
-+}
-+
-+static int validate_comm_list(const char *comm_list)
-+{
-+	const char *p;
-+	const char *comm_start;
-+	int count = 0;
-+	int comm_len = 0;
-+
-+	if (!comm_list || strlen(comm_list) == 0) {
-+		fprintf(stderr, "Error: Empty comm list\n");
-+		return -1;
-+	}
-+
-+	comm_start = comm_list;
-+	for (p = comm_list; *p; p++) {
-+		if (*p == ',') {
-+			/* Check COMM length before separator */
-+			if (comm_len == 0) {
-+				fprintf(stderr, "Error: Empty COMM in list\n");
-+				return -1;
-+			}
-+			if (comm_len >= TASK_COMM_LEN) {
-+				fprintf(stderr,
-+					"Error: COMM too long (max %d chars)\n",
-+					TASK_COMM_LEN - 1);
-+				fprintf(stderr, "  Near: %.15s...\n", comm_start);
-+				return -1;
-+			}
-+			count++;
-+			comm_len = 0;
-+			comm_start = p + 1;
-+			continue;
-+		}
-+		comm_len++;
-+	}
-+
-+	/* Check last COMM */
-+	if (comm_len == 0) {
-+		fprintf(stderr, "Error: Empty COMM at end of list\n");
-+		return -1;
-+	}
-+	if (comm_len >= TASK_COMM_LEN) {
-+		fprintf(stderr, "Error: COMM too long (max %d chars)\n",
-+			TASK_COMM_LEN - 1);
-+		fprintf(stderr, "  Near: %.15s...\n", comm_start);
-+		return -1;
-+	}
-+
-+	if (++count > 8) {
-+		fprintf(stderr, "Error: Too many COMMs (max 8)\n");
++	if (access(cgroup_path, F_OK) != 0) {
++		fprintf(stderr, "Error: Cgroup path '%s': not found or no memory controller\n",
++			path);
 +		return -1;
 +	}
 +
@@ -260,64 +186,36 @@ index 1d1f0a38678a..516c2d109a6a 100644
  int main(int argc, char *argv[])
  {
  	const char *output_file = NULL;
-@@ -148,6 +241,9 @@ int main(int argc, char *argv[])
- 	static struct option long_options[] = {
- 		{"mode",	required_argument, 0, 'm'},
- 		{"nid",		required_argument, 0, 'n'},
-+		{"pid",		required_argument, 0, 'p'},
-+		{"tgid",	required_argument, 0, 't'},
-+		{"comm",	required_argument, 0, 'c'},
+@@ -244,6 +279,7 @@ int main(int argc, char *argv[])
+ 		{"pid",		required_argument, 0, 'p'},
+ 		{"tgid",	required_argument, 0, 't'},
+ 		{"comm",	required_argument, 0, 'c'},
++		{"cgroup",	required_argument, 0, 'g'},
  		{"output",	required_argument, 0, 'o'},
  		{"help",	no_argument,	   0, 'h'},
  		{0, 0, 0, 0}
-@@ -174,7 +270,7 @@ int main(int argc, char *argv[])
+@@ -270,7 +306,7 @@ int main(int argc, char *argv[])
  		return 1;
  	}
  
--	while ((opt = getopt_long(argc, argv, "m:n:o:h", long_options, NULL)) != -1) {
-+	while ((opt = getopt_long(argc, argv, "m:n:p:t:c:o:h", long_options, NULL)) != -1) {
+-	while ((opt = getopt_long(argc, argv, "m:n:p:t:c:o:h", long_options, NULL)) != -1) {
++	while ((opt = getopt_long(argc, argv, "m:n:p:t:c:g:o:h", long_options, NULL)) != -1) {
  		int len;
  
  		switch (opt) {
-@@ -206,6 +302,48 @@ int main(int argc, char *argv[])
+@@ -344,6 +380,22 @@ int main(int argc, char *argv[])
  			cmd_len += len;
  			break;
  		}
-+		case 'p': {
-+			const char *pid_list = optarg;
++		case 'g': {
++			const char *cgroup_path = optarg;
 +
-+			if (validate_pid_list(pid_list) < 0)
++			if (validate_cgroup_path(cgroup_path) < 0)
 +				return 1;
-+			len = snprintf(filter_cmd + cmd_len, MAX_CMD_LEN - cmd_len,
-+				       "%spid=%s", cmd_len > 0 ? " " : "", pid_list);
-+			if (len < 0 || cmd_len + len >= MAX_CMD_LEN) {
-+				fprintf(stderr, "Error: Command too long\n");
-+				return 1;
-+			}
-+			cmd_len += len;
-+			break;
-+		}
-+		case 't': {
-+			const char *tgid_list = optarg;
++			const char *path = (cgroup_path[0] == '/') ? cgroup_path + 1 : cgroup_path;
 +
-+			if (validate_tgid_list(tgid_list) < 0)
-+				return 1;
 +			len = snprintf(filter_cmd + cmd_len, MAX_CMD_LEN - cmd_len,
-+				       "%stgid=%s", cmd_len > 0 ? " " : "", tgid_list);
-+			if (len < 0 || cmd_len + len >= MAX_CMD_LEN) {
-+				fprintf(stderr, "Error: Command too long\n");
-+				return 1;
-+			}
-+			cmd_len += len;
-+			break;
-+		}
-+		case 'c': {
-+			const char *comm_list = optarg;
-+
-+			if (validate_comm_list(comm_list) < 0)
-+				return 1;
-+			len = snprintf(filter_cmd + cmd_len, MAX_CMD_LEN - cmd_len,
-+				       "%scomm=%s", cmd_len > 0 ? " " : "", comm_list);
++				       "%smemcg=/%s", cmd_len > 0 ? " " : "", path);
 +			if (len < 0 || cmd_len + len >= MAX_CMD_LEN) {
 +				fprintf(stderr, "Error: Command too long\n");
 +				return 1;
@@ -328,32 +226,6 @@ index 1d1f0a38678a..516c2d109a6a 100644
  		case 'o':
  			output_file = optarg;
  			break;
-@@ -220,7 +358,7 @@ int main(int argc, char *argv[])
- 
- 	/* At least one filter must be specified */
- 	if (cmd_len == 0) {
--		fprintf(stderr, "Error: At least one filter (-m or -n) must be specified\n\n");
-+		fprintf(stderr, "Error: At least one filter must be specified\n\n");
- 		usage(argv[0]);
- 		return 1;
- 	}
-@@ -255,15 +393,7 @@ int main(int argc, char *argv[])
- 	ret = write(fd, filter_cmd, strlen(filter_cmd));
- 
- 	if (ret < 0) {
--		if (errno == EINVAL) {
--			fprintf(stderr, "Error: Kernel rejected the filter command.\n");
--			fprintf(stderr, "Possible causes:\n");
--			fprintf(stderr, "  - Kernel does not support per-fd filtering\n");
--			fprintf(stderr, "  - NUMA node has no memory\n");
--			fprintf(stderr, "  - Unknown reason\n");
--		} else {
--			perror("write filter command");
--		}
-+		perror("write filter command");
- 		goto out;
- 	}
- 
 -- 
 2.20.1
 
