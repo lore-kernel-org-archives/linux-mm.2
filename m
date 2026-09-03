@@ -4,143 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96E87C624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 12:50:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A35CC624A4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 12:52:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E84A6B00AF; Thu,  3 Sep 2026 08:50:07 -0400 (EDT)
+	id 1FDFC6B00A3; Thu,  3 Sep 2026 08:52:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 998F66B00B2; Thu,  3 Sep 2026 08:50:07 -0400 (EDT)
+	id 1AEC06B00A4; Thu,  3 Sep 2026 08:52:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 860AB6B00B3; Thu,  3 Sep 2026 08:50:07 -0400 (EDT)
+	id 09D9B6B00A7; Thu,  3 Sep 2026 08:52:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A4B76B00AF
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 08:50:07 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id ED4B3140529
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:50:06 +0000 (UTC)
-X-FDA: 85172433612.29.33BD2C1
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D2FA56B00A3
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 08:52:54 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 67F95C04B3
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:52:54 +0000 (UTC)
+X-FDA: 85172440668.20.D8C4121
 Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf15.hostedemail.com (Postfix) with ESMTP id EB486A0004
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:50:04 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="s/gvNVuW";
-	spf=pass (imf15.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788439805;
-	b=uH7IH9NDnW154iFi1ZzNDz/jX8Z1yyigBd7KgDGY625ZsPbTpUQXHSEfnrfep+gS8HD3y+
-	UKi3pq4ey+mgcHfOt9qxuZI/ksLgapiaEQatSqtz9vvJlNjt6gB/QkDJvfgHWrTbO7UA9t
-	mTHeb2QxcarrQig3jngQ8eWEc5Hm/BA=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="s/gvNVuW";
-	spf=pass (imf15.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788439805;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1C3B240008
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 12:52:51 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=AL5KBfZ0;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf11.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=mhocko@suse.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788439972;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=59Wj+J6S9wt/dcmTRFnqS+5MGklja5S5ehnxj0FnuDo=;
-	b=CQGGrk4AlmPi7E91JtY/MEDn1uWP8hQvgAKVzTJT2rvYtG7rrmFlQ+nn7SX/kQkHKxXFgj
-	9QhprYK0owWat/EjKUR0pg468VlcNf9vCAHjaur37+89MpvCLxc5aK9JlMPWVgQP6HQw0o
-	SdRuV4Pm4B2dSLDofkufvDtBrQYFGnI=
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-499b10c86edso913875e9.2
-        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 05:50:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788439803; cv=none;
-        d=google.com; s=arc-20260327;
-        b=FfHxLqPgdWVSaTNBLFCVtYWhihSft45MnXo46acXAcisEymaR9ByjwWe7f41gVCKp3
-         bE7pcZHEl5u2g/2XnfPMWJbIvezDHEfisLhlXXOUmktIggdi//9Yv3M+bkhG+hzbViS1
-         urb16X0BQBH5t8vb1xKggmrvSKGiBbCVigR8BNopCFQ7u7ztZUaVvJKYqLVQxGWhIvdx
-         bF//rfK70s+I1ZeytCIile6pBDg7raFctre6RSUGs24HbalyKQWmyqFp5iH0mrE5Wou5
-         kgCGhANlRLiBZgAHkXCFi5M7NAUEgOUAtJq5FzpGwOz/9IkiAcjbD2FtkV2AiV6lFO5a
-         cRzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=59Wj+J6S9wt/dcmTRFnqS+5MGklja5S5ehnxj0FnuDo=;
-        fh=tNjvmhXDCX965OZUbuYy87fEA4ucQKvXKEm0SEpcRkQ=;
-        b=efwybGlQe36g+uZTBz/SICu8SxefJ87+WtmfrSPPHq/qnlChCH21e/FNNYDvo/ym/Y
-         rTeHoZ07h+arD5ztj7c/RDN1Qe6Ha1flgJO3w+YECvfVkvaOrhrq+OxmWMlrCTW04rDQ
-         9nBx02Vd/iAwBkdCmzRqD28YJGbdxKSBlYmvxDfqpfpcKUE0qIwdmJgtDGsqk7NIGlPl
-         Ga/Wi8w5qhn7aYfE/cSZNJ/W3lf3dBJI/WhIZDLv4Dms9G8WXJKackdrPgYxeUdY6oU/
-         Q6mofRuoZECLRxVIS83Ssa1vWVN2WPhLOCX+iRS3+OreYTVLWajyFks1aSzvMzw6UtZu
-         TDQQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=O/BVphZoQ/SK9hU1QtOXRTarKJyoDJy/tE9xK1PMEI4=;
+	b=Z8HqobB6K49eLPeVXAFMgiI4WzizbmspDkH1Sd8NkkdjiPcrWP01dSuTHnJMNvDj8phMjZ
+	lQOZ8ybm888JvJ4v9iTD4e59MytWFF9SPgslbH4AsxHWLAl+KndkvcPsdEDaB0qMZN+O5u
+	phVPmtUtTEC0QmJFMN6wqYOdWdfp9n0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788439972;
+	b=m98lS5t83I8uJ0UhUMVdP3jLCNiSI88Unm92S2SVUlu7gDZUkXnrNyYwfyG0YxRFEoeYKK
+	S4LrsmPusJqnca27Kt/wYIJoraSrSRS+hFbPOHl/cUJ4UxGkxLHAxWZBpVAsnDvzkJaxw9
+	2r7V8i3sXrc2JLMnI0kzGry2sjr04+Y=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=AL5KBfZ0;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf11.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-49b8687630fso19864155e9.3
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 05:52:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788439803; x=1789044603; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=suse.com; s=google; t=1788439971; x=1789044771; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=59Wj+J6S9wt/dcmTRFnqS+5MGklja5S5ehnxj0FnuDo=;
-        b=s/gvNVuWA4fbIkMZRj012IpLff9tZZ6HzG3Ys4Ws2ZfiwMAlqb1NBSZfuri+WQTCuS
-         TrH0exbASuNn/5JT1QY++qWAo+kvMbFMh5+IuXSOzyQbu0P6nvvRhk2ILUxng8xe2sTF
-         C5Qxm9wi5VJkMtCB8CbQYBAJ5uQLCE9y0HnPzBmzXfqcsgwk5xVOz1E6/5+v/PozW5h1
-         KT9TFqGKBpuHBkTS43GWcn/rGtlEBWeh6pq8y2ReAmo4wIzyC14+WDtxni5vGR+js7+F
-         O7VZAtlQTr3GFk+FUh/odJaNcnFLAQZeVfoU1y8uR3MTcJlwjuLB7sbqTPUAUc5aKmaq
-         0mRA==
+        bh=O/BVphZoQ/SK9hU1QtOXRTarKJyoDJy/tE9xK1PMEI4=;
+        b=AL5KBfZ0vSs6XHvfmhV+97W36aUkd+0LWemnYKPSgmV+Z3mXV2xvpNRCiIlVBvt9th
+         SGfIxni7G+hEUWM3d179DXWz5gnsTdxXu9bU7DzGU+ilHZCytO83/Ybo8pH9wOy0synC
+         peTVBr4/Mx97CxTqp/9wuBf6eaYOiFnNblKoH6ws9iH6YJql3+j3V/9I7vamEoHyaaCv
+         ByDCN7smtXpduX/PLYeYK9KXR1oxcJwygHLl8DHDr7NODTY3x+5gTa9jrxHHCxj1mJT9
+         2zc7d1UA+awZCLlytJLiSQFNla5WsuzZt6bML9XHEz+sxp5DC1GdEV3Q2Pdcke9TQzmA
+         8SgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788439803; x=1789044603;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1788439971; x=1789044771;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=59Wj+J6S9wt/dcmTRFnqS+5MGklja5S5ehnxj0FnuDo=;
-        b=V91mr1k8annFu97pnjPIxpXXJUInzaqWl0nqx3p+P9q9zNJ0M11/9FwjMJj3AtyncN
-         4X9dCinwLewNOcOxfYsKo5uSwTkRHhQWhhh3aUQzZu6xBU9y1Er+zRfuDbvVWkV+gzPH
-         KPp3UGOpPpoSUznbzh6iy9P2CNvpF4koDeax6n0Ee4QZeHDhw25QOS5gH7/HRTM1zx6R
-         08rw35gv8G17X6fhtfgnNYcy+hqxjIn/MKBdgYeGcLYKc0ox1Z9iKvI/UnOHSOToQXYt
-         SEod1e/MIN217bROWKOZ6Kgy51WMugIHGF1ui1su7OlA2d0ZjMwrWsNx/km0e2CrAtho
-         O4Fw==
-X-Forwarded-Encrypted: i=1; AKwUvBzTHLRthhKLuMH4zgyHkAcEQ/ZtttgbOXGjaLEISRdsQMgleBB2T6lzdv0G9vckey54fwnoZb21Zg==@kvack.org
-X-Gm-Message-State: AFuF++lBAPvTGZckVLk5A5Rq6qLlS/3wc/2dlEUlMn3FF7VEtMqSjSJF
-	F336vdA1D5tTk3grWnZNyq6YRlgmGLZsv7zcvjcvs8XuTpCarFLbOvch2/e854GHCo1LlMIbusI
-	HR6SUyamFUznqqhaQlkLKn7o4h4tUVJ4=
-X-Gm-Gg: AYBFou17RqvLiJpI9ejoMz4eRh2XuSOOVHVSTGMamxfxQa7iOw4ORGtABeb4k554Y9r
-	r4DhjU+moSVAwVYJ1ObpQRYDP+dAdoxyhquCDY1tYRXNZbcG2Tc19Q/n2eH/EmjIRJFdAV3tSlY
-	H5YNfO7IzRnj0olL18Q8J5tcjjsSqszJ72f181bWKUmBH+gASH6YV4+MUwLdKcrM74sjBlwK3AO
-	f5JznaNtYT2VFK2fyCLxPCxPbT6XOY9Yd9VVs07QuFDzlQvwt6qVJqIT4fkmrhVMNVr/dGAMNxu
-	yP/pByTBXtIy8jJJ2eGHJOLp2WfrBFC/nJFx1vYIO6gp+WsWHEpVSaHlqaDA5Cavikf8Lna9kW1
-	FNUB6i7YL3m61HRFdmWfjtdtJoady
-X-Received: by 2002:a05:600c:530c:b0:499:cef6:104c with SMTP id
- 5b1f17b1804b1-49ce58369f4mr98184805e9.1.1788439802952; Thu, 03 Sep 2026
- 05:50:02 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260901151818.3191443-1-xueyuan.chen21@gmail.com>
- <20260901151818.3191443-2-xueyuan.chen21@gmail.com> <apk8ZRr6do_YAlzf@kernel.org>
-In-Reply-To: <apk8ZRr6do_YAlzf@kernel.org>
-From: Xueyuan Chen <xueyuan.chen21@gmail.com>
-Date: Thu, 3 Sep 2026 20:49:52 +0800
-X-Gm-Features: AcwNN1UgFTYq7ea9-qGswA9Jf4fWjx8u_UTgGqrDxE_25OvzBaj7okOUxHJIdeg
-Message-ID: <CA+qSx6wqd5VSR=9yarFFmyN1SyvLJqEHpA7BwmzuxNQTHbS=Xg@mail.gmail.com>
-Subject: Re: [PATCH v7 1/3] mm: make persistent huge zero folio read-only
-To: Mike Rapoport <rppt@kernel.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	usama.arif@linux.dev, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
-	liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, kas@kernel.org, 
-	catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, 
-	linux-arm-kernel@lists.infradead.org, tglx@kernel.org, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	luto@kernel.org, peterz@infradead.org, linux-mm@kvack.org, 
+        bh=O/BVphZoQ/SK9hU1QtOXRTarKJyoDJy/tE9xK1PMEI4=;
+        b=c9N6GKJMsuNefQr9jUWwBiKDBqdTh7PX7jSNByukQ10CGSYzBXG9yz3f6Uiif97JCn
+         g30nZeyM4kctqJr9wzO/VCypPgwx9TEwz1DuRDwTIlyXaV34Fk/mL50ZJQq0YWydBLhl
+         u/Mh46iDjurWj4Wd5G5T3NmSPKgJ3QMoIHMYGQoHYVprZGCQZUbQb+Z+CfGq8KmLrz+z
+         QrgOla9tj1RioJz0JcmUl42hQ+1lMBSGB/n/04OIIccuT8YvfSknnrouDAvHY5g4Er8g
+         bn3oRtWgRL1US9WYuF3XJNHquM2z4/hczpF91oi6E9w4K2wOoNDxjjJnG9b2S7ENejNg
+         fvLg==
+X-Forwarded-Encrypted: i=1; AKwUvBzq22nc58ab3HBTEMFFZFJrLNLqGgpotniTQ+JkncvO7fFWLggWkmilxe8cg8m7tlM6elkBhDE0iQ==@kvack.org
+X-Gm-Message-State: AFuF++kcv0fjChBsQpTOqdDT+cqYjEM1UDP1Q5Q3A+fuCSl+LUO8hiTQ
+	JjE123sS1yhf9rWrGQF6kY7CBuck0VgEvCfp4hxad5yKc2i6yICbnkmaSKjBkVsyxCE=
+X-Gm-Gg: AYBFou0fW7w0xupH1Gqnna6Lw4fBeP/NlAhKcL3MpB3BZYWEjgMN7nbPpqVRIdTuAIf
+	FSQNS15AlSZSwn9pENZzBH4YyJOygKSfy4dVHPk1MO3vlBaGp6mWigaC+ktLDlD46VyrNR/R9LD
+	ieaMRd7oqd+A8wg/2XnC2BmpopIdhyvcaaJOYNxxdYg2PvvP9HNL4y6Ca1OCVNlbUz+G8Bn/nlq
+	stla/Xk0umtTxMW3gzDpZUMGs4rsSZRS47Z1ACHtpxouvdXhyw/t6pNQezw7dejEg+rDiMLHmWv
+	ybl0cvQFiEsr+sz/sJ63WcLhW034Q2S50YOUbO6ePV54gir82n4u+qvfjtQxY3yBfRT2jq6keIe
+	GUS6XmNAV/hbPuL+5ykxtUBZ5jxdWJ+SW+Ins9x8uhnRY1W0jTuqzatMQ7tfrygFRdT9G0Db5YB
+	bimL/BLGX0cVw8v6kq36T81oYLHBvCKXSYbsWSt6vRAZbwY3YAK9AJCgtph0aTRIhlgPF1xihq4
+	O8+4avpbXIC
+X-Received: by 2002:a05:600c:c4a6:b0:498:952:e276 with SMTP id 5b1f17b1804b1-49ce581142cmr250223635e9.8.1788439970781;
+        Thu, 03 Sep 2026 05:52:50 -0700 (PDT)
+Received: from localhost (109-81-91-122.rct.o2.cz. [109.81.91.122])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee5d6029sm71680715e9.6.2026.09.03.05.52.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Sep 2026 05:52:50 -0700 (PDT)
+Date: Thu, 3 Sep 2026 14:52:49 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Nimrod Oren <noren@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Hugh Dickins <hughd@google.com>, Nirmoy Das <nirmoyd@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v3] mm: remove min_free_kbytes adjustment for THP
+Message-ID: <apltoauHn-l--8nI@tiehlicka>
+References: <20260901190123.3511535-1-noren@nvidia.com>
+ <20260902162323.GO3004@cmpxchg.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260902162323.GO3004@cmpxchg.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1C3B240008
+X-Stat-Signature: 6qoyweem9otnz1zyb174ao9ua3pbjdwy
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: EB486A0004
-X-Stat-Signature: e8sndwdaonpbk7rtzbptg39s7kyfzjhu
-X-HE-Tag: 1788439804-650257
-X-HE-Meta: U2FsdGVkX19waDD16hH8pPD5km27jmhDI3WD9r+t/5MfOpU2Yvsl4xq8IHfU32TvMchqbElBc0UUKG68anoKjO+YolmOvQN5A0a+kJ3VjZ9pC3PbiZU04/DtpRsxuTqQXLBHbG5yLglUOAZGgYHG6l9P/MAB3TyA7f12lWFiR6p77dgAhjKDSuvgXI/MPpkDt9SPMfrXjsg+mRBgGbqePlFCIJZ+drH47exH74WRcIWGSX6Q7TotJhx4rzckd5y/sAW4B89MBTtts92Kj1YYYJdob/GasehCQ4EOlH5NqdCjv8wrC223eDb/lc76h5Zkw8WM50v+4t5lzj0tkGeTVt4vLtk7p7Ib8gl2ZKMW3AShXVHCBfU6esmZk2xVgboNJED2LfXsMHfh6XJVk83wa2DqRjxCsriZcgwFyLpsfIPrJTcVdoRIT/kJvkkDax172rlznMUVUeay/XScg9RW76XLIuuKJ4OAAHhXr11qfe7MJLZ05auTPMAcSxFB0GSBaQqP7C2k8lq+ie2kjHj9RWAJyWQpbSds8Aze236+Rh3A+7/TzER2Uhhfy9Yw/qhfLxU5RirCfr8r36kVaII04lvU3RobPthrxxCkb8f4VVGMw9PVOxfgvyQoXKtLQ1gfFfv0u2TfEc51gxoTwZRZLF1jAA/Y+wM0OlWP7f8xmxTUMkNgIeF9BaGM20Ify/ppyteQh4OqUZ9PCb4odr6sF7yBnqLA7KqLQI2bG8NUZO0Z2xIifZ/T6WLL5fiX9YikKc/UFUkD4hJnJu2Vv72KUJDxHRNZN18KBqWMoyYIoy/4SDEezy0CK+khR3yO/PtEfedNN0LEzsLgTprkGSozr+m+d1rCEfSiT5JLTxhdjabY41/sat9f95XXgQF6DKUswgGHG7MxivWSWRm5odMkPAGzqRA84UI5f6Zd7DlyxfYXIL6prdYRgHEf8rfK3WGhAtLalaLAlUL55R9k1eP
- 7g572guq
- RdNT8WyvKl1DNbeDl2OIBjjGz0hR3Ah0TSW9Rv1myjyqYb/jaIjIMHT+QJ+yAk7+nNEeDL1Epjow02DbhBwbw082gbEwtmLIunvNl00V/41auzcV15AIIaK86N4apdAoEShP+t34sr1UUB6ArvpMzSYUlv/AlSfNCDdQkhpuNkbUi17qYJ3W+3eNs7SVRUbHYCTuTXpAgXS/TmDC6nJtchvJh/ups9R/K1XZzTreVn4ZxfUoTMCwMHcCh7vCLhHpJEOTsNVJdhT9sRRc0ZKHoj96WziA/vs6X3plNI/ZjDDkO2nI/+8KS6LqjEf0d3GqXeCLXAmTRRPaTG+WtyLq+xtHSLj0Us43EdWT11ruASMCvxQ0EemoHt+HxaTf6krfmm5BdG2ZC9kP8p3FDA7O8o2JpTp+k4Zdp76vr5ZeqfbJwEpA7Qr/ePgVqQ1NO9Y2iZ5VBdaSROV60ZUVWp7kU7+sTPhi/oi9MNsS+
+X-HE-Tag: 1788439971-27098
+X-HE-Meta: U2FsdGVkX18OODrHz3T82d/v22fXAPpchHQnZC7uAINg0L+iY/cNO4hbS7f8bSxR5Sj6fULtri9aSI8O3OETXxWNR61/EFTZouxFoC60JOW4GUuUhkiQl+YYXBoPvV8V9qlcJu7qkt3+aSViBqqFL4lGgwm0C0x+3qQsuzqTrJOeg3ZWLMzo2k2ySFfbExxJbUoFxk3CBONRPGurfJpUcniOUXu5NjTw7btkC2rdCJme3xqmonkknYUbrbr8JxyKIABqlMYFdrxInjGKab3xrqytzVcF81AegVN0ziIKIaF+3F3FKyq0nmGtZerwOo+VAUzVQy/xG9gHq9wIQJtG2239LhlQrqTKJS4FBTzqeMdwxNVug1/CcO8sjGyqJ/+6kVbe2i5gCzRQ8Ux1mJlE0MLlXVAurhzAkHW5NuVi22M/w21rO6i+8sA0oZ40IP3GSuV8lFxsEa0HmH2961BOGtj7kcBlnDTYBdNL1WENrqehYgb1CyoMsqvOQ5cDv4keEmkdgp3iBu3sUEwwuM6Eg0Bp6/NiKB9/lzFa87MAG1sVbZiJBLQYrWEfzMwymVbkQWkt5VyjCi+Z9dBLjZNDpqHlKCWcJRExZaLpv0fJV456IZQVDn/rwKtC6RE+oXc8d7d6/h1oVnCRxR4QxcPTRRuqjFeio0rXKWcAlsiKipqXnSs0q2l1pfIhSnT+2Kdt8vRSa7G4mp51358ClCdwEuRNfY58bNMcDfcKSJXGkkL4ZRUFz125B7QYjAcmuUOyGR7cPdCIpapqJKmDfdrylAfxmt4u/h9NnO2Ir/S7cIJquX4zN5Fzm1r90XauTyLE6m1zYkLK5/KqKuwV46Vycjx+pdtkiDvl2MMGXxUzqVLYq/Pp/iPoXA+Ilm0lYwdLxxC8mB+m2lb2rcKLzhEnK+FyZxcLW7ox1aa2rtsF5Ewn+jc1S6WGMjipwLaqJBPMQYeI1oKbL6BAVSpuO2o
+ 6tuZU8LR
+ v2xG24BU95Qo+FgmghdscQ2TK7A/mmWUC65AvN1Ryf/edEsuhFmKJByQX9Xa5LTxU/PTfT0lUy+L9NOGPu3CnHUfNEtYuYonCVDMHdJO3ieI9WB5MVcxWeHdyWjCKgLThb//Pm1djw9M6+nsZhkJc56C415mtwN62Gp9ADMiFbjl+xio2qbnCvzRSScA5SHVBJPwjtHMQqpXN+DKwQpLCPPOFgB+TtqN3Ia5X2XRliO8QU/IugaFaeXBRfm/gRqrlvFA6OTT0pHzy8eUYjWwEbSie9QJSQtg2tsE4mg+xTlyWNu3lkn0BkHeO86s6FJPkvxk1HCEsTDvOIEH3RUcypAbUftGcbUih4xxF1GwbjKHD8vG81HXCDzWpfHQzZxZSxaQhEk9pO1nMlsK1KwqI6ELXvo8mDBbFu7XONb32/uIaQ0Nniax8UJk6Rgsuv8a13uG6lwdCAVNF0RGE8Q4FV5RlOCmGji0Aqj/7sAiwTVoEw4/Ag0eLGpP5oOl2kb+hYtomYGxFXwYebHxo0JT2DeNg3W/rCTIIUVWa1R8ejaWikuhOBTJPjislWBhqV32b4/ng
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,131 +135,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 3, 2026 at 5:22=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wrot=
-e:
->
-> On Tue, Sep 01, 2026 at 11:18:16PM +0800, Xueyuan Chen wrote:
-> > The persistent huge zero folio is shared globally and should stay zero
-> > after initialization. As Jann Horn pointed out [1], kernel bugs have
-> > ended up writing to pages that were meant to be read-only, including in
-> > security-sensitive cases. Making the folio read-only in the direct map
-> > turns such writes into faults instead of silent zero-page corruption.
-> >
-> > Add a page-based helper consistent with the existing direct-map interfa=
-ces.
-> > Handle TLB invalidation in the architecture implementation; unsupported
-> > architectures retain their current behavior.
-> >
-> > Protect the folio after initialization. Skip highmem folios, which have=
- no
-> > permanent direct-map mapping.
-> >
-> > Inspired by Jann Horn's read-only zero page work [1] and follow-up
-> > discussion [3] with Yang Shi.
-> >
-> > Link: https://lore.kernel.org/r/20260508-ro-zeropage-v1-1-9808abc20b49@=
-google.com [1]
-> > Link: https://lore.kernel.org/r/0e5b23a6-4895-454a-9dfa-6dc21adc2991@ke=
-rnel.org [2]
-> > Link: https://lore.kernel.org/r/CAHbLzkrXXe7r3n3jXgDKtwZhRqj=3DjDx9E6dL=
-OULohnhBguvi9A@mail.gmail.com [3]
-> >
-> > Suggested-by: David Hildenbrand <david@kernel.org>
-> > Suggested-by: Usama Arif <usama.arif@linux.dev>
-> > Co-developed-by: Lance Yang <lance.yang@linux.dev>
-> > Signed-off-by: Lance Yang <lance.yang@linux.dev>
-> > Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> > ---
-> >  include/linux/set_memory.h | 17 +++++++++++++++++
-> >  mm/huge_memory.c           | 13 ++++++++++---
-> >  2 files changed, 27 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/include/linux/set_memory.h b/include/linux/set_memory.h
-> > index 3fe293cfed8c..ed9ce04b18a1 100644
-> > --- a/include/linux/set_memory.h
-> > +++ b/include/linux/set_memory.h
-> > @@ -54,6 +54,23 @@ static inline bool can_set_direct_map(void)
-> >  #endif
-> >  #endif /* CONFIG_ARCH_HAS_SET_DIRECT_MAP */
-> >
-> > +#ifndef set_direct_map_ro
-> > +/**
-> > + * set_direct_map_ro - make a direct-map range read-only
-> > + * @page: first page in the direct-map range
-> > + * @nr: number of pages in the range
-> > + *
-> > + * Make the direct-map range starting at @page read-only and invalidat=
-e stale
-> > + * writable translations before returning.
-> > + *
-> > + * Return: 0 on success, or a negative error code on failure.
-> > + */
-> > +static inline int set_direct_map_ro(struct page *page, unsigned int nr=
-)
-> > +{
-> > +     return 0;
-> > +}
-> > +#endif
-> > +
-> >  #ifdef CONFIG_X86_64
-> >  int set_mce_nospec(unsigned long pfn);
-> >  int clear_mce_nospec(unsigned long pfn);
-> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> > index 54494c3fa983..742283b36d74 100644
-> > --- a/mm/huge_memory.c
-> > +++ b/mm/huge_memory.c
-> > @@ -42,6 +42,7 @@
-> >  #include <linux/pgalloc_tag.h>
-> >  #include <linux/pagewalk.h>
-> >  #include <linux/cleanup.h>
-> > +#include <linux/set_memory.h>
-> >
-> >  #include <asm/tlb.h>
-> >  #include "internal.h"
-> > @@ -291,10 +292,16 @@ static int __init huge_zero_init(void)
-> >       huge_zero_folio =3D alloc_huge_zero_folio();
-> >       if (!huge_zero_folio) {
-> >               pr_warn("Allocating persistent huge zero folio failed\n")=
-;
-> > -     } else {
-> > -             huge_zero_pfn =3D folio_pfn(huge_zero_folio);
-> > -             count_vm_event(THP_ZERO_PAGE_ALLOC);
-> > +             return 0;
-> >       }
-> > +
-> > +     huge_zero_pfn =3D folio_pfn(huge_zero_folio);
-> > +     count_vm_event(THP_ZERO_PAGE_ALLOC);
-> > +
-> > +     /* Highmem folios have no permanent direct-map mapping to protect=
-. */
-> > +     if (!folio_test_highmem(huge_zero_folio))
-> > +             set_direct_map_ro(folio_page(huge_zero_folio, 0), HPAGE_P=
-MD_NR);
->
-> Sorry, I don't remember if it was discussed previously, but why can't we
-> use the existing set_memory_ro() here?
+On Wed 02-09-26 12:23:23, Johannes Weiner wrote:
+> On Tue, Sep 01, 2026 at 10:01:23PM +0300, Nimrod Oren wrote:
+> > When THP is enabled, set_recommended_min_free_kbytes() may raise
+> > min_free_kbytes using a heuristic that scales with pageblock_nr_pages.
+> > Commit f000565adb77 ("thp: set recommended min free kbytes") added this
+> > heuristic to help keep pageblocks free and reduce fragmentation for THP
+> > allocations.
+> > 
+> > The recommendation scales poorly with larger base page sizes. With the
+> > default arm64 pageblock sizes, the contribution per eligible zone
+> > before applying the existing cap of 5% of low memory is:
+> > 
+> >   4 KiB pages:   2 MiB pageblock,   22 MiB per zone
+> >  16 KiB pages:  32 MiB pageblock,  352 MiB per zone
+> >  64 KiB pages: 512 MiB pageblock,  5.5 GiB per zone
+> > 
+> > Even with that cap, min_free_kbytes can reach excessive levels.
+> > 
+> > The automatic min_free_kbytes increase predates proactive compaction
+> > and many subsequent changes to compaction. Given those changes,
+> > increasing min_free_kbytes for THP by default is no longer clearly
+> > justified.
+> > 
+> > Remove set_recommended_min_free_kbytes() and all associated
+> > recalculation paths. With this policy gone, min_free_kbytes is
+> > controlled only by the page allocator's default calculation and the
+> > vm.min_free_kbytes sysctl. Users who want additional headroom may set a
+> > higher value via that sysctl.
+> > 
+> > Link: https://lore.kernel.org/r/20260831075635.2244437-1-noren@nvidia.com/
+> > Suggested-by: Michal Hocko <mhocko@suse.com>
+> > Signed-off-by: Nimrod Oren <noren@nvidia.com>
+> 
+> Just to summarize my take from the subthread with Zi: the premise of
+> this patch is to roll the regression dice on every THP setup out there
+> because certain ARM configurations result in a questionable pageblock size.
+> 
+> I'm not against carefully evaluating and testing out today's need for
+> set_recommended_min_free_kbytes() in real world examples. But this is
+> not that.
 
-Hi Mike,
+I do hear your concerns Johannes. They are valid but I am not really
+sure wht kind of testing would prove such a change to be safe.
+ 
+> Nacked-by: Johannes Weiner <hannes@cmpxchg.org>
 
-We want to change the linear map here, but arm64 set_memory_ro() only
-works on vmalloc addresses.
-So a new helper is needed on arm64, and x86 implements the same
-helper to keep the two architectures consistent. On x86 it is
-basically set_memory_ro() minus the alias check.
-
-Thanks,
-Xueyuan
-
->
-> > +
-> >       return 0;
-> >  }
-> >
-> > --
-> > 2.47.3
-> >
->
-> --
-> Sincerely yours,
-> Mike.
+-- 
+Michal Hocko
+SUSE Labs
 
