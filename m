@@ -4,144 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 727C3C624D7
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 10:56:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26291C624DA
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 11:01:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7455D6B009B; Thu,  3 Sep 2026 06:56:34 -0400 (EDT)
+	id C300F6B0088; Thu,  3 Sep 2026 07:01:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F6AE6B009D; Thu,  3 Sep 2026 06:56:34 -0400 (EDT)
+	id C08256B008A; Thu,  3 Sep 2026 07:01:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BDDD6B009E; Thu,  3 Sep 2026 06:56:34 -0400 (EDT)
+	id B44886B008C; Thu,  3 Sep 2026 07:01:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E2026B009B
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 06:56:34 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 28713C04B5
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:56:32 +0000 (UTC)
-X-FDA: 85172147424.22.AFE5BC8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 21A5E40004
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:56:29 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E1YJ8g4Z;
-	spf=pass (imf11.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 84A336B0088
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 07:01:09 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0C64680490
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 11:01:09 +0000 (UTC)
+X-FDA: 85172159058.15.5172540
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 0B18B140014
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 11:01:06 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bqrYkZ3N;
+	spf=pass (imf09.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788433267;
+	b=cDZJ3Rn5su3VPnd6CWiL2LGq5XvGyY9NgEG2G7P2JSWyxlMxinFe6yuYwXt02vAvn27gvK
+	OIUCTh4BssjXBMgJvQW7xg7pDdz7YwJq/CZumux5FHXE2XeXFnMP97MnOUGagWnhQWpptz
+	bf5ISYJhXe1JfO137pHqFrjjJGB+CJk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788432990;
+	s=arc-20220608; t=1788433267;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XiQkSdBuViJhK1RAwv/WcHb/2F2HMU7HpXbahyvM+E0=;
-	b=FqkKedsGGqM+ETDz8gQXwiuChrA/eoewCSaXljMW240ibc8Y6jG80kVch1pDxyRWoVE9vW
-	Sby0V2k9iUaSS6t+//KDBgtqZHaFPwokW51NP0dYpHxGq59TLdE+DBZYSHuyL42Bf+gD2k
-	QkvkR0TlukR9kAj35+fKAsEHRKs3qdY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788432990;
-	b=0NtuOeVRKAP/uWq7w/iKgFhVW+QH+Sm9uzri+Hlg0R1m2qjrUuqStQQ09M/qesRLxstDFk
-	GDlyLGRyZWavCaSYzYuRKBUkWHk+wQPQA3inOIG9D+UL5r4TmAS/M0UrKBjEQjCYtFEcV4
-	wfok1xO55w3gnPGoIRIh0urx1A1q+kQ=
+	bh=6Co2h1oEZ5U60JdWzSyZd4v6op5yvcq3/jaM5LDdEc4=;
+	b=YAbkX9vcOzCp9AyzZnP7KmxQlintIckc6DHVhNOSClRPxUUesrbrBsgLDYkwdQd3bl5s9r
+	WbX0Og+wzxbE5BheLyufxhYx1wDurf9nHzFP+ecsKSnu1G997kZmOWHI5wknJdSHPx7bVF
+	H+rnkKIEK/dk2p7Z4DsdVuBQzwx3Nfg=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E1YJ8g4Z;
-	spf=pass (imf11.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bqrYkZ3N;
+	spf=pass (imf09.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6D18343E10;
-	Thu,  3 Sep 2026 10:56:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CDAF1F00A3A;
-	Thu,  3 Sep 2026 10:56:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 79B46600D4;
+	Thu,  3 Sep 2026 11:01:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D5BF1F00A3D;
+	Thu,  3 Sep 2026 11:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788432989;
-	bh=XiQkSdBuViJhK1RAwv/WcHb/2F2HMU7HpXbahyvM+E0=;
+	s=k20260515; t=1788433266;
+	bh=6Co2h1oEZ5U60JdWzSyZd4v6op5yvcq3/jaM5LDdEc4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=E1YJ8g4ZDmJgFYPmGdtkXbt2SbGloE5KgPWiNDmzYD5H+0i1jL8mpi84emSVbjnO9
-	 irmLmjENy8Zbj5AWR/LdO0ZYMJQhl6SXrMNxaCHkawiW1PStgucE6DgdDT96bqGsUD
-	 Fh0FRbuEPJCfS2Bpb3MuSbwk6FnaCOoy0D/G3SzzNTwMoBScNNCuwa0A/nh5tuwvPh
-	 fd1MXtLfC4O2IeYkEY9m4uOFEafrLJJILsc4dqdfNz7gS0mct91aAnrv0Yn7VTKC3D
-	 6RCcENIlKlTGaeuoLwdE4s58mGXaMLJUbgNe1NfPhzX9/2AMwL6Q/AOUq/9O6WXjoI
-	 nnym8RX/8zigA==
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 893DA198003A;
-	Thu,  3 Sep 2026 06:56:18 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-08.internal (MEProxy); Thu, 03 Sep 2026 06:56:25 -0400
-X-ME-Sender: <xms:UVKZamIPGdTSwMXtzhWS2XNv8V_X9rqvclDcQIAPmBw85vqcUJt6Dg>
-    <xme:UVKZaluFRNc4_GnzSaVHhjuuJvG0gyG16pboe-5XeHfbXKV9u-P0pIYp5YmLVG0Eb
-    Khmr8tAx3g8GmCiP_OvbFFyZCY-AZr-LAsQAPSKCTUEspI9Qb1QhCcl>
-X-ME-Received: <xmr:UVKZao-g67Pcb9Wn8J8SHlaa4cGtpwQki57Zw4nXVwEpoTglk44pC0cSXJM>
-X-ME-Proxy-Cause: dmFkZTE2vw9rBDB6ZhLsQ6+CrQI8s2qKm/A60heJ0L01+aqdfpUavd9W3Flk9ygWT+QFwp
-    mE2BJJQAcCNCN2yQEO/QNo8KqvPVSjQoVwmD4wh4iPm8SCtGX51Fbl1bfGk9nIvo94LLoS
-    DbPAK6SQ3yRsfQfYBB0+cE/W+NgrQM5sNhf3OIrcEjQyPKYN4EtdPVRvdBYBHV7r+8O3ty
-    GFcSK+Bkq8lHnOAo1KINJ21TichzO92EIRCe84TVoF8p9/h9hPQ2maXMkXaApGSTamLSVj
-    6eIZPnbWRfl3kYuq/qf8QcVCAY+VEQWf25EY6cu9oyTGFOCPLa37QrM2nNlI3l5ueXcTos
-    5TCMAY7rReahwfAH1qHbxHW7xpWJcNLmCn+3rqMoJAeCGR5jwVyFsp0Oz5VmGvoYHGvyb+
-    kJGgIziu8a+oKvOpjtc21O6XEF/aL2I7Zn6LHE/9vKjTtecpD8laqjfIf0jHF1MVlf5nO6
-    8i49U7BEnv56JRBs7gao47i+61WcgJ4fymJ9+5VgMEQaQWQemyZCGatLnbOaRiIh9o4HfS
-    EYAz9ALEXEOjrmODtSpJrHE37mSwVjcoCse/txxs/Z0VrrJrf19mMM8rpqzsvnkoFTQkgd
-    pssiaV6OsxXcD4Ho/PWwP8pkfJmG//FmEK190CuZAcxVorlErU5Vy73zeKLA
-X-ME-Proxy: <xmx:UVKZamB3Y_uWvPz_oiuNVGzSsWaY4aI4n_mmLyKSmcVOHxuYkoxYww>
-    <xmx:UlKZat4klBgTOvEbFB_Et7ymvuHEd4t-Mu3omx7quS7XrgX2A63ftA>
-    <xmx:UlKZaodyHZawt2FctaHJVhVeW6ErTzyJ51ZmVy6iw8uvhItT4odFzw>
-    <xmx:UlKZat8eeJ2VADripRpoJZNPmFmfApz2o4p7BFblWIAv7XpTx3ssJw>
-    <xmx:UlKZavGKRHYccIDnxaZpJU5lAykHr1junb0145CTbKA9TveQZtq7K8yc>
+	b=bqrYkZ3Nuw2gSLzszRw4YSlg6dKKxUPWaMlOky6DmbP60AtoxI9haiEb1BEG/cUys
+	 MvSnMfLyNr3Jj3oymkmI6cfhHLYT/xh/xcNKZ7brcdjrBsLRHdnI/AnQOH1r+xLkz9
+	 9Z9PN8+DTluhqg5FdNjDMXPjsBnsWXJ/0DgOH2RGHOsgfJE6iSj0O7+pvc8c/0x/EK
+	 kAgFpz6gkk/nRJq6iE6AN1oiahgO3kGq5rdGF1UMAGrQNpMDp0x8Up5hbK3KVO7pBj
+	 kmTMZYsllTsJO5w4moTUr95uHfcT60BBs0GdrKAw/iJ3FStM6xyZqGQHFtN8pANR96
+	 +SrxWQ7wdg4fw==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 2563F1980045;
+	Thu,  3 Sep 2026 07:01:00 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Thu, 03 Sep 2026 07:01:03 -0400
+X-ME-Sender: <xms:a1OZagmAG7j6VJirCeLTtNlue7pwBrkSTkNDG1L0AHAced1WMB_iYw>
+    <xme:a1OZal99lOxvPIW37ltyjZ5CDjkygiX2gs8yEhLn4ZOK61JRm_Ex_nA1PIcBtSxuC
+    gGJ2AbfiYNgFRCa6BQlPNk3mES0ezTXT0fvA4UC-UPSzZkAkuKMmvAu>
+X-ME-Received: <xmr:a1OZalJtouO_vCEz8ZS-MbtcARM_QkhQ0eOZ4xO5UDT6heGIXk1ork5aMv4>
+X-ME-Proxy-Cause: dmFkZTEA/cNC+NRqgQfaBumMDDx1mWc7P9YPky+3YOsSOYpGncfsqXqvxUA1lnV3kGc/D3
+    nfOMOv5iJRrDNZEb09Wp6Ci+GCE7RpVSA3F2mIFsP6RdaiwnBx7IJnP6HoupX2jLRKa/TZ
+    RHWVjGVFVcLQ5umGIm9LqN16c9sxkd4fbfAJ17Y8BO62MwR1mfEbTKE7OTpRbSAE423FhH
+    1wZe6iEVIVXmzj+nEyY0eFv9NPWvKwGpH42i1EBHMQ0Fnlu5vhtmpgFMcKf9mV/vkNiR5F
+    Md8PLn6dXbf8r4GlIyIfgffW2VSbl74YFgeMWBBcvk9pbvm2hbOekd/flPpcE186mETXH9
+    E4In0uv/GYYJZvZDaU87LNCpRSOgxbnjGmiHkdURa4yWx4pWsx3RNmU0uHfWRqliWUrUtY
+    ncCmY2Pzw2TWJ8CmI3cAt2ndDzmWrLoHqWurpNRuXeDqZPrvLdEjIlNknECYBWGkhGPExm
+    09kXZb9OR2/tSNt6VDH6lcw28H/Q/IVMHwhal4Ar7k7lWmko7M5X/Pz4rwFOOSW1aE7dRw
+    D0K0U1LmhVL/cxL7LiW10qwOSENDvOZ7owE28K1RnfodxvrrRipHVJu8sNYI1QxKw5QMeX
+    13tglXTgeAO2W3uXGKKGA3z9yzuzluKWopB1RFC/JLCz8GpCM99Cs0XgRpUw
+X-ME-Proxy: <xmx:a1OZamnNkI7bJ4yHxV_1gbYtdW6lYGZCTdWuQcI8ngcYBYFEuGljGA>
+    <xmx:a1OZaifrBgq1pS-hD0AD94xwucHAvw-8_JaecTlb_XtKV0Y8oX1L5Q>
+    <xmx:a1OZanWSnlogF2uZ8z_IOgPQc2LYK-7F_M3Kyj-M3TgL_DrKtcsz7g>
+    <xmx:a1OZap4goxnawmH5a9t5G5-czWl6DZSL8SdM9LBCIq6RjG987MFPyw>
+    <xmx:a1OZaq7H_dHtDDbxfvlsULJW5edviCU_LhOJl498HowvdcN2H7WFxPAo>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 3 Sep 2026 06:56:16 -0400 (EDT)
-Date: Thu, 3 Sep 2026 11:56:15 +0100
+ 3 Sep 2026 07:00:58 -0400 (EDT)
+Date: Thu, 3 Sep 2026 12:00:57 +0100
 From: Kiryl Shutsemau <kas@kernel.org>
-To: Hugh Dickins <hughd@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- 	Ackerley Tng <ackerleytng@google.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- 	Baolin Wang <baolin.wang@linux.alibaba.com>,
- Barry Song <baohua@kernel.org>, 	Binbin Wu <binbin.wu@linux.intel.com>,
- Christian Brauner <brauner@kernel.org>, 	Christoph Hellwig <hch@lst.de>,
- Christoph Lameter <cl@gentwo.org>,
- 	Claudio Imbrenda <imbrenda@linux.ibm.com>,
- David Hildenbrand <david@kernel.org>, 	JP Kobryn <jp.kobryn@linux.dev>,
- Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>,
- 	Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>,
- 	Lance Yang <lance.yang@linux.dev>, Leonardo Bras <leobras.c@gmail.com>,
- 	Lorenzo Stoakes <ljs@kernel.org>, Marcelo Tosatti <mtosatti@redhat.com>,
- 	Matthew Wilcox <willy@infradead.org>,
- Mel Gorman <mgorman@techsingularity.net>,
- 	Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>,
- Minchan Kim <minchan@kernel.org>, 	Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>,
- 	Peter Zijlstra <peterz@infradead.org>, Qi Zheng <qi.zheng@linux.dev>,
- Rik van Riel <riel@surriel.com>,
- 	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- 	Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@kernel.org>,
- 	Yang Shi <yang@os.amperecomputing.com>, Yu Zhao <yuzhao@google.com>,
- Zach O'Keefe <zokeefe@google.com>, 	Zi Yan <ziy@nvidia.com>,
- linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- 	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 07/25] mm/fbatch: LRU_NEXT_ACTIVATE bit to optimize
- folio_activate()
-Message-ID: <aplHq9bvNdyPGEw-@thinkstation>
-References: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com>
- <16b39f43-d91e-7b23-900e-90cec13837ff@google.com>
- <apAllneItXmyjRPo@thinkstation>
- <7b30ca86-dca6-83b7-a632-180e35ed2a0c@google.com>
- <apThx6sWOQ-aZcN7@thinkstation>
- <821cced3-dcc8-6c80-a92c-c568c2639e5a@google.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: david@kernel.org, linux-mm@kvack.org, x86@kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, rick.p.edgecombe@intel.com, 
+	yilun.xu@intel.com, xiaoyao.li@intel.com, sohil.mehta@intel.com, 
+	adrian.hunter@intel.com, kishen.maloor@intel.com, tony.lindgren@linux.intel.com, 
+	peter.fang@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, 
+	chao.gao@intel.com, artem.bityutskiy@linux.intel.com, kvm@vger.kernel.org
+Subject: Re: [PATCH 4/6] x86/virt/tdx: Add extra memory to TDX module for the
+ extensions
+Message-ID: <aplSf00ESix5s6Ak@thinkstation>
+References: <20260821032920.256225-1-yilun.xu@linux.intel.com>
+ <20260821032920.256225-5-yilun.xu@linux.intel.com>
+ <aohvlMO7ehqcVW96@thinkstation>
+ <aowMYbHKK4b0O5P6@yilunxu-OptiPlex-7050>
+ <apE8yHrGx/bfifV9@yilunxu-OptiPlex-7050>
+ <apf6WFKun8z4ejG8@thinkstation>
+ <aplOhHWvaxqUJDqu@yilunxu-OptiPlex-7050>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <821cced3-dcc8-6c80-a92c-c568c2639e5a@google.com>
+In-Reply-To: <aplOhHWvaxqUJDqu@yilunxu-OptiPlex-7050>
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 21A5E40004
-X-Stat-Signature: c8k4aaf36bci47d8za6zpac9bb1pgd1a
-X-HE-Tag: 1788432989-744481
-X-HE-Meta: U2FsdGVkX1/QvyAFySwmsYG15uglFro9gjGSP3+8Yk18DAQyJ5eMubyMF2k0RANmgA1QYNyaVHq+vKOTb9KdXYIA0Ziq5kvAy+8jECTmcyN5pBD7cohz5zIS6oIcN2G3dC9zr72s55Myedsn9bQ8gAYjuvogMqWcbRUEnguoO4vcKoEwWMangd89uPdU26Cy2ST7ImO4wjQ3uiv9z/g0cGnGTjLGT/Hs/nERpiewRwYKok/kCS1oGG5ySrWZauFGrhJlcTZ74pNqIz0exRUo4KUEMevsuNaqt1J2fhgzril8dmwN4z/jDjQcUcJ5O0fBO93GiJIs2Y/B1W57kbkcr/+OboY/jVwrcO+AoWxDklvSG7SZUrYy6y46xeiJiwlpby3MwJztHchsdS8/STGkRKhaRmIudL90CwuT1jEflz0g91oNzpiHD4e0PQIS6Oq0cRyTnkdPsl6X8zM1lpU5kRtpFqyernjlKy+ehtAobj+zduDvrCin/SOXimzqiPFT0a3/QH1xt6GIk73h6jQBxpiB6eQU9/PF0A+ZixZ4slJAVx0ofI9ZIMriIlIeXxT+6m+rLukO0XZWOV0ER0a5vBpm99KQLrGr7MSjw9TQXme5+pvOfuDoBVeVAgP0gK9M5F5LaegD6NIRWf+cjsOBHv0euDeUj47xA/5my9h8zY4VahaUn4bEYput/OiO4i/Dij3KYZTNustkEfYGxL0dgw3CioWQC3qKrzKAZIMt2v5jTQXadPC37wC3hL4g+idWMHNeM1US7dMG+367Ot2FfXb798bFuubksXeUrC095KsCblw3bTl/VhsdSrX72lrw9z9pjsfKBq74xswROQz1dEdE4wFRUfEjZmKungJv5QS0rA8Zwt+s2pJ6bHeZK4uc2nLgKWvWJADUoRVRJjowknLUf7V4G7KCtAoVYNE7OArwh5A3tZSJXKgZAbnruZx2AhoDIhVdNT00pKOKdUU
- AAHGjf+J
- VmnK93Hm6roQHN53QNexvEybDxs6juyzWg1bIWvWeWc/fTc9rFeZ6D01NV5GFWUCd/VBp4MUCib4T3DU0e7XI99eTD1hV0a6jlX+hRTrwc31EQL6BqxWfguX2/i2tyCgjh1rhKnypE34U6txyOar7ts1Zo2ENhTwFIh60H8C3cG9n3QxeWlcV/nUkLGhnilyddckIcPSDDvM6F4I5WwcHhbfrEHjW6nNPg3Yy4ZVM83HPBucNcQg7R/g4PJPxv17bL/8fO0aZICyWfpNPj1p2W6r2WMqmX660raTzySz2sRY80czl9BPGH493DcLAk67xGUn49vr9ewWWg2Cr5ztuFJOhKsiOYJy2Pe2cBJe12954Z3bAqw3qt6tvvH/h7ofbwJC+ZxdNqMoC5X9bpXj4Z6wZSA==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0B18B140014
+X-Stat-Signature: ion539o4muj19f5sxa397fcjjairoxdh
+X-HE-Tag: 1788433266-531066
+X-HE-Meta: U2FsdGVkX19sJU/c2d/e1MbDZX+hxoDY1wY1PYkWH5mrn6WqN2CB9zKzZIT1J8T8nNz8RZpedNKfPzGy4xs53wfpf9gQEGOA2jYO2IqtIqtjzLd5cD6cP0WG/CW7M8WquhoJxF4HjW6NJG1eEMt0mEIaQzvQ06j5q6xLph/sbfhIpnQktNuE62WPinH/QaTSqdDUXyNas2y/6hHga5lXOnAiH4DWNFY7Apv444pKSQMyHaYkgoV6i+6OWkf3uPtye6gv/tg2Kd702N+k6tbMDwBD+28BF+qhvPBEo8dnrTcVd5DFOWzcTFuEcQDVSrsZh9id63thlfjP6oyt2bQQMfZw/fy7l+OLVPO/jblnSGH3kX5p8I907fJhe8uIrFUpyTOeICf7bpJUvEmDf7Gb3FzfHtzUGXD8jKB0Hpf3cExkzMi6BX0dwlj/8jXfr87lGtSyCv1dlO3i1elGXGokTvzVkUJtF3d6VqhOORnWXgjSxvjgZAho8EywrXHPK3m5jxwREhEu6fofTh47IkCpmpKWcu8TVXsSj1u8TGpV9JqnN03WCwIGOfDMFNEbROLv5mWEnT8g4wqf8lk46FHwY5/kCSCVYqj0M+MYdTfPZU+lgz770LB3EPsku4KoGy9tGRYgwnet1PetveinVoUbOR0A/NKv25xN8gZGWv3qM/mS+Jmm/hO90rB9O7HPZ+8ux0W9HBWUA3XgeXY/5ka89lXEdRkvu7cHXlQYkDvYrk2CvFXfiPUix0XkPl7G3YCgO3hi7FvCmtzZSnHPIWazCsUEub/GuTNa8kDn0+tUvlMDscVGz1XzdIN22kG7aqj72WGu6WMLB6XHN0XGeSgaSQXfZ+3eRmpDTr+fxEweDwfPKEyLFqiBnYH8WLmMu/fMZ3HmdsOc9CI384524EWM7oX8Jr7mhjrF3KDVJav7C69JRhM3XjxZhfjL04xnezn+pxI6loMacqge8PAKshJ
+ vY3xPjPI
+ U8F9ycMWstBcdbrsn5s4+p0v+l7Yg+sKfjJ6N3PNVQc9fe06XKwJEcDO70+/b7gySS7nwvyHRFhnl2JGmxmyR1eo9rUHOPuUoIYTwCCg7BHSXmexwOpRFck+sThirsOhCb48eiSKpExo7O+JGhV/NblQEgCskghzj7veWUIBGuDTuWmFKDvaDbdzXdXcwb8nlC7IEVRpgMamkZPlRHJowxnnI60Hm7fBLP+SAy+BTW8kM1v7JV8A10Dmbg4WpEQtwMTCN0BUugsHXSeub8gQ/WK93E2we29Dfbnacj+9fapSpaNem+C6Fd2khmKy4YimvPjwSf0wuhjao874=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,126 +128,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 02, 2026 at 10:41:56PM -0700, Hugh Dickins wrote:
-> On Mon, 31 Aug 2026, Kiryl Shutsemau wrote:
-> > On Fri, Aug 28, 2026 at 01:40:51AM -0700, Hugh Dickins wrote:
-> > > Do you have a head for smp_mb__ barriers? I'm more anxious that
-> > > I might be missing one or two of those.
+On Thu, Sep 03, 2026 at 06:40:04PM +0800, Xu Yilun wrote:
+> On Wed, Sep 02, 2026 at 11:54:25AM +0100, Kiryl Shutsemau wrote:
+> > On Fri, Aug 28, 2026 at 03:46:16PM +0800, Xu Yilun wrote:
+> > > > > > +	page = alloc_contig_pages(required_pages, GFP_KERNEL, numa_mem_id(),
+> > > > > > +				  &node_online_map);
+> > > > > 
+> > > > > Why contiguous? TDH.EXT.MEM.ADD takes a list of page addresses and the loop
+> > > > > below writes every one of them out separately.
+> > > > > 
+> > > > > alloc_pages_bulk() fits the chunking that is already here, and a short
+> > > > > return can be handled per chunk. alloc_contig_pages() isolates and migrates
+> > > > > to get its range and fails TDX init outright when it cannot find one. PAMT
+> > > > 
+> > > > Yeah, this is not the ABI requirement, but the kernel's consideration. A
+> > > > brief reasoning in the commit log: avoiding permanent memory fragmentation
+> > > > and buddy allocator efficiency loss.
+> > > > 
+> > > > Also there is some discussion:
+> > > > 
+> > > > https://lore.kernel.org/all/167d9540-2d9a-4367-bc68-b96494bc4044@intel.com/
+> > > > 
+> > > > TL;DR
+> > > >   - The memory will never return to the kernel.
+> > > >   - There is chance that this tens of megabytes will fragment tens of
+> > > >     gigabytes of memory forever.
+> > > >   - The chance of fragmentation is actually low since at boot up, but
+> > > >     let the buddy allocator take care of these never-returned memory
+> > > >     is not necessary and lowers its efficiency.
+> > > 
+> > > Hi Kiryl & David:
+> > > 
+> > > I see there is another suggestion that the whole memory adding process
+> > > could be a little simpler if we allocate & add pages 4k by 4k [1],
+> > > rather than one-time pre-allocation. The concern of this alternative is,
+> > > as said above, memory fragmentation.
+> > > 
+> > > [1] https://lore.kernel.org/lkml/f48b83feb2ee1d3c88b5a1627cf35b4b282d3f90.camel@intel.com/
+> > > 
+> > > And I've realized the memory fragmentation discussion is not actually
+> > > closed in previous thread [2]. We need more input.
+> > > 
+> > > [2] https://lore.kernel.org/all/167d9540-2d9a-4367-bc68-b96494bc4044@intel.com/
+> > > 
+> > > Let me give a brief overview of the problem:
+> > > 
+> > > Intel TDX (Trust Domain Extensions) is a feature for confidential
+> > > computing. A secure firmware called "TDX module" runs in an isolated
+> > > environment to provide services about security.
+> > > 
+> > > In Linux, the host initializes TDX module at boot up time
+> > > (subsys_initcall()). During the initialization, the host must donate
+> > > tens of mega bytes physical memory (35M ~ 110M in the forseeable
+> > > future) to the TDX module. These memory will *never be revoked* cause
+> > > the TDX Module initialization is a one way path.
+> > > 
+> > > The TDX Module doesn't require this memory be physically contiguous. But
+> > > the kernel side concern is if we do PAGE_SIZE allocation, it may
+> > > permanently fragment memory regions, stop them from allocating 2M huge
+> > > pages. In worst case, ~50G (110M * 512) memory regions affacted.
+> > > 
+> > > So is the physically contiguous allocation really a better choice here?
+> > > We appreciate inputs from mm folks. Thanks!
 > > 
-> > I think the release side of PG_lru is missing.
+> > What matters for fragmentation is not contiguity, it is how many
+> > pageblocks are left partially occupied by unmovable pages that are never
+> > freed.
 > > 
-> > You effectively turn PG_lru into a lock over folio->lru.next.
+> > So you can ask one pageblock at a time with
 > > 
-> > The acquire side works: test_and_clear_bit() has a return value, so it
-> > is fully ordered.
+> > 	page = alloc_pages(GFP_KERNEL | __GFP_NOWARN, order);
 > > 
-> > But there's a problem with release. set_bit() is unordered. You
-> > correctly placed a fence in __folio_add_lru(), but every other
-> > folio_set_lru() is problematic.
+> > with fallback to lower order if you must.
 > > 
-> > For instance:
+> > It also fits the ABI: pageblock_order is 9 on x86, i.e. 512 pages, which
+> > is exactly TDX_HPA_LIST_MAX_NR_PAGES. One allocation is one full HPA list
+> > is one TDH.EXT.MEM.ADD, so the allocation loop and the chunking loop
+> > become the same loop.
 > > 
-> > 	CPU0 				CPU1
-> > folio_batch_move_lru()		folio_batch_move_lru()
-> >   lru_add_del_folio()
-> >     lru.next = LIST_POISON1
-> >   lruvec lock
-> >     list_add()
-> >   /* no barrier */
-> >   set_bit(PG_lru)
-> > 				  folio_try_get() == true
-> > 				  folio_test_clear_lru() == true
-> > 				  lru_next == stale BATCHED ???
-> >   lruvec unlock
-> > 
-> > If CPU1 sees a stale BATCHED, lru_add_del_folio() returns true without
-> > doing the list_del() or the NR_LRU_BASE accounting, and CPU1 then goes
-> > on to lruvec_add_folio() a folio that is already on a list.
-> > 
-> > I think we need to have a helper that would set PG_lru and enforce
-> > release semantics.
+> > But alloc_contig_pages() might be a good enough approximation for
+> > per-pageblock allocation if we do it during the boot when fragmentation
+> > is low.
 > 
-> Thank you very much for this, Kiryl: it helps me considerably.
-> But I have to cool myself down close to absolute zero to think
-> about these things, and can only manage that occasionally.
+> IIUC, you mean alloc_contig_pages() also gives good de-fragmentation
+> that we need. But it would be slightly easier to fail cause it requires
+> extra contiguity that we don't need.
+
+alloc_contig_pages() can be more expensive than needed (or fail) since
+you ask for the full allocation size to be contiguous, where you should
+be okay with a set of pageblocks regardless where they are relative to
+each other.
+
+> Multiple alloc_pages(order-9) meets our requirement exactly but the
+> falling back to lower order may create more fragments. And we can do
+> this because of the ABI definition - an HPA_LIST could happen to hold
+> an entire pageblock.
 > 
-> I've nothing useful to say yet. I believe I understand you, and in
-> particular your last sentence, which I take as an observation that
-> clear_bit_unlock() is well-established, but what we want is
-> set_bit_unlock(), perhaps better named set_bit_release().
-> 
-> Of course I'm not competent to add that to N architectures, most of
-> them unfamiliar to me.  So I'm looking for a reasonable compromise,
-> to minimize the additional overhead needed for correctness here,
-> just using what we have already have (test_and_set, smp_mb__).
+> If I have to choose, I prefer alloc_contig_pages(). It doesn't have to
+> depend on HPA_LIST ABI details.
 
-It would not be N architectures. This should be good enough:
-
-/* include/asm-generic/bitops/lock.h */
-#ifndef arch_set_bit_release
-static __always_inline void
-arch_set_bit_release(unsigned int nr, volatile unsigned long *p)
-{
-	p += BIT_WORD(nr);
-	raw_atomic_long_fetch_or_release(BIT_MASK(nr), (atomic_long_t *)p);
-}
-#endif
-
-/* include/asm-generic/bitops/instrumented-lock.h */
-static inline void set_bit_release(long nr, volatile unsigned long *addr)
-{
-	kcsan_release();
-	instrument_atomic_write(addr + BIT_WORD(nr), sizeof(long));
-	arch_set_bit_release(nr, addr);
-}
-
-/* arch/x86/include/asm/bitops.h -- mirrors arch_clear_bit_unlock() */
-static __always_inline void
-arch_set_bit_release(long nr, volatile unsigned long *addr)
-{
-	barrier();	/* LOCK prefix is already a full barrier */
-	arch_set_bit(nr, addr);
-}
-#define arch_set_bit_release arch_set_bit_release
-
-I don't know if we want to make it _unlock() to match
-clear_bit_unlock(). Naming is hard.
-
-x86 does need an override, since it has no locked OR that returns the old
-value -- arch_atomic64_fetch_or() is a cmpxchg loop.
-
-arm64 is happy with the generic version.
-
-ppc and riscv need a definition of their own only because they do not
-include asm-generic/bitops/lock.h, so the #ifndef above never reaches
-them. ppc can take the generic body. and riscv is a one-liner right next
-to its existing arch_clear_bit_unlock().
-
-This set_bit_release() gets better results than alternatives:
-
-                set_bit_release()  smp_mb__ + set_bit()   test_and_set_bit()
-x86             lock orb           lock orb               lock btsq
-arm64 LSE       ldsetl             dmb ish + stset        ldsetal
-arm64 LL/SC     ldxr/stlxr         dmb ish + ldxr/stxr    ldxr/stlxr + dmb ish
-ppc             lwsync + loop      sync + loop            sync + loop + sync
-riscv           amoor.d.rl         fence rw,rw + amoor.d  amoor.d.aqrl
-
-I can prepare a proper patches with what I listed above, if you want, so
-you can prepend to your series.
-
-If you don't want to go there for the initial series,
-smp_mb__before_atomic() plus folio_set_lru() should be good enough:
-
-static __always_inline bool folio_test_clear_lru_acquire(struct folio *folio)
-{
-	return folio_test_clear_lru(folio);
-}
-
-static __always_inline void folio_set_lru_release(struct folio *folio)
-{
-	smp_mb__before_atomic();
-	folio_set_lru(folio);
-}
+As I said before, as long as you do it once during the boot, it should
+be good enough.
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
