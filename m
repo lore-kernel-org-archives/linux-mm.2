@@ -4,90 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F174FC624A4
-	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 14:04:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47C63C624A4
+	for <linux-mm@archiver.kernel.org>; Thu,  3 Sep 2026 14:05:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F04CB6B0092; Thu,  3 Sep 2026 10:04:58 -0400 (EDT)
+	id 394806B0095; Thu,  3 Sep 2026 10:05:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDCEF6B0095; Thu,  3 Sep 2026 10:04:58 -0400 (EDT)
+	id 36BD76B0096; Thu,  3 Sep 2026 10:05:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1A6C6B0096; Thu,  3 Sep 2026 10:04:58 -0400 (EDT)
+	id 281B66B0098; Thu,  3 Sep 2026 10:05:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C2E396B0092
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:04:58 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5FAD3C0564
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:04:58 +0000 (UTC)
-X-FDA: 85172622276.04.70AB8AD
+	by kanga.kvack.org (Postfix) with ESMTP id 012C76B0095
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 10:05:36 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 716ACC056E
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:05:36 +0000 (UTC)
+X-FDA: 85172623872.18.9F8ECA5
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id B476EC001D
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:04:56 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U1dKkoSP;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id B53DA1A0015
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 14:05:34 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ckNGaMeG;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788444296;
+	s=arc-20220608; t=1788444334;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=elge9bDwtCLKT6xvAo3JEAnzLjGry/X8H8tlMHRXEkQ=;
-	b=c6QglQZ40yEMfznA3uokw5LKCt6pKV0Q+K9Ur1f2bgnmvm3IPPUKvh9+m+UCzTWiiiZiXD
-	mehk0N97moeYgepnrCEpldsTUtiezL/kXlWPkOpjEycbNlWCztUleknJSLaxbqMBl2YvE8
-	1XXTVUJrxCboK15YuEQ6VRFH0fMlYQk=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U1dKkoSP;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=MaD2aj64RBdEMELfyTFkH990wKoNoGi7GvA6hmcvB1E=;
+	b=Zz4KY+aZjWhvgW7xjuLadV9OAMaY3hjgc73Oscyzpib+A05qEAwlj27edYKfpSbBX4GrYJ
+	DrmuQwNvw1qDUWeJd5QIEn0zd4QFl75LbvsDHmUTXltBITVQUNb/8jYNm4Y8f4dzjHOYPM
+	cFvBlXIiaYeUwp5ZWruLXJBc1Hsw0dU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788444296;
-	b=sx9Tuu4ojHn2us6LEQJF69lHkHjpukmYaJadhV1I/9aIIALbLMo287q/iU/Jf7X0BOm341
-	Q6VRDb22jc7DCOcv06BX3pX3HGW60/8l3MpjazYNYJPYdsSub0FwDkoKP0s8OmuGGlkySF
-	U7hLZCxGvGZVzyqRbJITzB2ncy8LZVY=
+	t=1788444334;
+	b=f5/jPIsajOcHaD2nzxTlB2RubG8cdGBJyUJTwJSTcpL6rboQq2PfI4a0D14mISmnxb+bA4
+	/dqW/8P6VhyO4n1+aFSX0XRTy9WkQxjGZWXg2mVtZG1h/3oIrBwZMq0Bc+0qzFoZWxkhTE
+	a1asMeWHSviPOAjjzDWZDEvZCJcuZvs=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ckNGaMeG;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D386B42AAE;
-	Thu,  3 Sep 2026 14:04:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE2951F00A3E;
-	Thu,  3 Sep 2026 14:04:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C46034018F;
+	Thu,  3 Sep 2026 14:05:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D421F00A3F;
+	Thu,  3 Sep 2026 14:05:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788444295;
-	bh=elge9bDwtCLKT6xvAo3JEAnzLjGry/X8H8tlMHRXEkQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=U1dKkoSPdAWi+lBx2IodRAo+PkpJIhGCvTSJ1ADsxn5z9A2citGbidswvrrava5iz
-	 ++OYMoE48S/FkIlqNm6nOVnquLiVBZeP17Bd0w81JRE0U9f+x1UgeDzMqMEkoKS3zJ
-	 wF33hMQM0KtC8xU0KwGdS1jDmNv3eZDvnGIffxXzvT3d6fMHZWrp7fX3PDwV4h9RBT
-	 EgHZ6+D7tLUZDNsT9CHbSTPVCHUbVQaKauNHhx+AWBu23+LiPfJPTG63l8yyz9Y1UN
-	 ijDg3/bwZEG3FE+VFXUxp1mI+Xfjhflq/tdU+l6+5UJWrzpN82ooLFbSMh6l/h+Vqo
-	 tjK95QBJzG+Yg==
-Date: Thu, 3 Sep 2026 15:04:48 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Zenghui Yu <zenghui.yu@linux.dev>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	shuah@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
-	nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	lance.yang@linux.dev, usama.arif@linux.dev
-Subject: Re: [PATCH] selftests/mm: remove unreachable returns after ksft exit
- helpers
-Message-ID: <apl-bS787dYOwTP-@gremlin>
-References: <20260903135251.39593-1-zenghui.yu@linux.dev>
+	s=k20260515; t=1788444333;
+	bh=MaD2aj64RBdEMELfyTFkH990wKoNoGi7GvA6hmcvB1E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ckNGaMeGbq4NUN+udET1ZeqZaP+BGvezF9qItzpVRqi1NymBYkzNSg86+L3OXPGkB
+	 EexP2DVFe5g98f91vY1sZHDg2Xrjipeliav9WcdTCsN3zRCdwABTgmM8MieUj9tfsp
+	 86ccDTkqUoMikZZId9aNy+KFjTUAqk/ybNomIzxkG0aAFm+GO08/LvmBdzxRYyR+SH
+	 e6tvxXoNGt9vheJJbfBxh9QgO+mYD84xk45nT2Uo5QWMB03U36BrL8nd1uMEyuDlDe
+	 yEkVZ/bucO/W7E7MNvQIMZAJ83Q/QiE73ZY/SMFmKvg9bgN+2R4fRecNLULJBlNtLV
+	 TAQjFgQCoQ5kg==
+From: SJ Park <sj@kernel.org>
+To: Liew Rui Yan <aethernet65535@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2.1] mm/damon/core: fix false positive in damos_quota_is_full() when esz is zero
+Date: Thu,  3 Sep 2026 07:05:20 -0700
+Message-ID: <20260903140521.98604-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260903124422.5340-1-aethernet65535@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260903135251.39593-1-zenghui.yu@linux.dev>
-X-Stat-Signature: oh9fmmhuzb5apnfapst3thfhfzfjsy7k
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B476EC001D
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1788444296-716585
-X-HE-Meta: U2FsdGVkX1+B0iGL+6Kdbh2fSmgl2xBW+9sdTvnCpzvw3iHCNXsXHa+CPSqhSmPSiHtClE8n6NJXBUia/qPk/RSfnrWYu9MpC8vHTzc2UJ7NHMSNf5ISnBnk8JOGhdGR1wbkc7VBuaHrJBUGHhL3sjX7dSimo/0nwIG9aYnujlH3g0YJrso+tsu33m7osrogkqc4WNS/Eh0cHAvcFTEENZykvRyAS56R4/7w7uc/UQuWLXBbHWFDTvYz8kE9i3rxtb2pwy7yjyBNG8hpmQ+MfcXahyce9o5mOo3jmmnneqYUsxifcLqqrVmF4K1UtsQnj/HUTGhpc46bOefud+DoYpCveSZSJSMFB0N63EZecYsVv21Dn0Otjo6E780uJ5mrsEcK0xSqP+rPUZg4ooHpkDyFELZD6yRCFGUaJAgrj0Vf3qvnzE0Q96U7uLzn9ssz1K6/5BL6FBpcWHCenI3wZ36R+OZWLqMQhBaRgMCI88H+X7P+ba+mWtrOd/wQZW+iHkZY8Y15yKiODzzJly2lG2Jw+X9OESKigNWnGFvEKevh0fkdN2bfMoOhlgkCRHfSQatmV8pHxUhMFIH7IRl+LLCXV+pkIH+Z+pkw5y9VvhQkvtq2CbLQHEIhEHB2WyXY/x72W8m24yGNjZtJ6MotXNDvd8WsEQDNh/sZWpAzX6NC5cLwacdHbldjYnaJLyQpu3itMQ/82rqFcJyocHfhi9itPFwh7o12YKN8Z15x6ebXMw0sXeaHFoHSFnq9XypVkBdGeSJbShyR8rFBlpAXdYpiaekSYTL2QQXmrULdbGarn1zAH7DvCaPwKzXON3+r3DdQjod+jNqLgGDUjBsrAA7hk2mX1AqZ/MxMpsb60Nv5R7bC1in77yQDb/QmYRrv3I+Yf65Xb+dLjGsJkFTSdMGVAk6pW1YyZIa4cqI8KRcfVXa+50qS20OWyM38QnNxnLW8QHL+Kp5+jgcAx/a
- +FIFExoM
- GmXuYC4BjAL70HFO08VYO/ppj5USM2N+r2//juse85OiWLIkNizFHNrCrQQzW68F7SGkB5n/RnqHQYBWSpEBIky3Y6tyzdFU2//9ya2YsJcYFq74TfAikIoQI/lucNHuic0vTuinFeGAaD/tadKh6kkyzQdr04Q+YjiTHKQE2T+tyW+esxB0u6LDUlleEZYER3rdDmpP9NkLeoGl0sGUoPhoikTyHxJzvHxvFceRvafeJgdZi7h3F01YB8v644i5CVa/NdOIQmdIhxynz+/aXVvJ7sw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B53DA1A0015
+X-Stat-Signature: gjht87ot1bp4io7uk93986x6brf94pwi
+X-HE-Tag: 1788444334-391233
+X-HE-Meta: U2FsdGVkX19RDf9qU2GfY5DyWThnHGtMx4wHhpbrT3eL5w+Z0EmhupEnDnGZ1/P+82OO+gPjJzN7Sa1zTuBxGbX7Je8fftRZryTxsGLsE5pVcpgRUj6wiNjWzUL1ZHeufYIcRcV5LilCLnZAtzcCvd6aVH0AWk6FahrlTAb/CTA/F7bwcjJXBM3I0s2OqPd0KyzTdxiqgIwKTk0ETvGVD78cH/sQUIjc0HLZ3D7yr7YuDeWSpn240AmRbdG7y+lbk1IfDAdk6j19x7qVjYRyjAd/uEhENKPFiBVubm81aGlxA/K29P9fKRX1ZBAmjY4L4pvAZJu9NiLLl0btsQwWhqahIeX3QvVMZ1GiB2tcfGKRwjcd1k8pUu/KVR/GMlrDlQ3ltvUxsiWnHULMXP8p2gJN/oZjrP4EkN3KwKsho65xB1TTSUpN4+VlwdOYx2lV233k6weJyrXFhRmtaO7iYMjs7bR14Pk8Ur/VUHCBAsxBlUwQntZAgLJzX/gjLzzhWj+oikISqu9Cpyo/m3AlfnR9T0/PNCFBEW+tKKsQyYoHkWg2XEvZSBprhGrDtPUdIjnsmvL+XcyCb4c65OESDbKmZ+3l4rHy/Br4NncODBt508QtvCbPzL4XzV4flk2IjUg41Zk0KlK2I9VmdZMab6F+NwRzP7eF4lMhlgDRoJ6+0BLH7dyf0clrgRwmFxY1jP6GsorkrbLYsX+QGlO9O//vHlFZegX2+nWwGeMInqTYbMmbcjPTwCkyBh6jcINhe3bzY+TeBdD9gMScV4CIFu5Rvr0Llm4A06tAkvhSFnDMIyNNTDcf/1z6pNm5sZOrI3CGB8OTPNkJ6xuB/8mTCFnQbqlwsJWok2Dge2P0Z0Oto12FqntTw1A3a7zXUXEFgFRPCIb/b5oK9LHyo1nMnZ92YVkHbz5djztx1pZs4C54w1J4ffJ6Xac1omB6ia4M72mO5bfN9nIdzxtJEDY
+ 9YZnyXhA
+ yR4sveNlC2OR2wBAryUV3vvOY22I8g9Wm4Azmre4Z7kdNJsv0T/ajnJEXkkRQyH/pqkRmFJC1UINVzQlf2sD442Sb2DBSQsPyQnErgMQthvYGKdIjz/zGuLeNjL97y8LKVdOb0kEIvQ+GVF0BVGHrxEGxK56fZvvXeYL5feYqHf2ZhKP35MzpmDq/83KcrNXOZ+cTDUcTBYWhVnNkMUlnjSMgAnHDt1Wh0gPywPmJahmRd8T4R7sHUxwI4wWgCyqDM2ng44dLGqQtnJAisv9R7NMLYlSnPjnVeULgJGFe/tKwLCc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,98 +94,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 03, 2026 at 09:52:51PM +0800, Zenghui Yu wrote:
-> From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
->
-> The ksft_exit*() helpers such as ksft_exit_fail_msg() are declared
-> __noreturn, and the ksft_exit() and ksft_finished() macros expand to calls
-> of them, always terminating the process via exit().  Any return statements
-> following such calls are unreachable, both at the end of main() and on
-> error paths of helper functions.
->
-> Remove all of them.  No functional change.
->
-> Assisted-by: GLM-5.3 OpenCode
+On Thu,  3 Sep 2026 20:41:48 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 
-Thanks for providing the tag, much appreciated :)
+> On Wed, 02 Sep 2026 17:33:50 -0700 SJ Park <sj@kernel.org> wrote:
+> 
+> > On Thu,  3 Sep 2026 06:31:38 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+[...]
+> First, I would like to clarify my intention to avoid any
+> misunderstanding.  My actual goal is to fix the semantic of the
+> qt_exceeds statistic, rather than necessarily changing the underlying
+> logic of damos_quota_is_full().
+> 
+> Currently, there is an issue with how qt_exceeds is incremented.  When
+> the quota is set very small, qt_exceeds increases frequently.  This
+> produces a statistical trend that looks almost identical to the
+> continuous increments caused by the Temporal Goal being achieved.
+> 
+> The original intent of introducing qt_exceeds is to let users easily
+> notice if the quota is too small.
+> 
+> Commit Messages [1]:
+> 
+>     mm/damon/schemes: account how many times quota limit has exceeded
+> 
+>     If the time/space quotas of a given DAMON-based operation scheme is too
+>     small, the scheme could show unexpectedly slow progress.  However, there
+>     is no good way to notice the case in runtime.  This commit extends the
+>     DAMOS stat to provide how many times the quota limits exceeded so that
+>     the users can easily notice the case and tune the scheme.
+> 
+> However, under the current behavior, users are forced to manually ignore
+> or filter out the qt_exceeds increments that occur after the Temporal
+> Goal is achieved.  This adds an unnecessary burden to the users and
+> contradicts the core goal of making it "easy" for them to tune the
+> scheme.
 
-> Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
+Still I feel the problem is unclear.  Why the users need to manually ignore or
+filter out the increments under what situation?  Knowing specific and detailed
+case would be helpful.  Are you or some people you know doing that and feeling
+it is too much?  If so, what is the real use case?  For what purpose and how
+DAMON is being used?  Why and how the ignorance of qt_exceeds is being done and
+how painful it is?
 
-LGTM, so:
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Thanks,
+SJ
 
-> ---
->  tools/testing/selftests/mm/folio_split_race_test.c | 2 --
->  tools/testing/selftests/mm/mlock-random-test.c     | 1 -
->  tools/testing/selftests/mm/pkey_sighandler_tests.c | 1 -
->  tools/testing/selftests/mm/split_huge_page_test.c  | 4 ----
->  4 files changed, 8 deletions(-)
->
-> diff --git a/tools/testing/selftests/mm/folio_split_race_test.c b/tools/testing/selftests/mm/folio_split_race_test.c
-> index 45b84f7b364e..1960635a953e 100644
-> --- a/tools/testing/selftests/mm/folio_split_race_test.c
-> +++ b/tools/testing/selftests/mm/folio_split_race_test.c
-> @@ -269,6 +269,4 @@ int main(void)
->  				      NUM_ITERATIONS);
->
->  	ksft_exit(iter == NUM_ITERATIONS);
-> -
-> -	return 0;
->  }
-> diff --git a/tools/testing/selftests/mm/mlock-random-test.c b/tools/testing/selftests/mm/mlock-random-test.c
-> index 16294bc7dae6..58772914fd79 100644
-> --- a/tools/testing/selftests/mm/mlock-random-test.c
-> +++ b/tools/testing/selftests/mm/mlock-random-test.c
-> @@ -71,7 +71,6 @@ int get_proc_locked_vm_size(void)
->
->  	fclose(f);
->  	ksft_exit_fail_msg("cannot parse VmLck in /proc/self/status: %s\n", strerror(errno));
-> -	return -1;
->  }
->
->  /*
-> diff --git a/tools/testing/selftests/mm/pkey_sighandler_tests.c b/tools/testing/selftests/mm/pkey_sighandler_tests.c
-> index 74bf79a5399d..f9c728ba96a5 100644
-> --- a/tools/testing/selftests/mm/pkey_sighandler_tests.c
-> +++ b/tools/testing/selftests/mm/pkey_sighandler_tests.c
-> @@ -556,5 +556,4 @@ int main(int argc, char *argv[])
->  	}
->
->  	ksft_finished();
-> -	return 0;
->  }
-> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
-> index 86a603692826..c01d227d7fd6 100644
-> --- a/tools/testing/selftests/mm/split_huge_page_test.c
-> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
-> @@ -101,7 +101,6 @@ static bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
->  	return (pfn_flags & folio_tail_flags) != folio_tail_flags;
->  fail:
->  	ksft_exit_fail_msg("Failed to get folio info\n");
-> -	return false;
->  }
->
->  static int check_after_split_folio_orders(char *vaddr_start, size_t len,
-> @@ -548,7 +547,6 @@ static int create_pagecache_thp_and_fd(const char *testfile, size_t fd_size,
->  err_out_unlink:
->  	unlink(testfile);
->  	ksft_exit_fail_msg("Failed to create large pagecache folios\n");
-> -	return -1;
->  }
->
->  static void split_thp_in_pagecache_to_order_at(size_t fd_size,
-> @@ -711,6 +709,4 @@ int main(int argc, char **argv)
->  	free(expected_orders);
->
->  	ksft_finished();
-> -
-> -	return 0;
->  }
-> --
-> 2.53.0
->
-
---
-Cheers, Lorenzo
+[...]
 
