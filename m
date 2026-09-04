@@ -4,88 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B197C624DE
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 06:53:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CE7BC79F83
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 07:13:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09E5A6B0096; Fri,  4 Sep 2026 02:53:19 -0400 (EDT)
+	id 224626B0088; Fri,  4 Sep 2026 03:13:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 075F86B0098; Fri,  4 Sep 2026 02:53:19 -0400 (EDT)
+	id 1D5D96B008A; Fri,  4 Sep 2026 03:13:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED06E6B0099; Fri,  4 Sep 2026 02:53:18 -0400 (EDT)
+	id 0EB856B008C; Fri,  4 Sep 2026 03:13:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C5E366B0096
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 02:53:18 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6344EA0775
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:53:18 +0000 (UTC)
-X-FDA: 85175163276.05.7F87314
-Received: from va-1-114.ptr.blmpb.com (va-1-114.ptr.blmpb.com [209.127.230.114])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 78D0E20005
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:53:16 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=V4Y+HsG3;
-	spf=pass (imf31.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788504796;
-	b=fCfUM7TOrCPY+ItAPzCh36iDntcMbGKMipd3b/Q2t0/N1TaJW/3P3poyAMH1HmSEMN6PpH
-	Xf50+GX97M7z5S/fBk7Y4SIDUJpvEg6N1nRTsFh3eU9n7FmZ5IlHNrq91WgAV60dMxD8Lz
-	sKLFNn//shWMuDFINX8CyYYNa9Z6yPE=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=V4Y+HsG3;
-	spf=pass (imf31.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D61BA6B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 03:13:18 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4E78F1206EE
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 07:13:18 +0000 (UTC)
+X-FDA: 85175213676.12.0FCAC16
+Received: from lgeamrelo12.lge.com (lgeamrelo12.lge.com [156.147.23.52])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C7F78C0004
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 07:13:14 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf10.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788504796;
+	s=arc-20220608; t=1788505996;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mPTOxwIC+jr/FMV+UNx0z3S+Ti/laXItlILymntanHY=;
-	b=U2LR8x3o/QlDnWERUQbCsWCujHqsEzRcqF8wfApMWlFjOe5ZOXIMYycd8SfODyv7fbCWy2
-	3APzm5ORcQXDyoz4zE0H5+h+6PkivrhRoQ9D4vltk0G74zxq8EoGOZdKLIR0YmnuSlNFKA
-	Wd+cTcJ6448JK8ntJo2tqhV34KgC15M=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1788504791; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=mPTOxwIC+jr/FMV+UNx0z3S+Ti/laXItlILymntanHY=;
- b=V4Y+HsG3crXlBb3yPWZi6+FSOQbqRRifsFgQD00UAvsT2ypE/oR8tbzsZcEZEgeTBKR7WL
- nSslbtzVrHCnPkgAqPCzeAjTfob+v6hvCwOgHeLS2qjWJhIeYtQIEQgCWmewajlNFOpc8H
- 1XspAzr8pS+58eSeqcJc5ftpIzxNflIulcVjLCZCDvetClVkhdUyxjei4bMxyJxBS921F2
- yu3uti6COgl3zTT4mqo3AVXPB+FQXA5qZZ2hgTsyzTcIjz0e+pQ31fkP7x5t1HYgsltgIk
- C02Eqks6kYc+q8oDOumKtLv5cqJKxT4mrt6i45+3vGLU9utSljsiyOwtxHc8YA==
-Date: Fri,  4 Sep 2026 14:51:59 +0800
-X-Lms-Return-Path: <lba+26a9a6ad5+1c1431+kvack.org+lizhe.67@bytedance.com>
-Message-Id: <20260904065159.34409-3-lizhe.67@bytedance.com>
-Mime-Version: 1.0
-In-Reply-To: <20260904065159.34409-1-lizhe.67@bytedance.com>
-To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>, 
-	<liam@infradead.org>, <rppt@kernel.org>, <surenb@google.com>, 
-	<mhocko@suse.com>, <tj@kernel.org>, <hannes@cmpxchg.org>, 
-	<shakeel.butt@linux.dev>, <muchun.song@linux.dev>, <qi.zheng@linux.dev>
-Cc: <cgroups@vger.kernel.org>, <linux-doc@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
-	<lizhe.67@bytedance.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Subject: [RFC 2/2] mm: add goal=demote to memory.reclaim
-References: <20260904065159.34409-1-lizhe.67@bytedance.com>
-Content-Transfer-Encoding: 7bit
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-X-Mailer: git-send-email 2.45.2
-Content-Type: text/plain; charset=UTF-8
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 78D0E20005
-X-Stat-Signature: g36pnwanccuxo5p4n7whq3s3q8kwoiqi
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TnJ3GcPQ8Ohm7bJDDF2RqjEhq9oi8J+AhVjzEAnv+JY=;
+	b=r/3dz1qNfS7mpBJu+6gNsGMy+urB+mTuQD16XNBYQBFnNm2moqSEHRFxl+Vw3BU7PpRkKl
+	0BQ9ChWMCWzS9E8UqvtK46ommeHgBV8nVk+0pDlaGOUUoWBhjENnmFwKJicgnXtdJ+kNoa
+	0CBD9s7tMiSK+PEVIZXBLKqLc29v1IY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788505996;
+	b=6pvCQxK/J4p8/+303t2xP4/Sa7e4nbXfRQDWFETW3Gzzlm0Pfp1PlkA7jkaLM5qAHOQfxA
+	CtW1Akq0RRsSsaUywa6ekc++ZCEsVgvEvUEPlQO5hlnfLPAQmLPdwMjKF/qmiA+yjzAJaZ
+	YTuMXzijmpvx/uubUsGD0LDExHc8LCc=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf10.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from unknown (HELO lgeamrelo04.lge.com) (156.147.1.127)
+	by 156.147.23.52 with ESMTP; 4 Sep 2026 16:13:10 +0900
+X-Original-SENDERIP: 156.147.1.127
+X-Original-MAILFROM: youngjun.park@lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.1.127 with ESMTP; 4 Sep 2026 16:13:10 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Fri, 4 Sep 2026 16:13:10 +0900
+From: Youngjun Park <youngjun.park@lge.com>
+To: "Lian Wang (ProcessMission)" <lianux.mm@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Kairui Song <kasong@tencent.com>, Jihan LIN <linjh22s@gmail.com>,
+	Kunwu Chan <kunwu.chan@linux.dev>, Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, linux-hardening@vger.kernel.org
+Subject: Re: [RESEND RFC PATCH v2 00/13] mm/swap: introduce per-priority
+ allocation queues
+Message-ID: <appvhlPleahTRklV@yjaykim-PowerEdge-T330>
+References: <20260829-swap-pcp-priq-v2-resend-0-68d3d925578c@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260829-swap-pcp-priq-v2-resend-0-68d3d925578c@gmail.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C7F78C0004
+X-Stat-Signature: xxah57h665eu168i8qp97sed6z6isgr7
 X-Rspam-User: 
-X-HE-Tag: 1788504796-138841
-X-HE-Meta: U2FsdGVkX19qCtjv9iEZWQqCnzyrQDfUEF2fjT22t5QaZkn9sCN4x814FDmXdstG0IhnagBAGmDSB00yCpKhPMkAQKtQeSdXSJWMPjSc6MJlq0OUrCzUMetAs0nVq53s8BZaoJi0WGezp2u/sukHF2L6tyQeuBxk0iQtJBnEySlazK0ZMVjTQHnNkM/tix8N8aP18rQTIwRPrYzkbW4nRVPB2RzaMxEXOpprvSE1uAXAP4u55/JW8wCKPOGM9Ah6h6VeC3xYxXn00CX/HIcA7EKapE3G09JNfxJEpA/4ny4XUjvhU7TLlgxdNN7QM4gndGv6lXSL7GyII1+vH8bjiJExfrWXDqqHSC0RRCcWI5O8c/uj26++57R6jCwFiIxGZPAw69bPDpQtft0xHP8jB0hZ2QeJTcHTQPIapXZVepk3FWhbkXAlwXqKl10iTH/PNgDmUk8GHCjkRPNB5B2F7gbdyV9R6pQSFOIA0wVLcm6ZoF+xq2CkFxGmrUuyQUzOLvKQZDh6xJSju6iNMb0DeuHw+7sxdVys3QVcnIvkA4ZFuD0Wse7KcZ83lP2iw9tz83kU8qKYyxC0sW2HXhl1KBoQXMqgEMxwL4pEYyEr5wHUCAi33hQPylTaOKppaPxo68Ux4d+jHen/7fA+Cq3YdhFxHbGNmVCQVJ1PELzcR8N/6DFnqvBY7TpgEu8kPVI0G+fnS+s/6IC5l6S0Sv4K/nlMabNA9127HsaTtS78R23Q1wxiacSRCQfoPi45ZQNzUPS8yVJ/ijMKtw6z90LgEVgTxOxio8CKiTFSFWwG3/LgxCkeZxnia3afq/LeC19rlzHPg0ezR97jblVNA/bFoE4637PdAwUekruKM023erIEfPhgRwyBBLxru6r0cFy1rAc+/UhvrX89UPFu7UF1PBnEI/0kMOaDWT5nMO96tEkR4iutq7XgwK3830qyD/ZhO9PA8GyblcHNJV6p3cf
- Iv5+4gpD
- BkBXJ5mng5aq+DzHde3GMPgmMauD7JCyhFS4PPiF0WAI18HCqmclHRt9yto9UnyB2Aqq1G2Qoeukno+yOOhFwv9wlgr6rudVc8FCW1NhsO5I7lzPWORsvAd68igqr0KOZNzj8DRIYr8RAgbtzrK4IvsotTLiTSYSCfHNT6+9lMiO/yxf+oIcRkUrO3fo1Zn/Y2gKyJZ+DB/xfqsI4lG00eb6mZZmmlxr0KtAS/pJ9Gc5yOkVfCVK6jwYaJB2ZwyTT2VD/
+X-HE-Tag: 1788505994-18304
+X-HE-Meta: U2FsdGVkX181M5s38zWue2Jj8kFegpkk74uVdcpMxPMMgTOYrwbSWjALdY5GSp3CqDBY6irMdkCERgVSrhufj6Vb5EgzDYi2fh9QN1qcUq4L1vXzbL9m4E8b7xAZeZsDWcWpGkh28f8BHwFUWSD+Q1ZaHYkASQ1NgF1cWSUMC4SfH7X3b6CfXk4w19fkKFbzASsNT9YgD0YCPXPJquJh8ffhI1oOgG3Px8TPMuvKq39JY6TNNg9ses8c61dAv+EAU/FUVlih++8EhM+pegNWLtADGtYnp1sfR4bsXtqfq56eGnJ27FhwBnRTGjM9QQC4NyaA7IdpQUWpZNhFQTMrQHkLGX1ZDBLuNkCFAaWEPqqJcD0Ggg1bxKz4jyGNiiogfiVatgc1PI/JKNQPTr/dVFSRI4EcfSuB5riki5Gs2fmTEtiE39+icvm6WYV4+K2nHXWhIIiHf8ix3O2ZwM2rRltVnTBhcOZzEKcJnHK1UxCBrTfifdlR2Pirlxmkej8D0hD024oUq6/yRCFd73mpn3zocO9bKCHsmnbc6BJ9+TESFkSnetffBzf1ZxkqG7IO97668SnBm0p5WQ46lQfVxdXRcLnh6l+VPnsa4xbB2nSkaX2fsRI8WagX5/k5d/msxgU9tFRMsmW4L7cyUa0HstAKgYmCMpEf8xEz91GPvhjAxfyTJv07VnJuRob8hrKrDqCu2vz4k36WbyNJfQXI1QnW3/zT7zyaMV66+RqIrqFE3TkWaeA78pmkwSdyirNcptuK5Tx+lloW1EmuqqEnnkIa6ww28oxGSRmdP2fYsn+Kq4ffRUy3WqSNPNMddBHXCzxtlHDwrVdqeuZCZZxRwtv61YjHIcwa9b+y1gFA7brlu2WXwECarr8lq9bJfLKGmJbECQmymMscocWfka535LHDMydhixTWlhjIzRPdUC+lNcDzyzR5uMYii3EqaO9krMo4i4trEXkxc8T4zw+
+ X1/6o1HJ
+ IyeXo7P/pKz5C0+dcgrMFc/wILCH0Mvo5sROmqXxQwDoPndb4VUHVK9RqQ0GsYIS5zu1aKnKcd5ptCGWz4VyxVFXOUjTtaD+uX8Q4k4rOpt+lrK58PWri19bg4i3N4bL8yU9uXINkszRKh1kXFkgkb/Tv2ExrkxdMvJj1D07mbHPa9Mzzd7hF6v/04rDv+gGgDSq1OCpRFNBcUpfFpI0aiEuV05V7ERRiRE75GmDYDCDVj1InqPKp2/vFsdJ6uBS4s9Nv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,226 +91,194 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-memory.reclaim normally runs the reclaim engine with the normal set of
-reclaim actions. On tiered memory systems this can age cold folios by
-demoting them first, but the same request can continue into eviction when
-demotion is unavailable or when lower-tier nodes are scanned. That makes
-memory.reclaim unsuitable for callers that want to use the existing
-reclaim scanner only to move cold folios from DRAM to CXL. For example,
-swappiness=0 biases selection toward file-LRU folios, but it still allows
-file cache to be evicted if the request keeps reclaiming after demotion
-progress.
+On Sat, Aug 29, 2026 at 03:43:50PM +0800, Lian Wang (ProcessMission) wrote:
+> Hi all,
+>
+> RESEND: Only the first cover letter was sent, with an outdated sender
+> display name.  No patches from the series were sent.  This resend uses
+> the corrected sender identity and starts the complete thread.  There are
+> no code or content changes from the previously reviewed v2 draft.
+>
+> This is v2 of Kairui's swap priority queue RFC [1].  With Kairui's
+> agreement, I am carrying this revision while preserving the original
+> authorship of his patches and Youngjun's per-device percpu-cluster patch.
 
-Add goal=demote as an explicit memcg memory.reclaim goal for best-effort
-tier demotion without LRU folio eviction. Successful demotions count
-toward the requested amount. The reclaim walk skips nodes that do not have
-demotion targets and keeps folios that are not queued for demotion instead
-of reclaiming them. The default remains goal=progress, preserving the
-existing behavior.
+Hi Lian,
+Thank you for work!
 
-Fail goal=demote with -EAGAIN before reclaim starts when the target cgroup
-has no usable demotion target. The option is valid in that case, but the
-requested goal cannot make progress; returning early avoids retrying the
-reclaim loop just to discover that every node is skipped.
+Since tiers come up further down, I'd like to raise a point about the
+patch subject line too. As Kairui mentioned in RFC v1 that we would
+stay aligned with tiers, would it make sense to frame this RFC as a
+per-tier allocation policy (or something along those lines)? Kairui,
+what's your opinion?
 
-This is useful for userspace controllers that want to manage top-tier
-headroom and maintain a desired DRAM/CXL occupancy ratio according to
-application policy and current system state. The controller can
-proactively move cold folios to lower tiers and adjust the demotion amount
-as workload placement, tier occupancy, bandwidth pressure, and latency
-targets change. Demoted folios remain charged to the cgroup, so the goal
-is placement control rather than memory.current reduction. It does not
-provide strict file-only or target-tier placement; it remains best effort
-and subject to reclaim eligibility and demotion target availability.
+Devices assigned to the same tier already share the same priority, so
+I don't think the allocation policy needs more than one option for
+that case (I can't think of a use case that would need it).
 
-Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
----
- Documentation/admin-guide/cgroup-v2.rst | 11 ++++++
- mm/internal.h                           |  1 +
- mm/vmscan.c                             | 48 ++++++++++++++++++++++---
- 3 files changed, 55 insertions(+), 5 deletions(-)
+1. For legacy swap with no tier configured, define it as a single
+   priority treated as one tier.
+2. When priorities match, allocation naturally falls to a single
+   policy (not a queue). the concrete policy here is this
+   queue-based scheme.
+3. When tiers are enabled, devices previously assigned under legacy
+   swap are reassigned to tiers at runtime.
+   (This means different swap device on same tier handled like same priority device)
 
-diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
-index ed87d45cfe21..518a3eafe5d9 100644
---- a/Documentation/admin-guide/cgroup-v2.rst
-+++ b/Documentation/admin-guide/cgroup-v2.rst
-@@ -1473,6 +1473,17 @@ The following nested keys are defined.
- 	does not disable demotion. This is best-effort and does not bypass memory
- 	protection or other reclaim constraints.
- 
-+	goal=demote performs best-effort memory tier demotion for LRU folios:
-+	successful demotion counts toward the requested amount, nodes without
-+	demotion targets are skipped, and folios that cannot be demoted are kept
-+	on the LRU instead of being evicted by this request. Slab shrinking is
-+	also skipped, as it cannot contribute demotion progress. Demoted folios
-+	remain charged to the cgroup, so this is intended for placement control
-+	rather than memory.current reduction. It can be combined with swappiness
-+	to use the existing anon/file reclaim balancing, for example
-+	swappiness=0 to prefer file-LRU folios. If no demotion target is available
-+	to the cgroup, this returns -EAGAIN.
-+
-   memory.peak
- 	A read-write single value file which exists on non-root cgroups.
- 
-diff --git a/mm/internal.h b/mm/internal.h
-index 40cb5900f857..33d75f6a5c3d 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -75,6 +75,7 @@ unsigned long lruvec_lru_size(struct lruvec *lruvec, enum lru_list lru,
- #define MEMCG_RECLAIM_MAY_SWAP (1 << 1)
- #define MEMCG_RECLAIM_PROACTIVE (1 << 2)
- #define MEMCG_RECLAIM_GOAL_EVICT (1 << 3)
-+#define MEMCG_RECLAIM_GOAL_DEMOTE (1 << 4)
- #define MIN_SWAPPINESS 0
- #define MAX_SWAPPINESS 200
- 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index cdaab8ad54ac..1a98e83f35c4 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -126,6 +126,9 @@ struct scan_control {
- 	/* Eviction-oriented proactive reclaim goal */
- 	unsigned int evict_goal:1;
- 
-+	/* Demotion-only proactive reclaim goal */
-+	unsigned int demote_goal:1;
-+
- 	/*
- 	 * Cgroup memory below memory.low is protected as long as we
- 	 * don't threaten to OOM. If any cgroup is reclaimed at
-@@ -189,6 +192,9 @@ struct scan_control {
- 
- static unsigned long reclaim_progress(struct scan_control *sc)
- {
-+	if (sc->demote_goal)
-+		return sc->nr_demoted;
-+
- 	if (!sc->evict_goal)
- 		return sc->nr_reclaimed;
- 
-@@ -392,6 +398,12 @@ static bool memcg_node_is_demotion_target(int target_nid,
- 
- static bool reclaim_skip_node(pg_data_t *pgdat, struct scan_control *sc)
- {
-+	if (sc->demote_goal) {
-+		if (sc->nr_demoted >= sc->nr_to_reclaim)
-+			return true;
-+		return !can_demote(pgdat->node_id, sc, sc->target_mem_cgroup);
-+	}
-+
- 	if (!sc->evict_goal || sc->nr_demoted < sc->nr_to_reclaim)
- 		return false;
- 	if (!can_demote(pgdat->node_id, sc, sc->target_mem_cgroup))
-@@ -1316,6 +1328,9 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 			continue;
- 		}
- 
-+		if (sc->demote_goal)
-+			goto keep_locked;
-+
- 		/*
- 		 * Anonymous process memory has backing store?
- 		 * Try to allocate it some swap space here.
-@@ -5185,7 +5200,8 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
- 
- 	need_rotate = try_to_shrink_lruvec(lruvec, sc);
- 
--	shrink_slab(sc->gfp_mask, pgdat->node_id, memcg, sc->priority);
-+	if (!sc->demote_goal)
-+		shrink_slab(sc->gfp_mask, pgdat->node_id, memcg, sc->priority);
- 
- 	if (!sc->proactive)
- 		vmpressure(sc->gfp_mask, sc->order, memcg, false,
-@@ -6288,8 +6304,9 @@ static void shrink_node_memcgs(pg_data_t *pgdat, struct scan_control *sc)
- 
- 		shrink_lruvec(lruvec, sc);
- 
--		shrink_slab(sc->gfp_mask, pgdat->node_id, memcg,
--			    sc->priority);
-+		if (!sc->demote_goal)
-+			shrink_slab(sc->gfp_mask, pgdat->node_id, memcg,
-+				    sc->priority);
- 
- 		/* Record the group's reclaim efficiency */
- 		if (!sc->proactive)
-@@ -6950,6 +6967,7 @@ unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
- 		.proactive = !!(reclaim_options & MEMCG_RECLAIM_PROACTIVE),
- 		.evict_goal = !!(reclaim_options &
- 					MEMCG_RECLAIM_GOAL_EVICT),
-+		.demote_goal = !!(reclaim_options & MEMCG_RECLAIM_GOAL_DEMOTE),
- 	};
- 	/*
- 	 * Traverse the ZONELIST_FALLBACK zonelist of the current node to put
-@@ -8027,6 +8045,7 @@ enum {
- 	MEMORY_RECLAIM_SWAPPINESS_MAX,
- 	MEMORY_RECLAIM_GOAL_PROGRESS,
- 	MEMORY_RECLAIM_GOAL_EVICT,
-+	MEMORY_RECLAIM_GOAL_DEMOTE,
- 	MEMORY_RECLAIM_NULL,
- };
- static const match_table_t tokens = {
-@@ -8034,6 +8053,7 @@ static const match_table_t tokens = {
- 	{ MEMORY_RECLAIM_SWAPPINESS_MAX, "swappiness=max"},
- 	{ MEMORY_RECLAIM_GOAL_PROGRESS, "goal=progress"},
- 	{ MEMORY_RECLAIM_GOAL_EVICT, "goal=evict"},
-+	{ MEMORY_RECLAIM_GOAL_DEMOTE, "goal=demote"},
- 	{ MEMORY_RECLAIM_NULL, NULL },
- };
- 
-@@ -8043,6 +8063,7 @@ int user_proactive_reclaim(char *buf,
- 	unsigned int nr_retries = MAX_RECLAIM_RETRIES;
- 	unsigned long nr_to_reclaim, nr_reclaimed = 0;
- 	bool evict_goal = false;
-+	bool demote_goal = false;
- 	int swappiness = -1;
- 	char *old_buf, *start;
- 	substring_t args[MAX_OPT_ARGS];
-@@ -8078,19 +8099,34 @@ int user_proactive_reclaim(char *buf,
- 			if (!memcg)
- 				return -EINVAL;
- 			evict_goal = false;
-+			demote_goal = false;
- 			break;
- 		case MEMORY_RECLAIM_GOAL_EVICT:
- 			if (!memcg)
- 				return -EINVAL;
- 			evict_goal = true;
- 			break;
-+		case MEMORY_RECLAIM_GOAL_DEMOTE:
-+			if (!memcg)
-+				return -EINVAL;
-+			demote_goal = true;
-+			break;
- 		default:
- 			return -EINVAL;
- 		}
- 	}
- 
--	if (nr_to_reclaim && evict_goal && !memcg_has_demotion_target(memcg))
--		evict_goal = false;
-+	if (evict_goal && demote_goal)
-+		return -EINVAL;
-+
-+	if (nr_to_reclaim && (evict_goal || demote_goal)) {
-+		bool has_demotion_target = memcg_has_demotion_target(memcg);
-+
-+		if (demote_goal && !has_demotion_target)
-+			return -EAGAIN;
-+		if (evict_goal && !has_demotion_target)
-+			evict_goal = false;
-+	}
- 
- 	while (nr_reclaimed < nr_to_reclaim) {
- 		/* Will converge on zero, but reclaim enforces a minimum */
-@@ -8125,6 +8161,8 @@ int user_proactive_reclaim(char *buf,
- 					  MEMCG_RECLAIM_PROACTIVE;
- 			if (evict_goal)
- 				reclaim_options |= MEMCG_RECLAIM_GOAL_EVICT;
-+			if (demote_goal)
-+				reclaim_options |= MEMCG_RECLAIM_GOAL_DEMOTE;
- 			reclaimed = try_to_free_mem_cgroup_pages(memcg,
- 						 batch_size, gfp_mask,
- 						 reclaim_options,
--- 
-2.20.1
+Point 3 reflects my thinking based on the current tier implementation.
+Current tier concept is good enough, but I keep thinking how to improve...
+(This means I don't think we need runtime tier enablement with
+ ability to change swap tier number range. swap device on/off & priority change not that dynamic? right?)
+
+There's an alternative tier-assignment approach that might fit this
+series better, and I'd like your thoughts on it.
+
+a. Fix the tier as a boot-time parameter.
+   (This way, legacy swap without tiers never hits case 3 at all. On
+   kernels with tiers enabled, swap devices are assigned per their
+   tier, and devices in the same tier follow the same policy even if
+   their priorities differ. plus ther is no swaptier interface management
+   add, remove, etc)
+
+b. If boot time isn't preferred, define tiers at compile time by
+   grouping equal priorities, or by splitting the priority range into
+   1/n buckets based on the number of tiers.
+   - The tier interface would then only allow naming (or should this
+     also be fixed at compile time?)
+   - grouping equal priorities strategy has some limit like
+
+I think this direction aligns well with this patch and, in some
+ways, leads to a cleaner architecture. But, both (a) and (b)
+have rough edges once I try to work them through in practice, and
+each would need to be resolved one at a time with agreement before
+introducing it. I'd like to hear other opinions, and if this
+is acceptable, I'll introduce original and this idea.
+
+> My substantive code changes are concentrated in patches 3, 9 and 11.
+> Patches 5, 10 and 12 contain the dependent adaptations needed to keep
+> the stack coherent and bisectable.  The code patch-ids of patches 1, 2,
+> 4, 6, 7, 8 and 13 are unchanged from v1.  My Signed-off-by on the full
+> series records the handoff and DCO chain; Co-developed-by is limited to
+> the three patches with substantive changes.
+>
+> The current swap allocator rotates swap_avail_head with plist_requeue()
+> when it moves between devices of the same priority.  That couples device
+> selection to the global cluster cache and serializes cluster transitions
+> on swap_avail_lock.
+
+> This series first restores per-device percpu clusters, then replaces the
+> allocation-time plist rotation with a priority-ordered queue.  Each
+> priority has a mostly immutable ring of devices.  Per-CPU readers rotate
+
+I think this feature will also be needed on the virtualized swap side,
+which makes me wonder whether this patch should go back into the swap
+tier series instead. Kairui, Lian, what do you think? (Or separately?)
+
+I've also been thinking about how to move the tier series forward
+since v10. I'll prepare v11 shortly.
+
+> within a ring after a fixed allocation quota, so the allocator preserves
+> strict priority ordering without contending on one global rotation point.
+>
+> The queue is also intended to separate device selection policy from the
+> per-device cluster allocator.  Youngjun's swap-tier series [2] remains
+
+FYI, the thing I've been hesitating over since v10 is that there was
+feedback that going through the memcg interface needs more swap code matureness (backend transfer)
+and discussion,
+so I needed to settle on a direction first.
+
+This patch itself looks like it could align well with the swap-tier
+use case (see my note on the interface below). As mentioned above,
+I'll follow up with the tier series soon.
+
+> under separate review. This RFC does not introduce a tier ABI or assume
+> that the tier series has landed: a ring is keyed by the existing swap
+> priority.  If tiers land first, the same queue can become an in-tier
+> allocation policy rather than a competing tier definition.
+
+This is the direction I was hoping for. (TBD)
+
+Within a tier. /sys/kernel/mm/swap/tiers/<tier name>/<policy name>
+
+- Across tiers: allocation follows priority based on speed
+  differences.
+- Within a tier: a selectable policy applies.
+  - The default policy is this series' scheme.
+  - Priority-based distribution should also be possible within a
+    tier.
+  - If xswap is introduced, its allocation should be selectable based
+    on memcg.
+  - Other custom allocation methods (round-robin, etc.).
+
+...
+
+> Testing
+> =======
+>
+> Kunwu ran an A/B/C/D/E matrix on a Kunpeng 920 server with 256 CPUs,
+> 249 GiB RAM and an aarch64 kernel.  The workload built a fixed kernel
+> source with "make -j96 defconfig Image modules" under 2 GiB and 3 GiB
+> memory cgroups, using eight equal-priority ZRAM devices.  Every arm used
+> one warm-up followed by 12 measured runs.
+>
+> A/B/C share the v1 base and reproduce the progression reported in v1:
+>
+>   A: before the series
+>   B: after patch 8, with per-device percpu clusters but the old plist
+>   C: after patch 13, with the complete priority queue
+>
+> D/E share the tested v2 base and isolate the current series:
+>
+>   D: before the series
+>   E: after all 13 v2 patches
+>
+> 1. Reproducing the v1 performance shape
+>
+> Average system time over 12 measured kernel builds:
+>
+>                               2 GiB       3 GiB
+>   Before (A)                40899.14s    22621.86s
+>   After patch 8 (B)         88712.52s    53244.70s
+>   After patch 13 (C)        41140.76s    22925.48s
+>
+> Patch 8 alone increased system time by 116.9% in the 2 GiB workload
+> and 135.4% in the 3 GiB workload.  Adding the priority queue returned
+> system time to within 0.59% and 1.34% of A, respectively.  The absolute
+> times differ from the v1 machine, but the expected performance shape is
+> reproduced: moving the cluster cache back to device scope is expensive
+> while allocation still rotates the plist, and the queue removes that
+> contention.
+>
+> 2. Isolating the v2 delta
+>
+> Average system time over 12 measured runs:
+>
+>                               2 GiB       3 GiB
+>   Base (D)                  39643.77s    22139.66s
+>   Full v2 (E)              40336.91s    22984.62s
+>   Delta                       +1.75%       +3.82%
+>
+> Average elapsed time, with sample standard deviation:
+>
+>                               2 GiB       3 GiB
+>   Base (D)              518.97 +/- 5.87s  334.07 +/- 4.01s
+>   Full v2 (E)           527.24 +/- 5.21s  342.98 +/- 2.78s
+>   Delta                       +1.59%       +2.67%
+>
+> The arms were run sequentially rather than interleaved, so these small
+> D/E deltas may include temporal drift.  They are reported as observed
+> instead of being described as zero regression.
+
+No regression is great news. the plist refactor is valuable on its
+own merits.
+
+That said, could you also share data on other angles, such as lock-
+contention benefits, or advantages in other use-case scenarios? (I'll
+also think about what would be worth testing here.)
+
+I've done an initial pass and given my review. I'll keep providing
+feedback as I go through the patch contents. :)
+
+Youngjun
 
