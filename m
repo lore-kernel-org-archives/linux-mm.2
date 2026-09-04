@@ -4,98 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E376BC79F80
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 09:46:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6886FC624DE
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 09:58:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BAD9C6B0099; Fri,  4 Sep 2026 05:46:38 -0400 (EDT)
+	id 4966E6B0088; Fri,  4 Sep 2026 05:58:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B85126B009B; Fri,  4 Sep 2026 05:46:38 -0400 (EDT)
+	id 447976B008A; Fri,  4 Sep 2026 05:58:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC2806B009D; Fri,  4 Sep 2026 05:46:38 -0400 (EDT)
+	id 337216B008C; Fri,  4 Sep 2026 05:58:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B87C6B0099
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 05:46:38 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 264EC401B8
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 09:46:38 +0000 (UTC)
-X-FDA: 85175600076.22.DB6A43D
-Received: from mta1.migadu.com (out-13.mta1.migadu.com [95.215.58.13])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 33DF4A0009
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 09:46:35 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qW3oOuJB;
-	spf=pass (imf15.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.13 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E6F46B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 05:58:05 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 85F0EA0323
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 09:58:04 +0000 (UTC)
+X-FDA: 85175628888.02.F5A9122
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E63B81C0003
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 09:58:02 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HXl+95NG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788515196;
+	s=arc-20220608; t=1788515882;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kJVKht9xC9hrhT6m5CdwUJpOEWN81iZvX1WrsDQ3RGM=;
-	b=bsZD2pJxncMLgAn2qZWxd70czUYIZpwvCxdeOnQo+C9sNdvRM4YiDOjs62ZVWOjDw9YLVv
-	ibGapHsYEdljtRDdBYUJL9lmeN0D2/SChgdEnWV87vwn0MHyMy1FUS086YvYJxX6DKDU6G
-	gRKCsMfV1FYrMtyzO7XSZdZYdCdKpG0=
+	bh=84RQjvUIbZegelFgUCwrD+5Gg8PBRCldn9ArQR1bQ0Q=;
+	b=bijccr8+LKBzhvrwbtEFEdOSdqyQj11qoyi5x8L3kJMh6hTNPy6gj56aFcKsuX6Sup1opo
+	Zpcs9oyW3JErAqaV/uNllsESObHuGpPgFcAhOvfeUAGnC0A3uDpbFa2DknU8T73x3Syfl0
+	5azdTCvQwblZvrCpjg/wS4csHiJrETo=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qW3oOuJB;
-	spf=pass (imf15.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.13 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HXl+95NG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788515196;
-	b=7jTwypH1rWAZYcFHSZMc/fm/fzU2Xr7w7ZwAiCRmhgD/5j7lC2IgTpBagSkQEtUWOlQ3/o
-	Ny83MlnmtyQ4Tq/mjp5NjIrshhEatvf02F35fP1nGAS+2l1oCWAk+dnL3ythb4qAtQ+O9J
-	0B4cCxCnL1HZ9t4Aq6yVLyexhwtXkck=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=/egS0JLq3DdP+ELRV2+UfNnFQyripc/bTgQpMQb2RyA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788515195; v=1; x=1789119995;
- b=qW3oOuJBe29Tupcqm9ATJ9aRgS3psFQXuPso1euycC7858JUW3MBvmxVRvaPD+zzUfcrM3rb
- 00VakCJQPwc+h8kR+79Z/WbkPVEFCi1Epwmau5Nz+ojPkq6GlC//NVhlb3sFC2nLYH79tCgIsA2
- H6mQkg8uB6wDBdNuWqEMvqSk=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 8f911b791d4dc657;
-	Fri, 04 Sep 2026 09:46:34 +0000
-X-Mizu-Trace-ID: 8f911b791d4dc657
-X-Migadu-Flow: FLOW_OUT
-From: "Hui Zhu" <hui.zhu@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-Subject: [PATCH v3 3/3] mm: memcg: skip the RCU lock when the memcg is not dying
-Date: Fri,  4 Sep 2026 17:45:56 +0800
-Message-ID: <0db657472c5278b2e2b87fbca7590b47ca520303.1788514750.git.zhuhui@kylinos.cn>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1788514750.git.zhuhui@kylinos.cn>
-References: <cover.1788514750.git.zhuhui@kylinos.cn>
+	t=1788515882;
+	b=tujK56x3XRFiVKnaysiCFP9cLYweYYzmpry1KBFkKNcH2oLlMdlxORs24egrWoRLs7yMWC
+	C5FYT1C4UIAip+d3CffPv+9wLudj0BVVaOnVUycNcNPvk8aMa0HsB0/doaq6TMdPCyKobk
+	vbCTdL0XNC4tcz0OOsTJ4GLPHjYgrLc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6173F60A75;
+	Fri,  4 Sep 2026 09:58:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7204F1F00A3D;
+	Fri,  4 Sep 2026 09:58:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788515882;
+	bh=84RQjvUIbZegelFgUCwrD+5Gg8PBRCldn9ArQR1bQ0Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HXl+95NGCkRn8wpoJGvYycHo6AFaZsZMhDw8m68jymnrceifFIzGIlqfOs8JNnCNS
+	 ndprzaCRxDNXYtrz2A2B0DjKXBH6/qTAXIJl/SoPyxrZwwkHwXB6h3YjDS0vQmpJbw
+	 FU64XqtGrRI0dTQ3q9MqUVCe8TPxCHSJpBuPjXmESI8ommzpz4g9wPhnMMD2eQW5wi
+	 YP0XLHJug5Crdf2Cd2Ewyc4Mfb4/a5hWceLXfL049a1IlD39ID5VMR9f4n5sg7k9KV
+	 KxpQtTMAYWOFgv0i20IDqwo0HOTgaE20eL3Pp1t+/HSyooz1pVXv/BSvyCbPv/CWYg
+	 blDgD6ygsVJgQ==
+Date: Fri, 4 Sep 2026 10:57:56 +0100
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
+	syzbot+acf142088e0182172e58@syzkaller.appspotmail.com, ThangNN99 <ngocthang2710.1999@gmail.com>
+Subject: Re: [PATCH] mm/slab: disallow kfree_rcu_sheaf() on PREEMPT_RT again
+Message-ID: <apqS7Z3F5Rtq7caz@nixos>
+References: <20260831-b4-kfree_rcu_hotfix-v1-1-4f0fb882638b@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: myzd94idk1qjz66zgy87n49njuugztap
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 33DF4A0009
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260831-b4-kfree_rcu_hotfix-v1-1-4f0fb882638b@kernel.org>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E63B81C0003
+X-Stat-Signature: o41t1kx6thkg6z19kr7tj8u7cnr6ytx8
 X-Rspam-User: 
-X-HE-Tag: 1788515195-440674
-X-HE-Meta: U2FsdGVkX18BiEqd8LZ6dyzu5CU3oLSrxcM7UfE0Qm+55zs3lKZYyYIQ7xu61SJZG+jwRoJ9K30Bjh8+18QJG3Yt3k6k8qOZsegLqSKIgBtTkKLkRLIUdWLoiNvsHGcijUaSP5N1q7MeFzGAwLYWqLws6f+oYaL57OkI2jgGwzm9mBO3TXR04AEhn9Df8nSBXfG5TPEXrLO3EzLjWwOfuKZr88krlMAkrJobXpcsmm3dBxnENodSyzS2uwPiekFWTSu6M6Su5RC3V8AujbuPw0pduX6rcVYrFQJZM1fxnv5WREbys6O3+rOaCrZKq8g2vFavg+8Z2SFNqHZPm716AeKpFN8MguUIyCv3XJGWIRJzm3YZpFMlqZrPkhStIHRF6cRBbaq7ZW7+ED/p/sDcgnvWvtAgStTsClrHXHWCrd7idCjVi9GXOBsHTRfAKCea04W1U5WFuF81SWMn5TFr2pmKQnREd2vZoDR/DVJ2F+Dj8u7nXxafDmPxlJiHvYDfTH0kepsD2Ms4XtHEbzokQ6lmVo/zlgZ36rtXsc8alxZfqNcUAm/D6m+e8mSgbXSl4M7AxeFtorfe/5skAB9FRiiwrtyZj8GiqBR8mr1eGRMhAH0en6pVMlVA1oB+f9TlQk9tyvjpJpmSYt9+oLj782QiPnYOoVLpxsdInYV85p0JYWxDvZhJrNTcGEQcjU/nlK+PstXIJnm/o63Ury5qoKup15sFAY8GJmgQpxHNLQMFrf8oZmxmMrUmZtURDw+2oc7n7vy6kCU1iaT2JKVB+mLtf28tzgdo21EqVKTv9W08F+zTsVwxtmpjyyWZMHXKWEKbXZafU98qRLirXzaq0G7zNzO0sM6FWIeznmgHPkvHBxczK2lsXPLcMyPV23DaSzGECZMS7psiTJDl3OwLogfGZTf1+UAgRQkFGkFxgRGrbNoBnMqY218ED/ESFp3rOnQgJ0JL13NchJrb/eX
- UKHQrjCP
- oOaBn4wZx8aKXzIapXl0oCo1/A3YGXY+XWNiTrHNEEd8/JGVRtQXvGV96WgyGV+mORd15oA/YvklFwPCADyPHGaU3oex4IRCuozBseb0/x9Vh+bG7q4XXqxZVe6DbkOEkFaItXK0CcPCyqOLe0MWApSt36SeU2xCRZQc9oI4x9I8kR3TEh/Oi7Nk/f/bUyoLlFbZbM0TYkKTO8g4UseS32imHTA==
+X-HE-Tag: 1788515882-936351
+X-HE-Meta: U2FsdGVkX1/4eNcMSh0VWO7uj7iw3apWmKeF03Be6dh+wIwNdtlwMzySb3xaGWgC3DD3uDAeUolRNW7gS77b/ifcHpRmRxsEZSu9hvtxutFXDagqUEM1A0eM9bv1ALzUjfM6gks+/vWh9U2NNXa6JrjsBOruzIg3vyKKHfuLeltMoVaPBsS6pITzh4StdzvH9gqAJ3eudFL0ueu89KZsTzlnFwtI5hUBC1ap81upy5SXyMIZulJaFGMCsPO9lFg4tWF/JAP/RBuNBSXDSHaWYsit2x2S/UAurBBMP1lLF+v6yL8TIPQQlFzs2KEWiBAL0lDdbVGyD7BAFuBiQBXvts5TMupS2gkCk96VBQEvO/E4nnkliV51Injee5372vGR5Tb86LAi+g6JACS3/wzCxTFJjjW1hl7EvzMM0Uyo4QMUQpK2hRcHLUyRgX3MspN76fIbYfq8SnLKTd8HknnXpyHRConONMEoobIKkPLDz3Ix9t7Ta5fy8q6QiuUPba4oDNAPg0nKUVrJV6mvcg71O6g5+kprjiCv/2Vgf8Fk5qwYi6VU/JfjypiO78jhulS0FQVZKuFCYS5OiG3uF0gT0yG13xTh43o+wfe6fRTiRUV0UIHEXmR6056xF/N/ePwkrATLj86jGbC169R80ijvPSAdvvIUuVZJbL+KoDf8NymkySuwb0IuahmrWcoiXN1CtM0BPX29/FFHAaXekZGZU93NPhRqOxMNCbC4s1HveGf+FiMp5ra3PLU/Givv6vVw0ckSFKqRXrxeMJ8fduxeFantWbi9HUagM2Q73kdfjXsrpZ21ii+/NABWU51B9k8sop/4GPQuMZ1NGVuNSORi/xRYXyy4OhD2neQYnr+V17qj+U58FhMMNtDpsPk45no7MyRuhVZKYNBrcD0dlCzoKLTVomAQsfO3fj7zbLBtsF+IlP8TkVglwMU8Gwz0RT29k8T9Ma5DEj8pwBc0Htd
+ rOUriIFI
+ AMx24z5LwFuX800sz7lCoSkATzfNVrXSGA8iwFZYxcSx01l/Afmd8tQ6OGWz+eZDUeEkhLqqBWBMmWIPFoa9dp+xiDmT+L8puEJVr0vR+XP9kU6pSVD8Oj5/p5zXXBKY43t41AIO4KyS0wG19me3+w1RSSw4UVo6GxJHH2Grf6cDaW73okP77A0mxZvZ4DMX3a9nSQtdHFjisNgCgdKQ2mDS3n/lTs4vflkVixjQgmryh/2xiINSUyRkUyZrBhVh9zEf0x701utQK9cDvHD6TFAfUuekupwph3nlVkQo1vTG6BcFKITSaNS6FjqcCtSshssdhH4ltwwxTMAD4Smem80KZrCZPGk25RbeTzF/k8AOnqdrViEySIQ+FkTflkz5Ch/N/KP6O86leqD8yq0l033II1Y5/4rdNNja8tRu1REVg9t6qPOlxMs9RflaSAZVFGAp4vmRy9pvxVZNmg8EOmC2SLe45H991rUofzApuEQ4E2tG3tfo3JZiNOscZXT/hmwq7rxMmjAC/ZU+1KETrKDpXlNDWRicdhvpfYXboQuuDS6EEWAwytreI7fUe9q0q6GojEeJgwe081MYcZcBL6CjwBA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,59 +95,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hui Zhu <zhuhui@kylinos.cn>
+On Mon, Aug 31, 2026 at 06:02:38PM +0200, Vlastimil Babka (SUSE) wrote:
+> This partially reverts commit 2a8bb29ec9b2 ("mm/slab: allow
+> kfree_rcu_sheaf() on PREEMPT_RT"). It was based on an assumption that
+> local_trylock() is safe on PREEMPT_RT from any context.
+> 
+> However kvfree_rcu() is also called by set_cpus_allowed_force() with
+> task_struct::pi_lock acquired and there it's not safe, as syzbot
+> has reported.
+> 
+> For the immediate fix, skip kfree_rcu_sheaf() on PREEMPT_RT again from
+> kvfree_call_rcu(). In theory, kfree_rcu_nolock() would have the same
+> problem when called from under pi_lock on PREEMPT_RT but that can
+> be addressed if such a caller is proposed.
+> 
+> Add an explanation comment, courtesy of Sebastian.
+> 
+> Reported-by: syzbot+acf142088e0182172e58@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=acf142088e0182172e58
+> Reported-by: ThangNN99 <ngocthang2710.1999@gmail.com>
+> Fixes: 2a8bb29ec9b2 ("mm/slab: allow kfree_rcu_sheaf() on PREEMPT_RT")
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> ---
 
-get_non_dying_memcg_start() takes rcu_read_lock() on every stat update, but
-the lock only protects the upward walk to a non-dying ancestor, which
-happens solely while a memcg is being offlined.  The dying check itself
-reads the CSS_DYING flag of a memcg the caller already holds a reference
-to, so it is safe without the lock.
+Looks good to me,
+Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
 
-Check memcg_is_dying() first and return immediately when the memcg is
-alive, taking the RCU lock only on the rare dying path.  On an anon
-fault/charge churn workload in a memcg this recovers the ~0.6% overhead
-added by the previous patch (4368077 vs 4343159 pages/s before, back to
-~4377000 pages/s after).
-
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
----
- mm/memcontrol.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
-
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index b3d1ac3fe0aa..f454d02746e9 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -813,6 +813,17 @@ static long memcg_state_val_in_pages(int idx, long val)
- static inline struct mem_cgroup *
- get_non_dying_memcg_start(struct mem_cgroup *memcg, bool *rcu_locked)
- {
-+	/*
-+	 * Fast path: the caller holds a reference to @memcg, so reading
-+	 * its CSS_DYING flag without the RCU lock is safe.  The RCU lock
-+	 * is only needed to walk up to a non-dying ancestor, which
-+	 * happens only while a memcg is actually being offlined.
-+	 */
-+	if (!memcg_is_dying(memcg)) {
-+		*rcu_locked = false;
-+		return memcg;
-+	}
-+
- 	rcu_read_lock();
- 	*rcu_locked = true;
- 
-@@ -824,6 +835,9 @@ get_non_dying_memcg_start(struct mem_cgroup *memcg, bool *rcu_locked)
- 
- static inline void get_non_dying_memcg_end(bool rcu_locked)
- {
-+	if (!rcu_locked)
-+		return;
-+
- 	rcu_read_unlock();
- }
- 
 -- 
-2.53.0
-
+Cheers,
+Harry / Hyeonggon
 
