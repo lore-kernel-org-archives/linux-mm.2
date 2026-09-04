@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E42F2C79F83
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 10:45:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8458C79F83
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 10:45:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C11F6B009F; Fri,  4 Sep 2026 06:45:38 -0400 (EDT)
+	id 6EBEA6B00A0; Fri,  4 Sep 2026 06:45:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8983A6B00A0; Fri,  4 Sep 2026 06:45:38 -0400 (EDT)
+	id 69D766B00A1; Fri,  4 Sep 2026 06:45:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 787256B00A1; Fri,  4 Sep 2026 06:45:38 -0400 (EDT)
+	id 515C86B00A2; Fri,  4 Sep 2026 06:45:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 565A66B009F
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:45:38 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E320E80649
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:45:37 +0000 (UTC)
-X-FDA: 85175748714.12.41B3733
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 18B97100005
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:45:35 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SP5bfIG8;
-	spf=pass (imf05.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 237976B00A0
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:45:41 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id ABB73407E8
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:45:40 +0000 (UTC)
+X-FDA: 85175748840.10.9F7F9AF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id EF7C8C000D
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:45:38 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IPOmoLYA;
+	spf=pass (imf22.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788518739;
+	b=2aXBjeTkxo9t7WjBh2WCR0Jv51GH8rwrEvIRaFyqHEuZNH2NhB607X6069c1JsGTJw8pqB
+	3QemhZXz7nva4PnyiCXn0w4rJpTV9mMSGbmLS0wvq/t2EbKhEcak4HktbIBsu3tO0nwKMs
+	HYeBQyRAhdGgdNq5UongaSoBh1Cck5A=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IPOmoLYA;
+	spf=pass (imf22.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788518736;
+	s=arc-20220608; t=1788518738;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kC3CPrr3PAY7P/aChmlLF9PhF6B4gfio4q7V2fdfYsc=;
-	b=vPso/GP8BxGyXdTzQW41NHgLKuECdUnsxeI/a+4YntLMoDqzkOEZ6yp4scgP1HSFYokGrV
-	O7PjHM1U5NhIrPHF3DeyIqWlbclmBqArJzNDVkBHBrEWfPJaok5TJ/IHc9y+aoTum/pUGJ
-	CarrSTiKGpl1prE9sIYNhk1eFEgogAU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788518736;
-	b=lcEec64Zy8I5bua5bQFIY5EzJDKYI5hiWs6+7G0L0WWnpM/Iep5CeLC4dc9Iri808mUQXU
-	ieOTQAVsKVzhjEVEe4ZJQ2cnrlO6f/XLbfd+OMVemShYWgqdXrFMlF8uCmSvU4Aka9uwil
-	iWZtfG6YLYGB0MDkF3k88zdN0F0YUkE=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SP5bfIG8;
-	spf=pass (imf05.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=5vNNvzKdHsOvV9OyhJTU/lOueTFevJJO4XmoYOQ+eTg=;
+	b=1lZ0ycFyzp80WkhdTsWnmt354X8ymqdSSjBc2AWNY4i5EMKPd0Fd3aJpfZB7djz4XsBviN
+	BqMaq0n2BKyMZdU0airWW9+S8JKoQiDbjbKe0795NE3gaWSIvPaRM6MeV40ov/8qESmygD
+	PofxGXWcZhJI8QyfxLkETTJENDerGKE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5AAA441AB0;
-	Fri,  4 Sep 2026 10:45:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 836DA1F00A3E;
-	Fri,  4 Sep 2026 10:45:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5553B60A8E;
+	Fri,  4 Sep 2026 10:45:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F3B1F00ACA;
+	Fri,  4 Sep 2026 10:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788518735;
-	bh=kC3CPrr3PAY7P/aChmlLF9PhF6B4gfio4q7V2fdfYsc=;
+	s=k20260515; t=1788518738;
+	bh=5vNNvzKdHsOvV9OyhJTU/lOueTFevJJO4XmoYOQ+eTg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=SP5bfIG8u6MRQNywxnJUOh6EF6Ed7XpEvhzfAE1agnxOQUrgZenSUyYiBRrnUlZbM
-	 jeabei0jiWAmeF7c3Gn9saxPOUP7pZ5iqkH7ZmyYIEpQJjpbHja2MhP5Dpj/oGo/TQ
-	 Rb6q1b6xAq4lsrzhFgI/p3pwuefX/K175ft/Eztv+5FOn1sLQD23M1mmOYKhL1J0jj
-	 wMDfTyZ1rBdn4BFr6lAPrAzM5Blm6BxHxXkx4Hy0m+wanRE30eEj+UBbsUUL/taWGT
-	 gZBJEclpTDXns6tyVt2TiBet4agLrRtaQneYUTIzCZmGqmQL7OE/IXk0IixV1Pb34i
-	 Tyhus9nqR5Cww==
+	b=IPOmoLYAsIj3FJJW1IqX+/l6C4WsfKJvtAb4ioQHEWQimGrkjT3/UDN9eS/XSsazP
+	 QnpcT5dLz251vFGtth6XVSzuO3S8HHwoQkmScXOo/yrpOo18RNAPMpKZ6t8TjfChEO
+	 927FWdOsqLjOJJV7pYWYy7x0tqhx03vfSemHrrCMDtsQiLu1MtFPi8e2JmOUclWhH8
+	 5yXFANh7s+CEDhUPH0kgrTyLpa0aegEyCiQdE2X1tJ4EWEqcUge3+dH+ARHfjM4UTS
+	 k/ongUpu3rtV2/rM+1xv7P7fnLD517TXmoy8XL9bFVoXS8BzDjr0AWoKXwsvvKqwNt
+	 hJqFW0ow9F6OA==
 From: Thierry Reding <thierry.reding@kernel.org>
-Date: Fri, 04 Sep 2026 12:44:57 +0200
-Subject: [PATCH v6 06/12] of: Export of_node_to_nid()
+Date: Fri, 04 Sep 2026 12:44:58 +0200
+Subject: [PATCH v6 07/12] mm/cma: Introduce cma_alloc_at() API
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260904-tegra-vpr-v6-6-79042cfa8de5@nvidia.com>
+Message-Id: <20260904-tegra-vpr-v6-7-79042cfa8de5@nvidia.com>
 References: <20260904-tegra-vpr-v6-0-79042cfa8de5@nvidia.com>
 In-Reply-To: <20260904-tegra-vpr-v6-0-79042cfa8de5@nvidia.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -113,30 +113,30 @@ Cc: Thierry Reding <thierry.reding@gmail.com>, devicetree@vger.kernel.org,
  linux-mm@kvack.org, iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
  linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=531; i=treding@nvidia.com;
- h=from:subject:message-id; bh=XVM1jxgviVEtDinHenIJ2Kw8sOhFectSaf+1DVtDVAo=;
- b=owEBbQKS/ZANAwAKAd0jrNd/PrOhAcsmYgBqmqE6BHc3U4JQE7eU7NgsnGt5czLULWf+jkgKq
- OsJ4G0rIHSJAjMEAAEKAB0WIQSI6sMIAUnM98CNyJ/dI6zXfz6zoQUCapqhOgAKCRDdI6zXfz6z
- oZMoD/9xguhdwCrD8iOdtsVTh6dfItXp4r9Hbp1ZfBZm4OHIQI81YR3MZrSb2bzObPQJoXC4dRy
- ZIYhPvqOvoILsZRMwWhqyyJXQRnmIDPlqWdvNybGETu1FibVSDZxMnudxPMRKtEBRG2es5Vt///
- s7wdiWgHfZzbpnobQGL0B1q6ZLLcxoK2kkAKKKzEbMnrPameUnFH66Yi8tyqRG1XlNz6JEwt8z0
- NXNjwPRMwYMiqVSATbrGIa51QKepW1D0NeQtsAXGk/WDjMaXbdly0QpUt7RANZcBjUtNvA0Ko2N
- pe5d7gaALs7yKIUTgy/AC0WmqCkC6s2jaYTcZ+/cHl7P3+tsvIox+SfFKW5/bGSZOwAZ9hLDu4w
- d68AplnyPNl8NsOCcwDct6dphMpBzWFuOO2z44y6Ee7CJrcOMqaT8eRU3SUhQttDVB/pCVAcU3y
- rHmnZZgQwAnjDHNl+Sk8APIDNYxsv/m+KNLs2gPv2ezugy6xYbkHwnLf2j+fnaP6gTlKewgZA2Z
- 4d8idRFEPqFLEYXsKG3rVDE+bywdW/uY33dz1euxG81qYT9tZKrGxRvCtWG/oQ9mWoogNlUTqvt
- OY8mocLptFLj7WMCtzyy7tPXOeq7oT4GS2flTTf+lc2cgg3pX7Rpg1QesoC5/nD7fEZFe3GyOGL
- 6CeFVyhYcyTff3g==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=11699; i=treding@nvidia.com;
+ h=from:subject:message-id; bh=g3+Web5AipUed1NoZ7SwnVTMq8b6YiuYb269+8LMDXw=;
+ b=owEBbQKS/ZANAwAKAd0jrNd/PrOhAcsmYgBqmqE6zic+A28EOvvjRlHYgr0bkc1hg/XFjhwuR
+ 58+1xN4tUeJAjMEAAEKAB0WIQSI6sMIAUnM98CNyJ/dI6zXfz6zoQUCapqhOgAKCRDdI6zXfz6z
+ oUbcD/4+HDzO44GDVKd8Xfif1Nth0zgLdLG9tJ7rK14JFcNlVH+y/LTxAjade3W5hl3uKhaIOdc
+ qso8AWeMpzAse9Scgy+/AWG39dtQ7GclINBLTE7jg9HkAdTAPePfeJC2jvNMzbPfGfVgflwzDgo
+ /pTjUcDN257WOqkZtx1dbh7NtC5Llej64onoQXse5ucTIuylefWWrK/6d7peF7ZMP3vNFqSSeT2
+ FjgcZDBJA9o6KeTc/TlFcjGR8+stmDjOgt2OD/Bm5izczhwyPtsSqbiDVSgM/G17lSmGv7ZeduH
+ anjq5SF4geSTVLaiE0++gi8pc9cuvUzc4TyJzgD/kc1ybjFRmpdhfkkPvlGOeY1gzvQVGea6NT3
+ 7vGw7wuAVZM80T4JJJJTrluFCrfYeCv7g9Y/pI9MEeuPauS3FlwpBYnUTOGk5nz/QQKQZo0fylm
+ r+UIv3vnK5jQ7ozx0XX+f06q8acg5ei1qSKrtGRL/4LQ6lisPOPInpMC83qANdxwz3/Mk9s/kSa
+ kJ356dsAQqFG05EOyQOyritpq+mdv0zTcR3lDfyyRx+URbNXUPiVQddq2lcUWoJRiOi4p3bewF5
+ x7qpq9Z8tE2ljsepTBYvxNJUreNddRCXHRrymarty6Jb6t2ZaHQbHyZhyM018vOFFHQz/Ck8fuV
+ TPBoSmPG44LYgtA==
 X-Developer-Key: i=treding@nvidia.com; a=openpgp;
  fpr=88EAC3080149CCF7C08DC89FDD23ACD77F3EB3A1
-X-Stat-Signature: 6jaasay4nc8hukte4jw3813uqw9k574q
-X-Rspamd-Queue-Id: 18B97100005
-X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788518735-648762
-X-HE-Meta: U2FsdGVkX1/MVdq2AnNKv3kpmN7PgvGtNSGzsEhYcFdPGVlPG/RwnGDWACy+yQF5ok7V+ZtaZAf/dB3E2yxTsVRjViwrgxW1KCVYkhi4bPaiwkRgEyvii+cmtKwAoUQsrowESRXKuiFsgD7DhFAKGjyVAlNz85HI7MB+L9GSsInB6YfkToBFa9C3mimo3P4hRiIo1nCXS4bA9pIhgpIkIAGlubEOpQqgppbsRqVMeFmDxkVddlhAjt0wLdjTX12uE65uiXQrL2RaSPa6CFh2BFqOsVgUGtT2cEa9bddBLx74Eaie57w38ySBd+9YOxdUszZEDRmKv//n0dElLgVYdAM0cU90IJ6ya5i+1HRbG8O3as+1hDNWi01Z19pvODkT6LeZjddEU9huJg5HUleDeH7/DQRV6ZoYUG2n2zgUsEwpciBYTZiAaAF/t74blEcQ5Ox4y+svES2AkMBsq4usRFta9Pj1U+IPWRvi7OpWRjzaX+gZZMOGn/8Ae2Sr6/NNxsRFXQNrnmcxUYgwTd/odpZqb/3nApIhGx106RUP5LErcXM+u/Nb7ZdBfjS1OlDDwdXPtBXyn5lcN/Q6pBQvQCh+S7KWY1qguzEzv7dvTBde1oSOZlYQ2BQ+b8GKa9RN0v3A2TjWPrcd/LV+iO5ZHtiDwR08kGHtra3DpiWyOGXcq5n2X/WFRDiyVgCEVlJE8rXOjoSNx9SIoGqC47q50WIEJsIDcQckhb8LVguUlEqDueN5e4lXwR8pkOeR9BxhbsPn9aK0GLFJGj722W2COtpP6IfAEuW8k5JOZjgmJ6N5UHp9gjPO5etlqBfw5CJB/vjjqEV6jr1yRnjMBi9c8xjE7V/43/izh9y6B2+uP7X3A1vyXgD8gO2hOkX1VAqXHepGXfdtg4BYZew5j98c3SznN2I6ZlHsnErelpFCjMQPL59euUAbBl97tIcQiMDToZHiRZ+ZOiOl0XKHIxL
- 30NCyNwk
- Q68uwiy69thlVc86nFhb7AE/JpWfqlRjmcJAIrz5oDSoP/5mmrr55rYP+kuKvKPxMHkWEyKvrigzsukR3eq3ZIew4QnFt/oTh+sjpzyucl8BpHvLXz7KUnR/Oa7vH/IFNwREdYQrvskgkEts1nmqxu6hIx4N/e+mI8dXRK02kKQarvDLCpB9mluq6WQR7TvxUoXYpf8KVCIBl8kgS5rLBVuMJDSIJTb5fGmCxta7RSoxEFNtLpIOAboG/ZK/5qNB6EklBADmNeX9xaaK85Ow/We+5SUshcycil6glc+ud2uZnnR6ynD8ISSElweWLmPKz7ahr9zEL6hichbnFSQ5mJCB4dYNjj5dZzNHVWAglMbIAiaA=
+X-Stat-Signature: wfq6b18z834tswdp3bqtmr8n64pcbxd5
+X-Rspamd-Queue-Id: EF7C8C000D
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788518738-529745
+X-HE-Meta: U2FsdGVkX18mTn/xd7sIhLzzv6iyXSr+vCjdulsQO0zo8C02xLn9GN95XQShMDdIeSQQm+EVYKTt4beCSQtCxrxYGSc7fbGisvN0YBDh/Hqhx4wMRuMXijj4Sp5oCVdft6xHgGLETFJTf98+Sse/Pt8idypS27+0oKXMRoVOTnFleEXu1ZLJwMPmjEYg50dn7gJwU9P0PbCaXGthSgzzO+0XXrY7VSWFhHHWIpRsK1sZSA/FVZGwrHDIAni7xPrigIv27e2Loa5SDKrka9uMj1SQwQJKlIO71zmzHJqNv/C2rwRG9oTdomIX+3gbE3m3JA5ed6zGwAOsQXR1rxpd7ZSKc6DdCpqi9+x52fwi1ohaBflsRSZ6fTJ0ONVj4yYH0Qd9nE21kc7LJwuaJPGVZ2hNVQHwAupPmgvE8WauUt+1TjSIC819QY3+Oo85lzU0X9xLFO80/HfgdQ4PHO67hs9PVtSvhRLrM4FgvS3T1xUi9SqcICiQBlnGnH2RoMhIu/tUi0fynaEffp1n1RG1KhxKbjg3X0UvLRxNXA3Ots3Vc45/7ikY4XpnbdThK76tL3z46BEtcWdvgCL5HyvNdSpNxAGr5Q0ohQasu282K8uNMto2SHm+Meq+e2LbQuCZDB55Q9seVFVTUA+ZAee6BGWqzKnoJreLuQwbc29ZJepbNAMweSGQjQsoaQJyiwdPNgdBmXP6iNpU3omP03ZNKXmcwCJyhdfOWhEBVYC1T9Q5Jf3NB9EtpG9VA6Ai7K4GS3T46h/03KV/cmr8h+66XXsvPEfFlg7O6tf6Pk3o1Y3iCjxXcoSS+r+ivHRU92PpQcrBtzXK7yth3d1Q6oeq8HPifEDolbdMuvyyYuxi6hmUuzkWuYHUHbQDh5H+qLSSFmDsHPiB+Epi2RJQBvnNf6uMsHTiglExeaBzHh7jFuVA11A3FByD70rh+bM1ucnX9CH21xjmWWEGhTtA34p
+ tj2FRNDh
+ lihDAb23uANvukbx7+6nOTg/iVcOEAH8svep28HXHp1O3Lf1/NKnhuROeJxdTx5ddjVs5+zCgopZF6yS9TiKANc2cUngw4vvEU2/XeL//fQErEP5YqNBi1DAWa/hGN87apJ2WVzYtAQlvMECfARtqKNK8y0y0wgnj3FsM5wTUG7n17wwpTBIZzjvniKE2scm0lSKQfB1UAFEI8MkHw+l6mTJnuhUIkKSsVAHBW27wiMcoBa/vwChiL9HBf0M3PE1iNYw2RXV3naj2giuwFD37el3DqfT0cZa6NH8/KpUehqTj9n7+LfQjSCltMTaLfD9LqwYTx4l7zlubVDp58CTEJ9gP1srbCgXimhxDAnn/nIMwvg+vy0vfCMSbNHUSf41B3yjO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,24 +146,347 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Thierry Reding <treding@nvidia.com>
 
-Drivers buildable as a module may want to use this, so export it.
+This API can be used to allocate a number of CMA pages starting at a
+fixed offset. This is useful, for example, if the CMA area is used as
+backing storage for a nested allocator that has stricter requirements
+than CMA itself.
 
+In order to reuse most of the existing code, the cma_range_alloc()
+function is enhanced to take as inputs a range of pages to look for a
+free region. If this range encompasses the entire CMA range, the
+behavior is as before, but the range can also be specified to match
+the offset and size passed in from cma_alloc_at(), in which case that
+is the range that will be allocated (or allocation will fail if the
+range is not available).
+
+Suggested-by: Marek Szyprowski <m.szyprowski@samsung.com>
 Signed-off-by: Thierry Reding <treding@nvidia.com>
 ---
- drivers/of/of_numa.c | 1 +
- 1 file changed, 1 insertion(+)
+Changes in v6:
+- refactor cma_range_alloc() so it can be reused for _at() code paths
+---
+ include/linux/cma.h        |  4 +++
+ include/trace/events/cma.h | 77 ++++++++++++++++++++++++++++++++++++++--
+ mm/cma.c                   | 88 +++++++++++++++++++++++++++++++++++-----------
+ 3 files changed, 146 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/of/of_numa.c b/drivers/of/of_numa.c
-index 230d5f628c1b..da2e9bd1717c 100644
---- a/drivers/of/of_numa.c
-+++ b/drivers/of/of_numa.c
-@@ -171,6 +171,7 @@ int of_node_to_nid(struct device_node *device)
+diff --git a/include/linux/cma.h b/include/linux/cma.h
+index 8555d38a97b1..844404459a42 100644
+--- a/include/linux/cma.h
++++ b/include/linux/cma.h
+@@ -49,11 +49,15 @@ extern int cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
+ 					struct cma **res_cma);
+ extern struct page *cma_alloc(struct cma *cma, unsigned long count, unsigned int align,
+ 			      bool no_warn);
++extern struct page *cma_alloc_at(struct cma *cma, unsigned long offset,
++				 unsigned long count, bool no_warn);
+ extern bool cma_release(struct cma *cma, const struct page *pages, unsigned long count);
  
- 	return NUMA_NO_NODE;
+ struct page *cma_alloc_frozen(struct cma *cma, unsigned long count,
+ 		unsigned int align, bool no_warn);
+ struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order);
++struct page *cma_alloc_at_frozen(struct cma *cma, unsigned long offset,
++				 unsigned long count, bool no_warn);
+ bool cma_release_frozen(struct cma *cma, const struct page *pages,
+ 		unsigned long count);
+ 
+diff --git a/include/trace/events/cma.h b/include/trace/events/cma.h
+index 37195edf2498..4e0ab63e303f 100644
+--- a/include/trace/events/cma.h
++++ b/include/trace/events/cma.h
+@@ -38,13 +38,17 @@ TRACE_EVENT(cma_release,
+ 
+ TRACE_EVENT(cma_alloc_start,
+ 
+-	TP_PROTO(const char *name, unsigned long request_count, unsigned long available_count,
++	TP_PROTO(const char *name, unsigned long start, unsigned long end,
++		unsigned long request_count, unsigned long available_count,
+ 		unsigned long total_count, unsigned int align),
+ 
+-	TP_ARGS(name, request_count, available_count, total_count, align),
++	TP_ARGS(name, start, end, request_count, available_count, total_count,
++		align),
+ 
+ 	TP_STRUCT__entry(
+ 		__string(name, name)
++		__field(unsigned long, start)
++		__field(unsigned long, end)
+ 		__field(unsigned long, request_count)
+ 		__field(unsigned long, available_count)
+ 		__field(unsigned long, total_count)
+@@ -53,14 +57,18 @@ TRACE_EVENT(cma_alloc_start,
+ 
+ 	TP_fast_assign(
+ 		__assign_str(name);
++		__entry->start = start;
++		__entry->end = end;
+ 		__entry->request_count = request_count;
+ 		__entry->available_count = available_count;
+ 		__entry->total_count = total_count;
+ 		__entry->align = align;
+ 	),
+ 
+-	TP_printk("name=%s request_count=%lu available_count=%lu total_count=%lu align=%u",
++	TP_printk("name=%s start=%lu end=%lu request_count=%lu available_count=%lu total_count=%lu align=%u",
+ 		  __get_str(name),
++		  __entry->start,
++		  __entry->end,
+ 		  __entry->request_count,
+ 		  __entry->available_count,
+ 		  __entry->total_count,
+@@ -132,6 +140,69 @@ TRACE_EVENT(cma_alloc_busy_retry,
+ 		  __entry->align)
+ );
+ 
++TRACE_EVENT(cma_alloc_at_start,
++
++	TP_PROTO(const char *name, unsigned long pfn,
++		 unsigned long request_count, unsigned long available_count,
++		 unsigned long total_count),
++
++	TP_ARGS(name, pfn, request_count, available_count, total_count),
++
++	TP_STRUCT__entry(
++		__string(name, name)
++		__field(unsigned long, pfn)
++		__field(unsigned long, request_count)
++		__field(unsigned long, available_count)
++		__field(unsigned long, total_count)
++	),
++
++	TP_fast_assign(
++		__assign_str(name);
++		__entry->pfn = pfn;
++		__entry->request_count = request_count;
++		__entry->available_count = available_count;
++		__entry->total_count = total_count;
++	),
++
++	TP_printk("name=%s pfn=%lx, request_count=%lu available_count=%lu total_count=%lu",
++		  __get_str(name),
++		  __entry->pfn,
++		  __entry->request_count,
++		  __entry->available_count,
++		  __entry->total_count)
++);
++
++TRACE_EVENT(cma_alloc_at_finish,
++
++	TP_PROTO(const char *name, unsigned long pfn, const struct page *page,
++		 unsigned long count, int errorno),
++
++	TP_ARGS(name, pfn, page, count, errorno),
++
++	TP_STRUCT__entry(
++		__string(name, name)
++		__field(unsigned long, pfn)
++		__field(const struct page *, page)
++		__field(unsigned long, count)
++		__field(int, errorno)
++	),
++
++	TP_fast_assign(
++		__assign_str(name);
++		__entry->pfn = pfn;
++		__entry->page = page;
++		__entry->count = count;
++		__entry->errorno = errorno;
++	),
++
++	TP_printk("name=%s pfn=0x%lx page=%p count=%lu errorno=%d",
++		  __get_str(name),
++		  __entry->pfn,
++		  __entry->page,
++		  __entry->count,
++		  __entry->errorno)
++);
++
+ #endif /* _TRACE_CMA_H */
+ 
+ /* This part must be outside protection */
+diff --git a/mm/cma.c b/mm/cma.c
+index a10ea37a261d..f92d3a188209 100644
+--- a/mm/cma.c
++++ b/mm/cma.c
+@@ -783,25 +783,32 @@ static void cma_debug_show_areas(struct cma *cma)
+ 	spin_unlock_irq(&cma->lock);
  }
-+EXPORT_SYMBOL(of_node_to_nid);
  
- int __init of_numa_init(void)
++/*
++ * Searches the CMA memrange, from @start to @end, for a free region of
++ * @count bits. If @end is less or equal to @start, will search the entire
++ * memrange.
++ */
+ static int cma_range_alloc(struct cma *cma, struct cma_memrange *cmr,
+-				unsigned long count, unsigned int align,
+-				struct page **pagep, gfp_t gfp)
++			   unsigned long start, unsigned long end,
++			   unsigned long count, unsigned int align,
++			   struct page **pagep, gfp_t gfp)
+ {
+ 	unsigned long bitmap_maxno, bitmap_no, bitmap_count;
+-	unsigned long start, pfn, mask, offset;
+-	int ret = -EBUSY;
++	unsigned long pfn, mask, offset;
+ 	struct page *page = NULL;
++	int ret = -EBUSY;
+ 
+ 	mask = cma_bitmap_aligned_mask(cma, align);
+ 	offset = cma_bitmap_aligned_offset(cma, cmr, align);
+-	bitmap_maxno = cma_bitmap_maxno(cma, cmr);
++	bitmap_maxno = (end > start) ? end : cma_bitmap_maxno(cma, cmr);
+ 	bitmap_count = cma_bitmap_pages_to_bits(cma, count);
+ 
+ 	if (bitmap_count > bitmap_maxno)
+ 		goto out;
+ 
+-	for (start = 0; ; start = bitmap_no + mask + 1) {
++	while (true) {
+ 		spin_lock_irq(&cma->lock);
++
+ 		/*
+ 		 * If the request is larger than the available number
+ 		 * of pages, stop right away.
+@@ -810,6 +817,7 @@ static int cma_range_alloc(struct cma *cma, struct cma_memrange *cmr,
+ 			spin_unlock_irq(&cma->lock);
+ 			break;
+ 		}
++
+ 		bitmap_no = bitmap_find_next_zero_area_off(cmr->bitmap,
+ 				bitmap_maxno, start, bitmap_count, mask,
+ 				offset);
+@@ -835,10 +843,11 @@ static int cma_range_alloc(struct cma *cma, struct cma_memrange *cmr,
+ 
+ 		bitmap_set(cmr->bitmap, bitmap_no, bitmap_count);
+ 		cma->available_count -= count;
++
+ 		/*
+-		 * It's safe to drop the lock here. We've marked this region for
+-		 * our exclusive use. If the migration fails we will take the
+-		 * lock again and unmark it.
++		 * It's safe to drop the lock here. We've marked this region
++		 * for our exclusive use. If the migration fails we will take
++		 * the lock again and unmark it.
+ 		 */
+ 		spin_unlock_irq(&cma->lock);
+ 
+@@ -856,37 +865,45 @@ static int cma_range_alloc(struct cma *cma, struct cma_memrange *cmr,
+ 			 __func__, pfn, page);
+ 
+ 		trace_cma_alloc_busy_retry(cma->name, pfn, page, count, align);
++		start = bitmap_no + mask + 1;
+ 	}
++
+ out:
+ 	if (!ret)
+ 		*pagep = page;
++
+ 	return ret;
+ }
+ 
+-static struct page *__cma_alloc_frozen(struct cma *cma,
+-		unsigned long count, unsigned int align, gfp_t gfp)
++static struct page *__cma_alloc_frozen(struct cma *cma, unsigned long start,
++				       unsigned long end, unsigned long count,
++				       unsigned int align, gfp_t gfp)
+ {
+ 	struct page *page = NULL;
+ 	int ret = -ENOMEM, r;
+ 	unsigned long i;
+-	const char *name = cma ? cma->name : NULL;
++
++	/* cma_alloc_at() and friends will only work with single-range CMA */
++	if (WARN_ON_ONCE(start > 0 && cma->nranges != 1))
++		return page;
+ 
+ 	if (!cma || !cma->count)
+ 		return page;
+ 
+-	pr_debug("%s(cma %p, name: %s, count %lu, align %d)\n", __func__,
+-		(void *)cma, cma->name, count, align);
++	pr_debug("%s(cma %p, name: %s, start %lu, end %lu, count %lu, align %d)\n",
++		 __func__, (void *)cma, cma->name, start, end, count, align);
+ 
+ 	if (!count)
+ 		return page;
+ 
+-	trace_cma_alloc_start(name, count, cma->available_count, cma->count, align);
++	trace_cma_alloc_start(cma->name, start, end, count,
++			      cma->available_count, cma->count, align);
+ 
+ 	for (r = 0; r < cma->nranges; r++) {
+ 		page = NULL;
+ 
+-		ret = cma_range_alloc(cma, &cma->ranges[r], count, align,
+-				       &page, gfp);
++		ret = cma_range_alloc(cma, &cma->ranges[r], start, end,
++				      count, align, &page, gfp);
+ 		if (ret != -EBUSY || page)
+ 			break;
+ 	}
+@@ -908,7 +925,7 @@ static struct page *__cma_alloc_frozen(struct cma *cma,
+ 	}
+ 
+ 	pr_debug("%s(): returned %p\n", __func__, page);
+-	trace_cma_alloc_finish(name, page ? page_to_pfn(page) : 0,
++	trace_cma_alloc_finish(cma->name, page ? page_to_pfn(page) : 0,
+ 			       page, count, align, ret);
+ 	if (page) {
+ 		count_vm_event(CMA_ALLOC_SUCCESS);
+@@ -926,14 +943,22 @@ struct page *cma_alloc_frozen(struct cma *cma, unsigned long count,
+ {
+ 	gfp_t gfp = GFP_KERNEL | (no_warn ? __GFP_NOWARN : 0);
+ 
+-	return __cma_alloc_frozen(cma, count, align, gfp);
++	return __cma_alloc_frozen(cma, 0, 0, count, align, gfp);
+ }
+ 
+ struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order)
+ {
+ 	gfp_t gfp = GFP_KERNEL | __GFP_COMP | __GFP_NOWARN;
+ 
+-	return __cma_alloc_frozen(cma, 1 << order, order, gfp);
++	return __cma_alloc_frozen(cma, 0, 0, 1 << order, order, gfp);
++}
++
++struct page *cma_alloc_at_frozen(struct cma *cma, unsigned long offset,
++				 unsigned long count, bool no_warn)
++{
++	gfp_t gfp = GFP_KERNEL | (no_warn ? __GFP_NOWARN : 0);
++
++	return __cma_alloc_frozen(cma, offset, offset + count, count, 0, gfp);
+ }
+ 
+ /**
+@@ -959,6 +984,29 @@ struct page *cma_alloc(struct cma *cma, unsigned long count,
+ }
+ EXPORT_SYMBOL_GPL(cma_alloc);
+ 
++/**
++ * cma_alloc_at() - allocate pages from contiguous area at fixed offset
++ * @cma:     Contiguous memory region for which the allocation is performed.
++ * @offset:  Index of the first page to allocate.
++ * @count:   Requested number of pages (in PAGE_SIZE order).
++ * @no_warn: Avoid printing message about failed allocation.
++ *
++ * This function allocates a part of the contiguous memory on a specific
++ * contiguous memory area.
++ */
++struct page *cma_alloc_at(struct cma *cma, unsigned long offset,
++			  unsigned long count, bool no_warn)
++{
++	struct page *page;
++
++	page = cma_alloc_at_frozen(cma, offset, count, no_warn);
++	if (page)
++		set_pages_refcounted(page, count);
++
++	return page;
++}
++EXPORT_SYMBOL_GPL(cma_alloc_at);
++
+ static struct cma_memrange *find_cma_memrange(struct cma *cma,
+ 		const struct page *pages, unsigned long count)
  {
 
 -- 
