@@ -4,118 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE43AC79F80
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 16:39:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6085C624DE
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 16:46:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B2B516B0088; Fri,  4 Sep 2026 12:39:03 -0400 (EDT)
+	id C72696B0088; Fri,  4 Sep 2026 12:46:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ADC816B008C; Fri,  4 Sep 2026 12:39:03 -0400 (EDT)
+	id C23A96B008A; Fri,  4 Sep 2026 12:46:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CE1D6B0092; Fri,  4 Sep 2026 12:39:03 -0400 (EDT)
+	id B5FAB6B008C; Fri,  4 Sep 2026 12:46:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A7F36B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:39:03 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D8350120129
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:39:02 +0000 (UTC)
-X-FDA: 85176639324.12.3A22A3C
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BDB0340006
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:39:00 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=XxSQ22se;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf01.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.41 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F9876B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:46:16 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1CE4740116
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:46:16 +0000 (UTC)
+X-FDA: 85176657552.19.FC9313A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 745051C0002
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:46:14 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QcKHemWz;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788540374;
+	b=kKDQap1aELtBV5ehw64l2ImCyE0nwi7aBsw6MX88x5LYtrhe11/BolRlmQfig2Lwn0QGGR
+	deb8hvqUjBoFscI8TwhxO4j3YzaH1H2XniKL1N7G3n2vYaGZUYsbOk+LzxelssCs70d5yz
+	IT2MazCqT91plMBhtVwhzPM18HYeMMw=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QcKHemWz;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788539941;
+	s=arc-20220608; t=1788540374;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BPJNCIJctbxrL/gwwpLp4isL2IQcKA6SZn3cTOfdjLA=;
-	b=zJI9dn6DUi4136exxpFQ/SOfiJE8p4nc/pjwjWT7MIU4Jg/oen5t5SIe/Mv8FWvJnFhSUP
-	m6+IjViOuor59HogTLuygwjcW9WWhIkXvlHveR29ssi2K+bDyjSITVDIKBZSJCcL0kANd7
-	tJcSEjfjisz3+4lFE2vMWVS+0kWsJVs=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=XxSQ22se;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf01.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.41 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788539941;
-	b=cVX6EK5h47qI1enXsm6P5ZTnfx4ey7stasi2wJVI0ClSLYy2id50D09rmKw3X/nzvGWPvZ
-	ZTVQu/9L2+uEtH2eJbhbO0pgO/CqiYXIk9/6dKAUQSksNk3+l1uru3ftQshn9HZff5hzqy
-	c6s3u4+CVDxEx72MH4f7W4S1carHL78=
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-90cd96389efso16318286d6.3
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 09:39:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1788539940; x=1789144740; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=BPJNCIJctbxrL/gwwpLp4isL2IQcKA6SZn3cTOfdjLA=;
-        b=XxSQ22seVmKpFnj56wlPoCoIENbUOwbl+BAqA1s5OUXyX4qf0luNfejEYMBqpdVqvR
-         hRg9mQlR7Gb1l8I2gQmfae1j0BCuqq6luh1ZMBgxxDSs/iTDENiFfCgyCVZSHYU4VzkU
-         NrCKBQzLd7fRo3bBY5Xh7c9FJ2Uvf7sJndFNSlmzL9lElLL6rng+u1YtJBKlkYLb7Jr5
-         h5/TnNCpYlm8fUd/X7HaomNPD+Ta4sFgGO/k7UfEsKYLVsd0pz57MPEuTyxbX0E/UApK
-         Rob2pZXvXYezR6J6Si2GWPtQYORme+MDS+V8oDmPTiLmg21KgPNgRRQxv4Zpr2FZuzsZ
-         sNkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788539940; x=1789144740;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BPJNCIJctbxrL/gwwpLp4isL2IQcKA6SZn3cTOfdjLA=;
-        b=V3A88SSD/vPOyT/ttwHoT6YI6Dzd9Wu3K19RQt0BbgfnrfF4HEYKC1LQ7UOBzVPYMe
-         MPQuQ8uuYHXLQKH7X3G0OPiiVoVLPRCeM6iXSeea2fFaV9UsUq6uJXD/VTr3hKwXLVmK
-         KXndnDNg/ZfT+Rq1MslEMgY5y05jV/fiIqNd/leK8UA4Ifi2hizP4rOy4b8Z4afGW5hZ
-         3HdjWDYTgA37pP4I/LBN0SKvjychyr617mN2V168Th4ggOI12z/JIF/1WPmD+Y3ZwBLN
-         eJZ8Eooa0j0HCIy/sYr78d+0q7VkiUrK6dI0lnqO04OPMbdSK+ot7effb9AeZSOWyKJf
-         LJxQ==
-X-Forwarded-Encrypted: i=1; AKwUvBymp3oWzhAh42Pm5rUq/2FY02/W+Qs+kFnTSEYnGfP8INhadQuKVnXBeOflNT3BDNTv3NezS4IZEQ==@kvack.org
-X-Gm-Message-State: AFuF++kVcN29oDQ9VwBHUu/sCrWf/T40W/hVHB0EyjNqjIFsN1U2wjYG
-	xscPgFZlRAkjvUbuhdtnF0dG12/tDO13g2hiddPx97GjRiN8AVjAPahvSMWtLIeEHU3iaQDBN47
-	SoAi059Y=
-X-Gm-Gg: AYBFou1AQ6kncwJEvUqUYpHLEOmIyCUgW2O++hCFc4HjSGQHS2AlANsEc6FfaTTN1uH
-	DfjkYi9iC7yFl9wgnrEjs8MpWwiU15+JIAbwvuMMhDKf3lQ4eYDvVoboPr6ucXbjKmGrnsbgb/K
-	oNutPehTCWvzSGo+zJKXqi8o9QfIhVzFFkUm3Yx75OUGvrj2ZtYJZKlKzJqp3WPDjfADAAeluIf
-	fxoqGk31IjuzguXyt5A6R3kerPze/vBt4aoZ5z/+JeSQvANMtD7JVDOsiXJbT3Y/xVNGskXfKon
-	joqcwTTc9lOTDOVBaHUa1cCAsMNlPWGsx0iGJgEUDvETq02AtOm9HRJB9xLchfjh4HUmILAsP+R
-	11bfaX8Cnlg2WNzn6uhr4sou7zHdf7PIjmk1sjGDUK+TuzRg796Tq7X8yRSJOP928eVpS4kzL0w
-	hCK+tqpU0Cay7EYu2VyajAzRRvoHcoZW/CX8jAwOywlDFZYs1L
-X-Received: by 2002:a05:6214:6343:b0:90c:c6fd:e8fe with SMTP id 6a1803df08f44-9103f044b57mr66427916d6.30.1788539939628;
-        Fri, 04 Sep 2026 09:38:59 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:501::2])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-910406b0f51sm23891226d6.42.2026.09.04.09.38.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 09:38:58 -0700 (PDT)
-Date: Fri, 4 Sep 2026 12:38:54 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Bo Zhang <zhangbo0325@gmail.com>
-Cc: akpm@linux-foundation.org, baohua@kernel.org, kasong@tencent.com,
-	qi.zheng@linux.dev, shakeel.butt@linux.dev, david@kernel.org,
-	mhocko@kernel.org, ljs@kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, zhangbo56@xiaomi.com
-Subject: Re: [RFC PATCH] mm: vmscan: avoid anon scanning for GFP_NOIO with
- low swapcache
-Message-ID: <20260904163854.GE6641@cmpxchg.org>
-References: <20260903130304.GQ3004@cmpxchg.org>
- <20260904020756.4163139-1-zhangbo56@xiaomi.com>
+	bh=maBinTpgEptRAadbtAeA4Cful7CwIKDPrQsFPR09ghw=;
+	b=MA/TQ1sG7a5UlDsrDEo9Kg50td7/HTQR60RfUDZRowNFBRIlTwzHyfLrE+47lSK+pgqdwJ
+	U7Jlh/WeFdDbyJYCubrfNpX+vX6ge570zvzt8MP0abJj5XN/TVTAmRbt829RfjBQOZscUZ
+	MWGRoqFf7cC3ZTNhpNcZQAA3PfD4NVI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8CFA543D4B;
+	Fri,  4 Sep 2026 16:46:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 593FC1F00A3E;
+	Fri,  4 Sep 2026 16:46:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788540373;
+	bh=maBinTpgEptRAadbtAeA4Cful7CwIKDPrQsFPR09ghw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=QcKHemWzOADUSWpVHigDqdv+C7oRjcVLvRNYL5g4HItAUbk+WUoLjWgsytshoBjig
+	 GqwM8XZWmQad9GKDYRlzSXarRQ/7QkXbH19qEkwbRYxc1rwC8HmDr9MH2LjI1uKmTk
+	 UTvKNLWoNE+Y1O48PcN5P7TMdilhIkPsfqmUQRSJ86+sKlLQn2RszsGQKEKLDvUVJT
+	 pKbzx+ZDbJci7y59/5qa7Jho5MYd6kOey+1sCoTt9mk1LAXtXD0EzDeeD2JDh7sdAX
+	 NTe7RoGbwpq1LEq8ogSHtkLdIYCMLKSCkqyQg92+7xzI4FmoaXPBm5ws0vyHhYh9fu
+	 GMPx2vDK/ROqA==
+Date: Fri, 4 Sep 2026 17:46:05 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Nimrod Oren <noren@nvidia.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Hugh Dickins <hughd@google.com>, Nirmoy Das <nirmoyd@nvidia.com>, 
+	Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm: remove min_free_kbytes adjustment for THP
+Message-ID: <aprtAqgJyS-gJ77Q@gremlin>
+References: <20260901190123.3511535-1-noren@nvidia.com>
+ <20260902162323.GO3004@cmpxchg.org>
+ <aphS2TancJAZLND7@gremlin>
+ <20260902183752.GP3004@cmpxchg.org>
+ <aplzo5Jsb6f1MdaM@gremlin>
+ <20260904154346.GB6641@cmpxchg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260904020756.4163139-1-zhangbo56@xiaomi.com>
-X-Rspamd-Server: rspam11
+In-Reply-To: <20260904154346.GB6641@cmpxchg.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 745051C0002
+X-Stat-Signature: itasexsz4so9rua99c5s8utytd3znmdf
 X-Rspam-User: 
-X-Stat-Signature: p5hyoq5y85fnadcmkieyiiqyx1ungm9n
-X-Rspamd-Queue-Id: BDB0340006
-X-HE-Tag: 1788539940-864948
-X-HE-Meta: U2FsdGVkX1/VzG3jXexoPK3DkbgNANTKNup/sxn3uOa6t7m85Y5VMqvY+Bb5tJO1ah3wkE/qYsKEim/3oZF1RtGFEj0BnxXcIGP0JVG09nMSmDP8jJv9lWA3zsvdyFIb4f7vm2AIJIS/+zGBPqo82H+e0htnVIOuEDBAUDorE9M2rCSi1v/KXBuiFCheLX/kWA5Hwgk9OebyCWkC998qvWg7yDKEWZcp2Al4pRcmcnsl+MyrFpvzmaOcmQGvPSaHv9xgnkBfcvZFWP3M5Ml6shsyneLhOxhAM5zjLdNK58ilDIetFzGWT3zDwOENl6CKPnlo17HZpSB4k4uCOos4I5MN8Yd3T8/Brwm9bcYtvEx2Suu3hKtySl9eEJ6cCi74jOjqIxAyYKWQj8RxBQkQmpKHjwNHFm3wH+9jR1IHaPzMhYWtl3hH+NC9cnBRGXEQarkqvu2DMZKzdnwNQLMVW1hkiCE6vEilI6Gv82SvSRTxfk5/0tSMg6+CncfFP0/Mn+kKXCZy3aLA7f9zjqLkz7isVk5PdWr7VYoybmEHBAvPKfFyE9TN0bGnQ6XlxpsOi178VIpW4xJX4zKKytNa/EMqg5F5F9v4xJF9kA71gjdiXCUY+9Vo+lCYLXiVL1DpqDGzbflf7/i03aGKAjoX3nIdW1T49DhNsN8ZrxEgmdThl1e7S8VAq7RYWpMeLLy7R4TJhjgjbninjhkGfv3ujR6Jh5Gy5OBHcXNk68ZaTWiG9ExV+7iKpdSaqVl2Ilqk57q83LQiHyBtccakTKyHE8fZe93NFh4IWFy9gxp+3cgKSFoUgbGaqKXu0YN1bEaywmEdCDOU+EgygG04q0U6ZaX0rRncHxzGFaQVZlxYQdqTvSgm1LSAptcbsMpU9MJIkStYu6YgzsGg6s+hLois+jQ2DjxGywwfXuyk+Qpzj28qqzoEMW/qF+EPm9lvznmAtyXSFUSYM5SJyJe3bAg
- BDY0drV1
- ezGHcSKcRfv1Y3QNZf7bf3Es0RFSh9sP4t4V6IT3m7DurE2nRO8GSuMWT0malSfC0Um5br9AneWw8OdD/pVycYD46+ZfORQN4Hvct4MtM1rD+i5sWXMlzeWEN6wXtkVbRvP/kV2oZsqz9mtkfZRL0BL/1VJIk9YOjdOtlLmvacc/5QRrvYYdAwrZx8LlBd72u2QiCGl7x54IF7u8Z42OGu1y8jwgwhKZ3pudrIVHPCrnY01Xfz1BJXJkTw2f8g5Y4CxqNwB61x1SfJRUB91dtiClSeiOD9OV/gHPWcdsV+kKZXNcleG3gAU2hMBbpLwWC/m6hAzkXZ0GBiq3iLa06ZwLa9uHwk5oyTwi+JSgzLDATpcx5f/zABjfppVZGIdqxKkp4Ey/QY/UxbG7rW8xvwzs67CgvMczm0LCBLgNAAdawQrUeLteTAsWdqCcljgItLRwTCTwPoLpV3Us=
+X-HE-Tag: 1788540374-719664
+X-HE-Meta: U2FsdGVkX1+7fP58djRbqpPaUbUuD0PLSNPcE3yX5a7StHSinV6RaHv1YYZQFJ5qpEHdLO14ynqtc5dnNIn5P/Dg2Fppvk2i6oE+V+R9Ra7SIO6S97AmXONAjjH0HTnJIMB7yNNrz0F/CxgpkdT/d4TpvxT4PXe1iL/dyAg7J6k5aZw3qx7RVBvg2IY/+sGUsVHpTGInVCD2z8MwSbOmIL9yRelX+3+hTxXAcpZmg7J/zv1dKlfCoGs2ycTc4kvrSXQJJX6NTSCq0g7bUi83J1aLQlRSCf/m8EIgwZdDWBiB8Gzuei2rFZo6/jLXBiYW1FxP+7RWNWFyCHWH4PO6l1cSO6jOUqInRHF1+Ad/AJIkWGZktDW3cyx1Af7JZdcF407TAXiSgjbvNTvtBrEoFuPM04LdSz4HFOxt1JqrOzVQowlQOUVatl2A6RDX0YLph6ATKfo6q53/jTxA8N6fmiuCgvwz64mO3cEKjGbr9HiTlAGiOLHUDm4X8c04cbSgO+S/Ti2GlvccpNrmPCjbs0pCVo007Tmh0v1R98OihDPcCLwBshaQObWhLDa+3R2MUjOkJRvsaJ2lStKmSyHiANMWZ4HG+lfZErxhIZrqJ+T17WsotSWhitK8uBK1B2lStCkgdNznlTHxH/FqEiznTjN4L5NQp1U7Iu9zUk87fk1QHo52D7jcOaOix/FJMDT2kYStEweQbOJ2Ml6VoGA7OPGZ5WSp35YASAhnLRTiUfxEs38rckP3CwLcavkicI4Mx98pQKJwLwpbwMiRqU+aC6TOz0H+e8JTWMuDei5tGjDMJDGHInxlGcWwhLOUS2uW863/MrPcyig2KmVl2dHAdJqJ8c+mqZsZFwA1VLKiG0h/2i+RlxB/r8rDVhbjtDGWf6Z9Hyg22elmJ7D0Fa80nypMbuffPF3dO/Q3WFZ3CyhoPxejszxLDWp96rs6EDVEyrCs0jo1HPhByH/qL0e
+ yNdLByj+
+ Lw9PbrketNPDv7fUSgZ1RMpiov1mbkQBXTwN8kvl2LYXD8E5+SHgtxI+SdzJHCHflzwAiag0PpWbqwSwve6BAd33pzT5bCODD/X3DqSx9wb0k/cA7kwU9+eEn64QBOcFcu3+YCHrQBLmM2gh7oGOqI8IYYvCnt0oQ2mu/6NIpaE0TMtP9FtysRF+JZmDLZIExssbFQpuQeEGT/i954J64HocKT85CCOX7WH95LCl3aKt0u39+7fgZn6kgQSvu4ZhjluX955AkruSfsrnNqJSz4YeEpdassC7P6siNEcW5vyXFbYE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,77 +103,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 04, 2026 at 10:07:56AM +0800, Bo Zhang wrote:
-> On Thu, Sep 03, 2026 at 09:03:04AM -0400, Johannes Weiner wrote:
-> > On Thu, Sep 03, 2026 at 12:01:31PM +0800, Bo Zhang wrote:
-> > > We have observed some cases where memory is allocated with GFP_NOIO, so
-> > > we cannot reclaim any anon folios unless they are in swapcache. We can
-> > > end up spending more than 150 ms looping in `shrink_folio_list()` scanning
-> > > non-swapcache folios without reclaiming a single folio. This is pure
-> > > overhead.
+On Fri, Sep 04, 2026 at 11:43:46AM -0400, Johannes Weiner wrote:
+> On Thu, Sep 03, 2026 at 04:46:18PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > Looking over the sub-thread (correct me if I'm wrong) the issues seem to be:
 > >
-> > Not entirely. There is some value in aging anon alongside file, so
-> > that the next __GFP_IO reclaimer doesn't look at a stale list.
-> 
-> You're right, "pure overhead" was too strong - aging anon does have
-> value for a later __GFP_IO reclaimer, and I don't intend to skip it in
-> general. Let me describe the case in full, because the reclaim cycle
-> itself already provides that aging on a later pass, which is what makes
-> me think the trade-off here leans the other way.
-> 
-> > Can you describe a bit more about what you observed? What workload is
-> > running, maybe you have a stack trace of which NOIO requests are
-> > routinely getting stuck in reclaim?
-> 
-> The workload is app launching on Android. The NOIO allocations come from
-> dm-verity hash-block reads via dm-bufio, which legitimately use GFP_NOIO
-> because they run underneath the IO path:
-> 
->   worker_thread
->    process_scheduled_works
->     verity_work
->      verity_verify_io
->       verity_hash_for_block
->        verity_verify_level
->         dm_bufio_read_with_ioprio
->          new_read
->           __bufio_new
->            alloc_buffer
->             gfp_mask: GFP_NOIO | __GFP_NORETRY | __GFP_NOMEMALLOC | __GFP_NOWARN
-> 
-> So the NOIO use itself is correct; the problem is on the reclaim side.
+> > - 512 MB pageblocks become unmoveable quicker than expected
+> >
+> > - When trying to convert a pageblock in try_to_claim_block() 256 MiB is required
+> >   to be of the desired migratetype, and this is difficult to achieve vs. 1 MiB
+> >   (yes clearly :)
+> >
+> > - AI training checkpointing was a problematic workload - big latency spikes and
+> >   timeouts. Tonnes of unmoveable memory, order-0 allocations falling back to
+> >   MIGRATE_MOVABLE (ugh), exhibiting try_to_claim_block() symptoms above.
+> >
+> > I hear all of this, and to be clear - this kind of real-world data, at scale, is
+> > the kind of thing we should base decisions on more than anything else.
+> >
+> > Reality > theory every time (and the more you look into the kernel you more you
+> > realise it's a tower of heuristics anyway, especially in classical reclaim :)
+> >
+> > I guess what you're trying to say here is the only way in these circumstances to
+> > make headway would be to have more memory reserved.
+> >
+> > But is that the right conclusion? Aren't you still screwed once those reserves
+> > are chomped up?
+> >
+> > Or are you saying the increased watermark levels gets you effective
+> > kcompactd/kswapd sooner?
+>
+> +1 Exactly! The watermarks sit on top of that reserve. Both background
+> reclaim and direct reclaim are thresholded such that there are always
+> a few pageblocks worth of free space for the allocator to choose from,
+> thus reducing the risk of fallbacks and block poisoning.
 
-Ack.
+Right.
 
-> Here is the full picture of one such direct reclaim. It runs two rounds
-> of do_try_to_free_pages(); the target is 32 folios.
-> 
-> Round 1 - partial (shared) memcg walk, 169.20 ms, 0 folios reclaimed
-> --------------------------------------------------------------------
->   prio 12->1 (~1.3 ms):
->     cache_trim_mode is on, so get_scan_count() picks SCAN_FILE. Only the
->     file side is scanned. Because this is a shared/partial walk, each
->     priority only visits a handful of memcgs before the iterator is
->     handed off, so very few memcgs are looked at on the way down:
->     428 file folios scanned, 0 reclaimed.
-> 
->   prio 0 (~167.9 ms):
->     priority hits 0 without meeting the target, so get_scan_count()
->     forces SCAN_EQUAL. The walk lands on a single memcg with a large,
->     unswapped anon LRU and a tiny file LRU:
-> 
->       inactive_anon ~335 MB, inactive_file ~4 MB   (~84:1)
->       memcg swap usage ~3.6 MB, so swapcache is negligible
-> 
->     shrink_lruvec() now keeps feeding that huge anon list into
->     shrink_folio_list() - ~2400 shrink_folio_list() calls, ~93,000 anon
->     folios scanned - and every folio hits the !__GFP_IO keep_locked path
->     (not in swapcache, needs a swap slot). This single shrink_lruvec()
->     pass alone is ~168 ms with 0 folios reclaimed.
+>
+> > The TL;DR for me is - you have a workload that's broken already with larger
+> > pageblock size - maybe you could test that with/without this patch and see if it
+> > really does help?
+> >
+> > Anyway it seems to me all of this is essentially a (valid!) critique of
+> > assumptions backed into the page allocator code.
+>
+> This part I don't quite follow. Why is the page allocator doing
+> anything wrong here?
 
-Ack. Thanks for the rich explanation, this is illuminating.
+In this bit of the email we were talking about a function that lives in
+page_alloc.c :)
 
-Agree with your fix. This GFP_NOIO just has to get through the day,
-and aging 90% of memory it cannot reclaim is an unreasonable side
-quest. Leave it to kswapd and the other reclaimers.
+>
+> You tell it your largest routine allocation size. It groups smaller
+> allocations by their ability to move into buckets of this size,
+> coordinates a headroom of buckets for non-violating placements, and
+> ensures reclaim kicks in when that headroom depletes.
+
+Yup, but as discussed if something straddles the buckets it's useless (it can
+only make guarantees about the buckets themselves), the target everything has in
+mind is PMD (since we are bumping the reserves for THP explicitly), and
+alignment/size requirements make smaller sizing useless for mTHP.
+
+>
+> You're giving it a very large bucket size and are not happy with the
+> headroom that commands.
+
+Yup.
+
+>
+> [ I'll reply to the other points in your email later. ]
+
+--
+Cheers, Lorenzo
 
