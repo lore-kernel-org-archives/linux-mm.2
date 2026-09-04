@@ -4,89 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECC18C624DE
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 07:57:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EB01C79F80
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 08:01:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BD7E6B0088; Fri,  4 Sep 2026 03:57:19 -0400 (EDT)
+	id E8F426B008A; Fri,  4 Sep 2026 04:01:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 695C96B008A; Fri,  4 Sep 2026 03:57:19 -0400 (EDT)
+	id E67176B008C; Fri,  4 Sep 2026 04:01:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5ABC76B008C; Fri,  4 Sep 2026 03:57:19 -0400 (EDT)
+	id D7CA66B0092; Fri,  4 Sep 2026 04:01:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 340B76B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 03:57:19 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A0FCC1A0818
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 07:57:18 +0000 (UTC)
-X-FDA: 85175324556.23.5946AA5
-Received: from mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7A61714000C
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 07:57:16 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VrI86WOg;
-	spf=pass (imf26.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B4F746B008A
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 04:01:50 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4B8AAC08BF
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 08:01:50 +0000 (UTC)
+X-FDA: 85175335980.22.652FE60
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 8FCD1100002
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 08:01:47 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=sk.com;
+	spf=pass (imf14.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788508636;
-	b=reT0sRn+6ULBTGsAp0aqklvGPSMt7yhRC/sSJjn96Nu9kfFNZHjUy2rZ8UrWcJn86ab9TH
-	j/4w3QSs45EFncDFDY3nWnhHZnOFoGisqSmSFwI812rxcjJh/BCDcy7TulzTcWZCTC1Zfk
-	IFW7qu+eHKAGaKE0NTBslyBkZmipxqM=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VrI86WOg;
-	spf=pass (imf26.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	t=1788508908;
+	b=hXWVhEKkpHkiK8n78ffrPdQyfsZTOhHn+KAJt5OlRHQe7Ok8OqNLMUf0SB+palBy9BPskM
+	pV9VL8Hh1gor7HYiZb+6sPb3xaJ5h1DV8KcfnEQfT4TywfocKL6ZTaSkOsw4Y96W17H99f
+	3/Ax06+oUx2hddkF8nQX6tYXCgexCNY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788508636;
+	s=arc-20220608; t=1788508908;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nmT7OlNcE4l1rFmFGpSOXlaCfNFPCRnyiYpJaccmNYk=;
-	b=Qs+NnLNsH6Hp4Y6ZTDpfDsDsyc3oiqUr900/MpJhYsoQilOiNzjWiwjGSgva+kl+8NPNqX
-	CbIavveQLSovE2wco1z20neWss8kBjK6JkQWc3jSpUDQrT1CPcFgNRStDS19f53QplPrZl
-	eLxNmRFXkRz+oc5aRmxRK9ge3EkPZ3U=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=mofboeBHEKPxM47nwHB8XlxHXL2t2jru+ee6kaJSofs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788508634; v=1; x=1789113434;
- b=VrI86WOgcsw4VJIek7PZlS9k4DOocTvIKSLjNUiagzUpS0RgP0cTq7yjf9//7VXOS87jIPlc
- 8HsYhU5KlkSi1ilF+oemSA1jlU3S2AN+roOVwXJ1+ddHNE+AT4qMGevMrCNf6KQLLANiVAVXWig
- y8PRkLua8j4VVWyZ7JMaxImw=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 85c4279ad02e47cd;
-	Fri, 04 Sep 2026 07:57:14 +0000
-X-Mizu-Trace-ID: 85c4279ad02e47cd
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 4 Sep 2026 15:57:11 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Youngjun Park <youngjun.park@lge.com>
-Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org,
-	akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
-	nphamcs@gmail.com, baohua@kernel.org, hannes@cmpxchg.org,
-	yosry@kernel.org, shikemeng@huaweicloud.com,
-	chengming.zhou@linux.dev, david@kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 15/16] mm, swap: require zswap for xswap devices
-Message-ID: <app513BgZmP8vgGe@fedora>
-References: <20260827094509.1016740-1-hebaoquan@kylinos.cn>
- <20260827094509.1016740-16-hebaoquan@kylinos.cn>
- <apkZNEe8/YAwygbA@yjaykim-PowerEdge-T330>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4LrsCeQXFwniDDOs24DEYD86hpQVWso7CyprcketDD4=;
+	b=rtKhLMRlsIhw6gmS4BBjuqhUAzKTDtf7fyPBXlm1sXssoWYyZVv4TWnxuCDUA7v5ssemLT
+	5QJdrzLdk+bICecwlf1oxU1tJiySpH1/r9zcTUSEhRZN6TU1THygbqX5l53wvoBuP6Hv34
+	VAWge87oATmmAqeVweqdwHatZjCxc/0=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=sk.com;
+	spf=pass (imf14.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
+X-AuditID: a67dfc5b-c2dff70000001609-5a-6a9a7ae7aa81
+From: Rakie Kim <rakie.kim@sk.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	byungchul@sk.com,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	urezki@gmail.com,
+	chenwandun@huawei.com,
+	linux-mm@kvack.org,
+	kernel_team@skhynix.com,
+	Rakie Kim <rakie.kim@sk.com>
+Subject: Re: [PATCH 2/2] mm/mempolicy: stop copying the nodemask in the interleave paths
+Date: Fri,  4 Sep 2026 17:01:37 +0900
+Message-ID: <20260904080140.1992-1-rakie.kim@sk.com>
+X-Mailer: git-send-email 2.52.0.windows.1
+In-Reply-To: <apgzMZQPTxS9QtDy@gourry-fedora-PF4VCD3F>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <apkZNEe8/YAwygbA@yjaykim-PowerEdge-T330>
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrMLMWRmVeSWpSXmKPExsXC9ZZnke6LqllZBjOLLeasX8NmsetGiMWX
+	d6uYLJ5v/cVo8fPucXaL41vnsVvsuwiUvLxrDpvFvTX/WS2+9UlbrL7IYrF6TYbF7KP32B14
+	PXbOusvu0d12md2j5chbVo/Fe14yeWxa1cnmsenTJHaPEzN+s3jsfGjpce5ihUdv8zs2j8+b
+	5AK4o7hsUlJzMstSi/TtErgyJkzcy1jQI1Gx/Ox2xgbGdUJdjJwcEgImEgv/PWOBsWeufcXU
+	xcjBwSagJHFsbwyIKSKgKtF2xR2kglngJ5PEqhl6ILawQITEr+19YJ0sQCUvPrUygti8QFPe
+	PpjPBDFRU2LdxltgNZwCZhIfny9jB7GFBHgkXm3YD1UvKHFy5hMWiPnyEs1bZzN3MXIB9X5n
+	k/h98hvUIEmJgytusExg5J+FpGcWkp4FjEyrGIUy88pyEzNzTPQyKvMyK/SS83M3MQKjYlnt
+	n+gdjJ8uBB9iFOBgVOLhvSA7I0uINbGsuDL3EKMEB7OSCK/1wulZQrwpiZVVqUX58UWlOanF
+	hxilOViUxHmNvpWnCAmkJ5akZqemFqQWwWSZODilGhiTlRM77kb97aifw53+z+B51ZTXOwO0
+	zR37ppbOmfL7ltHTjRHrhH70ROzO3VLZN7vTPOLWBLPWsDTxK3c3WMVM8Vk1o3PzZ7W/Ev0f
+	uFmMQ3KVVOvPVzc3Bom0FUZ6ulgylMTOEdmxYK3ztz8fdHa5cu6f5yx3X2H7bIm4p407ZhTy
+	qdmbvFZiKc5INNRiLipOBAD97pcYhgIAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrJLMWRmVeSWpSXmKPExsXCNUM9Rvd51awsg9U/9C3mrF/DZrHrRojF
+	uSmz2Sy+vFvFZPF86y9Gi593j7NbHN86j91i30WgisNzT7JaXN41h83i3pr/rBbf+qQtDl17
+	zmqx+iKLxeo1GRazj95jdxDw2DnrLrtHd9tldo+WI29ZPRbvecnksWlVJ5vHpk+T2D1OzPjN
+	4rHzoaXHuYsVHr3N79g8vt328Fj84gOTx+dNcgG8UVw2Kak5mWWpRfp2CVwZEybuZSzokahY
+	fnY7YwPjOqEuRk4OCQETiZlrXzF1MXJwsAkoSRzbGwNiigioSrRdcQepYBb4ySSxaoYeiC0s
+	ECHxa3sfC4jNAlTy4lMrI4jNCzTl7YP5TBATNSXWbbwFVsMpYCbx8fkydhBbSIBH4tWG/VD1
+	ghInZz5hgZgvL9G8dTbzBEaeWUhSs5CkFjAyrWIUycwry03MzDHVK87OqMzLrNBLzs/dxAiM
+	gGW1fybuYPxy2f0QowAHoxIP7wXZGVlCrIllxZW5hxglOJiVRHitF07PEuJNSaysSi3Kjy8q
+	zUktPsQozcGiJM7rFZ6aICSQnliSmp2aWpBaBJNl4uCUamCcdP57uuqcIDNOU7Ubd7++2fMk
+	+fyCuY9Wtt2+v9ixN3iju/aTkxw3dR9c/bp3mv8ilpaI0KblMocWbWQT8dWe6RO4+FCxSvXG
+	UIZU3oAT/0UL/L6ejujveeg917dfZm7Mz2beSz/PrfUV+p/XvVD6q7HEVq+TYtd/7Hq9ykVt
+	UrUJU1nvtWc6SizFGYmGWsxFxYkAWumk2XwCAAA=
+X-CFilter-Loop: Reflected
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7A61714000C
-X-Stat-Signature: 9amngscfb7d1ue4oohhsmgypcm3mgyut
-X-HE-Tag: 1788508636-866075
-X-HE-Meta: U2FsdGVkX19VlSwdAXriEo+3niumhGzd8VlTn9+9r/9NRPc7+DW8TKwwFUCCdwYkhUr4lEhcsv39Cak1BRE2ZNdOT6t9jWJjdkSymbzgWqF5THwnXeFHl+oq8b4bO707lpTILHeagGQ1HqFaync1hUbNudc84JlGxIUAidFo73xf2FGNjX5R9CD+s11ysBKipttXZcZWbVY3+gsWoOUoZAsHp9jNG0CyqFea1fPRDXldGIVO6YzA4HOHG8+CCGDKcDfQ+5Pkbi5GijkZdaADpm2OWUexI6SnyMf8JNwtOS4VDVGg42G0fC8PqRH6rEWEjQB5u0yCzKsgse5Xl1+gxiVXkJOthNguzbr7vXnHRYr2kLxM98v1u/vrF95iH+Fzn0ZMs+t8xlI02jUDf9mEh0FaG7mdzyqk9PbeyRizVSlRppKuSYR7YxNlC1NM5ybyG5iWPYxfVP/d385m6XVuv31MvRJX/x42o3+LyManPxTbJ6X2AX86RGXRIcyC3jtGMA7nfDPeR9RM3DfwQ9aqS44CEMK+QMkAh+IckhMIIYxrdAo72lxp15tuwCec6EIifSVZV6rGUbSTbhTVg0s2StofR1vd48uvneoc6tFYYItOSpQmmOM73v+EL1uel9iIbAywiEzdnB+mw86eXO5h1Z+66qHWLptc2x+thbis5TM50+w5xtgXRqGEqUGl1Z35qD34apkVeQx4UWL8/oUE4nTYpEOadc6OQTLjd/v59lp45aiwSf1jTQ7IkWIIRy6hoEDJVQNNfjlmbpgkQV68jWI/f7Iu4fsP0M7hFW417yGSz5iL7ZBupW2hDCcjXv1LMq9Oz8HCnBjlC7+WwrSU9ymU1bgTMeT50skHwnh2bIe4beY08qNncxgngiBFcNUW7KqDT/k3KoYHNhspYiDTi4KAX1yH5MM5Rx+UOJDrozBN20B3gKgkJiysuCuCmeXXawLmwMessxl9wrJUtjE
- rJ4RAF4X
- xMMcc5akNiClFRT6hsZ2i6i5j5zx30qG+eiV9QiIE9Bi5Rd+eoAZvDjhwY+0Tjf2Bee5VT52NWZ2NoapyCAAqt+Wu43vQi+ScH6l+dnG1VDZiuoq0JJcXPfAnQEa5yrIQUzlPwgvgYIHUxoZM3Bp4FvG1DbALkI6sPNuLONMWogUXqTbLdrh8eS+RSx1h7MAxO7+2OwXdweug9I8nWhBocKvf3RkKyJVHt4kNVeCjwKaOuqOztAIBKEW/6KZoAShBWHOnJ/jxOZ5Itig=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 8FCD1100002
+X-Stat-Signature: am61p4963bpid8jozp5y9r9ws6hb8haf
+X-HE-Tag: 1788508907-47582
+X-HE-Meta: U2FsdGVkX183LGZeG0pNrLL8NnLpDW1OzyZsOHK0H1bKqtteH0ecDJpJWP19dD3FdHQix264+oa8KWczxYklamV+CqxHY+Ul370SrI2lwDWl+e6ziOKMxVdJstoFPF3c/k9w2lgY2/9Gzx0XZSnfVYfRtZbspzIaIpbWiiU/lr+5G55gI6p99Qv8tpaECCmCKHB8vXsosvBocaQTDyHLXk5Yhw1Q4OETJv1351SdEhGti/6SyG8kJ8TP8lfEVcLS4CFPVhDZ8phi7/k/XVZ/OvBFLA6hE3vylTnWrU13dFFbuZNQh3wzNidVoh8ULau3ZXSz16mNZiI2TNKYB9B4sNrC7eBYjEqBnI9OTBcdSvVMVXRJ6l9xu2DADAh2FwqDcRZkeKiQ6OcLWL1whPA8XfKlPSxd/585scuga26A2uyPyxVgCYqwPUvx9aW9H/Fn9fbAPSvjGE5gBs+4XkCn200dWkIuiw4C+KzGXnjWbZCqE+ScgBwgFu7zWbjSGtatEOIQ71lrXBjHVpuGFukL9hEMs+psDHT7IeesFkwDz7VD/iXaP0Cnptn29Zq0M7ncDMSKLJA6SM6HXbClCW46+b2mS+fRwVboEnHKzqw9Un8TcLAaeV3IJTQRy46r8T7iO5WL0Go3orsfHx6w6yfe2QMJXU0pb0Fnr5h3mRAlyNr2ujq8bG33DH1waaAytsP2JGRo7ySeb2kA59m15Ls9rlERnh344fuIGaJaThADBNwsPa8dvhRELD8il8M4YCcftpfcP6c4e6Q+Db++3vBDNwj9T0963coJxEL6qOGLTC6hiQ4JsqIEvanNyf0sv7fQ87TqQEoLE1daL3td+pW3PhR6vZyCclDN3OKTSCpShg+5InUjmJlRwnlsSgwoo3o+LjlH5/JsuBXDmT3dHi3R6Ik3XpjXbQAX0BfmT6SmAWobE+kRl4Sg9ZbZjaBcwHwwLanvW/GKkjIJjzJL6oq
+ YUxJMLrq
+ L9DlXNobJtNlKCVCZv7YmeEScsGO0r3FvuexG364YkC9WAU40gPPGbm/PKVqrEF1+gwID3JecMqEnz+6Fft5K/tps2zQ2Ldp8KvoxX2nb2m3d7MUIu0GHGTOK/Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,40 +114,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/03/26 at 03:52pm, Youngjun Park wrote:
-> On Thu, Aug 27, 2026 at 05:45:05PM +0800, Baoquan He wrote:
-> > xswap has no backing storage: swapped-out pages live only in zswap.
-> > Without zswap, swapout always bounces back, so the device would
-> > consume swap entry space without ever freeing memory.  Refuse to
-> > create a device when zswap is unavailable.
-> > 
-> > Runtime disabling of zswap after creation is safe: existing entries
-> > stay loadable (zswap_load() gates on zswap_never_enabled(), not the
-> > runtime zswap_enabled flag) and new swapouts merely bounce back to
-> > memory without freeing it.
-> 
-> Hello Boaquan.
-> 
-> If xswap is used alongside another swap device, wouldn't runtime
-> disabling of zswap cause a problem? 
-> User assumes other remained swap device used right afte zswap disabled.
-> 
-> Once a device is allocated as xswap and zswap gets runtime disabled,
-> xswap keeps receiving new swap entry allocations, and every swapout
-> to it just bounces back without freeing memory . until xswap's
-> entries are exhausted. Meanwhile the other swap device sits unused.
-> 
-> If my point is right...
-> A few ways to handle this come to mind.
-> 
-> 1. Once xswap has started accepting writes, refuse to runtime disable zswap.
-> 2. If zswap is runtime disabled, stop handing out new entries from
->    xswap (drop it from the available list, or gate on an XSWAP flag).
->    This would also need nr_swap_pages, the visible swap count to be
->    reduced accordingly, and unused cluster memory reclaimed.
->    behave as if xswap had been swapoff'd.
-> 3. Support falling back to another swap device once zswap becomes
->    unavailable. 
+On Wed, 2 Sep 2026 10:52:45 -0400 Gregory Price <gourry@gourry.net> wrote:
 
-Agreed. 2) sounds better. Thanks for the detailed analysis.
+> I don't think this actually fixes anything?
+>
+> But basically the proposal is to widen the SRCU() window further to
+> include the cpuset cookie entirely.
+>
+> e.g.
+>
+> SRCU() {
+> 	cpuset_cookie() {
+> 		for_each_node_mask(node, pol->nodes)
+> 			weight_total += ...
+> 			nnodes++;
+> 	}
+>
+> 	/* ... snip - single node quick-exit ... */
+>
+>         /* ... actual multi-node bulk allocation ... */
+> 	for_each_node_mask(node, pol->nodes) {
+> 		nr_allocated = __alloc_pages_bulk(gfp, node, ...);
+>
+> 		/*
+>                  * At this point, due to a torn read from pol->nodes
+> 		 * we can visit a node that wasn't present previously
+> 		 * or we can skip a node that was present previously.
+> 		 *
+> 		 * In either case, weight_total is the wrong value for
+> 		 * the set of nodes being walked anyway - we are going
+> 		 * to skew in the distribution no matter what.
+> 		 */
+> 	}
+> }
+>
+> I'm not sure widening the SRCU window is worth it here, it doesn't
+> actually buy us anything.
+>
+> Also we'd be calculating the weight total every time even when there's a
+> scenario where we quick-exit because the entire allocation fits in the
+> first node in the mask.
+
+Sorry, I did not explain that well. I was not suggesting moving the
+sum into the cookie loop or widening the SRCU section - only adding
+the counter to the sum loop where it already is:
+
+	/* calculate total, detect system default usage */
+	nnodes = 0;
+	for_each_node_mask(node, pol->nodes) {
+		weight_total += table ? table[node] : 1;
+		nnodes++;
+	}
+
+The order of the function does not change, so the quick-exit path
+still returns before this loop runs - the sum is not computed in
+that case either way.
+
+What I had in mind is the gap between the two reads. Say the policy
+starts with two nodes, every weight is 10, and 100 pages are
+requested:
+
+	/* the mask is {0,1} here */
+	do {
+		cpuset_mems_cookie = read_mems_allowed_begin();
+		nnodes = nodes_weight(pol->nodes);	/* nnodes = 2 */
+	} while (read_mems_allowed_retry(cpuset_mems_cookie));
+
+	/* a rebind grows the mask to {0,1,2,3} at this point */
+
+	/* calculate total, detect system default usage */
+	for_each_node_mask(node, pol->nodes)
+		weight_total += ...;			/* 10 * 4 = 40 */
+
+	rounds = rem_pages / weight_total;		/* 100 / 40 = 2 */
+
+	for (i = 0; i < nnodes; i++)			/* bounded by 2 */
+		...
+
+The distribution is planned from a total of 40, which spreads the
+100 pages over four nodes, but the walk is still bounded by the two
+nodes counted earlier. It places 60 pages and returns, and the
+caller allocates the remaining 40 one page at a time. The mask does
+not have to change again during the walk for this to happen.
+
+You are right that a torn read during the walk still skews the
+distribution, and this does not change that. It only removes the
+case where the bound and the total start out inconsistent. If that
+is not worth the extra line, I am fine either way.
+
+Thanks for looking at it.
+
+Rakie Kim
 
