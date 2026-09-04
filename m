@@ -4,132 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C29DAC79F82
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 15:43:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61B0EC624DE
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 15:50:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B10716B0088; Fri,  4 Sep 2026 11:43:55 -0400 (EDT)
+	id 6B0106B008C; Fri,  4 Sep 2026 11:50:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE8276B008A; Fri,  4 Sep 2026 11:43:55 -0400 (EDT)
+	id 6616F6B0092; Fri,  4 Sep 2026 11:50:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D9D16B008C; Fri,  4 Sep 2026 11:43:55 -0400 (EDT)
+	id 550C76B0095; Fri,  4 Sep 2026 11:50:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A88F6B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 11:43:55 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E62BFA0052
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:43:54 +0000 (UTC)
-X-FDA: 85176500388.28.E33AE00
-Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B797A40006
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:43:52 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=etpTHB87;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf07.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.50 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DB9D6B008C
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 11:50:58 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9755B8012C
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:50:57 +0000 (UTC)
+X-FDA: 85176518154.09.A3DBA05
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B8245180010
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:50:55 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=s75Z8nFp;
+	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.172 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788537055;
+	b=DjISpl9flC7dx5QY6+1qay1+e0XSefKT9HgdDV4Bdob3E7z2elm0H/HfGKSi0ATseAPnxR
+	Mgwk53vqWCJwAlfiQaBuQizkC6XI3dJedCIQNWKApjwSbafsQXgnH5wvcFxNwcuvo9uFwH
+	YnwiEPvcGeT1rVTfrpzxP68hbQPGru0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788536633;
+	s=arc-20220608; t=1788537055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xKmfbONiKhT7CrkzRLhdhFZmjYER1RIKBnciL0qdhTk=;
-	b=8HqFYUt0lzLf6NVQBe6D4pAfDXBbDuTKieu4Fj5gR2plLQupvbYSrbsGjBDennGgcbElwu
-	XkIEBUBQgsTwFIcHcvIcXypBUJp2ndneCWAP0zK5z6Gh8Clhkd8dazW3NTUZkttxeze7L+
-	lMEUAt/7f0fmWga2ueHyYsfnEz5giKo=
+	bh=+CPM3PhCyVUbcThvlnBvxoK/N41olTITEO0G3pjffxQ=;
+	b=YUPLqnYEq6iOGb71c1qHFbkHQnSQATia1cHEcqJNuBKMDKKRvMpYLaV1mxHFEOE7gU+iYQ
+	yym0RnWSs2DTJdfzQGWXtcsAARtNGSEnJJMf+O1gYUrqiGKZCtirA2rG7pW4TUB2zMzb0C
+	ZNLGDmTKUbgLaxrgS0jLmgM4SuDr7IQ=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=etpTHB87;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf07.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.50 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788536633;
-	b=vrrJglkdY7oDcpq2HHNmov5RJHKFbM6ygHRaXkpN+0lGNmjNsdSVO33shz73SIqONkJyJf
-	T42KJaCVo6/ZFa+0E2mIVP/bv+mkGR5CjuUiUqqsO/hJaP0MlTJSmQRp2b3hQlEY8IqJgc
-	tj6ORSVtYXU9ZggKfpkXOIeL0jo3Z9k=
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-66fa996e65bso2225700d50.0
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 08:43:52 -0700 (PDT)
+	imf16.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=s75Z8nFp;
+	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.172 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-92edb12cdf2so82650685a.3
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 08:50:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1788536632; x=1789141432; darn=kvack.org;
+        d=gourry.net; s=google; t=1788537055; x=1789141855; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=xKmfbONiKhT7CrkzRLhdhFZmjYER1RIKBnciL0qdhTk=;
-        b=etpTHB87AZaJ9ENCdXCdjZJC6GSEr0NmROpq8HrjeFAmuZu/Mdh6UsThj0FutBsfAd
-         rtBlAMS9XF4nwHvdrbGjw1MRPfT4ALV4EkaF2ASzuitgPEyJu/zq2BMcII3KEGJbODzx
-         rX0z5J85ZD3DyoTnx2HPZh38YR8IjGTA9CkWmrzZR5c7ykHy6sq/UmKsHjtnAWJFfbXX
-         sBxgo/68Wqxn1QoI6K0ZmvQ4rGdRyz60Oy98qPME83mBwahvgsMg5aZTnjDpWbOvNZUd
-         zGyjxUXCNnT1v1ozZ8Wv9oXcz7oeVV+GRNSYibrAnRR/0XWuesT4VsVafwXrlunrX8XT
-         CafQ==
+        bh=+CPM3PhCyVUbcThvlnBvxoK/N41olTITEO0G3pjffxQ=;
+        b=s75Z8nFp+tEoWIs7KM7WT4lQrCzTYSz+bZWQeVBwIjqmVKuCmA9M5Jd6H5/3sQbQw5
+         UfInyfwBaRlleimE5SFai9UAaKrBSccMWC0ssBDH5r+mAeUDKj4uXODQkmKbdHVcAjAr
+         hk485mu8wjsfq6kr4QdemAC2cSqrtHlF8h7vvtxUUypSxHj+mrpGZiZ0BIi1TMMlvs5k
+         m2Mbnp+bg0Y1i7hKbqe3/vo9PPmACHyALb2C50bhcrnjwgg7+qjVqeubKXNtEC3ZxsAh
+         hUoucza7UbNG4TyskfpkamGYBIkLJHyQZ8STgxmBo2KQ9zww9ogEuGIVg/Olj1/7llRw
+         IMyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788536632; x=1789141432;
+        d=1e100.net; s=20251104; t=1788537055; x=1789141855;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=xKmfbONiKhT7CrkzRLhdhFZmjYER1RIKBnciL0qdhTk=;
-        b=M8lMs/swvKyMbMltEgFoDL3XIVaLi+LL7LhIfpdP71OcNibWO8OZMjY2BmRJ6EagFD
-         gTDBpqXXjLnwsFw8gN10/NQ6jiC/lUOrMPBRQSUbYQ/fEDC76bcJmwP91/I42Ye2u68c
-         suV4YL9azfbyh+mKpjdg8j9TUfBECGYv4cdFjwpIk0AJF/W3ya1XwsUbWk7JcBNoMNuD
-         twqgBXAfIu+IPgGiGhJ7ky5XKb07sw8QL+nyhEWqalkIx2iLdwEuhiEY47PM6SFYqCpM
-         dweWVpwWX5r4fS2ysmWCDeU50botxkVAo/OMTPuqGhDGfvRy29Ubof9eM9tftLyTOzFP
-         pJ1g==
-X-Forwarded-Encrypted: i=1; AKwUvBzsbLSjmBasQy/3f3hIfJy+DFg2eYRWal64EXMz2tu2tqe/Rx4ywwKTi1pZfRaNye0IGf5h96LeUg==@kvack.org
-X-Gm-Message-State: AFuF++lT6zhWdlE5aqzAYohQ8RCbrka7H14Uw//pKUTKv/lSbQ13hZAv
-	65h83KfQs+72db6Dq6rE9co9pq/yvb8AGXBFTC8sPZKCvD6a+Zxy4B3xg0DOPyD7wkU=
-X-Gm-Gg: AYBFou3ilsjqQSKlHs3veYL/VGMw8dmii0q9Q50s0X6IWjn/Vj02s6FjV60lGmSpIz7
-	V7RjYgui8LIIgBUTcvfDTqtChybDv0YEgPsVebEBVZUICVsR61DozfGQY0mcsy5+L5+cHqNzbpt
-	jjyuUMc7wCIHZPXCzSb4Atq4lzAek7cpPLGt0lSZRXnBje1PZ7/38N67Ib4pYaIi6lbT8EFgD6t
-	KWGPpyDfjKZfTagnAzoQSn+/r8TBVsRQL0wlA0RvOU4Twpbf0rOVfLFFUBYf7PEmjbMQ0ktHsUx
-	3x+obySMeIOr+zLjrhq789/b1XTMEsvO9Cbdu3oXUfCtHvtNl9i90dz1os4GXdyEXwqWGSEZ5K0
-	NaSFPfPR3G3/wRSoo3ADLQjxLeAZxokCTUl5PDrbluxOrJwKOBjMR2sVPFsqtL7gkHMwOAJqbUU
-	StSwL1DVGGhrgeyXCro7urGaHUXTXDchNBR8L+
-X-Received: by 2002:a05:690e:4419:b0:66f:c1be:84d6 with SMTP id 956f58d0204a3-66fc1bf5087mr550972d50.68.1788536631738;
-        Fri, 04 Sep 2026 08:43:51 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:501::2])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91040664741sm23243936d6.22.2026.09.04.08.43.50
+        bh=+CPM3PhCyVUbcThvlnBvxoK/N41olTITEO0G3pjffxQ=;
+        b=srS/fTWRg0OukPiDVCsjkJ9eejAk4GrCmIAKw7uZa08v50gr1bA8QbGr4ZQEq81Y4e
+         I9wC1An4l/62e/0BWBMB2qv5zNJNlm0IUCVLT1VhYqg42y69LXyPJgxMLu/esHB3+WvG
+         BS2o17FiyoRrILZ53RMxJb6K63LCwj9dHn9SIr2rkJA/6VtJr8kbSmCOAgr5qEBXnzGN
+         wvyE20ut0+KvVxaC5gR2t5BH3DWEunaK7HvOztGO/o1Nmwma+hd+1dyOGfvMDroFrlPm
+         3on4YDojooCWpNRg65feN/ou6mI0A4GnryZJ82PQwb92RUbgHZxd9vyUEjP3o8KUtVSK
+         Y+wQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx4kzRyqbXmPp5xA3Ek6Czq99lKhyukp+CF9m4FrH1fiPVntZh//BkiEtbGq5VNXePi71UL6s1VNA==@kvack.org
+X-Gm-Message-State: AFuF++kSsQTOOXV3+stv1KNSXFq6SK8ZkIUIbqcMvlgfQ4/AX5QUVz2k
+	8SNvftlFj1wLLBozlUVTPyaRaF48rI70INs9CdlKE7fki/XXFtXDBBhgmUkpJI5Lxnc=
+X-Gm-Gg: AYBFou3ZXeYYRF7xdGGDL0BDHFeVRI9oLUs9EQOozBGrIGEsyS54vFQ+sL02IASHUoJ
+	yJ/CeGaF3thZM+YxKMC5zx1uYjeF1eNPsynfEcg1Mu9XYzUJstv1TCJ5SIKVihKSuWKMa3ux2Ud
+	Y6TOoC/mMuArdepMS0q6xcFSrPKR78JiEE9hOZr9IbcoCFnWGJFx7+LQX9CV2t7CagWARklm0S6
+	+PYB01P7sNbRsfrkzQRlx91GLSxe0cVV9TduXfG+XtGBRix+rCR6YGeYxkghVPwA+g4sxioyjTE
+	xs9dAl4WC4VSBcT/qkMyO5ycsWNvq7aTYxXjRE6ZFPD56X4VTyLd06BLK9iFodFjD5Sc9vaBmML
+	hCtVNUxkzJjyFLqI3zxuzZEJID1G5iGtnUQHEqJJ+HQ2W3w34mtPSUcFUXlambaUaaQ1rbdb1Ur
+	1ICa5ZViyyYtIb99efqPkOAYhjTkMVMlrnCN/OglbZ3dPJPmYoXaW4NKqQFz/Q09VjXqsyH43Cq
+	d3U3hI7qL0L2oQxkxFtY8EhKDLenP+Sr4dUkDojfJPg
+X-Received: by 2002:a05:620a:aa1b:b0:937:675e:2903 with SMTP id af79cd13be357-939804018c5mr653972485a.14.1788537049980;
+        Fri, 04 Sep 2026 08:50:49 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9397f9f0734sm245958785a.4.2026.09.04.08.50.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 08:43:51 -0700 (PDT)
-Date: Fri, 4 Sep 2026 11:43:46 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Nimrod Oren <noren@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Hugh Dickins <hughd@google.com>, Nirmoy Das <nirmoyd@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm: remove min_free_kbytes adjustment for THP
-Message-ID: <20260904154346.GB6641@cmpxchg.org>
-References: <20260901190123.3511535-1-noren@nvidia.com>
- <20260902162323.GO3004@cmpxchg.org>
- <aphS2TancJAZLND7@gremlin>
- <20260902183752.GP3004@cmpxchg.org>
- <aplzo5Jsb6f1MdaM@gremlin>
+        Fri, 04 Sep 2026 08:50:49 -0700 (PDT)
+Date: Fri, 4 Sep 2026 11:50:47 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Rakie Kim <rakie.kim@sk.com>
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, matthew.brost@intel.com, 
+	joshua.hahnjy@gmail.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com, urezki@gmail.com, chenwandun@huawei.com, linux-mm@kvack.org, 
+	kernel_team@skhynix.com
+Subject: Re: [PATCH 2/2] mm/mempolicy: stop copying the nodemask in the
+ interleave paths
+Message-ID: <aprm5dwF_kWaOe44@gourry-fedora-PF4VCD3F>
+References: <apgzMZQPTxS9QtDy@gourry-fedora-PF4VCD3F>
+ <20260904080140.1992-1-rakie.kim@sk.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aplzo5Jsb6f1MdaM@gremlin>
-X-Stat-Signature: kjtkkkn5k8guxtd767uxfsh7xq4ac7cs
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B797A40006
+In-Reply-To: <20260904080140.1992-1-rakie.kim@sk.com>
 X-Rspam-User: 
-X-HE-Tag: 1788536632-874786
-X-HE-Meta: U2FsdGVkX1/DUUvnrHTrdgJog+OO6dKDEWJHx2qjT6AlRwE6JkatmBq/61LDxGxuW2QjAe19X/OLTJjaw9Ut3yfiT/fyVJLOMDPdb8Ve5Lznmg67nqpQV/Bm3xx/71JrmXrDHqlxDaIbOonFdo9etloVb1YGkkjGR+hc8ETvfWJdBSAx8x8G6ZNkjFZT2iu0SOGj0CFIVOZ7MvgnvkFRGFSu3uQjfbfOGaPxXUoQepMu0DlM7DtUbMBYz/fFYSI/WLy79BmAYI0rHOql8XTN7bdOwGb1bt9iywWm9MGmfE3IwyINVsrBTYYaY1nVgjJId+J3vwtN/Ow9uLlwQxK5xu1QqeypyD7dVdizwntVqigW8cdVyDNfyoM3tArgZHEpCmXO6tvHXNsdjs7s4O+uVQHk6TJ9mSTcgbEtxXvWjOBhriaQ3bJ0SRjcncJ4ybK6PkAYXv87HxtyFZTtWMxUarsNuDpxOqqqtfmlUHvICqgBqmfQl0E7G3r1stabMpdr8X2vidr/ZjZpdCIbjWo7c6Xh/dAWgU7a5rQu4g5i87PRpJMytASlTJy6vDCXxHXTY15XHCntIytleYPLeGFG8PpoeR6WkvHWoQUzm3dw0AlLALhG/b7zwW9dfJQMVkZiKuhoMdPd6Dneaovclph3dQOfz9cjSpQulnZ+KmKNFc9ba3gQKQ32eI4X+Tx6qNaEAufaqeE/YD9kArFdV8TZNcVDwNVaIZpzvbzTcNzMI9XY48V5zHhSvYnl4yq7yL4oxfcshi9+/I751aQvTEQzrJHc2PlAwQ6LodxavIsjv4EUCOi1TCTZmELnVDmzeH2g1nfuKwK4P1WHo1G+A7LDIM7DSgzWcS/DBVzqjsN9Bmv2x3dAsGV7b063eMQjh2LE4Xgb2SoyFoiKgpuk3UDg7BrvcXBlNmobO4VRfJmtafxKqVNtsnj00OrD8DH1iTF857Z5c31lUvOK0rdSe4K
- XOiydH4v
- 4xXdZLOrcpHHm2T+EEboFsXNnKDRG26pe6WQiOKORo6oflydkuWJhAqPQLkUBJqc7AxVXUNHo/cac4yagyL0JiZZO07RcdCiyz6+6V2m68zHATQDP+Ft5JC8Wa/4yqCI5dEJU+IafKPImp+JLnu5S1UmXqPiZdbuVmwujk2xA29QZ1shZD1I+ht+AiVE6Kf7FLhJai94SJheft5b0cNMq80iHEtln5WoXfMdEJMj6fhy3Nm4CdM74tw/fwyn7C/GMPFaq4UAK3wkQLUCuNURR8ibDJ6KOczlpfwQzw3CBh94/cHh1sXT+UrT70cpqefXPyrRX2ER8yUMnMnE2+OrvHVEz9S4t9JFmwNh3nCEynss8gD8I55WvS/E65Hn5QEgY8YSOPPuTZlAOHvHA0oeJm3kwkUwwG/JLuxMHZkRiySB+Nu4HAg4tss0ioPpiPe0NYwqogc25QjDBTn8=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B8245180010
+X-Stat-Signature: mxh1rcod1ncafrhe4cag56w4dt9asiwb
+X-HE-Tag: 1788537055-231110
+X-HE-Meta: U2FsdGVkX1+IJbNq0NFpoz5Cr8rdkACUEVeBSlH5HthnaFOJz8Kw8ct4QXPQ98OdUJUFz615Gr/ZzvEXvGvwlbM+rIpTZUrz8AricN2u9XsdHpOeCEfXP8fL4TtMOrTOJSeSPUlshpC61PfMjOdMHvvx82JAuh8fyLmb0TgdQ6R5opBV+NNdkvMvToClhn5pymlG2yAMzkDlimrlsrYIyadgi7GZJ5540AZ99HrR2+rLBKtLR8j39mFUBeowGDcMFWW2KoJFCaD4bcND/Dtx5Saoob2tacQlE4bxwvazKUpLpWiR6CkdNIEfoT65KmlfwNLTBPeM0o5X4oI2+9jQ0M0lAbHnmk8ipSvsNtaQMO0mId1+UQP+eGhaFhgqgyjy7ukqEhDtINB+HZCRxlp+Jlp/pmn9J9Cu7VOMkk9puE9Cy3Ak5i61QqE+WD8apGk3/LP8LqF0oPV31b6Y1B+lAAwc7aWX73RaAPB7Ti2DEgeRjtke/apVjwHeeB2Jbr9mBNEiDmyiBOoDt9Gr5mOnM+lAknenq34ztCalRCYcS+BaJiwtGIvTpG0KkvjDHl5syEn7aFd/+duebFZl/bYM8ntZGcyQ5dbSCnH/3AWsh1R1k4PXTvbthAcv+Ydx+6Fh6EegUKRUlMzVgevuzXn82wdhRlDYf1ziZu1UA9zUydRBgvwO+/mtONHZ0bajQB1u5Z3qbUYWHfI7uxnoPFr4/xD1uTG+qq/qUlL3loUuaPoYhzVwgwUd8A7pImdEnC88zpdG7waWBcfdQVnahJhfU2u8IDsFFTgiCy5ein4rzgsiv3xjy7kCbcDbgU2ZkwmKr9+TocPDvf3mKl+PlqqCnN9ckV/rD/9USAqljr44O56EdhzMcLhTEN5WbXhN21RO7ys5ngKwf3to3gaJWLCEz0z200V09yaKch9h5KqD/piyeaVBDAQmeKg6ZgkzvOBJFzKsJ07GIQa0u7UEu3y
+ fYtUqDkL
+ QWZ6P8SvcUkZa/fRbDsdluHcNchDKZ1as+2TAL2RjnlN2mzXJXqLOMKEcFuzup0RXxmYOxAe9c9dE+72DmZhXXR0OrilidTCFpHO06sGMm9l4SLe4bGNQ2k9MPUcC4Vrh+4bqoseQ/128fj9dYjda5i2n2uFmO2lCPEyJogy8r3xAU/JPnRYndPkSVc8m7uWYFGp+x3Rpr2ZAg/3guwwbiPWs6sO2yi3JjiKlrFG/KZLhL+AP4kFvUncB/wjhNFEVIBp/8uOsTjgqwbVxtTBAMMflL7FxvjoWQ3TAiJ82yD38hVbc51rqjQRY/Fg4IEeRntWoSpVKFb8puiovcqfnR3UbLshyx2ZKm0KJaIXAX7NAssTtAyBvx3dFtMGxA1WEAyWzHrlUib8tdWjzbhKXUBqtlQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,56 +124,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 03, 2026 at 04:46:18PM +0100, Lorenzo Stoakes (ARM) wrote:
-> Looking over the sub-thread (correct me if I'm wrong) the issues seem to be:
+On Fri, Sep 04, 2026 at 05:01:37PM +0900, Rakie Kim wrote:
 > 
-> - 512 MB pageblocks become unmoveable quicker than expected
+> What I had in mind is the gap between the two reads. Say the policy
+> starts with two nodes, every weight is 10, and 100 pages are
+> requested:
 > 
-> - When trying to convert a pageblock in try_to_claim_block() 256 MiB is required
->   to be of the desired migratetype, and this is difficult to achieve vs. 1 MiB
->   (yes clearly :)
+> 	/* the mask is {0,1} here */
+> 	do {
+> 		cpuset_mems_cookie = read_mems_allowed_begin();
+> 		nnodes = nodes_weight(pol->nodes);	/* nnodes = 2 */
+> 	} while (read_mems_allowed_retry(cpuset_mems_cookie));
 > 
-> - AI training checkpointing was a problematic workload - big latency spikes and
->   timeouts. Tonnes of unmoveable memory, order-0 allocations falling back to
->   MIGRATE_MOVABLE (ugh), exhibiting try_to_claim_block() symptoms above.
+> 	/* a rebind grows the mask to {0,1,2,3} at this point */
 > 
-> I hear all of this, and to be clear - this kind of real-world data, at scale, is
-> the kind of thing we should base decisions on more than anything else.
+> 	/* calculate total, detect system default usage */
+> 	for_each_node_mask(node, pol->nodes)
+> 		weight_total += ...;			/* 10 * 4 = 40 */
 > 
-> Reality > theory every time (and the more you look into the kernel you more you
-> realise it's a tower of heuristics anyway, especially in classical reclaim :)
+> 	rounds = rem_pages / weight_total;		/* 100 / 40 = 2 */
 > 
-> I guess what you're trying to say here is the only way in these circumstances to
-> make headway would be to have more memory reserved.
-> 
-> But is that the right conclusion? Aren't you still screwed once those reserves
-> are chomped up?
-> 
-> Or are you saying the increased watermark levels gets you effective
-> kcompactd/kswapd sooner?
+> 	for (i = 0; i < nnodes; i++)			/* bounded by 2 */
+> 		...
+>
 
-+1 Exactly! The watermarks sit on top of that reserve. Both background
-reclaim and direct reclaim are thresholded such that there are always
-a few pageblocks worth of free space for the allocator to choose from,
-thus reducing the risk of fallbacks and block poisoning.
+Consider:
 
-> The TL;DR for me is - you have a workload that's broken already with larger
-> pageblock size - maybe you could test that with/without this patch and see if it
-> really does help?
-> 
-> Anyway it seems to me all of this is essentially a (valid!) critique of
-> assumptions backed into the page allocator code.
+	/* nodemask: {0,1} */
+ 	for_each_node_mask(node, pol->nodes) {
+ 		weight_total += ...;
+		nnodes++;
+	}
+ 
+ 	/* a rebind grows the mask to {2,3,4,5} */
+ 
+ 	rounds = rem_pages / weight_total;		/* 100 / 10 = 10 */
+ 	for (i = 0; i < nnodes; i++)			/* bounded by 2 */
+ 		...
 
-This part I don't quite follow. Why is the page allocator doing
-anything wrong here?
+in this scenario every value is wrong.  The weight total was calculated
+based on {0,1} and the loop will use {2,3} weights and ignore {4,5}
+entirely.
 
-You tell it your largest routine allocation size. It groups smaller
-allocations by their ability to move into buckets of this size,
-coordinates a headroom of buckets for non-violating placements, and
-ensures reclaim kicks in when that headroom depletes.
+It's the nature of the mechanism and race - best we can do is ensure
+safety.  Ensuring correct distributions would likely require locks or
+reworking the entire weight mechanism.
 
-You're giving it a very large bucket size and are not happy with the
-headroom that commands.
+I'd rather keep the change simple (cookie the value that can cause a
+div/0) and leave the math alone.
 
-[ I'll reply to the other points in your email later. ]
+~Gregory
 
