@@ -4,96 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E59D3C79F87
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 18:45:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31993C79F82
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 19:01:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07EE86B008A; Fri,  4 Sep 2026 14:45:00 -0400 (EDT)
+	id 3D2316B0088; Fri,  4 Sep 2026 15:01:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02F1A6B008C; Fri,  4 Sep 2026 14:44:59 -0400 (EDT)
+	id 3A99C6B008A; Fri,  4 Sep 2026 15:01:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEB8D6B0092; Fri,  4 Sep 2026 14:44:59 -0400 (EDT)
+	id 2C0976B008C; Fri,  4 Sep 2026 15:01:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B09296B008A
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 14:44:59 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 40D97801AF
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 18:44:59 +0000 (UTC)
-X-FDA: 85176956718.30.5861FAB
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	by imf19.hostedemail.com (Postfix) with ESMTP id AE12C1A0007
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 18:44:56 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=eJUERQMi;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C44E6B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:01:01 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 77065C01C4
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 19:01:00 +0000 (UTC)
+X-FDA: 85176997080.20.B8AE5FB
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 8F38E140019
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 19:00:56 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=l3rBDNTj;
+	dmarc=pass (policy=none) header.from=uniontech.com;
+	spf=pass (imf26.hostedemail.com: domain of guanwentao@uniontech.com designates 54.207.22.56 as permitted sender) smtp.mailfrom=guanwentao@uniontech.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788547497;
+	s=arc-20220608; t=1788548458;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=yPiz4etSZ4uVK8SA9ONN2LabHRqQPxuOcoB/UL7+Aus=;
-	b=8kRy3L8lKSgCQBGzW9eLHIWKm5S81/mxHzk5GcmM9RMIl9QJoe85ym0e97Qwm1Pf2FXBD/
-	AKBV4A/lCxFIYTH7Fb1wlz+t1Fj84JDSC4kgMuHdz+EbVv/CEorzmR1D7FRO8x5cU5JaVQ
-	6Z/i5N+wbA6e6wK87DFjlKa/hV1UqmY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788547497;
-	b=pRml2aoWpLpfDy18+JyZWGhEH8rBOGhS1NsI97afF8Y9JFm7jENjCUgu4V7zCvAkC14sQK
-	ZdWXcWNM0z7dpXon0db5NH/cJ5KwEixPXf3dIOapOgy58zwUhlVW1mFSxJTITZcMvwnUq1
-	/H8FRIPraiTBa1nEjJwUvHltqT9r6Wo=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=UcOmkfW2ZFxthOlyo7oYIE1Vjb1R2Z7a4/GWDq7I1Ck=;
+	b=uEIK57wv1nrq8Vw3kZojjGRo6ZdQufOplVWFZdIac8kFZQjAVvnjp/GXjHTXGbrGj5OT1Y
+	hO0ydrkHOucUdTUCcfwO3nJ7vrwkvH71cdW2ol9iZ4pnO7STa/YK4NeKPqKOdKT+MYDskw
+	9H2M63+H/3Ybb8W/utnhJHkOEzcUpFA=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=eJUERQMi;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788547497; x=1820083497;
-  h=date:from:to:cc:subject:message-id;
-  bh=GATMvEBnUp24vVj527m0h2TPJ+ux9jeOddghKhOK4is=;
-  b=eJUERQMiKfweDRDCwaaGAP7ExM+yZ8N3A6ksbg/AEc6uApk5dYj0Tap9
-   BUJ2ThPI7b4GdgI7YFRqK8eJPuEiOVAudIXRThg+t8wwXCGmAPuQLK5He
-   Rp9PayqZSmH1fHZ/CApC7G1L1MuKq02VYhSBTWFGr3i93k60aRdMlNQtc
-   SnefbELo7iPR63X5XuunIBb4/P4ZsJNXqsV0DcOYJaefJ1dGm5C3Bibxc
-   UfppZlyMo1AjZPK34JkktvrSTwgIKlZTUriIQ21YWcrYyKHVKHwms2mye
-   ZIAHc8d65zSs19SljpH3wvYPKGQojmh/ixl9lG37TXPIz1U/teQjDSvBK
-   A==;
-X-CSE-ConnectionGUID: 0++qh/HRS+mJDilKwZhDeA==
-X-CSE-MsgGUID: 8oEZGthYT5uon4k5Vz1y3w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11896"; a="76614098"
-X-IronPort-AV: E=Sophos;i="6.25,262,1779174000"; 
-   d="scan'208";a="76614098"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2026 11:44:55 -0700
-X-CSE-ConnectionGUID: sqT61xydRJC762fPROe0mA==
-X-CSE-MsgGUID: 5+5rc9f1TEmBsIOjUIHwpg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,262,1779174000"; 
-   d="scan'208";a="299987173"
-Received: from lkp-server01.sh.intel.com (HELO bfac249b2189) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 04 Sep 2026 11:44:53 -0700
-Received: from kbuild by bfac249b2189 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1x2YuB-00000000A5y-1U4S;
-	Fri, 04 Sep 2026 18:44:51 +0000
-Date: Sat, 05 Sep 2026 02:44:49 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux Memory Management List <linux-mm@kvack.org>,
- Mark Brown <broonie@kernel.org>
-Subject: [linux-next:master] BUILD REGRESSION
- 9d80aa4617b32f5054c5aa471d06b66704854935
-Message-ID: <202609050245.M50lqUNI-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Stat-Signature: ct93sybmqzujgzpm5w4nqu9zb361ri6e
-X-Rspamd-Queue-Id: AE12C1A0007
-X-Rspamd-Server: rspam02
+	imf26.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=l3rBDNTj;
+	dmarc=pass (policy=none) header.from=uniontech.com;
+	spf=pass (imf26.hostedemail.com: domain of guanwentao@uniontech.com designates 54.207.22.56 as permitted sender) smtp.mailfrom=guanwentao@uniontech.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788548458;
+	b=gYYSashZB2mi5BmbR5JGxFaaT93tAwvOBe2x9Cuamu3XbFESm9HU6/Gx4vmbbVCX4BW6wA
+	Ix+dT9w7qDPCDyOl/5eVbcc0yefhb0yQetrX2Ou+eEtzFR4eei502yf4EFwb7maG8znlMy
+	MQwk68yF39WW95Yv2ei98BJldxLTDU4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1788548440;
+	bh=UcOmkfW2ZFxthOlyo7oYIE1Vjb1R2Z7a4/GWDq7I1Ck=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=l3rBDNTjTL0yF0NP3My9oCBCABG3IrqEUxi76wdLf3tOV9uJeaCUtmNbFUAwqC2v8
+	 NY3HprGqFd+4gJI4l0EX3urdxQMd4rXC+Jt1MZrzPJWnfGAcNFoc4RkT0CRc4ePoSH
+	 vISNYpWRHA25JqnRg+5iyCgCg/s67qJl7goIWgvI=
+X-QQ-mid: esmtpsz10t1788548434t4ffa4808
+X-QQ-Originating-IP: tPtF9edAtIQDM30B6GGR5BAuwcOTCe2L8C0nf2UkaZM=
+Received: from localhost.localdomain ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Sat, 05 Sep 2026 03:00:32 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 9379820658307783900
+EX-QQ-RecipientCnt: 9
+From: Wentao Guan <guanwentao@uniontech.com>
+To: david@fromorbit.com,
+	hannes@cmpxchg.org
+Cc: qinyuntan@linux.alibaba.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	kasong@tencent.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Guan <guanwentao@uniontech.com>
+Subject: [PATCH] mm: list_lru: clear shrinker id when disabling memcg awareness
+Date: Sat,  5 Sep 2026 03:00:28 +0800
+Message-Id: <20260904190028.21542-1-guanwentao@uniontech.com>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: M5znx2hx04lbpoOMoO88JiSBtTYP6nekwxgAzfuIjrO7fQdi5Su1fYp6
+	Q6PciVO8CAKv8wSI0XzUCxSVbI+06MYLhnSw2ZZGLewCM1dMYXjjgMezH7VyioOCOxH0dDn
+	dp1ve+PPz06DpXhJDFnwF7/66HRoBF9f4BqnHP2/qBtIVOIKYhgXLDslj5yOkf3BazjnQ8B
+	brHpOhUUgVLrV0pyI/73CM2GU9juec00CSPfqkjFreOF3sUD+GWftIxZ5ytk/G8SyUunll8
+	ggTTPFTk+VfamEbRY3ikGuXs3c9zZOcfDeYPEkjLS7ZjMnaNaOOAYCsqOltkBahTGPifsgz
+	K+6E86b4ryKRlclq7/oS+QSV2YV2PpufafD5T3J/lzjsBpAovlXaVvTYsIpN4RSl7rEvlNd
+	f5qZWCqusJY28FHaniG7j+nOxsL2tNDQmiaXzMzod2ySblW7l22cVo1lCKIe7v6/EntLXrO
+	U1feJlpSlOzykklyi6EHVS3TI8LMtvE+28Wf92HHpAdYijBG3BLklxgtuPg38wG46ptkJYA
+	/etV7W9acW3EOpjqq19JWN85MiPy67Nh8vaMK4+h627PRwjgnmA2Rvjv9XIPxaXScGm7ptn
+	anz8ekM1Hy3sD1XWeBfjLrigiYmnY4qCx+K0OKvMNGHAC8/oY+Xvs1zpSzyPS2odLBmWPD1
+	R9zKoMR470gyF0njLzCqtazs1nzIe7YppFnN5BW/7sAKku9Ck64vxf7IUAmt2FzW5rEU+9Z
+	3NWhRtOS/lookT4aTvoKDqA2RBA1enumqJN2piOZMU+hGQIM5jtt4U6fEsqKBngdc/vMStE
+	VEnrHVv9D+z8CKtKlyUNtDWDUzRMDeAK8qZU4iYqff9FS8CQrR9PEnTR7iv7ede5C0pP+tb
+	4WYZVb/0Q7qMS2dwoihT7inJ7jdXp5HLLBHd/Zx/J5Up8qM4StqO0bKFoD3/63NGXx/3FU7
+	64inMkTpfWn4qcWQVNcGM3IGfjWdr0MmfUBBW2MZLkqt68UdK8FprLjbkGHclwTjrzQS6DO
+	o3Pxly0aCxmYtCnOUe3OMS0R1fdffj3m2qNessKU7GszfhNTJtFmL2In3CZ/E7RKqbh7ufU
+	Q==
+X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+X-QQ-RECHKSPAM: 0
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788547496-943730
-X-HE-Meta: U2FsdGVkX1/ehIAPhvCMR7kmxDFbD/0VOLCJbqc7d2Et7BEYItGQwWGKhw6ccCGs5SfTq+rxa+ksglGshw5mS4e/4a8RbugpcXhYnBb3qUa/vOl94vVaLpGDLlxgzg0hfbZfp0TkgwNC4A40qLAVykA21GAwIDR2KBwGdqbUjRtCD5mrqkna0FtHWSp6QVazkCl8KLOenyZmxFvgMDgE4+THZgF6UglobNRKfN/hQ83StlZmjEMdsR/RG+g2JUVh6OVGv8RzM/UgZD5Y7QS7ZmQjSEkmE9X1gd+Z/lvgqkyL9UTZAYEKzLUzNt6u2pmjFgcgRsJ/t6nvhjm7+8laHXXs6a2Sb06N6WF7pPCRI0CDiaN77OWHYOsugo9QGXMWm94ARQAYC814EjZRqD0wvzWfI/BPBtmdyTr4Oxs1LvdaQ0PQ1ldwfXWIs6ruhdukABsEz6WBb5DkAK3oR0SBA2zTA5dIT18ih8KTai4qHJIKRNb2IRul1hA82OH5muDHWaZaVAh1J/ZnG3KPFgOLfst+M0UneIH+SaNe+OCbAZ2ZKzBzrHQp3zR8oPIFhNJTPVPyF//AoB3N86hv7p3TeZYcWxGIndHEUVJ5zA4Bk/TcIzLCIe0rcWIAygX4//asDQcyBrdmqBw6tSm5nV5r7s/CJjk9Q+gAipR8/SNZyPhsJ1qMTig+kuHNwOT+3wic3aCLephJ0tUXbZa5bhaPTZgKFSMaZi3/QmW7Ujnr/qlM2xcVH8AKpR0VFVEAGNY7wb8H6/aJYjliv6BtUhDJf92oTHVUjS15PB1mtTUQMzTPwq30hJf0wKRHJg9TKLXb7+Grzp/ajbckFBbkR5eJX/s3j0kR6WCh7hCuAi5MW5MwJn0Y0FVKRWPiT5XtCPBu2N2B/eXqb/jaCuMkHReI0ly0zIqqdYpfkX4dS3fTgaCer3P8atnahGdSKAq7buzMgKss3lfCAOTC6HwIczP
- 4tPns5Af
- fYxr5T3gUofoLT2y83IOBctmxOWe5Hz9N29bisQTm/kY/ve46b5nF1YjumVcGT1SKH6F3Yh7tcG+vUOhwnVWqwbEVhPDeCwFpnAPKxk8mAUg7cycwCLvGhUOrPXA087UNd8HVRQTmadtqFjr+7yNCsuRZeRTFgyJnb3ZTDu92HyZ9dwLenAKhNPE+jVf8jMr6yq8rXGpPWB2leZpd4XlF+FXo/MSrpP8G7AM6
+X-Stat-Signature: m7atrb9gyrf36urm85m6youjtz484tx4
+X-Rspamd-Queue-Id: 8F38E140019
+X-HE-Tag: 1788548456-443140
+X-HE-Meta: U2FsdGVkX1+0IaUVAjkSI8fbAiOqoc/SOm/1GKF85+Hulzpzk5nV+Mt1jAsPXFXXryxKp5YhASEiN9ef0l3unZHWppwFmEg98B5iYIxX90fLTjvHdu2eO3pKlJ7dnTDCohw9HLkaxvUFeOVokSeIrXNANoFhziVeXIYJIOYLOCxQCBSc5GsqTJoleNrznnD/zhzIYj1GdHD7H9Lg/zniKk02kWbCdQe5iTSvaftP0nxMn9IfBB7tE420k1oiIMSmHrHwSPm+3p/mmcYEjQEvAsxLbcNFrQJL/PMLDzDuQQSZmFQLYfCBCZ1If//YF++BUEayR9uvrQl8RxxO+xvS1LJi6a70dXvf+tVnkkmdfAeAz1xliUwk8t0bmNSaxYglbAyW1XfsTomj/YGsswlvnK0HJ+Qqb11oWnLqadCRW4KMGkhiOD5F3MmChk3YlaMcy+skigVwhzC+MwJ4hHNf7bHsijOxPt/CqcNMcHdZEEWIg3aVTM0u6sQbu7HKRCfyFZo0ivva+Zy2PTIL+JQ8DEBG0WO0wmVz4Gi77mxoSv3BRc20KkhSXPTjc9KT1TTGE1sUsC/SRnaAOT6VOgvL8jwntDBnZQEuwSfWeHEN1dXZdt9/oHPLnEPD5zKExG9ayiL2WX8IkKiUAhYks+gwmC3QvOSkdXRl21XBESqpv+7Ecug1U8AA34SlUepQ9NwfpAOSM70mxz3YXcOC5sHzbPaIvF1jereBNbOMKDmswawQbYNGdxqaoTxPHSSaM8A+1jFc7xHhO3k5OKHssbDs6dbpyllWHSW9Utj6MQ2vuZM4AYKg2Yum4S4J6+nWs0hQ3GUklU9k9j7UHYEapsN6Wv43wUIiTEKWmyJsTszB3IiyV35twoFng8RoIiNhF3tx33R7zOWrDLEelCHYkfR9DeUGjWzfS579n8FClsgHTm69HXzPx/xUj7xFiKgiXgK2l+OkiZMzEaehs16IqOX
+ 0lps7tFv
+ 636/em8qr2vtBANRBjigK2ryuWjI3E671JyTb/hw6hgmWIHmta1z1i8FxE2PfA0Sqiz8fXJ87X5gYr/rg/AEiFbwCzWwU3oqR7BRPyB2TqRIYx9zdgD60H8hMptQPaiTJV6HCTxlObFRRb2CmamzYf60CbNZ0n6l7qbPeR/Qfx7CBvE8VnX0HlNIm1m21qO6XBy55vHmZznEWGEborRh3UgKCQd44QsJbdtvjE6wRLdsc/xOEBGInv2EdSvd2YjKrbW53TJnWnNVng8EX3lmP2IE9Ef9Gi5tsn5Bm+ZQ7fC16oWa2M5/rtAOQUKqjzaBL9Bn4w5kOyhwAFi/YtoKN70fO9ZjXvzkyQQokEGvMzsEABIT/EwOBbsIE9Gl03Ztb+sxD0wzS7N+HuuBmYVtfmCS0KB+kyYEL1f8JqnaTkcRFB2Fh/fxXO0Doiw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,85 +116,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 9d80aa4617b32f5054c5aa471d06b66704854935  Add linux-next specific files for 20260903
+When cgroup.memory=nokmem is in effect, __list_lru_init() disables
+memcg awareness for the list_lru, but it leaves lru->shrinker_id copied
+from the supplied shrinker.
 
-Error/Warning (recently discovered and may have been fixed):
+This used to be mostly harmless for memcg-aware slab list_lrus because,
+with kmem accounting disabled, slab objects are not charged to memcgs and
+list_lru_add_obj() passes NULL memcgs. The THP deferred split conversion
+changed that: it initializes a memcg-aware list_lru with the THP shrinker
+and later adds anon THPs with the folio memcg, even when kmem accounting
+is disabled. The list_lru itself has been collapsed to plain per-node
+lists, but the stale shrinker id still makes __list_lru_add() call
+set_shrinker_bit().
 
-    https://lore.kernel.org/oe-kbuild-all/202609042120.6bgj0pUa-lkp@intel.com
+This was reproduced on a kernel with CONFIG_MEMCG=y and
+CONFIG_TRANSPARENT_HUGEPAGE=y, booted with kernel memory accounting
+disabled. The same condition can be reproduced by booting with:
 
-    mm/memcontrol.c:2859:41: error: implicit declaration of function 'irq_work_queue'; did you mean 'drain_workqueue'? [-Werror=implicit-function-declaration]
-    mm/memcontrol.c:4234:9: error: implicit declaration of function 'init_irq_work'; did you mean 'init_irq_proc'? [-Werror=implicit-function-declaration]
-    mm/memcontrol.c:4443:9: error: implicit declaration of function 'irq_work_sync' [-Werror=implicit-function-declaration]
+  cgroup.memory=nokmem
 
-Unverified Error/Warning (likely false positive, kindly check if interested):
+and then faulting in anonymous THPs so that they are queued on the THP
+deferred split list_lru. The warning showed that the memcg had no kmem id
+and no memcg shrinker bitmap capacity, while the list_lru still carried a
+valid shrinker id:
 
-    drivers/scsi/ipr.c:2935:1: internal compiler error: in final_scan_insn_1, at final.cc:2823
+  set_shrinker_bit: memcg=ffff8d23cbe60000 css_id=31 kmem_id=-1 \
+    dying=0 nid=0 shrinker_id=0 shrinker_nr_max=0 map_nr_max=0 \
+    info=ffff8d23d68c60c0
+  WARNING: mm/shrinker.c:218 at set_shrinker_bit+0xdb/0x100
 
-Error/Warning ids grouped by kconfigs:
+The stack was:
 
-recent_errors
-|-- csky-allmodconfig
-|   `-- drivers-scsi-ipr.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-`-- sparc-randconfig-r061-20260904
-    |-- mm-memcontrol.c:error:implicit-declaration-of-function-init_irq_work
-    |-- mm-memcontrol.c:error:implicit-declaration-of-function-irq_work_queue
-    `-- mm-memcontrol.c:error:implicit-declaration-of-function-irq_work_sync
+  set_shrinker_bit
+  __list_lru_add
+  deferred_split_folio
+  map_anon_folio_pmd_nopf
+  map_anon_folio_pmd_pf
+  __do_huge_pmd_anonymous_page
+  do_huge_pmd_anonymous_page
+  __handle_mm_fault
+  handle_mm_fault
+  do_user_addr_fault
+  exc_page_fault
+  asm_exc_page_fault
 
-elapsed time: 1536m
+The list_lru code already uses shrinker_id == -1 as the sentinel that
+prevents set_shrinker_bit() from doing any memcg bitmap operation. Keep
+that invariant when memcg awareness is forced off due to disabled kmem
+accounting.
 
-configs tested: 46
-configs skipped: 2
+This is related to the cgroup_disable=memory case fixed by Qinyun Tan,
+where __list_lru_init() also needs to collapse list_lrus to plain
+per-node lists when the memory controller is disabled entirely. That
+patch makes the memcg awareness decision complete; this patch keeps the
+shrinker id in sync with that decision.
 
-tested configs:
-alpha         allnoconfig    gcc-16.1.0
-alpha        allyesconfig    gcc-16.1.0
-arc          allmodconfig    gcc-16.1.0
-arc           allnoconfig    gcc-16.1.0
-arc          allyesconfig    gcc-16.1.0
-arm           allnoconfig    clang-17
-arm          allyesconfig    gcc-16.1.0
-arm64        allmodconfig    clang-24
-arm64         allnoconfig    gcc-16.1.0
-csky          allnoconfig    gcc-16.1.0
-hexagon      allmodconfig    clang-24
-hexagon       allnoconfig    clang-24
-i386         allmodconfig    gcc-14
-i386          allnoconfig    gcc-14
-i386         allyesconfig    gcc-14
-loongarch    allmodconfig    clang-19
-loongarch     allnoconfig    clang-20
-m68k         allmodconfig    gcc-16.1.0
-m68k          allnoconfig    gcc-16.1.0
-m68k         allyesconfig    gcc-16.1.0
-microblaze    allnoconfig    gcc-16.1.0
-mips         allmodconfig    gcc-16.1.0
-mips          allnoconfig    gcc-16.1.0
-nios2         allnoconfig    gcc-11.5.0
-openrisc      allnoconfig    gcc-16.1.0
-parisc       allmodconfig    gcc-16.1.0
-parisc        allnoconfig    gcc-16.1.0
-parisc       allyesconfig    gcc-16.1.0
-powerpc      allmodconfig    gcc-16.1.0
-powerpc       allnoconfig    gcc-16.1.0
-riscv        allmodconfig    clang-24
-riscv         allnoconfig    gcc-16.1.0
-riscv        allyesconfig    clang-24
-s390          allnoconfig    clang-24
-s390         allyesconfig    gcc-16.1.0
-sh           allmodconfig    gcc-16.1.0
-sh            allnoconfig    gcc-16.1.0
-sh           allyesconfig    gcc-16.1.0
-sparc         allnoconfig    gcc-16.1.0
-um            allnoconfig    clang-17
-um           allyesconfig    gcc-14
-x86_64       allmodconfig    clang-22
-x86_64        allnoconfig    clang-22
-x86_64       allyesconfig    clang-22
-x86_64      rhel-9.4-rust    clang-22
-xtensa        allnoconfig    gcc-16.1.0
+Link: https://lore.kernel.org/linux-mm/20260902093202.609559-1-qinyuntan@linux.alibaba.com/
+Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
+Assisted-by: atomcode:gpt-5.5-medium
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+---
+ mm/list_lru.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+diff --git a/mm/list_lru.c b/mm/list_lru.c
+index 36662d02ff963..c08a5e2367106 100644
+--- a/mm/list_lru.c
++++ b/mm/list_lru.c
+@@ -671,8 +671,10 @@ int __list_lru_init(struct list_lru *lru, bool memcg_aware, struct shrinker *shr
+ 	else
+ 		lru->shrinker_id = -1;
+ 
+-	if (mem_cgroup_kmem_disabled())
++	if (mem_cgroup_kmem_disabled()) {
+ 		memcg_aware = false;
++		lru->shrinker_id = -1;
++	}
+ #endif
+ 
+ 	lru->node = kzalloc_objs(*lru->node, nr_node_ids);
+-- 
+2.30.2
+
 
