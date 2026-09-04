@@ -4,92 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99D60C79F82
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 21:58:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD40AC624DE
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 22:06:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FC376B0088; Fri,  4 Sep 2026 17:58:39 -0400 (EDT)
+	id B65446B0088; Fri,  4 Sep 2026 18:06:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7ACE66B008A; Fri,  4 Sep 2026 17:58:39 -0400 (EDT)
+	id B15F06B008A; Fri,  4 Sep 2026 18:06:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C5A16B008C; Fri,  4 Sep 2026 17:58:39 -0400 (EDT)
+	id A2BAE6B008C; Fri,  4 Sep 2026 18:06:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 47F5F6B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 17:58:39 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BE1D9160242
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 21:58:38 +0000 (UTC)
-X-FDA: 85177444716.01.E454C3F
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 51E0A4000E
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 21:58:35 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=DEs3y3UK;
-	spf=pass (imf27.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 83FCF6B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 18:06:01 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F18BCC014C
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 22:06:00 +0000 (UTC)
+X-FDA: 85177463280.28.73830CE
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5C02D80005
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 22:05:59 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=huk7KqyE;
+	spf=pass (imf02.hostedemail.com: domain of 3xUCbaggKCBA80xqCqzqw44w1u.s421y3AD-220Bqs0.47w@flex--skhawaja.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3xUCbaggKCBA80xqCqzqw44w1u.s421y3AD-220Bqs0.47w@flex--skhawaja.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788559559;
+	b=naUyYUOXJY92nb35VRWvqCMOEqq9tL3Z+mpIjCCOVjyqRK5n0a/dymlKgzTC8AdnVsOH/5
+	0yFb1RQvnQ7Sf5o7cV25VYZdaDeVFSiYbZJmu98j2a1pudK9u2dzvsJGp6fQrt9H+XyPgz
+	EDg2yMaVhQNVdCTlOIXbL9/Plu01UZE=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=huk7KqyE;
+	spf=pass (imf02.hostedemail.com: domain of 3xUCbaggKCBA80xqCqzqw44w1u.s421y3AD-220Bqs0.47w@flex--skhawaja.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3xUCbaggKCBA80xqCqzqw44w1u.s421y3AD-220Bqs0.47w@flex--skhawaja.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788559117;
+	s=arc-20220608; t=1788559559;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XzksWWU1MUewC/BGGGBFcbL92cidcE2lZQDMH810em0=;
-	b=776pSA3pNokZd97LE6Lgji5WjH+lNrYCft1k9ND9HfvRatdAT4ZooBQ9BjSuSByp+MU5+2
-	8lCKkrhpxGEWs8jsjMGyjJjYPl8ObMjRxzbyHnVwCZ/Id6nDpqXoZrCmzxpUszACy+T8og
-	9gdU6KnwxlCHXlGhEPdJ1WIaiAZG6cU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788559117;
-	b=lpp7Wm1YyZja2IlcNWSA7Dzk9SaBd9ctm4oi96M9SJ74ruHxRqJCHEpT3D95RMFaC0ORpc
-	ZT3YP9XluYUgTOPoiKxum0etmq+SRdYMVpotGi/Iq7zwJE0q8DLXuNWk8QwRmc2in7NCno
-	yRg56pg1PX8gCK6JT7wjlOY0Knw/goE=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=DEs3y3UK;
-	spf=pass (imf27.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=XzksWWU1MUewC/BGGGBFcbL92cidcE2lZQDMH810em0=; b=DEs3y3UKSKMtC6+hpG42uJJrxK
-	nNwf1sy9HeWqgaQDHiRkVEDSiamQWh5BXeT3EJdFuQGLJI08iYFHKJP3OtvFw26vslDqZLWkTpr5N
-	0JbaWi1KUCxAoiMkDEWNXR0rugBYMGV4rlFfK7u2Nwy0lozHNnipNxscf0L0jV434+RGmNGUmZdeF
-	P2sMfhObKnxBU7IuHpbz4vbcVWZ2lcRQN5Z3a9b9TQUqW1hNIVca+B+BIiFK+wunioTm8qPTbkqZc
-	TelBW/MjVOrpYaMI+VLJbMAsC9zVOz6pXXJmwj0vXIU605lTKycs4rzdCpKcNEMQ2gRXt6wrAkRPD
-	3LJjHOgQ==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x2bvc-00000003MUF-39hx;
-	Fri, 04 Sep 2026 21:58:32 +0000
-Message-ID: <bf0048cb-afa0-4830-b453-4083680e6534@infradead.org>
-Date: Fri, 4 Sep 2026 14:58:32 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] asm-generic: fix typo "explicity" in comment
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Hemanth Selam <hemanth.selam@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, David Hildenbrand
- <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>, Arnd Bergmann <arnd@arndb.de>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-arch@vger.kernel.org
-References: <20260904104854.25272-1-hemanth.selam@gmail.com>
- <20260904104854.25272-2-hemanth.selam@gmail.com> <apqsBpALCmN8S-qw@gremlin>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <apqsBpALCmN8S-qw@gremlin>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Xi0GrjNtf+j3mFnPowGAqEQrMP8mYt8469qIGDpsVtE=;
+	b=pM3RAXORUKYv4xOswGOhWEECZOUvCG0JJPxKRDbxgca09ooeMh3HvYdCSOS8YOVd+YHeXt
+	PDQtSaNINBwqiIDUaUhm8aREpvUgU7sV9f48ufWBCthjr8K7wn+cTrdzWtJFF7k7UfmpsF
+	HmBkMV9ilBBOCku1/vdUOdcBeXnIQOc=
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc2229450b4so1503861a12.1
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 15:05:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788559558; x=1789164358; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Xi0GrjNtf+j3mFnPowGAqEQrMP8mYt8469qIGDpsVtE=;
+        b=huk7KqyEOSfAYNO+U7jJqf9tFMFMt0uQY5S7HsFjc33la/k0JpobR5E6pPj6IqaaeZ
+         s6sgvQS95zHcYVPGIEvwzb9ObIcM+tf5uZDLrUgiMGhJoJqrGGsu0/49IWV4wlHpRQBx
+         Rl3Xb4ro0gO3CI9xU7RQf98gJNMNP9VmOB759/7o8XFPauZOFlZKW3E6hGeA1uCmLOYq
+         CTTypQeSDMSSq2Era7p97NLZ+VD/bz7dI1hzXnlcaUdcyu+/DsTgCpAjLRJZyya0nvMh
+         +2s2+7ZvRbEfD3r/emeh0YX6ciCDVYMm/I7UewcoGmsLTcs7Jgk5rKsicoXwxRb06lRq
+         2bAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788559558; x=1789164358;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Xi0GrjNtf+j3mFnPowGAqEQrMP8mYt8469qIGDpsVtE=;
+        b=BfrdnvQLIKy8qQAL5hTOBgearXm7ypymvXjPdBSBY0ha1IemXsso7S/ocZzIyUh82h
+         hlcXni+s5wzi7uolg5AzvD5MXA6Uo1UmNinHZOgg0oMDYYz72bSd1OK/SUFwCVLAFv2g
+         dnQp18EUJV/HY2ytFg6rLEYwvX5Wb3Hqjx/5rhGlllDJSHa9+qpLqZNfWx+jsoS0jqYY
+         V4ahJ4YLkcsL+F9NJpEANyX0tIqI3fzEXLZ9Ta+1QOGQ1lO+AtlKla2QDiE4885vGGF1
+         yaMiX+90qNbUTTpc0u9mS9mApdmRcdmJmP86zoZXgF+gW91iHFYjcNGEg83c8X7coB7Z
+         EWYw==
+X-Forwarded-Encrypted: i=1; AKwUvBwU/FZJ6Ku/TKEQlJIUE0T5S5jghc+wuGF0V908tLlS/tZ2Sx0KFCKQXG4XVjtm1n+HqXRftiSKLg==@kvack.org
+X-Gm-Message-State: AFuF++nD3dmgwOAF9pFwUXB2ym6VIKoRNzosNfd7v4O1q206+jaNpZBy
+	radCn2Ip2YMXDcEO7sXupur9rFglD48tB4DmBRt4rn4Qii2EohqCeXWGonfhu64rsnZJq/oRfnP
+	Or058e5898oPsuA==
+X-Received: from pfdr13.prod.google.com ([2002:aa7:8b8d:0:b0:85f:2b12:262a])
+ (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:3021:b0:857:727c:a1f3 with SMTP id d2e1a72fcca58-8616907fefamr12452673b3a.21.1788559557820;
+ Fri, 04 Sep 2026 15:05:57 -0700 (PDT)
+Date: Fri,  4 Sep 2026 22:05:53 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.1003.g10538fe699-goog
+Message-ID: <20260904220555.589752-1-skhawaja@google.com>
+Subject: [PATCH 0/1] liveupdate: Add documentation for file dependencies
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
+	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>
+Cc: Samiullah Khawaja <skhawaja@google.com>, David Matlack <dmatlack@google.com>, tarunsahu@google.com, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"open list:KEXEC HANDOVER (KHO)" <kexec@lists.infradead.org>, 
+	"open list:KEXEC HANDOVER (KHO)" <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 51E0A4000E
-X-Stat-Signature: p8ftfioc7ocu94jpobozaodomgwpc97b
-X-HE-Tag: 1788559115-910783
-X-HE-Meta: U2FsdGVkX1/lF/JJe4APshgUWBkf8pzWMP/GS7eI5TGYQ1EWaCgOwPeqDy9Ng7/ahtE2ulM+suNhAyNk7bGSYk1zJ9ayjQZVHR25fLJxgQudPJVM2C29TW11xLoBqFaMsaIW7uUHsq+B/iEweqd7PQj8mWq32672bJqYCYegAu604xCE3Uae4rttrWKpboGart2G6BBdet/+ygCbhOtqH8Bmzjh9pgUd2BNEkR1SAP8GtxWLbvKE+M6GUl61C0/3bk4TsSMjmrLugr3YNca7ZO6yS63JeOR7+umx4A2PnQEOwfYqqIkLEHxuQ+Qyvaw5rotn4MYQN+V0JZvRZc3Xc7VV1XmbXsckecUyGFj02sUugu3EFfj3p0J+gB8r9NHlSgM0jzvpmxTrodjyl+YiYQ+DdtCVtCLjpIYVKbIDKuKK1P+0Lg4aPj2oBJ3XLjglgQe9ZsaJjZWa8Jl9vdEt7EO8KKxvfwuqJnryCOApCd7z28z2WdLPWJ/6MSh8VtilsTblqManlDbAemqPzHC/BdgqT1S9HjQqXFj6/M5C7vLFsT53ZMNPDOoiZp2Y12jNENKYPEZ4o6Y0n5Qd42AVeIbjeND4QQjFFdZCzJwe4UVVEsz9t6g2CeBpKFXb3t3DV0Uv1YVVwTO3pnZelAKDoi9E6UsSO2bzHCSE8efgoYxSvExHkQgkWFq5LqOOWFreL1IUJEAzbtvEcgBxCn0846T/qKj/dSz9kQZDV2RaTU60j/jCQ8Jnt9RXtyruL9l06Mc0mmYYeFx1poV7L5U/vUe2GcqAUwSJuoMOkt8hYROkNG4xOHW9DOTTWyPVrwpojiRbiIvoeYSEaH+o2eRc4ID+0sasXwISU+lX+BMub/CIx4/OfOgWKoBdFlpafNr3IQL+TuM2VgsAWKchVkHw8NWYMr3uiwQJX2myc5Z8huOFvYuXMF54aco3ahUWe/S6W3dGvL/1hTk4JfgcX0F
- AI1eC4mw
- 5yOrLBsBWWNNDsUpzb7II7USDu7XTljdZPMY7SuhwEz1/d5w0Jb5LpuchKpn0xPe6apWaTVzjKOrNnp/M+1hiDFScRkSF81owqsFP1yqt1J5S5VSG/msY9tXchHMJUQPCS8d2UhfKyzP1ni/ziigphi+isBN5rkpIbWZbUmpqSXqvIl22oLu4AmqzVWtBVnTADZZNazP0iAIfhuM56xGo2bdRmWVEs8eP37jlOoVEpimKh7OH3guVOZpWjudJFn9p5ZICbCZ3U28h8+wkyXmTMye6kkHLgopibat4ROvhx8WNlIZHR/KS10VKlKTg0yqPTQhaRGarRf9J5iUIDPoE7tDFRWiGI8CP2JrDN8pkTvej1ol+H4/DnREbbh87RQ37Cs2Ct6Mp2y3gjsh5gj/gb2cfu/BKIvQsFiUYTEjChwyaUYt4ngjpO4/iYh4WqDy3PCTjTGf/inuhoScFF8wmeMQ4rA==
+X-Stat-Signature: 4nynry9ncuz3stxcymoqnjzz4zapkuw8
+X-Rspamd-Queue-Id: 5C02D80005
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788559559-791922
+X-HE-Meta: U2FsdGVkX1/F26mWT1qzLRt7zWtAFopIr+6D2Ij+ZpQvDvoYcsxb5QtqY7w2USVR4t/3Oy3wg+JZZmfuJblyX0XbZ0xra9B0nRIxweuGJGY7SzDbtqI1nRsshrMD4YUqKgOMU/JTIyCQKWaoKvN2whJ4ieAOWPI1Bg7ziosEPaceqjE3RZy4u4g1dIBZG9SDb3QFVdwxb5quEeDlOiU8l+nlf7nnzuE8wWmxVyzROW3rBztZxvl4Pyr/JY3f2G7f+mxWi96TzhgMRaaYVwCiAkPDeevGMikhT7cypeMuSRV1bO4fdxKiPP3ck8/MrEEUqkvZttipq5MWdrUgAlOmcOKXYo3WQHImKE9Q2Yjn3tmNGC9ETUqm0LxjxTD//B/4HydvkNWBaOk3KZQOqEmy1FSw1/eyig3qiT9DMbJwWYOcSCawJDzPfQBSZ1+iQXdf/1VDsZqv0HOUZ6uP/AgFRZFFB8SOqsSMlNWNU1WeisQ/8l2vOs2GVeR4QlAs1wQMdTI7sAjTq9K52TTY2TMGJ6iip1+phSj80THsuC1RDxFiWkBiJJvgDFzLBmTucofHNmAkwEMc/pxG0UDmTu4Oy6hqM1yk5MUbzIog24evpAIgX6oRPQjYUhLDUMLCuzLDKNDudDCOt73fydxQ99YD3Jfun6nzEc0OEUlcAGM14Lfy3J7eOfcOFYrnaa+hG8e5yAcwVMga0Vi2MnqrGqdT55aoA0CajvL5y1DTSsfWE5FX5zxTlc9vCuxYDBytC2meNi0wweuGLiFpTo6V1uKjNv+M/pqp8xaEiD9Lr7DIDoPlTN0qMGTgaKkymQqIVvBEHU4wTQY08ULT81EQwLyHDlOOA2STFr/FO3epvGpYoBlLME6LcOoBRP0WH3XMKFNyQY4ZhUYHqrSV0lSihzOY8sJ6r2NO/MdmNCEeEh5UstKvZk8MEl0GmULEQdOW4JxqC4CksgpeyaPTHzjWTGo
+ NhzbXTmM
+ W52lsJY7RKSrWiLJfl7VlFaqzQzRUhYPTySoVjw8Ywr1bzpFCUjmTNvrySVyMaL7zM1Dx4ZuOGVCjroBVmlW6LhULCNymSLQY4AWRMymMdVx/DOfB1Xs7ZTK2EE1JO09AqB3r/7DtO5UVdACmbgRwuwoKVxAgpfcWGP+YbRxYOW7b4hgVawjNbsDYqfI8rL5+Plkpy3zU96ien7/KQed7TePMhXmMgzETA9vLHaQl4BCjTN6Nj/ejy9WHYhvcM0c9c+QDRQep+TVP1Y6p9nrSGy0yDhyFyPTCxmEz61uZGzl53Jp0a69WA7G/O5ofaw02PoLLp3Et2VPHoC+Gcw7VUkRRYtL5u7zu5/9yXSxdFzq+MDHlul8TSL1lqiqfxv1Xa82W+oEaBLVCYgDM1ZIU01dMpaMsBRsTv6rqv24cqeenjCnq+hdaAIlOq3PEDZXDr1EWoklAWtU2SWjZVLPMIjPgZDkAGbAhX+i9m9I0ImRvc1fjFCxjsiUmYiPele2PcvIv4NA2OqLdfCVqsDutnbAtGdGAD4EJKlE+dbReqj6CcbtCmxJ7BrRERTN3ajLp+zZVlKWd7TzLugDzcZOY8lGWNNN12Pw81ZxcZfXwZOmX5Yc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,62 +108,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+I sent out v3 of liveupdate_get_file_incoming() and
+liveupdate_get_token_outgoing() series to add documentation for
+dependencies.
+
+https://lore.kernel.org/all/20260820191854.1642931-1-skhawaja@google.com/
+
+But since v2 of that series is already merged into kho/next, I am
+sending the documentation as a separate patch.
+
+Samiullah Khawaja (1):
+  liveupdate: luo_file: Add documentation for dependencies
+
+ kernel/liveupdate/luo_file.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
 
-On 9/4/26 4:33 AM, Lorenzo Stoakes (ARM) wrote:
-> On Fri, Sep 04, 2026 at 04:18:46PM +0530, Hemanth Selam wrote:
->> Correct "explicity" to "Explicitly", reported by scripts/checkpatch.pl
->> using the misspelling list in scripts/spelling.txt.  Only touches comments,
->> no code changes.
->>
->> Assisted-by: Cursor:claude-opus-5
-> 
-> Thanks for acking the LLM usage! Appreciated.
-
-I agree, but I find myself wondering what the LLM did here.
-checkpatch reported the misspelling.
-Does it take an LLM to use the correct spelling?
-
->> Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
-> 
-> Please make sure to cc everybody on every single patch. It makes it a nightmare
-> to deal with your series given the volume of mail I get.
-> 
-> I may have to write a bot to auto send this :)
-> 
-> Anyway LGTM so:
-> 
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-Thanks.
-
-> 
->> ---
->>  include/uapi/asm-generic/mman-common.h | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/include/uapi/asm-generic/mman-common.h b/include/uapi/asm-generic/mman-common.h
->> index ef1c27fa3c57..cf1418649b3a 100644
->> --- a/include/uapi/asm-generic/mman-common.h
->> +++ b/include/uapi/asm-generic/mman-common.h
->> @@ -62,7 +62,7 @@
->>  #define MADV_HUGEPAGE	14		/* Worth backing with hugepages */
->>  #define MADV_NOHUGEPAGE	15		/* Not worth backing with hugepages */
->>
->> -#define MADV_DONTDUMP   16		/* Explicity exclude from the core dump,
->> +#define MADV_DONTDUMP   16		/* Explicitly exclude from the core dump,
->>  					   overrides the coredump filter bits */
->>  #define MADV_DODUMP	17		/* Clear the MADV_DONTDUMP flag */
->>
->> --
->> 2.48.1
->>
-> 
-> --
-> Cheers, Lorenzo
-> 
-
+base-commit: c65687600ed075d237a204755d99ad538db34b47
 -- 
-~Randy
+2.55.0.1003.g10538fe699-goog
+
 
