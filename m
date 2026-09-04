@@ -4,100 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDA90C79F80
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 06:37:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9D94C79F80
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 06:50:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D294A6B008C; Fri,  4 Sep 2026 02:37:25 -0400 (EDT)
+	id C58896B0088; Fri,  4 Sep 2026 02:50:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDA666B0092; Fri,  4 Sep 2026 02:37:25 -0400 (EDT)
+	id C09B56B008A; Fri,  4 Sep 2026 02:50:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF1776B0095; Fri,  4 Sep 2026 02:37:25 -0400 (EDT)
+	id AD7B66B008C; Fri,  4 Sep 2026 02:50:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EFB56B008C
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 02:37:25 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3E54C140755
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:37:25 +0000 (UTC)
-X-FDA: 85175123250.25.85C2C4D
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 3E98518000C
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:37:22 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=YEtxI0FR;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf06.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 79CB56B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 02:50:40 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 111C016052C
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:50:40 +0000 (UTC)
+X-FDA: 85175156640.29.8FAC2FA
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9A9EA40002
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:50:36 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=S2Gi565F;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788503843;
+	s=arc-20220608; t=1788504638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LWLs0SHkrM24MSInQ2XpsIeq1uN6XlQiC8ArRKGi6VU=;
-	b=NTmscSVr3C3kbSowE5U88eLZxim9rKdig5MXZk4EEs3P7mNlJzHcZpyP0R2WguXNE+0kyC
-	gZfnshKk6cOvw1/0KFW4gM0MVBbsOByJ5LbRA/Du5J5JKERs+4dxTRCa2ygUTg6SY+ZP0l
-	u6P73FD3Z45+SYUwtInfj+RRJw9peY8=
+	bh=dUwnrTnO9K1+Dq0dCp0gfyukZzjfQW8mCiD3/Ac3fAA=;
+	b=ovBuwAXW+dd4FxAKUmO144YWyKcmtKuXoinhWvOXJtPJdmFv0rxGHtsMd7OtGEa0tIso6/
+	ARGIZ7qFOzuQ9ccdCvzRzjKZfB8Z959fwplGfvSF07ek8y7t3VFdH2oasoOjQxbwnmKMWY
+	u9L5WokmD8SxQ/J28FuHNTlbI6W6tPk=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=YEtxI0FR;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf06.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=S2Gi565F;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788503843;
-	b=jdYhHshD7ognxtN1ABJQNiSQLHDOOhei3wXFjlcTyBEg1yGvPZXxn1XthWJQ9D9ZyS4u85
-	3GgPWSyk1wOtmsrc0TcqNfC1PbuFXUWA4m0QO8wIjVHChKMtF6YdRr7p61UdIk7NYQy8Kc
-	evxyV4efxC3uerfKzjNJzG4HxX+SZxs=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=LWLs0SHkrM24MSInQ2XpsIeq1uN6XlQiC8ArRKGi6VU=;
-	b=YEtxI0FRow7IvcmxoAJBY+ae55mUabDb/bjKQgeX9SS7QQ+8nfXAva973oSdhRtKxwQYZTtDj
-	utiknF5qkpjoK4A8MV8LYD1sQzyp6engTnsbd6jrwFXKN5N+dLXDlaKZYUmSX/WSyLp3qpmKbMF
-	jmVGXE5qkc4hBMnG5NPOM6c=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hbmgf3nTdznTVx;
-	Fri,  4 Sep 2026 14:26:06 +0800 (CST)
-Received: from whupemk100004.china.huawei.com (unknown [7.152.185.74])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9A03140572;
-	Fri,  4 Sep 2026 14:37:18 +0800 (CST)
-Received: from [10.173.124.160] (10.173.124.160) by
- whupemk100004.china.huawei.com (7.152.185.74) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 4 Sep 2026 14:37:16 +0800
-Subject: Re: [PATCH v9 10/15] mm: Check individual hugetlb pages for poison
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-CC: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>, Naoya Horiguchi
-	<nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
-	<linux-fsdevel@vger.kernel.org>, Christian Brauner <christian@brauner.io>,
-	Jiaqi Yan <jiaqiyan@google.com>, "Gregory Price (Meta)" <gourry@gourry.net>,
-	Andrew Morton <akpm@linux-foundation.org>, Jane Chu <jane.chu@oracle.com>,
-	<linux-mm@kvack.org>
-References: <20260805210557.1118966-1-willy@infradead.org>
- <20260805210557.1118966-11-willy@infradead.org>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <0ca31092-bfc1-af3d-a588-bb6bb7d5d9d8@huawei.com>
-Date: Fri, 4 Sep 2026 14:37:16 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	t=1788504638;
+	b=q1mRTIKMM9iYb/Ib6EI8GcSqGUxZpuDGKcoRJXsaKasjVJBGqHAlKPuLUB9uEcvNFcWjDT
+	Ng0uPaf80nFHwmFYKqNwEK47eAyLcoLfMeLqERSWxcVkF6BgYmVxx8cpdCqIgjDfzbTY1y
+	BXMZ8dAH/T9yTwX0qp584R7YUjt7uXI=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1788504633; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=dUwnrTnO9K1+Dq0dCp0gfyukZzjfQW8mCiD3/Ac3fAA=;
+	b=S2Gi565F0mAKIcyN952RVbJkby22sv8kB0twqwF2xok7BZUsN7LjCMvVyhgsmFLsk5SdTnkGBR3lvYjf1g+KMsS1SPUvyTrQExTgsAwI1dpWeUNFUQOrI02CjHazb0xkfiMZj+FZyr4jxjHplXqWEFFC3tVYQMXV9rmKFnwy9Ys=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=28;SR=0;TI=SMTPD_---0XAHuDz3_1788504630;
+Received: from 30.74.144.116(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAHuDz3_1788504630 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 04 Sep 2026 14:50:32 +0800
+Message-ID: <de28b6a7-7f51-4344-8139-1ec412604062@linux.alibaba.com>
+Date: Fri, 4 Sep 2026 14:50:30 +0800
 MIME-Version: 1.0
-In-Reply-To: <20260805210557.1118966-11-willy@infradead.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm: memcg: settle memory.high debt after THP faults
+ with non-blocking gfp
+To: Qinyun Tan <qinyuntan@linux.alibaba.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@suse.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Xunlei Pang <xlpang@linux.alibaba.com>,
+ "Liam R . Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Chris Down <chris@chrisdown.name>, Chuanhua Han <hanchuanhua@oppo.com>,
+ Kairui Song <kasong@tencent.com>, linux-mm@kvack.org,
+ cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260904035407.4098627-1-qinyuntan@linux.alibaba.com>
+ <20260904035407.4098627-2-qinyuntan@linux.alibaba.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260904035407.4098627-2-qinyuntan@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- whupemk100004.china.huawei.com (7.152.185.74)
-X-Stat-Signature: enaqj4exaus8itm1kidjbyxh3o68angu
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3E98518000C
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9A9EA40002
+X-Stat-Signature: jhw1yy9ptey3fs9o7ydfiqhud7173dz1
 X-Rspam-User: 
-X-HE-Tag: 1788503842-225172
-X-HE-Meta: U2FsdGVkX1+XyZd253p5cXXSJfOOKAqNJKzkPbzW6Snv5vKT+gWTM6WojpI4Sg0k+2uysfgb9MMVcy5ekfaR5JsmlM2lFVjWb+GIeEydJg2oplCcMWleo9Rh8cwi3tV8r5vnuU0XVXOnj4kgD1vPD/2M7WcJ7CaEELEMlfwKq7VLTO42E4TqrZxl/0X61P4080xjfOVj2Tlx1IlQGDHctM/5e0ldmffUjaxX4/QCb84bIT2Oepkdq4VIeSoN7q6vSraaelMdKe2+OYqLt84MmbqcEq7wXbcLYTP6GCCNUsLGBkbM11P3G4HOEEt8q3LtOJaPPjZ2fsomRHvzJVKOrW+8u88omADNz2gLXSNMananeUGLvi5hygGDcxSz9B6FBTtsSGLS1ZlFxSrbTKdNMSk93bhDWRVsvudDH1O6vKOZwhf45bJv+G+v4fqW2MqcyHV8iZ4zU/ssYmGmIGDf+D+W3GxQ5y/QpAeyQoHkTg9QNcFX29ygqss+0lNkOcIgXOr8VxnQXFjjm8cO32uVoGTY5FoiqvDpZR8MihpeHQWVr/wnfWOc2U6C2U1KKZhcLAU8Y8KACYWpV0R83JfY1gDAa+H072Td39w/vvZIXHVEnuBf88iRsGt5Qz0OkDXIqSvnMjRwylbD4+vq+AHvtg0sGkb1ijDRhFmWD3QQnYKM+NOb10tVHHM8mOo/dh4dMm0xH++LqNelNiGR+G3vfcRqE11wtdU3nKJ1ztEVWCDm8LTkNwmJPM4vcrTwhcRcG4QLMv3qy0EoBYT+RQweLc3MB1ptOhjI9RYb+ak8t9QGpmxeZaWJjCa5kC7AotAxtQ1SK735i75uhRDeFM87i/tWjHftZ/njAI/rSSbNkpT9eNc8ARlIygekHwYH7NmYweWZ77mybgY6Op3W26OGJLjDwBeeFSJU2Wc0kfgIMMPYgUy+GCss6z1Z3DsXDym8FnZvpsulCsRAR8KOFUh
- FeSXakmZ
- 56dhl2L3XGf2bHrRQdqu+t/UkJW1PIKBa0XIxKLW0OujZED6JNiXab4wsX2r3mW7A/GmcRbC2dARdRzydUWCwoiWv3iTT8SYyurMzjNdlShIJemUiu+Ix9mNmMWjl78BAR3BwvhDb7ZceepSUbtHbw/iKHlgcLIjkYjY/BWUCaSzNS/E8weiCSYEMAFLpTxXHM8gi3E4BJs/8mSSjzw7bpvkE3i7OFyPid74ZYjhlNLiFoK5eUhUWkecMFqOorPpZMlq20BoGprOhx4B0Rf0q1xKQN9X8t/G2YYUnAUCc0pNV8deJUODXGQrUMgr4DbIjiWUB5yEEO0l5cQfQy4AUmwIQzGkYU6MSi8OLmaHuzEY1JyLLAIoa5ZQG5Z63RyKmbgN5d8JYu+gMSSxYj5OFNlr7MAP4sU+GqqwO0C8WKB5mtr9M6ayoxr/NJanjv26lakvT0bKdHxU2O/PUQ8GDFoBeFuNcino0D9Jjq49HYMyFZlwTQ2s06LMsYnu+HgX6EHNgDXapNNKHL8yeYcklzc6dDivR13kq4cq4
+X-HE-Tag: 1788504636-894264
+X-HE-Meta: U2FsdGVkX1/PjmkV917Zg4M6vq2Z5GzfYDnGa/FBhNPfmbQWAG6eL4+URNGq2LdCbI45s1A0TY1UwCUgo4TglN12Lf6JOZsUF0N/GMrX8QSk9D6/uSz+RFCykAJsHIWr+gETZrC/TUvwrNYwy+qTTHOddz1CRsOdkJKa8aObPmVBzADLUjUug9P0E2x+k4atlfe5iYYqu3EK4e4RNG52RxxIHrbn117rv614s72qyglQj5n09gEH0vuTGgbKr4bK19wuOhDCYyBVDLWkVbI3S5OHUP/scPSGTpu+IXpU/z+RrokOkU2TdOskkfMto9bxBATcpzByUytBOFknxwq7tmXp27pszmHXXSSrT4kGOaHBTbuPxC5Bpg214KjsQfL8WeGWegXn2MoHMrAfoE519WMakgVTDN8SKHFNDAGUhMYWwKA2POTcFXa96nv2wk5wn15LOHlaqA+4XwMuhPe86i6QUEL5i6fqKs7C+k+OqM2qHKFjGqNo2XzAFnKljshH9jyz/H7TVpcYJ3/Vf8xO7Hl4ICw6CcFsl8pQpQelN8GUjQ+daWc4hNYH1g9ff1qRM4ryc8rBx4RLXx/Sdb4gPed+VcND/gDBLsDKTfzQsbnyGBALuYCZ4P7Hd+DEDNc5UemeFOF91EVjDDyrToZNiDjZcet56uiGFXEPv5U7sRl2j6JjG2UUQHWOlTwVrDQ09yJ+zRl79pLjZyGYDPsCpCRG29jx7aI/YvTtzXqJCKwu3Sk9gdp3zrakcO5z0KclNLNQEQjBk70tehuDdhWWPO65VbGkAOCGRyg3HyoMnr/EOw8lx0t89XgTbUautWs7yK0fC/PR4ANyR+gl4khonKqZ3QGFIXbsSFjQuAdDiP5FVOGuRR8urfLHWxNgWxh6PhzQCvyG7/uigvMwKqdknAnm8ki/eEiqEKZboLyGkULakqhQF+h9txlxmKuX2t2EsCZd831InoJarI2rvnK
+ oMOIlsYl
+ kBG6FXZKqXPMm7xdT1h7ozxn78FLnLJ0ecbyDpmPMErJm8dx9u4X1Kx5ixkcM9EYAKaQ61a+WALuz/aaTWUgjeXjOsdZsg7hLsrBGfe9JG8U0omtquBJJBjnKmnYBYVZlTLgBzHI/DdU0uEXWQOXX0OeNBQqh4sAQcMlxYE6/X+a6GdCr47Lpoa03xWn5BinQ3nkv/nRpQFXD8wKbc+y2dhAlpuD7uZySaQnBKpAfha+YID4FeMsmreZYYj3nq2iH/mAjqLA40GqhHiEpnirPP6Uwl+kPcY0QLKJ4PZjLcJU/TS+Jg61TQol4Jr2zCJCLIuiJQlf9ogJ3sw4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,22 +100,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/8/6 5:05, Matthew Wilcox (Oracle) wrote:
-> So far, is_page_hwpoison() has returned true for the entire poisoned
-> hugetlb folio, but we can usually allow access to the pages which
-> aren't poisoned.  It's slightly tricky due to not having a reference
-> to the folio, but the hugetlb lock can save us here.
+
+
+On 9/4/26 11:54 AM, Qinyun Tan wrote:
+> Anonymous THP faults happening in a kernel loop that does not return
+> to userspace -- the populate loop of a single mlock() call, or any
+> GUP-driven population -- can drive a memcg's usage from memory.high
+> all the way up to memory.max with zero reclaim and zero penalty
+> sleep.
 > 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Reviewed-by: Jane Chu <jane.chu@oracle.com>
-> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+> This defeats the containment memory.high is supposed to provide:
+> above high, the documented promise is that "the processes of the
+> cgroup are throttled and put under heavy reclaim pressure", and
+> userspace OOM handlers (oomd, Kubernetes) rely on the high..max
+> buffer as their reaction window.  Only after hitting memory.max does
+> the non-blocking charge fail, THP fall back to 4K, and
+> folio_prealloc()'s GFP_KERNEL charge finally restore throttling --
+> by which point the entire buffer has been consumed.
+> 
+> memory.high is enforced at two points after a charge succeeds:
+> 
+>    1. from resume_user_mode_work() on return to userspace, requested
+>       via set_notify_resume();
+>    2. synchronously in try_charge_memcg() for large overcharges, added
+>       by commit c9afe31ec443 ("memcg: synchronously enforce memory.high
+>       for large overcharges"), gated on gfpflags_allow_blocking().
+> 
+> A populate loop does not return to userspace between faults, so gate
+> 1 never runs.  Gate 2 is defeated by the charge gfp: since
+> commit 3b3636924dfe ("mm, memcg: sync allocation and memcg charge
+> gfp flags for THP"), the THP fault path passes the allocation gfp
+> from vma_thp_gfp_mask() to mem_cgroup_charge().  With defrag=defer
+> that gfp is GFP_TRANSHUGE_LIGHT | __GFP_KSWAPD_RECLAIM; with the
+> default defrag=madvise and no MADV_HUGEPAGE it is plain
+> GFP_TRANSHUGE_LIGHT.  Neither allows blocking.  This is the right
+> policy for the physical allocation -- a THP is not worth direct
+> compaction, fall back to 4K instead -- but try_charge_memcg() also
+> interprets it as "this context cannot sleep" and skips the
+> synchronous enforcement, even
+> though fault context sleeps just fine (it holds the mmap or per-VMA
+> read lock).
+> 
+> Fix this in the fault paths, which know their context can sleep:
+> after a successful THP/mTHP charge, settle any accrued over-high
+> debt via mem_cgroup_handle_over_high(GFP_KERNEL).  This reuses the
+> existing throttling machinery (reclaim + calculate_high_delay()
+> penalty sleep) and is a no-op read of
+> current->memcg_nr_pages_over_high when there is no debt.
+
+This doesn't convince me. If the user sets defrag=defer, it means large 
+folio allocations should not block, so using gfpflags_allow_blocking() 
+to decide whether to call mem_cgroup_handle_over_high() is reasonable.
+
+If you call mem_cgroup_handle_over_high() directly in the allocation 
+functions, it would definitely increase allocation latency. This is not 
+what we expect when setting defrag=defer.
+
+On the other hand, I wonder if briefly exceeding memory.high is really a 
+problem in the real products. If this is only to fix the 
+test_memcg_high_sync selftest below, which is full of magic numbers, I 
+don't think it makes much sense.
+
+> Deliberately not changed:
+> 
+>   - The charge gfp itself is kept coupled to the allocation gfp, so the
+>     fail-fast behaviour at memory.max (charge fails -> fall back to 4K
+>     instead of reclaiming or OOMing for a THP) that the coupling was
+>     introduced for is fully preserved.
+> 
+>   - try_charge_memcg() is not touched: gfpflags_allow_blocking() is the
+>     only signal it has, and it must stay conservative for callers that
+>     genuinely cannot sleep.
+> 
+> The pre-existing selftest test_memcg_high_sync, added alongside the
+> synchronous enforcement by commit 6323ec54b450 ("selftests: memcg:
+> test high limit for single entry allocation"), readily reproduces
+> this: it mlocks 200M against memory.high=30M and memory.max=140M
+> with swap disabled, and expects high events with no max events.  On
+> systems with transparent_hugepage/enabled=always it fails without
+> this patch -- the population bursts through to memory.max -- and
+> passes with it.
+> 
+> Fixes: c9afe31ec443 ("memcg: synchronously enforce memory.high for large overcharges")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
 > ---
->  include/linux/page-flags.h |  4 +++-
->  mm/memory-failure.c        | 43 +++++++++++++++++++++++++++++++-------
->  2 files changed, 39 insertions(+), 8 deletions(-)
+> 
+> Note for stable backports: mem_cgroup_handle_over_high() only gained
+> its gfp_mask argument in v6.6, from commit 9ea9cb00a82b ("mm:
+> memcontrol: fix GFP_NOFS recursion in memory.high enforcement"); on
+> older kernels the call sites take no argument.
+> 
+>   mm/huge_memory.c | 8 ++++++++
+>   mm/memory.c      | 2 ++
+>   2 files changed, 10 insertions(+)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index ced400f72d43..543ba4a74dc3 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -1329,6 +1329,14 @@ static struct folio *vma_alloc_anon_folio_pmd(struct vm_area_struct *vma,
+>   		return NULL;
+>   	}
+>   
+> +	/*
+> +	 * The charge gfp encodes THP allocation policy and may not allow
+> +	 * blocking, which makes try_charge skip its synchronous memory.high
+> +	 * throttling. Fault context can sleep, so settle any over-high debt
+> +	 * here instead of letting usage grow unthrottled up to memory.max.
+> +	 */
+> +	mem_cgroup_handle_over_high(GFP_KERNEL);
+> +
+>   	if (folio_memcg_alloc_deferred(folio)) {
+>   		folio_put(folio);
+>   		count_vm_event(THP_FAULT_FALLBACK);
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 8b0c2c735d3d..24cbf2a26905 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -5362,6 +5362,8 @@ static struct folio *alloc_anon_folio(struct vm_fault *vmf)
+>   			folio_put(folio);
+>   			goto next;
+>   		}
+> +		/* Same reasoning as in vma_alloc_anon_folio_pmd(). */
+> +		mem_cgroup_handle_over_high(GFP_KERNEL);
+>   		if (order > 1 && folio_memcg_alloc_deferred(folio)) {
+>   			folio_put(folio);
+>   			goto fallback;
 
-Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
-
-Thanks.
-.
 
