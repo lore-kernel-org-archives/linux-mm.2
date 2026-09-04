@@ -4,117 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3048CC79F82
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 20:35:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C485C624DE
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 21:14:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4AB276B0088; Fri,  4 Sep 2026 16:35:53 -0400 (EDT)
+	id 082E56B0088; Fri,  4 Sep 2026 17:14:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45A9D6B008A; Fri,  4 Sep 2026 16:35:53 -0400 (EDT)
+	id 00DB06B008A; Fri,  4 Sep 2026 17:14:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3482C6B008C; Fri,  4 Sep 2026 16:35:53 -0400 (EDT)
+	id DEFC56B008C; Fri,  4 Sep 2026 17:14:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EB66F6B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:35:52 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D73CE16014E
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 20:35:50 +0000 (UTC)
-X-FDA: 85177236060.03.C43FC7A
-Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D9F1C40006
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 20:35:48 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b="AH0QIu/1";
-	dmarc=pass (policy=none) header.from=collabora.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf17.hostedemail.com: domain of daniel.almeida@collabora.com designates 136.143.188.11 as permitted sender) smtp.mailfrom=daniel.almeida@collabora.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AD8C56B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 17:14:36 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 20F9712022D
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 21:14:36 +0000 (UTC)
+X-FDA: 85177333752.28.8E656DC
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 5222014000B
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 21:14:34 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=MJSQK4Zo;
+	spf=pass (imf09.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788554149;
+	s=arc-20220608; t=1788556474;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I0k6Kz+SdWEmoW6Od/eEawvKt15zwDmptkDj5bWnB04=;
-	b=fSBzYHl0p7PiRJuYCbz4lknNnY1ZABvJ0trfVFC92TeQDOgVmCUd/e4K/m/3HnmQ+4ViPS
-	e3r1/MUu+Qf4vV2AawUVtFIe2BLjnSIr3q6VgpEKUcS3Cm4JcOWZFSZaAnJZFTBsgOBaiP
-	afIeqxIkQWFqNHtRl8Xc4N9PLZRYPtk=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b="AH0QIu/1";
-	dmarc=pass (policy=none) header.from=collabora.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf17.hostedemail.com: domain of daniel.almeida@collabora.com designates 136.143.188.11 as permitted sender) smtp.mailfrom=daniel.almeida@collabora.com
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=bvjoQwE4ZDaiwAW0jTIm2X9dCshUZub+PI63iQkxm4U=;
+	b=Umd8cBUd5KMCKlpgUiboVp/zmAb3+ciwHo0ed1pfDWFvVp1F9036qv1jVaoZVhQ8vz2cjw
+	rhZI73c5fY+47WE8F63MiTj4Xo3WRYH+G6SpVnOmgi9EttHPZoRMqm8K5HLv9dlyBCNV8q
+	5Pys6ysSYVdbrWHSKwbu3PWgk4nuqKk=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788554149;
-	b=8UKJ+crgik1AjceowTthJMGXtSaxaYnmtRVI6WY/yV0/PGHmK1gaReE4lXpnisjtOhYXwn
-	ooTdK+PseHwAs+Wxqio7F08QxHqZoxoilRtdjuPWOOIIyqOZKqDj93ggFlb14Fq1Gg5wMv
-	kfVTfsFiBfmrLDp1ZXX12BYcvQr2K8I=
-ARC-Seal: i=1; a=rsa-sha256; t=1788554138; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Q+Tl8OjiLNj2TOW2Ca6y3oZuXXVaOox6E2aQEMQ1K7y7cw74k8SXkDyq5Pt+sN2spNCvnD0zAgWzSUYkAovbvGfz1+Nxw3/xHt6F8SVn1AtVa4chNQHKHKk6PcX5a5RjDjCXZXTWAneIURl8ix2O8eCUxs1ucTYStEhoUY0dZ68=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1788554138; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=I0k6Kz+SdWEmoW6Od/eEawvKt15zwDmptkDj5bWnB04=; 
-	b=CDWqeX5iKsGcCfsVo7Pf3drLz6TbWQFUtzIRXzLyFBYpMCWnGX2EMbJW0G8C7E2KANShckrKKsxHh0ZmVxlYSpz/ggWGJqpkZiust0xZGTbuabNPNLK0j5mE9d1cFQnPY9gsnS293a+Hz19vI2CVYhy9HsUPSyrqelDlHxs7GL4=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1788554138;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
-	bh=I0k6Kz+SdWEmoW6Od/eEawvKt15zwDmptkDj5bWnB04=;
-	b=AH0QIu/1ROj5KivqKZVlwT/Pt2CtnypTOH5IjKniTcu3h5r8w01eUCoYvhYWBOm+
-	ucs79wglBotCytiwi1iYfe0ipANZ3z0kmh/lJPoSwMlyOKT5PvFftvWVmTm8HkNkUXU
-	XcnLeNrbeCTFDoUyws4j5CiyjQOV+v5DvXHFRLoY=
-Received: by mx.zohomail.com with SMTPS id 1788554135928568.4108043928953;
-	Fri, 4 Sep 2026 13:35:35 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH 9/9] drm/tyr: add BO-related ioctls
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260902-tyr-ioctls-v1-9-e0fdbf8bd108@kylinos.cn>
-Date: Fri, 4 Sep 2026 17:35:16 -0300
-Cc: rust-for-linux@vger.kernel.org,
- Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
- =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>,
- Lyude Paul <lyude@redhat.com>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org,
- dri-devel@lists.freedesktop.org,
- Alvin Sun <alvin.sun@linux.dev>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <FDEDAB25-FBF2-438C-9C1C-F72DC851E88C@collabora.com>
-References: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
- <20260902-tyr-ioctls-v1-9-e0fdbf8bd108@kylinos.cn>
-To: sunke@kylinos.cn
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
-X-Stat-Signature: butnpqsgts96u4893crqg3ryhj8n9wri
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D9F1C40006
+	t=1788556474;
+	b=Z9q4D3dsEP8saGLjuSmxDCJuafSevEmguh9QgL3J6G4HGTvarvZSZHzuv0slSkWJA9R7sO
+	gB2mBpg/ANPlz24bVJFlN6iHKo36S5p8B0vlLSjLZD/hmYZ76BBp7Atjwq1zZ7+IjCRbm4
+	0CLCamkYrzsmz6n4G35xLE1PI18IGOc=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=MJSQK4Zo;
+	spf=pass (imf09.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-49b0dbfbf7bso11637475e9.2
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 14:14:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788556473; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Xezz6DpW98JTuL989Hy8D+esq6xqMHeu7+Ry8jPwXSFhmG2pZlDF1ZmJv/QIYRadHk
+         p/3B9nBQJp6/MD7rWdbFu3dTaCtMTD1/7CF4Ws4+LHBOxkCW2vgkym9MxXZI9KKIBfPm
+         VScclD7oWMHMXxuckyNWc3emC3/rbY45rvvCm7ql55xePHIJ1g/8h4HjsbB1lHAB3RC1
+         AG671E/+1uF7/1nNG0o6pB6GS7kssH1daJ6avzpH37yRiIb+awQpdka+VuvCF+ky2wOW
+         6HKdpichjGV9rQRQexD+3Dy1O1icsipGg38hK4jkdpScCHJke1/ek/c/fzeii1vMQpUU
+         oSYQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=bvjoQwE4ZDaiwAW0jTIm2X9dCshUZub+PI63iQkxm4U=;
+        fh=hBu3IdIzriexa/vm7+y9017h0uPr/BW8NbY/CaQ1aaE=;
+        b=J01iXmTIXF8w9TYM2wx62hURcYwR98CUW1XuQUU2ZxcuJGHEBMfdBHoAGF3B+cB9BJ
+         0jwt1uZZA5o298g2KFS9vUvPLArHqsEFaPpMJJGb4yd6IxeBLvEh04wO4qpr4iJ/hzV9
+         cP2I3T2EK1XCrhfcXo1+MErkyqtxlXE1RWCeBUyb4VjQ/uJhSHLp7KZXqDg+2bZsyxYB
+         Eqyy4Mk0/as0eSOEMnE0E4LSooVM0WT340lmBzIR1y9i9NNrnnEuh3j6qEWBRRE+OQqy
+         ojwpBKPMU5udK8wzh2ICZqUPa9fKrXIJccQ6Q4GQ7mFzOZ4ytkWxjJU05PvUX+8+ytLq
+         ZL7A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788556473; x=1789161273; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=bvjoQwE4ZDaiwAW0jTIm2X9dCshUZub+PI63iQkxm4U=;
+        b=MJSQK4Zoe9hcZsVIVyBRmLxCjesPT4IsRCq8M6024l6qeKYTGmookx83pdg82KtwK6
+         bEoVMnbXELmkaKRzpNNVJjaiI1a9JUig004qH+RGFAEHO/v9Spmp2o7RFle/JWU4o5DA
+         pInp7TBgxIRW+qZ+k+RT0PBZWo53jYSD/ScFH3m3FuuToS0DuVVBceJ5zJjeCYmkQ1E6
+         YVPfNzi4J+Qmf2g1qYbUsF6OtkmB5P5kOLpwyBWtjNzceGPYeBmQs4NUDl+2utQW8a+w
+         5InsLe0IvmaGGQAS/zm2jlvVKwpUrZgwigTCCZcR5BW4BoPQsRUFI6w6nz95iuAJW2+N
+         YMIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788556473; x=1789161273;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=bvjoQwE4ZDaiwAW0jTIm2X9dCshUZub+PI63iQkxm4U=;
+        b=JSpdk6CqglU2egv9s4S39lDkW9sF6J59mGHofOl0XX6xiCxkzFSQfytVsFX30MrQF1
+         5SctmrpD7veAnSFs52McWzGMHvrikde0e8dXHzxufGxPPkS8uE10e9iPH9tgEfPTIWVM
+         AQFtFvpC5AtWZBFzIeDG/fZFjKqW+GzcEVpTx+j1l4LmPJL8qjIsZPZJ9rIQstZG7Vvn
+         Euxwthiiwz4zYZHKKJu9OHiOj2WWmAOt9gYc/ZrshfQYMK7q+fLiHknMt29O7MTpOQ86
+         uThf8gpFGEuyPZYt/Bik+FGwFM1gLSX/dRPNDWYpEoSWu3vtL6hBqvqs9n6SBUqdH5v5
+         kwzg==
+X-Forwarded-Encrypted: i=1; AKwUvBzE1jeVpwpSPHnZ23puTVxQNZjSWNdb8lLbLEg+tLkm+ocii2beqOlbn6kjoBcI/rR2P8rSFLGs4w==@kvack.org
+X-Gm-Message-State: AFuF++mZUlaKVeDqiHiWTMGZuNCDZw+DKMuckyE9mEh2IgdAeMe4Txmu
+	mxMhKNQQJzdIdULa6ctAxnWdvy2nvUMe/L/x55HE+GbSe/V826trlKV3BqnHMfs7jooU1OBcUh3
+	RnNlaNgmFwSQ6SatgzvdpB/CcgjbzY7c=
+X-Gm-Gg: AYBFou2mdSwk/5lmuzQxxzy300JOZdd63pd3tJ++4EFNmkmDpCovlsxbwVgk+s702ai
+	MCOfTAHGeGzdVsyrQgqasnrRlprAkN/6zgcqj77Kbl35YaF/ehtaoMzBrRV7Mz/+madxO1u82pN
+	n+zm8PK8Hq0cQdZN8EnSwCmGggsi2gX1eyRRh0sTTo9xVV4HIxN6BqIJ/LAy/G6O2dnD5bEhirr
+	8qIPFBJBN/x8VHK8bNDBkJ+yfcr2ck/HQpMA1n3qXl5xreab3h6ORQDicTmZuMP7iwU8KsLvm5O
+	je6BlW9HWp6IzZj+7GBsC0v8I2KOCVJo+pDaIf50jJhh+pcYeA64g605qrQ5JXa5A6LzjMQlr8z
+	A
+X-Received: by 2002:a05:6000:29d9:b0:484:3310:710f with SMTP id
+ ffacd0b85a97d-485872934dcmr13557408f8f.27.1788556472698; Fri, 04 Sep 2026
+ 14:14:32 -0700 (PDT)
+MIME-Version: 1.0
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Fri, 4 Sep 2026 14:14:20 -0700
+X-Gm-Features: AcwNN1VfnacCjCOIsG0-NjVV5-93v6OYjHgRMeo0vufw1HSKHHIhU85YeFRiLtM
+Message-ID: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+Subject: Path forward for Virtualized Swap?
+To: Kairui Song <kasong@tencent.com>
+Cc: Chris Li <chrisl@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>, 
+	Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kairui Song <ryncsn@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1788554148-801965
-X-HE-Meta: U2FsdGVkX19PtSxoYam0aHDmX2K2k9681ct+OzY82W9WJgZyYZtqtSNFgbEOtqBMynav9Y4P8/JFud50ICJgHy836wgG7XnGCHozyvdsMLWfWg+B2p4+T17/rzkxGk1PoT6xfkQVhLVTTsf8a9WOgsjFJwN3kG93ZXUYd3cuTwcmUekZaveUg4yS7dTACLcqjGAaBqyGKPn061Wx82h9YI2M6HVW0NF2/QPlECTgfSBNvPEWWLUxaPURmcn7vM3dAURPRw0XCilvv0iLW2CwQO2/j03d/Gsp2F+8ySHO9KDsfnzHtZGgxMUXNnMllHSXtQrsiIIrIQEfSpHCbb4VK2XwqNVw27wQzcSTVZTbLDafoFc02SJ4ZJCeawm8nlHYTzGwtqf9yKxohR6/bBPCLVQam9u0IlIj3omCka/4Qf0J+p227G6r50PC+Jpk1I/XlDU+Px2mpJ6AKEk8fw7vWXY6ukwFVesMYg7Nc7GBJntiZDiIW1djQB95s3eD27rhJfX2P199PEGl3nhNZoFMIJoSf1fWPvcNe+ZJ58Ef8fmJCcVO8Z6G+bDDoq+hQupPYti1BSSx2I9wHFqltgqs6tmr1uoMaeWYKfIu0KV3kSG3vt1ybo1/f2DybZzBhK+lLnqOtH/BqsueWrHaLofvi+8vuvObBbpo4W8eUhm205oZ1WIiVy33ZHj8O78FAHlj0XoWOSuB3+saiOANnCmLHyHNNV0wVbOWJ1+dRLAcp1Whg8QLXEAzVbRkFP1Ro0bIP/QdiHbADGUUf9ZtOVQa2XicIHhp0MGJ8lxrX+BF1hyMoeCrgTzMmZcHGJhgkGLpMOmEeHwf3p10JnreA5XHx2Fzkn4uro/vMnd2QdlbxsEJBVHI0jHdGA/UeNshLAdBKyWInWbwUWgP58uHBI6y6VVygKI78fBR7oQ7L1CndVopwNz0FbjERDgnPq6LiDg1lfPFfkoZKlgGZ5OKYnX
- oS+p+5r+
- WzEiOKowYQJgi3zKr8wDsXVom7xEG9+J86B04DqLpUnjE41IsEh+1DkJhNkC+0Q4Ahvb5rKdi6H2LFW8bjVgQKp+jQC6FLUs0rMrPW7FBKFuCmHWWM9EVsn3m5B/BfLEaOpsPpaDEpJe2y1e9cm9Lv5jG8/QSDTT3f9BegzOhtN13cuvAlciKsEtb1dR1mz3jxx46GDUz8qSuqE909jxAcOhAnJRyY4bNMfTP9idNtw/MJ1lkvUK7ZsreTOuoGQtuO0N2MMXzQHblu4YNOxFAZMOiG9IZGFqJZgbrtsUNnK51Y2MOgkp+zRb+zDB7Prt1OyEgPkf0EGybWeEqsbnOkTrUH1VVRaat71LDzp9nH4fksm+e6o7DrJw1HxVqK5Mlja+tXP6tyaltpN3zCBfzu+868sphcBtoW16sQDKr8kIbvZI=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5222014000B
+X-Stat-Signature: 7fucist7th1smao5e1wofhfc6wq669uh
+X-HE-Tag: 1788556474-712709
+X-HE-Meta: U2FsdGVkX1+KxZeeDFsZAbPzYqzKzPQQjFVaomDDF/fC2LMGUZGPzJf/bQIDP339pseLwqsxW2EdRjzknsDvDUYog9EYvgNTyB6ECepLP2mKbG4SmhSvLXpSONuWlB7c6L9k4pErsKLJTbkUWorzDLWKo/Ht51BIo32KxJQ+HCEIBCfPeSXvOc7YdYMkBkne8ZE2HTD/6mrex3ovWOX6WBW9uWaaJWqbd8et2it2Laga6zbxNMK2kxnH14OcngLYaL1MHPnpk/RU7nexxcbUp8N1ryVVyR/LrIgvx3jjCIReICV/pkuyjjsScx+J5ibQd85dkoP1TzdHQgCLbBbNr/hRSTFTUZX0Rm5yCeaf3nu9gXHjK31f6WU6noKXCgeGwXh2mOVkvbC2XgKu4UYJZpDAURxt+4T/Nncy6E7PQk6zhj43wIpJAOGok4wB2oc0qrY9Jc99kW3AQ+NXBs/bDMtPBVFfpA1j5iE5Ill+47mGo37z2jRC5bGoL3catvEO6AN+TMOAaAfBljFbyzjGlnP3gm+mFo0u35mvj8YK8tshoH9W9uD+vWS0CbmBEdRP173YeqtGKIWVcVMukr9CMl4QjKbhI4BBNy1Z6OwGRwTM1BlRv6Gq0K/atyKbc+SG0qKYyyk3G9Mzumj+Pu/YtXge6qc4JU+MDycdR3RMSpOQI/WeQkxKUw2ssf9ky5RXd1p9/GlqCuU7kh/CaZuV6R5iUOSPeCU+x8ymovS1Wg3GCWYSpAac99ayKWNOT7YWPaqm86bfjzzQMZ+8WQdpaiueqAH5/Co22fAbnY2jykRJgHX10NmuymMJliXS8tKaGoJOtWMDx0/DqmA9KoZSILskob29iErIns2RsdncMVFvCc/wXr6rH8vCcsMPuK4Aoj/fLuOPikDhSIT7mTkDoFk/K7qgsBRWNgFTi7bpAZJOzc2G5J/j3Mo0Dd6Sl8sLvEf/BVh8DGFaoT7/cED
+ W6+zLCKb
+ IjhT0wUpm8tNye0MMv4Ai+vckLgDnEL1JTKnJSR6ZyI3aoWWXepM2Wfd6QwDrHNtJ+M5qTGExlJYNDGfr9Qk7kgDHmQZDJMIkwyzWtneQAv6HIWn4bXb5guOwnYVecBj7gNoS/C+SUOM/mQA322rl1TPBN3tw8pda9f6l08Wv0oxIBQ7bx/kve02uxqyGzxGtglH1NcGM3KgX2bwL7FqnYQbzySt1eTtnymD7hDss4Dn5WvuuPTQNXdYzMDxP1e4Fo0uPHelcm3reAQyrxq1NOlBb47hdgt2pThHE/QK8AJMmTeZH4M4Bvntkn3Yo/+o8HEIhVdotzlFWCn6PnKfsd9k0GUb20SCvz4PZ8PkHF9bIzOPo+uOOnqo1AF7Zg8+gu9olUoqcD7HxMIaNWzt/OQ/Pld/g93xKtEte3ckcsZiwDUT57bc/tXoVbkOrf1hLC+3ZbClEhPafO2MO1ZKAba3iEwZD1Dz8o1/GiG5kSMsklKJAgv3mHw1bUzwnFFco8HmZsSDCaxi+HwKT/SH/PmD/9/ghDaAoIZUp1+HNI6mTlHxycIefDXHNBKQ3fU64J96Qcc5IfXn/84vGN9XCYFWyXEQaQfOhwoJKfbr+NkU3IG43LcNYJgobrIoupxBbu7I5k2co1Zvgrg8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,171 +150,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+To Kairui, Johannes, Yosry, Chris, David, Andrew, and other (z)swap folks -
+I need some help here.
 
+I'd like to ask for a decision, or failing that, the specific thing that
+would get us to one. I'd much rather work against a concrete objection than
+keep respinning into silence.
 
-> On 1 Sep 2026, at 13:09, Ke Sun via B4 Relay =
-<devnull+sunke.kylinos.cn@kernel.org> wrote:
->=20
-> From: Alvin Sun <alvin.sun@linux.dev>
->=20
-> Expose buffer creation and BO mmap offset retrieval.
->=20
-> - BO_CREATE page-aligns the size and returns a handle with
->  write-combined mapping.
-> - BO_MMAP_OFFSET provides the offset for the DRM generic mmap
->  path, rejecting NO_MMAP objects and non-zero pad.
->=20
-> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+Quick recap: today a swapped-out page holds a disk slot even when the data
+never reaches disk, like zswap or zero-filled pages. My patch series
+(latest version at [10]) puts a virtual entry in the page table instead and
+resolves the backing separately, so zswap stops reserving disk it never
+uses and can work on machines with no storage swap space at all.
 
-Same comment as the previous patches, please write a few
-more things here about why the changes are needed.
+I've been working on this since April 2025, going through 10 revisions (6
+on the original design ([1] through [6]) and 4 on the swap-table-based
+rewrite ([7] through [10])). I also gave a talk on it at LPC [11].
 
-With that addressed,=20
+Throughout the process, I've been very receptive to reviewers - including
+parties whose use cases are very different from my own, like zram users and
+the ghost-swapfile-style deployments that want zswap with no backing disk
+at all - and the current design reflects that:
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+* Kairui asked that this be optional, not a replacement [12]. It is now:
+  vswap is opt-in behind the vswap= cmdline parameter, and with vswap=off
+  the existing swap paths aren't touched at all.
 
-> ---
-> drivers/gpu/drm/tyr/driver.rs |  2 ++
-> drivers/gpu/drm/tyr/file.rs   | 70 =
-+++++++++++++++++++++++++++++++++++++++++++
-> drivers/gpu/drm/tyr/gem.rs    |  7 +++++
-> 3 files changed, 79 insertions(+)
->=20
-> diff --git a/drivers/gpu/drm/tyr/driver.rs =
-b/drivers/gpu/drm/tyr/driver.rs
-> index b3145526ada06..fc8d11c9ba1ca 100644
-> --- a/drivers/gpu/drm/tyr/driver.rs
-> +++ b/drivers/gpu/drm/tyr/driver.rs
-> @@ -224,6 +224,8 @@ impl drm::Driver for TyrDrmDriver {
->         (PANTHOR_VM_DESTROY, drm_panthor_vm_destroy, =
-ioctl::RENDER_ALLOW, TyrDrmFileData::vm_destroy),
->         (PANTHOR_VM_BIND, drm_panthor_vm_bind, ioctl::RENDER_ALLOW, =
-TyrDrmFileData::vm_bind),
->         (PANTHOR_VM_GET_STATE, drm_panthor_vm_get_state, =
-ioctl::RENDER_ALLOW, TyrDrmFileData::vm_get_state),
-> +        (PANTHOR_BO_CREATE, drm_panthor_bo_create, =
-ioctl::RENDER_ALLOW, TyrDrmFileData::bo_create),
-> +        (PANTHOR_BO_MMAP_OFFSET, drm_panthor_bo_mmap_offset, =
-ioctl::RENDER_ALLOW, TyrDrmFileData::bo_mmap_offset),
->     }
-> }
->=20
-> diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
-> index 157bc40e1cac4..16abf2968299c 100644
-> --- a/drivers/gpu/drm/tyr/file.rs
-> +++ b/drivers/gpu/drm/tyr/file.rs
-> @@ -252,6 +252,76 @@ pub(crate) fn vm_get_state(
->             Ok(0)
->         })
->     }
-> +
-> +    pub(crate) fn bo_create(
-> +        ddev: &TyrDrmDevice<Registered>,
-> +        _reg_data: &TyrDrmRegistrationData<'_>,
-> +        bocreate: &mut uapi::drm_panthor_bo_create,
-> +        file: &TyrDrmFile,
-> +    ) -> Result<u32> {
-> +        if bocreate.size =3D=3D 0
-> +            || bocreate.pad !=3D 0
-> +            || bocreate.flags & =
-!uapi::drm_panthor_bo_flags_DRM_PANTHOR_BO_NO_MMAP !=3D 0
-> +            || bocreate.exclusive_vm_id !=3D 0
-> +        {
-> +            dev_err!(
-> +                ddev.as_ref(),
-> +                "Invalid BO_CREATE params: size=3D{}, pad=3D{}, =
-flags=3D{:#x}, exclusive_vm_id=3D{}\n",
-> +                bocreate.size,
-> +                bocreate.pad,
-> +                bocreate.flags,
-> +                bocreate.exclusive_vm_id
-> +            );
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        let size =3D usize::try_from(bocreate.size).map_err(|_| {
-> +            dev_err!(
-> +                ddev.as_ref(),
-> +                "BO_CREATE size {:#x} too large\n",
-> +                bocreate.size
-> +            );
-> +            EINVAL
-> +        })?;
-> +        let bo =3D crate::gem::new_object(ddev, size, =
-bocreate.flags)?;
-> +        bocreate.handle =3D bo.create_handle(file)?;
-> +        bocreate.size =3D bo.size() as u64;
-> +
-> +        Ok(0)
-> +    }
-> +
-> +    pub(crate) fn bo_mmap_offset(
-> +        ddev: &TyrDrmDevice<Registered>,
-> +        _reg_data: &TyrDrmRegistrationData<'_>,
-> +        bommap: &mut uapi::drm_panthor_bo_mmap_offset,
-> +        file: &TyrDrmFile,
-> +    ) -> Result<u32> {
-> +        if bommap.pad !=3D 0 {
-> +            dev_err!(
-> +                ddev.as_ref(),
-> +                "BO mmap offset pad not zero: {}\n",
-> +                bommap.pad
-> +            );
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        let bo =3D crate::gem::lookup_handle(file, =
-bommap.handle).inspect_err(|_| {
-> +            dev_err!(ddev.as_ref(), "Invalid BO mmap handle: {}\n", =
-bommap.handle);
-> +        })?;
-> +        if bo.create_flags() & =
-uapi::drm_panthor_bo_flags_DRM_PANTHOR_BO_NO_MMAP !=3D 0 {
-> +            dev_err!(ddev.as_ref(), "BO mmap offset on NO_MMAP =
-object\n");
-> +            return Err(EPERM);
-> +        }
-> +        bommap.offset =3D bo.create_mmap_offset().inspect_err(|_| {
-> +            dev_err!(
-> +                ddev.as_ref(),
-> +                "Failed to create mmap offset for handle {}\n",
-> +                bommap.handle
-> +            );
-> +        })?;
-> +
-> +        Ok(0)
-> +    }
-> }
->=20
-> fn vm_bind_exec_op(vm: &Vm<'_>, file: &TyrDrmFile, op: &VmBindOp) -> =
-Result {
-> diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-> index d9ddcb287f52b..f404139f54f32 100644
-> --- a/drivers/gpu/drm/tyr/gem.rs
-> +++ b/drivers/gpu/drm/tyr/gem.rs
-> @@ -38,6 +38,13 @@ pub(crate) struct BoData {
->     flags: u32,
-> }
->=20
-> +impl BoData {
-> +    /// Returns the flags the BO was created with.
-> +    pub(crate) fn create_flags(&self) -> u32 {
+* Kairui also pointed out that if I kept shrinking the metadata I'd "end up
+  reimplementing the swap table format" [12]. I took that feedback, and
+  reworked the entire series on top of swap table.
 
-I would prefer flags() instead of create_flags(), which reads a bit more =
-like a constructor.
+* Per Chris' requests, I've figured out ways to minimize memory overhead
+  [13]. On a zswap-only setup there's almost 0 overhead now, because the
+  vtable is merged with zswap's xarray rather than sitting on top of it.
+  The indirection is paid for by the tree we delete.
 
-> +        self.flags
-> +    }
-> +}
-> +
-> /// Provides a way to pass arguments when creating BoData
-> /// as required by the gem::DriverObject trait.
-> pub(crate) struct BoCreateArgs {
->=20
-> --=20
-> 2.43.0
->=20
->=20
->=20
+* Johannes pointed out that a physical cluster backing only vswap entries
+  still had to allocate a memcg_table, which was an overhead regression
+  against my older design on the zswap writeback case [14] (since a swap
+  entry occupies multiple levels). I've also fixed this.
 
+* I've spent a lot of time chasing regressions on setups we don't even run
+  at Meta - zram in particular [6]. And if anyone's still worried after all
+  that, vswap=off keeps the old swap code available.
+
+Numbers are in the v4 cover letter [10]. In terms of performance, vswap is
+on par or better than baseline on zswap across memhog, usemem and kernel
+build, and vswap=off tracks baseline within noise. I've even included an
+A/B experiment on a real production workload (Instagram/django): throughput
+on par, latency slightly better, and the swapfile footprint for every zswap
+user on the host goes away.
+
+Now, on xswap. Baoquan's working on a series [15] that covers some of the
+same ground, and the VM_SPARSE cluster_info idea in it is genuinely good.
+I've been reviewing that lineage since July [16] and I'd like whatever
+lands to end up with the best parts of both. From my perspective the
+differences are:
+
+1. Userspace knobs. xswap asks the admin for a size (a percent of RAM) plus
+   a per-device limit to tune afterwards. I'm not aware of any use case
+   that needs those, and I don't think users have a good way to answer the
+   question anyway - sizing swap for compressed memory depends on memory
+   size, workload, and compression ratio all at once. That's precisely the
+   provisioning problem vswap exists to remove. The kernel should be as
+   transparent and dynamic as possible here, and not add knobs unless
+   there's a use case for them.
+
+2. Writeback support. Writeback is core functionality for zswap, not an
+   add-on, and a design needs to account for it from the start. This came
+   up before, in the discussion around Chris' ghost swapfile RFC [17]: for
+   a solution here to be acceptable, it has to work with the primary
+   usecase and support disk writeback. Without it, whatever zswap won't
+   take (incompressible pages especially) has nowhere to go, and cold
+   compressed data can never leave RAM.
+
+3. Cgroup charging behavior. vswap/xswap shouldn't be charged against the
+   swap usage counter. It's fundamentally a different resource from
+   physical swapfile space, and memory.swap.* should read 0 when nothing is
+   on disk [18]. I made the longer argument for this in [19].
+
+4. Data structure (xarray vs sparse vmalloc array). Even with xarray, vswap
+   is already on par with or beating baseline. I like the sparse array
+   idea, but why are we landing an optimization before the feature itself,
+   without any A/B data showing the difference matters?
+
+One thing I do want to be clear about: I'm glad other people care about
+this problem. Chris' ghost swapfile and Baoquan's xswap are both going
+after the same set of problems, and that's a good sign. It means this is
+real and shared, not something only Meta runs into.
+
+What's been harder is the shape of the engagement. Alternatives keep
+getting posted and pushed that don't cover all the requirements, while this
+series sits without review. I don't think I'm owed anyone's interest in the
+problems I care about. But I do think working code, with benchmarks and
+production exposure behind it, deserves a fair hearing next to in-progress
+proposals.
+
+So what I'm asking for: I'd like us to converge rather than keep two series
+in flight. My preference is that we land vswap first, then build Baoquan's
+sparse array on top of it as an optimization. That gets the feature in, and
+by then we'd have the A/B data to show whether the sparse array actually
+beats the xarray.
+
+If you think that's the wrong order, I'd genuinely like to understand why -
+after 17 months and 10 revisions I still don't have a clear picture of the
+objection.
+
+[1] https://lore.kernel.org/all/20250407234223.1059191-1-nphamcs@gmail.com/
+[2] https://lore.kernel.org/all/20250429233848.3093350-1-nphamcs@gmail.com/
+[3] https://lore.kernel.org/all/20260208215839.87595-1-nphamcs@gmail.com/
+[4] https://lore.kernel.org/all/20260318222953.441758-1-nphamcs@gmail.com/
+[5] https://lore.kernel.org/all/20260320192735.748051-1-nphamcs@gmail.com/
+[6] https://lore.kernel.org/all/20260505153854.1612033-1-nphamcs@gmail.com/
+[7] https://lore.kernel.org/all/20260528212955.1912856-1-nphamcs@gmail.com/
+[8] https://lore.kernel.org/all/20260612193738.2183968-1-nphamcs@gmail.com/
+[9] https://lore.kernel.org/all/20260806184254.3790858-1-nphamcs@gmail.com/
+[10] https://lore.kernel.org/all/20260825153238.2695446-1-nphamcs@gmail.com/
+[11] https://lwn.net/Articles/1016136/
+[12] https://lore.kernel.org/all/CAMgjq7AQNGK-a=AOgvn4-V+zGO21QMbMTVbrYSW_R2oDSLoC+A@mail.gmail.com/
+[13] https://lore.kernel.org/all/CACePvbVXQWgcPD-bgK7iDba4NFLo2tT89ZbLOa03maJU4er4ag@mail.gmail.com/
+[14] https://lore.kernel.org/all/aZyFxKGXc8J6PIij@cmpxchg.org/
+[15] https://lore.kernel.org/all/20260827094509.1016740-1-hebaoquan@kylinos.cn/
+[16] https://lore.kernel.org/lkml/CAKEwX=Pe+qMZd2xhnU-PAGQtgXkp56c-JwYCbt2Lux9htgB67Q@mail.gmail.com/
+[17] https://lore.kernel.org/all/20251121114011.GA71307@cmpxchg.org/
+[18] https://lore.kernel.org/all/anYIboHEUZb4fhHv@cmpxchg.org/
+[19] https://lore.kernel.org/all/CAKEwX=P4syV38jAVCWq198r2OHXXc=xA-fx1dk6+qYef6yzxWQ@mail.gmail.com/
 
