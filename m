@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AC82C79F82
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 14:54:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEF10C79F82
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 14:54:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B4FA6B009F; Fri,  4 Sep 2026 10:54:31 -0400 (EDT)
+	id 1FF146B00A0; Fri,  4 Sep 2026 10:54:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 865D16B00A0; Fri,  4 Sep 2026 10:54:31 -0400 (EDT)
+	id 188FA6B00A1; Fri,  4 Sep 2026 10:54:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 707536B00A1; Fri,  4 Sep 2026 10:54:31 -0400 (EDT)
+	id 002ED6B00A2; Fri,  4 Sep 2026 10:54:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 23EA06B009F
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:54:31 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9D94A401E5
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 14:54:30 +0000 (UTC)
-X-FDA: 85176375900.01.E0F413A
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	by imf21.hostedemail.com (Postfix) with ESMTP id BE20B1C0008
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 14:54:28 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BeI4yBDd;
-	spf=pass (imf21.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id C72A76B00A0
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:54:35 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5CB8D1A0169
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 14:54:35 +0000 (UTC)
+X-FDA: 85176376110.24.D7BFC1A
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 7FC6120003
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 14:54:33 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Py68GHiK;
+	spf=pass (imf03.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788533673;
+	b=ToZlyRun40H/Ry+d8vg193i/zKJrkV9LaDBqkOV6ItzS00Yuxj2kJCxm4vs1i63P/RSG2O
+	VIZOuLa3telJ0TEGIYT1fV4ZJdwf8pp0u1N0EOGC4DzhvAXhEkWBvavl80CrhMuZnERrc9
+	3KQ6xtIjgdX+nz5XgbERlrZk0AEaUG4=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Py68GHiK;
+	spf=pass (imf03.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788533668;
+	s=arc-20220608; t=1788533673;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TWn588bvPgkOg4s+MpXI1REAHLgHCTvpnRnhLr6d9ks=;
-	b=OMpRM8JIlkhmFzlgn5oiPDajorlrLVufTuEN4+8a4A35dIr5RFHj5NMdMzScgPc8sSUwo7
-	tgoT4e/DYh0tMm282ZdUiaPlAHiFBXTeo02KdZiWlZgdulagE6qi/rI5g3Hu6ufD0oKv1r
-	86E5KHVPHwMzKQpy1EUdwCeJnTFp1FA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788533668;
-	b=kgGJv2kTbu2mSHNePrgpf+t3zlw40ZQjy6rcvOK83L6gtIMWsFZhSbYVgjzbB4HkUVpL76
-	etmOZKX3Za0Y7aicikxV+k3/9gMGSHyzY4EGSGhBwCGwOwvIOuR3aVxEiP3lPEni26v/c8
-	pfAp8U2u8GoY24slyIskGPj8HaRqwuo=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BeI4yBDd;
-	spf=pass (imf21.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-484374f54d0so680879f8f.3
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 07:54:28 -0700 (PDT)
+	bh=3pwlsy70YW3qwfiCOdC58N7kJRNRBNA8nQQHxlaBoNo=;
+	b=DpyQUGLgsF9te7E3LDmQOhTYg7IwIEV5D1iegucz1oWQOrKAHuc2Yiw2uthiN0AJjwpZXv
+	sdABwuu9Nx3mH6x4TR2EyhQ04zgitSqWb40Y9TwxcAOa7Kq29pSuBj6onrW7DEaMrGrAD2
+	fosDYtbCo3oefzyF4G5+XegVek2b1PA=
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-47f96c5b722so744737f8f.0
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 07:54:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788533667; x=1789138467; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1788533672; x=1789138472; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=TWn588bvPgkOg4s+MpXI1REAHLgHCTvpnRnhLr6d9ks=;
-        b=BeI4yBDdO0neiOzi44uEd2jli85jzMetnrA7oWYfaQDauZhweE/lXXpiASW8TkofdO
-         5TEW+gKpEWfxoXhJVH7inCMj9ULdGR7qgZiG6Tm8E907N2sjTOyaW/k/zj/OLvvSz+IW
-         PspXuLOCc3n/RqV4aiqD+rY8yfhhXCJkkf7y1UidOBfhNOwVfpobRtlI9NtazplJtiVa
-         nnnAGw84LPCAk277GzFM9VJI/JwjafVd1vXTmRra3FZ7ZPsN1dWVRpIuvuL2tVo2W87C
-         razfn2xS6R1ROeIGeFtzEOa4mZCgrrSaSVGyz+Ax8ZMSv5glGgZDsDMWvwtkttI8n7q+
-         mY1A==
+        bh=3pwlsy70YW3qwfiCOdC58N7kJRNRBNA8nQQHxlaBoNo=;
+        b=Py68GHiKByXHuuUmQ2lJZNwuJrIUvG2RUjMBzQcnaoFJxNzcUenIl7r5VluMa9duZt
+         +GAvwzM7C/99w/UzK7NkW19/KJP07pU1hW69Ul7oSeNYNAY2+5SntxSXk4EftTH+LdYU
+         fvHsBGmugEl8MU7+4rksgD45aHCadXip1T2tq5gjs4TsrgNRanAgp4PNReSo+vtauckk
+         PE8xolCkU7Lx7tnI1zp+hSetiEL5Ai4GS9s6u1zIwIpSLRAPZ040qndrt6T3e5jLNKhv
+         G+pXwVPwm0nZTOxwkKWEt8A3XriRERq6A3tFM4aIbAtbCx2NA3vz2vLvcD38IAWbX7uT
+         6xCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788533667; x=1789138467;
+        d=1e100.net; s=20251104; t=1788533672; x=1789138472;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=TWn588bvPgkOg4s+MpXI1REAHLgHCTvpnRnhLr6d9ks=;
-        b=AUN6MNR3XIPOYK3TKk7QluoVxaL/nbq9CzJZmblk3VIzT1UW8E1OQoFsmUOmU/49Vm
-         Naw1Nb3DqrmNh7ECyuI8Q2zL+yqMn8L/x0EuYSRkwS9gy3cfmdk0zl1HuswJX5fA2wnw
-         3M/smxELp+YPJhAvvgZJ5Aq06e5JIbL078Q+/Bzg0ziVbp9yhFDOzVaw87P5TnC7SL+a
-         KP6RfnV76qolpPiE9GIhmapv02UObHsJpkCVz9aYzTMaD+5rMN4tF7IuHRS656w9Y1dZ
-         kNBVCl9+1c0ZUwO59DUYZiSmj0HheiCsaSQgatICwdDevkoYx7c0pJHWmxL5NfMP4nzo
-         yjHg==
-X-Forwarded-Encrypted: i=1; AKwUvBxZnXMcXlsPn70izTXPzdkeQ+NCSBF9kuQxWkdM3/HxZkn0kzviUyf00FpzqXW2qQNZwIn6/UiZlg==@kvack.org
-X-Gm-Message-State: AFuF++lARTyrTkeMuohX+G/PyCKpxu6kv/nOjK+Ioiegq82U3scNvUcr
-	PUvvQnnuPUZERIO/J75mALQY4+QUsHVFeAfSRT04mBhRFPBGpTzqdVhO
-X-Gm-Gg: AYBFou06Sdztn3lgxQT6x8MLmSTebuLgFcUdrQ2uQNA4KkjPlIC/Es+ZvK9b698uTgN
-	dD05lr7dWVgMga1R7EfXqvLfdb+QOEiDG1Fr/aYGkrg4/vYczjnevbWFL1kgJnnwPqxxn0mfXC6
-	QHd9/BueKeeTZ6IH3KaVqYYmlq9Lgslt7LFkORAG/xn00Qa17jSw2TBiR94EdstXp1HXMlnvxjr
-	/QWPZ1fHCdtC1Tl6sJ4BIAeupEYPHzSKshAYO/4JvyWam1oPXj/Fk3JAbcsqgqHui08Ao1gdqZ4
-	77UxtncgdNu7/dENipYJsA1k0epFi7WwPNAKjN584o/vHZ1Ujc4DoElQDTfz+82QI0iwNrPHbQ6
-	vdCxSbSN5TlEbb1SvHtgjXrI5Mw6b5a++JjsFKWVwGd6rzEaVjygnX8+jrgXd5vx1/yuPZPVFtJ
-	L+AbybfubnoZiQISR9pJAawx2MTacFELwneTG+nicOWlo3bHqR/y06qMywwgxU4pAfKJHFt6i90
-	Q==
-X-Received: by 2002:a05:6000:470a:b0:485:8101:dc40 with SMTP id ffacd0b85a97d-48587057037mr5818648f8f.9.1788533667239;
-        Fri, 04 Sep 2026 07:54:27 -0700 (PDT)
+        bh=3pwlsy70YW3qwfiCOdC58N7kJRNRBNA8nQQHxlaBoNo=;
+        b=Ez5xc3sqkP8eZnvUZFPk3TC2gyilVcq2czAJ5NUtoiSXauHcfoy8xOLyI7iXEyQYPn
+         XEdfsLqJ7+SHwnF5FFIVyVZ3hkX+03HWy36SAW4gcqniGzfpSEshBmrDco/ybNY0bA9C
+         pnLVEpRev17AU081GHFL/rr2nPTSDIQlKdVZWcNVAzu8o/1+bNL6plOL+Zw3Aq8b9S95
+         0u/dyTUDGjyC6pivEtNCYEP9lUKiUlHdV/EBEL6fqZlcjP2M98mNxlLqcZ4Rlu/AzENB
+         ao/CsgEK5AVVSVtcYPry5pqhvzIEiMi7XMVrzJA9Dvn4+9hY6kUcuZTWLx9OjGD8ZnhX
+         fOHw==
+X-Forwarded-Encrypted: i=1; AKwUvBzB6rjSu3j6oIYWAOkfJB6rzHoOpN4z5CvfbK91ZAGZVE2znalz/YtzxAUUMnLMRigCcV/aQPUrdA==@kvack.org
+X-Gm-Message-State: AFuF++kv2TD+ca4eButCQJXcQQzu2lYOvJ0ZGA2kAmOmmW++soB+jpHr
+	StzdxjwAnL6/7u9Hry5TBVABle1Xzt8QoPqqTDzCWdky1tqtu42fBzdX
+X-Gm-Gg: AYBFou148J2uMls1HoloDQCdXUF7pYzK3d/rkDRI68uNlY3yVPpx4KDvw/lCNuNhNoT
+	bynsFiUpFQBRJIucgbQ6e9lehzPXHublmNbOkgrCPVNx+CXhZpkprRVsAsqbVysOWICaUHU2HZ2
+	/wqYfD+qU/ZszunGAAuo6agM+t/FzfkuU5JyorBoBtg7fb6i2HTu42WxEHojsA3fTOwODq/4aU8
+	e3uIsEdVl+soAEJC8BgH35IO8NufW8wehTTitNhADgl30hsEYM5DTxDa0/KxJlQLYdqkdpW8QoN
+	u/asU8V04Bi89nM9qZE433KdZhNyeTJ+8+P7zEu+eH6p7m18J8wumJEPVvG0g+8APdbUeHAT+Eb
+	NkBxPm6I4wCMkyrIpCw9ZGycAWFvVly0rBdGoPS9Xm6qJez2r6unb71AxWWdXJs+Iif4uQR37Xm
+	bseIbVJ5b1a+XhHCFDpB+A9lfpy/RzUVj/jq5o4FEP7GymBzf+zO9Gtopxf+2kFkoStTqxWMYp/
+	g==
+X-Received: by 2002:a05:6000:4710:b0:485:8a47:5b83 with SMTP id ffacd0b85a97d-4858a475c60mr4635617f8f.32.1788533672009;
+        Fri, 04 Sep 2026 07:54:32 -0700 (PDT)
 Received: from dell-desktop ([2a02:587:4b5f:900:ef25:2f4:1792:4e6f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485885cb03asm6802799f8f.37.2026.09.04.07.54.25
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485885cb03asm6802799f8f.37.2026.09.04.07.54.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 07:54:26 -0700 (PDT)
+        Fri, 04 Sep 2026 07:54:31 -0700 (PDT)
 From: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
 To: bpf@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -111,22 +111,22 @@ Cc: linux-kernel@vger.kernel.org,
 	utilityemal77@gmail.com,
 	sun.jian.kdev@gmail.com,
 	tasos.papagiannnis@gmail.com
-Subject: [PATCH bpf-next v4 4/7] bpf: Allow reads through trusted-or-null BTF pointers
-Date: Fri,  4 Sep 2026 17:53:37 +0300
-Message-ID: <20260904145340.40212-5-tasos.papagiannnis@gmail.com>
+Subject: [PATCH bpf-next v4 5/7] selftests/bpf: Cover trusted-or-null BTF pointer reads
+Date: Fri,  4 Sep 2026 17:53:38 +0300
+Message-ID: <20260904145340.40212-6-tasos.papagiannnis@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260904145340.40212-1-tasos.papagiannnis@gmail.com>
 References: <20260904145340.40212-1-tasos.papagiannnis@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: BE20B1C0008
-X-Stat-Signature: yyzwbtf6r79iz9jua4i578gbm6yc3zbn
-X-HE-Tag: 1788533668-414220
-X-HE-Meta: U2FsdGVkX19Lon7Po9hjrptmuLrkNmJ/76B1x3Wyvg6p82vq52X1xZFI/DQB37CZHBlLtngsNNgYX6ExUdfaVcvr3yWXG71iI/DlwzXNt2j5lmfpAIwdC6OBkVyz6moPnas2R5Bb3JEp/imXCTTgG6IyXwCVVcAwHivTNA5BJGYzt8FSvo+mlPYErjCKlZScrFusIdBi7y+pOXkS+tVXGJMyGJKypapAQcTXNe+5k+1A752AtLaUwAZEBU2L9GIxtVZ2SLhnA/GQZ3qqjSuQI08oCAxPXcDGT59bMM/paEte5sCrOztBlARJ9ky+DSzD3pyJUG4KCeuyzRw7ArHSTrPDhWdZUUqK+x8ylGMza1WTkHVpLcnomqurUnhdrrr5Jja2+VvNejrwJqtuPwg2QQ0auRPvEAT5reTUyTQeXbWtXh3J0JSLxjX/lhXkT1zXls6pz9a5oMkN+DIkrKSz8SxBtY/nkzsaxJa+EBFUGKSQPKbyXoGYUaKRzXK/fY2b1qKEJGPRj91OktMh+RrL4HWIWHUDv33JHuSxsXcBW5V800EkUCaa42te+wxwsHhEv0bTv3ObVCGTcXPJB8Z2/dTwyADe6kkNSf1WqDVcb1W0UoUQ/O90rqqxZzYFEHyZDFfg+WjqWFn/c+ZlmwFEE9BEdas9DIRzYE/3H9RC6O5FvA+FYU5lxOjvkwA1G0V9rIzjDBWINzBihf3xrog3NcXuNIujk84pJQzlfcTRCRXGzhlVxQuZG59f7/SZFswSPEuX1VIwUmaPjZwZ+53gGZbcbYrraZZOgG2DlJuS9VF1vmZxQNScRUQeSdUqJ15lYLhMzvlMxVdzFU8n9Plw+H6szgdFe4yL7Ql7w6zC4N/8PWSgz8w2Denl/rCht+ftVCsG545c+phnbLXwMbwq8r14u5WNJ+tqWVCvDVuflArfCP3v+Oco3YOpadMnkzAajph42lT8Ft8y7/wF51g
- BB4dgfXB
- gn5denm/qd6f01hg0T1a3PfUo+JVx08SFWY4yzey5KdUEjO+V0symwVa6nTl37Ohhtrtdp2CCOYqFZDjFCxej9aw827yXuPV9E8sE+5yQpaQuq2rwQFfgM/q8PCo+4PKW9I1RTLRmvBpUrPm0IOdDMrvL+y/MIGQqnHqeDJr0HT6ulsK6HqOi5klA/aBetrf2v1nNob5ABGhLXMq0PK9HMkJsQhK1nyVLlehXyuSMZhDGPCPZafXGBljD2J3oKYXCKu3dZt74G16K9JI1yZjA6VDFZnpSnC0cRJM2/fIXrDRF3WN89xM/aHbfxDQpGrDIKIOCvDGZ2eOacafA380TmfejDoKKU4mCHTrcNeaKDjxIT5luO/gmPQCKfoulmVVUqD7m7QeaAaS8duiokpRjEtAFsn2HT9q8UbulvwgtBds7up2a884ozsDBsPuROmTwjGgICHrqWrT53BwOlkegrAHB44fvxnFWm2Yv4b7hDVKk8Sy6cIvXR+3M5g==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7FC6120003
+X-Stat-Signature: r14i7s1tog8ku16kxzmo1mf8bakiyq5m
+X-HE-Tag: 1788533673-595590
+X-HE-Meta: U2FsdGVkX19u+o/kHAVrVeekC57aUOgDDaSZG9mP/fe+6TSaRIAnI7sY8XB8se32myxLSxp5tF0ftZ1eJ56J++m25o1OAAQ5T4VSgOqYFr8q0EUvjC5f4YdHZdBPr+m03n9UVfUvrMW6vYKWHX+wDjPJ+lc3D8o+iH9VWSzu5V5UwBqq2S8UAOC180JpKeZfVCYHFSWtxApieW4RtrQjl4m6c8gVWgOM3naZrvZv6jPzzQAuwQ1p9GfvMbuHR2Yn+I1mN/InhPKWU1mNp7f3HUvM3xyUd6SPIRIJ11nPZACJE3DhXVQbxlD1/RCnHMQ/hGCBUqY/B/r000d50jWZg/pJnEPC4j48zK1uCRQHlypIvOze1QCkZvzv+x91qZU4eZOqsqSRxkbHLUG4doAO9BODSR4sPW/jfGKcuhFSJwB7NRU81Fp1VEOIN6iryFd2p+cpZouGClPp1Khu4MYu+ib8h2MEwXQ6WM41npt2nFzUYPjXKhFuX3A/NZHWqUp62c5LEhdufPWDE1ZJo08MyHJ0nNW0RT//AAMzj0ngtLS0fQEz17TswOiPcRNH94LMAXN0d5ObBnCw21WizK1mSdmvCaqlMm4fnSKK7zlqIonUIf188dSd76YLhBHn97boeja6LIqmJbRbl7kPdhIJ7kX7RK9EkrwAFqrclBvNdXbBpJBmDP/8OGSHEm3kfPXTra6UsSoJvu1CW8pmzdTKy63HlTykXUVEk/m6OX6cLoNFIXdppE3oKX0Vgw7wnDgWC6qWzDaROsTfK9C72tYE1/4ofr9vRU8al8xKZAw+zfpWD9xR4ZsIorIZVhk7HtlG1g4Eg3xZjCvF4LvBrOZKgbtWUzDvYnFiq+2AIjW7TPFZVABtxy3hWFJ9fcrYYaqYUyL74y6hOzWm+AlBmXcCKV9VEAsCqHc+idNLRxJX8WocOKyqahI3/whqVnxMiaOCQEzlGd8kwGAM9f2qH9i
+ Og2+faAS
+ sB2VEow8czEcVnwuC+W5KzNuTAoHEJ6oUrZH8wlWcTEN/DlANXyBaHUKE96IR3c0brS6cdLJlwgMdN2t4agikROylWweqMSkhqwEac5Gan/YIkvcZ8xoOyXng4UKpb+gVmjAr0FNu1nxdxTkpJInZ/AxaFbq2z+qLo3X1JpRPXRtmWaEVnQRSrd89e0h40ZHcCFoPfBaZA+C/Rk1ytPQcOM22cSSRZEK8/zoFlELfx9kWBIVlbxg/LKNs/HYwOzhfMkubgakMp87fvCI4rq+laulJZkU4nEXEShMuwqFXiQfx22n0LWElLFKrVia8Ivdid59v+cTeEtI/bNVxji5NGWp0pZ9KO6kILrSc2W4Eg2ugnPg5NyTnI1BXnXmdko1UIfzuSgic/dWnF+HWINX0xX3QarqCD9rLF+JXA8psNK+xkhh2zlC3CXC4z81X0wgyHfAZ0VnJkAnwW/bzB4omJxvB2teB3c1MZLl2ufoM7ucb4ff71wxLZIox0A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,100 +134,450 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, a trusted-or-null pointer
-(i.e. PTR_TO_BTF_ID|PTR_TRUSTED|PTR_MAYBE_NULL) has to be checked
-for NULL before it can be dereferenced. Marking a field from
-PTR_TO_BTF_ID typing to trusted-or-null can reject programs that
-previously dereferenced the pointer directly. This is useful as we
-need to mark new fields as trusted in order to pass those as arguments
-to kfuncs.
+Update verifier tests that expected an unchecked trusted-or-null BTF
+pointer dereference to fail. Cover scalar reads and chained reads through
+BTF and memory pointers. Add a runtime test which verifies that non-NULL
+reads return the field value and NULL reads return zero.
 
-Allow reads through pointers marked as
-PTR_TO_BTF_ID|PTR_TRUSTED|PTR_MAYBE_NULL without an explicit NULL
-check. Treat these pointers as potentially faulting so the reads happen
-through BPF_PROBE_MEM. If a read produces another BTF pointer, clear its
-trusted flags and mark it as PTR_UNTRUSTED.
-
-This applies only to reads. Other cases still require an explicit NULL
-check. After such a check, the pointer retains PTR_TRUSTED and can be
-used normally.
-
-The unchecked read path has two consequences:
-
-1. It uses BPF_PROBE_MEM, which is slower than a normal load. An
-   explicit NULL check refines the pointer to PTR_TRUSTED and allows a
-   normal load.
-
-2. A faulting read returns zero, which is indistinguishable from a
-   legitimately zero-valued field. Programs that need to distinguish
-   those cases must check the pointer before reading the field.
-
-The next patch updates current tests and also introduces more checks to
-ensure this change does not break anything.
+Verify that pointer arithmetic, stores, atomic RMW operations, and
+BPF_LOAD_ACQ accesses remain prohibited. Assert that a BTF pointer
+derived from an unchecked trusted-or-null load is PTR_UNTRUSTED. Verify
+that attempting to NULL-check the derived pointer remains rejected and
+that it cannot be passed to a kfunc requiring an RCU pointer. Keep the
+existing NULL-check tests to verify that an explicit check of the original
+pointer recovers normal trusted pointer behavior.
 
 Signed-off-by: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
 ---
- include/linux/bpf_verifier.h |  9 ++++++++-
- kernel/bpf/verifier.c        | 12 +++++++++++-
- 2 files changed, 19 insertions(+), 2 deletions(-)
+ .../selftests/bpf/prog_tests/bpf_iter.c       |  6 +-
+ .../prog_tests/test_struct_ops_maybe_null.c   | 13 ++--
+ .../bpf/prog_tests/tp_btf_nullable.c          | 28 +++++++
+ .../selftests/bpf/progs/raw_tp_null_fail.c    | 75 ++++++++++++++++++-
+ .../bpf/progs/test_tp_btf_nullable.c          | 45 ++++++++++-
+ .../bpf/progs/test_tp_btf_nullable_runtime.c  | 35 +++++++++
+ .../selftests/bpf/progs/verifier_lsm.c        | 18 ++++-
+ .../selftests/bpf/progs/verifier_vfs_accept.c | 14 ++++
+ .../selftests/bpf/progs/verifier_vfs_reject.c | 14 ----
+ .../selftests/bpf/test_kmods/bpf_testmod.c    |  1 +
+ .../sched_ext/maybe_null_fail_dsp.bpf.c       |  5 +-
+ 11 files changed, 219 insertions(+), 35 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/progs/test_tp_btf_nullable_runtime.c
 
-diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
-index ae9f606539f4..d3d7254cc1f6 100644
---- a/include/linux/bpf_verifier.h
-+++ b/include/linux/bpf_verifier.h
-@@ -1326,6 +1326,11 @@ static inline bool bpf_is_ptr_to_mem_or_btf_id(enum bpf_reg_type type)
- 	}
+diff --git a/tools/testing/selftests/bpf/prog_tests/bpf_iter.c b/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
+index c69080ca14f5..99a16a1add70 100644
+--- a/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
++++ b/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
+@@ -39,10 +39,10 @@ static void test_btf_id_or_null(void)
+ 	struct bpf_iter_test_kern3 *skel;
+ 
+ 	skel = bpf_iter_test_kern3__open_and_load();
+-	if (!ASSERT_ERR_PTR(skel, "bpf_iter_test_kern3__open_and_load")) {
+-		bpf_iter_test_kern3__destroy(skel);
++	if (!ASSERT_OK_PTR(skel, "bpf_iter_test_kern3__open_and_load"))
+ 		return;
+-	}
++
++	bpf_iter_test_kern3__destroy(skel);
  }
  
-+static inline bool bpf_is_trusted_or_null_btf_ptr(enum bpf_reg_type type)
+ static void do_dummy_read_opts(struct bpf_program *prog, struct bpf_iter_attach_opts *opts)
+diff --git a/tools/testing/selftests/bpf/prog_tests/test_struct_ops_maybe_null.c b/tools/testing/selftests/bpf/prog_tests/test_struct_ops_maybe_null.c
+index 01dc2613c8a5..45af6f00ad90 100644
+--- a/tools/testing/selftests/bpf/prog_tests/test_struct_ops_maybe_null.c
++++ b/tools/testing/selftests/bpf/prog_tests/test_struct_ops_maybe_null.c
+@@ -19,15 +19,16 @@ static void maybe_null(void)
+ 	struct_ops_maybe_null__destroy(skel);
+ }
+ 
+-/* Test that the verifier rejects a program that access a nullable pointer
+- * without a check beforehand.
++/*
++ * Test that the verifier accepts a fault-protected read through a nullable
++ * trusted pointer without an explicit NULL check.
+  */
+-static void maybe_null_fail(void)
++static void maybe_null_no_check(void)
+ {
+ 	struct struct_ops_maybe_null_fail *skel;
+ 
+ 	skel = struct_ops_maybe_null_fail__open_and_load();
+-	if (ASSERT_ERR_PTR(skel, "struct_ops_module_fail__open_and_load"))
++	if (!ASSERT_OK_PTR(skel, "struct_ops_maybe_null_fail__open_and_load"))
+ 		return;
+ 
+ 	struct_ops_maybe_null_fail__destroy(skel);
+@@ -41,6 +42,6 @@ void test_struct_ops_maybe_null(void)
+ 	 */
+ 	if (test__start_subtest("maybe_null"))
+ 		maybe_null();
+-	if (test__start_subtest("maybe_null_fail"))
+-		maybe_null_fail();
++	if (test__start_subtest("maybe_null_no_check"))
++		maybe_null_no_check();
+ }
+diff --git a/tools/testing/selftests/bpf/prog_tests/tp_btf_nullable.c b/tools/testing/selftests/bpf/prog_tests/tp_btf_nullable.c
+index accc42e01f8a..825fe7a92d74 100644
+--- a/tools/testing/selftests/bpf/prog_tests/tp_btf_nullable.c
++++ b/tools/testing/selftests/bpf/prog_tests/tp_btf_nullable.c
+@@ -2,6 +2,31 @@
+ 
+ #include <test_progs.h>
+ #include "test_tp_btf_nullable.skel.h"
++#include "test_tp_btf_nullable_runtime.skel.h"
++
++static void test_nullable_runtime(void)
 +{
-+	return type == (PTR_TO_BTF_ID | PTR_TRUSTED | PTR_MAYBE_NULL);
++	struct test_tp_btf_nullable_runtime *skel;
++
++	skel = test_tp_btf_nullable_runtime__open_and_load();
++	if (!ASSERT_OK_PTR(skel, "open_and_load"))
++		return;
++
++	skel->bss->monitored_tid = sys_gettid();
++
++	if (!ASSERT_OK(test_tp_btf_nullable_runtime__attach(skel), "attach"))
++		goto out;
++
++	if (!ASSERT_OK(trigger_module_test_read(2), "trigger"))
++		goto out;
++
++	ASSERT_EQ(skel->bss->calls, 2, "calls");
++	ASSERT_EQ(skel->bss->nonnull_len, 2, "nonnull_len");
++	ASSERT_EQ(skel->bss->null_len, 0, "null_len");
++
++out:
++	test_tp_btf_nullable_runtime__destroy(skel);
++}
+ 
+ void test_tp_btf_nullable(void)
+ {
+@@ -11,4 +36,7 @@ void test_tp_btf_nullable(void)
+ 	}
+ 
+ 	RUN_TESTS(test_tp_btf_nullable);
++
++	if (test__start_subtest("runtime"))
++		test_nullable_runtime();
+ }
+diff --git a/tools/testing/selftests/bpf/progs/raw_tp_null_fail.c b/tools/testing/selftests/bpf/progs/raw_tp_null_fail.c
+index 0d58114a4955..1ce81bcf1626 100644
+--- a/tools/testing/selftests/bpf/progs/raw_tp_null_fail.c
++++ b/tools/testing/selftests/bpf/progs/raw_tp_null_fail.c
+@@ -2,23 +2,90 @@
+ /* Copyright (c) 2024 Meta Platforms, Inc. and affiliates. */
+ 
+ #include <vmlinux.h>
++#include <bpf/bpf_helpers.h>
+ #include <bpf/bpf_tracing.h>
+ #include "bpf_misc.h"
+ 
+ char _license[] SEC("license") = "GPL";
+ 
+-/* Ensure module parameter has PTR_MAYBE_NULL */
++extern struct task_struct *bpf_task_acquire(struct task_struct *p) __ksym;
++extern void bpf_task_release(struct task_struct *p) __ksym;
++
++/*
++ * Ensure the module tracepoint argument is trusted-or-NULL while allowing
++ * a fault-protected read without an explicit NULL check.
++ */
+ SEC("tp_btf/bpf_testmod_test_raw_tp_null_tp")
+-__failure __msg("R1 invalid mem access 'trusted_ptr_or_null_'")
++__success __log_level(2)
++__msg("R1=trusted_ptr_or_null_sk_buff")
+ int test_raw_tp_null_bpf_testmod_test_raw_tp_null_arg_1(void *ctx) {
+     asm volatile("r1 = *(u64 *)(r1 +0); r1 = *(u64 *)(r1 +0);" ::: __clobber_all);
+     return 0;
+ }
+ 
+-/* Check NULL marking */
++/*
++ * Ensure sched_pi_setprio's second argument is trusted-or-NULL while allowing
++ * a fault-protected read without an explicit NULL check.
++ */
+ SEC("tp_btf/sched_pi_setprio")
+-__failure __msg("R1 invalid mem access 'trusted_ptr_or_null_'")
++__success __log_level(2)
++__msg("R1=trusted_ptr_or_null_task_struct")
+ int test_raw_tp_null_sched_pi_setprio_arg_2(void *ctx) {
+     asm volatile("r1 = *(u64 *)(r1 +8); r1 = *(u64 *)(r1 +0);" ::: __clobber_all);
+     return 0;
+ }
++
++SEC("tp_btf/sched_pi_setprio")
++__failure __log_level(2)
++__msg("R1=untrusted_ptr_task_struct")
++__msg("R1 must be a rcu pointer")
++int BPF_PROG(trusted_or_null_walk_is_untrusted, struct task_struct *task,
++	     struct task_struct *pi_task)
++{
++	struct task_struct *parent, *acquired;
++
++	parent = pi_task->real_parent;
++	acquired = bpf_task_acquire(parent);
++	if (acquired)
++		bpf_task_release(acquired);
++	return 0;
 +}
 +
- static inline bool bpf_may_fault_on_deref(enum bpf_reg_type type)
++SEC("tp_btf/sched_pi_setprio")
++__failure __msg("R1 must be a rcu pointer")
++int BPF_PROG(derived_ptr_null_check_does_not_restore_trust,
++	     struct task_struct *task, struct task_struct *pi_task)
++{
++	struct task_struct *parent, *acquired;
++
++	parent = pi_task->real_parent;
++	if (!parent)
++		return 0;
++
++	acquired = bpf_task_acquire(parent);
++	if (acquired)
++		bpf_task_release(acquired);
++
++	return 0;
++}
++
++/*
++ * In contrast, checking the original trusted-or-NULL pointer removes
++ * PTR_MAYBE_NULL while retaining PTR_TRUSTED.
++ */
++SEC("tp_btf/sched_pi_setprio")
++__success
++int BPF_PROG(original_ptr_null_check_retains_trust,
++	     struct task_struct *task, struct task_struct *pi_task)
++{
++	struct task_struct *acquired;
++
++	if (!pi_task)
++		return 0;
++
++	acquired = bpf_task_acquire(pi_task);
++	if (acquired)
++		bpf_task_release(acquired);
++
++	return 0;
++}
+diff --git a/tools/testing/selftests/bpf/progs/test_tp_btf_nullable.c b/tools/testing/selftests/bpf/progs/test_tp_btf_nullable.c
+index cf0547a613ff..b7914224ba19 100644
+--- a/tools/testing/selftests/bpf/progs/test_tp_btf_nullable.c
++++ b/tools/testing/selftests/bpf/progs/test_tp_btf_nullable.c
+@@ -7,7 +7,7 @@
+ #include "bpf_misc.h"
+ 
+ SEC("tp_btf/bpf_testmod_test_nullable_bare_tp")
+-__failure __msg("R1 invalid mem access 'trusted_ptr_or_null_'")
++__success
+ int BPF_PROG(handle_tp_btf_nullable_bare1, struct bpf_testmod_test_read_ctx *nullable_ctx)
  {
- 	/*
-@@ -1333,7 +1338,9 @@ static inline bool bpf_may_fault_on_deref(enum bpf_reg_type type)
- 	 * protection, that is, the ones bpf_convert_ctx_accesses() has to
- 	 * turn a BPF_LDX into a BPF_PROBE_MEM one for.
- 	 */
--	return type == PTR_TO_BTF_ID || (type_flag(type) & PTR_UNTRUSTED);
-+	return type == PTR_TO_BTF_ID ||
-+	       (type_flag(type) & PTR_UNTRUSTED) ||
-+	       bpf_is_trusted_or_null_btf_ptr(type);
+ 	return nullable_ctx->len;
+@@ -21,4 +21,47 @@ int BPF_PROG(handle_tp_btf_nullable_bare2, struct bpf_testmod_test_read_ctx *nul
+ 	return 0;
  }
  
- static inline bool bpf_prog_has_arena_ctx_arg(const struct bpf_prog *prog)
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 8f585ceb2cd5..386401fe051d 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -6116,6 +6116,15 @@ static int check_ptr_to_btf_access(struct bpf_verifier_env *env,
- 	if (ret != PTR_TO_BTF_ID) {
- 		/* just mark; */
- 
-+	} else if (bpf_is_trusted_or_null_btf_ptr(reg->type)) {
-+		/*
-+		 * An unchecked load through a trusted-or-NULL pointer is
-+		 * fault-protected. Any pointer derived from that load must be
-+		 * untrusted, as a fault produces a NULL value.
-+		 */
-+		clear_trusted_flags(&flag);
-+		flag |= PTR_UNTRUSTED;
++SEC("tp_btf/bpf_testmod_test_nullable_bare_tp")
++__success
++int BPF_PROG(handle_tp_btf_nullable_mem, struct bpf_testmod_test_read_ctx *nullable_ctx)
++{
++	return nullable_ctx->buf[0];
++}
 +
- 	} else if (type_flag(reg->type) & PTR_UNTRUSTED) {
- 		/* If this is an untrusted pointer, all pointers formed by walking it
- 		 * also inherit the untrusted flag.
-@@ -6591,7 +6600,8 @@ static int check_mem_access(struct bpf_verifier_env *env, int insn_idx, struct b
- 		if (!err && t == BPF_READ && value_regno >= 0)
- 			mark_reg_unknown(env, regs, value_regno);
- 	} else if (base_type(reg->type) == PTR_TO_BTF_ID &&
--		   !type_may_be_null(reg->type)) {
-+		   (!type_may_be_null(reg->type) ||
-+		    (t == BPF_READ && bpf_is_trusted_or_null_btf_ptr(reg->type)))) {
- 		err = check_ptr_to_btf_access(env, regs, reg, argno, off, size, t,
- 					      value_regno);
- 	} else if (reg->type == CONST_PTR_TO_MAP) {
++SEC("tp_btf/bpf_testmod_test_nullable_bare_tp")
++__failure __msg("pointer arithmetic on trusted_ptr_or_null_ prohibited")
++int BPF_PROG(handle_tp_btf_nullable_arith, struct bpf_testmod_test_read_ctx *nullable_ctx)
++{
++	asm volatile("%[ctx] += 1" : [ctx] "+r"(nullable_ctx));
++	return nullable_ctx->len;
++}
++
++SEC("tp_btf/bpf_testmod_test_nullable_bare_tp")
++__failure __msg("invalid mem access 'trusted_ptr_or_null_'")
++int BPF_PROG(handle_tp_btf_nullable_atomic_rmw,
++	     struct bpf_testmod_test_read_ctx *nullable_ctx)
++{
++	asm volatile ("r1 = %[ctx];"
++		      "w2 = 1;"
++		      "lock *(u32 *)(r1 + %[len]) += w2;"
++		      :
++		      : [ctx] "r"(nullable_ctx),
++			__imm_const(len,
++				    offsetof(struct bpf_testmod_test_read_ctx,
++					     len))
++		      : "r1", "r2", "memory");
++	return 0;
++}
++
++#ifdef __BPF_FEATURE_LOAD_ACQ_STORE_REL
++SEC("tp_btf/bpf_testmod_test_nullable_bare_tp")
++__failure
++__msg("BPF_ATOMIC loads from R{{[0-9]+}} trusted_ptr_or_null_")
++int BPF_PROG(handle_tp_btf_nullable_load_acquire,
++	     struct bpf_testmod_test_read_ctx *nullable_ctx)
++{
++	return __atomic_load_n(&nullable_ctx->len, __ATOMIC_ACQUIRE);
++}
++#endif
++
+ char _license[] SEC("license") = "GPL";
+diff --git a/tools/testing/selftests/bpf/progs/test_tp_btf_nullable_runtime.c b/tools/testing/selftests/bpf/progs/test_tp_btf_nullable_runtime.c
+new file mode 100644
+index 000000000000..5c9c7f94040d
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/test_tp_btf_nullable_runtime.c
+@@ -0,0 +1,35 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include "vmlinux.h"
++#include <bpf/bpf_helpers.h>
++#include <bpf/bpf_tracing.h>
++#include "../test_kmods/bpf_testmod.h"
++
++char _license[] SEC("license") = "GPL";
++
++int monitored_tid;
++int calls;
++__u64 nonnull_len;
++__u64 null_len;
++
++SEC("tp_btf/bpf_testmod_test_nullable_bare_tp")
++int BPF_PROG(handle_nullable_runtime,
++	     struct bpf_testmod_test_read_ctx *nullable_ctx)
++{
++	__u32 tid = bpf_get_current_pid_tgid();
++	__u64 len;
++	int call;
++
++	if (tid != monitored_tid)
++		return 0;
++
++	len = nullable_ctx->len;
++	call = calls++;
++
++	if (call == 0)
++		nonnull_len = len;
++	else if (call == 1)
++		null_len = len;
++
++	return 0;
++}
+diff --git a/tools/testing/selftests/bpf/progs/verifier_lsm.c b/tools/testing/selftests/bpf/progs/verifier_lsm.c
+index c724bf389f5c..fac133d90f5e 100644
+--- a/tools/testing/selftests/bpf/progs/verifier_lsm.c
++++ b/tools/testing/selftests/bpf/progs/verifier_lsm.c
+@@ -162,13 +162,13 @@ __naked int disabled_hook_test3(void *ctx)
+ 
+ SEC("lsm/mmap_file")
+ __description("not null checking nullable pointer in bpf_lsm_mmap_file")
+-__failure __msg("R1 invalid mem access 'trusted_ptr_or_null_'")
++__success
+ int BPF_PROG(no_null_check, struct file *file)
+ {
+-	struct inode *inode;
++	ino_t ino;
+ 
+-	inode = file->f_inode;
+-	__sink(inode);
++	ino = file->f_inode->i_ino;
++	__sink(ino);
+ 
+ 	return 0;
+ }
+@@ -188,6 +188,16 @@ int BPF_PROG(null_check, struct file *file)
+ 	return 0;
+ }
+ 
++SEC("lsm/mmap_file")
++__description("store through trusted-or-null file is rejected")
++__failure
++__msg("R{{[0-9]+}} invalid mem access 'trusted_ptr_or_null_'")
++int BPF_PROG(store_through_trusted_or_null_file, struct file *file)
++{
++	file->f_flags = 0;
++	return 0;
++}
++
+ SEC("lsm_cgroup/file_open")
+ __description("sleepable lsm_cgroup program is rejected")
+ __failure __msg("Program of this type cannot be sleepable")
+diff --git a/tools/testing/selftests/bpf/progs/verifier_vfs_accept.c b/tools/testing/selftests/bpf/progs/verifier_vfs_accept.c
+index 55398c04290a..17c1542cc7e1 100644
+--- a/tools/testing/selftests/bpf/progs/verifier_vfs_accept.c
++++ b/tools/testing/selftests/bpf/progs/verifier_vfs_accept.c
+@@ -100,4 +100,18 @@ int BPF_PROG(inode_rename, struct inode *old_dir, struct dentry *old_dentry,
+ 	return 0;
+ }
+ 
++SEC("lsm.s/inode_rename")
++__success __log_level(2)
++__msg("R{{[0-9]+}}=trusted_ptr_or_null_inode")
++int BPF_PROG(inode_rename_no_null_check, struct inode *old_dir,
++	     struct dentry *old_dentry, struct inode *new_dir,
++	     struct dentry *new_dentry, unsigned int flags)
++{
++	ino_t ino = new_dentry->d_inode->i_ino;
++
++	if (ino == 0)
++		return -EACCES;
++	return 0;
++}
++
+ char _license[] SEC("license") = "GPL";
+diff --git a/tools/testing/selftests/bpf/progs/verifier_vfs_reject.c b/tools/testing/selftests/bpf/progs/verifier_vfs_reject.c
+index 8f0c45421f89..2a0813258183 100644
+--- a/tools/testing/selftests/bpf/progs/verifier_vfs_reject.c
++++ b/tools/testing/selftests/bpf/progs/verifier_vfs_reject.c
+@@ -159,18 +159,4 @@ int BPF_PROG(path_d_path_kfunc_non_lsm, struct path *path, struct file *f)
+ 	return 0;
+ }
+ 
+-SEC("lsm.s/inode_rename")
+-__failure __msg("invalid mem access 'trusted_ptr_or_null_'")
+-int BPF_PROG(inode_rename, struct inode *old_dir, struct dentry *old_dentry,
+-	     struct inode *new_dir, struct dentry *new_dentry,
+-	     unsigned int flags)
+-{
+-	struct inode *inode = new_dentry->d_inode;
+-	ino_t ino;
+-
+-	ino = inode->i_ino;
+-	if (ino == 0)
+-		return -EACCES;
+-	return 0;
+-}
+ char _license[] SEC("license") = "GPL";
+diff --git a/tools/testing/selftests/bpf/test_kmods/bpf_testmod.c b/tools/testing/selftests/bpf/test_kmods/bpf_testmod.c
+index 2380b6cbdead..2da9c2464c25 100644
+--- a/tools/testing/selftests/bpf/test_kmods/bpf_testmod.c
++++ b/tools/testing/selftests/bpf/test_kmods/bpf_testmod.c
+@@ -651,6 +651,7 @@ bpf_testmod_test_read(struct file *file, struct kobject *kobj,
+ 	if (bpf_testmod_loop_test(101) > 100)
+ 		trace_bpf_testmod_test_read(current, &ctx);
+ 
++	trace_bpf_testmod_test_nullable_bare_tp(&ctx);
+ 	trace_bpf_testmod_test_nullable_bare_tp(NULL);
+ 
+ 	/* Magic number to enable writable tp */
+diff --git a/tools/testing/selftests/sched_ext/maybe_null_fail_dsp.bpf.c b/tools/testing/selftests/sched_ext/maybe_null_fail_dsp.bpf.c
+index ec724d7b33d1..ecaa36355cae 100644
+--- a/tools/testing/selftests/sched_ext/maybe_null_fail_dsp.bpf.c
++++ b/tools/testing/selftests/sched_ext/maybe_null_fail_dsp.bpf.c
+@@ -7,14 +7,13 @@
+ 
+ char _license[] SEC("license") = "GPL";
+ 
+-u64 vtime_test;
+-
+ void BPF_STRUCT_OPS(maybe_null_running, struct task_struct *p)
+ {}
+ 
+ void BPF_STRUCT_OPS(maybe_null_fail_dispatch, s32 cpu, struct task_struct *p)
+ {
+-	vtime_test = p->scx.dsq_vtime;
++	/* Pointer arithmetic on a trusted-or-NULL pointer must be rejected. */
++	asm volatile("%[p] += 0" : [p] "+r"(p));
+ }
+ 
+ SEC(".struct_ops.link")
 -- 
 2.55.0
 
