@@ -4,96 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7A89C624DE
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 09:31:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3FD1C624DE
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 09:42:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 32B0F6B0088; Fri,  4 Sep 2026 05:31:21 -0400 (EDT)
+	id A1E8B6B0088; Fri,  4 Sep 2026 05:42:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DC8A6B008A; Fri,  4 Sep 2026 05:31:21 -0400 (EDT)
+	id 9D0676B008A; Fri,  4 Sep 2026 05:42:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F37F6B008C; Fri,  4 Sep 2026 05:31:21 -0400 (EDT)
+	id 8E6BF6B008C; Fri,  4 Sep 2026 05:42:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E6E5A6B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 05:31:20 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E19851C3337
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 09:31:18 +0000 (UTC)
-X-FDA: 85175561436.02.E9B3E58
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 42D2840005
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 09:31:17 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EnF573Ue;
-	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 67F046B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 05:42:30 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DC76F40142
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 09:42:29 +0000 (UTC)
+X-FDA: 85175589618.09.B6C94D7
+Received: from mta0.migadu.com (out-70.mta0.migadu.com [91.218.175.70])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 80C6A100005
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 09:42:27 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ndS5Nwkz;
+	spf=pass (imf05.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.70 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788514277;
+	s=arc-20220608; t=1788514948;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ntGqMbIytPTwLlJR1fA/xTB+g7J2BTUkRTGlMKhEpBI=;
-	b=08Jod/bis5AlWcOLCv3XDscMPA9uyGEGwr27rwl6wIHaw2vpkVdJG46l8A0jq8OAIkFkkT
-	Ybido1u9DAwmlIyrdIG2BjqLw/BkaB5t2YtcVahtRhY0tcQngO/bfBQyWGa3VVNRAOMbQ+
-	hddrvb8FGuqaoX8SZgjuh6MK2EIcZU8=
+	bh=YMHEPjY05VrVAvXYJN5aQJ9iulTQ573kLxiZf3AJdu4=;
+	b=DMH+nNDtDxEWey3xNmvduZPigYaz+21iAnq5+UQbuoOfwui0tgCLtQ5YGRFflBjTqczt83
+	l7JlUm0IXUCSNdlLh7UdwDsaud53kE4grR9LThUNVfnmcQQ0ffH7fMdQS+wSUgdR2Z/NHa
+	yvq4gt51XAL+a7bQs5kWCx5lVryAcno=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788514277;
-	b=CQeMgumioIRrq4aYkQ6rqOw4rwiQbej6GX49Z0etu02AP+7ElUWsdx16i7y1Y0Wry0Mcst
-	2odl9Jwg53qWqA2fzyU76SUoChbUGWyC2tKynQ6O7iredQOi3pnBsEzCR3qTQIzQPbju2i
-	U9sogFdmw1/8N3mbryJ/AABk8lUISHU=
+	t=1788514948;
+	b=Ezxr9Jg5jSrCsGi2PTSHBuXpMtPZUc1ekhJwahkxDqOtkAFNOjKR/W834yglywF89lRubW
+	0Y4mYOA2WizUbpv78IK5SU9L6zp3bEE3GOsx2dhfsMXmVL1qve6YSpDzrX67j1ULfWa9KG
+	6AdU61gX6dswNRA6/HocE+9nhe9BIFw=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EnF573Ue;
-	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 78B9660A6D;
-	Fri,  4 Sep 2026 09:31:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE4991F00A3D;
-	Fri,  4 Sep 2026 09:31:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788514276;
-	bh=ntGqMbIytPTwLlJR1fA/xTB+g7J2BTUkRTGlMKhEpBI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EnF573UetbEzUTlGgz4Tk/HQtIPjMLYjCzaINKkr83N0oVneVEIXv2SAaw7NFguOD
-	 HszNUHvb6pel1Q8+9mMkTNoN8ouZCDDtIWGnq+Y7SdT/t755RNwfjkCOWxii5TURV7
-	 1cmDnH1wsJ6kUAzaR33Y7Zw5Q/I/X7pg6LgaikJ/PPdtiAcvZemp4uuIH0q2gcj1dH
-	 WYujHcCSYUyZD+GzDq/eM9lmkPQHH/4CwFRz47OAM+WgM7PIXRzOn0nIL2JXHc3CKz
-	 p7NOLDy38otOuXtrAUkU0o6muWT3qYtTElKJDUSH1H4HEyXqaVIghB3GDP4zRdL4Sc
-	 Wz/r90OEWi/ug==
-Date: Fri, 4 Sep 2026 11:31:09 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Jann Horn <jannh@google.com>
-Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Jeff Xu <jeffxu@google.com>, =?utf-8?B?VGhpw6liYXVk?= Weksteen <tweek@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Pedro Falcato <pfalcato@suse.de>, David Hildenbrand <david@kernel.org>, linux-mm@kvack.org
-Subject: Re: [PATCH v2 2/3] proc: query LSMs for introspective mem access (if
- PROC_MEM_FORCE_ALWAYS)
-Message-ID: <20260904-busfahren-klarkommen-kodex-da59b836bef2@brauner>
-References: <20260825-selinux-pokemem-v2-2-b46bc64916d8@google.com>
- <82929c994076d95f99560ecc67f6cfce@paul-moore.com>
- <CAG48ez1rd3cFhmGn7mWkaVvGqYg+cDiGUhuhH6r51dUm-QBXUA@mail.gmail.com>
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ndS5Nwkz;
+	spf=pass (imf05.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.70 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=AEOl6nzdf3KLgAdeyrWM9HJQIsd4abDqxzz7JxSO0f8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788514945; v=1; x=1789119745;
+ b=ndS5NwkzYWT3+Ing3GlOaqW5rLELXaiH7MT5vuB5bjLRRI5gaxbOk4m6+JRel3bknHUQzhn2
+ AsFAC6onmdX29suSE7rIasU1bDEJbvdbcHieWxMtTatInD1p2lPP/q/016Ar9vVc/XLVsxSnvYz
+ 4dDTdx1bNX3VmqrnBAIpnZks=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 6ce36c104c4d392e;
+	Fri, 04 Sep 2026 09:42:25 +0000
+X-Mizu-Trace-ID: 6ce36c104c4d392e
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 4 Sep 2026 17:42:20 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Kairui Song <ryncsn@gmail.com>, Baoquan He <hebaoquan@kylinos.cn>,
+	linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
+	kasong@tencent.com, baohua@kernel.org, youngjun.park@lge.com,
+	hannes@cmpxchg.org, yosry@kernel.org, shikemeng@huaweicloud.com,
+	chengming.zhou@linux.dev, david@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 00/16] xswap: extendable swap device backed by zswap
+Message-ID: <apqSfFGyJpUMWCY9@fedora>
+References: <20260827094509.1016740-1-hebaoquan@kylinos.cn>
+ <apVNB2FRTFMDtvGP@KASONG-MC4>
+ <apaw_XmqnEcY8sv7@MiWiFi-R3L-srv>
+ <CAKEwX=MU9uXVenEu7he+h-Pq7K3BmCGvvKS-KiPK61Xd0ox_mQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAG48ez1rd3cFhmGn7mWkaVvGqYg+cDiGUhuhH6r51dUm-QBXUA@mail.gmail.com>
+In-Reply-To: <CAKEwX=MU9uXVenEu7he+h-Pq7K3BmCGvvKS-KiPK61Xd0ox_mQ@mail.gmail.com>
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 42D2840005
-X-Stat-Signature: 9k3iw1x4u6q6p7hiqdam9xq1fkrfgmyd
-X-HE-Tag: 1788514277-177142
-X-HE-Meta: U2FsdGVkX1+1l/aJfILRny7i14xfZA5WjTDsu9zz8gOVl17QbOoS9LarWLmIdOtcpqpyt1VJZtDtnpHYr8o2kv6oNRuNc7u+WPZ/dF+m02HfSlCRSud8WcxT5oZxxll0/5CAuQuuylohFZ0S1CcgoCc7knPonhNsA2DkykXmDiyOJeW3JGDdnx7QJ69+ay8mNiAWW4RIrcHdOzw+rGBrbJPO2dBbdjAHFKXgwuDRNLLMYzunLVZ7H0ATM4cQS7/BRHYI9iw7tUNYMa74njsWCJGHoL2DfNeO+KCs0roU8Xrr2Bq3N22dKNeBMq5TPMRUr+VYU2EyYQdzBImhkW97EjK/6NuE+05hCxG/83VYLwj7VV50Ha4hqCVxN9GF6HK3GRhA32RjjVXl4oztklgW5LdKICYeWR95a/69NbMkUm58aZu1OX4IIRhmzo04oUPsSK1o2fv4Smrs7kpfA0JqE9PfG98WhWNB9JzRq66eg74rhfdkESX2d3G0KKWMWh7IvKNZYrY0NKWze4BUZ5B28Ok9xmZvJ/HCgIisOy8EzMcEMmUb1A1affhNActBok5YQl99T/jQjb7gsMpe75sn49mDCszqvCr+uAw8Z0lJdsvQzQeLt8pg5CzBu96h11vvYjGN2zyo9w9PzDw48BQmZ479n/iylz4ajKUexNOfd+1LBQo27UYW1CRH67Xx3eYh7b3USEp8Oh2yA/Gz/FKDLULI5iAmBt5Yk0NOYPBe7QteKul9H9LxBc4ksrcdyC13pUeIGIlU4h3EIfN4NFcS0NNrgkO2GOXJkE4R9wGqoSS4dmNEIEspd8QmDxiu4QBBRTraiFciJGh+fSvdGU46Ix14imKbJv9SOhKQCm7e2k3/w4wrWfuL1mkOXGHWbOnXNhjO+CnR+xtoD41pIzaP8XGZXYF2SWymlkCujWnxsSYBNYq4DlJPAqzgAfBXrnDCEpLcdkyTF7M+6L18Thp
- zfyTSpnx
- dJwSVkrOyfTKoWmGhdnF1/k53LUBtn6bugssodubzLBg8vDGiu9jxkwMAb74MrWWI1qiXX7CJFBcFzcRupLDoEHywaeXutinl4swid7uNEAK/aJJd9p1y4sZHx7EoWPXioXNbUx8QBMGGfph7ZibkdLPfvGn+zRGTcePZWC5rL+lpb2M4eVZUIXntu7PRi3EI7TySsxOcjoPZ1cwmj8p30CYM/qnVjWCGWCdGoH+ER8qXS4M9eOTEaJcKHMRFXM0BYMTQPoAWfN/K7ZrVVvMNjc1v4+293eBpt85F6qiT+mjijzkhobD0VSIQkh56WbVES9MrKBw+0hkzczMU89WLKMPIfHqf178RmQr8H9wfDsdBeBR//2+dRtTquCb62zp/SVHvcutHnkhzUyxvIw2TqZOke9Np81UjLxkk8RBhLkxUH2sx84hC/R9Ob+rKiXLkIeN1bMY+y5DBLF1yyj1INNYC5xD7I0Wo5axBSRUijywtimoUzh0O0k8dWItm3tuLGywGQPTy2pN6Soq1ijhd4BY9ZGN5xYIPTu6OV0rMEtiX8z4=
+X-Rspamd-Queue-Id: 80C6A100005
+X-Stat-Signature: 1wccydach6iupo58cbb9o3x47bq1mqf1
+X-HE-Tag: 1788514947-970249
+X-HE-Meta: U2FsdGVkX18DUesB9lF3OI5a08ReCiSE2r3jOUMcMdQlokua84miM5yjyW6j6G/WfB/aA0yaMasa3XO8Qj3OIXuYBz8ZYFI0fZLm1DQGG21dpp1ueon3h8JHty2ys6TrdYBGzF4S4V+wFH1PTpfKK5NJtZBBbXOxE8sgKQCBVEXxF5HrFMGztezdJcoGqCOsTZWRC8c8wBASxpcXaWJYGP3YvkDPlgb0QzU9wjyPbLGMMu79cgDHf0dDSIdGGKmV+XyEWqT68kLZjJXMe6J7W8kCBeXdwkk5PIHbXuIdN/6F9EXQfp8KoP1Rg9XWRHhTzKkT1BZmEKLuR0ceXuztgncw08JV6WMaM5z1a+UM+SlCt23TfPgx+Xu23CpoBbqcOhkvxBTGv6wGVZRfO5hADbPGE/IlDe/AQQkuhn/aBdKh2guPAV871UeG6xpZyQ1XrFNNFgheulXelBadnYGm4xxBYnDU3/eEeiw/Uh95Pmq29grdJGQuQgmOlVBBGwIiI6/yvIz04Q9B+UnMSw+jQCvYF13qty051BCQO6E5AFM8ReSZJu8FSRCduH90TojTszXbrk/NOK4FDerVzO+6dPcpADmFOyxA5vGxEiNK/p4g2Eo/ANiNAalMrlpVNY+YYQUij9jMdUrZnVKdgLVfsfcR5cTDkqkce+0v08MKeDFytwq3gGbdq5zGYjgOrr8fJQ921bPDvmpf3Uvy0LBkAHKd/cyfoDnU0eb7EOvdXQGvmFA2u3947Eyr4XskYDPKBXfEyKxmTVYbN+UYcwnSvb5VsnMTTE8M6HYMjM5nvuDaXTIdz81TYkQlKCMDSSWw0SlRYdlklAeeptEe5knP0aMm/Hb7PstKEhehqNRisUgqv9gwwFqAfIvHRrB1Mb2dnolxJEQ4MLmHXEialX5B/NAF67yHGCGHPd0NE34WU6Ut/9UB3IH6SjqFDPPMPaP69VJychuMmMNhWU++gNK
+ XYlRAh9u
+ hB+dNuB2yo5OwU+G2AFUwNCGc8zdSxe4eAg4Rc2zg8+SVqOnlEYtwZnpIntzgmLzNY9YNEkysBHQsEMNtaGKmv1yoX6zpW5fjo7rgdqPzqlbXerGa34zmrZg+vhUarOWk7s7kvp65xq2AvQMXf4QAJ2rWKUIP2adxqN2ONGAWoRXRlw5OlCvwoO4Lsusr+d/CPUQ+Rv4h8W9gwGMHj58eOs4w0aM+KG0OlFTaGAoDs4w4X/qx/X6eo994ge8Kh0BneTfEOE+2Rfla+zaLXcpbZiAvzTvPvAdqyQ/uQXR5yzmjyIo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,104 +97,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 28, 2026 at 03:03:26PM +0200, Jann Horn wrote:
-> On Fri, Aug 28, 2026 at 3:10 AM Paul Moore <paul@paul-moore.com> wrote:
-> > On Aug 25, 2026 Jann Horn <jannh@google.com> wrote:
-> > > If the system is running with PROC_MEM_FORCE_ALWAYS, LSMs currently have no
-> > > good opportunity to block a process from overwriting read-only code in its
-> > > own address space through FOLL_FORCE writes via /proc/self/mem.
-> > > The security_ptrace_access_check() LSM hook is bypassed when a process
-> > > opens /proc/self/mem because this is considered "introspection".
-> > >
-> > > This causes a hole in SELinux EXECMEM enforcement, which tries to ensure
-> > > that a process cannot create executable anonymous pages.
-> > >
-> > > PROC_MEM_FORCE_PTRACE prevents that and ensures that such FOLL_FORCE
-> > > accesses are only possible when the LSM allows ptrace() attachment; but it
-> > > is unclear how quickly PROC_MEM_FORCE_PTRACE can be deployed in
-> > > environments running lots of third-party code, such as Android.
-> > >
-> > > So, introduce a new LSM hook that can forbid FOLL_FORCE specifically for
-> > > such "introspective" accesses.
-> > >
-> > > Signed-off-by: Jann Horn <jannh@google.com>
-> > > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> > > Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > > ---
-> > >  fs/proc/base.c                |  9 +++++++++
-> > >  include/linux/lsm_hook_defs.h |  1 +
-> > >  include/linux/security.h      |  6 ++++++
-> > >  security/security.c           | 20 ++++++++++++++++++++
-> > >  4 files changed, 36 insertions(+)
-> > >
-> > > diff --git a/fs/proc/base.c b/fs/proc/base.c
-> > > index bec6197329dc..dc6fdcb47b79 100644
-> > > --- a/fs/proc/base.c
-> > > +++ b/fs/proc/base.c
-> > > @@ -851,6 +851,11 @@ static int __mem_open(struct inode *inode, struct file *file, unsigned int mode)
-> > >  /* private_data for proc_mem_operations */
-> > >  struct mem_private {
-> > >       struct mm_struct *mm;
-> > > +     /*
-> > > +      * Was the ptrace access check on open bypassed because the opener used
-> > > +      * the same MM (introspection)?
-> > > +      */
-> > > +     bool opened_by_owner;
-> > >  };
-> > >
-> > >  static int mem_open(struct inode *inode, struct file *file)
-> > > @@ -864,12 +869,14 @@ static int mem_open(struct inode *inode, struct file *file)
-> > >       priv->mm = proc_mem_open(inode, PTRACE_MODE_ATTACH);
-> > >       if (IS_ERR_OR_NULL(priv->mm))
-> > >               return priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
-> > > +     priv->opened_by_owner = priv->mm == current->mm;
-> > >       file->private_data = no_free_ptr(priv);
-> > >       return 0;
-> > >  }
-> > >
-> > >  static bool proc_mem_foll_force(struct file *file, struct mm_struct *mm)
-> > >  {
-> > > +     struct mem_private *priv = file->private_data;
-> > >       struct task_struct *task;
-> > >       bool ptrace_active = false;
-> > >
-> > > @@ -886,6 +893,8 @@ static bool proc_mem_foll_force(struct file *file, struct mm_struct *mm)
-> > >               }
-> > >               return ptrace_active;
-> > >       default:
-> > > +             if (priv->opened_by_owner)
-> > > +                     return security_mem_foll_force_opened_by_owner(file->f_cred) == 0;
-> > >               return true;
-> > >       }
-> > >  }
+On 09/02/26 at 10:10am, Nhat Pham wrote:
+> On Tue, Sep 1, 2026 at 7:03 AM Baoquan He <baoquan.he@linux.dev> wrote:
 > >
-> > First things first, we've got to shorten that hook name :)  What do you
-> > think of security_proc_mem_foll_force()?
+> > On 09/01/26 at 01:54am, Kairui Song wrote:
+> > > On Thu, Aug 27, 2026 at 05:44:50PM +0800, Baoquan He wrote:
+> > > > xswap is an extendable swap device with no backing storage. Swapped-out
+> > > > pages live only in zswap, so the device wastes no disk space and its
+> > > > size is independent of any physical device.
+> > > >
+> > > > xswap decouples PTE swap entries from physical backing storage. The
+> > > > cluster_info array is backed by a sparse vmalloc (VM_SPARSE) area that is
+> > > > grown and shrunk on demand:
+> > > >
+> > > > - Grow: when cluster allocation runs out of free clusters and the device
+> > > >   is below its ceiling, more physical pages are mapped into the VM_SPARSE
+> > > >   area and their clusters are added to the free list.
+> > > >
+> > > > - Shrink: when contiguous free clusters accumulate at the tail of the
+> > > >   mapped range (tracked in O(1) via nr_free_tail), they are unmapped and
+> > > >   the backing pages freed.  Shrink is deferred to a workqueue to avoid
+> > > >   lock recursion.
+> > > >
+> > >
+> > > Hi Baoquan,
+> > >
+> > > I didn't check too many details on how the implementation in previous
+> > > RFC until now, After looking at it, using VM_SPARSE to setup the cluster
+> > > info area is a really smart idea, really good job!
+> > >
+> > > I think many info are missing in the cover letter though so I wasn't
+> > > sure how this grow and shrink works from the description, after
+> > > checking the code, it looks much cleaner to me now, correct me
+> > > if I'm wrong:
+> > >
+> > > Every xswap device will have a huge and fixed "hard limit"
+> > > (si->max and si->nr_clusters_max), and practically can be considered
+> > > large enough to hold any workload, and won't change once swapon
+> > > is done.
+> > >
+> > > The actually data (si->cluster_info) of xswap device is completely
+> > > sparse and dynamic using VM_SPARSE, and so we don't need to change
+> > > any existing routine. It grow/alloc and shrink/free automatically by
+> > > the kernel, limited or driven by a "soft limit" (si->nr_clusters
+> > > and si->pages) which you can modify using the interface below.
+> >
+> > Thanks a lot for careful checking, and you are quite right about the
+> > mechanism and details.
+> >
+> > >
+> > > Once concern is that the "hard limit" is now the total RAM size. Isn't
+> > > that actually a bit small? Will be better if that one is tunable too?
+> > > With a parameter, and before swap on, as the hard limit is hard to
+> > > adjust once swapon is done. Any thing limiting this?
+> >
+> > Chris and I talked about this, we both think the total RAM size is a
+> > good hard limit. Because xswap is similar with zswap/zram in essence by
+> > compressing memory content to save memory. So the real limit is the
+> > zswap pool, not the slot count. In fact it's never able to utilize the
+> > total system RAM, right? Making it larger than system RAM is
+> > meaningless.
 > 
-> If we move the "opened_by_owner" part into a flag then I guess that
-> works... will do.
+> No. This is not quite right. The size of this device is the size of
+> the "swapped out" data, which is multiple times the post-compression
+> size (i.e zswap pool size). The multiple here depends on how well the
+> data is compressed.
 > 
-> > Beyond that, we really try to avoid making LSM hook calls conditional.  It
-> > can limit what an LSM can enforce, it tends to be a bit more fragile, and
-> > it adds some unnecessary work in the case where CONFIG_SECURITY is
-> > disabled.  I would suggest passing 'opened_by_owner' flag as a second
-> > parameter to the LSM hook and calling the hook unconditionally in the
-> > default switch case as a replacement for the 'return true;' statement.  I
-> > understand it may seem a bit odd, but we try to make the LSM interface as
-> > generic as possible with respect to different models and this is one way
+> This is not to consider the other swap backends:
 > 
-> I guess I can do that, but then the question becomes, what other modes
-> of using the LSM hook that don't currently exist in the kernel should
-> I be supporting with this? I can make this a parameter, but any LSM
-> policy that actually uses the parameter in a different way would
-> probably be buggy/inconsistent, unless other new LSM hooks are added.
+> 1. zero-filled swap pages have effectively 0 memory footprint.
 > 
-> If your intent is to make the hook work for any /proc/$pid/mem access,
-> including when the caller is ptrace-attached, then I guess I have to
-> move around the security hook call in proc_mem_foll_force() a little
-> bit. I guess I'll do that in v3, though I really don't like trying to
-> come up with a reasonable in-kernel API contract for a scenario that
-> currently has zero users.
+> 2. disk swap pages (I know this is not currently supported yet, but
+> it's a consideration for the overall design).
 
-So we effectively landed on what I proposed in the first version... 
+You are right, system RAM may not be a good hard limit. Then 2x system
+RAM? 
+
+> 
+> >
+> > Memory hotplug is a case in which system RAM can be enlarged during
+> > system running, while that can be taken into account later as a enhanced
+> > feature if it's really wanted.
+> 
+> A lot of these problems are self-inflicted. If we design a fully
+> dynamic swap device, then it's not in consideration.
+
+As initial version, I'd like to make it not fully dynamic. The current
+mechanism can make the change of xswap being full dynamic very easy.
+I am glad to see people can post patch to change it later with
+justification. I don't think we need to make everything perfect and anyone
+satisfied at the beginning.
+
+> 
+> >
+> > >
+> > > And I think these details better be mentioned bit more too.
+> >
+> > Sure, I can put these thoughts into cover letter or patch log for
+> > reference.
+> >
+> > >
+> > > > A per-device ceiling (nr_clusters) bounds growth and is adjustable at
+> > > > runtime via debugfs.
+> > > >
+> > > > Interface:
+> > > >
+> > > >   /sys/kernel/mm/xswap/create           write "<percent> [<prio>]" to
+> > > >                                         create a device; percent is a
+> > > >                                         percent of RAM (0 for the default),
+> > > >                                         prio is an optional swap priority
+> > > >                                         (default DEF_SWAP_PRIO)
+> > >
+> > > With what I have read so far, the mandatory percent limit here is kind of
+> > > strange, even with 0 as default. Why not make both args optional and just
+> > > let it grow without any limit by default? It looks more "fully dynamic"
+> > > that way.
+> >
+> > I'd like to clarify why we default to a soft limit rather than "no limit".
+> >
+> > The soft limit is the administrator's deliberate size choice, similar
+> > to how zram requires an explicit size. On a multi-TB system the
+> > cluster_info array is not free, so planning how much of it to allow is a
+> > real decision. The current behavior is: grow up to the soft limit as usage
+> > demands, then stay there. We do not shrink on idle, and shrink only happens
+> > when the admin lowers the limit. So there is no grow/shrink oscillation in
+> > normal operation.
+> >
+> > A default of "no limit / fully dynamic" will instead let the device grow
+> > without restriction under memory pressure. While allocating cluster_info
+> > pages exactly when memory is scarce, relying on shrink to reclaim afterwards,
+> > which is the oscillation we want to avoid. So we'll make both create arguments
+> > optional, but the default will be a sensible ceiling rather than unbounded.
+> >
+> > >
+> > > >   /sys/kernel/mm/xswap/destroy          write a swap type to tear down
+> > > >                                         a device
+> > > >   /sys/kernel/debug/xswap/type<N>_cluster_limit
+> > > >                                         read/write the per-device
+> > > >                                         cluster ceiling
+> > >
+> 
+> What's the point of having multiple xswap devices if it's going to be
+> dynamic, cluster-based anyway?
 
