@@ -4,129 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCA5DC624DE
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 16:04:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 228ECC624DE
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 16:04:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F08BF6B0095; Fri,  4 Sep 2026 12:04:32 -0400 (EDT)
+	id 8EE216B0096; Fri,  4 Sep 2026 12:04:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE25B6B0096; Fri,  4 Sep 2026 12:04:32 -0400 (EDT)
+	id 8C5CB6B0098; Fri,  4 Sep 2026 12:04:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF6BE6B0098; Fri,  4 Sep 2026 12:04:32 -0400 (EDT)
+	id 7DC056B0099; Fri,  4 Sep 2026 12:04:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BB3826B0095
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:04:32 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5C5F880126
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:04:32 +0000 (UTC)
-X-FDA: 85176552384.01.2B5FFA7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 82EE980012
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:04:30 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YKLd9aDj;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788537870;
-	b=PIeIuJCD2TgPyptOIxaYexPkboW2DVrv9ZbIHQRjPgtRfoUhzWRItbXQugWbb87kgMjdpy
-	DutDMBsjcRyhdJ3v/hxKc87BxZrysIpj1/WDAlrY5wYaZisFke83U1iQraxrPH6LXweda3
-	xw40VkFU1omcoRmN7/qkWGv2BID6oqs=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YKLd9aDj;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 5718C6B0096
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:04:55 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D9D5280116
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:04:54 +0000 (UTC)
+X-FDA: 85176553308.30.54476DD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id E2746140006
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:04:52 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jQpvkg59;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788537870;
+	s=arc-20220608; t=1788537892;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kfO05etABMv82BXz4+vLRRcFamVzSGusRFH1mdkPthE=;
-	b=DScuQLLhOiVDSOzsoZb6QbY33t9EAMvEkotfz0+rgBLqA9Amxd4PIikO4ztZdL6cXG98OQ
-	NPQGLXPC/qxQOEJ+allBBY/eXQTZCWz0vee1q/2EZpn5Fv/1oq0jh+7NL6t0gI3QPxomHj
-	SLGS/zdHIfMrAcMNu/mjjb4L0PWlkGs=
+	bh=Gmmk1t0C2Y1hPKizPmgrlyI9EGo6c5QQyx4vRZ8NgY4=;
+	b=BDMw4rVPEZvedVLMAho5yZsH3vRf+wn5eKwWV8b4xKDdTKWteFILLva42+tbQWdXligJFJ
+	rcN1tDx/b1dPywY5VU68xGv5W2EfZ2xmGaoPp8E6P3gWgWOs9h8tuynlqvAwrf7R9tVihh
+	RK44G/2HZ44ovUlBruePQ3mysgfpi2k=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jQpvkg59;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788537892;
+	b=tTR2AUE/BadryOZBSSB9C+I7KSkoWsH3Lue4YN4WCq44vOYsFZhltlgEWxrt/sNifrU1OL
+	I3QKYeuvd1oBbdBPVqzAHe7yWmkSuC6ZeR6vFLIvvAB5FiMWL4udCnTal42gxbl41NsvcU
+	uUV2P0X1fMTUxr2K6iZbW2pC+l349ZE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A66BE4168A;
-	Fri,  4 Sep 2026 16:04:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B2D1F00A3D;
-	Fri,  4 Sep 2026 16:04:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 66BAB60210
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:04:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20ABF1F00ADE
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:04:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788537869;
-	bh=kfO05etABMv82BXz4+vLRRcFamVzSGusRFH1mdkPthE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YKLd9aDjjzXaQ4SfS3x8Hrp3POL1gK2WdY77i3qp+ramm5iyO91UoC/iFAsMbwNnq
-	 3RAnVVfnLjNjOv+8Sj1IwZT0Kp77cCf/Iim7UBGVSQVFt+9tlobHceHzhgMbS8XypL
-	 Ks0y4rW62Zfjrwc/uSzqErFGK8OkezAc4VreJyl3DQ7yzYtHKSG5aw3Nt9ENi4aHF8
-	 Gl6JBit9umqQFGaVMR3re/TRFPoJIRHPU3DZIz6CQIcXE85atIZ/7C/U6RDSin45m+
-	 Y9zzZCv6MGim/GrcPxnbPt2+q8Et9Ew9HW8d3MmVh5cu2ObIMVyXcwwK1BuCfCZBoj
-	 vOgdB3e/7s+iw==
-Message-ID: <b81e9fba-9567-4bd4-ad9a-08c8f03dbb14@kernel.org>
-Date: Fri, 4 Sep 2026 18:04:25 +0200
+	s=k20260515; t=1788537892;
+	bh=Gmmk1t0C2Y1hPKizPmgrlyI9EGo6c5QQyx4vRZ8NgY4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=jQpvkg59xrZaJqQj+BYwlw06oZ5X3kZsfc3kDpSgWhZsaJNcUxCx6cX+MkxYh2Dyp
+	 l/JSc8jOWtNEMwlBZ8hjQbZasEFSQP2sqx5B79sPYmew10yzO5Ta+sespMRlQAYf+0
+	 cSCfUL+Z5PlqK+g95rD2QzihJB1EQIVKcYqio6B+j8LFWfseTpgF86OMJ/1X1FzYIj
+	 QqHe1xYF2dMZjefgkMbj1PHtx+GaQ10Tl9eJxSKKFdQRVkEeyI2KjoSWpj/FXS232T
+	 CoR321UJ3UMbQFKbJ44imBL++K4YtuwvIpspN+AHVC5Z6UKIo0sKZ8cPMw8Wnui0Us
+	 e9GyOjoiLJVBQ==
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c25b661d37dso170400666b.0
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 09:04:52 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBys3Gvu0of/+t+6joAYGfd6UJ8n8bovU08DUjT+eea6N2L0vJWA9uq/tu/yQVSbRQLebhsed9myaQ==@kvack.org
+X-Gm-Message-State: AFuF++nIZ9mHkBQMrfIPPcZ7j28B2lUxtA7OHVKYOFT9gEzeBoZXxWWy
+	q2cxefCPvHu9JI0grXtLqgi1XTn9gHm2Je268i0V+67ujCFEi0FS8o+GJEfRjmtkYZQnwiqROo6
+	vFE1aPPEiPZ2ieHxzZ+WUK+cOSfDdj50=
+X-Received: by 2002:a17:907:94c4:b0:c26:19e3:e984 with SMTP id
+ a640c23a62f3a-c2619e3ef27mr162038966b.36.1788537890836; Fri, 04 Sep 2026
+ 09:04:50 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/2] mm/slub: make the case handling in __slab_free()
- easier to follow
-Content-Language: en-US
-To: Hao Li <hao.li@linux.dev>, harry@kernel.org, akpm@linux-foundation.org
-Cc: cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260824122004.3652-1-hao.li@linux.dev>
- <20260824122513.3829-1-hao.li@linux.dev>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260824122513.3829-1-hao.li@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 82EE980012
-X-Stat-Signature: wauk1m5u9zrfjnqqc6gs8fhx4yg8mics
+References: <20260830114731.8322-1-wujianyue000@gmail.com> <cover.1788528216.git.wujianyue000@gmail.com>
+ <22625ed4915936814f766092e9d7ac6637c5b2f4.1788528216.git.wujianyue000@gmail.com>
+In-Reply-To: <22625ed4915936814f766092e9d7ac6637c5b2f4.1788528216.git.wujianyue000@gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Fri, 4 Sep 2026 09:04:39 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zMiOvhy3BZ0NjvL6Wn6e_VpVb-sZzk5bpDFuoXBHbzATA@mail.gmail.com>
+X-Gm-Features: AcwNN1WjlVqWQnVgvcTJ5MoeC1gjlI_29fN_QCooc4LogG5zdxtCzAEpPETlkYQ
+Message-ID: <CAO9r8zMiOvhy3BZ0NjvL6Wn6e_VpVb-sZzk5bpDFuoXBHbzATA@mail.gmail.com>
+Subject: Re: [PATCH v5 2/3] mm/zswap: replace the zswap_pools list with an
+ allocating xarray
+To: Jianyue Wu <wujianyue000@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: bswm4swnf6b31wcegd63u9aoz4bgota5
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E2746140006
 X-Rspam-User: 
-X-HE-Tag: 1788537870-143174
-X-HE-Meta: U2FsdGVkX1+BNM+zwIfc3KEEa/LCr9kpEpC6zX3k6kA6mSx9LV2Y0VO9o1+DOHmRpcXwe2Ld3pEMaU7orMF/oGvTszLWTGB0bvWKiIpsEBKal9UtpqpbwwFKHRDJnCQcpq/JL9eDuwow7FaM40rhRk3D4ch9ZmvkSlJwToxLDOhmVuEF4uerPRH3GdsFA5k3SC3cccgQNX1cginc775V6nkXHCFZJy8wJiMNbr0Zwk9KDFjFCEcq20VGbAarbXpazjuS/WohmMc5LLShxj7ZpOZUy43+Iq9h3QlGazVqLxXQU9W/luVWrBly9haTd/Vsn0LTQKTeAVrW9rDy1CaDmP1m80nA6zDi206AtnHR9Qwk2AegChFAbN3gMyZYYKUwfeVTOUcZO+/FiE1K3oWhrBWJmqWfUUWFmHJfdbq92CgffI/i8qPFge3/Zn+PqL+TKBiq9msU2iZwWhhBRYdDSmq9ZUFHahQOhCgbLmI9i1ui6PmjmXQBms4D/ONzCkvtei5Gy+khdKY6ZY3ZVx/T9t7DeNMtPIkyjaKKhy/S13pH1xf2cTGl+QJxVQrmBlfpj9Xpp8sT6aeTh/5Isb4LzjYkVTJxRUzLfSjrLIfyuqHrwMiWeA5K98WeItsJ6pQHulVzw6SF//UwfE300H3XcTiICt/E47QdY4RBex3i5BqprNDET3sYk1pED45+3EsBXzSEhKm1MZeWt6VBo365Gh/+Qix9mrFhjnwuf+TCAcmRlbRbbHQZz3CrzbkZL0K65HuhRCgfv354tjFrh787fwyJJIUx4Eb4QSPFrVVFhkUGBngc4d7zOavWl0HJIxWhtXIaM+84uDtminQcP8n4l+gl/VSu1DNbbVN6iereFMYUCP+Vqktm8PGXh5NFL2S8vq3bKz7J6YtH5HjL1/K82qN0few1IvIMsLVPMw3MXwO/C5mZ9GugrSHF/JfZ4p92f+ocAWG9RYBVpLBsFFP
- XgziYsoN
- hP75y4u17QQLKwHM77tuMV3lnqqc0yr9zUl6abxk/KzmBodHieHLHg4xQX99M4/Rxmz4m3YtWIdy0PzxL22aehUApf0oqHYbdReUKL34+er8ZA2hoOb0fo2GcRso8NJRKTXZrauXz3q6E7/tgVUoUwrY1ItDVQH/3Fp7sqqQkw6jqZZKeaiJ9FshxH4szeIykWFqkkFZAEYw8JOLdGQ5Hp5piIrkOAJI4LcMrSFH+8vBtWuaEK6vPLtCk69tAvXpGSKxSAG9DDP12A6nJXumz8FDE8q3I8Lw2DQWKC2ChNfuhlvxSCGVNNk3ym4O4bMc1MQ4atZ8uX6PG1So=
+X-HE-Tag: 1788537892-308147
+X-HE-Meta: U2FsdGVkX199gqzw00vBBeHzQJvWCTojKdcRB9G+PpcrjKPCnWQA9LS4rptQ/HrHhmlGNUfEsrivFr+vxoiyUEEb6aYhyG3S13ssgzNFGDiJHqdW72lywK5bBtiQHUuMIK2x++j4SFKPDFwiT1mbnSwWkQ5gzyYr7Dt8QpDhl+oxXuiW2Ma6kRc77/9RlR+0Ld3jvtrpQ9AgnIus4il0FeVFW475QqDLOp7dS9TYyjz78CKpu5I3UVDVjlx/d8L93UipmdZ1KTLBknqrOY4Lwk6rybnX8YzlzssrHQe9COO/1WdQzvf6v1akHdUB0b5TOFbQp1dD6ufs4ZYIU9n4ALapvkMrJhVz7VzHrgnv25Htq5WK1tPrJ1xytPg6suDlpRbTupofSACe2ntGp7katDaDDfDOOH8wexLy4WglaaMojrHD/R/O+i2kkhf2TJL9FHm2hOURcoNA9Yk2PEeaI/EqDVJ1ThkLFFc37MWKxFRIOXj+Ribsicv9wurklmdznpZjh0uNHoHzTsuT4byxB4176DnSgJZZuV+1TjeYmlI0XV73RqnrWXZJlCkWjy8QqQ89o3d1R5mZt2xSr0WpfyuU/q++3q8tiC6hA7yXMhAi9Vbap82lAsABoOB/GIch3uy2ojWu0CbEWc4hb02uhL1diUi+xYz01PjOQfCKHk+tqjwgrSNMvbnwh54rZ1nUQaK/uN05w+7m1OInFcOx/llrSFVjJExwNrOU6TIfWLlpl5r/QMLuWeWDf9/rr9c/o9KF5pzVGQezDi4ypWndDZwgMm6/DQPI9UbzQfcc+KxCiV6s60/cZq0IWIVHnNip79PBz7le6V1fGVC8w4zdGnhgDUS03Dyc1ArUJQn6DMWSdVw3pq4SpPc86FLuzHIwDSPIXgZbTlwrYoSOjLqAE+gBi5/qts7OyvIHkSylspcXUv2Wtn9YTN5/UAXUwoZvlEebBS2IbJ84PjrV0HM
+ G3u6PGfg
+ QqVy+bKyQfx0E03WZ4fwcXB7V2BdijyntjMro0nb2yQzsqnXBzymDC0ugcjc86CfjZRdLKKpcZtmIXQG5JwjjHr4aOvE440NTeKGn0RGK4xfqRpGWUdk68q74Wdxf3qLkm/32QZ68Mde4tU7I82E73HuvNmPOBvVwuk96tWXaknFj66DtqytiqmD8dazxzH+ahGSWXCykQh8w+65jsjUJMw0piAOviFWpTqqqmNFIf8f4SlSDQJ/3AkES2tVDs0AAFsb1D08NRoVkWCu4DZbdX4Qj5Aj/VwXhKSSLWCrYinBLBkgFwpCKHEOelTCsmpugl8Xnhg6nIjhTwHkqwWVWhlrpVa/4Nhf+L05E9lsuJjefv7mIICuU0UMBinheAMW+9Zc/o0NmGaBHsVZphDTZwPOzoOZ3yXt4kTFiHr24f6IHljLWZvtFOJMvqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,179 +105,305 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/24/26 14:25, Hao Li wrote:
-> There are 7 possible transitions in __slab_free():
-> 
->   a. partial->partial
-
-maybe add "(offlist/onlist doesn't matter)"
-
->   b. partial->empty, offlist
->   c. partial->empty, onlist, exceeding min_partial
->   d. partial->empty, onlist, not exceeding min_partial
->   e. full->empty, exceeding min_partial
->   f. full->empty, not exceeding min_partial
->   g. full->partial
-> 
-> (There is no offlist variant of e, f and g as a full slab is on no
-> list.)
-> 
-> Clarify which case each branch handles, and replace the goto with a
-> return at the end of the skipped block so that every branch explicitly
-> states its coverage.
-> 
-> Case 'a' is the only path that needs neither list_lock nor list
-> handling. Give it an early continue: handling it upfront is much clearer
-> than forcing every other case into a nested block.
-> 
-> Also, read SL_partial once after the loop right where it is used, rather
-> than re-reading it on every iteration.
-> 
-> No functional change.
-> 
-> Signed-off-by: Hao Li <hao.li@linux.dev>
-
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
-Nit:
-
+On Fri, Sep 4, 2026 at 6:25=E2=80=AFAM Jianyue Wu <wujianyue000@gmail.com> =
+wrote:
+>
+> Originally zswap keeps its pools on an RCU list whose head also serves
+> as the current pool. Convert the pool table to an allocating xarray
+> keyed by a small integer id, and track the current pool with a separate
+> RCU-protected pointer.
+>
+> The xarray gives each pool a stable id for a later zswap_entry shrink.
+> XA_FLAGS_ALLOC1 starts ids at 1, so id 0 remains reserved. The id range
+> is bounded by ZSWAP_MAX_POOL_ID because the later entry field is a u8.
+>
+> Keep compressor switching close to the previous flow: look up an
+> existing pool under xa_lock, resurrect it outside the lock if reused, or
+> create a new one. zswap_pool_create() allocates the pool's id and
+> publishes it into the xarray as its final step, so the create call is
+> itself atomic: it either fully builds the pool and publishes it, or
+> unwinds completely on failure. Publishing makes the pool live, so a
+> caller that later fails (e.g. param_set_charp()) must still kill the
+> pool to erase it from the xarray. Runtime compressor parameter updates
+> are serialized by the module parameter lock, so no speculative loser
+> path is needed.
+>
+> A retiring pool is erased from the xarray in __zswap_pool_empty() and
+> freed via queue_rcu_work(), preserving the old RCU teardown ordering.
+>
+> Suggested-by: Nhat Pham <nphamcs@gmail.com>
+> Suggested-by: Yosry Ahmed <yosry@kernel.org>
+> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+> Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
 > ---
->  mm/slub.c | 95 ++++++++++++++++++++++++++++---------------------------
->  1 file changed, 49 insertions(+), 46 deletions(-)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index b0cd0572e2f2..e20375307770 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -5748,76 +5748,79 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
->  		new.inuse -= cnt;
->  
->  		/*
-> -		 * Might need to be taken off (due to becoming empty) or added
-> -		 * to (due to not being full anymore) the partial list.
-> -		 * Unless it's frozen.
-> +		 * partial->partial: the slab was on the node partial list and
-> +		 * stays there, so we need no list handling and no list_lock.
-
-I think more accurate is "if the slab was on the node partial list, it stays
-there, and if it was off, it stays off, so we need no..." ?
-
-> +		 *
-> +		 * Note that continue in a do-while goes on to evaluate the
-> +		 * condition below, so we do perform the freelist update.
->  		 */
-> -		if (!new.inuse || was_full) {
-> -
-> -			n = get_node(s, slab_nid(slab));
-> -			/*
-> -			 * Speculatively acquire the list_lock.
-> -			 * If the cmpxchg does not succeed then we may
-> -			 * drop the list_lock without any processing.
-> -			 *
-> -			 * Otherwise the list_lock will synchronize with
-> -			 * other processors updating the list of slabs.
-> -			 */
-> -			spin_lock_irqsave(&n->list_lock, flags);
-> +		if (!was_full && new.inuse)
-> +			continue;
->  
-> -			on_node_partial = slab_test_node_partial(slab);
-> -		}
-> +		/*
-> +		 * The slab might need to be taken off (due to becoming empty)
-> +		 * or added to (due to not being full anymore) the partial
-> +		 * list.
-> +		 *
-> +		 * Speculatively acquire list_lock before calling cmpxchg(), as
-> +		 * performing cmpxchg() prior to lock acquisition races with
-> +		 * concurrent paths, such as the shrinker.
-> +		 *
-> +		 * If the cmpxchg does not succeed then we will drop the
-> +		 * list_lock and retry.
-> +		 */
-> +		n = get_node(s, slab_nid(slab));
-> +		spin_lock_irqsave(&n->list_lock, flags);
->  
->  	} while (!slab_update_freelist(s, slab, &old, &new, "__slab_free"));
->  
->  	if (likely(!n)) {
-> +		/* partial->partial: we didn't take the list_lock */
-> +		return;
-> +	}
+>  mm/zswap.c | 87 +++++++++++++++++++++++++++++++++---------------------
+>  1 file changed, 54 insertions(+), 33 deletions(-)
+>
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index e456e5080531..74876acfa9dc 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -34,6 +34,7 @@
+>  #include <linux/writeback.h>
+>  #include <linux/pagemap.h>
+>  #include <linux/workqueue.h>
+> +#include <linux/xarray.h>
+>  #include <linux/list_lru.h>
+>  #include <linux/zsmalloc.h>
+>
+> @@ -154,12 +155,24 @@ struct zswap_pool {
+>         struct zs_pool *zs_pool;
+>         struct crypto_acomp_ctx __percpu *acomp_ctx;
+>         struct percpu_ref ref;
+> -       struct list_head list;
+>         struct rcu_work release_rwork;
+>         struct hlist_node node;
+> +       u8 idx;
+>         char tfm_name[CRYPTO_MAX_ALG_NAME];
+>  };
+>
+> +/*
+> + * Live pools keyed by id (1..ZSWAP_MAX_POOL_ID).  XA_FLAGS_ALLOC1 keeps
+> + * the reserved id 0 unallocated, so looking it up never aliases a live
+> + * pool.  XA_FLAGS_LOCK_BH makes the xa_lock softirq-safe: it is taken
+> + * from __zswap_pool_empty(), which runs from a percpu_ref release
+> + * callback in softirq context.
+> + */
+> +#define ZSWAP_FIRST_POOL_ID 1
+> +#define ZSWAP_MAX_POOL_ID U8_MAX
+> +static DEFINE_XARRAY_FLAGS(zswap_pools, XA_FLAGS_ALLOC1 | XA_FLAGS_LOCK_=
+BH);
+> +static struct zswap_pool __rcu *zswap_current_pool;
 > +
-> +	on_node_partial = slab_test_node_partial(slab);
+>  /* Global LRU lists shared by all zswap pools. */
+>  static struct list_lru zswap_list_lru;
+>
+> @@ -200,10 +213,6 @@ struct zswap_entry {
+>  static struct xarray *zswap_trees[MAX_SWAPFILES];
+>  static unsigned int nr_zswap_trees[MAX_SWAPFILES];
+>
+> -/* RCU-protected iteration */
+> -static LIST_HEAD(zswap_pools);
+> -/* protects zswap_pools list modification */
+> -static DEFINE_SPINLOCK(zswap_pools_lock);
+>  /* pool counter to provide unique names to zsmalloc */
+>  static atomic_t zswap_pools_count =3D ATOMIC_INIT(0);
+>
+> @@ -275,6 +284,7 @@ static struct zswap_pool *zswap_pool_create(char *com=
+pressor)
+>         struct zswap_pool *pool;
+>         char name[38]; /* 'zswap' + 32 char (max) num + \0 */
+>         int ret, cpu;
+> +       u32 id;
+>
+>         if (!zswap_has_pool && !strcmp(compressor, ZSWAP_PARAM_UNSET))
+>                 return NULL;
+> @@ -320,12 +330,24 @@ static struct zswap_pool *zswap_pool_create(char *c=
+ompressor)
+>                               PERCPU_REF_ALLOW_REINIT, GFP_KERNEL);
+>         if (ret)
+>                 goto ref_fail;
+> -       INIT_LIST_HEAD(&pool->list);
 > +
-> +	if (!was_full && !on_node_partial) {
->  		/*
-> -		 * We didn't take the list_lock because the slab was already on
-> -		 * the partial list and will remain there.
-> +		 * partial->empty, offlist: a bulk refill has taken the slab
-> +		 * off the partial list and will put it back, so its list
-> +		 * handling is not ours to do.
->  		 */
-> +		spin_unlock_irqrestore(&n->list_lock, flags);
->  		return;
->  	}
->  
-> -	/*
-> -	 * This slab was partially empty but not on the per-node partial list,
-> -	 * in which case we shouldn't manipulate its list, just return.
-> -	 */
-> -	if (!was_full && !on_node_partial) {
-> +	/* full/partial->empty, exceed: we have enough partial slabs already */
-> +	if (unlikely(!new.inuse && n->nr_partial >= s->min_partial)) {
-> +		/* partial->empty, onlist, exceed */
-> +		if (likely(!was_full)) {
-> +			remove_partial(n, slab);
-> +			stat(s, FREE_REMOVE_PARTIAL);
-> +		}
-> +		/* full->empty, exceed: it is on no list to remove from */
-> +
->  		spin_unlock_irqrestore(&n->list_lock, flags);
-> +		stat(s, FREE_SLAB);
-> +		discard_slab(s, slab);
->  		return;
->  	}
->  
->  	/*
-> -	 * If slab became empty, should we add/keep it on the partial list or we
-> -	 * have enough?
-> +	 * At this point, only three cases remain:
-> +	 *   full->partial
-> +	 *   full->empty, not exceed
-> +	 *   partial->empty, onlist, not exceed
->  	 */
-> -	if (unlikely(!new.inuse && n->nr_partial >= s->min_partial))
-> -		goto slab_empty;
->  
-> -	/*
-> -	 * Objects left in the slab. If it was not on the partial list before
-> -	 * then add it.
-> -	 */
-> +	/* full->partial; full->empty, not exceed */
->  	if (unlikely(was_full)) {
->  		add_partial(n, slab, ADD_TO_TAIL);
->  		stat(s, FREE_ADD_PARTIAL);
->  	}
-> -	spin_unlock_irqrestore(&n->list_lock, flags);
-> -	return;
-> -
-> -slab_empty:
-> -	/*
-> -	 * The slab could have a single object and thus go from full to empty in
-> -	 * a single free, but more likely it was on the partial list. Remove it.
-> -	 */
-> -	if (likely(!was_full)) {
-> -		remove_partial(n, slab);
-> -		stat(s, FREE_REMOVE_PARTIAL);
-> -	}
-> +	/* partial->empty, onlist, not exceed: it stays where it is */
->  
->  	spin_unlock_irqrestore(&n->list_lock, flags);
-> -	stat(s, FREE_SLAB);
-> -	discard_slab(s, slab);
+> +       ret =3D xa_alloc_bh(&zswap_pools, &id, pool,
+> +                         XA_LIMIT(ZSWAP_FIRST_POOL_ID, ZSWAP_MAX_POOL_ID=
+),
+> +                         GFP_KERNEL);
+> +       if (ret) {
+> +               if (ret =3D=3D -EBUSY)
+> +                       pr_err("cannot allocate pool id (max %d live pool=
+s)\n",
+> +                              ZSWAP_MAX_POOL_ID - ZSWAP_FIRST_POOL_ID + =
+1);
+> +               goto xa_fail;
+> +       }
+> +       pool->idx =3D id;
+>
+>         zswap_pool_debug("created", pool);
+>
+>         return pool;
+>
+> +xa_fail:
+> +       percpu_ref_exit(&pool->ref);
+>  ref_fail:
+>         cpuhp_state_remove_instance(CPUHP_MM_ZSWP_POOL_PREPARE, &pool->no=
+de);
+>
+> @@ -386,7 +408,7 @@ static void __zswap_pool_release(struct work_struct *=
+work)
+>         WARN_ON(!percpu_ref_is_zero(&pool->ref));
+>         percpu_ref_exit(&pool->ref);
+>
+> -       /* pool is now off zswap_pools list and has no references. */
+> +       /* The pool is no longer in zswap_pools and has no references. */
+>         zswap_pool_destroy(pool);
 >  }
->  
->  /*
+>
+> @@ -398,16 +420,16 @@ static void __zswap_pool_empty(struct percpu_ref *r=
+ef)
+>
+>         pool =3D container_of(ref, typeof(*pool), ref);
+>
+> -       spin_lock_bh(&zswap_pools_lock);
+> +       xa_lock_bh(&zswap_pools);
+>
+>         WARN_ON(pool =3D=3D zswap_pool_current());
+>
+> -       list_del_rcu(&pool->list);
+> +       __xa_erase(&zswap_pools, pool->idx);
+>
+>         INIT_RCU_WORK(&pool->release_rwork, __zswap_pool_release);
+>         queue_rcu_work(system_percpu_wq, &pool->release_rwork);
+>
+> -       spin_unlock_bh(&zswap_pools_lock);
+> +       xa_unlock_bh(&zswap_pools);
 
+Do we need to call queue_rcu_work() under the lock? I assume not. Can
+we just call xa_erase_bh()?
+
+>  }
+>
+>  static int __must_check zswap_pool_tryget(struct zswap_pool *pool)
+> @@ -433,7 +455,8 @@ static struct zswap_pool *__zswap_pool_current(void)
+>  {
+>         struct zswap_pool *pool;
+>
+> -       pool =3D list_first_or_null_rcu(&zswap_pools, typeof(*pool), list=
+);
+> +       pool =3D rcu_dereference_check(zswap_current_pool,
+> +                                    lockdep_is_held(&zswap_pools.xa_lock=
+));
+>         WARN_ONCE(!pool && zswap_has_pool,
+>                   "%s: no page storage pool!\n", __func__);
+>
+> @@ -442,7 +465,7 @@ static struct zswap_pool *__zswap_pool_current(void)
+>
+>  static struct zswap_pool *zswap_pool_current(void)
+>  {
+> -       assert_spin_locked(&zswap_pools_lock);
+> +       lockdep_assert_held(&zswap_pools.xa_lock);
+>
+>         return __zswap_pool_current();
+>  }
+> @@ -462,14 +485,15 @@ static struct zswap_pool *zswap_pool_current_get(vo=
+id)
+>         return pool;
+>  }
+>
+> -/* type and compressor must be null-terminated */
+> +/* compressor must be null-terminated */
+>  static struct zswap_pool *zswap_pool_find_get(char *compressor)
+>  {
+>         struct zswap_pool *pool;
+> +       unsigned long id;
+>
+> -       assert_spin_locked(&zswap_pools_lock);
+> +       lockdep_assert_held(&zswap_pools.xa_lock);
+>
+> -       list_for_each_entry_rcu(pool, &zswap_pools, list) {
+> +       xa_for_each(&zswap_pools, id, pool) {
+>                 if (strcmp(pool->tfm_name, compressor))
+>                         continue;
+>                 /* if we can't get it, it's about to be destroyed */
+> @@ -495,9 +519,15 @@ unsigned long zswap_total_pages(void)
+>  {
+>         struct zswap_pool *pool;
+>         unsigned long total =3D 0;
+> +       unsigned long id;
+>
+> +       /*
+> +        * rcu_read_lock() is required here, not just for xa_for_each(): =
+it also
+> +        * keeps each pool alive while it is dereferenced, since a concur=
+rently
+> +        * retired pool is freed via queue_rcu_work() after a grace perio=
+d.
+> +        */
+
+Doesn't xa_for_each() already handle RCU locking?
+
+>         rcu_read_lock();
+> -       list_for_each_entry_rcu(pool, &zswap_pools, list)
+> +       xa_for_each(&zswap_pools, id, pool)
+>                 total +=3D zs_get_total_pages(pool->zs_pool);
+>         rcu_read_unlock();
+>
+> @@ -554,20 +584,17 @@ static int zswap_compressor_param_set(const char *v=
+al, const struct kernel_param
+>                 return -ENOENT;
+>         }
+>
+> -       spin_lock_bh(&zswap_pools_lock);
+> -
+> +       xa_lock_bh(&zswap_pools);
+>         pool =3D zswap_pool_find_get(s);
+
+This is the only caller of zswap_pool_find_get(), and since we remove
+list_del_rcu() below we have no reason for holding the lock here other
+than zswap_pool_find_get(). So let's move the locking inside? I am
+also not really sure if we actually need to hold the lock here anymore
+to begin with.
+
+>         if (pool) {
+>                 zswap_pool_debug("using existing", pool);
+>                 WARN_ON(pool =3D=3D zswap_pool_current());
+> -               list_del_rcu(&pool->list);
+>         }
+> +       xa_unlock_bh(&zswap_pools);
+>
+> -       spin_unlock_bh(&zswap_pools_lock);
+> -
+> -       if (!pool)
+> +       if (!pool) {
+>                 pool =3D zswap_pool_create(s);
+> -       else {
+> +       } else {
+>                 /*
+>                  * Restore the initial ref dropped by percpu_ref_kill()
+>                  * when the pool was decommissioned and switch it again
+> @@ -584,23 +611,17 @@ static int zswap_compressor_param_set(const char *v=
+al, const struct kernel_param
+>         else
+>                 ret =3D -EINVAL;
+>
+> -       spin_lock_bh(&zswap_pools_lock);
+> +       xa_lock_bh(&zswap_pools);
+
+Do we still need to hold the lock here?
+
+>
+>         if (!ret) {
+>                 put_pool =3D zswap_pool_current();
+> -               list_add_rcu(&pool->list, &zswap_pools);
+> +               rcu_assign_pointer(zswap_current_pool, pool);
+>                 zswap_has_pool =3D true;
+>         } else if (pool) {
+> -               /*
+> -                * Add the possibly pre-existing pool to the end of the p=
+ools
+> -                * list; if it's new (and empty) then it'll be removed an=
+d
+> -                * destroyed by the put after we drop the lock
+> -                */
+> -               list_add_tail_rcu(&pool->list, &zswap_pools);
+>                 put_pool =3D pool;
+>         }
+>
+> -       spin_unlock_bh(&zswap_pools_lock);
+> +       xa_unlock_bh(&zswap_pools);
+>
+>         /*
+>          * Drop the ref from either the old current pool,
+> @@ -1788,7 +1809,7 @@ static int zswap_setup(void)
+>         pool =3D __zswap_pool_create_fallback();
+>         if (pool) {
+>                 pr_info("loaded using pool %s\n", pool->tfm_name);
+> -               list_add(&pool->list, &zswap_pools);
+> +               rcu_assign_pointer(zswap_current_pool, pool);
+>                 zswap_has_pool =3D true;
+>                 static_branch_enable(&zswap_ever_enabled);
+>         } else {
+> --
+> 2.43.0
+>
 
