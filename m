@@ -4,104 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB402C79F80
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 16:36:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE43AC79F80
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 16:39:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A89A36B008A; Fri,  4 Sep 2026 12:36:12 -0400 (EDT)
+	id B2B516B0088; Fri,  4 Sep 2026 12:39:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A14596B008C; Fri,  4 Sep 2026 12:36:12 -0400 (EDT)
+	id ADC816B008C; Fri,  4 Sep 2026 12:39:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DB4B6B0092; Fri,  4 Sep 2026 12:36:12 -0400 (EDT)
+	id 9CE1D6B0092; Fri,  4 Sep 2026 12:39:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 507016B008A
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:36:12 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 91CC9140154
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:36:11 +0000 (UTC)
-X-FDA: 85176632142.19.F738F6F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 9B708C0009
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:36:09 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MoMOTByP;
-	spf=pass (imf22.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788539769;
-	b=tEcmPSCzBjqDSmHmiM+UKipEx4k7gtq5UWoqbgjCzrTs2lQJqd60RBDCg0P7gTLMJ1SPoa
-	ROCQ/Z4g3HnbFyOU8+H217u/No/1O8kYf0MY8HCOokW6q5dqmHyjrD2y9l0LVgkYtZdS0N
-	VYnwaKnb7VfjfPX9ap9PMYLTvzsrkhs=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MoMOTByP;
-	spf=pass (imf22.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A7F36B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:39:03 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D8350120129
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:39:02 +0000 (UTC)
+X-FDA: 85176639324.12.3A22A3C
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	by imf01.hostedemail.com (Postfix) with ESMTP id BDB0340006
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:39:00 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=XxSQ22se;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf01.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.41 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788539769;
+	s=arc-20220608; t=1788539941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EqyHe4ig7vedzj2gzyGv7QJ5dMXsIqSih2e4fKgIahI=;
-	b=3hZNIsKEiHzDFLjqPfn7rREJ60HQZFo1mBBqMr6tB/Kv3zjaXCKUXZstfALZAiksqP3ovS
-	bbNdY0L+TEsmeNfCRr2fVy3dA5WvDoQFkojrCyyYTMX2nTmylKEVHpHXt9gj/tL+X8Odr5
-	fc4hqmyYrAuk6v79/ssR7KMyeOkbfc8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 13B8141098
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:36:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC0FF1F00A3E
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:36:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788539768;
-	bh=EqyHe4ig7vedzj2gzyGv7QJ5dMXsIqSih2e4fKgIahI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=MoMOTByPAVtmgg10B02BQAVMBbjSbMFqN3cuBPf3CfXHcQTr/Iu2mvqgwAxX+MDcX
-	 /+iZyRQMGQCBkzlDh0fhsouXEwEht9AoT92jWvHI5ILdvlw+m6tmP8hVixUvbg4Wr8
-	 mJ7gbA2ujyoSBrus+ISmG82m6XJ9i1PFMUDzZhaRITEP+6zEXry4yWv4DEZ90+LZKo
-	 /55jAeLvuVGZqhF/qWoO4nP1fYOliNYWF92M7SFNqrttr5FXgK0fDvtB3gTUqNJwjd
-	 rH11eMH73g348P77hoy6VhoKIxDHwZYqELHv6GyGLESWf6D6ECZeJPmuU6OKUd4hie
-	 FoX2ZLedcobFQ==
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c1c52d920b8so159840166b.2
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 09:36:07 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxN4MBFDV6V3dmP6/LZk2brqyfCr75iQ9LnXdAODQvXcxNsnZeS/0XjEcgplApyMF4t+0OStdSYPQ==@kvack.org
-X-Gm-Message-State: AFuF++n3MQ1p5jACdcjcthsIRh1QYdKlercUuk3KDC8eWGRpaJAt4vfG
-	gesQ3KRlTVAsGH6e8sjOtfq9OKBUtwwqGsOPLq2tCvZbGNw/kp82p+zo7PEFfnLpV7XiX+gJ0Fb
-	zC4sQbfBb8DKa0jyrTa2CBAPAIoPlyq0=
-X-Received: by 2002:a17:907:3c8d:b0:c25:608d:7934 with SMTP id
- a640c23a62f3a-c260c9cb984mr349898266b.12.1788539766806; Fri, 04 Sep 2026
- 09:36:06 -0700 (PDT)
+	bh=BPJNCIJctbxrL/gwwpLp4isL2IQcKA6SZn3cTOfdjLA=;
+	b=zJI9dn6DUi4136exxpFQ/SOfiJE8p4nc/pjwjWT7MIU4Jg/oen5t5SIe/Mv8FWvJnFhSUP
+	m6+IjViOuor59HogTLuygwjcW9WWhIkXvlHveR29ssi2K+bDyjSITVDIKBZSJCcL0kANd7
+	tJcSEjfjisz3+4lFE2vMWVS+0kWsJVs=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=XxSQ22se;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf01.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.41 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788539941;
+	b=cVX6EK5h47qI1enXsm6P5ZTnfx4ey7stasi2wJVI0ClSLYy2id50D09rmKw3X/nzvGWPvZ
+	ZTVQu/9L2+uEtH2eJbhbO0pgO/CqiYXIk9/6dKAUQSksNk3+l1uru3ftQshn9HZff5hzqy
+	c6s3u4+CVDxEx72MH4f7W4S1carHL78=
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-90cd96389efso16318286d6.3
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 09:39:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1788539940; x=1789144740; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=BPJNCIJctbxrL/gwwpLp4isL2IQcKA6SZn3cTOfdjLA=;
+        b=XxSQ22seVmKpFnj56wlPoCoIENbUOwbl+BAqA1s5OUXyX4qf0luNfejEYMBqpdVqvR
+         hRg9mQlR7Gb1l8I2gQmfae1j0BCuqq6luh1ZMBgxxDSs/iTDENiFfCgyCVZSHYU4VzkU
+         NrCKBQzLd7fRo3bBY5Xh7c9FJ2Uvf7sJndFNSlmzL9lElLL6rng+u1YtJBKlkYLb7Jr5
+         h5/TnNCpYlm8fUd/X7HaomNPD+Ta4sFgGO/k7UfEsKYLVsd0pz57MPEuTyxbX0E/UApK
+         Rob2pZXvXYezR6J6Si2GWPtQYORme+MDS+V8oDmPTiLmg21KgPNgRRQxv4Zpr2FZuzsZ
+         sNkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788539940; x=1789144740;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BPJNCIJctbxrL/gwwpLp4isL2IQcKA6SZn3cTOfdjLA=;
+        b=V3A88SSD/vPOyT/ttwHoT6YI6Dzd9Wu3K19RQt0BbgfnrfF4HEYKC1LQ7UOBzVPYMe
+         MPQuQ8uuYHXLQKH7X3G0OPiiVoVLPRCeM6iXSeea2fFaV9UsUq6uJXD/VTr3hKwXLVmK
+         KXndnDNg/ZfT+Rq1MslEMgY5y05jV/fiIqNd/leK8UA4Ifi2hizP4rOy4b8Z4afGW5hZ
+         3HdjWDYTgA37pP4I/LBN0SKvjychyr617mN2V168Th4ggOI12z/JIF/1WPmD+Y3ZwBLN
+         eJZ8Eooa0j0HCIy/sYr78d+0q7VkiUrK6dI0lnqO04OPMbdSK+ot7effb9AeZSOWyKJf
+         LJxQ==
+X-Forwarded-Encrypted: i=1; AKwUvBymp3oWzhAh42Pm5rUq/2FY02/W+Qs+kFnTSEYnGfP8INhadQuKVnXBeOflNT3BDNTv3NezS4IZEQ==@kvack.org
+X-Gm-Message-State: AFuF++kVcN29oDQ9VwBHUu/sCrWf/T40W/hVHB0EyjNqjIFsN1U2wjYG
+	xscPgFZlRAkjvUbuhdtnF0dG12/tDO13g2hiddPx97GjRiN8AVjAPahvSMWtLIeEHU3iaQDBN47
+	SoAi059Y=
+X-Gm-Gg: AYBFou1AQ6kncwJEvUqUYpHLEOmIyCUgW2O++hCFc4HjSGQHS2AlANsEc6FfaTTN1uH
+	DfjkYi9iC7yFl9wgnrEjs8MpWwiU15+JIAbwvuMMhDKf3lQ4eYDvVoboPr6ucXbjKmGrnsbgb/K
+	oNutPehTCWvzSGo+zJKXqi8o9QfIhVzFFkUm3Yx75OUGvrj2ZtYJZKlKzJqp3WPDjfADAAeluIf
+	fxoqGk31IjuzguXyt5A6R3kerPze/vBt4aoZ5z/+JeSQvANMtD7JVDOsiXJbT3Y/xVNGskXfKon
+	joqcwTTc9lOTDOVBaHUa1cCAsMNlPWGsx0iGJgEUDvETq02AtOm9HRJB9xLchfjh4HUmILAsP+R
+	11bfaX8Cnlg2WNzn6uhr4sou7zHdf7PIjmk1sjGDUK+TuzRg796Tq7X8yRSJOP928eVpS4kzL0w
+	hCK+tqpU0Cay7EYu2VyajAzRRvoHcoZW/CX8jAwOywlDFZYs1L
+X-Received: by 2002:a05:6214:6343:b0:90c:c6fd:e8fe with SMTP id 6a1803df08f44-9103f044b57mr66427916d6.30.1788539939628;
+        Fri, 04 Sep 2026 09:38:59 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:501::2])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-910406b0f51sm23891226d6.42.2026.09.04.09.38.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Sep 2026 09:38:58 -0700 (PDT)
+Date: Fri, 4 Sep 2026 12:38:54 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Bo Zhang <zhangbo0325@gmail.com>
+Cc: akpm@linux-foundation.org, baohua@kernel.org, kasong@tencent.com,
+	qi.zheng@linux.dev, shakeel.butt@linux.dev, david@kernel.org,
+	mhocko@kernel.org, ljs@kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, zhangbo56@xiaomi.com
+Subject: Re: [RFC PATCH] mm: vmscan: avoid anon scanning for GFP_NOIO with
+ low swapcache
+Message-ID: <20260904163854.GE6641@cmpxchg.org>
+References: <20260903130304.GQ3004@cmpxchg.org>
+ <20260904020756.4163139-1-zhangbo56@xiaomi.com>
 MIME-Version: 1.0
-References: <cover.1699104759.git.quic_charante@quicinc.com>
- <a8e16f7eb295e1843f8edaa1ae1c68325c54c896.1699104759.git.quic_charante@quicinc.com>
- <aphSYFTd12oia8K2@google.com> <apkhSHr3by5Bf8jW@tiehlicka>
- <CAO9r8zPCYNmJbkQEA62z75AB=ziWqGb38_E-ee_6o40Sz=zHXA@mail.gmail.com>
- <apqppFukssaAQz3w@tiehlicka> <CAO9r8zMBBhhqepbLR9buOOu7bpyLW+UTu55DjbCYrbBp56rkCw@mail.gmail.com>
- <aprxXHSh-LyqaFCW@tiehlicka>
-In-Reply-To: <aprxXHSh-LyqaFCW@tiehlicka>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Fri, 4 Sep 2026 09:35:55 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zO93CMjJHLO1ZqHY0Tr2kDfvpMHfH3MLkR37vV0YROf_g@mail.gmail.com>
-X-Gm-Features: AcwNN1WCfeo409btAP4JUxUY_0DYyfbooHU3anTgx9GPmkXmnGquyayK6GUdEWc
-Message-ID: <CAO9r8zO93CMjJHLO1ZqHY0Tr2kDfvpMHfH3MLkR37vV0YROf_g@mail.gmail.com>
-Subject: Re: [PATCH V3 3/3] mm: page_alloc: drain pcp lists before oom kill
-To: Michal Hocko <mhocko@suse.com>
-Cc: Charan Teja Kalla <quic_charante@quicinc.com>, akpm@linux-foundation.org, 
-	mgorman@techsingularity.net, david@redhat.com, vbabka@suse.cz, 
-	hannes@cmpxchg.org, quic_pkondeti@quicinc.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260904020756.4163139-1-zhangbo56@xiaomi.com>
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9B708C0009
-X-Stat-Signature: kxu396eem9ky6hybaybm36bzmoqfxjgy
-X-HE-Tag: 1788539769-800042
-X-HE-Meta: U2FsdGVkX191eqEnE+FDAhofpZUtV5RSLQYMmqKsBwvnQRkhvQwjHYN2PJDXvCp0OK/4+HFJU2FFq3L0uoPaTebGhWDH8134PijT6YEUxb2JOagowTjhOHnQ1UIjNBpjcXbfpyZ83+kVbGA1ZgCvE/nVE1kaZ2dG7QN+2pND6GN+I51OxhGAGQK9jAB3APX9m+6GVzuKlsEqhwKT2iQFSIpyVVAchCfOisTuxLWsEniE6DT6cffeS1/0QtYY+otZ31M0En5O9NDOTd7DakxB4qWrDLfZjHjUwai0XqpKcDucoXF1+qlq/F9zfDLqD4JsXYWA1r0fZpOpJOnjtfu4EzlTYxBBorihJfDwCR8NT72Ct140PRmkxbIRAFybWCIPz3KNzT16iIQfQythQbNaj7sHrt+4JE3bS3OpAU7qHyq9zT8OW7ou6npHjWjlK4AsAvzeNi2kbpEgsv04FwE51BfcxsTe1MjoEvFt9EqVsn7pnpi3I0VWeHh4lkA7v20t4tJG44aLP/hgdm4R/FWfnWaNxnVN+w/KZMVi8RJK/AaKUYlOocU/AVITLteW+8dQ5rt+F1/Xsm4DaVxV7OoTFRIdywhUvplwGBfKZG4JKMiG2ELS2p0K28sBxZi6Gu58LzJS9Z/eSBDSiPcRntk5eEECAU54N6pubxDW6K5QK/o9ZgAH9vmkaQPTZt6b95HvMj+3WABi7LwIPJbcy3LLbMYsdyHmhUw43vMQu/5M5b3GG1pQXhIQApDYo9uGGHAH/2JjU5hae3SwXqFNLHaEa4XQyOcrzASwXOyjKSZ/65jhbDnO5crgrwBUycvJHxy0XYHuwyOXN/Pka4dnLUkIKLE2jnocxrHTbqs9lYUXrcbrWE0P3clPfzzQ0eeAr1kZr1Nu9ddQUN6xWVud5IOcf3xA+GMVtDTmuZvIau4xhES+wGWWFRh2abo4uWX7DmBkiZqaSXaWNsimLvBGy3t
- lXLqKXXa
- o22MHCvMol7g6CCE38pLD1tzBpT6uP/S5ilvnEdHQAmoj8fDQy9OYawU4ymndV6QZKOODX2ceXECpZL19v7G4wcaW2o4WjKk4t3wYwrSx8DR3SLJjgN/pWvAwXqKBlNtC9eUZshL9eOuXsqsrO7vnBwCzNploCkCzcBAEpQmJlCa0oXs0/k+IX6Q/9Lg2u/3YiZiIQqLv/qoD7SPCz+DnBZUVrKVrV4TrqC+VDnOcW9vNdz8RBrELC672wInD+pY7Xago1BCniWIPsw5mNegNX3O5er92MOG4dLn3x73LXYFNYICNzmRPlwx2G14s0yUzcvpywv9uYRf73g9i3QcsZLtZFz6hDQPNdi94u2ErmtKmr05JjX/MIl0HMqIULkinHyLjawiDgFDdujcdrONqCJYrDIwoUgs9Y6i7Lhk0KnY3DlsFm7objG8sFqsjxkVjaKcX
+X-Stat-Signature: p5hyoq5y85fnadcmkieyiiqyx1ungm9n
+X-Rspamd-Queue-Id: BDB0340006
+X-HE-Tag: 1788539940-864948
+X-HE-Meta: U2FsdGVkX1/VzG3jXexoPK3DkbgNANTKNup/sxn3uOa6t7m85Y5VMqvY+Bb5tJO1ah3wkE/qYsKEim/3oZF1RtGFEj0BnxXcIGP0JVG09nMSmDP8jJv9lWA3zsvdyFIb4f7vm2AIJIS/+zGBPqo82H+e0htnVIOuEDBAUDorE9M2rCSi1v/KXBuiFCheLX/kWA5Hwgk9OebyCWkC998qvWg7yDKEWZcp2Al4pRcmcnsl+MyrFpvzmaOcmQGvPSaHv9xgnkBfcvZFWP3M5Ml6shsyneLhOxhAM5zjLdNK58ilDIetFzGWT3zDwOENl6CKPnlo17HZpSB4k4uCOos4I5MN8Yd3T8/Brwm9bcYtvEx2Suu3hKtySl9eEJ6cCi74jOjqIxAyYKWQj8RxBQkQmpKHjwNHFm3wH+9jR1IHaPzMhYWtl3hH+NC9cnBRGXEQarkqvu2DMZKzdnwNQLMVW1hkiCE6vEilI6Gv82SvSRTxfk5/0tSMg6+CncfFP0/Mn+kKXCZy3aLA7f9zjqLkz7isVk5PdWr7VYoybmEHBAvPKfFyE9TN0bGnQ6XlxpsOi178VIpW4xJX4zKKytNa/EMqg5F5F9v4xJF9kA71gjdiXCUY+9Vo+lCYLXiVL1DpqDGzbflf7/i03aGKAjoX3nIdW1T49DhNsN8ZrxEgmdThl1e7S8VAq7RYWpMeLLy7R4TJhjgjbninjhkGfv3ujR6Jh5Gy5OBHcXNk68ZaTWiG9ExV+7iKpdSaqVl2Ilqk57q83LQiHyBtccakTKyHE8fZe93NFh4IWFy9gxp+3cgKSFoUgbGaqKXu0YN1bEaywmEdCDOU+EgygG04q0U6ZaX0rRncHxzGFaQVZlxYQdqTvSgm1LSAptcbsMpU9MJIkStYu6YgzsGg6s+hLois+jQ2DjxGywwfXuyk+Qpzj28qqzoEMW/qF+EPm9lvznmAtyXSFUSYM5SJyJe3bAg
+ BDY0drV1
+ ezGHcSKcRfv1Y3QNZf7bf3Es0RFSh9sP4t4V6IT3m7DurE2nRO8GSuMWT0malSfC0Um5br9AneWw8OdD/pVycYD46+ZfORQN4Hvct4MtM1rD+i5sWXMlzeWEN6wXtkVbRvP/kV2oZsqz9mtkfZRL0BL/1VJIk9YOjdOtlLmvacc/5QRrvYYdAwrZx8LlBd72u2QiCGl7x54IF7u8Z42OGu1y8jwgwhKZ3pudrIVHPCrnY01Xfz1BJXJkTw2f8g5Y4CxqNwB61x1SfJRUB91dtiClSeiOD9OV/gHPWcdsV+kKZXNcleG3gAU2hMBbpLwWC/m6hAzkXZ0GBiq3iLa06ZwLa9uHwk5oyTwi+JSgzLDATpcx5f/zABjfppVZGIdqxKkp4Ey/QY/UxbG7rW8xvwzs67CgvMczm0LCBLgNAAdawQrUeLteTAsWdqCcljgItLRwTCTwPoLpV3Us=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,184 +123,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 4, 2026 at 9:27=E2=80=AFAM Michal Hocko <mhocko@suse.com> wrote=
-:
->
-> On Fri 04-09-26 09:09:35, Yosry Ahmed wrote:
-> > On Fri, Sep 4, 2026 at 4:21=E2=80=AFAM Michal Hocko <mhocko@suse.com> w=
-rote:
-> > >
-> > > On Thu 03-09-26 07:03:33, Yosry Ahmed wrote:
-> > > > On Thu, Sep 3, 2026 at 12:27=E2=80=AFAM Michal Hocko <mhocko@suse.c=
-om> wrote:
-> > > > >
-> > > > > On Wed 02-09-26 16:49:48, Yosry Ahmed wrote:
-> > > > > > On Sun, Nov 05, 2023 at 06:20:50PM +0530, Charan Teja Kalla wro=
-te:
-> > > > > > > pcp lists are drained from __alloc_pages_direct_reclaim(), on=
-ly if some
-> > > > > > > progress is made in the attempt.
-> > > > > > >
-> > > > > > > struct page *__alloc_pages_direct_reclaim() {
-> > > > > > >     .....
-> > > > > > >    *did_some_progress =3D __perform_reclaim(gfp_mask, order, =
-ac);
-> > > > > > >    if (unlikely(!(*did_some_progress)))
-> > > > > > >       goto out;
-> > > > > > > retry:
-> > > > > > >     page =3D get_page_from_freelist();
-> > > > > > >     if (!page && !drained) {
-> > > > > > >         drain_all_pages(NULL);
-> > > > > > >         drained =3D true;
-> > > > > > >         goto retry;
-> > > > > > >     }
-> > > > > > > out:
-> > > > > > > }
-> > > > > > >
-> > > > > > > After the above, allocation attempt can fallback to
-> > > > > > > should_reclaim_retry() to decide reclaim retries. If it too r=
-eturn
-> > > > > > > false, allocation request will simply fallback to oom kill pa=
-th without
-> > > > > > > even attempting the draining of the pcp pages that might help=
- the
-> > > > > > > allocation attempt to succeed.
-> > > > > > >
-> > > > > > > VM system running with ~50MB of memory shown the below stats =
-during OOM
-> > > > > > > kill:
-> > > > > > > Normal free:760kB boost:0kB min:768kB low:960kB high:1152kB
-> > > > > > > reserved_highatomic:0KB managed:49152kB free_pcp:460kB
-> > > > > > >
-> > > > > > > Though in such system state OOM kill is imminent, but the cur=
-rent kill
-> > > > > > > could have been delayed if the pcp is drained as pcp + free i=
-s even
-> > > > > > > above the high watermark.
-> > > > > > >
-> > > > > > > Fix this missing drain of pcp list in should_reclaim_retry() =
-along with
-> > > > > > > unreserving the high atomic page blocks, like it is done in
-> > > > > > > __alloc_pages_direct_reclaim().
-> > > > > > >
-> > > > > > > Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
-> > > > > >
-> > > > > > [Sorry for thread necromancy]
-> > > > > >
-> > > > > > Hi Charan,
-> > > > > >
-> > > > > > Are you planning to respin this patch?
-> > > > > >
-> > > > > > I know that Michal was questioning the need for it. While doing=
- some
-> > > > > > stress testing I came across a couple of OOM kills that had sig=
-nificant
-> > > > > > amount of memory in pcplists. Something that would have been pr=
-evented
-> > > > > > by this patch.
-> > > > >
-> > > > > Could you share some numbers to see the scale of the problem?
-> > > >
-> > > > Sure, here's a sample from an OOM log (ignore mapped/free_mapped, i=
-t's
-> > > > from the ALLOC_UNMAPPED series):
-> > > >
-> > > > [   40.336188] Mem-Info:
-> > > > [   40.336195] active_anon:96 inactive_anon:1540181 isolated_anon:0
-> > > >                 active_file:51 inactive_file:0 isolated_file:0
-> > > >                 unevictable:382720 dirty:43 writeback:0
-> > > >                 slab_reclaimable:20339 slab_unreclaimable:26597
-> > > >                 mapped:382858 shmem:153 pagetables:8291
-> > > >                 sec_pagetables:0 bounce:0
-> > > >                 kernel_misc_reclaimable:0
-> > > >                 free:17264 free_pcp:16890 free_cma:0
-> > > > [   40.336199] Node 0 active_anon:384kB inactive_anon:6160724kB
-> > > > active_file:204kB inactive_file:0kB unevictable:1530880kB
-> > > > isolated(anon):0kB isolated(file):0kB mapped:1531432kB dirty:172kB
-> > > > writeback:0kB shmem:612kB shmem_thp:0kB shmem_pmdmapped:0kB
-> > > > anon_thp:10240kB kernel_stack:2576kB pagetables:33164kB
-> > > > sec_pagetables:0kB all_unreclaimable? yes Balloon:0kB gpu_active:0k=
-B
-> > > > gpu_reclaim:0kB
-> > > > [   40.336202] DMA32 free:34808kB boost:0kB min:11028kB low:13784kB
-> > > > high:16540kB reserved_highatomic:0KB free_highatomic:0KB
-> > > > free_mapped:11032KB active_anon:0kB inactive_anon:1487720kB
-> > > > active_file:52kB inactive_file:20kB unevictable:393252kB
-> > > > writepending:4kB zspages:0kB present:2096760kB managed:1991156kB
-> > > > mlocked:393252kB bounce:0kB free_pcp:42404kB local_pcp:2460kB
-> > > > free_cma:0kB
-> > > > [   40.336205] lowmem_reserve[]: 0 5976 5976
-> > > > [   40.336210] Normal free:34248kB boost:0kB min:34024kB low:42528k=
-B
-> > > > high:51032kB reserved_highatomic:0KB free_highatomic:0KB
-> > > > free_mapped:34028KB active_anon:384kB inactive_anon:4672764kB
-> > > > active_file:180kB inactive_file:0kB unevictable:1137628kB
-> > > > writepending:168kB zspages:0kB present:6291456kB managed:6120144kB
-> > > > mlocked:1137628kB bounce:0kB free_pcp:25156kB local_pcp:764kB
-> > > > free_cma:0kB
-> > > > [   40.336213] lowmem_reserve[]: 0 0 0
-> > > >
-> > > > As far as I can tell there's about ~65M of free memory stranded on
-> > > > pcplists (in an 8G VM), which would have kept the amount of free
-> > > > memory above the watermarks and prevented that specific OOM kill.
-> > > > Although, as I mentioned before, this is a synthetic stress test.
-> > > > Perhaps in practice it doesn't matter all that much in practice, bu=
-t
-> > > > it seems like the logical thing to do.
-> > >
-> > > yes, pcp lists are quite (unusually) high. Is it possible they simply
-> > > got repopulated after the first direct reclaim run? Or is there
-> > > something else(odd) going on?
+On Fri, Sep 04, 2026 at 10:07:56AM +0800, Bo Zhang wrote:
+> On Thu, Sep 03, 2026 at 09:03:04AM -0400, Johannes Weiner wrote:
+> > On Thu, Sep 03, 2026 at 12:01:31PM +0800, Bo Zhang wrote:
+> > > We have observed some cases where memory is allocated with GFP_NOIO, so
+> > > we cannot reclaim any anon folios unless they are in swapcache. We can
+> > > end up spending more than 150 ms looping in `shrink_folio_list()` scanning
+> > > non-swapcache folios without reclaiming a single folio. This is pure
+> > > overhead.
 > >
-> > I think in this case there wasn't a lot of reclaimable memory (mostly
-> > anon with no swap), so at some point direct reclaim didn't make any
-> > progress. __alloc_pages_direct_reclaim() only drains the pcplists if
-> > reclaim makes progress, I am not sure if that's intentional. An
-> > alternative would be perhaps removing this condition, something like
-> > this:
-> >
-> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> > index 8d79f76cdd0e1..98e9079240ad5 100644
-> > --- a/mm/page_alloc.c
-> > +++ b/mm/page_alloc.c
-> > @@ -4592,11 +4592,12 @@ __alloc_pages_direct_reclaim(gfp_t gfp_mask,
-> > unsigned int order,
-> >         psi_memstall_enter(&pflags);
-> >         *did_some_progress =3D __perform_reclaim(gfp_mask, order, ac);
-> >         if (unlikely(!(*did_some_progress)))
-> > -               goto out;
-> > +               goto drain;
-> >
-> >  retry:
-> >         page =3D get_page_from_freelist(gfp_mask, order, alloc_flags, a=
-c);
-> >
-> > +drain:
-> >         /*
-> >          * If an allocation failed after direct reclaim, it could be be=
-cause
-> >          * pages are pinned on the per-cpu lists or in high alloc reser=
-ves.
-> > @@ -4608,7 +4609,6 @@ __alloc_pages_direct_reclaim(gfp_t gfp_mask,
-> > unsigned int order,
-> >                 drained =3D true;
-> >                 goto retry;
-> >         }
-> > -out:
-> >         psi_memstall_leave(&pflags);
->
-> Ideally if we can make the function call less hairy. Maybe we want to
-> make draining part of the reclaim as the last resort when normal reclaim
-> fails.
+> > Not entirely. There is some value in aging anon alongside file, so
+> > that the next __GFP_IO reclaimer doesn't look at a stale list.
+> 
+> You're right, "pure overhead" was too strong - aging anon does have
+> value for a later __GFP_IO reclaimer, and I don't intend to skip it in
+> general. Let me describe the case in full, because the reclaim cycle
+> itself already provides that aging on a later pass, which is what makes
+> me think the trade-off here leans the other way.
+> 
+> > Can you describe a bit more about what you observed? What workload is
+> > running, maybe you have a stack trace of which NOIO requests are
+> > routinely getting stuck in reclaim?
+> 
+> The workload is app launching on Android. The NOIO allocations come from
+> dm-verity hash-block reads via dm-bufio, which legitimately use GFP_NOIO
+> because they run underneath the IO path:
+> 
+>   worker_thread
+>    process_scheduled_works
+>     verity_work
+>      verity_verify_io
+>       verity_hash_for_block
+>        verity_verify_level
+>         dm_bufio_read_with_ioprio
+>          new_read
+>           __bufio_new
+>            alloc_buffer
+>             gfp_mask: GFP_NOIO | __GFP_NORETRY | __GFP_NOMEMALLOC | __GFP_NOWARN
+> 
+> So the NOIO use itself is correct; the problem is on the reclaim side.
 
-Do you mean do the draining in __perform_reclaim(), or deeper into the
-reclaim stack?
+Ack.
 
-The thing is that __alloc_pages_direct_reclaim() currently drains when
-__perform_reclaim() fails to make any progress and we still cannot
-allocate. The change above makes it drain if it cannot allocate after
-__perform_reclaim(), regardless of progress. So if you want to move it
-into __perform_reclaim(), we'll have it in both places.
+> Here is the full picture of one such direct reclaim. It runs two rounds
+> of do_try_to_free_pages(); the target is 32 folios.
+> 
+> Round 1 - partial (shared) memcg walk, 169.20 ms, 0 folios reclaimed
+> --------------------------------------------------------------------
+>   prio 12->1 (~1.3 ms):
+>     cache_trim_mode is on, so get_scan_count() picks SCAN_FILE. Only the
+>     file side is scanned. Because this is a shared/partial walk, each
+>     priority only visits a handful of memcgs before the iterator is
+>     handed off, so very few memcgs are looked at on the way down:
+>     428 file folios scanned, 0 reclaimed.
+> 
+>   prio 0 (~167.9 ms):
+>     priority hits 0 without meeting the target, so get_scan_count()
+>     forces SCAN_EQUAL. The walk lands on a single memcg with a large,
+>     unswapped anon LRU and a tiny file LRU:
+> 
+>       inactive_anon ~335 MB, inactive_file ~4 MB   (~84:1)
+>       memcg swap usage ~3.6 MB, so swapcache is negligible
+> 
+>     shrink_lruvec() now keeps feeding that huge anon list into
+>     shrink_folio_list() - ~2400 shrink_folio_list() calls, ~93,000 anon
+>     folios scanned - and every folio hits the !__GFP_IO keep_locked path
+>     (not in swapcache, needs a swap slot). This single shrink_lruvec()
+>     pass alone is ~168 ms with 0 folios reclaimed.
 
-Or maybe I just don't understand what you meant :)
+Ack. Thanks for the rich explanation, this is illuminating.
+
+Agree with your fix. This GFP_NOIO just has to get through the day,
+and aging 90% of memory it cannot reclaim is an unreasonable side
+quest. Leave it to kswapd and the other reclaimers.
 
