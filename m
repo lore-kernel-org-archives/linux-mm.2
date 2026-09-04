@@ -4,124 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5548FC624DE
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 16:10:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85D3DC79F80
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 16:10:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E66F6B00AF; Fri,  4 Sep 2026 12:10:10 -0400 (EDT)
+	id 9BC0B6B00B0; Fri,  4 Sep 2026 12:10:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BE716B00B0; Fri,  4 Sep 2026 12:10:10 -0400 (EDT)
+	id 993CB6B00B1; Fri,  4 Sep 2026 12:10:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FAE86B00B1; Fri,  4 Sep 2026 12:10:10 -0400 (EDT)
+	id 8AA826B00B2; Fri,  4 Sep 2026 12:10:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 455176B00AF
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:10:10 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D0EFBC0140
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:10:09 +0000 (UTC)
-X-FDA: 85176566538.04.81B003C
-Received: from mail-qk1-f194.google.com (mail-qk1-f194.google.com [209.85.222.194])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6FF03180018
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:10:07 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="nH1/DUIn";
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf24.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.194 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+	by kanga.kvack.org (Postfix) with ESMTP id 6DA626B00B0
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:10:23 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F2711C014F
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:10:22 +0000 (UTC)
+X-FDA: 85176567084.07.1F519EF
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E13E21A0009
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:10:20 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=RHT9oTQ9;
+	spf=pass (imf19.hostedemail.com: domain of petr.pavlu@suse.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=petr.pavlu@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788538221;
+	b=8YFdcB00AbVDEEFhvE0lP0nxQJ5OxSdqOIN0xAnTt0xhzF4WE5JDXwJ/gSKJ5RJ6sfJ2JR
+	qYjpEDfqEj0yo/YuZRdGf93nElzg93MmYe0w4xlmrTVY4ayAbnQI1uqM9yBy/t5sLvYQn/
+	EJGfZo/QsAfOm72Sno4t7vjE5jvg0NY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788538207;
+	s=arc-20220608; t=1788538221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O/dj2tdiAd1cTUZz8ylHlEPfPG8XqvRkzCQtnk9erCM=;
-	b=doWi5yL2lrrhPEr2dmV1jDWFh7/7qsJLYcAN9RmcELTx1T1uXTf4IljV3WxlQRTVc5t7+j
-	lhsdDFmquvGvYWyTJV32wU6lvBI+rKJhOHP3VlEe8ioHAxT8tVJBUoXVFp0/Exy3iBCcSR
-	hcEcqk3abvTN7ctixWEfXrTOFDnKMUE=
+	bh=e1Eo3Xs09Cv3zHO+VFGveYQjtgcEc68O1MBEL+U3hM0=;
+	b=Lqeto35p49e/YxFYI2zytBcYRTYmrpL91E+StdbVcEDq7Agw7txHfyuMQ5PDxsHGV2oBgz
+	pG+o8voqFj4gXmu5p2Pv5UHD9CZ7Wk3vqVoRqVXWOxGY0sNwUNxOUNBV5cqY4TH/PcqL/V
+	sogZe7YYhy2REu5fryqRzTEKfsXpmt8=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="nH1/DUIn";
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf24.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.194 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788538207;
-	b=0RdXZcdlbRY2EyvQyXlv7Ja848JDswshluj6hUJlIHhZbve+eXHlqU5ba+HpVuPonfagne
-	d1NG6jqU3dXZ7ytg1K/XmuLJwF0EdUkNcaLBY8meBof3uqyxbjIgHtkgXOH/Fi2S+zP3ra
-	zZgSNzke5uKuMzV3GpBE5XLfjFFX2lk=
-Received: by mail-qk1-f194.google.com with SMTP id af79cd13be357-936dfd009d1so253495385a.1
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 09:10:07 -0700 (PDT)
+	imf19.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=RHT9oTQ9;
+	spf=pass (imf19.hostedemail.com: domain of petr.pavlu@suse.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=petr.pavlu@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6a7ea0046deso1381036a12.3
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 09:10:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1788538206; x=1789143006; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=O/dj2tdiAd1cTUZz8ylHlEPfPG8XqvRkzCQtnk9erCM=;
-        b=nH1/DUInt33XQWFmBvyqXh2JC20tkS0RWzsbMkO6kosgbE8u0SqKD4W7c/Ypkr9v2K
-         Z0/PiNj+AXGlxsVlkXGZWLq6u2uL/Oult6wvX3bbWEPpRI6QsDXjwpH1g6nKSejzpm9z
-         Vq/SuLsxeFfwXO0Ra1FosyX8qjbtfqEaavYisA4VA1NCaAHS1SEzJAwhf6MNTQyKprcI
-         0O4EMQKRFl7+wRseMvtZGZe6u5JaC1AGD90+Nj/d5wvTGnOrWR0W8fZi3eDLSuM7JsGb
-         ainvRikwYnMZ0lLSm+OTCmyuimDvyI9tNCQSi31RczACHVzU/XhGz+MaqmEoSJcfA04H
-         45gA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788538206; x=1789143006;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=suse.com; s=google; t=1788538219; x=1789143019; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=O/dj2tdiAd1cTUZz8ylHlEPfPG8XqvRkzCQtnk9erCM=;
-        b=cyb4D/B5E+e8Eq57M9j8q91OmA3Gp1ZnOl7fhGn5T+YEI6rxTLBuqLDb+cfviZq/zp
-         pEhTClDeEkcVvpDlrglqPspNRpc0CfefPkylq27NYq04uV9cihBuWz0+ZLDZyur9hVv1
-         LFpTmZquzYpCXA+LPRWwX/VzZzW3rYOOrwVVdkSfwaxzsscTgT2G/0uwwudOlOyRhR6k
-         ZGadwBZlFafoELCfv8SzUlWZDxwkyucAOSSumWUmE0kAGw1vjz8NO69M+fr42ZJvrhTZ
-         ptiSQz4hDcPm9nmGYirrBxKe+ab3MeOiSFGyVh8G65jYbUe/Oc1uYIv5Akqv7Pk7v42L
-         Xfng==
-X-Forwarded-Encrypted: i=1; AKwUvBwp9iAds76rFqjXAy2P4aBTYF7+aOpUF5njwQGSKT1ZGO/H8sRkS8cK9zpVllkEHj7GW8sGDJafAw==@kvack.org
-X-Gm-Message-State: AFuF++kCe0QXRQ2AK1QUqnRjTS5MEQC8M1eyhXEtn8Ll99Yz7q9XYdUL
-	prF9UPgiF8cJCx+vAu/ignOs5FmGbHnqmfj9wxJZdllrrWoYzIDZVgxWyBZSfF4a08I=
-X-Gm-Gg: AYBFou13oqw6/u+9i/bB8RLEdK8sYUVuvEdbHHRjpAsKxJK7iFnCpR16QAf3ro2EZ7y
-	BGY1pjG4QIBLU72+hBBiRHxLztVpA4tNnhu/jz+DCP6+o9DUpu/5FRCE8+EvZOwpZikHIU5t4Ul
-	4D9S0ixw+scwK4hSKv14/IE57itX9OsyhJiVbg6alF5ttw9lhHRTgtN0WUwLdaaJAe9ohIzlUJJ
-	t6Juu+If4JfmOuA7T5yHO1O4z0zZf0K3ouLlSqFMYdQu7RPXXO3V4LPHA3T7fnBqfXV+iqPT95g
-	L0YEUgSzco4sfGSmyCzdK7MTu99pETVtEppjYu8m49sIWNmcx0ZQvMP4z8FO8urvPcwpoUcCqPn
-	IkEyZ3xArYQ0QAzyeO1Zoctqri6oIrdsDlB86ibWeoX6MOxPO1j+0tYme4XCHCDsJrv98JEr3U1
-	mImWLsNamoP4iO2bgxU38W+Br5Qw2LiXjpAc0W
-X-Received: by 2002:a05:620a:6cc6:b0:930:f285:5ee9 with SMTP id af79cd13be357-9396e0b2fc3mr1194176885a.20.1788538206229;
-        Fri, 04 Sep 2026 09:10:06 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:501::2])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9104067b125sm23869576d6.29.2026.09.04.09.10.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 09:10:05 -0700 (PDT)
-Date: Fri, 4 Sep 2026 12:10:00 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Salvatore Dipietro <dipiets@amazon.it>
-Cc: linux-kernel@vger.kernel.org, hch@infradead.org, abuehaze@amazon.com,
-	akpm@linux-foundation.org, alisaidi@amazon.com, blakgeof@amazon.com,
-	brauner@kernel.org, dgc@kernel.org, dipietro.salvatore@gmail.com,
-	djwong@kernel.org, jackmanb@google.com,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-xfs@vger.kernel.org, mhocko@suse.com, ritesh.list@gmail.com,
-	rvvandan@amazon.com, stable@vger.kernel.org, surenb@google.com,
-	vbabka@kernel.org, willy@infradead.org, ziy@nvidia.com,
-	Vlastimil Babka <vbabka@suse.cz>,
-	David Hildenbrand <david@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Brendan Jackman <brendan.jackman@linux.dev>
-Subject: Re: [PATCH v4] mm/page_alloc: avoid direct compaction for costly
- __GFP_NORETRY allocations
-Message-ID: <20260904161000.GC6641@cmpxchg.org>
-References: <20260904115629.3993331-1-dipiets@amazon.it>
+        bh=e1Eo3Xs09Cv3zHO+VFGveYQjtgcEc68O1MBEL+U3hM0=;
+        b=RHT9oTQ9UZgWLKb3qqCyeViPG6Xij5clhID4xiOJBc3uB/HZER1SWOdvtvCbDpgnQF
+         ZbQmpYbxAYDN64mktlYJy4nyVIdZ4pbW85vazdId4+QwXnWgP+s3/tdMQZ0cDp9zJFbK
+         JgBR4cuIjUmO5d5RrLyM+vqwCCaTtbuPplu5VIggQ42yg8/oZeHljEB+SLmAZg///+4o
+         s8vDigHHkjyT16Ai11tKBSZZRQMLKdALlTkSp30bo2QCLVdFjx27zFvy1Q/rqTXACVrB
+         FPBm5BzIK/O/Kw58PjUNpaq+eD+0BxqLIsG5NOekVDw5c4f3WHlLod9/K0XCeaI4B+JL
+         MK2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788538219; x=1789143019;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=e1Eo3Xs09Cv3zHO+VFGveYQjtgcEc68O1MBEL+U3hM0=;
+        b=kDJJK4KZQiRnH329y8mBuvgrmg5lTryV4bX1T1Wus+lDC8l7hq5Z+m9u74XJKGVhHe
+         xpk+LWQLbjVT90nztVbxq8FfdUXJ3OIznRN5aS/4Ty3Cz+IKWxX996U8McC6ToOhPagD
+         w2aUyrW5IXixHRRyz4hh2DhGf4wjaylbuF8ppIbFmdvtNlLaA0MTNNixMf+iSFP8pnRV
+         wn0Tpf9zJ+DHs1FgjZTKoHVaKE9EQ9pEf7UpkJsunloLuIoJRkjiimZ1VJSIMgG/PGj0
+         hjyfs8ZKKaY12P8JEXAlaHEKjOVH8w6r6wFOVdclS9nI2S3C8k8caFnMiMNseQJx/fVn
+         7HTA==
+X-Forwarded-Encrypted: i=1; AKwUvBycmj9NBj4KpQHn6d94kGne2veMsykKPQwGcMLc0Z9iBmlpm4NfYT9k5bmO+wzC4BMuL2nK2Vadcg==@kvack.org
+X-Gm-Message-State: AFuF++k2E2ZYE5FI1C1heui2zrXeX8wRBNqxDzdr81VWG6BVTPdxhGGA
+	nTQViqIWyBmxsE1hbJVRqNhRlMnlkEXBwYMW/nHK40JTV98xU0xQWoUitqKwutUEF18=
+X-Gm-Gg: AYBFou0QS/K5gqOA5OFIhmZvicOY6WsGeMKR6/4uESB9j7Hrf7xWErc3+gvZ07Ipu9t
+	kQb7zYo5RxNx0FgZOUS4zdW0U4x00YLsbL2tnFqv+Ro6pafjDs/Z+iCtzvibEzgnbKlDs9FG+hW
+	Xbo8glAD9HS7VCcTtsMeHPDjegTu7tlRGM2NYoUnIymMaQY8kk3KfjoNolX0RZemDSosuDm3XSd
+	CwrGny6IfCUCWcTZMfVJ8yJ2jrbJvPS1GMhOoYkgRMCrY9A/25zH1UMjErja23udYFtwRcAcESL
+	nJpRg8yEhspJuNK1F/mQ5Ljw3H2eOrZ4CYMckR/IQ5I19mViHjdN9MgxTTnTQF93AJSpL90BThb
+	0Aeul6z8VUads7fMf3bNoQlexyU0pTUKUAe/F21OEp62YRqcsDQ76Rij7MTiNpdYaMIEi16/5IF
+	7gCwNiPJUGjuFDpfUjcdEbHNp0LpacJC5n/aN7LdEZTCAAgKHTcsGkAKISwBgjFsK2S5QDv50tm
+	lvVW/ly0Mf2b3qAIPacJlXP
+X-Received: by 2002:a17:907:c00e:b0:c25:254:292e with SMTP id a640c23a62f3a-c260c401012mr368173466b.0.1788538218984;
+        Fri, 04 Sep 2026 09:10:18 -0700 (PDT)
+Received: from ?IPV6:2a07:de40:8100:0:89a9:fd0e:583d:4a53? ([2001:af0:8000:1409:193:86:92:181])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c260d53e0b1sm126030366b.33.2026.09.04.09.10.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Sep 2026 09:10:18 -0700 (PDT)
+Message-ID: <d2159a62-d64b-4e47-9e5b-9c409ae4de9b@suse.com>
+Date: Fri, 4 Sep 2026 18:10:17 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260904115629.3993331-1-dipiets@amazon.it>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6FF03180018
-X-Stat-Signature: u3qpaztyj7e6zq3sderq47o7td84m8ud
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 2/4] module: introduce SH_ENTSIZE_STANDALONE for
+ separately allocated sections
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
+ Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-modules@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
+References: <20260902081802.146145-1-hao.ge@linux.dev>
+ <20260902081802.146145-3-hao.ge@linux.dev>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20260902081802.146145-3-hao.ge@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1788538207-6847
-X-HE-Meta: U2FsdGVkX19bjwvCsQRvDPBP01yDcXflwIMK+/1VnjsaS3uZdkWqqiFLdjRheJjBcAp2Eksg64Sl+CWjHw076WXZlTqeQQPreCmWTeTP89PnDR+1h/d+LUt4D0yFHMR1Iw62OeY7A1tZK/Q6Qqqsm1bCGOYTYBbPEU2gR8N/qNrr2UD9jrtMapH9AHNxhiTax/2iZBI0dUnhVvDHfvSWeMy/gTzQfIBA9emrBhLBjWkac492Z3e4hRuj4NXVsGPYnmz0ENDWjsvLDikjEqSP8X2ZwqKxetcOUOzW2zbSNkkFA8Y5kZ9Z0aCrfQ5Wq7xVUPfTySpYiHzQqp60Pkhom8g6AQxfcQs7ImoPKpZT4Q11vdxD4uiznj6Yq/goaj8uZ2NHhSuLx1+nZy1QYq1FJDN5kb/RZe3ZFsQpttgL3P6HPSRv7YnR8vWaEl/+Mo6mAjJ7cm3NgznMOhv+x6wWvI/BCtbsf3OA6zaqHJbopL8oaIkeA+Uc6Futx+BtKWZIzEOKt1BFFmSPcAdTGlPnKCnA6jZsOhtfUlipUEtDEmwU2au5pLy2RN5ECWViGuiSNXiy3Cvu26JNIsZOb1gkY3jNvJqNI9CGHKEbT6g+CxSGH9/qa10xAB/bj89UFBFGeVswU+Ns0sJXSYzkkipVB/jsriej5Yw2JFI1wYDYQxFOn9THHZshsvziFtzq1TOixBcumDO7KYlk2zFOfDa46RjYqkSwg4izX9Jp4ZR00JtYWVJewSOZCUCdvgLjWJ8UCLzO5m6Tfp2voBseS02pWDwK0BztWpWv1nq1rCdn4IYVyZ27Ljv6rup0aqV7tM96/wWvt9iETyNz8yHwoUKBB3Gj31B/K1kXfNKh+sAXygDU2gHUjlqZumMwJGGcpUR6ncIC+Sjd31GOKpKJnCI9bxY9b+CFHvIFVo/q+VJNIxLry8qIefwuw9k0Y/eBjDtad9csgoW3bP2qFxpXoF9
- obhHyo0s
- QqwnQVswdQRT3nWnPsW30+9UWljsiw3Uqsd9FBM1NCz6bFVDgdFxYxK5KzdLHt7TyUMtCDl8DMn6VTxipMZsRiyEwbDhr9sFvpwhSTFz6UV2dLckLlEDBZTxCRj2MvrQAYoDZFMZr7oEyjhFlbW9YOQPDe1qvMyvDGwEJlIUwIVNxtAfYPXAQLWiDjZf5l9KkmkEHZlqTK4CNsd0c6ifTz6X9P6H7TPhn6d2jEU/1LeSkDTsmleYP8CGPzuIzceDjQIdaXwPwOZhLJWQ0yl+T6umP5qgDNBC/hv01iLi6e2QUlbj93NAzrd9RNZly61nYwnvy8Yz1E1FfXeBFZANdnI+bEM3yS+s6HcMFt6D6xYqPabyINV9VupqCUVfFMXRSwC2Tiy4cckwDPhgUzrBkQCN3MDGEwlMWUXeIU785zPYOsqBchYYYVd5sCKoOjT35M+FlY3GAdJgFHHzigaYflzPZzHAf01AETY4NVWvYhP+J6WTS2FCzPjlE4l4SL+g3J7rg/75YQrKV1IBwZl6uVVvuuBNEV6wM7zup1tIyBem8M36qeSQ7SXfgveB7fKzkrFYMxpyOOq076z6cdwDXeCQmIqoIImpJCggcnL8SDrF0sAtc+3rtiJ1sn3FLV+wriolLkaMPfc12rrGB+tWWWxWqRUHcv5ySI4vY21wA3SJqIEUh/aM+OrXiJ02tfEREUHkZbrHxb2agfld8hDVV4gjZZLX4wzgfSxf79rJ0gbBjnMcwCeCJ0dyKH0829cHsBMLwJr4sAZJEGAzVB5VThFlM6rO/6AYgW1L3/i93nfaGrhmKAn40sLc2+G8S7Hg/DKN0hNdDKtSQN/iF5szRSGDn8Gd5ZnTe2wiX
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: E13E21A0009
+X-Stat-Signature: w6zue1qbn9uqiesdmdzae8bgpjyj35iq
+X-HE-Tag: 1788538220-909350
+X-HE-Meta: U2FsdGVkX19nytpOg6IrCjxjBKDl1Hw18cEvqZl1vDjZRw4lE+dJjwespiI7M2EhgNUQNxlQs21J6xIsZoEA0bKIhLLqSX8owyYoeyhe5HvH5v2f+KKjfevSGmT5uWynhvR9LP6+CsZH0Tzl/31uZXbjYW2wSl5S7VTFMVrOJj2zRsach2hAYY7DR+oO/sqhY8DqugP5Co0sov64OpAHOxpm1A3MN5q5qIA/aeLhe78xeHJib/Ofg0SMqkDk4zxtkIAvJtoM+djoP6QjZnLqZ6POW4ltc9IlD0+44iryJpWrEhCxZkAAh8KI0NNITDX4xb3Dpk9hJuOWp5IYdS2P1OMEQytnsos2Y1lnQqUC1LaOVdemQbIPIAQK6etZGvCukKKTWRCjSHESYF6ApvM9JhIG9RNdC4IHbjHpZS5Ew1lT39mSrQXpSg+XsabMF9xozHFEgiCbmmxINieu5nbhcxSWSHVHsMHwC9wJBQkbJvYFqdFzhXJe5ZHVQVA7tbYKigGub766b3/+mVKiJEJTt/07oRRB6hSjIkRRDyM2PYjeRc6fPTYW9ZdTcK4Wrb123Dz8mgQZJe2Vl6w48mFYh7grnNYKK6n5yzwAYbf50F0QiysNMqTEVAClKqUftn9T3HR/w0w+vRuk5m1C4Pn4mDZaq4jCAgRcYHB66g6/Hgh70djyc1ASWwSvFouHm4dP4TVPkU07Q+tnvwJibEvc3wUbao2qlZVYuR6LC/hjRPzVmFi3Tykk+wFzpw5ZqOmw/ARkV3g1Ir0003Vt+QXEWfrOfYbwZDHzb+xjoy1NyGgF1j9H1Ax1IpOMrc2VQoZbVWuGbFn61nCP5FQLpTxHHxAVL1HN5D01clUjZmJA4I3v81anDZVg7aYeQSgcSV2OvRRrSczQeHxsD11zUv+Z+CtRzSF8bnAuIhcLT2/kkIPIviSX/cK4Q4eTORzAuPgL+MF+eGY7/RIfASuQTy3
+ nFK6c1I/
+ tbNTGm4aghrSBKs1uQK6PPRndDj2Uz+cD5LeHw1QgYdj68cBn6cDf3o/cWRHb0hbtqaAGHpiM2WBn4hSXv5g52lqLtS0Vr6wER1l5zHSvkPgSER+oVXDKNQt0ZhF4enfdS8+K5ztKaaGWv+dahIr5XI73NkJRw9tZkZH1Mz50gx9nQXM1R6Myk2EdyHazXSNlbgBmjfZw2kU1/1CH+WvaJPBFe4GpecoiH07TN4U+tkO1JpEnrOVt0X0HI0vFBOU6fZ2UZLUzprE6BNaFsg/BxElmDBQa+pogifvgPxhKgR3HtnsSIfFNwpxgJVXH60tn5c+4/Ooz3gM2UsIteUWo6zid7qEznoLAmLH8FCQ4tiTFijcwzw4aRRYP7aZdoo3xKJjdBqu/pJrD4h31tw+p8IVsKnuvvQWmlxq2utg7nqqH0wDbx485dnVhRtfm52VAFPs1Wp7ra9q38vc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,71 +129,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 04, 2026 at 11:56:28AM +0000, Salvatore Dipietro wrote:
-> Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
-> introduced high-order folio allocations in the iomap buffered write
-> path.  When memory is fragmented, each failed costly-order allocation
-> enters __alloc_pages_slowpath() which runs direct compaction and
-> drain_all_pages(), causing a 0.38x throughput drop on PostgreSQL
-> pgbench (simple-update) with 1024 clients on a 96-vCPU arm64 system.
+On 9/2/26 10:18 AM, Hao Ge wrote:
+> SHF_ALLOC means, per the ELF spec, that a section occupies memory
+> during process execution. Some module sections occupy memory
+> outside the regular module layout, for example the percpu section
+> with its per-CPU allocations. The loader currently excludes such
+> a section from the layout by clearing its SHF_ALLOC, which
+> overloads the flag with a loader-internal meaning.
+> apply_relocations() needs a special case for the section, and
+> find_sec(".data..percpu") returns different results before and
+> after layout_and_allocate().
 > 
-> The root issue is that direct compaction is too expensive for hot
-> allocation paths that have fallbacks to smaller allocations.
-> __filemap_get_folio_mpol() already marks higher-order allocations with
-> __GFP_NORETRY | __GFP_NOWARN, signalling that the caller can handle
-> failure.  However, the page allocator still attempts full direct
-> compaction for costly orders with __GFP_NORETRY, which is unnecessarily
-> aggressive when the caller will simply retry at a lower order.
+> Introduce SH_ENTSIZE_STANDALONE to mark sections with a separate
+> allocation. The percpu section is its first user. layout_sections()
+> and move_module() skip marked sections, and apply_relocations() goes
+> back to testing only SHF_ALLOC.
 > 
-> For costly-order allocations with __GFP_NORETRY, clear
-> __GFP_DIRECT_RECLAIM at the very start of the slowpath, before
-> can_direct_reclaim, can_compact and the nofail checks are evaluated.
-> This makes the entire slowpath treat the request as non-blocking: no
-> direct reclaim, no direct compaction and no drain_all_pages() IPI
-> across every CPU. kswapd (and in turn kcompactd) is still woken further
-> down for background defragmentation, so compaction keeps working for
-> long-term system health while being removed from the latency-critical
-> direct allocation path.
+> No functional change intended.
 > 
-> Allocations that also request __GFP_THISNODE are exempted.  That flag
-> pairing identifies the local-node-first THP attempt issued by
-> alloc_pages_mpol() (mempolicy.c), which relies on direct compaction to
-> form transparent huge pages.
-> 
-> Test environment:
->   Hardware:  AWS EC2 m8g.24xlarge (96 vCPU, arm64)
->              12x 1TB IO2 32000 IOPS RAID0 XFS
->   OS:        AL2023
->   Kernel:    v7.3-rc1
->   Database:  PostgreSQL 18.4
->   Workload:  pgbench simple-update, 1024 clients, 96 threads, 1200s
-> 
-> Results (average of 3 runs, TPS):
-> 
->   Config                   Avg TPS      % vs Baseline
->   baseline (no patch)       59,408       -
->   With this patch          155,409      +161.6%
-> 
-> Link: https://lore.kernel.org/all/20260403193535.9970-1-dipiets@amazon.it/T/#t [v1]
-> Link: https://lore.kernel.org/linux-mm/20260420161404.642-1-dipiets@amazon.it/T/#u [v2]
-> Link: https://lore.kernel.org/all/20260710143437.12379-1-dipiets@amazon.it/T/#u [v3]
-> Fixes: 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Based-on-a-patch-by: Petr Pavlu <petr.pavlu@suse.com>
+> Link: https://lore.kernel.org/all/499bb60c-c6e3-43a3-bd92-95a0567ece5e@suse.com/
 > Cc: stable@vger.kernel.org
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: Matthew Wilcox <willy@infradead.org>
-> Cc: Christoph Hellwig <hch@lst.de>
-> Cc: Dave Chinner <dgc@kernel.org>
-> Cc: Ritesh Harjani <ritesh.list@gmail.com>
-> Cc: linux-mm@kvack.org
-> Cc: linux-fsdevel@vger.kernel.org
-> Cc: linux-xfs@vger.kernel.org
-> Signed-off-by: Salvatore Dipietro <dipiets@amazon.it>
+> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+> ---
+> [...]
+> diff --git a/kernel/module/main.c b/kernel/module/main.c
+> index c32f1d370b73..078dae188aba 100644
+> --- a/kernel/module/main.c
+> +++ b/kernel/module/main.c
+> @@ -1618,14 +1618,8 @@ static int apply_relocations(struct module *mod, const struct load_info *info)
+>  		if (infosec >= info->hdr->e_shnum)
+>  			continue;
+>  
+> -		/*
+> -		 * Don't bother with non-allocated sections.
+> -		 * An exception is the percpu section, which has separate allocations
+> -		 * for individual CPUs. We relocate the percpu section in the initial
+> -		 * ELF template and subsequently copy it to the per-CPU destinations.
+> -		 */
+> -		if (!(info->sechdrs[infosec].sh_flags & SHF_ALLOC) &&
+> -		    (!infosec || infosec != info->index.pcpu))
+> +		/* Don't bother with non-allocated sections. */
+> +		if (!(info->sechdrs[infosec].sh_flags & SHF_ALLOC))
+>  			continue;
+>  
+>  		if (info->sechdrs[i].sh_flags & SHF_RELA_LIVEPATCH)
 
-Looks good to me, thanks for keeping at it.
+Please keep a comment about how .data..percpu is handled. This is not
+obvious and should be described explicitly.
 
-Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
+Something like the following:
+
+		/*
+		 * Don't bother with non-allocated sections.
+		 *
+		 * Note that .data..percpu has separate allocations for
+		 * individual CPUs. We relocate the section in the
+		 * initial ELF template and subsequently copy it to the
+		 * per-CPU destinations.
+		 */
+
+-- 
+Thanks,
+Petr
 
