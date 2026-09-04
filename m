@@ -4,91 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93150C79F80
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 05:51:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71190C79F80
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 06:07:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FA496B0088; Fri,  4 Sep 2026 01:51:08 -0400 (EDT)
+	id EC7516B0088; Fri,  4 Sep 2026 02:07:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3AB4A6B008A; Fri,  4 Sep 2026 01:51:08 -0400 (EDT)
+	id E783A6B008A; Fri,  4 Sep 2026 02:07:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C39B6B008C; Fri,  4 Sep 2026 01:51:08 -0400 (EDT)
+	id D8E076B008C; Fri,  4 Sep 2026 02:07:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0EFC06B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 01:51:08 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6C0844073A
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 05:51:07 +0000 (UTC)
-X-FDA: 85175006574.07.17F4F92
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 9FDB5100004
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 05:51:05 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="T/P4mY69";
-	spf=pass (imf14.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id B76376B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 02:07:56 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5857840736
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:07:56 +0000 (UTC)
+X-FDA: 85175048952.10.156FA15
+Received: from lgeamrelo12.lge.com (lgeamrelo12.lge.com [156.147.23.52])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 2735520002
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:07:51 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=none;
+	spf=pass (imf31.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788501065;
-	b=SiEj3PXSoxRdQASfjKsKcJ3AcrfZZRx01at4pT1a25etl+17m5aFvLoMJJ/afI0Es7w8Lf
-	WIjao0mGOv9dQ+k6DN3ZlzIgnKKTjb/iYij6YZ3FDSQjtRvH2f4DktXTtMIBBH65dA8UaV
-	P1dILpR7Cq6ZTr4BMXWVQhgJWByeeAo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788501065;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=Ni9g+VS/7DxBWoYVJAkvr5meS+eqSiNuXWyCSs4HoDs=;
-	b=t15lCqX1wZl11LzpNB4cZtGqbhIkfLe/OeIA37PVzbR0J2pMZkcmgqK1c3pXMkeoC094SV
-	z8KxrXGjxWMthsj2VF6gFsjHuX9cCSnfTwJ+9NMzzPZ6KwQcagWToNuwHksqceVviQmSnh
-	TP0sX11lNRj+5Wmu6iTSwoRI6jdiF+w=
+	t=1788502074;
+	b=pLitD6+8veAg7OLCpJaNHCfJ5XtHJDVJI4leHhFEWmrjkObsQ8nYCwt5QO6rqpMSikXr/B
+	0l+aRVPW1yPqLuBd8jlYykhWOAHM5YNVgv6bJDSwy43w7Qr8KcAqU3jkeA54ADow66e/ZK
+	gcITIb07pFTYfeNV4v3tz84RFZmVBho=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="T/P4mY69";
-	spf=pass (imf14.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E0EB760A6B;
-	Fri,  4 Sep 2026 05:51:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96DE21F00A3E;
-	Fri,  4 Sep 2026 05:51:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788501064;
-	bh=Ni9g+VS/7DxBWoYVJAkvr5meS+eqSiNuXWyCSs4HoDs=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc;
-	b=T/P4mY69d7b6hQUixCeJyZXv8seyN033qYzYvIKbUX4p7R2OQs6PETh74s8XbDiOR
-	 WXFCA2bp94DUcqS3gkjsXCDpRdaRKuHgcqRBz05VnT4pfdGK7mWRbX6PWPrFLQ0eGH
-	 OjsjwSkyuUzpjnmYexFZnGtX1auzkKwEqgTPwmbh97BrMHPx77Mm0ALjtvEP3lBM3U
-	 o12szbDxevz7rUSkWUNTddxY9hg2RivnO0EHgD2kr23YXIyMf8ag9EYnnLuQ+0O8ox
-	 KjGEaCFwNlpYNoMEL14ERHkSAL/f41M/yF8RM3RT0DqS0YwLpmj+PPQ1etj5YCHec7
-	 NavJf9LyYQlEQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0C3238119E5;
-	Fri,  4 Sep 2026 05:50:06 +0000 (UTC)
-Subject: Re: [GIT PULL] hotfixes for 7.3-rc2
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20260903174847.a7f81bd5400d48cc8d0feaf9@linux-foundation.org>
-References: <20260903174847.a7f81bd5400d48cc8d0feaf9@linux-foundation.org>
-X-PR-Tracked-List-Id: <linux-mm.kvack.org>
-X-PR-Tracked-Message-Id: <20260903174847.a7f81bd5400d48cc8d0feaf9@linux-foundation.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-09-03-17-45
-X-PR-Tracked-Commit-Id: 97d34aa65c29cca85e3e9050f4c936389b38a054
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: bc35965f6940a9bf834d54187b6088b8eb09206d
-Message-Id: <178850100549.4186254.2817444267395046439.pr-tracker-bot@kernel.org>
-Date: Fri, 04 Sep 2026 05:50:05 +0000
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, mm-commits@vger.kernel.org
+	imf31.hostedemail.com;
+	dkim=none;
+	spf=pass (imf31.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788502074;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vUJvrasfqih2RqWrrQHenGCjo8FjvVbZNkjFbbTtDcQ=;
+	b=laOVJ/s5lwUuQ8MAZX0XvPzWJ60hIm4DEkGte6K7fqRNKgxdNJZJ3UvrnuI7zHZ6WKdR/b
+	BRCzOVGtstJSRDW2m7lbbFBXZm3Pd4r1NJlUnBusF1pcJKffBrl/wfhA3HJGqQ6pwFJfzr
+	d+QaRynB3zkvSU4DtKlY6yAPfIJwGQg=
+Received: from unknown (HELO lgeamrelo01.lge.com) (156.147.1.125)
+	by 156.147.23.52 with ESMTP; 4 Sep 2026 15:07:46 +0900
+X-Original-SENDERIP: 156.147.1.125
+X-Original-MAILFROM: youngjun.park@lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.1.125 with ESMTP; 4 Sep 2026 15:07:46 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Fri, 4 Sep 2026 15:07:46 +0900
+From: Youngjun Park <youngjun.park@lge.com>
+To: gaoguixing <gaoguixing@uniontech.com>
+Cc: kasong@tencent.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org, chrisl@kernel.org,
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
+	baohua@kernel.org
+Subject: Re: [RFC PATCH] mm/swap: fix swap table count encoding for empty
+ slots
+Message-ID: <appgMkDEZkgKID48@yjaykim-PowerEdge-T330>
+References: <2FDEE109C6578F17+20260904025411.106943-1-gaoguixing@uniontech.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2FDEE109C6578F17+20260904025411.106943-1-gaoguixing@uniontech.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9FDB5100004
-X-Stat-Signature: 15ztprba4g4fb7bppsn3qiy836y789yu
-X-HE-Tag: 1788501065-150307
-X-HE-Meta: U2FsdGVkX1/VMeoDYZaoT39i9qDAJt2slbHo3u6sXxLRaaSzEwqM9KEzIr6rQ2w3xUEWsA6HbLrlYEuARzfEFGc+yToqk1yIxG9X50LTf4Nvawo3Tufylnq7f1MoLZrkL7UteJoyQ0T5Sm9cSLdIYeMj688JkO4SF0HY2m8pl1W2T6lmLro6xTIvP1qVeYOoFAmgTfo2m88I//1fWKkYAoLGXXcpwyyo80gEpTCli6zXXMH1G/af9rnabvqfuIXkBXjDkiAykMoRj4oXMpQoFZGDNYS5PBs6+YvN6JTG1urcJR552b0jYJ+t983j6x+UGG8CH2agI2U5niHXvwA52gRtrlZ0YLb7FJcfHFZwgxWIDBhoOwCdrV/BYWJ16GkhJh75yjEYEAyQ+V4BHf8dM6/DdzBf0g4OZQ5RRaHuQkfhhJL3OrsVdaXdVpz15pqO7xlDpd27iQYmaZD/+VtQB2e/YKl+Hc2stWhxic9h1CyZ18yppG2mq9GCSSrSE0RFszCvR1EIOcb+lDl/qBpQis7gPBMHkHJ9BmOLV0ILzYHmrQIJwOPFFXY01xeA6K0gD2O5o2Z9cSwlzQsYj+cF+LnHewP/DmBYR2Z7B+wfPnhdkAZMj82tKtMqRRXBbYCEyKkG/MVVl66JVgcm07+07xDU6kQEWj86vDeq9mgs7ltvmw6M1Scxg+n6irXntYp/DXzzCGr/qZwf+PDu5DGnHrGHWgwLGxVq6FQ9GFv3bPCNRkD0cz1o6Of1ZmFwe+3vZVDh9Tka2A5iW+4V1T2FiWtA6JG3SB/Q0pHhBL7PBBayRhUuWKQEMgI8XsA2FuFbHcErAIvHtU2/LBzrlh+iegDB0zxl008zzy/wuK+e1BE3MrpJPePgqvDeGfW/UmPiwegUN327Ltrv3RaCJG/+4a647Vfm0GIU2k9vRodH99R1C+hzvmlrK5qsaoAqCzz8R78PiB+5wuLH1o8LIeu
- yH/P+Pec
- bb6QPkxD8PJ8HdBch2sjykEDXX95eLyWI3IQOLGTWqc6AWqQgSIxZbdRfLD9IJn0tnWqEJqRCskEH5AH4/sjV0ZtZeLJ+OpboT8Z8HokhOv+ygQipuzHAdpZw2A+mcOBC1RzIUuX+1roLlyZPJ15+bMda1zh3k0UrxKvsG2iRZbe4d/QcpKj66BR9saYtcIQMwmMgfvHRU334eympsm4I3poJ1ENRXpH/TQ32uCR1OWxta1KudGL0ATIzLusBkZEEZ+aOpgeHOSU+AQprIwQbmciQ97Kc0rYykrVokYkffFfTu/rQiWIPn3JLExOY501vftHw9kWVEj49stzWYEFcttKOKWUW8AF3ljmfZS/YmeoPCqUBgg7OCaFtF578blV59n574cbFeFYQ3rD2Z1qp3ptJGgD37q9w8O0hWFrZdQpWq/3+OoqqBVcVrQ==
+X-Stat-Signature: z7t4cwt3oein98ra6tcg1ya1ycnubwze
+X-Rspamd-Queue-Id: 2735520002
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788502071-924581
+X-HE-Meta: U2FsdGVkX1/WvdiZ+TxQuFYfFyPCzMVN2GItJwDD8i3TrqUuCKKkRwGI20yuiHxRNj0kbHpQ6TnYjI5bYx2BC0IKAsMK+QoSC7H3C2LRhHy1sazYZn7udUdGGIUZcSTti1XTGDKd8ndrQ4vX3JwSs4ITqlJgxJSXPr6MwJqDNqUSl5CrrcDnYZ8eBZpHcSvMO5oOVP3j8ujz1CHWmdomnwAlckMPHzNpyTZb7Hng0XCZlOayhG1X8jJzJ/+SPNwKsDToQQY0bx0MZHBnGmuHi3n0OfMxz1XzixYxRPfNJdvJlLbWaYMMvPVVOJ7KIdrVXt6dwAhc7KyJ5AuJWtOT9X1vJHuBz9Mz7Coo15h1Wn+TGRqu4amEkm+js632TTBQWHDjiE6qXpumuRAA/diaFrL4CcGh8QovbViswRy+HAD1+X5dn5yZmBc7hYMxvkiZ9/KYL2oqABD/KUUkzY8u3GLOuJXCWFSLwPir6MVCaWwW+o6EDBWt7ofIEamOjDHJxTL+QaEsxiRX4s/BGJh2MDah+6qQfxhP/twUhAnDhAm/f8D9jzWylBJ+nqfhP2loI5VGa7DorP1LViC80kA6zMuX97lxSyOGEKHIQidg6up76nyiPoFWvDrwkSbzFFE+L/5d11+pQXpf0GE08YvF2HzVQQ8mKEkVL54q7ESu6fiLfqH1ojzvvTfTeKsLBgLhMQ0bX6Qjbasyr5wzKsV26u0CeaO3E+hwYM7GTXEmMpmm34UAWxA57QXR7XvZSciXjAeA/gr8BgjN0a+tkhMDqeGjzmNmod0tTtuycdGK8Jd5hL3ElW5rb8Ue1dKHY5jAyjoNjQ5CQBQ/mSZta1nmZonODzkISzXqKarKDAPIMEu9I2tc0sGOP9o8EEfrCybegYrwKXqG6+iDxpcEWUbwuzmXFS6cLAYLiHWvJ2bwWEAMuWI5AcHQe/i+iQdsSPtrqa87+EuuXkncZo+MdWk
+ bvNxSBGc
+ hVwYMWJqAUllNSFcO6Fqi1c93ajHS3a8WPeXE9kPWjUpWJKH6vOUEiNSDkBEwaBdm5NVbocY7ciNBI5gk8EsnPS9RneXZP+e7+Ps6UCkLF82RCpwDBqgNa8XrEy3IxrmJrIBKFNvQcjTjZEng14P/P6JriTpuBRffBa7mkYURVb7QVLPjxaDI/7szJQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,16 +86,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The pull request you sent on Thu, 3 Sep 2026 17:48:47 -0700:
+On Fri, Sep 04, 2026 at 10:54:11AM +0800, gaoguixing wrote:
+....
+>  mm/swapfile.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index d6c5c25755be..02fd5ad94185 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -163,16 +163,16 @@ static void __swap_table_update_count(struct swap_cluster_info *ci,
+>  				      unsigned char count)
+>  {
+>  	unsigned long swp_tb = __swap_table_get(ci, ci_off);
+> -	unsigned char flags = swap_table_count(count);
+> +	unsigned char tb_count = swap_table_count(count);
+>  
+>  	if (WARN_ON_ONCE(swp_tb_is_bad(swp_tb)))
+>  		return;
+> -	if (!flags && swp_tb_is_null(swp_tb))
+> +	if (!tb_count && swp_tb_is_null(swp_tb))
+>  		return;
+> -	if (flags && swp_tb_is_null(swp_tb))
+> -		swp_tb = shadow_to_swp_tb(NULL, flags);
+> -	else
+> -		swp_tb = __swp_tb_mk_count(swp_tb, flags);
+> +	if (tb_count && swp_tb_is_null(swp_tb))
+> +		swp_tb = shadow_to_swp_tb(NULL, 0);
+> +
+> +	swp_tb = __swp_tb_mk_count(swp_tb, tb_count);
+>  	__swap_table_set(ci, ci_off, swp_tb);
+>  }
+>
+Hello,
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-09-03-17-45
+If I understand correctly, this function was added during a custom
+kernel adaptation, and since the flags field mixes the count and the
+Z flag, you'd like to split out a dedicated helper for updating the
+swap count?
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/bc35965f6940a9bf834d54187b6088b8eb09206d
+To me the layout and helpers in swap_table.h and swapfile.c already
+read well enough. A mistake is possible, but following how the flags
+field is used across swap_table.h and its callers was not hard.
 
-Thank you!
+I can't quite see where this would apply or what it buys us from this
+diff alone. Could you progress & share the rationale and an actual patch on top
+of the upstream series?
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Thanks,
+Youngjun
+ 
 
