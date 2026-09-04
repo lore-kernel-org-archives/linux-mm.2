@@ -4,129 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1989C79F82
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 14:54:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D937BC624DE
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 15:08:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FB416B00A2; Fri,  4 Sep 2026 10:54:43 -0400 (EDT)
+	id C2D996B0088; Fri,  4 Sep 2026 11:08:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 385516B00A3; Fri,  4 Sep 2026 10:54:43 -0400 (EDT)
+	id C04866B008A; Fri,  4 Sep 2026 11:08:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24CDE6B00A4; Fri,  4 Sep 2026 10:54:43 -0400 (EDT)
+	id B1AC36B008C; Fri,  4 Sep 2026 11:08:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F23D66B00A2
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:54:42 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8145AC01FA
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 14:54:42 +0000 (UTC)
-X-FDA: 85176376404.25.5E18AA4
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B3806C0003
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 14:54:40 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OOysHydY;
-	spf=pass (imf10.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788533680;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DCA56B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 11:08:51 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 314AD401F0
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:08:51 +0000 (UTC)
+X-FDA: 85176412062.17.984124B
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010001.outbound.protection.outlook.com [52.101.56.1])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 5A5E0C0006
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:08:48 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="tSVEmD/d";
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf28.hostedemail.com: domain of ziy@nvidia.com designates 52.101.56.1 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788534528;
+	b=aMSulraoWjMG/cDQMrTgBv/ItH/qPp5ng6T61OEA9+jqyD7YPt1ROML1eCPFVwwXTwRR5w
+	FTtjIRDDcqaPyE60QhmPLALCXKBf5tnEQj544zA192VbA+TPUPth3u3hqOyeOz79Ej+r7d
+	Ck7tetvgXii/LhT6ldudnHNrYRIWLs0=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="tSVEmD/d";
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf28.hostedemail.com: domain of ziy@nvidia.com designates 52.101.56.1 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788534528;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6KgsraBrUcToWRNGkqj8MPFUdOM/wW4nUtZo/xB90w4=;
-	b=BBi/6iZRVoNcqKzpaLnAtaS23JJVRCSrp4mrAmpuoTHGGe/3g+Yj0H/f3Fnajc9WKK9qa2
-	lCSWOEaBZ3zjGi9ZT8HV/WvMIgFn6AsSZV5wnsPYBO1V6fvtZHeR9kOGxbXJX4IZIPn5lN
-	Byi5jjANnBYWO9FmftgS9aWEgGi2a5g=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788533680;
-	b=ZjgASn9d9P0bvotMnS3F97bfvNz8c1MqbLl/mhGLGUhfMWh6m02Ty/wfppqTaA3S/+zWfy
-	aB6SdOBBQ0UARCRRCWNi8ZuaU18P5wTahNiZTrqlTxIWHg3x5IB4wrYA1o4sQx+4jJsb7Y
-	jnt7e0xD14j8eSKBNe3S7c1s/aVrM3o=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OOysHydY;
-	spf=pass (imf10.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-485850cbac3so713103f8f.3
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 07:54:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788533679; x=1789138479; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6KgsraBrUcToWRNGkqj8MPFUdOM/wW4nUtZo/xB90w4=;
-        b=OOysHydYAi5pK+16L1OXH6WxYFIX+yf+QwBMKJlCxiBOxRPSva0X0Ym9R32BpQmUjk
-         HvAuEFlmwD/FaOuyf7LNURTq1yvyBxozfjzx7J4l7Yuvz4tUUnE8KrMbXbYTA3+u+Bqp
-         ZaOty8jnXoFZaLqBSN/B9y985rmjUXTa5EltKn/fCCJjZq5jTVHgL1kEV8uCVwv9YfbY
-         8FWj0umifjDlOJ8DxvaRXRRCHFXJi41udBW9Lk0XUS8XoTiGrQYsH8nyt/KqmtAK3x6S
-         qSmyG0jRClSHN5yhY+rslKFEAhIl2Ei4fDJDTj3M89DKbscq8LJUAqgTr4wLDTZrkpCm
-         H20Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788533679; x=1789138479;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6KgsraBrUcToWRNGkqj8MPFUdOM/wW4nUtZo/xB90w4=;
-        b=CBD57mwCYeonYTV07aySygtNa1OO4S/EAKfWBU1TcKZ0dKM+GujHFd4FPrVODf6SEU
-         hnoLy813Ypj6yE1ERrZUWdAdRHDo3gNF1PnMbFjwnhkRQGcayYG/2c2TBHt4dDIgI9ln
-         0Jyrg47nPZKTPaiD0MCkzyHV+3kbnOktK53WXh2zCkqCyCTL0/gix/fUPiN7nRVZafgb
-         hu5ePnmq7Eegtgq2EAZFm0XbB6/z1MtNvdjWl+1IXi6YwVU84oTgmyYBWxFN6ZYJfKP6
-         QG/1SAfiH3D6jn62JnAAQ6ZcbZ3DWl8a4LeRFAoTZwuHCgCCMZkxrJMGcjHgXPYstHUp
-         9pvw==
-X-Forwarded-Encrypted: i=1; AKwUvBx+Cxo4Bun2X+KqX+hHedYJR4vC6MWBrRNjpQ4XQ5roTuiYU3bMo555J2XV6khkwkpG9/nXuPRqKA==@kvack.org
-X-Gm-Message-State: AFuF++ksT+Pj7knAuyGi7cAXFmy9+41Zf1fAx798HbtWR9yqBtW/05o4
-	3BF1iDEn/arHTFLcpEzNbx1GI+EgRyZSbBITp5fDo826z1MFMwp5Jvkv
-X-Gm-Gg: AYBFou1uOF5KT3eGdDxVQugTehSMaKDoqiLcGnfKKD79AA3p+7/ZSVofNZMMM7enbNI
-	HTUfZbSPsNXB+OtT3cmNco7+RCgyrH83Cjan/vVdpv5JXQw+NW8CcgtpoMgK2IcvoqvuYJGBJjh
-	xPXlIGy2nWN+NGuVWVJf9e3Z81+0kEZVuqo9+4w0ajEPVsWEqg8RIgiSMNvIycNauWLSWG1DkuR
-	akKvia5QG2ujEkVgoaEAGcpXu0FwQ2ItK6+cb0ZG8UVK460/pgim8h0k2Mt4LYA0zO4Dsp8EcO5
-	oHRSiumrRHvr9DQ94Ny8RNGpc/eEZLAKw51jq5s5vYWfAjuakyTxHCGaV14MqjlqxkZ8+pEWfNc
-	6/j3VzByCPYK6QaMUB7R6gVTsrfA+dN5C0jR0wPWMfNa1sNTxFQKgdeiVfZuavXLF+nuQgN5X0p
-	SsY3EueeIFgure3LsmAMM3r0shna8IDnqd3D6funRA5gT+Yp5qnY2wXkXKOt1a3P4DTZWESG3la
-	w==
-X-Received: by 2002:a05:6000:25fe:b0:485:8cb8:b838 with SMTP id ffacd0b85a97d-4858cb8b900mr3127211f8f.7.1788533679283;
-        Fri, 04 Sep 2026 07:54:39 -0700 (PDT)
-Received: from dell-desktop ([2a02:587:4b5f:900:ef25:2f4:1792:4e6f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485885cb03asm6802799f8f.37.2026.09.04.07.54.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 07:54:38 -0700 (PDT)
-From: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
-To: bpf@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	kpsingh@kernel.org,
-	matt@bobrowski.net,
-	song@kernel.org,
-	utilityemal77@gmail.com,
-	sun.jian.kdev@gmail.com,
-	tasos.papagiannnis@gmail.com
-Subject: [PATCH bpf-next v4 7/7] selftests/bpf: Test mm_struct user memory kfuncs with linux_binprm
-Date: Fri,  4 Sep 2026 17:53:40 +0300
-Message-ID: <20260904145340.40212-8-tasos.papagiannnis@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260904145340.40212-1-tasos.papagiannnis@gmail.com>
-References: <20260904145340.40212-1-tasos.papagiannnis@gmail.com>
+	bh=GN6mBwLT/6rTFhRsPUjslE3h4JBShe6KdsyAhTt8At8=;
+	b=P0ydihmlMfpUDIw3fKSDKCMmBblXw3NfN8NCx4D8kS4wwnWkWH1LURvrig11nwKzoJ6FeH
+	k7hPCOgVWiBFDKENHtuwb+Uge9kDDV1aZxX43d8pPqNJpSTKp8XvW37zIoDmWexNCmTq4E
+	wNiXBEqAeg3aj/j2qXgY2CvCf6cBhdk=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hT8FusuxNES62XU8/gBSONdzPjzy84Pf6e5Lk4+CFEhjaWvIdiUCbM+/LdMEB9W5EquoUcYUHW1fclIaTdLIo2jOkzKhErzKn72lW34OL+07mtfItn/jVR0+5UmOfAyyj2k50vo+Lqh/Xcdtf2G8n46OLgEIL7F8MQ96bDHHorfHZcg3uMQGaqLTwrTbgRB4sce/TQlPD4F+9c9x0ouTATqTSawaPw+kxlu7VM35OVI+sDmEVHyj3rnxqy5xisz3Zn8NMsZlY88fZwRbmmPIscctJfox2MR9NI321htU2uLb964QwfioNdW6JPpGJsVFC0fR0K12wsxobMQo3oBTzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GN6mBwLT/6rTFhRsPUjslE3h4JBShe6KdsyAhTt8At8=;
+ b=w5gCk5VH9sUYqceHFRz5a1ghW2lDOfxW0hp72Jbh62alqoHaobJRdUpnXbssVHr0qDHWbXLbyncNYGOodKdnQUpd7pztwkA8ZvXITXDScONZcCqZpV9ck/j3qBfTqmtzjRaW5R7sIhzP+QpMD5DVqtHAw7UWIGGmV4g6sajGuNhm2e638VjxNUfW8YOW6b7rR5EPFcazEh/15dv6CdvQjxYaiATFaitFH7TlVAAVafbXxPylIrWcjIfhDMEI6cGYnKvYuooTGXI/7R+YXVAd3YMjBqE8f9uhkQPJDftlkpMQ374VuKKrU6qq3l6QGqa1uik0DWkmRVsaIKOotRdk0A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GN6mBwLT/6rTFhRsPUjslE3h4JBShe6KdsyAhTt8At8=;
+ b=tSVEmD/d7QCqlNWY11RwfHexE6NLaAjb7ErQSA9gTfHac+2Nda4298Ydd9tWM1/O7XxCRRlTgT9q6vOKFBmV9MkZN55tuOlKuSHb/cLHl3Xdk91cg3NS7J6/UPMzXayZCqVSEJUh+Ccrl5LGL6s1ibNeQ88GFWx6SwGcroGhEcS/EHLpXIuzHU7zSU+hUWGdvv6e0QviLmBHGeHCpAP+jvRAE0cGWF5n67B74gr1c3HVGw7CGIgLCIDWDxVENYWEowqeDsq+JgJQx2VSTXgGAur4Vpzky5LBDpP/z/V7p0hng71J4JGhMZeDfyqlbAFfS5fOjdqQ2f/mAsu8qtoklw==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by DM6PR12MB4330.namprd12.prod.outlook.com (2603:10b6:5:21d::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Fri, 4 Sep
+ 2026 15:08:36 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0360.008; Fri, 4 Sep 2026
+ 15:08:35 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 04 Sep 2026 11:08:33 -0400
+Message-Id: <DL6MKKOOL5DX.1R3Q77UTXBFYT@nvidia.com>
+Subject: Re: [PATCH v4] mm/page_alloc: avoid direct compaction for costly
+ __GFP_NORETRY allocations
+Cc: <abuehaze@amazon.com>, <akpm@linux-foundation.org>,
+ <alisaidi@amazon.com>, <blakgeof@amazon.com>, <brauner@kernel.org>,
+ <dgc@kernel.org>, <dipietro.salvatore@gmail.com>, <djwong@kernel.org>,
+ <hannes@cmpxchg.org>, <linux-fsdevel@vger.kernel.org>,
+ <linux-mm@kvack.org>, <linux-xfs@vger.kernel.org>, <mhocko@suse.com>,
+ <ritesh.list@gmail.com>, <rvvandan@amazon.com>, <stable@vger.kernel.org>,
+ <surenb@google.com>, <willy@infradead.org>, "David Hildenbrand"
+ <david@redhat.com>, "Christoph Hellwig" <hch@lst.de>, "Brendan Jackman"
+ <brendan.jackman@linux.dev>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, "Salvatore Dipietro"
+ <dipiets@amazon.it>, <linux-kernel@vger.kernel.org>, <hch@infradead.org>
+From: "Zi Yan" <ziy@nvidia.com>
+X-Mailer: aerc 0.22.0
+References: <20260904115629.3993331-1-dipiets@amazon.it>
+ <8cc503d9-04a1-4d90-874c-ada6c0ac5147@kernel.org>
+In-Reply-To: <8cc503d9-04a1-4d90-874c-ada6c0ac5147@kernel.org>
+X-ClientProxiedBy: BN0PR04CA0125.namprd04.prod.outlook.com
+ (2603:10b6:408:ed::10) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DM6PR12MB4330:EE_
+X-MS-Office365-Filtering-Correlation-Id: e07f8e47-2398-4ce3-9a3b-08df0a966445
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|1800799024|13003099007|4143699003|56012099006|10067099003|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	GIk7PhfTXZTuF1Et1NKSfQ+PwRp6GhuMqzKn0bcAUDTxcaQIMIH6UJdvbmoZXrcPi7tVgtZoWCiStCv13jTnd16ESBvomJPpNh8PTnsWvENdcqNY7iDTP9dFdxqUXKc6NqgtM+c1od7eC5L+4Hx9gHCjQncF/XO7RNIpD+K+hBmA32mrd7ahojFJuEL9atriRil4OPlv4bzhzMosW+9FlLTenLGVBkL715zbQRepwFQYOg/188Eoq6esMi6St9A5niiyJG3oXbyxd4lInnATzCFE4tuEXZJkKQ8/Ew1chhUiVdG4J/e0/zZ6Cv9a+uSzXrBr/fLmkvG9islCIFWDOm9q2b1fYw7kHK68Lcu/pfADobXinwebrl5dMYEp5CVup3kUdgIgRNMKsVrFiMsdF4Am1QEzqrK+ybUOCMbfW+++UugsFJ3w9fGKuJDB+JxQgz0rLslUnQmLvRVdw+RP+9l9H1amrtqmY0R0g8uN1LtNEyndlwKxU6/yacJGBT03AitTnJUYAbXGJNbeNwiaGuPG9iPpmqccmVKefQZaT6Qg+TkoaPCR69SQnlky6cLGG6aiSUUhQ/ffyVE4i19zIytU7C9TUw03NLSdkd6Pf7V9ZVHwxbtwwqbHNaWlpgzzejDGFi2wYo/d84U1dB+tK4qSFUnm2KGkMKGYGY8/2Dw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(1800799024)(13003099007)(4143699003)(56012099006)(10067099003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?d1JpcmJ6anY0aFpSSGg2TmtublRkemJGUzNGdTlOc25jZHNIekJhQ1VlbldT?=
+ =?utf-8?B?eGs3UFR6WHpvdmlZY1AxTTl0SkVTWnFYWHB4cjZ1M1haVUVsRVB5cWZGVkVl?=
+ =?utf-8?B?YURad0gxeEx6VXZodXZnVmljbFNCYTVQMktXREdsZjRFblhGQUVDN1hFMFNW?=
+ =?utf-8?B?SHBQVTlYSmdGRWcxdXFJZjFVY2VNVU8zWmxEVy8yZEpNdGVoVEU2MWdaWlE0?=
+ =?utf-8?B?eXBiK1JjQUMxdVF5NWMrQVhYSHhDc3owTU9lMjNyMUF3blpuMzAwTkplTUJ6?=
+ =?utf-8?B?cWJsTHZQaFdTc2YvUGlrVVpDOFU2NmgwbldZdGQyaEoyVXJWZFdQdXptZE9W?=
+ =?utf-8?B?MGV2NjlHSXBIc0VkSmhlYWVKMWRnejJ4dVhoV0U0THJHd3R6WHRBWm4wRjJ3?=
+ =?utf-8?B?ZDRIdEVYU3puSHZXbmZVVFJiVHNybXc4VDJEUzV4UlQycmJQTGVjT09tQU9r?=
+ =?utf-8?B?REpCR2xqenJCRGlzT05oMDdPV3JTVkd4cEZNb1ZsT0JQTUpHdHBId2w5bHRo?=
+ =?utf-8?B?UlI5cmcxUXRiN2VQdXBUbk00R0lmYk44M2d6S29PT0RTelh0N2RZSVE5Z25P?=
+ =?utf-8?B?TmhvLytMMWRnUkRHS1M1alJoLzdQRzFudUtEbUtZbkorSi9sMUUyT3NYaC9t?=
+ =?utf-8?B?NVlHN1NzNjcyb085dGR2T2xxcGNBbEpuN3huOFZQYUJXU2R1YW5VWXBTUzNu?=
+ =?utf-8?B?S1l1YVhpdlgvZzBEYW9PS2hPcTFUTGVidTY5dVVBWjRNK0owdldzYnFVK21T?=
+ =?utf-8?B?dnl4MVpQM1BvMzhyTTNMYXlRaEorYUtMTkw2bnNaMFBiTFhNVUl1aURUOG1u?=
+ =?utf-8?B?SGFxOERSbEplK3dxUXM5TmJ1S3RwbXlmY1Y2OWNINEROUExCOWhxOEdsOW1E?=
+ =?utf-8?B?SVp1U04yK25zd3B4cEg0bUl5cmtYdmo2cGRCYUtLVERzU05CMDA5WG15RENF?=
+ =?utf-8?B?R3NFUHFPWjVBZlZIbHVvNDNzTjFDL2pCMzRxQlRBU2ZhM1IzZzJ1RHU5VHNI?=
+ =?utf-8?B?cHBLTXNVcHhXK0xpZ2RKOEdxNWdYdEdhUU1rbTBlSVY1cXh5ZGRzQU9jNit0?=
+ =?utf-8?B?RFBsQStpY09iWlZoMTZEMzVzSEdXRHJEZ0s2V29tWjFHaGZ4NnhSRHZYR1cy?=
+ =?utf-8?B?T0VWeHlPaUNWRUZsT3N2UmI0elB1Wk41NVBwU1JDWW9OeUZKNjhyQlZiWHo4?=
+ =?utf-8?B?TVlHaGkyaklYUzJySm4rNGhzQ2RBN0hNQjUrZklZVityakU1a1pRWmtNamJM?=
+ =?utf-8?B?ZXNuYVFNeW5rYXFUa3pmdndtOCtJM0ZSMXZMUTBwSVE5QkhNT2dGWUhaa3Zv?=
+ =?utf-8?B?aC9xUXFGWmdVVVA0dnNrT0V4MzZtKzlHTU9BZkc3TkJpOERYMXVNckVuQkto?=
+ =?utf-8?B?a1ViSWlWeHkreHRnUnExcjF1aDMvNEtLMEhTaVN6Q2F2ZEhaeUlVMkMwUDdE?=
+ =?utf-8?B?SUxEUW1RbStXOXk3WjhWZWR3TFFsYm9MWVRXWmJSeEQxc1BQQjl6WDV5dnJZ?=
+ =?utf-8?B?WUJTWkVzUlJ5SHRnRkVwQmJpcGxhM2hRQ1pTQ0g2dzMvVVJIa3RpV1pHUmdE?=
+ =?utf-8?B?d2RHNS9uL2VHTHZkMFZyYjUwSmJTaHV0Qit4a2FNZFEvSEFPVEFUNmxHK3dR?=
+ =?utf-8?B?NTFETURuczhqcDZnQWhXenVqb3Z6em5TMTFNZGthRW9xOURGSkJiamVrQnVj?=
+ =?utf-8?B?UTdmeXZXNkFySzljSWxhRU1XT3lyM3BNbGUra0NjRHBOWHB6VmR2TlJSSzNV?=
+ =?utf-8?B?YWtYMXFlU0tsTC9uS3B0emVqT0l0eHhLcVY0TU1BbERzSW9aZ25OV0xKcCtM?=
+ =?utf-8?B?TkM0Q0Z1cklrZmdkcGhLTGdDMnFiQ1Z4SWlJR1BXd1RLUmZ3eXkwU0dqVFRw?=
+ =?utf-8?B?T2RxSmhYS1FhS1VHa2Z0UmR1ZkVKTWcyTnBTZjRmd3pVS2JoVDBiSjNKNXZW?=
+ =?utf-8?B?cExvb1lXbDg4b3ZIUklHQ3dXQ3I1YlpWNTJRRjg1RmpXNGJ3YXkwbWVFcXhv?=
+ =?utf-8?B?RzZlQmJwWnFreDNGVXBYUEdVZWVpQkhTTTJiQnNCRzFKVDFEdjZFcUoySm5P?=
+ =?utf-8?B?Y09PaEdxeWc2Y0xVZ3pkeUQ3d0pDdHJadlgvWGxXVUJzcXcyK1orcFZyWlpy?=
+ =?utf-8?B?SEJlZy9yaENZOGw4bW9sR3k3RTVMSUIrMzZVUW1OQ3pudzdVYm02RzlhZjNt?=
+ =?utf-8?B?dWtDZlZtZnAwelJLaEdZL1NMbUlkQXJSck8vZUIrV2VYSGl5QmprVkxyRXI5?=
+ =?utf-8?B?S0U4V1NsaUszQTBldm1VaWh2UWxGMkdjMTY4K2d2cTFPNW5JL0c3RHVJVnNl?=
+ =?utf-8?Q?0zmOazxrGu9JXAOXYj?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e07f8e47-2398-4ce3-9a3b-08df0a966445
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2026 15:08:35.4844
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5+Uqk5ckVm7H1CcR/fcOKkfvF9grmJ46CvQr0o0erv5bHvlPQvKOPhlVvs2tqaR4
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4330
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B3806C0003
-X-Stat-Signature: 513duudfpws51ocbfjxd8desz5mt4zee
-X-HE-Tag: 1788533680-394654
-X-HE-Meta: U2FsdGVkX1+Hr0NtCB1128+IRQVmcgYPq6ZYpbhG9O2FWgfI/TnXII/e//AjV26Vfy4YOs4EBkF09tC2rRzL/ft48lzAtSKvuqNWvBzansj3hCfWg3aeQm5G0qoWtjCU4Tep8+h32x2b1BGkk5u2FVbQpi1S8TfX7h0mE6e6MtEEBoiJSp0VGobotS6wKuF3vFcrKGEta1YB56cPX94NfdJb+ETjC45OFGaukqhwfy2ny2iILfv7csvSIAdyTcvyVGBgj1A7lxwx2K0/6hNFV/kpm6zb8MeznnODcjccGOGK51uT3g9uS80wviMw9AQsYJHbmBz3vINXaEkkHV/0mNIJXAZuTXfhReo3ozu0oY8Slhw9/aqzATTrYfenk2nOKUOe/U3oPgDVmYUJarRbxnjElx1T26CW7n9MSynWQjIiJJGZLfxvaIirbfcKLSnRCWVKZOnVn6TgFiBRcLr7oEvYCXinc8SjQ1WB33VRGl0E9/RBxkM+Jz9RM4GYKPQZoGeOr54geE/psWx8jLs+bs+XFnhO/CSa7SrDIciTGyyyfE4cZWh+alaKTnbp6o2FTXfrZ/wY4J6m0ly4spdXxsiXfMFVn1CH8Fz/b5iEvBWhWmAkv6yskB5ZEPk8dlGYwG1OOTuR+fvTUjOzY1Q9dlIFvjpUFZZcL0xkQlegG3aZ3iUnOZYT0XJqUewIkc2vgt7nWSPBFrwBm8C8UO3HWnaHgRg0+kdEmtvGeAk2X1bmsci331Svw6SFvAYbGTXiskNp6lc8lHkc4k0N/x4Jcu7TzOhMOs+lDqzgcaluKpLJG1ZDGkWpCq39GgMYeR5sSLXFqwAWAkUHgcQdQRZMPt3W0n1xSRV0Nrq8rmE//zm1FICjhahQyTI7+ZsP7OWZmW5MAnI4J60getlBeVqbmIpXm5Fqx2oHABesL9XtuG8rSc7awn+Ejy5Elk9Q6Jl9i19zLdtoajTTHoONioJ
- ifO+Ttvt
- IEu7wGm6CKg7lT4HmQeWJiigKv64HAObY/AtlZdTunMYG74pNEAKIzPqd3TLLAZG4GlkI2Zn9ldOdTqxc+q+kdR+I/YBTCbbe3ypPN0Wt6yrQyYpPFOkyTqvxpT7rPk6wYUhWxaolgr6+QcAONgvQXDUbF2YZ7o25DXsOc4/V6iuXdHSlmR2gVjVXziq8//PTVkmn/Fx/3YyWWHTyJnNE5zCLtG05oIiOT538Q67d8OYFFDSfsee3JcUUyQBxyX3mLp4Z+mSxowLLKr6VKV2+kp97OR0vZgOEM6vDwb/DzJB/oxvrYf/XEeIr72hVHIB6iwPwZwDZpGIecMOTGgAop62YB+WXCPv/EOWU8ZwJX4DP0ZWt4CcXTxD2P1dXP5J7ydyXtSmhGgiKpOusuGh+LksAqlfW/ITBtse/UjCAFkRwTGCT2nRhjoxADJ4Ry4PdWC4ev85JrQcpmyH+RURVkcGFQD+LkZcD0r6wmG4K7m5jfP9uDGwgIR2Zo/hqcttiyMPx/BarvXAOQ9TvOm5CrsvQcEloIxgUkfyg
+X-Stat-Signature: eipbp37i9o6349ctx349f4rhnzzo8sw4
+X-Rspamd-Queue-Id: 5A5E0C0006
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788534528-615702
+X-HE-Meta: U2FsdGVkX1/ytD1S21XiXrk+ggZAVleJU/3uoUm/5nGKXqMMOXz98iNbBrOr4DHYsxtftLXeMS0/Ii79PwCxHvUHsD3nAJqhgN4F0ovPtod+IV6UbNFtUpT8+YY8wdzVC2CSPutTzUzySO3CSdUrX9U5zYP034n+cSaDmlbVRbszOEnndLUrUqWz8X/XNsTJES+2lwwL3Wx0xA71mFzyBmrEE+SBPacwJbSoE5cHJcr52dt6jGvsfhHfjb3nWJrewCOgCoUushOaIFSxqYLIE5h0DOUQxZumYLcABxaqkaZ4KVeHhOF1VLBlgfW0HAI1EiPrFLJ0n6VzPdUrvhjBHtOykVPsBnhHamYWy78PXUHbndpaE5gu6Jg9k6g5uu5WsIC6hhyHKzF9aoWwozx7jU/jrfXFV2PuOgFZ0dhuN32Mt4G9vUKA33Mbzo0wObOspzIkjwBSJ6j5RxWDLJYitEDCX90v9DWdzcssOQ55Ii3wEv1CNUYcd27FoUxrWNAtUn+pig+RAKsIdtX0q4y0h6rSA/rGdp94HlY566Vscd+vW9kMxqjUGSFPMIT6qMWNtDMetpwv7nxVCQNPtyHmNWiBfgt9XNocSzH+gUy+PQO+cPHeeyGxxAvK3cTM9ssCvGghUv0Dm0x/mI3pN6AjCCGWfPV92bmd3Q0LxURXE8p6HRzNsvp5wpmgT4cpVDE4AcyGUGwJHYlumoFiTw0pJDSs4/9PiprfQ5rg2Ac8W/Ge4C7SQi1ObGuZmG1zXUm7VdQaXeBcgS7AN0uBAlVhlNSlrAxjKCosrzvpbF2gpbZdJpXyqlcxiyk2iWfgRjilFQSYZWKLxrz7IerGsGvdosU5blERugD7a7tmQWBnb1hI15rf+iOAurc4AJKidlEqgHT/UMKpyce7nSmQkM/h24C9YYAPR0pusMnB1TIzj/8yNsCAba+rvclWFixG4jM9ZCoAVbQkD3xlISQOOcg
+ gFQPXWn0
+ QeVqxRYVqhFJkTzpliSy3dhqK3q/bU3OLiQpsG91pCgB7xialS/EAoTt1CuaMPjBVQOeikkFxLqk54/T/HSFag2+1e8OA+IMIYxxBePGZXFb8xS8o0WLbYHrDV8/z1Upt6pxy3ZK23sWxUW2+PIiTtqq4ojAfcb901zIJML5buUMOYiCOfFwYA5bqqyJKmfPA+7X7pC0/aWu4aOvfKo9GedF5hsvdyY3SCl7+sOrPPsLmIg4XNm0jbUkGibyvnbbfWj7WWFswiaNoeaogUVeFKOR9eR6BRfw68Vi8uEh5p9F6FpGmA9rlrBXmkFaajjNMXRA5mBzymUKMBQkdIikyDEOj1h2jReDKUvOHmME2jR1WVVrJxtZFDTyc56hiqxpWSD4QWff4AU1ACoTg2ek0YY6tSOqD9UIwnDajmWKAfFcqdBOaYNuBtzYbsgxHm6TANZibiHwoq+nIiz/dXphwZNopcJBkEt/kwj8q+8fqbsvCnYaWLY08F11xovjZqn3BhK7r58fiQBmgVVIQXeNQHlbBJowcyu8QCZNoFu//8gh7rawjo8mutJeb6P3fwS0522AyUx8R+dbs4Y7CrHkqzzYlGlEEcfC7Eev+TPvunDpMDDuqu33PPnPx7i4wH0cToI9YcvXRh7o+/zeUETVRHHONpjOZL17hXQbPXdDF73e2+9QyNrMq4VnSSlgh2tHRHsKHLZGed3HhOHywqQxX2lhrYQiRUDpRS9JrPiw4irNIvrcuerPGc/1Qt0WTPePZVZ8cG3w7aWBsh7Yy6mBJZjUn1ONHVw6B2hoIaKuBsEQzXGnpt94I5m0u36jc0W+GanZFtFGy+K1+OLmjdOMIGtwEaVngEI70wVSYc9lgpmC3OoDqFkHVhJyTNZHtQ0phwf37
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,236 +179,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a sleepable BPF LSM program attached to bprm_check_security to test
-bpf_copy_from_user_mm() and bpf_copy_from_user_mm_str() on CONFIG_MMU
-kernels.
+On Fri Sep 4, 2026 at 10:11 AM EDT, Vlastimil Babka (SUSE) wrote:
+> On 9/4/26 13:56, Salvatore Dipietro wrote:
+>> Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+>> introduced high-order folio allocations in the iomap buffered write
+>> path.  When memory is fragmented, each failed costly-order allocation
+>> enters __alloc_pages_slowpath() which runs direct compaction and
+>> drain_all_pages(), causing a 0.38x throughput drop on PostgreSQL
+>> pgbench (simple-update) with 1024 clients on a 96-vCPU arm64 system.
+>>=20
+>> The root issue is that direct compaction is too expensive for hot
+>> allocation paths that have fallbacks to smaller allocations.
+>> __filemap_get_folio_mpol() already marks higher-order allocations with
+>> __GFP_NORETRY | __GFP_NOWARN, signalling that the caller can handle
+>> failure.  However, the page allocator still attempts full direct
+>> compaction for costly orders with __GFP_NORETRY, which is unnecessarily
+>> aggressive when the caller will simply retry at a lower order.
+>>=20
+>> For costly-order allocations with __GFP_NORETRY, clear
+>> __GFP_DIRECT_RECLAIM at the very start of the slowpath, before
+>> can_direct_reclaim, can_compact and the nofail checks are evaluated.
+>> This makes the entire slowpath treat the request as non-blocking: no
+>> direct reclaim, no direct compaction and no drain_all_pages() IPI
+>> across every CPU. kswapd (and in turn kcompactd) is still woken further
+>> down for background defragmentation, so compaction keeps working for
+>> long-term system health while being removed from the latency-critical
+>> direct allocation path.
+>>=20
+>> Allocations that also request __GFP_THISNODE are exempted.  That flag
+>> pairing identifies the local-node-first THP attempt issued by
+>> alloc_pages_mpol() (mempolicy.c), which relies on direct compaction to
+>> form transparent huge pages.
+>>=20
+>> Test environment:
+>>   Hardware:  AWS EC2 m8g.24xlarge (96 vCPU, arm64)
+>>              12x 1TB IO2 32000 IOPS RAID0 XFS
+>>   OS:        AL2023
+>>   Kernel:    v7.3-rc1
+>>   Database:  PostgreSQL 18.4
+>>   Workload:  pgbench simple-update, 1024 clients, 96 threads, 1200s
+>>=20
+>> Results (average of 3 runs, TPS):
+>>=20
+>>   Config                   Avg TPS      % vs Baseline
+>>   baseline (no patch)       59,408       -
+>>   With this patch          155,409      +161.6%
+>>=20
+>> Link: https://lore.kernel.org/all/20260403193535.9970-1-dipiets@amazon.i=
+t/T/#t [v1]
+>> Link: https://lore.kernel.org/linux-mm/20260420161404.642-1-dipiets@amaz=
+on.it/T/#u [v2]
+>> Link: https://lore.kernel.org/all/20260710143437.12379-1-dipiets@amazon.=
+it/T/#u [v3]
+>> Fixes: 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+>> Cc: stable@vger.kernel.org
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: Vlastimil Babka <vbabka@suse.cz>
+>> Cc: David Hildenbrand <david@redhat.com>
+>> Cc: Michal Hocko <mhocko@suse.com>
+>> Cc: Johannes Weiner <hannes@cmpxchg.org>
+>> Cc: Matthew Wilcox <willy@infradead.org>
+>> Cc: Christoph Hellwig <hch@lst.de>
+>> Cc: Dave Chinner <dgc@kernel.org>
+>> Cc: Ritesh Harjani <ritesh.list@gmail.com>
+>> Cc: linux-mm@kvack.org
+>> Cc: linux-fsdevel@vger.kernel.org
+>> Cc: linux-xfs@vger.kernel.org
+>> Signed-off-by: Salvatore Dipietro <dipiets@amazon.it>
+>
+> I guess this will have to do until unlikely(we figure out a better API)..=
+.
 
-Starting at bprm->p, verify that bpf_copy_from_user_mm() can copy the
-contiguous NUL-separated argument and environment data. Then use
-bpf_copy_from_user_mm_str() to read each argument and environment string
-separately, advancing the offset by the length returned from each call.
+We could add a "new_gfp =3D gfp_policy(gfp)" to adjust input gfp based on
+various policies we currently have. Even better if callers can do that
+instead.
 
-Skip the test on !CONFIG_MMU. In that configuration, exec argument and
-environment strings remain in bprm->page[] until the binary loader
-transfers them to the new process stack, so they are not accessible
-through bprm->mm at the bprm_check_security hook.
+>
+> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>
+>> ---
+>> v4: Clear __GFP_DIRECT_RECLAIM early in the slowpath and exempt
+>>     __GFP_THISNODE so THP attempt keeps using direct compaction
+>> v3: Move to mm/page_alloc.c, wake kcompactd instead of avoiding it
+>> v2: Move from fs/iomap/buffered-io.c to mm/filemap.c
+>> v1: Avoid compaction in iomap folio allocation
+>>=20
+>>  mm/page_alloc.c | 18 +++++++++++++++---
+>>  1 file changed, 15 insertions(+), 3 deletions(-)
+>>=20
+>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>> index 12fac9084c48..542c2ec31061 100644
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -4784,10 +4784,10 @@ static inline struct page *
+>>  __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+>>  						struct alloc_context *ac)
+>>  {
+>> -	bool can_direct_reclaim =3D gfp_mask & __GFP_DIRECT_RECLAIM;
+>> -	bool can_compact =3D can_direct_reclaim && gfp_compaction_allowed(gfp_=
+mask);
+>> -	bool nofail =3D gfp_mask & __GFP_NOFAIL;
+>>  	const bool costly_order =3D order > PAGE_ALLOC_COSTLY_ORDER;
+>> +	bool can_direct_reclaim;
+>> +	bool can_compact;
+>> +	bool nofail;
+>>  	struct page *page =3D NULL;
+>>  	unsigned int alloc_flags;
+>>  	unsigned long did_some_progress;
+>> @@ -4802,6 +4802,18 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned i=
+nt order,
+>>  	bool can_retry_reserves =3D true;
+>>  	unsigned long alloc_start_time =3D jiffies;
+>> =20
+>> +	/*
+>> +	 * Costly __GFP_NORETRY callers have a cheap fallback, so don't stall
+>> +	 * them in reclaim or compaction. __GFP_THISNODE callers are exempt.
+>> +	 */
 
-Signed-off-by: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
----
- .../bpf/prog_tests/copy_from_user_bprm.c      |  72 ++++++++++
- .../selftests/bpf/progs/copy_from_user_bprm.c | 123 ++++++++++++++++++
- 2 files changed, 195 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/copy_from_user_bprm.c
- create mode 100644 tools/testing/selftests/bpf/progs/copy_from_user_bprm.c
+Should this also be documented in gfp_types.h? It currently only says,
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/copy_from_user_bprm.c b/tools/testing/selftests/bpf/prog_tests/copy_from_user_bprm.c
-new file mode 100644
-index 000000000000..b2325b193576
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/copy_from_user_bprm.c
-@@ -0,0 +1,72 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <errno.h>
-+#include <sys/wait.h>
-+#include <unistd.h>
-+
-+#include <test_progs.h>
-+
-+#include "copy_from_user_bprm.skel.h"
-+
-+void test_copy_from_user_bprm(void)
-+{
-+	char arg0[] = "first";
-+	char arg1[] = "second-argument";
-+	char env0[] = "SOME_ENV=a";
-+	char env1[] = "OTHER_ENV=something";
-+	struct copy_from_user_bprm *skel;
-+	pid_t child;
-+	int status;
-+
-+	skel = copy_from_user_bprm__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		return;
-+
-+	/*
-+	 * On !CONFIG_MMU, exec strings are held in bprm->page[] rather than
-+	 * being mapped in bprm->mm.
-+	 */
-+	if (!skel->kconfig->CONFIG_MMU) {
-+		printf("%s:SKIP: test requires CONFIG_MMU\n", __func__);
-+		test__skip();
-+		goto out;
-+	}
-+
-+	if (!ASSERT_OK(copy_from_user_bprm__attach(skel), "attach"))
-+		goto out;
-+
-+	child = fork();
-+	if (!ASSERT_GE(child, 0, "fork"))
-+		goto out;
-+
-+	if (!child) {
-+		char *const argv[] = { arg0, arg1, NULL };
-+		char *const envp[] = { env0, env1, NULL };
-+
-+		skel->bss->monitored_pid = getpid();
-+		execve("/bin/true", argv, envp);
-+		_exit(errno);
-+	}
-+
-+	if (!ASSERT_EQ(waitpid(child, &status, 0), child, "waitpid"))
-+		goto out;
-+
-+	if (ASSERT_TRUE(WIFEXITED(status), "child_exited"))
-+		ASSERT_EQ(WEXITSTATUS(status), EPERM, "exec_errno");
-+
-+	ASSERT_EQ(skel->bss->bprm_argc, 2, "bprm_argc");
-+	ASSERT_EQ(skel->bss->bprm_envc, 2, "bprm_envc");
-+	ASSERT_EQ(skel->bss->data_len_match, 1, "data_len_match");
-+	ASSERT_EQ(skel->bss->invalid_flags_ret, -EINVAL, "invalid_flags_ret");
-+	ASSERT_EQ(skel->bss->copy_ret, 0, "copy_ret");
-+	ASSERT_EQ(skel->bss->str_arg0_ret, sizeof(arg0), "str_arg0_ret");
-+	ASSERT_EQ(skel->bss->str_arg1_ret, sizeof(arg1), "str_arg1_ret");
-+	ASSERT_EQ(skel->bss->str_env0_ret, sizeof(env0), "str_env0_ret");
-+	ASSERT_EQ(skel->bss->str_env1_ret, sizeof(env1), "str_env1_ret");
-+	ASSERT_EQ(skel->bss->data_match, 1, "data_match");
-+	ASSERT_EQ(skel->bss->str_args_match, 1, "str_args_match");
-+	ASSERT_EQ(skel->bss->str_envs_match, 1, "str_envs_match");
-+
-+out:
-+	copy_from_user_bprm__destroy(skel);
-+}
-diff --git a/tools/testing/selftests/bpf/progs/copy_from_user_bprm.c b/tools/testing/selftests/bpf/progs/copy_from_user_bprm.c
-new file mode 100644
-index 000000000000..b334a157419e
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/copy_from_user_bprm.c
-@@ -0,0 +1,123 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include "vmlinux.h"
-+
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
-+#include <errno.h>
-+#include "bpf_misc.h"
-+
-+char _license[] SEC("license") = "GPL";
-+
-+static const char expected_data[] = "first\0second-argument\0"
-+				    "SOME_ENV=a\0OTHER_ENV=something";
-+static const char expected_arg0[] = "first";
-+static const char expected_arg1[] = "second-argument";
-+static const char expected_env0[] = "SOME_ENV=a";
-+static const char expected_env1[] = "OTHER_ENV=something";
-+
-+int monitored_pid;
-+int bprm_argc;
-+int bprm_envc;
-+int data_len_match;
-+int invalid_flags_ret;
-+int copy_ret;
-+int str_arg0_ret;
-+int str_arg1_ret;
-+int str_env0_ret;
-+int str_env1_ret;
-+int data_match;
-+int str_args_match;
-+int str_envs_match;
-+
-+extern bool CONFIG_MMU __kconfig __weak;
-+
-+extern int bpf_copy_from_user_mm(void *dst, u32 dst__sz,
-+				 const void *unsafe_ptr__ign,
-+				 struct mm_struct *mm, u64 flags) __ksym;
-+
-+extern int bpf_copy_from_user_mm_str(void *dst, u32 dst__sz,
-+				     const void *unsafe_ptr__ign,
-+				     struct mm_struct *mm, u64 flags) __ksym;
-+
-+SEC("lsm.s/bprm_check_security")
-+int BPF_PROG(check_exec_args, struct linux_binprm *bprm)
-+{
-+	u32 pid = bpf_get_current_pid_tgid() >> 32;
-+	char data[sizeof(expected_data)] = {};
-+	struct mm_struct *mm;
-+	char arg0[32] = {};
-+	char arg1[32] = {};
-+	char env0[32] = {};
-+	char env1[32] = {};
-+	u64 offset = 0;
-+	u64 data_len;
-+
-+	if (!CONFIG_MMU)
-+		return 0;
-+
-+	if (pid != monitored_pid)
-+		return 0;
-+
-+	mm = bprm->mm;
-+	if (!mm)
-+		return 0;
-+
-+	bprm_argc = bprm->argc;
-+	bprm_envc = bprm->envc;
-+
-+	/* this is the total size of args and envs starting from bprm->p */
-+	data_len = bprm->exec - bprm->p;
-+	data_len_match = data_len == sizeof(expected_data);
-+
-+	invalid_flags_ret = bpf_copy_from_user_mm(data,
-+						  sizeof(data), (void *)bprm->p, mm, ~0ULL);
-+
-+	copy_ret = bpf_copy_from_user_mm(data, sizeof(data), (void *)bprm->p,
-+					 mm, 0);
-+	if (copy_ret)
-+		return 0;
-+
-+	data_match =
-+		!__builtin_memcmp(data, expected_data, sizeof(expected_data));
-+
-+	/* arg0 is at bprm->p */
-+	str_arg0_ret = bpf_copy_from_user_mm_str(arg0, sizeof(arg0),
-+						 (void *)(bprm->p + offset),
-+						 mm, BPF_F_PAD_ZEROS);
-+	if (str_arg0_ret != sizeof(expected_arg0))
-+		return 0;
-+	offset += str_arg0_ret;
-+
-+	/* arg1 is at bprm->p + sizeof(arg0) */
-+	str_arg1_ret = bpf_copy_from_user_mm_str(arg1, sizeof(arg1),
-+						 (void *)(bprm->p + offset),
-+						 mm, BPF_F_PAD_ZEROS);
-+	if (str_arg1_ret != sizeof(expected_arg1))
-+		return 0;
-+	offset += str_arg1_ret;
-+
-+	/* env0 is at bprm->p + sizeof(arg0) + sizeof(arg1) */
-+	str_env0_ret = bpf_copy_from_user_mm_str(env0, sizeof(env0),
-+						 (void *)(bprm->p + offset),
-+						 mm, BPF_F_PAD_ZEROS);
-+	if (str_env0_ret != sizeof(expected_env0))
-+		return 0;
-+	offset += str_env0_ret;
-+
-+	/* env1 is at bprm->p + sizeof(arg0) + sizeof(arg1) + sizeof(env0) */
-+	str_env1_ret = bpf_copy_from_user_mm_str(env1, sizeof(env1),
-+						 (void *)(bprm->p + offset),
-+						 mm, BPF_F_PAD_ZEROS);
-+	if (str_env1_ret != sizeof(expected_env1))
-+		return 0;
-+
-+	str_args_match =
-+		!__builtin_memcmp(arg0, expected_arg0, sizeof(expected_arg0)) &&
-+		!__builtin_memcmp(arg1, expected_arg1, sizeof(expected_arg1));
-+	str_envs_match =
-+		!__builtin_memcmp(env0, expected_env0, sizeof(expected_env0)) &&
-+		!__builtin_memcmp(env1, expected_env1, sizeof(expected_env1));
-+
-+	return data_match && str_args_match && str_envs_match ? -EPERM : 0;
-+}
--- 
-2.55.0
+"__GFP_NORETRY: The VM implementation will try only very lightweight
+memory direct reclaim to get some memory under memory pressure (thus it
+can sleep)."
+
+Otherwise,
+
+Acked-by: Zi Yan <ziy@nvidia.com>
+
+>> +	if (costly_order && (gfp_mask & __GFP_NORETRY) &&
+>> +	    !(gfp_mask & __GFP_THISNODE))
+>> +		gfp_mask &=3D ~__GFP_DIRECT_RECLAIM;
+>> +
+>> +	can_direct_reclaim =3D gfp_mask & __GFP_DIRECT_RECLAIM;
+>> +	can_compact =3D can_direct_reclaim && gfp_compaction_allowed(gfp_mask)=
+;
+>> +	nofail =3D gfp_mask & __GFP_NOFAIL;
+>> +
+>>  	if (unlikely(nofail)) {
+>>  		/*
+>>  		 * Also we don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
+
+
+
+
+--=20
+Best Regards,
+Yan, Zi
 
 
