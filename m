@@ -4,81 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71190C79F80
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 06:07:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69C21C61DD3
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 06:20:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC7516B0088; Fri,  4 Sep 2026 02:07:56 -0400 (EDT)
+	id 679566B0088; Fri,  4 Sep 2026 02:20:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E783A6B008A; Fri,  4 Sep 2026 02:07:56 -0400 (EDT)
+	id 629CF6B008A; Fri,  4 Sep 2026 02:20:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8E076B008C; Fri,  4 Sep 2026 02:07:56 -0400 (EDT)
+	id 519406B008C; Fri,  4 Sep 2026 02:20:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B76376B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 02:07:56 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5857840736
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:07:56 +0000 (UTC)
-X-FDA: 85175048952.10.156FA15
-Received: from lgeamrelo12.lge.com (lgeamrelo12.lge.com [156.147.23.52])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 2735520002
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:07:51 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=none;
-	spf=pass (imf31.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788502074;
-	b=pLitD6+8veAg7OLCpJaNHCfJ5XtHJDVJI4leHhFEWmrjkObsQ8nYCwt5QO6rqpMSikXr/B
-	0l+aRVPW1yPqLuBd8jlYykhWOAHM5YNVgv6bJDSwy43w7Qr8KcAqU3jkeA54ADow66e/ZK
-	gcITIb07pFTYfeNV4v3tz84RFZmVBho=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=none;
-	spf=pass (imf31.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 36BD86B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 02:20:15 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B4D9C12071C
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:20:11 +0000 (UTC)
+X-FDA: 85175079822.11.C13A258
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	by imf20.hostedemail.com (Postfix) with ESMTP id DAED21C0005
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:20:08 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hgJrdBa5;
+	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788502074;
+	s=arc-20220608; t=1788502809;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vUJvrasfqih2RqWrrQHenGCjo8FjvVbZNkjFbbTtDcQ=;
-	b=laOVJ/s5lwUuQ8MAZX0XvPzWJ60hIm4DEkGte6K7fqRNKgxdNJZJ3UvrnuI7zHZ6WKdR/b
-	BRCzOVGtstJSRDW2m7lbbFBXZm3Pd4r1NJlUnBusF1pcJKffBrl/wfhA3HJGqQ6pwFJfzr
-	d+QaRynB3zkvSU4DtKlY6yAPfIJwGQg=
-Received: from unknown (HELO lgeamrelo01.lge.com) (156.147.1.125)
-	by 156.147.23.52 with ESMTP; 4 Sep 2026 15:07:46 +0900
-X-Original-SENDERIP: 156.147.1.125
-X-Original-MAILFROM: youngjun.park@lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.1.125 with ESMTP; 4 Sep 2026 15:07:46 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Fri, 4 Sep 2026 15:07:46 +0900
-From: Youngjun Park <youngjun.park@lge.com>
-To: gaoguixing <gaoguixing@uniontech.com>
-Cc: kasong@tencent.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org, chrisl@kernel.org,
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
-	baohua@kernel.org
-Subject: Re: [RFC PATCH] mm/swap: fix swap table count encoding for empty
- slots
-Message-ID: <appgMkDEZkgKID48@yjaykim-PowerEdge-T330>
-References: <2FDEE109C6578F17+20260904025411.106943-1-gaoguixing@uniontech.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2FDEE109C6578F17+20260904025411.106943-1-gaoguixing@uniontech.com>
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=L4QZYxym8tqD4tNNeiGC4V1lbfWQDeWXiNUEbycu76A=;
+	b=3spKNc2btNdmWssaS85nK35nQSk0b/N2B7XnevPjDH/X8KdxGJ9EtohHu3nBavINu3gPju
+	aNsyk0Jklj9hZlben2OeJt8qC7AX95P14b6s4T6ZA6sHilElmSKwYPhBGD5ec+qFyV35dB
+	mjKwpH5n8jgMFhluKH4dqzVoBLuDZvc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788502809;
+	b=rl/7NVNI4AneU4KzZwAYxa6hXXet0JbGWchnEIn22K3RTS07a0EDusu8MD01nNysj6ifXe
+	Rt7u0sHdTuh6OR7xzmaSmkcICuGFuN1L2Hs/2Pm7wXSdcmw3DicFCDhKDCW/MvzMiRFGgB
+	fdey9AJh9bAsYcq8dp0AlRAQXxOl8Ds=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hgJrdBa5;
+	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788502809; x=1820038809;
+  h=date:from:to:cc:subject:message-id;
+  bh=9cbImcupship+485zNokOvzLoVRZpy8r9KRhkrz6eMw=;
+  b=hgJrdBa5VND5hvgPBiuHDyX4ExIWoO7k4o8f7o0oV9coCXCxa404MAB4
+   NCWarurWpObHawAp8mMhKHWS8lwp1oLW3ACmqSQf2ZR8ChloYvrB+VvwJ
+   C3UrcLueWIN1J5yy6YY+40DaCgvNrV/5P0rxKbkyHnMsGAUCvoPlIiRwr
+   Fudxk2s7v9cD3gZdK25zHlmG7ZfnXL6GNaW5sCMOoIQm9Q1YYtrZ2B7EY
+   pQ/+/uO0Lhy86xEun9oYW7odXP+ExpWCpe2C1juV1QGYk2+/N7qSHNHHi
+   DNOvhMY70niHvN6v1v1UVneN71Uqf1KOwwRdKNhR+oatP/tci8r7kxDpP
+   A==;
+X-CSE-ConnectionGUID: scmsAVEISvqBlSmLhlsK4g==
+X-CSE-MsgGUID: LZPkPAE5Rtitjj+sIb6YLA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="88141463"
+X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
+   d="scan'208";a="88141463"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 23:20:07 -0700
+X-CSE-ConnectionGUID: VqXhzGlXTk2my69ZHy2wSg==
+X-CSE-MsgGUID: UkzzmJfZSxu1b1FgoQHqaw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
+   d="scan'208";a="293466969"
+Received: from lkp-server01.sh.intel.com (HELO bfac249b2189) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 03 Sep 2026 23:20:06 -0700
+Received: from kbuild by bfac249b2189 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1x2NHP-000000005x2-15W4;
+	Fri, 04 Sep 2026 06:20:03 +0000
+Date: Fri, 04 Sep 2026 14:19:58 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: linux-mm@kvack.org
+Subject: [rppt-memblock:for-next] BUILD SUCCESS
+ dbffc67777cd752ef3f77818109e1d2ef13e2949
+Message-ID: <202609041455.Dj5aQuUj-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-Stat-Signature: z7t4cwt3oein98ra6tcg1ya1ycnubwze
-X-Rspamd-Queue-Id: 2735520002
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788502071-924581
-X-HE-Meta: U2FsdGVkX1/WvdiZ+TxQuFYfFyPCzMVN2GItJwDD8i3TrqUuCKKkRwGI20yuiHxRNj0kbHpQ6TnYjI5bYx2BC0IKAsMK+QoSC7H3C2LRhHy1sazYZn7udUdGGIUZcSTti1XTGDKd8ndrQ4vX3JwSs4ITqlJgxJSXPr6MwJqDNqUSl5CrrcDnYZ8eBZpHcSvMO5oOVP3j8ujz1CHWmdomnwAlckMPHzNpyTZb7Hng0XCZlOayhG1X8jJzJ/+SPNwKsDToQQY0bx0MZHBnGmuHi3n0OfMxz1XzixYxRPfNJdvJlLbWaYMMvPVVOJ7KIdrVXt6dwAhc7KyJ5AuJWtOT9X1vJHuBz9Mz7Coo15h1Wn+TGRqu4amEkm+js632TTBQWHDjiE6qXpumuRAA/diaFrL4CcGh8QovbViswRy+HAD1+X5dn5yZmBc7hYMxvkiZ9/KYL2oqABD/KUUkzY8u3GLOuJXCWFSLwPir6MVCaWwW+o6EDBWt7ofIEamOjDHJxTL+QaEsxiRX4s/BGJh2MDah+6qQfxhP/twUhAnDhAm/f8D9jzWylBJ+nqfhP2loI5VGa7DorP1LViC80kA6zMuX97lxSyOGEKHIQidg6up76nyiPoFWvDrwkSbzFFE+L/5d11+pQXpf0GE08YvF2HzVQQ8mKEkVL54q7ESu6fiLfqH1ojzvvTfTeKsLBgLhMQ0bX6Qjbasyr5wzKsV26u0CeaO3E+hwYM7GTXEmMpmm34UAWxA57QXR7XvZSciXjAeA/gr8BgjN0a+tkhMDqeGjzmNmod0tTtuycdGK8Jd5hL3ElW5rb8Ue1dKHY5jAyjoNjQ5CQBQ/mSZta1nmZonODzkISzXqKarKDAPIMEu9I2tc0sGOP9o8EEfrCybegYrwKXqG6+iDxpcEWUbwuzmXFS6cLAYLiHWvJ2bwWEAMuWI5AcHQe/i+iQdsSPtrqa87+EuuXkncZo+MdWk
- bvNxSBGc
- hVwYMWJqAUllNSFcO6Fqi1c93ajHS3a8WPeXE9kPWjUpWJKH6vOUEiNSDkBEwaBdm5NVbocY7ciNBI5gk8EsnPS9RneXZP+e7+Ps6UCkLF82RCpwDBqgNa8XrEy3IxrmJrIBKFNvQcjTjZEng14P/P6JriTpuBRffBa7mkYURVb7QVLPjxaDI/7szJQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: DAED21C0005
+X-Stat-Signature: 3hym4yw8kngp4os9d7uxjt9fymgeuicb
+X-HE-Tag: 1788502808-644495
+X-HE-Meta: U2FsdGVkX1977n7m34RCzB+B0bepdEL82LF/ZrRJXISgNG22elVMGBbN83rlmyopiIf7Rueb6NPwtbBKCo3+CbVVBjtLPYqYoySEwZOG4nbe7f4o9jfn7tdemePxtNRt2pLxPKasBRJ4jdaAyG/sRBzLfm0UXap2VCMzpW23bNmn1lIblRPdd7Kuk1ybFEcioYYWry8RyJ74/jcefAOVdIW6qQJQo+V6VXQS+tSVA93GwB7kg0R80z0XR+13V62kIqJsCZj6LDJPeFwQUpYx7SvH06dS9B4hTdIjU+CtmvYf/QHw+vHKflNXjxki82HY/dpHKOTjuh2K2gRi8Vg8pUUMifZwPtZrPAtShblWzAyTkIBK+KPVfusCzZzCD/Iv82b33QwlUAvKQDtILejeXQYk3QtrMjauZlvcUJqis3t0gWSNDIkoKGAlVB5qEoMjX+MqgJi97DGgK985EquSIt4SBrx+uH7FS20q5K2j0HN/fn5MnaRdYHcwkLhRZzdxmDrg5QJGP/MwB7c3LFS6Dj8vWOebCLeKoZSsEpUQTr/XiPsZnH9ax8FVNXSaAIBC/99o8VAy3dP5aD+NqJHdCvkA9BAAPHmgHkfYVW7GdEyDCXC/ZTVwsyJQPCsGKHR/lgUJxpcNRWk5WENg3T/fwoxmzOWQoBBQWavdJbvpOLKBD2WcksOdnRsHfoLrYhXOYasOmOQTR+U+TKJWE+BKcYcoFrShjpoGaox7I6vo6Fkf0IDCp5cSBB3EC1l3xyJupKSBphfqimxW4oXcPZco+W009u8G1JGRM1sAszx53sY+fyCjXaeEb9ifQsZ7d/Zy9d99dSNaqPeVdaT1gDxkAkQSa7QXd8MnULjhkO8J6JwtLbszS0JWIsENWBCY2uhFNXbL1o8KngWdtdXWk3MdrCCqguGGtFmzciTBmC4i9jptLcNCOQTI2z+PN5mEf+poTgLyghQjhFlipqMX9Yx
+ KIqqqSD4
+ 9FSQY35Xzkb6bYCgTC5Odcoyd2FgfAd85t5bvJDgWv92Q0Oh6Jetq5FwcU50pztNlNxAjNf9AvoeaVMqYsYdqguN8vhb1eSyM8aSe/0Qcr0WzjxXc/ZpnJLMcqP4oMoGK25KQOB1iWETbfVt5VYB22X3OhOZqOaK1oN/cUqFiiXVjWNH0HtM5Fim8g7jCAXN7yNzG8BYbPdjmtwE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,54 +100,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 04, 2026 at 10:54:11AM +0800, gaoguixing wrote:
-....
->  mm/swapfile.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index d6c5c25755be..02fd5ad94185 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -163,16 +163,16 @@ static void __swap_table_update_count(struct swap_cluster_info *ci,
->  				      unsigned char count)
->  {
->  	unsigned long swp_tb = __swap_table_get(ci, ci_off);
-> -	unsigned char flags = swap_table_count(count);
-> +	unsigned char tb_count = swap_table_count(count);
->  
->  	if (WARN_ON_ONCE(swp_tb_is_bad(swp_tb)))
->  		return;
-> -	if (!flags && swp_tb_is_null(swp_tb))
-> +	if (!tb_count && swp_tb_is_null(swp_tb))
->  		return;
-> -	if (flags && swp_tb_is_null(swp_tb))
-> -		swp_tb = shadow_to_swp_tb(NULL, flags);
-> -	else
-> -		swp_tb = __swp_tb_mk_count(swp_tb, flags);
-> +	if (tb_count && swp_tb_is_null(swp_tb))
-> +		swp_tb = shadow_to_swp_tb(NULL, 0);
-> +
-> +	swp_tb = __swp_tb_mk_count(swp_tb, tb_count);
->  	__swap_table_set(ci, ci_off, swp_tb);
->  }
->
-Hello,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git for-next
+branch HEAD: dbffc67777cd752ef3f77818109e1d2ef13e2949  mm/mm_init: remove zone_absent_pages_in_node()
 
-If I understand correctly, this function was added during a custom
-kernel adaptation, and since the flags field mixes the count and the
-Z flag, you'd like to split out a dedicated helper for updating the
-swap count?
+elapsed time: 2964m
 
-To me the layout and helpers in swap_table.h and swapfile.c already
-read well enough. A mistake is possible, but following how the flags
-field is used across swap_table.h and its callers was not hard.
+configs tested: 73
+configs skipped: 5
 
-I can't quite see where this would apply or what it buys us from this
-diff alone. Could you progress & share the rationale and an actual patch on top
-of the upstream series?
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Thanks,
-Youngjun
- 
+tested configs:
+alpha         allnoconfig    gcc-16.1.0
+alpha        allyesconfig    gcc-16.1.0
+arc          allmodconfig    gcc-16.1.0
+arc           allnoconfig    gcc-16.1.0
+arc          allyesconfig    clang-24
+arc          allyesconfig    gcc-16.1.0
+arm           allnoconfig    clang-17
+arm           allnoconfig    gcc-16.1.0
+arm          allyesconfig    gcc-16.1.0
+arm64        allmodconfig    clang-24
+arm64         allnoconfig    gcc-16.1.0
+csky         allmodconfig    gcc-16.1.0
+csky          allnoconfig    gcc-16.1.0
+hexagon      allmodconfig    clang-24
+hexagon      allmodconfig    gcc-16.1.0
+hexagon       allnoconfig    clang-24
+hexagon       allnoconfig    gcc-16.1.0
+i386         allmodconfig    clang-22
+i386          allnoconfig    gcc-14
+i386          allnoconfig    gcc-16.1.0
+i386         allyesconfig    clang-22
+loongarch    allmodconfig    clang-19
+loongarch    allmodconfig    clang-24
+loongarch     allnoconfig    clang-20
+loongarch     allnoconfig    gcc-16.1.0
+m68k         allmodconfig    gcc-16.1.0
+m68k          allnoconfig    gcc-16.1.0
+m68k         allyesconfig    gcc-16.1.0
+microblaze    allnoconfig    gcc-16.1.0
+microblaze   allyesconfig    gcc-16.1.0
+mips         allmodconfig    gcc-16.1.0
+mips          allnoconfig    gcc-16.1.0
+mips         allyesconfig    gcc-16.1.0
+nios2        allmodconfig    gcc-11.5.0
+nios2         allnoconfig    clang-24
+nios2         allnoconfig    gcc-11.5.0
+openrisc     allmodconfig    gcc-16.1.0
+openrisc      allnoconfig    clang-24
+openrisc      allnoconfig    gcc-16.1.0
+parisc       allmodconfig    gcc-16.1.0
+parisc        allnoconfig    clang-24
+parisc        allnoconfig    gcc-16.1.0
+parisc       allyesconfig    gcc-16.1.0
+powerpc      allmodconfig    gcc-16.1.0
+powerpc       allnoconfig    clang-24
+powerpc       allnoconfig    gcc-16.1.0
+riscv        allmodconfig    clang-24
+riscv         allnoconfig    clang-24
+riscv         allnoconfig    gcc-16.1.0
+riscv        allyesconfig    clang-24
+s390         allmodconfig    clang-24
+s390          allnoconfig    clang-24
+s390         allyesconfig    gcc-16.1.0
+sh           allmodconfig    gcc-16.1.0
+sh            allnoconfig    clang-24
+sh            allnoconfig    gcc-16.1.0
+sh           allyesconfig    gcc-16.1.0
+sparc         allnoconfig    clang-24
+sparc         allnoconfig    gcc-16.1.0
+sparc64      allmodconfig    clang-20
+um           allmodconfig    clang-17
+um            allnoconfig    clang-17
+um            allnoconfig    clang-24
+um           allyesconfig    gcc-14
+um           allyesconfig    gcc-16.1.0
+x86_64       allmodconfig    clang-22
+x86_64        allnoconfig    clang-22
+x86_64        allnoconfig    clang-24
+x86_64       allyesconfig    clang-22
+x86_64      rhel-9.4-rust    clang-22
+xtensa        allnoconfig    clang-24
+xtensa        allnoconfig    gcc-16.1.0
+xtensa       allyesconfig    gcc-16.1.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
