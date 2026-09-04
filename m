@@ -4,95 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69C21C61DD3
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 06:20:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39E65C79F80
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 06:27:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 679566B0088; Fri,  4 Sep 2026 02:20:15 -0400 (EDT)
+	id 1319E6B008C; Fri,  4 Sep 2026 02:27:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 629CF6B008A; Fri,  4 Sep 2026 02:20:15 -0400 (EDT)
+	id 0E2626B0092; Fri,  4 Sep 2026 02:27:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 519406B008C; Fri,  4 Sep 2026 02:20:15 -0400 (EDT)
+	id F130C6B0095; Fri,  4 Sep 2026 02:27:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 36BD86B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 02:20:15 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B4D9C12071C
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:20:11 +0000 (UTC)
-X-FDA: 85175079822.11.C13A258
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	by imf20.hostedemail.com (Postfix) with ESMTP id DAED21C0005
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:20:08 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hgJrdBa5;
-	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788502809;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=L4QZYxym8tqD4tNNeiGC4V1lbfWQDeWXiNUEbycu76A=;
-	b=3spKNc2btNdmWssaS85nK35nQSk0b/N2B7XnevPjDH/X8KdxGJ9EtohHu3nBavINu3gPju
-	aNsyk0Jklj9hZlben2OeJt8qC7AX95P14b6s4T6ZA6sHilElmSKwYPhBGD5ec+qFyV35dB
-	mjKwpH5n8jgMFhluKH4dqzVoBLuDZvc=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C0B186B008C
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 02:27:49 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 260FCA07C7
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:27:49 +0000 (UTC)
+X-FDA: 85175099058.05.50E06D7
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 83057C0004
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:27:44 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	spf=pass (imf10.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788502809;
-	b=rl/7NVNI4AneU4KzZwAYxa6hXXet0JbGWchnEIn22K3RTS07a0EDusu8MD01nNysj6ifXe
-	Rt7u0sHdTuh6OR7xzmaSmkcICuGFuN1L2Hs/2Pm7wXSdcmw3DicFCDhKDCW/MvzMiRFGgB
-	fdey9AJh9bAsYcq8dp0AlRAQXxOl8Ds=
+	t=1788503267;
+	b=ok19R3PXkKz80/NfjcA4Gf1HaBR8G6FV+6429pX4xhpIcqDUgLANWf2VnYCU4b2LZFZKAP
+	yDKYd823BTyvQrVid/6FGK+0kag1b35xUc3zmDOGKz50nwib9Z9o/8Fe7Fp9/sV1JEayv+
+	Iz9BEq/nPvpW/lejuQfe9dQcTXH1ncg=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hgJrdBa5;
-	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788502809; x=1820038809;
-  h=date:from:to:cc:subject:message-id;
-  bh=9cbImcupship+485zNokOvzLoVRZpy8r9KRhkrz6eMw=;
-  b=hgJrdBa5VND5hvgPBiuHDyX4ExIWoO7k4o8f7o0oV9coCXCxa404MAB4
-   NCWarurWpObHawAp8mMhKHWS8lwp1oLW3ACmqSQf2ZR8ChloYvrB+VvwJ
-   C3UrcLueWIN1J5yy6YY+40DaCgvNrV/5P0rxKbkyHnMsGAUCvoPlIiRwr
-   Fudxk2s7v9cD3gZdK25zHlmG7ZfnXL6GNaW5sCMOoIQm9Q1YYtrZ2B7EY
-   pQ/+/uO0Lhy86xEun9oYW7odXP+ExpWCpe2C1juV1QGYk2+/N7qSHNHHi
-   DNOvhMY70niHvN6v1v1UVneN71Uqf1KOwwRdKNhR+oatP/tci8r7kxDpP
-   A==;
-X-CSE-ConnectionGUID: scmsAVEISvqBlSmLhlsK4g==
-X-CSE-MsgGUID: LZPkPAE5Rtitjj+sIb6YLA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="88141463"
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="88141463"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 23:20:07 -0700
-X-CSE-ConnectionGUID: VqXhzGlXTk2my69ZHy2wSg==
-X-CSE-MsgGUID: UkzzmJfZSxu1b1FgoQHqaw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="293466969"
-Received: from lkp-server01.sh.intel.com (HELO bfac249b2189) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 03 Sep 2026 23:20:06 -0700
-Received: from kbuild by bfac249b2189 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1x2NHP-000000005x2-15W4;
-	Fri, 04 Sep 2026 06:20:03 +0000
-Date: Fri, 04 Sep 2026 14:19:58 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: linux-mm@kvack.org
-Subject: [rppt-memblock:for-next] BUILD SUCCESS
- dbffc67777cd752ef3f77818109e1d2ef13e2949
-Message-ID: <202609041455.Dj5aQuUj-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	imf10.hostedemail.com;
+	dkim=none;
+	spf=pass (imf10.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788503267;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vWUjGiXxSJ79F5Tjc7l4aFxL+j951hyBk7rB/hx/9r4=;
+	b=5+pFc5jrQb9vH+2/hIaGtMeQ0zii2LASj0gdXFNypOyAXj3659ntyHjYXnkxmr9yRU4ghw
+	69tgHI6cifTeRukS7pkQct1JUd8wt0Y175OIzFeP0hdIUhqCz+XcOaUnw2ptk+wHCsSfGG
+	Ht7ImY35WlGu2HifjvwYBTb4MOnK4n0=
+Received: from mail.maildlp.com (unknown [172.19.163.170])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hbmhH342jzKHMTF
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 14:26:39 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.112])
+	by mail.maildlp.com (Postfix) with ESMTP id 1A8A74056F
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 14:27:34 +0800 (CST)
+Received: from [10.174.178.253] (unknown [10.174.178.253])
+	by APP1 (Coremail) with UTF8SMTPSA id cCh0CgDH_AfTZJpqP+rGAg--.7342S3;
+	Fri, 04 Sep 2026 14:27:33 +0800 (CST)
+Message-ID: <4e498938-f21b-4d75-b789-8a615aba877a@huaweicloud.com>
+Date: Fri, 4 Sep 2026 14:27:31 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] mm/truncate: fix data loss when splitting fails in
+ truncate_inode_partial_folio()
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org,
+ akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, hughd@google.com, baolin.wang@linux.alibaba.com,
+ willy@infradead.org, jack@suse.cz, ziy@nvidia.com, bfoster@redhat.com,
+ djwong@kernel.org, yi.zhang@huawei.com, yizhang089@gmail.com,
+ yangerkun@huawei.com, chengzhihao1@huawei.com, wangkefeng.wang@huawei.com,
+ yukuai@fnnas.com
+References: <20260903115018.2034541-1-yi.zhang@huaweicloud.com>
+ <CAJnrk1ZLzNQxrSLQx7TsLK89QC_=9cDfoDcyKNBNde0CiDGoNg@mail.gmail.com>
+Content-Language: en-US
+From: Zhang Yi <yi.zhang@huaweicloud.com>
+In-Reply-To: <CAJnrk1ZLzNQxrSLQx7TsLK89QC_=9cDfoDcyKNBNde0CiDGoNg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:cCh0CgDH_AfTZJpqP+rGAg--.7342S3
+X-Coremail-Antispam: 1UD129KBjvJXoW3XFy8tF1DXF47KF18AFWUurg_yoWfWw1kpr
+	W3Ka9Iyr4DG3y2krsrZan8Xw1Yy3s3XrWUJFyfGFy3CFs09r1xKF1UK3WF93y7Grn7AFy0
+	qF1UZa9xW3WDAFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
+	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
+	4xRDUUUUU==
+X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DAED21C0005
-X-Stat-Signature: 3hym4yw8kngp4os9d7uxjt9fymgeuicb
-X-HE-Tag: 1788502808-644495
-X-HE-Meta: U2FsdGVkX1977n7m34RCzB+B0bepdEL82LF/ZrRJXISgNG22elVMGBbN83rlmyopiIf7Rueb6NPwtbBKCo3+CbVVBjtLPYqYoySEwZOG4nbe7f4o9jfn7tdemePxtNRt2pLxPKasBRJ4jdaAyG/sRBzLfm0UXap2VCMzpW23bNmn1lIblRPdd7Kuk1ybFEcioYYWry8RyJ74/jcefAOVdIW6qQJQo+V6VXQS+tSVA93GwB7kg0R80z0XR+13V62kIqJsCZj6LDJPeFwQUpYx7SvH06dS9B4hTdIjU+CtmvYf/QHw+vHKflNXjxki82HY/dpHKOTjuh2K2gRi8Vg8pUUMifZwPtZrPAtShblWzAyTkIBK+KPVfusCzZzCD/Iv82b33QwlUAvKQDtILejeXQYk3QtrMjauZlvcUJqis3t0gWSNDIkoKGAlVB5qEoMjX+MqgJi97DGgK985EquSIt4SBrx+uH7FS20q5K2j0HN/fn5MnaRdYHcwkLhRZzdxmDrg5QJGP/MwB7c3LFS6Dj8vWOebCLeKoZSsEpUQTr/XiPsZnH9ax8FVNXSaAIBC/99o8VAy3dP5aD+NqJHdCvkA9BAAPHmgHkfYVW7GdEyDCXC/ZTVwsyJQPCsGKHR/lgUJxpcNRWk5WENg3T/fwoxmzOWQoBBQWavdJbvpOLKBD2WcksOdnRsHfoLrYhXOYasOmOQTR+U+TKJWE+BKcYcoFrShjpoGaox7I6vo6Fkf0IDCp5cSBB3EC1l3xyJupKSBphfqimxW4oXcPZco+W009u8G1JGRM1sAszx53sY+fyCjXaeEb9ifQsZ7d/Zy9d99dSNaqPeVdaT1gDxkAkQSa7QXd8MnULjhkO8J6JwtLbszS0JWIsENWBCY2uhFNXbL1o8KngWdtdXWk3MdrCCqguGGtFmzciTBmC4i9jptLcNCOQTI2z+PN5mEf+poTgLyghQjhFlipqMX9Yx
- KIqqqSD4
- 9FSQY35Xzkb6bYCgTC5Odcoyd2FgfAd85t5bvJDgWv92Q0Oh6Jetq5FwcU50pztNlNxAjNf9AvoeaVMqYsYdqguN8vhb1eSyM8aSe/0Qcr0WzjxXc/ZpnJLMcqP4oMoGK25KQOB1iWETbfVt5VYB22X3OhOZqOaK1oN/cUqFiiXVjWNH0HtM5Fim8g7jCAXN7yNzG8BYbPdjmtwE=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 83057C0004
+X-Stat-Signature: zyjc6fupt14rsf3tccimq838oqgn6rpi
+X-HE-Tag: 1788503264-92240
+X-HE-Meta: U2FsdGVkX1+THNrwA/1ytnDk0tQbc8w2rMU6t1cw4dkcuGI3unEq9CizzQL4Vkb8jsjfq1a+xVhxl61rbRWjE4yjY/8MhUp8nCfmuTBubmXtPs4IFQpUiO4lMmZFYMTQ45us7C1YDjJ78KA6/uMDwDk8KGeaZgA5EIETCcvtByNXOAk4IRN5dW27oir1yVvUHxkLS3APjV+3EfULgxVZD/hLtjg2cQ2omjEoC1zO8cuxR+WCRmSyPTDsgYi+G7ayILwS6rU77qFuxKam854B1xssw8tpAHHfgGpkYldxgl4WjVwDYUHn8yTNCJHlZ0txwJz2MAHKwGUNCf1iVttzMnVAUhfUS4YYv3+7HJDYtdZ04FFHaz3f9EruzqOXjUd5XVNDtFvPtlipr+klEZW0VXy3O7iAJIVRL+Ryl4IdwFCX2oiQIRptu0xO9IdC0uOJHg4HO4k7pGH2qESB8RJvw6XwHxBENGTDvVAB0WHV/3cfbERX2WCFP7GnYYmCceQvfMepofqXAVJcr45HmD+YfvvvVmnDJnz2gzgrXmo6bTq34sZZf5bK5eX1Mg7ylFYVTSjn8ALzQcQ9wWdC27X0kI2CAFCwTYPq/L04v/P4ihQMLjcuTTUBcL9+R4IAeXiixwjUuz45WTZT5eWRokz0yhmc9BYNm2yYocIcYrYcCRFxis9MWLlNN9MqlIKsPjS3pGODUq5wpAZ0CC4YiPsfTqly3bx5XAYsHCzHzMevjTPAG0/wr57VZ3PMBGZceoV+YpPHn0hv4w0uB9OMfDWDIEN5SbfjXfdMVthKUSmT6fni0vzqeeklRUH4eCL1aeuLXXKlt2lqnc43KAuXAl3tfFaeSa+Aux+E5BcU6k1tdwIkHbb+aUu1A4SC2hqf8Kczyjou8oOxf5EXmw+Lhq2npidqXTs9F1zKGydk3WSnrn5u0x9DpkoTViGM4SKZbPPnWVv9JnGZZVAcLUJyvXw
+ BdcAmu7J
+ KNttkp6CXx+Z7h91YrnGV483YasL/AcqpLw5IrPLzCWlYqnp53t4O52OLA+7ZwJxjN0dOa3J2KW3pgIfwREoRsG8ApS6ccoj139xPckTbcCdPiY1gfWcRzkPcr9uw19tmlvZGANzJTnEyruM+UNY8D42HQK63FFPFFHYTeYwz0or+BVaYa3KWp6bmGQjIw8/z+LNFLg0zAdvJ3jIfBBSoqQgXVKzK78GeteQcLmO0OAs3gsw2QJ1rnfEQWDKn2InM59VeESeNUeKbbSKLgCWOqsBgVFDjp+sQIYOf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,93 +112,212 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git for-next
-branch HEAD: dbffc67777cd752ef3f77818109e1d2ef13e2949  mm/mm_init: remove zone_absent_pages_in_node()
+On 9/4/2026 3:01 AM, Joanne Koong wrote:
+> On Thu, Sep 3, 2026 at 5:01 AM Zhang Yi <yi.zhang@huaweicloud.com> wrote:
+>>
+>> From: Zhang Yi <yi.zhang@huawei.com>
+>>
+>> truncate_inode_partial_folio() splits a large folio so that the caller's
+>> truncate loop can drop the in-range sub-folios while keeping the
+>> out-of-range tail. The first split at the punch start edge is
+>> non-uniform, which leaves the sub-folio at the truncation end edge as
+>> large as possible, this means it may still straddle the range, holding
+>> both zeroed in-range and valid out-of-range data. The function then
+>> attempts a second split at offset + length to isolate that tail.
+>>
+>> If the second split fails the straddling sub-folio stays merged. The
+>> function returned true unconditionally on all exit paths of the success
+>> block, telling the caller it was fully handled. The caller kept its
+>> default end and the truncate loop truncated every sub-folio below it,
+>> including the merged straddler, discarding the valid out-of-range tail.
+>>
+>> For example, a 4-page order-2 folio punched from offset 0 to the middle
+>> of the last page:
+>>
+>>   truncate_inode_pages_range()
+>>     truncate_inode_partial_folio()      # same_folio == true
+>>       1st split at page0 -> [p0, p1, p2-3]   # non-uniform, success
+>>       folio2 = p2-3 # straddles: p2 zeroed, p3 tail valid
+>>       2nd split of folio2 fails / cannot lock
+>>       return true                       # BUG: caller keeps default end
+>>     end = 3
+>>     loop truncates p0, p1, p2-3        # p3's valid tail is lost
+>>
+>> This became reachable after commit 7460b470a131 ("mm/truncate: use
+>> folio_split() in truncate operation") replaced the atomic split_folio()
+>> with folio_split(), whose non-uniform split can partially split a folio
+>> and leave the end edge merged.
+>>
+>> It has gone unnoticed because a dirty large folio normally carries the
+>> filesystem's private data, for example buffer_head, so
+>> filemap_release_folio() -> iomap_release_folio() returns false on a
+>> dirty folio and folio_split() aborts with -EBUSY before any split,
+>> leaving the straddler safely unsplit. The bug is only reachable on paths
+>> that produce dirty large folios without filesystem private data, and it
+>> was caught on the upcoming ext4 iomap buffered I/O path when no ifs is
+>> attached.
+>>
+>> Rework the contract so the caller is told where to stop instead of
+>> silently truncating the straddler:
+>>
+>>   - Return true only when a split occurred, false otherwise. This
+>>     clarifies the existing confusing return value semantics.
+>>
+>>   - Add an optional out-parameter pgoff_t *end, set to the index of the
+>>     folio that contains @lend and must be kept by the caller's loop. It
+>>     is only written when the folio actually straddles @lend. On the
+>>     success path it defaults to the page index of the end edge and is
+>>     refined to folio2->index when the second split fails to isolate the
+>>     tail.
+>>
+>>   - Rename the byte-range parameters start/end to lstart/lend to avoid
+>>     clashing with the new @end output and to separate byte offsets from
+>>     folio indices.
+>>
+>> Callers in truncate_inode_pages_range() and shmem_undo_range() pass &end
+>> only when the folio straddles lend. After all, no caller discards a
+>> straddling folio anymore, the in-range cleanly-split sub-folios below it
+>> are still dropped.
+>>
+>> Suggested-by: Brian Foster <bfoster@redhat.com>
+>> Link: https://lore.kernel.org/linux-fsdevel/anH-WKA1coW6wtfG@bfoster/
+>> Fixes: 7460b470a131 ("mm/truncate: use folio_split() in truncate operation")
+>> Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+>> ---
+>>  mm/internal.h |  4 ++--
+>>  mm/shmem.c    | 12 +++++------
+>>  mm/truncate.c | 57 ++++++++++++++++++++++++++++++---------------------
+>>  3 files changed, 41 insertions(+), 32 deletions(-)
+>>
+>> diff --git a/mm/truncate.c b/mm/truncate.c
+>> index b58ba940be47..2ebb00f6c379 100644
+>> --- a/mm/truncate.c
+>> +++ b/mm/truncate.c
+>> @@ -206,15 +206,18 @@ static int folio_split_or_unmap(struct folio *folio, struct page *split_at,
+>>  /*
+>>   * Handle partial folios.  The folio may be entirely within the
+>>   * range if a split has raced with us.  If not, we zero the part of the
+>> - * folio that's within the [start, end] range, and then split the folio if
+>> + * folio that's within the [lstart, lend] range, and then split the folio if
+>>   * it's large.  split_page_range() will discard pages which now lie beyond
+>>   * i_size, and we rely on the caller to discard pages which lie within a
+>>   * newly created hole.
+>>   *
+>> - * Returns false if splitting failed so the caller can avoid
+>> - * discarding the entire folio which is stubbornly unsplit.
+>> + * When @end non-NULL, set to the index of the folio that contains @lend
+>> + * and must be kept by the caller's truncate loop.  Return %true if the
+>> + * folio was split, %false otherwise, in which case the folio is dropped or
+>> + * may still straddle the range, so the caller must not discard it.
+>>   */
+>> -bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+>> +bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
+>> +                                 loff_t lend, pgoff_t *end)
+>>  {
+>>         loff_t pos = folio_pos(folio);
+>>         size_t size = folio_size(folio);
+>> @@ -222,19 +225,22 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+>>         struct page *split_at, *split_at2;
+>>         unsigned int min_order;
+>>
+>> -       if (pos < start)
+>> -               offset = start - pos;
+>> +       if (end && pos + size > (u64)lend)
+>> +               *end = folio->index;
+>> +
+>> +       if (pos < lstart)
+>> +               offset = lstart - pos;
+>>         else
+>>                 offset = 0;
+>> -       if (pos + size <= (u64)end)
+>> +       if (pos + size <= (u64)lend)
+>>                 length = size - offset;
+>>         else
+>> -               length = end + 1 - pos - offset;
+>> +               length = lend + 1 - pos - offset;
+>>
+>>         folio_wait_writeback(folio);
+>>         if (length == size) {
+>>                 truncate_inode_folio(folio->mapping, folio);
+>> -               return true;
+>> +               return false;
+>>         }
+>>
+>>         /*
+>> @@ -248,7 +254,7 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+>>         if (folio_needs_release(folio))
+>>                 folio_invalidate(folio, offset, length);
+>>         if (!folio_test_large(folio))
+>> -               return true;
+>> +               return false;
+>>
+>>         min_order = mapping_min_folio_order(folio->mapping);
+>>         split_at = folio_page(folio, PAGE_ALIGN_DOWN(offset) / PAGE_SIZE);
+>> @@ -259,6 +265,10 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+>>                  * for shmem truncate
+>>                  */
+>>                 struct folio *folio2;
+>> +               bool tail_isolated = true;
+>> +
+>> +               if (end)
+>> +                       *end = (pos + offset + length) >> PAGE_SHIFT;
+> 
+> If I'm understanding it correctly, based on how
+> truncate_inode_pages_range() uses the end value (eg the "while (index
+> < end)" loop condition and the find_get_entries(..., end - 1, ...)),
+> end needs to point to the start of the folio if the tail folio from
+> the split is a large folio, in order to exclude that folio from then
+> being truncated. But with the (pos + offset + length) >> PAGE_SHIFT
+> calculation here, does that result in some cases in it pointing to the
+> middle of a large folio? Maybe some logic is needed to make sure that
+> it points to the start?
+> 
 
-elapsed time: 2964m
+Hi Joanne,
 
-configs tested: 73
-configs skipped: 5
+Thanks for your careful review! I don't think that case can actually
+occur. Let me walk through the scenarios where the
+(pos + offset + length) >> PAGE_SHIFT calculation is kept as the final
+end value:
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+1) offset + length == size:
+   The truncate range aligns exactly with the folio boundary, so
+   (pos + offset + length) >> PAGE_SHIFT points to the start of the next
+   folio, not the middle of one.
 
-tested configs:
-alpha         allnoconfig    gcc-16.1.0
-alpha        allyesconfig    gcc-16.1.0
-arc          allmodconfig    gcc-16.1.0
-arc           allnoconfig    gcc-16.1.0
-arc          allyesconfig    clang-24
-arc          allyesconfig    gcc-16.1.0
-arm           allnoconfig    clang-17
-arm           allnoconfig    gcc-16.1.0
-arm          allyesconfig    gcc-16.1.0
-arm64        allmodconfig    clang-24
-arm64         allnoconfig    gcc-16.1.0
-csky         allmodconfig    gcc-16.1.0
-csky          allnoconfig    gcc-16.1.0
-hexagon      allmodconfig    clang-24
-hexagon      allmodconfig    gcc-16.1.0
-hexagon       allnoconfig    clang-24
-hexagon       allnoconfig    gcc-16.1.0
-i386         allmodconfig    clang-22
-i386          allnoconfig    gcc-14
-i386          allnoconfig    gcc-16.1.0
-i386         allyesconfig    clang-22
-loongarch    allmodconfig    clang-19
-loongarch    allmodconfig    clang-24
-loongarch     allnoconfig    clang-20
-loongarch     allnoconfig    gcc-16.1.0
-m68k         allmodconfig    gcc-16.1.0
-m68k          allnoconfig    gcc-16.1.0
-m68k         allyesconfig    gcc-16.1.0
-microblaze    allnoconfig    gcc-16.1.0
-microblaze   allyesconfig    gcc-16.1.0
-mips         allmodconfig    gcc-16.1.0
-mips          allnoconfig    gcc-16.1.0
-mips         allyesconfig    gcc-16.1.0
-nios2        allmodconfig    gcc-11.5.0
-nios2         allnoconfig    clang-24
-nios2         allnoconfig    gcc-11.5.0
-openrisc     allmodconfig    gcc-16.1.0
-openrisc      allnoconfig    clang-24
-openrisc      allnoconfig    gcc-16.1.0
-parisc       allmodconfig    gcc-16.1.0
-parisc        allnoconfig    clang-24
-parisc        allnoconfig    gcc-16.1.0
-parisc       allyesconfig    gcc-16.1.0
-powerpc      allmodconfig    gcc-16.1.0
-powerpc       allnoconfig    clang-24
-powerpc       allnoconfig    gcc-16.1.0
-riscv        allmodconfig    clang-24
-riscv         allnoconfig    clang-24
-riscv         allnoconfig    gcc-16.1.0
-riscv        allyesconfig    clang-24
-s390         allmodconfig    clang-24
-s390          allnoconfig    clang-24
-s390         allyesconfig    gcc-16.1.0
-sh           allmodconfig    gcc-16.1.0
-sh            allnoconfig    clang-24
-sh            allnoconfig    gcc-16.1.0
-sh           allyesconfig    gcc-16.1.0
-sparc         allnoconfig    clang-24
-sparc         allnoconfig    gcc-16.1.0
-sparc64      allmodconfig    clang-20
-um           allmodconfig    clang-17
-um            allnoconfig    clang-17
-um            allnoconfig    clang-24
-um           allyesconfig    gcc-14
-um           allyesconfig    gcc-16.1.0
-x86_64       allmodconfig    clang-22
-x86_64        allnoconfig    clang-22
-x86_64        allnoconfig    clang-24
-x86_64       allyesconfig    clang-22
-x86_64      rhel-9.4-rust    clang-22
-xtensa        allnoconfig    clang-24
-xtensa        allnoconfig    gcc-16.1.0
-xtensa       allyesconfig    gcc-16.1.0
+2) !folio_try_get(folio2):
+   The folio at that position has already been freed or is being freed,
+   so there is no folio in the page cache at that location. The
+   subsequent find_get_entries() won't find anything there.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+3) !folio_test_large(folio2):
+   folio2 is no longer large, likely split to order-0 by a concurrent
+   operation. For an order-0 folio, the page index and folio index are
+   the same, so the calculation is correct.
+
+4) folio2 becomes stale:
+   The same to case 2), folio2 is removed from the address space, so
+   there is no large folio straddling the boundary that needs
+   protection. The caller won't get folio from here through
+   find_get_entries(). Using the page index is safe here.
+
+If a large folio straddles the boundary at (offset + length), we will
+successfully get a reference via folio_try_get(folio2) and
+folio_test_large(folio2) will be true. In that case, if the split fails
+(cannot lock or split operation fails), we set tail_isolated to false
+and set *end = folio2->index to point to the start of that large folio
+since tail_isolated.
+
+The page index from this setting is only kept when no large folio exists
+at the boundary, which makes it safe to use. What is particularly
+noteworthy is that for cases 2 and 4 above, aside from setting it to
+(pos + offset + length) >> PAGE_SHIFT, there does not seem to be any
+better alternative.
+
+Does this make sense or am I missing something?
+
+Thanks,
+Yi.
+
+
 
