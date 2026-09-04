@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 662B6C79F88
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 16:07:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99402C79F80
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 16:07:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC8826B0099; Fri,  4 Sep 2026 12:07:40 -0400 (EDT)
+	id BE32D6B009E; Fri,  4 Sep 2026 12:07:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9EFD6B00A0; Fri,  4 Sep 2026 12:07:40 -0400 (EDT)
+	id BB0B16B00A1; Fri,  4 Sep 2026 12:07:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98E566B009F; Fri,  4 Sep 2026 12:07:40 -0400 (EDT)
+	id A03756B009E; Fri,  4 Sep 2026 12:07:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 615426B0099
+	by kanga.kvack.org (Postfix) with ESMTP id 61C476B009B
 	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:07:40 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E2C13A37CD
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id ECDD5A31EB
 	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:07:39 +0000 (UTC)
-X-FDA: 85176560238.03.695978A
+X-FDA: 85176560238.16.354924E
 Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4C9791C000D
+	by imf21.hostedemail.com (Postfix) with ESMTP id 507361C000C
 	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:07:38 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=TVMRNpdR;
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b="aCY8I/E4";
 	dmarc=pass (policy=none) header.from=efficios.com;
-	spf=pass (imf20.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
+	spf=pass (imf21.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1788538058;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tL1cmKSs0ZNOuF7NNYcj/4wBqlHVdgHSzS/qIxPqsfg=;
-	b=0ZJCGEO1CRxQcVoF3z19EMtpqwg9nZNvpLWLWllXtLyEO7Htk4mcqM1vM+TWWARrgNQFY1
-	2HPTY9p+Jph/o950jU84IRPiB8eb2sxsp+Wt2pfTpLaq3KSEV/kBJKA8fpAW4yILtR9GQu
-	tIqgmAktXH+vyTqdJrkXk5GMvrER+00=
+	bh=Q5XjUMcgmvN6EiMKr1kiGvv/bXDNdn2svG6c9pEzr3Y=;
+	b=en56KkP8axPBOV1k9Eeuh4uA7YUDi7W2EP8YbN2ob95kwBqWZTq2nw/F3K09gkl8ot26q6
+	lPei6uhUoM64XL7gNqybDuiYd1G0aEXUNUdwrSwshwLBl892RskJzFDgBFjrvEAktxVMHO
+	VJMfmBDYv5NotTgi621OcjvyHC/0Mns=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=TVMRNpdR;
+	imf21.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b="aCY8I/E4";
 	dmarc=pass (policy=none) header.from=efficios.com;
-	spf=pass (imf20.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
+	spf=pass (imf21.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1788538058;
-	b=TTbuaB+Xo3UMV19TJjjfmbnEGJ3S1sW+PqhVy6Bm2VqaJKaZgpzv51lYSznph4V73WnZWX
-	tf3GGsTCE/mhguuZIw1hnrkk9EbEc5fxhgCr0Kf7EboLynHr/mBh7ovPLr3fYpgfT88B3U
-	dSEMwwbf44CjBqt2mGqpjr4qDk2+HM0=
+	b=SoQ7pmNYfgpjpGxS9rYcX2/7M923fLRMjGVIi7q07tzZgxhI8yMfd2kippml6J7RCF0+PV
+	p6w2nDfQtAqQpXQh7bFH6O3AGCtbinriT7khlYowhogqIpUCg/nZvMQriUOuC94AB6Q4ZT
+	mVZhGKCrdHajx/ad3+LDDwsoE+hcVDY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
 	s=smtpout1; t=1788538057;
-	bh=tL1cmKSs0ZNOuF7NNYcj/4wBqlHVdgHSzS/qIxPqsfg=;
+	bh=Q5XjUMcgmvN6EiMKr1kiGvv/bXDNdn2svG6c9pEzr3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TVMRNpdR4irqd+KXoAZHu4cVDh/3JMWFTxlrYkqbrzDz1OmLPAw7B7KDGa07j+vot
-	 KVDPelqDC2CkIs2JEXoSkfmkihhzIznBz5FHYSq7WkgpeHY4EQdkOuvHilgdYkPzru
-	 mm3s3qdLG0NaJ5pRY5dGXDbdVKmYfoyXOZeRLcXTf8Djai4RvAa+y874/LzzW6O0H8
-	 qGeDvF9xKVTpjtsrIN0z83xTI4pQH1+GJ0vXoK76HqAMTqN4yYD5dNtphlRoAwnFnb
-	 tXrFQLvXUdGLNZsS5t9KyD9MLk6SjYur3+yM6WWDbOTsr7KFGzcB5hm9pDweYE+zwN
-	 kXc76ZhrKesjQ==
+	b=aCY8I/E4AZotvStO3XxDJslKNIh2d6ZCQc8isQzd1KAGAKHUkRoSYS2zMOMdmcwud
+	 hk405Eb/ymckhJ3tOyC3oVKHolpksgZlZtva+l8AnkqoTmFQrtiP+98maqgBT/NGPZ
+	 uH53XzTwD+uhx+cAvuwyepwRp1sLcrWEAz0/GBP5/1u3O4PXDBfZYZ2K9HCsTa7B9o
+	 UeCNTjdyMEUZTYXmHkOq9BrnwU+tYG5nyUTeKmjHQaP6M7Gd1cKR329UgWxJBph+ag
+	 IuQtgW48r8jZ0h+vmN/y7Jjm7Kkrk1vcK8+32NW1xZGNw4D7KhiJRbU8L5JrdCMAof
+	 5IiUbuznJP6Sg==
 Received: from compudjdev.. (mtl.efficios.com [216.120.195.104])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4hc1Zd3YwYzVqf;
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4hc1Zd4jrRzWpK;
 	Fri, 04 Sep 2026 12:07:37 -0400 (EDT)
 From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 To: Andrew Morton <akpm@linux-foundation.org>
@@ -98,24 +98,24 @@ Cc: linux-kernel@vger.kernel.org,
 	David Carlier <devnexen@gmail.com>,
 	Josh Law <objecting@objecting.org>,
 	linux-mm@kvack.org
-Subject: [PATCH v22 02/10] lib: test hierarchical per-cpu counters
-Date: Fri,  4 Sep 2026 12:07:14 -0400
-Message-ID: <20260904160734.23445-3-mathieu.desnoyers@efficios.com>
+Subject: [PATCH v22 03/10] mm: improve RSS counter approximation accuracy for proc interfaces
+Date: Fri,  4 Sep 2026 12:07:15 -0400
+Message-ID: <20260904160734.23445-4-mathieu.desnoyers@efficios.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260904160734.23445-1-mathieu.desnoyers@efficios.com>
 References: <20260904160734.23445-1-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 507361C000C
+X-Stat-Signature: arektn9uyxwwiqqn168groiqknpqgkdh
 X-Rspam-User: 
-X-Stat-Signature: 7u9p88pchgafqwy567hhng97ca3bxf71
-X-Rspamd-Queue-Id: 4C9791C000D
-X-HE-Tag: 1788538058-750380
-X-HE-Meta: U2FsdGVkX1/gn654coArSY/e6uUXSTm1zSHzgUqoQOZl2JFm9qtBeRyH9LLgEmuRv3rXORzCyDCOCrvEYJozlHK3Vwa3P7ugItr5/8hl3VHBpbx1ho8PfE0Tkp8gEUufAMs7xCMeoK9as2CfRU7pXyARd2T+dAKkt5FTw7VLwAob5apAv2S9eCOX+PL03jNzgnVNpMNdtgt4VSRYmrAPiqlkTWp50guP5hBi+mgCmy8yknYDblPcdBgrYHK+0V552xcHvaeRMlnMXA/LxaGMarGaPCOAtNSbWp3gJ6Odk8XJ+Gs/YPOhdFQamCJDjyE7KMMx8OQWjj5UQVuDYSwjGfPu35AadUPABVvQrltRbS38WMegnglXu8LeyrURKJ3UG2QgcnmgWWEavfJuBYpa4N+xHxaWyO1npOCUx3eQdgJOoYkJLvczZMGzo2/o831mi8MPuAUfUDiNcGRygTV3Sac1HSZva7N8KYr3G0dTohSo8aXKjdPs9USsEGlDorQ7rSzvL4pkIkD9WGGkbs9KIO+/yvlJ239K1tV+foYzr2eSxtfMT1XzMItOVTK25PDmeDjjwrpV3B/Q8lZvZXgWz97puYvg29UsEHtpZh5PQv6D67s2v6ZaFI0IblifLdHJXaDVd2RIdU4QctqhOolAbI6+OcZzl2oUSdxcCewnF6smZRw74VvSLuvFtgtl7J+PMCt5iEjRyd6C53I1SjhUKy45M9gsvM97SYZ/tZNdnhoFEaAxZ+HYj/3N7zOmvdF7P6kCROvevXaepkkTE7ZOCG+oKDW3LcKmhGCLvdvegGPd+9/UDkJbaJD8PqXF9kMrj2XuqjQhri2n6YkxnhR8CDoiRBcmumD2RZP47IYLQAZXg6IZwACD4/31+p/dsCZ4c5iraR/WELIC1Xqf7hkQtPrO6kp38XrCq4UumgEAepsTB12hCfzzjbbrZVaI4JF2MYEaOwyj+PTGZbG7bL6
- 8QFY16ym
- 0hv9JoxLGPfJLkxIJe32uovg5UMvmsclTYLhBieoGAZFuAxz8psxGzM+3AFpQls123iqcQ3fsoqxVSTQXwlR3nb6WOoRsQr/KMVqM3eKRBzR0jZ5wXxU7vqmTbiqgWTpTaSiIxF9MVJyit24NO5Jf/zgq08/MzU2UGWXo9nCWEXM/YZzqcln8WeRdiJAYNYpcqp7QnBkPKnLZyxj7+BFvmoq4ByB60I8OIYPDNxqS2CAwQwHdOYP2IlN4Mu0TxjEnn1lxm5j+0zpqqpvYCleaoAzpYG1os4yu5/Qqy867BWmoWbL+jQauBM8Txe9DRfXiH2MdI631bTMoz8ldho6hCnkYjMstn3qgoOLHKiIsb7InWs+lilO/eYV/+Q3PoRpSeAPoKABV3pwVK2Rm8JmN1jqwqEsS/0LZNFxBdfgQ9rKxYea6TiihHxc73THYtO5cb1WW4/dyBYn9siNh2P36qGzCzTCM54bJqUddmd7HPe9geXKHDHrCFPxtXXuvHkm7TOHzYE01Ba+mq/wF6gHzhnS8tf4f54ybewegoPe2R+L3qXoyGi0p6trjbdQsKPl7gBONosWL4Mwzas4f58VVPmyNXs50qucLxaPDlbSFisgjRbKhDKp87aebChUAiJ5IEYq8tC9pqh613/LP/OlXsyqt5KD9ynZE13oCM8cjThAGkjZmq+Hxx7rdfYtkml70Otg9qj4Ybowf8MWJ8SbVzTGox1J+u2TsVjy+/N40buGFXqJFp1x6L4jB5uGQck+FiPMfU01zEc+YC1jcsMQD4MhAHp2oD1ESCSTU8527fH8julGIA/seuj0c55HKj7CjeGjaWupF3S77kB4Zxb048ywO98I9joUYoa+d2rexXEv+KtC2XuKPE/2wPVkBQJ0GZxMhFY+aoio9GYAtPfjKikq/UuVEWTbWwTqNXR1bOKbBsCtdX9dudtPHZXO0zaf9iotXyskxcnx+OL2iPWgPwSCHZuTW
- 1dM2u/jc
- 0V3f2IZLOOgRSrDNiuz4qNgEWn/9pWLPgw7HQ5y2H5E8FC9rBcS1VlbsTKKCOltrUh/DueBrrMHn4HPJHYEZeBwrffjUztrb
+X-HE-Tag: 1788538058-567984
+X-HE-Meta: U2FsdGVkX1980mm/c1YtiwX7TQE5xvrMfInTBx9pdR0FTMEWG9yCDPzpCEj2fEq+ZKM66WUBsraf1m9FREsPFEyu8x7EMEtDVaxYjMas0MzPydZagYPhPC1+neioCzFoCG6B/PYMw25h4RP/PYy9ylgHVMersFgenMIWntZ83OQDEiu4AsH/bj6uAkAGFi+vEnS6pv3iU5rRTsp9Mz/jfbWCEuwdpKYhHdCyajKZNlNeCC3AdRQyPUYC4JslkyvhPxtciPnk8HGNVNZbeAA/K7E10hGJSMDwnrS+7tv2f3Y9MKUiN/hMd1aOYV4TOvem+gcYZb/0ztUhdbfybamhyN8zxCydgkfDwgSgyU82FDDJG7seGrYdNpppJCSwThPcw79jbP3MJpuMiKsyisJpx2j+TeieL6DceWbI9VEgKNV1dFmKw4nYqagNv/sRP6No2uk9/AQmuJEiwBg2yX4crXeh/UIodwicc6+OgRgw72OSvksi/NlBAIcdB6QN7xmi1bdtlfgfV3xL+uFPolWcmiSEQrJ3riy3HDGR+bN01JUBcENLle0RoRHxDlN87todAtjrNYVqezuhDdRliEZlfQFDq+rspDqwS7kHjfh8y96J5/AGXrk0OMWXiL95GT8xCLxoD1ay0bnJ04yIkPoZ70bWgl2cwFYKp5sW2uxD+UnXMMBHUKSIs289GBgjTushO5bW6qCAohTvAIrpmLEwcvp0uibzNVMNAnoMTg5JBWHvc/B0JhwY1pZDCGNauEuWrWVSxzCG+R39NzjtDjb2F95sJxONYxBFVr4J6TIt4lo16E2e4tqgxjySI2RgoOnaGo6nSVbO/Aoj/2YswJAoD03cG6pB+YnglfQz468iCJ5q1nN35ARSEVNru3gL+sdsCWVZALzr9rIYZYU+0n+M5Mrut/gY9PQ+Tw6oA+Q8aA3kSqHNwghGY4YdIWhzYR6tCMBny/93O781Mmtua/7
+ jW0fGqDy
+ PLQ/mjBVnguf5zRCaqiClm7DIFWMuTRAhrqxFE2u5LZQiuBLcAN84FkWAOHxT9JnIGbNz68SsyOTqffz8dE6SqPAfahE8texQTMaAFetfArlJ83P+U2oVzXbVaPZaXGMHS77S/M80ZAIk8+tGmgQIAsg4CJyYblJUztLWDbSlAjvIH3ePfRPaX91ODnabFdNuOtH8OjnUImERfdzdvpmyg/PtlPEqP8HmhMEZKCUWdOvYAP5KiV26KlWfmrrhpFJz5G1+5OP0yPH4VBnYRfkwh28EZkmwaYBoAKN6+3w9yGAbLjKA8FbDuJLpuyUrt4pPTK9KieHpdYx9/Oat00LkR5/D4AFGlwxVDFxVkfn+8okyN7oNbAx/uy1YqhDnui9duIBiEAb2meOBkNOJMXFX5IhA1MwNMtg1sY7HrwQ6Nfh5hgK8iAFtZ9rG3/avVlkrdtzd9jUvsPgNsaQtk6L7lxWujR88r+MVaLjscZrZYAu4lnISmL7yH2p7DC+0+3JOAnO5NzBLHnB2/j1v7gHkmoHKeIjEVoMN7EZAlNeOKRUOaP2UHwR4RNpAhMqEmt6oABsJ1C501LwsiCeQChJsf718TF99YFL7ZvegUD9GEi8ud+uno8SYgmaU6xp20DHigvB0C+dYEL0RnSaagooplKZofAxiqG160w+r7QULu0iUJagF+RWGWKk33MnWKqYyYjEKBUf+j7C6EGlGLghc6u3hHxLWRMqhfKEspEFMx0047EbnuNUWCGI+hq3rjHYFVRzd2QaqS+Z4GHhbRITGOGplP58v4utgqXHkRAJJ5Kd/cZ5bGvUeQIU+mOqYBRjbyj19DDXxiSe25seoaQO8X5LFTvOQ6akAl/ZMpAbBJ78SMZYf+IB8LrGal4AoazcxymbRJaPYYs22qW9BYp9qYnZXUyOyva3zzcQoeGHShHGBNFrJMhokFO6R8yxl8G6lBzG/EDgw8IFBv7yOY1b3gPXGnJfo
+ wsImGC6i
+ 8NhfwWN7ErVb05vlJqb5o31VQY1lHr4lIrfV/CQjLcqCRXchXidWCxhNqrGt1U1VbbgXEhJJizRY9YUytgxuSKlEnkmhHKnj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,43 +123,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce Kunit tests for hierarchical per-cpu counters.
+Use hierarchical per-cpu counters for RSS tracking to improve the accuracy
+of per-mm RSS sum approximation on large many-core systems [1].  This
+improves the accuracy of the RSS values returned by proc interfaces.
 
-Keep track of two sets of hierarchical counters, each meant to have the
-same precise sum at any time, but distributed differently across the
+Here is a (possibly incomplete) list of the prior approaches that were
+used or proposed, along with their downside:
+
+1) Per-thread rss tracking: large error on many-thread processes.
+
+2) Per-CPU counters: up to 12% slower for short-lived processes and 9%
+   increased system time in make test workloads [1]. Moreover, the
+   inaccuracy increases with O(n^2) with the number of CPUs.
+
+3) Per-NUMA-node counters: requires atomics on fast-path (overhead),
+   error is high with systems that have lots of NUMA nodes (32 times
+   the number of NUMA nodes).
+
+4) Use a percise per-cpu counter sum for each counter value query:
+   Requires iteration on each possible CPUs for each sum, which
+   adds overhead on large many-core systems running many processes.
+
+The approach proposed here is to replace the per-cpu counters by the
+hierarchical per-cpu counters, which bounds the inaccuracy based on the
+system topology with O(N*logN).
+
+* Testing results:
+
+Test hardware: 2 sockets AMD EPYC 9654 96-Core Processor (384 logical CPUs total)
+
+Methodology:
+
+Comparing the current upstream implementation with the hierarchical
+counters is done by keeping both implementations wired up in parallel, and
+running a single-process, single-threaded program which hops randomly
+across CPUs in the system, calling mmap(2) and munmap(2) on random CPUs,
+keeping track of an array of allocated mappings, randomly choosing entries
+to either map or unmap.
+
+get_mm_counter() is instrumented to compare the upstream counter
+approximation to the precise value, and print the delta when going over a
+given threshold.  The delta of the hierarchical counter approximation to
+the precise value is also printed for comparison.
+
+After a few minutes running this test, the upstream implementation counter
+approximation reaches a 1GB delta from the precise value, compared to 80MB
+delta with the hierarchical counter.  The hierarchical counter provides a
+guaranteed maximum approximation inaccuracy of 192MB on that hardware
 topology.
 
-Keep track of an atomic counter along with each hierarchical counter, for
-sum validation.
+* Fast path implementation comparison
 
-Those tests cover:
+The new inline percpu_counter_tree_add() uses a this_cpu_add_return() for
+the fast path (under a certain allocation size threshold).  Above that, it
+calls a slow path which "trickles up" the carry to upper level counters
+with atomic_add_return.
 
-- Single-threaded (no concurrency) updates.
-- Concurrent updates of counters from various CPUs.
+In comparison, the upstream counters implementation calls
+percpu_counter_add_batch which uses this_cpu_try_cmpxchg() on the fast
+path, and does a raw_spin_lock_irqsave above a certain threshold.
 
-Perform the following validations:
+The hierarchical implementation is therefore expected to have less
+contention on mid-sized allocations than the upstream counters because the
+atomic counters tracking those bits are only shared across nearby CPUs.
+In comparison, the upstream counters immediately use a global spinlock
+when reaching the threshold.
 
-- Compare the precise sum of counters with the sum tracked by
-  an atomic counter.
-- Compare the precise sum of two sets of hierarchical counters.
-- Approximated comparison of hierarchical counter with atomic counter.
-- Approximated comparison of two sets of hierarchical counters.
-- Validate the bounds of approximation ranges.
+* Benchmarks
 
-Run with the following .kunit/.kunitconfig:
+Using will-it-scale page_fault1 benchmarks to compare the upstream
+counters to the hierarchical counters.  This is done with hyperthreading
+disabled.  The speedup is within the standard deviation of the upstream
+runs, so the overhead is not significant.
 
-CONFIG_KUNIT=y
-CONFIG_SMP=y
-CONFIG_PREEMPT=y
-CONFIG_NR_CPUS=32
-CONFIG_HOTPLUG_CPU=y
-CONFIG_PERCPU_COUNTER_TREE_KUNIT_TEST=y
+                                          upstream   hierarchical    speedup
+page_fault1_processes -s 100 -t 1           614783         615558      +0.1%
+page_fault1_threads -s 100 -t 1             612788         612447      -0.1%
+page_fault1_processes -s 100 -t 96        37994977       37932035      -0.2%
+page_fault1_threads -s 100 -t 96           2484130        2504860      +0.8%
+page_fault1_processes -s 100 -t 192       71262917       71118830      -0.2%
+page_fault1_threads -s 100 -t 192          2446437        2469296      +0.1%
 
-With the following execution (to use SMP):
+* Memory Use
 
-./tools/testing/kunit/kunit.py run --arch=x86_64 --qemu_args="-smp 12"
+The most important parts in terms of memory use are the per-cpu counters
+and the tree items which propagate the carry.
 
-Link: https://lkml.kernel.org/r/20260227153730.1556542-3-mathieu.desnoyers@efficios.com
+In the proposed implementation, the per-cpu counters are allocated within
+per-cpu data structures, so they end up using:
+
+  nr_possible_cpus * sizeof(unsigned long)
+
+This is in addition to the tree items.  The size of those items is defined
+by the per_nr_cpu_order_config table "nr_items" field.  Each item is
+aligned on cacheline size (typically 64 bytes) to minimize false sharing.
+
+Here is the footprint for a few nr_cpu_ids on a 64-bit arch:
+
+nr_cpu_ids   percpu counters (bytes)     nr_items       items size (bytes)     total (bytes)
+    2               16                     1                 64                    80
+    4               32                     3                192                   224
+    8               64                     7                448                   512
+   64               512                   21               1344                  1856
+  128              1024                   21               1344                  2368
+  256              2048                   37               2368                  4416
+  512              4096                   73               4672                  8768
+
+Compared to this, the upstream percpu counters use a 32-bit integer
+per-cpu (4 bytes), and accumulate within a 64-bit global value.
+
+So there is an extra memory footprint added by the current hpcc
+implementation, but if it's an issue we have various options to consider
+to reduce its footprint.
+
+Link: https://lore.kernel.org/lkml/20250331223516.7810-2-sweettea-kernel@dorminy.me/ # [1]
+Link: https://lkml.kernel.org/r/20260227153730.1556542-4-mathieu.desnoyers@efficios.com
 Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Cc: "Paul E. McKenney" <paulmck@kernel.org>
 Cc: Steven Rostedt <rostedt@goodmis.org>
@@ -196,454 +274,251 @@ Cc: Josh Law <objecting@objecting.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org
 ---
-Changes since v19:
-- Rename config option to PERCPU_COUNTER_TREE_KUNIT_TEST.
----
- lib/Kconfig                           |  12 +
- lib/tests/Makefile                    |   2 +
- lib/tests/percpu_counter_tree_kunit.c | 399 ++++++++++++++++++++++++++
- 3 files changed, 413 insertions(+)
- create mode 100644 lib/tests/percpu_counter_tree_kunit.c
+ include/linux/mm.h          | 19 ++++++++++----
+ include/linux/mm_types.h    | 50 +++++++++++++++++++++++++++----------
+ include/trace/events/kmem.h |  2 +-
+ kernel/fork.c               | 22 +++++++++-------
+ 4 files changed, 65 insertions(+), 28 deletions(-)
 
-diff --git a/lib/Kconfig b/lib/Kconfig
-index 4e6b34c3346d..c0524258b205 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -41,6 +41,18 @@ config PACKING_KUNIT_TEST
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index dd09c438fa23..7dd6fdda9bc8 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3447,38 +3447,47 @@ static inline bool get_user_page_fast_only(unsigned long addr,
+ {
+ 	return get_user_pages_fast_only(addr, 1, gup_flags, pagep) == 1;
+ }
++
++static inline struct percpu_counter_tree_level_item *get_rss_stat_items(struct mm_struct *mm)
++{
++	unsigned long ptr = (unsigned long)mm;
++
++	ptr += offsetof(struct mm_struct, flexible_array);
++	return (struct percpu_counter_tree_level_item *)ptr;
++}
++
+ /*
+  * per-process(per-mm_struct) statistics.
+  */
+ static inline unsigned long get_mm_counter(struct mm_struct *mm, int member)
+ {
+-	return percpu_counter_read_positive(&mm->rss_stat[member]);
++	return percpu_counter_tree_approximate_sum_positive(&mm->rss_stat[member]);
+ }
  
- 	  When in doubt, say N.
+ static inline unsigned long get_mm_counter_sum(struct mm_struct *mm, int member)
+ {
+-	return percpu_counter_sum_positive(&mm->rss_stat[member]);
++	return percpu_counter_tree_precise_sum_positive(&mm->rss_stat[member]);
+ }
  
-+config PERCPU_COUNTER_TREE_KUNIT_TEST
-+	tristate "KUnit tests for hierarchical per-cpu counters" if !KUNIT_ALL_TESTS
-+	depends on KUNIT
-+	default KUNIT_ALL_TESTS
-+	help
-+	  This builds Kunit tests for the hierarchical per-cpu counters.
-+
-+	  For more information on KUnit and unit tests in general,
-+	  please refer to the KUnit documentation in Documentation/dev-tools/kunit/.
-+
-+	  When in doubt, say N.
-+
- config BITREVERSE
- 	tristate
- 	select GENERIC_BITREVERSE if !HAVE_ARCH_BITREVERSE
-diff --git a/lib/tests/Makefile b/lib/tests/Makefile
-index 3cac3b63a752..051e73705977 100644
---- a/lib/tests/Makefile
-+++ b/lib/tests/Makefile
-@@ -58,4 +58,6 @@ obj-$(CONFIG_UTIL_MACROS_KUNIT) += util_macros_kunit.o
- obj-$(CONFIG_RATELIMIT_KUNIT_TEST) += test_ratelimit.o
- obj-$(CONFIG_UUID_KUNIT_TEST) += uuid_kunit.o
+ void mm_trace_rss_stat(struct mm_struct *mm, int member);
  
-+obj-$(CONFIG_PERCPU_COUNTER_TREE_KUNIT_TEST) += percpu_counter_tree_kunit.o
-+
- obj-$(CONFIG_TEST_RUNTIME_MODULE)		+= module/
-diff --git a/lib/tests/percpu_counter_tree_kunit.c b/lib/tests/percpu_counter_tree_kunit.c
-new file mode 100644
-index 000000000000..a79176655c4b
---- /dev/null
-+++ b/lib/tests/percpu_counter_tree_kunit.c
-@@ -0,0 +1,399 @@
-+// SPDX-License-Identifier: GPL-2.0+ OR MIT
-+// SPDX-FileCopyrightText: 2026 Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-+
-+#include <kunit/test.h>
+ static inline void add_mm_counter(struct mm_struct *mm, int member, long value)
+ {
+-	percpu_counter_add(&mm->rss_stat[member], value);
++	percpu_counter_tree_add(&mm->rss_stat[member], value);
+ 
+ 	mm_trace_rss_stat(mm, member);
+ }
+ 
+ static inline void inc_mm_counter(struct mm_struct *mm, int member)
+ {
+-	percpu_counter_inc(&mm->rss_stat[member]);
++	percpu_counter_tree_add(&mm->rss_stat[member], 1);
+ 
+ 	mm_trace_rss_stat(mm, member);
+ }
+ 
+ static inline void dec_mm_counter(struct mm_struct *mm, int member)
+ {
+-	percpu_counter_dec(&mm->rss_stat[member]);
++	percpu_counter_tree_add(&mm->rss_stat[member], -1);
+ 
+ 	mm_trace_rss_stat(mm, member);
+ }
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index dff5fd1c1b06..96ad6ac20b11 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -18,7 +18,7 @@
+ #include <linux/page-flags-layout.h>
+ #include <linux/workqueue.h>
+ #include <linux/seqlock.h>
+-#include <linux/percpu_counter.h>
 +#include <linux/percpu_counter_tree.h>
-+#include <linux/kthread.h>
-+#include <linux/wait.h>
-+#include <linux/random.h>
-+
-+struct multi_thread_test_data {
-+	long increment;
-+	int nr_inc;
-+	int counter_index;
-+};
-+
-+#define NR_COUNTERS	2
-+
-+/* Hierarchical per-CPU counter instances. */
-+static struct percpu_counter_tree counter[NR_COUNTERS];
-+static struct percpu_counter_tree_level_item *items;
-+
-+/* Global atomic counters for validation. */
-+static atomic_long_t global_counter[NR_COUNTERS];
-+
-+static DECLARE_WAIT_QUEUE_HEAD(kernel_threads_wq);
-+static atomic_t kernel_threads_to_run;
-+
-+static void complete_work(void)
-+{
-+	if (atomic_dec_and_test(&kernel_threads_to_run))
-+		wake_up(&kernel_threads_wq);
-+}
-+
-+static void hpcc_print_info(struct kunit *test)
-+{
-+	kunit_info(test, "Running test with %d CPUs\n", num_online_cpus());
-+}
-+
-+static void add_to_counter(int counter_index, unsigned int nr_inc, long increment)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < nr_inc; i++) {
-+		percpu_counter_tree_add(&counter[counter_index], increment);
-+		atomic_long_add(increment, &global_counter[counter_index]);
-+	}
-+}
-+
-+static void check_counters(struct kunit *test)
-+{
-+	int counter_index;
-+
-+	/* Compare each counter with its global counter. */
-+	for (counter_index = 0; counter_index < NR_COUNTERS; counter_index++) {
-+		long v = atomic_long_read(&global_counter[counter_index]);
-+		long approx_sum = percpu_counter_tree_approximate_sum(&counter[counter_index]);
-+		unsigned long under_accuracy = 0, over_accuracy = 0;
-+		long precise_min, precise_max;
-+
-+		/* Precise comparison. */
-+		KUNIT_EXPECT_EQ(test, percpu_counter_tree_precise_sum(&counter[counter_index]), v);
-+		KUNIT_EXPECT_EQ(test, 0, percpu_counter_tree_precise_compare_value(&counter[counter_index], v));
-+
-+		/* Approximate comparison. */
-+		KUNIT_EXPECT_EQ(test, 0, percpu_counter_tree_approximate_compare_value(&counter[counter_index], v));
-+
-+		/* Accuracy limits checks. */
-+		percpu_counter_tree_approximate_accuracy_range(&counter[counter_index], &under_accuracy, &over_accuracy);
-+
-+		KUNIT_EXPECT_GE(test, (long)(approx_sum - (v - under_accuracy)), 0);
-+		KUNIT_EXPECT_LE(test, (long)(approx_sum - (v + over_accuracy)), 0);
-+		KUNIT_EXPECT_GT(test, (long)(approx_sum - (v - under_accuracy - 1)), 0);
-+		KUNIT_EXPECT_LT(test, (long)(approx_sum - (v + over_accuracy + 1)), 0);
-+
-+		/* Precise min/max range check. */
-+		percpu_counter_tree_approximate_min_max_range(approx_sum, under_accuracy, over_accuracy, &precise_min, &precise_max);
-+
-+		KUNIT_EXPECT_GE(test, v - precise_min, 0);
-+		KUNIT_EXPECT_LE(test, v - precise_max, 0);
-+		KUNIT_EXPECT_GT(test, v - (precise_min - 1), 0);
-+		KUNIT_EXPECT_LT(test, v - (precise_max + 1), 0);
-+	}
-+	/* Compare each counter with the second counter. */
-+	KUNIT_EXPECT_EQ(test, percpu_counter_tree_precise_sum(&counter[0]), percpu_counter_tree_precise_sum(&counter[1]));
-+	KUNIT_EXPECT_EQ(test, 0, percpu_counter_tree_precise_compare(&counter[0], &counter[1]));
-+	KUNIT_EXPECT_EQ(test, 0, percpu_counter_tree_approximate_compare(&counter[0], &counter[1]));
-+}
-+
-+static int multi_thread_worker_fn(void *data)
-+{
-+	struct multi_thread_test_data *td = data;
-+
-+	add_to_counter(td->counter_index, td->nr_inc, td->increment);
-+	complete_work();
-+	kfree(td);
-+	return 0;
-+}
-+
-+static void test_run_on_specific_cpu(struct kunit *test, int target_cpu, int counter_index, unsigned int nr_inc, long increment)
-+{
-+	struct task_struct *task;
-+	struct multi_thread_test_data *td = kzalloc(sizeof(struct multi_thread_test_data), GFP_KERNEL);
-+
-+	KUNIT_EXPECT_PTR_NE(test, td, NULL);
-+	td->increment = increment;
-+	td->nr_inc = nr_inc;
-+	td->counter_index = counter_index;
-+	atomic_inc(&kernel_threads_to_run);
-+	task = kthread_run_on_cpu(multi_thread_worker_fn, td, target_cpu, "kunit_multi_thread_worker");
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, task);
-+}
-+
-+static void init_kthreads(void)
-+{
-+	atomic_set(&kernel_threads_to_run, 1);
-+}
-+
-+static void fini_kthreads(void)
-+{
-+	/* Release our own reference. */
-+	complete_work();
-+	/* Wait for all others threads to run. */
-+	wait_event(kernel_threads_wq, (atomic_read(&kernel_threads_to_run) == 0));
-+}
-+
-+static void test_sync_kthreads(void)
-+{
-+	fini_kthreads();
-+	init_kthreads();
-+}
-+
-+static void init_counters(struct kunit *test, unsigned long batch_size)
-+{
-+	int i, ret;
-+
-+	items = kzalloc(percpu_counter_tree_items_size() * NR_COUNTERS, GFP_KERNEL);
-+	KUNIT_EXPECT_PTR_NE(test, items, NULL);
-+	ret = percpu_counter_tree_init_many(counter, items, NR_COUNTERS, batch_size, GFP_KERNEL);
-+	KUNIT_EXPECT_EQ(test, ret, 0);
-+
-+	for (i = 0; i < NR_COUNTERS; i++)
-+		atomic_long_set(&global_counter[i], 0);
-+}
-+
-+static void fini_counters(void)
-+{
-+	percpu_counter_tree_destroy_many(counter, NR_COUNTERS);
-+	kfree(items);
-+}
-+
-+enum up_test_inc_type {
-+	INC_ONE,
-+	INC_MINUS_ONE,
-+	INC_RANDOM,
-+};
-+
+ #include <linux/types.h>
+ #include <linux/futex_types.h>
+ #include <linux/rseq_types.h>
+@@ -1170,6 +1170,19 @@ typedef struct {
+ 	DECLARE_BITMAP(__mm_flags, NUM_MM_FLAG_BITS);
+ } __private mm_flags_t;
+ 
 +/*
-+ * Single-threaded tests. Those use many threads to run on various CPUs,
-+ * but synchronize for completion of each thread before running the
-+ * next, effectively making sure there are no concurrent updates.
++ * The alignment of the mm_struct flexible array is based on the largest
++ * alignment of its content:
++ * __alignof__(struct percpu_counter_tree_level_item) provides a
++ * cacheline aligned alignment on SMP systems, else alignment on
++ * unsigned long on UP systems.
 + */
-+static void do_hpcc_test_single_thread(struct kunit *test, int _cpu0, int _cpu1, enum up_test_inc_type type)
-+{
-+	unsigned long batch_size_order = 5;
-+	int cpu0 = _cpu0;
-+	int cpu1 = _cpu1;
-+	int i;
++#ifdef CONFIG_SMP
++# define __mm_struct_flexible_array_aligned	__aligned(__alignof__(struct percpu_counter_tree_level_item))
++#else
++# define __mm_struct_flexible_array_aligned	__aligned(__alignof__(unsigned long))
++#endif
 +
-+	init_counters(test, 1UL << batch_size_order);
-+	init_kthreads();
-+	for (i = 0; i < 10000; i++) {
-+		long increment;
+ struct kioctx_table;
+ struct iommu_mm_data;
+ struct mm_struct {
+@@ -1312,7 +1325,7 @@ struct mm_struct {
+ 		unsigned long saved_e_flags;
+ #endif
+ 
+-		struct percpu_counter rss_stat[NR_MM_COUNTERS];
++		struct percpu_counter_tree rss_stat[NR_MM_COUNTERS];
+ 
+ 		struct linux_binfmt *binfmt;
+ 
+@@ -1422,10 +1435,13 @@ struct mm_struct {
+ 	} __randomize_layout;
+ 
+ 	/*
+-	 * The mm_cpumask needs to be at the end of mm_struct, because it
+-	 * is dynamically sized based on nr_cpu_ids.
++	 * The rss hierarchical counter items, mm_cpumask, and mm_cid
++	 * masks need to be at the end of mm_struct, because they are
++	 * dynamically sized based on nr_cpu_ids.
++	 * The content of the flexible array needs to be placed in
++	 * decreasing alignment requirement order.
+ 	 */
+-	char flexible_array[] __aligned(__alignof__(unsigned long));
++	char flexible_array[] __mm_struct_flexible_array_aligned;
+ };
+ 
+ /* Copy value to the first system word of mm flags, non-atomically. */
+@@ -1464,22 +1480,28 @@ extern struct mm_struct init_mm;
+ 
+ #define MM_STRUCT_FLEXIBLE_ARRAY_INIT									\
+ {													\
+-	[0 ... sizeof(cpumask_t) + MM_CID_STATIC_SIZE - 1] = 0	\
++	[0 ... (PERCPU_COUNTER_TREE_ITEMS_STATIC_SIZE * NR_MM_COUNTERS) + sizeof(cpumask_t) + MM_CID_STATIC_SIZE - 1] = 0	\
+ }
+ 
+-/* Pointer magic because the dynamic array size confuses some compilers. */
+-static inline void mm_init_cpumask(struct mm_struct *mm)
++static inline size_t get_rss_stat_items_size(void)
+ {
+-	unsigned long cpu_bitmap = (unsigned long)mm;
+-
+-	cpu_bitmap += offsetof(struct mm_struct, flexible_array);
+-	cpumask_clear((struct cpumask *)cpu_bitmap);
++	return percpu_counter_tree_items_size() * NR_MM_COUNTERS;
+ }
+ 
+ /* Future-safe accessor for struct mm_struct's cpu_vm_mask. */
+ static inline cpumask_t *mm_cpumask(struct mm_struct *mm)
+ {
+-	return (struct cpumask *)&mm->flexible_array;
++	unsigned long ptr = (unsigned long)mm;
 +
-+		switch (type) {
-+		case INC_ONE:
-+			increment = 1;
-+			break;
-+		case INC_MINUS_ONE:
-+			increment = -1;
-+			break;
-+		case INC_RANDOM:
-+			increment = (long) get_random_long() % 50000;
-+			break;
-+		}
-+		if (_cpu0 < 0)
-+			cpu0 = cpumask_any_distribute(cpu_online_mask);
-+		if (_cpu1 < 0)
-+			cpu1 = cpumask_any_distribute(cpu_online_mask);
-+		test_run_on_specific_cpu(test, cpu0, 0, 1, increment);
-+		test_sync_kthreads();
-+		test_run_on_specific_cpu(test, cpu1, 1, 1, increment);
-+		test_sync_kthreads();
-+		check_counters(test);
-+	}
-+	fini_kthreads();
-+	fini_counters();
++	ptr += offsetof(struct mm_struct, flexible_array);
++	/* Skip RSS stats counters. */
++	ptr += get_rss_stat_items_size();
++	return (struct cpumask *)ptr;
 +}
 +
-+static void hpcc_test_single_thread_first(struct kunit *test)
++static inline void mm_init_cpumask(struct mm_struct *mm)
 +{
-+	int cpu = cpumask_first(cpu_online_mask);
++	cpumask_clear((struct cpumask *)mm_cpumask(mm));
+ }
+ 
+ #ifdef CONFIG_LRU_GEN
+@@ -1571,6 +1593,8 @@ static inline cpumask_t *mm_cpus_allowed(struct mm_struct *mm)
+ 	unsigned long bitmap = (unsigned long)mm;
+ 
+ 	bitmap += offsetof(struct mm_struct, flexible_array);
++	/* Skip RSS stats counters. */
++	bitmap += get_rss_stat_items_size();
+ 	/* Skip cpu_bitmap */
+ 	bitmap += cpumask_size();
+ 	return (struct cpumask *)bitmap;
+diff --git a/include/trace/events/kmem.h b/include/trace/events/kmem.h
+index cd7920c81f85..290ccb9fd25d 100644
+--- a/include/trace/events/kmem.h
++++ b/include/trace/events/kmem.h
+@@ -448,7 +448,7 @@ TRACE_EVENT(rss_stat,
+ 		 */
+ 		__entry->curr = current->mm == mm && !(current->flags & PF_KTHREAD);
+ 		__entry->member = member;
+-		__entry->size = (percpu_counter_sum_positive(&mm->rss_stat[member])
++		__entry->size = (percpu_counter_tree_approximate_sum_positive(&mm->rss_stat[member])
+ 							    << PAGE_SHIFT);
+ 	),
+ 
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 416758c8a3d4..5bad7a24d186 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -137,6 +137,11 @@
+  */
+ #define MAX_THREADS FUTEX_TID_MASK
+ 
++/*
++ * Batch size of rss stat approximation
++ */
++#define RSS_STAT_BATCH_SIZE	32
 +
-+	do_hpcc_test_single_thread(test, cpu, cpu, INC_ONE);
-+	do_hpcc_test_single_thread(test, cpu, cpu, INC_MINUS_ONE);
-+	do_hpcc_test_single_thread(test, cpu, cpu, INC_RANDOM);
-+}
-+
-+static void hpcc_test_single_thread_first_random(struct kunit *test)
-+{
-+	int cpu = cpumask_first(cpu_online_mask);
-+
-+	do_hpcc_test_single_thread(test, cpu, -1, INC_ONE);
-+	do_hpcc_test_single_thread(test, cpu, -1, INC_MINUS_ONE);
-+	do_hpcc_test_single_thread(test, cpu, -1, INC_RANDOM);
-+}
-+
-+static void hpcc_test_single_thread_random(struct kunit *test)
-+{
-+	do_hpcc_test_single_thread(test, -1, -1, INC_ONE);
-+	do_hpcc_test_single_thread(test, -1, -1, INC_MINUS_ONE);
-+	do_hpcc_test_single_thread(test, -1, -1, INC_RANDOM);
-+}
-+
-+/* Multi-threaded SMP tests. */
-+
-+static void do_hpcc_multi_thread_increment_each_cpu(struct kunit *test, unsigned long batch_size, unsigned int nr_inc, long increment)
-+{
-+	int cpu;
-+
-+	init_counters(test, batch_size);
-+	init_kthreads();
-+	for_each_online_cpu(cpu) {
-+		test_run_on_specific_cpu(test, cpu, 0, nr_inc, increment);
-+		test_run_on_specific_cpu(test, cpu, 1, nr_inc, increment);
-+	}
-+	fini_kthreads();
-+	check_counters(test);
-+	fini_counters();
-+}
-+
-+static void do_hpcc_multi_thread_increment_even_cpus(struct kunit *test, unsigned long batch_size, unsigned int nr_inc, long increment)
-+{
-+	int cpu;
-+
-+	init_counters(test, batch_size);
-+	init_kthreads();
-+	for_each_online_cpu(cpu) {
-+		test_run_on_specific_cpu(test, cpu, 0, nr_inc, increment);
-+		test_run_on_specific_cpu(test, cpu & ~1, 1, nr_inc, increment); /* even cpus. */
-+	}
-+	fini_kthreads();
-+	check_counters(test);
-+	fini_counters();
-+}
-+
-+static void do_hpcc_multi_thread_increment_single_cpu(struct kunit *test, unsigned long batch_size, unsigned int nr_inc, long increment)
-+{
-+	int cpu;
-+
-+	init_counters(test, batch_size);
-+	init_kthreads();
-+	for_each_online_cpu(cpu) {
-+		test_run_on_specific_cpu(test, cpu, 0, nr_inc, increment);
-+		test_run_on_specific_cpu(test, cpumask_first(cpu_online_mask), 1, nr_inc, increment);
-+	}
-+	fini_kthreads();
-+	check_counters(test);
-+	fini_counters();
-+}
-+
-+static void do_hpcc_multi_thread_increment_random_cpu(struct kunit *test, unsigned long batch_size, unsigned int nr_inc, long increment)
-+{
-+	int cpu;
-+
-+	init_counters(test, batch_size);
-+	init_kthreads();
-+	for_each_online_cpu(cpu) {
-+		test_run_on_specific_cpu(test, cpu, 0, nr_inc, increment);
-+		test_run_on_specific_cpu(test, cpumask_any_distribute(cpu_online_mask), 1, nr_inc, increment);
-+	}
-+	fini_kthreads();
-+	check_counters(test);
-+	fini_counters();
-+}
-+
-+static void hpcc_test_multi_thread_batch_increment(struct kunit *test)
-+{
-+	unsigned long batch_size_order;
-+
-+	for (batch_size_order = 2; batch_size_order < 10; batch_size_order++) {
-+		unsigned int nr_inc;
-+
-+		for (nr_inc = 1; nr_inc < 1024; nr_inc *= 2) {
-+			long increment;
-+
-+			for (increment = 1; increment < 100000; increment *= 10) {
-+				do_hpcc_multi_thread_increment_each_cpu(test, 1UL << batch_size_order, nr_inc, increment);
-+				do_hpcc_multi_thread_increment_even_cpus(test, 1UL << batch_size_order, nr_inc, increment);
-+				do_hpcc_multi_thread_increment_single_cpu(test, 1UL << batch_size_order, nr_inc, increment);
-+				do_hpcc_multi_thread_increment_random_cpu(test, 1UL << batch_size_order, nr_inc, increment);
-+			}
-+		}
-+	}
-+}
-+
-+static void hpcc_test_multi_thread_random_walk(struct kunit *test)
-+{
-+	unsigned long batch_size_order = 5;
-+	int loop;
-+
-+	for (loop = 0; loop < 100; loop++) {
-+		int i;
-+
-+		init_counters(test, 1UL << batch_size_order);
-+		init_kthreads();
-+		for (i = 0; i < 1000; i++) {
-+			long increment = (long) get_random_long() % 512;
-+			unsigned int nr_inc = ((unsigned long) get_random_long()) % 1024;
-+
-+			test_run_on_specific_cpu(test, cpumask_any_distribute(cpu_online_mask), 0, nr_inc, increment);
-+			test_run_on_specific_cpu(test, cpumask_any_distribute(cpu_online_mask), 1, nr_inc, increment);
-+		}
-+		fini_kthreads();
-+		check_counters(test);
-+		fini_counters();
-+	}
-+}
-+
-+static void hpcc_test_init_one(struct kunit *test)
-+{
-+	struct percpu_counter_tree pct;
-+	struct percpu_counter_tree_level_item *counter_items;
-+	int ret;
-+
-+	counter_items = kzalloc(percpu_counter_tree_items_size(), GFP_KERNEL);
-+	KUNIT_EXPECT_PTR_NE(test, counter_items, NULL);
-+	ret = percpu_counter_tree_init(&pct, counter_items, 32, GFP_KERNEL);
-+	KUNIT_EXPECT_EQ(test, ret, 0);
-+
-+	percpu_counter_tree_destroy(&pct);
-+	kfree(counter_items);
-+}
-+
-+static void hpcc_test_set(struct kunit *test)
-+{
-+	static long values[] = {
-+		5, 100, 127, 128, 255, 256, 4095, 4096, 500000, 0,
-+		-5, -100, -127, -128, -255, -256, -4095, -4096, -500000,
-+	};
-+	struct percpu_counter_tree pct;
-+	struct percpu_counter_tree_level_item *counter_items;
-+	int i, ret;
-+
-+	counter_items = kzalloc(percpu_counter_tree_items_size(), GFP_KERNEL);
-+	KUNIT_EXPECT_PTR_NE(test, counter_items, NULL);
-+	ret = percpu_counter_tree_init(&pct, counter_items, 32, GFP_KERNEL);
-+	KUNIT_EXPECT_EQ(test, ret, 0);
-+
-+	for (i = 0; i < ARRAY_SIZE(values); i++) {
-+		long v = values[i];
-+
-+		percpu_counter_tree_set(&pct, v);
-+		KUNIT_EXPECT_EQ(test, percpu_counter_tree_precise_sum(&pct), v);
-+		KUNIT_EXPECT_EQ(test, 0, percpu_counter_tree_approximate_compare_value(&pct, v));
-+
-+		percpu_counter_tree_add(&pct, v);
-+		KUNIT_EXPECT_EQ(test, percpu_counter_tree_precise_sum(&pct), 2 * v);
-+		KUNIT_EXPECT_EQ(test, 0, percpu_counter_tree_approximate_compare_value(&pct, 2 * v));
-+
-+		percpu_counter_tree_add(&pct, -2 * v);
-+		KUNIT_EXPECT_EQ(test, percpu_counter_tree_precise_sum(&pct), 0);
-+		KUNIT_EXPECT_EQ(test, 0, percpu_counter_tree_approximate_compare_value(&pct, 0));
-+	}
-+
-+	percpu_counter_tree_destroy(&pct);
-+	kfree(counter_items);
-+}
-+
-+static struct kunit_case hpcc_test_cases[] = {
-+	KUNIT_CASE(hpcc_print_info),
-+	KUNIT_CASE(hpcc_test_single_thread_first),
-+	KUNIT_CASE(hpcc_test_single_thread_first_random),
-+	KUNIT_CASE(hpcc_test_single_thread_random),
-+	KUNIT_CASE(hpcc_test_multi_thread_batch_increment),
-+	KUNIT_CASE(hpcc_test_multi_thread_random_walk),
-+	KUNIT_CASE(hpcc_test_init_one),
-+	KUNIT_CASE(hpcc_test_set),
-+	{}
-+};
-+
-+static struct kunit_suite hpcc_test_suite = {
-+	.name = "percpu_counter_tree",
-+	.test_cases = hpcc_test_cases,
-+};
-+
-+kunit_test_suite(hpcc_test_suite);
-+
-+MODULE_DESCRIPTION("Test cases for hierarchical per-CPU counters");
-+MODULE_LICENSE("Dual MIT/GPL");
+ /*
+  * Protected counters by write_lock_irq(&tasklist_lock)
+  */
+@@ -633,14 +638,12 @@ static void check_mm(struct mm_struct *mm)
+ 			 "Please make sure 'struct resident_page_types[]' is updated as well");
+ 
+ 	for (i = 0; i < NR_MM_COUNTERS; i++) {
+-		long x = percpu_counter_sum(&mm->rss_stat[i]);
+-
+-		if (unlikely(x)) {
++		if (unlikely(percpu_counter_tree_precise_compare_value(&mm->rss_stat[i], 0) != 0))
+ 			pr_alert("BUG: Bad rss-counter state mm:%p type:%s val:%ld Comm:%s Pid:%d\n",
+-				 mm, resident_page_types[i], x,
++				 mm, resident_page_types[i],
++				 percpu_counter_tree_precise_sum(&mm->rss_stat[i]),
+ 				 current->comm,
+ 				 task_pid_nr(current));
+-		}
+ 	}
+ 
+ 	if (mm_pgtables_bytes(mm))
+@@ -738,7 +741,7 @@ void __mmdrop(struct mm_struct *mm)
+ 	check_mm(mm);
+ 	mm_pasid_drop(mm);
+ 	mm_destroy_cid(mm);
+-	percpu_counter_destroy_many(mm->rss_stat, NR_MM_COUNTERS);
++	percpu_counter_tree_destroy_many(mm->rss_stat, NR_MM_COUNTERS);
+ 
+ 	free_mm(mm);
+ }
+@@ -1144,8 +1147,9 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p)
+ 	if (mm_alloc_sched(mm))
+ 		goto fail_sched;
+ 
+-	if (percpu_counter_init_many(mm->rss_stat, 0, GFP_KERNEL_ACCOUNT,
+-				     NR_MM_COUNTERS))
++	if (percpu_counter_tree_init_many(mm->rss_stat, get_rss_stat_items(mm),
++					  NR_MM_COUNTERS, RSS_STAT_BATCH_SIZE,
++					  GFP_KERNEL_ACCOUNT))
+ 		goto fail_pcpu;
+ 
+ 	lru_gen_init_mm(mm);
+@@ -3122,7 +3126,7 @@ void __init mm_cache_init(void)
+ 	 * dynamically sized based on the maximum CPU number this system
+ 	 * can have, taking hotplug into account (nr_cpu_ids).
+ 	 */
+-	mm_size = sizeof(struct mm_struct) + cpumask_size() + mm_cid_size();
++	mm_size = sizeof(struct mm_struct) + cpumask_size() + mm_cid_size() + get_rss_stat_items_size();
+ 
+ 	mm_cachep = kmem_cache_create_usercopy("mm_struct",
+ 			mm_size, ARCH_MIN_MMSTRUCT_ALIGN,
 -- 
 2.43.0
 
