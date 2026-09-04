@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5665C624D3
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 03:54:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73B37C61DD6
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 03:54:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF9876B0098; Thu,  3 Sep 2026 23:54:22 -0400 (EDT)
+	id 6055B6B0099; Thu,  3 Sep 2026 23:54:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD15C6B0099; Thu,  3 Sep 2026 23:54:22 -0400 (EDT)
+	id 5DCEB6B009B; Thu,  3 Sep 2026 23:54:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABEF16B009B; Thu,  3 Sep 2026 23:54:22 -0400 (EDT)
+	id 4CC226B009D; Thu,  3 Sep 2026 23:54:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 843B26B0098
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 23:54:22 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2A17E40702
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 03:54:22 +0000 (UTC)
-X-FDA: 85174712364.20.A2D6BE2
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id B828D40006
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 03:54:18 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=H1DRkfKo;
-	spf=pass (imf01.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 25CF96B0099
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 23:54:24 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B16211606B6
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 03:54:23 +0000 (UTC)
+X-FDA: 85174712406.10.C93ECEB
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D7FB7180005
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 03:54:20 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=auoso0OF;
+	spf=pass (imf16.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788494060;
-	b=qq/8SZsSzOwYLxoD4Kd9av4wWpfSbmIgukJwz4/HzOJ0IIIFV4iZZhDanYz6K3cZknRJhk
-	QwlGo2B3/eod5elarXnFGZn51N8mlQK8jApyTJVrKtwL5NqEilXX2pfIEs08t3fub4hYFe
-	lfZ66B2+Vn4uqzyDQnBmSFvK93uzSeE=
+	t=1788494061;
+	b=vCQkdNnYSKWYHItRZj7LLJpiFv6B5JFoU4Es39FeDVEFdpROS5LcsvsE0ypA/syDsi3aiP
+	7WYmyqWqha9VgHfCsxyKcG4xS026QUTtvb7GQhT6iGAvDwlp/vhLfwdeH1X7ITnfEZZPxJ
+	R1hXvtxXcpTL4gSoO9jr6tJ9L07XGrM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788494060;
+	s=arc-20220608; t=1788494061;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RgILmAj8pZmVgzIjSER8ulyJ/VZ7FZsMUaib2i4Gc/c=;
-	b=zmjOhbRStAbPw9Jvu5aDnaYHb7HSkwGchWU1rNMpPFWVe0td3fa9fEKGB8T1yPLLGmPJDa
-	/0EA2shgJ16XdX3wLUDgjfWkRB3XuY63YPthsAHYvlLeWnplJMMKbujYZfIyyBYcFflcrM
-	7CsaR4cTgyc5+xbJV6awtPuqUBZdEsI=
+	bh=YPr2nhosCXoKcsIhMPeI7fzZvZMIzTsZ4k4iope2HB0=;
+	b=P7tkcRn7+f6TMdlzMBioQN16MH5yXC4Z2k6yUSC2VlslbG/GyjPKAuqkQgQmEadPmrswfe
+	8btm6TVYvoJ5nm5+VfSEzoi0bwl+WAeB/iGi9vNy5c9dNC5VslxjC0QfiAbPSMe4JQNF2U
+	46Qks3s0sowT4tGILFd9SzPM//M1m+0=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=H1DRkfKo;
-	spf=pass (imf01.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=auoso0OF;
+	spf=pass (imf16.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1788494056; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=RgILmAj8pZmVgzIjSER8ulyJ/VZ7FZsMUaib2i4Gc/c=;
-	b=H1DRkfKoPKGu6Emdmr2jAdGSCpJI8BtCHVoWSSjmHgm84Pog15d+5enW8ZvbDFFUnpEDsnC2h8SA5pusEafE5NAsrZVpLOT9jeBFeiBqZ6l5D6Hml1GqpbfrBjqzRkoIGfWQavhSkNUmDjF3voSHv3UM5XsuZyiuKMuvZjRLH4g=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R791e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=29;SR=0;TI=SMTPD_---0XAHc.dA_1788494052;
-Received: from banye.tbsite.net(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XAHc.dA_1788494052 cluster:ay36)
+	t=1788494057; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=YPr2nhosCXoKcsIhMPeI7fzZvZMIzTsZ4k4iope2HB0=;
+	b=auoso0OFINc6fGFlwnJAcB8grxt81XvOdLyfiZ4WHkvMtZsD/2FjCx2R4faP6y13vol9bEOjOemqMFF5ynOhD+NiYtdmzTtciVLXHWoirEIJGiqZYqS+Y6cAFBHRt3deAiZQHcIWmHRrL+AHoHZaZM48T/FoQ09ClvUUXs65OVc=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R571e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=29;SR=0;TI=SMTPD_---0XAHc.di_1788494054;
+Received: from banye.tbsite.net(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XAHc.di_1788494054 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Fri, 04 Sep 2026 11:54:13 +0800
+          Fri, 04 Sep 2026 11:54:16 +0800
 From: Qinyun Tan <qinyuntan@linux.alibaba.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Johannes Weiner <hannes@cmpxchg.org>,
@@ -87,9 +87,9 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>,
 	linux-kernel@vger.kernel.org,
 	Qinyun Tan <qinyuntan@linux.alibaba.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/2] mm: memcg: settle memory.high debt after THP faults with non-blocking gfp
-Date: Fri,  4 Sep 2026 11:54:06 +0800
-Message-ID: <20260904035407.4098627-2-qinyuntan@linux.alibaba.com>
+Subject: [PATCH 2/2] mm: memcg: settle memory.high debt after large folio swapin
+Date: Fri,  4 Sep 2026 11:54:07 +0800
+Message-ID: <20260904035407.4098627-3-qinyuntan@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <20260904035407.4098627-1-qinyuntan@linux.alibaba.com>
 References: <20260904035407.4098627-1-qinyuntan@linux.alibaba.com>
@@ -97,12 +97,12 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B828D40006
-X-Stat-Signature: eqftussuutk6n9ptcj5bpgict5ua8wuu
-X-HE-Tag: 1788494058-942587
-X-HE-Meta: U2FsdGVkX1+JbV6zfrVpf+2SwJTRh1aR5jNuMhZ2cVHdwdQX8u6nOZ7Z7VPrYItgyt+FDTm/s6NoDkAWnLmHfw+WQMIyE3mYJ6uEJ+M7Xni4TObRwzLLcWtX0QR+/Kg+URlv2OFtIbPkB2EXU1Y3zfGO/z/QAd1tJNMVyw5JfJWwKMaK//8hdnw+f9FoNjb/RwCNt0zM4lYJr1ytM6zpT984JxC4mOqsA9s02Qre5TnrT0tCPtmQXyiQdVCjnFusDRmbXq2DtV1oP7RZAvJ/yC35ojrdrH4IpCkJYxd4yzmaYSYgEQUQaUXX/yFUds68t/nfKIcPKqbaNRp7O2dfTGl/jOyC0oUHzzRzkOU3oR2FDE2yvo6YBgUeoqDUjLAExVRXE0qCcBI9z4Q0jYIw508+43MlrEeQrrKjhf1W11WpRmst7RjdwqGM5mIXp+3SaObEK6OXra2p22eQWxI78DWk2p+n4uVEQyheV4f8ZLC4QflH+kWesQKnSoH6NMZrzHvxkxPhwQoBvNQn3R5fBHV7WDseLVA3OIV80pCzFDDDA85e+parZQV4D4dGJZ0emL5WdnX4aulpFAFYI9p860mVj4QrYdoLpfZY5O7cuTVJUc4XM0P6V9yMFyVr3eVPX1lvCZp2W+mCPLbj4sHFwUQ3qhhEHWawPyO46Ap+skY3kIV92690yLA+mzuNpCXhCDSPODOJ7HTSqNue1OTqdW9JugO7NcHPi/v3Aaf3216qqOhEgVBVg70TjsaD7mofXv2IoWqgzYi0W2kYr9VqTq1R++B1RYwZjUn4gUV2+9n6wnEv3J/XrAsMXhHerC/+QKLiBp3Tf878T9XUW1VD67fzQ46Bv1VzsWdqaB31znKkjabJ72S1yW08FiBIR0E0s2VxDbxHhRLEQnVXchl+jHGLrCpp8SBHdAQizBu2+YWSzxzorg6yNfaIItFExPoICUciqz37B3k0DRtqOkv
- yAQHKIwJ
- XNpFhxOnR5nLRjrxruIg6mCwSUlxDH/T5l/nX+o8FGK757kb4rRa2FJy10ZasIWS+sJC82VZdrz8ERzvqmO6AQ6ccko0Towcm/efaE7DbVDUPbGFPnPwNoWzT13tcY6K5+3VkEwD0NHa5x4lassbGZMJ1eZk9RJwO7nKHkHmS4J3xd9cQ9+jpFtCjANWOqkWOflySHQV5onQYoqZs6p7J0vhyCh3yHAkMbmMqbiqvH8IIKG8X1VrbN60PlpuvIJ1JrPunuUiS6V/TduSqOCx1UB2nFg==
+X-Rspamd-Queue-Id: D7FB7180005
+X-Stat-Signature: wiwid3ip6ndk187shkbz73jperwcjxxz
+X-HE-Tag: 1788494060-856332
+X-HE-Meta: U2FsdGVkX18eOsbhOaIaVZ1bkHl9jd8eDuGhB8mTtJENrH/VjYnlpOjOGaPPE9zrJQpKDQlNnXv/35vxfCijvEOMiS9L6Qt0431dK5ri2WU1T9oCDpvAOAkQ6c1TXuqbmeqtQ6xGcqQ9c2rP+K4ZSfPfg9Rf6GNdtABHlIY083HJIMkdAQKSg2oRDrSK8i7W/7C6Nkc7JenO+cZ5U0aQq4refn7kNoe90RFaeNiKqNG/bYFwGOxYBGULeIjSunvZoz8CRG5kH4znlcVdsXwU+UK+cL/xkccqUjYrNA7ieOYluYWqXNTzJOBds8a54VbCQRErrCgwrGwgwf5BogDuc4V4Pc+d3SGNTI9zCS5TEJIUrNpiu82r0/HxXsfDVva1jU1xPeZdXlBIxa34juBdVBW6neLvr3XLD4ljVfoI3WPlYtymSfLQZrbIuSKOMSTvyvU3aWWQ6MNpN5nMRzbsj/gJBbN1yT4XrjsDtnBU44Y9mm8HAUL78ukfwdbEJSO7MwNdauy2vgI2sdqM/NRyA/Hu/3zLnGxaW098biwM/sVUD53fSjqtRFJMwENWA8NiSNSW+yaoSWQaGoTI8alHzMg4iLH6M5fksdp7Jyl8NpIdYNJtmFfqNaJWyFhtSPcIZPAZfDWogNVdurjdp3Q4xGUrhdfS6xK5OO8ylvyQmD0YQlLfo5XIP7jJ4PfsJ5g0DnIYY91/BJPFVu4QW+B7q08R4KFDxgK5wwbs31IasosA5VHBRhpUpL6PrcrfCIJbVI8L2SVgjhonccewNvtituM58DLm26MD/ThEsb57p1bpcpz6P3QF3HQX6P2dYYAucR4r9ftnamzCmGMckQ/wcHKPnLMoix1v9y0BVPlzC5M/KN7H+kdKiivnob6OBTVUmRaO2jB7clBgYVU5HJhw2ASwD64dbKiT0sKVXQgvO7pKLGSa1YX6ZxQLpdeMDQ5wRRpQodNoh1hDmryVf3i
+ 9BVh5Pz4
+ xZTSEJysaG5lSPYZl2xG0u+86s5/DU7oNu0tNezA2hpNOQg4eDmTHDcmK3kXCztpG3AfFw2+xZGA8eCCaOCWI9Iak/bocqYucxtN6Eg08fO5mR6BhTcvJdTSL/Zw+tF3m3TU7bn8onpRqIz4fqpN3Mu0T8Zcp2BjpOCqxDnzKewO8T9KQvwu3/6yyQt9/w/IyO2iOeUh3C13Z4SVitESjlzz5j2WSn0t+7B/ymkm2SFDnAYTRS0RO8fk3ihJdYGlDc211WlwxVyg+qG9A1nl8cFPfHg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,118 +110,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Anonymous THP faults happening in a kernel loop that does not return
-to userspace -- the populate loop of a single mlock() call, or any
-GUP-driven population -- can drive a memcg's usage from memory.high
-all the way up to memory.max with zero reclaim and zero penalty
-sleep.
+On SWP_SYNCHRONOUS_IO swap devices (zram) with mTHP swapin enabled,
+swapping a range back in from within a single kernel entry -- the
+populate loop of mlock() or MADV_POPULATE_READ, or any GUP-driven
+population -- drives a memcg's usage from memory.high straight up to
+memory.max with zero reclaim and zero penalty sleep.
 
-This defeats the containment memory.high is supposed to provide:
-above high, the documented promise is that "the processes of the
-cgroup are throttled and put under heavy reclaim pressure", and
-userspace OOM handlers (oomd, Kubernetes) rely on the high..max
-buffer as their reaction window.  Only after hitting memory.max does
-the non-blocking charge fail, THP fall back to 4K, and
-folio_prealloc()'s GFP_KERNEL charge finally restore throttling --
-by which point the entire buffer has been consumed.
+This defeats the containment memory.high is supposed to provide: the
+high..max buffer that userspace OOM handlers (oomd, Kubernetes) rely
+on as their reaction window is consumed in well under a second, and
+when the swapped-in pages are mlocked the burst ends in memcg OOM.
 
-memory.high is enforced at two points after a charge succeeds:
+The cause is the swapin instance of the problem fixed by the
+previous patch for anonymous THP faults.  memory.high is enforced
+either on return to userspace, which a populate loop does not reach
+between faults, or synchronously in try_charge_memcg() for large
+overcharges, which is gated on gfpflags_allow_blocking().  Since
+commit 242d12c98174 ("mm: support large folios swap-in for sync io
+devices"), swapping in a large folio charges it with the gfp derived
+from vma_thp_gfp_mask() (nowadays via __swap_cache_alloc(), which
+overrides the caller's GFP_HIGHUSER_MOVABLE for order > 0 before
+calling mem_cgroup_swapin_charge_folio()).  With the default
+defrag=madvise and no MADV_HUGEPAGE the resulting gfp is
+GFP_TRANSHUGE_LIGHT based and does not allow blocking.  That is the
+right policy for the physical allocation, but try_charge_memcg()
+also reads it as "this context cannot sleep" and skips the
+synchronous enforcement, even though swapin fault context sleeps
+just fine.  Order-0 swapin is unaffected: it charges with the
+caller's GFP_HIGHUSER_MOVABLE and throttles as expected.
 
-  1. from resume_user_mode_work() on return to userspace, requested
-     via set_notify_resume();
-  2. synchronously in try_charge_memcg() for large overcharges, added
-     by commit c9afe31ec443 ("memcg: synchronously enforce memory.high
-     for large overcharges"), gated on gfpflags_allow_blocking().
-
-A populate loop does not return to userspace between faults, so gate
-1 never runs.  Gate 2 is defeated by the charge gfp: since
-commit 3b3636924dfe ("mm, memcg: sync allocation and memcg charge
-gfp flags for THP"), the THP fault path passes the allocation gfp
-from vma_thp_gfp_mask() to mem_cgroup_charge().  With defrag=defer
-that gfp is GFP_TRANSHUGE_LIGHT | __GFP_KSWAPD_RECLAIM; with the
-default defrag=madvise and no MADV_HUGEPAGE it is plain
-GFP_TRANSHUGE_LIGHT.  Neither allows blocking.  This is the right
-policy for the physical allocation -- a THP is not worth direct
-compaction, fall back to 4K instead -- but try_charge_memcg() also
-interprets it as "this context cannot sleep" and skips the
-synchronous enforcement, even
-though fault context sleeps just fine (it holds the mmap or per-VMA
-read lock).
-
-Fix this in the fault paths, which know their context can sleep:
-after a successful THP/mTHP charge, settle any accrued over-high
-debt via mem_cgroup_handle_over_high(GFP_KERNEL).  This reuses the
-existing throttling machinery (reclaim + calculate_high_delay()
-penalty sleep) and is a no-op read of
+Fix this by settling the debt at the end of do_swap_page(), where
+sleeping is known to be safe: the folio lock, the page table lock
+and the swap device reference have all been dropped, only the
+mmap/VMA read lock is held -- the same context in which the order-0
+charge path already throttles today.  This is a no-op read of
 current->memcg_nr_pages_over_high when there is no debt.
 
-Deliberately not changed:
+The charge gfp is deliberately kept coupled to the allocation gfp so
+the fail-fast fallback to order-0 at memory.max is preserved,
+matching the previous patch.
 
- - The charge gfp itself is kept coupled to the allocation gfp, so the
-   fail-fast behaviour at memory.max (charge fails -> fall back to 4K
-   instead of reclaiming or OOMing for a THP) that the coupling was
-   introduced for is fully preserved.
+Verified on zram swap with hugepages-64kB/enabled=always and zswap
+disabled at boot: memory.high=30M, memory.max=140M, then a single
+MADV_POPULATE_READ over a 200M swapped-out range (~3200 64k large
+folio swapins, confirmed via mTHP swpin stats).  Without this patch
+the populate bursts through the whole high..max buffer in 0.24s and
+memory.events max goes 0->1.  With it, max stays 0 across repeated
+runs and usage is held at memory.high by reclaim throughout (high
+0->~680).  Populate time is unchanged (0.22s): settling on every
+fault keeps the overage within one charge batch, reclaim keeps up
+with the swapin rate and the penalty sleep never needs to engage.
 
- - try_charge_memcg() is not touched: gfpflags_allow_blocking() is the
-   only signal it has, and it must stay conservative for callers that
-   genuinely cannot sleep.
+The penalty-sleep regime (mlock'd populate, so swapped-in pages are
+immediately unreclaimable) was verified separately: without this
+patch the locked burst blows through the entire high..max buffer
+(~132M of 64k swapins) within 0.1s and ends in memcg OOM; with it,
+usage climbs from memory.high at a quadratically decaying pace (33M
+after 5s, reproducibly) and never approaches memory.max within the
+observation window.
 
-The pre-existing selftest test_memcg_high_sync, added alongside the
-synchronous enforcement by commit 6323ec54b450 ("selftests: memcg:
-test high limit for single entry allocation"), readily reproduces
-this: it mlocks 200M against memory.high=30M and memory.max=140M
-with swap disabled, and expects high events with no max events.  On
-systems with transparent_hugepage/enabled=always it fails without
-this patch -- the population bursts through to memory.max -- and
-passes with it.
-
-Fixes: c9afe31ec443 ("memcg: synchronously enforce memory.high for large overcharges")
+Fixes: 242d12c98174 ("mm: support large folios swap-in for sync io devices")
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
 ---
 
-Note for stable backports: mem_cgroup_handle_over_high() only gained
-its gfp_mask argument in v6.6, from commit 9ea9cb00a82b ("mm:
-memcontrol: fix GFP_NOFS recursion in memory.high enforcement"); on
-older kernels the call sites take no argument.
+ mm/memory.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
- mm/huge_memory.c | 8 ++++++++
- mm/memory.c      | 2 ++
- 2 files changed, 10 insertions(+)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index ced400f72d43..543ba4a74dc3 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1329,6 +1329,14 @@ static struct folio *vma_alloc_anon_folio_pmd(struct vm_area_struct *vma,
- 		return NULL;
- 	}
- 
-+	/*
-+	 * The charge gfp encodes THP allocation policy and may not allow
-+	 * blocking, which makes try_charge skip its synchronous memory.high
-+	 * throttling. Fault context can sleep, so settle any over-high debt
-+	 * here instead of letting usage grow unthrottled up to memory.max.
-+	 */
-+	mem_cgroup_handle_over_high(GFP_KERNEL);
-+
- 	if (folio_memcg_alloc_deferred(folio)) {
- 		folio_put(folio);
- 		count_vm_event(THP_FAULT_FALLBACK);
 diff --git a/mm/memory.c b/mm/memory.c
-index 8b0c2c735d3d..24cbf2a26905 100644
+index 8b0c2c735d3d..dd56b43d3aa3 100644
 --- a/mm/memory.c
 +++ b/mm/memory.c
-@@ -5362,6 +5362,8 @@ static struct folio *alloc_anon_folio(struct vm_fault *vmf)
- 			folio_put(folio);
- 			goto next;
- 		}
-+		/* Same reasoning as in vma_alloc_anon_folio_pmd(). */
-+		mem_cgroup_handle_over_high(GFP_KERNEL);
- 		if (order > 1 && folio_memcg_alloc_deferred(folio)) {
- 			folio_put(folio);
- 			goto fallback;
--- 
+@@ -5267,6 +5267,14 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ out:
+ 	if (si)
+ 		put_swap_device(si);
++	/*
++	 * Large folio swapin charges with the THP allocation gfp, which may
++	 * not allow blocking, making try_charge skip its synchronous
++	 * memory.high throttling. Settle any over-high debt here instead,
++	 * where sleeping is safe: the folio lock, the page table lock and
++	 * the swap device reference have all been dropped.
++	 */
++	mem_cgroup_handle_over_high(GFP_KERNEL);
+ 	return ret;
+ out_nomap:
+ 	if (vmf->pte)
+--
 2.55.0
-
 
