@@ -4,100 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 140DCC624DE
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 15:39:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E65DC624DE
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 15:41:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 190306B0092; Fri,  4 Sep 2026 11:39:01 -0400 (EDT)
+	id 36A736B0096; Fri,  4 Sep 2026 11:41:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 142396B0095; Fri,  4 Sep 2026 11:39:01 -0400 (EDT)
+	id 31B836B0098; Fri,  4 Sep 2026 11:41:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0300C6B0096; Fri,  4 Sep 2026 11:39:00 -0400 (EDT)
+	id 233786B0099; Fri,  4 Sep 2026 11:41:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D01546B0092
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 11:39:00 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5D32214018E
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:39:00 +0000 (UTC)
-X-FDA: 85176488040.25.214E3C5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 77717180007
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:38:58 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ld8uObJq;
-	spf=pass (imf16.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 014016B0096
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 11:41:25 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 864A1C0119
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:41:25 +0000 (UTC)
+X-FDA: 85176494130.28.C15C46C
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf04.hostedemail.com (Postfix) with ESMTP id D92F34000A
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:41:23 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="bfUp/KRQ";
+	spf=pass (imf04.hostedemail.com: domain of paul.dolan.dev@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=paul.dolan.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788536483;
+	b=wGjjD1nq7ChKCYOBYmm68h1//CY4mZKpxllEUaK0rGDCuLpzqXXLgzYBAomMP5Oa48y/vb
+	tzBnX9XWUbcVHNYYTHqEJXsDFhCgebRQ8662LqX2118dZUX8rg/8lz/etaolIEvC1V2ZCn
+	/OV4AUvvBkjDjonQYZ69SrmC/fpYqwc=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="bfUp/KRQ";
+	spf=pass (imf04.hostedemail.com: domain of paul.dolan.dev@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=paul.dolan.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788536338;
+	s=arc-20220608; t=1788536483;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6+ywn+iFJBI4u5VtxY8RaiWWlMhCJYYHLJoR+W3cfUA=;
-	b=zucmReCFWnvRYL1qcMp1/ekATedWaturXwqLxNIK1yjDDYaHidWwFp9VXv1HoIsUmgMeV3
-	zDZkCnhGpI97ArDJ5FTY+xEp8rMD4ORqPMFhUX4OsF1n0vRA+SNlnokAswp0RXO9BSdfuz
-	gKG8hM4BjJ0XiOWuICkFnp8gM8QLgbQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788536338;
-	b=VC1HXZ6HlgM6XO1O3ndZ+baRVg728Ra2gIQw0aribAQJdMvZKnE+Vw2yqowT1/Vn3zwm11
-	qLfwb3IlAB8+6Oke0TehJvq+od4erMFv8fTS7wy3xqRKq4/Q77yPppXTcPRocQHnV4lqTe
-	EdQVQzO0/E0tX6Lab8ZuF2xKQtaWMyI=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ld8uObJq;
-	spf=pass (imf16.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 05C7B6020A
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:38:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1BC61F00ACA
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:38:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788536337;
-	bh=6+ywn+iFJBI4u5VtxY8RaiWWlMhCJYYHLJoR+W3cfUA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Ld8uObJqyTgaolkmEQNwBGwdwhdqeAxH+dsgV49h07FxLg01nJJSLJLjrI+WkKhI6
-	 QWJGaalPQv27t7Pl0pgCAQT05tm0w5q8WZqr7yhcXfVFZL9V1leujEEXRhBDGW9Hxy
-	 vWQR7/ZCvqoxlca06/NKkDHqKWuKx4LpBxiIc4veH5/Ykmy6u7fuBEe4s0YJpS3DlC
-	 2PGy82XS8lTPh3FQkvst/gtanhigCPGGXYTtuC4k7efm82wbf7gckanT/sH/eC/d7q
-	 GNV2od4f/76WDOJN+D+w40GifXTYtxY32C2kCIl/HZHbPAqibfrfkoDxU6Ekv/8G8O
-	 tcdJeUS52jVKw==
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c247f6687dcso187533566b.2
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 08:38:57 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBx9IJ+22iWRIiAdWV3WskhnYsph5/MsvEsGcEOUT0HoTaUyHivctD7EP3zqnQmTKtcuXyaF/Hc9Qg==@kvack.org
-X-Gm-Message-State: AFuF++nCSf9M3e1isYVRjiEUHweFCauVgDaUps+Q/63mJUthqKW94739
-	slicCCmUb4t42rjW0btOBBd3DM2bcAuZGC0UrTm5Dwe1OI7LKADmjNTVY1Tgj68W54lnhLkfWZ/
-	ATPn1k8S6eeK6i4hLnDr2b2+7pUehP+o=
-X-Received: by 2002:a17:906:730e:b0:c26:1648:a060 with SMTP id
- a640c23a62f3a-c261648b673mr184938466b.27.1788536336575; Fri, 04 Sep 2026
- 08:38:56 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=BjL2pXlHfuAQFc/3GOIX7IQe1y00mLqM+xdgaQa2Gmw=;
+	b=4t0QXdu/f1airF7k3EGJDvvUjQRxd/BErgqGiP856BLzCMIVPMVdKwwpjEmwXt1lo4Ru/n
+	sW/p0juVXwB0kVsMQE8wjtHm/twbxNY4Es2mUT05WiGDS5na8BDx5MleyWUIzqkUwj/qfy
+	LJkg9BK5mxZqNSAFq7uSfGQyCHgSvfw=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-49ccfbe062eso9699845e9.3
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 08:41:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788536482; x=1789141282; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=BjL2pXlHfuAQFc/3GOIX7IQe1y00mLqM+xdgaQa2Gmw=;
+        b=bfUp/KRQK8ZdbcSOuttpqPfUluVVeZcAXtRTUNEgOHSzNkgClQVgJQmHHToLQ0ck37
+         Hy6WZf4bFdNy2fZhkMSbkpMPtYO78j2pdOKlXoPtMoo7Ave3ffDEma4DoOoDF2veqyrK
+         RPDBrZ09TngIDUCmjGT8H/YcRhcJGRGU+4vKzBNOV3peZX3LX6GiztjETWYJe6DHWEpu
+         iy73rYzYh5oCz1fPkTvH3bUzyl8qcpeofM5Nvmx8uxHJ4pQ1wbETKCtVZQ0P5uh2DIF3
+         PWi4sAnPP/BtE+dIGE5dP4QGacvjpL8J4NaIVb53sxVrZWKA9CegigGeJHjxircQ7GX4
+         opog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788536482; x=1789141282;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=BjL2pXlHfuAQFc/3GOIX7IQe1y00mLqM+xdgaQa2Gmw=;
+        b=CzSjPVNUvlMlAHwzR+0QyzlsqFZUv/tH7Y3lf21kbaJ5O5dI52PCYKxCSfIFIo+L94
+         gbt78s6R2XhJ0x9TrRP/Z5aTiIhwFLRoD68Cq+y8Tx5I8gdDqfi84srkPix9W8d3ZHEV
+         3JvqwlqpjrEyNW0IpIOnDDG2kpg+/5vPMBWxxb4wToUfkXPN6ICT1Uh/KwfGHqTPPjBr
+         xlB3ezt5f/Vd3PSds5fCoAplsL8z/x0dvcsZloWa3IBmStlpBWsDIQAL5KTpBFC/SYRY
+         b9gEt2nv0STKVUqLkn9W8zfyTf6JYq2BHQIFiJR6MuyzaWoIUKbo8/MH7Ybok9o1e+yw
+         2EtA==
+X-Gm-Message-State: AFuF++mH2kMc8z11t2Kl72gcCZnY8VLaMS91JKs/DsLTJAKjuNZeNImH
+	/+n0XKDqls239li9K4Jdq5FjsdIqOnbxbdd/tSDUpHHAe5zyTcxpsSA/
+X-Gm-Gg: AYBFou1cpsJKGFL7Gz+E/rQPkA+fLso61lNyTNcAHoGAKW0XGiNE4TObyuWc26abvRO
+	JL7bbUK1pn25yRLzsyc2rzD45/OhIqmjXR5pvE2zcTbAYeO4ELR78fc2T0HcnmlTRoyirID1IRN
+	Jf02h7i/Y3xO/EEIjai7nCQyam3Sf9MRa6XX7ab24NGPW3eHEq0BvHABgdXo1EOsPQNzVDqGHUm
+	0UKrN1ulg/y5/NFdpLG2LXAMVVp9saV3+ytjvodp5Wfzth64x6zdOCvH3ggroYbxFjvqFbUVq31
+	EClcytrkh5stpCeeQ7V/IfmrFRRmMZCZXPkRa4u39UAbMqr8rNFpT2uVaQZYy9WRAfDaYP9Ip0Q
+	MK20Nhe4q4Epih7tvqcSUHWJ1I2sUG+f7I0B4YPF+zC6W+pt2fLUpr3Z2sUcgx5j4Z8yjcCqwTa
+	mkf3ePbtKq1wfX6pGFskk/5p3SG1VMbWvN91xCEC+Hr5NWScdYldjxpNf7WWQlj9uYL/FNxw==
+X-Received: by 2002:a05:600c:3495:b0:49c:dadb:18a7 with SMTP id 5b1f17b1804b1-49cf8244260mr66326485e9.10.1788536482119;
+        Fri, 04 Sep 2026 08:41:22 -0700 (PDT)
+Received: from fedora ([109.77.55.89])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d00031c95sm5959525e9.11.2026.09.04.08.41.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Sep 2026 08:41:21 -0700 (PDT)
+From: Paul Dolan <paul.dolan.dev@gmail.com>
+To: Kees Cook <kees@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] selftests/exec: reject zero as power-of-two alignment
+Date: Fri,  4 Sep 2026 16:40:57 +0100
+Message-ID: <20260904154057.160753-1-paul.dolan.dev@gmail.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-References: <20260830114731.8322-1-wujianyue000@gmail.com> <cover.1788528216.git.wujianyue000@gmail.com>
- <5c4f72f1ffbd5f15d0b57fb1a87f73b4249ab424.1788528216.git.wujianyue000@gmail.com>
-In-Reply-To: <5c4f72f1ffbd5f15d0b57fb1a87f73b4249ab424.1788528216.git.wujianyue000@gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Fri, 4 Sep 2026 08:38:43 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zP7LCRaq4e0O_gPz61d+ee6Pt=tBZXQRy4X27idB228rw@mail.gmail.com>
-X-Gm-Features: AcwNN1Uq-xb74ABY9zw0rMtVudm20ky-JyPbJrRRmi6zN4PCGk90egkvsX4nMXI
-Message-ID: <CAO9r8zP7LCRaq4e0O_gPz61d+ee6Pt=tBZXQRy4X27idB228rw@mail.gmail.com>
-Subject: Re: [PATCH v5 3/3] mm/zswap: reference the pool by id to shrink
- struct zswap_entry
-To: Jianyue Wu <wujianyue000@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D92F34000A
+X-Stat-Signature: r46dz7qh4fy5w8pcjz793unignzszkj7
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 77717180007
-X-Stat-Signature: aaus9bwkmg3r68617mihf4yb9r3j93pe
-X-HE-Tag: 1788536338-961808
-X-HE-Meta: U2FsdGVkX1894tcCoxmAU+MQI/suDvdN+pA/sKLx/heAG/7t4Lr59uHZFPLi6CH7jLJdwvqTD8doYSx1B+1yc7N9GAAbW+m2WtBhuxoeOir4VlTc4x96K5WWfi1ETxQ83e0K4EURedAk48cMBvTc9Veh/hQbDyECK+bQUlfFRS6BGyeu6dR5WTWjjywMheXHo95N8Y4+0N2HJkcbCKRh+yjNYENjGd+6kZQQ/8JYCiIq9d2xJkepHTYcqn/wqkWcC1XtNpRM69rvrWM3NFW/kpc3iClDZT/fpNkCBP9bypPfbkUtDaOrvZW8jiT0AOyCs99N5pIbmyJZFNnQscFs11vYO04lFEva/0A1nwVF5mmeBNv/0qMJo2qe3pFzMYc03+7KKfrEEifgwd7ZWMUwtGYQbKv4VGIYgimh861E0QfT/o4yXORymN0J24AWEJPXoXWZ+1j1KcwFJZiKvZu3GgO2+sOKPPTpIGgLTBgmhOEAh2ykB845AMZNgVN/9nQUciVlSZYhkqchOt6ToxnPNazg1euW0RfSvwDCIt7fe85wotyR2TZYz13YpUcI59Nqvja9EP01kUV80sChAKusFO6J0WPHQeHEwdYWBEXGX5jr4C3XJ2JoKdOIHvuEignXsdT07H4JtWFrNeqT8HECkmvB7N4VhTcpS9CrhXscarIU291kozCkxp90GRtK07a8ykeJ4Q2RZ4Jfyhn4fNnhzgpqGCntgPg/TNZAG9fuiqNqFY5bc0gGRFO8OWNB/hOm8F8dc2fByPFfPJTO8uiL46rerZLze3b9ZgXfc5xMFn8RBiDfd2hUEJ/6F94SYSh/LTIliNELJRBH8h/C8ZvZ+tEl3hDAfC74yk9w3Og9QPmliJeVBFleLebo9Fk8aeyHnL6dW0hGXSxbt0zlPUcwTOU/rZyV2XQJm6cnbax4lf0FZeS6C4nPoLmiDYd1NHZ3dRqLlNnk1d65GDXelwt
- s67mou4P
- GYBkDTmup24zFYm/qsHQ1BwDH49fPZDSSN4LJVO4nHg1MSCh2Yn2tVeecHaqOTHvpY33FttqUDjV5OVx+UkVq/vj2AFnI7fm0b+YnNLLRNEiFnRtdVBP/auntLtk6tZeOhEHHdK/2DNEOc2524Jl5Ru2JzNBCNPwpPIsBu2qwu96A33yHmGv7BQXv2kKIBuxON658Jd30wk6y1dO+x2b3ySh+dm7E6iYirVV5zHfYMALo/CRZ5FrZvGR7643JOmiekNdbpBWQfJvjaojd7/RGaxRwokFdjybUaLrDnkERxrgLzxR/yWPFND7WvZ25Bx8kiwA3+NkMrGoc3SjPIOc8FnFqd8sl4xzCWTkG9XUoGyKyEgb+qY0/xT05QA==
+X-HE-Tag: 1788536483-795632
+X-HE-Meta: U2FsdGVkX1/lhgtl0JI7NIUwBWeqzohq774fSbR8NjZ4zJzxu2r0yJfs8VAfj/nAuPlzcOVou5tn7WCLsxfaofa0sQtWi0mK9h1ht/y7QdZnFU8aRkyB1Iz0Wd6mcvwHKIJPa/j6CiYrpvqovIjjudLYxGZg62jO0B/FfaE7xOHv+Lxvu0Bmn4dUCXDxQI5Do7GX8lh301S9W6gVX9MErK9Nhro2PBlMyU3YLGamhvloovENAK9QUO9BGS0vCgzZGdI2VEoIpFh7d+Qq2iByhEhZPG+7yCXMjrf28UpPVf7yyqDnSjl5oh1om8laRuH11n3LLRo+F+kzjLEVKxTu+qcHFVP9up++IdvWMs3LolqBJMREDYx6OvkLQSa2Q0tkdvOoA6FCtuyohyIiyPEnYd6I5kmmdc0YHVxu09f2mimfJNSSub8OizRxql52vt0yI80v29GbWegG3j+wjAUBb8v1JvfqH1S+KOB10qxx7w91g7tl4MNt8ZqTnkUvMM3lby/mPx7gJnGNuWyF2dfdt8aWOqUGSB8vsRxKFBzPlSN2ezk/Sc8JKunT2p4+ZfImNzCz8CzRkg0MQY/y6uRwSbdZTbrG3toHuDUJGwt4Ndih3BD1SGTZGnAui3F8PWXxrKoFosSZdOvVZhzPLwW7nrLdRxqEnnP0vSRBXg2cQ/X24BmeCFwJ7V6FPFRK0PePMwvNnjJiWfiRv5qzIaT76AYFzXTTq3A6QX9Q27FDeB6xrxShtBo90LAxMlVLpdRFi72Z26W9uoSpRO4w9VukLqXZwtlkf24F0d+2GuAzWBDwN7lPLtJ9nZd0L5NiYjewyak5bUWymeaGr+uVJIZKDm1Rye9MwDTEYjTQpeTndadDwZJlS+Bdkz1/2gMb8ASrmUAREEAtkDSV5b3ecuSYQtKExLXZbyvtytQXhO4V5paDirSmbHb5Mmbqw9QjkfiixalpOWRuYJ/zq8dbdIR
+ NFgudkG5
+ X7PgHH8EnODPN0weTsWhRYBUBkszB5rDyVbzdlTYL2wVG13zaAk2r358QN5NnOTIn+ODl1lJP32t8Qe1j7o2jhcqTw4BZ2NNVR++vzK/criAeVmUiOdWZ/wm3YLwIq661AY74c8C5p5AlNXOR7DbsDzZZpUAAHDnS05UHxE4tV6ZwUlbfdg9FJE1NScQ/6wiWWBzrjb+4s5wNU8G4xUhcm5LQKxHb6ifHDzXU9pq4fykIZDrK9lSRZddjTRPyir66QyeFMj8cxqeBrrfgcvbpuqt6ZZGNmsFhECSkOnklWurvFHK1Fa1ODvXkvVULo1f4pDzyyoIe13h5ZtSCBTGVEU4yv4RLOKEyeWpSQBSwF5fd3R7oyKHghOoGy8OEBi4ekXCMl/vZdySXA1llGMNBeKMjIpidMR9GE8cN9tJaYn0lttm29a7ZRwPM/0Wdp9ggpTfA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,162 +115,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 4, 2026 at 6:25=E2=80=AFAM Jianyue Wu <wujianyue000@gmail.com> =
-wrote:
->
-> struct zswap_entry is one allocation per stored page, so its size is
-> pure overhead. It currently embeds an 8-byte pool pointer, even though
-> the live pools now sit in an allocating xarray keyed by a small integer
-> id that fits in a u8.
->
-> Replace the per-entry pool pointer with that u8 id and resolve it
-> through the xarray with xa_load(). A live entry holds a reference to its
-> pool, so the id cannot be reused under it; xa_load() is lockless and
-> only needs an rcu_read_lock() section, no zswap_pools_lock. A live entry
-> never uses the reserved id 0, so looking up that id resolves to NULL
-> and trips a WARN rather than aliasing a live pool.
->
-> The u8 fits in the padding after the bool referenced field, shrinking
-> the entry from 56 to 48 bytes on 64-bit. This raises objs_per_slab from
-> 73 to 85 and saves about 2MiB of metadata per 1GiB of data held in
-> zswap.
->
-> Suggested-by: Chris Li <chrisl@kernel.org>
-> Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
-> ---
->  mm/zswap.c | 45 ++++++++++++++++++++++++++++++++++++++-------
->  1 file changed, 38 insertions(+), 7 deletions(-)
->
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 74876acfa9dc..31cf0ef43d23 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -195,7 +195,7 @@ static struct shrinker *zswap_shrinker;
->   *              writeback logic. The entry is only reclaimed by the writ=
-eback
->   *              logic if referenced is unset. See comments in the shrink=
-er
->   *              section for context.
-> - * pool - the zswap_pool the entry's data is in
-> + * pool_idx - id of the zswap_pool that the entry's data is in.
->   * handle - zsmalloc allocation handle that stores the compressed page d=
-ata
->   * objcg - the obj_cgroup that the compressed memory is charged to
->   * lru - handle to the pool's lru used to evict pages.
-> @@ -204,12 +204,27 @@ struct zswap_entry {
->         swp_entry_t swpentry;
->         unsigned int length;
->         bool referenced;
-> -       struct zswap_pool *pool;
-> +       u8 pool_idx;
->         unsigned long handle;
->         struct obj_cgroup *objcg;
->         struct list_head lru;
->  };
->
-> +/*
-> + * The pool stays alive after this returns because a stored entry holds =
-a
-> + * reference to its pool (taken in zswap_store_page()).
-> + */
-> +static struct zswap_pool *zswap_entry_pool(struct zswap_entry *entry)
-> +{
-> +       struct zswap_pool *pool;
-> +
-> +       rcu_read_lock();
-> +       pool =3D xa_load(&zswap_pools, entry->pool_idx);
-> +       rcu_read_unlock();
+The load_address test reports whether an alignment was found separately
+from whether that alignment is a power of two. However, the usual
+x & (x - 1) check also evaluates to zero when x is zero, causing a
+missing alignment to be reported as a power of two.
 
-Doesn't xa_load() already call rcu_read_[un]lock()?
+Require the alignment to be non-zero when reporting the power-of-two
+result.
 
-> +
-> +       return pool;
-> +}
-> +
->  static struct xarray *zswap_trees[MAX_SWAPFILES];
->  static unsigned int nr_zswap_trees[MAX_SWAPFILES];
->
-> @@ -770,9 +785,13 @@ static void zswap_entry_cache_free(struct zswap_entr=
-y *entry)
->   */
->  static void zswap_entry_free(struct zswap_entry *entry)
->  {
-> +       struct zswap_pool *pool =3D zswap_entry_pool(entry);
-> +
->         zswap_lru_del(entry);
-> -       zs_free(entry->pool->zs_pool, entry->handle);
-> -       zswap_pool_put(entry->pool);
-> +       if (!WARN_ON_ONCE(!pool)) {
-> +               zs_free(pool->zs_pool, entry->handle);
-> +               zswap_pool_put(pool);
-> +       }
->         if (entry->objcg) {
->                 obj_cgroup_uncharge_zswap(entry->objcg, entry->length);
->                 obj_cgroup_put(entry->objcg);
-> @@ -929,12 +948,15 @@ static bool zswap_compress(struct page *page, struc=
-t zswap_entry *entry,
->
->  static bool zswap_decompress(struct zswap_entry *entry, struct folio *fo=
-lio)
->  {
-> -       struct zswap_pool *pool =3D entry->pool;
-> +       struct zswap_pool *pool =3D zswap_entry_pool(entry);
->         struct scatterlist input[2]; /* zsmalloc returns an SG list 1-2 e=
-ntries */
->         struct scatterlist output;
->         struct crypto_acomp_ctx *acomp_ctx;
->         int ret =3D 0, dlen;
->
-> +       if (WARN_ON_ONCE(!pool))
-> +               return false;
-> +
->         acomp_ctx =3D raw_cpu_ptr(pool->acomp_ctx);
->         mutex_lock(&acomp_ctx->mutex);
->         zs_obj_read_sg_begin(pool->zs_pool, entry->handle, input, entry->=
-length);
-> @@ -970,7 +992,7 @@ static bool zswap_decompress(struct zswap_entry *entr=
-y, struct folio *folio)
->         pr_alert_ratelimited("Decompression error from zswap (%d:%lu %s %=
-u->%d)\n",
->                                                 swp_type(entry->swpentry)=
-,
->                                                 swp_offset(entry->swpentr=
-y),
-> -                                               entry->pool->tfm_name,
-> +                                               pool->tfm_name,
->                                                 entry->length, dlen);
->         return false;
->  }
-> @@ -1428,6 +1450,16 @@ static bool zswap_store_page(struct page *page,
->         if (!zswap_compress(page, entry, pool))
->                 goto compress_failed;
->
-> +       /*
-> +        * Set pool_idx before publishing the entry: compression has
-> +        * succeeded and the pool is already pinned by this store, so the=
- id is
-> +        * final.  Doing it here (rather than after xa_store()) means the=
- entry
-> +        * is never briefly visible with a stale pool_idx left over from =
-slab
-> +        * reuse, which zswap_entry_pool() would otherwise resolve to an
-> +        * unrelated live pool.
-> +        */
-> +       entry->pool_idx =3D pool->idx;
-> +
->         old =3D xa_store(swap_zswap_tree(page_swpentry),
->                        swp_offset(page_swpentry),
->                        entry, GFP_KERNEL);
-> @@ -1473,7 +1505,6 @@ static bool zswap_store_page(struct page *page,
->          *    The publishing order matters to prevent writeback from seei=
-ng
->          *    an incoherent entry.
->          */
-> -       entry->pool =3D pool;
->         entry->swpentry =3D page_swpentry;
->         entry->objcg =3D objcg;
->         entry->referenced =3D true;
-> --
-> 2.43.0
->
+Fixes: b57a2907c9d9 ("selftests/exec: Build both static and non-static load_address tests")
+Signed-off-by: Paul Dolan <paul.dolan.dev@gmail.com>
+---
+ tools/testing/selftests/exec/load_address.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/tools/testing/selftests/exec/load_address.c b/tools/testing/selftests/exec/load_address.c
+index 55fd3732f029..e279d85e8f19 100644
+--- a/tools/testing/selftests/exec/load_address.c
++++ b/tools/testing/selftests/exec/load_address.c
+@@ -92,9 +92,10 @@ int main(int argc, char **argv)
+ 
+ 	/* Is the alignment sane? */
+ 	pow2 = extracted.alignment & (extracted.alignment - 1);
+-	ksft_test_result(pow2 == 0,
+-			 "Alignment is%s a power of 2: %#llx\n",
+-			 pow2 == 0 ? "" : " NOT", extracted.alignment);
++	ksft_test_result(extracted.alignment != 0 && pow2 == 0,
++		"Alignment is%s a power of 2: %#llx\n",
++		extracted.alignment != 0 && pow2 == 0 ? "" : " NOT",
++		extracted.alignment);
+ 
+ 	/* Is the load address aligned? */
+ 	misalign = extracted.load_address & (extracted.alignment - 1);
+-- 
+2.55.0
+
 
