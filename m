@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 736FDC624D3
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 03:35:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD9F3C61DD6
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 03:38:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 093336B0098; Thu,  3 Sep 2026 23:35:18 -0400 (EDT)
+	id AA3576B0088; Thu,  3 Sep 2026 23:38:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC0B76B009D; Thu,  3 Sep 2026 23:35:17 -0400 (EDT)
+	id A53DE6B008A; Thu,  3 Sep 2026 23:38:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBDDA6B0098; Thu,  3 Sep 2026 23:35:17 -0400 (EDT)
+	id 9417E6B0099; Thu,  3 Sep 2026 23:38:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 99D5C6B009B
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 23:35:17 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2FADE1C2615
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 03:35:17 +0000 (UTC)
-X-FDA: 85174664274.08.BCEA7B9
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B0F25140008
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 03:35:13 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bBqSUasH;
-	spf=pass (imf23.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 750826B0088
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 23:38:33 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 170A7A4918
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 03:38:33 +0000 (UTC)
+X-FDA: 85174672506.02.AE590AD
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 41FF0100006
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 03:38:30 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="cr/bVGZm";
+	spf=pass (imf05.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788492915;
-	b=7P2sIcZAJTRSquKeuAiFnSL4Ieqse5Z+FU//weXuEud6FG8HBs+9awdozn7iU6pMUMkKQO
-	UwpB1AqL5/x8HBTIKmqsGe5AVmZdxynZBCZfkDVb5Wxu6pDgJuhoYOe+f/nbFC6LMmn/0G
-	NBJnnj7A93m0O4stgBq2G1m9i3re+sk=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bBqSUasH;
-	spf=pass (imf23.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	t=1788493111;
+	b=F4kgwr4w0xzkQA0QQrxtM/do0lLS5cH2UXIKehbNzskJTzwrFCtlAqCt0Ros+S41YI9T2e
+	pvkdLmo/dIFFxumIANrGVypOmQv9ToFGEgKv9Uqg7hQBYNQHyEvPoLISN9fcMiMn3LaFtH
+	YFsAaTtZ2dx+7lW+nQqh9L0ZLR7DwYc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788492915;
+	s=arc-20220608; t=1788493111;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Uxu22xj995mFVQr2+Ydau7ylOTci62Lzzj4k69xScho=;
-	b=6vhtowBTb79yXG8v3sy1KWICmJHF9hX/amGVmujea9d6FoJdlQy2Bu3OQrfJoYFdbzACL/
-	7czb88kvXtDNtmmm9TfMhNAy47E24GM+JNWV1OHvOjicjf1CI+4dPtz20CnpGybKYcadUo
-	WaUvofuYprxy2dHgCs8tWZEtnjt2978=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1788492910; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=Uxu22xj995mFVQr2+Ydau7ylOTci62Lzzj4k69xScho=;
-	b=bBqSUasHjOYLFKUuhEm6an8pN+L389Ez9CdZsO9qnNZitJJwuRQ8X5Px5aApRHE0NENNL9G0BmIsS+CcI5k8H5iZp1p+QWHcavMhKNNQoaS/lJYF3druZU59gTj2+VJSq+Q6rIZsgbs96aqjmwMYN5DEHVp+ck16d41BadROwkM=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=23;SR=0;TI=SMTPD_---0XAHQrJe_1788492907;
-Received: from banye.tbsite.net(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XAHQrJe_1788492907 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 04 Sep 2026 11:35:08 +0800
-From: Qinyun Tan <qinyuntan@linux.alibaba.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: =?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Kairui Song <kasong@tencent.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Xunlei Pang <xlpang@linux.alibaba.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Qinyun Tan <qinyuntan@linux.alibaba.com>
-Subject: [PATCH 1/2] mm: thp: restore SHRINKER_NONSLAB on the deferred split shrinker
-Date: Fri,  4 Sep 2026 11:35:02 +0800
-Message-ID: <20260904033503.4067283-2-qinyuntan@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260904033503.4067283-1-qinyuntan@linux.alibaba.com>
-References: <20260904033503.4067283-1-qinyuntan@linux.alibaba.com>
+	bh=biC4R+3LhAPGPOqKjajgQ9ft5Kgc9aWgzDMercUsc4o=;
+	b=dmLo4oZXp9k3vAfZd4umeFO9PYblRsSmtg7Ay1k411aYtvFrYPLMAj0i5suTYbI7YlYuiv
+	b+q2td+dKGZHbNUnCZDBm4W/JYHTHpm3fpRAWO9iUEwCiM8KUPlvSsNuhBO8ZWg591YLVC
+	GhRGPNI2BP43QgYNjuBNx6xFkBjTQZo=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="cr/bVGZm";
+	spf=pass (imf05.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=biC4R+3LhAPGPOqKjajgQ9ft5Kgc9aWgzDMercUsc4o=;
+	b=cr/bVGZmvR+Db/oP0Dj9tZ6ueSc2zbqdvTsKUvCJhO/Jdi3VIzzceDdmWB2g/An67Vy4ZH3Y8
+	+gJOaHYmE4iydXuWUh4hQZ+eyXPc82AtoKa5SMp2lCze+3HMM6sddWsmMFg7q+shXnewtB/pxGq
+	Lep5wAs7BZItzX3UODjNGeE=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4hbhjS5kvszKmVp;
+	Fri,  4 Sep 2026 11:27:24 +0800 (CST)
+Received: from whupemk100004.china.huawei.com (unknown [7.152.185.74])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8931040572;
+	Fri,  4 Sep 2026 11:38:19 +0800 (CST)
+Received: from [10.173.124.160] (10.173.124.160) by
+ whupemk100004.china.huawei.com (7.152.185.74) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Fri, 4 Sep 2026 11:38:17 +0800
+Subject: Re: [PATCH v9 02/15] memory-failure: Prevent hugetlb freeing during
+ unpoisoning
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+CC: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>, Naoya Horiguchi
+	<nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+	<linux-fsdevel@vger.kernel.org>, Christian Brauner <christian@brauner.io>,
+	Jiaqi Yan <jiaqiyan@google.com>, "Gregory Price (Meta)" <gourry@gourry.net>,
+	Andrew Morton <akpm@linux-foundation.org>, Jane Chu <jane.chu@oracle.com>,
+	<linux-mm@kvack.org>
+References: <20260805210557.1118966-1-willy@infradead.org>
+ <20260805210557.1118966-3-willy@infradead.org>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <616d673c-3428-24c4-c3f8-ce93b950e142@huawei.com>
+Date: Fri, 4 Sep 2026 11:38:16 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B0F25140008
-X-Stat-Signature: b18ufaa9r43niyq4ywf3ck15a7sii1nf
+In-Reply-To: <20260805210557.1118966-3-willy@infradead.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ whupemk100004.china.huawei.com (7.152.185.74)
 X-Rspam-User: 
-X-HE-Tag: 1788492913-699734
-X-HE-Meta: U2FsdGVkX1/hJFh3jW64wnYS4OMMfe53sg+Y/bwp8uq81jgzdVIAY1ibVlrRk0S6ASdK6ak1xiV/Zj21L6FF6kN94uo36uRUGRPZDVluR4QWvd2hS/gZohN+fvcLS1zis0/kXbVkjCR/1bK6E3SiadYcJR1GjcAJIzde+p/fLW6st7bw3kcFExSsIkcKs1IFElWWVTb01T5t7Fi5R9e0vuOJGj+0y+x4Uucr6e0Mix8WVRGaNM65CEq5Afzr9XpQeBVcXA1MA/ucZ6LgwIzA0iwa+ovO8YbwROXF8/cefzufOVjjkeHvzx657BrPLEIF1/m6+bZvO+PZ5/OCHryp4XWUl84SH691O4v+Yg8QZWovlIwlsEB3jnCaMvHVlMkJm88iNJhd2d6gtKiM8K3CLX2um6cDYRfZaORP3uslhjjaNktc44p2TB1QbTLM6J1OlMR0Kuduc7shXdbmfoVij33r4DteC7uMdyV2LXBdXWq9VsW2sJd/EfTictNJgxl+pTwvY7sg8qZb8Vt1OeTgAnFI7fs39lkTf8k2f6DXtnGg4et9U1pZtZwQ89to5mk3005vT29+oVVeoDuwD1j5HoZs4LUanog5idSWcKT/rhgNnr90FgTNCPp2aJwGHZl4maIhZNKtiIuNK58Y8a6MpXfLUo8oazlA09kXjLDITTZ4jQ5gBFzNU+rOQa0YwVXi6t1cfH+vvlbnGK+8Cte1YDAMK0/zJ1VmNP1cqAwpRs71zsclHkMHYJAC0gZIFiRuRiphIIXeXPXv9c3faw7gtl/YQevJEYzbnlgCkn2xXHcJk865Wl14FKvfxw96avABnQxGguXKJkhUet6u0CFv4zlFfq5qeLC5B271uNqDG6777qrrf8de1IOAeCJTAGpzabMJer8Hwzo1eDqszLgE68kVmrHP23CjG0TVgbIptQD1ZvE+sNSvEWMj9jZCULbSDl0Z7pj4ue2VPc8FkgX
- 2rwA+UC5
- GfFh7YGcJXfGnhQLembpCxML3uUWiU9UyFhxW2ma91BvjQu98B0RfO1kgO8SJ0Pn3wh+kLkMClC7SiwscQSk/X+qZJkHPvTf3pxNSsffsiya5HT/WC8/MMod4tZpdi6vr8mJygpwtFzqUDYDnwqBKwvT2d6QTR+dCsdChrdnHvVLNgqHB/3fYHE/T+w9PpgSZpEyJXyWBT4C+IBTikTObgS80YzL6XIK0I+fho2Yi+V769Y0fv61EqqcOKq3xnQA+TK3NX/zQvNzMXgrLoRbLC829OwrGaS8HmX1QdofimnfqpHVsNWkhBHVDsyy4hSyovVK7Cmxsy2h74apIWZqb8ivAxQetzWG23wWanURcsz37aG6J/SxN8LwG5MTZwfknxIKb8R4H5EGqv1717KywxJC3Yq1d4mXGnd+8
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 41FF0100006
+X-Stat-Signature: fcejnuzcwxidud1e99itsd1bzoznx7zf
+X-HE-Tag: 1788493110-689541
+X-HE-Meta: U2FsdGVkX18UaOeKyGb8fM8D2uJITmC9iBUe9vaILJqLPgwSKRbmiWH06yGhN3bSMfStjwaLjf8bAc32orYptMb86b86VU47VcYEkWI4ynOrev8DNw9qJ/YBDVnEYei4EQxH2EVFMOO/yRdU4fJczfT12KawgKhBrwBC1C5ydHEXXiZ4lwaajZVmKVLHcks6QyMjaZvEbuEMZni1Vxu3tsb+YWTR4sAH7oVEyyR54uvjZr5/Tane69evEUnm1h0ar/dURrZIz+Z2UZHU3eLi6jI/8n163YJPOn4g7fbFuDK4MMqN+MmYJqgS4PMzzbtVzzk7PVVaDkhhYk9xiz1ZOkuH+uSLHucdDS5s1ttvDW1lmiNAx8b0eq+IeRni8UQsSRpgJw/x3vKlwyMFzvVC8/X64Xdqpbo+wHNcKfn3KMIWQVfvnnfDGpQFB4BNlwWk9JwnPaEZ1bpkjkcWoOuOs8eB0bqdxwkSicGxIbQ8C0JhUw3v4HherEkFNqAtMQ27lGr3vD7pd6zKHBpDDfQyGrhoxzMkiXB315MxqMMKSQYr+83h9PmF5qS5rDrW4AmqUmktLn7nKf/u6fcUdQVv38PKRDm9h9mjWzwCfPOuLK9ofVW3ZqzFzY9RQXLe7sgrP1LvBr6U/DJAb+derKUTs6MQB2oXwrqazE7KBNXnymknYz/bNeJfV1WOYZzBgHdLBksZ9mS00C4aZM/5i/InbNKM0k2kDX9nl/TSe9YAVUAtbSvvwzbe03Csb0dlMvZatAo+TZ+58zMp4KM2VqL5VZvnRTG2gPrx+ZOUewCD9HBQ/S8QanC8yAMPBWSGK88/GO/pG8L3y53WlKDx0dwW+6YL8rtSl/cJfcVC5qQzSrX5QZ/nxHku+A2/6KKnEkhmD5aFwJP6XShybzHF7zaoIoCPMPYHI7oXfyeDU6K25E6+WuOtXbKIM+EX1qGCNR78Jaujyw1cIwJZlPKsuHs
+ X45DZWbE
+ OnjTLN8d7gnRREEty6o+WUiQ7DhQlMjBANTQYHqai/fD303t0/c+6iX1QOjYItlZifRUmVHzmIYPKdYIVotIccueAvxqWrFFy0yfMnv5ozh1mKwxuy5w4oQbP3kgRYLQGBH3NTzl6deRZWEMZzRYqLncQAP30zCgHu9PZRUFhJ4FRmeaGygYmHKeiLALQDDC8zlc5WTxBzY8H/PHhta8zGHtOl1WbjewqVwOxc64qzIYT7W0Ke9MgW3eyC15KsKR2jOeGHQjXwVBYL+DN++4fBDZjL74/9meDH6V+Q2ujvQS0w7TshdhXpAPm4eGep3qhj0mzNkSVclgcbHjTa5T5eZqLQ+FKKTd1VsRNWr2S9zSylFbmlCqiWalQE/BPzSEcob/YyW+X/aJveytgRzu0OO/witXZ3q2XM3Y3C2mxlgsEZfutLeUFBggPqyFLpXu8wbeeE8fiN1TzuMJtm6oMYtnaOd33vOrA9hsUc7imJotqqPBOLqxIXezfoAwSm4PKkcy1ndF0Gy6cmgg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,49 +106,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On a system booted with cgroup.memory=nokmem, the deferred split
-shrinker is quietly demoted to a non-memcg-aware one.  As a result,
-partially unmapped THPs are only split under global reclaim; memcg
-(limit-induced) reclaim never splits them, so a cgroup under memory
-pressure keeps its underused THPs intact.
+On 2026/8/6 5:05, Matthew Wilcox (Oracle) wrote:
+> If we fail to get a reference on the hugetlb folio, then it might be
+> freed as we operate on it.  Prevent the freeing and the attendant races
+> around manipulation of the raw_hwp list by holding the hugetlb_lock,
+> which is also held by the hugetlb code when freeing hugetlb folios.
+> 
+> Fixes: ac5fcde0a96a ("mm, hwpoison: make unpoison aware of raw error info in hwpoisoned hugepage")
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+> Reviewed-by: Jane Chu <jane.chu@oracle.com>
+> ---
+>  include/linux/hugetlb.h | 19 +++++++++++++++++++
+>  mm/memory-failure.c     |  6 +++++-
+>  2 files changed, 24 insertions(+), 1 deletion(-)
 
-This is a regression from commit fafaeceb89a5 ("mm: switch deferred
-split shrinker to list_lru"), which re-registered the shrinker without
-SHRINKER_NONSLAB.  The shrinker had carried this flag since commit
-0a432dcbeb32 ("mm: shrinker: make shrinker not depend on memcg kmem")
-precisely so it would keep working with kmem accounting disabled.
-Without the flag, shrinker_memcg_alloc() fails with -ENOSYS under
-nokmem and the shrinker loses its memcg awareness.
+Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
 
-This was noticed by Michal during review of the patch "mm/list_lru:
-don't copy stale shrinker id from non-memcg-aware shrinkers" [1].
-
-Restore the flag.
-
-[1] https://lore.kernel.org/lkml/697713c4-0857-485b-aba7-c74f37a3c8b4@linux.alibaba.com/
-
-Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
-Suggested-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
----
- mm/huge_memory.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 644d6905b49cc..16f9aa5b2d077 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1022,7 +1022,8 @@ int folio_memcg_alloc_deferred(struct folio *folio)
- static int __init thp_shrinker_init(void)
- {
- 	deferred_split_shrinker = shrinker_alloc(SHRINKER_NUMA_AWARE |
--						 SHRINKER_MEMCG_AWARE,
-+						 SHRINKER_MEMCG_AWARE |
-+						 SHRINKER_NONSLAB,
- 						 "thp-deferred_split");
- 	if (!deferred_split_shrinker)
- 		return -ENOMEM;
--- 
-2.43.7
-
+Thanks.
+.
 
