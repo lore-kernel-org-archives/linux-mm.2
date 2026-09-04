@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26799C79F82
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 15:11:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 056C8C79F82
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 15:11:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7EE96B009D; Fri,  4 Sep 2026 11:10:44 -0400 (EDT)
+	id 4DE156B009E; Fri,  4 Sep 2026 11:10:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2F5E6B009E; Fri,  4 Sep 2026 11:10:44 -0400 (EDT)
+	id 4B6006B009F; Fri,  4 Sep 2026 11:10:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD0EB6B009F; Fri,  4 Sep 2026 11:10:44 -0400 (EDT)
+	id 3CB9E6B00A0; Fri,  4 Sep 2026 11:10:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 843906B009D
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 11:10:44 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0503CC0117
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:10:43 +0000 (UTC)
-X-FDA: 85176416808.19.2EE320E
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2235A6B009E
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 11:10:46 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B063E160166
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:10:45 +0000 (UTC)
+X-FDA: 85176416850.07.8CA73BA
 Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 10C2040011
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:10:41 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="X waYnG5";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=DX+ujuqC;
-	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	by imf10.hostedemail.com (Postfix) with ESMTP id BBD34C0008
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:10:43 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="a iNRlLY";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=iZKeYrJv;
+	spf=pass (imf10.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788534642;
+	s=arc-20220608; t=1788534643;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=csaSFAKtS72MfKNk/auWa3JqV7XZUOIFQz4rsLI1NhI=;
-	b=EbNN49oJJ0ddENg84lsfdsfKiUjppm+Swet5zJvniIIPYl9aVFeFo6pBVL4Xh0bdgaOE7C
-	EnJBUCviUjazHLmj/aMwQO7+FgcyAL9i3uimhil2yV5t+KdkEZiOQGNaJdX8MLcU4e8acz
-	1pEQennBkaGZnFxUUTzL/2njWwjDLSk=
+	bh=DqDmzPS8A0heXGsnD3SSNRWbRweyoQUnesWHCHkvF4Y=;
+	b=L+vVdi/9ZIOmt5mJ8gO6C9s2qf/MVc8nHrAR2csW8DjAQyW0lTwBpZlVv/XrqZ40tVCrPz
+	8juGCSOKnR9pDtNf3MbbBoNdXLLHHIiWne6wx2TtJJ5RpGDWgCmjFhpDlBVUHXy2uGJrwr
+	JheSRm0FDzvHccDNwg+w2vsmkTe0fkU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788534642;
-	b=18n3zJFAv18vnzmoCh2XUK1mDnNfQb9Z8Y01w6oT2fye5gtup7HqnHT48DAXeC+SUC6qQ1
-	PEEQxhlPS5vSjGm53YuoTFMsHCU7Tj13shImph9nb13sO0/Y8ky6uAbF5GPegR3SKxL19b
-	IFck8xEYZ00vHbE7h2aK5FvHgveOjn8=
+	t=1788534643;
+	b=IHDU97hbwaTiWJcmbPV+KkXS/pShSb3sLha67AA6hZTU6HbzmPr65Ah873Kqwm2x3e27Y5
+	+rutDPCEmS1CHtfOV/OhIMbO2b+7k2URS+DmnRge/3xg0Hrp4WM2Fe5y1sheVS2+x/4p+q
+	FclvfC8WLZgjXlWxlwB/HKt6DKqRB74=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="X waYnG5";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=DX+ujuqC;
-	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	imf10.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="a iNRlLY";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=iZKeYrJv;
+	spf=pass (imf10.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 8DED61400106;
-	Fri,  4 Sep 2026 11:10:41 -0400 (EDT)
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 4ED2F1400122;
+	Fri,  4 Sep 2026 11:10:43 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Fri, 04 Sep 2026 11:10:41 -0400
+  by phl-compute-04.internal (MEProxy); Fri, 04 Sep 2026 11:10:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1788534641; x=
-	1788621041; bh=csaSFAKtS72MfKNk/auWa3JqV7XZUOIFQz4rsLI1NhI=; b=X
-	waYnG5j1sSW2fwEzdyndDYCRRtS4ErnAiqu+9/6bftCwiKT6VUiCZJ1AdCV6cZqv
-	FpAdvxcgEnOXmuigqNFSCvGhGxnk/WJ71//t2I+jw2Lhm1v1zQ4PwefHaKZhpFEv
-	5365GptykMY+ws5agze1/r5HJmw1RPftgMBbJ9GMI3NjjAMwP6eWjb+pmxmBn6OZ
-	36BqbGhu/f9ifoK0sU33hHsGlm7Wu1UksKLt8r2dU6MH++9hin4zN33/zIt4i8T7
-	NsNds6UrQF+LxguJcPRqdTzvAkHf5somE3LPmdV6XtqMzxuzxTgkBj44etoqjE/b
-	ocYQFy0RPos87gZANUWuQ==
+	:reply-to:subject:subject:to:to; s=fm2; t=1788534643; x=
+	1788621043; bh=DqDmzPS8A0heXGsnD3SSNRWbRweyoQUnesWHCHkvF4Y=; b=a
+	iNRlLY0yFkRuNBNoMOTbkSBg1NEQpfcBCqEzNvxZ35G8wJh8ENf5lzdLKFY5qew3
+	ecSkTJS8YSzk9BF9e/xqXFOSW7We+/WvuO4qYCj2AoIuR+dh+jr/czK199UXzRmc
+	FEO+dJ2Cb1QgDKLHsT4aibC+HGfUvqjoIMz64fC9vA0rEfDvuQYHd+Jx9Q7WzYoD
+	EqAw62HLDm0esEgxpS+t1ghUMey/kzKjRNBvgH2z2fgX5aLDt3C+iVVnARV37AbQ
+	4BceyOe6EyHyHWxcT+9AtiwmdiCo/C+JoaMRJX9cpBQhzZ96AKTZ4bSwKWRJQ1dX
+	cdmaIQgPBRlhFTYEvpiEA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1788534641; x=1788621041; bh=c
-	saSFAKtS72MfKNk/auWa3JqV7XZUOIFQz4rsLI1NhI=; b=DX+ujuqCNxKmXGTWG
-	rrJ0ev8RZB/VwCcBAgnB2OSN1Yzjzjw9iUp3LJodqP5FJ+7fkh6eUGtyajP1x45N
-	AxBEpGkwhHGRjREV99cTB3wFwcJesYGu/PtcX92vlNPK4EjweIjL94lULMS4v3FQ
-	X8Shq0T2jhRnEVNwaDR+8Ri+wNkPhoUOuEnvdhDSNc6Ze0ioUA99is0TjyqknHgE
-	KIvMor/UZdd5BZdQhVjyvAX5rxBl6VVz4F3W3qC2BKH1PvpbdvRNFsmtJPd6lrwd
-	q7tkhc6FOTE+eNHv5cck+e6xMnNpnNXP0oGmngJmatSdSnZXhzYDO4pKfiAexanA
-	msRWg==
-X-ME-Sender: <xms:cd-aauSu_FVyReBtVERC8V_XlC6GKDcSMxwoo06h3TQfJuhDbMTQPQ>
-    <xme:cd-aavsNLN1DtOpjRAohmNQ0wPpAweCEvJHkz72rSezX-rLlGrpxY4Io5W7o2aPUM
-    YBFuIYCgD5jZ1C9E3vPLef0xcrC-QrDRKeyNoh4VVquZkAIgT_ZaA1->
-X-ME-Received: <xmr:cd-aah8SlxC0IuLw_E5Dv6SImVfsRQtrrRK5AoQfDdlMnlz3_LsFiv2lXWs>
-X-ME-Proxy-Cause: dmFkZTFdOocfRN4jOpcQf0AqfSai/YCGo+xlO94MLvzn7lqitof50EENUNEgJzLPt2H+RQ
-    DWgrwJL5dg2BaLkWQfjz0w8mX09EzID7A24sM1R0CcrzJ0aCsxP+pgO1accdG5RnvXKoNP
-    Qi2+ranCgsFBQlrx3RUM64Xgm9l9zr2TPWbzFNtan3mUwkVlJ/gBEGXolzLuuMZ3CJ6e8L
-    gmzum6oDDF3av5ecJE/wINba64+XlYa/U9oL8c0Dkr16eu3wp8w8wOsHTRTsCgO4oV0meO
-    0fb7rtZliPO8XPlA3k/rGcTv+01JWMnSe6fG3OACTE4UctUjoP9cM2YnBbUckeF0hhckLt
-    MMHeYhNDUPl4H+anSl0bx4O31nPweggRutuPuOSD3x0SBk0h7PGsgbLKNhVs6w0dYfOFiK
-    uYRiJbsY1zG3wyIMbFQDDpgC56vqbkfDVNXSp3AcIV3y1+SR/EVO5E6n2mSmw5kgS1Faln
-    KMe0a7IYL3FakTwavg3ixHmnnqMW/ll9wuw4GLGJgwQiA3X9obmCgwVf36wlnRxDap0Eki
-    tDwPFPWlgUMJdvEnd+0mPBdshgAAjvK8sQxd7Y9dei+aygeLU8zgYgO4eYrnVK3AQ+JjML
-    OjzR8R+srhjyw4VZMOJryhJc0YwyTEIK8RraXetOdXVeQhlZwH0f/tNpkNow
-X-ME-Proxy: <xmx:cd-aagZq1IPMtXg0W2mk07KCR3zFtIaVJh4epJW78UATn2MzeapKcw>
-    <xmx:cd-aalo7-vb1_gFqoZUKENxQ_v0ExsXdNpX2rTtZ87XoqN3FMfNIxg>
-    <xmx:cd-aaga9_lmsJFU-iHImfckSAvrd03PjXsLKWURmzVRAOrUaw6bDYw>
-    <xmx:cd-aag7_cO94Bxy2X7d59MVFZOZ2Ua_RFky1WoUN0V3N9L08VBL7Sg>
-    <xmx:cd-aakXM3ypMzNY7-Kd_TLFjhIXlTod_DvpT1af_9k2AWH9cqsqfPeqy>
+	:x-me-sender:x-sasl-enc; s=fm1; t=1788534643; x=1788621043; bh=D
+	qDmzPS8A0heXGsnD3SSNRWbRweyoQUnesWHCHkvF4Y=; b=iZKeYrJvpGiY/Nr47
+	wz76ETjHnIlha350S2w8hadghwZQBPIe8uQpDqpCQiA/sGnFZjhyTvUuiXlhVhuA
+	vEkKcRk6EvY5Q8FezNEu/h65F1nmO0IcWZOyM7ifgmeyFUHUEwH+zy9d5A2zQ2O5
+	EPwjHoM06+cGOrDhOe7XmbMSM/VkYZGg170wG/MVOl0UDoQepb5MDY2v196Z4K/n
+	GQc2zHWlSquhNKXpgcMBpeJMTzvWxHCy5WTAuiZfo8MSgJgbSrS7ISzjN1uwfGva
+	aj60SUzvEf73AsP3T2xlge9SO2eBd5xmjCIezKe1leJFqZ536kM6yIzXqjSeMSd2
+	Od4gw==
+X-ME-Sender: <xms:c9-aahALs0SsFLMW-iUtuWCG3pO4nNBN-49gc2e1M7V8orKYh8xW2A>
+    <xme:c9-aarfUMHhl9FPhyNcznwCuXURoomBNhBzvbJ8cvIcNsry2K97U-UeYW5W20GA5b
+    IuDRZMBQ90qgn_ts4NRUvzXQ8b3K-1V_v1uVWZMB2bS-aAfv0qoKZQ0>
+X-ME-Received: <xmr:c9-aaiuYfJlZuZa82g4blGgMBSF6BQ27ugmycf4m6lVBT7wlptKFqK4U_jU>
+X-ME-Proxy-Cause: dmFkZTET6cjphBfz4H8Wg4Mwj3Q2fsO4rbzY0RZa6uwdK6ABZ7pEhWaf3DWE0Wh23XozXl
+    YXqBYYUtwtfZ1qQ9wX2bCqZqo/yq027VrzWqESBcvph06bOS8vyiOGOCS0fh2RY7A/kSFI
+    L9MElk4eZ3HddGFY9A2GQHzM4/P7C4mhUDQ1iVikEtpcmuF5W8uFTm0u0CjZbROqFnINk4
+    xO1zzX/Hj74YRRcHjJyG4ygWf0Hx5RhGZptpxeuVNBh7kD8dz0lfmQnwRvV5yZ57YM54K9
+    KH8vVIjAAxpTayQfOZqnAJ2Uka0rmt6zQ0IYLz8TzxO+2W2OgPHZMW2lenfH2WoNpxg3WD
+    kFoVBGZvgOEe88v5nMnx07Cy+ZRyXffepGnIEKsGa7dZWyUYqFYxlmHpu/pujCOsKJzCP2
+    G18G4R9ED1zc3xEMfxQd1aA5krFgZzp0SnlDTDaiszQev8U+2LtqTwJNgLFIxDCoe4a3XF
+    6ju9R760FF98GTSg3YFQhFvgpzntzkCc1enEyfOroI+8l8scsQ7cXGkotwLuub8q3xzRh3
+    qP/KCxPHSRHdftib7Az3yS8wv2Cec5t0zf45Weo4/GQ8LlIODtgWu+Fjgo8hyfRskTHX/T
+    YZbFGnP/OYDfQs6JjgDvfI2B+wbeptAoGCnnJluV5+xLZHUd36GfWHdI3Log
+X-ME-Proxy: <xmx:c9-aaiJFDf88E5BiwfO5E0D02-zlu5E1WgiVYQQJjvmpMbSpPpnPYg>
+    <xmx:c9-aakau2siB0seeLVNuifDhSVu3EloVHKt5v2k43_rHmNi5W7FlRw>
+    <xmx:c9-aaoKzX_dzD9tGbTU4Lqy2amciJ3dN5Bpper-sl9Gnum4Uemb7fQ>
+    <xmx:c9-aatpZfdG2WlRXbDWmNUOMW6DSK_HNv5QTBECxw4Z-svml8t1SMw>
+    <xmx:c9-aai5pfguVhU9zArI3gk4BNBysVBLt4FIxV2BYAMPEGv6dyqTNiiq9>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 4 Sep 2026 11:10:40 -0400 (EDT)
+ 4 Sep 2026 11:10:42 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -120,22 +120,22 @@ Cc: linux-mm@kvack.org,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Jann Horn <jannh@google.com>,
 	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCH 06/12] mm/collapse: drop the collapse_possible() wrapper
-Date: Fri,  4 Sep 2026 16:10:20 +0100
-Message-ID: <e6780351a3a29fc1a9efb7d2fb2ef6d1466a50dd.1788533997.git.kas@kernel.org>
+Subject: [PATCH 07/12] mm/collapse: name the per-table scan reset for what it resets
+Date: Fri,  4 Sep 2026 16:10:21 +0100
+Message-ID: <ec3d193817dfa5d0e4fa2f31642c066ebfdd3151.1788533997.git.kas@kernel.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <cover.1788533997.git.kas@kernel.org>
 References: <cover.1788533997.git.kas@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 10C2040011
-X-Stat-Signature: 576t7izfoooxdk898uytqt4jj68ggmc5
-X-HE-Tag: 1788534641-764824
-X-HE-Meta: U2FsdGVkX18ajd5wQc4GnZeKYjF9C/ljRhdnXIUv2Gj9t7i7itU1pf+iJbnvt6VXzFwr3a5+XYa7MRJz88Ma6eoLUO9QR//VfPWcBp4aVRvNxcDTeF9h4JBL++g6A77IOMsAwauz5noh1MAV3HF7KLMEpa0H4jkk8bqDz+fjH9shMHl6wU9BGC08GKCt/YfWc2gey9izQiDcvp/3YnAl4gwmpcxfbcFc784QCOuRTKSngRg/gHjT/0kMLFHfXpxKVh7Rp3Y6Ntm9ZAdSeSueHojPqzYUDE8L1d0QJLR53xFzhLIgp9yVPh5BG1HlRXwY1Syu2EtR6SD48mDrruWi4Of/fJvGBOEAvTNtMsUBAu6m2ZCbofAeCas/gP0Uyji037ts0ExdxtXEivR7GiaBICAf5MNL4Zhy28Jlken15mLJHNBS5X/RmCne1PyTcZF1H2X68h0nqqtznS0MYX9y0tCvUBSgaLx3tRhkZqekhiQxxQ8bgHYznk9sg5G+Fpo8bpUVpmez2fPNHBB3BcrPh32wNUIXMIAl9/gGTwvf1B7YgeN35LGZ2ysPP3ppdlmQCn2RdNZPVVFO76jDMB946gz3iuqMVttCsCpgK8OsIE54G1yELzMe9etNCGFG+HSl+Yb4HDQ5ZUNuSmua2vQvjGOfr/i7wLDpgS1gd0SpNuzqkveGG3IsbAwFzBJUojxP+vVasoT6DhY6fkBTeD2LM0jR3aN0bkU1OYCTJqJiMWvUO8J58+UaUC0lxjWFCSkeIUIOYFyBx+nQlHHG2t7OOUMTi8SDWxNlmFaXF2M+STYpD6Dy4qXVTAn5TWDC/8S+Y86ErRc6wwW04TmyTgTF7xsxDWGAXMTAh1mnwSONXupcaOEG//zcwbh1bI1hkxQ8JkEu6q/bHWVIYMnYH2NP4oMzViZU7G/OQnx4CC4AQ3WEB2dEMCAfvKWTcwgutPCvBX83R8/dpd62CGL0RKc
- VvrrFgJ/
- ye7N6uWg40vQcyM6db28w5B2ax6V/0wz6g2LO2mdv4PdxP4O+KAgUcZdED30VWQCY42Zo8NH4jcUsV+LlzdHsDXNBvSWUHyJa4YOsBd3/IaojRL3X5cxJepY3y+BFSnEtGtxDp54Dn6x8VFD7NNZ/NRH5dq9YOD7CMF6qvZ05p0WouHsC7D77G/U/GiuIGaztEVqemWgXFNfMfGnWsmcem3ozEdCRLVVDbR/lvzzqM3S58XX4ge8LlCn2wPKx1IcD5oXpgCpzCIUjQYCpw2PYz0bFNCJAP42buMvVKkZ1uzRswEY4gyHc6wskzC/MA6JMBoTWiTZwNsm4g4y43il11rjvl6uFUHcn2+m0trJO0ssI00hWrJIQxU7z6jBnt7ST3ifjbloOtcJXVuKNhGLkQGV6IdfmDmwdkz622bB8fXSczr7mEYNYncYcaw==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: BBD34C0008
+X-Stat-Signature: ffh71ta1cmrcqgogc91zqzofw3ec6yqj
+X-HE-Tag: 1788534643-507760
+X-HE-Meta: U2FsdGVkX1++TzdENB7rBmDeWaYpQt/ri2ZXS3+TZc/nc+oZz8noOohwQvRvuAmDgtD2lPtuf8IYIotrP6orOcV3AL7ZuRsSYZfoZfLyi3+vycIVL5p6msrK2y0ZSJ36W7uB+q6PQiV7yfxLVK+YDsbxmTxlXjgGDlw0hUzBUfn8zeiGNevJ8+YZMMNKrHl/j855bO/aGbYUPC0W4f4JHwo+b5u6hZW8aV69NuY+S24Ar6YllUGMHmUK71twHIWcrCaE9lrTRG1AGvGYvauAIXzR98gpYbfxouD1SH1VA8Zwt3HKszqZLBllUrfeTEvbxpu0Q3QutTD12XG3EWxRzFxiA9cDEflRM+F9eq9rSbWFWz9dYtBu3lndJjWoMfc/T0YyQa9iLkX5UXNqav6umktUeIjOcGg+DHFXEg/p+xykyj/aV/+SadEkjpgwd0qQsWSw8SG7CMb89Ae80krEljeuCSfheFjMtp1DSpaL9PC0KNKwRV2ktwX9EeMg6DfsCAvB1l3jvLugU1ncJxI0QeqcXsMnT2XY8mjIKt1WDV+WXj4ypVAzFk8fZ+NVuw0/jg0YkqC7x4mkPcBJnZGM/LRxkMGwto6tuzFiOLyfqM8dvecGV9wC0HBCw8tUhsSBFIEVaTZA9Z/6O/NIMGfIakrtfusrmvHqV7F3pZFSmgmg5k3hD6Fpm6LWxN8Qkhtf01YILJnDsf3V+pKNa5VsDomtpcbnKqWYeaHndPvjYovtnqSpBOXxiace4q/eI0U0Zq5cumuoS5gUXFDuORpv0BWHZDMbf6W0LlQIBfVnGspZbufWcGUBGDoYVQYjxR9A6fYu8AvU1uRi7CsYjv7EqZ523F7ztbAKkGQbyBO7LDtGzw/Y5LZdMgc6rN5F6c9b/tZoZyYmqJrBw3Q52saCjoSSR7Evlzi3cXmSUyTshU04CHgXqdxw5K0h2Bxs7Pt6+RsCTIUtVEoAWMoJdKj
+ PYwKcjzo
+ B4osiyztese5hJ0ZeQjV1R8fYaBGFzFT54wC6+rykINs4Wh7GXXSTBgCFGv7tb3od5fPOimBAJ2pbcjNtGFqPp00yNa9bjTWVBO0UbHHxWAkdeGTZhUifgefkIiAYWlXGOEfeFH4dlyRF6tPE8TyBAEiubIGRsBHM1DxSNs2R627DfDQaVVWYmWGx6t8w6ZVqVaJSDuTDI5p4MjsL873FfTu24v6lJ+SBIFnaZBp/tDxf/y7Xit2E3z1pj7XNRNfT1fsmf42Sn8tCc6J9gDE0XcVuBdfqg9h8TGaE4A3tzoJPmRK73yrYm4S7fGBrJIVRoHOSigs0coYBrkptllNEwe1rZ3xO93Dm/gjzLJ64i9XpI/r++g7ST6Rc0zYuWFfM9Bkv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,60 +145,56 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-collapse_possible() only forwards to collapse_possible_orders() and turns
-its mask into a bool.  Its three callers can test the mask themselves.
+collapse_control_init_scan() resets what one scan accumulates: the node
+load, the allocation nodemask and the eligible-PTE bitmap.  It runs before
+every PTE table a scan is given, not once per control, so its name points
+at the wrong thing.
+
+Call it collapse_scan_reset().
+
+Preparation for giving a control a real init and release, run once each
+for a whole series of scans.  Two names a word apart would then stand for
+two different jobs.
 
 No functional change.
 
 Assisted-by: Claude-Code:claude-opus-5
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- mm/khugepaged.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ mm/khugepaged.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index b2ebacfcc0be..22272cfe97e6 100644
+index 22272cfe97e6..511ffb381fe9 100644
 --- a/mm/khugepaged.c
 +++ b/mm/khugepaged.c
-@@ -512,17 +512,11 @@ static unsigned long collapse_possible_orders(struct vm_area_struct *vma,
- 	return thp_vma_allowable_orders(vma, vm_flags, tva_flags, orders);
+@@ -550,7 +550,7 @@ void __khugepaged_exit(struct mm_struct *mm)
+ 	}
  }
  
--static bool collapse_possible(struct vm_area_struct *vma,
--		vm_flags_t vm_flags, enum tva_type tva_flags)
--{
--	return collapse_possible_orders(vma, vm_flags, tva_flags);
--}
--
- void khugepaged_enter_vma(struct vm_area_struct *vma,
- 			  vm_flags_t vm_flags)
+-static void collapse_control_init_scan(struct collapse_control *cc)
++static void collapse_scan_reset(struct collapse_control *cc)
  {
--	if (!mm_flags_test(MMF_VM_HUGEPAGE, vma->vm_mm) && hugepage_enabled()
--	    && collapse_possible(vma, vm_flags, TVA_KHUGEPAGED))
-+	if (!mm_flags_test(MMF_VM_HUGEPAGE, vma->vm_mm) && hugepage_enabled() &&
-+	    collapse_possible_orders(vma, vm_flags, TVA_KHUGEPAGED))
- 		__khugepaged_enter(vma->vm_mm);
- }
+ 	memset(cc->node_load, 0, sizeof(cc->node_load));
+ 	nodes_clear(cc->alloc_nmask);
+@@ -1579,7 +1579,7 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
+ 		goto out;
+ 	}
  
-@@ -2864,7 +2858,8 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
- 			cc->progress++;
- 			break;
- 		}
--		if (!collapse_possible(vma, vma->vm_flags, TVA_KHUGEPAGED)) {
-+		if (!collapse_possible_orders(vma, vma->vm_flags,
-+					      TVA_KHUGEPAGED)) {
- 			cc->progress++;
- 			continue;
- 		}
-@@ -3177,7 +3172,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
- 	BUG_ON(vma->vm_start > start);
- 	BUG_ON(vma->vm_end < end);
+-	collapse_control_init_scan(cc);
++	collapse_scan_reset(cc);
  
--	if (!collapse_possible(vma, vma->vm_flags, TVA_FORCED_COLLAPSE))
-+	if (!collapse_possible_orders(vma, vma->vm_flags, TVA_FORCED_COLLAPSE))
- 		return -EINVAL;
+ 	enabled_orders = collapse_possible_orders(vma, vma->vm_flags, tva_flags);
  
- 	hstart = ALIGN(start, HPAGE_PMD_SIZE);
+@@ -2660,7 +2660,7 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
+ 
+ 	present = 0;
+ 	swap = 0;
+-	collapse_control_init_scan(cc);
++	collapse_scan_reset(cc);
+ 	rcu_read_lock();
+ 	xas_for_each(&xas, folio, start + HPAGE_PMD_NR - 1) {
+ 		if (xas_retry(&xas, folio))
 -- 
 2.54.0
 
