@@ -4,100 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A96DC61DD6
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 03:46:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6018EC624D3
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 03:46:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FEDC6B008C; Thu,  3 Sep 2026 23:46:17 -0400 (EDT)
+	id 756646B0095; Thu,  3 Sep 2026 23:46:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1AFBC6B0092; Thu,  3 Sep 2026 23:46:17 -0400 (EDT)
+	id 706546B0096; Thu,  3 Sep 2026 23:46:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09F256B0095; Thu,  3 Sep 2026 23:46:17 -0400 (EDT)
+	id 61D606B0098; Thu,  3 Sep 2026 23:46:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D317C6B008C
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 23:46:16 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 64AEBA495C
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 03:46:16 +0000 (UTC)
-X-FDA: 85174691952.14.4358560
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C92CA20002
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 03:46:13 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="6uC/vWv0";
-	spf=pass (imf13.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788493574;
-	b=cq6r8wqKz1z8vT5XEHhY2YcOiTuYnUqg6zkpnnLOAaBbqGPplqjeWZpcCl3LELupvEK17Z
-	xdkDeoCyDGn4Lzzh7IBz2DFkGLfVwOCxRUhcxpBaPYt86hrA2BMC9rkt1ZY/mbknYaEPDD
-	/GgmI2GcDCm8L9GtPAI1r8Su95m9ArQ=
+	by kanga.kvack.org (Postfix) with ESMTP id 4082A6B0095
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 23:46:28 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CB9031406F5
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 03:46:27 +0000 (UTC)
+X-FDA: 85174692414.07.FCFE84D
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 98AAFC000B
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 03:46:25 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Do6AqAKu;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf22.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788493574;
+	s=arc-20220608; t=1788493586;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SIuK7J1YBtgSbsO4y234J+OCLkHRVV8xFBrqxuZcDSY=;
-	b=XJDq45TH81XDJmZUIU/ddnWUvUbQctjpXWM/E41p/XG1YcO8QnZwcy+Kke+K8mfAQOTaF+
-	OAc0z5howI7E+rpgmIF926fctQg9bLxiYa0R5NkW3gOKfJtQ/dIj9VWEdPO8UHLRO6ls/n
-	iNv9Xr6//x0aVpHEAuVKCSCYZdu1sCc=
+	bh=/63bea0xeveJA2KYJiJoZogPYN8tUNJq7l9pT00vG8g=;
+	b=fxwSY9ia/rzJwuwmOp6ZCSBQ4bKBpp9vbCQaaG4ujWBU2V9uAGewFRuE1N/6QXFrtrtZql
+	sIGociPwM8k35u2lcTvwk5ZTr1OketVniFvMbhexUnETd9DFYu3ThNPdpx/6xDg8QNd2+u
+	9tln6RW/abeqxGwP8xHB6Oorqyv4zxw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788493586;
+	b=2wdjp23bWT0cO8e0ntXCv0P9g2Mgy/RyNFHoeLNqnqkN9zImI7NZF090P2BeizJe3/XO4E
+	JJPgZQkWgz4HnkloWWKc5g8B0Q1qnuJNgWz/RWQqysgf6kGfeOOHSjCEk7qupJjH5MapzF
+	oHO7oD2WJ2L3yiZAPdWqENWJN4sTq+4=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="6uC/vWv0";
-	spf=pass (imf13.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=SIuK7J1YBtgSbsO4y234J+OCLkHRVV8xFBrqxuZcDSY=;
-	b=6uC/vWv088IcSD3VRAb+C7qMy8CmOjPd0VDzbXrco+qQJERbahSNy8fjOrnfB6pC/+Dz57CDW
-	KyQCG/e0CnT7nH2do2JAfb01k2ABou365u01YElwR2uwNmFkKW4mxWBG0CJBfdyluD96/pw1l97
-	5r/YE6i0aGIgH0Q2BHmMYbo=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4hbhtZ68r4zmVX8;
-	Fri,  4 Sep 2026 11:35:18 +0800 (CST)
-Received: from whupemk100004.china.huawei.com (unknown [7.152.185.74])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1B8C540580;
-	Fri,  4 Sep 2026 11:46:10 +0800 (CST)
-Received: from [10.173.124.160] (10.173.124.160) by
- whupemk100004.china.huawei.com (7.152.185.74) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 4 Sep 2026 11:46:08 +0800
-Subject: Re: [PATCH v9 08/15] hugetlb: Use the has_hwpoisoned flag
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-CC: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>, Naoya Horiguchi
-	<nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
-	<linux-fsdevel@vger.kernel.org>, Christian Brauner <christian@brauner.io>,
-	Jiaqi Yan <jiaqiyan@google.com>, "Gregory Price (Meta)" <gourry@gourry.net>,
-	Andrew Morton <akpm@linux-foundation.org>, Jane Chu <jane.chu@oracle.com>,
-	<linux-mm@kvack.org>
-References: <20260805210557.1118966-1-willy@infradead.org>
- <20260805210557.1118966-9-willy@infradead.org>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <d30db03b-ffb4-52ce-c922-415ad75661ea@huawei.com>
-Date: Fri, 4 Sep 2026 11:46:07 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	imf22.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Do6AqAKu;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf22.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C6433153B;
+	Thu,  3 Sep 2026 20:46:20 -0700 (PDT)
+Received: from [10.164.148.37] (MacBook-Pro-3.blr.arm.com [10.164.148.37])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2EB3F3F882;
+	Thu,  3 Sep 2026 20:46:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788493584; bh=EM+aG+yWfzm6igvMiw3Sluv2MfuOq6zvpVWV7arL9Ao=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Do6AqAKuTFSA+TQLVdkujGV3kkrfvURPaimfzoeAacZ1nJ7LnUQyOXq2sjQ3xdpf6
+	 RWe3342+gzzBgjAyJEYnzNb056VUm9egV8DnlBVsLaGmrEQjAPFT0RTEADDOyLKHCq
+	 fXfLi3sNVVLQQBMyTrBwToH5/OR1FT5XxhySt1C4=
+Message-ID: <f9c41141-308d-4688-99ce-643c34729c47@arm.com>
+Date: Fri, 4 Sep 2026 09:16:05 +0530
 MIME-Version: 1.0
-In-Reply-To: <20260805210557.1118966-9-willy@infradead.org>
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/8] mm: move anon-exclusive batch helper to mm.h
+To: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ hughd@google.com, chrisl@kernel.org, kasong@tencent.com
+Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
+ baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ baoquan.he@linux.dev, baohua@kernel.org, youngjun.park@lge.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, pfalcato@suse.de, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com
+References: <20260901054358.4049095-1-dev.jain@arm.com>
+ <20260901054358.4049095-4-dev.jain@arm.com>
 Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260901054358.4049095-4-dev.jain@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- whupemk100004.china.huawei.com (7.152.185.74)
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 98AAFC000B
+X-Stat-Signature: r8csj7c9nsxm7ofsrod8pixd1516i6tr
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C92CA20002
-X-Stat-Signature: qt8tdxdc6tkbe16tcgyqh7yrrhx4frtm
-X-HE-Tag: 1788493573-650305
-X-HE-Meta: U2FsdGVkX1/vMm+vPr+F6FXhMwZS0QykOiFJAyxGInED2D7zsz0jRdrDQKw2vfg8488WU90PxypTrDNBmABfVVBMhzfhkVWDcftnBGo5lozqwhZUjUj6nWoG95+14zLBJA8lHusm9iD0kEz6ovuXFn2vq2WeAqX/Sis08r0iQD0H9nqMbE7B8XILbFZOsuwXosJK+h9EwbTdexWXAYV+IdG1rhhimhYwydvdhUfrkVYjY/LpqUn+VHfFO2Bs2tcdIGD0zJbAEZrFxth9cDYrw9BHYnNDYG7Z0um/mL+0/z2nEQJ7bf9QnullL4YqbleEBm1Ux7rBcjRW8SaU9ePntUBpnpzUz7T+X+XiqbYaQMlCD+TJEx3GfbRInEld4Kl+vFiL4ukeX/sPklyMeufKIMYvx44YU0J5mDZ/yQ0cxFYc+yNstX6ABrjOIoV+/hiRhEdryXF53nSPfBi5HEB0grkXvaH9ATpNGWGHR8ChP/72g11LGUTXgW6uXii3xvHLx9DqKUASqcvRZcBaYhE56GVSptrxNjxeKLbW8YIeLtvKZqqTHCPoWs4ENG2pzg66Fd++Vyv69D+B8X/rrK3iImQ7MRlIBqy6tDvFVFzY3DKXwu7oxcpIP0S6zDXTM3xOEL3Q61Pngm3/UA/2kFD77b0TehTVgEYOin9otg2h+bPko8+apOqnEfKXvgYg/0QIb5h//T+sSmWRLoRvqujDKIVFfc/20MLpMlRIwqEa0csLor4O95xjqsxFZUTCsjSGxMiTn1xGpr9MnNdVtcFtWIAz4nzRGPZ3iDCRCnlLJjBG8AMTRszSIMwHrW+zuzPdBRucb/jazVdzjbazWQBK9SFq0IKEVhlyzGvAKCV+dMA6JLfTDPWeju1vNJUNyPkPDkXV5rZVLe/hwB6r94Z/oYGje/BAt8RufgZUldPvr6TaPBvPrjC5dTzkV2SwLHqaauFHb9Ev/pitBh8Xxwz
- dfqZgcnm
- 3JTARGJCygO2eGdkWWL67XVupWFqKMmPNXSRt+SvkUhXImMJB69qXggH+tlOmkqh1MANAcz6In6xtsRHpmIl/LYffpRMbnfOdKzGqouKJ3HW22mnry7xy/J3zk+DF+c/NTjH8IIsLzoAlh8Mw1moa+3pp985ux79awBrnDG7oCXWTOOFIgNN5FJ7ju2VQdMVeL392SoxO7jzqBm/fpTtRHYt2VSPZpuGnr/RYSbymBfk/CcpdEiLj8juIzIX+sRnXKpV4IFxtMg0X++D9VkP2HVS+n9lQ6QrCkUx/EVxEAaN/tTGbSasCOj18WNjaYvviUgjpns0CCEmyDZwgOx8qzZPhwTnifvMVluJmW+m1Y2mIZGrc8E8nNaOvq7f2ZWNLCFTpgNAYR8LgKKRFPE/1VwNbhbZjJtpWKLOOv1p2KHfQkWc+VMqV2CpcyPLXcuNk3FKUgXDIL5ylNK8Rdf+kQ9Mr7m3WK7pIGxN22FNJ9k5Ro33x2ofsfBujkcLzz72mNtXBEtUqrFu7RPlwBZ52qvWAJ4Qw0yfsm1uKLi3mni56PZc/evqT6HoQxHT4lEWmoQUf
+X-HE-Tag: 1788493585-703539
+X-HE-Meta: U2FsdGVkX1/mYAUwzASBW/vq5fdDD4yMgWiNYTjHJi9byFoyKzD0LNeWld4h1FqhA1TbYVObd1OAEwhWvk/AWpI5Rt+pBjTIxw7xCw9EbZkNtb1rQDhfxj9mVz5r7r6pG/n24kowjPhKuRnhryYEuFJSBl/21LWl62RmO/CFRQE77pLykh7gH8oXA/Y7/0mJNqnNhNWdqgB/OKxbe9VhqoutUrlJJeWoD21upRGT9CLkZAYCmkfofoHZG8lN8vj/01ssks56ea4A5D6E7D9rMn64mlvyPcDdskpTmfOndfLJhwL76nHw5MIKE/gRdBW5d2GzAwt2pBJHEp8gmUNOFI8D995GYlIGV2zRkvkC2LGS0LkhMMa3fFyHjAZre207QIH3z+6XO4Kd1OsrZaOBg1UwLhZb3Q1JeKPEl2udRrlFNiqfIvQ0RoR6JlrX6o9QhBcIRxegcAwlcz8XWB+NN3HnC1xPUopjkqxv5r1Gz0/eNdM18dDLiZNpVI/AMfqgIfdzt4JVg22q2T+pOTfTdIWVE+QtNjXi4fv51kNvZRDtp6Pmu452g6+Cm/hTthj/gPcgSCwZPSniBojkdUcZmEz3VUl8qlnQLdbqxMAJ9i7ZgqgqkG7oqGN0T8fA6HYrcKObI36RgciWhuej6tzOxvwxv5mS9GKC0dsCZfMWsgZebS4daH55SSDIsKwNT0iaSFxQrZVS4d0uqrwhaaLu3nSB8ezUGMdWmKxAwZ8IeM2ADdqQF1eahxYQkerQaSlYT3CENNzEuK8GYq+xlMQKMi3hoeZXqC0nKZc580QJlpSnf73pCYjQsGZbn5XmJqvLdkhJrSGU9FKkAjLBYe6FZho0WB6eVVKeo6aXSrF8qt4SxMafHdpJTHOU30sLKZ24qlAw4bViYQPyrg5gJTy5x4X8L8/vtBrd511Ea9jRS5heqi9XusMwmT7AYSwwdHarpeT/3diVQQLof3otHxk
+ uR0QGlxZ
+ LqwSLFGNT6rZeHiWBJwr7XEx+TKMvhhwIlb5ZjioKiAP1xIkbzP6nazMTTlaMGqWIdOG0mil60HQjb6k/+2GZAS9PfbO1UhMPcTmTbJN9+5LJZNwmRUzFuw/0dzuhuBMgO/oncD3aNeii0LLDokOwZBCcuK7g2NGUaoY8Pyi2ni+1YWqldlHJiEMAXRg9T2fLBv9REpIQtiuEofzZ6LxZ2Yhw2A1DeVGLLGVlaFev4rL9W1+ySso0hhGqZL1ojrmWwmKo2frAdADsVcgg+KdAJ6zIlK2Y/u5+fgwaq75K/iv1gY0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,285 +97,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/8/6 5:05, Matthew Wilcox (Oracle) wrote:
-> Other large folios use the has_hwpoisoned flag.  Convert hugetlb to match.
-> This will help us use the per-page hwpoison flag in the future.
+
+
+On 01/09/26 11:13 am, Dev Jain wrote:
+> In preparation for optimizing large folio unmapping, we need to reuse
+> the page_anon_exclusive_batch helper in rmap.c and rmap.h and obey the
+> existing use in mprotect.c .
 > 
-> Also introduce a folio_test_huge_poison().  This has exactly the same
-> meaning as folio_test_has_hwpoisoned() but can be used when we don't have
-> a reference to the folio containing the page.  folio_test_has_hwpoisoned()
-> can race with folio splitting / reallocation and trip the assertions
-> in const_folio_flags().
+> Therefore, move it from mprotect.c to mm.h. Gate with CONFIG_MMU since
+> both rmap and mprotect users are built only for CONFIG_MMU.
 > 
-> This closes a gap where a page in a previously-poisoned hugetlb folio
-> could be observed to not have the hwpoison bit set.
+> While at it, change start_idx and max_len to unsigned long type for
+> future proofing against THP support at >= PUD level. Also shorten
+> expected_anon_exclusive -> anon_exclusive.
 > 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Reviewed-by: Jane Chu <jane.chu@oracle.com>
-> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
 > ---
->  fs/Kconfig                 |  2 +-
->  fs/hugetlbfs/inode.c       |  2 +-
->  include/linux/page-flags.h | 47 ++++++++++++++++++++++++------
->  mm/Kconfig                 |  6 +++-
->  mm/hugetlb.c               | 10 +++----
->  mm/memory-failure.c        | 58 +++++++++++++++++++++++++++-----------
->  mm/rmap.c                  | 43 +++++++++++++++++-----------
->  7 files changed, 120 insertions(+), 48 deletions(-)
+>  include/linux/mm.h | 19 +++++++++++++++++++
+>  mm/mprotect.c      | 17 -----------------
+>  2 files changed, 19 insertions(+), 17 deletions(-)
 > 
-> diff --git a/fs/Kconfig b/fs/Kconfig
-> index cf6ae64776e6..eddac4ed214b 100644
-> --- a/fs/Kconfig
-> +++ b/fs/Kconfig
-> @@ -272,7 +272,7 @@ endif # HUGETLBFS
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index dd09c438fa23e..63da8813bc5df 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -244,6 +244,25 @@ static inline unsigned long folio_page_idx(const struct folio *folio,
+>  	return page - &folio->page;
+>  }
 >  
->  config HUGETLB_PAGE
->  	def_bool HUGETLBFS
-> -	select XARRAY_MULTI
-> +	select LARGE_FOLIO
->  
->  config HUGETLB_PAGE_OPTIMIZE_VMEMMAP
->  	def_bool HUGETLB_PAGE
-> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-> index 216e1a0dd0b2..fbac554886c3 100644
-> --- a/fs/hugetlbfs/inode.c
-> +++ b/fs/hugetlbfs/inode.c
-> @@ -258,7 +258,7 @@ static ssize_t hugetlbfs_read_iter(struct kiocb *iocb, struct iov_iter *to)
->  		} else {
->  			folio_unlock(folio);
->  
-> -			if (!folio_test_hwpoison(folio))
-> +			if (!folio_test_has_hwpoisoned(folio))
->  				want = nr;
->  			else {
->  				/*
-> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> index 4185a03a45cf..7e8784e852fb 100644
-> --- a/include/linux/page-flags.h
-> +++ b/include/linux/page-flags.h
-> @@ -893,14 +893,20 @@ static inline int PageTransCompound(const struct page *page)
->  TESTPAGEFLAG_FALSE(TransCompound, transcompound)
->  #endif
->  
-> -#if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_TRANSPARENT_HUGEPAGE)
-> +#if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_LARGE_FOLIO)
->  /*
-> - * PageHasHWPoisoned indicates that at least one subpage is hwpoisoned in the
-> - * compound page.
-> + * The has_hwpoisoned flag indicates that at least one page is hwpoisoned
-> + * in the folio.  That page will usually also have the HWPoison flag
-> + * set, but this is not possible for folios which have HugeTLB vmemmap
-> + * optimization (see hugetlb_update_hwpoison() for the scheme used
-> + * in that case).  You probably don't want to call this directly; use
-> + * folio_has_hwpoisoned_page() instead.
->   *
->   * This flag is set by hwpoison handler.  Cleared by THP split or free page.
->   */
->  FOLIO_FLAG(has_hwpoisoned, FOLIO_SECOND_PAGE)
-> +FOLIO_TEST_SET_FLAG(has_hwpoisoned, FOLIO_SECOND_PAGE)
-> +FOLIO_TEST_CLEAR_FLAG(has_hwpoisoned, FOLIO_SECOND_PAGE)
->  #else
->  FOLIO_FLAG_FALSE(has_hwpoisoned)
->  #endif
-> @@ -1041,8 +1047,29 @@ PAGE_TYPE_OPS(Slab, slab, slab)
->  
->  #ifdef CONFIG_HUGETLB_PAGE
->  FOLIO_TYPE_OPS(hugetlb, hugetlb)
-> +
-> +#ifdef CONFIG_MEMORY_FAILURE
-> +static inline bool folio_test_huge_poison(const struct folio *folio)
+> +#ifdef CONFIG_MMU
+> +/*
+> + * Get max length of consecutive PTEs pointing to PageAnonExclusive() pages or
+> + * !PageAnonExclusive() pages, starting from start_idx. Caller must enforce
+> + * that the PTEs point to consecutive pages of the same anon large folio.
+> + */
+> +static __always_inline int page_anon_exclusive_batch(unsigned long start_idx,
+
+Sashiko says to make the return value unsigned long here, I'll do that. Now we
+have an unfortunate mix of int's in existing callers, but keeping nr_pages
+unsigned long everywhere eventually seems like the right thing to do.
+
+
+> +		unsigned long max_len, struct page *first_page, bool anon_exclusive)
 > +{
-> +	return (READ_ONCE(folio->page.page_type) >> 23) ==
-> +		((PGTY_hugetlb << 1) | 1);
-> +}
+> +	int idx;
 > +
-> +static inline void folio_set_huge_poison(struct folio *folio)
-> +{
-> +	folio->page.page_type |= (1 << 23);
+> +	for (idx = start_idx + 1; idx < start_idx + max_len; ++idx) {
+> +		if (anon_exclusive != PageAnonExclusive(first_page + idx))
+> +			break;
+> +	}
+> +	return idx - start_idx;
 > +}
-> +
-> +static inline void folio_clear_huge_poison(struct folio *folio)
-> +{
-> +	folio->page.page_type &= ~(1 << 23);
-> +}
-> +#else
-> +FOLIO_TEST_FLAG_FALSE(huge_poison)
 > +#endif
->  #else
->  FOLIO_TEST_FLAG_FALSE(hugetlb)
-> +FOLIO_TEST_FLAG_FALSE(huge_poison)
->  #endif
->  
->  PAGE_TYPE_OPS(Zsmalloc, zsmalloc, zsmalloc)
-> @@ -1069,9 +1096,10 @@ static inline bool PageHuge(const struct page *page)
->  }
->  
->  /*
-> - * Check if a page is currently marked HWPoisoned. Note that this check is
-> - * best effort only and inherently racy: there is no way to synchronize with
-> - * failing hardware.
-> + * Check if a page is currently marked HWPoisoned.  This check is best
-> + * effort only and inherently racy: there is no way to synchronize with
-> + * failing hardware.  The caller may not have a refcount on the folio
-> + * containing the page, so we must be careful to not trip any assertions.
->   */
->  static inline bool is_page_hwpoison(const struct page *page)
+> +
+>  static inline struct folio *lru_to_folio(struct list_head *head)
 >  {
-> @@ -1080,12 +1108,15 @@ static inline bool is_page_hwpoison(const struct page *page)
->  	if (PageHWPoison(page))
->  		return true;
->  	folio = page_folio(page);
-> -	return folio_test_hugetlb(folio) && PageHWPoison(&folio->page);
-> +	if (folio_test_huge_poison(folio))
-> +		return true;
-> +	/* In case we raced with hugetlb transferring flags */
-> +	return PageHWPoison(page);
+>  	return list_entry((head)->prev, struct folio, lru);
+> diff --git a/mm/mprotect.c b/mm/mprotect.c
+> index 2888ee638d872..75c2b1a00eb36 100644
+> --- a/mm/mprotect.c
+> +++ b/mm/mprotect.c
+> @@ -138,23 +138,6 @@ static __always_inline void prot_commit_flush_ptes(struct vm_area_struct *vma,
+>  		tlb_flush_pte_range(tlb, addr, nr_ptes * PAGE_SIZE);
 >  }
 >  
->  static inline bool folio_has_hwpoisoned_page(const struct folio *folio)
->  {
-> -	return folio_test_hwpoison(folio) ||
-> +	return PageHWPoison(&folio->page) ||
->  	       (folio_test_large(folio) && folio_test_has_hwpoisoned(folio));
->  }
->  
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 9e0ca4824905..e666dd14ca0c 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -843,11 +843,15 @@ config PERSISTENT_HUGE_ZERO_FOLIO
->  config MM_ID
->  	def_bool n
->  
-> +config LARGE_FOLIO
-> +	def_bool n
-> +	select XARRAY_MULTI
-> +
->  menuconfig TRANSPARENT_HUGEPAGE
->  	bool "Transparent Hugepage Support"
->  	depends on HAVE_ARCH_TRANSPARENT_HUGEPAGE && !PREEMPT_RT
->  	select COMPACTION
-> -	select XARRAY_MULTI
-> +	select LARGE_FOLIO
->  	select MM_ID
->  	help
->  	  Transparent Hugepages allows the kernel to use huge pages and
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 47403d02be88..40ae967b9ecc 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -1255,7 +1255,7 @@ static struct folio *dequeue_hugetlb_folio_node_exact(struct hstate *h,
->  		if (pin && !folio_is_longterm_pinnable(folio))
->  			continue;
->  
-> -		if (folio_test_hwpoison(folio))
-> +		if (folio_test_has_hwpoisoned(folio))
->  			continue;
->  
->  		if (is_migrate_isolate_page(&folio->page))
-> @@ -1387,7 +1387,7 @@ static void folio_clear_hugetlb(struct folio *folio)
->  	 * Move HWPoison flag to each error page
->  	 * which makes any healthy pages reusable.
->  	 */
-> -	if (unlikely(folio_test_hwpoison(folio)))
-> +	if (unlikely(folio_test_has_hwpoisoned(folio)))
->  		folio_clear_hugetlb_hwpoison(folio);
->  
->  	__folio_clear_hugetlb(folio);
-> @@ -4003,7 +4003,7 @@ long demote_pool_huge_page(struct hstate *src, nodemask_t *nodes_allowed,
->  		struct folio *folio, *next;
->  
->  		list_for_each_entry_safe(folio, next, &src->hugepage_freelists[node], lru) {
-> -			if (folio_test_hwpoison(folio))
-> +			if (folio_test_has_hwpoisoned(folio))
->  				continue;
->  
->  			remove_hugetlb_folio(src, folio, false);
-> @@ -5814,7 +5814,7 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
->  		 * don't have hwpoisoned swap entry for errored virtual address.
->  		 * So we need to block hugepage fault by PG_hwpoison bit check.
->  		 */
-> -		if (unlikely(folio_test_hwpoison(folio))) {
-> +		if (unlikely(folio_test_has_hwpoisoned(folio))) {
->  			ret = VM_FAULT_HWPOISON_LARGE |
->  				VM_FAULT_SET_HINDEX(hstate_index(h));
->  			goto backout_unlocked;
-> @@ -6323,7 +6323,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
->  	ptl = huge_pte_lock(h, dst_mm, dst_pte);
->  
->  	ret = -EIO;
-> -	if (folio_test_hwpoison(folio))
-> +	if (folio_test_has_hwpoisoned(folio))
->  		goto out_release_unlock;
->  
->  	ret = -EEXIST;
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index 1dd0e7b99bb1..714e1b398f2c 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -1829,7 +1829,7 @@ bool is_raw_hwpoison_page_in_hugepage(struct page *page)
->  	struct folio *folio = page_folio(page);
->  	bool ret = false;
->  
-> -	if (!folio_test_hwpoison(folio))
-> +	if (!folio_test_has_hwpoisoned(folio))
->  		return false;
->  
->  	if (!folio_test_hugetlb(folio))
-> @@ -1881,6 +1881,24 @@ static unsigned long __folio_free_raw_hwp(struct folio *folio, bool move_flag)
->  #define	MF_HUGETLB_FOLIO_PRE_POISONED	3	/* folio already poisoned */
->  #define	MF_HUGETLB_PAGE_PRE_POISONED	4	/* exact page already poisoned */
->  #define	MF_HUGETLB_RETRY		5	/* hugepage is busy, retry */
-> +
-> +static inline int hugetlb_set_poison(struct folio *folio)
-> +{
-> +	if (folio_test_set_has_hwpoisoned(folio))
-> +		return MF_HUGETLB_FOLIO_PRE_POISONED;
-> +	folio_set_huge_poison(folio);
-> +	return 0;
-> +}
-> +
-> +static inline int hugetlb_clear_poison(struct folio *folio)
-> +{
-> +	if (!folio_test_has_hwpoisoned(folio))
-> +		return -EBUSY;
-> +	folio_clear_huge_poison(folio);
-> +	folio_clear_has_hwpoisoned(folio);
-> +	return 0;
-> +}
-> +
+> -/*
+> - * Get max length of consecutive ptes pointing to PageAnonExclusive() pages or
+> - * !PageAnonExclusive() pages, starting from start_idx. Caller must enforce
+> - * that the ptes point to consecutive pages of the same anon large folio.
+> - */
+> -static __always_inline int page_anon_exclusive_batch(int start_idx, int max_len,
+> -		struct page *first_page, bool expected_anon_exclusive)
+> -{
+> -	int idx;
+> -
+> -	for (idx = start_idx + 1; idx < start_idx + max_len; ++idx) {
+> -		if (expected_anon_exclusive != PageAnonExclusive(first_page + idx))
+> -			break;
+> -	}
+> -	return idx - start_idx;
+> -}
+> -
 >  /*
->   * Set hugetlb folio as hwpoisoned, update folio private raw hwpoison list
->   * to keep track of the poisoned pages.
-> @@ -1890,12 +1908,12 @@ static int hugetlb_update_hwpoison(struct folio *folio, struct page *page)
->  	struct llist_head *head;
->  	struct raw_hwp_page *raw_hwp;
->  	struct raw_hwp_page *p;
-> -	int ret = folio_test_set_hwpoison(folio) ? MF_HUGETLB_FOLIO_PRE_POISONED : 0;
-> +	int ret = hugetlb_set_poison(folio);
->  
->  	/*
->  	 * Once the hwpoison hugepage has lost reliable raw error info,
-> -	 * there is little meaning to keep additional error info precisely,
-> -	 * so skip to add additional raw error info.
-> +	 * there is no point in keeping additional error info precisely,
-> +	 * so skip adding additional raw error info.
->  	 */
->  	if (folio_test_hugetlb_raw_hwp_unreliable(folio))
->  		return MF_HUGETLB_FOLIO_PRE_POISONED;
-> @@ -1950,8 +1968,8 @@ void folio_clear_hugetlb_hwpoison(struct folio *folio)
->  		return;
->  	if (folio_test_hugetlb_vmemmap_optimized(folio))
->  		return;
-> -	folio_clear_hwpoison(folio);
->  	folio_free_raw_hwp(folio, true);
-> +	folio_clear_has_hwpoisoned(folio);
+>   * This function is a result of trying our very best to retain the
+>   * "avoid the write-fault handler" optimization. In can_change_pte_writable(),
 
-Should hugetlb_clear_poison be used here to clear huge_poison flag now that hwpoison flag
-is transferred to the raw error pages? Apart from this, this patch looks good to me.
-
-Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
-
-Thanks.
-.
 
