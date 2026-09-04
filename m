@@ -4,89 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19804C61DD6
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 14:05:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6AAAC61DD6
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 14:12:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 416666B0088; Fri,  4 Sep 2026 10:05:46 -0400 (EDT)
+	id 46FFB6B0088; Fri,  4 Sep 2026 10:12:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C7406B008A; Fri,  4 Sep 2026 10:05:46 -0400 (EDT)
+	id 3F9556B008A; Fri,  4 Sep 2026 10:12:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DD4F6B008C; Fri,  4 Sep 2026 10:05:46 -0400 (EDT)
+	id 2E8626B008C; Fri,  4 Sep 2026 10:12:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B48C6B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:05:46 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8A4261615A5
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 14:05:45 +0000 (UTC)
-X-FDA: 85176253050.25.77A5092
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C8A3B120008
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 14:05:43 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OI2bij6/";
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 0994C6B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:12:07 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 99DA81614A7
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 14:12:06 +0000 (UTC)
+X-FDA: 85176269052.14.BD3042C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id D7E7C20009
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 14:12:04 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BrE+ZMtf;
+	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788530743;
+	s=arc-20220608; t=1788531124;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cH8whGMhdnYHqnIKF2d9DpiGJu7/VAcxPYFKae9Iiys=;
-	b=4qpbrveBviyAqrTtjQIrIk1D+o4F4Ekhkyabdj7QzPdZZFy+f0Aiy7hiCyLWOChG9fR5+w
-	BcltP1CfWAxftyHmQ7jPPG9LUrSwb4uKlhTTozO3nJFdFO2BAi/oOfF7VggQEKc4ZPjhVB
-	AnO2qpFCrtYwdHQgRONgojWQZH4TMbk=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OI2bij6/";
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=HslPyUpRcbehZSDwq6RcvWYGlQd9VOcvDUYf4trg7Og=;
+	b=Opwzn8bPJXaYwmjA8S37BVTnRgdI2PV+QLB19mU80O4XZNsD8IQu8bHLFUtHiyT4JhhCIO
+	x0hmkNt1Fc9jYEzpynhFrmVDMOjjYEzmdxbLfIRMHZT/nhYjmae36AkGp88klGeLg9N05n
+	WeP2ASoU2ch1TOd5ekXO58F7nz7o3nI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788530743;
-	b=sYtH0kIWFWOwOMSCCWaDmU44vN4Yp9b6HmenERK87V/wTSGHUJxvQhzZH9xzQr8l4F3eGP
-	kyAzRSrSyXkRV6eD/pxr1aHNkuWuK+fFzYv8BVZoX6k2TLVOXqby4vtDNixTR8kslmtmuk
-	f0RkfTHMgLkQi7BVGKCi8GRw3lefgnk=
+	t=1788531124;
+	b=YVSmHNA5/Ku1MIXZUU/8W6zNmFX9f0xLJ6lpY6Jz6b7+mRB5R4B9xikmDT4olzZRa/1rkA
+	B8fA5sQsxZqVLhlH2XYjc1Hh9U+maHXRa3WlG9TeBlA4y7jm/3Vq27yI5NxqmzJeSFPocy
+	hYKoNLeD9oXWLuLtPR7UW01+5QXC6fY=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BrE+ZMtf;
+	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C478F43C16;
-	Fri,  4 Sep 2026 14:05:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 735391F00A3D;
-	Fri,  4 Sep 2026 14:05:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 420C7600C8;
+	Fri,  4 Sep 2026 14:12:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D4211F00A3D;
+	Fri,  4 Sep 2026 14:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788530742;
-	bh=cH8whGMhdnYHqnIKF2d9DpiGJu7/VAcxPYFKae9Iiys=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OI2bij6/1gcvJdnYRwg/cyz3uX5kjSP1JBWwvg/oXy/cnjpoFRW38hy/3WXhp3E4o
-	 gkDSe1ikvNbn5Gnnme5jcrXiUrZ3W5DnbItax3PtobpTXHHwQFIdaV/Uuf9JBIe2yR
-	 Iq5xBRFb35PBpoNSsHJP5trJMLfxOxk/oov8YtbdqHIrWBii4jJH5kto7vcXuHNiDL
-	 RD76wAeZ0GvM9OGlbqajgQUIs0QDpbugbIx8jb5TTRGqJkyd50ts9To+DFPI3QMRbE
-	 e7vyzCcJUqcoKSNSsxRrcS2gUdWAN8TTV3omRwhjxdhpjtyUdMGM+oreQRMPQMN0VQ
-	 6pXTR6o4uhmoQ==
-From: SJ Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2.1] mm/damon/core: fix false positive in damos_quota_is_full() when esz is zero
-Date: Fri,  4 Sep 2026 07:05:35 -0700
-Message-ID: <20260904140535.64833-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260904081324.3972-1-aethernet65535@gmail.com>
-References: 
+	s=k20260515; t=1788531124;
+	bh=HslPyUpRcbehZSDwq6RcvWYGlQd9VOcvDUYf4trg7Og=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=BrE+ZMtfse74Rx9gXb8TBDlul9CFpphp+iDqcuvaKvn+la0P4nw5x+dpLJxpxymss
+	 Fs3KqhtyP8Y5icHlBfXtie/e7n3oDDCiUPhZMb2z4zlcBvtOi8L+OmAJuavGfAlGrs
+	 cXtecutkELrLQLHpstHEKDgODcyKR1f9W8IYLMCJ5IN1eY5iumCefMXOEHCTqsuitP
+	 ny3AZ/M7WoDBugBXgLtjoiKCabNy4omvWzIwPrvn8EX3kpo73VlkRer+YmR0M1jHGH
+	 kROjVJDipV2iUMvn9dIfWNAesAHo6z6phJRoseA1bL5GIfnFKW3k4F/FOU9ZFkNNN+
+	 E/dfVEFGq0SAg==
+Message-ID: <8cc503d9-04a1-4d90-874c-ada6c0ac5147@kernel.org>
+Date: Fri, 4 Sep 2026 16:11:57 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: jogbze5tw1zgao8s9m3rybhmk799nek5
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C8A3B120008
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] mm/page_alloc: avoid direct compaction for costly
+ __GFP_NORETRY allocations
+Content-Language: en-US
+To: Salvatore Dipietro <dipiets@amazon.it>, linux-kernel@vger.kernel.org,
+ hch@infradead.org
+Cc: abuehaze@amazon.com, akpm@linux-foundation.org, alisaidi@amazon.com,
+ blakgeof@amazon.com, brauner@kernel.org, dgc@kernel.org,
+ dipietro.salvatore@gmail.com, djwong@kernel.org, hannes@cmpxchg.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-xfs@vger.kernel.org, mhocko@suse.com, ritesh.list@gmail.com,
+ rvvandan@amazon.com, stable@vger.kernel.org, surenb@google.com,
+ willy@infradead.org, ziy@nvidia.com, David Hildenbrand <david@redhat.com>,
+ Christoph Hellwig <hch@lst.de>, Brendan Jackman <brendan.jackman@linux.dev>
+References: <20260904115629.3993331-1-dipiets@amazon.it>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260904115629.3993331-1-dipiets@amazon.it>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1788530743-129003
-X-HE-Meta: U2FsdGVkX189KQh+enUbcFIuoWkkq49Rd4b8xJVih4mvwj+5tqOSZSnjqaYKio07t9NsUmEH1+sNXvTMz5JYUBPUYmdTErQgz0dR0TgRNTB0YqptSl6sbEwpAkczBU+XMJhcegW23yHpcW40uRaJOevm4BigeOd6GJC+AI9/riSIpMPbuX9fPJLmVVtI02CFV3PO7MVXa7SlFqqAq11chRi/s0ZkcM3hXuBmA9vVi+55GcvYA4VjNyNMEhebDYBZ66/X9+Q1ftVRt0WKEAtkdxQwItdxds7PbAvMViSgigCEn0vDyRMheEK5QXpbY7JsGauJ8eB7wmUiRYmSILV8Ym8k2QXe6qTyFEJB/KLUy2h74YlKmtwUWqui30nOuFp78U6pf1UStrsibCXerExaOUe2BlfsgLZnZZ+qDpsgv5sHtI/d3/XF9wUAN+baobYhgZW61/scich33iRci0nDsFnmjZVd1IJVAPX16zB5IZm98BKnjTpA8+lWfEwfjY24HbuPfzYjM0zzX0caaxoeUhUMM2ZIPg/qPV42sfOX8j9ShPqi8ZMoLYqRoZGemw54qcxjXEdljHCufUCCGsVgXrHiA4iPENtTCSoROI9mScx5e0uJSlez9D29Jyra+7hV3Un70ZG9QHJmu11anFeNWAeLX5ccD03XdqIEXYbPsy2/i4wvtFCuzm+FvjT8aQNsfm0L/bphHrFNpj4sKHZxqiuxs7VtA+CBZDtl4eCmp3viQQ+5szMIjpNkzS6kvEz8ykowZSEw/DQxkDPuiN6R8N65H96j4gDKFbnI+SnfFl2stwhHM1+fc2fyInDcTIa84drOA3nk8BB+q7ZRKWDIY0yVBDpgq3EAZMcKNBx6mhVTUO2vTb3GRRIzwoOYbN8wf3M4XxTfvgsa+jdKON2QZnxNOySJ2W+cwoAjc7YnPeuQ/UcBFcsIMEpGNVwa1TcaFWU7vkV5T2F0CP1YVns
- 9DwP4UMR
- 6k3CO3KVOsLiiwOn4U2Hib6pVyeMrmm5rKJFNxEIJ/WvdxLHqYJS7DqCsy7JE52vxQJd89J4BO26knNSQegsm3usm9/iln8qvwMcUOl5aWHSMCHg70l7s4fxxpIUB8PyvCADezOGQFYvaN5dpWrSgqfhHOby1P6U+VwEOc7giwQmlQABtnbi7lsvA8FcAQ+qUYX0JVX8u0yNlYkTwCEliIXq3U1i7HLlof+mc+FYNsRseH5kKl3ZDfvTktYFaon4KwGRvqCpJqoJTIiVgR9bJtH9w2Ati8pfmPst/XHotjdjjWOtMw8g7RtDhOg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D7E7C20009
+X-Stat-Signature: 56amncsx3hnfz33p5f7qjdman7b73rea
+X-HE-Tag: 1788531124-127823
+X-HE-Meta: U2FsdGVkX1/Tw0kiK5H7sW3BhyYQLSulWHWOYQx/oslFa1fjSVcCrIV02WDW7nJvHUHdyXXqJgRONEA9OMKqNwb6ybTfWwUguAbXZOTgPySLZpUBo+q11pX56Fy0/C/vCQZnXcmks7HLkRmSwCtKCgaE3Zjiv1HLvWENcvVmQYITDi/vIDD/K2+UjlrQo7CAto9TiOPsQFQTD/+gN2Iirz5J7wGs2mtMlpRs0FZ2dnx5TvF5tvqQxuJFQKIwUs5rY19UeseeJPJdDCX2Cw7aEnkpg2s+lVmWiotG91WERrdacDpTh577jbJ8A71GRXjvaHLnODPvz64HjmUSxLmyBpVUGeODHNHGjDsqiwW1OEw46yGy+uZ4ZTwa//cztQQcyP792B/GclCUdDc4E7d5awh/43qlrI+9v1xaArjOse7bSUIhOv/52X54Z2BFVw4hSeGuPzQysmFZW6ISCVClS5bxcr5s0uug6f4fgBMhYz72kWy25Q2ObCZu/TSjj/TqT1Rd10WdMyOUzMQ8EIsvZZ9FWML7AIA7JYEfFPRy6X3DQ9FiXiUo0w8lZr4yiE/JAYXtuj6hF8yidBI+//VpR3B43ZggDZEsPetFoCLSxLOQN9UPOrjau3mNo+7+UFiic//EZRIPRjXfCON0XRZ2sqiScJ5sMLTq4dWgCDJKeW7+1t/rgdr0Add8ZbKO0nBbLrQZ45xBEkEOR1gp1oR0s9zhepBmrY5x+9PIM10FO/5cBfa3K6c0YETp4RH1X7zl7P1AobBT7hC21iywngpYtvc5NyAPdoZQl7saqKarErCbQdvieyOApZ2dbZ8qOKQoRyAQ+Qayf7UbHd2d/7TshpMwnKfvMkS04SjR2gnRA1fOn3E21OOtPOVBySBx4n7u+I1wHFwkfYXQOopH8OTZ9FAfyOUgknyu+10h2YAjEbRWQ3xjXSTfvRjyd6dI2vC/so0kJBmqNL55HV2REhO
+ +5VxerPd
+ fRD98grdD5K3DsYRjF6UyLq+3fX3kzkkXzggwCCVrcnjJ9NN+qsM4eZMCTHAmxJsbGChT/p35Up0yXZNW6MsE4j6NBrlnPmka0oecWwsueFV8OwGKwNnmRAqy2mcB7ufeumXvFwTIP59n8iOBjYZrNLkbWTYsirHn49PqmcVf5fUuXKD8sTwG5BrqdEBZj5o5vFOFJkI6aYA0Aaip2vs+bJ3o12iEMuzFqwbS0wlAK2Q4LZ97NijNZgUzohUJisht4/Zkg5HRsdfSkwO3Q2MY+6NbIOGphgo7JpMam5eDQiWNwMP/u6AsGLRG2DJQv/AI1qb2MBTeu3ohyBkvSl/HcNcRZD5Iu7SAWoLJBChUJ+DHvQ+pOtEHPaF3vLXW8euYGbKU6alE53DwRnXWzjiDjxIWvmSrQxEOdqo2RQsBkwFQukdY0Js+tM1gZsoIJB6J80JcQKdM84d3XVGi2cIHL7QngRZ6SemDsNl0LjoYEXhGTgQ4wDVlJK+hZoy2f/MzsHNW5kwrijtfzF/m756qJMdiMET2KCjuadvfysSd3o5qIf4W+d15RrX0ClAwb4fyFdASjGJs8ohAjlmNWUiqaa886O0tSTH6KKx86vlPOwTXfarhJUbL5eR+7LPdnNNtd8NX6CffcEnpVX6DN93Kl13T14UKCzyyzAu0MM4lVWnaPz1vXu0dYtN9IGaluMT3sTS4u5o2TxNVYmKwB7aaaN5IrwsdiawFpnWoGPe1gj+eIRcDOwmXkU66sQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,109 +140,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  4 Sep 2026 16:07:41 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-
-> On Thu, 03 Sep 2026 07:05:20 -0700 SJ Park <sj@kernel.org> wrote:
+On 9/4/26 13:56, Salvatore Dipietro wrote:
+> Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+> introduced high-order folio allocations in the iomap buffered write
+> path.  When memory is fragmented, each failed costly-order allocation
+> enters __alloc_pages_slowpath() which runs direct compaction and
+> drain_all_pages(), causing a 0.38x throughput drop on PostgreSQL
+> pgbench (simple-update) with 1024 clients on a 96-vCPU arm64 system.
 > 
-> > On Thu,  3 Sep 2026 20:41:48 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> > 
-> > > On Wed, 02 Sep 2026 17:33:50 -0700 SJ Park <sj@kernel.org> wrote:
-> > > 
-> > > > On Thu,  3 Sep 2026 06:31:38 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> > [...]
-> > > First, I would like to clarify my intention to avoid any
-> > > misunderstanding.  My actual goal is to fix the semantic of the
-> > > qt_exceeds statistic, rather than necessarily changing the underlying
-> > > logic of damos_quota_is_full().
-> > > 
-> > > Currently, there is an issue with how qt_exceeds is incremented.  When
-> > > the quota is set very small, qt_exceeds increases frequently.  This
-> > > produces a statistical trend that looks almost identical to the
-> > > continuous increments caused by the Temporal Goal being achieved.
-> > > 
-> > > The original intent of introducing qt_exceeds is to let users easily
-> > > notice if the quota is too small.
-> > > 
-> > > Commit Messages [1]:
-> > > 
-> > >     mm/damon/schemes: account how many times quota limit has exceeded
-> > > 
-> > >     If the time/space quotas of a given DAMON-based operation scheme is too
-> > >     small, the scheme could show unexpectedly slow progress.  However, there
-> > >     is no good way to notice the case in runtime.  This commit extends the
-> > >     DAMOS stat to provide how many times the quota limits exceeded so that
-> > >     the users can easily notice the case and tune the scheme.
-> > > 
-> > > However, under the current behavior, users are forced to manually ignore
-> > > or filter out the qt_exceeds increments that occur after the Temporal
-> > > Goal is achieved.  This adds an unnecessary burden to the users and
-> > > contradicts the core goal of making it "easy" for them to tune the
-> > > scheme.
-> > 
-> > Still I feel the problem is unclear.  Why the users need to manually ignore or
-> > filter out the increments under what situation?  Knowing specific and detailed
-> > case would be helpful.  Are you or some people you know doing that and feeling
-> > it is too much?  If so, what is the real use case?  For what purpose and how
-> > DAMON is being used?  Why and how the ignorance of qt_exceeds is being done and
-> > how painful it is?
+> The root issue is that direct compaction is too expensive for hot
+> allocation paths that have fallbacks to smaller allocations.
+> __filemap_get_folio_mpol() already marks higher-order allocations with
+> __GFP_NORETRY | __GFP_NOWARN, signalling that the caller can handle
+> failure.  However, the page allocator still attempts full direct
+> compaction for costly orders with __GFP_NORETRY, which is unnecessarily
+> aggressive when the caller will simply retry at a lower order.
 > 
-> First, I'd like to clarify that this isn't a problem encountered by a
-> real user, it's just a scenario I came up with.
-
-Thank you for clarifying this.
-
+> For costly-order allocations with __GFP_NORETRY, clear
+> __GFP_DIRECT_RECLAIM at the very start of the slowpath, before
+> can_direct_reclaim, can_compact and the nofail checks are evaluated.
+> This makes the entire slowpath treat the request as non-blocking: no
+> direct reclaim, no direct compaction and no drain_all_pages() IPI
+> across every CPU. kswapd (and in turn kcompactd) is still woken further
+> down for background defragmentation, so compaction keeps working for
+> long-term system health while being removed from the latency-critical
+> direct allocation path.
 > 
-> 1. Users sample qt_exceeds periodically (e.g., every 10 minutes).
-
-What's the purpose of this sampling?
-
+> Allocations that also request __GFP_THISNODE are exempted.  That flag
+> pairing identifies the local-node-first THP attempt issued by
+> alloc_pages_mpol() (mempolicy.c), which relies on direct compaction to
+> form transparent huge pages.
 > 
-> 2. Within this 10 minute sampling interval, the counter aggregates both
->    the real quota exhaustions and the increments caused by esz==0.
+> Test environment:
+>   Hardware:  AWS EC2 m8g.24xlarge (96 vCPU, arm64)
+>              12x 1TB IO2 32000 IOPS RAID0 XFS
+>   OS:        AL2023
+>   Kernel:    v7.3-rc1
+>   Database:  PostgreSQL 18.4
+>   Workload:  pgbench simple-update, 1024 clients, 96 threads, 1200s
 > 
-> 3. When users notice a high qt_exceeds value, they eventually realize
->    (perhaps by reading the code or documentation) that it includes the
->    counts from the esz==0 state.
+> Results (average of 3 runs, TPS):
 > 
-> 4. To get the actual quota exhaustion statistics, the user is now forced
->    to perform additional testing and implement external filtering to
->    separate the esz==0 increments from the real exceeds.
+>   Config                   Avg TPS      % vs Baseline
+>   baseline (no patch)       59,408       -
+>   With this patch          155,409      +161.6%
 > 
-> Even if we explicitly state in the documentation that qt_exceeds
-> includes the esz==0 counts, it still burdens the user.  The user still
-> has to figure out how to filter out the esz==0 increments externally to
-> get the signal they actually care about.
+> Link: https://lore.kernel.org/all/20260403193535.9970-1-dipiets@amazon.it/T/#t [v1]
+> Link: https://lore.kernel.org/linux-mm/20260420161404.642-1-dipiets@amazon.it/T/#u [v2]
+> Link: https://lore.kernel.org/all/20260710143437.12379-1-dipiets@amazon.it/T/#u [v3]
+> Fixes: 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+> Cc: stable@vger.kernel.org
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: Christoph Hellwig <hch@lst.de>
+> Cc: Dave Chinner <dgc@kernel.org>
+> Cc: Ritesh Harjani <ritesh.list@gmail.com>
+> Cc: linux-mm@kvack.org
+> Cc: linux-fsdevel@vger.kernel.org
+> Cc: linux-xfs@vger.kernel.org
+> Signed-off-by: Salvatore Dipietro <dipiets@amazon.it>
 
-Users set the temporal goal.  They can know when the goal is achieved since
-most of the goal metrics are already exposed to user space.  Users can also
-show the current effective quotas.  I agree that can be cumbersome, but how
-problematic it is?  Also, as I asked above, why they want to do this after all?
+I guess this will have to do until unlikely(we figure out a better API)...
 
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
+> ---
+> v4: Clear __GFP_DIRECT_RECLAIM early in the slowpath and exempt
+>     __GFP_THISNODE so THP attempt keeps using direct compaction
+> v3: Move to mm/page_alloc.c, wake kcompactd instead of avoiding it
+> v2: Move from fs/iomap/buffered-io.c to mm/filemap.c
+> v1: Avoid compaction in iomap folio allocation
 > 
-> Honestly, I struggle to imagine any valid use case where a user would
-> actually rely on the qt_exceeds increments caused by esz==0 to make
-> decisions.
+>  mm/page_alloc.c | 18 +++++++++++++++---
+>  1 file changed, 15 insertions(+), 3 deletions(-)
 > 
-> If the only purpose of qt_exceeds is to let users "easily notice" if the
-> quota is too small,
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 12fac9084c48..542c2ec31061 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -4784,10 +4784,10 @@ static inline struct page *
+>  __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+>  						struct alloc_context *ac)
+>  {
+> -	bool can_direct_reclaim = gfp_mask & __GFP_DIRECT_RECLAIM;
+> -	bool can_compact = can_direct_reclaim && gfp_compaction_allowed(gfp_mask);
+> -	bool nofail = gfp_mask & __GFP_NOFAIL;
+>  	const bool costly_order = order > PAGE_ALLOC_COSTLY_ORDER;
+> +	bool can_direct_reclaim;
+> +	bool can_compact;
+> +	bool nofail;
+>  	struct page *page = NULL;
+>  	unsigned int alloc_flags;
+>  	unsigned long did_some_progress;
+> @@ -4802,6 +4802,18 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+>  	bool can_retry_reserves = true;
+>  	unsigned long alloc_start_time = jiffies;
+>  
+> +	/*
+> +	 * Costly __GFP_NORETRY callers have a cheap fallback, so don't stall
+> +	 * them in reclaim or compaction. __GFP_THISNODE callers are exempt.
+> +	 */
+> +	if (costly_order && (gfp_mask & __GFP_NORETRY) &&
+> +	    !(gfp_mask & __GFP_THISNODE))
+> +		gfp_mask &= ~__GFP_DIRECT_RECLAIM;
+> +
+> +	can_direct_reclaim = gfp_mask & __GFP_DIRECT_RECLAIM;
+> +	can_compact = can_direct_reclaim && gfp_compaction_allowed(gfp_mask);
+> +	nofail = gfp_mask & __GFP_NOFAIL;
+> +
+>  	if (unlikely(nofail)) {
+>  		/*
+>  		 * Also we don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
 
-I agree it could be a signal to show if the quota is too small.  But the real
-purpose of qt_exceeds is, in my opinion, letting users understand how DAMOS is
-internally working now.  After all, how much quota means if it is too small or
-not?  That all depends on the real use case and complicated things including
-their SLO etc.
-
-If documentation is saying the purpose of qt_exceeds is to show if the quota is
-too small, that is what need to be updated.
-
-> forcing them to manually filter out the noise
-> defeats that purpose.
-
-So, I don't agree.
-
-
-Thanks,
-SJ
-
-[...]
 
