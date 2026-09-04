@@ -4,117 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FDC4C79F80
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 08:13:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A44EC79F80
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 08:22:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 135716B0088; Fri,  4 Sep 2026 04:13:18 -0400 (EDT)
+	id 3914F6B0088; Fri,  4 Sep 2026 04:22:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E80B6B008A; Fri,  4 Sep 2026 04:13:18 -0400 (EDT)
+	id 341176B008A; Fri,  4 Sep 2026 04:22:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F17146B008C; Fri,  4 Sep 2026 04:13:17 -0400 (EDT)
+	id 257666B008C; Fri,  4 Sep 2026 04:22:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C56596B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 04:13:17 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 62AA8A0A57
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 08:13:17 +0000 (UTC)
-X-FDA: 85175364834.29.C4A07F4
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 95178180005
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 08:13:15 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gIsMHlr5;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EE71F6B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 04:22:04 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 46BF8160A78
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 08:22:04 +0000 (UTC)
+X-FDA: 85175386968.10.DCF3621
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B0A424000C
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 08:22:02 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OjIgCijT;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788509595;
+	s=arc-20220608; t=1788510122;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0pDAJ5Zbgk6FV/+bTUIcqCISS5VxMKMSD1bvgwX22t8=;
-	b=RHi3YGj0r3wBeihiOZX31agETT+78HkYoIZxVAVdvB7eIdfESugZosrew9tOEkR96r5q3e
-	b7gcJLt6EHMuL+1ooQiZGRJAZFyE+Mp5EEd/QmBy9B8jBmQ97/rihHXIcYTzUt1DK2tVzG
-	I0How1m8OH6q5uJ7Xc5M+oUQ5pa3c9Y=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gIsMHlr5;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+	bh=ViqxEg2nic21/cC+OdaYhidCKvzIE/91TrHsQDV+MNs=;
+	b=RH4WtLicAS//Ju1/A0UcG0n4C3eaa2fYX4bIZzx56FHKsuwOwCUp09BeC8BIIEU8v7tnLY
+	teix7yERB0k9xu22IBozaaZg9xxmRg+YrTYfjpQgFpr8T6mPl0KnhNv3ao+Xxg9p+ZtKVX
+	uZrzrZJCnc78dQgd3B60EM/9zSaO+mI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788509595;
-	b=kxeafqfAWRK5JkT1YwMLjOoKcjnAqdae/a9ErRgPAGWJCD9cwxLN3gz3V0GAPO7etvIoKV
-	xKT+qg0+U7EsdM+hzMRBNyoblKbRIMrQIsG6G8scym1Dy8brMkCJ7js29a8QAkxceBB7CL
-	rFdiAzNaIgOqrWqcXm/F65NNmyKBrgU=
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-84830c774a0so771506b3a.1
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 01:13:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788509594; x=1789114394; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0pDAJ5Zbgk6FV/+bTUIcqCISS5VxMKMSD1bvgwX22t8=;
-        b=gIsMHlr5fjTWlzKJp1jgDQ3oZhdyasXEBbsZBQk55HgB62xnjgi59sM1YovQ/Qi3qU
-         1/KflEhgN8j93j2DxntPwmqq9Bc4LP23Bmb6ECs4aGWjuqXPWhopq0MgJTP/5enoDuBf
-         qheE7D/r2U0485HvcesJBfBO/nlXIvgU1/NYU9Vk+oA73zXNOIpO0TXR6s0ciAcBXy4r
-         iaUs7e1C6T+fDA5GF+wamSaItmLZKOmdGjh4v8MjFggi/7hDoALwASR+LB/VLaCbdlN3
-         5Zgy4LyCiCPon1T2NDzHi1zOqokhKFc9tPWMHKNlCaVHrwB5mAP3zT2nVHYrNWIsF40y
-         7Csw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788509594; x=1789114394;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0pDAJ5Zbgk6FV/+bTUIcqCISS5VxMKMSD1bvgwX22t8=;
-        b=dnnTcieCUqAhOKXToD5M8+3oNY3MAxlWK2+AdPcLPT/ePwfFk+7qmk5qKb1ZyCgo11
-         RiWrRwWLYF0mkppfld5WfnXvDlwjs0QSfy7p0lJHWmoDZVwcnCnBxQwIQ3XHjBo7ZF81
-         tfLi2azMGSzWaxX0oqmvUMCWROIEhG2TqD0fU+ASLNtMYZmVovEyRRl49XGs5tmtJoZ6
-         XrHHgReRswsaHxyuxbMKtCKZaWhZ/NT9DFi/JKIqPOFisMFbsUWVDDMZicogK+2A6ZSw
-         hcA27a9OYrkpVX4LKofK9QEblPSiDdEWZxoc1TcqSIIgQC3Z0JGgxOOOEGZhZXPWzEHO
-         c8yQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzb4gQZJrr0uGj0AdSBehwl7krCUHgfDhjOVHmm6WRvqvhkZBHf0B331eTudaAbkMQyrAuOgK1f9A==@kvack.org
-X-Gm-Message-State: AFuF++nS/XGGh7UrVAqI62OjSngO+FhJmguzNNM4dsll1QAzBoYJ46cB
-	HaqcgT5dgKXinBGa4jUZf95zDjHNOx5DoAT8Zyn5znwnXsPNxwWw6oth
-X-Gm-Gg: AYBFou1uSufPh3ecGlNu2OzDzapOnHHUd5u1K1oYAMjfRyCJzdtIihRgoMe9XRRh+00
-	1jI0XXsBJkb6CeKrngq46ZndZLjadwIs5aRpPYMpjp6OyHPqRoRQtRixyVid5PzKgk5l9bfFSf6
-	1sBFex27taJsZMdX3oCaE73LlBqARubK7k8a7ldjR1z+TMztl+dojIMj+BQmYJ8R9uxa488Y2in
-	PzUXAZ/3XGS6DVt4DvJJ/9epyVSzSwVxrcy4Urc5vK3j+4So8jOd7+KZFeBkTXCTpgIjRmPnFGZ
-	PdvHYc3QCbACJ1Iog5XsBMFw7mvICDIIA+KqLAGtYkFgjKbHOf659mZgROBhkoCSE2oOOEQN4Sz
-	RbzHeNrr5ziU3WGDH67BVah3R852+6B5eI/MpfwvkH8xTFbxZ0lADBsKpMRfNXezxf20pxj+A3P
-	sV1xUyYlvnyb90vBED5AE9Yui7UjvX4GnVYQ4rwxnoypP8Mk06JfHXBkaKax8rBGkMnMPHQJ9bE
-	z6Hx/EJfIYUQ5E7ybg=
-X-Received: by 2002:a05:6a00:4289:b0:852:38ea:3fd with SMTP id d2e1a72fcca58-861676b276dmr6641062b3a.11.1788509594279;
-        Fri, 04 Sep 2026 01:13:14 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:8929:bbae:36df:3680:44d3:b5e1])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86152c2a52asm862512b3a.30.2026.09.04.01.13.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 01:13:13 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: sj@kernel.org
-Cc: aethernet65535@gmail.com,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2.1] mm/damon/core: fix false positive in damos_quota_is_full() when esz is zero
-Date: Fri,  4 Sep 2026 16:07:41 +0800
-Message-ID: <20260904081324.3972-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260903140521.98604-1-sj@kernel.org>
-References: <20260903140521.98604-1-sj@kernel.org>
+	t=1788510122;
+	b=5+USQwuleGnkAyAkqY3qkCbmItu/1AEYJl+422ggFBnIDek7ABKcdgV8AtBAsoNvr4Zxjh
+	foykfOgFPav4cPbFwe5e/4tL7Fu06aGzDE/yX0ILS3FGWH7IFQcL8462EcHs19vH51HXOT
+	PNjww4NTYXIDbQYtbT1FoLGp1i9WwzM=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OjIgCijT;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8D05D60211;
+	Fri,  4 Sep 2026 08:22:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 079581F00A3D;
+	Fri,  4 Sep 2026 08:21:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788510121;
+	bh=ViqxEg2nic21/cC+OdaYhidCKvzIE/91TrHsQDV+MNs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=OjIgCijTg8xubFCjXgjFEtmB1OQ+cfvyNFkyhkMtj8Y7nIE6k+3q/RspG0eSdf5bs
+	 2svaQZbbt+haYCBqjLTdpFHywBlL3Dv1AeDUK1p18/QTS9oyZ4cnvAmfa3nBgsmhQM
+	 tD6TyWTRFWOZXPJgDpzltMHLopfSdJDEIj0ME57ePoF44PluyT27F2LO0m3wSN+vTx
+	 wWntQnd3eH+IaFBkfmKkYvd1h5gGdIK9gnQOyZ7ZeyPE6KjCBYBxL+XNERadmabR4i
+	 RSjSNiRJzetnE1zaqPaJTtGeDy75H3nSCS09VbBvslDUSLXNf+yQesncXhmSVvL+5F
+	 ZVxAtzIYZMaVg==
+Date: Fri, 4 Sep 2026 11:21:55 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: syzbot <syzbot@kernel.org>, syzkaller-bugs@googlegroups.com,
+	Krystian Kaniewski <krystianmkaniewski@gmail.com>,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org,
+	syzbot@lists.linux.dev
+Subject: Re: [PATCH] xarray: fix index jumping backwards in xas_find()
+Message-ID: <app_o87YogZExbwm@kernel.org>
+References: <2992424b-2120-489e-9010-f45f46ed52c8@mail.kernel.org>
+ <20260903112251.6114f91af953412d2355e5b3@linux-foundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: jtciwg69p66czymj7ctaait7611515km
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 95178180005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260903112251.6114f91af953412d2355e5b3@linux-foundation.org>
 X-Rspam-User: 
-X-HE-Tag: 1788509595-221676
-X-HE-Meta: U2FsdGVkX1984T3hbua4a7Y2V+0lNSTBj2CHpPN52TxZN44qCPaBx9i+PT7ZcYVq0Egd6bQd9qoRjV+V3TDNLTeJDIU59r6BLQF/BO8U5Di/O3lVi5xl7faZAYtlNdjphLEcSxQxVJThh0KBywwFx0dEQRo7i72y//g1lrGdoXx+Vt4XqcAabkxKApvKZ5oNYBGBF9rdDDUSSyPtO/yU0QQrDZ9vqnSwzqyI/2DANBrdyfFZi9e4y6saOm4k8gS71QlcriR42cy5YZOusU9nu79RQo16w/GF3P4Hr1Lz5JvR/Uzs7vQu1CY+O3yI4cqQV0hgveBb9DvXqttUIl8SZzHaKT3IXOZfA00UFzgVq2T9yjdyQ1XD+/VcsQKOI17LVoCOyC6HtGLZEdaP834lawX3deSWv3eQopqtUMlSerE/65/drN8KhLWFe9fNAqohhB1Py3/xU3GvKh3jHD1renj75G0Yr6CWtFUlJnFyHR98Cr7bD076d9e/2r3x0o7eKhjp5u5XI3PLyUfFrd92cqE5Rq7dXvO7eqnW+DXwlSOcfHzPlLmp7A4Ls6b79Y2gcrAkw75WZVM7c3w26LmSD34siJTnqHGLupAzNWoW/iUSTI6u1xt2cIU9cPlf6AXseZg2ggLH1fAcqtGvR2bNSTM70PlvyBJ4Og1c/2+bW90gOSQs8pde5zgi6C0ikeyuOahAoKqOGXlXXagY+9OCZ1ujzrFz29nBXeZugS8fvKB71fQYcBannQ/mQFM8SarTBVvbvz+lJA6GtnWSbR1rWIpUoiS7HNR5fmWLXDbzo2Pxa0o59/97T8HIJCJrEeMPr0zpIaiJvJv9Pgi1GO245T+nKE0eFxAFECRSGCp+pkBi7SHPGQ1Z8BvLcYlfBUxLtD2hR4w8yXLx+bEoMH+1PeDD86Ey2oE2zBhNrBdIRoVqTzrf2eMMND8ihTo2IbcTWEiV9ES9Yu5pviCCg6E
- DStocxVK
- 8CNVWl92y8q6kqkLjyKlgJ8Qh5457Qk/0GBfwptGxXJY7seoXTjd72uKvLunjvldgK/Bq7bB1RlpnOGMa5ZG3q6oCecRwbcpBTqm841StsOFjCZJaSCgxDLmpMi1IT8VhGPoMBpYkPXiSpw+uX5U+AiQaHSZibsJ/wRHykkOWz20KTwLDCzizLEtx2V6oUukUCXKjIFmbzVpeihTIYTiWo59lTLxfsjq0Dz78I+vEFa6mqXr3NkJIg1c4AGi1oBkDiNPRhM6HlOZMF1tmqBz6iTizmdA7thPzdip2ip6x3vKOvrlOFfbVxOJ4mSuET8s8Ck2I0b+Zcj/NL36HCFU6qKzrwmG0T7QvMLH+R+autFkHvUuKMFss4lOiC7jPqP5irex/zIKwsSt/xOhqxjv0jArH6Yi4HcjqomMUQlP2Xosp1jlCe2JrdsbJr3T5xxseqxu3l0gJdWig1c3Xgk6rKjkXKB90iIB1PPRABuuaYl7zdiE=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B0A424000C
+X-Stat-Signature: qm85bqo9qjxne6c9ary6p1qh6hthwgdg
+X-HE-Tag: 1788510122-688765
+X-HE-Meta: U2FsdGVkX19D2pNR4XbKbEYWrD+qKj0tkbv5SY+tIQtEymPk8F86UaMWJpXu8w79UJ6P5wOeMaJB0SiiNj+Iv4oMj8SGOom+J8rZN4StfJ3CgRTrnbYHlyaOlsdpzCc6XT8yj1ELPgPSw0Kn//dTpb1wFYOVK5I6v7Rqg5FYXB4UUqo9K8xzp2EWBXJdYxr5W41xBVjnAPku/0ZtG8iwaOy/tBhbIIAvV+ImCgP/IyO3B8eVZ/GNZIj/G9ZOrLy1vFsMB0RQiMJzKKD0crhrAuwvEB4ElD4Ne6j/qrrxOtyRtX3/TwqVPM9aF9ZcX4pYBz8gi+oEFJuBqJzNTdPoWgD06HL4HPQNHShbvN+MmAeyG/x5yMI47p+/m6qjzM6uRzKlpAAHTm/iF7nITNKp+b2UMrnfpqajitdGgEdbFoqiUO7kffA6YXcRZpc6eA/AuI1yT7HSgsF6v/0jz6fCmJIKArmFzLElI/6FyTO5DfD+kjlIOgcPs2U20OW0twios7BtPR1zXbbQ8VaXfnwh4hIQKEPC1q1CieW6LKuiI/8rIgHz7ba6YxdEn181RsUB5kKS1Ncrs2amn+gSVtEt7SymCUjnwBffJvsqpw4ANUtxoTOdmtSAzkvoEVav54QHG2BGpDf5G1aP58mZ7JGautGQfx5f6frbpbTRJmk1fwk5ZuSpbSoXZKXFG9zF4gi/5Vg1rQUrb5TePZcBSawCUwcFB5Vf+0GgEpaOKXj+riqpeC40p+ndWobzEwTULUQhcdjPJgxS9NdwZq7YhKuh5VLXBzptuVxsPdISwYw9fSKPxLpOvSq8HIkdrlcLNKjoomqSt6YMYba2PGx+83/EisBSl/U+4LoEL4VUHaP+tpM6zggqx1n/+e3D1p84wokCOiY7Kn9h004yGzCAzOkCuHnYPEoi7OO9VXLlgcn8KpU7Aej+IVNIv65LhBewE5VdAVrvTH/d0y7eW3z/w++
+ lYiYsgHH
+ NVsGFkqqw5xUCoUGs9GdEiZtqFBw0+jDMj4UFmafef3JrTIGeh5dwib6JDD4PlXoT32+9gWejJGM112chgM0oVV9UUX8nVIboemZ8N0Mik2ZTD32f7m5UJkQzlJdfuOyO6HFShTpDkEExagdztTiNez9ud/geYie7yv4nhPdB5s58MtRFvk0+7kMLPw6kectVZGdcMpwxlokvB6DuHOKh3+71BiWT1syYYrqRq0Q+yINH15PQOELWQy1QCB2b8T0euIaIUDh82/XPUNGmrNSsD2VCZ29hD7l+EvWnrPAI2YoeTIy+dFDzX4wq6jD7knS8mv6U4L5pLA3XoIdJIFOcbvRo9gxRoQ+B5PfnJDasKSgH87e6G/g66QMANjVGhdIng72VnHISfj9rSsIt7j+d8ERAJwqigq3GjYHhoFqPrgzxasIa2n+Sod5Gk7KQO0wCtBCaC+7Lu+rva9M9qSLa8WfJfk+3tiJcz8DXTsZSXi2WKTk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,79 +94,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 03 Sep 2026 07:05:20 -0700 SJ Park <sj@kernel.org> wrote:
-
-> On Thu,  3 Sep 2026 20:41:48 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+On Thu, Sep 03, 2026 at 11:22:51AM -0700, Andrew Morton wrote:
+> On Thu,  3 Sep 2026 13:48:55 +0000 (UTC) "syzbot" <syzbot@kernel.org> wrote:
 > 
-> > On Wed, 02 Sep 2026 17:33:50 -0700 SJ Park <sj@kernel.org> wrote:
+> > From: Krystian Kaniewski <krystianmkaniewski@gmail.com>
 > > 
-> > > On Thu,  3 Sep 2026 06:31:38 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> [...]
-> > First, I would like to clarify my intention to avoid any
-> > misunderstanding.  My actual goal is to fix the semantic of the
-> > qt_exceeds statistic, rather than necessarily changing the underlying
-> > logic of damos_quota_is_full().
+> > A bug in the XArray iterator xas_find() causes the iterator's index
+> > (xas->xa_index) to jump backwards when iterating over a multi-index entry
+> > (like a THP) that resides in a non-leaf node and is concurrently split.
 > > 
-> > Currently, there is an issue with how qt_exceeds is incremented.  When
-> > the quota is set very small, qt_exceeds increases frequently.  This
-> > produces a statistical trend that looks almost identical to the
-> > continuous increments caused by the Temporal Goal being achieved.
+> > When iterating over a multi-index entry in a non-leaf node, xas_load() sets
+> > xas->xa_offset to the base offset of the entry, but leaves xas->xa_index at
+> > the requested index. When the caller subsequently wants to advance to the
+> > next entry, xas_find() is called. xas_find() attempts to synchronize
+> > xas->xa_offset with xas->xa_index before advancing. However, the fixup
+> > logic was incorrectly restricted to leaf nodes (!xas->xa_node->shift).
+> > Because the THP resides in a non-leaf node, the fixup is skipped.
 > > 
-> > The original intent of introducing qt_exceeds is to let users easily
-> > notice if the quota is too small.
+> > As a result, xas_find() simply increments xas->xa_offset and recalculates
+> > xas->xa_index based on this new offset. This causes xas->xa_index to jump
+> > backwards. If the THP was concurrently split, the entry at the new offset
+> > is a node pointer, so xas_find() descends into it and returns the folio at
+> > the backwards index. The caller (filemap_map_pages()) then calculates the
+> > PTE pointer based on this backwards index, resulting in an invalid memory
+> > access such as an out-of-bounds read or use-after-free on a page-table page
+> > freed via tlb_remove_table_rcu().
 > > 
-> > Commit Messages [1]:
-> > 
-> >     mm/damon/schemes: account how many times quota limit has exceeded
-> > 
-> >     If the time/space quotas of a given DAMON-based operation scheme is too
-> >     small, the scheme could show unexpectedly slow progress.  However, there
-> >     is no good way to notice the case in runtime.  This commit extends the
-> >     DAMOS stat to provide how many times the quota limits exceeded so that
-> >     the users can easily notice the case and tune the scheme.
-> > 
-> > However, under the current behavior, users are forced to manually ignore
-> > or filter out the qt_exceeds increments that occur after the Temporal
-> > Goal is achieved.  This adds an unnecessary burden to the users and
-> > contradicts the core goal of making it "easy" for them to tune the
-> > scheme.
+> > To fix this, check if xas->xa_offset matches get_offset(xas->xa_index,
+> > xas->xa_node). If it does not and the node is a non-leaf node, set
+> > xas->xa_offset to get_offset(xas->xa_index, xas->xa_node) before advancing.
+> > Also add test cases in test_xarray to verify xas_find() behavior when
+> > iterating over and splitting multi-index entries.
 > 
-> Still I feel the problem is unclear.  Why the users need to manually ignore or
-> filter out the increments under what situation?  Knowing specific and detailed
-> case would be helpful.  Are you or some people you know doing that and feeling
-> it is too much?  If so, what is the real use case?  For what purpose and how
-> DAMON is being used?  Why and how the ignorance of qt_exceeds is being done and
-> how painful it is?
+> Thanks.  But the changelog omits vital information: a description of
+> the userspace-visible runtime effects of the bug.
+> 
+> > Fixes: b803b42823d0 ("xarray: Add XArray iterators")
+> > Assisted-by: Gemini:gemini-3.7-flash syzbot
+> > Reported-by: syzbot+b72767277f29b6407083@syzkaller.appspotmail.com
+> > Closes: https://syzkaller.appspot.com/bug?extid=b72767277f29b6407083
+> 
+> I see from there that it was a use-after-free, detected by KASAN.  I'll
+> update the changelog and I'll add cc:stable.
+> 
+> I'll queue the patch for testing while awaiting review input.
 
-First, I'd like to clarify that this isn't a problem encountered by a
-real user, it's just a scenario I came up with.
+The testing shows there are issues with this patch:
 
-1. Users sample qt_exceeds periodically (e.g., every 10 minutes).
+https://github.com/linux-mm/linux-mm/actions/runs/33815757662/job/100847425973
 
-2. Within this 10 minute sampling interval, the counter aggregates both
-   the real quota exhaustions and the increments caused by esz==0.
+And since it's in mm-unstable now it breaks all CI jobs :(
 
-3. When users notice a high qt_exceeds value, they eventually realize
-   (perhaps by reading the code or documentation) that it includes the
-   counts from the esz==0 state.
+> > Link: https://syzkaller.appspot.com/ai_job?id=a01c56bd-74d0-411c-afb4-ee6f0cb6cb61
+> 
+> 
 
-4. To get the actual quota exhaustion statistics, the user is now forced
-   to perform additional testing and implement external filtering to
-   separate the esz==0 increments from the real exceeds.
-
-Even if we explicitly state in the documentation that qt_exceeds
-includes the esz==0 counts, it still burdens the user.  The user still
-has to figure out how to filter out the esz==0 increments externally to
-get the signal they actually care about.
-
-Honestly, I struggle to imagine any valid use case where a user would
-actually rely on the qt_exceeds increments caused by esz==0 to make
-decisions.
-
-If the only purpose of qt_exceeds is to let users "easily notice" if the
-quota is too small, forcing them to manually filter out the noise
-defeats that purpose.
-
-Best regards,
-Rui Yan
+-- 
+Sincerely yours,
+Mike.
 
