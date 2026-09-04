@@ -4,176 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F659C624DE
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 15:17:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBCB5C624DE
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 15:20:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 279316B008C; Fri,  4 Sep 2026 11:17:24 -0400 (EDT)
+	id 95DE26B0088; Fri,  4 Sep 2026 11:20:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22A596B00B0; Fri,  4 Sep 2026 11:17:24 -0400 (EDT)
+	id 90F4B6B008A; Fri,  4 Sep 2026 11:20:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F2356B00B1; Fri,  4 Sep 2026 11:17:24 -0400 (EDT)
+	id 7FFDF6B00B0; Fri,  4 Sep 2026 11:20:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DEA736B008C
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 11:17:23 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7918BA0110
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:17:23 +0000 (UTC)
-X-FDA: 85176433566.02.5C6E396
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010021.outbound.protection.outlook.com [52.101.46.21])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 9084EC000E
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:17:20 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=owCqIpX9;
-	spf=pass (imf22.hostedemail.com: domain of ziy@nvidia.com designates 52.101.46.21 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788535040;
-	b=UtGy+KAILBvRvdgBcw4eLAdWb/xu1KUvh0i6Cd1ttHjUxBiGL6aokLCXEjq762yulGK27k
-	MPmswWVyWXj63k8LnUl89ka0L2wAnxcW4ZdbbWeEdXpS1dImpysTKcQgQNtac9Xzcl/eMQ
-	JcJf47MyzMoaUqPbj9TOi2kz8CCQ73w=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788535040;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 500ED6B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 11:20:58 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BD3AD120139
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:20:57 +0000 (UTC)
+X-FDA: 85176442554.01.7E2BA53
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A7EF1A000C
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:20:55 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="n5H/6KZD";
+	spf=pass (imf25.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.41 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788535256;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gGEpUV7XhtyRprnoQt/Gsq2hn2UfxVPF6itMIVsZwU8=;
-	b=QZ7aE3JmfO+Nj04VuJlHDD1vlIvQmWE1fovpvIz74/DHGTQkJFyAflTEHOTzpoCUicduce
-	rDMkRem/mVu30PB3MnY3zI0eghI5qSnRrgXc0TK2abYjJUPJuMkxoMVUtVQoMtbg29rlcQ
-	2+G9Ps683KhAajih+OSQSy5vNOAU5Gw=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=owCqIpX9;
-	spf=pass (imf22.hostedemail.com: domain of ziy@nvidia.com designates 52.101.46.21 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qHcI6DlDKO9YtNzcEGyMCQP6qlZIo1Kf3G+nCrxMXnpvM/qcw6HcmS5ykRIk81Brrt1uqkIS3yF6hejys4uOw+JLLjnKv2jBSxcGhTUx3SHdixVOLIPOEaUCoGRT0SMoHlPVF4jWj4GJ3FA4GL43wa9HwQL44R0M1g7REZGSH9QNk/XpCfjQMHcDKRXKyiOVxu3JraWYt+BMvjWk9Ldn+BhoBm0a1r0fxKOLJk6KNeR6LY+kh8blAoYqoqKukst+50WBkZo9feVkQGjwBw8jVk4rH0Pa/UV58VrLQ3lzNcsUWyIcvmO11DGLlpGPP21JxSlsJm37iDCGbqklKd2xig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gGEpUV7XhtyRprnoQt/Gsq2hn2UfxVPF6itMIVsZwU8=;
- b=XE6Ss5iToy1S+3ZDZPK3LRItRtG/wDP5VEFkIstu/6pXcj4EpdgcQ6lwav+XsnhXePeegUvIXZc5c/oYvhfh9dz1rV0U/pyzyErDe71R/g4VZ+d5xfkBdt3a0LyCQ+IzlC5VLxKg+F6kcNZ0iQEbnNSkSRIDvq460AcHMnTzfB6dr+8T+DDbZ6hy00H4XLMiXYDUMcSCkJJ2YxQqj+DMkaQZWi8AcHvJqkxWAZTJIQqvovjIV3GxoZapo/ZUquE8u8f/3YJNpTehyKslNCnRsX30NJ3KCHyNx3oLO22aBAopIi5Ftn+2krcofbQsTzX5DKEF8Xm9E8kFQrYZxP4Ryg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gGEpUV7XhtyRprnoQt/Gsq2hn2UfxVPF6itMIVsZwU8=;
- b=owCqIpX9M4GkKkhdsQixYCyunHLsot0i6GAEuBJVrTRtVPYyI0wR9Dlv43Xbr1ExscsIZmp06HirVqlOxccCZ7pUjhCkZvlm5oIrqKgSkAHGRVRYsZfR3lrv6urLsrS7QjTjhpZM4ShhE/xDa3u/Mo23QdaP3HRdi6SgvptvKu83YymEJJ1QhdbE9msK3dOiZsbaIz0YFVi5H9hjpshWo1KvFd+wZqXruiQr8d8pIKnaYk4g7qAagw0Nifwcuvo7KKpzrOTpwewEALM2CfWiFq7BmNcVIp97bC+VSMyvCJUFd2XuEuE1xkZGi4Fj4MV7UFmUUrWHfjpcCcRwm9DmKA==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by DS0PR12MB8502.namprd12.prod.outlook.com (2603:10b6:8:15b::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Fri, 4 Sep
- 2026 15:17:12 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0360.008; Fri, 4 Sep 2026
- 15:17:12 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 04 Sep 2026 11:17:10 -0400
-Message-Id: <DL6MR5YHGMHH.1DB33JGTEUG8S@nvidia.com>
-Cc: =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, "David Hildenbrand"
- <david@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Baolin Wang"
- <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>,
- "Nico Pache" <nico.pache@linux.dev>, "Ryan Roberts" <ryan.roberts@arm.com>,
- "Dev Jain" <dev.jain@arm.com>, "Barry Song" <baohua@kernel.org>, "Lance
- Yang" <lance.yang@linux.dev>, "Usama Arif" <usama.arif@linux.dev>,
- "Johannes Weiner" <hannes@cmpxchg.org>, "Yosry Ahmed" <yosry@kernel.org>,
- "Nhat Pham" <nphamcs@gmail.com>, "Chengming Zhou"
- <chengming.zhou@linux.dev>, "Kairui Song" <kasong@tencent.com>, "Shakeel
- Butt" <shakeel.butt@linux.dev>, "Xunlei Pang" <xlpang@linux.alibaba.com>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-To: "Qinyun Tan" <qinyuntan@linux.alibaba.com>, "Andrew Morton"
- <akpm@linux-foundation.org>
-From: "Zi Yan" <ziy@nvidia.com>
-Subject: Re: [PATCH 1/2] mm: thp: restore SHRINKER_NONSLAB on the deferred
- split shrinker
-X-Mailer: aerc 0.22.0
-References: <20260904033503.4067283-1-qinyuntan@linux.alibaba.com>
- <20260904033503.4067283-2-qinyuntan@linux.alibaba.com>
-In-Reply-To: <20260904033503.4067283-2-qinyuntan@linux.alibaba.com>
-X-ClientProxiedBy: YQZPR01CA0037.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:86::7) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=O362rQF00y/JKc7213VDRMRIdmSf7bkWLibT5UwQexQ=;
+	b=xF3PW4aDAcIfkpi7ohMFVLc92bSERE7a9Q8LQyWp0biOprfBl+vqJCV1pGg4nAFyPLXC24
+	HtCGsf30ga2dXjCEmVBd5TndOWNkBFZp6Ar6Jed7SEU2mY+Bf6cglyE63vBEEcbek34hYx
+	NmxuJ+UO8X2fIPqkJbjd3O/wLi0h4lU=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="n5H/6KZD";
+	spf=pass (imf25.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.41 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788535256;
+	b=HXscHLnTZWcXxM1EjaOMkSX42SgXeCTfOL2Qfdg0Qc0CQzVJ/6OIFBZTcZy0OwvDW7HeqD
+	PsoQM5lwZdVUCYwbpOGnaJG0YIIbKu8ZqGK9q427N2Y+Vn4BDCsuGWsQzytdOlHmWQb2S3
+	JqTS195cL3OLcCvcHwEifQRBcH4Exlc=
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-90e8e70fa02so13439806d6.3
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 08:20:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1788535255; x=1789140055; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=O362rQF00y/JKc7213VDRMRIdmSf7bkWLibT5UwQexQ=;
+        b=n5H/6KZD+iG1ofTp1HU+D/p6qJoI4AUMSNCv1TAr7J4lH1xbmjf/5CJdJ8I6ZFP/Ej
+         DPtI32DFJ8MpDDNTWMC26FGqHrMzaIiIgoCnzcTgK73+/S+aG5ZzaWV6U7G++KKbziYF
+         wFaR3qQo8Ua8mw14OawCN+C7S4WWe8iefqbue8UZcX6Tn8fpLRV2JVJlm4RN3NzLS0Oq
+         i36Kp/ONe6Z0rAVWgtpjSk7XJVXL/aJH1oqdxEjsSZ516i9IVEVa/PpTJjgMgUL414HR
+         Tadv5j+KrUEBFESnL0wz+OX8Ht/tGMgrG0yPYlwL2AcqKIMB8652qvF/C4OLUyXSXsqw
+         MEjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788535255; x=1789140055;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=O362rQF00y/JKc7213VDRMRIdmSf7bkWLibT5UwQexQ=;
+        b=mAN5nudBsaCzhkMPRqHvE0C41iZxlFTcUNrlazrjbbH1lSVvVA0Dd0Y4FUeF0vl0iX
+         M3M2jONiL+B9QTI4ZWtwmTyZIrzUstITKdIuu+qv7FpnisyR1f7pFlQCma/TbH0zyORP
+         V7+z77YzbHM9i5Yu81rGHr1Pk0le6Z/cGZT1NJb0VpGUu71v+zHp373WCYYSL2tPA21I
+         Vs/lRsrDvt1kdjncngtBxhxyrN17XwEbF7syKUwwnYHH2socvISAzKBhXDBsfSRwGM3P
+         VPM8ib93INiQ9usYu2cN7aBClEh3J2LoE4VcoceZJu+f9w6wKU8I3lqKZT2BBloTBdmZ
+         UAXA==
+X-Forwarded-Encrypted: i=1; AKwUvBzBoEb/QI3M0cFTEw6dviHzDXJpCXaACqMyaLte4yCFlOBM8vh9JnB1LEBuJdgWF8Q9yK5xa0zeFA==@kvack.org
+X-Gm-Message-State: AFuF++lOXz16AA2ot2taMKFenq1uFWRRebJugFVYGobwEtXIwNrQs3A4
+	bnxbXA4dLY5+lXp+VMn1vIwbyTXBh9K7990t/tUJMvqfSqj3hIQodr5B+eeZXL094LY=
+X-Gm-Gg: AYBFou0RGVxj4C7xJqcoEnkbRdTf4LAGMFAkoAY3ov5pAl6oIf+STI7G1/tUkERXbhq
+	54Ia4niA1UnSg2U9aeStRsBmEpF4pOwQ3E6WQv2v845ht5qyhIOZ9nWMXZDv0PWyVmLzj3ZoX3I
+	w92dcUVI9nGIgzKmvf4qi63dHU5gdSzrQLoHLQc6o110Ag4ikdxISrqjBtkiYe0oZQy58dNqAJY
+	nRJknEnF4SrO7hPDut1+W2ijqSI96BkHwe6N8KDmzW28mNazddod391vNDOcM+dNwVTde1GvCke
+	VF9RvrS9skxEoGBhdrNgMoauBkJQqlI+/PqkdvE4t5XKQrH4ENDanr69lP8JlVMAiOIVBE+eneB
+	TMw91VXWpcqYbStftVkJZfEpUyoNHAZAFYED32/zIfna39YC0SDj8Sg5P2z5QtC6rZiWWN7aMB9
+	exh5EfutI3bni0o2gO1B3VPw==
+X-Received: by 2002:a05:620a:6d47:b0:939:6dfa:7528 with SMTP id af79cd13be357-939804ee530mr481834685a.52.1788535254506;
+        Fri, 04 Sep 2026 08:20:54 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:501::2])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9397f9f0734sm239642785a.4.2026.09.04.08.20.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Sep 2026 08:20:53 -0700 (PDT)
+Date: Fri, 4 Sep 2026 11:20:48 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Nimrod Oren <noren@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Hugh Dickins <hughd@google.com>, Nirmoy Das <nirmoyd@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Rik van Riel <riel@surriel.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm: remove min_free_kbytes adjustment for THP
+Message-ID: <20260904152048.GA6641@cmpxchg.org>
+References: <20260901190123.3511535-1-noren@nvidia.com>
+ <20260901204449.GK3004@cmpxchg.org>
+ <C8541A2F-D6A9-41B0-A3FE-52339A6601F0@nvidia.com>
+ <20260901220917.GM3004@cmpxchg.org>
+ <69C018F5-A1C8-47AD-9567-3497AA6808EC@nvidia.com>
+ <20260902160417.GN3004@cmpxchg.org>
+ <DL5WUE8JD6MH.3W984LEQQMFV@nvidia.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DS0PR12MB8502:EE_
-X-MS-Office365-Filtering-Correlation-Id: 618a0a19-8437-4a18-f633-08df0a979844
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|366016|11063799006|10067099003|4143699003|22082099003|18002099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	ffwEx/T4Kt/HJrm89xa99KFnHWMWue3CPX9Ek+FshQ9uAS1D0aNV+rtZLe/oRK40zB8wtvC/fysGz+XdnyY2qANmbanjz3P07LSQVBESBqPBbYLKpUBgPBq0lJOixIRZ6AEF+kGtVMc+MHXfKXOKMlRMnQw+qm0OjNXFkYOGKQq/Mz+jzQ3vdHdG7lwVQnT/zWovFYd3iRTxo2oodsEFbQ7ar93iOfaXUOyD7RW5b9ZYrU5muTbA7ExH90RGrTc5VsDJwSAe77B69eL4sL/j13hFA1zsO7A7GT/zn5c3y0yyRIWdsydI0bl0BQPZ7a9gZEfoqeWbaQbb9LgueFun4bEB5BLooDoibNU1D2pMClmVvNd300gqGvbkIvQlKggGFIJKWQLueTbpQTtSJDN1rormOBv4H8Xd5NIvoNiZN5uejVlMwqwF61dMGdZrfNmLtlFMOXZzBxK7jfozGeYaOrFjEzoACmk4zVmZVqeTaIO2x6dNlPhNYk1zPqhP3szewzK+gkpvEaqExx1c8Ntlx5a1EbORf2jWTonjgu2uDFF9NT0UOG8AqOOzec7E1LQSoc0YqzJOOQ3F83CJ2ge8CgdiPuKRd1iWf78ERrrE2PI+ZmEUXEOXyh5QBNV/PgwoTsLtVHWqHJnDf/hcr50Nkxw6SpktLVCFg4MQWHpc9Pk=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(366016)(11063799006)(10067099003)(4143699003)(22082099003)(18002099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OSsyNGs2dVF3a1JwTXNmaCs1YlROUWdMK0JuNS9JcDgvWFB0dWt6Zzk2RmJU?=
- =?utf-8?B?TlhZb1dLQTk1Z1dkQkxESWQ5Yjh1dGp2aWkxK3VOZVgxT0poZ3FJUkhmNWdZ?=
- =?utf-8?B?OE14L1JpT3U5OTZodGMzSTFkM0JtQ0NxMXoxSGp2NW9QblQ2TGt3dWp4aWN4?=
- =?utf-8?B?dG1RekNyNnFGTGoybTVWaHh1SmIxa2tWVExDemNtOXo3K0hBSmdhUmhMRHpP?=
- =?utf-8?B?SzBPbFFOeWE0ZEFTYVJwNm5wWkVWYk02d3ZreElXMDVWUDU5eVpQNGtXM2VK?=
- =?utf-8?B?VG5abTN4YkpiT3JyVm9NSWZmTmIvRHNjTXFwbERlK2VDbWp5WXhRVTdCaTI4?=
- =?utf-8?B?RG45TEQ1Q0phbzljYlFvd3ZpWU5oQkR4U0dtM2xUMmlwMHRwU3VuRVRJVC9u?=
- =?utf-8?B?cGZ3SWoveEFFZWVzQTkyK2w1cm9FVDFEY1Evc2kwV1RsNUJ4ejd2TzlqMUFF?=
- =?utf-8?B?NUFueEwzNWF2WGZjL1lkYnZzK2R3b0dwL0Fzb0dVQkpPZ1lVMGxhSUdJZXUz?=
- =?utf-8?B?TXIzUmJibmRtQnNtYmdBbEtsczJzYTFpZE1KZ0x3dzk2K0NxT2o5aHJWdUJ3?=
- =?utf-8?B?M3JxOWtJb29ZbkFoK1JPNmh6NE1ja1ZVektZWjRBL1ZhLytjUDlyWXRseStO?=
- =?utf-8?B?c3dVZlN3ckt6M1pZWC8zb0pGUDZJcTVTSllrRk9PQ1ZNdXV1OEloZDhwZUky?=
- =?utf-8?B?aklxR094YXBndW1CemFPQnltNE9rc3FGZ2o3bEFTeXlkaW9DN1VsM1lGOGFY?=
- =?utf-8?B?THFhUm4rZUQ2TUhxNzhyZWNaOTFacUN4VWJzYzhUUE9NYk9kblAvV1JoWkli?=
- =?utf-8?B?aVB4ME5vM1lZTHZYVlhGdGdOUnJaNVZISEVUNmFvRG9rNnpOYURMbXlnUkNP?=
- =?utf-8?B?STRoUnFNSFBQTWZWMVNOZDRqN3d6YWo4bG0rdk1oV1VsUzUvNis2cGdRTWU1?=
- =?utf-8?B?MW80ak40OGUwdEl6ZW1CenE2NHIxT2w3dW9yQlBwRnRPWEM2bExySHY2K28w?=
- =?utf-8?B?SzlvOFA1K3FSSkxtM2tIbW0za1BBUUtld0JTWlZyM2lzY2syYVg1TFhMYXlK?=
- =?utf-8?B?dEQ1bjY1LzdmT3kvamNIeFltejhYcnZUMDV5Sm05cWpFanpWeGhHcnBHWUxG?=
- =?utf-8?B?SXFjRENTZUoxMVJXdEhSUHNxbnJqNVFVOU83UXQxS0Y0M0RJTFo0WjY5eU1q?=
- =?utf-8?B?TTdoN1BKUmlqaW50MUZqai9QOXh5VG56T3Jib09vZmQ4SmUwMHFlUzIxTElS?=
- =?utf-8?B?cnl0cW1mSXdhVUV5aHlJQVBjL1FyMVVGdkZUNmFsVlkwQ3VLZ3E4bElIMlVn?=
- =?utf-8?B?eXRHZ2lsZGM5S3EyeUoxMUFPM1ZFVzVIZThlbEZsK0JsUzBIQ1hJZS85aEVX?=
- =?utf-8?B?SzBhRitjcFVYVGxHdFplQUkrQmJKMzNHTWptcHZJZ3doOW5QVmRhRDF5UzNT?=
- =?utf-8?B?VWJaNmFKSFNsSWVwUnUyTmZxSWZiWXdROEE5S1dsUTlLV3NEV1ltREk0dzBY?=
- =?utf-8?B?UkVNME81ZE0rWUFpMlQvbnlKNlViVGh2TXl6ZjB4U2pBd1dSckRIZzRnOTZI?=
- =?utf-8?B?dWFxR2JMTEZMNHJpenc2cDJhc3VzbWtoRmhDL24vZCtLR3dLVEovVTdnTStW?=
- =?utf-8?B?clU1bDh2cXdlMDNEczBMeFN2ckt4bFd2eTdHeEFRWm9kcm9DeU82b1drdy9I?=
- =?utf-8?B?aVNNM0lIaXJGMVIrVi96b2FVWXJkcFo3VzlnZzFpWHVWOHlRQmlEaWw4UGlw?=
- =?utf-8?B?WmZZcGhVZGVXTTM3Z0p3bkNaYnJwS3MxbXk2Z1lPNjdwZHRoSnhlY29vRjEz?=
- =?utf-8?B?blVqOG1xcnh1YW1KaU41NFVIdHNhWC9NZGlTallONnhUVVlSZE9MeEl0UkRN?=
- =?utf-8?B?M1Z2bFdkcmJyaHRhYWxESjZOWU5JeGVKcjNVWExTT2pmTjZ2UnkyU1JycTVj?=
- =?utf-8?B?SXlZS3RicllVeDhpWnd1d1hSMC9meGgzNXZQU3Y5QXdtanYybjJHRXI3bTYz?=
- =?utf-8?B?UlNFTEpDVGQ0V09yaFU1S3dweE0wOGdpTjFic3NRY3VUc1ZyV2c4NEFlZWRO?=
- =?utf-8?B?Z0JoSHgrdEl4UFJDNW0rT3JoVk9PTnVFNlRadkkweDdaRlFUS0dZY1dhWng4?=
- =?utf-8?B?VzUzMW9OTDhQT2FRRXRlNjFoUWVTaWgwWlhyWUh2VjBBMzdaSEg0a1Z6NmR1?=
- =?utf-8?B?aTllbnZ3bmJ2QWlVUm0xRzVpdDRxTllKKzQ4enBodktvQ2NGTEZEdWY5clJI?=
- =?utf-8?B?MDlFcGg5dnBzQXEvM0krWkZuWkN4ektBeWZLVzBIUE1jSmxGNDBZZ085QXRx?=
- =?utf-8?Q?VOhpBcsY5XUTRQ0ed6?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 618a0a19-8437-4a18-f633-08df0a979844
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2026 15:17:12.1981
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /D8BM/S2ALCnn3oKZnfgWR2DLLvKoLfBu0nM29MkW8JcAKmwzt5kHXpqcnMDX+F/
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8502
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DL5WUE8JD6MH.3W984LEQQMFV@nvidia.com>
+X-Stat-Signature: zyyixxugp18bzu9h4pfu8is33xiogiwd
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A7EF1A000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9084EC000E
-X-Stat-Signature: dfys69ynx98h7quf3esykofquh5a4smo
-X-HE-Tag: 1788535040-534222
-X-HE-Meta: U2FsdGVkX18KMk5VdEuYTUn6fJRIFqvxgQbp25600QHN263uAbzkpzjqxJ6J6STavzmn0S6OKF8P7IfaCZljal1DuOU9I9sIfsheLC8/uXP0Bb2SU0T9yXalaLIxbJX0dgUt/G8oFSnMi2bJ1TtU0i+G6P4JrN2fuR3sZEPB5s+5E4hjZXXo/wscgPdCtpbdKWKcIKiFNHR6ycFBwi0QbwWGhFMjpsJPjn45tC+h+QbAz9dLSTzfqVXzZitAXHN2xRulHo8jcjkZS+FvglKDJS+gbjoLM2MUMWNeiOiCFwfHZTkzjjuGp1ohswK+CDAK/7sHyeKp/mV7jKT7h3+mphqI8Qx3FHaJHUV1FtZU4kqMCXGzmhnmBefR48Ke8KcwPWnbQfEf9JqMaGA2Ted8l8sfj478xzQRjP40Tv8vbBNJWbRseveFkzH4IyBOF46viek6iCdzr7uQ9ZQKBSm1yUu0/CM9gV9O5jmVC6OS28CUod6YmvEQnFpHYizN91BGmxNclQ+Cb9i0p4+Mwdcc8QoW3RKNW8xiH760uK4nAF4O03hpLN0ygWpj3t+tR7QlhpnEazL5hJ5Smo2RyBfWUp4FF+0RYb+fxGP0It46M4cf1fxk1+I137G3KjNqRuwjQ5pNgXC9pNqQzjtxFLwMlXcbqpiZ00kziVqrxjS36ZF1i9UEKuG4HKPE1tWVUEvcoswotaIpLtbMVjb5N+Q4bh7C1/eNC/g0Y7fP3GloUiLU6m7aI5KJCu5JNaly254PSczL+ZKguIDS1zsf/I+30niMFOjeTHP6Md7F2i/2+32Y+cDprrrJ+GllANWtbtmjixBPFha4ZhXvojjQb7OvNgMtSZ7DYTMXatPK0aLjn0bNCkvccFbUJSjUOkS4/Li0eYkvNt0KtDEkw52uV3ksY/BCwKXtn2K63zCfVrQt+hoIBTw7spB5MAJYeKejUfPksfUdi7JqXlgS1kUUP2S
- 6ZGOE2qW
- QPwDl7z9IXwxtb8F3WlIG+rrDxs0NyeCRsYaDZpYyTmlwd6ok4U7JdE+Qe3kfLr8LmoHyehivNDFZgptEtldFRQz23b/7f/RUG4lvWh/U0w+YeI9mkbWAs4XMFsLVfCMexq6l9l2LCzhgDnfz5RnOZnUTkLZZopv0H1Ll4fmrXYIt4S9E8kT4X4oiKYw6rMHntoLD272oyDzYlYK/S4EvJzpKVXreh24sgP8JdCHqAePuzhqEY0aMheh/kl734m4ZeKrKRVhJWfB8DVzQ12j0ROoekKrk4vVmTs2RZfqI2TYaTtNbNaN+E/BHh2l3BvMeG7+VaEAKWal2VWrrDWnqQXdoNRvF0CN9oaK4XZG3FrBZg/kCcQ7Yu0MbxSyJeAMjlsePphZdittZA+TFUtUMUKpfNnIbQuNUp64zGd2GwiVhX2GKlZ2Uz6OybCHOE765UgBuAa1J1lZmqSPmzWGOdbzVWpU5mSZAQWPs7dxeHxmFwVpAuFspVbTBBEDoGnij0PDRE36wQtdHfpnXd+tsMQ6oj94h8XqV0UgFrjv48t5tQy8=
+X-HE-Tag: 1788535255-168129
+X-HE-Meta: U2FsdGVkX19FSATpEBtNz439juTW5huNJZPfVFH2XxnQmRLoHj+Ws9YFidIG8DWhf9sZjL8bO3abNYVUjgd8m8WF2yBmSrGBL3r28BkLTWnY+7x7/3BbFUTVlBL5mXk2++IBpZ2yEDlaFeF9FPLbvEoTjE2I3Rgsm8YlT3nPE1MEu0gtIokhwkMlidVRAjprbPmdDZjj1vVvjCUfzV79pgppJBLoSeio1Xz8gKbu3B4HbJ7H5v10ATGvWzyOVvZrfPy6H5ZOdTWZsCvB/Kuj19VwWtl5tjmw/F7j4eK5wZ2UEVWo5eJV/dvR4NpFqj5nBMe/NFUDkLx3xQIneONy/WAujppd0KHjefgbFC4WCDvMW+zdBL51DOwQ+29KMvA9DWv9vEUAQ6EdYzlj3wWtpdxAZfkdjRe1xQj3U7FTTh9SuXVcnEM0wYIiY2CsJeuy2Ypisdjt1Ty/J3QzuqzfwnUQrMfu2mCHqLWQ8c0W+o8/WNTEWnfD9SUElfFHoFVpnaYj6ie3Su7T6y6BZdseNfowuZh4Zil5kGEuVcVpLrYHC4oyx0zkqp3OhZTHnUGIOjxrhVg5FG9emZNquCwiQOyOSJwaVuqfDn22opIbXgyhZru24taUBSs5oi7IWGnx590qSJuce5nqOQNTbsIzbKqD6NBNoio5DNIKsUdu+Xx5bv96eOUC/e8OJIbIX9By/E1ESgBDH86KNJr5NkPNJZ3CsNKeC2OgWL+ZIp0JMA5E0yuSZBXoMtfKuxL2AstOVj/a39qgRLD5ZhNSjNEfeAdwiAwYmAbsAMO6QrzZW5caTjhtPdSWOf2NkfZfqXdbe+RtnaZsBTBkSe4TwRh9o79qwAWS/yUMFp60EKJGoaLnmoqPRlAcqQGEhSw4/39inQi/LvTyM46vS3Wf3t1baziJnmnUSRiAW6fYokqzk1tCC14DW7nzlfI3YeVOsmqCtq9TZRPXLU3OQxMd6lU
+ pFmt0goa
+ 40bPPwWLA3NGobRU5McbU8a0YFWQmfvXH4nqaAQYjti6m/KsKW8pJDnHgD3uXa1Qtk+xTPiPKs0d9nInP43LKHbcXOseU4CRouNR5QF7upYwSTNdgBy4vgR06lLJptZ6FcBHFXfiJHzmb4RdqkhEGUoVUyKM4qeFhMSSndo02HAcvAlqs9CoUJGowqtuabDvWS9FGLEDgeSba5xfKFfIPi1hk1q3vGvfiF5hSca+3QClVumbRc00YrNNSlXT1loVRmQ9xnUEQTyecDu05ZdCs16WbZsLgOLwqMDY3An3BU11UHgKMUQS4g0rAa8r0dN1u/ti7TidkUtyZ4BTTGxmES1XhypDeZXvYvOEPyL+5uzUcr4pNkS8BDwQCdtRENHo+Y1hPUpkdNTxQfkel9sqhfKs7iyVId9Ne7U0yGW/U7dBzFu8DIHKpe38I5vID2hmVzffzVk2TCqna5nk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -181,45 +141,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Sep 3, 2026 at 11:35 PM EDT, Qinyun Tan wrote:
-> On a system booted with cgroup.memory=3Dnokmem, the deferred split
-> shrinker is quietly demoted to a non-memcg-aware one.  As a result,
-> partially unmapped THPs are only split under global reclaim; memcg
-> (limit-induced) reclaim never splits them, so a cgroup under memory
-> pressure keeps its underused THPs intact.
->
-> This is a regression from commit fafaeceb89a5 ("mm: switch deferred
-> split shrinker to list_lru"), which re-registered the shrinker without
-> SHRINKER_NONSLAB.  The shrinker had carried this flag since commit
-> 0a432dcbeb32 ("mm: shrinker: make shrinker not depend on memcg kmem")
-> precisely so it would keep working with kmem accounting disabled.
-> Without the flag, shrinker_memcg_alloc() fails with -ENOSYS under
-> nokmem and the shrinker loses its memcg awareness.
->
-> This was noticed by Michal during review of the patch "mm/list_lru:
-> don't copy stale shrinker id from non-memcg-aware shrinkers" [1].
->
-> Restore the flag.
->
-> [1] https://lore.kernel.org/lkml/697713c4-0857-485b-aba7-c74f37a3c8b4@lin=
-ux.alibaba.com/
->
-> Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
-> Suggested-by: Michal Koutn=C3=BD <mkoutny@suse.com>
-> Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
-> ---
->  mm/huge_memory.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
+On Thu, Sep 03, 2026 at 02:58:54PM -0400, Zi Yan wrote:
+> OK, digress to the compaction and reclaim discussion. Isn't this 512MB
+> pageblock size issue also telling us 1GB THP allocation will not work at
+> all? It is a proxy of 1GB super-pageblock.
 
-Makes sense.
+Yes. I doubt this will work well with the conventional page allocator.
 
-Acked-by: Zi Yan <ziy@nvidia.com>
+If you recall, when Usama floated 1G THP, one of the first questions
+was how do you allocate this. Rik's gigablock patches are an
+interesting push in that direction. CMA as a stop-gap measure.
 
+Meanwhile I'm trying to also make the native pageblock defragmentation
+better to make order-9 requests more reliable to allocate at runtime.
 
+Both of these efforts are kind of complicated by this config saying
+pageblock is now half a gig. It's too large for gigablocks. It's too
+large for watermarking/pageblock-aware reserves (as this patch shows).
 
---=20
-Best Regards,
-Yan, Zi
+We're struggling with order-9 blocks and you're saying this should
+work fine with order-13 blocks - with a 16x larger page - but with
+defrag reserves that are reasonable in absolute bytes. ;)
 
+> I need to spend some time on it to understand all the heuristics and see
+> if anything can be improved.
+> 
+> A quick chat with Claude results in some items for me to explore:
+> 
+> 1. reduce pageblock conversion threshold from half of the pageblock.
+> That can reduce the number of slowpath entries.
+
+That means you have pageblocks that contain a supermajority of a
+foreign type. What does the block type mean at that point?
+
+> 2. make reclaim pageblock aware, so when an order-0 unmovable page
+> allocation incurs a reclaim, the reclaim will try to get free movable
+> pages from an unmovable pageblock first.
+>
+> 3. in addition to produce a neutral block, compaction/reclaim need to
+> repair unmovable blocks by getting rid of movable pages. Proactive
+> compaction should do that too.
+
+This makes a lot of sense. I believe Rik was looking at more directed
+evacuations of exactly that type. CCing him. You guys might be able to
+collaborate on this.
+
+> >> > Seems to me the excessive min_free_kbytes is just a symptom of a
+> >> > deeper problem.
+> >> 
+> >> Yes, our anti-fragmentation mechanism does not work as we expected,
+> >> so that we need an excessive min_free_kbytes to get khugepaged working.
+> >> I wonder why reclaim cannot get the extra free memory instead of
+> >> reserving it via min_free_kbytes. Maybe we need a watermark boost
+> >> when some consecutive THP allocations are seen to achieve similar
+> >> effect of boosting min_free_kbytes?
+> >
+> > I'm just wondering what the easiest way forward is to fix the ARM 64k
+> > page problem.
+> >
+> > Yes, optimally, reclaim would work to satisfy compaction space by
+> > itself. We've seen it fail at that before, though.
+> >
+> > How critical set_recommended_min_free_kbytes() is today is a question
+> > that neither of us has a clear answer to. It's from 2011 and a lot has
+> > changed. However, knowing Andrea, I'm willing to bet he added this
+> > based on seeing a need in testing data. And I would actually expect it
+> > to work better now with proactive compaction, since that has a better
+> > chance of turning low-order chunks of that volume into pageblocks that
+> > can be converted instead of needing a poisoning steal.
+> >
+> > It's a change of long-standing behavior for everybody. It has a
+> > regression risk and requires careful evaluation and testing.
+> 
+> Not for 4KB systems with large memory, since khugepaged's
+> min_free_kbytes is capped at 66MB for one-node, 88MB for two-node, and
+> 44MB + N*22MB for N-node. For a GB300 host you mentioned above, it has
+> 494GB memory and with pageblock size set to 2MB, it should be a nop,
+> right?
+
+For single node, normal minfree catches up with recommended at
+256G. For two nodes, it catches up at 484G.
+
+I would say that affects the majority, or at least a sizable share, of
+machines out there today.
 
