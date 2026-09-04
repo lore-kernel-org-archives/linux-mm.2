@@ -4,95 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9D94C79F80
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 06:50:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C6C7C79F80
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 06:52:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C58896B0088; Fri,  4 Sep 2026 02:50:40 -0400 (EDT)
+	id 6909C6B008C; Fri,  4 Sep 2026 02:52:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C09B56B008A; Fri,  4 Sep 2026 02:50:40 -0400 (EDT)
+	id 640686B0092; Fri,  4 Sep 2026 02:52:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD7B66B008C; Fri,  4 Sep 2026 02:50:40 -0400 (EDT)
+	id 558A06B0095; Fri,  4 Sep 2026 02:52:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 79CB56B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 02:50:40 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 111C016052C
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:50:40 +0000 (UTC)
-X-FDA: 85175156640.29.8FAC2FA
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9A9EA40002
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:50:36 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=S2Gi565F;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F9696B008C
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 02:52:39 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7F6A580680
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:52:38 +0000 (UTC)
+X-FDA: 85175161596.30.C7336A2
+Received: from va-1-114.ptr.blmpb.com (va-1-114.ptr.blmpb.com [209.127.230.114])
+	by imf20.hostedemail.com (Postfix) with ESMTP id F21081C0002
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:52:33 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=O6rjfpBa;
+	spf=pass (imf20.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788504638;
+	s=arc-20220608; t=1788504757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dUwnrTnO9K1+Dq0dCp0gfyukZzjfQW8mCiD3/Ac3fAA=;
-	b=ovBuwAXW+dd4FxAKUmO144YWyKcmtKuXoinhWvOXJtPJdmFv0rxGHtsMd7OtGEa0tIso6/
-	ARGIZ7qFOzuQ9ccdCvzRzjKZfB8Z959fwplGfvSF07ek8y7t3VFdH2oasoOjQxbwnmKMWY
-	u9L5WokmD8SxQ/J28FuHNTlbI6W6tPk=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=28SnKEvKoJ3nWwHB2ftkFSyFO3g/G4nEKnDXDivfznM=;
+	b=nwdTzfIpBC4txAABSuw8dpaYJUG0vVz8K7fOjPMAHLyZ11fiweu4ZbD6WopZTQuiExtlpN
+	wRS7Fgj1m9fLJDcuil11v2f6w98yxWfdfvniSIzg1qrLM0u7qkLtiWTSkxRzO+rOb3grKz
+	22zNhYPlJjUZybsbePpnErdCDplLyEM=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=S2Gi565F;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	imf20.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=O6rjfpBa;
+	spf=pass (imf20.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788504638;
-	b=q1mRTIKMM9iYb/Ib6EI8GcSqGUxZpuDGKcoRJXsaKasjVJBGqHAlKPuLUB9uEcvNFcWjDT
-	Ng0uPaf80nFHwmFYKqNwEK47eAyLcoLfMeLqERSWxcVkF6BgYmVxx8cpdCqIgjDfzbTY1y
-	BXMZ8dAH/T9yTwX0qp584R7YUjt7uXI=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1788504633; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=dUwnrTnO9K1+Dq0dCp0gfyukZzjfQW8mCiD3/Ac3fAA=;
-	b=S2Gi565F0mAKIcyN952RVbJkby22sv8kB0twqwF2xok7BZUsN7LjCMvVyhgsmFLsk5SdTnkGBR3lvYjf1g+KMsS1SPUvyTrQExTgsAwI1dpWeUNFUQOrI02CjHazb0xkfiMZj+FZyr4jxjHplXqWEFFC3tVYQMXV9rmKFnwy9Ys=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=28;SR=0;TI=SMTPD_---0XAHuDz3_1788504630;
-Received: from 30.74.144.116(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAHuDz3_1788504630 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 04 Sep 2026 14:50:32 +0800
-Message-ID: <de28b6a7-7f51-4344-8139-1ec412604062@linux.alibaba.com>
-Date: Fri, 4 Sep 2026 14:50:30 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm: memcg: settle memory.high debt after THP faults
- with non-blocking gfp
-To: Qinyun Tan <qinyuntan@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@suse.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Xunlei Pang <xlpang@linux.alibaba.com>,
- "Liam R . Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Chris Down <chris@chrisdown.name>, Chuanhua Han <hanchuanhua@oppo.com>,
- Kairui Song <kasong@tencent.com>, linux-mm@kvack.org,
- cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260904035407.4098627-1-qinyuntan@linux.alibaba.com>
- <20260904035407.4098627-2-qinyuntan@linux.alibaba.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260904035407.4098627-2-qinyuntan@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+	t=1788504757;
+	b=GJBSIkcgmSlkT9srs+CxJRg3bAlrFrWuUmeZj18NvhgLEn1wNBDewx4ZtbRy9O99tLFUf1
+	dXXrgvPUDMYWilqZJ+Z6DqX+XiCeFADLfCFG93v7RZjxL3BdioDgKU8lqMvlwT9jcY7cpf
+	65a85r8Qg0rS32JQG1xVTGUzO2YYX/s=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1788504748; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=28SnKEvKoJ3nWwHB2ftkFSyFO3g/G4nEKnDXDivfznM=;
+ b=O6rjfpBak0JRuHQ3Q0TsStrZ5DrTED/F43Kw59lqymysp4p3BN9D37Hock/VNXTr6dzr72
+ QcYCHW5/nKmaZTU2dNkVlYgv4dfDWdCNO1/jJ8N4ZJBn2Zyd1dw+KqNW2Q+LBkZ83nsjvj
+ DgD/Op2O9pQMgQE+8k6BtSCU7qvsS4YtAU12lSzodKvysglQbp1wXvK3odRJI+q3rfHe4T
+ bIFkmjqGZHhinSbbZHDakUuW4mrIyZpYtftbgg1fgIiTAxtFInMcuannl4HyXnsizMPR9C
+ qgStbSE82nrAPeD4yCFjSK4Z0I0wCgIKR5dnI+e4Ri0YWlTqX8Ev+y0uIilkrw==
+To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>, 
+	<liam@infradead.org>, <rppt@kernel.org>, <surenb@google.com>, 
+	<mhocko@suse.com>, <tj@kernel.org>, <hannes@cmpxchg.org>, 
+	<shakeel.butt@linux.dev>, <muchun.song@linux.dev>, <qi.zheng@linux.dev>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Subject: [RFC 0/2] mm: add explicit goals to memcg memory.reclaim
+Date: Fri,  4 Sep 2026 14:51:57 +0800
+Message-Id: <20260904065159.34409-1-lizhe.67@bytedance.com>
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9A9EA40002
-X-Stat-Signature: jhw1yy9ptey3fs9o7ydfiqhud7173dz1
+X-Mailer: git-send-email 2.45.2
+Content-Type: text/plain; charset=UTF-8
+Cc: <cgroups@vger.kernel.org>, <linux-doc@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
+	<lizhe.67@bytedance.com>
+Mime-Version: 1.0
+X-Lms-Return-Path: <lba+26a9a6aaa+cf76a3+kvack.org+lizhe.67@bytedance.com>
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+X-Stat-Signature: r8wncwm7xr5spnki8jigbg9unkwz3xxj
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: F21081C0002
 X-Rspam-User: 
-X-HE-Tag: 1788504636-894264
-X-HE-Meta: U2FsdGVkX1/PjmkV917Zg4M6vq2Z5GzfYDnGa/FBhNPfmbQWAG6eL4+URNGq2LdCbI45s1A0TY1UwCUgo4TglN12Lf6JOZsUF0N/GMrX8QSk9D6/uSz+RFCykAJsHIWr+gETZrC/TUvwrNYwy+qTTHOddz1CRsOdkJKa8aObPmVBzADLUjUug9P0E2x+k4atlfe5iYYqu3EK4e4RNG52RxxIHrbn117rv614s72qyglQj5n09gEH0vuTGgbKr4bK19wuOhDCYyBVDLWkVbI3S5OHUP/scPSGTpu+IXpU/z+RrokOkU2TdOskkfMto9bxBATcpzByUytBOFknxwq7tmXp27pszmHXXSSrT4kGOaHBTbuPxC5Bpg214KjsQfL8WeGWegXn2MoHMrAfoE519WMakgVTDN8SKHFNDAGUhMYWwKA2POTcFXa96nv2wk5wn15LOHlaqA+4XwMuhPe86i6QUEL5i6fqKs7C+k+OqM2qHKFjGqNo2XzAFnKljshH9jyz/H7TVpcYJ3/Vf8xO7Hl4ICw6CcFsl8pQpQelN8GUjQ+daWc4hNYH1g9ff1qRM4ryc8rBx4RLXx/Sdb4gPed+VcND/gDBLsDKTfzQsbnyGBALuYCZ4P7Hd+DEDNc5UemeFOF91EVjDDyrToZNiDjZcet56uiGFXEPv5U7sRl2j6JjG2UUQHWOlTwVrDQ09yJ+zRl79pLjZyGYDPsCpCRG29jx7aI/YvTtzXqJCKwu3Sk9gdp3zrakcO5z0KclNLNQEQjBk70tehuDdhWWPO65VbGkAOCGRyg3HyoMnr/EOw8lx0t89XgTbUautWs7yK0fC/PR4ANyR+gl4khonKqZ3QGFIXbsSFjQuAdDiP5FVOGuRR8urfLHWxNgWxh6PhzQCvyG7/uigvMwKqdknAnm8ki/eEiqEKZboLyGkULakqhQF+h9txlxmKuX2t2EsCZd831InoJarI2rvnK
- oMOIlsYl
- kBG6FXZKqXPMm7xdT1h7ozxn78FLnLJ0ecbyDpmPMErJm8dx9u4X1Kx5ixkcM9EYAKaQ61a+WALuz/aaTWUgjeXjOsdZsg7hLsrBGfe9JG8U0omtquBJJBjnKmnYBYVZlTLgBzHI/DdU0uEXWQOXX0OeNBQqh4sAQcMlxYE6/X+a6GdCr47Lpoa03xWn5BinQ3nkv/nRpQFXD8wKbc+y2dhAlpuD7uZySaQnBKpAfha+YID4FeMsmreZYYj3nq2iH/mAjqLA40GqhHiEpnirPP6Uwl+kPcY0QLKJ4PZjLcJU/TS+Jg61TQol4Jr2zCJCLIuiJQlf9ogJ3sw4=
+X-HE-Tag: 1788504753-636427
+X-HE-Meta: U2FsdGVkX1/Rg6AfAO7pQGovB/+iX0+ZmKU5XT4/w74JAyzczd8SYIjpWe4yVUQGEyHRitGNvyT6gCgmCyWPT+LjgPUn+3/OI5IuEKp0rDda1xrRtkUZhPv2Sw+jF44HI4cwFHNm3oBKlRPljt3DbPGKw/UsGkRfjM5wZzRHAMee8iCVL8Dc8OLeyY1ErjKtZRr7fZnKKWQJ+Pt/g2DS68zZOS8btMA1c0cWgG4BTgbQGFytDiywzzwB5adtZdmKq8K03Umi952vAFakS+RgbFN4gqKTD0MFpZu8/8+Nq/lXeBuqSZG2i0HW7if3hEnOsAygZty0Vy+S9B3ybHqbseNkI4/Y6obdJuZJDVtO7oBMRiiPgZ03Oae/wBhGZVyE0WSoIWedaRP0t61PeJLykx+bcFaEF4HwtavxlWMuwVTO2phi8pN8NB8m/K0stnEVfXvZKUvlDkTPqGVuW4cklOkeS1QDdE6JsFWlV7aA5OMk0owsguZuNMkTGAKSHgDRGzRiX3fwWWEgiMGa4+RYqJq9xbWj63SP9sVBZh0RnnhjzWVVibIyLv8HeFsFJ13d//jwyoZTMjcqBOPCl2jDEy76/46BKqqcYtas5/4NkN4dsSEtMvHSEpi0j1gAahrlmvKoMW5WqaI/OhzaP15P4HTk3hTmBRsap8OWV9HTyNyEhMeW82zAMuB9vCyhoP8emom1tN3jwKSGQCVYGFtpWOITH+9LHeQQsqMyrN3o+HWKewfeO0PsJcuRx2Mx1zcdeX6+rDHcwxfdjy2NwTQ/COahvajBrq+G30ds5uG3u3YVYfq9B5H9NAU/2/2ODsfENaYZVt08ZCUTHWRzKb0OIxhq4qGfvFzWqv5z66sXsUU/Q6luEaOz8zBOj6pQ2XFiRvXvDYRb95ih/wklsqd0qOpkPUW6sLcIs9jQTHixgig734r5jjmpAeHXJIkP9lHVAvHeq7CzH6+8ZJ2THIp
+ t1XgHbhW
+ 8hhmUzgDbgFK/pgcTgjFArT/tcFNCBPXI/EdM4H8gdrC+mlk9uoikKqW3oNsT4yad1fJamUbZfhhCKjBOXlMPlmpwuKUsffNL1mUK+Ng6c7skmzRGPXHnsjSPnVdeJ2hb5lnnZBc3nwI1RYiPUbbtl+5rVmqtodid+0gWfJZ/jZgP1hOrUG7arZn3dmJTpH+sgTWWjNfzcUt8l7r8IAFSuT5GTu7rP7cyn+GTvgIxoAZFt4A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,132 +90,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+memory.reclaim is used by userspace controllers as a proactive memcg
+reclaim interface. On systems without memory tiering, a completed request
+is normally interpreted as eviction-oriented progress: pages were freed
+and the cgroup's charged footprint can drop.
 
+Memory tiering makes that interpretation ambiguous. The reclaim scanner
+may satisfy the requested amount by demoting cold folios from a faster
+tier to a slower tier. That is useful aging behavior, but it means a
+request can complete even though the cgroup's charged footprint is
+unchanged. Userspace controllers that rely on memory.reclaim for actual
+cgroup footprint reduction therefore lose the ability to request the same
+kind of outcome they get on non-tiered systems.
 
-On 9/4/26 11:54 AM, Qinyun Tan wrote:
-> Anonymous THP faults happening in a kernel loop that does not return
-> to userspace -- the populate loop of a single mlock() call, or any
-> GUP-driven population -- can drive a memcg's usage from memory.high
-> all the way up to memory.max with zero reclaim and zero penalty
-> sleep.
-> 
-> This defeats the containment memory.high is supposed to provide:
-> above high, the documented promise is that "the processes of the
-> cgroup are throttled and put under heavy reclaim pressure", and
-> userspace OOM handlers (oomd, Kubernetes) rely on the high..max
-> buffer as their reaction window.  Only after hitting memory.max does
-> the non-blocking charge fail, THP fall back to 4K, and
-> folio_prealloc()'s GFP_KERNEL charge finally restore throttling --
-> by which point the entire buffer has been consumed.
-> 
-> memory.high is enforced at two points after a charge succeeds:
-> 
->    1. from resume_user_mode_work() on return to userspace, requested
->       via set_notify_resume();
->    2. synchronously in try_charge_memcg() for large overcharges, added
->       by commit c9afe31ec443 ("memcg: synchronously enforce memory.high
->       for large overcharges"), gated on gfpflags_allow_blocking().
-> 
-> A populate loop does not return to userspace between faults, so gate
-> 1 never runs.  Gate 2 is defeated by the charge gfp: since
-> commit 3b3636924dfe ("mm, memcg: sync allocation and memcg charge
-> gfp flags for THP"), the THP fault path passes the allocation gfp
-> from vma_thp_gfp_mask() to mem_cgroup_charge().  With defrag=defer
-> that gfp is GFP_TRANSHUGE_LIGHT | __GFP_KSWAPD_RECLAIM; with the
-> default defrag=madvise and no MADV_HUGEPAGE it is plain
-> GFP_TRANSHUGE_LIGHT.  Neither allows blocking.  This is the right
-> policy for the physical allocation -- a THP is not worth direct
-> compaction, fall back to 4K instead -- but try_charge_memcg() also
-> interprets it as "this context cannot sleep" and skips the
-> synchronous enforcement, even
-> though fault context sleeps just fine (it holds the mmap or per-VMA
-> read lock).
-> 
-> Fix this in the fault paths, which know their context can sleep:
-> after a successful THP/mTHP charge, settle any accrued over-high
-> debt via mem_cgroup_handle_over_high(GFP_KERNEL).  This reuses the
-> existing throttling machinery (reclaim + calculate_high_delay()
-> penalty sleep) and is a no-op read of
-> current->memcg_nr_pages_over_high when there is no debt.
+At the same time, some controllers want the opposite operation: use the
+reclaim scanner as a best-effort placement mechanism to move cold folios
+from DRAM to CXL or other lower tiers, without evicting them from memory.
+This can be used to maintain top-tier headroom or a desired
+DRAM/CXL occupancy ratio according to workload policy.
 
-This doesn't convince me. If the user sets defrag=defer, it means large 
-folio allocations should not block, so using gfpflags_allow_blocking() 
-to decide whether to call mem_cgroup_handle_over_high() is reasonable.
+This series keeps the existing behavior as the default, and adds explicit
+opt-in goals for userspace controllers that want a more specific outcome
+from memcg memory.reclaim:
 
-If you call mem_cgroup_handle_over_high() directly in the allocation 
-functions, it would definitely increase allocation latency. This is not 
-what we expect when setting defrag=defer.
+  echo "1G goal=evict" > memory.reclaim
 
-On the other hand, I wonder if briefly exceeding memory.high is really a 
-problem in the real products. If this is only to fix the 
-test_memcg_high_sync selftest below, which is full of magic numbers, I 
-don't think it makes much sense.
+    Run the normal reclaim scanner and keep demotion enabled as part of
+    tier aging, but do not count successful demotion toward completing the
+    requested amount. This lets callers ask memory.reclaim to continue
+    until eviction progress, rather than demotion-only progress, satisfies
+    the request. If the cgroup has no usable demotion target, goal=evict
+    falls back to the default goal=progress behavior.
 
-> Deliberately not changed:
-> 
->   - The charge gfp itself is kept coupled to the allocation gfp, so the
->     fail-fast behaviour at memory.max (charge fails -> fall back to 4K
->     instead of reclaiming or OOMing for a THP) that the coupling was
->     introduced for is fully preserved.
-> 
->   - try_charge_memcg() is not touched: gfpflags_allow_blocking() is the
->     only signal it has, and it must stay conservative for callers that
->     genuinely cannot sleep.
-> 
-> The pre-existing selftest test_memcg_high_sync, added alongside the
-> synchronous enforcement by commit 6323ec54b450 ("selftests: memcg:
-> test high limit for single entry allocation"), readily reproduces
-> this: it mlocks 200M against memory.high=30M and memory.max=140M
-> with swap disabled, and expects high events with no max events.  On
-> systems with transparent_hugepage/enabled=always it fails without
-> this patch -- the population bursts through to memory.max -- and
-> passes with it.
-> 
-> Fixes: c9afe31ec443 ("memcg: synchronously enforce memory.high for large overcharges")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
-> ---
-> 
-> Note for stable backports: mem_cgroup_handle_over_high() only gained
-> its gfp_mask argument in v6.6, from commit 9ea9cb00a82b ("mm:
-> memcontrol: fix GFP_NOFS recursion in memory.high enforcement"); on
-> older kernels the call sites take no argument.
-> 
->   mm/huge_memory.c | 8 ++++++++
->   mm/memory.c      | 2 ++
->   2 files changed, 10 insertions(+)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index ced400f72d43..543ba4a74dc3 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -1329,6 +1329,14 @@ static struct folio *vma_alloc_anon_folio_pmd(struct vm_area_struct *vma,
->   		return NULL;
->   	}
->   
-> +	/*
-> +	 * The charge gfp encodes THP allocation policy and may not allow
-> +	 * blocking, which makes try_charge skip its synchronous memory.high
-> +	 * throttling. Fault context can sleep, so settle any over-high debt
-> +	 * here instead of letting usage grow unthrottled up to memory.max.
-> +	 */
-> +	mem_cgroup_handle_over_high(GFP_KERNEL);
-> +
->   	if (folio_memcg_alloc_deferred(folio)) {
->   		folio_put(folio);
->   		count_vm_event(THP_FAULT_FALLBACK);
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 8b0c2c735d3d..24cbf2a26905 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -5362,6 +5362,8 @@ static struct folio *alloc_anon_folio(struct vm_fault *vmf)
->   			folio_put(folio);
->   			goto next;
->   		}
-> +		/* Same reasoning as in vma_alloc_anon_folio_pmd(). */
-> +		mem_cgroup_handle_over_high(GFP_KERNEL);
->   		if (order > 1 && folio_memcg_alloc_deferred(folio)) {
->   			folio_put(folio);
->   			goto fallback;
+  echo "1G goal=demote" > memory.reclaim
 
+    Use the existing reclaim scanner for best-effort memory tier demotion
+    without LRU folio eviction. This is intended for placement control,
+    such as maintaining top-tier headroom or a desired DRAM/CXL occupancy
+    ratio. Demoted folios remain charged to the cgroup, so this goal does
+    not imply memory.current reduction. If the cgroup has no usable
+    demotion target, the request fails early with -EAGAIN.
+
+The default remains goal=progress, which is the current memory.reclaim
+behavior. In that mode, the kernel's existing reclaim progress accounting
+is unchanged and successful demotion can satisfy the requested amount.
+
+Patch 1 preserves the tiered LRU aging model. It changes the completion
+accounting for an eviction-oriented request, while still allowing demotion
+to happen as an intermediate step. After enough demotion has been done in
+a batch, reclaim avoids repeatedly scanning the top tiers in the cgroup's
+allowed demotion hierarchy just to produce more demotion-only progress,
+while still allowing lower tiers to age or reclaim normally.
+
+Patch 2 constrains a request in the other direction: it allows best-effort
+demotion as the requested action, while keeping folios that are not queued
+for demotion instead of evicting them from the LRU. It also skips slab
+shrinking, because slab reclaim cannot contribute demotion progress and
+would otherwise be retried aggressively for an underfilled demotion
+request.
+
+This also keeps the ABI scoped to the existing memory.reclaim interface
+instead of adding a new cgroup file. The goal key describes what kind of
+progress the caller wants from the request; it does not select a source or
+target tier, does not provide strict placement guarantees, and remains
+subject to cgroup protection, swappiness balancing, reclaim eligibility,
+and demotion target availability.
+
+This series is memcg-only. The per-node reclaim interface shares the
+parser but has different semantics: node reclaim can legitimately treat
+demotion as the desired way to relieve pressure on a node. For that
+reason, the new goals are rejected from the per-node path rather than
+being given a different meaning there.
+
+Li Zhe (2):
+  mm: add goal=evict to memory.reclaim
+  mm: add goal=demote to memory.reclaim
+
+ Documentation/admin-guide/cgroup-v2.rst |  26 ++++
+ include/linux/memory-tiers.h            |  13 ++
+ mm/internal.h                           |   2 +
+ mm/memory-tiers.c                       |  35 +++++-
+ mm/vmscan.c                             | 154 ++++++++++++++++++++++--
+ 5 files changed, 219 insertions(+), 11 deletions(-)
+
+-- 
+2.20.1
 
