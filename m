@@ -4,118 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24A0FC61DD6
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 11:04:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B069BC624D3
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 11:04:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F4556B0088; Fri,  4 Sep 2026 07:04:15 -0400 (EDT)
+	id BA2CD6B008A; Fri,  4 Sep 2026 07:04:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A5136B008A; Fri,  4 Sep 2026 07:04:15 -0400 (EDT)
+	id B7A566B008C; Fri,  4 Sep 2026 07:04:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED6106B008C; Fri,  4 Sep 2026 07:04:14 -0400 (EDT)
+	id A90806B0092; Fri,  4 Sep 2026 07:04:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C1CDA6B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 07:04:14 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 54B8080A5F
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 11:04:14 +0000 (UTC)
-X-FDA: 85175795628.27.725E803
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5FAF94000D
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 11:04:12 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=MtPjOBV0;
-	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BFC66B008A
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 07:04:35 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2B17F1C2BE8
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 11:04:35 +0000 (UTC)
+X-FDA: 85175796510.04.EC01DAC
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 32301180008
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 11:04:33 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="dROb/DG6";
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf06.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788519852;
+	s=arc-20220608; t=1788519873;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hx1MJKR10ulwIc9ONtxMhWx5TvezeBCB8mZ2l4Tg1bk=;
-	b=QOPo/ykO/TAABthgyIr5zafXcS5t95noZcObh64u1IE7OFUZLWof1bmW8bpnvbFP/HqGNl
-	zdHm66skBJMilBeKRxwg2emveKqATI4pAPawBSCxcWzg6DkfDPXhDUrAqgbfGMlM422qkq
-	I2vreVXpxqNlL8VkrvuzmjBnyXzw/Q0=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=MtPjOBV0;
-	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	bh=ba0WVI8S/qZuXrDRnwRxY/dvGyBoVl56jflNJMJpGxI=;
+	b=Y06Q8UI95ghjmGcUHg6lkAH/V4eWjW2A2VNmDPyt8CjDroAQnbbmV95TWSxLYKJ3dRXOWQ
+	3uxzm9rWfyzNFwUzRcj9Um/rgjWZhYipbEVWH0QBLOlhkvltCLaeBisc0gOUqfhGofF+F9
+	+QWttgrhTjXf8vkyPQLNM2IPtS5Z6Ok=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788519852;
-	b=lNGrMVFjESDToAXQSMrFX37579EQMx67P5ORQsdlaFzJj+oDM/Bl9uTh4HFTqpBXiarDcx
-	G+NPIJ9N7RbGzQPFkeTEuxfk+aK09OpTOqoVznq0a5LdtB4UZWFDyAR6hU/6kZ1k24klLp
-	IghHyDLIYyx7iY/4Zl1T864BYP4/egI=
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-490cf322ed0so9083795e9.1
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 04:04:12 -0700 (PDT)
+	t=1788519873;
+	b=6AOR1h99GwAfx6E8o2tqOGMqHh/b9bTivz+v8h7fvin+RLzB8OHHtN8uT2IgazZyaNZTV6
+	t/az9u9VUkq5gRx7C0pLAHyzRvCl7HAHpARSV/KJDp3SvYTTWDPCsoBNeyYjpuLFAvldON
+	xnZ2JWgIlw58y0dcl2Sj15kLlVTCUt0=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="dROb/DG6";
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf06.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4921eed3fa2so9426085e9.0
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 04:04:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1788519851; x=1789124651; darn=kvack.org;
+        d=suse.com; s=google; t=1788519872; x=1789124672; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=hx1MJKR10ulwIc9ONtxMhWx5TvezeBCB8mZ2l4Tg1bk=;
-        b=MtPjOBV0OzjS4bCwTTHUYuLFTAq9nj96ZnDlgsnN/XI1ZBttVktwFwYGXB8Ixb06j6
-         cQpwOXlqIAhjIGci5dRwgDKbU8sIvpP/JLIBh3+QzIgYHYyotI9yfdS5Yw4zT8L82N6J
-         aJf2Q+biPYlL/FcnkqhaDbYHW7NDS5ZqkMxRJA02Q1YAMHZAGqRt0eoRh+WRK4ssi7SH
-         FCZSjlZh2PcKIatK2QlnqnLXaUrdKW6tndMAfDmo0L9nY5QXxk8CT/qeyPq06L1iCa5K
-         P7xfy/ZHNZNhmFyT5phSc6cHXCs5sYdHmZapgBPmpyTy8mUuUqq4Gldxkuja6ttqZqSs
-         HvhQ==
+        bh=ba0WVI8S/qZuXrDRnwRxY/dvGyBoVl56jflNJMJpGxI=;
+        b=dROb/DG625Zs1LbBRxZRdwpfi1sWVANJHGYXE5lcEbYZ05koMwdte01C/PIKSmnch+
+         PbtMcXCzSKKhy2sf2NFGkz1GV2u4yRqpuIvHwnqMa1lkPOYnwXGvkEALhNKvQbEibaUN
+         QnhiazfjoqvWYHYyP28JsAjgmN13QFNdafcEVyFdEkyyNmZrYQC045gQu9AsYn2gkwTR
+         /c4k+Pf9giaqmndqCsAqnzkqKU9v+eBW1YiJfI/hakgMP0cyjjMEARyAXi0Bwmv20Moa
+         h0CTwGY0V0LENZIGmMjgaaAhcTWnSoQB0S9T4ix0fUli52E1WN2EWmbdoDSosUPmYyoI
+         r8bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788519851; x=1789124651;
+        d=1e100.net; s=20251104; t=1788519872; x=1789124672;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=hx1MJKR10ulwIc9ONtxMhWx5TvezeBCB8mZ2l4Tg1bk=;
-        b=lsipA5iuWxMY7tsUc0C29P6HJjKgsivnstkv7iR1wQN8H6l6wJraNG6wwvjZkhaWII
-         ILDo0y4gE918It00KXoIh1cIauEaSb4iM0TZLR0NI3hDgHtTgOAcbqJwRD6oD9QiJCgi
-         C4dNhOCvexDTt1iXnOh5vi+hfV5sT8e/YXmpqjHvE0ck7r+4sX1oPy3S0kyj+lYDNtEx
-         9UwI/vNy/c6UDXJj4EwwAniFs7tVws3j1S1jB90vyNOFR6AV9C+HOL1NZDVhvDDyU4W5
-         qalQT/VgrFJ7UMD51xy4HKWBFvMeBH6C7ks903Zpz6zono3xL2VRQ7qImMqL2ysIDD1G
-         C5Jw==
-X-Forwarded-Encrypted: i=1; AKwUvBzTYnjZRPMX8j9FruTsygoFlyhOBYzAkYwlEkss9MUYB71ReeM0ai2DSXYE0Qoxj6KszLpoMPQ6eQ==@kvack.org
-X-Gm-Message-State: AFuF++mmavzwrlGXENF5fh+1oQ+JsFiw/+FNnel5N9/D0Od+4P8wP7aw
-	lzcG7/vh82w2+xjsZHGfAgtrsGGzJPO0cvTUnZau1AXyWkiRDEQt8Kug+bOHckq36+g=
-X-Gm-Gg: AYBFou0xSeolDFTUJu3z/JQxaAOG7atNLkS+T9qc1daT71Unn0yj7xyXmcOXZ6lPssi
-	Vv4bCRE0PREbvE/6WsCD5M7BfoFTefGJu5G7lqNAx0dcUgp0+zCzoTSrWNZHCAsRT4kcxxwcedG
-	DZeFe5+gz6+FF10oOQqw2d7Z+ElwE5ZrNBx/+QzfqO/fwLzRHG/olF4XSKU1CgzX0/4w1xbAPIU
-	5BBwV7tRGVpDdHDE9luFLJcblAR1ryW3TNFUDzFFymmboXecY3773aU4Gr8ZODQVzIVv2EQd9Q2
-	/zS6hjo7zMrJshLueiYaIdaOGGGNi2YEi0MTbdc2iFRX/Nn/qK06xrAT3dRCk3oE3UHh3q2mkKv
-	6xLIjyqvr/GVKKRY2PjY/hXebylF/etXU7R8EUkBWh0N/3LdUmR4/zDhLcJaT2961sC8eyP94AG
-	KheUbqhgJk6N7QPqjSr3/KvYP0syn6nexSVXQrl4T5ZpJoCHJ1Oy6iMlQrJrt0yvyQ8agOuI4ZY
-	g==
-X-Received: by 2002:a05:600d:6445:10b0:49c:fc6c:be09 with SMTP id 5b1f17b1804b1-49cfc6cc00emr18769275e9.32.1788519850918;
-        Fri, 04 Sep 2026 04:04:10 -0700 (PDT)
+        bh=ba0WVI8S/qZuXrDRnwRxY/dvGyBoVl56jflNJMJpGxI=;
+        b=SPHCnjpFUdRK2e9rRmcLOMPmOKY+nv1bRY870c7Un1hIBOdSeAiSs4mkXdyU2wqZez
+         BbGrJ7Gz9W9XoNhFlfaAUlYSd6f5mLbgPjI6/fulgCX2U8t1/4dDjCsgqk6P/qfPsU8/
+         qXI6u6bkOUY5M32Z9IxT31m5dTEnI8dHMrUDU3bAyOgi1S3Jyp6qJJ36ycMqg1iDJQZh
+         Ekb1nbJr4deZkmgQz4Tlzoob35dY4pa9aG4b3otzrbtYderKY5yqEVLVcLQZHJm3luda
+         4t7f0va6LDvHVKsksN4JibF66gOi94fOvUL9NEHLZ3wwlYx1hcZL8OiwfSEKTLLXIm4P
+         cjCw==
+X-Forwarded-Encrypted: i=1; AKwUvBxTNpphHCRhDZVVf44o5mS4Q7WjzQROMXBCsIEtMa6lOUVhd4GuYfVmByflTFRrRvhxHrfA7U0lYA==@kvack.org
+X-Gm-Message-State: AFuF++kP3z7r89SgUcWaujMkHgJiLNb1PEGvyQbwddXdla4wxx+Oya9X
+	Elc8xdEdNEP2N8aVhHbnz5dEqk7RxbnpaQJSdr0JJ3HvMcp1zsNf37kbqsBXFr81KuM=
+X-Gm-Gg: AYBFou12Vn0POg8vCE6sBzxuzC2U2gp5DJTjZFjWDiW7q98wsqC8LqgiyzRziSbs50l
+	XOZXE9rwZP3YnrT4hqsi6Of9OrUijUpgkn4DffyzxfFNeBPinf6EbskuyQGEl5bTcXjMC9Cg/En
+	vrNMZdC2jErlsr+N/duFXkjqlUpiFrLxGOSZAL4eu9prPwCUBK2+UT8EfzhBLl5Vd2//6+8cJYh
+	P/FQvNN/A5+yIlUe7Swuw5o1tVwr1srTCkiBC6Pnb6gmvUNWPsdFaPvZh8ta2v/Owtjs6DOqL7X
+	/d5Le2LaJ7YD3/gqKevmHsQU26eg5NIdu+lC5tLiHfsM8CHgH/0yaD91TH16Ihzbe5j0l/3tM7T
+	TkGLZ621XgJgGdDn28tugx41YA7217xt7ebS46OwamIRIfkmFjITwOHuiePYXG7EUaV3OjQ0aq0
+	KcC/KNkHqY42DtM1WNm9fa2ZsH+OLkYSVg9pLxyNF5j2SrKzgWtYVxulg4RVU9YFAK7Thzg7dE4
+	w==
+X-Received: by 2002:a05:600c:8b05:b0:499:9240:9a1c with SMTP id 5b1f17b1804b1-49cf82787camr51743595e9.15.1788519871896;
+        Fri, 04 Sep 2026 04:04:31 -0700 (PDT)
 Received: from localhost (109-81-91-122.rct.o2.cz. [109.81.91.122])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee60d8a6sm145447675e9.10.2026.09.04.04.04.10
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee80eda4sm142910265e9.15.2026.09.04.04.04.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 04:04:10 -0700 (PDT)
-Date: Fri, 4 Sep 2026 13:04:08 +0200
+        Fri, 04 Sep 2026 04:04:31 -0700 (PDT)
+Date: Fri, 4 Sep 2026 13:04:29 +0200
 From: Michal Hocko <mhocko@suse.com>
 To: Ye Liu <ye.liu@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Ye Liu <liuye@kylinos.cn>,
-	David Rientjes <rientjes@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org,
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Ye Liu <liuye@kylinos.cn>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/8] mm/oom_kill: convert process/thread iterators to
- for_each_*_rcu
-Message-ID: <apqlqLeCyS94csaH@tiehlicka>
+Subject: Re: [PATCH 3/8] mm/ksm: convert process iterator to
+ for_each_process_rcu
+Message-ID: <apqlvearwGfs4A3_@tiehlicka>
 References: <20260904083001.553587-1-ye.liu@linux.dev>
- <20260904083001.553587-3-ye.liu@linux.dev>
+ <20260904083001.553587-4-ye.liu@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260904083001.553587-3-ye.liu@linux.dev>
-X-Stat-Signature: i66wij66xzg6ze89int3z15hogokf78x
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5FAF94000D
+In-Reply-To: <20260904083001.553587-4-ye.liu@linux.dev>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 32301180008
+X-Stat-Signature: er597bsqqy3zuartqkf7x7mhgu66i8rc
 X-Rspam-User: 
-X-HE-Tag: 1788519852-742016
-X-HE-Meta: U2FsdGVkX186ZLCYiaPtTAMrjjDCkSayO7TBky/fL7+kd2eI73B3r9v4GARuLeDvI2wyJRhaZXoHNRaJxIZ1EesN/vzrlsPlj9Q39XzGuEOFjJPVScmHShscCx+FCLNDYoQJhgvznH6jrg51Sl9/1lOLgt9Cao52LIiUt4iae4kmheP5/KdRwZ50f6qWMuWK5sR9OpHiMNCYzn5vnhvgh2N3HvcOdxb6joEgzbqQ+Sm+M133ZjOrqoogG9clJxZ+PS3lQi3j1hfE1vaprt/7gJMcDLXKO17sSF+iq7zCPwOhiS9veDSvw+h81pf1Otjl2H0fLC91Xt12557HfChGVlbwtBGCpA1k++0brCOxZjF/CYms85XuQacA7G+f2mFYgRgxHCJWcnSb2HvexA2uj5SDqxxxQS01l4dhJ6iuiqHsujxnGxfpvz7+uNSFwrKjdHU4U3kxcpvWUK7xWouozlwPuTUKZieMrjqatbtMmMLFtzj+z1j5A9M1trudqvTku/BlUgs+xjpjXdtQpw73YEky7ahP6ueKv9AkFCriInJiCAy0mgWjhls69P3rH/0gDcVqwBjpNT21/kNw0s8XycgOiPq0acL5wBm5Db7Z5dM6a3MMlN2GyuPTHQ0j7PF1XH7UoYjoxBP0Ts3r5OVklpu2do9jEXc1nLrJwPFWqaSnHkm3+pJZzSf5eMJ7lu8QWcKpkrq0m9f0eTSqQYnxQvDNJXV6gQndH7CpLU3XUyIyKfwgMB1vUCFtlFpqA0vovsLhn9NMB44HlDLBxrRrgeJcc9KnjDn4fEwouRfHhggv2ASXmuHjIRmK8TnQy6G6GsmCqkJ/TKEf9yhmKcrib/9Xhd872Vg3LBY27fvGNZz7xFi1SWO5BjuXj+vq1RGzKkeXALsuaXx/y76CtwooPtg1Abj++pxEFJMajOboqaiHZBwCyYR0iMQvA+8Pkml+eeiWcJlUZJPVtfpPbCR
- jxgsO8ed
- xCw/7Kdbi8Ssa6g0UFVx2DljVIL5i+UXx4KccHxIWgZGi/YMObYo0cTIEA8JVnG9DQSU7GcYHF7hjgVDQUU4+sDsSv1gl7XH4FFiXup2bHEnJTYB36k+8d/WXayrLW6MhZQkHUQmmGP9X+Ri3RBZWSA+mbyUvgw/wSkwo75ArhHZasPWKk/GfKYF2g7nu0/ydvkbllYGMb7gG+sTtC2xtOc688nK9h9rUATFbkzG1qq3ml/M4FVOHnoEz+akIcRk+Ud7yCKFSYPLo6c2+O4fgD1b5P7vN85k1hrZr6RhFGG8jAQhC7Mb23xnf0SE9LhnXxGNTRCYmTEwmqj9MimkA/u9StGW7LiY+hT06B5Rz/T8x+x29TVmnvWDs3hhNkFpBpR0qTXmcIYb/ggojzFgBAZxW8dtupJOE0c678bh4f+gsE9nZLKiMvt0kkebIrmJLQ8peyrVp4Ej5rAU=
+X-HE-Tag: 1788519873-181674
+X-HE-Meta: U2FsdGVkX1/ID0IqEycala0AYrjuPvsv47QpCmyvdfVWQUmuQGhLIeI0xianDktbIjpn3roWQ+zvirCKH1IZ+4fVxC9km7tceLizk0jBeDjPSgCMp0GRBMUXl0Gdc/aiGaPYvc+E/ZcLeckXzxrHxKkfqG06EJPMkziI9Q/mn2OgYVUwt9fKXbmbOgshH6b3n7f8whX7mymf0C6fVky1yYG5yRt+ebvwpUxXOj2BucmYQVozYWJUJlvjcwICnFZAPp9jjx/brdie62LRHfNDGIF5KkEusOdN7ozJ9SicC/2TTCSrZSsuStz4ILWFNDOMFLSciN41ZFloZ0D2stKt2QA7wiQ6GFvvbGWe60iBtNXRMh4fZ6XaMFnViTpjgYUVBmahABMu0Zzfm8EIRkBytV1vtMxK0rkWhRgjwL6iZpFYLdVTJIAJr90LtTdu+PS/M8Lb30CCUmWh5cbIFn/v5V+U99KsbOg7+Ey7iaixMsaY2qABJFFGZwGdmGEzZR9em/cP9l4E+Si0O3IW2P8uUhd7hFq6WM7rND3hJLg/26QnyqB/QSISBvIvsmN6Axd1fdOnY9hMQYgvI3RMJVkL0xLmgUXQ6YJQxSRAMrED00O95GdtvPbbCTC359sa7qKN7s1kWlitDGTV1egTkjfZNvgKpeRsZ1SUyNwgkDCHynbEt9Ve5ybL9iNOJEYirSLxQX3IxCbr1ThLMlarLxC2OA9A1WzQqNRkjfLvffdttnvCYEZ/fMeI99F/q13Sd43aNjHBpvySuD2rF+JaA48MRTVrDF9p9j+NFAjHUsJ3ZEwmXtIKvYSUPGqrXdMW2EVqgZU3nhzGm6Ku8WU8y8QqrSd/vyMvMpJwhKcHFyT3M65K7sJJOa/6huddOwl6/Y+CCWcfISOFyb9kNJUUUcoKMBOKYVhcYDEAPLAZnPoXZpG81r6pgwIKUwigPKUHLcDYmuyYxdJ+XzI2IOaeBcA
+ qfPCa0OW
+ kcYcVAVadpzBTjHroXtx8HL3UvZU4oNIsOnMwD3cCPhSgs3n9GLkMegnSpUSFjy4dMIqnkZFwNoZ4PD7j4oyUuVJw4dZZoNrDCQJrQqrVGgMOCcAp5C+Pb/SUza23T114Rav6XWjeMaAGMc/RPTfofN87robx8XcClgnJ90NFPOMlBXcYzGJ444Tq51C/d6NG6PXIvjL+vUiQZIs7oONoQStwHOphnCHFpRgF+sPt1/uStXDtWn/Fxa6ba/zrmBHzArqKKKO1a2ni0HVFtED77AmGWm+zhco+iqbElRfdYErYEMzPVaCsFe9hspzUJgyu1rqlvvhne9KHXv7LqIJ5W2TaQd5IVxH9FIdv3Yy6a7Kpb6ycYIZ0kPJcu2x0z5gDiBJF/gapOA25tbR4kTX4v+yVm/UC1aZ5iF+9grwXWJvbnhoyjuJpS0PwlLgPjHnc3PZS6sP1kUPbC8c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,13 +124,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 04-09-26 16:29:54, Ye Liu wrote:
+On Fri 04-09-26 16:29:55, Ye Liu wrote:
 > From: Ye Liu <liuye@kylinos.cn>
 > 
-> Replace the manual rcu_read_lock()/rcu_read_unlock() pairs wrapping
-> for_each_process()/for_each_thread() loops with for_each_process_rcu()
-> and for_each_thread_rcu(), so that the RCU read-side critical section
-> is scoped to the loop body.
+> Replace the manual rcu_read_lock()/rcu_read_unlock() pair combined
+> with for_each_process() loop in mm/ksm.c with for_each_process_rcu().
 > 
 > No functional change.
 > 
@@ -138,98 +137,34 @@ On Fri 04-09-26 16:29:54, Ye Liu wrote:
 Acked-by: Michal Hocko <mhocko@suse.com>
 
 > ---
->  mm/oom_kill.c | 20 +++++---------------
->  1 file changed, 5 insertions(+), 15 deletions(-)
+>  mm/ksm.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 > 
-> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> index 5f372f6e26fa..8dd025965810 100644
-> --- a/mm/oom_kill.c
-> +++ b/mm/oom_kill.c
-> @@ -94,8 +94,7 @@ static bool oom_cpuset_eligible(struct task_struct *start,
->  	bool ret = false;
->  	const nodemask_t *mask = oc->nodemask;
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index 49d48d1e0998..fa5e4c47fb1b 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -3280,8 +3280,7 @@ void collect_procs_ksm(const struct folio *folio, const struct page *page,
+>  		struct anon_vma *av = rmap_item->anon_vma;
 >  
-> -	rcu_read_lock();
-> -	for_each_thread(start, tsk) {
-> +	for_each_thread_rcu(start, tsk) {
->  		if (mask) {
->  			/*
->  			 * If this is a mempolicy constrained oom, tsk's
-> @@ -114,7 +113,6 @@ static bool oom_cpuset_eligible(struct task_struct *start,
->  		if (ret)
->  			break;
->  	}
-> -	rcu_read_unlock();
->  
->  	return ret;
->  }
-> @@ -368,11 +366,9 @@ static void select_bad_process(struct oom_control *oc)
->  	else {
->  		struct task_struct *p;
->  
+>  		anon_vma_lock_read(av);
 > -		rcu_read_lock();
-> -		for_each_process(p)
-> +		for_each_process_rcu(p)
->  			if (oom_evaluate_task(p, oc))
->  				break;
-> -		rcu_read_unlock();
->  	}
->  }
->  
-> @@ -430,14 +426,12 @@ static void dump_tasks(struct oom_control *oc)
->  		struct task_struct *p;
->  		int i = 0;
->  
-> -		rcu_read_lock();
-> -		for_each_process(p) {
-> +		for_each_process_rcu(p) {
->  			/* Avoid potential softlockup warning */
->  			if ((++i & 1023) == 0)
->  				touch_softlockup_watchdog();
->  			dump_task(p, oc);
+> -		for_each_process(tsk) {
+> +		for_each_process_rcu(tsk) {
+>  			struct anon_vma_chain *vmac;
+>  			const unsigned long addr = rmap_item->address & PAGE_MASK;
+>  			const unsigned long index = rmap_item->linear_page_index;
+> @@ -3298,7 +3297,6 @@ void collect_procs_ksm(const struct folio *folio, const struct page *page,
+>  				}
+>  			}
 >  		}
 > -		rcu_read_unlock();
+>  		anon_vma_unlock_read(av);
 >  	}
 >  }
->  
-> @@ -894,8 +888,7 @@ static bool task_will_free_mem(struct task_struct *task)
->  	 * are dying as well to make sure that a) nobody pins its mm and
->  	 * b) the task is also reapable by the oom reaper.
->  	 */
-> -	rcu_read_lock();
-> -	for_each_process(p) {
-> +	for_each_process_rcu(p) {
->  		if (!process_shares_mm(p, mm))
->  			continue;
->  		if (same_thread_group(task, p))
-> @@ -904,7 +897,6 @@ static bool task_will_free_mem(struct task_struct *task)
->  		if (!ret)
->  			break;
->  	}
-> -	rcu_read_unlock();
->  
->  	return ret;
->  }
-> @@ -960,8 +952,7 @@ static void __oom_kill_process(struct task_struct *victim, const char *message)
->  	 * That thread will now get access to memory reserves since it has a
->  	 * pending fatal signal.
->  	 */
-> -	rcu_read_lock();
-> -	for_each_process(p) {
-> +	for_each_process_rcu(p) {
->  		if (!process_shares_mm(p, mm))
->  			continue;
->  		if (same_thread_group(p, victim))
-> @@ -982,7 +973,6 @@ static void __oom_kill_process(struct task_struct *victim, const char *message)
->  			continue;
->  		do_send_sig_info(SIGKILL, SEND_SIG_PRIV, p, PIDTYPE_TGID);
->  	}
-> -	rcu_read_unlock();
->  
->  	if (can_oom_reap)
->  		queue_oom_reaper(victim);
 > -- 
 > 2.25.1
+> 
 
 -- 
 Michal Hocko
