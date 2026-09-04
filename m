@@ -4,141 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0B34C61DD6
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 13:02:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 633C1C624D3
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 13:25:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 995D36B0088; Fri,  4 Sep 2026 09:02:42 -0400 (EDT)
+	id 0521A6B0088; Fri,  4 Sep 2026 09:25:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96D6D6B008A; Fri,  4 Sep 2026 09:02:42 -0400 (EDT)
+	id F3E896B008A; Fri,  4 Sep 2026 09:25:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8836C6B008C; Fri,  4 Sep 2026 09:02:42 -0400 (EDT)
+	id E53396B008C; Fri,  4 Sep 2026 09:25:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C9946B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 09:02:42 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DEF8B1C34CC
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 13:02:41 +0000 (UTC)
-X-FDA: 85176094122.06.90DC94C
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	by imf13.hostedemail.com (Postfix) with ESMTP id EC57B20002
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 13:02:39 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Hy1c6ImT;
-	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BC9AE6B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 09:25:12 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BD8B0808E6
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 13:25:10 +0000 (UTC)
+X-FDA: 85176150780.17.B20100D
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 03C6018000F
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 13:25:08 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GEJXJFRE;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788526959;
+	spf=pass (imf24.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788528309;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A1Y7YmZWSzxr2iY3IqKw6JuwDP6OUCGK+XiwHXOkRsQ=;
-	b=evDWJQWTMuPAmXqDpql4OQs/6qdxynckg+udHGwPQ9FnkuaT9MHO0oQdae3BvMFj3/9xgc
-	4b7b9y5AuQGNET0PJS0X6ETHFkNoxfLzACLRcPo+Vm0tNgpQwEUCAXtoFK5YovzdrA89WU
-	L8ARdv9Vkf9wR9m6gCz0+gwNuXnacDA=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788526959;
-	b=ay3ISBrlZDKgff84XLBTaOQoLxu0Prb0v6DZpyqbdrw9dSnECrAcEI5dkNCygnCzeC0HXX
-	fsElOPxaMh3c8x8uI99ysKzqOZ4UtFmaED3t/E2wwAgo4CRgSxtYs0+C1UrdxB4tHDhXpQ
-	RrK4T4Yhh0FLYfxglmLGrgRuHIoLq6k=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Hy1c6ImT;
-	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	bh=CP/vbJtIF948iniYIw2bTcvHalRSWj3A4FS22l6l3aQ=;
+	b=uBe23XYhEz/I9yuyAW1BBkBje1WYJ3tfTWjutMFAYUOcNHkxcZszFpbWeKSdk8TvD5NXuG
+	KiR5v+Bk8JY6PoW7ayIeGZb9yAu+WER5sMuqdCntikImMol5vyDarcrWNuTRwc6a6IAufj
+	PvBqHkMye6Swtje3Tzu3Tdt3Fqik9pQ=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GEJXJFRE;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c25366c9b42so100412366b.2
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 06:02:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788526958; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nN4BGvTN26aYl3NJ9hOcStEgWCji3nvZtP4iBdFTYi7DM7Cx8LZPB5c9iszKZrr/Pj
-         Kjtk5YkNV7WkDdW5PExg92qkjlqHicO8LyoNKepsLkVQBmgaQ7rK03J6ztadyngq7t7S
-         sinNY8TILj7GsTv+rOlB6li5b8P+EZeLnkXihv6sMwqQcJnJOsNlqmSByi5SrRTWtATb
-         UnjZMK2h7wVeOZkOQY85NXBcT03ZZdM80YabAKIwTdVNAJdSpQxU0vf3BIJQ6Xg5TVh/
-         lSinRfsRiiY7omiEwcQ6If+StD2kf4GhdmqAxLTaM0xvbZVo1s71uCaB8Gp08YChGSxT
-         FcGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=A1Y7YmZWSzxr2iY3IqKw6JuwDP6OUCGK+XiwHXOkRsQ=;
-        fh=ROIQv+AnMhKpkuUVObIQOVYfQImB02NU141CX6MYoOE=;
-        b=oFQs60EwQsh7Rd4h/O1ji7Rx2Oc/FATSSpx9/YCTk37LCJ8y1y97Y/Sz8UubWiwAfY
-         oZj51fhmFVw5roCCRcLsb+byAajHXNhdA9rTf2KStPNCSE1ih1KcJskCcjEluKowiZBm
-         fMRIfqzuwdtDb0G88p7nbVzLkgIPprGb9m2nnyjZ9GQHn6uo2DgLkRlysNqjLtYQ6Mj8
-         Q0McB5ZmB05O/CRrbPQcSJEHUCa0L0w2TkaBlNuCtviZusuzHQJhJxZwXTnoZpv0ruLz
-         N5wUzyAhTbLUMTn5eL+RVbz9DCq8kPvqhDoDr+2MBYrrgJJDSmGMdiHhM9WB1gqUexEV
-         yqgg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	spf=pass (imf24.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788528309;
+	b=ekcAG5MTOvNZvJkh5OZeCmQIxxsy27frrqZtr56JmioYZIS+Sa4ykc7kcFz+jRiXPLilhG
+	fewvkDGMzIKzweqSDJPMNVl7iPM5YfSDW8dHsgYLkohqo63ZsnjHHJlyus1VwbgbZX4sUD
+	EYhzzYq1V/6yJ5O5O+vkYx5gmxXeoVM=
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-8534d507f59so1127282b3a.0
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 06:25:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788526958; x=1789131758; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=A1Y7YmZWSzxr2iY3IqKw6JuwDP6OUCGK+XiwHXOkRsQ=;
-        b=Hy1c6ImT1QA/9NWuOcszWsOTnFxdHxGeeeClyByT1wPkI6qFmC+iIX7RoJrmxL6zTE
-         jR1c4OSCpFCw1Ql8ns8uF+A/rZgiWS0oW2KXh4s7Wz0RCKTkSq94mSBrd8vJanHHNv+j
-         3C8lLo8mIXxmTBZJTdtKcu2PhwlMOdAejRnegugqRLscpzf/6vipfr97io5o5NRM5wdp
-         VD+FMbDr7GrJ1KudWXUyFcWD/B8SHyxT9jVvIPQbvy8/YAolzDcw7Q/k7F5EAVyZH2eM
-         sd7q/nQL90Imqh70LgiUe3g45VL16ejXk7mOzkD8BE791WtP/5UbaF3v2Jbx3AxJeqCM
-         AxSQ==
+        d=gmail.com; s=20251104; t=1788528308; x=1789133108; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CP/vbJtIF948iniYIw2bTcvHalRSWj3A4FS22l6l3aQ=;
+        b=GEJXJFREu8mg2VwJEWP0fsn4DIR3PMHodEUWekDlGJrdS64Hs9Aof7RqAk1Lc9WNii
+         1iEYtACrwjTpt0iC1+PcXSUgVdF3JeS7RsuqYyQdqy6aRGtprwqbd78nDBtFaEoVVobm
+         Y4PKoKzGs8/XW+YyHBYpZ4MjG+seY0b+sOgJpjl0Hh/Wwmseu3otSU0/Z6CG/SrEiFEe
+         d56h3L8oCrobEHG47FZNnlbYf20GMv9f5oDkrFIvH/nLbXYn0m1OEocYbpxyfMWhNL7l
+         BJ+YeBthVq8ZJswT7UuKvHxclboQxrSMaqaz7RowD9u0QFJgpGwPgodJQfaiNRwESqMc
+         aMow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788526958; x=1789131758;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=A1Y7YmZWSzxr2iY3IqKw6JuwDP6OUCGK+XiwHXOkRsQ=;
-        b=bK3p/TZyQudG+1lIqINiqs3tH7G3qcxT9W8m6TXqOAha/PIGkWe66rUqad+Waah9BC
-         bQJtsIMBstUyRnuxqfgvgwJr5RGJgl7W9gwjAQpuIo6DeAdMxqItrnH9shdYj+jY592Y
-         U+wm1VApElw3DYw8tAQs6bxvkk/hQxiDlRHmj7vIlKwXZUhRb8cm4Ir82PLp3W9Dw/3n
-         69TW/XLIdDSIJRfFzdTbbk4gnqBlEd8eDWiAayhk5aFt+XLJcAzMJ+xwMILHDHloeQw3
-         Wczew0AkDON8LGOmDzpju1Lj5TR2zwYkuVCJzK+gxDK/+wIOAu94Fy/IrUYMwPUnXyY1
-         gBjw==
-X-Forwarded-Encrypted: i=1; AKwUvBx5Yj+WocyUquWWQpcoxxTQ1fWwFAcThKKAOTN9wy6ZXTC1UdTJFtWmNHHw0VDKw0j3DOo/JzcrPg==@kvack.org
-X-Gm-Message-State: AFuF++ngHWO1IffrrkGlaGC2HoCk3wZsujMXk6yw8T6d72RJ594sEwCv
-	gJNuwSm9KM01hBpCYXuMXh3R+4AbRPbHeYhyCwiDrpMLRP4hUP+E1NaGTMlmVCvhXy6mnK9bqFc
-	ze+0dpG0+JAIwTIblkSoO4E0YmMubkjg=
-X-Gm-Gg: AYBFou13pSg2WmMeT2LluyI4ffOtPbiPnf/z2Elcef0h0lI7Y5HIP4y4W8tHFghd+vk
-	vnXNHWGWOzkkj95hzyIDH2orMrDw75Kn1cIcfhr45m/qLptk9KZgLL7Heh6yuGUmKqwTXM/B5Sq
-	CLjuIUMQJ0WaXesLBIJaZHwJ3XiylXegiZaJ/ZUZ6/H7rBe+66tUXPCZp9/F4AKzPUFcEWs/3g9
-	3buTNQcZe1NW7NJ03yQK7O9UiORk16ETIm+UMFKGPAdjq8exG5p3/KHa/n+XLP7SVTEX2dIUvhu
-	Qcdi0Pxdl3OEk5gajGiD4TYlSsIzrkuedAn0eCPJubNYDDrDTO5ggXu/94U5fKHswJ3WJaTtCxe
-	fvQ==
-X-Received: by 2002:a17:907:807:b0:c26:19de:912d with SMTP id
- a640c23a62f3a-c2619dea0a3mr112357266b.32.1788526957825; Fri, 04 Sep 2026
- 06:02:37 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788528308; x=1789133108;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CP/vbJtIF948iniYIw2bTcvHalRSWj3A4FS22l6l3aQ=;
+        b=KsTaO4FUw/INXu+lbaaVqyg0Dqjo64EpKAbok4fEEfFiYg+HX+WzAS2ayIs3cw35CY
+         n1JOyHgTP7i/064LSQroG0zb6Rj9eLhO3tMkeuEoksnqJC3WfmxAhzlo+ceLeeiOcVi6
+         DUhwnwCdv8eL8xQ8CYxvTe9KxaKgUakVhWxdUSQDS9//iTg8gLQl/0fkrA7tbz1T3k4J
+         fbJHVnl2MI6284l2JxTuucX7pZO8dNMYKzf08LISaQ1Sb2bhzNqF7wQkP2FCXypbuksw
+         gZgNzBgKVNK+Z0lO0J4IzW7/LejBp7+q2Kk8hyqW4qV9h2PW0rLTSh0SyzommdqDfvZ4
+         K8iQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzTrPPtE0n3OFJu37DhaTGjXjbvuZiD4UW8w2wm37NN28tXen6T9oDyWNIAjaAlmdBwBQD+p5q3RQ==@kvack.org
+X-Gm-Message-State: AFuF++mjES/q3kX5nirb30y80sZ6bqNa6GTfqd2zdvdjtMO8SGDiuwWb
+	uGAlFV/T7IXnuqxwbY9v/vRcKep1kfxzkL5mDXUiOs6P5BJlHAsAT4hmWzvIh4wn
+X-Gm-Gg: AYBFou0AlFGKmvpephjkoVIdI/vGzbDAeh8BaK1FbwhxhVCrYEJptCT0+1ejyJDn7Bl
+	LoKwCHoWrFBiASaFVOaFt0VuXwJ9nfKrJX4z18SpTYl1e2HYdsE+AtY4FWJ8jFq6h/BQi7z8T2l
+	SqmAdpRRv1sQykbzwx4YVju2unTso05lKKzwr56Wcx56BB60iSreGZaPMReGKG2/bB3+5jPdyBq
+	243h5MJbh5T6S9wR8W0sps2/0Z2nVnBKjwxqDdASJVjUtC+Jx34U8LbprJxCuNZxKe8OZsJDRsP
+	OHiYUFPctuQdjB7scfDvxxMjbTMEH3TyG2B3CZaZ+q7g/txHRFmHbfYD3jajTbcf1R8kwK9WCK5
+	nXK/tYeGQ4UVhq4iTvuJoDkFEgROuBgTEWr84bozUhaMCsydeHmFv/IML5WyDOq0cfqa8O0ZzBa
+	UCG+KYhY0+rqM8iRtChSA1BOYPkwoMd7PgxlxUC2ZDgStD1bI57/wyDif+EYH1+eP6ZgMRZ6b9r
+	3s022pw9UGuElt0oy6N4uBDLOlqNnGrGB2zHQ==
+X-Received: by 2002:a05:6a00:2d0a:b0:851:b03a:fcb with SMTP id d2e1a72fcca58-86169b6bda4mr7057801b3a.14.1788528307602;
+        Fri, 04 Sep 2026 06:25:07 -0700 (PDT)
+Received: from NV-J4GCB44.nvidia.com ([103.74.125.162])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86152c2a52asm1147302b3a.30.2026.09.04.06.25.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Sep 2026 06:25:06 -0700 (PDT)
+From: Jianyue Wu <wujianyue000@gmail.com>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Chris Li <chrisl@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v5 0/3] mm/zswap: shrink zswap_entry via a pool id
+Date: Fri,  4 Sep 2026 21:24:53 +0800
+Message-ID: <cover.1788528216.git.wujianyue000@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260830114731.8322-1-wujianyue000@gmail.com>
+References: <20260830114731.8322-1-wujianyue000@gmail.com>
 MIME-Version: 1.0
-References: <20260829-swap-pcp-priq-v2-resend-0-68d3d925578c@gmail.com>
- <appvhlPleahTRklV@yjaykim-PowerEdge-T330> <20260904100900.21517-1-lianux.mm@gmail.com>
-In-Reply-To: <20260904100900.21517-1-lianux.mm@gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 4 Sep 2026 21:02:00 +0800
-X-Gm-Features: AcwNN1Vm-0llheBPana_0CljCj4L1V8rcsjZv3MdI7EdXVkr6QNxUdxDIn19Bb4
-Message-ID: <CAMgjq7Bh0hdVoRcS4xMRL0YG-zmjh-TxyF9xXCmP2MRarAyksQ@mail.gmail.com>
-Subject: Re: [RESEND RFC PATCH v2 00/13] mm/swap: introduce per-priority
- allocation queues
-To: "Lian Wang (ProcessMission)" <lianux.mm@gmail.com>
-Cc: Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Jihan LIN <linjh22s@gmail.com>, 
-	Kunwu Chan <kunwu.chan@linux.dev>, Kees Cook <kees@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Thomas Gleixner <tglx@kernel.org>, linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 7xmbas1wdf4y656mt8jxr1zfyt9wp68j
-X-Rspamd-Queue-Id: EC57B20002
-X-Rspamd-Server: rspam02
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: arcsdc53ruwf6eat45hzrbszn48m3dxk
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 03C6018000F
 X-Rspam-User: 
-X-HE-Tag: 1788526959-543115
-X-HE-Meta: U2FsdGVkX1+EQWmYuoQhNypo4bJCHRp/48u8u5FgjxwVC5MOuMqjq3sIwwIc57J+2atbqCv8GUH4VU0QSFtGsyzULXIkUukgKRt/dHQrk6hwQpkjua+8A2/yaqin6kzxbL7BEMQV57Cn0B2bf9pW+4Ja33lE9WmHeVs7LrCe3nYqQpgsJinqLllPi34H1AourXIxpaJ8YT593sdmHDvOUaOsj+vVhEyVU5E5NKRM1tiFJCmxfsNpYN/M0xH/TBGpRhTe+YD/+8Zkp2+TEjjG1af0mU8lD1mQqDx7jhd0NR0ddrHpRIeTaseSKg9GuVOJ5wLrXrPNH3l51gCGy7OCGQvnELCVE0jgO0cbj5iNFyd6VTJXxqpkwHGHKsDYT1KMPHCfkdrNVPd4KAr4eK6aPmuAxfWVnbsPtVTUNGkQ7q6nGjHem6ymM+b0Mwlx5HQWC7A3oApEU8cZwvDTBo+2dVmV3q8Fqnppboj7SbUZ6MeoP97snAcPAyr+XABeeDtVSe4WASy4Ezjv9DFNehEs0OSwthFQEjO1jY5yTjMU7pGEYA+2+tQ33RofUibtW3vyG5TgyWxwXVw9ACaldIwErOsKoEzuPz/W9iWmCXJwfB3QUtGdhwIurNfRrwQp32IqKACHgfd0cxP1bYoJg74iZAIRn9zqTlBt3u52zWIWT5qoa4gZLIfSLgwqPKbM+YEUza7ijbzSHPDkKf1umubVtlgzL8MpBOi9CqzWJ1c182sYe30hR42dHzCEaBMyW1gjsXiCChnUz35qjy+HI4Zsr2ZBTjfXHvxC1aFsUlbH8M0wOUdLsKfY9m5JReDKv7Tc6AyXTmphNthM7KVxkb6MQoJy8vHtVTn/HfEtS33fgvYrmc5du6HaNsnCexNxcMu8I5bkqOQuWPYsYRlso9vHbbY79ogRSqjQgAIxD6hWoeMppk7MzI4cCeT14ZwPSSxEL5y+6V+IAICv2k2K6Zd
- 6zXLnouA
- sr2fAOvIupuA7Req3iS5spWZ11h9tWVe+WJK65QbKwKNUP5fIahsE4wcG8KsCqDVswoWtlqs5tsNKN/Us5hQ6xbT/iyRk+VLrtmoa0uyPBD/YvTsP7dxp/kq1ZxGwK1sUOPcYl1yUdSReHV6TBJN8r1psFz8tJP/2LECLPqTKvXsR+FChsBaCI6FdVuT+xsur8HwKWIRcLkRX93dhuYNCQvo+I6aBTHqFeOIkLGod3rh+t5moAszx3cCCYskb6DI2Fy/ELzPLBAVjC5cjzZu2kSwXCBsTj10nIX5iVwTLA9vYR5qJSZF0v6t/BFLMw7MpsW0rHYMq97J+HiJU8EyLjsVPVv1NjVlV5x0LeWnts2R0c3BwIpG/JYTXKKLt+dNc1SLkDB0dh6Okilvw9jjcKCV6KEIevphLTSr9jLef1PTV78NFfH3f+mzBFAzoGOqzcbM/u0SdTYP/GT2LuGAQXBugwy2egRezayIxf2YhTQvpSso8b+6L1Moh33hwSs9HZuV38vrudGbGkpq6U9xBhuyvcg==
+X-HE-Tag: 1788528308-261777
+X-HE-Meta: U2FsdGVkX18WLdZPCp51iY9H5m2PezWqKXkDGCgrmnHNWUWQXuN5rbgQkUntLBN/EF9/nx4rBI271G4SuRNM/oyi5Xa1pMeY+oD5gOLFDKccIkGRvQRZ5G2UewirU2GV23FVmTv/qzdmrcgH7ovF392h+cXdZG0Xz2eQpVG7N0bGNFJ/3Ds3eNQNewX76Hb56SPUjsCC0IgUH9sy9aOzSrKh0okLNt4QwJ0eBmXGYUH5sakCznAbwxU4kykzKZ0119bmE/eFEjFynoj/bynr2zx13eQxEh6XNmKXlrw09TzSvnUNuk+hCeXvkTQXO8wkhnnpNXcE4muT7zQku3BYaRSSIITZOckyk83MVZ+dy/3cB6BF3F9u95HhKfwrN9XJqy8TpDKzmtbAy0Y6QxPmXXAxUhB3oNwgrBaRN6qS/BOuAczKroSsOc/dDBW9djqqQa+rWabsns2p1fQWcOGvN2oD+8U+IOn94jvWHkMuZ1dkYp8mHd4DTA6FFRYz0R88gU9GEYm6tX4dHthCcPgE9xjNb2EFqlPaF8cK7Pxbj0N8t3jGq5598Le+Yw+EzEno1E9mErknQYWCRQB4+zTnPxi5saN4JLDCs89Tn0TMgcEioiBEe5neWiAvQETetC4IYubw7eNxv0KMraJbn5A2KydrXrvWfok/EhHMKtttbsDa90+CvWJDUxi1cGZdYdknETkBZUUXJqO7uqHlze+X2zkv93SBYyxwiA2fqZslBRqbbYyQKr5z38RNxg1fXxTpGjYZVxc12qtDSe8vuwI9s7VaKXsRvV1WL8ePzRQbZA14hu8unMmFue+VjVmaqBUtTNK3T872m/fH1LBrE8NiU92hgsMG69+bj+uIWAMtix8kSR/qzjw0vHWOApUhwN2ftuwLjPTlm7l2//UjGicve2RjwfyD8C1lo/MtUKpnNvvuXOIhvo6XO5sA7ROtuidfXnS13T8Srz2teEmVU8t
+ tPB6wdP8
+ sJowQRTAp1JxryqW3m+NZQhgsv/PGufNkA5sTOzUnszEaNxLmngKp1ZEPS2kweid4vnoMBHwsVXkHH4hUOcHENwn9zVzg9E6LphC3NqSDAMgGvUdthHn2K0HBvs6Vn2G7Cg3FKg/bO1A/L9JdRwSeM8JLDJCNPa76BkxxLzp5k196jVIAKy4Ka4QMCgb8luw1yK8KyKU2w7CCUIaRkAN0uOGksgkCDz8ytYrOmFeWAzxY79/p0GsXRMTZXy+b7ozf7KkgCGjn9OhqGETI34jZVoUHSR/IcEfxNgMnwgMrriycgWntWVn2S3cJxlEeZpXxKqHeUE8Wk1Ks1I2JeRySK0I3HpiKiB70tfqsbGC/WoYt1/ReJ1Pchiq6mBuwhuZFweNuw9C6raHYb1D1P5joR5qoz0XCt5YEJHCdfDXpCtoz8ELJVPx5TRRtfDqYDrMQEVKAun9yt7VCqPlCZ+HkCM0TUw0mQ/nzSxlJMmtsKgUOWUsMWrBCsOIhNUOgM+X1qwwFZaj/xksSkbGp4/CgH9ReSe/puhJ+oaR0P1KKGYz4hldPvMyfSUJPcF7EqgBSgtWxkF9glHED2kwPqfFPcdpaB0f4jVTpHuQnFxdVDW5LOWxZKQR7PJUtOw0uMobcUBJjFuTpzFNGHl2v/fZGSHs/gQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,75 +123,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 4, 2026 at 6:12=E2=80=AFPM Lian Wang (ProcessMission)
-<lianux.mm@gmail.com> wrote:
->
-> On Fri, 4 Sep 2026 16:13:10 +0900 Youngjun Park <youngjun.park@lge.com> w=
-rote:
->
-> > Since tiers come up further down, I'd like to raise a point about the
-> > patch subject line too. As Kairui mentioned in RFC v1 that we would
-> > stay aligned with tiers, would it make sense to frame this RFC as a
-> > per-tier allocation policy (or something along those lines)? Kairui,
-> > what's your opinion?
->
-> Thanks for the thoughtful feedback and for taking an initial pass over
-> the series.
->
-> I agree that this queue could naturally become an in-tier allocation
-> policy. For this RFC, I would prefer to keep it separate and scoped to
-> the existing priority semantics while the tier and virtual-swap
-> directions are still being settled. We can revisit the subject and
-> naming once that boundary is clearer.
+Every stored page has a struct zswap_entry, so its size is pure per-page
+overhead.  On 64-bit it is currently 56 bytes, of which 8 bytes are a
+pointer to the owning zswap_pool.
 
-Hi All!
+Only a handful of pools are ever live: a new pool is created only when
+the compressor is (re)set, and pools are reused across compressor
+switches.  That makes a per-entry pool pointer more expensive than it
+needs to be, and the RCU list that currently tracks pools is more
+machinery than this needs once each pool already has a stable id.
 
-We can start with adpating the default priority if tiering still needs
-more time to land, Not changing the user interface means less risk.
-It's also fine to implement tiering first, there are some other
-blocking issues for tier though.
+This series:
 
-With tiering I think we will still need rotation of devices in the
-same priorities / tier. Once tier is ready, we can further extend the
-rotation in the same tier; that's something to discuss.
+  1. Releases retired pools with queue_rcu_work() instead of a worker
+     calling synchronize_rcu(), so the release worker no longer blocks
+     on an RCU grace period.
+  2. Replaces the zswap_pools list with an allocating xarray
+     (XA_FLAGS_ALLOC1 | XA_FLAGS_LOCK_BH) and a separate RCU-protected
+     current-pool pointer, giving each pool a stable small id.  Ids
+     start at 1.  The reserved id 0 is never allocated, so looking it
+     up resolves to NULL.  The table grows as needed up to 255 live
+     pools (u8 pool_idx), not a fixed slot array.
+  3. Stores that u8 pool id in each zswap_entry instead of the pool
+     pointer.  The u8 fits in padding after the bool referenced field,
+     so the entry shrinks from 56 to 48 bytes on 64-bit (~2MiB of
+     metadata saved per 1GiB of data held in zswap).
 
->
-> I will also sync with Kairui when he has time. He has several things in
-> flight, but his view on the ownership and framing would be valuable.
->
-> > Devices assigned to the same tier already share the same priority, so
+Runtime compressor switching is preserved.  Pool ids are bounded to
+1..255 because struct zswap_entry stores the id in a u8.  The cap
+counts every id still in the xarray, including a killed pool that still
+has entries.  Ids are reused when a pool is erased.  Switching back to
+a compressor that still has a pool in the xarray resurrects it rather
+than allocating a new id.  If all usable ids are full, creating a pool
+for another compressor fails and the compressor switch is rejected.
 
-Hmm, the current posted tier is a band of priorities. Do you mean that
-when tiering is enabled, devices in the same tier, despite of having
-different priority, will be used equally? And is priority ineffective
-then?
+On 64-bit, struct zswap_entry is 56 -> 48 bytes, which fits 73 -> 85
+objects in a 4K slab.
 
-> > I don't think the allocation policy needs more than one option for
-> > that case (I can't think of a use case that would need it).
-> >
-> > 1. For legacy swap with no tier configured, define it as a single
-> >    priority treated as one tier.
-> > 2. When priorities match, allocation naturally falls to a single
-> >    policy (not a queue). the concrete policy here is this
-> >    queue-based scheme.
-> > 3. When tiers are enabled, devices previously assigned under legacy
-> >    swap are reassigned to tiers at runtime.
-> >    (This means different swap device on same tier handled like same pri=
-ority device)
->
-> These are useful design points. I would like to study the concrete v11
-> before deciding between runtime, boot-time, or compile-time tier
-> assignment. It seems safer not to bind this queue RFC to a permanent
-> tier interface while those semantics and the virtual-swap backend model
-> are still under discussion.
->
-> > I think this feature will also be needed on the virtualized swap side,
-> > which makes me wonder whether this patch should go back into the swap
-> > tier series instead. Kairui, Lian, what do you think? (Or separately?)
+Benchmark (x86_64, compressor=lzo, MADV_PAGEOUT store + fault-in load):
 
-I'm fine as long as there won't be a regression. I remember V10 of
-tier didn't touch this yet so the regression is limited to tier
-enabled case, so no existing case will experience any issue, that is
-fine. Causing a performance regression for existing usecases is
-usually a bad idea.
+  - e2e store+load median latency: no measurable regression vs baseline
+    at matched stored_delta
+
+Each store, free, and decompress looks up the pool with xa_load()
+instead of following a pointer.  With only a handful of live pools the
+xarray walk is short.
+
+Testing
+=======
+
+- Boot with DEBUG_ATOMIC_SLEEP + lockdep/PROVE_RCU + KASAN:
+  zswap store/load, shrinker writeback, and compressor switch
+  (retire, then switch back to resurrect) pass
+
+This series is based on akpm/mm-unstable as of 2026-09-04
+(20cab322c95c).
+
+To: Johannes Weiner <hannes@cmpxchg.org>
+To: Yosry Ahmed <yosry@kernel.org>
+To: Nhat Pham <nphamcs@gmail.com>
+To: Chengming Zhou <chengming.zhou@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
+
+Changes since RFC v4:
+  - Replace the RCU pool list with an allocating xarray
+    (XA_FLAGS_ALLOC1 | XA_FLAGS_LOCK_BH) and a separate RCU-protected
+    current-pool pointer.
+  - Resolve entry->pool_idx with xa_load() under rcu_read_lock().
+  - Write pool_idx before the entry is stored in the swap tree, so a
+    lookup cannot see a stale pool_idx left over from slab reuse.
+  - Retire pools with queue_rcu_work() on system_percpu_wq.
+  - Drop the RFC tag.
+
+Link: https://lore.kernel.org/all/20260830114731.8322-1-wujianyue000@gmail.com/
+Link: https://lore.kernel.org/all/20260815-shrink_zswap_entry_0815_v2-v3-3-0171bd86a667@gmail.com/
+Link: https://lore.kernel.org/all/20260731-shrink_zswap_entry_v2-0-0-v2-0-e72083aa8734@gmail.com/
+Link: https://lore.kernel.org/all/20260726-shrink_zswap_entry_v1-0-0-v1-1-30957e4d0cb6@gmail.com/
+
+---
+Jianyue Wu (3):
+  mm/zswap: release retired pools via queue_rcu_work() instead of
+    synchronize_rcu()
+  mm/zswap: replace the zswap_pools list with an allocating xarray
+  mm/zswap: reference the pool by id to shrink struct zswap_entry
+
+ mm/zswap.c | 144 ++++++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 97 insertions(+), 47 deletions(-)
+
+
+base-commit: 20cab322c95cea0327215bb81a05df69336032dd
+-- 
+2.43.0
+
 
