@@ -4,88 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADB8EC79F80
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 16:25:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B669C624DE
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 16:27:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9C036B0088; Fri,  4 Sep 2026 12:25:08 -0400 (EDT)
+	id 23C066B008A; Fri,  4 Sep 2026 12:27:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4CC76B008A; Fri,  4 Sep 2026 12:25:08 -0400 (EDT)
+	id 1EC766B008C; Fri,  4 Sep 2026 12:27:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 962456B008C; Fri,  4 Sep 2026 12:25:08 -0400 (EDT)
+	id 0DBF36B0092; Fri,  4 Sep 2026 12:27:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6ABD76B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:25:08 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0849F140135
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:25:08 +0000 (UTC)
-X-FDA: 85176604296.09.8001548
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 3A2E5100002
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:25:06 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WyFHp9Ge;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C164C6B008A
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:27:13 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4ADDA16014E
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:27:13 +0000 (UTC)
+X-FDA: 85176609546.21.9DDA599
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 33F74C0006
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:27:11 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="bTOp//JN";
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf28.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788539106;
+	s=arc-20220608; t=1788539231;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KzIjMFSH1tNjnbsKNHaVpESmlSYBZ1Zva20ytbg13fA=;
-	b=RLxDsbS1LoNCwF+OD7beqX+1mOeK3eZ078CcoOWbeEjbFgK/sHijp57Stuuw2G9QUn2g0b
-	CVj6/Msqx1j5l0bl4diteeUPpSRggal0922Zpu2UVZXDnXnRToVl5C3j2O8yNYLcwFhEJe
-	tdADDQHlbd5VnBS0jU+P+jS1/PcrzoI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788539106;
-	b=Ij6GDRP9WJv6GQvFCrfUg26d6bir00lxoDx+d6JfxtWimFbmB1+9j5KDFwTnByNuDx1L5D
-	nSpT6m6UbpdD9gOx+y9KcP0gegImKEtRP4QyDpbM8aZ7oWbuV/M4Hdhn7lQ3F+SUBe5pTI
-	RBWpUCbegOiUwZvbiRI6vvnCXa28Vdg=
+	bh=r44+M//4DhylFOBUCmAtsCMDMPsNkoNaCuU6IAuNSxs=;
+	b=f0o7j8fN4iWDwt/kRhyGHwVdRo4fewo6Tgn0lUt/t2DVs0Ebe13WOA2sRelVYk8SfpZltS
+	eZXB3yM5EkEpajrE3P06SiR7e5GM1KssBRPzGvzBjbYFgSR9sFrJeZMohQPy/DkxxOITjT
+	t/I7SCbnSBnom0kDmCzNwFfL91Zm9a4=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WyFHp9Ge;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AC3F74092B;
-	Fri,  4 Sep 2026 16:25:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A941F00A3D;
-	Fri,  4 Sep 2026 16:25:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788539104;
-	bh=KzIjMFSH1tNjnbsKNHaVpESmlSYBZ1Zva20ytbg13fA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WyFHp9GeXwJKlncsYct5wjADPuVdgkLd2uSHFbC1mG55lAXc1U8XZoWXmnfmn9Dr2
-	 PXORo+2coJ7Mph4851ypNraMEIjoOMS5zCR3wcjtLWWfghetN0zc1n+EVb7FD2/U8l
-	 naTgQWztpPtatKKLKpxcMtowm4CHYIHi8CIt2tCvFG4729T85JbHsgYl4hOcPBSKe5
-	 9n2GlvulkZtYJ09c13UQtPuTLY4evPQHxn6dnQSXBKuq3QzLvYB9pvF/AuT24+2u/P
-	 wkSpUmHB4p4J9mFmKtXOvNAZ9oavWEkWa3uVk5jDbifS4N5aSsiiyRilgZ5DgCNRE3
-	 XDY810l320myw==
-Date: Fri, 4 Sep 2026 17:24:59 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: David Stevens <stevensd@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] memcg: Don't call schedule_work when no spinning is
- allowed
-Message-ID: <aprp6GXv8poXXad9@gremlin>
-References: <20260831234339.280376-1-stevensd@google.com>
+	imf28.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="bTOp//JN";
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf28.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=mhocko@suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788539231;
+	b=o8eblz0c4y+XruPm04dj+x9OgCn2COsPMvcphFxcz5k36eErY1inql+dE3muzQCuw7IcSE
+	wamx45T2qb/Ow3w9jMCj67NTk4w5WaQk9fZciohMi26wupLUBxI/VBJbKYPNwHZ0myiMTm
+	ykTPWaWCIB2Zdj3CUdqlPFuWyzhOy+c=
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4921eed3fa2so14373035e9.0
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 09:27:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1788539230; x=1789144030; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=r44+M//4DhylFOBUCmAtsCMDMPsNkoNaCuU6IAuNSxs=;
+        b=bTOp//JNjZ5Fd7Zvv7WpcMR9Ls3h3CRySL+pZ/YTROjZbX5XzWBUckvxI39kXTzmZI
+         aLtyHinDAoT0eZfAgLhfq6xFubGMP8zKbXhjCueFUBLq7ETBLrLya+lo1R94MqKLISyJ
+         RF7t5SBvJmKXSMb4dlQcicmAsJSbPCPsiAaq/FIqAicGf2WQI1AeVb01pjpUBuhiW1gV
+         woiOdIMQYIse691T0C1rzFekd6rKaz2zjyPoQWQzs5AK3CCTDKfF6WlLmeYUeqbby+b3
+         ZibZd+LdYKyXhVD5WRBUbU15nIRkKXa8Do/V2ccsGMm7BXKkStIx+FdOwXmmyxsFWS21
+         MY5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788539230; x=1789144030;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=r44+M//4DhylFOBUCmAtsCMDMPsNkoNaCuU6IAuNSxs=;
+        b=pA2gn5XSvPxBe+Bia8XSzroPBiug+pDdCuJ0lwwtTIuwgB/AjT64bOH8IBZffK+g+7
+         awGOi/aumQeikFbz8afq6pODYJZwlgIOtoeBmG9R8OhMR0j4C45PSLmyr8jbTyXiapYW
+         VTQG8qpCS+plBhnHZ6VR1cQTXnKVP5Lf3ftSl4Bqjy+bbBE0exolsTzUZUryQzk3Z7qP
+         uYaj8W4K0msrVVdYItyZ++93VUSM//pel3O8nGafShMKFwkqZErw9FhGbiM0RtdtfBfd
+         W4OlNa9NPdBdBHsLel8IZmPV83WyveByr2iYV7sBFysBDIf2J2KODEE3qsuk+vOd3clU
+         iLtg==
+X-Forwarded-Encrypted: i=1; AKwUvBwtz3aryBAe+6EkzOw6lZXFcf/Z++UaSSAu8rqQWAtwnS1rbDMyahN5g9KifXmRhs6jrjtB3ASc2w==@kvack.org
+X-Gm-Message-State: AFuF++mvG2YdO+TIKWSpVBZKmYqJzvhFpiI/A+pNTTHNowdQFy8fRLZD
+	ztsiYaJcwXo3yL+hbzSTDR4Ss0AYzJJsfF6K5UcfhwOpdIT9BcfCTHUrpchnphuJpVM=
+X-Gm-Gg: AYBFou0PicQ7eRvXCa9zeQyd8U8BH8cgawycg6Wbaf0Y+2nn/7Bfbu8eNqddFDCr00W
+	ix/IMQZvXEvobOOB9XQb1ZP/mQMUP0GDyXFhTTwtgkLh3Y77dlFvwFaK15DbwMNAkG/tTr3xf4T
+	8Uek30lg0K6DwkBVawRB6xprnOg4DmEFWdfMVTyVAATsxaQZfFps7Vq4Rj9QWRQnKHxRDl9DEhK
+	sNKUPPCCVgRSOG7yTNl+nJLFRGP7/Jdu45/UJd12/xCIPtRzvBy0HGW+T8AJPisoNyKwHmItGVF
+	SmkaCWurEEI0Q+3KF8iPfoWDDgHPFg5llHlPZjnEC/yUNhlpE+NoB9c+sLiqGAUGf0MdkriI/Fr
+	Ta6I8/9opIv+UJCjq8uc2aJkyGWuf48xvG1f2xA0XAr5W4zMahI2tJJf4PnscqoQNnJEYiUL0lO
+	9sI14jGFS8z5XV1hXEJLUFGqd1MheDCOZeUz84kIduQ7EBtSp8ZMzrlHVvWQkXfHk/DI2V5MJFO
+	A==
+X-Received: by 2002:a05:600c:190b:b0:49c:fa21:e743 with SMTP id 5b1f17b1804b1-49cfa21e92amr53496425e9.25.1788539229587;
+        Fri, 04 Sep 2026 09:27:09 -0700 (PDT)
+Received: from localhost (109-81-91-122.rct.o2.cz. [109.81.91.122])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cff8195ffsm20600285e9.14.2026.09.04.09.27.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Sep 2026 09:27:09 -0700 (PDT)
+Date: Fri, 4 Sep 2026 18:27:08 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Charan Teja Kalla <quic_charante@quicinc.com>,
+	akpm@linux-foundation.org, mgorman@techsingularity.net,
+	david@redhat.com, vbabka@suse.cz, hannes@cmpxchg.org,
+	quic_pkondeti@quicinc.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V3 3/3] mm: page_alloc: drain pcp lists before oom kill
+Message-ID: <aprxXHSh-LyqaFCW@tiehlicka>
+References: <cover.1699104759.git.quic_charante@quicinc.com>
+ <a8e16f7eb295e1843f8edaa1ae1c68325c54c896.1699104759.git.quic_charante@quicinc.com>
+ <aphSYFTd12oia8K2@google.com>
+ <apkhSHr3by5Bf8jW@tiehlicka>
+ <CAO9r8zPCYNmJbkQEA62z75AB=ziWqGb38_E-ee_6o40Sz=zHXA@mail.gmail.com>
+ <apqppFukssaAQz3w@tiehlicka>
+ <CAO9r8zMBBhhqepbLR9buOOu7bpyLW+UTu55DjbCYrbBp56rkCw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260831234339.280376-1-stevensd@google.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAO9r8zMBBhhqepbLR9buOOu7bpyLW+UTu55DjbCYrbBp56rkCw@mail.gmail.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 33F74C0006
+X-Stat-Signature: s4fdukappe941gq4ge97x5ghkudtxy8o
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3A2E5100002
-X-Stat-Signature: 6x9y6amc1dyep84h1ckxhko8ww57ubp4
-X-HE-Tag: 1788539106-437009
-X-HE-Meta: U2FsdGVkX196f4ZjyZ406abnn1KD5L5039fPw0sx7T4fMT4KuREPGdCnjQcN0bUCkz57ykvJmHuCbUn16MZ+5nYi46b7VUwX6Kd0es0HE+tREq5SjutdjdOPiw0LMip7r2I2iu0bD8rHpkxOUxI9lN5g4SpyIQwvq+YuL8mVPE9zIarZcuwYuJPgso6+R6DhWzW12sirlY/ZbkHxJ4IryhlsK18YNgyXzoQmQr6vc5oOJbObhGZ+cDiNRnqdBpPxjoffCfB/4wPCtq4u2bGHHKTBplCiwwCUzluS8MX1euML2+9gQHa31IkheS26eB5dNt/7HhnlUtOHAzXWbFgIXnJSp3eFyYsdy+MsFsmJ9ddP6loCQT9gYHuYNp7q9+zzhYV+6kzTqE4WsP3vQe0k/2BJnaA+GKmGJPdQe/H9xg8hKkjAgg4268hVn0GSjovEu+k03Yv9P4nkCPXP2/ghnltK2qjjqvnbvwrzesApVaQu4fQfZ3gNfVHZHSTJbEwCiJwt5bb/l5wMpBK/NZv7Jkds/MhXQbOXycGSZLWyCZ9NMICccWZO3lZdRCoBrwkn44nKfm4DPWI0qHUIBeuWcHJnfs7giyPAljRtd7/kmWmtm4ztRjhoCTrasmQeQmSTAdJDnKEMTzSSvSI0SQEonKqejVU9MdiNphHsgIOSmkt0MtAWUzYJVsQdkLssgu/TegEwYymQ2WnNqxrDnMWuf03x4rCLO63MaemlSAdO4lfYsBREUmeCO7t3Rvj4pOguSyjYYSWRD8y6LPkRr9xWM3xCmZJa9XabOyTljMMWDG4uCuGGnf58+qfT7/Off3+od4iw4Ke/8vOUS7qRca8x9Va0lOfp3+6KK1Ry3GhgAjTTQVUKXPtzOlzmRAA1PoMKQU8pAKBx0vx2BQDCCx7CwdVXz3IbjFI7TSROnlaiFq/nl72NANZG1mpn+3lPm5Rzrj0U/hUl+mfuMUKvaIT
- LyFeabza
- nYc6XvZTV3DotwNQwYrduYCaXD5bIJ+9hZomtCxXeNkBEYmxTefTXGb0hXmACyp6UdJjajbNHGWyL9KlTFdxgBsZPt7v0EfkCTQ4i0zsj/x3gVjsXUXHhpfVjudq17DXOf2dHXWIhDN/CbGt1VVyH1A56zgQ9EuC4akbcqp3Rg5CgWGRmbzaHXpUEIhYY/uL63PcF+AOVxdtPO8wHQ7z47hjd+8ekSd8DNpUgxK5eA/P+XLCXnyqLdAFs0ESnixVf2VIRpaw8scfTdF+UepJG8KnhBMgwjlgu+JwOVYBS78F9leosaF3xb8YX3Lz+tUQqSLdE
+X-HE-Tag: 1788539231-424819
+X-HE-Meta: U2FsdGVkX1+pKscREV2/Tc8z0N8DoXe2bPZiSS4TZnEhNbrXny+7aCLWPjp50d0jouylTErRNYFPzAEK2/hRso8jjyUmP3/nYxVLdql//jYhwkWx7Xq8Ruja1rLjWMSOUsSw/9ySvor8v4Lm+OFqRYCG4xlNLSf5qe8gi1Eh5pWI4T0+Ma2z2vdzQ88UKNWq8x0hB/hSJXHL/kYZK7ia5pMeOAQ8ykeJuA9h/lo1MC9dYEMEUEEsdZ+FWNxK1Ml12RFKG2F38aen+c4MTcITulvR6R/h15ONkU3zFcFKUcENL/SH38zbyeB3mCYu81v/xMAeecvI9oIb+dGEKebYLJyM5Fly74VtBItw0vncLS/j1ZAlIexrkXoVNMuXOmQZDldudHV20ISBFrTm3ZqmstqkKQXigjfhkCVf/sPRZf4sAkJaLbcN7Y4kbmDqu+ZqXqH+xghEHPy80eQce48E1/igekjhCntxJ5jEIFmSqlUu2Niko76PpwE65r/FZng0EI8Oqm3jPrXl0NJ7qrV5RKLaA4shjgnuf1nCbCmJuIr1hw6axzOI4506Z15c9GS6/5ugBVFct9VX5QHapZnChrdhH+BK2QKroQl7vyuznq7Uhtjv+vD5rjRnt0U8WvH/n67vtLD5sNzhj+/ZIKgNTJ1+ijn43GqarjHKy5o8cE1X/VCT2u+dL/Z2CDVWIereQbOXytbOmOssML9PrgdxWC08sQTUbwmqSE+X4OIoVMYMiIgqzisCQeJkM97VGv1txByy11tnkIuBXoGlx/c/EPOatxIYxpgCOmrodZLWvKQHC2TyuFDypxMkx3U2qs5gSDzunoZYzZEaDV4r4nK7Lm3QRL/Gx5FI71iwVUG/8GhLUXugX1J/zPmuOqL/3JelRCWxtzYU2WTc83npzzj4XIEn/0+SQdLMUkeaAbuDyH+ucM2xbFuW0THS3bxJD+/sxMsE83S70nkY+UF0XJZ
+ 1dNudlso
+ 3/l4MmzLNTsmljNZvfTDCkdHHPzDESQ3f2T1MPliBZj0Ldmh6WTTH/PaRJ0yNsg9L00+e/PcUiWNABj/D9APG3p2yiyb5kgkmZjZSDRh5zBwaMBfuriqkzT338r8CSVVbVy0HByUvInv0rk+Q2jhORiCboaXAkmkFLl82NbC6JbW3oTyPlc7lhL9/lB6olqsRwlDoqVYcmSOhOI6p4PZ2Ge3bweh+TqecEusrfBf3rXlRcWTHuTiQxUf3oWgL7FtgqejQCVw8nP47JTDI9qj76G3peTwPvqSpqyfoKt+ftOABi9jY7wqXUmOhbUhzqPM1KdSg3lihbCrk2m3Z1DttUf+N8Xw+zaMIF6VSjKQtcKf72QYEdrYQc97o/+K/PNqOjPfBw8EtexHWHLxXzn67GYwPy+2R2LZvCGF7IDj4ag7f8qiIrChhc4ReovHHD6EFU68PEUQrX1IfV7gfFrwXhz4jDlo2qgYIVr5HRKlbKHTFcV1zYPGwykZG0xcb2V1T+tohcCk/m1HYP4yef468MVEkjSTv08KoO2x6ZauK0o38iHI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,116 +130,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 31, 2026 at 04:43:39PM -0700, David Stevens wrote:
-> Memcg charging can be done from any context, but calling schedule_work()
-> isn't safe from an NMI. If memory.high is breached from a context where
-> spinning isn't allowed, use irq_work to schedule the reclaim work.
->
-> Fixes: 3ac4638a734a ("memcg: make memcg_rstat_updated nmi safe")
-> Signed-off-by: David Stevens <stevensd@google.com>
+On Fri 04-09-26 09:09:35, Yosry Ahmed wrote:
+> On Fri, Sep 4, 2026 at 4:21 AM Michal Hocko <mhocko@suse.com> wrote:
+> >
+> > On Thu 03-09-26 07:03:33, Yosry Ahmed wrote:
+> > > On Thu, Sep 3, 2026 at 12:27 AM Michal Hocko <mhocko@suse.com> wrote:
+> > > >
+> > > > On Wed 02-09-26 16:49:48, Yosry Ahmed wrote:
+> > > > > On Sun, Nov 05, 2023 at 06:20:50PM +0530, Charan Teja Kalla wrote:
+> > > > > > pcp lists are drained from __alloc_pages_direct_reclaim(), only if some
+> > > > > > progress is made in the attempt.
+> > > > > >
+> > > > > > struct page *__alloc_pages_direct_reclaim() {
+> > > > > >     .....
+> > > > > >    *did_some_progress = __perform_reclaim(gfp_mask, order, ac);
+> > > > > >    if (unlikely(!(*did_some_progress)))
+> > > > > >       goto out;
+> > > > > > retry:
+> > > > > >     page = get_page_from_freelist();
+> > > > > >     if (!page && !drained) {
+> > > > > >         drain_all_pages(NULL);
+> > > > > >         drained = true;
+> > > > > >         goto retry;
+> > > > > >     }
+> > > > > > out:
+> > > > > > }
+> > > > > >
+> > > > > > After the above, allocation attempt can fallback to
+> > > > > > should_reclaim_retry() to decide reclaim retries. If it too return
+> > > > > > false, allocation request will simply fallback to oom kill path without
+> > > > > > even attempting the draining of the pcp pages that might help the
+> > > > > > allocation attempt to succeed.
+> > > > > >
+> > > > > > VM system running with ~50MB of memory shown the below stats during OOM
+> > > > > > kill:
+> > > > > > Normal free:760kB boost:0kB min:768kB low:960kB high:1152kB
+> > > > > > reserved_highatomic:0KB managed:49152kB free_pcp:460kB
+> > > > > >
+> > > > > > Though in such system state OOM kill is imminent, but the current kill
+> > > > > > could have been delayed if the pcp is drained as pcp + free is even
+> > > > > > above the high watermark.
+> > > > > >
+> > > > > > Fix this missing drain of pcp list in should_reclaim_retry() along with
+> > > > > > unreserving the high atomic page blocks, like it is done in
+> > > > > > __alloc_pages_direct_reclaim().
+> > > > > >
+> > > > > > Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
+> > > > >
+> > > > > [Sorry for thread necromancy]
+> > > > >
+> > > > > Hi Charan,
+> > > > >
+> > > > > Are you planning to respin this patch?
+> > > > >
+> > > > > I know that Michal was questioning the need for it. While doing some
+> > > > > stress testing I came across a couple of OOM kills that had significant
+> > > > > amount of memory in pcplists. Something that would have been prevented
+> > > > > by this patch.
+> > > >
+> > > > Could you share some numbers to see the scale of the problem?
+> > >
+> > > Sure, here's a sample from an OOM log (ignore mapped/free_mapped, it's
+> > > from the ALLOC_UNMAPPED series):
+> > >
+> > > [   40.336188] Mem-Info:
+> > > [   40.336195] active_anon:96 inactive_anon:1540181 isolated_anon:0
+> > >                 active_file:51 inactive_file:0 isolated_file:0
+> > >                 unevictable:382720 dirty:43 writeback:0
+> > >                 slab_reclaimable:20339 slab_unreclaimable:26597
+> > >                 mapped:382858 shmem:153 pagetables:8291
+> > >                 sec_pagetables:0 bounce:0
+> > >                 kernel_misc_reclaimable:0
+> > >                 free:17264 free_pcp:16890 free_cma:0
+> > > [   40.336199] Node 0 active_anon:384kB inactive_anon:6160724kB
+> > > active_file:204kB inactive_file:0kB unevictable:1530880kB
+> > > isolated(anon):0kB isolated(file):0kB mapped:1531432kB dirty:172kB
+> > > writeback:0kB shmem:612kB shmem_thp:0kB shmem_pmdmapped:0kB
+> > > anon_thp:10240kB kernel_stack:2576kB pagetables:33164kB
+> > > sec_pagetables:0kB all_unreclaimable? yes Balloon:0kB gpu_active:0kB
+> > > gpu_reclaim:0kB
+> > > [   40.336202] DMA32 free:34808kB boost:0kB min:11028kB low:13784kB
+> > > high:16540kB reserved_highatomic:0KB free_highatomic:0KB
+> > > free_mapped:11032KB active_anon:0kB inactive_anon:1487720kB
+> > > active_file:52kB inactive_file:20kB unevictable:393252kB
+> > > writepending:4kB zspages:0kB present:2096760kB managed:1991156kB
+> > > mlocked:393252kB bounce:0kB free_pcp:42404kB local_pcp:2460kB
+> > > free_cma:0kB
+> > > [   40.336205] lowmem_reserve[]: 0 5976 5976
+> > > [   40.336210] Normal free:34248kB boost:0kB min:34024kB low:42528kB
+> > > high:51032kB reserved_highatomic:0KB free_highatomic:0KB
+> > > free_mapped:34028KB active_anon:384kB inactive_anon:4672764kB
+> > > active_file:180kB inactive_file:0kB unevictable:1137628kB
+> > > writepending:168kB zspages:0kB present:6291456kB managed:6120144kB
+> > > mlocked:1137628kB bounce:0kB free_pcp:25156kB local_pcp:764kB
+> > > free_cma:0kB
+> > > [   40.336213] lowmem_reserve[]: 0 0 0
+> > >
+> > > As far as I can tell there's about ~65M of free memory stranded on
+> > > pcplists (in an 8G VM), which would have kept the amount of free
+> > > memory above the watermarks and prevented that specific OOM kill.
+> > > Although, as I mentioned before, this is a synthetic stress test.
+> > > Perhaps in practice it doesn't matter all that much in practice, but
+> > > it seems like the logical thing to do.
+> >
+> > yes, pcp lists are quite (unusually) high. Is it possible they simply
+> > got repopulated after the first direct reclaim run? Or is there
+> > something else(odd) going on?
+> 
+> I think in this case there wasn't a lot of reclaimable memory (mostly
+> anon with no swap), so at some point direct reclaim didn't make any
+> progress. __alloc_pages_direct_reclaim() only drains the pcplists if
+> reclaim makes progress, I am not sure if that's intentional. An
+> alternative would be perhaps removing this condition, something like
+> this:
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 8d79f76cdd0e1..98e9079240ad5 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -4592,11 +4592,12 @@ __alloc_pages_direct_reclaim(gfp_t gfp_mask,
+> unsigned int order,
+>         psi_memstall_enter(&pflags);
+>         *did_some_progress = __perform_reclaim(gfp_mask, order, ac);
+>         if (unlikely(!(*did_some_progress)))
+> -               goto out;
+> +               goto drain;
+> 
+>  retry:
+>         page = get_page_from_freelist(gfp_mask, order, alloc_flags, ac);
+> 
+> +drain:
+>         /*
+>          * If an allocation failed after direct reclaim, it could be because
+>          * pages are pinned on the per-cpu lists or in high alloc reserves.
+> @@ -4608,7 +4609,6 @@ __alloc_pages_direct_reclaim(gfp_t gfp_mask,
+> unsigned int order,
+>                 drained = true;
+>                 goto retry;
+>         }
+> -out:
+>         psi_memstall_leave(&pflags);
 
-This is in mm-unstable and breaks the build for me :)
-
-In general - please don't rely on implicit header includes, if you're using
-functions from a header that's not included, add the include because your local
-config might happen to import it but another one might be broken.
-
-$ make -j $(nproc) LLVM=1 mm/memcontrol.o
-  DESCEND objtool
-  CC      arch/x86/kernel/asm-offsets.s
-  UPD     include/generated/asm-offsets.h
-  CC      kernel/sched/rq-offsets.s
-  UPD     include/generated/rq-offsets.h
-  CALL    scripts/checksyscalls.sh
-  CC      mm/memcontrol.o
-mm/memcontrol.c:2859:6: error: call to undeclared function 'irq_work_queue'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
- 2859 |                                         irq_work_queue(&memcg->high_irq_work);
-      |                                         ^
-mm/memcontrol.c:4234:2: error: call to undeclared function 'init_irq_work'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
- 4234 |         init_irq_work(&memcg->high_irq_work, high_irq_work_func);
-      |         ^
-mm/memcontrol.c:4443:2: error: call to undeclared function 'irq_work_sync'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
- 4443 |         irq_work_sync(&memcg->high_irq_work);
-      |         ^
-3 errors generated.
-make[3]: *** [scripts/Makefile.build:290: mm/memcontrol.o] Error 1
-make[2]: *** [scripts/Makefile.build:551: mm] Error 2
-make[1]: *** [/home/lorenzo/kerndev/kernels/mm/Makefile:2229: .] Error 2
-make: *** [Makefile:248: __sub-make] Error 2
-
-> ---
->  include/linux/memcontrol.h |  1 +
->  mm/memcontrol.c            | 12 +++++++++++-
->  2 files changed, 12 insertions(+), 1 deletion(-)
->
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index 8170bb8066a2..036d973ceca6 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-> @@ -219,6 +219,7 @@ struct mem_cgroup {
->  	spinlock_t	 peaks_lock;
->
->  	/* Range enforcement for interrupt charges */
-> +	struct irq_work high_irq_work;
->  	struct work_struct high_work;
->
->  #ifdef CONFIG_ZSWAP
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 6dc4888a90f3..5e2f749067cb 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-
-You need to add:
-
-#include <linux/irq_work.h> in this file.
-
-> @@ -2360,6 +2360,11 @@ static void high_work_func(struct work_struct *work)
->  	reclaim_high(memcg, MEMCG_CHARGE_BATCH, GFP_KERNEL);
->  }
->
-> +static void high_irq_work_func(struct irq_work *work)
-> +{
-> +	schedule_work(&container_of(work, struct mem_cgroup, high_irq_work)->high_work);
-> +}
-> +
->  /*
->   * Clamp the maximum sleep time per allocation batch to 2 seconds. This is
->   * enough to still cause a significant slowdown in most cases, while still
-> @@ -2752,7 +2757,10 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
->  		/* Don't bother a random interrupted task */
->  		if (!in_task()) {
->  			if (mem_high) {
-> -				schedule_work(&memcg->high_work);
-> +				if (allow_spinning)
-> +					schedule_work(&memcg->high_work);
-> +				else
-> +					irq_work_queue(&memcg->high_irq_work);
->  				break;
->  			}
->  			continue;
-> @@ -4129,6 +4137,7 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
->  		goto fail;
->
->  	INIT_WORK(&memcg->high_work, high_work_func);
-> +	init_irq_work(&memcg->high_irq_work, high_irq_work_func);
->  	vmpressure_init(&memcg->vmpressure);
->  	INIT_LIST_HEAD(&memcg->memory_peaks);
->  	INIT_LIST_HEAD(&memcg->swap_peaks);
-> @@ -4337,6 +4346,7 @@ static void mem_cgroup_css_free(struct cgroup_subsys_state *css)
->  		static_branch_dec(&memcg_bpf_enabled_key);
->
->  	vmpressure_cleanup(&memcg->vmpressure);
-> +	irq_work_sync(&memcg->high_irq_work);
->  	cancel_work_sync(&memcg->high_work);
->  	memcg1_remove_from_trees(memcg);
->  	free_shrinker_info(memcg);
->
-> base-commit: 8d3ae59288f1e7d58d76558a6ee96d533bc5019f
-> --
-> 2.55.0.897.gb25b4bd76c-goog
->
->
-
---
-Cheers, Lorenzo
+Ideally if we can make the function call less hairy. Maybe we want to
+make draining part of the reclaim as the last resort when normal reclaim
+fails.
+-- 
+Michal Hocko
+SUSE Labs
 
