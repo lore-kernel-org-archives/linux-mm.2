@@ -4,88 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 525C1C61DD3
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 00:35:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AB5FC624D4
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 00:41:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 799CA6B008C; Thu,  3 Sep 2026 20:35:44 -0400 (EDT)
+	id 1FF3E6B0088; Thu,  3 Sep 2026 20:41:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74A5B6B0092; Thu,  3 Sep 2026 20:35:44 -0400 (EDT)
+	id 1B0116B008A; Thu,  3 Sep 2026 20:41:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 660386B0095; Thu,  3 Sep 2026 20:35:44 -0400 (EDT)
+	id 0EE2C6B008C; Thu,  3 Sep 2026 20:41:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 377086B008C
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 20:35:44 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BC0A7A47D7
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 00:35:43 +0000 (UTC)
-X-FDA: 85174211766.16.4A79AAB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 0D9551C0004
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 00:35:41 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RL1Vm7GC;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E462D6B0088
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 20:41:38 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 68EA140683
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 00:41:38 +0000 (UTC)
+X-FDA: 85174226676.14.7794981
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 10C9616000E
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 00:41:34 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=ICElzZeO;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf08.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788482142;
+	s=arc-20220608; t=1788482496;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/i0PB9wZ1BVhvmuU/BjDsAlCJWHvx+Op8tKKNzHHKY8=;
-	b=zm4qba1EuUegeTNE/Yk1mRW4jU6Y8Z6MdBxyGWanL2chNF4W1sNK6FAPFmsNPojIdV97r8
-	xqXunb0FklTnbTdaq2j6/fjHAMVi/YtvpUkoitZzRyM0bzmk86ipgwurXjmR4hMBWk+f3o
-	Bx3BY7yLqZrDIXkhDr3Ds1D3A62OGIA=
+	bh=3YK94SrrP/vItYLu0yuChfSeE7HGX/g9ss7iDjP+W/0=;
+	b=hnJEgDyJiQUc7Nnbm+oPO7C7wCj7YKpLgQBz4FIMtCa5RBczTpdzyb9uqaWDiTPA5UqFJ1
+	QF7P0kVEOLWRXSwyJ3P41XNejWLsKBY13PLzLcHXpgdrSlTDF7bQvHwjHUFPSzy+z5qMUZ
+	HTBwB35ju8568wcFzfdPXZUQGiSa8oY=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RL1Vm7GC;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=ICElzZeO;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf08.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788482142;
-	b=VQAKVwO16oIjVbbimput02xmIkIXmyeZ0mKhAeHBQSMune8PzhvIjjcYfhDJQFEPSLrI2r
-	FFGdB7XtY2bNqFWFMG2EAq/0jK/0sEeM41JwTYCV1OgV/7ATxdjPSzHs8KlT5+mI/1cMcg
-	9i6TdC3l0Nsq2CyWYNXjiptciubenD0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 53B006057A;
-	Fri,  4 Sep 2026 00:35:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B98E41F000E9;
-	Fri,  4 Sep 2026 00:35:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788482141;
-	bh=/i0PB9wZ1BVhvmuU/BjDsAlCJWHvx+Op8tKKNzHHKY8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=RL1Vm7GCgFf5V9xYnCjpbbZYUGpe6r9pkdDDULkM8h3VSSYPHnHI0b0+fkdMB/iRh
-	 PqWDkm7zxDo/trg60ESnjwaGEwBo75ZTD4QD8KqUhouYiWS042mB4Fde7cNTiPBvCI
-	 3dFpKjDn79U4dj243cWrUyJQiNCk01+xCg739Hjk=
-Date: Thu, 3 Sep 2026 17:35:40 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: SJ Park <sj@kernel.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>, David Hildenbrand
- <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko
- <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] mm/memory: fix hugetlb_zap_begin() call in
- zap_vma_range_batched()
-Message-Id: <20260903173540.e8f660dcaf083946417cba3e@linux-foundation.org>
-In-Reply-To: <20260904000028.149656-1-sj@kernel.org>
-References: <20260904000028.149656-1-sj@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 34x3zrd1efqnshycejq8nosd8mmyfg8c
+	t=1788482496;
+	b=gLh5vSY3Hflt0YD3SOBeqRvyp7gTlQV8Zv1x3UbJjlpexbW0JJoizL5hr3iek3tyuIIdv6
+	3yuBYRe2cfTtPkQlC9howIV8SlzE4MgwDKdJ/v3o3MkQl9WvmALS08nXEBnpGZWKlY2Vc0
+	wR9znpxLlg44mwDWGmz0US2Qfkt0KaY=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=3YK94SrrP/vItYLu0yuChfSeE7HGX/g9ss7iDjP+W/0=;
+	b=ICElzZeOv+DVZa16XDC103N2kHZ60MA3ETG79mvIQYQqCeUK0/6slyujbQnm37mvwhbaQKUz0
+	Z0w5bGkxGfDmetQGKazZ6Icwv4W8F3G/VQGnivrCSa+YU0kGj8vMf7+o1zWQzUQAaJEolgMJ9vh
+	kss0kI5ab3y7zhIO1l0/Z9M=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4hbcnX2nLjzRhWS;
+	Fri,  4 Sep 2026 08:30:40 +0800 (CST)
+Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3EF1240579;
+	Fri,  4 Sep 2026 08:41:29 +0800 (CST)
+Received: from [10.174.177.243] (10.174.177.243) by
+ kwepemk300003.china.huawei.com (7.202.195.93) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Fri, 4 Sep 2026 08:41:27 +0800
+Message-ID: <62729d59-198d-4ed2-b1e1-b18384e73b98@huawei.com>
+Date: Fri, 4 Sep 2026 08:41:26 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] xfs: fix NOFS state corruption in btree split worker
+To: Brian Foster <bfoster@redhat.com>
+CC: <brauner@kernel.org>, <djwong@kernel.org>, <cem@kernel.org>,
+	<akpm@linux-foundation.org>, <vbabka@kernel.org>, <surenb@google.com>,
+	<mhocko@suse.com>, <brendan.jackman@linux.dev>, <hannes@cmpxchg.org>,
+	<ziy@nvidia.com>, <david@kernel.org>, <qi.zheng@linux.dev>,
+	<shakeel.butt@linux.dev>, <ljs@kernel.org>, <linux-xfs@vger.kernel.org>,
+	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>
+References: <20260902134417.c44503a1d65533f81fb1c391@linux-foundation.org>
+ <20260903133756.2006032-1-wangkefeng.wang@huawei.com>
+ <apl7hNnt0lR5HFXA@bfoster>
+Content-Language: en-US
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <apl7hNnt0lR5HFXA@bfoster>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemk300003.china.huawei.com (7.202.195.93)
+X-Stat-Signature: 6fdnduh4tcbz88xr54ahpes33i8tad4p
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0D9551C0004
+X-Rspamd-Queue-Id: 10C9616000E
 X-Rspam-User: 
-X-HE-Tag: 1788482141-623893
-X-HE-Meta: U2FsdGVkX1+LKqcZ7AKl4pTtLM+iHIUvbdElt1S9ks8jE2S/R5YZzTqo88Ysw3QJspGr4L8lbfrGeOJ6sn3qyTrEYS1gR3NpYw9fZ47Tj8OwVXEyogMTllQb5ysUgblYaQdlUYiFDNkDUYFKhIpGqitZxyf4uKzKH4W/IactZiBtdbh39R4byjtgOaDH8929d7ovikuWkkjZDzmX7Wl5HFR9RUYF1J9wR/AfRRTA9GgOPJ/QgbT3jM4r91towhqNQHqlLgC/9Eu3nKnRYQAQffuulpHZfxKWOWwLtKnZ38xHCZEC5T9ei7NbNo7zQK0SObNmTrWUCUqXMZ9CGJwpjmxxrjILG/ScOPZJYOP0r+wqKbdkrORiv0xPnqF2AeHT9rvuYy8GJua2hJQNTQi7Ca5puu9LIaqk6o/y04pQgqa51oYLN9mIR76vaE+FjdebrQb5l5uDKbYUp37cdLiblM9KOJQAyeUyDbmRE7w11bFz5CpTt3t4tFK73UQ9pEpklB14xd3b/xfuGotJgNqbm6DcEh5RiiahMn3gGIQACgSJFJUKIN7jYTg+Z6/7nTrkbxgG0xasJWp0Hd5sNtgmtWQlLZI4FsJNHrQg3g6CrvDy1cq1bjeqbr9u/KWKAq94gmNTCbEBdIGVQK5kmzDFFa9eUF/4CCfvDiFAWp/5NAR/9ae6ZwZdRGuZ05aataDKxqa0ycuZRf1C78MrQmEt7Zy8BAkqgwoFCZ3ix7GUghjmEQlfsJW55sJq+cDWCs7nFnDVB0fBmBvS1vM2X92XESZgDJ9UhJH9SiPglzCDSv4LthobeACxGcoilGwMp/FhZWFq13Xax14BKBRIWvWww/TZBlpC4JLNNLmx1c2lbBCC1P3YIxtFT5VLRIPKa2H1GXr1JW9KXj2Vo55hR4XX+PaFPnC3aylJo5YGrM1M5R5dPDQDseWbjfHsNKzdCcnjgNMMVl1/DM7Iaf1PPZ+
- rBgTfYwl
- kn3DCv0UHTjaZ+xAC8Sgik1dN7p+FqBubzOp4GKxhupAaOmsPAoRRXuI0rTQLPDPTAYKQIdxoj5colGNuwlkDmJHtkg3m44wvQQwHsWsDwis1sAKqBlAujBmB9dTAmgIg/uOzFczRYBs4HJwIX3Qd8dBAGpUA4KtFNiNX65KET7nRWWM+Ge/AzY3biFPOjLbYhwph3tm/Wvd5MpEgSieuiQz0sJWBEoQY0SExYx9XthDMt4G+feWA4kWb2sys3Ld+XQHVqldcaxarha6P00rsELUll7OJOmikjDGMm/Kpfo4bC6LXUS+qAP0yQsbIxCqxqtfEPGJP78niSYRdXconTrfxf0f6jtfsvmi6yfcQwX211jcXN8QymJ0vPCXBh14lkXqc/Z+8Ue59O6sl0YXDpxbRJFWCdCMEPOw47HYY93y/eb3NbnfoBEumsoQoyhhpSKkDiVLuyQD9Mf8AfoznA86FjjUNs6PforN3pHWPcHU62TQAkU+DNEEzQXhh7QZsdf2yiDKVUvfxoy+bfF/i7ncsA3MNhy10YMZZ10db5vf/CoKXn3ikyOfgZb2LQ+q1hd+YEOug8BL0r/VNpVxf1CFZ5bK2WYOfGUZYCusIkjANzEl/Ig6O2Pklvk8GqEUPvoAe/uyU3dKSOZAQlVjkSqapAAWVVFYiFsmqi0eOppx9R2SdqJhRpUkzTUaVz6y4xN6tBbHUkx2QIje/XhbzYSU/ik+wi2QjLmtz5+IsMT5HGf5b7TEy/t2+Jq20Yu8vIhIt3mxXsvQSk2M=
+X-HE-Tag: 1788482494-403583
+X-HE-Meta: U2FsdGVkX1/ky/nF85V5tvqoXgnAW53Rv+36gAdaJrO3xTDcCA14XvI+uexQ1nBscq/UdMZr3Ua9VdVsKwkL3vHeGouTFlRCG00SWLye2NAv+XYH1eoVM84eUuieYg69oqxBSVHzOCgOtWyVqZEIdxZ1+8GoKtUYUa5/3IZs0AmL5x1Nruy6At/xvWfAKyrcMd744qnomw7BVwH2Qu3lE2D1NLMlCiHM7Y0QlXPox4l7E03FUkTGru/J17LEQZP9tzLRWG2CUGPsOF7KZi52J1K+Y18zXHIntCC8/KpjK2GfZdOji/DmPbF9Kq5V9H4/Q85tb/8VR04v36ffA4hAuRyulr4ns+24wmGf3Dq7fSlPuw75aTuxTKZlA9nFcwMfqR7D9fHcb1T8enMFZVuYPA8/lcjpqdsoD6jq0RwwMoM6xYn5Qejv/d8xxPMLLi7iqLEwptGdqXhggRxuFFKqCsKIdLpQUO5jN0Xg4wUMheDmZ10Z6C9dzJAbOz2vwI5V9qXUvafUpheFLIo1tYJEWVv88+eqRWA4dqN/hw/XqVlRuNc628038kb2+eMULSEqm1EnwqNdNIkGf8OxL0jmzUO1EpaDB9T6koC5vax0ld1pjuPx1vjSFK6v/FV1MVeBeYGJmCWth6wfFNhnmwPCIV3MbX8uNF86BZCrMpyzxmHDPjtcAqd7RkUoyn06gAH1DVL7Tf2vk1CQsFmhHAQbG0OyX9kIrWFRx3L8CP6coz4tAnJaaA62LeAt5nrzzUSGCN1rtWBpF22DaecN/3ruf33Xv8tUtEl29etB1LdTi9mrOcqRAf0jLjqtnrgZ4cNuv/8TabSJr7j6/SATfZUuukzo/geQe8ESnSxtfqGzntzJOrksTJVf+1BQ1SUpVPljOLD3Ufndk6PNwKSrrQA+8a/QZTI9/I0KqCOecyJ8Jkaog4JHvOpCUwdWUbCl+LJR6ixGnDzU3T6HdMlfwDK
+ AYskCkNQ
+ iOqUMqcvXG4uUG/ArOcZ+fmVIhjQXRWKExWmQl7S9DBep5gweHfJK1oaq0uffTqXZe2bVRMavamD/63qTWY225Dd+FjSBKXHOBEJT9sI9GZggCHnaEQl81T9i98yVHBvnQE1XHGliIHLA+wSu7EhDFYB6y4qhpiwP6btRav3AlrvYegqe3d4nFwvlGFQMJ+u+lSRhwUfXKIrXzmwx63w+uzbIsIVcDGFmrK7iw36oZsYUjA1dUCxPdMz+qyu5AxyDgczFX7YZVUfg92P/a+x5c2c28bmiDsXImrQfwPx9SZFGbeFHSIOynVLnBiTf8rloR+eN42AGC008zBTAlJPsILHHXsKSS/idC2i2U8Z3IpPZkVRCEUjfOsVHGs4wfsB2O12PYoLh8yW3lTtT5bkX4ke2lQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,220 +104,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  3 Sep 2026 17:00:26 -0700 SJ Park <sj@kernel.org> wrote:
 
-> Commit f1fc44daf618 ("mm/hugetlb: don't lock private resv_map during
-> final unmap") added zap_details parameter to hugetlb_zap_begin().  But
-> the hugetlb_zap_begin() call in zap_vma_range_batched() is not updated.
-> As a result, build fails as below.  Fix it.
+
+On 9/3/2026 9:52 PM, Brian Foster wrote:
+> On Thu, Sep 03, 2026 at 09:37:56PM +0800, Kefeng Wang wrote:
+>> xfs_btree_split_worker() calls xfs_trans_set_context() and
+>> xfs_trans_clear_context() on the caller's transaction, overwriting
+>> tp->t_pflags with the worker's NOFS state. When the caller already has
+>> PF_MEMALLOC_NOFS set (e.g. xfs_end_ioend_write, xfs_dio_write_end_io),
+>> the corrupted tp->t_pflags causes xfs_trans_free() to erroneously clear
+>> the caller's NOFS protection.
+>>
+>> Use memalloc_nofs_save/restore with a local variable instead so
+>> tp->t_pflags is never touched.
+>>
+>> Closes: https://sashiko.dev/#/patchset/20260902131653.1338227-1-wangkefeng.wang@huawei.com
+>> Fixes: 756b1c343333 ("xfs: use current->journal_info for detecting transaction recursion")
+>> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+>> ---
 > 
->   CC      mm/memory.o
-> .../mm/memory.c: In function ‘zap_vma_range_batched’:
-> .../mm/memory.c:2308:9: error: too few arguments to function ‘hugetlb_zap_begin’
->  2308 |         hugetlb_zap_begin(vma, &range.start, &range.end);
->       |         ^~~~~~~~~~~~~~~~~
-> In file included from .../mm/memory.c:48:
-> .../include/linux/hugetlb.h:253:20: note: declared here
->   253 | static inline void hugetlb_zap_begin(struct vm_area_struct *vma,
->       |                    ^~~~~~~~~~~~~~~~~
-
-You cleverly pulled during the ten-minute-window after I'd pushed this
-out in order to pull it onto my build-test-machine.
-
-There's probably a smarter way of doing this, not sure what though.
-
-It doesn't happen often - I usually only need to push/pull the quilt
-patches (25-new).
-
-> /* TODO: move below to commentary */
+> I agree that the Sashiko analysis looks correct. The only thing I wonder
+> is whether it might be a bit cleaner to have the set_context() helper
+> return the context instead of hardcode the assignment to ->t_pflags so
+> it can be used in both places. The reasoning is just that the current
+> arrangement kind of makes it easy to repeat this mistake in the future.
 > 
-> I didn't read the broken commit in depth.  This fix is only
-> build-tested.  I wanted to report the issue with this as a temporal fix,
-> but the broken commit doesn't have Link: tag.  So directly posting this
-> temporal and not very well verified fix first.
-
-Yeah, this is possible fix for
-https://syzkaller.appspot.com/bug?extid=bd6aaf99e8443d8a9034 which I
-had chatgpt create for me.  It's in limbo at present until I figure out
-what to do with it.  Actually I'll hide it from others while figuring-out
-happens.
+> Then again, it's a single line helper so maybe another option could be
+> to just remove and open code it. I suppose the pro of keeping the helper
+> is that it's a decent spot to document the concern and why it returns a
+> value, etc. *shrug* Thoughts?
 
 
+I personally tend to remove the helper functions, but let's see what 
+others think.
 
-For the morbidly curious.  It's really only a 2-line change, plus a bunch
-of changes to pass the zap_details down to  __hugetlb_zap_begin().
-
-
-
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: mm/hugetlb: don't lock private resv_map during final unmap
-
-Replacing a private hugetlb mapping can trigger a lockdep circular
-locking warning and, if the corresponding reclaim, NBD and socket paths
-run concurrently, can deadlock userspace tasks.
-
-The mmap path holds mmap_lock for write while removing an overlapping
-mapping and then reaches:
-
-  unmap_vmas()
-    hugetlb_zap_begin()
-      hugetlb_vma_lock_write()
-        resv_map->rw_sema
-
-This establishes the lock ordering:
-
-  mmap_lock -> resv_map->rw_sema
-
-Lockdep already knows about a transitive dependency in the other
-direction.  In full, the relevant part of the dependency graph is:
-
-  resv_map->rw_sema
-    -> fs_reclaim
-    -> q->q_usage_counter
-    -> q->elevator_lock
-    -> set->srcu
-    -> cmd->lock
-    -> nsock->tx_lock
-    -> sk_lock-AF_INET6
-    -> mmap_lock
-
-The resv_map->rw_sema -> fs_reclaim edge can be established by a
-private hugetlb fault.  The fault holds the private VMA lock for read
-and huge_pte_alloc() can allocate page-table memory with reclaim
-enabled.  The middle of the chain comes from the block and NBD paths,
-while sk_lock-AF_INET6 -> mmap_lock can be established when an IPv6
-send copies from userspace while holding the socket lock and faults on
-the user buffer.
-
-Consequently, lockdep summarizes the relevant reverse path as:
-
-  resv_map->rw_sema -> sk_lock-AF_INET6 -> mmap_lock
-
-This is a transitive lockdep dependency, not a single call stack
-holding all three locks.
-
-Commit bf4916922c60 ("hugetlbfs: extend hugetlb_vma_lock to private
-VMAs") made hugetlb_vma_lock_write() acquire resv_map->rw_sema for
-private hugetlb mappings.  That lock is needed for partial zaps such as
-MADV_DONTNEED.  It keeps a concurrent fault from running after the PTE
-has been cleared but before the hugepage has actually been returned to
-the pool, which could otherwise result in an unexpected SIGBUS when the
-hugepage pool is fully allocated.
-
-That serialization is unnecessary when the VMA is being finally
-unmapped.  mmap_lock prevents a concurrent fault from entering a VMA
-which is being removed, and private VMAs do not participate in hugetlb
-PMD sharing.
-
-Pass the zap details to hugetlb_zap_begin() so that it can distinguish
-a final unmap.  For final unmaps, continue taking the hugetlb VMA lock
-for shareable mappings, where it protects PMD sharing and the lifetime
-of the VMA lock, but do not take resv_map->rw_sema for a private
-mapping.  Likewise, do not attempt to release the private reservation
-map lock from hugetlb_zap_end().
-
-Non-final zaps continue taking resv_map->rw_sema, preserving the
-MADV_DONTNEED versus page-fault serialization for which private hugetlb
-VMA locking was introduced.
-
-Fixes: bf4916922c60 ("hugetlbfs: extend hugetlb_vma_lock to private VMAs")
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Reported-by: syzbot+bd6aaf99e8443d8a9034@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=bd6aaf99e8443d8a9034
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Jane Chu <jane.chu@oracle.com>
-Assisted-by: ChatGPT <chatgpt@openai.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/linux/hugetlb.h |    8 +++++---
- mm/hugetlb.c            |   16 ++++++++++++++--
- mm/memory.c             |    4 ++--
- 3 files changed, 21 insertions(+), 7 deletions(-)
-
---- a/include/linux/hugetlb.h~mm-hugetlb-dont-lock-private-resv_map-during-final-unmap
-+++ a/include/linux/hugetlb.h
-@@ -245,15 +245,17 @@ void adjust_range_if_pmd_sharing_possibl
- 				unsigned long *start, unsigned long *end);
- 
- extern void __hugetlb_zap_begin(struct vm_area_struct *vma,
--				unsigned long *begin, unsigned long *end);
-+				unsigned long *begin, unsigned long *end,
-+				struct zap_details *details);
- extern void __hugetlb_zap_end(struct vm_area_struct *vma,
- 			      struct zap_details *details);
- 
- static inline void hugetlb_zap_begin(struct vm_area_struct *vma,
--				     unsigned long *start, unsigned long *end)
-+				     unsigned long *start, unsigned long *end,
-+				     struct zap_details *details)
- {
- 	if (is_vm_hugetlb_page(vma))
--		__hugetlb_zap_begin(vma, start, end);
-+		__hugetlb_zap_begin(vma, start, end, details);
- }
- 
- static inline void hugetlb_zap_end(struct vm_area_struct *vma,
---- a/mm/hugetlb.c~mm-hugetlb-dont-lock-private-resv_map-during-final-unmap
-+++ a/mm/hugetlb.c
-@@ -5403,13 +5403,25 @@ void __unmap_hugepage_range(struct mmu_g
- }
- 
- void __hugetlb_zap_begin(struct vm_area_struct *vma,
--			 unsigned long *start, unsigned long *end)
-+			 unsigned long *start, unsigned long *end,
-+			 struct zap_details *details)
- {
-+	zap_flags_t zap_flags = details ? details->zap_flags : 0;
-+
- 	if (!vma->vm_file)	/* hugetlbfs_file_mmap error */
- 		return;
- 
- 	adjust_range_if_pmd_sharing_possible(vma, start, end);
--	hugetlb_vma_lock_write(vma);
-+
-+	/*
-+	 * A final unmap cannot race with a fault in this VMA because
-+	 * mmap_lock prevents the fault from entering a VMA which is being
-+	 * removed.  Skip the private resv_map lock in that case to avoid
-+	 * inverting its lock order with mmap_lock.  Shareable mappings
-+	 * still need the VMA lock to protect PMD sharing.
-+	 */
-+	if (!(zap_flags & ZAP_FLAG_UNMAP) || __vma_shareable_lock(vma))
-+		hugetlb_vma_lock_write(vma);
- 	if (vma->vm_file)
- 		i_mmap_lock_write(vma->vm_file->f_mapping);
- }
---- a/mm/memory.c~mm-hugetlb-dont-lock-private-resv_map-during-final-unmap
-+++ a/mm/memory.c
-@@ -2268,7 +2268,7 @@ void unmap_vmas(struct mmu_gather *tlb,
- 		unsigned long start = max(vma->vm_start, unmap->vma_start);
- 		unsigned long end = min(vma->vm_end, unmap->vma_end);
- 
--		hugetlb_zap_begin(vma, &start, &end);
-+		hugetlb_zap_begin(vma, &start, &end, &details);
- 		__zap_vma_range(tlb, vma, start, end, &details);
- 		hugetlb_zap_end(vma, &details);
- 		vma = mas_find(unmap->mas, unmap->tree_end - 1);
-@@ -2304,7 +2304,7 @@ void zap_vma_range_batched(struct mmu_ga
- 
- 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
- 				address, end);
--	hugetlb_zap_begin(vma, &range.start, &range.end);
-+	hugetlb_zap_begin(vma, &range.start, &range.end, details);
- 	update_hiwater_rss(vma->vm_mm);
- 	mmu_notifier_invalidate_range_start(&range);
- 	/*
-_
+> 
+> (Please don't change this patch just on my comments alone. Let's see if
+> others have input first..).
+> 
+> Brian
+> 
+>>   fs/xfs/libxfs/xfs_btree.c | 10 ++++++++--
+>>   1 file changed, 8 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/fs/xfs/libxfs/xfs_btree.c b/fs/xfs/libxfs/xfs_btree.c
+>> index 6738d9d1511b..8ae4b94e6995 100644
+>> --- a/fs/xfs/libxfs/xfs_btree.c
+>> +++ b/fs/xfs/libxfs/xfs_btree.c
+>> @@ -3007,12 +3007,18 @@ xfs_btree_split_worker(
+>>   {
+>>   	struct xfs_btree_split_args	*args = container_of(work,
+>>   						struct xfs_btree_split_args, work);
+>> -	xfs_trans_set_context(args->cur->bc_tp);
+>> +	unsigned int			nofs_flags;
+>> +
+>> +	/*
+>> +	 * Don't use xfs_trans_set_context() here: it would overwrite the
+>> +	 * caller's saved NOFS state in tp->t_pflags.  Use a local scope.
+>> +	 */
+>> +	nofs_flags = memalloc_nofs_save();
+>>   
+>>   	args->result = __xfs_btree_split(args->cur, args->level, args->ptrp,
+>>   					 args->key, args->curp, args->stat);
+>>   
+>> -	xfs_trans_clear_context(args->cur->bc_tp);
+>> +	memalloc_nofs_restore(nofs_flags);
+>>   
+>>   	/*
+>>   	 * Do not access args after complete() has run here. We don't own args
+>> -- 
+>> 2.55.0
+>>
+>>
+> 
+> 
 
 
