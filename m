@@ -4,145 +4,179 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C485C624DE
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 21:14:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB6EEC624DE
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 21:35:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 082E56B0088; Fri,  4 Sep 2026 17:14:37 -0400 (EDT)
+	id B31826B0088; Fri,  4 Sep 2026 17:35:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00DB06B008A; Fri,  4 Sep 2026 17:14:36 -0400 (EDT)
+	id AE13B6B008A; Fri,  4 Sep 2026 17:35:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEFC56B008C; Fri,  4 Sep 2026 17:14:36 -0400 (EDT)
+	id 9ABF26B008C; Fri,  4 Sep 2026 17:35:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AD8C56B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 17:14:36 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 20F9712022D
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 21:14:36 +0000 (UTC)
-X-FDA: 85177333752.28.8E656DC
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5222014000B
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 21:14:34 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MJSQK4Zo;
-	spf=pass (imf09.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788556474;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 652DE6B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 17:35:45 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CEC04140213
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 21:35:44 +0000 (UTC)
+X-FDA: 85177387008.04.3C8B877
+Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 9F58CA0007
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 21:35:41 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=h36vtbVJ;
+	dkim=pass header.d=columbia.edu header.s=lionmail header.b=d9yAzAIZ;
+	spf=pass (imf25.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788557742;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=bvjoQwE4ZDaiwAW0jTIm2X9dCshUZub+PI63iQkxm4U=;
-	b=Umd8cBUd5KMCKlpgUiboVp/zmAb3+ciwHo0ed1pfDWFvVp1F9036qv1jVaoZVhQ8vz2cjw
-	rhZI73c5fY+47WE8F63MiTj4Xo3WRYH+G6SpVnOmgi9EttHPZoRMqm8K5HLv9dlyBCNV8q
-	5Pys6ysSYVdbrWHSKwbu3PWgk4nuqKk=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788556474;
-	b=Z9q4D3dsEP8saGLjuSmxDCJuafSevEmguh9QgL3J6G4HGTvarvZSZHzuv0slSkWJA9R7sO
-	gB2mBpg/ANPlz24bVJFlN6iHKo36S5p8B0vlLSjLZD/hmYZ76BBp7Atjwq1zZ7+IjCRbm4
-	0CLCamkYrzsmz6n4G35xLE1PI18IGOc=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MJSQK4Zo;
-	spf=pass (imf09.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-49b0dbfbf7bso11637475e9.2
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 14:14:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788556473; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Xezz6DpW98JTuL989Hy8D+esq6xqMHeu7+Ry8jPwXSFhmG2pZlDF1ZmJv/QIYRadHk
-         p/3B9nBQJp6/MD7rWdbFu3dTaCtMTD1/7CF4Ws4+LHBOxkCW2vgkym9MxXZI9KKIBfPm
-         VScclD7oWMHMXxuckyNWc3emC3/rbY45rvvCm7ql55xePHIJ1g/8h4HjsbB1lHAB3RC1
-         AG671E/+1uF7/1nNG0o6pB6GS7kssH1daJ6avzpH37yRiIb+awQpdka+VuvCF+ky2wOW
-         6HKdpichjGV9rQRQexD+3Dy1O1icsipGg38hK4jkdpScCHJke1/ek/c/fzeii1vMQpUU
-         oSYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=bvjoQwE4ZDaiwAW0jTIm2X9dCshUZub+PI63iQkxm4U=;
-        fh=hBu3IdIzriexa/vm7+y9017h0uPr/BW8NbY/CaQ1aaE=;
-        b=J01iXmTIXF8w9TYM2wx62hURcYwR98CUW1XuQUU2ZxcuJGHEBMfdBHoAGF3B+cB9BJ
-         0jwt1uZZA5o298g2KFS9vUvPLArHqsEFaPpMJJGb4yd6IxeBLvEh04wO4qpr4iJ/hzV9
-         cP2I3T2EK1XCrhfcXo1+MErkyqtxlXE1RWCeBUyb4VjQ/uJhSHLp7KZXqDg+2bZsyxYB
-         Eqyy4Mk0/as0eSOEMnE0E4LSooVM0WT340lmBzIR1y9i9NNrnnEuh3j6qEWBRRE+OQqy
-         ojwpBKPMU5udK8wzh2ICZqUPa9fKrXIJccQ6Q4GQ7mFzOZ4ytkWxjJU05PvUX+8+ytLq
-         ZL7A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=L/aPYyT1Jy/RmfEhEFasDwbK2r6Vj3z/rQBklaXlzNI=;
+	b=rh4Mg75MdAyq9vhfZuPd15xZsikEMMPZUv4gXbB3eq6PwqD3hGQdKCzr+372gDomt2E+Bt
+	TDzS2+Vbja5EzW/kvrNTzkYGLvBRkjGTGyqFLBoEYaSUOC7JwH0/FtX/fTYUnxz9B9p/3Y
+	hgm9qK68H+WI/XVbWmlgfAob77EpBuM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788557742;
+	b=us3MQQZWMW72/QO1UglTm/myeY8Eo1O+ApSHv9MVVnKjB5xde3tZvpPCj6lpyGTpjamFRB
+	gGKNuvgE0s/NQZVVG54vVj0mTD6c5ivit94d9V+TPrEL64p54w1YLcFmPOG8Cf9djlA8lX
+	r5IH3AkkfEbAd73pVPE+zpB3ZZjCx7U=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=h36vtbVJ;
+	dkim=pass header.d=columbia.edu header.s=lionmail header.b=d9yAzAIZ;
+	spf=pass (imf25.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from pps.filterd (m0167068.ppops.net [127.0.0.1])
+	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 684KZ0i33346412
+	for <linux-mm@kvack.org>; Fri, 4 Sep 2026 17:35:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pps01; bh=L/aP
+	YyT1Jy/RmfEhEFasDwbK2r6Vj3z/rQBklaXlzNI=; b=h36vtbVJnPBr/57FHUct
+	EG1vzQhWbPpsp50Ww0DPKKHUacejmfX4tEXDe9AHJaRXF1UWzQa6CMYBXiIAHgG8
+	aMUQTSUTg9jbDTdZVJzcdg+s2p6vfajitccHwSiIa9PmEq6WrpJNAae3d9IhAL/x
+	8/KHRVFMEokYsmCh3QcB9/0BYko51C/snMoPCyxaKS4q+5V6a+YX4YBdiPNThh/y
+	FCZeFTmEUXFM/5/t9qqpVsS7iouwFlpSXXnbmtGcq//5sh45WZuUCs+YvJ8UIswG
+	xf+ZwoXDkRxAlxgKrrgdHlcQkpAg5bEKOvMr++z4CsB1xHSSPilo/EaA0ahkxiKU
+	GQ==
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com [209.85.219.70])
+	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4gg0a838wc-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Fri, 04 Sep 2026 17:35:39 -0400 (EDT)
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-90e7de22fddso30665016d6.3
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 14:35:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788556473; x=1789161273; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bvjoQwE4ZDaiwAW0jTIm2X9dCshUZub+PI63iQkxm4U=;
-        b=MJSQK4Zoe9hcZsVIVyBRmLxCjesPT4IsRCq8M6024l6qeKYTGmookx83pdg82KtwK6
-         bEoVMnbXELmkaKRzpNNVJjaiI1a9JUig004qH+RGFAEHO/v9Spmp2o7RFle/JWU4o5DA
-         pInp7TBgxIRW+qZ+k+RT0PBZWo53jYSD/ScFH3m3FuuToS0DuVVBceJ5zJjeCYmkQ1E6
-         YVPfNzi4J+Qmf2g1qYbUsF6OtkmB5P5kOLpwyBWtjNzceGPYeBmQs4NUDl+2utQW8a+w
-         5InsLe0IvmaGGQAS/zm2jlvVKwpUrZgwigTCCZcR5BW4BoPQsRUFI6w6nz95iuAJW2+N
-         YMIA==
+        d=columbia.edu; s=lionmail; t=1788557738; x=1789162538; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=L/aPYyT1Jy/RmfEhEFasDwbK2r6Vj3z/rQBklaXlzNI=;
+        b=d9yAzAIZG8TfQJ6Yw5r1o0xMwQmVtCWAi0MN4lZOc1zEgiyt0naB7QPgjcJ0zwErvQ
+         PAM/UhN2U+ss36ymJ4QWaKWaw25/wK5pJLDJSopXtALDku5OF+75GXXP7nJOkCyLjcmQ
+         HkHFlaQArVGFmH4KNFNqiJVpdrW3l+obI2ipEeRxAXk8XdQDdJ99tE5cfZtnm1cye/Sc
+         nd7UG7KLUAIUFSeaIWnnDbc3qw0kX2V+7WAwBo/lOT7hhLbsKFy4PqWZbGM7AiItUNkR
+         8Q94v9i0lVw4Ul1RZBDOojeY7NXbKezhidfUcgp8ahOnqUOzjWCOo/lDK8cul3R9VKQQ
+         zAYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788556473; x=1789161273;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=bvjoQwE4ZDaiwAW0jTIm2X9dCshUZub+PI63iQkxm4U=;
-        b=JSpdk6CqglU2egv9s4S39lDkW9sF6J59mGHofOl0XX6xiCxkzFSQfytVsFX30MrQF1
-         5SctmrpD7veAnSFs52McWzGMHvrikde0e8dXHzxufGxPPkS8uE10e9iPH9tgEfPTIWVM
-         AQFtFvpC5AtWZBFzIeDG/fZFjKqW+GzcEVpTx+j1l4LmPJL8qjIsZPZJ9rIQstZG7Vvn
-         Euxwthiiwz4zYZHKKJu9OHiOj2WWmAOt9gYc/ZrshfQYMK7q+fLiHknMt29O7MTpOQ86
-         uThf8gpFGEuyPZYt/Bik+FGwFM1gLSX/dRPNDWYpEoSWu3vtL6hBqvqs9n6SBUqdH5v5
-         kwzg==
-X-Forwarded-Encrypted: i=1; AKwUvBzE1jeVpwpSPHnZ23puTVxQNZjSWNdb8lLbLEg+tLkm+ocii2beqOlbn6kjoBcI/rR2P8rSFLGs4w==@kvack.org
-X-Gm-Message-State: AFuF++mZUlaKVeDqiHiWTMGZuNCDZw+DKMuckyE9mEh2IgdAeMe4Txmu
-	mxMhKNQQJzdIdULa6ctAxnWdvy2nvUMe/L/x55HE+GbSe/V826trlKV3BqnHMfs7jooU1OBcUh3
-	RnNlaNgmFwSQ6SatgzvdpB/CcgjbzY7c=
-X-Gm-Gg: AYBFou2mdSwk/5lmuzQxxzy300JOZdd63pd3tJ++4EFNmkmDpCovlsxbwVgk+s702ai
-	MCOfTAHGeGzdVsyrQgqasnrRlprAkN/6zgcqj77Kbl35YaF/ehtaoMzBrRV7Mz/+madxO1u82pN
-	n+zm8PK8Hq0cQdZN8EnSwCmGggsi2gX1eyRRh0sTTo9xVV4HIxN6BqIJ/LAy/G6O2dnD5bEhirr
-	8qIPFBJBN/x8VHK8bNDBkJ+yfcr2ck/HQpMA1n3qXl5xreab3h6ORQDicTmZuMP7iwU8KsLvm5O
-	je6BlW9HWp6IzZj+7GBsC0v8I2KOCVJo+pDaIf50jJhh+pcYeA64g605qrQ5JXa5A6LzjMQlr8z
-	A
-X-Received: by 2002:a05:6000:29d9:b0:484:3310:710f with SMTP id
- ffacd0b85a97d-485872934dcmr13557408f8f.27.1788556472698; Fri, 04 Sep 2026
- 14:14:32 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788557738; x=1789162538;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=L/aPYyT1Jy/RmfEhEFasDwbK2r6Vj3z/rQBklaXlzNI=;
+        b=sDwtDR5lXRIONgV1WmzZwuMUjIgjuRBmQYCb7uxVwxeBvbMdj/VtKmHU9qgv5PkStx
+         zz8efUWA6vlUn/3M48mhZvHUzINsoVJugi9FympdONvBGtKURzSGVaVrZil1zwS6uvo1
+         UViXoeX04pTM8ai742HMZw0Pv+krveS71ftrQA34mvqbK56EIXnCVzKytSG0AV74czCn
+         iraBHx94aMbdGdpBVnStYaAo2R2x9Q5tnAYHnHHVWO32Asg4LU6XgAHgtvk4x6gZ342V
+         HNNBCHCvEIh9zH4AEbXSJJ7RwNr0FdRQeOLrQHbvcL6SpMbuy2S5qTaRfd7OBWRA69rV
+         WL4w==
+X-Forwarded-Encrypted: i=1; AKwUvBw3mVa2J9RB6+gjsuveTb/ICJGEnAYjQi0V3FhTLOJVqRby5yXViUagBTrc2HcwO8wae1INhWIvpA==@kvack.org
+X-Gm-Message-State: AFuF++kdebJ7pF0ceQJb1cizQ6NHEmZwsfxDaNiV83JqrEbUzqu5wCZV
+	3gUsS4r0n2wfq5IjHBQ+9OUltelxhkg5dJn/cHEh+YjGb5qPQyorezvaLIA9Lm7W6yJGNWzdW3b
+	kh64j/o2YjPMqFIDZRief/S0faSIw78NlmIdkMYsW66r6w+HD
+X-Gm-Gg: AYBFou1Fhuo8+vWCyehxZbD2WL4faQzyj+vJ4xSccV52jnmZcxeVsjjnbrPG9MKVoM6
+	xnPQUk7nJ3leSVgMW5bcJ7G+zkPzoMOy3e9n3q6iVMqi5Aa/fo+TtHNXKr2IGXjYaVdHgv4lEZQ
+	2ioERqNfya9Bj9YXELXl03AK8vRh9gTnKAYHztYZHoFCB2KdKhB/rH+W03KJs4//q0++sCdI5+3
+	SWRnXoGRYLeN5sIAQUFoE0CWbCtNvmg+CkxRYBlWkKctdcf/cDdwbbmfpU0mfAkojh3OdGvnrys
+	rwQQMvGxgHObtkz38f0p70zWNcIers+wrEHri+ZH4d8GbX/2TgEAxCRuDxz9hAzvxZkuQHl+Qnk
+	AXQVdTWI3kXJIspKLMDepHB7/Ji4uRD83WA3yR3h6Ak1BmzvO9Tf8
+X-Received: by 2002:a05:622a:130c:b0:52f:e60e:70c3 with SMTP id d75a77b69052e-53054961fddmr94381221cf.24.1788557738250;
+        Fri, 04 Sep 2026 14:35:38 -0700 (PDT)
+X-Received: by 2002:a05:622a:130c:b0:52f:e60e:70c3 with SMTP id d75a77b69052e-53054961fddmr94378971cf.24.1788557736018;
+        Fri, 04 Sep 2026 14:35:36 -0700 (PDT)
+Received: from [10.207.49.22] (nat-128-59-177-158.net.columbia.edu. [128.59.177.158])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5305418950fsm29599931cf.20.2026.09.04.14.35.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Sep 2026 14:35:35 -0700 (PDT)
+Message-ID: <5ac3eb40-2c40-45cf-a5ce-d7dc3a10c491@columbia.edu>
+Date: Fri, 4 Sep 2026 17:35:34 -0400
 MIME-Version: 1.0
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Fri, 4 Sep 2026 14:14:20 -0700
-X-Gm-Features: AcwNN1VfnacCjCOIsG0-NjVV5-93v6OYjHgRMeo0vufw1HSKHHIhU85YeFRiLtM
-Message-ID: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
-Subject: Path forward for Virtualized Swap?
-To: Kairui Song <kasong@tencent.com>
-Cc: Chris Li <chrisl@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>, 
-	Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
-	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Kairui Song <ryncsn@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 03/11] mm: memcontrol: constify the lruvec helpers
+To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Shakeel Butt <shakeel.butt@linux.dev>,
+        Muchun Song <muchun.song@linux.dev>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+        Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+        Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+        Youngjun Park <youngjun.park@lge.com>,
+        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>,
+        Axel Rasmussen <axelrasmussen@google.com>,
+        Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260902-folio_memcg-const-v1-0-e2c1da22246d@columbia.edu>
+ <20260902-folio_memcg-const-v1-3-e2c1da22246d@columbia.edu>
+Content-Language: en-US
+From: Tal Zussman <tz2294@columbia.edu>
+In-Reply-To: <20260902-folio_memcg-const-v1-3-e2c1da22246d@columbia.edu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA0MDIwMCBTYWx0ZWRfX/asKYMI1WIKJ
+ d78AfZa4B7v7BQP90jkLXJvZchHwXB4pdn/gta71cPyiegZMrJNFAxScjb6U4RftwekDkuFvb6H
+ 1oY5sT8F2fF20Lk+AlgSEqR09QZ/aUbmR41gAcBWuKR7FNeImukd
+X-Proofpoint-GUID: OnhSZ-StKmj94lbH-zkcOl7YYMxmXRVE
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA0MDIwMCBTYWx0ZWRfX5J6+BjsT733G
+ n0Ifp/SPCcHMrVTjZeslL6lkyrW7gSfHPEnu+Xx8v34H04eb9dHhMT27oz91YL9lbZFTn2IXuNS
+ cDeegSBU7801kL+X7Qgo8nk9kW+F1SVuAyKWb4Akog2BH9P9b8GDORgC2fF1tT1sPTz1IB8fdyi
+ Qa7Zyfm0Vko/o5VfhO3kJwod/3Ddu+yV0kbb27zCt+UB/T4D+KgDIUYcpy5u35/xGjixvLtB6K3
+ QMK0QfXmpJNBh2uDhWSD5MRFqyPxxr5UR5eOxTPXVZLSjGt9tNa0gpXYWBci7kpP++OglzAfH/C
+ Onep9IpZdyV8ivR+8cGP18wcL714/79U7xrAKMlX/mMkzcywRDKUz9VXjpRIEvE/BR8yj4VVEKx
+ KgTUQDdARw0+Z20EDH77Hm2vQU39o1YORxca4NDUAAsvy1+IKyCpJRkz8IWTMAeZjVnZlONROF7
+ fvz2Z2uSw7Dal10qoCA==
+X-Proofpoint-ORIG-GUID: OnhSZ-StKmj94lbH-zkcOl7YYMxmXRVE
+X-Authority-Analysis: v=2.4 cv=MZpcfZ/f c=1 sm=1 tr=0 ts=6a9b39ab cx=c_pps
+ a=oc9J++0uMp73DTRD5QyR2A==:117 a=tLges04aSNaZGVAfhBIy2A==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=usPcmh10W0ubT8QP8_c3:22
+ a=chcUDXjQMmrNteCdNfIA:9 a=QEXdDO2ut3YA:10 a=iYH6xdkBrDN1Jqds4HTS:22
+X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11896
+ signatures=596817
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=10 spamscore=0 malwarescore=0 phishscore=0 impostorscore=10
+ clxscore=1015 suspectscore=0 priorityscore=1501 adultscore=0
+ lowpriorityscore=10 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2609040200
+X-Stat-Signature: w3wnzaku431ajqgc3aiuzzppntb8bm36
+X-Rspamd-Queue-Id: 9F58CA0007
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5222014000B
-X-Stat-Signature: 7fucist7th1smao5e1wofhfc6wq669uh
-X-HE-Tag: 1788556474-712709
-X-HE-Meta: U2FsdGVkX1+KxZeeDFsZAbPzYqzKzPQQjFVaomDDF/fC2LMGUZGPzJf/bQIDP339pseLwqsxW2EdRjzknsDvDUYog9EYvgNTyB6ECepLP2mKbG4SmhSvLXpSONuWlB7c6L9k4pErsKLJTbkUWorzDLWKo/Ht51BIo32KxJQ+HCEIBCfPeSXvOc7YdYMkBkne8ZE2HTD/6mrex3ovWOX6WBW9uWaaJWqbd8et2it2Laga6zbxNMK2kxnH14OcngLYaL1MHPnpk/RU7nexxcbUp8N1ryVVyR/LrIgvx3jjCIReICV/pkuyjjsScx+J5ibQd85dkoP1TzdHQgCLbBbNr/hRSTFTUZX0Rm5yCeaf3nu9gXHjK31f6WU6noKXCgeGwXh2mOVkvbC2XgKu4UYJZpDAURxt+4T/Nncy6E7PQk6zhj43wIpJAOGok4wB2oc0qrY9Jc99kW3AQ+NXBs/bDMtPBVFfpA1j5iE5Ill+47mGo37z2jRC5bGoL3catvEO6AN+TMOAaAfBljFbyzjGlnP3gm+mFo0u35mvj8YK8tshoH9W9uD+vWS0CbmBEdRP173YeqtGKIWVcVMukr9CMl4QjKbhI4BBNy1Z6OwGRwTM1BlRv6Gq0K/atyKbc+SG0qKYyyk3G9Mzumj+Pu/YtXge6qc4JU+MDycdR3RMSpOQI/WeQkxKUw2ssf9ky5RXd1p9/GlqCuU7kh/CaZuV6R5iUOSPeCU+x8ymovS1Wg3GCWYSpAac99ayKWNOT7YWPaqm86bfjzzQMZ+8WQdpaiueqAH5/Co22fAbnY2jykRJgHX10NmuymMJliXS8tKaGoJOtWMDx0/DqmA9KoZSILskob29iErIns2RsdncMVFvCc/wXr6rH8vCcsMPuK4Aoj/fLuOPikDhSIT7mTkDoFk/K7qgsBRWNgFTi7bpAZJOzc2G5J/j3Mo0Dd6Sl8sLvEf/BVh8DGFaoT7/cED
- W6+zLCKb
- IjhT0wUpm8tNye0MMv4Ai+vckLgDnEL1JTKnJSR6ZyI3aoWWXepM2Wfd6QwDrHNtJ+M5qTGExlJYNDGfr9Qk7kgDHmQZDJMIkwyzWtneQAv6HIWn4bXb5guOwnYVecBj7gNoS/C+SUOM/mQA322rl1TPBN3tw8pda9f6l08Wv0oxIBQ7bx/kve02uxqyGzxGtglH1NcGM3KgX2bwL7FqnYQbzySt1eTtnymD7hDss4Dn5WvuuPTQNXdYzMDxP1e4Fo0uPHelcm3reAQyrxq1NOlBb47hdgt2pThHE/QK8AJMmTeZH4M4Bvntkn3Yo/+o8HEIhVdotzlFWCn6PnKfsd9k0GUb20SCvz4PZ8PkHF9bIzOPo+uOOnqo1AF7Zg8+gu9olUoqcD7HxMIaNWzt/OQ/Pld/g93xKtEte3ckcsZiwDUT57bc/tXoVbkOrf1hLC+3ZbClEhPafO2MO1ZKAba3iEwZD1Dz8o1/GiG5kSMsklKJAgv3mHw1bUzwnFFco8HmZsSDCaxi+HwKT/SH/PmD/9/ghDaAoIZUp1+HNI6mTlHxycIefDXHNBKQ3fU64J96Qcc5IfXn/84vGN9XCYFWyXEQaQfOhwoJKfbr+NkU3IG43LcNYJgobrIoupxBbu7I5k2co1Zvgrg8=
+X-HE-Tag: 1788557741-195842
+X-HE-Meta: U2FsdGVkX18ciHr6z0VItLSl2zSnrbAmmh6VU1upTyWJJEkMRko/R17HivSTJnYwQUWi7sAsjfw4SQx9luHqtaJfBjPE0vcZ/t2y7qsvmS+nmA1xoNfUfCsfDj9MciiXA8DTsVeMhcsbeJ0zfmB55HjNsUtNtdWS220iFtNcjRGZAgmJCvSjbGWt/OGB7nxD7NXXmrPFxOYVamxUAog8SznS3TBIlSStAiQuW2BSs8tSgn3zVj3pYDP1TIFN/NAiRPwyeaHNxhrwY1wSsDC4j/xMKM48eeQ7TW1d5f4N1rMVhHskJqZUU98fnc/y/NFMIWHEQ2m0Ez5wHHbiytgDewtkk7sn+P3chBT0cA65h7PWauKBC4WKnd+HJEQaHYwNyW0NECTtSH72daELnnNb65fNbQPzVURzC6O8+GAshWiPNux/WmQg0VPdEPkuJAn+G+2zBP/meYROWg372cYAa1DpCe4QpvMUwZAiYyg/gTBRgbjKgiUnyDieDx8Zrmu49xEGtUTTeJz1mfVwF4XwroQtDeaqU7riz9vzZhWgPPUAGziemrSCk9hpPJyw905XbVfuETV3bO9GPfP+WfGDc8tA9pNMU2WPH97//TnqqhalRakKbg7yp3T1OB6TXatwrSUsMJOojx/GD7eZcr0yktbMeO5Izw5Mdpb3bHgO6pwfmyXBgy5lmwjxCuEy45kC0s+8svNawDfsDFLbcUhDl8MFphSFPyrD0z1GE3yL1zndgNN4jt2UU3rSVjda5oQQs1d90q7LHuyX0mgZaBeKD2P2VQYEPGskkg7JU0M/u2jMZSa4wMmjahroqfNK1l+VKvz4mG5+kBVq3WHR4UxurX2xBpFBrPH9eunXS/KUM71bLExaWSkhych9dk02bGbwvs6JF+YAkPrFQtJkp5eMo64IZ8c1YPA5AmUIz9ZeGtq76pGf2JmecEhh77EcEMI6lxMfd5SmKO3yFEWHg84
+ vxpi7OhK
+ nTZsJLkuB084lUXhizVyj7xhZr9hdMD44RUggTVR8LgDzYxfWnX/lnDzmS/h7BEKRPuPTBiKzx9TCOqUA9yUoVfEkYiANlw+asZHwxg08BmVcVlodnk7NZNiQxdyqMR4xcCdxGOlw0b71YmWCoBD0zwFTpJGOtR9uV38JAHLxplwrYwr1BCJrWD6TKfh4baJf8Z5VTrHTgZRwnZbue05SpbsQwggTXFPfRrfxE1I2HLyZ/6A09bk/2MydJxOXCxK4+JE38BV3y1wUVDR0lmKPiZfvVp3WAln2WjmVhVVTQdA61BijWHZDb8GRxXg/EDWEQSTvK2hxlVFnnOgMTvXj1npVihzhJQVBIdG67fRaAW5Sb4gcoyqS5GiCq6sgaQHzrpWeaN51/QJ2SsZyTbvLKaFIiNfe0gdMrlmW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,129 +184,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-To Kairui, Johannes, Yosry, Chris, David, Andrew, and other (z)swap folks -
-I need some help here.
+On 9/2/26 10:27 PM, Tal Zussman wrote:
+> The lruvec lookup helpers only read from the memcg, folio, or lruvec
+> they are given. Constify them, along with lruvec_pgdat().
+> 
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+> ---
+>  include/linux/memcontrol.h | 34 +++++++++++++++++-----------------
+>  include/linux/mmzone.h     |  2 +-
+>  mm/memcontrol.c            |  6 +++---
+>  3 files changed, 21 insertions(+), 21 deletions(-)
+> 
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index 2b3b62e84ab2..4b7cc97e45b2 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -688,7 +688,7 @@ void mem_cgroup_migrate(struct folio *old, struct folio *new);
+>   * @pgdat combination. This can be the node lruvec, if the memory
+>   * controller is disabled.
+>   */
+> -static inline struct lruvec *mem_cgroup_lruvec(struct mem_cgroup *memcg,
+> +static inline struct lruvec *mem_cgroup_lruvec(const struct mem_cgroup *memcg,
+>  					       struct pglist_data *pgdat)
+>  {
+>  	struct mem_cgroup_per_node *mz;
 
-I'd like to ask for a decision, or failing that, the specific thing that
-would get us to one. I'd much rather work against a concrete objection than
-keep respinning into silence.
+From Sashiko:
 
-Quick recap: today a swapped-out page holds a disk slot even when the data
-never reaches disk, like zswap or zero-filled pages. My patch series
-(latest version at [10]) puts a virtual entry in the page table instead and
-resolves the backing separately, so zswap stops reserving disk it never
-uses and can work on machines with no storage swap space at all.
+[Severity: Medium]
+Does this function actually just read from the memcg?
 
-I've been working on this since April 2025, going through 10 revisions (6
-on the original design ([1] through [6]) and 4 on the swap-table-based
-rewrite ([7] through [10])). I also gave a talk on it at LPC [11].
+Looking at the rest of mem_cgroup_lruvec() not shown in this diff, it
+contains:
 
-Throughout the process, I've been very receptive to reviewers - including
-parties whose use cases are very different from my own, like zram users and
-the ghost-swapfile-style deployments that want zswap with no backing disk
-at all - and the current design reflects that:
+     if (unlikely(lruvec->pgdat != pgdat))
+         lruvec->pgdat = pgdat;
 
-* Kairui asked that this be optional, not a replacement [12]. It is now:
-  vswap is opt-in behind the vswap= cmdline parameter, and with vswap=off
-  the existing swap paths aren't touched at all.
+This mutates the lruvec which is logically part of the memcg's per-node
+state.
 
-* Kairui also pointed out that if I kept shrinking the metadata I'd "end up
-  reimplementing the swap table format" [12]. I took that feedback, and
-  reworked the entire series on top of swap table.
+Since the commit message states these helpers "only read from the memcg",
+is it safe to constify this when it can modify the structure on newly
+onlined nodes?
 
-* Per Chris' requests, I've figured out ways to minimize memory overhead
-  [13]. On a zswap-only setup there's almost 0 overhead now, because the
-  vtable is merged with zswap's xarray rather than sitting on top of it.
-  The indirection is paid for by the tree we delete.
+Answer:
 
-* Johannes pointed out that a physical cluster backing only vswap entries
-  still had to allocate a memcg_table, which was an overhead regression
-  against my older design on the zswap writeback case [14] (since a swap
-  entry occupies multiple levels). I've also fixed this.
+The write goes to lruvec->pgdat, which is stored in the per-node
+structure reached through memcg->nodeinfo[], not in the memcg itself,
+so const is fine. I'll clarify the commit message.
 
-* I've spent a lot of time chasing regressions on setups we don't even run
-  at Meta - zram in particular [6]. And if anyone's still worried after all
-  that, vswap=off keeps the old swap code available.
+> @@ -1528,8 +1528,8 @@ static inline void lruvec_unlock_irqrestore(struct lruvec *lruvec, unsigned long
+>  }
+>  
+>  /* Test requires a stable folio->memcg binding, see folio_memcg() */
+> -static inline bool folio_matches_lruvec(struct folio *folio,
+> -		struct lruvec *lruvec)
+> +static inline bool folio_matches_lruvec(const struct folio *folio,
+> +		const struct lruvec *lruvec)
+>  {
+>  	return lruvec_pgdat(lruvec) == folio_pgdat(folio) &&
+>  	       lruvec_memcg(lruvec) == folio_memcg(folio);
 
-Numbers are in the v4 cover letter [10]. In terms of performance, vswap is
-on par or better than baseline on zswap across memhog, usemem and kernel
-build, and vswap=off tracks baseline within noise. I've even included an
-A/B experiment on a real production workload (Instagram/django): throughput
-on par, latency slightly better, and the swapfile footprint for every zswap
-user on the host goes away.
+From Sashiko:
 
-Now, on xswap. Baoquan's working on a series [15] that covers some of the
-same ground, and the VM_SPARSE cluster_info idea in it is genuinely good.
-I've been reviewing that lineage since July [16] and I'd like whatever
-lands to end up with the best parts of both. From my perspective the
-differences are:
+[Severity: Low]
+Were folio_lruvec_relock_irq() and folio_lruvec_relock_irqsave()
+intentionally omitted from the constification?
 
-1. Userspace knobs. xswap asks the admin for a size (a percent of RAM) plus
-   a per-device limit to tune afterwards. I'm not aware of any use case
-   that needs those, and I don't think users have a good way to answer the
-   question anyway - sizing swap for compressed memory depends on memory
-   size, workload, and compression ratio all at once. That's precisely the
-   provisioning problem vswap exists to remove. The kernel should be as
-   transparent and dynamic as possible here, and not add knobs unless
-   there's a use case for them.
+Just below this hunk in include/linux/memcontrol.h, both functions
+still take a non-const struct folio pointer:
 
-2. Writeback support. Writeback is core functionality for zswap, not an
-   add-on, and a design needs to account for it from the start. This came
-   up before, in the discussion around Chris' ghost swapfile RFC [17]: for
-   a solution here to be acceptable, it has to work with the primary
-   usecase and support disk writeback. Without it, whatever zswap won't
-   take (incompressible pages especially) has nowhere to go, and cold
-   compressed data can never leave RAM.
+static inline struct lruvec *folio_lruvec_relock_irq(struct folio *folio,
+         struct lruvec *locked_lruvec)
 
-3. Cgroup charging behavior. vswap/xswap shouldn't be charged against the
-   swap usage counter. It's fundamentally a different resource from
-   physical swapfile space, and memory.swap.* should read 0 when nothing is
-   on disk [18]. I made the longer argument for this in [19].
+static inline void folio_lruvec_relock_irqsave(struct folio *folio,
+         struct lruvec **lruvecp, unsigned long *flags)
 
-4. Data structure (xarray vs sparse vmalloc array). Even with xarray, vswap
-   is already on par with or beating baseline. I like the sparse array
-   idea, but why are we landing an optimization before the feature itself,
-   without any A/B data showing the difference matters?
+Since they only pass the folio along to other now-constified helpers,
+should they be updated to maintain API consistency?
 
-One thing I do want to be clear about: I'm glad other people care about
-this problem. Chris' ghost swapfile and Baoquan's xswap are both going
-after the same set of problems, and that's a good sign. It means this is
-real and shared, not something only Meta runs into.
+Answer:
 
-What's been harder is the shape of the engagement. Alternatives keep
-getting posted and pushed that don't cover all the requirements, while this
-series sits without review. I don't think I'm owed anyone's interest in the
-problems I care about. But I do think working code, with benchmarks and
-production exposure behind it, deserves a fair hearing next to in-progress
-proposals.
+Will constify their folio as well.
 
-So what I'm asking for: I'd like us to converge rather than keep two series
-in flight. My preference is that we land vswap first, then build Baoquan's
-sparse array on top of it as an optimization. That gets the feature in, and
-by then we'd have the A/B data to show whether the sparse array actually
-beats the xarray.
-
-If you think that's the wrong order, I'd genuinely like to understand why -
-after 17 months and 10 revisions I still don't have a clear picture of the
-objection.
-
-[1] https://lore.kernel.org/all/20250407234223.1059191-1-nphamcs@gmail.com/
-[2] https://lore.kernel.org/all/20250429233848.3093350-1-nphamcs@gmail.com/
-[3] https://lore.kernel.org/all/20260208215839.87595-1-nphamcs@gmail.com/
-[4] https://lore.kernel.org/all/20260318222953.441758-1-nphamcs@gmail.com/
-[5] https://lore.kernel.org/all/20260320192735.748051-1-nphamcs@gmail.com/
-[6] https://lore.kernel.org/all/20260505153854.1612033-1-nphamcs@gmail.com/
-[7] https://lore.kernel.org/all/20260528212955.1912856-1-nphamcs@gmail.com/
-[8] https://lore.kernel.org/all/20260612193738.2183968-1-nphamcs@gmail.com/
-[9] https://lore.kernel.org/all/20260806184254.3790858-1-nphamcs@gmail.com/
-[10] https://lore.kernel.org/all/20260825153238.2695446-1-nphamcs@gmail.com/
-[11] https://lwn.net/Articles/1016136/
-[12] https://lore.kernel.org/all/CAMgjq7AQNGK-a=AOgvn4-V+zGO21QMbMTVbrYSW_R2oDSLoC+A@mail.gmail.com/
-[13] https://lore.kernel.org/all/CACePvbVXQWgcPD-bgK7iDba4NFLo2tT89ZbLOa03maJU4er4ag@mail.gmail.com/
-[14] https://lore.kernel.org/all/aZyFxKGXc8J6PIij@cmpxchg.org/
-[15] https://lore.kernel.org/all/20260827094509.1016740-1-hebaoquan@kylinos.cn/
-[16] https://lore.kernel.org/lkml/CAKEwX=Pe+qMZd2xhnU-PAGQtgXkp56c-JwYCbt2Lux9htgB67Q@mail.gmail.com/
-[17] https://lore.kernel.org/all/20251121114011.GA71307@cmpxchg.org/
-[18] https://lore.kernel.org/all/anYIboHEUZb4fhHv@cmpxchg.org/
-[19] https://lore.kernel.org/all/CAKEwX=P4syV38jAVCWq198r2OHXXc=xA-fx1dk6+qYef6yzxWQ@mail.gmail.com/
 
