@@ -4,109 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EB01C79F80
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 08:01:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FDC4C79F80
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 08:13:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8F426B008A; Fri,  4 Sep 2026 04:01:50 -0400 (EDT)
+	id 135716B0088; Fri,  4 Sep 2026 04:13:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E67176B008C; Fri,  4 Sep 2026 04:01:50 -0400 (EDT)
+	id 0E80B6B008A; Fri,  4 Sep 2026 04:13:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7CA66B0092; Fri,  4 Sep 2026 04:01:50 -0400 (EDT)
+	id F17146B008C; Fri,  4 Sep 2026 04:13:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B4F746B008A
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 04:01:50 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4B8AAC08BF
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 08:01:50 +0000 (UTC)
-X-FDA: 85175335980.22.652FE60
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8FCD1100002
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 08:01:47 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=sk.com;
-	spf=pass (imf14.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788508908;
-	b=hXWVhEKkpHkiK8n78ffrPdQyfsZTOhHn+KAJt5OlRHQe7Ok8OqNLMUf0SB+palBy9BPskM
-	pV9VL8Hh1gor7HYiZb+6sPb3xaJ5h1DV8KcfnEQfT4TywfocKL6ZTaSkOsw4Y96W17H99f
-	3/Ax06+oUx2hddkF8nQX6tYXCgexCNY=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C56596B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 04:13:17 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 62AA8A0A57
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 08:13:17 +0000 (UTC)
+X-FDA: 85175364834.29.C4A07F4
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 95178180005
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 08:13:15 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=gIsMHlr5;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788508908;
+	s=arc-20220608; t=1788509595;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4LrsCeQXFwniDDOs24DEYD86hpQVWso7CyprcketDD4=;
-	b=rtKhLMRlsIhw6gmS4BBjuqhUAzKTDtf7fyPBXlm1sXssoWYyZVv4TWnxuCDUA7v5ssemLT
-	5QJdrzLdk+bICecwlf1oxU1tJiySpH1/r9zcTUSEhRZN6TU1THygbqX5l53wvoBuP6Hv34
-	VAWge87oATmmAqeVweqdwHatZjCxc/0=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0pDAJ5Zbgk6FV/+bTUIcqCISS5VxMKMSD1bvgwX22t8=;
+	b=RHi3YGj0r3wBeihiOZX31agETT+78HkYoIZxVAVdvB7eIdfESugZosrew9tOEkR96r5q3e
+	b7gcJLt6EHMuL+1ooQiZGRJAZFyE+Mp5EEd/QmBy9B8jBmQ97/rihHXIcYTzUt1DK2tVzG
+	I0How1m8OH6q5uJ7Xc5M+oUQ5pa3c9Y=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=sk.com;
-	spf=pass (imf14.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
-X-AuditID: a67dfc5b-c2dff70000001609-5a-6a9a7ae7aa81
-From: Rakie Kim <rakie.kim@sk.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=gIsMHlr5;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788509595;
+	b=kxeafqfAWRK5JkT1YwMLjOoKcjnAqdae/a9ErRgPAGWJCD9cwxLN3gz3V0GAPO7etvIoKV
+	xKT+qg0+U7EsdM+hzMRBNyoblKbRIMrQIsG6G8scym1Dy8brMkCJ7js29a8QAkxceBB7CL
+	rFdiAzNaIgOqrWqcXm/F65NNmyKBrgU=
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-84830c774a0so771506b3a.1
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 01:13:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788509594; x=1789114394; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0pDAJ5Zbgk6FV/+bTUIcqCISS5VxMKMSD1bvgwX22t8=;
+        b=gIsMHlr5fjTWlzKJp1jgDQ3oZhdyasXEBbsZBQk55HgB62xnjgi59sM1YovQ/Qi3qU
+         1/KflEhgN8j93j2DxntPwmqq9Bc4LP23Bmb6ECs4aGWjuqXPWhopq0MgJTP/5enoDuBf
+         qheE7D/r2U0485HvcesJBfBO/nlXIvgU1/NYU9Vk+oA73zXNOIpO0TXR6s0ciAcBXy4r
+         iaUs7e1C6T+fDA5GF+wamSaItmLZKOmdGjh4v8MjFggi/7hDoALwASR+LB/VLaCbdlN3
+         5Zgy4LyCiCPon1T2NDzHi1zOqokhKFc9tPWMHKNlCaVHrwB5mAP3zT2nVHYrNWIsF40y
+         7Csw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788509594; x=1789114394;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0pDAJ5Zbgk6FV/+bTUIcqCISS5VxMKMSD1bvgwX22t8=;
+        b=dnnTcieCUqAhOKXToD5M8+3oNY3MAxlWK2+AdPcLPT/ePwfFk+7qmk5qKb1ZyCgo11
+         RiWrRwWLYF0mkppfld5WfnXvDlwjs0QSfy7p0lJHWmoDZVwcnCnBxQwIQ3XHjBo7ZF81
+         tfLi2azMGSzWaxX0oqmvUMCWROIEhG2TqD0fU+ASLNtMYZmVovEyRRl49XGs5tmtJoZ6
+         XrHHgReRswsaHxyuxbMKtCKZaWhZ/NT9DFi/JKIqPOFisMFbsUWVDDMZicogK+2A6ZSw
+         hcA27a9OYrkpVX4LKofK9QEblPSiDdEWZxoc1TcqSIIgQC3Z0JGgxOOOEGZhZXPWzEHO
+         c8yQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzb4gQZJrr0uGj0AdSBehwl7krCUHgfDhjOVHmm6WRvqvhkZBHf0B331eTudaAbkMQyrAuOgK1f9A==@kvack.org
+X-Gm-Message-State: AFuF++nS/XGGh7UrVAqI62OjSngO+FhJmguzNNM4dsll1QAzBoYJ46cB
+	HaqcgT5dgKXinBGa4jUZf95zDjHNOx5DoAT8Zyn5znwnXsPNxwWw6oth
+X-Gm-Gg: AYBFou1uSufPh3ecGlNu2OzDzapOnHHUd5u1K1oYAMjfRyCJzdtIihRgoMe9XRRh+00
+	1jI0XXsBJkb6CeKrngq46ZndZLjadwIs5aRpPYMpjp6OyHPqRoRQtRixyVid5PzKgk5l9bfFSf6
+	1sBFex27taJsZMdX3oCaE73LlBqARubK7k8a7ldjR1z+TMztl+dojIMj+BQmYJ8R9uxa488Y2in
+	PzUXAZ/3XGS6DVt4DvJJ/9epyVSzSwVxrcy4Urc5vK3j+4So8jOd7+KZFeBkTXCTpgIjRmPnFGZ
+	PdvHYc3QCbACJ1Iog5XsBMFw7mvICDIIA+KqLAGtYkFgjKbHOf659mZgROBhkoCSE2oOOEQN4Sz
+	RbzHeNrr5ziU3WGDH67BVah3R852+6B5eI/MpfwvkH8xTFbxZ0lADBsKpMRfNXezxf20pxj+A3P
+	sV1xUyYlvnyb90vBED5AE9Yui7UjvX4GnVYQ4rwxnoypP8Mk06JfHXBkaKax8rBGkMnMPHQJ9bE
+	z6Hx/EJfIYUQ5E7ybg=
+X-Received: by 2002:a05:6a00:4289:b0:852:38ea:3fd with SMTP id d2e1a72fcca58-861676b276dmr6641062b3a.11.1788509594279;
+        Fri, 04 Sep 2026 01:13:14 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2402:1980:8929:bbae:36df:3680:44d3:b5e1])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86152c2a52asm862512b3a.30.2026.09.04.01.13.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Sep 2026 01:13:13 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: aethernet65535@gmail.com,
 	akpm@linux-foundation.org,
-	david@kernel.org,
-	ziy@nvidia.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	byungchul@sk.com,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	urezki@gmail.com,
-	chenwandun@huawei.com,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	kernel_team@skhynix.com,
-	Rakie Kim <rakie.kim@sk.com>
-Subject: Re: [PATCH 2/2] mm/mempolicy: stop copying the nodemask in the interleave paths
-Date: Fri,  4 Sep 2026 17:01:37 +0900
-Message-ID: <20260904080140.1992-1-rakie.kim@sk.com>
-X-Mailer: git-send-email 2.52.0.windows.1
-In-Reply-To: <apgzMZQPTxS9QtDy@gourry-fedora-PF4VCD3F>
-References: 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2.1] mm/damon/core: fix false positive in damos_quota_is_full() when esz is zero
+Date: Fri,  4 Sep 2026 16:07:41 +0800
+Message-ID: <20260904081324.3972-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260903140521.98604-1-sj@kernel.org>
+References: <20260903140521.98604-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrMLMWRmVeSWpSXmKPExsXC9ZZnke6LqllZBjOLLeasX8NmsetGiMWX
-	d6uYLJ5v/cVo8fPucXaL41vnsVvsuwiUvLxrDpvFvTX/WS2+9UlbrL7IYrF6TYbF7KP32B14
-	PXbOusvu0d12md2j5chbVo/Fe14yeWxa1cnmsenTJHaPEzN+s3jsfGjpce5ihUdv8zs2j8+b
-	5AK4o7hsUlJzMstSi/TtErgyJkzcy1jQI1Gx/Ox2xgbGdUJdjJwcEgImEgv/PWOBsWeufcXU
-	xcjBwSagJHFsbwyIKSKgKtF2xR2kglngJ5PEqhl6ILawQITEr+19YJ0sQCUvPrUygti8QFPe
-	PpjPBDFRU2LdxltgNZwCZhIfny9jB7GFBHgkXm3YD1UvKHFy5hMWiPnyEs1bZzN3MXIB9X5n
-	k/h98hvUIEmJgytusExg5J+FpGcWkp4FjEyrGIUy88pyEzNzTPQyKvMyK/SS83M3MQKjYlnt
-	n+gdjJ8uBB9iFOBgVOLhvSA7I0uINbGsuDL3EKMEB7OSCK/1wulZQrwpiZVVqUX58UWlOanF
-	hxilOViUxHmNvpWnCAmkJ5akZqemFqQWwWSZODilGhiTlRM77kb97aifw53+z+B51ZTXOwO0
-	zR37ppbOmfL7ltHTjRHrhH70ROzO3VLZN7vTPOLWBLPWsDTxK3c3WMVM8Vk1o3PzZ7W/Ev0f
-	uFmMQ3KVVOvPVzc3Bom0FUZ6ulgylMTOEdmxYK3ztz8fdHa5cu6f5yx3X2H7bIm4p407ZhTy
-	qdmbvFZiKc5INNRiLipOBAD97pcYhgIAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrJLMWRmVeSWpSXmKPExsXCNUM9Rvd51awsg9U/9C3mrF/DZrHrRojF
-	uSmz2Sy+vFvFZPF86y9Gi593j7NbHN86j91i30WgisNzT7JaXN41h83i3pr/rBbf+qQtDl17
-	zmqx+iKLxeo1GRazj95jdxDw2DnrLrtHd9tldo+WI29ZPRbvecnksWlVJ5vHpk+T2D1OzPjN
-	4rHzoaXHuYsVHr3N79g8vt328Fj84gOTx+dNcgG8UVw2Kak5mWWpRfp2CVwZEybuZSzokahY
-	fnY7YwPjOqEuRk4OCQETiZlrXzF1MXJwsAkoSRzbGwNiigioSrRdcQepYBb4ySSxaoYeiC0s
-	ECHxa3sfC4jNAlTy4lMrI4jNCzTl7YP5TBATNSXWbbwFVsMpYCbx8fkydhBbSIBH4tWG/VD1
-	ghInZz5hgZgvL9G8dTbzBEaeWUhSs5CkFjAyrWIUycwry03MzDHVK87OqMzLrNBLzs/dxAiM
-	gGW1fybuYPxy2f0QowAHoxIP7wXZGVlCrIllxZW5hxglOJiVRHitF07PEuJNSaysSi3Kjy8q
-	zUktPsQozcGiJM7rFZ6aICSQnliSmp2aWpBaBJNl4uCUamCcdP57uuqcIDNOU7Ubd7++2fMk
-	+fyCuY9Wtt2+v9ixN3iju/aTkxw3dR9c/bp3mv8ilpaI0KblMocWbWQT8dWe6RO4+FCxSvXG
-	UIZU3oAT/0UL/L6ejujveeg917dfZm7Mz2beSz/PrfUV+p/XvVD6q7HEVq+TYtd/7Hq9ykVt
-	UrUJU1nvtWc6SizFGYmGWsxFxYkAWumk2XwCAAA=
-X-CFilter-Loop: Reflected
+X-Stat-Signature: jtciwg69p66czymj7ctaait7611515km
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 95178180005
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8FCD1100002
-X-Stat-Signature: am61p4963bpid8jozp5y9r9ws6hb8haf
-X-HE-Tag: 1788508907-47582
-X-HE-Meta: U2FsdGVkX183LGZeG0pNrLL8NnLpDW1OzyZsOHK0H1bKqtteH0ecDJpJWP19dD3FdHQix264+oa8KWczxYklamV+CqxHY+Ul370SrI2lwDWl+e6ziOKMxVdJstoFPF3c/k9w2lgY2/9Gzx0XZSnfVYfRtZbspzIaIpbWiiU/lr+5G55gI6p99Qv8tpaECCmCKHB8vXsosvBocaQTDyHLXk5Yhw1Q4OETJv1351SdEhGti/6SyG8kJ8TP8lfEVcLS4CFPVhDZ8phi7/k/XVZ/OvBFLA6hE3vylTnWrU13dFFbuZNQh3wzNidVoh8ULau3ZXSz16mNZiI2TNKYB9B4sNrC7eBYjEqBnI9OTBcdSvVMVXRJ6l9xu2DADAh2FwqDcRZkeKiQ6OcLWL1whPA8XfKlPSxd/585scuga26A2uyPyxVgCYqwPUvx9aW9H/Fn9fbAPSvjGE5gBs+4XkCn200dWkIuiw4C+KzGXnjWbZCqE+ScgBwgFu7zWbjSGtatEOIQ71lrXBjHVpuGFukL9hEMs+psDHT7IeesFkwDz7VD/iXaP0Cnptn29Zq0M7ncDMSKLJA6SM6HXbClCW46+b2mS+fRwVboEnHKzqw9Un8TcLAaeV3IJTQRy46r8T7iO5WL0Go3orsfHx6w6yfe2QMJXU0pb0Fnr5h3mRAlyNr2ujq8bG33DH1waaAytsP2JGRo7ySeb2kA59m15Ls9rlERnh344fuIGaJaThADBNwsPa8dvhRELD8il8M4YCcftpfcP6c4e6Q+Db++3vBDNwj9T0963coJxEL6qOGLTC6hiQ4JsqIEvanNyf0sv7fQ87TqQEoLE1daL3td+pW3PhR6vZyCclDN3OKTSCpShg+5InUjmJlRwnlsSgwoo3o+LjlH5/JsuBXDmT3dHi3R6Ik3XpjXbQAX0BfmT6SmAWobE+kRl4Sg9ZbZjaBcwHwwLanvW/GKkjIJjzJL6oq
- YUxJMLrq
- L9DlXNobJtNlKCVCZv7YmeEScsGO0r3FvuexG364YkC9WAU40gPPGbm/PKVqrEF1+gwID3JecMqEnz+6Fft5K/tps2zQ2Ldp8KvoxX2nb2m3d7MUIu0GHGTOK/Q==
+X-HE-Tag: 1788509595-221676
+X-HE-Meta: U2FsdGVkX1984T3hbua4a7Y2V+0lNSTBj2CHpPN52TxZN44qCPaBx9i+PT7ZcYVq0Egd6bQd9qoRjV+V3TDNLTeJDIU59r6BLQF/BO8U5Di/O3lVi5xl7faZAYtlNdjphLEcSxQxVJThh0KBywwFx0dEQRo7i72y//g1lrGdoXx+Vt4XqcAabkxKApvKZ5oNYBGBF9rdDDUSSyPtO/yU0QQrDZ9vqnSwzqyI/2DANBrdyfFZi9e4y6saOm4k8gS71QlcriR42cy5YZOusU9nu79RQo16w/GF3P4Hr1Lz5JvR/Uzs7vQu1CY+O3yI4cqQV0hgveBb9DvXqttUIl8SZzHaKT3IXOZfA00UFzgVq2T9yjdyQ1XD+/VcsQKOI17LVoCOyC6HtGLZEdaP834lawX3deSWv3eQopqtUMlSerE/65/drN8KhLWFe9fNAqohhB1Py3/xU3GvKh3jHD1renj75G0Yr6CWtFUlJnFyHR98Cr7bD076d9e/2r3x0o7eKhjp5u5XI3PLyUfFrd92cqE5Rq7dXvO7eqnW+DXwlSOcfHzPlLmp7A4Ls6b79Y2gcrAkw75WZVM7c3w26LmSD34siJTnqHGLupAzNWoW/iUSTI6u1xt2cIU9cPlf6AXseZg2ggLH1fAcqtGvR2bNSTM70PlvyBJ4Og1c/2+bW90gOSQs8pde5zgi6C0ikeyuOahAoKqOGXlXXagY+9OCZ1ujzrFz29nBXeZugS8fvKB71fQYcBannQ/mQFM8SarTBVvbvz+lJA6GtnWSbR1rWIpUoiS7HNR5fmWLXDbzo2Pxa0o59/97T8HIJCJrEeMPr0zpIaiJvJv9Pgi1GO245T+nKE0eFxAFECRSGCp+pkBi7SHPGQ1Z8BvLcYlfBUxLtD2hR4w8yXLx+bEoMH+1PeDD86Ey2oE2zBhNrBdIRoVqTzrf2eMMND8ihTo2IbcTWEiV9ES9Yu5pviCCg6E
+ DStocxVK
+ 8CNVWl92y8q6kqkLjyKlgJ8Qh5457Qk/0GBfwptGxXJY7seoXTjd72uKvLunjvldgK/Bq7bB1RlpnOGMa5ZG3q6oCecRwbcpBTqm841StsOFjCZJaSCgxDLmpMi1IT8VhGPoMBpYkPXiSpw+uX5U+AiQaHSZibsJ/wRHykkOWz20KTwLDCzizLEtx2V6oUukUCXKjIFmbzVpeihTIYTiWo59lTLxfsjq0Dz78I+vEFa6mqXr3NkJIg1c4AGi1oBkDiNPRhM6HlOZMF1tmqBz6iTizmdA7thPzdip2ip6x3vKOvrlOFfbVxOJ4mSuET8s8Ck2I0b+Zcj/NL36HCFU6qKzrwmG0T7QvMLH+R+autFkHvUuKMFss4lOiC7jPqP5irex/zIKwsSt/xOhqxjv0jArH6Yi4HcjqomMUQlP2Xosp1jlCe2JrdsbJr3T5xxseqxu3l0gJdWig1c3Xgk6rKjkXKB90iIB1PPRABuuaYl7zdiE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,95 +122,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 2 Sep 2026 10:52:45 -0400 Gregory Price <gourry@gourry.net> wrote:
+On Thu, 03 Sep 2026 07:05:20 -0700 SJ Park <sj@kernel.org> wrote:
 
-> I don't think this actually fixes anything?
->
-> But basically the proposal is to widen the SRCU() window further to
-> include the cpuset cookie entirely.
->
-> e.g.
->
-> SRCU() {
-> 	cpuset_cookie() {
-> 		for_each_node_mask(node, pol->nodes)
-> 			weight_total += ...
-> 			nnodes++;
-> 	}
->
-> 	/* ... snip - single node quick-exit ... */
->
->         /* ... actual multi-node bulk allocation ... */
-> 	for_each_node_mask(node, pol->nodes) {
-> 		nr_allocated = __alloc_pages_bulk(gfp, node, ...);
->
-> 		/*
->                  * At this point, due to a torn read from pol->nodes
-> 		 * we can visit a node that wasn't present previously
-> 		 * or we can skip a node that was present previously.
-> 		 *
-> 		 * In either case, weight_total is the wrong value for
-> 		 * the set of nodes being walked anyway - we are going
-> 		 * to skew in the distribution no matter what.
-> 		 */
-> 	}
-> }
->
-> I'm not sure widening the SRCU window is worth it here, it doesn't
-> actually buy us anything.
->
-> Also we'd be calculating the weight total every time even when there's a
-> scenario where we quick-exit because the entire allocation fits in the
-> first node in the mask.
+> On Thu,  3 Sep 2026 20:41:48 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> 
+> > On Wed, 02 Sep 2026 17:33:50 -0700 SJ Park <sj@kernel.org> wrote:
+> > 
+> > > On Thu,  3 Sep 2026 06:31:38 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> [...]
+> > First, I would like to clarify my intention to avoid any
+> > misunderstanding.  My actual goal is to fix the semantic of the
+> > qt_exceeds statistic, rather than necessarily changing the underlying
+> > logic of damos_quota_is_full().
+> > 
+> > Currently, there is an issue with how qt_exceeds is incremented.  When
+> > the quota is set very small, qt_exceeds increases frequently.  This
+> > produces a statistical trend that looks almost identical to the
+> > continuous increments caused by the Temporal Goal being achieved.
+> > 
+> > The original intent of introducing qt_exceeds is to let users easily
+> > notice if the quota is too small.
+> > 
+> > Commit Messages [1]:
+> > 
+> >     mm/damon/schemes: account how many times quota limit has exceeded
+> > 
+> >     If the time/space quotas of a given DAMON-based operation scheme is too
+> >     small, the scheme could show unexpectedly slow progress.  However, there
+> >     is no good way to notice the case in runtime.  This commit extends the
+> >     DAMOS stat to provide how many times the quota limits exceeded so that
+> >     the users can easily notice the case and tune the scheme.
+> > 
+> > However, under the current behavior, users are forced to manually ignore
+> > or filter out the qt_exceeds increments that occur after the Temporal
+> > Goal is achieved.  This adds an unnecessary burden to the users and
+> > contradicts the core goal of making it "easy" for them to tune the
+> > scheme.
+> 
+> Still I feel the problem is unclear.  Why the users need to manually ignore or
+> filter out the increments under what situation?  Knowing specific and detailed
+> case would be helpful.  Are you or some people you know doing that and feeling
+> it is too much?  If so, what is the real use case?  For what purpose and how
+> DAMON is being used?  Why and how the ignorance of qt_exceeds is being done and
+> how painful it is?
 
-Sorry, I did not explain that well. I was not suggesting moving the
-sum into the cookie loop or widening the SRCU section - only adding
-the counter to the sum loop where it already is:
+First, I'd like to clarify that this isn't a problem encountered by a
+real user, it's just a scenario I came up with.
 
-	/* calculate total, detect system default usage */
-	nnodes = 0;
-	for_each_node_mask(node, pol->nodes) {
-		weight_total += table ? table[node] : 1;
-		nnodes++;
-	}
+1. Users sample qt_exceeds periodically (e.g., every 10 minutes).
 
-The order of the function does not change, so the quick-exit path
-still returns before this loop runs - the sum is not computed in
-that case either way.
+2. Within this 10 minute sampling interval, the counter aggregates both
+   the real quota exhaustions and the increments caused by esz==0.
 
-What I had in mind is the gap between the two reads. Say the policy
-starts with two nodes, every weight is 10, and 100 pages are
-requested:
+3. When users notice a high qt_exceeds value, they eventually realize
+   (perhaps by reading the code or documentation) that it includes the
+   counts from the esz==0 state.
 
-	/* the mask is {0,1} here */
-	do {
-		cpuset_mems_cookie = read_mems_allowed_begin();
-		nnodes = nodes_weight(pol->nodes);	/* nnodes = 2 */
-	} while (read_mems_allowed_retry(cpuset_mems_cookie));
+4. To get the actual quota exhaustion statistics, the user is now forced
+   to perform additional testing and implement external filtering to
+   separate the esz==0 increments from the real exceeds.
 
-	/* a rebind grows the mask to {0,1,2,3} at this point */
+Even if we explicitly state in the documentation that qt_exceeds
+includes the esz==0 counts, it still burdens the user.  The user still
+has to figure out how to filter out the esz==0 increments externally to
+get the signal they actually care about.
 
-	/* calculate total, detect system default usage */
-	for_each_node_mask(node, pol->nodes)
-		weight_total += ...;			/* 10 * 4 = 40 */
+Honestly, I struggle to imagine any valid use case where a user would
+actually rely on the qt_exceeds increments caused by esz==0 to make
+decisions.
 
-	rounds = rem_pages / weight_total;		/* 100 / 40 = 2 */
+If the only purpose of qt_exceeds is to let users "easily notice" if the
+quota is too small, forcing them to manually filter out the noise
+defeats that purpose.
 
-	for (i = 0; i < nnodes; i++)			/* bounded by 2 */
-		...
-
-The distribution is planned from a total of 40, which spreads the
-100 pages over four nodes, but the walk is still bounded by the two
-nodes counted earlier. It places 60 pages and returns, and the
-caller allocates the remaining 40 one page at a time. The mask does
-not have to change again during the walk for this to happen.
-
-You are right that a torn read during the walk still skews the
-distribution, and this does not change that. It only removes the
-case where the bound and the total start out inconsistent. If that
-is not worth the extra line, I am fine either way.
-
-Thanks for looking at it.
-
-Rakie Kim
+Best regards,
+Rui Yan
 
