@@ -4,89 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DC32C624D3
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 18:26:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0DFBC624D3
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 18:37:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 42D976B0096; Fri,  4 Sep 2026 14:26:48 -0400 (EDT)
+	id 776066B0088; Fri,  4 Sep 2026 14:37:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DE3C6B0098; Fri,  4 Sep 2026 14:26:48 -0400 (EDT)
+	id 726436B008A; Fri,  4 Sep 2026 14:37:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F3E86B0099; Fri,  4 Sep 2026 14:26:48 -0400 (EDT)
+	id 617286B008C; Fri,  4 Sep 2026 14:37:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 065AC6B0096
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 14:26:47 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 924DE160170
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 18:26:47 +0000 (UTC)
-X-FDA: 85176910854.10.21741ED
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id DDEE81C0008
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 18:26:45 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IzZk9N13;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F1F76B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 14:37:14 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B23871201B7
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 18:37:13 +0000 (UTC)
+X-FDA: 85176937146.01.BE9BC18
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 951F320008
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 18:37:11 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=C+3s+b+7;
+	spf=pass (imf13.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.45 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788546406;
+	s=arc-20220608; t=1788547031;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oOHPyrxGo1MSBUwKK8LJZJGpSrjxqZrlHYw4onj99co=;
-	b=kWTszzxurRIzd4DlDd/YrdFWHZVftzxcjbGdweNNGfBHHAR96m1kYLrfgGjKBtImOpK0t9
-	TBJ0dwYa0my+zni8rAiaaeyZiQzUjSeMq7MNCDlmCl12nXgX0I+vgOsFL4CK2/1Ed27wov
-	X8K4IYx0Y9jaf4MCT9SVWUkRlYM472A=
+	bh=EYrVETvRvxY5BVpkhPjtzdiUc0wbZQ7Wsx0WTj7855w=;
+	b=PtkbxXAd+ms4Sc0v3EiU4OoPywpytLcIkepU1xIpLW3DJoLlcY/D36hen2u3sr5OZ7bLEJ
+	nDpcssqgbf1rNJGWysRox/u3xKMvePSs+0/dsSD+M+s0ITIX9Vn9w4VfzWoP1KshzNw7wQ
+	ykEPHq8odfZ4ntyqaRfGKrgKwFj6l8c=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788546406;
-	b=CsSaAqJ7fnu5V+EJ0CjBuxW15iN5cpQw61XB2TITkvbCOi1tNJa0J2yWQqRo+okAW3nV8a
-	IDrtr2rceNJXRvLJBSKHHipjZycR9U2LB8robgn4oMrgRVlXJR1i1vZ++j27dntJAxZHFf
-	4a1Yhw1Q/J5MVYp6SmwTiUcwRUzd+4Q=
+	t=1788547031;
+	b=JWSF3e9sI+1DmP/9HJrW76aKUwLTnGmu/BkjzWIIAZbUURJg0rPf9QDs2QLGPxerqwPvhj
+	YGmeqGtIsHSYDp4HdTca+33qhWi/4cSNay5u3WA5AsPd2tzi7zUQ6WutyEO154MgZJSaxB
+	mQUK/uvqaENK0ttOXJ2Ln51SF3zrv3Y=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IzZk9N13;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 44C4260209;
-	Fri,  4 Sep 2026 18:26:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 663401F00A3D;
-	Fri,  4 Sep 2026 18:26:44 +0000 (UTC)
+	imf13.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=C+3s+b+7;
+	spf=pass (imf13.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.45 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-66c7127a73dso2017369d50.2
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 11:37:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788546405;
-	bh=oOHPyrxGo1MSBUwKK8LJZJGpSrjxqZrlHYw4onj99co=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=IzZk9N130M1AYqZLUIcnt1+xtyT9UazgRQmgcW1dCFY+Oy4NX97N/6boMXxgOTa5L
-	 ykHX+tXGl/E0wn4BBf2ilsyKB/i71c0yWNjFngGN6ydwhULI5bMtfkIpsl3TmZmlFF
-	 UI6bM3EgRe6+R9abWKirKpVpFRsJLH7io482Y8TE=
-Date: Fri, 4 Sep 2026 11:26:43 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
-Cc: bpf@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org,
- david@kernel.org, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
- eddyz87@gmail.com, memxor@gmail.com, kpsingh@kernel.org,
- matt@bobrowski.net, song@kernel.org, utilityemal77@gmail.com,
- sun.jian.kdev@gmail.com
-Subject: Re: [PATCH bpf-next v4 0/7] bpf: Add user memory access kfuncs for
- mm_struct
-Message-Id: <20260904112643.73448e55f788fb1cdcdd12ef@linux-foundation.org>
-In-Reply-To: <20260904145340.40212-1-tasos.papagiannnis@gmail.com>
-References: <20260904145340.40212-1-tasos.papagiannnis@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        d=cmpxchg.org; s=google; t=1788547030; x=1789151830; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=EYrVETvRvxY5BVpkhPjtzdiUc0wbZQ7Wsx0WTj7855w=;
+        b=C+3s+b+73djlDmFizFqxNL3L8NVIpzuZHxfmHzOjinZKvxlY/gznhfy3vXCSLS7Ill
+         yfB/4NxpAQw50TFbpW7Zzd5qLfM9gSnQjxQSG/XJqqf0XnW/829wfWpKV6RjVPLDA0vV
+         xZ/tf1A0nYVS4B7Je1oTSJvLe1b5OouZyGD5MBJPu5Xwrce1chPlf/WVBZvXX5VFmisU
+         7lHl6z87MhfN0+De1zlQ2TkMjolcE52VQcmRQXZuhPkmVDEu8DJ0zcjwmY4V+TvVuSSV
+         TwN7DLtOYc6AWXnOg0k4UYMFh9T4I4BLQBSppiEJuKu5R76Vcuv+7wPefvAeqaPSogLW
+         aQng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788547030; x=1789151830;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=EYrVETvRvxY5BVpkhPjtzdiUc0wbZQ7Wsx0WTj7855w=;
+        b=Cs7AsXpP4AquhOHgKL5LJqNS5/nkoWU3Ai4hX4hI2RSl1cFBJ8CXNVDUFA9OZkUMKw
+         A2+N1K2vKxnxjB8dwnh98g5xMh7QON2OahNxv87KTs8SCAkFL0rknpw50WFCxcojOi7h
+         o2RcWzL+mTQ4GgyyL3NOyRYnPUxhkBBFoEFj2NUmUq8OaAuMWhWF4V/dKr0+aAa8+PwS
+         jlB4fraQh4ZOERRoxDfhvVEXKsIgylYWVP1wIiMVJaF/xtpYPu9muEskfqHM9xqVSYBl
+         BFTltaODncuvosx8GgTFMM/Jlm7dPnmdgjNzrz1sVrAduxe0jru8vKDXDGq+F/3hMQdi
+         SQsQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxyxfMS961qo36RvksgFUonvJjRYUs7e/C6q0z3Q8+loA6jNmEjLJQ7ug25V/VU/Iel5Elx4gs0mg==@kvack.org
+X-Gm-Message-State: AFuF++nFZApsUJ1CB7BZQYjleGeCBYHT7Cz8kFy90yF9JgbRlo5sm5Pe
+	6ybDjzLblzPFiNUEFrtq1kOMXRrzCnC1ChPmCtrfmd3vOWr2GcImPmutUsP8a9dD7g0=
+X-Gm-Gg: AYBFou1TAJzPOg6PZlwHKz0yG+jTKapebzAYSc8tXbBEoLNc8DvEz4gNJWocX4qENE+
+	FW01xh3gVr/iuES98X8khV8Q4C56j3/er8N68I8WGmBugsFkb6OWbXCcgTFepMiMbceShUoVCgk
+	QpUzkyyMoGPUTA9PvoZNUXsNjXXsljopiJeK/qKW0S+XLJoaMNet6a/HaIJDDK0am06vXYOyuMg
+	Sz0s8cCjDunbtSh2JHyYf7BEyxwkx5CNxftzxX49WyyG4kxspFc6gWwcL+M4/fa7hMUOraQL9aZ
+	FABi1Qew13sIBgbaiaz1OPsDeguUUcRtsSE4sCAkk4oh/n/IQCt8iLqew0aLvRO8BuFnSrXwXKV
+	uQ/HXmto1HhJimzzUgEWemE364xwXDGdttj2P5hT2T2ZFSRIBYbPIKtWFMfdFD+8kb/Qdxe0RzD
+	6+JQIiImfEeAm0VHgfN8ISAiiDPCvmt8SB8V7mVky9/xOrfOlUtjoJpipi1de/
+X-Received: by 2002:a05:690e:250d:10b0:66f:8d5a:e091 with SMTP id 956f58d0204a3-66fb59585bdmr525152d50.13.1788547029035;
+        Fri, 04 Sep 2026 11:37:09 -0700 (PDT)
+Received: from localhost ([2605:8600:200:1a83:fe59:7385:2855:8588])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8714a979199sm24242077b3.29.2026.09.04.11.37.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Sep 2026 11:37:08 -0700 (PDT)
+Date: Fri, 4 Sep 2026 14:37:07 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: David Stevens <stevensd@google.com>
+Cc: Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH v2] memcg: Don't call schedule_work when no spinning is
+ allowed
+Message-ID: <20260904183707.GF6641@cmpxchg.org>
+References: <20260904173145.2028377-1-stevensd@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260904173145.2028377-1-stevensd@google.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DDEE81C0008
-X-Stat-Signature: 9kjtywna834886jrurdhum4hcsyc7mfx
-X-HE-Tag: 1788546405-20773
-X-HE-Meta: U2FsdGVkX18tRNx9Q+Vtfs7NK/k1I4N2eoYD9ZWKNT4DRhdRhTllL9YixS5eQwLe4VISiRQS+j61FMdcL1vg3rjcHr4NU9YPaMbHVvsMEasf1rn3L+0gdkz9edTBMKSRmHU6WTwaWPhAsO1sXnZX2QcEMdv6Kt/MihGxcHZFwgAnKSZN3u1W8xkgF6YXji9cb8gppHbcXRS0uNXUOeyP5N/r1G/FdaA6NUqRuj4L2FIJ6+kFikDlaMzp9rLDSmIh8R/M8xKasww6jy54JeZjmtaxBjBGmjbme318CCddOhIQxSdZZdYxBbehX1wEC1mDtD0jXnW3DJQhmiS5UwJ3f3kuviDWRBNGwtklVeRI5m6p162KMNVHJYEOzU9IkUWCQToe1mZ5RDgT2zFyzIKgpmzIAO9Vxx1vgz7CvRYEx/X/Q0BGCZKe9j0Fl2rr7KVQ/f+Ze/HORYe/qbJ1sdEfjiL1VHRW3rumuU30m6qfIOizqwiV2QiHjnAvuNRuB4lGs6fo0JbXnJ+cbXK0pTIICA1cSYONcSllE4xt1V7ksx3FWSEnfHsR83B1M74iDrFnHr/vTt1TER9s/3JKEj+E5fwE6gHMbRiP6GyR8lKak0C21HU28a1YAXpSyvH+wGqGKXSXr3qOnO2ZyZ01SDZny+qdGqSaUO1wTCZnb7j0j6QqFw6dHKrpx84t7nz28ypkPXojLfqLBOAT7Ro+FywdUyQ9U1MtwfCwcRCWcS6uNqvvMFflMV9GfCpk6YIiwRksKY/qisRSjxyrmvtAlvkkhbH/Yfic0zGxdXVyLtcl8dGaCmhplMvRPVRcPqRo06HhrFe6PSGZKE9Dgky/HgM8gl2HOlwLUQfCDiJ1r+z+MlLD533Q0qLJVvSfpPqoLQWrX/4yBURLBYy847s3CDbZedzBXSdPVOahEjRVEhehMSDcxNsjW53oigkx0K9h7N+tQy4QWv0d5YMFXlCZmmc
- EXf404Y5
- B+zZE9th415IQGdJoZAjt3NAAyed2kGBYVxIMmJE+fe1JLJgo5s0veHGjip7Or0j4FvVMoPWAD5tXJ0+SoKRLJOnwb9QxEk/s/sZnv/oDzXHDxoNbmF/PvJKGoRgO8Plsx03MO+LxsZDGh4PTpiaRTx9TsqvbUIg7qb3ASHUQ95MzOIw0xfu4hZJsMBvOuGY44PeCqq26KjT3BIm0SgzKtN/L3h+BPfsIBNWPzRVTDdhg4xS5B0dm6dLqhZGyhzdcK+OInLIpNzg66SzlW+lujseUsfs38bC5slaugO97SQXZyspphtP1JkY0yxnm6Drfdb5HpR3eYVWLi7FJn7LCSrODICDKBRctUwaqq9IhKc2Lg4Pi0JIYwzBi4malWsvaT44IVOV3g/VKnDs=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 951F320008
+X-Stat-Signature: kyskpwi5p4jxuuomr94y7z3ti9kjab6z
+X-HE-Tag: 1788547031-856658
+X-HE-Meta: U2FsdGVkX1/5dDFOxuFeBISYZGQmn5KDfrXG2SnfcvfKzvRx7wVpaSyprCwnWs73bzequi6aeT0ZcgONFd2hz9jVevoXmHf3QU7QHCt4h9rNkQYdVnFybAVQ1tiQ2Yjp+vptXxew7Glxbb0ZT5Yc0REplOWY6yzmRo9HTXCDwDv7/JQzn4OsdzsAbi80l0uzMM6P53dMmW4i+za/y5r/8ckBNAJGAcSQ3azN8j18BV/dXzAGF+Lku5eGGUMS0p9hcvzA7H+wBaQjnIZ6MVdHfnlngqDKOkXHkmKnUzp9FAwcuxSW1gAbVXNbMm5xBVO94T4fLp8HRBANRAVRHpjXizyp4VwFu1bTAZa2sX4FFy2vagEWinyMGaYv1TXXsTlVqBKuHVSWyg7WvIfHIgsYPXBea4FhVNs7yqMfIgPhmFFll/62ozNq5ngijlzcphroiK7hJcLbbotARYpRRB860cS+UHTWdnys/KopmDMpSg9VYwiq3+n0anDPu4SE6NULvrEmdQJVCTE0XphDg+pJ3MTRB+gtUaDwWu8CoTA1PO1P8fxivgzPsbQFscA/xSx3X+DfSy/ktcfImLLnGdKvth9QFTtL46QNWxjfCAH+mTjqF9YwT2B4u2VeWEN7KaKFHPHI2kCRWVJP6He9xRIsrnvxc7m8OcJMERxZqp0B88y9CwQHX70HZkJcZJxquAvtS+WxbJLMbzAQrW5oVvYHT2ZtmmscLazYm6ycaUjKVvV2YEeWnpPFl1ZkCHppg2MqghoEMyEktlKhjQzIcQBHHoDS/1oy5Hz4kGDLnO3tCTEHXd1MN4FUBTD28jVaeqlM683EgdaO8oNwxsVCfl3l0vLqRKGACQcHCXBsbutWqtkssIM0pXVwD1mHaQQd8K9K1RO6LC3lfK01o6v4+lG1+VjOcyGNGwAvAcV+Mja7kBbRpehlNVOtZD2FxsMMLe11K4KzLkB9RdJbgEaK5Ce
+ 81eBan23
+ 7+IcGhCVaZNS0XbeQ82Ww9SMK1OqF0C8wmD4uGsvbPSANryAr8eMhFykiQJxe5Nf5jn1MW0Gef1ApChYeJXSdxwFpiBRxiNSRTOR3C3q7vQZ0RYj65wcZoQbk8YwFqY+fK/WTSX9CMtSbAwuPRm+u7wQeCiyM9G7oDhmYsi//jjx5E81xaYtRme4dyjEl23hEsZS1Py1Vs32HRjQILF2TpQAYGuKb006Wngx9NTfWA8GTge1Dhf9Ec2wBXooXuz+hv+yNsQPwKEulD6mslOZYEgcw6W8wLp/k/bZyFaBQ54396KsgW0bEvyM+n+RPhi5Tea1+kusCPdaw46/yvHE97PjL76sBxn0W6uAAlVEog/PHI3z5GTSHAdyQevfFplVQxOvIV1xqWYYA+cq5oRAY1bzdjnKN7HOP6HdWRnzZ3bkqjWM03PLTtazNe+6uC76rSfXEYf0A+x0824ZmM8NT9LD+r0NBMT5OZ6T2jZ3zfp1rwrUaJ6TPqIflIUowfqRFFP4Fub3jw4XJ+1Biw3ugWY6PggcLVCZfaslO+YrzSArk0OY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,41 +125,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  4 Sep 2026 17:53:33 +0300 Anastasios Papagiannis <tasos.papagiannnis@gmail.com> wrote:
-
-> On MMU systems, during exec, argument and environment strings are copied
-> into the new address space held by struct linux_binprm before that address
-> space is installed on the task_struct. Existing BPF user memory helpers
-> operate on the current address space or one associated with a task_struct.
-> Because no task_struct refers to the new address space at this point,
-> programs cannot access these strings from the bprm_check_security LSM
-> hook.
+On Fri, Sep 04, 2026 at 10:31:45AM -0700, David Stevens wrote:
+> Memcg charging can be done from any context, but calling schedule_work()
+> isn't safe from an NMI. If memory.high is breached from a context where
+> spinning isn't allowed, use irq_work to schedule the reclaim work.
 > 
-> This series adds two sleepable BPF kfuncs for copying bytes or
-> NUL-terminated strings from a trusted struct mm_struct. It also marks
-> linux_binprm->mm as trusted-or-null, allowing BPF LSM programs to pass it
-> to the kfuncs after a NULL check and inspect exec arguments before
-> allowing the exec to continue.
+> Fixes: 3ac4638a734a ("memcg: make memcg_rstat_updated nmi safe")
+> Acked-by: Michal Hocko <mhocko@suse.com>
+> Signed-off-by: David Stevens <stevensd@google.com>
 
-Why didn't I get the usual bpfbot review emails for this series?  Is
-this a sign that all was clear?
-
-> Changing bprm->mm to trusted-or-null would otherwise reject existing BPF
-> programs that read through it without a NULL check. Preserve that behavior
-> by allowing fault-protected reads through trusted-or-null BTF pointers.
-> Pointer arithmetic, writes, atomic RMW operations, BPF_LOAD_ACQ accesses,
-> and passing the pointer to a kfunc that requires a non-NULL trusted
-> argument continue to require an explicit NULL check.
-> 
-> On NOMMU systems, exec argument and environment strings remain in
-> bprm->page[] until they are transferred to the new process stack. They
-> cannot be accessed through bprm->mm at the bprm_check_security hook.
-> The new kfuncs remain available on NOMMU for address ranges represented
-> by a supplied struct mm_struct.
-
-I'm surprised that bpf even attempts to support NOMMU.  I expect the
-user/tester population is zero.  Perhaps just disallow this, if it
-saves any effort.
-
-
+Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
 
