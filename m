@@ -4,120 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25E19C61DD6
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 10:49:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 037BDC624D3
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 10:49:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 322146B00AC; Fri,  4 Sep 2026 06:49:22 -0400 (EDT)
+	id 1C32A6B00AE; Fri,  4 Sep 2026 06:49:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FA196B00AD; Fri,  4 Sep 2026 06:49:22 -0400 (EDT)
+	id 19AA46B00AF; Fri,  4 Sep 2026 06:49:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E9AC6B00AE; Fri,  4 Sep 2026 06:49:22 -0400 (EDT)
+	id 08A546B00B0; Fri,  4 Sep 2026 06:49:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F22B56B00AC
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:49:21 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 88FFF8088C
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:49:21 +0000 (UTC)
-X-FDA: 85175758122.13.3820A9C
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf28.hostedemail.com (Postfix) with ESMTP id BEA52C0007
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:49:19 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GWJMTSIB;
+	by kanga.kvack.org (Postfix) with ESMTP id DCE366B00AE
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:49:27 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DE23FA3B4A
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:49:25 +0000 (UTC)
+X-FDA: 85175758290.29.9381277
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 1D7AD1C0004
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:49:23 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lbvEPN51;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of hemanth.selam@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=hemanth.selam@gmail.com
+	spf=pass (imf18.hostedemail.com: domain of hemanth.selam@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=hemanth.selam@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788518959;
+	s=arc-20220608; t=1788518964;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IvTqQo1kkFi/Zlhj6jPmbfvUoufzoLUlgQD0pvdpiaY=;
-	b=xw16alR5wPUoDmF0wADpSqVW3j0mZwa77rZtWVW9ahHCsi6XugOtgozn70P2XvWeLgHOKp
-	r2ZDq9G6xaV+jKOZkHQ+nAA04aE1fcBRgJyoGUsdrhN4sY3MOc5gAtnAhW6cWNi0MaIUvE
-	05GcHXCpC4vwWnNb70HEsrpKEvLR+gE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788518959;
-	b=5TCp+bgEAibXrK3Zpz5OuRmdXmtoKuHcMxP9dQyUSn6f16XfALhnK50T8HKxUqEISqHJKs
-	KN6qdbLXck/yHfsrFZ1DRIrPIa+tRccs46sp525kHNxHBkbGmKwKJU/mKhSoK0ZJs3jPnP
-	Mt+G6l19v6U4DeLlTBhZJr4VPWTq2to=
+	bh=+p3qhdKCBh5IlPhZs/uQwjI5uPM2Gq0BK3muJ2QsC0g=;
+	b=OyoTKTK1yq4FP/pZdcAZ55FP57QGx57FtixEbbSQ1hCOAjnWTnOLRnE7+2F7mvBQ8NIVro
+	NAqB/pkj9yjr/UpP18jRK41gmoN8b4ZxZiXitVKXd5EOYgtviLKKsH8GB02tbEJDoiBAwL
+	covozpCjtV6RFh9GOq4149GsvzmxSe0=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GWJMTSIB;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lbvEPN51;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of hemanth.selam@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=hemanth.selam@gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2d01663d816so6223665ad.1
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 03:49:19 -0700 (PDT)
+	spf=pass (imf18.hostedemail.com: domain of hemanth.selam@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=hemanth.selam@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788518964;
+	b=C+Rn+67vzeee7UhKXCK6fBPTCEuObtPoYacXdbd3dL0YC8YgY+CXQNzu1m36fq0VVU9yZ0
+	VcpinmERALZ7znizbeldIQHDWSKmFGgyBpddir73iNiMheO2V6rvT5g3lCHLfVRhXBZkCq
+	KZjPNya5KV6eXSjtcmLLAyqfZih58+E=
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2d53197d8b5so7677885ad.3
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 03:49:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788518959; x=1789123759; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1788518963; x=1789123763; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=IvTqQo1kkFi/Zlhj6jPmbfvUoufzoLUlgQD0pvdpiaY=;
-        b=GWJMTSIBEBX37o7YAJnl2IQ01G0uD869G832PVycphUb+zRLmS+/8pe0kodiEOdIXE
-         7KS4BkOHpG/S8BusNq0UyNhDCc3HX2wnmZsSmAswy5rLs2SRtjq5SoKQqsfR/jThorhi
-         5H/fiIhkDeVd6Y1Rc4yrY5IfqWB9ePOW4XnEbBhsyV136X9yXVAkekiYXoArPmQBgPUW
-         uhDR3j2ctdaa7JPichEKOliVZzXbQTC6tKbPY9S+KJZa9DwebouX0LwHDMO8eZk+1lx8
-         z8PSL01kjxdmxBT0Vg7EA5jKZ/SiBYclslkYMaNdWpVfSQWHoiWSLG/LvPoewfMRD+Ct
-         zY2A==
+        bh=+p3qhdKCBh5IlPhZs/uQwjI5uPM2Gq0BK3muJ2QsC0g=;
+        b=lbvEPN51pxsrbDV1Tk5slrVEUq1wGdr1oCNJwb8zslihX9qtdeK0WcDbfnOry5TVWw
+         8le/lnQyzpwW3uozbhKpyaThOnXfseF3WuGOGTrEOhTkXB/M0u7jzKer0bREIKi4lPbO
+         e2weq1dz+vjbSRTmQl/vklBYJ9ytbfOyjNBWpB9XQz0Jg9EdoRXrikUL1vl6o5Jh+Ljb
+         lDZtV2rqcKBsFIWocQkTwpfl7PS4RzY9d5/pJR8P4FMQ/qLNSRld6iZGFiHF2erSkYug
+         v1wjBzS4ElqbX4YaoyNrnyl2yaJ7nq+VnUCvx9ZRkVV8KZeIvIR2VUsWFNjbuC38NfM/
+         VGnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788518959; x=1789123759;
+        d=1e100.net; s=20251104; t=1788518963; x=1789123763;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IvTqQo1kkFi/Zlhj6jPmbfvUoufzoLUlgQD0pvdpiaY=;
-        b=kqKrhMpLS5PB8IBOhCmdE/GP5P7S2F86TgCMD/s1NwhtR6WrgUBVYDyvnnuYoXA0fi
-         SlUhqrEAYgijRJrje+QStgl+bpueN0EL+fIQWFqQmWLpZrcO5KT1XGbtEC41tf3scT2f
-         vSQI4TFJDagphptvxmWbmdynpxQEDgbfBBljneU9eDt5okaWb7g5t4Xqpl4Kc4iMBG+5
-         7Lhb7mj5JsrAjEUokT1qASx269f8VIfYmhHjx4wWjbFScqTBBoVmBKgGtX7/YWXG8YzJ
-         GVbvaQUC/rL72y96pY1jog5Fy6ObVRn5f1Xs16sXFQOg4dFbTrW+0swDXTYRdDTJkdmD
-         q2IQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxXDHIwY7sJQUFbABpJV4AOxrtDbx5bxUbaDCu8eo8OFZwAnXDV23ElSng/dIHVidhOubpiFZu7/A==@kvack.org
-X-Gm-Message-State: AFuF++kvlG7osJZz8S2s2ZtVxmVeZYrFVtvKTl02n8x94t6F7tahM9OI
-	SiNQ+Wwt7oxV3cdBdemRSX84+Z9ZPKyya4c1eCpE1ESA0+0XDWjnCZrkN7XWTWQUkLc=
-X-Gm-Gg: AYBFou11YQGr5e+HCpZxIFJRwCOoYpm9ry+lekGnvmavv47EobSauf1qxKrU9/joDx9
-	xt6YWd0yGrOLJ2cYOJHkKy7fBpF8/CZ5NyBcMdOFvAsUhhpMlU0gqKFgUhrwUUTZFhdAukjT8jA
-	2XAEsuCALxv8ovnLub1xSW8eiL5m4GEGbkMeel9awQIwUSbKgx+XD8DP58/wpVybMJbCO5cJL3+
-	CTus4T/4VN0H+fwE76R1LirCn+l2qzpPMHiu8sBRGC+Y5wOqDYD1X4JPMz9zPrqEXzmMsrPIs4F
-	Jn1Z3jlQP+EH7H7sF4XabOb0qH8V1DG6M/G6eknDjq+n5pAaaPTpcTsypYWvdHduLJjAKXcD7Kt
-	eKgb/OB79kUYIVavCzRWScItDoCuEFDgvmTBrI0/lc4eK5oqjcC1rFobqqwYKkKjuvpkWQPzurA
-	jYUadtsUVk7wn7XaPgtOYIJjKFUtwQ3VYEca89Li/oGXfIRF6KkSPcccUtRiGoUjiI+f38T+Z2Y
-	Xo3VEjFi3ZDLow=
-X-Received: by 2002:a17:90b:4984:b0:381:25ce:bcc2 with SMTP id 98e67ed59e1d1-39b26104798mr8006465a91.6.1788518958544;
-        Fri, 04 Sep 2026 03:49:18 -0700 (PDT)
+        bh=+p3qhdKCBh5IlPhZs/uQwjI5uPM2Gq0BK3muJ2QsC0g=;
+        b=geEs+V/L462cK80mmYY3RiiQnFtp57Fzpmi+2axGvj1UE+76iIv6sBnoPx5FFbtcNq
+         OHOWc67zDMIkEX55kE6hkUeiR7rcgakFbfpLVV8NTOnqAQfJiQfyFz1c0OfXVzbWOGbJ
+         N9SSXU7+CLj4jF/qYZVSuCxtxlyyCUXwUSEKXsWL+hquw2uHgykCC6Su6dXrxeDakaVZ
+         gq5yHi7wMgkuzb9SoGvl0It0xSMXO/zq4bMnp5ZrsFvc31KvvUO2i5xn/72TORyCWhVh
+         lvEu/i0wdYu/hVXaWiDmoj+Vcmh7xkn2dAdqQ00qHmqo/lpFg/nIo4UXEALHZkL8bEr4
+         yqtw==
+X-Forwarded-Encrypted: i=1; AKwUvByPuyc2+fWN1XnWy0RFeMri+Z7vr4pW6y39wuh+Z++g3cdh2zCPwUUagF86eu+HwPQP8VUYqXau3g==@kvack.org
+X-Gm-Message-State: AFuF++mtD5zh4wiGHEC+A4l3g4iUTCCBrLInqmQqG2x/2oJzqQc2xVA+
+	4qRW/LQKy/zCxS4sLFiAjz3oShaJ1s0i2vQMu/PUBB/bHtcJqo161gUN
+X-Gm-Gg: AYBFou3+QA7ZglxbaUFTqtlo4gglCa3Qe++Ly+5NjozcJXChO4/xu6CyQqkyIwfUrLZ
+	K+hklP5QC2nBlztBU65BtuzQzYBIgMAUBbRQSwDnlKDtUyE6EzMXbNr/3RxEvXRUPqf0bSc4Hgv
+	N48Rp3E9X+Pxk26ur66qZ29tFMSt4IowOpb+9zYM7qyX9mh83TS/wPEiv5nxC7JpzohLR0VI9P8
+	/a8Nmm3EsNDvBhaCshC6Q85NkyzPCwWp9gy3kcmIx9nt89ZkQcw6mQJxpZjoOJTdhgGFdVMlDj8
+	ZNInYdWzcxS5th09MCOGhrwbaMl48jPUE+CDB2RhHrple8OGmPcOCK+8XVmJsvhJhUlrS8YrqG7
+	lTYkl6dKWEwAEFcJmyk9DyezVCWYsOoWqow79QaHXSftM4y1pe4HMuwJvKGg0O825HAeGLqalbX
+	MxbipapAFQPys+P+K/ICf4NaMu2JQXJX5rPZZUtL/7vJfNiCFWxOp2A0rSnOfYrFyQZ2gCam8vY
+	8GFnIHKyv0PQVdLFZcMuBn8lXI=
+X-Received: by 2002:a17:90b:3ccf:b0:399:ea1:5a82 with SMTP id 98e67ed59e1d1-39b26101277mr6729394a91.3.1788518962867;
+        Fri, 04 Sep 2026 03:49:22 -0700 (PDT)
 Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339af25062sm8583927eec.16.2026.09.04.03.49.14
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339af25062sm8583927eec.16.2026.09.04.03.49.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 03:49:17 -0700 (PDT)
+        Fri, 04 Sep 2026 03:49:22 -0700 (PDT)
 From: Hemanth Selam <hemanth.selam@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
 	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>
 Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 4/5] mm: fix typo "mergable" in comment
-Date: Fri,  4 Sep 2026 16:18:49 +0530
-Message-ID: <20260904104854.25272-5-hemanth.selam@gmail.com>
+Subject: [PATCH 5/5] tools/testing: fix typo "mergable" in comment
+Date: Fri,  4 Sep 2026 16:18:50 +0530
+Message-ID: <20260904104854.25272-6-hemanth.selam@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20260904104854.25272-1-hemanth.selam@gmail.com>
 References: <20260904104854.25272-1-hemanth.selam@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BEA52C0007
-X-Stat-Signature: o1pq16fe8e9mwmwizenzpqrngg6769rg
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1D7AD1C0004
+X-Stat-Signature: ts56uegubbh4xg9hgxwea7fs8ipaqyih
 X-Rspam-User: 
-X-HE-Tag: 1788518959-85868
-X-HE-Meta: U2FsdGVkX1+PzdpfA+rXwXN1oVMeoYTwJX2mL+JDEO0eEcHEFNHi8w+eKeGEhCNAbX+AqoCPcSvRBTYl1QmEbrhtKWxz93H33RgstpzynGNMUxbYruGdigqTJnGuM3HMMHnyK5wgpqvk8Vy+L6fGjZOG1cz7g9DRVg1GaQMsmwxpS7RAZKtCJPrjYZBiiZcXuqiiA2BurU0njEbs3wm/m6NYK3Q3cJqfqC2n/FOPcHIJcdoYyG6vOcI6zzJywC1FTmYpqoOZ4iNgNeIyCnpVhiYHvGIhW8WcFy9Q/xaBsW1n8bcsxqO3ZboPniNIx6J5QGLZz501M68gFun+uRN+Q3MxtUaheIKP523rVRN4e7DCnP4KtQ+hqfLo/JVpoI5FNh3a9zU0jZH4sD0TtFL6EPjqgidabh0UHOakpuiwzuPMtN3Z37JX+fOcGbEJMsRsUm3esbr4MYDS2moSjGbRK8WsfLKImjsyfz/1TfmtHW7oOX/j63lZKP71KW/LudoUDs+/FN1MRY+x7mOHtDNm2L48ksRWcdcKyB23rWrfsKaYe0kNFOAeSd4GAvoDEKAr3RS+QPNHrTMGDuF9cBameFtX3Rqq5thcZCd0XAhJy32RspQMcmBY7kjzcei02S50ONFkX1yIk2qAAtiyCfJCteBqKJ815icDEaVjlMw/rH22UTvwdR7aQZgwEBCjMvJ2rwcaE2Xl7B5a2e3I+DRMUsQz/D2yYL2iF2W9fFKrYgGYeHPq2as/NmUA2SYsjFmRbaiGyK89eCvbox1awF/Ecd5GftbSVyTf6yADBEk5oxt6037Ry8qPNdKUVqYNKr0HLWQsV+LZSnq/2WUs4QgHeoVgiiKUuGioESsItilGfifrxhVGuWxgRJpP2Ff3iFJEnguAa2cGnKAf9aoxdaKa2eU9ykGspRDv0C3rcp/iu+IwlGqIGWcpLa9Qnh5k3nCoSQQl28FBxG2Wy00tNgk
- 8cB3s33t
- 5NPpstxhmIxrxLEgbdcxRwS2yCGDN3Ezc/3SLaxAqIxTP3YCAl03zQXw12B9TwOA2sqfb4wXpBiI8CDgoe5d/yfGEowSyRDr6tooeon8SXvjxii2ghz7uLGWYIGW7wR4F/TeaDGvHmpoM68FcyqiOKSTFss+1MVNYsaWK13LPokNTswLIQFbUcz3c91POosermWpEbjAcNgmrWW2Pd9OXRLEwSDGejVpcO5f7AAnBvmc5b+6krEWR7EdImT6Hn0pPCnbsiyesFKlvPzhb6hNXN61oaL0JddRmJauKgXIcGezfFWcgpsiigh/1PKpGiz2X1/dvkVodHGok9DkcS89NCGPrftsAjHMsPxcCHpsgPUk348/Sv7r204OmvKTsTa5MJSA0k9CeGlnwUMnEn7MGMGuDzLTs9gAjY1v1JFHVjQnTy8I8l0sDWU7fjymqTNWTHK7l
+X-HE-Tag: 1788518963-124877
+X-HE-Meta: U2FsdGVkX1+tPw6mM8sHQ11jdZlBNDO6B/J+8iKG7oYptNYJgL6/cFZv/1IaH1EvhdWJAYBmXTLJ1YiK7JR88en50vnUnMqrk2r/55n8345dm0M43zFH8cJ3/le8s0Li0VZ1PtAEQmCbIsfRc7FQuV1B6saUAxF7PdSZNVgR+Tb7kXZqID1K8uJqLA6fzhgYoIGV1YK/CV1gWZIQaz9BkEJauZJIJitbOHwP4MkAcUO8VKmh7Aqt5gyZdtAa0Up0F9ANLPVy4l8qIPcIVyeDPhRa8ysvzoZeFp6HV08YqBK9Ca543Zvxs4fvELv4x/35LUw6dSppZ8hrosIb0XccE1YZeT2x0uvAxpLlQRhAuUTI+FPK2mtdYLq7KsUWeb5GI3TEe2LS++u+rYr+mIsocuTYlBRWSVK5sAxrrxn+zaawfkcl8Je4jmLIj6N+R4X6Y4aZG0MBirrZUDfG/ypwGImKW3mlsjkyWC76bwBFDjh3t8qoWHvQQ08lTIBl8eQWGhreCkYb2dCA0paaihrW6gvSJqKk4+vblmnKJZ0EqaBBBaj/fvLW4fA/TLymzY1KObvcQvIGXdkHWp2qYh6Shn4fxb/1gbs3einS8yVdjBBKqmqCei6hY8XaCJi5sQ5cB6ecarxX1yeYaqh4KZv9xyBYVRXM2xr0Lf/lTzKrPqSIPlm5BnoI2LnyHmcp4cDO2ieeukk1WSb9VRBtbpdOPdkK6Ztaf7KIO4in3jCQyzwl/jtbrHcz0wLVeIYCdjYWfEGuQfI7KMplKmsFwngzthZXj51XbMKzeVzlQTRSzFCRUEeEA83hxRrsQYxmrzCs5vBJp7uTIEIIUU24CSNI84pQT6jztxrQ6JQUW7767wcgQXS/gV2g5K1/WJdb0uXF+mABnAfoEsRrFvlQM4UEmgYNcA/g0ZajEv0+9mBI57veE/QR1euq6GzV3jtXHzOHvefYQorGPgxwLThm2Yb
+ qW09VTpI
+ 5ytKFfq2oNst4cZLlhB73OmPg7NBJqpFq66AYvwFo29VGrk+191mHVAsQW+VskC7gk4mXzwqqBSSWVA1LQtm4UvgUtIcU+vW3lWATbJLB+2pYvFvKG/e4meo9ALEf+QsDyW1hpYRiVitoALpFa+qE15ipgiFnnkvJPkTnbi3FgfxG3A+jlHgqNZ28Lgm2t3Th80zBDhaUciv++xHqbr0WLSznuueWDd29JB2wh3tL5kdO3zFJFmxEbPGBSw9lEzbYgiAGN/PgPeuF69/p8XWALP0eSKVq2VT5Nuv1gPwypnyLjJutx+75RC8TtirMwQE2KwYY0pIpN14wYU30Es9b9c/Fegu4L7o0Rx4r/16mdJH52z90I3XDr7Kq0vwef06c7soBVo4mOpm94rcbW1x/6YUFZ3Jx2TBM47Z09Y56WU7g8AgvtiRXI82rUWkMX/RlJP9O
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,22 +130,22 @@ code changes.
 Assisted-by: Cursor:claude-opus-5
 Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
 ---
- include/linux/mm.h | 2 +-
+ tools/testing/vma/include/dup.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index dd09c438fa23..5c856b78ddc2 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -587,7 +587,7 @@ enum {
+diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
+index 4c58487b764e..302a6774fca5 100644
+--- a/tools/testing/vma/include/dup.h
++++ b/tools/testing/vma/include/dup.h
+@@ -353,7 +353,7 @@ enum {
  #define VMA_ACCESS_FLAGS mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT, VMA_EXEC_BIT)
  
  /*
 - * Special vmas that are non-mergable, non-mlock()able.
 + * Special vmas that are non-mergeable, non-mlock()able.
   */
+ #define VM_SPECIAL (VM_IO | VM_DONTEXPAND | VM_PFNMAP | VM_MIXEDMAP)
  
- #define VMA_SPECIAL_FLAGS mk_vma_flags(VMA_IO_BIT, VMA_DONTEXPAND_BIT, \
 -- 
 2.48.1
 
