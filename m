@@ -4,105 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73B37C61DD6
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 03:54:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB206C61DD6
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 04:28:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6055B6B0099; Thu,  3 Sep 2026 23:54:24 -0400 (EDT)
+	id 5D1886B0088; Fri,  4 Sep 2026 00:28:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DCEB6B009B; Thu,  3 Sep 2026 23:54:24 -0400 (EDT)
+	id 581806B008A; Fri,  4 Sep 2026 00:28:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4CC226B009D; Thu,  3 Sep 2026 23:54:24 -0400 (EDT)
+	id 49A5B6B008C; Fri,  4 Sep 2026 00:28:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 25CF96B0099
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 23:54:24 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B16211606B6
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 03:54:23 +0000 (UTC)
-X-FDA: 85174712406.10.C93ECEB
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D7FB7180005
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 03:54:20 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=auoso0OF;
-	spf=pass (imf16.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 234656B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 00:28:04 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 76CA5140708
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 04:28:03 +0000 (UTC)
+X-FDA: 85174797246.11.A527F5F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id AF18A180006
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 04:28:01 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="0gr/kHqO";
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788494061;
-	b=vCQkdNnYSKWYHItRZj7LLJpiFv6B5JFoU4Es39FeDVEFdpROS5LcsvsE0ypA/syDsi3aiP
-	7WYmyqWqha9VgHfCsxyKcG4xS026QUTtvb7GQhT6iGAvDwlp/vhLfwdeH1X7ITnfEZZPxJ
-	R1hXvtxXcpTL4gSoO9jr6tJ9L07XGrM=
+	t=1788496081;
+	b=IiNfX8HImGbXTcvOqu7YAno1HugrDnmxZfziVFmAaPXwqsiX2vJIgzHZTjYS9NRgNWSUHt
+	+DfIKgZE6YXdeeQx2d0lTat1W+YTDvLuj+ntUYUnOyFekCuf245u/cR3xfgZpDjISFjuqb
+	XNzZv7JyKnAwxh5mUZ9E7GDuHDzePrw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788494061;
+	s=arc-20220608; t=1788496081;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YPr2nhosCXoKcsIhMPeI7fzZvZMIzTsZ4k4iope2HB0=;
-	b=P7tkcRn7+f6TMdlzMBioQN16MH5yXC4Z2k6yUSC2VlslbG/GyjPKAuqkQgQmEadPmrswfe
-	8btm6TVYvoJ5nm5+VfSEzoi0bwl+WAeB/iGi9vNy5c9dNC5VslxjC0QfiAbPSMe4JQNF2U
-	46Qks3s0sowT4tGILFd9SzPM//M1m+0=
+	bh=kCJFtgL6xdcTMGe+9WP8iYjWEvs66hdQP/mx1LoKy90=;
+	b=OzDSMeCTTSc6drWMOiHR6qMfpRDvUgbaSm6kJlojm6jqDa/mwGcSAw1q7Oh6RJZU/sAgg4
+	N6QmCmKZB8DlclPy15ycLtgRPw6poV0ORnsKZFDIcNz/wNZmS02nFmLtGIEsBzNNMSx1Iy
+	axJ0e5xEAvrsRRDJsvrxwSUfbMLupGo=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=auoso0OF;
-	spf=pass (imf16.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1788494057; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=YPr2nhosCXoKcsIhMPeI7fzZvZMIzTsZ4k4iope2HB0=;
-	b=auoso0OFINc6fGFlwnJAcB8grxt81XvOdLyfiZ4WHkvMtZsD/2FjCx2R4faP6y13vol9bEOjOemqMFF5ynOhD+NiYtdmzTtciVLXHWoirEIJGiqZYqS+Y6cAFBHRt3deAiZQHcIWmHRrL+AHoHZaZM48T/FoQ09ClvUUXs65OVc=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R571e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=29;SR=0;TI=SMTPD_---0XAHc.di_1788494054;
-Received: from banye.tbsite.net(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XAHc.di_1788494054 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 04 Sep 2026 11:54:16 +0800
-From: Qinyun Tan <qinyuntan@linux.alibaba.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Xunlei Pang <xlpang@linux.alibaba.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Chris Down <chris@chrisdown.name>,
-	Chuanhua Han <hanchuanhua@oppo.com>,
-	Kairui Song <kasong@tencent.com>,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Qinyun Tan <qinyuntan@linux.alibaba.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] mm: memcg: settle memory.high debt after large folio swapin
-Date: Fri,  4 Sep 2026 11:54:07 +0800
-Message-ID: <20260904035407.4098627-3-qinyuntan@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260904035407.4098627-1-qinyuntan@linux.alibaba.com>
-References: <20260904035407.4098627-1-qinyuntan@linux.alibaba.com>
-MIME-Version: 1.0
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="0gr/kHqO";
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E8EE341088;
+	Fri,  4 Sep 2026 04:27:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 346F91F00A3D;
+	Fri,  4 Sep 2026 04:27:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1788496079;
+	bh=kCJFtgL6xdcTMGe+9WP8iYjWEvs66hdQP/mx1LoKy90=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=0gr/kHqO/4ULNDJqPp84Lr60lI6kRpHpGBsaJ4e4DY0IrOIABLCKnu8b0Zb8++P4U
+	 Uz9mbSiKYC/18RzGfoNdYjWOSH2jJ7d56y9bvv+pHFNAGH8w+OcP+QvpuYDENuS+y7
+	 1wg732cuJfMcY5ImcFpZd0ZoqDL+FeKIUTzsD2TM=
+Date: Thu, 3 Sep 2026 21:27:58 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>
+Cc: baolin.wang@linux.alibaba.com, axelrasmussen@google.com,
+ baoquan.he@linux.dev, chenridong@xiaomi.com, david@kernel.org,
+ hannes@cmpxchg.org, kasong@tencent.com, lianux.mm@gmail.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
+ lyugaofei@xiaomi.com, mhocko@kernel.org, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, stevensd@chromium.org, wangzicheng@honor.com,
+ weixugc@google.com, xueyuan.chen21@gmail.com, yuanchu@google.com,
+ zhangbo56@xiaomi.com
+Subject: Re: [PATCH v3 6/7] mm/mglru: move folios from oldest gen to
+ second-oldest gen from head to tail
+Message-Id: <20260903212758.4ee5fec2a7def1a26f19eb2e@linux-foundation.org>
+In-Reply-To: <20260904032748.210-1-baohua@kernel.org>
+References: <129ecc53-f96e-4a5d-a79c-c05293d815d3@linux.alibaba.com>
+	<20260904032748.210-1-baohua@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D7FB7180005
-X-Stat-Signature: wiwid3ip6ndk187shkbz73jperwcjxxz
-X-HE-Tag: 1788494060-856332
-X-HE-Meta: U2FsdGVkX18eOsbhOaIaVZ1bkHl9jd8eDuGhB8mTtJENrH/VjYnlpOjOGaPPE9zrJQpKDQlNnXv/35vxfCijvEOMiS9L6Qt0431dK5ri2WU1T9oCDpvAOAkQ6c1TXuqbmeqtQ6xGcqQ9c2rP+K4ZSfPfg9Rf6GNdtABHlIY083HJIMkdAQKSg2oRDrSK8i7W/7C6Nkc7JenO+cZ5U0aQq4refn7kNoe90RFaeNiKqNG/bYFwGOxYBGULeIjSunvZoz8CRG5kH4znlcVdsXwU+UK+cL/xkccqUjYrNA7ieOYluYWqXNTzJOBds8a54VbCQRErrCgwrGwgwf5BogDuc4V4Pc+d3SGNTI9zCS5TEJIUrNpiu82r0/HxXsfDVva1jU1xPeZdXlBIxa34juBdVBW6neLvr3XLD4ljVfoI3WPlYtymSfLQZrbIuSKOMSTvyvU3aWWQ6MNpN5nMRzbsj/gJBbN1yT4XrjsDtnBU44Y9mm8HAUL78ukfwdbEJSO7MwNdauy2vgI2sdqM/NRyA/Hu/3zLnGxaW098biwM/sVUD53fSjqtRFJMwENWA8NiSNSW+yaoSWQaGoTI8alHzMg4iLH6M5fksdp7Jyl8NpIdYNJtmFfqNaJWyFhtSPcIZPAZfDWogNVdurjdp3Q4xGUrhdfS6xK5OO8ylvyQmD0YQlLfo5XIP7jJ4PfsJ5g0DnIYY91/BJPFVu4QW+B7q08R4KFDxgK5wwbs31IasosA5VHBRhpUpL6PrcrfCIJbVI8L2SVgjhonccewNvtituM58DLm26MD/ThEsb57p1bpcpz6P3QF3HQX6P2dYYAucR4r9ftnamzCmGMckQ/wcHKPnLMoix1v9y0BVPlzC5M/KN7H+kdKiivnob6OBTVUmRaO2jB7clBgYVU5HJhw2ASwD64dbKiT0sKVXQgvO7pKLGSa1YX6ZxQLpdeMDQ5wRRpQodNoh1hDmryVf3i
- 9BVh5Pz4
- xZTSEJysaG5lSPYZl2xG0u+86s5/DU7oNu0tNezA2hpNOQg4eDmTHDcmK3kXCztpG3AfFw2+xZGA8eCCaOCWI9Iak/bocqYucxtN6Eg08fO5mR6BhTcvJdTSL/Zw+tF3m3TU7bn8onpRqIz4fqpN3Mu0T8Zcp2BjpOCqxDnzKewO8T9KQvwu3/6yyQt9/w/IyO2iOeUh3C13Z4SVitESjlzz5j2WSn0t+7B/ymkm2SFDnAYTRS0RO8fk3ihJdYGlDc211WlwxVyg+qG9A1nl8cFPfHg==
+X-Rspamd-Queue-Id: AF18A180006
+X-Stat-Signature: or86h3xw9jq1k44wfkkri1an73pznrzi
+X-HE-Tag: 1788496081-451093
+X-HE-Meta: U2FsdGVkX1+WjFdZ6E6JY6X6cAiHKPR0DeKWjDe43J9hEbPeKNj6lNujHBmi2aN3Dlv0tcuiF9kCDAgDOHLZbkpqQZ4/Hpvpyz93jFNYH8WrW0auumVQSxNaGNb7+WW2FdRrCZJAx2m6bTGxezZyjImJ14QuVSoEmVB90UcgDgxtxVeTzMv4gSbAcSuYiLutWDv+3SLbqKLchrM95NdxUJI7ElNOpqcqib0f5P6hJveK0DAsmaCXNPuWrx/SRHg72ToBZYfVO4+ujHTd1U5MrAJ6YY7DQxxThXVS+kyGoOO8LbC9gveZ4IwNody2gjKkGeQwQ02+YlWhV+CNmMWyh/6jaL/2TX7hz6fToomT4bmt40AhY1z7RoS03uKNGrc4NqqhAVxbuOzpvqSiOQHnhow0p18NC0YsaUAKCiILj3tyZjrlOEHeCqoGvqcyPrePE+XkQnDIK+PaUhiFthbSmfpFM4J7H05Yoi1a50n2x3dLN0mLIWUrsjdLkAB2ytcqJ9QscVL7kgMnSYlTE15YgR4WlFvN6mA33ZR6oOx6fkI74oBqnDVtHk2nmvsXAwkdAWrtgf5MhgRsyeD4lLjR+i0MKGgp9yaj4Dk7ndq81QYGOMeyNmWJMJstfvmLEUKN5fI4eGjgUy2ryD6ROrRr6Ty5Hf7JU1tPTIqqcqT7TscBavdBfIjY0TPt1U0zInHigO1He93hVdBOWfw2z8PZIFXNLiXQcAvtyPOhCLU5IeWNzgX0veINf4bes//0lMhmhXgcgPv/otrBwP6QkmRLMcz4xr6yjgGHCb0e7N806mmgDFz6/wGTNXmXjGu9pfyLfC5eP/dNz1WldPVprWfVMuh0coXv5dB76r0eu47+/1gFEHWxcVKyi7cIonrgwdoZmJNiovNwvg6JIL3ZxdZGYM5wChAAGYZqTqkgPIDIkOuLp4+n5c2nzSkk794V1Pj5JAUbMhn7efepCLcaRRH
+ labUPMrF
+ jIO4cRFWPHaKePw7TcLuZd4btJKSLTu+I9UQo8Cw5npvdsY+G8XqNAq0u9PqCdWfYgw5R0c01duxozlZrElZ0My8IetFs1Jw1ow762fP0ICgq5elE7lIccRWLk7JVZtHpG3vE0dXhQhDOpS62Z6eH1BGAmVF4QRjnDGkyl1y7rmM24JMvofQVOy4JsfGo4qSS7XOnHYJvX+opvIed3a2R3+0IqctpHCmW0xeSrYN8INrD8RtuMMLQvnV07xFshbDsT7AlgBw/W5OtpMcZjldCNJGmKSStsmmiDdMi50WrYBeYmCies866hsA/9pdWL3KOm2T8Eho+DwwvI6fJGfY6Lek8iHf2ul4+16F/lIX4+rPzjnWiD2Kf01mph6PfUxH5hxGpiglGrj5/wll2I/4YJU5Niw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,92 +97,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On SWP_SYNCHRONOUS_IO swap devices (zram) with mTHP swapin enabled,
-swapping a range back in from within a single kernel entry -- the
-populate loop of mlock() or MADV_POPULATE_READ, or any GUP-driven
-population -- drives a memcg's usage from memory.high straight up to
-memory.max with zero reclaim and zero penalty sleep.
+On Fri,  4 Sep 2026 11:27:48 +0800 "Barry Song (Xiaomi)" <baohua@kernel.org> wrote:
 
-This defeats the containment memory.high is supposed to provide: the
-high..max buffer that userspace OOM handlers (oomd, Kubernetes) rely
-on as their reaction window is consumed in well under a second, and
-when the swapped-in pages are mlocked the burst ends in memcg OOM.
+> On Fri, Sep 4, 2026 at 10:47 AM Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
+> [...]
+> >
+> > Could you add this info to the commit message? (IIUC, someone tried to
+> > remove the prefetch in MM, since they found that prefetch doesn't seem
+> > to help much on modern CPUs.)
+> 
+> Sure. I guess we could ask Andrew for his kind help in adding the
+> following to the Changelog of this patch.
+> 
+> Hi Andrew,
+> 
+> Could you please update the changelog and add the description below
+> at the end? 
 
-The cause is the swapin instance of the problem fixed by the
-previous patch for anonymous THP faults.  memory.high is enforced
-either on return to userspace, which a populate loop does not reach
-between faults, or synchronously in try_charge_memcg() for large
-overcharges, which is gated on gfpflags_allow_blocking().  Since
-commit 242d12c98174 ("mm: support large folios swap-in for sync io
-devices"), swapping in a large folio charges it with the gfp derived
-from vma_thp_gfp_mask() (nowadays via __swap_cache_alloc(), which
-overrides the caller's GFP_HIGHUSER_MOVABLE for order > 0 before
-calling mem_cgroup_swapin_charge_folio()).  With the default
-defrag=madvise and no MADV_HUGEPAGE the resulting gfp is
-GFP_TRANSHUGE_LIGHT based and does not allow blocking.  That is the
-right policy for the physical allocation, but try_charge_memcg()
-also reads it as "this context cannot sleep" and skips the
-synchronous enforcement, even though swapin fault context sleeps
-just fine.  Order-0 swapin is unaffected: it charges with the
-caller's GFP_HIGHUSER_MOVABLE and throttles as expected.
-
-Fix this by settling the debt at the end of do_swap_page(), where
-sleeping is known to be safe: the folio lock, the page table lock
-and the swap device reference have all been dropped, only the
-mmap/VMA read lock is held -- the same context in which the order-0
-charge path already throttles today.  This is a no-op read of
-current->memcg_nr_pages_over_high when there is no debt.
-
-The charge gfp is deliberately kept coupled to the allocation gfp so
-the fail-fast fallback to order-0 at memory.max is preserved,
-matching the previous patch.
-
-Verified on zram swap with hugepages-64kB/enabled=always and zswap
-disabled at boot: memory.high=30M, memory.max=140M, then a single
-MADV_POPULATE_READ over a 200M swapped-out range (~3200 64k large
-folio swapins, confirmed via mTHP swpin stats).  Without this patch
-the populate bursts through the whole high..max buffer in 0.24s and
-memory.events max goes 0->1.  With it, max stays 0 across repeated
-runs and usage is held at memory.high by reclaim throughout (high
-0->~680).  Populate time is unchanged (0.22s): settling on every
-fault keeps the overage within one charge batch, reclaim keeps up
-with the swapin rate and the penalty sleep never needs to engage.
-
-The penalty-sleep regime (mlock'd populate, so swapped-in pages are
-immediately unreclaimable) was verified separately: without this
-patch the locked burst blows through the entire high..max buffer
-(~132M of 64k swapins) within 0.1s and ends in memcg OOM; with it,
-usage climbs from memory.high at a quadratically decaying pace (33M
-after 5s, reproducibly) and never approaches memory.max within the
-observation window.
-
-Fixes: 242d12c98174 ("mm: support large folios swap-in for sync io devices")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
----
-
- mm/memory.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/mm/memory.c b/mm/memory.c
-index 8b0c2c735d3d..dd56b43d3aa3 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5267,6 +5267,14 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- out:
- 	if (si)
- 		put_swap_device(si);
-+	/*
-+	 * Large folio swapin charges with the THP allocation gfp, which may
-+	 * not allow blocking, making try_charge skip its synchronous
-+	 * memory.high throttling. Settle any over-high debt here instead,
-+	 * where sleeping is safe: the folio lock, the page table lock and
-+	 * the swap device reference have all been dropped.
-+	 */
-+	mem_cgroup_handle_over_high(GFP_KERNEL);
- 	return ret;
- out_nomap:
- 	if (vmf->pte)
---
-2.55.0
+No probs.
 
