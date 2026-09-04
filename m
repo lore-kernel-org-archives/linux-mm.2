@@ -4,105 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1BBEC624DE
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 14:51:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01D76C79F82
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 14:52:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C32366B0088; Fri,  4 Sep 2026 10:51:18 -0400 (EDT)
+	id B71B76B008A; Fri,  4 Sep 2026 10:52:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBBF56B008A; Fri,  4 Sep 2026 10:51:18 -0400 (EDT)
+	id B22346B008C; Fri,  4 Sep 2026 10:52:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A83B06B008C; Fri,  4 Sep 2026 10:51:18 -0400 (EDT)
+	id A10E56B0092; Fri,  4 Sep 2026 10:52:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 828956B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:51:18 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F05101601CD
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 14:51:16 +0000 (UTC)
-X-FDA: 85176367752.08.FDC8AA3
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 293AF40002
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 14:51:14 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=lT0+5QON;
-	spf=pass (imf12.hostedemail.com: domain of 34dqaagkKCF4P6NQJO6DQCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--tarunsahu.bounces.google.com designates 209.85.208.69 as permitted sender) smtp.mailfrom=34dqaagkKCF4P6NQJO6DQCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788533475;
-	b=pTJ209Ta+0WpGGaoIW9R4YiNjv144EIxUWB4OSaQuluEOIG4Y7qcIMAHI0fhsF+DCLJXrD
-	PO1EfPxRkx9KYDwVbPwGTEoZkxeoiZx5lnIH0h5Ze/YteHjbBhsrJjGiZqlFK2zOouoQh+
-	EG9hBmAtd38vB1DESLj3chXbsDdl5tI=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 82CE36B008A
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:52:15 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EDDDA80182
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 14:52:14 +0000 (UTC)
+X-FDA: 85176370188.21.5B83563
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 38F6B140013
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 14:52:13 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dJD4MJZR;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788533475;
+	s=arc-20220608; t=1788533533;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mLY/ci2oR2yKic2vb+sEbJUZ8whxHO5esQUdSjd9KzA=;
-	b=B2VSXQqogKZvUf489kSwPgT8uxZVvRGJDRPh1N39XGzBEpoAotGlqaEFIQqU0GU0+9ssTH
-	oBCP+oDXj68oKkqoMw7wZtEPnH3NTLFnutBXmdUK4KrBO0kW2QRkcIbvgF0rlX8aujgl+b
-	O2xAkCgF4KnPgv2b0A48IKMisf7KluU=
+	bh=dwQzg2jEwGo+36T57R0zDsUiTlf1aTzJz1Ht0vOr634=;
+	b=fBpH5biHKkOzmDqw7/Ll3OwJb7wFsENvz4mDv9TaUiTTT8HFvI3HSWZZDtO+WSyLvFA/0J
+	JvbTavTrZbgZKUlL+jwdmrPVolI3SE5nIqF+ze3qex//okk5ufy4ej1X5KWfFYiKuZL34O
+	3HWMknok5HYStY5FfH7cPn589tShBVk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788533533;
+	b=HMwH1IRZSaJdRZHoC+4oB56pIeLCIDKLi7T1VeHRwuP9Fh2hXUq3Ou5KY+Z9b8apnLobaR
+	aRls8Ppi8Q5J8N6rX7E1AVkv4gEcRdESL84NRAJbDrRslefXy5p8P6mw9je/EgXpv39Dew
+	HqfU8h4jHeFgkzsQO6o8jdsT+piX92o=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=lT0+5QON;
-	spf=pass (imf12.hostedemail.com: domain of 34dqaagkKCF4P6NQJO6DQCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--tarunsahu.bounces.google.com designates 209.85.208.69 as permitted sender) smtp.mailfrom=34dqaagkKCF4P6NQJO6DQCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-6a18e266026so1071119a12.3
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 07:51:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788533473; x=1789138273; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mLY/ci2oR2yKic2vb+sEbJUZ8whxHO5esQUdSjd9KzA=;
-        b=lT0+5QONhMHzyq1xLrvoLPVwAb9Yz/6H6p8Yd4Z9W4PfKBJTuKSn2KnZk38uadIAz9
-         jIk+WwQ7EnqRZbPUrNDlCxh2tClmOzhl31x8DJBK1xjFL018inhVCa/iFt6ZAMUpW30P
-         FE7w1qXoaTZrPhy+QEAePHh3uhQOqmDerjsIWm2dKL22NNs7NWoiBYpRTDKj9L/IJdIb
-         br026sNV55GbwkpsmxUDM3NvrLI3OmZn4gTUfjYy955ptqJWwW77YK0WTaZ9QxYwrmPs
-         zfQwkrEraCDCeScmw2uHUh2HVfXhv3VWvYHnViQdeq97SHwbqSXXp3P8YBjcSOC6nlQt
-         ma/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788533473; x=1789138273;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=mLY/ci2oR2yKic2vb+sEbJUZ8whxHO5esQUdSjd9KzA=;
-        b=eV/OH7/QpL01Gp2KFV2nB41MEyXHvXJPsQETZHVCLYIdaxPRibp9OUI69IwfXX2n57
-         T7Kb094cps8BrasvdeOPu44K5tZolc5yHMBNotYxdl1E03Xh9+YDET145708FiVCpvxo
-         PPvTq7HzhlXq9O5x5F9X1PhwEnl6VCDVPmafbvJdgW8A21eg74Gmwwdg1z24cVtFzYLQ
-         d6wvtGcvQdNOZM7SiYShwPyXJdhJR9lV68PQ/x7gmFh/tcbUraPU1znSVauv8lk1f4ef
-         djRqJ1IjNDLqsWTRnIPI/O+G1yeXDZr0PJ7NTOo5HU8N4lfWQVPczAMjSB7PxwLTyVIA
-         cjSQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzWpPdlwzhL/I49coHjuTV5VgwBScDwaxOH3dkI5hptU0RgoCkEwnihFaTaTyi4oiTNH0SjftHUkg==@kvack.org
-X-Gm-Message-State: AFuF++kXbAPfbgmlwISYziHa8brf87mNVid8knONhuzwdvAVbR34e+VD
-	dC2CAmuKZfaSgd92sT+c7+2SCVc8OunWe+xkvGf92YYTSIlK+P/sjALxzo6vCZkQEvPrulcxTX9
-	wEpC/DCah9QSGLxw4zw==
-X-Received: from edgi19-n1.prod.google.com ([2002:a05:6402:a593:10b0:6a6:8587:3226])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:52c9:b0:6a6:32f5:5573 with SMTP id 4fb4d7f45d1cf-6a7e8f94ac4mr2595587a12.21.1788533473262;
- Fri, 04 Sep 2026 07:51:13 -0700 (PDT)
-Date: Fri, 04 Sep 2026 14:51:12 +0000
-In-Reply-To: <5c223d7d-4f7b-420c-8019-d4f343f0f232@oracle.com>
-Mime-Version: 1.0
-References: <20260903155907.1065681-1-tarunsahu@google.com> <5c223d7d-4f7b-420c-8019-d4f343f0f232@oracle.com>
-Message-ID: <9huz7bl1134v.fsf@tarunix.c.googlers.com>
-Subject: Re: [PATCH] memblock: use binary search to locate candidate regions
-From: tarunsahu@google.com
-To: Dongli Zhang <dongli.zhang@oracle.com>, dmatlack@google.com, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Pratyush Yadav <pratyush@kernel.org>
-Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dJD4MJZR;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0437941FE8;
+	Fri,  4 Sep 2026 14:52:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D9AB1F00A3D;
+	Fri,  4 Sep 2026 14:52:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788533531;
+	bh=dwQzg2jEwGo+36T57R0zDsUiTlf1aTzJz1Ht0vOr634=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dJD4MJZRh25gKn1nsYZg1uaVLWJzXKYzmcpljcL5Mdbw+te3eMDvlsfSG9Bm+LauY
+	 1PMYKdnizw1riPMM2zZVYBgaVIA7EtVJ8cov43aSLdyL2qOcmfIFD1DomRZ5O8h2yf
+	 EFyXQv6mrObBDLRyCl/6eeK6rs2bzgC/U+vZqiS5JNr9YtAB13QZMQDTi7mXnTL7sn
+	 ehioRVm6vFTKuzq+wmx2FoDPEws7k6y4ifeBcZityJdsRQ0vZzJwGD8c7gGtDnNyIM
+	 L/RZfe3skN1RH/lKdBdkvfW4QdyAKjCn7jG3Qs9RVNbw6NvzkNADqAY8B06W6aB3e3
+	 tVtFPdJOSG6NA==
+Date: Fri, 4 Sep 2026 15:52:06 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+Cc: Mike Kaplinskiy <mike@recall.ai>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R . Howlett" <liam@infradead.org>, David Hildenbrand <david@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>
+Subject: Re: [RFC PATCH v1] mm/madvise: prefetch private file COW swap entries
+Message-ID: <aprY-BekgYlsK-Y9@gremlin>
+References: <CABeknB82T0d3VUjz6Xwcdfa8spHvNzO6tZNTMwjJgF00EwrWWA@mail.gmail.com>
+ <D758D1DD4372AF8E+20260904100919.2139680-1-zhaozhengzhuo@uniontech.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <D758D1DD4372AF8E+20260904100919.2139680-1-zhaozhengzhuo@uniontech.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 293AF40002
-X-Stat-Signature: 9jiwxumfjoydz7osnfrn88hzus96g5oz
-X-HE-Tag: 1788533474-996852
-X-HE-Meta: U2FsdGVkX1+Qa5nqVcqoKiWzn6bfEEW5moz+PG500QyUDU0cbVGTrlauHoiDvycazAAwo+xj6Wlns6FwFEf6ID/h8j8Y2h/tE2eTmXgrjOan2mNyL/6lR1Jpw5t4cYaheMA6wUAx5OapfqhAJuSKFSaFAFLmZX8+7xDgl8oe10krrnjH9elJSByNKpy+bypvTHAVoYHaC6oQ9z9ySXq8u94Rk9z2itoIV036NxvA0C0Zjjhg79EHFTD4AT/mH2orYNnhtfRYU9EuPIEiMRR4kW7D0WXJSrsI7troz5MwMlM5ofOAcFqQOY5AJTJ8bdwFxy4lmjj1qDZZHwY4Fog2IW5ybSTHU7aPAoR0zBJwhVgbXXFh12aXZe/yAQqv9YlCYBEPC4LQ8IimzX+VddLVSUF2RaeVyqdrcW/p0pLLNEMqxzi/M32LpyG7XyF6ZMqFRu4U0vHKew7mGc9jdxNcuN0B8OH0xL1yAzEfpoYiQxeXhuJBTXSqnDbptzvFGf7Xrj01mJUmn1E93w/2Ue998sZjK6y8YpP5k5hqibR7mhlyLy7sXktg1fXbYo1hnueE817FmcqWug/1F5YIB9j5zltsoNk45MH6QWTdZT/huGWjwasLPiCKJx1IrwIv7TlzlgxMyDgWM5uP5+khNrn9nf5l5RTPXL5oibCS7OJeJxbifkjbX0pFYcZfK6WjMhqSMwhC7TBagQRxetSR9mY1JLTFtV29VQ0qlm5JofgVs3QVNHicKX09j0j/G0GRG1T1pFzCC5syPdsYk/+DqwU/x4+6xwAfoxsupxgTux/NK8efePcQKfAL0xWE7fayEChF5cQScfZtCDeLn4Jo0SRtvRCb0rNkaBpwB8wQdsxuG5bsXC7TmsigcVsWH/CymoL6BW8Vb/QRHq8+h0uuwx9It3en5UPoS6I7mooHwJMfNmrOiUpIWLFM7B6BvSnREp3NqS0BJnzWYN/LE8Xnv8z
- CvsNp26S
- JNd6x30R6Z9/ZEZN34GaDWNl0chJO6qms7l/WqMZot2KSNy2MNi4ZYxwm92k+fc1CiGiogomwJ07La195yIpIMlnmlPIaXl34RWO+y4BkBxyxvCUKSvw6uWSTRijSlrXXz0FgXL9bDl7fA1fEuasPhKycV0MqRgwoEfeqBIB+YfdqBt3k8mj/KZgu76/ners1lGaOsg2AY15qh9ZUljXebcNb7XsIgyRqbMufzJ80avcwtz8t+PTL+/cTx+ebgun0zWcnQ3JwDL2WSYyuv5x+yyMch9UMhK0KOoqJG3AX3Bm2iO6GnmeXm5Ribx97nQVS8j9tezBLO7FiiJr8j3lhZrFOJ85gi9MieRLfcbRWt0EvyuuLPzmNsW/O4NkXme8V7+YH2Jr8ZGI9tNBo09nU5+yRIDyIWp0fS70Jqm26+lXYm3+sT/k27/p/GD9cAvra6kqRcaBtejhneh/4Lz/HZ3boiI/vm48UDeG20o7c38j7X5bUM+jICPzznRj/U/N8QYtW0pNMcFDhD640oyQXZUC0e+Jw1lxLcoN236I1bCfNEq1sLhWa/jW5gQZLQw5HpEF7uK+l+h+qNrUsuJWOD79yimXeq0vv/Q2K5bDs8bMrUGQ=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 38F6B140013
+X-Stat-Signature: 3sdfpe5r5kgokawsbezphus7permgake
+X-HE-Tag: 1788533533-262530
+X-HE-Meta: U2FsdGVkX19iNYzWKz2XLlnHTWH/2Sd/mobpNJbBirlqp0qgTUQGXfxXsDkQOJxToEuWY3hR4Oj6G/Ay/rL0UPZqwzklX4Dnb3xfeb5TpPWcC5LmqJUMtONgjkFbsZvWjBWz1Y/ombF8nLW+JyNjQvbhSvIu7cfx4e5hCeXHc9JbFdE/xJ6uwB43Gl6PEOyAzSddtpbk6jvAROP2WwOzOXOLULBJFqCy8eVaqhnjcmcaXU93FsoymGlNNs5U/11O8QZSAqBl0WdyoXpGWs5alLOLv999LodTB6fej7xGygG3t6Pp+QEDOkay2pNpoYsuYbKKqBJTPxNZoPYo/lAk1fSwgJVbCdHf5q2M+SvV32PVIFaG/A1eCeSKVZpob5ZchKgiG1XhLXYXed5b8RnBwd4Ao7J8xj1WMo8btQFrBA8hPjWGpTK4jmqtlqZ+Tl37D0p6oWMKsNIaoHMiMKjOynsJddu/vU7Ij44SkODOSvBa6hkfy3PUbVC/O7CLBNAYNE9jdAB/oNtN/F5OPjR/LKZCoE+ZTuNKp112ins1GhfAqhgYLxsnLMh898CaM7CqplhIN2+yJH+veCokM5g/D8RQ/0XI/QJoFBtg1ll5hr02R8jw1YOV4JZ53ip+JZS7BPWEl/06Q7DDjMTaPvSWqR6SvF5U2rx839Ynp5QvMkNqJIUawYYUVd6pQzPSLP23CNURhBUS0zTC018naWxaNPpH3wYWMqWu+PF5FuVwq2dOTIa0cmy/+sIl/xpIdg/OLVG7c2Fi7eoqoOiLVzy1lzIesig92Z/X+XtKakKIUu5i8XXYO6I1NEIrR/JlKSV4ARL4DjL6hPRlERpHK4xqu+3FLzBy9KlIjq+YEDC/AaGYPy0egVXRgj7rBIx074ZPbcCRO3d2ibbFbKRmm5YVy/4AJLPPGd/OuorVzia/b+vFcdkqNxluxfI6Sw4gvRDPVRXoMIwAdqzXrE9eREk
+ WbD2r/co
+ RJs+fmFZyrUKFidke5fs7OMtBcBUwI7wo6zE/k25cmpM+bJSfNTJXwmLk6TsH9zDS2cjVBCT8dBelyg1Gb6fcBNH5VrkyNXQmTMnp8qgDWq7n6+L48jimKC7bu8llf3ejcGCMhIbXDkH+MY16SHcBMNvHEOY9zuEtksyOP5hOMBjH3F7AfhQS+0wHxbndD/YEUfsDYYKEL02Lo4NCQfS2qrUFqTUXwBPrfyoSdM6JftXy8gtQ4n70v7p2USXS7+RxKIkWET5UboQ04+NDsrPOAfSQoLLVFOyUk4wzmxfqsinBpi/k+20Q0MzfSQix3bnmbMmYYhCgVWETQFjVm7GNsly6GKQF55+x8cs05AgesXUEL4FSOaLWi+2YcT6Gbi6IflZUzdi0+Kowd4Ga066g3ftx9xKm3KAt1MWYPtxmjrwv1tbmMKldp1gucx94IIdnYzEgK7kOi3TRR4Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,234 +93,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Dongli Zhang <dongli.zhang@oracle.com> writes:
+On Fri, Sep 04, 2026 at 06:09:19PM +0800, zhaozhengzhuo wrote:
+...
 
-> On Thu, Sep 3, 2026 8:59:06AM -0700, Tarun Sahu wrote:
->> Use binary search (memblock_bsearch_start) in memblock_add_range() and
->> memblock_isolate_range() to locate candidate regions instead of linearly
->> scanning from index 0.
->> 
->> Under heavy memory fragmentation (such as KHO page preservation registering
->> hundreds of thousands of disjoint folios), scanning from index 0 on every
->> insertion and isolation results in O(N^2) complexity, causing boot-time
->> memory retrieval to take several minutes (~268s for 393k pages).
->> 
->> Using binary search reduces the worst-case complexity to O(N log N)
->> (and O(N) for sequential appends), cutting KHO memory retrieval time
->> from ~268s to ~50ms.
->
-> I encountered this issue with my workload. Initially, it was because I forgot to
-> set THP to "always", As a result, there were many 4K pages even though they were
-> contiguous.
->
-> Indeed, I noticed some delays or hiccups with my workload even with THP set to
-> "always".
->
-> In the past month, I used something like what I attached at the end of my reply
-> to reduce the number of memblock_reserve() calls. I never realized the poor
-> performance was caused by memblock_reserve() itself.
->
-> [    0.231623] mem auto-init: stack:all(zero), heap alloc:off, heap free:off
-> --> delay
-> [   38.587378] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=32, Nodes=1
->
-> With your patch, I ran several rounds of tests with THP set to "never" (4K
-> pages) and no longer noticed any hiccups or delays with my workload.
->
-> [    0.247746] mem auto-init: stack:all(zero), heap alloc:off, heap free:off
-> [    0.512019] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=32, Nodes=1
->
->
-> Thanks to this patch, I no longer have to put up with the delays or hiccups in
-> my workload!
->
-> Thank you very much!
 
-Glad to know it helped and thanks for testing this.
+> Fixes: 1998cc048901 ("mm: make madvise(MADV_WILLNEED) support swap file prefetch")
 
+Fixes totally inappropriate.
+
+> Reported-by: Mike Kaplinskiy <mike@recall.ai>
+
+Missing Closes tag.
+
+> Link: https://lore.kernel.org/linux-mm/CABeknB_S2XJSHFgnHdgnN0rjzHhH4oQJs_APq9fvxHztQ_pgiA@mail.gmail.com/
+> Signed-off-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+
+(Very likely) missing Assisted-by tag.
+
+Please follow kernel procedure.
+
+https://docs.kernel.org/process/coding-assistants.html
+https://docs.kernel.org/process/generated-content.html
+
+I already sent at patch at
+https://lore.kernel.org/linux-mm/apm68kgHC0NK2zVI@gremlin/ before this one, so
+I'm going to take care of this thanks.
+
+> ---
+>  mm/madvise.c | 32 ++++++++++++++++++++++++++------
+>  1 file changed, 26 insertions(+), 6 deletions(-)
 >
-> Dongli Zhang
->
->
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 7c4d86daf86d..03e1f914c800 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -67,6 +67,8 @@ union kho_page_info {
->  static_assert(sizeof(union kho_page_info) == sizeof(((struct page *)0)->private));
->
->  static bool kho_enable __ro_after_init =
-> IS_ENABLED(CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT);
-> +static phys_addr_t kho_preserved_batch_start __initdata;
-> +static phys_addr_t kho_preserved_batch_end __initdata;
->
->  bool kho_is_enabled(void)
->  {
-> @@ -610,25 +612,58 @@ static struct page *__init
-> kho_get_preserved_page(phys_addr_t phys,
->  	return pfn_to_page(pfn);
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index 73c2901b9adb..96cbce6c7f8b 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -193,10 +193,16 @@ static int madvise_update_vma(vm_flags_t new_flags,
 >  }
 >
-> +static void __init kho_preserved_memory_batch_flush(void)
-> +{
-> +	phys_addr_t size;
-> +
-> +	if (kho_preserved_batch_start == kho_preserved_batch_end)
-> +		return;
-> +
-> +	size = kho_preserved_batch_end - kho_preserved_batch_start;
-> +	memblock_reserve(kho_preserved_batch_start, size);
-> +	memblock_reserved_mark_noinit(kho_preserved_batch_start, size);
-We can also combine these two function. IIUC, kho_preserved_batch_start
-does not overlap with other reserved regions so, they will be mutually
-exclusives ranges and can directly be marked noinit while adding to
-reserved list.
+>  #ifdef CONFIG_SWAP
+> +struct swapin_walk_ctx {
+> +	struct vm_area_struct *vma;
+> +	bool swapped;
+> +};
 
-~Tarun
+This is silly.
 
 > +
-> +	kho_preserved_batch_start = 0;
-> +	kho_preserved_batch_end = 0;
-> +}
-> +
-> +static void __init kho_preserved_memory_batch_add(phys_addr_t phys,
-> +						  unsigned int order)
-> +{
-> +	phys_addr_t size = 1ULL << (order + PAGE_SHIFT);
-> +	phys_addr_t end = phys + size;
-> +
-> +	if (kho_preserved_batch_start == kho_preserved_batch_end) {
-> +		kho_preserved_batch_start = phys;
-> +		kho_preserved_batch_end = end;
-> +		return;
-> +	}
-> +
-> +	if (phys == kho_preserved_batch_end) {
-> +		kho_preserved_batch_end = end;
-> +		return;
-> +	}
-> +
-> +	kho_preserved_memory_batch_flush();
-> +	kho_preserved_batch_start = phys;
-> +	kho_preserved_batch_end = end;
-> +}
-> +
->  static int __init kho_preserved_memory_reserve(unsigned long key, void *data)
+>  static int swapin_walk_pmd_entry(pmd_t *pmd, unsigned long start,
+>  		unsigned long end, struct mm_walk *walk)
 >  {
->  	union kho_page_info info;
->  	struct page *page;
->  	unsigned int order;
->  	phys_addr_t phys;
-> -	u64 sz;
+> -	struct vm_area_struct *vma = walk->private;
+> +	struct swapin_walk_ctx *swc = walk->private;
+> +	struct vm_area_struct *vma = swc->vma;
+>  	struct swap_io_ctx ctx = {};
+>  	pte_t *ptep = NULL;
+>  	spinlock_t *ptl;
+> @@ -223,8 +229,10 @@ static int swapin_walk_pmd_entry(pmd_t *pmd, unsigned long start,
 >
->  	phys = kho_decode_radix_key(key, &order);
+>  		folio = read_swap_cache_async(&ctx, entry, GFP_HIGHUSER_MOVABLE,
+>  					vma, addr);
+> -		if (folio)
+> +		if (folio) {
+> +			swc->swapped = true;
+>  			folio_put(folio);
+> +		}
+
+This is pointless, it's not a good trade off.
+
+>  	}
 >
-> -	sz = 1UL << (order + PAGE_SHIFT);
->  	page = kho_get_preserved_page(phys, order);
+>  	if (ptep)
+> @@ -297,10 +305,22 @@ static long madvise_willneed(struct madvise_behavior *madv_behavior)
+>  	loff_t offset;
 >
-> -	/* Reserve the memory preserved in KHO in memblock */
-> -	memblock_reserve(phys, sz);
-> -	memblock_reserved_mark_noinit(phys, sz);
->  	info.magic = KHO_PAGE_MAGIC;
->  	info.order = order;
->  	page->private = info.page_private;
-> +	kho_preserved_memory_batch_add(phys, order);
+>  #ifdef CONFIG_SWAP
+> -	if (!file) {
+> -		walk_page_range_vma(vma, start, end, &swapin_walk_ops, vma);
+> -		lru_add_drain(); /* Push any new pages onto the LRU now */
+> -		return 0;
+> +	bool private_file = file && !(vma->vm_flags & VM_SHARED);
+
+This is not correct. My version uses the correct CoW predicate.
+
+> +
+> +	/*
+> +	 * A private file mapping can contain anonymous COW pages. Once such
+> +	 * pages are swapped out, their PTEs contain swap entries even though
+> +	 * the VMA still has vm_file set. Prefetch those pages as well; file
+> +	 * readahead can only fetch the original file contents.
+> +	 */
+> +	if (!file || (private_file && vma->anon_vma)) {
+> +		struct swapin_walk_ctx ctx = { .vma = vma };
+> +
+> +		walk_page_range_vma(vma, start, end, &swapin_walk_ops, &ctx);
+> +		if (ctx.swapped)
+> +			lru_add_drain(); /* Push any new pages onto the LRU now */
+> +		if (!file)
+> +			return 0;
+
+General structure is OK, but again I already sent a patch.
+
+So please no v2, I will handle this thanks!
+
+>  	}
 >
->  	return 0;
->  }
-> @@ -1687,8 +1722,13 @@ static void __init kho_mem_retrieve(void)
->  		.leaf = kho_preserved_memory_reserve,
->  	};
->
-> -	if (kho_radix_walk_tree(&kho_in.radix_tree, &cb, NULL))
-> +	kho_preserved_batch_start = 0;
-> +	kho_preserved_batch_end = 0;
-> +	if (kho_radix_walk_tree(&kho_in.radix_tree, &cb, NULL)) {
-> +		kho_preserved_memory_batch_flush();
->  		goto err;
-> +	}
-> +	kho_preserved_memory_batch_flush();
->
->  	return;
->
->> 
->> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
->> ---
->>  mm/memblock.c | 38 ++++++++++++++++++++++++++++++++++++--
->>  1 file changed, 36 insertions(+), 2 deletions(-)
->> 
->> diff --git a/mm/memblock.c b/mm/memblock.c
->> index 9ce86349a29f..88940474b020 100644
->> --- a/mm/memblock.c
->> +++ b/mm/memblock.c
->> @@ -160,6 +160,11 @@ static __refdata struct memblock_type *memblock_memory = &memblock.memory;
->>  	     i < memblock_type->cnt;					\
->>  	     i++, rgn = &memblock_type->regions[i])
->>  
->> +#define for_each_memblock_type_from(i, memblock_type, rgn, start)	\
->> +	for (i = (start), rgn = &memblock_type->regions[i];		\
->> +	     i < memblock_type->cnt;					\
->> +	     i++, rgn = &memblock_type->regions[i])
->> +
->>  #define memblock_dbg(fmt, ...)						\
->>  	do {								\
->>  		if (memblock_debug)					\
->> @@ -591,6 +596,33 @@ static void __init_memblock memblock_insert_region(struct memblock_type *type,
->>  	type->total_size += size;
->>  }
->>  
->> +/**
->> + * memblock_bsearch_start - Find the first region index where rend > base
->> + * @type: memblock type to search
->> + * @base: base physical address of the candidate range
->> + *
->> + * Returns the first region index that could potentially overlap @base.
->> + */
->> +static int __init_memblock memblock_bsearch_start(struct memblock_type *type,
->> +						  phys_addr_t base)
->> +{
->> +	int mid, low = 0;
->> +	int high = type->cnt;
->> +
->> +	if (type->cnt && base >= type->regions[type->cnt - 1].base +
->> +				 type->regions[type->cnt - 1].size)
->> +		return type->cnt;
->> +
->> +	while (low < high) {
->> +		mid = (low + high) / 2;
->> +		if (type->regions[mid].base + type->regions[mid].size <= base)
->> +			low = mid + 1;
->> +		else
->> +			high = mid;
->> +	}
->> +	return low;
->> +}
->> +
->>  /**
->>   * memblock_add_range - add new memblock region
->>   * @type: memblock type to add new region into
->> @@ -651,7 +683,8 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
->>  	base = obase;
->>  	nr_new = 0;
->>  
->> -	for_each_memblock_type(idx, type, rgn) {
->> +	for_each_memblock_type_from(idx, type, rgn,
->> +				    memblock_bsearch_start(type, base)) {
->>  		phys_addr_t rbase = rgn->base;
->>  		phys_addr_t rend = rbase + rgn->size;
->>  
->> @@ -827,7 +860,8 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
->>  		if (memblock_double_array(type, base, size) < 0)
->>  			return -ENOMEM;
->>  
->> -	for_each_memblock_type(idx, type, rgn) {
->> +	for_each_memblock_type_from(idx, type, rgn,
->> +				    memblock_bsearch_start(type, base)) {
->>  		phys_addr_t rbase = rgn->base;
->>  		phys_addr_t rend = rbase + rgn->size;
->>  
->> -- 
->> 2.55.0.970.g62bdec98f9-goog
->> 
->> 
+>  	if (shmem_mapping(file->f_mapping)) {
+> --
+> 2.43.0
+
+--
+Cheers, Lorenzo
 
