@@ -4,88 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3426C624DE
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 11:37:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C80F7C624D3
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 11:41:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCA356B0096; Fri,  4 Sep 2026 07:37:18 -0400 (EDT)
+	id D94996B0092; Fri,  4 Sep 2026 07:41:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7ACD6B009B; Fri,  4 Sep 2026 07:37:18 -0400 (EDT)
+	id D47BC6B0098; Fri,  4 Sep 2026 07:41:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B90056B009D; Fri,  4 Sep 2026 07:37:18 -0400 (EDT)
+	id C33906B0099; Fri,  4 Sep 2026 07:41:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A03C96B0096
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 07:37:18 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4118C1A0E04
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 11:37:18 +0000 (UTC)
-X-FDA: 85175878956.10.652941D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B86E820002
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 11:37:16 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KWq7GcWu;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 96BFC6B0092
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 07:41:22 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1C785120E42
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 11:41:22 +0000 (UTC)
+X-FDA: 85175889204.08.848FEBD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 64B97C0007
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 11:41:20 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AiADOeqn;
+	spf=pass (imf28.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788521836;
+	s=arc-20220608; t=1788522080;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M35ChtJ6LeX4aN5jhdAT3A6U190niCHvw/nKaSgFqhI=;
-	b=7fEsLKvYL+89/MYZA0L6/8oAlZcgp47WhVDDZmPG7c4HuDQfFQ5ZoQ7O2ELlyvHpfVQkix
-	6LBjLb10jyY4/qnJyReOQN3y0XdQnk7BmUDM1HZuQDxy/Y3s/e7dAGJ0xnxjVRn6FzyeHl
-	FToh7FAH+RoOFAVIHq95Rzlz+uqTI24=
+	bh=AVcKEaA4QKNBqPQxG7kCkdRB1jRFfjMN2gDUjmG9sC4=;
+	b=d5wxuvckJ++nl+lI8OQo8f/dVHjZwdImNzu7+G5m7dFURvZCwkjUcgWFiQwqoRgkTq6Q6+
+	/Ntu1dzKg4+2TKklmiNBU2rVyBsQ0PvtrNlN81QCxvGU5FMqv/cczpXk/SlsE8K8oIetVg
+	7ePkEtFOBJgaIQch/xdHt+iVzCHVxb0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788521836;
-	b=JDz4vmFonBXodRQ2dYphogxHsafSIIFvBv6SOUhnz1aH1rwUNGeI3y2CQahExjnxIYyQOv
-	X0T/O3MNag8k34EXy+AQ2BsbVhdSbkW3GmUDOIpgGvn10Y0T4JHMjxTXws4IHtvCLuO/mQ
-	q1dgqjUsU9wwZ2Pt+3TG5MqqCbjNg+I=
+	t=1788522080;
+	b=ebWZwk1XJ+gvfVdImz0ivf8UgczR4dt54NmqzoAJJ5ucMOfl3qjjxF6F8BIaOHuB+DeCVu
+	m02XDjdtd9uQFD3XEN+TV5rzDuhxJPyItrKW6BOp+rVfVB6V0WkkCusOVlUznjTS1+0bFX
+	X4ZH+8oAHdGjpBqKlZfjzq981WpNV74=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KWq7GcWu;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AiADOeqn;
+	spf=pass (imf28.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 41FA66020A;
-	Fri,  4 Sep 2026 11:37:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12061F00A3D;
-	Fri,  4 Sep 2026 11:37:13 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6F6B043E76;
+	Fri,  4 Sep 2026 11:41:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6381A1F00A3E;
+	Fri,  4 Sep 2026 11:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788521836;
-	bh=M35ChtJ6LeX4aN5jhdAT3A6U190niCHvw/nKaSgFqhI=;
+	s=k20260515; t=1788522079;
+	bh=AVcKEaA4QKNBqPQxG7kCkdRB1jRFfjMN2gDUjmG9sC4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KWq7GcWu3wYuI1i2MlTQzlbxBnc4tNFM/6s4h7dMYSE6I0N2cGP/fp7HPiIHQxh/H
-	 vtVqJiRPDoR7if5qb8DFO534owlOw9gQXNo5zmU2dJ8HYRmZnhwEa58iPMZXzv9UE+
-	 7eynM2QcakmyT8b76x4X1eZsQvet590ZDD1xjGxuiRcyLa7IJ3jC25g+rj/KMSLKYU
-	 BgYDlNc9JiKrSR+XsIyxQfuLKilVh/ZuYOlobrkuieEesA2y5C1x3up434CncgWH2t
-	 +zO+0dHkCCjJLpn4iIzDwNficQBNigwJK6akSlRwWqr+zvZhIjPcQ06WCBHOdzbcfv
-	 kp+o+XibdDIww==
-Date: Fri, 4 Sep 2026 12:37:11 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Hemanth Selam <hemanth.selam@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCH 5/5] tools/testing: fix typo "mergable" in comment
-Message-ID: <apqtOmwcvDaA8cp9@gremlin>
-References: <20260904104854.25272-1-hemanth.selam@gmail.com>
- <20260904104854.25272-6-hemanth.selam@gmail.com>
+	b=AiADOeqnGMHeLkfaGNji1T3Dj3iV1UB/ASC2xLDgi7AfO3Xx5O8iq6YxSwXlm2j4e
+	 +kp9dklRJ7+iqSVX2PJ5wPUaOLeh0xL3AG7uZXSajQB8Ueai6Q/MwLs+2KsniKywT4
+	 ng5I34uDzQcmVKk7eyz2TXtpx4Ht+KP87LPZnCDOBaW8k2Rs8suvD9hMRM0s3nI03H
+	 khymos7oQULP1MD/xvWmlFFMgkHQ9XejH5YMHiX3uh0rmk92ZYbQ98AlvpLzDSohTg
+	 v3IUX38C/8KGCNvpFnTzHhpBe9kqorbNRNmkYYevlia5fsjiGh0O87jfvbAnvMeM0J
+	 1APOUvIK5UabA==
+Date: Fri, 4 Sep 2026 12:41:05 +0100
+From: Will Deacon <will@kernel.org>
+To: Thierry Reding <thierry.reding@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Sowjanya Komatineni <skomatineni@nvidia.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Russell King <linux@armlinux.org.uk>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Brian Starkey <Brian.Starkey@arm.com>,
+	John Stultz <jstultz@google.com>,
+	"T.J. Mercier" <tjmercier@google.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Chun Ng <chunn@nvidia.com>, Mark Rutland <mark.rutland@arm.com>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	devicetree@vger.kernel.org, linux-tegra@vger.kernel.org,
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-mm@kvack.org,
+	iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org,
+	linux-trace-kernel@vger.kernel.org,
+	Thierry Reding <treding@nvidia.com>, vdonnefort@google.com
+Subject: Re: [PATCH v6 00/12] dma-buf: heaps: Add support for Tegra VPR
+Message-ID: <apquUWgrD9C2jWQ0@willie-the-truck>
+References: <20260904-tegra-vpr-v6-0-79042cfa8de5@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260904104854.25272-6-hemanth.selam@gmail.com>
-X-Stat-Signature: seh1k9a56zsdfzheuhmktmfriiqj7e88
-X-Rspamd-Queue-Id: B86E820002
+In-Reply-To: <20260904-tegra-vpr-v6-0-79042cfa8de5@nvidia.com>
+X-Stat-Signature: dsugjs6mccusosz6xzwwmytyomf77iiu
+X-Rspamd-Queue-Id: 64B97C0007
 X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788521836-559588
-X-HE-Meta: U2FsdGVkX1+5EuCCHpD0hS76hmK48rHMbxYgnFC2VyR6uvxf6kFRKkH8Sks157JX3gxcl2i0ubZc9lIKnwyU4exV0zGDnBwPQP9k77xG9kUeX6fSbd96L/UkRZPvX1dUCSLBJMKAkq/bvxA9aqTWT7IfiC86s7tdQT3k39IiD6wuQS03hMjLn1IRjtSIiXI57jfZKCWe0fyqZ2/jAOdoAyYVSR+jwYH3J9dmyygnXHaHQq7QBuCtwIIu2XZcQXoGydJu/Hn9Oab0Bv07FnwuLHWF5ZR+CnnTJrUOPwsgwtjJzuqQKlduNtLxox45Vu0AID+V1RCXazFRuxRjNk7blNRHwNskfoiOOT7cdOghAncK22tUXNHF/GKuiCD6AqzKLcQ4wLPZi/wy/ZsDOoDtGJFXGkvVu7CDbwGxCfg0nW1Ch1SAbEEhZyEhTihVXSlY9u0DHNAY354asJa4edWFlSle/3CjrZjcBHWqjC5fz/yo8NvQ77LNt7fL5EpWfCv/FqepyICOoo1OfoTHVwnrbYUjrgcGV2bVvEKyRRTfJRO9RFrGLWaZQlUiOybPWCm0Z8EaeiogkTWsX4UZzti7pFbzK467Nfr2RyQSElnqEPdDkpHO3uwoJkmdnpi6HZYpY1Ri2HDrTuBZWvxkMVEq2ljwWuyk1Nqz7AZqFYp1RynY0rJg/gs7kkHvY/jd3UeeRfZKIDS4aJbzrXSl+po2lu4JsAz6FXH3yymIjXpHsUB0NO478EUHM9DEWmRALfUYzmkji7nN65XCyoxC/Xu4PZ4/J35ossenR/Yh2Hk37zo5C8pBGWRVq/dKRl2+3yMGB4g39DekpHvsg8kHWTWfsecQO5V/ctp6XQGqr+j8XrM+gNG/c0KY/oR2mNFEP2JEewwTpKgiAKSCp3SEHbcrHaF/KmpC2O9JB02/KAviLm0fcy2KWEMxw0/wf5pr2a/rQdMSwU9fH1ldYEnvbke
- kkdzoElm
- idAZ59wPH2uXpUieNfdlEtH39f+FkgxREdvYoqQXrJByk/FSAwhmgQA+30oLGifciOmiG/5PDmXf6EuJxYyPPEV+gXMUBTtpkT412Lwj1O0vyiTmY2gRm8dlCPI40tsWsKzssY1/IM6FZhntKN87vinCq2F6XFeePSlwQJLuHru7KW9zyunA08V/6BPUYf+lPIIpcFl0Qe+EDXuXxfUWHMhZv7CMMNJWPO6tZwLswGGNpsphSAg4WFfXrAGBs9gfir79JwAtev7J4Hm1C74cup9skFYVJK9BOZzkfWux772zagS2Wv3BNs2u1UYeSvR6H7INFBGLjKdPXWm7ogehSp/qv4ZI50dEdFYPF
+X-HE-Tag: 1788522080-661455
+X-HE-Meta: U2FsdGVkX18gh8m9ANo+dnzPVGR8+rOUtT6XcEAbWzkUt4N3oO5UiG0AVh7vL1a/SxVgb0zF4rKiw/VDAwXF7YrI8Q8wwtNSIQIbhAThM9tXFW8aIe6LCZI3YLPvIhlNRHCkyqJR+i2NPMhy0BZeEHnYI+siweonvdOMzp5u4hUA5OcszIc3ZuTugvpgFe8/cFH1kwMIihhLKhbeC7e/umHQjc0nU/aTpQFzSeU598fCQsJ22ElLLvCiVGbvi1qIEs8DoZpwHFKg2+ctS4qh2e2Goqtqetx/vVcv4Soq8LKJg5P7k/OEBzkzgtMdFQ2WdmOvWsoQBetCvIMrUraroHMMG5ihpKpedSnJ5xe2cjFHbAtdk+8PCbdFh9tEZeDmdFHkN94jUc3agaXOIekSmd6dRTJ3vLlZvGPPhhVxfDSPcsbU1Ey5rRPrKJpCIxhJ94xnITrdFiQVn6SD10EK8paRABWmbsO0mzuhY02h+EDd1WEH0LsRIxbu4O+Lks3cWwXCNfZF322S8Nq6Hl6yxjBH1sp6RDHTHC50GXFx5fNzaWpPcj+L73uDRDtJt75X/GDdkHCuStw0PIEndSWbb9kG0hGaFQB0PsElWx7sz0cqjlvtBdBqYLnTfQ3op0RGakq3XOka0U1jLYE7JZ2AvkmS012bbRJo3gKLD3OVp2iobE24xpyfKpkWkRYj5WmqKjtcre1ZwIzorSZtvjl39R8NR1GrcP8fz9u0tih9G1/nkXHKSJjGHKbBZJY1E/EOBFqnefiBS5EkMF47zMjUkVJu8Dhig2MJ6eLsoQ+BiXn5JNUUBczdTzqVzyztAW/rpDl12vWKaIXJa9pIQ/GHCYnkK1ci3qfWKtojV0kHx5sRMtUdFgGuK6aEBz5JNlqzF6vmFD7h/YSweTJmvoqSAxGivOnMIl5493jSDnoXrJLPoPLzrTGlk/Z7qsQfx6TJh6qtjk8IbXn9EDKI1lk
+ gVXSeoLn
+ l+23s0Ey6GFrP8XiblkL3hzI6Hssi+lgTYXwmhK+164rVfbJpz8PvYF+bBvtrsxOXairCn83HTW8MJyIyXsaoMB4GB/B/HHENbl28kBkU6zB3gCCTyXEJz6kWhfEQ1uqy6GrUIm0j14v4qKDwlSZ0Z4dmvVNbBtZdZfRZdPTUFtqOMOedo06nVRRaKYz5zUiDZApFof7kvDMqS6KmX8U5/S7q9pCrJO6jtREI511+cpXbjG4Df5zZ7Lkmfv01bWTtXJRWNq7TM8T7Wb9CmuISkHO6o4urNBznP2ZS3Mex6GQovAw/NS7LKCbzcm42Rs8tZt/5IKwmFNuvtSezUK823UIpXp1aLXVfci47+IBPXIZ8fn0qlprTTcyv5hNMD3mi0OKjNwUE8K0RbALJig7AhN2xkg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,40 +137,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 04, 2026 at 04:18:50PM +0530, Hemanth Selam wrote:
-> Correct "mergable" to "mergeable", reported by scripts/checkpatch.pl using
-> the misspelling list in scripts/spelling.txt.  Only touches comments, no
-> code changes.
->
-> Assisted-by: Cursor:claude-opus-5
-> Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
+Hi Thierry,
 
-This one I'd drop, as a series of mine I'm going to send soon removes it from
-the kernel altogether, and I don't want conflicts on a typo fix :)
+On Fri, Sep 04, 2026 at 12:44:51PM +0200, Thierry Reding wrote:
+> This series adds support for the video protection region (VPR) used on
+> Tegra SoC devices. It's a special region of memory that is protected
+> from accesses by the CPU and used to store DRM protected content (both
+> decrypted stream data as well as decoded video frames).
+> 
+> Patches 1 through 3 add DT binding documentation for the VPR and add the
+> VPR to the list of memory-region items for display, host1x and NVDEC.
+> 
+> The set_direct_map_*_noflush() functions that will be used later in this
+> series are exported in patch 4 so that the drivers that use them can be
+> built as a module.
+> 
+> Patch 5 adds bitmap_allocate(), which is like bitmap_allocate_region()
+> but works on sizes that are not a power of two.
+> 
+> The of_node_to_nid() function is exported in patch 6 because it is used
+> in a later patch adding a driver that can be built as a module.
+> 
+> Patch 7 introduces new APIs needed by the Tegra VPR implementation that
+> allow memory to be allocated at a fixed offset within a CMA area. Tegra
+> VPR needs this in order to implement its own allocator on top of CMA to
+> meet the strict hardware requirements. This replaces the dynamic CMA
+> area creation patch from earlier versions.
 
-Thanks!
+Did you get a chance to see how this could work with Vincent's series:
 
-> ---
->  tools/testing/vma/include/dup.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-> index 4c58487b764e..302a6774fca5 100644
-> --- a/tools/testing/vma/include/dup.h
-> +++ b/tools/testing/vma/include/dup.h
-> @@ -353,7 +353,7 @@ enum {
->  #define VMA_ACCESS_FLAGS mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT, VMA_EXEC_BIT)
->
->  /*
-> - * Special vmas that are non-mergable, non-mlock()able.
-> + * Special vmas that are non-mergeable, non-mlock()able.
->   */
->  #define VM_SPECIAL (VM_IO | VM_DONTEXPAND | VM_PFNMAP | VM_MIXEDMAP)
->
-> --
-> 2.48.1
->
+https://lore.kernel.org/r/20260902104712.2399797-1-vdonnefort@google.com
 
---
-Cheers, Lorenzo
+? I think that should remove your reliance on can_set_direct_map() and
+mean that you can retain block mappings for most of the linear mapping.
+
+Looks like you forgot to cc him, so I added him here.
+
+Cheers,
+
+Will
 
