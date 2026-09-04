@@ -4,97 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6838EC61DD3
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 00:22:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8266C624D6
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 00:28:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4995A6B0088; Thu,  3 Sep 2026 20:22:53 -0400 (EDT)
+	id C6D516B0088; Thu,  3 Sep 2026 20:28:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 44AE26B008A; Thu,  3 Sep 2026 20:22:53 -0400 (EDT)
+	id BF9546B008A; Thu,  3 Sep 2026 20:28:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 360A06B008C; Thu,  3 Sep 2026 20:22:53 -0400 (EDT)
+	id AC14A6B008C; Thu,  3 Sep 2026 20:28:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D2756B0088
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 20:22:53 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8B115A4524
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 00:22:52 +0000 (UTC)
-X-FDA: 85174179384.23.0FF2882
+	by kanga.kvack.org (Postfix) with ESMTP id 7F3DC6B0088
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 20:28:41 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 16CA21406B0
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 00:28:41 +0000 (UTC)
+X-FDA: 85174194042.27.4F128BF
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id BFD511C0006
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 00:22:50 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gicqvsBy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id 64D3280003
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 00:28:39 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a5TBCL0l;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788481719;
+	b=EUN+8ftKCvjk7llyWOjeea3iNDP+rJ1MguXd0To8nZadt4ajlFVarrG5NXz0qcevjBs5aJ
+	5O5COjhSgLiIJeJimFyYiamV2dl9ZkVsDSeowF2Y2GbccAUd9GNIJbJgOcFnTIo5zh59oI
+	eSIPReLWIyg+eHqgysNzb07Ek0cBZ7w=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788481370;
+	s=arc-20220608; t=1788481719;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y2BAzD5wHFMDI0Tdchm9F35oeS9pHKExb3hvTSPu/hc=;
-	b=js+FEvpcB+7M0S4+aFeVCZgyAwQCWYVoo2tT1qriL2ZArJr6X9XPTWq5mMHxwRz/1aILA9
-	vfcuxjfrQT7lA3xbTSvQQOZKIX2RyuaiXkQnAbh8qs52sGUHYQuUtePzJAGMZYV+pgtg3e
-	4VL0JJwPVY6fUx4tdzn4o01Sp5B1Dgk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788481370;
-	b=XQmvm+2cU69gWd8zTLn/qE0HTVvWdKn0VCNczUAOVSrV2PjGecKxDyFSFP7Ki02nqAUt34
-	wFBQoJwz2JBvo5SkBZ+ypWQxgd9Z+N+GlT4cItJiQcy4MaNghH5k6ngnQTBbTFUURS6D5j
-	IcACOEa605MzjoGVe9jcXQyJQ9iJYcY=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=166TVcIhx+0QErke7o9FSwWx5qn3nWzpmAkGNjrnyxo=;
+	b=RVruWLgq87LaKXSHPnP99FTulzk7KrXOZlC6AMCpMC9wGVtihNzvDXXKK1eqn147wz8Zsk
+	IZ/QmeukLT+oLM0uVn+k/Pn1/mRlSqeslzLm88dxopCNZFrndR69WnqgzEUWMshw46qFkS
+	Z/xSpT47uqW3J8+G5Pbi5D/frAQKYaY=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gicqvsBy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a5TBCL0l;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 967D1402BD;
-	Fri,  4 Sep 2026 00:22:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B7B1F000E9;
-	Fri,  4 Sep 2026 00:22:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8BBB641837;
+	Fri,  4 Sep 2026 00:28:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D7A01F000E9;
+	Fri,  4 Sep 2026 00:28:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788481369;
-	bh=y2BAzD5wHFMDI0Tdchm9F35oeS9pHKExb3hvTSPu/hc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gicqvsBymTvjdLcjuS1ruinp8U4tujPXFLCOwmT4AVkN1uVesOw6xKE3DeWiorxrY
-	 VZ8U9LWPIvHU6ZIPH5I9drRjGboN+okakuA3rcJks41cdgbB8uCoTjIDf7zkNzPNxR
-	 WgaMG41cZAraxhybtzI4zcT8J7B6VqrpJ3zhJVWFbSKe5e4zoHfiXrKJdkR1lLVXxa
-	 LIyK4NnyzV0Rx9+M7Oh3Y5pxd3LTB2OcnJdYZfZQ2Ttg8FD/mm7X6NTb8Gi8XhBN51
-	 X1s7SCEMnxqG7XoSMl0bMJCtZYYjQ0/ESwVVmNcCJJ98QIfyTEPJAPDyolmquxhBlg
-	 EZ6avSmxjLR2A==
+	s=k20260515; t=1788481718;
+	bh=166TVcIhx+0QErke7o9FSwWx5qn3nWzpmAkGNjrnyxo=;
+	h=From:To:Cc:Subject:Date;
+	b=a5TBCL0lOqtdWhuMu8eqDhclsqwxPf/1VXkbfpNmnIcjvwjDn80KggTx9+l4jPfIG
+	 OJ+2gO/99uTovvA+HLAQNk5LgV3QqxyNxVMSYAF79F1BpUun4xBFzMQfE+3vUmDNY6
+	 I9q1gPKx6r5qi8ZelTUBBv7ECk7+bzrm2EzAwzD/JMclfrGieDUZQD2qPXAwtu0iDP
+	 4ngSvns5LNd+t3kVnYKkgTOCrR2urpvCBpUW7tIRO5x0g7jHIVcJnQP3p12iifdCwt
+	 7cQQjxOOvKQnP0CZVRPR14yV8SW4M8P/hwCJR/FRofKl3gJfW5cRlBaloEThAw0k7K
+	 yki2hn2G0y2FQ==
 From: SJ Park <sj@kernel.org>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Nathan Gao <zcgao@amazon.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	SJ Park <sj@kernel.org>,
+	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>
-Subject: Re: [PATCH] mm/memory: fix hugetlb_zap_begin() call in zap_vma_range_batched()
-Date: Thu,  3 Sep 2026 17:22:35 -0700
-Message-ID: <20260904002237.114959-1-sj@kernel.org>
+	stable@vger.kernel.org
+Subject: [PATCH v5] mm/damon/ops-common: use a page-aligned address in damon_ptep_mkold()
+Date: Thu,  3 Sep 2026 17:28:27 -0700
+Message-ID: <20260904002829.116381-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260904000028.149656-1-sj@kernel.org>
-References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BFD511C0006
-X-Stat-Signature: kspseii5t97f47kj79a4xdk5t8nf6ssu
 X-Rspam-User: 
-X-HE-Tag: 1788481370-302443
-X-HE-Meta: U2FsdGVkX18uJt2hv+yDZrXw68BGkVH1/fQSBZcNjl0Takj0X4iJKIky45tnVyjRJt0Oi3+iXIlO/DuDLSl8MPPmjeBzn5kM6fcgUFLAHDbHCHjdwjpF9DrfDf5zmQweMlV8stpFBI72i2eeYY5sKAWD8DAcBA22SlrwqBwFKWfJlRMOd9qX+MMG2nMQfjPeXsBhAEYD63jWi9rdQbvGBcsCXDKt3E+gFxw/JjA96ordBltQy0qcvB34S6i9ohghVl8Y9J9z95B4qR+PWjDG00r7GumPCNltW3s3sdNBpO0ABlD89ei1zO/ro7jekIakvrlEmeWSFSLv8g7ItFbquHKahIvXdG5pvDUP5bhJ6FSAUnuoveKNnJVvjcRpYzhvjFwSTwHYtHfMBv+sDKUyDQIiUX9ABnNtU3OXswjXEWPinPhLIiRzQON1vdJ5NR0hulS3765aT+IRsvmKs+qzkco0B61e/62FAAd2y9SEXrgC4eUlzJJxh3zRrb4pejvWYMeYlPIuIH2ikaedRu/GG1vtB1s45GJY7xF3xk/0+iaDMDay2UGEIzWHfaT7yY0seb1MzmBbCYr3nJaNcTmNaF1L6hfDSm5/AKMctR5KTwE6IsfP676cZgp6tSR4qjfYLI72lP6l+eE+ddsz0XxJ0ubYq3DOSCHSwta4n3PBLWnV97h1kWzNm/K3QVBQwMb/yJmpTA69nmAUOa1oYiSqfjx3HaedqaVSaMJHCPsDVQJApXTR49Sn39+o0j1eiaSFODwPSAVuoKJETfRZeCJAyohZNUhJpVSSQr0fGAkx8k7U+ri6+poteakej1Ku7xrpeQz5kZX2snROGEk1s1RUO14j9ND7FiIq+izcHrbWS0+dgebHPPLG/3MMZs3WPJtPP28EAL/p4aeXjYJrQCPzLqSuzCnti/SOn3FGT7ns/sGfWqtelvYufaWtU7U9Iw4BwxG3Yf4gBoX3CMLpd5D
- ZIbNAfEa
- 87svlWmEyB6Z+XdtxAtzEDNB2sXvyllUx4pA01VciUsVHrfU7r7jSUeQnJ06ZQK+yPvSElkLzNIwlelBKBbtl2s/V10pxcS/bLNjEJW7GI3iFtjbjW4CbmGWL/MqArg2Lrd9GSZ/P1GQIz/XDRS/U+neNqAaia5Jky89aj8xlj7VqhzpbQVXEI7VgqQ+r0STDFlFf985estLoTPCC4KCppzkUHP1ogyPL8SCpl9GR5TIGsGpM75NT0MeVd1YjDdFQiGCLJAcX6SIKbliAZs4MH/gaGPwUnAdr3+ft9hbuP7RlP6MDMH9PSpbcJ0P2lH7xASI39rOW14VflH8eSLsCtOcPu8KwecW4u2hebh7hHfguMsKZJps478StdMeuNovgiCHT8sJ2Pcs1rhJDWxHgaAoDU3AnEUK6ei7t0bjMCAJFaA/sU02+cgVSW82g3vtysLklZ5PfYeFIYAUR3tcaF8YBkdtIjs2dz5NEzmhuW4d4jdc3+Ynth9PqBbDSzIaFt4R6MKHuWZPHphyWsh3naOf6G23DHNLY+B3F9BT1qp47sa0FWcxfmVOg2A/y+xUaxSxX
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 64D3280003
+X-Stat-Signature: xrd74fgs9qsi55porzxhkfrdt49yggta
+X-HE-Tag: 1788481719-14326
+X-HE-Meta: U2FsdGVkX18cepOYcbTj41tCmsALQPVFo1FgxSMUyqRpn61YVc8GDCgZnkhPfui01PD1drYjVLL6tvRtKQRoUoLm023hU9hB5wDz+pK0sdoEiLaxlvi8LKK6D9yT6b25jVWTwuZouizbbyfZuY0RuitHoB3sBZziAJV1NY30hXB+AcsmBDAhUcDfw7GCk5KeJyYLKrc6iC+53Ocx6vxAxPsZUr3q1ogPcosT5CcUilUSyHSb1mO93nCqztIs+dTWiGwhodoGgtjv8x1tLrdXw/fs29gC8CUnUjsFAx90Thqj/tsHbqHyClt7W2qQ7BGaofXK7uRiNk8bVQPW1Bb+MhWRYwdnKlzveMuBQyYq2gYOw1X+XLycWKXg5izYhi5ZlOQtX7LxyVj4OJe6fHZxRsnRpwTbxOgKNP7IMAnafDM4ElV3asG1p0gOWrp2NKKBgJkDylPJSidLaFrTHznxDFKXwiGO/TqfavfdE/wddtzUH1+2/rsUG7sK0nb62uSBIbHIxvFBU3jvaHKoCkF0EJoxV2ckE0G9oZLJw//rqcD+h+AeXotHjHWAdMZbq8BkvL7UQtHPzzrHDt3Go40JbQOjhx5uM77PSQFqjKVmfNTN4zceW7crfvJEDrCvcUJhjRzLmJNhXQY9RSvLmxxamCmjcYbAvVhBdpsahj+viqJ9MDRvLwitSgjYEaiwhwv+Ai6IVwvuOlPHLFLy8LYVzqIOHgUOQ9AsAw+x76+vFG4D4peeV9w0CcNAEeQ7UoKBu4xUR8DXyTkRlKX29XEcTuyYIDUXG8aZentlMZyVuL2jNOK1jP3dsZL9aQr+4MAY452RHo9MHrkjI5+i5HgX2SuLiCsWUYA0by8sSq2CmyIUfsvXOyDPzucl6EzHmi+odgLhg86tv6bqo/3567Okyc4Gm97xWfluK35QovLSpcEKgC/sPhK3w8+XiLeUMRvipye5ISFq/bRo6sy8TVJ
+ W72JZecQ
+ l/FBGBAsRMPZTj9iUKH/QkNXfsw3NKPthsVvy1gi4L/rgq/Aj8X649wQotOFQTkKziAfirFuZl7IG8aIh1CNi68ucwedgRm3uvx9j3ogHtm1kI6x0dADTyZbLuf5ke3MWdyZ8FEHYob0I7VYemdBYHi0hKBgZvWrplqTN8HL+G2oHJARg/2M6cZoJNVYwwdLf+z7R6hrvnP6Io2xGWJCOpfOeohx85GGOVmi121zOh3O8OCgAPiZz+G8MyEGNxGB5eKYCDeld1Y/aIbOVT32Tzl43DImIqyYKaJ0fP0299l3pNHhW4+OaqtGO0akKMkE6p5VCEgDAHTGxdlqjTXeLlBhLXXe9AXD4BJxdCrGysRKO/mSftCCLVO2XpSTcc3OggzFWuWAUx/hEChs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,175 +95,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  3 Sep 2026 17:00:26 -0700 SJ Park <sj@kernel.org> wrote:
+From: Nathan Gao <zcgao@amazon.com>
 
-> Commit f1fc44daf618 ("mm/hugetlb: don't lock private resv_map during
-> final unmap") added zap_details parameter to hugetlb_zap_begin().  But
-> the hugetlb_zap_begin() call in zap_vma_range_batched() is not updated.
-> As a result, build fails as below.  Fix it.
-> 
->   CC      mm/memory.o
-> .../mm/memory.c: In function ‘zap_vma_range_batched’:
-> .../mm/memory.c:2308:9: error: too few arguments to function ‘hugetlb_zap_begin’
->  2308 |         hugetlb_zap_begin(vma, &range.start, &range.end);
->       |         ^~~~~~~~~~~~~~~~~
-> In file included from .../mm/memory.c:48:
-> .../include/linux/hugetlb.h:253:20: note: declared here
->   253 | static inline void hugetlb_zap_begin(struct vm_area_struct *vma,
->       |                    ^~~~~~~~~~~~~~~~~
-> 
-> /* TODO: move below to commentary */
-> 
-> I didn't read the broken commit in depth.  This fix is only
-> build-tested.  I wanted to report the issue with this as a temporal fix,
-> but the broken commit doesn't have Link: tag.  So directly posting this
-> temporal and not very well verified fix first.
-> 
-> Fixes: Fixes: f1fc44daf618 ("mm/hugetlb: don't lock private resv_map during final unmap")
-> Signed-off-by: SJ Park <sj@kernel.org>
-> ---
->  mm/memory.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index fcf893f4b55e2..151a1bf512e00 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -2305,7 +2305,7 @@ void zap_vma_range_batched(struct mmu_gather *tlb,
->  
->  	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
->  				address, end);
-> -	hugetlb_zap_begin(vma, &range.start, &range.end);
-> +	hugetlb_zap_begin(vma, &range.start, &range.end, details);
->  	update_hiwater_rss(vma->vm_mm);
->  	mmu_notifier_invalidate_range_start(&range);
->  	/*
+__damon_va_prepare_access_check() picks a random byte address within the
+region and stores it in r->sampling_addr. damon_va_mkold() passes it into
+a page table walk, which hands it to damon_ptep_mkold() as the address of
+the page to sample:
 
-And this is not enough for some configs.
+  damon_va_mkold(mm, r->sampling_addr)
+    damon_va_walk_page_range(mm, addr, addr + 1)
+      damon_mkold_pmd_entry()
+        damon_ptep_mkold(pte, vma, addr)
+          ptep_test_and_clear_young(vma, addr, pte)
+          mmu_notifier_clear_young(mm, addr, addr + PAGE_SIZE)
 
-# /home/lkhack/linux/mm/memory.c: In function 'unmap_vmas':
-# /home/lkhack/linux/mm/memory.c:2272:3: error: too many arguments to function 'hugetlb_zap_begin'
-#  2272 |   hugetlb_zap_begin(vma, &start, &end, &details);
-#       |   ^~~~~~~~~~~~~~~~~
-# In file included from /home/lkhack/linux/mm/memory.c:48:
-# /home/lkhack/linux/include/linux/hugetlb.h:322:20: note: declared here
-#   322 | static inline void hugetlb_zap_begin(
+For arm64, before commit 6f0e1142173a ("arm64: mm: support batch
+clearing of the young flag for large folios"), the contpte helper walked
+exactly CONT_PTES entries from the aligned-down page table pointer and
+used @addr only to pass down to each entry, so an unaligned value was
+harmless:
 
-Below change fixes the build on the config, too.
+        ptep = contpte_align_down(ptep);
+        addr = ALIGN_DOWN(addr, CONT_PTE_SIZE);
+        for (i = 0; i < CONT_PTES; i++, ptep++, addr += PAGE_SIZE)
 
-'''
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 63c85f2540c9f..0cdccafb83983 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -321,7 +321,8 @@ static inline void adjust_range_if_pmd_sharing_possible(
+Now the range to walk is derived from @addr instead: end = addr +
+nr * PAGE_SIZE, rounded up to CONT_PTE_SIZE. For a sample in the last
+page of a contpte block, the sub-page offset puts end just past the
+block boundary, so the round-up lands a whole block further and the
+walk clears PTE_AF in CONT_PTES entries beyond the sampled block. For
+the last block in a page table page, those entries are past the end of
+that page, so the walk writes into the page that follows.
 
- static inline void hugetlb_zap_begin(
-                                struct vm_area_struct *vma,
--                               unsigned long *start, unsigned long *end)
-+                               unsigned long *start, unsigned long *end,
-+                               struct zap_details *details)
- {
- }
+Triggered by the full 7.1/7.2 kernel selftest suite on arm64 (EC2
+c/m6g.4xlarge). The kernel sometimes crashes at or shortly after the
+DAMON test.
 
-'''
+What the overrun does depends on the page that happens to follow the
+page table, so there is no single signature. If that page is read-only,
+the write faults in the sampling path itself:
 
-So more complete version of the patch would look like below.  Forgive me
-posting v2 as a reply for this case.  I think this doesn't deserve a new
-thread.
+  Unable to handle kernel write to read-only memory at virtual address ffff0003c5d2d000
+    FSC = 0x0f: level 3 permission fault
+    CM = 0, WnR = 1, TnD = 0, TagAccess = 0
+  CPU: 10 UID: 0 PID: 3487 Comm: kdamond.2
+  pc : contpte_test_and_clear_young_ptes+0x70/0xc0
+  lr : damon_ptep_mkold+0x1e8/0x1f8
+  Call trace:
+   contpte_test_and_clear_young_ptes+0x70/0xc0 (P)
+   damon_mkold_pmd_entry+0x150/0x170
+   walk_pmd_range+0x110/0x2b0
+   walk_pud_range+0x10c/0x208
+   walk_pgd_range+0x134/0x258
+   __walk_page_range+0x98/0x1b0
+   walk_page_range_vma_unsafe+0x90/0x148
+   walk_page_range_vma+0x28/0x40
+   damon_va_walk_page_range+0x114/0x2b8
+   damon_va_prepare_access_checks+0xec/0x1a8
+   kdamond_fn+0x534/0x770
+   kthread+0x128/0x138
+   ret_from_fork+0x10/0x20
 
+Otherwise the page is writable, the PTE_AF clearing succeeds silently
+and the damage only surfaces later, in whatever happened to own the
+page, so the backtrace is unrelated to DAMON and differs between runs.
 
-Thanks,
-SJ
+Pass a page-aligned address to the ptep_test_and_clear_young() call in
+damon_ptep_mkold(), which is the only place DAMON can reach
+contpte_test_and_clear_young_ptes() from. Nothing else sees the aligned
+address, and r->sampling_addr itself is left as is, so the sampling and
+region bookkeeping semantics are unchanged.
 
-=== >8 ===
-From hackermail Thu Jan  1 00:00:00 1970
-From: SJ Park <sj@kernel.org>
-Date: Thu, 3 Sep 2026 16:52:06 -0700
-Subject: [PATCH v2] mm/memory: fix hugetlb_zap_begin() call in zap_vma_range_batched()
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org
-
-Commit f1fc44daf618 ("mm/hugetlb: don't lock private resv_map during
-final unmap") added zap_details parameter to hugetlb_zap_begin().  But
-the hugetlb_zap_begin() call in zap_vma_range_batched() is not updated.
-As a result, build fails as below.
-
-  CC      mm/memory.o
-.../mm/memory.c: In function ‘zap_vma_range_batched’:
-.../mm/memory.c:2308:9: error: too few arguments to function ‘hugetlb_zap_begin’
- 2308 |         hugetlb_zap_begin(vma, &range.start, &range.end);
-      |         ^~~~~~~~~~~~~~~~~
-In file included from .../mm/memory.c:48:
-.../include/linux/hugetlb.h:253:20: note: declared here
-  253 | static inline void hugetlb_zap_begin(struct vm_area_struct *vma,
-      |                    ^~~~~~~~~~~~~~~~~
-
-It also fails on !CONFIG_HUGETLB_PAGE config.
-
-    .../mm/memory.c: In function 'unmap_vmas':
-    .../mm/memory.c:2272:3: error: too many arguments to function 'hugetlb_zap_begin'
-     2272 |   hugetlb_zap_begin(vma, &start, &end, &details);
-          |   ^~~~~~~~~~~~~~~~~
-    In file included from .../mm/memory.c:48:
-    .../include/linux/hugetlb.h:322:20: note: declared here
-     322 | static inline void hugetlb_zap_begin(
-
-Fixes: Fixes: f1fc44daf618 ("mm/hugetlb: don't lock private resv_map during final unmap")
+Fixes: 6f0e1142173a ("arm64: mm: support batch clearing of the young flag for large folios")
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Nathan Gao <zcgao@amazon.com>
+Reviewed-by: SJ Park <sj@kernel.org>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
-I didn't read the broken commit in depth.  This fix is only
-build-tested.  I wanted to report the issue with this as a temporal fix,
-but the broken commit doesn't have Link: tag.  So directly posting this
-temporal and not very well verified fix first.
+Changes From v4
+- v4: https://lore.kernel.org/20260902031655.84721-1-zcgao@amazon.com
+- Collect R-b: from Baolin.
+- Rebase to latest mm-new.
 
-Changes from v1
-- v1: https://lore.kernel.org/20260904000028.149656-1-sj@kernel.org
-- Fix !CONFIG_HUGETLB_PAGE build.
+V3 -> V4:
+- Align only the address that is passed to ptep_test_and_clear_young(),
+  rather than @addr for the whole of damon_ptep_mkold(), so the
+  mmu_notifier_clear_young() call keeps seeing the sampled address (SJ)
 
- include/linux/hugetlb.h | 3 ++-
- mm/memory.c             | 2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+V2 -> V3:
+- Move the alignment into damon_ptep_mkold(), instead of aligning in
+  damon_va_mkold() and damon_va_young().  The ptep_test_and_clear_young()
+  call in damon_ptep_mkold() is DAMON's only path to
+  contpte_test_and_clear_young_ptes(), so damon_ptep_mkold() is the
+  closest place in DAMON to the function that requires an aligned
+  address (SJ)
 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 63c85f2540c9f..0cdccafb83983 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -321,7 +321,8 @@ static inline void adjust_range_if_pmd_sharing_possible(
- 
- static inline void hugetlb_zap_begin(
- 				struct vm_area_struct *vma,
--				unsigned long *start, unsigned long *end)
-+				unsigned long *start, unsigned long *end,
-+				struct zap_details *details)
- {
- }
- 
-diff --git a/mm/memory.c b/mm/memory.c
-index fcf893f4b55e2..151a1bf512e00 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2305,7 +2305,7 @@ void zap_vma_range_batched(struct mmu_gather *tlb,
- 
- 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
- 				address, end);
--	hugetlb_zap_begin(vma, &range.start, &range.end);
-+	hugetlb_zap_begin(vma, &range.start, &range.end, details);
- 	update_hiwater_rss(vma->vm_mm);
- 	mmu_notifier_invalidate_range_start(&range);
- 	/*
+V1 -> V2:
+- Align inside damon_va_mkold() and damon_va_young() rather than aligning
+  r->sampling_addr itself, so that sub-page sampling addresses remain
+  possible for future non-PTE access check primitives (SJ)
+- Point Fixes: at 6f0e1142173a instead of 3f49584b262c, since the
+  unaligned address was harmless before that commit (SJ)
+- Describe how the issue was noticed and what it does to the kernel (SJ)
 
-base-commit: 2d1388907095f676b59fe6dd22f244abc08408cf
+v3: https://lore.kernel.org/all/20260901201001.33271-1-zcgao@amazon.com/
+v2: https://lore.kernel.org/all/20260831221151.50561-1-zcgao@amazon.com/
+v1: https://lore.kernel.org/all/20260827193821.46115-1-zcgao@amazon.com/
+
+ mm/damon/ops-common.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+index 7a2e40bc7baed..7219c608b1952 100644
+--- a/mm/damon/ops-common.c
++++ b/mm/damon/ops-common.c
+@@ -61,7 +61,12 @@ void damon_ptep_mkold(pte_t *pte, struct vm_area_struct *vma, unsigned long addr
+ 	 * device aspects.
+ 	 */
+ 	if (likely(pte_present(pteval)))
+-		young |= ptep_test_and_clear_young(vma, addr, pte);
++		/*
++		 * Arch implementation of ptep_test_and_clear_young() may
++		 * require aligned @addr
++		 */
++		young |= ptep_test_and_clear_young(vma, PAGE_ALIGN_DOWN(addr),
++				pte);
+ 	young |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + PAGE_SIZE);
+ 	if (young)
+ 		folio_set_young(folio);
+
+base-commit: 87db3abd2b79ed6ccaaf6d3c25df6adbd8ea3596
 -- 
 2.47.3
 
