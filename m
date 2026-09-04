@@ -4,168 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9E3CC79F82
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 22:35:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16444C79F82
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 22:44:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E58B96B008A; Fri,  4 Sep 2026 18:35:16 -0400 (EDT)
+	id 8C4466B0088; Fri,  4 Sep 2026 18:44:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE3796B008C; Fri,  4 Sep 2026 18:35:16 -0400 (EDT)
+	id 874EA6B008A; Fri,  4 Sep 2026 18:44:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C825E6B0092; Fri,  4 Sep 2026 18:35:16 -0400 (EDT)
+	id 78C0A6B008C; Fri,  4 Sep 2026 18:44:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 988676B008A
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 18:35:16 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2D7A5A3D31
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 22:35:16 +0000 (UTC)
-X-FDA: 85177537032.22.7AC1F98
-Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6461C1A0006
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 22:35:13 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=OM83EIbe;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b=VK0eX8bh;
-	spf=pass (imf19.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4309F6B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 18:44:27 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B3B72401DC
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 22:44:26 +0000 (UTC)
+X-FDA: 85177560132.14.7CB3E12
+Received: from mta0.migadu.com (out-136.mta0.migadu.com [91.218.175.136])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 02535180003
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 22:44:22 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZIA8Ldk9;
+	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.136 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788561865;
+	b=fHBaH1SJJzBRMKxLlC02VWlzPMl9fbHvteP8AsoNzDi56pE4Ihjus/9609rPRB0zKPc43H
+	fueiNFFA+jYvREOT8Uj3E3m1a5xplOcUH7tp1+ipaX+vdeTVGvgQUvSNdLq7QU0Xh4phGZ
+	pSNhZLl+FNumERtD85jCTit099aFMho=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZIA8Ldk9;
+	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.136 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788561313;
+	s=arc-20220608; t=1788561864;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NS3IWLMNep/DrvoibIPUp7dIa6zL29X7BYhj1p+bdp0=;
-	b=jcBL5uMSd5yqmnxe0281Aje63OBHljNBnmOcgp7IMu6RfJI+Db4hfm0iqlgoCa0W9jWiHS
-	IAhQ7tF4ujvA5EeoriGQPmzRsTKtidbfaAw9uHY5Afc0qJ+RmtoF3G3pZTtA1hVkaJadV5
-	Ivv5Iittv4BMl+3bxKiVizgjZbUHccE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788561313;
-	b=fQZCmGGTqoUTCZjqvyNDraaw4wbQ869XxFGu47cWK7WJUglVWG12jem6BkqX3upTmf50vj
-	bOsm+fQwZriMBxmsuLHKoMDjVpzs/kPfJm2sFMoyxHL2aXokQ+hV3AHvwGHrpPfPFIWrIm
-	2sPFUBw9fjYbLM1AvyH/7d4tWFccQCk=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=OM83EIbe;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b=VK0eX8bh;
-	spf=pass (imf19.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
-Received: from pps.filterd (m0499199.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 684MWkmq3078192
-	for <linux-mm@kvack.org>; Fri, 4 Sep 2026 18:35:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=NS3I
-	WLMNep/DrvoibIPUp7dIa6zL29X7BYhj1p+bdp0=; b=OM83EIbeyrJBmKFxiBn7
-	95BjxB368qVNGNObkjZ85O1d248QOiUYlzhhJJep+Gt6Hi2B8Fzo7oVG64eJc/tj
-	zbc2s9qp5g61Kxn9jIQmS3ffGdAlGQCLFIZHun44tpLrXKQNNfvb8FNBH5XRYio2
-	Z0cVo9Dhz5NYwVILy/CkqWJ4AHXPq0IB3wvtxsLVRMEl30S7UHiN5mLrnAZYCkPg
-	El3m/66187L/MxMuSPzMn+/WT6GRdkqqrMx3xhVwRJ1iy26arqEVzNfdiHL4NoDp
-	xnLYfSKwSetCrD1jSwhPGIAgpUmWjZfBSh9+fhBno0Kz/ApUcGuNj1MCJ7bpAC3u
-	VQ==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4gfyvkuqbh-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Fri, 04 Sep 2026 18:35:12 -0400 (EDT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93494cce712so273380685a.3
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 15:35:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=columbia.edu; s=lionmail; t=1788561311; x=1789166111; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NS3IWLMNep/DrvoibIPUp7dIa6zL29X7BYhj1p+bdp0=;
-        b=VK0eX8bhtfh2SndFD2S7uLIhe97zD9CJLPIG6xLa+H6a84TYTWbUlCqx3YFGBNe6Rr
-         5MXGJ2Rrgk4coVXPK/kIQhVDjkV9YsnlrbZM8uPzPbkalLG2WD7prNv63yTtevKyq5hL
-         lCQWru0KuFXflZNFedjYctn/DA58ZJT1TLfNdfX9kNA357q9zPlyvDjjeuE/HPghDQFZ
-         v5wj+jp/MpSIQatmS58Y+HVta31/XU2xuVIgNEHqzcF3Z98/mj1gYJE7XAaBHnMxkNdd
-         mnwiPJ4la0q2K1YwJttgeoSrlBTmaUdbNKELl+P+qfm33dT0Nq3bvyTQHXxw3DrL64gv
-         9mMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788561311; x=1789166111;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=NS3IWLMNep/DrvoibIPUp7dIa6zL29X7BYhj1p+bdp0=;
-        b=QU+Al7+H0ATIR7+0JyCxRgC6tmL0HCLiKFXYTz6XJx4SD0G3mnIVf525WpNRPlkKCj
-         A8M3XNUs+lVsj8N3EzWZpdxQPp51xXW96HG5kgJ0twheYLK0zEOLEmNHB1H7tfkkcrlp
-         y+8HVJLa+hvm9scS880Inl8v6dkpWlfwrHecPJEBsPv9LQOjoKotYzgN3YzDEZm0ObjD
-         vXu8JXm80wKGLs1EvEfUQsmPxgnnUJYzMOCeB8b8iFoVDRXAxLzTNPXCFHmRt/WBZNS7
-         0Aiu9/5jI2rr4gdPd8lPD4AOktF4nx4kKiWGa9RofA2asaTGBZ8Str8OqbFk3K1LkHFD
-         FflA==
-X-Forwarded-Encrypted: i=1; AKwUvBwe/iJg/zB+AIvVl68fC5xiyhyNv3vygxwuMxQMjIeE1PZxlsTrEZM88okuh6e3R+N+jBAnzM0N2g==@kvack.org
-X-Gm-Message-State: AFuF++lGYLwZmiV9Q/6+3TVCksbmVf/kd6pv4wFsYt/90S35aP1s3RcB
-	7U7/KtGpAVQCrIJ7MHa1m/fcg939UdpfcJgZ8/HWtnAky3nftayTFmgFF+xbnHNO65Fc0spcdMJ
-	Emz4r47SSS23O1sW9SrKQTBIyagCrr+oaZampjJ3qqXjBktr5
-X-Gm-Gg: AYBFou0rkMAg7WEvuUY6x5iSRU0r0gLz7jPNzE6hxGEMo9lfiOlLzizk2gvWBVINqPI
-	lRCFrWN3tM2EQtuv9CgwcIw4vJoCudHnRL0q9MSUzXsGxirL+YRhjU5x42zes6bDM5u1VbtUyL2
-	KrnDU4fsl1Z8DfxQBqW9yZe051nXilN1u9TV6v5s8fMklJwvkRgmOs885suqMzYn2H6Y5X3+bPb
-	ggSxw03Gg++G6/ZMEAeom4Q5V0M0bEbMDPmND0b2SzA3d/nrMuHN9zvbp/Sg+odxqmZW4ONptRO
-	QjGyLfuXhrewXBcL5veO4BGcxpJlVLfqZIZfyxTn7XSIOFcpRvcbMsc1W5tD/BpNZy8hEDbjxEO
-	7aQf7rJ7T0k3k6K7BGu94UivjwLWhsiEPD+i6+I/Yun8R0xvkJ9WA
-X-Received: by 2002:a05:620a:44c3:b0:939:8905:ce9b with SMTP id af79cd13be357-9398905d927mr531684885a.17.1788561310791;
-        Fri, 04 Sep 2026 15:35:10 -0700 (PDT)
-X-Received: by 2002:a05:620a:44c3:b0:939:8905:ce9b with SMTP id af79cd13be357-9398905d927mr531679985a.17.1788561310278;
-        Fri, 04 Sep 2026 15:35:10 -0700 (PDT)
-Received: from [10.207.49.22] (nat-128-59-177-158.net.columbia.edu. [128.59.177.158])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91040664be1sm31193686d6.18.2026.09.04.15.35.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Sep 2026 15:35:09 -0700 (PDT)
-Message-ID: <789e5449-fc8b-4ef4-9571-26abd514681b@columbia.edu>
-Date: Fri, 4 Sep 2026 18:35:09 -0400
+	bh=i3ccFdMbIeMRLpQb7lQSI2xHgvfmQ31LlLgC3Y7zGvk=;
+	b=f+0s89nV6Smbq+LW1bCIv9hfyurCaU7x2hnMlBCyPJT/3kkqme7VD058TiiwvHU7JHo+nZ
+	NRAWGL28e8uqYSWNcdq2+QjTZmCUVJP0hnwb1fAo11iU8OHtEnsKFytktnkqpe2gceByvO
+	aDEeVjirmUbnsPnGFQmpeA8B0Ayr77I=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=5JJslb5aQZAIHz9ntL7bFQFlu+8A9jB1du1N6SMHrzU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788561859; v=1; x=1789166659;
+ b=ZIA8Ldk9XPWXPLAo8tDRa5rgZE4OdAOVKrKRmI6UkSsOz3kApmQfiVELn7SzroBR6ADMNMa7
+ 1MUCl9YC6DCVamiDxZ3Ekce4/v0BLLM7dcxcKUAdWbfDSWvKeoUbxkE2qvJeRGQMiHBWwuEhAEq
+ aHTVBYIvPVtHUBrjEqDTMvk0=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 9c0fbca0130c8bd5;
+	Fri, 04 Sep 2026 22:44:09 +0000
+X-Mizu-Trace-ID: 9c0fbca0130c8bd5
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 4 Sep 2026 15:44:04 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: David Stevens <stevensd@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH v2] memcg: Don't call schedule_work when no spinning is
+ allowed
+Message-ID: <aptIy7R37n5C-o6z@linux.dev>
+References: <20260904173145.2028377-1-stevensd@google.com>
+ <apsTohKZNnZuWIxC@linux.dev>
+ <CAOiLmNGdPk+7v6Aqm9ctQV9J3YKti50gVTP00P=-3cZ8-x5cUA@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/2] f2fs: complete dropbehind write bios in task
- context
-To: Wenjie Qi <qwjhust@gmail.com>, jaegeuk@kernel.org, chao@kernel.org
-Cc: linux-f2fs-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org,
-        hch@lst.de, jack@suse.cz, axboe@kernel.dk, baohua@kernel.org,
-        linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-mm@kvack.org, qiwenjie@xiaomi.com
-References: <cover.1788438786.git.qiwenjie@xiaomi.com>
- <c4e69fb1ffd6c6fd968683c690ba29f2b98c9fa8.1788438786.git.qiwenjie@xiaomi.com>
-Content-Language: en-US
-From: Tal Zussman <tz2294@columbia.edu>
-In-Reply-To: <c4e69fb1ffd6c6fd968683c690ba29f2b98c9fa8.1788438786.git.qiwenjie@xiaomi.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA0MDIwOSBTYWx0ZWRfX5f/qxMg8zozR
- pD+Ny/ZRsWAD4VoKSfsXnMKrMsAYXZZ/USvk2bzjB+UsxfnFIjpPiocsBt9Q2izKR1iv26oKVcp
- HsII84bJAmEuk1gBb7LSgTRmIbqhBNsO5HsYcP+F8ShyLzszRyFTM5tV8i6uL9/Si1eSDSPFG6P
- 6H/ssyVAwhwB0qscxTrUflNbOe16Fk73LYWmQFQemWlObs93MJJgDBLTHJY/JRTv3kWthi0xIBg
- S8nOByQXvqAg8qWbQDmFZWu5uOxIeqa95lnIpgMInuFDfB2fpTxXB193s/Pgo082zApgOHqmAUi
- JBQGvbMYWA2b30aaNO9ScungKOtVRyy9pTYB35k51+gKv5f6zg/58L40+vboxoUpFhqMqRG3VKh
- OhIvs2knhmUcKlPQkbVPlHokDCh2vvoe/yt6Joi5pUPDn0RLpX6rb2KbV5I9bZN+Bqh9oUTt6KP
- BjtFooDwNlgK5NEtfNw==
-X-Proofpoint-GUID: UMHRWz16AAWo73OWgrDUEHWJ4o0Gl_w9
-X-Authority-Analysis: v=2.4 cv=T868ifKQ c=1 sm=1 tr=0 ts=6a9b47a0 cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=tLges04aSNaZGVAfhBIy2A==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=G--0XuH5328wxK7v7Suf:22
- a=IeNN-m2dAAAA:8 a=r4jUT_wghbJ-rGNBW1sA:9 a=QEXdDO2ut3YA:10
- a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA0MDIwOSBTYWx0ZWRfX7lsanUyG4lRE
- nf+nORx1Ly/v6pSHkfvs6RwM8QaezZnF07ykCUFiYldFv4xnj54EUOgvBzUvrPYAUcO9gmGDY2V
- zfKssQGWQ37TSO+/5UEDDBUS2cdCTfQ7Khj7mnvdE9SNnmBxlwPT
-X-Proofpoint-ORIG-GUID: UMHRWz16AAWo73OWgrDUEHWJ4o0Gl_w9
-X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11896
- signatures=596817
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=10 adultscore=0 lowpriorityscore=10 suspectscore=0 malwarescore=0
- spamscore=0 priorityscore=1501 clxscore=1015 impostorscore=10 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609040209
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAOiLmNGdPk+7v6Aqm9ctQV9J3YKti50gVTP00P=-3cZ8-x5cUA@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6461C1A0006
-X-Stat-Signature: qa47i9nxud4duoiktpfhjjtzobx8rzqa
-X-HE-Tag: 1788561313-893267
-X-HE-Meta: U2FsdGVkX19xLk+gqrz272ezWNcReUGU/A9vpSCoNBoN7l9hxs7vr+R8zPhLRHu4fx7fY/DDRO3zUX7stTBJ3+ZBKReTbiTQdBwh0Xl3nOw8VMOsdXqPno2e0XXHDtL6avjKyVTftImzc4kUgYpvs101sJUzC2hQLzpwHO3EltsLyX/C11K6RZTaScujtypNmZJ2J06nBOdRN/d9Lq3h/HyUhOoFixfp0kqfp56Iut7eCGGrIYlcdEsT+erL05qBb3mA5lvUCM3ApBCbKvs3ssA8jigf/m6WG36N3msil1L6eD9SniJAVtA2gTbxA6HBTW7QCpeWY+jfbyhnxm3bx6uSfJ4Aq1DPZNwx+OrVFcpiivgTTLWDxTrWShaDNXget4z6rHyB7kSM9a001QX/W5CkI4w7QwsB3AX4jstJSF7mykMWmENvZQKuqI+LQblrrIo5a1VEbeL0gpWY3LeqJiRMcNYGICPSDBdlriN/d8A6YyjP+9fzC5Mmw1l1rOfBFZuG9Qgzlr//zB1jwibHc3z2WOU7HHFFx2XQltilxbpDHLQmaMnHOf0v/+kSfZKvONgAj0El0ivUNpNfwIdsp0v7pgeFhcEha8o1cT9Xqfw+5I7559jxA+PW+XhgYPqmTsGC4K1ehr7zshiJfHbUKvDTaodWU7o5iQKyNjImQXVvZGWSaT03WgIwpLtrMF6wS/KzbJJiowfySeXZkXVWh7XBsSRsLcsIs0BNJSRYr4kyCxuD8rCLOXVO1EmrfcsTfi508aNEOu2updBFILnIHRUMXoIaeVak8YzGGjvR9NsG+3oH1kGoVQAQa11tF6n18RgVF5a6pjfjR1gU44S26ikkAQrEkqvUmKt3cwPDKLOhzJMOYkHTB+YamRlLsH5gVQRNtJqgtTvA00KOSgxnimqPDpOyb43i75uCdJbTYTq9WvDHW6goIh9qxX3hgvwLFrt2i65Sq50suaRD6sY
- GdilehnO
- cj1TaOoMpAIgVcBHXy632zf2dAAMW4xTF7dHiOaGtY5Q7opWIeJpXf4xh7ye8pFoGmxzO52ke1qL3ZUqcwL0xmB1/OXSiIOv8up740rK/QMrtQtDqCaY7Domw93HxYZzpXVgiF5JbfGCLlogM17PP4hOA4M41S7n+j86dHMQjphOdq5H6qV37REvJ1/23frJvsJxRxH82djgfgzmGKeVEwatBOr6+B8fw3O1Hr5weTRU+CaHBn31taC1fbpyO2VufBHgLNF6qswa/eg6uhxYDac0XCJEV/ZuCc7g9B3PIdkPOPlO0UKC6FomJfSau440nyUvPHi8CIhsSX6cJ6P2bkFFwncLK8jxmYVdi1QZbSieRv2oK8BoONqWVwgKJGfsBwjunQc4/Ctm4UvBwgwPHYmzUvHBvpTnFkgp6HF7c+5QzrhwyMywgJxr8Q/bLCgJK68fu
+X-Stat-Signature: 347wntxhfncxst4z3a1ehqr6qp4axscw
+X-Rspamd-Queue-Id: 02535180003
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788561862-155034
+X-HE-Meta: U2FsdGVkX19d4lBAYvBlquBxE/sEiPc+TOnaXByIIl8F3TCFSACBHTga5T1SJoUB2X26bhODVcyJDS4plVAyt9UXQm9/vUZ0LFxGeLHZ1/bd8RrySgydpMAMFKvaHD3Iv76WLeF8anoK+J8Q0B8QY/eMHON41gf7AaPQX8koFjxNeFREmPfkVBBsr80dMCMDFFJHKbeb7Hp/5Ybxe40gfkDlmwcuKk/EXTb8LkwN6IpMNBLTW2hA62GOgN3FCjAHzmbtIp9jwVPNz4c4uKLdPtfsJAbmzpSZaGrLnM1VkrtITlv/v5n+8IWdE37UZMSeGy3BYnwzdJXI6ZbXdESS30cfsjAZyKJIbZrwLpy5KHz2ih13kKVty/0MMqIMrliooVd+VyGUmhXV8DFI0NJmK0kAP4UN53zu61PNFliD2bDZc8jc9Eb86ClaX0vGI45L9rkgK0yita11VbqzIMC+d3O64ZJCGS4Yja3C9LlLdjTw+T7hjcdrH+q2yiQgJKwCSyToGlw9DGYQSbUElSV2deKi12piuZnoWRBlLHENzK+XLzGeyVobkjZCXNfZxOm/+ySIsKJkC+H9R0gMLmZUWboHkVDOjAA0J+ZGDZ7W9hFI/0o8kKP1kx1y45Efq29W2rSXTBEuKSeGZsOuoYv+7pn24ekX9skzhwKmiYxJHDDt5mv0aY7NQ4yERvbjJlEOXGtrvSsoNfDeeG47XRVyKh6Ysz5NrqdcaB0rRQqvMHwy6C/voHd+kwI4hHpIvF3I5C/e/vfnVUEEkSs2gxn8jlh70gVV+XFCzJXVk7I5ApH0yk23w4BD2mViQMRhgHICD3/ykwSeOWxPEO9BsfMcdJOw8/qnbemt8eWp7vfqjd2VJyqo0r3nTQiM+izQeWrOx7riy6RP4N55JTSXfyaLa5L06HWQNETNjJsBefF+1XbBwNUT42mj6V99zVBEGHCDzkBiFtM2BjuNt7oAgom
+ Ub13uzdT
+ wZREqfLCghPWQDdKWkjey9xwEgnpy5WTWjCA4smNgZlEEbALQ8yjkA4jhKPq/EDtDiGFF3mpCo7aJuVJheQYKMiTifqBYLjZtPbOM+fKTgODhDzNjGies3JqGINcc5hUsz4jXC56IO+USoNHFSeP+ZtSnP5N7XUKCASQ4d864ilKUXdCm69OMXD8efH5WY+g18hbYaStGMaZlhp//mo7mrcoB9Z5ehBhGmXFLr6v2/UupKn+Npw7tqm1lJUzKKt9521oMdpW9QlKJKWgcgRe2mvcqR/FBmDvZFvQoLtlZkDP6pvb75S5TtLqanrJj5DrQmZ4j5ZyqoTxoJjYsjcxTWOLotIfNlUNJJ2O9qwE5lKt8L2VIzUWntzRjQGdygz0CIYYEeiBdnDk66FYgiTKuUjuNFz+vl3beYSRH7aCPIlPD7mk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -173,81 +95,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/3/26 3:59 PM, Wenjie Qi wrote:
-> Buffered RWF_DONTCACHE writes invalidate dropbehind folios at writeback
-> completion. Mark these bios BIO_COMPLETE_IN_TASK so the block layer runs
-> F2FS completion in task context when needed.
+On Fri, Sep 04, 2026 at 03:15:54PM -0700, David Stevens wrote:
+> On Fri, Sep 4, 2026 at 12:03 PM Shakeel Butt <shakeel.butt@linux.dev> wrote:
+> >
+> > On Fri, Sep 04, 2026 at 10:31:45AM -0700, David Stevens wrote:
+> > > Memcg charging can be done from any context, but calling schedule_work()
+> > > isn't safe from an NMI. If memory.high is breached from a context where
+> > > spinning isn't allowed, use irq_work to schedule the reclaim work.
+> > >
+> > > Fixes: 3ac4638a734a ("memcg: make memcg_rstat_updated nmi safe")
+> > > Acked-by: Michal Hocko <mhocko@suse.com>
+> > > Signed-off-by: David Stevens <stevensd@google.com>
+> > > ---
+> > > v2:
+> > >   - Added missing includes reported by Lorenzo and kernel test robot
+> > >   - Added Acked-by
+> > >
+> > >  include/linux/memcontrol.h |  2 ++
+> > >  mm/memcontrol.c            | 13 ++++++++++++-
+> > >  2 files changed, 14 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> > > index 8170bb8066a2..4a5ef0aba475 100644
+> > > --- a/include/linux/memcontrol.h
+> > > +++ b/include/linux/memcontrol.h
+> > > @@ -23,6 +23,7 @@
+> > >  #include <linux/writeback.h>
+> > >  #include <linux/page-flags.h>
+> > >  #include <linux/shrinker.h>
+> > > +#include <linux/irq_work_types.h>
+> > >
+> > >  struct mem_cgroup;
+> > >  struct obj_cgroup;
+> > > @@ -219,6 +220,7 @@ struct mem_cgroup {
+> > >       spinlock_t       peaks_lock;
+> > >
+> > >       /* Range enforcement for interrupt charges */
+> > > +     struct irq_work high_irq_work;
+> > >       struct work_struct high_work;
+> > >
+> > >  #ifdef CONFIG_ZSWAP
+> > > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> > > index 6dc4888a90f3..0e8b302ca9ad 100644
+> > > --- a/mm/memcontrol.c
+> > > +++ b/mm/memcontrol.c
+> > > @@ -62,6 +62,7 @@
+> > >  #include <linux/seq_buf.h>
+> > >  #include <linux/sched/isolation.h>
+> > >  #include <linux/kmemleak.h>
+> > > +#include <linux/irq_work.h>
+> > >  #include "internal.h"
+> > >  #include "swap_table.h"
+> > >  #include <net/sock.h>
+> > > @@ -2360,6 +2361,11 @@ static void high_work_func(struct work_struct *work)
+> > >       reclaim_high(memcg, MEMCG_CHARGE_BATCH, GFP_KERNEL);
+> > >  }
+> > >
+> > > +static void high_irq_work_func(struct irq_work *work)
+> > > +{
+> > > +     schedule_work(&container_of(work, struct mem_cgroup, high_irq_work)->high_work);
+> > > +}
+> > > +
+> > >  /*
+> > >   * Clamp the maximum sleep time per allocation batch to 2 seconds. This is
+> > >   * enough to still cause a significant slowdown in most cases, while still
+> > > @@ -2752,7 +2758,10 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+> > >               /* Don't bother a random interrupted task */
+> > >               if (!in_task()) {
+> > >                       if (mem_high) {
+> > > -                             schedule_work(&memcg->high_work);
+> > > +                             if (allow_spinning)
+> > > +                                     schedule_work(&memcg->high_work);
+> > > +                             else
+> > > +                                     irq_work_queue(&memcg->high_irq_work);
+> > >                               break;
+> > >                       }
+> > >                       continue;
+> > > @@ -4129,6 +4138,7 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
+> > >               goto fail;
+> > >
+> > >       INIT_WORK(&memcg->high_work, high_work_func);
+> > > +     init_irq_work(&memcg->high_irq_work, high_irq_work_func);
+> > >       vmpressure_init(&memcg->vmpressure);
+> > >       INIT_LIST_HEAD(&memcg->memory_peaks);
+> > >       INIT_LIST_HEAD(&memcg->swap_peaks);
+> > > @@ -4337,6 +4347,7 @@ static void mem_cgroup_css_free(struct cgroup_subsys_state *css)
+> > >               static_branch_dec(&memcg_bpf_enabled_key);
+> > >
+> > >       vmpressure_cleanup(&memcg->vmpressure);
+> > > +     irq_work_sync(&memcg->high_irq_work);
+> >
+> > On RT kernels, this will put rcu grace period here while we are holding the
+> > cgroup_mutex. Easy fix would be to use IRQ_WORK_INIT_HARD instead of
+> > init_irq_work() in mem_cgroup_alloc.
+> >
+> > Something like:
+> >         memcg->high_irq_work = IRQ_WORK_INIT_HARD(high_irq_work_func);
+> >
 > 
-> Use the same flag to keep normal and dropbehind folios from merging in the
-> IPU and OPU paths. Classify the original page-cache folio rather than an
-> encrypted or compressed replacement folio.
-> 
-> Keep the existing large-ATC completion path unchanged.
-> 
-> Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
-> ---
->   fs/f2fs/data.c | 18 +++++++++++++++---
->   1 file changed, 15 insertions(+), 3 deletions(-)
-> 
-> diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-> index 21f396ebe22..b0fedacfd12 100644
-> --- a/fs/f2fs/data.c
-> +++ b/fs/f2fs/data.c
-> @@ -503,6 +503,8 @@ static struct bio *__bio_alloc(struct f2fs_io_info *fio, int npages)
->   	bio = bio_alloc_bioset(bdev, npages,
->   				fio->op | fio->op_flags | f2fs_io_flags(fio),
->   				GFP_NOIO, &f2fs_bioset);
-> +	if (!is_read_io(fio->op) && folio_test_dropbehind(fio->folio))
-> +		bio_set_flag(bio, BIO_COMPLETE_IN_TASK);
->   	bio->bi_iter.bi_sector = sector;
->   	if (is_read_io(fio->op)) {
->   		bio->bi_end_io = f2fs_read_end_io;
-> @@ -793,6 +795,13 @@ static bool page_is_mergeable(struct f2fs_sb_info *sbi, struct bio *bio,
->   	return bio->bi_bdev == f2fs_target_device(sbi, cur_blkaddr, NULL);
->   }
->   
-> +static bool f2fs_bio_dropbehind_mergeable(struct bio *bio,
-> +					  struct f2fs_io_info *fio)
-> +{
-> +	return bio_flagged(bio, BIO_COMPLETE_IN_TASK) ==
-> +		folio_test_dropbehind(fio->folio);
-> +}
-> +
+> This executes as part of css_free_rwork_fn(), so it isn't under cgroup_mutex.
 
-So I'm admittedly not very familiar with f2fs, but why is it necessary
-to prevent merging here? For iomap, we concluded that merging was fine,
-as it just results in some extra folios getting resolved in task context
-(see commit efbde6f9f449 ("iomap: use BIO_COMPLETE_IN_TASK for dropbehind
-writeback")).
+Oh yes, css_free_rwork_fn does not take cgroup_mutex. Though synchronize_rcu()
+is still something to avoid but not a blocker.
 
->   static bool io_type_is_mergeable(struct f2fs_bio_info *io,
->   						struct f2fs_io_info *fio)
->   {
-> @@ -985,8 +994,10 @@ int f2fs_merge_page_bio(struct f2fs_io_info *fio)
->   
->   	trace_f2fs_submit_folio_bio(data_folio, fio);
->   
-> -	if (bio && !page_is_mergeable(fio->sbi, bio, *fio->last_block,
-> -						fio->new_blkaddr))
-> +	if (bio &&
-> +	    (!page_is_mergeable(fio->sbi, bio, *fio->last_block,
-> +				fio->new_blkaddr) ||
-> +	     !f2fs_bio_dropbehind_mergeable(bio, fio)))
->   		f2fs_submit_merged_ipu_write(fio->sbi, &bio, NULL);
->   alloc_new:
->   	if (!bio) {
-> @@ -1086,7 +1097,8 @@ void f2fs_submit_page_write(struct f2fs_io_info *fio)
->   	    (!io_is_mergeable(sbi, io->bio, io, fio, io->last_block_in_bio,
->   			      fio->new_blkaddr) ||
->   	     !f2fs_crypt_mergeable_bio(io->bio, fio_inode(fio),
-> -				bio_folio->index, fio)))
-> +				bio_folio->index, fio) ||
-> +	     !f2fs_bio_dropbehind_mergeable(io->bio, fio)))
->   		__submit_merged_bio(io);
->   alloc_new:
->   	if (io->bio == NULL) {
-> -- 
-> 2.43.0
-> 
+You can add:
 
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
