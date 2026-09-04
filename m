@@ -4,101 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD9F3C61DD6
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 03:38:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52ACEC61DD6
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 03:39:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA3576B0088; Thu,  3 Sep 2026 23:38:33 -0400 (EDT)
+	id 686376B0099; Thu,  3 Sep 2026 23:39:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A53DE6B008A; Thu,  3 Sep 2026 23:38:33 -0400 (EDT)
+	id 65D9B6B009B; Thu,  3 Sep 2026 23:39:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9417E6B0099; Thu,  3 Sep 2026 23:38:33 -0400 (EDT)
+	id 54D5A6B009D; Thu,  3 Sep 2026 23:39:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 750826B0088
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 23:38:33 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 170A7A4918
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 03:38:33 +0000 (UTC)
-X-FDA: 85174672506.02.AE590AD
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 41FF0100006
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 03:38:30 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="cr/bVGZm";
-	spf=pass (imf05.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788493111;
-	b=F4kgwr4w0xzkQA0QQrxtM/do0lLS5cH2UXIKehbNzskJTzwrFCtlAqCt0Ros+S41YI9T2e
-	pvkdLmo/dIFFxumIANrGVypOmQv9ToFGEgKv9Uqg7hQBYNQHyEvPoLISN9fcMiMn3LaFtH
-	YFsAaTtZ2dx+7lW+nQqh9L0ZLR7DwYc=
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E89726B0099
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 23:39:32 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7412AC0721
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 03:39:32 +0000 (UTC)
+X-FDA: 85174674984.01.99EFBED
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	by imf17.hostedemail.com (Postfix) with ESMTP id A32E140007
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 03:39:29 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=QcO+CNGN;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf17.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788493111;
+	s=arc-20220608; t=1788493170;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=biC4R+3LhAPGPOqKjajgQ9ft5Kgc9aWgzDMercUsc4o=;
-	b=dmLo4oZXp9k3vAfZd4umeFO9PYblRsSmtg7Ay1k411aYtvFrYPLMAj0i5suTYbI7YlYuiv
-	b+q2td+dKGZHbNUnCZDBm4W/JYHTHpm3fpRAWO9iUEwCiM8KUPlvSsNuhBO8ZWg591YLVC
-	GhRGPNI2BP43QgYNjuBNx6xFkBjTQZo=
+	bh=MNwQxIddTEnFNFTYEgM9wD4+3ebO+BflR2FwcYl3w2A=;
+	b=AwoK13NNnZ9rpLgXJmJDH+vmXsxV6tEpgI4w9LXhnIqWp8uZ0sdYxRuaEG+aLj08GnmHdV
+	c0kQvoCvXO0YJ5PFD5zrQoiDjYyBq0xxposBJw/Cnjro3cRt1r8yEL4eRykqn0f/peKJ+h
+	2KZCX3OfSkWmMOLvKKAi4u6PXBNvSmM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788493170;
+	b=H7Luutd7Iaz3iJaZEXp2CQW/UCsrde+KG0sLtoW4/Jv9L8A7eN3cSO34Oi+elr2YTRy0lP
+	3EzRxKxS+CYGRzNNUmPbeueV6vruO151tNl46n5HAGKKJD3ClKieje7AUxKP8WfPsW1TE8
+	Y3eLmSj7T5w4jrwCUHi651XImJKldD4=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="cr/bVGZm";
-	spf=pass (imf05.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=biC4R+3LhAPGPOqKjajgQ9ft5Kgc9aWgzDMercUsc4o=;
-	b=cr/bVGZmvR+Db/oP0Dj9tZ6ueSc2zbqdvTsKUvCJhO/Jdi3VIzzceDdmWB2g/An67Vy4ZH3Y8
-	+gJOaHYmE4iydXuWUh4hQZ+eyXPc82AtoKa5SMp2lCze+3HMM6sddWsmMFg7q+shXnewtB/pxGq
-	Lep5wAs7BZItzX3UODjNGeE=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4hbhjS5kvszKmVp;
-	Fri,  4 Sep 2026 11:27:24 +0800 (CST)
-Received: from whupemk100004.china.huawei.com (unknown [7.152.185.74])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8931040572;
-	Fri,  4 Sep 2026 11:38:19 +0800 (CST)
-Received: from [10.173.124.160] (10.173.124.160) by
- whupemk100004.china.huawei.com (7.152.185.74) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 4 Sep 2026 11:38:17 +0800
-Subject: Re: [PATCH v9 02/15] memory-failure: Prevent hugetlb freeing during
- unpoisoning
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-CC: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>, Naoya Horiguchi
-	<nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
-	<linux-fsdevel@vger.kernel.org>, Christian Brauner <christian@brauner.io>,
-	Jiaqi Yan <jiaqiyan@google.com>, "Gregory Price (Meta)" <gourry@gourry.net>,
-	Andrew Morton <akpm@linux-foundation.org>, Jane Chu <jane.chu@oracle.com>,
-	<linux-mm@kvack.org>
-References: <20260805210557.1118966-1-willy@infradead.org>
- <20260805210557.1118966-3-willy@infradead.org>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <616d673c-3428-24c4-c3f8-ce93b950e142@huawei.com>
-Date: Fri, 4 Sep 2026 11:38:16 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	imf17.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=QcO+CNGN;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf17.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-84f38f3b36eso407513b3a.1
+        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 20:39:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1788493168; x=1789097968; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=MNwQxIddTEnFNFTYEgM9wD4+3ebO+BflR2FwcYl3w2A=;
+        b=QcO+CNGNWVegKpkSQzsD28Di+vUI8baB/o+3lgG+AjHrn6HvD2MV4YOsmRvw8c/Mil
+         b1Bdam9Y/ss6bURMWZNi+MDRaKsd3CVSvEZSWip5skLWqHA+HMc4pC6yvLqYSUwlMBpp
+         HfmVUDEvk07VYwA70rO4eYilaOgjCjQS2IDwA7lAK0g4XZzqcrGrBIhHJmHntXjbLBLm
+         9LYeR1dk/MtWR0ZZLi0dIZNNgqtmqXmmhPLN8AhpBJZWQSIkSr6cDHa1tGeLf0b+27gs
+         BOFF/kHvDuZ0AsCCvycXGDt8XdOIo30IlBfht+x+8KJQWUn8H7OxoNXd9O70ux0uBO9W
+         MPZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788493168; x=1789097968;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MNwQxIddTEnFNFTYEgM9wD4+3ebO+BflR2FwcYl3w2A=;
+        b=fbOcyUkNWDXxIq0zs8/163BOHB11Ew6kZArrql8lAKj66SE7/gPzGVAmHVZUhubhfl
+         ccc/+CVjsEprzxD+Y++oXysDL6PFJHlP137egKknnZssIscYsLMjDfx9EvUVvOJv9Zlb
+         UCztC3azUXYgdH1caDrdnNRVbTVt5yJOWCUDAmGVu949j79x+mAQU6fqv1JIDGSIVrXu
+         MGKWsPS5GQkU/3T+IfYFqaPu9jOFEc5LvlNwRlDkNP17ship3fwcFdA/UAkLkd/oygG5
+         VWM7HTCwAsfm8MPKFEj5MgWZTS4OaCnQoaTZ2wsI2p8adn6t1NQAqXPn85Q+DsSi2Cxm
+         qL2A==
+X-Gm-Message-State: AFuF++nzaNPB+6sAHl6/jQmtuySB/sYWrcX+Zy6uWlQJ49FRiw8oe+M6
+	xCPPT/ynsv92WwK8BsNouMvA5uVppQmDSL/3TG95wqj/oKpzRt147tEI+mEuvC012jk=
+X-Gm-Gg: AYBFou0ZZ7Vf1P5CXh177lDKn4lJ/GAOKOelZ9GIdhCgxodohxmUTr5aUe3hJlQZ9b2
+	EdcYTDHFk7vGEFo3ylKtLkmJc/ekJwFTEcjFbgPNd7PwBCE21p+RgBnvLi5hK1n/6nzMLJ82RQq
+	ZIBfZflCUlDm5lFsQL9tJHdeUTvh9wzymUUOAuQvn/7zyf6GFlh9s2sXg7/xm9p1MRC+09taUrX
+	E4bTjtEUx9mky1J6Mfil2khlHVg+xzZ1QEdgWZa3cSchpkVyEXs5O6yGiaCEP5RZsyPMfF1Yrm1
+	1IH73n+HQMKdb6CQtd/992WEoEojo2wjjhsO7y2Z+sIzut41FswlLMWW21FZ4ApXyCTXJptCvDT
+	2cy8JlsH/2k8YNKrpZjfjU590p7Wd8Nvg7bMucAWK6dWo0NnIyBo4MdViUIo39tV4es+4GYmA9+
+	J4Nys3Hu1Kcfz+cY0nZbpuF45RlQyLQcZG4SRWMDgDEjVLy749hHd/wEDP/yj7kFp267Qhsy8fb
+	56dQ1QkTP1eR3vu1bbySiPms6BsRuaU
+X-Received: by 2002:a05:6a00:8016:b0:857:74ae:ad76 with SMTP id d2e1a72fcca58-8616b46b125mr5070023b3a.26.1788493167991;
+        Thu, 03 Sep 2026 20:39:27 -0700 (PDT)
+Received: from [100.81.12.150] ([61.213.176.57])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86152e39a38sm603701b3a.39.2026.09.03.20.39.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Sep 2026 20:39:27 -0700 (PDT)
+Message-ID: <5f34e3e1-749e-44d1-b3e7-50e11f7240e3@bytedance.com>
+Date: Fri, 4 Sep 2026 11:39:23 +0800
 MIME-Version: 1.0
-In-Reply-To: <20260805210557.1118966-3-willy@infradead.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
+User-Agent: Mozilla Thunderbird
+Subject: Re: [External] Re: [PATCH v2] writeback, memcg: skip foreign dirty
+ tracking for bdev inodes
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, cgroups@vger.kernel.org, hannes@cmpxchg.org,
+ mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+ muchun.song@linux.dev, axboe@kernel.dk, tj@kernel.org, jack@suse.cz
+References: <20260903083303.2769873-1-sunjunchao@bytedance.com>
+ <20260903123427.eb0beab18ff68d4632aece6c@linux-foundation.org>
+From: Julian Sun <sunjunchao@bytedance.com>
+In-Reply-To: <20260903123427.eb0beab18ff68d4632aece6c@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- whupemk100004.china.huawei.com (7.152.185.74)
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A32E140007
+X-Stat-Signature: ggk3k49zix3mboiyd7dwauuxqpad9k5g
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 41FF0100006
-X-Stat-Signature: fcejnuzcwxidud1e99itsd1bzoznx7zf
-X-HE-Tag: 1788493110-689541
-X-HE-Meta: U2FsdGVkX18UaOeKyGb8fM8D2uJITmC9iBUe9vaILJqLPgwSKRbmiWH06yGhN3bSMfStjwaLjf8bAc32orYptMb86b86VU47VcYEkWI4ynOrev8DNw9qJ/YBDVnEYei4EQxH2EVFMOO/yRdU4fJczfT12KawgKhBrwBC1C5ydHEXXiZ4lwaajZVmKVLHcks6QyMjaZvEbuEMZni1Vxu3tsb+YWTR4sAH7oVEyyR54uvjZr5/Tane69evEUnm1h0ar/dURrZIz+Z2UZHU3eLi6jI/8n163YJPOn4g7fbFuDK4MMqN+MmYJqgS4PMzzbtVzzk7PVVaDkhhYk9xiz1ZOkuH+uSLHucdDS5s1ttvDW1lmiNAx8b0eq+IeRni8UQsSRpgJw/x3vKlwyMFzvVC8/X64Xdqpbo+wHNcKfn3KMIWQVfvnnfDGpQFB4BNlwWk9JwnPaEZ1bpkjkcWoOuOs8eB0bqdxwkSicGxIbQ8C0JhUw3v4HherEkFNqAtMQ27lGr3vD7pd6zKHBpDDfQyGrhoxzMkiXB315MxqMMKSQYr+83h9PmF5qS5rDrW4AmqUmktLn7nKf/u6fcUdQVv38PKRDm9h9mjWzwCfPOuLK9ofVW3ZqzFzY9RQXLe7sgrP1LvBr6U/DJAb+derKUTs6MQB2oXwrqazE7KBNXnymknYz/bNeJfV1WOYZzBgHdLBksZ9mS00C4aZM/5i/InbNKM0k2kDX9nl/TSe9YAVUAtbSvvwzbe03Csb0dlMvZatAo+TZ+58zMp4KM2VqL5VZvnRTG2gPrx+ZOUewCD9HBQ/S8QanC8yAMPBWSGK88/GO/pG8L3y53WlKDx0dwW+6YL8rtSl/cJfcVC5qQzSrX5QZ/nxHku+A2/6KKnEkhmD5aFwJP6XShybzHF7zaoIoCPMPYHI7oXfyeDU6K25E6+WuOtXbKIM+EX1qGCNR78Jaujyw1cIwJZlPKsuHs
- X45DZWbE
- OnjTLN8d7gnRREEty6o+WUiQ7DhQlMjBANTQYHqai/fD303t0/c+6iX1QOjYItlZifRUmVHzmIYPKdYIVotIccueAvxqWrFFy0yfMnv5ozh1mKwxuy5w4oQbP3kgRYLQGBH3NTzl6deRZWEMZzRYqLncQAP30zCgHu9PZRUFhJ4FRmeaGygYmHKeiLALQDDC8zlc5WTxBzY8H/PHhta8zGHtOl1WbjewqVwOxc64qzIYT7W0Ke9MgW3eyC15KsKR2jOeGHQjXwVBYL+DN++4fBDZjL74/9meDH6V+Q2ujvQS0w7TshdhXpAPm4eGep3qhj0mzNkSVclgcbHjTa5T5eZqLQ+FKKTd1VsRNWr2S9zSylFbmlCqiWalQE/BPzSEcob/YyW+X/aJveytgRzu0OO/witXZ3q2XM3Y3C2mxlgsEZfutLeUFBggPqyFLpXu8wbeeE8fiN1TzuMJtm6oMYtnaOd33vOrA9hsUc7imJotqqPBOLqxIXezfoAwSm4PKkcy1ndF0Gy6cmgg=
+X-HE-Tag: 1788493169-846404
+X-HE-Meta: U2FsdGVkX1/Njejnxz6TAnAnY/69gz1Tmt09h3qjj9WOq81iLp44052h8/Tc1mqk+VIEGbVkefOIRKhouQAi2iBvca/rXd/T6DPkz3W5qFvztST0pq/kIL/6ZE62hoOpbT9FCfTsJIM8bWmB02DEA2kt+y9CqmW8RuhuewrlL2+wQ6PutGo3/ZlDsvZEXpUSB0PX/PyR1OwVm6XlUgBRUy3bkquccRd9LLXvg0a7Lev5C4LSmPvU4rJ6Fp+rm0zvrz9YWuC6ay3N9n6gDJueOMpM1HzshQEkMmjpGNRvSBgkFFoSEkpDBq5G8Wpgj7sG8snqsDJ6NA6om1gS6ZrGK37Ja8gagfKRAON4KspMA+Du+rM/fckmE7fYRUhvvHBARFIcl7vp9kKf5xM9W3Y/FhGZABRG5ZpjJzBkhyY3lKlIwhl3WV7cd62CXet79tgo8uKQr93UsPw1hQyQN5VyH21T9/JHv7kGlVRDygVevgktSXj7f7I+0OrPjxzDs45YVlMICW8IzsiTYFW4Yrr1Luh07ZouakltyAxiW91QUH6tqhtHCXdOfMVkJz5aJT4yC5DpkTkBTqT4KhCun/YdPr5kFNNadVOlKzaWh73XyeB2veBkZxRUWzQNqdgfabXwP5VBE/LocRBMD0J12616bOzaJrNKBbmjoxAtLDBOPSWUYzXyP2KCh05SnxBsO9jmBaZmwOHv/qkeFxp1MtMjpyazTs8Ll2PwVOtx5HdV/oueVOtz7cRpebTgEA77oRphcFwzX6tRofxy/WlyYp0VOF7Z6+WfoZdbQTN6Z4Gaggmb9RcfQCvodUmhnUpPdJLWdarKV5TEqqyKVb77BjJYVzMjTTSiTVhQfVwkRCXKoutknqlW17RfxIpMfLKAniWn3uovd3OH8v3cWFD21cTjCJ1G1iVAgRbrAUevgm7AqMfMd7LC+Sn7n948F+YJDLNyVLEEVM83pcZcw8Pn0f8
+ um4t+KXo
+ hpNGVfwjo+ZQCfQqUEQQpI+R1vFQ53Tw9gs3BnlQ1A7DRfFCzAGv3cZWdRp0Zs4tQQJCAbP/ovy7jtSpoWm1Fi23x4pKlmD8kona4inGVzTLVZDllIGifvzxaYgqT3u1ab4j0EkwnhVr2BbwMAoOlon0ePWxttAAlUWZnUW/v9PsjjcuM8tJLLM12WWjAoJNCqtJ8XVGT8VLNYGe3dIlIJQkv7CbwFfWXVJAbHHaWH5pHqjzhGlMdIJgQYkrddXNXHavPkrAu+wsxKBJD4+MHNm0kOg63Xi9V/SBgv6Hm211FkC0jIHdnYB3/3H6ZhYifalkjeO+k7d5UVOur0inHBFJPWV0KmYs1vXsDwh7BjN1cSyU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,23 +123,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/8/6 5:05, Matthew Wilcox (Oracle) wrote:
-> If we fail to get a reference on the hugetlb folio, then it might be
-> freed as we operate on it.  Prevent the freeing and the attendant races
-> around manipulation of the raw_hwp list by holding the hugetlb_lock,
-> which is also held by the hugetlb code when freeing hugetlb folios.
+On 9/4/26 3:34 AM, Andrew Morton wrote:
+> On Thu,  3 Sep 2026 16:33:03 +0800 Julian Sun <sunjunchao@bytedance.com> wrote:
 > 
-> Fixes: ac5fcde0a96a ("mm, hwpoison: make unpoison aware of raw error info in hwpoisoned hugepage")
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
-> Reviewed-by: Jane Chu <jane.chu@oracle.com>
-> ---
->  include/linux/hugetlb.h | 19 +++++++++++++++++++
->  mm/memory-failure.c     |  6 +++++-
->  2 files changed, 24 insertions(+), 1 deletion(-)
+>> Foreign dirty flushing handles cases where a dirtied folio's memcg and
+>> the memcg owning its inode wb differ.
+>>
+>> wbc_detach_inode() notes that "concurrent write sharing of an inode is
+>> expected to be very rare". This expectation does not hold for bdev inodes.
+>> A bdev inode and mapping are shared by buffered users of the block device,
+>> while the inode has a single wb owner. On ext4, buffer-cache folios used
+>> by metadata and journal I/O can therefore be charged to different memcgs
+>> while sharing the same mapping. Normal bdev activity can thus produce
+>> frequent folio/wb ownership mismatches.
+>>
+>> This was reproduced on cgroup v2 with the memory and I/O controllers
+>> enabled, using ext4 on a loop device. jbd2 repeatedly generated
+>> track_foreign_dirty events for bdev folios charged to unrelated memcgs.
+>> When one of those memcgs entered dirty throttling, the resulting record led
+>> to a flush_foreign event and queued writeback with reason=foreign_flush for
+>> the bdev inode's root wb.
+>>
+>> Skip foreign dirty tracking when the folio mapping's host inode is on the
+>> blockdev pseudo superblock. This prevents bdev-originated records from
+>> triggering later foreign flushes.
+>>
+>> The tradeoff is that dirty throttling in the folio's memcg no longer uses
+>> bdev dirtiness to queue writeback on the bdev inode's owner wb. Those
+>> folios remain subject to normal writeback. This is preferable because a
+>> single bdev wb owner does not identify which cgroup is responsible for a
+>> mapping shared by buffered bdev users. Flushing it can write back data
+>> unrelated to the throttled memcg. Dirty accounting, normal writeback, and
+>> foreign dirty tracking for non-bdev inodes remain unchanged.
+> 
+> When fixing something, please always describe the userspace-visible
+> runtime effects.
 
-Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
+Sorry, I overlooked this aspect.
+> 
+> I'm thinking probably "unnecessary I/O"?  If so, has this been
+> quantified/measured?  If not, can the effects be guessed about?
 
-Thanks.
-.
+We suspect that a large amount of prematurely triggered foreign 
+writeback consumes device writeback bandwidth, thereby degrading the 
+performance of the entire writeback path.
+
+On one production machine, the total nr_pages of the foreign-flush works 
+was 630,681,285, or about 2.4 TiB, while the machine had only 400 GiB of 
+memory. Although nr_pages does not represent the number of dirty pages 
+that will ultimately be written back, the actual number of pages written 
+back may still be very large because the corresponding wb was 
+continuously accumulating dirty pages.>
+>> --- a/mm/memcontrol.c
+>> +++ b/mm/memcontrol.c
+>> @@ -3898,6 +3898,15 @@ void mem_cgroup_track_foreign_dirty_slowpath(struct folio *folio,
+>>   	u64 oldest_at = now;
+>>   	int oldest = -1;
+>>   	int i;
+>> +	struct address_space *mapping = folio_mapping(folio);
+>> +	struct inode *bdev_inode = mapping ? mapping->host : NULL;
+>> +
+>> +	/*
+>> +	 * Bdev inodes are usually shared by many memcgs so foreign
+>> +	 * tracking leads to frequent flushes which is counterproductive.
+>> +	 */
+>> +	if (bdev_inode && sb_is_blkdev_sb(bdev_inode->i_sb))
+>> +		return;
+>>   
+>>   	trace_track_foreign_dirty(folio, wb);
+>>   
+>> -- 
+>> 2.39.5
+
+Thanks,
+-- 
+Julian Sun <sunjunchao@bytedance.com>
 
