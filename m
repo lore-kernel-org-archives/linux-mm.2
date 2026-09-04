@@ -4,113 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49CCCC624DE
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 12:21:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80E16C624DE
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 12:21:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CEAC6B008A; Fri,  4 Sep 2026 08:21:06 -0400 (EDT)
+	id 551886B0095; Fri,  4 Sep 2026 08:21:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17FE16B0092; Fri,  4 Sep 2026 08:21:06 -0400 (EDT)
+	id 528DA6B0096; Fri,  4 Sep 2026 08:21:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06F336B0095; Fri,  4 Sep 2026 08:21:06 -0400 (EDT)
+	id 466376B0098; Fri,  4 Sep 2026 08:21:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D3D566B008A
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 08:21:05 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BE4CEC1160
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:21:03 +0000 (UTC)
-X-FDA: 85175989206.14.458646A
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 036F8C0005
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:21:01 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PaXHCb+u;
+	by kanga.kvack.org (Postfix) with ESMTP id 212CC6B0095
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 08:21:14 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8ECC2C0E04
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:21:13 +0000 (UTC)
+X-FDA: 85175989626.03.D96E9B4
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C3D8E140008
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:21:11 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pBHkpg1z;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of hemanth.selam@gmail.com designates 209.85.210.53 as permitted sender) smtp.mailfrom=hemanth.selam@gmail.com
+	spf=pass (imf23.hostedemail.com: domain of hemanth.selam@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=hemanth.selam@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788524462;
+	s=arc-20220608; t=1788524471;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hd4PSrEusbAFa4INILvOws+6RzUQJp6h+WgDUNey2JU=;
-	b=2QZKtCTr9eV6IyCq0WEy1lZSlGBjO6DzQfV+gHEyla6emu0n7oDPBcyis7X8pwpqGlmdzZ
-	3Np3bITdN+JoHvx+QQ8KrsqkF1K68rhjtTVx/WROr18uDf8Z15LSvWRHZ1R0VAP4zV1GAs
-	1wrsF3kctL5pBNJE8vRhCEUGRoRyZII=
+	bh=lkiCyCvi2P+iZbARVukdTb/KqWgHgSHrWQF85+jAN58=;
+	b=vYpwqWOcjcnsqEfJNhNH9Oh0xLoVyJ8YBd1Un+ZYZAggIbHozJUgP2vAMCpkDrjHoicJZ3
+	x5ca6U+VnBELLwetM4WPlBG8Z7xDTvs8FoI1nu3C1GvLoz1IEtOX4cWSBXQvX/Y8jabSPu
+	iwzd57RwWEvxdtE9owlQYVqoN63ftuQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788524462;
-	b=3nH9IP7l//HEVKVYx71arQcwupXun2Qkkd+w5VtbXw8xm3uA6XM0tN3xgIMzbEowV/zkio
-	SjYrhJKpAJkZVAjz3UwCN4frjWUqtqjpOb/fJn1LSNffMWsCO4LSIUwgS5G/Cqv7mN6oW3
-	zGcgir7t+m4QTOwy/N+sBFTqr1LjAtY=
+	t=1788524471;
+	b=EtbZh+oWyLyYN6RS4JUbqxJFs0H7xTFdVMNsf2V7xbFyOfncFsUIft6wpPD+sJL8Syc0oP
+	viKcjEPerpcTNNLbuzVbxYkKpTuEN7AuNhWbH97BabwCS+Xd67lHr+OrAFY8a7pEnziXzP
+	TRq2USljI6FW/mn6ifHl1VQcV7PN+eM=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PaXHCb+u;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pBHkpg1z;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of hemanth.selam@gmail.com designates 209.85.210.53 as permitted sender) smtp.mailfrom=hemanth.selam@gmail.com
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7f3ece23165so776063a34.0
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 05:21:01 -0700 (PDT)
+	spf=pass (imf23.hostedemail.com: domain of hemanth.selam@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=hemanth.selam@gmail.com
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cc147d86bebso967962a12.0
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 05:21:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788524461; x=1789129261; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1788524470; x=1789129270; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=hd4PSrEusbAFa4INILvOws+6RzUQJp6h+WgDUNey2JU=;
-        b=PaXHCb+utkaDbHDwYk7UBLzZbSxy6SJT4FJTH7zwRQ0DS1EHuaoVXZk97J91bBzKsH
-         iP43CkBz5GlxdvKaC1RLNGa5JOsg9yqVtmml+lXXbxp7AIbWs9W4MlEgGsvub1rVW8Lm
-         MArqeKXeVkBgs6wKFrvg79SEp9SSar5yF5yHw8aJwUlNR9Alx7yQicY7SzPoyAuxVbzB
-         07UD/02vcxbmH0Nm4/WXaUl3ekL1kwqDMfF397M60I7hh4AiSjC5F6/2lp/fe4LNsCqi
-         wBcPTQgp/TZZu/i5v/sTXyoL2v5SwOUffPxpxW4w/0qpgKCjk/wKYIXc7Y7oZuvs7PQW
-         WEeg==
+        bh=lkiCyCvi2P+iZbARVukdTb/KqWgHgSHrWQF85+jAN58=;
+        b=pBHkpg1zbEJlKInXNSZ1Ec2GTHfXkfTLa0wwNpDNNa4dagSGsHAGAzeHiFTU1Yvx36
+         1bxQS2+vzpIcP6jGAVr5WXu991E+qnnfWxRAdtHa+80uso0xMaR0eFAXyWKZyWpMZCRJ
+         n0hCXDI/uoODppmq7KhqKPj53PFDahADjYKH+upW7QKBTJ7Got9fyBuwq2T5NKBUU1c8
+         2XNP6uXsG1tcMNMmdJqe7jIhAnDTrHenKcwSYwu+7a5+1kjGfQ6GxhilEfsclgRapyaa
+         1/q9Go/6ZNd71QoQiS7a+TLqRSHZGwRZVVXiLiLKGXO9mY2rNrxgMqWHG4r/4nc2t4bf
+         d2Tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788524461; x=1789129261;
+        d=1e100.net; s=20251104; t=1788524470; x=1789129270;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hd4PSrEusbAFa4INILvOws+6RzUQJp6h+WgDUNey2JU=;
-        b=aYzYFyxjrf9364g0IoH4rl49s0lHqWoBLeKoq2zVV2HDryZU3B0WU7p+jTCVQX23t9
-         dQd2F3YRX4T4NR6UDgQiDNQoFg19t3qtLicVHOIG6+9V1lV5/h6R6biHyegQWifdyy2F
-         T/thWTx5ni+lWmyJxDoFZIwpdjvEptYK85rL6SZ1PEpaUaw9NVOKZPEpuzwBqDfWL/dC
-         FP9ztR1Ry4P0ZHbtXN5DELIKiIMNat3kofZTpB/lZWnNdYxbTvoWmv32dQ2JY8MdS08G
-         UryQ6rKVRJyE/PhTqVE1o+ZsJpo8DzPeEdpARge8kFOnJRgXkJJWaF1TNcfDacjucfWn
-         xmgg==
-X-Forwarded-Encrypted: i=1; AKwUvByAdDM8Npgp1rB8J/tqZviIwN9Aj1CiAHfekCR5lUGjnx+1/zWjdpRqoGMWD6scsALtXeEMd+zqOw==@kvack.org
-X-Gm-Message-State: AFuF++nNnqpvEDYuZKnZzv5LjjJNYZNy9mx+XsjbeXdbhLDHNGPtLT6h
-	EyPnPaCP+ud1WrsJcZJuJHEx0BWlFZ8gS3LrKrOHm1daVEsXb3au/tzV
-X-Gm-Gg: AYBFou054CzhBoropKVBypHxg6Fu3MGrL+xQbxeYNQLvIt7LyWptnMbiwcBv5vF01/g
-	mOUFIGMb+bkOhxmCvMuho8d6ShxNZmfGpqpeLnKZbyXXmTkc/STsO9NN+duMOBseSar7pmEqMX+
-	SxXJtPFmcrpRVt9ouOS98fZFSm6Z6Qjs6+COdzIr6EO139asyywv51tmC3g3OSHlScuA1rx2ZnX
-	t+spZWlsyTPAISomBBC/dLSMWpOo19bMCailq4Vr+K+wWSsfI9Ol8eIB7A9NRYkNmyaUZy8OGnw
-	0JnEdXNrMO+sI9hCz8E2QzlIjPY/14zJa8KWU7FxN5RuP33t2Tn0y3FDUcvnfMvK+nKTe3oYZhk
-	5xYkqN4e+gvFEaoWwhtvE2ZtizjlpaeMlOwIU4t4Uqt9uEyd1070A96XnlprkRbnzHHoJlJV65c
-	4HwB0XE9LcBVjjHYsbat2P4AZ79gmVdfbK2pnpZep29Dj3rPFEYU2ltHO67kK4Pd6KUmU3e1qoE
-	+bO0lJZltsRqD5LsE4Sl73DcmR9Bj1YWqBD1g==
-X-Received: by 2002:a05:6820:1694:b0:6b7:83d6:2932 with SMTP id 006d021491bc7-6b783d62f07mr1483331eaf.53.1788524460754;
-        Fri, 04 Sep 2026 05:21:00 -0700 (PDT)
+        bh=lkiCyCvi2P+iZbARVukdTb/KqWgHgSHrWQF85+jAN58=;
+        b=J3jO4HozMwhC5Nj7gKL7m9kE0KBqpYcFw4vUyu8yOxARfyU2CQqx/lw7b/imfHx8Vh
+         IjumsaRyqy+uhiO9XVOd6ABApcDT8NMjgCFBVTS0jakqKpCeNRQoVY7lFl925QmCk6JZ
+         nBa6qvxkMLGZLl2wc+q68xMNSW+cl2n28PkZAw3Ao8vxMUgJ9PIlA/4n3TQf2G/4MTST
+         erkCLlW2AyoJpCSjx4kfb03C6h79yWCurAZJ9XLEqzdz51BnqCeLD7YGRHuL8aehlzAQ
+         n0TEelDoiKvq/VpRQAV03Bndg2b13RPiFm2ckd/8iuVd/MkW60hu1Zgc3DJw+2DxhHhJ
+         8Niw==
+X-Forwarded-Encrypted: i=1; AKwUvBxYlIZkOxmehqMMdhvxanmSO75+V1VfriA0SSOZMHMFYWS3/ZEsOWwgZVg1Rh21u1iK2w5Kxs+YJw==@kvack.org
+X-Gm-Message-State: AFuF++ko3FEmvsdfohl9Zk718Lih55d6Kei8I/NDrZ66z8rB7nR8kLdZ
+	lOfwKINH/uGdOoyONGv2ebwq7m6Y+qMD18wPaRaVOYuMhm6GIqTo6rcS
+X-Gm-Gg: AYBFou0xEOa7YwVxKJVE+09yPmcEZ6ydRehGh5lrTTDgBT5o2sN6joU1mXQp1UP3ZZt
+	hJkIOrtDyKDgcZ6UNR+FbwvzMV00ii1a/RPj0vp3FUxskRv+aRI8WmXZjVSsyse1MVE62NZDnJn
+	l0Ni7vJSZYKmjEi7L5YW5khV09rZ2CAPeLfjcjUq45mhpS5XqzxRW0cxHjzCVzDRn0dc360eOAD
+	UfAlncD8eD6MwVRyZSfnUSfA1bSz9APC5ZVi8mgpQrjK5XZgZlbvnSpuuePUUnUGhWlyqcKiQYD
+	PV2S9kztM36XWRtBm97WPmn5upq+GBcGz4Aeii2hnoJDGsXc7N2iSVBpZDgkrQcU4ZD3kmMv8Pu
+	6lp2AQNdZX8rHUaOoquXFeVT1rFb+LhWFJ/VkgCagS4ho8bEGhqHX0pn35/+9kgRU4kwT1hMtr+
+	LwYHdhPe1nU/oChRux8LQG3736gsavXYXV+EXWCNLO6iSqyDLo/tyyk7TeS/WGpL2O+h6piIhe7
+	ZTEPOA9SvxHGac=
+X-Received: by 2002:a17:90b:2e46:b0:38f:a81:15b1 with SMTP id 98e67ed59e1d1-39b08653554mr16531593a91.19.1788524470541;
+        Fri, 04 Sep 2026 05:21:10 -0700 (PDT)
 Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339b608409sm7116019eec.21.2026.09.04.05.20.59
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339b608409sm7116019eec.21.2026.09.04.05.21.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 05:21:00 -0700 (PDT)
+        Fri, 04 Sep 2026 05:21:10 -0700 (PDT)
 From: Hemanth Selam <hemanth.selam@gmail.com>
-To: Kees Cook <kees@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Kees Cook <kees@kernel.org>
 Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 1/3] elf: fix typo "accomodate" in comment
-Date: Fri,  4 Sep 2026 17:50:50 +0530
-Message-ID: <20260904122054.28531-2-hemanth.selam@gmail.com>
+Subject: [PATCH 3/3] kernel: fix typo "overriden" in comment
+Date: Fri,  4 Sep 2026 17:50:52 +0530
+Message-ID: <20260904122054.28531-4-hemanth.selam@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20260904122054.28531-1-hemanth.selam@gmail.com>
 References: <20260904122054.28531-1-hemanth.selam@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 036F8C0005
-X-Stat-Signature: kjhmsiiz16ntcay4xz1o7rgnm1egyajf
+X-Rspamd-Queue-Id: C3D8E140008
+X-Stat-Signature: b9x6m6wu9gbru6oq768qy6fwy8tu8tpk
 X-Rspam-User: 
-X-HE-Tag: 1788524461-932353
-X-HE-Meta: U2FsdGVkX1+0YBxfY4immv0qh5INr2ZQwPu5p72oZU4jvF9Vvw8T7/Ghy7LF6oI0JLJRIQw93yMNuhKXb6ZQMGPzcS5/6NjFLAO1TFMZlubfOM1dzc99K431Om+ZA4Fes40ckbTTSDUiaM2ujr/nd+5A6ucS8HL35oXMTFBrm6vkcnCevojAWU95XZqWRJuKplKvaLfpy/lPVT2VQhTLdixycm592hlRs8VtxEdxg/lu6n1KjAIpdfmFHfENKAh8tHAJwX62GTCcRjJFeM8EBZDMAPe8Mou2OuzR1i/SfWfFmdUF0G2NeiPfgsrF8zdCwMKVN70+88PKnmg6cnHLoAo46Po/jIxbrDcdaF0gVARQSIToE2Z2NjVyAv3Ms15Nq0o2LjLZJ8bA3b3KedOCbV8NNpi+hZVdBf3pQCbXsc3l9Ewyb7p74B+bJfA90fIk2eYq2XVQ+Z0fjq5aaIoayrG3O1X7SshG9lhht3+2tiav5GSwuWntu4XF9m1jqnj1tkWL1bTMlWx+5B3itWalM9qlnA0bnaaNchL1C/+R0xUXjvZl27dFlJ1Tl3KuhNo6ZXI7o/lxORcele8JuDFI7KXqNmM1iDI57iznuWdO6nExfBmTOxGcxsgeGjiHMG5JPtbJZ8mh00Fk9vy/4wCbrX68n+inaO44kAxgW3u8BGYEyEIPVe+xNcuyic0Nv7J2iumXKG7drqy2yYIDaFAwI5sy1iCzYTsoYAQuDOm5OaE47zjpRSveM1hMFK7fKQFv+WkUhbK3Mf2zhEQDAqWYDhpmJvynBHbBM39SpVCUw5QFph3J+i5YMJ+rTK9BUSomYCF2KZwA5IhBZ8go29U4vXx3UgLGKoCWo0uCArVQas4N5IfxPMYHRrhHdEZ9m7gKlUrR9uLa5iO84aSfXS4S2a8i7zs7bD2qnvlGHkDVzgudJ7qjWkBf1Kbo8tgMCBIq0LcbJF36nol4Yls3bZO
- do4f4jqD
- /3dY8xcIeQIkDnutnxy96LDAVe6bfx743l7T3782P2JNyFN0MKNjYz7CAVxKpsig6ltl1igGoe7k+q8ZiUGKaWIDpVyk6ToK1y+29UXEaePOeRuhda3hdL7Zp89zXDu6o/fUiUGVUpkW0NT3GObMj3fZc70im7T25i7zng3SnRDTTJ9dQOEZAyolfSxUPIXdMJhblSCtmvRvsCpoknfFJf0S6iVw3cucBV2RG48iBSAYxuOCbuxOYLJPja3OAOMRrjT2wGntN5Io36hv+s4nyHMKqawxDcdxknFGj/0FuauY8DCKIGY14gx3KbKDKFaWutvT225IoUI28EKnBBe29cAX/DTqMs4FTb2mJP7UAQMgeB/dN1t0MHm3P2QS5BlJqfR2dlN5JOtKocnOrX/GWmXXVRUcHDHBG92c3br2M8hpIVHbA6u1L9C7hbhIJX4bBK1Fd
+X-HE-Tag: 1788524471-196406
+X-HE-Meta: U2FsdGVkX1+bwy/8jTVB28SnBFq48fer/LS6Pb1qANb0j8fG+OGqKiwuxpKB2BzM+g+3EbVvgX4hZBAVpOsYLxmCtAL7IZMXwVhA9brQNAtjUpK7SJujL9RkXfjHw9+hmTTqGrQwga2rYUAEFqw4c50Gzel1ajjUtahsTo6LQ/qeDI0k1e0qWZTE+qNbVe6fkCACmeoh5aigo4985t58QksbZDXwQfpouYGyKEi0e/w7PCr0mglLepHc7BUvOsv+2C++l+fatyhroH4nDsEE30WKWhD57MREIAAWffIAa9uuM1ELGxgHPHKVG2s4QoeeApD8wud/LuCg/NnUSj+cbSd/DaKtaKEfq3b1ByfPFYFqJmiHRTzw78JzRZteuje8W9ggplUDLJja9FCKMfRBzV/JZSvOotNs2+xvAFBpDnYt80mUaLOV/Qj02ZTSK5tbj3yik7BruME3ctXYOnp9Oo2H3tX3knH1qL5MzDp+DJQn0cH067Z9av9i0Q1M5qAWWcJOfL3hQ7tOvYRq3Cbm81BorrF0zo2Znk8EjevGVdDKE9un/Pm0dl2X5p5S7D3bKeYavAdmEiub7lslW2uBtOA8l4mBnqDLDynDh8OfXDrPyE3gZoYOiCJHuQsiLTpJZpemUUisWkjsgL+JfUnvsGHpui4SVPIRTpLVJsNy5lwMas5kawwc68/dYenGvMCAcfNaPvIvvwhzDGnP/lumqELTTVxqfFhna06iLAG6rKnl5tj5+WDhVmLVBqRP/xyWlsGcTaQX6DC17dItVKJxNmJlVCGt56q8o3V74CdpcIatJvVGNBsRwcm7V+RA2lBq1YY5ujxk36+y2e76Qa7j/dxWYMVTPHUeWoFEAG+/Wb/XL+AONIqYCHw2gSoU7wgcWTqGQo3CStqtdFsrKvH2wS2YkshDaeSIefaSAJyDZYt5NA3LCSF7EdWh9GwcJ9IG7jfm1bZ5fxbgpN0b3Gm
+ fAYEAwJ+
+ NyIKwwIAHydoEdLuJzzun3cqXso3N/2J7cbqNkDtyGboQMOHiqjyKM5/WwM2ikFAQaK/1qAtPQqwjebUvKorPn7Yrf5b1mVAjpvayUeYMi3xrgY1t1IJDDlAz4rLY1wx9HaYzHmCEQVB8C/SozE/tMqs4GhO1uz6+UinX921r6wnjqNCKotlLa9zEHQvXYdZpxeB7TD/DAfW36tqTnUv61hwjA0P4uV7gMkl5aZSJCy//dqw9OtQQXLbMViEQ3PJGqBphfVgIql8vO+SWaUO4mcdsOjVz0SzccCX5R+sBf331yB+xHfr6g3NBFGPJR4OTtXXBi8PeWgMBwuJPYf8cT0Is+jyT645LxLFSUP06j6Of4bgBNFnKT75ueQyqk47kcho6UCOLU6L+5/THLqZ7aSzjRKEfliN49+pq6zx14HNhPaE2ESpQ3Dn1eRGwRsyzg98d
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,29 +136,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Correct "accomodate" to "accommodate", reported by scripts/checkpatch.pl
+Correct "overriden" to "overridden", reported by scripts/checkpatch.pl
 using the misspelling list in scripts/spelling.txt.  Only touches comments,
 no code changes.
 
 Assisted-by: Cursor:claude-opus-5
 Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
 ---
- include/uapi/linux/elf.h | 2 +-
+ kernel/fork.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/elf.h b/include/uapi/linux/elf.h
-index ee30dcd80901..91995dbd3ad3 100644
---- a/include/uapi/linux/elf.h
-+++ b/include/uapi/linux/elf.h
-@@ -408,7 +408,7 @@ typedef struct elf64_shdr {
- #define NT_AUXV		6
- /*
-  * Note to userspace developers: size of NT_SIGINFO note may increase
-- * in the future to accomodate more fields, don't assume it is fixed!
-+ * in the future to accommodate more fields, don't assume it is fixed!
-  */
- #define NN_SIGINFO      "CORE"
- #define NT_SIGINFO      0x53494749
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 416758c8a3d4..6d3340d34234 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -3266,7 +3266,7 @@ int ksys_unshare(unsigned long unshare_flags)
+ 	if (unshare_flags & CLONE_NEWNS)
+ 		unshare_flags |= CLONE_FS;
+ 
+-	/* No unsharing with overriden fs state */
++	/* No unsharing with overridden fs state */
+ 	VFS_WARN_ON_ONCE(unshare_flags & (CLONE_NEWNS | CLONE_FS) &&
+ 			 current->fs != current->real_fs);
+ 
 -- 
 2.48.1
 
