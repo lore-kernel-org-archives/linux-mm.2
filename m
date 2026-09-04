@@ -4,123 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBC31C61DD3
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 02:08:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8FD3C79F81
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 02:10:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DD5F6B0088; Thu,  3 Sep 2026 22:08:24 -0400 (EDT)
+	id A97F66B0095; Thu,  3 Sep 2026 22:10:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38EA16B0092; Thu,  3 Sep 2026 22:08:24 -0400 (EDT)
+	id A21C86B0096; Thu,  3 Sep 2026 22:10:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27DBD6B0095; Thu,  3 Sep 2026 22:08:24 -0400 (EDT)
+	id 910296B0098; Thu,  3 Sep 2026 22:10:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EDE0D6B0088
-	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 22:08:23 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 609DB1A06D2
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 02:08:23 +0000 (UTC)
-X-FDA: 85174445286.20.56287B4
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7E8E380006
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 02:08:21 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LGdLDM0D;
-	spf=pass (imf02.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E8696B0095
+	for <linux-mm@kvack.org>; Thu,  3 Sep 2026 22:10:32 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C6AF81406CD
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 02:10:31 +0000 (UTC)
+X-FDA: 85174450662.30.040BC95
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 417D840002
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 02:10:27 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=gJfvaJT3;
+	spf=pass (imf27.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788487701;
-	b=sFveCEU4Y291WKgn1GDDYjsYHVzn15HeYay48vKQAgNWOtadyHmm9z5c9DXJdf4sRa3Rf7
-	ep33UaKOToN/LQFg3iCTG+vgM9jUk9RsVNPvAMnUlWv2RPmT6BuA4Uwb/Q7Z/3GYfEVHth
-	pnk9D2RSpLn30p58FDu9UOQVQ8GcUZ0=
+	t=1788487829;
+	b=jw5Pmu4rlPprAzBLFm6AnnjP3p7NR9ulDbIirIpBvsippe857e0Txo4udYL4NJBC4/kFw7
+	u3NgrNJT/RlhN1CulU9kuUH/gR/JAGZctqXhB5LOEnHPjz0dJvNtsc9nA4KUej/Z+0HDVU
+	YgKv3Gg1I+KTSDj3V7OpF8QxHytBmuE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788487701;
+	s=arc-20220608; t=1788487829;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D8Sx88G1D3cLQBFH9yUavJPElbl9q9H57N/owGoAbjE=;
-	b=u4EGttVPVc+09P83EXOnC3nWBQJfoL7Bqvuicjvlp23lYN8QzPPMsSU7XyI1f8jOv2olL/
-	D5yIt5oSx6Jvf62Ub4P0RTWPPxlrWsLMw+L8XQwBe1k1j+bN9Y9Hx2DgKapR6Xmib0nFjg
-	k7KUd2mR3lLkhtKNmFvmocP/YCIzCa4=
+	bh=J+SHGWUY7CbETPDlAl8WdiZ5m/7wagn5ECpymwWOZn0=;
+	b=A8LvUrcHQ0XZP6isBZN8eW7ATErizgwWFdlNiel+Upspk2m5aUYEmeGqLGg45nWCwIAqMh
+	NNovzcJ6AnwZWwgy3aRuJYLETREWjhPZKiTsyM5cm9iKxGw6VFtVaZxlZc8qNq3qrkcjSA
+	Km2NyIrp/6sUXyXzZTUtyk90uFLjq8I=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LGdLDM0D;
-	spf=pass (imf02.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ce98cb8165so5712415ad.1
-        for <linux-mm@kvack.org>; Thu, 03 Sep 2026 19:08:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788487700; x=1789092500; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=D8Sx88G1D3cLQBFH9yUavJPElbl9q9H57N/owGoAbjE=;
-        b=LGdLDM0DW2GxK/5CgrcAaj7MLYzWVhEkDEYyaBtZyiFdbiN563ecragNM+0yLsaRxm
-         YWdWKyaX5WPWCcLLKB+8c6VG+YG7h3CJI9Jh8yl2mm1LH1cOcCHOa9FChbU3eciBJZds
-         7hjm9g5ZgSArF9HNWq9No7mfRXsmpY9WmeHCnSxivTY3KPqTzz41eGwVraM4UxbH4DBY
-         vciB0tiGY90vhCP20GRAzSq5w+Dj5OrmUgKMDyrkZsYSjykNf4CP7fy56Ngw2GlZERRW
-         yuzJgl3K4wN6Vy5O8ZDTzTGpgtbkUqRXHzoKktpTxymC1msvkIi7US5nwhwJ47V089/M
-         RmTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788487700; x=1789092500;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=D8Sx88G1D3cLQBFH9yUavJPElbl9q9H57N/owGoAbjE=;
-        b=IbYYs644f+Uei7TrvaHe0nOtrigEmvR14oetDN0w6kUFWHGqvw3QxceUFzumWDcZ/a
-         18hCQNeYJvPR/DJjbHG/kR4wdMlLrsuLrCurOzppIChQ3dUimtMklqXL6pUcMrFpOF6u
-         pVymtlvT4AWqliBJsHmd5wuzENg5WEt+u+EE3m6l6oI+eXVFXqp0muzuy56qwfIuzHhk
-         lVu7k4DxSAKid1EymFtxAFF8eSBYSFD0P2itK3Dv3jhpA3jBc0aK2m7U/Kkh8XPW+bQp
-         Fk/QGZYcgj3U94JUaEWTlFxLQxxTnOZ7iVR3F4TpEgiZ5RkMz6MDJBzL4nKDLgcpGgXL
-         nNOA==
-X-Forwarded-Encrypted: i=1; AKwUvBxunUhhbUqK59jZXhiV5WxWNV7B8hpxQSdfaOVPpLxqZm83RvTbJzt/7VdS0FIzNIi238cN5xec5Q==@kvack.org
-X-Gm-Message-State: AFuF++nROEssWXRCryMLh/ErSWx2ZLdhhQEHaq5olqlR/x+dhz7NfjGD
-	qrw3dHSalUSU06bnLPCAJWzBP6jxVVSgHzbpRLFsWLdAnGZ0Lhi/Qdr1
-X-Gm-Gg: AYBFou2qiaDEGs6dtGPR1kz+qVQgJtN/aGT39twx/x1BScTKzpXxjykytkzabi+KqZz
-	3bLj7WZYQBjeJys7pnF1XoninJO/Pkev5S+c2b/gSnM7f+JcINYnvIrv68OfCwu5KT1FYRQV3jT
-	0mCgi12kaNRfAjMYLd6Uzd4uE1MHopbeP93WCDG24AibP5FWdChpAvd2R+6gSpxkWn4U414OH9m
-	XVGsTZ5k6T7lmiGJjpuHGnJPyqQoCWhmpnVMoByZSiOftEvVjA1n+hMmjoYu2iVhCG1GyXm11g0
-	1v00pTF2H6rsc0w0p+zz1VdA7a2KoBx8tMmXTNiIOkSFRipqXEiS8m+aQuLc+k6pQ59vLabkyXK
-	rJ2dxw8QpxGgpnV0CCbLuvtfeQwn0flKZMFf/dNWIMqkMtYtm0895XVYeMIsoLoYAGK0JZuXrkF
-	TasOEAHxScYNmGTTnmXOKH9sFcVoflyjE0B4gDZlzCA07iYK6XGyrnL+JtKjVEtE88phfK59urm
-	bI3QA==
-X-Received: by 2002:a17:903:faf:b0:2d6:ef11:1773 with SMTP id d9443c01a7336-2db159c66bdmr16943145ad.8.1788487700136;
-        Thu, 03 Sep 2026 19:08:20 -0700 (PDT)
-Received: from zhangbo56-PC.mioffice.cn ([43.224.245.235])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2db1497f3e0sm3022005ad.44.2026.09.03.19.08.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 19:08:19 -0700 (PDT)
-From: Bo Zhang <zhangbo0325@gmail.com>
-X-Google-Original-From: Bo Zhang <zhangbo56@xiaomi.com>
-To: hannes@cmpxchg.org
-Cc: akpm@linux-foundation.org,
-	baohua@kernel.org,
-	kasong@tencent.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	david@kernel.org,
-	mhocko@kernel.org,
-	ljs@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	zhangbo56@xiaomi.com
-Subject: Re: [RFC PATCH] mm: vmscan: avoid anon scanning for GFP_NOIO with low swapcache
-Date: Fri,  4 Sep 2026 10:07:56 +0800
-Message-Id: <20260904020756.4163139-1-zhangbo56@xiaomi.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260903130304.GQ3004@cmpxchg.org>
-References: <20260903130304.GQ3004@cmpxchg.org>
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=gJfvaJT3;
+	spf=pass (imf27.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1788487825; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=J+SHGWUY7CbETPDlAl8WdiZ5m/7wagn5ECpymwWOZn0=;
+	b=gJfvaJT3Z+sg4w+QrBCDwxyaXNLLZeE3NaNV2yhyqE59IEhmIUiuxqXtbgoCITwX7XVWJLb+oexa+iHIjrO36bq+uDYWZFsfxDMEWLyMgGXTRmRXuBe3zNbxr/u3H7QEiZbdiUJeo1EtBjTHFUXBUU+GeI+UG77IgLqDPvcdbms=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0XAHIyJ-_1788487822;
+Received: from 30.178.82.219(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XAHIyJ-_1788487822 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 04 Sep 2026 10:10:23 +0800
+Message-ID: <697713c4-0857-485b-aba7-c74f37a3c8b4@linux.alibaba.com>
+Date: Fri, 4 Sep 2026 10:10:20 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/list_lru: don't copy stale shrinker id from
+ non-memcg-aware shrinkers
+To: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Lance Yang
+ <lance.yang@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Dave Chinner <david@fromorbit.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ David Hildenbrand <david@kernel.org>, Xunlei Pang
+ <xlpang@linux.alibaba.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260901115104.2944996-1-qinyuntan@linux.alibaba.com>
+ <aphXPCn8isUVV87k@localhost.localdomain>
+ <0c5aba0f-137a-4aaf-bddc-060118322602@linux.alibaba.com>
+ <apktMn_hwvZwsRUG@localhost.localdomain>
+From: Qinyun Tan <qinyuntan@linux.alibaba.com>
+In-Reply-To: <apktMn_hwvZwsRUG@localhost.localdomain>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7E8E380006
-X-Stat-Signature: dbwyrrkyuxmmckteu9tgbrbbyh3yiu5s
-X-HE-Tag: 1788487701-494146
-X-HE-Meta: U2FsdGVkX1+kvFL23MerSgueJaFyHulsvH3upz0DBlAZE4MkR6YhktVLyJye53D+osnOa/S7XhBnBE/7mkGyP6tHYbrXHnivj9n6KZLHPWLo/HI2UT5eajLTEjPobRL0dy8+oh/6LNBeSdhqKLmVlA0lTlQhlM7vF5BJ8GRZkg0rZjJuWRDx8ixKQOcUMNJpL1Ap5BnbV4QUFi68yMWSVRdBJi+ujj4N6o8RG1TopwKlUyXfl0FvBbbnkMek9eSyvszLkQ+/NFQ1Rr1pWiy7wwl9vICiqtZg4GJEKPwp9v2aWPMeXiq97SqVHOLu5sAWDjuX/jqfHTIVY1vA5STJ1/6wU2s/TIg7cvQNwkhIopNv1H7vtRyffZ7NKwXedfy4gptDdm6U67dSbdD0pEotsV4WgzU0Euqx/l4/SOIKImArVTcNhLpOvxe4dYR3n8cU5SZ6LB/uOMHLmKqcSMWzkNYBkUgoQy9NS6z2YkKhLFy8cjNqzDM+349UEiAdkULC0JJ0SCdVGkVh86GvpoBr5CBDojWK61Ad3EKRaElZnipAWQOWpvxgHzQVLD48ECp0RFZwhWNcUw6ohXOjI2dBACTsvbm/wN3S1CmSNjkRhZSK3evVJvlAjsQplFVn8CXStq2olwIpdxoVPpjVZmYUvepcDp56KgFRiAGsgv9y5+A1ee9HG6FWZ+LlyLNpt1WSItdQ8OJ6mtlX4/YOO7jEDcsO1LZkaYAKGn4Om8+5KPcHtwR9EtJA0IZM5zpQai4rbOhKS5hNSAX323IUkJkCDo5X1iawuPxk5S/HNKjwLXScJFEjgWNVrc+hKuvR6Jh1ZccuouLXmE7aYZh1ABUX4gpaRI809KLECRvSWoiHwQNXqxyKnWnnw42mIPVIVOc+I0QHH9S478g1iVySAY4WpEk+aGLB37X2+sGJrkF31DP86n878E1f2i/03VmlZb7F8Q+JSYYoQsMKRLrvDuc
- hrqJUKli
- 3BMUiHsgDpibFLYxj4saR98iAdFBXh/eUZ/1zNQimhudh+ncrcl4jvb5Bi/OKqf9G4Y/uA0+Xnf6VsdsRX2cKTAu5F2kzRuYSXiAVw3K0VMB3d6p89mNBDwtxvQtzVxXbmPH49dVgNxXODA7L4T96bJOfQYcLeZ2FvW6XnB5QXg9KJ2qgFi+ffr9DlGgrY1COWbw7YHQgJVVm7IS+uoIH4pGmNkF7aa1ZpKiFOZukljEpNr+9EiwYjwyW34iNbrQMajRRUZdL9Mhv/4StZZtdp4zyaL5n7tAEP8wMct6e2Ac/CG4DFJ9oDNYi89TAEWKUQP7IobFb1TX5SJkr28yM/94JtH59rIFTUNpNy8av30h0iQ3sVtC/w8MmRrRhOehrsDSgg0CE9ILg8JPngzqXznqmvA==
+X-Rspamd-Queue-Id: 417D840002
+X-Stat-Signature: 7am7e4du7h35wakfkte36utd6pa15ixs
+X-HE-Tag: 1788487827-89670
+X-HE-Meta: U2FsdGVkX186g4NJuXG/vFl3ziMHOGf8BYYnuZhWaeVTN/2IkH86L/iH2vYB6YDv3+8X6QTm7wyTUtwT6LwOyotJEnMVNPs3J2E1GMTf8klqZpaAg1/hqXyUCeUlDKTFSM7tZtp+QNDamxSTZ0JCc9+W6U8ZWa56Q3NfGaEJcdetJZw9e9DvIwUN7PrzazugJsw5U9qVIMecUOcoJQ7FFD9LGhAaIkI7mxIa/qyEwkG5BjwjN9RVRkaQTwlThaxna+/InLkOKZV0nrU+0+cE0P6Y+0AJ68qGxbO95uTiIpkd2OKa9AnPSuhTGlGWCOE55zb2hA3yG4qEeKAzAjfNmO5dX6LVvRTa+Eba3hLeDavvY8B3834OiczQorqyXqPJtiV1QT31egIBxqpdyhC3aA/yDGDBPwkjQ8pHF/+VbGxnAk2+PyELxTZPUFEFeWtUssDMCLwYD2w1RbwUxO2buFqu9lQzNydnWo39nNERxdI7it26gxHUR1WyD8CgKMFp10RrkuarUthWmExitmBR8qB0CV0sGtsedRVoA7vwg1P/26BCpCjUme8SotEPhllI4lqcohfXi+G8sCn3/539PY6i8NBzxVY0VNApI2SvyXfyfEtvvhyEc1IOOUblwR77kLb2LNCEq+EqkZtS0QmWC75Q6Xw748zGzpPPZiMKUnlU52lhdr+96DAmmyuSh4xmzynwCc2Hc2I1ppHk1DN5gvbm7naCnxw9X2T0sBcJfMd1q1yP/dqSy+kZ4OfLcaMqI/9a3jhC133QUFcYdpTPV4bG7go4Dmm/3DOR5lhqbZ47xccc0iuDlJYTS/cgY1EzlTzUBiXl0Vv+4Ez+rXWB2Tcs9k+/M+WrvVfnlfuZPKDfdv/cXN47+TR0TQYo+ZRrhD3JStCtp91liWbwMogWJACqCqo/e/DWQ4KYsVE4DTc+CzV40FJNnaXksZuDLJ9PG+IbBdh8fl2UwNBDrVc
+ 3QFPDFfG
+ 7OUz890dqX/RQ9SsAY2oeFoiIi9U3Dn395vhjxU1Kb30YYkpf970/cIjzUdbUsnxbOsSEbs3eS2XQCK5T3L/ha3D8YNv2vW6wrwPQd2b6OHNE/OCefe/NzRl/Pd+0yG/g3mG9Ke2hiHnr9TdGLoplnsk4OIlCkMvhHrDO+Miv9Z0fAkWElm1ZV8DKYH6ieG+jyZQHtJTU9iotUyRqFDQdZgvPqFN+AWkZYgW7QxZQ69LDeiG4bx7hlOJJhXWEsjV34E9kn5vUkapt5lieEM9Q3hovT3bqYcZEXabRHXGXphY1MSFHbC+oGtLoJffuaJSrUBaVL7esEFh/lh0OdCLt4OTh8oKvujvrBVSPoOTG6iLROY+EJnezfHJBag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,128 +96,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 03, 2026 at 09:03:04AM -0400, Johannes Weiner wrote:
-> On Thu, Sep 03, 2026 at 12:01:31PM +0800, Bo Zhang wrote:
-> > We have observed some cases where memory is allocated with GFP_NOIO, so
-> > we cannot reclaim any anon folios unless they are in swapcache. We can
-> > end up spending more than 150 ms looping in `shrink_folio_list()` scanning
-> > non-swapcache folios without reclaiming a single folio. This is pure
-> > overhead.
+Hi, Michal
+
+On 9/3/26 5:20 PM, Michal Koutný wrote:
+> On Thu, Sep 03, 2026 at 12:06:53PM +0800, Qinyun Tan <qinyuntan@linux.alibaba.com> wrote:
+>> You're right, that sentence is imprecise - SHRINKER_NONSLAB shrinkers
+>> do register per-memcg under nokmem.  What I meant is that on a system
+>> where no NONSLAB shrinker happens to register, shrinker_nr_max stays 0.
+> 
+> And ideally, with cgroup.memory=nokmem no slab-based code should call
+> set_shrinker_bit() with whatever shrinker_id.
+> 
+
+Agreed, and with this patch that holds: slab-based lrus fall back to
+shrinker_id == -1 and set_shrinker_bit() is never reached.
+
+>> That said, I see the flag restoration and this patch as complementary
+>> rather than either-or: 
+> 
+> Yes, it fixes your immediate issue and it is a prudent approach in
+> list_lru_init(). OTOH, with this fixup, we won't be able to learn about
+> shrinkers that are missing SHRINKER_NONSLAB.
 >
-> Not entirely. There is some value in aging anon alongside file, so
-> that the next __GFP_IO reclaimer doesn't look at a stale list.
 
-You're right, "pure overhead" was too strong - aging anon does have
-value for a later __GFP_IO reclaimer, and I don't intend to skip it in
-general. Let me describe the case in full, because the reclaim cycle
-itself already provides that aging on a later pass, which is what makes
-me think the trade-off here leans the other way.
+True. Though the old behavior wasn't a reliable canary either: the
+warning only fired while shrinker_nr_max was still 0. Once any
+SHRINKER_NONSLAB shrinker had expanded the maps, a missing flag showed
+up as a silently mis-set bit 0 rather than a warning. With your audit
+below covering the current tree, I think losing that accidental signal
+is an acceptable trade-off.
+ 
+> 
+>> other MEMCG_AWARE-but-not-NONSLAB shrinkers
+>> (superblock, workingset shadow nodes) still take the fallback path
+>> under nokmem by design, and __list_lru_init() copying an unassigned
+>> id there is a landmine independent of the deferred split case.  So I
+>> think this patch is still wanted as the generic fix, with the flag
+>> restoration on top for THP.
+>>
+>> (zswap might deserve the same NONSLAB treatment as THP, btw - its
+>> entries resolve the memcg from the folio's objcg, which is available
+>> regardless of nokmem.)
+> 
+> _That_ is an important point.
+> So that would need a fix too, and likely Fixes: b5ba474f3f518 ("zswap:
+> shrink zswap pool based on memory pressure").
+> 
 
-> Can you describe a bit more about what you observed? What workload is
-> running, maybe you have a stack trace of which NOIO requests are
-> routinely getting stuck in reclaim?
+Will do.
 
-The workload is app launching on Android. The NOIO allocations come from
-dm-verity hash-block reads via dm-bufio, which legitimately use GFP_NOIO
-because they run underneath the IO path:
+> (I'd have preferred if there weren't Fixes: 03375203e1da8 which honors
+> the SHRINKER_NONSLAB semantics and it only uncovered pre-existing
+> missing flags. Or keep that Fixes: but explain the relation to the other
+> commits. (To make it clear to backporters.))
+> 
 
-  worker_thread
-   process_scheduled_works
-    verity_work
-     verity_verify_io
-      verity_hash_for_block
-       verity_verify_level
-        dm_bufio_read_with_ioprio
-         new_read
-          __bufio_new
-           alloc_buffer
-            gfp_mask: GFP_NOIO | __GFP_NORETRY | __GFP_NOMEMALLOC | __GFP_NOWARN
+Fair point.  I'd propose retargeting the tag to
 
-So the NOIO use itself is correct; the problem is on the reclaim side.
+  Fixes: fafaeceb89a5e ("mm: switch deferred split shrinker to list_lru")
 
-Here is the full picture of one such direct reclaim. It runs two rounds
-of do_try_to_free_pages(); the target is 32 folios.
+as that is the commit that made the problem user-visible: it put a
+list_lru holding charged user folios behind a fallback shrinker, and
+the boot-time warning is reproducible from v7.2 on.  Does that work
+for you?
 
-Round 1 - partial (shared) memcg walk, 169.20 ms, 0 folios reclaimed
---------------------------------------------------------------------
-  prio 12->1 (~1.3 ms):
-    cache_trim_mode is on, so get_scan_count() picks SCAN_FILE. Only the
-    file side is scanned. Because this is a shared/partial walk, each
-    priority only visits a handful of memcgs before the iterator is
-    handed off, so very few memcgs are looked at on the way down:
-    428 file folios scanned, 0 reclaimed.
+Andrew, thanks for the sentence fixup yesterday.  If Michal agrees,
+could you please also retarget the Fixes: tag:
 
-  prio 0 (~167.9 ms):
-    priority hits 0 without meeting the target, so get_scan_count()
-    forces SCAN_EQUAL. The walk lands on a single memcg with a large,
-    unswapped anon LRU and a tiny file LRU:
+  -Fixes: 03375203e1da8 ("mm: do not allocate shrinker info with cgroup.memory=nokmem")
+  +Fixes: fafaeceb89a5e ("mm: switch deferred split shrinker to list_lru")
 
-      inactive_anon ~335 MB, inactive_file ~4 MB   (~84:1)
-      memcg swap usage ~3.6 MB, so swapcache is negligible
+>> Would you like me to send a separate patch restoring SHRINKER_NONSLAB
+>> in thp_shrinker_init() (Fixes: fafaeceb89a5e)?  Happy to do so if
+>> that works for you.
+> 
+> SHRINKER_MEMCG_AWARE are due to be checked for correct marking with
+> SHRINKER_NONSLAB. I can see that it is missing in: thp-deferred_split,
+> zswap-shrinker in the v7.3-rc1. (The shrinkers in nfs42xattr.c seem to
+> be slab-based so they're correct.)
+> 
 
-    shrink_lruvec() now keeps feeding that huge anon list into
-    shrink_folio_list() - ~2400 shrink_folio_list() calls, ~93,000 anon
-    folios scanned - and every folio hits the !__GFP_IO keep_locked path
-    (not in swapcache, needs a swap slot). This single shrink_lruvec()
-    pass alone is ~168 ms with 0 folios reclaimed.
+Thanks for auditing the whole tree.  I'll send a two-patch series
+restoring/adding SHRINKER_NONSLAB for thp-deferred_split
+(Fixes: fafaeceb89a5e) and zswap-shrinker (Fixes: b5ba474f3f518).
 
-  Round 1 ends with nr_reclaimed = 0 < target, so reclaim retries with
-  sc->memcg_full_walk = 1.
+> The shrinkers mentioned in your original commit message:  workingset
+> shadow nodes, superblock lrus are both slab-based, so systemd with only
+> those shouldn't be affected by this bug.
+> 
 
-Round 2 - full memcg walk, 2.37 ms, 68 folios reclaimed
--------------------------------------------------------
-  With memcg_full_walk = 1, priority resets to 12 and every priority
-  now visits the complete subtree (~78 memcgs). Progress is made
-  entirely from the file side:
+Right - they were listed only as lrus that end up carrying the bogus
+id 0, not as triggers; as the changelog notes, their objects resolve
+to a NULL memcg under nokmem so set_shrinker_bit() is never called for
+them.  The only actual trigger is thp-deferred_split.
 
-    prio 12: ...  0 reclaimed
-    prio 11: ...  0
-    prio 10: ...  3
-    prio  9: ...  8
-    prio  8: ... 18
-    prio  7: ... 38   -> cumulative 68 >= target 32, done
+> Thanks,
+> Michal
 
-  All 68 reclaimed folios come from file LRUs; anon contributes 0.
-
-So the whole 168 ms is spent scanning an anon list that cannot yield a
-single folio under GFP_NOIO, and the actual progress comes from file in
-a fast full-walk round that follows.
-
-> 150ms sounds awful indeed. Is this cumulative for a whole reclaim
-> cycle or single shrink_folio_list() runs?
-
-It is a single shrink_lruvec() invocation on that one memcg, as above -
-not accumulated across the cycle. Each shrink_folio_list() only handles
-SWAP_CLUSTER_MAX folios and is fast on its own; it's the prio-0 while
-loop over the huge anon list that adds up to ~168 ms.
-
-On the aging trade-off
-----------------------
-I take your point that this pass would otherwise have aged anon for the
-next __GFP_IO reclaimer. But in this cycle that benefit is small and the
-cost is large:
-
-- The aging is not lost so much as deferred. Round 2 (and any later
-  __GFP_IO reclaimer) still walks the full subtree; anon that genuinely
-  needs IO to be reclaimed gets aged/reclaimed then, once IO is allowed.
-- The 168 ms is spent scanning ~93k anon folios that, by construction of
-  GFP_NOIO + negligible swapcache, cannot be reclaimed on this pass at
-  all - the aging is the only product, and it comes at the price of a
-  ~168 ms stall in a latency-sensitive path.
-
-That's why I'd argue the balance tips towards skipping anon here rather
-than aging it. To keep the change narrow, the check only triggers at
-priority 0 (where SCAN_EQUAL is forced) and only when swapcache is far
-below the anon LRU (below min(anon >> 6, SWAP_CLUSTER_MAX)), i.e. when
-essentially no anon on the list is reclaimable without IO. Outside that
-corner anon is scanned and aged exactly as before.
-
-And skipping anon in this corner doesn't cost us the aging in practice:
-with no reclaimable anon left to scan, Round 1 simply finishes quickly
-and reclaim proceeds to the full-walk retry (Round 2), which resets to
-priority 12 and walks the whole subtree - anon included - so anon still
-gets aged there, just without the ~168 ms detour first.
 
 Thanks,
-Bo
+
+Qinyun Tan
 
