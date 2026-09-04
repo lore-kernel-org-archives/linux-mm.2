@@ -4,135 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB968C624DE
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 08:25:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9C9BC79F80
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 08:30:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89F566B008A; Fri,  4 Sep 2026 04:25:16 -0400 (EDT)
+	id 771066B0088; Fri,  4 Sep 2026 04:30:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8500E6B008C; Fri,  4 Sep 2026 04:25:16 -0400 (EDT)
+	id 721716B008C; Fri,  4 Sep 2026 04:30:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73F516B0092; Fri,  4 Sep 2026 04:25:16 -0400 (EDT)
+	id 637DF6B0092; Fri,  4 Sep 2026 04:30:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 485A16B008A
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 04:25:16 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B5827140B1D
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 08:25:15 +0000 (UTC)
-X-FDA: 85175394990.26.F6E0C52
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E567F40007
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 08:25:13 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jYzhgz46;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4219B6B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 04:30:23 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B5B4B1C2BCB
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 08:30:22 +0000 (UTC)
+X-FDA: 85175407884.21.4B4034D
+Received: from mta1.migadu.com (out-21.mta1.migadu.com [95.215.58.21])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 94706C0005
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 08:30:20 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="SwyJQPQ/";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.21 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788510314;
+	s=arc-20220608; t=1788510621;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rccA36EyuXOhMqphuckpFvf8Da7GhE5PelXowHSaKKU=;
-	b=ei3DoB6N8wQ1cDLWGpgNBo6RufM2kZDwvXbSkyo8aLn7eyiuWryLdalhOoSrelE/wVvWB9
-	wf0/igZe3lxdGvPvs3d8uJzor+pyBL4Wt3JxkgTH9PlgNZhqB5pcSls83PibqqD4c3BbND
-	9SK4Gv4/mSbkipHQKo6Okadca12ZQ7w=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ncUxllqf1cm3UfR8JP1JBVu1ZMGk05vegR0cYzXRhK8=;
+	b=L2XrTcNiV9GHcZGpCmbx1YbpdylpyQ/Nor4ZmgxV4PrbI4gS8A9F2F938JfsgMWnt3UGO9
+	gKa3Kt7Sj+wqsEdIup83CPTMNwV/pLG3+IpMldPLd1ykKWev7Kmn5jNwF3mHn+wJr1uBGY
+	KUJa/0We+PicPNBfqnCt6MtkkGNnYro=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jYzhgz46;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="SwyJQPQ/";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.21 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788510314;
-	b=d2Mgw7NV3MzjG2OHeBlBn3El6UEj4U5f05BEMsJONwE7WPMZA5AyODMI8NCqY8LXO2uLdh
-	OxCLxpxsfSxjRaCJkqE7dcCMuL8AXjeymjGt2o/Z4AGw6UnW5HT8S9B/cSbPijBNY4VWbx
-	pUe5vmO34AnmuZgo/G0aX5ICzTi5BmY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 69A4840593;
-	Fri,  4 Sep 2026 08:25:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F170B1F00A3D;
-	Fri,  4 Sep 2026 08:25:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788510312;
-	bh=rccA36EyuXOhMqphuckpFvf8Da7GhE5PelXowHSaKKU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jYzhgz46a22ezQusLxk9qVWzQI2UXXiD8DvEw/lOqkhOwdgrCWcO1PeVLXJQtj5a/
-	 Mcfwj2o6LtGuledzus610SHt1SyAQvI86ZINLZpIhtF2VF74lauraRJIXGzwPMv6UG
-	 H56+HTYNcZHd+wcjFFv+F2AxBzXaQTMeHKICum90zwAIpr+jAHb6T8t5lguaRQ9t97
-	 apn1TZ22uiUV2x/KtlgbQ4IpEUbB0fxwq0HYxBD8jGWmMfM4D6uqX/5B5u3jLnn8na
-	 gOZ9ym87/tUs5+GmYkYFRb9iaAs8vYA47cMEWF8pL8wyIKjDBho1F51y2u4HQvcge1
-	 fe4Vbz8zJgbwg==
-Message-ID: <a6ce8684-116b-42f2-a88c-154eb86bad59@kernel.org>
-Date: Fri, 4 Sep 2026 10:25:07 +0200
+	t=1788510621;
+	b=43Vql0d6pZKOJPLff9F0ZRgOp/Qtj6eglt6RX7HGJqDQavxzIrd3f5F+jub0L8Xe4JElVt
+	x8wN9c5JcYNy78UZlZ5mrxR33t452nae69s5xTXqZKgnke9AxeGWMkFSnJEtKV354qo567
+	1A0qUiWkST8AHe8bbwtvF4vvpTjCECg=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=L8pOajLjq6OOGJ6hOdj/9J4YnLULNmgvV3Ddj6iBbVU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788510619; v=1; x=1789115419;
+ b=SwyJQPQ/JsqB0G+VQvAHfhOqVMDhSiAIC4wNpuayZfNUeVrLxXBB47YPlyrxfXF8weTMjmWD
+ zMtG0x5ODFmBJzGTVqVb61iOkElSJupyRY8r1iV16nqYAs4x+/s4D9BsqoaCZ/mEJaMkYbOwXPG
+ MHZyIm6+6Ci6OKgaWZX8Yb0g=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id c4aafd7d2505d2d3;
+	Fri, 04 Sep 2026 08:30:11 +0000
+X-Mizu-Trace-ID: c4aafd7d2505d2d3
+X-Migadu-Flow: FLOW_OUT
+From: Ye Liu <ye.liu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+Cc: Ye Liu <liuye@kylinos.cn>,
+	David Hildenbrand <david@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	rcu@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>
+Subject: [PATCH 0/8] mm: introduce for_each_process_rcu and for_each_thread_rcu
+Date: Fri,  4 Sep 2026 16:29:52 +0800
+Message-Id: <20260904083001.553587-1-ye.liu@linux.dev>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/8] mm/page_owner: Add PID/TGID/COMM and cgroup
- filtering
-To: Zhen Ni <zhen.ni@easystack.cn>, Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- Steven Rostedt <rostedt@goodmis.org>
-References: <20260903041819.1776630-1-zhen.ni@easystack.cn>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260903041819.1776630-1-zhen.ni@easystack.cn>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: xi5o6krrr5fo1rpj7x3aq5sn651whr8o
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E567F40007
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 94706C0005
+X-Stat-Signature: g79s8niib6h4wsx7ysfo5f877eoyfma1
 X-Rspam-User: 
-X-HE-Tag: 1788510313-557471
-X-HE-Meta: U2FsdGVkX1/Nx23fhkS1PlWZhnkotqxHLS4DW1wIpeIh85VAGcyV0fk6x31AV0/aEfoFYdsMwcvimoqtowOMKTTKRcS2ZlhqMbu9qhq5u1YI78Zfal9weIprprEcIP1qbw3ryFYDzM0Z32uVOSI/xkCaXGrRPpl98yb8cKOf+9kGpQizxuil1LnoKhgGwBIdJ53YIyV2yAdNO3FLBqbAP0TXV+kDlIn8m+D+7jKvu1qMzaMTJyXDcEuC+OpSI7jFcNlBjdZKyMdt+mntYuEieW7jbgXTrypOtaJ4du03nrxpexeULNClX8EuPyD/R8fJ0XwlmBlm0iika6t6DUQ/k5nFtZWvj35o5gD7uoeoFA+8TXJond9ukTynEfhom2I8JV3hmRhAjYQxRsaz4C3CwFZXDO8/tDe0rjZGr2R+fy+NJ1TtWDOvTYm8XMAUitkFx4cmyykpspbI1o2GeoJ4Mp8jwXqHGK3GiDOnLegrpm/6pMGnMm1Y6n40wwaA/KsBa/DrjvL1/Nd+6zXcsEpcoJNDFBCCKEE3uOaAC6SI8sfEIJ9ZXdwGYCZlF5kPu1YA8jQOHxwt3F8tqx9FXLf0pO9StacAPcMfM0wXTS5qooI++ttIu1nJykkC8oqnEvVau1qwIkLjObGnIcTVUWMtsKA8QRhIw0f2OSPP1YfiwxQsVOfb6lkB92T0I2sxjJHZXaS7eRumDuMOs9uMfaDpcy1O4TxGf7WdmTYd3bvI4VdURj9dTe5XmKEkC9iAi5+eKyI2NoWpFH/ytovxAC2HOZZ7b+jDxtNynULOujGf8vCttJ99/5uvkgRHrFObhzCv5X1RkgnocwDJy67VKIH0Zdm819vfs6H8R77D9HKqGZep0N04kTciIY7IhBb2l7KbZyOo43TwFgYm7zEZF59PmL3edmqRhPHeSMkt6PJNFYtOhxerZ49RiHpGOikSCYNXOHrfgUEp/nzsxfMPY12
- XQx53tRc
- 5+vaI4PoPFWYgnPEOIckf6EBSI1TX7eIp37QWoFE4uB6/EU4s9gMec4ApZHGdTNi3iROesQ2SpDuPrBQnAD1hleo+Y41V7j8Y+l0RyXUz0GnaXe9JGJBHLYCi1Jah315+MSZRQnoqE22IHzity7sV3wiD1tMhJxWaJ3+qmAlm4TIWIC/ZmtoDdKktnYjcOlbpPs2vTSlT23PwzneUT1jdzJixqstZt1FJd6GHa6/vmZyI4QzkmgQ19WO/mKQmLb1L+PEo9scNt/D6hDM/FxFY75IBYk+JoPOyte0vY5MalPqzF4J5mDjW8B1P4I8TXrHfzCiEWxsAbfnRVrI=
+X-HE-Tag: 1788510620-691709
+X-HE-Meta: U2FsdGVkX19P3hFWQ7JjN58Gyc9QKq+8eAvlkERT3U8imgv9dpq4OqBBPC/kuo4JUijrRg/sr0j/vp+BzXf0fZYPChUeWEvyaRwzgwRbC0vPh1pqQj7Hjt8JqX6kA1Z/yYXA31PYhIKc3FhE0ky8e9krc6lIWaN1nDLectmJALh7ljte2JJpVXHJRcqsXS7lkfEyjGBFF9aDCQY8mjMHgloeZswwPkpK1CbXtmWq73TNST7v8yaKcH3ocDgpvom1t48McswPSJ9yRXlm9suYanrl2mB07TpFoU43HJdExOIWCA3Ze3CfyNfkCXAKLh9VSxCmGB7BHL1TdLaNGpAOKUaggAjrreIEsGBFw+QYqy225RJmJMuXE6HnDgIbTflvS+4WvR6iKDsWx7uyA7aN/n/V+Mr+k9oSm+NwNv2P2cyYo1G/uN54oCMby2AaURHlWcVaJv/hZpukwl9jFOQyxjeR1Cb4mo951rt8MrS0aROZl3tJxeQ3cFCvNPutM2xtRflaq4laPEpap1cTo5SMD/OEZgpMrVMjF7TFwGUEkVBcTOVjxhARs/nhR/m85ra5LqKW10O2cUQBDCMgetWuYBmB7eCXfasVGw5YGVgwZB7RGWBkI77L/Km+8FzfT1d9/dSv7a2HQa2wT0UyjKZsBtMHcGYawiHU3mTg6iPWZZo64g0FFH+ebMfcZ4x9abb9NXgZfgsSgqDt5C7KOaY0WOk7l268eBPH2sUpG5bvexfPvYlclmjKB4xHGx+WiggkDCcuMN8Xg5Z++BqEKVfqVllzZFx2LzwJBWs0cnadl8/UL4soaOqFSAaur3o6WxGotSh8gzsOidDjYgINvIxzCkQ0EEcd70ayFxhBhdgjvFu/jsyazaBAKvO6QH1pHJRhY2puwJWYMyAtB0NF+qNDxWF7bLvyDA1xcJgeP3v3U2fZXmWy5vwUtU7hXGi60H1ocZxl2tQ/VdrVE5k+vy2
+ vNDBWh/L
+ 18H1JCvk7lF0oyfL9bqBk7+ALC3Uj3UxlisHIB78w6KL6zUw+Gib9xFaNsA/RWpO4GHcpC2Y6MkgAKfltK8hT0G+2ihGcE9+3hKZDpbjJoiKC+xsshFSPe2+5CbZTKdAMBfXZvtawIdoAc0jMELzEnjPbDyMxGsHGt8P4R5HIa9/fAynH0U7qUaWSP3HDar9KBapYmQev22x6MRRPiWHM5OhygYBYZhgQ5Hz3XSNhNvtYj55E0Caqo1rvu7UlcZZtOL/wDPWEBQCMB1nvzYxHbjYFHfAquMy9Kdjhf9/Rzu+tNqdOwOFzSbdvEcXjJGyhP3oMX+Xc1s87OeqNACaAy3eqeJyjNGHAbn4mgWbPW2u8XeMgWAZpgBEPGEiraebBSr0gNmEKGRfpHRcJ+uRR5kbjJA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,57 +105,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/3/26 06:18, Zhen Ni wrote:
-> This patch series adds process and memory cgroup filtering support to
-> page_owner. Following the previous series that introduced print_mode and
-> NUMA node filters:
->   https://lore.kernel.org/linux-mm/20260707115411.1714314-1-zhen.ni@easystack.cn/
-> 
-> This series adds filtering capabilities to page_owner, allowing users to
-> filter output by specific processes and memory cgroups. Users can now
-> filter page_owner output by PID, TGID, COMM (with wildcard support), and
-> memory cgroup path. This makes page_owner debugging more focused and
-> efficient for tracking memory allocations in specific contexts.
+From: Ye Liu <liuye@kylinos.cn>
 
-I wonder about the usefulness of all the new filters. In my experience
-page_owner is useful to find a kernel memory leak code, and for that the
-stacktraces are most useful. Dealing with things like pid/tgid/comm/cgroups
-sounds more like your aim is to profile and optimize particular userspace to
-use less kernel memory? In that case, isn't it rather the area of memory
-allocation profiling (or maybe tracing with bpf), not page_owner?
+Introduce for_each_process_rcu(), for_each_thread_rcu() and
+for_each_process_thread_rcu() macros that combine the existing
+iteration macros with scoped_guard(rcu), so that the RCU read lock
+is automatically acquired before iteration and released when the
+loop exits — including via break, goto, or return.
 
-Moreover, tracing or bpf can already do such kind of filtering and AFAIK
-ftrace filters for tracepoints are nice and generic, while this is adding a
-bunch of custom parsing and filtering. So that makes me somewhat sceptical.
+The rest of the series converts manual rcu_read_lock()/
+rcu_read_unlock() and guard(rcu)() pairs across mm/, kernel/, fs/,
+lib/ and security/ to use the new macros.
 
-> Targeted filtering provides significant performance benefits on large memory
-> servers by reducing both execution time and output size. By filtering at the
-> kernel level before reading, only relevant page allocations are processed,
-> dramatically reducing the amount of data that needs to be handled in userspace.
-> 
-> This series extends page_owner filtering capabilities with:
-> - PID filtering
-> - TGID filtering
-> - COMM filtering with wildcard support
-> - Cgroup (memcg) filtering for containerized environments
-> 
-> The series is organized as follows:
-> 
-> Patches 1-3: Add PID, TGID, and COMM filtering support to page_owner
->   - Support filtering by process ID
->   - Support filtering by thread group ID
->   - Support filtering by command name with wildcards
-> 
-> Patch 4: Refactor memcg handling to prepare for cgroup filter support
-> Patch 5: Add memory cgroup filtering support
-> 
-> Patches 6-7: Update page_owner_filter tool with corresponding features
-> 
-> Patch 8: Update documentation
-> 
-> These filters are particularly useful for:
-> - Debugging memory leaks in specific processes
-> - Analyzing memory usage in containerized environments
-> - Isolating allocations from specific services or applications
-> 
+Patch 1 may trigger checkpatch "Macros with complex values should be
+enclosed in parentheses" errors.  These are false positives — the
+scoped_guard() pattern is a control-flow construct, not a multi-
+statement macro, and the same idiom is used elsewhere in the kernel.
+
+Suggested by Michal Hocko for the oom_kill path [1].
+
+[1] https://lore.kernel.org/all/20260813092933.562028-1-ye.liu@linux.dev/
+
+Ye Liu (8):
+  mm: introduce for_each_process_rcu and for_each_thread_rcu
+  mm/oom_kill: convert process/thread iterators to for_each_*_rcu
+  mm/ksm: convert process iterator to for_each_process_rcu
+  mm/memory-failure: convert process iterator to for_each_process_rcu
+  kernel: convert process/thread iterators to for_each_*_rcu
+  fs: convert process/thread iterators to for_each_*_rcu
+  lib: convert process iterator to for_each_process_rcu
+  security/landlock: convert thread iterator to for_each_thread_rcu
+
+ fs/proc/base.c               |  4 +---
+ fs/resctrl/rdtgroup.c        |  8 ++------
+ include/linux/sched/signal.h | 19 +++++++++++++++++++
+ kernel/cpu.c                 |  4 +---
+ kernel/freezer.c             |  4 +---
+ kernel/hung_task.c           |  7 ++-----
+ kernel/locking/lockdep.c     |  4 +---
+ kernel/rcu/update.c          |  4 +---
+ kernel/sched/core.c          |  3 +--
+ kernel/sched/debug.c         |  4 +---
+ kernel/trace/fgraph.c        |  8 ++------
+ kernel/unwind/deferred.c     |  3 +--
+ lib/is_single_threaded.c     |  5 +----
+ mm/ksm.c                     |  4 +---
+ mm/memory-failure.c          | 16 ++++------------
+ mm/oom_kill.c                | 20 +++++---------------
+ security/landlock/tsync.c    |  8 ++------
+ 17 files changed, 46 insertions(+), 79 deletions(-)
+
+Signed-off-by: Ye Liu <liuye@kylinos.cn>
+
+--
+2.25.1
 
