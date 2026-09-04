@@ -4,142 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A42BC624DE
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 12:42:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0B34C61DD6
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 13:02:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C6E26B0088; Fri,  4 Sep 2026 08:42:46 -0400 (EDT)
+	id 995D36B0088; Fri,  4 Sep 2026 09:02:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 577C96B008A; Fri,  4 Sep 2026 08:42:46 -0400 (EDT)
+	id 96D6D6B008A; Fri,  4 Sep 2026 09:02:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46A096B0095; Fri,  4 Sep 2026 08:42:46 -0400 (EDT)
+	id 8836C6B008C; Fri,  4 Sep 2026 09:02:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 008586B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 08:42:45 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 655311A0BED
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:42:45 +0000 (UTC)
-X-FDA: 85176043890.20.741B108
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 7A1E140005
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:42:43 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HHJErrsY;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C9946B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 09:02:42 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DEF8B1C34CC
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 13:02:41 +0000 (UTC)
+X-FDA: 85176094122.06.90DC94C
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	by imf13.hostedemail.com (Postfix) with ESMTP id EC57B20002
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 13:02:39 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Hy1c6ImT;
+	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf04.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788525763;
+	s=arc-20220608; t=1788526959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9NvEAvFmRQ4KOLpVzS9bkFTsS1KS/yh22uq2NVZ+PR8=;
-	b=XHS6z5CxTU4S1UaEYZo3xopZuerXN0t4EwmSQKuMVznlT2pcm1cMLaAnY9uszU75jkDQiJ
-	ElJ0/QhMmFIGIvxj05DIW9fhGS169LVpCxWD8Mt+uyNAr4q+f9ASpngKrvENDUr+YKNPAF
-	xurK6DkCQut7tmnWnckELej19Wgonbw=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HHJErrsY;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf04.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+	bh=A1Y7YmZWSzxr2iY3IqKw6JuwDP6OUCGK+XiwHXOkRsQ=;
+	b=evDWJQWTMuPAmXqDpql4OQs/6qdxynckg+udHGwPQ9FnkuaT9MHO0oQdae3BvMFj3/9xgc
+	4b7b9y5AuQGNET0PJS0X6ETHFkNoxfLzACLRcPo+Vm0tNgpQwEUCAXtoFK5YovzdrA89WU
+	L8ARdv9Vkf9wR9m6gCz0+gwNuXnacDA=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788525763;
-	b=8jIUheZ8SFnIFerZo/MOls+NBchpcomUvs4+nrF31bNTuExBnnmXbC1C57OPtBVpK3k8YO
-	Ci9+IdqdIykTvbtD8AHgYVGIS9q6xO5xCczsS2G581yu7JMx3DgvLktAZF+P/JMsJT7ZK1
-	RfTk7uDyxSRK+6cdGV4LMM+JO1ZBIpI=
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c252e703fa3so141014866b.3
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 05:42:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788525762; cv=none;
+	t=1788526959;
+	b=ay3ISBrlZDKgff84XLBTaOQoLxu0Prb0v6DZpyqbdrw9dSnECrAcEI5dkNCygnCzeC0HXX
+	fsElOPxaMh3c8x8uI99ysKzqOZ4UtFmaED3t/E2wwAgo4CRgSxtYs0+C1UrdxB4tHDhXpQ
+	RrK4T4Yhh0FLYfxglmLGrgRuHIoLq6k=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Hy1c6ImT;
+	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c25366c9b42so100412366b.2
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 06:02:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788526958; cv=none;
         d=google.com; s=arc-20260327;
-        b=ViZB5gcbU+QYmbuUfq2YSrYuXH14MFWt7reIeSDxbqgpdL3cMOfj+Q2hYeQq6mKT/P
-         ClcbleUPNWLSX0EZKeJOB9EaOGK31mNx6Pm5Vosk0IIqyEQ3BgIBei+AYQ9l8o+KBHUl
-         h5MGvpEfjCOv//pGHDUbkx4XAX7dv1JyTk21VxNlU8WkSvISXbuGhZx9zR6yZbqMsXaz
-         1FCHXaztZLiaBQZW1RTAh37FLErdzA4jCKx7Bg9Fm6+MdOe4EcpmVwNkkGUXzA717WeI
-         FGrE9+mu8jwEattOIscBpawxWpLrpFlMM3Oza+2Xc8JzveCkp6clrXmkdeWtpEBB+LK8
-         n31A==
+        b=nN4BGvTN26aYl3NJ9hOcStEgWCji3nvZtP4iBdFTYi7DM7Cx8LZPB5c9iszKZrr/Pj
+         Kjtk5YkNV7WkDdW5PExg92qkjlqHicO8LyoNKepsLkVQBmgaQ7rK03J6ztadyngq7t7S
+         sinNY8TILj7GsTv+rOlB6li5b8P+EZeLnkXihv6sMwqQcJnJOsNlqmSByi5SrRTWtATb
+         UnjZMK2h7wVeOZkOQY85NXBcT03ZZdM80YabAKIwTdVNAJdSpQxU0vf3BIJQ6Xg5TVh/
+         lSinRfsRiiY7omiEwcQ6If+StD2kf4GhdmqAxLTaM0xvbZVo1s71uCaB8Gp08YChGSxT
+         FcGw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=9NvEAvFmRQ4KOLpVzS9bkFTsS1KS/yh22uq2NVZ+PR8=;
-        fh=2CLRqMDUA/JIh0pBObtVY/F/VAUVfLm9gbnHxQTsKc0=;
-        b=gjEKt6aZDNHyq4N2OTn4Gy+PNS0ATMtdt/iQlzwl+7oLTebAnWjXZsdcaShMjZkTXq
-         S0e+iBiwlYZn2nmg7kslc+/RjsJjtNvEFagT2A/hk8FGVvCVc3sQQxkM5Gb3DEWHQhc4
-         vmFc5bLGR2WhrgqD9UcZE6DXDtc4/UFNca+Q+6c7FskgLcvCULQS+6K+CdW9GuQl32+g
-         Y9tFKfXv80LtdEAwO3T8gK+0mRSSAetu8I4ZfCPnasmjVxR9/nWvFg3aItp+SURtBjUT
-         5XVGM3BSqixMYjea9RbLyWqbARDOdb51z3sbv4jUn4kFU1NdPQ84MEe2uNRm3qfwqCDM
-         ZBsQ==;
+        bh=A1Y7YmZWSzxr2iY3IqKw6JuwDP6OUCGK+XiwHXOkRsQ=;
+        fh=ROIQv+AnMhKpkuUVObIQOVYfQImB02NU141CX6MYoOE=;
+        b=oFQs60EwQsh7Rd4h/O1ji7Rx2Oc/FATSSpx9/YCTk37LCJ8y1y97Y/Sz8UubWiwAfY
+         oZj51fhmFVw5roCCRcLsb+byAajHXNhdA9rTf2KStPNCSE1ih1KcJskCcjEluKowiZBm
+         fMRIfqzuwdtDb0G88p7nbVzLkgIPprGb9m2nnyjZ9GQHn6uo2DgLkRlysNqjLtYQ6Mj8
+         Q0McB5ZmB05O/CRrbPQcSJEHUCa0L0w2TkaBlNuCtviZusuzHQJhJxZwXTnoZpv0ruLz
+         N5wUzyAhTbLUMTn5eL+RVbz9DCq8kPvqhDoDr+2MBYrrgJJDSmGMdiHhM9WB1gqUexEV
+         yqgg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788525762; x=1789130562; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1788526958; x=1789131758; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=9NvEAvFmRQ4KOLpVzS9bkFTsS1KS/yh22uq2NVZ+PR8=;
-        b=HHJErrsYP4LyPYMBBrSVRUrk0qfZRuwB8lIAKcBdyFxHXi/L+kiOPznbsZXhakwo0a
-         HzLmvvJrvFWgYBKfKiF5czq0bY+pnmAkbXq8sWOP2QUdgZUfI8X6r+nhOPb3S0MjPjva
-         tlPqU1JAwjKNIP9E5z/l2uwUkgduHlamYaaFKvR7MxMK46CRSRJeZvMsvU0zxFoHZ+RT
-         Va8BQDYOBK0LH5uFFKICzZsvRVLnPWIFtVmnjY3jmrH6VX82WP+iIqHuS5Q3Jhu8uGUl
-         VH4uCJvQK2y/ssctFPAfAdomC56JzNd89FCtRRlsmq+3F6PIswxXbLOrDo9t6xWy0Gs9
-         yvqQ==
+        bh=A1Y7YmZWSzxr2iY3IqKw6JuwDP6OUCGK+XiwHXOkRsQ=;
+        b=Hy1c6ImT1QA/9NWuOcszWsOTnFxdHxGeeeClyByT1wPkI6qFmC+iIX7RoJrmxL6zTE
+         jR1c4OSCpFCw1Ql8ns8uF+A/rZgiWS0oW2KXh4s7Wz0RCKTkSq94mSBrd8vJanHHNv+j
+         3C8lLo8mIXxmTBZJTdtKcu2PhwlMOdAejRnegugqRLscpzf/6vipfr97io5o5NRM5wdp
+         VD+FMbDr7GrJ1KudWXUyFcWD/B8SHyxT9jVvIPQbvy8/YAolzDcw7Q/k7F5EAVyZH2eM
+         sd7q/nQL90Imqh70LgiUe3g45VL16ejXk7mOzkD8BE791WtP/5UbaF3v2Jbx3AxJeqCM
+         AxSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788525762; x=1789130562;
+        d=1e100.net; s=20251104; t=1788526958; x=1789131758;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=9NvEAvFmRQ4KOLpVzS9bkFTsS1KS/yh22uq2NVZ+PR8=;
-        b=e6l/WzWYgYSFnPg48fa26sp4HskwgTQUGMAxfCeMCbp2rpa6V86cjfVYJJoc72vjV4
-         imO9gK/iQSv2b55h5jCyI5PsSDOKxgzOEcUX9GuX2paYC9awFI0CZC+IDrsKz0E9sau3
-         anFm/D3vgilAgiEc3VakfkpO8+G11Xxu6vQ0Mkmmo4WWygvoE4F7UpqeJNTfSem2QSeU
-         nUmHnJJJQupo4kRpJZajU/Yka7XyB4VZiiU7UsTMtLSJO2NlIMVr/XwsWs4ay+qu1zzR
-         RMY/U16irrZyoNFO/RbUcNqNnZv5VD/6VU4CNmNZd4brs6qLCMDmL3oEMuHM9D42/WjN
-         1XGA==
-X-Forwarded-Encrypted: i=1; AKwUvBwEDTuC1p5DdAprgrOtzAb/MPgfJ/HsIWESi8S2sXYFOWP/KMPmP7P5TfUg4fuiLHyJyXLBrh4Pyw==@kvack.org
-X-Gm-Message-State: AFuF++mqtkdiPHl8pwoUdkiLWDJ4dJxSt3WfWL/OsWG1959VEtTtGOsA
-	t0ataOp5lJvZxuyyCw0ewO6ru25chMVkdEpxu7JB+qjhvt7L74S+O0DsZLdEyhSSdx8CpgMVcdU
-	NLNTAuOm0V6cZ3Gl9YKyxNOomqsqVvy8=
-X-Gm-Gg: AYBFou1UEB/T2BegYB7o6YZOX1OnZ3fWlxGK7hALgJEMmxfpoJtvg4BWm7w/Rc/Uvcx
-	ZWOw0IP0uNVfmgTJLMwL+D3UYPrR9hxw0b3QA1ka78YgsBxp06Fs+zZfNFA07WTG3C5MDXUX2WB
-	Fd2MADkYJQreSGlNA4hIuvs9Mjoy9fYM+RoXcyUiWJsK19mJ0QYASwniM7FBsahcnsF8F7douzH
-	WzgFlCVSaHVIFzHw+mspKNZVo1q37HCBblwPAfkZ92SASceo4tMakCLdcozg8hMP921MR/BIlUL
-	62kL4UQw0wddXF0VR/1yNrjffNDByRURzShElWOzRXsMBSx85EYR4rMI7dRCc6z27z49ZL+JZf/
-	UMg==
-X-Received: by 2002:a17:907:3c8f:b0:c25:4b9c:5ed1 with SMTP id
- a640c23a62f3a-c260c9ab80emr257426666b.12.1788525761715; Fri, 04 Sep 2026
- 05:42:41 -0700 (PDT)
+        bh=A1Y7YmZWSzxr2iY3IqKw6JuwDP6OUCGK+XiwHXOkRsQ=;
+        b=bK3p/TZyQudG+1lIqINiqs3tH7G3qcxT9W8m6TXqOAha/PIGkWe66rUqad+Waah9BC
+         bQJtsIMBstUyRnuxqfgvgwJr5RGJgl7W9gwjAQpuIo6DeAdMxqItrnH9shdYj+jY592Y
+         U+wm1VApElw3DYw8tAQs6bxvkk/hQxiDlRHmj7vIlKwXZUhRb8cm4Ir82PLp3W9Dw/3n
+         69TW/XLIdDSIJRfFzdTbbk4gnqBlEd8eDWiAayhk5aFt+XLJcAzMJ+xwMILHDHloeQw3
+         Wczew0AkDON8LGOmDzpju1Lj5TR2zwYkuVCJzK+gxDK/+wIOAu94Fy/IrUYMwPUnXyY1
+         gBjw==
+X-Forwarded-Encrypted: i=1; AKwUvBx5Yj+WocyUquWWQpcoxxTQ1fWwFAcThKKAOTN9wy6ZXTC1UdTJFtWmNHHw0VDKw0j3DOo/JzcrPg==@kvack.org
+X-Gm-Message-State: AFuF++ngHWO1IffrrkGlaGC2HoCk3wZsujMXk6yw8T6d72RJ594sEwCv
+	gJNuwSm9KM01hBpCYXuMXh3R+4AbRPbHeYhyCwiDrpMLRP4hUP+E1NaGTMlmVCvhXy6mnK9bqFc
+	ze+0dpG0+JAIwTIblkSoO4E0YmMubkjg=
+X-Gm-Gg: AYBFou13pSg2WmMeT2LluyI4ffOtPbiPnf/z2Elcef0h0lI7Y5HIP4y4W8tHFghd+vk
+	vnXNHWGWOzkkj95hzyIDH2orMrDw75Kn1cIcfhr45m/qLptk9KZgLL7Heh6yuGUmKqwTXM/B5Sq
+	CLjuIUMQJ0WaXesLBIJaZHwJ3XiylXegiZaJ/ZUZ6/H7rBe+66tUXPCZp9/F4AKzPUFcEWs/3g9
+	3buTNQcZe1NW7NJ03yQK7O9UiORk16ETIm+UMFKGPAdjq8exG5p3/KHa/n+XLP7SVTEX2dIUvhu
+	Qcdi0Pxdl3OEk5gajGiD4TYlSsIzrkuedAn0eCPJubNYDDrDTO5ggXu/94U5fKHswJ3WJaTtCxe
+	fvQ==
+X-Received: by 2002:a17:907:807:b0:c26:19de:912d with SMTP id
+ a640c23a62f3a-c2619dea0a3mr112357266b.32.1788526957825; Fri, 04 Sep 2026
+ 06:02:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260902-memcg-swapcache-stats-fix-v3-1-795f5d455f7b@tencent.com>
-In-Reply-To: <20260902-memcg-swapcache-stats-fix-v3-1-795f5d455f7b@tencent.com>
+References: <20260829-swap-pcp-priq-v2-resend-0-68d3d925578c@gmail.com>
+ <appvhlPleahTRklV@yjaykim-PowerEdge-T330> <20260904100900.21517-1-lianux.mm@gmail.com>
+In-Reply-To: <20260904100900.21517-1-lianux.mm@gmail.com>
 From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 4 Sep 2026 20:42:05 +0800
-X-Gm-Features: AcwNN1VHGK44NPRvYuy__k5IFafFsHEdaZnGRcRo-ytY5YzYC93mhmnvSLdmfxw
-Message-ID: <CAMgjq7BNk004x_zQM3k4QuCLmqMx0BVvd4HLxHq5+XvZ0fTk2Q@mail.gmail.com>
-Subject: Re: [PATCH v3] mm/memcg: clear folio memcg after changing per memcg stats
-To: bingfangguo@tencent.com
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Bingfang Guo <bfguo@icloud.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
+Date: Fri, 4 Sep 2026 21:02:00 +0800
+X-Gm-Features: AcwNN1Vm-0llheBPana_0CljCj4L1V8rcsjZv3MdI7EdXVkr6QNxUdxDIn19Bb4
+Message-ID: <CAMgjq7Bh0hdVoRcS4xMRL0YG-zmjh-TxyF9xXCmP2MRarAyksQ@mail.gmail.com>
+Subject: Re: [RESEND RFC PATCH v2 00/13] mm/swap: introduce per-priority
+ allocation queues
+To: "Lian Wang (ProcessMission)" <lianux.mm@gmail.com>
+Cc: Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Jihan LIN <linjh22s@gmail.com>, 
+	Kunwu Chan <kunwu.chan@linux.dev>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Thomas Gleixner <tglx@kernel.org>, linux-hardening@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7A1E140005
-X-Stat-Signature: 4ascwid3junq4jqndmd3f78yejhp51i9
+X-Stat-Signature: 7xmbas1wdf4y656mt8jxr1zfyt9wp68j
+X-Rspamd-Queue-Id: EC57B20002
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788525763-272786
-X-HE-Meta: U2FsdGVkX1+evwHr81YUx31SN2aNQ1WIhw0s6ngoO/8PWSWbzhTZ35roVoBqC2+XTFjxq+Uj6dtr6YJG1Qk5f7emWeCG1+b0VupTm18j8nDaoxLg2Cjo9IBvB9kbftmt/FFPzzP65FXg9Es0fHBcqFTIjNLrwVP6jZ5JOvrv+YysKzm+W/qxw/C9UBgvN9Pq2n3jTLobua+LwBVbYkK9ESKGEtPeUK3H5avwBaDgaICd4FrJ/wiKaLsJ+QALRnf7F4XSuZFZtrVk/IUklwKj5YVv2BwnXSP2kdv+St5ot5P/G4nBY1gU23ULlrd+8b0mmSabzleXzlqM76VOeMAJLTLE2ku/1M1Wv3qcftbxY/IsFML//93+OTI8wGVNDfH8TVEzyHHHc7RJ0IOu4cAarXmmEhdVUtQyUxJjJdGd/NXwdSTvUVoKdKJsH2++BJpFtKpJDHrusp9XqLcvDgs2utLhOFeL+pLEjCai6s+7DkinPszyj4lnUBqqmn5NClpzIKnn7f8t26lpkrBXyb/sL7Z/fxDGayTl5U9Dq3aKuV9VYP0MROpMLsMHXxVJIvlwErFEMgbtEwWNoueHKkH33/oGwzQsVI5zH6RPlRZGgPo9aC9CTnjQy3AbtSidFQ25tBrctRYCJNGJt/QsrbbAPuN6c6pMM7lfO4KxhxXuAFdphI+cQqCwVFmXQxLhopkrMoWaOy+bDPwS1VWRWcZqsFjuap8XqetsJn3EOQnLUO2mBsU3sITMvtIJoAVSynBLV+nYVFH+54z/527YEx04VGmOPR26HRDWxeFWXpspr1j/HNKiyix/TcoGMS1z0rbEttZuzRXpWc91BN3Ovo11O9M1TZXkCP7SyuutDA4bII4UuljcyQJDpD4t0APO/QNWd82qQSPXav1NHSwpMq58K51N6RBaLTvtp539MiBNXJy5d4RJpw3TOUYZ8Nq1OOAr5c0mgsGTItfF0Gmn0KM
- 1emOOUym
- wLti3tZGXQdcVbrRyJmhYYBHj2T0bnfleZS1+AnKhekIIMNs3HNnTaxd6ECBpivchKOq4aXvFqd/mYWE6C6NLif/dkx4gCsv3xQ1yyl4efBPEpOV9iSMOEgIQpLHJPuiJ7KH/79W4uxBm8XeP0NKZD7lIrtsJ19gV4lqbmGrSpwmajXFiJ0Gv9wwzpScbkeRxcB1JsvxsDxLv+mfkA5ujapuf7tX4NwuQRa1XkJQ1ArKm1awU8HRjRTLo9Ix2iS8gUyCPdev6xQ3FA4IweuRJHa4wDRtT+96EEsaCV7DaK+WjAjkaTdmpJU6Pb4oOGTP8cLXHafK5kIY1RZaaRjOSogu++lQDxWobzHFYIJ+oxUXet1eG6+QBeS5yaKZzTGBr2xN/EHw2AMDsovDoc+/UXeNhqYaMkgiff/+ek5trk6qie0fJCVNznGcTpPs2OxmnjKtfXSNFpzDWDXc=
+X-HE-Tag: 1788526959-543115
+X-HE-Meta: U2FsdGVkX1+EQWmYuoQhNypo4bJCHRp/48u8u5FgjxwVC5MOuMqjq3sIwwIc57J+2atbqCv8GUH4VU0QSFtGsyzULXIkUukgKRt/dHQrk6hwQpkjua+8A2/yaqin6kzxbL7BEMQV57Cn0B2bf9pW+4Ja33lE9WmHeVs7LrCe3nYqQpgsJinqLllPi34H1AourXIxpaJ8YT593sdmHDvOUaOsj+vVhEyVU5E5NKRM1tiFJCmxfsNpYN/M0xH/TBGpRhTe+YD/+8Zkp2+TEjjG1af0mU8lD1mQqDx7jhd0NR0ddrHpRIeTaseSKg9GuVOJ5wLrXrPNH3l51gCGy7OCGQvnELCVE0jgO0cbj5iNFyd6VTJXxqpkwHGHKsDYT1KMPHCfkdrNVPd4KAr4eK6aPmuAxfWVnbsPtVTUNGkQ7q6nGjHem6ymM+b0Mwlx5HQWC7A3oApEU8cZwvDTBo+2dVmV3q8Fqnppboj7SbUZ6MeoP97snAcPAyr+XABeeDtVSe4WASy4Ezjv9DFNehEs0OSwthFQEjO1jY5yTjMU7pGEYA+2+tQ33RofUibtW3vyG5TgyWxwXVw9ACaldIwErOsKoEzuPz/W9iWmCXJwfB3QUtGdhwIurNfRrwQp32IqKACHgfd0cxP1bYoJg74iZAIRn9zqTlBt3u52zWIWT5qoa4gZLIfSLgwqPKbM+YEUza7ijbzSHPDkKf1umubVtlgzL8MpBOi9CqzWJ1c182sYe30hR42dHzCEaBMyW1gjsXiCChnUz35qjy+HI4Zsr2ZBTjfXHvxC1aFsUlbH8M0wOUdLsKfY9m5JReDKv7Tc6AyXTmphNthM7KVxkb6MQoJy8vHtVTn/HfEtS33fgvYrmc5du6HaNsnCexNxcMu8I5bkqOQuWPYsYRlso9vHbbY79ogRSqjQgAIxD6hWoeMppk7MzI4cCeT14ZwPSSxEL5y+6V+IAICv2k2K6Zd
+ 6zXLnouA
+ sr2fAOvIupuA7Req3iS5spWZ11h9tWVe+WJK65QbKwKNUP5fIahsE4wcG8KsCqDVswoWtlqs5tsNKN/Us5hQ6xbT/iyRk+VLrtmoa0uyPBD/YvTsP7dxp/kq1ZxGwK1sUOPcYl1yUdSReHV6TBJN8r1psFz8tJP/2LECLPqTKvXsR+FChsBaCI6FdVuT+xsur8HwKWIRcLkRX93dhuYNCQvo+I6aBTHqFeOIkLGod3rh+t5moAszx3cCCYskb6DI2Fy/ELzPLBAVjC5cjzZu2kSwXCBsTj10nIX5iVwTLA9vYR5qJSZF0v6t/BFLMw7MpsW0rHYMq97J+HiJU8EyLjsVPVv1NjVlV5x0LeWnts2R0c3BwIpG/JYTXKKLt+dNc1SLkDB0dh6Okilvw9jjcKCV6KEIevphLTSr9jLef1PTV78NFfH3f+mzBFAzoGOqzcbM/u0SdTYP/GT2LuGAQXBugwy2egRezayIxf2YhTQvpSso8b+6L1Moh33hwSs9HZuV38vrudGbGkpq6U9xBhuyvcg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,238 +146,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 2, 2026 at 10:07=E2=80=AFAM Bingfang Guo via B4 Relay
-<devnull+bingfangguo.tencent.com@kernel.org> wrote:
+On Fri, Sep 4, 2026 at 6:12=E2=80=AFPM Lian Wang (ProcessMission)
+<lianux.mm@gmail.com> wrote:
 >
-> From: Bingfang Guo <bingfangguo@tencent.com>
+> On Fri, 4 Sep 2026 16:13:10 +0900 Youngjun Park <youngjun.park@lge.com> w=
+rote:
 >
-> I notice extremely high swapcached count in the per memcg level
-> memory.stat when running tests with cgroupv1 setup by swapping pages in
-> and out.  It seems that the counter never gets decreased so the value is
-> rather useless and confusing to users reading it. So I think fixing it
-> so that the value can reflect the actual swapcache usage correctly could
-> be helpful.
+> > Since tiers come up further down, I'd like to raise a point about the
+> > patch subject line too. As Kairui mentioned in RFC v1 that we would
+> > stay aligned with tiers, would it make sense to frame this RFC as a
+> > per-tier allocation policy (or something along those lines)? Kairui,
+> > what's your opinion?
+>
+> Thanks for the thoughtful feedback and for taking an initial pass over
+> the series.
+>
+> I agree that this queue could naturally become an in-tier allocation
+> policy. For this RFC, I would prefer to keep it separate and scoped to
+> the existing priority semantics while the tier and virtual-swap
+> directions are still being settled. We can revisit the subject and
+> naming once that boundary is clearer.
 
-Thanks! Good catch, I missed the V1 case.
+Hi All!
 
-> __memcg1_swapout() transfers the memsw charge of a folio to its swap
-> entry and clears folio->memcg_data as part of that.  In the vmscan
-> swapout path it runs before __swap_cache_del_folio(), which then
-> decrements the swapcache stats through lruvec_stat_mod_folio().  Since
-> folio->memcg_data has already been cleared, folio_memcg() returns NULL
-> and the NR_SWAPCACHE decrement only updates the node-level counter
-> instead of the memcg's lruvec, leaking the per-memcg swapcache count.
->
-> Move the __memcg1_swapout() call into __swap_cache_del_folio(), after
-> the NR_FILE_PAGES and NR_SWAPCACHE updates but before
-> __swap_cache_do_del_folio() removes the folio from the swap cache.  This
-> keeps the stats attributed to the folio's memcg while still recording
-> the swap cgroup with a valid folio->swap.  Add a swapout parameter so
-> the plain swap_cache_del_folio() path is left unchanged.
->
-> Fixes: b197d41462c20 ("mm/memcg, swap: store cgroup id in cluster table d=
-irectly")
+We can start with adpating the default priority if tiering still needs
+more time to land, Not changing the user interface means less risk.
+It's also fine to implement tiering first, there are some other
+blocking issues for tier though.
 
-Is this the right Fixes? I think the problem could be introduced by
-2732acda82c9?
+With tiering I think we will still need rotation of devices in the
+same priorities / tier. Once tier is ready, we can further extend the
+rotation in the same tier; that's something to discuss.
 
-> Signed-off-by: Bingfang Guo <bingfangguo@tencent.com>
-> ---
-> The problem is reproducible using the following script and program:
 >
-> ```
-> #!/bin/bash
-> set -e
+> I will also sync with Kairui when he has time. He has several things in
+> flight, but his view on the ownership and framing would be valuable.
 >
-> CG=3D/sys/fs/cgroup/memory/swapcache-leak-test
-> SIZE=3D$((256 * 1024 * 1024))   # 256 MiB of anon memory
->
-> [ "$(id -u)" -eq 0 ] || { echo "must run as root"; exit 1; }
-> grep -q . /proc/swaps <<<"$(tail -n +2 /proc/swaps)" || { echo "no swap a=
-ctive; run: swapon <dev>"; exit 1; }
->
-> cleanup() { rmdir "$CG" 2>/dev/null || true; }
-> trap cleanup EXIT
->
-> cc -O2 swapout.c -o swapout
->
-> mkdir -p "$CG"
-> echo "+memory" > /sys/fs/cgroup/cgroup.subtree_control 2>/dev/null || tru=
-e
->
-> echo "=3D=3D before reclaim =3D=3D"
-> grep -E '^(swapcached|anon) ' "$CG/memory.stat"
->
-> # Put ourselves in the cgroup, allocate & touch anon memory, then wait to=
- be reclaimed.
-> (
->         echo $BASHPID > "$CG/cgroup.procs"
->         # Allocate and dirty SIZE bytes of anonymous memory.
->         ./swapout
-> ) &
-> WORKER=3D$!
-> sleep 2
->
-> echo "=3D=3D after reclaim (swap cache should drain to ~0) =3D=3D"
-> grep -E '^(swapcached|anon) ' "$CG/memory.stat"
->
-> SWAPCACHED=3D$(awk '/^swapcached /{print $2}' "$CG/memory.stat")
-> echo
-> if [ "$SWAPCACHED" -gt $((1024 * 1024)) ]; then
->         echo "LEAK DETECTED: swapcached =3D $SWAPCACHED bytes (expected ~=
-0)  [BUGGY kernel]"
->         RC=3D1
-> else
->         echo "OK: swapcached =3D $SWAPCACHED bytes  [FIXED kernel]"
->         RC=3D0
-> fi
->
-> kill "$WORKER" 2>/dev/null || true
-> wait "$WORKER" 2>/dev/null || true
-> exit $RC
-> ```
->
-> swapout.c:
-> ```
-> #include <stdio.h>
-> #include <stdlib.h>
-> #include <string.h>
-> #include <unistd.h>
-> #include <sys/mman.h>
->
-> int main(int argc, char **argv)
-> {
->         size_t mib =3D (argc > 1) ? strtoul(argv[1], NULL, 10) : 256;
->         size_t size =3D mib * 1024UL * 1024UL;
->         long page =3D sysconf(_SC_PAGESIZE);
->         char *buf;
->         size_t i;
->
->         buf =3D mmap(NULL, size, PROT_READ | PROT_WRITE,
->                    MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->         if (buf =3D=3D MAP_FAILED) {
->                 perror("mmap");
->                 return 1;
->         }
->
->         /* Fault in and dirty every page so it becomes reclaimable anon. =
-*/
->         for (i =3D 0; i < size; i +=3D page)
->                 buf[i] =3D 1;
->
->         printf("allocated and dirtied %zu MiB, paging out...\n", mib);
->
->         /* Force the whole range out to swap. */
->         if (madvise(buf, size, MADV_PAGEOUT)) {
->                 perror("madvise(MADV_PAGEOUT)");
->                 return 1;
->         }
->
->         /* Give reclaim a moment, then stay alive so the cgroup can be in=
-spected. */
->         printf("paged out; sleeping so memory.stat can be read. pid=3D%d\=
-n", getpid());
->         sleep(30);
->
->         munmap(buf, size);
->         return 0;
-> }
-> ```
->
-> Test result:
->
-> before:
-> ```
-> =3D=3D before reclaim =3D=3D
-> swapcached 0
-> allocated and dirtied 256 MiB, paging out...
-> paged out; sleeping so memory.stat can be read. pid=3D4778
-> =3D=3D after reclaim (swap cache should drain to ~0) =3D=3D
-> swapcached 268435456
->
-> LEAK DETECTED: swapcached =3D 268435456 bytes (expected ~0)  [BUGGY kerne=
-l]
-> ```
->
-> after the patch:
-> ```
-> =3D=3D before reclaim =3D=3D
-> swapcached 0
-> allocated and dirtied 256 MiB, paging out...
-> paged out; sleeping so memory.stat can be read. pid=3D2601
-> =3D=3D after reclaim (swap cache should drain to ~0) =3D=3D
-> swapcached 0
->
-> OK: swapcached =3D 0 bytes  [FIXED kernel]
-> ```
+> > Devices assigned to the same tier already share the same priority, so
 
-Nice, the reproducer is under "---" so won't be included in the commit
-message but anyone can find it on lore.
+Hmm, the current posted tier is a band of priorities. Do you mean that
+when tiering is enabled, devices in the same tier, despite of having
+different priority, will be used equally? And is priority ineffective
+then?
 
-> ---
-> Changes in v3:
-> - Add doc for the new parameter.
-> - Link to v2: https://lore.kernel.org/r/20260901-memcg-swapcache-stats-fi=
-x-v2-1-9caad330459b@tencent.com
+> > I don't think the allocation policy needs more than one option for
+> > that case (I can't think of a use case that would need it).
+> >
+> > 1. For legacy swap with no tier configured, define it as a single
+> >    priority treated as one tier.
+> > 2. When priorities match, allocation naturally falls to a single
+> >    policy (not a queue). the concrete policy here is this
+> >    queue-based scheme.
+> > 3. When tiers are enabled, devices previously assigned under legacy
+> >    swap are reassigned to tiers at runtime.
+> >    (This means different swap device on same tier handled like same pri=
+ority device)
 >
-> Changes in v2:
-> - Update the commit message to describe the problem in the beginnning.
-> - Change function declaration for !CONFIG_SWAP as well.
-> - Link to v1: https://lore.kernel.org/r/20260831-memcg-swapcache-stats-fi=
-x-v1-1-1c0819ebdb86@tencent.com
-> ---
->  mm/swap.h       |  6 ++++--
->  mm/swap_state.c | 11 ++++++++---
->  mm/vmscan.c     |  3 +--
->  3 files changed, 13 insertions(+), 7 deletions(-)
+> These are useful design points. I would like to study the concrete v11
+> before deciding between runtime, boot-time, or compile-time tier
+> assignment. It seems safer not to bind this queue RFC to a permanent
+> tier interface while those semantics and the virtual-swap backend model
+> are still under discussion.
 >
-> diff --git a/mm/swap.h b/mm/swap.h
-> index 0b5d507739bcb..b3b54c28929a1 100644
-> --- a/mm/swap.h
-> +++ b/mm/swap.h
-> @@ -319,7 +319,8 @@ struct folio *swap_cache_alloc_folio(swp_entry_t targ=
-et_entry, gfp_t gfp_mask,
->  void __swap_cache_add_folio(struct swap_cluster_info *ci,
->                             struct folio *folio, swp_entry_t entry);
->  void __swap_cache_del_folio(struct swap_cluster_info *ci,
-> -                           struct folio *folio, swp_entry_t entry, void =
-*shadow);
-> +                           struct folio *folio, swp_entry_t entry, void =
-*shadow,
-> +                           bool swapout);
->  void __swap_cache_replace_folio(struct swap_cluster_info *ci,
->                                 struct folio *old, struct folio *new);
->
-> @@ -452,7 +453,8 @@ static inline void swap_cache_del_folio(struct folio =
-*folio)
->  }
->
->  static inline void __swap_cache_del_folio(struct swap_cluster_info *ci,
-> -               struct folio *folio, swp_entry_t entry, void *shadow)
-> +               struct folio *folio, swp_entry_t entry, void *shadow,
-> +               bool swapout)
->  {
->  }
->
-> diff --git a/mm/swap_state.c b/mm/swap_state.c
-> index 305877e1f4d7b..99985208b529b 100644
-> --- a/mm/swap_state.c
-> +++ b/mm/swap_state.c
-> @@ -306,6 +306,7 @@ static void __swap_cache_do_del_folio(struct swap_clu=
-ster_info *ci,
->   * @folio: The folio.
->   * @entry: The first swap entry that the folio corresponds to.
->   * @shadow: shadow value to be filled in the swap cache.
-> + * @swapout: whether this operation swaps out the folio.
->   *
->   * Removes a folio from the swap cache and fills a shadow in place.
->   * This won't put the folio's refcount. The caller has to do that.
-> @@ -314,13 +315,17 @@ static void __swap_cache_do_del_folio(struct swap_c=
-luster_info *ci,
->   * using the index of @entry, and lock the cluster that holds the entrie=
-s.
->   */
+> > I think this feature will also be needed on the virtualized swap side,
+> > which makes me wonder whether this patch should go back into the swap
+> > tier series instead. Kairui, Lian, what do you think? (Or separately?)
 
-Perhaps the Context: part of kdoc could briefly mention that for
-"swapout =3D true" case, the folio should be a reclaiming one?
+I'm fine as long as there won't be a regression. I remember V10 of
+tier didn't touch this yet so the regression is limited to tier
+enabled case, so no existing case will experience any issue, that is
+fine. Causing a performance regression for existing usecases is
+usually a bad idea.
 
