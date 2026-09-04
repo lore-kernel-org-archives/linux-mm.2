@@ -4,98 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 378C3C624D3
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 13:37:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B390C624D3
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 13:43:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 432206B0088; Fri,  4 Sep 2026 09:37:34 -0400 (EDT)
+	id 1F40B6B008C; Fri,  4 Sep 2026 09:43:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E4036B008A; Fri,  4 Sep 2026 09:37:34 -0400 (EDT)
+	id 1CC246B0092; Fri,  4 Sep 2026 09:43:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F95A6B008C; Fri,  4 Sep 2026 09:37:34 -0400 (EDT)
+	id 0BAD56B0095; Fri,  4 Sep 2026 09:43:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 05EF66B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 09:37:33 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 88BC3A094E
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 13:37:33 +0000 (UTC)
-X-FDA: 85176181986.23.F2DB64D
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 7E77114000C
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 13:37:30 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=mUSmphVV;
-	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788529051;
-	b=wqf7JYBawh43zWVQ5Ze+ZjUR80l1Wn/QFKMDECEQqrcq2vJ7+tC/qHsb8/QNc2cxuxzzwj
-	RxjimlCMAQEzOvnommro/Q/dkPXJNAMN/LwhW1g9PEkG0o+hu2EnJmnjV4mics4FpZ9mmS
-	gWhn71NVyupwYBBSFoL4p4QY+0kg3Qk=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=mUSmphVV;
-	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788529051;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D39A86B008C
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 09:43:49 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 59603160375
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 13:43:49 +0000 (UTC)
+X-FDA: 85176197778.19.2BF265A
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 68A0A20006
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 13:43:47 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kw7oAwn1;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf31.hostedemail.com: domain of rakukuip@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=rakukuip@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788529427;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=LA4BcyPGk3+hCItIRyvN1qJMNqXvX82wv8Mm3ndUWaE=;
-	b=hJGbge8OKJ2zrqd6ZRXzjLngB1a8v7ylsf08bYx78lwqgdQ7kCqm7UPcRilK2NJZi8k9GF
-	zM2YUQs1ZNB/ciQ+lA4pn+Ur2W3TO2wKIOO2WGE3MLwApE3TaKnXB8cxIJuyplS25ehwwK
-	1Ja6nBbBMD0nPjsGvwuKvkbh6Ir+klo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788529050; x=1820065050;
-  h=date:from:to:cc:subject:message-id;
-  bh=FFhPNocyWoRlevwMBqguZAZZpXfJxpMrsibk/N2s+KA=;
-  b=mUSmphVVjXdVCRyzyaQymAD/PYse196H9nPCxQKfczP2NO0lmnYGlZNR
-   tXwOWEM2gRebelCKdAh3r0ksqjJOmGKn6+wUiGx/hShxKxTRTtctQ72Aw
-   9NqEdVD7QPGKzU+s5l5uvTCSGUxNnmcotyTXURIBxqUlGKiLONMRB/UXn
-   PWe8rk4B7GM3ZhNcuChLaZf6789Gf4BiOkufeSxqKsu8mSiPGQz3T/rlO
-   pxb1hempH1FgVrd5qeU0ejYUB4KgOKIptKFzy30F8Z4aDeUjqD0P+yXoZ
-   4AYq73YnV6JG5oSsmO2nlc0fv1npwEGS61e8oJvYYcZ06sVEdLBiI9yN5
-   g==;
-X-CSE-ConnectionGUID: ajcqrIqzSh2juLV75H+T6g==
-X-CSE-MsgGUID: ukLlamqISqC4EFmHHMtFTw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="88172871"
-X-IronPort-AV: E=Sophos;i="6.25,262,1779174000"; 
-   d="scan'208";a="88172871"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2026 06:37:29 -0700
-X-CSE-ConnectionGUID: 2e/I0mJpQ1uuKsG3e56xmw==
-X-CSE-MsgGUID: 14FJjKCJS3u1xq3nk1WmcQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,262,1779174000"; 
-   d="scan'208";a="268307053"
-Received: from lkp-server01.sh.intel.com (HELO bfac249b2189) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 04 Sep 2026 06:37:27 -0700
-Received: from kbuild by bfac249b2189 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1x2U6e-000000009os-3nwJ;
-	Fri, 04 Sep 2026 13:37:24 +0000
-Date: Fri, 04 Sep 2026 21:36:36 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Stevens <stevensd@google.com>
-Cc: oe-kbuild-all@lists.linux.dev,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master 3196/3635] mm/memcontrol.c:2859:41:
- error: implicit declaration of function 'irq_work_queue'; did you mean
- 'drain_workqueue'?
-Message-ID: <202609042120.6bgj0pUa-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Pk+ekoqv4mOUrrBEKJkMRNIlFSGEaIH2fs68xJ4kFYw=;
+	b=nfd1JOUcnsv9Oqw3fYt3/fW3jCNq0X1UjnL3QK3penWzZpp5o7o0p6Nn/MZGRLQZX3eCwX
+	q2HYkvj4AIfk5SGClhlg+xCpYSkwRc4FCDXaxQHRgb7j1BL/jn+mvsjmIJ63GlYQwppAkZ
+	2p4jwH1jQmAyhHKtltmJBVIxJcz7Z20=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kw7oAwn1;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf31.hostedemail.com: domain of rakukuip@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=rakukuip@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788529427;
+	b=10C4NYlO92mvTvWxo65303Csh9WMFD7arxmWBE2RUVjxNkJ9uOoDgPizYdCKD0EaHCP9L1
+	GzJwks/qNsOJ8avJo4Zgd8YE4CwuVXHbOH5xPo87W6JUv1Kd6ojsM3IRmg+e5GM2dAJfq6
+	9chFAHdNHSkbSJEti9Ko9EPH1lAFzi0=
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2db217a2b2aso2416065ad.0
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 06:43:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788529426; cv=none;
+        d=google.com; s=arc-20260327;
+        b=MpfuW2Np0PqYj9aMZBpO+tcw4ohsv2BEJ7zq06uX2SSr9QupO8nATElvlDzdLLOcwu
+         igs6k3mlvW4Yaw6oT7lwWa0ksQpRsZ3KkvqYeiQiQNyrhLfTMZfUp6wGAghIwBSRAWFi
+         Tk5r3jRN3+ioATrYKnAFJVyDODnS4WqsOU6AJKlhXRmmyIO6d02pCz4uJjxEiyfCiQaI
+         pmg4KNFo0HBJbi4KfcRiW+lWxA2TJKq0YqacF0pdFXW09uOS3atOxpUIXGDhbjt8GzoY
+         WbHCfEinOmv31RNr7EwnzrlXt8P7AdUQpIbnow+n8yht78denaxMcfYz+c6W7eCGOAPE
+         E2Ng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Pk+ekoqv4mOUrrBEKJkMRNIlFSGEaIH2fs68xJ4kFYw=;
+        fh=dFpRHtAkfnOw4A7MaQA7HY9yPr4t+ReiLQMOKgJlZpc=;
+        b=rlairF/cqrJ+93aq+jevq/k4OCKYh1VsxfeURJOSWm5SLmRBZgYGig/ebUZ4hrY7Q3
+         L6bFM/q0TIPUmNXl1i+0oDyaQW82iPgETZZJcXZWNYCKJlzKzqs036q/ZS7RTTRZV4f/
+         23fSfLZ+/3O+GQK1EV+Xq8gRxzIcMMoeGnCizKNplVrn9muu2U2XilBvJpZYUOI3fNRx
+         YN2/Wg/N7RTVzxHFr45ARyzM6lkoHFGU+iX3V+FSf/4mPJCHx/k4NqnjHqS6PJmFqJzQ
+         xjNwDsbwWb6Ky1Kar4z5sON71Mjg18JjsbuppzHd7IajzaeBq0R0gr+to+VJs3ELTlcr
+         omhA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788529426; x=1789134226; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Pk+ekoqv4mOUrrBEKJkMRNIlFSGEaIH2fs68xJ4kFYw=;
+        b=kw7oAwn1sEMr5q1YSGvqj4+eBGrbqFuaBCNrDdpLt/x1yDHrBC7zuv1fv9YR+DKMzD
+         pxKbho+HdotGxZUgoh9g4adzGhbBuzDoR2aCWJzhoYovEQVg/r3Wrzsokb1kg08yMrRs
+         HgffuhlaK/50RU6FXfBlIAS5Zhp2zPYGr9O/1ygWPp5VZe9F84nPmBCqQPDJ2/pXl5Uc
+         PDvw7twjKfCVwu11/4LmJFMaaSkq7O7qFedta84DEM/nyIlPPE8+t+KgQglrviXAbUBE
+         X3OCTSowHmU+fW/dorxwuoucmqcHIen0HHBiwPE2v/EDQfxszQzF1eIlhNNMEqNBTzQW
+         ijWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788529426; x=1789134226;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Pk+ekoqv4mOUrrBEKJkMRNIlFSGEaIH2fs68xJ4kFYw=;
+        b=SsFOXPrl3gbmqsASSnzpFp8ORDufL9Bgwtzu5FoTi3J56q2/0ZzcblBqDREowJTA8r
+         WXXBBcfugo4cT1PNnyuyMiVYf3R7AlmKV1peOE8+ibaHlPnjZfF99Lvr/FjE7zhfu3dv
+         Uf/4JYF5yhP24PzagXbhxZSSEeKKsaZAMOY7FLat6j67lm5zjzzKIMMwX6mNtP9ALMOu
+         QGPuVhJiRjDDZ/+8XxDaQg8e70V5AcCNcKZM0D4Gp4+lYqFCdGzNPxcoU258UNAMFHie
+         wsLv0TB2g7U4eNi7dNYT4m3SMRr1vjPyH+pkl/drucGUmIipwZvsybnnIrNWASEV4Qw+
+         UBdQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxbA7NZW3+IceUhdxdHgmDJUWS8JjfjtTvhYgPrtYsnfqF7nYt3VV53Vz4Mbn1vPqXIh4WHzUH8NQ==@kvack.org
+X-Gm-Message-State: AFuF++n1wapt6IhWmxak0iPm87GZ7TNNo95qKIQryHnr7JFxgDacNivV
+	vOGZIEJBItLoBsbzc20a973bKcmcd4imGAGPRbM2WkuxUfUvbdhu/N/MCi5ftdFVjaKSecLlri2
+	ebFYCqNd5KBy/3M+E32K86V3ZAe1BMlo=
+X-Gm-Gg: AYBFou2oDIuqIDiWvNBjxoHpZLtDxIWFddoirkePfqMGGabT5iz8R51jKoslg7IT9Qu
+	Yda/rPrQoUm4cQ7RcQYOqUI0l7RjrS/l+ugwywStb5MYMvenTYVZ2uqMyyo8UCmeEOzNNOx24vr
+	ng7OVuWCoIV1I6nszuAr2MYVj6u8rEnWBHsLXN3zbpL+EGHtqIpQq0JoYa6Zte+VLX5+OKeJzWB
+	yTyUvgk96f6hLB4qTkNIPnwb1DwFNPHZr4DW9GKfBriRFw2VB+FkeJfJ3pvORaW2fvtERUwO6Kj
+	F8fIly+I3p5vPIKPinlM2hYSZ54+3ofHU5Fm2FIIAxcuyngwdyMDo+S9XQ==
+X-Received: by 2002:a17:90b:1d84:b0:396:4cbf:45a2 with SMTP id
+ 98e67ed59e1d1-39b261e3b7fmr7927943a91.14.1788529425879; Fri, 04 Sep 2026
+ 06:43:45 -0700 (PDT)
+MIME-Version: 1.0
+References: <cover.1784428532.git.rakukuip@gmail.com> <f618e2f57ad0086a8d7a95cb17dcf5a1f0cf0e45.1784428532.git.rakukuip@gmail.com>
+ <25e3e218-cb74-4d7d-9301-24b583f4323f@kernel.org>
+In-Reply-To: <25e3e218-cb74-4d7d-9301-24b583f4323f@kernel.org>
+From: Lain Anc <rakukuip@gmail.com>
+Date: Fri, 4 Sep 2026 21:43:32 +0800
+X-Gm-Features: AcwNN1Vs3ti2GIIaKPH-KN5z3MW8u40mPX7KFTlUSbwRns9e1XZmUv3KVUPkOio
+Message-ID: <CANZytUx8s4Pj=VDm15tvORd8E_pG1oJQKdKx_9Dh+J5_jarbLg@mail.gmail.com>
+Subject: Re: [PATCH 1/1] mm: fix out-of-bounds access and race in generic_access_phys
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Ren Wei <enjou1224z@gmail.com>, linux-mm@kvack.org, akpm@linux-foundation.org, 
+	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, notasas@gmail.com, vega@nebusec.ai
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 68A0A20006
+X-Stat-Signature: 9b6fjgogpphewtxa66mysq6zxjw4pf84
 X-Rspam-User: 
-X-Stat-Signature: gpj84gstud6u3k4rwzqirmoo6xbwjmkr
-X-Rspamd-Queue-Id: 7E77114000C
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788529050-106038
-X-HE-Meta: U2FsdGVkX1+mfb0wxlL2jRuuI0/VRkurybRHqIzlgH8hS3l9S+FIHrSzZrMVvIJbWqQUPaIOdxCHNx96SuQUrFMOWzhR1EPw7t//gNh1FfxRN1GbUh+YA8wKSw/Fmgi71ouK+ANU6Gmk2quws9l7F/UZ01YgsUZ4dNRB/YMXp1teEdqxDQqRpT/AgDzFDxfUHFLBytpnsXs6e9BFgeldgCeqc3s/9jdAR76mp7cjtouL52Vu/H7C49qH+JFEqI+RuH8GXGLKVQ+/ofHNAMTuFW2BZnUGvEowS1ZEHLw+kgaC0ie1A/HTg5oF26jLCHy7UpqKyXbYleTay+RhXBoAAwIAobDbB/PP7c0hOAion8ieyC7GeLEm5EyNT0CbRjVB+FvN7HrVJsjMQIwd5svy+m68/M5I1qqvg92a8C9SGcWKFxcP8wWIR0V7IuHnO3rsvcBIsZ2fzOXt6IXE+flqp1G2IsknfoVGGkmn1IBgnbQtMpd0ldTJOGGc6d2C3zB2XphV5+b5hBiCWXuJxR9AnkjXxuoSM/tZcSfWpjrbXZ6PRC/W1A9UTeVLvBUWtQGPL67NyOmvhDMGTR3JakqEBA7MrHXmL93d5fQQHs4MKnvYPx3JRDQwikMIhH1yh/lWxjRjqaf/AjEFqBnQ80MLeY0W09Rv3r7pzjxVQPrXkS1dmun5YdoqV18c2Q/6C3stozDy8nYfSyRw/KJ6H4Nuz3yKMYLrEyJDJ0zHcM/MYOB6P+b73yyd+m2PIxzhlaluisH4GtJlHomb9TcmxmKSDtFmuvpxYE4OxPVMpzO/rmD2kLmf+x6nXRh03a7qb8PyiHGfrBftr3kXy6DLtqsyjIZHsuSP4ZTDiaP5jZBNOVv7cd7Hx/rMFn37pFvlLsnhxZaZ6k9ckvgqCajvjLLNA0ce2eRBN/Vypev4YixGmQiGQUlbTovYbc9bpCFiyh7K4wUWM71smNoVS1THZiv
- u6/+LJ+3
- HF0e5RIs8CEriwlQiwNxEI73nW0CtsoeXTMSQjJ+55Tccar/q7YtvzfYWdHg88M3+u4bntC8qJQrchOUf0Y4a55rJhbZlWENlT/2MQi0s+JFfgV+drU0kvgKOMEOwJZZzODdlxcWdKDtz6ADRZZ4bDGI9Wk0cCl1mKM6gzOrQw0CUxp5j6byG3jI+DeyHifNaSyaCMV0Y1OhXQxspGBklEx2ZjG2CzAWRaOhdADN5xIHlxBqWvpx+yAPOATbJ7ST+2D6efMfL1VmWTi2zjnIlxI6pbvl3+peWtmkJL1TOswZ93k5wCElzz71Rp12zNynlKplKpm6ZS40wCjG8iMAyLyNEIKgAlTSmorOd36H3Xa2ktiloaKTd5q5EaJgl73Ao9Rtc
+X-HE-Tag: 1788529427-989749
+X-HE-Meta: U2FsdGVkX195M7DtlnjjLHQQUyiWnbwf6e68+/sCxTwR6rsz3CKuovawy/K8/PCWWI0vX55qmAHJiDyFjTwQi9ng7dCm2CsrIoQ0ldolg9V0bghK/UweGf9YSL7yGRhaurI/Zgw2sTogFJAdB+1bzcvtCQ7hfW4vDPZ+7hHqXs7bkPpLNwztYmBkZ6uRt4BA8EEqdn+Q90MwePkTKk87UuZIRnNsIY53KksxkJbK4L8kxUct3I1KdebUTs7cvwK3s9M8z8tWBgX9xEoYpSDHfTOzgCwi2CK4t9hPGACdQ0VKBTfSpaIdoJwxs2aBpyCrFtrOkeqv2a9ZfRbKIIbnqFh/9NTs6qrlMQJSmXrMXDcC5D1dg56qMaE00kR1vRVzf8gejzxRm21I+BnWD+4IwHSp2LKGR3YBQO54/CC0NKZV96i96ZqZ1c4DZ7hVf1Go+jZn+xqVUWIUdTo7kO6v/lv4CsjH4RH/W5kQlbJSUsxGDTHoHJhZ4NY1/yM8NtMa246WqE1SN/SZuR3CjWAtDpAuf8uDDEKK3u1G3NLgyz/xlgwF+2UxfFLYyXQ3/Dt4DEYrJd65dkSFyzc7/Jzli8NC/0upRJLKSMjDjKgJEH4ilG85+NGtWy5ZABPcpSaYapYN/qsgjULHRAhBfdtee/WEZU8inEIPapype10gi69fBKFu9/qC16Hx8VhBYrJ5M9aRHk8yS/fjRF0Sbt5nc8ob2Uc6NBLqc/ftE0DXgmWmXFondlRLVtGbU0Fa/ZFG68AVUiSVIu4Of+df00l8dVS0qQ7pivhvMIrcmMMjHuNTlS6qlsnFUowmKJcQuWlh6omY9NjsEPBKeMufCxYSGQ+YL+EInjSbQ/SzXkNrGQaMOEOTA2e6CuACOJ19M53uTrQxPcRXEf5UstVdLVeavc+xfqTjBoApYOQA6pHqLWYif7hRB0NVBv0Q7z7+/TRDvNRPvG2J9DveEVOBGBQ
+ SlA7uNkp
+ Wx827eHYDIKTYfPZwLs4VSplTeKrp/9QsT/jEUIQ6Jmq75YQvSuKcmWmYBKAAcuY5nRiiZheJRU8ldojoIQ+ItHviFiydRUGZxsex16evjoFaRNFU/aOOF/g6M+1VeQrImNjVeWqG60ubdUim/+gr9+WI1IqyKy1fp19Oa3fzEhrM9q2l+thOj5B6vcU0sLYcSu5PTV5niaDXoPiYXubiQQ4qwowr+kWCdlx/WvpkjlE6ScQ4n3haTOXUehj0XJKfbL18Usj+lgeSCO5CBO1qE1nDLz8b24PD14T8COcXyNBDd5e1xCeB+BsOMBxWAdCZT/It2FetuaSAO4v00YM3D//9McPrzqV9xsJhvlxpaMYQTpcUSQ6VZrMgxVKQwmz0XbM7xPpBs7FqQK40zFjc4qW/ZV1Djsmk4xR6+crXjc7Y4JLeWpZI4NIK92HBWpu0gUPvIsYCUBLzqHE0NGmDQUHlEa1UxoOmR6aQYifBY5IaqVMZEa53T4B4UQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,258 +141,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-head:   9d80aa4617b32f5054c5aa471d06b66704854935
-commit: f4bb278a0bb905c7703993060e0d9271820f7532 [3196/3635] memcg: don't call schedule_work when no spinning is allowed
-config: sparc-randconfig-r061-20260904 (https://download.01.org/0day-ci/archive/20260904/202609042120.6bgj0pUa-lkp@intel.com/config)
-compiler: sparc64-linux-gcc (GCC) 13.4.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260904/202609042120.6bgj0pUa-lkp@intel.com/reproduce)
+David Hildenbrand (Arm) <david@kernel.org> =E4=BA=8E2026=E5=B9=B47=E6=9C=88=
+21=E6=97=A5=E5=91=A8=E4=BA=8C 22:50=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On 7/21/26 16:26, Ren Wei wrote:
+> > From: Luxiao Xu <rakukuip@gmail.com>
+> >
+> > generic_access_phys() improperly validates the memory access range. It
+> > only validates the start address using follow_pfnmap_start() and then
+> > uses ioremap_prot() to map the entire requested length. This fails to
+> > verify if the access range stays within the VMA boundaries or if it
+> > crosses into adjacent physical/MMIO mappings, allowing out-of-bounds
+> > read or write access.
+> >
+> > Furthermore, the previous implementation failed to handle partial
+> > progress semantics required by __access_remote_vm() and lacked
+> > necessary concurrency checks (retry logic) to prevent the use of
+> > stale mappings after releasing the PFNMAP lock.
+> >
+> > Fix this by:
+> > - Processing memory access in page-sized chunks, ensuring every page
+> >   is validated within its VMA boundaries.
+> > - Introducing a retry mechanism to re-validate the PFN/protection
+> >   after mapping, ensuring safety against concurrent page table
+> >   modifications.
+> > - Returning the total number of bytes successfully copied to satisfy
+> >   the partial progress semantics of the access_process_vm
+> >   infrastructure.
+> >
+> > Fixes: 9cb12d7b4cca ("mm/memory.c: actually remap enough memory")
+> > Cc: stable@vger.kernel.org
+> > Reported-by: Vega <vega@nebusec.ai>
+> > Assisted-by: Codex:gpt-5.4
+> > Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
+> > Signed-off-by: Ren Wei <enjou1224z@gmail.com>
+>
+>
+> Hm, I wonder if it's responsibility of the callers to make sure that [add=
+r,
+> addr+len) is actually within VMA bounds. Just like it's the callers
+> responsibility to ensure that "addr" falls within the VMA.
+>
+> That makes the ->access() implementation harder to get wrong.
+>
+> --
+> Cheers,
+>
+> David
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202609042120.6bgj0pUa-lkp@intel.com/
+Thanks for the feedback!
 
-All errors (new ones prefixed by >>):
+You are right that callers like __access_remote_vm() already constrain
+the access length to (vma->vm_end - addr).
 
-   mm/memcontrol.c: In function 'try_charge_memcg':
->> mm/memcontrol.c:2859:41: error: implicit declaration of function 'irq_work_queue'; did you mean 'drain_workqueue'? [-Werror=implicit-function-declaration]
-    2859 |                                         irq_work_queue(&memcg->high_irq_work);
-         |                                         ^~~~~~~~~~~~~~
-         |                                         drain_workqueue
-   mm/memcontrol.c: In function 'mem_cgroup_alloc':
->> mm/memcontrol.c:4234:9: error: implicit declaration of function 'init_irq_work'; did you mean 'init_irq_proc'? [-Werror=implicit-function-declaration]
-    4234 |         init_irq_work(&memcg->high_irq_work, high_irq_work_func);
-         |         ^~~~~~~~~~~~~
-         |         init_irq_proc
-   mm/memcontrol.c: In function 'mem_cgroup_css_free':
->> mm/memcontrol.c:4443:9: error: implicit declaration of function 'irq_work_sync' [-Werror=implicit-function-declaration]
-    4443 |         irq_work_sync(&memcg->high_irq_work);
-         |         ^~~~~~~~~~~~~
-   cc1: some warnings being treated as errors
+However, within a single VMA, consecutive virtual pages may not map to
+consecutive physical pages (PFNs), and individual PTEs might have different
+protections/writability. The previous code mapped the entire `len` starting
+from the first page's PFN, which assumed physical contiguity. Chunking by
+page ensures each page's PFN and protection are validated via
+follow_pfnmap_start().
 
+I will clarify this rationale in the commit log for v2.
 
-vim +2859 mm/memcontrol.c
-
-  2678	
-  2679	static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
-  2680				    unsigned int nr_pages)
-  2681	{
-  2682		unsigned int batch = max(MEMCG_CHARGE_BATCH, nr_pages);
-  2683		int nr_retries = MAX_RECLAIM_RETRIES;
-  2684		struct mem_cgroup *mem_over_limit;
-  2685		struct page_counter *counter;
-  2686		unsigned long nr_reclaimed;
-  2687		bool passed_oom = false;
-  2688		unsigned int reclaim_options;
-  2689		bool drained = false;
-  2690		bool raised_max_event = false;
-  2691		unsigned long pflags;
-  2692		bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
-  2693		int ret = 0;
-  2694	
-  2695	retry:
-  2696		if (consume_stock(memcg, nr_pages))
-  2697			return ret;
-  2698	
-  2699		if (!allow_spinning)
-  2700			/* Avoid the refill and flush of the older stock */
-  2701			batch = nr_pages;
-  2702	
-  2703		reclaim_options = MEMCG_RECLAIM_MAY_SWAP;
-  2704		if (!do_memsw_account() ||
-  2705		    page_counter_try_charge(&memcg->memsw, batch, &counter)) {
-  2706			if (page_counter_try_charge(&memcg->memory, batch, &counter))
-  2707				goto done_restock;
-  2708			if (do_memsw_account())
-  2709				page_counter_uncharge(&memcg->memsw, batch);
-  2710			mem_over_limit = mem_cgroup_from_counter(counter, memory);
-  2711		} else {
-  2712			mem_over_limit = mem_cgroup_from_counter(counter, memsw);
-  2713			reclaim_options &= ~MEMCG_RECLAIM_MAY_SWAP;
-  2714		}
-  2715	
-  2716		if (batch > nr_pages) {
-  2717			batch = nr_pages;
-  2718			goto retry;
-  2719		}
-  2720	
-  2721		/*
-  2722		 * Prevent unbounded recursion when reclaim operations need to
-  2723		 * allocate memory. This might exceed the limits temporarily,
-  2724		 * but we prefer facilitating memory reclaim and getting back
-  2725		 * under the limit over triggering OOM kills in these cases.
-  2726		 */
-  2727		if (unlikely(current->flags & PF_MEMALLOC))
-  2728			goto force;
-  2729	
-  2730		if (unlikely(task_in_memcg_oom(current)))
-  2731			goto nomem;
-  2732	
-  2733		if (!gfpflags_allow_blocking(gfp_mask))
-  2734			goto nomem;
-  2735	
-  2736		/*
-  2737		 * OOM victim still needs to charge memory to exit. OOM reaper should
-  2738		 * help but it might fail on mmap_lock contention. If the victim is a
-  2739		 * large thread group then all exiting threads might compete on oom_lock
-  2740		 * just to learn that there is nothing really killable anymore. Bail
-  2741		 * out early and fail the charge to expedite their exit. They are
-  2742		 * considered fully reclaimed by the oom reaper and they shouldn't
-  2743		 * contribute further charges.
-  2744		 */
-  2745		if (tsk_is_oom_victim(current) &&
-  2746		    mm_flags_test(MMF_OOM_SKIP, current->signal->oom_mm))
-  2747			goto nomem;
-  2748	
-  2749		__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
-  2750		raised_max_event = true;
-  2751	
-  2752		psi_memstall_enter(&pflags);
-  2753		nr_reclaimed = try_to_free_mem_cgroup_pages(mem_over_limit, nr_pages,
-  2754							    gfp_mask, reclaim_options, NULL);
-  2755		psi_memstall_leave(&pflags);
-  2756	
-  2757		if (mem_cgroup_margin(mem_over_limit) >= nr_pages)
-  2758			goto retry;
-  2759	
-  2760		if (!drained) {
-  2761			drain_all_stock(mem_over_limit);
-  2762			drained = true;
-  2763			goto retry;
-  2764		}
-  2765	
-  2766		if (gfp_mask & __GFP_NORETRY)
-  2767			goto nomem;
-  2768		/*
-  2769		 * Even though the limit is exceeded at this point, reclaim
-  2770		 * may have been able to free some pages.  Retry the charge
-  2771		 * before killing the task.
-  2772		 *
-  2773		 * Only for regular pages, though: huge pages are rather
-  2774		 * unlikely to succeed so close to the limit, and we fall back
-  2775		 * to regular pages anyway in case of failure.
-  2776		 */
-  2777		if (nr_reclaimed && nr_pages <= (1 << PAGE_ALLOC_COSTLY_ORDER))
-  2778			goto retry;
-  2779	
-  2780		if (nr_retries--)
-  2781			goto retry;
-  2782	
-  2783		if (gfp_mask & __GFP_RETRY_MAYFAIL)
-  2784			goto nomem;
-  2785	
-  2786		/* Avoid endless loop for tasks bypassed by the oom killer */
-  2787		if (passed_oom && task_is_dying())
-  2788			goto nomem;
-  2789	
-  2790		/*
-  2791		 * keep retrying as long as the memcg oom killer is able to make
-  2792		 * a forward progress or bypass the charge if the oom killer
-  2793		 * couldn't make any progress.
-  2794		 */
-  2795		if (mem_cgroup_oom(mem_over_limit, gfp_mask,
-  2796				   get_order(nr_pages * PAGE_SIZE))) {
-  2797			passed_oom = true;
-  2798			nr_retries = MAX_RECLAIM_RETRIES;
-  2799			goto retry;
-  2800		}
-  2801	nomem:
-  2802		/*
-  2803		 * Memcg doesn't have a dedicated reserve for atomic
-  2804		 * allocations. But like the global atomic pool, we need to
-  2805		 * put the burden of reclaim on regular allocation requests
-  2806		 * and let these go through as privileged allocations.
-  2807		 */
-  2808		if (!(gfp_mask & (__GFP_NOFAIL | __GFP_HIGH))) {
-  2809			ret = -ENOMEM;
-  2810			goto out;
-  2811		}
-  2812	force:
-  2813		/*
-  2814		 * The allocation either can't fail or will lead to more memory
-  2815		 * being freed very soon.  Allow memory usage go over the limit
-  2816		 * temporarily by force charging it.
-  2817		 */
-  2818		page_counter_charge(&memcg->memory, nr_pages);
-  2819		if (do_memsw_account())
-  2820			page_counter_charge(&memcg->memsw, nr_pages);
-  2821	
-  2822	out:
-  2823		/*
-  2824		 * Don't forget to raise a MEMCG_MAX event for forced or rejected
-  2825		 * requests.
-  2826		 */
-  2827		if (!raised_max_event)
-  2828			__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
-  2829	
-  2830		return ret;
-  2831	
-  2832	done_restock:
-  2833		if (batch > nr_pages)
-  2834			refill_stock(memcg, batch - nr_pages);
-  2835	
-  2836		/*
-  2837		 * If the hierarchy is above the normal consumption range, schedule
-  2838		 * reclaim on returning to userland.  We can perform reclaim here
-  2839		 * if __GFP_RECLAIM but let's always punt for simplicity and so that
-  2840		 * GFP_KERNEL can consistently be used during reclaim.  @memcg is
-  2841		 * not recorded as it most likely matches current's and won't
-  2842		 * change in the meantime.  As high limit is checked again before
-  2843		 * reclaim, the cost of mismatch is negligible.
-  2844		 */
-  2845		do {
-  2846			bool mem_high, swap_high;
-  2847	
-  2848			mem_high = page_counter_read(&memcg->memory) >
-  2849				READ_ONCE(memcg->memory.high);
-  2850			swap_high = page_counter_read(&memcg->swap) >
-  2851				READ_ONCE(memcg->swap.high);
-  2852	
-  2853			/* Don't bother a random interrupted task */
-  2854			if (!in_task()) {
-  2855				if (mem_high) {
-  2856					if (allow_spinning)
-  2857						schedule_work(&memcg->high_work);
-  2858					else
-> 2859						irq_work_queue(&memcg->high_irq_work);
-  2860					break;
-  2861				}
-  2862				continue;
-  2863			}
-  2864	
-  2865			if (mem_high || swap_high) {
-  2866				/*
-  2867				 * The allocating tasks in this cgroup will need to do
-  2868				 * reclaim or be throttled to prevent further growth
-  2869				 * of the memory or swap footprints.
-  2870				 *
-  2871				 * Target some best-effort fairness between the tasks,
-  2872				 * and distribute reclaim work and delay penalties
-  2873				 * based on how much each task is actually allocating.
-  2874				 */
-  2875				current->memcg_nr_pages_over_high += batch;
-  2876				set_notify_resume(current);
-  2877				break;
-  2878			}
-  2879		} while ((memcg = parent_mem_cgroup(memcg)));
-  2880	
-  2881		/*
-  2882		 * Reclaim is set up above to be called from the userland
-  2883		 * return path. But also attempt synchronous reclaim to avoid
-  2884		 * excessive overrun while the task is still inside the
-  2885		 * kernel. If this is successful, the return path will see it
-  2886		 * when it rechecks the overage and simply bail out.
-  2887		 */
-  2888		if (current->memcg_nr_pages_over_high > MEMCG_CHARGE_BATCH &&
-  2889		    !(current->flags & PF_MEMALLOC) &&
-  2890		    gfpflags_allow_blocking(gfp_mask))
-  2891			__mem_cgroup_handle_over_high(gfp_mask);
-  2892		return ret;
-  2893	}
-  2894	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+Luxiao
 
