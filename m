@@ -4,142 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38539C624DE
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 17:33:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC046C79F80
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 17:33:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37D536B0095; Fri,  4 Sep 2026 13:33:38 -0400 (EDT)
+	id EC91C6B0096; Fri,  4 Sep 2026 13:33:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 355456B0096; Fri,  4 Sep 2026 13:33:38 -0400 (EDT)
+	id E9FD96B0098; Fri,  4 Sep 2026 13:33:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 245ED6B0098; Fri,  4 Sep 2026 13:33:38 -0400 (EDT)
+	id D8E536B0099; Fri,  4 Sep 2026 13:33:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EAFF76B0095
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 13:33:37 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 71200140162
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 17:33:37 +0000 (UTC)
-X-FDA: 85176776874.30.7F52D11
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 5A3E2C000B
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 17:33:35 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=b1eqeNyM;
-	dmarc=pass (policy=none) header.from=gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id B478F6B0096
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 13:33:49 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 54FE98014C
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 17:33:49 +0000 (UTC)
+X-FDA: 85176777378.26.76449DC
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 66D93100002
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 17:33:47 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Rfk7MqYe;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf10.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+	spf=pass (imf05.hostedemail.com: domain of stevensd@google.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=stevensd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788543227;
+	b=NF8O5+rf+g5XM0Py9J00buQux26wNedUbSIxDFOjIIDQQ0cegj/J6Ij6vNFqgyBIwz3eXw
+	+kf6i9/z+g+JkSHzW6RvzQjxsXBXngt0VmY31q69cww59WvY48z4YY7l4Xu99jwvyIW67t
+	iOaTmCYGWmlwI1ckV1/1nzyEwP9/1BI=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Rfk7MqYe;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf05.hostedemail.com: domain of stevensd@google.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=stevensd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788543215;
+	s=arc-20220608; t=1788543227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=soTQky9Z3nYNLqFSceLyBlbSmjBlYyMm4HBR+pwE4Gg=;
-	b=WVgTujhB0xkM1gN1POkCWLFylOeAvr8Xstf24PnEwUAEL+XD7MinJ6Hx2AUndQt3sLfp+K
-	w6slmyufxDi90xmhIxo1wF992AGjM28mGneiC5xZFVIXOylLfzxPOGXOTgGM6y5PsaUMkl
-	kBBhxrE9bBkEPvfHhLNwGKAuCFM8ZB8=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=b1eqeNyM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf10.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788543215;
-	b=3BVAWTqtzM/OFf+b+bPc/5rx5Qx7PxDlawzjYZENTJd9LyC6qUvrKgVIEzHDpMNzvc6KZF
-	FbLyL1Z5pl3CSSwXCw83hVhmy56lcpo19RGVEaOWtBR6rQWLlz50y0sX4/80AkNEnO5/h5
-	1M72QWaOOQr0NLuCPO7w8bFG+7u5cf4=
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-48441a2ba14so1101370f8f.1
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 10:33:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788543214; cv=none;
+	bh=t1ktVxTbJlW2upQFhjIfSwuMOl5963W4/r7K4+ZZ0GY=;
+	b=A9xT4ElG/iNI9RfbOJdSkOcKTxZLbYW+lksEjrHF/4t4mA6l+faJqferDlQtocj6KAQNFA
+	Xg2sw+FonU2V1xgO+J9vsMw1sgeUrh+V2kIjwDUgyAClzS5poep+I3V8gnRVQCF5gVseh4
+	yx76uB2n1eVFC+7I2Ocb5RZD2Yzy1q4=
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49cff3b3b92so21095e9.1
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 10:33:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788543226; cv=none;
         d=google.com; s=arc-20260327;
-        b=SKFIqtfVI3WrfgWvYL5EITtkf9Fw4Tb6LKXX6fq74Ri5ckHvkCmF5vx4db5iLfm7WF
-         f9tDNRbZDvIXUVSPB7gF1ypC/6z80L7eiJWupJpdjYeSIf9c6tW4ZgkYQrLcTrzYMkY/
-         5bTi1+1x44pke6YCAL3absYvQ3Xk/40LK/WqtQSvgGSnJ0HAhig5uqwcip9OBjZu4t0V
-         Ru6b10kim/Xrap5M7Nnj0b2JqfygZ9vydbJyxQYBWDnNPKDKS8vVnUSBUIiFnJhjdCMc
-         XxnS/IyEJMwjw3Dbf722QiIhTGWly3hPek6xRtvpwFLtZUyE67Rh+KrA52Slq3FogjMm
-         jxSg==
+        b=n268f7uqdIq6o4iGyNueYwycVQnxznNoR84a8lx0NuhiuqZJ+YKx1qbCVxf6yeHDK7
+         w1kdZ+QYzYNaUDXS3rU0rWPhXGD8a7c1B5u4Jt5PzSVR6yP/u+OnhGBrCB83KOoUBhAD
+         o17f8qm53jmIv3xxUoaV7+/V5I1rGZ69iS8d8JyeQKKbCBcmHGDpKeirfcIv/YWO/dAk
+         /XLDSAhPyYWRufjQTHhAhHEPMjhsveV5iPftolsXbLe5IoyTtgSXSghb8FcRwXlHT96k
+         KBIgbxHXO9zczH8AvoR2f2+HHweIUMhcuYBzSZWXaskTZGLSvKX3YLLOjmnXoIP2bEZz
+         4ZHw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=soTQky9Z3nYNLqFSceLyBlbSmjBlYyMm4HBR+pwE4Gg=;
-        fh=ADQYGoFp7OVoUemyxaMhUTdLFFV8+JAYf7HQVZkXFDQ=;
-        b=d8IrcGrzatA5e+e9nLzdwXJT+Vq4fyaPA7dMqyrMvqKQIOotQ04N2nqfK6hNBP95KR
-         485q/WcjAW95yd/kar6XGNgmWNJWKdanxg2A0cosCLhs1LhCjTEHnd52E+ttBqpIeS20
-         B439ZmycBcgLRMQOVHdjJnGkgHuY5Lsrd3EY7SnPZKx68OzBxV18KxtZzKQdayb6kViu
-         l3YiWVaI3J+HtrA4xNmz3jAY6JiLksEx6pNRSeIyBwo0nqitqutzCqaJaopwvJR5l5I5
-         D7FsHWB92zLYycsFAQlqcVFZ79idWgPM8mDkQZ/E9B/lkbOh4VEvdH67rICoEcX6Bnsa
-         Rwng==;
+        bh=t1ktVxTbJlW2upQFhjIfSwuMOl5963W4/r7K4+ZZ0GY=;
+        fh=zxvXFzJevY2BbcuyC0VpriHQZ9+Rh9c4t/9sry+CegE=;
+        b=eI1y3UqWWAAVN6Rdlo9xlGbfBKZZHqJjuPWvByleVUFHEf7hPW4mUVHt3W0bbPn1f3
+         9ATpW1CQ6zOpvv3+tNhGEmKJALRPHJfHRuk2vtAFFgzGEazQL8nfaKLXe/soFEjw5y6u
+         1Dh/HlxxsXszSSijmlWwtGg8Xj4HdCRgOQPWiaBqDDOi345rS2UaSgF2HJalxkf53JNS
+         r3Vtjiu/inf+GyTHR74P41G/M55powPKI8HAiUcdG/inOnh8MQ0kG0oBuCyNDdqupr5o
+         +p6hGIH1oH9a9Hc8h19wN58rUU16tUP+V9VI1RCOjuadBYX+lxztTMnJqYnQqjR1YRWa
+         H44Q==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788543214; x=1789148014; darn=kvack.org;
+        d=google.com; s=20251104; t=1788543226; x=1789148026; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=soTQky9Z3nYNLqFSceLyBlbSmjBlYyMm4HBR+pwE4Gg=;
-        b=b1eqeNyMLDUxIGrT7TsurUZY0Da/IPPKgB73QoyDTYLg5+QMLGSmdHoLVRhw+HhvkI
-         WL/7l41KBNBKNq66Br3swH5TjNhUTNDAlWyH86fAf37oFF75sePFN8MP5Fr+fNXUy1Qt
-         Povhr9KsENkOl8BrPyNy8Vib6yO9wkafjpYO0DYNC8yVLEj0o8SpYnDXtYLbI2u6Wy+P
-         owtKZjgxPQ5PlIo5VHRHobPO+p38FH3mkh5GNgESzyHZ+OYSnzSQg6Y0vjX5HQbYRMXf
-         pfpzi47E3ctC08gGGYONFvC13XMZqmW2ha/aFZUvTG1BXJ5YdkxXE2KQH8k3ZeKeSaa1
-         7Xvw==
+        bh=t1ktVxTbJlW2upQFhjIfSwuMOl5963W4/r7K4+ZZ0GY=;
+        b=Rfk7MqYeT/uUs0TaRdzBUYsQqJmiIpxRcECq3lYQvFqpkGL7EH0ZVuPAmLjIXuB5Wo
+         K3n85tUWuAvPdhD7VekAtMUCexQjT3NiHCcX6lg+EZBHjT7AftPlIY4LXvG7PUBlvJGC
+         bqd39bDtqpSI8CpyCPObo5XN/PxQ5r3uSHkJeyYkI7rY1Z8jXNsSbtTgtAb0Jl8UCvyN
+         2xp3YXbnO1dTL5CbBbSvWtySx5pr5VWrl7jA/rAd9XhGnCD94eOOZrsZk8OIFoIuXxlE
+         NPo0ltxg5uqzm8TvY3z4io8DMTj/eHIkoEUAFFsKJ8uIfsVoVpiOPME6bYsmNscYgKws
+         xUNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788543214; x=1789148014;
+        d=1e100.net; s=20251104; t=1788543226; x=1789148026;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=soTQky9Z3nYNLqFSceLyBlbSmjBlYyMm4HBR+pwE4Gg=;
-        b=hT29waOl30Al5HSvKBy/LUPlHnUNsfVRfRN0QS6M4gChj6uD4ZN58dfWPPgfVnbqcc
-         tI34qHbTuVNnQomNlUDG7HgipRllRdKUs0au1TSAPJHK93ELbf2L5nlWGdXOOJJdgZrX
-         fy1DDs8AU22/oCNdjsNd3XpQTR2j4olmw3XgpDDdfOdN+kFOaDmdxfnqzAECFgw+WV0S
-         vm9NKymzGYGDreVzKwIQ9Af8rdy6sU98YxlKK3p0bOulVj2Q0QfxO/IhvSUoovRBbF8I
-         8b5iABO4C3rweNDMQAxp2PDjvcOzNiddH9TbsE22QIgKEejjHf8qHx/WtNpq6UTKSvCX
-         5hOg==
-X-Gm-Message-State: AFuF++kL1kcMHsQ884ALtmr3LXoAQI3hZ391RLxhxwQh1n+F13lg+weq
-	MSWKXEkkKgIi2i9sJIlW/ywOh1zpRUmiVvsm/ICtEGRfUxBIkQyXAuf52Ddv7cSkcBrRfwaSrS/
-	A2e0PmHps/qvFTj+22/z/1mXyzH6HB+M=
-X-Gm-Gg: AYBFou31TQjnRwCzn5ZJhPrg7HYp0RpRU5frNprfAwEJVLBcdV43F+fxthlxU9w/KJB
-	wVD/m1D96S9Ns/mLx2dvrH8J2+YgTgcWGgYnto1jUkasLiKaGokdcWdRWHTOgoEhDvTf3jDWFsw
-	kMmOtBQ1yIsmdB2nTz33dnfoVt/+FX0hp+kxF9KoN9iVbfjaFXXg/PDdhdkl17wCwrXqnw4n7Ce
-	+QMkl4cqQBIL3XFPXrm1zF7JZ9QmAJNirvoFBH+ndngOr8IhpLqn7zKyU6Ee1SdAlQY9hmqmqPt
-	tp0wzyibns73N/5bMe1s2HnJBmSc6WB0ADjeLdCM+pNm0+8DKr26gyWmDeMPblH1OzkmiDTyK2p
-	4wN3Hz+WSN+Tr6WgAeWBnxWcg/ok=
-X-Received: by 2002:a05:6000:228a:b0:485:8fe2:ed81 with SMTP id
- ffacd0b85a97d-4858fe2ee3amr163801f8f.26.1788543213669; Fri, 04 Sep 2026
- 10:33:33 -0700 (PDT)
+        bh=t1ktVxTbJlW2upQFhjIfSwuMOl5963W4/r7K4+ZZ0GY=;
+        b=Dn183I5REp3vmegvA9ev1Fu1V18uOXMG6/oYMV+wK2OdTKWNIRu2wAFhyrIXGYn+oS
+         tUbnP68B+h2KxmEzCencUXlCLK15vRqy4s63ab5HyDMMKVkBUG2VGRC2jvZHeqS+6WFj
+         HtkBmsNii0E/K42QLVlS0NCf2lpGeJ8Bwkmy2lykF7tCNqRKvae/rFtbAleK4bPRq9mx
+         qd99US1leGPeQSOhs8L6NQMGuFZhoV5YO8ex7LCRhImJZYMXHMUY6eRQPLfEPccoF/2+
+         gzJyLSbcx0EKuutNlZyA2zY+cCOIvDPOcZVNQT6cM70p8/AeHAp/j3mvmTgjPcDWOM1u
+         c7FA==
+X-Forwarded-Encrypted: i=1; AKwUvBz+Jrpo3boTLphnzDJgAZkTdI1No/vFSMUNN6R++AWz/ufQHlUzr4jjZIbEECB3DCUFwo4zTH6XHw==@kvack.org
+X-Gm-Message-State: AFuF++kimpLSiA5t3utRK+5wC3pHlb6MYrYhrW17X4HQPIsQMtYcYd3Y
+	fo5iIJbOnFh5ga9aW+pVaqJmpAWJ5M5pSp1iJ/KOgyBfkXX9TtbZSWVLRBJp1esTkD9QFWYPlAM
+	kLJULEsPKGnfsVd4ReYqyR4u2Z87t5AX0tUif+JfJOtcVPbDMwSB4vflU
+X-Gm-Gg: AYBFou33NafdOtDlORICt59yQnqHokW6Tnx95quS+IHNer7guhL1T8ftiXmdAzgdVtn
+	Ce6xpOfB2+zCipmE1CwRv4UvDzMTY15nBsaLGiHjyuSrT1+4fa5A5b0LKUNcajo3XGV0IfBjvej
+	q1KboihdFVFccCDiiDT8Pbhw/C6UgJuv4Vetv+1frzx3e3UFUghCNXdP3/eEJQgbO2c8yayhite
+	4GiaXXuyg9n66+YZwZPq0C3qjSkCAv5zDcH0eN0mNygpIR9xIh6FpLt+rwPbe/mnQ7VJe0rUTdw
+	6Jq5o2Dn65CliNkLpVQickcgeGMKSAmbExMVBUs4BQf3/JTyV0b68t0BHUJkDY8c3ij7a4uDlZu
+	z+Qh191G0Clo=
+X-Received: by 2002:a05:600c:35d0:b0:499:fa56:f542 with SMTP id
+ 5b1f17b1804b1-49d01d85e40mr39325e9.8.1788543225025; Fri, 04 Sep 2026 10:33:45
+ -0700 (PDT)
 MIME-Version: 1.0
-References: <20260903115018.2034541-1-yi.zhang@huaweicloud.com>
- <CAJnrk1ZLzNQxrSLQx7TsLK89QC_=9cDfoDcyKNBNde0CiDGoNg@mail.gmail.com> <4e498938-f21b-4d75-b789-8a615aba877a@huaweicloud.com>
-In-Reply-To: <4e498938-f21b-4d75-b789-8a615aba877a@huaweicloud.com>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Fri, 4 Sep 2026 10:33:21 -0700
-X-Gm-Features: AcwNN1WC5_C19pRuHFRSSvaEOgUDXw8Fkj4YdviBWSd6-uI0JItHi4sYChYNXkU
-Message-ID: <CAJnrk1bQYUe6+1ryyJur5EEnZYrC+_5AYsy=OWzVRgD4202y1g@mail.gmail.com>
-Subject: Re: [RFC PATCH] mm/truncate: fix data loss when splitting fails in truncate_inode_partial_folio()
-To: Zhang Yi <yi.zhang@huaweicloud.com>
-Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, hughd@google.com, baolin.wang@linux.alibaba.com, 
-	willy@infradead.org, jack@suse.cz, ziy@nvidia.com, bfoster@redhat.com, 
-	djwong@kernel.org, yi.zhang@huawei.com, yizhang089@gmail.com, 
-	yangerkun@huawei.com, chengzhihao1@huawei.com, wangkefeng.wang@huawei.com, 
-	yukuai@fnnas.com
+References: <20260831234339.280376-1-stevensd@google.com> <aprp6GXv8poXXad9@gremlin>
+In-Reply-To: <aprp6GXv8poXXad9@gremlin>
+From: David Stevens <stevensd@google.com>
+Date: Fri, 4 Sep 2026 10:33:32 -0700
+X-Gm-Features: AcwNN1W259iSlNcdOxCm33dP0lK-4S0p3PqWOSOPP-wtwD-84kHw7ZoHOPqUqY4
+Message-ID: <CAOiLmNEPw_cPE0QM1Q7CbNC8owW94PvejKo71Hb7DF=QKNN4Lg@mail.gmail.com>
+Subject: Re: [PATCH] memcg: Don't call schedule_work when no spinning is allowed
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5A3E2C000B
-X-Stat-Signature: u83d439ygskwnoosnuyeq8wmdza9cgss
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 66D93100002
+X-Stat-Signature: h17x1g5w3t9naycoh4cpmezxiirz3nt5
 X-Rspam-User: 
-X-HE-Tag: 1788543215-564198
-X-HE-Meta: U2FsdGVkX19pPl99c7f1i5uhpKJAauX4qbcPcrY8GUXbkn4meGHZQFitqfrQJsG4kaaBFu/yLUpYWciRsLyyt4mcm6Q3jKAflmcgwcGFsczIprRsATpy/CQt54dYkGQ/bqHfM/AFTJiqwXfdbi4j+kO9lsqug6092oZseCkSVii1zGMLdAzfUzVrzzk65Tsf5P/GJZJrChecFS2hrwBS1n0a2BfSkXaq7l3Xp7Z3peGhcaNJi2AT+zdMB3LzD7TzQKy7PhRXxLnyqVHs8RN86RwTLgNXdQ5PRmUOudcfU+amneGGvHs6VPp3hYfw1dOiHbXQO/hzsHoBg98KwhTQKds4f/0IdE6yZNYyNPfP0aMSd3V2a3+VE2yY7dKulsOHTpejyqOoCYnsvKjZuq9Kf/OCaJ5JdPRX3MjwsE1usfz+YRdfowP5EjMKvQzUcl3uQ72EU7r6DVWfdKwy9sV9BENvbwm0WwI1cyem+03U3VhyOUSZuEwKnJdDD1W3kAH9pXrSih9jJVSCSmd73+j1Sd20B9OO9zH2/S35hpBNtfbWAT9i59R+1DmQjjo89JKLiS6QF/VL8nIWTKnU1OqoU4GALwo5J37wySKdIZo0PDPSf5360bvCRU0MUT5XTW4JtnscD6r+5A/W9zBCfZqsslFNEIKVYClUq/UmP/2VYQG5vuD+k3+cMOtnXcR9BY+t1dHSHcqsfBV1Siaftc/snCZhRGhpOk/3RUZKwEoFS+0ux9lSvo+SMFb2CC7U2NxBXQ7n1MckCgNGkAAu1t9TShD3P2TYKKuEtbDkmjUToFWPGEsboxVhWeNBiOGdbLg80ntGyx/YCmDY+YIldU2vQy8i9BMKeApnXvyNj8eu2OFYvPvn2589n/ESD7EvoiuSodhi2ZnB5gGDOldzlZOdIgY4W3BfuSM/Sk2w8Fb8JMVdTyQ459b/p4pdg30HJ7Fn8ve6jsx+KBI5LURTBFd
- 6oKe8lZ4
- TbjDiQJSYHqe7vV51lSE8Vw5loBcvW0H5afoYu6N9K9cg+J35z+pOEimmUz3mF7rx+Iz2yDdTYxGh+Iugnv8SSA7bYwOIPwld/tTaG1n7aUHzqs8s8PlNM2FkUYtuRP1ftClKpxMLS11cYHLbIx9LEFeB8i2UCAouGKk6EnuR8YqXDkudJBtkdirFDEdsmFxktF+WPfygJkEslOtanvuYz2WnkxJzFts6Oa5YWitkDmS2Mj+4tgtM/ysWAshuk5ULVapYcje7WsCWNlSteZGddhVi3eRuAo7T9CyEujCa7NCHzLN7lIAhINx9ASS+EOLquMlMS/K7bYzHl8QfWKEFWeyfimYrWCw3QuSGvrQ0V9lWLlhjfRM/sxBdF/p7Tx9nYnx34WzIg2CQeshe5VAj+YTIhLdrHaHkW2ttuvwUCI214Cq/dZIx1ZcUYto+6lNF6a/6HitZXrl6l8gTS2pGShdE711ZEpX9yaI5
+X-HE-Tag: 1788543227-685241
+X-HE-Meta: U2FsdGVkX1//OLq9t9xUpkhV1To8iaN98kygTa3Dx1oTkuxMB9q7tPOC8y8OmocSfmyO5P67rIMNKICJQOpXFwWylPWWCj+WWj3dZsOWIuEsaAKT4LnLPWON8Ir2kXsy+fCSOhkRelT3gqeM2LUZlSV+MTtCcPdueTAwQMlqFsdc5kbObfXhEJnJgvhif9V1OYGKSYBOTNYAV83bWAjPCC80GAPbmR4neE9jEjGiFHdiEziAFn48DTMoeJcOYOsPoDaULlSEcS7SNZJOu8EZ9TnTEqQSk/+AFavlOj6NqzuC4VqxZh5NbwLjf7Luu8x85ZX+fi7eCVwS4cGl0U3kcjwRmH9LdCES+CSb2IRwbO1OL5RjMSfKB+roIYzGX8GoE6X7BjoTUrKUBF2VlcZNIU7tebmzdsJc09aWHNQaOfQYKT0RtyarZ9vu/J7xoAHrzTux2CuGKm/jknwqxBMtS7L1VIUxwVjnnnU3g9t8wlYi8UPzFEQNII0nAd5i/dmir0u9AWF2ToWy51OWVfGtm6t2+op0hiDldYZ16ZRwp5wDFXrWgmhHiMaLcNnVb3NdlYjzvdworRIyzP9e51BT82EOr7H4Z4B2RVk9gAc0t13NQkwSifCAv2EHVdC3lv++6MC28O8KJZhMNeU1OTMpCJDf0HgDHUDX/Z0SzNN6i1ts1QUfiukpnCIK9OCeIGAfe+hCrXKISPGYuQhehfBcm3nSfTm7K9azDazstfYlIl6RjBrEF2jBSyVgizczgNC5rrpUl+HF7g+iDveRR8zR9slkvLyEPwywOLA01jbgQodvLl/mZm04JNb//t4Zk+qZXZ/H6gDzsgxuVxRDBQ4++U25kwYjXr6lpZHjVuX/CGufFTwkwLbSBZZboiIGg5FhRhrKFnUl5RCOLERIgHIXBgLk6eOK5mn/ZgyB6dPeq8v5NwyEZey0dtBYHxEK0EGCgOIGXht4l6OyMUwA+3h
+ uA3xPY2c
+ sfYWMyyoa06jQrM3RjqMq8WT6QxHPheTcajAOINztfGtYA5kT6G7ssKNJaNkFa4DecsMSqAnYf83A4RTeu/cTuFs/BNgtPeS4UJVx0tsTHlTg1HOrB6vO6y5YVAKggJ8Zbl52QMm51GLFWLegaRETKzs+kkTHjOHed7Qq4gHYi6MsDU3u5er0U+EjQuWgt4JyCRKbzM8FTtdeVlh/ze5B1YxMMVPhcZ/j87EMam/bJj8FE3npiekm2otuqiA+zqMlN16zuIzO8zffAd1rWM6Xz6ahqYCsS9nGbC7yuYldfgCGgTvEffcJf9r7VhQsce2rVUNJ98kJD5LsII8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,108 +142,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 3, 2026 at 11:27=E2=80=AFPM Zhang Yi <yi.zhang@huaweicloud.com>=
- wrote:
+On Fri, Sep 4, 2026 at 9:25=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.or=
+g> wrote:
 >
-> On 9/4/2026 3:01 AM, Joanne Koong wrote:
-> >>         /*
-> >> @@ -259,6 +265,10 @@ bool truncate_inode_partial_folio(struct folio *f=
-olio, loff_t start, loff_t end)
-> >>                  * for shmem truncate
-> >>                  */
-> >>                 struct folio *folio2;
-> >> +               bool tail_isolated =3D true;
-> >> +
-> >> +               if (end)
-> >> +                       *end =3D (pos + offset + length) >> PAGE_SHIFT=
-;
+> On Mon, Aug 31, 2026 at 04:43:39PM -0700, David Stevens wrote:
+> > Memcg charging can be done from any context, but calling schedule_work(=
+)
+> > isn't safe from an NMI. If memory.high is breached from a context where
+> > spinning isn't allowed, use irq_work to schedule the reclaim work.
 > >
-> > If I'm understanding it correctly, based on how
-> > truncate_inode_pages_range() uses the end value (eg the "while (index
-> > < end)" loop condition and the find_get_entries(..., end - 1, ...)),
-> > end needs to point to the start of the folio if the tail folio from
-> > the split is a large folio, in order to exclude that folio from then
-> > being truncated. But with the (pos + offset + length) >> PAGE_SHIFT
-> > calculation here, does that result in some cases in it pointing to the
-> > middle of a large folio? Maybe some logic is needed to make sure that
-> > it points to the start?
-> >
+> > Fixes: 3ac4638a734a ("memcg: make memcg_rstat_updated nmi safe")
+> > Signed-off-by: David Stevens <stevensd@google.com>
 >
-> Hi Joanne,
+> This is in mm-unstable and breaks the build for me :)
 >
-> Thanks for your careful review! I don't think that case can actually
-> occur. Let me walk through the scenarios where the
-> (pos + offset + length) >> PAGE_SHIFT calculation is kept as the final
-> end value:
+> In general - please don't rely on implicit header includes, if you're usi=
+ng
+> functions from a header that's not included, add the include because your=
+ local
+> config might happen to import it but another one might be broken.
 
-Hi Yi,
+Sorry about that, I'll be sure to be more careful in the future. I've
+sent out a v2 with the missing includes.
 
-Thanks for your reply and for walking through the logic and explaining it.
-
->
-> 1) offset + length =3D=3D size:
->    The truncate range aligns exactly with the folio boundary, so
->    (pos + offset + length) >> PAGE_SHIFT points to the start of the next
->    folio, not the middle of one.
->
-> 2) !folio_try_get(folio2):
->    The folio at that position has already been freed or is being freed,
->    so there is no folio in the page cache at that location. The
->    subsequent find_get_entries() won't find anything there.
->
-> 3) !folio_test_large(folio2):
->    folio2 is no longer large, likely split to order-0 by a concurrent
->    operation. For an order-0 folio, the page index and folio index are
->    the same, so the calculation is correct.
->
-> 4) folio2 becomes stale:
->    The same to case 2), folio2 is removed from the address space, so
->    there is no large folio straddling the boundary that needs
->    protection. The caller won't get folio from here through
->    find_get_entries(). Using the page index is safe here.
->
-> If a large folio straddles the boundary at (offset + length), we will
-> successfully get a reference via folio_try_get(folio2) and
-> folio_test_large(folio2) will be true. In that case, if the split fails
-> (cannot lock or split operation fails), we set tail_isolated to false
-> and set *end =3D folio2->index to point to the start of that large folio
-> since tail_isolated.
-
-The case I have in mind is the case where the 2nd split succeeds
-(returns 0) and tail_isolated will not be set to false, and *end still
-gets returned back to the caller as the original "(pos + offset +
-length) >> PAGE_SHIFT" calculation. I don't think it's guaranteed that
-the split will create a folio that starts at that page.
-
-The example I'm thinking about is a 64k folio being truncated at
-offset 0 to 36k on a 16k blocksize filesystem with 4k pages:
-*end =3D (pos + offset + length) >> PAGE_SHIFT =3D 36k >> PAGE_SHIFT =3D pa=
-ge index 9
-start: [0 - 15]
-after 1st split: [0 - 3] [4 - 7] [8 - 15]
-split_at2 =3D 36k / PAGE_SIZE =3D 9
-2nd split will try splitting [8 - 15] at split_at2
-after 2nd split: [8 - 11] [12 - 15]
-
-in the truncate_inode_pages_range() logic, start =3D 0, end =3D 9, so
-find_get_entries(..., end - 1 (=3D 8) ...) returns the [8 - 11] folio
-and truncate_inode_folio() will drop all 4 of those pages (including
-36k to 48k which might have dirty data).
-
-Do you think this makes sense or am I missing something?
-
->
-> The page index from this setting is only kept when no large folio exists
-> at the boundary, which makes it safe to use. What is particularly
-> noteworthy is that for cases 2 and 4 above, aside from setting it to
-> (pos + offset + length) >> PAGE_SHIFT, there does not seem to be any
-> better alternative.
-
-I think if we just rounded down *end by the min order (eg *end =3D
-round_down((pos + offset + length) >> PAGE_SHIFT, 1UL << min_order);),
-that would ensure end is always on a folio boundary and can't be
-inside a folio.
-
-Thanks,
-Joanne
+-David
 
