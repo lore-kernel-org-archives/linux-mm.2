@@ -4,105 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F7D9C624DE
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 09:06:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7A89C624DE
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 09:31:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BADF96B008C; Fri,  4 Sep 2026 05:06:20 -0400 (EDT)
+	id 32B0F6B0088; Fri,  4 Sep 2026 05:31:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B85AD6B0096; Fri,  4 Sep 2026 05:06:20 -0400 (EDT)
+	id 2DC8A6B008A; Fri,  4 Sep 2026 05:31:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9CE56B0098; Fri,  4 Sep 2026 05:06:20 -0400 (EDT)
+	id 1F37F6B008C; Fri,  4 Sep 2026 05:31:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 86DED6B008C
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 05:06:20 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E6E5A6B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 05:31:20 -0400 (EDT)
 Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 07D20A0FB5
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 09:06:20 +0000 (UTC)
-X-FDA: 85175498520.02.4A848FB
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf11.hostedemail.com (Postfix) with ESMTP id A069D40008
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 09:06:15 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	spf=pass (imf11.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E19851C3337
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 09:31:18 +0000 (UTC)
+X-FDA: 85175561436.02.E9B3E58
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 42D2840005
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 09:31:17 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EnF573Ue;
+	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788512778;
+	s=arc-20220608; t=1788514277;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=D7J+bUVsxO529SxpxUW0xHsoPx2AL+Tsz0e7cfwk3i0=;
-	b=U2l/IX8ZwxJqWRpaiN/CCHVZRPCmT+nCJa3xun4k+36CqANQigX5rpvDB8nY+UhN1Cu5vV
-	A26kGNW55eNvUWmnIUt3YJ7fMYonzBiWCJbxM5Ti+v6SJrRMNuXoER/YfgUoEGqtMTA2YR
-	zrVBD+YBvdRLQW5AOuMGSUSfdtyIfC4=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ntGqMbIytPTwLlJR1fA/xTB+g7J2BTUkRTGlMKhEpBI=;
+	b=08Jod/bis5AlWcOLCv3XDscMPA9uyGEGwr27rwl6wIHaw2vpkVdJG46l8A0jq8OAIkFkkT
+	Ybido1u9DAwmlIyrdIG2BjqLw/BkaB5t2YtcVahtRhY0tcQngO/bfBQyWGa3VVNRAOMbQ+
+	hddrvb8FGuqaoX8SZgjuh6MK2EIcZU8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788512778;
-	b=Aw8sjeksd5cK42zMsuwr+CsUhRTFygCHaREoCJ18AouHhDgkL4ckz4czLeTA+XWr2DK/rP
-	rG57FIJum9EJeCqU0Qqo+FMecRhfXztuLDPSG+8JAIyd3Jwiuy8WxJDQndZX4FoayC2Xpi
-	iMkXIYMQxgCUAl6xw5l7SX/woYdVuao=
-Received: from mail.maildlp.com (unknown [172.19.163.198])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4hbrCP58QtzYQv75
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 17:05:21 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id 0F61D40576
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 17:06:06 +0800 (CST)
-Received: from [10.174.178.253] (unknown [10.174.178.253])
-	by APP1 (Coremail) with UTF8SMTPSA id cCh0CgA3Hgn7iZpqJIHUAg--.46109S3;
-	Fri, 04 Sep 2026 17:06:05 +0800 (CST)
-Message-ID: <5e9a4d7f-7197-441b-9492-61c7b7e8943d@huaweicloud.com>
-Date: Fri, 4 Sep 2026 17:06:03 +0800
+	t=1788514277;
+	b=CQeMgumioIRrq4aYkQ6rqOw4rwiQbej6GX49Z0etu02AP+7ElUWsdx16i7y1Y0Wry0Mcst
+	2odl9Jwg53qWqA2fzyU76SUoChbUGWyC2tKynQ6O7iredQOi3pnBsEzCR3qTQIzQPbju2i
+	U9sogFdmw1/8N3mbryJ/AABk8lUISHU=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EnF573Ue;
+	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 78B9660A6D;
+	Fri,  4 Sep 2026 09:31:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE4991F00A3D;
+	Fri,  4 Sep 2026 09:31:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788514276;
+	bh=ntGqMbIytPTwLlJR1fA/xTB+g7J2BTUkRTGlMKhEpBI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=EnF573UetbEzUTlGgz4Tk/HQtIPjMLYjCzaINKkr83N0oVneVEIXv2SAaw7NFguOD
+	 HszNUHvb6pel1Q8+9mMkTNoN8ouZCDDtIWGnq+Y7SdT/t755RNwfjkCOWxii5TURV7
+	 1cmDnH1wsJ6kUAzaR33Y7Zw5Q/I/X7pg6LgaikJ/PPdtiAcvZemp4uuIH0q2gcj1dH
+	 WYujHcCSYUyZD+GzDq/eM9lmkPQHH/4CwFRz47OAM+WgM7PIXRzOn0nIL2JXHc3CKz
+	 p7NOLDy38otOuXtrAUkU0o6muWT3qYtTElKJDUSH1H4HEyXqaVIghB3GDP4zRdL4Sc
+	 Wz/r90OEWi/ug==
+Date: Fri, 4 Sep 2026 11:31:09 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Jann Horn <jannh@google.com>
+Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Jeff Xu <jeffxu@google.com>, =?utf-8?B?VGhpw6liYXVk?= Weksteen <tweek@google.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Pedro Falcato <pfalcato@suse.de>, David Hildenbrand <david@kernel.org>, linux-mm@kvack.org
+Subject: Re: [PATCH v2 2/3] proc: query LSMs for introspective mem access (if
+ PROC_MEM_FORCE_ALWAYS)
+Message-ID: <20260904-busfahren-klarkommen-kodex-da59b836bef2@brauner>
+References: <20260825-selinux-pokemem-v2-2-b46bc64916d8@google.com>
+ <82929c994076d95f99560ecc67f6cfce@paul-moore.com>
+ <CAG48ez1rd3cFhmGn7mWkaVvGqYg+cDiGUhuhH6r51dUm-QBXUA@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm/truncate: fix data loss when splitting fails in
- truncate_inode_partial_folio()
-To: linux-mm@kvack.org
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-ext4@vger.kernel.org, akpm@linux-foundation.org, david@kernel.org,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, hughd@google.com,
- baolin.wang@linux.alibaba.com, willy@infradead.org, jack@suse.cz,
- ziy@nvidia.com, bfoster@redhat.com, djwong@kernel.org, yi.zhang@huawei.com,
- yizhang089@gmail.com, yangerkun@huawei.com, chengzhihao1@huawei.com,
- wangkefeng.wang@huawei.com, yukuai@fnnas.com
-References: <20260903115018.2034541-1-yi.zhang@huaweicloud.com>
-Content-Language: en-US
-From: Zhang Yi <yi.zhang@huaweicloud.com>
-In-Reply-To: <20260903115018.2034541-1-yi.zhang@huaweicloud.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:cCh0CgA3Hgn7iZpqJIHUAg--.46109S3
-X-Coremail-Antispam: 1UD129KBjvAXoWfJFyUuw4fGFWxCr13KFWfXwb_yoW8JrW7Wo
-	WfJws0vF1FqrWkta1UAF97JFykX3Z09ryfJF13ur4qvF42q34DAw4UJw1DGan5Zr1qkFn8
-	G347J3WSyrZrJr13n29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UjIYCTnIWjp_UUUY77kC6x804xWl14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK
-	8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4
-	AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF
-	7I0E14v26r4j6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
-	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
-	s2-5UUUUU==
-X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
-X-Stat-Signature: qe518w9yyswftmcykyy4z17bncfhjm1c
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A069D40008
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAG48ez1rd3cFhmGn7mWkaVvGqYg+cDiGUhuhH6r51dUm-QBXUA@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1788512775-973583
-X-HE-Meta: U2FsdGVkX19C2hs0yFHFfPvq1IgQ/UL5Bdpf4h/Ztleq3lpeWxVAZlcKeJUByJAEigIT4zsyPOesWjvWUTr+85GzIx7t4WCQpoKoFpZoq2w6H65RIU5SM9wPLQaSpgRnEqsOV4dWr5WD92Vj0LdGQWrSnvlSzKUyKCEilpCDBTcbYENktQpE65Kbf1gmR0mXpExc+xRB5qilo9htsGd9FCrXB4IlUfUllvdT3DRvLeH4wp1hRUc33yAjGLqIgEAUHOFbzsljPSPuMqX0TtowRp8Zaho63N22nhZ6UXtEUJTcbeFy4JnwETco3rokRypCH9WVqN+xFjLl7K3jzxFdHbKQ3bV5Lta/gPXl92qiGNIqA8jssoUnqdp0w1uQMG132yooLjMYbVn7URwN2FkJorodfHC+H+8HhdFbN5enSdD7quxOolDmEi4Ldxl1u+KuiGOv1Utfn1Le1MbBvOHIVcgHogtTK7GKdRktr65dF/8JedW9nGJwnclAVE/C9SqXCNJD/lyNGlErgapIms8DfnuGPFHaUJyZ89dRRN4xxogyBYo3nZ2NOgwDR3+oCh22CnRZfFFIir5PQh3Q1VsKahTPFPzeF1oDxtyvMiEdFabYNmxAngB5gHBtWKV9XLd5q97UbSrmjdZpSdix71Y4S9uDUKYdOtsCJOS35YJM8Bx6p8uocPOvmmRtJXURszHUjXolLhqWQDaIGJYdzjbABlrpMykiavTJtXsmcF1Riw0hKlXjvU0yZj05zLP43wAccx1d396dUzoj0AKGoq94RzyXBftr9NyfJxUJ5lf/0xA4Xr1r/Zru2RvXArN75ggp1qC8XiIc4Ol1Z0u70gwjg8l88LM0j60wSpmW1Cn9iIZI+C5u3k/2WcphEo/Ra2WUJqd3TTzAEdWKDTT/DMCf7TkrDX4x+HYtaav33jIGGUJI9Hgat6+/6Zi64iDfrkVDoMHlQyV+JausqrEaLYa
- T9SU02nt
- +LXpRQCshcDSfweAvVfmDpp8xlTaTWOttSAngP/vHervQJxQCmR/gyHEBhkL+uP2/EUv5tquHhS3bFf7RtL3YUlf64lKDuW/q6fcTLdzkzREymv/WXOLegPGsjvb5mUoj09ga/ZYlhY/AqRL9lxqU1vrYgnEewpQ2ywaY/E7wyRwR5DpTgGqPRMcS85TXEI4AQw3vsZXeBpfaLqMf2H/MHp3TbyEwkDIbpKu/RAr+GQpTXzc=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 42D2840005
+X-Stat-Signature: 9k3iw1x4u6q6p7hiqdam9xq1fkrfgmyd
+X-HE-Tag: 1788514277-177142
+X-HE-Meta: U2FsdGVkX1+1l/aJfILRny7i14xfZA5WjTDsu9zz8gOVl17QbOoS9LarWLmIdOtcpqpyt1VJZtDtnpHYr8o2kv6oNRuNc7u+WPZ/dF+m02HfSlCRSud8WcxT5oZxxll0/5CAuQuuylohFZ0S1CcgoCc7knPonhNsA2DkykXmDiyOJeW3JGDdnx7QJ69+ay8mNiAWW4RIrcHdOzw+rGBrbJPO2dBbdjAHFKXgwuDRNLLMYzunLVZ7H0ATM4cQS7/BRHYI9iw7tUNYMa74njsWCJGHoL2DfNeO+KCs0roU8Xrr2Bq3N22dKNeBMq5TPMRUr+VYU2EyYQdzBImhkW97EjK/6NuE+05hCxG/83VYLwj7VV50Ha4hqCVxN9GF6HK3GRhA32RjjVXl4oztklgW5LdKICYeWR95a/69NbMkUm58aZu1OX4IIRhmzo04oUPsSK1o2fv4Smrs7kpfA0JqE9PfG98WhWNB9JzRq66eg74rhfdkESX2d3G0KKWMWh7IvKNZYrY0NKWze4BUZ5B28Ok9xmZvJ/HCgIisOy8EzMcEMmUb1A1affhNActBok5YQl99T/jQjb7gsMpe75sn49mDCszqvCr+uAw8Z0lJdsvQzQeLt8pg5CzBu96h11vvYjGN2zyo9w9PzDw48BQmZ479n/iylz4ajKUexNOfd+1LBQo27UYW1CRH67Xx3eYh7b3USEp8Oh2yA/Gz/FKDLULI5iAmBt5Yk0NOYPBe7QteKul9H9LxBc4ksrcdyC13pUeIGIlU4h3EIfN4NFcS0NNrgkO2GOXJkE4R9wGqoSS4dmNEIEspd8QmDxiu4QBBRTraiFciJGh+fSvdGU46Ix14imKbJv9SOhKQCm7e2k3/w4wrWfuL1mkOXGHWbOnXNhjO+CnR+xtoD41pIzaP8XGZXYF2SWymlkCujWnxsSYBNYq4DlJPAqzgAfBXrnDCEpLcdkyTF7M+6L18Thp
+ zfyTSpnx
+ dJwSVkrOyfTKoWmGhdnF1/k53LUBtn6bugssodubzLBg8vDGiu9jxkwMAb74MrWWI1qiXX7CJFBcFzcRupLDoEHywaeXutinl4swid7uNEAK/aJJd9p1y4sZHx7EoWPXioXNbUx8QBMGGfph7ZibkdLPfvGn+zRGTcePZWC5rL+lpb2M4eVZUIXntu7PRi3EI7TySsxOcjoPZ1cwmj8p30CYM/qnVjWCGWCdGoH+ER8qXS4M9eOTEaJcKHMRFXM0BYMTQPoAWfN/K7ZrVVvMNjc1v4+293eBpt85F6qiT+mjijzkhobD0VSIQkh56WbVES9MrKBw+0hkzczMU89WLKMPIfHqf178RmQr8H9wfDsdBeBR//2+dRtTquCb62zp/SVHvcutHnkhzUyxvIw2TqZOke9Np81UjLxkk8RBhLkxUH2sx84hC/R9Ob+rKiXLkIeN1bMY+y5DBLF1yyj1INNYC5xD7I0Wo5axBSRUijywtimoUzh0O0k8dWItm3tuLGywGQPTy2pN6Soq1ijhd4BY9ZGN5xYIPTu6OV0rMEtiX8z4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,316 +101,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/3/2026 7:50 PM, Zhang Yi wrote:
-> From: Zhang Yi <yi.zhang@huawei.com>
+On Fri, Aug 28, 2026 at 03:03:26PM +0200, Jann Horn wrote:
+> On Fri, Aug 28, 2026 at 3:10 AM Paul Moore <paul@paul-moore.com> wrote:
+> > On Aug 25, 2026 Jann Horn <jannh@google.com> wrote:
+> > > If the system is running with PROC_MEM_FORCE_ALWAYS, LSMs currently have no
+> > > good opportunity to block a process from overwriting read-only code in its
+> > > own address space through FOLL_FORCE writes via /proc/self/mem.
+> > > The security_ptrace_access_check() LSM hook is bypassed when a process
+> > > opens /proc/self/mem because this is considered "introspection".
+> > >
+> > > This causes a hole in SELinux EXECMEM enforcement, which tries to ensure
+> > > that a process cannot create executable anonymous pages.
+> > >
+> > > PROC_MEM_FORCE_PTRACE prevents that and ensures that such FOLL_FORCE
+> > > accesses are only possible when the LSM allows ptrace() attachment; but it
+> > > is unclear how quickly PROC_MEM_FORCE_PTRACE can be deployed in
+> > > environments running lots of third-party code, such as Android.
+> > >
+> > > So, introduce a new LSM hook that can forbid FOLL_FORCE specifically for
+> > > such "introspective" accesses.
+> > >
+> > > Signed-off-by: Jann Horn <jannh@google.com>
+> > > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> > > Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > > ---
+> > >  fs/proc/base.c                |  9 +++++++++
+> > >  include/linux/lsm_hook_defs.h |  1 +
+> > >  include/linux/security.h      |  6 ++++++
+> > >  security/security.c           | 20 ++++++++++++++++++++
+> > >  4 files changed, 36 insertions(+)
+> > >
+> > > diff --git a/fs/proc/base.c b/fs/proc/base.c
+> > > index bec6197329dc..dc6fdcb47b79 100644
+> > > --- a/fs/proc/base.c
+> > > +++ b/fs/proc/base.c
+> > > @@ -851,6 +851,11 @@ static int __mem_open(struct inode *inode, struct file *file, unsigned int mode)
+> > >  /* private_data for proc_mem_operations */
+> > >  struct mem_private {
+> > >       struct mm_struct *mm;
+> > > +     /*
+> > > +      * Was the ptrace access check on open bypassed because the opener used
+> > > +      * the same MM (introspection)?
+> > > +      */
+> > > +     bool opened_by_owner;
+> > >  };
+> > >
+> > >  static int mem_open(struct inode *inode, struct file *file)
+> > > @@ -864,12 +869,14 @@ static int mem_open(struct inode *inode, struct file *file)
+> > >       priv->mm = proc_mem_open(inode, PTRACE_MODE_ATTACH);
+> > >       if (IS_ERR_OR_NULL(priv->mm))
+> > >               return priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
+> > > +     priv->opened_by_owner = priv->mm == current->mm;
+> > >       file->private_data = no_free_ptr(priv);
+> > >       return 0;
+> > >  }
+> > >
+> > >  static bool proc_mem_foll_force(struct file *file, struct mm_struct *mm)
+> > >  {
+> > > +     struct mem_private *priv = file->private_data;
+> > >       struct task_struct *task;
+> > >       bool ptrace_active = false;
+> > >
+> > > @@ -886,6 +893,8 @@ static bool proc_mem_foll_force(struct file *file, struct mm_struct *mm)
+> > >               }
+> > >               return ptrace_active;
+> > >       default:
+> > > +             if (priv->opened_by_owner)
+> > > +                     return security_mem_foll_force_opened_by_owner(file->f_cred) == 0;
+> > >               return true;
+> > >       }
+> > >  }
+> >
+> > First things first, we've got to shorten that hook name :)  What do you
+> > think of security_proc_mem_foll_force()?
 > 
-> truncate_inode_partial_folio() splits a large folio so that the caller's
-> truncate loop can drop the in-range sub-folios while keeping the
-> out-of-range tail. The first split at the punch start edge is
-> non-uniform, which leaves the sub-folio at the truncation end edge as
-> large as possible, this means it may still straddle the range, holding
-> both zeroed in-range and valid out-of-range data. The function then
-> attempts a second split at offset + length to isolate that tail.
+> If we move the "opened_by_owner" part into a flag then I guess that
+> works... will do.
 > 
-> If the second split fails the straddling sub-folio stays merged. The
-> function returned true unconditionally on all exit paths of the success
-> block, telling the caller it was fully handled. The caller kept its
-> default end and the truncate loop truncated every sub-folio below it,
-> including the merged straddler, discarding the valid out-of-range tail.
+> > Beyond that, we really try to avoid making LSM hook calls conditional.  It
+> > can limit what an LSM can enforce, it tends to be a bit more fragile, and
+> > it adds some unnecessary work in the case where CONFIG_SECURITY is
+> > disabled.  I would suggest passing 'opened_by_owner' flag as a second
+> > parameter to the LSM hook and calling the hook unconditionally in the
+> > default switch case as a replacement for the 'return true;' statement.  I
+> > understand it may seem a bit odd, but we try to make the LSM interface as
+> > generic as possible with respect to different models and this is one way
 > 
-> For example, a 4-page order-2 folio punched from offset 0 to the middle
-> of the last page:
+> I guess I can do that, but then the question becomes, what other modes
+> of using the LSM hook that don't currently exist in the kernel should
+> I be supporting with this? I can make this a parameter, but any LSM
+> policy that actually uses the parameter in a different way would
+> probably be buggy/inconsistent, unless other new LSM hooks are added.
 > 
->   truncate_inode_pages_range()
->     truncate_inode_partial_folio()      # same_folio == true
->       1st split at page0 -> [p0, p1, p2-3]   # non-uniform, success
->       folio2 = p2-3 # straddles: p2 zeroed, p3 tail valid
->       2nd split of folio2 fails / cannot lock
->       return true                       # BUG: caller keeps default end
->     end = 3
->     loop truncates p0, p1, p2-3        # p3's valid tail is lost
-> 
-> This became reachable after commit 7460b470a131 ("mm/truncate: use
-> folio_split() in truncate operation") replaced the atomic split_folio()
-> with folio_split(), whose non-uniform split can partially split a folio
-> and leave the end edge merged.
-> 
-> It has gone unnoticed because a dirty large folio normally carries the
-> filesystem's private data, for example buffer_head, so
-> filemap_release_folio() -> iomap_release_folio() returns false on a
-> dirty folio and folio_split() aborts with -EBUSY before any split,
-> leaving the straddler safely unsplit. The bug is only reachable on paths
-> that produce dirty large folios without filesystem private data, and it
-> was caught on the upcoming ext4 iomap buffered I/O path when no ifs is
-> attached.
-> 
-> Rework the contract so the caller is told where to stop instead of
-> silently truncating the straddler:
-> 
->   - Return true only when a split occurred, false otherwise. This
->     clarifies the existing confusing return value semantics.
-> 
->   - Add an optional out-parameter pgoff_t *end, set to the index of the
->     folio that contains @lend and must be kept by the caller's loop. It
->     is only written when the folio actually straddles @lend. On the
->     success path it defaults to the page index of the end edge and is
->     refined to folio2->index when the second split fails to isolate the
->     tail.
-> 
->   - Rename the byte-range parameters start/end to lstart/lend to avoid
->     clashing with the new @end output and to separate byte offsets from
->     folio indices.
-> 
-> Callers in truncate_inode_pages_range() and shmem_undo_range() pass &end
-> only when the folio straddles lend. After all, no caller discards a
-> straddling folio anymore, the in-range cleanly-split sub-folios below it
-> are still dropped.
-> 
-> Suggested-by: Brian Foster <bfoster@redhat.com>
-> Link: https://lore.kernel.org/linux-fsdevel/anH-WKA1coW6wtfG@bfoster/
-> Fixes: 7460b470a131 ("mm/truncate: use folio_split() in truncate operation")
-> Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-> ---
->  mm/internal.h |  4 ++--
->  mm/shmem.c    | 12 +++++------
->  mm/truncate.c | 57 ++++++++++++++++++++++++++++++---------------------
->  3 files changed, 41 insertions(+), 32 deletions(-)
-> 
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 68db5abd0a4c..db7d9d9fb5c9 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -627,8 +627,8 @@ unsigned find_lock_entries(struct address_space *mapping, pgoff_t *start,
->  unsigned find_get_entries(struct address_space *mapping, pgoff_t *start,
->  		pgoff_t end, struct folio_batch *fbatch, pgoff_t *indices);
->  int truncate_inode_folio(struct address_space *mapping, struct folio *folio);
-> -bool truncate_inode_partial_folio(struct folio *folio, loff_t start,
-> -		loff_t end);
-> +bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
-> +		loff_t lend, pgoff_t *end);
->  long mapping_evict_folio(struct address_space *mapping, struct folio *folio);
->  unsigned long mapping_try_invalidate(struct address_space *mapping,
->  		pgoff_t start, pgoff_t end, unsigned long *nr_failed);
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 89a1495e55f7..cc1548ff509a 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -1175,11 +1175,9 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
->  	if (folio) {
->  		same_folio = lend < folio_next_pos(folio);
->  		folio_mark_dirty(folio);
-> -		if (!truncate_inode_partial_folio(folio, lstart, lend)) {
-> +		if (!truncate_inode_partial_folio(folio, lstart, lend,
-> +						  same_folio ? &end : NULL))
->  			start = folio_next_index(folio);
-> -			if (same_folio)
-> -				end = folio->index;
-> -		}
->  		folio_unlock(folio);
->  		folio_put(folio);
->  		folio = NULL;
-> @@ -1189,8 +1187,7 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
->  		folio = shmem_get_partial_folio(inode, lend >> PAGE_SHIFT);
->  	if (folio) {
->  		folio_mark_dirty(folio);
-> -		if (!truncate_inode_partial_folio(folio, lstart, lend))
-> -			end = folio->index;
-> +		truncate_inode_partial_folio(folio, lstart, lend, &end);
->  		folio_unlock(folio);
->  		folio_put(folio);
->  	}
-> @@ -1258,7 +1255,8 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
->  
->  				if (!folio_test_large(folio)) {
->  					truncate_inode_folio(mapping, folio);
-> -				} else if (truncate_inode_partial_folio(folio, lstart, lend)) {
-> +				} else if (truncate_inode_partial_folio(folio,
-> +							lstart, lend, NULL)) {
->  					/*
->  					 * If we split a page, reset the loop so
->  					 * that we pick up the new sub pages.
-> diff --git a/mm/truncate.c b/mm/truncate.c
-> index b58ba940be47..2ebb00f6c379 100644
-> --- a/mm/truncate.c
-> +++ b/mm/truncate.c
-> @@ -206,15 +206,18 @@ static int folio_split_or_unmap(struct folio *folio, struct page *split_at,
->  /*
->   * Handle partial folios.  The folio may be entirely within the
->   * range if a split has raced with us.  If not, we zero the part of the
-> - * folio that's within the [start, end] range, and then split the folio if
-> + * folio that's within the [lstart, lend] range, and then split the folio if
->   * it's large.  split_page_range() will discard pages which now lie beyond
->   * i_size, and we rely on the caller to discard pages which lie within a
->   * newly created hole.
->   *
-> - * Returns false if splitting failed so the caller can avoid
-> - * discarding the entire folio which is stubbornly unsplit.
-> + * When @end non-NULL, set to the index of the folio that contains @lend
-> + * and must be kept by the caller's truncate loop.  Return %true if the
-> + * folio was split, %false otherwise, in which case the folio is dropped or
-> + * may still straddle the range, so the caller must not discard it.
->   */
-> -bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
-> +bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
-> +				  loff_t lend, pgoff_t *end)
->  {
->  	loff_t pos = folio_pos(folio);
->  	size_t size = folio_size(folio);
-> @@ -222,19 +225,22 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
->  	struct page *split_at, *split_at2;
->  	unsigned int min_order;
->  
-> -	if (pos < start)
-> -		offset = start - pos;
-> +	if (end && pos + size > (u64)lend)
-> +		*end = folio->index;
-> +
-> +	if (pos < lstart)
-> +		offset = lstart - pos;
->  	else
->  		offset = 0;
-> -	if (pos + size <= (u64)end)
-> +	if (pos + size <= (u64)lend)
->  		length = size - offset;
->  	else
-> -		length = end + 1 - pos - offset;
-> +		length = lend + 1 - pos - offset;
->  
->  	folio_wait_writeback(folio);
->  	if (length == size) {
->  		truncate_inode_folio(folio->mapping, folio);
-> -		return true;
-> +		return false;
->  	}
->  
->  	/*
-> @@ -248,7 +254,7 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
->  	if (folio_needs_release(folio))
->  		folio_invalidate(folio, offset, length);
->  	if (!folio_test_large(folio))
-> -		return true;
-> +		return false;
->  
->  	min_order = mapping_min_folio_order(folio->mapping);
->  	split_at = folio_page(folio, PAGE_ALIGN_DOWN(offset) / PAGE_SIZE);
-> @@ -259,6 +265,10 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
->  		 * for shmem truncate
->  		 */
->  		struct folio *folio2;
-> +		bool tail_isolated = true;
-> +
-> +		if (end)
-> +			*end = (pos + offset + length) >> PAGE_SHIFT;
->  
->  		if (offset + length == size)
->  			goto no_split;
-> @@ -273,24 +283,28 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
->  		if (!folio_test_large(folio2))
->  			goto out;
->  
-> -		if (!folio_trylock(folio2))
-> +		if (!folio_trylock(folio2)) {
-> +			tail_isolated = false;
->  			goto out;
-> +		}
->  
->  		/* make sure folio2 is large and does not change its mapping */
->  		if (folio_test_large(folio2) &&
-> -		    folio2->mapping == folio->mapping)
-> -			folio_split_or_unmap(folio2, split_at2, min_order);
-> +		    folio2->mapping == folio->mapping &&
-> +		    folio_split_or_unmap(folio2, split_at2, min_order))
-> +			tail_isolated = false;
+> If your intent is to make the hook work for any /proc/$pid/mem access,
+> including when the caller is ptrace-attached, then I guess I have to
+> move around the security hook call in proc_mem_foll_force() a little
+> bit. I guess I'll do that in v3, though I really don't like trying to
+> come up with a reasonable in-kernel API contract for a scenario that
+> currently has zero users.
 
-Sashiko pointed out:
-
-> [Severity: High]
-> Does this code have a TOCTOU race that could lead to an out-of-bounds page
-> split?
->
-> In truncate_inode_partial_folio() in mm/truncate.c, a speculative folio
-> lookup occurs just prior to this block:
->
-> 	split_at2 = folio_page(folio,
-> 			PAGE_ALIGN_DOWN(offset + length) / PAGE_SIZE);
-> 	folio2 = page_folio(split_at2);
->
-> 	if (!folio_try_get(folio2))
-> 		goto no_split;
->
-> Without a re-validation check after folio_try_get(), couldn't a concurrent
-> operation (like memory reclaim or shmem readahead reallocation) change the
-> compound structure of folio2?
->
-> If the compound structure changes, a thread could successfully take a
-> reference on the new, smaller folio2. However, split_at2 would now be
-> outside the bounds of this new folio2.
->
-> When folio2 is later passed into folio_split_or_unmap() in the modified
-> code above, would this out-of-bounds split_at2 cause a kernel panic via
-> VM_BUG_ON_FOLIO() inside folio_split(), or corrupt adjacent page structures
-> if debug is disabled?
->
-> Should there be a check like if (unlikely(page_folio(split_at2) != folio2))
-> added after folio_try_get() to stabilize the reference?
-
-I think this is right. This is a pre-existing issue in the current code.
-There is a TOCTOU window between page_folio() and folio_try_get(). A
-concurrent split could change folio2's compound structure, making
-split_at2 point outside the new folio2's bounds. This would cause an
-out-of-bounds split when we later call folio_split_or_unmap().
-
-However, folio_try_get() alone isn't sufficient to close this window. We
-need to re-validate after acquiring folio2's lock, since I think the
-folio could still be split between folio_try_get() and folio_trylock().
-
-I can send a separate fix patch to address this issue prior to this one.
-
-Thanks,
-Yi.
-
->  
->  		folio_unlock(folio2);
->  out:
-> +		if (!tail_isolated && end)
-> +			*end = folio2->index;
->  		folio_put(folio2);
->  no_split:
->  		return true;
->  	}
-> -	if (folio_test_dirty(folio))
-> -		return false;
-> -	truncate_inode_folio(folio->mapping, folio);
-> -	return true;
-> +	if (!folio_test_dirty(folio))
-> +		truncate_inode_folio(folio->mapping, folio);
-> +	return false;
->  }
->  
->  /*
-> @@ -413,11 +427,9 @@ void truncate_inode_pages_range(struct address_space *mapping,
->  	folio = __filemap_get_folio(mapping, lstart >> PAGE_SHIFT, FGP_LOCK, 0);
->  	if (!IS_ERR(folio)) {
->  		same_folio = lend < folio_next_pos(folio);
-> -		if (!truncate_inode_partial_folio(folio, lstart, lend)) {
-> +		if (!truncate_inode_partial_folio(folio, lstart, lend,
-> +						  same_folio ? &end : NULL))
->  			start = folio_next_index(folio);
-> -			if (same_folio)
-> -				end = folio->index;
-> -		}
->  		folio_unlock(folio);
->  		folio_put(folio);
->  		folio = NULL;
-> @@ -427,8 +439,7 @@ void truncate_inode_pages_range(struct address_space *mapping,
->  		folio = __filemap_get_folio(mapping, lend >> PAGE_SHIFT,
->  						FGP_LOCK, 0);
->  		if (!IS_ERR(folio)) {
-> -			if (!truncate_inode_partial_folio(folio, lstart, lend))
-> -				end = folio->index;
-> +			truncate_inode_partial_folio(folio, lstart, lend, &end);
->  			folio_unlock(folio);
->  			folio_put(folio);
->  		}
-
+So we effectively landed on what I proposed in the first version... 
 
