@@ -4,140 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73946C624D3
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 10:46:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0743EC624D3
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 10:49:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B4756B00A6; Fri,  4 Sep 2026 06:45:55 -0400 (EDT)
+	id 08A676B00A7; Fri,  4 Sep 2026 06:49:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58B2E6B00A7; Fri,  4 Sep 2026 06:45:55 -0400 (EDT)
+	id 03A996B00A9; Fri,  4 Sep 2026 06:49:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 452FB6B00A9; Fri,  4 Sep 2026 06:45:55 -0400 (EDT)
+	id E6B7A6B00AA; Fri,  4 Sep 2026 06:49:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 191096B00A6
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:45:55 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A3AEB80803
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:45:54 +0000 (UTC)
-X-FDA: 85175749428.25.1DB9883
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id DBC2D40002
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:45:52 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YP9DP3WW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C733F6B00A7
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:49:07 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4C9CA12086C
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:49:07 +0000 (UTC)
+X-FDA: 85175757534.17.BD16BDF
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8741914000C
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:49:05 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UiwGJtYF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of hemanth.selam@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=hemanth.selam@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788518753;
+	s=arc-20220608; t=1788518945;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tp5ZGMgCkDYYyYju3vZvBz8YmJ8LdRAUta1tmaeUPO4=;
-	b=lLQ1ekdn58ExZnhzdHICTt0rbVyHp2JVeI6Km67s+mr2e+hiaXcaCif80SmWVu9uV045J7
-	6YKshTjkPqLnDYpmxR0ZB0/E3NFPTOvfoBSKRHTKvj4W/ASIrV9bhtwkUavOv5VEOMGD4d
-	76urT3QC0dL2XLIXGCBbfKccizwOs7E=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788518753;
-	b=j7W1XM8tLPXVv1OQfQu0pQPiL/Q5HWqAu1NBlFdrk6/Uu4a2kug3EqI8HB/rPYq4mmyhBp
-	24r522DThdv2QW5ow/BSeU9RdIUV1+frOccc3czcWFqP0Lse6hYmiuYkq+bgCCQ6dXRbas
-	/6pSKuncGBme1E7zIGHJguVzGORCMLE=
+	bh=OlLVTDTkKLUK1RrWb8jn049QsgDUDcnIGDsaM7mMOOY=;
+	b=PB4+WUTY1WBj3yO+GZmRfPBd/TlqPxWtm/YxaS9ELEhslbCcZ6C4QyorsAutG3x8ok16Od
+	W3cPepZca9ZieDo12DS81cGC24Yb+GnRHbnqOD8uaN1VypOsrIohXs9tCzUBhdlng/y34P
+	3XSbqTewVGqo35d83J/5p5ZdJIg4MzI=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YP9DP3WW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2FAEA41502;
-	Fri,  4 Sep 2026 10:45:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 590C11F00A3D;
-	Fri,  4 Sep 2026 10:45:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788518752;
-	bh=tp5ZGMgCkDYYyYju3vZvBz8YmJ8LdRAUta1tmaeUPO4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=YP9DP3WWRHbpiBvqdRY47YbL8PcKvkW6ZXkIs1iXMKrHnkCIpHGrZPLBccBF7fo+9
-	 LV2JfjAHdxT74nfkVvRATWOGtmNEYIfha/f9lSFm+oRgKm90U62Knia62E+zDOb5h8
-	 BQHGnIwPgCVW2OaNJzvAXlgTZb2AbvzmXnUwyoIQQbE5eGYFWO1Di0Lr+YUVs2rnf0
-	 r7W6QnGFNrRfOdMjFQ+XjH/4PTzUJexNHgYqqxF0Lu30hod7dzL+Wyz/10mkHaqB/T
-	 O/hvZ9CjdZzI1ffSGAwm/du+AWBMSAkXfEGbuPOSnZdgEhDQUX68+TcEIjfSjIePTl
-	 aQbfiX0MrZCSg==
-From: Thierry Reding <thierry.reding@kernel.org>
-Date: Fri, 04 Sep 2026 12:45:03 +0200
-Subject: [PATCH v6 12/12] arm64: tegra: Add VPR placeholder node on
- Tegra264
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UiwGJtYF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of hemanth.selam@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=hemanth.selam@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788518945;
+	b=e0XRygTE7Tnws3pv4TuX0FJxm84HMe9si6zFEkmtK3OvfjtmD8ATpjS5zqypx94NwrfkP7
+	712/1Ytm6sLh8AGFMhp/1d2o9Pm9uMSj1V04+ZzfrTzAlDIw7Ccp3N9jDji3nwIvvQMDGo
+	7vpYr1SGrbDoTiXDxhY46S1D+3FMa7w=
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2d7195706f1so9534875ad.0
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 03:49:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788518944; x=1789123744; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=OlLVTDTkKLUK1RrWb8jn049QsgDUDcnIGDsaM7mMOOY=;
+        b=UiwGJtYFDXKkcL/pU5mOJQ4rkRJ9Lhpdcw1VZwbvtjpG14h/cy12wbj8Z/hAuvnho7
+         5sVwvOyMQTxOHKYMGEBNHd7hhhNzSonVpqKsA4EtxAUs8vBqvaCbFvh9x2SPzMSpQeUR
+         hbkSFVQZveDZVxDzFk7NakDfAIdRnjU6I/76iKUgiSbcJwcEF9+xMzzcCyT1ma5sApDy
+         BcmQZYVuDNqJDOLqRdIEQagQjkXhBkQTqaeWCY5NfdtlqhzAkdE3YRDrtc7wcPhBRABk
+         2hTqim18OKPfIU6jDGEf0ivDWcWBMIJ1p+do8x7i5KtKRZqzK/1aLkw4/0UYq42gIDr1
+         HWCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788518944; x=1789123744;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OlLVTDTkKLUK1RrWb8jn049QsgDUDcnIGDsaM7mMOOY=;
+        b=ikAN0KjpDPrlnzObvaYa2N5HL+/Wc1NknWjXhPHMPp47mPDBg/HIZ0i7uo67hOAJWg
+         BhlLEEGM8AqTq58NtbDy+QZMQiT1GChwPFptb3jAeZtLClOZ2DFli580TL9KEU8BfvJV
+         /cNW0oAEZe0Ov4hR/8zwj67ueUPEmchygsy+Orj710hTt+o/j01EjfZICpJ4gzfOYO7C
+         QjUYobPBmMt3VwAnO/n94qME5Ian1TmTBWyqHvJkX5APXz9LP7M32p7Tvx32BlOwNBHK
+         Mhta5d3auvvDCMNBwmEl1IMWpjQvL6Sd9ipunEGLs3ZyetNf5UvOJhDMcbXRNVRWe2LU
+         LDkQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxlcjrfE7AYX4DdsddnKDAzne0kNk/5tMbfEdsYFxcrUYRdg2xg7FccuF/tHWlLTJLj4OIoTnR5Jw==@kvack.org
+X-Gm-Message-State: AFuF++l82wpvOmQuicAMnpbSgtwxKlCnhUVatL/ytuLuruXL+T9xtgFb
+	8ADjuL8/1AIZwLrDKiZSDyndA9tt67MKp/NaUf9OE481okW5KiLIKHs+VkZqF3gV4FY=
+X-Gm-Gg: AYBFou19FE1MqtDT9sTVY2JTd77hEX18yBkZuG4OL7Q9BI0PNLoR9u7a5phLE8+fnTv
+	ebpsf0UwZPjgOBoaNHojuLMCvgzbaMXJbMW1kFOcGKIE0Rjlpm2dehvzVPtnExjiUMuz8mJUYnQ
+	gU6Fox7QLtLDrEOn7vR+yM5QmbinxSaWAFX6a7EDKRYHWQxyxd6DZb/B6xmnPMFDUQgZZzQN3RQ
+	+DUyaqjAeWWxnMr/HnU8Am0C++ULBTtw7IAy6BnHsDrv11BegYreU6ZUPiZ84CJyuyOk3m2BCZh
+	6a6JYdAOWZmI8kMF7yU9UoVGNzinMlVect6u1JmCdzOwffefIQgeVRPtZtHmI/Wr54PtoE96QKC
+	R2KqTZUHCsaDOnCLAYnDLBr0vl7ZDGXNVg151uWBVm/fIQX5Twag2Zdph2vSufhfHa8juTnUTQQ
+	MEeYwBOfflKyH8wKjZvv0aMLcDfAkJgNyFJAxBxqj3LFaEx/TDxvGeKCUg1X1bVkIGX5wDPpd0p
+	k2NY1Q35oXgaxs+KW+XynrFsQ==
+X-Received: by 2002:a17:90b:586c:b0:398:a2ed:7b5c with SMTP id 98e67ed59e1d1-39b2623ef65mr8977929a91.24.1788518944271;
+        Fri, 04 Sep 2026 03:49:04 -0700 (PDT)
+Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339af25062sm8583927eec.16.2026.09.04.03.49.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Sep 2026 03:49:03 -0700 (PDT)
+From: Hemanth Selam <hemanth.selam@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-arch@vger.kernel.org
+Subject: [PATCH 1/5] asm-generic: fix typo "explicity" in comment
+Date: Fri,  4 Sep 2026 16:18:46 +0530
+Message-ID: <20260904104854.25272-2-hemanth.selam@gmail.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20260904104854.25272-1-hemanth.selam@gmail.com>
+References: <20260904104854.25272-1-hemanth.selam@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260904-tegra-vpr-v6-12-79042cfa8de5@nvidia.com>
-References: <20260904-tegra-vpr-v6-0-79042cfa8de5@nvidia.com>
-In-Reply-To: <20260904-tegra-vpr-v6-0-79042cfa8de5@nvidia.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Thierry Reding <thierry.reding@kernel.org>, 
- Jonathan Hunter <jonathanh@nvidia.com>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- Sowjanya Komatineni <skomatineni@nvidia.com>, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>, 
- Mikko Perttunen <mperttunen@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
- Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
- Russell King <linux@armlinux.org.uk>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Sven Schnelle <svens@linux.ibm.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
- Robin Murphy <robin.murphy@arm.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
- Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
- Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, 
- "T.J. Mercier" <tjmercier@google.com>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- Steven Rostedt <rostedt@goodmis.org>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
- Chun Ng <chunn@nvidia.com>, Mark Rutland <mark.rutland@arm.com>, 
- Saravana Kannan <saravanak@kernel.org>
-Cc: Thierry Reding <thierry.reding@gmail.com>, devicetree@vger.kernel.org, 
- linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org, 
- linux-mm@kvack.org, iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
- linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2208; i=treding@nvidia.com;
- h=from:subject:message-id; bh=R7+I3znIc+C4CFBfwF3uhHrkIxj2+n+gJD2B2rW3tV0=;
- b=owEBbQKS/ZANAwAKAd0jrNd/PrOhAcsmYgBqmqE7rP80/4E7a4eMykLVRISmqrRHTPAuxP98w
- IQWcaSm6L+JAjMEAAEKAB0WIQSI6sMIAUnM98CNyJ/dI6zXfz6zoQUCapqhOwAKCRDdI6zXfz6z
- oaKNEACHyKhsBTZ1ctuBVdFSOjnEQ57mTqBOSye23UOv+Cr1ljxFp2QbH5hIEcClwoZOO9RCHkp
- Ta4o8lXpIGEeh0Os6ntBR3KiBB3v0WNaZwRZMwygvkxDFdGVgZv+m77w6UjOiNOOiwCO3J5sAXi
- Z1LPXrk5DPnIVRNxKPWenoikUckPR8eZDbkLjzC4i1lugL0pzKxtYA/KfhtpKQ3ySP74CCNVlLR
- lIV7U3WbT+g1GKMvtGNimuiIRl5iPmXfM+hs0uLpc9uWLGhsLMVfGVUTCmjIDDgabJWY1W/ikVx
- oKbI5FF342XhJ+LD2NO99czozExIVH/xTcwhhijOUOMPZ5WCV20Z2Ct1BlhkN8a3yK8CweWyWvN
- 0OoosKFHIGaJw/ZXOKhzODb3vrk0W1sMsJMrrRbAWpXoeNWJhh26wKyk5uZ5kypmlSSv6tSUmSS
- 0i60LJTaLmdfnl5vZnL2nKNBmpjWdZnT9lhXfDn4/v+saokkEIbUkA5QzpPBWsc/EQSwKN79Hjc
- t6gbLAylaeVwcS6w/AalDjDGEDVGDQ//gIHc4WSypdbJIpT4N2qhlCQaTIHyq3NxEj8C24lCtvz
- vJBUWMxwp8mg/mGygNuSa9PivjI7QtLST0GOLttf8SYkBQ0Fa3MYv1YSkoYYglsWVF3WDMfY8I5
- 2up7C/PXiHlgD7Q==
-X-Developer-Key: i=treding@nvidia.com; a=openpgp;
- fpr=88EAC3080149CCF7C08DC89FDD23ACD77F3EB3A1
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DBC2D40002
-X-Stat-Signature: orqjyngb1cyo3g34mankzeq4nwq6fnkh
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788518752-713829
-X-HE-Meta: U2FsdGVkX1910QorRf8ZZHW7V20bxfWYAg0GeT+S++03lTsd2JlstFUA3VM4mQeeWiXfLpGfKw3ZR89K7vOTJujJFwvM9g50LJpMIscE2A51oAIkb7oottiaX4Or/cISuH+6q3fOvDBeLvRQS/XuA1+9DXUQGHA5W/aq9JLbrSukV5nE929qXdPeaoUySyVa48Uu8vmcI5gJM4Iqz1ug+cWsL+ZDAEWKemVGzOYZAnuiv0jLHklKNxDWFsE5ze6O3heBs5oM7grJfv6h7mAk3Ri6x+rlw0m9EyuW3Ub6lUk+vc0JrDRjbE3VEjgTujvo2ohE2zMPzAJMOynKzCyqwJAxWzWEE+Xqnr8cueP9y+U+FafCaCW5GsxS30yBcrEzYIF178ZQKLTkZjUgZX3cr3W2Mw37am6vroZQSpjb9QvFw7gEEoZ1UaFif1dXSQM1rVi2uuNyXeI4BvcbIYL09OMfmj1n9wqmAg13NEV2bUVgH9lWQv4mSKJDEGPiUBRvWtDWC/gPIAM8VY9T2uuXGfe3YNgudT2XfuTHVYMwrRCWZM0mYMvFEJ3Om+90fiSvqmtP9uUA9z2S1r12IXD5lZFNv/GSHHHmwCOgSBLrTOZ+wxXqHjqUD4EwZC1Z+BYHsf+v7/g0Yc0w3jSLSyQOHrE0xchJldzUlaQcL4+qM4IZIFZ2ZWY5w8uq88tDSymfZ6yfPgzRKq8wFgzHJfPQdDpwFzt1ARl8S5BcOKTqz1SyCdh7rdqHyGC3jU6P8cbRkDBphVoNCgCT5Qpd28FYdchuE2jG8eEt4qyBsXGMLPd8tc5BzD+KmfYnYjsEP9EX0brsHAuOmP6lYub06XUFf1rUgYOhCGFBMtwM1YOYY1OVo4BQK1zxHi+fO74CxxrcIyeqg6l0Lw/RJ/nVvpJ6oPQ28kFEAWJsUAZ2lJXDkwCfXWAclGar/4iJ0VYk1zABKQ86eEHcq5xk6QHkXZ6
- UxJpM2f1
- E9fsN4s5iO5slthxOCBVJrEzL4roetxKx54jf2xbkLiX6mp3fDx/Z10UBZvN3y5Dp2i9JpCDv9glY5zYk7XDwE55224zDKQ+fBTqd3CaE1enX9hpwPBVHh+qpVn8HT7n6e++VtCnlRRKxdCidOtcJRq/sX4t2LZWXp6C8Cc9IZCoejf0ACj6iqM39Rfx049bSSzm+i2jdTDwIyqCig9zSZAkgiuK+Bv8ypT6ANMVdJ+H2KOorS/t1hmXoEoeredQzSnZD241IlxQ0pw1vmFSCGmn033L75qHslCPauI0z2lF3DLhlz7+sSCH65fIvIxeLFOdzVSfgwMSFmFDzNSI3leAWaGuUsulKmWqL
+X-Stat-Signature: ympc4p8rc85b4xjwzt7ksqwzyqm33gkx
+X-Rspamd-Queue-Id: 8741914000C
+X-HE-Tag: 1788518945-336006
+X-HE-Meta: U2FsdGVkX1/TMA5GsECBPmHWnJGgZE4k32mjE5OiFf/uJXH8uqyaDS75T2qNP7z6TOSxYg1Q3ow6P8oOcmWaZwqo6un4snlIQrq0ylw1Msl+tQISKw+PktSM8u+2Osdsglo7qlkFgT0OxyKexAMV0TpzUpCY7pn3jnUP1Fo5CJ0nWRWSC6IrEKOw47W94rbIIV8b8sLEyMin5Vi4jk7BA0YbK4NZLj0Ja4hGpcE0a58g/iSEfb9LSJNZEnP8T0jRD5pqP/g5bXJmxMkGJgaUry0YaHfcFdCNeuAHabto36POC41x97pUbPBdE5uNw9Y+vxOfO0oTo9H78pCeMOisK3njBhAIyuS2jpljI0jZiH2D3/BMJD5g4tTV1SHEr/sYjX2bQhityoPCWPKtb1UJBlZ17vfU/21dt/zWOX9SXYKRHTsSWBtdyGRq4XKazHELq9aHdCsXqqoxDRFVguwpP5pFmPv44obDS9wKO6BRbeJJZCCOQ52OqMv12qKe0pJZhgbhFcBFV03Ser/JNchXrz/NtwqvxPn+07i1c5RXmTn6vAvBcAnn/o4vK2Unf6bLcJDPcJENhGcuEH5IZJDsJ/xPc5j+RQ0D5rQH+o1D8NKrO9l4rOvskK/uabd1fdRPe9zRT36ySGdIFIFdX+dLylje0NODsvFVTVDly+foUjc01gS0AvkJLDAnM6Zw6GG/i+xaHEeH46vy0MsXf1xXl4ciLLT4fuNFJoCAUQfz9OgaYSXZemZYCCuI0r+6vBii8iSQOeQjQFP0uniP2co88hPNKgVPIV+cMic4NQHGVbj6/TpNyy3GQGflHqEGkHqpMbKIcwojaKA5x963nnKOrAGzRU7ZuObcnLIjx4Honlq+XNU5XC7SIhwV+Gj7z9OuDN9nWmvbBj/DQMGLqZ2VCZAGKUIdfcqFBTG/VCQqTo77yftATaVnmliDcpXi+F2Bp3lALFIBqi7qFJTfcWU
+ DlYFUyY2
+ 7/7Tu1BLLLAPNRgqZDDu0H3qSgTAWZTOO9yBbgCYeX4/OcAQBwQlKTP5cPjwhDTPt7Agb5ZdTNEWSCBNSwtmWH5Vn9MDCMLTTa5y1H2+0zkeqGY4K/Vf6uQhPcO/8DRFdF4+lyaE64u7XRxGaqartvvi1cIlHFfQSJJfixSbwK7feSERLbjg/Drh2VpX3cal2cUN1vO9kqB4PWuG6MRak6omkcEIIyuUVHJGndrb7FYDTeCjVPDPGGHJhE3X0C7iV30TtTNjogQ339TbcUBcp0wv0RTqT0fOFb4DuDtstIPXinUx9hj2NmDsSVaA2iLS2b2KZxJN0M9GooLzJwcvMnN4BhSc5PkXrj8PKxAxu8GWlxMzPktXoR/UEVnZsHDuVr0/OLmvngjuafvhTSE2kHZw6o40NTu2R+rEIrk9dcm/barZmv3in0Yw8zuRwAkX4F8mJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,74 +125,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Thierry Reding <treding@nvidia.com>
+Correct "explicity" to "Explicitly", reported by scripts/checkpatch.pl
+using the misspelling list in scripts/spelling.txt.  Only touches comments,
+no code changes.
 
-This node contains two sets of properties, one for the case where the
-VPR is resizable (in which case the VPR region will be dynamically
-allocated at boot time) and another case where the VPR is fixed in size
-and initialized by early firmware.
-
-The firmware running on the device is responsible for updating the node
-with the real physical address for the fixed VPR case and remove the
-properties needed only for resizable VPR. Similarly, if the VPR is
-resizable, the firmware should remove the "reg" property since it is no
-longer needed.
-
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Assisted-by: Cursor:claude-opus-5
+Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
 ---
-Changes in v3:
-- comment out fixed VPR properties, assume resizable by default
-- rename node to "protected"
----
- arch/arm64/boot/dts/nvidia/tegra264.dtsi | 33 ++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ include/uapi/asm-generic/mman-common.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/nvidia/tegra264.dtsi b/arch/arm64/boot/dts/nvidia/tegra264.dtsi
-index 964f18b256b1..998f7e28b9cb 100644
---- a/arch/arm64/boot/dts/nvidia/tegra264.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra264.dtsi
-@@ -24,6 +24,39 @@ shmem_bpmp: shmem@86070000 {
- 			reg = <0x0 0x86070000 0x0 0x2000>;
- 			no-map;
- 		};
-+
-+		vpr: protected {
-+			compatible = "nvidia,tegra-video-protection-region";
-+			status = "disabled";
-+
-+			/*
-+			 * Two variants exist for this. For fixed VPR, the
-+			 * firmware is supposed to update the "reg" property
-+			 * with the fixed memory region configured as VPR.
-+			 *
-+			 * For resizable VPR we don't care about the exact
-+			 * address and instead want a reserved region to be
-+			 * allocated with a certain size and alignment at
-+			 * boot time.
-+			 *
-+			 * The below assumes resizable VPR by default. If the
-+			 * firmwares sets up fixed VPR, it is responsible for
-+			 * adding the missing "reg" property, removing any of
-+			 * the unused properties, as well as adding a unit-
-+			 * address matching the "reg" property.
-+			 */
-+
-+			/* fixed VPR */
-+			/*
-+			reg = <0x0 0x0 0x0 0x0>;
-+			no-map;
-+			*/
-+
-+			/* resizable VPR */
-+			size = <0x0 0x70000000>;
-+			alignment = <0x0 0x100000>;
-+			reusable;
-+		};
- 	};
+diff --git a/include/uapi/asm-generic/mman-common.h b/include/uapi/asm-generic/mman-common.h
+index ef1c27fa3c57..cf1418649b3a 100644
+--- a/include/uapi/asm-generic/mman-common.h
++++ b/include/uapi/asm-generic/mman-common.h
+@@ -62,7 +62,7 @@
+ #define MADV_HUGEPAGE	14		/* Worth backing with hugepages */
+ #define MADV_NOHUGEPAGE	15		/* Not worth backing with hugepages */
  
- 	/* SYSTEM MMIO */
-
+-#define MADV_DONTDUMP   16		/* Explicity exclude from the core dump,
++#define MADV_DONTDUMP   16		/* Explicitly exclude from the core dump,
+ 					   overrides the coredump filter bits */
+ #define MADV_DODUMP	17		/* Clear the MADV_DONTDUMP flag */
+ 
 -- 
-2.55.0
+2.48.1
 
 
