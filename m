@@ -4,129 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59E93C624DE
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 15:25:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EEDEC79F87
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 15:29:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5963B6B008C; Fri,  4 Sep 2026 11:25:14 -0400 (EDT)
+	id 8AA856B0095; Fri,  4 Sep 2026 11:29:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56D616B0092; Fri,  4 Sep 2026 11:25:14 -0400 (EDT)
+	id 8821D6B0096; Fri,  4 Sep 2026 11:29:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45BF66B0095; Fri,  4 Sep 2026 11:25:14 -0400 (EDT)
+	id 797C26B0098; Fri,  4 Sep 2026 11:29:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B77B6B008C
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 11:25:14 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A27C4A0129
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:25:13 +0000 (UTC)
-X-FDA: 85176453306.07.D0379F3
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 88D2A4000C
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:25:11 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=PQnp9ZT3;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=oUdI6azy;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OSAW7qDb;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/0JDl6m8";
-	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 52F5A6B0095
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 11:29:23 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D9019160136
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:29:22 +0000 (UTC)
+X-FDA: 85176463764.11.AA59BE3
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 084281C0003
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 15:29:20 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KKbgn3cM;
+	spf=pass (imf21.hostedemail.com: domain of eli.billauer@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=eli.billauer@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788535761;
+	b=jAf6+jSIyI68B4O6hrZDAW/i5Ut62zoNrGNviF1etd6gBb6El6x97iabPQNfdlREKviypE
+	syHsVyfzVFtjNMCgVgptzMo5AwUJ3/K2vox4sE382Jv/eWEA3R1ZROJzjBY88ntnm49dJW
+	c6tfp3UstaXK9T6bF1Hh/krB82pg/iI=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KKbgn3cM;
+	spf=pass (imf21.hostedemail.com: domain of eli.billauer@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=eli.billauer@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788535511;
+	s=arc-20220608; t=1788535761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4uegA/dEm0BMFL81peUN2ZxZ/uAgFp0QibfS0jKjF30=;
-	b=s3UJ6SN9/Tw5dNvIbLZaLwoKItb7OtOUKui/4vJZEwrA7e3IlacUmFcS+0Z2QlRmWPkCXE
-	LQoNu/PLohfPqEHyMl5t2lWkJc8fA+oteIZepTRqqJB68jOMu9jHf0BlwaShNoVifAaYLh
-	VoQnZmXB2O5ts6ihwcJHSQW0ViK+TbI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788535511;
-	b=WKrIgrRXzYqJMmfmtrfl/Zg4UgiJ9ZiTz26k6cSYAhOtzn13AJCnQ78q52LghmlRTxE+Xe
-	ZlIOqnBNcvX08Ij/q/IC4E9tlzxlULHRIb4vHtCAj60dK1XYsUBvrE3UnsnIPVVH3FJiI4
-	jFeFezgWutXYS8GKBBFPd+7A/fbg+Lg=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=PQnp9ZT3;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=oUdI6azy;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OSAW7qDb;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/0JDl6m8";
-	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B67401F8C0;
-	Fri,  4 Sep 2026 15:25:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1788535505; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4uegA/dEm0BMFL81peUN2ZxZ/uAgFp0QibfS0jKjF30=;
-	b=PQnp9ZT3hHw+piKXvGyV4Lwj4X/GkvOuYhqt8qPFzJDLekXnkVVi1Yy15nmTvLl4Pc/gYE
-	3lgnZGjdpBd1CQ48Mgu33rGT8vxbYWy6XiO9QKcr5iFFlEfrHNRXe6IqcwSrxTe9UyXHp9
-	jiMeF9GzBs1nhnwN7Aasz0XjwVk8RdA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1788535505;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4uegA/dEm0BMFL81peUN2ZxZ/uAgFp0QibfS0jKjF30=;
-	b=oUdI6azy3DEZZMOxggEoj+qxOzOfU/3si4iKli3LjdvBgfe90ZWpeLLeMnkjxJ1yCVohM6
-	qII66s/hDabjttBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1788535501; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4uegA/dEm0BMFL81peUN2ZxZ/uAgFp0QibfS0jKjF30=;
-	b=OSAW7qDb9UllVJbDZJH9jLc59GfVrtVtYbccNcTCFH5sN05qgv6qjDTBfEnZKLIwieE/u+
-	aYH96yC4sLu67ljvJOjqMjN6PjxmZhCoN6tHwMjtPeiuvSe2FlMY4Xdt/Zaeyb00RqsfJR
-	+jdTY7p3q23jzkOiFtHcD9V++vu/4Kc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1788535501;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4uegA/dEm0BMFL81peUN2ZxZ/uAgFp0QibfS0jKjF30=;
-	b=/0JDl6m8kBmKKAoeUdRgqGF1pkgFIWiKi9yX3LQjW7zB7Dt6SdbLMFZV1EXZwOUGKENRUp
-	bfyV8+WP4zCiRaCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E4BA413726;
-	Fri,  4 Sep 2026 15:25:00 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id WjKNNMzimmpRAwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 04 Sep 2026 15:25:00 +0000
-Date: Fri, 4 Sep 2026 16:24:59 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, David Hildenbrand <david@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Mike Kaplinskiy <mike@recall.ai>, 
-	zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
-Subject: Re: [PATCH] mm/madvise: swap in CoW'd MAP_PRIVATE-file mappings on
- MADV_WILLNEED
-Message-ID: <apriM1q4GzAgP7JQ@pedro-suse.tail5790ac.ts.net>
-References: <20260904-madv-will-need-map-private-v1-1-6b83cc99fcff@kernel.org>
+	bh=b3s2kh4gj1DOKMjmkcbmo31+xgIaWNFlf4UB372dsWc=;
+	b=h1KDI8hdMECKHeYZxIJylntsYhQOyo6yW9rpcN4ttN3O23nVo+1NgxdTYzjipKdSlKujJ2
+	kAHr7+Z5Ytk3jEvfb3Kckvlq6BbArBVS//unBr8Q8iD/UhrelPv16VpaCvJuv/p0Myq5N1
+	qbUi9hPEdu68oLlK9jH5OX5P8qu//Zg=
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6a60f0dbeccso1669247a12.0
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 08:29:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788535759; x=1789140559; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=b3s2kh4gj1DOKMjmkcbmo31+xgIaWNFlf4UB372dsWc=;
+        b=KKbgn3cM3QKGU1VzrU+vaavHTATj1aMXjDwYU2rH4G4hFSU+amPop3ssC2Elh941rF
+         eQi4GG/MxKFoGcdms7y/JCF6H8yDBz8ShC49VUlWsYx/O/zzCGYteC7U2iERya/+xrAe
+         j7it76mcxmjvfF0LwK3au73NPnc7ro+bMjVGCykxq0cxBxT/ooQKofcEtXn4pNBcu120
+         lYG6PNtgl/VMLaWpO7dai+nPZZvHRK05thW9xYemBUmUHgBIzA+n4Y+0iQSp9HUDRr4k
+         E8h3gR5WAzRZEPlWR0Xu89Yn+odfKddIdK/TxUSmoiubmwoAumzZTTzKgxyrh2Pfqybh
+         VgLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788535759; x=1789140559;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=b3s2kh4gj1DOKMjmkcbmo31+xgIaWNFlf4UB372dsWc=;
+        b=htVzj3L5dDXd94XnqpaUwG3X18gVkSfE7qKMUcRIgqprBNukguxuLEesUTdjlp/FyB
+         eODFrmg7lAMovhPqPidXrAen0GuCawIrDOro4VBXRVQ8JUa6Kor0EORqNQk+Wq9dYBxZ
+         s4VrHh1AaSSNJicOOgFVn0NnTSBPaaFWET19zZ5mqCtju31CxJUeMLHOUkZ5qh/eQdpd
+         L1j97bQURK30VC2z+LygQIkoEcokYWVs6Seq6MAgU4jdmFL7Iuj3HHUK9UYdkB3sKHvB
+         yo1/dAgtolTprZRJCLypEz0ILk6U9OiZks7T3CIvEBk01wec9+BsuwwlS9ThSlM2t5k4
+         i9eA==
+X-Forwarded-Encrypted: i=1; AKwUvBxFoz6jPuONJiyIC8f/A80OUffH6/rWxtI1TvNB9VJn59idjensN6Oo+zaNjE2VtFkYYymdc1hZXg==@kvack.org
+X-Gm-Message-State: AFuF++l5oAr+TQVGBkAbJkeZCxy6zIUiWJPHqDu8RauQVK7fZvPhnLO4
+	00WNqHLwwj5nRRX6rtj7Z0pMfO5yVpkCQNHjdRueDlQsB7wwppbEBs72
+X-Gm-Gg: AYBFou19l3CRmBdatFAWVihxCzjAjBhqE0s1hK3Q5WE7iaby3KSw/FHWUZSuq/oG2rh
+	AQt6lGAqGFaTPQVZGFzd/5t7X2tT41VGs4JDsHK42KVt5W7tT2Q9ybN231Dq1IRpryty5cqr2Zf
+	/F5o/uyVxZksO5w77o+bSGOsmxuhB1Vku35BTw4dM3UeDYulBDEZTLxG9o7jEbNXeCG8+BimScr
+	QWM58BvFeEUR1n4YU/4LFZBWjlu1lLOY0gcV3Zx+AKdhEXUjqGoXZ8fm7b56NwWpAu4x/I/uGUj
+	50FqHGfFnEYQxoaiFmdeFlmTtYoXO1XbYXS3JvdrTlzSvcWM0TEI25MXH03cgzcd0PmYoBPIjOl
+	TVN57BPzUVkYy/5PiE9ewk6lE9KKIJOLtCklIV+j1ivtoVaNGm98ADMT4mL0mrYYKllV+I7XQxz
+	EAKYCAbFTkpOvifiUH32Se80V6VUVHxh5eHende8O8WBhC2MJptuUQ1YppgWmB2WM1X55A7CSnC
+	orJwasPoiatBqBKc7fh9LY=
+X-Received: by 2002:a05:6402:24d0:b0:6a7:ea54:386 with SMTP id 4fb4d7f45d1cf-6a7ea541e6cmr1470990a12.23.1788535759252;
+        Fri, 04 Sep 2026 08:29:19 -0700 (PDT)
+Received: from [192.168.1.89] (c-85-228-45-68.bbcust.telenor.se. [85.228.45.68])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a7e6bee8e8sm1460646a12.23.2026.09.04.08.29.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Sep 2026 08:29:18 -0700 (PDT)
+Message-ID: <49245a34-cc56-736e-b2b4-168c2a0b1df7@outbound.gmail.com>
+Date: Fri, 4 Sep 2026 17:29:16 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260904-madv-will-need-map-private-v1-1-6b83cc99fcff@kernel.org>
-X-Rspamd-Action: no action
-X-Stat-Signature: rt47hfww3z4bnene1dzmegzp7kd6xkpq
-X-Rspamd-Queue-Id: 88D2A4000C
-X-Rspamd-Server: rspam02
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+From: Eli Billauer <eli.billauer@gmail.com>
+Subject: Re: [PATCH 2/4] char: xillybus: replace __get_free_pages() with
+ kmalloc()
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>
+Cc: David Laight <david.laight.linux@gmail.com>, Arnd Bergmann
+ <arnd@arndb.de>, Brad Warrum <bwarrum@linux.ibm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Michal Simek <michal.simek@amd.com>, Ritu Agarwal <rituagar@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org
+References: <20260830-char-misc-v1-0-05e2ce44f291@kernel.org>
+ <20260830-char-misc-v1-2-05e2ce44f291@kernel.org>
+ <f6001085-9234-4025-ff34-6cc4a66c293a@outbound.gmail.com>
+ <20260831123937.32255a49@pumpkin> <apaF1HUtJnstuUN4@kernel.org>
+ <1729fb06-6beb-f8ef-3e71-47fc3f00345d@outbound.gmail.com>
+ <apcPg_y-HsMki7we@kernel.org>
+ <9a3d6a08-339c-3315-cc81-46907d0836ad@outbound.gmail.com>
+ <apgSCyj-h2xVc2ss@kernel.org>
+ <1d7f8806-f4a0-fda0-a361-a011460ef308@outbound.gmail.com>
+ <3c19c24f-5036-4bbe-b3af-e5eae102f34a@kernel.org>
+Content-Language: en-US
+In-Reply-To: <3c19c24f-5036-4bbe-b3af-e5eae102f34a@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1788535511-355570
-X-HE-Meta: U2FsdGVkX184sH4GCdsTwa4Lm387sXN7mhiW4FhUyrPEqDfZPGiPuYW8eZET3TJ4O0J1g+jilMu8w6YW+ICf9bB3kxkQAaJxJd28QXIeXCQFAPFpZfCs2NBqT6WdoEJ8U2cf4aa8DWGgggRFBtcwXU9JXcRSwpdTJBMSVgVmeoDIek1dcTbhZixo663rpoHYkEWlBBDDE7QGtFcI9XZyYE0NMUBVXOXEalPURmnV9lUqlVqj/540v8dEJFT4DlLU9euIfa0XjmFpqLan2ZyL5p5De9zrdYkH2ryLLICgJM020gi/K6ys9JwwR05M9JzMJ4QWlPMt9KksQgZ9k809ehSk9r+s3EP3ESveehvLt4cAf8jeAiy/7/vWyQBW9sR8WyWD0z5K9NAwlQRz1+lKoQXgGmMmqvp8i8o9Rw3w3LNg7Z+h4xQeuA/kSXK5C11MkPECiErzvHvwnWsZd5z2kVgi4gpy7uMo61ck9/AEwDbBUthH0vprggglYkk6Xjt+9RptopjqHPi3PJ8G5pX0E8hQ6eaKTsN5qWc5HjohvRZ3htUajgRYKa/W10eGkfX9zcApAVNQegtbTCdf0ExCLWNeMYu5OSxmIeuRrm8tMXUI2xVLAEIm1IIZkTuukufntvg/sKkIgZz6svpAZjcar9Uzx8H3IOLAwKvjPvWR9x2hzxPkVA1daO9n626/7nhqJCCvGCK2Y58ujPyp96Xbl+9rl2L35MPjnPngDwPv1qrY2B/kEY67Z7VkAI6Ka+lbtkHr/ntLVe0VdcT9cwaQWMWgshqeD4a4/yu6dCsrs9/v6G14PR3jp61/g7ovcoKBaKmKn1MN9oRzr1JfuIXgVHYQv7zaHyBAFaeFXuXqccUHQiD7osZMR5aVskAdYroHd1tkGNh6Uc1TtV4wEkvWyaf9LukkzjLe9n7pVGVBjq7a/fZT2tVEs5/WO9jQRez/0o0nS6ICTvEApVu4c3J
- v1X0K5zH
- e4yZwxQQLc/eB94vKQSrOzpWp3lNMtyqqB8c67O/ad2KoXlfk31XtpQujHBCq16yl/sYm56Mcn7JZxqz2ncV5u8HCpycHrz7WZQnqoyTadV+bQ8xWHM5XdhBmxZvdMGBxibVLDHTf9vh+gZLzpiyh54xn1ndBeP74CTiJlsRBQbOT0AmSNTbAa5LColWNcgcFPfjf+zz13MpK7GfIRSO3Ihi01D1q4ZD2dGsVxgvCKoDwDr5h0Yxz+z3ovtwHbzCFMMB5MPNhd1d1RAPYWYpqVN6SRSRbxz0DYGg60fIe226yMceUE6JtA6860WJaBOlEEDTzHn+Xcze2assvl8GJkk6D012790t4uAM7t/SPXpr+I2A=
+X-Stat-Signature: gf91znrwrhdtcod7fawrnsfhc8gp8jdr
+X-Rspamd-Queue-Id: 084281C0003
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788535760-304689
+X-HE-Meta: U2FsdGVkX18nJERhuDWJWzsrV19kkw1wOvhbR/sxWKa7nIniXZF+9IWwob8cCCo68bzhPCqgpiV+wVxHE3/mfn39YCm+pwVz1o5PObWIzfezZX7OQSr7ezvyhyGUL7P1I5CaBmi1JkDucF/wxlM7uGxDOGauLPLzlaCp2dKklCodxXTjGmEpOk6Yu5t6uGFtTtHv59Agoe6TLlvvP838GzQ337CbvV+YmqQVb6iw19R6rursZ4q62kc0oJRmTzV1b+TIIWFPkx4NfqLpWdsGoRRG709hqGPlyMworNPGG5s+BMEq7qCH6Aa+U68oSE843jtyC6QObf45qimjUu652bqdss3l2GppI0i8ftCoCDYiOT6njd6YU7DjPUztZIH1u59X35XyytFLAkVXbmULYyzXdekOuw2OfiC1GGO/jVf2BCyk718S299YkNalYbohq30dXKuP2Jk3RLgaDsvslxTCCu045gCd9bdCe5hQ1cOKVeRKLTYoNHMdjtQ9FvDfgOE+E00nRtiBO4DcxxFRhB9tj91oI/lW10MjUrIawOZnyXG1iEWR5Au8/ocqZ9y6qZHBNXBZEJ6xKAk2YLAn40uFhMKWe6mDlbGYiSlB4YrBYotM7+7nPKESYuXnFiF2YU0GOINDdBc9jr31YFHvAgCj0tIqDJ96dPdYk3XQJ6HZQGPZHtVQL4WcE7QCmjkI3ZIY4Pbb/o0P7RgvqVuVdCUjYdsnQyrlSU6ug+ZruS53ayRig6uhxWWAVco06ApTWcFVPj6H4nR/yRp1FF6UgkPaF3ZHPuGcJ6HPdOQFeSD9ihUiy0HcKDYQ6scpjB0pz3M6/7jcklRg3A/9Rt0Zk2ca9V0xg09Dl4tHsG7mc0MT4MmBypYNs+dKgSzku8hSGQR4RWaLKIXJZmsnexQ11vQyomo6JZgcqzlWe8XpaQBJvzgsCcCtrcVypCAV+nq/ExXS4iUVJxCg7BqQbt4
+ FjfyoZ9h
+ mjUzuXj3Cg6qdXcZ3Zu20Ng0Vcx0SF3sqYFNKrm5tLPmUa3NofUTxRzNLlD39f7+8iZD3tHwd2cZTYEeLB+JvEPjARuZE0wMp9Kc7QXP6TaKViWu/zJQ6JjlvF6AgKTYW+JA6ZY5ghVfJuYHbefOVXcD1EhBlzaYwehfnD81Z0WQ1QGX4uAb7d5h5hfP1+faCkGK0Pt44IqjXWjbh26CZbPtVvovuEDCHKZ8Kt8F0LiRIEjrGn5S4y60RpHGPAQ0i8NG+jW230T6PDkbQO8hYUNp/WiB9TKV717IxGVw/pONDArYVF8I1Ztg3k1jocysNdRCFXGjPDDF2jCBsLz8CcFTYe3Jw6mIYJ8sqJXpGta5Pc28IXjzJuK9OEYBg0lpsGv0vCm5LwDsnSPBlmyvwwJn6oeCyEeYZuLGptjmg14WEQsmImSmRiKdWux21iwM6OxEeYNi8JCV5bGTPzKcdwV6LKDN/itHJcbF4zBpU1Mj0QIeoduzkOC0WqOc7tlRmNIzYLdQNDYskR5SfnsXNMAHPEw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,51 +140,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 04, 2026 at 04:12:53PM +0100, Lorenzo Stoakes (ARM) wrote:
-> Currently MADV_WILLNEED treats file-backed and pure anonymous mappings
-> entirely separately - using POSIX_FADV_WILLNEED (equivalent of a readahead)
-> for the former and a tree walk and swap in to swap cache for the latter.
-> 
-> MAP_PRIVATE-file backed mappings straddle the two and currently get treated
-> as if they were purely file-backed, meaning any swapped out private pages
-> remain swapped out.
-> 
-> Resolve the issue by explicitly checking for CoW'd MAP_PRIVATE-file backed
-> mappings and performing both walks in this case.
-> 
-> Since the logic checks for vma->anon_vma this means un-CoW'd
-> MAP_PRIVATE-file backed mappings retain only the single file walk.
-> 
-> Reported-by: Mike Kaplinskiy <mike@recall.ai>
-> Closes: https://lore.kernel.org/all/CABeknB_S2XJSHFgnHdgnN0rjzHhH4oQJs_APq9fvxHztQ_pgiA@mail.gmail.com/
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  mm/madvise.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> index 73c2901b9adb..d0510dd49dde 100644
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -297,10 +297,12 @@ static long madvise_willneed(struct madvise_behavior *madv_behavior)
->  	loff_t offset;
->  
->  #ifdef CONFIG_SWAP
-> -	if (!file) {
-> +	if (!file || (vma_is_cow_mapping(vma) && vma->anon_vma)) {
+On 03/09/2026 16:28, Vlastimil Babka (SUSE) wrote:
+>> Replacing it with a kmalloc() is confusing in my opinion, and requires
+>> that the reader is aware that kmalloc() falls back to __get_free_pages()
+> Why? The reader has only to know that kmalloc() will provide such a buffer
+> (up to sizes that the page allocator would) and whether it falls back to the
+> page allocator or not is an implementation detail.
 
-Couldn't this all be simplified to
+When I see __get_free_pages(), I automatically assume there is some ugly 
+low-level memory management going on, which is exactly what fifo_init() 
+does. kmalloc() feels like something you use more for allocating memory 
+for a struct. There is no such rule, of course, but this is my 
+subjective view on these two functions. As I wrote earlier, this is a 
+matter of taste. Maybe it's only me thinking like that.
 
-	if (vma->anon_vma) {
+And as I'm not the one deciding whether this patch is applied or not, it 
+doesn't matter so much what I think about this matter. I've humbly 
+voiced my opinion, and that's about as much as I can do.
 
-? swapin needs anon pages to have been faulted-in. Non-cow mappings won't
-have an anon_vma, nor will fully empty anonymous VMAs (and that's fine).
-Right?
-
-Regardless, looks cromulent
-
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-
--- 
-Pedro
+Regards,
+    Eli
 
