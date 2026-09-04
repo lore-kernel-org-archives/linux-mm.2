@@ -4,131 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80E16C624DE
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 12:21:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6398C61DD6
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 12:36:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 551886B0095; Fri,  4 Sep 2026 08:21:14 -0400 (EDT)
+	id A9E366B008C; Fri,  4 Sep 2026 08:36:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 528DA6B0096; Fri,  4 Sep 2026 08:21:14 -0400 (EDT)
+	id A4F786B0092; Fri,  4 Sep 2026 08:36:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 466376B0098; Fri,  4 Sep 2026 08:21:14 -0400 (EDT)
+	id 9655E6B0095; Fri,  4 Sep 2026 08:36:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 212CC6B0095
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 08:21:14 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8ECC2C0E04
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:21:13 +0000 (UTC)
-X-FDA: 85175989626.03.D96E9B4
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C3D8E140008
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:21:11 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pBHkpg1z;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of hemanth.selam@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=hemanth.selam@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 703B36B008C
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 08:36:48 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 078E0A57A3
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:36:48 +0000 (UTC)
+X-FDA: 85176028896.16.E3FA0CE
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 35B321A0008
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:36:46 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ZBqisjXc;
+	spf=pass (imf19.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788525406;
+	b=PkW7s6GS6OFYcNTn9SXZC1rP6ch7M6svge24PHBzg2RSMZPUXz27sMHX6IlM6HN9utAnQU
+	6zp0uDXLHQ/ptYydOiai709cZMaeyHm2D8trQGSG3ywTjcVfLqwryyaVawgJbFInzsqeBa
+	hfNch46vKUIYH+dg6L1wpYVTTKwsRfo=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ZBqisjXc;
+	spf=pass (imf19.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788524471;
+	s=arc-20220608; t=1788525406;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lkiCyCvi2P+iZbARVukdTb/KqWgHgSHrWQF85+jAN58=;
-	b=vYpwqWOcjcnsqEfJNhNH9Oh0xLoVyJ8YBd1Un+ZYZAggIbHozJUgP2vAMCpkDrjHoicJZ3
-	x5ca6U+VnBELLwetM4WPlBG8Z7xDTvs8FoI1nu3C1GvLoz1IEtOX4cWSBXQvX/Y8jabSPu
-	iwzd57RwWEvxdtE9owlQYVqoN63ftuQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788524471;
-	b=EtbZh+oWyLyYN6RS4JUbqxJFs0H7xTFdVMNsf2V7xbFyOfncFsUIft6wpPD+sJL8Syc0oP
-	viKcjEPerpcTNNLbuzVbxYkKpTuEN7AuNhWbH97BabwCS+Xd67lHr+OrAFY8a7pEnziXzP
-	TRq2USljI6FW/mn6ifHl1VQcV7PN+eM=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pBHkpg1z;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of hemanth.selam@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=hemanth.selam@gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cc147d86bebso967962a12.0
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 05:21:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788524470; x=1789129270; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lkiCyCvi2P+iZbARVukdTb/KqWgHgSHrWQF85+jAN58=;
-        b=pBHkpg1zbEJlKInXNSZ1Ec2GTHfXkfTLa0wwNpDNNa4dagSGsHAGAzeHiFTU1Yvx36
-         1bxQS2+vzpIcP6jGAVr5WXu991E+qnnfWxRAdtHa+80uso0xMaR0eFAXyWKZyWpMZCRJ
-         n0hCXDI/uoODppmq7KhqKPj53PFDahADjYKH+upW7QKBTJ7Got9fyBuwq2T5NKBUU1c8
-         2XNP6uXsG1tcMNMmdJqe7jIhAnDTrHenKcwSYwu+7a5+1kjGfQ6GxhilEfsclgRapyaa
-         1/q9Go/6ZNd71QoQiS7a+TLqRSHZGwRZVVXiLiLKGXO9mY2rNrxgMqWHG4r/4nc2t4bf
-         d2Tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788524470; x=1789129270;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lkiCyCvi2P+iZbARVukdTb/KqWgHgSHrWQF85+jAN58=;
-        b=J3jO4HozMwhC5Nj7gKL7m9kE0KBqpYcFw4vUyu8yOxARfyU2CQqx/lw7b/imfHx8Vh
-         IjumsaRyqy+uhiO9XVOd6ABApcDT8NMjgCFBVTS0jakqKpCeNRQoVY7lFl925QmCk6JZ
-         nBa6qvxkMLGZLl2wc+q68xMNSW+cl2n28PkZAw3Ao8vxMUgJ9PIlA/4n3TQf2G/4MTST
-         erkCLlW2AyoJpCSjx4kfb03C6h79yWCurAZJ9XLEqzdz51BnqCeLD7YGRHuL8aehlzAQ
-         n0TEelDoiKvq/VpRQAV03Bndg2b13RPiFm2ckd/8iuVd/MkW60hu1Zgc3DJw+2DxhHhJ
-         8Niw==
-X-Forwarded-Encrypted: i=1; AKwUvBxYlIZkOxmehqMMdhvxanmSO75+V1VfriA0SSOZMHMFYWS3/ZEsOWwgZVg1Rh21u1iK2w5Kxs+YJw==@kvack.org
-X-Gm-Message-State: AFuF++ko3FEmvsdfohl9Zk718Lih55d6Kei8I/NDrZ66z8rB7nR8kLdZ
-	lOfwKINH/uGdOoyONGv2ebwq7m6Y+qMD18wPaRaVOYuMhm6GIqTo6rcS
-X-Gm-Gg: AYBFou0xEOa7YwVxKJVE+09yPmcEZ6ydRehGh5lrTTDgBT5o2sN6joU1mXQp1UP3ZZt
-	hJkIOrtDyKDgcZ6UNR+FbwvzMV00ii1a/RPj0vp3FUxskRv+aRI8WmXZjVSsyse1MVE62NZDnJn
-	l0Ni7vJSZYKmjEi7L5YW5khV09rZ2CAPeLfjcjUq45mhpS5XqzxRW0cxHjzCVzDRn0dc360eOAD
-	UfAlncD8eD6MwVRyZSfnUSfA1bSz9APC5ZVi8mgpQrjK5XZgZlbvnSpuuePUUnUGhWlyqcKiQYD
-	PV2S9kztM36XWRtBm97WPmn5upq+GBcGz4Aeii2hnoJDGsXc7N2iSVBpZDgkrQcU4ZD3kmMv8Pu
-	6lp2AQNdZX8rHUaOoquXFeVT1rFb+LhWFJ/VkgCagS4ho8bEGhqHX0pn35/+9kgRU4kwT1hMtr+
-	LwYHdhPe1nU/oChRux8LQG3736gsavXYXV+EXWCNLO6iSqyDLo/tyyk7TeS/WGpL2O+h6piIhe7
-	ZTEPOA9SvxHGac=
-X-Received: by 2002:a17:90b:2e46:b0:38f:a81:15b1 with SMTP id 98e67ed59e1d1-39b08653554mr16531593a91.19.1788524470541;
-        Fri, 04 Sep 2026 05:21:10 -0700 (PDT)
-Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339b608409sm7116019eec.21.2026.09.04.05.21.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 05:21:10 -0700 (PDT)
-From: Hemanth Selam <hemanth.selam@gmail.com>
+	 in-reply-to:references:dkim-signature;
+	bh=GHrCOGdPLTZtsU2GTGSRn/Mn2SEzNA9R0A50cQSrjCw=;
+	b=Vk/tshAt0kmRAcmsUgz/FRQ3R7zc0HrvfBYkOeKzUxbZJF1Ax84h9Ei+h9Rifc0jr5/JgV
+	8V/wLy6le5by3XpEmR3jivUxgUJsoWQxtq7sIpStHaZEegKXgtfVy0nNzeWQlFbM6qETxC
+	VxfnKhtgeDtFsICIO9weGdAv3wgSsDI=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 401E3153B;
+	Fri,  4 Sep 2026 05:36:41 -0700 (PDT)
+Received: from a081061.blr.arm.com (a081061.arm.com [10.164.19.84])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 5A9E63F673;
+	Fri,  4 Sep 2026 05:36:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788525404; bh=wqMiefQ813XjBpOY/Bqzi8iJ8yepxecd9s2Uzbyx0Fw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ZBqisjXcjxPy/bkSfkzByDqNCHHBVYrb9/SV5j+900Mt4hMJfVeUmAA3e2YPFZArZ
+	 1parRFfNjspTkqiOOTeWdAluNjwgoqmTsIKIp9D9jCJ9QWch1wndmHiPp2TwK4dGUB
+	 Mkmk+0PqhpjkvW3f5Yd67NZPkwMgWhvj0rejXZ7U=
+From: Sarthak Sharma <sarthak.sharma@arm.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Kees Cook <kees@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 3/3] kernel: fix typo "overriden" in comment
-Date: Fri,  4 Sep 2026 17:50:52 +0530
-Message-ID: <20260904122054.28531-4-hemanth.selam@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20260904122054.28531-1-hemanth.selam@gmail.com>
-References: <20260904122054.28531-1-hemanth.selam@gmail.com>
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Mark Brown <broonie@kernel.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Muhammad Usama Anjum <usama.anjum@arm.com>,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Sarthak Sharma <sarthak.sharma@arm.com>
+Subject: [PATCH v9 0/6] selftests/mm: separate GUP microbenchmarking from functional testing
+Date: Fri,  4 Sep 2026 18:06:25 +0530
+Message-ID: <20260904123631.198697-1-sarthak.sharma@arm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C3D8E140008
-X-Stat-Signature: b9x6m6wu9gbru6oq768qy6fwy8tu8tpk
 X-Rspam-User: 
-X-HE-Tag: 1788524471-196406
-X-HE-Meta: U2FsdGVkX1+bwy/8jTVB28SnBFq48fer/LS6Pb1qANb0j8fG+OGqKiwuxpKB2BzM+g+3EbVvgX4hZBAVpOsYLxmCtAL7IZMXwVhA9brQNAtjUpK7SJujL9RkXfjHw9+hmTTqGrQwga2rYUAEFqw4c50Gzel1ajjUtahsTo6LQ/qeDI0k1e0qWZTE+qNbVe6fkCACmeoh5aigo4985t58QksbZDXwQfpouYGyKEi0e/w7PCr0mglLepHc7BUvOsv+2C++l+fatyhroH4nDsEE30WKWhD57MREIAAWffIAa9uuM1ELGxgHPHKVG2s4QoeeApD8wud/LuCg/NnUSj+cbSd/DaKtaKEfq3b1ByfPFYFqJmiHRTzw78JzRZteuje8W9ggplUDLJja9FCKMfRBzV/JZSvOotNs2+xvAFBpDnYt80mUaLOV/Qj02ZTSK5tbj3yik7BruME3ctXYOnp9Oo2H3tX3knH1qL5MzDp+DJQn0cH067Z9av9i0Q1M5qAWWcJOfL3hQ7tOvYRq3Cbm81BorrF0zo2Znk8EjevGVdDKE9un/Pm0dl2X5p5S7D3bKeYavAdmEiub7lslW2uBtOA8l4mBnqDLDynDh8OfXDrPyE3gZoYOiCJHuQsiLTpJZpemUUisWkjsgL+JfUnvsGHpui4SVPIRTpLVJsNy5lwMas5kawwc68/dYenGvMCAcfNaPvIvvwhzDGnP/lumqELTTVxqfFhna06iLAG6rKnl5tj5+WDhVmLVBqRP/xyWlsGcTaQX6DC17dItVKJxNmJlVCGt56q8o3V74CdpcIatJvVGNBsRwcm7V+RA2lBq1YY5ujxk36+y2e76Qa7j/dxWYMVTPHUeWoFEAG+/Wb/XL+AONIqYCHw2gSoU7wgcWTqGQo3CStqtdFsrKvH2wS2YkshDaeSIefaSAJyDZYt5NA3LCSF7EdWh9GwcJ9IG7jfm1bZ5fxbgpN0b3Gm
- fAYEAwJ+
- NyIKwwIAHydoEdLuJzzun3cqXso3N/2J7cbqNkDtyGboQMOHiqjyKM5/WwM2ikFAQaK/1qAtPQqwjebUvKorPn7Yrf5b1mVAjpvayUeYMi3xrgY1t1IJDDlAz4rLY1wx9HaYzHmCEQVB8C/SozE/tMqs4GhO1uz6+UinX921r6wnjqNCKotlLa9zEHQvXYdZpxeB7TD/DAfW36tqTnUv61hwjA0P4uV7gMkl5aZSJCy//dqw9OtQQXLbMViEQ3PJGqBphfVgIql8vO+SWaUO4mcdsOjVz0SzccCX5R+sBf331yB+xHfr6g3NBFGPJR4OTtXXBi8PeWgMBwuJPYf8cT0Is+jyT645LxLFSUP06j6Of4bgBNFnKT75ueQyqk47kcho6UCOLU6L+5/THLqZ7aSzjRKEfliN49+pq6zx14HNhPaE2ESpQ3Dn1eRGwRsyzg98d
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 35B321A0008
+X-Stat-Signature: hjebb17bp6biyje8zbusta4ianifig73
+X-HE-Tag: 1788525406-929741
+X-HE-Meta: U2FsdGVkX1+5mk0H7Tt0YSkuT/uFJjgIU0MR81EtEIo5qkYlTmgh7Be9zAlZ/Yc8J5S3JVkt8hRZDw3azc3+rAn+qwkltibC4Zm45YuAqfHBPNv9ntytiB3qYGiuC+peTU+GG/B3v7xR70PdqwrpDjh1YT9fUeJpmuBnl+Xm074wXrS6QsdNAqLXd1aEDKqvC/uhL74hlOEwx6VRrLZvDLr8DdiG/ezA62GhrIXnoicIRtuzF6QL04AwpENrfpH4LLAhrNR7W5J7VdJ28xwbtjmx6pXPs8+Nl3ka21TauRkt7EGSZ/IYyweaR3+TxHL6uCgXelkuP2yryuzGIyUADZJpFL8Om44udB5Mlckff0STK/8EFfIWzbnJSLpx+hoFTw3aKERELycw+NlBH/rp3Xj3ASqwvIS1/d+4RhgS4cBDV89MDIxRDPyfckDoqiY7IMmHG3lbwlurPDntEADXPEzFMH8NAY6ECKu2DnjxjedZCP9A68M8M17Uhg7zi78AUvYz/d7NFFBuwfD0uMMFxNH/KpYOumHR1wefDLeZc/HDuoGlJ+OCi2hvI1YFlhphUVjVgbxpU8ssF1YbUa8SlPMzHoJ4d7ZbN8Dyrc250CmIe1pMDRG442yVUQdZigV8NOEIHlu0MQpf7m8jst3lE0QwmTblb+8rt2p2u61xu4PHq0tS0EWKt+JYgQiqatQlAEwCIK6mLQ0kvvWVVp00hMGnMpxXICbKhqJr0Re7ZNH1k2nuC5d+SHbgjVyF3r2WNJEX/Af+v8WuEOewQVQvIYvyhBO5tY74hk2kTHJ5x6VcJjislx10Y2bB1OLzoprwGNLL+xc+mJdUNDkorXB0TvA9mUqvIrylFcxw8uQGGnQ6G20R/xhJC7RZJvWLGwUJSrgge3zGGYY6IRvxB8TuqOfueL7AM9xg4MDZ4BajnpfBYYsUegQHLEbG4hNDaFW0Igiv0aiWZBTwdE7Fzk+
+ r0kZiI3q
+ A3Jiowhr6YtOnfE+IMfQjwMNdUQOrFUBqS606+MnqFS0oyVC7vyxnRwiOOeFfCGKjVPQ/SV0AtQEq3rLJBeVYNZz4lNZtUtQqvJzUaGZM/vQnSGX0AchEr2Z3jRoJ+8DvzukrdDqCVllhnjiVsfYVbBk45nohS75TgThmEsjXEnM3bdmWKIWEIlh0x++m2yX3xUAXGztCVKwK3gUJL4Jqbz2v7vyb3mLF6gC3V4so7bVFyMoUll0HAe+YgqMIclajT7CpMwuYDxWTy2Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,30 +112,186 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Correct "overriden" to "overridden", reported by scripts/checkpatch.pl
-using the misspelling list in scripts/spelling.txt.  Only touches comments,
-no code changes.
+gup_test.c currently serves two separate purposes: benchmarking
+(GUP_FAST_BENCHMARK, PIN_FAST_BENCHMARK and PIN_LONGTERM_BENCHMARK) and
+functional testing (GUP_BASIC_TEST, PIN_BASIC_TEST and
+DUMP_USER_PAGES_TEST). Keeping both in one program makes the functional
+tests harder to run and report individually, while run_vmtests.sh has to
+invoke the program repeatedly with different options.
 
-Assisted-by: Cursor:claude-opus-5
-Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
+Separate these roles into tools/mm/gup_bench for benchmarking and
+tools/testing/selftests/mm/gup for functional testing. Move the shared
+file and hugepage helpers to tools/lib/mm/ so both programs can use them
+without duplicating the implementation.
+
+Patch 1 makes read_file(), write_file(), read_num(), write_num() and
+write_num_ignore_einval() return errors to their callers instead of
+exiting. It also makes read_num() reject negative and malformed values
+and updates the existing callers to handle failures.
+
+Patch 2 moves these file helpers from vm_util.c to tools/lib/mm/. It keeps
+them available to the mm selftests through vm_util.h and adjusts the
+selftests build accordingly.
+
+Patch 3 moves hugepage_settings.[ch] from selftests/mm to tools/lib/mm/.
+It also removes its kselftest dependency while preserving TAP-compatible
+diagnostics for selftest users.
+
+Patch 4 moves the existing gup_test implementation from selftests/mm to
+tools/mm as gup_bench. This keeps the code movement separate from the
+subsequent changes and makes it easier to review.
+
+Patch 5 removes the functional test modes and kselftest dependency from
+gup_bench. When run without arguments, it performs one GUP_FAST benchmark
+using the existing defaults instead of running the whole matrix. Other
+benchmark configurations can be selected through command-line options.
+
+Patch 6 adds a new harness-based GUP selftest. It covers THP, non-THP and
+HugeTLB mappings across private/shared and read/write variants. For each
+variant, it tests get_user_pages(), get_user_pages_fast(),
+pin_user_pages(), pin_user_pages_fast() and long-term pinning modes
+using four batch sizes. The HugeTLB variants share a one-time setup,
+with the page count chosen using a 256 MiB target and a minimum of one
+page.
+
+Changes in v9:
+- Handle read_num() and write_num() calls in hugetlb-soft-offline.c
+- Require GUP tests to pin all requested pages
+- Setup HugeTLB pages after prerequisite checks, choose the count
+  using a 256 MiB target and skip variants when setup fails
+
+Changes in v8:
+- Add a comment to clarify read_num() input validation
+- Remove duplicate exit code in gup_bench
+- Drop DUMP_USER_PAGES_TEST coverage from gup
+- Update Documentation and Kconfig
+
+Changes in v7:
+- Rebase onto mm-unstable
+- Address feedback from Mike and Sashiko
+- Make read_file() return 0 on success and tighten read_num() parsing
+- Move write_num_ignore_einval() with the shared file helpers
+- Keep the existing gup_bench argument parsing and avoid unrelated checks
+- Set up 128 HugeTLB pages once for all HugeTLB selftest variants
+
+Changes in v6:
+- Rebase onto v7.2-rc5
+- Address feedback from David, Mark, John, Dev and Sashiko
+- Keep the shared file helpers silent and let callers report errors
+- Move the existing gup_test into tools/mm before changing its behaviour
+- Report ioctl failures from gup_bench worker threads
+- Remove the default benchmark matrix and run one default benchmark instead
+- Add the new harness-based functional selftest in a separate final patch
+- Drop the unrelated thp_swap_allocator_test .gitignore change
+
+Changes in v5:
+- Rebase onto v7.2-rc3
+- Address feedback from Mike, John, Dev and Sashiko
+- Make file helper diagnostics TAP-compatible
+- Validate read_num() input and propagate errors while restoring shared
+  memory limits
+- Preserve build bisectability for the x86 protection_keys test
+- Preserve HugeTLB diagnostics using TAP-compatible printf() output
+- Validate the remaining numeric arguments accepted by gup_bench
+
+Changes in v4:
+- Address review feedback from Mike and Sashiko
+- Add a preparatory patch so shared file helpers return errors instead of exiting
+- Reduce include churn by keeping shared helpers exposed through vm_util.h
+- Preserve HugeTLB diagnostics and restore HugeTLB state more carefully
+- Fix selftests/mm build details after moving helpers to tools/lib/mm
+- Tighten gup_bench argument handling and gup_test setup/sparse-dump coverage
+
+Changes in v3:
+- Address v2 feedback from Sashiko
+- Add shared file_utils helpers under tools/lib/mm
+- Move hugepage_settings out of selftests and into tools/lib/mm
+- Convert gup_bench to use the shared tools/lib/mm helpers
+- Guard against invalid thread counts in gup_bench
+- Handle thread-array allocation failure cleanly in gup_bench
+- Restore HugeTLB settings on setup failure in gup_test
+- Add sparse DUMP_USER_PAGES_TEST coverage for pages 0, 19 and 0x1000
+
+Changes in v2:
+- Address v1 feedback from Sashiko
+- Add fast and long-term GUP/PUP coverage
+- Sweep nr_pages_per_call over 1, 512, 123 and all pages
+- Call madvise(MADV_NOHUGEPAGE) in non-THP variants
+- Use 256 MB for HugeTLB fixtures
+- Restore HugeTLB settings from fixture teardown
+- Report nr_pages_per_call for each iteration
+- Update the pin_user_pages unit-testing documentation
+
+Previous versions:
+v8: lore.kernel.org/all/20260831042101.18085-1-sarthak.sharma@arm.com/
+v7: lore.kernel.org/all/20260813181230.483746-1-sarthak.sharma@arm.com/
+v6: lore.kernel.org/all/20260730140825.238130-1-sarthak.sharma@arm.com/
+v5: lore.kernel.org/all/20260716123226.197736-1-sarthak.sharma@arm.com/
+v4: lore.kernel.org/all/20260527142432.230127-1-sarthak.sharma@arm.com/
+v3: lore.kernel.org/all/20260521111801.173019-1-sarthak.sharma@arm.com/
+v2: lore.kernel.org/all/20260519120506.184512-1-sarthak.sharma@arm.com/
+v1: lore.kernel.org/all/20260515084840.174652-1-sarthak.sharma@arm.com/
+
 ---
- kernel/fork.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sarthak Sharma (6):
+  selftests/mm: make file helpers return errors
+  tools/lib/mm: add shared file helpers
+  tools/lib/mm: move hugepage_settings out of selftests
+  tools/mm: move gup_test from selftests/mm to tools/mm
+  tools/mm: make gup_bench a benchmark only tool
+  selftests/mm: add a GUP selftest
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 416758c8a3d4..6d3340d34234 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -3266,7 +3266,7 @@ int ksys_unshare(unsigned long unshare_flags)
- 	if (unshare_flags & CLONE_NEWNS)
- 		unshare_flags |= CLONE_FS;
- 
--	/* No unsharing with overriden fs state */
-+	/* No unsharing with overridden fs state */
- 	VFS_WARN_ON_ONCE(unshare_flags & (CLONE_NEWNS | CLONE_FS) &&
- 			 current->fs != current->real_fs);
- 
+ Documentation/core-api/pin_user_pages.rst     |   9 -
+ MAINTAINERS                                   |   4 +-
+ mm/Kconfig                                    |  21 +-
+ tools/lib/mm/file_utils.c                     | 106 +++++++
+ tools/lib/mm/file_utils.h                     |  13 +
+ .../selftests => lib}/mm/hugepage_settings.c  | 109 +++++--
+ .../selftests => lib}/mm/hugepage_settings.h  |   0
+ tools/mm/.gitignore                           |   1 +
+ tools/mm/Makefile                             |  11 +-
+ .../mm/gup_test.c => mm/gup_bench.c}          | 191 +++++-------
+ tools/testing/selftests/mm/Makefile           |  15 +-
+ tools/testing/selftests/mm/compaction_test.c  |   2 +-
+ tools/testing/selftests/mm/cow.c              |   1 -
+ .../selftests/mm/folio_split_race_test.c      |   1 -
+ tools/testing/selftests/mm/guard-regions.c    |   1 -
+ tools/testing/selftests/mm/gup.c              | 287 ++++++++++++++++++
+ tools/testing/selftests/mm/gup_longterm.c     |   1 -
+ tools/testing/selftests/mm/hmm-tests.c        |   6 +-
+ tools/testing/selftests/mm/hugetlb-madvise.c  |   1 -
+ tools/testing/selftests/mm/hugetlb-mmap.c     |   1 -
+ tools/testing/selftests/mm/hugetlb-mremap.c   |   1 -
+ tools/testing/selftests/mm/hugetlb-shm.c      |   1 -
+ .../selftests/mm/hugetlb-soft-offline.c       |  18 +-
+ tools/testing/selftests/mm/hugetlb_dio.c      |   1 -
+ .../selftests/mm/hugetlb_fault_after_madv.c   |   1 -
+ .../selftests/mm/hugetlb_madv_vs_map.c        |   1 -
+ tools/testing/selftests/mm/khugepaged.c       |  15 +-
+ tools/testing/selftests/mm/ksm_tests.c        |   1 -
+ tools/testing/selftests/mm/migration.c        |   2 +-
+ tools/testing/selftests/mm/pagemap_ioctl.c    |   1 -
+ .../testing/selftests/mm/prctl_thp_disable.c  |   1 -
+ tools/testing/selftests/mm/protection_keys.c  |   2 +-
+ tools/testing/selftests/mm/run_vmtests.sh     |  37 +--
+ tools/testing/selftests/mm/soft-dirty.c       |   1 -
+ .../selftests/mm/split_huge_page_test.c       |   6 +-
+ tools/testing/selftests/mm/thuge-gen.c        |   1 -
+ tools/testing/selftests/mm/transhuge-stress.c |   1 -
+ tools/testing/selftests/mm/uffd-common.h      |   1 -
+ tools/testing/selftests/mm/uffd-wp-mremap.c   |   2 +-
+ .../selftests/mm/va_high_addr_switch.c        |   1 -
+ tools/testing/selftests/mm/vm_util.c          | 121 ++------
+ tools/testing/selftests/mm/vm_util.h          |   8 +-
+ 42 files changed, 678 insertions(+), 327 deletions(-)
+ create mode 100644 tools/lib/mm/file_utils.c
+ create mode 100644 tools/lib/mm/file_utils.h
+ rename tools/{testing/selftests => lib}/mm/hugepage_settings.c (87%)
+ rename tools/{testing/selftests => lib}/mm/hugepage_settings.h (100%)
+ rename tools/{testing/selftests/mm/gup_test.c => mm/gup_bench.c} (50%)
+ create mode 100644 tools/testing/selftests/mm/gup.c
+
 -- 
-2.48.1
+2.53.0
 
 
