@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D54FC624D3
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 10:45:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC3A1C61DD6
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 10:45:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2CD1D6B009B; Fri,  4 Sep 2026 06:45:33 -0400 (EDT)
+	id F01FA6B009E; Fri,  4 Sep 2026 06:45:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A4C36B009D; Fri,  4 Sep 2026 06:45:33 -0400 (EDT)
+	id ED9E36B009F; Fri,  4 Sep 2026 06:45:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BC0E6B009E; Fri,  4 Sep 2026 06:45:33 -0400 (EDT)
+	id DF08C6B00A0; Fri,  4 Sep 2026 06:45:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D2A136B009B
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:45:32 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 55C361C285E
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:45:32 +0000 (UTC)
-X-FDA: 85175748504.27.05470ED
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CA046B009E
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:45:35 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 21615120812
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:45:35 +0000 (UTC)
+X-FDA: 85175748630.17.0B5B285
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 816B440005
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:45:30 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ge/Wyc+a";
+	by imf05.hostedemail.com (Postfix) with ESMTP id 47D1510000D
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:45:33 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=isV2IgZu;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788518730;
+	s=arc-20220608; t=1788518733;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ywgp/pHfl+lA6AvsB1zv7ftqiWMvHJVARqEHp5d3uMA=;
-	b=AtfYQDDgItt8+QNx3Uol6ohIGSQFHxqUKY/CY4HCQ6j757M0rv+6Fg6eXU+h4fEH7CRtGk
-	yGKJBEOwgAgB6khCOYh9HKBCaryWx/IjE0DswZiOlJOwJ7mLYi+mkf+Ongx6KryJEyIEld
-	WdY9WphXhwcYGkTKVbrCZZ4Z8Qz89O4=
+	bh=tvyd01m5FmUtu3q6l/t0/X1UQi3FbzSuZHwJCHFz3QM=;
+	b=LRjLKYlA8OCqDL4uzdIfOGRydYki7JEJY4Ck/nOMVDevECj0zNvSiwseWZ7qF9gy/zDhXu
+	xL85Eprpr3CvvRtFxuLftm0tEr2U0qhBSFmqfsio5AJnt/C4dHXlwicBuKysmxS1JD3Ge6
+	/tpNy66GGlMNmrYH8enBfmqEhT0TloI=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ge/Wyc+a";
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=isV2IgZu;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788518730;
-	b=3hj1WVfk6aMDJDHyce/hAe9nhvlNkzUo0oVv4S3JFE+0J98wJA6Ubk4XYJsy94Q2x02GtC
-	YceYhLdSfpmkV9oYo6EhHEpjYA7axdZ2vB9Mzrn1mFmXtUFbBDLRRa5uHBfTQ8YMaLiW98
-	b0nrM36Gvc8WPDHiZiQH/wYn9IoOZ1E=
+	t=1788518733;
+	b=GAjWj+GktKWoDY08G7xlbGp65t+hugtskjeRc6POZut5ElQUmclsoKYexBT25gz4YXXPPU
+	3wnAPfgmOWERiZ3zAUlAwRRZrTec36qnJ/yFuXSTLehHqYzMSxobHzxGVN7dwuii+0voSL
+	Q2FY6wlDhIjCUqf7+6vko6lgnxvxdXI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C379742DE2;
-	Fri,  4 Sep 2026 10:45:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0FA1F00ADF;
-	Fri,  4 Sep 2026 10:45:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 949B043E5F;
+	Fri,  4 Sep 2026 10:45:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BACE11F00A3F;
+	Fri,  4 Sep 2026 10:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788518729;
-	bh=ywgp/pHfl+lA6AvsB1zv7ftqiWMvHJVARqEHp5d3uMA=;
+	s=k20260515; t=1788518732;
+	bh=tvyd01m5FmUtu3q6l/t0/X1UQi3FbzSuZHwJCHFz3QM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ge/Wyc+aaEqvFnsoCBLmmHxDP2ZrFsI76uOFZedKIyr3ObjIeJehqTg/E/e4qyHqz
-	 RS2fdjU20oGmEzZbwFbjGznSL0/Jc0/BbBAKwE+1TGN77/9r/ctsXXwNjpFK3h5N8E
-	 9//1N6WjKRUGuCSZLU2UPtMWn5MH8udTFO77aWBnc9Blk8heAf2sjncGA4/OUqaWiw
-	 hviqgWQK+x/0ZyeqTGloK7D8LR+vbsJzC5suRNfxpI/nrfbY2i2LJ8mxekylPof/SP
-	 QllQE4G4a05osclFK3ydp7vEZeEjmnTYfutnB68stAiHS9QQrGqYmvRiVEUGEauaI/
-	 YP2HaE6K0j+mQ==
+	b=isV2IgZuqaEj8L6w5TATquMIISnjgvRvBLrttVMb2J3/qELjt9chFPiUY34MdPhYP
+	 U28wPbZT8ogHrGtyUr5RJLQSczYHZExyBqdqMTuDI4gEZeqEhLhF7nUfxbbgN5LSLg
+	 WpGf0U5aqCH3nfFsuGuAY5TAdMaRGNYw4DPjF1ZLmFN3bIn6UXfe4cqWr+MNfTnNvu
+	 S6KbiqTp0Jv0ibjBYHeuTnW7BAKozymnTvHSpJwEHw8uX/NLpZSTc44eFq0eoqawMc
+	 D9BkZU83noFXqptzh6Me0L7ADkDCNvLNKqKkWO6JZ37eeSuyw+i+hWbz0qXVlN6AGu
+	 3HNhAB4yeUGRQ==
 From: Thierry Reding <thierry.reding@kernel.org>
-Date: Fri, 04 Sep 2026 12:44:55 +0200
-Subject: [PATCH v6 04/12] arm64/mm: Export set_direct_map_*_noflush() APIs
+Date: Fri, 04 Sep 2026 12:44:56 +0200
+Subject: [PATCH v6 05/12] bitmap: Add bitmap_allocate() function
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260904-tegra-vpr-v6-4-79042cfa8de5@nvidia.com>
+Message-Id: <20260904-tegra-vpr-v6-5-79042cfa8de5@nvidia.com>
 References: <20260904-tegra-vpr-v6-0-79042cfa8de5@nvidia.com>
 In-Reply-To: <20260904-tegra-vpr-v6-0-79042cfa8de5@nvidia.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -113,30 +113,30 @@ Cc: Thierry Reding <thierry.reding@gmail.com>, devicetree@vger.kernel.org,
  linux-mm@kvack.org, iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
  linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1083; i=treding@nvidia.com;
- h=from:subject:message-id; bh=aIM9S+b4eUaYPFPTqciGrMGQP2g0bdZA73J57AFYD/0=;
- b=owEBbQKS/ZANAwAKAd0jrNd/PrOhAcsmYgBqmqE6y9LZb0fTu1fD2MuKJlskXvqXRscG5DRpw
- 2HGzz+KC/WJAjMEAAEKAB0WIQSI6sMIAUnM98CNyJ/dI6zXfz6zoQUCapqhOgAKCRDdI6zXfz6z
- oZ+tEACbMm5y/9flV4B7lKc8c7sppUYfz2sbPsDFHHFGgAEXu0hrxqgbkreSsnbS8Y9VM3SHYU6
- BIhWV65aiGSz9zanzQqW0gUp6Ik+a9ZDiQ42QrejAoXtHqLtiJIBCvBGPElSqa4nFWQKrt54t2u
- VoIWmYskkNKk4ySyAoyMQdiLxvfqDiqPcuDYOKjmHq9u3hZL5FYTCfWMsH86RPe3xq3cWhIAdgp
- CSJTdwjOtQkEk3XCT5nyw5+bW4h7LEBJ4UzuNfeT8TYCoHw1bt8gO33t8GR5XgTajrdjVC6OhrD
- ruXH+RxCak8NyrklGIImjHCjsflgXqYRWVoOG8MejJ7Kbck+ql3IpUlTuFBn8DBYhYmr7h5aEXG
- dIyUpdgttoGOllBhebafHIEs1QTAPwh39wkOefhQCLmY4NrgJhp6iORWs93GZqDVMwr2wp/37mH
- nV6fa/DQn7PtV82lupwtW7dizZAARJAj38jqpSk2fNBy8n0V9JOQl+4O9Lodc0vIJSE1GPEmuLG
- ktMY7hPZQs7PBDvedNWcLwkxqHaLWxIRj1QXn8BqTft/3FZA05MqDViAtIWTTa5df/rTUg1UW51
- MkEw02uH/BB7iJWaabxssoUEhygxoSsbRbPaCkAyHPyd6ADUyywmWGqqCq9xvJiGo1Y8sPiLj9P
- TCgI7/FYwlN/EDA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2300; i=treding@nvidia.com;
+ h=from:subject:message-id; bh=wRtcGoPPtBVnuqzylzx/Ya02XdoWLRjgy09wPiiWfTU=;
+ b=owEBbQKS/ZANAwAKAd0jrNd/PrOhAcsmYgBqmqE6FB7y46zRAFj+W91sU31vLRZ9vxOWfwPV5
+ Zl4kuw26HOJAjMEAAEKAB0WIQSI6sMIAUnM98CNyJ/dI6zXfz6zoQUCapqhOgAKCRDdI6zXfz6z
+ oeAMEACJJndPxZkKMt6p/5hvrc40QBNDQZ+kF6WmhtnFd/6EVpvs0pjUb8O3if3mkq4TtTKowKz
+ kIuYwA01ot+/ztJA5scT5H/tCqLx/Qds237aUUTv/IzEoq2K4YW/FlTvmXelPijG5HS9T+GeFXV
+ RxODMakq1BUp1WBx0Fvx3tiI40Ukv9zyhQFgNYpIld1ACRlTawrq/ce0NYFwF5wGFaPKkbsEIO3
+ SOwvT5W5s5BuxLJknJq4AaldPvitW5S1LIvagCvP3/wQcvXSXufgOm2MlU3JOi4viyWwRu/L2+C
+ u50xLPvsNEVbWot1lKc75AvkNCcJCtowBhIl8x4HKN+ilKWv8A3go2jvHFSqTIOLCbJmV1DCO5F
+ RTJIpj0JWZPUkl6xqHfiWzgFvJJTmV/So6PtCwG/dbYDI5ngKGDvuEB0RCu4aOfMpiQuiyRs18f
+ SN4t3ERyRKbWzjXimIPHFupQdwDQVNb/5niYY7HikDSTPJCaZTf0B+qjNaNhchJg+AbXBtp+LWN
+ P1a8VilssiEkbeQ8/uw8IMefrUeaSKo9DQyKqMeWYyGE7jWqGUaTQxkTCPSmW+oxhEOq+xpjKac
+ +RjQa8xpetUONC0UCwaBtDLZywDwGF1t7Itd05IGfD+dCnNPAW/gg0w+Wz2AIRM2lKYSNKwYNJx
+ MloyP4fy9QyiMYw==
 X-Developer-Key: i=treding@nvidia.com; a=openpgp;
  fpr=88EAC3080149CCF7C08DC89FDD23ACD77F3EB3A1
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 47D1510000D
+X-Stat-Signature: 93bce4ggjo3uqa7sm36poxipkcnsddux
 X-Rspam-User: 
-X-Stat-Signature: z8if98qd3638bn5nfz79kmq68dkdjh63
-X-Rspamd-Queue-Id: 816B440005
-X-HE-Tag: 1788518730-285362
-X-HE-Meta: U2FsdGVkX19mdbKuv1ey+VN2VRL7Ibk0QdF3Xpn0nQgH8fg0FnXnQ/xsup4jK0Hcx2n4YF8NTbx36sRWYjXrzMjvI2xMNBAV1w+isyLQLpSpq8PxcdgRHHkUupdqaW1tzeB2UsP1cOaqH7D0ROY1NpKLlDgMV1qReb/48p9lLNgtPkg+5GEz0zrvFoIEIxgdD7HUrKCk0mV9y9gkyBIGZidmvMrfw+vcX4tmZrcTenk9ohfQ4cYX2+4+Wftwkiz1p/cATN7WnPJJGw3NVKCBTi9ekHJ6pl6M/IsBQQZrATtkKVhCVu+3kBF9Tqs5wUR6QR3MzXqXi1PRJbRiS05KfaQmcOgA+o9sfPMp+NYAZyJ08V/IUneSzVwOR9que4FYsbvbEBh2cZ83ds203QloUC92Q1Usaop9Td/MCcxu+7ZHs8SJ/1sMPm7YQDIiy8P3Kl4w6vNzuQlnc0dY9+KUy5SzFdhooYsf7wbD2LhqID6q9302r20iOJ7ilwJRcxgkEUUSvl3OVtMD5wSmsrjGJ60HobJ3FrRoAAsBVQH0B5lDYh4HuN9fMdRCxAeRHA+7O79cFnAUygdbIupDWgtKIIoHC4TQpuWe/ic5pEje6mHOj2u5Po+H2QI2jNZ/Pgmot/kAXN/oLRq74cFaepmWnIWUy49/b7gdbG8BkkSRcAfQLBS57WkLN9h3GESglsoqPC0/Jkj/GEVHHMVE1Ins56CFrxO11XpXZTqhRULgYB+SzAvNImDxwAmJOhSAas4RhD6b3KlV+uB0K/M7wT2uf109pZHfIUxLJddEtUCKNHvTo9VXmVHjSRq+J40d+Cy6kS00hZKBI/RIt9QSfoSTC06SSom9pPqMDHVLLmCUDpJQ30TTVYz7kVHuvULDIKRY3WjqI/Icj47aaI+Y17WP2SOZu/rzLjgEjl6I99DjaMT2H2DsyYoeaXU98dq5xPj0QAv4nfMz/s6FemhT4kF
- xwk6w87y
- zK9doiyP4bMG29yxfYp1llcXs4iJ87zamqxMrnTD65JoJl/POCpmIiiqL83sIEmkAjeLBDoHCUr7mJb1LSAx1ndCXVUm5Vq5ReA6huqlKDj81MO3EV9MZVsC4YtBVCXNKsPzpBfQ6r+IZltfGWc3wi3pODfA2pYVRv7cdXNDznPiVl/73UTCWJ35ahqHerVy9y8Jy0d+Lim2yIlw7lz/+S2M0vOwcCZ/HSDXeBn+HZQFzNsI88ulEX1Kgom6prsWQZt0Nl0rR7XLTDgjAz3QzPemQgWSb9kBNtKDVATDCO7jsAh7qEqpDYKDe2SzWofGsaiXftN8lgeGOTljW2qAxOhRnEFX/2WnpndILX0dSvsZAZ8Q=
+X-HE-Tag: 1788518733-741817
+X-HE-Meta: U2FsdGVkX19ngmVItfzwicFEhucjAEJw+8uq4tkq2vpjGsFoRGFFaZ1/nt4cvH8cBOceZqg1qsNWx3h9xhvCKEVw5Ghaeve6RH3c/jDf5YqwQhSZH922NgtW67DdcIpPUxUfuwYtgIYHYEvbFYK1XYQNCIgwyOBbicr/kM3APKgPhuPNCOzJDzxuxF/Bp2BN3Xz5Z5XrgPZUEBCAFwbm1pHBP8UWYexvxkZQpX06+mC7rEhBaFTayNzDHgCNYDHA+m7ZdR0GI1Ko8wQNqWi0mEg0GqgO7OKVAjILBuPEkJosGmB9O8Kbb8e8/36YrneitmLOEAjJ3FIGdzzPi5nkz+QGEAEyEA30j+rBhuhWiz04tVXUlJxFeqUKvJ1xYYmX6bjk+hRHjwVrN6JW4q9j7hw6kMLRb40WM6gyw+aCdnPQmhRMimsrKoVJ4azi6t4MmEtgsEAsh69DlF5k2mxUdNu2d7FdQIaQXVLYAAsNxN0F6NrGtYl+FfYNknGujygxdg4MK6mqCmbeea6WTYoLx5eoZ1dDaHb+BHJf8yklPq9G6l0g4cQHYqNB+tYkm7TjMEpDHUMptiC0hf9y52qs9GHTfT3f6gS7Et0m6POZsi760qD3q0ofuTPaQ8QgbRTRiPJbry9w9TNkY57gfrQs0RgdzmP9d4rOKhLMPtsBs7wPVakmrTUhtpLfTtUni3Mw26K1ReJ6OQqxqX6JihZXmU0pY7+j0XmN/2US/r6dtWxsAUZLbxqIYDRs0iML62WujWzmpAa/0lwov6UXrzxvC2Yz8k7MXuGTq2kNJoKGClcZ/YwxJmeucY7YTn9nr48rbe/ie/oD5AcYjvOLHAdJ2yXcxYaEI8E61DPL4cEwqrsth5E/1GfInWKWEbcKBOCQc6vPtZGSUTrojOc0acTHshkYYRkEoKxhvqmU76n3K8VmfKCngrqCrzB1xLeu+eL6aSf5UTiOKuTZtfmLiIm
+ 4Zw+PUhb
+ pJy1i3wHr7sDZ5ViMrAB091qYK7cwzREH1+H5q5wrddFxb9vwxC/ejV2pOUF0ZtMpzIJpoLMgdlzrZJN1N1ci6EmGEpJN/C1/yIRptphnJ8oU64NlgA07ksipnMc0zKio+H7AuYsLmDuR4QDd3WzHvpceKfPDTJtRHPPb+MUeATWXhN4MVAG/yU67I/r0eIPfMpgRd5hwo18SHGtEKC5OV2xSymaPK8+Gipv8xcCnymllVOMmATHyREcb0e7QNT0xReZ7Oj1+KkNYD76rCSqLnYp7OTUhCHwctwtXOPEyMt4W1826PuglKk9E4CeAeITOewtpWz5TmQhFJXEr0qJBZH1CIz2NoR0+fiQzyLRt3YWF+Nc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,33 +146,69 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Thierry Reding <treding@nvidia.com>
 
-Drivers that use this may want to be built as a module, so export them.
+This is similar to bitmap_allocate_region() but allows allocation of
+non-power of two pages/bits.
+
+While at it, reimplement bitmap_allocate_region() in terms of this new
+helper to remove a sliver of code duplication.
 
 Signed-off-by: Thierry Reding <treding@nvidia.com>
 ---
- arch/arm64/mm/pageattr.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/bitmap.h | 25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-index 132938b32eb1..9253c529f8aa 100644
---- a/arch/arm64/mm/pageattr.c
-+++ b/arch/arm64/mm/pageattr.c
-@@ -262,6 +262,7 @@ int set_direct_map_invalid_noflush(struct page *page, unsigned int numpages)
- 	return update_range_prot((unsigned long)page_address(page),
- 				 PAGE_SIZE * numpages, set_mask, clear_mask);
+diff --git a/include/linux/bitmap.h b/include/linux/bitmap.h
+index 7df1573a409c..c2ab02985b5f 100644
+--- a/include/linux/bitmap.h
++++ b/include/linux/bitmap.h
+@@ -716,10 +716,10 @@ void bitmap_release_region(unsigned long *bitmap, unsigned int pos, int order)
  }
-+EXPORT_SYMBOL(set_direct_map_invalid_noflush);
  
- int set_direct_map_default_noflush(struct page *page, unsigned int numpages)
+ /**
+- * bitmap_allocate_region - allocate bitmap region
++ * bitmap_allocate - allocate bitmap region
+  *	@bitmap: array of unsigned longs corresponding to the bitmap
+  *	@pos: beginning of bit region to allocate
+- *	@order: region size (log base 2 of number of bits) to allocate
++ *	@len: number of bits to allocate
+  *
+  * Allocate (set bits in) a specified region of a bitmap.
+  *
+@@ -727,16 +727,31 @@ void bitmap_release_region(unsigned long *bitmap, unsigned int pos, int order)
+  * free (not all bits were zero).
+  */
+ static __always_inline
+-int bitmap_allocate_region(unsigned long *bitmap, unsigned int pos, int order)
++int bitmap_allocate(unsigned long *bitmap, unsigned int pos, unsigned int len)
  {
-@@ -274,6 +275,7 @@ int set_direct_map_default_noflush(struct page *page, unsigned int numpages)
- 	return update_range_prot((unsigned long)page_address(page),
- 				 PAGE_SIZE * numpages, set_mask, clear_mask);
+-	unsigned int len = BIT(order);
+-
+ 	if (find_next_bit(bitmap, pos + len, pos) < pos + len)
+ 		return -EBUSY;
+ 	bitmap_set(bitmap, pos, len);
+ 	return 0;
  }
-+EXPORT_SYMBOL(set_direct_map_default_noflush);
  
- static int __set_memory_enc_dec(unsigned long addr,
- 				int numpages,
++/**
++ * bitmap_allocate_region - allocate bitmap region
++ *	@bitmap: array of unsigned longs corresponding to the bitmap
++ *	@pos: beginning of bit region to allocate
++ *	@order: region size (log base 2 of number of bits) to allocate
++ *
++ * Allocate (set bits in) a specified region of a bitmap.
++ *
++ * Returns: 0 on success, or %-EBUSY if specified region wasn't
++ * free (not all bits were zero).
++ */
++static __always_inline
++int bitmap_allocate_region(unsigned long *bitmap, unsigned int pos, int order)
++{
++	return bitmap_allocate(bitmap, pos, BIT(order));
++}
++
+ /**
+  * bitmap_find_free_region - find a contiguous aligned mem region
+  *	@bitmap: array of unsigned longs corresponding to the bitmap
 
 -- 
 2.55.0
