@@ -4,127 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE270C624D3
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 22:24:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45DB9C624D3
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 22:33:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 349AE6B008C; Fri,  4 Sep 2026 18:24:31 -0400 (EDT)
+	id 442A86B0088; Fri,  4 Sep 2026 18:33:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 31FEA6B0092; Fri,  4 Sep 2026 18:24:31 -0400 (EDT)
+	id 3F3BF6B008A; Fri,  4 Sep 2026 18:33:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E8BC6B0095; Fri,  4 Sep 2026 18:24:31 -0400 (EDT)
+	id 30DF76B008C; Fri,  4 Sep 2026 18:33:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E87A86B008C
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 18:24:30 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4682414024E
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 22:24:30 +0000 (UTC)
-X-FDA: 85177509900.30.A5C6AB4
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 55669C0003
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 22:24:28 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ESICFc25;
-	spf=pass (imf28.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 008296B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 18:33:11 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 81FFA140139
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 22:33:11 +0000 (UTC)
+X-FDA: 85177531782.27.D5851CD
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 9041EC0008
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 22:33:08 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=IxBtX3U6;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788560668;
-	b=C3q6N9wh3YrTRyHZJ/OPhZW/UQv3mWJWK+UkSTl7O5agc4C9ChK0zVtY0TsJu8xOwKC6vS
-	WNoOnlny33/XKACx1qMqXcbgqsxWWLYAfXLCyZHT3gx8akDNH5blbreFqMcZBtBvL7NJ1x
-	37KkICtKl/rh+y1PYbtnHX4phtcmyfY=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ESICFc25;
-	spf=pass (imf28.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	t=1788561189;
+	b=ppJ4VMRczgMVfJZ77fyDGkLsAf/rDntxtPWz7yIzcvlE4m1iD7H++BsXo4vwxOsC5go091
+	eHBRGMWY6z+Zw6vnBJYp+iwjaAbw1H5l+qfLxAdc6yD5NOUE5nZMtFKS5Eac3f9EgP9jeo
+	LqjH5T3pBZ9DWZIslTRLaw4mApN8oKM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788560668;
+	s=arc-20220608; t=1788561189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eSoy4tzP5/vZd/n79Ub53Qw/sODynJmx2A4LOY3bVO0=;
-	b=4RZJ0M7Wjm7PdHQ6RmtS5IVrsv0TYatDO+sp7o+VFZw+WIldhF5MtWEJnx8cvLqhuUb+ON
-	u88HzODzQNg6uPY8AHGgwtT+u0ry96G9HtnznVy+kiVtqbQt0VhzL43XzqjG6uemhVp++S
-	i32IcayRFMulQcDEnVJ3y86sV4oILRs=
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cc1c3c90074so1304806a12.2
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 15:24:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788560667; x=1789165467; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=eSoy4tzP5/vZd/n79Ub53Qw/sODynJmx2A4LOY3bVO0=;
-        b=ESICFc25xgEM5D7Z5+pfLDWo64TWzzNAWzlqCnxjyCoL9QEf+MULNTqWw9XPaebdlE
-         /+8sjURCw/Cepsu5X4Fyqjr0rtmhMaDLIzla7j/9zEp182SD9tT+/56T8DPZeL60BxXx
-         lidHW2K2TYjerTlnXFCm8IlqBpf1YLCa1awPao6K4+YmUVQUQKyJYhzRg5YpULMVrKxk
-         Iwjd1iBSDb8hLn6+ce2eY0v0gslWiSqiQ46LF9qXl4TGndCdYgX0BqeqD9l71EeNS9BN
-         mqs6COS4hK+67Zf14ZVhkBxD3yuXi9MQd9TAXKoxCAJtCkxG9UMzpUWnFPTTKH5wTziF
-         Aecw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788560667; x=1789165467;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=eSoy4tzP5/vZd/n79Ub53Qw/sODynJmx2A4LOY3bVO0=;
-        b=FJCFWqa2o+RREWixWxytoe/gD1ZpLA9t6fK0fj60KEdwml8guTbsz1/uOTZ1OxDTjV
-         OgbP56uxht3MiQv3CIhJi5hjd+JMzZ9FhTe9jKaXg4FtfI2Trnz0ZzqSGYcZb3naV185
-         HKTC3Jn3Ny5AalSwsjISj8wXRkiD+RZNadN+PSXUvdUySpAZU0ThQ6NsPX7Juh4N2L7g
-         NxHbw8HS1yTdci476WLIty9RdOiDJiaNla3/MH4mLvnyM7YU2v9dUMb52Tdvn7PRlTNL
-         miJZ/yTGDnCpcFi96+rjdYDt9Wc1hAnlqjtyWFP1fc38p6hMOSNHUztH13N9R85gRCTd
-         jwkA==
-X-Forwarded-Encrypted: i=1; AKwUvBxi+O5Nh6DhivHuSuicC7TdLqDwZMRMfug3FPK5u06yF2vWFAno/lDGPLae6EhUh+z2iZUGs5XrsA==@kvack.org
-X-Gm-Message-State: AFuF++nT9fwE2nkbAphRh60hcH8FcyRn6CNWFBh4j53wznwL0v+6DAR1
-	oZya9h0JbGq8iPEg0WQRYf+Ak0lthoHtV44UQ1K+8q5Jf3z9istdP+d+5hyjIh7gDw==
-X-Gm-Gg: AYBFou12yeB+COWIYvSgiVnumXJcARkPQMH76z3ixpFzAodHVk57QUM4HkNp8fdwx7D
-	FcEEHLn0oeG1aZ3m6T533Vf0EHQo5X5NM6bEjxuD5d6w+k7YB9dsmSNZl2YEojXHKseLXPqMopX
-	fZ7aHs68yhLJG1vbtK4MwkuHggtRxAtOeK//UB5yemN3+agpVicX7BpcMNsxkVBbhlw3FOWhG7Q
-	/ZOi2kkNzojYBhR0TXIvO6bmXZ4b+2qVGJ4uyxKWDEw07ZCcwdG6h2P05ctzGZwYDZi0Qy/mBAT
-	emoM3pBfI3C7Uj29g3OhSsEFj1900PQt4+fSUHx0XVPcXwSa2GTYNZywSN1Dmmi2I5ZIKdBlwGE
-	MZlOQKaHsM3/qmcOGZsdwrNi+6FwpxwYDdWT8iYXMbfkvaJSUUlgQ/r9LTQTvq8IrjIfAVrl14K
-	gEvPe2vB/RhgpzMVWeD/QOxWRJ46HN2X4/N5uGOvzCYU8gpaFkuTO+eHnWBAufMdG0xetSf5tBE
-	MftclOGaRd6rWv2chgs/6aHrUWhEw==
-X-Received: by 2002:a05:6a00:2e99:b0:84c:4b58:2cec with SMTP id d2e1a72fcca58-8616b26f6bfmr12056954b3a.15.1788560666130;
-        Fri, 04 Sep 2026 15:24:26 -0700 (PDT)
-Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86153a1c1basm1621740b3a.52.2026.09.04.15.24.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 15:24:25 -0700 (PDT)
-Date: Fri, 4 Sep 2026 22:24:21 +0000
-From: David Matlack <dmatlack@google.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Logan Odell <loganodell@google.com>, arnd@arndb.de,
-	pasha.tatashin@soleen.com, rppt@kernel.org, pratyush@kernel.org,
-	graf@amazon.com, akpm@linux-foundation.org, pbonzini@redhat.com,
-	maz@kernel.org, oupton@kernel.org, seanjc@google.com,
-	bhelgaas@google.com, alex@shazbot.org, kevin.tian@intel.com,
-	dwmw2@infradead.org, baolu.lu@linux.intel.com, joro@8bytes.org,
-	will@kernel.org, robin.murphy@arm.com, linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	linux-mm@kvack.org, kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	linux-pci@vger.kernel.org, iommu@lists.linux.dev
-Subject: Re: [RFC PATCH 0/3] liveupdate: Move to feature flags for LUO and
- memfd ABI compatibility
-Message-ID: <aptFFYqcSiBdMLE8@google.com>
-References: <20260903023452.721732-1-loganodell@google.com>
- <20260904160009.GV4157646@nvidia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260904160009.GV4157646@nvidia.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 55669C0003
-X-Stat-Signature: d6iz8wcunpi949xibrqdxucqteg4qo6j
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=bTRfc+f6+z98XzsZj6SrSB+VCB7F5Iy/l1vA1k3rFCE=;
+	b=7Jm4T/6UQLNIs8EHxsVOh5k9X5Dx7zNbVCFhL3RoQkMH/WufY/n5FvS+96QJCwV0eJgGUT
+	yPXhTQuAwdz9GngQWLDwverptIUeFbXYI09LdamWfE0140u/I91gM6hfMl7mjPp+v4n9Dy
+	kUSlZZT+P4Zpqmyvo7xG7Xw23cOJfqM=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=IxBtX3U6;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788561188; x=1820097188;
+  h=date:from:to:cc:subject:message-id;
+  bh=VmuDvGGu5gYnC6uQaNYccGAJzm010w0N5hZH+dEWsE4=;
+  b=IxBtX3U6yv8wLix6wL6alp9f3ZBPluFn6xTAkRzadEeUfTlLXXvj6Zan
+   4JbiUXByC1zaFUiMDkNS2T4wn1A9NAVkEzTzrShMoi0CEEO1NzE7fR2By
+   Hk0NL+Rk+8FFOfemFUOCr0nXUQwaTu1qe9F1gWfKD+zXNQ0GPlMFCnrJL
+   9iHE9CftvE8f6fk14RNWR0rd5lBMl/0cDhifuzPQ6MAwrTV7BbX8skeyQ
+   AjiRnxds2f3k3x/MK4WjMdR1V/6wrFMOjvBrq4WzQasHRum/WyQHE2sXK
+   zgZ7u+XkVXRYoe+P1VG+G4Eiv5TGg/WMItGFP2mvKxBvFrUHAhneHhtGJ
+   g==;
+X-CSE-ConnectionGUID: IxB8et+lSWmfFPW26z/ymg==
+X-CSE-MsgGUID: Vi57hlqqRDevTMEBTwmKrg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11896"; a="106584645"
+X-IronPort-AV: E=Sophos;i="6.25,262,1779174000"; 
+   d="scan'208";a="106584645"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2026 15:33:07 -0700
+X-CSE-ConnectionGUID: LrHTzWPBQl6cMnrSigAXOw==
+X-CSE-MsgGUID: 1SdEnM2xTwyPVLZOw10xAQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,262,1779174000"; 
+   d="scan'208";a="270683256"
+Received: from lkp-server01.sh.intel.com (HELO bfac249b2189) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 04 Sep 2026 15:33:06 -0700
+Received: from kbuild by bfac249b2189 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1x2cT0-00000000ADe-3wVC;
+	Fri, 04 Sep 2026 22:33:02 +0000
+Date: Sat, 05 Sep 2026 06:32:19 +0800
+From: kernel test robot <lkp@intel.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org
+Subject: [akpm-mm:mm-new 301/316] mm/memory_hotplug.c:1507:13:
+ warning: 'node_is_memoryless' defined but not used
+Message-ID: <202609050628.ywCLhOj5-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-HE-Tag: 1788560668-973771
-X-HE-Meta: U2FsdGVkX1/bamBbn77kxuDTfjpJ+2WHBAHxmzpkgdmfkq7500nzDrELrTc8L1MoMHLsZfR2jjvn5HyKWFpVjTgqBQTd3FwyVSRyPIKIFggnibdCxDXwUgiF9TwV2E5oWUyiBSseFZqhbnUNyOFYZdFe8cBhyyU5EOh4vD9ffAoUQOnbuqkWUBab2Q3oZ9gyvt83v5ZxwVt4TcnZbY1c02lVAc3xLqWhlHqvLa6pNX65cWvsBQHmmOSmfItmj/gI5BJdd8wXjo959zQyvIti9Je/Xag3XDAVHu6y2NIF2mlsYwNJkoYiytWnCc0Cu49QxLyYSH7H10so0gkuasjVLoIGljFo5rI8OFblmKjX7B3WVQK3qem2gxXxt6n+rq3Z9koyaGadCR2Y/I7r0yDZUs4xN0BMedWlODjSQFGODyYTdfCS471HwhA8COLHZClir7hB1dPsj/vcYmio2LDaMyXFQ1uhflCANDhINkUjCk4Ym9M9gYwotTOrpeyP7iYE6Ipo4rjSp6EPS1uJwmbz4BTU2WCoyFciiLlnC3fmdVRR79J1m6N8rz5PHTNprsxM8eW3VjhaNWEUdaqVIRY5SLj36RXAaAeORa3VuXTGIGfzgmmFRomW5JCySyCd4/ATMJuaWUp2Q/eKN1GEEcYHZrCl3GcU8koxq+XVR2gLZ76bqHBiyAfBm7gvQQAKJS9Qpg+3Qm3Fjm1Qy1s2O7uH1X6QZrvZJwqgbe2oY8D/HEIC3st0YxpDnRiIOpVPrc6m1mZpr1dYRTcNqBI0qXCbUdccdX8bZZANOm4RW1hUay5nEs8GB3Tp8uG45TOuYXgWe5mWODPdLGFeeIRuQZqpgcWz7jdjvPcpwImUYrY9hSnjpiMbj1XXWVayOAYMQ28vWOUxOjW0JoTI0BuS69yS/ygPiXoQpafv49ArT0PlcLyUYSBIzedwyjvm9TfdlohciE8Eb7Hj27qhK/kFJYA
- XXFJ/VIf
- 1CTwEJ9EIu/pyq6Xp2MWz8+9RFZV9MUn3iHVyPA3orkzJSud1VtwvmaFOICmkzE/E8UVOKIUK6xZW0sYWcs87J/ZeCKCm0BKtxm8/OBAalWcdVoEvWnbc8bhUHw5pBneqklwileAR1Mpq1xZsMLn+kJTKvDJs4MdPvegov6nrdVe/bze7xEXoIu8gIOaPY5EcvMXY0PeGqKuDs7Sxig7IccVrgZ8UgloCKdFJVFjVT/8ckiXs1f57/4fG+h5krxInjw8Xv2emWB0sT74u1uW0MkYqnhIeiFBONGdQcB+BFFamqsVXz5nx/BG4lw877UdXLJ405Q9ILxBXLfPTdKDeuM3ocoAJ27lnrMx4/VhvtxrTSEW9RL/2dOOVkZfvk/FcWLxjZVmRAk4m506oW7eiZEomnA==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 9041EC0008
+X-Stat-Signature: uhx6bur956nz1xrpyzphy8xdixjcf5q6
+X-HE-Tag: 1788561188-138321
+X-HE-Meta: U2FsdGVkX1++GRWwx4eAcaayZV6QlGT5YwbZqE8nCEYfNy0nHT3ZEmtDTIZus40wuHr/OopM32W2fT/bSUuOdeL/ofnyelPYkITGMZYy9yj94STczMnxSp4XfH1z2gMxTlkEsR2Yylzt69ZeggYWxvW/a3FxFmXvoou6lq03ViPWRWAV+wHwNnW6uIQ63Kp0McYpfJ5fFfQZMEiF3/Lb2zvYLeLv8EHfXbgTlgeq7vfqT5E2F2r3/9y3NsXawe7uL+//dghpOpTPYUp+PMwThS6JdTk3DEM2JRuyYHnyaROj9MiwsOugD8f6MpiDV7UgtbRnLgZInc5ZSTcjzZC/bKEIQJbvuwsJPULJk4zFOrjDEv9WEJSSFfWYd1IMk+xrHl8xKtULB8/I86y/+ZUa7fLnf9Hly0yTPFcKgWI1YW/CgSt8s9zhaSXJrEU6D5yM6gzD+9wq7Tmkw4z5xzVtHPL6Xb6HnDnhzsGvd5gub0fenllv2ZRvf+w4MAWK3J4tMqbk4jA85a67R8xAVVOl5oZzBxGp4PF4+0aU4NqV4vxK8ePl8LsyOjf0SO4MCBQCXqPh7o6h0BCQJTonrwLBv/atGdx+kEvLREQbfVJMBPuKA3PNRC8vvyJ+WnA2GOEh5YzZYl1pPwxT2055+PZ7slboVAqepIe8f12NGeaYinuk3lTDiVpm3Py3/UZ66mSFBkm5Z3GsQFk1ugkH3yhpbIEoqV9ejo8wXKq23quMgHJEYqm3vtq+fC8ch6g0f6EDIqeCAfb8FIDwqHizG+5ZvV+P/txbX0JAJE5i1PQhZHpIaH/wFuaW0g2VoHVEjlFi9QmJ+ekanxfn3l9mT4jydEHsQCz4iRelcixXcxswmRdIFOMvWPnFD186Hl2E+pkPz8AlIdF+Jqh1qJ1z4k7q4UnffR9YtOn9XVvLxf3FolnyR+h3e8t4VExYyxNOanyV3OwZNtcVX6EESbmptvH
+ KWP1MrDi
+ xGV3fatdXMYA1QhmEsSE8YOEnqCMBwkNAIZ39w/5qNzCJaATA4aw1SllpZM0HnGbVNEXXFxP4zfh6zj388yjOkWiRMXz38TQ0++Pc8KimAh6+T9QDkvcenibstM9h1CjrElOoSZBXwPkm6jwBPa1KHtYsygynYre2I4z6T1e6D+PgvW/S2Mi0vpMkpOSvCv6WqwihxFVtz5bugU1ecn/cAAbaB80TpRmEqSd/sBQhqvoPn/8DTqQWud4uxTUUYghevlNH6ZaVnRzKIoA/Bpo7oehQRlkxyw9JjWtmldrIP4Y9Zbr7JfVvAEoudI5thh/BMUZMB9pMtcXhFs8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,56 +103,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-09-04 01:00 PM, Jason Gunthorpe wrote:
-> On Wed, Sep 02, 2026 at 07:34:49PM -0700, Logan Odell wrote:
-> > We're including maintainers from all subsystems that currently is or
-> > will be expected to participate in live update to ensure alignment on
-> > the path forward for compatibility.
-> > 
-> > Currently, Live Update Orchestrator (LUO) and its file handlers rely on
-> > monolithic compatibility strings (such as "luo-v5" and "memfd-v1") to
-> > validate ABI compatibility across kexec live updates. Any modification
-> > to serialized structures requires bumping the version string, which
-> > strictly breaks compatibility between adjacent kernels even when changes
-> > are additive, backwards-compatible, or optional.
-> 
-> That was the intention, I aruged strongly that upstream does not want
-> to maintain a CSP matrix of endless kernel version combinations. That
-> is far too much work to push on maintainers. Upstream would do much
-> less, maybe only same-version, depending.
+Hi Gregory,
 
-We received basically the opposite stance from Sean regarding the KVM
-LUO ABI:
+FYI, the error/warning was bisected to this commit, please ignore it if it's irrelevant.
 
-  https://lore.kernel.org/kvm/aoSCCTTBn9D5hqzk@google.com/
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   e3fc12b08aadde9cec7b3799ac0e0c9a1aa245c4
+commit: 77a622e07892674da28eb3ad349ddd96df10aded [301/316] mm/memory_hotplug: factor out node_is_memoryless()
+config: x86_64-randconfig-161-20260904 (https://download.01.org/0day-ci/archive/20260905/202609050628.ywCLhOj5-lkp@intel.com/config)
+compiler: gcc-13 (Debian 13.3.0-16) 13.3.0
+smatch: v0.5.0-9187-g5189e3fb
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260905/202609050628.ywCLhOj5-lkp@intel.com/reproduce)
 
-So we're trying to use this series to get some alignment across LUO
-ABIs.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202609050628.ywCLhOj5-lkp@intel.com/
 
-> > This RFC series transitions LUO and subsystem file handlers to use
-> > granular feature bitmasks instead of compatibility strings. We replace
-> > the compatibility string with a header structure that includes some
-> > reserved space to define the features that are included after the
-> > feature.
-> 
-> The compatability string is only a small part of it, you also need a
-> serializing ABI that can handle some random mixmash of these
-> features. Ie the various TLV schemes that were all proposed. What is
-> the plan here?
+All warnings (new ones prefixed by >>):
 
-The proposal here (which is inspired by the KVM UAPI) is to ensure every
-LUO ABI struct has 2 properties:
+>> mm/memory_hotplug.c:1507:13: warning: 'node_is_memoryless' defined but not used [-Wunused-function]
+    1507 | static bool node_is_memoryless(int nid)
+         |             ^~~~~~~~~~~~~~~~~~
 
- 1. A field to encode options/features (e.g. u64 flags).
- 2. A way way to grow without breaking backward compatibility (e.g. so
-    we can add new fields).
 
-Each flag can mean whatever it needs to. e.g. It can indicate the
-precence of one or more fields (i.e. new fields in the struct), or it
-can mean a field now has a different meaning (i.e. union in the struct).
+vim +/node_is_memoryless +1507 mm/memory_hotplug.c
 
-This would enable adding support for new features without breaking
-backward compatibility. Downstream users would have to ensure their
-kernel does not start using a new feature while it can still rollback to
-a version that does not support the new feature.
+  1505	
+  1506	/* Caller must hold the memory hotplug lock for this check. */
+> 1507	static bool node_is_memoryless(int nid)
+  1508	{
+  1509		/*
+  1510		 * A node still spanning pages (especially ZONE_DEVICE) is not
+  1511		 * memoryless.  A node spans memory after move_pfn_range_to_zone(),
+  1512		 * e.g. once a memory block has been onlined.
+  1513		 */
+  1514		if (node_spanned_pages(nid))
+  1515			return false;
+  1516		/*
+  1517		 * Offline memory blocks may not be spanned by the node yet, but they
+  1518		 * link to it in sysfs and can be onlined later, so the node is not
+  1519		 * memoryless while any remain.
+  1520		 */
+  1521		return !for_each_memory_block(&nid, check_no_memblock_for_node_cb);
+  1522	}
+  1523	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
