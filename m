@@ -4,118 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29056C79F80
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 16:08:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E3DAC624DE
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 16:09:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A5276B00A4; Fri,  4 Sep 2026 12:07:46 -0400 (EDT)
+	id 044C36B00AD; Fri,  4 Sep 2026 12:09:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8559E6B00A5; Fri,  4 Sep 2026 12:07:46 -0400 (EDT)
+	id F38666B00AE; Fri,  4 Sep 2026 12:09:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76C4B6B00A6; Fri,  4 Sep 2026 12:07:46 -0400 (EDT)
+	id E4DE06B00AF; Fri,  4 Sep 2026 12:09:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A3216B00A4
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:07:46 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BBE93A0101
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:07:41 +0000 (UTC)
-X-FDA: 85176560322.29.AF7E00A
-Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2FCE840009
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:07:40 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=ZtArIxs3;
-	spf=pass (imf01.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B99BE6B00AD
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:09:50 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 52D7BC014D
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:09:50 +0000 (UTC)
+X-FDA: 85176565740.18.167D730
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 66BA4180008
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:09:48 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VOYe2PR3;
+	spf=pass (imf06.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788538060;
-	b=VQ2tsurGHbJHmmnTcbjBeD1O4O7H3tL2Pn1MlGxiS6gkn4uwPldViE0p0ykgOjMxU7RQO6
-	23GQ02oxk3GjW3Zao4zwyWp1KnexYYVOZFr2cQIVoovdjyyJwsmzamqjtmS6xcsu3gW9cH
-	RqQLOR52wN7V11K4VUUd8k8Z4wbLNBU=
+	t=1788538188;
+	b=R6h8MZWzHtMe/VKK5F6yxmLGnLzxNbsGkiCCAtpQ7gYs2Ya/XAC6Dw9nMQtBoRd5bSvtPi
+	JynA7l6/816UB6drkFNFYr1nem9eBdHhpOR25LqtUS7KepTF3hDztr5d23YUu6iTllqIQp
+	HNcfcjZsguDjMxrE8jpGY6WrOClPRCw=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=ZtArIxs3;
-	spf=pass (imf01.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VOYe2PR3;
+	spf=pass (imf06.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788538060;
+	s=arc-20220608; t=1788538188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lradUNjQ28/3mgjgcohJ5akUg3r+w3Kdj2J+iydSJdo=;
-	b=M4OnxZilI8SjRGL5bFN3T3P6jD9YSRWb2lPy6/P8qG99XyQZwhOsvhqx2rfbJVPNP0OnNI
-	w8bimr2+hIhU/DA4f60hpMD4EYGi+LFV6fQP+3g2WbY5r52Q+68SbYI4Jyws8ORhASR9p5
-	PnVZ+XjGDwKleNYUUZ2kSx04Gryfgoo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
-	s=smtpout1; t=1788538058;
-	bh=lradUNjQ28/3mgjgcohJ5akUg3r+w3Kdj2J+iydSJdo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZtArIxs36rzznKd2FiPR6bsMWG98lM6zzCRxyDLG0UFs6hz+gDG/jeNe3GW19Sreg
-	 HfM5ADbXr7bwXq270tGwlDUvKC3sSf0adM1lTlD3PduSl08LkU2cLfBYiHLcqJpz7S
-	 7Ksoy6hLprKYuabeX9dOqjX3xZGKcBhI0mcQImgvwYzcqhtCqSeSIqWVZrjYmIAsJU
-	 So9KxR6oWF7scAXrAS7z51ONPjnWNpw284SGIYcTXHalDngJ0s2XiiRgMAs639pUKJ
-	 tsM/fIiZNoo2ll2Kam2AW6MvqA+gJJFggCiX/0hKpBr26Ju3rzuc0gJnP8CXGxxnfX
-	 Ur2hOcWYKlyNg==
-Received: from compudjdev.. (mtl.efficios.com [216.120.195.104])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4hc1Zf3dnqzXNS;
-	Fri, 04 Sep 2026 12:07:38 -0400 (EDT)
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>,
-	Martin Liu <liumartin@google.com>,
-	David Rientjes <rientjes@google.com>,
-	christian.koenig@amd.com,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	SeongJae Park <sj@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	David Hildenbrand <david@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Yu Zhao <yuzhao@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	David Carlier <devnexen@gmail.com>,
-	Josh Law <objecting@objecting.org>,
-	linux-mm@kvack.org
-Subject: [PATCH v22 08/10] lib/hpcc: Clarify accuracy range documentation
-Date: Fri,  4 Sep 2026 12:07:20 -0400
-Message-ID: <20260904160734.23445-9-mathieu.desnoyers@efficios.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260904160734.23445-1-mathieu.desnoyers@efficios.com>
-References: <20260904160734.23445-1-mathieu.desnoyers@efficios.com>
+	bh=Eeq1cCGbIWkkHc8XN84l/PkE/s3OPAx4E/DdJKyKEcM=;
+	b=PGQPlUxaZmeUpkZ5RtxqUaJoO+oRs3gFdO4qc9rruBngMHraPL5xrqNEyjV8BrIocofTIb
+	JpTTRAMJ6O7Vs2DFz6UaepxV7Pt+kFOp+uEg6P+7+3925onMGYevZ4M+YbYBAjAPOOoJYf
+	u046IMSwcBicb1Myv5TFbcnpH2j4ydY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8F1A243822
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:09:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FDFE1F00ADF
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:09:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788538187;
+	bh=Eeq1cCGbIWkkHc8XN84l/PkE/s3OPAx4E/DdJKyKEcM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=VOYe2PR3MDiMotRQLT7leWQ2WJJprtf6szl2QmGCnwpsMPNduyy5iI4sE4U86VJAL
+	 VCUT7yTGxb6+dQmdmCxfM+9Fk4uWK25UBCH8MLtV3Pn1QyN5lmIG8sHYZuVSGQQikI
+	 wLfO3JHOlKD8HFz4OluR+8zmcmQf0IzKEWnSlJEhM6NZG7CXJtIzlLtYD2buSAqLOk
+	 Lu1JE3d7U+GmLygai1R9RQxvBA8KtF3fj1Jazu2M3xNiHZcfeA2e/4FDG4OXtT7++9
+	 /AB35hSJlxt0IPLv34h1e3iyHEYSq3AYs2n6CvKSm7MIjPQzYJQL4HOu0qZ/0YzXJV
+	 UvlHEbVrOS2nw==
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c197e7e4e94so203042666b.2
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 09:09:47 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzL/tAwBDHhVExcBftyRl6W5FJW7mq5fr8PybLi7SyzAhKTqXKMcC/6zgweBUssGX77IDcB/wJTGg==@kvack.org
+X-Gm-Message-State: AFuF++mvES+BmMVc8f+baZ19Tr7+iJxLaU7M4jNuPJye3TB8tNoPOZP5
+	ZoguEeoKsv2gLulVcGdkMpKNdQgq4EYdgX7Mr0RadJm5KKnqOx/blN5OX5b3kD9HeqsP2uxSeD5
+	WuMxFYSIaFIZBCP3GgJj0X1GbDBkW/oE=
+X-Received: by 2002:a17:907:6c0f:b0:c26:19de:9ac7 with SMTP id
+ a640c23a62f3a-c2619dea67cmr159398866b.31.1788538186259; Fri, 04 Sep 2026
+ 09:09:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1699104759.git.quic_charante@quicinc.com>
+ <a8e16f7eb295e1843f8edaa1ae1c68325c54c896.1699104759.git.quic_charante@quicinc.com>
+ <aphSYFTd12oia8K2@google.com> <apkhSHr3by5Bf8jW@tiehlicka>
+ <CAO9r8zPCYNmJbkQEA62z75AB=ziWqGb38_E-ee_6o40Sz=zHXA@mail.gmail.com> <apqppFukssaAQz3w@tiehlicka>
+In-Reply-To: <apqppFukssaAQz3w@tiehlicka>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Fri, 4 Sep 2026 09:09:35 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zMBBhhqepbLR9buOOu7bpyLW+UTu55DjbCYrbBp56rkCw@mail.gmail.com>
+X-Gm-Features: AcwNN1UI8vVflFBHpjQw18qMFlO-gIfm7g3j2hfRTedEMhop9xXtUozwNzZigZA
+Message-ID: <CAO9r8zMBBhhqepbLR9buOOu7bpyLW+UTu55DjbCYrbBp56rkCw@mail.gmail.com>
+Subject: Re: [PATCH V3 3/3] mm: page_alloc: drain pcp lists before oom kill
+To: Michal Hocko <mhocko@suse.com>
+Cc: Charan Teja Kalla <quic_charante@quicinc.com>, akpm@linux-foundation.org, 
+	mgorman@techsingularity.net, david@redhat.com, vbabka@suse.cz, 
+	hannes@cmpxchg.org, quic_pkondeti@quicinc.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: w7mayus8siy7z7fyuziuyp3y8dusbme5
-X-Rspamd-Queue-Id: 2FCE840009
+X-Stat-Signature: apwi6u988wrbcqocqiz5jqdu6htfbpnu
+X-Rspamd-Queue-Id: 66BA4180008
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1788538060-438409
-X-HE-Meta: U2FsdGVkX187rnXQE8KqVrYWEgt5TQxxV1YHjaG942yIppA5UYX74b19YQSua04wmPzx9ZkmlPQtlKixvtuYBZA1d8fSkbpnVmi3vJIRS2oL/wN4rE3Y1ODMRW3G6tvZ6n/QCjjg7M8z0upm6YcKM+KvcVrHH/nLWqfjCCwVN9AleqoHlYIc8d07pIdsksYiLAK8ilIxslVYdI5W96o3FCbxS/WG+7yivHiPe8HS/CtG4oq4tOSZne42YPNYxdUcHahpeCOs2qzZRl/x7v0atee/jrmmPeVV1UU3/3hT76nF9FhRlB7RZu6uCywgo4V2xZuKQsEgwW9pMnAmoIOCyNSjCYq3z8rFAkqkQoNWV114Y7eux0T25BoJTUniOWkVWatxJQD1GU0+kCeQcLBOB36Ztt//6GDPuxtD64uHNSMCnv3ay5dR5WRYNqNLKG7DOYpxyLLaAN5Ckq/LKPKYiQ9WsRTI8yIiHzbgyG7fO935HF/RFNwlr7GqaqjYh5+csIRAFB5MqeED90y4irNxX2Q8i/XVKSJ9EulvxAVG788krvvYJkEb55giIdRK2qYWFOcDIG+gQQcbT2mrGxVw29QL3N0VeA7qq48Sn0UZTfDgpSmH6E2qx6WTvHTWyigMTGhRb5NZIaqiwAQJs9Q+ClEQaUibGvde1KvtbwbjEdIAiZvCqOX3vZgNQTI6brn/5WHlS3ol4oWogtluTlMTfbwndlJ1kLZu9kpFyEBg3Dgse4F1NBFF9Aj06LEZv4ZRJD+CQd0RvoWyNGRH4T/XB1Zxf3m4CKroEIH8fVgHdUqTa8GQYDwoo26yZG4FcHE9wmBHQrr3Bn6sQwKc7T8XeyOGHBPCNvDtkhU2EGPZfkxAsWZu1MJlGhLRcqHi6DXPxdaSOPJIIWz25rLhmxqqRegZTdDNKw//tj2QVIn6lbIZDS+cMKjJ5mpsL7uWesQwQRMZCchTl400VESe59i
- TaE+9f9E
- s/NLo0kyUuZDy04HpmVwLumIWD8GkrFspiDVpAVwQHRjSvXB3oeNxARmevd0WHWka7L9Z0I2cfFmryep7FW58hIKcFeuJMihKojT7daBm8PcsVGgmoXI6ub5WXysZTxMGElF5s97FxJzmtwv2ExVBh8uUC0TeGnYUWjAy1tV4/tET9brr0RL92wpteaLQXFty5f51183maMSFi4f2VXUlFd2/ncNGbwMl6EMn2vCezIpapB5VqlHcLpetdyDxG+ATSIQ0eopUfUDzfyUGYLOXwnjjmQyRJH7kPM26BNtDCt7RztsdwsUZn+0AgW4YQZhyZLhROTbk1ExMKGsgNM/ZfoHNcHjg3J+mNgSqxxaC8i3QlH8qSDSfJsBJg9Adrlg/5a02uVj2w2HBWtsAGlZaVaRqh5mbr0M+BA1tco143Ds5p7xLrQzera/aD7+qK/Qe3C2SJAM5Bzt42xBuddMRJbw+5oSWp/+zg/IhKsscwofwJXcGofNagALdX3W1B7J9eDI9s9mqMsH3DiNmVY1HaraM/uV01SqByxTf6mLXvZPeS5E9LJBuQ7DtbUwmIXrq7TfcqKCDON/5NYCBPOU1Gmz0NvtEJUTP/8UtWd+yprM0YuzRMLWsrW8hbf0u/QIbc2hYqOeg+QErKH1Qbbzv7/Qdg3YK77dXHLEdfX90CJ6s1Xr6wa2GP+WS4cR4sRtDe7pi5TEzZeDXJ+wrptVDDn2bQkHyo312ALBmFA9rVANnSf19x/P+YNk2dfG9PJ744PjHSYV9N+VC09KZnxnZrbBlB27E1EodWJWxIWi9g3qOafe/gyOxOeIC0RGdRHoIQBRwNGjkwRHxT6EHfyy4Ip/Yo9wLlHL4GPTxS4xJSw1AHBMOiAPXRaAPnHG2JLy04e/FDXqCS2APR12uW4TBaKGfuFA0zIyoryVpCyCQ024nyIcBLfbLkntW79PbJVTlYce8cPMjSDkf05zm18zdEXnMZJP2
- WLAFUiMz
- MsuM1xgg4mH8VNgIjoadX30tbXp53TgY7AViQU2KX5fI6f8inzgGGD+UX3wJ/gLxGBWjYWuVWPMduVpWuDTTP68OVf8W1bh6olzZVopDuKtHYfgm144BE17Tt6fX7+KyoqmDjZnK+E9GjSyymJLEvA9ZX6+4+v4R
+X-HE-Tag: 1788538188-142428
+X-HE-Meta: U2FsdGVkX1/WGPZ865ySEzglfO96J+IwdjMueKRBGjewEQy8oCn64Kw7nSRLAf6ROOg0NQgFUwWSa3NOQTqZwuPUItIAkg8HU0jBT41ZlvrdhFZXWvu/J1BYm2HKXxUmASp7GnANabvm0z/m8uHoOdoJC9UvsCa/eDu8e7kbI1VMOlAKbD6r7FXdSBU5PIon3CDWV+zTO1fqfFWHhb0SrgMZwfSLnohWFDftEYde0Lu2lOzcYGglLBa9/zpvoJVUxxaP/iPzgY8QApqqJQ7YgTwHgmR1dzTr5e3SE5EEEx/u7EgGT9oLJ/CK5umnYiJkMymbDIwmX1csmj8LYEMHGlc6AcatBXXngo0HuAPV89BQPVKoSaeY0te6Q2vtb9jTCVkY3XSuvJGbTyNjdvPXiPgH8KKmai2yGkEjtMEW2wi7SRcqBWsgKMIeUCNvTZ07MiUSJvLkNvkD2ie0cUaxMd9lDB4g7cnKOQYWx00tOmxIJPhktir3t/capIJe0QMPOgc8H13aBAputB7AalC+ky2evKRpcvT5R0Ur/5iPI0O4hcsk8taDkeEmKmTPc7Cd7G7YcMGHz3K6r2a3PjAoIIls5qS7zyymgsGyNX0/WH/5NkK/B867wD9uswqtG4NhiSzbLOhzYoLOJqKRYRKqy2PgJPAvP8JEhkSNq8DQG4DPMefzyfh2R/xldB3R8zxaCwmEwKC5C+tqY60G6fwwd6QvAjEIuPwWTbC0HZduBgmT0UCL+Esn5pwiYpzGtDZcTmu3FcR5fD3XIgV0TakEJQ/X5gNksHvPs25kTJdYtp45fj0z/p9fp1pMAzpJvNJVlTT+e8+PeCOF6qdaCRbb6/lBlpfe5VtAzqRWPe9iNZX6MEmNBtlQUcTuJbnSVj18Pa71MNNrtLn40IyKVftB2JIcgTJt41FulfYOcZg9YTZInlG/ybHX7xAQGCxI7hLyZCNKDVBGdhUVzpDhgwq
+ TSgh1C3h
+ tfMpBYuqpD8rSazr4r+jJw4uymTOByc1B8SkuqcEgX5730oC0VwZayzdI/F4/bL/AXyOJgD26ZwR2hiEmYiLl4j635AlPbdSiLHH//qsYI39uK9L+e51LRJGSIFnQQOYLF53mOUIktPNUq3YZfG9mLlFxa3lP3918C+husWuWChrbwV4OAXkJtmmvHEPanjX0zV2JKAjgXf1x2yKNkdrrxenBccDM43Qfv5z6uDx99fSGPeQOFpwKsAAn9QIyhTbcwooGety6KLHrKcPt+H/ZvDikzm8fdXUGYYnc0X+T7ahb4O6hjvpQOvVNa7A4ydXIBfJPLaOXxVIUclvzuz2lpIoCcrGjkG1UALoNSmqPbOmtpSE6dQmCF86AHj+1xTGLICNablDMqkN6Rf+dMC4bHr1v+ejx4Fq78EKDwc14CgXb1wV6MZTQkq6gyeOL/ntF+1Pn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,111 +107,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Answer a report from Sashiko at:
-https://sashiko.dev/#/patchset/20260901182857.26690-1-mathieu.desnoyers@efficios.com
+On Fri, Sep 4, 2026 at 4:21=E2=80=AFAM Michal Hocko <mhocko@suse.com> wrote=
+:
+>
+> On Thu 03-09-26 07:03:33, Yosry Ahmed wrote:
+> > On Thu, Sep 3, 2026 at 12:27=E2=80=AFAM Michal Hocko <mhocko@suse.com> =
+wrote:
+> > >
+> > > On Wed 02-09-26 16:49:48, Yosry Ahmed wrote:
+> > > > On Sun, Nov 05, 2023 at 06:20:50PM +0530, Charan Teja Kalla wrote:
+> > > > > pcp lists are drained from __alloc_pages_direct_reclaim(), only i=
+f some
+> > > > > progress is made in the attempt.
+> > > > >
+> > > > > struct page *__alloc_pages_direct_reclaim() {
+> > > > >     .....
+> > > > >    *did_some_progress =3D __perform_reclaim(gfp_mask, order, ac);
+> > > > >    if (unlikely(!(*did_some_progress)))
+> > > > >       goto out;
+> > > > > retry:
+> > > > >     page =3D get_page_from_freelist();
+> > > > >     if (!page && !drained) {
+> > > > >         drain_all_pages(NULL);
+> > > > >         drained =3D true;
+> > > > >         goto retry;
+> > > > >     }
+> > > > > out:
+> > > > > }
+> > > > >
+> > > > > After the above, allocation attempt can fallback to
+> > > > > should_reclaim_retry() to decide reclaim retries. If it too retur=
+n
+> > > > > false, allocation request will simply fallback to oom kill path w=
+ithout
+> > > > > even attempting the draining of the pcp pages that might help the
+> > > > > allocation attempt to succeed.
+> > > > >
+> > > > > VM system running with ~50MB of memory shown the below stats duri=
+ng OOM
+> > > > > kill:
+> > > > > Normal free:760kB boost:0kB min:768kB low:960kB high:1152kB
+> > > > > reserved_highatomic:0KB managed:49152kB free_pcp:460kB
+> > > > >
+> > > > > Though in such system state OOM kill is imminent, but the current=
+ kill
+> > > > > could have been delayed if the pcp is drained as pcp + free is ev=
+en
+> > > > > above the high watermark.
+> > > > >
+> > > > > Fix this missing drain of pcp list in should_reclaim_retry() alon=
+g with
+> > > > > unreserving the high atomic page blocks, like it is done in
+> > > > > __alloc_pages_direct_reclaim().
+> > > > >
+> > > > > Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
+> > > >
+> > > > [Sorry for thread necromancy]
+> > > >
+> > > > Hi Charan,
+> > > >
+> > > > Are you planning to respin this patch?
+> > > >
+> > > > I know that Michal was questioning the need for it. While doing som=
+e
+> > > > stress testing I came across a couple of OOM kills that had signifi=
+cant
+> > > > amount of memory in pcplists. Something that would have been preven=
+ted
+> > > > by this patch.
+> > >
+> > > Could you share some numbers to see the scale of the problem?
+> >
+> > Sure, here's a sample from an OOM log (ignore mapped/free_mapped, it's
+> > from the ALLOC_UNMAPPED series):
+> >
+> > [   40.336188] Mem-Info:
+> > [   40.336195] active_anon:96 inactive_anon:1540181 isolated_anon:0
+> >                 active_file:51 inactive_file:0 isolated_file:0
+> >                 unevictable:382720 dirty:43 writeback:0
+> >                 slab_reclaimable:20339 slab_unreclaimable:26597
+> >                 mapped:382858 shmem:153 pagetables:8291
+> >                 sec_pagetables:0 bounce:0
+> >                 kernel_misc_reclaimable:0
+> >                 free:17264 free_pcp:16890 free_cma:0
+> > [   40.336199] Node 0 active_anon:384kB inactive_anon:6160724kB
+> > active_file:204kB inactive_file:0kB unevictable:1530880kB
+> > isolated(anon):0kB isolated(file):0kB mapped:1531432kB dirty:172kB
+> > writeback:0kB shmem:612kB shmem_thp:0kB shmem_pmdmapped:0kB
+> > anon_thp:10240kB kernel_stack:2576kB pagetables:33164kB
+> > sec_pagetables:0kB all_unreclaimable? yes Balloon:0kB gpu_active:0kB
+> > gpu_reclaim:0kB
+> > [   40.336202] DMA32 free:34808kB boost:0kB min:11028kB low:13784kB
+> > high:16540kB reserved_highatomic:0KB free_highatomic:0KB
+> > free_mapped:11032KB active_anon:0kB inactive_anon:1487720kB
+> > active_file:52kB inactive_file:20kB unevictable:393252kB
+> > writepending:4kB zspages:0kB present:2096760kB managed:1991156kB
+> > mlocked:393252kB bounce:0kB free_pcp:42404kB local_pcp:2460kB
+> > free_cma:0kB
+> > [   40.336205] lowmem_reserve[]: 0 5976 5976
+> > [   40.336210] Normal free:34248kB boost:0kB min:34024kB low:42528kB
+> > high:51032kB reserved_highatomic:0KB free_highatomic:0KB
+> > free_mapped:34028KB active_anon:384kB inactive_anon:4672764kB
+> > active_file:180kB inactive_file:0kB unevictable:1137628kB
+> > writepending:168kB zspages:0kB present:6291456kB managed:6120144kB
+> > mlocked:1137628kB bounce:0kB free_pcp:25156kB local_pcp:764kB
+> > free_cma:0kB
+> > [   40.336213] lowmem_reserve[]: 0 0 0
+> >
+> > As far as I can tell there's about ~65M of free memory stranded on
+> > pcplists (in an 8G VM), which would have kept the amount of free
+> > memory above the watermarks and prevented that specific OOM kill.
+> > Although, as I mentioned before, this is a synthetic stress test.
+> > Perhaps in practice it doesn't matter all that much in practice, but
+> > it seems like the logical thing to do.
+>
+> yes, pcp lists are quite (unusually) high. Is it possible they simply
+> got repopulated after the first direct reclaim run? Or is there
+> something else(odd) going on?
 
-Note that both Sashiko and Claude got it wrong with respect to what was
-going on there. I took out pen and paper to draw the range situation,
-and presented the result to Claude through ascii art, which solved the
-matter. Having two LLMs misguided by the code, I decided to add a visual
-representation of the approximation ranges to compare_delta() so anyone
-reviewing this code won't fall into the same traps.
+I think in this case there wasn't a lot of reclaimable memory (mostly
+anon with no swap), so at some point direct reclaim didn't make any
+progress. __alloc_pages_direct_reclaim() only drains the pcplists if
+reclaim makes progress, I am not sure if that's intentional. An
+alternative would be perhaps removing this condition, something like
+this:
 
-This change is documentation only.
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 8d79f76cdd0e1..98e9079240ad5 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4592,11 +4592,12 @@ __alloc_pages_direct_reclaim(gfp_t gfp_mask,
+unsigned int order,
+        psi_memstall_enter(&pflags);
+        *did_some_progress =3D __perform_reclaim(gfp_mask, order, ac);
+        if (unlikely(!(*did_some_progress)))
+-               goto out;
++               goto drain;
 
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Dennis Zhou <dennis@kernel.org>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Christoph Lameter <cl@linux.com>
-Cc: Martin Liu <liumartin@google.com>
-Cc: David Rientjes <rientjes@google.com>
-Cc: christian.koenig@amd.com
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Cc: David Carlier <devnexen@gmail.com>
-Cc: Josh Law <objecting@objecting.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org
----
- lib/percpu_counter_tree.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ retry:
+        page =3D get_page_from_freelist(gfp_mask, order, alloc_flags, ac);
 
-diff --git a/lib/percpu_counter_tree.c b/lib/percpu_counter_tree.c
-index cd71581f56bb..a8351c53d062 100644
---- a/lib/percpu_counter_tree.c
-+++ b/lib/percpu_counter_tree.c
-@@ -457,6 +457,32 @@ long percpu_counter_tree_precise_sum(struct percpu_counter_tree *counter)
- }
- EXPORT_SYMBOL_GPL(percpu_counter_tree_precise_sum);
- 
-+/*
-+ * Each counter's approximation lies within [precise - under, precise + over]:
-+ *
-+ *                  approx_a range
-+ *            <-----------+----------->
-+ *          under_a       |       over_a
-+ *                    precise_a
-+ *                        |                          approx_b range
-+ *                        |                    <-----------+----------->
-+ *                        |                  under_b       |       over_b
-+ *                        |                            precise_b
-+ *                        |                                |
-+ *                        |<------------ gap ------------->|
-+ *  ----------------------+--------------------------------+-------------> values
-+ *
-+ * The two ranges are disjoint, and the comparison can return a definitive
-+ * answer, only once the gap exceeds the two facing half-widths:
-+ *
-+ *   a below b:  gap > over_a + under_b   (a's upper edge, b's lower edge)
-+ *   a above b:  gap > under_a + over_b   (a's lower edge, b's upper edge)
-+ *
-+ * When comparing against a plain value, the value has zero width, so the
-+ * margins reduce to that single counter's under and over.
-+ *
-+ * accuracy_neg is used when delta < 0, and accuracy_pos is used when delta >= 0.
-+ */
- static
- int compare_delta(long delta, unsigned long accuracy_neg, unsigned long accuracy_pos)
- {
-@@ -494,6 +520,7 @@ int compare_delta(long delta, unsigned long accuracy_neg, unsigned long accuracy
-  */
- int percpu_counter_tree_approximate_compare(struct percpu_counter_tree *a, struct percpu_counter_tree *b)
- {
-+	/* See the range geometry above compare_delta(). */
- 	return compare_delta(percpu_counter_tree_approximate_sum(a) - percpu_counter_tree_approximate_sum(b),
- 			     a->approx_accuracy_range.over + b->approx_accuracy_range.under,
- 			     a->approx_accuracy_range.under + b->approx_accuracy_range.over);
-@@ -549,6 +576,7 @@ int percpu_counter_tree_precise_compare(struct percpu_counter_tree *a, struct pe
- 	long delta = count_a - count_b;
- 	int res;
- 
-+	/* See the range geometry above compare_delta(). */
- 	res = compare_delta(delta,
- 			    a->approx_accuracy_range.over + b->approx_accuracy_range.under,
- 			    a->approx_accuracy_range.under + b->approx_accuracy_range.over);
--- 
-2.43.0
++drain:
+        /*
+         * If an allocation failed after direct reclaim, it could be becaus=
+e
+         * pages are pinned on the per-cpu lists or in high alloc reserves.
+@@ -4608,7 +4609,6 @@ __alloc_pages_direct_reclaim(gfp_t gfp_mask,
+unsigned int order,
+                drained =3D true;
+                goto retry;
+        }
+-out:
+        psi_memstall_leave(&pflags);
 
+        return page;
 
