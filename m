@@ -4,135 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6AAAC61DD6
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 14:12:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1BBEC624DE
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 14:51:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46FFB6B0088; Fri,  4 Sep 2026 10:12:07 -0400 (EDT)
+	id C32366B0088; Fri,  4 Sep 2026 10:51:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F9556B008A; Fri,  4 Sep 2026 10:12:07 -0400 (EDT)
+	id BBBF56B008A; Fri,  4 Sep 2026 10:51:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E8626B008C; Fri,  4 Sep 2026 10:12:07 -0400 (EDT)
+	id A83B06B008C; Fri,  4 Sep 2026 10:51:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0994C6B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:12:07 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 99DA81614A7
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 14:12:06 +0000 (UTC)
-X-FDA: 85176269052.14.BD3042C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id D7E7C20009
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 14:12:04 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BrE+ZMtf;
-	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 828956B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:51:18 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F05101601CD
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 14:51:16 +0000 (UTC)
+X-FDA: 85176367752.08.FDC8AA3
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 293AF40002
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 14:51:14 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=lT0+5QON;
+	spf=pass (imf12.hostedemail.com: domain of 34dqaagkKCF4P6NQJO6DQCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--tarunsahu.bounces.google.com designates 209.85.208.69 as permitted sender) smtp.mailfrom=34dqaagkKCF4P6NQJO6DQCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788533475;
+	b=pTJ209Ta+0WpGGaoIW9R4YiNjv144EIxUWB4OSaQuluEOIG4Y7qcIMAHI0fhsF+DCLJXrD
+	PO1EfPxRkx9KYDwVbPwGTEoZkxeoiZx5lnIH0h5Ze/YteHjbBhsrJjGiZqlFK2zOouoQh+
+	EG9hBmAtd38vB1DESLj3chXbsDdl5tI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788531124;
+	s=arc-20220608; t=1788533475;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HslPyUpRcbehZSDwq6RcvWYGlQd9VOcvDUYf4trg7Og=;
-	b=Opwzn8bPJXaYwmjA8S37BVTnRgdI2PV+QLB19mU80O4XZNsD8IQu8bHLFUtHiyT4JhhCIO
-	x0hmkNt1Fc9jYEzpynhFrmVDMOjjYEzmdxbLfIRMHZT/nhYjmae36AkGp88klGeLg9N05n
-	WeP2ASoU2ch1TOd5ekXO58F7nz7o3nI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788531124;
-	b=YVSmHNA5/Ku1MIXZUU/8W6zNmFX9f0xLJ6lpY6Jz6b7+mRB5R4B9xikmDT4olzZRa/1rkA
-	B8fA5sQsxZqVLhlH2XYjc1Hh9U+maHXRa3WlG9TeBlA4y7jm/3Vq27yI5NxqmzJeSFPocy
-	hYKoNLeD9oXWLuLtPR7UW01+5QXC6fY=
+	bh=mLY/ci2oR2yKic2vb+sEbJUZ8whxHO5esQUdSjd9KzA=;
+	b=B2VSXQqogKZvUf489kSwPgT8uxZVvRGJDRPh1N39XGzBEpoAotGlqaEFIQqU0GU0+9ssTH
+	oBCP+oDXj68oKkqoMw7wZtEPnH3NTLFnutBXmdUK4KrBO0kW2QRkcIbvgF0rlX8aujgl+b
+	O2xAkCgF4KnPgv2b0A48IKMisf7KluU=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BrE+ZMtf;
-	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 420C7600C8;
-	Fri,  4 Sep 2026 14:12:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D4211F00A3D;
-	Fri,  4 Sep 2026 14:11:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788531124;
-	bh=HslPyUpRcbehZSDwq6RcvWYGlQd9VOcvDUYf4trg7Og=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BrE+ZMtfse74Rx9gXb8TBDlul9CFpphp+iDqcuvaKvn+la0P4nw5x+dpLJxpxymss
-	 Fs3KqhtyP8Y5icHlBfXtie/e7n3oDDCiUPhZMb2z4zlcBvtOi8L+OmAJuavGfAlGrs
-	 cXtecutkELrLQLHpstHEKDgODcyKR1f9W8IYLMCJ5IN1eY5iumCefMXOEHCTqsuitP
-	 ny3AZ/M7WoDBugBXgLtjoiKCabNy4omvWzIwPrvn8EX3kpo73VlkRer+YmR0M1jHGH
-	 kROjVJDipV2iUMvn9dIfWNAesAHo6z6phJRoseA1bL5GIfnFKW3k4F/FOU9ZFkNNN+
-	 E/dfVEFGq0SAg==
-Message-ID: <8cc503d9-04a1-4d90-874c-ada6c0ac5147@kernel.org>
-Date: Fri, 4 Sep 2026 16:11:57 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm/page_alloc: avoid direct compaction for costly
- __GFP_NORETRY allocations
-Content-Language: en-US
-To: Salvatore Dipietro <dipiets@amazon.it>, linux-kernel@vger.kernel.org,
- hch@infradead.org
-Cc: abuehaze@amazon.com, akpm@linux-foundation.org, alisaidi@amazon.com,
- blakgeof@amazon.com, brauner@kernel.org, dgc@kernel.org,
- dipietro.salvatore@gmail.com, djwong@kernel.org, hannes@cmpxchg.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-xfs@vger.kernel.org, mhocko@suse.com, ritesh.list@gmail.com,
- rvvandan@amazon.com, stable@vger.kernel.org, surenb@google.com,
- willy@infradead.org, ziy@nvidia.com, David Hildenbrand <david@redhat.com>,
- Christoph Hellwig <hch@lst.de>, Brendan Jackman <brendan.jackman@linux.dev>
-References: <20260904115629.3993331-1-dipiets@amazon.it>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260904115629.3993331-1-dipiets@amazon.it>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=lT0+5QON;
+	spf=pass (imf12.hostedemail.com: domain of 34dqaagkKCF4P6NQJO6DQCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--tarunsahu.bounces.google.com designates 209.85.208.69 as permitted sender) smtp.mailfrom=34dqaagkKCF4P6NQJO6DQCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-6a18e266026so1071119a12.3
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 07:51:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788533473; x=1789138273; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mLY/ci2oR2yKic2vb+sEbJUZ8whxHO5esQUdSjd9KzA=;
+        b=lT0+5QONhMHzyq1xLrvoLPVwAb9Yz/6H6p8Yd4Z9W4PfKBJTuKSn2KnZk38uadIAz9
+         jIk+WwQ7EnqRZbPUrNDlCxh2tClmOzhl31x8DJBK1xjFL018inhVCa/iFt6ZAMUpW30P
+         FE7w1qXoaTZrPhy+QEAePHh3uhQOqmDerjsIWm2dKL22NNs7NWoiBYpRTDKj9L/IJdIb
+         br026sNV55GbwkpsmxUDM3NvrLI3OmZn4gTUfjYy955ptqJWwW77YK0WTaZ9QxYwrmPs
+         zfQwkrEraCDCeScmw2uHUh2HVfXhv3VWvYHnViQdeq97SHwbqSXXp3P8YBjcSOC6nlQt
+         ma/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788533473; x=1789138273;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=mLY/ci2oR2yKic2vb+sEbJUZ8whxHO5esQUdSjd9KzA=;
+        b=eV/OH7/QpL01Gp2KFV2nB41MEyXHvXJPsQETZHVCLYIdaxPRibp9OUI69IwfXX2n57
+         T7Kb094cps8BrasvdeOPu44K5tZolc5yHMBNotYxdl1E03Xh9+YDET145708FiVCpvxo
+         PPvTq7HzhlXq9O5x5F9X1PhwEnl6VCDVPmafbvJdgW8A21eg74Gmwwdg1z24cVtFzYLQ
+         d6wvtGcvQdNOZM7SiYShwPyXJdhJR9lV68PQ/x7gmFh/tcbUraPU1znSVauv8lk1f4ef
+         djRqJ1IjNDLqsWTRnIPI/O+G1yeXDZr0PJ7NTOo5HU8N4lfWQVPczAMjSB7PxwLTyVIA
+         cjSQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzWpPdlwzhL/I49coHjuTV5VgwBScDwaxOH3dkI5hptU0RgoCkEwnihFaTaTyi4oiTNH0SjftHUkg==@kvack.org
+X-Gm-Message-State: AFuF++kXbAPfbgmlwISYziHa8brf87mNVid8knONhuzwdvAVbR34e+VD
+	dC2CAmuKZfaSgd92sT+c7+2SCVc8OunWe+xkvGf92YYTSIlK+P/sjALxzo6vCZkQEvPrulcxTX9
+	wEpC/DCah9QSGLxw4zw==
+X-Received: from edgi19-n1.prod.google.com ([2002:a05:6402:a593:10b0:6a6:8587:3226])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:52c9:b0:6a6:32f5:5573 with SMTP id 4fb4d7f45d1cf-6a7e8f94ac4mr2595587a12.21.1788533473262;
+ Fri, 04 Sep 2026 07:51:13 -0700 (PDT)
+Date: Fri, 04 Sep 2026 14:51:12 +0000
+In-Reply-To: <5c223d7d-4f7b-420c-8019-d4f343f0f232@oracle.com>
+Mime-Version: 1.0
+References: <20260903155907.1065681-1-tarunsahu@google.com> <5c223d7d-4f7b-420c-8019-d4f343f0f232@oracle.com>
+Message-ID: <9huz7bl1134v.fsf@tarunix.c.googlers.com>
+Subject: Re: [PATCH] memblock: use binary search to locate candidate regions
+From: tarunsahu@google.com
+To: Dongli Zhang <dongli.zhang@oracle.com>, dmatlack@google.com, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Pratyush Yadav <pratyush@kernel.org>
+Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D7E7C20009
-X-Stat-Signature: 56amncsx3hnfz33p5f7qjdman7b73rea
-X-HE-Tag: 1788531124-127823
-X-HE-Meta: U2FsdGVkX1/Tw0kiK5H7sW3BhyYQLSulWHWOYQx/oslFa1fjSVcCrIV02WDW7nJvHUHdyXXqJgRONEA9OMKqNwb6ybTfWwUguAbXZOTgPySLZpUBo+q11pX56Fy0/C/vCQZnXcmks7HLkRmSwCtKCgaE3Zjiv1HLvWENcvVmQYITDi/vIDD/K2+UjlrQo7CAto9TiOPsQFQTD/+gN2Iirz5J7wGs2mtMlpRs0FZ2dnx5TvF5tvqQxuJFQKIwUs5rY19UeseeJPJdDCX2Cw7aEnkpg2s+lVmWiotG91WERrdacDpTh577jbJ8A71GRXjvaHLnODPvz64HjmUSxLmyBpVUGeODHNHGjDsqiwW1OEw46yGy+uZ4ZTwa//cztQQcyP792B/GclCUdDc4E7d5awh/43qlrI+9v1xaArjOse7bSUIhOv/52X54Z2BFVw4hSeGuPzQysmFZW6ISCVClS5bxcr5s0uug6f4fgBMhYz72kWy25Q2ObCZu/TSjj/TqT1Rd10WdMyOUzMQ8EIsvZZ9FWML7AIA7JYEfFPRy6X3DQ9FiXiUo0w8lZr4yiE/JAYXtuj6hF8yidBI+//VpR3B43ZggDZEsPetFoCLSxLOQN9UPOrjau3mNo+7+UFiic//EZRIPRjXfCON0XRZ2sqiScJ5sMLTq4dWgCDJKeW7+1t/rgdr0Add8ZbKO0nBbLrQZ45xBEkEOR1gp1oR0s9zhepBmrY5x+9PIM10FO/5cBfa3K6c0YETp4RH1X7zl7P1AobBT7hC21iywngpYtvc5NyAPdoZQl7saqKarErCbQdvieyOApZ2dbZ8qOKQoRyAQ+Qayf7UbHd2d/7TshpMwnKfvMkS04SjR2gnRA1fOn3E21OOtPOVBySBx4n7u+I1wHFwkfYXQOopH8OTZ9FAfyOUgknyu+10h2YAjEbRWQ3xjXSTfvRjyd6dI2vC/so0kJBmqNL55HV2REhO
- +5VxerPd
- fRD98grdD5K3DsYRjF6UyLq+3fX3kzkkXzggwCCVrcnjJ9NN+qsM4eZMCTHAmxJsbGChT/p35Up0yXZNW6MsE4j6NBrlnPmka0oecWwsueFV8OwGKwNnmRAqy2mcB7ufeumXvFwTIP59n8iOBjYZrNLkbWTYsirHn49PqmcVf5fUuXKD8sTwG5BrqdEBZj5o5vFOFJkI6aYA0Aaip2vs+bJ3o12iEMuzFqwbS0wlAK2Q4LZ97NijNZgUzohUJisht4/Zkg5HRsdfSkwO3Q2MY+6NbIOGphgo7JpMam5eDQiWNwMP/u6AsGLRG2DJQv/AI1qb2MBTeu3ohyBkvSl/HcNcRZD5Iu7SAWoLJBChUJ+DHvQ+pOtEHPaF3vLXW8euYGbKU6alE53DwRnXWzjiDjxIWvmSrQxEOdqo2RQsBkwFQukdY0Js+tM1gZsoIJB6J80JcQKdM84d3XVGi2cIHL7QngRZ6SemDsNl0LjoYEXhGTgQ4wDVlJK+hZoy2f/MzsHNW5kwrijtfzF/m756qJMdiMET2KCjuadvfysSd3o5qIf4W+d15RrX0ClAwb4fyFdASjGJs8ohAjlmNWUiqaa886O0tSTH6KKx86vlPOwTXfarhJUbL5eR+7LPdnNNtd8NX6CffcEnpVX6DN93Kl13T14UKCzyyzAu0MM4lVWnaPz1vXu0dYtN9IGaluMT3sTS4u5o2TxNVYmKwB7aaaN5IrwsdiawFpnWoGPe1gj+eIRcDOwmXkU66sQ==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 293AF40002
+X-Stat-Signature: 9jiwxumfjoydz7osnfrn88hzus96g5oz
+X-HE-Tag: 1788533474-996852
+X-HE-Meta: U2FsdGVkX1+Qa5nqVcqoKiWzn6bfEEW5moz+PG500QyUDU0cbVGTrlauHoiDvycazAAwo+xj6Wlns6FwFEf6ID/h8j8Y2h/tE2eTmXgrjOan2mNyL/6lR1Jpw5t4cYaheMA6wUAx5OapfqhAJuSKFSaFAFLmZX8+7xDgl8oe10krrnjH9elJSByNKpy+bypvTHAVoYHaC6oQ9z9ySXq8u94Rk9z2itoIV036NxvA0C0Zjjhg79EHFTD4AT/mH2orYNnhtfRYU9EuPIEiMRR4kW7D0WXJSrsI7troz5MwMlM5ofOAcFqQOY5AJTJ8bdwFxy4lmjj1qDZZHwY4Fog2IW5ybSTHU7aPAoR0zBJwhVgbXXFh12aXZe/yAQqv9YlCYBEPC4LQ8IimzX+VddLVSUF2RaeVyqdrcW/p0pLLNEMqxzi/M32LpyG7XyF6ZMqFRu4U0vHKew7mGc9jdxNcuN0B8OH0xL1yAzEfpoYiQxeXhuJBTXSqnDbptzvFGf7Xrj01mJUmn1E93w/2Ue998sZjK6y8YpP5k5hqibR7mhlyLy7sXktg1fXbYo1hnueE817FmcqWug/1F5YIB9j5zltsoNk45MH6QWTdZT/huGWjwasLPiCKJx1IrwIv7TlzlgxMyDgWM5uP5+khNrn9nf5l5RTPXL5oibCS7OJeJxbifkjbX0pFYcZfK6WjMhqSMwhC7TBagQRxetSR9mY1JLTFtV29VQ0qlm5JofgVs3QVNHicKX09j0j/G0GRG1T1pFzCC5syPdsYk/+DqwU/x4+6xwAfoxsupxgTux/NK8efePcQKfAL0xWE7fayEChF5cQScfZtCDeLn4Jo0SRtvRCb0rNkaBpwB8wQdsxuG5bsXC7TmsigcVsWH/CymoL6BW8Vb/QRHq8+h0uuwx9It3en5UPoS6I7mooHwJMfNmrOiUpIWLFM7B6BvSnREp3NqS0BJnzWYN/LE8Xnv8z
+ CvsNp26S
+ JNd6x30R6Z9/ZEZN34GaDWNl0chJO6qms7l/WqMZot2KSNy2MNi4ZYxwm92k+fc1CiGiogomwJ07La195yIpIMlnmlPIaXl34RWO+y4BkBxyxvCUKSvw6uWSTRijSlrXXz0FgXL9bDl7fA1fEuasPhKycV0MqRgwoEfeqBIB+YfdqBt3k8mj/KZgu76/ners1lGaOsg2AY15qh9ZUljXebcNb7XsIgyRqbMufzJ80avcwtz8t+PTL+/cTx+ebgun0zWcnQ3JwDL2WSYyuv5x+yyMch9UMhK0KOoqJG3AX3Bm2iO6GnmeXm5Ribx97nQVS8j9tezBLO7FiiJr8j3lhZrFOJ85gi9MieRLfcbRWt0EvyuuLPzmNsW/O4NkXme8V7+YH2Jr8ZGI9tNBo09nU5+yRIDyIWp0fS70Jqm26+lXYm3+sT/k27/p/GD9cAvra6kqRcaBtejhneh/4Lz/HZ3boiI/vm48UDeG20o7c38j7X5bUM+jICPzznRj/U/N8QYtW0pNMcFDhD640oyQXZUC0e+Jw1lxLcoN236I1bCfNEq1sLhWa/jW5gQZLQw5HpEF7uK+l+h+qNrUsuJWOD79yimXeq0vv/Q2K5bDs8bMrUGQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,120 +110,234 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/4/26 13:56, Salvatore Dipietro wrote:
-> Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
-> introduced high-order folio allocations in the iomap buffered write
-> path.  When memory is fragmented, each failed costly-order allocation
-> enters __alloc_pages_slowpath() which runs direct compaction and
-> drain_all_pages(), causing a 0.38x throughput drop on PostgreSQL
-> pgbench (simple-update) with 1024 clients on a 96-vCPU arm64 system.
-> 
-> The root issue is that direct compaction is too expensive for hot
-> allocation paths that have fallbacks to smaller allocations.
-> __filemap_get_folio_mpol() already marks higher-order allocations with
-> __GFP_NORETRY | __GFP_NOWARN, signalling that the caller can handle
-> failure.  However, the page allocator still attempts full direct
-> compaction for costly orders with __GFP_NORETRY, which is unnecessarily
-> aggressive when the caller will simply retry at a lower order.
-> 
-> For costly-order allocations with __GFP_NORETRY, clear
-> __GFP_DIRECT_RECLAIM at the very start of the slowpath, before
-> can_direct_reclaim, can_compact and the nofail checks are evaluated.
-> This makes the entire slowpath treat the request as non-blocking: no
-> direct reclaim, no direct compaction and no drain_all_pages() IPI
-> across every CPU. kswapd (and in turn kcompactd) is still woken further
-> down for background defragmentation, so compaction keeps working for
-> long-term system health while being removed from the latency-critical
-> direct allocation path.
-> 
-> Allocations that also request __GFP_THISNODE are exempted.  That flag
-> pairing identifies the local-node-first THP attempt issued by
-> alloc_pages_mpol() (mempolicy.c), which relies on direct compaction to
-> form transparent huge pages.
-> 
-> Test environment:
->   Hardware:  AWS EC2 m8g.24xlarge (96 vCPU, arm64)
->              12x 1TB IO2 32000 IOPS RAID0 XFS
->   OS:        AL2023
->   Kernel:    v7.3-rc1
->   Database:  PostgreSQL 18.4
->   Workload:  pgbench simple-update, 1024 clients, 96 threads, 1200s
-> 
-> Results (average of 3 runs, TPS):
-> 
->   Config                   Avg TPS      % vs Baseline
->   baseline (no patch)       59,408       -
->   With this patch          155,409      +161.6%
-> 
-> Link: https://lore.kernel.org/all/20260403193535.9970-1-dipiets@amazon.it/T/#t [v1]
-> Link: https://lore.kernel.org/linux-mm/20260420161404.642-1-dipiets@amazon.it/T/#u [v2]
-> Link: https://lore.kernel.org/all/20260710143437.12379-1-dipiets@amazon.it/T/#u [v3]
-> Fixes: 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
-> Cc: stable@vger.kernel.org
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: Matthew Wilcox <willy@infradead.org>
-> Cc: Christoph Hellwig <hch@lst.de>
-> Cc: Dave Chinner <dgc@kernel.org>
-> Cc: Ritesh Harjani <ritesh.list@gmail.com>
-> Cc: linux-mm@kvack.org
-> Cc: linux-fsdevel@vger.kernel.org
-> Cc: linux-xfs@vger.kernel.org
-> Signed-off-by: Salvatore Dipietro <dipiets@amazon.it>
+Dongli Zhang <dongli.zhang@oracle.com> writes:
 
-I guess this will have to do until unlikely(we figure out a better API)...
+> On Thu, Sep 3, 2026 8:59:06AM -0700, Tarun Sahu wrote:
+>> Use binary search (memblock_bsearch_start) in memblock_add_range() and
+>> memblock_isolate_range() to locate candidate regions instead of linearly
+>> scanning from index 0.
+>> 
+>> Under heavy memory fragmentation (such as KHO page preservation registering
+>> hundreds of thousands of disjoint folios), scanning from index 0 on every
+>> insertion and isolation results in O(N^2) complexity, causing boot-time
+>> memory retrieval to take several minutes (~268s for 393k pages).
+>> 
+>> Using binary search reduces the worst-case complexity to O(N log N)
+>> (and O(N) for sequential appends), cutting KHO memory retrieval time
+>> from ~268s to ~50ms.
+>
+> I encountered this issue with my workload. Initially, it was because I forgot to
+> set THP to "always", As a result, there were many 4K pages even though they were
+> contiguous.
+>
+> Indeed, I noticed some delays or hiccups with my workload even with THP set to
+> "always".
+>
+> In the past month, I used something like what I attached at the end of my reply
+> to reduce the number of memblock_reserve() calls. I never realized the poor
+> performance was caused by memblock_reserve() itself.
+>
+> [    0.231623] mem auto-init: stack:all(zero), heap alloc:off, heap free:off
+> --> delay
+> [   38.587378] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=32, Nodes=1
+>
+> With your patch, I ran several rounds of tests with THP set to "never" (4K
+> pages) and no longer noticed any hiccups or delays with my workload.
+>
+> [    0.247746] mem auto-init: stack:all(zero), heap alloc:off, heap free:off
+> [    0.512019] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=32, Nodes=1
+>
+>
+> Thanks to this patch, I no longer have to put up with the delays or hiccups in
+> my workload!
+>
+> Thank you very much!
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Glad to know it helped and thanks for testing this.
 
-> ---
-> v4: Clear __GFP_DIRECT_RECLAIM early in the slowpath and exempt
->     __GFP_THISNODE so THP attempt keeps using direct compaction
-> v3: Move to mm/page_alloc.c, wake kcompactd instead of avoiding it
-> v2: Move from fs/iomap/buffered-io.c to mm/filemap.c
-> v1: Avoid compaction in iomap folio allocation
-> 
->  mm/page_alloc.c | 18 +++++++++++++++---
->  1 file changed, 15 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 12fac9084c48..542c2ec31061 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -4784,10 +4784,10 @@ static inline struct page *
->  __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
->  						struct alloc_context *ac)
+>
+> Dongli Zhang
+>
+>
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 7c4d86daf86d..03e1f914c800 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -67,6 +67,8 @@ union kho_page_info {
+>  static_assert(sizeof(union kho_page_info) == sizeof(((struct page *)0)->private));
+>
+>  static bool kho_enable __ro_after_init =
+> IS_ENABLED(CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT);
+> +static phys_addr_t kho_preserved_batch_start __initdata;
+> +static phys_addr_t kho_preserved_batch_end __initdata;
+>
+>  bool kho_is_enabled(void)
 >  {
-> -	bool can_direct_reclaim = gfp_mask & __GFP_DIRECT_RECLAIM;
-> -	bool can_compact = can_direct_reclaim && gfp_compaction_allowed(gfp_mask);
-> -	bool nofail = gfp_mask & __GFP_NOFAIL;
->  	const bool costly_order = order > PAGE_ALLOC_COSTLY_ORDER;
-> +	bool can_direct_reclaim;
-> +	bool can_compact;
-> +	bool nofail;
->  	struct page *page = NULL;
->  	unsigned int alloc_flags;
->  	unsigned long did_some_progress;
-> @@ -4802,6 +4802,18 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
->  	bool can_retry_reserves = true;
->  	unsigned long alloc_start_time = jiffies;
->  
-> +	/*
-> +	 * Costly __GFP_NORETRY callers have a cheap fallback, so don't stall
-> +	 * them in reclaim or compaction. __GFP_THISNODE callers are exempt.
-> +	 */
-> +	if (costly_order && (gfp_mask & __GFP_NORETRY) &&
-> +	    !(gfp_mask & __GFP_THISNODE))
-> +		gfp_mask &= ~__GFP_DIRECT_RECLAIM;
+> @@ -610,25 +612,58 @@ static struct page *__init
+> kho_get_preserved_page(phys_addr_t phys,
+>  	return pfn_to_page(pfn);
+>  }
+>
+> +static void __init kho_preserved_memory_batch_flush(void)
+> +{
+> +	phys_addr_t size;
 > +
-> +	can_direct_reclaim = gfp_mask & __GFP_DIRECT_RECLAIM;
-> +	can_compact = can_direct_reclaim && gfp_compaction_allowed(gfp_mask);
-> +	nofail = gfp_mask & __GFP_NOFAIL;
+> +	if (kho_preserved_batch_start == kho_preserved_batch_end)
+> +		return;
 > +
->  	if (unlikely(nofail)) {
->  		/*
->  		 * Also we don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
+> +	size = kho_preserved_batch_end - kho_preserved_batch_start;
+> +	memblock_reserve(kho_preserved_batch_start, size);
+> +	memblock_reserved_mark_noinit(kho_preserved_batch_start, size);
+We can also combine these two function. IIUC, kho_preserved_batch_start
+does not overlap with other reserved regions so, they will be mutually
+exclusives ranges and can directly be marked noinit while adding to
+reserved list.
 
+~Tarun
+
+> +
+> +	kho_preserved_batch_start = 0;
+> +	kho_preserved_batch_end = 0;
+> +}
+> +
+> +static void __init kho_preserved_memory_batch_add(phys_addr_t phys,
+> +						  unsigned int order)
+> +{
+> +	phys_addr_t size = 1ULL << (order + PAGE_SHIFT);
+> +	phys_addr_t end = phys + size;
+> +
+> +	if (kho_preserved_batch_start == kho_preserved_batch_end) {
+> +		kho_preserved_batch_start = phys;
+> +		kho_preserved_batch_end = end;
+> +		return;
+> +	}
+> +
+> +	if (phys == kho_preserved_batch_end) {
+> +		kho_preserved_batch_end = end;
+> +		return;
+> +	}
+> +
+> +	kho_preserved_memory_batch_flush();
+> +	kho_preserved_batch_start = phys;
+> +	kho_preserved_batch_end = end;
+> +}
+> +
+>  static int __init kho_preserved_memory_reserve(unsigned long key, void *data)
+>  {
+>  	union kho_page_info info;
+>  	struct page *page;
+>  	unsigned int order;
+>  	phys_addr_t phys;
+> -	u64 sz;
+>
+>  	phys = kho_decode_radix_key(key, &order);
+>
+> -	sz = 1UL << (order + PAGE_SHIFT);
+>  	page = kho_get_preserved_page(phys, order);
+>
+> -	/* Reserve the memory preserved in KHO in memblock */
+> -	memblock_reserve(phys, sz);
+> -	memblock_reserved_mark_noinit(phys, sz);
+>  	info.magic = KHO_PAGE_MAGIC;
+>  	info.order = order;
+>  	page->private = info.page_private;
+> +	kho_preserved_memory_batch_add(phys, order);
+>
+>  	return 0;
+>  }
+> @@ -1687,8 +1722,13 @@ static void __init kho_mem_retrieve(void)
+>  		.leaf = kho_preserved_memory_reserve,
+>  	};
+>
+> -	if (kho_radix_walk_tree(&kho_in.radix_tree, &cb, NULL))
+> +	kho_preserved_batch_start = 0;
+> +	kho_preserved_batch_end = 0;
+> +	if (kho_radix_walk_tree(&kho_in.radix_tree, &cb, NULL)) {
+> +		kho_preserved_memory_batch_flush();
+>  		goto err;
+> +	}
+> +	kho_preserved_memory_batch_flush();
+>
+>  	return;
+>
+>> 
+>> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
+>> ---
+>>  mm/memblock.c | 38 ++++++++++++++++++++++++++++++++++++--
+>>  1 file changed, 36 insertions(+), 2 deletions(-)
+>> 
+>> diff --git a/mm/memblock.c b/mm/memblock.c
+>> index 9ce86349a29f..88940474b020 100644
+>> --- a/mm/memblock.c
+>> +++ b/mm/memblock.c
+>> @@ -160,6 +160,11 @@ static __refdata struct memblock_type *memblock_memory = &memblock.memory;
+>>  	     i < memblock_type->cnt;					\
+>>  	     i++, rgn = &memblock_type->regions[i])
+>>  
+>> +#define for_each_memblock_type_from(i, memblock_type, rgn, start)	\
+>> +	for (i = (start), rgn = &memblock_type->regions[i];		\
+>> +	     i < memblock_type->cnt;					\
+>> +	     i++, rgn = &memblock_type->regions[i])
+>> +
+>>  #define memblock_dbg(fmt, ...)						\
+>>  	do {								\
+>>  		if (memblock_debug)					\
+>> @@ -591,6 +596,33 @@ static void __init_memblock memblock_insert_region(struct memblock_type *type,
+>>  	type->total_size += size;
+>>  }
+>>  
+>> +/**
+>> + * memblock_bsearch_start - Find the first region index where rend > base
+>> + * @type: memblock type to search
+>> + * @base: base physical address of the candidate range
+>> + *
+>> + * Returns the first region index that could potentially overlap @base.
+>> + */
+>> +static int __init_memblock memblock_bsearch_start(struct memblock_type *type,
+>> +						  phys_addr_t base)
+>> +{
+>> +	int mid, low = 0;
+>> +	int high = type->cnt;
+>> +
+>> +	if (type->cnt && base >= type->regions[type->cnt - 1].base +
+>> +				 type->regions[type->cnt - 1].size)
+>> +		return type->cnt;
+>> +
+>> +	while (low < high) {
+>> +		mid = (low + high) / 2;
+>> +		if (type->regions[mid].base + type->regions[mid].size <= base)
+>> +			low = mid + 1;
+>> +		else
+>> +			high = mid;
+>> +	}
+>> +	return low;
+>> +}
+>> +
+>>  /**
+>>   * memblock_add_range - add new memblock region
+>>   * @type: memblock type to add new region into
+>> @@ -651,7 +683,8 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
+>>  	base = obase;
+>>  	nr_new = 0;
+>>  
+>> -	for_each_memblock_type(idx, type, rgn) {
+>> +	for_each_memblock_type_from(idx, type, rgn,
+>> +				    memblock_bsearch_start(type, base)) {
+>>  		phys_addr_t rbase = rgn->base;
+>>  		phys_addr_t rend = rbase + rgn->size;
+>>  
+>> @@ -827,7 +860,8 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
+>>  		if (memblock_double_array(type, base, size) < 0)
+>>  			return -ENOMEM;
+>>  
+>> -	for_each_memblock_type(idx, type, rgn) {
+>> +	for_each_memblock_type_from(idx, type, rgn,
+>> +				    memblock_bsearch_start(type, base)) {
+>>  		phys_addr_t rbase = rgn->base;
+>>  		phys_addr_t rend = rbase + rgn->size;
+>>  
+>> -- 
+>> 2.55.0.970.g62bdec98f9-goog
+>> 
+>> 
 
