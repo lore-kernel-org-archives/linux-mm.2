@@ -4,102 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E3DAC624DE
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 16:09:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5548FC624DE
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 16:10:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 044C36B00AD; Fri,  4 Sep 2026 12:09:51 -0400 (EDT)
+	id 7E66F6B00AF; Fri,  4 Sep 2026 12:10:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F38666B00AE; Fri,  4 Sep 2026 12:09:50 -0400 (EDT)
+	id 7BE716B00B0; Fri,  4 Sep 2026 12:10:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4DE06B00AF; Fri,  4 Sep 2026 12:09:50 -0400 (EDT)
+	id 6FAE86B00B1; Fri,  4 Sep 2026 12:10:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B99BE6B00AD
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:09:50 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 52D7BC014D
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:09:50 +0000 (UTC)
-X-FDA: 85176565740.18.167D730
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 66BA4180008
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:09:48 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VOYe2PR3;
-	spf=pass (imf06.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788538188;
-	b=R6h8MZWzHtMe/VKK5F6yxmLGnLzxNbsGkiCCAtpQ7gYs2Ya/XAC6Dw9nMQtBoRd5bSvtPi
-	JynA7l6/816UB6drkFNFYr1nem9eBdHhpOR25LqtUS7KepTF3hDztr5d23YUu6iTllqIQp
-	HNcfcjZsguDjMxrE8jpGY6WrOClPRCw=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VOYe2PR3;
-	spf=pass (imf06.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 455176B00AF
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:10:10 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D0EFBC0140
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:10:09 +0000 (UTC)
+X-FDA: 85176566538.04.81B003C
+Received: from mail-qk1-f194.google.com (mail-qk1-f194.google.com [209.85.222.194])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6FF03180018
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:10:07 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="nH1/DUIn";
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf24.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.194 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788538188;
+	s=arc-20220608; t=1788538207;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Eeq1cCGbIWkkHc8XN84l/PkE/s3OPAx4E/DdJKyKEcM=;
-	b=PGQPlUxaZmeUpkZ5RtxqUaJoO+oRs3gFdO4qc9rruBngMHraPL5xrqNEyjV8BrIocofTIb
-	JpTTRAMJ6O7Vs2DFz6UaepxV7Pt+kFOp+uEg6P+7+3925onMGYevZ4M+YbYBAjAPOOoJYf
-	u046IMSwcBicb1Myv5TFbcnpH2j4ydY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8F1A243822
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:09:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FDFE1F00ADF
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:09:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788538187;
-	bh=Eeq1cCGbIWkkHc8XN84l/PkE/s3OPAx4E/DdJKyKEcM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=VOYe2PR3MDiMotRQLT7leWQ2WJJprtf6szl2QmGCnwpsMPNduyy5iI4sE4U86VJAL
-	 VCUT7yTGxb6+dQmdmCxfM+9Fk4uWK25UBCH8MLtV3Pn1QyN5lmIG8sHYZuVSGQQikI
-	 wLfO3JHOlKD8HFz4OluR+8zmcmQf0IzKEWnSlJEhM6NZG7CXJtIzlLtYD2buSAqLOk
-	 Lu1JE3d7U+GmLygai1R9RQxvBA8KtF3fj1Jazu2M3xNiHZcfeA2e/4FDG4OXtT7++9
-	 /AB35hSJlxt0IPLv34h1e3iyHEYSq3AYs2n6CvKSm7MIjPQzYJQL4HOu0qZ/0YzXJV
-	 UvlHEbVrOS2nw==
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c197e7e4e94so203042666b.2
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 09:09:47 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzL/tAwBDHhVExcBftyRl6W5FJW7mq5fr8PybLi7SyzAhKTqXKMcC/6zgweBUssGX77IDcB/wJTGg==@kvack.org
-X-Gm-Message-State: AFuF++mvES+BmMVc8f+baZ19Tr7+iJxLaU7M4jNuPJye3TB8tNoPOZP5
-	ZoguEeoKsv2gLulVcGdkMpKNdQgq4EYdgX7Mr0RadJm5KKnqOx/blN5OX5b3kD9HeqsP2uxSeD5
-	WuMxFYSIaFIZBCP3GgJj0X1GbDBkW/oE=
-X-Received: by 2002:a17:907:6c0f:b0:c26:19de:9ac7 with SMTP id
- a640c23a62f3a-c2619dea67cmr159398866b.31.1788538186259; Fri, 04 Sep 2026
- 09:09:46 -0700 (PDT)
+	bh=O/dj2tdiAd1cTUZz8ylHlEPfPG8XqvRkzCQtnk9erCM=;
+	b=doWi5yL2lrrhPEr2dmV1jDWFh7/7qsJLYcAN9RmcELTx1T1uXTf4IljV3WxlQRTVc5t7+j
+	lhsdDFmquvGvYWyTJV32wU6lvBI+rKJhOHP3VlEe8ioHAxT8tVJBUoXVFp0/Exy3iBCcSR
+	hcEcqk3abvTN7ctixWEfXrTOFDnKMUE=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="nH1/DUIn";
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf24.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.194 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788538207;
+	b=0RdXZcdlbRY2EyvQyXlv7Ja848JDswshluj6hUJlIHhZbve+eXHlqU5ba+HpVuPonfagne
+	d1NG6jqU3dXZ7ytg1K/XmuLJwF0EdUkNcaLBY8meBof3uqyxbjIgHtkgXOH/Fi2S+zP3ra
+	zZgSNzke5uKuMzV3GpBE5XLfjFFX2lk=
+Received: by mail-qk1-f194.google.com with SMTP id af79cd13be357-936dfd009d1so253495385a.1
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 09:10:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1788538206; x=1789143006; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=O/dj2tdiAd1cTUZz8ylHlEPfPG8XqvRkzCQtnk9erCM=;
+        b=nH1/DUInt33XQWFmBvyqXh2JC20tkS0RWzsbMkO6kosgbE8u0SqKD4W7c/Ypkr9v2K
+         Z0/PiNj+AXGlxsVlkXGZWLq6u2uL/Oult6wvX3bbWEPpRI6QsDXjwpH1g6nKSejzpm9z
+         Vq/SuLsxeFfwXO0Ra1FosyX8qjbtfqEaavYisA4VA1NCaAHS1SEzJAwhf6MNTQyKprcI
+         0O4EMQKRFl7+wRseMvtZGZe6u5JaC1AGD90+Nj/d5wvTGnOrWR0W8fZi3eDLSuM7JsGb
+         ainvRikwYnMZ0lLSm+OTCmyuimDvyI9tNCQSi31RczACHVzU/XhGz+MaqmEoSJcfA04H
+         45gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788538206; x=1789143006;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=O/dj2tdiAd1cTUZz8ylHlEPfPG8XqvRkzCQtnk9erCM=;
+        b=cyb4D/B5E+e8Eq57M9j8q91OmA3Gp1ZnOl7fhGn5T+YEI6rxTLBuqLDb+cfviZq/zp
+         pEhTClDeEkcVvpDlrglqPspNRpc0CfefPkylq27NYq04uV9cihBuWz0+ZLDZyur9hVv1
+         LFpTmZquzYpCXA+LPRWwX/VzZzW3rYOOrwVVdkSfwaxzsscTgT2G/0uwwudOlOyRhR6k
+         ZGadwBZlFafoELCfv8SzUlWZDxwkyucAOSSumWUmE0kAGw1vjz8NO69M+fr42ZJvrhTZ
+         ptiSQz4hDcPm9nmGYirrBxKe+ab3MeOiSFGyVh8G65jYbUe/Oc1uYIv5Akqv7Pk7v42L
+         Xfng==
+X-Forwarded-Encrypted: i=1; AKwUvBwp9iAds76rFqjXAy2P4aBTYF7+aOpUF5njwQGSKT1ZGO/H8sRkS8cK9zpVllkEHj7GW8sGDJafAw==@kvack.org
+X-Gm-Message-State: AFuF++kCe0QXRQ2AK1QUqnRjTS5MEQC8M1eyhXEtn8Ll99Yz7q9XYdUL
+	prF9UPgiF8cJCx+vAu/ignOs5FmGbHnqmfj9wxJZdllrrWoYzIDZVgxWyBZSfF4a08I=
+X-Gm-Gg: AYBFou13oqw6/u+9i/bB8RLEdK8sYUVuvEdbHHRjpAsKxJK7iFnCpR16QAf3ro2EZ7y
+	BGY1pjG4QIBLU72+hBBiRHxLztVpA4tNnhu/jz+DCP6+o9DUpu/5FRCE8+EvZOwpZikHIU5t4Ul
+	4D9S0ixw+scwK4hSKv14/IE57itX9OsyhJiVbg6alF5ttw9lhHRTgtN0WUwLdaaJAe9ohIzlUJJ
+	t6Juu+If4JfmOuA7T5yHO1O4z0zZf0K3ouLlSqFMYdQu7RPXXO3V4LPHA3T7fnBqfXV+iqPT95g
+	L0YEUgSzco4sfGSmyCzdK7MTu99pETVtEppjYu8m49sIWNmcx0ZQvMP4z8FO8urvPcwpoUcCqPn
+	IkEyZ3xArYQ0QAzyeO1Zoctqri6oIrdsDlB86ibWeoX6MOxPO1j+0tYme4XCHCDsJrv98JEr3U1
+	mImWLsNamoP4iO2bgxU38W+Br5Qw2LiXjpAc0W
+X-Received: by 2002:a05:620a:6cc6:b0:930:f285:5ee9 with SMTP id af79cd13be357-9396e0b2fc3mr1194176885a.20.1788538206229;
+        Fri, 04 Sep 2026 09:10:06 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:501::2])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9104067b125sm23869576d6.29.2026.09.04.09.10.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Sep 2026 09:10:05 -0700 (PDT)
+Date: Fri, 4 Sep 2026 12:10:00 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Salvatore Dipietro <dipiets@amazon.it>
+Cc: linux-kernel@vger.kernel.org, hch@infradead.org, abuehaze@amazon.com,
+	akpm@linux-foundation.org, alisaidi@amazon.com, blakgeof@amazon.com,
+	brauner@kernel.org, dgc@kernel.org, dipietro.salvatore@gmail.com,
+	djwong@kernel.org, jackmanb@google.com,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-xfs@vger.kernel.org, mhocko@suse.com, ritesh.list@gmail.com,
+	rvvandan@amazon.com, stable@vger.kernel.org, surenb@google.com,
+	vbabka@kernel.org, willy@infradead.org, ziy@nvidia.com,
+	Vlastimil Babka <vbabka@suse.cz>,
+	David Hildenbrand <david@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Brendan Jackman <brendan.jackman@linux.dev>
+Subject: Re: [PATCH v4] mm/page_alloc: avoid direct compaction for costly
+ __GFP_NORETRY allocations
+Message-ID: <20260904161000.GC6641@cmpxchg.org>
+References: <20260904115629.3993331-1-dipiets@amazon.it>
 MIME-Version: 1.0
-References: <cover.1699104759.git.quic_charante@quicinc.com>
- <a8e16f7eb295e1843f8edaa1ae1c68325c54c896.1699104759.git.quic_charante@quicinc.com>
- <aphSYFTd12oia8K2@google.com> <apkhSHr3by5Bf8jW@tiehlicka>
- <CAO9r8zPCYNmJbkQEA62z75AB=ziWqGb38_E-ee_6o40Sz=zHXA@mail.gmail.com> <apqppFukssaAQz3w@tiehlicka>
-In-Reply-To: <apqppFukssaAQz3w@tiehlicka>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Fri, 4 Sep 2026 09:09:35 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMBBhhqepbLR9buOOu7bpyLW+UTu55DjbCYrbBp56rkCw@mail.gmail.com>
-X-Gm-Features: AcwNN1UI8vVflFBHpjQw18qMFlO-gIfm7g3j2hfRTedEMhop9xXtUozwNzZigZA
-Message-ID: <CAO9r8zMBBhhqepbLR9buOOu7bpyLW+UTu55DjbCYrbBp56rkCw@mail.gmail.com>
-Subject: Re: [PATCH V3 3/3] mm: page_alloc: drain pcp lists before oom kill
-To: Michal Hocko <mhocko@suse.com>
-Cc: Charan Teja Kalla <quic_charante@quicinc.com>, akpm@linux-foundation.org, 
-	mgorman@techsingularity.net, david@redhat.com, vbabka@suse.cz, 
-	hannes@cmpxchg.org, quic_pkondeti@quicinc.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260904115629.3993331-1-dipiets@amazon.it>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6FF03180018
+X-Stat-Signature: u3qpaztyj7e6zq3sderq47o7td84m8ud
 X-Rspam-User: 
-X-Stat-Signature: apwi6u988wrbcqocqiz5jqdu6htfbpnu
-X-Rspamd-Queue-Id: 66BA4180008
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788538188-142428
-X-HE-Meta: U2FsdGVkX1/WGPZ865ySEzglfO96J+IwdjMueKRBGjewEQy8oCn64Kw7nSRLAf6ROOg0NQgFUwWSa3NOQTqZwuPUItIAkg8HU0jBT41ZlvrdhFZXWvu/J1BYm2HKXxUmASp7GnANabvm0z/m8uHoOdoJC9UvsCa/eDu8e7kbI1VMOlAKbD6r7FXdSBU5PIon3CDWV+zTO1fqfFWHhb0SrgMZwfSLnohWFDftEYde0Lu2lOzcYGglLBa9/zpvoJVUxxaP/iPzgY8QApqqJQ7YgTwHgmR1dzTr5e3SE5EEEx/u7EgGT9oLJ/CK5umnYiJkMymbDIwmX1csmj8LYEMHGlc6AcatBXXngo0HuAPV89BQPVKoSaeY0te6Q2vtb9jTCVkY3XSuvJGbTyNjdvPXiPgH8KKmai2yGkEjtMEW2wi7SRcqBWsgKMIeUCNvTZ07MiUSJvLkNvkD2ie0cUaxMd9lDB4g7cnKOQYWx00tOmxIJPhktir3t/capIJe0QMPOgc8H13aBAputB7AalC+ky2evKRpcvT5R0Ur/5iPI0O4hcsk8taDkeEmKmTPc7Cd7G7YcMGHz3K6r2a3PjAoIIls5qS7zyymgsGyNX0/WH/5NkK/B867wD9uswqtG4NhiSzbLOhzYoLOJqKRYRKqy2PgJPAvP8JEhkSNq8DQG4DPMefzyfh2R/xldB3R8zxaCwmEwKC5C+tqY60G6fwwd6QvAjEIuPwWTbC0HZduBgmT0UCL+Esn5pwiYpzGtDZcTmu3FcR5fD3XIgV0TakEJQ/X5gNksHvPs25kTJdYtp45fj0z/p9fp1pMAzpJvNJVlTT+e8+PeCOF6qdaCRbb6/lBlpfe5VtAzqRWPe9iNZX6MEmNBtlQUcTuJbnSVj18Pa71MNNrtLn40IyKVftB2JIcgTJt41FulfYOcZg9YTZInlG/ybHX7xAQGCxI7hLyZCNKDVBGdhUVzpDhgwq
- TSgh1C3h
- tfMpBYuqpD8rSazr4r+jJw4uymTOByc1B8SkuqcEgX5730oC0VwZayzdI/F4/bL/AXyOJgD26ZwR2hiEmYiLl4j635AlPbdSiLHH//qsYI39uK9L+e51LRJGSIFnQQOYLF53mOUIktPNUq3YZfG9mLlFxa3lP3918C+husWuWChrbwV4OAXkJtmmvHEPanjX0zV2JKAjgXf1x2yKNkdrrxenBccDM43Qfv5z6uDx99fSGPeQOFpwKsAAn9QIyhTbcwooGety6KLHrKcPt+H/ZvDikzm8fdXUGYYnc0X+T7ahb4O6hjvpQOvVNa7A4ydXIBfJPLaOXxVIUclvzuz2lpIoCcrGjkG1UALoNSmqPbOmtpSE6dQmCF86AHj+1xTGLICNablDMqkN6Rf+dMC4bHr1v+ejx4Fq78EKDwc14CgXb1wV6MZTQkq6gyeOL/ntF+1Pn
+X-HE-Tag: 1788538207-6847
+X-HE-Meta: U2FsdGVkX19bjwvCsQRvDPBP01yDcXflwIMK+/1VnjsaS3uZdkWqqiFLdjRheJjBcAp2Eksg64Sl+CWjHw076WXZlTqeQQPreCmWTeTP89PnDR+1h/d+LUt4D0yFHMR1Iw62OeY7A1tZK/Q6Qqqsm1bCGOYTYBbPEU2gR8N/qNrr2UD9jrtMapH9AHNxhiTax/2iZBI0dUnhVvDHfvSWeMy/gTzQfIBA9emrBhLBjWkac492Z3e4hRuj4NXVsGPYnmz0ENDWjsvLDikjEqSP8X2ZwqKxetcOUOzW2zbSNkkFA8Y5kZ9Z0aCrfQ5Wq7xVUPfTySpYiHzQqp60Pkhom8g6AQxfcQs7ImoPKpZT4Q11vdxD4uiznj6Yq/goaj8uZ2NHhSuLx1+nZy1QYq1FJDN5kb/RZe3ZFsQpttgL3P6HPSRv7YnR8vWaEl/+Mo6mAjJ7cm3NgznMOhv+x6wWvI/BCtbsf3OA6zaqHJbopL8oaIkeA+Uc6Futx+BtKWZIzEOKt1BFFmSPcAdTGlPnKCnA6jZsOhtfUlipUEtDEmwU2au5pLy2RN5ECWViGuiSNXiy3Cvu26JNIsZOb1gkY3jNvJqNI9CGHKEbT6g+CxSGH9/qa10xAB/bj89UFBFGeVswU+Ns0sJXSYzkkipVB/jsriej5Yw2JFI1wYDYQxFOn9THHZshsvziFtzq1TOixBcumDO7KYlk2zFOfDa46RjYqkSwg4izX9Jp4ZR00JtYWVJewSOZCUCdvgLjWJ8UCLzO5m6Tfp2voBseS02pWDwK0BztWpWv1nq1rCdn4IYVyZ27Ljv6rup0aqV7tM96/wWvt9iETyNz8yHwoUKBB3Gj31B/K1kXfNKh+sAXygDU2gHUjlqZumMwJGGcpUR6ncIC+Sjd31GOKpKJnCI9bxY9b+CFHvIFVo/q+VJNIxLry8qIefwuw9k0Y/eBjDtad9csgoW3bP2qFxpXoF9
+ obhHyo0s
+ QqwnQVswdQRT3nWnPsW30+9UWljsiw3Uqsd9FBM1NCz6bFVDgdFxYxK5KzdLHt7TyUMtCDl8DMn6VTxipMZsRiyEwbDhr9sFvpwhSTFz6UV2dLckLlEDBZTxCRj2MvrQAYoDZFMZr7oEyjhFlbW9YOQPDe1qvMyvDGwEJlIUwIVNxtAfYPXAQLWiDjZf5l9KkmkEHZlqTK4CNsd0c6ifTz6X9P6H7TPhn6d2jEU/1LeSkDTsmleYP8CGPzuIzceDjQIdaXwPwOZhLJWQ0yl+T6umP5qgDNBC/hv01iLi6e2QUlbj93NAzrd9RNZly61nYwnvy8Yz1E1FfXeBFZANdnI+bEM3yS+s6HcMFt6D6xYqPabyINV9VupqCUVfFMXRSwC2Tiy4cckwDPhgUzrBkQCN3MDGEwlMWUXeIU785zPYOsqBchYYYVd5sCKoOjT35M+FlY3GAdJgFHHzigaYflzPZzHAf01AETY4NVWvYhP+J6WTS2FCzPjlE4l4SL+g3J7rg/75YQrKV1IBwZl6uVVvuuBNEV6wM7zup1tIyBem8M36qeSQ7SXfgveB7fKzkrFYMxpyOOq076z6cdwDXeCQmIqoIImpJCggcnL8SDrF0sAtc+3rtiJ1sn3FLV+wriolLkaMPfc12rrGB+tWWWxWqRUHcv5ySI4vY21wA3SJqIEUh/aM+OrXiJ02tfEREUHkZbrHxb2agfld8hDVV4gjZZLX4wzgfSxf79rJ0gbBjnMcwCeCJ0dyKH0829cHsBMLwJr4sAZJEGAzVB5VThFlM6rO/6AYgW1L3/i93nfaGrhmKAn40sLc2+G8S7Hg/DKN0hNdDKtSQN/iF5szRSGDn8Gd5ZnTe2wiX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,158 +129,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 4, 2026 at 4:21=E2=80=AFAM Michal Hocko <mhocko@suse.com> wrote=
-:
->
-> On Thu 03-09-26 07:03:33, Yosry Ahmed wrote:
-> > On Thu, Sep 3, 2026 at 12:27=E2=80=AFAM Michal Hocko <mhocko@suse.com> =
-wrote:
-> > >
-> > > On Wed 02-09-26 16:49:48, Yosry Ahmed wrote:
-> > > > On Sun, Nov 05, 2023 at 06:20:50PM +0530, Charan Teja Kalla wrote:
-> > > > > pcp lists are drained from __alloc_pages_direct_reclaim(), only i=
-f some
-> > > > > progress is made in the attempt.
-> > > > >
-> > > > > struct page *__alloc_pages_direct_reclaim() {
-> > > > >     .....
-> > > > >    *did_some_progress =3D __perform_reclaim(gfp_mask, order, ac);
-> > > > >    if (unlikely(!(*did_some_progress)))
-> > > > >       goto out;
-> > > > > retry:
-> > > > >     page =3D get_page_from_freelist();
-> > > > >     if (!page && !drained) {
-> > > > >         drain_all_pages(NULL);
-> > > > >         drained =3D true;
-> > > > >         goto retry;
-> > > > >     }
-> > > > > out:
-> > > > > }
-> > > > >
-> > > > > After the above, allocation attempt can fallback to
-> > > > > should_reclaim_retry() to decide reclaim retries. If it too retur=
-n
-> > > > > false, allocation request will simply fallback to oom kill path w=
-ithout
-> > > > > even attempting the draining of the pcp pages that might help the
-> > > > > allocation attempt to succeed.
-> > > > >
-> > > > > VM system running with ~50MB of memory shown the below stats duri=
-ng OOM
-> > > > > kill:
-> > > > > Normal free:760kB boost:0kB min:768kB low:960kB high:1152kB
-> > > > > reserved_highatomic:0KB managed:49152kB free_pcp:460kB
-> > > > >
-> > > > > Though in such system state OOM kill is imminent, but the current=
- kill
-> > > > > could have been delayed if the pcp is drained as pcp + free is ev=
-en
-> > > > > above the high watermark.
-> > > > >
-> > > > > Fix this missing drain of pcp list in should_reclaim_retry() alon=
-g with
-> > > > > unreserving the high atomic page blocks, like it is done in
-> > > > > __alloc_pages_direct_reclaim().
-> > > > >
-> > > > > Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
-> > > >
-> > > > [Sorry for thread necromancy]
-> > > >
-> > > > Hi Charan,
-> > > >
-> > > > Are you planning to respin this patch?
-> > > >
-> > > > I know that Michal was questioning the need for it. While doing som=
-e
-> > > > stress testing I came across a couple of OOM kills that had signifi=
-cant
-> > > > amount of memory in pcplists. Something that would have been preven=
-ted
-> > > > by this patch.
-> > >
-> > > Could you share some numbers to see the scale of the problem?
-> >
-> > Sure, here's a sample from an OOM log (ignore mapped/free_mapped, it's
-> > from the ALLOC_UNMAPPED series):
-> >
-> > [   40.336188] Mem-Info:
-> > [   40.336195] active_anon:96 inactive_anon:1540181 isolated_anon:0
-> >                 active_file:51 inactive_file:0 isolated_file:0
-> >                 unevictable:382720 dirty:43 writeback:0
-> >                 slab_reclaimable:20339 slab_unreclaimable:26597
-> >                 mapped:382858 shmem:153 pagetables:8291
-> >                 sec_pagetables:0 bounce:0
-> >                 kernel_misc_reclaimable:0
-> >                 free:17264 free_pcp:16890 free_cma:0
-> > [   40.336199] Node 0 active_anon:384kB inactive_anon:6160724kB
-> > active_file:204kB inactive_file:0kB unevictable:1530880kB
-> > isolated(anon):0kB isolated(file):0kB mapped:1531432kB dirty:172kB
-> > writeback:0kB shmem:612kB shmem_thp:0kB shmem_pmdmapped:0kB
-> > anon_thp:10240kB kernel_stack:2576kB pagetables:33164kB
-> > sec_pagetables:0kB all_unreclaimable? yes Balloon:0kB gpu_active:0kB
-> > gpu_reclaim:0kB
-> > [   40.336202] DMA32 free:34808kB boost:0kB min:11028kB low:13784kB
-> > high:16540kB reserved_highatomic:0KB free_highatomic:0KB
-> > free_mapped:11032KB active_anon:0kB inactive_anon:1487720kB
-> > active_file:52kB inactive_file:20kB unevictable:393252kB
-> > writepending:4kB zspages:0kB present:2096760kB managed:1991156kB
-> > mlocked:393252kB bounce:0kB free_pcp:42404kB local_pcp:2460kB
-> > free_cma:0kB
-> > [   40.336205] lowmem_reserve[]: 0 5976 5976
-> > [   40.336210] Normal free:34248kB boost:0kB min:34024kB low:42528kB
-> > high:51032kB reserved_highatomic:0KB free_highatomic:0KB
-> > free_mapped:34028KB active_anon:384kB inactive_anon:4672764kB
-> > active_file:180kB inactive_file:0kB unevictable:1137628kB
-> > writepending:168kB zspages:0kB present:6291456kB managed:6120144kB
-> > mlocked:1137628kB bounce:0kB free_pcp:25156kB local_pcp:764kB
-> > free_cma:0kB
-> > [   40.336213] lowmem_reserve[]: 0 0 0
-> >
-> > As far as I can tell there's about ~65M of free memory stranded on
-> > pcplists (in an 8G VM), which would have kept the amount of free
-> > memory above the watermarks and prevented that specific OOM kill.
-> > Although, as I mentioned before, this is a synthetic stress test.
-> > Perhaps in practice it doesn't matter all that much in practice, but
-> > it seems like the logical thing to do.
->
-> yes, pcp lists are quite (unusually) high. Is it possible they simply
-> got repopulated after the first direct reclaim run? Or is there
-> something else(odd) going on?
+On Fri, Sep 04, 2026 at 11:56:28AM +0000, Salvatore Dipietro wrote:
+> Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+> introduced high-order folio allocations in the iomap buffered write
+> path.  When memory is fragmented, each failed costly-order allocation
+> enters __alloc_pages_slowpath() which runs direct compaction and
+> drain_all_pages(), causing a 0.38x throughput drop on PostgreSQL
+> pgbench (simple-update) with 1024 clients on a 96-vCPU arm64 system.
+> 
+> The root issue is that direct compaction is too expensive for hot
+> allocation paths that have fallbacks to smaller allocations.
+> __filemap_get_folio_mpol() already marks higher-order allocations with
+> __GFP_NORETRY | __GFP_NOWARN, signalling that the caller can handle
+> failure.  However, the page allocator still attempts full direct
+> compaction for costly orders with __GFP_NORETRY, which is unnecessarily
+> aggressive when the caller will simply retry at a lower order.
+> 
+> For costly-order allocations with __GFP_NORETRY, clear
+> __GFP_DIRECT_RECLAIM at the very start of the slowpath, before
+> can_direct_reclaim, can_compact and the nofail checks are evaluated.
+> This makes the entire slowpath treat the request as non-blocking: no
+> direct reclaim, no direct compaction and no drain_all_pages() IPI
+> across every CPU. kswapd (and in turn kcompactd) is still woken further
+> down for background defragmentation, so compaction keeps working for
+> long-term system health while being removed from the latency-critical
+> direct allocation path.
+> 
+> Allocations that also request __GFP_THISNODE are exempted.  That flag
+> pairing identifies the local-node-first THP attempt issued by
+> alloc_pages_mpol() (mempolicy.c), which relies on direct compaction to
+> form transparent huge pages.
+> 
+> Test environment:
+>   Hardware:  AWS EC2 m8g.24xlarge (96 vCPU, arm64)
+>              12x 1TB IO2 32000 IOPS RAID0 XFS
+>   OS:        AL2023
+>   Kernel:    v7.3-rc1
+>   Database:  PostgreSQL 18.4
+>   Workload:  pgbench simple-update, 1024 clients, 96 threads, 1200s
+> 
+> Results (average of 3 runs, TPS):
+> 
+>   Config                   Avg TPS      % vs Baseline
+>   baseline (no patch)       59,408       -
+>   With this patch          155,409      +161.6%
+> 
+> Link: https://lore.kernel.org/all/20260403193535.9970-1-dipiets@amazon.it/T/#t [v1]
+> Link: https://lore.kernel.org/linux-mm/20260420161404.642-1-dipiets@amazon.it/T/#u [v2]
+> Link: https://lore.kernel.org/all/20260710143437.12379-1-dipiets@amazon.it/T/#u [v3]
+> Fixes: 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+> Cc: stable@vger.kernel.org
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: Christoph Hellwig <hch@lst.de>
+> Cc: Dave Chinner <dgc@kernel.org>
+> Cc: Ritesh Harjani <ritesh.list@gmail.com>
+> Cc: linux-mm@kvack.org
+> Cc: linux-fsdevel@vger.kernel.org
+> Cc: linux-xfs@vger.kernel.org
+> Signed-off-by: Salvatore Dipietro <dipiets@amazon.it>
 
-I think in this case there wasn't a lot of reclaimable memory (mostly
-anon with no swap), so at some point direct reclaim didn't make any
-progress. __alloc_pages_direct_reclaim() only drains the pcplists if
-reclaim makes progress, I am not sure if that's intentional. An
-alternative would be perhaps removing this condition, something like
-this:
+Looks good to me, thanks for keeping at it.
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 8d79f76cdd0e1..98e9079240ad5 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4592,11 +4592,12 @@ __alloc_pages_direct_reclaim(gfp_t gfp_mask,
-unsigned int order,
-        psi_memstall_enter(&pflags);
-        *did_some_progress =3D __perform_reclaim(gfp_mask, order, ac);
-        if (unlikely(!(*did_some_progress)))
--               goto out;
-+               goto drain;
-
- retry:
-        page =3D get_page_from_freelist(gfp_mask, order, alloc_flags, ac);
-
-+drain:
-        /*
-         * If an allocation failed after direct reclaim, it could be becaus=
-e
-         * pages are pinned on the per-cpu lists or in high alloc reserves.
-@@ -4608,7 +4609,6 @@ __alloc_pages_direct_reclaim(gfp_t gfp_mask,
-unsigned int order,
-                drained =3D true;
-                goto retry;
-        }
--out:
-        psi_memstall_leave(&pflags);
-
-        return page;
+Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
 
