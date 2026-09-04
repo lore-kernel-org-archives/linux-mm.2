@@ -4,142 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 814EBC79F80
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 17:23:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43B84C624DE
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 17:32:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 391B96B008C; Fri,  4 Sep 2026 13:23:41 -0400 (EDT)
+	id 01E8D6B0088; Fri,  4 Sep 2026 13:32:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 369696B0092; Fri,  4 Sep 2026 13:23:41 -0400 (EDT)
+	id F11A16B008A; Fri,  4 Sep 2026 13:31:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27FDE6B0095; Fri,  4 Sep 2026 13:23:41 -0400 (EDT)
+	id E02926B0095; Fri,  4 Sep 2026 13:31:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EA40B6B008C
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 13:23:40 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 57FE9140186
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 17:23:40 +0000 (UTC)
-X-FDA: 85176751800.20.1DFAF61
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 88F06180002
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 17:23:38 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=W0CKor+O;
-	spf=pass (imf06.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.171 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AD59A6B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 13:31:59 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9F4A44013F
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 17:31:57 +0000 (UTC)
+X-FDA: 85176772674.27.19708FA
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+	by imf28.hostedemail.com (Postfix) with ESMTP id EEB69C000B
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 17:31:55 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=I6P7Bps9;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of 3igCbaggKCFMDEzGz8Dy19916z.x97638FI-775Gvx5.9C1@flex--stevensd.bounces.google.com designates 209.85.167.198 as permitted sender) smtp.mailfrom=3igCbaggKCFMDEzGz8Dy19916z.x97638FI-775Gvx5.9C1@flex--stevensd.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788542618;
+	s=arc-20220608; t=1788543116;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YCVI76HnM719qm2pNvwAM4j/ewQptWjm8pfKFuUJMF4=;
-	b=zMrlR42VJ3H39J9C4fSP3CecquxJRGBZHgEh/a8Ss2MPbfpzVQO5PNa9koPf35MpOXtpb6
-	lIreLGxu/3sgMyaICBf3l13rvKDrkCuve0Ch87azP/KHXZaTxUSH/8mGttrIMvvTxjauw/
-	ej7AcdIRE5BJIvyx063+1BVcOcYca78=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788542618;
-	b=XfXNZnvpknq+q5J1enRJFvgjNzNFuiiDVH2WCyIttT5ozaegRRrAM6bgetAIIStaxh0zZp
-	PoeYwqvAE5WOK3eSwnC/VdRZF67WFhFKnUvu019MT3XGkbYkdSVHTiggDdACSFdwSNd/2C
-	1YRupeqJgxDbxonRL5LMKv/7ZKK8bDI=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=6tqulB8FDTNVxXNeXDPTSBTeFrFMPJvixAJvKQn0AlQ=;
+	b=2758EAS+CHzFONNFR0g7MqPB8T8QCvcW/G4TFzqIaC5XdcJx8LqKnpnZfAzmTnsovg6UVa
+	u3sUkjqZtAbpEBRKhW0CQVwG9a83EfyWAVp/VCJwCGU7GuFFw+WQ9GFlIk6cjbDAnUcFf1
+	0Q7VP98XOEeidaHvZOBRXwQA3CMhBbQ=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=W0CKor+O;
-	spf=pass (imf06.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.171 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-4ab70b882c5so1062580b6e.2
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 10:23:38 -0700 (PDT)
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=I6P7Bps9;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of 3igCbaggKCFMDEzGz8Dy19916z.x97638FI-775Gvx5.9C1@flex--stevensd.bounces.google.com designates 209.85.167.198 as permitted sender) smtp.mailfrom=3igCbaggKCFMDEzGz8Dy19916z.x97638FI-775Gvx5.9C1@flex--stevensd.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788543116;
+	b=T6DPVeueK+oh2Q++bsygPPD5prs8YcFjbbpMstHNyCW5IGIHvB9hWUYlxI1YbSEH5fNdhG
+	g1eMizsSKSGRrA38xDYmK3hpo0dKvK0gEBwqJCcv69QIoqKmy2D0xE5mW+r85R9tlNWO9U
+	U7Z8gJVH/X06Dujw+5quEfALbH0/nwA=
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4b388f7989fso1168704b6e.2
+        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 10:31:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788542617; x=1789147417; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=YCVI76HnM719qm2pNvwAM4j/ewQptWjm8pfKFuUJMF4=;
-        b=W0CKor+OpNbVeT7yhERWId1GCZtlUxSnpB5q9CEnYxRckrrb/B1nkA2+cnJBI27ID8
-         WmEuAZkuMAcr9uI9NzZ9H8r3sG2SdnEcO+yd+FVcmGfgK4pqjjEMZc9t5CGJklF9IqGR
-         ItJg/9xwBbQGLHn68x3ouLcoc6Q78+E5wviNr2tPIJ3TxL/FmSMLH2ZXcHkh6tGc8iu3
-         kiLPZ8hjcOun3pVk8gk4n4rxsk1qGs9JsWYGnbFktosnPTDRbZ23yMmH/9FCSazNOKHv
-         s0n5my29sj+xOVI5gOKwrO26+skzxps/vI8jy+vl71rzscHD5wGSSQtcQX+DhTnP6Doy
-         gFSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788542617; x=1789147417;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=google.com; s=20251104; t=1788543115; x=1789147915; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YCVI76HnM719qm2pNvwAM4j/ewQptWjm8pfKFuUJMF4=;
-        b=bilkwptJxXgD7/pIwqe8p+k9aE+YCTreDlioOCZMXdtt51dFgrJsMp2TM7NBUBiKJX
-         vjwdwNIeLLEEFoSMaLFrhTBFDsddmA1VpjqtW6Jcpn4tCwfOfluDBF6lkyKS03KeniUT
-         jM+7uq228M77t1rwpQ/Vfp+O5g+D0UdDngF+URB4vOG8zaaNv6Dxid8CvksWQVAgnLgU
-         fbyQRIapfbvw87lGG41KoCHUGVlbnqc5p8s9bgR86UDNHUsG5PVOG9AvOkrjWmT8zpIa
-         mR4l/fSbG7TG2/NnStqsH8WQBzwfDk1FGvkiCr8pEt3KbK0QHTlmUFgvfXpbCUeppbSt
-         g66w==
-X-Forwarded-Encrypted: i=1; AKwUvBzRIL+KIgUyLnsC04gaz/fCHcOre5zIYwxhUbSeDCX3K9XFMHNguU3wNuhlCORzp5v8Xus5OLIDNQ==@kvack.org
-X-Gm-Message-State: AFuF++l5PbZ0aH/BBph5jQDcoSamXrp0PeV90dqBVW6nNgQGM5wHFcpF
-	L7TVMJXhRluujwG1BshS71sK4vVeRDDhiiLwtVXzu/Dk64Iy6FMSvkGO
-X-Gm-Gg: AYBFou3b8VKZUvJsgZX3CFFE1fViXGPUHwK48GJai3s0gfIqlB89F03tunKv6ngxAFj
-	ksirIqrOorjSaYjkS6sbWNxSkatsuxTCdvlhm/WDIjomejveAIoSa9vWbYgshS5jCuRJzW5jj67
-	LjvO/5Tu3rY6ILPLhPs5DOcJg6YLp+/8AG/Bn5Tco9O+Y/2csq0CDBIE2Wv8PeaUCdsBG8K8Qok
-	qgGKdFhKBafjNe7d07Kc4UqX5Hp94ZnmcS7tJJeSz3UTwaWueVfG8vQA1al2+5vf/iivbJa2Fkm
-	2SsvmAOMknnXPb1Izf/YXeHcbcNVYNYE6hrgOe7U6zQg0seomso1efk0nt2+pFqgLQ/IEr91N8L
-	x9Xd/QzI5flH4SPl8UV9ymEfeAzgadGjUV8GZA9iIXB45y/ITe65WRcGZDusPerdI+bKVTVkq/V
-	7JwLsKtE/M80nHF33IotI8xEbmYgPHPpPS22q/XE0GHq351Yo8aX/W/kwH1NFw6qU3hcIhAtxkx
-	4QizGbHaqqU6qG8KdM=
-X-Received: by 2002:a05:6820:1c87:b0:6b6:d4c1:be22 with SMTP id 006d021491bc7-6b6fb0ddb89mr5397329eaf.13.1788542616324;
-        Fri, 04 Sep 2026 10:23:36 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:24::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6b6dc6aca49sm3331420eaf.6.2026.09.04.10.23.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 10:23:36 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Cc: Alex Shi <alexs@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Dongliang Mu <dzm91@hust.edu.cn>,
-	Hongxiang Lou <louhongxiang@huawei.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Michal Hocko <mhocko@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Peter Xu <peterx@redhat.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	jthoughton@google.com,
-	fvdl@google.com,
-	rientjes@google.com,
-	vannapurve@google.com,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Wupeng Ma <mawupeng1@huawei.com>,
-	Yanteng Si <si.yanteng@linux.dev>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Ackerley Tng <ackerleytng@google.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] mm: hugetlb: Drop refcount before freeing on memcg charge failure
-Date: Fri,  4 Sep 2026 10:23:33 -0700
-Message-ID: <20260904172334.322019-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260902-hugetlb-alloc-folio-memcg-charge-error-handling-v1-2-e3e8942c141b@google.com>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: t6apu9ydzm7ta8gbs956o7q8smt39pe8
-X-Rspamd-Queue-Id: 88F06180002
-X-Rspamd-Server: rspam02
+        bh=6tqulB8FDTNVxXNeXDPTSBTeFrFMPJvixAJvKQn0AlQ=;
+        b=I6P7Bps9fWrOPg02OxD+eB6tlzk5/R6CQhRtcCa3iggPI1NS7qMT1d8uIxrhmC63Rh
+         ChEFKa2pRrfecYyQsK6iYFiSrBkrdpKzOJHqGmy7jkythtnYWn4MXkj+sDrB4iFNT0OL
+         5hOQrlIzgvIZKSqSozsQS9niDmh78JvZe3mV/vTWLPUIm9YbbDjH/jVxg13ihzCQH2Dy
+         Pu3LetAscuBeDNYJZR42eIu6zBV5ri0LGClnULhYuU/fG1/j9HZrEFj16ZqFcJs7PIK3
+         0+etL/i47UrmwxFAvuVLU9XWiKA1quTfVXGzg5p2saO3ug2O8B7otVrzDoigLTQ0IbVB
+         rvGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788543115; x=1789147915;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6tqulB8FDTNVxXNeXDPTSBTeFrFMPJvixAJvKQn0AlQ=;
+        b=DOhduS8iWtk4WoiP1ZwPROTPGtyMx3CnDrTBwXmQH4kdMpDxngOyooLMFzK2vcJJ+U
+         IoJYOZs3CvShDejz1TrSuprkYKkf034klOYXXVA4+UCJtUfx9Lurqvtn+4c07pDuzR78
+         UFjMLH0ZW11lRXDwo5JSuA/p37Hw5rjKnqh3sY85FGz7GgZwT0+wlzsGB7FkOuPe/u2p
+         YOS48yztP0c3dHC4/2CnSlcWOu+ZBTNGjt2AScXD2sSHOruPArKTm0XyDYil1p/cMUcd
+         bIW+sOqfIGMbAyYwJ0n3KtoJSMgK13nUWG61Vh8FJnzbAJjFFRGj+wSVLMHCmp7Bzteo
+         lMWA==
+X-Forwarded-Encrypted: i=1; AKwUvBxb2wrGbKOzXtD0HZmLtKjefpAMvNKEzFeb/Zvvr9FdROl3DMaAvmXw0bTayHMPYZ3jr+p/h+sWfQ==@kvack.org
+X-Gm-Message-State: AFuF++lNfTO7YXzV6tPTrxmvDNivib4VxSDgnX04XhlkXlfH8Syvxwpx
+	UoAe2k8pohzeO4bNJzCmyDZkyIVhMv2nsQBiMmcBtl/cyza7qX9inNSDUI4su8/rJDVNQHuFpWg
+	V3pdEhjUTWOzTYw==
+X-Received: from dyjh19.prod.google.com ([2002:a05:7300:5613:b0:315:877c:f169])
+ (user=stevensd job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6820:60b:b0:6b7:8396:f3c2 with SMTP id 006d021491bc7-6b78396f7ecmr3028618eaf.36.1788543114426;
+ Fri, 04 Sep 2026 10:31:54 -0700 (PDT)
+Date: Fri,  4 Sep 2026 10:31:45 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.979.g7e5102b832-goog
+Message-ID: <20260904173145.2028377-1-stevensd@google.com>
+Subject: [PATCH v2] memcg: Don't call schedule_work when no spinning is allowed
+From: David Stevens <stevensd@google.com>
+To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, David Stevens <stevensd@google.com>, 
+	Michal Hocko <mhocko@suse.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EEB69C000B
+X-Stat-Signature: qhetgzn6nxb778mtgebfyb38oq7ahtx6
 X-Rspam-User: 
-X-HE-Tag: 1788542618-165404
-X-HE-Meta: U2FsdGVkX1+A3SLWQacgp5I3GUvQ1MCg69z6U+s7ctkdPWFhr8IMb65U/S+Of/dZ5mNfKAMp/5vDTvGpEp1WN6WlCceTmqz0YviZZgJvfvp0cQSKM6z3DcBDM2o62hXL9tQUX+DYux61BIZUxGF37X4ZXyN8KhmFLR/0VFCboy1zR/v00u1tbVY9lYzOHHD27gGD2ePUrhDRIoybZ079mIelOcCiST4NSDjGW93W6SUO3uh0aNlpCWnGLj0VDx2kIAlOfudT81Bo13jmQoIcLXKUJ0j3CMIzqm6WE+1z1GSlFo91tdkYpEnPb9XXP9GGzkmklxOpwoc/h28jfWPmkf5iCZVoKL38l2kDUn+fnoED0ZUuon5AEmpS7Nj9xvXJ7GPt32ofE0cGkdBa+4rWsHqNMBYpSF7fggSAi0kN32ZuOZjRzjp6NXVpNQ+tzOTeafwD0mh2XJ1ZbFEblR3d3ZBlp2mSI5Oa0eEam0Z/xnd7w/NsOXCDqp36eqp+gOfRELTXw7DLU+aItmqELXbPBvKPIt0OtLRdsC95TfaI115YOPpSz2/sL42l/jAWk6pjMMs/Cibs1YDMq0zKOiO99BRbsSgrVaq9kDpNuts6MG6z3aOcTwxPXIqrPkXsaVU6W06r8U+/0GPYeQ7fMbG9IdwGmh9IvsYAb+jZQdNbOiX77GrpFqKy7RLLKiUJdpuRnB9jyoAB49khCu5rEhiOZ/fZLBuiARfCVYAzyx5H6KGVHOt6QUWBUV96AxHItl+zgZcCX5g4xdQlJVxKC7ZcfwhiNyomUx1K/m4hzwDn5JrOar87Vz6XhMZ4ZAaiR3Fuwdg2xSFG1Ot9ApNaOmBhgetQpZN5ba+C/W25HMtqUB44bHXfvlqZacXGUlA/51XJ5sJUTNnN4X27Wc1qbQzeeLbZFTYXMOEYv/vxmkT71XocrlFgLMBcLbXs400fF3msEDveraGzYTFDymd6kzc
- YiUCpmpD
- q1WhiAO7NqPlB+Y+qOj/RwcRxaJCyHfZP74rM6SAE4MbQMAiGAN/gBkXCoFQ9seErh87ku+v7Z4T/ZMkznCAN8kHDz2prO78AKgA/slR6SMpCeWKTzDcHmGdHLGqwP+TJy1GbSbl85n81bqMRD+Exk6V7vsrLuS8qfm2t+214a+x69PWI1Z0bCXaNVKKpqByQ5Zl4FTu7WZwOwYpFHVtlTa0RWf2GsjjWX99+fJnwyTeWTn68WtEWXcZNBhMoB4llTZpzJ4woX/pT4KygMfxFIYdCcssYUHKiVB07foEc5uDLop3U3gYXuvSNZ3w7KA95dvR+xRcljP9svkoMgVngzxBCqxGjKF3E5r0CZh7I/tKkWML316UIS4GMVyvVomkWTzkLi++in6a0Zzw9WuEHLFqWF+LdRBesXQR4hHOsBQsarC6m/geHIU2+iD2uGlY5mfTibRISIfwYv8TO4a7r9OXddEkDg34dYe7icvfZlkOZgMyZIoR+iyYWc+LzlMAsD3wZb13ofMDUcLDsXYnDq0RewLMgqSovvLbt3gI9ygH12jEbl1BGWiHM9BrWMWvxzOU2K0QSqX0PBTD55IbmMvkpRLARDeXvjnarljixOjNXkpoIHNKRGegktZQfvVbbsm1xuBRor6tQT/mDjIk/7r4N6w==
+X-HE-Tag: 1788543115-6829
+X-HE-Meta: U2FsdGVkX1/DvCAFapqmkcPzYhQxMGttGKcaSXdsm12LRnHZwXzJJgp1YSBKxVXtNgKEgbicokns5aLwdFahwLqRkQzbiJxSeo6ozvfKBbCOoROhfmCTd3gpTujm8+KEGraxj5NXx4c6UP2KEe9v/QNGV9RD6wXt2Q6Kmav50DXHEV11V0jb9T1hXZiW4gH2Op/UKct/rZzm+txW4oW5QzZUnXJaGocwc+v8bF77nVLiUKCl2IpGFbA4QjRJlvfFwSw5cRP5k6hFBO3ypyNU+s7bHPdmwTJhwQwqe/sC+xAMxLT/FjLhhqFF1RUS0Mr0bzrRmMVoHG/YRvw9yDLHRjpNteEBqaSS64FO9pLoHQPHyyNqASExQ0vgsq77BrjlgubnRG6rvW9vEPGfSf1VJ2HK54+rHDz8fod9qCTHS56EccR582N5+NoI5jSp9lr2DgOKyBSuCEozDQVM2HTzoRnh3f13i5ghIrJF9uGIlX5IruMm4aHktXhlKqPZOLRDkoAyHhCxGnckBFQiKml3LgYxs7hZTpSYpADCCJK/tKCL+dBRYSeINwE5cwdwCv3apmp6qDQpTWsbw6MICS8ZuWNeqRvE81XYY/AnGr+Fuse1w9PXrfxN1bMpgpNe9SFiIhB9wbWYqtR0gRMWCyKKPDy+jzCejPx5tkWxudMyw0b2WOqU7W3FQwvs5Jdqdc9L2ZxLAML+OHsUVUaoodF6OpFc5/j097M0OA7tlqHwHCYgZzE5viGQd+xm9jMQ3B+YLeIxw+3JEhGGcN8aBihkywpQu052ZH1GZe/ZhyhTnCAe9nn2OxR7OEt1WdGl6TBtXJAEiWUyhrcUz2HXlc5Ce0M1Ctn6Btl14GI5wrEHIkVBAo0TofrrI/3KoKkaEZyS2Nxi9cs/aeO5ODo+rd8alV6WucFGJNkpgLzN9y5511bKyb9Y6/yUcgOZOANcbMPUdJYNs4Hqdwd3S759MoC
+ yNrgvW+b
+ nlf+RHRThdgPpDzCyCp1V3HlHSYsLXFK00jCtwNAKcucrUM207X/kvReZZ7BiP7d0Ije8N5DXufA5kH2KogHT8G/bArIgSzwQQg5ShPDxMrcbPiHtm1bK0Hpmz082cemBTVCmA+/SDrDqKPbb4DV4rSZTxmx44umpZvgZhFU/pBEh3U3srAAlCBxPrvHesOWq0VapGeDj3L0gMeM5iHAutkS5/HMB3m2y2Pfl6gNgWd61PpiOQati4QXyjLSlxXFXHO/XC3oZVyTeU6TZERXDHybKkYRh2t62Xo3Xi26wwRBtl418X9S9GH9av3TZt82v3gM+dyyia1oKyiIj1g/V66n62T/6M/vIfpAygxvjeQ4fqTwJnsxPtuS+uXkrelwJDeG4GJ/aPfXlcY9LsVDMpGuBSXpIxnRdrymP/8B+6yfnCA9tSKg2DxKOJeo6ac8xtkHSLaKVxQ8xb05iZ65PBJQZzeP4CSulXpuT0C94pbWEvZsWDH+4U4K0823VE9G6SUv0VdXiWZpapvuMoCvada51we0zgw3AB+mDEWYEDmNnYWjdIWBcWeOxYclFbhjNdQCXvdsR71g8VmlWSUppXzhklE4HEsqS0XQsShEpjkykLUKNWh8qqDrebaKycbr0cZleej1/7XtnxEgVsWwSkMakn/6FF6ovQrdEp8Jip6a8cZIwCHK6MZ/DRCU1b941/C1G
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,49 +108,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 02 Sep 2026 01:22:57 -0700 Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org> wrote:
+Memcg charging can be done from any context, but calling schedule_work()
+isn't safe from an NMI. If memory.high is breached from a context where
+spinning isn't allowed, use irq_work to schedule the reclaim work.
 
-> From: Ackerley Tng <ackerleytng@google.com>
-> 
-> When mem_cgroup_charge_hugetlb(folio, gfp) returns -ENOMEM, the folio has
-> its refcount set to 1 via folio_ref_unfreeze(folio, 1).
-> 
-> The error path calls free_huge_folio(folio) directly, which expects a
-> refcount of 0. Hence, VM_BUG_ON_FOLIO(folio_ref_count(folio), folio) is
-> triggered.
-> 
-> Even with CONFIG_DEBUG_VM disabled, returning a folio with refcount 1 to
-> the freelist can corrupt allocator state later.
-> 
-> Use folio_put(folio) instead of free_huge_folio(folio) to properly drop the
-> reference before freeing it.
+Fixes: 3ac4638a734a ("memcg: make memcg_rstat_updated nmi safe")
+Acked-by: Michal Hocko <mhocko@suse.com>
+Signed-off-by: David Stevens <stevensd@google.com>
+---
+v2:
+  - Added missing includes reported by Lorenzo and kernel test robot
+  - Added Acked-by
 
-LGTM, thank you Ackerley!
+ include/linux/memcontrol.h |  2 ++
+ mm/memcontrol.c            | 13 ++++++++++++-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
-Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 8170bb8066a2..4a5ef0aba475 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -23,6 +23,7 @@
+ #include <linux/writeback.h>
+ #include <linux/page-flags.h>
+ #include <linux/shrinker.h>
++#include <linux/irq_work_types.h>
+ 
+ struct mem_cgroup;
+ struct obj_cgroup;
+@@ -219,6 +220,7 @@ struct mem_cgroup {
+ 	spinlock_t	 peaks_lock;
+ 
+ 	/* Range enforcement for interrupt charges */
++	struct irq_work high_irq_work;
+ 	struct work_struct high_work;
+ 
+ #ifdef CONFIG_ZSWAP
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 6dc4888a90f3..0e8b302ca9ad 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -62,6 +62,7 @@
+ #include <linux/seq_buf.h>
+ #include <linux/sched/isolation.h>
+ #include <linux/kmemleak.h>
++#include <linux/irq_work.h>
+ #include "internal.h"
+ #include "swap_table.h"
+ #include <net/sock.h>
+@@ -2360,6 +2361,11 @@ static void high_work_func(struct work_struct *work)
+ 	reclaim_high(memcg, MEMCG_CHARGE_BATCH, GFP_KERNEL);
+ }
+ 
++static void high_irq_work_func(struct irq_work *work)
++{
++	schedule_work(&container_of(work, struct mem_cgroup, high_irq_work)->high_work);
++}
++
+ /*
+  * Clamp the maximum sleep time per allocation batch to 2 seconds. This is
+  * enough to still cause a significant slowdown in most cases, while still
+@@ -2752,7 +2758,10 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 		/* Don't bother a random interrupted task */
+ 		if (!in_task()) {
+ 			if (mem_high) {
+-				schedule_work(&memcg->high_work);
++				if (allow_spinning)
++					schedule_work(&memcg->high_work);
++				else
++					irq_work_queue(&memcg->high_irq_work);
+ 				break;
+ 			}
+ 			continue;
+@@ -4129,6 +4138,7 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
+ 		goto fail;
+ 
+ 	INIT_WORK(&memcg->high_work, high_work_func);
++	init_irq_work(&memcg->high_irq_work, high_irq_work_func);
+ 	vmpressure_init(&memcg->vmpressure);
+ 	INIT_LIST_HEAD(&memcg->memory_peaks);
+ 	INIT_LIST_HEAD(&memcg->swap_peaks);
+@@ -4337,6 +4347,7 @@ static void mem_cgroup_css_free(struct cgroup_subsys_state *css)
+ 		static_branch_dec(&memcg_bpf_enabled_key);
+ 
+ 	vmpressure_cleanup(&memcg->vmpressure);
++	irq_work_sync(&memcg->high_irq_work);
+ 	cancel_work_sync(&memcg->high_work);
+ 	memcg1_remove_from_trees(memcg);
+ 	free_shrinker_info(memcg);
 
-> Fixes: 991135774c0e0 ("memcg/hugetlb: introduce mem_cgroup_charge_hugetlb")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> Reviewed-by: Muchun Song <muchun.song@linux.dev>
-> ---
->  mm/hugetlb.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 01b57f6d3b804..97c06f227ef8a 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -2889,7 +2889,7 @@ struct folio *hugetlb_alloc_folio(struct hstate *h,
->  	lruvec_stat_mod_folio(folio, NR_HUGETLB, nr_pages);
->  
->  	if (ret == -ENOMEM) {
-> -		free_huge_folio(folio);
-> +		folio_put(folio);
->  		/*
->  		 * Skip uncharging hugetlb_cgroup since the charges
->  		 * were committed to the folio and freeing the folio
-> 
-> -- 
-> 2.55.0.970.g62bdec98f9-goog
+base-commit: 8d3ae59288f1e7d58d76558a6ee96d533bc5019f
+-- 
+2.55.0.979.g7e5102b832-goog
+
 
