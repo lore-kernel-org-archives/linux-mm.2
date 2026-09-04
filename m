@@ -4,118 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 037BDC624D3
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 10:49:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 318C9C61DD6
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 10:56:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C32A6B00AE; Fri,  4 Sep 2026 06:49:28 -0400 (EDT)
+	id 292A06B0088; Fri,  4 Sep 2026 06:56:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19AA46B00AF; Fri,  4 Sep 2026 06:49:28 -0400 (EDT)
+	id 243A46B008A; Fri,  4 Sep 2026 06:56:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08A546B00B0; Fri,  4 Sep 2026 06:49:28 -0400 (EDT)
+	id 15ABC6B008C; Fri,  4 Sep 2026 06:56:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DCE366B00AE
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:49:27 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DE23FA3B4A
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:49:25 +0000 (UTC)
-X-FDA: 85175758290.29.9381277
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 1D7AD1C0004
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:49:23 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lbvEPN51;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of hemanth.selam@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=hemanth.selam@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id EF1946B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:56:32 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8197E140886
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:56:32 +0000 (UTC)
+X-FDA: 85175776224.21.2273C66
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 67B86160003
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:56:30 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=S2rNmhuT;
+	spf=pass (imf08.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788519390;
+	b=RJKFLI4aL+dwfJhmbt81TDHyzKcPtWAO97AQb9SXVlQ+UdrHIbl9u7be0ZJsJyN5HATaIC
+	EO+9ey2+5sVP1x1X1GXhgIneXas/gVPTKioCr50Z9B0weaDr3CUdXO/8DMyrCupukqSAYj
+	J7Cmge438Ja/qjUgG8YwhYsV8hc+XW0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788518964;
+	s=arc-20220608; t=1788519390;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+p3qhdKCBh5IlPhZs/uQwjI5uPM2Gq0BK3muJ2QsC0g=;
-	b=OyoTKTK1yq4FP/pZdcAZ55FP57QGx57FtixEbbSQ1hCOAjnWTnOLRnE7+2F7mvBQ8NIVro
-	NAqB/pkj9yjr/UpP18jRK41gmoN8b4ZxZiXitVKXd5EOYgtviLKKsH8GB02tbEJDoiBAwL
-	covozpCjtV6RFh9GOq4149GsvzmxSe0=
+	bh=IM8NoM49A+ozaM0Om6T6zXkX9aE+Qkum0L985twKnxk=;
+	b=LJW4ZJsDS1d1+HdikitCLwvW8g1TWd9ihC5RlxSOJSwuzI1xbIlFOIH44edXpKswf+kTFi
+	SSHTrLsOgqvuAk+fNXfdcRb5liavFxsAX9yE+i1Q301sQA06Ew80Lj3qUe6uRsiqLDJl5d
+	pObTOHUmbdfguDyVe6m8JJ1rJ0Y+SZg=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lbvEPN51;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of hemanth.selam@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=hemanth.selam@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788518964;
-	b=C+Rn+67vzeee7UhKXCK6fBPTCEuObtPoYacXdbd3dL0YC8YgY+CXQNzu1m36fq0VVU9yZ0
-	VcpinmERALZ7znizbeldIQHDWSKmFGgyBpddir73iNiMheO2V6rvT5g3lCHLfVRhXBZkCq
-	KZjPNya5KV6eXSjtcmLLAyqfZih58+E=
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2d53197d8b5so7677885ad.3
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 03:49:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788518963; x=1789123763; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+p3qhdKCBh5IlPhZs/uQwjI5uPM2Gq0BK3muJ2QsC0g=;
-        b=lbvEPN51pxsrbDV1Tk5slrVEUq1wGdr1oCNJwb8zslihX9qtdeK0WcDbfnOry5TVWw
-         8le/lnQyzpwW3uozbhKpyaThOnXfseF3WuGOGTrEOhTkXB/M0u7jzKer0bREIKi4lPbO
-         e2weq1dz+vjbSRTmQl/vklBYJ9ytbfOyjNBWpB9XQz0Jg9EdoRXrikUL1vl6o5Jh+Ljb
-         lDZtV2rqcKBsFIWocQkTwpfl7PS4RzY9d5/pJR8P4FMQ/qLNSRld6iZGFiHF2erSkYug
-         v1wjBzS4ElqbX4YaoyNrnyl2yaJ7nq+VnUCvx9ZRkVV8KZeIvIR2VUsWFNjbuC38NfM/
-         VGnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788518963; x=1789123763;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+p3qhdKCBh5IlPhZs/uQwjI5uPM2Gq0BK3muJ2QsC0g=;
-        b=geEs+V/L462cK80mmYY3RiiQnFtp57Fzpmi+2axGvj1UE+76iIv6sBnoPx5FFbtcNq
-         OHOWc67zDMIkEX55kE6hkUeiR7rcgakFbfpLVV8NTOnqAQfJiQfyFz1c0OfXVzbWOGbJ
-         N9SSXU7+CLj4jF/qYZVSuCxtxlyyCUXwUSEKXsWL+hquw2uHgykCC6Su6dXrxeDakaVZ
-         gq5yHi7wMgkuzb9SoGvl0It0xSMXO/zq4bMnp5ZrsFvc31KvvUO2i5xn/72TORyCWhVh
-         lvEu/i0wdYu/hVXaWiDmoj+Vcmh7xkn2dAdqQ00qHmqo/lpFg/nIo4UXEALHZkL8bEr4
-         yqtw==
-X-Forwarded-Encrypted: i=1; AKwUvByPuyc2+fWN1XnWy0RFeMri+Z7vr4pW6y39wuh+Z++g3cdh2zCPwUUagF86eu+HwPQP8VUYqXau3g==@kvack.org
-X-Gm-Message-State: AFuF++mtD5zh4wiGHEC+A4l3g4iUTCCBrLInqmQqG2x/2oJzqQc2xVA+
-	4qRW/LQKy/zCxS4sLFiAjz3oShaJ1s0i2vQMu/PUBB/bHtcJqo161gUN
-X-Gm-Gg: AYBFou3+QA7ZglxbaUFTqtlo4gglCa3Qe++Ly+5NjozcJXChO4/xu6CyQqkyIwfUrLZ
-	K+hklP5QC2nBlztBU65BtuzQzYBIgMAUBbRQSwDnlKDtUyE6EzMXbNr/3RxEvXRUPqf0bSc4Hgv
-	N48Rp3E9X+Pxk26ur66qZ29tFMSt4IowOpb+9zYM7qyX9mh83TS/wPEiv5nxC7JpzohLR0VI9P8
-	/a8Nmm3EsNDvBhaCshC6Q85NkyzPCwWp9gy3kcmIx9nt89ZkQcw6mQJxpZjoOJTdhgGFdVMlDj8
-	ZNInYdWzcxS5th09MCOGhrwbaMl48jPUE+CDB2RhHrple8OGmPcOCK+8XVmJsvhJhUlrS8YrqG7
-	lTYkl6dKWEwAEFcJmyk9DyezVCWYsOoWqow79QaHXSftM4y1pe4HMuwJvKGg0O825HAeGLqalbX
-	MxbipapAFQPys+P+K/ICf4NaMu2JQXJX5rPZZUtL/7vJfNiCFWxOp2A0rSnOfYrFyQZ2gCam8vY
-	8GFnIHKyv0PQVdLFZcMuBn8lXI=
-X-Received: by 2002:a17:90b:3ccf:b0:399:ea1:5a82 with SMTP id 98e67ed59e1d1-39b26101277mr6729394a91.3.1788518962867;
-        Fri, 04 Sep 2026 03:49:22 -0700 (PDT)
-Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339af25062sm8583927eec.16.2026.09.04.03.49.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 03:49:22 -0700 (PDT)
-From: Hemanth Selam <hemanth.selam@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 5/5] tools/testing: fix typo "mergable" in comment
-Date: Fri,  4 Sep 2026 16:18:50 +0530
-Message-ID: <20260904104854.25272-6-hemanth.selam@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20260904104854.25272-1-hemanth.selam@gmail.com>
-References: <20260904104854.25272-1-hemanth.selam@gmail.com>
+	imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=S2rNmhuT;
+	spf=pass (imf08.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 87EB5153B;
+	Fri,  4 Sep 2026 03:56:25 -0700 (PDT)
+Received: from [10.57.81.239] (unknown [10.57.81.239])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2F2533F673;
+	Fri,  4 Sep 2026 03:56:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788519389; bh=Jo0Cg8nB4834KwQthZNdLPhYT1OJ9nMS3OZvbrsYpgI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=S2rNmhuTTmENs918kTR+Q1XiOPxk9ktuHnukft7JoZ92m+dYWAtk5PqOQ/TfRAMp8
+	 bDALhVnplbiEnx2XLIpzsuIvyHVlcN/TSD7l+dGLfUtdERLg8jTfAMUglWLLiKleJo
+	 7qGXyqfOJ0GL33LVnVUxEzrw4r7KufRGNKImHiTg=
+Message-ID: <78638e8a-4919-4c2b-b6d8-dadc7a981709@arm.com>
+Date: Fri, 4 Sep 2026 11:56:25 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1D7AD1C0004
-X-Stat-Signature: ts56uegubbh4xg9hgxwea7fs8ipaqyih
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: hugetlb: fix BBM for mprotect() on contiguous PTEs
+To: Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ linux-arm-kernel@lists.infradead.org,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260901131823.15799-1-kmehltretter@gmail.com>
+ <551663b9-d031-4755-af7f-dc6c22524b35@arm.com>
+ <aplP1oUjx96O_I69@willie-the-truck>
+From: Ryan Roberts <ryan.roberts@arm.com>
+Content-Language: en-GB
+In-Reply-To: <aplP1oUjx96O_I69@willie-the-truck>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1788518963-124877
-X-HE-Meta: U2FsdGVkX1+tPw6mM8sHQ11jdZlBNDO6B/J+8iKG7oYptNYJgL6/cFZv/1IaH1EvhdWJAYBmXTLJ1YiK7JR88en50vnUnMqrk2r/55n8345dm0M43zFH8cJ3/le8s0Li0VZ1PtAEQmCbIsfRc7FQuV1B6saUAxF7PdSZNVgR+Tb7kXZqID1K8uJqLA6fzhgYoIGV1YK/CV1gWZIQaz9BkEJauZJIJitbOHwP4MkAcUO8VKmh7Aqt5gyZdtAa0Up0F9ANLPVy4l8qIPcIVyeDPhRa8ysvzoZeFp6HV08YqBK9Ca543Zvxs4fvELv4x/35LUw6dSppZ8hrosIb0XccE1YZeT2x0uvAxpLlQRhAuUTI+FPK2mtdYLq7KsUWeb5GI3TEe2LS++u+rYr+mIsocuTYlBRWSVK5sAxrrxn+zaawfkcl8Je4jmLIj6N+R4X6Y4aZG0MBirrZUDfG/ypwGImKW3mlsjkyWC76bwBFDjh3t8qoWHvQQ08lTIBl8eQWGhreCkYb2dCA0paaihrW6gvSJqKk4+vblmnKJZ0EqaBBBaj/fvLW4fA/TLymzY1KObvcQvIGXdkHWp2qYh6Shn4fxb/1gbs3einS8yVdjBBKqmqCei6hY8XaCJi5sQ5cB6ecarxX1yeYaqh4KZv9xyBYVRXM2xr0Lf/lTzKrPqSIPlm5BnoI2LnyHmcp4cDO2ieeukk1WSb9VRBtbpdOPdkK6Ztaf7KIO4in3jCQyzwl/jtbrHcz0wLVeIYCdjYWfEGuQfI7KMplKmsFwngzthZXj51XbMKzeVzlQTRSzFCRUEeEA83hxRrsQYxmrzCs5vBJp7uTIEIIUU24CSNI84pQT6jztxrQ6JQUW7767wcgQXS/gV2g5K1/WJdb0uXF+mABnAfoEsRrFvlQM4UEmgYNcA/g0ZajEv0+9mBI57veE/QR1euq6GzV3jtXHzOHvefYQorGPgxwLThm2Yb
- qW09VTpI
- 5ytKFfq2oNst4cZLlhB73OmPg7NBJqpFq66AYvwFo29VGrk+191mHVAsQW+VskC7gk4mXzwqqBSSWVA1LQtm4UvgUtIcU+vW3lWATbJLB+2pYvFvKG/e4meo9ALEf+QsDyW1hpYRiVitoALpFa+qE15ipgiFnnkvJPkTnbi3FgfxG3A+jlHgqNZ28Lgm2t3Th80zBDhaUciv++xHqbr0WLSznuueWDd29JB2wh3tL5kdO3zFJFmxEbPGBSw9lEzbYgiAGN/PgPeuF69/p8XWALP0eSKVq2VT5Nuv1gPwypnyLjJutx+75RC8TtirMwQE2KwYY0pIpN14wYU30Es9b9c/Fegu4L7o0Rx4r/16mdJH52z90I3XDr7Kq0vwef06c7soBVo4mOpm94rcbW1x/6YUFZ3Jx2TBM47Z09Y56WU7g8AgvtiRXI82rUWkMX/RlJP9O
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 67B86160003
+X-Stat-Signature: f4nb5frjt1nwgus1uq7m4f45xu883omo
+X-HE-Tag: 1788519390-428427
+X-HE-Meta: U2FsdGVkX1+jK4ukWAIflTTPp0SEX+3NPD8pjqvIt/tjT8mSgR+bxPhIQB9Vq6qWypujwca3dJKv0xYbX5IYT10IDeIk5O5nDNlvAccJ9CRMK+zKysqUyk1gYaKhd0DxNUUmpPTVkcJ1FUqsmTqa0wF72Ugnc9DmbOjlxtZNVxujvmq7s/Ks4zByMKhhLw4HsSN9XgESoykbdqHvi1D1Km1OvWrBP1L83buWUxsJCmo3vWwSQcms0ARkSmn5BHpj7jT6t8y6S7ahGCYjgpp+yWvdGQEVAA8ofJ4MtuXtgcs0cNOpM82CKJJvkB8grbq8lMaujOC/92Pm59/ZcNCswT70y6qV+AAHidgWZBtN6QIqH18zGB65EYzlefwPS65dVPoKzHdQjfEElXTecDWx/40vldKM44VLHmhMW76Y8z9ZCi9HwkB9CM639FEwtx0Yhf7Szb918zQ7D/F+7kNFbQx8gWnJpMAa/cyJ7VdmU0LrMQ7qkJeVarVF6lAX+VoI4PIUTxS94tfNKxPQbTqVYA1pOZciFgOH3YKurMFsHcNrUmQ3jY+rLST+XHsbsC3PHIQHquJxefT3uHfeYnM34lPd2rNeHYGxHe6/60Y1Z70+Qhz2+X7I9DgEAfl8g9R67yQkcdgUaO16G3OpBNf9yJFw/G1e1uPzcgJvLE0hPy6E3eLgyuhB43PMX8hyJUFYmu9IqVQkVhy2d0DwPoc1zv6Jo16ysroDMlUegVaBMOqmsB0SqxG/6hR8MqdaEvoiNkz72zIwQ0RWpFmMllVeGu94TvWOEkdn3994ktdQtbJUGMnOEGl3Ell/gs77ZCokEg/B4rXxKttIDVpQ08Ld0ge70bazZHl6AvhaK41Wh/M8IYydg1M/8WA5PaPKKG8EwoEkRc3XdNp8+tCxVdxXknYhkIBLwk2ernArMpaBT4v84Ql4V2J/e07+PtkGu/EZWukVBGj0whm9n2V1BsW
+ wmZV4nm+
+ 30rOOm2I0B2D1wcOI2AyMcm70+xtoFzDcN+YOqr7EI6t1b2MZBpNS2Mr3cV9L75hPrXxWIfMvCXNTLAYfUMnDvpq64YAZ34JBGO8a3faG55ZjITN3fWl5oH3PNhu7rxpYQFWuduWr3wBUc2P3R2vtAoubG8vwdM1gCqTvvTgpqRunq2oBlXYovKH+ehNCTURjXK768eG1h7iOU9yj2v0me/SkHDJnzC/JM9wDPtHJtL9Fc1JlLlBvEviHxrg2DKW/j8lI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,30 +99,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Correct "mergable" to "mergeable", reported by scripts/checkpatch.pl using
-the misspelling list in scripts/spelling.txt.  Only touches comments, no
-code changes.
+On 03/09/2026 11:45, Will Deacon wrote:
+> On Wed, Sep 02, 2026 at 08:16:36PM +0530, Dev Jain wrote:
+>>
+>>
+>> On 01/09/26 6:48 pm, Karl Mehltretter wrote:
+>>> huge_ptep_modify_prot_start() clears a hugetlb entry before changing its
+>>> permissions. For contiguous PTE mappings, break-before-make (BBM)
+>>> requires a TLB invalidation after clearing the set and before making any
+>>> entry valid again.
+>>>
+>>> Commit fb396bb459c1 ("arm64/hugetlb: Drop TLB flush from
+>>> get_clear_flush()") removed this invalidation, relying on the deferred
+>>> flush from the core code. Commit 410982303772 ("arm64: hugetlb: Restore
+>>> TLB invalidation for BBM on contiguous ptes") restored it for
+>>> huge_ptep_set_{access_flags,wrprotect}(), since a deferred flush is too
+>>> late for the break step. The modify-prot path has the same problem.
+>>>
+>>> Use huge_ptep_clear_flush() for contiguous entries so that the TLB is
+>>> invalidated during the break step. Leave huge_ptep_get_and_clear()
+>>> unchanged because it is also used by teardown paths, where the deferred
+>>> flush is sufficient.
+>>>
+>>> Fixes: fb396bb459c1 ("arm64/hugetlb: Drop TLB flush from get_clear_flush()")
+>>> Assisted-by: LLM
+>>> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+>>> ---
+>>
+>> The transition happening here is:
+>>
+>> old_prot+cont -> zero -> new_prot+cont ... (i)
+>> and then TLB flush.
+>>
+>> Arm Arm rule R_JQQTC says:
+>> "For a TLB lookup in a contiguous region mapped by translation table entries
+>> that have consistent values for the Contiguous bit, but have the OA, attributes,
+>> or permissions misprogrammed, that TLB lookup is permitted to produce an OA,
+>> access permissions, and memory attributes that are consistent with any one
+>> of the programmed translation table values."
+>>
+>> This implies that a live update like
+>> old_prot+cont -> new_prot+cont then TLB flush ... (ii)
+>>
+>> is safe. Which should also imply that the transition (i) is safe,
+>> since the configurations the PE can observe for (ii) is the same
+>> for (i), except that in (ii) the PE can fault too, which is fine.
+> 
+> I'm not sure I agree. As written, the text above says that if the
+> permissions are misprogrammed (which they are in this case) then the TLB
+> can produce an OA consistent with any of the entries. Hopefully it just
+> needs some further clarification.
 
-Assisted-by: Cursor:claude-opus-5
-Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
----
- tools/testing/vma/include/dup.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I'm not sure I understand your concern here. Is your concern that the OA could
+be pulled from one of the invalid entries? The intent is that any entry that
+does not have the VALID bit set is not considered an "entry" within the
+"contiguous range" for the purposes of this. (because it is invalid).
 
-diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-index 4c58487b764e..302a6774fca5 100644
---- a/tools/testing/vma/include/dup.h
-+++ b/tools/testing/vma/include/dup.h
-@@ -353,7 +353,7 @@ enum {
- #define VMA_ACCESS_FLAGS mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT, VMA_EXEC_BIT)
- 
- /*
-- * Special vmas that are non-mergable, non-mlock()able.
-+ * Special vmas that are non-mergeable, non-mlock()able.
-  */
- #define VM_SPECIAL (VM_IO | VM_DONTEXPAND | VM_PFNMAP | VM_MIXEDMAP)
- 
--- 
-2.48.1
+That's implied (if you squint) from:
+
+IPGVGZ: The Contiguous bit is present only in valid Block and Page translation
+table descriptors, and therefore neither of the following configurations are
+considered as misprogramming of the Contiguous bit:
+  - A contiguous range of descriptors that are each either invalid, or valid
+    with Contiguous set to 1.
+  - A contiguous range of descriptors that are each either invalid, or valid
+    with Contiguous set to 0.
+
+In general I am of the opinion that the rules around contiguous mappings are not
+as clear as they could be and the VMSA architect has indicated that he hopes to
+clean them up over time. Bit I don't quite see your concern in this case.
+
+
+> 
+> There are probably also cases where we're changing the attributes and the
+> permissions at the same time, so it's not clear to me that it's safe to
+> allow those to be inconsistent (e.g. tagged/guarded vs read/write). If
+> I was going from untagged read/write -> tagged read-only then I presumably
+> wouldn't expect to see a tag check fault on a write?
+
+Again, I'm not sure I follow, but I'll take a stab. I think you're implying that
+a write permission fault should take precedence over a tag check fault? (I have
+no idea off the top of my head). And you're further implying that with this
+transition the HW might see an intermediate "tagged read/write" entry, and if it
+does then it will raise a tag check fault, not a write fault for an attempted
+write. But I don't see how R_JQQTC permits that because it says "consistent with
+any one of the programmed translation table values" so the HW can't pick
+attributes from one entry and permissions from another. It will either see the
+old "untagged read/write" or the new "tagged read-only".
+
+Sorry if I've missed the point!!
+
+Thanks,
+Ryan
+
+
+> 
+> Will
 
 
