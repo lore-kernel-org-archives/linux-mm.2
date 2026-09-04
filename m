@@ -4,125 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A0C5C624D3
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 10:09:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5B2FC624D3
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 10:10:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 326506B0088; Fri,  4 Sep 2026 06:09:23 -0400 (EDT)
+	id DFEB36B008A; Fri,  4 Sep 2026 06:10:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D72B6B008A; Fri,  4 Sep 2026 06:09:23 -0400 (EDT)
+	id DD6186B0092; Fri,  4 Sep 2026 06:10:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C5BB6B008C; Fri,  4 Sep 2026 06:09:23 -0400 (EDT)
+	id D188C6B008A; Fri,  4 Sep 2026 06:10:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DA8526B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:09:22 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4B1A11403F7
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:09:22 +0000 (UTC)
-X-FDA: 85175657364.14.8E5D1D6
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 7CC06100005
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:09:20 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kOyVEa6c;
-	spf=pass (imf05.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A78F06B008A
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 06:10:25 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 353711A045A
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:10:25 +0000 (UTC)
+X-FDA: 85175660010.04.337B527
+Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
+	by imf03.hostedemail.com (Postfix) with ESMTP id B87C520009
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 10:10:21 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=cQVWWnVi;
+	dmarc=pass (policy=none) header.from=uniontech.com;
+	spf=pass (imf03.hostedemail.com: domain of zhaozhengzhuo@uniontech.com designates 18.132.163.193 as permitted sender) smtp.mailfrom=zhaozhengzhuo@uniontech.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788516560;
+	s=arc-20220608; t=1788516623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zkDl0Y4zNUnFCr0BpcsL/xKlNTA0whYo8hcoWC1r1Ck=;
-	b=epDyl09Uf40cNEO4LUjand3r7q/TOqDHmOYm2KdEilDkvGGqpnnn7eSj/P+Vb0GrZGSmB4
-	J3Qrz2OVk5SrS28P5/XCuj03yIK066dLi/cU+BL1ipOJ/v5wV+LHNQeWeFkjL0Wsv6bWRN
-	4sanhZAtFqnF5iWzmno5JilKN7x3slc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788516560;
-	b=T/uXW/N90DHOjnegplhc+PfYd8PpkC24pauwDjkeJbfJr7U1GoWrZ+Jp+XSKC0v921t1JS
-	9uDFVq8XQuOaJ874zv7cJh2Th8TQkKVFjz5DXxxfUGPfqFXPqUZWRPRNRrk4Vlk4V2S9rx
-	iYCVRQjT0Ap3nsPdpKld238ORBm7dz8=
+	bh=oYE+vq7JoinPXqlPiiLFr6Z7aSo9LWECAdI/awbwABU=;
+	b=x3FAAwfv6vTi/T0LpLa9tBVMdswJFjJcDJI6zvW1DJRk/ik9ZPnS1RFO0VLJ940pkYkacd
+	JeMklMzztjDMu0ZotsI5QpY6HQMrklIzbieID2e+5Ma/c12LbqxX5J04wxcqrfdg3RWgnD
+	MoHHXZz97GQpYWi5K8B7IBSfSXVKHJE=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kOyVEa6c;
-	spf=pass (imf05.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3964dfb5a69so1078699a91.1
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 03:09:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788516559; x=1789121359; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zkDl0Y4zNUnFCr0BpcsL/xKlNTA0whYo8hcoWC1r1Ck=;
-        b=kOyVEa6cqrQ+GJn27Jyv0JMbyKeSVAfyBzz2xdsTEWos4BwQ3AaSs88U3SZ1gwOhNm
-         P4x2SRtr7drRdfSToqBv/gHj/Ei3ZwBsSnvGw87v9R02CDzSD7UDFZcKGS/wvc2Qlf3O
-         2oFApCwNj1CU+AlSoJ4yyNvoZslDNL6vrOO7BR6W6wC83pkGaKOuWdHv2L+Ta1dVDmk9
-         zGy1r2VU5mhBHTcYtYw2/kEEUosCVHYyG2MP9q9r9NT4t1l6G92xWSE5Vhu4TRsD/F46
-         emN0EH8HJXTDUfsX8h0X6ErpzxyyCtqSmhdZwgoq6y5pyzFPlB+3v7hW+TXVemDhzQcG
-         kB9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788516559; x=1789121359;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zkDl0Y4zNUnFCr0BpcsL/xKlNTA0whYo8hcoWC1r1Ck=;
-        b=OZiZv0oILs3sJ1a4heXa8i2bbFlcADaDd5O/1fnG9/7lqO39PXxgCglO1FLoGomtKe
-         6L6JNRGGTmGdwsG8AM0jQJT34tCx91Si39UlZxLNKlQfyTVZ8e5Qqhquwx3WY1jto/0H
-         Irn5EPT8MtIw9e5nOsP6M/uk+Yzdiuvxy4MAo39QG1tQADaTYiQbZMxjcC9dDmSCUpGu
-         1T9CUYkzQrS+jzHx2MOmGJRiHtm4J36zfyGts8iRpvAY0NoQKDtuQW3Guu75Ti/CdYM7
-         nCcwEY2WW609xtNoKo+0q2nBuqfNbDwrQXD3X/W0GXuqRAjW7F0oIPpnQ60su7potArP
-         uLNw==
-X-Gm-Message-State: AFuF++kV9+pHAVfOgKVythIEpqYY8PMPiCs5htTAMJxatJPkGiBv2H9P
-	GTnNASp/XT9K6mqwLTLua1EKWoTfu78xBZK2LJPhjc7o0L4mSCvFPPnv
-X-Gm-Gg: AYBFou2cVF9hD2vJGlCPC6ry5Gw/YvMRfwjscIZHo2JvDNGJ5ZGT2j0D282biyr1uxA
-	9PjcSO+zO6K2yXk6QItn7zumaTbF4azPiuXMhRwhfPhp2/KyLmfRcD918Sg+Aulc465bPGGqxWp
-	9DSkICU0bOspPblf7/AAW5YOWbWpAds39orP1HJZ4sLR2Dp6jq/LuJVmrhmkFgqxehOaAE3uahZ
-	dLe30ey8QHnsOMMcS/RfseslHJ0VRcBOkTnvCwjhFi09lwsV/llurPlpoFPXfwDSYrcgJ6/T7hA
-	RWfSfDpa18lPKjyaCMXC13OU9jSY7SRKg4Lf58o8tXPPFecEKHYMThOHvBuXvTCMU2CIBBMEa6F
-	4oMZzNi3HMYH2mpy7k25GJfgYG2jxX9EO61Yh2rsJmbO+E9O2nEsGNbdrQlo+bEUhz0e6LefYu+
-	w4nSzlbMxDivGJJhDp0DfCqAVeYXG4NIxHvIVy0ETk9j8/5VfBO/MYH8BAd/uckUJrQsvF8cYf/
-	XAT76hLycar+30X15xOg1bu2+cD
-X-Received: by 2002:a17:90b:2b43:b0:38e:c7b0:84ad with SMTP id 98e67ed59e1d1-39b25ed34f3mr9006849a91.0.1788516559196;
-        Fri, 04 Sep 2026 03:09:19 -0700 (PDT)
-Received: from localhost.localdomain (vmi2317720.contaboserver.net. [84.247.152.65])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b2612d3f1sm3692904a91.13.2026.09.04.03.09.11
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 04 Sep 2026 03:09:18 -0700 (PDT)
-From: "Lian Wang (ProcessMission)" <lianux.mm@gmail.com>
-To: Youngjun Park <youngjun.park@lge.com>
+	imf03.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=cQVWWnVi;
+	dmarc=pass (policy=none) header.from=uniontech.com;
+	spf=pass (imf03.hostedemail.com: domain of zhaozhengzhuo@uniontech.com designates 18.132.163.193 as permitted sender) smtp.mailfrom=zhaozhengzhuo@uniontech.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788516623;
+	b=d5IDI5nGAivQZ3wJFH0jYkBECK30gFD1gjjzAjVT0APrfX+t3KRYy3HjHOBk2lbCOG4+Aj
+	hjuw2ip0aJCLT2jQ8Ctbww8xUK3ha/o2NRE50iftYtxis7ipaPima0zQb4hSXLUwCpN9wA
+	+VkkIIiMyHWLtrNKTY5BUnPUnojwuZs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1788516574;
+	bh=oYE+vq7JoinPXqlPiiLFr6Z7aSo9LWECAdI/awbwABU=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=cQVWWnViZ2DuikCfgtFBwbwrErF1bepZdgdLzut85NMmCs7yd0Pcszzs/38HYU1HV
+	 hQJ8qj54khx2k8Z7XLTHxMOvVEbGpFQTvpW3RuSCx7KfbarqH2w6rUyexh/GSWtogd
+	 tFkcdcWw8iUXSREtagWvcUI1Sz4rSUe8Vopz+hAM=
+X-QQ-mid: zesmtpgz4t1788516571t8b9c63d0
+X-QQ-Originating-IP: cuuYc32YtZREKSHjW7EbuP6Q2GYO8WdR0JvfjfVTmqo=
+Received: from zzz-PC ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 04 Sep 2026 18:09:24 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 14653282178175958479
+From: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+To: Mike Kaplinskiy <mike@recall.ai>
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Kairui Song <kasong@tencent.com>,
-	Jihan LIN <linjh22s@gmail.com>,
-	Kunwu Chan <kunwu.chan@linux.dev>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	linux-hardening@vger.kernel.org
-Subject: Re: [RESEND RFC PATCH v2 00/13] mm/swap: introduce per-priority allocation queues
-Date: Fri,  4 Sep 2026 18:08:49 +0800
-Message-ID: <20260904100900.21517-1-lianux.mm@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <appvhlPleahTRklV@yjaykim-PowerEdge-T330>
-References: <20260829-swap-pcp-priq-v2-resend-0-68d3d925578c@gmail.com> <appvhlPleahTRklV@yjaykim-PowerEdge-T330>
+	"Liam R . Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>
+Subject: [RFC PATCH v1] mm/madvise: prefetch private file COW swap entries
+Date: Fri,  4 Sep 2026 18:09:19 +0800
+Message-ID: <D758D1DD4372AF8E+20260904100919.2139680-1-zhaozhengzhuo@uniontech.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <CABeknB82T0d3VUjz6Xwcdfa8spHvNzO6tZNTMwjJgF00EwrWWA@mail.gmail.com>
+References: <CABeknB82T0d3VUjz6Xwcdfa8spHvNzO6tZNTMwjJgF00EwrWWA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5b-2
+X-QQ-XMAILINFO: OS03Bzyx9zEDU1sgPBctWmK9/4gN2flMQSQpp+W+wILlj/CZhZPK3D5e
+	9Rdx6g2TL4GmNm1lzB6Sto5qRMIMOLoYa3LofatSOkVRodroXzznQq9iDPW8qSwJta1uGAO
+	fiIIe971dHbsAPDdjsO1Zmduc2EnsamFJJmv+0G3cgi9YR4u5J8txC1d2kSYt31OQU3VhTu
+	Kl+Q5J75bziHnM9ihqaH2stgJZ3LqunHAuBkYh6foakI0wWLTVlbmFlInfVTNU7w/redNUh
+	YZcUKAakkp6DaVihraauFUshujSgY7FEMdi48Q0Z9akjl12iUpvdPYJ82bpZ+FjmxeXGKCt
+	JzCqsevD8W07Dp2rEH8fCWShjzPA3eZrDj957JHDO0suta6lDZrJmGkNWEEJ6JislRaAFWm
+	nnPNBZaqpmMvpSY8Sz2GkQMtuas8hVZ7i+ODsLomN1jqUw2wm3xj3gvMDxURftY+Zb5ECNg
+	DgRexqqha+6vaYbEtvBAEpRGj4DqZL+d+4buMmSqkcpWkptE3t2aLYdSOV4m8Z8TjWEXyYD
+	Dkh00XoFF0HgsHBeu9ilzD99LtL1GBg66O1dbOfBLav44OeQRM7aoxrTKcuHV5UWTSCXlyG
+	RCbc+x6Z+D/o+hy3lwJjc3J6xA83CeFQ3vOysQetI1nn5t0JfUZgNvi5hAkE3o4IXjJ8uJu
+	7ul+L4s/hSuAJkg4NYU6B+kuTXeCaO8iTg35awQCfsnnUCOOFRmseYA44RUBUNAUX6yKx34
+	8Ljgl/65ywpHfzTnP5VKNVRHegBoH6pQirIPjyg6/JocI+7k3FOMdy5RyKdIcRxc15jYh7j
+	T8YA6olDDohIbO0qR7+WT7a06nY9z/v8/9Pom8UKRVDHq8APqzRMZ/DurpertlBqRAq+EB7
+	YTNfU+Olqd6MeVg6D7hGH2Isl1L2lLBvvNhDdT3eVCCO/Sh9ZjH8QaK6IoL8gmpzUQaepCV
+	Itiq1Z7LUKJtte49WvPIdENuQr9gXPxLPOsIKPbclNjYIkx8ayAVVYcXhlA9oH/lqXTpdsk
+	pCcGtIl5+zRuMqwMN1O/c89C1ZMp4mRkb6tnfx7zswkMTg+0R0knjU7uBLqeQ=
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
+X-QQ-RECHKSPAM: 0
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B87C520009
+X-Stat-Signature: kttt1uu98papxmg8h81bz4cxw5bj1erc
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 7CC06100005
-X-Stat-Signature: q9ags6cjj8581jjqxnybqudi5i53xsay
-X-HE-Tag: 1788516560-396433
-X-HE-Meta: U2FsdGVkX1+Pk2tnlKHo1HRwhFOQF9PagkKF03B/4tLTBmhCz8/wsJiNUxJgAXAtJCVAyfaMBVKV9tdQ1Fk9xPKAuCQNkFem3DWP9fM20/gHpkOy/G3P13tNDe0ZG7/vZXZ920fZRv3QtRpb60tby2TLuercT6ABSIIUaviDNh8XHmhYzHiRW9UclfPDhRMJ6ZR03joa7Cqavx7fp9sfzqCc+imJ+ArbfnikXG0y9HZcmQM5S/scsmzOJsIPeTN2t4NCnpgcd7/FrdPOaV5samuN93OM60owoKeqFsu3PjnP/SUhma8sxpn819q94rmMY37MZCg4R0RWgwRnifjBMzF94D4Ji5BS8quNwZGALjkRTRbUS3aA7ewUyBz9cKlU2BFSi1m7zJaPU8ZINRsaNZjLSrj09hOw8bJ4nfAlYv5q0JOxYwhc4JI5QL115PivJYxL4ARKH8ii+K9e4cFAwGsQAz9L+MoZUuM4UqlQAn7M8KF37l3M9eddQjTSozXuF2bTnczBH0k84WK3JsUf/x+OgL2rSHQyT/s/WZ2OzN/798Aco4X1heiPLeEwG8I4583tBAASP7XADjaG2gGBevQGYhHbvSzE3DD4RzgZkLglIp9AR3Qc6q1BYrlyI4bFYMZjh5feHllBJQeCssmPCMNQNv3ugv1HxijtCgLELY/XAjVursGwB6ZEz0esfOJi+QpOTnftuaifpB02S2P7k3fldxwE/+df/A/d3z5VdVHCci0xJlJ4fNMaKk4U9u7RB/NVenCsZnxh4kkSW1xdfL1BQVB7f4emNE5KtT/q2VF5fGUySdaZ7q9+zk6YIbtzd67FvM33Vo+imUbOJ1eKf91KQcHSdddQBoqcfGRDMlTiNj1bi9v9QR3v0Cy6Lhe259BRwVF9JqehPXA3kFBNaeyec9DNVXpMgyG5NQVmUAoUpcoDCK9Z1ytm0dj8lP849SgblS+Zx7ja2S9Nkkc
- MabqMzlc
- JuqM1OLcV9u/YTZ4fxJ/DfX+497XCvFZ15Wd56na9rR9UM3v2Ngm8XXeVmRAQxkBtVanxBYvjx40aEBzWGuy7VxRZfgja71SnjTOKgoYwnv2L0O3ljAOgWqC4fO42eOdufWpaR4wGJD6lsjXG5Rk1Xxu7BN5ac3Q/Do9KegiiKz1rJiqTQsp8gUNBMOzflQHllvh1JWw1KibuVleoE2GkJwFBm5vCl6M3xziF3TN7uPPmu4tJ4XhLKlSk/Aez/Gg1Z/hdyYNxmQ9inpHzj/aevq6na2lHzOcdx+tZdVY81rZwlp5d0ZSzb0H6LYZpAQ86EuMQ2kAUHCpq3Qrhy3MJV6dHB2Sll8HBKUd8UAuTtlSC2KZEQCWxjGSAiy5A6FAgcyXmAhaHq+hyVQes1hboR2ygtfhbSciR4Y3YQnhXqVxvp2N+o/wj5Wc6UFOCK+omskjggcFHAMoi6uc=
+X-HE-Tag: 1788516621-90769
+X-HE-Meta: U2FsdGVkX1+FUVWXprDIPefAskTeJsQYVYIk5mCq6xDOKjKJE7Fee4vb+aQWAmo7vp5YKjXHCehsehiFhRGf3liuEnANTuiq0Z3fZBq866gHPUnLGH/bN5u1Dcb47jfn87a0tobtsbHU2hOnaqGaMoQe5Dx8RAtfuqJ1NkfsgUTU+ToR0wAaaU+ksFMVCutEUtvgWXtR9mbXSsCHsoqwgKdXrsM1/V+zKaFgzSjcaFyoNXmyK4xi19s2DmyFyCl3YdTqKGghWzgUORWv60wzEl4ZUk+3kJoyZTZtdJTE06LYpMh2ohsbmHD5cE4/psA0VXkiuIlCY6yDdEp5d49t6QR6zqe94o/CISJbTyHF75XWVx/wRf4CkXMLif6h7B8Rag4DlFSzXPOJtLHfoZbVH5cUb/xLyNT7vnT3BZf/7qeVYJTVdzVXaAVRlULNq0xiUloVz0XLX9VwLXmTj1OMftPSU9MJRNVGy9i/IEC305VYIa3frWShbcKVQpRXeHhNiDQ+bZ3qAroKy1D1a6mneLszF1g5bf69uOYwHcd28Z6es835zm49oCrorsMd/UsN9WafeoOkSD7QM3EiQcVXcvZHukSeBFO1/gq9fI4Ni5gBmIYOpcHXO3q1lGGL05kl70q6I2QXR6uLqly6smDPC16HTv7QmgC6b7bZf9CiLk8bPSYPtl1AhzAVwhVhY06kpt8+8aIBs9oXMA6/zm9FQUytamspPSltQYrAQvX0VPtTl4mXRt2+dk8ltqDdVEOPfrq/V4X733VtnlhWuy++Eo07CKxtEvQgQpxwPLclo1O1sCXdtwZwlvcopDPK8BxMjbDir9dnF7o5NcWSMIqrs/UZwnUn1azJNbBqsiCm/lpN3x0Z641Wc0/5NLJTPfyqJsU5EEmPqQaWLymQBrYW7w9zhYsNk4/b9RJAh30hpVskkfuK678EGcKidq2vNl5aoZ5P3YQgXOnYA+daCFF
+ HuiDXghZ
+ GeTcRUtlpdl7+fnDMbqj47U125gk6odtxBgDXLuS58YoRbu7Z2UBqJUh3P7C8by+PSK+9EkWKjrOw7Cu81UZ2mlUEGzgfe9xYXWn2REZX5uk9ijqkLcKepS6nMG99IHX6dIumKeCv4HCNKL1Rkziv2/FRzcZTZFzOmcJT180ihE8FXxpky2tvYpBgb0fbxb88UuJgqFK5TfY5mqtw5J+zCNXQH2Fu5qPWGufg69Pusy3V5ZR6s6KsD5JYIg2TgrMjUNac62Et0Rb0f2wz6QOMF7SkXrIfKtwgk8QkMtqZ5BmI+qFjYMTEzgzPO2dVx5U8iuTrSeaZPJsDEnwiKXVgxnyVwXU0gSKGBQFYPllRJ7GCNzDsvjrGC8n42OHMw4LJ+XZmYP6q2sVRBD0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,95 +116,187 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 4 Sep 2026 16:13:10 +0900 Youngjun Park <youngjun.park@lge.com> wrote:
+Hi Mike,
 
-> Since tiers come up further down, I'd like to raise a point about the
-> patch subject line too. As Kairui mentioned in RFC v1 that we would
-> stay aligned with tiers, would it make sense to frame this RFC as a
-> per-tier allocation policy (or something along those lines)? Kairui,
-> what's your opinion?
+Thanks for the report and for offering to let me take a first pass at the
+fix.  I reproduced the behaviour and prepared the RFC below.  I would
+appreciate feedback from you and the mm maintainers on both the scope and the
+locking model before I prepare a non-RFC revision.
 
-Thanks for the thoughtful feedback and for taking an initial pass over
-the series.
+MADV_WILLNEED currently uses file readahead whenever a VMA has vm_file.  For
+a MAP_PRIVATE file mapping, however, a write fault creates anonymous COW
+folios whose swap entries live only in the PTE.  File readahead cannot
+prefetch those modified contents, so the pages are still read synchronously
+when the application later touches them.
 
-I agree that this queue could naturally become an in-tier allocation
-policy. For this RFC, I would prefer to keep it separate and scoped to
-the existing priority semantics while the tier and virtual-swap
-directions are still being settled. We can revisit the subject and
-naming once that boundary is clearer.
+This RFC walks PTEs for private file VMAs that have an anon_vma and schedules
+reads for their swap entries before continuing with the existing file or
+shmem path.  The anon_vma check avoids an additional walk for private file
+mappings that have never taken a COW fault.  The existing shmem XArray path
+is retained; private shmem COW PTEs are covered by the same walk.
 
-I will also sync with Kairui when he has time. He has several things in
-flight, but his view on the ownership and framing would be valuable.
+The change also avoids draining the current CPU's LRU pagevec when the new
+PTE walk did not find a folio.  The existing shmem path is otherwise left
+unchanged in this RFC.
 
-> Devices assigned to the same tier already share the same priority, so
-> I don't think the allocation policy needs more than one option for
-> that case (I can't think of a use case that would need it).
->
-> 1. For legacy swap with no tier configured, define it as a single
->    priority treated as one tier.
-> 2. When priorities match, allocation naturally falls to a single
->    policy (not a queue). the concrete policy here is this
->    queue-based scheme.
-> 3. When tiers are enabled, devices previously assigned under legacy
->    swap are reassigned to tiers at runtime.
->    (This means different swap device on same tier handled like same priority device)
+One detail from testing is worth calling out.  Mike's original reproducer
+uses a file under /tmp, and /tmp is tmpfs (shmem) on the test VM.  I initially
+tested a version that excluded shmem, but that version did not fix the
+original reproducer: after a private shmem write fault, the modified
+anonymous COW page has a swap entry only in the PTE, while the original
+shmem page's swap entry is tracked in the shmem XArray.  Consequently, the
+PTE walk is needed for private shmem COW pages even though
+shmem_swapin_range() must remain for pages tracked by the shmem XArray.  The
+RFC therefore covers private shmem as well as regular file mappings, while
+leaving the existing shmem path in place.
 
-These are useful design points. I would like to study the concrete v11
-before deciding between runtime, boot-time, or compile-time tier
-assignment. It seems safer not to bind this queue RFC to a permanent
-tier interface while those semantics and the virtual-swap backend model
-are still under discussion.
+Test setup
+----------
 
-> I think this feature will also be needed on the virtualized swap side,
-> which makes me wonder whether this patch should go back into the swap
-> tier series instead. Kairui, Lian, what do you think? (Or separately?)
->
-> I've also been thinking about how to move the tier series forward
-> since v10. I'll prepare v11 shortly.
+I tested on x86-64 with the mm-unstable tree at e3b5239afe1b, using the
+following workload:
 
-I agree that the mechanism should be useful on the virtualized-swap side
-too. Once you post v11, I will study and review it, and I am happy to
-work with you on whether the queue should be rebased onto the tier
-infrastructure or remain a separate policy layer.
+  * 64 MiB MAP_PRIVATE mapping;
+  * write one byte in every page to create private COW folios;
+  * MADV_PAGEOUT, followed by approximately 1 GiB of memory pressure;
+  * MADV_WILLNEED, then a page-by-page read of the mapping;
+  * 2.3 GiB VM RAM and a 2.5 GiB disk-backed swap device.
 
-> This is the direction I was hoping for. (TBD)
->
-> Within a tier. /sys/kernel/mm/swap/tiers/<tier name>/<policy name>
->
-> - Across tiers: allocation follows priority based on speed
->   differences.
-> - Within a tier: a selectable policy applies.
->   - The default policy is this series' scheme.
->   - Priority-based distribution should also be possible within a
->     tier.
->   - If xswap is introduced, its allocation should be selectable based
->     on memcg.
->   - Other custom allocation methods (round-robin, etc.).
+The reproducer is based on Mike's original program.  I changed the backing
+file to a regular XFS file for the first comparison, and added timing and
+pswpin counters.  I also ran the same workload with a memfd to exercise the
+private-shmem case.  The complete source is not repeated here because it is
+already present in the original thread.
 
-The split between cross-tier selection and an in-tier allocation policy
-makes sense to me. Keeping the current queue as an independent mechanism
-for now should let us evaluate it as the possible default policy without
-committing the tier ABI prematurely.
+Results
+-------
 
-> No regression is great news. the plist refactor is valuable on its
-> own merits.
->
-> That said, could you also share data on other angles, such as lock-
-> contention benefits, or advantages in other use-case scenarios? (I'll
-> also think about what would be worth testing here.)
+For one representative regular-file run, the counters and wall-clock times
+were:
 
-Yes. I will add direct lock-contention measurements, the one-device
-case, and higher-priority rings containing full devices. Let's keep
-sharing results and test ideas as the two series evolve.
+                         MADV_WILLNEED       subsequent touch
+  ---------------------  -----------------  -----------------
+  baseline pswpin        +2,578             +16,718
+  RFC v1 pswpin          +17,610            +0
+  baseline time          16.5 ms            752 ms
+  RFC v1 time            274 ms             55 ms
 
-> I've done an initial pass and given my review. I'll keep providing
-> feedback as I go through the patch contents. :)
+The exact values vary with swap pressure and asynchronous I/O completion.
+Across additional runs, the RFC version prefetched approximately 17,000 to
+19,000 pages during MADV_WILLNEED, while the subsequent touch usually
+performed no additional swap-in.
 
-Thank you. The v2 code delta from v1 is intentionally focused. If you
-find any problem in the individual patches, please let me know and I
-will iterate on it with you. I also plan to spend time this weekend
-studying your recent v3 swap work, and I look forward to reviewing v11.
+The private-shmem test also moved the majority of the COW swap-in into the
+MADV_WILLNEED phase, while retaining shmem_swapin_range() for pages tracked
+only by the shmem XArray.
 
-Thanks,
-Lian
+For mappings with no swap entries, repeated advice calls showed no measurable
+extra cost for private-none or private-clean mappings because of the
+anon_vma guard.  A private-COW mapping paid for the additional PTE walk; the
+observed extra wall time was roughly 20 us for 64 MiB, 0.1--0.2 ms for
+256 MiB, and 0.5--0.6 ms for 1 GiB on this VM.
+
+On an x86-64 VM with a 64 MiB mapping, 2.3 GiB RAM and 2.5 GiB swap, the
+unpatched kernel read 2,578 pages during MADV_WILLNEED and 16,718 pages on
+the subsequent touch.  This version read 17,610 pages during MADV_WILLNEED
+and none on the touch in the corresponding run.  The advice/touch wall time
+was 16.5/752 ms before and 274/55 ms after; values vary with swap pressure.
+The same test with a memfd (private shmem) also prefetched the COW pages,
+while retaining the existing shmem XArray path.
+
+Locking and open questions
+--------------------------
+
+The PTE walk keeps the mmap read lock, as the existing anonymous
+MADV_WILLNEED path does.  Swap reads for ordinary block devices are normally
+submitted asynchronously, but folio allocation, zswap, and synchronous swap
+devices can still make this path block.  I have not attempted to collect
+addresses, drop mmap_lock, and perform the reads later: doing that safely
+would require pinning or revalidating the VMA, PTEs, swap entries, and NUMA
+policy after the unlock.
+
+Could the maintainers please advise on the following points?
+
+  1. Is reusing the existing mmap-lock and PTE-walk model acceptable for this
+     small fix, or should this wait for a more general swap-in redesign?
+  2. Should private shmem COW PTEs be included in this change, or should the
+     first version be limited to regular file mappings?
+  3. Is the anon_vma guard and conditional LRU drain the right trade-off, or
+     would you prefer a smaller change that keeps the existing drain calls?
+
+I have built mm/madvise.o, run git diff --check, and run checkpatch.pl --strict
+on this version.  Any review of the implementation, test methodology, or
+the proposed scope would be very helpful before I send a v2.
+
+Fixes: 1998cc048901 ("mm: make madvise(MADV_WILLNEED) support swap file prefetch")
+Reported-by: Mike Kaplinskiy <mike@recall.ai>
+Link: https://lore.kernel.org/linux-mm/CABeknB_S2XJSHFgnHdgnN0rjzHhH4oQJs_APq9fvxHztQ_pgiA@mail.gmail.com/
+Signed-off-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+---
+ mm/madvise.c | 32 ++++++++++++++++++++++++++------
+ 1 file changed, 26 insertions(+), 6 deletions(-)
+
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 73c2901b9adb..96cbce6c7f8b 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -193,10 +193,16 @@ static int madvise_update_vma(vm_flags_t new_flags,
+ }
+ 
+ #ifdef CONFIG_SWAP
++struct swapin_walk_ctx {
++	struct vm_area_struct *vma;
++	bool swapped;
++};
++
+ static int swapin_walk_pmd_entry(pmd_t *pmd, unsigned long start,
+ 		unsigned long end, struct mm_walk *walk)
+ {
+-	struct vm_area_struct *vma = walk->private;
++	struct swapin_walk_ctx *swc = walk->private;
++	struct vm_area_struct *vma = swc->vma;
+ 	struct swap_io_ctx ctx = {};
+ 	pte_t *ptep = NULL;
+ 	spinlock_t *ptl;
+@@ -223,8 +229,10 @@ static int swapin_walk_pmd_entry(pmd_t *pmd, unsigned long start,
+ 
+ 		folio = read_swap_cache_async(&ctx, entry, GFP_HIGHUSER_MOVABLE,
+ 					vma, addr);
+-		if (folio)
++		if (folio) {
++			swc->swapped = true;
+ 			folio_put(folio);
++		}
+ 	}
+ 
+ 	if (ptep)
+@@ -297,10 +305,22 @@ static long madvise_willneed(struct madvise_behavior *madv_behavior)
+ 	loff_t offset;
+ 
+ #ifdef CONFIG_SWAP
+-	if (!file) {
+-		walk_page_range_vma(vma, start, end, &swapin_walk_ops, vma);
+-		lru_add_drain(); /* Push any new pages onto the LRU now */
+-		return 0;
++	bool private_file = file && !(vma->vm_flags & VM_SHARED);
++
++	/*
++	 * A private file mapping can contain anonymous COW pages. Once such
++	 * pages are swapped out, their PTEs contain swap entries even though
++	 * the VMA still has vm_file set. Prefetch those pages as well; file
++	 * readahead can only fetch the original file contents.
++	 */
++	if (!file || (private_file && vma->anon_vma)) {
++		struct swapin_walk_ctx ctx = { .vma = vma };
++
++		walk_page_range_vma(vma, start, end, &swapin_walk_ops, &ctx);
++		if (ctx.swapped)
++			lru_add_drain(); /* Push any new pages onto the LRU now */
++		if (!file)
++			return 0;
+ 	}
+ 
+ 	if (shmem_mapping(file->f_mapping)) {
+-- 
+2.43.0
 
