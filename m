@@ -4,89 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DDFCC61DD3
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 05:33:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93150C79F80
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 05:51:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 426EB6B0088; Fri,  4 Sep 2026 01:33:40 -0400 (EDT)
+	id 3FA496B0088; Fri,  4 Sep 2026 01:51:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D86A6B008A; Fri,  4 Sep 2026 01:33:40 -0400 (EDT)
+	id 3AB4A6B008A; Fri,  4 Sep 2026 01:51:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EE616B008C; Fri,  4 Sep 2026 01:33:40 -0400 (EDT)
+	id 2C39B6B008C; Fri,  4 Sep 2026 01:51:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0ED196B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 01:33:40 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 896051606E8
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 05:33:39 +0000 (UTC)
-X-FDA: 85174962558.29.7FC333C
-Received: from mta0.migadu.com (out-191.mta0.migadu.com [91.218.175.191])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 681F440003
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 05:33:37 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="s/fXJIUz";
-	spf=pass (imf07.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.191 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788500017;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aH4uD7GTCpQD2ykD3RsY6bcY6MCmeysTDUJsNCvh0sI=;
-	b=0zZ0Fk7zGmS/pqu4LzrpdlR1zd59jq/XzNamlw/l9pAwMrnr9659Dsv7J7bmD/Tigj+8hj
-	nriQpUPsPz+C/P1uo6rWu/J74WyrCh56Ry5SOJjEupPY7dWVH4ouDXqt1BRvm6F+zYNMoW
-	yOE/V54xZ758EjIhwsS0Nnld6X1FIcQ=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0EFC06B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 01:51:08 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6C0844073A
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 05:51:07 +0000 (UTC)
+X-FDA: 85175006574.07.17F4F92
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9FDB5100004
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 05:51:05 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="T/P4mY69";
+	spf=pass (imf14.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788500017;
-	b=tSgoqUvTkSBRIYUKQmh3gm7c5iYDsVIM7I9hUvdPHICfw8uBfPYrorPePOCvMYpKb1YzMV
-	wHRn7fI5vpzc/BSGcD4cY1O2NTh/Y8RBY7ibwUK65IbS35ZwlGx0ebP00mFpRsxlg+G1nm
-	HbVh24ARXvP4xWJL0ubKNm7bUwz1zlw=
+	t=1788501065;
+	b=SiEj3PXSoxRdQASfjKsKcJ3AcrfZZRx01at4pT1a25etl+17m5aFvLoMJJ/afI0Es7w8Lf
+	WIjao0mGOv9dQ+k6DN3ZlzIgnKKTjb/iYij6YZ3FDSQjtRvH2f4DktXTtMIBBH65dA8UaV
+	P1dILpR7Cq6ZTr4BMXWVQhgJWByeeAo=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788501065;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=Ni9g+VS/7DxBWoYVJAkvr5meS+eqSiNuXWyCSs4HoDs=;
+	b=t15lCqX1wZl11LzpNB4cZtGqbhIkfLe/OeIA37PVzbR0J2pMZkcmgqK1c3pXMkeoC094SV
+	z8KxrXGjxWMthsj2VF6gFsjHuX9cCSnfTwJ+9NMzzPZ6KwQcagWToNuwHksqceVviQmSnh
+	TP0sX11lNRj+5Wmu6iTSwoRI6jdiF+w=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="s/fXJIUz";
-	spf=pass (imf07.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.191 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=7KwgNRUvE81Flv3MCvzg9gLOP2UeUiR1MgUJyPfduP4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788500015; v=1; x=1789104815;
- b=s/fXJIUzAtbiSf36KY3P7OvzYDYSdjttQUma3z90OPAXzp1iex34YZsj/aVuczyyCnzJvZ0i
- 8x0h0pGrJ3TToAZTp+Y57Edb4dC04Yu0xqxOvj92duB1HhWlcJEPoEUV4xc87LfaC4J3dYQq8dD
- RD0MJt2N8pM3PtT2o+n/tBJk=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id 88679e7f5a2622ed;
-	Fri, 04 Sep 2026 05:33:35 +0000
-X-Mizu-Trace-ID: 88679e7f5a2622ed
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 4 Sep 2026 13:33:28 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Youngjun Park <youngjun.park@lge.com>
-Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org,
-	akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
-	nphamcs@gmail.com, baohua@kernel.org, hannes@cmpxchg.org,
-	yosry@kernel.org, shikemeng@huaweicloud.com,
-	chengming.zhou@linux.dev, david@kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 14/16] mm, swap: refactor swapoff + add xswap_destroy
-Message-ID: <appYKKppIlwJ7vD7@fedora>
-References: <20260827094509.1016740-1-hebaoquan@kylinos.cn>
- <20260827094509.1016740-15-hebaoquan@kylinos.cn>
- <apkaxIJRdo4zwnS1@yjaykim-PowerEdge-T330>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <apkaxIJRdo4zwnS1@yjaykim-PowerEdge-T330>
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="T/P4mY69";
+	spf=pass (imf14.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E0EB760A6B;
+	Fri,  4 Sep 2026 05:51:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96DE21F00A3E;
+	Fri,  4 Sep 2026 05:51:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788501064;
+	bh=Ni9g+VS/7DxBWoYVJAkvr5meS+eqSiNuXWyCSs4HoDs=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc;
+	b=T/P4mY69d7b6hQUixCeJyZXv8seyN033qYzYvIKbUX4p7R2OQs6PETh74s8XbDiOR
+	 WXFCA2bp94DUcqS3gkjsXCDpRdaRKuHgcqRBz05VnT4pfdGK7mWRbX6PWPrFLQ0eGH
+	 OjsjwSkyuUzpjnmYexFZnGtX1auzkKwEqgTPwmbh97BrMHPx77Mm0ALjtvEP3lBM3U
+	 o12szbDxevz7rUSkWUNTddxY9hg2RivnO0EHgD2kr23YXIyMf8ag9EYnnLuQ+0O8ox
+	 KjGEaCFwNlpYNoMEL14ERHkSAL/f41M/yF8RM3RT0DqS0YwLpmj+PPQ1etj5YCHec7
+	 NavJf9LyYQlEQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0C3238119E5;
+	Fri,  4 Sep 2026 05:50:06 +0000 (UTC)
+Subject: Re: [GIT PULL] hotfixes for 7.3-rc2
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20260903174847.a7f81bd5400d48cc8d0feaf9@linux-foundation.org>
+References: <20260903174847.a7f81bd5400d48cc8d0feaf9@linux-foundation.org>
+X-PR-Tracked-List-Id: <linux-mm.kvack.org>
+X-PR-Tracked-Message-Id: <20260903174847.a7f81bd5400d48cc8d0feaf9@linux-foundation.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-09-03-17-45
+X-PR-Tracked-Commit-Id: 97d34aa65c29cca85e3e9050f4c936389b38a054
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: bc35965f6940a9bf834d54187b6088b8eb09206d
+Message-Id: <178850100549.4186254.2817444267395046439.pr-tracker-bot@kernel.org>
+Date: Fri, 04 Sep 2026 05:50:05 +0000
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, mm-commits@vger.kernel.org
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 681F440003
-X-Stat-Signature: sp6xazxm3eb1zgep4nt7pz89r1q7mi33
-X-HE-Tag: 1788500017-860962
-X-HE-Meta: U2FsdGVkX1/vmgXIOMztC6BWj8FzfodsBrG+pLru8pac6um/OlDI/ECt3q1c95FGBnBfe82JV2xehUmBWrjTgLGeSTIVMDH6VeoWsQSfTvATHHNnVFlK/O+xJDA5EUsl+tOmF/wHPP77aI+6SRZm2gVkfcg1eMYWE956FDKqXzMoaWTn6UkjThim5PZKN92KssSMUf2Jq85HWZxdoVpnDrAa0NH1H5OhR9O7yHI8UJzki78viDWtp5MkKcjGAMmj+K8kDiQ1hC8Sc9wnSRxgRz/2f5/cFI+DDWq+LpIaHBve2kMKRduS0RGoI1D4EMjKwFZGWva+d5A7Y7MUS44Z7PkQi3or7nAOMUie08bqKZY+G9I7hBytPqAcgbdR05LLfDitQ4w7g+/0UpADcZ/toPPZwxBFJDN4z81rf2bJu1Sb3e7zpUtE02IE7PSmdi0ljFsbSCw8RoSeIHZtFcOQ/3vD5FrwJ2HVK8GqmELF0zn/+NNe/MHLllnXPyb1fFtxqwyi150cQmex4ljTWadVbFKe4gUJdvD7QwtSbe7HCs/GKa7ktWmUcqhjfgqo+scu7EnQqEX+hqBYdXnT1d9/K4r8nitXrs5AThOcg+j0nB/cgZgXiSSm7HjID5LDawWygludhZ/38eXReRFVx8uePMRG9T12v1HoXgjv0Uj3UrFdm8izN/xuO/Q+yRDnsjphysoGhnhHr2k5KA7psJxsMvX4+AzEk4WgQnFIo3yZFDhkE7voT5dbqQvPz8oaGm2CX0aaqEQgW30ZV+x7lY/sGDJaBO8e1ifFnb6Xgjjv9fJkcoLgb1oSSPo/Kzms/7n95MBwX8EgzbI2wzd25QsA0v4rmYV1wYALZTEkQRbIjgGTNdvYz+eEJrLNI3bezJvU5plP6ZE8yCLBADsa4sDPbItUxmMoJ+2+rSaXf8GNREW8djx/EmnZc6KO+5AusyChU7pRO8C4vdW+/N33OWh
- Xwst41iC
- eEtYHz6/uQ0pY4qS1pSWH9BRV6yl8yiz/mYVpP+zI9HXXFl/70wCTCdMBdqq576T4JvWeX6TpGPV4yS+6PBi6fPmEg93VCjFw69e/KPk1b3O4mfKqRrr/khfN8W85j47Nz7bLtFCELzSKgJ/0fdxKta+4Y5lznI1KCL7JUDtlB15cstkEp7Mg7RRYnHMtMp3lUBiDpgkyRR/TSZH4TqoljQinrDkIN2X+qylWcxvxAQ9lBw+OTHPdss0yye90ux3NUV0JVrMFSnYZE/bOveqWK3JlYfbn6/v2euaViJWd/PhVTXsPbvBs+IpQcWNTGEswDlS2
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 9FDB5100004
+X-Stat-Signature: 15ztprba4g4fb7bppsn3qiy836y789yu
+X-HE-Tag: 1788501065-150307
+X-HE-Meta: U2FsdGVkX1/VMeoDYZaoT39i9qDAJt2slbHo3u6sXxLRaaSzEwqM9KEzIr6rQ2w3xUEWsA6HbLrlYEuARzfEFGc+yToqk1yIxG9X50LTf4Nvawo3Tufylnq7f1MoLZrkL7UteJoyQ0T5Sm9cSLdIYeMj688JkO4SF0HY2m8pl1W2T6lmLro6xTIvP1qVeYOoFAmgTfo2m88I//1fWKkYAoLGXXcpwyyo80gEpTCli6zXXMH1G/af9rnabvqfuIXkBXjDkiAykMoRj4oXMpQoFZGDNYS5PBs6+YvN6JTG1urcJR552b0jYJ+t983j6x+UGG8CH2agI2U5niHXvwA52gRtrlZ0YLb7FJcfHFZwgxWIDBhoOwCdrV/BYWJ16GkhJh75yjEYEAyQ+V4BHf8dM6/DdzBf0g4OZQ5RRaHuQkfhhJL3OrsVdaXdVpz15pqO7xlDpd27iQYmaZD/+VtQB2e/YKl+Hc2stWhxic9h1CyZ18yppG2mq9GCSSrSE0RFszCvR1EIOcb+lDl/qBpQis7gPBMHkHJ9BmOLV0ILzYHmrQIJwOPFFXY01xeA6K0gD2O5o2Z9cSwlzQsYj+cF+LnHewP/DmBYR2Z7B+wfPnhdkAZMj82tKtMqRRXBbYCEyKkG/MVVl66JVgcm07+07xDU6kQEWj86vDeq9mgs7ltvmw6M1Scxg+n6irXntYp/DXzzCGr/qZwf+PDu5DGnHrGHWgwLGxVq6FQ9GFv3bPCNRkD0cz1o6Of1ZmFwe+3vZVDh9Tka2A5iW+4V1T2FiWtA6JG3SB/Q0pHhBL7PBBayRhUuWKQEMgI8XsA2FuFbHcErAIvHtU2/LBzrlh+iegDB0zxl008zzy/wuK+e1BE3MrpJPePgqvDeGfW/UmPiwegUN327Ltrv3RaCJG/+4a647Vfm0GIU2k9vRodH99R1C+hzvmlrK5qsaoAqCzz8R78PiB+5wuLH1o8LIeu
+ yH/P+Pec
+ bb6QPkxD8PJ8HdBch2sjykEDXX95eLyWI3IQOLGTWqc6AWqQgSIxZbdRfLD9IJn0tnWqEJqRCskEH5AH4/sjV0ZtZeLJ+OpboT8Z8HokhOv+ygQipuzHAdpZw2A+mcOBC1RzIUuX+1roLlyZPJ15+bMda1zh3k0UrxKvsG2iRZbe4d/QcpKj66BR9saYtcIQMwmMgfvHRU334eympsm4I3poJ1ENRXpH/TQ32uCR1OWxta1KudGL0ATIzLusBkZEEZ+aOpgeHOSU+AQprIwQbmciQ97Kc0rYykrVokYkffFfTu/rQiWIPn3JLExOY501vftHw9kWVEj49stzWYEFcttKOKWUW8AF3ljmfZS/YmeoPCqUBgg7OCaFtF578blV59n574cbFeFYQ3rD2Z1qp3ptJGgD37q9w8O0hWFrZdQpWq/3+OoqqBVcVrQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,36 +96,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/03/26 at 03:59pm, Youngjun Park wrote:
-> On Thu, Aug 27, 2026 at 05:45:04PM +0800, Baoquan He wrote:
-> > +/* Tear down a file-less xswap device by its swap type. */
-> > +static int xswap_destroy(int type)
-> > +{
-> > +	struct swap_info_struct *p;
-> > +
-> > +	p = swap_type_to_info(type);
-> > +	if (!p)
-> > +		return -EINVAL;
-> > +
-> > +	spin_lock(&swap_lock);
-> > +	if (!(p->flags & SWP_WRITEOK) || !(p->flags & SWP_XSWAP)) {
-> > +		spin_unlock(&swap_lock);
-> > +		return -EINVAL;
-> > +	}
-> > +	/* Refuse swapoff while the device is pinned for hibernation */
-> > +	if (p->flags & SWP_HIBERNATION) {
-> > +		spin_unlock(&swap_lock);
-> > +		return -EBUSY;
-> > +	}
-> 
-> non-blockfile swap device must not be chosen for Hibernation.
-> There is no space to hibernate.
+The pull request you sent on Thu, 3 Sep 2026 17:48:47 -0700:
 
-You areright.
+> git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-09-03-17-45
 
-xswap devices are file-less and zswap-backed with no disk space,
-so they cannot host a hibernation image. Sashiko has reported this, v2
-excludes SWP_XSWAP devices from hibernation device discovery (both 
-find_first_swap() and __find_hibernation_swap_type()), so they are never
-chosen for hibernation.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/bc35965f6940a9bf834d54187b6088b8eb09206d
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
