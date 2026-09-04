@@ -4,161 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A114C79F87
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 16:00:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56697C624DE
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 16:01:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0325C6B0088; Fri,  4 Sep 2026 12:00:22 -0400 (EDT)
+	id 405DD6B008C; Fri,  4 Sep 2026 12:01:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00AC06B008A; Fri,  4 Sep 2026 12:00:21 -0400 (EDT)
+	id 3DD446B0092; Fri,  4 Sep 2026 12:01:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3C6A6B008C; Fri,  4 Sep 2026 12:00:21 -0400 (EDT)
+	id 2F4A76B0096; Fri,  4 Sep 2026 12:01:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B8AB46B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:00:21 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4FBD0160133
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:00:21 +0000 (UTC)
-X-FDA: 85176541842.03.49A64FC
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011034.outbound.protection.outlook.com [52.101.52.34])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 74B18A0002
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:00:18 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=gvWW3BhI;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf15.hostedemail.com: domain of jgg@nvidia.com designates 52.101.52.34 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788537618;
-	b=E1gxqaJrNjcXV7E+XFMeoXqs5rwer7TB8B4XTK5US/Wb6eQTNojBOqEpV/OgwUQSParS4l
-	qpKCSTtrl9blJJGYUVKM6CkBQvmjbWwx5mu+yfqLa6ZYX9oNWtdVTY1hsXWQ3G4M/M73zO
-	soT1gNYPb9uftRXxy7zC8gkhcp9Xnjc=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=gvWW3BhI;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf15.hostedemail.com: domain of jgg@nvidia.com designates 52.101.52.34 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788537618;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 01FE56B008C
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 12:01:46 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 66CC21A0137
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:01:46 +0000 (UTC)
+X-FDA: 85176545412.23.12BA55F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id B47842000D
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 16:01:44 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Chil6rRr;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788537704;
+	b=ent5EagB5TaEvVg0+Y5lOAxSiHCKOo4PGcoeLB3DUFxFcQUqzfRc5nv/NlHHX9zdn0yjja
+	htLQP3J73Xl/OFv1xS5vuM3hnkA6WY/OtrWwMq02XSkJ/issfMm9Yj+4TvefKZR+yO7u/d
+	/ukGGtDa8SOlD51oVuibJZ1P9nqpa7I=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788537704;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WisfPxbQJQ7TDJJHqC8qQmgkAFnmwETL6QTYfMAUrN4=;
-	b=lOcCgvNgbGQ5ds2NO0bCVGlrrXCPAXq94r+i+PATn0RrhhTFuQO3cpA0KVX+I8PTCpLlAO
-	XZILBlEkXU3VW4F4OkCdKQ/FtiO9h/DdugF/Dp9+Iw7Enza4UQHXjUPgjEUc/4cg+FyyKj
-	dvK5VQRGWyTqvRMH7QDxUPdsFxeSzS4=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=P7zR96oJc1JwWXQbSclXfqcTceTTZa6mxDPVM+CZdkIqJ13Z7PGcWil7nXemsbieCmqGW35GU0U4/RHyikSYRUTLLlkqHv0U7DE19C/iC2o+NQtim/YbcKZG2tw5T3MnH6wIIBGsV7iIu4trg01H7sS1aIkaTi27jMpaGhPk6+Axj/vwjJz62YwAquQHKVb2ryWnCXpSsrrTqoHsAKzLTvu87sXMGonycNS/ctgpOnfQLGhSiktKko6AxU4q7Eg3ubgkblqVySQgfBpkBbH3OAM03Fupv2Osup1ip5upZDCjZIxfMfAC5tmKSv8mgQvAXJTSvfIa8mkeqrpanCoXKA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WisfPxbQJQ7TDJJHqC8qQmgkAFnmwETL6QTYfMAUrN4=;
- b=h+xMXZIpNxYSXA6TgDhUO7xEjthNu6WUYFduwHv0E9aTF8PgZ07F+dcUjoe8Iimx/x8J8mhtGp+G00XePpKdEmNvkO4z2rKggI/1ImWhQLePg37tK2xlbotmfCY2D1G4zo58/Vd2J/xhaboraW4II0J9GMcxWQ4IpL2J4HBSdMmlxfO1PlUPsUPI+gsEb8hHPci4sklfLNJK/kH6AzYwRM47KgD6yqiA3pentgWZobrd2PhzMcQvtcoYGAbpdBvDS3hhIsUVsxb19+ugoAlghz/5OFAl/j7OdS7t6NXg7Uym11T//PuQMCYlkyiorJPsc6NJcStibEGWHo4RmTI0VA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WisfPxbQJQ7TDJJHqC8qQmgkAFnmwETL6QTYfMAUrN4=;
- b=gvWW3BhICwoQ4/ReEXGlyVNT1C2iCeTmnDYNdlt2kFQe/4/0izgW4ksKo8cxOpE3NzjtFy6xP5K2KN4M0hlQ667WuWhgcI3BWkJ/EgQsHx597W74jrlQzKDJB8Evgy6S5Ojo/hzsK5oT4TbH1fmlG+cAf0uL6OZ0CrVtApWDiyFkQ797C5hLry8WkAB71ReXsDu9IOXET96E0ZiPV1zR/q7oeAAtTkfRFe0VhYTt+Wj4Tr/nBCh4d6pcP6urIOdeXNjihwCkqKyE18PFkpikwYPhaflcB90SNlFzrqoj9VtR0INuzHQaisbtYhtoW5nbm2t7IYhXl5k03dh3rZfraA==
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by PH8PR12MB6772.namprd12.prod.outlook.com (2603:10b6:510:1c7::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Fri, 4 Sep
- 2026 16:00:11 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%4]) with mapi id 15.21.0360.008; Fri, 4 Sep 2026
- 16:00:11 +0000
-Date: Fri, 4 Sep 2026 13:00:09 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Logan Odell <loganodell@google.com>
-Cc: arnd@arndb.de, pasha.tatashin@soleen.com, rppt@kernel.org,
-	pratyush@kernel.org, graf@amazon.com, akpm@linux-foundation.org,
-	pbonzini@redhat.com, maz@kernel.org, oupton@kernel.org,
-	seanjc@google.com, bhelgaas@google.com, alex@shazbot.org,
-	kevin.tian@intel.com, dwmw2@infradead.org, baolu.lu@linux.intel.com,
-	joro@8bytes.org, will@kernel.org, robin.murphy@arm.com,
-	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org, linux-mm@kvack.org, kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	linux-pci@vger.kernel.org, iommu@lists.linux.dev
-Subject: Re: [RFC PATCH 0/3] liveupdate: Move to feature flags for LUO and
- memfd ABI compatibility
-Message-ID: <20260904160009.GV4157646@nvidia.com>
-References: <20260903023452.721732-1-loganodell@google.com>
+	bh=8+ocR7sGCB/9B0UdyCqbIbFztIKXJYrXR0zQcU6I5Pk=;
+	b=tQc8OAjnLhdOk0L/YS4HWYI9tZM2+VBNprqeVqVWtENWKFpv26MRFne6jhl6lVE0cLhVK0
+	gofRBEtm2iP6dQS+9VlCNrE7xQRX9DIrn8GpQxrsDcFWgG2gAcBWzVC08y+AU/4zQnqOCR
+	Qe5Opa6J48sIxRwpDnjgN+JGLSabefk=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Chil6rRr;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 227C743837;
+	Fri,  4 Sep 2026 16:01:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D48F1F00A3D;
+	Fri,  4 Sep 2026 16:01:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788537703;
+	bh=8+ocR7sGCB/9B0UdyCqbIbFztIKXJYrXR0zQcU6I5Pk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Chil6rRr5FT32LVSVmyd3qa03Z6aWYEodRak43Dgt3mp/StVMgtwJgJen31j+J38z
+	 HBqo9q1Pvh2oaYpcONL8zfTAcnHYvTPF0SnAc69CT5/OYBlnIEhj5aCjlnpaPQvLjB
+	 dcv36lkfAh39srnfz+qlMNJAPlKIom69Ukx5AF4QwkBFtUNtTYq0k9J2nBJESHMNtg
+	 RJ+A1XK/QIuaHPP+DMw4cdQd0pDrXmya7Yg23jvT2fBMtLyK484HXXm0pGQ1QXugN3
+	 eMVhHRqWzRfaIGE9kfcAtgwYRuvTRbuVD/x0MP+gJFe5o8lGC4ZWwvpgdkHH1rcsDz
+	 vdWIzqbTzQheg==
+Date: Fri, 4 Sep 2026 17:01:37 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, David Hildenbrand <david@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Mike Kaplinskiy <mike@recall.ai>, 
+	zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+Subject: Re: [PATCH] mm/madvise: swap in CoW'd MAP_PRIVATE-file mappings on
+ MADV_WILLNEED
+Message-ID: <aprjOxDy3JCPb2oa@gremlin>
+References: <20260904-madv-will-need-map-private-v1-1-6b83cc99fcff@kernel.org>
+ <apriM1q4GzAgP7JQ@pedro-suse.tail5790ac.ts.net>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260903023452.721732-1-loganodell@google.com>
-X-ClientProxiedBy: YT3PR01CA0126.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:83::22) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|PH8PR12MB6772:EE_
-X-MS-Office365-Filtering-Correlation-Id: cfa9b40b-c6ce-401b-5f7c-08df0a9d999a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|366016|11063799006|56012099006|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	c1F5s7/JCC6wWnKfOceMxpvxGfhciNBegPTQUfHiHL6vdTVr90mbs40Jt8X7/cTHsglFxz/pP/BQEKTV2d/QF/LCOjvspiPsYoh5PP7m8QcfmeNReKq+FLnbDU86YqC2/zqm0cryA9ITOrjfuVpr7k8HHbxEagx90XP/NbhO543i9Eaaf7o/O0CyTdVmYTMXZ5OqlS8hUjoGW9C9QkTYGnymAgZKR1KS62mbRzIRwPDPPnRTFHI5J9RVqDb9CIlpFuPZnEvLsC79xgAjgKU8+ITNb1zttBZWg25xmyXkeEKPBOZQHqJ+Ukm8XBnf5PLD/2PYeXKiw70fvVscdkXWP51e81kt8gh8cR8ADpuk+xSaL4+2kSEaiYLw/TT0GpDMgkhgbZ+hFdJDow8J06PtlY7O0ovGEZg7FQugPhDukqC7Kp2ZlJ0VuHsExxGxiJAlE2EnQAqykUiGg65Edvts7HO7C6lJZk1UUcKLTrN3t0PR8HeUqrMp0FVtf9VrOU8cSKROYzuGKsSUjRDTiVTA2QFj++QJZRNTmFfwlJ2o3PH0/JYySXxG7F4LTtWtozZstQqDmE4S6rdkBE6VwrXtjZ8aMxvUDBplspdLg/GcPx3mFCcFC4scHI6N9S5Gl5qN27j/HgqCkyaKZDyJvluPRjVHlocBbRJMR52+HJas1Zo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(366016)(11063799006)(56012099006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?xV5sl24cOng/+JXfKVV+LpvyukxPrPvydPS/6gUXIv8OPVUoFbSED6nAKr6U?=
- =?us-ascii?Q?ig3NhsIPud/LTHR44SHYWQ5ezyu99GAzvgHT+5gItsXZ4n4P5hDrhhhSJjzw?=
- =?us-ascii?Q?F5RM8icwxbLQequ1f3QXcU1t6OzwjfTBFkAGnUW31B76c7+rZ4BEjcqVJcCh?=
- =?us-ascii?Q?MW+IjMKVBIdxC7J1XSccQEILKba4a51OhK6tFQqzJrwTR//HnvlBn42jkAxN?=
- =?us-ascii?Q?se5C1kljO1CS/ZYW4SM3Z5xXXoDAJw2iwm0qrBFf/fuxRrPZ/lA7P5HFCWSs?=
- =?us-ascii?Q?9kLaBl+Cz+KJT0WACsw/bmWlnome3lDytqxkXtekzoRY6SCb/wGxRqGByBGw?=
- =?us-ascii?Q?cTOnLa1O30aJS6yCxkM4tVnOhi2r1Ks/p593fjRMUedZoiqesmKs0PuhgXY/?=
- =?us-ascii?Q?TlNQ5ST9ohavmeStTg0C5P8gomlqmEGmbTx8GrR3pXt/YyCdtMNKjgsB3U2a?=
- =?us-ascii?Q?Y/cySKJqYmPgx1VItcpP3WxnRv3rnyZgqiFHV9jtb/aaRM+cXFeJ2m/Iicb9?=
- =?us-ascii?Q?eSeQHjcgf8Ho6q3zbh64P1dJMKMn8velA5hwJcsjSVtpKfossGjy6tQuH7Lp?=
- =?us-ascii?Q?e2RPBeFOHzbkUjYEGRjr6g5n+KEMRLdc5VKr0TgejbNsfbZBkPhRzfTNASq9?=
- =?us-ascii?Q?ZiLWAOutMFSXW/gIJXfxL8XaGQZ3eDhf9zImq2cUj2/4vM/yUfC7DK4uOASw?=
- =?us-ascii?Q?UBovpc9VHielk5AJfJbvEJS0zLWGhi2g8Opvr3TUeVLgRJOIWHny72a8Vgfh?=
- =?us-ascii?Q?VPDFJHvBXcYLYg92JlPKFWcTAqzoDg+o6f9o2OpyI1TZxegrvWYzjhsUuueL?=
- =?us-ascii?Q?oYNJNup/qOt6iN1wvV3e+zZEHHykYKncqUflCs1YIfz1MS/ilkI+SbZ+iZna?=
- =?us-ascii?Q?Ubh860vrgetZeYadBmidAG1oQ71QOQS5kdopI09ira3HzCk9We+QSHdX/nSm?=
- =?us-ascii?Q?Uul62+VSfo4w8K3R+lj1oUYUvtn6GiKzGV9gvouWeVszdlQrJAO4BfnWWg1D?=
- =?us-ascii?Q?C1wRBuzpAlrvMESJ39YwxXCUawHaHf2e/6Hql5Xh3eoMtlcR1sJRu6EH6Fhy?=
- =?us-ascii?Q?HcYnOAI3zXHd3MiFZJsoePbtGGxrusaJd4S49TQKAEMGahwiy812+n+DfrHx?=
- =?us-ascii?Q?XWevVpwJzTwcFDX1SE401Bcu4faYOgBZ73RtEzledDBSQ6KX8hVma02Wlo41?=
- =?us-ascii?Q?C/x+v6qlKtOXXQ12pFspnTXiaN8uLX4w1yfD8KEm9yRkzstgp1TQbLprv/pi?=
- =?us-ascii?Q?exScVHGVpT6/Qs1f9EsLKL3srJvW6qgSnzWJCshVHONBz4206BpmNGQV8sBb?=
- =?us-ascii?Q?JZR01urlOqkuYrZdaiZYXXNXOpm3ey/xo5u92sY4q6eOh+psBzE3USq4+yU7?=
- =?us-ascii?Q?wtBq/av3ZsecegOOAXwvop40IWxNfBV5S1E8W+gS6MENOvwcreVlsDndmPuu?=
- =?us-ascii?Q?f7gRRoNA3lpA1qvVQk/pQUDimVo78OJVozp8gwY3/KwKALfH0vlcbSt4S1fI?=
- =?us-ascii?Q?8b/GYswBpPg1b6UxEXFKd36fHveuP4/xLRHIsVvSwFzdu9qDEqyDpCScsaDP?=
- =?us-ascii?Q?aTTNmYE9tyXQkzLgjVheELag0z+tyfHmzkwUIZV1hYljypL1MvKvv4o0PsAJ?=
- =?us-ascii?Q?lWb7nSzA+12aiBGKlcBUDLl1iOhxP/eU96hmpK+6BuUgztKNUYmJ9J9u0f57?=
- =?us-ascii?Q?xpbQfmtrnx4ZsHJKvTAiDs/ocsQ3wd8gd54iwLC5tw4EedA5?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cfa9b40b-c6ce-401b-5f7c-08df0a9d999a
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2026 16:00:11.5213
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rWdojgZNSskNuyGNN+ISFbG6xbEC5yT8H16EoHvt4xWi+RHq5Wshm8JQxguaRiwy
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6772
+In-Reply-To: <apriM1q4GzAgP7JQ@pedro-suse.tail5790ac.ts.net>
 X-Rspam-User: 
-X-Stat-Signature: 3qp5hdfyk3esthhyy8woy46a4xbbxzk7
-X-Rspamd-Queue-Id: 74B18A0002
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788537618-388532
-X-HE-Meta: U2FsdGVkX19Try5xNRpxTuT9ikFLkuyM6nrTXndOF7E/NeWkXvhukiSDw+8zwg4FAu2dJTiGxD8JCF0jMKc0OszdaFwCxWSFt7JekaFg/Lpwj758UhLDBz8mybQX0xBr7baLFAF3oLhPSi0aOrivZXE6Z4/9FuyqTx1m/8WV7AjJjrnpzqVP//3zRZLSbi4XLHfEetPX1s+nE9toV1W8V4wYX5UCCAQaafQF/Cr8sCOKt7mffRluWR3zfYPP0/TgZGZWalqD7j7a4uMtUZaVj8SBcpf6nitvg7+ubMQWN2eFfbCZxdVVmC+L0fa3XLtqFuS09DxuZG/khY9/jbuh93MqLfxq1wbhUzrZiR3P7SnXNwKtsL4nPiKyWq9WLqx+wme5CZjHCq0zHcnUkO/RK8dtmPpWBlu/VU/tx20wXa38QIEBxl84bxy5862bhabfYCaJy2efGcImqUAF5uWwwBr4SY9CgOr+8S9bJjxGJ5yMGNQCksjibDbnwr//RqbCh9Q5244O/o2SNDOM97FM8kEOzds1sIZbgaijETVKhgRcqAU5J3k1nVNXJNNUFy8fzECFNS1de+bMnW7Wb07siQoWpZUAjg4+0XOcVZBB++n1RvuGHyhM1MO/b0wH/gp/rnAvfwMLuBWZRuWRzSmY4qS8cjdyyG/9SHVwKiE+l+H0Zj4GoLPv88vbW+i4NZMOQsWz+YfvJ0ng8/X8J36bRzbmzjiSJw6mDcxwXtMZzb6nXWVl3blIy86Ee8sjSgi7Y60jOvYzdjcu6tFG0vUHr5GiXW9lJtMoxQkCj5j455L1scjqZvv6UbsB59SEx6G9l8m32qpoMUnDvYHUByZN5WI/fpJw4fLnTH5OPEj+eM8znJtcCldBq9UVQ+lxDF0+sHNUUoC/AHDKp8svlIeCUvgn+uFKSvqrwGjV5LAS1XaE5qI1XzmuUfCvXZx77k4najk5wQtEjMBpEtFwoc5
- OGzCyOoa
- wXlRDvKjL4+sjLU3UmgoCYFBG9Ty50W6ljNxiHjfugquIksTinRDYnUPYkDobE+utEw2TgBGH/gUY1uKYovq9FlBMBos5n12ehRNaHq6QkLcL1S+2jaSDpQM8QweHbi5QLsFWhzgKt99ToLyFDIANltjKgcugrkobxHEQiEMn0gY4IaAbg9NvsZJz68QL/RKnlWRuODxAoL/IcMgnm4HFP/oJaSzcCxV06tw28kTitiHN8X71IL/3Ic6ciisv5XY54CK+e8pjogjQyfDiOQ2NSzcsJPrFbaa7ivwpSN/1izx/5CkrVb5XsttxFgS35e8MVyoJiFlSjxirSRsEOxxrHtvCXInY99VQCO50waLmg5R+wB8ygSvMKC6Z2+MeHOhD2j38ym9lLmJoQmmWiM9K6j0gRA==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B47842000D
+X-Stat-Signature: 8fry8mboiwbm7zi4deg87rjgcxn9cbsg
+X-HE-Tag: 1788537704-413889
+X-HE-Meta: U2FsdGVkX19PI6n7SRJwAyX82QZ7/YtFZs4AtGMw6eQo+sGw0An9M1Gg9duEhL/Us5VL2QfslU1CIsj3NqTdrLNm5UPgyTFQqbga3GA7vBHiM+AURqEBcE7fwaqcqxZWakIn51mDoPC/qg/buv0XZUiMqVTj57cuv4Ud2qTMSrd5qLrFgS7jEhW0g+Aj7GYbJRyRui17T3JPAQWzUoExcKH1figYLQ1aH46cPLvP7MfewZQ8lUEe2yZRVIKaox7kGBonj7ycSv0AyJtr3Fl6tCUmO0/e3y+LdJQkTo/fTzlgKH0haHLVHuSf3rqTn22DirJs37heMNDz09JWdXDZGLYMvTQgL1rpk8BKAC0lzCflye6g5AyOPSZChiWVDbs++7lvbRk+FBaX//u5TzQkpDiU0kmWUNTdEZT6rHMHfKhvvam3TN0NR/3rynCqDR2r7eNtjPKmjC8GY1W/5E9YesuT9rEbY+pNtiKpaIMSALE3/gEciQ++JBbP7trmdQAKGtrEprWcDo3H+A5QTcx2G8ZO91LLuc/9L1by9lEWnDwOgiO2VvRaW5mcE0EORUf5N9crmWqlA2LicL4mqUurGTM3WXr+SBFknpWZfAgoxYxDbR4MBJvl8CmqLf738T3Yh/38dYOLIIQRuWIe+d+2zFsBeCMk04h62apN0hi/MxEv9uNZTo5Wtk56+BxpMflfWsal/Qcz0M0pP10CG3j/i/GSYu7VC+5wnnYAX6YWoS+laKeln5M117MD+1tqyEXJAWT+4xxmoeQtdwhHGQzIPLLEtMcdrfc76uFF2OSL9f+YVuSN68DYqBVtAO5ws5jFIqywnnX/L/u9F5hNjPbbr88EbPFYDnY+OYEAsp1MC/HXY43judI3FZ85ZZ3E0cGMeEqoO35oImxt7xa4r54laCHAvORLnSBwqZ4BDF8icWygkuodKeTieAZhrHIrxlRIVFF3Psxx/zgUgyRodpj
+ PfegjBgX
+ qxFwfs6qLU3vCH42DWgIprSc2msDy7t4n7nGEUY4TB0nJgSrgefpk1xVtDopLGLs/hYoS1V3UiJks15/CMoaqGVXXQSS4ERAZ9RQ33sUqGfqCO6y2P+6GLrpMalVKBa0nyVXys/jXeG6D6buDeRvGU6N+hrjxxzBL9AINr+ZDb5HtmxM2WO3Tz3tJLrdVGHgV2Fp0Dn8aS59BS/PPhwDe+FUDUbXxbf3WwtdP+Y5t7uZvpStN23ubGgk74+Ph4YrhSHHpV4vo/uOHxGDWQoFS6ZPG3rXW3hKlX943DyY/0Ho1rEbIdG/TCT212VH+/n7MUiRsKBHwleg1yPUT75ZjfN9MVRNGgQNZ4SAk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,33 +95,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 02, 2026 at 07:34:49PM -0700, Logan Odell wrote:
-> We're including maintainers from all subsystems that currently is or
-> will be expected to participate in live update to ensure alignment on
-> the path forward for compatibility.
-> 
-> Currently, Live Update Orchestrator (LUO) and its file handlers rely on
-> monolithic compatibility strings (such as "luo-v5" and "memfd-v1") to
-> validate ABI compatibility across kexec live updates. Any modification
-> to serialized structures requires bumping the version string, which
-> strictly breaks compatibility between adjacent kernels even when changes
-> are additive, backwards-compatible, or optional.
+On Fri, Sep 04, 2026 at 04:24:59PM +0100, Pedro Falcato wrote:
+> On Fri, Sep 04, 2026 at 04:12:53PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > Currently MADV_WILLNEED treats file-backed and pure anonymous mappings
+> > entirely separately - using POSIX_FADV_WILLNEED (equivalent of a readahead)
+> > for the former and a tree walk and swap in to swap cache for the latter.
+> >
+> > MAP_PRIVATE-file backed mappings straddle the two and currently get treated
+> > as if they were purely file-backed, meaning any swapped out private pages
+> > remain swapped out.
+> >
+> > Resolve the issue by explicitly checking for CoW'd MAP_PRIVATE-file backed
+> > mappings and performing both walks in this case.
+> >
+> > Since the logic checks for vma->anon_vma this means un-CoW'd
+> > MAP_PRIVATE-file backed mappings retain only the single file walk.
+> >
+> > Reported-by: Mike Kaplinskiy <mike@recall.ai>
+> > Closes: https://lore.kernel.org/all/CABeknB_S2XJSHFgnHdgnN0rjzHhH4oQJs_APq9fvxHztQ_pgiA@mail.gmail.com/
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > ---
+> >  mm/madvise.c | 6 ++++--
+> >  1 file changed, 4 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/mm/madvise.c b/mm/madvise.c
+> > index 73c2901b9adb..d0510dd49dde 100644
+> > --- a/mm/madvise.c
+> > +++ b/mm/madvise.c
+> > @@ -297,10 +297,12 @@ static long madvise_willneed(struct madvise_behavior *madv_behavior)
+> >  	loff_t offset;
+> >
+> >  #ifdef CONFIG_SWAP
+> > -	if (!file) {
+> > +	if (!file || (vma_is_cow_mapping(vma) && vma->anon_vma)) {
+>
+> Couldn't this all be simplified to
+>
+> 	if (vma->anon_vma) {
+>
+> ? swapin needs anon pages to have been faulted-in. Non-cow mappings won't
+> have an anon_vma, nor will fully empty anonymous VMAs (and that's fine).
+> Right?
 
-That was the intention, I aruged strongly that upstream does not want
-to maintain a CSP matrix of endless kernel version combinations. That
-is far too much work to push on maintainers. Upstream would do much
-less, maybe only same-version, depending.
+Hmm good point :)
 
-> This RFC series transitions LUO and subsystem file handlers to use
-> granular feature bitmasks instead of compatibility strings. We replace
-> the compatibility string with a header structure that includes some
-> reserved space to define the features that are included after the
-> feature.
+Though the
 
-The compatability string is only a small part of it, you also need a
-serializing ABI that can handle some random mixmash of these
-features. Ie the various TLV schemes that were all proposed. What is
-the plan here?
+	if (!file)
+		return 0;
 
-Jason
+Would have to be outside of the block to avoid an anon unfaulted (nop) from
+being skipped.
+
+And it's a real improvement to have unfaulted anon skip...
+
+But I find that version is documenting what's going on a lot less.
+
+Since both anon and MAP_PRIVATE file-backed are CoW mappings we could just
+reference that.
+
+Andrew - could you swap the patch out in-place with below? Thanks!
+
+Cheers, Lorenzo
+
+----8<----
+From a706374a1186b6b4409a0e760e8728bcadba0c96 Mon Sep 17 00:00:00 2001
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Date: Thu, 3 Sep 2026 20:08:39 +0100
+Subject: [PATCH] mm/madvise: swap in CoW'd MAP_PRIVATE-file mappings on
+ MADV_WILLNEED
+
+Currently MADV_WILLNEED treats file-backed and pure anonymous mappings
+entirely separately - using POSIX_FADV_WILLNEED (equivalent of a readahead)
+for the former and a tree walk and swap in to swap cache for the latter.
+
+MAP_PRIVATE-file backed mappings straddle the two and currently get treated
+as if they were purely file-backed, meaning any swapped out private pages
+remain swapped out.
+
+Resolve the issue by explicitly checking for CoW'd MAP_PRIVATE-file backed
+mappings and performing both walks in this case.
+
+Since the logic checks for vma->anon_vma this means un-CoW'd
+MAP_PRIVATE-file backed mappings retain only the single file walk.
+
+Reported-by: Mike Kaplinskiy <mike@recall.ai>
+Closes: https://lore.kernel.org/all/CABeknB_S2XJSHFgnHdgnN0rjzHhH4oQJs_APq9fvxHztQ_pgiA@mail.gmail.com/
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+ mm/madvise.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 73c2901b9adb..963337f93a7a 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -297,11 +297,12 @@ static long madvise_willneed(struct madvise_behavior *madv_behavior)
+ 	loff_t offset;
+
+ #ifdef CONFIG_SWAP
+-	if (!file) {
++	if (vma_is_cow_mapping(vma) && vma->anon_vma) {
+ 		walk_page_range_vma(vma, start, end, &swapin_walk_ops, vma);
+ 		lru_add_drain(); /* Push any new pages onto the LRU now */
+-		return 0;
+ 	}
++	if (!file)
++		return 0;
+
+ 	if (shmem_mapping(file->f_mapping)) {
+ 		shmem_swapin_range(vma, start, end, file->f_mapping);
+--
+2.55.0
 
