@@ -4,101 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC196C624D3
-	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 23:21:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF04CC79F82
+	for <linux-mm@archiver.kernel.org>; Fri,  4 Sep 2026 23:59:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75C436B0088; Fri,  4 Sep 2026 19:21:16 -0400 (EDT)
+	id 81A7E6B0088; Fri,  4 Sep 2026 19:59:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70D3E6B008A; Fri,  4 Sep 2026 19:21:16 -0400 (EDT)
+	id 7A4886B008A; Fri,  4 Sep 2026 19:59:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FBBF6B008C; Fri,  4 Sep 2026 19:21:16 -0400 (EDT)
+	id 66B746B008C; Fri,  4 Sep 2026 19:59:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C6046B0088
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 19:21:16 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2B936140250
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 23:21:14 +0000 (UTC)
-X-FDA: 85177652868.02.AB97611
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 837DD100007
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 23:21:12 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=PF8UcNeZ;
-	spf=pass (imf14.hostedemail.com: domain of 3Z1KbagcKCNQM54B8F46EE6B4.2ECB8DKN-CCAL02A.EH6@flex--wfelipe.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3Z1KbagcKCNQM54B8F46EE6B4.2ECB8DKN-CCAL02A.EH6@flex--wfelipe.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 45AAF6B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 19:59:26 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CC0D01C18CA
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 23:59:25 +0000 (UTC)
+X-FDA: 85177749090.11.34CB2D9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 374B040003
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 23:59:24 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TO2wh+yi;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788564072;
+	s=arc-20220608; t=1788566364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=kJKXKrq7yq1xNiVeL0CLanUf8ioKHs425feCWZPQVgw=;
-	b=7MLpGiJ+XvXpRMIBLirS3fhkdOM7oe6j24YBdPLxE3gXuAaWMBEE3vT+YI7y/srRBkMdN3
-	0sj2fDk2KqnC6hyjYL1gEw2ALx3cCtFoU+tBrgAMZzpOkYZQCWXBJANJzEsrclxjfzKHWp
-	FC7G/kQ4DiJOSD2NMSFd5yAZHBZvsi0=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=PF8UcNeZ;
-	spf=pass (imf14.hostedemail.com: domain of 3Z1KbagcKCNQM54B8F46EE6B4.2ECB8DKN-CCAL02A.EH6@flex--wfelipe.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3Z1KbagcKCNQM54B8F46EE6B4.2ECB8DKN-CCAL02A.EH6@flex--wfelipe.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=q6CYCkPfdGnTvONd8HyYxDOWKWY6Ru41NtJnnGeiMOg=;
+	b=Bhmfge6UsZVQwUgDC+PHxfUBtdEQkjusTMDdOjq91CGYLmQQfrgBv8ICzKKWSRUH5oCQLJ
+	gaYoz92iP2VFrGPRi0HuehILULp8go6H7vwybvzCGQ7wELPHZHVsKWxt0kM1FFKIpzYQSa
+	IXfWK5Tb0vL3zCnEYjIFJjGtsDwk2nY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788564072;
-	b=OM7uP3hgZ9umk99IEr1QCPihJuTQf3g5egM1cD3XTzOZ7lfaw1QDMQjkURKVYS3g1K2ETH
-	y7fI4vifC/TgpaJ0ol9/yhSaRfIcpzoLSDLGTJ/j5BYzVV8MzJaSEESftBIHiRs0gbzP5x
-	khO3fn+kXdK1Aj3TqOkPW1yUUO9Q1Ns=
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cbedb8673ceso1317458a12.0
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 16:21:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788564071; x=1789168871; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kJKXKrq7yq1xNiVeL0CLanUf8ioKHs425feCWZPQVgw=;
-        b=PF8UcNeZSUm8NdM0TfvnaX07mkw7j4Bn/8ZXW7UYvjq+OntszCAOR41C0FIZAyVBgm
-         HekDVu5H9dMBZBpHneeolTMp1zK9bGeJIrCkyEmofl9x9OoPreXvi3aK+xx95mifYmvG
-         z2Faco7UCX1qtR6VDKMTX7uGVtSxSwto4GFgeBB79z3XjU8iV91N+y9tZ5ZfaTOmTSeO
-         fLlKCPjdeWemZ6xLPbNuercBTuvXBpogFYMnLVyIjQ+nNViZa4zHnGljwMrxA4jqsP5Y
-         6zHaMQqgIL7A8x9cMzQ0taMe5C8PoN5KdfvUFBvqai6FjZq5XdUtkRtYLg4XXNLASVmE
-         lsdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788564071; x=1789168871;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kJKXKrq7yq1xNiVeL0CLanUf8ioKHs425feCWZPQVgw=;
-        b=df/jeMZ9D4zKzpU53KJ3G7aF8nhI40wFTukgDvF2eV/PlRMgWMf2m9rcpSAHv6SMA4
-         kyFf81gJTF23hQOrIyOvSCB452duXp7DwyMM8hhYRNvD+qAGC3I/rRr5FK5VDZoq6wX9
-         K2eY1XrCZ/kQwTzzvU/XnMOD+I45Iy5oDCZl51zA7wRMcO4awP7XwS2H2wmpf5xR/z0I
-         mkQEo5w0jF6oNFJiRJJUKKHxYxpm6KjTJMgmkjOJInuPhVk71Tg3cdRcKcX4Ryh6U86O
-         pqY2ESNhzJAVghd9isqiOgFmv4DSGk+zPKNN1T4ZR2d1L6SXYYJcEpko92D+PFYrI0nk
-         pkUw==
-X-Gm-Message-State: AFuF++lv07dvzawguISJgkMsVFbhqAr7yi4cnD7/+C5ljlewz2vLwnsU
-	6/JgM6P333Cwv0b1KHlz6Rf1xJtfdiMEEUgrAfFQzLjm8VEgovAIQ91Cc60yPOFlHXthVmyCowf
-	pMgv8qtAcpA==
-X-Received: from pfux26.prod.google.com ([2002:a05:6a00:bda:b0:84e:1951:8efd])
- (user=wfelipe job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:8009:b0:852:3726:dfde
- with SMTP id d2e1a72fcca58-8616809429bmr12694250b3a.9.1788564071116; Fri, 04
- Sep 2026 16:21:11 -0700 (PDT)
-Date: Fri,  4 Sep 2026 23:20:47 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.979.g7e5102b832-goog
-Message-ID: <20260904232108.3034333-1-wfelipe@google.com>
-Subject: [PATCH] mm/zswap: convert zswap_store_page() and zswap_compress() to
- take a folio
-From: Wilson Felipe Pereira <wfelipe@google.com>
-To: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Wilson Felipe Pereira <wfelipe@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 6watow5x8i6roth7cubxqzg6hmddrtfr
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 837DD100007
+	t=1788566364;
+	b=6TP0fwHnVr4Ys4VSLesaN4C/rR2iMF1Z7bo41YL+pUVxwYO/XEZDTj3YVAIszKmuVnQnMc
+	DROE8/+JG7+w8NCYQl5Rl7QptqENekTke7T++DSSzTsZD1I6XFIkpg6lw3XSR2jYHk8ThP
+	kVhYdSej39aUrirzn50O2+DUs+HqL5Q=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TO2wh+yi;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 81F25600E2;
+	Fri,  4 Sep 2026 23:59:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFEB1F00A3D;
+	Fri,  4 Sep 2026 23:59:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788566363;
+	bh=q6CYCkPfdGnTvONd8HyYxDOWKWY6Ru41NtJnnGeiMOg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=TO2wh+yiKuCY1xzOsag6p5uyZOXkGCKAu9zZFjNh15nMGEvsNeP3JUEKP/3W6gy4g
+	 WbwV4TwI9PmwEOMxdK1pUyUclBKMjDYdCkbwfZPK+g7Mjk/SPZCKrCzozGJzrPSp0n
+	 5bv8HIAON+IMF62uJcQs+DduMLKa6eaNblScfGB/m50OIaNQGqCJ6XrKD9sUPZ9/3Y
+	 Mh2J/WDXU7wQzlDDTU8ydWzWZ/3yb1jHO2u+4ILT+G4ObOjIq0e/Iq83JxXY5o39KW
+	 r9afyp+V+wiGXbaD0D3k1ylmzO1hUcXV5jqLlW0/m5JA1OXOzbSXrS7qOJQT17lHju
+	 uv+gfGJJnXxmA==
+From: SJ Park <sj@kernel.org>
+To: Hemanth Selam <hemanth.selam@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-arch@vger.kernel.org
+Subject: Re: [PATCH 1/5] asm-generic: fix typo "explicity" in comment
+Date: Fri,  4 Sep 2026 16:59:15 -0700
+Message-ID: <20260904235916.67459-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260904104854.25272-2-hemanth.selam@gmail.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1788564072-675747
-X-HE-Meta: U2FsdGVkX19L2B61uPQEnvH/6q3vFvb5XMUB1igzuOZwy1C4zUyXvKbzBD+3pL9JdzukjGlYpy5bGtol6eZlzXh0bYhFledCOj6JxjzcwHujR+EAwrXJhqbR7R3hMheAkY6nteZW26lixU5X4bTIygdDucHT+4phTh600ydgLdoTc63e/UoFXekBiH4D4SJISFbHTaQ/ReYtwefoCUhmo4F9lm6XF2r68Qbiv6X+npAP7X4/FioO8JDmPLa7/yLlg7ye+vmgVfeeREyokCH9KLo8+0hPnJq80H8tboxFuX7U9/wngIoUrbalSMQN7eo65aVHmpMi6XHGRPOYtVNjPkUgpP0i0X8nrFjAvCd3Swayk1GJUlPsEku2aCg4D6Z85ke/1kFrraFt9//BCXRLFVcb0fDiBwVcCVOMDAXJUd3W5mLs2sg3rpPPQw/GAPvRqLGn+SWYHXG10DTCsFNAV7wzgbz0ec4rrKflWhakprEZ7KSbfBbpVThLDV/HX/b++sobaWCRsLQJqJ2ZemqMotp7ALvd4foMR9hfoeRJW56SxXnUyEGjgitkrzH/o4mYsqGfVJ6kl6d/PT+zdXletNofKohtiOuA1iLmGgHvWXCc53CIpH+PBDCEWbEkSwDx9FP0iYNNxGs4gn5Z3gEDHj1tXZe6pIMOqOANhu5vlIo4a2FwbZXb584aa6hQ0edOMjh+v/kBxAPkHIVvkC2P8Pf0dR1vJSBdmB3QQxmNKslVpdhPZgvldce+wkXgObfo+f9c95v7Wxvug9a/rXiMrhjKVEsbrycvEGrPzN/e8RauG6mwozBTiszS+OqQhOUkZs4TvGcjjcrTJ/JhdQosDlIRBM2BtLHoXHX+3pAvD0KopNZLZ+0B5qUezsMXqkBgdVmFGKN8hZ5TutjPEjBMTjxCb89kld/i+Bn8L2Eg4Z6Cia+hhmqwGK0E2ZQg5fZT/miVnt+FPiTRC99G3+s
- AAo2NpFn
- 18vEBT6fxNmYjy9igqI0/MHV+LieilP9Eq8teTute0/frl2d8X8v7hCNIUeNkKSeOnFFzoXOaZZo2fPksXLFOcCsYEPp+i/kVe5nxuQKsVQ+MVQ0u37KnIwwaMC7/C6bS3gvlIiFH9pf2AfoU+rzPrq3YcrG3OJ3W4OUSaDSiuIXnyTLmDCbQZ/820HNQTRMGzAuwfYUo1YarRxkHvAJnvVwfOqz0SPugCAghbP2aacqJxFnrjoOBAwGiJ7PbhlfHS80U/cVkwIrwYT9l9Q9aHL1Baw+m0pPGzBTFbt9TEyTn5lXnA0TzT1jqDMczr7wt7Uwwz6EbQKbEN26XGkuypWK9ohDxYE6YG6YcYFfp5DFscw+mDHcRegFdS8Hwegt2Rmg2brANKCKrJcH/CmSWarCyCUOADzwsSb/krFBmIdcuC7vtZTwAQYyylJofu+vaKMl7upPYUheWMAEKr9ogqyi9tOuS9SaDKwb44SaW3UfcMrNARWbhr/7PO8zFn5uo99vAPCbZhBQyGPshm/D+I7RE7aNIxeDQ4BPZcp+GHGNiR8W4z//jaUtfLjMyLVgEuYZwlphdomazkj45AOjTIJnbR3o7crSFxt4u0RLrVgSIbwDJJg8j9kog6hY2WwhqJJtT
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 374B040003
+X-Stat-Signature: or1ajp4c8bugx73776xs6zofbs37xjfh
+X-HE-Tag: 1788566364-305960
+X-HE-Meta: U2FsdGVkX19uifXZSv/wrB3CFP3SQKu0w7sYHHel3Lh716gkOwQji4nHz9rBn5eflFjkYHwntYSvvBiKpQ1DzI886X5/P3WVLKBAScDqUSIt+jrJVHLkkBLekkyvxyABcCFofxbx4kHHD5w+1ejVA/jP9wHNBxNs4lSHuFW8lbjmjhq2oESe6Y/f6EtgL1ia+kUewQOxNYNq1KDgOz+193d/jkBtClA3HZIfzIVGc8FEGbF2EM+m7L9T2CZhpKqml8NB80adUXC2NygAPCHKvoqlS/6n1AmJakiYeh8sqx0CPuetIT00rqolSTdlyVdWstF+tZ0jYPJWq/X8GJ4Z8PjKxHFNA6M6Bcgs0HFStPkwbLtuH/Ky3di5WqZRdATI6qK+liXqO9tRF+GUOEIpv7Vs6NXRRRpEB3NUNZwEYop6AgeDfIhDrZBSJI4Gz3dDk3JhUp9hEyhrtJ16X0cLl68NJknHKLDi37StNsZANnGH1aXfBGo5DBkosa/AkyLFZmopASIzk+a2TxBp4CnPJyzmxj35fAcDbhjpA7QymaRhzTvAfb9Byv0ylewvy+n7K09soaKLMMZ6qkItEF+oxTX8mLwevAn+IcJE8nTp2getDgFy1vZ5BaEblMPk3RE9Xy+lfUfkZAABfPJvCmvHUA1nLYwPiqeSjF4SqIZKNogg2uBO0WOCm/O7Y3hV8FsFtXof6TldhG8PtfSLrbGRyGQC6OEglipmj9aBgBIbMI87dIkpx6NNvan9rfZAulXBG2fBgjkNEHyAeeo1de489pKGqzz7xKSTdd2Pa4rqF+Mkk4gZ/KQnfVMfS2mtmszpIPM9lMdSVf7eITbCW4iE0/gRLa+ncsJNF/AXfrQjghhX0YBzjy8TYLR0KyPlzjM/odu3Imnki4m1jvZ/cEBbDKgxNa791kRu1pcG9wmH9sfh1BI4TL+9rW6BleksuQp/BYzhXz1Px2QnGu4PDUA
+ JWO80ZZ5
+ N1yPwzxR3kd8dXsGb2GghVOmJRZ2M4m8rxNn9kvtX2XQzEObiWajLTGyeEllKtDKZOPN06b6PTI+9oQvuz0DDyjKLdqLJkyK0YibrwotMDulYhqsi42aJIbGjzmHqLBmNSGe0BXjz4YjBwUQPOUApzI+s5MNMriVV7MutkFVyUz+IxAd+qOMfuxEEKdbLgtsmhLETIBcw05UGEA4BrjOg/i9+wqW1TI4nOsBdbMIE2wqbB0/kH4bJP2oNi72bhA4N1MPEifoqzhc6BfOn8UAiVOefJEOJYaIfr4a2F2l8qtaX/c5C3EyfcMsJftg7hjUSxdIoBhrfik60KOg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,113 +99,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, zswap_store() iterates through a folio and extracts individual
-struct page pointers using folio_page() to pass into zswap_store_page()
-and zswap_compress().
+On Fri,  4 Sep 2026 16:18:46 +0530 Hemanth Selam <hemanth.selam@gmail.com> wrote:
 
-Pass the folio and the page index directly into these functions instead.
-This eliminates the need to materialize struct page pointers inside the
-zswap_store() loop and replaces legacy page-based accessors with their
-folio equivalents:
+> Correct "explicity" to "Explicitly", reported by scripts/checkpatch.pl
 
-- sg_set_page() -> sg_set_folio()
-- kmap_local_page() -> kmap_local_folio()
-- page_to_nid() -> folio_nid()
-- page_swap_entry() -> calculated via folio->swap and index
+Too trivial, but 's/explicity/Explicity/'
 
-Signed-off-by: Wilson Felipe Pereira <wfelipe@google.com>
----
- mm/zswap.c | 26 ++++++++++++--------------
- 1 file changed, 12 insertions(+), 14 deletions(-)
+> using the misspelling list in scripts/spelling.txt.
 
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 37f34e406c8e..225308c195c7 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -837,8 +837,8 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
- 	return ret;
- }
- 
--static bool zswap_compress(struct page *page, struct zswap_entry *entry,
--			   struct zswap_pool *pool)
-+static bool zswap_compress(struct folio *folio, long index,
-+			   struct zswap_entry *entry, struct zswap_pool *pool)
- {
- 	struct crypto_acomp_ctx *acomp_ctx;
- 	struct scatterlist input, output;
-@@ -854,7 +854,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 
- 	dst = acomp_ctx->buffer;
- 	sg_init_table(&input, 1);
--	sg_set_page(&input, page, PAGE_SIZE, 0);
-+	sg_set_folio(&input, folio, PAGE_SIZE, index * PAGE_SIZE);
- 
- 	sg_init_one(&output, dst, PAGE_SIZE);
- 	acomp_request_set_params(acomp_ctx->req, &input, &output, PAGE_SIZE, dlen);
-@@ -883,8 +883,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 	 */
- 	if (comp_ret || !dlen || dlen >= PAGE_SIZE) {
- 		rcu_read_lock();
--		if (!mem_cgroup_zswap_writeback_enabled(
--					folio_memcg(page_folio(page)))) {
-+		if (!mem_cgroup_zswap_writeback_enabled(folio_memcg(folio))) {
- 			rcu_read_unlock();
- 			comp_ret = comp_ret ? comp_ret : -EINVAL;
- 			goto unlock;
-@@ -892,12 +891,12 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 		rcu_read_unlock();
- 		comp_ret = 0;
- 		dlen = PAGE_SIZE;
--		dst = kmap_local_page(page);
-+		dst = kmap_local_folio(folio, index * PAGE_SIZE);
- 		mapped = true;
- 	}
- 
- 	gfp = GFP_NOWAIT | __GFP_NORETRY | __GFP_HIGHMEM | __GFP_MOVABLE;
--	handle = zs_malloc(pool->zs_pool, dlen, gfp, page_to_nid(page));
-+	handle = zs_malloc(pool->zs_pool, dlen, gfp, folio_nid(folio));
- 	if (IS_ERR_VALUE(handle)) {
- 		alloc_ret = PTR_ERR((void *)handle);
- 		goto unlock;
-@@ -1405,21 +1404,22 @@ static void shrink_worker(struct work_struct *w)
- * main API
- **********************************/
- 
--static bool zswap_store_page(struct page *page,
-+static bool zswap_store_page(struct folio *folio, long index,
- 			     struct obj_cgroup *objcg,
- 			     struct zswap_pool *pool)
- {
--	swp_entry_t page_swpentry = page_swap_entry(page);
-+	swp_entry_t page_swpentry = swp_entry(swp_type(folio->swap),
-+					      swp_offset(folio->swap) + index);
- 	struct zswap_entry *entry, *old;
- 
- 	/* allocate entry */
--	entry = zswap_entry_cache_alloc(GFP_KERNEL, page_to_nid(page));
-+	entry = zswap_entry_cache_alloc(GFP_KERNEL, folio_nid(folio));
- 	if (!entry) {
- 		zswap_reject_kmemcache_fail++;
- 		return false;
- 	}
- 
--	if (!zswap_compress(page, entry, pool))
-+	if (!zswap_compress(folio, index, entry, pool))
- 		goto compress_failed;
- 
- 	old = xa_store(swap_zswap_tree(page_swpentry),
-@@ -1528,9 +1528,7 @@ bool zswap_store(struct folio *folio)
- 	}
- 
- 	for (index = 0; index < nr_pages; ++index) {
--		struct page *page = folio_page(folio, index);
--
--		if (!zswap_store_page(page, objcg, pool))
-+		if (!zswap_store_page(folio, index, objcg, pool))
- 			goto put_pool;
- 	}
- 
--- 
-2.55.0.979.g7e5102b832-goog
+Again, too trivial, but I think mentioning spelling.txt is not necessary.  LLMs
+might disagree.
 
+> Only touches comments,
+> no code changes.
+
+Anyway good catch, and looks correct to me.  Thank you for fixing this.
+
+> 
+> Assisted-by: Cursor:claude-opus-5
+> Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
+
+Reviewed-by: SJ Park <sj@kernel.org>
+
+
+Thanks,
+SJ
+
+[...]
 
