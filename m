@@ -4,124 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF185C79F82
-	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 02:43:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AC5EC79F89
+	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 02:45:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 936EC6B008C; Fri,  4 Sep 2026 22:43:21 -0400 (EDT)
+	id 1C0566B0095; Fri,  4 Sep 2026 22:45:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E8386B0092; Fri,  4 Sep 2026 22:43:21 -0400 (EDT)
+	id 1715F6B0096; Fri,  4 Sep 2026 22:45:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FDBC6B0095; Fri,  4 Sep 2026 22:43:21 -0400 (EDT)
+	id 087EA6B0098; Fri,  4 Sep 2026 22:45:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5808B6B008C
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 22:43:21 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CEDCDC01FC
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 02:43:20 +0000 (UTC)
-X-FDA: 85178162160.06.34871B2
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 1157980002
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 02:43:18 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LI9txNpV;
-	spf=pass (imf30.hostedemail.com: domain of sef1548@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=sef1548@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788576199;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C9E106B0095
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 22:45:11 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 38EFD1A01ED
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 02:45:11 +0000 (UTC)
+X-FDA: 85178166822.21.2EC73A1
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013024.outbound.protection.outlook.com [40.107.201.24])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 7349F180004
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 02:45:08 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=my10TE+8;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf24.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.24 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788576308;
+	b=e24JWSZK620hDlvrnWfDK5fQEUhKPrIZS3IqUieM/lifULkIgGU1YAmVLP3IzD/nc/4Mqs
+	2PsUXyDvBabWl31Nwjgcm7/VBm40MXz0lV6XzHOyZvMUV0x0QNVZywTEVUeuEA3h5YgeMz
+	m+rozVxFe4h2FtLEYnMvocvgkYPpNx0=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=my10TE+8;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf24.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.24 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788576308;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nN1oOZhHFA6iOMNOJ2Qu+h7C5QPyvLKsSkfURb8yDX4=;
-	b=u8mWqlBgpCm9dmqeLI6/UdXnbiisOgarPGxCzNxp0kgEQb8ccbkVnQZQ/x+4i7/G42jWxb
-	1IQu51A4N+73lkocMt/zL7OfYFoG4nW75xwC5mDhJzR/pG7EUodFzN1728B3jNdJUUjLnv
-	R0UrzqJMdZ72GCHAJd0/p10VGfCGXHU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788576199;
-	b=T84W4iu3m8uwEPW9rgf8tFjR88W69H25jIl7vztjhFDG7WZ8W0OyNIjkYXyZd/JUptjeTf
-	vk1PRz9UJjBxIcw4r7t+3vEyl4Q4rK/Oc9Mr+uRhfJ9kIyp/WHUPGaC0cewF3gIrPhLWXI
-	jLH390GjnogZSHfzno3/3qeFmtypg30=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LI9txNpV;
-	spf=pass (imf30.hostedemail.com: domain of sef1548@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=sef1548@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38dfe7eb825so1359804a91.0
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 19:43:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788576198; x=1789180998; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=nN1oOZhHFA6iOMNOJ2Qu+h7C5QPyvLKsSkfURb8yDX4=;
-        b=LI9txNpV77ZmrUSEBoTyEHcOV0xULhigi0ijlOmEE1aUSEmRR8rCoSgM18t7DhIvI+
-         W+QEco/6rv8gXSPY0vXOk1c4xwV4T76p1PzXRFjfH88Vze+vSPkaIE+mzwbLfVsSC9Rj
-         K3WQ8MWpjIMLnK2BZFraUQ/dHvNY06H8gqvH989ejpl3O15VRZYDFeg5kG5Qsb5BayVq
-         gTReq4qS2ehCpA2lCbs8OVC/PxRgl481oW5GJq35sb/6y6KJdl1IaJOpZzeDn9EkLoAw
-         l9NkT40bIiFh8huqAYwAUHINuu4EtV+UAORaJcAzsTlfoxsq5+LR6jA6Zo19gDOcG49r
-         vS6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788576198; x=1789180998;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nN1oOZhHFA6iOMNOJ2Qu+h7C5QPyvLKsSkfURb8yDX4=;
-        b=QsiEz1YlH6SC9KreNKAHwhK296r8Zk7Ycu5dsz4Uv8ZxhGX+UXzzNjabtXegdCt+vJ
-         BwF8Yz3kc8TJA4SgGZHqg/q6xwyl3/aepE069Cm2dvx3s5h3I61LDQEHtUKWQ52Kth8S
-         t4oBq0HsIUdjQUKgxbRTFnBtaf8dmsaI6QB6tfCJzpvH43Vju1KWHaDcHoa6fCmYg1dX
-         gfcw1CQV1srat97tiiAiCukPiaOguBKqdoPh2V4FiZGjNlb0dtU1TT2JUicHN3mVQ8Gv
-         0iytaH9diXfImYG/77KKA6+EfK96pLfTirKAGiwmmSgZvaUmdgG3/OgxlPfkLA5rsL1/
-         Q6xg==
-X-Forwarded-Encrypted: i=1; AKwUvBw0GNVzJMPxR+gJWZMq/bQ6BhF3CBZThrTbP08aUrqebOWXwttjeepUPjIgWCz9bEoyApKnGi9veQ==@kvack.org
-X-Gm-Message-State: AFuF++m447UqycgH5VUbxgio5dpjmo9YU776Dkb4fhIEVJLVubyhS+r1
-	mK2cdb1iWXkCS5a4TKCqlL+tvx8/29yWG64KZKpSSqKrsn8lNg1RHCPv
-X-Gm-Gg: AYBFou2w4BAx4VMsFLA8ptvlSBQvJT9hRHocgB6k5tmmvXDn7BMZrEvwj/ZEAcC0GcT
-	ly3lCbXV/74UtAHYhU1WGc9ICpK6Z3X2RMbnz1M6Utan3AbRQgs0D3FGQ88QyEsfzkuBAk7Sbf7
-	az2dHdGRE8LVxKleMiRfRqrD6pOybkHiqzJLXaseTAgsDKsB9DbwQfrY0WNpSu1l0+euudf+IdI
-	S/tpwFOjAczK92UURPfv5UDDehrkV6HOHrtl9/4upOg33464jN3e+F2RfCNpOD3aoLUjzb6iTih
-	i0mjU2Z5Cm1b5kFJACo30hMkboFzVA/VuiRXscaTNKD/y1rdgnEHRQLxgKePwGaD3DnBiZwV/cB
-	So6xJCjRNdDHA/kScS1j/63W2L+NhHpy5Jy4Uv0PebbvyH8XN8I1L0olQAX4UgW6e2JdN3z4Mdj
-	RWcpxU9haCSHqRxw19Xn6bf8+SQMIHOHbOUqmCcf3fvw55N9gcH/mPUIBD7NqFY0IJVz6QuN9zn
-	qkJUaQ+Yp/epXmDnXwtATcWNiEJBBdVQ+whqrsjzvgsqgJXc4Jgr4g9QertAT2s/nbV+uxUWJfk
-	BJ6NNf25mZw=
-X-Received: by 2002:a17:90b:5807:b0:398:9be9:ab8c with SMTP id 98e67ed59e1d1-39b26229bd7mr15729029a91.17.1788576197758;
-        Fri, 04 Sep 2026 19:43:17 -0700 (PDT)
-Received: from nickhuang (2001-b400-e206-2f43-77ca-14d0-ff57-9965.emome-ip6.hinet.net. [2001:b400:e206:2f43:77ca:14d0:ff57:9965])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08d086adsm13735453a91.15.2026.09.04.19.43.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 19:43:17 -0700 (PDT)
-Date: Sat, 5 Sep 2026 02:43:10 +0000
-From: Nick Huang <sef1548@gmail.com>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: "Liam R. Howlett" <liam@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>, maple-tree@lists.infradead.org,
-	linux-mm@kvack.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] docs: maple_tree: Replace removed bulk insertion API
-Message-ID: <apuBvv2sLEKPHlQN@nickhuang>
-References: <20260905015509.76265-1-kmehltretter@gmail.com>
+	bh=2YdiYCDW0ds85cdHpCtFo6bH34eI4T8Bz1wBZJRlKbM=;
+	b=MxfWkq7sGZVBxwzNjU3lgVg+jpLfNhd53iFyncx23Zd+irTp/2ZiPuERVI/ra9Jwk6WYFS
+	JY9PnhCyikUJ90LsuoGBwGkeaUX350CfSaWOHaiv9mey5UWoAceb01o4P+fbLazTLFIsjs
+	92v50dWXnvkCJOcC3CtdEzEBror+lVA=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oCU4sinYV5IiOtGO6CZza341n+STzU8NM2+zvI6VoSvfHsub7z2ZBDp0SsZrQH+uaq50Wej/cTlazDyaJLbR+idBiBTLwLe2T6pHRA6afO+AjoZWMwUDRpzCz2cMhut4sasiZTkDEpZJbAZWDpTW7v20RSRfpRt6Nap2c1FfXdi8FLdccEXoxX38QiqKeF+2fKixf8N9yoqacCgmpgPTIxRcsMtBC39UgObKF41F7PZArFqgxIaZUNd4pJcAtnaDUxEyRSYNtTNoI34K8xaq0G7V//Wq7GH20xkpel1Um8rsTGuJF3YF57wBVO7o+2cZiHxoGe3fcRyrhGkN24q/Xg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2YdiYCDW0ds85cdHpCtFo6bH34eI4T8Bz1wBZJRlKbM=;
+ b=pEkkQxULwRQwqXwgn5Cs7J1c+/PkkF7dbv/c5F9sSO0brnDN1DSAiD8dchUbXYn47EBPV7NkWgiVNOySuxdrH92/XHv0phPMP8OTEQgGu2s36j1x3e8foc86LpuYy7BY5Evub6jGVUwu/2kkRVD/m8nrhGbQkqHFO+olern4XPeLdKod7SldDjRBOy+Q8FAGOoUlKfOp2Kpz0w/BQGjpG1wrf4ProF747EVjfsGn7d6zS7SjX9YYEMEbNypWkSqbO3vrOid6No9qIGKWoEEPrmKQBMzIQTpUdxiYrjETt4ohlrbvaNgdYXZO1y4qnbIKsNqpQPrhr/9J9Ow63GPqHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2YdiYCDW0ds85cdHpCtFo6bH34eI4T8Bz1wBZJRlKbM=;
+ b=my10TE+8eHvya81QJ8U1AhnKmNz5zSDIZKI6gTH/WaCRPlJpAKS7NDRrnwhbZwIVgUc6hBmAB4iJndZDx+Yc3WIR3IHiR1A16VMw3FfNpOVp/hYaxhJ0UwzZTNJ+JZy6m4q9FSFQsFX31/Mf3gfOe8R2sOcshjaV+aXjO0eW26TUgAwJRCEDaHJF2Ypvwp4i175SMony0NYdTy/IU/DtVCqU7Zojpx3DkBTGGEm5XiOAf2+tWAVNOY768Id7XmqN00S/XrXF3dYZ7m7hUQigHBHCKkbret3tGaSijZMYx7jFBHDuMA2Zbo/7zojqnmtVjG8E7RQOtP+h2KSzbzYkWw==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by CH1PPFE5ACC0FD2.namprd12.prod.outlook.com (2603:10b6:61f:fc00::629) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Sat, 5 Sep
+ 2026 02:45:00 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0360.008; Sat, 5 Sep 2026
+ 02:45:00 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 04 Sep 2026 22:44:58 -0400
+Message-Id: <DL71DSES00K6.5JMVM0IJLPHP@nvidia.com>
+From: "Zi Yan" <ziy@nvidia.com>
+Subject: Re: [PATCH 05/12] mm/collapse: state what a collapse may do in the
+ policy
+Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <kernel-team@meta.com>, "Baolin Wang" <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <liam@infradead.org>, "Nico Pache"
+ <nico.pache@linux.dev>, "Ryan Roberts" <ryan.roberts@arm.com>, "Dev Jain"
+ <dev.jain@arm.com>, "Barry Song" <baohua@kernel.org>, "Lance Yang"
+ <lance.yang@linux.dev>, "Usama Arif" <usama.arif@linux.dev>, "Vlastimil
+ Babka" <vbabka@kernel.org>, "Jann Horn" <jannh@google.com>, "Kiryl
+ Shutsemau (Meta)" <kas@kernel.org>
+To: "Kiryl Shutsemau" <kirill@shutemov.name>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>,
+ "Lorenzo Stoakes" <ljs@kernel.org>
+X-Mailer: aerc 0.22.0
+References: <cover.1788533997.git.kas@kernel.org>
+ <b01681c3cc945a7f7c3c7ca1de502f7cc0e93fe8.1788533997.git.kas@kernel.org>
+In-Reply-To: <b01681c3cc945a7f7c3c7ca1de502f7cc0e93fe8.1788533997.git.kas@kernel.org>
+X-ClientProxiedBy: YQBPR0101CA0267.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:68::27) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260905015509.76265-1-kmehltretter@gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|CH1PPFE5ACC0FD2:EE_
+X-MS-Office365-Filtering-Correlation-Id: fb90b19c-69af-4dec-faeb-08df0af7ae03
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|11063799006|10067099003|4143699003|22082099003|18002099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	1BIL/gSwww0dzMy6qQ4m/rCPwrO9q1JIiouon4v8KwbiL0qG2noa79nMmhhdQbqvXc5pdQJCfPzz5OPP9YD07MuwAqbiHxrNMeZrUXPDw97yZupSmwQqNY2ViOkeG4WWBYSymrGTEJugp8srv/HNZOCDdhnfYuyLuhslEWY0oAYUQEt61OLRVdCfIl055bHBl7a2Ye2cZ+CIg82A9faLCtsm2GooBA9gfKf4ze+CVf8WAB925nYquTglnZ78HWqy+BYwLaFfHRgPbfwEdPPXWTfYX9qxJO2VqkTxNhfbAamNLf2zhRUG5e3sIG2hzLzmwaF7cQ+2dYFIhBPBmBEley7n+dm0SaqxbEAxxV1X3K73u4q9fuvqRWHmSWnHAdRgryfMrN77jydupfr4cWo9xP6MAQiF2VGgynrAtBJaPA5zn6ZLnf2s4x5BB+7vSdGNWrib8aBwSwUdmNYnxGo+XTskqXWSNQJCmVxnYoG9NDxsxaXIK5TBbwfD9I92OsOy+aaWfsKsJTb28VnL977BnL3jEm7wp7QnbG0mxCqwB1GiCdmpHsCmRyCTURzReK+UST180gozsxENgF2Lj5xprJ1C2Qaz+lSyeXfZityCce49Pguxg4rgZFw9S1b13cDnOgyRu1xNk3/bksr6Y8dHKgrtn3bCWyRxnTrzbPZFlJs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(11063799006)(10067099003)(4143699003)(22082099003)(18002099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NjhNYVpqaHA1RXFNcUgycWtKZlltTUlIUWxqK2g1cE9RTFpZSUVyWCtLcUwx?=
+ =?utf-8?B?R084L3BRMzhHRjhtbXJnaEJvUkVLOWFJUTJGMnlFQ0NucXBqQnFIZUZyNzY4?=
+ =?utf-8?B?TUhJc0xZQmVTTHVpa1ArQzRONkJQNkxGK29pZnZ1aG05bmk2RmpXbDF4SGdl?=
+ =?utf-8?B?WnNQRVppeWgvaTQvb2xUbnBGWU5ZS1ZuNTcvblJSaWdrMUJ0SUcvaTRjY1FH?=
+ =?utf-8?B?eVJvTzRmVWRTZUFiZmxpL09WQjJQaFNuQi9HZTJKbnU1U1dDOEdlOFRmQXRt?=
+ =?utf-8?B?ekdab1NJMjZkelhudy9jdmJJbS9jZzRkcjBobUx5QUl2NmhmS2Q5T0xUS3Ur?=
+ =?utf-8?B?UEFYOUZmV1JTTnZFRm1xOGV1Y0RJRGN2eG1XbE1kTEZxSTlNUjJUTlpCazJH?=
+ =?utf-8?B?NHplcU5Qb2hGOEtWMEQ2ZHdkY3pTa1BkWjg3WnVuYlJjZVgrRG9SQ2tHY2wz?=
+ =?utf-8?B?OFlXVFZUS2ErdG5taC9pMkY2U1l3OWpQODB1RFRsRXFsL2RQQ0EwaGtLdnFI?=
+ =?utf-8?B?OGhvKzFEalhObTlhbW9IaUFTSitWbnJWUUhRZSsxQ1ZqL0U2Mk9YdjdEMmty?=
+ =?utf-8?B?em5NMnZsWGYrM3ZwZklVcXpsRjNaUmRvbUhIVEpSZ3ZWdGpCMndNb28vQkUv?=
+ =?utf-8?B?end6eVIyMktSSE5lek9xbzgwUHNQMkJiaElMRHF6OGtwSkJsN0Rrc3RiVzYy?=
+ =?utf-8?B?VlR5cE5kQnM2T3B5bjJSbndJdWt2c2d0VVNuSDBjTFZIM3BmN2duNk1TZ2ov?=
+ =?utf-8?B?N1MwOC9jTnZaTC9MTmJ2VklRSmttZDd6SUxIaGhjY2FvczhjNjBUbFd1ME1W?=
+ =?utf-8?B?c00xZWFzbTd2ZlBSRzQrUzltRHVkUWFlUWU1VVFjaHRqdWFHRzhWY3VtTW5B?=
+ =?utf-8?B?NXp0YUJ0bHd3UFZTY2JEQjBIbEY2YUxKM0MxUEVyU0E5Vi9JRTY3ckhCTXE3?=
+ =?utf-8?B?bUZkcVlGRS9aU0V2RG1BRTUyNkNYZ1FBczVmMzE1Y1lxZUtUTVJpRU1DeDhM?=
+ =?utf-8?B?WGF6TFl2aks1U01BZWpaWFVwSU1wVkJsSDBOVkdCbSs2YXc3MGN3M24rRFVM?=
+ =?utf-8?B?Ukg5QXZla2JhK1VyeWtwWXNxZDQ1RllDYWFlUDdsZFdqWjBmUDRqaGRqSWxX?=
+ =?utf-8?B?VGE2eC81VHJIR0orVVlhbzR5bmVKVWcwZWJkczBrNEJPdFIrSVhSNk1sYXdZ?=
+ =?utf-8?B?bnZJZW4zU0VpVzJPVVFFa0FWazNHYnBvdTlTV2ZsUEVsa3AvY0R6S3E0SE00?=
+ =?utf-8?B?cU44U1hMeUZCRUMxTG1iL0xDa21RMEwwendJNDRaNVZpLzRScUF6Z3BINlJm?=
+ =?utf-8?B?ckIyenBnR3UwQ1V4Z25Ockx3ZnQ4aEhndjRJbjZlRWx3NVlYcS9uQ05NdjIx?=
+ =?utf-8?B?d2RJUkRRVGFsc3YzSm95Q2xwQUdQR012RDRVQWxEQlVTMWpvR013TXl4c3dB?=
+ =?utf-8?B?S3cwQkozd0pEczRtTko3VWdnVlFEc2VNM1JvNGpON2FsSHFvbXM0WXRHOGhu?=
+ =?utf-8?B?a0x3Uyt6MzMwZlU1U255WG9BcG9oczhDS0g0VHFMdjlkL1k3cXBvdEJ5T0xq?=
+ =?utf-8?B?TjZDOG5zRFhHOEhrWWplZ040cmxuQ2ZGeVJsZmhJTkwyd1d4ZXg0NVA2VDRu?=
+ =?utf-8?B?RllzVVFYY0NUVDk0cC9GL1JjdUxnNW1JUGtZc2R1OWc1bllPR1RvbDUydnJJ?=
+ =?utf-8?B?b1FNMUlaQWUvYkc5ZzNHVDMvOHM0MitwVXlrVEV6R1dad0U5NURGTk5lbmxa?=
+ =?utf-8?B?UDFDeGxYTmxCdElVRzFtcm9iRkY5ODRKQ1k2S1BjMWxlUjkvWG1nTkZXd0tB?=
+ =?utf-8?B?dTNmMlN2eHZMblI2VzRxbnlmRiticE90M1VNOWNMbXpGdVdJQTlGZ0hoRmlJ?=
+ =?utf-8?B?ZlFEMHo1R2ZxRkFGRXFwb250enh0YkNPaUQyLzN1T3JiYnFaYUZtdEZkSkdW?=
+ =?utf-8?B?YmhRSGJxSzdQeFI4cWNkb0p5dUs2SHhXQmI2OGEvemt3dC80djVhSVpkRHVK?=
+ =?utf-8?B?a1JwZjdvdU5uaG9zbzdscG8yWXlXVkVWU0RwZjR6YjBXbUtZbEVTbjRJSFh5?=
+ =?utf-8?B?UXhRQS9BNi9ZT2REYUU3NmljTFZWSVBlUGxPSFBUZTdhdXo0Q1cvRnB1QUlW?=
+ =?utf-8?B?eG9xZDRqQTFkOXREUy9Hek5OelpmekNxSjI3aytBSG84ZGVmeUZYT2RWSTQ5?=
+ =?utf-8?B?dUE1QllYZGdhVDUxbFYzQmV2QVpVVDlKZDV3TUMzbEhwNWJNdERTSExLb2tB?=
+ =?utf-8?B?c0prZDE3N2FPbzBwYTVkSE1sQnRyVkJmTlFYdkliUWlLVGl2VElPYm9Jazk2?=
+ =?utf-8?Q?IkRoKXNHVPsuQcl7La?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fb90b19c-69af-4dec-faeb-08df0af7ae03
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2026 02:45:00.3296
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FjDu00++RhIEExT/39tMM9mLv5t32d/16LK4U9fCiKVvhDFMWl9ii+m54CWB3G75
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPFE5ACC0FD2
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1157980002
-X-Stat-Signature: wwj3axr9fwjmb8diemof8msssyjzet86
-X-HE-Tag: 1788576198-379104
-X-HE-Meta: U2FsdGVkX1/mbO83kx4QhPoa7d4amEPK3EzZGJkvWd2XaYrYKytUhvn32osqMYjvlXFnSK5s/QVVToQswU1Xf67kVTe6yaV7Gdo4Vi8DDxXHyOVv75lL4PRJqpPo9+EDay2z1Q7PdUQcTCZZ3JWV0gvqvxsTx/lU6J+6Y8d+bd2mViz8c/8W8SGcI7yXx7wFihQx0oR9NIguxiymv4g/27D+eyexkxGILgxcpOQp8vDZ+NGneZjPjcu/rMq3qz78rK7qWDxHE2QEnqTA5oi3J4Uffm7aMOb/6/DZKvWCATwYdw5bfzAUAO7ceqmMBTdzKAqo+vE7ri9mN1uOcYsfBpTIjJPHbDoAKgvTnFAeh3KP6acBqO493pDydAbrcPDLFMlXngIlDgOzkhyMJhmvHZeSqHPN0ShM16jdebHigkRwAYtwlQN24VOZUph2l5yHF3kIUL6Nb2GWJ1A5ulmzTHS/NzZVjnO0NYUVcsOSnt0e0qoypLRCuNRcE87y+ANfXaO+CCp5bnm2uzfnzhUjUuxPI1/ZnD921cnCuBolYGYnVVw/6+1nFIEXeSeym7CAS/ebx0og4eLVMFsMq06C9z9d+o4NHbW64AWC4XF8gVSrpxknoc2Wl3ROk1C7oxqArQw45NZhbc0cq/ML2YyvUOzD/pkI5UEUzHGL+t/FAUxp72O0jRRtIEH11KxQ9BlfytFqAWieD0QRV12wOQcUjnaFlxcr7ry+m6FlENkO+enyt1a07DOXVd2UN0zzLg6WqcfAfGS6YWw8z86nCmmXf+u7eRZTj3/XgroWlJooI0zvmPM33nyAPLIx2NqZjs5mnmCNCuKKN4IWhQwvbOpeoARF9B+jngm59a6YDnFRczCRCM7zUqg0Uis09IKe60ZW8vux24XClYZTJfEOjpXIVLPmKCtgVPfpeAkcDNPtkWCSAmFAZvDZ9LhxxXmCyrWG7mJIp81eGRRBii6IThD
- fb60gGKT
- I+o0dnUs8Lr6iM1RrpeyVp7Z3HiKW1hDIGrdCRDe7VbNyR2n55Q9Sl50civBziExM4RjKIEh/yMFI7lG3HdGVAAYh7O0bXROhp0UXIYrRJPOvke77CYzHK0dCQgZLB7p1bLh++ueIEgO6tzBd264gsRFXLWwbLVJoPfWfvU6CtGmrZAJm69mGvIb16a2+zIBmkehI4ezwqtOzug/qmHXRzEL+0MOxE2ilko+knsJx4SlKGDA2fz5UI0aAShjdf5sfPHFYws3toy+eEDYq2Ihqm7cahI+grSdrWdsoUnA8blRFjxYuDJkse9x1xyt9+6fUztp3cnDsim9rY/ZYyCTo96Vqgqyrvqb051wPZcvpHpZSoafiY44XmT7A2GcNvcYs6RtFSRLNHdOKXotkYUNVvKOH1PP7R6BJ43g5/mVYsYqVEFp41T3L4m3DGOduzIiok5us4C3qk8A7GWxqfd4In80eqekZdIO2zhVhFPPyUnNeQl8vCvGEaqdqu1EJ5JFL9A/drMMATb9eUVsozoYURV7xwYX8q8np7sJbtVbCBvkjPue4AiIQtk4Fbm0ftwx+awfn
+X-Stat-Signature: 4ymzoz6wkrwucyx95yxdd5eyfb3r48cf
+X-Rspamd-Queue-Id: 7349F180004
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788576308-823916
+X-HE-Meta: U2FsdGVkX1+nujMOtHdbm5XiR5McRawPL4SDsijKsbIW84ERAc/8sObMoZlncWurYsTTAPrqyG4OSydt0tR6CkhOMougdyAivS9ySSUWhmwEl/EWLsfhCuSlqI1Rc5dBQ0nd1wk2qik9AUdNrk3dP4gpJgM8xMxqDDHUBpe5UuSFx/qIoSqjijUwFw++PSOP3CFaVM4k5MRzJ8Djd0ydLUzlxbA0G4tryQPBWDq+hR2W249P6J9URJ5UFmZqy8fLkFACWOd6UYmps27ZVVlfpu16dD/rW7ZDjUk8KqJG4ykPXmuF/LjtnboNipE0c/uIrZu2FMhAXLCeL1r9+kEEExoRaxjnryZeYbQlfkuYfJSUERWxMvPxo+/J4e1JI7f4KTOTHktm/QVcxDLt0M7nj9ROTjVp5UvWXlp6VBU+jpCLpBmSRq1AvCn3x6BXRz/X7Ge8BTnmWCuBIgwLjf5wCIJkMFLaoNwyCS8Vf808lHRRiP8TamRsJ7W5L5J2AHIbuUDWV/xUFB9gCkYP9VRX+zNO+VmTVAGUd6tkw27cdlFkXxLPrNmRlKle6v4jj4q2yCHw98hWVcJbBtdQdFLfdE9fSup6eyu6je2VcRAy8TcZsnlg/Pn2mxQCUF9N7EQHxwLxDOriA7bsA9Jklc2yqhpmA4ZoVhUfA7UKzhASCagc2hd5jGEuE+5e8bGWqsF1B/H05hYhHQUViGGZHpeBn+8crwXh2udMV3n2XG+X/ziRC5KHp368ANU+bAPB0BExIr+PI0se9RQTDjq5u3F/vz9ANQ4iqeTYea5DcNbm5Qm3ngX/HB7Tq1m/dPEGeEoVVQRNfOSnfOga7Dan2G/phn/s27l2uBCxKjC6NeIbum19RARc5DH0aNMolubJxrBChu2K3DxTgG7McMXaXpWdP399u060QJDq2MR7i0FOJhrYtqcpenP9U+W4Pds8HuCnwgS6x4JVxHEYUZio4tu
+ avKmMWXG
+ 9HQkqX+K8RgxzmvO8BvPgIjYPw+UdjmRrF3I1hX05FzlKk+fd+FxfsSYV5bJPCTiGJoZKLjyGJTrdEzio0SsYFtZL78SYjztledJH1XmwXzzq29a1js9JKKLMHW2Nd5Zz6xPwwfyWiR9nZISm5QPkKBFyPR/Cr5TFreBdsJi+7MdsFhGCks4j4qaT9E2KMW+xAfy9TppCdHrGJkSigoTv1ET6dYFqgrS7+pp+Rf/8ZIldo2MxN5ZiVkJ7jYd8+FuzKrIV3xdSMvkVFeTITDOhqc1VTiO671i1tzN0Uhe7+4tVD99VgTqIwrR3qa/RDHZPv2+9EWWmZ3FK7V3leGJpctvoPbjUY1xZW/VQOVKKPydZ+kh0GXy2yjXP09dBYQ4a7cYKFBbi7XcUGU9wnyqqrvOFBQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,50 +179,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 05, 2026 at 03:55:09AM +0200, Karl Mehltretter wrote:
-> Commit e3852a1213ff ("maple_tree: Drop bulk insert support") removed
-> mas_expected_entries() but left the documentation describing it.
-> Document the current preallocation interface instead.
-> 
-> Fixes: e3852a1213ff ("maple_tree: Drop bulk insert support")
-> Assisted-by: LLM
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+On Fri Sep 4, 2026 at 11:10 AM EDT, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+>
+> Tests scattered through the collapse path decide what a collapse is
+> allowed to do by asking whether khugepaged started it.  Between them they
+> settle:
+>
+>  - which VMAs are eligible, and how hard to try for a folio;
+>  - how many empty, swapped-out or shared PTEs a window may contain, and
+>    whether a sub-PMD window is held to a stricter rule than a PMD;
+>  - whether a range has to look used, and whether a MADV_FREE'd page is
+>    left alone;
+>  - whether the PMD is mapped as part of the request, and whether dirty
+>    pages are worth writing back and retrying.
+>
+> None of those is a fact about khugepaged.  Each is something the caller
+> decided before asking, and the collapse code should not have to look up
+> who called to find out.
+>
+> Add struct collapse_policy for the caller to fill: khugepaged from its
+> own settings, MADV_COLLAPSE from the fact that a user asked explicitly.
+> Every test becomes a read of a field, and cc->is_khugepaged goes, having
+> no reader left.
+>
+> khugepaged fills the policy once per scan pass, MADV_COLLAPSE once per
+> call.  That is the one change in behaviour.  The max_ptes_* limits and th=
+e
+> defrag setting behind the allocation mask are sampled once per pass rathe=
+r
+> than on every table.  A table scanned early in a pass and one scanned lat=
+e
+> are then judged alike.
+>
+> collapse_file() also drops a NULL check on the collapse_control.  It has
+> one call site, reached only from collapse_single_pmd(), which dereference=
+s
+> cc unconditionally, so the check was already dead.
+>
+> Assisted-by: Claude-Code:claude-opus-5
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 > ---
->  Documentation/core-api/maple_tree.rst | 9 ++++-----
->  1 file changed, 4 insertions(+), 5 deletions(-)
-> 
-> diff --git a/Documentation/core-api/maple_tree.rst b/Documentation/core-api/maple_tree.rst
-> index 12bccfb6aac1..836342fb1eec 100644
-> --- a/Documentation/core-api/maple_tree.rst
-> +++ b/Documentation/core-api/maple_tree.rst
-> @@ -214,11 +214,10 @@ Advanced Allocating Nodes
->  -------------------------
->  
->  Allocations are usually handled internally to the tree, however if allocations
-> -need to occur before a write occurs then calling mas_expected_entries() will
-> -allocate the worst-case number of needed nodes to insert the provided number of
-> -ranges.  This also causes the tree to enter mass insertion mode.  Once
-> -insertions are complete calling mas_destroy() on the maple state will free the
-> -unused allocations.
-> +need to occur before a write occurs then calling mas_preallocate() will
-> +allocate the nodes needed to store the provided entry.  The entry is then
-> +stored with mas_store_prealloc().  If the store is abandoned, calling
-> +mas_destroy() on the maple state will free the unused allocations.
->  
->  .. _maple-tree-advanced-locks:
->  
-> -- 
-> 2.53.0
-Hi Karl
+>  mm/collapse.h   |  40 ++++++++++++++++-
+>  mm/khugepaged.c | 114 ++++++++++++++++++++++++++----------------------
+>  2 files changed, 102 insertions(+), 52 deletions(-)
+>
+> diff --git a/mm/collapse.h b/mm/collapse.h
+> index 1c40229b9554..05282eed9a35 100644
+> --- a/mm/collapse.h
+> +++ b/mm/collapse.h
+> @@ -48,8 +48,46 @@ enum scan_result {
+>  	SCAN_PAGE_DIRTY_OR_WRITEBACK,
+>  };
+> =20
+> +/* What a collapse is allowed to do, decided by the caller that asks for=
+ it */
+> +struct collapse_policy {
+> +	/* Limits, stated per PMD; HPAGE_PMD_NR means "no limit" */
+> +	unsigned int max_ptes_none;
+> +	unsigned int max_ptes_swap;
+> +	unsigned int max_ptes_shared;
+> +
+> +	/*
+> +	 * Hold a sub-PMD window to a stricter rule than a PMD: no swapped-out
+> +	 * and no shared PTEs at all, and max_ptes_none as
+> +	 * collapse_max_ptes_none() scales it.
+> +	 */
+> +	bool strict_sub_pmd;
+> +
+> +	/*
+> +	 * Collapse only where it looks worth doing: require some sign the
+> +	 * range is in use, and leave clean lazyfree folios for reclaim rather
+> +	 * than collapsing them into a folio that is not lazyfree.
+> +	 */
+> +	bool skip_lazyfree;
+> +	bool require_referenced;
+> +
+> +	/*
+> +	 * Finish the job rather than leaving it half done for a fault to pick
+> +	 * up: map the PMD over a file collapse before returning, and write
+> +	 * dirty pages back and retry once instead of refusing them.  Both cost
+> +	 * latency the caller has to be willing to pay.
+> +	 */
+> +	bool install_pmd;
+> +	bool writeback_dirty;
+> +
+> +	/* How hard to try for a destination folio */
+> +	gfp_t gfp;
+> +
+> +	/* Which VMAs are eligible, as thp_vma_allowable_orders() spells it */
+> +	enum tva_type tva_type;
+> +};
+> +
+>  struct collapse_control {
+> -	bool is_khugepaged;
+> +	struct collapse_policy policy;
 
-The documented behavior appears to be consistent with the existing tests in
-tools/testing/radix-tree/maple.c, in particular the mas_preallocate() /
-mas_store_prealloc() / mas_destroy() handling around lines 35173-35185:
+Can it be made const since it seems to be read-only?
 
-https://elixir.bootlin.com/linux/v7.2.2/source/tools/testing/radix-tree/maple.c#L35173
-https://elixir.bootlin.com/linux/v7.2.2/source/tools/testing/radix-tree/maple.c#L35185
 
-Acked-by: Nick Huang [sef1548@gmail.com](mailto:sef1548@gmail.com)
-
+--=20
+Best Regards,
+Yan, Zi
 
 
