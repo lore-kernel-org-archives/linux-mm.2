@@ -4,83 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1909EC624D3
-	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 10:42:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7E5AC624DB
+	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 10:49:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3D726B008A; Sat,  5 Sep 2026 06:42:51 -0400 (EDT)
+	id D5CB26B0088; Sat,  5 Sep 2026 06:49:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEE3F6B008C; Sat,  5 Sep 2026 06:42:51 -0400 (EDT)
+	id D0D036B0092; Sat,  5 Sep 2026 06:49:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B045E6B0092; Sat,  5 Sep 2026 06:42:51 -0400 (EDT)
+	id C230D6B0095; Sat,  5 Sep 2026 06:49:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B3C26B008A
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 06:42:51 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E2D841C041F
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 10:42:50 +0000 (UTC)
-X-FDA: 85179370500.27.3F05ED3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 0ECF720002
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 10:42:48 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IKmpDGQ0;
-	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A9ADF6B0088
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 06:49:45 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 35933C0302
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 10:49:45 +0000 (UTC)
+X-FDA: 85179387930.02.95CEC58
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 5A78DC0004
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 10:49:43 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GxKP0rvU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788604969;
+	s=arc-20220608; t=1788605383;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rLJWFNXuPNNNHTLThsNU83PHBMIGxroyjlrmOn0TnyQ=;
-	b=ZA5p/DMuA1jssTHNatUMSs8bWdc7FYQDYYK1nHhmde3kIo/IuI3zOKNhF4v2dYSTmgvEgy
-	O6KbiE9QkH62jj4BRnTvy16RNm8yNrGlFywHzKsIwiHgO/SpZcTXksN2FYVwpWdyv4NdAG
-	MLPqAcGk0N0DhDUga5eoUxZaTeSG9XQ=
+	bh=RHAA100hBxoZ3L71lKyk+AmwOPI0P6UvpAuNgR702wU=;
+	b=Zay0TPDpQ3bZSd2oIMb99K+uAnqtODHT5ZFTjoshcNyBmL9mov0SVS5xj3QN/NtnbgJ5Po
+	MlQpSB0eJJfTeEyEdc/RoOii3e8f5oa+Nr4hsaFlqDwgjayWvuEOqgdmrO8vLyUsz4toq0
+	HLiHeql7Q3JcMRN+m5l2Y2MixNUu9Ns=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IKmpDGQ0;
-	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GxKP0rvU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788604969;
-	b=TuLPTEH1Sr2rYQl6Kqw9brVqOfHxxaGtG84icY8/7MVVJ3RB2IxsYvKfBfSIYx8Zh552O/
-	Vh56yJBTrLQrqyElp1Swc7TgOzby5s4NhGgPqD9GnfLnWn0HQv8Xfgw1BnyLr6RiAddWhi
-	sfBb1AM5OxBDNtWAI2JA6ouDJgpdUPA=
+	t=1788605383;
+	b=kfNpbbGK1Zr2JTo3b2vugTHRCcXgWLhcR/o9kk3qet2sT89dfcvJ6gcXMuUKMFmt+qmXAJ
+	qnttrVq7ZXy/R48C9iF2ryQCZHYSQiR/Y/3Z+mtb9oG75LU7imSUczwPnYUss6kd2TQ5zq
+	QdccepRdt3v3Ay/+vyP8fyaYVYJ+jNs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id ED43B4478E
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 10:42:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D911F00A3D
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 10:42:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 10DB0602C8
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 10:49:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB921F01562
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 10:49:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788604967;
-	bh=rLJWFNXuPNNNHTLThsNU83PHBMIGxroyjlrmOn0TnyQ=;
+	s=k20260515; t=1788605381;
+	bh=RHAA100hBxoZ3L71lKyk+AmwOPI0P6UvpAuNgR702wU=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=IKmpDGQ0el4Idbgrsf83+Czj0k3aEanbwJfSsuvjxQZxp6e/k8sk3OA5z3KpcZJJ6
-	 Fck4hPBvPB1Jxz5ABQcNA41TBXv5cVpcV6iMtSoFZ8MFkFiu5zoIHPRb11O0bzncNB
-	 9PQsi0G4qk56XSSheLR66QFt9lRNqLg/hMUl1DiKRRR4vrRjmUZuQ6yFKPfw7UHTxx
-	 vUV4nG87nbIlbZqHmOExdAxh82ZOpa+hS4y6eojZkYVpwkacqwFl83cWsB0QXSZsLd
-	 0MIkRnKvEUqa60tnTxqyXa8pFlnzmqD19pXfb36Iec4E2mk12w/3CEvUfw1Lm+K/gz
-	 xbG2Pez972Idw==
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-92e99ef0902so161120185a.2
-        for <linux-mm@kvack.org>; Sat, 05 Sep 2026 03:42:47 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByR8bMLDMkNa0fWagciNov9gP6Vm2A2ZXiDr3Mj81YlBwBRK/ditJmgA5Yj09J62Cu780HcP2DLrw==@kvack.org
-X-Gm-Message-State: AFuF++nhcx8yRFJEwlqLCOZ7WlDxMuyq0pEomD9sgn3YPKkYhz4/oVGn
-	PL8XxUvwz00+3EGvepnOWSaPtBbmsmTGJHIw13W/FLsiHKT5fG1zJpYrau4xNdz4dzN+ekUGUTV
-	eZhXqdEikXNmPhCf7zhVfIfXAz0bn0Fw=
-X-Received: by 2002:a05:620a:4e86:b0:939:6dea:ce77 with SMTP id
- af79cd13be357-939804a804dmr849282485a.45.1788604966952; Sat, 05 Sep 2026
- 03:42:46 -0700 (PDT)
+	b=GxKP0rvUTM1WVaoYWsYbGz9meyuaamSxHMeFLXYm78ZWYmU4OAavJs0kDNE2HR3X+
+	 2/nCp8lZPKTgJ7oF64mYgppRgHVvRxi6mY6J9aum5YnBocruHheq2eHYdHg2+jcntw
+	 kYHnJRxU1O8oFW9HZD8vh+30sr5Ns5iMbPzLcJ50c2k+vCG6NItKSPPacRaUqvGmRj
+	 KQ6uWFyvqLekfQIbbcdJC3VZ/s2HlR6NHKL28hvK2gJoGW+FcAZHbKA+S4uqvGfjsA
+	 teB1/pi3kfIfebNqTOHiq0WMZJ8memmBjczuLnxAarBjV33jXEihuQkvk+xvKar3yM
+	 gfZFGv1aR7X5g==
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-93900ed2925so162974785a.0
+        for <linux-mm@kvack.org>; Sat, 05 Sep 2026 03:49:41 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByJnpmvUhGSGXJ9eNIpUAoOHkUtefw20enUkNVeJKWy70OK+op1jGFQlN1iTW4wYpAQ9hDyiwACdg==@kvack.org
+X-Gm-Message-State: AFuF++lbTlWagpFIxkEqnCVX5ZQu38GEvkCIxWtAoXuG8ytBBv3buimU
+	bUf44rwL2XJkKlseOukz8C7yyVy6uIIKP9h1CTA2noDLTk9yW97GbTxp7Asxoku36TD30FzBiu6
+	uWbbBMIpo4LZ9/DGs4j2jwlkmclDGSi4=
+X-Received: by 2002:a05:620a:27c4:b0:92b:5408:b6be with SMTP id
+ af79cd13be357-9398037370amr1199846885a.23.1788605380850; Sat, 05 Sep 2026
+ 03:49:40 -0700 (PDT)
 MIME-Version: 1.0
 References: <20260901054358.4049095-1-dev.jain@arm.com> <20260901054358.4049095-6-dev.jain@arm.com>
-In-Reply-To: <20260901054358.4049095-6-dev.jain@arm.com>
+ <CAGsJ_4yigbhqkrnufJKC2+rW7StraQvD0gr=4HQkTjKGQ9siGQ@mail.gmail.com>
+In-Reply-To: <CAGsJ_4yigbhqkrnufJKC2+rW7StraQvD0gr=4HQkTjKGQ9siGQ@mail.gmail.com>
 From: Barry Song <baohua@kernel.org>
-Date: Sat, 5 Sep 2026 18:42:34 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4yigbhqkrnufJKC2+rW7StraQvD0gr=4HQkTjKGQ9siGQ@mail.gmail.com>
-X-Gm-Features: AcwNN1XGWvWBuJ0T_PK_fgXIydvvLgvH261yKhl-AABkpvYtbUiBkK5uOF9e0oI
-Message-ID: <CAGsJ_4yigbhqkrnufJKC2+rW7StraQvD0gr=4HQkTjKGQ9siGQ@mail.gmail.com>
+Date: Sat, 5 Sep 2026 18:49:29 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xmeEQWoPsda2qfLh=E=tC5TgNZChTYENu4f+zPqibf-w@mail.gmail.com>
+X-Gm-Features: AcwNN1VVa-rvJYwwVPRxR_MMRDJhw3RmKWC3O0AZSlLS_T3XLrO55yM2YEBtp44
+Message-ID: <CAGsJ_4xmeEQWoPsda2qfLh=E=tC5TgNZChTYENu4f+zPqibf-w@mail.gmail.com>
 Subject: Re: [PATCH v2 5/8] mm/internal: rename swap offset helpers to
  softleaf offset
 To: Dev Jain <dev.jain@arm.com>
@@ -94,14 +95,14 @@ Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
 	ryan.roberts@arm.com, anshuman.khandual@arm.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 7yf98n9g57whxy7xxrg5w4d4zxrcios4
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0ECF720002
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788604968-518937
-X-HE-Meta: U2FsdGVkX19xeFSeArukSN/BRqDaxs23NU+ZCDIlVQ/7tDFW6jSG1Loduy0oF0/wukocy2/WFYPIHjwfpzz+93cRqKMzbHhBVUdWmnpcA5saRHYc7zkBMwsuFA5ZbGjP1mHbnY8G/0y3RMUyCVDjdESf65/sWboBlVbRyT1RWDO4ktyF/7nJPJDTVjdjsopPup9RQtueacCV/uuuVwLZzHTtSTM9jFGhz94bjp6hQJ1IHA+jj/iROHM+AMZeLGpwgN7y0nvksO89Fts7VooLnweevzFv6b9E04GXw+BzebRGcXMx5OX0JlWp+0nHUz5EzXXsE4GKHmaV19sQIJwKP16YbmQRhC5j2BCs++J/ur2Mt1iZasvt/sjor+p1XHutp4yAoGQApMI/r5g1+AIdxOVVTNCiBdWlPSV9RHTqlOV7+yp6bNNDRJpeutzNrQrBw6/kgMSOe9tW9GEQUh6VQQugSlAkR/Kg3yQ/dKTx/OVzZoRkAKsp3rsKJ575bH4+yGNVOa7p+0MSCWXo8kNjH6A4dcu52YiirXvGj5yQuSSjbN/61i8XgZvdbUQrozqUchDuyx13YCEodkpbnMO1SQrolzxifZUQhi7n/VOn2vWnPNbUvjQ8cpDRu7yelSWvQSt/9CSXJRvECpKY9HQIAscEDTnk2ylvC2RQZNrk7L2VpR24/eP1SaHBqx3kl60SH83bGiFamkg5zNGWrnC90jasr3SjUp8cb8bQffy4BfzKNDSL13iV1wmJO3DQaXKhJxn0BhwtiuylhwNuJYiN65BRGrIhfCz21hZxDCCPlTi1KfxBZKHXaimfKwdLFY63sqM/QWHaPf55BomPapJ3XFrzkL8YJZf/CMfLmGfxBbJY2QTIR90sRyBFUs4vgB5L5DWRF0iZIrvuBVX1tFAzfqa5cIRUabBkjMAQN2vYbUuaiyz7DU4omipSKuPqQupAiOmwDjMCPboFrqse+8G
- 81nC0Y5q
- 064Uy+TJ5yjRkf5pvTTz+sbq8z8yTDRqL879SjeoNojg8qGbvHM64VrKFqPBCGdgIQMCMUYjr0NqBfv2VIVvFxO3Q0/l4zu2Vzvbm5gEulb7oZvTHGSitO059ZlxEj9eXsUSVJbUK/R5rGyS4FqMQpW9Ha/RCRgF843zAVuPYMnCEmIsOLYlMbbdLZErjI6ghSbJ7MykGjk60c8caTcfcHf8Rrku0vOmwcVEP943D8K6xwqLVrMzeJinKSM54x/IE95VJysxpdsGEbnQTeD80wiqRNjGHro+I6+I5IPsptpSuZaiyTomrAb5o2CPvD9Wsq4gNKPJ3fGZ186To4UFXP+OlYDEFcqqh8qeBz4nHzEEXrpWHTz3yeqDGQQ==
+X-Stat-Signature: 51by3smx1tkhydtsaq4uhhs4bohwu6pz
+X-Rspamd-Queue-Id: 5A78DC0004
+X-HE-Tag: 1788605383-58117
+X-HE-Meta: U2FsdGVkX1+M0c7M0ZvnAB+OJNFH/gq8klo2n37nxDILvXUT7AnvSupEwAT+4Du6KAE4JHCRS+JGC48LcuZN3ASIpTgfX4OF7tULxLXuZVoliISzGJ86+ipSgSbBNkPsgcilKmE5XVPiQIcex4LDDmfV9t0xBvTsgsetVl1nl9TWHLUx1OusEPNrQxrM7f55PHmzaFAvHWyjcDRfoNsxFUQyn6zG+ijQTRuQ30BHV+WaV7bszrQ21HaDDJwWO4jsHzEd4H+GIw4XC9/zEkZObKyG5vAjLtZ0p9tkov3HNWKthbRVc8iZH7ioJp7DsGEKWicuIF2RI0mCJpLHvbpiWK4PJpMYDyFmy4DmXkF2BrRZDvuCsr0S4GuJnQkJDm8bKW6A4Rbq9LjYJeKs292V3Gx1pXn1K6d9qK4CZvmQY74/Ow6Q9PSkVXRvWwnGiJBZ8WvSGp6FHEmfDTPxf8iw+dUzm80Ek1Jp75WDocMS+y6A3AjvD0sNDFzbqjkyxAb1cjBiHK9yC+47WeI0cEOU9gdULlmzWMO5bkxC9tdcSkawUVpesbVSLSiW6+qBxMX46fRQwfDzfR/xC3uhbDVYfJ9wkTindNzLf02x3vEuEsDNILgM6FtZLCcXt1TdmvaPfWWRbAXMdZbscl4A6piEasc6cr1+SPs+6eigkomSScxKzISyzU0ZAxD0Uv0BW+2o0JynATd/D5aZCiRll9VlAzUTHt0agSyT4HK1cNNxKSubg4Rx6828GZwiL7wn0RdNFf3yxvtXgyJc5h9L4S4lI2jGoRMUg5jYBEnwsWPBKarYT2a3TdlKOlRZmFA72qjehupcCYwj/e3NCIaxum6gOmdTnaKBycu9CdCdKzvONdBBG3aqBKgs+OEMSzcCZLtsD27QjgnoZOXU2vLsk4F8BUh6n/yRNtc6fC1cpoih+2JS7dXjnZ1dTVapqr1PCPMJqepMmEGWsKEwblXoH0v
+ TpFz9Qjf
+ CwjWtdaM6ReXeONlLL4S4B8+WCMPqIZkPcwkJLzBANWQIeVN0OsO/GMxYQRQDowcRKxgOe0j9TwSN2j8YC2ON4JI18qssnxXjJwCeIfs8BAE/Y7eMvps7q+SQM6IFWqsOBXd+gfTe2NBGusQQ04T6o9VaUJVffzZdsUX/Y/uWgGGbokiFvSSTeFvMpy2TBQNocXrE0aB7Rcpj35v255KZQhF6gYeWDghgak1+c/r2FTB50tf+Glk10+IxLOBDYcxvAgpaq1OHkgn5WfDOe4CDB1sGKdsL9eCkXLjGkerhBZX393VQXuWUg4nQ/Rxvjo7kv9SegDrMVKN0vQ8dHlycYFDUiI/TZrd9eJmeb9nADrPT7j2JSokGdvzU9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,50 +110,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 1, 2026 at 1:44=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
+On Sat, Sep 5, 2026 at 6:42=E2=80=AFPM Barry Song <baohua@kernel.org> wrote=
+:
 >
-> In preparation for adding a helper to set softleaf ptes in one go,
-> generalize the swap entry helpers shifting the swap offset by delta,
-> for softleaves.
+> On Tue, Sep 1, 2026 at 1:44=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
+> >
+> > In preparation for adding a helper to set softleaf ptes in one go,
+> > generalize the swap entry helpers shifting the swap offset by delta,
+> > for softleaves.
+> >
+> > Note that the soft-dirty bit, exclusive bit and uffd bit preservation
+> > will still work for non-swap softleaves, since a softleaf entry is
+> > constructed out of a type and offset, and those bits are ahead of
+> > the soft-dirty, exclusive and uffd bits.
+> >
+> > For example, for a migration entry, pte_swp_exclusive() will return
+> > false, as the exclusivity is encoded in the type itself
+> > (SOFTLEAF_MIGRATION_READ_EXCLUSIVE).
 >
-> Note that the soft-dirty bit, exclusive bit and uffd bit preservation
-> will still work for non-swap softleaves, since a softleaf entry is
-> constructed out of a type and offset, and those bits are ahead of
-> the soft-dirty, exclusive and uffd bits.
->
-> For example, for a migration entry, pte_swp_exclusive() will return
-> false, as the exclusivity is encoded in the type itself
-> (SOFTLEAF_MIGRATION_READ_EXCLUSIVE).
+> I don't quite understand why you mention this. Is anyone calling
+> `pte_swp_exclusive()` on a migration entry? Shouldn't it only be called
+> when `softleaf_is_swap()` is true?
 
-I don't quite understand why you mention this. Is anyone calling
-`pte_swp_exclusive()` on a migration entry? Shouldn't it only be called
-when `softleaf_is_swap()` is true?
+Is it the rename from `pte_move_swp_offset()` to
+`pte_move_softleaf_offset()` here that is causing this semantic confusion?
 
->
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
+static inline pte_t pte_move_swp_offset(pte_t pte, long delta)
+{
+        const softleaf_t entry =3D softleaf_from_pte(pte);
+        pte_t new =3D __swp_entry_to_pte(__swp_entry(swp_type(entry),
+                                                   (swp_offset(entry)
++ delta)));
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+        if (pte_swp_soft_dirty(pte))
+                new =3D pte_swp_mksoft_dirty(new);
+        if (pte_swp_exclusive(pte))
+                new =3D pte_swp_mkexclusive(new);
+        if (pte_swp_uffd(pte))
+                new =3D pte_swp_mkuffd(new);
 
-> ---
->  mm/internal.h | 29 +++++++++++++++--------------
->  mm/memory.c   |  4 ++--
->  2 files changed, 17 insertions(+), 16 deletions(-)
->
-[...]
->
->  /**
-> @@ -523,7 +524,7 @@ static inline pte_t pte_next_swp_offset(pte_t pte)
->   */
->  static inline int swap_pte_batch(pte_t *start_ptep, int max_nr, pte_t pt=
-e)
->  {
+        return new;
+}
 
-We might find a user for this in the future, in which case we might
-want to rename `swap_pte_batch()` to `swap_softleaf_batch()`?
-
-> -       pte_t expected_pte =3D pte_next_swp_offset(pte);
-> +       pte_t expected_pte =3D pte_next_softleaf_offset(pte);
-
-Best Regards
-Barry
+If so, I wonder if it would be better not to rely on the implicit
+assumption that the softleaf type and offset fields are laid out before
+the soft-dirty, exclusive, and uffd bits. Could we make this explicit
+in the code?
 
