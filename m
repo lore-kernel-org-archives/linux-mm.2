@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97E1EC79F8B
-	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 20:26:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C86A4C624DB
+	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 20:26:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 78F506B00A4; Sat,  5 Sep 2026 16:26:47 -0400 (EDT)
+	id 9F9866B00A1; Sat,  5 Sep 2026 16:26:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C3676B00A1; Sat,  5 Sep 2026 16:26:47 -0400 (EDT)
+	id 9A9C76B00AA; Sat,  5 Sep 2026 16:26:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 543F66B00A5; Sat,  5 Sep 2026 16:26:47 -0400 (EDT)
+	id 787706B009F; Sat,  5 Sep 2026 16:26:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E0946B009F
+	by kanga.kvack.org (Postfix) with ESMTP id 4E7236B00A4
 	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 16:26:47 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B3736160302
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E13DA1C1EFE
 	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 20:26:46 +0000 (UTC)
-X-FDA: 85180842012.25.BAE03BA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1950240003
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 20:26:44 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y646QVjB;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+X-FDA: 85180842012.27.401D5B7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6350040003
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 20:26:45 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cI9f8YtR;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1788640005;
-	b=8nL0VXgCgDLllTSbcnhrZeTMarUEAi/88Wdjxw4oav9u/HwSKFd2kfaP50mPp1/qYY+r42
-	AVjYMS1Kiki8dxy41MquRPgfzOh1uuKkyx70F8L53yc3X9oBdjqYMZeQbr8KSeZkxbuX4o
-	14nMPNrIvJiLQSOCXgRSgKt9xIUEv/A=
+	b=oW6WMfcWW/kC0VUKTuSsylw+Kv+llvSvroUiNB/e9vjgm3Y6CanKseH1QsVt/CI3GawCnz
+	CIajiN/SZbEiVFAiPcyoxNtgMZ5arYJ+EKoiyRrBpUfSGAJv57MUmDrHZVGcnuGhxRV+7E
+	w5i+o9Lw/ZG1LV4Pv6uvcRbPere6adU=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cI9f8YtR;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1788640005;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fn4wlsJY/z4XEr5TrccoXyN8K/aFxzX6vlLK3FGYk8U=;
-	b=izKQ/aeCBcnElMgXvhq8k7MsY681zuj2Qo9JHFZ41/DA2Hd5UlSMlmaZD/k9irMRGnnJv/
-	licrzvEJLjQSQcJrY1fgCEI1h01FMgNky7btURPyraQDgWHmXJ7HubNZngETqrXY5mt6Qt
-	vzBoBX5r16pznfN+IshRfQU3TiAAbKM=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y646QVjB;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 in-reply-to:references:dkim-signature;
+	bh=M3fBlIwPeb0MLRMMvDOp8XO46lHImBBRdMKs8udzsHQ=;
+	b=InVU2LYj9DEZnhJLv1Pg54l2wiJeQwYBTqDRho8D2Iy+eWdakcqh1PJ7Y+YU9cpGQjticg
+	AfouveFAb4EdZkiShFAn3mRyejhws0TyJaGCKQ3eQdhcerUKt47mPBotdDtegDFbfLfP6f
+	yeoMOAujtbJOWKxWVLSC0JBFeESPYqo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6C7256025B;
-	Sat,  5 Sep 2026 20:26:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF2A51F00AC4;
+	by sea.source.kernel.org (Postfix) with ESMTP id AEAAE43E51;
+	Sat,  5 Sep 2026 20:26:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ACB31F00A3A;
 	Sat,  5 Sep 2026 20:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788640004;
-	bh=Fn4wlsJY/z4XEr5TrccoXyN8K/aFxzX6vlLK3FGYk8U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Y646QVjBODL2Nszz7u/PMlBRcqwdj40UkazJ/+ndoBf45LjxUX63V8oybAf0LrkTb
-	 EsbEmKlKOyyDEQcIBDdziEIQe6oT/MkSV5kt+HK9xOLpQDKOuJv6tv5rcRwxzjimdX
-	 WPzg/dpwTrEmQh9Xs46X7j10+LK21PhNLXpKZwPZL79EQ3ne4VVaQxSNlDktdEQeDl
-	 Fg31MReWxKR4UYG96stySnkAc2tdSInKBIywyRA7IRTUNTe0kJDSWlvcsjeRhXc5A2
-	 bfi9jDkidi/1NTrcVDtJ+BWtH5qstOI0Fesqwg7s6XE/PLvWmsnVbsyfl4LydHo4Ct
-	 dNlS54AuTjURA==
+	s=k20260515; t=1788640003;
+	bh=M3fBlIwPeb0MLRMMvDOp8XO46lHImBBRdMKs8udzsHQ=;
+	h=From:To:Cc:Subject:Date;
+	b=cI9f8YtRJ+edLFJlYPyXxAzXRe8E6sxjDX+IW3YEp6gzU+FkO2TCYOxaY0tKab9xg
+	 AzpLZOrtpkGQFuEWklX59RZgAvTPv5ASwtwNPR6bbSD7hAyiY+WAMdQrYX3CKSeNWY
+	 Fl59i58l4G5p34IRrpvClc92blo8kMO5diA3fhI9tNcJsOePfVGDcF7zWLsqT671LD
+	 Qblp6NslfepNv31/aNO8rcqqJDtnpg7qQNvK7bfa/ir0yMfCe/hVcc8o34wD/1ziDb
+	 lL9HOS9ETJNmkg1yY2QqKYX/yBBIF+22icv8IAOuvnnd330Bn29qQXgwZ/wGl73zBc
+	 n7dloPmQHgGhg==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -70,22 +70,20 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 2/5] mm/damon/paddr: move probe filter handling to ops-common
-Date: Sat,  5 Sep 2026 13:26:24 -0700
-Message-ID: <20260905202634.88102-3-sj@kernel.org>
+Subject: [RFC PATCH 0/5] mm/damon/vaddr: support {prep,apply}_probes
+Date: Sat,  5 Sep 2026 13:26:22 -0700
+Message-ID: <20260905202634.88102-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260905202634.88102-1-sj@kernel.org>
-References: <20260905202634.88102-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1950240003
-X-Stat-Signature: 55qjygwa3aremtxec4k1eo1eq41nn4k6
-X-HE-Tag: 1788640004-977250
-X-HE-Meta: U2FsdGVkX197JXyv4p70Q2GdSE+mO7ri3kU878Fiiy7h1gm+OTNhSVd+e8i/klXcJIiY1OLrELtwvRxPpE7Q0qGuqIdIH2ZeTjDBAN7kR/vS5xeVYTEElyk04UgIlLseTYjga+nUlzXh386dXeV3uNUwl4egaemjFPpJvKyRvDjYQuCKobfviXI9th1R2bWMbxxGUQGhC8FJvAORPnJKsAsZ+bTpdnCsx++cr+FU9FZdSN6XAgjMM7zrN1ybyR9nTmSt7DVPHzwxQHL4NIIF5Exx5b0t6NTyp03yyafFU1558VMatmfN8Bryjmp9eS3CLjO3llVlQO15oUPnDlFetqFDu4dPOpMJwTbhuk9Opu/b9r6d8/8mg1jSpMEEugcU+TM00Kl9VtbXUVfvN/OVc5jj7zHPRM4cmEJMk2P06FdXhZ3LeqfeLuOpYqnou65wEuc/MylcrZ0tiYDvNWOWRtPRfrsnpoldD9ew9fuEelQf6AYBSs8HdvQcY7pofzcs3ydMZzT78ul4SodGiyoiwBswRGrLHK9iB4VPOImj38g2A7pqGRBV1qJb8vW0s2oV061WCzkbVhXXTEbXdpjie6OGwHKQfVryyYLNM0R5beSwIePGvB8mYBRWUFWeKueYNDFHrJXe7FqiEjHPNNVb7t+lhwuGL7jTU+bkdcoITwEQO/ohutrMiAXRzrCcuOxqwwWvLSOR/sw06sSerWmpMWgoAmJt/9XR2gAQ37yIIaWl456NbmXJ9d2a36HVb4JgHNXuRm2yVVkJjN8RncbCcsmZ2BNmO2SwpAfdIGvSQS/ISBBUb2bclMuQw4iqhWkbOBCNePUgfcOhbHp0h6J4pTIoNHuE7cnI6IJGNOOMBGN66EoMx7bRv5HaZ7CopRlqjFKFhDBy7TvH/WOB66n8bPSLD0DRuqM/DzpT6BGnskOhkOM9ODHixKq78bHvGNQGEapa2aPaj9SwZ1iucWy
- OZxS78Rz
- B3wlnU/t7Oeg7CF7Tsz7SkgvVOI10UdZvjsZx2ja+3r1Qu+6EqCyTzzi9KST3yNnCIh8TBtFdQ/204QFQWpU5FPq9akzAlj9cA3eZAiHvTqiDerzwTn8NUP9mKvABPwWhdRIcMTouqeaBPPHfg+19NAzwl9pBPAFY0cJOtZRfdFli/Vbgovw5L/HnhIWfKVnJLDQ8azNFAehG+V1kq3KIH1ofi3yzhdl0DnzGIagv5glH2gc=
+X-Stat-Signature: m5e4jr7majn4ihzw6oqumrsa9o3dqmsa
+X-Rspamd-Queue-Id: 6350040003
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788640005-313826
+X-HE-Meta: U2FsdGVkX1/hXZUCeC3ulY/5CZr9h5ng4Gyj6UIvBprGA5MszerIRc9Q1QW34SDsaaq7y38xdG0jaOLjmW5tDX9r+3mMLtQIsuNbujakCB8f6/FNT+YZKv5MNDwKWKUEmxF2/QtmuYynTUqXs1tgtUzsEyA8HefC4wGee+wHVtwl0nHWV/R9W+F3AwwmUcjPGOpfPmL3aWgEQA3AEQDNe6s16/Dyac/Gb/L39taW/Wlb1JxpnpN9aa6XeM9N9eHbC5cIWEff6wC4IrN4TgSUjdJpEdKHJlMJ3vnHTHoljuGNJy5iMY+meno5FMItAc/FtXHU2kShX8eJxPfDSoTOy1Lb6PzPnhuCCtXsSmpr3FWBY8gGUa1011H1ISt84l3ziIi7uymbjR3PU3c9BCJ41k/XeSAaFm9TbDz75H3UAvLcUfJsOgIjGh4EirPLN71+7E/StJyO97gBRL+mTBGBsSLQh2rPG9ybXga4/djgSjgilNcKHug2i4QydEAh0VINF4TYLaIe3PPGvlL+iXFF4/iswCiajZvPNGy+r4tm/XFYKxDT7NfatTkRjVIF4K1H0+/AlTWJQ0NkSsghy633j9qls9sorzWxRx5ySyW1rox9otfSabqIBghQdMkqkA6z4ZRMs0bRDBRXWfGmgqrgPB4oJB4NNQlm3gg9hwEvmPMDu+wQuXYQx7ABuUvSXMCgY+NcpE9z2+bzpjqZtvMWTVSUeRMkqclHb8tXtC0iMZ6KCVwIL0RVK8wq58EQccZt5OLreAiZ/UQUHe/kioaXlFGzXaUHYlcoExyw1dVFne3qAe/rSAOOb8tLrNl7etEJtLgieMd1it14U/nayZqMUO5vK/m3Lxss5bQzQhCMmSVjadvxspuzzTg70KUBd01zHJQPITkRL/HGJHwARgFDKJu/9CWAfHnJqPQ5Np250A5cARlljEx93SIGeF+OBHYY2bA6stw5/ptT0Dstlf5
+ RhYIbBBr
+ yMSicBSEOQXwYZAyjvagAKDZCp1xpMui/R6xdt7AZijQEpueg+bj5sygmxfP+TeZgOj51Xs5hjzMUVqzp8NTILcfxX/aF5XQqIXmRZlHEyLAOkFMTX03SOiYpOns9cVDOGD7wmQ5l5sPll0noI9Cd1O7OGZ3Dd3Kk4uZoQFXiixRDknWvzXH+hsUG4ymZyxaHy99rrTQo1pnoVzhUm9FC73i996uKLxn9qk23oxG+IewabEhopZ8kv5TIFrfFTC4icWrROG18L0fn8EHaiO4Gt0Ohig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,111 +91,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Probe filter matching logic for anon and memcg type filters in DAMON's
-physical address space operation set (paddr) can be reused by virtual
-address space operation set (vaddr) in future.  Prepare the future by
-moving the code to ops-common.c
+DAMON supports data attributes monitoring.  However, only the physical
+address space operation set (paddr) is supporting it.  Add the support
+to the virtual address space operation set (vaddr).
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/ops-common.c | 32 ++++++++++++++++++++++++++++++++
- mm/damon/ops-common.h |  2 ++
- mm/damon/paddr.c      | 23 +----------------------
- 3 files changed, 35 insertions(+), 22 deletions(-)
+Patch 1 adds prep_probes support to vaddr.  Patch 2 moves probe filter
+handling code in paddr.c that can be reused by vaddr to ops-common.c.
+Patch 3 adds minimum apply_probes support to vaddr.  Patch 4 extends the
+support for hugetlb.  Patch 5 extends the support for pgidle_unset
+filter.
 
-diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
-index 441d45679eaf2..76b663a4be610 100644
---- a/mm/damon/ops-common.c
-+++ b/mm/damon/ops-common.c
-@@ -524,3 +524,35 @@ bool damos_ops_has_filter(struct damos *s)
- 		return true;
- 	return false;
- }
-+
-+bool damon_ops_filter_match(struct damon_filter *filter, struct folio *folio)
-+{
-+	bool matched = false;
-+	struct mem_cgroup *memcg;
-+
-+	switch (filter->type) {
-+	case DAMON_FILTER_TYPE_ANON:
-+		if (!folio) {
-+			matched = false;
-+			break;
-+		}
-+		matched = folio_test_anon(folio);
-+		break;
-+	case DAMON_FILTER_TYPE_MEMCG:
-+		if (!folio) {
-+			matched = false;
-+			break;
-+		}
-+		rcu_read_lock();
-+		memcg = folio_memcg_check(folio);
-+		if (!memcg)
-+			matched = false;
-+		else
-+			matched = filter->memcg_id == mem_cgroup_id(memcg);
-+		rcu_read_unlock();
-+		break;
-+	default:
-+		break;
-+	}
-+	return matched == filter->matching;
-+}
-diff --git a/mm/damon/ops-common.h b/mm/damon/ops-common.h
-index 172f0f17c4a84..ee27058251005 100644
---- a/mm/damon/ops-common.h
-+++ b/mm/damon/ops-common.h
-@@ -31,3 +31,5 @@ bool damos_folio_filter_match(struct damos_filter *filter, struct folio *folio);
- unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid);
- 
- bool damos_ops_has_filter(struct damos *s);
-+
-+bool damon_ops_filter_match(struct damon_filter *filter, struct folio *folio);
-diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index d2173a448d0b0..d7c81829445ba 100644
---- a/mm/damon/paddr.c
-+++ b/mm/damon/paddr.c
-@@ -143,29 +143,8 @@ static bool damon_pa_filter_match(struct damon_filter *filter,
- 		struct folio *folio)
- {
- 	bool matched = false;
--	struct mem_cgroup *memcg;
- 
- 	switch (filter->type) {
--	case DAMON_FILTER_TYPE_ANON:
--		if (!folio) {
--			matched = false;
--			break;
--		}
--		matched = folio_test_anon(folio);
--		break;
--	case DAMON_FILTER_TYPE_MEMCG:
--		if (!folio) {
--			matched = false;
--			break;
--		}
--		rcu_read_lock();
--		memcg = folio_memcg_check(folio);
--		if (!memcg)
--			matched = false;
--		else
--			matched = filter->memcg_id == mem_cgroup_id(memcg);
--		rcu_read_unlock();
--		break;
- 	case DAMON_FILTER_TYPE_PGIDLE_UNSET:
- 		if (!folio)
- 			matched = false;
-@@ -173,7 +152,7 @@ static bool damon_pa_filter_match(struct damon_filter *filter,
- 			matched = damon_folio_young(folio);
- 		break;
- 	default:
--		break;
-+		return damon_ops_filter_match(filter, folio);
- 	}
- 	return matched == filter->matching;
- }
+Test
+====
+
+I confirmed it can capture ~48 mb working set of masim in vaddr mode,
+like below.
+
+First, start masim [1] to access ~48 mb memory at a time, in the
+background.
+
+    $ ./masim/masim.py run \
+            --config_file ./masim/configs/stairs-50mb.cfg \
+            --repeat 10 --quiet &
+
+Note that the config says the working set is 50mb.  It is 50 million
+bytes, so ~48 MiB.
+
+Start traditional access monitoring of masim's virtual address space
+using damo [2].
+
+    $ sudo ./damo/damo start $(pidof masim)
+
+Confirm it can capture the ~48 MiB working set as the 4-th region on the
+snapshot.
+
+    $ sudo ./damo/damo report access
+    heatmap:
+    11111111334[...]3000000000000000000000000000000000000000489999997777777743333333555556[...]8
+    # min/max temperatures: -1,150,000,000, 80,009,499, column size: 6.963
+    MiB
+    intervals: sample 5 ms aggr 100 ms (max access hz 200)
+    0   addr 85.355 TiB   size 55.703 MiB  access 0 hz   age 9.500 s
+    1   addr 85.355 TiB   size 18.984 MiB  access 0 hz   age 6.700 s
+    2   addr 127.183 TiB  size 278.516 MiB access 0 hz   age 11.500 s
+    3   addr 127.183 TiB  size 7.570 MiB   access 0 hz   age 900 ms
+    4   addr 127.183 TiB  size 48.133 MiB  access 190 hz age 800 ms
+    5   addr 127.183 TiB  size 54.977 MiB  access 0 hz   age 1.700 s
+    6   addr 127.183 TiB  size 55.113 MiB  access 0 hz   age 6.700 s
+    7   addr 127.183 TiB  size 37.902 MiB  access 0 hz   age 3.900 s
+    8   addr 127.990 TiB  size 120.000 KiB access 0 hz   age 11.400 s
+    9   addr 127.990 TiB  size 8.000 KiB   access 70 hz  age 0 ns
+    10  addr 127.990 TiB  size 4.000 KiB   access 0 hz   age 11.200 s
+    memory bw estimate: 8.931 GiB per second
+    total size: 557.027 MiB
+    record DAMON intervals: sample 5 ms, aggr 100 ms
+
+Stop access monitoring and start probe-only mode access monitoring.
+
+    $ sudo ./damo/damo stop
+    $ sudo ./damo/damo start $(pidof masim) --probe_prep set_pgidle \
+            --probe_filter allow pgidle_unset --probe_weight 1
+
+Confirm it can also capture the ~48 MiB working set as the 11-th region
+on the snapshot.
+
+    $ sudo ./damo/damo report attrs
+    heatmap:
+    00000000113[...]40000000000000000000000000000000000000000000000001111114999999533333336[...]6
+    # min/max temperatures: -840,000,000, 330,002,000, column size: 6.961
+    MiB
+    probe prep: set_pgidle, filter: allow pgidle_unset (weight: 1)
+    intervals: sample 5 ms aggr 100 ms (max probe hits 20)
+    #   size         address       age           probe_hits
+    0   8.000 KiB    127.990 TiB   8.700 s       0
+    1   120.000 KiB  127.990 TiB   8.600 s       0
+    2   55.543 MiB   127.183 TiB   8.400 s       0
+    3   110.008 MiB  127.183 TiB   8.300 s       0
+    4   55.352 MiB   127.183 TiB   8.100 s       0
+    5   55.605 MiB   127.183 TiB   8 s           0
+    6   55.691 MiB   85.355 TiB    7.900 s       0
+    7   54.430 MiB   127.183 TiB   7.900 s       0
+    8   50.391 MiB   127.183 TiB   6.900 s       0
+    9   18.879 MiB   85.355 TiB    6 s           0
+    10  52.844 MiB   127.183 TiB   3.500 s       0
+    11  48.039 MiB   127.183 TiB   3.300 s       20
+    12  4.000 KiB    127.990 TiB   8.500 s       20
+    memory bw estimate: 0 B per second
+    total size: 556.910 MiB
+    record DAMON intervals: sample 5 ms, aggr 100 ms
+
+[1] https://github.com/sjp38/masim
+[2] https://github.com/damonitor/damo
+
+SJ Park (5):
+  mm/damon/vaddr: support prep_probes
+  mm/damon/paddr: move probe filter handling to ops-common
+  mm/damon/vaddr: support apply_probe
+  mm/damon/vaddr: extend apply_probes() for hugetlb
+  mm/damon/vaddr: support pgidle_unset probe filter type
+
+ mm/damon/ops-common.c |  32 ++++++
+ mm/damon/ops-common.h |   2 +
+ mm/damon/paddr.c      |  23 +----
+ mm/damon/vaddr.c      | 232 ++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 267 insertions(+), 22 deletions(-)
+
+
+base-commit: 59446eebc45959fe2d899aeeb301c8df6a1eaf04
 -- 
 2.47.3
 
