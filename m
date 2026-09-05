@@ -4,61 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A075C79F8B
-	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 19:36:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8561EC624DB
+	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 19:45:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72AAF6B0098; Sat,  5 Sep 2026 15:36:56 -0400 (EDT)
+	id 5D9596B0095; Sat,  5 Sep 2026 15:44:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DB8B6B0099; Sat,  5 Sep 2026 15:36:56 -0400 (EDT)
+	id 58AC06B0096; Sat,  5 Sep 2026 15:44:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F0F86B009B; Sat,  5 Sep 2026 15:36:56 -0400 (EDT)
+	id 479A16B009B; Sat,  5 Sep 2026 15:44:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 34F2E6B0098
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 15:36:56 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AB4EA803F6
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 19:36:55 +0000 (UTC)
-X-FDA: 85180716390.16.EF4B67D
-Received: from outbound.ci.icloud.com (ci-2006a-snip4-3.eps.apple.com [57.103.90.134])
-	by imf10.hostedemail.com (Postfix) with ESMTP id AD2EBC0005
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 19:36:53 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 149E86B0095
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 15:44:59 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7C16C1603EE
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 19:44:58 +0000 (UTC)
+X-FDA: 85180736676.06.6DB3C92
+Received: from outbound.qs.icloud.com (qs-2002f-snip4-5.eps.apple.com [57.103.87.186])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 72346C0002
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 19:44:56 +0000 (UTC)
 Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=jofXPMkk;
-	spf=pass (imf10.hostedemail.com: domain of bfguo@icloud.com designates 57.103.90.134 as permitted sender) smtp.mailfrom=bfguo@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788637013;
-	b=WCz+2lUOefjVVA8p6rHgodAMTX1EN453Z9hZgGiuVtoPWYSykqWxUHUkDPdxT588imy6n1
-	gv1XpDpQQy8Bd0tZ52KWVFHyLEnSCFPzi1CS4M0s4Qh7De/Xw2qLzA20mQTpV3jw5khhrd
-	cxqzqjuijcjYLNDbTQgvzkxH900UKcM=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=jofXPMkk;
-	spf=pass (imf10.hostedemail.com: domain of bfguo@icloud.com designates 57.103.90.134 as permitted sender) smtp.mailfrom=bfguo@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=MyoG0xMw;
+	dmarc=pass (policy=quarantine) header.from=icloud.com;
+	spf=pass (imf10.hostedemail.com: domain of bfguo@icloud.com designates 57.103.87.186 as permitted sender) smtp.mailfrom=bfguo@icloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788637013;
+	s=arc-20220608; t=1788637496;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PC2pRNtqdy7kEe5lF1ZHl4XVumVkfLLoGiTBdLWhYp4=;
-	b=hakhUCjjUrvHOlxQxGwq6jEbCxbbZi7QlCMhyKp/eQVxQq2ynyd9SqFtt/3vT2CZ035pxR
-	0MjRk+gyCilYewyRKxYQiyqFnUeweDkTqleXkC1LuqF83HYrbaeSWHYKnpyTPP0BPA5DD4
-	vXI3EzT3bIe8GlhvJgyc2caThVLucbc=
-Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-central-1k-100-percent-7 (Postfix) with ESMTPS id E9BAB1800163;
-	Sat, 05 Sep 2026 19:36:48 +0000 (UTC)
-X-ICL-RepId: 01a07312-d3dd-7743-a70e-6a22db0e2eca
-X-ICL-Out-Info: HUtFAUMEWwJACUgATUQeDx5WFlZNRAJCTQtPHV4PRQBAC1YGVBcOVk1bHlQYWCtbE1UXRgkZCF0dGR5XUF4IXh9MHB0OWAYSAlpFAlQXA1ccVkVcGEMJXQVXHB0OXkVbE1UXRgkZCF0dGQhHHwowA0IOVgNDB0UALRkcV1BeCF4fTBwdDlgGEh1QHA5RVhtKBmssfglaAkZHXSFYWHcpez5+PnIjcCxnPxQ1cF0JS0YJSR0OBFQHXQVd
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1788637012; x=1791229012; bh=PC2pRNtqdy7kEe5lF1ZHl4XVumVkfLLoGiTBdLWhYp4=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=jofXPMkk0lhwcEGgNW8GLnZK/gJwnbofuMabnYZOtTIYi97y2+EhoJDxgphVegR0whRwyqleEvSxSOXwqIH8LgQWdsL8w6Qy43A17cxMln7jvsdb0g6IEaEPBy6wN/kNnNGx6su3o4DqvLpAQTdIkm/CpAxA1noQwNGkXnqKnuFs0a2J441WwpcgjE0iwdCei+KgHhSBOn5XItF1u87UsfcsqzBzd3sBf1cVTcP5w/pqJ6O37NGMCl8pYo0RUNQ+3iuvnJ2XDgV2FuZXCqgOeSOfYZNp8BXob+wasgkLsx4tdw6OcR+MOWBTuDFDJH8sRb/shpANlnSZ9iJdvI7Siw==
+	bh=vgZ1W85NEnq1A+vi0kFHRhJG3UFYJ5R0koCjzl4BPsg=;
+	b=OGdxbe9Lgu3IlsCk19CkB/U9jhe/veCkArdJU5yQYm8038k7OWjm7FBgetdWJJzaVA7hY6
+	jfjATlsPlEH6INy9J+P4NJ06PxeCePQdiej+zHDGr89GwRT6sHgBxHTzG+4ck1sLgc10lq
+	d+IKX61UMazhBoTRpEtSeSDgRARU9+c=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=MyoG0xMw;
+	dmarc=pass (policy=quarantine) header.from=icloud.com;
+	spf=pass (imf10.hostedemail.com: domain of bfguo@icloud.com designates 57.103.87.186 as permitted sender) smtp.mailfrom=bfguo@icloud.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788637496;
+	b=t97PZWG6oK5ANYtSnHPpOOUdJKEo1Jw8/CNFODyNjVLkNhfZLjqppuHVYcRAGN2lY+qkVX
+	MsQiulF/pQpzvrePZpOjYXMJm10vil/ac9uts49LjT3KY31R5wQamZq0L+SdaDjQ4SHXZ2
+	q2h15MWc2L5mfZj/m7r2MoHQEGtY8xg=
+Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-east-2d-100-percent-3 (Postfix) with ESMTPS id 634DE180021D;
+	Sat, 05 Sep 2026 19:44:54 +0000 (UTC)
+X-ICL-RepId: 01a0731a-3c74-7ec7-b86a-3a754c9da115
+X-ICL-Out-Info: HUtFAUMEWwJACUgATUQeDx5WFlZNRAJCTQtPHV4PRQBAC1YGVBcOVk1bHlQYWCtbE1UXRgkZCF0dGR5XUF4IXh9MHB0OWAYSAlpFAlQXA1ccVkVcGEMJXQVXHB0cREVbE1UXRgkZCF0dGQhHHwowA0IOVgNDB0UALRkcV1BeCF4fTBwdDlgGEh1QHA5RVhtKCHJAfS9VNH0ScDR6F3cpez5+PnIjcCxnPxQ1cF0JS0YJSR0OBFQHXQVd
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1788637495; x=1791229495; bh=vgZ1W85NEnq1A+vi0kFHRhJG3UFYJ5R0koCjzl4BPsg=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=MyoG0xMwKrXYmaS9RkvxbTKHLUfHOFg60wR31WAACVAlc7rB06PCF9xwpyoSH9B15CBd7WFKGOUdugPhSpl9DBmmIzfa0uJGILU1I6Ev7NojIWb684WMM0+A5SxvCdXN9eHED5VphoCWDW6giA4Nuj4c659gnT3yTmXyyMTbe5RLq0T5OvNqItAaiIIJ2/zgwuGfkgHvAZ9yqjWwUNC0eMI7PjsQaS21IfA+I0FvyXyq60V5KjOzLJWlFHhVdgjmv+f1g32x5uYUQV1vBtwFQWFDp4GGEFzH4kuaI2k/qIVBQ58HnYzQInndBtGvanhr5UdUKDfLAPwspk+qaqxJNw==
 mail-alias-created-date: 1772519804199
-Received: from BINGFANGGUO-MC0 (unknown [17.57.156.36])
-	by p00-icloudmta-asmtp-us-central-1k-100-percent-7 (Postfix) with ESMTPSA id E8AFC18000A1;
-	Sat, 05 Sep 2026 19:36:42 +0000 (UTC)
-Date: Sun, 6 Sep 2026 03:36:37 +0800
+Received: from BINGFANGGUO-MC0 (unknown [17.57.155.37])
+	by p00-icloudmta-asmtp-us-east-2d-100-percent-3 (Postfix) with ESMTPSA id 67D5D180022B;
+	Sat, 05 Sep 2026 19:44:48 +0000 (UTC)
+Date: Sun, 6 Sep 2026 03:44:43 +0800
 From: Bingfang Guo <bfguo@icloud.com>
 To: Muchun Song <muchun.song@linux.dev>
 Cc: bingfangguo@tencent.com, cgroups@vger.kernel.org, linux-mm@kvack.org,
@@ -73,40 +74,41 @@ Cc: bingfangguo@tencent.com, cgroups@vger.kernel.org, linux-mm@kvack.org,
 	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
 	David Hildenbrand <david@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>
-Subject: Re: [PATCH RFC v2 4/6] mm/memcg: return the memcg when putting
- memcgid
-Message-ID: <apxvRTMdmit7dYk5@BINGFANGGUO-MC0>
+Subject: Re: [PATCH RFC v2 5/6] mm/memcg: move memcg private ID refcount to
+ objcg
+Message-ID: <apxxK8NBb_ObILIz@BINGFANGGUO-MC0>
 References: <20260901-bingfangguo-memcgid-rework-v2-0-8edd7f7a7251@tencent.com>
- <20260901-bingfangguo-memcgid-rework-v2-4-8edd7f7a7251@tencent.com>
- <c3bec318-ef9d-4d96-8a98-a68717c17201@linux.dev>
+ <20260901-bingfangguo-memcgid-rework-v2-5-8edd7f7a7251@tencent.com>
+ <bfbfbed6-2946-4e85-830b-7a2505f316db@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <c3bec318-ef9d-4d96-8a98-a68717c17201@linux.dev>
-X-Authority-Info-Out: v=2.4 cv=Is0Tsb/g c=1 sm=1 tr=0 ts=6a9c6f52
- cx=c_apl:c_pps:t_out a=2G65uMN5HjSv0sBfM2Yj2w==:117
- a=2G65uMN5HjSv0sBfM2Yj2w==:17 a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <bfbfbed6-2946-4e85-830b-7a2505f316db@linux.dev>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA1MDIyMCBTYWx0ZWRfXzQpnDgQ1a+ir
+ cJpYO9COsrNB0sW+5uKHBjzmZB3QGFC+STgvt2k3rBE28uFtkGRYvebHHLCBggBfinRzoatljme
+ /SEPtYNCF5UEu8h3v5jljkQoVAkqUbAEyJgAZSv5XlwvfmvnlwBGiiDo1+KKXmaNo6vKWB0VWxS
+ ddKRzbGb8SXGbqB966OtZew0dBZHc5UJB7JSaiMYTjF1Ol1rZahAjfDYs2yW00t9LWFFAC9WKxk
+ S2DMhdZbZhSNZdTKAbj3RLfi9H04lkrP087DDul/0/LV161q4yXm5TDNZss2GQrKJ65hFnr2i9O
+ 23pX6t/eIGukeIZlXV7v7U1oXAOymzPOJ6Psatc7XhlveOHyJftrg0PzydsLiQ=
+X-Proofpoint-GUID: jsMkpzEOxl_tdh33T3SnsJKtZQ4lcWV5
+X-Authority-Info-Out: v=2.4 cv=f8hFxeyM c=1 sm=1 tr=0 ts=6a9c7136
+ cx=c_apl:c_pps:t_out a=bsP7O+dXZ5uKcj+dsLqiMw==:117
+ a=bsP7O+dXZ5uKcj+dsLqiMw==:17 a=8nJEP1OIZ-IA:10 a=VdqzKS8jKosA:10
  a=x7bEGLp0ZPQA:10 a=vu5NlEYW-o8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=GvQkQWPkAAAA:8 a=RnMKIuOpERM8nik1lK0A:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: p4Q2hJtHhTaNPS4UtdXOLTXi8dG3hPFG
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA1MDIxOSBTYWx0ZWRfXzpXclV0Pypgr
- AFFQcokQv+YX1+N3s0m2/roHny8krnmks5UKgPChWkp+woS7DjP2G52jOKv5+TkXb7qElQ0TVUi
- 8vBCoLVDQg5sfbki19T/lKsJRhfsLOcKYWsCmelP+LgvpezHn9U6QdH+PhHlM16O6X6cDNmfmuZ
- LJeuFLR56KmvV6tDK7oCVyOWCmoOneAX89impebxv6WRYJBM10sibqznDZ4DQkk+oBnPuqyARIk
- HtdXqXpwAcxyRWxWQB9yCsDqqjC4bh0rwEB8A1HHGUDO78eQhRK4257IiC8xr8iiYevtNkQKRFB
- ipH91XIpuZkL8B8VGzp2GbxXNHCSc7nxZ6CzICl7S9d6jmqhtO6KLyhATrZVIk=
-X-Proofpoint-ORIG-GUID: p4Q2hJtHhTaNPS4UtdXOLTXi8dG3hPFG
-X-JNJ: AAAAAAAB1YHLZMnlLxriG8Q7OGpKoLkFgHiy/8fjVXrZqLZKdCkWLwiHorGiXqxdIj3FtBwHEUD+14/XM5YakMsDnzA+McYXxHHYAXP48LuRVFPGVA3Y4vSBRpdrL/oIThuKYI7Wf3SA5BuQtBB9Ted71IMlC+1Ng3oz7y3LkRwgh09ezwiNycI6MuoT+PitUDK0Xx+Pz1ujH8fAbPk0vDaDMAIcJQobo+2Cv+BC7nfd5nANPCRmeKtpRIySrl/iFQzolJnSaQHAbrtr6XhxibQKtAj51l8x4KWCiYMfTQNE6ndfw/27tTP3wOfYPQJ1hcmJrAMJqCM37CIYqf2+eCLBTGR3wwg9zZ5skBPM7VW9ax3MGJ8gExLVO24aPGe4x1z2j8b8yJMYT8gJCGZRFmihlg5Bkryn1P4r4vwlrs0WamABIinJXKqPY2n97xLw0g8ZiUpPHmJe+Eq9kG2lt3dBdAlApg4j6Yf7JbnvbNPzCDpAhZ1sAlo0AndqmYH1l1w/+3Ssk9L0uT/AJDLeS0h2iaUEsxDJBQlLuPWrQLwrJ1BBhjgJPsc+utDRoJT97MQciC7ehi+puWZkyr/+HrEjZbj9lHl6udY7NErRex1pDFdGxgSxp+QG05yu4bXmQ4lPn3KS4mVZKaJuvIMOH/llWc8fBsQcQQ3ktbfy/iZZIs9vvFlWOIe1wO5bwQFe/5ICuIqSQS9J4ktxmPDbOz7Xy5CwE8tRFCGcU6A79KqL0uOBTbyPusCwKD2Rz02twx911x8cAQ+T/daNX9lvccVUffWisBGMFf6cZPjLxzWlU0kGyUIfp0X8QZ6eZeeTnTynmOjD90DntpkWEWRUBRsI7ALAldTjZdQQz4/uHBndWXa3lwWBdyfHbXp9+OkU9/ImJ5VXdQGMIfn8BuNGOm7vWa5Q1fRBlDcvmcRhBbyeW+fuu2LC0D9KVtUjLrxNf+kZC5+9usKbPIll8XC0k7r
- i4jrkz7g
- cVOnDvIFH1Xc8JPLdb74XdcE1wOjERW7pg5nXwh0WjGPpkwhkzfOt+t+vhHu3IGuUcMYwfhS7A1o8NNRr3W4iuOrS7LxqdlaIrCK4tJi9S7QZKE+6TL0pMRiMSG0tLc7qtjQFBzxX+oDp5s7tFNo6RjsiRfSRjVUqwlnjUTiubrvE8hAOxaMo1lixH+G77GlIX7VVG0k6zki6+IDZTuEQAzNw/WjWvW53hQu8294Lagpd/0NzAibiZor0OLEdQgMe2qVwEace8PNymUAv05nwGIH0M+uRG4wtlZP1M7kZTRMmFxI03yocBgu9dOJKUsaC7c+3ydnBYBw/FZi05tDcJsSEmVonxHBwwVGanM0VdQacq24tQ42Wwbr01xpfUQdyJ4SAT6ksXWcpgQOWGobZBvpD+UJq71NmE6Hg50w+8ZVVHxxISGvzu8KM0rcIRbbLg5djObeyT1kHTX9T
+ a=GvQkQWPkAAAA:8 a=UXXNyEDf_6Bw8tBy6J0A:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
+X-Proofpoint-ORIG-GUID: jsMkpzEOxl_tdh33T3SnsJKtZQ4lcWV5
+X-JNJ: AAAAAAABbwEHuEKc5p1z86aCudLojf1tUZXKlml7AnkP6o7v66FGMgH0lAxwJnz3NOjz/XAS+KjSV3qBWm0XrLoR9ae8pdwZzhNvt1DlaAPvzKAgEKhVKG3c7cpdTVIYKkU06ErYNb1881llKB6nPpSiyUHt5wqK3tr3Tt1SAeqBe/++QuUcf4AGe5PHYiAJ2qvXuBQ+GiLWIBDLZ8RF01ITTn9DvUg5+TT+5iRTs/QHho5LJ2ldtn/Z8jt7y7IuUeDcVhFuIPXfRrbzVLS3qmpBQLwiMTvCDgjYcxfmfRZ0bkVeHSyVaxrF1LSvGCDJOFlLSjsO7oByow6iHPD/TKoHmgoG17viGop9EjT0nNWT1vE0sh0UwVGSFmq7j7teh7c85qoTIAF1tlyk7CbwnzzYowEtwveedK+fumnKr7W9Zxxsn+0nRtjoHVnGmM9qwfmWHLx7+xmrKmIvxjjEYzztxLKReLkaSyXUYzTvC9j7vy0dFv7F586kFVQBVE6pq8pmc+TSqJ3uJz3uc3grslZA8qP7bidnkv6EtTmks8oLXPqOcM7smEpQKsqRtFaGCI2MtyYkqmRYPlV+To/Mb4A5Y1X65EktBW+BshM09PWZyHDXHM5aJkaCfC2xICYNYSOsUSKpBtW9lQCkrVRtDdIV2zqpnTXuTB6tEo+HFxhttEnJvRJiOFJs2E+R4GySs0nr9GXqfq8sj3N8JkDsg0WQ452hxZI5yIgtifuLnhfD352or7RJ0zEQhaG4c8mHXP4BEi5tvDmgravhK6EzfMKnNt+OXTUnbTrnSISv+rYnPg1r2uN3wIuLxKmSTlueD48eLqkUY063u/OWrl7Xda63YqUOjt9Dqv4Y7mHGYysYfeJU/GErTazFnSA8y4jNiqKVOu4Cbv8Oav7cwWjCSJJo0kFF76I7jB1snYETeRgnP/QtZ2syvDAZXiOaykW0ctqbny/yB3CfcfNpcnVpNmR
+ cz1inR7f
+ WI28fAFIf+uK7biakQ/ocl7fSxIWml0MRI+6Bd946SsihZ0Y9MGvjBigxnGPGHqUV1MI7GSKQhk/VW2x7drQsbfiDPV3W17bbmepZR7g5zx7wT+2DFDuOX7O1V4mZDzdk/SJsxw3tK3Q6oUeLsGcuKAjbJtl0Pu7idhv4AkeicbJkzNxJ0WvVFm5Rm2vNkoQ+WsPZXLSrYpYqUudAaDp3cGLOg+NxwJsuV04BSKieDdFtsWG6p5yui/DbdkEOXg4B3jUNagV2cdQQlTZ1n5RorcJ4vwOEACR/v40yPKHTRdmkjifsxtC/9Lexm5bB2x27pHMPmApTCFGskS2rlRjKhFSkuiHKjDTwTihr7jkKH3suTtJtHGy18UTG0HyZNS0r9wxfWjfv060Ti0RDYRUPS66C9pCY2vZ2sH072+2FbvRqiZd5E7YkRzSrVBq5wyqAgCXu5lubaBNjj6MmNFATleG3Ld9MhNPsUuZroLUgHnZ4Vc64Nt8XV32o
+X-Stat-Signature: ao6qyf5i86s41aqyo3bbg4r4u1o5tyfc
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 72346C0002
 X-Rspam-User: 
-X-Stat-Signature: 858dzjw5owip3hym9cxuoccok5spstnx
-X-Rspamd-Queue-Id: AD2EBC0005
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788637013-224316
-X-HE-Meta: U2FsdGVkX19FclNK+FLvz3GD3TNaPqrbY5jzO6nz0Y23X77UZmWNu8vgumJkCl8t3Orq1Tr8wTeykonYON3AUYP/N24Kj+hD2M/UKLwJXDFhxeIIx9DFpY95rYYXSllcnHTGf3gMh9QpafIqNdFeQqFSyeFm8lSUoR0A6M3+4o/K8AF1awMLAlU4KQgZBAGx8/uRWCM03OWMtiW0LC0Ey/wVg44Nrpv6K0MbUSDF5wJjCrvnJTewkI3EtzD62tdhj+AFTMeJyg0GfO4uJkmAfeuqcvjekpRP1UENg94u/Wn77wpnMwAs0pE0htTOYvmBPT3oUgLp65NPByY0sTSqERM/9ukvOdm26mXq9lUFhyet9Mp9TfCGMmLYmXf4mz96NuGHA9SYhr0X2kaI4HnJOKvy0U11LiCj0I1xZsE0C8O4SCCD2HxAZ2Y/3FQSYddpFoFkyGZKtTXN82vNoGBDrWDQZmdhX17nzu2NgOenF8lBI5INcb30/RDjTSEsdv6aFLPEWPsFNu8GjztJAr6C5HJcitviqQ/lx3cP+Ur+zD7kU5hi7XV2vvD4H1/pX+5jzOysuhUGZkPl6gcGg5nGcawhlnCt/P7YpYst+65kRl/UyC3oe/4xFgmfBlKEwHb9iS/fPH2XYocBICOG+dXEZW7nfOjdhxhg1TeBfYKVlYtV/jRIQNVe3scMfgigziLadC52g01jmL3Rm/gnVcG3YE2ogv5fY31THPYMYYSiVXCXIcLH4xs8JfgcOfev2SDWlKHAYy1FEPKh+YkdN+QBicNKx1U6pOOWE80Z4b/AP84tgsni06AteW5DgVvAojk8zBCywHWkEiyl0ePCjgSdoIl+lt7+V5yt8ltgCMUGhQYLIlyc01M1vhKgoQgHx5EKkdP7dPRNUCD7ca3xo7Q6iVkmXdsYKM76+i+uQ/rlREKnqHcHY/ulfK+ZHpL22bdtw/7ZNK2398rDgJt0hru
- LMNK5Vh0
- ud3/f8rqTQZsBVs6juUOglFnoBKAxU6QSefOVzl8x6lCDv6jUUoryS9A/F3ZSNpUBtaRaqyMi7356OWzFUKL08X+7dfyE5uf57iEaZxTjj6kN9pl0xBNRg7gVry5vrRb5UdQ8LcaJdqgviFxIt+a6OU5996ZXhmg615jAy/oeOBqu3jNANoUW0rc0zp94E8rb7/OwRxPRDKa0KkP2x7srKzw02v8lGW+ASnPDRkWMRnDMXn4/DXkR3W+84UbqQ8lcugZohPWKRlLpdxpWrrHfKYdYF6dGwjqc3RDBuN7QtA7ORQQQqzIKF5H6EAqbM0oxqyLKkvtjqZRYEd9kt/kZH/7HgC8o9mOfIaXzIdAVs5/KuGs=
+X-HE-Tag: 1788637496-717710
+X-HE-Meta: U2FsdGVkX1+hhJ0CFczOYL11+GNiXilrro9OKwFIMb7J8ukeGKG50DmqBHCCR9pzJH4CSfjvGB+KhkOk1EkG9VtHR8vYYChBwWVjhtLafeZOE6G+8v3SpciJrPKU3OAeHDB+tE0CfQv03oD7QlqNR4iuEPwF4oE3tPFvFEzns5B0wTdL01MWhAIRfhTNcIRyCkLEt+d//tqJKBaVz2obcS195p87+ARxR5Ayw+TN4/E8BVl55DkN7pE4KOm54IPrVx5antjEkzcsrq04ZpEv3YrRpy+ajiYGio/aDSqg6YyCgWRklYcyPLC/fq6FzCAaP1yDb+fPe9Wn/EpG+4x8ykggmoZTUYjP6lAJuuLYZBzYpSxT43yEEGCGyIuSUsGv3PIAC85CSH1eEgTYEdYSVXNCYFL1AWMWljQKQGvigJSZUMtS66GIxVsvNWMYmAK/oIFDSWaZesQ1PZ5e90PbUPooiXmV2+UFl6o02MMardD4TVDqDLb9ySjSHjGB4cBatGFlgjUNus0lyw9Y04i0rGr7xQpJQ09RzZuu3mW2Zo5ypezchvNY2MWBgy7tRoEGaVyRbPU18LU5CFuH3OH0ut5wWtqDNaravBBJkKFeGtjdpF1hpcDt4VuC3k8zH6WgsSFUo3cSBBgzJXvluGfIExtN4XKOcRgipxpzbmOi9+zlA3zqUrlKOlBylI5yya6CxuOOuHQyWzJAaDILcxBw9160mTF+KUmeIdWm4zkJCs0gkZasV6hgkxhYUzsikX7NislLsOXz+1zYlE5H1NZoIRcJghKNAUetuIF16Jb7xRMYDk1Vvd0yVfG4ZKFstCJxPGLclNz8ja2MG0WthFqAXx/5kfXarMUhyTySStNjBGurb5uo/dfNWA4NbazxC+z97bz+oEQJl6/yEKntBeY7RBo46rilNCFXRla86hjby5yHLRFTcxQxvA7PhmqQtbnXesyFXlfFcazTU1w9z/f
+ KxOTrUWd
+ jcIJyZC4cUaW8OKUEVyZeNX0pHtvkl0R2yNmozIkDTP5A3CyHqnXrHZbb0waxUXb+5rDN8aB3Myx2DaXOtHs0yb0hxjuti4DdCJrtgPpifhO7S59ifoTdwHzMmPeHRqGAZT3dZeM5/6NdTxm57+rbe8/dlSSFN6IUeutqfTrvaWnRamBY6ZD+vPElbaoRs4xlV0iHBtitpdfel7GHlfJzsImeWozWAOkA3D4DVvC2WQtzJD4SQXOnQHjN9JxrdEv7/k6+l2okAhX6qkRLhd9477pnLtwp0qLKJgWxf+OC+vVjiTB7AyycH6YFFjS3qeQ/TfBf2VTonJ0LOE8Rn2q5cLniatpeqazq2DokmI7LAxCapoUgxFD/UsAFEbmtBmfwyr/d
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,106 +116,305 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 05, 2026 at 03:28:50PM +0800, Muchun Song wrote:
+On Sat, Sep 05, 2026 at 04:46:30PM +0800, Muchun Song wrote:
 > 
-
-Hi, Muchun!
-
 > 
 > On 2026/9/1 16:58, Bingfang Guo via B4 Relay wrote:
 > > From: Bingfang Guo <bingfangguo@tencent.com>
 > > 
-> > __mem_cgroup_uncharge_swap() needs both the memcg and the id refcount
-> > drop.  Right now it looks the memcg up by id, uncharges it, then looks
-> > it up again inside mem_cgroup_private_id_put() to drop the reference.
+> > The memcg private ID is used by objects that can't afford storing a
+> > whole pointer and can outlive memcgs to track the memcg (notably swap
+> > entries). The current design holds a refcount to the css, preventing the
+> > memcg from being freed.  This patch unbinds the lifetime of memcgid from
+> > the memcg so it can be freed.
 > > 
-> > Make mem_cgroup_private_id_put() resolve the id once, drop the
-> > reference, and return the nearest online memcg with a reference held for
-> > the caller.  __mem_cgroup_uncharge_swap() then uses that memcg directly
-> > and drops the reference after uncharging, avoiding the second xarray
-> > lookup.
+> > The idea is to move the refcount of memcgid to one of the memcg's objcg
+> > and hold a pointer and a reference to the objcg in the global memcgid
+> > xarray. No more css reference to the memcg so swapped out pages no
+> > longer pin the dying memcg.
+> > 
+> > When retrieving the online memcg from the id, the objcg is taken out of
+> > the xarray, and resolves to the online parent memcg naturally, which is
+> > exactly what is expected in normal swapin folio charging path.  For swap
+> > uncharging, the objcg is used for putting the id refcount and getting
+> > the online ancestor in one go.
+> > 
+> > The exceptions are list_lru and workingset recent test, which require
+> > exact the memcg the id points to. Those callers are fixed in the next
+> > patch.
 > > 
 > > Signed-off-by: Bingfang Guo <bingfangguo@tencent.com>
 > > ---
-> >   mm/memcontrol.c | 20 +++++++++++++++++---
-> >   1 file changed, 17 insertions(+), 3 deletions(-)
+> >   include/linux/memcontrol.h | 15 +++++-----
+> >   mm/memcontrol.c            | 71 +++++++++++++++++++++++++++++++---------------
+> >   2 files changed, 55 insertions(+), 31 deletions(-)
 > > 
+> > diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> > index f227348a3f24a..eafc817ff244c 100644
+> > --- a/include/linux/memcontrol.h
+> > +++ b/include/linux/memcontrol.h
+> > @@ -66,11 +66,6 @@ struct mem_cgroup_reclaim_cookie {
+> >   #define MEM_CGROUP_ID_SHIFT	16
+> > -struct mem_cgroup_private_id {
+> > -	int id;
+> > -	refcount_t ref;
+> > -};
+> > -
+> >   struct memcg_vmstats_percpu;
+> >   struct memcg1_events_percpu;
+> >   struct memcg_vmstats;
+> > @@ -173,6 +168,7 @@ struct obj_cgroup {
+> >   	struct percpu_ref refcnt;
+> >   	struct mem_cgroup *memcg;
+> >   	atomic_t nr_charged_bytes;
+> > +	refcount_t memcgid_ref;
+> 
+> Since all the interfaces now include the private field, the name I'd
+> recommend here is private_id_refcnt.
+> 
+> >   	union {
+> >   		struct list_head list; /* protected by objcg_lock */
+> >   		struct rcu_head rcu;
+> > @@ -189,8 +185,8 @@ struct obj_cgroup {
+> >   struct mem_cgroup {
+> >   	struct cgroup_subsys_state css;
+> > -	/* Private memcg ID. Used to ID objects that outlive the cgroup */
+> > -	struct mem_cgroup_private_id id;
+> > +	/* The objcg holding private memcg ID. */
+> > +	struct obj_cgroup *id_objcg;
+> 
+> By the same logic, rename it to private_id_objcg.
+> 
+> >   	/* Accounted resources */
+> >   	struct page_counter memory;		/* Both v1 & v2 */
+> > @@ -255,6 +251,9 @@ struct mem_cgroup {
+> >   #endif
+> >   	int kmemcg_id;
+> > +	/* Private memcg ID. Used to ID objects that outlive the cgroup */
+> > +	int id;
+> 
+> Same, private_id. To better reflect the range that this private ID can
+> express, I suggest defining it as an unsigned short.
+> 
+
+Sure, I will take that in the next version. It's more consistent
+and clear that way.
+
+> > +
+> >   #ifdef CONFIG_CGROUP_WRITEBACK
+> >   	struct list_head cgwb_list;
+> >   #endif
+> > @@ -810,7 +809,7 @@ static inline unsigned short mem_cgroup_private_id(struct mem_cgroup *memcg)
+> >   	if (mem_cgroup_disabled())
+> >   		return 0;
+> > -	return memcg->id.id;
+> > +	return memcg->id;
+> >   }
+> >   struct mem_cgroup *mem_cgroup_from_private_id(unsigned short id);
 > > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > index 048c9bb0fad79..f0503a1e5492d 100644
+> > index f0503a1e5492d..38d2b00657a7a 100644
 > > --- a/mm/memcontrol.c
 > > +++ b/mm/memcontrol.c
-> > @@ -4048,14 +4048,28 @@ static void __mem_cgroup_private_id_put(struct mem_cgroup *memcg, unsigned int n
+> > @@ -3773,7 +3773,7 @@ static void memcg_online_kmem(struct mem_cgroup *memcg)
+> >   	static_branch_enable(&memcg_kmem_online_key);
+> > -	memcg->kmemcg_id = memcg->id.id;
+> > +	memcg->kmemcg_id = memcg->id;
+> >   }
+> >   static void memcg_offline_kmem(struct mem_cgroup *memcg)
+> > @@ -4032,19 +4032,23 @@ static DEFINE_XARRAY_ALLOC1(mem_cgroup_private_ids);
+> >   static void mem_cgroup_private_id_remove(struct mem_cgroup *memcg)
+> >   {
+> > -	if (memcg->id.id > 0) {
+> > -		xa_erase(&mem_cgroup_private_ids, memcg->id.id);
+> > -		memcg->id.id = 0;
+> > +	if (memcg->id > 0) {
+> > +		xa_erase(&mem_cgroup_private_ids, memcg->id);
+> > +		memcg->id = 0;
 > >   	}
 > >   }
-> > -static void mem_cgroup_private_id_put(unsigned short id, unsigned int n)
-> > +/**
-> > + * mem_cgroup_private_id_put - put memcgid and get the nearest online memcg
-> > + * @id: the memcg private id got from mem_cgroup_id_get_online
-> > + * @n: count of references to put
-> > + */
-> > +static struct mem_cgroup *mem_cgroup_private_id_put(unsigned short id, unsigned int n)
-> 
-> Having an API that put reference-counted resources return a struct pointer
-> is a very strange design. Please don't do that.
-
-That's true.
-
-> 
+> > -static void __mem_cgroup_private_id_put(struct mem_cgroup *memcg, unsigned int n)
+> > +static void __mem_cgroup_private_id_put(struct obj_cgroup *objcg,
+> > +		unsigned short id, unsigned int n)
 > >   {
-> >   	struct mem_cgroup *memcg;
-> >   	rcu_read_lock();
-> >   	memcg = mem_cgroup_from_private_id(id);
-> > +	if (!memcg)
-> > +		goto out;
+> > -	if (refcount_sub_and_test(n, &memcg->id.ref)) {
+> > -		mem_cgroup_private_id_remove(memcg);
+> > +	struct obj_cgroup *objcg_free;
+> > -		/* Memcg ID pins CSS */
+> > -		css_put(&memcg->css);
+> > +	if (refcount_sub_and_test(n, &objcg->memcgid_ref)) {
+> > +		objcg_free = xa_erase(&mem_cgroup_private_ids, id);
+> > +		VM_WARN_ON(objcg_free != objcg);
 > > +
-> >   	__mem_cgroup_private_id_put(memcg, n);
-> > +
-> > +	while (memcg_is_dying(memcg) || !mem_cgroup_tryget(memcg))
-> > +		memcg = parent_mem_cgroup(memcg);
-> > +
-> > +out:
-> >   	rcu_read_unlock();
-> > +	return memcg;
+> > +		/* Memcg ID pins the objcg */
+> > +		obj_cgroup_put(objcg);
+> >   	}
 > >   }
-> >   static void mem_cgroup_private_id_kill(struct mem_cgroup *memcg)
-> > @@ -5816,7 +5830,7 @@ void __mem_cgroup_uncharge_swap(unsigned short id, unsigned int nr_pages)
-> >   	struct mem_cgroup *memcg;
+> > @@ -4055,18 +4059,20 @@ static void __mem_cgroup_private_id_put(struct mem_cgroup *memcg, unsigned int n
+> >    */
+> >   static struct mem_cgroup *mem_cgroup_private_id_put(unsigned short id, unsigned int n)
+> >   {
+> > -	struct mem_cgroup *memcg;
+> > +	struct mem_cgroup *memcg = NULL;
+> > +	struct obj_cgroup *objcg;
 > >   	rcu_read_lock();
 > > -	memcg = mem_cgroup_from_private_id(id);
+> > -	if (!memcg)
+> > +	objcg = xa_load(&mem_cgroup_private_ids, id);
+> > +	if (unlikely(!objcg))
+> >   		goto out;
+> > -	__mem_cgroup_private_id_put(memcg, n);
+> > -
+> > +	memcg = obj_cgroup_memcg(objcg);
+> >   	while (memcg_is_dying(memcg) || !mem_cgroup_tryget(memcg))
+> >   		memcg = parent_mem_cgroup(memcg);
+> > +	__mem_cgroup_private_id_put(objcg, id, n);
+> > +
+> >   out:
+> >   	rcu_read_unlock();
+> >   	return memcg;
+> > @@ -4074,12 +4080,17 @@ static struct mem_cgroup *mem_cgroup_private_id_put(unsigned short id, unsigned
+> >   static void mem_cgroup_private_id_kill(struct mem_cgroup *memcg)
+> >   {
+> > -	__mem_cgroup_private_id_put(memcg, 1);
+> > +	__mem_cgroup_private_id_put(memcg->id_objcg, memcg->id, 1);
+> >   }
+> >   struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg, unsigned int n)
+> >   {
+> > -	while (!refcount_add_not_zero(n, &memcg->id.ref)) {
+> > +	struct obj_cgroup *objcg;
+> > +
+> > +	rcu_read_lock();
 > 
-> I think we can introduce a new helper like obj_cgroup_from_private_id(),
-> We can use the ID to get the corresponding obj_cgroup, and then get the
-> mem_cgroup.
+> I think we need to make it mandatory here for the caller to hold the RCU
+> lock.
+> Otherwise, if we don't enforce that, we would have to require that the
+> passed
+> memcg holds at least one reference count. But either way-whether it's
+> holding
+> the RCU lock or holding a reference count-the RCU read lock you added here
+> is
+> useless. I suggest changing it to:
+> 
+>     lockdep_assert_once(rcu_read_lock_held());
 
-I actually did this in some local versions but gave up in the end
-because the ID should be referring to some memcg and I was not
-sure if getting some objcg from a memcgid looks normal.
+That's a good idea! I was thinking that offlined memcgs with css
+refcount held might cause issues, which proves to be wrong.  So
+RCU lock will be enough here!
 
-So if that is acceptable, I think it's a great idea to do like
-that! And the put can look less weird then.
+> 
+> Of course, I could be missing your point here, so please correct me if I'm
+> wrong.
+> 
+> > +	objcg = memcg->id_objcg;
+> 
+> BTW, as long as the memcg isn't released, the objcg won't be released
+> either, because the memcg holds a reference to the objcg.
+> 
 
-Thanks for your idea!
+Oh yes... I missed that point. Thanks for your reminding!  The
+RCU lock can be removed from here.
+
+> > +
+> > +	while (!refcount_add_not_zero(n, &objcg->memcgid_ref)) {
+> >   		/*
+> >   		 * The root cgroup cannot be destroyed, so it's refcount must
+> >   		 * always be >= 1.
+> > @@ -4089,7 +4100,10 @@ struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg, un
+> >   			break;
+> >   		}
+> >   		memcg = parent_mem_cgroup(memcg);
+> > +		objcg = memcg->id_objcg;
+> >   	}
+> > +
+> > +	rcu_read_unlock();
+> >   	return memcg;
+> >   }
+> > @@ -4101,8 +4115,14 @@ struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg, un
+> >    */
+> >   struct mem_cgroup *mem_cgroup_from_private_id(unsigned short id)
+> >   {
+> > +	struct obj_cgroup *objcg;
+> >   	WARN_ON_ONCE(!rcu_read_lock_held());
+> > -	return xa_load(&mem_cgroup_private_ids, id);
+> > +
+> > +	objcg = xa_load(&mem_cgroup_private_ids, id);
+> > +	if (!objcg)
+> > +		return NULL;
+> > +
+> > +	return obj_cgroup_memcg(objcg);
+> >   }
+> >   struct mem_cgroup *mem_cgroup_get_from_id(u64 id)
+> > @@ -4203,7 +4223,7 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
+> >   	if (!memcg)
+> >   		return ERR_PTR(-ENOMEM);
+> > -	error = xa_alloc(&mem_cgroup_private_ids, &memcg->id.id, NULL,
+> > +	error = xa_alloc(&mem_cgroup_private_ids, &memcg->id, NULL,
+> >   			 XA_LIMIT(1, MEM_CGROUP_ID_MAX), GFP_KERNEL);
+> >   	if (error)
+> >   		goto fail;
+> > @@ -4348,9 +4368,10 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
+> >   				   FLUSH_TIME);
+> >   	lru_gen_online_memcg(memcg);
+> > -	/* Online state pins memcg ID, memcg ID pins CSS */
+> > -	refcount_set(&memcg->id.ref, 1);
+> > -	css_get(css);
+> > +	/* CSS pins memcg ID, memcg ID pins obj cgroup */
+> > +	memcg->id_objcg = objcg;
+> > +	refcount_set(&memcg->id_objcg->memcgid_ref, 1);
+> > +	obj_cgroup_get(memcg->id_objcg);
+> >   	/*
+> >   	 * Ensure mem_cgroup_from_private_id() works once we're fully online.
+> > @@ -4362,7 +4383,7 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
+> >   	 * publish it here at the end of onlining. This matches the
+> >   	 * regular ID destruction during offlining.
+> >   	 */
+> > -	xa_store(&mem_cgroup_private_ids, memcg->id.id, memcg, GFP_KERNEL);
+> > +	xa_store(&mem_cgroup_private_ids, memcg->id, memcg->id_objcg, GFP_KERNEL);
+> >   	return 0;
+> >   free_objcg:
+> > @@ -5832,7 +5853,11 @@ void __mem_cgroup_uncharge_swap(unsigned short id, unsigned int nr_pages)
+> >   	rcu_read_lock();
+> >   	memcg = mem_cgroup_private_id_put(id, nr_pages);
+> >   	if (memcg) {
+> > -		if (!mem_cgroup_is_root(memcg)) {
+> > +		/*
+> > +		 * If the memcg was offline and reparented to root, swap needs
+> > +		 * uncharging as well. We check this by comparing the memcgid.
+> > +		 */
+> > +		if (!mem_cgroup_is_root(memcg) || id != mem_cgroup_private_id(memcg)) {
+> 
+> Swap accounting should be based on whether the associated objcg is a root
+> objcg,
+> rather than whether its current memcg is the root memcg. Since an objcg may
+> be
+> reparented while retaining its original root status, using
+> obj_cgroup_is_root()
+> provides a stable criterion. Applying the same criterion in both the charge
+> and
+> uncharge paths makes the accounting symmetric and avoids having to infer the
+> original state through memcg ID comparisons.
+
+I certainly agree. A really clean way!
+
+So as long as we are good with getting objcg from the ID, we can
+move to that.
+
+After the change, we can use obj_cgroup_from_private_id() if the
+original memcg's root status or parent is needed. And
+mem_cgroup_from_private_id() can be used if we'd like to get
+exactly the same memcg the ID refers to. Returning NULL indicates
+that it's not online anymore.
 
 Regards,
 Bingfang
 
 > 
-> Muhcun,
+> Muchun,
 > Thanks.
-> > +	memcg = mem_cgroup_private_id_put(id, nr_pages);
-> >   	if (memcg) {
-> >   		if (!mem_cgroup_is_root(memcg)) {
+> 
 > >   			if (do_memsw_account())
-> > @@ -5825,10 +5839,10 @@ void __mem_cgroup_uncharge_swap(unsigned short id, unsigned int nr_pages)
-> >   				page_counter_uncharge(&memcg->swap, nr_pages);
-> >   		}
-> >   		mod_memcg_state(memcg, MEMCG_SWAP, -nr_pages);
-> > -		mem_cgroup_private_id_put(id, nr_pages);
-> >   	}
-> >   	rcu_read_unlock();
-> > +	mem_cgroup_put(memcg);
-> >   }
-> >   long mem_cgroup_get_nr_swap_pages(struct mem_cgroup *memcg)
+> >   				page_counter_uncharge(&memcg->memsw, nr_pages);
+> >   			else
 > > 
 > 
 
