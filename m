@@ -4,139 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68241C624D3
-	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 13:21:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A88CFC624DB
+	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 13:24:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 418876B008C; Sat,  5 Sep 2026 09:20:59 -0400 (EDT)
+	id BE7956B0092; Sat,  5 Sep 2026 09:24:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A27B6B0092; Sat,  5 Sep 2026 09:20:59 -0400 (EDT)
+	id B71976B0095; Sat,  5 Sep 2026 09:24:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2442A6B0095; Sat,  5 Sep 2026 09:20:59 -0400 (EDT)
+	id A3BA46B0096; Sat,  5 Sep 2026 09:24:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E593C6B008C
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 09:20:58 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5B8AE8034F
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 13:20:58 +0000 (UTC)
-X-FDA: 85179768996.23.AB2D718
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 644562000A
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 13:20:56 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JF8Ab0iK;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf03.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788614456;
+	by kanga.kvack.org (Postfix) with ESMTP id 7FE8A6B0092
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 09:24:06 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 17C97A447F
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 13:24:06 +0000 (UTC)
+X-FDA: 85179776892.24.5C251A8
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf31.hostedemail.com (Postfix) with ESMTP id E094B20004
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 13:24:02 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="Y6T7wk E";
+	spf=pass (imf31.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788614643;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uwIV32WsD/zZ7++4VP2rotd5bmAf7SflccOb0estirA=;
-	b=Ol2Y1s9rvm9nKz1u8FMDxW5fmisC7bVZLN2F0EJaOkgD9bo6OY2TP/PsYuBtJ19i09KxWb
-	Dlbd+ogFKMC5bADcHw1FllFBoqu/DO1NiG38jXAbulBND82GVImdpoIDK40xBqYqRJqsB/
-	Am5Q04MOTAMyU3QKATt/d4gvnFtA0rI=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JF8Ab0iK;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf03.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788614456;
-	b=6CH7h8kAjMRSZPvLp5eoTCkk2eeSvif6Q0YLB4yTpp1b0yq0xs0zptc/McJWfqZ18e2z7L
-	NNrEO32UnhSsjS8BnufwtcucBh0WhtKQlcC0EE5XwgNOMHjL0us+F7qx0z0mLdPKLvMczu
-	H/FjYwzy4W5FFKBLKgFmUr5o6vAQWyU=
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5b0231a3e86so1734973e87.0
-        for <linux-mm@kvack.org>; Sat, 05 Sep 2026 06:20:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788614455; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ZGle6TXIPFhnmtUR2oIVFEZVvSuWSRN15GGcJv7YnBADy2kF8aoywVhHuBT3cJWkZC
-         NSqSvsNIMl8g4Mu/0Fkqs5HtvXzGG9nXyPpYXBsG+wHOuuwOekMQR81J5NG+D0nzmvxS
-         I22ZLghi4usYEXqVU3R3jrHtJHmxNBniSS8zi++wNiCesfMEtobTfNduJi03tL7iqizW
-         V3v74SRCk1o7wb6hgBzyI56KffWR7KYeKkgnSYxMssmedZn7SDmDDizPXWG4bWXI+Wal
-         M3ZZUsu+DL+HvE6iphkTFuePmlENqB/TZ0w0fUSey9+VwBC+nc2Ri21bso19uEkIKL9t
-         IDAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=uwIV32WsD/zZ7++4VP2rotd5bmAf7SflccOb0estirA=;
-        fh=hZZI2MTYHDCEXJs80TH/sATxzL4gAizJNooojTjKBb4=;
-        b=LfJYU4D79YfCbWt1kHOKL8zFubA2T8okUa5cOdxTYb7atS114KR+9VSp1Ichirqh5F
-         uni27TPi1YEo+m3qgxjrzgjP0mdy/cd33MtX8+JrlxAOVlSlk0i8/FU2Jg5UVcN3qS0j
-         2ErgV9CP2imVsnbjpVbP7Y6xDINTkghdGSB3mE8NMFsqzzTncZQW7IAGnhgQ02nL4mnb
-         rlVd/JmImJ909fk3gX9xpeK+EHGUvRDWmzXi6lfT6Jrwv+LjLhMlE6zRbtamJhxEJ0M2
-         4WfTpKX/evXfzgb5bhZOmWlB7jCF0DNDL1wxqIrdxLpkIZ6fHUqSxk6CTn8Tzu0nzKj6
-         H1/w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788614455; x=1789219255; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=uwIV32WsD/zZ7++4VP2rotd5bmAf7SflccOb0estirA=;
-        b=JF8Ab0iKdxcjz6uWjsk3SECocJC8bNX8JjhYV3KKMelyv2jzFo9kEA+mCvrdkjdAhU
-         8BIx5MYoRHcyEqLd2Y/3/qkTi2vDbEXvkGxh++Xr59ml105lhIVjWm7HvSnYrWp8bRHT
-         m95qMcsTrruH1bciAF/c4RuKT06ttmpkZXNxz+0qy4R3KLzybWybJG8to0EdfFGH23LW
-         PB2hSPBDKfuSnRT/RuNFoGfAUweFWuKYeb3Gtcji8lP6tpovaXy1flNQtK9jAjXkFTsG
-         +6ekfbtYiW3aS/BeO88QGVSq6gn7dKe1wQK3JNB/EDSoXtQcr5nQyZdfZ9jw+veDEuKQ
-         l8Og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788614455; x=1789219255;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uwIV32WsD/zZ7++4VP2rotd5bmAf7SflccOb0estirA=;
-        b=qDWL7aNz5jZ3YLJ6HVb2W2AcPq6We5uVVeMhKTyknP3FxbCjtp1fWcwugODWn+mYbe
-         9ov6dIoQzFM4/W9iWHeK3KxX8zEpJW64Gt8k9Tm76JvFqhOXapCdMFIo5P2/tX3BZIr+
-         AvGI86Q5dYCQnCiI2Xr+gzzTIkWGHBVFSr8v8PuJKaaXbUSZYgr71Xra2um6hcHATQwv
-         4YxX6W0sHGiTQjRHQTpSei8OqRtVikf+66KDl9dSBqbnrmLXoxpBa4cyMcX1ARkwaJJD
-         UR7GAFwLneOLip5T2ij4J3jqz3Zt+ju+GRtCYIMCN9YRczhM7WDrFw99yUtlatWFpLxb
-         CWMQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw5+Xi1chQsru/4zuln5OAnk5GSe+1nDpDFqfEbicpq44Z+BV17S7uMbwFijwyBueWSjkgPmafgtA==@kvack.org
-X-Gm-Message-State: AFuF++ktV7kHIKMq9P4xdc1AOqHttCjjCybF7nHkIP89tBXry06fSQE8
-	g4aZVbYhRa21MCkdWpXRIHBtPAqb6C96IPrzrluZ9WAE6226vwepaoYzwF8GoDrACahX6zLHFxd
-	DVGlMkjcEA8AHXvOKKW+Vuk/Q03jtoBo=
-X-Gm-Gg: AYBFou0t4vermc96DOMxBAcW9Td4+huPQhwY/sdY1sYdyZYY2arFHgGzs+j9sTmEB9y
-	XNgqjspbJ04rYmWJG0pvFUhyZYhtIX3EDZU39kVYwcBrsynTiIe+McUl68uaWhy8nscbc2ptwWK
-	xKOGW0nBG4+bID+c1+Yximb9XF3U9nAdkFzRoeoa50QOBSklHh7uvU4r7gPu64ZayLnzzeuIECu
-	tGgiCovqfnyIMTyzaQsKWHeJsg2RsrUdAuoVUFS4pGXFEaMtSZaxt8BTBcIJozyDo3wq3CggVc5
-	yxPz4h5vJpUuVzYj4FF805+JV8J8+St4HR989QxgGj3lsvrqHx3YCRmNQPHMq/b86kzGms3Ezas
-	=
-X-Received: by 2002:a05:6512:3f0e:b0:5b0:eda:de1f with SMTP id
- 2adb3069b0e04-5b616f02096mr2059293e87.6.1788614454269; Sat, 05 Sep 2026
- 06:20:54 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260830114731.8322-1-wujianyue000@gmail.com> <cover.1788528216.git.wujianyue000@gmail.com>
- <5c4f72f1ffbd5f15d0b57fb1a87f73b4249ab424.1788528216.git.wujianyue000@gmail.com>
- <CAO9r8zP7LCRaq4e0O_gPz61d+ee6Pt=tBZXQRy4X27idB228rw@mail.gmail.com>
-In-Reply-To: <CAO9r8zP7LCRaq4e0O_gPz61d+ee6Pt=tBZXQRy4X27idB228rw@mail.gmail.com>
-From: Jianyue Wu <wujianyue000@gmail.com>
-Date: Sat, 5 Sep 2026 21:20:39 +0800
-X-Gm-Features: AcwNN1XQdTnL4GDeFU5BsDnq2fml9cZJZMgkYM195Nirw_rp_dSf65yDkyjMKHI
-Message-ID: <CAJxJ_jifBfg+f9OuUSPiYThFU_0edA-XOmuKxbKf=2LNgeWPvg@mail.gmail.com>
-Subject: Re: [PATCH v5 3/3] mm/zswap: reference the pool by id to shrink
- struct zswap_entry
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+	bh=+xdX3u19Dwb6Bpywq5kWM1LOmEoefXtOBB0aNulunYA=;
+	b=Idh2ZG87AsDQYktQWMoOro0mJjmGwfEYjY9zMYCYiho13a+6bjwn9RwzrvAkDwNAkUqfdt
+	sZG+Gs/h0C97HZXx6u+BEJkr7RVPLCODAZiTm8a+U2wk6FsthjWA/G4M/8tT31kectWB8z
+	Ja/TQVqnAYlJeJTn3hWHlQ9gGgukr6w=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788614643;
+	b=IkIPaWyEAd+mksOWZmt6fj+gHll8SIDkJ61gZSBVK4nBEfwUrOLkgldRfTZV1zZPV3F7kk
+	shKk6qJG93PsPX8NNFQWT+hNgMZ0EScIPSL9ZqrElDXAOPyV57ikuAtU/vwp4XRIoj0IjO
+	CuA91y70mxqzLrH8a3IPnl7J6qB1br0=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="Y6T7wk E";
+	spf=pass (imf31.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=+xdX3u19Dwb6Bpywq5kWM1LOmEoefXtOBB0aNulunYA=; b=Y6T7wk
+	ECusJx5+FAWTrbWTYpRs2KnCXc7xlgPi9QnR84brPpnGqghG2BCyhkSl3uOY5D/yRp4ewBFpn1Xrn
+	LOzm5dfgEzfH7wIsJJC9Wv356rd6RNYmX3UutZqJeHPu1Us1g7ljNCqjciOdRH2IeqBC3sRa+5KjS
+	bivDBRAy+i04LY1wL0NisWZZU5aV439bxVHMFp9hsxIwhGyN3Ks0eP3x1iFt7gZLmdG1OUYyePGGh
+	vldG1gOoCrrxQtv0WJkhvsULxkKkv13QwephDwn4zXbv/cQ1coX4Tqrgoo00aYgp3rwjbgz5w9TDq
+	4rO2pJboQdI2iOszAk3yF/T2xYzA==;
+Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
+	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <riel@surriel.com>)
+	id 1x2qME-00000000tPx-0DNo;
+	Sat, 05 Sep 2026 13:22:58 +0000
+Message-ID: <5cb70d43baa959b4c0d1552d67ac5d4b4a17cd37.camel@surriel.com>
+Subject: Re: [PATCH] mm/rmap: fix missing barrier between anon_vma init and
+ vma->anon_vma publish
+From: Rik van Riel <riel@surriel.com>
+To: Jinjiang Tu <tujinjiang@huawei.com>, akpm@linux-foundation.org, 
+	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
+	harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
+ minchan.kim@gmail.com, 	lwoodman@redhat.com,
+ kamezawa.hiroyu@jp.fujitsu.com, mel@csn.ul.ie, 	linux-mm@kvack.org
+Cc: wangkefeng.wang@huawei.com, sunnanyong@huawei.com
+Date: Sat, 05 Sep 2026 09:22:55 -0400
+In-Reply-To: <20260905061820.642437-1-tujinjiang@huawei.com>
+References: <20260905061820.642437-1-tujinjiang@huawei.com>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 644562000A
-X-Stat-Signature: x5geyiz75e1fjehbos8gbgsn7boa8zce
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+MIME-Version: 1.0
 X-Rspam-User: 
-X-HE-Tag: 1788614456-888793
-X-HE-Meta: U2FsdGVkX1/zRf6DgfLf+TQ9IaD3+y/GZgEzB+nMF9j+rmTlyQMo1tVb9EgwkUT1OXzyYDKDgKuGsUzTZbX2wpNwtPbswg0c1QmSCpPsHMeCAXguOu9KDJovRyH7zCY2bnp0neSmLC7hA/0tnJPweuJrNgOXoYDHrBzPGJY8WVZ5txzyhOma+gj+bJlPTt6NyyXjPCE0JNUN0W5YRfKmQFTSiVYdD2H+YEDDIqf7wOfMbegy4e8o+JpjBXNZ0oXDamL0zl3mNKoGnymRAf8X3GA4dKYyWOJRWsv6YOgxNV24UWZa4sPQN0BTEVoldbxZiIoU0MKEX3tg0I0/vWCrkp/dQaDDv8O11Lz7Hzj1kqWRsQ5tu8j3r6gRdryKDYdyQMK54N50dQufzqAUtUlqfqK6aTZwaOCS0iE1IVxYRV+brcEbRFVnjRxlEAAimz95crIlmmM1gVm/0wdkYOcHSr+cXCb76LTSqZ1BUc7D+yTaOaqPH6kEsoAmWG29lz2E6XwKKHNCWN8a1hbuAqlcWK1WETG16Yk5ybWE353hqIs1oWAEyrsoMzWMw/kI7LbP5xucnXKD761AVT9lK01G/Hl38+1n2T8mlw4gtd9Y0fxXGdgCX2WV4c9CyqXeLRisMjX60YUBF8jXRWlRo6ROOfwDB++8PBxj94YNlTnS8fYfgH7lNsmJx4coxS6cPD2Zv3+/SkEkStBkYK0twMqE7nI1qCJqr7bKLvairlpYmXc599cTe5P7sFHngju0k1nEXngivM67Js5BCBk3dpat9T2AwOJa3HQv3B4GvRr2mxhaB0UR4JKKggUsxj3HLCAPQzYS5tZh/dierlgIfyiJBScvnmal1tXJOA/Kw66JCFqBzRgZp22RUVKNx1wl8vYSAYYGMMQ3KGdFLLZk5UFdXtZ7ht4J5CTSBjYn6L9ZNuYPX+KepDHoVaBCLOS8V4pQf3MKxoPSPYwz6U7QJ/V
- ti4b27K6
- k/MlXZs+iYh0ERTlkpDvroJp1aJ70E86mrLFmaVlx9+qdbJUCeiYLWpzqBTBcbp0KfdnR96ZIajIsix51AIArnUn800oupZPra23W5kn8cqxcuuUoBQEWCVBbwGHIjf+XGCJ0XQj4u0RiqUxWKxloMi5UirwCPN5opQG29e7O4Zy2zDVXTW8Rf63Z42FvTqJdq0XwNAsAkkFbbYjPFlUa/NgbWvwqL9AZfZja4H0iNHx9Sij5Kh0lV1bpH9men7cwDxFREEJmVmGtlKH3+5Rx/wroPfNdeXyho8Wi/lRxI+4bbocot10DsNpOiyMEMKix2keIxSOPmdMWyc/ZhPTY87BQPsef6/yn/wo+wxhixqx7H6greMt2JrP6O9WVzP/p6nuw9/VKylO9hU30N8A3QPlA4RNT3YJsbdOGcIKrHEDb/IAosxmHwGSF8slVLc9r5N2nVuB6xb2Y2n2cSsLcR61J1rQMXOAs+wQq9YrIMpfke5YUb4ANsjF8LQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E094B20004
+X-Stat-Signature: 73hepy6gd6n76ddm1cfkd6bn4z7uccsg
+X-HE-Tag: 1788614642-952287
+X-HE-Meta: U2FsdGVkX18am7gjtVSZ13iYlT829ebrD4Mdyi+fPQ+9kz73F69m8v9VxYs2xwlwo5Rz5D0Iob4OHQAO79bEsI/f+oIBPVWG5UZ0zuuPnAScXZpRlprYuh7eagB5h1f8ne95gEqizB2cCOA0NG40KchVxgD55cWmZtrY0fsnfgdcxSb2yKvNt6LBfNxR8cTg+AhmRfQ4GcCDavQJqmvjIG8IyAMiBqy7yqmQ76PDaCcQP9x00LFfTJIn1ANWdmSofSyj3zD2C6bwBltUjy2JKA3PNfjSJxotX6jXIdaTRNJQU6E9l0yIbJo+Jfw4mzusr2M4JUcIggP23ZxjxzYCjSGUTqNq0nKqfEL1Mro0PkO8sew/jIiJEMG8RSb/zr7p9w0lDJkSgyhefIqfLkR22j7eV3jdd7I069pKZEwgmXyXuYNRFwslrDDS7HJNMdhsNTt3gbBrwmPVjM/5yGGyUttvdt4rF6P1B+5BFBzBgWb/hU6rbe1tJ5owC5JvWA1h865S4gcXjRGSVwaH2qqq+OsGMphmh33eXsiX+ckdIBnNbNenSLxFuiRj8Y1yEWdnwG6kxL6NyObkhi7MIrP/oTDhy7Yx9EHCf/JTbfzPMdRlLzezaJ5DMToBm3UxJOmBvS9RoapF85qoBae/p5Kd+IATM3QQQEP98Rc8KJRqUlbZomRbwhIojnhCcHH4Txqe/UbZL16Kf+tn6zlD0gQedq1Ffrv8qDH9v361LoqJaMX4bShp6QKhQrgjxtpDfVOQFbquiN/jPHDjpA44oWfTIa8H/edGFBzPlEygrI4/XwO463yQsVg4/zijL+RWsYVDfPHIYF677KoCGj6g88f4hMTx7U5uW0qZ5uWjKw5/3Gk8G9y7an8nOhulOJcXoxe7pZp3PopECtDpdTDcsbr0dbIgooEHuesUtOQXIAixKG1LaNRgVph/zzALprupEid5EKObVY0pRW9+Q3b7roX
+ GqrsAyAH
+ YJPVQgTUNFjluNufbkTDlGa4QpFaAgQd6RJAGN2QzcZbwlJJ/nMJhVby5ZO1OMqcBQeyCeMlh+MGrBGOO7fz8hbnyVoLJkAyQiWDHwPvjg66PnBuM8GGq3NSOPyHfgm2gSGNwksGgTSz9MRhiOLJUoY7UKeD2ZJl9msDJEeEz81xpsBABNRqjzNHumTjakzquWw1D09z7BifgBxLpPygNDLH5jXwT4HwTY2mms70qB6iwgNyg3q1OX7ETfqDtWOmk0nAgtxJUcLkNseYWn3+5vycQRU9FmmjkT5qvyT+q36z29h8EHqTbE7Qm0eUzkKW33xX/BYH/Z0gvYKKejuoaPmISKseV761k2n6Gl22oZEl523bWOmo7gOJ7U5WCrMBXpPUEQJEUOmhr8+icpAhQFb3B6Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,27 +121,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 4, 2026 at 11:38=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
-> > +/*
-> > + * The pool stays alive after this returns because a stored entry hold=
-s a
-> > + * reference to its pool (taken in zswap_store_page()).
-> > + */
-> > +static struct zswap_pool *zswap_entry_pool(struct zswap_entry *entry)
-> > +{
-> > +       struct zswap_pool *pool;
-> > +
-> > +       rcu_read_lock();
-> > +       pool =3D xa_load(&zswap_pools, entry->pool_idx);
-> > +       rcu_read_unlock();
->
-> Doesn't xa_load() already call rcu_read_[un]lock()?
->
+On Sat, 2026-09-05 at 14:18 +0800, Jinjiang Tu wrote:
+>=20
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index d1819fd69938..a868e835eadb 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -209,7 +209,11 @@ int __anon_vma_prepare(struct vm_area_struct
+> *vma)
+> =C2=A0	/* page_table_lock to protect against threads */
+> =C2=A0	spin_lock(&mm->page_table_lock);
+> =C2=A0	if (likely(!vma->anon_vma)) {
+> -		vma->anon_vma =3D anon_vma;
+> +		/*
+> +		 * The fields of anon_vma must be visible before
+> anon_vma
+> +		 * is published to vma->anon_vma.
+> +		 */
+> +		smp_store_release(&vma->anon_vma, anon_vma);
+> =C2=A0		anon_vma_chain_assign(vma, avc, anon_vma);
+> =C2=A0		anon_rmap_tree_insert(avc, anon_vma);
+> =C2=A0		anon_vma->num_active_vmas++;
 
-Yes, xa_load() does the lookup under RCU internally, so the wrapping
-rcu_read_lock()/unlock() is redundant, and will remove it.
+Nice catch on this bug!
 
-Best regards,
-Jianyue
+This is perhaps a dumb question, but does this
+write side barrier need to pair with a read
+side barrier, to ensure the reads are also
+correctly ordered?
+
+--=20
+All Rights Reversed.
 
