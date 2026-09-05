@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 741F6C624D3
-	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 14:02:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C660C624DB
+	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 14:02:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B0016B0088; Sat,  5 Sep 2026 10:02:02 -0400 (EDT)
+	id 8364D6B008A; Sat,  5 Sep 2026 10:02:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6608E6B008A; Sat,  5 Sep 2026 10:02:02 -0400 (EDT)
+	id 7E7556B008C; Sat,  5 Sep 2026 10:02:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54F8C6B008C; Sat,  5 Sep 2026 10:02:02 -0400 (EDT)
+	id 6D61D6B0092; Sat,  5 Sep 2026 10:02:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CA106B0088
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 10:02:02 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BA531A43E8
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 14:02:01 +0000 (UTC)
-X-FDA: 85179872442.07.A1A9163
-Received: from mail-wm2-f6.google.com (mail-wm2-f6.google.com [74.125.225.134])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A27CF40010
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 14:01:59 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dq+WoF3t;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of christosskarlos.kernel@gmail.com designates 74.125.225.134 as permitted sender) smtp.mailfrom=christosskarlos.kernel@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BB686B008A
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 10:02:07 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DA4481A036D
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 14:02:06 +0000 (UTC)
+X-FDA: 85179872652.01.1AFF15B
+Received: from mail-wm2-f11.google.com (mail-wm2-f11.google.com [74.125.225.139])
+	by imf23.hostedemail.com (Postfix) with ESMTP id F212414000C
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 14:02:04 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jLpp8p9D;
+	spf=pass (imf23.hostedemail.com: domain of christosskarlos.kernel@gmail.com designates 74.125.225.139 as permitted sender) smtp.mailfrom=christosskarlos.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788616919;
+	s=arc-20220608; t=1788616925;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=nPpHNOPG2eF6hIZslIRv1KyfhI9ApkPtiUNXBEjR624=;
-	b=PDMQE0vyHnXpSpSgZVI1EC7VSq5k1hWFeJYM3Osvab0OerQRhvMcIxVGKk0QpWFs8u+Fe6
-	yl7QZXlK0jpEcRfJodl4TjAnyIn4QzLkHgkqDJHboL9REoFyKBMW2zPYXp+FafthNNfe//
-	TJDMO/38+4sO3pP55PC3VMeU3GxEQqg=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=XYwBU5ZHVueM1YfQFwjzrz4zbhTksf0+irRokmEvL88=;
+	b=g9+5jnjPJZ1Qjf+xUEzZCizlnHUl+gmq3r1HobpwNJO1G8l1U+BgKhc6rdYcQR4zyEu2ZH
+	I50WjHA1WubE14UsIriTUViiH3ePUNJrJHh4YAasQm2E9+L6BF49GnvyYOyIl5USXiYNlV
+	gCTuoi+pCGFQuKQV1cZOcfKtP63/ZOE=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dq+WoF3t;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of christosskarlos.kernel@gmail.com designates 74.125.225.134 as permitted sender) smtp.mailfrom=christosskarlos.kernel@gmail.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jLpp8p9D;
+	spf=pass (imf23.hostedemail.com: domain of christosskarlos.kernel@gmail.com designates 74.125.225.139 as permitted sender) smtp.mailfrom=christosskarlos.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788616919;
-	b=rZv4Gj+mGFMqC6Cp+XwWZ5CU6zuNflamScUjC3EcENhKTRGjSIKT88SAmzhRxF/KpgUUKs
-	7Ku9UM5Al51UhKt7topLA6GrhfCF0Bz8Kz28vL2heTnMGfjCd+5gCb61RKfgM2t7O1+Eog
-	mJKdmHY56OoHvFdeIIO+i2A2z2emqZQ=
-Received: by mail-wm2-f6.google.com with SMTP id 5b1f17b1804b1-499aaf0a723so7144975e9.1
-        for <linux-mm@kvack.org>; Sat, 05 Sep 2026 07:01:59 -0700 (PDT)
+	t=1788616925;
+	b=SzjxZBi6Jx0VhpQWhAY6bPg/ZbLMo6cVvvia4HveVRlkFQVwy4cePrAM/srB7VL833cKcR
+	GH/VgCAm7MxrEvn7zHqtFGHp9Y8+RUf956huo+6F1IzQTRYnVJdxXCXyCJ8RIcvweripNE
+	0gp1Ke83WHyPc2+2wV82Ib5v6ja3IIs=
+Received: by mail-wm2-f11.google.com with SMTP id 5b1f17b1804b1-49ccf0fbf41so8261115e9.0
+        for <linux-mm@kvack.org>; Sat, 05 Sep 2026 07:02:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788616918; x=1789221718; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nPpHNOPG2eF6hIZslIRv1KyfhI9ApkPtiUNXBEjR624=;
-        b=dq+WoF3tpw7Nk1dcmJvml7z5UckI57IqDEcqPodF1Us/gNiOAl+PXIz4Obg/gT1vzR
-         OOUufMappjRVkZ8kFWWbjXfNYs4/De44KFK5fYdozgvvL9yhQ9lc9Q7wa+6i8hp+IcR2
-         YB4lsxN8yH6aq49sGFBpcUmqYivWHnwnctEY46gQu2cnPi1/Jq/6WkXRpX34oioJZCUc
-         zcbeoSloLO3qr9jht4xHp3ZeVkkTFMjabLLPSV0WmP6GqgiHjlImR7N4K+VfgH1unf9S
-         GXXH93s4UoVSDcj538RaaDzuL91EkZYBo1HZDDa2rQ+A0JzeWIztM9dYq01lPAjZUi9O
-         4qgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788616918; x=1789221718;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1788616924; x=1789221724; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=nPpHNOPG2eF6hIZslIRv1KyfhI9ApkPtiUNXBEjR624=;
-        b=XEGt1jAPsBiIPT3tYRts8HagDMs3WnQQkzMc2nnEBgq3ify/RB51bWtGb31juoO2Cq
-         NSUZ96MP21Q8HEnRAWkeFeSC0vt8TZ51GzmaRrvecuXG/7ntmmjL1URjD+ZqlRNv/Azy
-         /O64irqcSFKq6NSHvcmLUYzy5/qHQuUC3aGp7QvyHM9QBeLWTZOSS6YXybthyXqco5An
-         HLZBS9SKRzuBQKsCE/Wp9ODhOe1rsf38d5ius7+15QSP/Q660BxqA95tq6dLFnywT/LL
-         onynQrApMWraIveZCYXTJzroTjNUPk7JIdGbUd5sHZTGNq058KzZFKglQSLv7XUhp1wX
-         unfg==
-X-Forwarded-Encrypted: i=1; AKwUvBya2bGxZ1usHpkj0FynUIR4Kz0gOgn05By5W3jefU1bYzChQlJ9GnsvpBfZ7KftrOBOjXFcOB1dIA==@kvack.org
-X-Gm-Message-State: AFuF++miTv1Ghy3jkI/mnanai7NPoYU8h0sZwviYwXZG9yBRx1/XV8sI
-	rW0cNDT3Bv+//7u3YrXrhi8FbN9WeB10e7SkfY/pzbQuTGhmkfChmUat
-X-Gm-Gg: AYBFou1N0hw8gMMHW6xWBQaaRUkGfdLa1G8ZJ4TF/MrRBtWkqbm3yFZY0dR+VMWnU7m
-	CCoxkgHjfOcgEKd2TN+kVGgoMUOHj95JdFUX+ihl9PS/tod93/FaDCQT9wZnmuIOla6qxNEpwYm
-	Yu2rpz5hvBc+kt7j+eI4QXV1RDYFOiBv8kM2Y+F/xFi7vrgSkgLQ4KsL8Zm1snVTwnADvNSPAAq
-	P/YEONPs3JwB9Ttm8Rk0dvWZ8D8TIZCdTs8mSSVg7sSPQndQVlWP6xGsu/K/zG/q+idI9Al9BUy
-	NoS/mdEB2061nfoYaTVmIF0kVEH4s/bw6ZQlczeAejR3QglkHzGh8jNsktyLJ1Xm9TyMdVfEIW0
-	2OWmFfmHFlVUVa5VYA3FH6E/AXTGcYLhS24LMjRfQJ2JKUi0h4DewYtr4FeBUpIvDCozdkL21DP
-	mRAjHiKGxNVE1JCsTSJfqyJZ75byld5DtVHNG72yUzJeALG9APB5vwp8D9l3wR5lPGTBNuoWNdw
-	8BeN7nkxDgmkPEPbQeLySccDZY28yqmsnK0qt7g
-X-Received: by 2002:a05:600c:8b6d:b0:499:a277:e8b5 with SMTP id 5b1f17b1804b1-49cf7fdd67emr233375335e9.3.1788616916740;
-        Sat, 05 Sep 2026 07:01:56 -0700 (PDT)
+        bh=XYwBU5ZHVueM1YfQFwjzrz4zbhTksf0+irRokmEvL88=;
+        b=jLpp8p9DCgkBBJtOZcYqMEUlbexFwNW2t52nVw3Z6S7KlHyhBPJEokpcKeROSSITPx
+         ZcVMoSBxLYJoD6cxUu6nm7/enXP+5LOFF+bvrR6FNN4EpEwWg9iBrSLvCwUraSVbtlx9
+         uGLERU9Mu6jGxbqBV/iCPql2DB1GwJYhYIXkW/BL3Zet4iUm91hVx5kaGMpIrKL1E7MK
+         qFuS6eMmWzRPxQrYaurtQHBSZ/1/f7V2uPg58ZYphxvrHK/h3VgFP0tNrd9ii9AeshpS
+         A27DwsJQJYCOJ4z413CeFILOpuqW6L7MQQ16KN53l8VYhLJ9enR1Gkggcp/SQFOHBq6M
+         er5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788616924; x=1789221724;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XYwBU5ZHVueM1YfQFwjzrz4zbhTksf0+irRokmEvL88=;
+        b=qNXLhbu0brDk/P8vmSNL4PP/2a3mqaFlv5HhF6ldLMwJo4GFJRIyM+O1l82/+mMRPA
+         jGy/I7pk2D7k01oafksA1L3jwvK6FuIjDjiIuv99rnDVVt+ist5WL0oChgqoBbw1Q6le
+         g57X6egcRMdg6fTqIpZlItTVDs4rXGfeZfpuPp8PBUlQeLhR8xrraAW4T6yKY+OVomwM
+         +XOOSsHRP7lDeYy7F+G5EgqHtVktd6wKjyCsSx95fP21Lui5u6tVX0nefHsfCkqn4wYC
+         tAJeIJQAy1CyXetyJQ58dPOGhP3N0hElw9hpps8FPkOZKNVFucOYEfsRRCMFnGofsM5V
+         Vq2Q==
+X-Forwarded-Encrypted: i=1; AKwUvBwtFPJuSbKiy5kX+MZX2LcCCXiF4VtO1kqZFOXwb1Wft/k30GJKSiCWcNhtknDdgN/EQvyC9sgZlw==@kvack.org
+X-Gm-Message-State: AFuF++k61AJ7E6HYq8oIAiDllMks6FlOpmxsMr8xW4j8yQ+J43pVZUgM
+	/wWwMKlHq8DoPkPSAivFN8/lLbsGKuFknCrjVoJQgK5pup3Ek+Y6xyYN
+X-Gm-Gg: AYBFou1wEGdTS51o8rFpzvZjw8InO8BU8KcFNSnjqHpm7qO8S2OuGoqYQJgnNwFdKsj
+	n9ynrOerFd1WExQ0YLlZH//CAOYzZ63MEa/aJBYF4OzYDyPkIRQMYw+L+ItV7YJhhrI6u08gaba
+	FR2St5k09+a4bXlSd8nDuZMDixApwWeUnq/5PdDJpdoI56lrkYIkupSUhQ/3F+WR4Rbhhv0FLj/
+	DKYCC2g/uAmJqqixXKWOthWBdUybZ7/SddHTFqjdxi19tej6cL/z6NPe4ySSpy0yJmxQ2xpg/PZ
+	1WFYSusbv/0yAXiEb7K00BrjIuOuHOFNV15Vv0NcuczchE1aQrrBdTYEpGsIpvmtmDim7o9Nsez
+	DPu14iyK8HI5kHJkUWJ3S5Zpp2yLSZOIjNZ2CekSHLsUy1fVWkPIZxArk02bUabaaiRRY+g2Cab
+	0NLS7vSrTets9xp0H6thoacLafxkz72jnhp3gEvnWHlraG1VG69xAHldireSOVMOVzlWLv2uGYk
+	EMiKESsTSflLj63JLiqsXhT5O5sfI1HXO7IurPRJg==
+X-Received: by 2002:a05:600c:81c5:b0:49d:433:c3b6 with SMTP id 5b1f17b1804b1-49d0443096amr36943665e9.27.1788616923081;
+        Sat, 05 Sep 2026 07:02:03 -0700 (PDT)
 Received: from outlook.com ([2a02:587:6022:4b00:84ac:4417:9f37:a496])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cf755c22esm149866765e9.0.2026.09.05.07.01.53
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cf755c22esm149866765e9.0.2026.09.05.07.02.00
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 05 Sep 2026 07:01:55 -0700 (PDT)
+        Sat, 05 Sep 2026 07:02:02 -0700 (PDT)
 From: Christos Skarlos <christosskarlos.kernel@gmail.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -120,20 +121,22 @@ Cc: ziy@nvidia.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Christos Skarlos <christosskarlos.kernel@gmail.com>
-Subject: [PATCH 0/3] mm: minor janitorial style cleanups
-Date: Sat,  5 Sep 2026 17:01:36 +0300
-Message-ID: <20260905140140.60792-1-christosskarlos.kernel@gmail.com>
+Subject: [PATCH] mm/huge_memory: fix various coding style warnings
+Date: Sat,  5 Sep 2026 17:01:37 +0300
+Message-ID: <20260905140140.60792-2-christosskarlos.kernel@gmail.com>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260905140140.60792-1-christosskarlos.kernel@gmail.com>
+References: <20260905140140.60792-1-christosskarlos.kernel@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ceu9rkeck417z41e45tkbsofjacaad64
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A27CF40010
+X-Stat-Signature: rcjjruup3p8agnj4kswjn8m3d5hwttjq
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: F212414000C
 X-Rspam-User: 
-X-HE-Tag: 1788616919-840826
-X-HE-Meta: U2FsdGVkX19QI5IdaDbsaUvG9SBvZv9bhT//w3Cvup+xBtuWvxDjmd11QXh7Idi23xTYw3ztcS9ZF3NCeKl81wb1EIrUS1Gcf5g7Y0AVy6XHijoRF3vk9N+FL21pdt788GuYp0jHuMkV7G9juHwNOREozn1Dbu3VpnkzV7DjYEOcNJZht1epCafmDy9T0kC30CZoql6BRpjlUtsCiDBFJtL/ZlAIYLXCKzJDb1c67Xjvieyf3ZcHarfvPESrhyX5vkLhKZQYoXSEOU2KdjQfO0EyhXNiDK0s3SLzwUiRss3dPb79sx3Jwnla9d5TG2isfX5Yi+VFyeLI7wY1oQfouLEHMX2nEiFFznA+MHNy7Pr4s6hyIk3DyweAqp8Atnru7WL4yJ8yUauW3wgD/z+sz3q83BVOikMFoUXywtizWzxDx9/9VHFD/SmdDFDywLC2XZstN0jLvvLMTjIg+pfQwZw6/ByIaTseWx1aangkqxREHvaSY+doE0LIrMx9be2cjg/c9xq+80nrBHXB4e1NM1q3kohVLPUMO9dLXukGTaXEWunAByyZqGsdlBRtdVgQ1DlKJOx20QJsF3IRU0iq4hRV72vhKX5ZBUbjuiRTypGFK9Vtq0o7uH9DI3GUAcvcSyobGsSFKF/F9/Bw7yL85ZTXRId9UDURXu9pHhp4rH1hZxwMsaXOCf24SrPQsdOrPUepIOrdfiz2ASTpbm7jaOV3oTWRBiAlLarkmxXA5KcCMms5QexjaOyVRGdQQoTDEZCQydCiUJjcTwkHbp9+ewHcDBAapastd8rXjWQnhDkNb4emzVYVnuQ4AYc6OEFsGnc33HS63WxdbISGdVypH8fvLCuMXgXpqwRx6zrBVQEibGQHujuVSuWHpe59rZKOOV/kKjGjBcCXyZSA+4GNaEGGeSCqKrJfPMbXI9aHpbOoxjDb6xkx2131NIZK3NRzVL5kAN5EM+zXXK94itG
- 9fKnyfN/
- C6hbAugBOs1eBJmn6Xy7r4mZYO4gBtTEDSFwmjNDIMPzmaJ3b0UQMgnzF+06klJftddYUQTtoO93UOMpMSHcy+cB+KA9fKazIOd4SnQqTvfCvHQDyXSoUoPmbY0oig5KQQMQB13Dwp3Tyw7q+TGgW1rtU3K4xXciqh/EaCNsnrBWRvugbp2khRMNJ9Yx1+tfgtY9IbfkBwZ5bKP2Z8fuu1DDNHQJ/9NooXGnDlyfK/DtAdHqcSNkpQv+iMEpwUgyYuCA9EPe3IJXTheuPk5kLMPcoYuhQUPdFXKow7h7JdgJXWcEFp+xXwkIeew6APVTHdJ6u2R+ZYVc6d+9D7maetCr0n33bW7Cvk7QN8lM3tyLNBZ72Vho/FtG21CiTuwSAr0TYuZiwllhB1j9c2KDXhehOL9SoInpazYAiDoloQ5qgJ4g8NryZVGI42vFBsGNuAIb58BPgjwTZnBGYGtTgUz0TeadWOdF6QZ4Xqtc5yNwevXHWZ77qHViYl9pfCWJGf7I/
+X-HE-Tag: 1788616924-112948
+X-HE-Meta: U2FsdGVkX19Bw9FpaZc1waRirJSx5jZM3KODpCznxRxy/oYQ9YY6HEgDBVDX1vmQbaWVAoZq9NqcvhYsvlSwBeLy87WM0cwwrakMfFlUBbkJakULCdmLTinG+tiS7Z1NDfRysam4AEm+2xvhcU+Dd4uTTep3r3ube4P3X1q8aHmcLfgpUd4iAX20UL2DfbmqUQL8GEuWgHt2oKpeROuuDqdWkb4YZ9kLUeos7YHUNRD+k/dyqWRPABd75gbm1qbunEvLU3JYmscxotsqeOB3QSNhcffKZikYpZUViXCUtH8xyDhDAOmkjDllgrJCBIbpHANOuGDd+bThBAxXAk9xC0DLQIrXaiPTQGiWHwMKz2anBD6Tht6kTFb8GPh6NMbk+M42Yz/yrexg7niLZan6N/gTdFgohvfzUqO6hy+nHGB3ZpoLZ/aAibtJp4pfOsju8NwSNLrLoaNq8YiYeXtZ1/BE4+OYSwkOK6SoIghNpgIi70CvINWmMxfptirV/pyVDY6mGG4Dzb2tm454gw+jm0cKcGR44lV9ApAgfqpdpwEf7uZ69jDzzkBTQNkdQ6fn/qOXJ8biKlGxBKoTDitCumtZXMaCD8yfLribkxfp7AkHGCO3fIJiekqLAwsSTcWtJuTgA+W8Suygu8pFVUT5Upn9b6DpuvxipfG4h2lckiH/okYTW5q0a4XmRA+TPHEURMmW42qTwgcMe1chR03HXs7iJA/dD/Ri1L+fwUaH4t+V6nUnwE33KcYD/ldac3JxnhRF7U6OeIUVAIB0QuSN2RUkWD2IECqjf8YcqZb7mF14X+zZ5yCHbivx5Vq0QtrMzAfXQosRq0VvEs0N784DzvzdxqCiVhFNavaV4/ENxcXutG9Y4hFJ8EqAfr990x80CD9ckjp8PaiNMgVZ88x2uiYB3y5SsO9lcwfHq/PCv5i5Sa+VfRpWM8dYVRdNQ0H5b8uHfM5LH/Z/rbsqUCJ
+ nOmvBtPZ
+ ySPEPHsVg5BIItOPuhqtNyncwQyNDNwvsY26p0J2kpHs+Cj36uoPP+6553i5beprwlTUybRHZR/q80RgwhPXSObCBOddgBGLJgZtNjnOTIW86IsP2Vm38LHG7+gyzjSRRRfPCbNIrEr56FeVzEJT12Yf4oYfc36vsC1nLsUAXI4CUz5TSBkiBPofcS4ogB4xpdmaP7l9V51JSiUKeZY7LuO1iNZK32gKRICOu9jwNdtIZughJVa9mJIUXEeylih5fSOT6Xc9rN/ktbmMnWdiP6QC32SLf54MWp7sJh3oAUoHycWPuFx8EhUnXZ62+F+FSL5EQQ6OorwNtWnohajw0djuZoqp5YQcsPKzZfhk/uLwpLtXZw0A98DXrVC1woq0+9FicazrCXL7Kd/2k/uHEZ6mrZY7m4Z7JYJqVPSUgyo+COUpS98Admq2a6nTyYa9aeF8RjUEsN4nIcQZQOJwnSMhCD19WsP8YaJdsADENkG7/EFQmBIGjDtnW+WuxPpcuY0pxX2TJFu1c5CRo3MX9boH4RhOXtETAr82f
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,22 +144,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch series resolves various coding style issues flagged by checkpatch.pl 
-across mmap.c, vmscan.c, and hugetlb.c. The changes include fixing spacing, adding 
-missing blank lines, formatting block comments, and removing unnecessary braces.
+Resolve coding style issues flagged by checkpatch.pl Specifically:
+- Add missing blank lines after variable declarations.
+- Remove unnecessary braces {} for a single statement block.
 
- No functional changes are introduced.
+No functional changes are introduced.
 
-Christos Skarlos (3):
-  mm/mmap.c: fix various coding style warnings
-  mm/vamscan: fix various coding style warnings and errors
-  mm/hugetlb: fix various coding style warnings.
+Signed-off-by: Christos Skarlos <christosskarlos.kernel@gmail.com>
+---
+ mm/huge_memory.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
- mm/hugetlb.c | 17 +++++++++++------
- mm/mmap.c    | 19 ++++++++++++-------
- mm/vmscan.c  | 12 +++++++-----
- 3 files changed, 30 insertions(+), 18 deletions(-)
-
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index ced400f72d43..371ee8d38c45 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1104,6 +1104,7 @@ subsys_initcall(hugepage_init);
+ static int __init setup_transparent_hugepage(char *str)
+ {
+ 	int ret = 0;
++
+ 	if (!str)
+ 		goto out;
+ 	if (!strcmp(str, "always")) {
+@@ -1510,6 +1511,7 @@ static void set_huge_zero_folio(pgtable_t pgtable, struct mm_struct *mm,
+ 		struct folio *zero_folio)
+ {
+ 	pmd_t entry;
++
+ 	entry = folio_mk_pmd(zero_folio, vma->vm_page_prot);
+ 	entry = pmd_mkspecial(entry);
+ 	pgtable_trans_huge_deposit(mm, pmd, pgtable);
+@@ -2613,6 +2615,7 @@ bool move_huge_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+ 
+ 		if (pmd_move_must_withdraw(new_ptl, old_ptl, vma)) {
+ 			pgtable_t pgtable;
++
+ 			pgtable = pgtable_trans_huge_withdraw(mm, old_pmd);
+ 			pgtable_trans_huge_deposit(mm, new_pmd, pgtable);
+ 		}
+@@ -3901,9 +3904,8 @@ int folio_check_splittable(struct folio *folio, unsigned int new_order,
+ 	 * swapcache folio split. Only uniform split to order-0 can be used
+ 	 * here.
+ 	 */
+-	if ((split_type == SPLIT_TYPE_NON_UNIFORM || new_order) && folio_test_swapcache(folio)) {
++	if ((split_type == SPLIT_TYPE_NON_UNIFORM || new_order) && folio_test_swapcache(folio))
+ 		return -EINVAL;
+-	}
+ 
+ 	if (is_huge_zero_folio(folio))
+ 		return -EINVAL;
 -- 
 2.55.0
 
