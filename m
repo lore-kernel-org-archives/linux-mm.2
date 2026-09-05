@@ -4,86 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B428FC624DB
-	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 23:09:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BEF8C79F85
+	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 23:21:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50BE46B0096; Sat,  5 Sep 2026 19:09:31 -0400 (EDT)
+	id 6D0476B00B0; Sat,  5 Sep 2026 19:21:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BCDB6B00AE; Sat,  5 Sep 2026 19:09:31 -0400 (EDT)
+	id 681CE6B00B1; Sat,  5 Sep 2026 19:21:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D2D36B00AF; Sat,  5 Sep 2026 19:09:31 -0400 (EDT)
+	id 596A96B00B2; Sat,  5 Sep 2026 19:21:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AF036B0096
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 19:09:31 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3AD246B00B0
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 19:21:32 -0400 (EDT)
 Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8F97BA442A
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 23:09:30 +0000 (UTC)
-X-FDA: 85181252100.14.1782C5D
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A827C16044C
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 23:21:31 +0000 (UTC)
+X-FDA: 85181282382.14.97E05A4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D772014000C
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 23:09:28 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=C7dIJfzp;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id EB5EE180002
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 23:21:29 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="msU87/qV";
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788650490;
+	b=Xkbi/14n68WyQZX4uE/BsEqwWT9o9cOblCylZmEswW+bvKLGttzl+1Tdy0TF3UflyTDe/P
+	Ab9B9Nmwws1sFK5B/E+SHl4zEVYc2p95a8hpnZICc0ALeI7wFqt6bT+4MuPwtRK7dFE4jh
+	fCat4uSowG82svlx82bBkN8/xC+k9ZQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788649769;
+	s=arc-20220608; t=1788650490;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7MvH/fL/MoL/0Xg/K8Z12nlCW6Dkm7qOIbbrTCfZHRA=;
-	b=vb8zUJ4axUg4XVmYhvg0BpRQ1wRl6/Jp/NKux69T1SsDfIxDqzaUHDX2iWQxuNUhS7WG38
-	4s5jf8cfS5dIIJM/fdAtPqjWQKIdTUr1RTsV7xrziRmlVu8KYLHWN+086oV1X24IhrhQFp
-	AOHZ5J/FfzL7zeZfKksp/sFkPMLa40Q=
+	bh=1DctgdNMON0RcIzT8CNT0PP0dVflKtlHhY7ioRXj7zg=;
+	b=bAz1YGG0kxBJ5THMCetF3eQ83O2uJw4gQhjLgFBW627v3ZbNHdkrqdv36lTYhJxixjn4LW
+	ReQ1eyJmX6jaue4qOqx5BXeP7KjfppCrdBoCcNm3tySPFR4ElQtAwD5+vtXSH8FVkr3nZU
+	jOb1fWj1V1HDZgqx5GKYoRwnyLWBaww=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=C7dIJfzp;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788649769;
-	b=OQzq/4oH84gsgwA942aWePFq4R30ggko2eOVQ9tK7iH4R5Z3awem9Fe4f3w/A/4xihfQVr
-	S3qWDZ920mELHNA/QY2/sTC6HZcIbwFEgAQwdG74uub7u0XCJsQGX6mDkvSW4Y3vFg4Egi
-	lZ0IpK9pc6am7h7Yqzt5Hwu9PL9YBLc=
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="msU87/qV";
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DF89160AA4;
-	Sat,  5 Sep 2026 23:09:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533DC1F00A3A;
-	Sat,  5 Sep 2026 23:09:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7024860AA5;
+	Sat,  5 Sep 2026 23:21:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6910A1F00A3A;
+	Sat,  5 Sep 2026 23:21:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788649767;
-	bh=7MvH/fL/MoL/0Xg/K8Z12nlCW6Dkm7qOIbbrTCfZHRA=;
+	d=linux-foundation.org; s=korg; t=1788650488;
+	bh=1DctgdNMON0RcIzT8CNT0PP0dVflKtlHhY7ioRXj7zg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=C7dIJfzpfJ+sDTZ1NygWVigYa2VcwgEfAjj9LTpyc1yQQ8opPo6leshC7FwEejVbZ
-	 7qqz3rLYlh/DRo55oG9x9cF3zOwXJ/+q7GTzBYovAJcEEHlPdUFC3vTKJeo2gw4gM4
-	 dOp4GufsgbaFSrNdmD7dnvrK9H6DLOXBS6ZyDufw=
-Date: Sat, 5 Sep 2026 16:09:26 -0700
+	b=msU87/qVV31p4uoJ92QcwUWglP0JZdHVb8xXjhNMlEntOlfHdQx3NyIKQd09NXVyy
+	 099+mBApeBTBMlFZZRN2dx9AUEQQNl/ksRRv8kiPLrTbU4BNqcF3s3UhoAEMWUR4Wy
+	 mhLvlV+B4MFJJWvV1ZpJASpdwa6sjiwHS19I9Iew=
+Date: Sat, 5 Sep 2026 16:21:28 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Longlong Xia <xialonglong2025@163.com>
-Cc: hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com,
- chengming.zhou@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Longlong Xia <xialonglong@kylinos.cn>
-Subject: Re: [PATCH 1/1] mm/zswap: enable static key after runtime pool
- recovery
-Message-Id: <20260905160926.9836f2ca0dc977b89f2f146e@linux-foundation.org>
-In-Reply-To: <20260905125101.2970456-1-xialonglong2025@163.com>
-References: <20260905125101.2970456-1-xialonglong2025@163.com>
+To: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: <david@kernel.org>, <ljs@kernel.org>, <riel@surriel.com>,
+ <liam@infradead.org>, <vbabka@kernel.org>, <harry@kernel.org>,
+ <jannh@google.com>, <lance.yang@linux.dev>, <minchan.kim@gmail.com>,
+ <lwoodman@redhat.com>, <kamezawa.hiroyu@jp.fujitsu.com>, <mel@csn.ul.ie>,
+ <linux-mm@kvack.org>, <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>
+Subject: Re: [PATCH] mm/rmap: fix missing barrier between anon_vma init and
+ vma->anon_vma publish
+Message-Id: <20260905162128.46fe06ad3689af1db637a005@linux-foundation.org>
+In-Reply-To: <20260905061820.642437-1-tujinjiang@huawei.com>
+References: <20260905061820.642437-1-tujinjiang@huawei.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: sfe8hw7qkn9w4kfcmz7iiapyaps5934i
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D772014000C
 X-Rspam-User: 
-X-HE-Tag: 1788649768-85085
-X-HE-Meta: U2FsdGVkX188kbohGtTGSiLvXt7r9V322ZAdWdgnWfhHrvYfiNb/BBpcT+yf8YSa7H5EpkIfEJAsTmkVW19iOb6+MqcFA8TEU68FADiE7Tofi3XIkDCsPiNsSfpnU+qY7sbmx6eqeU5s9z3/NzN335InMCSVsJp3vTqh3oUo/SEB6Bz3L64kWFJbJQGaDZ5PqqvEqfugTs8mNTMezwjwwQLQGQFZ1pMiOS4tLeBov/MpKEmVsEMGPmcfZoxfGNZcuWPyOWamvYRECyOgRl0DFfZL8bG3z/llrh6MJ89bWwmrtGF5pKCzHbVw1QZYX3Inozttc2nPkbD+CjE3yq0+mH+O1izs+Y9ZvgbwBABYq+B2gQxXWT123LClIxaf7UbihWCOKz02jBBNWg/m8USdUozEEZZBfsFy4d8eEi6WhoBeXYBwfOJfA8GErmKh7UG6NVVMQ1s3xuK0JrBTFgW5ZjJTOqfRhFb8XEffNU1swinm6Q2TcZV5LJRFseTbjeEyxaWvcqMuo5ZDC0B1EZK1GlE+5rGIrOwOtarWqxpyI9njyDwyp/R+BEZqHCQCHHhHOiw2FqoNCmqxF+uJEyZ82dEaVGU9A/rE51khhcr0ymsi7iD83VLxTiSbUOpAnO3GsTR+6l6PSamQ3tr3cpdUUbda8f1VUPmxQte2Fs4ebFnDH4fjqCTKi2erWlTuvtbospggX/rtDtlqs8JuAY81zPMCgigiMTVwDWd//4mB7g+4UVQokWE91AnQe5H2ampmTBRVix1+nVarQoAg1gk4+SKQjsPgr+aLrVaqVhAEpOvGp3sKns48WS7vSRfNZHd4s85JVuJLq2l6Lkg4C+6Ap4Vt2pmIpZXG9J1sbAQAqtKYRXm2lJ+Qy8jRZP90iBw5/1/l2Uly8orWZ5ns1kEsW/qTU2N+Y+kN8GZxs1IGd/N1XmYTt8WMfnVkxQCRNTzgVLOoSYm3orOlOfp+BEq
- DmicxAm9
- QX4ytHLMjvaXIqtCWhrgG0SY5qsQthc+FP0VnWk8EkMCi1C4lzhQffGEYJ9HnDZ5LKHiXDWSWDoy5yx60QSUn7X4XxlIi6fFvbsRUF4t1pxSEYvpN03fk7plZfuvbTPvYaslIeCi2ZZTWaiuj8+4ma60abvG+AKTj5kJcnrPy1ugRZFhxuaf8jqJm8VrEuFosq2M/FawqDdkxICLh16TgV4Ao65wntEoFLj0vmarQh7zCiWKkyt4VGwXV+ka6J9k5dRugG33awWhnttRFrSzSFRGP0gD585hgqWOQImxamR5qex2tSTycVGvyK1ikFaHhMdqMqHiyP+9IzcA=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: EB5EE180002
+X-Stat-Signature: cjrdstezk9xdhigckofqwz3ptinmo9dh
+X-HE-Tag: 1788650489-855940
+X-HE-Meta: U2FsdGVkX19XW56UwrQUqCQdMZvQx76mQg35MNNyCJ1mZ4oul6g2W93jJJ155dfOuyURedfoSAla8VX28l3x2HEYQmR5M5T/hs8yCTlUDmZT1w+K9h9QMDTU+TDErBlTd11yx/a20QNhdg9295FWfxHn0VAmwvJbOLRWqHfB/xK/8GzjWnQfZSXpyCwwo8M7z8j3lKAE7p5arlPkA7V+oNuKSzN3l6oyj0GNmn0NeD5izS1xGaUJ7hV0fuOhq1FHok122Cp16mRZU89ZmUZg3MaM5v2YBPGiNFRW4qefUBvlxHlInVHBJA1L1p0M9TNwr0h5vsExdu947aYU5YMuHfOSCOxMz2Rj89nx3bTftH+eHLM5ySZ1592YvEUpka6CtRqfg38zKaHgNQY8lVwPubJvy7P/4T0crMHICn0p04BkV7DZa2N0BvAPbqrj93Aumt1nMq9+gAoCdNbv6O/UnpTgk94agWQ6CHvPHnnUsUmRrj1+01LHYYkDcXUiV4m/ErO5ltwJYMn86xFORddfpPNd9JU1CcHwfTno4VU8oxIgJ5AY+1WNvYAVCeUDAm3eM4iMFtynwITlyyBF1gPfUb9T9EleGx6e814vcg2el3BtxdRAqaKlWVPdwFxpllMhFeKTIkAmNBttLhxxywFy1bw64p90E0Yl4PFMXDJFApnQ90uGAw97FaNzM8RUGKQflQrHcaq4RTGXgWNQfoVL1+pT+r/31NFcW4LfYZ2zKJP+c0eOOPjR01IrEFUqpqcTxPfHNn66YOIk3hnn01Gi/d/jzcqOL8fyhwdP5U+NrYuIp5yTM1dF9eBwIqpiz2GzZ8VrLQlg6K8Jrq7R3r8g2WAcBTUkeEFg2udbLsWEFIfpivUlyxiRPmw0ZlsOGN6tcBVqdSAuCw5Um5trXplYhDFLlp7gYataxlkUqPQX/h+Tzkcv46DfK+vskHMrBZoMpNALz2AmfNe9lWfH+Rp
+ 5W+xJJO/
+ QHsNdnRwFxP2Z5yBQw0WfHfP8JTkV238cYYzhNw0tWzIBOw5oM4Lz17v8CsVyQh9N5WfKrpGXL8mAUqg3zq/TdDjrHCh3O/BxWQZIfM2jd4Vl+eTYJfHFkhEbqeXt+/Y4l3XBD3ky7nDWJpODk7KoylZnHKNfazMrIoG1fmol/vX69ywb/+vONrkQyAs47T0CDnUm2g+xW2lned1JysrYhXVckN/K6jJ14422n4Iojao8esYbcdyeXwh2hNMKAgYNFIqeVwahyR95JhHVxC5nXlA+iuxQmfoZBi2WK/DXcceUedxD3lf3oQalCxYGJ6hDnzheBpAWjW6qho6uI2HWTJ9lCrhmy9ZFBY+TZHJOYYZ2Hk4IpWg3xwuJi2qbylyyvlW4avmLS+elvQmZySqX86JMrNmA1RNfl//bV8xfYAha5co=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,42 +93,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat,  5 Sep 2026 20:50:28 +0800 Longlong Xia <xialonglong2025@163.com> wrote:
+On Sat, 5 Sep 2026 14:18:19 +0800 Jinjiang Tu <tujinjiang@huawei.com> wrote:
 
-> From: Longlong Xia <xialonglong@kylinos.cn>
+> On arm64 server, we found  __anon_vma_prepare() reuses anon_vma and
+> anon_vma->root is stale due to missing memory barrier, leading to
+> lock and unlock two different anon_vma->root, thus leading to a anon_vma
+> will never be unlocked, and another anon_vma couldn't be locked anymore.
 > 
-> When CONFIG_ZSWAP_DEFAULT_ON is disabled, zswap_setup() can complete
-> without a pool after a failed initial pool creation. A later compressor
-> parameter update can create and publish a pool, but does not enable
-> zswap_ever_enabled.
+> The race is as follows:
+>
+> ...
 > 
-> If users then enable zswap, zswap_store() intercepts swapout while
-> zswap_load() still returns -ENOENT without consulting the xarray. The
-> swapin path therefore reads a stale backing swap slot because the store
-> skipped writing it.
+> Without this fix, our production environment could reproduce this issue
+> about 2-5 times each month.
 
-That sounds bad.  I'll leave it to reviewers to suggest whether this is
-a sufficient description of the runtime effects, and to decide whether
-a backport is appropriate.  Please.
+That's important info.  Can you tell us more?  How was this observed by
+operations people?  A copy-n-paste of the kernel messages would be helpful.
 
-> Enable the static key after a successful compressor and pool update. Do
-> this outside zswap_pools_lock because static key updates may sleep.
-> 
-> Verified with fault injection on a stock kernel (compressor builtin,
-> CONFIG_ZSWAP_DEFAULT_ON=n):
-> 
->   1. Boot with zswap.enabled=1; pool creation fails, init completes
->      pool-less (static key off).
->   2. Echo an available compressor name to zswap.compressor; a pool is
->      recovered but the key stays off.
->   3. Enable zswap.
->   4. madvise(MADV_PAGEOUT) a pattern-verified 512 MiB region, then
->      fault it back in and verify.
-> 
-> Step 4 reads back 131072/131072 zeroed pages (zswpin=0, zswpout=131072)
-> without this patch; all pages intact (zswpin=131072) with it.
-
-And thanks.  Sashiko might have found another issue in this zswap code:
-	https://sashiko.dev/#/patchset/20260905125101.2970456-1-xialonglong2025@163.com
+This will help downstream people to decide whether this patch fixes a
+thing they're seeing happen.
 
 
