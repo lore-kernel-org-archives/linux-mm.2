@@ -4,88 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BEF8C79F85
-	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 23:21:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4DC4C79F85
+	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 23:34:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D0476B00B0; Sat,  5 Sep 2026 19:21:32 -0400 (EDT)
+	id 9D03A6B00AE; Sat,  5 Sep 2026 19:34:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 681CE6B00B1; Sat,  5 Sep 2026 19:21:32 -0400 (EDT)
+	id 932FB6B00AF; Sat,  5 Sep 2026 19:34:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 596A96B00B2; Sat,  5 Sep 2026 19:21:32 -0400 (EDT)
+	id 849B56B00B2; Sat,  5 Sep 2026 19:34:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3AD246B00B0
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 19:21:32 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A827C16044C
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 23:21:31 +0000 (UTC)
-X-FDA: 85181282382.14.97E05A4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id EB5EE180002
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 23:21:29 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="msU87/qV";
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788650490;
-	b=Xkbi/14n68WyQZX4uE/BsEqwWT9o9cOblCylZmEswW+bvKLGttzl+1Tdy0TF3UflyTDe/P
-	Ab9B9Nmwws1sFK5B/E+SHl4zEVYc2p95a8hpnZICc0ALeI7wFqt6bT+4MuPwtRK7dFE4jh
-	fCat4uSowG82svlx82bBkN8/xC+k9ZQ=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 581136B00AE
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 19:34:26 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E2CF0A4236
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 23:34:25 +0000 (UTC)
+X-FDA: 85181314890.18.066242F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 484CC100002
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 23:34:24 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ArrtLe6P;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788650490;
+	s=arc-20220608; t=1788651264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1DctgdNMON0RcIzT8CNT0PP0dVflKtlHhY7ioRXj7zg=;
-	b=bAz1YGG0kxBJ5THMCetF3eQ83O2uJw4gQhjLgFBW627v3ZbNHdkrqdv36lTYhJxixjn4LW
-	ReQ1eyJmX6jaue4qOqx5BXeP7KjfppCrdBoCcNm3tySPFR4ElQtAwD5+vtXSH8FVkr3nZU
-	jOb1fWj1V1HDZgqx5GKYoRwnyLWBaww=
+	bh=ywBvGvF1QAkmenEsO5AtSwGMCsTkLfBx4RbvcxuGfcg=;
+	b=WkDpwvJx/G/z2OTJIXLZsaPLgNeZ+qwP3K56MHLvBGT5N20airyaKfn7BYu+LLoIdmc3bp
+	rihb5PQdsbDfgpfDCzJD2lIr6+GANaOOU7D0NdnYnVaC1q8LNtCeEbNfEBnLTwmW+5h6AZ
+	VprU5+ItI+pdEPW+sIsdImWsKEIjd3E=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788651264;
+	b=lPuoJtJ4tqXe+gd3y2Y4hWOMeFaNUlkOp9V0nOQYvCGJetp/m4lGg6WravoqbOSotJEUH0
+	uneCRMqqEch/TnYQn4xA8xARqeqMEUwRQZ3VZ6Ii7zb0d/auwVeckRM/IFr2NXkVI4vTJG
+	RHWq2X4uJh6C2S1csP+yXlJgqV6oW2E=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="msU87/qV";
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ArrtLe6P;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7024860AA5;
-	Sat,  5 Sep 2026 23:21:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6910A1F00A3A;
-	Sat,  5 Sep 2026 23:21:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 34EC841FA3;
+	Sat,  5 Sep 2026 23:34:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA931F00A3A;
+	Sat,  5 Sep 2026 23:34:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788650488;
-	bh=1DctgdNMON0RcIzT8CNT0PP0dVflKtlHhY7ioRXj7zg=;
+	d=linux-foundation.org; s=korg; t=1788651263;
+	bh=ywBvGvF1QAkmenEsO5AtSwGMCsTkLfBx4RbvcxuGfcg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=msU87/qVV31p4uoJ92QcwUWglP0JZdHVb8xXjhNMlEntOlfHdQx3NyIKQd09NXVyy
-	 099+mBApeBTBMlFZZRN2dx9AUEQQNl/ksRRv8kiPLrTbU4BNqcF3s3UhoAEMWUR4Wy
-	 mhLvlV+B4MFJJWvV1ZpJASpdwa6sjiwHS19I9Iew=
-Date: Sat, 5 Sep 2026 16:21:28 -0700
+	b=ArrtLe6PpOaxcyg+4/KCEC++MSxo/sRI29yTDnnZQC5E1x8aR+0TsMCmhJ8Z4IZ32
+	 7meO5w1II8TkhRg64OHpcxWwjweR73aFQo4567+x6ngsAgUfgUxkgTGw2dviGxf306
+	 RGc2c5vEsCAYB7sb+Ty2Lr7GE5ZA4xlIl+RMaFHs=
+Date: Sat, 5 Sep 2026 16:34:22 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: <david@kernel.org>, <ljs@kernel.org>, <riel@surriel.com>,
- <liam@infradead.org>, <vbabka@kernel.org>, <harry@kernel.org>,
- <jannh@google.com>, <lance.yang@linux.dev>, <minchan.kim@gmail.com>,
- <lwoodman@redhat.com>, <kamezawa.hiroyu@jp.fujitsu.com>, <mel@csn.ul.ie>,
- <linux-mm@kvack.org>, <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>
-Subject: Re: [PATCH] mm/rmap: fix missing barrier between anon_vma init and
- vma->anon_vma publish
-Message-Id: <20260905162128.46fe06ad3689af1db637a005@linux-foundation.org>
-In-Reply-To: <20260905061820.642437-1-tujinjiang@huawei.com>
-References: <20260905061820.642437-1-tujinjiang@huawei.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song
+ <muchun.song@linux.dev>, Usama Arif <usama.arif@linux.dev>, Meta kernel
+ team <kernel-team@meta.com>, cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/6] memcg: group struct fields by access pattern
+Message-Id: <20260905163422.4da655f452c4015cda0d4e3b@linux-foundation.org>
+In-Reply-To: <20260905030522.1887837-1-shakeel.butt@linux.dev>
+References: <20260905030522.1887837-1-shakeel.butt@linux.dev>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 484CC100002
+X-Stat-Signature: g55eoysa664keea658mamkuozdiiqsiz
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: EB5EE180002
-X-Stat-Signature: cjrdstezk9xdhigckofqwz3ptinmo9dh
-X-HE-Tag: 1788650489-855940
-X-HE-Meta: U2FsdGVkX19XW56UwrQUqCQdMZvQx76mQg35MNNyCJ1mZ4oul6g2W93jJJ155dfOuyURedfoSAla8VX28l3x2HEYQmR5M5T/hs8yCTlUDmZT1w+K9h9QMDTU+TDErBlTd11yx/a20QNhdg9295FWfxHn0VAmwvJbOLRWqHfB/xK/8GzjWnQfZSXpyCwwo8M7z8j3lKAE7p5arlPkA7V+oNuKSzN3l6oyj0GNmn0NeD5izS1xGaUJ7hV0fuOhq1FHok122Cp16mRZU89ZmUZg3MaM5v2YBPGiNFRW4qefUBvlxHlInVHBJA1L1p0M9TNwr0h5vsExdu947aYU5YMuHfOSCOxMz2Rj89nx3bTftH+eHLM5ySZ1592YvEUpka6CtRqfg38zKaHgNQY8lVwPubJvy7P/4T0crMHICn0p04BkV7DZa2N0BvAPbqrj93Aumt1nMq9+gAoCdNbv6O/UnpTgk94agWQ6CHvPHnnUsUmRrj1+01LHYYkDcXUiV4m/ErO5ltwJYMn86xFORddfpPNd9JU1CcHwfTno4VU8oxIgJ5AY+1WNvYAVCeUDAm3eM4iMFtynwITlyyBF1gPfUb9T9EleGx6e814vcg2el3BtxdRAqaKlWVPdwFxpllMhFeKTIkAmNBttLhxxywFy1bw64p90E0Yl4PFMXDJFApnQ90uGAw97FaNzM8RUGKQflQrHcaq4RTGXgWNQfoVL1+pT+r/31NFcW4LfYZ2zKJP+c0eOOPjR01IrEFUqpqcTxPfHNn66YOIk3hnn01Gi/d/jzcqOL8fyhwdP5U+NrYuIp5yTM1dF9eBwIqpiz2GzZ8VrLQlg6K8Jrq7R3r8g2WAcBTUkeEFg2udbLsWEFIfpivUlyxiRPmw0ZlsOGN6tcBVqdSAuCw5Um5trXplYhDFLlp7gYataxlkUqPQX/h+Tzkcv46DfK+vskHMrBZoMpNALz2AmfNe9lWfH+Rp
- 5W+xJJO/
- QHsNdnRwFxP2Z5yBQw0WfHfP8JTkV238cYYzhNw0tWzIBOw5oM4Lz17v8CsVyQh9N5WfKrpGXL8mAUqg3zq/TdDjrHCh3O/BxWQZIfM2jd4Vl+eTYJfHFkhEbqeXt+/Y4l3XBD3ky7nDWJpODk7KoylZnHKNfazMrIoG1fmol/vX69ywb/+vONrkQyAs47T0CDnUm2g+xW2lned1JysrYhXVckN/K6jJ14422n4Iojao8esYbcdyeXwh2hNMKAgYNFIqeVwahyR95JhHVxC5nXlA+iuxQmfoZBi2WK/DXcceUedxD3lf3oQalCxYGJ6hDnzheBpAWjW6qho6uI2HWTJ9lCrhmy9ZFBY+TZHJOYYZ2Hk4IpWg3xwuJi2qbylyyvlW4avmLS+elvQmZySqX86JMrNmA1RNfl//bV8xfYAha5co=
+X-HE-Tag: 1788651264-200257
+X-HE-Meta: U2FsdGVkX19LBvCrNc1f0utujoi67JWK4JlXVXRBgs2Oe92gEMhe8UjwPKfR0s6hLOOAmnySD5n1ECpcvk6lpFLxZVtICdihojPP48e6H4AaFL8z/ztmqrlRI8yOWz6R1e+FvTnrB5kOSoEqVH8h4zjnrhAoo7Cz761MCwQ1cw3E2wvjfzUenhUJP7RRwbkvteQnFeJmJ6Gxf/2N36Tv29HCcASKv9XgpN6QwmQKIDgnptVj/RYN3B9E/9Q35UH23C84Ui62C5skwLzCCj0iC8FN4trcbE0knf1RMVEqClH0eP5Yb9A3XDMMzgSXyHsm4TO7Iw7hBcvoIpWe+K2aHFkpPN//Ei2JIj3uuDsobT+nxZQuxdp+6x1AuZhIf2QBcUCO76qGU5zw+PvdSaSBNO55qBtg2HylqydJcb77IPdF7BZZI2/WKLXYz2wjjqQCvAJFdH8cicrj7ilO6z6r3/zr0hyLBjv1rCQ+kgfvNx0FPcZtc5zcNbPbG15RIIEjh85+xRUBVelFQG0G55lSfhSzkpYSQy6MvagFg82l7k+X/h1XdhZ9ePyJoNFupDr3uHdQma4H4AINSxd3lU8OmDjShZwxHA80tCE79hLntiUwCDbKdpQJBDaYG98RC3tI1ntV1OUMUVJ73cS69cnEUdd1iMBzHZqKKWpVp5JFObN+ESr99y1C29zzBbiEN/RK3pDnt72RIReYjXtBdCXsyqWHVBuzPyC7kzjLr0efy571Ek7MtUGVAjR3WGchabfMZf+sYVCdgZoiD5OdDaZYMBp0FDDWaFUUK7+jndROUklp66jTdWTVCI6InPxnknOeePUsPj0Sehe4IE+U7Vj/Hd6+EDJU8Yyr/5yIPS3gzz2+RJr1Zx6wkflAJrlnHUtSHoN99TeT1KLlHQtC7PqIIR9FsI1dHlXGtrYdklPuik7T/C2g3oe7CVaVcRsPdnv0j9JG+bVieVI4UrPvTuT
+ kFgkrwTY
+ cfPXFG8FelEuGCGFsM7G+lkEcrrdKF5Q2a3kckpOZM1fVC/+93m5XXSu6S0rhzoVH0VcxP64xwTrR5SjHGq3GLmvx4hpmg0S6m2okYhdL4oR+hl2rgWsvtPXmfkABgWwxU5i3U/9yRbPECIJPVtQxYHFitWV6Zox6GAJnVrZZcusheD8xYrno8MurYNF2hpskLrj+dfczjysxDUyz16HrYkvFTLY1mHIK4ofwdpSbYUY5mQmxgRq5aQvynjQcdsI6/4jg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,24 +92,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 5 Sep 2026 14:18:19 +0800 Jinjiang Tu <tujinjiang@huawei.com> wrote:
+On Fri,  4 Sep 2026 20:05:16 -0700 Shakeel Butt <shakeel.butt@linux.dev> wrote:
 
-> On arm64 server, we found  __anon_vma_prepare() reuses anon_vma and
-> anon_vma->root is stale due to missing memory barrier, leading to
-> lock and unlock two different anon_vma->root, thus leading to a anon_vma
-> will never be unlocked, and another anon_vma couldn't be locked anymore.
+> Every so often we get a memcg performance regression caused by nothing
+> more than a field moving. Someone adds a field, removes one, or puts a
+> few behind a config option. The layout shifts, fields with different
+> access patterns land on the same cache line, and a bot reports a
+> regression.
 > 
-> The race is as follows:
->
 > ...
-> 
-> Without this fix, our production environment could reproduce this issue
-> about 2-5 times each month.
+>
+> This series makes the layout a contract the compiler checks, the same
+> way struct net_device does it. Fields are sorted into named cache line
+> groups by access pattern, and memcg_struct_check() verifies at build
+> time that every field sits in its group. A field added in the wrong
+> place now breaks the build instead of quietly costing a few percent.
 
-That's important info.  Can you tell us more?  How was this observed by
-operations people?  A copy-n-paste of the kernel messages would be helpful.
+Sounds smart.
 
-This will help downstream people to decide whether this patch fixes a
-thing they're seeing happen.
+Significant repair work was needed for the struct mem_cgroup_per_node
+and struct mem_cgroup alterations, due to the below pending changes.  I
+think I got it all, please check.
+
+--- linux-7.3-rc1/include/linux/memcontrol.h	2026-08-30 04:44:06.000000000 -0700
++++ 25/include/linux/memcontrol.h	2026-09-05 16:31:03.119571612 -0700
+@@ -95,25 +95,12 @@ struct mem_cgroup_per_node {
+ 	struct lruvec_stats			*lruvec_stats;
+ 	struct shrinker_info __rcu	*shrinker_info;
+ 
+-#ifdef CONFIG_MEMCG_V1
+-	/*
+-	 * Memcg-v1 only stuff in middle as buffer between read mostly fields
+-	 * and update often fields to avoid false sharing. If v1 stuff is
+-	 * not present, an explicit padding is needed.
+-	 */
+-
+-	struct rb_node		tree_node;	/* RB tree node */
+-	unsigned long		usage_in_excess;/* Set to the value by which */
+-						/* the soft limit is exceeded*/
+-	bool			on_tree;
+-#else
+ 	CACHELINE_PADDING(_pad1_);
+-#endif
+ 
+ 	/* Fields which get updated often at the end. */
+ 	struct lruvec		lruvec;
+ 	CACHELINE_PADDING(_pad2_);
+-	unsigned long		lru_zone_size[MAX_NR_ZONES][NR_LRU_LISTS];
++	long			lru_zone_size[MAX_NR_ZONES][NR_LRU_LISTS];
+ 	struct mem_cgroup_reclaim_iter	iter;
+ 
+ 	/*
+@@ -293,8 +280,6 @@ struct mem_cgroup {
+ 
+ 	struct memcg1_events_percpu __percpu *events_percpu;
+ 
+-	unsigned long soft_limit;
+-
+ 	/* protected by memcg_oom_lock */
+ 	bool oom_lock;
+ 	int under_oom;
+
 
 
