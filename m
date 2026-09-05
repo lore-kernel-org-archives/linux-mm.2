@@ -4,116 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A88CFC624DB
-	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 13:24:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22100C624DB
+	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 13:29:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE7956B0092; Sat,  5 Sep 2026 09:24:06 -0400 (EDT)
+	id B2E0C6B0088; Sat,  5 Sep 2026 09:29:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B71976B0095; Sat,  5 Sep 2026 09:24:06 -0400 (EDT)
+	id ADEA86B008A; Sat,  5 Sep 2026 09:29:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3BA46B0096; Sat,  5 Sep 2026 09:24:06 -0400 (EDT)
+	id 9CEA96B008C; Sat,  5 Sep 2026 09:29:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FE8A6B0092
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 09:24:06 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 17C97A447F
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 13:24:06 +0000 (UTC)
-X-FDA: 85179776892.24.5C251A8
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf31.hostedemail.com (Postfix) with ESMTP id E094B20004
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 13:24:02 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="Y6T7wk E";
-	spf=pass (imf31.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 7D3996B0088
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 09:29:52 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1ADE1A4404
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 13:29:52 +0000 (UTC)
+X-FDA: 85179791424.17.E7016FA
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 53F2720008
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 13:29:50 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GLK3tfNy;
+	spf=pass (imf13.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=qwjhust@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788614643;
+	s=arc-20220608; t=1788614990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+xdX3u19Dwb6Bpywq5kWM1LOmEoefXtOBB0aNulunYA=;
-	b=Idh2ZG87AsDQYktQWMoOro0mJjmGwfEYjY9zMYCYiho13a+6bjwn9RwzrvAkDwNAkUqfdt
-	sZG+Gs/h0C97HZXx6u+BEJkr7RVPLCODAZiTm8a+U2wk6FsthjWA/G4M/8tT31kectWB8z
-	Ja/TQVqnAYlJeJTn3hWHlQ9gGgukr6w=
+	bh=y4u0GWyaTeRSvMtQ0YnsmqSEps2foZyTtNF0hC2tn64=;
+	b=LUBNdFc6EDJA51uexSKzlIa3+6OFbhfNnNDJiBlfphOf/TZCKfyVJOUfvDpuYqmK6KpZmo
+	FbQ1oZOC6Bw0Cb24dausZbqS5rkUKfnNuRIbTdGl5GgXWeEhdVBIUETALo1P5UwFTfQylN
+	Aw9jIEfjszhsPQLm2L03fOgCwwndEfY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788614643;
-	b=IkIPaWyEAd+mksOWZmt6fj+gHll8SIDkJ61gZSBVK4nBEfwUrOLkgldRfTZV1zZPV3F7kk
-	shKk6qJG93PsPX8NNFQWT+hNgMZ0EScIPSL9ZqrElDXAOPyV57ikuAtU/vwp4XRIoj0IjO
-	CuA91y70mxqzLrH8a3IPnl7J6qB1br0=
+	t=1788614990;
+	b=eEt6DMvhzk3qZaIO6SErJazwhO7/3EyW95xibeVLD5HSuwhLi8pcUHKBME7nF7HokLEJGq
+	WDUsdZqkmZAGYGAcurIGvSMPydyngglXUuqOraUju7QQEhxUzA59bULey98mSPYcRVn8mf
+	01yE2SXmRapMVCNPBFAb6+HzAHpNZyA=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="Y6T7wk E";
-	spf=pass (imf31.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=+xdX3u19Dwb6Bpywq5kWM1LOmEoefXtOBB0aNulunYA=; b=Y6T7wk
-	ECusJx5+FAWTrbWTYpRs2KnCXc7xlgPi9QnR84brPpnGqghG2BCyhkSl3uOY5D/yRp4ewBFpn1Xrn
-	LOzm5dfgEzfH7wIsJJC9Wv356rd6RNYmX3UutZqJeHPu1Us1g7ljNCqjciOdRH2IeqBC3sRa+5KjS
-	bivDBRAy+i04LY1wL0NisWZZU5aV439bxVHMFp9hsxIwhGyN3Ks0eP3x1iFt7gZLmdG1OUYyePGGh
-	vldG1gOoCrrxQtv0WJkhvsULxkKkv13QwephDwn4zXbv/cQ1coX4Tqrgoo00aYgp3rwjbgz5w9TDq
-	4rO2pJboQdI2iOszAk3yF/T2xYzA==;
-Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1x2qME-00000000tPx-0DNo;
-	Sat, 05 Sep 2026 13:22:58 +0000
-Message-ID: <5cb70d43baa959b4c0d1552d67ac5d4b4a17cd37.camel@surriel.com>
-Subject: Re: [PATCH] mm/rmap: fix missing barrier between anon_vma init and
- vma->anon_vma publish
-From: Rik van Riel <riel@surriel.com>
-To: Jinjiang Tu <tujinjiang@huawei.com>, akpm@linux-foundation.org, 
-	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
- minchan.kim@gmail.com, 	lwoodman@redhat.com,
- kamezawa.hiroyu@jp.fujitsu.com, mel@csn.ul.ie, 	linux-mm@kvack.org
-Cc: wangkefeng.wang@huawei.com, sunnanyong@huawei.com
-Date: Sat, 05 Sep 2026 09:22:55 -0400
-In-Reply-To: <20260905061820.642437-1-tujinjiang@huawei.com>
-References: <20260905061820.642437-1-tujinjiang@huawei.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GLK3tfNy;
+	spf=pass (imf13.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=qwjhust@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-cc439bfb2d8so1314214a12.2
+        for <linux-mm@kvack.org>; Sat, 05 Sep 2026 06:29:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788614989; x=1789219789; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=y4u0GWyaTeRSvMtQ0YnsmqSEps2foZyTtNF0hC2tn64=;
+        b=GLK3tfNyB4kKPeVRUmlPIB+Dfg7Q7AmpFDFYLFrGYhNV871tQB0oXg6dd96HKllbvR
+         dlHLK4e1qhAMtDwgxZErU5VWLpdlnhaj6CSGl1XZMREXal9pdEv62GlXTlnYI3B0JeyD
+         0qu/VFoHdgcWCrN+jafTWfCPdN9KxLuzBdDPvhG5SyqwP8ty+nWzjl9fNSK6WZVvVH1I
+         RnPmXrh2MPp/JrzoqVr2tMWxPLdObqXPi3AwoYUys7y+XwlEIMzD8NDKi9Jb+AVDllOh
+         1gLNAVl362HjGpnzZsV82QxCEKBCfS28GmQI4oVuNLQ/n8aOXaH+LoSFw6nMlO/3xCyQ
+         tpiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788614989; x=1789219789;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=y4u0GWyaTeRSvMtQ0YnsmqSEps2foZyTtNF0hC2tn64=;
+        b=P9a2lw28m4OfCaf6BoGAA27jwj7bRLKso7FZenLUnLvrE/g05pMQZ4sPGE+bHNbyle
+         VQ8B0pCYYylQ/FnImqtEdL5O/m3yco77cdoMvLXy86mGH/AfgyJGBJLbzhP+qkSlSGDP
+         IkkvW6xGaZp4wXrrQIAV/TtX67gqvrW1D5ANYlniNtALwc6ycbrSd1ssFMpmUDU2tOE6
+         j1ysSZo/kIdCOTTKr9lJcN+RHqYSbVzAEpOACJNEGM6RsbXDj7zyN5keC2c8I4ZOop0/
+         wMPsxs+pdCE4AIXGqwSEwPWJ8AL5BbYIQyUOJOHwh0JnjUjClwY6rTZ0r68gyL8IwQRl
+         dDSA==
+X-Forwarded-Encrypted: i=1; AKwUvBz37fVAl6DCEp7sSgoeDCx16QhgIeaTcnKPVBYrDZ8A0W83Unb5USpRWCMtrg5Q37UyW8Y7r0nSXg==@kvack.org
+X-Gm-Message-State: AFuF++k9stVpZ9GBSHyB5Rolcb8cOydfPD/hNlPqBFMln/WczyRBoVKg
+	+gDaaKJTKzO9XhE+riR52fVFv95zRNmsG3Y+jfkkPM1UeV1zM3lyRzDX
+X-Gm-Gg: AYBFou2xbLrFZDfD9vOASGZsmq4sDYcU+fHn/+iQuuEbh6a5yKIt2BkyRbuU57ErfAw
+	uaEQUAfUgER28DTMUuQg8l3JxzdzAM10iOyjku0zTQzVOmp7633i4zoOddREH3suOiloGeCs7u5
+	pvxIgr6fyBDSSKH/aEF7LeCqz9136OgP4iJYoleRP/CdS3j5lkJWpptWD85jzqp0PYFTIZ5BDiX
+	RmHgUUUCa07Z4svA4tQpDSCwz0qFANsgp/ZXoXmIngszbtsJA+UBiKm2jGlu/I9L8ftfcj2OkxM
+	mgRRkDYhBP1ZewdpDhWacixVeW9v/EiJE3KzKqpmX2Q0ttqkGh9HtS6Wq0DA3CsoFVxJIva5eez
+	ii7m437IW16uM17B6apQ6ehEVxlahc9Ay+vsG10/TO9n26ohJg65stHi5dkvM6sRIBKPWvBHchn
+	y6PQbMbdbo9Na8YP7JGIL6LQe7WO1zOdz8SOfoQEFBNViGrIzclRv1QoPZiG814kFfKuC7i70sM
+	SVMjCxgUd6y0W+Zd5EFTQ==
+X-Received: by 2002:a17:90b:4d06:b0:366:10f1:3d91 with SMTP id 98e67ed59e1d1-39b2614df74mr17583898a91.1.1788614988974;
+        Sat, 05 Sep 2026 06:29:48 -0700 (PDT)
+Received: from qiwenjie-ThinkCentre-M760t.mioffice.cn ([43.224.245.241])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08c397b1sm16146499a91.8.2026.09.05.06.29.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 05 Sep 2026 06:29:47 -0700 (PDT)
+From: Wenjie Qi <qwjhust@gmail.com>
+To: syzbot+cid5582b8164122eda@syzkaller.appspotmail.com
+Cc: syzbot@lists.linux.dev,
+	syzkaller-bugs@googlegroups.com,
+	jaegeuk@kernel.org,
+	chao@kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	hch@lst.de,
+	jack@suse.cz,
+	axboe@kernel.dk,
+	tz2294@columbia.edu,
+	baohua@kernel.org,
+	linux-block@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	qiwenjie@xiaomi.com,
+	qwjhust@gmail.com
+Subject: [PATCH] f2fs: handle NULL kiocb in write_begin
+Date: Sat,  5 Sep 2026 21:29:40 +0800
+Message-ID: <5fdd4d960a6b47ab7cfa6ef0f44fb575fc45d1ca.1788611415.git.qiwenjie@xiaomi.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <6a9bbf94.a5e650b3.26d8a.0006.GAE@google.com>
+References: <cover.1788438786.git.qiwenjie@xiaomi.com> <6a9bbf94.a5e650b3.26d8a.0006.GAE@google.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E094B20004
-X-Stat-Signature: 73hepy6gd6n76ddm1cfkd6bn4z7uccsg
-X-HE-Tag: 1788614642-952287
-X-HE-Meta: U2FsdGVkX18am7gjtVSZ13iYlT829ebrD4Mdyi+fPQ+9kz73F69m8v9VxYs2xwlwo5Rz5D0Iob4OHQAO79bEsI/f+oIBPVWG5UZ0zuuPnAScXZpRlprYuh7eagB5h1f8ne95gEqizB2cCOA0NG40KchVxgD55cWmZtrY0fsnfgdcxSb2yKvNt6LBfNxR8cTg+AhmRfQ4GcCDavQJqmvjIG8IyAMiBqy7yqmQ76PDaCcQP9x00LFfTJIn1ANWdmSofSyj3zD2C6bwBltUjy2JKA3PNfjSJxotX6jXIdaTRNJQU6E9l0yIbJo+Jfw4mzusr2M4JUcIggP23ZxjxzYCjSGUTqNq0nKqfEL1Mro0PkO8sew/jIiJEMG8RSb/zr7p9w0lDJkSgyhefIqfLkR22j7eV3jdd7I069pKZEwgmXyXuYNRFwslrDDS7HJNMdhsNTt3gbBrwmPVjM/5yGGyUttvdt4rF6P1B+5BFBzBgWb/hU6rbe1tJ5owC5JvWA1h865S4gcXjRGSVwaH2qqq+OsGMphmh33eXsiX+ckdIBnNbNenSLxFuiRj8Y1yEWdnwG6kxL6NyObkhi7MIrP/oTDhy7Yx9EHCf/JTbfzPMdRlLzezaJ5DMToBm3UxJOmBvS9RoapF85qoBae/p5Kd+IATM3QQQEP98Rc8KJRqUlbZomRbwhIojnhCcHH4Txqe/UbZL16Kf+tn6zlD0gQedq1Ffrv8qDH9v361LoqJaMX4bShp6QKhQrgjxtpDfVOQFbquiN/jPHDjpA44oWfTIa8H/edGFBzPlEygrI4/XwO463yQsVg4/zijL+RWsYVDfPHIYF677KoCGj6g88f4hMTx7U5uW0qZ5uWjKw5/3Gk8G9y7an8nOhulOJcXoxe7pZp3PopECtDpdTDcsbr0dbIgooEHuesUtOQXIAixKG1LaNRgVph/zzALprupEid5EKObVY0pRW9+Q3b7roX
- GqrsAyAH
- YJPVQgTUNFjluNufbkTDlGa4QpFaAgQd6RJAGN2QzcZbwlJJ/nMJhVby5ZO1OMqcBQeyCeMlh+MGrBGOO7fz8hbnyVoLJkAyQiWDHwPvjg66PnBuM8GGq3NSOPyHfgm2gSGNwksGgTSz9MRhiOLJUoY7UKeD2ZJl9msDJEeEz81xpsBABNRqjzNHumTjakzquWw1D09z7BifgBxLpPygNDLH5jXwT4HwTY2mms70qB6iwgNyg3q1OX7ETfqDtWOmk0nAgtxJUcLkNseYWn3+5vycQRU9FmmjkT5qvyT+q36z29h8EHqTbE7Qm0eUzkKW33xX/BYH/Z0gvYKKejuoaPmISKseV761k2n6Gl22oZEl523bWOmo7gOJ7U5WCrMBXpPUEQJEUOmhr8+icpAhQFb3B6Q==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 53F2720008
+X-Stat-Signature: bszzjhtpkxka37gbwbpkrq9tsjxkexf7
+X-HE-Tag: 1788614990-509125
+X-HE-Meta: U2FsdGVkX186gg4aktmfDDhAYH6ATWGpFugC16NuiP71+lMxqPReSWEs+bncGV79a+L5GSZmHHAkLGcl/qFeoHOP64PXv21WIimAeCCoMwvuDaaJiA+jdIW11JRpdYbaZISXujbqEicGy5zBLH58627F+jriQvWBvZmFgwex5aeiaUk1qpMKMuBtvBrF5JzH+O6xSzdPTa/HpKYupbuPQz9+sqOh7MLgetTCK5VMreiJShCk+HRDcpCm1lCTYM8hlSHU+Ka872JN+3p2j10ufk2+yfjzdnXkLI/ckXhMqLgjjHJY0VNJDUW1S5RuBlz7qQ0KEAbBGyYV1ZMDB1s2Fql4+8BEg1DvQJyKH1EWoyT853uq/FaH/SG1vECClaVp1074+5a3wZawfEXb2Iqi64cZ9203O/P5X6fdjOh6BGMMiwVBEPHSQFnlPS4nN9R+3xqPz3lCvgJcQg5Pewy2kWIXeprIIJsEgq5LgxDfG60vv9sOJHJSWXtIFT+8u3W0WBfa3PmxyOc8qiYoxMB+LvqyzdgO1wT7tRNQ5B5xlyrwvZ73i7SdpmcQflA6E4tIn5WsCf+CJTcdGwJma5glBcYyoQMjgsKZkZV33Cmzk8kmHA9+LzvpBdYPCpZ5KUQt2OluveS2FCDmDZgVTIEZQ+DN3PZczlVQiloPAnvpKDigPUw0v1VaJHW+5h4Ea7dgB6dVUy0/85HbgpSnu8babPsEwhBBOaZgwzLjW42Hh8xyoZWTZRuq+lGdC6EmroSK7vEr1e6oGdVnANxobQVAJfd2BflclsDJstTqpzxB7Q4U5BzyWhsDvJ4eVqCquUBdoh0hsLupiSP7rVtbAqP/xHyYp1HWW7CXsdFkJITZBFJdeW9SzOhxJZMCJQXr6vCgLPJEaIFdi2cRm2AV3FpbQKQWmTIqkVbxy8ZRyTyz5+pGGqJq3mS9XVeRjT+E7+m2ns9a/hVmhRFiSiKiYX2
+ 3LgSS7iL
+ v8ciDA3QmUaYyKqS0W5Pw6FpJ6a9+/zlPqxH9Mgq/pObyEhv1RKSb7U6brO4HRcDtapY0GpFxtjxiCe5SoF6WIelv4xGa8JzUSlEUE59BM0UrePEwWBEX4AVVxkQH2e7sM4vtDkODGhDfICy6fvYuTPhA8iljkaY2psRCNIkhXqdXRLdPITlvm6ymkGoc5KTiqs4DrjCvUv4KhHbCUTXKzFQAxYi7NudCGmcE/dViiHmh5fg8SGiOmZgvjoL8mhEoyExVPI8mpjATyS0nDQ8qLLEUYuzb4TifOoUSTdRXlJKnAIZlYrL0QCXyUN0oRYcwDPuVBJi9x7erslq+dU2Pgqzh8mz2o67pg7aKHVaKeT9RJAzyIZKubjNVycCIU0dCIMxb06tZhtLxR6EMa+wgxZu066Eij2Wg0O6EBzQbDrY1cCJ9sjCWGaED6B29qCsUV57W5hhEc4byeDJQCe3R49hCOsHsuba9mlSs6mAyGNtlPoeCOpVkX8rA8UStwChTMx5xSVhNPhfU/vtSe93Tt13SZHXXyGcPYr2/ZMtKMW0tnFXZGKJX4/3tFFhAZFnbvbsYzxGJ3a4XsdJedH77ooUD0NiQ5XD4/m71ho4uuLr3Fyh4uXEF+S+/3NOfHfjLCEXgZ9fdGpEHebR42fzBrZbbzsXun06VqVQT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,35 +132,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 2026-09-05 at 14:18 +0800, Jinjiang Tu wrote:
->=20
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index d1819fd69938..a868e835eadb 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -209,7 +209,11 @@ int __anon_vma_prepare(struct vm_area_struct
-> *vma)
-> =C2=A0	/* page_table_lock to protect against threads */
-> =C2=A0	spin_lock(&mm->page_table_lock);
-> =C2=A0	if (likely(!vma->anon_vma)) {
-> -		vma->anon_vma =3D anon_vma;
-> +		/*
-> +		 * The fields of anon_vma must be visible before
-> anon_vma
-> +		 * is published to vma->anon_vma.
-> +		 */
-> +		smp_store_release(&vma->anon_vma, anon_vma);
-> =C2=A0		anon_vma_chain_assign(vma, avc, anon_vma);
-> =C2=A0		anon_rmap_tree_insert(avc, anon_vma);
-> =C2=A0		anon_vma->num_active_vmas++;
+From: Wenjie Qi <qiwenjie@xiaomi.com>
 
-Nice catch on this bug!
+The address-space write_begin callback is also used by internal callers
+that pass a NULL kiocb, including page_symlink().
 
-This is perhaps a dumb question, but does this
-write side barrier need to pair with a read
-side barrier, to ensure the reads are also
-correctly ordered?
+Check iocb before propagating IOCB_DONTCACHE into the F2FS-specific folio
+lookup flags.
 
---=20
-All Rights Reversed.
+Fixes: cd5bc4fbb900 ("f2fs: enable buffered RWF_DONTCACHE")
+Reported-by: syzbot+cid5582b8164122eda@syzkaller.appspotmail.com
+Closes: https://ci.syzbot.org/series/cbb9ded8-1388-4a7b-bfa7-44082b04025b
+Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
+---
+#syz test
+
+ fs/f2fs/data.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index 6e816c9349a..63625ab3f1e 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -3890,7 +3890,7 @@ static int f2fs_write_begin(const struct kiocb *iocb,
+ 	block_t blkaddr = NULL_ADDR;
+ 	int err = 0;
+ 
+-	if (iocb->ki_flags & IOCB_DONTCACHE)
++	if (iocb && iocb->ki_flags & IOCB_DONTCACHE)
+ 		fgp_flags |= FGP_DONTCACHE;
+ 
+ 	trace_f2fs_write_begin(inode, pos, len);
+-- 
+2.43.0
 
