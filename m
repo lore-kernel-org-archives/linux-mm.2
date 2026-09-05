@@ -4,115 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4382CC624D3
-	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 16:51:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49B55C624D3
+	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 17:32:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C1906B0096; Sat,  5 Sep 2026 12:51:20 -0400 (EDT)
+	id 1F8EE6B0088; Sat,  5 Sep 2026 13:32:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9983C6B0099; Sat,  5 Sep 2026 12:51:20 -0400 (EDT)
+	id 1A9816B008A; Sat,  5 Sep 2026 13:32:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8ADDF6B009B; Sat,  5 Sep 2026 12:51:20 -0400 (EDT)
+	id 099076B008C; Sat,  5 Sep 2026 13:32:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 629F26B0096
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 12:51:20 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E2AF012039C
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 16:51:19 +0000 (UTC)
-X-FDA: 85180299078.21.D7A6C91
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id DC593100003
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 16:51:17 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=arXUyjWI;
-	spf=pass (imf05.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788627078;
-	b=VbBNgjJmT5r9EN8+IMcaE0kVcty9XyUex/ecUmAu1la14Un1oxAFD5v5Tm/QQ6dq48zJ9q
-	R5qoz2roaHjzhNv6UpLmux/AutqBT7ASD39/jpbgS2TVoBgck8feoS+2WEWlK+h3wwsaQz
-	XSY5DzMQ5/XpaVrKcX052uT6CE2Z8uw=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=arXUyjWI;
-	spf=pass (imf05.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788627078;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A6D0C6B0088
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 13:32:03 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 45DC1A462B
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 17:32:03 +0000 (UTC)
+X-FDA: 85180401726.01.1083960
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 72A73C0007
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 17:32:01 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=T9zK2nrN;
+	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788629521;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CVZJCbZd7SKrRBmkaPaWAXgPHlJH5u6x32BC51sCpxI=;
-	b=QdD6nV/Wf9XUQiDIkE3+sa04oyXwImwY0d/j0vZcu/9V/rl3yb2kpkgoSMIAdqs8GgCAJJ
-	LJZ0epCkgRvvj94WKj8MNX59CKQSZHow9gQCfNVmDjumBjW4rE2FK2qcrCFSYOTVfp+afP
-	ej4D9lrCL9aISC/R3VIxc8tSri3qaWE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D90CE447D0;
-	Sat,  5 Sep 2026 16:51:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BA711C2BCB3;
-	Sat,  5 Sep 2026 16:51:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1788627074;
-	bh=8E6ECgqk9jbzeKH7VgrO1c1D3JazW9qbEm+L/2eKeQE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=arXUyjWIEWDXBWfKJy1dBE/65/Dff+ugZVNxdXc0p88l7nkCgIwyyGxqf6+OHW3wm
-	 Gx2kIju7wqhWOzAGaItGf20SGtAuN+BWskxDDn8Q+mP3mkDy6nRf/NyHBlTVA3UYZ6
-	 ge8MM9St0UErsdpJnqe784MNhQ14e9DXq4uzbVhg0rXHkyB3/4P40lzLxtVqCufevv
-	 A0pguX51MlpQOLYU1GGH7WL77rHwkarkgLPZUCt/jTt+8QuLv5pf0T74xx+vHa83c0
-	 SkKulIH99pZnyNldHFOwTAeN2/Z3sSgyD9kwdlTXWj3MSvH97iGEidr1R1JgdUrLmO
-	 mOGat7scYWfVw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A5619C624D6;
-	Sat,  5 Sep 2026 16:51:14 +0000 (UTC)
-From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Sun, 06 Sep 2026 00:51:11 +0800
-Subject: [PATCH v6 6/6] mm/mglru: fix potential generation folio number
- leak
+	bh=JOW8XuwLJiAY2FOtXpU6W0erUZewcmKtXhsLrPUNiVE=;
+	b=pti2l+DpFg6nLvxSggKia2P3UDzgL+1uOIVH79PXT+k3o3GBY4QAsRoVszXGjI4mHXJzJE
+	wrjfB+priohPW8TIjZARPWPcJgpG8X+bMwgbU2NRzJYWsk85hgozVTNgxWEzikcNc/5xG2
+	RbcI4GlR/qHBgYCudQdql463OPt8Fh8=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788629521;
+	b=gI4tO80YJ+8lhltRCy6VaUVl6/IYviDeAL3a5930qH1I3u1KUwi38X/xyYfKtVjOcgyxrM
+	9Zw4b6/aY9bOACzwtPAlDCBSEeK4lsPmbPzEiBXSeNcJ5rKNs0GEveUJ+0BfQCH89KBO5V
+	We9NH0SVYw48knqQzuUI2z8hYITz2JY=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=T9zK2nrN;
+	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c263415982eso46123266b.0
+        for <linux-mm@kvack.org>; Sat, 05 Sep 2026 10:32:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788629520; cv=none;
+        d=google.com; s=arc-20260327;
+        b=lkcRq2XOtOJ+62WtzzlSO0zliADyXH6tkxyslSqawORDdf0TmwnhwM1Lqe8/LTUuHp
+         qlalT4fdQ702/RsmLxpCWpOsHRnWsJmczfWrsW55BTXuLb+EpbZUi73z7bWPAeT/JVQt
+         dyuB5NWT54KEECulErJ8AT2lOkYrFIrkv0mgN9qrpZuOod+zgFq9vRMHUduVj9IROhe0
+         BIAGjLz3/Ax4mAQQ3e8oiSSaTr3Q1myd6o8Azy7CjSL5hUmyAQGBIrwFCqlQlkop5GmO
+         kzZIB3KykX92gN+vC23zQoh0tYPHqGvnYdfOh1K3j3diCPt2zk0KLNIkXNz9SmVjInd9
+         o+pQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=JOW8XuwLJiAY2FOtXpU6W0erUZewcmKtXhsLrPUNiVE=;
+        fh=PKxWCYZuATGR6xHmyaA7uIrirEwASCIRHd9dBs/MHkA=;
+        b=k5JT/ewSV8O4BBJlNchEKsf0zeF9G1KolMN3wKddFIC1mVJsLepDXyYtHmQpA8WRnw
+         p9bovH2C8PLH/EC1ZfzpXy1YEgwhV6/nHzlamqzbdaaPL3/HxCxeXcgtOKsTDZSwIEtn
+         jVyhMmpEN4pAsLeOLZcf+TNbncCzgEHJWlg7x/FvfFfTKLUwuUtC2zVxfwsCIo0DH1Xy
+         SSMd1PPsKVtytju/RUpxkYHm6e5LccDAYUQVrwSbmb01tJ7kOQT6KhUrXUG+IBlvuEhv
+         JxDx0VJ/oudSuPwUgWGjRTJSlGxhXtsb5FN1ucyC1KVavWutqb/PsmQx+WFtQBn9V0Yj
+         G5yg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788629520; x=1789234320; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JOW8XuwLJiAY2FOtXpU6W0erUZewcmKtXhsLrPUNiVE=;
+        b=T9zK2nrNlDbJptl6tcz2YeAjvwIcTZODty0tkX63TABD7lKka0s3dF9Em2aMoWT8SQ
+         ggKTvGIKrwhKxiyvm6mK1gjxecLm7RrrRDwTmZT3nXgqgnu9mo3DIfsDZsXyeukQYE7g
+         EA25uOI8Mc2jFnAlSzQ+31g3102tg1kLPL1gVpBYysNpXn3WdJL+zpRgqEsTda3OvCLS
+         c9KVCEmo/rwp64JWPh+5ccZfKP/qsJ650LJcbGzJvW4LPjoSzktqa0MhPNJRx3CWOHmp
+         LIH/FJCCt4gZJapEZGCzU6csrt+iFAkgYkUrkSjQJ5AVfLkAjqunb4FNgMKAK7RptFHr
+         XD5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788629520; x=1789234320;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=JOW8XuwLJiAY2FOtXpU6W0erUZewcmKtXhsLrPUNiVE=;
+        b=LDSxrJ1frNXEs+pNKjz1Vs69L55OSYCcbIPEnEE1lWXwixpfj98Sq4Bc4W05lyZp2v
+         u6JOpZgEB9z7+cPW7M/QF1w6doLSfM4pK7kq73tpn5v0usiy5TYuN310yzztRRuTY47T
+         O2OPzocZ9AWZSs9FB4SpUSVSVBGuIHCWMJ1E5OBtsn5f0qwlD7Ic5Tn7uNwReoCyNSwo
+         xyFKrfkCUKR99f4Eynztpmg7LlT7kB+CPtqhof2qJ53ki385uSzGIXh9hm3kxV5a0/Y3
+         c1MxqtHIZRoo+x5WR9z+IZ33oypy6w56yPHQbsNtdVDNX2kISyuH7E7yg+JzFUKz3gCR
+         eOIA==
+X-Gm-Message-State: AFuF++lDICTYF0uNn702IJvrgqSkqBQelHypT54aCCkzWYiI+EjcgfWk
+	2cHzAx8yMt/4qysZhf6OY2/tYpR6PwjNp3wNsAygdBotYoC5VQo8bI8zFEzkVUaEEHII80VE61r
+	g+gZA0sY1WVRvFdKMWoWQIEjckoclhYU=
+X-Gm-Gg: AYBFou1+PvgogtQh5XFGWlfj9sOwAvZov2KF/M1rwEBEeAtnXQ29ii+G7vdmSManQLr
+	YpLwjr17kmLvyNZ3JqDLp/8FouMQWdbDU5Vlf9K/OzUXKTzPjqwQneMwCHmMgcnCQ8DCN0oBJJ/
+	k/yMZGqKoEyY/cpdKWvhmrwGL1nBPYbrU0q41yMO6bGHoxI5uMKLShadM2tNpfGbN9IY29jB3D1
+	tO2CarkhAC678jeCl0c4EEJCum963bpd0G9PKk2xFDeDjikrpi4PGhrmLAHVEA20l7bi/6Wu9ju
+	gVQlbokILgJfxBIbo2fMRtF3KT1g2aIRrJq/WC0LFTrddJbcHGpyIrLmK/l2TaS6lV2ER5Z9X8W
+	W/uY=
+X-Received: by 2002:a17:907:c16:b0:c25:2d27:5652 with SMTP id
+ a640c23a62f3a-c260c9d1affmr910733066b.11.1788629519742; Sat, 05 Sep 2026
+ 10:31:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260906-mglru-flags-cleanup-v6-6-9aacbd77d4ca@tencent.com>
-References: <20260906-mglru-flags-cleanup-v6-0-9aacbd77d4ca@tencent.com>
-In-Reply-To: <20260906-mglru-flags-cleanup-v6-0-9aacbd77d4ca@tencent.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
- Baoquan He <baoquan.he@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Ridong Chen <ridong.chen@linux.dev>, Lian Wang <lianux.mm@gmail.com>, 
- Yu Zhao <yuzhao@google.com>, Zi Yan <ziy@nvidia.com>, 
- Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Kairui Song <ryncsn@gmail.com>, 
- Kairui Song <kasong@tencent.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788627072; l=5345;
- i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=BszP81PgRTBhE2JUIBp3b0zvUwogDjQzP4kQOvW4z5Q=;
- b=COU4XzMMF4/bP+d3BBOGlqBbUw/B8cXR4ESkPoHM4EsQvt1aN1TnK2/RgGeWTHudo0zyJFBiw
- +YM3N6CHPuZDoNN5waXdGEPU/w0/rvEe6UuykFuMvPY5wjjnb1HA/Nb
-X-Developer-Key: i=kasong@tencent.com; a=ed25519;
- pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
-X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
- with auth_id=562
-X-Original-From: Kairui Song <kasong@tencent.com>
-Reply-To: kasong@tencent.com
+References: <20260906-mglru-flags-cleanup-v6-0-9aacbd77d4ca@tencent.com> <20260906-mglru-flags-cleanup-v6-2-9aacbd77d4ca@tencent.com>
+In-Reply-To: <20260906-mglru-flags-cleanup-v6-2-9aacbd77d4ca@tencent.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Sun, 6 Sep 2026 01:31:22 +0800
+X-Gm-Features: AcwNN1W6XiAA7KV5jUk181yU-Mg2q-AQY3I1lcI5rPzfroqnvUHhwkCK3HoP1Y0
+Message-ID: <CAMgjq7DTmBQU4D95J2ur2CUYPohx1ychRV=vKvLjR78tNFJwOg@mail.gmail.com>
+Subject: Re: [PATCH v6 2/6] mm/mglru: introduce helpers for manipulating gen
+ and refs flags
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Chris Li <chrisl@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Ridong Chen <ridong.chen@linux.dev>, Lian Wang <lianux.mm@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Stat-Signature: qp9bk19ydowtmqfp3hgpeqz8ka8gcek7
-X-Rspamd-Queue-Id: DC593100003
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788627077-740980
-X-HE-Meta: U2FsdGVkX19iwSrjzeRNB/tLcsK065koW6HZ3kxFGOMyhtTUl3gtxjEKBDgzT9+KZLgS47t0Dc1IcYqQD/kIixNBqF8SyM6/yAFG3sZEbkGqYbk4rZ3c+29aI20ezxdsWRSvg9gowAdBGxRzXsuIAT5XhZNa+Tmo8Ru/T+HGYAgZx1MuzSZ8HHvmFTPiIm3RlklzbHuUCn+LVPYYWy+M23N28VNwvJy+HwwMHb/fY1FFO/kBiQybCTbEJ7rVQj6kGij6eacekqcPiLCMs9KscvXWXYNAJXd3aIvgXG6J5XqjQ+lB7y7wlxApWwCCIA4X7OvncI61oDamz5lblqbE7OijawAy8k6f4ngJq3vWTKXjNL8u65K/S448oF6BYgYU557ySQDj2MrYKf42YurJd5/jOldglPfigQgZ4WkTUU57HCsbdTE9WUxCaA8BAbvFbLQF14qeoasKPzyI+ncp3O3j2/gC0JvnnCbEiX/fGDWS9uUANdtp1xlzRF4gXTstE1C5RdFkEvHTac+txgj2pUivp9ydIwE0wCYPwHAu4sEt+RbUh6VlG+t/gGXgMqhQD1Kq1JKf/lq6GGDPAErfxIvP6sQGtJC2AW90a93wr0DK/ZfIdCiMTDfcrny7IZacfg2ksZLVDaYaSrsDs6ZXWKKsHsXbnangNEkFF1Pu+psC23eCjpUR7y28pqR//KkUdJpvODqgrl20Q1rdNH+B1GoSVDyryeSYx6gm8ZirrlDi885vJH3BUG0rRttkIfsKav+6T96IggA0WGe9qtNe/fXWaO0AEHaOY7PWKf55sJZPf7BTX0Aaye0R+m3CqczDAXnIeuiY1vKnqnaTYrtV0bUItfxNPSz3+5Uqp2n6rsBUHDofS/6Y6VdVS2lzfqncFeB9RMDXIJyv2RL3n4zvZp9NchssHsrV45sgIa7BHBiF2L22lIq0QYcqBLTON0FV6Yq3caGpQBO6FH/LWzA
- fNxm34TB
- BRS4GxW5bWh8FPWRJriISNutLk/r5UYFXOL6W3HXg/78Vir+8DjpoSTUoDqDSMcGY7dl6WWaqlJhJEHzc24OCAJL+SOZs+pOReg2J66npOQdQPXJUYRJ9lgcvLgMvvPKUvRBtl/0YITwnGLZf+qcS2E0IRSh/ODKkijStqHsgLabaPRwFYOtKoAm2/Vlv5u2PdUXyxSr31/t5GE5bRJKiZRlPFKWM1Z1u09SaF9BoQsV1RuTOCWp9QKmuyDus3NzjygWGIhls9R6YaNjMebAF/eK/U4gZsVL20kXhSDs6CFoVr6nOnKpMo5nxeRl979PIXmnOetVy9ld1V/uZmfwGFNSlxNDWeGdhZ8iW0ShBHKG3acXMwCeB7ODkCNct5/8FD1ooPBs68qUb9wyOy3dDK7ayhodCppNm7GvIs7dWIjxxt8tokyttsBW1akhB0TwEI6Wcx9+VJtxDMapdC00+ZpnTZQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 72A73C0007
+X-Stat-Signature: pi3r9kzq5dk9i6yn6gb1zceytdzqd5hg
+X-HE-Tag: 1788629521-539502
+X-HE-Meta: U2FsdGVkX1+lo6mbGtjj44mEZqgf8dH6obGIniImkBlS6xJ0yijOgBeit3fg1Vl5SsYyHzaVRi9I9PWwpJufMFuXWCtUJ99lnPtAB5eHUxIZlrtzNXkCNkS8Pa8b2lywEH0N22kBUucSaP/JCoYrwPlzQ/5SfuoJcOuZkPTfLvBN6xaZQIFUnl55r0aTjtKXzSu9P8p6j2puSs4u5x3Ez5ix3sftjcoCVeOFGpg5bFktGhDNBLrLkVjszduEczSOiN7xB4bJzKvpysiwXOFPcJ0hnf1Y/uKh7fxKHUvX5l6aUlqblxfJz0PF90fgjbg0lhWaVNx4D57wyrE0rpSUrTM1QPyggFPGj+cgnpZJsSIdl3oJxq6bbw82Os3n/52NmmS9FCAtg8+C5pNd3K1ii70uLB2qQ5qkLS5GX7r1ou/HFm4RKFW1Og5xyND0x6sNMtYVksgAQt6TOBmQCyaxdQg2que6r4MQK32fCZ0sjbTYXoR82p4wYsnmtZqwD5HoGHfCsxakQS7EAp9dFXBdI8tahuLFIv+NrG+Fgvtf+4EGiYQuUOZeWROGMe77DoNt+lQ2AGjL/xyig2zCu1SOtQrwUYZXSZHzf+tpPvqnLq4kQT3qjrQ2p0iBe23Bt5q/+uew1pworUKCAs/o9dMvQAdEypgiewGOLE9rxjzDoFPG1FpANvu6v6d039RdNtPy2DENrFdI0SExHdLoJXtanSJ8eu0t+bN4YaCp0PeuEU9gMOBoBqRzni1Rc/ClTY4DFcs6J4qjGbWeCffPGtnfwf6QgNAy7TReggKI9A7PQ4mWNjMJqsMTMScLJhFF8VRzDQ4JD/wt7lwWoKJ2nPFFgFn/LeDOgV1La2/VCGXzHeEZYZuBZoI8gwJFr5cJvsqQNLjdT760NH09pql9xIg1yzX9o7v3BlCZS3gnRpZkJHA/tNi5sHn9Rrbh2xCFINivE7U4WVOoWMHlchmL6Cg
+ JhshhRiJ
+ LGsAqTwg3CzugDxmboGExDCknwGOQZC9hwdAr/hdLadwE7GLQ8Um6LUT8qAq920VLovBlqWUo69giuBRwsY/7cikXBHiozRGe9G9A9LGHb9Ci2q5zmsTsPPNi/zSIV52s13PuQGR+Knrdpnn7mZMVZqWc0QyDATGYW1Z2en9ct9lhnVErUUVsoRITu1u5T7Nuk6rQ42fMGA8CuHfEA/J9MRB9cVmE1drl0Qg1jE7oRhQmBqDD2J5Yj6P7PpMo0yrMloISyOs2tUI7T8b6R/JwnFy5Cp8JzjNr4q711ucsGW+e/5+9yslU8HadQXmRbQl512T67EO0TH+3aK5ihx5BOeCjqMFVGUMwyXpFmRRkWF84hGV/wxo2yBR8WmPi8MfQ9Fqxe0qzQnX/w9sJLm46xxBk5uALxXxBfFb3Kz+N9bP7x/bGlbO0UDtkjYRUbXZDc6/vziwJNAWDc7LCQtZt6fzlzaAN/TTmZ7LsUiaD/rdpe/PIohaS3eaFnw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,132 +147,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kairui Song <kasong@tencent.com>
+Sashiko reports (please ignore, false positive):
 
-Each generation of MGLRU accounts anon and file folio numbers
-separately, and the page table walker updates each generation's
-counters in batch once the walk is done. The walker promotes a
-folio's generation with a cmpxchg on folio->flags, and
-update_batch_size() then reads the live flags again to pick the
-anon/file column to charge. The walk holds neither the lruvec lock nor
-the folio lock, so the type can flip between the cmpxchg and that
-read: the lazyfree path clears PG_swapbacked, and reclaim sets it back
-on a dirty lazyfree folio. The batched delta pair is then recorded in
-the wrong type column. Nothing reconciles it afterwards, permanently
-skewing lrugen->nr_pages and the reclaim budgets derived from it.
+commit b3b2fc9d5285717c3d36754aee77477780b76245
+Author: Kairui Song <kasong@tencent.com>
 
-Fix it by capturing the type from the flags snapshot the cmpxchg
-linearized against: folio_update_gen() returns the type of the state
-it transitioned from, and update_batch_size() accounts with that.
+mm/mglru: introduce helpers for manipulating gen and refs flags
 
-A folio's type only changes while it is off the LRU list, inside a
-del/add pair under the lruvec lock, with the gen bits cleared in
-between. The generation and PG_swapbacked sit in the same
-folio->flags word, so the cmpxchg snapshot captures them together.
-Let G be the generation that snapshot captured (old_gen) and G' the
-one it wrote (new_gen); the CAS can land in only three places:
+This commit introduces helpers for adjusting a folio's refs and generation
+info instead of performing bit operations directly on folio flags. It
+splits some combined atomic operations into two without intended functional
+changes.
 
-  - before the del: the folio is anon at G; the batch records anon
-    G -> G', and the del later removes the folio from the anon
-    counters;
-  - between del and add: gen == -1, so folio_update_gen() returns -1
-    without touching the flags and no batch is recorded; the del/add
-    pair accounts for the move alone;
-  - after the add: the folio is file at the fresh generation the add
-    charged; the batch records file, that gen -> G', matching that
-    charge.
+> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+> --- a/include/linux/mm_inline.h
+> +++ b/include/linux/mm_inline.h
+[ ... ]
+> @@ -270,7 +339,7 @@ static inline bool lru_gen_add_folio(struct lruvec *lruvec, struct folio *folio,
+>   gen = lru_gen_from_seq(seq);
+>   flags = (gen + 1UL) << LRU_GEN_PGOFF;
+>   /* see the comment on MIN_NR_GENS about PG_active */
+> - set_mask_bits(&folio->flags.f, LRU_GEN_MASK | BIT(PG_active), flags);
+> + set_mask_bits(folio_flags(folio, 0), LRU_GEN_MASK | BIT(PG_active), flags);
 
-Unlike the drift of lazy promotions, which sort_folio() repairs under
-the lruvec lock, the phantom deltas from before this fix land in a
-column the folio never occupies again, so nothing ever repairs them.
+This isn't a bug introduced by this patch, but does lru_gen_add_folio()
+fail to clear LRU_REFS_FLAGS when updating the LRU generation mask here?
 
-Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
-Reviewed-by: Barry Song <baohua@kernel.org>
-Signed-off-by: Kairui Song <kasong@tencent.com>
----
- include/linux/mm_inline.h | 11 +++++++++++
- mm/vmscan.c               | 13 +++++++------
- 2 files changed, 18 insertions(+), 6 deletions(-)
+When an isolated folio is added back to the LRU using lru_gen_add_folio(),
+its generation is updated but the stale LRU_REFS_FLAGS are retained.
+Stale tier bits can inflate access counts and severely distort eviction
+decisions, defeating the purpose of the multi-gen LRU tier tracking.
 
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index 047295ae6e8a..ab69b9930893 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -30,6 +30,17 @@ static inline int folio_is_file_lru(const struct folio *folio)
- 	return !folio_test_swapbacked(folio);
- }
- 
-+/**
-+ * folio_flags_is_file_lru - Should the folio be on a file LRU or anon LRU?
-+ * @flags: The folio's flags.
-+ *
-+ * Just like folio_is_file_lru but take the folio flags directly instead.
-+ */
-+static inline int folio_flags_is_file_lru(const unsigned long *flags)
-+{
-+	return !test_bit(PG_swapbacked, flags);
-+}
-+
- static __always_inline void __update_lru_size(struct lruvec *lruvec,
- 				enum lru_list lru, enum zone_type zid,
- 				long nr_pages)
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index ec5832b0d867..40d3f1b48a74 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3294,7 +3294,8 @@ static bool positive_ctrl_err(struct ctrl_pos *sp, struct ctrl_pos *pv)
-  ******************************************************************************/
- 
- /* promote pages accessed through page tables */
--static int folio_update_gen(struct folio *folio, int new_gen, const vma_flags_t *vma_flags)
-+static int folio_update_gen(struct folio *folio, int new_gen, int *type,
-+			    const vma_flags_t *vma_flags)
- {
- 	unsigned long new_flags, old_flags = READ_ONCE(*folio_flags(folio, 0));
- 	int old_gen;
-@@ -3323,6 +3324,7 @@ static int folio_update_gen(struct folio *folio, int new_gen, const vma_flags_t
- 		new_flags |= BIT(PG_workingset);
- 	} while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
- 
-+	*type = folio_flags_is_file_lru(&old_flags);
- 	return old_gen;
- }
- 
-@@ -3368,9 +3370,8 @@ static int folio_inc_gen(struct lruvec *lruvec, struct folio *folio)
- }
- 
- static void update_batch_size(struct lru_gen_mm_walk *walk, struct folio *folio,
--			      int old_gen, int new_gen)
-+			      int old_gen, int new_gen, int type)
- {
--	int type = folio_is_file_lru(folio);
- 	int zone = folio_zonenum(folio);
- 	int delta = folio_nr_pages(folio);
- 
-@@ -3559,7 +3560,7 @@ static bool suitable_to_scan(int total, int young)
- static void walk_update_folio(struct lru_gen_mm_walk *walk, struct vm_area_struct *vma,
- 		struct lruvec *lruvec, struct folio *folio, bool dirty)
- {
--	int new_gen, old_gen;
-+	int new_gen, old_gen, type;
- 
- 	if (!folio)
- 		return;
-@@ -3572,9 +3573,9 @@ static void walk_update_folio(struct lru_gen_mm_walk *walk, struct vm_area_struc
- 		folio_mark_dirty(folio);
- 
- 	if (walk) {
--		old_gen = folio_update_gen(folio, new_gen, &vma->flags);
-+		old_gen = folio_update_gen(folio, new_gen, &type, &vma->flags);
- 		if (old_gen >= 0 && old_gen != new_gen)
--			update_batch_size(walk, folio, old_gen, new_gen);
-+			update_batch_size(walk, folio, old_gen, new_gen, type);
- 	} else if (lru_gen_set_refs(folio, &vma->flags)) {
- 		old_gen = folio_lru_gen(folio);
- 		if (old_gen >= 0 && old_gen != new_gen)
+===
 
--- 
-2.55.0
-
-
+As it said, it's not a bug introduced by this patch, and I don't think
+it is an existing bug either, lru_gen_add_folio isn't suppose to clear
+the refs flags, or we might under counted refs or workingset.
 
