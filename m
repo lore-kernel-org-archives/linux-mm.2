@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0D54C624DB
-	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 14:02:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6BEFC624DB
+	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 14:02:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCAF46B0092; Sat,  5 Sep 2026 10:02:17 -0400 (EDT)
+	id C2F2D6B0096; Sat,  5 Sep 2026 10:02:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7C986B0095; Sat,  5 Sep 2026 10:02:17 -0400 (EDT)
+	id C06EA6B0098; Sat,  5 Sep 2026 10:02:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF5B76B0096; Sat,  5 Sep 2026 10:02:17 -0400 (EDT)
+	id AF5AA6B0099; Sat,  5 Sep 2026 10:02:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 914756B0092
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 10:02:17 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 11DF3120399
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 14:02:17 +0000 (UTC)
-X-FDA: 85179873114.15.3BA5524
-Received: from mail-wm2-f11.google.com (mail-wm2-f11.google.com [74.125.225.139])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 467F320013
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 14:02:15 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cwzULKrD;
-	spf=pass (imf31.hostedemail.com: domain of christosskarlos.kernel@gmail.com designates 74.125.225.139 as permitted sender) smtp.mailfrom=christosskarlos.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D2846B0096
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 10:02:25 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0818140385
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 14:02:25 +0000 (UTC)
+X-FDA: 85179873450.21.64E4897
+Received: from mail-wr2-f10.google.com (mail-wr2-f10.google.com [74.125.225.74])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 3481A120011
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 14:02:23 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=otVQ54sC;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of christosskarlos.kernel@gmail.com designates 74.125.225.74 as permitted sender) smtp.mailfrom=christosskarlos.kernel@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788616935;
+	s=arc-20220608; t=1788616943;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1j3T5b2cEL6pgSZfKmDhv9K0ynuzYhpAf3KEcht699E=;
-	b=E3NDInM3hI8I7YCnPaXXbnv7FGqyWQOxCnQT9ktDn4bCdQGbhn27usJRo0NKCkQDHte49D
-	FECrX1NOMtIIYaWKr1XKEdfYWuf3rWn1g40UHBmwO90MJyOnETNJ/zWkDWO42Vg0cCRVyi
-	yjklC3vqkW7XD+qH89p3xcUwAnW/qL0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788616935;
-	b=RRovTR0DCbZDppysOWqVnedeYDGOVwplOHBgh5wp/alawRhqFDYRe2PZEHpyBKZatRsNeq
-	kutAUE98RDZ3gQRGuLqeW3aadfGTwL5RvFWO0RkY9dQzdgUAOh6lirD2uMhtk0NKvLMk9M
-	jeUyJqQHzrIrqWg1YL0M1dXZEAPl2so=
+	bh=lAVqgBHrMqJB3BSpfl35IypQuNVtfirpz6pazsL02KQ=;
+	b=AZ09v/8C10HEZi4jwhW9ZX0UWgNwg42ntOuCQS2IdJtoB+ewdmDJqRvYUYbYlqD9q8LVso
+	qzYnUy9amGindi7BDsT3aqGe2wi2Q85vxl1P/JQyRnKURobHYK01beP8q1+uRag5tNnTgC
+	qs8Yz4kY9j2hSHQm5uTXg96k4ujDp/o=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cwzULKrD;
-	spf=pass (imf31.hostedemail.com: domain of christosskarlos.kernel@gmail.com designates 74.125.225.139 as permitted sender) smtp.mailfrom=christosskarlos.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm2-f11.google.com with SMTP id 5b1f17b1804b1-49ccea58fe3so4461285e9.1
-        for <linux-mm@kvack.org>; Sat, 05 Sep 2026 07:02:15 -0700 (PDT)
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=otVQ54sC;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of christosskarlos.kernel@gmail.com designates 74.125.225.74 as permitted sender) smtp.mailfrom=christosskarlos.kernel@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788616943;
+	b=6/XUmEDIOW4ncq9v9MoHHQ5EpBau23qoDEajTP0lAZj07O/333eoJ6qztBH2DOnrFYCVXv
+	OEfsZMWBnuDI2jxI2t1hD5j9BuraKqI7ERS89oRSNt1O3WKv0NQIuOYpC2Q3f2X3fLqOEM
+	cQ9+D7jRLzedbBwtSuirT1RqoCJonkY=
+Received: by mail-wr2-f10.google.com with SMTP id ffacd0b85a97d-484372811e5so610513f8f.0
+        for <linux-mm@kvack.org>; Sat, 05 Sep 2026 07:02:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788616934; x=1789221734; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1788616941; x=1789221741; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=1j3T5b2cEL6pgSZfKmDhv9K0ynuzYhpAf3KEcht699E=;
-        b=cwzULKrD7/e53GSJilToh9dM93qYob/koV9eTlML5Ef5BiHz0R/v99rtYDzNAGf7yI
-         TeJtz+XXzlQb3k0VA/1K+6afYlV5EB0TRCjALqbXVuYOeyUgqG70J2gW4fbahys3T6tl
-         ntg+zqs0NWZkVyYZOOA4LIx6Ii7kNy9UymlaU4pct06GAOIutecG2zTpXeCAxlCLSzad
-         Nf6sgrOS1PaNYMWnrgRM/wEHno3ILJbi4e1EdeXtgXrKYfPknRhIw/IDkFh5mnLRjDZ7
-         3NtIG5r3o7ODyq6YYfOzsA1Pdx76Iv7KZMlyiNayuz+fwCc8tomhrtgTwu9PWtYXurD8
-         Q9rw==
+        bh=lAVqgBHrMqJB3BSpfl35IypQuNVtfirpz6pazsL02KQ=;
+        b=otVQ54sCwr3qpykPL1LtIi4HbcqZhKoBtl96hZeoVr4TkYKswtt5onPK/R2gSJKi1F
+         G5WQEm2h17sfd9rRhXQAih17GK+3yjCX7WDIrF7OGCr8ZkDcRvN3q26SgMnCEFqDd0Ml
+         DhvYkCMjUL8K9gPK14nMDQgQG9inKEVb4pQMvxMDbB7yVYJOe/1oPBEy27VZCe/Xk0eN
+         WM+xBk3XsyXA1Aioh1XExXezdF+2UPoEC1qMlpUNoro7MtfikvmuQav8SNGn4G7/LyPT
+         qIIpIKNLCaH4Cv8k/4OJADwiqf/stmXtnWyF3u2Z9CdgjUeOcmkZbcIUqNMnUoZad83c
+         P28w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788616934; x=1789221734;
+        d=1e100.net; s=20251104; t=1788616941; x=1789221741;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1j3T5b2cEL6pgSZfKmDhv9K0ynuzYhpAf3KEcht699E=;
-        b=ruTlOmHOU4aLNlnmIP75MxfB4B6H30h4Gen+BNbyDBu2AZ10vRyxK6W2SGgnekntbX
-         ouT8ivMvlEcZ0+q/0AiEnJaPkpBMo75wdcHZWR4P+Syx1j1RWbxNUDus7COJ6E1+N9ux
-         Ri5M5S35gTNOGFr0Id+imz+QefJf3G9KcvoimJynDhUnTKJSapHK6qlCNkjmeD6K1xK+
-         6Of4+lC1bqfrBpsRXd8UebvYrtR52bF8nwsBXJueIEr7slJp3uEwjVzQScRYGElxg3cp
-         Af/Kw8jCrjXezrc0gqZUMbcSVrxMQOG1d/XPX74SPkl64JnNV09F8GVbN/cY3rZ6KMYL
-         7hFA==
-X-Forwarded-Encrypted: i=1; AKwUvBzWGl47qLDznpN6dZGfgsAxZXFFjzqjsj7iCtlYG3ucXPdnNUpok7EYUuK052dAIcnXQB7GLQ5/Ng==@kvack.org
-X-Gm-Message-State: AFuF++ni2qgQ0YRfmvqEO94Ms9szR50h0IaVQyLMCl0RJ6ljYQVIcvmg
-	SRJRMEOViXBxZUjqazrmy+G3noQRbmG8hoz/nTBglPZcn5a/9ZB6cuwi
-X-Gm-Gg: AYBFou36RahElLiFX1g09+0vxshYgZHjlF5fnOUYjdgAUZLyzZAu+hh7GJm3bYhC9xa
-	doV4Arjs/dN2QoUsHnc4mR2ezG6SoK/FalslbFvf1yPaOd/eyv+vBhIIanqQNPBQ0lIVI09G0Xu
-	iRmwtyeoYhfbtCr/ECBHGtMPzVjKAbX5eMFqnCE9bD5f1ehDv6kCZVnyVqFzFS6KRP1MNN9rWIt
-	Xw92sLu5C17SuAnjEEz+INIoLuPTqvL7GGX7LJQXheg8SIK8iMHKaiEiBr3XI5fu8b1kQK0JDIa
-	asXJbQF861RFKu7254Pq5SZM02eLl0By7MtVkUo3dTbP87scygWGicU5XpZCYH9EhSMqjBGFGMG
-	6zm4Vc8S9F2VvIXEEGqpZ4DEnaaS8oLIZFyWZ7i7qsK6qZ+Iffzj8mh61iRxZiiOhNRMZ3QmUfS
-	Bnh2NPB7DTgaSH0XnM/8CjEynLKixAFYhuqIHgvyGjkQssgFwSzqamHGEsb+nZ3FmRCnyJsjYwS
-	DjaLVHMUHKg8i1z0pRrv+apNBT6Aw==
-X-Received: by 2002:a05:600c:c1d7:20b0:49c:ffe3:2b3f with SMTP id 5b1f17b1804b1-49cffe32f58mr50527755e9.3.1788616933800;
-        Sat, 05 Sep 2026 07:02:13 -0700 (PDT)
+        bh=lAVqgBHrMqJB3BSpfl35IypQuNVtfirpz6pazsL02KQ=;
+        b=SFEAwDTl19B9Oo9Fj/5D+HWZEmLsizV+tW/gwziNAkL1ykWH+qq3XAfsZHwem1CWpI
+         Fj7sHX1yPfMuYby4BMKHrQ57Y5n2t6558h/oXnJJELtpbPHA7J4G8xVS3TSgQa25RO3K
+         HhjfYERJIg8yr/gZ12CG+ZpD0/MAmW2yvGyqmM1LZ3SlUL2dsoETGebFNsEnocp6x3qs
+         nv0p8yEyrO+8qT4ssZsCJoBLiFD91+5kpx8GgG327C5Vp151G6x0BJmomKuKvwZGJnyV
+         VP59D9/YqkUHSJyc6SGt4y3d/03mFKGQU+lwMPuFjv9aLmt5hXDSwbqSNz2eTfSYoQZn
+         bwRQ==
+X-Forwarded-Encrypted: i=1; AKwUvBywQNH/ADT9NNDUOwBBsrFGqJurPUQ2AEk120CBH4ZUT4F3Z7qUUhvsmeQhRamZPGHLJfWtiWVBXQ==@kvack.org
+X-Gm-Message-State: AFuF++lvwgrycyCIUOlgpNiOXR4VY2R1yAa7KQTQ+9H96ibGJtbsTgF9
+	Gp9smTzl69exe8vC3FDN5nTBECjFL0RrQSYlXwNPeyeGK8DX9vkfvadA
+X-Gm-Gg: AYBFou3KvxjO+qoh7pOfFvc2VVtcc8Ij9RmsTGEZoXCuzBwDu0xUiLcAncRFjvKgc+3
+	WgcDU+vda0e6L+7XFwT2tdqjZClZSpwWTbQbdVx5zIAvGAD+J9iAoX7Oepp7yyLqtJ6HvDkliR9
+	ymbtWdZGkgatWFZiWijpgTcgBw98Nweu0YKPG9YMJeeR5IdfaSiD9Q2xMOkLtF5BH4MnqNWM0Vf
+	jfNFyoyGisELMQVjiLmU5z1H4q1TIRBgsClKvM1F4s4qT8/KF3wlSmqiv9pVpigO2TR/h5ozLnu
+	R/Zc35c5+SswIpIxf/MZy3vH75/FNIR6PeMSBYUXUUDy6UqKeymsc45VtBLC8DdPbqztLVdKEYh
+	pPycUfP76MvQB8HKrajWSfvMCws7VV6gK0xVN55+3bD9bR3MqNmntENdbT5rmOuGrs3estceUg6
+	Ml2fHTWK3A+ZCEfjw5nsQY6570o8154LqSgj7g34F4PLmbBtfGLS1cdfaTfcQUQyMe5RljAXxS6
+	ORrwY5l6yVjxNM0gbsDQvxK0OD8mw==
+X-Received: by 2002:a05:600c:4f83:b0:49d:91:274 with SMTP id 5b1f17b1804b1-49d00910374mr51848155e9.10.1788616941497;
+        Sat, 05 Sep 2026 07:02:21 -0700 (PDT)
 Received: from outlook.com ([2a02:587:6022:4b00:84ac:4417:9f37:a496])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cf755c22esm149866765e9.0.2026.09.05.07.02.11
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cf755c22esm149866765e9.0.2026.09.05.07.02.19
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 05 Sep 2026 07:02:13 -0700 (PDT)
+        Sat, 05 Sep 2026 07:02:21 -0700 (PDT)
 From: Christos Skarlos <christosskarlos.kernel@gmail.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -121,22 +121,22 @@ Cc: ziy@nvidia.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Christos Skarlos <christosskarlos.kernel@gmail.com>
-Subject: [PATCH 2/3] mm/vamscan: fix various coding style warnings and errors
-Date: Sat,  5 Sep 2026 17:01:39 +0300
-Message-ID: <20260905140140.60792-4-christosskarlos.kernel@gmail.com>
+Subject: [PATCH 3/3] mm/hugetlb: fix various coding style warnings.
+Date: Sat,  5 Sep 2026 17:01:40 +0300
+Message-ID: <20260905140140.60792-5-christosskarlos.kernel@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260905140140.60792-1-christosskarlos.kernel@gmail.com>
 References: <20260905140140.60792-1-christosskarlos.kernel@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3481A120011
+X-Stat-Signature: axd6p1kwsws3i1bx46nf4h6c3mrzqnf3
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 467F320013
-X-Stat-Signature: nyq56yhw9fidd33iccz98f3c4nemk3xq
-X-HE-Tag: 1788616935-206142
-X-HE-Meta: U2FsdGVkX1+y6Fpj1uXYPqpGwtJMmG1NHaPBplmKBNR8sAE9wotDIk+pHHT8EZhWerbu9tR5q3ioTiIx65ho6sH1MVMrThihR8c/TML2mJSQUJdEcTil6sU7FkXIcfn0dN0Bsk+5pefozvk9MBwq0OznCVcU11EH9ZlTeMcOkj6FkvstIrhypsejvTOzCIMgxqAQAvxN0cyySslaalZ6bYUhmrbyl6G2MroJX5AwiemT86xUU86H2y5zKHd3vAEEFtCHt3Gsn9rY630UCKFfjaGoUQaD4wL40hcPytrcFUMCRhgLWEWMuaFbWh+YJUYVqYZ2B5snCgRmCwqMRPYvbKwcjARcn2WltKokNqyd8LAfutUMTHOJ0kAdlpHVYZ3X9vmos03cvf43vmlznxHie5VBfX4xx10QuRHrG/TZOgxZrsBMZbKRpac2UILjBjM/VRrDLiGb9SIYrH8wFSd8cQpU8fIvpbNphSJBuc0/e20Be7bziWxYU5C7YosFTC48e1X9U0pRsNDpZpV/oxrKIRqzJieAnaxK2qvSN+r6/sYu+V+dBwHAg0nDuK+KMqCfCOOCwInvRWlvbErlgWjjvjPyd5LLVgRcxuLfq8/BpGJTAR3jN5Tkpi7nQNaQ68puCqwvg7b3fN2fM1AWlQF/RS0aZBZXe/MQj1PV7LFi+NAqqUNEQFXMTJw/gQYo1JNhT3S4zvqLd1wirZAXbployiwWQGmBWTk+DfSsi5L9oKUDmGX9dA6VNR7fJb9zhedNmqCb5BHOlcz2f8Fp5LIFYPAFUhxdKFNRWdILFPId5eNUrSpKdE6Qo4d3VayzYJmGjLstvAtcNYGVg84GCQyJtzpgvtEyVmnQFqi2dDVg27PyeaNn5KqQIuneJO3XF/tvD2vz1zbY/qc2uDlTRQu/WJ+BCE9+peKe9ImDf7NzxBEeZUOHvK7igzdDfxTf3XLkMTXTy9wlcB1H/pZjsvK
- VaAGF4yq
- kNaIPhI7C/5575TOdfiZVU9QRxMe0CSpmSfbi0xH1XGEU/xhvcwNki2Vy17QzVFUuIvEOMd3ZiUflrVVi6MBUel1ebmEFPbktjsEp9lYA+yAeF2KvEIGmMHoNWCcSaZUyqR+kXyimx1CGpX+oIYQ9Voua/LWAuhOHq3pHCGjy6/8f7ZbGlIHR/342iE92bsaCFUzyBHtBQd6cd4uGqcCL+/vuh+ENmqnFsgsdpwH8bsmPLAFuCLVfaii5t1a40670Al1ip0lZujjJbx6dOlGbGgmEJPP4RSmGY/4WyF3v0VfNYmu7Ca9MwRwE5KCIrO22ePL3pVI4EzKCzlvCMGffs/xAfNdiTsqrk09dxGXQyZunnKY7nbQDNShdH6WShQW0L5+cLR+LSdjdnzPA9CbCMqYBvuejHJc1o07sUML0tM+nwRhfMAx7yACPjH2sapWOtB7P0uJMt8EMjOWd4LR8ghNaQo1gBg95sLrWWc1vdMieCjs=
+X-HE-Tag: 1788616943-307513
+X-HE-Meta: U2FsdGVkX1+Sdc2VY1uuSa0WGFm1kwEZL3ontsDHTEBwhQR6CeB49/lDJB+eXDa3M5Z0d6jo8QNoTEMkCTsNx5zIlDCjiP3l9IWpkYT1AMh5KvG7+KpXoCe6ZAODxg7C1HV5RFwFovV7AFD1G4BuR3p7N6bEfyf8X5YNn/gk31b0YPFW5M6SnievPvkTpj+cTu53C67LaMFZ/+PKwi/gUa96VFR4gCob1/Oc30lQUXXPkMSt/MG01L1DJZW0iqXVlDYwdYqrIZMtVH71DMB0rXsbRv3ii8hbh9cNMuITzXyePa/oz4daODOifZjAqATs8STJuIivCBgp4TIoJtHcw1rmyDzKbUHVkfP8ysQ/fpwwzJ6qTg0Npfu/cyn3WUVCzHDKbtGVb3IIGfjfMA59W6MKbfCI6tTJiOILnQ1AEGHqvCcXqtzGOFZ8tdxkqlsrvr3t1AxK5akka+hNrETIyRJqMi1vwwX89DYTHJI0dAw/LBC+Hp+y6vpKb3Z39qmX3btIn8/Ezz1wuhKTJe/xMZ8eVaYTmqyxC9dV8Eks0evZ/O3UvjOh5snPeylLaKtJLgYBmOd0GYXv2VW9wyDpy8o0ohmxEK93N4JCDHSE+ed7mu+ZtS/pEmscbrzdl+gYe4TUiJgQFbGGhuUdCxDyi80jaZPug+Z3GFvP22aErGKNTUrDqg3zY29aoxJat/Nl+/oHIuM6ZW2I+H+ugf9ZGoX2HEqgjKxI0UwTWtK/lfgTkwpuobPlCMxqd4yAh4pmPlGiTFw20Lm4MixcfYRPYkoOUdYxwpYB1svVRUHvQk8zH3+gn1tjefTVC/kEQUR0NRnyoREFKYP6AMzVE+wkndy12wCdaFkm3wUCbC/RrjSiG+v3IG6sx9NEd3BcUASNH0YWZaiM2mmQpOMQrIH9YvsZod2EkVbLMBdtWA35WQbSkhXJG+3dGcO/+qof7fXFE1P7wxaQRDwEopvIZar
+ 8vAFVjef
+ D0nmEf0m934q8Wo4WdZWkZexI7h3UCT6b301HJ+NYN+v6OHVOOx3s3HRy5/P9fQjSOY166t3E93F6SyW9JqeZxqXkYAhM2sHpQJuPt37k6PxbgvqTb3B2mn0PGCQHzZhW3w8NV/JoDjFP/qfr6fUWubjnAKTLeHrz9Sgy3eGZkex+/ytEozTbryDzVmKnoGaoRlw3kVo4AQ2dCt8789FKGs1MrLv2OB71H3iMZBcrI2RIZZ/ZszzUiQhG1tYFej/FSty6seGfJ4Gsy8AAfBURZ3XuX5mK09A9oITKtQXDqVKyZCKGoHe7EdbQA04x83lFA2ynIEIlOPd0cQ+eom3G9FCcKRZ4R345qwHsGp6iiBA+6BxXWEMZX0UX4J61vsR37VuRiZ0eFR+uns+1E+gHW/y5otzOVgvWBJAUCb6N1QW7xIUEjBAVdbnK9dt9j1Hx5iFCLvy9Kp5EytDleZbIUFHCmFnwtnBUDaI+1SC+XMZXE2vGGfWy7nG1OA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,76 +144,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Resolve coding style issues flagged by checkpatch.pl script. Specifically:
+Resolve coding style issues flagged by the checkpatch.pl script. Specifically:
+- Fix block comment formatting to keep tailing '*/' on a separate line.
 - Add missing blank lines after variable declarations.
-- Replace "unsigned" with "unsigned int".
-- Replace spaces with tabs where possible.
+- Remove anecessary braces {} from single statement blocks.
 
-No functional changes are introduced.
+No functional changes where introduced.
 
 Signed-off-by: Christos Skarlos <christosskarlos.kernel@gmail.com>
 ---
- mm/vmscan.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ mm/hugetlb.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index f11491ee9ed5..8637cc0910fa 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -535,7 +535,7 @@ void reclaim_throttle(pg_data_t *pgdat, enum vmscan_throttle_state reason)
- 	 * writeback to a slow device to excessive referenced folios at the tail
- 	 * of the inactive LRU.
- 	 */
--	switch(reason) {
-+	switch (reason) {
- 	case VMSCAN_THROTTLE_WRITEBACK:
- 		timeout = HZ/10;
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 4f6f58bf3db6..ec8e799e356e 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -145,7 +145,8 @@ static inline void unlock_or_release_subpool(struct hugepage_subpool *spool,
  
-@@ -1529,6 +1529,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 		VM_BUG_ON_FOLIO(folio_test_active(folio), folio);
- 		if (!folio_test_mlocked(folio)) {
- 			int type = folio_is_file_lru(folio);
+ 	/* If no pages are used, and no other handles to the subpool
+ 	 * remain, give up any reservations based on minimum size and
+-	 * free the subpool */
++	 * free the subpool
++	 */
+ 	spin_unlock_irqrestore(&spool->lock, irq_flags);
+ 
+ 	if (free_subpool) {
+@@ -3700,6 +3701,7 @@ static void try_to_free_low(struct hstate *h, unsigned long count,
+ 	for_each_node_mask(i, *nodes_allowed) {
+ 		struct folio *folio, *next;
+ 		struct list_head *freel = &h->hugepage_freelists[i];
 +
- 			folio_set_active(folio);
- 			stat->nr_activate[type] += nr_pages;
- 			count_memcg_folio_events(folio, PGACTIVATE, nr_pages);
-@@ -2073,8 +2074,8 @@ static void shrink_active_list(unsigned long nr_to_scan,
- 	LIST_HEAD(l_hold);	/* The folios which were snipped off */
- 	LIST_HEAD(l_active);
- 	LIST_HEAD(l_inactive);
--	unsigned nr_deactivate, nr_activate;
--	unsigned nr_rotated = 0;
-+	unsigned int nr_deactivate, nr_activate;
-+	unsigned int nr_rotated = 0;
- 	bool file = is_file_lru(lru);
- 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+ 		list_for_each_entry_safe(folio, next, freel, lru) {
+ 			if (count >= h->nr_huge_pages)
+ 				goto out;
+@@ -3764,6 +3766,7 @@ static int set_max_huge_pages(struct hstate *h, unsigned long count, int nid,
+ 	unsigned long allocated;
+ 	struct folio *folio;
+ 	LIST_HEAD(page_list);
++
+ 	NODEMASK_ALLOC(nodemask_t, node_alloc_noretry, GFP_KERNEL);
  
-@@ -2614,7 +2615,7 @@ static void get_scan_count(struct lruvec *lruvec, struct scan_control *sc,
  	/*
- 	 * If there is enough inactive page cache, we do not reclaim
- 	 * anything from the anonymous working right now to make sure
--         * a streaming file access pattern doesn't cause swapping.
-+	 * a streaming file access pattern doesn't cause swapping.
- 	 */
- 	if (sc->cache_trim_mode) {
- 		scan_balance = SCAN_FILE;
-@@ -3416,6 +3417,7 @@ static bool get_next_vma(unsigned long mask, unsigned long size, struct mm_walk
- {
- 	unsigned long start = round_up(*vm_end, size);
- 	unsigned long end = (start | ~mask) + 1;
+@@ -4188,9 +4191,9 @@ void __init hugetlb_add_hstate(unsigned int order)
+ 	struct hstate *h;
+ 	unsigned long i;
+ 
+-	if (size_to_hstate(PAGE_SIZE << order)) {
++	if (size_to_hstate(PAGE_SIZE << order))
+ 		return;
+-	}
 +
- 	VMA_ITERATOR(vmi, args->mm, start);
+ 	BUG_ON(hugetlb_max_hstate >= HUGE_MAX_HSTATE);
+ 	BUG_ON(order < order_base_2(__NR_USED_SUBPAGE));
+ 	WARN_ON(order > MAX_FOLIO_ORDER);
+@@ -4832,11 +4835,11 @@ static pte_t make_huge_pte(struct vm_area_struct *vma, struct folio *folio,
+ 	pte_t entry = folio_mk_pte(folio, vma->vm_page_prot);
+ 	unsigned int shift = huge_page_shift(hstate_vma(vma));
  
- 	VM_WARN_ON_ONCE(mask & size);
-@@ -7748,7 +7750,7 @@ static int __init kswapd_init(void)
- 	int nid;
+-	if (try_mkwrite && (vma->vm_flags & VM_WRITE)) {
++	if (try_mkwrite && (vma->vm_flags & VM_WRITE))
+ 		entry = pte_mkwrite_novma(pte_mkdirty(entry));
+-	} else {
++	else
+ 		entry = pte_wrprotect(entry);
+-	}
++
+ 	entry = pte_mkyoung(entry);
+ 	entry = arch_make_huge_pte(entry, shift, vma->vm_flags);
  
- 	for_each_node_state(nid, N_MEMORY)
-- 		kswapd_run(nid);
-+		kswapd_run(nid);
- 	register_sysctl_init("vm", vmscan_sysctl_table);
- 	return 0;
- }
+@@ -4919,6 +4922,7 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
+ 	last_addr_mask = hugetlb_mask_last_page(h);
+ 	for (addr = src_vma->vm_start; addr < src_vma->vm_end; addr += sz) {
+ 		spinlock_t *src_ptl, *dst_ptl;
++
+ 		src_pte = hugetlb_walk(src_vma, addr, sz);
+ 		if (!src_pte) {
+ 			addr |= last_addr_mask;
+@@ -6321,6 +6325,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
+ 		folio = alloc_hugetlb_folio(dst_vma, dst_addr, false);
+ 		if (IS_ERR(folio)) {
+ 			pte_t *actual_pte = hugetlb_walk(dst_vma, dst_addr, PMD_SIZE);
++
+ 			if (actual_pte) {
+ 				ret = -EEXIST;
+ 				goto out;
 -- 
 2.55.0
 
