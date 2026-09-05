@@ -4,139 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A399CC624D3
-	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 13:16:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68241C624D3
+	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 13:21:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98ED36B0088; Sat,  5 Sep 2026 09:16:04 -0400 (EDT)
+	id 418876B008C; Sat,  5 Sep 2026 09:20:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93F806B008A; Sat,  5 Sep 2026 09:16:04 -0400 (EDT)
+	id 3A27B6B0092; Sat,  5 Sep 2026 09:20:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82F036B008C; Sat,  5 Sep 2026 09:16:04 -0400 (EDT)
+	id 2442A6B0095; Sat,  5 Sep 2026 09:20:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E0DD6B0088
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 09:16:04 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F10951A033D
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 13:16:03 +0000 (UTC)
-X-FDA: 85179756606.07.ACA3173
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 00046A0004
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 13:16:01 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bv7+ovCM;
-	arc=pass ("google.com:s=arc-20260327:i=1");
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E593C6B008C
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 09:20:58 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5B8AE8034F
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 13:20:58 +0000 (UTC)
+X-FDA: 85179768996.23.AB2D718
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 644562000A
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 13:20:56 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JF8Ab0iK;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf03.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788614162;
+	s=arc-20220608; t=1788614456;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BIDLuR2kbCh+tksJuAQN8RIab7rU28NTAOGf9YHRpSo=;
-	b=uyuMpLKXQqeH0ZSrCdp2+lcw8/i7kMYjFfGo700W2T6OnSUmEH0ljSSH8aXMzuqv00ZGml
-	Cfwqgm5YoWp+35yoY7KwgGQFNbvyQEF/80ms0uhN6SAN+50EKhvRoK/VCTTgseITuaIz0W
-	wMr1KW7lYTjB8otsJ8KkhQKwHhhUL3Y=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788614162;
-	b=37lSOU0ZpyoSss2LxmyWcgqOOqJ21nm3lDj9BjFlexLbFYK6KWBbjz23SE38/b10kLiEr4
-	hWZZeKM3Gi4cdudTgn3m4T84srN2NzEjCCJxBY7891CCIFzK9Wn3V9m3d2yjtiuZlLZBbs
-	g3AF82CSeld4/eUWi3ctLzljpOkxwfY=
+	bh=uwIV32WsD/zZ7++4VP2rotd5bmAf7SflccOb0estirA=;
+	b=Ol2Y1s9rvm9nKz1u8FMDxW5fmisC7bVZLN2F0EJaOkgD9bo6OY2TP/PsYuBtJ19i09KxWb
+	Dlbd+ogFKMC5bADcHw1FllFBoqu/DO1NiG38jXAbulBND82GVImdpoIDK40xBqYqRJqsB/
+	Am5Q04MOTAMyU3QKATt/d4gvnFtA0rI=
 ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bv7+ovCM;
-	arc=pass ("google.com:s=arc-20260327:i=1");
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JF8Ab0iK;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-3a305310ddaso19656091fa.0
-        for <linux-mm@kvack.org>; Sat, 05 Sep 2026 06:16:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788614160; cv=none;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf03.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788614456;
+	b=6CH7h8kAjMRSZPvLp5eoTCkk2eeSvif6Q0YLB4yTpp1b0yq0xs0zptc/McJWfqZ18e2z7L
+	NNrEO32UnhSsjS8BnufwtcucBh0WhtKQlcC0EE5XwgNOMHjL0us+F7qx0z0mLdPKLvMczu
+	H/FjYwzy4W5FFKBLKgFmUr5o6vAQWyU=
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5b0231a3e86so1734973e87.0
+        for <linux-mm@kvack.org>; Sat, 05 Sep 2026 06:20:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788614455; cv=none;
         d=google.com; s=arc-20260327;
-        b=fwfwkTW6rWWxpWbRiS9oI4lVdMcy8nqvud+FJ0ftVmP5/03QX2LjV1+i7IjZYHIo7+
-         x7UhrPCxEjB+kHv3XQcx+e0mdfSuIgc0vTOgVD72ZMwBQYW774NxivbM+Yl6Ig+k6ufv
-         QMYI8g+WHgjoB9nWxjKh4uSg5Av2nQ+pbB3GcFYYW7HOBaNggj9r7s1DCEYRhw28DrUq
-         4LxggEZqHD4MJIEsCgViStJZ9oGRtHLVFyo5KrLn8UHXxKExr5upz4PmiFagpC5yY8BS
-         ud+NbVC8lSy+SA6rShJGhNdtGFzmFaeKUjSc18r1apRGOZ1Qoe5eeeF4WJ8TSiRXXT2w
-         DUsA==
+        b=ZGle6TXIPFhnmtUR2oIVFEZVvSuWSRN15GGcJv7YnBADy2kF8aoywVhHuBT3cJWkZC
+         NSqSvsNIMl8g4Mu/0Fkqs5HtvXzGG9nXyPpYXBsG+wHOuuwOekMQR81J5NG+D0nzmvxS
+         I22ZLghi4usYEXqVU3R3jrHtJHmxNBniSS8zi++wNiCesfMEtobTfNduJi03tL7iqizW
+         V3v74SRCk1o7wb6hgBzyI56KffWR7KYeKkgnSYxMssmedZn7SDmDDizPXWG4bWXI+Wal
+         M3ZZUsu+DL+HvE6iphkTFuePmlENqB/TZ0w0fUSey9+VwBC+nc2Ri21bso19uEkIKL9t
+         IDAQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=BIDLuR2kbCh+tksJuAQN8RIab7rU28NTAOGf9YHRpSo=;
-        fh=7C1EjVLkaHE2rxOifubOp+gfyYTMr4m6eYAahTFeCXA=;
-        b=bIuosm5fLaJQVG6CDHI2Tt7GxHNs9dUKjpvxJ7wiIGvvpLwSK72wwSDyxgssdPUfMj
-         2w2sFoU+hgwgM739925fdNx7tvN8zOghFZz+AYt5HmeNtY/ejM9qXdahFpwieHoZ+KZn
-         xKmLAgKcTivUcwEaUp7hx5q6A7MWElWAUjg3N7XNNkRxyWGnxHDBinKQ8wo155GA8ydH
-         XKuE4DhNAOBangqV6Sm3nQqZwvxA1q5sEZ1TFe1Nv9LPYhyYoDX5VDoVDIk7ab2lB8lp
-         OOsdOdpvNm7Sd9heov03j28XE1VsE2TUuFxvaBCVqU4w8tL4JwVWPG3MWkB0It4Upbm9
-         1b1w==;
+        bh=uwIV32WsD/zZ7++4VP2rotd5bmAf7SflccOb0estirA=;
+        fh=hZZI2MTYHDCEXJs80TH/sATxzL4gAizJNooojTjKBb4=;
+        b=LfJYU4D79YfCbWt1kHOKL8zFubA2T8okUa5cOdxTYb7atS114KR+9VSp1Ichirqh5F
+         uni27TPi1YEo+m3qgxjrzgjP0mdy/cd33MtX8+JrlxAOVlSlk0i8/FU2Jg5UVcN3qS0j
+         2ErgV9CP2imVsnbjpVbP7Y6xDINTkghdGSB3mE8NMFsqzzTncZQW7IAGnhgQ02nL4mnb
+         rlVd/JmImJ909fk3gX9xpeK+EHGUvRDWmzXi6lfT6Jrwv+LjLhMlE6zRbtamJhxEJ0M2
+         4WfTpKX/evXfzgb5bhZOmWlB7jCF0DNDL1wxqIrdxLpkIZ6fHUqSxk6CTn8Tzu0nzKj6
+         H1/w==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788614160; x=1789218960; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1788614455; x=1789219255; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=BIDLuR2kbCh+tksJuAQN8RIab7rU28NTAOGf9YHRpSo=;
-        b=bv7+ovCMWPKrPIuNu6kgZ5y3VF8BJpNoX0goSWr88UlLfFTfOgOAmb1ih3WUPoGLNA
-         /C5kKGzaopkxa9ZLiH28ZZtIjVtzfI90WSCBAPfuf+DCm20X7TLt02n/hmGN67P8DbQq
-         c4zpUxhT1vUWbBZ2MpVWM0QbxIH10knyOM4THCx72cis1GaBUdRImjYlJqxEzjEyoKYm
-         su/hclx5JsMYHrkCNGZkXAE4FVaO42X3NBs8i/y+WQrHmqHag3I5JAz1OSBr0Qp5M3o1
-         xe3wfZ8pOZbQXhhQC4rrlLgi2JU/rYtZAGhkQsMk64wCU3vIx6hRoX3G+MTjXkcyKTY8
-         gTxw==
+        bh=uwIV32WsD/zZ7++4VP2rotd5bmAf7SflccOb0estirA=;
+        b=JF8Ab0iKdxcjz6uWjsk3SECocJC8bNX8JjhYV3KKMelyv2jzFo9kEA+mCvrdkjdAhU
+         8BIx5MYoRHcyEqLd2Y/3/qkTi2vDbEXvkGxh++Xr59ml105lhIVjWm7HvSnYrWp8bRHT
+         m95qMcsTrruH1bciAF/c4RuKT06ttmpkZXNxz+0qy4R3KLzybWybJG8to0EdfFGH23LW
+         PB2hSPBDKfuSnRT/RuNFoGfAUweFWuKYeb3Gtcji8lP6tpovaXy1flNQtK9jAjXkFTsG
+         +6ekfbtYiW3aS/BeO88QGVSq6gn7dKe1wQK3JNB/EDSoXtQcr5nQyZdfZ9jw+veDEuKQ
+         l8Og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788614160; x=1789218960;
+        d=1e100.net; s=20251104; t=1788614455; x=1789219255;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=BIDLuR2kbCh+tksJuAQN8RIab7rU28NTAOGf9YHRpSo=;
-        b=T4H8GVJ+gxMXLCr3Zz/zTL+Qm0JocstzZvRAy6bc7qVFNCZymEx3PZ3nwIlWTrlSGI
-         ZY1ZsnuqnwjcEtd9UKl0vOr+R4v3aJrbFJAqsMuBy05DFtomVG+xFtZFo21qEj6Ueqs1
-         6OImshBgTgdqPuySedDRPdWv8ON+Wukc+a3YbapXtS+0QePv9W3IomiZ+Uueubmp8zGM
-         +BEn1ZU7aOQs1qK57Oh7hnqYHHoNJhfDXuMEPd8HKqkGtPnSzUOHD9SKFJVyuClkHNc9
-         hD8XY1vYotuXGMxJDQ2IxcKei3RwNLkhYGwQwZXtjrygPamvNu/vtqTnl6k9P4FFSW//
-         /MTg==
-X-Forwarded-Encrypted: i=1; AKwUvBxa3cJSy3syQt44SjHZy+NwVWfVa/vPoaNKt9XxjAzoDyOPEGdtksfspA8sj1TEmlA4CwS42YaCPg==@kvack.org
-X-Gm-Message-State: AFuF++lr/03MKoq4/xYLIfs1JiL14BWcGiRcb/O4Jsgp/Ze4+z5ba3lA
-	RAGwkBvNyYSEDmd+PTJKzfMFBDm3JEl6dQzl1Oar9chGFBxRXGVaZs8Bcal5Ztr2dAgfJegYBSS
-	ganFdOtu1qckqfeNSdGOsLhunv/kKZ3A=
-X-Gm-Gg: AYBFou0dM2ABmCnpz/xx9vQymfO6pKfAN8uRlkeUMu1IbCafUADsj4YyrOVbfi/7wqn
-	5aQfBTW+GNvmTDDrrSxw7thwvTCgDC1D0iXdSx/6/3FMx5sohe6p+juxwvLo/xmmslVAaDauYvL
-	16narg9+Bks1PNvn19j9WqqndXWJGgmnmRDc4/VbQ76ukms1Rwz3wwGHeYa+EyE3vpY7aRXKtdU
-	yMdyiAnRRLft26l4FLWoo/VsGJ7xGYbeRbAQQPJkRi2ZoBUICbDH1XvE7BL+qLoqSjz738rSfkZ
-	ko4ussyGC1zrlSr6z6xWxZDIDj/B+P3dFL4UhxL7b/NFb6RXcd7VZf+VqV8yx3FxuvsmAN+LS80
+        bh=uwIV32WsD/zZ7++4VP2rotd5bmAf7SflccOb0estirA=;
+        b=qDWL7aNz5jZ3YLJ6HVb2W2AcPq6We5uVVeMhKTyknP3FxbCjtp1fWcwugODWn+mYbe
+         9ov6dIoQzFM4/W9iWHeK3KxX8zEpJW64Gt8k9Tm76JvFqhOXapCdMFIo5P2/tX3BZIr+
+         AvGI86Q5dYCQnCiI2Xr+gzzTIkWGHBVFSr8v8PuJKaaXbUSZYgr71Xra2um6hcHATQwv
+         4YxX6W0sHGiTQjRHQTpSei8OqRtVikf+66KDl9dSBqbnrmLXoxpBa4cyMcX1ARkwaJJD
+         UR7GAFwLneOLip5T2ij4J3jqz3Zt+ju+GRtCYIMCN9YRczhM7WDrFw99yUtlatWFpLxb
+         CWMQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw5+Xi1chQsru/4zuln5OAnk5GSe+1nDpDFqfEbicpq44Z+BV17S7uMbwFijwyBueWSjkgPmafgtA==@kvack.org
+X-Gm-Message-State: AFuF++ktV7kHIKMq9P4xdc1AOqHttCjjCybF7nHkIP89tBXry06fSQE8
+	g4aZVbYhRa21MCkdWpXRIHBtPAqb6C96IPrzrluZ9WAE6226vwepaoYzwF8GoDrACahX6zLHFxd
+	DVGlMkjcEA8AHXvOKKW+Vuk/Q03jtoBo=
+X-Gm-Gg: AYBFou0t4vermc96DOMxBAcW9Td4+huPQhwY/sdY1sYdyZYY2arFHgGzs+j9sTmEB9y
+	XNgqjspbJ04rYmWJG0pvFUhyZYhtIX3EDZU39kVYwcBrsynTiIe+McUl68uaWhy8nscbc2ptwWK
+	xKOGW0nBG4+bID+c1+Yximb9XF3U9nAdkFzRoeoa50QOBSklHh7uvU4r7gPu64ZayLnzzeuIECu
+	tGgiCovqfnyIMTyzaQsKWHeJsg2RsrUdAuoVUFS4pGXFEaMtSZaxt8BTBcIJozyDo3wq3CggVc5
+	yxPz4h5vJpUuVzYj4FF805+JV8J8+St4HR989QxgGj3lsvrqHx3YCRmNQPHMq/b86kzGms3Ezas
 	=
-X-Received: by 2002:a05:651c:b10:b0:3a2:72c:cde9 with SMTP id
- 38308e7fff4ca-3a371aa4067mr15568791fa.4.1788614159830; Sat, 05 Sep 2026
- 06:15:59 -0700 (PDT)
+X-Received: by 2002:a05:6512:3f0e:b0:5b0:eda:de1f with SMTP id
+ 2adb3069b0e04-5b616f02096mr2059293e87.6.1788614454269; Sat, 05 Sep 2026
+ 06:20:54 -0700 (PDT)
 MIME-Version: 1.0
 References: <20260830114731.8322-1-wujianyue000@gmail.com> <cover.1788528216.git.wujianyue000@gmail.com>
- <22625ed4915936814f766092e9d7ac6637c5b2f4.1788528216.git.wujianyue000@gmail.com>
- <CAO9r8zMiOvhy3BZ0NjvL6Wn6e_VpVb-sZzk5bpDFuoXBHbzATA@mail.gmail.com>
-In-Reply-To: <CAO9r8zMiOvhy3BZ0NjvL6Wn6e_VpVb-sZzk5bpDFuoXBHbzATA@mail.gmail.com>
+ <5c4f72f1ffbd5f15d0b57fb1a87f73b4249ab424.1788528216.git.wujianyue000@gmail.com>
+ <CAO9r8zP7LCRaq4e0O_gPz61d+ee6Pt=tBZXQRy4X27idB228rw@mail.gmail.com>
+In-Reply-To: <CAO9r8zP7LCRaq4e0O_gPz61d+ee6Pt=tBZXQRy4X27idB228rw@mail.gmail.com>
 From: Jianyue Wu <wujianyue000@gmail.com>
-Date: Sat, 5 Sep 2026 21:15:44 +0800
-X-Gm-Features: AcwNN1VskVyn78MOpZJIqhjd6iWsQ7_GA-bFD4pMhIW8yua49SmVA6-bbHCeXls
-Message-ID: <CAJxJ_jhfJ-ZTnvXvQsKFtyKK-ScTa2HUjnSpK+sOvgtgdZ=bcQ@mail.gmail.com>
-Subject: Re: [PATCH v5 2/3] mm/zswap: replace the zswap_pools list with an
- allocating xarray
+Date: Sat, 5 Sep 2026 21:20:39 +0800
+X-Gm-Features: AcwNN1XQdTnL4GDeFU5BsDnq2fml9cZJZMgkYM195Nirw_rp_dSf65yDkyjMKHI
+Message-ID: <CAJxJ_jifBfg+f9OuUSPiYThFU_0edA-XOmuKxbKf=2LNgeWPvg@mail.gmail.com>
+Subject: Re: [PATCH v5 3/3] mm/zswap: reference the pool by id to shrink
+ struct zswap_entry
 To: Yosry Ahmed <yosry@kernel.org>
 Cc: Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
 	Chengming Zhou <chengming.zhou@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
 	Chris Li <chrisl@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 00046A0004
-X-Stat-Signature: pxdc3zjf7ep5ab7738mrico6fmjdanzw
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 644562000A
+X-Stat-Signature: x5geyiz75e1fjehbos8gbgsn7boa8zce
 X-Rspam-User: 
-X-HE-Tag: 1788614161-175208
-X-HE-Meta: U2FsdGVkX1+WBKJ2sM7rbhxiOTL00Vtz20YarfPzf2/sUREhTN6kg7nbiRS8+c7rDnNnrbNTE3uzE1stTtOn4keRGxHjXaaCeSIrmym9FHUod/2/1NQaSBPekcfkrhA9yZWWBdpKyM+RmZ2FY2onMrtscoJ/B1LEmVmwPS3jzbCLhkiSY2w4ANuzQ0sfz8yN9BfPD9ee/gvhkbILFUZfmrvFfclNe+TM/VkDesRwbk3HMEuhhmqEumzIdOwQFJIMMq3xjhgmZHPh88uJTePOsLmrScOewj53MO04fgioODMxVmEwUSiDWM5BOWt8f/BslQPemgKXl49N2vBouu2SWGMUp6VxRSD/eau4QaPyRtii4kwxN+GUQ/E8MBb56buzS4VYyRnEXEnlIMIuC2lkQvV56hh/l0NfTEWctPMqCXrg6x5rhLsmzjdCW5pAegqD8ZRhBYnSBm6D6HQIc7h4n4LGJDoaOmT4+vfmEQmbWW5Knt3OA7tkTSkNLEecrsnmotoSDA/1FJq5nL3IAiJrq7Sv98+bMLoqNmfebSRHG/blngGRcQZ4VrDn73q8qwI4gMm3KIRPUdGrWczvKZ1t/QxQYOphPXm8nwQvn+bA8KPjoH+TkPUrp5MoQ6/B2+jXjotlmzq75CzfZdBp4XD03Zev3VrUx/RZvKesOnPovOWq2N+PL4HtwEGUh8IBqt4B5QdFUMFTHMU0xgRNpTX437vyo7QbGRpygv92YREgFgD+T59rIEzek9Awo5wMtshnEycYcAm3r+Y/m7RMqIVyvezYtFQxS3zd88JbViXAYzirbazISM+Y3h1WeY+n5m0amb/tiejYOac9r8J9VEgT7zSDZwleG3PSyviDDgXfoiN4vr2nuUI6i2eX/ynFSBURikq0Up7+/Mjbt9y/Ff9f6sRW7V3oBwrkXQ1RwzGhZTQGHshIOy/eM5jVklZbZnP1DdBzzsda90E5b9E143b
- t9AA/3N1
- l9wq+f/AX7IhBSE83yPOVyicglLUsl9RCtUzOxxUSTR/VBVcJJdh0aMbF/NtnMBwvxKrfOCl9Tjgu0zDR/+gHTcWOmyBOPpnuOKGLEMqkZnGGWWBG7X2JE5t1NVV7jcue1s0dezpqUWYW5RT0dBC9aWFrM6w9Zo/wVoD4MWjIQf9NZ0ySJ0/9lH7qzhA3Gix1uGx1nl8e/DaJbu63qCc9t9Eh3Fz2xe2S7qy4LPw4GqD/dil3/36jCwlUS/eqid1p8Igc9wDRbZDanHzZlQB81CNjG1cU24gP5ussrHYtHhmUAaAicvSY/vz67qvSrrExF9Q2d9IqHsSOBR/SezYbb6gGZ+OQJ1Tbnu68b8tOzknNv7AWSXBbZ9KfjFgMw+431qim/JnEkZ+Q8+HaMOXQw2jVl7uZx9xXi6OIkITxu5jQ9PhgBkPCzYBLlu9HLefHUorG+UvhcvXv3MillGg/eSoufKTF4SPA1ycfcfGVa5OZ2yWGOl52V/57Eg==
+X-HE-Tag: 1788614456-888793
+X-HE-Meta: U2FsdGVkX1/zRf6DgfLf+TQ9IaD3+y/GZgEzB+nMF9j+rmTlyQMo1tVb9EgwkUT1OXzyYDKDgKuGsUzTZbX2wpNwtPbswg0c1QmSCpPsHMeCAXguOu9KDJovRyH7zCY2bnp0neSmLC7hA/0tnJPweuJrNgOXoYDHrBzPGJY8WVZ5txzyhOma+gj+bJlPTt6NyyXjPCE0JNUN0W5YRfKmQFTSiVYdD2H+YEDDIqf7wOfMbegy4e8o+JpjBXNZ0oXDamL0zl3mNKoGnymRAf8X3GA4dKYyWOJRWsv6YOgxNV24UWZa4sPQN0BTEVoldbxZiIoU0MKEX3tg0I0/vWCrkp/dQaDDv8O11Lz7Hzj1kqWRsQ5tu8j3r6gRdryKDYdyQMK54N50dQufzqAUtUlqfqK6aTZwaOCS0iE1IVxYRV+brcEbRFVnjRxlEAAimz95crIlmmM1gVm/0wdkYOcHSr+cXCb76LTSqZ1BUc7D+yTaOaqPH6kEsoAmWG29lz2E6XwKKHNCWN8a1hbuAqlcWK1WETG16Yk5ybWE353hqIs1oWAEyrsoMzWMw/kI7LbP5xucnXKD761AVT9lK01G/Hl38+1n2T8mlw4gtd9Y0fxXGdgCX2WV4c9CyqXeLRisMjX60YUBF8jXRWlRo6ROOfwDB++8PBxj94YNlTnS8fYfgH7lNsmJx4coxS6cPD2Zv3+/SkEkStBkYK0twMqE7nI1qCJqr7bKLvairlpYmXc599cTe5P7sFHngju0k1nEXngivM67Js5BCBk3dpat9T2AwOJa3HQv3B4GvRr2mxhaB0UR4JKKggUsxj3HLCAPQzYS5tZh/dierlgIfyiJBScvnmal1tXJOA/Kw66JCFqBzRgZp22RUVKNx1wl8vYSAYYGMMQ3KGdFLLZk5UFdXtZ7ht4J5CTSBjYn6L9ZNuYPX+KepDHoVaBCLOS8V4pQf3MKxoPSPYwz6U7QJ/V
+ ti4b27K6
+ k/MlXZs+iYh0ERTlkpDvroJp1aJ70E86mrLFmaVlx9+qdbJUCeiYLWpzqBTBcbp0KfdnR96ZIajIsix51AIArnUn800oupZPra23W5kn8cqxcuuUoBQEWCVBbwGHIjf+XGCJ0XQj4u0RiqUxWKxloMi5UirwCPN5opQG29e7O4Zy2zDVXTW8Rf63Z42FvTqJdq0XwNAsAkkFbbYjPFlUa/NgbWvwqL9AZfZja4H0iNHx9Sij5Kh0lV1bpH9men7cwDxFREEJmVmGtlKH3+5Rx/wroPfNdeXyho8Wi/lRxI+4bbocot10DsNpOiyMEMKix2keIxSOPmdMWyc/ZhPTY87BQPsef6/yn/wo+wxhixqx7H6greMt2JrP6O9WVzP/p6nuw9/VKylO9hU30N8A3QPlA4RNT3YJsbdOGcIKrHEDb/IAosxmHwGSF8slVLc9r5N2nVuB6xb2Y2n2cSsLcR61J1rQMXOAs+wQq9YrIMpfke5YUb4ANsjF8LQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,70 +144,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 5, 2026 at 12:04=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrot=
+On Fri, Sep 4, 2026 at 11:38=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
 e:
+> > +/*
+> > + * The pool stays alive after this returns because a stored entry hold=
+s a
+> > + * reference to its pool (taken in zswap_store_page()).
+> > + */
+> > +static struct zswap_pool *zswap_entry_pool(struct zswap_entry *entry)
+> > +{
+> > +       struct zswap_pool *pool;
+> > +
+> > +       rcu_read_lock();
+> > +       pool =3D xa_load(&zswap_pools, entry->pool_idx);
+> > +       rcu_read_unlock();
 >
-> > -       list_del_rcu(&pool->list);
-> > +       __xa_erase(&zswap_pools, pool->idx);
-> >
-> >         INIT_RCU_WORK(&pool->release_rwork, __zswap_pool_release);
-> >         queue_rcu_work(system_percpu_wq, &pool->release_rwork);
-> >
-> > -       spin_unlock_bh(&zswap_pools_lock);
-> > +       xa_unlock_bh(&zswap_pools);
->
-> Do we need to call queue_rcu_work() under the lock? I assume not. Can
-> we just call xa_erase_bh()?
-
-Right, no need. queue_rcu_work() only touches the retiring pool's own
-release_rwork. xa_erase_bh(&zswap_pools, pool->idx) is enough.
-
->
-> Doesn't xa_for_each() already handle RCU locking?
->
-> >         rcu_read_lock();
-> > -       list_for_each_entry_rcu(pool, &zswap_pools, list)
-> > +       xa_for_each(&zswap_pools, id, pool)
-> >                 total +=3D zs_get_total_pages(pool->zs_pool);
-> >         rcu_read_unlock();
-
-xa_for_each() only takes RCU around each internal lookup, not across the
-loop body, so the explicit rcu_read_lock() is still needed to keep a
-concurrently retired pool alive while we dereference pool->zs_pool.
-
-> > @@ -554,20 +584,17 @@ static int zswap_compressor_param_set(const char =
-*val, const struct kernel_param
-> >                 return -ENOENT;
-> >         }
-> >
-> > -       spin_lock_bh(&zswap_pools_lock);
-> > -
-> > +       xa_lock_bh(&zswap_pools);
-> >         pool =3D zswap_pool_find_get(s);
->
-> This is the only caller of zswap_pool_find_get(), and since we remove
-> list_del_rcu() below we have no reason for holding the lock here other
-> than zswap_pool_find_get(). So let's move the locking inside? I am
-> also not really sure if we actually need to hold the lock here anymore
-> to begin with.
-
-Agreed, and it turns out we don't need xa_lock here at all.
-
-> > @@ -584,23 +611,17 @@ static int zswap_compressor_param_set(const char =
-*val, const struct kernel_param
-> >         else
-> >                 ret =3D -EINVAL;
-> >
-> > -       spin_lock_bh(&zswap_pools_lock);
-> > +       xa_lock_bh(&zswap_pools);
->
-> Do we still need to hold the lock here?
+> Doesn't xa_load() already call rcu_read_[un]lock()?
 >
 
-Agreed, no need lock here. Compressor switches are serialized by the
-module parameter lock, so this is the only writer of zswap_current_pool.
-
-Thanks for the review!
+Yes, xa_load() does the lookup under RCU internally, so the wrapping
+rcu_read_lock()/unlock() is redundant, and will remove it.
 
 Best regards,
 Jianyue
