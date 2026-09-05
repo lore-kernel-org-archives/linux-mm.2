@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0FAEC79F89
-	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 03:06:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 999DEC79F89
+	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 03:06:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1E6F6B0096; Fri,  4 Sep 2026 23:05:50 -0400 (EDT)
+	id 73CA86B0098; Fri,  4 Sep 2026 23:05:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF6EE6B0098; Fri,  4 Sep 2026 23:05:50 -0400 (EDT)
+	id 6ED316B0099; Fri,  4 Sep 2026 23:05:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE4BC6B0099; Fri,  4 Sep 2026 23:05:50 -0400 (EDT)
+	id 604126B009B; Fri,  4 Sep 2026 23:05:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8ACDE6B0096
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 23:05:50 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E93061401B9
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3BDD66B0098
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 23:05:52 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B45AE4025F
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 03:05:51 +0000 (UTC)
+X-FDA: 85178218902.17.1DCE996
+Received: from mta1.migadu.com (out-137.mta1.migadu.com [95.215.58.137])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B88DC14000C
 	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 03:05:49 +0000 (UTC)
-X-FDA: 85178218818.15.43550EB
-Received: from mta1.migadu.com (out-134.mta1.migadu.com [95.215.58.134])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 0A24220003
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 03:05:47 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ENKTF5V4;
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=W4umrh0I;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf31.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.134 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	spf=pass (imf26.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.137 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788577548;
+	s=arc-20220608; t=1788577550;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EXJ9u/uxcNDsijc5/H41GDixo838+SaWhrAkFVHi+Ys=;
-	b=c6pahgsRK4IpSG10sxXl6WgBemLL0PG/Lqp+r1+sp9Sr3xZoSbPULlOtONwg/MEIsKLy+k
-	csIeeVgvPVf06QTSm2cNHrdFKpv0axTy1RxKE7v/2gmSwU7YMaaq6Sopd/sO5V5OcPEBrC
-	zJYPQWJjlVPrg8MwuAHd631JWwV/fyc=
+	bh=pIv257LnOhPcN/U+nBTiXeeSnsXB7qeGFe9XRjwzLeE=;
+	b=N1flfdiBhM2pVqivJaI5E0nPrkeZHthYUalRGtLrftvv3Gf1+CWIngqrcFNLs6jMORt3Ox
+	kYL0TuSrgLDBKvDgZRSYr0NFy6y9vsrG5TmwqC+m7+vQi7h1c1gregAhg3ite8gI4EvvVp
+	0PkEhEkZEegainAQXO44V5ign8ZUygE=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ENKTF5V4;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=W4umrh0I;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf31.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.134 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	spf=pass (imf26.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.137 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788577548;
-	b=j3+sy+uqv1yS67a9+Z95pb8daoV8UreSF6yhoy7cqPOAGozp3GkMIq4S/x/kMDLpq26hGj
-	KHhTDx/ksZcNOosiJDQAC9UjFJZibVUDzC7EXiVh4rmjWO4eM1YXJDXXH++yt6bSZwYXII
-	xNgnXsQzFG3y8egy6wiIBOCilLALJUE=
+	t=1788577550;
+	b=3ERN555Gh+T1b4Ja3kbdrk4hcdtLLeStEdfXPzCB0DOTnrOgCRQw3RnLmL8SfiM59yCyHX
+	W0gEGfMlnWw3szMFaYUfPzCMY4p4bO9uCA7SsI4aHI0UqM+HIBvstPZGNJfff86r/hQUZ4
+	VgQ5Gz3+oJhy1SgT0LD4bKYgY3ju+hQ=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=iPlKgRCUUQd3XAlmVdK29edWcfnznhNVidhGTeL5Mag=;
+DKIM-Signature: a=rsa-sha256; bh=F1dMlE3SNbCaduwN58Kn4je6GZ6Gq4FaW4vEejZffVI=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788577546; v=1; x=1789182346;
- b=ENKTF5V4Ne+I80OH/xVQhbReWdLhttoPnvc/x2gc+Pzbi5EyCc44P1WH7g2avzpbF145w617
- N1LDGuz42r1pCSgqb/ES8DhUTZS9df5F2ACZhA4s52SUa//BP9FCW2MFh54hfP6zqSbVVP8/fN7
- UkjVvJPlRGx3P4AxQJ+92Iec=
+ t=1788577548; v=1; x=1789182348;
+ b=W4umrh0IBWw2xAtN6p/GkEoZsBz4q6SjKzBfB2DcwN7fRn7kt1mQY1OM5kwQiDY0aJv2Cslo
+ Mha+oI7LfBQ/iYrxmRdjM1sX8svD2NsmLC8YtT/dLYK+JBD72iYOVv97jucH4b5YpUx0ZdYg5KN
+ 2Xykk6h1w08ilRUR5LxPhN4Y=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 460a9f945d6b52a6;
-	Sat, 05 Sep 2026 03:05:46 +0000
-X-Mizu-Trace-ID: 460a9f945d6b52a6
+Received: by smtp.migadu.com with ESMTPS id e1ea12b19bf4cab9;
+	Sat, 05 Sep 2026 03:05:48 +0000
+X-Mizu-Trace-ID: e1ea12b19bf4cab9
 X-Migadu-Flow: FLOW_OUT
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>
@@ -72,22 +72,22 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>,
 	cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 5/6] memcg: group the read-mostly fields of struct mem_cgroup
-Date: Fri,  4 Sep 2026 20:05:21 -0700
-Message-ID: <20260905030522.1887837-6-shakeel.butt@linux.dev>
+Subject: [PATCH 6/6] memcg: group the fields of struct mem_cgroup_per_node
+Date: Fri,  4 Sep 2026 20:05:22 -0700
+Message-ID: <20260905030522.1887837-7-shakeel.butt@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260905030522.1887837-1-shakeel.butt@linux.dev>
 References: <20260905030522.1887837-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
+X-Stat-Signature: uwjxf5ykj73t5f15wpc78jqwp99gbrpj
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B88DC14000C
 X-Rspam-User: 
-X-Stat-Signature: iqp6frjaur63ii9ys5sgjzky98ydbcg4
-X-Rspamd-Queue-Id: 0A24220003
-X-HE-Tag: 1788577547-386850
-X-HE-Meta: U2FsdGVkX1+FkOTwnfy4adlsAqBRErjotYZOIMVeUF3bo+8LA3VeEbK3pIVQyeoMZ6/e4Wtvx8L1rhr4zsrzMhl8Cd5xTOA+mgfhkaNJvOTtfSwB+Pw2qSje1FhNwC8U27cvjmDtWPP6WR6tCFPRLc2BBj+V8L+NgFIljP4muxkTZGYUJRN31RPM7PUXL32Yk6kLMekm7/4UOldCr8VJ5U1LflOTvOTr1K2SWMwgvHR2AjQ7ZIwW4kZdIzd1sJpuA2+jlAneo/JLeH0ZJS6OAJqRsdKFFAz6Ax+AOKTAHZ8AaHLCYZraSw2m3h+HoOOQba6K6Q9W7/gPl4MJ9IWnokszR01l8+UdeUdnHJcWnC41iJYluo+B2tvmvn+gdzQDdEIlvDyjZvjduYG80zfzSKKOL9UBRccRCAmTF2L4fSaANHmCHQsTZweYK4J41/+JHgfxMkMrLYYVyBvisswuaf+BJa30UUlCJLMi7tOXdo4ICNB6XDhosHwPEDQ2WQktR1xgJMd0xv74xxD+TEAIQLgy8gJPQR3FUXISaBwv9tKlxGOGTPE/wXXgOEqVe00/sb/kTMdDoRt6l08MXsjf1cV8S8fECrVmiXsYSma45/6CCkd8AXKhzD5m64xOZcYVPOMfKUNDnpQpzLFqu/8b0DrUeTyYAyyEd0ubOwQuogZ002KYroKX3+o647gWLvgVB+PonFFl/7e5PYFXO6a6/tjuKd4CMU14UzVjnhNMNtZozlacnVDG03km4pRCcBx6tBuQuzMEmy2Gb6nBygpA7RnThpbdarXr+5KDQdE24H0ED6KiUNrWXvTA01WeGMDn0AebxmP+44aIUoMIR4uD71hcy7SS3QJbxuw7FrQj/LxGzU+Iw7M3o8KWwhURaQqle8KYH1j/b4zkYzcQ1w6uArX+fNlxtFI0YZJfJHlO8HBqQN6/nrIy1XtGD1w4lygAuQaHpCx6Fs2QTpy5ZUk
- GzRZZRxl
- Fgcm1W3WmfEStqHdyUv32Pblz0Z0WYuTzlckQvwuV1rPqhoc66N87Tvne1+QZ7lgdaS09K3m7n6scgWj4VJSjKe6M9RUbA50KkfWnXmEQcvqn7Eqmblt6iOpXid03wyTsxvJtBpDQDedqgrm0VfYn5iV1QpIK27+O9TlqA4Pu/MrxYiFwrOHAT/Fne8TIOb3kuyP5DDCTDNLalCivFiL8pQynq5cRgc3nyx3isggDCbT+rBlFPnfkitulH5pzXW3x3IGrTll8VBydCUkmNtvkHbtX3g==
+X-HE-Tag: 1788577549-988314
+X-HE-Meta: U2FsdGVkX1/xPi+J4EDR7d8ZSn1bLFgNybDIIRXC54l6eJFlC3VIm+4RMb+/KyMdD3biqdDjDDwFndTJdlDR+R43umg0vxb91AvEQ/p9nta5wGTPqnwAYloVqPb9djZmCTYnXKA5lzcgR9xjlFi/mfqMmheBLSUwncF4UNlnJbljfYLPWZwpvzsDh+3pP0nVplhiP3kOsB9LlQ6uAt/tZWjLgVMewpHmLjMRIWFW3vegyk+7f1XI0hEUI7kUkPUwVvuIPYkQog0/zk1MTn15fYIifNwrSf0kWg2AEiMpROb6hrUg6jDwcUpnZ9Shb9jxf4RDynP1SdKB6sB7ZhgfgtjVu9LcGSf2iSMmhlC34/9PBZ/vWiDjlg7fsRXX6T037bT5XnknOoyOXJDXOyrzU5FtaTZ5jthEZ7AkG4wmpQbYpuybqlce9lNldyirBfmmp9kIxMh2NS4E/Wl5Jgilo9wtOujkk2wqfT57GmlM8AX590hIpqvgXnoMGmBcqssODrUT9ZvAgCATGkIDTuI+BcswXPRqd4Dxg5XLsFlQ2C9tNyglbygWjKECXHnS0byW4cD+TONRwe74ylTaBJtOIWhNhwqxLi+F+MCu+yw1RVo2y3n1+MxjEvuwfkIxbKz3SORrL2FhM6JwGHkf2bxnZKI4nLsMZjQHEfP/mXRvr8/22f+MTqLdrPhi9N07hRwRCqK20+X8SxJStksqOPblnTfjyrf+IJAObaVEq0y+C1Eh0QUFOyBng6hC3F157ht7zHf/m5sgdC85psQHvkFLcRMTCTzfrzSm81S2qWDrDnk9XU7cWcSq+YSiUBXlABXnsUM3GSj9eAKjwS7hY9rowkIxI3p5v77+2+REEhYAbcpHA8JGtBUFrXifJjy4PJ1QX0B39q+cuTRKH5EHKi3IPUidcpODZrgOIC1z5TD6jKLqvxL+GDa+EubBF1cbDhglj32ZHhrbGjDyznfRDIL
+ UPZv4W0b
+ uABiO4wrZ5QkaanLpdQLsJsu3USWXD/qE2zJoUigey1ydKEUWZ70vOt9lFQWSiHalzvwfU1X9OR0JKpd5PntqYY2rliMu+KwIBgMkbSaJ4T+YjPpaGnTCbjDxfQ986Fx8UeRjQ/HnpZtte1c9uIXowD37nDAfzuGjW3y1w1USI61kNKSwipC5B4QokdeUY+nRTfHT9ldh5on1qVe01TL663IMaGNxMhO1M/absVWlBg6NG2VbzlZVghwC5DrKZU/0LZTgJ4xPRGzPZwcA+O39LGp8FA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,147 +95,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-These fields are set when the memcg is created and only read after
-that:
+Replace the two ad-hoc CACHELINE_PADDING members with named cache line
+groups:
 
-  vmstats_percpu   read on every stat update
-  vmstats
-  zswap_max, zswap_writeback
-  private_id       read on every eviction and refault
-  kmemcg_id        read on every list_lru lookup
-  oom_group
+  memcg_pn_read_mostly   memcg, lruvec_stats_percpu, lruvec_stats,
+                         shrinker_info, objcg
+  memcg_pn_lruvec        lruvec
+  memcg_pn_write_hot     lru_zone_size, iter, nmi slab stats
+  memcg_pn_cold          orig_objcg, objcg_list
 
-Put them in one cache line group at the end of the struct, right
-before nodeinfo[]. nodeinfo[] is read-mostly too but it is a flexible
-array, so it cannot sit inside a group. The group ends without padding
-so the two share a line.
+The group markers give the same isolation the padding did, but they
+are named and the build now checks them.
 
-This also drops the ____cacheline_aligned_in_smp on vmstats_percpu
-added by commit c1afbd5de131 ("mm/memcontrol: avoid false sharing
-between vmstats and events"). That only aligned the start of the
-field. cgwb_domain followed it on the same line and is written on
-every writeout completion. A group boundary covers both sides.
+lruvec still gets its own lines. Commit f59adcf59332 ("mm: memcg: add
+cacheline padding after lruvec in mem_cgroup_per_node") showed why
+that matters: lru_zone_size[] is written under lru_lock but read
+without it by lruvec_lru_size(), so it must not share a line with
+lruvec.
+
+Splitting the cold fields out costs one extra cache line per node per
+memcg.
 
 No functional change.
 
 Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 ---
- include/linux/memcontrol.h | 62 +++++++++++++++++++++-----------------
- mm/memcontrol.c            | 17 +++++++++++
- 2 files changed, 52 insertions(+), 27 deletions(-)
+ include/linux/memcontrol.h | 32 ++++++++++++++++++++++----------
+ mm/memcontrol.c            | 30 ++++++++++++++++++++++++++++++
+ 2 files changed, 52 insertions(+), 10 deletions(-)
 
 diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 635929a1f13b..d0f3458f9250 100644
+index d0f3458f9250..e10a3eaae890 100644
 --- a/include/linux/memcontrol.h
 +++ b/include/linux/memcontrol.h
-@@ -183,9 +183,6 @@ struct obj_cgroup {
- struct mem_cgroup {
- 	struct cgroup_subsys_state css;
+@@ -82,7 +82,8 @@ struct mem_cgroup_reclaim_iter {
+  * per-node information in memory controller.
+  */
+ struct mem_cgroup_per_node {
+-	/* Keep the read-only fields at the start */
++	/* Set when the memcg is created, then only read. */
++	__cacheline_group_begin_aligned(memcg_pn_read_mostly);
+ 	struct mem_cgroup	*memcg;		/* Back pointer, we cannot */
+ 						/* use container_of	   */
  
--	/* Private memcg ID. Used to ID objects that outlive the cgroup */
--	int private_id;
+@@ -91,14 +92,30 @@ struct mem_cgroup_per_node {
+ 	struct shrinker_info __rcu	*shrinker_info;
+ 	struct obj_cgroup __rcu		*objcg;
+ 
+-	CACHELINE_PADDING(_pad1_);
++	__cacheline_group_end_aligned(memcg_pn_read_mostly);
+ 
+-	/* Fields which get updated often at the end. */
++	/*
++	 * Keep lruvec on its own lines. Sharing them with lru_zone_size[]
++	 * regressed, see commit f59adcf59332 ("mm: memcg: add cacheline
++	 * padding after lruvec in mem_cgroup_per_node").
++	 */
++	__cacheline_group_begin_aligned(memcg_pn_lruvec);
+ 	struct lruvec		lruvec;
+-	CACHELINE_PADDING(_pad2_);
++	__cacheline_group_end_aligned(memcg_pn_lruvec);
++
++	/* Written on every LRU update and on every reclaim iteration. */
++	__cacheline_group_begin_aligned(memcg_pn_write_hot);
+ 	unsigned long		lru_zone_size[MAX_NR_ZONES][NR_LRU_LISTS];
+ 	struct mem_cgroup_reclaim_iter	iter;
++#ifdef CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC
++	/* slab stats for nmi context */
++	atomic_t		slab_reclaimable;
++	atomic_t		slab_unreclaimable;
++#endif
++	__cacheline_group_end_aligned(memcg_pn_write_hot);
+ 
++	/* Touched only when the memcg is reparented or freed. */
++	__cacheline_group_begin_aligned(memcg_pn_cold);
+ 	/*
+ 	 * orig_objcg preserves a pointer (and a reference) to the original
+ 	 * objcg until the end of life of memcg.
+@@ -106,12 +123,7 @@ struct mem_cgroup_per_node {
+ 	struct obj_cgroup	*orig_objcg;
+ 	/* list of inherited objcgs, protected by objcg_lock */
+ 	struct list_head objcg_list;
 -
- 	/* Accounted resources */
- 	struct page_counter memory;		/* Both v1 & v2 */
- 
-@@ -259,30 +256,6 @@ struct mem_cgroup {
- #endif
- 	__cacheline_group_end_aligned(memcg_cold);
- 
--#ifdef CONFIG_ZSWAP
--	unsigned long zswap_max;
--
--	/*
--	 * Prevent pages from this memcg from being written back from zswap to
--	 * swap, and from being swapped out on zswap store failures.
--	 */
--	bool zswap_writeback;
+-#ifdef CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC
+-	/* slab stats for nmi context */
+-	atomic_t		slab_reclaimable;
+-	atomic_t		slab_unreclaimable;
 -#endif
--
--	/*
--	 * Should the OOM killer kill all belonging tasks, had it kill one?
--	 */
--	bool oom_group;
--
--	/* memory.stat */
--	struct memcg_vmstats	*vmstats;
--
--	int kmemcg_id;
--
--	/* Keep the hot per-CPU stats pointer away from memory event counters. */
--	struct memcg_vmstats_percpu __percpu *vmstats_percpu
--		____cacheline_aligned_in_smp;
--
- #ifdef CONFIG_MEMCG_V1
- 	/* v1 only. Not grouped: v1 is legacy, sorting it is not worth it. */
- 
-@@ -322,6 +295,41 @@ struct mem_cgroup {
- 	int swappiness;
- #endif /* CONFIG_MEMCG_V1 */
- 
-+	/*
-+	 * Set when the memcg is created and cleared when it is offlined.
-+	 * Never written on a hot path.
-+	 */
-+	__cacheline_group_begin_aligned(memcg_read_mostly);
-+	/* Read on every stat update */
-+	struct memcg_vmstats_percpu __percpu *vmstats_percpu;
-+
-+	/* memory.stat */
-+	struct memcg_vmstats	*vmstats;
-+
-+#ifdef CONFIG_ZSWAP
-+	unsigned long zswap_max;
-+#endif
-+
-+	/* Private memcg ID. Used to ID objects that outlive the cgroup */
-+	int private_id;
-+
-+	int kmemcg_id;
-+
-+	/*
-+	 * Should the OOM killer kill all belonging tasks, had it kill one?
-+	 */
-+	bool oom_group;
-+
-+#ifdef CONFIG_ZSWAP
-+	/*
-+	 * Prevent pages from this memcg from being written back from zswap to
-+	 * swap, and from being swapped out on zswap store failures.
-+	 */
-+	bool zswap_writeback;
-+#endif
-+	/* Not padded: nodeinfo[] is read-mostly too, let it share the line. */
-+	__cacheline_group_end(memcg_read_mostly);
-+
- 	struct mem_cgroup_per_node *nodeinfo[];
++	__cacheline_group_end_aligned(memcg_pn_cold);
  };
  
+ struct mem_cgroup_threshold {
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index b2cc82c936ed..4a5a30439a03 100644
+index 4a5a30439a03..6976a60c911f 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -5779,6 +5779,23 @@ static void __init memcg_struct_check(void)
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_cold,
- 				      mm_list);
- #endif
+@@ -5796,6 +5796,36 @@ static void __init memcg_struct_check(void)
+ 				      kmemcg_id);
+ 	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_read_mostly,
+ 				      oom_group);
 +
-+	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_read_mostly,
-+				      vmstats_percpu);
-+	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_read_mostly,
-+				      vmstats);
-+#ifdef CONFIG_ZSWAP
-+	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_read_mostly,
-+				      zswap_max);
-+	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_read_mostly,
-+				      zswap_writeback);
++	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup_per_node,
++				      memcg_pn_read_mostly, memcg);
++	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup_per_node,
++				      memcg_pn_read_mostly, lruvec_stats_percpu);
++	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup_per_node,
++				      memcg_pn_read_mostly, lruvec_stats);
++	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup_per_node,
++				      memcg_pn_read_mostly, shrinker_info);
++	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup_per_node,
++				      memcg_pn_read_mostly, objcg);
++
++	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup_per_node,
++				      memcg_pn_lruvec, lruvec);
++
++	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup_per_node,
++				      memcg_pn_write_hot, lru_zone_size);
++	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup_per_node,
++				      memcg_pn_write_hot, iter);
++#ifdef CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC
++	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup_per_node,
++				      memcg_pn_write_hot, slab_reclaimable);
++	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup_per_node,
++				      memcg_pn_write_hot, slab_unreclaimable);
 +#endif
-+	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_read_mostly,
-+				      private_id);
-+	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_read_mostly,
-+				      kmemcg_id);
-+	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_read_mostly,
-+				      oom_group);
++
++	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup_per_node,
++				      memcg_pn_cold, orig_objcg);
++	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup_per_node,
++				      memcg_pn_cold, objcg_list);
  }
  
  int __init mem_cgroup_init(void)
